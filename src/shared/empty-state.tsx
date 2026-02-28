@@ -1,0 +1,76 @@
+import * as React from 'react'
+import { cn } from '../ui/lib/utils'
+import type { LucideIcon } from 'lucide-react'
+import { Inbox } from 'lucide-react'
+
+interface EmptyStateProps extends React.HTMLAttributes<HTMLDivElement> {
+  icon?: LucideIcon
+  title: string
+  description?: string
+  action?: React.ReactNode
+  compact?: boolean
+}
+
+function EmptyState({
+  icon: Icon = Inbox,
+  title,
+  description,
+  action,
+  compact = false,
+  className,
+  ...props
+}: EmptyStateProps) {
+  return (
+    <div
+      className={cn(
+        'flex flex-col items-center justify-center text-center',
+        compact ? 'gap-3 py-8' : 'gap-4 py-16',
+        className,
+      )}
+      {...props}
+    >
+      <div
+        className={cn(
+          'flex items-center justify-center rounded-xl bg-[var(--Mapped-Surface-Secondary)]',
+          compact ? 'h-10 w-10' : 'h-12 w-12',
+        )}
+      >
+        <Icon
+          className={cn(
+            'text-[var(--Mapped-Text-Quaternary)]',
+            compact ? 'h-5 w-5' : 'h-6 w-6',
+          )}
+          strokeWidth={1.5}
+        />
+      </div>
+
+      <div className="flex max-w-[280px] flex-col gap-1">
+        <h3
+          className={cn(
+            'text-[var(--Mapped-Text-Primary)]',
+            compact ? 'B2-Reg semibold' : 'B1-Reg semibold',
+          )}
+        >
+          {title}
+        </h3>
+        {description && (
+          <p
+            className={cn(
+              'text-[var(--Mapped-Text-Quaternary)]',
+              compact ? 'B3-Reg' : 'B2-Reg',
+            )}
+          >
+            {description}
+          </p>
+        )}
+      </div>
+
+      {action && <div className="mt-1">{action}</div>}
+    </div>
+  )
+}
+
+EmptyState.displayName = 'EmptyState'
+
+export { EmptyState }
+export type { EmptyStateProps }

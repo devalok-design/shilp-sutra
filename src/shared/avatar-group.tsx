@@ -1,0 +1,146 @@
+import * as React from 'react'
+import { cva, type VariantProps } from 'class-variance-authority'
+import { cn } from '../ui/lib/utils'
+import {
+  Avatar,
+  AvatarImage,
+  AvatarFallback,
+} from '../ui/avatar'
+import {
+  Tooltip,
+  TooltipContent,
+  TooltipTrigger,
+} from '../ui/tooltip'
+
+function getInitials(name: string): string {
+  const parts = name.trim().split(/\s+/)
+  if (parts.length >= 2) {
+    return (parts[0][0] + parts[1][0]).toUpperCase()
+  }
+  return name.slice(0, 2).toUpperCase()
+}
+
+const avatarSizeVariants = cva(
+  'shrink-0 overflow-hidden rounded-full border-2 border-[var(--Mapped-Surface-Primary)]',
+  {
+    variants: {
+      size: {
+        sm: 'h-6 w-6 text-[9px]',
+        default: 'h-8 w-8 text-[11px]',
+        lg: 'h-10 w-10 text-[13px]',
+      },
+    },
+    defaultVariants: {
+      size: 'default',
+    },
+  },
+)
+
+interface AvatarUser {
+  name: string
+  image?: string | null
+}
+
+interface AvatarGroupProps
+  extends React.HTMLAttributes<HTMLDivElement>,
+    VariantProps<typeof avatarSizeVariants> {
+  users: AvatarUser[]
+  max?: number
+  showTooltip?: boolean
+}
+
+function AvatarGroup({
+  users,
+  max = 4,
+  size,
+  showTooltip = true,
+  className,
+  ...props
+}: AvatarGroupProps) {
+  const displayed = users.slice(0, max)
+  const overflow = users.length - max
+
+  const overlapMap = {
+    sm: '-ml-1.5',
+    default: '-ml-2',
+    lg: '-ml-2.5',
+  }
+  const overlapClass = overlapMap[size ?? 'default']
+
+  return (
+    <div
+      className={cn('flex items-center', className)}
+      {...props}
+    >
+      {displayed.map((user, index) => {
+        const initials = getInitials(user.name)
+
+        const avatar = (
+          <Avatar
+            key={index}
+            className={cn(
+              avatarSizeVariants({ size }),
+              index > 0 && overlapClass,
+            )}
+            style={{ zIndex: displayed.length - index }}
+          >
+            {user.image && (
+              <AvatarImage src={user.image} alt={user.name} />
+            )}
+            <AvatarFallback
+              className="bg-[var(--Mapped-Surface-Dark)] font-[Ranade] font-semibold text-[var(--Mapped-Text-On-Dark-Primary)]"
+            >
+              {initials}
+            </AvatarFallback>
+          </Avatar>
+        )
+
+        if (!showTooltip) return avatar
+
+        return (
+          <Tooltip key={index}>
+            <TooltipTrigger asChild>{avatar}</TooltipTrigger>
+            <TooltipContent
+              className="border-[var(--border-primary)] bg-[var(--Mapped-Surface-Primary)] text-[var(--Mapped-Text-Primary)]"
+              sideOffset={6}
+            >
+              <p className="B3-Reg">{user.name}</p>
+            </TooltipContent>
+          </Tooltip>
+        )
+      })}
+
+      {overflow > 0 && (
+        <Tooltip>
+          <TooltipTrigger asChild>
+            <div
+              className={cn(
+                avatarSizeVariants({ size }),
+                overlapClass,
+                'flex cursor-default items-center justify-center bg-[var(--Mapped-Surface-Darker)] font-[Ranade] font-semibold text-[var(--Mapped-Text-On-Dark-Primary)]',
+              )}
+              style={{ zIndex: 0 }}
+            >
+              +{overflow}
+            </div>
+          </TooltipTrigger>
+          <TooltipContent
+            className="border-[var(--border-primary)] bg-[var(--Mapped-Surface-Primary)] text-[var(--Mapped-Text-Primary)]"
+            sideOffset={6}
+          >
+            <div className="flex flex-col gap-0.5">
+              {users.slice(max).map((user, i) => (
+                <p key={i} className="B3-Reg">{user.name}</p>
+              ))}
+            </div>
+          </TooltipContent>
+        </Tooltip>
+      )}
+    </div>
+  )
+}
+
+AvatarGroup.displayName = 'AvatarGroup'
+
+export { AvatarGroup }
+export type { AvatarGroupProps, AvatarUser }

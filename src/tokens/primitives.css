@@ -1,0 +1,70 @@
+/* ═══════════════════════════════════════════════════════════════════
+   TIER 1 — PRIMITIVE TOKENS
+   Raw palette values. Never referenced directly in component code.
+   ═══════════════════════════════════════════════════════════════════ */
+
+:root {
+  /* ── Pink scale — Devalok brand ─────────────────────────────── */
+  --pink-50:  #fcf7f7;
+  --pink-100: #f7e9e9;
+  --pink-200: #efd5d9;
+  --pink-300: #e5b3bf;
+  --pink-400: #d97195;
+  --pink-500: #d33163;
+  --pink-600: #b6204a;
+  --pink-700: #932044;
+  --pink-800: #6e1433;
+  --pink-900: #4d0a1c;
+  --pink-950: #2a0510;
+
+  /* ── Purple scale — secondary accent ────────────────────────── */
+  --purple-50:  #f8f6fc;
+  --purple-100: #f2eff8;
+  --purple-200: #e6e1f3;
+  --purple-300: #d3c8ea;
+  --purple-400: #ab9ded;
+  --purple-500: #8258a9;
+  --purple-600: #6a3f91;
+  --purple-700: #512d75;
+  --purple-800: #3a274e;
+  --purple-900: #2a1a3a;
+  --purple-950: #1e1429;
+
+  /* ── Neutral scale — warm-tinted grays ──────────────────────── */
+  --neutral-0:   #ffffff;
+  --neutral-50:  #f8f7f7;
+  --neutral-100: #f2f1f1;
+  --neutral-200: #e6e4e5;
+  --neutral-300: #d3ced0;
+  --neutral-400: #b7afb2;
+  --neutral-500: #8c8084;
+  --neutral-600: #6b6164;
+  --neutral-700: #564e50;
+  --neutral-800: #403a3c;
+  --neutral-900: #282425;
+  --neutral-950: #050505;
+
+  /* ── Green ──────────────────────────────────────────────────── */
+  --green-50:  #e1f8e0;
+  --green-100: #aaffb9;
+  --green-600: #007a14;
+  --green-700: #005c0f;
+
+  /* ── Red ────────────────────────────────────────────────────── */
+  --red-50:  #ffc5c1;
+  --red-100: #ff9c95;
+  --red-600: #e00e00;
+  --red-700: #b30b00;
+
+  /* ── Yellow ─────────────────────────────────────────────────── */
+  --yellow-50:  #fff585;
+  --yellow-100: #ffe83f;
+  --yellow-600: #a36200;
+  --yellow-700: #7a4900;
+
+  /* ── Blue ───────────────────────────────────────────────────── */
+  --blue-50:  #bee3f9;
+  --blue-100: #43b2ed;
+  --blue-600: #0e537e;
+  --blue-700: #0a3f60;
+}

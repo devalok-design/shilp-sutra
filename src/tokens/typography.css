@@ -1,0 +1,399 @@
+/* ═══════════════════════════════════════════════════════════════════
+   TYPOGRAPHY — Font faces, type scale utilities, and prose styles
+   ═══════════════════════════════════════════════════════════════════ */
+
+/* ── Font Faces ─────────────────────────────────────────────────── */
+
+/* Google Sans (primary UI font) — Variable font: supports weights 100-900 */
+@font-face {
+  font-family: 'Google Sans';
+  src: url('../../fonts/GoogleSans-Variable.ttf') format('truetype');
+  font-weight: 100 900;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: 'Google Sans';
+  src: url('../../fonts/GoogleSans-Italic-Variable.ttf') format('truetype');
+  font-weight: 100 900;
+  font-style: italic;
+  font-display: swap;
+}
+
+/* Ranade (accent — brand moments, hero headings, special callouts) */
+@font-face {
+  font-family: 'Ranade';
+  src: url('../../fonts/Ranade-Variable.ttf') format('truetype');
+  font-weight: 100 900;
+  font-display: swap;
+}
+@font-face {
+  font-family: 'Ranade';
+  src: url('../../fonts/Ranade-VariableItalic.ttf') format('truetype');
+  font-weight: 100 900;
+  font-style: italic;
+  font-display: swap;
+}
+
+/* ── Title Scale (T1–T7) ───────────────────────────────────────── */
+
+.T1-Reg {
+  font-family: inherit;
+  font-size: 62px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: 100%;
+  letter-spacing: -1.24px;
+}
+
+.T2-Reg {
+  font-family: inherit;
+  font-size: 48px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: 100%;
+  letter-spacing: -0.96px;
+}
+
+.T3-Reg {
+  font-family: inherit;
+  font-size: 38px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: 100%;
+  letter-spacing: -0.76px;
+}
+
+.T4-Reg {
+  font-family: inherit;
+  font-size: 32px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: 100%;
+  letter-spacing: -0.64px;
+}
+
+.T5-Reg {
+  font-family: inherit;
+  font-size: 24px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: 100%;
+  letter-spacing: -0.48px;
+}
+
+.T6-Reg {
+  font-family: inherit;
+  font-size: 20px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: 100%;
+}
+
+.T7-Reg {
+  font-family: inherit;
+  font-size: 18px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: 100%;
+  letter-spacing: -0.48px;
+}
+
+/* ── Body Scale (B1–B8) ────────────────────────────────────────── */
+
+.B1-Reg {
+  font-family: inherit;
+  font-size: 16px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: 100%;
+  letter-spacing: -0.32px;
+}
+
+.B2-Reg {
+  font-family: inherit;
+  font-size: 14px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: 100%;
+  letter-spacing: -0.32px;
+}
+
+.B3-Reg {
+  font-family: inherit;
+  font-size: 12px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: 100%;
+  letter-spacing: -0.32px;
+}
+
+.B4-Reg {
+  font-family: inherit;
+  font-size: 10px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: 100%;
+  letter-spacing: -0.32px;
+}
+
+.B5-Reg {
+  font-family: inherit;
+  font-size: 16px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: 140%;
+  letter-spacing: 0.32px;
+}
+
+.B6-Reg {
+  font-family: inherit;
+  font-size: 14px;
+  font-style: normal;
+  font-weight: 600;
+  line-height: 100%;
+}
+
+.B7-Reg {
+  font-family: inherit;
+  font-size: 12px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: 100%;
+}
+
+.B8-Reg {
+  font-family: inherit;
+  font-size: 14px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: 100%;
+  letter-spacing: -0.28px;
+}
+
+.B2-Semibold {
+  font-family: inherit;
+  font-size: 14px;
+  font-style: normal;
+  font-weight: 600;
+  line-height: 100%;
+  letter-spacing: -0.32px;
+}
+
+/* ── Label Scale (L1–L6) ───────────────────────────────────────── */
+
+.L1 {
+  font-family: inherit;
+  font-size: 16px;
+  font-style: normal;
+  font-weight: 600;
+  line-height: 100%;
+  /* 16px */
+  letter-spacing: 0.96px;
+  text-transform: uppercase;
+}
+
+.L2 {
+  font-family: inherit;
+  font-size: 14px;
+  font-style: normal;
+  font-weight: 600;
+  line-height: 100%;
+  /* 16px */
+  letter-spacing: 0.96px;
+  text-transform: uppercase;
+}
+
+.L3 {
+  font-family: inherit;
+  font-size: 12px;
+  font-style: normal;
+  font-weight: 600;
+  line-height: 100%;
+  letter-spacing: 0.72px;
+  text-transform: uppercase;
+}
+
+.L4 {
+  font-family: inherit;
+  font-size: 10px;
+  font-style: normal;
+  font-weight: 600;
+  line-height: 100%;
+  letter-spacing: 0.6px;
+  text-transform: uppercase;
+}
+
+.L5 {
+  font-family: inherit;
+  font-size: 10px;
+  font-style: normal;
+  font-weight: 600;
+  line-height: 100%;
+  letter-spacing: 0.6px;
+  text-transform: uppercase;
+}
+
+.L6 {
+  font-family: inherit;
+  font-size: 14px;
+  font-style: normal;
+  font-weight: 600;
+  line-height: 100%;
+  letter-spacing: 0.84px;
+  text-transform: uppercase;
+}
+
+/* ── Paragraph Scale (P1–P7) ───────────────────────────────────── */
+
+.P1 {
+  font-family: inherit;
+  font-size: 18px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: 140%;
+  letter-spacing: 0.36px;
+}
+
+.P2 {
+  font-family: inherit;
+  font-size: 16px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: 140%;
+  letter-spacing: 0.36px;
+}
+
+.P3 {
+  font-family: inherit;
+  font-size: 14px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: 140%;
+  letter-spacing: 0.36px;
+}
+
+.P4 {
+  font-family: inherit;
+  font-size: 12px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: 140%;
+  letter-spacing: 0.36px;
+}
+
+.P5 {
+  font-family: inherit;
+  font-size: 16px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: 140%;
+  letter-spacing: 0.16px;
+}
+
+.P6 {
+  font-family: inherit;
+  font-size: 18px;
+  font-style: normal;
+  font-weight: 600;
+  line-height: 100%;
+}
+
+.P7 {
+  font-family: inherit;
+  font-size: 14px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: 140%;
+  letter-spacing: 0.14px;
+}
+
+/* ── Weight Modifier ────────────────────────────────────────────── */
+
+.semibold {
+  font-weight: 600;
+}
+
+/* ── Responsive Overrides ───────────────────────────────────────── */
+
+@media (max-width: 767px) {
+  .T5-Reg {
+    font-size: 16px;
+  }
+}
+
+/* ── Prose Styles (Devsabha AI Insights) ────────────────────────── */
+
+.prose-devsabha {
+  font-family: 'Ranade', sans-serif;
+  font-size: 13px;
+  line-height: 1.6;
+  color: var(--color-text-secondary);
+}
+
+.prose-devsabha h1,
+.prose-devsabha h2,
+.prose-devsabha h3,
+.prose-devsabha h4 {
+  font-family: 'Ranade', sans-serif;
+  font-weight: 600;
+  color: var(--color-text-primary);
+  margin-top: 1em;
+  margin-bottom: 0.5em;
+}
+
+.prose-devsabha h1 { font-size: 18px; }
+.prose-devsabha h2 { font-size: 16px; }
+.prose-devsabha h3 { font-size: 14px; }
+.prose-devsabha h4 { font-size: 13px; }
+
+.prose-devsabha p {
+  margin-bottom: 0.5em;
+}
+
+.prose-devsabha ul {
+  list-style-type: disc;
+  padding-left: 1.5em;
+  margin-bottom: 0.5em;
+}
+
+.prose-devsabha ol {
+  list-style-type: decimal;
+  padding-left: 1.5em;
+  margin-bottom: 0.5em;
+}
+
+.prose-devsabha li {
+  margin-bottom: 0.25em;
+}
+
+.prose-devsabha strong {
+  font-weight: 600;
+  color: var(--color-text-primary);
+}
+
+.prose-devsabha em {
+  font-style: italic;
+}
+
+.prose-devsabha code {
+  font-size: 12px;
+  background: var(--color-layer-03);
+  border-radius: 4px;
+  padding: 0.15em 0.4em;
+}
+
+.prose-devsabha blockquote {
+  border-left: 3px solid var(--color-border-strong);
+  padding-left: 1em;
+  margin: 0.5em 0;
+  color: var(--color-text-tertiary);
+}
+
+.prose-devsabha *:first-child {
+  margin-top: 0;
+}
+
+.prose-devsabha *:last-child {
+  margin-bottom: 0;
+}

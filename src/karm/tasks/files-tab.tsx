@@ -18,7 +18,7 @@ import {
   DialogClose,
 } from '../../ui/dialog'
 import { Button } from '../../ui/button'
-import { EmptyState } from '../../ui/empty-state'
+import { EmptyState } from '../../shared/empty-state'
 import {
   File as FileIcon,
   FileText,

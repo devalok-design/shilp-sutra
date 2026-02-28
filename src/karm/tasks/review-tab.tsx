@@ -13,7 +13,7 @@ import {
   PopoverTrigger,
 } from '../../ui/popover'
 import { Badge } from '../../ui/badge'
-import { EmptyState } from '../../ui/empty-state'
+import { EmptyState } from '../../shared/empty-state'
 import {
   GitPullRequest,
   Plus,
@@ -82,12 +82,12 @@ function formatDate(dateStr: string) {
 
 const STATUS_MAP: Record<
   ReviewRequest['status'],
-  { variant: 'default' | 'secondary' | 'destructive' | 'outline'; label: string; className: string }
+  { variant: 'yellow' | 'green' | 'magenta' | 'red'; label: string; className: string }
 > = {
-  PENDING: { variant: 'secondary', label: 'Pending', className: 'bg-yellow-100 text-yellow-800 border-yellow-200' },
-  APPROVED: { variant: 'default', label: 'Approved', className: 'bg-green-100 text-green-800 border-green-200' },
-  CHANGES_REQUESTED: { variant: 'outline', label: 'Changes Requested', className: 'bg-orange-100 text-orange-800 border-orange-200' },
-  REJECTED: { variant: 'destructive', label: 'Rejected', className: 'bg-red-100 text-red-800 border-red-200' },
+  PENDING: { variant: 'yellow', label: 'Pending', className: 'bg-yellow-100 text-yellow-800 border-yellow-200' },
+  APPROVED: { variant: 'green', label: 'Approved', className: 'bg-green-100 text-green-800 border-green-200' },
+  CHANGES_REQUESTED: { variant: 'magenta', label: 'Changes Requested', className: 'bg-orange-100 text-orange-800 border-orange-200' },
+  REJECTED: { variant: 'red', label: 'Rejected', className: 'bg-red-100 text-red-800 border-red-200' },
 }
 
 const RESPONSE_OPTIONS: {

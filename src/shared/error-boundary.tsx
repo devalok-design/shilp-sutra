@@ -4,6 +4,8 @@ import * as React from 'react'
 import { AlertTriangle, Ban, FileQuestion, ServerCrash } from 'lucide-react'
 import { Button } from '../ui/button'
 
+declare const process: { env: { NODE_ENV?: string } } | undefined
+
 interface ErrorDisplayProps {
   error: unknown
   onReset?: () => void
@@ -94,7 +96,10 @@ function ErrorDisplay({ error, onReset }: ErrorDisplayProps) {
   const status = getStatusFromError(error)
   const message = getMessageFromError(error)
   const stack = getStackFromError(error)
-  const isDev = process.env.NODE_ENV === 'development'
+  const isDev =
+    typeof process !== 'undefined' &&
+    process.env &&
+    process.env.NODE_ENV === 'development'
 
   const errorConfig = getErrorConfig(status)
   const Icon = errorConfig.icon

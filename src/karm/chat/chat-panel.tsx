@@ -17,7 +17,7 @@ export interface Agent {
   desc: string
 }
 
-interface ChatPanelProps {
+export interface ChatPanelProps {
   isOpen: boolean
   onOpenChange: (open: boolean) => void
   messages: ChatMessage[]

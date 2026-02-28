@@ -7,7 +7,7 @@ import {
   AvatarImage,
   AvatarFallback,
 } from '../../ui/avatar'
-import { EmptyState } from '../../ui/empty-state'
+import { EmptyState } from '../../shared/empty-state'
 import { MessageCircle, Send } from 'lucide-react'
 
 // ============================================================

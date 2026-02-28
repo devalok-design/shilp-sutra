@@ -1,4 +1,6 @@
-const VisuallyHidden = ({ children }) => {
+import * as React from 'react'
+
+const VisuallyHidden = ({ children }: { children: React.ReactNode }) => {
   return (
     <span
       style={{

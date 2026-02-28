@@ -323,4 +323,3 @@ function CommandPalette({
 CommandPalette.displayName = 'CommandPalette'
 
 export { CommandPalette }
-export type { CommandPaletteProps, CommandGroup, CommandItem }

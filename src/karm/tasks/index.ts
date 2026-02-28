@@ -1,0 +1,7 @@
+export { TaskDetailPanel, type TaskDetailPanelProps, type FullTask } from './task-detail-panel'
+export { TaskProperties, type TaskPropertiesProps, type TaskData, type Member, type Column } from './task-properties'
+export { ActivityTab, type ActivityTabProps, type AuditLogEntry } from './activity-tab'
+export { ConversationTab, type ConversationTabProps, type Comment } from './conversation-tab'
+export { FilesTab, type FilesTabProps, type TaskFile } from './files-tab'
+export { ReviewTab, type ReviewTabProps, type ReviewRequest } from './review-tab'
+export { SubtasksTab, type SubtasksTabProps, type Subtask } from './subtasks-tab'

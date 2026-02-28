@@ -1,0 +1,330 @@
+'use client'
+
+import * as React from 'react'
+import { cn } from '../../ui/lib/utils'
+import {
+  Avatar,
+  AvatarImage,
+  AvatarFallback,
+} from '../../ui/avatar'
+import {
+  Popover,
+  PopoverContent,
+  PopoverTrigger,
+} from '../../ui/popover'
+import { Badge } from '../../ui/badge'
+import { EmptyState } from '../../ui/empty-state'
+import {
+  GitPullRequest,
+  Plus,
+  Check,
+  X,
+  MessageSquare,
+} from 'lucide-react'
+
+// ============================================================
+// Types
+// ============================================================
+
+interface ReviewUser {
+  id: string
+  name: string
+  image: string | null
+}
+
+export interface ReviewRequest {
+  id: string
+  taskId: string
+  status: 'PENDING' | 'APPROVED' | 'CHANGES_REQUESTED' | 'REJECTED'
+  feedback: string | null
+  requestedBy: ReviewUser
+  reviewer: ReviewUser
+  createdAt: string
+  updatedAt: string
+}
+
+interface Member {
+  id: string
+  name: string
+  image?: string | null
+}
+
+interface ReviewTabProps {
+  reviews: ReviewRequest[]
+  members: Member[]
+  onRequestReview: (reviewerId: string) => void
+  onUpdateStatus: (
+    reviewId: string,
+    status: ReviewRequest['status'],
+    feedback?: string,
+  ) => void
+  className?: string
+}
+
+// ============================================================
+// Helpers
+// ============================================================
+
+function getInitials(name: string) {
+  const parts = name.trim().split(/\s+/)
+  if (parts.length >= 2) return (parts[0][0] + parts[1][0]).toUpperCase()
+  return name.slice(0, 2).toUpperCase()
+}
+
+function formatDate(dateStr: string) {
+  return new Date(dateStr).toLocaleDateString('en-IN', {
+    month: 'short',
+    day: 'numeric',
+    hour: 'numeric',
+    minute: '2-digit',
+  })
+}
+
+const STATUS_MAP: Record<
+  ReviewRequest['status'],
+  { variant: 'default' | 'secondary' | 'destructive' | 'outline'; label: string; className: string }
+> = {
+  PENDING: { variant: 'secondary', label: 'Pending', className: 'bg-yellow-100 text-yellow-800 border-yellow-200' },
+  APPROVED: { variant: 'default', label: 'Approved', className: 'bg-green-100 text-green-800 border-green-200' },
+  CHANGES_REQUESTED: { variant: 'outline', label: 'Changes Requested', className: 'bg-orange-100 text-orange-800 border-orange-200' },
+  REJECTED: { variant: 'destructive', label: 'Rejected', className: 'bg-red-100 text-red-800 border-red-200' },
+}
+
+const RESPONSE_OPTIONS: {
+  status: ReviewRequest['status']
+  label: string
+  icon: React.ElementType
+}[] = [
+  { status: 'APPROVED', label: 'Approve', icon: Check },
+  { status: 'CHANGES_REQUESTED', label: 'Request Changes', icon: MessageSquare },
+  { status: 'REJECTED', label: 'Reject', icon: X },
+]
+
+// ============================================================
+// Review Tab
+// ============================================================
+
+function ReviewTab({
+  reviews,
+  members,
+  onRequestReview,
+  onUpdateStatus,
+  className,
+}: ReviewTabProps) {
+  const [feedbackMap, setFeedbackMap] = React.useState<Record<string, string>>({})
+  const [expandedId, setExpandedId] = React.useState<string | null>(null)
+  const [reviewerOpen, setReviewerOpen] = React.useState(false)
+  const [searchTerm, setSearchTerm] = React.useState('')
+
+  const filteredMembers = members.filter(
+    (m) => m.name.toLowerCase().includes(searchTerm.toLowerCase()),
+  )
+
+  const handleRespond = (
+    reviewId: string,
+    status: ReviewRequest['status'],
+  ) => {
+    onUpdateStatus(reviewId, status, feedbackMap[reviewId])
+    setFeedbackMap((prev) => {
+      const next = { ...prev }
+      delete next[reviewId]
+      return next
+    })
+    setExpandedId(null)
+  }
+
+  return (
+    <div className={cn('flex flex-col', className)}>
+      {reviews.length > 0 ? (
+        <div className="space-y-3">
+          {reviews.map((review) => {
+            const statusInfo = STATUS_MAP[review.status]
+            const isExpanded = expandedId === review.id
+
+            return (
+              <div
+                key={review.id}
+                className="rounded-lg border border-[var(--border-primary)] bg-[var(--Mapped-Surface-Primary)] p-3"
+              >
+                {/* Header */}
+                <div className="flex items-center gap-2.5">
+                  <Avatar className="h-6 w-6 shrink-0">
+                    {review.reviewer.image && (
+                      <AvatarImage
+                        src={review.reviewer.image}
+                        alt={review.reviewer.name}
+                      />
+                    )}
+                    <AvatarFallback className="bg-[var(--Mapped-Surface-Darker)] text-[8px] font-semibold text-[var(--Mapped-Text-On-Dark-Primary)]">
+                      {getInitials(review.reviewer.name)}
+                    </AvatarFallback>
+                  </Avatar>
+                  <div className="flex-1 min-w-0">
+                    <span className="text-[13px] font-[Ranade] font-medium text-[var(--Mapped-Text-Primary)]">
+                      {review.reviewer.name}
+                    </span>
+                    <span className="ml-2 text-[11px] font-[Ranade] text-[var(--Mapped-Text-Quaternary)]">
+                      requested by {review.requestedBy.name}
+                    </span>
+                  </div>
+                  <Badge
+                    variant={statusInfo.variant}
+                    className={statusInfo.className}
+                  >
+                    {statusInfo.label}
+                  </Badge>
+                </div>
+
+                {/* Feedback */}
+                {review.feedback && (
+                  <div className="mt-2.5 rounded-md bg-[var(--Mapped-Surface-Secondary)] px-3 py-2">
+                    <p className="text-[12px] font-[Ranade] leading-relaxed text-[var(--Mapped-Text-Secondary)]">
+                      {review.feedback}
+                    </p>
+                  </div>
+                )}
+
+                {/* Actions for pending reviews */}
+                {review.status === 'PENDING' && (
+                  <div className="mt-2.5">
+                    {isExpanded ? (
+                      <div className="space-y-2">
+                        <textarea
+                          value={feedbackMap[review.id] || ''}
+                          onChange={(e) =>
+                            setFeedbackMap((prev) => ({
+                              ...prev,
+                              [review.id]: e.target.value,
+                            }))
+                          }
+                          placeholder="Add feedback (optional)..."
+                          rows={2}
+                          className="w-full resize-none rounded-md border border-[var(--border-primary)] bg-transparent px-2.5 py-2 text-[12px] font-[Ranade] text-[var(--Mapped-Text-Primary)] placeholder:text-[var(--Mapped-Text-Quaternary)] outline-none focus:border-[var(--border-secondary)]"
+                        />
+                        <div className="flex items-center gap-1.5">
+                          {RESPONSE_OPTIONS.map((opt) => {
+                            const Icon = opt.icon
+                            return (
+                              <button
+                                key={opt.status}
+                                type="button"
+                                onClick={() => handleRespond(review.id, opt.status)}
+                                className={cn(
+                                  'inline-flex items-center gap-1 rounded-md px-2.5 py-1 text-[11px] font-[Ranade] font-semibold transition-colors',
+                                  opt.status === 'APPROVED' &&
+                                    'bg-[var(--Surface-Success)] text-[var(--Text-Success)] hover:opacity-90',
+                                  opt.status === 'CHANGES_REQUESTED' &&
+                                    'bg-[var(--Surface-Pending)] text-[var(--Text-Pending)] hover:opacity-90',
+                                  opt.status === 'REJECTED' &&
+                                    'bg-[var(--Mapped-Error-Suraface)] text-[var(--Text-Error)] hover:opacity-90',
+                                )}
+                              >
+                                <Icon className="h-3 w-3" strokeWidth={2} />
+                                {opt.label}
+                              </button>
+                            )
+                          })}
+                          <button
+                            type="button"
+                            onClick={() => setExpandedId(null)}
+                            className="ml-auto text-[11px] font-[Ranade] text-[var(--Mapped-Text-Quaternary)] hover:text-[var(--Mapped-Text-Secondary)]"
+                          >
+                            Cancel
+                          </button>
+                        </div>
+                      </div>
+                    ) : (
+                      <button
+                        type="button"
+                        onClick={() => setExpandedId(review.id)}
+                        className="text-[12px] font-[Ranade] font-medium text-[var(--Mapped-Text-Highlight)] transition-colors hover:underline"
+                      >
+                        Respond
+                      </button>
+                    )}
+                  </div>
+                )}
+
+                {/* Timestamp */}
+                <p className="mt-2 text-[10px] font-[Ranade] text-[var(--Mapped-Text-Quaternary)]">
+                  {formatDate(review.createdAt)}
+                </p>
+              </div>
+            )
+          })}
+        </div>
+      ) : (
+        <EmptyState
+          icon={GitPullRequest}
+          title="No reviews yet"
+          description="Request a review from a team member"
+          compact
+        />
+      )}
+
+      {/* Request Review */}
+      <Popover open={reviewerOpen} onOpenChange={setReviewerOpen}>
+        <PopoverTrigger asChild>
+          <button
+            type="button"
+            className="mt-3 inline-flex items-center gap-1.5 rounded-lg px-2 py-1.5 text-[13px] font-[Ranade] text-[var(--Mapped-Text-Quaternary)] transition-colors hover:bg-[var(--Mapped-Surface-Dark)] hover:text-[var(--Mapped-Text-Secondary)]"
+          >
+            <Plus className="h-3.5 w-3.5" strokeWidth={1.5} />
+            Request Review
+          </button>
+        </PopoverTrigger>
+        <PopoverContent
+          className="w-[220px] border-[var(--border-primary)] bg-[var(--Mapped-Surface-Primary)] p-0"
+          align="start"
+          sideOffset={4}
+        >
+          <div className="border-b border-[var(--border-primary)] px-3 py-2">
+            <input
+              type="text"
+              placeholder="Search members..."
+              value={searchTerm}
+              onChange={(e) => setSearchTerm(e.target.value)}
+              className="w-full bg-transparent text-[13px] font-[Ranade] text-[var(--Mapped-Text-Primary)] placeholder:text-[var(--Mapped-Text-Quaternary)] outline-none"
+            />
+          </div>
+          <div className="max-h-[200px] overflow-y-auto py-1">
+            {filteredMembers.map((member) => (
+              <button
+                key={member.id}
+                type="button"
+                onClick={() => {
+                  onRequestReview(member.id)
+                  setReviewerOpen(false)
+                  setSearchTerm('')
+                }}
+                className="flex w-full items-center gap-2.5 px-3 py-1.5 text-left transition-colors hover:bg-[var(--Mapped-Surface-Dark)]"
+              >
+                <Avatar className="h-5 w-5">
+                  {member.image && (
+                    <AvatarImage src={member.image} alt={member.name} />
+                  )}
+                  <AvatarFallback className="bg-[var(--Mapped-Surface-Darker)] text-[8px] font-semibold text-[var(--Mapped-Text-On-Dark-Primary)]">
+                    {getInitials(member.name)}
+                  </AvatarFallback>
+                </Avatar>
+                <span className="flex-1 truncate text-[13px] font-[Ranade] text-[var(--Mapped-Text-Primary)]">
+                  {member.name}
+                </span>
+              </button>
+            ))}
+            {filteredMembers.length === 0 && (
+              <p className="px-3 py-4 text-center text-[12px] font-[Ranade] text-[var(--Mapped-Text-Quaternary)]">
+                No members found
+              </p>
+            )}
+          </div>
+        </PopoverContent>
+      </Popover>
+    </div>
+  )
+}
+
+ReviewTab.displayName = 'ReviewTab'
+
+export { ReviewTab }
+export type { ReviewTabProps }

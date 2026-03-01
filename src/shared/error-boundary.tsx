@@ -77,8 +77,8 @@ function getErrorConfig(status?: number) {
         title: 'Server error',
         message:
           'Something went wrong on our end. Please try again later or contact support if the issue persists.',
-        bgColor: 'var(--color-danger-surface)',
-        iconColor: 'var(--color-danger)',
+        bgColor: 'var(--color-error-surface)',
+        iconColor: 'var(--color-error)',
       }
     default:
       return {

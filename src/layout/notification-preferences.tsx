@@ -231,7 +231,7 @@ export default function NotificationPreferences({
                     <button
                       type="button"
                       onClick={() => onDelete?.(pref.id)}
-                      className="shrink-0 rounded p-1.5 text-[var(--color-text-placeholder)] transition-colors hover:bg-[var(--color-layer-02)] hover:text-[var(--color-danger)]"
+                      className="shrink-0 rounded p-1.5 text-[var(--color-text-placeholder)] transition-colors hover:bg-[var(--color-layer-02)] hover:text-[var(--color-error)]"
                     >
                       <IconTrash className="h-3.5 w-3.5" />
                     </button>

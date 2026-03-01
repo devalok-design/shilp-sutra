@@ -15,7 +15,7 @@ export const buttonVariants = cva(
         ghost:
           'bg-transparent text-[var(--color-text-secondary)] hover:bg-[var(--color-layer-02)] hover:text-[var(--color-text-primary)]',
         danger:
-          'bg-[var(--color-danger)] text-[var(--color-text-on-color)] hover:bg-[var(--color-danger-hover)] shadow-[var(--shadow-01)]',
+          'bg-[var(--color-error)] text-[var(--color-text-on-color)] hover:bg-[var(--red-700)] shadow-[var(--shadow-01)]',
         'danger-ghost':
           'bg-transparent text-[var(--color-error)] border border-[var(--color-border-error)] hover:bg-[var(--color-error-surface)]',
         link: 'text-[var(--color-text-link)] underline-offset-4 hover:underline',

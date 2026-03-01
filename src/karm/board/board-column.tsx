@@ -217,7 +217,7 @@ export function BoardColumn({
             </DropdownMenuItem>
             <DropdownMenuSeparator />
             <DropdownMenuItem
-              className="text-[var(--color-danger)] focus:text-[var(--color-danger)]"
+              className="text-[var(--color-error)] focus:text-[var(--color-error)]"
               onClick={() => onDeleteColumn?.(column.id)}
             >
               <IconTrash className="mr-2 h-3.5 w-3.5" />

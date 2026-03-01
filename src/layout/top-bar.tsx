@@ -237,8 +237,8 @@ export default function TopBar({
                     className="flex w-full cursor-pointer items-center gap-2 px-4 py-3 hover:bg-[var(--color-layer-02)]"
                     onClick={onLogout}
                   >
-                    <IconLogout className="h-4 w-4 text-[var(--color-danger)]" />
-                    <span className="text-sm text-[var(--color-danger)]">
+                    <IconLogout className="h-4 w-4 text-[var(--color-error)]" />
+                    <span className="text-sm text-[var(--color-error)]">
                       Logout
                     </span>
                   </DropdownMenuItem>

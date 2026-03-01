@@ -173,6 +173,7 @@ const preset: Partial<Config> = {
         fast: 'var(--duration-fast)',
         moderate: 'var(--duration-moderate)',
         slow: 'var(--duration-slow)',
+        medium: 'var(--duration-medium)',
         deliberate: 'var(--duration-deliberate)',
       },
       transitionTimingFunction: {
@@ -180,6 +181,7 @@ const preset: Partial<Config> = {
         entrance: 'var(--ease-entrance)',
         exit: 'var(--ease-exit)',
         bounce: 'var(--ease-bounce)',
+        linear: 'var(--ease-linear)',
       },
       zIndex: {
         base: 'var(--z-base)',

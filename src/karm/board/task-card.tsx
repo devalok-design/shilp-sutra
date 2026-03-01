@@ -80,7 +80,7 @@ function TaskCardVisual({
         isDragging && !isDragOverlay && 'opacity-40',
         isDragOverlay &&
           'rotate-[2deg] shadow-[var(--shadow-03)] border-[var(--color-border-interactive)]/60 ring-1 ring-[var(--color-interactive)]/40',
-        task.isBlocked && 'border-l-2 border-l-[var(--color-danger)]',
+        task.isBlocked && 'border-l-2 border-l-[var(--color-error)]',
       )}
       onClick={() => onClickTask?.(task.id)}
     >

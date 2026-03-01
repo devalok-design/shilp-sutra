@@ -118,6 +118,7 @@ export function EditBreak({
       picker.setSelectedStartDate(formatDateStr(selectedLeave?.startDate))
       picker.setSelectedEndDate(formatDateStr(selectedLeave?.endDate))
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [selectedLeave])
 
   useEffect(() => {

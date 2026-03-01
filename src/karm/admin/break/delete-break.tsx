@@ -17,7 +17,7 @@ export interface DeleteBreakProps {
   onDelete?: () => void
 }
 
-export function DeleteBreak({ id, userId, onDelete }: DeleteBreakProps) {
+export function DeleteBreak({ id: _id, userId: _userId, onDelete }: DeleteBreakProps) {
   const [isSubmitting, setIsSubmitting] = useState(false)
   const { toast } = useToast()
   const [open, setOpen] = useState(false)

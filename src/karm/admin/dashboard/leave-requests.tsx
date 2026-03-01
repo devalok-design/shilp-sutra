@@ -90,6 +90,7 @@ export function LeaveRequests({
       window.removeEventListener('keydown', handleKeyDown)
       window.removeEventListener('keyup', handleKeyUp)
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [interaction.hoveredRequest, interaction.isCtrlPressed, interaction.openComment, interaction.hoverActionTemp])
 
   // ============================================================

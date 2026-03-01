@@ -3,11 +3,6 @@
 import * as React from 'react'
 import { cn } from '../../ui/lib/utils'
 import {
-  Avatar,
-  AvatarImage,
-  AvatarFallback,
-} from '../../ui/avatar'
-import {
   Dialog,
   DialogTrigger,
   DialogContent,
@@ -31,7 +26,6 @@ import {
   IconTrash,
   IconPaperclip,
 } from '@tabler/icons-react'
-import { getInitials } from '../../shared/lib/string-utils'
 
 // ============================================================
 // Types

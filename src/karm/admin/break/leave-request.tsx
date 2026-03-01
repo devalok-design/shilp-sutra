@@ -16,7 +16,6 @@ import { isSameDay } from 'date-fns'
 import {
   Tooltip,
   TooltipContent,
-  TooltipProvider,
   TooltipTrigger,
 } from '../../../ui/tooltip'
 import type { BreakRequest } from '../types'

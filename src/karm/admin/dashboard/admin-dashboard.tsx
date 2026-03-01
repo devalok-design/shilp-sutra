@@ -267,14 +267,14 @@ function AdminDashboardCalendar({
 
   // Intentionally omit callback from deps — fire only when value changes,
   // not when callback identity changes (consumers may not stabilize these).
-  // eslint-disable-next-line react-hooks/exhaustive-deps
   useEffect(() => {
     onTimeFrameChange?.(cal.activeTimeFrame)
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [cal.activeTimeFrame])
 
-  // eslint-disable-next-line react-hooks/exhaustive-deps
   useEffect(() => {
     onDateChange?.(cal.selectedDate)
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [cal.selectedDate])
 
   // ============================================================

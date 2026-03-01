@@ -190,6 +190,7 @@ function TaskDetailPanel({
       setTitleValue(task.title)
       setEditingTitle(false)
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [task?.id])
 
   // Reset active tab when opening

@@ -14,7 +14,7 @@ vi.mock('../ui/sidebar', () => ({
 // Mock the tooltip to avoid Radix portal/provider issues in tests
 vi.mock('../ui/tooltip', () => ({
   Tooltip: ({ children }: { children: React.ReactNode }) => <>{children}</>,
-  TooltipTrigger: ({ children, asChild, ...props }: any) => (
+  TooltipTrigger: ({ children, asChild, ...props }: { children: React.ReactNode; asChild?: boolean } & Record<string, unknown>) => (
     asChild ? <>{children}</> : <span {...props}>{children}</span>
   ),
   TooltipContent: ({ children }: { children: React.ReactNode }) => (
@@ -26,13 +26,13 @@ vi.mock('../ui/tooltip', () => ({
 // Mock the dropdown menu to simplify testing
 vi.mock('../ui/dropdown-menu', () => ({
   DropdownMenu: ({ children }: { children: React.ReactNode }) => <>{children}</>,
-  DropdownMenuTrigger: ({ children, asChild, ...props }: any) => (
+  DropdownMenuTrigger: ({ children, asChild, ...props }: { children: React.ReactNode; asChild?: boolean } & Record<string, unknown>) => (
     asChild ? <>{children}</> : <span {...props}>{children}</span>
   ),
   DropdownMenuContent: ({ children }: { children: React.ReactNode }) => (
     <div>{children}</div>
   ),
-  DropdownMenuItem: ({ children, onClick, ...props }: any) => (
+  DropdownMenuItem: ({ children, onClick, ...props }: { children: React.ReactNode; onClick?: () => void } & Record<string, unknown>) => (
     <button onClick={onClick} {...props}>{children}</button>
   ),
   DropdownMenuSeparator: () => <hr />,

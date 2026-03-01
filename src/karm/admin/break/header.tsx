@@ -18,7 +18,7 @@ import {
 } from '../../../ui/dropdown-menu'
 import { CustomButton } from '../../custom-buttons/CustomButton'
 import { IconButton } from '../../custom-buttons/icon-button'
-import type { AdminUser, BreakBalanceData } from '../types'
+import type { AdminUser } from '../types'
 
 // ============================================================
 // Header — Break admin header with associate and date filters

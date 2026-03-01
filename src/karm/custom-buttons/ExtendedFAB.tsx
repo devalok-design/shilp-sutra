@@ -42,7 +42,7 @@ const rippleColorClasses: Record<ExtendedFABColor, string> = {
 }
 
 const ExtendedFAB: React.FC<ExtendedFABProps> = ({
-  size,
+  size: _size,
   color,
   text,
   icon,

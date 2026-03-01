@@ -38,7 +38,7 @@ export function Breaks({
   onFetchMonthBreaks,
   onSave,
   onDelete,
-  onRefresh,
+  onRefresh: _onRefresh,
 }: BreaksProps) {
   return (
     <div className="m-0 flex h-[400px] w-full flex-col items-start justify-start p-0 max-md:h-auto">

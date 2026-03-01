@@ -6,7 +6,7 @@
 // must update days array synchronously).
 // ============================================================
 
-import { useReducer, useCallback, useEffect } from 'react'
+import { useReducer, useCallback } from 'react'
 import { format } from 'date-fns'
 import {
   isSameDay,

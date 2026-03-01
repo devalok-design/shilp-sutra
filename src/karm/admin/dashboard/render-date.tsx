@@ -140,6 +140,7 @@ export function RenderDate({
       breakEnd,
       selected,
     }))
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [day, dateAttendanceMap, selectedDate, isAdmin])
 
   // Determine if this is a non-weekly break with specific position

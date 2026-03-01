@@ -118,7 +118,7 @@ function ConversationTab({
 
   const handlePost = () => {
     const trimmed = editorContent.trim()
-    // IconCheck that content is not just empty HTML tags
+    // Check that content is not just empty HTML tags
     const textOnly = trimmed.replace(/<[^>]*>/g, '').trim()
     if (!textOnly) return
 

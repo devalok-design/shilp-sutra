@@ -264,7 +264,7 @@ export const WithSearchCallback: Story = {
       <CommandPalette {...args} />
       <div style={{ padding: 32 }}>
         <p style={{ fontSize: 13, color: 'var(--color-text-secondary)' }}>
-          Press <kbd style={{ padding: '2px 6px', borderRadius: 4, border: '1px solid var(--color-border-default)', fontSize: 12, background: 'var(--color-layer-02)' }}>Ctrl+K</kbd> to open. IconCheck the browser console for search query logs as you type.
+          Press <kbd style={{ padding: '2px 6px', borderRadius: 4, border: '1px solid var(--color-border-default)', fontSize: 12, background: 'var(--color-layer-02)' }}>Ctrl+K</kbd> to open. Check the browser console for search query logs as you type.
         </p>
       </div>
     </div>

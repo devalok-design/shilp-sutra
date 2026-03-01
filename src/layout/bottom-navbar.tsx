@@ -104,7 +104,7 @@ export default function BottomNavbar({
     return currentPath.startsWith(path)
   }
 
-  // IconCheck if any "more" item is active
+  // Check if any "more" item is active
   const isMoreActive = moreItems.some((item) =>
     isActive(item.href, item.exact),
   )
@@ -160,7 +160,7 @@ export default function BottomNavbar({
         </div>
       )}
 
-      {/* Bottom IconNavigation Bar */}
+      {/* Bottom Navigation Bar */}
       <nav
         aria-label="Mobile navigation"
         className={cn(

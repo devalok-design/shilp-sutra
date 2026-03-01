@@ -173,7 +173,7 @@ export const SearchInProgress: Story = {
 }
 
 export const NoSearchResults: Story = {
-  name: 'Empty IconSearch Results',
+  name: 'Empty Search Results',
   args: {
     user: adminUser,
     searchResults: [],

@@ -230,7 +230,7 @@ export function RenderDate({
       backgroundColor = '#E6E1F3'
       color = '#403A3C'
       boxShadow =
-        '0px 4px 4px 0px rgba(255, 255, 255, 0.25) inset, 0px 0px 4px 0px var(--primitives-purple-400-b, #AB9DED) inset'
+        '0px 4px 4px 0px rgba(255, 255, 255, 0.25) inset, 0px 0px 4px 0px var(--color-focus) inset'
 
       if (state.breakStart && !state.breakEnd && activeTimeFrame !== 'weekly') {
         baseStyle.borderTopLeftRadius = '20px'
@@ -275,7 +275,7 @@ export function RenderDate({
         backgroundColor = '#E6E1F3'
         color = '#403A3C'
         boxShadow =
-          '0px 4px 4px 0px rgba(255, 255, 255, 0.25) inset, 0px 0px 4px 0px var(--primitives-purple-400-b, #AB9DED) inset'
+          '0px 4px 4px 0px rgba(255, 255, 255, 0.25) inset, 0px 0px 4px 0px var(--color-focus) inset'
 
         if (
           state.breakStart &&

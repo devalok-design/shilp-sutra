@@ -249,7 +249,7 @@ export function Calendar({ onDateSelect, hasCorrection }: CalendarProps) {
               className={`mx-1 my-1 flex-col ${
                 activeTimeFrame === 'monthly' &&
                 isSameDay(day.fullDate, selectedDate)
-                  ? 'flex h-10 w-10 items-center justify-center rounded-[var(--radius-full)] bg-[var(--color-layer-accent)] shadow-[0px_4px_4px_0px_rgba(255,255,255,0.25)_inset,0px_0px_4px_0px_var(--primitives-purple-400-b,#AB9DED)_inset]'
+                  ? 'flex h-10 w-10 items-center justify-center rounded-[var(--radius-full)] bg-[var(--color-interactive-subtle)] shadow-[0px_4px_4px_0px_rgba(255,255,255,0.25)_inset,0px_0px_4px_0px_var(--color-focus)_inset]'
                   : 'flex h-10 w-10 items-center justify-center'
               }`}
             >

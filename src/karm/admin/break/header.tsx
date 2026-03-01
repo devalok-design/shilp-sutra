@@ -115,7 +115,7 @@ export function BreakAdminHeader({
 
       <header className="flex items-center gap-3">
         {filters.selectedAssociate ? (
-          <div className="B2-Reg flex flex-row items-center justify-start gap-1 rounded-[6px] bg-[var(--Alias-Semantics-Highlight-darkest)] p-1.5 text-[var(--color-text-on-color)]">
+          <div className="B2-Reg flex flex-row items-center justify-start gap-1 rounded-[6px] bg-[var(--color-interactive)] p-1.5 text-[var(--color-text-on-color)]">
             <div className="flex items-center justify-start gap-0.5">
               {userImages[filters.selectedAssociate.id] ? (
                 <img
@@ -200,7 +200,7 @@ export function BreakAdminHeader({
 
         {/* Date Filter */}
         {filters.dateFilterEnd && (
-          <div className="B2-Reg flex-direction-row flex items-center justify-between rounded-[6px] bg-[var(--Alias-Semantics-Highlight-darkest)] px-2 py-[6px] text-[var(--color-text-on-color)]">
+          <div className="B2-Reg flex-direction-row flex items-center justify-between rounded-[6px] bg-[var(--color-interactive)] px-2 py-[6px] text-[var(--color-text-on-color)]">
             <div className="flex items-center">
               <CalendarIcon />
               <span className="ml-[2px] mr-1">

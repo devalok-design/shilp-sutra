@@ -21,8 +21,8 @@ interface CustomButtonProps {
 const typeClasses: Record<ButtonType, string> = {
   filled: [
     'shadow-[0px_1px_3px_0.05px_var(--shadow-button-hover,#efd5d9),inset_0px_8px_16px_0px_rgba(255,255,255,0.16),inset_0px_2px_0px_0px_rgba(255,255,255,0.1)]',
-    'border border-solid border-[var(--Alias-Primary-Default,#d33163)]',
-    'bg-[var(--color-interactive,#d33163)]',
+    'border border-solid border-[var(--color-interactive)]',
+    'bg-[var(--color-interactive)]',
     'text-[var(--color-text-on-color,#fcf7f7)]',
     '[text-shadow:0px_1px_1px_rgba(0,0,0,0.15)]',
   ].join(' '),
@@ -34,8 +34,8 @@ const typeClasses: Record<ButtonType, string> = {
 /* ── focused state per type ───────────────────────────────── */
 const focusedClasses: Record<ButtonType, string> = {
   filled: [
-    'border-2 border-solid border-[var(--Alias-Primary-Default,#d33163)]',
-    'bg-[var(--color-interactive,#d33163)]',
+    'border-2 border-solid border-[var(--color-interactive)]',
+    'bg-[var(--color-interactive)]',
     'shadow-[0px_1px_3px_0.05px_rgba(24,24,27,0.24),inset_0px_8px_16px_0px_rgba(255,255,255,0.16),inset_0px_2px_0px_0px_rgba(255,255,255,0.1)]',
   ].join(' '),
   tonal: 'bg-[var(--color-layer-02,#fcf7f7)] shadow-none',
@@ -46,8 +46,8 @@ const focusedClasses: Record<ButtonType, string> = {
 /* ── hover state per type ─────────────────────────────────── */
 const hoverClasses: Record<ButtonType, string> = {
   filled: [
-    'border border-solid border-[var(--color-interactive,#d33163)]',
-    'bg-[var(--color-interactive,#d33163)]',
+    'border border-solid border-[var(--color-interactive)]',
+    'bg-[var(--color-interactive)]',
     'shadow-[0px_4px_8px_0px_var(--shadow-button-hover,#efd5d9),0px_1px_3px_0.05px_var(--color-layer-02,#fff),inset_0px_8px_16px_0px_rgba(255,255,255,0.16),inset_0px_2px_0px_0px_rgba(255,255,255,0.1)]',
   ].join(' '),
   tonal: 'bg-[var(--color-field,#f7e9e9)] text-[var(--color-text-primary,#3f181e)]',

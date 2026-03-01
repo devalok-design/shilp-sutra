@@ -98,7 +98,7 @@ export function DashboardHeader({
       <div className="flex w-full items-center justify-between gap-4 md:mt-0 md:w-auto md:justify-start max-md:mt-[17px] max-lg:gap-[0.5rem]">
         <div className="hidden md:flex">
           {selectedAssociate ? (
-            <div className="B2-Reg flex-direction-row flex items-center justify-start rounded-[6px] bg-[var(--Alias-Semantics-Highlight-darkest,#1E1429)] px-[8px] py-[6px] text-[var(--color-text-on-color)]">
+            <div className="B2-Reg flex-direction-row flex items-center justify-start rounded-[6px] bg-[var(--color-interactive)] px-[8px] py-[6px] text-[var(--color-text-on-color)]">
               <div className="flex items-center justify-start gap-0">
                 {userImages[selectedAssociate.id] ? (
                   <img

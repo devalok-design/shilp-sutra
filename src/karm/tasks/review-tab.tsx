@@ -155,7 +155,6 @@ function ReviewTab({
                   </div>
                   <Badge
                     variant={statusInfo.variant}
-                    className={statusInfo.className}
                   >
                     {statusInfo.label}
                   </Badge>

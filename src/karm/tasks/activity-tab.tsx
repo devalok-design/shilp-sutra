@@ -56,14 +56,14 @@ interface ActionConfig {
 const ACTION_MAP: Record<string, ActionConfig> = {
   'task.created': {
     icon: IconPlus,
-    color: 'text-[var(--green-500)]',
-    dotColor: 'bg-[var(--green-500)]',
+    color: 'text-[var(--color-success-text)]',
+    dotColor: 'bg-[var(--color-success)]',
     getDescription: () => 'created this task',
   },
   'task.updated': {
     icon: IconEdit,
-    color: 'text-[var(--blue-300)]',
-    dotColor: 'bg-[var(--blue-300)]',
+    color: 'text-[var(--color-info-text)]',
+    dotColor: 'bg-[var(--color-info)]',
     getDescription: (entry) => {
       const meta = entry.metadata as Record<string, unknown> | null
       if (meta?.field === 'title') return 'updated the title'
@@ -77,8 +77,8 @@ const ACTION_MAP: Record<string, ActionConfig> = {
   },
   'task.moved': {
     icon: IconArrowRight,
-    color: 'text-[var(--yellow-500)]',
-    dotColor: 'bg-[var(--yellow-500)]',
+    color: 'text-[var(--color-warning-text)]',
+    dotColor: 'bg-[var(--color-warning)]',
     getDescription: (entry) => {
       const meta = entry.metadata as Record<string, unknown> | null
       const from = meta?.fromColumn || 'unknown'
@@ -88,8 +88,8 @@ const ACTION_MAP: Record<string, ActionConfig> = {
   },
   'task.assigned': {
     icon: IconUserPlus,
-    color: 'text-[var(--blue-300)]',
-    dotColor: 'bg-[var(--blue-300)]',
+    color: 'text-[var(--color-info-text)]',
+    dotColor: 'bg-[var(--color-info)]',
     getDescription: (entry) => {
       const meta = entry.metadata as Record<string, unknown> | null
       return `assigned ${meta?.assigneeName || 'a user'}`
@@ -97,8 +97,8 @@ const ACTION_MAP: Record<string, ActionConfig> = {
   },
   'task.unassigned': {
     icon: IconUserMinus,
-    color: 'text-[var(--neutral-400)]',
-    dotColor: 'bg-[var(--neutral-400)]',
+    color: 'text-[var(--color-text-secondary)]',
+    dotColor: 'bg-[var(--color-icon-disabled)]',
     getDescription: (entry) => {
       const meta = entry.metadata as Record<string, unknown> | null
       return `removed ${meta?.assigneeName || 'a user'}`
@@ -112,8 +112,8 @@ const ACTION_MAP: Record<string, ActionConfig> = {
   },
   'task.file_uploaded': {
     icon: IconPaperclip,
-    color: 'text-[var(--blue-300)]',
-    dotColor: 'bg-[var(--blue-300)]',
+    color: 'text-[var(--color-info-text)]',
+    dotColor: 'bg-[var(--color-info)]',
     getDescription: (entry) => {
       const meta = entry.metadata as Record<string, unknown> | null
       return `uploaded ${meta?.fileName || 'a file'}`
@@ -121,8 +121,8 @@ const ACTION_MAP: Record<string, ActionConfig> = {
   },
   'task.review_requested': {
     icon: IconGitPullRequest,
-    color: 'text-[var(--yellow-500)]',
-    dotColor: 'bg-[var(--yellow-500)]',
+    color: 'text-[var(--color-warning-text)]',
+    dotColor: 'bg-[var(--color-warning)]',
     getDescription: (entry) => {
       const meta = entry.metadata as Record<string, unknown> | null
       return `requested review from ${meta?.reviewerName || 'a reviewer'}`
@@ -130,8 +130,8 @@ const ACTION_MAP: Record<string, ActionConfig> = {
   },
   'task.review_completed': {
     icon: IconCircleCheck,
-    color: 'text-[var(--green-500)]',
-    dotColor: 'bg-[var(--green-500)]',
+    color: 'text-[var(--color-success-text)]',
+    dotColor: 'bg-[var(--color-success)]',
     getDescription: (entry) => {
       const meta = entry.metadata as Record<string, unknown> | null
       return `${meta?.status || 'reviewed'} the task`
@@ -140,7 +140,7 @@ const ACTION_MAP: Record<string, ActionConfig> = {
   'task.visibility_changed': {
     icon: IconEye,
     color: 'text-[var(--color-text-tertiary)]',
-    dotColor: 'bg-[var(--neutral-500)]',
+    dotColor: 'bg-[var(--color-icon-secondary)]',
     getDescription: (entry) => {
       const meta = entry.metadata as Record<string, unknown> | null
       return `changed visibility to ${meta?.visibility || 'unknown'}`
@@ -148,8 +148,8 @@ const ACTION_MAP: Record<string, ActionConfig> = {
   },
   'task.priority_changed': {
     icon: IconFlag,
-    color: 'text-[var(--red-300)]',
-    dotColor: 'bg-[var(--red-300)]',
+    color: 'text-[var(--color-error-text)]',
+    dotColor: 'bg-[var(--color-error)]',
     getDescription: (entry) => {
       const meta = entry.metadata as Record<string, unknown> | null
       return `changed priority to ${meta?.priority || 'unknown'}`
@@ -157,14 +157,14 @@ const ACTION_MAP: Record<string, ActionConfig> = {
   },
   'task.labels_changed': {
     icon: IconTag,
-    color: 'text-[var(--blue-300)]',
-    dotColor: 'bg-[var(--blue-300)]',
+    color: 'text-[var(--color-info-text)]',
+    dotColor: 'bg-[var(--color-info)]',
     getDescription: () => 'updated labels',
   },
   'task.due_date_changed': {
     icon: IconCalendarEvent,
-    color: 'text-[var(--yellow-500)]',
-    dotColor: 'bg-[var(--yellow-500)]',
+    color: 'text-[var(--color-warning-text)]',
+    dotColor: 'bg-[var(--color-warning)]',
     getDescription: (entry) => {
       const meta = entry.metadata as Record<string, unknown> | null
       if (meta?.dueDate) return `set due date to ${meta.dueDate}`
@@ -176,7 +176,7 @@ const ACTION_MAP: Record<string, ActionConfig> = {
 const DEFAULT_ACTION: ActionConfig = {
   icon: IconActivity,
   color: 'text-[var(--color-text-placeholder)]',
-  dotColor: 'bg-[var(--neutral-400)]',
+  dotColor: 'bg-[var(--color-icon-disabled)]',
   getDescription: (entry) => entry.action,
 }
 

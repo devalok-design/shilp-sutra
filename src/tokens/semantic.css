@@ -99,9 +99,11 @@
   --color-tag-purple-border:    var(--purple-200);
   --spacing-01: 2px;
   --spacing-02: 4px;
+  --spacing-02b: 6px;
   --spacing-03: 8px;
   --spacing-04: 12px;
   --spacing-05: 16px;
+  --spacing-05b: 20px;
   --spacing-06: 24px;
   --spacing-07: 32px;
   --spacing-08: 40px;
@@ -112,6 +114,7 @@
   --spacing-13: 160px;
   --radius-none: 0;
   --radius-sm: 2px;
+  --radius-default: 4px;
   --radius-md: 6px;
   --radius-lg: 10px;
   --radius-xl: 16px;

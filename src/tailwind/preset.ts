@@ -13,6 +13,7 @@ const preset: Partial<Config> = {
       },
       borderRadius: {
         'ds-sm': 'var(--radius-sm)',
+        'ds-default': 'var(--radius-default)',
         'ds-md': 'var(--radius-md)',
         'ds-lg': 'var(--radius-lg)',
         'ds-xl': 'var(--radius-xl)',
@@ -22,9 +23,11 @@ const preset: Partial<Config> = {
       spacing: {
         'ds-01': 'var(--spacing-01)',
         'ds-02': 'var(--spacing-02)',
+        'ds-02b': 'var(--spacing-02b)',
         'ds-03': 'var(--spacing-03)',
         'ds-04': 'var(--spacing-04)',
         'ds-05': 'var(--spacing-05)',
+        'ds-05b': 'var(--spacing-05b)',
         'ds-06': 'var(--spacing-06)',
         'ds-07': 'var(--spacing-07)',
         'ds-08': 'var(--spacing-08)',

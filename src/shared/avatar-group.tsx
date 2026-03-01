@@ -21,17 +21,17 @@ function getInitials(name: string): string {
 }
 
 const avatarSizeVariants = cva(
-  'shrink-0 overflow-hidden rounded-full border-2 border-[var(--Mapped-Surface-Primary)]',
+  'shrink-0 overflow-hidden rounded-full border-2 border-[var(--color-layer-01)]',
   {
     variants: {
       size: {
         sm: 'h-6 w-6 text-[9px]',
-        default: 'h-8 w-8 text-[11px]',
+        md: 'h-8 w-8 text-[11px]',
         lg: 'h-10 w-10 text-[13px]',
       },
     },
     defaultVariants: {
-      size: 'default',
+      size: 'md',
     },
   },
 )
@@ -62,10 +62,10 @@ function AvatarGroup({
 
   const overlapMap = {
     sm: '-ml-1.5',
-    default: '-ml-2',
+    md: '-ml-2',
     lg: '-ml-2.5',
   }
-  const overlapClass = overlapMap[size ?? 'default']
+  const overlapClass = overlapMap[size ?? 'md']
 
   return (
     <div
@@ -88,7 +88,7 @@ function AvatarGroup({
               <AvatarImage src={user.image} alt={user.name} />
             )}
             <AvatarFallback
-              className="bg-[var(--Mapped-Surface-Dark)] font-[Ranade] font-semibold text-[var(--Mapped-Text-On-Dark-Primary)]"
+              className="bg-[var(--color-field)] font-[Ranade] font-semibold text-[var(--color-text-on-color)]"
             >
               {initials}
             </AvatarFallback>
@@ -101,7 +101,7 @@ function AvatarGroup({
           <Tooltip key={index}>
             <TooltipTrigger asChild>{avatar}</TooltipTrigger>
             <TooltipContent
-              className="border-[var(--border-primary)] bg-[var(--Mapped-Surface-Primary)] text-[var(--Mapped-Text-Primary)]"
+              className="border-[var(--color-border-default)] bg-[var(--color-layer-01)] text-[var(--color-text-primary)]"
               sideOffset={6}
             >
               <p className="B3-Reg">{user.name}</p>
@@ -117,7 +117,7 @@ function AvatarGroup({
               className={cn(
                 avatarSizeVariants({ size }),
                 overlapClass,
-                'flex cursor-default items-center justify-center bg-[var(--Mapped-Surface-Darker)] font-[Ranade] font-semibold text-[var(--Mapped-Text-On-Dark-Primary)]',
+                'flex cursor-default items-center justify-center bg-[var(--color-layer-03)] font-[Ranade] font-semibold text-[var(--color-text-on-color)]',
               )}
               style={{ zIndex: 0 }}
             >
@@ -125,7 +125,7 @@ function AvatarGroup({
             </div>
           </TooltipTrigger>
           <TooltipContent
-            className="border-[var(--border-primary)] bg-[var(--Mapped-Surface-Primary)] text-[var(--Mapped-Text-Primary)]"
+            className="border-[var(--color-border-default)] bg-[var(--color-layer-01)] text-[var(--color-text-primary)]"
             sideOffset={6}
           >
             <div className="flex flex-col gap-0.5">

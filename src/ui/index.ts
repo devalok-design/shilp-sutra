@@ -77,7 +77,6 @@ export { DataTable } from './data-table'
 export { Progress } from './progress'
 export { Skeleton } from './skeleton'
 export { StatCard, type StatCardProps } from './stat-card'
-export { EmptyState, type EmptyStateProps } from './empty-state'
 export { Code } from './code'
 
 // Navigation

@@ -4,7 +4,6 @@ import * as React from 'react'
 import { Slot } from '@radix-ui/react-slot'
 import { cn } from '../../ui/lib/utils'
 import { useState } from 'react'
-import styles from './icon-button.module.css'
 
 type IconButtonSize = 'small' | 'medium' | 'large'
 type IconButtonState = 'default' | 'focused' | 'hover' | 'pressed'
@@ -114,7 +113,7 @@ const IconButton = React.forwardRef<HTMLButtonElement, IconButtonProps>(
           {content}
           {!disabled && isRippling && (
             <div
-              className={cn('absolute w-[100px] h-[100px] rounded-full bg-[var(--Text-Button-Text)] pointer-events-none opacity-50', styles['animate-ripple'])}
+              className="absolute w-[100px] h-[100px] rounded-full bg-[var(--Text-Button-Text)] pointer-events-none opacity-50 animate-ripple-icon"
               style={{
                 left: `${ripplePosition.x - 50}px`,
                 top: `${ripplePosition.y - 50}px`,

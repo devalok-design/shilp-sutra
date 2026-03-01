@@ -1,0 +1,431 @@
+'use client'
+
+// ============================================================
+// AssociateDetail — Selected associate view with tasks,
+// attendance status, break card, and edit dialog
+// Extracted from admin-dashboard.tsx
+// ============================================================
+
+import * as React from 'react'
+import { useState } from 'react'
+import {
+  Dialog,
+  DialogClose,
+  DialogContent,
+  DialogFooter,
+  DialogHeader,
+  DialogTrigger,
+} from '../../../ui/dialog'
+import { CustomButton } from '../../custom-buttons/CustomButton'
+import { IconButton } from '../../custom-buttons/icon-button'
+import {
+  EditIcon,
+  SendIcon,
+  AddIcon,
+  DragIcon,
+  DragActiveIcon,
+  CheckboxIcon,
+  CheckboxActiveIcon,
+} from '../icons'
+import { isSameDay } from '../utils/date-utils'
+import { BreakRequestCard } from './break-request'
+import { format, isBefore, startOfDay as fnsStartOfDay } from 'date-fns'
+import type {
+  AdminUser,
+  AttendanceRecord,
+  BreakRequest,
+} from '../types'
+
+// ============================================================
+// Types
+// ============================================================
+
+export interface TaskItem {
+  id: string
+  title: string
+  status: string
+  assigneeIds?: string
+  priority?: string
+}
+
+export interface AssociateDetailProps {
+  selectedAssociate: AdminUser
+  selectedDate: string
+  selectedUserAttendance: AttendanceRecord | null
+  userTasks: TaskItem[]
+  selectedBreakRequest: BreakRequest | null
+  isFutureDate: boolean
+  assetsBaseUrl: string
+  onUpdateAttendanceStatus?: (params: {
+    userId: string
+    date: string
+    isPresent: boolean
+  }) => void | Promise<void>
+  onToggleTaskStatus?: (
+    taskId: string,
+    newStatus: string,
+  ) => void | Promise<void>
+  onAddTask?: (title: string, assigneeId: string) => void | Promise<void>
+  onReorderTasks?: (
+    draggedTaskId: string,
+    targetTaskId: string,
+  ) => void | Promise<void>
+  onCancelBreak?: (params: {
+    requestId: string
+    deleteSingleDay: boolean
+    dateToCancel: string | Date
+    userId: string
+  }) => void | Promise<void>
+  onRefreshSelectedUserAttendance?: () => void | Promise<void>
+  onRefreshAttendanceData?: () => void | Promise<void>
+}
+
+// ============================================================
+// Sub-components
+// ============================================================
+
+function AttendanceStatus({
+  selectedUserAttendance,
+}: {
+  selectedUserAttendance: AttendanceRecord | null
+}) {
+  const status = selectedUserAttendance?.status || 'ABSENT'
+  const displayStatus = status === 'Not_Marked' ? 'ABSENT' : status
+  const formattedStatus =
+    displayStatus.charAt(0).toUpperCase() +
+    displayStatus.slice(1).toLowerCase()
+
+  const timeIn = selectedUserAttendance?.timeIn
+    ? new Date(selectedUserAttendance.timeIn).toLocaleTimeString()
+    : null
+
+  return (
+    <div className="flex w-full flex-col items-center justify-center px-[16px] py-[32px] sm:px-4 sm:py-6 md:px-6 md:py-4 md:pr-0">
+      <p className="L3 mb-6 uppercase text-[var(--Mapped-Text-Tertiary)]">
+        Attendance status
+      </p>
+      <div className="mb-3 flex w-full items-center justify-center gap-2 rounded-3xl border border-[var(--border-secondary)] px-4 py-3.5 text-center">
+        <span className="font-semibold text-[var(--Mapped-Text-Highlight)]">
+          {formattedStatus}
+        </span>
+        {formattedStatus === 'Absent' && (
+          <div
+            style={{
+              width: '1px',
+              height: '20px',
+              opacity: 0.5,
+              background: 'var(--Border-Tertiary, #DD9EB8)',
+            }}
+          ></div>
+        )}
+        {!timeIn && status !== 'HOLIDAY' && status !== 'WEEKEND' && (
+          <span className="B2-Reg text-[var(--Mapped-Text-Tertiary)]">
+            Not marked
+          </span>
+        )}
+        {!!timeIn && status === 'ABSENT' && (
+          <span className="B2-Reg text-[var(--Mapped-Text-Tertiary)]">
+            Removed
+          </span>
+        )}
+      </div>
+
+      {timeIn && (
+        <p className="B2-Reg m-0 text-center text-[var(--Mapped-Text-Disabled)]">
+          Marked at {timeIn}
+        </p>
+      )}
+    </div>
+  )
+}
+
+function AttendanceEditDialog({
+  selectedAssociate,
+  selectedDate,
+  selectedUserAttendance,
+  onUpdateAttendanceStatus,
+}: {
+  selectedAssociate: AdminUser
+  selectedDate: string
+  selectedUserAttendance: AttendanceRecord | null
+  onUpdateAttendanceStatus?: AssociateDetailProps['onUpdateAttendanceStatus']
+}) {
+  return (
+    <DialogContent className="sm:max-w-md">
+      <DialogHeader>
+        <div className="B2-Reg text-[var(--Mapped-Text-Tertiary)]">
+          Edit attendance of{' '}
+          <span className="B2-Bold semibold text-[var(--Mapped-Text-Highlight)]">
+            {selectedAssociate.name}
+          </span>
+        </div>
+      </DialogHeader>
+      <div className="flex flex-col items-center justify-start">
+        <div className="T7-Reg mb-4 text-[var(--Mapped-Text-Highlight)]">
+          {format(new Date(selectedDate), "dd MMMM ''yy")}
+        </div>
+        <div className="mb-3 flex w-full items-center justify-center gap-2 rounded-3xl border border-[var(--border-secondary)] px-4 py-3.5 text-center font-semibold text-[var(--Mapped-Text-Highlight)]">
+          {selectedUserAttendance?.status === 'PRESENT'
+            ? 'PRESENT '
+            : 'ABSENT'}
+        </div>
+      </div>
+      <DialogFooter className="sm:justify-start">
+        <DialogClose asChild>
+          <CustomButton
+            className="w-full"
+            type="filled"
+            text={`Mark as ${selectedUserAttendance?.status === 'PRESENT' ? 'absent' : 'present'}`}
+            onClick={() => {
+              const isPresent = selectedUserAttendance?.status !== 'PRESENT'
+              onUpdateAttendanceStatus?.({
+                userId: selectedAssociate.id,
+                date: selectedDate,
+                isPresent,
+              })
+            }}
+          />
+        </DialogClose>
+      </DialogFooter>
+    </DialogContent>
+  )
+}
+
+// ============================================================
+// Component
+// ============================================================
+
+export function AssociateDetail({
+  selectedAssociate,
+  selectedDate,
+  selectedUserAttendance,
+  userTasks,
+  selectedBreakRequest,
+  isFutureDate,
+  assetsBaseUrl,
+  onUpdateAttendanceStatus,
+  onToggleTaskStatus,
+  onAddTask,
+  onReorderTasks,
+  onCancelBreak,
+  onRefreshSelectedUserAttendance,
+  onRefreshAttendanceData,
+}: AssociateDetailProps) {
+  const [newTaskName, setNewTaskName] = useState('')
+  const [draggedTaskIndex, setDraggedTaskIndex] = useState<number | null>(null)
+  const [hoveredTaskIndex, setHoveredTaskIndex] = useState<number | null>(null)
+
+  const handleAddTask = async (e: React.FormEvent) => {
+    e.preventDefault()
+    if (!newTaskName.trim() || !selectedAssociate) return
+
+    await onAddTask?.(newTaskName, selectedAssociate.id)
+    setNewTaskName('')
+  }
+
+  const handleDragStart = (e: React.DragEvent, idx: number) => {
+    setDraggedTaskIndex(idx)
+    ;(e.target as HTMLElement).classList.add('dragging')
+  }
+
+  const handleDrop = async (e: React.DragEvent, idx: number) => {
+    e.preventDefault()
+    if (draggedTaskIndex !== null && draggedTaskIndex !== idx) {
+      const draggedTask = userTasks[draggedTaskIndex]
+      const targetTask = userTasks[idx]
+
+      await onReorderTasks?.(draggedTask.id, targetTask.id)
+    }
+    setDraggedTaskIndex(null)
+    setHoveredTaskIndex(null)
+  }
+
+  return (
+    <div className="relative flex items-center justify-between md:items-stretch">
+      {!isFutureDate && selectedUserAttendance?.status !== 'BREAK' && (
+        <Dialog>
+          <DialogTrigger asChild>
+            <IconButton
+              icon={<EditIcon />}
+              size="small"
+              className="absolute right-2 top-2"
+            />
+          </DialogTrigger>
+          <AttendanceEditDialog
+            selectedAssociate={selectedAssociate}
+            selectedDate={selectedDate}
+            selectedUserAttendance={selectedUserAttendance}
+            onUpdateAttendanceStatus={onUpdateAttendanceStatus}
+          />
+        </Dialog>
+      )}
+      {isFutureDate ? (
+        <>
+          {selectedUserAttendance?.status === 'BREAK' ? (
+            <BreakRequestCard
+              selectedDate={selectedDate}
+              userId={selectedAssociate.id}
+              breakRequest={selectedBreakRequest}
+              assetsBaseUrl={assetsBaseUrl}
+              onCancelBreak={onCancelBreak}
+              onRefreshAttendance={onRefreshSelectedUserAttendance}
+              onRefreshGroupedAttendance={onRefreshAttendanceData}
+            />
+          ) : (
+            <div className="min-h-28"></div>
+          )}
+        </>
+      ) : selectedUserAttendance?.status === 'BREAK' ? (
+        <BreakRequestCard
+          selectedDate={selectedDate}
+          userId={selectedAssociate.id}
+          breakRequest={selectedBreakRequest}
+          assetsBaseUrl={assetsBaseUrl}
+          onCancelBreak={onCancelBreak}
+          onRefreshAttendance={onRefreshSelectedUserAttendance}
+          onRefreshGroupedAttendance={onRefreshAttendanceData}
+        />
+      ) : selectedUserAttendance?.status === 'ABSENT' ||
+        (selectedUserAttendance?.status === 'Not_Marked' &&
+          isBefore(
+            new Date(selectedDate),
+            fnsStartOfDay(new Date()),
+          )) ? (
+        <div className="flex w-full flex-col items-center justify-center p-6">
+          <p className="L3 mb-4 uppercase text-[var(--Mapped-Text-Tertiary)]">
+            COMMENT
+          </p>
+          <div className="flex w-full items-center justify-between rounded-[var(--Number-4x,8px)] border border-[var(--Border-Primary,#F7E9E9)] bg-[var(--Mapped-Surface-Primary)] px-4 max-md:h-[48px]">
+            <input
+              className="B2-Reg flex-1 border-none py-2 text-[var(--Mapped-Text-Primary)] outline-none"
+              defaultValue="Don't miss next time :)"
+            />
+            <IconButton
+              icon={<SendIcon />}
+              size="small"
+              onClick={() => {
+                const isPresent =
+                  selectedUserAttendance?.status !== 'PRESENT'
+                onUpdateAttendanceStatus?.({
+                  userId: selectedAssociate.id,
+                  date: selectedDate,
+                  isPresent,
+                })
+              }}
+            />
+          </div>
+        </div>
+      ) : (
+        <div className="mb-auto flex w-full flex-col md:pr-[24px]">
+          <p className="L3 mb-[24px] uppercase text-[var(--Mapped-Text-Highlight)]">
+            Tasks for the day
+          </p>
+
+          {userTasks && (
+            <>
+              <div className="no-scrollbar mb-[8px] flex max-h-[250px] flex-col gap-2 overflow-y-auto">
+                {userTasks.map((task, idx) => (
+                  <div
+                    key={task.id}
+                    className={`task-item mb-[8px] flex items-center gap-[5px] ${
+                      draggedTaskIndex === idx ? 'dragging' : ''
+                    }`}
+                    draggable
+                    onDragStart={(e) => handleDragStart(e, idx)}
+                    onDragOver={(e) => e.preventDefault()}
+                    onDrop={(e) => handleDrop(e, idx)}
+                    onDragEnter={() => setHoveredTaskIndex(idx)}
+                    onDragLeave={() => setHoveredTaskIndex(null)}
+                    onDragEnd={(e) => {
+                      if (e.target instanceof HTMLElement) {
+                        e.target.classList.remove('dragging')
+                      }
+                    }}
+                  >
+                    {hoveredTaskIndex === idx && (
+                      <div className="drop-indicator"></div>
+                    )}
+                    {task.status === 'COMPLETED' ? (
+                      <DragActiveIcon className="" />
+                    ) : (
+                      <DragIcon />
+                    )}
+                    <div
+                      onClick={() => {
+                        onToggleTaskStatus?.(
+                          task.id,
+                          task.status === 'COMPLETED'
+                            ? 'TODO'
+                            : 'COMPLETED',
+                        )
+                      }}
+                      className="cursor-pointer"
+                    >
+                      {task.status === 'COMPLETED' ? (
+                        <CheckboxActiveIcon className="text-[var(--Mapped-Surface-Button-Secondary)]" />
+                      ) : (
+                        <CheckboxIcon />
+                      )}
+                    </div>
+                    <p
+                      className={`P7 flex-1 overflow-hidden hyphens-auto break-all pr-4 ${
+                        task.status === 'COMPLETED'
+                          ? 'text-[var(--Mapped-Text-Disabled)] line-through'
+                          : 'text-[var(--Mapped-Text-Secondary)]'
+                      }`}
+                      style={{ wordBreak: 'break-word', minWidth: 0 }}
+                    >
+                      {task.title}
+                    </p>
+                  </div>
+                ))}
+              </div>
+              {isSameDay(new Date(selectedDate), new Date()) && (
+                <form
+                  className="flex items-center gap-[5px] pb-4"
+                  onSubmit={handleAddTask}
+                >
+                  <div className="w-[24px]"></div>
+                  <button type="submit" className="appearance-none">
+                    <AddIcon />
+                  </button>
+                  <textarea
+                    className="B2-Reg flex w-full resize-none items-center border-none bg-transparent !leading-6 text-[var(--Mapped-Text-Secondary)] outline-none placeholder:leading-6"
+                    placeholder="Add a task"
+                    value={newTaskName}
+                    onChange={(e) => setNewTaskName(e.target.value)}
+                    onKeyDown={(e) => {
+                      if (e.key === 'Enter' && !e.shiftKey) {
+                        e.preventDefault()
+                        handleAddTask(e)
+                      }
+                    }}
+                    rows={1}
+                    style={{
+                      minHeight: '24px',
+                      height: 'auto',
+                      overflow: 'hidden',
+                    }}
+                    onInput={(e) => {
+                      const target = e.target as HTMLTextAreaElement
+                      target.style.height = 'auto'
+                      target.style.height = target.scrollHeight + 'px'
+                    }}
+                  />
+                </form>
+              )}
+            </>
+          )}
+        </div>
+      )}
+      {!isFutureDate && selectedUserAttendance?.status !== 'BREAK' && (
+        <>
+          <div className="block h-[auto] w-[2px] bg-[var(--border-secondary)]"></div>
+          <AttendanceStatus selectedUserAttendance={selectedUserAttendance} />
+        </>
+      )}
+    </div>
+  )
+}
+
+AssociateDetail.displayName = 'AssociateDetail'

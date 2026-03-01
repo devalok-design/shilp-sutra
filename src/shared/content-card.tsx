@@ -8,11 +8,11 @@ const contentCardVariants = cva(
     variants: {
       variant: {
         default:
-          'border border-[var(--border-primary)] bg-[var(--Mapped-Surface-Primary)] hover:shadow-[0px_2px_8px_0px_var(--Elevation-2)]',
-        outlined:
+          'border border-[var(--color-border-default)] bg-[var(--color-layer-01)] hover:shadow-[var(--shadow-02)]',
+        outline:
           'border border-[var(--border-secondary)] bg-transparent hover:border-[var(--border-tertiary)]',
         ghost:
-          'border border-transparent bg-transparent hover:bg-[var(--Elevation-Card-hover-primary)]',
+          'border border-transparent bg-transparent hover:bg-[var(--color-layer-02)]',
       },
       padding: {
         default: 'p-5',
@@ -61,14 +61,14 @@ function ContentCard({
       {hasHeader && (
         <div
           className={cn(
-            'flex items-center justify-between border-b border-[var(--border-primary)]',
+            'flex items-center justify-between border-b border-[var(--color-border-default)]',
             padding === 'compact' ? 'px-3 py-2.5' : padding === 'spacious' ? 'px-6 py-4' : 'px-5 py-3.5',
           )}
         >
           {header ?? (
             <>
               {headerTitle && (
-                <h3 className="B1-Reg semibold text-[var(--Mapped-Text-Primary)]">
+                <h3 className="B1-Reg semibold text-[var(--color-text-primary)]">
                   {headerTitle}
                 </h3>
               )}
@@ -97,7 +97,7 @@ function ContentCard({
       {footer && (
         <div
           className={cn(
-            'border-t border-[var(--border-primary)]',
+            'border-t border-[var(--color-border-default)]',
             padding === 'compact' ? 'px-3 py-2.5' : padding === 'spacious' ? 'px-6 py-4' : 'px-5 py-3.5',
           )}
         >

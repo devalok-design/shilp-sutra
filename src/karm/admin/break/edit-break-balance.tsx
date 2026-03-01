@@ -88,7 +88,7 @@ export function EditBreakBalance({
     <Dialog>
       <DialogTrigger asChild>
         <Button
-          variant="outline"
+          variant="secondary"
           className="P2 border-[var(--border-primary)] bg-[var(--Mapped-Surface-Primary)] px-4 py-3 pr-6 text-[var(--Mapped-Text-Secondary)] shadow-[0_4px_8px_0_var(--Elevation-2)]"
         >
           <EditIcon />

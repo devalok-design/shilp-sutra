@@ -2,7 +2,7 @@
 
 import React from 'react'
 import { Switch } from '../../ui/switch'
-import styles from './AdminSwitch.module.css'
+import { cn } from '../../ui/lib/utils'
 
 interface AdminSwitchProps {
   checked: boolean
@@ -17,18 +17,50 @@ const AdminSwitch: React.FC<AdminSwitchProps> = ({
   disabled = false,
   className = '',
 }) => {
-  const switchClasses = [
-    styles.adminSwitch,
-    disabled && styles.disabled,
-    className,
-  ].filter(Boolean).join(' ')
-
   return (
     <Switch
       checked={checked}
       onCheckedChange={onCheckedChange}
       disabled={disabled}
-      className={switchClasses}
+      className={cn(
+        // Base styles
+        'relative w-[68px] h-10 rounded-[88px] transition-all duration-200 ease-in-out',
+        'bg-[var(--Mapped-Surface-Dark)]',
+        // Checked state
+        'data-[state=checked]:bg-[var(--Mapped-Surface-Button-Secondary)]',
+        // Thumb styles (child span) – checked
+        '[&[data-state=checked]>span]:translate-x-[30px]',
+        '[&[data-state=checked]>span]:bg-[var(--Mapped-Surface-Primary)]',
+        "[&[data-state=checked]>span]:bg-[url('https://karm-crm.s3.ap-south-1.amazonaws.com/assets/AdminSwitch/admin-switch-on.svg')]",
+        '[&[data-state=checked]>span]:bg-no-repeat',
+        '[&[data-state=checked]>span]:bg-center',
+        '[&[data-state=checked]>span]:bg-[length:20px]',
+        '[&[data-state=checked]>span]:transition-all',
+        '[&[data-state=checked]>span]:duration-200',
+        '[&[data-state=checked]>span]:ease-in-out',
+        // Thumb styles – unchecked
+        '[&[data-state=unchecked]>span]:translate-x-[2px]',
+        '[&[data-state=unchecked]>span]:bg-[var(--Mapped-Surface-Primary)]',
+        "[&[data-state=unchecked]>span]:bg-[url('https://karm-crm.s3.ap-south-1.amazonaws.com/assets/AdminSwitch/admin-switch-off.svg')]",
+        '[&[data-state=unchecked]>span]:bg-no-repeat',
+        '[&[data-state=unchecked]>span]:bg-center',
+        '[&[data-state=unchecked]>span]:bg-[length:20px]',
+        '[&[data-state=unchecked]>span]:transition-all',
+        '[&[data-state=unchecked]>span]:duration-200',
+        '[&[data-state=unchecked]>span]:ease-in-out',
+        // Hover state (when not disabled)
+        !disabled && 'hover:bg-[var(--Surface-Dark,#f7e9e9)]',
+        !disabled && 'data-[state=checked]:hover:bg-[var(--Mapped-Surface-Button-Secondary)]',
+        // Disabled state
+        disabled && [
+          'cursor-not-allowed',
+          'bg-[var(--Surface-Disabled,#d3ced0)]',
+          'border-[var(--Text-Disabled-1,#b7afb2)]',
+          '[&>span]:bg-[var(--Text-Quaternary,#8c8084)]',
+          '[&>span]:opacity-50',
+        ],
+        className,
+      )}
     />
   )
 }

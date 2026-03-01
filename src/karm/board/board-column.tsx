@@ -167,7 +167,7 @@ export function BoardColumn({
         {/* Add task button */}
         <Button
           variant="ghost"
-          size="icon"
+          size="icon-md"
           className="h-6 w-6 opacity-0 group-hover:opacity-100 hover:bg-pink-50 hover:text-pink-600 transition-opacity"
           onClick={() => {
             setIsAdding(true)
@@ -182,7 +182,7 @@ export function BoardColumn({
           <DropdownMenuTrigger asChild>
             <Button
               variant="ghost"
-              size="icon"
+              size="icon-md"
               className="h-6 w-6 opacity-0 group-hover:opacity-100 transition-opacity"
             >
               <MoreHorizontal className="h-3.5 w-3.5" />

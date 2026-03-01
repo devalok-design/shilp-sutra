@@ -96,7 +96,7 @@ export const AllSkeletons: Story = {
   render: () => (
     <div style={{ display: 'flex', flexDirection: 'column', gap: 32 }}>
       <div>
-        <p style={{ marginBottom: 12, fontSize: 13, fontWeight: 600, color: 'var(--Mapped-Text-Secondary)' }}>
+        <p style={{ marginBottom: 12, fontSize: 13, fontWeight: 600, color: 'var(--color-text-secondary)' }}>
           CardSkeleton
         </p>
         <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: 16 }}>
@@ -107,21 +107,21 @@ export const AllSkeletons: Story = {
       </div>
 
       <div>
-        <p style={{ marginBottom: 12, fontSize: 13, fontWeight: 600, color: 'var(--Mapped-Text-Secondary)' }}>
+        <p style={{ marginBottom: 12, fontSize: 13, fontWeight: 600, color: 'var(--color-text-secondary)' }}>
           TableSkeleton
         </p>
         <TableSkeleton rows={4} columns={4} />
       </div>
 
       <div>
-        <p style={{ marginBottom: 12, fontSize: 13, fontWeight: 600, color: 'var(--Mapped-Text-Secondary)' }}>
+        <p style={{ marginBottom: 12, fontSize: 13, fontWeight: 600, color: 'var(--color-text-secondary)' }}>
           BoardSkeleton
         </p>
         <BoardSkeleton columns={4} cardsPerColumn={2} />
       </div>
 
       <div>
-        <p style={{ marginBottom: 12, fontSize: 13, fontWeight: 600, color: 'var(--Mapped-Text-Secondary)' }}>
+        <p style={{ marginBottom: 12, fontSize: 13, fontWeight: 600, color: 'var(--color-text-secondary)' }}>
           ListSkeleton
         </p>
         <div style={{ maxWidth: 480 }}>

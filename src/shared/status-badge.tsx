@@ -7,23 +7,23 @@ const statusBadgeVariants = cva(
   {
     variants: {
       status: {
-        active: 'bg-[var(--Surface-Success)] text-[var(--Text-Success)]',
-        pending: 'bg-[var(--Surface-Pending)] text-[var(--Text-Pending)]',
-        approved: 'bg-[var(--approved-bg)] text-[var(--Text-Success)]',
-        rejected: 'bg-[var(--denied-bg)] text-[var(--Text-Error)]',
-        completed: 'bg-[var(--Surface-Success)] text-[var(--Text-Success)]',
-        blocked: 'bg-[var(--Mapped-Error-Suraface)] text-[var(--Text-Error)]',
-        cancelled: 'bg-[var(--Elevation-Card-hover-primary)] text-[var(--Mapped-Text-Quaternary)]',
-        draft: 'bg-[var(--Elevation-Card-hover-primary)] text-[var(--Mapped-Text-Tertiary)]',
+        active: 'bg-[var(--color-success-surface)] text-[var(--color-text-success)]',
+        pending: 'bg-[var(--color-warning-surface)] text-[var(--color-text-warning)]',
+        approved: 'bg-[var(--color-success-surface)] text-[var(--color-text-success)]',
+        rejected: 'bg-[var(--color-error-surface)] text-[var(--color-text-error)]',
+        completed: 'bg-[var(--color-success-surface)] text-[var(--color-text-success)]',
+        blocked: 'bg-[var(--color-error-surface)] text-[var(--color-text-error)]',
+        cancelled: 'bg-[var(--color-layer-02)] text-[var(--color-text-placeholder)]',
+        draft: 'bg-[var(--color-layer-02)] text-[var(--color-text-tertiary)]',
       },
       size: {
         sm: 'px-2 py-0.5 text-[10px] font-semibold tracking-wide',
-        default: 'px-2.5 py-1 text-[12px] font-medium tracking-wide',
+        md: 'px-2.5 py-1 text-[12px] font-medium tracking-wide',
       },
     },
     defaultVariants: {
       status: 'pending',
-      size: 'default',
+      size: 'md',
     },
   },
 )

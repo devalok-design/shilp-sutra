@@ -248,13 +248,13 @@ function FilesTab({
                         </DialogHeader>
                         <DialogFooter>
                           <DialogClose asChild>
-                            <Button variant="outline" size="sm">
+                            <Button variant="secondary" size="sm">
                               Cancel
                             </Button>
                           </DialogClose>
                           <DialogClose asChild>
                             <Button
-                              variant="destructive"
+                              variant="danger"
                               size="sm"
                               onClick={() => onDelete(file.id)}
                             >

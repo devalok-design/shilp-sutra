@@ -41,11 +41,11 @@ function ToolbarButton({
       title={title}
       className={cn(
         'inline-flex h-7 w-7 items-center justify-center rounded-md transition-colors',
-        'hover:bg-[var(--Mapped-Surface-Dark)]',
+        'hover:bg-[var(--color-field)]',
         'disabled:pointer-events-none disabled:opacity-40',
         isActive
-          ? 'bg-[var(--Mapped-Surface-Dark)] text-[var(--Mapped-Text-Highlight)]'
-          : 'text-[var(--Mapped-Text-Quaternary)]',
+          ? 'bg-[var(--color-field)] text-[var(--color-interactive)]'
+          : 'text-[var(--color-text-placeholder)]',
       )}
     >
       {children}
@@ -55,7 +55,7 @@ function ToolbarButton({
 
 function Toolbar({ editor }: { editor: Editor }) {
   return (
-    <div className="flex flex-wrap items-center gap-0.5 border-b border-[var(--border-primary)] px-3 py-1.5">
+    <div className="flex flex-wrap items-center gap-0.5 border-b border-[var(--color-border-default)] px-3 py-1.5">
       <ToolbarButton
         onClick={() => editor.chain().focus().toggleBold().run()}
         isActive={editor.isActive('bold')}
@@ -80,7 +80,7 @@ function Toolbar({ editor }: { editor: Editor }) {
         <Strikethrough className="h-3.5 w-3.5" strokeWidth={2.5} />
       </ToolbarButton>
 
-      <div className="mx-1 h-4 w-px bg-[var(--border-primary)]" />
+      <div className="mx-1 h-4 w-px bg-[var(--color-border-default)]" />
 
       <ToolbarButton
         onClick={() =>
@@ -102,7 +102,7 @@ function Toolbar({ editor }: { editor: Editor }) {
         <Heading3 className="h-3.5 w-3.5" strokeWidth={2.5} />
       </ToolbarButton>
 
-      <div className="mx-1 h-4 w-px bg-[var(--border-primary)]" />
+      <div className="mx-1 h-4 w-px bg-[var(--color-border-default)]" />
 
       <ToolbarButton
         onClick={() => editor.chain().focus().toggleBulletList().run()}
@@ -128,7 +128,7 @@ function Toolbar({ editor }: { editor: Editor }) {
         <Code className="h-3.5 w-3.5" strokeWidth={2.5} />
       </ToolbarButton>
 
-      <div className="mx-1 h-4 w-px bg-[var(--border-primary)]" />
+      <div className="mx-1 h-4 w-px bg-[var(--color-border-default)]" />
 
       <ToolbarButton
         onClick={() => editor.chain().focus().undo().run()}
@@ -172,7 +172,7 @@ function RichTextEditor({
       Placeholder.configure({
         placeholder,
         emptyEditorClass:
-          'before:content-[attr(data-placeholder)] before:text-[var(--Mapped-Text-Quaternary)] before:float-left before:h-0 before:pointer-events-none',
+          'before:content-[attr(data-placeholder)] before:text-[var(--color-text-placeholder)] before:float-left before:h-0 before:pointer-events-none',
       }),
     ],
     content,
@@ -182,15 +182,15 @@ function RichTextEditor({
         class: cn(
           'prose prose-sm max-w-none focus:outline-none',
           'min-h-[120px] px-3 py-3',
-          'font-[Ranade] text-[14px] leading-relaxed text-[var(--Mapped-Text-Primary)]',
-          '[&_h2]:T6-Reg [&_h2]:mb-2 [&_h2]:mt-4 [&_h2]:text-[var(--Mapped-Text-Primary)]',
-          '[&_h3]:B1-Reg [&_h3]:semibold [&_h3]:mb-1.5 [&_h3]:mt-3 [&_h3]:text-[var(--Mapped-Text-Primary)]',
-          '[&_p]:mb-1.5 [&_p]:text-[var(--Mapped-Text-Secondary)]',
+          'font-[Ranade] text-[14px] leading-relaxed text-[var(--color-text-primary)]',
+          '[&_h2]:T6-Reg [&_h2]:mb-2 [&_h2]:mt-4 [&_h2]:text-[var(--color-text-primary)]',
+          '[&_h3]:B1-Reg [&_h3]:semibold [&_h3]:mb-1.5 [&_h3]:mt-3 [&_h3]:text-[var(--color-text-primary)]',
+          '[&_p]:mb-1.5 [&_p]:text-[var(--color-text-secondary)]',
           '[&_ul]:ml-4 [&_ul]:list-disc [&_ol]:ml-4 [&_ol]:list-decimal',
-          '[&_li]:text-[var(--Mapped-Text-Secondary)]',
-          '[&_code]:rounded [&_code]:bg-[var(--Mapped-Surface-Secondary)] [&_code]:px-1.5 [&_code]:py-0.5 [&_code]:text-[13px] [&_code]:text-[var(--Mapped-Text-Highlight)]',
-          '[&_pre]:rounded-lg [&_pre]:bg-[var(--Mapped-Surface-Secondary)] [&_pre]:p-3',
-          '[&_strong]:font-semibold [&_strong]:text-[var(--Mapped-Text-Primary)]',
+          '[&_li]:text-[var(--color-text-secondary)]',
+          '[&_code]:rounded [&_code]:bg-[var(--color-layer-02)] [&_code]:px-1.5 [&_code]:py-0.5 [&_code]:text-[13px] [&_code]:text-[var(--color-interactive)]',
+          '[&_pre]:rounded-lg [&_pre]:bg-[var(--color-layer-02)] [&_pre]:p-3',
+          '[&_strong]:font-semibold [&_strong]:text-[var(--color-text-primary)]',
         ),
       },
     },
@@ -204,7 +204,7 @@ function RichTextEditor({
   return (
     <div
       className={cn(
-        'overflow-hidden rounded-lg border border-[var(--border-primary)] bg-[var(--Mapped-Surface-Primary)]',
+        'overflow-hidden rounded-lg border border-[var(--color-border-default)] bg-[var(--color-layer-01)]',
         'transition-colors focus-within:border-[var(--border-secondary)]',
         className,
       )}
@@ -235,15 +235,15 @@ function RichTextViewer({ content, className }: RichTextViewerProps) {
       attributes: {
         class: cn(
           'prose prose-sm max-w-none',
-          'font-[Ranade] text-[14px] leading-relaxed text-[var(--Mapped-Text-Primary)]',
-          '[&_h2]:T6-Reg [&_h2]:mb-2 [&_h2]:mt-4 [&_h2]:text-[var(--Mapped-Text-Primary)]',
-          '[&_h3]:B1-Reg [&_h3]:semibold [&_h3]:mb-1.5 [&_h3]:mt-3 [&_h3]:text-[var(--Mapped-Text-Primary)]',
-          '[&_p]:mb-1.5 [&_p]:text-[var(--Mapped-Text-Secondary)]',
+          'font-[Ranade] text-[14px] leading-relaxed text-[var(--color-text-primary)]',
+          '[&_h2]:T6-Reg [&_h2]:mb-2 [&_h2]:mt-4 [&_h2]:text-[var(--color-text-primary)]',
+          '[&_h3]:B1-Reg [&_h3]:semibold [&_h3]:mb-1.5 [&_h3]:mt-3 [&_h3]:text-[var(--color-text-primary)]',
+          '[&_p]:mb-1.5 [&_p]:text-[var(--color-text-secondary)]',
           '[&_ul]:ml-4 [&_ul]:list-disc [&_ol]:ml-4 [&_ol]:list-decimal',
-          '[&_li]:text-[var(--Mapped-Text-Secondary)]',
-          '[&_code]:rounded [&_code]:bg-[var(--Mapped-Surface-Secondary)] [&_code]:px-1.5 [&_code]:py-0.5 [&_code]:text-[13px] [&_code]:text-[var(--Mapped-Text-Highlight)]',
-          '[&_pre]:rounded-lg [&_pre]:bg-[var(--Mapped-Surface-Secondary)] [&_pre]:p-3',
-          '[&_strong]:font-semibold [&_strong]:text-[var(--Mapped-Text-Primary)]',
+          '[&_li]:text-[var(--color-text-secondary)]',
+          '[&_code]:rounded [&_code]:bg-[var(--color-layer-02)] [&_code]:px-1.5 [&_code]:py-0.5 [&_code]:text-[13px] [&_code]:text-[var(--color-interactive)]',
+          '[&_pre]:rounded-lg [&_pre]:bg-[var(--color-layer-02)] [&_pre]:p-3',
+          '[&_strong]:font-semibold [&_strong]:text-[var(--color-text-primary)]',
         ),
       },
     },

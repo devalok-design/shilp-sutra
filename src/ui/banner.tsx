@@ -37,34 +37,29 @@ export interface BannerProps
   onDismiss?: () => void
 }
 
-function Banner({
-  className,
-  variant = 'info',
-  action,
-  dismissible,
-  onDismiss,
-  children,
-  ...props
-}: BannerProps) {
-  const Icon = BANNER_ICONS[variant ?? 'info']
+const Banner = React.forwardRef<HTMLDivElement, BannerProps>(
+  ({ className, variant = 'info', action, dismissible, onDismiss, children, ...props }, ref) => {
+    const Icon = BANNER_ICONS[variant ?? 'info']
 
-  return (
-    <div className={cn(bannerVariants({ variant }), className)} role="alert" {...props}>
-      <Icon className="h-[var(--icon-md)] w-[var(--icon-md)] shrink-0" aria-hidden="true" />
-      <span className="flex-1">{children}</span>
-      {action && <span className="shrink-0">{action}</span>}
-      {dismissible && onDismiss && (
-        <button
-          type="button"
-          onClick={onDismiss}
-          className="shrink-0 rounded-[var(--radius-sm)] opacity-60 hover:opacity-100 focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-current"
-          aria-label="Dismiss"
-        >
-          <X className="h-4 w-4" />
-        </button>
-      )}
-    </div>
-  )
-}
+    return (
+      <div ref={ref} className={cn(bannerVariants({ variant }), className)} role="alert" {...props}>
+        <Icon className="h-[var(--icon-md)] w-[var(--icon-md)] shrink-0" aria-hidden="true" />
+        <span className="flex-1">{children}</span>
+        {action && <span className="shrink-0">{action}</span>}
+        {dismissible && onDismiss && (
+          <button
+            type="button"
+            onClick={onDismiss}
+            className="shrink-0 rounded-[var(--radius-sm)] opacity-60 hover:opacity-100 focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-current"
+            aria-label="Dismiss"
+          >
+            <X className="h-4 w-4" />
+          </button>
+        )}
+      </div>
+    )
+  },
+)
+Banner.displayName = 'Banner'
 
 export { Banner, bannerVariants }

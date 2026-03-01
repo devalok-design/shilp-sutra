@@ -43,28 +43,31 @@ export interface BadgeProps
   onDismiss?: () => void
 }
 
-function Badge({ className, variant, size, dot, onDismiss, children, ...props }: BadgeProps) {
-  return (
-    <span className={cn(badgeVariants({ variant, size }), className)} {...props}>
-      {dot && (
-        <span
-          className="h-1.5 w-1.5 rounded-full bg-current opacity-70 shrink-0"
-          aria-hidden="true"
-        />
-      )}
-      {children}
-      {onDismiss && (
-        <button
-          type="button"
-          onClick={onDismiss}
-          className="ml-0.5 rounded-full opacity-60 hover:opacity-100 focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-current"
-          aria-label="Remove"
-        >
-          <X className="h-3 w-3" />
-        </button>
-      )}
-    </span>
-  )
-}
+const Badge = React.forwardRef<HTMLSpanElement, BadgeProps>(
+  ({ className, variant, size, dot, onDismiss, children, ...props }, ref) => {
+    return (
+      <span ref={ref} className={cn(badgeVariants({ variant, size }), className)} {...props}>
+        {dot && (
+          <span
+            className="h-1.5 w-1.5 rounded-full bg-current opacity-70 shrink-0"
+            aria-hidden="true"
+          />
+        )}
+        {children}
+        {onDismiss && (
+          <button
+            type="button"
+            onClick={onDismiss}
+            className="ml-0.5 rounded-full opacity-60 hover:opacity-100 focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-current"
+            aria-label="Remove"
+          >
+            <X className="h-3 w-3" />
+          </button>
+        )}
+      </span>
+    )
+  },
+)
+Badge.displayName = 'Badge'
 
 export { Badge, badgeVariants }

@@ -18,7 +18,7 @@ const meta: Meta<typeof AvatarGroup> = {
   argTypes: {
     size: {
       control: 'select',
-      options: ['sm', 'default', 'lg'],
+      options: ['sm', 'md', 'lg'],
     },
     max: {
       control: { type: 'number', min: 1, max: 10 },
@@ -81,7 +81,7 @@ export const SizeSmall: Story = {
 export const SizeDefault: Story = {
   args: {
     users: mockUsers.slice(0, 5),
-    size: 'default',
+    size: 'md',
     max: 4,
   },
 }
@@ -98,19 +98,19 @@ export const AllSizes: Story = {
   render: () => (
     <div style={{ display: 'flex', flexDirection: 'column', gap: 16 }}>
       <div style={{ display: 'flex', alignItems: 'center', gap: 16 }}>
-        <span style={{ width: 60, fontSize: 12, color: 'var(--Mapped-Text-Secondary)' }}>
+        <span style={{ width: 60, fontSize: 12, color: 'var(--color-text-secondary)' }}>
           Small
         </span>
         <AvatarGroup users={mockUsers.slice(0, 5)} size="sm" max={4} />
       </div>
       <div style={{ display: 'flex', alignItems: 'center', gap: 16 }}>
-        <span style={{ width: 60, fontSize: 12, color: 'var(--Mapped-Text-Secondary)' }}>
+        <span style={{ width: 60, fontSize: 12, color: 'var(--color-text-secondary)' }}>
           Default
         </span>
-        <AvatarGroup users={mockUsers.slice(0, 5)} size="default" max={4} />
+        <AvatarGroup users={mockUsers.slice(0, 5)} size="md" max={4} />
       </div>
       <div style={{ display: 'flex', alignItems: 'center', gap: 16 }}>
-        <span style={{ width: 60, fontSize: 12, color: 'var(--Mapped-Text-Secondary)' }}>
+        <span style={{ width: 60, fontSize: 12, color: 'var(--color-text-secondary)' }}>
           Large
         </span>
         <AvatarGroup users={mockUsers.slice(0, 5)} size="lg" max={4} />
@@ -167,6 +167,6 @@ export const LargeTeam: Story = {
       { name: 'Kavya Rao', image: null },
     ],
     max: 5,
-    size: 'default',
+    size: 'md',
   },
 }

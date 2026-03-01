@@ -100,7 +100,7 @@ function PriorityIndicator({
       >
         <Icon className={cn('h-3.5 w-3.5', config.color)} strokeWidth={2} />
       </div>
-      <span className="B3-Reg text-[var(--Mapped-Text-Secondary)]">
+      <span className="B3-Reg text-[var(--color-text-secondary)]">
         {config.label}
       </span>
     </div>

@@ -149,7 +149,7 @@ export default function NotificationPreferences({
           </CardTitle>
           <Button
             size="sm"
-            variant="outline"
+            variant="secondary"
             onClick={() => setShowAddDialog(true)}
           >
             <Plus className="mr-1.5 h-3.5 w-3.5" />

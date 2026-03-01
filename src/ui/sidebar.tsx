@@ -276,7 +276,7 @@ const SidebarTrigger = forwardRef<
       ref={ref}
       data-sidebar="trigger"
       variant="ghost"
-      size="icon"
+      size="icon-md"
       className={cn('h-7 w-7', className)}
       onClick={(event) => {
         onClick?.(event)
@@ -521,14 +521,14 @@ const sidebarMenuButtonVariants = cva(
           'hover:bg-[var(--color-layer-02)] bg-[var(--color-background)] shadow-[0_0_0_1px_var(--color-border-subtle)] hover:text-[var(--color-text-primary)] hover:shadow-[0_0_0_1px_var(--color-border-strong)]',
       },
       size: {
-        default: 'h-8 text-sm',
+        md: 'h-8 text-sm',
         sm: 'h-7 text-xs',
         lg: 'h-12 text-sm group-data-[collapsible=icon]:!p-0',
       },
     },
     defaultVariants: {
       variant: 'default',
-      size: 'default',
+      size: 'md',
     },
   },
 )
@@ -546,7 +546,7 @@ const SidebarMenuButton = forwardRef<
       asChild = false,
       isActive = false,
       variant = 'default',
-      size = 'default',
+      size = 'md',
       tooltip,
       className,
       ...props
@@ -609,7 +609,7 @@ const SidebarMenuAction = forwardRef<
         'hover:bg-[var(--color-layer-02)] absolute right-1 top-1.5 flex aspect-square w-5 items-center justify-center rounded-md p-0 text-[var(--color-text-primary)] outline-none ring-[var(--color-focus)] transition-transform hover:text-[var(--color-text-primary)] focus-visible:ring-2 peer-hover/menu-button:text-[var(--color-text-primary)] [&>svg]:size-4 [&>svg]:shrink-0',
         'after:absolute after:-inset-2 after:md:hidden',
         'peer-data-[size=sm]/menu-button:top-1',
-        'peer-data-[size=default]/menu-button:top-1.5',
+        'peer-data-[size=md]/menu-button:top-1.5',
         'peer-data-[size=lg]/menu-button:top-2.5',
         'group-data-[collapsible=icon]:hidden',
         showOnHover &&
@@ -631,7 +631,7 @@ const SidebarMenuBadge = forwardRef<HTMLDivElement, ComponentProps<'div'>>(
         'pointer-events-none absolute right-1 flex h-5 min-w-5 select-none items-center justify-center rounded-md px-1 text-xs font-medium tabular-nums text-[var(--color-text-primary)]',
         'peer-hover/menu-button:text-[var(--color-text-primary)] peer-data-[active=true]/menu-button:text-[var(--color-text-primary)]',
         'peer-data-[size=sm]/menu-button:top-1',
-        'peer-data-[size=default]/menu-button:top-1.5',
+        'peer-data-[size=md]/menu-button:top-1.5',
         'peer-data-[size=lg]/menu-button:top-2.5',
         'group-data-[collapsible=icon]:hidden',
         className,

@@ -86,6 +86,27 @@ const preset: Partial<Config> = {
         'tag-purple-bg': 'var(--color-tag-purple-bg)',
         'tag-purple-text': 'var(--color-tag-purple-text)',
       },
+      keyframes: {
+        ripple: {
+          '0%': { transform: 'translate(-50%, -50%) scale(0)', opacity: '1' },
+          '100%': { transform: 'translate(-50%, -50%) scale(4)', opacity: '0' },
+        },
+        shake: {
+          '0%': { transform: 'translateX(0)' },
+          '10%': { transform: 'translateX(-3px)' },
+          '20%': { transform: 'translateX(3px)' },
+          '30%': { transform: 'translateX(-8px)' },
+          '40%': { transform: 'translateX(8px)' },
+          '50%': { transform: 'translateX(-5px)' },
+          '60%': { transform: 'translateX(3px)' },
+          '70%, 100%': { transform: 'translateX(0)' },
+        },
+      },
+      animation: {
+        ripple: 'ripple 0.6s linear',
+        'ripple-icon': 'ripple 300ms linear forwards',
+        shake: 'shake 1s ease-in infinite',
+      },
       boxShadow: {
         '01': 'var(--shadow-01)',
         '02': 'var(--shadow-02)',

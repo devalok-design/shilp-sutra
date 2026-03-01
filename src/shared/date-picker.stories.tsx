@@ -43,7 +43,7 @@ export const Controlled: DatePickerStory = {
       return (
         <div style={{ display: 'flex', flexDirection: 'column', gap: 12 }}>
           <DatePicker value={date} onChange={setDate} placeholder="Pick a date" />
-          <p style={{ fontSize: 13, color: 'var(--Mapped-Text-Secondary)' }}>
+          <p style={{ fontSize: 13, color: 'var(--color-text-secondary)' }}>
             Selected: {date ? date.toLocaleDateString() : 'None'}
           </p>
         </div>
@@ -89,7 +89,7 @@ export const RangeControlled: DatePickerStory = {
               setEnd(range.end)
             }}
           />
-          <p style={{ fontSize: 13, color: 'var(--Mapped-Text-Secondary)' }}>
+          <p style={{ fontSize: 13, color: 'var(--color-text-secondary)' }}>
             Start: {start ? start.toLocaleDateString() : 'None'} | End: {end ? end.toLocaleDateString() : 'None'}
           </p>
         </div>
@@ -107,7 +107,7 @@ export const CalendarGridDefault: DatePickerStory = {
       const [month, setMonth] = useState(new Date(2026, 2, 1))
       const [selected, setSelected] = useState<Date | null>(null)
       return (
-        <div style={{ padding: 16, border: '1px solid var(--border-primary)', borderRadius: 12, display: 'inline-block', background: 'var(--Mapped-Surface-Primary)' }}>
+        <div style={{ padding: 16, border: '1px solid var(--color-border-default)', borderRadius: 12, display: 'inline-block', background: 'var(--color-layer-01)' }}>
           <CalendarGrid
             currentMonth={month}
             selected={selected}
@@ -126,7 +126,7 @@ export const CalendarGridWithSelection: DatePickerStory = {
     const CalendarGridWithSel = () => {
       const [month, setMonth] = useState(new Date(2026, 2, 1))
       return (
-        <div style={{ padding: 16, border: '1px solid var(--border-primary)', borderRadius: 12, display: 'inline-block', background: 'var(--Mapped-Surface-Primary)' }}>
+        <div style={{ padding: 16, border: '1px solid var(--color-border-default)', borderRadius: 12, display: 'inline-block', background: 'var(--color-layer-01)' }}>
           <CalendarGrid
             currentMonth={month}
             selected={new Date(2026, 2, 15)}
@@ -145,7 +145,7 @@ export const CalendarGridWithRange: DatePickerStory = {
     const CalendarGridRange = () => {
       const [month, setMonth] = useState(new Date(2026, 2, 1))
       return (
-        <div style={{ padding: 16, border: '1px solid var(--border-primary)', borderRadius: 12, display: 'inline-block', background: 'var(--Mapped-Surface-Primary)' }}>
+        <div style={{ padding: 16, border: '1px solid var(--color-border-default)', borderRadius: 12, display: 'inline-block', background: 'var(--color-layer-01)' }}>
           <CalendarGrid
             currentMonth={month}
             rangeStart={new Date(2026, 2, 8)}
@@ -164,13 +164,13 @@ export const BothPickers: DatePickerStory = {
   render: () => (
     <div style={{ display: 'flex', flexDirection: 'column', gap: 24 }}>
       <div>
-        <p style={{ marginBottom: 8, fontSize: 13, fontWeight: 600, color: 'var(--Mapped-Text-Secondary)' }}>
+        <p style={{ marginBottom: 8, fontSize: 13, fontWeight: 600, color: 'var(--color-text-secondary)' }}>
           Single Date Picker
         </p>
         <DatePicker value={new Date(2026, 2, 15)} />
       </div>
       <div>
-        <p style={{ marginBottom: 8, fontSize: 13, fontWeight: 600, color: 'var(--Mapped-Text-Secondary)' }}>
+        <p style={{ marginBottom: 8, fontSize: 13, fontWeight: 600, color: 'var(--color-text-secondary)' }}>
           Date Range Picker
         </p>
         <DateRangePicker startDate={new Date(2026, 2, 1)} endDate={new Date(2026, 2, 15)} />

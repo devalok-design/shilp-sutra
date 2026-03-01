@@ -37,36 +37,31 @@ export interface AlertProps
   onDismiss?: () => void
 }
 
-function Alert({
-  className,
-  variant = 'info',
-  title,
-  dismissible,
-  onDismiss,
-  children,
-  ...props
-}: AlertProps) {
-  const Icon = ALERT_ICONS[variant ?? 'info']
+const Alert = React.forwardRef<HTMLDivElement, AlertProps>(
+  ({ className, variant = 'info', title, dismissible, onDismiss, children, ...props }, ref) => {
+    const Icon = ALERT_ICONS[variant ?? 'info']
 
-  return (
-    <div className={cn(alertVariants({ variant }), className)} role="alert" {...props}>
-      <Icon className="mt-0.5 h-[var(--icon-md)] w-[var(--icon-md)] shrink-0" aria-hidden="true" />
-      <div className="flex-1 min-w-0">
-        {title && <p className="font-semibold text-sm mb-0.5">{title}</p>}
-        <div className="text-sm opacity-90">{children}</div>
+    return (
+      <div ref={ref} className={cn(alertVariants({ variant }), className)} role="alert" {...props}>
+        <Icon className="mt-0.5 h-[var(--icon-md)] w-[var(--icon-md)] shrink-0" aria-hidden="true" />
+        <div className="flex-1 min-w-0">
+          {title && <p className="font-semibold text-sm mb-0.5">{title}</p>}
+          <div className="text-sm opacity-90">{children}</div>
+        </div>
+        {dismissible && onDismiss && (
+          <button
+            type="button"
+            onClick={onDismiss}
+            className="shrink-0 rounded-[var(--radius-sm)] opacity-60 hover:opacity-100 focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-current"
+            aria-label="Dismiss"
+          >
+            <X className="h-4 w-4" />
+          </button>
+        )}
       </div>
-      {dismissible && onDismiss && (
-        <button
-          type="button"
-          onClick={onDismiss}
-          className="shrink-0 rounded-[var(--radius-sm)] opacity-60 hover:opacity-100 focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-current"
-          aria-label="Dismiss"
-        >
-          <X className="h-4 w-4" />
-        </button>
-      )}
-    </div>
-  )
-}
+    )
+  },
+)
+Alert.displayName = 'Alert'
 
 export { Alert, alertVariants }

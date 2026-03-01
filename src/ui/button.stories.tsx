@@ -14,15 +14,12 @@ const meta: Meta<typeof Button> = {
         'ghost',
         'danger',
         'danger-ghost',
-        'default',
-        'destructive',
-        'outline',
         'link',
       ],
     },
     size: {
       control: 'select',
-      options: ['sm', 'md', 'lg', 'icon-sm', 'icon-md', 'icon-lg', 'default', 'icon'],
+      options: ['sm', 'md', 'lg', 'icon-sm', 'icon-md', 'icon-lg'],
     },
     disabled: { control: 'boolean' },
     asChild: { control: 'boolean' },
@@ -74,7 +71,7 @@ export const DangerGhost: Story = {
 
 export const Outline: Story = {
   args: {
-    variant: 'outline',
+    variant: 'secondary',
     children: 'Outline',
   },
 }
@@ -143,7 +140,7 @@ export const AllVariants: Story = {
       <Button variant="ghost">Ghost</Button>
       <Button variant="danger">Danger</Button>
       <Button variant="danger-ghost">Danger Ghost</Button>
-      <Button variant="outline">Outline</Button>
+      <Button variant="secondary">Outline</Button>
       <Button variant="link">Link</Button>
     </div>
   ),

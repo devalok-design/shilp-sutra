@@ -31,13 +31,13 @@ function EmptyState({
     >
       <div
         className={cn(
-          'flex items-center justify-center rounded-xl bg-[var(--Mapped-Surface-Secondary)]',
+          'flex items-center justify-center rounded-xl bg-[var(--color-layer-02)]',
           compact ? 'h-10 w-10' : 'h-12 w-12',
         )}
       >
         <Icon
           className={cn(
-            'text-[var(--Mapped-Text-Quaternary)]',
+            'text-[var(--color-text-placeholder)]',
             compact ? 'h-5 w-5' : 'h-6 w-6',
           )}
           strokeWidth={1.5}
@@ -47,7 +47,7 @@ function EmptyState({
       <div className="flex max-w-[280px] flex-col gap-1">
         <h3
           className={cn(
-            'text-[var(--Mapped-Text-Primary)]',
+            'text-[var(--color-text-primary)]',
             compact ? 'B2-Reg semibold' : 'B1-Reg semibold',
           )}
         >
@@ -56,7 +56,7 @@ function EmptyState({
         {description && (
           <p
             className={cn(
-              'text-[var(--Mapped-Text-Quaternary)]',
+              'text-[var(--color-text-placeholder)]',
               compact ? 'B3-Reg' : 'B2-Reg',
             )}
           >

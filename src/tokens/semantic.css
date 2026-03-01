@@ -161,9 +161,9 @@
   --color-accent-hover:         var(--purple-300);
   --color-accent-subtle:        var(--purple-950);
   /* Danger */
-  --color-danger:               var(--red-100);
-  --color-danger-hover:         var(--red-50);
-  --color-danger-surface:       var(--red-700);
+  --color-danger:               var(--red-500);
+  --color-danger-hover:         var(--red-400);
+  --color-danger-surface:       var(--red-900);
   /* Background & Layers */
   --color-background:           var(--neutral-950);
   --color-layer-01:             var(--neutral-900);
@@ -182,11 +182,11 @@
   --color-text-placeholder:     var(--neutral-500);
   --color-text-helper:          var(--neutral-400);
   --color-text-disabled:        var(--neutral-600);
-  --color-text-error:           var(--red-100);
-  --color-text-success:         var(--green-100);
-  --color-text-warning:         var(--yellow-100);
-  --color-text-link:            var(--blue-100);
-  --color-text-link-hover:      var(--blue-50);
+  --color-text-error:           var(--red-200);
+  --color-text-success:         var(--green-200);
+  --color-text-warning:         var(--yellow-200);
+  --color-text-link:            var(--blue-200);
+  --color-text-link-hover:      var(--blue-100);
   --color-text-on-color:        var(--neutral-0);
   --color-text-on-color-dark:   var(--neutral-50);
   --color-text-inverse:         var(--neutral-900);
@@ -203,29 +203,29 @@
   --color-border-strong:        var(--neutral-500);
   --color-border-interactive:   var(--pink-400);
   --color-border-disabled:      var(--neutral-700);
-  --color-border-error:         var(--red-100);
-  --color-border-success:       var(--green-100);
-  --color-border-warning:       var(--yellow-100);
+  --color-border-error:         var(--red-400);
+  --color-border-success:       var(--green-400);
+  --color-border-warning:       var(--yellow-400);
   /* Focus */
   --color-focus:                var(--pink-400);
   --color-focus-inset:          var(--neutral-950);
   /* Status / Feedback */
-  --color-success:              var(--green-100);
-  --color-success-surface:      var(--green-700);
-  --color-success-border:       var(--green-100);
-  --color-success-text:         var(--green-100);
-  --color-error:                var(--red-100);
-  --color-error-surface:        var(--red-700);
-  --color-error-border:         var(--red-100);
-  --color-error-text:           var(--red-100);
-  --color-warning:              var(--yellow-100);
-  --color-warning-surface:      var(--yellow-700);
-  --color-warning-border:       var(--yellow-100);
-  --color-warning-text:         var(--yellow-100);
-  --color-info:                 var(--blue-100);
-  --color-info-surface:         var(--blue-700);
-  --color-info-border:          var(--blue-100);
-  --color-info-text:            var(--blue-100);
+  --color-success:              var(--green-500);
+  --color-success-surface:      var(--green-900);
+  --color-success-border:       var(--green-400);
+  --color-success-text:         var(--green-200);
+  --color-error:                var(--red-500);
+  --color-error-surface:        var(--red-900);
+  --color-error-border:         var(--red-400);
+  --color-error-text:           var(--red-200);
+  --color-warning:              var(--yellow-500);
+  --color-warning-surface:      var(--yellow-900);
+  --color-warning-border:       var(--yellow-400);
+  --color-warning-text:         var(--yellow-200);
+  --color-info:                 var(--blue-500);
+  --color-info-surface:         var(--blue-900);
+  --color-info-border:          var(--blue-400);
+  --color-info-text:            var(--blue-200);
   /* Skeleton */
   --color-skeleton-base:        var(--neutral-800);
   --color-skeleton-shimmer:     var(--neutral-700);

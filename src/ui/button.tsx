@@ -18,13 +18,6 @@ export const buttonVariants = cva(
           'bg-[var(--color-danger)] text-[var(--color-text-on-color)] hover:bg-[var(--color-danger-hover)] shadow-[var(--shadow-01)]',
         'danger-ghost':
           'bg-transparent text-[var(--color-error)] border border-[var(--color-border-error)] hover:bg-[var(--color-error-surface)]',
-        // Keep legacy variants for backward compat
-        default:
-          'bg-[var(--color-interactive)] text-[var(--color-text-on-color)] hover:bg-[var(--color-interactive-hover)] shadow-[var(--shadow-01)]',
-        destructive:
-          'bg-[var(--color-danger)] text-[var(--color-text-on-color)] hover:bg-[var(--color-danger-hover)]',
-        outline:
-          'bg-transparent text-[var(--color-interactive)] border-[var(--color-border-interactive)] hover:bg-[var(--color-interactive-subtle)]',
         link: 'text-[var(--color-text-link)] underline-offset-4 hover:underline',
       },
       size: {
@@ -34,14 +27,11 @@ export const buttonVariants = cva(
         'icon-sm': 'h-[var(--size-sm)] w-[var(--size-sm)] rounded-[var(--radius-md)]',
         'icon-md': 'h-[var(--size-md)] w-[var(--size-md)] rounded-[var(--radius-md)]',
         'icon-lg': 'h-[var(--size-lg)] w-[var(--size-lg)] rounded-[var(--radius-lg)]',
-        // Legacy sizes
-        default: 'h-[var(--size-md)] rounded-[var(--radius-md)] px-4',
-        icon: 'h-[var(--size-md)] w-[var(--size-md)] rounded-[var(--radius-md)]',
       },
     },
     defaultVariants: {
-      variant: 'default',
-      size: 'default',
+      variant: 'primary',
+      size: 'md',
     },
   },
 )

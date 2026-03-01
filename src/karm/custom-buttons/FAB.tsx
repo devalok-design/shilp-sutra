@@ -1,7 +1,7 @@
 'use client'
 
 import React, { useState, useRef, useEffect } from 'react'
-import styles from './FAB.module.css'
+import { cn } from '../../ui/lib/utils'
 
 export type FABSize = 'small' | 'medium' | 'big'
 
@@ -13,6 +13,12 @@ interface FABProps {
   className?: string
   /** Accessible label for the button. Defaults to "Floating action button". */
   'aria-label'?: string
+}
+
+const sizeClasses: Record<FABSize, string> = {
+  small: 'w-9 h-9',
+  medium: 'w-[52px] h-[52px]',
+  big: 'w-[84px] h-[84px]',
 }
 
 const FAB: React.FC<FABProps> = ({
@@ -105,20 +111,23 @@ const FAB: React.FC<FABProps> = ({
     }, 600)
   }
 
-  const fabClasses = [
-    styles.fab,
-    styles[size],
-    styles[state],
-    disabled && styles.disabled,
-    className,
-  ]
-    .filter(Boolean)
-    .join(' ')
-
   return (
     <button
       ref={buttonRef}
-      className={fabClasses}
+      className={cn(
+        // Base styles
+        'flex items-center justify-center rounded-full border-none outline-none cursor-pointer transition-all duration-200 ease-in-out relative overflow-hidden',
+        'bg-[var(--Surface-Button-primary,#d33163)] text-white',
+        // Size
+        sizeClasses[size],
+        // State: focused
+        state === 'focused' && 'border border-solid border-[var(--Surface-Primary,#fff)] bg-[var(--Surface-Button-primary,#d33163)] shadow-[0px_4px_8px_0px_rgba(0,0,0,0.15),0px_2px_3px_0px_rgba(0,0,0,0.3)]',
+        // State: hover
+        state === 'hover' && 'bg-[var(--Surface-Button-primary,#d33163)] shadow-[0px_4px_8px_0px_var(--Elevation-Button-hover,#efd5d9),0px_1px_3px_0.05px_var(--Surface-Tertiary,#fff),inset_0px_8px_16px_0px_rgba(255,255,255,0.16),inset_0px_2px_0px_0px_rgba(255,255,255,0.1)]',
+        // Disabled
+        disabled && 'bg-[var(--Surface-Disabled,#D3CED0)] cursor-not-allowed pointer-events-none shadow-none',
+        className,
+      )}
       onClick={(e) => {
         createRipple(e)
         onClick?.()
@@ -136,7 +145,7 @@ const FAB: React.FC<FABProps> = ({
       {ripples.map((ripple) => (
         <span
           key={ripple.id}
-          className={styles.ripple}
+          className="absolute rounded-full bg-[rgba(252,247,247,0.2)] -translate-x-1/2 -translate-y-1/2 scale-0 animate-ripple pointer-events-none"
           style={{
             left: ripple.x,
             top: ripple.y,

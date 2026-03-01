@@ -1,7 +1,7 @@
 'use client'
 
 import React, { useState, useRef, useEffect } from 'react'
-import styles from './CustomButton.module.css'
+import { cn } from '../../ui/lib/utils'
 
 export type ButtonType = 'filled' | 'tonal' | 'outline' | 'text'
 
@@ -15,6 +15,60 @@ interface CustomButtonProps {
   className?: string
   /** Enable the shake animation. Defaults to false. */
   shake?: boolean
+}
+
+/* ── colour / variant base ────────────────────────────────── */
+const typeClasses: Record<ButtonType, string> = {
+  filled: [
+    'shadow-[0px_1px_3px_0.05px_var(--Elevation-Button-hover,#efd5d9),inset_0px_8px_16px_0px_rgba(255,255,255,0.16),inset_0px_2px_0px_0px_rgba(255,255,255,0.1)]',
+    'border border-solid border-[var(--Alias-Primary-Default,#d33163)]',
+    'bg-[var(--Surface-Button-primary,#d33163)]',
+    'text-[var(--Text-Button-Text,#fcf7f7)]',
+    '[text-shadow:0px_1px_1px_rgba(0,0,0,0.15)]',
+  ].join(' '),
+  tonal: 'bg-[var(--Surface-Secondary,#fcf7f7)] text-[var(--Text-Highlight,#932044)]',
+  outline: 'bg-transparent border border-solid border-[var(--Border-Tertiary,#dd9eb8)] text-[var(--Text-Highlight,#932044)]',
+  text: 'text-[var(--Text-Highlight,#932044)]',
+}
+
+/* ── focused state per type ───────────────────────────────── */
+const focusedClasses: Record<ButtonType, string> = {
+  filled: [
+    'border-2 border-solid border-[var(--Alias-Primary-Default,#d33163)]',
+    'bg-[var(--Surface-Button-primary,#d33163)]',
+    'shadow-[0px_1px_3px_0.05px_rgba(24,24,27,0.24),inset_0px_8px_16px_0px_rgba(255,255,255,0.16),inset_0px_2px_0px_0px_rgba(255,255,255,0.1)]',
+  ].join(' '),
+  tonal: 'bg-[var(--Surface-Secondary,#fcf7f7)] shadow-none',
+  outline: 'border border-solid border-[var(--Border-Tertiary,#dd9eb8)]',
+  text: '',
+}
+
+/* ── hover state per type ─────────────────────────────────── */
+const hoverClasses: Record<ButtonType, string> = {
+  filled: [
+    'border border-solid border-[var(--Surface-Button-primary,#d33163)]',
+    'bg-[var(--Surface-Button-primary,#d33163)]',
+    'shadow-[0px_4px_8px_0px_var(--Elevation-Button-hover,#efd5d9),0px_1px_3px_0.05px_var(--Surface-Tertiary,#fff),inset_0px_8px_16px_0px_rgba(255,255,255,0.16),inset_0px_2px_0px_0px_rgba(255,255,255,0.1)]',
+  ].join(' '),
+  tonal: 'bg-[var(--Surface-Dark,#f7e9e9)] text-[var(--Text-Primary,#3f181e)]',
+  outline: 'border border-solid border-[var(--Border-Tertiary,#dd9eb8)] bg-[var(--Surface-Tertiary,#fff)] text-[var(--Text-Primary,#3f181e)]',
+  text: 'text-[var(--Text-Primary,#3f181e)]',
+}
+
+/* ── disabled state per type ──────────────────────────────── */
+const disabledClasses: Record<ButtonType, string> = {
+  filled: 'bg-[var(--Surface-Disabled,#d3ced0)] text-[var(--Text-Quaternary,#8c8084)]',
+  tonal: 'bg-[var(--Surface-Disabled,#d3ced0)] text-[var(--Text-Quaternary,#8c8084)]',
+  outline: 'border border-solid border-[var(--Text-Disabled-1,#b7afb2)] text-[var(--Text-Quaternary,#8c8084)]',
+  text: 'text-[var(--Text-Quaternary,#8c8084)]',
+}
+
+/* ── ripple bg per type ───────────────────────────────────── */
+const rippleBg: Record<ButtonType, string> = {
+  filled: 'bg-[rgba(252,247,247,0.2)]',
+  tonal: 'bg-[rgba(140,128,132,0.2)]',
+  outline: 'bg-[rgba(140,128,132,0.2)]',
+  text: 'hidden',
 }
 
 const CustomButton: React.FC<CustomButtonProps> = ({
@@ -107,19 +161,25 @@ const CustomButton: React.FC<CustomButtonProps> = ({
     }, 600)
   }
 
-  const buttonClasses = [
-    styles.button,
-    styles[type],
-    styles[state],
-    disabled && styles.disabled,
-    shake && !disabled && styles.shakeAnimation,
-    className,
-  ].filter(Boolean).join(' ')
-
   return (
     <button
       ref={buttonRef}
-      className={buttonClasses}
+      className={cn(
+        // Base styles
+        'inline-flex items-center justify-center gap-1 px-5 py-3 rounded-[88px] cursor-pointer transition-all duration-200 ease-in-out relative overflow-hidden',
+        "font-['Ranade'] text-sm font-semibold leading-none text-center",
+        // Type (variant) base styles
+        typeClasses[type],
+        // State styles
+        state === 'focused' && focusedClasses[type],
+        state === 'hover' && hoverClasses[type],
+        // Disabled styles
+        disabled && 'cursor-not-allowed pointer-events-none border-none shadow-none [text-shadow:none]',
+        disabled && disabledClasses[type],
+        // Shake animation
+        shake && !disabled && 'animate-shake',
+        className,
+      )}
       onClick={(e) => {
         createRipple(e)
         onClick?.()
@@ -136,7 +196,10 @@ const CustomButton: React.FC<CustomButtonProps> = ({
       {ripples.map((ripple) => (
         <span
           key={ripple.id}
-          className={styles.ripple}
+          className={cn(
+            'absolute rounded-full -translate-x-1/2 -translate-y-1/2 scale-0 animate-ripple pointer-events-none',
+            rippleBg[type],
+          )}
           style={{
             left: ripple.x,
             top: ripple.y,
@@ -145,9 +208,9 @@ const CustomButton: React.FC<CustomButtonProps> = ({
           }}
         />
       ))}
-      {leftIcon && <span className={styles.leftIcon}>{leftIcon}</span>}
-      <span className={styles.textStyle}>{text}</span>
-      {rightIcon && <span className={styles.rightIcon}>{rightIcon}</span>}
+      {leftIcon && <span className="flex items-center justify-center w-[18px] h-[18px]">{leftIcon}</span>}
+      <span>{text}</span>
+      {rightIcon && <span className="flex items-center justify-center w-[18px] h-[18px]">{rightIcon}</span>}
     </button>
   )
 }

@@ -107,7 +107,7 @@ function ErrorDisplay({ error, onReset }: ErrorDisplayProps) {
   return (
     <div className="flex min-h-[60vh] items-center justify-center p-4">
       <div
-        className="flex w-full max-w-lg flex-col items-center gap-6 rounded-xl border border-[var(--border-primary)] bg-[var(--Mapped-Surface-Primary)] p-8 text-center shadow-sm"
+        className="flex w-full max-w-lg flex-col items-center gap-6 rounded-xl border border-[var(--color-border-default)] bg-[var(--color-layer-01)] p-8 text-center shadow-sm"
       >
         {/* Error Icon */}
         <div
@@ -123,14 +123,14 @@ function ErrorDisplay({ error, onReset }: ErrorDisplayProps) {
         {/* Error Info */}
         <div className="flex flex-col gap-2">
           {status && (
-            <span className="B3-Reg text-[var(--Mapped-Text-Quaternary)]">
+            <span className="B3-Reg text-[var(--color-text-placeholder)]">
               Error {status}
             </span>
           )}
-          <h2 className="T5-Reg font-semibold text-[var(--Mapped-Text-Primary)]">
+          <h2 className="T5-Reg font-semibold text-[var(--color-text-primary)]">
             {errorConfig.title}
           </h2>
-          <p className="B1-Reg text-[var(--Mapped-Text-Tertiary)]">
+          <p className="B1-Reg text-[var(--color-text-tertiary)]">
             {message || errorConfig.message}
           </p>
         </div>
@@ -150,11 +150,11 @@ function ErrorDisplay({ error, onReset }: ErrorDisplayProps) {
 
         {/* Dev stack trace */}
         {isDev && stack && (
-          <div className="w-full overflow-auto rounded-lg border border-[var(--border-primary)] bg-[var(--Mapped-Surface-Secondary)] p-4 text-left">
-            <p className="B3-Reg mb-2 font-semibold text-[var(--Mapped-Text-Primary)]">
+          <div className="w-full overflow-auto rounded-lg border border-[var(--color-border-default)] bg-[var(--color-layer-02)] p-4 text-left">
+            <p className="B3-Reg mb-2 font-semibold text-[var(--color-text-primary)]">
               Stack Trace (development only)
             </p>
-            <pre className="whitespace-pre-wrap text-xs text-[var(--Mapped-Text-Tertiary)]">
+            <pre className="whitespace-pre-wrap text-xs text-[var(--color-text-tertiary)]">
               {stack}
             </pre>
           </div>

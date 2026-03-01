@@ -85,17 +85,17 @@ function CalendarGrid({
         <button
           type="button"
           onClick={() => onMonthChange(subMonths(currentMonth, 1))}
-          className="inline-flex h-7 w-7 items-center justify-center rounded-md text-[var(--Mapped-Text-Quaternary)] transition-colors hover:bg-[var(--Mapped-Surface-Dark)] hover:text-[var(--Mapped-Text-Secondary)]"
+          className="inline-flex h-7 w-7 items-center justify-center rounded-md text-[var(--color-text-placeholder)] transition-colors hover:bg-[var(--color-field)] hover:text-[var(--color-text-secondary)]"
         >
           <ChevronLeft className="h-4 w-4" strokeWidth={1.5} />
         </button>
-        <span className="B2-Reg semibold text-[var(--Mapped-Text-Primary)]">
+        <span className="B2-Reg semibold text-[var(--color-text-primary)]">
           {format(currentMonth, 'MMMM yyyy')}
         </span>
         <button
           type="button"
           onClick={() => onMonthChange(addMonths(currentMonth, 1))}
-          className="inline-flex h-7 w-7 items-center justify-center rounded-md text-[var(--Mapped-Text-Quaternary)] transition-colors hover:bg-[var(--Mapped-Surface-Dark)] hover:text-[var(--Mapped-Text-Secondary)]"
+          className="inline-flex h-7 w-7 items-center justify-center rounded-md text-[var(--color-text-placeholder)] transition-colors hover:bg-[var(--color-field)] hover:text-[var(--color-text-secondary)]"
         >
           <ChevronRight className="h-4 w-4" strokeWidth={1.5} />
         </button>
@@ -105,7 +105,7 @@ function CalendarGrid({
         {WEEKDAYS.map((wd) => (
           <div
             key={wd}
-            className="flex h-8 items-center justify-center text-[11px] font-semibold uppercase tracking-wider text-[var(--Mapped-Text-Quaternary)]"
+            className="flex h-8 items-center justify-center text-[11px] font-semibold uppercase tracking-wider text-[var(--color-text-placeholder)]"
           >
             {wd}
           </div>
@@ -129,13 +129,13 @@ function CalendarGrid({
                 'flex h-8 w-9 items-center justify-center rounded-md text-[13px] font-[Ranade] transition-colors',
                 !inMonth && 'pointer-events-none opacity-0',
                 inMonth && !isSelected && !edge && !inRange &&
-                  'text-[var(--Mapped-Text-Primary)] hover:bg-[var(--Mapped-Surface-Dark)]',
+                  'text-[var(--color-text-primary)] hover:bg-[var(--color-field)]',
                 inRange && !edge &&
-                  'rounded-none bg-[var(--Mapped-Surface-Dark)] text-[var(--Mapped-Text-Primary)]',
+                  'rounded-none bg-[var(--color-field)] text-[var(--color-text-primary)]',
                 (isSelected || edge) &&
-                  'bg-[var(--Mapped-Surface-Button-Primary)] text-[var(--Text-Button-Text)] hover:bg-[var(--Mapped-Surface-Button-Secondary)]',
+                  'bg-[var(--color-interactive)] text-[var(--color-text-on-color)] hover:bg-[var(--color-interactive-hover)]',
                 isToday && !isSelected && !edge &&
-                  'font-semibold text-[var(--Mapped-Text-Highlight)]',
+                  'font-semibold text-[var(--color-interactive)]',
               )}
             >
               {format(d, 'd')}
@@ -178,22 +178,22 @@ function DatePicker({
         <button
           type="button"
           className={cn(
-            'inline-flex h-9 items-center gap-2 rounded-lg border border-[var(--border-primary)] bg-[var(--Mapped-Surface-Primary)] px-3 text-left transition-colors',
+            'inline-flex h-9 items-center gap-2 rounded-lg border border-[var(--color-border-default)] bg-[var(--color-layer-01)] px-3 text-left transition-colors',
             'hover:border-[var(--border-secondary)]',
             'focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-[var(--border-tertiary)]',
             className,
           )}
         >
           <CalendarDays
-            className="h-4 w-4 text-[var(--Mapped-Text-Quaternary)]"
+            className="h-4 w-4 text-[var(--color-text-placeholder)]"
             strokeWidth={1.5}
           />
           <span
             className={cn(
               'B2-Reg',
               value
-                ? 'text-[var(--Mapped-Text-Primary)]'
-                : 'text-[var(--Mapped-Text-Quaternary)]',
+                ? 'text-[var(--color-text-primary)]'
+                : 'text-[var(--color-text-placeholder)]',
             )}
           >
             {value ? format(value, formatStr) : placeholder}
@@ -201,7 +201,7 @@ function DatePicker({
         </button>
       </PopoverTrigger>
       <PopoverContent
-        className="w-auto border-[var(--border-primary)] bg-[var(--Mapped-Surface-Primary)] p-3"
+        className="w-auto border-[var(--color-border-default)] bg-[var(--color-layer-01)] p-3"
         align="start"
         sideOffset={4}
       >
@@ -279,22 +279,22 @@ function DateRangePicker({
         <button
           type="button"
           className={cn(
-            'inline-flex h-9 items-center gap-2 rounded-lg border border-[var(--border-primary)] bg-[var(--Mapped-Surface-Primary)] px-3 text-left transition-colors',
+            'inline-flex h-9 items-center gap-2 rounded-lg border border-[var(--color-border-default)] bg-[var(--color-layer-01)] px-3 text-left transition-colors',
             'hover:border-[var(--border-secondary)]',
             'focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-[var(--border-tertiary)]',
             className,
           )}
         >
           <CalendarDays
-            className="h-4 w-4 text-[var(--Mapped-Text-Quaternary)]"
+            className="h-4 w-4 text-[var(--color-text-placeholder)]"
             strokeWidth={1.5}
           />
           <span
             className={cn(
               'B2-Reg',
               rangeStart && rangeEnd
-                ? 'text-[var(--Mapped-Text-Primary)]'
-                : 'text-[var(--Mapped-Text-Quaternary)]',
+                ? 'text-[var(--color-text-primary)]'
+                : 'text-[var(--color-text-placeholder)]',
             )}
           >
             {displayText()}
@@ -302,7 +302,7 @@ function DateRangePicker({
         </button>
       </PopoverTrigger>
       <PopoverContent
-        className="w-auto border-[var(--border-primary)] bg-[var(--Mapped-Surface-Primary)] p-3"
+        className="w-auto border-[var(--color-border-default)] bg-[var(--color-layer-01)] p-3"
         align="start"
         sideOffset={4}
       >

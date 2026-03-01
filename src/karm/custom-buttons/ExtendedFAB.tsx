@@ -1,7 +1,7 @@
 'use client'
 
 import React, { useState, useRef, useEffect } from 'react'
-import styles from './ExtendedFAB.module.css'
+import { cn } from '../../ui/lib/utils'
 
 export type ExtendedFABSize = 'small' | 'big'
 export type ExtendedFABColor = 'filled' | 'tonal'
@@ -14,6 +14,31 @@ interface ExtendedFABProps {
   onClick?: () => void
   disabled?: boolean
   className?: string
+}
+
+const colorClasses: Record<ExtendedFABColor, string> = {
+  filled: 'bg-[var(--Surface-Button-primary,#d33163)] text-[var(--Text-Button-Text,#fcf7f7)]',
+  tonal: 'border border-solid border-[var(--Border-Secondary,#efd5d9)] bg-[var(--Surface-Dark,#f7e9e9)] text-[var(--Text-Secondary,#403a3c)]',
+}
+
+const focusedClasses: Record<ExtendedFABColor, string> = {
+  filled: 'border border-solid border-[var(--Border-Tertiary,#dd9eb8)] bg-[var(--Surface-Button-primary,#d33163)]',
+  tonal: 'border border-solid border-[var(--Border-Tertiary,#dd9eb8)] bg-[var(--Surface-Dark,#f7e9e9)]',
+}
+
+const hoverClasses: Record<ExtendedFABColor, string> = {
+  filled: 'bg-[var(--Surface-Button-primary,#d33163)] shadow-[0px_1px_3px_0.05px_var(--Elevation-Button-hover,#efd5d9),inset_0px_8px_16px_0px_rgba(255,255,255,0.16),inset_0px_2px_0px_0px_rgba(255,255,255,0.1)]',
+  tonal: 'border border-solid border-[var(--Border-Secondary,#efd5d9)] bg-[var(--Surface-Dark,#f7e9e9)] shadow-[0px_1px_3px_0.05px_var(--Elevation-Button-hover,#efd5d9),inset_0px_8px_16px_0px_rgba(255,255,255,0.16),inset_0px_2px_0px_0px_rgba(255,255,255,0.1)]',
+}
+
+const disabledClasses: Record<ExtendedFABColor, string> = {
+  filled: 'bg-[var(--Surface-Disabled,#D3CED0)] text-[var(--Text-Tertiary,#6B6164)]',
+  tonal: 'bg-[var(--Surface-Disabled,#D3CED0)] text-[var(--Text-Tertiary,#6B6164)]',
+}
+
+const rippleColorClasses: Record<ExtendedFABColor, string> = {
+  filled: 'bg-[rgba(252,247,247,0.2)]',
+  tonal: 'bg-[rgba(140,128,132,0.2)]',
 }
 
 const ExtendedFAB: React.FC<ExtendedFABProps> = ({
@@ -107,21 +132,26 @@ const ExtendedFAB: React.FC<ExtendedFABProps> = ({
     }, 600)
   }
 
-  const extendedFABClasses = [
-    styles.extendedFAB,
-    styles[size],
-    styles[color],
-    styles[state],
-    disabled && styles.disabled,
-    className,
-  ]
-    .filter(Boolean)
-    .join(' ')
-
   return (
     <button
       ref={buttonRef}
-      className={extendedFABClasses}
+      className={cn(
+        // Base styles
+        'inline-flex items-center gap-2 p-3.5 rounded-[48px] border-none outline-none cursor-pointer transition-all duration-200 ease-in-out relative overflow-hidden',
+        "font-['Ranade'] text-sm font-semibold leading-none",
+        // Size
+        'h-[46px]',
+        // Color
+        colorClasses[color],
+        // State: focused
+        state === 'focused' && focusedClasses[color],
+        // State: hover
+        state === 'hover' && hoverClasses[color],
+        // Disabled
+        disabled && 'cursor-not-allowed pointer-events-none shadow-none',
+        disabled && disabledClasses[color],
+        className,
+      )}
       onClick={(e) => {
         createRipple(e)
         onClick?.()
@@ -138,7 +168,10 @@ const ExtendedFAB: React.FC<ExtendedFABProps> = ({
       {ripples.map((ripple) => (
         <span
           key={ripple.id}
-          className={styles.ripple}
+          className={cn(
+            'absolute rounded-full -translate-x-1/2 -translate-y-1/2 scale-0 animate-ripple pointer-events-none',
+            rippleColorClasses[color],
+          )}
           style={{
             left: ripple.x,
             top: ripple.y,
@@ -147,8 +180,8 @@ const ExtendedFAB: React.FC<ExtendedFABProps> = ({
           }}
         />
       ))}
-      <span className={styles.icon}>{icon}</span>
-      <span className={styles.text}>{text}</span>
+      <span className="flex items-center justify-center w-[18px] h-[18px]">{icon}</span>
+      <span className="text-sm font-medium leading-[1.2]">{text}</span>
     </button>
   )
 }

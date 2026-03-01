@@ -27,7 +27,7 @@ function PageHeader({
   return (
     <div
       className={cn(
-        'flex flex-col gap-4 border-b border-[var(--border-primary)] pb-6',
+        'flex flex-col gap-4 border-b border-[var(--color-border-default)] pb-6',
         className,
       )}
       {...props}
@@ -38,14 +38,14 @@ function PageHeader({
             <React.Fragment key={index}>
               {index > 0 && (
                 <ChevronRight
-                  className="h-3.5 w-3.5 text-[var(--Mapped-Text-Quaternary)]"
+                  className="h-3.5 w-3.5 text-[var(--color-text-placeholder)]"
                   strokeWidth={1.5}
                 />
               )}
               {crumb.href ? (
                 <a
                   href={crumb.href}
-                  className="B3-Reg text-[var(--Mapped-Text-Quaternary)] transition-colors hover:text-[var(--Mapped-Text-Secondary)]"
+                  className="B3-Reg text-[var(--color-text-placeholder)] transition-colors hover:text-[var(--color-text-secondary)]"
                 >
                   {crumb.label}
                 </a>
@@ -54,8 +54,8 @@ function PageHeader({
                   className={cn(
                     'B3-Reg',
                     index === breadcrumbs.length - 1
-                      ? 'text-[var(--Mapped-Text-Primary)]'
-                      : 'text-[var(--Mapped-Text-Quaternary)]',
+                      ? 'text-[var(--color-text-primary)]'
+                      : 'text-[var(--color-text-placeholder)]',
                   )}
                 >
                   {crumb.label}
@@ -70,14 +70,14 @@ function PageHeader({
         <div className="flex flex-col gap-1.5">
           <h1
             className={cn(
-              'T5-Reg text-[var(--Mapped-Text-Primary)]',
+              'T5-Reg text-[var(--color-text-primary)]',
               titleClassName,
             )}
           >
             {title}
           </h1>
           {subtitle && (
-            <p className="B2-Reg text-[var(--Mapped-Text-Quaternary)]">
+            <p className="B2-Reg text-[var(--color-text-placeholder)]">
               {subtitle}
             </p>
           )}

@@ -1,0 +1,20 @@
+import { Meta } from '@storybook/blocks'
+import { FoundationsShowcase } from './FoundationsShowcase'
+
+<Meta title="Foundations" />
+
+# Design Foundations
+
+Shilp Sutra uses a **three-tier token architecture** that separates raw values from intent-based decisions, making theming and dark mode straightforward.
+
+```
+Tier 1: Primitives    Raw palette values (never used directly in components)
+Tier 2: Semantic       Intent-based tokens (what components consume)
+Tier 3: Tailwind       Utility classes mapped from semantic tokens
+```
+
+Toggle dark mode with the toolbar switcher to see all tokens respond automatically.
+
+---
+
+<FoundationsShowcase />

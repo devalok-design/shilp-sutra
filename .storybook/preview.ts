@@ -29,6 +29,38 @@ const preview: Preview = {
       classTarget: 'html',
     },
     docs: { theme },
+    options: {
+      storySort: {
+        order: [
+          'Getting Started',
+          'Foundations',
+          'UI', [
+            'Introduction',
+            'Core',
+            'Form Controls',
+            'Data Display',
+            'Feedback',
+            'Navigation',
+            'Other',
+            '*',
+          ],
+          'Shared', ['Introduction', '*'],
+          'Layout', ['Introduction', '*'],
+          'Karm', [
+            'Introduction',
+            'Board',
+            'Tasks',
+            'Chat',
+            'Dashboard',
+            'Client',
+            'CustomButtons',
+            'Admin',
+            'Other',
+            '*',
+          ],
+        ],
+      },
+    },
   },
 }
 

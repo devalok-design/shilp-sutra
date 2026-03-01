@@ -17,8 +17,10 @@
 
 import {
   createContext,
+  useCallback,
   useContext,
   useEffect,
+  useMemo,
   useState,
   type ReactNode,
 } from 'react'
@@ -137,11 +139,41 @@ function AdminDashboardRoot({
     null,
   )
 
-  // Wrap setter to notify parent
-  const setSelectedAssociate = (user: AdminUser | null) => {
-    setSelectedAssociateRaw(user)
-    onAssociateChange?.(user)
-  }
+  // Wrap setter to notify parent (stable ref)
+  const setSelectedAssociate = useCallback(
+    (user: AdminUser | null) => {
+      setSelectedAssociateRaw(user)
+      onAssociateChange?.(user)
+    },
+    [onAssociateChange],
+  )
+
+  // Memoize context to avoid re-rendering all consumers on every Root render
+  const contextValue = useMemo<AdminDashboardContextValue>(
+    () => ({
+      currentUserId,
+      currentUserRole,
+      currentUser,
+      assetsBaseUrl,
+      userImages,
+      cal,
+      activeTab,
+      setActiveTab,
+      selectedAssociate,
+      setSelectedAssociate,
+    }),
+    [
+      currentUserId,
+      currentUserRole,
+      currentUser,
+      assetsBaseUrl,
+      userImages,
+      cal,
+      activeTab,
+      selectedAssociate,
+      setSelectedAssociate,
+    ],
+  )
 
   // Loading state
   if (isLoading) {
@@ -149,20 +181,7 @@ function AdminDashboardRoot({
   }
 
   return (
-    <AdminDashboardContext.Provider
-      value={{
-        currentUserId,
-        currentUserRole,
-        currentUser,
-        assetsBaseUrl,
-        userImages,
-        cal,
-        activeTab,
-        setActiveTab,
-        selectedAssociate,
-        setSelectedAssociate,
-      }}
-    >
+    <AdminDashboardContext.Provider value={contextValue}>
       <div className="flex w-full max-w-[var(--max-width)] flex-col items-center justify-center max-md:h-[100%] max-md:justify-start">
         <div className="z-[1] flex w-full flex-col items-start justify-start rounded-[8px] border border-[var(--color-border-default,#F7E9E9)] bg-[var(--color-layer-02)] p-[16px] shadow-[0px_25px_40px_0px_var(--shadow-01,#E6E4E5)] max-md:h-[calc(100vh-201px)] max-md:max-h-[calc(100vh-201px)] max-md:overflow-y-auto max-md:border-0 max-md:px-4 max-md:pb-[0px] max-md:pt-[24px]">
           {children}
@@ -212,7 +231,7 @@ function AdminDashboardCalendar({
   const handleTodayClick = () => {
     cal.goToday()
     setActiveTab('leaveRequest')
-    onDateChange?.(cal.selectedDate)
+    // onDateChange fires via the selectedDate effect below
   }
 
   const handleDateChange = (direction: 'prev' | 'next') => {
@@ -246,10 +265,14 @@ function AdminDashboardCalendar({
   // Effects — notify parent of date/timeframe changes
   // ============================================================
 
+  // Intentionally omit callback from deps — fire only when value changes,
+  // not when callback identity changes (consumers may not stabilize these).
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   useEffect(() => {
     onTimeFrameChange?.(cal.activeTimeFrame)
   }, [cal.activeTimeFrame])
 
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   useEffect(() => {
     onDateChange?.(cal.selectedDate)
   }, [cal.selectedDate])
@@ -476,13 +499,6 @@ export interface AdminDashboardLeaveRequestsProps {
     adminComment: string
     userId: string
   }) => void | Promise<void>
-  /** Called to cancel a break */
-  onCancelBreak?: (params: {
-    requestId: string
-    deleteSingleDay: boolean
-    dateToCancel: string | Date
-    userId: string
-  }) => void | Promise<void>
   /** Called to approve an attendance correction */
   onApproveCorrection?: (correctionId: string) => void | Promise<void>
   /** Called to reject an attendance correction */
@@ -516,7 +532,7 @@ function AdminDashboardLeaveRequests({
     } else if (filteredAttendanceCorrections.length > 0) {
       setActiveTab('attendanceRequest')
     }
-  }, [requests.length, corrections.length])
+  }, [requests.length, filteredAttendanceCorrections.length, setActiveTab])
 
   const handleRequestTabSwitch = (tab: string) => {
     setActiveTab(tab)
@@ -630,7 +646,7 @@ function AdminDashboardContent({ children }: AdminDashboardContentProps) {
   return (
     <div
       className={cn(
-        'flex w-full flex-col rounded-[8px] bg-[var(--color-layer-02)] md:p-0 md:p-6 max-md:bg-transparent',
+        'flex w-full flex-col rounded-[8px] bg-[var(--color-layer-02)] md:p-6 max-md:bg-transparent',
         {
           'rounded-[var(--radius-lg)]': !_isFirstDate && !_isLastDate,
           'rounded-[var(--radius-lg)] rounded-tl-none': _isFirstDate && !_isLastDate,

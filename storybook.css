@@ -1,3 +1,48 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+/* Restore table styles inside Storybook docs (Tailwind Preflight strips them) */
+.sbdocs table,
+.sbdocs-wrapper table {
+  width: 100%;
+  border-collapse: collapse;
+  margin: 1rem 0;
+}
+
+.sbdocs th,
+.sbdocs td,
+.sbdocs-wrapper th,
+.sbdocs-wrapper td {
+  border: 1px solid #d1d5db;
+  padding: 0.5rem 0.75rem;
+  text-align: left;
+}
+
+.sbdocs th,
+.sbdocs-wrapper th {
+  background: #f3f4f6;
+  font-weight: 600;
+}
+
+.sbdocs tr:nth-child(even) td,
+.sbdocs-wrapper tr:nth-child(even) td {
+  background: #f9fafb;
+}
+
+.dark .sbdocs th,
+.dark .sbdocs td,
+.dark .sbdocs-wrapper th,
+.dark .sbdocs-wrapper td {
+  border-color: #374151;
+}
+
+.dark .sbdocs th,
+.dark .sbdocs-wrapper th {
+  background: #1f2937;
+}
+
+.dark .sbdocs tr:nth-child(even) td,
+.dark .sbdocs-wrapper tr:nth-child(even) td {
+  background: #111827;
+}

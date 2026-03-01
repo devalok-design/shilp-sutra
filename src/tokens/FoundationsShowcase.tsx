@@ -222,7 +222,6 @@ const labelScale = [
   { cls: 'L2', label: 'L2', size: '14px' },
   { cls: 'L3', label: 'L3', size: '12px' },
   { cls: 'L4', label: 'L4', size: '10px' },
-  { cls: 'L5', label: 'L5', size: '10px' },
   { cls: 'L6', label: 'L6', size: '14px' },
 ]
 

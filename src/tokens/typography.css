@@ -39,11 +39,11 @@
 
 .T1-Reg {
   font-family: inherit;
-  font-size: 62px;
+  font-size: 60px;
   font-style: normal;
   font-weight: 400;
   line-height: 115%;
-  letter-spacing: -1.24px;
+  letter-spacing: -1.2px;
 }
 
 .T2-Reg {
@@ -57,11 +57,11 @@
 
 .T3-Reg {
   font-family: inherit;
-  font-size: 38px;
+  font-size: 36px;
   font-style: normal;
   font-weight: 400;
   line-height: 115%;
-  letter-spacing: -0.76px;
+  letter-spacing: -0.72px;
 }
 
 .T4-Reg {
@@ -222,16 +222,6 @@
   text-transform: uppercase;
 }
 
-.L5 {
-  font-family: inherit;
-  font-size: 10px;
-  font-style: normal;
-  font-weight: 600;
-  line-height: 130%;
-  letter-spacing: 0.6px;
-  text-transform: uppercase;
-}
-
 .L6 {
   font-family: inherit;
   font-size: 14px;
@@ -243,6 +233,8 @@
 }
 
 /* ── Paragraph Scale (P1–P7) ───────────────────────────────────── */
+/* NOTE: P2 (0.36px tracking) and B5-Reg (0.32px tracking) are near-identical
+   at 16px/140%. P2 is for paragraph blocks, B5-Reg for inline body text. */
 
 .P1 {
   font-family: inherit;
@@ -324,7 +316,7 @@
 
 .prose-devsabha {
   font-family: 'Ranade', sans-serif;
-  font-size: 13px;
+  font-size: 14px;
   line-height: 1.6;
   color: var(--color-text-secondary);
 }
@@ -343,7 +335,7 @@
 .prose-devsabha h1 { font-size: 18px; }
 .prose-devsabha h2 { font-size: 16px; }
 .prose-devsabha h3 { font-size: 14px; }
-.prose-devsabha h4 { font-size: 13px; }
+.prose-devsabha h4 { font-size: 14px; }
 
 .prose-devsabha p {
   margin-bottom: 0.5em;

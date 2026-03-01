@@ -101,11 +101,11 @@ function AttendanceStatus({
 
   return (
     <div className="flex w-full flex-col items-center justify-center px-[16px] py-[32px] sm:px-4 sm:py-6 md:px-6 md:py-4 md:pr-0">
-      <p className="L3 mb-6 uppercase text-[var(--Mapped-Text-Tertiary)]">
+      <p className="L3 mb-6 uppercase text-[var(--color-text-tertiary)]">
         Attendance status
       </p>
-      <div className="mb-3 flex w-full items-center justify-center gap-2 rounded-3xl border border-[var(--border-secondary)] px-4 py-3.5 text-center">
-        <span className="font-semibold text-[var(--Mapped-Text-Highlight)]">
+      <div className="mb-3 flex w-full items-center justify-center gap-2 rounded-3xl border border-[var(--color-border-subtle)] px-4 py-3.5 text-center">
+        <span className="font-semibold text-[var(--color-interactive)]">
           {formattedStatus}
         </span>
         {formattedStatus === 'Absent' && (
@@ -114,24 +114,24 @@ function AttendanceStatus({
               width: '1px',
               height: '20px',
               opacity: 0.5,
-              background: 'var(--Border-Tertiary, #DD9EB8)',
+              background: 'var(--color-border-strong, #DD9EB8)',
             }}
           ></div>
         )}
         {!timeIn && status !== 'HOLIDAY' && status !== 'WEEKEND' && (
-          <span className="B2-Reg text-[var(--Mapped-Text-Tertiary)]">
+          <span className="B2-Reg text-[var(--color-text-tertiary)]">
             Not marked
           </span>
         )}
         {!!timeIn && status === 'ABSENT' && (
-          <span className="B2-Reg text-[var(--Mapped-Text-Tertiary)]">
+          <span className="B2-Reg text-[var(--color-text-tertiary)]">
             Removed
           </span>
         )}
       </div>
 
       {timeIn && (
-        <p className="B2-Reg m-0 text-center text-[var(--Mapped-Text-Disabled)]">
+        <p className="B2-Reg m-0 text-center text-[var(--color-text-disabled)]">
           Marked at {timeIn}
         </p>
       )}
@@ -153,18 +153,18 @@ function AttendanceEditDialog({
   return (
     <DialogContent className="sm:max-w-md">
       <DialogHeader>
-        <div className="B2-Reg text-[var(--Mapped-Text-Tertiary)]">
+        <div className="B2-Reg text-[var(--color-text-tertiary)]">
           Edit attendance of{' '}
-          <span className="B2-Bold semibold text-[var(--Mapped-Text-Highlight)]">
+          <span className="B2-Bold semibold text-[var(--color-interactive)]">
             {selectedAssociate.name}
           </span>
         </div>
       </DialogHeader>
       <div className="flex flex-col items-center justify-start">
-        <div className="T7-Reg mb-4 text-[var(--Mapped-Text-Highlight)]">
+        <div className="T7-Reg mb-4 text-[var(--color-interactive)]">
           {format(new Date(selectedDate), "dd MMMM ''yy")}
         </div>
-        <div className="mb-3 flex w-full items-center justify-center gap-2 rounded-3xl border border-[var(--border-secondary)] px-4 py-3.5 text-center font-semibold text-[var(--Mapped-Text-Highlight)]">
+        <div className="mb-3 flex w-full items-center justify-center gap-2 rounded-3xl border border-[var(--color-border-subtle)] px-4 py-3.5 text-center font-semibold text-[var(--color-interactive)]">
           {selectedUserAttendance?.status === 'PRESENT'
             ? 'PRESENT '
             : 'ABSENT'}
@@ -292,12 +292,12 @@ export function AssociateDetail({
             fnsStartOfDay(new Date()),
           )) ? (
         <div className="flex w-full flex-col items-center justify-center p-6">
-          <p className="L3 mb-4 uppercase text-[var(--Mapped-Text-Tertiary)]">
+          <p className="L3 mb-4 uppercase text-[var(--color-text-tertiary)]">
             COMMENT
           </p>
-          <div className="flex w-full items-center justify-between rounded-[var(--Number-4x,8px)] border border-[var(--Border-Primary,#F7E9E9)] bg-[var(--Mapped-Surface-Primary)] px-4 max-md:h-[48px]">
+          <div className="flex w-full items-center justify-between rounded-[8px] border border-[var(--color-border-default,#F7E9E9)] bg-[var(--color-layer-01)] px-4 max-md:h-[48px]">
             <input
-              className="B2-Reg flex-1 border-none py-2 text-[var(--Mapped-Text-Primary)] outline-none"
+              className="B2-Reg flex-1 border-none py-2 text-[var(--color-text-primary)] outline-none"
               defaultValue="Don't miss next time :)"
             />
             <IconButton
@@ -317,7 +317,7 @@ export function AssociateDetail({
         </div>
       ) : (
         <div className="mb-auto flex w-full flex-col md:pr-[24px]">
-          <p className="L3 mb-[24px] uppercase text-[var(--Mapped-Text-Highlight)]">
+          <p className="L3 mb-[24px] uppercase text-[var(--color-interactive)]">
             Tasks for the day
           </p>
 
@@ -362,7 +362,7 @@ export function AssociateDetail({
                       className="cursor-pointer"
                     >
                       {task.status === 'COMPLETED' ? (
-                        <CheckboxActiveIcon className="text-[var(--Mapped-Surface-Button-Secondary)]" />
+                        <CheckboxActiveIcon className="text-[var(--color-interactive-hover)]" />
                       ) : (
                         <CheckboxIcon />
                       )}
@@ -370,8 +370,8 @@ export function AssociateDetail({
                     <p
                       className={`P7 flex-1 overflow-hidden hyphens-auto break-all pr-4 ${
                         task.status === 'COMPLETED'
-                          ? 'text-[var(--Mapped-Text-Disabled)] line-through'
-                          : 'text-[var(--Mapped-Text-Secondary)]'
+                          ? 'text-[var(--color-text-disabled)] line-through'
+                          : 'text-[var(--color-text-secondary)]'
                       }`}
                       style={{ wordBreak: 'break-word', minWidth: 0 }}
                     >
@@ -390,7 +390,7 @@ export function AssociateDetail({
                     <AddIcon />
                   </button>
                   <textarea
-                    className="B2-Reg flex w-full resize-none items-center border-none bg-transparent !leading-6 text-[var(--Mapped-Text-Secondary)] outline-none placeholder:leading-6"
+                    className="B2-Reg flex w-full resize-none items-center border-none bg-transparent !leading-6 text-[var(--color-text-secondary)] outline-none placeholder:leading-6"
                     placeholder="Add a task"
                     value={newTaskName}
                     onChange={(e) => setNewTaskName(e.target.value)}
@@ -420,7 +420,7 @@ export function AssociateDetail({
       )}
       {!isFutureDate && selectedUserAttendance?.status !== 'BREAK' && (
         <>
-          <div className="block h-[auto] w-[2px] bg-[var(--border-secondary)]"></div>
+          <div className="block h-[auto] w-[2px] bg-[var(--color-border-subtle)]"></div>
           <AttendanceStatus selectedUserAttendance={selectedUserAttendance} />
         </>
       )}

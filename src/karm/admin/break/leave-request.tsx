@@ -64,30 +64,30 @@ export function LeaveRequest({
     <>
       <div
         key={request.id}
-        className="flex justify-between border-b border-[var(--border-primary)] px-2 py-[14px] last:border-b-0"
+        className="flex justify-between border-b border-[var(--color-border-default)] px-2 py-[14px] last:border-b-0"
       >
         <div className="flex w-full items-center gap-3">
           {userImages[request.user?.id || ''] ? (
             <img
-              className="bg-red h-10 w-10 overflow-hidden rounded-full bg-[var(--Mapped-Surface-Secondary)]"
+              className="bg-red h-10 w-10 overflow-hidden rounded-full bg-[var(--color-layer-02)]"
               src={userImages[request.user?.id || '']}
               alt={''}
             />
           ) : (
-            <span className="flex h-7 w-full max-w-7 items-center justify-center rounded-full bg-[var(--mapped-borders-margin-tertiary)] text-xs font-medium uppercase text-[--Mapped-Text-Primary]">
+            <span className="flex h-7 w-full max-w-7 items-center justify-center rounded-full bg-[var(--mapped-borders-margin-tertiary)] text-xs font-medium uppercase text-[--color-text-primary]">
               {request.user?.name?.[0] || 'U'}
             </span>
           )}
           <div className="flex w-auto max-w-[75%] flex-col items-start gap-[6px]">
             <div className="flex flex-row gap-1.5">
               <div className="flex items-center gap-2">
-                <p className="B3-Reg text-[var(--Mapped-Text-Secondary)]">
+                <p className="B3-Reg text-[var(--color-text-secondary)]">
                   {request.user?.name}
                 </p>
                 {request.correction && (
                   <>
-                    <div className="block h-3 w-[1px] bg-[var(--border-secondary)]"></div>{' '}
-                    <p className="B3-Reg text-[var(--Text-Purple-text)]">
+                    <div className="block h-3 w-[1px] bg-[var(--color-border-subtle)]"></div>{' '}
+                    <p className="B3-Reg text-[var(--color-text-accent)]">
                       Attendance Corrections
                     </p>{' '}
                   </>
@@ -98,29 +98,29 @@ export function LeaveRequest({
               {isSingleDay ? (
                 <div className="flex w-full flex-wrap items-center gap-2">
                   <div className="group relative">
-                    <p className="B1-Reg semibold line-clamp-2 cursor-default text-[var(--Mapped-Text-Primary)]">
+                    <p className="B1-Reg semibold line-clamp-2 cursor-default text-[var(--color-text-primary)]">
                       {request.reason}
                     </p>
                     <div className="B1-Reg invisible absolute left-0 top-full z-[999999] mt-2 max-w-xs whitespace-normal rounded bg-gray-900 px-2 py-1 text-white shadow-lg group-hover:visible">
                       {request.reason}
                     </div>
                   </div>
-                  <p className="B1-Reg text-[var(--Mapped-Text-Tertiary)]">
+                  <p className="B1-Reg text-[var(--color-text-tertiary)]">
                     • {formatDateWithWeekday(startDate)}
                   </p>
                 </div>
               ) : (
                 <>
-                  <p className="B1-Reg semibold line-clamp-2 cursor-default text-[var(--Mapped-Text-Primary)]">
+                  <p className="B1-Reg semibold line-clamp-2 cursor-default text-[var(--color-text-primary)]">
                     {request.reason}
                   </p>
                   <div className="B1-Reg invisible absolute left-0 top-full z-[999999] mt-2 max-w-xs whitespace-normal rounded bg-gray-900 px-2 py-1 text-white shadow-lg group-hover:visible">
                     {request.reason}
                   </div>
-                  <p className="B1-Reg text-[var(--Mapped-Text-Tertiary)]">
+                  <p className="B1-Reg text-[var(--color-text-tertiary)]">
                     {formatDateWithWeekday(startDate)} to{' '}
                     {formatDateWithWeekday(endDate)},
-                    <span className="text-[var(--Mapped-Text-Highlight2)]">
+                    <span className="text-[var(--color-interactive-hover)]">
                       {' '}
                       {request.numberOfDays} days
                     </span>
@@ -185,7 +185,7 @@ export function LeaveRequest({
             </DialogDescription>
           </DialogHeader>
           <div className="flex flex-col">
-            <div className="B2-Reg flex flex-col items-start justify-center gap-2 rounded-[8px] border border-[var(--border-secondary)] bg-[var(--Mapped-Surface-Primary)] p-[10px_16px_4px_16px] text-[var(--Mapped-Text-Primary)]">
+            <div className="B2-Reg flex flex-col items-start justify-center gap-2 rounded-[8px] border border-[var(--color-border-subtle)] bg-[var(--color-layer-01)] p-[10px_16px_4px_16px] text-[var(--color-text-primary)]">
               <label className="L5 text-[#8C8084]" htmlFor="comment">
                 Comment
               </label>

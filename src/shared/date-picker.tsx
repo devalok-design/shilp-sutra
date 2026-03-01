@@ -126,7 +126,7 @@ function CalendarGrid({
               onMouseEnter={() => onHover?.(d)}
               onMouseLeave={() => onHover?.(null)}
               className={cn(
-                'flex h-8 w-9 items-center justify-center rounded-md text-[13px] font-[Ranade] transition-colors',
+                'flex h-8 w-9 items-center justify-center rounded-md text-[13px] font-body transition-colors',
                 !inMonth && 'pointer-events-none opacity-0',
                 inMonth && !isSelected && !edge && !inRange &&
                   'text-[var(--color-text-primary)] hover:bg-[var(--color-field)]',

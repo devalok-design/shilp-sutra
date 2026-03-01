@@ -150,14 +150,14 @@ function FilesTab({
           className={cn(
             'rounded-lg border-2 border-dashed transition-colors',
             dragOver
-              ? 'border-[var(--Mapped-Text-Highlight)] bg-[var(--Mapped-Surface-Button-Primary)]/5'
-              : 'border-[var(--border-primary)]',
+              ? 'border-[var(--color-interactive)] bg-[var(--color-interactive)]/5'
+              : 'border-[var(--color-border-default)]',
           )}
         >
           <div className="flex flex-col items-center gap-2 py-6">
-            <div className="flex h-9 w-9 items-center justify-center rounded-lg bg-[var(--Mapped-Surface-Secondary)]">
+            <div className="flex h-9 w-9 items-center justify-center rounded-lg bg-[var(--color-layer-02)]">
               <Upload
-                className="h-4 w-4 text-[var(--Mapped-Text-Quaternary)]"
+                className="h-4 w-4 text-[var(--color-text-placeholder)]"
                 strokeWidth={1.5}
               />
             </div>
@@ -166,11 +166,11 @@ function FilesTab({
                 type="button"
                 onClick={() => fileInputRef.current?.click()}
                 disabled={isUploading}
-                className="text-[13px] font-[Ranade] font-medium text-[var(--Mapped-Text-Highlight)] transition-colors hover:underline disabled:opacity-40"
+                className="text-[13px] font-body font-medium text-[var(--color-interactive)] transition-colors hover:underline disabled:opacity-40"
               >
                 {isUploading ? 'Uploading...' : 'Click to upload'}
               </button>
-              <span className="text-[13px] font-[Ranade] text-[var(--Mapped-Text-Quaternary)]">
+              <span className="text-[13px] font-body text-[var(--color-text-placeholder)]">
                 {' '}or drag and drop
               </span>
             </div>
@@ -192,22 +192,22 @@ function FilesTab({
             return (
               <div
                 key={file.id}
-                className="group flex items-center gap-3 rounded-lg px-2 py-2 transition-colors hover:bg-[var(--Mapped-Surface-Dark)]"
+                className="group flex items-center gap-3 rounded-lg px-2 py-2 transition-colors hover:bg-[var(--color-field)]"
               >
                 {/* File icon */}
-                <div className="flex h-8 w-8 shrink-0 items-center justify-center rounded-lg bg-[var(--Mapped-Surface-Secondary)]">
+                <div className="flex h-8 w-8 shrink-0 items-center justify-center rounded-lg bg-[var(--color-layer-02)]">
                   <Icon
-                    className="h-4 w-4 text-[var(--Mapped-Text-Tertiary)]"
+                    className="h-4 w-4 text-[var(--color-text-tertiary)]"
                     strokeWidth={1.5}
                   />
                 </div>
 
                 {/* File info */}
                 <div className="flex-1 min-w-0">
-                  <p className="truncate text-[13px] font-[Ranade] font-medium text-[var(--Mapped-Text-Primary)]">
+                  <p className="truncate text-[13px] font-body font-medium text-[var(--color-text-primary)]">
                     {file.title}
                   </p>
-                  <p className="text-[11px] font-[Ranade] text-[var(--Mapped-Text-Quaternary)]">
+                  <p className="text-[11px] font-body text-[var(--color-text-placeholder)]">
                     {formatFileDate(file.createdAt)}
                     <span className="mx-1.5">by</span>
                     {file.uploadedBy.name}
@@ -221,10 +221,10 @@ function FilesTab({
                       href={file.downloadUrl}
                       target="_blank"
                       rel="noopener noreferrer"
-                      className="inline-flex h-7 w-7 items-center justify-center rounded-md transition-colors hover:bg-[var(--Mapped-Surface-Secondary)]"
+                      className="inline-flex h-7 w-7 items-center justify-center rounded-md transition-colors hover:bg-[var(--color-layer-02)]"
                       title="Download"
                     >
-                      <Download className="h-3.5 w-3.5 text-[var(--Mapped-Text-Tertiary)]" />
+                      <Download className="h-3.5 w-3.5 text-[var(--color-text-tertiary)]" />
                     </a>
                   )}
                   {!readOnly && (
@@ -232,10 +232,10 @@ function FilesTab({
                       <DialogTrigger asChild>
                         <button
                           type="button"
-                          className="inline-flex h-7 w-7 items-center justify-center rounded-md transition-colors hover:bg-[var(--Mapped-Error-Suraface)]"
+                          className="inline-flex h-7 w-7 items-center justify-center rounded-md transition-colors hover:bg-[var(--color-error-surface)]"
                           title="Delete"
                         >
-                          <Trash2 className="h-3.5 w-3.5 text-[var(--Text-Error)]" />
+                          <Trash2 className="h-3.5 w-3.5 text-[var(--color-text-error)]" />
                         </button>
                       </DialogTrigger>
                       <DialogContent>

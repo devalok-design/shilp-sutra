@@ -80,24 +80,24 @@ export default function AttendanceCTA({
   // Marked state: compact strip
   if (isMarked && !isOnBreak) {
     return (
-      <div className="relative overflow-hidden rounded-2xl border border-[var(--border-primary)] bg-[var(--Mapped-Surface-Primary)]">
+      <div className="relative overflow-hidden rounded-2xl border border-[var(--color-border-default)] bg-[var(--color-layer-01)]">
         <div className="flex items-center justify-between px-6 py-5 sm:px-8">
           <div className="flex flex-col gap-1">
-            <h2 className="T5-Reg text-[var(--Mapped-Text-Primary)]">
+            <h2 className="T5-Reg text-[var(--color-text-primary)]">
               {greeting},{' '}
-              <span className="font-semibold italic text-[var(--Mapped-Surface-Button-Primary)]">
+              <span className="font-semibold italic text-[var(--color-interactive)]">
                 {firstName}
               </span>
             </h2>
-            <p className="B2-Reg text-[var(--Mapped-Text-Tertiary)]">
+            <p className="B2-Reg text-[var(--color-text-tertiary)]">
               {currentDate}
             </p>
           </div>
-          <div className="flex items-center gap-2 rounded-xl bg-[var(--Mapped-Success-Surface-Light)] px-4 py-2.5">
-            <div className="flex h-5 w-5 items-center justify-center rounded-full bg-[var(--Mapped-Text-Success-On-Light)]">
+          <div className="flex items-center gap-2 rounded-xl bg-[var(--color-success-surface)] px-4 py-2.5">
+            <div className="flex h-5 w-5 items-center justify-center rounded-full bg-[var(--color-text-success)]">
               <Check className="h-3 w-3 text-white" />
             </div>
-            <span className="B2-Reg font-semibold text-[var(--Mapped-Text-Success-On-Light)]">
+            <span className="B2-Reg font-semibold text-[var(--color-text-success)]">
               Marked at{' '}
               {timeIn ? formatTime(timeIn) : '--:--'}
             </span>
@@ -110,16 +110,16 @@ export default function AttendanceCTA({
   // On Break state
   if (isOnBreak) {
     return (
-      <div className="relative overflow-hidden rounded-2xl border border-[var(--border-primary)] bg-[var(--Mapped-Surface-Primary)]">
+      <div className="relative overflow-hidden rounded-2xl border border-[var(--color-border-default)] bg-[var(--color-layer-01)]">
         <div className="flex items-center justify-between px-6 py-5 sm:px-8">
           <div className="flex flex-col gap-1">
-            <h2 className="T5-Reg text-[var(--Mapped-Text-Primary)]">
+            <h2 className="T5-Reg text-[var(--color-text-primary)]">
               {greeting},{' '}
-              <span className="font-semibold italic text-[var(--Mapped-Surface-Button-Primary)]">
+              <span className="font-semibold italic text-[var(--color-interactive)]">
                 {firstName}
               </span>
             </h2>
-            <p className="B2-Reg text-[var(--Mapped-Text-Tertiary)]">
+            <p className="B2-Reg text-[var(--color-text-tertiary)]">
               {currentDate}
             </p>
           </div>
@@ -138,22 +138,22 @@ export default function AttendanceCTA({
   // Unmarked + cannot mark: attendance window closed
   if (!canMarkAttendance) {
     return (
-      <div className="relative overflow-hidden rounded-2xl border border-[var(--border-primary)] bg-[var(--Mapped-Surface-Primary)]">
+      <div className="relative overflow-hidden rounded-2xl border border-[var(--color-border-default)] bg-[var(--color-layer-01)]">
         <div className="flex items-center justify-between px-6 py-6 sm:px-8 sm:py-8">
           <div className="flex flex-col gap-1.5">
-            <h2 className="T4-Reg text-[var(--Mapped-Text-Primary)]">
+            <h2 className="T4-Reg text-[var(--color-text-primary)]">
               {greeting},{' '}
-              <span className="font-semibold italic text-[var(--Mapped-Surface-Button-Primary)]">
+              <span className="font-semibold italic text-[var(--color-interactive)]">
                 {firstName}
               </span>
             </h2>
-            <p className="B1-Reg text-[var(--Mapped-Text-Tertiary)]">
+            <p className="B1-Reg text-[var(--color-text-tertiary)]">
               {currentDate}
             </p>
           </div>
-          <div className="flex items-center gap-2 rounded-xl bg-[var(--Elevation-Card-hover-primary)] px-4 py-2.5">
-            <Clock className="h-4 w-4 text-[var(--Mapped-Text-Quaternary)]" />
-            <span className="B2-Reg text-[var(--Mapped-Text-Quaternary)]">
+          <div className="flex items-center gap-2 rounded-xl bg-[var(--color-layer-02)] px-4 py-2.5">
+            <Clock className="h-4 w-4 text-[var(--color-text-placeholder)]" />
+            <span className="B2-Reg text-[var(--color-text-placeholder)]">
               Attendance window closed
             </span>
           </div>
@@ -164,17 +164,17 @@ export default function AttendanceCTA({
 
   // Unmarked + can mark: large greeting with mark button
   return (
-    <div className="relative overflow-hidden rounded-2xl border border-[var(--border-primary)] bg-gradient-to-br from-[#fcf7f7] via-white to-[rgba(225,248,224,0.3)]">
+    <div className="relative overflow-hidden rounded-2xl border border-[var(--color-border-default)] bg-gradient-to-br from-[#fcf7f7] via-white to-[rgba(225,248,224,0.3)]">
       <div className="flex items-center justify-between px-6 py-8 sm:px-8 sm:py-10">
         <div className="flex flex-col gap-1.5">
-          <h2 className="T4-Reg text-[var(--Mapped-Text-Primary)]">
+          <h2 className="T4-Reg text-[var(--color-text-primary)]">
             {greeting},{' '}
-            <span className="font-semibold italic text-[var(--Mapped-Surface-Button-Primary)]">
+            <span className="font-semibold italic text-[var(--color-interactive)]">
               {firstName}
             </span>
           </h2>
           <div className="flex items-center gap-2">
-            <p className="B1-Reg text-[var(--Mapped-Text-Tertiary)]">
+            <p className="B1-Reg text-[var(--color-text-tertiary)]">
               {currentDate}
             </p>
           </div>
@@ -184,7 +184,7 @@ export default function AttendanceCTA({
           type="button"
           onClick={onMarkAttendance}
           disabled={isSubmitting}
-          className="flex items-center gap-2.5 rounded-[14px] bg-[var(--Mapped-Surface-Button-Primary)] px-7 py-3.5 font-semibold text-white shadow-md transition-all hover:-translate-y-0.5 hover:shadow-lg active:translate-y-0 active:scale-[0.98] disabled:opacity-60"
+          className="flex items-center gap-2.5 rounded-[14px] bg-[var(--color-interactive)] px-7 py-3.5 font-semibold text-white shadow-md transition-all hover:-translate-y-0.5 hover:shadow-lg active:translate-y-0 active:scale-[0.98] disabled:opacity-60"
         >
           {isSubmitting ? 'Marking...' : 'Mark Attendance'}
           {!isSubmitting && (

@@ -228,19 +228,19 @@ export function EditBreak({
       APPROVED: {
         text: 'Approved',
         className:
-          'bg-[var(--approved-bg)] text-[var(--Mapped-Text-Success-On-Light)]',
+          'bg-[var(--color-success-surface)] text-[var(--color-text-success)]',
       },
       PENDING: {
         text: 'Pending',
-        className: 'bg-[var(--pending-bg)] text-[var(--Mapped-Text-Warning)]',
+        className: 'bg-[var(--color-warning-surface)] text-[var(--color-text-warning)]',
       },
       REJECTED: {
         text: 'Deny',
-        className: 'bg-[var(--denied-bg)] text-[var(--Mapped-Text-Error)]',
+        className: 'bg-[var(--color-error-surface)] text-[var(--color-text-error)]',
       },
       CANCELLED: {
         text: 'Redacted',
-        className: 'bg-[var(--denied-bg)] text-[var(--Mapped-Text-Error)]',
+        className: 'bg-[var(--color-error-surface)] text-[var(--color-text-error)]',
       },
     }
 
@@ -487,7 +487,7 @@ export function EditBreak({
       <DialogTrigger asChild>
         <Button
           variant="secondary"
-          className="P2 border-[var(--border-primary)] bg-[var(--Mapped-Surface-Primary)] px-4 py-3 pr-6 text-[var(--Mapped-Text-Secondary)] shadow-[0_4px_8px_0_var(--Elevation-2)]"
+          className="P2 border-[var(--color-border-default)] bg-[var(--color-layer-01)] px-4 py-3 pr-6 text-[var(--color-text-secondary)] shadow-[0_4px_8px_0_var(--shadow-02)]"
         >
           <EditIcon />
           <span>Edit</span>
@@ -497,9 +497,9 @@ export function EditBreak({
         <DialogHeader>
           <DialogDescription>
             <div className="flex w-full flex-col items-center gap-[18px]">
-              <p className="B2-Reg w-full text-left text-[var(--Mapped-Text-Tertiary)]">
+              <p className="B2-Reg w-full text-left text-[var(--color-text-tertiary)]">
                 Edit break details of{' '}
-                <span className="semibold text-[var(--Mapped-Text-Highlight)]">
+                <span className="semibold text-[var(--color-interactive)]">
                   {selectedLeave?.user?.name}
                 </span>
               </p>
@@ -509,11 +509,11 @@ export function EditBreak({
                 id="updateleaveform"
                 className="flex w-full flex-col gap-4"
               >
-                <div className="flex w-full flex-col gap-1 rounded-[8px] border border-[var(--border-secondary)] px-4 pb-2 pt-3.5">
-                  <h2 className="L4 uppercase text-[var(--Text-Quaternary)]">
+                <div className="flex w-full flex-col gap-1 rounded-[8px] border border-[var(--color-border-subtle)] px-4 pb-2 pt-3.5">
+                  <h2 className="L4 uppercase text-[var(--color-text-placeholder)]">
                     Reason
                   </h2>
-                  <p className="P3 text-[var(--Mapped-Text-Primary)]">
+                  <p className="P3 text-[var(--color-text-primary)]">
                     {removeAllEmojis(selectedLeave?.reason)}
                   </p>
                 </div>
@@ -525,8 +525,8 @@ export function EditBreak({
                     className={`P3 flex w-full items-center justify-center gap-[10px] rounded-[48px] border ${
                       showCalendar && activeDate === 'start'
                         ? 'border-[var(--border-tertiary)]'
-                        : 'border-[var(--border-primary)]'
-                    } bg-[var(--Mapped-Surface-Tertiary)] px-[10px] py-[10px] text-[var(--Mapped-Text-Secondary)] max-md:text-[12px]`}
+                        : 'border-[var(--color-border-default)]'
+                    } bg-[var(--color-layer-02)] px-[10px] py-[10px] text-[var(--color-text-secondary)] max-md:text-[12px]`}
                   >
                     {formatDateToLongForm(formData.startDate)}
                   </button>
@@ -539,8 +539,8 @@ export function EditBreak({
                     className={`P3 flex w-full items-center justify-center gap-[10px] rounded-[48px] border ${
                       showCalendar && activeDate === 'end'
                         ? 'border-[var(--border-tertiary)]'
-                        : 'border-[var(--border-primary)]'
-                    } bg-[var(--Mapped-Surface-Tertiary)] px-[10px] py-[10px] text-[var(--Mapped-Text-Secondary)] max-md:text-[12px]`}
+                        : 'border-[var(--color-border-default)]'
+                    } bg-[var(--color-layer-02)] px-[10px] py-[10px] text-[var(--color-text-secondary)] max-md:text-[12px]`}
                   >
                     {formatDateToLongForm(formData.endDate)}
                   </button>
@@ -606,7 +606,7 @@ export function EditBreak({
                       {['SUN', 'MON', 'TUE', 'WED', 'THU', 'FRI', 'SAT'].map(
                         (weekDay) => (
                           <div key={weekDay} className="pb-2 pt-4 text-center">
-                            <span className="L3 uppercase text-[var(--Mapped-Text-Tertiary)]">
+                            <span className="L3 uppercase text-[var(--color-text-tertiary)]">
                               {weekDay}
                             </span>
                           </div>
@@ -626,7 +626,7 @@ export function EditBreak({
                                 day.fullDate === selectedEndDate)
                                 ? 'pb-0 pt-0'
                                 : isInSelectedRange(day.fullDate)
-                                  ? 'bg-[var(--Surface-Purple-button-tertiary)] pb-0 pt-0'
+                                  ? 'bg-[var(--color-layer-accent-subtle)] pb-0 pt-0'
                                   : 'pb-0 pt-0'
                             }
                             flex cursor-pointer flex-col items-center text-center
@@ -659,13 +659,13 @@ export function EditBreak({
                                   day.fullDate === selectedStartDate ||
                                   day.fullDate === selectedEndDate ||
                                   isBreakDay(day.fullDate)
-                                    ? 'rounded-full bg-[var(--Surface-Purple-button-secondary)] shadow-[0px_4px_4px_0px_rgba(255,255,255,0.25)_inset,0px_0px_4px_0px_var(--purple-400,#AB9DED)_inset]'
+                                    ? 'rounded-full bg-[var(--color-interactive-accent)] shadow-[0px_4px_4px_0px_rgba(255,255,255,0.25)_inset,0px_0px_4px_0px_var(--purple-400,#AB9DED)_inset]'
                                     : 'flex h-10 w-10 items-center justify-center'
                                 }
                                 ${
                                   day.isToday
-                                    ? 'bg-[var(--Mapped-Text-Highlight2)] p-2 text-[var(--neutrals-lightest)]'
-                                    : 'text-[var(--Mapped-Text-Secondary)]'
+                                    ? 'bg-[var(--color-interactive-hover)] p-2 text-[var(--color-text-on-color)]'
+                                    : 'text-[var(--color-text-secondary)]'
                                 }
                               `}
                             >
@@ -678,16 +678,16 @@ export function EditBreak({
                   </div>
                 )}
 
-                <div className="flex w-full items-center justify-between rounded-[8px] border border-[var(--border-primary)] px-4 py-3">
-                  <p className="L4 uppercase text-[var(--Text-Quaternary)]">
+                <div className="flex w-full items-center justify-between rounded-[8px] border border-[var(--color-border-default)] px-4 py-3">
+                  <p className="L4 uppercase text-[var(--color-text-placeholder)]">
                     No of Days
                   </p>
-                  <p className="text-xl font-semibold text-[var(--Mapped-Text-Primary)]">
+                  <p className="text-xl font-semibold text-[var(--color-text-primary)]">
                     {selectedLeave.numberOfDays}
                   </p>
                 </div>
-                <div className="flex w-full items-center justify-between rounded-[8px] border border-[var(--border-primary)] px-4 py-3">
-                  <p className="L4 uppercase text-[var(--Text-Quaternary)]">
+                <div className="flex w-full items-center justify-between rounded-[8px] border border-[var(--color-border-default)] px-4 py-3">
+                  <p className="L4 uppercase text-[var(--color-text-placeholder)]">
                     Status
                   </p>
                   <div
@@ -697,15 +697,15 @@ export function EditBreak({
                     {renderStatus(formData.status)}
                     <ArrowDownIcon />
                     {showStatusOptions && (
-                      <div className="P2 absolute left-[10px] top-[25px] z-[4] flex flex-col overflow-hidden rounded-[7px] border border-[var(--border-primary)] bg-[var(--Mapped-Surface-Primary)] shadow-[0px_4px_8px_0px_var(--Elevation-2)]">
+                      <div className="P2 absolute left-[10px] top-[25px] z-[4] flex flex-col overflow-hidden rounded-[7px] border border-[var(--color-border-default)] bg-[var(--color-layer-01)] shadow-[0px_4px_8px_0px_var(--shadow-02)]">
                         <div
-                          className="cursor-pointer border-b border-b-[var(--border-primary)] bg-[var(--Mapped-Surface-Primary)] px-3 py-2"
+                          className="cursor-pointer border-b border-b-[var(--color-border-default)] bg-[var(--color-layer-01)] px-3 py-2"
                           onClick={() => handleStatusSelect('APPROVED')}
                         >
                           {renderStatus('APPROVED')}
                         </div>
                         <div
-                          className="cursor-pointer bg-[var(--Mapped-Surface-Primary)] px-3 py-2"
+                          className="cursor-pointer bg-[var(--color-layer-01)] px-3 py-2"
                           onClick={() => handleStatusSelect('REJECTED')}
                         >
                           {renderStatus('REJECTED')}
@@ -714,14 +714,14 @@ export function EditBreak({
                     )}
                   </div>
                 </div>
-                <div className="flex w-full flex-col gap-1 rounded-[8px] border border-[var(--border-secondary)] px-4 pb-2 pt-3.5">
-                  <h2 className="L4 uppercase text-[var(--Text-Quaternary)]">
+                <div className="flex w-full flex-col gap-1 rounded-[8px] border border-[var(--color-border-subtle)] px-4 pb-2 pt-3.5">
+                  <h2 className="L4 uppercase text-[var(--color-text-placeholder)]">
                     Comment
                   </h2>
                   <input
                     type="text"
                     name="comment"
-                    className="P3 text-[var(--Text-Primary)] outline-none"
+                    className="P3 text-[var(--color-text-primary)] outline-none"
                     placeholder="Enjoy your break, TC"
                     value={formData.comment}
                     onChange={handleInputChange}

@@ -123,24 +123,24 @@ type TabId = typeof TABS[number]['id']
 function PanelSkeleton() {
   return (
     <div className="space-y-6 p-6">
-      <Skeleton className="h-7 w-3/4 bg-[var(--Mapped-Surface-Dark)]" />
+      <Skeleton className="h-7 w-3/4 bg-[var(--color-field)]" />
       <div className="space-y-3">
         {Array.from({ length: 6 }).map((_, i) => (
           <div key={i} className="flex items-center gap-3">
-            <Skeleton className="h-4 w-[120px] bg-[var(--Mapped-Surface-Dark)]" />
-            <Skeleton className="h-4 flex-1 bg-[var(--Mapped-Surface-Dark)]" />
+            <Skeleton className="h-4 w-[120px] bg-[var(--color-field)]" />
+            <Skeleton className="h-4 flex-1 bg-[var(--color-field)]" />
           </div>
         ))}
       </div>
-      <div className="flex gap-4 border-b border-[var(--border-primary)] pb-2">
+      <div className="flex gap-4 border-b border-[var(--color-border-default)] pb-2">
         {Array.from({ length: 5 }).map((_, i) => (
-          <Skeleton key={i} className="h-3 w-16 bg-[var(--Mapped-Surface-Dark)]" />
+          <Skeleton key={i} className="h-3 w-16 bg-[var(--color-field)]" />
         ))}
       </div>
       <div className="space-y-3">
-        <Skeleton className="h-10 w-full bg-[var(--Mapped-Surface-Dark)]" />
-        <Skeleton className="h-10 w-full bg-[var(--Mapped-Surface-Dark)]" />
-        <Skeleton className="h-10 w-4/5 bg-[var(--Mapped-Surface-Dark)]" />
+        <Skeleton className="h-10 w-full bg-[var(--color-field)]" />
+        <Skeleton className="h-10 w-full bg-[var(--color-field)]" />
+        <Skeleton className="h-10 w-4/5 bg-[var(--color-field)]" />
       </div>
     </div>
   )
@@ -250,7 +250,7 @@ function TaskDetailPanel({
         className={cn(
           'w-full sm:max-w-none sm:w-[40%] min-w-[380px] p-0',
           'flex flex-col overflow-hidden',
-          'border-l border-[var(--border-primary)] bg-[var(--Mapped-Surface-Primary)]',
+          'border-l border-[var(--color-border-default)] bg-[var(--color-layer-01)]',
         )}
       >
         <VisuallyHidden>
@@ -264,7 +264,7 @@ function TaskDetailPanel({
         ) : (
           <>
             {/* Header -- Title */}
-            <div className="shrink-0 border-b border-[var(--border-primary)] px-6 pb-4 pt-6">
+            <div className="shrink-0 border-b border-[var(--color-border-default)] px-6 pb-4 pt-6">
               {!clientMode && editingTitle ? (
                 <input
                   ref={titleInputRef}
@@ -273,21 +273,21 @@ function TaskDetailPanel({
                   onChange={(e) => setTitleValue(e.target.value)}
                   onBlur={handleTitleBlur}
                   onKeyDown={handleTitleKeyDown}
-                  className="w-full bg-transparent text-[18px] font-[Ranade] font-semibold leading-snug text-[var(--Mapped-Text-Primary)] outline-none"
+                  className="w-full bg-transparent text-[18px] font-body font-semibold leading-snug text-[var(--color-text-primary)] outline-none"
                 />
               ) : (
                 <h2
                   onClick={clientMode ? undefined : () => setEditingTitle(true)}
                   className={cn(
-                    'text-[18px] font-[Ranade] font-semibold leading-snug text-[var(--Mapped-Text-Primary)]',
-                    !clientMode && 'cursor-text hover:text-[var(--Mapped-Text-Highlight)] transition-colors',
+                    'text-[18px] font-body font-semibold leading-snug text-[var(--color-text-primary)]',
+                    !clientMode && 'cursor-text hover:text-[var(--color-interactive)] transition-colors',
                   )}
                 >
                   {task.title}
                 </h2>
               )}
               {task.parentTaskId && (
-                <p className="mt-1 text-[11px] font-[Ranade] text-[var(--Mapped-Text-Quaternary)]">
+                <p className="mt-1 text-[11px] font-body text-[var(--color-text-placeholder)]">
                   Subtask
                 </p>
               )}
@@ -296,7 +296,7 @@ function TaskDetailPanel({
             {/* Scrollable Body */}
             <div className="flex-1 overflow-y-auto">
               {/* Properties Section */}
-              <div className="border-b border-[var(--border-primary)] px-6 py-4">
+              <div className="border-b border-[var(--color-border-default)] px-6 py-4">
                 <TaskProperties
                   task={task}
                   columns={columns}
@@ -315,7 +315,7 @@ function TaskDetailPanel({
               </div>
 
               {/* Tab Bar */}
-              <div className="sticky top-0 z-10 border-b border-[var(--border-primary)] bg-[var(--Mapped-Surface-Primary)] px-6">
+              <div className="sticky top-0 z-10 border-b border-[var(--color-border-default)] bg-[var(--color-layer-01)] px-6">
                 <div className="flex gap-0">
                   {visibleTabs.map((tab) => {
                     const Icon = tab.icon
@@ -333,10 +333,10 @@ function TaskDetailPanel({
                         type="button"
                         onClick={() => handleTabChange(tab.id)}
                         className={cn(
-                          'relative flex items-center gap-1.5 px-3 py-2.5 text-[12px] font-[Ranade] font-medium transition-colors',
+                          'relative flex items-center gap-1.5 px-3 py-2.5 text-[12px] font-body font-medium transition-colors',
                           isActive
-                            ? 'text-[var(--Mapped-Text-Highlight)]'
-                            : 'text-[var(--Mapped-Text-Quaternary)] hover:text-[var(--Mapped-Text-Secondary)]',
+                            ? 'text-[var(--color-interactive)]'
+                            : 'text-[var(--color-text-placeholder)] hover:text-[var(--color-text-secondary)]',
                         )}
                       >
                         <Icon className="h-3.5 w-3.5" strokeWidth={1.5} />
@@ -346,8 +346,8 @@ function TaskDetailPanel({
                             className={cn(
                               'ml-0.5 inline-flex h-4 min-w-[16px] items-center justify-center rounded-full px-1 text-[9px] font-semibold',
                               isActive
-                                ? 'bg-[var(--Mapped-Surface-Button-Primary)]/15 text-[var(--Mapped-Text-Highlight)]'
-                                : 'bg-[var(--Mapped-Surface-Dark)] text-[var(--Mapped-Text-Quaternary)]',
+                                ? 'bg-[var(--color-interactive)]/15 text-[var(--color-interactive)]'
+                                : 'bg-[var(--color-field)] text-[var(--color-text-placeholder)]',
                             )}
                           >
                             {count}
@@ -355,7 +355,7 @@ function TaskDetailPanel({
                         )}
 
                         {isActive && (
-                          <span className="absolute bottom-0 left-2 right-2 h-[2px] rounded-full bg-[var(--Mapped-Surface-Button-Primary)]" />
+                          <span className="absolute bottom-0 left-2 right-2 h-[2px] rounded-full bg-[var(--color-interactive)]" />
                         )}
                       </button>
                     )

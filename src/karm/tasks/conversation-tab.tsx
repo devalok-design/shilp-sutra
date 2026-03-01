@@ -161,8 +161,8 @@ function ConversationTab({
                     className={cn(
                       'text-[9px] font-semibold',
                       isClient
-                        ? 'bg-[var(--Surface-Pending)] text-[var(--Text-Pending)]'
-                        : 'bg-[var(--Mapped-Surface-Darker)] text-[var(--Mapped-Text-On-Dark-Primary)]',
+                        ? 'bg-[var(--color-warning-surface)] text-[var(--color-text-warning)]'
+                        : 'bg-[var(--color-layer-03)] text-[var(--color-text-on-color)]',
                     )}
                   >
                     {getInitials(author.name)}
@@ -172,24 +172,24 @@ function ConversationTab({
                 {/* Comment body */}
                 <div className="flex-1 min-w-0">
                   <div className="flex items-baseline gap-2">
-                    <span className="text-[13px] font-[Ranade] font-medium text-[var(--Mapped-Text-Primary)]">
+                    <span className="text-[13px] font-body font-medium text-[var(--color-text-primary)]">
                       {author.name}
                     </span>
                     {/* Badge: staff sees "Client" on client comments; client sees "Team" on staff comments */}
                     {clientMode ? (
                       !isClient && (
-                        <span className="rounded bg-[var(--Mapped-Surface-Darker)] px-1 py-px text-[9px] font-semibold uppercase tracking-wider text-[var(--Mapped-Text-On-Dark-Primary)]">
+                        <span className="rounded bg-[var(--color-layer-03)] px-1 py-px text-[9px] font-semibold uppercase tracking-wider text-[var(--color-text-on-color)]">
                           Team
                         </span>
                       )
                     ) : (
                       isClient && (
-                        <span className="rounded bg-[var(--Surface-Pending)] px-1 py-px text-[9px] font-semibold uppercase tracking-wider text-[var(--Text-Pending)]">
+                        <span className="rounded bg-[var(--color-warning-surface)] px-1 py-px text-[9px] font-semibold uppercase tracking-wider text-[var(--color-text-warning)]">
                           Client
                         </span>
                       )
                     )}
-                    <span className="text-[11px] font-[Ranade] text-[var(--Mapped-Text-Quaternary)]">
+                    <span className="text-[11px] font-body text-[var(--color-text-placeholder)]">
                       {formatTimestamp(comment.createdAt)}
                     </span>
                   </div>
@@ -201,7 +201,7 @@ function ConversationTab({
                         className: '[&_.ProseMirror]:!min-h-0 [&_.ProseMirror]:!p-0',
                       })
                     ) : (
-                      <p className="text-[13px] font-[Ranade] text-[var(--Mapped-Text-Secondary)] whitespace-pre-wrap">
+                      <p className="text-[13px] font-body text-[var(--color-text-secondary)] whitespace-pre-wrap">
                         {stripHtml(comment.content)}
                       </p>
                     )}
@@ -223,7 +223,7 @@ function ConversationTab({
       {/* Comment input */}
       <div className="mt-4 space-y-2">
         {taskVisibility === 'EVERYONE' && !clientMode && (
-          <p className="text-[10px] font-[Ranade] text-[var(--Text-Pending)]">
+          <p className="text-[10px] font-body text-[var(--color-text-warning)]">
             This task is visible to clients. Comments may be seen by external users.
           </p>
         )}
@@ -239,7 +239,7 @@ function ConversationTab({
             onChange={(e) => setEditorContent(e.target.value)}
             placeholder="Write a comment..."
             rows={3}
-            className="w-full resize-none rounded-md border border-[var(--border-primary)] bg-transparent px-3 py-2 text-[13px] font-[Ranade] text-[var(--Mapped-Text-Primary)] placeholder:text-[var(--Mapped-Text-Quaternary)] outline-none focus:border-[var(--border-secondary)]"
+            className="w-full resize-none rounded-md border border-[var(--color-border-default)] bg-transparent px-3 py-2 text-[13px] font-body text-[var(--color-text-primary)] placeholder:text-[var(--color-text-placeholder)] outline-none focus:border-[var(--color-border-subtle)]"
           />
         )}
         <div className="flex justify-end">
@@ -247,7 +247,7 @@ function ConversationTab({
             type="button"
             onClick={handlePost}
             disabled={!editorContent.replace(/<[^>]*>/g, '').trim()}
-            className="inline-flex items-center gap-1.5 rounded-lg bg-[var(--Mapped-Surface-Button-Primary)] px-3.5 py-1.5 text-[12px] font-[Ranade] font-semibold text-[var(--Text-Button-Text)] transition-colors hover:bg-[var(--Mapped-Surface-Button-Secondary)] disabled:opacity-40 disabled:cursor-not-allowed"
+            className="inline-flex items-center gap-1.5 rounded-lg bg-[var(--color-interactive)] px-3.5 py-1.5 text-[12px] font-body font-semibold text-[var(--color-text-on-color)] transition-colors hover:bg-[var(--color-interactive-hover)] disabled:opacity-40 disabled:cursor-not-allowed"
           >
             <Send className="h-3.5 w-3.5" strokeWidth={2} />
             Comment

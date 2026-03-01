@@ -432,7 +432,7 @@ export function AdminDashboard({
 
   return (
     <div className="flex w-full max-w-[var(--max-width)] flex-col items-center justify-center max-md:h-[100%] max-md:justify-start">
-      <div className="z-[1] flex w-full flex-col items-start justify-start rounded-[8px] border border-[var(--border-primary,#F7E9E9)] bg-[var(--Mapped-Surface-Tertiary)] p-[16px] shadow-[0px_25px_40px_0px_var(--Elevation-1,#E6E4E5)] max-md:h-[calc(100vh-201px)] max-md:max-h-[calc(100vh-201px)] max-md:overflow-y-auto max-md:border-0 max-md:px-4 max-md:pb-[0px] max-md:pt-[24px]">
+      <div className="z-[1] flex w-full flex-col items-start justify-start rounded-[8px] border border-[var(--color-border-default,#F7E9E9)] bg-[var(--color-layer-02)] p-[16px] shadow-[0px_25px_40px_0px_var(--shadow-01,#E6E4E5)] max-md:h-[calc(100vh-201px)] max-md:max-h-[calc(100vh-201px)] max-md:overflow-y-auto max-md:border-0 max-md:px-4 max-md:pb-[0px] max-md:pt-[24px]">
         {/* ============================================================ */}
         {/* Header: Month selector + Associate filter + Toggle + Arrows  */}
         {/* ============================================================ */}
@@ -462,7 +462,7 @@ export function AdminDashboard({
           {activeTimeFrame === 'monthly' &&
             ['SUN', 'MON', 'TUE', 'WED', 'THU', 'FRI', 'SAT'].map((weekDay) => (
               <div key={weekDay} className="pb-2 pt-4 text-center">
-                <span className="L3 uppercase text-[var(--Mapped-Text-Tertiary)]">
+                <span className="L3 uppercase text-[var(--color-text-tertiary)]">
                   {weekDay}
                 </span>
               </div>
@@ -480,8 +480,8 @@ export function AdminDashboard({
               } flex cursor-pointer flex-col items-center text-center ${
                 activeTimeFrame === 'weekly' && activeIndex === index
                   ? selectedUserAttendance?.status === 'BREAK'
-                    ? 'bg-[var(--Surface-Purple-button-tertiary)]'
-                    : 'bg-[var(--Mapped-Surface-Secondary)]'
+                    ? 'bg-[var(--color-layer-accent-subtle)]'
+                    : 'bg-[var(--color-layer-02)]'
                   : ''
               } ${day.isPadding ? 'opacity-50' : ''} `}
               onClick={() => handleDayClick(index, day.fullDate)}
@@ -490,7 +490,7 @@ export function AdminDashboard({
               }
             >
               {activeTimeFrame === 'weekly' && (
-                <span className="L3 mb-2 uppercase text-[var(--Mapped-Text-Tertiary)]">
+                <span className="L3 mb-2 uppercase text-[var(--color-text-tertiary)]">
                   {day.day}
                 </span>
               )}
@@ -510,7 +510,7 @@ export function AdminDashboard({
         {/* ============================================================ */}
         <div
           className={cn(
-            'flex w-full flex-col rounded-[8px] bg-[var(--Mapped-Surface-Secondary)] md:p-0 md:p-6 max-md:bg-transparent',
+            'flex w-full flex-col rounded-[8px] bg-[var(--color-layer-02)] md:p-0 md:p-6 max-md:bg-transparent',
             {
               'rounded-lg': !isFirstDate && !isLastDate,
               'rounded-lg rounded-tl-none': isFirstDate && !isLastDate,
@@ -560,8 +560,8 @@ export function AdminDashboard({
           {filteredAttendanceCorrections.length > 0 ||
           leaveRequests.length > 0 ? (
             <div className="w-full p-0 md:p-6">
-              <div className="max-md:pt[16px] flex flex-col items-start overflow-hidden rounded-[var(--Number-4x,8px)] border-0 border-[var(--border-secondary)] bg-[var(--Mapped-Surface-Primary)] pt-2 md:border max-md:pb-0">
-                <div className="flex w-full items-start border-b-[1px] border-b-[var(--border-primary)] px-6 md:border-b max-md:border-0 max-md:px-[0px]">
+              <div className="max-md:pt[16px] flex flex-col items-start overflow-hidden rounded-[8px] border-0 border-[var(--color-border-subtle)] bg-[var(--color-layer-01)] pt-2 md:border max-md:pb-0">
+                <div className="flex w-full items-start border-b-[1px] border-b-[var(--color-border-default)] px-6 md:border-b max-md:border-0 max-md:px-[0px]">
                   {leaveRequests.length > 0 && (
                     <div
                       role="button"
@@ -573,12 +573,12 @@ export function AdminDashboard({
                       }
                       className={`L3 cursor-pointer px-2 py-3 uppercase ${
                         activeTab === 'leaveRequest'
-                          ? 'border-b-[1px] border-b-[var(--Mapped-Surface-Button-Secondary)] text-[var(--Mapped-Text-Primary)]'
-                          : 'text-[var(--Mapped-Text-Tertiary)]'
+                          ? 'border-b-[1px] border-b-[var(--color-interactive-hover)] text-[var(--color-text-primary)]'
+                          : 'text-[var(--color-text-tertiary)]'
                       }`}
                     >
                       <span className="hidden sm:inline">break </span>Requests
-                      <span className="text-[var(--Mapped-Text-Highlight2)]">
+                      <span className="text-[var(--color-interactive-hover)]">
                         ({leaveRequests.length})
                       </span>
                     </div>
@@ -596,12 +596,12 @@ export function AdminDashboard({
                       }
                       className={`L3 cursor-pointer px-2 py-3 uppercase ${
                         activeTab === 'attendanceRequest'
-                          ? 'border-b-[1px] border-b-[var(--Mapped-Surface-Button-Secondary)] text-[var(--Mapped-Text-Primary)]'
-                          : 'text-[var(--Mapped-Text-Tertiary)]'
+                          ? 'border-b-[1px] border-b-[var(--color-interactive-hover)] text-[var(--color-text-primary)]'
+                          : 'text-[var(--color-text-tertiary)]'
                       }`}
                     >
                       Attendance Correction{' '}
-                      <span className="text-[var(--Mapped-Text-Highlight2)]">
+                      <span className="text-[var(--color-interactive-hover)]">
                         ({filteredAttendanceCorrections.length})
                       </span>
                     </div>

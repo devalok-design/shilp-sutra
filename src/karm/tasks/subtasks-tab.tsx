@@ -113,15 +113,15 @@ function SubtasksTab({
       {/* Progress bar */}
       {totalCount > 0 && (
         <div className="mb-4 flex items-center gap-3">
-          <div className="flex-1 h-1.5 rounded-full bg-[var(--Mapped-Surface-Dark)] overflow-hidden">
+          <div className="flex-1 h-1.5 rounded-full bg-[var(--color-field)] overflow-hidden">
             <div
-              className="h-full rounded-full bg-[var(--Mapped-Surface-Button-Primary)] transition-all duration-300"
+              className="h-full rounded-full bg-[var(--color-interactive)] transition-all duration-300"
               style={{
                 width: `${totalCount > 0 ? (completedCount / totalCount) * 100 : 0}%`,
               }}
             />
           </div>
-          <span className="shrink-0 text-[11px] font-[Ranade] font-medium text-[var(--Mapped-Text-Quaternary)]">
+          <span className="shrink-0 text-[11px] font-body font-medium text-[var(--color-text-placeholder)]">
             {completedCount}/{totalCount}
           </span>
         </div>
@@ -140,7 +140,7 @@ function SubtasksTab({
                 key={subtask.id}
                 className={cn(
                   'group flex items-center gap-2.5 rounded-lg px-2 py-1.5 transition-colors',
-                  'hover:bg-[var(--Mapped-Surface-Dark)] cursor-pointer',
+                  'hover:bg-[var(--color-field)] cursor-pointer',
                 )}
                 onClick={() => onClickSubtask?.(subtask.id)}
               >
@@ -153,13 +153,13 @@ function SubtasksTab({
                   }}
                   className={cn(
                     'shrink-0 rounded p-0.5 transition-colors',
-                    readOnly ? 'cursor-default' : 'hover:bg-[var(--Mapped-Surface-Secondary)]',
+                    readOnly ? 'cursor-default' : 'hover:bg-[var(--color-layer-02)]',
                   )}
                 >
                   {isComplete ? (
-                    <CheckSquare className="h-4 w-4 text-[var(--Mapped-Text-Highlight)]" strokeWidth={1.5} />
+                    <CheckSquare className="h-4 w-4 text-[var(--color-interactive)]" strokeWidth={1.5} />
                   ) : (
-                    <Square className="h-4 w-4 text-[var(--Mapped-Text-Quaternary)]" strokeWidth={1.5} />
+                    <Square className="h-4 w-4 text-[var(--color-text-placeholder)]" strokeWidth={1.5} />
                   )}
                 </button>
 
@@ -174,10 +174,10 @@ function SubtasksTab({
                 {/* Title */}
                 <span
                   className={cn(
-                    'flex-1 truncate text-[13px] font-[Ranade]',
+                    'flex-1 truncate text-[13px] font-body',
                     isComplete
-                      ? 'text-[var(--Mapped-Text-Quaternary)] line-through'
-                      : 'text-[var(--Mapped-Text-Primary)]',
+                      ? 'text-[var(--color-text-placeholder)] line-through'
+                      : 'text-[var(--color-text-primary)]',
                   )}
                 >
                   {subtask.title}
@@ -189,7 +189,7 @@ function SubtasksTab({
                     {firstAssignee.image && (
                       <AvatarImage src={firstAssignee.image} alt={firstAssignee.name} />
                     )}
-                    <AvatarFallback className="bg-[var(--Mapped-Surface-Darker)] text-[7px] font-semibold text-[var(--Mapped-Text-On-Dark-Primary)]">
+                    <AvatarFallback className="bg-[var(--color-layer-03)] text-[7px] font-semibold text-[var(--color-text-on-color)]">
                       {getInitials(firstAssignee.name)}
                     </AvatarFallback>
                   </Avatar>
@@ -212,7 +212,7 @@ function SubtasksTab({
       {/* Add subtask -- hidden in readOnly mode */}
       {!readOnly && (
         isAdding ? (
-          <div className="mt-2 flex items-center gap-2 rounded-lg border border-[var(--border-primary)] bg-[var(--Mapped-Surface-Primary)] px-3 py-2">
+          <div className="mt-2 flex items-center gap-2 rounded-lg border border-[var(--color-border-default)] bg-[var(--color-layer-01)] px-3 py-2">
             <input
               ref={inputRef}
               type="text"
@@ -223,13 +223,13 @@ function SubtasksTab({
                 if (!newTitle.trim()) setIsAdding(false)
               }}
               placeholder="Subtask title..."
-              className="flex-1 bg-transparent text-[13px] font-[Ranade] text-[var(--Mapped-Text-Primary)] placeholder:text-[var(--Mapped-Text-Quaternary)] outline-none"
+              className="flex-1 bg-transparent text-[13px] font-body text-[var(--color-text-primary)] placeholder:text-[var(--color-text-placeholder)] outline-none"
             />
             <button
               type="button"
               onClick={handleSubmit}
               disabled={!newTitle.trim()}
-              className="inline-flex h-6 items-center gap-1 rounded-md bg-[var(--Mapped-Surface-Button-Primary)] px-2.5 text-[11px] font-[Ranade] font-semibold text-[var(--Text-Button-Text)] transition-colors hover:bg-[var(--Mapped-Surface-Button-Secondary)] disabled:opacity-40"
+              className="inline-flex h-6 items-center gap-1 rounded-md bg-[var(--color-interactive)] px-2.5 text-[11px] font-body font-semibold text-[var(--color-text-on-color)] transition-colors hover:bg-[var(--color-interactive-hover)] disabled:opacity-40"
             >
               Add
             </button>
@@ -238,7 +238,7 @@ function SubtasksTab({
           <button
             type="button"
             onClick={() => setIsAdding(true)}
-            className="mt-2 inline-flex items-center gap-1.5 rounded-lg px-2 py-1.5 text-[13px] font-[Ranade] text-[var(--Mapped-Text-Quaternary)] transition-colors hover:bg-[var(--Mapped-Surface-Dark)] hover:text-[var(--Mapped-Text-Secondary)]"
+            className="mt-2 inline-flex items-center gap-1.5 rounded-lg px-2 py-1.5 text-[13px] font-body text-[var(--color-text-placeholder)] transition-colors hover:bg-[var(--color-field)] hover:text-[var(--color-text-secondary)]"
           >
             <Plus className="h-3.5 w-3.5" strokeWidth={1.5} />
             Add subtask

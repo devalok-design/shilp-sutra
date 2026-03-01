@@ -299,7 +299,7 @@ export function BreakAdmin({
 
   return (
     <div className="z-[1] flex w-full max-w-[var(--max-width)] flex-col items-center justify-center md:pt-0">
-      <div className="no-scrollbar w-full overflow-auto border border-[var(--border-secondary)] sm:rounded-[8px] max-md:rounded-none max-md:border-0">
+      <div className="no-scrollbar w-full overflow-auto border border-[var(--color-border-subtle)] sm:rounded-[8px] max-md:rounded-none max-md:border-0">
         {/* Header */}
         <BreakAdminHeader
           filters={filters}
@@ -310,13 +310,13 @@ export function BreakAdmin({
         />
 
         {/* Body */}
-        <div className="no-scrollbar flex h-fit min-w-[800px] flex-col border-t-[1px] border-[var(--border-secondary)] bg-[var(--Mapped-Surface-Tertiary)] shadow-transparent max-lg:min-w-[100%] max-lg:overflow-x-auto">
-          <div className="flex w-full gap-2 border-b-[1px] border-[var(--border-primary)] px-6 pt-2 max-lg:min-w-[800px]">
+        <div className="no-scrollbar flex h-fit min-w-[800px] flex-col border-t-[1px] border-[var(--color-border-subtle)] bg-[var(--color-layer-02)] shadow-transparent max-lg:min-w-[100%] max-lg:overflow-x-auto">
+          <div className="flex w-full gap-2 border-b-[1px] border-[var(--color-border-default)] px-6 pt-2 max-lg:min-w-[800px]">
             <button
               className={`L3 mb-[-1px] px-2 py-3 ${
                 activeTab === 'breaks'
-                  ? 'text-var(--Mapped-Text-Primary) border-b-[1px] border-[var(--Mapped-Surface-Button-Secondary)]'
-                  : 'text-[var(--Mapped-Text-Tertiary)]'
+                  ? 'text-var(--color-text-primary) border-b-[1px] border-[var(--color-interactive-hover)]'
+                  : 'text-[var(--color-text-tertiary)]'
               }`}
               onClick={() => setActiveTab('breaks')}
             >
@@ -325,24 +325,24 @@ export function BreakAdmin({
             <button
               className={`L3 mb-[-1px] flex items-center gap-1 px-2 py-3 ${
                 activeTab === 'requests'
-                  ? 'border-b-[1px] border-[var(--Mapped-Surface-Button-Secondary)] text-[var(--Mapped-Text-Primary)]'
-                  : 'text-[var(--Mapped-Text-Tertiary)]'
+                  ? 'border-b-[1px] border-[var(--color-interactive-hover)] text-[var(--color-text-primary)]'
+                  : 'text-[var(--color-text-tertiary)]'
               }`}
               onClick={() => setActiveTab('requests')}
             >
               REQUESTS{' '}
-              <span className="text-[var(--Mapped-Text-Highlight2)]">{`(${pendingRequests.length})`}</span>
+              <span className="text-[var(--color-interactive-hover)]">{`(${pendingRequests.length})`}</span>
             </button>
             <button
               className={`L3 mb-[-1px] flex items-center gap-1 px-2 py-3 ${
                 activeTab === 'balance'
-                  ? 'border-b-[1px] border-[var(--Mapped-Surface-Button-Secondary)] text-[var(--Mapped-Text-Primary)]'
-                  : 'text-[var(--Mapped-Text-Tertiary)]'
+                  ? 'border-b-[1px] border-[var(--color-interactive-hover)] text-[var(--color-text-primary)]'
+                  : 'text-[var(--color-text-tertiary)]'
               }`}
               onClick={() => setActiveTab('balance')}
             >
               BALANCE{' '}
-              <span className="text-[var(--Mapped-Text-Highlight2)]">{`(${breakBalanceData.length})`}</span>
+              <span className="text-[var(--color-interactive-hover)]">{`(${breakBalanceData.length})`}</span>
             </button>
           </div>
 
@@ -358,7 +358,7 @@ export function BreakAdmin({
                 onRefresh={onRefresh}
               />
             ) : activeTab === 'requests' ? (
-              <div className="no-scrollbar flex h-[400px] flex-col gap-1 overflow-y-auto border-t border-t-[var(--border-primary)] px-6 pb-1 pt-1 max-md:h-[calc(100vh-317px)] max-md:border-0">
+              <div className="no-scrollbar flex h-[400px] flex-col gap-1 overflow-y-auto border-t border-t-[var(--color-border-default)] px-6 pb-1 pt-1 max-md:h-[calc(100vh-317px)] max-md:border-0">
                 {pendingRequests.map((request) => (
                   <LeaveRequest
                     key={request.id}

@@ -42,7 +42,7 @@ const priorityConfig: Record<
 }
 
 const priorityVariants = cva(
-  'inline-flex items-center gap-1.5 font-[Ranade]',
+  'inline-flex items-center gap-1.5 font-body',
   {
     variants: {
       display: {

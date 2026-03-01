@@ -5,10 +5,11 @@ const preset: Partial<Config> = {
   theme: {
     extend: {
       fontFamily: {
-        sans: ['"Google Sans"', 'system-ui', 'sans-serif'],
-        display: ['"Google Sans"', 'system-ui', 'sans-serif'],
-        accent: ['Ranade', 'Georgia', 'serif'],
-        mono: ['"SF Mono"', '"Fira Code"', 'monospace'],
+        sans: ['var(--font-sans)', 'system-ui', 'sans-serif'],
+        display: ['var(--font-display)', 'system-ui', 'sans-serif'],
+        body: ['var(--font-body)', 'sans-serif'],
+        accent: ['var(--font-body)', 'sans-serif'],
+        mono: ['var(--font-mono)', 'monospace'],
       },
       borderRadius: {
         'ds-sm': 'var(--radius-sm)',

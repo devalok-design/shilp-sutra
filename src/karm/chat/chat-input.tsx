@@ -50,8 +50,8 @@ export function ChatInput({
   )
 
   return (
-    <div className="border-t border-[var(--border-primary)] bg-[var(--Mapped-Surface-Primary)] p-3">
-      <div className="flex items-end gap-2 rounded-xl border border-[var(--border-primary)] bg-[var(--Mapped-Surface-Quaternary)] px-3 py-2">
+    <div className="border-t border-[var(--color-border-default)] bg-[var(--color-layer-01)] p-3">
+      <div className="flex items-end gap-2 rounded-xl border border-[var(--color-border-default)] bg-[var(--color-field)] px-3 py-2">
         <textarea
           ref={textareaRef}
           value={text}
@@ -63,7 +63,7 @@ export function ChatInput({
           placeholder={placeholder}
           disabled={isStreaming}
           rows={1}
-          className="B2-Reg no-scrollbar max-h-[160px] min-h-[24px] flex-1 resize-none bg-transparent text-[var(--Mapped-Text-Primary)] placeholder:text-[var(--Mapped-Text-Quaternary)] focus:outline-none disabled:opacity-50"
+          className="B2-Reg no-scrollbar max-h-[160px] min-h-[24px] flex-1 resize-none bg-transparent text-[var(--color-text-primary)] placeholder:text-[var(--color-text-placeholder)] focus:outline-none disabled:opacity-50"
         />
         {isStreaming ? (
           <button
@@ -77,7 +77,7 @@ export function ChatInput({
           <button
             onClick={handleSend}
             disabled={!text.trim()}
-            className="flex h-8 w-8 shrink-0 items-center justify-center rounded-lg bg-[var(--Mapped-Text-Highlight)] text-white transition-colors hover:opacity-90 disabled:opacity-40"
+            className="flex h-8 w-8 shrink-0 items-center justify-center rounded-lg bg-[var(--color-interactive)] text-white transition-colors hover:opacity-90 disabled:opacity-40"
             aria-label="Send message"
           >
             <Send className="h-3.5 w-3.5" />
@@ -85,7 +85,7 @@ export function ChatInput({
         )}
       </div>
       {disclaimer && (
-        <p className="B3-Reg mt-1.5 text-center text-[var(--Mapped-Text-Quaternary)]">
+        <p className="B3-Reg mt-1.5 text-center text-[var(--color-text-placeholder)]">
           {disclaimer}
         </p>
       )}

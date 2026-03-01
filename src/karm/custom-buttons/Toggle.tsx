@@ -71,8 +71,8 @@ const Toggle: React.FC<ToggleProps> = ({
       ref={tablistRef}
       className={cn(
         'inline-flex gap-0 p-0 rounded-[88px]',
-        'bg-[var(--Mapped-Surface-Secondary,#fcf7f7)]',
-        'border border-solid border-[var(--Mapped-Surface-Darker,#efd5d9)]',
+        'bg-[var(--color-layer-02,#fcf7f7)]',
+        'border border-solid border-[var(--color-layer-03,#efd5d9)]',
         className,
       )}
       role="tablist"
@@ -115,32 +115,32 @@ const sizeLastClasses: Record<ToggleSize, string> = {
 
 /* ── color base classes ───────────────────────────────────── */
 const colorClasses: Record<ToggleColor, string> = {
-  filled: "text-[var(--Text-Button-Text,#fcf7f7)] [text-shadow:0px_1px_1px_rgba(0,0,0,0.15)]",
-  tonal: 'text-[var(--Text-Tertiary,#6B6164)]',
+  filled: "text-[var(--color-text-on-color,#fcf7f7)] [text-shadow:0px_1px_1px_rgba(0,0,0,0.15)]",
+  tonal: 'text-[var(--color-text-tertiary,#6B6164)]',
 }
 
 /* ── hover state per color ────────────────────────────────── */
 const hoverColorClasses: Record<ToggleColor, string> = {
   filled: [
-    'bg-[var(--Surface-Button-primary,#d33163)]',
-    'shadow-[0px_4px_8px_0px_var(--Elevation-Button-hover,#efd5d9),0px_1px_3px_0.05px_var(--Surface-Tertiary,#fff),inset_0px_8px_16px_0px_rgba(255,255,255,0.16),inset_0px_2px_0px_0px_rgba(255,255,255,0.1)]',
+    'bg-[var(--color-interactive,#d33163)]',
+    'shadow-[0px_4px_8px_0px_var(--shadow-button-hover,#efd5d9),0px_1px_3px_0.05px_var(--color-layer-02,#fff),inset_0px_8px_16px_0px_rgba(255,255,255,0.16),inset_0px_2px_0px_0px_rgba(255,255,255,0.1)]',
   ].join(' '),
-  tonal: 'text-[var(--Text-Primary,#3f181e)]',
+  tonal: 'text-[var(--color-text-primary,#3f181e)]',
 }
 
 /* ── selected state per color ─────────────────────────────── */
 const selectedColorClasses: Record<ToggleColor, string> = {
   filled: [
-    'bg-[var(--Surface-Button-primary,#d33163)]',
-    'shadow-[0px_1px_3px_0.05px_var(--Elevation-Button-hover,#efd5d9),inset_0px_8px_16px_0px_rgba(255,255,255,0.16),inset_0px_2px_0px_0px_rgba(255,255,255,0.1)]',
+    'bg-[var(--color-interactive,#d33163)]',
+    'shadow-[0px_1px_3px_0.05px_var(--shadow-button-hover,#efd5d9),inset_0px_8px_16px_0px_rgba(255,255,255,0.16),inset_0px_2px_0px_0px_rgba(255,255,255,0.1)]',
   ].join(' '),
-  tonal: 'bg-[var(--Surface-Dark,#f7e9e9)] !text-[var(--Text-Primary,#3f181e)]',
+  tonal: 'bg-[var(--color-field,#f7e9e9)] !text-[var(--color-text-primary,#3f181e)]',
 }
 
 /* ── disabled state per color ─────────────────────────────── */
 const disabledColorClasses: Record<ToggleColor, string> = {
-  filled: 'text-[var(--Text-Quaternary,#8c8084)]',
-  tonal: 'text-[var(--Text-Quaternary,#8c8084)]',
+  filled: 'text-[var(--color-text-placeholder,#8c8084)]',
+  tonal: 'text-[var(--color-text-placeholder,#8c8084)]',
 }
 
 /* ── ripple bg per color ──────────────────────────────────── */
@@ -233,8 +233,8 @@ const ToggleButton: React.FC<ToggleButtonProps> = ({
         // Base styles
         'inline-flex items-center gap-2 rounded-[88px] border-none outline-none cursor-pointer transition-all duration-200 ease-in-out relative overflow-hidden',
         "font-['Ranade'] text-sm font-semibold leading-none text-center",
-        'bg-[var(--Mapped-Surface-Primary,#fcf7f7)]',
-        'text-[var(--Text-Tertiary,#6B6164)]',
+        'bg-[var(--color-layer-01,#fcf7f7)]',
+        'text-[var(--color-text-tertiary,#6B6164)]',
         // First / last child rounding
         'first:rounded-tr-none first:rounded-br-none',
         'last:rounded-tl-none last:rounded-bl-none',

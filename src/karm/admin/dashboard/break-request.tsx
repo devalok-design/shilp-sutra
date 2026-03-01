@@ -115,7 +115,7 @@ export function BreakRequestCard({
   }
 
   return (
-    <div className="relative flex w-full flex-col gap-6 rounded-[8px] bg-[var(--Surface-Purple-button-tertiary)]">
+    <div className="relative flex w-full flex-col gap-6 rounded-[8px] bg-[var(--color-layer-accent-subtle)]">
       {assetsBaseUrl && (
         <img
           src={`${assetsBaseUrl}/break-background.svg`}
@@ -127,21 +127,21 @@ export function BreakRequestCard({
         {/* Left section - Break information or mobile cancel form */}
         {showMobileCancelForm && isSingleDayBreak ? (
           <div className="flex h-full w-full flex-col items-center justify-center px-[13px] pt-[17px]">
-            <div className="w-full gap-4 rounded-md bg-[var(--Mapped-Surface-Primary)] px-6 py-8 md:hidden">
+            <div className="w-full gap-4 rounded-md bg-[var(--color-layer-01)] px-6 py-8 md:hidden">
               <div className="flex flex-col items-center gap-[12px]">
-                <div className="T7-Reg semibold text-center text-[var(--Mapped-Text-Primary)]">
+                <div className="T7-Reg semibold text-center text-[var(--color-text-primary)]">
                   Cancel this break?
                 </div>
-                <div className="B1-Reg max-w-[240px] text-center text-[var(--Mapped-Text-Tertiary)] max-md:leading-[100%]">
+                <div className="B1-Reg max-w-[240px] text-center text-[var(--color-text-tertiary)] max-md:leading-[100%]">
                   You&apos;re about to cancel the break scheduled for{' '}
-                  <span className="semibold text-[var(--Mapped-Text-Secondary)]">
+                  <span className="semibold text-[var(--color-text-secondary)]">
                     {formatBreakDate(breakRequest.startDate)}
                   </span>
                 </div>
               </div>
               <div className="mt-4 flex w-full flex-col gap-3">
                 <button
-                  className="B2 semibold w-full rounded-[88px] border border-[var(--Mapped-Surface-Button-Primary)] bg-[var(--Mapped-Surface-Button-Primary)] px-[20px] py-[12px] text-center text-[var(--Mapped-Text-On-Dark-Primary)]"
+                  className="B2 semibold w-full rounded-[88px] border border-[var(--color-interactive)] bg-[var(--color-interactive)] px-[20px] py-[12px] text-center text-[var(--color-text-on-color)]"
                   style={{
                     boxShadow:
                       '0px 1px 3px 0.05px rgba(24, 24, 27, 0.24), 0px 8px 16px 0px rgba(255, 255, 255, 0.16) inset, 0px 2px 0px 0px rgba(255, 255, 255, 0.10) inset',
@@ -162,23 +162,23 @@ export function BreakRequestCard({
         ) : (
           <div className="flex h-full w-full flex-col items-center justify-center gap-6 p-6 px-6 py-8 md:w-1/2 md:p-8">
             <div className="flex flex-col items-center justify-end gap-4">
-              <div className="L3 text-[var(--Mapped-Text-Tertiary)]">
+              <div className="L3 text-[var(--color-text-tertiary)]">
                 Reason
               </div>
-              <div className="T7-Reg semibold text-[var(--Mapped-Text-Primary)]">
+              <div className="T7-Reg semibold text-[var(--color-text-primary)]">
                 {removeAllEmojis(breakRequest?.reason || ' ')}
               </div>
             </div>
             <div className="flex flex-col items-center justify-end gap-4">
-              <div className="L3 text-[var(--Mapped-Text-Tertiary)]">
+              <div className="L3 text-[var(--color-text-tertiary)]">
                 Break Period
               </div>
-              <div className="T7-Reg semibold text-[var(--Mapped-Text-Primary)]">
+              <div className="T7-Reg semibold text-[var(--color-text-primary)]">
                 {formatDate(new Date(breakRequest.startDate))}{' '}
                 {breakRequest.numberOfDays > 1 && (
                   <>- {formatDate(new Date(breakRequest.endDate))} </>
                 )}
-                <span className="T7-Reg text-[var(--Mapped-Text-Secondary)] opacity-60">
+                <span className="T7-Reg text-[var(--color-text-secondary)] opacity-60">
                   {`(${breakRequest.numberOfDays} day${
                     breakRequest.numberOfDays > 1 ? 's' : ''
                   })`}
@@ -189,8 +189,8 @@ export function BreakRequestCard({
         )}
         {!showMobileCancelForm && (
           <>
-            <div className="h-[1px] w-[329px] bg-[var(--border-secondary)] md:hidden max-md:w-[90%]"></div>
-            <div className="hidden h-[170px] w-[2px] bg-[var(--border-secondary)] md:block"></div>
+            <div className="h-[1px] w-[329px] bg-[var(--color-border-subtle)] md:hidden max-md:w-[90%]"></div>
+            <div className="hidden h-[170px] w-[2px] bg-[var(--color-border-subtle)] md:block"></div>
           </>
         )}
         <div
@@ -202,10 +202,10 @@ export function BreakRequestCard({
               : 'py-6'
           } md:w-1/2 md:px-6 md:py-4 max-md:pt-[34px]`}
         >
-          <p className="L3 mb-6 uppercase text-[var(--Mapped-Text-Tertiary)] max-md:mb-[16px]">
+          <p className="L3 mb-6 uppercase text-[var(--color-text-tertiary)] max-md:mb-[16px]">
             Break Status
           </p>
-          <div className="mb-3 flex w-full flex-col items-center justify-start gap-[14px] rounded-3xl border border-[var(--border-secondary)] bg-[var(--Mapped-Surface-Primary)] px-4 py-3.5 text-center font-semibold text-[var(--Mapped-Text-Primary)]">
+          <div className="mb-3 flex w-full flex-col items-center justify-start gap-[14px] rounded-3xl border border-[var(--color-border-subtle)] bg-[var(--color-layer-01)] px-4 py-3.5 text-center font-semibold text-[var(--color-text-primary)]">
             {renderStatus(breakRequest.status, false)}
             {breakRequest.status === 'APPROVED' && breakRequest.adminComment}
             {breakRequest.status === 'REJECTED' && breakRequest.adminComment}
@@ -215,7 +215,7 @@ export function BreakRequestCard({
             <>
               {isBreakCancellable() && onCancelBreak && (
                 <button
-                  className="P4 cursor-pointer border-none bg-transparent text-[var(--Mapped-Text-Highlight2)] underline md:hidden"
+                  className="P4 cursor-pointer border-none bg-transparent text-[var(--color-interactive-hover)] underline md:hidden"
                   onClick={() => setShowMobileCancelForm(!showMobileCancelForm)}
                 >
                   Want to cancel this break?
@@ -226,21 +226,21 @@ export function BreakRequestCard({
               <Dialog>
                 {isBreakCancellable() && onCancelBreak && (
                   <DialogTrigger asChild>
-                    <button className="P4 hidden cursor-pointer border-none bg-transparent text-[var(--Mapped-Text-Highlight2)] underline md:block">
+                    <button className="P4 hidden cursor-pointer border-none bg-transparent text-[var(--color-interactive-hover)] underline md:block">
                       Want to cancel this break?
                     </button>
                   </DialogTrigger>
                 )}
                 <DialogContent className="max-w-[329px] gap-3 rounded-[16px]">
                   <DialogHeader>
-                    <div className="T7-Reg semibold text-center text-[var(--Mapped-Text-Primary)]">
+                    <div className="T7-Reg semibold text-center text-[var(--color-text-primary)]">
                       Cancel this break?
                     </div>
                   </DialogHeader>
                   <div className="flex flex-col items-center justify-start">
-                    <div className="B1-Reg max-w-[241px] text-center text-[var(--Mapped-Text-Tertiary)]">
+                    <div className="B1-Reg max-w-[241px] text-center text-[var(--color-text-tertiary)]">
                       You&apos;re about to cancel the break scheduled for{' '}
-                      <span className="semibold text-[var(--Mapped-Text-Secondary)]">
+                      <span className="semibold text-[var(--color-text-secondary)]">
                         {formatBreakDate(breakRequest.startDate)}
                       </span>
                     </div>
@@ -248,7 +248,7 @@ export function BreakRequestCard({
                   <DialogFooter className="mt-3 sm:justify-start">
                     <DialogClose asChild>
                       <button
-                        className="B2 semibold w-full rounded-[88px] border border-[var(--Mapped-Surface-Button-Primary)] bg-[var(--Mapped-Surface-Button-Primary)] px-[20px] py-[12px] text-center text-[var(--Mapped-Text-On-Dark-Primary)]"
+                        className="B2 semibold w-full rounded-[88px] border border-[var(--color-interactive)] bg-[var(--color-interactive)] px-[20px] py-[12px] text-center text-[var(--color-text-on-color)]"
                         style={{
                           boxShadow:
                             '0px 1px 3px 0.05px rgba(24, 24, 27, 0.24), 0px 8px 16px 0px rgba(255, 255, 255, 0.16) inset, 0px 2px 0px 0px rgba(255, 255, 255, 0.10) inset',
@@ -266,14 +266,14 @@ export function BreakRequestCard({
             <Dialog>
               {isBreakCancellable() && onCancelBreak && (
                 <DialogTrigger asChild>
-                  <button className="P4 cursor-pointer border-none bg-transparent text-[var(--Mapped-Text-Highlight2)] underline">
+                  <button className="P4 cursor-pointer border-none bg-transparent text-[var(--color-interactive-hover)] underline">
                     Want to cancel this break?
                   </button>
                 </DialogTrigger>
               )}
               <DialogContent className="max-w-[329px] gap-3 rounded-[16px]">
                 <DialogHeader>
-                  <div className="T7-Reg semibold flex text-center text-[var(--Mapped-Text-Primary)]">
+                  <div className="T7-Reg semibold flex text-center text-[var(--color-text-primary)]">
                     Cancel your break
                   </div>
                 </DialogHeader>
@@ -286,7 +286,7 @@ export function BreakRequestCard({
                         onChange={(e) => setDeleteSingleDay(e.target.checked)}
                         className="roundec-full"
                       />
-                      <span className="text-[var(--Mapped-Text-Secondary)]">
+                      <span className="text-[var(--color-text-secondary)]">
                         {getDaySuffix(new Date(selectedDate).getDate())} break
                         only
                       </span>
@@ -298,7 +298,7 @@ export function BreakRequestCard({
                         onChange={(e) => setDeleteSingleDay(!e.target.checked)}
                         className="rounded-full"
                       />
-                      <span className="text-[var(--Mapped-Text-Secondary)]">
+                      <span className="text-[var(--color-text-secondary)]">
                         {getDaySuffix(
                           new Date(breakRequest.startDate).getDate(),
                         )}{' '}
@@ -312,7 +312,7 @@ export function BreakRequestCard({
                 <DialogFooter className="mt-3 sm:justify-start">
                   <DialogClose asChild>
                     <button
-                      className="B2 semibold w-full rounded-[88px] border border-[var(--Mapped-Surface-Button-Primary)] bg-[var(--Mapped-Surface-Button-Primary)] px-[20px] py-[12px] text-center text-[var(--Mapped-Text-On-Dark-Primary)]"
+                      className="B2 semibold w-full rounded-[88px] border border-[var(--color-interactive)] bg-[var(--color-interactive)] px-[20px] py-[12px] text-center text-[var(--color-text-on-color)]"
                       style={{
                         boxShadow:
                           '0px 1px 3px 0.05px rgba(24, 24, 27, 0.24), 0px 8px 16px 0px rgba(255, 255, 255, 0.16) inset, 0px 2px 0px 0px rgba(255, 255, 255, 0.10) inset',

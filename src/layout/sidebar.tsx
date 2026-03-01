@@ -1,5 +1,3 @@
-'use client'
-
 /**
  * AppSidebar -- Application-layer sidebar built on the Sidebar primitive.
  *

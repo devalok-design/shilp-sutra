@@ -225,7 +225,7 @@ export function RenderDate({
       backgroundColor = '#D33163'
       color = '#FFFFFF'
       boxShadow =
-        '0px 4px 4px 0px rgba(255, 255, 255, 0.25) inset, 0px 0px 8px 0px var(--Mapped-Surface-Button-secondary, #B6204A) inset'
+        '0px 4px 4px 0px rgba(255, 255, 255, 0.25) inset, 0px 0px 8px 0px var(--color-interactive-hover, #B6204A) inset'
     } else if (state.isBreak) {
       backgroundColor = '#E6E1F3'
       color = '#403A3C'
@@ -264,7 +264,7 @@ export function RenderDate({
         backgroundColor = '#B02651'
         color = '#FFFFFF'
         boxShadow =
-          '0px 4px 4px 0px rgba(255, 255, 255, 0.25) inset, 0px 0px 8px 0px var(--Mapped-Surface-Button-secondary, #B6204A) inset'
+          '0px 4px 4px 0px rgba(255, 255, 255, 0.25) inset, 0px 0px 8px 0px var(--color-interactive-hover, #B6204A) inset'
       } else if (state.isPresent) {
         backgroundColor = '#E6E4E5'
         color = '#3F181E'
@@ -329,7 +329,7 @@ export function RenderDate({
     if (state.selected) {
       fontWeight = '600'
       if (activeTimeFrame === 'monthly') {
-        color = 'var(--Text-Primary)'
+        color = 'var(--color-text-primary)'
       }
     }
 

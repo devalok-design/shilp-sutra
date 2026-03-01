@@ -286,7 +286,7 @@ const ViewSwitcherTemplate = () => {
         justifyContent: 'space-between',
         padding: '8px 16px',
         borderRadius: '8px',
-        border: '1px solid var(--border-primary, #e0e0e0)',
+        border: '1px solid var(--color-border-default, #e0e0e0)',
         minWidth: '320px',
       }}
     >
@@ -310,7 +310,7 @@ const FilterBarTemplate = () => {
         gap: '16px',
         padding: '8px 16px',
         borderRadius: '8px',
-        border: '1px solid var(--border-primary, #e0e0e0)',
+        border: '1px solid var(--color-border-default, #e0e0e0)',
       }}
     >
       <span style={{ fontSize: '14px', fontWeight: 600, color: 'var(--text-primary, #333)' }}>Tasks:</span>

@@ -20,47 +20,47 @@ interface CustomButtonProps {
 /* ── colour / variant base ────────────────────────────────── */
 const typeClasses: Record<ButtonType, string> = {
   filled: [
-    'shadow-[0px_1px_3px_0.05px_var(--Elevation-Button-hover,#efd5d9),inset_0px_8px_16px_0px_rgba(255,255,255,0.16),inset_0px_2px_0px_0px_rgba(255,255,255,0.1)]',
+    'shadow-[0px_1px_3px_0.05px_var(--shadow-button-hover,#efd5d9),inset_0px_8px_16px_0px_rgba(255,255,255,0.16),inset_0px_2px_0px_0px_rgba(255,255,255,0.1)]',
     'border border-solid border-[var(--Alias-Primary-Default,#d33163)]',
-    'bg-[var(--Surface-Button-primary,#d33163)]',
-    'text-[var(--Text-Button-Text,#fcf7f7)]',
+    'bg-[var(--color-interactive,#d33163)]',
+    'text-[var(--color-text-on-color,#fcf7f7)]',
     '[text-shadow:0px_1px_1px_rgba(0,0,0,0.15)]',
   ].join(' '),
-  tonal: 'bg-[var(--Surface-Secondary,#fcf7f7)] text-[var(--Text-Highlight,#932044)]',
-  outline: 'bg-transparent border border-solid border-[var(--Border-Tertiary,#dd9eb8)] text-[var(--Text-Highlight,#932044)]',
-  text: 'text-[var(--Text-Highlight,#932044)]',
+  tonal: 'bg-[var(--color-layer-02,#fcf7f7)] text-[var(--color-interactive,#932044)]',
+  outline: 'bg-transparent border border-solid border-[var(--color-border-strong,#dd9eb8)] text-[var(--color-interactive,#932044)]',
+  text: 'text-[var(--color-interactive,#932044)]',
 }
 
 /* ── focused state per type ───────────────────────────────── */
 const focusedClasses: Record<ButtonType, string> = {
   filled: [
     'border-2 border-solid border-[var(--Alias-Primary-Default,#d33163)]',
-    'bg-[var(--Surface-Button-primary,#d33163)]',
+    'bg-[var(--color-interactive,#d33163)]',
     'shadow-[0px_1px_3px_0.05px_rgba(24,24,27,0.24),inset_0px_8px_16px_0px_rgba(255,255,255,0.16),inset_0px_2px_0px_0px_rgba(255,255,255,0.1)]',
   ].join(' '),
-  tonal: 'bg-[var(--Surface-Secondary,#fcf7f7)] shadow-none',
-  outline: 'border border-solid border-[var(--Border-Tertiary,#dd9eb8)]',
+  tonal: 'bg-[var(--color-layer-02,#fcf7f7)] shadow-none',
+  outline: 'border border-solid border-[var(--color-border-strong,#dd9eb8)]',
   text: '',
 }
 
 /* ── hover state per type ─────────────────────────────────── */
 const hoverClasses: Record<ButtonType, string> = {
   filled: [
-    'border border-solid border-[var(--Surface-Button-primary,#d33163)]',
-    'bg-[var(--Surface-Button-primary,#d33163)]',
-    'shadow-[0px_4px_8px_0px_var(--Elevation-Button-hover,#efd5d9),0px_1px_3px_0.05px_var(--Surface-Tertiary,#fff),inset_0px_8px_16px_0px_rgba(255,255,255,0.16),inset_0px_2px_0px_0px_rgba(255,255,255,0.1)]',
+    'border border-solid border-[var(--color-interactive,#d33163)]',
+    'bg-[var(--color-interactive,#d33163)]',
+    'shadow-[0px_4px_8px_0px_var(--shadow-button-hover,#efd5d9),0px_1px_3px_0.05px_var(--color-layer-02,#fff),inset_0px_8px_16px_0px_rgba(255,255,255,0.16),inset_0px_2px_0px_0px_rgba(255,255,255,0.1)]',
   ].join(' '),
-  tonal: 'bg-[var(--Surface-Dark,#f7e9e9)] text-[var(--Text-Primary,#3f181e)]',
-  outline: 'border border-solid border-[var(--Border-Tertiary,#dd9eb8)] bg-[var(--Surface-Tertiary,#fff)] text-[var(--Text-Primary,#3f181e)]',
-  text: 'text-[var(--Text-Primary,#3f181e)]',
+  tonal: 'bg-[var(--color-field,#f7e9e9)] text-[var(--color-text-primary,#3f181e)]',
+  outline: 'border border-solid border-[var(--color-border-strong,#dd9eb8)] bg-[var(--color-layer-02,#fff)] text-[var(--color-text-primary,#3f181e)]',
+  text: 'text-[var(--color-text-primary,#3f181e)]',
 }
 
 /* ── disabled state per type ──────────────────────────────── */
 const disabledClasses: Record<ButtonType, string> = {
-  filled: 'bg-[var(--Surface-Disabled,#d3ced0)] text-[var(--Text-Quaternary,#8c8084)]',
-  tonal: 'bg-[var(--Surface-Disabled,#d3ced0)] text-[var(--Text-Quaternary,#8c8084)]',
-  outline: 'border border-solid border-[var(--Text-Disabled-1,#b7afb2)] text-[var(--Text-Quaternary,#8c8084)]',
-  text: 'text-[var(--Text-Quaternary,#8c8084)]',
+  filled: 'bg-[var(--color-field-disabled,#d3ced0)] text-[var(--color-text-placeholder,#8c8084)]',
+  tonal: 'bg-[var(--color-field-disabled,#d3ced0)] text-[var(--color-text-placeholder,#8c8084)]',
+  outline: 'border border-solid border-[var(--color-text-disabled,#b7afb2)] text-[var(--color-text-placeholder,#8c8084)]',
+  text: 'text-[var(--color-text-placeholder,#8c8084)]',
 }
 
 /* ── ripple bg per type ───────────────────────────────────── */

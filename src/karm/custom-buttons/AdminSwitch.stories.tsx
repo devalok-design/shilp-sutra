@@ -129,7 +129,7 @@ const WithLabelTemplate = () => {
         justifyContent: 'space-between',
         padding: '12px 16px',
         borderRadius: '8px',
-        border: '1px solid var(--border-primary, #e0e0e0)',
+        border: '1px solid var(--color-border-default, #e0e0e0)',
         minWidth: '280px',
       }}
     >

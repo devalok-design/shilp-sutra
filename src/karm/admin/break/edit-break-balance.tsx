@@ -89,7 +89,7 @@ export function EditBreakBalance({
       <DialogTrigger asChild>
         <Button
           variant="secondary"
-          className="P2 border-[var(--border-primary)] bg-[var(--Mapped-Surface-Primary)] px-4 py-3 pr-6 text-[var(--Mapped-Text-Secondary)] shadow-[0_4px_8px_0_var(--Elevation-2)]"
+          className="P2 border-[var(--color-border-default)] bg-[var(--color-layer-01)] px-4 py-3 pr-6 text-[var(--color-text-secondary)] shadow-[0_4px_8px_0_var(--shadow-02)]"
         >
           <EditIcon />
           <span>Edit</span>
@@ -99,9 +99,9 @@ export function EditBreakBalance({
         <DialogHeader>
           <DialogDescription>
             <div className="flex flex-col items-center justify-start gap-[18px]">
-              <p className="B2-Reg w-full text-left text-[var(--Mapped-Text-Tertiary)]">
+              <p className="B2-Reg w-full text-left text-[var(--color-text-tertiary)]">
                 Edit break balance conversion of <br className="mb-1" />
-                <span className="semibold text-[var(--Mapped-Text-Highlight)]">
+                <span className="semibold text-[var(--color-interactive)]">
                   {selectedLeave?.user?.name}
                 </span>
               </p>
@@ -112,7 +112,7 @@ export function EditBreakBalance({
                 className="flex w-full flex-col gap-4"
               >
                 <div className="flex w-full items-center justify-between">
-                  <div className="L3 uppercase text-[var(--Mapped-Text-Quaternary)]">
+                  <div className="L3 uppercase text-[var(--color-text-placeholder)]">
                     Cash out
                   </div>
                   <NumberInput
@@ -126,11 +126,11 @@ export function EditBreakBalance({
                 </div>
 
                 <div className="flex w-full items-center justify-between">
-                  <div className="L3 uppercase text-[var(--Mapped-Text-Quaternary)]">
+                  <div className="L3 uppercase text-[var(--color-text-placeholder)]">
                     Carry forward
                   </div>
                   <div className="flex w-[100px] items-center justify-center">
-                    <div className="B1-Reg semibold text-[var(--Mapped-Text-Secondary)]">
+                    <div className="B1-Reg semibold text-[var(--color-text-secondary)]">
                       {carryForward}
                     </div>
                   </div>

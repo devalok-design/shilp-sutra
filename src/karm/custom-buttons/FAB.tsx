@@ -117,15 +117,15 @@ const FAB: React.FC<FABProps> = ({
       className={cn(
         // Base styles
         'flex items-center justify-center rounded-full border-none outline-none cursor-pointer transition-all duration-200 ease-in-out relative overflow-hidden',
-        'bg-[var(--Surface-Button-primary,#d33163)] text-white',
+        'bg-[var(--color-interactive,#d33163)] text-white',
         // Size
         sizeClasses[size],
         // State: focused
-        state === 'focused' && 'border border-solid border-[var(--Surface-Primary,#fff)] bg-[var(--Surface-Button-primary,#d33163)] shadow-[0px_4px_8px_0px_rgba(0,0,0,0.15),0px_2px_3px_0px_rgba(0,0,0,0.3)]',
+        state === 'focused' && 'border border-solid border-[var(--color-layer-01,#fff)] bg-[var(--color-interactive,#d33163)] shadow-[0px_4px_8px_0px_rgba(0,0,0,0.15),0px_2px_3px_0px_rgba(0,0,0,0.3)]',
         // State: hover
-        state === 'hover' && 'bg-[var(--Surface-Button-primary,#d33163)] shadow-[0px_4px_8px_0px_var(--Elevation-Button-hover,#efd5d9),0px_1px_3px_0.05px_var(--Surface-Tertiary,#fff),inset_0px_8px_16px_0px_rgba(255,255,255,0.16),inset_0px_2px_0px_0px_rgba(255,255,255,0.1)]',
+        state === 'hover' && 'bg-[var(--color-interactive,#d33163)] shadow-[0px_4px_8px_0px_var(--shadow-button-hover,#efd5d9),0px_1px_3px_0.05px_var(--color-layer-02,#fff),inset_0px_8px_16px_0px_rgba(255,255,255,0.16),inset_0px_2px_0px_0px_rgba(255,255,255,0.1)]',
         // Disabled
-        disabled && 'bg-[var(--Surface-Disabled,#D3CED0)] cursor-not-allowed pointer-events-none shadow-none',
+        disabled && 'bg-[var(--color-field-disabled,#D3CED0)] cursor-not-allowed pointer-events-none shadow-none',
         className,
       )}
       onClick={(e) => {

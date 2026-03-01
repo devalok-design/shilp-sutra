@@ -66,11 +66,11 @@ export function CorrectionList({
 
   return (
     <div
-      className={`flex max-h-[200px] w-full flex-col overflow-y-auto bg-[var(--Mapped-Surface-Primary)] px-6 max-md:h-[calc(100vh-586px)] max-md:max-h-[calc(100vh-586px)] max-md:min-h-[372px] max-md:p-0 ${activeTimeFrame === 'weekly1' ? 'max-md:h-[calc(100vh-824px)] max-md:max-h-[calc(100vh-824px)]' : ''}`}
+      className={`flex max-h-[200px] w-full flex-col overflow-y-auto bg-[var(--color-layer-01)] px-6 max-md:h-[calc(100vh-586px)] max-md:max-h-[calc(100vh-586px)] max-md:min-h-[372px] max-md:p-0 ${activeTimeFrame === 'weekly1' ? 'max-md:h-[calc(100vh-824px)] max-md:max-h-[calc(100vh-824px)]' : ''}`}
     >
       {corrections.map((correction) => (
         <Fragment key={correction.id}>
-          <div className="max-md:border-1 flex items-center justify-between px-2 py-3.5 max-md:rounded-[8px] max-md:border-[var(--border-primary)]">
+          <div className="max-md:border-1 flex items-center justify-between px-2 py-3.5 max-md:rounded-[8px] max-md:border-[var(--color-border-default)]">
             <div className="flex items-center gap-3">
               <img
                 className="h-10 w-10 rounded-full border-2 max-md:mb-[auto]"
@@ -85,19 +85,19 @@ export function CorrectionList({
                 alt={`${correction?.user?.name}'s Icon`}
               />
               <div className="flex flex-col gap-1">
-                <p className="B3-Reg text-[var(--Mapped-Text-Secondary)]">
+                <p className="B3-Reg text-[var(--color-text-secondary)]">
                   {correction?.user?.name}
                 </p>
                 <div className="flex w-full flex-wrap items-center gap-2">
-                  <p className="B1 semibold text-[var(--Mapped-Text-Primary)]">
+                  <p className="B1 semibold text-[var(--color-text-primary)]">
                     {correction?.reason}
                   </p>
                   {correction?.reason ? (
-                    <p className="B1 font-semibold text-[var(--Mapped-Text-Tertiary)]">
+                    <p className="B1 font-semibold text-[var(--color-text-tertiary)]">
                       &bull;
                     </p>
                   ) : null}
-                  <p className="B1-Reg text-[var(--Mapped-Text-Tertiary)]">
+                  <p className="B1-Reg text-[var(--color-text-tertiary)]">
                     {formatDateWithWeekday(
                       new Date(correction?.date),
                     )}
@@ -110,7 +110,7 @@ export function CorrectionList({
                 <Tooltip delayDuration={0}>
                   <TooltipTrigger asChild>
                     <button
-                      className={`rounded-full p-2 text-[var(--Mapped-Text-Tertiary)] hover:text-[var(--Mapped-Text-Secondary)] ${
+                      className={`rounded-full p-2 text-[var(--color-text-tertiary)] hover:text-[var(--color-text-secondary)] ${
                         correction?.user?.id === currentUserId
                           ? 'cursor-not-allowed opacity-50'
                           : ''
@@ -161,7 +161,7 @@ export function CorrectionList({
                         correction?.user?.id === currentUserId
                       }
                     >
-                      <TickIcon className="h-6 w-6 text-[var(--Mapped-Text-Success-On-Light)]" />
+                      <TickIcon className="h-6 w-6 text-[var(--color-text-success)]" />
                     </button>
                   </TooltipTrigger>
                   {correction?.user?.id === currentUserId && (

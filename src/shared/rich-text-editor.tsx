@@ -182,7 +182,7 @@ function RichTextEditor({
         class: cn(
           'prose prose-sm max-w-none focus:outline-none',
           'min-h-[120px] px-3 py-3',
-          'font-[Ranade] text-[14px] leading-relaxed text-[var(--color-text-primary)]',
+          'font-body text-[14px] leading-relaxed text-[var(--color-text-primary)]',
           '[&_h2]:T6-Reg [&_h2]:mb-2 [&_h2]:mt-4 [&_h2]:text-[var(--color-text-primary)]',
           '[&_h3]:B1-Reg [&_h3]:semibold [&_h3]:mb-1.5 [&_h3]:mt-3 [&_h3]:text-[var(--color-text-primary)]',
           '[&_p]:mb-1.5 [&_p]:text-[var(--color-text-secondary)]',
@@ -235,7 +235,7 @@ function RichTextViewer({ content, className }: RichTextViewerProps) {
       attributes: {
         class: cn(
           'prose prose-sm max-w-none',
-          'font-[Ranade] text-[14px] leading-relaxed text-[var(--color-text-primary)]',
+          'font-body text-[14px] leading-relaxed text-[var(--color-text-primary)]',
           '[&_h2]:T6-Reg [&_h2]:mb-2 [&_h2]:mt-4 [&_h2]:text-[var(--color-text-primary)]',
           '[&_h3]:B1-Reg [&_h3]:semibold [&_h3]:mb-1.5 [&_h3]:mt-3 [&_h3]:text-[var(--color-text-primary)]',
           '[&_p]:mb-1.5 [&_p]:text-[var(--color-text-secondary)]',

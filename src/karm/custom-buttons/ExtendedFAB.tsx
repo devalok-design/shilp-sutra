@@ -17,23 +17,23 @@ interface ExtendedFABProps {
 }
 
 const colorClasses: Record<ExtendedFABColor, string> = {
-  filled: 'bg-[var(--Surface-Button-primary,#d33163)] text-[var(--Text-Button-Text,#fcf7f7)]',
-  tonal: 'border border-solid border-[var(--Border-Secondary,#efd5d9)] bg-[var(--Surface-Dark,#f7e9e9)] text-[var(--Text-Secondary,#403a3c)]',
+  filled: 'bg-[var(--color-interactive,#d33163)] text-[var(--color-text-on-color,#fcf7f7)]',
+  tonal: 'border border-solid border-[var(--color-border-subtle,#efd5d9)] bg-[var(--color-field,#f7e9e9)] text-[var(--color-text-secondary,#403a3c)]',
 }
 
 const focusedClasses: Record<ExtendedFABColor, string> = {
-  filled: 'border border-solid border-[var(--Border-Tertiary,#dd9eb8)] bg-[var(--Surface-Button-primary,#d33163)]',
-  tonal: 'border border-solid border-[var(--Border-Tertiary,#dd9eb8)] bg-[var(--Surface-Dark,#f7e9e9)]',
+  filled: 'border border-solid border-[var(--color-border-strong,#dd9eb8)] bg-[var(--color-interactive,#d33163)]',
+  tonal: 'border border-solid border-[var(--color-border-strong,#dd9eb8)] bg-[var(--color-field,#f7e9e9)]',
 }
 
 const hoverClasses: Record<ExtendedFABColor, string> = {
-  filled: 'bg-[var(--Surface-Button-primary,#d33163)] shadow-[0px_1px_3px_0.05px_var(--Elevation-Button-hover,#efd5d9),inset_0px_8px_16px_0px_rgba(255,255,255,0.16),inset_0px_2px_0px_0px_rgba(255,255,255,0.1)]',
-  tonal: 'border border-solid border-[var(--Border-Secondary,#efd5d9)] bg-[var(--Surface-Dark,#f7e9e9)] shadow-[0px_1px_3px_0.05px_var(--Elevation-Button-hover,#efd5d9),inset_0px_8px_16px_0px_rgba(255,255,255,0.16),inset_0px_2px_0px_0px_rgba(255,255,255,0.1)]',
+  filled: 'bg-[var(--color-interactive,#d33163)] shadow-[0px_1px_3px_0.05px_var(--shadow-button-hover,#efd5d9),inset_0px_8px_16px_0px_rgba(255,255,255,0.16),inset_0px_2px_0px_0px_rgba(255,255,255,0.1)]',
+  tonal: 'border border-solid border-[var(--color-border-subtle,#efd5d9)] bg-[var(--color-field,#f7e9e9)] shadow-[0px_1px_3px_0.05px_var(--shadow-button-hover,#efd5d9),inset_0px_8px_16px_0px_rgba(255,255,255,0.16),inset_0px_2px_0px_0px_rgba(255,255,255,0.1)]',
 }
 
 const disabledClasses: Record<ExtendedFABColor, string> = {
-  filled: 'bg-[var(--Surface-Disabled,#D3CED0)] text-[var(--Text-Tertiary,#6B6164)]',
-  tonal: 'bg-[var(--Surface-Disabled,#D3CED0)] text-[var(--Text-Tertiary,#6B6164)]',
+  filled: 'bg-[var(--color-field-disabled,#D3CED0)] text-[var(--color-text-tertiary,#6B6164)]',
+  tonal: 'bg-[var(--color-field-disabled,#D3CED0)] text-[var(--color-text-tertiary,#6B6164)]',
 }
 
 const rippleColorClasses: Record<ExtendedFABColor, string> = {

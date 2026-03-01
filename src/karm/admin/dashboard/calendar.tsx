@@ -160,7 +160,7 @@ export function Calendar({ onDateSelect, hasCorrection }: CalendarProps) {
     <div className="w-full">
       <div className="flex-direction-row justify-flex-start mb-6 flex w-full items-center">
         <DropdownMenu>
-          <DropdownMenuTrigger className="T6-Reg flex items-center gap-2 text-[var(--Mapped-Text-Secondary)]">
+          <DropdownMenuTrigger className="T6-Reg flex items-center gap-2 text-[var(--color-text-secondary)]">
             {selectedMonth}
             <FilledArrowIcon />
           </DropdownMenuTrigger>
@@ -192,16 +192,16 @@ export function Calendar({ onDateSelect, hasCorrection }: CalendarProps) {
             <button
               aria-label="Previous"
               onClick={() => handleDateChange('prev')}
-              className="rounded-full p-1 hover:bg-[var(--Mapped-Surface-Secondary)]"
+              className="rounded-full p-1 hover:bg-[var(--color-layer-02)]"
             >
-              <ArrowLeftIcon className="h-5 w-5 text-[var(--Mapped-Text-Secondary)]" />
+              <ArrowLeftIcon className="h-5 w-5 text-[var(--color-text-secondary)]" />
             </button>
             <button
               aria-label="Next"
               onClick={() => handleDateChange('next')}
-              className="rounded-full p-1 hover:bg-[var(--Mapped-Surface-Secondary)]"
+              className="rounded-full p-1 hover:bg-[var(--color-layer-02)]"
             >
-              <ArrowForwardIcon className="h-5 w-5 text-[var(--Mapped-Text-Secondary)]" />
+              <ArrowForwardIcon className="h-5 w-5 text-[var(--color-text-secondary)]" />
             </button>
           </div>
         </div>
@@ -215,7 +215,7 @@ export function Calendar({ onDateSelect, hasCorrection }: CalendarProps) {
         {activeTimeFrame === 'monthly' &&
           ['SUN', 'MON', 'TUE', 'WED', 'THU', 'FRI', 'SAT'].map((weekDay) => (
             <div key={weekDay} className="pb-2 pt-4 text-center">
-              <span className="L3 uppercase text-[var(--Mapped-Text-Tertiary)]">
+              <span className="L3 uppercase text-[var(--color-text-tertiary)]">
                 {weekDay}
               </span>
             </div>
@@ -232,7 +232,7 @@ export function Calendar({ onDateSelect, hasCorrection }: CalendarProps) {
                 : 'pb-0 pt-0'
             } flex cursor-pointer flex-col items-center text-center ${
               activeTimeFrame === 'weekly' && activeIndex === index
-                ? 'bg-[var(--Mapped-Surface-Secondary)]'
+                ? 'bg-[var(--color-layer-02)]'
                 : ''
             } ${day.isPadding ? 'opacity-50' : ''} `}
             onClick={() => handleDayClick(index, day.fullDate)}
@@ -241,7 +241,7 @@ export function Calendar({ onDateSelect, hasCorrection }: CalendarProps) {
             }
           >
             {activeTimeFrame === 'weekly' && (
-              <span className="L3 mb-2 uppercase text-[var(--Mapped-Text-Tertiary)]">
+              <span className="L3 mb-2 uppercase text-[var(--color-text-tertiary)]">
                 {day.day}
               </span>
             )}
@@ -249,25 +249,25 @@ export function Calendar({ onDateSelect, hasCorrection }: CalendarProps) {
               className={`mx-1 my-1 flex-col ${
                 activeTimeFrame === 'monthly' &&
                 isSameDay(day.fullDate, selectedDate)
-                  ? 'flex h-10 w-10 items-center justify-center rounded-full bg-[var(--Surface-Purple-Dark)] shadow-[0px_4px_4px_0px_rgba(255,255,255,0.25)_inset,0px_0px_4px_0px_var(--primitives-purple-400-b,#AB9DED)_inset]'
+                  ? 'flex h-10 w-10 items-center justify-center rounded-full bg-[var(--color-layer-accent)] shadow-[0px_4px_4px_0px_rgba(255,255,255,0.25)_inset,0px_0px_4px_0px_var(--primitives-purple-400-b,#AB9DED)_inset]'
                   : 'flex h-10 w-10 items-center justify-center'
               }`}
             >
               <span
                 className={`B1-Reg flex h-10 w-10 items-center justify-center rounded-full ${
                   day.isToday
-                    ? 'bg-[var(--Mapped-Text-Highlight2)] p-2 text-[var(--neutrals-lightest)]'
-                    : 'text-[var(--Mapped-Text-Secondary)]'
+                    ? 'bg-[var(--color-interactive-hover)] p-2 text-[var(--color-text-on-color)]'
+                    : 'text-[var(--color-text-secondary)]'
                 } ${
                   day.isActive && !day.isToday
-                    ? 'bg-[var(--Mapped-Surface-Dark)]'
+                    ? 'bg-[var(--color-field)]'
                     : ''
                 }`}
               >
                 {day.date}
               </span>
               {hasCorrection && hasCorrection(day.fullDate) && (
-                <div className="absolute z-10 mt-6 h-[6px] w-[6px] translate-y-[5px] rounded-[60px] bg-[var(--Text-Error)]"></div>
+                <div className="absolute z-10 mt-6 h-[6px] w-[6px] translate-y-[5px] rounded-[60px] bg-[var(--color-text-error)]"></div>
               )}
             </div>
           </div>

@@ -228,13 +228,13 @@ export const Toolbar: Story = {
         alignItems: 'center',
         padding: '4px 8px',
         borderRadius: '8px',
-        border: '1px solid var(--border-primary, #e0e0e0)',
+        border: '1px solid var(--color-border-default, #e0e0e0)',
       }}
     >
       <IconButton size="small" icon={<Pencil size={20} />} />
       <IconButton size="small" icon={<Copy size={20} />} />
       <IconButton size="small" icon={<Share2 size={20} />} />
-      <div style={{ width: '1px', height: '20px', background: 'var(--border-primary, #e0e0e0)', margin: '0 4px' }} />
+      <div style={{ width: '1px', height: '20px', background: 'var(--color-border-default, #e0e0e0)', margin: '0 4px' }} />
       <IconButton size="small" icon={<Trash2 size={20} />} />
     </div>
   ),

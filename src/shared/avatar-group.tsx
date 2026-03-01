@@ -88,7 +88,7 @@ function AvatarGroup({
               <AvatarImage src={user.image} alt={user.name} />
             )}
             <AvatarFallback
-              className="bg-[var(--color-field)] font-[Ranade] font-semibold text-[var(--color-text-on-color)]"
+              className="bg-[var(--color-field)] font-body font-semibold text-[var(--color-text-on-color)]"
             >
               {initials}
             </AvatarFallback>
@@ -117,7 +117,7 @@ function AvatarGroup({
               className={cn(
                 avatarSizeVariants({ size }),
                 overlapClass,
-                'flex cursor-default items-center justify-center bg-[var(--color-layer-03)] font-[Ranade] font-semibold text-[var(--color-text-on-color)]',
+                'flex cursor-default items-center justify-center bg-[var(--color-layer-03)] font-body font-semibold text-[var(--color-text-on-color)]',
               )}
               style={{ zIndex: 0 }}
             >

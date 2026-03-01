@@ -17,8 +17,8 @@ const sizeClasses: Record<IconButtonSize, string> = {
 const stateClasses: Record<IconButtonState, string> = {
   default: '',
   focused: 'border-[1px] border-[var(--border-tertiary)]',
-  hover: 'hover:bg-[var(--Elevation-Card-hover-primary)]',
-  pressed: 'bg-[var(--Elevation-Card-hover-primary)]',
+  hover: 'hover:bg-[var(--color-layer-02)]',
+  pressed: 'bg-[var(--color-layer-02)]',
 }
 
 export interface IconButtonProps extends React.ButtonHTMLAttributes<HTMLButtonElement> {
@@ -113,7 +113,7 @@ const IconButton = React.forwardRef<HTMLButtonElement, IconButtonProps>(
           {content}
           {!disabled && isRippling && (
             <div
-              className="absolute w-[100px] h-[100px] rounded-full bg-[var(--Text-Button-Text)] pointer-events-none opacity-50 animate-ripple-icon"
+              className="absolute w-[100px] h-[100px] rounded-full bg-[var(--color-text-on-color)] pointer-events-none opacity-50 animate-ripple-icon"
               style={{
                 left: `${ripplePosition.x - 50}px`,
                 top: `${ripplePosition.y - 50}px`,

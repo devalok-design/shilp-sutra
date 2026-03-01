@@ -58,10 +58,10 @@ export function DeleteBreak({ id, userId, onDelete }: DeleteBreakProps) {
       </DialogTrigger>
       <DialogContent className="flex w-[335px] flex-col items-center gap-6 p-6 max-md:w-[90%] max-md:rounded-[8px]">
         <div className="flex w-full max-w-[240px] flex-col items-center gap-3 text-center">
-          <p className="P6 text-center text-[var(--Text-Primary)]">
+          <p className="P6 text-center text-[var(--color-text-primary)]">
             Delete this break?
           </p>
-          <p className="P2 text-[var(--Mapped-Text-Tertiary)]">
+          <p className="P2 text-[var(--color-text-tertiary)]">
             This will be permanently deleted and can not undo
           </p>
         </div>

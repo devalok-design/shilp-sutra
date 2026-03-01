@@ -144,7 +144,7 @@ function ReviewTab({
             return (
               <div
                 key={review.id}
-                className="rounded-lg border border-[var(--border-primary)] bg-[var(--Mapped-Surface-Primary)] p-3"
+                className="rounded-lg border border-[var(--color-border-default)] bg-[var(--color-layer-01)] p-3"
               >
                 {/* Header */}
                 <div className="flex items-center gap-2.5">
@@ -155,15 +155,15 @@ function ReviewTab({
                         alt={review.reviewer.name}
                       />
                     )}
-                    <AvatarFallback className="bg-[var(--Mapped-Surface-Darker)] text-[8px] font-semibold text-[var(--Mapped-Text-On-Dark-Primary)]">
+                    <AvatarFallback className="bg-[var(--color-layer-03)] text-[8px] font-semibold text-[var(--color-text-on-color)]">
                       {getInitials(review.reviewer.name)}
                     </AvatarFallback>
                   </Avatar>
                   <div className="flex-1 min-w-0">
-                    <span className="text-[13px] font-[Ranade] font-medium text-[var(--Mapped-Text-Primary)]">
+                    <span className="text-[13px] font-body font-medium text-[var(--color-text-primary)]">
                       {review.reviewer.name}
                     </span>
-                    <span className="ml-2 text-[11px] font-[Ranade] text-[var(--Mapped-Text-Quaternary)]">
+                    <span className="ml-2 text-[11px] font-body text-[var(--color-text-placeholder)]">
                       requested by {review.requestedBy.name}
                     </span>
                   </div>
@@ -177,8 +177,8 @@ function ReviewTab({
 
                 {/* Feedback */}
                 {review.feedback && (
-                  <div className="mt-2.5 rounded-md bg-[var(--Mapped-Surface-Secondary)] px-3 py-2">
-                    <p className="text-[12px] font-[Ranade] leading-relaxed text-[var(--Mapped-Text-Secondary)]">
+                  <div className="mt-2.5 rounded-md bg-[var(--color-layer-02)] px-3 py-2">
+                    <p className="text-[12px] font-body leading-relaxed text-[var(--color-text-secondary)]">
                       {review.feedback}
                     </p>
                   </div>
@@ -199,7 +199,7 @@ function ReviewTab({
                           }
                           placeholder="Add feedback (optional)..."
                           rows={2}
-                          className="w-full resize-none rounded-md border border-[var(--border-primary)] bg-transparent px-2.5 py-2 text-[12px] font-[Ranade] text-[var(--Mapped-Text-Primary)] placeholder:text-[var(--Mapped-Text-Quaternary)] outline-none focus:border-[var(--border-secondary)]"
+                          className="w-full resize-none rounded-md border border-[var(--color-border-default)] bg-transparent px-2.5 py-2 text-[12px] font-body text-[var(--color-text-primary)] placeholder:text-[var(--color-text-placeholder)] outline-none focus:border-[var(--color-border-subtle)]"
                         />
                         <div className="flex items-center gap-1.5">
                           {RESPONSE_OPTIONS.map((opt) => {
@@ -210,13 +210,13 @@ function ReviewTab({
                                 type="button"
                                 onClick={() => handleRespond(review.id, opt.status)}
                                 className={cn(
-                                  'inline-flex items-center gap-1 rounded-md px-2.5 py-1 text-[11px] font-[Ranade] font-semibold transition-colors',
+                                  'inline-flex items-center gap-1 rounded-md px-2.5 py-1 text-[11px] font-body font-semibold transition-colors',
                                   opt.status === 'APPROVED' &&
-                                    'bg-[var(--Surface-Success)] text-[var(--Text-Success)] hover:opacity-90',
+                                    'bg-[var(--color-success-surface)] text-[var(--color-text-success)] hover:opacity-90',
                                   opt.status === 'CHANGES_REQUESTED' &&
-                                    'bg-[var(--Surface-Pending)] text-[var(--Text-Pending)] hover:opacity-90',
+                                    'bg-[var(--color-warning-surface)] text-[var(--color-text-warning)] hover:opacity-90',
                                   opt.status === 'REJECTED' &&
-                                    'bg-[var(--Mapped-Error-Suraface)] text-[var(--Text-Error)] hover:opacity-90',
+                                    'bg-[var(--color-error-surface)] text-[var(--color-text-error)] hover:opacity-90',
                                 )}
                               >
                                 <Icon className="h-3 w-3" strokeWidth={2} />
@@ -227,7 +227,7 @@ function ReviewTab({
                           <button
                             type="button"
                             onClick={() => setExpandedId(null)}
-                            className="ml-auto text-[11px] font-[Ranade] text-[var(--Mapped-Text-Quaternary)] hover:text-[var(--Mapped-Text-Secondary)]"
+                            className="ml-auto text-[11px] font-body text-[var(--color-text-placeholder)] hover:text-[var(--color-text-secondary)]"
                           >
                             Cancel
                           </button>
@@ -237,7 +237,7 @@ function ReviewTab({
                       <button
                         type="button"
                         onClick={() => setExpandedId(review.id)}
-                        className="text-[12px] font-[Ranade] font-medium text-[var(--Mapped-Text-Highlight)] transition-colors hover:underline"
+                        className="text-[12px] font-body font-medium text-[var(--color-interactive)] transition-colors hover:underline"
                       >
                         Respond
                       </button>
@@ -246,7 +246,7 @@ function ReviewTab({
                 )}
 
                 {/* Timestamp */}
-                <p className="mt-2 text-[10px] font-[Ranade] text-[var(--Mapped-Text-Quaternary)]">
+                <p className="mt-2 text-[10px] font-body text-[var(--color-text-placeholder)]">
                   {formatDate(review.createdAt)}
                 </p>
               </div>
@@ -267,24 +267,24 @@ function ReviewTab({
         <PopoverTrigger asChild>
           <button
             type="button"
-            className="mt-3 inline-flex items-center gap-1.5 rounded-lg px-2 py-1.5 text-[13px] font-[Ranade] text-[var(--Mapped-Text-Quaternary)] transition-colors hover:bg-[var(--Mapped-Surface-Dark)] hover:text-[var(--Mapped-Text-Secondary)]"
+            className="mt-3 inline-flex items-center gap-1.5 rounded-lg px-2 py-1.5 text-[13px] font-body text-[var(--color-text-placeholder)] transition-colors hover:bg-[var(--color-field)] hover:text-[var(--color-text-secondary)]"
           >
             <Plus className="h-3.5 w-3.5" strokeWidth={1.5} />
             Request Review
           </button>
         </PopoverTrigger>
         <PopoverContent
-          className="w-[220px] border-[var(--border-primary)] bg-[var(--Mapped-Surface-Primary)] p-0"
+          className="w-[220px] border-[var(--color-border-default)] bg-[var(--color-layer-01)] p-0"
           align="start"
           sideOffset={4}
         >
-          <div className="border-b border-[var(--border-primary)] px-3 py-2">
+          <div className="border-b border-[var(--color-border-default)] px-3 py-2">
             <input
               type="text"
               placeholder="Search members..."
               value={searchTerm}
               onChange={(e) => setSearchTerm(e.target.value)}
-              className="w-full bg-transparent text-[13px] font-[Ranade] text-[var(--Mapped-Text-Primary)] placeholder:text-[var(--Mapped-Text-Quaternary)] outline-none"
+              className="w-full bg-transparent text-[13px] font-body text-[var(--color-text-primary)] placeholder:text-[var(--color-text-placeholder)] outline-none"
             />
           </div>
           <div className="max-h-[200px] overflow-y-auto py-1">
@@ -297,23 +297,23 @@ function ReviewTab({
                   setReviewerOpen(false)
                   setSearchTerm('')
                 }}
-                className="flex w-full items-center gap-2.5 px-3 py-1.5 text-left transition-colors hover:bg-[var(--Mapped-Surface-Dark)]"
+                className="flex w-full items-center gap-2.5 px-3 py-1.5 text-left transition-colors hover:bg-[var(--color-field)]"
               >
                 <Avatar className="h-5 w-5">
                   {member.image && (
                     <AvatarImage src={member.image} alt={member.name} />
                   )}
-                  <AvatarFallback className="bg-[var(--Mapped-Surface-Darker)] text-[8px] font-semibold text-[var(--Mapped-Text-On-Dark-Primary)]">
+                  <AvatarFallback className="bg-[var(--color-layer-03)] text-[8px] font-semibold text-[var(--color-text-on-color)]">
                     {getInitials(member.name)}
                   </AvatarFallback>
                 </Avatar>
-                <span className="flex-1 truncate text-[13px] font-[Ranade] text-[var(--Mapped-Text-Primary)]">
+                <span className="flex-1 truncate text-[13px] font-body text-[var(--color-text-primary)]">
                   {member.name}
                 </span>
               </button>
             ))}
             {filteredMembers.length === 0 && (
-              <p className="px-3 py-4 text-center text-[12px] font-[Ranade] text-[var(--Mapped-Text-Quaternary)]">
+              <p className="px-3 py-4 text-center text-[12px] font-body text-[var(--color-text-placeholder)]">
                 No members found
               </p>
             )}

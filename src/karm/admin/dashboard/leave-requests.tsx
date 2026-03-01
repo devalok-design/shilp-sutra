@@ -160,10 +160,10 @@ export function LeaveRequests({
         {requests?.map((request) => (
           <div
             key={request.id}
-            className="flex flex-col justify-start rounded-[8px] border-b border-[var(--border-primary)] md:gap-4 md:border-b-0 max-md:border-none"
+            className="flex flex-col justify-start rounded-[8px] border-b border-[var(--color-border-default)] md:gap-4 md:border-b-0 max-md:border-none"
           >
-            <div className="flex flex-col justify-between rounded-t-[8px] border border-[var(--border-primary)] md:flex-row md:border-0 md:px-2 md:py-3.5 max-md:border-b-0">
-              <div className="flex items-center gap-3 border-b border-[var(--border-primary)] p-4 md:border-none md:p-0 max-md:items-start">
+            <div className="flex flex-col justify-between rounded-t-[8px] border border-[var(--color-border-default)] md:flex-row md:border-0 md:px-2 md:py-3.5 max-md:border-b-0">
+              <div className="flex items-center gap-3 border-b border-[var(--color-border-default)] p-4 md:border-none md:p-0 max-md:items-start">
                 <img
                   src={userImages[request.user?.id || '']}
                   className="h-10 w-10 overflow-hidden rounded-full bg-[#FCF7F7]"
@@ -172,7 +172,7 @@ export function LeaveRequests({
                 <div className="flex max-w-[277px] flex-col items-start gap-1 sm:max-w-none">
                   <div className="flex flex-row gap-1.5">
                     <div className="flex items-center gap-2">
-                      <p className="B3-Reg text-[var(--Mapped-Text-Secondary)]">
+                      <p className="B3-Reg text-[var(--color-text-secondary)]">
                         {request.user?.name}
                       </p>
                     </div>
@@ -180,25 +180,25 @@ export function LeaveRequests({
                   {/* for one day leave, display one line message & date */}
                   {isSingleDayRequest(request) ? (
                     <div className="flex w-full flex-col items-center gap-2 md:flex-row md:flex-wrap max-md:items-start">
-                      <p className="B1 semibold text-[var(--Mapped-Text-Primary)]">
+                      <p className="B1 semibold text-[var(--color-text-primary)]">
                         {removeAllEmojis(request.reason)}
                       </p>
-                      <p className="B1 hidden font-semibold text-[var(--Mapped-Text-Tertiary)] md:block">
+                      <p className="B1 hidden font-semibold text-[var(--color-text-tertiary)] md:block">
                         &bull;
                       </p>
-                      <p className="B1-Reg text-[var(--Mapped-Text-Tertiary)]">
+                      <p className="B1-Reg text-[var(--color-text-tertiary)]">
                         {formatDate(new Date(request.startDate))}
                       </p>
                     </div>
                   ) : (
                     <div className="flex flex-col items-start justify-start gap-2">
-                      <p className="B1 semibold text-[var(--Mapped-Text-Primary)]">
+                      <p className="B1 semibold text-[var(--color-text-primary)]">
                         {removeAllEmojis(request.reason)}
                       </p>
-                      <p className="B1-Reg text-[var(--Mapped-Text-Tertiary)]">
+                      <p className="B1-Reg text-[var(--color-text-tertiary)]">
                         {formatDate(new Date(request.startDate))} to{' '}
                         {formatDate(new Date(request.endDate))}
-                        <span className="text-[var(--Mapped-Text-Highlight2)]">
+                        <span className="text-[var(--color-interactive-hover)]">
                           {', '}
                           {request.numberOfDays} days
                         </span>
@@ -208,7 +208,7 @@ export function LeaveRequests({
                 </div>
               </div>
               <div className="flex h-full w-full items-center justify-between self-stretch sm:w-auto sm:justify-start">
-                <div className="flex w-1/2 justify-center border-r border-[var(--border-primary)] p-1 md:border-r-0">
+                <div className="flex w-1/2 justify-center border-r border-[var(--color-border-default)] p-1 md:border-r-0">
                   <Tooltip delayDuration={0}>
                     <TooltipTrigger asChild>
                       <button
@@ -235,7 +235,7 @@ export function LeaveRequests({
                         className={`rounded-[128px] p-2 ${
                           activeRequest?.id === request.id &&
                           activeAction === 'rejectBreak'
-                            ? 'bg-[var(--Surface-Error)]'
+                            ? 'bg-[var(--color-error-surface)]'
                             : ''
                         } ${
                           request?.user?.id === currentUserId
@@ -247,7 +247,7 @@ export function LeaveRequests({
                           className={`h-6 w-6 ${
                             activeRequest?.id === request.id &&
                             activeAction === 'rejectBreak'
-                              ? 'text-[var(--Text-Error)]'
+                              ? 'text-[var(--color-text-error)]'
                               : ''
                           }`}
                         />
@@ -260,7 +260,7 @@ export function LeaveRequests({
                     )}
                   </Tooltip>
                 </div>
-                <div className="flex w-1/2 justify-center bg-[var(--Surface-Success)] p-1 md:bg-transparent">
+                <div className="flex w-1/2 justify-center bg-[var(--color-success-surface)] p-1 md:bg-transparent">
                   <Tooltip delayDuration={0}>
                     <TooltipTrigger asChild>
                       <button
@@ -287,7 +287,7 @@ export function LeaveRequests({
                         className={`rounded-[128px] p-2 ${
                           activeRequest?.id === request.id &&
                           activeAction === 'approveBreak'
-                            ? 'bg-[var(--Surface-Success)]'
+                            ? 'bg-[var(--color-success-surface)]'
                             : ''
                         } ${
                           request?.user?.id === currentUserId
@@ -311,9 +311,9 @@ export function LeaveRequests({
               activeRequest &&
               activeRequest?.id === request.id) ||
               isMobile) && (
-              <div className="flex flex-row items-start justify-between rounded-[8px] border-[1px] border-[var(--border-primary)] py-1 max-md:rounded-t-none">
+              <div className="flex flex-row items-start justify-between rounded-[8px] border-[1px] border-[var(--color-border-default)] py-1 max-md:rounded-t-none">
                 <div className="flex w-full flex-col items-start justify-start gap-1 px-4 pb-1 pt-[10px]">
-                  <div className="L4 text-[var(--Mapped-Text-Quaternary)]">
+                  <div className="L4 text-[var(--color-text-placeholder)]">
                     comment
                   </div>
                   <input
@@ -321,7 +321,7 @@ export function LeaveRequests({
                     value={message}
                     onChange={(e) => setMessage(e?.target?.value)}
                     placeholder="Enter a Comment"
-                    className="P3 w-full text-[var(--Mapped-Text-Primary)] outline-none"
+                    className="P3 w-full text-[var(--color-text-primary)] outline-none"
                   />
                 </div>
                 <button

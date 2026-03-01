@@ -106,8 +106,8 @@ const ACTION_MAP: Record<string, ActionConfig> = {
   },
   'task.commented': {
     icon: MessageSquare,
-    color: 'text-[var(--Mapped-Text-Highlight)]',
-    dotColor: 'bg-[var(--Mapped-Text-Highlight)]',
+    color: 'text-[var(--color-interactive)]',
+    dotColor: 'bg-[var(--color-interactive)]',
     getDescription: () => 'added a comment',
   },
   'task.file_uploaded': {
@@ -139,7 +139,7 @@ const ACTION_MAP: Record<string, ActionConfig> = {
   },
   'task.visibility_changed': {
     icon: Eye,
-    color: 'text-[var(--Mapped-Text-Tertiary)]',
+    color: 'text-[var(--color-text-tertiary)]',
     dotColor: 'bg-[var(--neutral-500)]',
     getDescription: (entry) => {
       const meta = entry.metadata as Record<string, unknown> | null
@@ -175,7 +175,7 @@ const ACTION_MAP: Record<string, ActionConfig> = {
 
 const DEFAULT_ACTION: ActionConfig = {
   icon: Activity,
-  color: 'text-[var(--Mapped-Text-Quaternary)]',
+  color: 'text-[var(--color-text-placeholder)]',
   dotColor: 'bg-[var(--neutral-400)]',
   getDescription: (entry) => entry.action,
 }
@@ -233,7 +233,7 @@ function ActivityTab({ activities, className }: ActivityTabProps) {
   return (
     <div className={cn('relative', className)}>
       {/* Timeline line */}
-      <div className="absolute left-[11px] top-2 bottom-2 w-px bg-[var(--border-primary)]" />
+      <div className="absolute left-[11px] top-2 bottom-2 w-px bg-[var(--color-border-default)]" />
 
       {/* Entries */}
       <div className="space-y-4">
@@ -246,10 +246,10 @@ function ActivityTab({ activities, className }: ActivityTabProps) {
           return (
             <div key={entry.id} className="relative flex gap-3 pl-0">
               {/* Dot on timeline */}
-              <div className="relative z-10 flex h-[22px] w-[22px] shrink-0 items-center justify-center rounded-full bg-[var(--Mapped-Surface-Primary)]">
+              <div className="relative z-10 flex h-[22px] w-[22px] shrink-0 items-center justify-center rounded-full bg-[var(--color-layer-01)]">
                 <div
                   className={cn(
-                    'flex h-5 w-5 items-center justify-center rounded-full bg-[var(--Mapped-Surface-Secondary)]',
+                    'flex h-5 w-5 items-center justify-center rounded-full bg-[var(--color-layer-02)]',
                   )}
                 >
                   <Icon
@@ -261,15 +261,15 @@ function ActivityTab({ activities, className }: ActivityTabProps) {
 
               {/* Content */}
               <div className="flex-1 min-w-0 pt-0.5">
-                <p className="text-[12px] font-[Ranade] leading-snug">
-                  <span className="font-medium text-[var(--Mapped-Text-Primary)]">
+                <p className="text-[12px] font-body leading-snug">
+                  <span className="font-medium text-[var(--color-text-primary)]">
                     {actorName}
                   </span>
-                  <span className="text-[var(--Mapped-Text-Tertiary)]">
+                  <span className="text-[var(--color-text-tertiary)]">
                     {' '}{description}
                   </span>
                 </p>
-                <p className="mt-0.5 text-[10px] font-[Ranade] text-[var(--Mapped-Text-Quaternary)]">
+                <p className="mt-0.5 text-[10px] font-body text-[var(--color-text-placeholder)]">
                   {formatTimestamp(entry.timestamp)}
                 </p>
               </div>

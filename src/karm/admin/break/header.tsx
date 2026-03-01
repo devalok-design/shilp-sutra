@@ -93,19 +93,19 @@ export function BreakAdminHeader({
   }
 
   return (
-    <div className="flex min-w-[800px] items-center justify-between bg-[var(--Mapped-Surface-Quaternary)] px-6 py-5 max-md:justify-start max-md:gap-[20px] max-lg:min-w-[100%]">
+    <div className="flex min-w-[800px] items-center justify-between bg-[var(--color-field)] px-6 py-5 max-md:justify-start max-md:gap-[20px] max-lg:min-w-[100%]">
       <div className="flex flex-col gap-4">
         {filters.selectedAssociate && (
           <>
-            <p className="L3 text-[var(--Mapped-Text-Tertiary)]">
+            <p className="L3 text-[var(--color-text-tertiary)]">
               Break Balance
             </p>
             <div className="flex items-end">
-              <p className="T2-Reg semibold mr-1 text-[var(--Mapped-Text-Highlight)]">
+              <p className="T2-Reg semibold mr-1 text-[var(--color-interactive)]">
                 {breakBalance?.remainingDays || 0}
               </p>
 
-              <p className="T5-Reg translate-y-[-5px] text-[var(--Mapped-Text-Quaternary)]">
+              <p className="T5-Reg translate-y-[-5px] text-[var(--color-text-placeholder)]">
                 / {breakBalance?.breakBalance || 0}
               </p>
             </div>
@@ -115,7 +115,7 @@ export function BreakAdminHeader({
 
       <header className="flex items-center gap-3">
         {filters.selectedAssociate ? (
-          <div className="B2-Reg flex flex-row items-center justify-start gap-1 rounded-[6px] bg-[var(--Alias-Semantics-Highlight-darkest)] p-1.5 text-[var(--Text-Button-Text)]">
+          <div className="B2-Reg flex flex-row items-center justify-start gap-1 rounded-[6px] bg-[var(--Alias-Semantics-Highlight-darkest)] p-1.5 text-[var(--color-text-on-color)]">
             <div className="flex items-center justify-start gap-0.5">
               {userImages[filters.selectedAssociate.id] ? (
                 <img
@@ -124,14 +124,14 @@ export function BreakAdminHeader({
                   className="h-5 w-5 rounded-full"
                 />
               ) : (
-                <div className="flex h-5 w-5 items-center justify-center rounded-full bg-[var(--Mapped-Surface-Secondary)]">
-                  <span className="text-[var(--Mapped-Text-Highlight)]">
+                <div className="flex h-5 w-5 items-center justify-center rounded-full bg-[var(--color-layer-02)]">
+                  <span className="text-[var(--color-interactive)]">
                     {filters.selectedAssociate.name.charAt(0)}
                   </span>
                 </div>
               )}
 
-              <span className="B2-Reg mx-0.5 text-[var(--Text-Button-Text)]">
+              <span className="B2-Reg mx-0.5 text-[var(--color-text-on-color)]">
                 {filters.selectedAssociate.name}
               </span>
             </div>
@@ -144,15 +144,15 @@ export function BreakAdminHeader({
               }
               className="border-0 p-0"
             >
-              <CrossIcon className="h-4 w-4 text-[var(--Text-Button-Text)]" />
+              <CrossIcon className="h-4 w-4 text-[var(--color-text-on-color)]" />
             </button>
           </div>
         ) : (
           <DropdownMenu>
-            <DropdownMenuTrigger className="B2-Reg flex flex-row items-center justify-between rounded-[6px] border border-[var(--border-secondary)] bg-[var(--Mapped-Surface-Primary)] px-2 py-1.5">
+            <DropdownMenuTrigger className="B2-Reg flex flex-row items-center justify-between rounded-[6px] border border-[var(--color-border-subtle)] bg-[var(--color-layer-01)] px-2 py-1.5">
               <div className="flex items-center">
                 <PersonIcon className="h-4 w-4" />
-                <span className="B2-Reg mx-2 text-[var(--Mapped-Text-Secondary)] max-lg:mx-0 max-lg:text-[12px]">
+                <span className="B2-Reg mx-2 text-[var(--color-text-secondary)] max-lg:mx-0 max-lg:text-[12px]">
                   Associate
                 </span>
               </div>
@@ -182,12 +182,12 @@ export function BreakAdminHeader({
                         />
                       ) : (
                         <div className="flex h-6 w-6 items-center justify-center rounded-full bg-gray-200">
-                          <span className="text-sm text-[var(--Mapped-Text-Highlight)]">
+                          <span className="text-sm text-[var(--color-interactive)]">
                             {user.name.charAt(0)}
                           </span>
                         </div>
                       )}
-                      <span className="B2-Reg text-[var(--Mapped-Text-Secondary)]">
+                      <span className="B2-Reg text-[var(--color-text-secondary)]">
                         {user.name}
                       </span>
                     </DropdownMenuItem>
@@ -200,7 +200,7 @@ export function BreakAdminHeader({
 
         {/* Date Filter */}
         {filters.dateFilterEnd && (
-          <div className="B2-Reg flex-direction-row flex items-center justify-between rounded-[6px] bg-[var(--Alias-Semantics-Highlight-darkest)] px-2 py-[6px] text-[var(--Text-Button-Text)]">
+          <div className="B2-Reg flex-direction-row flex items-center justify-between rounded-[6px] bg-[var(--Alias-Semantics-Highlight-darkest)] px-2 py-[6px] text-[var(--color-text-on-color)]">
             <div className="flex items-center">
               <CalendarIcon />
               <span className="ml-[2px] mr-1">
@@ -232,10 +232,10 @@ export function BreakAdminHeader({
             setFilters((prev) => ({ ...prev, isOpen: open }))
           }}
         >
-          <DropdownMenuTrigger className="B2-Reg flex-direction-row flex items-center justify-between rounded-[6px] border border-[var(--border-secondary)] bg-[var(--Mapped-Surface-Primary)] p-1.5">
+          <DropdownMenuTrigger className="B2-Reg flex-direction-row flex items-center justify-between rounded-[6px] border border-[var(--color-border-subtle)] bg-[var(--color-layer-01)] p-1.5">
             <div className="flex items-center">
               <CalendarDateIcon />
-              <span className="mx-2 text-[var(--Mapped-Text-Secondary)]">
+              <span className="mx-2 text-[var(--color-text-secondary)]">
                 Date
               </span>
             </div>
@@ -249,7 +249,7 @@ export function BreakAdminHeader({
                   icon={<ArrowLeftIcon />}
                   onClick={handlePrev}
                 />
-                <span className="B2-Reg text-[var(--Mapped-Text-Secondary)]">
+                <span className="B2-Reg text-[var(--color-text-secondary)]">
                   {monthMap[filters.currMonth].name}
                 </span>
                 <IconButton
@@ -269,7 +269,7 @@ export function BreakAdminHeader({
                     }))
                   }}
                 />
-                <span className="B2-Reg text-[var(--Mapped-Text-Secondary)]">
+                <span className="B2-Reg text-[var(--color-text-secondary)]">
                   {filters.currYear}
                 </span>
                 <IconButton

@@ -117,7 +117,7 @@ const FAB: React.FC<FABProps> = ({
       className={cn(
         // Base styles
         'flex items-center justify-center rounded-[var(--radius-full)] border-none outline-none cursor-pointer transition-[color,background-color,border-color,box-shadow] duration-[var(--duration-moderate)] ease-in-out relative overflow-hidden',
-        'bg-[var(--color-interactive,#d33163)] text-white',
+        'bg-[var(--color-interactive,#d33163)] text-[var(--color-text-on-color)]',
         // Size
         sizeClasses[size],
         // State: focused

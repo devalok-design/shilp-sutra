@@ -140,7 +140,7 @@ export function MessageList({
             return (
               <div key={msg.id} className="flex justify-end">
                 <div className="flex max-w-[85%] items-start gap-2">
-                  <div className="rounded-[var(--radius-2xl)] rounded-br-[var(--radius-sm)] bg-[var(--color-interactive)] px-3.5 py-2.5 text-white">
+                  <div className="rounded-[var(--radius-2xl)] rounded-br-[var(--radius-sm)] bg-[var(--color-interactive)] px-3.5 py-2.5 text-[var(--color-text-on-color)]">
                     <p className="B2-Reg whitespace-pre-wrap">{msg.content}</p>
                   </div>
                   <div className="flex h-7 w-7 shrink-0 items-center justify-center rounded-[var(--radius-full)] bg-[var(--color-field)]">

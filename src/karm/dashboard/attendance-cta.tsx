@@ -95,7 +95,7 @@ export default function AttendanceCTA({
           </div>
           <div className="flex items-center gap-2 rounded-[var(--radius-xl)] bg-[var(--color-success-surface)] px-4 py-2.5">
             <div className="flex h-5 w-5 items-center justify-center rounded-[var(--radius-full)] bg-[var(--color-text-success)]">
-              <IconCheck className="h-3 w-3 text-white" />
+              <IconCheck className="h-3 w-3 text-[var(--color-text-on-color)]" />
             </div>
             <span className="B2-Reg font-semibold text-[var(--color-text-success)]">
               Marked at{' '}
@@ -184,7 +184,7 @@ export default function AttendanceCTA({
           type="button"
           onClick={onMarkAttendance}
           disabled={isSubmitting}
-          className="flex items-center gap-2.5 rounded-[14px] bg-[var(--color-interactive)] px-7 py-3.5 font-semibold text-white shadow-md transition-all hover:-translate-y-0.5 hover:shadow-lg active:translate-y-0 active:scale-[0.98] disabled:opacity-50"
+          className="flex items-center gap-2.5 rounded-[14px] bg-[var(--color-interactive)] px-7 py-3.5 font-semibold text-[var(--color-text-on-color)] shadow-md transition-all hover:-translate-y-0.5 hover:shadow-lg active:translate-y-0 active:scale-[0.98] disabled:opacity-50"
         >
           {isSubmitting ? 'Marking...' : 'Mark Attendance'}
           {!isSubmitting && (

@@ -68,7 +68,7 @@ export function ChatInput({
         {isStreaming ? (
           <button
             onClick={onCancel}
-            className="flex h-8 w-8 shrink-0 items-center justify-center rounded-[var(--radius-lg)] bg-red-500 text-white transition-colors hover:bg-red-600"
+            className="flex h-8 w-8 shrink-0 items-center justify-center rounded-[var(--radius-lg)] bg-red-500 text-[var(--color-text-on-color)] transition-colors hover:bg-red-600"
             aria-label="Stop generating"
           >
             <IconSquare className="h-3.5 w-3.5" />
@@ -77,7 +77,7 @@ export function ChatInput({
           <button
             onClick={handleSend}
             disabled={!text.trim()}
-            className="flex h-8 w-8 shrink-0 items-center justify-center rounded-[var(--radius-lg)] bg-[var(--color-interactive)] text-white transition-colors hover:opacity-90 disabled:opacity-50"
+            className="flex h-8 w-8 shrink-0 items-center justify-center rounded-[var(--radius-lg)] bg-[var(--color-interactive)] text-[var(--color-text-on-color)] transition-colors hover:opacity-90 disabled:opacity-50"
             aria-label="Send message"
           >
             <IconSend className="h-3.5 w-3.5" />

@@ -94,7 +94,7 @@ export function Breaks({
                     {breakItem.user?.name ||
                       breakItem.user?.name?.split(' ')[0]}
                   </span>
-                  <div className="P3 invisible absolute left-0 top-full z-10 mt-2 whitespace-nowrap rounded bg-gray-900 px-2 py-1 text-sm text-white shadow-lg group-hover:visible">
+                  <div className="P3 invisible absolute left-0 top-full z-10 mt-2 whitespace-nowrap rounded bg-gray-900 px-2 py-1 text-sm text-[var(--color-text-on-color)] shadow-lg group-hover:visible">
                     {breakItem.user?.name}
                   </div>
                 </div>

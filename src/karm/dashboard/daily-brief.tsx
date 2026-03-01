@@ -24,11 +24,11 @@ interface DailyBriefProps {
 // ============================================================
 
 const DOT_COLORS = [
-  'bg-amber-500',
-  'bg-emerald-500',
-  'bg-blue-500',
-  'bg-pink-500',
-  'bg-purple-500',
+  'bg-[var(--color-warning)]',
+  'bg-[var(--color-success)]',
+  'bg-[var(--color-info)]',
+  'bg-[var(--color-interactive)]',
+  'bg-[var(--color-accent)]',
 ]
 
 export default function DailyBrief({

@@ -32,14 +32,14 @@ export interface BoardColumnData {
 // ============================================================
 
 const COLUMN_ACCENTS = [
-  'border-l-blue-400',
-  'border-l-violet-400',
-  'border-l-amber-400',
-  'border-l-emerald-400',
-  'border-l-pink-400',
-  'border-l-cyan-400',
-  'border-l-orange-400',
-  'border-l-teal-400',
+  'border-l-[var(--color-info)]',
+  'border-l-[var(--color-accent)]',
+  'border-l-[var(--color-warning)]',
+  'border-l-[var(--color-success)]',
+  'border-l-[var(--color-interactive)]',
+  'border-l-[var(--blue-300)]',
+  'border-l-[var(--yellow-300)]',
+  'border-l-[var(--green-300)]',
 ]
 
 // ============================================================

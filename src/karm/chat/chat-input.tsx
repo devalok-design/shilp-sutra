@@ -68,7 +68,7 @@ export function ChatInput({
         {isStreaming ? (
           <button
             onClick={onCancel}
-            className="flex h-8 w-8 shrink-0 items-center justify-center rounded-[var(--radius-lg)] bg-red-500 text-[var(--color-text-on-color)] transition-colors hover:bg-red-600"
+            className="flex h-8 w-8 shrink-0 items-center justify-center rounded-[var(--radius-lg)] bg-[var(--color-error)] text-[var(--color-text-on-color)] transition-colors hover:bg-[var(--red-700)]"
             aria-label="Stop generating"
           >
             <IconSquare className="h-3.5 w-3.5" />

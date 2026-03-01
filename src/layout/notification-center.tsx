@@ -107,9 +107,9 @@ function getDateGroup(dateStr: string): string {
 }
 
 const TIER_COLORS: Record<string, string> = {
-  INFO: 'bg-blue-400',
-  IMPORTANT: 'bg-amber-400',
-  CRITICAL: 'bg-red-500',
+  INFO: 'bg-[var(--color-info)]',
+  IMPORTANT: 'bg-[var(--color-warning)]',
+  CRITICAL: 'bg-[var(--color-error)]',
 }
 
 // -----------------------------------------------------------------------

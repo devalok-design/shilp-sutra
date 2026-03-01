@@ -481,7 +481,7 @@ export function EditBreak({
                     <div className="flex items-center justify-between">
                       <button
                         type="button"
-                        className="rounded-[var(--radius-full)] p-2 hover:bg-gray-100"
+                        className="rounded-[var(--radius-full)] p-2 hover:bg-[var(--color-field-hover)]"
                         onClick={() => picker.navigateMonth('prev')}
                       >
                         <svg
@@ -509,7 +509,7 @@ export function EditBreak({
                       </div>
                       <button
                         type="button"
-                        className="rounded-[var(--radius-full)] p-2 hover:bg-gray-100"
+                        className="rounded-[var(--radius-full)] p-2 hover:bg-[var(--color-field-hover)]"
                         onClick={() => picker.navigateMonth('next')}
                       >
                         <svg

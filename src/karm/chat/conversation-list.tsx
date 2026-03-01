@@ -132,7 +132,7 @@ export function ConversationList({
                         e.stopPropagation()
                         onDelete(convo.id)
                       }}
-                      className="flex h-7 w-7 items-center justify-center rounded-[var(--radius-md)] text-[var(--color-text-placeholder)] transition-colors hover:bg-red-50 hover:text-red-500 dark:hover:bg-red-950/30"
+                      className="flex h-7 w-7 items-center justify-center rounded-[var(--radius-md)] text-[var(--color-text-placeholder)] transition-colors hover:bg-[var(--color-error-surface)] hover:text-[var(--color-text-error)]"
                       aria-label="Delete conversation"
                     >
                       <IconTrash className="h-3.5 w-3.5" />

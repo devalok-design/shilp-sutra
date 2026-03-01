@@ -107,7 +107,7 @@ export function DashboardHeader({
                     className="h-5 w-5 rounded-[var(--radius-full)]"
                   />
                 ) : (
-                  <div className="flex h-5 w-5 flex-shrink-0 items-center justify-center rounded-[var(--radius-full)] bg-gray-200">
+                  <div className="flex h-5 w-5 flex-shrink-0 items-center justify-center rounded-[var(--radius-full)] bg-[var(--color-layer-03)]">
                     <span className="text-[var(--color-interactive)]">
                       {selectedAssociate.name.charAt(0)}
                     </span>
@@ -161,7 +161,7 @@ export function DashboardHeader({
                           className="h-6 w-6 rounded-[var(--radius-full)]"
                         />
                       ) : (
-                        <div className="flex h-6 w-6 items-center justify-center rounded-[var(--radius-full)] bg-gray-200">
+                        <div className="flex h-6 w-6 items-center justify-center rounded-[var(--radius-full)] bg-[var(--color-layer-03)]">
                           <span className="text-sm text-[var(--color-interactive)]">
                             {user.name.charAt(0)}
                           </span>

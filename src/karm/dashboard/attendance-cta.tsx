@@ -123,9 +123,9 @@ export default function AttendanceCTA({
               {currentDate}
             </p>
           </div>
-          <div className="flex items-center gap-2 rounded-[var(--radius-xl)] bg-amber-50 px-4 py-2.5">
-            <IconCoffee className="h-4 w-4 text-amber-700" />
-            <span className="B2-Reg font-semibold text-amber-700">
+          <div className="flex items-center gap-2 rounded-[var(--radius-xl)] bg-[var(--color-warning-surface)] px-4 py-2.5">
+            <IconCoffee className="h-4 w-4 text-[var(--color-text-warning)]" />
+            <span className="B2-Reg font-semibold text-[var(--color-text-warning)]">
               On break
               {attendance?.breakReason ? ` \u2014 ${attendance.breakReason}` : ''}
             </span>

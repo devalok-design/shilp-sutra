@@ -24,7 +24,7 @@ export function BreakBalance({
 }: BreakBalanceProps) {
   return (
     <div className="m-0 flex h-[400px] flex-col items-start justify-start p-0 max-md:h-auto">
-      <div className="m-0 mx-[4%] mb-4 mt-3 flex w-[92%] items-start justify-start gap-2 p-0 text-gray-500">
+      <div className="m-0 mx-[4%] mb-4 mt-3 flex w-[92%] items-start justify-start gap-2 p-0 text-[var(--color-text-placeholder)]">
         <div className="L3 w-[16.4%] min-w-[120px] px-3 py-[10px] text-[var(--color-text-tertiary)]">
           NAME
         </div>
@@ -37,10 +37,10 @@ export function BreakBalance({
         {breakBalanceData.map((breakItem) => (
           <div
             key={breakItem.id}
-            className="flex w-full flex-row items-center justify-start gap-2 !border-0 text-left hover:bg-gray-50"
+            className="flex w-full flex-row items-center justify-start gap-2 !border-0 text-left hover:bg-[var(--color-field)]"
           >
             <div className="flex w-1/6 min-w-[120px] items-center gap-2 p-3">
-              <div className="flex h-7 w-7 items-center justify-center rounded-[var(--radius-full)] bg-rose-100">
+              <div className="flex h-7 w-7 items-center justify-center rounded-[var(--radius-full)] bg-[var(--color-error-surface)]">
                 {userImages[breakItem.userId] ? (
                   <img
                     src={userImages[breakItem.userId]}

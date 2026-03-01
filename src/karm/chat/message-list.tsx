@@ -126,9 +126,9 @@ export function MessageList({
           if (msg.role === 'SYSTEM') {
             return (
               <div key={msg.id} className="flex justify-center">
-                <div className="flex items-center gap-2 rounded-[var(--radius-lg)] bg-red-50 px-3 py-2 dark:bg-red-950/30">
-                  <IconAlertCircle className="h-3.5 w-3.5 shrink-0 text-red-500" />
-                  <p className="B3-Reg text-red-600 dark:text-red-400">
+                <div className="flex items-center gap-2 rounded-[var(--radius-lg)] bg-[var(--color-error-surface)] px-3 py-2">
+                  <IconAlertCircle className="h-3.5 w-3.5 shrink-0 text-[var(--color-text-error)]" />
+                  <p className="B3-Reg text-[var(--color-text-error)]">
                     {msg.content}
                   </p>
                 </div>

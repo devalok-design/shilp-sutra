@@ -2,7 +2,7 @@ import type { Meta, StoryObj } from '@storybook/react'
 import renderAdjustmentType, { AdjustmentType } from './render-adjustment-type'
 
 const meta: Meta = {
-  title: 'UI/Other/RenderAdjustmentType',
+  title: 'Karm/Other/RenderAdjustmentType',
   tags: ['autodocs'],
   argTypes: {
     type: {

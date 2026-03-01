@@ -23,10 +23,42 @@ Welcome to **Shilp Sutra** -- the design system powering Devalok applications. I
 ## Quick links
 
 - [**Foundations**](?path=/docs/foundations--docs) -- Color palettes, spacing, typography, shadows, and motion
+- [**Iconography**](?path=/docs/iconography--docs) -- 5,000+ Tabler Icons with sizes, strokes, and usage patterns
 - [**UI Primitives**](?path=/docs/ui-introduction--docs) -- Buttons, inputs, dialogs, tables, and more
 - [**Shared Components**](?path=/docs/shared-introduction--docs) -- PageHeader, DatePicker, RichTextEditor, and more
 - [**Layout**](?path=/docs/layout-introduction--docs) -- AppSidebar, TopBar, BottomNavbar, and more
 - [**Karm**](?path=/docs/karm-introduction--docs) -- Kanban boards, task details, chat, admin panels
+
+---
+
+## Iconography
+
+Shilp Sutra uses [**Tabler Icons**](https://tabler.io/icons) (`@tabler/icons-react`) -- a collection of 5,000+ MIT-licensed, stroke-based icons on a consistent 24x24 grid.
+
+```tsx
+import { IconPlus, IconSearch, IconSettings } from '@tabler/icons-react'
+
+// Size via Tailwind classes (recommended)
+<IconPlus className="h-4 w-4" />
+
+// Size via prop
+<IconSearch size={18} />
+
+// Custom stroke width (default: 2)
+<IconSettings className="h-5 w-5" stroke={1.5} />
+```
+
+For the type of an icon component, use `Icon` from `@tabler/icons-react`:
+
+```tsx
+import type { Icon as TablerIcon } from '@tabler/icons-react'
+
+interface Props {
+  icon?: TablerIcon
+}
+```
+
+See the [**Iconography page**](?path=/docs/iconography--docs) for the full catalog of icons used in the design system, size variations, stroke options, and usage patterns.
 
 ---
 

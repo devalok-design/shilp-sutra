@@ -4,22 +4,22 @@ import * as React from 'react'
 import { cn } from '../../ui/lib/utils'
 import { EmptyState } from '../../shared/empty-state'
 import {
-  Activity,
-  ArrowRight,
-  MessageSquare,
-  Paperclip,
-  UserPlus,
-  UserMinus,
-  Flag,
-  Eye,
-  Tag,
-  CalendarDays,
-  Plus,
-  GitPullRequest,
-  CheckCircle,
-  Edit3,
-} from 'lucide-react'
-import type { LucideIcon } from 'lucide-react'
+  IconActivity,
+  IconArrowRight,
+  IconMessage,
+  IconPaperclip,
+  IconUserPlus,
+  IconUserMinus,
+  IconFlag,
+  IconEye,
+  IconTag,
+  IconCalendarEvent,
+  IconPlus,
+  IconGitPullRequest,
+  IconCircleCheck,
+  IconEdit,
+} from '@tabler/icons-react'
+import type { Icon as TablerIcon } from '@tabler/icons-react'
 
 // ============================================================
 // Types
@@ -47,7 +47,7 @@ interface ActivityTabProps {
 // ============================================================
 
 interface ActionConfig {
-  icon: LucideIcon
+  icon: TablerIcon
   color: string
   dotColor: string
   getDescription: (entry: AuditLogEntry) => string
@@ -55,13 +55,13 @@ interface ActionConfig {
 
 const ACTION_MAP: Record<string, ActionConfig> = {
   'task.created': {
-    icon: Plus,
+    icon: IconPlus,
     color: 'text-[var(--green-500)]',
     dotColor: 'bg-[var(--green-500)]',
     getDescription: () => 'created this task',
   },
   'task.updated': {
-    icon: Edit3,
+    icon: IconEdit,
     color: 'text-[var(--blue-300)]',
     dotColor: 'bg-[var(--blue-300)]',
     getDescription: (entry) => {
@@ -76,7 +76,7 @@ const ACTION_MAP: Record<string, ActionConfig> = {
     },
   },
   'task.moved': {
-    icon: ArrowRight,
+    icon: IconArrowRight,
     color: 'text-[var(--yellow-500)]',
     dotColor: 'bg-[var(--yellow-500)]',
     getDescription: (entry) => {
@@ -87,7 +87,7 @@ const ACTION_MAP: Record<string, ActionConfig> = {
     },
   },
   'task.assigned': {
-    icon: UserPlus,
+    icon: IconUserPlus,
     color: 'text-[var(--blue-300)]',
     dotColor: 'bg-[var(--blue-300)]',
     getDescription: (entry) => {
@@ -96,7 +96,7 @@ const ACTION_MAP: Record<string, ActionConfig> = {
     },
   },
   'task.unassigned': {
-    icon: UserMinus,
+    icon: IconUserMinus,
     color: 'text-[var(--neutral-400)]',
     dotColor: 'bg-[var(--neutral-400)]',
     getDescription: (entry) => {
@@ -105,13 +105,13 @@ const ACTION_MAP: Record<string, ActionConfig> = {
     },
   },
   'task.commented': {
-    icon: MessageSquare,
+    icon: IconMessage,
     color: 'text-[var(--color-interactive)]',
     dotColor: 'bg-[var(--color-interactive)]',
     getDescription: () => 'added a comment',
   },
   'task.file_uploaded': {
-    icon: Paperclip,
+    icon: IconPaperclip,
     color: 'text-[var(--blue-300)]',
     dotColor: 'bg-[var(--blue-300)]',
     getDescription: (entry) => {
@@ -120,7 +120,7 @@ const ACTION_MAP: Record<string, ActionConfig> = {
     },
   },
   'task.review_requested': {
-    icon: GitPullRequest,
+    icon: IconGitPullRequest,
     color: 'text-[var(--yellow-500)]',
     dotColor: 'bg-[var(--yellow-500)]',
     getDescription: (entry) => {
@@ -129,7 +129,7 @@ const ACTION_MAP: Record<string, ActionConfig> = {
     },
   },
   'task.review_completed': {
-    icon: CheckCircle,
+    icon: IconCircleCheck,
     color: 'text-[var(--green-500)]',
     dotColor: 'bg-[var(--green-500)]',
     getDescription: (entry) => {
@@ -138,7 +138,7 @@ const ACTION_MAP: Record<string, ActionConfig> = {
     },
   },
   'task.visibility_changed': {
-    icon: Eye,
+    icon: IconEye,
     color: 'text-[var(--color-text-tertiary)]',
     dotColor: 'bg-[var(--neutral-500)]',
     getDescription: (entry) => {
@@ -147,7 +147,7 @@ const ACTION_MAP: Record<string, ActionConfig> = {
     },
   },
   'task.priority_changed': {
-    icon: Flag,
+    icon: IconFlag,
     color: 'text-[var(--red-300)]',
     dotColor: 'bg-[var(--red-300)]',
     getDescription: (entry) => {
@@ -156,13 +156,13 @@ const ACTION_MAP: Record<string, ActionConfig> = {
     },
   },
   'task.labels_changed': {
-    icon: Tag,
+    icon: IconTag,
     color: 'text-[var(--blue-300)]',
     dotColor: 'bg-[var(--blue-300)]',
     getDescription: () => 'updated labels',
   },
   'task.due_date_changed': {
-    icon: CalendarDays,
+    icon: IconCalendarEvent,
     color: 'text-[var(--yellow-500)]',
     dotColor: 'bg-[var(--yellow-500)]',
     getDescription: (entry) => {
@@ -174,7 +174,7 @@ const ACTION_MAP: Record<string, ActionConfig> = {
 }
 
 const DEFAULT_ACTION: ActionConfig = {
-  icon: Activity,
+  icon: IconActivity,
   color: 'text-[var(--color-text-placeholder)]',
   dotColor: 'bg-[var(--neutral-400)]',
   getDescription: (entry) => entry.action,
@@ -214,14 +214,14 @@ function getActorName(entry: AuditLogEntry): string {
 }
 
 // ============================================================
-// Activity Tab
+// IconActivity Tab
 // ============================================================
 
 function ActivityTab({ activities, className }: ActivityTabProps) {
   if (activities.length === 0) {
     return (
       <EmptyState
-        icon={Activity}
+        icon={IconActivity}
         title="No activity yet"
         description="Actions on this task will appear here"
         compact
@@ -254,7 +254,7 @@ function ActivityTab({ activities, className }: ActivityTabProps) {
                 >
                   <Icon
                     className={cn('h-3 w-3', config.color)}
-                    strokeWidth={2}
+                    stroke={2}
                   />
                 </div>
               </div>

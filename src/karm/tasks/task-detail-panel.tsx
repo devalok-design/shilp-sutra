@@ -16,12 +16,12 @@ import { ConversationTab, type Comment } from './conversation-tab'
 import { FilesTab, type TaskFile } from './files-tab'
 import { ActivityTab, type AuditLogEntry } from './activity-tab'
 import {
-  ListChecks,
-  GitPullRequest,
-  MessageCircle,
-  Paperclip,
-  Activity,
-} from 'lucide-react'
+  IconListCheck,
+  IconGitPullRequest,
+  IconMessageCircle,
+  IconPaperclip,
+  IconActivity,
+} from '@tabler/icons-react'
 
 // ============================================================
 // Types
@@ -107,11 +107,11 @@ interface TaskDetailPanelProps {
 // ============================================================
 
 const TABS = [
-  { id: 'subtasks', label: 'Subtasks', icon: ListChecks },
-  { id: 'review', label: 'Review', icon: GitPullRequest },
-  { id: 'conversation', label: 'Conversation', icon: MessageCircle },
-  { id: 'files', label: 'Files', icon: Paperclip },
-  { id: 'activity', label: 'Activity', icon: Activity },
+  { id: 'subtasks', label: 'Subtasks', icon: IconListCheck },
+  { id: 'review', label: 'Review', icon: IconGitPullRequest },
+  { id: 'conversation', label: 'Conversation', icon: IconMessageCircle },
+  { id: 'files', label: 'Files', icon: IconPaperclip },
+  { id: 'activity', label: 'IconActivity', icon: IconActivity },
 ] as const
 
 type TabId = typeof TABS[number]['id']
@@ -339,7 +339,7 @@ function TaskDetailPanel({
                             : 'text-[var(--color-text-placeholder)] hover:text-[var(--color-text-secondary)]',
                         )}
                       >
-                        <Icon className="h-3.5 w-3.5" strokeWidth={1.5} />
+                        <Icon className="h-3.5 w-3.5" stroke={1.5} />
                         <span>{tab.label}</span>
                         {count !== null && count > 0 && (
                           <span

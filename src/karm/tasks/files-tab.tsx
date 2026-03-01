@@ -20,17 +20,17 @@ import {
 import { Button } from '../../ui/button'
 import { EmptyState } from '../../shared/empty-state'
 import {
-  File as FileIcon,
-  FileText,
-  FileImage,
-  FileCode,
-  FileSpreadsheet,
-  FileArchive,
-  Upload,
-  Download,
-  Trash2,
-  Paperclip,
-} from 'lucide-react'
+  IconFile as FileIcon,
+  IconFileText,
+  IconPhoto,
+  IconFileCode,
+  IconFileSpreadsheet,
+  IconFileZip,
+  IconUpload,
+  IconDownload,
+  IconTrash,
+  IconPaperclip,
+} from '@tabler/icons-react'
 import { getInitials } from '../../shared/lib/string-utils'
 
 // ============================================================
@@ -70,15 +70,15 @@ function getFileIcon(fileType: string | null) {
   if (!fileType) return FileIcon
   const type = fileType.toLowerCase()
   if (['jpg', 'jpeg', 'png', 'gif', 'svg', 'webp', 'bmp'].includes(type))
-    return FileImage
+    return IconPhoto
   if (['pdf', 'doc', 'docx', 'txt', 'rtf'].includes(type))
-    return FileText
+    return IconFileText
   if (['js', 'ts', 'jsx', 'tsx', 'py', 'rb', 'go', 'rs', 'html', 'css', 'json'].includes(type))
-    return FileCode
+    return IconFileCode
   if (['xls', 'xlsx', 'csv'].includes(type))
-    return FileSpreadsheet
+    return IconFileSpreadsheet
   if (['zip', 'tar', 'gz', 'rar', '7z'].includes(type))
-    return FileArchive
+    return IconFileZip
   return FileIcon
 }
 
@@ -151,9 +151,9 @@ function FilesTab({
         >
           <div className="flex flex-col items-center gap-2 py-6">
             <div className="flex h-9 w-9 items-center justify-center rounded-[var(--radius-lg)] bg-[var(--color-layer-02)]">
-              <Upload
+              <IconUpload
                 className="h-4 w-4 text-[var(--color-text-placeholder)]"
-                strokeWidth={1.5}
+                stroke={1.5}
               />
             </div>
             <div className="text-center">
@@ -193,7 +193,7 @@ function FilesTab({
                 <div className="flex h-8 w-8 shrink-0 items-center justify-center rounded-[var(--radius-lg)] bg-[var(--color-layer-02)]">
                   <Icon
                     className="h-4 w-4 text-[var(--color-text-tertiary)]"
-                    strokeWidth={1.5}
+                    stroke={1.5}
                   />
                 </div>
 
@@ -219,7 +219,7 @@ function FilesTab({
                       className="inline-flex h-7 w-7 items-center justify-center rounded-[var(--radius-md)] transition-colors hover:bg-[var(--color-layer-02)]"
                       title="Download"
                     >
-                      <Download className="h-3.5 w-3.5 text-[var(--color-text-tertiary)]" />
+                      <IconDownload className="h-3.5 w-3.5 text-[var(--color-text-tertiary)]" />
                     </a>
                   )}
                   {!readOnly && (
@@ -230,7 +230,7 @@ function FilesTab({
                           className="inline-flex h-7 w-7 items-center justify-center rounded-[var(--radius-md)] transition-colors hover:bg-[var(--color-error-surface)]"
                           title="Delete"
                         >
-                          <Trash2 className="h-3.5 w-3.5 text-[var(--color-text-error)]" />
+                          <IconTrash className="h-3.5 w-3.5 text-[var(--color-text-error)]" />
                         </button>
                       </DialogTrigger>
                       <DialogContent>
@@ -268,7 +268,7 @@ function FilesTab({
       ) : (
         <div className="mt-2">
           <EmptyState
-            icon={Paperclip}
+            icon={IconPaperclip}
             title="No files attached"
             description="Upload files to share with your team"
             compact

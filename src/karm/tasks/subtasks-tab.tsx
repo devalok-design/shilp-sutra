@@ -9,11 +9,11 @@ import {
 } from '../../ui/avatar'
 import { EmptyState } from '../../shared/empty-state'
 import {
-  CheckSquare,
-  Square,
-  Plus,
-  ListChecks,
-} from 'lucide-react'
+  IconSquareCheck,
+  IconSquare,
+  IconPlus,
+  IconListCheck,
+} from '@tabler/icons-react'
 import { getInitials } from '../../shared/lib/string-utils'
 import { PRIORITY_DOT_COLORS } from './task-constants'
 
@@ -142,9 +142,9 @@ function SubtasksTab({
                   )}
                 >
                   {isComplete ? (
-                    <CheckSquare className="h-4 w-4 text-[var(--color-interactive)]" strokeWidth={1.5} />
+                    <IconSquareCheck className="h-4 w-4 text-[var(--color-interactive)]" stroke={1.5} />
                   ) : (
-                    <Square className="h-4 w-4 text-[var(--color-text-placeholder)]" strokeWidth={1.5} />
+                    <IconSquare className="h-4 w-4 text-[var(--color-text-placeholder)]" stroke={1.5} />
                   )}
                 </button>
 
@@ -186,7 +186,7 @@ function SubtasksTab({
       ) : (
         !isAdding && (
           <EmptyState
-            icon={ListChecks}
+            icon={IconListCheck}
             title="No subtasks"
             description="Break this task into smaller pieces"
             compact
@@ -225,7 +225,7 @@ function SubtasksTab({
             onClick={() => setIsAdding(true)}
             className="mt-2 inline-flex items-center gap-1.5 rounded-[var(--radius-lg)] px-2 py-1.5 text-[13px] font-body text-[var(--color-text-placeholder)] transition-colors hover:bg-[var(--color-field)] hover:text-[var(--color-text-secondary)]"
           >
-            <Plus className="h-3.5 w-3.5" strokeWidth={1.5} />
+            <IconPlus className="h-3.5 w-3.5" stroke={1.5} />
             Add subtask
           </button>
         )

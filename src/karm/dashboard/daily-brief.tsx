@@ -2,7 +2,7 @@
 
 import { useState } from 'react'
 import ReactMarkdown from 'react-markdown'
-import { ChevronDown, ChevronUp, Sparkles } from 'lucide-react'
+import { IconChevronDown, IconChevronUp, IconSparkles } from '@tabler/icons-react'
 
 // ============================================================
 // Types
@@ -69,15 +69,15 @@ export default function DailyBrief({
         className="flex items-center justify-between px-5 py-4 transition-colors hover:bg-[var(--color-layer-02)]"
       >
         <div className="flex items-center gap-2">
-          <Sparkles className="h-4 w-4 text-[var(--color-interactive)]" />
+          <IconSparkles className="h-4 w-4 text-[var(--color-interactive)]" />
           <span className="B1-Reg font-semibold text-[var(--color-text-primary)]">
             Morning Brief
           </span>
         </div>
         {collapsed ? (
-          <ChevronDown className="h-4 w-4 text-[var(--color-text-placeholder)]" />
+          <IconChevronDown className="h-4 w-4 text-[var(--color-text-placeholder)]" />
         ) : (
-          <ChevronUp className="h-4 w-4 text-[var(--color-text-placeholder)]" />
+          <IconChevronUp className="h-4 w-4 text-[var(--color-text-placeholder)]" />
         )}
       </button>
 

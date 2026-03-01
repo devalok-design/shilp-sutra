@@ -8,7 +8,7 @@ import {
   AvatarFallback,
 } from '../../ui/avatar'
 import { EmptyState } from '../../shared/empty-state'
-import { MessageCircle, Send } from 'lucide-react'
+import { IconMessageCircle, IconSend } from '@tabler/icons-react'
 import { getInitials } from '../../shared/lib/string-utils'
 
 // ============================================================
@@ -118,7 +118,7 @@ function ConversationTab({
 
   const handlePost = () => {
     const trimmed = editorContent.trim()
-    // Check that content is not just empty HTML tags
+    // IconCheck that content is not just empty HTML tags
     const textOnly = trimmed.replace(/<[^>]*>/g, '').trim()
     if (!textOnly) return
 
@@ -208,7 +208,7 @@ function ConversationTab({
         </div>
       ) : (
         <EmptyState
-          icon={MessageCircle}
+          icon={IconMessageCircle}
           title="No comments yet"
           description="Start a conversation about this task"
           compact
@@ -244,7 +244,7 @@ function ConversationTab({
             disabled={!editorContent.replace(/<[^>]*>/g, '').trim()}
             className="inline-flex items-center gap-1.5 rounded-[var(--radius-lg)] bg-[var(--color-interactive)] px-3.5 py-1.5 text-[12px] font-body font-semibold text-[var(--color-text-on-color)] transition-colors hover:bg-[var(--color-interactive-hover)] disabled:opacity-50 disabled:cursor-not-allowed"
           >
-            <Send className="h-3.5 w-3.5" strokeWidth={2} />
+            <IconSend className="h-3.5 w-3.5" stroke={2} />
             Comment
           </button>
         </div>

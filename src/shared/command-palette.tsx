@@ -8,8 +8,8 @@
  */
 import * as React from 'react'
 import * as DialogPrimitive from '@primitives/react-dialog'
-import { Search, CornerDownLeft, ArrowUp, ArrowDown } from 'lucide-react'
-import type { LucideIcon } from 'lucide-react'
+import { IconSearch, IconCornerDownLeft, IconArrowUp, IconArrowDown } from '@tabler/icons-react'
+import type { Icon as TablerIcon } from '@tabler/icons-react'
 import { cn } from '../ui/lib/utils'
 import VisuallyHidden from '../ui/visually-hidden'
 
@@ -21,7 +21,7 @@ export interface CommandItem {
   id: string
   label: string
   description?: string
-  icon?: LucideIcon
+  icon?: TablerIcon
   shortcut?: string
   onSelect: () => void
 }
@@ -179,15 +179,15 @@ function CommandPalette({
           <VisuallyHidden>
             <DialogPrimitive.Title>Command Palette</DialogPrimitive.Title>
             <DialogPrimitive.Description>
-              Search or jump to pages, projects, tasks, and actions
+              IconSearch or jump to pages, projects, tasks, and actions
             </DialogPrimitive.Description>
           </VisuallyHidden>
 
-          {/* Search input */}
+          {/* IconSearch input */}
           <div className="flex items-center gap-3 border-b border-[var(--color-border-default)] px-4 py-3">
-            <Search
+            <IconSearch
               className="h-[18px] w-[18px] shrink-0 text-[var(--color-text-placeholder)]"
-              strokeWidth={1.5}
+              stroke={1.5}
             />
             <input
               ref={inputRef}
@@ -253,7 +253,7 @@ function CommandPalette({
                       {ItemIcon && (
                         <ItemIcon
                           className="h-4 w-4 shrink-0 text-[var(--color-text-placeholder)]"
-                          strokeWidth={1.5}
+                          stroke={1.5}
                         />
                       )}
                       <div className="flex flex-1 flex-col">
@@ -270,9 +270,9 @@ function CommandPalette({
                         </kbd>
                       )}
                       {isActive && (
-                        <CornerDownLeft
+                        <IconCornerDownLeft
                           className="h-3 w-3 shrink-0 text-[var(--color-text-placeholder)]"
-                          strokeWidth={1.5}
+                          stroke={1.5}
                         />
                       )}
                     </button>
@@ -287,10 +287,10 @@ function CommandPalette({
             <div className="flex items-center gap-1.5">
               <div className="flex items-center gap-0.5">
                 <kbd className="inline-flex h-5 w-5 items-center justify-center rounded border border-[var(--color-border-default)] bg-[var(--color-layer-02)]">
-                  <ArrowUp className="h-2.5 w-2.5 text-[var(--color-text-placeholder)]" strokeWidth={2} />
+                  <IconArrowUp className="h-2.5 w-2.5 text-[var(--color-text-placeholder)]" stroke={2} />
                 </kbd>
                 <kbd className="inline-flex h-5 w-5 items-center justify-center rounded border border-[var(--color-border-default)] bg-[var(--color-layer-02)]">
-                  <ArrowDown className="h-2.5 w-2.5 text-[var(--color-text-placeholder)]" strokeWidth={2} />
+                  <IconArrowDown className="h-2.5 w-2.5 text-[var(--color-text-placeholder)]" stroke={2} />
                 </kbd>
               </div>
               <span className="text-[10px] text-[var(--color-text-placeholder)]">
@@ -299,7 +299,7 @@ function CommandPalette({
             </div>
             <div className="flex items-center gap-1.5">
               <kbd className="inline-flex h-5 items-center justify-center rounded border border-[var(--color-border-default)] bg-[var(--color-layer-02)] px-1.5">
-                <CornerDownLeft className="h-2.5 w-2.5 text-[var(--color-text-placeholder)]" strokeWidth={2} />
+                <IconCornerDownLeft className="h-2.5 w-2.5 text-[var(--color-text-placeholder)]" stroke={2} />
               </kbd>
               <span className="text-[10px] text-[var(--color-text-placeholder)]">
                 Select

@@ -22,7 +22,7 @@ import {
   isBefore,
   isAfter,
 } from 'date-fns'
-import { CalendarDays, ChevronLeft, ChevronRight } from 'lucide-react'
+import { IconCalendarEvent, IconChevronLeft, IconChevronRight } from '@tabler/icons-react'
 
 const WEEKDAYS = ['Su', 'Mo', 'Tu', 'We', 'Th', 'Fr', 'Sa']
 
@@ -87,7 +87,7 @@ function CalendarGrid({
           onClick={() => onMonthChange(subMonths(currentMonth, 1))}
           className="inline-flex h-7 w-7 items-center justify-center rounded-[var(--radius-md)] text-[var(--color-text-placeholder)] transition-colors hover:bg-[var(--color-field)] hover:text-[var(--color-text-secondary)]"
         >
-          <ChevronLeft className="h-4 w-4" strokeWidth={1.5} />
+          <IconChevronLeft className="h-4 w-4" stroke={1.5} />
         </button>
         <span className="B2-Reg semibold text-[var(--color-text-primary)]">
           {format(currentMonth, 'MMMM yyyy')}
@@ -97,7 +97,7 @@ function CalendarGrid({
           onClick={() => onMonthChange(addMonths(currentMonth, 1))}
           className="inline-flex h-7 w-7 items-center justify-center rounded-[var(--radius-md)] text-[var(--color-text-placeholder)] transition-colors hover:bg-[var(--color-field)] hover:text-[var(--color-text-secondary)]"
         >
-          <ChevronRight className="h-4 w-4" strokeWidth={1.5} />
+          <IconChevronRight className="h-4 w-4" stroke={1.5} />
         </button>
       </div>
 
@@ -184,9 +184,9 @@ function DatePicker({
             className,
           )}
         >
-          <CalendarDays
+          <IconCalendarEvent
             className="h-4 w-4 text-[var(--color-text-placeholder)]"
-            strokeWidth={1.5}
+            stroke={1.5}
           />
           <span
             className={cn(
@@ -285,9 +285,9 @@ function DateRangePicker({
             className,
           )}
         >
-          <CalendarDays
+          <IconCalendarEvent
             className="h-4 w-4 text-[var(--color-text-placeholder)]"
-            strokeWidth={1.5}
+            stroke={1.5}
           />
           <span
             className={cn(

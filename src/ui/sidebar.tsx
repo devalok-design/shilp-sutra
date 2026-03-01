@@ -2,7 +2,7 @@
 
 import { Slot } from '@primitives/react-slot'
 import { VariantProps, cva } from 'class-variance-authority'
-import { PanelLeft } from 'lucide-react'
+import { IconLayoutSidebarLeftCollapse } from '@tabler/icons-react'
 
 import { useIsMobile } from '../hooks/use-mobile'
 import { cn } from './lib/utils'
@@ -284,7 +284,7 @@ const SidebarTrigger = forwardRef<
       }}
       {...props}
     >
-      <PanelLeft />
+      <IconLayoutSidebarLeftCollapse />
       <span className="sr-only">Toggle Sidebar</span>
     </Button>
   )

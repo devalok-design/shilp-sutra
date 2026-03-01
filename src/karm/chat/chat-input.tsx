@@ -1,7 +1,7 @@
 'use client'
 
 import { useState, useRef, useCallback, type KeyboardEvent } from 'react'
-import { Send, Square } from 'lucide-react'
+import { IconSend, IconSquare } from '@tabler/icons-react'
 
 interface ChatInputProps {
   onSubmit: (message: string) => void
@@ -71,7 +71,7 @@ export function ChatInput({
             className="flex h-8 w-8 shrink-0 items-center justify-center rounded-[var(--radius-lg)] bg-red-500 text-white transition-colors hover:bg-red-600"
             aria-label="Stop generating"
           >
-            <Square className="h-3.5 w-3.5" />
+            <IconSquare className="h-3.5 w-3.5" />
           </button>
         ) : (
           <button
@@ -80,7 +80,7 @@ export function ChatInput({
             className="flex h-8 w-8 shrink-0 items-center justify-center rounded-[var(--radius-lg)] bg-[var(--color-interactive)] text-white transition-colors hover:opacity-90 disabled:opacity-50"
             aria-label="Send message"
           >
-            <Send className="h-3.5 w-3.5" />
+            <IconSend className="h-3.5 w-3.5" />
           </button>
         )}
       </div>

@@ -24,7 +24,7 @@ import {
 } from '../ui/dialog'
 import { Switch } from '../ui/switch'
 import { Card, CardHeader, CardTitle, CardContent } from '../ui/card'
-import { Plus, Trash2, Bell, MessageSquare } from 'lucide-react'
+import { IconPlus, IconTrash, IconBell, IconMessage } from '@tabler/icons-react'
 import { cn } from '../ui/lib/utils'
 
 // -----------------------------------------------------------------------
@@ -76,9 +76,9 @@ export interface NotificationPreferencesProps {
 // Constants
 // -----------------------------------------------------------------------
 
-const CHANNEL_LABELS: Record<string, { label: string; icon: typeof Bell }> = {
-  IN_APP: { label: 'In-App', icon: Bell },
-  GOOGLE_CHAT: { label: 'Google Chat', icon: MessageSquare },
+const CHANNEL_LABELS: Record<string, { label: string; icon: typeof IconBell }> = {
+  IN_APP: { label: 'In-App', icon: IconBell },
+  GOOGLE_CHAT: { label: 'Google Chat', icon: IconMessage },
 }
 
 const TIER_LABELS: Record<string, string> = {
@@ -152,7 +152,7 @@ export default function NotificationPreferences({
             variant="secondary"
             onClick={() => setShowAddDialog(true)}
           >
-            <Plus className="mr-1.5 h-3.5 w-3.5" />
+            <IconPlus className="mr-1.5 h-3.5 w-3.5" />
             Add Rule
           </Button>
         </CardHeader>
@@ -233,7 +233,7 @@ export default function NotificationPreferences({
                       onClick={() => onDelete?.(pref.id)}
                       className="shrink-0 rounded p-1.5 text-[var(--color-text-placeholder)] transition-colors hover:bg-[var(--color-layer-02)] hover:text-[var(--color-danger)]"
                     >
-                      <Trash2 className="h-3.5 w-3.5" />
+                      <IconTrash className="h-3.5 w-3.5" />
                     </button>
                   </div>
                 )

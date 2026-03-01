@@ -1,14 +1,14 @@
 import type { Meta, StoryObj } from '@storybook/react'
 import { EmptyState } from './empty-state'
 import {
-  Inbox,
-  Search,
-  FolderOpen,
-  Users,
-  FileText,
-  Bell,
-  Calendar,
-} from 'lucide-react'
+  IconInbox,
+  IconSearch,
+  IconFolderOpen,
+  IconUsers,
+  IconFileText,
+  IconBell,
+  IconCalendar,
+} from '@tabler/icons-react'
 
 const meta: Meta<typeof EmptyState> = {
   title: 'Shared/EmptyState',
@@ -36,7 +36,7 @@ export const WithAction: Story = {
   args: {
     title: 'No projects found',
     description: 'Create a new project to start tracking tasks and progress.',
-    icon: FolderOpen,
+    icon: IconFolderOpen,
     action: (
       <button
         style={{
@@ -58,7 +58,7 @@ export const WithAction: Story = {
 
 export const SearchNoResults: Story = {
   args: {
-    icon: Search,
+    icon: IconSearch,
     title: 'No results found',
     description:
       'Try adjusting your search terms or filters to find what you are looking for.',
@@ -67,7 +67,7 @@ export const SearchNoResults: Story = {
 
 export const EmptyInbox: Story = {
   args: {
-    icon: Inbox,
+    icon: IconInbox,
     title: 'Inbox is empty',
     description: 'You are all caught up! No new messages or notifications.',
   },
@@ -75,7 +75,7 @@ export const EmptyInbox: Story = {
 
 export const NoTeamMembers: Story = {
   args: {
-    icon: Users,
+    icon: IconUsers,
     title: 'No team members',
     description: 'Invite your colleagues to collaborate on this project.',
     action: (
@@ -98,7 +98,7 @@ export const NoTeamMembers: Story = {
 
 export const NoDocuments: Story = {
   args: {
-    icon: FileText,
+    icon: IconFileText,
     title: 'No documents',
     description: 'Upload or create documents to share with your team.',
     action: (
@@ -114,7 +114,7 @@ export const NoDocuments: Story = {
             cursor: 'pointer',
           }}
         >
-          Upload
+          IconUpload
         </button>
         <button
           style={{
@@ -137,7 +137,7 @@ export const NoDocuments: Story = {
 
 export const NoNotifications: Story = {
   args: {
-    icon: Bell,
+    icon: IconBell,
     title: 'No notifications',
     description: 'When something important happens, you will be notified here.',
   },
@@ -145,7 +145,7 @@ export const NoNotifications: Story = {
 
 export const NoEvents: Story = {
   args: {
-    icon: Calendar,
+    icon: IconCalendar,
     title: 'No upcoming events',
     description: 'Your calendar is clear for the week.',
   },
@@ -153,7 +153,7 @@ export const NoEvents: Story = {
 
 export const Compact: Story = {
   args: {
-    icon: Inbox,
+    icon: IconInbox,
     title: 'No items',
     description: 'Nothing to display.',
     compact: true,
@@ -162,7 +162,7 @@ export const Compact: Story = {
 
 export const CompactWithAction: Story = {
   args: {
-    icon: FolderOpen,
+    icon: IconFolderOpen,
     title: 'No tasks assigned',
     description: 'Drag tasks here or create new ones.',
     compact: true,

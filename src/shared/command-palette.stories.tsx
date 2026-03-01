@@ -1,19 +1,19 @@
 import type { Meta, StoryObj } from '@storybook/react'
 import { within, userEvent, expect } from '@storybook/test'
 import {
-  LayoutDashboard,
-  FolderKanban,
-  ListChecks,
-  Users,
-  CalendarDays,
-  Settings,
-  Search,
-  Plus,
-  LogOut,
-  Bell,
-  BarChart3,
-  MessageSquare,
-} from 'lucide-react'
+  IconLayoutDashboard,
+  IconLayoutKanban,
+  IconListCheck,
+  IconUsers,
+  IconCalendarEvent,
+  IconSettings,
+  IconSearch,
+  IconPlus,
+  IconLogout,
+  IconBell,
+  IconChartBar,
+  IconMessage,
+} from '@tabler/icons-react'
 import { CommandPalette } from './command-palette'
 import type { CommandGroup } from './command-palette'
 
@@ -24,7 +24,7 @@ const navigationGroup: CommandGroup = {
       id: 'dashboard',
       label: 'Dashboard',
       description: 'Go to the main dashboard',
-      icon: LayoutDashboard,
+      icon: IconLayoutDashboard,
       shortcut: 'G D',
       onSelect: () => console.log('Navigate to Dashboard'),
     },
@@ -32,7 +32,7 @@ const navigationGroup: CommandGroup = {
       id: 'projects',
       label: 'Projects',
       description: 'View all projects',
-      icon: FolderKanban,
+      icon: IconLayoutKanban,
       shortcut: 'G P',
       onSelect: () => console.log('Navigate to Projects'),
     },
@@ -40,7 +40,7 @@ const navigationGroup: CommandGroup = {
       id: 'tasks',
       label: 'My Tasks',
       description: 'View your assigned tasks',
-      icon: ListChecks,
+      icon: IconListCheck,
       shortcut: 'G T',
       onSelect: () => console.log('Navigate to Tasks'),
     },
@@ -48,21 +48,21 @@ const navigationGroup: CommandGroup = {
       id: 'team',
       label: 'Team',
       description: 'View team members and bandwidth',
-      icon: Users,
+      icon: IconUsers,
       onSelect: () => console.log('Navigate to Team'),
     },
     {
       id: 'calendar',
       label: 'Calendar',
       description: 'Attendance and schedule',
-      icon: CalendarDays,
+      icon: IconCalendarEvent,
       onSelect: () => console.log('Navigate to Calendar'),
     },
     {
       id: 'bandwidth',
       label: 'Bandwidth',
       description: 'Team availability tracker',
-      icon: BarChart3,
+      icon: IconChartBar,
       onSelect: () => console.log('Navigate to Bandwidth'),
     },
   ],
@@ -75,7 +75,7 @@ const actionsGroup: CommandGroup = {
       id: 'new-task',
       label: 'Create New Task',
       description: 'Add a task to any project board',
-      icon: Plus,
+      icon: IconPlus,
       shortcut: 'C',
       onSelect: () => console.log('Create new task'),
     },
@@ -83,7 +83,7 @@ const actionsGroup: CommandGroup = {
       id: 'search',
       label: 'Search Everything',
       description: 'Search across tasks, projects, and people',
-      icon: Search,
+      icon: IconSearch,
       shortcut: '/',
       onSelect: () => console.log('Open search'),
     },
@@ -91,14 +91,14 @@ const actionsGroup: CommandGroup = {
       id: 'notifications',
       label: 'View Notifications',
       description: 'Check your latest notifications',
-      icon: Bell,
+      icon: IconBell,
       onSelect: () => console.log('View notifications'),
     },
     {
       id: 'devsabha',
       label: 'Start Devsabha',
       description: 'Begin a standup meeting session',
-      icon: MessageSquare,
+      icon: IconMessage,
       onSelect: () => console.log('Start Devsabha'),
     },
   ],
@@ -111,7 +111,7 @@ const settingsGroup: CommandGroup = {
       id: 'settings',
       label: 'Settings',
       description: 'Manage your account preferences',
-      icon: Settings,
+      icon: IconSettings,
       shortcut: 'G S',
       onSelect: () => console.log('Open settings'),
     },
@@ -119,7 +119,7 @@ const settingsGroup: CommandGroup = {
       id: 'logout',
       label: 'Log Out',
       description: 'Sign out of your account',
-      icon: LogOut,
+      icon: IconLogout,
       onSelect: () => console.log('Log out'),
     },
   ],
@@ -264,7 +264,7 @@ export const WithSearchCallback: Story = {
       <CommandPalette {...args} />
       <div style={{ padding: 32 }}>
         <p style={{ fontSize: 13, color: 'var(--color-text-secondary)' }}>
-          Press <kbd style={{ padding: '2px 6px', borderRadius: 4, border: '1px solid var(--color-border-default)', fontSize: 12, background: 'var(--color-layer-02)' }}>Ctrl+K</kbd> to open. Check the browser console for search query logs as you type.
+          Press <kbd style={{ padding: '2px 6px', borderRadius: 4, border: '1px solid var(--color-border-default)', fontSize: 12, background: 'var(--color-layer-02)' }}>Ctrl+K</kbd> to open. IconCheck the browser console for search query logs as you type.
         </p>
       </div>
     </div>

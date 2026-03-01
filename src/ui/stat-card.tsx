@@ -1,4 +1,4 @@
-import { Minus, TrendingDown, TrendingUp } from 'lucide-react'
+import { IconMinus, IconTrendingDown, IconTrendingUp } from '@tabler/icons-react'
 import * as React from 'react'
 import { cn } from './lib/utils'
 
@@ -32,10 +32,10 @@ function StatCard({ className, label, value, delta, icon, loading, ...props }: S
 
   const DeltaIcon =
     delta?.direction === 'up'
-      ? TrendingUp
+      ? IconTrendingUp
       : delta?.direction === 'down'
-        ? TrendingDown
-        : Minus
+        ? IconTrendingDown
+        : IconMinus
 
   const deltaColour =
     delta?.direction === 'up'

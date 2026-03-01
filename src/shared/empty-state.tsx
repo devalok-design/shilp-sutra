@@ -1,10 +1,10 @@
 import * as React from 'react'
 import { cn } from '../ui/lib/utils'
-import type { LucideIcon } from 'lucide-react'
-import { Inbox } from 'lucide-react'
+import type { Icon as TablerIcon } from '@tabler/icons-react'
+import { IconInbox } from '@tabler/icons-react'
 
 interface EmptyStateProps extends React.HTMLAttributes<HTMLDivElement> {
-  icon?: LucideIcon
+  icon?: TablerIcon
   title: string
   description?: string
   action?: React.ReactNode
@@ -12,7 +12,7 @@ interface EmptyStateProps extends React.HTMLAttributes<HTMLDivElement> {
 }
 
 function EmptyState({
-  icon: Icon = Inbox,
+  icon: Icon = IconInbox,
   title,
   description,
   action,
@@ -40,7 +40,7 @@ function EmptyState({
             'text-[var(--color-text-placeholder)]',
             compact ? 'h-5 w-5' : 'h-6 w-6',
           )}
-          strokeWidth={1.5}
+          stroke={1.5}
         />
       </div>
 

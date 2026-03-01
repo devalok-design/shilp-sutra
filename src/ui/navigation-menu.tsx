@@ -1,6 +1,6 @@
 import * as React from 'react'
 import * as NavigationMenuPrimitive from '@primitives/react-navigation-menu'
-import { ChevronDown } from 'lucide-react'
+import { IconChevronDown } from '@tabler/icons-react'
 
 import { cn } from './lib/utils'
 
@@ -52,7 +52,7 @@ const NavigationMenuTrigger = React.forwardRef<
     {...props}
   >
     {children}{' '}
-    <ChevronDown
+    <IconChevronDown
       className="relative top-[1px] ml-1 h-3 w-3 transition-transform duration-[var(--duration-moderate)] group-data-[state=open]:rotate-180"
       aria-hidden="true"
     />

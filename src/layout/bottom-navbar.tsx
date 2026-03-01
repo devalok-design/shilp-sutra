@@ -8,7 +8,7 @@
  */
 import Link from 'next/link'
 import { useState } from 'react'
-import { MoreHorizontal, X } from 'lucide-react'
+import { IconDots, IconX } from '@tabler/icons-react'
 import { cn } from '../ui/lib/utils'
 
 // -----------------------------------------------------------------------
@@ -104,7 +104,7 @@ export default function BottomNavbar({
     return currentPath.startsWith(path)
   }
 
-  // Check if any "more" item is active
+  // IconCheck if any "more" item is active
   const isMoreActive = moreItems.some((item) =>
     isActive(item.href, item.exact),
   )
@@ -133,7 +133,7 @@ export default function BottomNavbar({
                 aria-label="Close more menu"
                 className="flex h-8 w-8 items-center justify-center rounded-[var(--radius-full)] hover:bg-[var(--color-layer-02)]"
               >
-                <X className="h-4 w-4 text-[var(--color-text-secondary)]" aria-hidden="true" />
+                <IconX className="h-4 w-4 text-[var(--color-text-secondary)]" aria-hidden="true" />
               </button>
             </div>
             <div className="grid grid-cols-4 gap-2">
@@ -160,7 +160,7 @@ export default function BottomNavbar({
         </div>
       )}
 
-      {/* Bottom Navigation Bar */}
+      {/* Bottom IconNavigation Bar */}
       <nav
         aria-label="Mobile navigation"
         className={cn(
@@ -198,7 +198,7 @@ export default function BottomNavbar({
                 aria-hidden="true"
               />
               <div className="p-2.5">
-                <MoreHorizontal className="h-5 w-5" aria-hidden="true" />
+                <IconDots className="h-5 w-5" aria-hidden="true" />
               </div>
               <span className="text-center leading-none">More</span>
             </div>

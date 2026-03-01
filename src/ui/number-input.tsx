@@ -1,7 +1,7 @@
 'use client'
 
 import * as React from 'react'
-import { MinusIcon, PlusIcon } from 'lucide-react'
+import { IconMinus, IconPlus } from '@tabler/icons-react'
 
 export interface NumberInputProps {
   value?: number
@@ -58,7 +58,7 @@ const NumberInput = React.forwardRef<HTMLInputElement, NumberInputProps>(
           disabled={disabled || value <= min}
           className="flex h-8 w-8 items-center justify-center border-0 text-[var(--color-text-placeholder)] transition-colors hover:text-[var(--color-text-secondary)]"
         >
-          <MinusIcon className="h-3 w-4" />
+          <IconMinus className="h-3 w-4" />
         </button>
 
         <input
@@ -78,7 +78,7 @@ const NumberInput = React.forwardRef<HTMLInputElement, NumberInputProps>(
           disabled={disabled || value >= max}
           className="flex h-8 w-8 items-center justify-center border-0 text-[var(--color-text-placeholder)] transition-colors hover:text-[var(--color-text-secondary)]"
         >
-          <PlusIcon className="h-4 w-4" />
+          <IconPlus className="h-4 w-4" />
         </button>
       </div>
     )

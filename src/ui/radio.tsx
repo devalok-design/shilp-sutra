@@ -1,5 +1,5 @@
 import * as RadioGroupPrimitive from '@primitives/react-radio-group'
-import { Circle } from 'lucide-react'
+import { IconCircle } from '@tabler/icons-react'
 import * as React from 'react'
 import { cn } from './lib/utils'
 
@@ -30,7 +30,7 @@ const RadioGroupItem = React.forwardRef<
       {...props}
     >
       <RadioGroupPrimitive.Indicator className="flex items-center justify-center">
-        <Circle className="h-2.5 w-2.5 fill-[var(--color-interactive)] text-[var(--color-interactive)]" />
+        <IconCircle className="h-2.5 w-2.5 fill-[var(--color-interactive)] text-[var(--color-interactive)]" />
       </RadioGroupPrimitive.Indicator>
     </RadioGroupPrimitive.Item>
   )

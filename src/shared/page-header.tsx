@@ -1,6 +1,6 @@
 import * as React from 'react'
 import { cn } from '../ui/lib/utils'
-import { ChevronRight } from 'lucide-react'
+import { IconChevronRight } from '@tabler/icons-react'
 
 interface Breadcrumb {
   label: string
@@ -37,9 +37,9 @@ function PageHeader({
           {breadcrumbs.map((crumb, index) => (
             <React.Fragment key={index}>
               {index > 0 && (
-                <ChevronRight
+                <IconChevronRight
                   className="h-3.5 w-3.5 text-[var(--color-text-placeholder)]"
-                  strokeWidth={1.5}
+                  stroke={1.5}
                 />
               )}
               {crumb.href ? (

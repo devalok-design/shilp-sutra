@@ -19,7 +19,7 @@ import {
   TooltipTrigger,
 } from '../ui/tooltip'
 import { SidebarTrigger } from '../ui/sidebar'
-import { LogOut, Search, User, Moon, Sun, Sparkles } from 'lucide-react'
+import { IconLogout, IconSearch, IconUser, IconMoon, IconSun, IconSparkles } from '@tabler/icons-react'
 import { cn } from '../ui/lib/utils'
 
 // -----------------------------------------------------------------------
@@ -128,18 +128,18 @@ export default function TopBar({
 
       {/* Right: Actions */}
       <div className="ml-auto flex items-center gap-2 md:gap-4">
-        {/* Search (Cmd+K) */}
+        {/* IconSearch (Cmd+K) */}
         <Tooltip>
           <TooltipTrigger asChild>
             <button
               onClick={handleSearchClick}
               className="flex h-9 w-9 items-center justify-center rounded-[var(--radius-full)] border border-[var(--color-border-default)] bg-[var(--color-layer-02)] text-[var(--color-text-secondary)] transition-colors hover:bg-[var(--color-layer-03)]"
             >
-              <Search className="h-4 w-4" />
+              <IconSearch className="h-4 w-4" />
             </button>
           </TooltipTrigger>
           <TooltipContent side="bottom" align="center">
-            Search (Ctrl+K)
+            IconSearch (Ctrl+K)
           </TooltipContent>
         </Tooltip>
 
@@ -154,7 +154,7 @@ export default function TopBar({
                 onClick={onAiChatClick}
                 className="flex h-9 w-9 items-center justify-center rounded-[var(--radius-full)] border border-[var(--color-border-default)] bg-[var(--color-layer-02)] text-[var(--color-text-secondary)] transition-colors hover:bg-[var(--color-layer-03)]"
               >
-                <Sparkles className="h-4 w-4" />
+                <IconSparkles className="h-4 w-4" />
               </button>
             </TooltipTrigger>
             <TooltipContent side="bottom" align="center">
@@ -210,7 +210,7 @@ export default function TopBar({
                 className="flex w-full cursor-pointer items-center gap-2 px-4 py-3 hover:bg-[var(--color-layer-02)]"
                 onClick={() => onNavigate?.('/profile')}
               >
-                <User className="h-4 w-4 text-[var(--color-text-secondary)]" />
+                <IconUser className="h-4 w-4 text-[var(--color-text-secondary)]" />
                 <span className="text-sm text-[var(--color-text-secondary)]">
                   Profile
                 </span>
@@ -221,9 +221,9 @@ export default function TopBar({
                 onClick={toggleTheme}
               >
                 {theme === 'dark' ? (
-                  <Sun className="h-4 w-4 text-[var(--color-text-secondary)]" />
+                  <IconSun className="h-4 w-4 text-[var(--color-text-secondary)]" />
                 ) : (
-                  <Moon className="h-4 w-4 text-[var(--color-text-secondary)]" />
+                  <IconMoon className="h-4 w-4 text-[var(--color-text-secondary)]" />
                 )}
                 <span className="text-sm text-[var(--color-text-secondary)]">
                   {theme === 'dark' ? 'Light Mode' : 'Dark Mode'}
@@ -237,7 +237,7 @@ export default function TopBar({
                     className="flex w-full cursor-pointer items-center gap-2 px-4 py-3 hover:bg-[var(--color-layer-02)]"
                     onClick={onLogout}
                   >
-                    <LogOut className="h-4 w-4 text-[var(--color-danger)]" />
+                    <IconLogout className="h-4 w-4 text-[var(--color-danger)]" />
                     <span className="text-sm text-[var(--color-danger)]">
                       Logout
                     </span>

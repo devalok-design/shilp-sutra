@@ -1,5 +1,5 @@
 import type { Meta, StoryObj } from '@storybook/react'
-import { Plus, ArrowRight, Download, Send, Heart, Settings } from 'lucide-react'
+import { IconPlus, IconArrowRight, IconDownload, IconSend, IconHeart, IconSettings } from '@tabler/icons-react'
 import { CustomButton } from './CustomButton'
 
 const meta: Meta<typeof CustomButton> = {
@@ -92,7 +92,7 @@ export const WithLeftIcon: Story = {
   args: {
     variant: 'filled',
     text: 'Add Item',
-    leftIcon: <Plus size={18} />,
+    leftIcon: <IconPlus size={18} />,
   },
 }
 
@@ -100,7 +100,7 @@ export const WithRightIcon: Story = {
   args: {
     variant: 'filled',
     text: 'Continue',
-    rightIcon: <ArrowRight size={18} />,
+    rightIcon: <IconArrowRight size={18} />,
   },
 }
 
@@ -108,18 +108,18 @@ export const WithBothIcons: Story = {
   args: {
     variant: 'tonal',
     text: 'Download',
-    leftIcon: <Download size={18} />,
-    rightIcon: <ArrowRight size={18} />,
+    leftIcon: <IconDownload size={18} />,
+    rightIcon: <IconArrowRight size={18} />,
   },
 }
 
 export const AllVariantsWithIcons: Story = {
   render: () => (
     <div style={{ display: 'flex', gap: '16px', alignItems: 'center', flexWrap: 'wrap' }}>
-      <CustomButton variant="filled" text="Send" leftIcon={<Send size={18} />} />
-      <CustomButton variant="tonal" text="Favorite" leftIcon={<Heart size={18} />} />
-      <CustomButton variant="outline" text="Settings" leftIcon={<Settings size={18} />} />
-      <CustomButton variant="text" text="Download" rightIcon={<Download size={18} />} />
+      <CustomButton variant="filled" text="Send" leftIcon={<IconSend size={18} />} />
+      <CustomButton variant="tonal" text="Favorite" leftIcon={<IconHeart size={18} />} />
+      <CustomButton variant="outline" text="Settings" leftIcon={<IconSettings size={18} />} />
+      <CustomButton variant="text" text="Download" rightIcon={<IconDownload size={18} />} />
     </div>
   ),
 }
@@ -168,7 +168,7 @@ export const ShakeWithIcon: Story = {
     variant: 'tonal',
     text: 'Attention!',
     shake: true,
-    leftIcon: <Heart size={18} />,
+    leftIcon: <IconHeart size={18} />,
   },
 }
 
@@ -188,7 +188,7 @@ export const Playground: Story = {
   args: {
     variant: 'filled',
     text: 'Playground',
-    leftIcon: <Plus size={18} />,
+    leftIcon: <IconPlus size={18} />,
     disabled: false,
     shake: false,
   },

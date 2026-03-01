@@ -1,4 +1,4 @@
-import { X } from 'lucide-react'
+import { IconX } from '@tabler/icons-react'
 import * as React from 'react'
 import { cva, type VariantProps } from 'class-variance-authority'
 import { cn } from './lib/utils'
@@ -61,7 +61,7 @@ const Badge = React.forwardRef<HTMLSpanElement, BadgeProps>(
             className="ml-0.5 rounded-[var(--radius-full)] text-[var(--color-icon-secondary)] transition-colors hover:text-[var(--color-icon-primary)] hover:bg-[var(--color-field)] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--color-focus)]"
             aria-label="Remove"
           >
-            <X className="h-3 w-3" />
+            <IconX className="h-3 w-3" />
           </button>
         )}
       </span>

@@ -2,7 +2,7 @@
 
 import { useRef, useEffect } from 'react'
 import { StreamingText } from './streaming-text'
-import { Bot, User, AlertCircle } from 'lucide-react'
+import { IconRobot, IconUser, IconAlertCircle } from '@tabler/icons-react'
 import ReactMarkdown from 'react-markdown'
 
 // ============================================================
@@ -106,7 +106,7 @@ export function MessageList({
       <div className="flex flex-1 items-center justify-center p-6">
         <div className="flex flex-col items-center gap-3 text-center">
           <div className="flex h-12 w-12 items-center justify-center rounded-[var(--radius-full)] bg-[var(--color-field)]">
-            <Bot className="h-6 w-6 text-[var(--color-text-secondary)]" />
+            <IconRobot className="h-6 w-6 text-[var(--color-text-secondary)]" />
           </div>
           <h3 className="B1-Reg text-[var(--color-text-primary)]">
             {emptyTitle}
@@ -127,7 +127,7 @@ export function MessageList({
             return (
               <div key={msg.id} className="flex justify-center">
                 <div className="flex items-center gap-2 rounded-[var(--radius-lg)] bg-red-50 px-3 py-2 dark:bg-red-950/30">
-                  <AlertCircle className="h-3.5 w-3.5 shrink-0 text-red-500" />
+                  <IconAlertCircle className="h-3.5 w-3.5 shrink-0 text-red-500" />
                   <p className="B3-Reg text-red-600 dark:text-red-400">
                     {msg.content}
                   </p>
@@ -144,7 +144,7 @@ export function MessageList({
                     <p className="B2-Reg whitespace-pre-wrap">{msg.content}</p>
                   </div>
                   <div className="flex h-7 w-7 shrink-0 items-center justify-center rounded-[var(--radius-full)] bg-[var(--color-field)]">
-                    <User className="h-3.5 w-3.5 text-[var(--color-text-secondary)]" />
+                    <IconUser className="h-3.5 w-3.5 text-[var(--color-text-secondary)]" />
                   </div>
                 </div>
               </div>
@@ -156,7 +156,7 @@ export function MessageList({
             <div key={msg.id} className="flex justify-start">
               <div className="flex max-w-[85%] items-start gap-2">
                 <div className="flex h-7 w-7 shrink-0 items-center justify-center rounded-[var(--radius-full)] bg-[var(--color-field)]">
-                  <Bot className="h-3.5 w-3.5 text-[var(--color-text-secondary)]" />
+                  <IconRobot className="h-3.5 w-3.5 text-[var(--color-text-secondary)]" />
                 </div>
                 <div className="rounded-[var(--radius-2xl)] rounded-bl-[var(--radius-sm)] bg-[var(--color-field)] px-3.5 py-2.5">
                   <div className="B2-Reg text-[var(--color-text-primary)]">
@@ -175,7 +175,7 @@ export function MessageList({
           <div className="flex justify-start">
             <div className="flex max-w-[85%] items-start gap-2">
               <div className="flex h-7 w-7 shrink-0 items-center justify-center rounded-[var(--radius-full)] bg-[var(--color-field)]">
-                <Bot className="h-3.5 w-3.5 text-[var(--color-text-secondary)]" />
+                <IconRobot className="h-3.5 w-3.5 text-[var(--color-text-secondary)]" />
               </div>
               <div className="rounded-[var(--radius-2xl)] rounded-bl-[var(--radius-sm)] bg-[var(--color-field)] px-3.5 py-2.5">
                 <div className="B2-Reg text-[var(--color-text-primary)]">
@@ -191,7 +191,7 @@ export function MessageList({
           <div className="flex justify-start">
             <div className="flex max-w-[85%] items-start gap-2">
               <div className="flex h-7 w-7 shrink-0 items-center justify-center rounded-[var(--radius-full)] bg-[var(--color-field)]">
-                <Bot className="h-3.5 w-3.5 text-[var(--color-text-secondary)]" />
+                <IconRobot className="h-3.5 w-3.5 text-[var(--color-text-secondary)]" />
               </div>
               <div className="rounded-[var(--radius-2xl)] rounded-bl-[var(--radius-sm)] bg-[var(--color-field)] px-3.5 py-2.5">
                 <div className="flex items-center gap-1.5 py-1">

@@ -1,5 +1,5 @@
 import { Slot } from '@primitives/react-slot'
-import { ChevronRight, MoreHorizontal } from 'lucide-react'
+import { IconChevronRight, IconDots } from '@tabler/icons-react'
 import * as React from 'react'
 import { cn } from './lib/utils'
 
@@ -68,7 +68,7 @@ const BreadcrumbSeparator = ({ children, className, ...props }: React.ComponentP
     className={cn('[&>svg]:h-3.5 [&>svg]:w-3.5', className)}
     {...props}
   >
-    {children ?? <ChevronRight />}
+    {children ?? <IconChevronRight />}
   </li>
 )
 BreadcrumbSeparator.displayName = 'BreadcrumbSeparator'
@@ -80,7 +80,7 @@ const BreadcrumbEllipsis = ({ className, ...props }: React.ComponentProps<'span'
     className={cn('flex h-9 w-9 items-center justify-center', className)}
     {...props}
   >
-    <MoreHorizontal className="h-4 w-4" />
+    <IconDots className="h-4 w-4" />
     <span className="sr-only">More</span>
   </span>
 )

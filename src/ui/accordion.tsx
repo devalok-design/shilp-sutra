@@ -1,6 +1,6 @@
 import * as React from 'react'
 import * as AccordionPrimitive from '@primitives/react-accordion'
-import { ChevronDown } from 'lucide-react'
+import { IconChevronDown } from '@tabler/icons-react'
 
 import { cn } from './lib/utils'
 
@@ -32,7 +32,7 @@ const AccordionTrigger = React.forwardRef<
       {...props}
     >
       {children}
-      <ChevronDown className="h-4 w-4 shrink-0 text-[var(--color-text-secondary)] transition-transform duration-[var(--duration-moderate)]" />
+      <IconChevronDown className="h-4 w-4 shrink-0 text-[var(--color-text-secondary)] transition-transform duration-[var(--duration-moderate)]" />
     </AccordionPrimitive.Trigger>
   </AccordionPrimitive.Header>
 ))

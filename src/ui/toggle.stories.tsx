@@ -1,5 +1,5 @@
 import type { Meta, StoryObj } from '@storybook/react'
-import { Bold } from 'lucide-react'
+import { IconBold } from '@tabler/icons-react'
 import { Toggle } from './toggle'
 
 const meta: Meta<typeof Toggle> = {
@@ -38,7 +38,7 @@ export const Outline: Story = {
 export const WithIcon: Story = {
   render: () => (
     <Toggle aria-label="Toggle bold">
-      <Bold className="h-4 w-4" />
+      <IconBold className="h-4 w-4" />
     </Toggle>
   ),
 }

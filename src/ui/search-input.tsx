@@ -1,6 +1,6 @@
 'use client'
 
-import { Search, X, Loader2 } from 'lucide-react'
+import { IconSearch, IconX, IconLoader2 } from '@tabler/icons-react'
 import * as React from 'react'
 import { cn } from './lib/utils'
 
@@ -15,7 +15,7 @@ const SearchInput = React.forwardRef<HTMLInputElement, SearchInputProps>(
 
     return (
       <div className="relative flex items-center">
-        <Search
+        <IconSearch
           className="absolute left-3 h-[var(--icon-md)] w-[var(--icon-md)] text-[var(--color-text-secondary)] pointer-events-none"
           aria-hidden="true"
         />
@@ -38,7 +38,7 @@ const SearchInput = React.forwardRef<HTMLInputElement, SearchInputProps>(
           {...props}
         />
         {loading ? (
-          <Loader2
+          <IconLoader2
             className="absolute right-3 h-[var(--icon-md)] w-[var(--icon-md)] text-[var(--color-text-secondary)] animate-spin pointer-events-none"
             aria-hidden="true"
           />
@@ -49,7 +49,7 @@ const SearchInput = React.forwardRef<HTMLInputElement, SearchInputProps>(
             className="absolute right-3 rounded-[var(--radius-full)] h-5 w-5 flex items-center justify-center text-[var(--color-text-secondary)] hover:text-[var(--color-text-primary)] hover:bg-[var(--color-layer-02)] transition-colors"
             aria-label="Clear search"
           >
-            <X className="h-3.5 w-3.5" />
+            <IconX className="h-3.5 w-3.5" />
           </button>
         ) : null}
       </div>

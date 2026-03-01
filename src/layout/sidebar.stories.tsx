@@ -2,19 +2,19 @@ import type { Meta, StoryObj } from '@storybook/react'
 import AppSidebar from './sidebar'
 import { SidebarProvider } from '../ui/sidebar'
 import {
-  LayoutDashboard,
-  CalendarCheck,
-  Umbrella,
-  FolderKanban,
-  ListTodo,
-  BookOpen,
-  SlidersHorizontal,
-  UserCircle,
-  ShieldCheck,
-  ClipboardList,
-  UserPlus,
-  Settings,
-} from 'lucide-react'
+  IconLayoutDashboard,
+  IconCalendarCheck,
+  IconUmbrella,
+  IconLayoutKanban,
+  IconListCheck,
+  IconBook,
+  IconAdjustmentsHorizontal,
+  IconUserCircle,
+  IconShieldCheck,
+  IconClipboardList,
+  IconUserPlus,
+  IconSettings,
+} from '@tabler/icons-react'
 import type { NavGroup, SidebarUser } from './sidebar'
 
 // ── Mock Data ────────────────────────────────────────────────
@@ -38,30 +38,30 @@ const mockUserWithImage: SidebarUser = {
 const mainNavGroup: NavGroup = {
   label: 'Main',
   items: [
-    { title: 'Dashboard', href: '/', icon: LayoutDashboard, exact: true },
-    { title: 'Attendance', href: '/attendance', icon: CalendarCheck },
-    { title: 'Breaks', href: '/breaks', icon: Umbrella },
-    { title: 'Projects', href: '/projects', icon: FolderKanban },
-    { title: 'My Tasks', href: '/my-tasks', icon: ListTodo },
-    { title: 'Devsabha', href: '/devsabha', icon: BookOpen },
+    { title: 'Dashboard', href: '/', icon: IconLayoutDashboard, exact: true },
+    { title: 'Attendance', href: '/attendance', icon: IconCalendarCheck },
+    { title: 'Breaks', href: '/breaks', icon: IconUmbrella },
+    { title: 'Projects', href: '/projects', icon: IconLayoutKanban },
+    { title: 'My Tasks', href: '/my-tasks', icon: IconListCheck },
+    { title: 'Devsabha', href: '/devsabha', icon: IconBook },
   ],
 }
 
 const secondaryNavGroup: NavGroup = {
   label: 'Account',
   items: [
-    { title: 'Adjustments', href: '/adjustments', icon: SlidersHorizontal },
-    { title: 'Profile', href: '/profile', icon: UserCircle },
+    { title: 'Adjustments', href: '/adjustments', icon: IconAdjustmentsHorizontal },
+    { title: 'Profile', href: '/profile', icon: IconUserCircle },
   ],
 }
 
 const adminNavGroup: NavGroup = {
   label: 'Admin',
   items: [
-    { title: 'Admin Dashboard', href: '/admin', icon: ShieldCheck },
-    { title: 'Lokwasi', href: '/admin/lokwasi', icon: ClipboardList },
-    { title: 'Onboarding', href: '/admin/onboarding', icon: UserPlus },
-    { title: 'System Config', href: '/admin/system-config', icon: Settings },
+    { title: 'Admin Dashboard', href: '/admin', icon: IconShieldCheck },
+    { title: 'Lokwasi', href: '/admin/lokwasi', icon: IconClipboardList },
+    { title: 'Onboarding', href: '/admin/onboarding', icon: IconUserPlus },
+    { title: 'System Config', href: '/admin/system-config', icon: IconSettings },
   ],
 }
 

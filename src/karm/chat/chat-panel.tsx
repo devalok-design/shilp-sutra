@@ -5,7 +5,7 @@ import { MessageList, type ChatMessage } from './message-list'
 import { ChatInput } from './chat-input'
 import { ConversationList, type Conversation } from './conversation-list'
 import { useState, useEffect } from 'react'
-import { MessageSquarePlus, History, X, ChevronDown } from 'lucide-react'
+import { IconMessagePlus, IconHistory, IconX, IconChevronDown } from '@tabler/icons-react'
 
 // ============================================================
 // Types
@@ -113,7 +113,7 @@ export function ChatPanel({
               <span className="B3-Reg text-[var(--color-text-placeholder)]">
                 {selectedAgent?.desc}
               </span>
-              <ChevronDown className="h-3.5 w-3.5 text-[var(--color-text-placeholder)]" />
+              <IconChevronDown className="h-3.5 w-3.5 text-[var(--color-text-placeholder)]" />
             </button>
 
             {/* Agent Dropdown */}
@@ -155,10 +155,10 @@ export function ChatPanel({
             className="flex h-8 w-8 items-center justify-center rounded-[var(--radius-lg)] text-[var(--color-text-secondary)] transition-colors hover:bg-[var(--color-layer-02)]"
             aria-label="New chat"
           >
-            <MessageSquarePlus className="h-4 w-4" />
+            <IconMessagePlus className="h-4 w-4" />
           </button>
 
-          {/* History Toggle */}
+          {/* IconHistory Toggle */}
           <button
             onClick={() => setShowHistory(!showHistory)}
             className={`flex h-8 w-8 items-center justify-center rounded-[var(--radius-lg)] transition-colors hover:bg-[var(--color-layer-02)] ${
@@ -168,7 +168,7 @@ export function ChatPanel({
             }`}
             aria-label="Conversation history"
           >
-            <History className="h-4 w-4" />
+            <IconHistory className="h-4 w-4" />
           </button>
 
           {/* Close */}
@@ -177,7 +177,7 @@ export function ChatPanel({
             className="flex h-8 w-8 items-center justify-center rounded-[var(--radius-lg)] text-[var(--color-text-secondary)] transition-colors hover:bg-[var(--color-layer-02)]"
             aria-label="Close chat"
           >
-            <X className="h-4 w-4" />
+            <IconX className="h-4 w-4" />
           </button>
         </div>
 

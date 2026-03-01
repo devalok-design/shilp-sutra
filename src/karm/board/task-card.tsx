@@ -6,7 +6,7 @@ import type { DraggableAttributes } from '@dnd-kit/core'
 import type { SyntheticListenerMap } from '@dnd-kit/core/dist/hooks/utilities'
 import { cn } from '../../ui/lib/utils'
 import { Avatar, AvatarFallback, AvatarImage } from '../../ui/avatar'
-import { Calendar, GripVertical } from 'lucide-react'
+import { IconCalendar, IconGripVertical } from '@tabler/icons-react'
 import { getInitials } from '../../shared/lib/string-utils'
 import { PRIORITY_LABELS, PRIORITY_DOT_COLORS } from '../tasks/task-constants'
 
@@ -97,7 +97,7 @@ function TaskCardVisual({
           {...(dragHandleProps?.listeners ?? {})}
           onClick={(e) => e.stopPropagation()}
         >
-          <GripVertical className="h-3.5 w-3.5 text-[var(--color-icon-secondary)]" />
+          <IconGripVertical className="h-3.5 w-3.5 text-[var(--color-icon-secondary)]" />
         </button>
         <div className="min-w-0 flex-1">
           <p className="text-sm font-medium leading-snug text-[var(--color-text-primary)] line-clamp-2">
@@ -147,7 +147,7 @@ function TaskCardVisual({
               dueInfo.className,
             )}
           >
-            <Calendar className="h-3 w-3" />
+            <IconCalendar className="h-3 w-3" />
             <span>{dueInfo.label}</span>
           </div>
         )}

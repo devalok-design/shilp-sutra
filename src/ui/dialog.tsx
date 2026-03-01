@@ -1,6 +1,6 @@
 import * as React from 'react'
 import * as DialogPrimitive from '@primitives/react-dialog'
-import { X as CloseIcon } from 'lucide-react'
+import { IconX as CloseIcon } from '@tabler/icons-react'
 
 import { cn } from './lib/utils'
 

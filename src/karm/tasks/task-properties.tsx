@@ -13,18 +13,18 @@ import {
   PopoverTrigger,
 } from '../../ui/popover'
 import {
-  Columns3,
-  User as UserIcon,
-  Users,
-  Flag,
-  CalendarDays,
-  Tag,
-  Eye,
-  Plus,
-  Check,
-  X,
-  ChevronDown,
-} from 'lucide-react'
+  IconColumns3,
+  IconUser as UserIcon,
+  IconUsers,
+  IconFlag,
+  IconCalendarEvent,
+  IconTag,
+  IconEye,
+  IconPlus,
+  IconCheck,
+  IconX,
+  IconChevronDown,
+} from '@tabler/icons-react'
 import { getInitials } from '../../shared/lib/string-utils'
 import { PRIORITY_LABELS, PRIORITY_DOT_COLORS } from './task-constants'
 
@@ -111,7 +111,7 @@ function PropertyRow({
       )}
     >
       <div className="flex w-[120px] shrink-0 items-center gap-2 text-[var(--color-text-placeholder)]">
-        <Icon className="h-3.5 w-3.5" strokeWidth={1.5} />
+        <Icon className="h-3.5 w-3.5" stroke={1.5} />
         <span className="B3-Reg">{label}</span>
       </div>
       <div className="flex-1 min-w-0">{children}</div>
@@ -189,7 +189,7 @@ function MemberPicker({
                   {member.name}
                 </span>
                 {isSelected && (
-                  <Check className="h-3.5 w-3.5 shrink-0 text-[var(--color-interactive)]" />
+                  <IconCheck className="h-3.5 w-3.5 shrink-0 text-[var(--color-interactive)]" />
                 )}
               </button>
             )
@@ -296,7 +296,7 @@ function TaskProperties({
   return (
     <div className={cn('space-y-0.5', className)}>
       {/* Column */}
-      <PropertyRow icon={Columns3} label="Column">
+      <PropertyRow icon={IconColumns3} label="Column">
         {readOnly && !editableFields?.includes('columnId') ? (
           <span className="px-2 py-1 text-[13px] font-body text-[var(--color-text-primary)]">
             {task.column.name}
@@ -309,7 +309,7 @@ function TaskProperties({
                 className="inline-flex items-center gap-1.5 rounded-[var(--radius-md)] px-2 py-1 text-[13px] font-body text-[var(--color-text-primary)] transition-colors hover:bg-[var(--color-field)]"
               >
                 <span>{task.column.name}</span>
-                <ChevronDown className="h-3 w-3 text-[var(--color-text-placeholder)]" />
+                <IconChevronDown className="h-3 w-3 text-[var(--color-text-placeholder)]" />
               </button>
             </PopoverTrigger>
             <PopoverContent
@@ -332,7 +332,7 @@ function TaskProperties({
                 >
                   {col.name}
                   {col.id === task.columnId && (
-                    <Check className="ml-auto h-3.5 w-3.5" />
+                    <IconCheck className="ml-auto h-3.5 w-3.5" />
                   )}
                 </button>
               ))}
@@ -378,7 +378,7 @@ function TaskProperties({
       )}
 
       {/* Assignees */}
-      <PropertyRow icon={Users} label="Assignees">
+      <PropertyRow icon={IconUsers} label="Assignees">
         <div className="flex flex-wrap items-center gap-1.5">
           {task.assignees.map((a) => (
             <div
@@ -402,7 +402,7 @@ function TaskProperties({
                   onClick={() => onUnassign(a.user.id)}
                   className="ml-0.5 rounded-[var(--radius-full)] p-0.5 transition-colors hover:bg-[var(--color-field)]"
                 >
-                  <X className="h-2.5 w-2.5 text-[var(--color-text-placeholder)]" />
+                  <IconX className="h-2.5 w-2.5 text-[var(--color-text-placeholder)]" />
                 </button>
               )}
             </div>
@@ -418,7 +418,7 @@ function TaskProperties({
                 type="button"
                 className="inline-flex h-5 w-5 items-center justify-center rounded-[var(--radius-full)] border border-dashed border-[var(--color-border-subtle)] transition-colors hover:bg-[var(--color-field)] hover:border-[var(--color-text-placeholder)]"
               >
-                <Plus className="h-3 w-3 text-[var(--color-text-placeholder)]" />
+                <IconPlus className="h-3 w-3 text-[var(--color-text-placeholder)]" />
               </button>
             </MemberPicker>
           )}
@@ -431,7 +431,7 @@ function TaskProperties({
       </PropertyRow>
 
       {/* Priority */}
-      <PropertyRow icon={Flag} label="Priority">
+      <PropertyRow icon={IconFlag} label="Priority">
         <Popover>
           <PopoverTrigger asChild>
             <button
@@ -465,7 +465,7 @@ function TaskProperties({
       </PropertyRow>
 
       {/* Due Date */}
-      <PropertyRow icon={CalendarDays} label="Due Date">
+      <PropertyRow icon={IconCalendarEvent} label="Due Date">
         <div className="flex items-center gap-1">
           {renderDatePicker ? (
             renderDatePicker({
@@ -488,14 +488,14 @@ function TaskProperties({
               onClick={() => handleDueDateChange(null)}
               className="rounded-[var(--radius-md)] p-1 transition-colors hover:bg-[var(--color-field)]"
             >
-              <X className="h-3 w-3 text-[var(--color-text-placeholder)]" />
+              <IconX className="h-3 w-3 text-[var(--color-text-placeholder)]" />
             </button>
           )}
         </div>
       </PropertyRow>
 
       {/* Labels */}
-      <PropertyRow icon={Tag} label="Labels">
+      <PropertyRow icon={IconTag} label="Labels">
         <div className="flex flex-wrap items-center gap-1.5">
           {task.labels.map((label) => (
             <span
@@ -509,7 +509,7 @@ function TaskProperties({
                   onClick={() => handleRemoveLabel(label)}
                   className="rounded-[var(--radius-full)] p-0.5 transition-colors hover:bg-[var(--color-field)]"
                 >
-                  <X className="h-2.5 w-2.5" />
+                  <IconX className="h-2.5 w-2.5" />
                 </button>
               )}
             </span>
@@ -540,7 +540,7 @@ function TaskProperties({
                 onClick={() => setShowLabelInput(true)}
                 className="inline-flex h-5 w-5 items-center justify-center rounded-[var(--radius-full)] border border-dashed border-[var(--color-border-subtle)] transition-colors hover:bg-[var(--color-field)] hover:border-[var(--color-text-placeholder)]"
               >
-                <Plus className="h-3 w-3 text-[var(--color-text-placeholder)]" />
+                <IconPlus className="h-3 w-3 text-[var(--color-text-placeholder)]" />
               </button>
             )
           )}
@@ -554,7 +554,7 @@ function TaskProperties({
 
       {/* Visibility -- hidden in client readOnly mode */}
       {!readOnly && (
-        <PropertyRow icon={Eye} label="Visibility">
+        <PropertyRow icon={IconEye} label="Visibility">
           <button
             type="button"
             onClick={handleVisibilityToggle}

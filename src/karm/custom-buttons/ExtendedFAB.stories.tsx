@@ -1,5 +1,5 @@
 import type { Meta, StoryObj } from '@storybook/react'
-import { Plus, Pencil, MessageSquare, Navigation, Upload } from 'lucide-react'
+import { IconPlus, IconPencil, IconMessage, IconNavigation, IconUpload } from '@tabler/icons-react'
 import { ExtendedFAB } from './ExtendedFAB'
 
 const meta: Meta<typeof ExtendedFAB> = {
@@ -45,7 +45,7 @@ export const SmallFilled: Story = {
     size: 'small',
     color: 'filled',
     text: 'Create',
-    icon: <Plus size={18} />,
+    icon: <IconPlus size={18} />,
   },
 }
 
@@ -54,7 +54,7 @@ export const BigFilled: Story = {
     size: 'big',
     color: 'filled',
     text: 'Create',
-    icon: <Plus size={24} />,
+    icon: <IconPlus size={24} />,
   },
 }
 
@@ -63,7 +63,7 @@ export const SmallTonal: Story = {
     size: 'small',
     color: 'tonal',
     text: 'Create',
-    icon: <Plus size={18} />,
+    icon: <IconPlus size={18} />,
   },
 }
 
@@ -72,7 +72,7 @@ export const BigTonal: Story = {
     size: 'big',
     color: 'tonal',
     text: 'Create',
-    icon: <Plus size={24} />,
+    icon: <IconPlus size={24} />,
   },
 }
 
@@ -84,15 +84,15 @@ export const AllVariants: Story = {
       <div>
         <div style={{ marginBottom: '8px', fontSize: '14px', fontWeight: 600, color: 'var(--text-secondary, #666)' }}>Filled</div>
         <div style={{ display: 'flex', gap: '16px', alignItems: 'center' }}>
-          <ExtendedFAB size="small" color="filled" text="Small Filled" icon={<Plus size={18} />} />
-          <ExtendedFAB size="big" color="filled" text="Big Filled" icon={<Plus size={24} />} />
+          <ExtendedFAB size="small" color="filled" text="Small Filled" icon={<IconPlus size={18} />} />
+          <ExtendedFAB size="big" color="filled" text="Big Filled" icon={<IconPlus size={24} />} />
         </div>
       </div>
       <div>
         <div style={{ marginBottom: '8px', fontSize: '14px', fontWeight: 600, color: 'var(--text-secondary, #666)' }}>Tonal</div>
         <div style={{ display: 'flex', gap: '16px', alignItems: 'center' }}>
-          <ExtendedFAB size="small" color="tonal" text="Small Tonal" icon={<Plus size={18} />} />
-          <ExtendedFAB size="big" color="tonal" text="Big Tonal" icon={<Plus size={24} />} />
+          <ExtendedFAB size="small" color="tonal" text="Small Tonal" icon={<IconPlus size={18} />} />
+          <ExtendedFAB size="big" color="tonal" text="Big Tonal" icon={<IconPlus size={24} />} />
         </div>
       </div>
     </div>
@@ -106,7 +106,7 @@ export const Compose: Story = {
     size: 'big',
     color: 'filled',
     text: 'Compose',
-    icon: <Pencil size={24} />,
+    icon: <IconPencil size={24} />,
   },
 }
 
@@ -115,7 +115,7 @@ export const Navigate: Story = {
     size: 'big',
     color: 'tonal',
     text: 'Navigate',
-    icon: <Navigation size={24} />,
+    icon: <IconNavigation size={24} />,
   },
 }
 
@@ -124,7 +124,7 @@ export const NewChat: Story = {
     size: 'small',
     color: 'filled',
     text: 'New Chat',
-    icon: <MessageSquare size={18} />,
+    icon: <IconMessage size={18} />,
   },
 }
 
@@ -134,17 +134,17 @@ export const Upload_: Story = {
     size: 'small',
     color: 'tonal',
     text: 'Upload',
-    icon: <Upload size={18} />,
+    icon: <IconUpload size={18} />,
   },
 }
 
 export const VariousLabels: Story = {
   render: () => (
     <div style={{ display: 'flex', gap: '16px', alignItems: 'center', flexWrap: 'wrap' }}>
-      <ExtendedFAB size="big" color="filled" text="Compose" icon={<Pencil size={24} />} />
-      <ExtendedFAB size="big" color="tonal" text="Navigate" icon={<Navigation size={24} />} />
-      <ExtendedFAB size="big" color="filled" text="New Chat" icon={<MessageSquare size={24} />} />
-      <ExtendedFAB size="big" color="tonal" text="Upload" icon={<Upload size={24} />} />
+      <ExtendedFAB size="big" color="filled" text="Compose" icon={<IconPencil size={24} />} />
+      <ExtendedFAB size="big" color="tonal" text="Navigate" icon={<IconNavigation size={24} />} />
+      <ExtendedFAB size="big" color="filled" text="New Chat" icon={<IconMessage size={24} />} />
+      <ExtendedFAB size="big" color="tonal" text="IconUpload" icon={<IconUpload size={24} />} />
     </div>
   ),
 }
@@ -156,7 +156,7 @@ export const DisabledSmallFilled: Story = {
     size: 'small',
     color: 'filled',
     text: 'Create',
-    icon: <Plus size={18} />,
+    icon: <IconPlus size={18} />,
     disabled: true,
   },
 }
@@ -166,7 +166,7 @@ export const DisabledBigTonal: Story = {
     size: 'big',
     color: 'tonal',
     text: 'Create',
-    icon: <Plus size={24} />,
+    icon: <IconPlus size={24} />,
     disabled: true,
   },
 }
@@ -177,15 +177,15 @@ export const AllVariantsDisabled: Story = {
       <div>
         <div style={{ marginBottom: '8px', fontSize: '14px', fontWeight: 600, color: 'var(--text-secondary, #666)' }}>Filled (Disabled)</div>
         <div style={{ display: 'flex', gap: '16px', alignItems: 'center' }}>
-          <ExtendedFAB size="small" color="filled" text="Small Filled" icon={<Plus size={18} />} disabled />
-          <ExtendedFAB size="big" color="filled" text="Big Filled" icon={<Plus size={24} />} disabled />
+          <ExtendedFAB size="small" color="filled" text="Small Filled" icon={<IconPlus size={18} />} disabled />
+          <ExtendedFAB size="big" color="filled" text="Big Filled" icon={<IconPlus size={24} />} disabled />
         </div>
       </div>
       <div>
         <div style={{ marginBottom: '8px', fontSize: '14px', fontWeight: 600, color: 'var(--text-secondary, #666)' }}>Tonal (Disabled)</div>
         <div style={{ display: 'flex', gap: '16px', alignItems: 'center' }}>
-          <ExtendedFAB size="small" color="tonal" text="Small Tonal" icon={<Plus size={18} />} disabled />
-          <ExtendedFAB size="big" color="tonal" text="Big Tonal" icon={<Plus size={24} />} disabled />
+          <ExtendedFAB size="small" color="tonal" text="Small Tonal" icon={<IconPlus size={18} />} disabled />
+          <ExtendedFAB size="big" color="tonal" text="Big Tonal" icon={<IconPlus size={24} />} disabled />
         </div>
       </div>
     </div>
@@ -199,7 +199,7 @@ export const Playground: Story = {
     size: 'big',
     color: 'filled',
     text: 'Create',
-    icon: <Plus size={24} />,
+    icon: <IconPlus size={24} />,
     disabled: false,
   },
 }

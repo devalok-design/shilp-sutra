@@ -1,4 +1,4 @@
-import { AlertCircle, CheckCircle2, Info, X, AlertTriangle } from 'lucide-react'
+import { IconAlertCircle, IconCircleCheck, IconInfoCircle, IconX, IconAlertTriangle } from '@tabler/icons-react'
 import * as React from 'react'
 import { cva, type VariantProps } from 'class-variance-authority'
 import { cn } from './lib/utils'
@@ -23,10 +23,10 @@ const bannerVariants = cva(
 )
 
 const BANNER_ICONS = {
-  info:    Info,
-  success: CheckCircle2,
-  warning: AlertTriangle,
-  error:   AlertCircle,
+  info:    IconInfoCircle,
+  success: IconCircleCheck,
+  warning: IconAlertTriangle,
+  error:   IconAlertCircle,
 }
 
 export interface BannerProps
@@ -53,7 +53,7 @@ const Banner = React.forwardRef<HTMLDivElement, BannerProps>(
             className="shrink-0 rounded-[var(--radius-sm)] text-[var(--color-icon-secondary)] transition-colors hover:text-[var(--color-icon-primary)] hover:bg-[var(--color-field)] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--color-focus)]"
             aria-label="Dismiss"
           >
-            <X className="h-4 w-4" />
+            <IconX className="h-4 w-4" />
           </button>
         )}
       </div>

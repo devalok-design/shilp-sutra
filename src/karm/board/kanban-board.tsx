@@ -23,7 +23,7 @@ import {
 } from '@dnd-kit/sortable'
 import { BoardColumn, type BoardColumnData } from './board-column'
 import { TaskCardOverlay, type BoardTask } from './task-card'
-import { Plus } from 'lucide-react'
+import { IconPlus } from '@tabler/icons-react'
 import { Button } from '../../ui/button'
 
 // ============================================================
@@ -340,7 +340,7 @@ export function KanbanBoard({
             onClick={onAddColumn}
             className="h-10 w-[300px] justify-start gap-2 rounded-[var(--radius-xl)] border border-dashed border-[var(--color-border-default)]/60 bg-[var(--color-layer-01)]/40 text-[var(--color-text-tertiary)] hover:border-[var(--color-border-interactive)] hover:bg-[var(--color-interactive-subtle)]/50 hover:text-[var(--color-interactive)]"
           >
-            <Plus className="h-4 w-4" />
+            <IconPlus className="h-4 w-4" />
             Add column
           </Button>
         </div>

@@ -39,6 +39,7 @@ const preview: Preview = {
         order: [
           'Getting Started',
           'Foundations',
+          'Iconography',
           'UI', [
             'Introduction',
             'Core',

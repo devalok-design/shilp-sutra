@@ -6,17 +6,17 @@ import StarterKit from '@tiptap/starter-kit'
 import Placeholder from '@tiptap/extension-placeholder'
 import { cn } from '../ui/lib/utils'
 import {
-  Bold,
-  Italic,
-  Strikethrough,
-  Heading2,
-  Heading3,
-  List,
-  ListOrdered,
-  Code,
-  Undo,
-  Redo,
-} from 'lucide-react'
+  IconBold,
+  IconItalic,
+  IconStrikethrough,
+  IconH2,
+  IconH3,
+  IconList,
+  IconListNumbers,
+  IconCode,
+  IconArrowBackUp,
+  IconArrowForwardUp,
+} from '@tabler/icons-react'
 
 interface ToolbarButtonProps {
   onClick: () => void
@@ -61,7 +61,7 @@ function Toolbar({ editor }: { editor: Editor }) {
         isActive={editor.isActive('bold')}
         title="Bold"
       >
-        <Bold className="h-3.5 w-3.5" strokeWidth={2.5} />
+        <IconBold className="h-3.5 w-3.5" stroke={2.5} />
       </ToolbarButton>
 
       <ToolbarButton
@@ -69,7 +69,7 @@ function Toolbar({ editor }: { editor: Editor }) {
         isActive={editor.isActive('italic')}
         title="Italic"
       >
-        <Italic className="h-3.5 w-3.5" strokeWidth={2.5} />
+        <IconItalic className="h-3.5 w-3.5" stroke={2.5} />
       </ToolbarButton>
 
       <ToolbarButton
@@ -77,7 +77,7 @@ function Toolbar({ editor }: { editor: Editor }) {
         isActive={editor.isActive('strike')}
         title="Strikethrough"
       >
-        <Strikethrough className="h-3.5 w-3.5" strokeWidth={2.5} />
+        <IconStrikethrough className="h-3.5 w-3.5" stroke={2.5} />
       </ToolbarButton>
 
       <div className="mx-1 h-4 w-px bg-[var(--color-border-default)]" />
@@ -89,7 +89,7 @@ function Toolbar({ editor }: { editor: Editor }) {
         isActive={editor.isActive('heading', { level: 2 })}
         title="Heading 2"
       >
-        <Heading2 className="h-3.5 w-3.5" strokeWidth={2.5} />
+        <IconH2 className="h-3.5 w-3.5" stroke={2.5} />
       </ToolbarButton>
 
       <ToolbarButton
@@ -99,7 +99,7 @@ function Toolbar({ editor }: { editor: Editor }) {
         isActive={editor.isActive('heading', { level: 3 })}
         title="Heading 3"
       >
-        <Heading3 className="h-3.5 w-3.5" strokeWidth={2.5} />
+        <IconH3 className="h-3.5 w-3.5" stroke={2.5} />
       </ToolbarButton>
 
       <div className="mx-1 h-4 w-px bg-[var(--color-border-default)]" />
@@ -109,7 +109,7 @@ function Toolbar({ editor }: { editor: Editor }) {
         isActive={editor.isActive('bulletList')}
         title="Bullet list"
       >
-        <List className="h-3.5 w-3.5" strokeWidth={2.5} />
+        <IconList className="h-3.5 w-3.5" stroke={2.5} />
       </ToolbarButton>
 
       <ToolbarButton
@@ -117,7 +117,7 @@ function Toolbar({ editor }: { editor: Editor }) {
         isActive={editor.isActive('orderedList')}
         title="Ordered list"
       >
-        <ListOrdered className="h-3.5 w-3.5" strokeWidth={2.5} />
+        <IconListNumbers className="h-3.5 w-3.5" stroke={2.5} />
       </ToolbarButton>
 
       <ToolbarButton
@@ -125,7 +125,7 @@ function Toolbar({ editor }: { editor: Editor }) {
         isActive={editor.isActive('codeBlock')}
         title="Code block"
       >
-        <Code className="h-3.5 w-3.5" strokeWidth={2.5} />
+        <IconCode className="h-3.5 w-3.5" stroke={2.5} />
       </ToolbarButton>
 
       <div className="mx-1 h-4 w-px bg-[var(--color-border-default)]" />
@@ -135,7 +135,7 @@ function Toolbar({ editor }: { editor: Editor }) {
         disabled={!editor.can().undo()}
         title="Undo"
       >
-        <Undo className="h-3.5 w-3.5" strokeWidth={2} />
+        <IconArrowBackUp className="h-3.5 w-3.5" stroke={2} />
       </ToolbarButton>
 
       <ToolbarButton
@@ -143,7 +143,7 @@ function Toolbar({ editor }: { editor: Editor }) {
         disabled={!editor.can().redo()}
         title="Redo"
       >
-        <Redo className="h-3.5 w-3.5" strokeWidth={2} />
+        <IconArrowForwardUp className="h-3.5 w-3.5" stroke={2} />
       </ToolbarButton>
     </div>
   )

@@ -11,27 +11,27 @@
  * component re-exports a minimal inline implementation.
  */
 import { useCallback, useMemo } from 'react'
-import type { LucideIcon } from 'lucide-react'
+import type { Icon as TablerIcon } from '@tabler/icons-react'
 import {
-  LayoutDashboard,
-  CalendarCheck,
-  Umbrella,
-  FolderKanban,
-  ListTodo,
-  BookOpen,
-  SlidersHorizontal,
-  UserCircle,
-  ShieldCheck,
-  ClipboardList,
-  UserPlus,
-  Settings,
-  FileText,
-  Users,
-  MessageSquare,
-  Video,
-  Link2,
-  Package,
-} from 'lucide-react'
+  IconLayoutDashboard,
+  IconCalendarCheck,
+  IconUmbrella,
+  IconLayoutKanban,
+  IconListCheck,
+  IconBook,
+  IconAdjustmentsHorizontal,
+  IconUserCircle,
+  IconShieldCheck,
+  IconClipboardList,
+  IconUserPlus,
+  IconSettings,
+  IconFileText,
+  IconUsers,
+  IconMessage,
+  IconVideo,
+  IconLink,
+  IconPackage,
+} from '@tabler/icons-react'
 import { CommandPalette, type CommandGroup, type CommandItem } from '../shared/command-palette'
 
 // -----------------------------------------------------------------------
@@ -61,7 +61,7 @@ export interface AppCommandPaletteProps {
   onNavigate?: (path: string) => void
   /** Called when the search input changes (for server-side search) */
   onSearch?: (query: string) => void
-  /** Search results from external search provider */
+  /** IconSearch results from external search provider */
   searchResults?: SearchResult[]
   /** Whether a search is currently in progress */
   isSearching?: boolean
@@ -73,14 +73,14 @@ export interface AppCommandPaletteProps {
 // Constants
 // -----------------------------------------------------------------------
 
-const ENTITY_TYPE_ICONS: Record<string, LucideIcon> = {
-  TASK: ListTodo,
-  PROJECT: FolderKanban,
-  USER: Users,
-  COMMENT: MessageSquare,
-  MEETING: Video,
-  LINK: Link2,
-  DELIVERABLE: Package,
+const ENTITY_TYPE_ICONS: Record<string, TablerIcon> = {
+  TASK: IconListCheck,
+  PROJECT: IconLayoutKanban,
+  USER: IconUsers,
+  COMMENT: IconMessage,
+  MEETING: IconVideo,
+  LINK: IconLink,
+  DELIVERABLE: IconPackage,
 }
 
 // -----------------------------------------------------------------------
@@ -94,49 +94,49 @@ function buildDefaultPageItems(
     {
       id: 'nav-dashboard',
       label: 'Dashboard',
-      icon: LayoutDashboard,
+      icon: IconLayoutDashboard,
       onSelect: () => nav('/'),
     },
     {
       id: 'nav-attendance',
       label: 'Attendance',
-      icon: CalendarCheck,
+      icon: IconCalendarCheck,
       onSelect: () => nav('/attendance'),
     },
     {
       id: 'nav-breaks',
       label: 'Breaks',
-      icon: Umbrella,
+      icon: IconUmbrella,
       onSelect: () => nav('/breaks'),
     },
     {
       id: 'nav-projects',
       label: 'Projects',
-      icon: FolderKanban,
+      icon: IconLayoutKanban,
       onSelect: () => nav('/projects'),
     },
     {
       id: 'nav-my-tasks',
       label: 'My Tasks',
-      icon: ListTodo,
+      icon: IconListCheck,
       onSelect: () => nav('/my-tasks'),
     },
     {
       id: 'nav-devsabha',
       label: 'Devsabha',
-      icon: BookOpen,
+      icon: IconBook,
       onSelect: () => nav('/devsabha'),
     },
     {
       id: 'nav-adjustments',
       label: 'Adjustments',
-      icon: SlidersHorizontal,
+      icon: IconAdjustmentsHorizontal,
       onSelect: () => nav('/adjustments'),
     },
     {
       id: 'nav-profile',
       label: 'Profile',
-      icon: UserCircle,
+      icon: IconUserCircle,
       onSelect: () => nav('/profile'),
     },
   ]
@@ -149,37 +149,37 @@ function buildDefaultAdminItems(
     {
       id: 'nav-admin-dashboard',
       label: 'Admin Dashboard',
-      icon: ShieldCheck,
+      icon: IconShieldCheck,
       onSelect: () => nav('/admin'),
     },
     {
       id: 'nav-admin-breaks',
       label: 'Manage Breaks',
-      icon: Umbrella,
+      icon: IconUmbrella,
       onSelect: () => nav('/admin/breaks'),
     },
     {
       id: 'nav-admin-attendance',
       label: 'Manage Attendance',
-      icon: CalendarCheck,
+      icon: IconCalendarCheck,
       onSelect: () => nav('/admin/attendance'),
     },
     {
       id: 'nav-admin-lokwasi',
       label: 'Lokwasi',
-      icon: ClipboardList,
+      icon: IconClipboardList,
       onSelect: () => nav('/admin/lokwasi'),
     },
     {
       id: 'nav-admin-onboarding',
       label: 'Onboarding',
-      icon: UserPlus,
+      icon: IconUserPlus,
       onSelect: () => nav('/admin/onboarding'),
     },
     {
       id: 'nav-admin-config',
       label: 'System Config',
-      icon: Settings,
+      icon: IconSettings,
       onSelect: () => nav('/admin/system-config'),
     },
   ]
@@ -272,7 +272,7 @@ export default function AppCommandPalette({
         id: `search-${r.entityType}-${r.id}`,
         label: r.title,
         description: r.snippet,
-        icon: ENTITY_TYPE_ICONS[r.entityType] ?? FileText,
+        icon: ENTITY_TYPE_ICONS[r.entityType] ?? IconFileText,
         onSelect: () => {
           onSearchResultSelect?.(r)
           nav(route)

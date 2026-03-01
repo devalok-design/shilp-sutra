@@ -1,17 +1,17 @@
 import type { Meta, StoryObj } from '@storybook/react'
 import BottomNavbar from './bottom-navbar'
 import {
-  LayoutDashboard,
-  CalendarCheck,
-  Umbrella,
-  FolderKanban,
-  ListTodo,
-  BookOpen,
-  SlidersHorizontal,
-  UserCircle,
-  ShieldCheck,
-  Settings,
-} from 'lucide-react'
+  IconLayoutDashboard,
+  IconCalendarCheck,
+  IconUmbrella,
+  IconLayoutKanban,
+  IconListCheck,
+  IconBook,
+  IconAdjustmentsHorizontal,
+  IconUserCircle,
+  IconShieldCheck,
+  IconSettings,
+} from '@tabler/icons-react'
 import type { BottomNavItem, BottomNavbarUser } from './bottom-navbar'
 
 // ── Mock Data ────────────────────────────────────────────────
@@ -27,19 +27,19 @@ const associateUser: BottomNavbarUser = {
 }
 
 const primaryItems: BottomNavItem[] = [
-  { title: 'Home', href: '/', icon: LayoutDashboard, exact: true },
-  { title: 'Attendance', href: '/attendance', icon: CalendarCheck },
-  { title: 'Projects', href: '/projects', icon: FolderKanban },
-  { title: 'Tasks', href: '/my-tasks', icon: ListTodo },
+  { title: 'Home', href: '/', icon: IconLayoutDashboard, exact: true },
+  { title: 'Attendance', href: '/attendance', icon: IconCalendarCheck },
+  { title: 'Projects', href: '/projects', icon: IconLayoutKanban },
+  { title: 'Tasks', href: '/my-tasks', icon: IconListCheck },
 ]
 
 const moreItems: BottomNavItem[] = [
-  { title: 'Breaks', href: '/breaks', icon: Umbrella },
-  { title: 'Devsabha', href: '/devsabha', icon: BookOpen },
-  { title: 'Adjustments', href: '/adjustments', icon: SlidersHorizontal },
-  { title: 'Profile', href: '/profile', icon: UserCircle },
-  { title: 'Admin', href: '/admin', icon: ShieldCheck },
-  { title: 'Settings', href: '/admin/system-config', icon: Settings },
+  { title: 'Breaks', href: '/breaks', icon: IconUmbrella },
+  { title: 'Devsabha', href: '/devsabha', icon: IconBook },
+  { title: 'Adjustments', href: '/adjustments', icon: IconAdjustmentsHorizontal },
+  { title: 'Profile', href: '/profile', icon: IconUserCircle },
+  { title: 'Admin', href: '/admin', icon: IconShieldCheck },
+  { title: 'IconSettings', href: '/admin/system-config', icon: IconSettings },
 ]
 
 // ── Meta ─────────────────────────────────────────────────────

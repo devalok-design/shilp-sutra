@@ -15,12 +15,12 @@ import {
 import { Badge } from '../../ui/badge'
 import { EmptyState } from '../../shared/empty-state'
 import {
-  GitPullRequest,
-  Plus,
-  Check,
-  X,
-  MessageSquare,
-} from 'lucide-react'
+  IconGitPullRequest,
+  IconPlus,
+  IconCheck,
+  IconX,
+  IconMessage,
+} from '@tabler/icons-react'
 import { getInitials } from '../../shared/lib/string-utils'
 import { REVIEW_STATUS_MAP } from './task-constants'
 
@@ -81,9 +81,9 @@ const RESPONSE_OPTIONS: {
   label: string
   icon: React.ElementType
 }[] = [
-  { status: 'APPROVED', label: 'Approve', icon: Check },
-  { status: 'CHANGES_REQUESTED', label: 'Request Changes', icon: MessageSquare },
-  { status: 'REJECTED', label: 'Reject', icon: X },
+  { status: 'APPROVED', label: 'Approve', icon: IconCheck },
+  { status: 'CHANGES_REQUESTED', label: 'Request Changes', icon: IconMessage },
+  { status: 'REJECTED', label: 'Reject', icon: IconX },
 ]
 
 // ============================================================
@@ -205,7 +205,7 @@ function ReviewTab({
                                     'bg-[var(--color-error-surface)] text-[var(--color-text-error)] hover:opacity-90',
                                 )}
                               >
-                                <Icon className="h-3 w-3" strokeWidth={2} />
+                                <Icon className="h-3 w-3" stroke={2} />
                                 {opt.label}
                               </button>
                             )
@@ -241,7 +241,7 @@ function ReviewTab({
         </div>
       ) : (
         <EmptyState
-          icon={GitPullRequest}
+          icon={IconGitPullRequest}
           title="No reviews yet"
           description="Request a review from a team member"
           compact
@@ -255,7 +255,7 @@ function ReviewTab({
             type="button"
             className="mt-3 inline-flex items-center gap-1.5 rounded-[var(--radius-lg)] px-2 py-1.5 text-[13px] font-body text-[var(--color-text-placeholder)] transition-colors hover:bg-[var(--color-field)] hover:text-[var(--color-text-secondary)]"
           >
-            <Plus className="h-3.5 w-3.5" strokeWidth={1.5} />
+            <IconPlus className="h-3.5 w-3.5" stroke={1.5} />
             Request Review
           </button>
         </PopoverTrigger>

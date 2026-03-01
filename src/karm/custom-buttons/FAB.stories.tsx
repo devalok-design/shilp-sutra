@@ -1,5 +1,5 @@
 import type { Meta, StoryObj } from '@storybook/react'
-import { Plus, Pencil, MessageSquare, Heart, Share2 } from 'lucide-react'
+import { IconPlus, IconPencil, IconMessage, IconHeart, IconShare } from '@tabler/icons-react'
 import { FAB } from './FAB'
 
 const meta: Meta<typeof FAB> = {
@@ -39,7 +39,7 @@ type Story = StoryObj<typeof FAB>
 export const Small: Story = {
   args: {
     size: 'small',
-    icon: <Plus size={20} />,
+    icon: <IconPlus size={20} />,
     'aria-label': 'Add item',
   },
 }
@@ -47,7 +47,7 @@ export const Small: Story = {
 export const Medium: Story = {
   args: {
     size: 'medium',
-    icon: <Plus size={24} />,
+    icon: <IconPlus size={24} />,
     'aria-label': 'Add item',
   },
 }
@@ -55,7 +55,7 @@ export const Medium: Story = {
 export const Big: Story = {
   args: {
     size: 'big',
-    icon: <Plus size={28} />,
+    icon: <IconPlus size={28} />,
     'aria-label': 'Add item',
   },
 }
@@ -66,15 +66,15 @@ export const AllSizes: Story = {
   render: () => (
     <div style={{ display: 'flex', gap: '24px', alignItems: 'center' }}>
       <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '8px' }}>
-        <FAB size="small" icon={<Plus size={20} />} aria-label="Small FAB" />
+        <FAB size="small" icon={<IconPlus size={20} />} aria-label="Small FAB" />
         <span style={{ fontSize: '12px', color: 'var(--text-secondary, #666)' }}>Small</span>
       </div>
       <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '8px' }}>
-        <FAB size="medium" icon={<Plus size={24} />} aria-label="Medium FAB" />
+        <FAB size="medium" icon={<IconPlus size={24} />} aria-label="Medium FAB" />
         <span style={{ fontSize: '12px', color: 'var(--text-secondary, #666)' }}>Medium</span>
       </div>
       <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '8px' }}>
-        <FAB size="big" icon={<Plus size={28} />} aria-label="Big FAB" />
+        <FAB size="big" icon={<IconPlus size={28} />} aria-label="Big FAB" />
         <span style={{ fontSize: '12px', color: 'var(--text-secondary, #666)' }}>Big</span>
       </div>
     </div>
@@ -86,7 +86,7 @@ export const AllSizes: Story = {
 export const EditIcon: Story = {
   args: {
     size: 'medium',
-    icon: <Pencil size={24} />,
+    icon: <IconPencil size={24} />,
     'aria-label': 'Edit',
   },
 }
@@ -94,7 +94,7 @@ export const EditIcon: Story = {
 export const ChatIcon: Story = {
   args: {
     size: 'medium',
-    icon: <MessageSquare size={24} />,
+    icon: <IconMessage size={24} />,
     'aria-label': 'Open chat',
   },
 }
@@ -102,11 +102,11 @@ export const ChatIcon: Story = {
 export const VariousIcons: Story = {
   render: () => (
     <div style={{ display: 'flex', gap: '16px', alignItems: 'center' }}>
-      <FAB size="medium" icon={<Plus size={24} />} aria-label="Add" />
-      <FAB size="medium" icon={<Pencil size={24} />} aria-label="Edit" />
-      <FAB size="medium" icon={<MessageSquare size={24} />} aria-label="Chat" />
-      <FAB size="medium" icon={<Heart size={24} />} aria-label="Favorite" />
-      <FAB size="medium" icon={<Share2 size={24} />} aria-label="Share" />
+      <FAB size="medium" icon={<IconPlus size={24} />} aria-label="Add" />
+      <FAB size="medium" icon={<IconPencil size={24} />} aria-label="Edit" />
+      <FAB size="medium" icon={<IconMessage size={24} />} aria-label="Chat" />
+      <FAB size="medium" icon={<IconHeart size={24} />} aria-label="Favorite" />
+      <FAB size="medium" icon={<IconShare size={24} />} aria-label="Share" />
     </div>
   ),
 }
@@ -116,7 +116,7 @@ export const VariousIcons: Story = {
 export const DisabledSmall: Story = {
   args: {
     size: 'small',
-    icon: <Plus size={20} />,
+    icon: <IconPlus size={20} />,
     disabled: true,
     'aria-label': 'Add item (disabled)',
   },
@@ -125,7 +125,7 @@ export const DisabledSmall: Story = {
 export const DisabledMedium: Story = {
   args: {
     size: 'medium',
-    icon: <Plus size={24} />,
+    icon: <IconPlus size={24} />,
     disabled: true,
     'aria-label': 'Add item (disabled)',
   },
@@ -134,7 +134,7 @@ export const DisabledMedium: Story = {
 export const DisabledBig: Story = {
   args: {
     size: 'big',
-    icon: <Plus size={28} />,
+    icon: <IconPlus size={28} />,
     disabled: true,
     'aria-label': 'Add item (disabled)',
   },
@@ -144,15 +144,15 @@ export const AllSizesDisabled: Story = {
   render: () => (
     <div style={{ display: 'flex', gap: '24px', alignItems: 'center' }}>
       <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '8px' }}>
-        <FAB size="small" icon={<Plus size={20} />} disabled aria-label="Small disabled" />
+        <FAB size="small" icon={<IconPlus size={20} />} disabled aria-label="Small disabled" />
         <span style={{ fontSize: '12px', color: 'var(--text-secondary, #666)' }}>Small</span>
       </div>
       <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '8px' }}>
-        <FAB size="medium" icon={<Plus size={24} />} disabled aria-label="Medium disabled" />
+        <FAB size="medium" icon={<IconPlus size={24} />} disabled aria-label="Medium disabled" />
         <span style={{ fontSize: '12px', color: 'var(--text-secondary, #666)' }}>Medium</span>
       </div>
       <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '8px' }}>
-        <FAB size="big" icon={<Plus size={28} />} disabled aria-label="Big disabled" />
+        <FAB size="big" icon={<IconPlus size={28} />} disabled aria-label="Big disabled" />
         <span style={{ fontSize: '12px', color: 'var(--text-secondary, #666)' }}>Big</span>
       </div>
     </div>
@@ -164,7 +164,7 @@ export const AllSizesDisabled: Story = {
 export const Playground: Story = {
   args: {
     size: 'medium',
-    icon: <Plus size={24} />,
+    icon: <IconPlus size={24} />,
     disabled: false,
     'aria-label': 'Floating action button',
   },

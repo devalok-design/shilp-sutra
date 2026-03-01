@@ -2,30 +2,30 @@
 
 // ============================================================
 // Admin Module — Icon Mappings
-// Maps legacy custom SVG icons to Lucide React equivalents
+// Maps legacy custom SVG icons to Tabler Icons equivalents
 // ============================================================
 
 export {
-  Plus as AddIcon,
-  ChevronDown as ArrowDownIcon,
-  ChevronDown as ArrowDropdownIcon,
-  ChevronDown as FilledArrowIcon,
-  ChevronRight as ArrowForwardIcon,
-  ChevronLeft as ArrowLeftIcon,
-  ArrowRight as ArrowRightIcon,
-  ChevronUp as ArrowUpIcon,
-  Trash2 as BreakDeleteIcon,
-  Calendar as CalendarIcon,
-  CalendarDays as CalendarDateIcon,
-  Square as CheckboxIcon,
-  CheckSquare as CheckboxActiveIcon,
-  X as CloseIcon,
-  X as CrossIcon,
-  GripVertical as DragIcon,
-  GripVertical as DragActiveIcon,
-  Pencil as EditIcon,
-  MoreVertical as MenuDotsIcon,
-  User as PersonIcon,
-  Send as SendIcon,
-  Check as TickIcon,
-} from 'lucide-react'
+  IconPlus as AddIcon,
+  IconChevronDown as ArrowDownIcon,
+  IconChevronDown as ArrowDropdownIcon,
+  IconChevronDown as FilledArrowIcon,
+  IconChevronRight as ArrowForwardIcon,
+  IconChevronLeft as ArrowLeftIcon,
+  IconArrowRight as ArrowRightIcon,
+  IconChevronUp as ArrowUpIcon,
+  IconTrash as BreakDeleteIcon,
+  IconCalendar as CalendarIcon,
+  IconCalendarEvent as CalendarDateIcon,
+  IconSquare as CheckboxIcon,
+  IconSquareCheck as CheckboxActiveIcon,
+  IconX as CloseIcon,
+  IconX as CrossIcon,
+  IconGripVertical as DragIcon,
+  IconGripVertical as DragActiveIcon,
+  IconPencil as EditIcon,
+  IconDotsVertical as MenuDotsIcon,
+  IconUser as PersonIcon,
+  IconSend as SendIcon,
+  IconCheck as TickIcon,
+} from '@tabler/icons-react'

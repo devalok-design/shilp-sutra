@@ -17,7 +17,7 @@ import {
   TooltipContent,
   TooltipTrigger,
 } from '../ui/tooltip'
-import { Bell, CheckCheck, Inbox } from 'lucide-react'
+import { IconBell, IconChecks, IconInbox } from '@tabler/icons-react'
 import { cn } from '../ui/lib/utils'
 
 // -----------------------------------------------------------------------
@@ -306,7 +306,7 @@ export default function NotificationCenter({
                 className,
               )}
             >
-              <Bell className="h-4 w-4" />
+              <IconBell className="h-4 w-4" />
               {unreadCount > 0 && (
                 <span className="absolute -right-0.5 -top-0.5 flex h-4 min-w-4 items-center justify-center rounded-[var(--radius-full)] bg-[var(--color-interactive)] px-1 text-[10px] font-bold text-white">
                   {unreadCount > 99 ? '99+' : unreadCount}
@@ -343,7 +343,7 @@ export default function NotificationCenter({
               onClick={onMarkAllRead}
               className="flex items-center gap-1 text-xs text-[var(--color-text-placeholder)] transition-colors hover:text-[var(--color-interactive)]"
             >
-              <CheckCheck className="h-3.5 w-3.5" />
+              <IconChecks className="h-3.5 w-3.5" />
               Mark all read
             </button>
           )}
@@ -358,7 +358,7 @@ export default function NotificationCenter({
           {notifications.length === 0 ? (
             <div className="flex flex-col items-center justify-center px-4 py-12">
               <div className="flex h-12 w-12 items-center justify-center rounded-[var(--radius-full)] bg-[var(--color-layer-02)]">
-                <Inbox className="h-6 w-6 text-[var(--color-text-placeholder)]" />
+                <IconInbox className="h-6 w-6 text-[var(--color-text-placeholder)]" />
               </div>
               <p className="mt-3 text-sm text-[var(--color-text-placeholder)]">
                 No notifications yet

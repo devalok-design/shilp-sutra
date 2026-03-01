@@ -1,7 +1,7 @@
 'use client'
 
 import * as React from 'react'
-import { AlertTriangle, Ban, FileQuestion, ServerCrash } from 'lucide-react'
+import { IconAlertTriangle, IconBan, IconFileUnknown, IconServerOff } from '@tabler/icons-react'
 import { Button } from '../ui/button'
 
 declare const process: { env: { NODE_ENV?: string } } | undefined
@@ -55,7 +55,7 @@ function getErrorConfig(status?: number) {
   switch (status) {
     case 404:
       return {
-        icon: FileQuestion,
+        icon: IconFileUnknown,
         title: 'Page not found',
         message:
           'The page you are looking for does not exist or has been moved.',
@@ -64,7 +64,7 @@ function getErrorConfig(status?: number) {
       }
     case 403:
       return {
-        icon: Ban,
+        icon: IconBan,
         title: 'Access denied',
         message:
           'You do not have permission to view this page. Contact your administrator if you believe this is a mistake.',
@@ -73,7 +73,7 @@ function getErrorConfig(status?: number) {
       }
     case 500:
       return {
-        icon: ServerCrash,
+        icon: IconServerOff,
         title: 'Server error',
         message:
           'Something went wrong on our end. Please try again later or contact support if the issue persists.',
@@ -82,7 +82,7 @@ function getErrorConfig(status?: number) {
       }
     default:
       return {
-        icon: AlertTriangle,
+        icon: IconAlertTriangle,
         title: 'Something went wrong',
         message:
           'An unexpected error occurred. Please try again or go back to the home page.',
@@ -120,7 +120,7 @@ function ErrorDisplay({ error, onReset }: ErrorDisplayProps) {
           />
         </div>
 
-        {/* Error Info */}
+        {/* Error IconInfoCircle */}
         <div className="flex flex-col gap-2">
           {status && (
             <span className="B3-Reg text-[var(--color-text-placeholder)]">

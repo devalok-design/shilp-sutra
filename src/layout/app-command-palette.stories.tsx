@@ -2,7 +2,7 @@ import type { Meta, StoryObj } from '@storybook/react'
 import AppCommandPalette from './app-command-palette'
 import type { SearchResult, AppCommandPaletteUser } from './app-command-palette'
 import type { CommandGroup } from '../shared/command-palette'
-import { Zap, GitBranch, Clock } from 'lucide-react'
+import { IconBolt, IconGitBranch, IconClock } from '@tabler/icons-react'
 
 // ── Mock Data ────────────────────────────────────────────────
 
@@ -64,20 +64,20 @@ const extraActionsGroup: CommandGroup = {
     {
       id: 'action-standup',
       label: 'Start Daily Standup',
-      icon: Zap,
+      icon: IconBolt,
       shortcut: 'Ctrl+Shift+S',
       onSelect: () => console.log('Start standup'),
     },
     {
       id: 'action-branch',
       label: 'Create Feature Branch',
-      icon: GitBranch,
+      icon: IconGitBranch,
       onSelect: () => console.log('Create branch'),
     },
     {
       id: 'action-timesheet',
       label: 'Log Timesheet Entry',
-      icon: Clock,
+      icon: IconClock,
       onSelect: () => console.log('Log timesheet'),
     },
   ],
@@ -136,14 +136,14 @@ type Story = StoryObj<typeof AppCommandPalette>
 // ── Stories ──────────────────────────────────────────────────
 
 export const AdminUser: Story = {
-  name: 'Admin User (with Admin pages)',
+  name: 'Admin IconUser (with Admin pages)',
   args: {
     user: adminUser,
   },
 }
 
 export const AssociateUser: Story = {
-  name: 'Associate User (no Admin pages)',
+  name: 'Associate IconUser (no Admin pages)',
   args: {
     user: associateUser,
   },
@@ -173,7 +173,7 @@ export const SearchInProgress: Story = {
 }
 
 export const NoSearchResults: Story = {
-  name: 'Empty Search Results',
+  name: 'Empty IconSearch Results',
   args: {
     user: adminUser,
     searchResults: [],
@@ -189,7 +189,7 @@ export const WithExtraGroups: Story = {
 }
 
 export const NoUser: Story = {
-  name: 'No User (Guest)',
+  name: 'No IconUser (Guest)',
   args: {
     user: null,
   },

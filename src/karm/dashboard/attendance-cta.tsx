@@ -1,6 +1,6 @@
 'use client'
 
-import { Check, Clock, Coffee } from 'lucide-react'
+import { IconCheck, IconClock, IconCoffee } from '@tabler/icons-react'
 
 // ============================================================
 // Types
@@ -95,7 +95,7 @@ export default function AttendanceCTA({
           </div>
           <div className="flex items-center gap-2 rounded-[var(--radius-xl)] bg-[var(--color-success-surface)] px-4 py-2.5">
             <div className="flex h-5 w-5 items-center justify-center rounded-[var(--radius-full)] bg-[var(--color-text-success)]">
-              <Check className="h-3 w-3 text-white" />
+              <IconCheck className="h-3 w-3 text-white" />
             </div>
             <span className="B2-Reg font-semibold text-[var(--color-text-success)]">
               Marked at{' '}
@@ -124,7 +124,7 @@ export default function AttendanceCTA({
             </p>
           </div>
           <div className="flex items-center gap-2 rounded-[var(--radius-xl)] bg-amber-50 px-4 py-2.5">
-            <Coffee className="h-4 w-4 text-amber-700" />
+            <IconCoffee className="h-4 w-4 text-amber-700" />
             <span className="B2-Reg font-semibold text-amber-700">
               On break
               {attendance?.breakReason ? ` \u2014 ${attendance.breakReason}` : ''}
@@ -152,7 +152,7 @@ export default function AttendanceCTA({
             </p>
           </div>
           <div className="flex items-center gap-2 rounded-[var(--radius-xl)] bg-[var(--color-layer-02)] px-4 py-2.5">
-            <Clock className="h-4 w-4 text-[var(--color-text-placeholder)]" />
+            <IconClock className="h-4 w-4 text-[var(--color-text-placeholder)]" />
             <span className="B2-Reg text-[var(--color-text-placeholder)]">
               Attendance window closed
             </span>

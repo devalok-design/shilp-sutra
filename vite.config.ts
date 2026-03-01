@@ -47,7 +47,7 @@ export default defineConfig({
         /^@tanstack\/.*/,
         /^@tiptap\/.*/,
         /^@dnd-kit\/.*/,
-        'lucide-react',
+        '@tabler/icons-react',
         'date-fns',
         'react-markdown',
         'clsx',

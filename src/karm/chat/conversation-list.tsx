@@ -1,6 +1,6 @@
 'use client'
 
-import { MessageSquare, Archive, Trash2, MessageSquarePlus } from 'lucide-react'
+import { IconMessage, IconArchive, IconTrash, IconMessagePlus } from '@tabler/icons-react'
 
 // ============================================================
 // Types
@@ -71,7 +71,7 @@ export function ConversationList({
           onClick={onNewChat}
           className="flex items-center gap-1.5 rounded-[var(--radius-lg)] px-2.5 py-1.5 text-[var(--color-text-secondary)] transition-colors hover:bg-[var(--color-layer-02)]"
         >
-          <MessageSquarePlus className="h-4 w-4" />
+          <IconMessagePlus className="h-4 w-4" />
           <span className="B3-Reg">New Chat</span>
         </button>
       </div>
@@ -84,7 +84,7 @@ export function ConversationList({
           </div>
         ) : conversations.length === 0 ? (
           <div className="flex flex-col items-center justify-center gap-2 py-12">
-            <MessageSquare className="h-8 w-8 text-[var(--color-text-placeholder)]" />
+            <IconMessage className="h-8 w-8 text-[var(--color-text-placeholder)]" />
             <p className="B2-Reg text-[var(--color-text-placeholder)]">
               No conversations yet
             </p>
@@ -123,7 +123,7 @@ export function ConversationList({
                       className="flex h-7 w-7 items-center justify-center rounded-[var(--radius-md)] text-[var(--color-text-placeholder)] transition-colors hover:bg-[var(--color-field)] hover:text-[var(--color-text-secondary)]"
                       aria-label="Archive conversation"
                     >
-                      <Archive className="h-3.5 w-3.5" />
+                      <IconArchive className="h-3.5 w-3.5" />
                     </button>
                   )}
                   {onDelete && (
@@ -135,7 +135,7 @@ export function ConversationList({
                       className="flex h-7 w-7 items-center justify-center rounded-[var(--radius-md)] text-[var(--color-text-placeholder)] transition-colors hover:bg-red-50 hover:text-red-500 dark:hover:bg-red-950/30"
                       aria-label="Delete conversation"
                     >
-                      <Trash2 className="h-3.5 w-3.5" />
+                      <IconTrash className="h-3.5 w-3.5" />
                     </button>
                   )}
                 </div>

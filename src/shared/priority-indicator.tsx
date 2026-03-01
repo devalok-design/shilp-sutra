@@ -2,39 +2,39 @@ import * as React from 'react'
 import { cva, type VariantProps } from 'class-variance-authority'
 import { cn } from '../ui/lib/utils'
 import {
-  ArrowDown,
-  Minus,
-  ArrowUp,
-  AlertTriangle,
-} from 'lucide-react'
-import type { LucideIcon } from 'lucide-react'
+  IconArrowDown,
+  IconMinus,
+  IconArrowUp,
+  IconAlertTriangle,
+} from '@tabler/icons-react'
+import type { Icon as TablerIcon } from '@tabler/icons-react'
 
 type Priority = 'LOW' | 'MEDIUM' | 'HIGH' | 'URGENT'
 
 const priorityConfig: Record<
   Priority,
-  { icon: LucideIcon; color: string; bgColor: string; label: string }
+  { icon: TablerIcon; color: string; bgColor: string; label: string }
 > = {
   LOW: {
-    icon: ArrowDown,
+    icon: IconArrowDown,
     color: 'text-[var(--blue-300)]',
     bgColor: 'bg-[var(--blue-100)]',
     label: 'Low',
   },
   MEDIUM: {
-    icon: Minus,
+    icon: IconMinus,
     color: 'text-[var(--yellow-500)]',
     bgColor: 'bg-[var(--yellow-100)]',
     label: 'Medium',
   },
   HIGH: {
-    icon: ArrowUp,
+    icon: IconArrowUp,
     color: 'text-[var(--red-300)]',
     bgColor: 'bg-[var(--red-100)]',
     label: 'High',
   },
   URGENT: {
-    icon: AlertTriangle,
+    icon: IconAlertTriangle,
     color: 'text-[var(--red-600)]',
     bgColor: 'bg-[var(--red-100)]',
     label: 'Urgent',
@@ -82,7 +82,7 @@ function PriorityIndicator({
         title={config.label}
         {...props}
       >
-        <Icon className={cn('h-3.5 w-3.5', config.color)} strokeWidth={2} />
+        <Icon className={cn('h-3.5 w-3.5', config.color)} stroke={2} />
       </div>
     )
   }
@@ -98,7 +98,7 @@ function PriorityIndicator({
           config.bgColor,
         )}
       >
-        <Icon className={cn('h-3.5 w-3.5', config.color)} strokeWidth={2} />
+        <Icon className={cn('h-3.5 w-3.5', config.color)} stroke={2} />
       </div>
       <span className="B3-Reg text-[var(--color-text-secondary)]">
         {config.label}

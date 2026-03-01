@@ -1,0 +1,56 @@
+import { Meta } from '@storybook/blocks'
+import { IconographyShowcase } from './IconographyShowcase'
+
+<Meta title="Iconography" />
+
+# Iconography
+
+Shilp Sutra uses [**Tabler Icons**](https://tabler.io/icons) (`@tabler/icons-react`) -- 5,000+ open-source MIT-licensed icons, all stroke-based on a consistent 24x24 grid.
+
+---
+
+## Usage
+
+```tsx
+import { IconPlus, IconSearch } from '@tabler/icons-react'
+
+// Using Tailwind classes for sizing (recommended in component code)
+<IconPlus className="h-4 w-4" />
+
+// Using the size prop (useful in stories or one-off sizes)
+<IconSearch size={18} />
+
+// Custom stroke weight (default is 2)
+<IconSettings className="h-5 w-5" stroke={1.5} />
+
+// Inherits text color
+<IconHeart className="h-4 w-4 text-[var(--color-text-error)]" />
+```
+
+## Typing icon props
+
+When a component accepts an icon as a prop, use the `Icon` type:
+
+```tsx
+import type { Icon as TablerIcon } from '@tabler/icons-react'
+
+interface CommandItem {
+  label: string
+  icon?: TablerIcon
+}
+```
+
+## Naming convention
+
+All Tabler icons follow the pattern `Icon` + PascalCase:
+
+| Pattern | Example |
+|---------|---------|
+| Object | `IconCalendar`, `IconFile`, `IconUser` |
+| Action | `IconPlus`, `IconTrash`, `IconDownload` |
+| Direction | `IconChevronRight`, `IconArrowUp` |
+| State | `IconEye` / `IconEyeOff`, `IconMoon` / `IconSun` |
+
+---
+
+<IconographyShowcase />

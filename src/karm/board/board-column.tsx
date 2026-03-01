@@ -13,7 +13,7 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from '../../ui/dropdown-menu'
-import { Plus, MoreHorizontal, Pencil, Trash2, Eye, EyeOff } from 'lucide-react'
+import { IconPlus, IconDots, IconPencil, IconTrash, IconEye, IconEyeOff } from '@tabler/icons-react'
 import { TaskCard, type BoardTask } from './task-card'
 
 // ============================================================
@@ -156,7 +156,7 @@ export function BoardColumn({
 
         {/* Client visibility indicator */}
         {column.isClientVisible && (
-          <Eye
+          <IconEye
             className="h-3 w-3 text-[var(--color-text-tertiary)]"
             aria-label="Visible to client"
           />
@@ -174,7 +174,7 @@ export function BoardColumn({
             setTimeout(() => inputRef.current?.focus(), 50)
           }}
         >
-          <Plus className="h-3.5 w-3.5" />
+          <IconPlus className="h-3.5 w-3.5" />
         </Button>
 
         {/* Column menu */}
@@ -185,7 +185,7 @@ export function BoardColumn({
               size="icon-md"
               className="h-6 w-6 opacity-0 group-hover:opacity-100 transition-opacity"
             >
-              <MoreHorizontal className="h-3.5 w-3.5" />
+              <IconDots className="h-3.5 w-3.5" />
             </Button>
           </DropdownMenuTrigger>
           <DropdownMenuContent align="end" className="w-44">
@@ -195,7 +195,7 @@ export function BoardColumn({
                 setIsEditing(true)
               }}
             >
-              <Pencil className="mr-2 h-3.5 w-3.5" />
+              <IconPencil className="mr-2 h-3.5 w-3.5" />
               Rename
             </DropdownMenuItem>
             <DropdownMenuItem
@@ -205,12 +205,12 @@ export function BoardColumn({
             >
               {column.isClientVisible ? (
                 <>
-                  <EyeOff className="mr-2 h-3.5 w-3.5" />
+                  <IconEyeOff className="mr-2 h-3.5 w-3.5" />
                   Hide from client
                 </>
               ) : (
                 <>
-                  <Eye className="mr-2 h-3.5 w-3.5" />
+                  <IconEye className="mr-2 h-3.5 w-3.5" />
                   Show to client
                 </>
               )}
@@ -220,7 +220,7 @@ export function BoardColumn({
               className="text-[var(--color-danger)] focus:text-[var(--color-danger)]"
               onClick={() => onDeleteColumn?.(column.id)}
             >
-              <Trash2 className="mr-2 h-3.5 w-3.5" />
+              <IconTrash className="mr-2 h-3.5 w-3.5" />
               Delete column
             </DropdownMenuItem>
           </DropdownMenuContent>
@@ -294,7 +294,7 @@ export function BoardColumn({
           }}
           className="flex items-center gap-1.5 border-t border-[var(--color-border-subtle)] px-3 py-2.5 text-xs text-[var(--color-text-placeholder)] transition-colors hover:bg-[var(--color-field)] hover:text-[var(--color-text-tertiary)]"
         >
-          <Plus className="h-3 w-3" />
+          <IconPlus className="h-3 w-3" />
           Add task
         </button>
       )}

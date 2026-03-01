@@ -1,5 +1,5 @@
 import * as CheckboxPrimitive from '@primitives/react-checkbox'
-import { Check, Minus } from 'lucide-react'
+import { IconCheck, IconMinus } from '@tabler/icons-react'
 import * as React from 'react'
 import { cn } from './lib/utils'
 
@@ -34,9 +34,9 @@ const Checkbox = React.forwardRef<
     >
       <CheckboxPrimitive.Indicator className="flex items-center justify-center text-current">
         {resolvedChecked === 'indeterminate' ? (
-          <Minus className="h-3.5 w-3.5" />
+          <IconMinus className="h-3.5 w-3.5" />
         ) : (
-          <Check className="h-3.5 w-3.5" />
+          <IconCheck className="h-3.5 w-3.5" />
         )}
       </CheckboxPrimitive.Indicator>
     </CheckboxPrimitive.Root>

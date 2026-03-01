@@ -6,12 +6,14 @@ const config: StorybookConfig = {
   addons: [
     {
       name: '@storybook/addon-essentials',
+      options: { docs: false },
+    },
+    {
+      name: '@storybook/addon-docs',
       options: {
-        docs: {
-          mdxPluginOptions: {
-            mdxCompileOptions: {
-              remarkPlugins: [remarkGfm],
-            },
+        mdxPluginOptions: {
+          mdxCompileOptions: {
+            remarkPlugins: [remarkGfm],
           },
         },
       },

@@ -35,6 +35,7 @@
 .dark .sbdocs-wrapper th,
 .dark .sbdocs-wrapper td {
   border-color: #374151;
+  color: #e5e7eb;
 }
 
 .dark .sbdocs th,
@@ -42,7 +43,111 @@
   background: #1f2937;
 }
 
+.dark .sbdocs td,
+.dark .sbdocs-wrapper td {
+  background: #111827;
+}
+
 .dark .sbdocs tr:nth-child(even) td,
 .dark .sbdocs-wrapper tr:nth-child(even) td {
-  background: #111827;
+  background: #1a2332;
+}
+
+/* ── Dark mode: Storybook docs page chrome ──
+   Override Emotion CSS-in-JS hardcoded light backgrounds.
+   Uses standalone hex values — NOT design tokens — to keep
+   Storybook's chrome fully independent from our design system. */
+.dark body {
+  background-color: #1a1a2e !important;
+}
+
+.dark .sbdocs,
+.dark .sbdocs-wrapper,
+.dark .sbdocs-content {
+  background-color: #1a1a2e !important;
+  color: #d1d5db !important;
+}
+
+/* Docs page text — scoped to exclude story surfaces so components
+   keep their own Tailwind / design-token styles */
+.dark .sbdocs :is(h1, h2, h3, h4, h5, h6, p, li, span):not(.story-surface *) {
+  color: #d1d5db !important;
+}
+
+.dark .sbdocs a:not(.story-surface *) {
+  color: #93c5fd !important;
+}
+
+.dark .sbdocs hr:not(.story-surface *) {
+  border-color: #374151 !important;
+}
+
+.dark .sbdocs code:not(.story-surface *),
+.dark .sbdocs pre:not(.story-surface *) {
+  background-color: #111827 !important;
+  color: #d1d5db !important;
+}
+
+/* Story wrappers — distinct from component backgrounds */
+.dark .docs-story,
+.dark .sb-story {
+  background-color: #1a1a2e !important;
+}
+
+.dark .sb-show-main {
+  background-color: #1a1a2e !important;
+}
+
+/* Storybook docblock (ArgsTable / props table) dark mode —
+   !important needed to override Emotion CSS-in-JS classes */
+.dark .docblock-argstable-head tr,
+.dark .docblock-argstable-head th {
+  background: #1f2937 !important;
+  color: #e5e7eb !important;
+  border-color: #374151 !important;
+}
+
+.dark .docblock-argstable-body tr {
+  background: #111827 !important;
+  border-color: #374151 !important;
+}
+
+.dark .docblock-argstable-body tr:nth-child(even) {
+  background: #1a2332 !important;
+}
+
+.dark .docblock-argstable-body td {
+  background: inherit !important;
+  border-color: #374151 !important;
+  color: #e5e7eb !important;
+}
+
+.dark .docblock-argstable {
+  border-color: #374151 !important;
+}
+
+/* Blanket override for all Emotion-styled children inside the docblock */
+.dark .docblock-argstable [class^="css-"] {
+  color: #e5e7eb !important;
+  border-color: #374151 !important;
+  background-color: transparent !important;
+}
+
+/* Restore specific backgrounds for type badges / code spans */
+.dark .docblock-argstable-body td > div span[class^="css-"],
+.dark .docblock-argstable-body td > span[class^="css-"] {
+  background-color: #374151 !important;
+}
+
+/* JSON tree values in controls column */
+.dark .docblock-argstable .rejt-value {
+  color: #86efac !important;
+}
+
+.dark .docblock-argstable .rejt-name {
+  color: #93c5fd !important;
+}
+
+.dark .docblock-argstable .rejt-collapsed-text {
+  color: #9ca3af !important;
 }

@@ -154,6 +154,10 @@
   --z-modal: 1300;
   --z-toast: 1500;
   --z-tooltip: 1600;
+
+  /* ── Gradients ─────────────────────────────────── */
+  --gradient-brand-light:       linear-gradient(135deg, var(--pink-400), var(--purple-500));
+  --gradient-brand-dark:        linear-gradient(135deg, var(--pink-600), var(--purple-700));
 }
 
 .dark {
@@ -267,6 +271,10 @@
   --shadow-04: 0 8px 32px rgba(0, 0, 0, 0.60);
   --shadow-05: 0 16px 48px rgba(0, 0, 0, 0.70);
   --shadow-brand: 0 4px 16px rgba(211, 49, 99, 0.35);
+
+  /* ── Gradients ─────────────────────────────────── */
+  --gradient-brand-light:       linear-gradient(135deg, var(--pink-500), var(--purple-600));
+  --gradient-brand-dark:        linear-gradient(135deg, var(--pink-700), var(--purple-800));
 }
 
 /* ── Reduced Motion ──────────────────────────────────── */

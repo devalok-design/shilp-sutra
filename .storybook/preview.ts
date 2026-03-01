@@ -1,5 +1,6 @@
 import React from 'react'
 import type { Preview } from '@storybook/react'
+import theme from './theme'
 import '../src/tokens/index.css'
 import '../storybook.css'
 
@@ -27,6 +28,7 @@ const preview: Preview = {
       stylePreview: true,
       classTarget: 'html',
     },
+    docs: { theme },
   },
 }
 

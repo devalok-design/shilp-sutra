@@ -35,7 +35,7 @@ export {
   type BreakRequestProps,
   LeaveRequests,
   type LeaveRequestsProps,
-  DashboardSkeleton,
+  DashboardSkeleton as AdminDashboardSkeleton,
 } from './dashboard'
 
 // Break management

@@ -153,6 +153,10 @@ const preset: Partial<Config> = {
         'ripple-icon': 'ripple 300ms linear forwards',
         shake: 'shake 1s ease-in infinite',
       },
+      backgroundImage: {
+        'gradient-brand': 'var(--gradient-brand-light)',
+        'gradient-brand-dark': 'var(--gradient-brand-dark)',
+      },
       boxShadow: {
         '01': 'var(--shadow-01)',
         '02': 'var(--shadow-02)',

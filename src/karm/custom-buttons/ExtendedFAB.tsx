@@ -138,7 +138,7 @@ const ExtendedFAB: React.FC<ExtendedFABProps> = ({
       className={cn(
         // Base styles
         'inline-flex items-center gap-2 p-3.5 rounded-[48px] border-none outline-none cursor-pointer transition-[color,background-color,border-color,box-shadow] duration-[var(--duration-moderate)] ease-in-out relative overflow-hidden',
-        "font-['Ranade'] text-sm font-semibold leading-none",
+        "font-accent text-sm font-semibold leading-none",
         // Size
         'h-[46px]',
         // Color

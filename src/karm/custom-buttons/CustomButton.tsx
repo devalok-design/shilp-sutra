@@ -174,7 +174,7 @@ const CustomButton: React.FC<CustomButtonProps> = ({
       className={cn(
         // Base styles
         'inline-flex items-center justify-center gap-1 px-5 py-3 rounded-[88px] cursor-pointer transition-[color,background-color,border-color,box-shadow] duration-[var(--duration-moderate)] ease-in-out relative overflow-hidden',
-        "font-['Ranade'] text-sm font-semibold leading-none text-center",
+        "font-accent text-sm font-semibold leading-none text-center",
         // Variant base styles
         variantClasses[variant],
         // State styles

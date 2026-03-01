@@ -8,7 +8,7 @@ const preset: Partial<Config> = {
         sans: ['var(--font-sans)', 'system-ui', 'sans-serif'],
         display: ['var(--font-display)', 'system-ui', 'sans-serif'],
         body: ['var(--font-body)', 'sans-serif'],
-        accent: ['var(--font-body)', 'sans-serif'],
+        accent: ['var(--font-accent)', 'sans-serif'],
         mono: ['var(--font-mono)', 'monospace'],
       },
       borderWidth: {

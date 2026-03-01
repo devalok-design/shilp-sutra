@@ -232,7 +232,7 @@ const ToggleButton: React.FC<ToggleButtonProps> = ({
       className={cn(
         // Base styles
         'inline-flex items-center gap-2 rounded-[88px] border-none outline-none cursor-pointer transition-[color,background-color,border-color,box-shadow] duration-[var(--duration-moderate)] ease-in-out relative overflow-hidden',
-        "font-['Ranade'] text-sm font-semibold leading-none text-center",
+        "font-accent text-sm font-semibold leading-none text-center",
         'bg-[var(--color-layer-01,#fcf7f7)]',
         'text-[var(--color-text-tertiary,#6B6164)]',
         // First / last child rounding
@@ -287,7 +287,7 @@ const ToggleButton: React.FC<ToggleButtonProps> = ({
           }}
         />
       ))}
-      <span className="font-['Ranade'] text-sm font-normal leading-none tracking-[-0.28px]">{text}</span>
+      <span className="font-accent text-sm font-normal leading-none tracking-[-0.28px]">{text}</span>
     </button>
   )
 }

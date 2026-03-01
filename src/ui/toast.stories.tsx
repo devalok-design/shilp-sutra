@@ -54,6 +54,7 @@ export const Default: Story = {
 }
 
 export const Destructive: Story = {
+  tags: ['!autodocs'],
   render: () => (
     <Toast variant="destructive" open>
       <div className="grid gap-1">
@@ -66,6 +67,7 @@ export const Destructive: Story = {
 }
 
 export const Karam: Story = {
+  tags: ['!autodocs'],
   render: () => (
     <Toast variant="karam" open>
       <div className="grid gap-1">
@@ -78,6 +80,7 @@ export const Karam: Story = {
 }
 
 export const WithAction: Story = {
+  tags: ['!autodocs'],
   render: () => (
     <Toast open>
       <div className="grid gap-1">
@@ -91,6 +94,7 @@ export const WithAction: Story = {
 }
 
 export const DestructiveWithAction: Story = {
+  tags: ['!autodocs'],
   render: () => (
     <Toast variant="destructive" open>
       <div className="grid gap-1">

@@ -345,7 +345,7 @@ const meta: Meta<typeof TaskDetailPanel> = {
     layout: 'fullscreen',
   },
   args: {
-    open: true,
+    open: false,
     onOpenChange: fn(),
     columns,
     members,
@@ -376,21 +376,26 @@ type Story = StoryObj<typeof TaskDetailPanel>
 export const Default: Story = {
   args: {
     task: fullTask,
+    open: true,
   },
 }
 
 /** Minimal task with empty tabs and no metadata */
 export const MinimalTask: Story = {
+  tags: ['!autodocs'],
   args: {
     task: minimalTask,
+    open: true,
     activities: [],
   },
 }
 
 /** Loading skeleton shown while task data is being fetched */
 export const Loading: Story = {
+  tags: ['!autodocs'],
   args: {
     task: null,
+    open: true,
     loading: true,
     activities: [],
   },
@@ -398,8 +403,10 @@ export const Loading: Story = {
 
 /** Panel opened with null task and no loading state -- shows skeleton */
 export const NullTask: Story = {
+  tags: ['!autodocs'],
   args: {
     task: null,
+    open: true,
     loading: false,
     activities: [],
   },
@@ -407,22 +414,28 @@ export const NullTask: Story = {
 
 /** Subtask view -- shows "Subtask" label beneath the title */
 export const SubtaskView: Story = {
+  tags: ['!autodocs'],
   args: {
     task: subtaskOfParent,
+    open: true,
   },
 }
 
 /** Urgent blocked task with overdue date and many labels */
 export const UrgentBlocked: Story = {
+  tags: ['!autodocs'],
   args: {
     task: urgentBlockedTask,
+    open: true,
   },
 }
 
 /** Client portal mode: only conversation tab visible, no editing, "Team" badges */
 export const ClientMode: Story = {
+  tags: ['!autodocs'],
   args: {
     task: fullTask,
+    open: true,
     clientMode: true,
     clientEditableFields: ['priority', 'dueDate'],
   },
@@ -430,8 +443,10 @@ export const ClientMode: Story = {
 
 /** Client mode with minimal task data */
 export const ClientModeMinimal: Story = {
+  tags: ['!autodocs'],
   args: {
     task: minimalTask,
+    open: true,
     clientMode: true,
     activities: [],
   },
@@ -439,8 +454,10 @@ export const ClientModeMinimal: Story = {
 
 /** Panel with enriched comments overriding task.comments */
 export const EnrichedComments: Story = {
+  tags: ['!autodocs'],
   args: {
     task: fullTask,
+    open: true,
     enrichedComments: [
       ...comments,
       {
@@ -467,8 +484,10 @@ export const Closed: Story = {
 
 /** File upload in progress */
 export const FileUploading: Story = {
+  tags: ['!autodocs'],
   args: {
     task: fullTask,
+    open: true,
     isUploading: true,
   },
 }

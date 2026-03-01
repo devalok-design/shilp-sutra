@@ -129,6 +129,7 @@ export const CorrectionRequest: Story = {
 
 /** Comment dialog open in approve mode */
 export const WithApproveComment: Story = {
+  tags: ['!autodocs'],
   args: {
     request: multiDayRequest,
     userImages: mockUserImages,
@@ -140,6 +141,7 @@ export const WithApproveComment: Story = {
 
 /** Comment dialog open in reject mode */
 export const WithRejectComment: Story = {
+  tags: ['!autodocs'],
   args: {
     request: singleDayRequest,
     userImages: mockUserImages,

@@ -26,8 +26,24 @@ export { default as NumberInput } from './number-input'
 export { SearchInput, type SearchInputProps } from './search-input'
 export { InputOTP, InputOTPGroup, InputOTPSlot, InputOTPSeparator } from './input-otp'
 export { FormField, FormHelperText, type FormHelperState } from './form'
+export { Slider } from './slider'
+export { Toggle, toggleVariants } from './toggle'
+export { ToggleGroup, ToggleGroupItem } from './toggle-group'
 
 // Feedback & Overlays
+export {
+  AlertDialog,
+  AlertDialogPortal,
+  AlertDialogOverlay,
+  AlertDialogTrigger,
+  AlertDialogContent,
+  AlertDialogHeader,
+  AlertDialogFooter,
+  AlertDialogTitle,
+  AlertDialogDescription,
+  AlertDialogAction,
+  AlertDialogCancel,
+} from './alert-dialog'
 export {
   Dialog,
   DialogPortal,
@@ -64,8 +80,11 @@ export {
 export { Toaster } from './toaster'
 export { Tooltip, TooltipTrigger, TooltipContent, TooltipProvider } from './tooltip'
 export { Popover, PopoverTrigger, PopoverContent, PopoverAnchor } from './popover'
+export { HoverCard, HoverCardTrigger, HoverCardContent } from './hover-card'
+export { Collapsible, CollapsibleTrigger, CollapsibleContent } from './collapsible'
 export { Alert, alertVariants, type AlertProps } from './alert'
 export { Banner, bannerVariants, type BannerProps } from './banner'
+export { Spinner, type SpinnerProps } from './spinner'
 
 // Data Display
 export { Card, CardHeader, CardFooter, CardTitle, CardDescription, CardContent, type CardProps } from './card'
@@ -78,6 +97,7 @@ export { Progress } from './progress'
 export { Skeleton } from './skeleton'
 export { StatCard, type StatCardProps } from './stat-card'
 export { Code } from './code'
+export { AspectRatio } from './aspect-ratio'
 
 // Navigation
 export { Accordion, AccordionItem, AccordionTrigger, AccordionContent } from './accordion'
@@ -125,6 +145,44 @@ export {
   ContextMenuSubTrigger,
   ContextMenuRadioGroup,
 } from './context-menu'
+export {
+  Menubar,
+  MenubarMenu,
+  MenubarTrigger,
+  MenubarContent,
+  MenubarItem,
+  MenubarSeparator,
+  MenubarLabel,
+  MenubarCheckboxItem,
+  MenubarRadioGroup,
+  MenubarRadioItem,
+  MenubarPortal,
+  MenubarGroup,
+  MenubarSub,
+  MenubarSubContent,
+  MenubarSubTrigger,
+  MenubarShortcut,
+} from './menubar'
+export {
+  PaginationRoot,
+  PaginationContent,
+  PaginationItem,
+  PaginationLink,
+  PaginationPrevious,
+  PaginationNext,
+  PaginationEllipsis,
+  type PaginationLinkProps,
+} from './pagination'
+export {
+  NavigationMenu,
+  NavigationMenuList,
+  NavigationMenuItem,
+  NavigationMenuContent,
+  NavigationMenuTrigger,
+  NavigationMenuLink,
+  NavigationMenuIndicator,
+  NavigationMenuViewport,
+} from './navigation-menu'
 export {
   Sidebar,
   SidebarContent,

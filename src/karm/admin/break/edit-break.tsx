@@ -13,22 +13,23 @@ import {
 import { Button } from '../../../ui/button'
 import { DeleteBreak } from './delete-break'
 import { removeAllEmojis } from '../utils/emoji-utils'
+import {
+  isDateInRange,
+  isDateSameOrAfter,
+  isDateAfter,
+  checkDateOverlap,
+  isBreakDay,
+} from '../utils/date-range-utils'
 import { CustomButton } from '../../custom-buttons/CustomButton'
 import { isSameDay } from '../utils/date-utils'
 import { useBreakDatePicker } from './use-break-date-picker'
 import {
   format,
-  startOfMonth,
   endOfMonth,
   getDay,
   getDaysInMonth,
   subDays,
   addDays,
-  isBefore,
-  isAfter,
-  isEqual,
-  parseISO,
-  isWithinInterval,
 } from 'date-fns'
 import type { BreakRequest } from '../types'
 
@@ -315,57 +316,8 @@ export function EditBreak({
     return daysInMonth
   }
 
-  // ============================================================
-  // Date range / overlap helpers
-  // ============================================================
-
-  const isDateBetween = (
-    dateStr: string,
-    startStr: string,
-    endStr: string,
-  ): boolean => {
-    const date = parseISO(dateStr)
-    const start = parseISO(startStr)
-    const end = parseISO(endStr)
-    return isWithinInterval(date, { start, end })
-  }
-
-  const isDateSameOrBefore = (dateStr1: string, dateStr2: string): boolean => {
-    const d1 = parseISO(dateStr1)
-    const d2 = parseISO(dateStr2)
-    return isBefore(d1, d2) || isEqual(d1, d2)
-  }
-
-  const isDateSameOrAfter = (dateStr1: string, dateStr2: string): boolean => {
-    const d1 = parseISO(dateStr1)
-    const d2 = parseISO(dateStr2)
-    return isAfter(d1, d2) || isEqual(d1, d2)
-  }
-
-  const isDateAfter = (dateStr1: string, dateStr2: string): boolean => {
-    return isAfter(parseISO(dateStr1), parseISO(dateStr2))
-  }
-
-  const checkOverlap = (newStartDate: string, newEndDate: string): boolean => {
-    return existingBreaks.some((breakRequest) => {
-      const brStart = format(new Date(breakRequest.startDate), 'yyyy-MM-dd')
-      const brEnd = format(new Date(breakRequest.endDate), 'yyyy-MM-dd')
-
-      const startOverlap = isDateBetween(newStartDate, brStart, brEnd)
-      const endOverlap = isDateBetween(newEndDate, brStart, brEnd)
-      const enclosingOverlap =
-        isDateSameOrBefore(newStartDate, brStart) &&
-        isDateSameOrAfter(newEndDate, brEnd)
-
-      return (
-        breakRequest.id !== selectedLeave.id &&
-        (startOverlap || endOverlap || enclosingOverlap)
-      )
-    })
-  }
-
   const handleDayClick = (day: CalendarDay) => {
-    if (isBreakDay(day.fullDate)) {
+    if (isBreakDay(day.fullDate, existingBreaks, selectedLeave.id)) {
       toast({
         title: 'Error',
         description: 'This date is already part of another break request.',
@@ -379,7 +331,7 @@ export function EditBreak({
         const newStartDate = day.fullDate
         const newEndDate = picker.selectedEndDate || newStartDate
 
-        if (checkOverlap(newStartDate, newEndDate)) {
+        if (checkDateOverlap(newStartDate, newEndDate, existingBreaks, selectedLeave.id)) {
           toast({
             title: 'Error',
             description:
@@ -406,7 +358,7 @@ export function EditBreak({
         const newEndDate = day.fullDate
         const newStartDate = picker.selectedStartDate || newEndDate
 
-        if (checkOverlap(newStartDate, newEndDate)) {
+        if (checkDateOverlap(newStartDate, newEndDate, existingBreaks, selectedLeave.id)) {
           toast({
             title: 'Error',
             description:
@@ -448,18 +400,7 @@ export function EditBreak({
       }
       return false
     }
-    return isDateBetween(date, picker.selectedStartDate, picker.selectedEndDate)
-  }
-
-  const isBreakDay = (date: string): boolean => {
-    return existingBreaks.some((breakRequest) => {
-      const brStart = format(new Date(breakRequest.startDate), 'yyyy-MM-dd')
-      const brEnd = format(new Date(breakRequest.endDate), 'yyyy-MM-dd')
-      return (
-        breakRequest.id !== selectedLeave.id &&
-        isDateBetween(date, brStart, brEnd)
-      )
-    })
+    return isDateInRange(date, picker.selectedStartDate, picker.selectedEndDate)
   }
 
   const days = getDaysInMonthGrid(picker.currentMonth, picker.currentYear)
@@ -644,7 +585,7 @@ export function EditBreak({
                                 ${
                                   day.fullDate === picker.selectedStartDate ||
                                   day.fullDate === picker.selectedEndDate ||
-                                  isBreakDay(day.fullDate)
+                                  isBreakDay(day.fullDate, existingBreaks, selectedLeave.id)
                                     ? 'rounded-[var(--radius-full)] bg-[var(--color-interactive-accent)] shadow-[0px_4px_4px_0px_rgba(255,255,255,0.25)_inset,0px_0px_4px_0px_var(--purple-400,#AB9DED)_inset]'
                                     : 'flex h-10 w-10 items-center justify-center'
                                 }

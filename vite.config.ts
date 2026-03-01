@@ -14,6 +14,7 @@ export default defineConfig({
   ],
   resolve: {
     alias: {
+      '@primitives': resolve(__dirname, 'src/primitives'),
       '@': resolve(__dirname, 'src'),
     },
   },
@@ -40,7 +41,9 @@ export default defineConfig({
         'react-dom',
         'react/jsx-runtime',
         /^next(\/.*)?$/,
-        /^@radix-ui\/.*/,
+        /^@floating-ui\/.*/,
+        'aria-hidden',
+        'react-remove-scroll',
         /^@tanstack\/.*/,
         /^@tiptap\/.*/,
         /^@dnd-kit\/.*/,

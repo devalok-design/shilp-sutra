@@ -17,7 +17,8 @@
     "resolveJsonModule": true,
     "isolatedModules": true,
     "paths": {
-      "@/*": ["./src/*"]
+      "@/*": ["./src/*"],
+      "@primitives/*": ["./src/primitives/*"]
     }
   },
   "include": ["src/**/*.ts", "src/**/*.tsx"],

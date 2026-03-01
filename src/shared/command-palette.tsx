@@ -7,7 +7,7 @@
  * All V1 color tokens replaced with semantic design-system tokens.
  */
 import * as React from 'react'
-import * as DialogPrimitive from '@radix-ui/react-dialog'
+import * as DialogPrimitive from '@primitives/react-dialog'
 import { Search, CornerDownLeft, ArrowUp, ArrowDown } from 'lucide-react'
 import type { LucideIcon } from 'lucide-react'
 import { cn } from '../ui/lib/utils'

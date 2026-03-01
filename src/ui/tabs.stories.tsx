@@ -1,4 +1,5 @@
 import type { Meta, StoryObj } from '@storybook/react'
+import { within, userEvent, expect } from '@storybook/test'
 import { Tabs, TabsContent, TabsList, TabsTrigger } from './tabs'
 
 const meta: Meta<typeof Tabs> = {
@@ -34,6 +35,16 @@ export const Line: Story = {
       </TabsContent>
     </Tabs>
   ),
+  play: async ({ canvasElement }) => {
+    const canvas = within(canvasElement)
+    // Verify initial tab content is visible
+    await expect(canvas.getByText('Project overview and summary information.')).toBeVisible()
+    // Click the "Tasks" tab
+    const tasksTab = canvas.getByRole('tab', { name: /tasks/i })
+    await userEvent.click(tasksTab)
+    // Verify the tasks content is now visible
+    await expect(canvas.getByText('Task list and kanban board view.')).toBeVisible()
+  },
 }
 
 export const Contained: Story = {

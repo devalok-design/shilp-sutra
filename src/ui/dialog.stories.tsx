@@ -1,4 +1,5 @@
 import type { Meta, StoryObj } from '@storybook/react'
+import { within, userEvent, expect } from '@storybook/test'
 import {
   Dialog,
   DialogContent,
@@ -53,6 +54,14 @@ export const Default: Story = {
       </DialogContent>
     </Dialog>
   ),
+  play: async ({ canvasElement }) => {
+    const canvas = within(canvasElement)
+    const trigger = canvas.getByRole('button', { name: /open dialog/i })
+    await userEvent.click(trigger)
+    const dialog = await within(document.body).findByRole('dialog')
+    await expect(dialog).toBeVisible()
+    await expect(within(dialog).getByText('Edit Profile')).toBeVisible()
+  },
 }
 
 export const Confirmation: Story = {

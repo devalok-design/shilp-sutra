@@ -1,4 +1,5 @@
 import type { Meta, StoryObj } from '@storybook/react'
+import { within, userEvent, expect } from '@storybook/test'
 import {
   LayoutDashboard,
   FolderKanban,
@@ -157,6 +158,17 @@ export const Default: Story = {
       </div>
     </div>
   ),
+  play: async ({ canvasElement }) => {
+    // Open the command palette with Ctrl+K
+    await userEvent.keyboard('{Control>}k{/Control}')
+    // Verify the dialog opened and the search input is visible
+    const dialog = await within(document.body).findByRole('dialog')
+    await expect(dialog).toBeVisible()
+    // Type a search query to filter results
+    await userEvent.type(within(dialog).getByPlaceholderText('Search or jump to...'), 'Dashboard')
+    // Verify that the filtered result is visible
+    await expect(within(dialog).getByText('Dashboard')).toBeVisible()
+  },
 }
 
 export const NavigationOnly: Story = {

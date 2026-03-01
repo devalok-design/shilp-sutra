@@ -35,9 +35,7 @@ export function EditBreakBalance({
 }: EditBreakBalanceProps) {
   const [isSubmitting, setIsSubmitting] = useState(false)
   const [cashOutValue, setCashOutValue] = useState(
-    selectedLeave?.cashout === ('-' as unknown as number)
-      ? 0
-      : selectedLeave?.cashout || 0,
+    typeof selectedLeave?.cashout === 'number' ? selectedLeave.cashout : 0,
   )
   const [carryForward, setCarryForward] = useState(
     selectedLeave?.carryForward || 0,
@@ -47,9 +45,7 @@ export function EditBreakBalance({
 
   useEffect(() => {
     setCashOutValue(
-      selectedLeave?.cashout === ('-' as unknown as number)
-        ? 0
-        : selectedLeave?.cashout || 0,
+      typeof selectedLeave?.cashout === 'number' ? selectedLeave.cashout : 0,
     )
     setCarryForward(selectedLeave?.carryForward || 0)
   }, [selectedLeave])

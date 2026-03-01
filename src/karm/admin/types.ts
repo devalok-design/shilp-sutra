@@ -120,6 +120,7 @@ export interface DayInfo {
   isPadding?: boolean
   hasBreak?: boolean
   isAbsent?: boolean
+  isDisabled?: boolean
 }
 
 /** SSE real-time event callbacks */

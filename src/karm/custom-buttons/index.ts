@@ -1,4 +1,4 @@
-export { CustomButton, type ButtonType } from './CustomButton'
+export { CustomButton, type ButtonVariant, type ButtonType } from './CustomButton'
 export { FAB, type FABSize } from './FAB'
 export { ExtendedFAB, type ExtendedFABSize, type ExtendedFABColor } from './ExtendedFAB'
 export { IconButton, type IconButtonProps } from './icon-button'

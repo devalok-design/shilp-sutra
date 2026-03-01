@@ -7,7 +7,7 @@ const meta: Meta<typeof CustomButton> = {
   component: CustomButton,
   tags: ['autodocs'],
   argTypes: {
-    type: {
+    variant: {
       control: 'select',
       options: ['filled', 'tonal', 'outline', 'text'],
       description: 'Visual style of the button',
@@ -43,45 +43,45 @@ export default meta
 
 type Story = StoryObj<typeof CustomButton>
 
-// --- Type Variants ---
+// --- Variants ---
 
 export const Filled: Story = {
   args: {
-    type: 'filled',
+    variant: 'filled',
     text: 'Filled Button',
   },
 }
 
 export const Tonal: Story = {
   args: {
-    type: 'tonal',
+    variant: 'tonal',
     text: 'Tonal Button',
   },
 }
 
 export const Outline: Story = {
   args: {
-    type: 'outline',
+    variant: 'outline',
     text: 'Outline Button',
   },
 }
 
 export const Text: Story = {
   args: {
-    type: 'text',
+    variant: 'text',
     text: 'Text Button',
   },
 }
 
-// --- All Types Side by Side ---
+// --- All Variants Side by Side ---
 
-export const AllTypes: Story = {
+export const AllVariants: Story = {
   render: () => (
     <div style={{ display: 'flex', gap: '16px', alignItems: 'center', flexWrap: 'wrap' }}>
-      <CustomButton type="filled" text="Filled" />
-      <CustomButton type="tonal" text="Tonal" />
-      <CustomButton type="outline" text="Outline" />
-      <CustomButton type="text" text="Text" />
+      <CustomButton variant="filled" text="Filled" />
+      <CustomButton variant="tonal" text="Tonal" />
+      <CustomButton variant="outline" text="Outline" />
+      <CustomButton variant="text" text="Text" />
     </div>
   ),
 }
@@ -90,7 +90,7 @@ export const AllTypes: Story = {
 
 export const WithLeftIcon: Story = {
   args: {
-    type: 'filled',
+    variant: 'filled',
     text: 'Add Item',
     leftIcon: <Plus size={18} />,
   },
@@ -98,7 +98,7 @@ export const WithLeftIcon: Story = {
 
 export const WithRightIcon: Story = {
   args: {
-    type: 'filled',
+    variant: 'filled',
     text: 'Continue',
     rightIcon: <ArrowRight size={18} />,
   },
@@ -106,20 +106,20 @@ export const WithRightIcon: Story = {
 
 export const WithBothIcons: Story = {
   args: {
-    type: 'tonal',
+    variant: 'tonal',
     text: 'Download',
     leftIcon: <Download size={18} />,
     rightIcon: <ArrowRight size={18} />,
   },
 }
 
-export const AllTypesWithIcons: Story = {
+export const AllVariantsWithIcons: Story = {
   render: () => (
     <div style={{ display: 'flex', gap: '16px', alignItems: 'center', flexWrap: 'wrap' }}>
-      <CustomButton type="filled" text="Send" leftIcon={<Send size={18} />} />
-      <CustomButton type="tonal" text="Favorite" leftIcon={<Heart size={18} />} />
-      <CustomButton type="outline" text="Settings" leftIcon={<Settings size={18} />} />
-      <CustomButton type="text" text="Download" rightIcon={<Download size={18} />} />
+      <CustomButton variant="filled" text="Send" leftIcon={<Send size={18} />} />
+      <CustomButton variant="tonal" text="Favorite" leftIcon={<Heart size={18} />} />
+      <CustomButton variant="outline" text="Settings" leftIcon={<Settings size={18} />} />
+      <CustomButton variant="text" text="Download" rightIcon={<Download size={18} />} />
     </div>
   ),
 }
@@ -128,7 +128,7 @@ export const AllTypesWithIcons: Story = {
 
 export const DisabledFilled: Story = {
   args: {
-    type: 'filled',
+    variant: 'filled',
     text: 'Disabled Filled',
     disabled: true,
   },
@@ -136,19 +136,19 @@ export const DisabledFilled: Story = {
 
 export const DisabledTonal: Story = {
   args: {
-    type: 'tonal',
+    variant: 'tonal',
     text: 'Disabled Tonal',
     disabled: true,
   },
 }
 
-export const AllTypesDisabled: Story = {
+export const AllVariantsDisabled: Story = {
   render: () => (
     <div style={{ display: 'flex', gap: '16px', alignItems: 'center', flexWrap: 'wrap' }}>
-      <CustomButton type="filled" text="Filled" disabled />
-      <CustomButton type="tonal" text="Tonal" disabled />
-      <CustomButton type="outline" text="Outline" disabled />
-      <CustomButton type="text" text="Text" disabled />
+      <CustomButton variant="filled" text="Filled" disabled />
+      <CustomButton variant="tonal" text="Tonal" disabled />
+      <CustomButton variant="outline" text="Outline" disabled />
+      <CustomButton variant="text" text="Text" disabled />
     </div>
   ),
 }
@@ -157,7 +157,7 @@ export const AllTypesDisabled: Story = {
 
 export const ShakeAnimation: Story = {
   args: {
-    type: 'filled',
+    variant: 'filled',
     text: 'Shake Me',
     shake: true,
   },
@@ -165,7 +165,7 @@ export const ShakeAnimation: Story = {
 
 export const ShakeWithIcon: Story = {
   args: {
-    type: 'tonal',
+    variant: 'tonal',
     text: 'Attention!',
     shake: true,
     leftIcon: <Heart size={18} />,
@@ -175,7 +175,7 @@ export const ShakeWithIcon: Story = {
 export const ShakeDisabledNoEffect: Story = {
   name: 'Shake + Disabled (No Animation)',
   args: {
-    type: 'filled',
+    variant: 'filled',
     text: 'No Shake When Disabled',
     shake: true,
     disabled: true,
@@ -186,7 +186,7 @@ export const ShakeDisabledNoEffect: Story = {
 
 export const Playground: Story = {
   args: {
-    type: 'filled',
+    variant: 'filled',
     text: 'Playground',
     leftIcon: <Plus size={18} />,
     disabled: false,

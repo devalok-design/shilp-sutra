@@ -83,6 +83,7 @@ export {
   ProjectCard,
   // Custom button components
   CustomButton,
+  type ButtonVariant,
   type ButtonType,
   FAB,
   type FABSize,
@@ -107,7 +108,7 @@ export {
   Calendar,
   type CalendarProps,
   BreakRequestCard,
-  // DashboardSkeleton already exported from shared
+  AdminDashboardSkeleton,
   BreakAdmin,
   type BreakAdminProps,
   BreakAdminHeader,

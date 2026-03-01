@@ -72,6 +72,7 @@ export {
 // Custom button components
 export {
   CustomButton,
+  type ButtonVariant,
   type ButtonType,
   FAB,
   type FABSize,
@@ -99,7 +100,7 @@ export {
   Calendar,
   type CalendarProps,
   BreakRequestCard,
-  DashboardSkeleton,
+  AdminDashboardSkeleton,
   BreakAdmin,
   type BreakAdminProps,
   BreakAdminHeader,

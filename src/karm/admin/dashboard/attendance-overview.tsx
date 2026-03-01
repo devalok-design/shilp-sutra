@@ -175,12 +175,12 @@ export function AttendanceOverview({
                     : status
                         .replace(/([A-Z])/g, ' $1')
                         .toLowerCase()}{' '}
-                  ({(groupUsers as any[]).length})
+                  ({(groupUsers as Array<{ user: AdminUser }>).length})
                 </h2>
                 <div className="flex cursor-pointer flex-wrap items-center">
                   <AvatarStack
-                    avatars={(groupUsers as any[]).map(
-                      ({ user }: any) => ({
+                    avatars={(groupUsers as Array<{ user: AdminUser }>).map(
+                      ({ user }) => ({
                         src: userImages[user.id],
                         alt: `${user.name}'s avatar`,
                         fallback: user.name.charAt(0),

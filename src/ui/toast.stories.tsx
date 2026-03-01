@@ -1,4 +1,5 @@
 import type { Meta, StoryObj } from '@storybook/react'
+import { within, userEvent, expect } from '@storybook/test'
 import {
   Toast,
   ToastAction,
@@ -41,6 +42,15 @@ export const Default: Story = {
       <ToastClose />
     </Toast>
   ),
+  play: async ({ canvasElement }) => {
+    const canvas = within(canvasElement)
+    // Verify the toast is visible with its title and description
+    await expect(canvas.getByText('Notification')).toBeVisible()
+    await expect(canvas.getByText('Your changes have been saved.')).toBeVisible()
+    // Verify the close button is present
+    const closeButton = canvas.getByRole('button')
+    await expect(closeButton).toBeVisible()
+  },
 }
 
 export const Destructive: Story = {

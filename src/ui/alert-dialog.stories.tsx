@@ -1,4 +1,5 @@
 import type { Meta, StoryObj } from '@storybook/react'
+import { within, userEvent, expect } from '@storybook/test'
 import {
   AlertDialog,
   AlertDialogAction,
@@ -41,6 +42,14 @@ export const Default: Story = {
       </AlertDialogContent>
     </AlertDialog>
   ),
+  play: async ({ canvasElement }) => {
+    const canvas = within(canvasElement)
+    const trigger = canvas.getByRole('button', { name: /open alert dialog/i })
+    await userEvent.click(trigger)
+    const dialog = await within(document.body).findByRole('alertdialog')
+    await expect(dialog).toBeVisible()
+    await expect(within(dialog).getByText('Are you absolutely sure?')).toBeVisible()
+  },
 }
 
 export const Destructive: Story = {

@@ -1,4 +1,5 @@
 import type { Meta, StoryObj } from '@storybook/react'
+import { within, userEvent, expect } from '@storybook/test'
 import {
   Accordion,
   AccordionContent,
@@ -38,6 +39,14 @@ export const Single: Story = {
       </AccordionItem>
     </Accordion>
   ),
+  play: async ({ canvasElement }) => {
+    const canvas = within(canvasElement)
+    // Click the first accordion trigger to expand it
+    const trigger = canvas.getByText('What is Shilp Sutra?')
+    await userEvent.click(trigger)
+    // Verify the content is now visible
+    await expect(canvas.getByText(/Devalok design system package/)).toBeVisible()
+  },
 }
 
 export const Multiple: Story = {

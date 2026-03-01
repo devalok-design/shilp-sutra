@@ -3,10 +3,15 @@
 import React, { useState, useRef, useEffect } from 'react'
 import { cn } from '../../ui/lib/utils'
 
-export type ButtonType = 'filled' | 'tonal' | 'outline' | 'text'
+export type ButtonVariant = 'filled' | 'tonal' | 'outline' | 'text'
+
+/** @deprecated Use ButtonVariant */
+export type ButtonType = ButtonVariant
 
 interface CustomButtonProps {
-  type: ButtonType
+  variant?: ButtonVariant
+  /** @deprecated Use variant */
+  type?: ButtonVariant
   leftIcon?: React.ReactNode
   rightIcon?: React.ReactNode
   text: string
@@ -17,8 +22,8 @@ interface CustomButtonProps {
   shake?: boolean
 }
 
-/* ── colour / variant base ────────────────────────────────── */
-const typeClasses: Record<ButtonType, string> = {
+/* ── variant base ─────────────────────────────────────────── */
+const variantClasses: Record<ButtonVariant, string> = {
   filled: [
     'shadow-[0px_1px_3px_0.05px_var(--shadow-button-hover,#efd5d9),inset_0px_8px_16px_0px_rgba(255,255,255,0.16),inset_0px_2px_0px_0px_rgba(255,255,255,0.1)]',
     'border border-solid border-[var(--color-interactive)]',
@@ -31,8 +36,8 @@ const typeClasses: Record<ButtonType, string> = {
   text: 'text-[var(--color-interactive,#932044)]',
 }
 
-/* ── focused state per type ───────────────────────────────── */
-const focusedClasses: Record<ButtonType, string> = {
+/* ── focused state per variant ────────────────────────────── */
+const focusedClasses: Record<ButtonVariant, string> = {
   filled: [
     'border-2 border-solid border-[var(--color-interactive)]',
     'bg-[var(--color-interactive)]',
@@ -43,8 +48,8 @@ const focusedClasses: Record<ButtonType, string> = {
   text: '',
 }
 
-/* ── hover state per type ─────────────────────────────────── */
-const hoverClasses: Record<ButtonType, string> = {
+/* ── hover state per variant ──────────────────────────────── */
+const hoverClasses: Record<ButtonVariant, string> = {
   filled: [
     'border border-solid border-[var(--color-interactive)]',
     'bg-[var(--color-interactive)]',
@@ -55,16 +60,16 @@ const hoverClasses: Record<ButtonType, string> = {
   text: 'text-[var(--color-text-primary,#3f181e)]',
 }
 
-/* ── disabled state per type ──────────────────────────────── */
-const disabledClasses: Record<ButtonType, string> = {
+/* ── disabled state per variant ───────────────────────────── */
+const disabledClasses: Record<ButtonVariant, string> = {
   filled: 'bg-[var(--color-field-disabled,#d3ced0)] text-[var(--color-text-placeholder,#8c8084)]',
   tonal: 'bg-[var(--color-field-disabled,#d3ced0)] text-[var(--color-text-placeholder,#8c8084)]',
   outline: 'border border-solid border-[var(--color-text-disabled,#b7afb2)] text-[var(--color-text-placeholder,#8c8084)]',
   text: 'text-[var(--color-text-placeholder,#8c8084)]',
 }
 
-/* ── ripple bg per type ───────────────────────────────────── */
-const rippleBg: Record<ButtonType, string> = {
+/* ── ripple bg per variant ────────────────────────────────── */
+const rippleBg: Record<ButtonVariant, string> = {
   filled: 'bg-[rgba(252,247,247,0.2)]',
   tonal: 'bg-[rgba(140,128,132,0.2)]',
   outline: 'bg-[rgba(140,128,132,0.2)]',
@@ -72,7 +77,8 @@ const rippleBg: Record<ButtonType, string> = {
 }
 
 const CustomButton: React.FC<CustomButtonProps> = ({
-  type,
+  variant: variantProp,
+  type: typeProp,
   leftIcon,
   rightIcon,
   text,
@@ -81,6 +87,7 @@ const CustomButton: React.FC<CustomButtonProps> = ({
   className = '',
   shake = false,
 }) => {
+  const variant = variantProp ?? typeProp ?? 'filled'
   const [state, setState] = useState<'default' | 'focused' | 'hover' | 'pressed'>('default')
   const buttonRef = useRef<HTMLButtonElement>(null)
   const [ripples, setRipples] = useState<Array<{ id: number; x: number; y: number; size: number }>>([])
@@ -168,14 +175,14 @@ const CustomButton: React.FC<CustomButtonProps> = ({
         // Base styles
         'inline-flex items-center justify-center gap-1 px-5 py-3 rounded-[88px] cursor-pointer transition-[color,background-color,border-color,box-shadow] duration-[var(--duration-moderate)] ease-in-out relative overflow-hidden',
         "font-['Ranade'] text-sm font-semibold leading-none text-center",
-        // Type (variant) base styles
-        typeClasses[type],
+        // Variant base styles
+        variantClasses[variant],
         // State styles
-        state === 'focused' && focusedClasses[type],
-        state === 'hover' && hoverClasses[type],
+        state === 'focused' && focusedClasses[variant],
+        state === 'hover' && hoverClasses[variant],
         // Disabled styles
         disabled && 'cursor-not-allowed pointer-events-none border-none shadow-none [text-shadow:none]',
-        disabled && disabledClasses[type],
+        disabled && disabledClasses[variant],
         // Shake animation
         shake && !disabled && 'animate-shake',
         className,
@@ -198,7 +205,7 @@ const CustomButton: React.FC<CustomButtonProps> = ({
           key={ripple.id}
           className={cn(
             'absolute rounded-[var(--radius-full)] -translate-x-1/2 -translate-y-1/2 scale-0 animate-ripple pointer-events-none',
-            rippleBg[type],
+            rippleBg[variant],
           )}
           style={{
             left: ripple.x,

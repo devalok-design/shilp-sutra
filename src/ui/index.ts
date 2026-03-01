@@ -22,10 +22,10 @@ export {
   SelectScrollDownButton,
 } from './select'
 export { Textarea, type TextareaProps } from './textarea'
-export { default as NumberInput } from './number-input'
+export { default as NumberInput, type NumberInputProps } from './number-input'
 export { SearchInput, type SearchInputProps } from './search-input'
 export { InputOTP, InputOTPGroup, InputOTPSlot, InputOTPSeparator } from './input-otp'
-export { FormField, FormHelperText, type FormHelperState } from './form'
+export { FormField, FormHelperText, type FormHelperState, type FormHelperTextProps } from './form'
 export { Slider } from './slider'
 export { Toggle, toggleVariants } from './toggle'
 export { ToggleGroup, ToggleGroupItem } from './toggle-group'
@@ -101,7 +101,7 @@ export { AspectRatio } from './aspect-ratio'
 
 // Navigation
 export { Accordion, AccordionItem, AccordionTrigger, AccordionContent } from './accordion'
-export { Tabs, TabsList, TabsTrigger, TabsContent } from './tabs'
+export { Tabs, TabsList, TabsTrigger, TabsContent, type TabsListProps, type TabsTriggerProps } from './tabs'
 export {
   Breadcrumb,
   BreadcrumbList,

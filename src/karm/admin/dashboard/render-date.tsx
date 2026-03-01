@@ -92,7 +92,7 @@ export function RenderDate({
     const present = isPresentDay(day.fullDate) ?? false
     const breakDay = isBreakDay(day.fullDate) ?? false
     const absent = isAbsentDay(day.fullDate) ?? false
-    const disabled = (day as any).isDisabled || false
+    const disabled = day.isDisabled || false
     const isDefault = !day.isToday && !breakDay && !absent && !disabled
 
     let breakStart = false

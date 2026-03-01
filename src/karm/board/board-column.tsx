@@ -121,7 +121,7 @@ export function BoardColumn({
   return (
     <div
       className={cn(
-        'flex h-full w-[300px] flex-shrink-0 flex-col rounded-[var(--radius-xl)] border-l-[3px] bg-white/80 backdrop-blur-sm',
+        'flex h-full w-[300px] flex-shrink-0 flex-col rounded-[var(--radius-xl)] border-l-[3px] bg-[var(--color-layer-01)]/80 backdrop-blur-sm',
         accentColor,
         isOverlay && 'shadow-xl',
       )}
@@ -140,7 +140,7 @@ export function BoardColumn({
           />
         ) : (
           <h3
-            className="text-sm font-semibold text-foreground truncate"
+            className="text-sm font-semibold text-[var(--color-text-primary)] truncate"
             onDoubleClick={() => {
               setEditName(column.name)
               setIsEditing(true)
@@ -150,14 +150,14 @@ export function BoardColumn({
           </h3>
         )}
 
-        <span className="flex h-5 min-w-[20px] items-center justify-center rounded-[var(--radius-full)] bg-muted px-1.5 text-[11px] font-medium text-muted-foreground">
+        <span className="flex h-5 min-w-[20px] items-center justify-center rounded-[var(--radius-full)] bg-[var(--color-field)] px-1.5 text-[11px] font-medium text-[var(--color-text-tertiary)]">
           {column.tasks.length}
         </span>
 
         {/* Client visibility indicator */}
         {column.isClientVisible && (
           <Eye
-            className="h-3 w-3 text-muted-foreground"
+            className="h-3 w-3 text-[var(--color-text-tertiary)]"
             aria-label="Visible to client"
           />
         )}
@@ -168,7 +168,7 @@ export function BoardColumn({
         <Button
           variant="ghost"
           size="icon-md"
-          className="h-6 w-6 opacity-0 group-hover:opacity-100 hover:bg-pink-50 hover:text-pink-600 transition-opacity"
+          className="h-6 w-6 opacity-0 group-hover:opacity-100 hover:bg-[var(--color-interactive-subtle)] hover:text-[var(--color-interactive)] transition-opacity"
           onClick={() => {
             setIsAdding(true)
             setTimeout(() => inputRef.current?.focus(), 50)
@@ -217,7 +217,7 @@ export function BoardColumn({
             </DropdownMenuItem>
             <DropdownMenuSeparator />
             <DropdownMenuItem
-              className="text-destructive focus:text-destructive"
+              className="text-[var(--color-danger)] focus:text-[var(--color-danger)]"
               onClick={() => onDeleteColumn?.(column.id)}
             >
               <Trash2 className="mr-2 h-3.5 w-3.5" />
@@ -232,7 +232,7 @@ export function BoardColumn({
         ref={setNodeRef}
         className={cn(
           'no-scrollbar flex flex-1 flex-col gap-2 overflow-y-auto px-2 pb-2 transition-colors duration-[var(--duration-moderate)]',
-          isOver && 'bg-pink-50/50',
+          isOver && 'bg-[var(--color-interactive-subtle)]/50',
         )}
       >
         <SortableContext items={taskIds} strategy={verticalListSortingStrategy}>
@@ -244,14 +244,14 @@ export function BoardColumn({
         {/* Empty state */}
         {column.tasks.length === 0 && !isAdding && (
           <div className="flex flex-1 items-center justify-center py-8">
-            <p className="text-xs text-muted-foreground/60">No tasks</p>
+            <p className="text-xs text-[var(--color-text-placeholder)]">No tasks</p>
           </div>
         )}
       </div>
 
       {/* Quick-add input */}
       {isAdding ? (
-        <div className="border-t border-border/40 p-2">
+        <div className="border-t border-[var(--color-border-subtle)] p-2">
           <Input
             ref={inputRef}
             value={newTitle}
@@ -267,7 +267,7 @@ export function BoardColumn({
           <div className="mt-1.5 flex items-center gap-1">
             <Button
               size="sm"
-              className="h-7 bg-pink-500 hover:bg-pink-600 text-white text-xs"
+              className="h-7 bg-[var(--color-interactive)] hover:bg-[var(--color-interactive-hover)] text-[var(--color-text-on-color)] text-xs"
               onClick={handleAddTask}
               disabled={!newTitle.trim()}
             >
@@ -292,7 +292,7 @@ export function BoardColumn({
             setIsAdding(true)
             setTimeout(() => inputRef.current?.focus(), 50)
           }}
-          className="flex items-center gap-1.5 border-t border-border/40 px-3 py-2.5 text-xs text-muted-foreground/70 transition-colors hover:bg-muted/30 hover:text-muted-foreground"
+          className="flex items-center gap-1.5 border-t border-[var(--color-border-subtle)] px-3 py-2.5 text-xs text-[var(--color-text-placeholder)] transition-colors hover:bg-[var(--color-field)] hover:text-[var(--color-text-tertiary)]"
         >
           <Plus className="h-3 w-3" />
           Add task

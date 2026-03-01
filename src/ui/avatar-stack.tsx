@@ -95,7 +95,7 @@ export function AvatarStack({
               <DropdownMenuItem
                 key={index}
                 className={cn(
-                  'flex w-full cursor-pointer items-center gap-[8px] px-[8px] py-[6px] dark:hover:bg-white/10',
+                  'flex w-full cursor-pointer items-center gap-[8px] px-[8px] py-[6px] dark:hover:bg-[var(--color-field-hover)]',
                   index !== remainingAvatars.length - 1 &&
                     'border-b border-b-[var(--color-border-subtle)]',
                 )}

@@ -1,0 +1,41 @@
+import { Meta } from '@storybook/blocks'
+
+<Meta title="Shared/Introduction" />
+
+# Shared Components
+
+Shilp Sutra provides **13 higher-level reusable components** built on top of the UI primitives. These handle common application patterns like page headers, status indicators, date selection, rich text editing, and loading states.
+
+---
+
+## Component catalog
+
+| Component | Description |
+|-----------|-------------|
+| **PageHeader** | Page title bar with breadcrumbs and action buttons |
+| **ContentCard** | Versatile card with outline, elevated, and interactive variants |
+| **StatusBadge** | Status indicator with semantic color mapping (success, warning, error, info, neutral) |
+| **AvatarGroup** | Stacked avatar display with configurable max count and overflow indicator |
+| **EmptyState** | Placeholder for empty lists and screens with icon, title, description, and action |
+| **PriorityIndicator** | Visual priority level indicator (P0 through P4) with color-coded severity |
+| **DatePicker** | Calendar-based date selection with popover trigger |
+| **DateRangePicker** | Two-calendar date range selection for start and end dates |
+| **RichTextEditor** | Tiptap-based rich text editor with toolbar (bold, italic, lists, links, code) |
+| **RichTextViewer** | Read-only rich text renderer for Tiptap/HTML content |
+| **CommandPalette** | Keyboard-driven command search dialog with grouped results |
+| **ErrorDisplay** | Error boundary display with status-specific messaging (404, 403, 500, generic) |
+| **GlobalLoading** | Top-of-page progress bar loading indicator |
+| **LoadingSkeleton** | Configurable skeleton loading patterns for cards, lists, and tables |
+| **PageSkeletons** | Pre-built full-page skeleton layouts for common page types |
+
+---
+
+## Usage pattern
+
+Shared components are imported from the `shared` barrel:
+
+```tsx
+import { PageHeader, StatusBadge, EmptyState } from '@devalok/shilp-sutra/shared'
+```
+
+Each component accepts semantic props and handles its own responsive behavior, dark mode theming, and accessibility.

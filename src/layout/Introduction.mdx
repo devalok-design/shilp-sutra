@@ -1,0 +1,51 @@
+import { Meta } from '@storybook/blocks'
+
+<Meta title="Layout/Introduction" />
+
+# Layout Components
+
+Shilp Sutra provides **6 app shell components** for building complete application layouts. These handle the structural frame of your application -- sidebar navigation, top bars, mobile navigation, notifications, and command palette.
+
+---
+
+## Component catalog
+
+| Component | Description |
+|-----------|-------------|
+| **AppSidebar** | Collapsible navigation sidebar with header slot, menu groups, footer, and expand/collapse toggle |
+| **TopBar** | Application top bar with search input, notification bell, and user avatar |
+| **BottomNavbar** | Mobile-optimized bottom navigation bar with icon and label tabs |
+| **NotificationCenter** | Notification list panel with read/unread states, timestamps, and mark-as-read actions |
+| **NotificationPreferences** | Notification settings panel with per-channel toggle controls |
+| **AppCommandPalette** | Application-level command palette triggered by Cmd+K / Ctrl+K with search, recent items, and grouped commands |
+
+---
+
+## Typical layout structure
+
+These components are designed to compose into a standard app shell:
+
+```
++--------------------------------------------------+
+|  TopBar                                          |
++----------+---------------------------------------+
+|          |                                       |
+| App      |  Page Content                         |
+| Sidebar  |                                       |
+|          |                                       |
++----------+---------------------------------------+
+|  BottomNavbar (mobile only)                      |
++--------------------------------------------------+
+```
+
+The **AppCommandPalette** and **NotificationCenter** render as overlays on top of this structure.
+
+---
+
+## Usage
+
+Layout components are imported from the `layout` barrel:
+
+```tsx
+import { AppSidebar, TopBar, BottomNavbar } from '@devalok/shilp-sutra/layout'
+```

@@ -1,0 +1,72 @@
+import { Meta } from '@storybook/blocks'
+
+<Meta title="Introduction" />
+
+# Shilp Sutra Design System
+
+Welcome to **Shilp Sutra** -- the design system powering Devalok applications. It provides a comprehensive set of tokens, primitives, shared components, layout shells, and domain-specific modules for building consistent, accessible, and themeable interfaces.
+
+---
+
+## What is included
+
+| Layer | Count | Description |
+|-------|-------|-------------|
+| **Design Tokens** | 3 tiers | Primitives, semantic tokens, and Tailwind integration |
+| **UI Primitives** | 52 | Low-level Radix UI-based components |
+| **Shared Components** | 13 | Higher-level reusable patterns |
+| **Layout Components** | 6 | App shell and navigation structures |
+| **Karm Modules** | 43 | Domain-specific project management components |
+
+---
+
+## Quick links
+
+- [**Tokens**](?path=/docs/tokens-introduction--docs) -- Color palettes, spacing, typography, shadows, and motion
+- [**UI Primitives**](?path=/docs/ui-introduction--docs) -- Buttons, inputs, dialogs, tables, and more
+- [**Shared Components**](?path=/docs/shared-introduction--docs) -- PageHeader, DatePicker, RichTextEditor, and more
+- [**Layout**](?path=/docs/layout-introduction--docs) -- AppSidebar, TopBar, BottomNavbar, and more
+- [**Karm**](?path=/docs/karm-introduction--docs) -- Kanban boards, task details, chat, admin panels
+
+---
+
+## Token architecture
+
+Shilp Sutra uses a three-tier token system:
+
+```
+Primitives  -->  Semantic  -->  Tailwind
+(raw values)    (intent-based)  (utility classes)
+```
+
+1. **Primitives** -- Raw color palettes (pink, purple, neutral, green, red, yellow, blue) with 50-950 scales. Never referenced directly in component code.
+2. **Semantic** -- Intent-based tokens like `--color-interactive`, `--color-text-primary`, `--spacing-05`. These are what components consume.
+3. **Tailwind** -- The semantic tokens are mapped to Tailwind CSS utilities via `tailwind.config`, so you can use classes like `bg-interactive` or `text-text-primary`.
+
+---
+
+## Installation
+
+```bash
+pnpm add @devalok/shilp-sutra
+```
+
+Import the token stylesheet in your app entry point:
+
+```ts
+import '@devalok/shilp-sutra/tokens/index.css'
+```
+
+---
+
+## Dark mode
+
+Dark mode is toggled by adding the `.dark` class to a parent element (typically `<html>` or `<body>`). All semantic tokens have `.dark` overrides that automatically remap to darker palette values.
+
+```html
+<html class="dark">
+  <!-- All components switch to dark theme -->
+</html>
+```
+
+In Storybook, use the theme switcher in the toolbar to toggle between light and dark modes.

@@ -1,0 +1,204 @@
+import { Meta } from '@storybook/blocks'
+
+<Meta title="Tokens/Introduction" />
+
+# Design Tokens
+
+Shilp Sutra uses a **three-tier token architecture** that separates raw values from intent-based decisions, making theming and dark mode straightforward.
+
+```
+Tier 1: Primitives    Raw palette values (never used directly in components)
+Tier 2: Semantic       Intent-based tokens (what components consume)
+Tier 3: Tailwind       Utility classes mapped from semantic tokens
+```
+
+---
+
+## Tier 1 -- Primitives
+
+Raw color palettes defined as CSS custom properties. Each palette provides a 50-950 scale.
+
+| Palette | Role | Scale |
+|---------|------|-------|
+| **Pink** | Brand / interactive | 50 -- 950 |
+| **Purple** | Secondary accent | 50 -- 950 |
+| **Neutral** | Grays (warm-tinted) | 0, 50 -- 950 |
+| **Green** | Success | 50 -- 950 |
+| **Red** | Error / danger | 50 -- 950 |
+| **Yellow** | Warning | 50 -- 950 |
+| **Blue** | Info / links | 50 -- 950 |
+
+Example: `--pink-500: #d33163`, `--neutral-900: #282425`
+
+---
+
+## Tier 2 -- Semantic Tokens
+
+Intent-based tokens that reference primitives. These are the tokens components should use.
+
+### Interactive
+
+| Token | Light | Dark |
+|-------|-------|------|
+| `--color-interactive` | pink-500 | pink-400 |
+| `--color-interactive-hover` | pink-600 | pink-300 |
+| `--color-interactive-active` | pink-700 | pink-200 |
+| `--color-interactive-selected` | pink-100 | pink-900 |
+| `--color-interactive-disabled` | neutral-300 | neutral-700 |
+
+### Text
+
+| Token | Light | Dark |
+|-------|-------|------|
+| `--color-text-primary` | neutral-900 | neutral-50 |
+| `--color-text-secondary` | neutral-700 | neutral-300 |
+| `--color-text-tertiary` | neutral-600 | neutral-400 |
+| `--color-text-placeholder` | neutral-400 | neutral-500 |
+| `--color-text-error` | red-600 | red-200 |
+| `--color-text-success` | green-600 | green-200 |
+| `--color-text-link` | blue-600 | blue-200 |
+| `--color-text-brand` | pink-700 | pink-300 |
+
+### Background and Layers
+
+| Token | Light | Dark |
+|-------|-------|------|
+| `--color-background` | neutral-0 | neutral-950 |
+| `--color-layer-01` | neutral-0 | neutral-900 |
+| `--color-layer-02` | neutral-50 | neutral-800 |
+| `--color-layer-03` | neutral-100 | neutral-700 |
+| `--color-field` | neutral-50 | neutral-900 |
+
+### Border
+
+| Token | Light | Dark |
+|-------|-------|------|
+| `--color-border-subtle` | neutral-100 | neutral-800 |
+| `--color-border-default` | neutral-200 | neutral-700 |
+| `--color-border-strong` | neutral-400 | neutral-500 |
+| `--color-border-interactive` | pink-500 | pink-400 |
+| `--color-border-error` | red-600 | red-400 |
+| `--color-border-success` | green-600 | green-400 |
+
+### Spacing
+
+| Token | Value |
+|-------|-------|
+| `--spacing-01` | 2px |
+| `--spacing-02` | 4px |
+| `--spacing-03` | 8px |
+| `--spacing-04` | 12px |
+| `--spacing-05` | 16px |
+| `--spacing-06` | 24px |
+| `--spacing-07` | 32px |
+| `--spacing-08` | 40px |
+| `--spacing-09` | 48px |
+| `--spacing-10` | 64px |
+| `--spacing-11` | 80px |
+| `--spacing-12` | 96px |
+| `--spacing-13` | 160px |
+
+### Radius
+
+| Token | Value |
+|-------|-------|
+| `--radius-sm` | 2px |
+| `--radius-md` | 6px |
+| `--radius-lg` | 10px |
+| `--radius-xl` | 16px |
+| `--radius-2xl` | 24px |
+| `--radius-full` | 9999px |
+
+### Shadow
+
+| Token | Description |
+|-------|-------------|
+| `--shadow-01` | Subtle (1px blur) |
+| `--shadow-02` | Low (6px blur) |
+| `--shadow-03` | Medium (16px blur) |
+| `--shadow-04` | High (32px blur) |
+| `--shadow-05` | Highest (48px blur) |
+| `--shadow-brand` | Brand-tinted pink glow |
+
+### Duration and Easing
+
+| Token | Value |
+|-------|-------|
+| `--duration-instant` | 0ms |
+| `--duration-fast` | 100ms |
+| `--duration-moderate` | 200ms |
+| `--duration-slow` | 400ms |
+| `--duration-deliberate` | 700ms |
+| `--ease-standard` | cubic-bezier(0.2, 0, 0.38, 0.9) |
+| `--ease-entrance` | cubic-bezier(0, 0, 0.38, 0.9) |
+| `--ease-exit` | cubic-bezier(0.2, 0, 1, 0.9) |
+| `--ease-bounce` | cubic-bezier(0.34, 1.56, 0.64, 1) |
+
+---
+
+## Typography
+
+The type system is defined as CSS utility classes across three scales.
+
+### Title Scale (T1 -- T7)
+
+| Class | Size | Weight | Tracking |
+|-------|------|--------|----------|
+| `.T1-Reg` | 62px | 400 | -1.24px |
+| `.T2-Reg` | 48px | 400 | -0.96px |
+| `.T3-Reg` | 38px | 400 | -0.76px |
+| `.T4-Reg` | 32px | 400 | -0.64px |
+| `.T5-Reg` | 24px | 400 | -0.48px |
+| `.T6-Reg` | 20px | 400 | -- |
+| `.T7-Reg` | 18px | 400 | -0.48px |
+
+### Body Scale (B1 -- B8)
+
+| Class | Size | Weight | Line height |
+|-------|------|--------|-------------|
+| `.B1-Reg` | 16px | 400 | 100% |
+| `.B2-Reg` | 14px | 400 | 100% |
+| `.B3-Reg` | 12px | 400 | 100% |
+| `.B4-Reg` | 10px | 400 | 100% |
+| `.B5-Reg` | 16px | 400 | 140% |
+| `.B6-Reg` | 14px | 600 | 100% |
+| `.B7-Reg` | 12px | 400 | 100% |
+| `.B8-Reg` | 14px | 400 | 100% |
+
+### Label Scale (L1 -- L6)
+
+| Class | Size | Weight | Transform |
+|-------|------|--------|-----------|
+| `.L1` | 16px | 600 | uppercase |
+| `.L2` | 14px | 600 | uppercase |
+| `.L3` | 12px | 600 | uppercase |
+| `.L4` | 10px | 600 | uppercase |
+| `.L5` | 10px | 600 | uppercase |
+| `.L6` | 14px | 600 | uppercase |
+
+All title and body classes also have a `.semibold` modifier. Append the weight variant as needed (e.g., `.T5-Reg.semibold`).
+
+### Font Families
+
+| Variable | Default |
+|----------|---------|
+| `--font-sans` | Google Sans, system-ui, sans-serif |
+| `--font-display` | Google Sans, system-ui, sans-serif |
+| `--font-body` | Ranade, sans-serif |
+| `--font-mono` | SF Mono, Fira Code, monospace |
+
+---
+
+## Dark mode
+
+All semantic tokens have `.dark` class overrides. Toggle dark mode by adding the `dark` class to any parent element:
+
+```css
+.dark {
+  --color-background: var(--neutral-950);
+  --color-text-primary: var(--neutral-50);
+  /* ... all tokens remap automatically */
+}
+```
+
+No component code changes are needed -- the token layer handles the entire theme switch.

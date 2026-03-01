@@ -8,12 +8,7 @@
 
 import { useEffect, useState } from 'react'
 import { cn } from '../../../ui/lib/utils'
-import {
-  isSameDay,
-  getWeekDays,
-  getMonthDays,
-  getStartOfDay,
-} from '../utils/date-utils'
+import { isSameDay } from '../utils/date-utils'
 import { DashboardSkeleton } from './dashboard-skeleton'
 import { DashboardHeader } from './dashboard-header'
 import { RenderDate, type DateAttendanceInfo } from './render-date'
@@ -21,6 +16,7 @@ import { AttendanceOverview } from './attendance-overview'
 import { AssociateDetail, type TaskItem } from './associate-detail'
 import { CorrectionList, type AttendanceCorrection } from './correction-list'
 import { LeaveRequests } from './leave-requests'
+import { useCalendarNavigation } from './use-calendar-navigation'
 import type {
   AdminUser,
   AttendanceRecord,
@@ -193,168 +189,61 @@ export function AdminDashboard({
   onRefreshSelectedUserAttendance,
 }: AdminDashboardProps) {
   // ============================================================
-  // Internal state (calendar navigation, UI state)
+  // Calendar navigation (shared hook)
   // ============================================================
 
-  const today = new Date()
+  const cal = useCalendarNavigation()
 
-  const [currentDate, setCurrentDate] = useState(
-    format(today, "yyyy-MM-dd'T'HH:mm:ssxxx"),
-  )
-  const [selectedDate, setSelectedDate] = useState(
-    format(today, "yyyy-MM-dd'T'HH:mm:ssxxx"),
-  )
-  const [isFutureDate, setIsFutureDate] = useState(false)
-  const [activeTimeFrame, setActiveTimeFrame] = useState('weekly')
-  const [days, setDays] = useState<DayInfo[]>([])
-  const [selectedMonth, setSelectedMonth] = useState('')
-  const [activeIndex, setActiveIndex] = useState(0)
-  const [dateOffset, setDateOffset] = useState(0)
+  // ============================================================
+  // Local UI state (not calendar-related)
+  // ============================================================
+
   const [activeTab, setActiveTab] = useState('leaveRequest')
   const [selectedAssociate, setSelectedAssociate] = useState<AdminUser | null>(
     null,
   )
 
-  const isFirstDate =
-    days.length > 0 &&
-    days[0].fullDate &&
-    isSameDay(days[0].fullDate, new Date(selectedDate))
-  const isLastDate =
-    days.length > 0 &&
-    days[days.length - 1].fullDate &&
-    isSameDay(days[days.length - 1].fullDate, new Date(selectedDate))
-
-  // ============================================================
-  // Calendar day generation
-  // ============================================================
-
-  const updateCalendarDays = () => {
-    if (activeTimeFrame === 'weekly') {
-      setDays(getWeekDays(currentDate, selectedDate))
-    } else {
-      setDays(getMonthDays(currentDate, selectedDate))
-    }
-  }
+  const _isFirstDate = cal.isFirstDate()
+  const _isLastDate = cal.isLastDate()
 
   // ============================================================
   // Navigation handlers
   // ============================================================
 
   const handleTodayClick = () => {
-    const todayStr = format(today, "yyyy-MM-dd'T'HH:mm:ssxxx")
-    setSelectedDate(todayStr)
-    setCurrentDate(todayStr)
-    setSelectedMonth(`${format(today, 'MMMM')} ${format(today, 'yyyy')}`)
+    cal.goToday()
     setActiveTab('leaveRequest')
-
-    const weekDiff = Math.floor(
-      (today.getTime() - new Date().getTime()) / (7 * 24 * 60 * 60 * 1000),
-    )
-    setDateOffset(weekDiff)
-
-    setTimeout(() => {
-      const newDays =
-        activeTimeFrame === 'weekly'
-          ? getWeekDays(today, today)
-          : getMonthDays(currentDate, selectedDate)
-
-      setDays(newDays)
-
-      const todayIndex = newDays.findIndex((day) =>
-        isSameDay(day.fullDate, today),
-      )
-      if (todayIndex !== -1) {
-        setActiveIndex(todayIndex)
-      }
-    }, 0)
-
-    onDateChange?.(todayStr)
-  }
-
-  const isTodaySelected = () => {
-    return isSameDay(new Date(selectedDate), today)
+    onDateChange?.(cal.selectedDate)
   }
 
   const handleDateChange = (direction: 'prev' | 'next') => {
-    const newDate = new Date(currentDate)
-
-    if (activeTimeFrame === 'weekly') {
-      const daysToAdd = direction === 'prev' ? -7 : 7
-      newDate.setDate(newDate.getDate() + daysToAdd)
-    } else {
-      const monthsToAdd = direction === 'prev' ? -1 : 1
-      newDate.setMonth(newDate.getMonth() + monthsToAdd)
-      newDate.setDate(1)
-    }
-
-    const newDateStr = format(newDate, "yyyy-MM-dd'T'HH:mm:ssxxx")
-    setCurrentDate(newDateStr)
-    setSelectedDate(newDateStr)
-    setDateOffset(dateOffset + (direction === 'prev' ? -1 : 1))
+    cal.navigateDate(direction)
     setActiveTab('leaveRequest')
-
-    const newMonth = `${format(newDate, 'MMMM')} ${format(newDate, 'yyyy')}`
-    setSelectedMonth(newMonth)
-
-    updateCalendarDays()
-    onDateChange?.(newDateStr)
+    // We need the new date after dispatch — the reducer already computed it,
+    // but since dispatch is synchronous in useReducer the state will be
+    // available on next render. Fire onDateChange in an effect below.
   }
 
   const handleMonthSelection = (monthYear: string) => {
-    const [month, year] = monthYear.split(' ')
-    const newDate = new Date(selectedDate)
-    newDate.setMonth(new Date(`${month} 1, 2024`).getMonth())
-    newDate.setFullYear(parseInt(year))
-
-    const newDateStr = format(newDate, "yyyy-MM-dd'T'HH:mm:ssxxx")
-    setCurrentDate(newDateStr)
-    setSelectedDate(newDateStr)
-    setSelectedMonth(monthYear)
+    cal.selectMonth(monthYear)
     setActiveTab('leaveRequest')
-
-    const weekDiff = Math.floor(
-      (newDate.getTime() - today.getTime()) / (7 * 24 * 60 * 60 * 1000),
-    )
-    setDateOffset(weekDiff)
-
-    onDateChange?.(newDateStr)
-  }
-
-  const getYearsList = () => {
-    const years: string[] = []
-    const currentYear = new Date().getFullYear()
-    const currentMonth = format(new Date(selectedDate), 'MMMM')
-
-    for (let i = -2; i < 1; i++) {
-      const date = new Date(currentYear + i, 0)
-      years.push(`${currentMonth} ${date.getFullYear()}`)
-    }
-    return years
   }
 
   const handleTabClick = (index: number) => {
-    const newSelectedDate = days[index].fullDate
-
-    setActiveIndex(index)
-    const newDateStr = format(newSelectedDate, "yyyy-MM-dd'T'HH:mm:ssxxx")
-    setSelectedDate(newDateStr)
-    setIsFutureDate(getStartOfDay(newSelectedDate) > getStartOfDay(today))
-    onDateChange?.(newDateStr)
+    const newSelectedDate = cal.days[index].fullDate
+    cal.selectDate(index, newSelectedDate)
+    onDateChange?.(format(newSelectedDate, "yyyy-MM-dd'T'HH:mm:ssxxx"))
   }
 
   const handleDayClick = (index: number, date: Date) => {
-    if (activeTimeFrame === 'weekly') {
+    if (cal.activeTimeFrame === 'weekly') {
       handleTabClick(index)
       setActiveTab('leaveRequest')
     } else {
-      const newDateStr = format(date, "yyyy-MM-dd'T'HH:mm:ssxxx")
-      setSelectedDate(newDateStr)
-      setIsFutureDate(getStartOfDay(date) > getStartOfDay(today))
+      cal.selectDayMonthly(date)
       setActiveTab('leaveRequest')
-      onDateChange?.(newDateStr)
+      onDateChange?.(format(date, "yyyy-MM-dd'T'HH:mm:ssxxx"))
     }
-    const newMonth = `${format(date, 'MMMM')} ${format(date, 'yyyy')}`
-    setSelectedMonth(newMonth)
   }
 
   const handleRequestTabSwitch = (tab: string) => {
@@ -374,34 +263,17 @@ export function AdminDashboard({
   // Effects
   // ============================================================
 
+  // Notify parent when time frame changes
   useEffect(() => {
-    setDays([])
-    updateCalendarDays()
-    onTimeFrameChange?.(activeTimeFrame)
-  }, [activeTimeFrame])
+    onTimeFrameChange?.(cal.activeTimeFrame)
+  }, [cal.activeTimeFrame])
 
+  // Notify parent when date changes (from navigate/select month)
   useEffect(() => {
-    updateCalendarDays()
-  }, [activeTimeFrame, currentDate, dateOffset, selectedDate])
+    onDateChange?.(cal.selectedDate)
+  }, [cal.selectedDate])
 
-  useEffect(() => {
-    const month = format(new Date(currentDate), 'MMMM')
-    const year = format(new Date(currentDate), 'yyyy')
-    setSelectedMonth(`${month} ${year}`)
-    const initialDays =
-      activeTimeFrame === 'weekly'
-        ? getWeekDays(currentDate, selectedDate)
-        : getMonthDays(currentDate, selectedDate)
-    setDays(initialDays)
-
-    const todayIndex = initialDays.findIndex((day) =>
-      isSameDay(day.fullDate, today),
-    )
-    if (todayIndex !== -1) {
-      setActiveIndex(todayIndex)
-    }
-  }, [])
-
+  // Auto-switch tabs when requests arrive
   useEffect(() => {
     if (leaveRequests.length > 0) {
       setActiveTab('leaveRequest')
@@ -437,17 +309,17 @@ export function AdminDashboard({
         {/* Header: Month selector + Associate filter + Toggle + Arrows  */}
         {/* ============================================================ */}
         <DashboardHeader
-          selectedMonth={selectedMonth}
-          yearsList={getYearsList()}
-          isTodaySelected={isTodaySelected()}
+          selectedMonth={cal.selectedMonth}
+          yearsList={cal.getYearsList()}
+          isTodaySelected={cal.isTodaySelected()}
           selectedAssociate={selectedAssociate}
           users={users}
           userImages={userImages}
-          activeTimeFrame={activeTimeFrame}
+          activeTimeFrame={cal.activeTimeFrame}
           onMonthSelection={handleMonthSelection}
           onTodayClick={handleTodayClick}
           onSelectAssociate={handleSelectAssociate}
-          onTimeFrameChange={(id) => setActiveTimeFrame(id)}
+          onTimeFrameChange={(id) => cal.setActiveTimeFrame(id)}
           onDateChange={handleDateChange}
         />
 
@@ -456,10 +328,10 @@ export function AdminDashboard({
         {/* ============================================================ */}
         <div
           className={`calender ${
-            activeTimeFrame === 'weekly' ? 'flex' : 'grid grid-cols-7 gap-0'
+            cal.activeTimeFrame === 'weekly' ? 'flex' : 'grid grid-cols-7 gap-0'
           } w-full items-center`}
         >
-          {activeTimeFrame === 'monthly' &&
+          {cal.activeTimeFrame === 'monthly' &&
             ['SUN', 'MON', 'TUE', 'WED', 'THU', 'FRI', 'SAT'].map((weekDay) => (
               <div key={weekDay} className="pb-2 pt-4 text-center">
                 <span className="L3 uppercase text-[var(--color-text-tertiary)]">
@@ -468,17 +340,17 @@ export function AdminDashboard({
               </div>
             ))}
 
-          {days.map((day, index) => (
+          {cal.days.map((day, index) => (
             <div
               key={index}
               role="button"
               tabIndex={0}
               className={`${
-                activeTimeFrame === 'weekly'
+                cal.activeTimeFrame === 'weekly'
                   ? 'w-full rounded-t-[var(--radius-lg)] pb-3.5 pt-4 max-md:rounded-[var(--radius-lg)]'
                   : 'pb-0 pt-0'
               } flex cursor-pointer flex-col items-center text-center ${
-                activeTimeFrame === 'weekly' && activeIndex === index
+                cal.activeTimeFrame === 'weekly' && cal.activeIndex === index
                   ? selectedUserAttendance?.status === 'BREAK'
                     ? 'bg-[var(--color-layer-accent-subtle)]'
                     : 'bg-[var(--color-layer-02)]'
@@ -489,7 +361,7 @@ export function AdminDashboard({
                 e.key === 'Enter' && handleDayClick(index, day.fullDate)
               }
             >
-              {activeTimeFrame === 'weekly' && (
+              {cal.activeTimeFrame === 'weekly' && (
                 <span className="L3 mb-2 uppercase text-[var(--color-text-tertiary)]">
                   {day.day}
                 </span>
@@ -497,9 +369,9 @@ export function AdminDashboard({
               <RenderDate
                 day={day}
                 isAdmin={true}
-                selectedDate={selectedDate}
+                selectedDate={cal.selectedDate}
                 dateAttendanceMap={selectedAssociate ? dateAttendanceMap : null}
-                activeTimeFrame={activeTimeFrame}
+                activeTimeFrame={cal.activeTimeFrame}
               />
             </div>
           ))}
@@ -512,10 +384,10 @@ export function AdminDashboard({
           className={cn(
             'flex w-full flex-col rounded-[8px] bg-[var(--color-layer-02)] md:p-0 md:p-6 max-md:bg-transparent',
             {
-              'rounded-[var(--radius-lg)]': !isFirstDate && !isLastDate,
-              'rounded-[var(--radius-lg)] rounded-tl-none': isFirstDate && !isLastDate,
-              'rounded-b-[var(--radius-lg)] rounded-tr-none': !isFirstDate && isLastDate,
-              'rounded-none': isFirstDate && isLastDate,
+              'rounded-[var(--radius-lg)]': !_isFirstDate && !_isLastDate,
+              'rounded-[var(--radius-lg)] rounded-tl-none': _isFirstDate && !_isLastDate,
+              'rounded-b-[var(--radius-lg)] rounded-tr-none': !_isFirstDate && _isLastDate,
+              'rounded-none': _isFirstDate && _isLastDate,
             },
           )}
         >
@@ -524,11 +396,11 @@ export function AdminDashboard({
           {/* ============================================================ */}
           {!selectedAssociate && (
             <AttendanceOverview
-              isFutureDate={isFutureDate}
+              isFutureDate={cal.isFutureDate}
               users={users}
               groupedAttendance={groupedAttendance}
               userImages={userImages}
-              selectedDate={selectedDate}
+              selectedDate={cal.selectedDate}
             />
           )}
 
@@ -538,11 +410,11 @@ export function AdminDashboard({
           {selectedAssociate && (
             <AssociateDetail
               selectedAssociate={selectedAssociate}
-              selectedDate={selectedDate}
+              selectedDate={cal.selectedDate}
               selectedUserAttendance={selectedUserAttendance}
               userTasks={userTasks}
               selectedBreakRequest={selectedBreakRequest}
-              isFutureDate={isFutureDate}
+              isFutureDate={cal.isFutureDate}
               assetsBaseUrl={assetsBaseUrl}
               onUpdateAttendanceStatus={onUpdateAttendanceStatus}
               onToggleTaskStatus={onToggleTaskStatus}
@@ -616,7 +488,7 @@ export function AdminDashboard({
                       currentUserId={currentUserId}
                       userImages={userImages}
                       assetsBaseUrl={assetsBaseUrl}
-                      activeTimeFrame={activeTimeFrame}
+                      activeTimeFrame={cal.activeTimeFrame}
                       onApproveCorrection={onApproveCorrection}
                       onRejectCorrection={onRejectCorrection}
                     />
@@ -628,7 +500,7 @@ export function AdminDashboard({
                     requests={leaveRequests}
                     currentUserId={currentUserId}
                     userImages={userImages}
-                    activeTimeFrame={activeTimeFrame}
+                    activeTimeFrame={cal.activeTimeFrame}
                     onApproveBreak={onApproveBreak}
                     onRejectBreak={onRejectBreak}
                   />

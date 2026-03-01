@@ -5,13 +5,14 @@
 // ============================================================
 
 import * as React from 'react'
-import { useState, useEffect } from 'react'
+import { useEffect } from 'react'
 import { Tooltip, TooltipContent, TooltipTrigger } from '../../../ui/tooltip'
 import { CrossIcon, TickIcon, SendIcon } from '../icons'
 import { useIsMobile } from '../../../hooks/use-mobile'
 import { formatDate } from '../utils/date-utils'
 import { removeAllEmojis } from '../utils/emoji-utils'
 import { isSameDay as fnsIsSameDay } from 'date-fns'
+import { useLeaveRequestInteraction } from './use-leave-request-interaction'
 import type { BreakRequest } from '../types'
 
 // ============================================================
@@ -53,16 +54,7 @@ export function LeaveRequests({
   onApproveBreak,
   onRejectBreak,
 }: LeaveRequestsProps) {
-  const [isProcessing, setIsProcessing] = useState(false)
-  const [activeRequest, setActiveRequest] = useState<BreakRequest | null>(null)
-  const [activeAction, setActiveAction] = useState<string | null>(null)
-  const [message, setMessage] = useState('')
-  const [openComment, setOpenComment] = useState(false)
-  const [hoveredRequest, setHoveredRequest] = useState<BreakRequest | null>(
-    null,
-  )
-  const [isCtrlPressed, setIsCtrlPressed] = useState(false)
-  const [hoverActionTemp, setHoverActionTemp] = useState<string | null>(null)
+  const interaction = useLeaveRequestInteraction()
   const isMobile = useIsMobile()
 
   // ============================================================
@@ -72,22 +64,22 @@ export function LeaveRequests({
   useEffect(() => {
     const handleKeyDown = (e: KeyboardEvent) => {
       if (e.ctrlKey || e.metaKey) {
-        setIsCtrlPressed(true)
-        if (hoveredRequest) {
-          setActiveAction(hoverActionTemp)
-          setOpenComment(true)
-          setActiveRequest(hoveredRequest)
+        interaction.setIsCtrlPressed(true)
+        if (interaction.hoveredRequest) {
+          interaction.setActiveAction(interaction.hoverActionTemp)
+          interaction.setOpenComment(true)
+          interaction.setActiveRequest(interaction.hoveredRequest)
         } else {
-          setOpenComment(false)
-          setActiveAction(null)
-          setActiveRequest(null)
+          interaction.setOpenComment(false)
+          interaction.setActiveAction(null)
+          interaction.setActiveRequest(null)
         }
       }
     }
 
     const handleKeyUp = (e: KeyboardEvent) => {
       if (!e.ctrlKey && !e.metaKey) {
-        setIsCtrlPressed(false)
+        interaction.setIsCtrlPressed(false)
       }
     }
 
@@ -98,15 +90,15 @@ export function LeaveRequests({
       window.removeEventListener('keydown', handleKeyDown)
       window.removeEventListener('keyup', handleKeyUp)
     }
-  }, [hoveredRequest, isCtrlPressed, openComment, hoverActionTemp])
+  }, [interaction.hoveredRequest, interaction.isCtrlPressed, interaction.openComment, interaction.hoverActionTemp])
 
   // ============================================================
   // Handlers
   // ============================================================
 
   const handleMouseEnter = (request: BreakRequest, action: string) => {
-    setHoverActionTemp(action)
-    setHoveredRequest(request)
+    interaction.setHoverActionTemp(action)
+    interaction.setHoveredRequest(request)
   }
 
   const handleRequestSubmit = async (
@@ -114,13 +106,13 @@ export function LeaveRequests({
     action: string | null,
   ) => {
     if (!request || !action) return
-    setIsProcessing(true)
-    setOpenComment(false)
+    interaction.setIsProcessing(true)
+    interaction.setOpenComment(false)
 
     try {
       const params = {
         requestId: request.id,
-        adminComment: message,
+        adminComment: interaction.message,
         userId: currentUserId,
       }
 
@@ -130,13 +122,13 @@ export function LeaveRequests({
         await onRejectBreak?.(params)
       }
 
-      setActiveRequest(null)
-      setActiveAction(null)
-      setMessage('')
+      interaction.setActiveRequest(null)
+      interaction.setActiveAction(null)
+      interaction.setMessage('')
     } catch (error) {
       console.error('Error processing break request:', error)
     } finally {
-      setIsProcessing(false)
+      interaction.setIsProcessing(false)
     }
   }
 
@@ -216,25 +208,25 @@ export function LeaveRequests({
                           handleMouseEnter(request, 'rejectBreak')
                         }}
                         onMouseLeave={() => {
-                          setHoverActionTemp(null)
-                          setHoveredRequest(null)
+                          interaction.setHoverActionTemp(null)
+                          interaction.setHoveredRequest(null)
                         }}
                         onClick={() => {
                           if (request?.user?.id !== currentUserId) {
-                            setActiveRequest(request)
-                            setActiveAction('rejectBreak')
-                            if (activeRequest?.id !== request.id) {
-                              setMessage('')
+                            interaction.setActiveRequest(request)
+                            interaction.setActiveAction('rejectBreak')
+                            if (interaction.activeRequest?.id !== request.id) {
+                              interaction.setMessage('')
                             }
                             handleRequestSubmit(request, 'rejectBreak')
                           }
                         }}
                         disabled={
-                          isProcessing || request?.user?.id === currentUserId
+                          interaction.isProcessing || request?.user?.id === currentUserId
                         }
                         className={`rounded-[128px] p-2 ${
-                          activeRequest?.id === request.id &&
-                          activeAction === 'rejectBreak'
+                          interaction.activeRequest?.id === request.id &&
+                          interaction.activeAction === 'rejectBreak'
                             ? 'bg-[var(--color-error-surface)]'
                             : ''
                         } ${
@@ -245,8 +237,8 @@ export function LeaveRequests({
                       >
                         <CrossIcon
                           className={`h-6 w-6 ${
-                            activeRequest?.id === request.id &&
-                            activeAction === 'rejectBreak'
+                            interaction.activeRequest?.id === request.id &&
+                            interaction.activeAction === 'rejectBreak'
                               ? 'text-[var(--color-text-error)]'
                               : ''
                           }`}
@@ -268,25 +260,25 @@ export function LeaveRequests({
                           handleMouseEnter(request, 'approveBreak')
                         }}
                         onMouseLeave={() => {
-                          setHoverActionTemp(null)
-                          setHoveredRequest(null)
+                          interaction.setHoverActionTemp(null)
+                          interaction.setHoveredRequest(null)
                         }}
                         onClick={() => {
                           if (request?.user?.id !== currentUserId) {
-                            setActiveRequest(request)
-                            setActiveAction('approveBreak')
-                            if (activeRequest?.id !== request.id) {
-                              setMessage('')
+                            interaction.setActiveRequest(request)
+                            interaction.setActiveAction('approveBreak')
+                            if (interaction.activeRequest?.id !== request.id) {
+                              interaction.setMessage('')
                             }
                             handleRequestSubmit(request, 'approveBreak')
                           }
                         }}
                         disabled={
-                          isProcessing || request?.user?.id === currentUserId
+                          interaction.isProcessing || request?.user?.id === currentUserId
                         }
                         className={`rounded-[128px] p-2 ${
-                          activeRequest?.id === request.id &&
-                          activeAction === 'approveBreak'
+                          interaction.activeRequest?.id === request.id &&
+                          interaction.activeAction === 'approveBreak'
                             ? 'bg-[var(--color-success-surface)]'
                             : ''
                         } ${
@@ -307,9 +299,9 @@ export function LeaveRequests({
                 </div>
               </div>
             </div>
-            {((openComment &&
-              activeRequest &&
-              activeRequest?.id === request.id) ||
+            {((interaction.openComment &&
+              interaction.activeRequest &&
+              interaction.activeRequest?.id === request.id) ||
               isMobile) && (
               <div className="flex flex-row items-start justify-between rounded-[8px] border-[1px] border-[var(--color-border-default)] py-1 max-md:rounded-t-none">
                 <div className="flex w-full flex-col items-start justify-start gap-1 px-4 pb-1 pt-[10px]">
@@ -318,15 +310,15 @@ export function LeaveRequests({
                   </div>
                   <input
                     type="text"
-                    value={message}
-                    onChange={(e) => setMessage(e?.target?.value)}
+                    value={interaction.message}
+                    onChange={(e) => interaction.setMessage(e?.target?.value)}
                     placeholder="Enter a Comment"
                     className="P3 w-full text-[var(--color-text-primary)] outline-none"
                   />
                 </div>
                 <button
-                  disabled={isProcessing}
-                  onClick={() => handleRequestSubmit(request, activeAction)}
+                  disabled={interaction.isProcessing}
+                  onClick={() => handleRequestSubmit(request, interaction.activeAction)}
                   className="my-auto flex hidden items-center justify-center rounded-[128px] p-2"
                 >
                   <SendIcon className="h-6 w-6" />

@@ -15,6 +15,7 @@ import { DeleteBreak } from './delete-break'
 import { removeAllEmojis } from '../utils/emoji-utils'
 import { CustomButton } from '../../custom-buttons/CustomButton'
 import { isSameDay } from '../utils/date-utils'
+import { useBreakDatePicker } from './use-break-date-picker'
 import {
   format,
   startOfMonth,
@@ -66,19 +67,15 @@ export function EditBreak({
   onSave,
   onDelete,
 }: EditBreakProps) {
+  // ============================================================
+  // Local UI state (not calendar-related)
+  // ============================================================
+
   const [showStatusOptions, setShowStatusOptions] = useState(false)
-  const [showCalendar, setShowCalendar] = useState(false)
-  const [activeDate, setActiveDate] = useState<'start' | 'end' | null>(null)
-  const [currentMonth, setCurrentMonth] = useState(new Date().getMonth())
-  const [currentYear, setCurrentYear] = useState(new Date().getFullYear())
-  const [selectedStartDate, setSelectedStartDate] = useState<string | null>(
-    null,
-  )
-  const [selectedEndDate, setSelectedEndDate] = useState<string | null>(null)
   const [existingBreaks, setExistingBreaks] = useState<BreakRequest[]>(
     existingBreaksProp || [],
   )
-  const formRef = useRef<HTMLFormElement>(null)
+  const [isSubmitting, setIsSubmitting] = useState(false)
   const [formData, setFormData] = useState<{
     status: string
     comment: string
@@ -90,7 +87,14 @@ export function EditBreak({
     startDate: selectedLeave?.startDate || '',
     endDate: selectedLeave?.endDate || '',
   })
-  const [isSubmitting, setIsSubmitting] = useState(false)
+
+  // ============================================================
+  // Calendar date picker (extracted hook)
+  // ============================================================
+
+  const picker = useBreakDatePicker()
+
+  const formRef = useRef<HTMLFormElement>(null)
   const { toast } = useToast()
 
   // ============================================================
@@ -110,8 +114,8 @@ export function EditBreak({
         startDate: formatDateStr(selectedLeave?.startDate),
         endDate: formatDateStr(selectedLeave?.endDate),
       })
-      setSelectedStartDate(formatDateStr(selectedLeave?.startDate))
-      setSelectedEndDate(formatDateStr(selectedLeave?.endDate))
+      picker.setSelectedStartDate(formatDateStr(selectedLeave?.startDate))
+      picker.setSelectedEndDate(formatDateStr(selectedLeave?.endDate))
     }
   }, [selectedLeave])
 
@@ -122,7 +126,7 @@ export function EditBreak({
     }
 
     if (onFetchMonthBreaks) {
-      onFetchMonthBreaks(currentMonth, currentYear)
+      onFetchMonthBreaks(picker.currentMonth, picker.currentYear)
         .then((breaks) => {
           if (breaks) {
             setExistingBreaks(
@@ -138,7 +142,7 @@ export function EditBreak({
           console.error('Error fetching breaks:', error)
         })
     }
-  }, [currentMonth, currentYear, existingBreaksProp, onFetchMonthBreaks])
+  }, [picker.currentMonth, picker.currentYear, existingBreaksProp, onFetchMonthBreaks])
 
   // ============================================================
   // Handlers
@@ -161,19 +165,19 @@ export function EditBreak({
   }
 
   const handleOpenCalendar = (dateType: 'start' | 'end') => {
-    setActiveDate(dateType)
+    picker.setActiveDate(dateType)
 
     if (dateType === 'start' && formData.startDate) {
       const startDate = new Date(formData.startDate)
-      setCurrentMonth(startDate.getMonth())
-      setCurrentYear(startDate.getFullYear())
+      picker.setCurrentMonth(startDate.getMonth())
+      picker.setCurrentYear(startDate.getFullYear())
     } else if (dateType === 'end' && formData.endDate) {
       const endDate = new Date(formData.endDate)
-      setCurrentMonth(endDate.getMonth())
-      setCurrentYear(endDate.getFullYear())
+      picker.setCurrentMonth(endDate.getMonth())
+      picker.setCurrentYear(endDate.getFullYear())
     }
 
-    setShowCalendar(true)
+    picker.setShowCalendar(true)
   }
 
   const handleSubmit = async (e: React.FormEvent) => {
@@ -311,24 +315,6 @@ export function EditBreak({
     return daysInMonth
   }
 
-  const goToPreviousMonth = () => {
-    if (currentMonth === 0) {
-      setCurrentMonth(11)
-      setCurrentYear(currentYear - 1)
-    } else {
-      setCurrentMonth(currentMonth - 1)
-    }
-  }
-
-  const goToNextMonth = () => {
-    if (currentMonth === 11) {
-      setCurrentMonth(0)
-      setCurrentYear(currentYear + 1)
-    } else {
-      setCurrentMonth(currentMonth + 1)
-    }
-  }
-
   // ============================================================
   // Date range / overlap helpers
   // ============================================================
@@ -389,9 +375,9 @@ export function EditBreak({
     }
 
     if (!day.isPadding) {
-      if (activeDate === 'start') {
+      if (picker.activeDate === 'start') {
         const newStartDate = day.fullDate
-        const newEndDate = selectedEndDate || newStartDate
+        const newEndDate = picker.selectedEndDate || newStartDate
 
         if (checkOverlap(newStartDate, newEndDate)) {
           toast({
@@ -403,22 +389,22 @@ export function EditBreak({
           return
         }
 
-        setSelectedStartDate(newStartDate)
+        picker.setSelectedStartDate(newStartDate)
         setFormData((prev) => ({
           ...prev,
           startDate: newStartDate,
         }))
 
-        if (selectedEndDate && isDateAfter(newStartDate, selectedEndDate)) {
-          setSelectedEndDate(newStartDate)
+        if (picker.selectedEndDate && isDateAfter(newStartDate, picker.selectedEndDate)) {
+          picker.setSelectedEndDate(newStartDate)
           setFormData((prev) => ({
             ...prev,
             endDate: newStartDate,
           }))
         }
-      } else if (activeDate === 'end') {
+      } else if (picker.activeDate === 'end') {
         const newEndDate = day.fullDate
-        const newStartDate = selectedStartDate || newEndDate
+        const newStartDate = picker.selectedStartDate || newEndDate
 
         if (checkOverlap(newStartDate, newEndDate)) {
           toast({
@@ -431,17 +417,17 @@ export function EditBreak({
         }
 
         if (
-          selectedStartDate &&
-          isDateSameOrAfter(newEndDate, selectedStartDate)
+          picker.selectedStartDate &&
+          isDateSameOrAfter(newEndDate, picker.selectedStartDate)
         ) {
-          setSelectedEndDate(newEndDate)
+          picker.setSelectedEndDate(newEndDate)
           setFormData((prev) => ({
             ...prev,
             endDate: newEndDate,
           }))
-        } else if (!selectedStartDate) {
-          setSelectedStartDate(newEndDate)
-          setSelectedEndDate(newEndDate)
+        } else if (!picker.selectedStartDate) {
+          picker.setSelectedStartDate(newEndDate)
+          picker.setSelectedEndDate(newEndDate)
           setFormData((prev) => ({
             ...prev,
             startDate: newEndDate,
@@ -450,19 +436,19 @@ export function EditBreak({
         }
       }
 
-      setShowCalendar(false)
+      picker.setShowCalendar(false)
     }
   }
 
   const isInSelectedRange = (date: string): boolean => {
-    if (!selectedStartDate || !selectedEndDate) {
-      if (showCalendar) {
-        if (activeDate === 'start' && formData.startDate === date) return true
-        if (activeDate === 'end' && formData.endDate === date) return true
+    if (!picker.selectedStartDate || !picker.selectedEndDate) {
+      if (picker.showCalendar) {
+        if (picker.activeDate === 'start' && formData.startDate === date) return true
+        if (picker.activeDate === 'end' && formData.endDate === date) return true
       }
       return false
     }
-    return isDateBetween(date, selectedStartDate, selectedEndDate)
+    return isDateBetween(date, picker.selectedStartDate, picker.selectedEndDate)
   }
 
   const isBreakDay = (date: string): boolean => {
@@ -476,7 +462,7 @@ export function EditBreak({
     })
   }
 
-  const days = getDaysInMonthGrid(currentMonth, currentYear)
+  const days = getDaysInMonthGrid(picker.currentMonth, picker.currentYear)
 
   // ============================================================
   // Render
@@ -523,7 +509,7 @@ export function EditBreak({
                     type="button"
                     onClick={() => handleOpenCalendar('start')}
                     className={`P3 flex w-full items-center justify-center gap-[10px] rounded-[48px] border ${
-                      showCalendar && activeDate === 'start'
+                      picker.showCalendar && picker.activeDate === 'start'
                         ? 'border-[var(--border-tertiary)]'
                         : 'border-[var(--color-border-default)]'
                     } bg-[var(--color-layer-02)] px-[10px] py-[10px] text-[var(--color-text-secondary)] max-md:text-[12px]`}
@@ -537,7 +523,7 @@ export function EditBreak({
                     type="button"
                     onClick={() => handleOpenCalendar('end')}
                     className={`P3 flex w-full items-center justify-center gap-[10px] rounded-[48px] border ${
-                      showCalendar && activeDate === 'end'
+                      picker.showCalendar && picker.activeDate === 'end'
                         ? 'border-[var(--border-tertiary)]'
                         : 'border-[var(--color-border-default)]'
                     } bg-[var(--color-layer-02)] px-[10px] py-[10px] text-[var(--color-text-secondary)] max-md:text-[12px]`}
@@ -547,14 +533,14 @@ export function EditBreak({
                 </div>
 
                 {/* Calendar overlay */}
-                {showCalendar && (
+                {picker.showCalendar && (
                   <div className="">
                     {/* Calendar Navigation */}
                     <div className="flex items-center justify-between">
                       <button
                         type="button"
                         className="rounded-[var(--radius-full)] p-2 hover:bg-gray-100"
-                        onClick={goToPreviousMonth}
+                        onClick={() => picker.navigateMonth('prev')}
                       >
                         <svg
                           className="h-5 w-5"
@@ -571,18 +557,18 @@ export function EditBreak({
                         </svg>
                       </button>
                       <div className="B6-Reg uppercase">
-                        {new Date(currentYear, currentMonth).toLocaleString(
+                        {new Date(picker.currentYear, picker.currentMonth).toLocaleString(
                           'default',
                           {
                             month: 'long',
                           },
                         )}{' '}
-                        {currentYear}
+                        {picker.currentYear}
                       </div>
                       <button
                         type="button"
                         className="rounded-[var(--radius-full)] p-2 hover:bg-gray-100"
-                        onClick={goToNextMonth}
+                        onClick={() => picker.navigateMonth('next')}
                       >
                         <svg
                           className="h-5 w-5"
@@ -622,8 +608,8 @@ export function EditBreak({
                           className={`
                             ${
                               isInSelectedRange(day.fullDate) &&
-                              (day.fullDate === selectedStartDate ||
-                                day.fullDate === selectedEndDate)
+                              (day.fullDate === picker.selectedStartDate ||
+                                day.fullDate === picker.selectedEndDate)
                                 ? 'pb-0 pt-0'
                                 : isInSelectedRange(day.fullDate)
                                   ? 'bg-[var(--color-layer-accent-subtle)] pb-0 pt-0'
@@ -632,19 +618,19 @@ export function EditBreak({
                             flex cursor-pointer flex-col items-center text-center
                             ${day.isPadding ? 'opacity-50' : ''}
                             ${
-                              day.fullDate === selectedStartDate &&
+                              day.fullDate === picker.selectedStartDate &&
                               isInSelectedRange(day.fullDate)
                                 ? 'start-date mini'
-                                : day.fullDate === selectedEndDate &&
+                                : day.fullDate === picker.selectedEndDate &&
                                     isInSelectedRange(day.fullDate)
                                   ? 'end-date mini'
                                   : isInSelectedRange(day.fullDate) &&
-                                      !(day.fullDate === selectedStartDate) &&
-                                      !(day.fullDate === selectedEndDate)
+                                      !(day.fullDate === picker.selectedStartDate) &&
+                                      !(day.fullDate === picker.selectedEndDate)
                                     ? 'in-range-date'
                                     : ''
                             }
-                            ${selectedStartDate === selectedEndDate ? 'same-date' : ''}
+                            ${picker.selectedStartDate === picker.selectedEndDate ? 'same-date' : ''}
                           `}
                           onClick={() => handleDayClick(day)}
                         >
@@ -656,8 +642,8 @@ export function EditBreak({
                             <span
                               className={`B1-Reg flex h-10 w-10 items-center justify-center rounded-[var(--radius-full)]
                                 ${
-                                  day.fullDate === selectedStartDate ||
-                                  day.fullDate === selectedEndDate ||
+                                  day.fullDate === picker.selectedStartDate ||
+                                  day.fullDate === picker.selectedEndDate ||
                                   isBreakDay(day.fullDate)
                                     ? 'rounded-[var(--radius-full)] bg-[var(--color-interactive-accent)] shadow-[0px_4px_4px_0px_rgba(255,255,255,0.25)_inset,0px_0px_4px_0px_var(--purple-400,#AB9DED)_inset]'
                                     : 'flex h-10 w-10 items-center justify-center'

@@ -44,6 +44,10 @@
       "import": "./dist/karm/client/index.js",
       "types": "./dist/karm/client/index.d.ts"
     },
+    "./karm/admin": {
+      "import": "./dist/karm/admin/index.js",
+      "types": "./dist/karm/admin/index.d.ts"
+    },
     "./tailwind": {
       "import": "./dist/tailwind/index.js",
       "types": "./dist/tailwind/index.d.ts"

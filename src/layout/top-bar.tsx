@@ -139,7 +139,7 @@ export default function TopBar({
             </button>
           </TooltipTrigger>
           <TooltipContent side="bottom" align="center">
-            IconSearch (Ctrl+K)
+            Search (Ctrl+K)
           </TooltipContent>
         </Tooltip>
 

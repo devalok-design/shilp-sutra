@@ -179,11 +179,11 @@ function CommandPalette({
           <VisuallyHidden>
             <DialogPrimitive.Title>Command Palette</DialogPrimitive.Title>
             <DialogPrimitive.Description>
-              IconSearch or jump to pages, projects, tasks, and actions
+              Search or jump to pages, projects, tasks, and actions
             </DialogPrimitive.Description>
           </VisuallyHidden>
 
-          {/* IconSearch input */}
+          {/* Search input */}
           <div className="flex items-center gap-3 border-b border-[var(--color-border-default)] px-4 py-3">
             <IconSearch
               className="h-[18px] w-[18px] shrink-0 text-[var(--color-text-placeholder)]"

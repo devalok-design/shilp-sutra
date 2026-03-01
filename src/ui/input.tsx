@@ -28,6 +28,7 @@ const Input = React.forwardRef<HTMLInputElement, InputProps>(
           state === 'success' && 'border-[var(--color-border-success)] focus-visible:ring-[var(--color-success)]',
           className,
         )}
+        aria-invalid={state === 'error' || undefined}
         ref={ref}
         {...props}
       />

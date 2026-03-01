@@ -139,7 +139,8 @@ export function Calendar({ onDateSelect, hasCorrection }: CalendarProps) {
           <div
             key={index}
             role="button"
-            tabIndex={0}
+            tabIndex={day.isPadding ? -1 : 0}
+            aria-label={day.isPadding ? undefined : format(day.fullDate, 'MMMM d, yyyy')}
             className={`${
               cal.activeTimeFrame === 'weekly'
                 ? 'w-full rounded-t-[var(--radius-lg)] pb-3.5 pt-4'
@@ -150,9 +151,12 @@ export function Calendar({ onDateSelect, hasCorrection }: CalendarProps) {
                 : ''
             } ${day.isPadding ? 'opacity-50' : ''} `}
             onClick={() => handleDayClick(index, day.fullDate)}
-            onKeyDown={(e) =>
-              e.key === 'Enter' && handleDayClick(index, day.fullDate)
-            }
+            onKeyDown={(e) => {
+              if (e.key === 'Enter' || e.key === ' ') {
+                e.preventDefault()
+                handleDayClick(index, day.fullDate)
+              }
+            }}
           >
             {cal.activeTimeFrame === 'weekly' && (
               <span className="L3 mb-2 uppercase text-[var(--color-text-tertiary)]">

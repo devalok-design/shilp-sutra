@@ -60,12 +60,8 @@ export default tseslint.config(
       'react-hooks/rules-of-hooks': 'error',
       'react-hooks/exhaustive-deps': 'warn',
 
-      // ── JSX Accessibility (recommended rules, all downgraded to warn) ─
-      ...Object.fromEntries(
-        Object.entries(jsxA11y.flatConfigs.recommended.rules).map(
-          ([key, val]) => [key, Array.isArray(val) ? ['warn', ...val.slice(1)] : 'warn'],
-        ),
-      ),
+      // ── JSX Accessibility (recommended rules at error level) ─
+      ...jsxA11y.flatConfigs.recommended.rules,
 
       // ── General ───────────────────────────────────────────────────
       'prefer-const': 'warn',

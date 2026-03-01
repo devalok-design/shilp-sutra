@@ -101,7 +101,7 @@ export function LeaveRequest({
                     <p className="B1-Reg semibold line-clamp-2 cursor-default text-[var(--color-text-primary)]">
                       {request.reason}
                     </p>
-                    <div className="B1-Reg invisible absolute left-0 top-full z-[999999] mt-2 max-w-xs whitespace-normal rounded bg-gray-900 px-2 py-1 text-white shadow-lg group-hover:visible">
+                    <div className="B1-Reg invisible absolute left-0 top-full z-[1600] mt-2 max-w-xs whitespace-normal rounded bg-gray-900 px-2 py-1 text-white shadow-lg group-hover:visible">
                       {request.reason}
                     </div>
                   </div>
@@ -114,7 +114,7 @@ export function LeaveRequest({
                   <p className="B1-Reg semibold line-clamp-2 cursor-default text-[var(--color-text-primary)]">
                     {request.reason}
                   </p>
-                  <div className="B1-Reg invisible absolute left-0 top-full z-[999999] mt-2 max-w-xs whitespace-normal rounded bg-gray-900 px-2 py-1 text-white shadow-lg group-hover:visible">
+                  <div className="B1-Reg invisible absolute left-0 top-full z-[1600] mt-2 max-w-xs whitespace-normal rounded bg-gray-900 px-2 py-1 text-white shadow-lg group-hover:visible">
                     {request.reason}
                   </div>
                   <p className="B1-Reg text-[var(--color-text-tertiary)]">

@@ -14,6 +14,7 @@
   --color-accent:               var(--purple-500);
   --color-accent-hover:         var(--purple-600);
   --color-accent-subtle:        var(--purple-50);
+  /* @deprecated Use --color-error instead */
   --color-danger:               var(--red-600);
   --color-danger-hover:         var(--red-700);
   --color-danger-surface:       var(--red-50);
@@ -37,6 +38,7 @@
   --color-text-warning:         var(--yellow-600);
   --color-text-link:            var(--blue-600);
   --color-text-link-hover:      var(--blue-700);
+  --color-text-interactive:     var(--pink-700);
   --color-text-on-color:        var(--neutral-0);
   --color-text-on-color-dark:   var(--neutral-900);
   --color-text-inverse:         var(--neutral-0);
@@ -166,7 +168,7 @@
   --color-accent:               var(--purple-400);
   --color-accent-hover:         var(--purple-300);
   --color-accent-subtle:        var(--purple-950);
-  /* Danger */
+  /* Danger — @deprecated Use --color-error instead */
   --color-danger:               var(--red-500);
   --color-danger-hover:         var(--red-400);
   --color-danger-surface:       var(--red-900);
@@ -197,6 +199,7 @@
   --color-text-on-color-dark:   var(--neutral-50);
   --color-text-inverse:         var(--neutral-900);
   --color-text-brand:           var(--pink-300);
+  --color-text-interactive:     var(--pink-300);
   /* Icons */
   --color-icon-primary:         var(--neutral-100);
   --color-icon-secondary:       var(--neutral-300);
@@ -264,4 +267,16 @@
   --shadow-04: 0 8px 32px rgba(0, 0, 0, 0.60);
   --shadow-05: 0 16px 48px rgba(0, 0, 0, 0.70);
   --shadow-brand: 0 4px 16px rgba(211, 49, 99, 0.35);
+}
+
+/* ── Reduced Motion ──────────────────────────────────── */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
 }

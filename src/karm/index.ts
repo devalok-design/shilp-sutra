@@ -1,3 +1,24 @@
+// ============================================================
+// karm/ Module Boundary Rules
+// ============================================================
+// karm/ components may import from:
+//   - ui/ components (../../ui/*)
+//   - ui/lib/utils (cn utility)
+//   - ui/lib/slot (Slot for asChild pattern)
+//   - shared/ components (../../shared/*)
+//   - layout/ components (../../layout/*)
+//   - hooks/ (../../hooks/*)
+//   - Within karm/ (sibling modules)
+//
+// karm/ components must NOT import from:
+//   - primitives/_internal/
+//   - @primitives/* path alias
+//   - Any non-exported internal utility
+//
+// This ensures karm/ can be cleanly extracted to
+// @devalok/shilp-sutra-karm in the future.
+// ============================================================
+
 // Board components
 export {
   KanbanBoard,

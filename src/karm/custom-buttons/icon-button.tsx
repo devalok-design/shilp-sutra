@@ -1,7 +1,7 @@
 'use client'
 
 import * as React from 'react'
-import { Slot } from '@primitives/react-slot'
+import { Slot } from '../../ui/lib/slot'
 import { cn } from '../../ui/lib/utils'
 import { useState } from 'react'
 

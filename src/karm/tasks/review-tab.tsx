@@ -21,6 +21,8 @@ import {
   X,
   MessageSquare,
 } from 'lucide-react'
+import { getInitials } from '../../shared/lib/string-utils'
+import { REVIEW_STATUS_MAP } from './task-constants'
 
 // ============================================================
 // Types
@@ -65,12 +67,6 @@ interface ReviewTabProps {
 // Helpers
 // ============================================================
 
-function getInitials(name: string) {
-  const parts = name.trim().split(/\s+/)
-  if (parts.length >= 2) return (parts[0][0] + parts[1][0]).toUpperCase()
-  return name.slice(0, 2).toUpperCase()
-}
-
 function formatDate(dateStr: string) {
   return new Date(dateStr).toLocaleDateString('en-IN', {
     month: 'short',
@@ -78,16 +74,6 @@ function formatDate(dateStr: string) {
     hour: 'numeric',
     minute: '2-digit',
   })
-}
-
-const STATUS_MAP: Record<
-  ReviewRequest['status'],
-  { variant: 'yellow' | 'green' | 'magenta' | 'red'; label: string; className: string }
-> = {
-  PENDING: { variant: 'yellow', label: 'Pending', className: 'bg-yellow-100 text-yellow-800 border-yellow-200' },
-  APPROVED: { variant: 'green', label: 'Approved', className: 'bg-green-100 text-green-800 border-green-200' },
-  CHANGES_REQUESTED: { variant: 'magenta', label: 'Changes Requested', className: 'bg-orange-100 text-orange-800 border-orange-200' },
-  REJECTED: { variant: 'red', label: 'Rejected', className: 'bg-red-100 text-red-800 border-red-200' },
 }
 
 const RESPONSE_OPTIONS: {
@@ -138,7 +124,7 @@ function ReviewTab({
       {reviews.length > 0 ? (
         <div className="space-y-3">
           {reviews.map((review) => {
-            const statusInfo = STATUS_MAP[review.status]
+            const statusInfo = REVIEW_STATUS_MAP[review.status]
             const isExpanded = expandedId === review.id
 
             return (

@@ -12,14 +12,7 @@ import {
   TooltipProvider,
   TooltipTrigger,
 } from '../ui/tooltip'
-
-function getInitials(name: string): string {
-  const parts = name.trim().split(/\s+/)
-  if (parts.length >= 2) {
-    return (parts[0][0] + parts[1][0]).toUpperCase()
-  }
-  return name.slice(0, 2).toUpperCase()
-}
+import { getInitials } from './lib/string-utils'
 
 const avatarSizeVariants = cva(
   'shrink-0 overflow-hidden rounded-[var(--radius-full)] border-2 border-[var(--color-layer-01)]',

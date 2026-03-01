@@ -25,6 +25,8 @@ import {
   X,
   ChevronDown,
 } from 'lucide-react'
+import { getInitials } from '../../shared/lib/string-utils'
+import { PRIORITY_LABELS, PRIORITY_DOT_COLORS } from './task-constants'
 
 // ============================================================
 // Types
@@ -84,27 +86,7 @@ interface TaskPropertiesProps {
 // Helpers
 // ============================================================
 
-function getInitials(name: string) {
-  const parts = name.trim().split(/\s+/)
-  if (parts.length >= 2) return (parts[0][0] + parts[1][0]).toUpperCase()
-  return name.slice(0, 2).toUpperCase()
-}
-
 const PRIORITIES = ['LOW', 'MEDIUM', 'HIGH', 'URGENT'] as const
-
-const PRIORITY_LABELS: Record<string, string> = {
-  LOW: 'Low',
-  MEDIUM: 'Medium',
-  HIGH: 'High',
-  URGENT: 'Urgent',
-}
-
-const PRIORITY_DOT_COLORS: Record<string, string> = {
-  LOW: 'bg-blue-400',
-  MEDIUM: 'bg-yellow-400',
-  HIGH: 'bg-orange-400',
-  URGENT: 'bg-red-500',
-}
 
 // ============================================================
 // Property Row

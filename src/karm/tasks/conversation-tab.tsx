@@ -9,6 +9,7 @@ import {
 } from '../../ui/avatar'
 import { EmptyState } from '../../shared/empty-state'
 import { MessageCircle, Send } from 'lucide-react'
+import { getInitials } from '../../shared/lib/string-utils'
 
 // ============================================================
 // Types
@@ -53,12 +54,6 @@ interface ConversationTabProps {
 // ============================================================
 // Helpers
 // ============================================================
-
-function getInitials(name: string) {
-  const parts = name.trim().split(/\s+/)
-  if (parts.length >= 2) return (parts[0][0] + parts[1][0]).toUpperCase()
-  return name.slice(0, 2).toUpperCase()
-}
 
 function formatTimestamp(dateStr: string) {
   const date = new Date(dateStr)

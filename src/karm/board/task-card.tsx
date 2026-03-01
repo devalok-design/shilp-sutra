@@ -7,6 +7,8 @@ import type { SyntheticListenerMap } from '@dnd-kit/core/dist/hooks/utilities'
 import { cn } from '../../ui/lib/utils'
 import { Avatar, AvatarFallback, AvatarImage } from '../../ui/avatar'
 import { Calendar, GripVertical } from 'lucide-react'
+import { getInitials } from '../../shared/lib/string-utils'
+import { PRIORITY_LABELS, PRIORITY_DOT_COLORS } from '../tasks/task-constants'
 
 // ============================================================
 // Types
@@ -23,35 +25,8 @@ export interface BoardTask {
 }
 
 // ============================================================
-// Priority Config
-// ============================================================
-
-const PRIORITY_COLORS: Record<string, string> = {
-  LOW: 'bg-blue-400',
-  MEDIUM: 'bg-yellow-400',
-  HIGH: 'bg-orange-400',
-  URGENT: 'bg-red-500',
-}
-
-const PRIORITY_LABELS: Record<string, string> = {
-  LOW: 'Low',
-  MEDIUM: 'Medium',
-  HIGH: 'High',
-  URGENT: 'Urgent',
-}
-
-// ============================================================
 // Helpers
 // ============================================================
-
-function getInitials(name: string) {
-  return name
-    .split(' ')
-    .map((n) => n[0])
-    .join('')
-    .toUpperCase()
-    .slice(0, 2)
-}
 
 function formatDueDate(dateStr: string) {
   const date = new Date(dateStr)
@@ -137,7 +112,7 @@ function TaskCardVisual({
         <div
           className={cn(
             'h-2 w-2 rounded-[var(--radius-full)] flex-shrink-0',
-            PRIORITY_COLORS[task.priority],
+            PRIORITY_DOT_COLORS[task.priority],
           )}
           title={PRIORITY_LABELS[task.priority]}
         />

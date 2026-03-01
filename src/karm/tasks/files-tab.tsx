@@ -31,6 +31,7 @@ import {
   Trash2,
   Paperclip,
 } from 'lucide-react'
+import { getInitials } from '../../shared/lib/string-utils'
 
 // ============================================================
 // Types
@@ -64,12 +65,6 @@ interface FilesTabProps {
 // ============================================================
 // Helpers
 // ============================================================
-
-function getInitials(name: string) {
-  const parts = name.trim().split(/\s+/)
-  if (parts.length >= 2) return (parts[0][0] + parts[1][0]).toUpperCase()
-  return name.slice(0, 2).toUpperCase()
-}
 
 function getFileIcon(fileType: string | null) {
   if (!fileType) return FileIcon

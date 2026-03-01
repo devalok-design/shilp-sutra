@@ -73,7 +73,9 @@ export function renderStatus(
   const { text, className } = map[status] || fallback
 
   return (
-    <div className={`B3-Reg w-fit rounded-[24px] px-[6px] py-[4px] ${className}`}>
+    <div
+      className={`B3-Reg w-fit rounded-[24px] px-[6px] py-[4px] ${className}`}
+    >
       {text}
     </div>
   )

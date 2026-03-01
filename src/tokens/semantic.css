@@ -8,6 +8,9 @@
   --color-accent:               var(--purple-500);
   --color-accent-hover:         var(--purple-600);
   --color-accent-subtle:        var(--purple-50);
+  --color-danger:               var(--red-600);
+  --color-danger-hover:         var(--red-700);
+  --color-danger-surface:       var(--red-50);
   --color-background:           var(--neutral-0);
   --color-layer-01:             var(--neutral-0);
   --color-layer-02:             var(--neutral-50);
@@ -59,6 +62,10 @@
   --color-info:                 var(--blue-600);
   --color-info-surface:         var(--blue-50);
   --color-info-border:          var(--blue-600);
+  --color-info-text:            var(--blue-700);
+  --color-success-text:         var(--green-700);
+  --color-warning-text:         var(--yellow-700);
+  --color-error-text:           var(--red-700);
   --color-skeleton-base:        var(--neutral-100);
   --color-skeleton-shimmer:     var(--neutral-50);
   --color-tag-neutral-bg:       var(--neutral-100);
@@ -75,6 +82,13 @@
   --color-tag-magenta-text:     var(--pink-700);
   --color-tag-purple-bg:        var(--purple-50);
   --color-tag-purple-text:      var(--purple-600);
+  --color-tag-neutral-border:   var(--neutral-200);
+  --color-tag-blue-border:      var(--blue-100);
+  --color-tag-green-border:     var(--green-100);
+  --color-tag-red-border:       var(--red-100);
+  --color-tag-yellow-border:    var(--yellow-100);
+  --color-tag-magenta-border:   var(--pink-200);
+  --color-tag-purple-border:    var(--purple-200);
   --spacing-01: 2px;
   --spacing-02: 4px;
   --spacing-03: 8px;
@@ -135,45 +149,109 @@
 }
 
 .dark {
+  /* Interactive */
   --color-interactive:          var(--pink-400);
   --color-interactive-hover:    var(--pink-300);
   --color-interactive-active:   var(--pink-200);
   --color-interactive-selected: var(--pink-900);
+  --color-interactive-disabled: var(--neutral-700);
   --color-interactive-subtle:   var(--pink-950);
+  /* Accent */
   --color-accent:               var(--purple-400);
   --color-accent-hover:         var(--purple-300);
   --color-accent-subtle:        var(--purple-950);
+  /* Danger */
+  --color-danger:               var(--red-100);
+  --color-danger-hover:         var(--red-50);
+  --color-danger-surface:       var(--red-700);
+  /* Background & Layers */
   --color-background:           var(--neutral-950);
   --color-layer-01:             var(--neutral-900);
   --color-layer-02:             var(--neutral-800);
   --color-layer-03:             var(--neutral-700);
   --color-overlay:              rgba(0, 0, 0, 0.70);
+  /* Fields */
   --color-field:                var(--neutral-900);
   --color-field-hover:          var(--neutral-800);
   --color-field-02:             var(--neutral-800);
   --color-field-02-hover:       var(--neutral-700);
+  /* Text */
   --color-text-primary:         var(--neutral-50);
   --color-text-secondary:       var(--neutral-300);
   --color-text-tertiary:        var(--neutral-400);
   --color-text-placeholder:     var(--neutral-500);
   --color-text-helper:          var(--neutral-400);
   --color-text-disabled:        var(--neutral-600);
-  --color-text-brand:           var(--pink-300);
+  --color-text-error:           var(--red-100);
+  --color-text-success:         var(--green-100);
+  --color-text-warning:         var(--yellow-100);
+  --color-text-link:            var(--blue-100);
+  --color-text-link-hover:      var(--blue-50);
   --color-text-on-color:        var(--neutral-0);
+  --color-text-on-color-dark:   var(--neutral-50);
   --color-text-inverse:         var(--neutral-900);
+  --color-text-brand:           var(--pink-300);
+  /* Icons */
   --color-icon-primary:         var(--neutral-100);
   --color-icon-secondary:       var(--neutral-300);
   --color-icon-disabled:        var(--neutral-600);
+  --color-icon-on-color:        var(--neutral-0);
   --color-icon-interactive:     var(--pink-400);
+  /* Borders */
   --color-border-subtle:        var(--neutral-800);
   --color-border-default:       var(--neutral-700);
   --color-border-strong:        var(--neutral-500);
   --color-border-interactive:   var(--pink-400);
   --color-border-disabled:      var(--neutral-700);
+  --color-border-error:         var(--red-100);
+  --color-border-success:       var(--green-100);
+  --color-border-warning:       var(--yellow-100);
+  /* Focus */
   --color-focus:                var(--pink-400);
   --color-focus-inset:          var(--neutral-950);
+  /* Status / Feedback */
+  --color-success:              var(--green-100);
+  --color-success-surface:      var(--green-700);
+  --color-success-border:       var(--green-100);
+  --color-success-text:         var(--green-100);
+  --color-error:                var(--red-100);
+  --color-error-surface:        var(--red-700);
+  --color-error-border:         var(--red-100);
+  --color-error-text:           var(--red-100);
+  --color-warning:              var(--yellow-100);
+  --color-warning-surface:      var(--yellow-700);
+  --color-warning-border:       var(--yellow-100);
+  --color-warning-text:         var(--yellow-100);
+  --color-info:                 var(--blue-100);
+  --color-info-surface:         var(--blue-700);
+  --color-info-border:          var(--blue-100);
+  --color-info-text:            var(--blue-100);
+  /* Skeleton */
   --color-skeleton-base:        var(--neutral-800);
   --color-skeleton-shimmer:     var(--neutral-700);
+  /* Tags */
+  --color-tag-neutral-bg:       var(--neutral-800);
+  --color-tag-neutral-text:     var(--neutral-200);
+  --color-tag-neutral-border:   var(--neutral-700);
+  --color-tag-blue-bg:          var(--blue-700);
+  --color-tag-blue-text:        var(--blue-100);
+  --color-tag-blue-border:      var(--blue-600);
+  --color-tag-green-bg:         var(--green-700);
+  --color-tag-green-text:       var(--green-100);
+  --color-tag-green-border:     var(--green-600);
+  --color-tag-red-bg:           var(--red-700);
+  --color-tag-red-text:         var(--red-100);
+  --color-tag-red-border:       var(--red-600);
+  --color-tag-yellow-bg:        var(--yellow-700);
+  --color-tag-yellow-text:      var(--yellow-100);
+  --color-tag-yellow-border:    var(--yellow-600);
+  --color-tag-magenta-bg:       var(--pink-900);
+  --color-tag-magenta-text:     var(--pink-200);
+  --color-tag-magenta-border:   var(--pink-800);
+  --color-tag-purple-bg:        var(--purple-900);
+  --color-tag-purple-text:      var(--purple-200);
+  --color-tag-purple-border:    var(--purple-800);
+  /* Shadows */
   --shadow-01: 0 1px 2px rgba(0, 0, 0, 0.30);
   --shadow-02: 0 2px 6px rgba(0, 0, 0, 0.40);
   --shadow-03: 0 4px 16px rgba(0, 0, 0, 0.50);

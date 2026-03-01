@@ -1,6 +1,9 @@
 import type { Meta, StoryObj } from '@storybook/react'
 import { DndContext } from '@dnd-kit/core'
-import { SortableContext, horizontalListSortingStrategy } from '@dnd-kit/sortable'
+import {
+  SortableContext,
+  horizontalListSortingStrategy,
+} from '@dnd-kit/sortable'
 import { BoardColumn, type BoardColumnData } from './board-column'
 import type { BoardTask } from './task-card'
 
@@ -16,9 +19,7 @@ const mockTasks: BoardTask[] = [
     labels: ['devops', 'infrastructure'],
     dueDate: new Date(Date.now() + 3 * 86400000).toISOString(),
     isBlocked: false,
-    assignees: [
-      { id: 'u1', name: 'Arjun Mehta', image: null },
-    ],
+    assignees: [{ id: 'u1', name: 'Arjun Mehta', image: null }],
   },
   {
     id: 'task-2',
@@ -87,10 +88,11 @@ const singleTaskColumn: BoardColumnData = {
 function DndWrapper({ children }: { children: React.ReactNode }) {
   return (
     <DndContext>
-      <SortableContext items={['column-wrapper']} strategy={horizontalListSortingStrategy}>
-        <div className="group">
-          {children}
-        </div>
+      <SortableContext
+        items={['column-wrapper']}
+        strategy={horizontalListSortingStrategy}
+      >
+        <div className="group">{children}</div>
       </SortableContext>
     </DndContext>
   )
@@ -189,15 +191,32 @@ export const FifthColumnAccent: Story = {
 /** All column accent colors displayed together */
 export const AllAccentColors: Story = {
   render: () => {
-    const columnNames = ['To Do', 'In Progress', 'Review', 'QA', 'Staging', 'Deployed', 'Archived', 'Done']
+    const columnNames = [
+      'To Do',
+      'In Progress',
+      'Review',
+      'QA',
+      'Staging',
+      'Deployed',
+      'Archived',
+      'Done',
+    ]
     return (
       <DndContext>
-        <SortableContext items={columnNames.map((_, i) => `column-accent-${i}`)} strategy={horizontalListSortingStrategy}>
+        <SortableContext
+          items={columnNames.map((_, i) => `column-accent-${i}`)}
+          strategy={horizontalListSortingStrategy}
+        >
           <div className="flex gap-4 overflow-x-auto">
             {columnNames.map((name, i) => (
               <div key={i} className="group h-[200px]">
                 <BoardColumn
-                  column={{ id: `accent-${i}`, name, tasks: [], isClientVisible: false }}
+                  column={{
+                    id: `accent-${i}`,
+                    name,
+                    tasks: [],
+                    isClientVisible: false,
+                  }}
                   index={i}
                   onAddTask={() => {}}
                 />
@@ -212,7 +231,8 @@ export const AllAccentColors: Story = {
     layout: 'padded',
     docs: {
       description: {
-        story: 'Shows all 8 column accent colors cycling through: blue, violet, amber, emerald, pink, cyan, orange, teal.',
+        story:
+          'Shows all 8 column accent colors cycling through: blue, violet, amber, emerald, pink, cyan, orange, teal.',
       },
     },
   },

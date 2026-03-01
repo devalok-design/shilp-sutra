@@ -6,7 +6,13 @@
 // ============================================================
 
 import * as React from 'react'
-import { Fragment, useEffect, useState, useRef, type CSSProperties } from 'react'
+import {
+  Fragment,
+  useEffect,
+  useState,
+  useRef,
+  type CSSProperties,
+} from 'react'
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -21,11 +27,7 @@ import {
   DialogHeader,
   DialogTrigger,
 } from '../../../ui/dialog'
-import {
-  Tooltip,
-  TooltipContent,
-  TooltipTrigger,
-} from '../../../ui/tooltip'
+import { Tooltip, TooltipContent, TooltipTrigger } from '../../../ui/tooltip'
 import { cn } from '../../../ui/lib/utils'
 import { AvatarStack } from '../../../ui/avatar-stack'
 import { CustomButton } from '../../custom-buttons/CustomButton'
@@ -331,12 +333,20 @@ function RenderDate({
         boxShadow =
           '0px 4px 4px 0px rgba(255, 255, 255, 0.25) inset, 0px 0px 4px 0px var(--primitives-purple-400-b, #AB9DED) inset'
 
-        if (state.breakStart && !state.breakEnd && activeTimeFrame !== 'weekly') {
+        if (
+          state.breakStart &&
+          !state.breakEnd &&
+          activeTimeFrame !== 'weekly'
+        ) {
           baseStyle.borderTopLeftRadius = '20px'
           baseStyle.borderBottomLeftRadius = '20px'
         }
 
-        if (state.breakEnd && !state.breakStart && activeTimeFrame !== 'weekly') {
+        if (
+          state.breakEnd &&
+          !state.breakStart &&
+          activeTimeFrame !== 'weekly'
+        ) {
           baseStyle.borderTopRightRadius = '20px'
           baseStyle.borderBottomRightRadius = '20px'
         }
@@ -553,7 +563,10 @@ export interface AdminDashboardProps {
   /** Called to reject an attendance correction */
   onRejectCorrection?: (correctionId: string) => void | Promise<void>
   /** Called to toggle a task's status */
-  onToggleTaskStatus?: (taskId: string, newStatus: string) => void | Promise<void>
+  onToggleTaskStatus?: (
+    taskId: string,
+    newStatus: string,
+  ) => void | Promise<void>
   /** Called to create a new task */
   onAddTask?: (title: string, assigneeId: string) => void | Promise<void>
   /** Called to reorder tasks via drag-and-drop */
@@ -647,11 +660,15 @@ export function AdminDashboard({
   const [activeIndex, setActiveIndex] = useState(0)
   const [dateOffset, setDateOffset] = useState(0)
   const [activeTab, setActiveTab] = useState('leaveRequest')
-  const [selectedAssociate, setSelectedAssociate] = useState<AdminUser | null>(null)
+  const [selectedAssociate, setSelectedAssociate] = useState<AdminUser | null>(
+    null,
+  )
   const [newTaskName, setNewTaskName] = useState('')
   const [draggedTaskIndex, setDraggedTaskIndex] = useState<number | null>(null)
   const [hoveredTaskIndex, setHoveredTaskIndex] = useState<number | null>(null)
-  const [correctionDates, setCorrectionDates] = useState<Record<string, boolean>>({})
+  const [correctionDates, setCorrectionDates] = useState<
+    Record<string, boolean>
+  >({})
   const [isDragging, setIsDragging] = useState(false)
   const [startX, setStartX] = useState(0)
   const [scrollLeft, setScrollLeft] = useState(0)
@@ -897,8 +914,7 @@ export function AdminDashboard({
 
   const renderAttendanceStatus = () => {
     const status = selectedUserAttendance?.status || 'ABSENT'
-    const displayStatus =
-      status === 'Not_Marked' ? 'ABSENT' : status
+    const displayStatus = status === 'Not_Marked' ? 'ABSENT' : status
     const formattedStatus =
       displayStatus.charAt(0).toUpperCase() +
       displayStatus.slice(1).toLowerCase()
@@ -1298,9 +1314,7 @@ export function AdminDashboard({
                 day={day}
                 isAdmin={true}
                 selectedDate={selectedDate}
-                dateAttendanceMap={
-                  selectedAssociate ? dateAttendanceMap : null
-                }
+                dateAttendanceMap={selectedAssociate ? dateAttendanceMap : null}
                 activeTimeFrame={activeTimeFrame}
               />
             </div>
@@ -1345,7 +1359,11 @@ export function AdminDashboard({
                   <div className="min-h-28">
                     {users &&
                       Object.entries(
-                        onBreakGroup(users, [] as AttendanceRecord[], selectedDate),
+                        onBreakGroup(
+                          users,
+                          [] as AttendanceRecord[],
+                          selectedDate,
+                        ),
                       )?.map(([status, breakUsers]) => {
                         const usersList = breakUsers as AdminUser[]
                         return (
@@ -1397,12 +1415,14 @@ export function AdminDashboard({
                         </h2>
                         <div className="flex cursor-pointer flex-wrap items-center">
                           <AvatarStack
-                            avatars={(groupUsers as any[]).map(({ user }: any) => ({
-                              src: userImages[user.id],
-                              alt: `${user.name}'s avatar`,
-                              fallback: user.name.charAt(0),
-                              name: user.name,
-                            }))}
+                            avatars={(groupUsers as any[]).map(
+                              ({ user }: any) => ({
+                                src: userImages[user.id],
+                                alt: `${user.name}'s avatar`,
+                                fallback: user.name.charAt(0),
+                                name: user.name,
+                              }),
+                            )}
                             maxAvatars={4}
                           />
                         </div>
@@ -1459,7 +1479,10 @@ export function AdminDashboard({
                 />
               ) : selectedUserAttendance?.status === 'ABSENT' ||
                 (selectedUserAttendance?.status === 'Not_Marked' &&
-                  isBefore(new Date(selectedDate), fnsStartOfDay(new Date()))) ? (
+                  isBefore(
+                    new Date(selectedDate),
+                    fnsStartOfDay(new Date()),
+                  )) ? (
                 <div className="flex w-full flex-col items-center justify-center p-6">
                   <p className="L3 mb-4 uppercase text-[var(--Mapped-Text-Tertiary)]">
                     COMMENT
@@ -1599,7 +1622,8 @@ export function AdminDashboard({
           {/* ============================================================ */}
           {/* Requests / Corrections tabs                                  */}
           {/* ============================================================ */}
-          {filteredAttendanceCorrections.length > 0 || leaveRequests.length > 0 ? (
+          {filteredAttendanceCorrections.length > 0 ||
+          leaveRequests.length > 0 ? (
             <div className="w-full p-0 md:p-6">
               <div className="max-md:pt[16px] flex flex-col items-start overflow-hidden rounded-[var(--Number-4x,8px)] border-0 border-[var(--border-secondary)] bg-[var(--Mapped-Surface-Primary)] pt-2 md:border max-md:pb-0">
                 <div className="flex w-full items-start border-b-[1px] border-b-[var(--border-primary)] px-6 md:border-b max-md:border-0 max-md:px-[0px]">
@@ -1662,15 +1686,15 @@ export function AdminDashboard({
                       ) : (
                         filteredAttendanceCorrections.map((correction) => (
                           <Fragment key={correction.id}>
-                            <div
-                              className="max-md:border-1 flex items-center justify-between px-2 py-3.5 max-md:rounded-[8px] max-md:border-[var(--border-primary)]"
-                            >
+                            <div className="max-md:border-1 flex items-center justify-between px-2 py-3.5 max-md:rounded-[8px] max-md:border-[var(--border-primary)]">
                               <div className="flex items-center gap-3">
                                 <img
                                   className="h-10 w-10 rounded-full border-2 max-md:mb-[auto]"
                                   src={
                                     userImages[correction?.user?.id || ''] ||
-                                    (assetsBaseUrl ? assetsBaseUrl + '/Goutham.png' : '')
+                                    (assetsBaseUrl
+                                      ? assetsBaseUrl + '/Goutham.png'
+                                      : '')
                                   }
                                   width={40}
                                   height={40}
@@ -1708,7 +1732,8 @@ export function AdminDashboard({
                                             : ''
                                         }`}
                                         onClick={() =>
-                                          correction?.user?.id !== currentUserId &&
+                                          correction?.user?.id !==
+                                            currentUserId &&
                                           handleCorrectionAction(
                                             correction,
                                             'REJECTED',
@@ -1741,7 +1766,8 @@ export function AdminDashboard({
                                             : ''
                                         }`}
                                         onClick={() =>
-                                          correction?.user?.id !== currentUserId &&
+                                          correction?.user?.id !==
+                                            currentUserId &&
                                           handleCorrectionAction(
                                             correction,
                                             'APPROVED',

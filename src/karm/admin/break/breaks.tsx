@@ -1,11 +1,7 @@
 'use client'
 
 import { MenuDotsIcon } from '../icons'
-import {
-  Popover,
-  PopoverContent,
-  PopoverTrigger,
-} from '../../../ui/popover'
+import { Popover, PopoverContent, PopoverTrigger } from '../../../ui/popover'
 import { EditBreak } from './edit-break'
 import { formatOptionalDate } from '../utils/date-utils'
 import { renderStatus } from '../utils/render-status'
@@ -109,8 +105,7 @@ export function Breaks({
                   {formatOptionalDate(startDate)}{' '}
                   {!isSingleDay_ && (
                     <>
-                      <span>-</span>{' '}
-                      {formatOptionalDate(endDate)}
+                      <span>-</span> {formatOptionalDate(endDate)}
                     </>
                   )}
                 </span>

@@ -122,19 +122,21 @@ export function EditBreak({
     }
 
     if (onFetchMonthBreaks) {
-      onFetchMonthBreaks(currentMonth, currentYear).then((breaks) => {
-        if (breaks) {
-          setExistingBreaks(
-            breaks.map((br) => ({
-              ...br,
-              startDate: new Date(br.startDate).toISOString(),
-              endDate: new Date(br.endDate).toISOString(),
-            })),
-          )
-        }
-      }).catch((error) => {
-        console.error('Error fetching breaks:', error)
-      })
+      onFetchMonthBreaks(currentMonth, currentYear)
+        .then((breaks) => {
+          if (breaks) {
+            setExistingBreaks(
+              breaks.map((br) => ({
+                ...br,
+                startDate: new Date(br.startDate).toISOString(),
+                endDate: new Date(br.endDate).toISOString(),
+              })),
+            )
+          }
+        })
+        .catch((error) => {
+          console.error('Error fetching breaks:', error)
+        })
     }
   }, [currentMonth, currentYear, existingBreaksProp, onFetchMonthBreaks])
 
@@ -261,10 +263,7 @@ export function EditBreak({
     return format(new Date(dateString), 'EEEE, MMMM d')
   }
 
-  const getDaysInMonthGrid = (
-    month: number,
-    year: number,
-  ): CalendarDay[] => {
+  const getDaysInMonthGrid = (month: number, year: number): CalendarDay[] => {
     const daysInMonth: CalendarDay[] = []
     const firstDayOfMonth = new Date(year, month, 1)
     const lastDayOfMonth = endOfMonth(firstDayOfMonth)
@@ -361,10 +360,7 @@ export function EditBreak({
     return isAfter(parseISO(dateStr1), parseISO(dateStr2))
   }
 
-  const checkOverlap = (
-    newStartDate: string,
-    newEndDate: string,
-  ): boolean => {
+  const checkOverlap = (newStartDate: string, newEndDate: string): boolean => {
     return existingBreaks.some((breakRequest) => {
       const brStart = format(new Date(breakRequest.startDate), 'yyyy-MM-dd')
       const brEnd = format(new Date(breakRequest.endDate), 'yyyy-MM-dd')
@@ -643,9 +639,7 @@ export function EditBreak({
                                     isInSelectedRange(day.fullDate)
                                   ? 'end-date mini'
                                   : isInSelectedRange(day.fullDate) &&
-                                      !(
-                                        day.fullDate === selectedStartDate
-                                      ) &&
+                                      !(day.fullDate === selectedStartDate) &&
                                       !(day.fullDate === selectedEndDate)
                                     ? 'in-range-date'
                                     : ''

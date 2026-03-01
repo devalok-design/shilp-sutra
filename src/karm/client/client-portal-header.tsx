@@ -11,8 +11,14 @@ interface ClientPortalHeaderProps extends React.HTMLAttributes<HTMLElement> {
   userAvatar?: string | null
 }
 
-const ClientPortalHeader = React.forwardRef<HTMLElement, ClientPortalHeaderProps>(
-  ({ className, orgName, orgLogo, userName, userAvatar, children, ...props }, ref) => {
+const ClientPortalHeader = React.forwardRef<
+  HTMLElement,
+  ClientPortalHeaderProps
+>(
+  (
+    { className, orgName, orgLogo, userName, userAvatar, children, ...props },
+    ref,
+  ) => {
     const initials = orgName
       .split(' ')
       .map((w) => w[0])

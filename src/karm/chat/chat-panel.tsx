@@ -77,7 +77,8 @@ export function ChatPanel({
   const [showHistory, setShowHistory] = useState(false)
   const [showAgentDropdown, setShowAgentDropdown] = useState(false)
 
-  const selectedAgent = agents.find((a) => a.id === selectedAgentId) ?? agents[0]
+  const selectedAgent =
+    agents.find((a) => a.id === selectedAgentId) ?? agents[0]
 
   // Close agent dropdown when clicking outside
   useEffect(() => {

@@ -2,10 +2,7 @@
 
 import { useState, useRef } from 'react'
 import { useDroppable } from '@dnd-kit/core'
-import {
-  SortableContext,
-  verticalListSortingStrategy,
-} from '@dnd-kit/sortable'
+import { SortableContext, verticalListSortingStrategy } from '@dnd-kit/sortable'
 import { cn } from '../../ui/lib/utils'
 import { Button } from '../../ui/button'
 import { Input } from '../../ui/input'
@@ -159,7 +156,10 @@ export function BoardColumn({
 
         {/* Client visibility indicator */}
         {column.isClientVisible && (
-          <Eye className="h-3 w-3 text-muted-foreground" aria-label="Visible to client" />
+          <Eye
+            className="h-3 w-3 text-muted-foreground"
+            aria-label="Visible to client"
+          />
         )}
 
         <div className="flex-1" />
@@ -237,11 +237,7 @@ export function BoardColumn({
       >
         <SortableContext items={taskIds} strategy={verticalListSortingStrategy}>
           {column.tasks.map((task) => (
-            <TaskCard
-              key={task.id}
-              task={task}
-              onClickTask={onClickTask}
-            />
+            <TaskCard key={task.id} task={task} onClickTask={onClickTask} />
           ))}
         </SortableContext>
 

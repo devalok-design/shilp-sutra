@@ -24,7 +24,8 @@ type Story = StoryObj<typeof ProjectCard>
 export const Active: Story = {
   args: {
     name: 'Client Portal Redesign',
-    description: 'Complete overhaul of the client-facing portal with new dashboard, improved task visibility, and accent color theming.',
+    description:
+      'Complete overhaul of the client-facing portal with new dashboard, improved task visibility, and accent color theming.',
     status: 'active',
     taskCount: 24,
     completedTasks: 14,
@@ -34,7 +35,8 @@ export const Active: Story = {
 export const Completed: Story = {
   args: {
     name: 'Brand Identity Refresh',
-    description: 'Updated logo, typography system, and color palette across all digital touchpoints.',
+    description:
+      'Updated logo, typography system, and color palette across all digital touchpoints.',
     status: 'completed',
     taskCount: 18,
     completedTasks: 18,
@@ -44,7 +46,8 @@ export const Completed: Story = {
 export const Paused: Story = {
   args: {
     name: 'Mobile App Development',
-    description: 'Native iOS and Android app for the client portal. Paused pending budget approval for Q3.',
+    description:
+      'Native iOS and Android app for the client portal. Paused pending budget approval for Q3.',
     status: 'paused',
     taskCount: 32,
     completedTasks: 8,
@@ -55,7 +58,8 @@ export const JustStarted: Story = {
   name: 'Just Started (0% Progress)',
   args: {
     name: 'SEO Optimization Phase 2',
-    description: 'Technical SEO audit, content optimization, and backlink strategy for improved organic reach.',
+    description:
+      'Technical SEO audit, content optimization, and backlink strategy for improved organic reach.',
     status: 'active',
     taskCount: 15,
     completedTasks: 0,
@@ -66,7 +70,8 @@ export const AlmostDone: Story = {
   name: 'Almost Done (95%)',
   args: {
     name: 'API Documentation',
-    description: 'Comprehensive API reference documentation with examples, authentication guides, and SDKs.',
+    description:
+      'Comprehensive API reference documentation with examples, authentication guides, and SDKs.',
     status: 'active',
     taskCount: 20,
     completedTasks: 19,
@@ -98,7 +103,8 @@ export const LongProjectName: Story = {
   name: 'Long Project Name',
   args: {
     name: 'Enterprise Resource Planning System Integration and Data Migration',
-    description: 'Full ERP system integration with existing tools, including data migration from legacy systems.',
+    description:
+      'Full ERP system integration with existing tools, including data migration from legacy systems.',
     status: 'active',
     taskCount: 50,
     completedTasks: 12,
@@ -109,7 +115,10 @@ export const CardGrid: Story = {
   name: 'Card Grid (Multiple)',
   decorators: [
     () => (
-      <div style={{ maxWidth: 860 }} className="grid grid-cols-1 gap-4 sm:grid-cols-2">
+      <div
+        style={{ maxWidth: 860 }}
+        className="grid grid-cols-1 gap-4 sm:grid-cols-2"
+      >
         <ProjectCard
           name="Client Portal Redesign"
           description="Complete overhaul of the client-facing portal."

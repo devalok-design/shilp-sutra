@@ -588,7 +588,7 @@ function TaskProperties({
                 'h-1.5 w-1.5 rounded-full',
                 task.visibility === 'EVERYONE'
                   ? 'bg-[var(--green-500)]'
-                  : 'bg-[var(--neutals-400)]',
+                  : 'bg-[var(--neutral-400)]',
               )}
             />
             {task.visibility === 'EVERYONE' ? 'Everyone' : 'Internal'}

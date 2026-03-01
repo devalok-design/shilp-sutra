@@ -97,8 +97,8 @@ const ACTION_MAP: Record<string, ActionConfig> = {
   },
   'task.unassigned': {
     icon: UserMinus,
-    color: 'text-[var(--neutals-400)]',
-    dotColor: 'bg-[var(--neutals-400)]',
+    color: 'text-[var(--neutral-400)]',
+    dotColor: 'bg-[var(--neutral-400)]',
     getDescription: (entry) => {
       const meta = entry.metadata as Record<string, unknown> | null
       return `removed ${meta?.assigneeName || 'a user'}`
@@ -140,7 +140,7 @@ const ACTION_MAP: Record<string, ActionConfig> = {
   'task.visibility_changed': {
     icon: Eye,
     color: 'text-[var(--Mapped-Text-Tertiary)]',
-    dotColor: 'bg-[var(--neutals-500)]',
+    dotColor: 'bg-[var(--neutral-500)]',
     getDescription: (entry) => {
       const meta = entry.metadata as Record<string, unknown> | null
       return `changed visibility to ${meta?.visibility || 'unknown'}`
@@ -176,7 +176,7 @@ const ACTION_MAP: Record<string, ActionConfig> = {
 const DEFAULT_ACTION: ActionConfig = {
   icon: Activity,
   color: 'text-[var(--Mapped-Text-Quaternary)]',
-  dotColor: 'bg-[var(--neutals-400)]',
+  dotColor: 'bg-[var(--neutral-400)]',
   getDescription: (entry) => entry.action,
 }
 

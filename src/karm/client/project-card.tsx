@@ -17,8 +17,20 @@ const statusVariantMap = {
 }
 
 const ProjectCard = React.forwardRef<HTMLDivElement, ProjectCardProps>(
-  ({ className, name, description, status, taskCount = 0, completedTasks = 0, ...props }, ref) => {
-    const progress = taskCount > 0 ? Math.round((completedTasks / taskCount) * 100) : 0
+  (
+    {
+      className,
+      name,
+      description,
+      status,
+      taskCount = 0,
+      completedTasks = 0,
+      ...props
+    },
+    ref,
+  ) => {
+    const progress =
+      taskCount > 0 ? Math.round((completedTasks / taskCount) * 100) : 0
 
     return (
       <div
@@ -44,7 +56,9 @@ const ProjectCard = React.forwardRef<HTMLDivElement, ProjectCardProps>(
         )}
         <div className="space-y-2">
           <div className="flex items-center justify-between text-xs text-[var(--color-text-helper)]">
-            <span>{completedTasks} / {taskCount} tasks</span>
+            <span>
+              {completedTasks} / {taskCount} tasks
+            </span>
             <span>{progress}%</span>
           </div>
           <div className="h-1.5 w-full overflow-hidden rounded-[var(--radius-full)] bg-[var(--color-layer-03)]">

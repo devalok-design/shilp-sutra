@@ -27,9 +27,7 @@ const urgentOverdueTask: BoardTask = {
   labels: ['bug', 'production', 'database'],
   dueDate: new Date(Date.now() - 86400000).toISOString(),
   isBlocked: true,
-  assignees: [
-    { id: 'u1', name: 'Arjun Mehta', image: null },
-  ],
+  assignees: [{ id: 'u1', name: 'Arjun Mehta', image: null }],
 }
 
 const minimalTask: BoardTask = {
@@ -49,9 +47,7 @@ const mediumTask: BoardTask = {
   labels: ['design'],
   dueDate: new Date(Date.now() + 7 * 86400000).toISOString(),
   isBlocked: false,
-  assignees: [
-    { id: 'u3', name: 'Kavita Reddy', image: null },
-  ],
+  assignees: [{ id: 'u3', name: 'Kavita Reddy', image: null }],
 }
 
 const dueTodayTask: BoardTask = {
@@ -82,13 +78,17 @@ const manyLabelsTask: BoardTask = {
 // Wrapper to provide DnD context for sortable TaskCard
 // ============================================================
 
-function SortableWrapper({ children, taskIds }: { children: React.ReactNode; taskIds: string[] }) {
+function SortableWrapper({
+  children,
+  taskIds,
+}: {
+  children: React.ReactNode
+  taskIds: string[]
+}) {
   return (
     <DndContext>
       <SortableContext items={taskIds} strategy={verticalListSortingStrategy}>
-        <div className="w-[280px] space-y-2">
-          {children}
-        </div>
+        <div className="w-[280px] space-y-2">{children}</div>
       </SortableContext>
     </DndContext>
   )
@@ -186,7 +186,8 @@ export const DragOverlay: StoryObj<typeof TaskCardOverlay> = {
   parameters: {
     docs: {
       description: {
-        story: 'The drag overlay variant shown while a card is being dragged. Has a slight rotation and elevated shadow.',
+        story:
+          'The drag overlay variant shown while a card is being dragged. Has a slight rotation and elevated shadow.',
       },
     },
   },
@@ -195,7 +196,12 @@ export const DragOverlay: StoryObj<typeof TaskCardOverlay> = {
 /** All priority levels displayed side-by-side for comparison */
 export const AllPriorities: Story = {
   render: () => {
-    const priorities: BoardTask['priority'][] = ['LOW', 'MEDIUM', 'HIGH', 'URGENT']
+    const priorities: BoardTask['priority'][] = [
+      'LOW',
+      'MEDIUM',
+      'HIGH',
+      'URGENT',
+    ]
     return (
       <DndContext>
         <SortableContext
@@ -222,7 +228,8 @@ export const AllPriorities: Story = {
   parameters: {
     docs: {
       description: {
-        story: 'Comparison of all four priority levels: Low (blue), Medium (yellow), High (orange), Urgent (red).',
+        story:
+          'Comparison of all four priority levels: Low (blue), Medium (yellow), High (orange), Urgent (red).',
       },
     },
   },

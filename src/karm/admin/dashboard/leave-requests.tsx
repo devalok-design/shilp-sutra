@@ -6,11 +6,7 @@
 
 import * as React from 'react'
 import { useState, useEffect } from 'react'
-import {
-  Tooltip,
-  TooltipContent,
-  TooltipTrigger,
-} from '../../../ui/tooltip'
+import { Tooltip, TooltipContent, TooltipTrigger } from '../../../ui/tooltip'
 import { CrossIcon, TickIcon, SendIcon } from '../icons'
 import { useIsMobile } from '../../../hooks/use-mobile'
 import { formatDate } from '../utils/date-utils'
@@ -62,7 +58,9 @@ export function LeaveRequests({
   const [activeAction, setActiveAction] = useState<string | null>(null)
   const [message, setMessage] = useState('')
   const [openComment, setOpenComment] = useState(false)
-  const [hoveredRequest, setHoveredRequest] = useState<BreakRequest | null>(null)
+  const [hoveredRequest, setHoveredRequest] = useState<BreakRequest | null>(
+    null,
+  )
   const [isCtrlPressed, setIsCtrlPressed] = useState(false)
   const [hoverActionTemp, setHoverActionTemp] = useState<string | null>(null)
   const isMobile = useIsMobile()
@@ -198,8 +196,7 @@ export function LeaveRequests({
                         {removeAllEmojis(request.reason)}
                       </p>
                       <p className="B1-Reg text-[var(--Mapped-Text-Tertiary)]">
-                        {formatDate(new Date(request.startDate))}{' '}
-                        to{' '}
+                        {formatDate(new Date(request.startDate))} to{' '}
                         {formatDate(new Date(request.endDate))}
                         <span className="text-[var(--Mapped-Text-Highlight2)]">
                           {', '}
@@ -232,7 +229,9 @@ export function LeaveRequests({
                             handleRequestSubmit(request, 'rejectBreak')
                           }
                         }}
-                        disabled={isProcessing || request?.user?.id === currentUserId}
+                        disabled={
+                          isProcessing || request?.user?.id === currentUserId
+                        }
                         className={`rounded-[128px] p-2 ${
                           activeRequest?.id === request.id &&
                           activeAction === 'rejectBreak'
@@ -282,7 +281,9 @@ export function LeaveRequests({
                             handleRequestSubmit(request, 'approveBreak')
                           }
                         }}
-                        disabled={isProcessing || request?.user?.id === currentUserId}
+                        disabled={
+                          isProcessing || request?.user?.id === currentUserId
+                        }
                         className={`rounded-[128px] p-2 ${
                           activeRequest?.id === request.id &&
                           activeAction === 'approveBreak'
@@ -325,9 +326,7 @@ export function LeaveRequests({
                 </div>
                 <button
                   disabled={isProcessing}
-                  onClick={() =>
-                    handleRequestSubmit(request, activeAction)
-                  }
+                  onClick={() => handleRequestSubmit(request, activeAction)}
                   className="my-auto flex hidden items-center justify-center rounded-[128px] p-2"
                 >
                   <SendIcon className="h-6 w-6" />

@@ -25,9 +25,11 @@ export const WithOrgLogo: Story = {
   name: 'With Organization Logo',
   args: {
     orgName: 'Devalok',
-    orgLogo: 'https://ui-avatars.com/api/?name=D&background=d33163&color=fff&size=64&bold=true',
+    orgLogo:
+      'https://ui-avatars.com/api/?name=D&background=d33163&color=fff&size=64&bold=true',
     userName: 'Mudit Kapoor',
-    userAvatar: 'https://ui-avatars.com/api/?name=MK&background=6366f1&color=fff&size=64',
+    userAvatar:
+      'https://ui-avatars.com/api/?name=MK&background=6366f1&color=fff&size=64',
   },
 }
 
@@ -36,7 +38,8 @@ export const WithUserAvatar: Story = {
   args: {
     orgName: 'Acme Corp',
     userName: 'Rahul Verma',
-    userAvatar: 'https://ui-avatars.com/api/?name=RV&background=059669&color=fff&size=64',
+    userAvatar:
+      'https://ui-avatars.com/api/?name=RV&background=059669&color=fff&size=64',
   },
 }
 
@@ -65,13 +68,22 @@ export const WithChildren: Story = {
   render: (args) => (
     <ClientPortalHeader {...args}>
       <nav className="flex items-center gap-4 text-sm">
-        <a href="#" className="font-medium text-[var(--color-text-primary)] hover:underline">
+        <a
+          href="#"
+          className="font-medium text-[var(--color-text-primary)] hover:underline"
+        >
           Dashboard
         </a>
-        <a href="#" className="text-[var(--color-text-secondary)] hover:underline">
+        <a
+          href="#"
+          className="text-[var(--color-text-secondary)] hover:underline"
+        >
           Projects
         </a>
-        <a href="#" className="text-[var(--color-text-secondary)] hover:underline">
+        <a
+          href="#"
+          className="text-[var(--color-text-secondary)] hover:underline"
+        >
           Support
         </a>
       </nav>

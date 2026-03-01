@@ -130,9 +130,9 @@ export function BreakAdmin({
   onFetchMonthBreaks,
   realtimeCallbacks,
 }: BreakAdminProps) {
-  const [activeTab, setActiveTab] = useState<
-    'breaks' | 'requests' | 'balance'
-  >('breaks')
+  const [activeTab, setActiveTab] = useState<'breaks' | 'requests' | 'balance'>(
+    'breaks',
+  )
   const [isProcessing, setIsProcessing] = useState(false)
   const [acceptedCommentBox, setAcceptedCommentBox] = useState<string | null>(
     null,
@@ -195,12 +195,7 @@ export function BreakAdmin({
         }
 
         if (onApproveRequest) {
-          onApproveRequest(
-            requestId,
-            comment,
-            request.correction,
-            request,
-          )
+          onApproveRequest(requestId, comment, request.correction, request)
         }
 
         toast({
@@ -258,12 +253,7 @@ export function BreakAdmin({
         }
 
         if (onRejectRequest) {
-          onRejectRequest(
-            requestId,
-            comment,
-            request.correction,
-            request,
-          )
+          onRejectRequest(requestId, comment, request.correction, request)
         }
 
         toast({
@@ -285,9 +275,7 @@ export function BreakAdmin({
         toast({
           title: 'Error',
           description:
-            error instanceof Error
-              ? error.message
-              : 'Failed to reject request',
+            error instanceof Error ? error.message : 'Failed to reject request',
           variant: 'destructive',
         })
       } finally {

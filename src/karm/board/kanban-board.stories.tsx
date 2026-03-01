@@ -6,7 +6,9 @@ import type { BoardTask } from './task-card'
 // Mock Data Factory
 // ============================================================
 
-function createTask(overrides: Partial<BoardTask> & { id: string; title: string }): BoardTask {
+function createTask(
+  overrides: Partial<BoardTask> & { id: string; title: string },
+): BoardTask {
   return {
     priority: 'MEDIUM',
     labels: [],
@@ -143,7 +145,12 @@ const fullBoardData: BoardData = {
 const emptyBoardData: BoardData = {
   columns: [
     { id: 'col-todo', name: 'To Do', isClientVisible: false, tasks: [] },
-    { id: 'col-in-progress', name: 'In Progress', isClientVisible: true, tasks: [] },
+    {
+      id: 'col-in-progress',
+      name: 'In Progress',
+      isClientVisible: true,
+      tasks: [],
+    },
     { id: 'col-done', name: 'Done', isClientVisible: true, tasks: [] },
   ],
 }
@@ -155,8 +162,18 @@ const singleColumnData: BoardData = {
       name: 'Inbox',
       isClientVisible: false,
       tasks: [
-        createTask({ id: 'task-11', title: 'Triage new customer bug reports', priority: 'HIGH', labels: ['triage'] }),
-        createTask({ id: 'task-12', title: 'Review pull request #342', priority: 'MEDIUM', labels: ['review'] }),
+        createTask({
+          id: 'task-11',
+          title: 'Triage new customer bug reports',
+          priority: 'HIGH',
+          labels: ['triage'],
+        }),
+        createTask({
+          id: 'task-12',
+          title: 'Review pull request #342',
+          priority: 'MEDIUM',
+          labels: ['review'],
+        }),
       ],
     },
   ],
@@ -173,8 +190,20 @@ const heavyBoardData: BoardData = {
           id: `heavy-${i}`,
           title: `Backlog task ${i + 1}: ${['Refactor auth module', 'Add dark mode support', 'Create email templates', 'Update dependencies', 'Optimize images', 'Add analytics tracking', 'Write E2E tests', 'Review security audit'][i]}`,
           priority: (['LOW', 'MEDIUM', 'HIGH', 'URGENT'] as const)[i % 4],
-          labels: [['backend'], ['frontend', 'design'], ['email'], ['maintenance'], ['performance'], ['analytics'], ['testing'], ['security']][i],
-          assignees: i % 2 === 0 ? [teamMembers.arjun] : [teamMembers.priya, teamMembers.kavita],
+          labels: [
+            ['backend'],
+            ['frontend', 'design'],
+            ['email'],
+            ['maintenance'],
+            ['performance'],
+            ['analytics'],
+            ['testing'],
+            ['security'],
+          ][i],
+          assignees:
+            i % 2 === 0
+              ? [teamMembers.arjun]
+              : [teamMembers.priya, teamMembers.kavita],
         }),
       ),
     },

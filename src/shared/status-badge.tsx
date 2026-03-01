@@ -35,8 +35,8 @@ const dotColorMap: Record<string, string> = {
   rejected: 'bg-[var(--red-500)]',
   completed: 'bg-[var(--green-600)]',
   blocked: 'bg-[var(--red-600)]',
-  cancelled: 'bg-[var(--neutals-400)]',
-  draft: 'bg-[var(--neutals-500)]',
+  cancelled: 'bg-[var(--neutral-400)]',
+  draft: 'bg-[var(--neutral-500)]',
 }
 
 interface StatusBadgeProps

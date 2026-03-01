@@ -63,10 +63,26 @@ const MOCK_MESSAGES: ChatMessage[] = [
 ]
 
 const MOCK_CONVERSATIONS: Conversation[] = [
-  { id: 'conv-1', title: 'Sprint planning help for Q2', updatedAt: minutesAgo(5) },
-  { id: 'conv-2', title: 'Break request policy questions', updatedAt: hoursAgo(2) },
-  { id: 'conv-3', title: 'Client portal redesign brainstorm', updatedAt: hoursAgo(8) },
-  { id: 'conv-4', title: 'How to set up Google Calendar sync', updatedAt: daysAgo(1) },
+  {
+    id: 'conv-1',
+    title: 'Sprint planning help for Q2',
+    updatedAt: minutesAgo(5),
+  },
+  {
+    id: 'conv-2',
+    title: 'Break request policy questions',
+    updatedAt: hoursAgo(2),
+  },
+  {
+    id: 'conv-3',
+    title: 'Client portal redesign brainstorm',
+    updatedAt: hoursAgo(8),
+  },
+  {
+    id: 'conv-4',
+    title: 'How to set up Google Calendar sync',
+    updatedAt: daysAgo(1),
+  },
   { id: 'conv-5', title: 'API documentation review', updatedAt: daysAgo(3) },
 ]
 
@@ -101,7 +117,8 @@ export const StreamingResponse: Story = {
     ...BASE_ARGS,
     messages: [MOCK_MESSAGES[0]],
     isStreaming: true,
-    streamingText: 'Let me look up your assigned tasks for this sprint. I can see you have **4 tasks**...',
+    streamingText:
+      'Let me look up your assigned tasks for this sprint. I can see you have **4 tasks**...',
   },
 }
 
@@ -129,12 +146,16 @@ export const WithPrahariAgent: Story = {
     ...BASE_ARGS,
     selectedAgentId: 'prahari',
     messages: [
-      { id: 'p1', role: 'USER' as const, content: 'Who missed attendance today?' },
+      {
+        id: 'p1',
+        role: 'USER' as const,
+        content: 'Who missed attendance today?',
+      },
       {
         id: 'p2',
         role: 'ASSISTANT' as const,
         content:
-          '**3 lokwasi** have not marked attendance today:\n\n1. Priya Sharma\n2. Rahul Verma\n3. Anika Patel\n\nI\'ve already sent the first reminder. The second reminder will go out at 1:00 PM if they haven\'t marked by then.',
+          "**3 lokwasi** have not marked attendance today:\n\n1. Priya Sharma\n2. Rahul Verma\n3. Anika Patel\n\nI've already sent the first reminder. The second reminder will go out at 1:00 PM if they haven't marked by then.",
       },
     ],
   },

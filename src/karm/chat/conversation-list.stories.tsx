@@ -10,7 +10,14 @@ const meta: Meta<typeof ConversationList> = {
   },
   decorators: [
     (Story) => (
-      <div style={{ maxWidth: 480, height: 500, display: 'flex', flexDirection: 'column' }}>
+      <div
+        style={{
+          maxWidth: 480,
+          height: 500,
+          display: 'flex',
+          flexDirection: 'column',
+        }}
+      >
         <Story />
       </div>
     ),
@@ -42,13 +49,33 @@ function daysAgo(days: number): string {
 }
 
 const CONVERSATIONS: Conversation[] = [
-  { id: 'conv-1', title: 'Sprint planning help for Q2', updatedAt: minutesAgo(2) },
-  { id: 'conv-2', title: 'Break request policy questions', updatedAt: minutesAgo(45) },
-  { id: 'conv-3', title: 'Client portal redesign brainstorm', updatedAt: hoursAgo(3) },
-  { id: 'conv-4', title: 'How to set up Google Calendar sync', updatedAt: hoursAgo(18) },
+  {
+    id: 'conv-1',
+    title: 'Sprint planning help for Q2',
+    updatedAt: minutesAgo(2),
+  },
+  {
+    id: 'conv-2',
+    title: 'Break request policy questions',
+    updatedAt: minutesAgo(45),
+  },
+  {
+    id: 'conv-3',
+    title: 'Client portal redesign brainstorm',
+    updatedAt: hoursAgo(3),
+  },
+  {
+    id: 'conv-4',
+    title: 'How to set up Google Calendar sync',
+    updatedAt: hoursAgo(18),
+  },
   { id: 'conv-5', title: 'API documentation review', updatedAt: daysAgo(2) },
   { id: 'conv-6', title: null, updatedAt: daysAgo(5) },
-  { id: 'conv-7', title: 'Attendance correction request', updatedAt: daysAgo(10) },
+  {
+    id: 'conv-7',
+    title: 'Attendance correction request',
+    updatedAt: daysAgo(10),
+  },
 ]
 
 // ── Stories ─────────────────────────────────────────────────
@@ -102,11 +129,31 @@ export const ManyConversations: Story = {
   args: {
     conversations: [
       ...CONVERSATIONS,
-      { id: 'conv-8', title: 'Deployment checklist for v2.3', updatedAt: daysAgo(12) },
-      { id: 'conv-9', title: 'Team bandwidth allocation', updatedAt: daysAgo(14) },
-      { id: 'conv-10', title: 'Database migration questions', updatedAt: daysAgo(16) },
-      { id: 'conv-11', title: 'Onboarding new team member', updatedAt: daysAgo(20) },
-      { id: 'conv-12', title: 'Performance review prep', updatedAt: daysAgo(25) },
+      {
+        id: 'conv-8',
+        title: 'Deployment checklist for v2.3',
+        updatedAt: daysAgo(12),
+      },
+      {
+        id: 'conv-9',
+        title: 'Team bandwidth allocation',
+        updatedAt: daysAgo(14),
+      },
+      {
+        id: 'conv-10',
+        title: 'Database migration questions',
+        updatedAt: daysAgo(16),
+      },
+      {
+        id: 'conv-11',
+        title: 'Onboarding new team member',
+        updatedAt: daysAgo(20),
+      },
+      {
+        id: 'conv-12',
+        title: 'Performance review prep',
+        updatedAt: daysAgo(25),
+      },
     ],
   },
 }

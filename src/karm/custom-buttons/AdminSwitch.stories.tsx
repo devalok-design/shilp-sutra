@@ -65,19 +65,35 @@ export const AllStates: Story = {
     <div style={{ display: 'flex', flexDirection: 'column', gap: '20px' }}>
       <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
         <AdminSwitch checked={false} onCheckedChange={() => {}} />
-        <span style={{ fontSize: '14px', color: 'var(--text-secondary, #666)' }}>Off</span>
+        <span
+          style={{ fontSize: '14px', color: 'var(--text-secondary, #666)' }}
+        >
+          Off
+        </span>
       </div>
       <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
         <AdminSwitch checked={true} onCheckedChange={() => {}} />
-        <span style={{ fontSize: '14px', color: 'var(--text-secondary, #666)' }}>On</span>
+        <span
+          style={{ fontSize: '14px', color: 'var(--text-secondary, #666)' }}
+        >
+          On
+        </span>
       </div>
       <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
         <AdminSwitch checked={false} onCheckedChange={() => {}} disabled />
-        <span style={{ fontSize: '14px', color: 'var(--text-secondary, #666)' }}>Disabled Off</span>
+        <span
+          style={{ fontSize: '14px', color: 'var(--text-secondary, #666)' }}
+        >
+          Disabled Off
+        </span>
       </div>
       <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
         <AdminSwitch checked={true} onCheckedChange={() => {}} disabled />
-        <span style={{ fontSize: '14px', color: 'var(--text-secondary, #666)' }}>Disabled On</span>
+        <span
+          style={{ fontSize: '14px', color: 'var(--text-secondary, #666)' }}
+        >
+          Disabled On
+        </span>
       </div>
     </div>
   ),
@@ -118,8 +134,22 @@ const WithLabelTemplate = () => {
       }}
     >
       <div>
-        <div style={{ fontSize: '14px', fontWeight: 600, color: 'var(--text-primary, #333)' }}>Admin Mode</div>
-        <div style={{ fontSize: '12px', color: 'var(--text-secondary, #666)', marginTop: '2px' }}>
+        <div
+          style={{
+            fontSize: '14px',
+            fontWeight: 600,
+            color: 'var(--text-primary, #333)',
+          }}
+        >
+          Admin Mode
+        </div>
+        <div
+          style={{
+            fontSize: '12px',
+            color: 'var(--text-secondary, #666)',
+            marginTop: '2px',
+          }}
+        >
           {isAdmin ? 'Full access enabled' : 'Standard access'}
         </div>
       </div>

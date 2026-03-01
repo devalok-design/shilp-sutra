@@ -10,7 +10,14 @@ const meta: Meta<typeof MessageList> = {
   },
   decorators: [
     (Story) => (
-      <div style={{ maxWidth: 480, height: 500, display: 'flex', flexDirection: 'column' }}>
+      <div
+        style={{
+          maxWidth: 480,
+          height: 500,
+          display: 'flex',
+          flexDirection: 'column',
+        }}
+      >
         <Story />
       </div>
     ),
@@ -31,7 +38,7 @@ const SAMPLE_MESSAGES: ChatMessage[] = [
     id: '2',
     role: 'ASSISTANT',
     content:
-      "You have **3 tasks** assigned this sprint:\n\n1. **Fix login redirect bug** — *In Progress*\n2. **Design review for client portal** — *To Do*\n3. **Write API documentation** — *To Do*\n\nWould you like me to update the status of any of these?",
+      'You have **3 tasks** assigned this sprint:\n\n1. **Fix login redirect bug** — *In Progress*\n2. **Design review for client portal** — *To Do*\n3. **Write API documentation** — *To Do*\n\nWould you like me to update the status of any of these?',
   },
   {
     id: '3',
@@ -42,7 +49,7 @@ const SAMPLE_MESSAGES: ChatMessage[] = [
     id: '4',
     role: 'ASSISTANT',
     content:
-      'Done! I\'ve moved **Design review for client portal** to *In Progress*. You now have 2 tasks in progress and 1 remaining in To Do.',
+      "Done! I've moved **Design review for client portal** to *In Progress*. You now have 2 tasks in progress and 1 remaining in To Do.",
   },
 ]
 
@@ -69,7 +76,8 @@ const MESSAGES_WITH_SYSTEM: ChatMessage[] = [
   {
     id: '2',
     role: 'SYSTEM',
-    content: 'This action is not permitted. Contact an administrator for destructive operations.',
+    content:
+      'This action is not permitted. Contact an administrator for destructive operations.',
   },
   {
     id: '3',
@@ -80,14 +88,18 @@ const MESSAGES_WITH_SYSTEM: ChatMessage[] = [
 ]
 
 const LONG_CONVERSATION: ChatMessage[] = [
-  { id: '1', role: 'USER', content: 'Good morning! How is the team doing today?' },
+  {
+    id: '1',
+    role: 'USER',
+    content: 'Good morning! How is the team doing today?',
+  },
   {
     id: '2',
     role: 'ASSISTANT',
     content:
       "Good morning! Here's a quick overview:\n\n- **12 of 15** team members have marked attendance\n- **3 tasks** were completed yesterday\n- **2 break requests** are pending approval",
   },
-  { id: '3', role: 'USER', content: 'Who hasn\'t marked attendance yet?' },
+  { id: '3', role: 'USER', content: "Who hasn't marked attendance yet?" },
   {
     id: '4',
     role: 'ASSISTANT',
@@ -129,7 +141,8 @@ export const EmptyCustomText: Story = {
   args: {
     messages: [],
     emptyTitle: 'Sutradhar',
-    emptyDescription: 'I can help you manage tasks, track progress, and organize your projects.',
+    emptyDescription:
+      'I can help you manage tasks, track progress, and organize your projects.',
   },
 }
 
@@ -159,7 +172,8 @@ export const StreamingWithText: Story = {
   args: {
     messages: [SAMPLE_MESSAGES[0]],
     isStreaming: true,
-    streamingText: 'Let me check your tasks for this sprint. I can see you have **3 tasks** assigned...',
+    streamingText:
+      'Let me check your tasks for this sprint. I can see you have **3 tasks** assigned...',
   },
 }
 

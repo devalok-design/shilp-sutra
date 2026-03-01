@@ -151,7 +151,12 @@ export function KanbanBoard({
   // Local state helpers
   // --------------------------------------------------------
   const moveTaskInState = useCallback(
-    (taskId: string, fromColumnId: string, toColumnId: string, toIndex: number) => {
+    (
+      taskId: string,
+      fromColumnId: string,
+      toColumnId: string,
+      toIndex: number,
+    ) => {
       setBoard((prev) => {
         const newColumns = prev.columns.map((col) => ({
           ...col,
@@ -177,15 +182,12 @@ export function KanbanBoard({
   // --------------------------------------------------------
   // Drag handlers
   // --------------------------------------------------------
-  const handleDragStart = useCallback(
-    (event: DragStartEvent) => {
-      const data = event.active.data.current
-      if (data?.type === 'task') {
-        setActiveTask(data.task as BoardTask)
-      }
-    },
-    [],
-  )
+  const handleDragStart = useCallback((event: DragStartEvent) => {
+    const data = event.active.data.current
+    if (data?.type === 'task') {
+      setActiveTask(data.task as BoardTask)
+    }
+  }, [])
 
   const handleDragOver = useCallback(
     (event: DragOverEvent) => {
@@ -348,9 +350,7 @@ export function KanbanBoard({
       {mounted &&
         createPortal(
           <DragOverlay dropAnimation={null}>
-            {activeTask ? (
-              <TaskCardOverlay task={activeTask} />
-            ) : null}
+            {activeTask ? <TaskCardOverlay task={activeTask} /> : null}
           </DragOverlay>,
           document.body,
         )}

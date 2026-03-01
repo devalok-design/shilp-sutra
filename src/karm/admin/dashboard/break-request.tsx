@@ -18,7 +18,12 @@ import { CloseIcon } from '../icons'
 import { formatDate, getDaySuffix } from '../utils/date-utils'
 import { removeAllEmojis } from '../utils/emoji-utils'
 import { renderStatus } from '../utils/render-status'
-import { format, startOfDay, isAfter, isSameDay as fnsIsSameDay } from 'date-fns'
+import {
+  format,
+  startOfDay,
+  isAfter,
+  isSameDay as fnsIsSameDay,
+} from 'date-fns'
 import type { BreakRequest as BreakRequestType } from '../types'
 
 // ============================================================
@@ -171,9 +176,7 @@ export function BreakRequestCard({
               <div className="T7-Reg semibold text-[var(--Mapped-Text-Primary)]">
                 {formatDate(new Date(breakRequest.startDate))}{' '}
                 {breakRequest.numberOfDays > 1 && (
-                  <>
-                    - {formatDate(new Date(breakRequest.endDate))}{' '}
-                  </>
+                  <>- {formatDate(new Date(breakRequest.endDate))} </>
                 )}
                 <span className="T7-Reg text-[var(--Mapped-Text-Secondary)] opacity-60">
                   {`(${breakRequest.numberOfDays} day${
@@ -213,9 +216,7 @@ export function BreakRequestCard({
               {isBreakCancellable() && onCancelBreak && (
                 <button
                   className="P4 cursor-pointer border-none bg-transparent text-[var(--Mapped-Text-Highlight2)] underline md:hidden"
-                  onClick={() =>
-                    setShowMobileCancelForm(!showMobileCancelForm)
-                  }
+                  onClick={() => setShowMobileCancelForm(!showMobileCancelForm)}
                 >
                   Want to cancel this break?
                 </button>
@@ -282,23 +283,19 @@ export function BreakRequestCard({
                       <input
                         type="checkbox"
                         checked={deleteSingleDay}
-                        onChange={(e) =>
-                          setDeleteSingleDay(e.target.checked)
-                        }
+                        onChange={(e) => setDeleteSingleDay(e.target.checked)}
                         className="roundec-full"
                       />
                       <span className="text-[var(--Mapped-Text-Secondary)]">
-                        {getDaySuffix(new Date(selectedDate).getDate())}{' '}
-                        break only
+                        {getDaySuffix(new Date(selectedDate).getDate())} break
+                        only
                       </span>
                     </label>
                     <label className="breakRequest-checkbox mt-2 flex items-center space-x-2">
                       <input
                         type="checkbox"
                         checked={!deleteSingleDay}
-                        onChange={(e) =>
-                          setDeleteSingleDay(!e.target.checked)
-                        }
+                        onChange={(e) => setDeleteSingleDay(!e.target.checked)}
                         className="rounded-full"
                       />
                       <span className="text-[var(--Mapped-Text-Secondary)]">
@@ -306,9 +303,7 @@ export function BreakRequestCard({
                           new Date(breakRequest.startDate).getDate(),
                         )}{' '}
                         to{' '}
-                        {getDaySuffix(
-                          new Date(breakRequest.endDate).getDate(),
-                        )}{' '}
+                        {getDaySuffix(new Date(breakRequest.endDate).getDate())}{' '}
                         breaks
                       </span>
                     </label>

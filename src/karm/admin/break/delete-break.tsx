@@ -54,10 +54,7 @@ export function DeleteBreak({ id, userId, onDelete }: DeleteBreakProps) {
   return (
     <Dialog open={open} onOpenChange={setOpen}>
       <DialogTrigger asChild>
-        <IconButton
-          icon={<BreakDeleteIcon />}
-          size="medium"
-        />
+        <IconButton icon={<BreakDeleteIcon />} size="medium" />
       </DialogTrigger>
       <DialogContent className="flex w-[335px] flex-col items-center gap-6 p-6 max-md:w-[90%] max-md:rounded-[8px]">
         <div className="flex w-full max-w-[240px] flex-col items-center gap-3 text-center">

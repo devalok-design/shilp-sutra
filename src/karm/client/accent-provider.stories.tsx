@@ -18,8 +18,8 @@ const AccentVisualizerDecorator = (Story: React.ComponentType) => (
     <Story />
     <div className="flex flex-col gap-4 p-6 rounded-xl border border-[var(--color-border-subtle)]">
       <h3 className="text-sm font-semibold text-[var(--color-text-primary)]">
-        AccentProvider injects CSS custom properties onto the document root.
-        The swatches below read from the injected variables:
+        AccentProvider injects CSS custom properties onto the document root. The
+        swatches below read from the injected variables:
       </h3>
       <div className="flex gap-3">
         <div className="flex flex-col items-center gap-1">
@@ -27,21 +27,27 @@ const AccentVisualizerDecorator = (Story: React.ComponentType) => (
             className="h-12 w-12 rounded-lg border"
             style={{ backgroundColor: 'var(--color-accent, #ccc)' }}
           />
-          <span className="text-xs text-[var(--color-text-secondary)]">--color-accent</span>
+          <span className="text-xs text-[var(--color-text-secondary)]">
+            --color-accent
+          </span>
         </div>
         <div className="flex flex-col items-center gap-1">
           <div
             className="h-12 w-12 rounded-lg border"
             style={{ backgroundColor: 'var(--color-accent-light, #eee)' }}
           />
-          <span className="text-xs text-[var(--color-text-secondary)]">--color-accent-light</span>
+          <span className="text-xs text-[var(--color-text-secondary)]">
+            --color-accent-light
+          </span>
         </div>
         <div className="flex flex-col items-center gap-1">
           <div
             className="h-12 w-12 rounded-lg border"
             style={{ backgroundColor: 'var(--color-accent-dark, #999)' }}
           />
-          <span className="text-xs text-[var(--color-text-secondary)]">--color-accent-dark</span>
+          <span className="text-xs text-[var(--color-text-secondary)]">
+            --color-accent-dark
+          </span>
         </div>
       </div>
       <div className="mt-2 flex items-center gap-3">

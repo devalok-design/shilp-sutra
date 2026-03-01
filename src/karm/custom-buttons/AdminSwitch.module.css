@@ -9,12 +9,12 @@
 }
 
 /* Checked state */
-.adminSwitch[data-state="checked"] {
+.adminSwitch[data-state='checked'] {
   background-color: var(--Mapped-Surface-Button-Secondary);
 }
 
 /* Thumb styles */
-.adminSwitch[data-state="checked"] > span {
+.adminSwitch[data-state='checked'] > span {
   transform: translateX(30px);
   background-color: var(--Mapped-Surface-Primary);
   background-image: url('https://karm-crm.s3.ap-south-1.amazonaws.com/assets/AdminSwitch/admin-switch-on.svg');
@@ -24,7 +24,7 @@
   transition: all 0.2s ease;
 }
 
-.adminSwitch[data-state="unchecked"] > span {
+.adminSwitch[data-state='unchecked'] > span {
   transform: translateX(2px);
   background-color: var(--Mapped-Surface-Primary);
   background-image: url('https://karm-crm.s3.ap-south-1.amazonaws.com/assets/AdminSwitch/admin-switch-off.svg');
@@ -39,7 +39,7 @@
   background-color: var(--Surface-Dark, #f7e9e9);
 }
 
-.adminSwitch[data-state="checked"]:hover:not(.disabled) {
+.adminSwitch[data-state='checked']:hover:not(.disabled) {
   background-color: var(--Mapped-Surface-Button-Secondary);
 }
 

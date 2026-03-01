@@ -76,7 +76,7 @@ export function DataTable<TData, TValue>({
             <TableRow>
               <TableCell
                 colSpan={columns.length}
-                className="h-24 text-center text-[var(--Mapped-Text-Tertiary)]"
+                className="h-24 text-center text-[var(--color-text-tertiary)]"
               >
                 {noResultsText || 'No results.'}
               </TableCell>

@@ -106,8 +106,7 @@ export function LeaveRequest({
                     </div>
                   </div>
                   <p className="B1-Reg text-[var(--Mapped-Text-Tertiary)]">
-                    •{' '}
-                    {formatDateWithWeekday(startDate)}
+                    • {formatDateWithWeekday(startDate)}
                   </p>
                 </div>
               ) : (
@@ -119,10 +118,8 @@ export function LeaveRequest({
                     {request.reason}
                   </div>
                   <p className="B1-Reg text-[var(--Mapped-Text-Tertiary)]">
-                    {formatDateWithWeekday(startDate)}{' '}
-                    to{' '}
-                    {formatDateWithWeekday(endDate)}
-                    ,
+                    {formatDateWithWeekday(startDate)} to{' '}
+                    {formatDateWithWeekday(endDate)},
                     <span className="text-[var(--Mapped-Text-Highlight2)]">
                       {' '}
                       {request.numberOfDays} days

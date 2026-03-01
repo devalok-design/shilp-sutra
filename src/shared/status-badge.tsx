@@ -29,14 +29,14 @@ const statusBadgeVariants = cva(
 )
 
 const dotColorMap: Record<string, string> = {
-  active: 'bg-[var(--green-500)]',
-  pending: 'bg-[var(--yellow-500)]',
-  approved: 'bg-[var(--green-500)]',
-  rejected: 'bg-[var(--red-500)]',
-  completed: 'bg-[var(--green-600)]',
-  blocked: 'bg-[var(--red-600)]',
-  cancelled: 'bg-[var(--neutral-400)]',
-  draft: 'bg-[var(--neutral-500)]',
+  active: 'bg-[var(--color-success)]',
+  pending: 'bg-[var(--color-warning)]',
+  approved: 'bg-[var(--color-success)]',
+  rejected: 'bg-[var(--color-error)]',
+  completed: 'bg-[var(--color-success)]',
+  blocked: 'bg-[var(--color-error)]',
+  cancelled: 'bg-[var(--color-icon-disabled)]',
+  draft: 'bg-[var(--color-icon-secondary)]',
 }
 
 interface StatusBadgeProps

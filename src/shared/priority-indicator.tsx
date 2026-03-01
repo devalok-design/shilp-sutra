@@ -17,26 +17,26 @@ const priorityConfig: Record<
 > = {
   LOW: {
     icon: IconArrowDown,
-    color: 'text-[var(--blue-300)]',
-    bgColor: 'bg-[var(--blue-100)]',
+    color: 'text-[var(--color-info-text)]',
+    bgColor: 'bg-[var(--color-info-surface)]',
     label: 'Low',
   },
   MEDIUM: {
     icon: IconMinus,
-    color: 'text-[var(--yellow-500)]',
-    bgColor: 'bg-[var(--yellow-100)]',
+    color: 'text-[var(--color-warning-text)]',
+    bgColor: 'bg-[var(--color-warning-surface)]',
     label: 'Medium',
   },
   HIGH: {
     icon: IconArrowUp,
-    color: 'text-[var(--red-300)]',
-    bgColor: 'bg-[var(--red-100)]',
+    color: 'text-[var(--color-error-text)]',
+    bgColor: 'bg-[var(--color-error-surface)]',
     label: 'High',
   },
   URGENT: {
     icon: IconAlertTriangle,
-    color: 'text-[var(--red-600)]',
-    bgColor: 'bg-[var(--red-100)]',
+    color: 'text-[var(--color-error-text)]',
+    bgColor: 'bg-[var(--color-error-surface)]',
     label: 'Urgent',
   },
 }

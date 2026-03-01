@@ -5,7 +5,7 @@
 // Extracted from admin-dashboard.tsx
 // ============================================================
 
-import { useEffect, useState, type CSSProperties } from 'react'
+import { useEffect, useState } from 'react'
 import { cn } from '../../../ui/lib/utils'
 import {
   isSameDay,
@@ -142,231 +142,112 @@ export function RenderDate({
     }))
   }, [day, dateAttendanceMap, selectedDate, isAdmin])
 
-  const getBGStyles = (): CSSProperties => {
-    const baseStyle: CSSProperties = {
-      display: 'flex',
-      width: '100%',
-      justifyContent: 'center',
-      alignItems: 'center',
-      padding: '4px',
-      marginLeft: '0px',
-      marginRight: '0px',
-    }
+  // Determine if this is a non-weekly break with specific position
+  const isNonWeeklyBreak = state.isBreak && activeTimeFrame !== 'weekly'
+  const isBreakStartOnly = isNonWeeklyBreak && state.breakStart && !state.breakEnd
+  const isBreakEndOnly = isNonWeeklyBreak && state.breakEnd && !state.breakStart
+  const isBreakMidNonWeekly = isNonWeeklyBreak && state.breakMid
 
-    let backgroundColor = 'transparent'
-    let borderTopLeftRadius = '0px'
-    let borderBottomLeftRadius = '0px'
-    let borderTopRightRadius = '0px'
-    let borderBottomRightRadius = '0px'
+  // ── Outer wrapper classes (replaces getBGStyles) ──
+  const bgClasses = cn(
+    'flex w-full items-center justify-center p-1',
+    isBreakStartOnly && 'rounded-l-[20px]',
+    isBreakEndOnly && 'rounded-r-[20px]',
+    isBreakMidNonWeekly && 'bg-[var(--color-interactive-subtle)]',
+  )
 
-    if (state.isBreak && activeTimeFrame !== 'weekly') {
-      if (state.breakStart && !state.breakEnd) {
-        borderTopLeftRadius = '20px'
-        borderBottomLeftRadius = '20px'
-        baseStyle.justifyContent = 'center'
-      }
+  // ── Inner date circle classes (replaces getStyles) ──
+  // Order matters: base → base-state → hover → focus → pressed → selected → disabledState
+  // tailwind-merge ensures the last conflicting class wins.
+  const dateClasses = cn(
+    // Base layout & transitions
+    'flex h-10 w-10 items-center justify-center rounded-full text-base font-normal relative overflow-hidden',
+    'transition-[background-color,color,border] duration-200',
+    'outline-[var(--color-border-strong)] outline-solid outline-0',
 
-      if (state.breakEnd && !state.breakStart) {
-        borderTopRightRadius = '20px'
-        borderBottomRightRadius = '20px'
-        baseStyle.justifyContent = 'center'
-      }
+    // Cursor
+    state.disabled ? 'cursor-default' : 'cursor-pointer',
 
-      if (state.breakMid) {
-        backgroundColor = '#F8F6FC'
-      }
-    }
+    // ── Base states (mutually exclusive in original if/else) ──
 
-    return {
-      ...baseStyle,
-      backgroundColor,
-      borderTopLeftRadius,
-      borderBottomLeftRadius,
-      borderTopRightRadius,
-      borderBottomRightRadius,
-    }
-  }
+    // Disabled
+    state.disabled && 'bg-transparent text-[var(--color-text-disabled)]',
 
-  const getStyles = (): CSSProperties => {
-    const baseStyle: CSSProperties = {
-      display: 'flex',
-      justifyContent: 'center',
-      alignItems: 'center',
-      width: '40px',
-      height: '40px',
-      borderRadius: '50%',
-      fontSize: '16px',
-      fontWeight: '400',
-      cursor: state.disabled ? 'default' : 'pointer',
-      position: 'relative',
-      transition: 'background-color 0.2s, color 0.2s, border 0.2s',
-      outlineColor: '#DD9EB8',
-      outlineStyle: 'solid',
-      outlineWidth: '0px',
-      overflow: 'hidden',
-    }
+    // Today (not break, not disabled)
+    !state.disabled && state.today && !state.isBreak &&
+      'bg-[var(--color-interactive)] text-[var(--color-text-on-color)] shadow-[inset_0_4px_4px_rgba(255,255,255,0.25),inset_0_0_8px_var(--color-interactive-hover)]',
 
-    let backgroundColor = 'transparent'
-    let color = '#000000'
-    let border = 'none'
-    let boxShadow = 'none'
-    let fontWeight = '400'
+    // Break (not disabled, not today-only)
+    !state.disabled && state.isBreak && !isBreakMidNonWeekly &&
+      'bg-[var(--color-interactive-selected)] text-[var(--color-text-secondary)] shadow-[inset_0_4px_4px_rgba(255,255,255,0.25),inset_0_0_4px_var(--color-focus)]',
 
-    if (state.disabled) {
-      return {
-        ...baseStyle,
-        backgroundColor: 'transparent',
-        color: '#B7AFB2',
-        cursor: 'default',
-      }
-    }
+    // Break mid in non-weekly view overrides break base
+    !state.disabled && state.isBreak && isBreakMidNonWeekly &&
+      'rounded-none bg-[var(--color-interactive-subtle)] text-[var(--color-text-secondary)] shadow-none',
 
-    if (state.today && !state.isBreak) {
-      backgroundColor = 'var(--color-interactive)'
-      color = '#FFFFFF'
-      boxShadow =
-        '0px 4px 4px 0px rgba(255, 255, 255, 0.25) inset, 0px 0px 8px 0px var(--color-interactive-hover, #B6204A) inset'
-    } else if (state.isBreak) {
-      backgroundColor = '#E6E1F3'
-      color = '#403A3C'
-      boxShadow =
-        '0px 4px 4px 0px rgba(255, 255, 255, 0.25) inset, 0px 0px 4px 0px var(--color-focus) inset'
+    // Break border-radius overrides for non-weekly
+    !state.disabled && state.isBreak && isBreakStartOnly &&
+      'rounded-l-[20px] rounded-r-none',
+    !state.disabled && state.isBreak && isBreakEndOnly &&
+      'rounded-l-none rounded-r-[20px]',
 
-      if (state.breakStart && !state.breakEnd && activeTimeFrame !== 'weekly') {
-        baseStyle.borderTopLeftRadius = '20px'
-        baseStyle.borderBottomLeftRadius = '20px'
-      }
+    // Absent (not disabled, not today, not break)
+    !state.disabled && !state.today && !state.isBreak && state.isAbsent &&
+      'bg-transparent text-[var(--color-error)]',
 
-      if (state.breakEnd && !state.breakStart && activeTimeFrame !== 'weekly') {
-        baseStyle.borderTopRightRadius = '20px'
-        baseStyle.borderBottomRightRadius = '20px'
-      }
+    // Present (not disabled, not today, not break, not absent)
+    !state.disabled && !state.today && !state.isBreak && !state.isAbsent && state.isPresent &&
+      'bg-transparent text-[var(--color-text-primary)]',
 
-      if (state.breakMid && activeTimeFrame !== 'weekly') {
-        baseStyle.borderRadius = '0px'
-        backgroundColor = '#F8F6FC'
-        color = '#403A3C'
-        boxShadow = 'unset'
-      }
-    } else if (state.isAbsent) {
-      backgroundColor = 'transparent'
-      color = '#D2222D'
-    } else if (state.isPresent) {
-      backgroundColor = 'transparent'
-      color = '#3F181E'
-    } else if (state.isDefault) {
-      backgroundColor = 'transparent'
-      color = '#6B6164'
-    }
+    // Default (not disabled, not today, not break, not absent, not present)
+    !state.disabled && state.isDefault &&
+      'bg-transparent text-[var(--color-text-secondary)]',
 
-    if (state.hover) {
-      if (state.today && !state.isBreak) {
-        backgroundColor = '#B02651'
-        color = '#FFFFFF'
-        boxShadow =
-          '0px 4px 4px 0px rgba(255, 255, 255, 0.25) inset, 0px 0px 8px 0px var(--color-interactive-hover, #B6204A) inset'
-      } else if (state.isPresent) {
-        backgroundColor = '#E6E4E5'
-        color = '#3F181E'
-      } else if (state.isDefault) {
-        backgroundColor = '#E6E4E5'
-        color = '#6B6164'
-      } else if (state.isBreak) {
-        backgroundColor = '#E6E1F3'
-        color = '#403A3C'
-        boxShadow =
-          '0px 4px 4px 0px rgba(255, 255, 255, 0.25) inset, 0px 0px 4px 0px var(--color-focus) inset'
+    // ── Hover overrides ──
 
-        if (
-          state.breakStart &&
-          !state.breakEnd &&
-          activeTimeFrame !== 'weekly'
-        ) {
-          baseStyle.borderTopLeftRadius = '20px'
-          baseStyle.borderBottomLeftRadius = '20px'
-        }
+    // Hover on today (not break)
+    state.hover && !state.disabled && state.today && !state.isBreak &&
+      'bg-[var(--color-interactive)] text-[var(--color-text-on-color)] shadow-[inset_0_4px_4px_rgba(255,255,255,0.25),inset_0_0_8px_var(--color-interactive-hover)]',
 
-        if (
-          state.breakEnd &&
-          !state.breakStart &&
-          activeTimeFrame !== 'weekly'
-        ) {
-          baseStyle.borderTopRightRadius = '20px'
-          baseStyle.borderBottomRightRadius = '20px'
-        }
+    // Hover on present (not today, not break)
+    state.hover && !state.disabled && !state.today && !state.isBreak && state.isPresent &&
+      'bg-[var(--color-field)] text-[var(--color-text-primary)]',
 
-        if (state.breakMid && activeTimeFrame !== 'weekly') {
-          baseStyle.borderRadius = '0px'
-          backgroundColor = '#F8F6FC'
-          color = '#403A3C'
-          boxShadow = 'unset'
-        }
-      } else if (state.isAbsent) {
-        backgroundColor = '#E6E4E5'
-        color = '#D2222D'
-      } else if (state.disabled) {
-        backgroundColor = '#E6E4E5'
-        color = '#B7AFB2'
-      }
-    }
+    // Hover on default (not today, not break, not present)
+    state.hover && !state.disabled && !state.today && !state.isBreak && !state.isPresent && state.isDefault &&
+      'bg-[var(--color-field)] text-[var(--color-text-secondary)]',
 
-    if (state.focus && !state.pressed) {
-      baseStyle.outlineWidth = '2px'
-    }
+    // Hover on break (same visual as base break, but re-assert to match original)
+    state.hover && !state.disabled && state.isBreak && !isBreakMidNonWeekly &&
+      'bg-[var(--color-interactive-selected)] text-[var(--color-text-secondary)] shadow-[inset_0_4px_4px_rgba(255,255,255,0.25),inset_0_0_4px_var(--color-focus)]',
+    state.hover && !state.disabled && state.isBreak && isBreakMidNonWeekly &&
+      'rounded-none bg-[var(--color-interactive-subtle)] text-[var(--color-text-secondary)] shadow-none',
 
-    if (state.pressed) {
-      baseStyle.position = 'relative'
-      if (
-        state.isPresent ||
-        state.isAbsent ||
-        state.isDefault ||
-        state.disabled
-      ) {
-        backgroundColor = '#FCF7F7'
-      }
-    }
+    // Hover on absent (not today, not break)
+    state.hover && !state.disabled && !state.today && !state.isBreak && state.isAbsent &&
+      'bg-[var(--color-field)] text-[var(--color-error)]',
 
-    if (state.selected) {
-      fontWeight = '600'
-      if (activeTimeFrame === 'monthly') {
-        color = 'var(--color-text-primary)'
-      }
-    }
+    // ── Focus ──
+    state.focus && !state.pressed && 'outline-2',
 
-    if (state.disabledState) {
-      color = '#B7AFB2'
-      if (state.today) {
-        color = '#FFF'
-        backgroundColor = '#B7AFB2'
-      }
-    }
+    // ── Pressed ──
+    state.pressed && (state.isPresent || state.isAbsent || state.isDefault || state.disabled) &&
+      'bg-[var(--color-error-surface)]',
 
-    return {
-      ...baseStyle,
-      backgroundColor,
-      color,
-      border,
-      fontWeight,
-      boxShadow,
-    }
-  }
+    // ── Selected ──
+    state.selected && 'font-semibold',
+    state.selected && activeTimeFrame === 'monthly' && 'text-[var(--color-text-primary)]',
+
+    // ── DisabledState (visual-only disabled, different from functional disabled) ──
+    state.disabledState && 'text-[var(--color-text-disabled)]',
+    state.disabledState && state.today &&
+      'bg-[var(--color-text-disabled)] text-[var(--color-text-on-color)]',
+  )
 
   return (
-    <div
-      className={cn('background', {
-        'calendar start-date':
-          state.isBreak && state.breakStart && !state.breakEnd,
-        'calendar end-date':
-          state.isBreak && !state.breakStart && state.breakEnd,
-        weekly: activeTimeFrame === 'weekly',
-      })}
-      style={getBGStyles()}
-    >
+    <div className={bgClasses}>
       <div
-        className={cn('date', {
-          pressed: state.pressed,
-          'text-bold': state.selected,
-        })}
+        className={dateClasses}
         tabIndex={0}
         onMouseEnter={() => setState((prev) => ({ ...prev, hover: true }))}
         onMouseLeave={() => setState((prev) => ({ ...prev, hover: false }))}
@@ -384,22 +265,10 @@ export function RenderDate({
             setState((prev) => ({ ...prev, pressed: false }))
           }
         }}
-        style={getStyles()}
       >
         {day.date}
         {state.isAbsent && (
-          <span
-            style={{
-              position: 'absolute',
-              bottom: '0px',
-              width: '6px',
-              height: '6px',
-              borderRadius: '50%',
-              backgroundColor: '#D2222D',
-              left: '50%',
-              transform: 'translateX(-50%)',
-            }}
-          />
+          <span className="absolute bottom-0 left-1/2 h-1.5 w-1.5 -translate-x-1/2 rounded-full bg-[var(--color-error)]" />
         )}
       </div>
     </div>

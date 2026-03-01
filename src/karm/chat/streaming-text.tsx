@@ -20,7 +20,7 @@ export function StreamingText({ text }: { text: string }) {
             )
           },
           pre: ({ children }) => (
-            <pre className="mb-2 overflow-x-auto rounded-lg bg-[var(--color-field)] p-3 text-sm">
+            <pre className="mb-2 overflow-x-auto rounded-[var(--radius-lg)] bg-[var(--color-field)] p-3 text-sm">
               {children}
             </pre>
           ),

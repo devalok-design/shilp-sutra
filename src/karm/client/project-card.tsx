@@ -36,7 +36,7 @@ const ProjectCard = React.forwardRef<HTMLDivElement, ProjectCardProps>(
       <div
         ref={ref}
         className={cn(
-          'group cursor-pointer rounded-[var(--radius-lg)] border border-[var(--color-border-subtle)] bg-[var(--color-layer-01)] p-5 shadow-[var(--shadow-01)] transition-shadow duration-200 hover:shadow-[var(--shadow-02)]',
+          'group cursor-pointer rounded-[var(--radius-lg)] border border-[var(--color-border-subtle)] bg-[var(--color-layer-01)] p-5 shadow-[var(--shadow-01)] transition-shadow duration-[var(--duration-moderate)] hover:shadow-[var(--shadow-02)]',
           className,
         )}
         {...props}
@@ -63,7 +63,7 @@ const ProjectCard = React.forwardRef<HTMLDivElement, ProjectCardProps>(
           </div>
           <div className="h-1.5 w-full overflow-hidden rounded-[var(--radius-full)] bg-[var(--color-layer-03)]">
             <div
-              className="h-full rounded-[var(--radius-full)] bg-[var(--color-interactive)] transition-[width] duration-300"
+              className="h-full rounded-[var(--radius-full)] bg-[var(--color-interactive)] transition-[width] duration-[var(--duration-slow)]"
               style={{ width: `${progress}%` }}
             />
           </div>

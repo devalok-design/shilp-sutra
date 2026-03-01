@@ -76,7 +76,7 @@ export function AvatarStack({
         <DropdownMenu>
           <DropdownMenuTrigger asChild>
             <div
-              className="text-sm font-semibold flex cursor-pointer items-center justify-center rounded-full border-2 border-[var(--color-layer-02)] bg-[var(--color-layer-03)] text-[var(--color-interactive-hover)]"
+              className="text-sm font-semibold flex cursor-pointer items-center justify-center rounded-[var(--radius-full)] border-2 border-[var(--color-layer-02)] bg-[var(--color-layer-03)] text-[var(--color-interactive-hover)]"
               style={{
                 width: size,
                 height: size,

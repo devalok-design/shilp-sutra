@@ -344,7 +344,7 @@ function TaskDetailPanel({
                         {count !== null && count > 0 && (
                           <span
                             className={cn(
-                              'ml-0.5 inline-flex h-4 min-w-[16px] items-center justify-center rounded-full px-1 text-[9px] font-semibold',
+                              'ml-0.5 inline-flex h-4 min-w-[16px] items-center justify-center rounded-[var(--radius-full)] px-1 text-[9px] font-semibold',
                               isActive
                                 ? 'bg-[var(--color-interactive)]/15 text-[var(--color-interactive)]'
                                 : 'bg-[var(--color-field)] text-[var(--color-text-placeholder)]',
@@ -355,7 +355,7 @@ function TaskDetailPanel({
                         )}
 
                         {isActive && (
-                          <span className="absolute bottom-0 left-2 right-2 h-[2px] rounded-full bg-[var(--color-interactive)]" />
+                          <span className="absolute bottom-0 left-2 right-2 h-[2px] rounded-[var(--radius-full)] bg-[var(--color-interactive)]" />
                         )}
                       </button>
                     )

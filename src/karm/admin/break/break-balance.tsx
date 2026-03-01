@@ -40,15 +40,15 @@ export function BreakBalance({
             className="flex w-full flex-row items-center justify-start gap-2 !border-0 text-left hover:bg-gray-50"
           >
             <div className="flex w-1/6 min-w-[120px] items-center gap-2 p-3">
-              <div className="flex h-7 w-7 items-center justify-center rounded-full bg-rose-100">
+              <div className="flex h-7 w-7 items-center justify-center rounded-[var(--radius-full)] bg-rose-100">
                 {userImages[breakItem.userId] ? (
                   <img
                     src={userImages[breakItem.userId]}
                     alt={''}
-                    className="h-7 w-7 flex-shrink-0 rounded-full object-cover"
+                    className="h-7 w-7 flex-shrink-0 rounded-[var(--radius-full)] object-cover"
                   />
                 ) : (
-                  <span className="flex h-7 w-full max-w-7 items-center justify-center rounded-full bg-[var(--mapped-borders-margin-tertiary)] text-xs font-medium uppercase text-[--color-text-primary]">
+                  <span className="flex h-7 w-full max-w-7 items-center justify-center rounded-[var(--radius-full)] bg-[var(--mapped-borders-margin-tertiary)] text-xs font-medium uppercase text-[--color-text-primary]">
                     {breakItem.user?.name?.[0] || 'U'}
                   </span>
                 )}

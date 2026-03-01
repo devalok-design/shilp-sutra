@@ -116,7 +116,7 @@ const FAB: React.FC<FABProps> = ({
       ref={buttonRef}
       className={cn(
         // Base styles
-        'flex items-center justify-center rounded-full border-none outline-none cursor-pointer transition-all duration-200 ease-in-out relative overflow-hidden',
+        'flex items-center justify-center rounded-[var(--radius-full)] border-none outline-none cursor-pointer transition-[color,background-color,border-color,box-shadow] duration-[var(--duration-moderate)] ease-in-out relative overflow-hidden',
         'bg-[var(--color-interactive,#d33163)] text-white',
         // Size
         sizeClasses[size],
@@ -145,7 +145,7 @@ const FAB: React.FC<FABProps> = ({
       {ripples.map((ripple) => (
         <span
           key={ripple.id}
-          className="absolute rounded-full bg-[rgba(252,247,247,0.2)] -translate-x-1/2 -translate-y-1/2 scale-0 animate-ripple pointer-events-none"
+          className="absolute rounded-[var(--radius-full)] bg-[rgba(252,247,247,0.2)] -translate-x-1/2 -translate-y-1/2 scale-0 animate-ripple pointer-events-none"
           style={{
             left: ripple.x,
             top: ripple.y,

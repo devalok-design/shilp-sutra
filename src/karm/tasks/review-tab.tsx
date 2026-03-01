@@ -144,7 +144,7 @@ function ReviewTab({
             return (
               <div
                 key={review.id}
-                className="rounded-lg border border-[var(--color-border-default)] bg-[var(--color-layer-01)] p-3"
+                className="rounded-[var(--radius-lg)] border border-[var(--color-border-default)] bg-[var(--color-layer-01)] p-3"
               >
                 {/* Header */}
                 <div className="flex items-center gap-2.5">
@@ -177,7 +177,7 @@ function ReviewTab({
 
                 {/* Feedback */}
                 {review.feedback && (
-                  <div className="mt-2.5 rounded-md bg-[var(--color-layer-02)] px-3 py-2">
+                  <div className="mt-2.5 rounded-[var(--radius-md)] bg-[var(--color-layer-02)] px-3 py-2">
                     <p className="text-[12px] font-body leading-relaxed text-[var(--color-text-secondary)]">
                       {review.feedback}
                     </p>
@@ -199,7 +199,7 @@ function ReviewTab({
                           }
                           placeholder="Add feedback (optional)..."
                           rows={2}
-                          className="w-full resize-none rounded-md border border-[var(--color-border-default)] bg-transparent px-2.5 py-2 text-[12px] font-body text-[var(--color-text-primary)] placeholder:text-[var(--color-text-placeholder)] outline-none focus:border-[var(--color-border-subtle)]"
+                          className="w-full resize-none rounded-[var(--radius-md)] border border-[var(--color-border-default)] bg-transparent px-2.5 py-2 text-[12px] font-body text-[var(--color-text-primary)] placeholder:text-[var(--color-text-placeholder)] outline-none focus:border-[var(--color-border-subtle)]"
                         />
                         <div className="flex items-center gap-1.5">
                           {RESPONSE_OPTIONS.map((opt) => {
@@ -210,7 +210,7 @@ function ReviewTab({
                                 type="button"
                                 onClick={() => handleRespond(review.id, opt.status)}
                                 className={cn(
-                                  'inline-flex items-center gap-1 rounded-md px-2.5 py-1 text-[11px] font-body font-semibold transition-colors',
+                                  'inline-flex items-center gap-1 rounded-[var(--radius-md)] px-2.5 py-1 text-[11px] font-body font-semibold transition-colors',
                                   opt.status === 'APPROVED' &&
                                     'bg-[var(--color-success-surface)] text-[var(--color-text-success)] hover:opacity-90',
                                   opt.status === 'CHANGES_REQUESTED' &&
@@ -267,7 +267,7 @@ function ReviewTab({
         <PopoverTrigger asChild>
           <button
             type="button"
-            className="mt-3 inline-flex items-center gap-1.5 rounded-lg px-2 py-1.5 text-[13px] font-body text-[var(--color-text-placeholder)] transition-colors hover:bg-[var(--color-field)] hover:text-[var(--color-text-secondary)]"
+            className="mt-3 inline-flex items-center gap-1.5 rounded-[var(--radius-lg)] px-2 py-1.5 text-[13px] font-body text-[var(--color-text-placeholder)] transition-colors hover:bg-[var(--color-field)] hover:text-[var(--color-text-secondary)]"
           >
             <Plus className="h-3.5 w-3.5" strokeWidth={1.5} />
             Request Review

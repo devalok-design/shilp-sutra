@@ -24,7 +24,7 @@ const Checkbox = React.forwardRef<
         'bg-[var(--color-field)]',
         'transition-colors duration-[var(--duration-fast)]',
         'focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--color-focus)] focus-visible:ring-offset-2',
-        'disabled:cursor-not-allowed disabled:opacity-40',
+        'disabled:cursor-not-allowed disabled:opacity-50',
         'data-[state=checked]:bg-[var(--color-interactive)] data-[state=checked]:border-[var(--color-interactive)] data-[state=checked]:text-[var(--color-text-on-color)]',
         'data-[state=indeterminate]:bg-[var(--color-interactive)] data-[state=indeterminate]:border-[var(--color-interactive)] data-[state=indeterminate]:text-[var(--color-text-on-color)]',
         error && 'border-[var(--color-border-error)]',

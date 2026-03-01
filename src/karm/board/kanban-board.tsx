@@ -338,7 +338,7 @@ export function KanbanBoard({
           <Button
             variant="ghost"
             onClick={onAddColumn}
-            className="h-10 w-[300px] justify-start gap-2 rounded-xl border border-dashed border-border/60 bg-white/40 text-muted-foreground hover:border-pink-300 hover:bg-pink-50/50 hover:text-pink-600"
+            className="h-10 w-[300px] justify-start gap-2 rounded-[var(--radius-xl)] border border-dashed border-border/60 bg-white/40 text-muted-foreground hover:border-pink-300 hover:bg-pink-50/50 hover:text-pink-600"
           >
             <Plus className="h-4 w-4" />
             Add column

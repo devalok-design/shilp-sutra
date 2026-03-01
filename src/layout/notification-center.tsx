@@ -185,7 +185,7 @@ function NotificationItem({
       <div className="mt-1.5 flex shrink-0">
         <span
           className={cn(
-            'h-2 w-2 rounded-full',
+            'h-2 w-2 rounded-[var(--radius-full)]',
             TIER_COLORS[notification.tier] || TIER_COLORS.INFO,
             notification.isRead && 'opacity-40',
           )}
@@ -227,7 +227,7 @@ function NotificationItem({
       {/* Unread indicator */}
       {!notification.isRead && (
         <div className="mt-1.5 shrink-0">
-          <span className="block h-2 w-2 rounded-full bg-[var(--color-interactive)]" />
+          <span className="block h-2 w-2 rounded-[var(--radius-full)] bg-[var(--color-interactive)]" />
         </div>
       )}
     </button>
@@ -302,13 +302,13 @@ export default function NotificationCenter({
           <PopoverTrigger asChild>
             <button
               className={cn(
-                'relative flex h-9 w-9 items-center justify-center rounded-full border border-[var(--color-border-default)] bg-[var(--color-layer-02)] text-[var(--color-text-secondary)] transition-colors hover:bg-[var(--color-layer-03)]',
+                'relative flex h-9 w-9 items-center justify-center rounded-[var(--radius-full)] border border-[var(--color-border-default)] bg-[var(--color-layer-02)] text-[var(--color-text-secondary)] transition-colors hover:bg-[var(--color-layer-03)]',
                 className,
               )}
             >
               <Bell className="h-4 w-4" />
               {unreadCount > 0 && (
-                <span className="absolute -right-0.5 -top-0.5 flex h-4 min-w-4 items-center justify-center rounded-full bg-[var(--color-interactive)] px-1 text-[10px] font-bold text-white">
+                <span className="absolute -right-0.5 -top-0.5 flex h-4 min-w-4 items-center justify-center rounded-[var(--radius-full)] bg-[var(--color-interactive)] px-1 text-[10px] font-bold text-white">
                   {unreadCount > 99 ? '99+' : unreadCount}
                 </span>
               )}
@@ -321,7 +321,7 @@ export default function NotificationCenter({
       </Tooltip>
 
       <PopoverContent
-        className="w-[380px] rounded-xl border border-[var(--color-border-default)] bg-[var(--color-layer-01)] p-0 shadow-lg"
+        className="w-[380px] rounded-[var(--radius-xl)] border border-[var(--color-border-default)] bg-[var(--color-layer-01)] p-0 shadow-lg"
         sideOffset={8}
         align="end"
       >
@@ -332,7 +332,7 @@ export default function NotificationCenter({
               Notifications
             </h3>
             {unreadCount > 0 && (
-              <span className="flex h-5 min-w-5 items-center justify-center rounded-full bg-[var(--color-interactive)]/10 px-1.5 text-[11px] font-semibold text-[var(--color-interactive)]">
+              <span className="flex h-5 min-w-5 items-center justify-center rounded-[var(--radius-full)] bg-[var(--color-interactive)]/10 px-1.5 text-[11px] font-semibold text-[var(--color-interactive)]">
                 {unreadCount}
               </span>
             )}
@@ -357,7 +357,7 @@ export default function NotificationCenter({
         >
           {notifications.length === 0 ? (
             <div className="flex flex-col items-center justify-center px-4 py-12">
-              <div className="flex h-12 w-12 items-center justify-center rounded-full bg-[var(--color-layer-02)]">
+              <div className="flex h-12 w-12 items-center justify-center rounded-[var(--radius-full)] bg-[var(--color-layer-02)]">
                 <Inbox className="h-6 w-6 text-[var(--color-text-placeholder)]" />
               </div>
               <p className="mt-3 text-sm text-[var(--color-text-placeholder)]">
@@ -394,7 +394,7 @@ export default function NotificationCenter({
 
           {isLoading && (
             <div className="flex items-center justify-center py-4">
-              <div className="h-5 w-5 animate-spin rounded-full border-2 border-[var(--color-border-default)] border-t-[var(--color-interactive)]" />
+              <div className="h-5 w-5 animate-spin rounded-[var(--radius-full)] border-2 border-[var(--color-border-default)] border-t-[var(--color-interactive)]" />
             </div>
           )}
         </div>

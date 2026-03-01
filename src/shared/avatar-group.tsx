@@ -21,7 +21,7 @@ function getInitials(name: string): string {
 }
 
 const avatarSizeVariants = cva(
-  'shrink-0 overflow-hidden rounded-full border-2 border-[var(--color-layer-01)]',
+  'shrink-0 overflow-hidden rounded-[var(--radius-full)] border-2 border-[var(--color-layer-01)]',
   {
     variants: {
       size: {

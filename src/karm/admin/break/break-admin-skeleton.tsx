@@ -45,22 +45,22 @@ export function BreakAdminSkeleton() {
             {Array.from({ length: 5 }).map((_, index) => (
               <div
                 key={index}
-                className="ml-6 grid grid-cols-6 items-center gap-4 rounded-lg py-2"
+                className="ml-6 grid grid-cols-6 items-center gap-4 rounded-[var(--radius-lg)] py-2"
               >
                 <div className="flex items-center gap-2">
-                  <Skeleton className="h-8 w-8 rounded-full bg-[var(--color-field)]" />
+                  <Skeleton className="h-8 w-8 rounded-[var(--radius-full)] bg-[var(--color-field)]" />
                   <Skeleton className="h-5 w-24 bg-[var(--color-field)]" />
                 </div>
                 <Skeleton className="h-5 w-full bg-[var(--color-field)]" />
                 <Skeleton className="h-5 w-16 bg-[var(--color-field)]" />
                 <Skeleton className="h-5 w-full bg-[var(--color-field)]" />
                 <div className="flex items-center gap-2">
-                  <Skeleton className="h-6 w-6 rounded-full bg-[var(--color-field)]" />
+                  <Skeleton className="h-6 w-6 rounded-[var(--radius-full)] bg-[var(--color-field)]" />
                   <Skeleton className="h-5 w-16 bg-[var(--color-field)]" />
                 </div>
                 <div className="flex items-center justify-end gap-2">
-                  <Skeleton className="h-8 w-8 rounded-full bg-[var(--color-field)]" />
-                  <Skeleton className="h-8 w-8 rounded-full bg-[var(--color-field)]" />
+                  <Skeleton className="h-8 w-8 rounded-[var(--radius-full)] bg-[var(--color-field)]" />
+                  <Skeleton className="h-8 w-8 rounded-[var(--radius-full)] bg-[var(--color-field)]" />
                 </div>
               </div>
             ))}

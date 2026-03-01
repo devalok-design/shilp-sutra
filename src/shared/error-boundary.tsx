@@ -59,8 +59,8 @@ function getErrorConfig(status?: number) {
         title: 'Page not found',
         message:
           'The page you are looking for does not exist or has been moved.',
-        bgColor: 'rgba(211, 49, 99, 0.1)',
-        iconColor: '#D33163',
+        bgColor: 'var(--color-interactive-subtle)',
+        iconColor: 'var(--color-interactive)',
       }
     case 403:
       return {
@@ -68,8 +68,8 @@ function getErrorConfig(status?: number) {
         title: 'Access denied',
         message:
           'You do not have permission to view this page. Contact your administrator if you believe this is a mistake.',
-        bgColor: 'rgba(245, 158, 11, 0.1)',
-        iconColor: '#F59E0B',
+        bgColor: 'var(--color-warning-surface)',
+        iconColor: 'var(--color-warning)',
       }
     case 500:
       return {
@@ -77,8 +77,8 @@ function getErrorConfig(status?: number) {
         title: 'Server error',
         message:
           'Something went wrong on our end. Please try again later or contact support if the issue persists.',
-        bgColor: 'rgba(239, 68, 68, 0.1)',
-        iconColor: '#EF4444',
+        bgColor: 'var(--color-danger-surface)',
+        iconColor: 'var(--color-danger)',
       }
     default:
       return {
@@ -86,8 +86,8 @@ function getErrorConfig(status?: number) {
         title: 'Something went wrong',
         message:
           'An unexpected error occurred. Please try again or go back to the home page.',
-        bgColor: 'rgba(211, 49, 99, 0.1)',
-        iconColor: '#D33163',
+        bgColor: 'var(--color-interactive-subtle)',
+        iconColor: 'var(--color-interactive)',
       }
   }
 }
@@ -107,11 +107,11 @@ function ErrorDisplay({ error, onReset }: ErrorDisplayProps) {
   return (
     <div className="flex min-h-[60vh] items-center justify-center p-4">
       <div
-        className="flex w-full max-w-lg flex-col items-center gap-6 rounded-xl border border-[var(--color-border-default)] bg-[var(--color-layer-01)] p-8 text-center shadow-sm"
+        className="flex w-full max-w-lg flex-col items-center gap-6 rounded-[var(--radius-xl)] border border-[var(--color-border-default)] bg-[var(--color-layer-01)] p-8 text-center shadow-sm"
       >
         {/* Error Icon */}
         <div
-          className="flex h-16 w-16 items-center justify-center rounded-2xl"
+          className="flex h-16 w-16 items-center justify-center rounded-[var(--radius-2xl)]"
           style={{ backgroundColor: errorConfig.bgColor }}
         >
           <Icon
@@ -150,7 +150,7 @@ function ErrorDisplay({ error, onReset }: ErrorDisplayProps) {
 
         {/* Dev stack trace */}
         {isDev && stack && (
-          <div className="w-full overflow-auto rounded-lg border border-[var(--color-border-default)] bg-[var(--color-layer-02)] p-4 text-left">
+          <div className="w-full overflow-auto rounded-[var(--radius-lg)] border border-[var(--color-border-default)] bg-[var(--color-layer-02)] p-4 text-left">
             <p className="B3-Reg mb-2 font-semibold text-[var(--color-text-primary)]">
               Stack Trace (development only)
             </p>

@@ -246,10 +246,10 @@ function ActivityTab({ activities, className }: ActivityTabProps) {
           return (
             <div key={entry.id} className="relative flex gap-3 pl-0">
               {/* Dot on timeline */}
-              <div className="relative z-10 flex h-[22px] w-[22px] shrink-0 items-center justify-center rounded-full bg-[var(--color-layer-01)]">
+              <div className="relative z-10 flex h-[22px] w-[22px] shrink-0 items-center justify-center rounded-[var(--radius-full)] bg-[var(--color-layer-01)]">
                 <div
                   className={cn(
-                    'flex h-5 w-5 items-center justify-center rounded-full bg-[var(--color-layer-02)]',
+                    'flex h-5 w-5 items-center justify-center rounded-[var(--radius-full)] bg-[var(--color-layer-02)]',
                   )}
                 >
                   <Icon

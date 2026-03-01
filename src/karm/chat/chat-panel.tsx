@@ -105,7 +105,7 @@ export function ChatPanel({
                 e.stopPropagation()
                 setShowAgentDropdown(!showAgentDropdown)
               }}
-              className="flex items-center gap-1.5 rounded-lg px-2 py-1.5 transition-colors hover:bg-[var(--color-layer-02)]"
+              className="flex items-center gap-1.5 rounded-[var(--radius-lg)] px-2 py-1.5 transition-colors hover:bg-[var(--color-layer-02)]"
             >
               <span className="B1-Reg text-[var(--color-text-primary)]">
                 {selectedAgent?.name}
@@ -118,7 +118,7 @@ export function ChatPanel({
 
             {/* Agent Dropdown */}
             {showAgentDropdown && (
-              <div className="absolute left-0 top-full z-50 mt-1 w-64 rounded-xl border border-[var(--color-border-default)] bg-[var(--color-layer-01)] py-1 shadow-lg">
+              <div className="absolute left-0 top-full z-50 mt-1 w-64 rounded-[var(--radius-xl)] border border-[var(--color-border-default)] bg-[var(--color-layer-01)] py-1 shadow-lg">
                 {agents.map((agent) => (
                   <button
                     key={agent.id}
@@ -152,7 +152,7 @@ export function ChatPanel({
               onStartNewChat?.()
               setShowHistory(false)
             }}
-            className="flex h-8 w-8 items-center justify-center rounded-lg text-[var(--color-text-secondary)] transition-colors hover:bg-[var(--color-layer-02)]"
+            className="flex h-8 w-8 items-center justify-center rounded-[var(--radius-lg)] text-[var(--color-text-secondary)] transition-colors hover:bg-[var(--color-layer-02)]"
             aria-label="New chat"
           >
             <MessageSquarePlus className="h-4 w-4" />
@@ -161,7 +161,7 @@ export function ChatPanel({
           {/* History Toggle */}
           <button
             onClick={() => setShowHistory(!showHistory)}
-            className={`flex h-8 w-8 items-center justify-center rounded-lg transition-colors hover:bg-[var(--color-layer-02)] ${
+            className={`flex h-8 w-8 items-center justify-center rounded-[var(--radius-lg)] transition-colors hover:bg-[var(--color-layer-02)] ${
               showHistory
                 ? 'bg-[var(--color-layer-02)] text-[var(--color-text-primary)]'
                 : 'text-[var(--color-text-secondary)]'
@@ -174,7 +174,7 @@ export function ChatPanel({
           {/* Close */}
           <button
             onClick={() => onOpenChange(false)}
-            className="flex h-8 w-8 items-center justify-center rounded-lg text-[var(--color-text-secondary)] transition-colors hover:bg-[var(--color-layer-02)]"
+            className="flex h-8 w-8 items-center justify-center rounded-[var(--radius-lg)] text-[var(--color-text-secondary)] transition-colors hover:bg-[var(--color-layer-02)]"
             aria-label="Close chat"
           >
             <X className="h-4 w-4" />

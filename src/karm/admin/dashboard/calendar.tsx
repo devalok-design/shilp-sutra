@@ -192,14 +192,14 @@ export function Calendar({ onDateSelect, hasCorrection }: CalendarProps) {
             <button
               aria-label="Previous"
               onClick={() => handleDateChange('prev')}
-              className="rounded-full p-1 hover:bg-[var(--color-layer-02)]"
+              className="rounded-[var(--radius-full)] p-1 hover:bg-[var(--color-layer-02)]"
             >
               <ArrowLeftIcon className="h-5 w-5 text-[var(--color-text-secondary)]" />
             </button>
             <button
               aria-label="Next"
               onClick={() => handleDateChange('next')}
-              className="rounded-full p-1 hover:bg-[var(--color-layer-02)]"
+              className="rounded-[var(--radius-full)] p-1 hover:bg-[var(--color-layer-02)]"
             >
               <ArrowForwardIcon className="h-5 w-5 text-[var(--color-text-secondary)]" />
             </button>
@@ -228,7 +228,7 @@ export function Calendar({ onDateSelect, hasCorrection }: CalendarProps) {
             tabIndex={0}
             className={`${
               activeTimeFrame === 'weekly'
-                ? 'w-full rounded-t-lg pb-3.5 pt-4'
+                ? 'w-full rounded-t-[var(--radius-lg)] pb-3.5 pt-4'
                 : 'pb-0 pt-0'
             } flex cursor-pointer flex-col items-center text-center ${
               activeTimeFrame === 'weekly' && activeIndex === index
@@ -249,12 +249,12 @@ export function Calendar({ onDateSelect, hasCorrection }: CalendarProps) {
               className={`mx-1 my-1 flex-col ${
                 activeTimeFrame === 'monthly' &&
                 isSameDay(day.fullDate, selectedDate)
-                  ? 'flex h-10 w-10 items-center justify-center rounded-full bg-[var(--color-layer-accent)] shadow-[0px_4px_4px_0px_rgba(255,255,255,0.25)_inset,0px_0px_4px_0px_var(--primitives-purple-400-b,#AB9DED)_inset]'
+                  ? 'flex h-10 w-10 items-center justify-center rounded-[var(--radius-full)] bg-[var(--color-layer-accent)] shadow-[0px_4px_4px_0px_rgba(255,255,255,0.25)_inset,0px_0px_4px_0px_var(--primitives-purple-400-b,#AB9DED)_inset]'
                   : 'flex h-10 w-10 items-center justify-center'
               }`}
             >
               <span
-                className={`B1-Reg flex h-10 w-10 items-center justify-center rounded-full ${
+                className={`B1-Reg flex h-10 w-10 items-center justify-center rounded-[var(--radius-full)] ${
                   day.isToday
                     ? 'bg-[var(--color-interactive-hover)] p-2 text-[var(--color-text-on-color)]'
                     : 'text-[var(--color-text-secondary)]'

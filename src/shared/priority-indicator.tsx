@@ -75,7 +75,7 @@ function PriorityIndicator({
     return (
       <div
         className={cn(
-          'inline-flex items-center justify-center rounded-md p-1',
+          'inline-flex items-center justify-center rounded-[var(--radius-md)] p-1',
           config.bgColor,
           className,
         )}
@@ -94,7 +94,7 @@ function PriorityIndicator({
     >
       <div
         className={cn(
-          'inline-flex items-center justify-center rounded-md p-0.5',
+          'inline-flex items-center justify-center rounded-[var(--radius-md)] p-0.5',
           config.bgColor,
         )}
       >

@@ -159,7 +159,7 @@ export default function NotificationPreferences({
         <CardContent>
           {isLoading ? (
             <div className="flex items-center justify-center py-8">
-              <div className="h-5 w-5 animate-spin rounded-full border-2 border-[var(--color-border-default)] border-t-[var(--color-interactive)]" />
+              <div className="h-5 w-5 animate-spin rounded-[var(--radius-full)] border-2 border-[var(--color-border-default)] border-t-[var(--color-interactive)]" />
             </div>
           ) : preferences.length === 0 ? (
             <div className="py-8 text-center">
@@ -185,7 +185,7 @@ export default function NotificationPreferences({
                     )}
                   >
                     {/* Channel icon */}
-                    <div className="flex h-8 w-8 shrink-0 items-center justify-center rounded-lg bg-[var(--color-layer-02)]">
+                    <div className="flex h-8 w-8 shrink-0 items-center justify-center rounded-[var(--radius-lg)] bg-[var(--color-layer-02)]">
                       <ChannelIcon className="h-4 w-4 text-[var(--color-text-secondary)]" />
                     </div>
 

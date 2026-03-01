@@ -239,7 +239,7 @@ function ConversationTab({
             onChange={(e) => setEditorContent(e.target.value)}
             placeholder="Write a comment..."
             rows={3}
-            className="w-full resize-none rounded-md border border-[var(--color-border-default)] bg-transparent px-3 py-2 text-[13px] font-body text-[var(--color-text-primary)] placeholder:text-[var(--color-text-placeholder)] outline-none focus:border-[var(--color-border-subtle)]"
+            className="w-full resize-none rounded-[var(--radius-md)] border border-[var(--color-border-default)] bg-transparent px-3 py-2 text-[13px] font-body text-[var(--color-text-primary)] placeholder:text-[var(--color-text-placeholder)] outline-none focus:border-[var(--color-border-subtle)]"
           />
         )}
         <div className="flex justify-end">
@@ -247,7 +247,7 @@ function ConversationTab({
             type="button"
             onClick={handlePost}
             disabled={!editorContent.replace(/<[^>]*>/g, '').trim()}
-            className="inline-flex items-center gap-1.5 rounded-lg bg-[var(--color-interactive)] px-3.5 py-1.5 text-[12px] font-body font-semibold text-[var(--color-text-on-color)] transition-colors hover:bg-[var(--color-interactive-hover)] disabled:opacity-40 disabled:cursor-not-allowed"
+            className="inline-flex items-center gap-1.5 rounded-[var(--radius-lg)] bg-[var(--color-interactive)] px-3.5 py-1.5 text-[12px] font-body font-semibold text-[var(--color-text-on-color)] transition-colors hover:bg-[var(--color-interactive-hover)] disabled:opacity-50 disabled:cursor-not-allowed"
           >
             <Send className="h-3.5 w-3.5" strokeWidth={2} />
             Comment

@@ -104,7 +104,7 @@ const meta: Meta<typeof TaskProperties> = {
   },
   decorators: [
     (Story) => (
-      <div className="w-[400px] rounded-lg border border-[var(--color-border-default)] bg-[var(--color-layer-01)] p-4">
+      <div className="w-[400px] rounded-[var(--radius-lg)] border border-[var(--color-border-default)] bg-[var(--color-layer-01)] p-4">
         <Story />
       </div>
     ),
@@ -175,7 +175,7 @@ export const AllPriorities: Story = {
   render: (args) => (
     <div className="space-y-6">
       {(['LOW', 'MEDIUM', 'HIGH', 'URGENT'] as const).map((priority) => (
-        <div key={priority} className="rounded-lg border border-[var(--color-border-default)] bg-[var(--color-layer-01)] p-4">
+        <div key={priority} className="rounded-[var(--radius-lg)] border border-[var(--color-border-default)] bg-[var(--color-layer-01)] p-4">
           <p className="mb-2 text-[11px] font-semibold uppercase tracking-wider text-[var(--color-text-placeholder)]">
             {priority}
           </p>

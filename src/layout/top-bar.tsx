@@ -133,7 +133,7 @@ export default function TopBar({
           <TooltipTrigger asChild>
             <button
               onClick={handleSearchClick}
-              className="flex h-9 w-9 items-center justify-center rounded-full border border-[var(--color-border-default)] bg-[var(--color-layer-02)] text-[var(--color-text-secondary)] transition-colors hover:bg-[var(--color-layer-03)]"
+              className="flex h-9 w-9 items-center justify-center rounded-[var(--radius-full)] border border-[var(--color-border-default)] bg-[var(--color-layer-02)] text-[var(--color-text-secondary)] transition-colors hover:bg-[var(--color-layer-03)]"
             >
               <Search className="h-4 w-4" />
             </button>
@@ -152,7 +152,7 @@ export default function TopBar({
             <TooltipTrigger asChild>
               <button
                 onClick={onAiChatClick}
-                className="flex h-9 w-9 items-center justify-center rounded-full border border-[var(--color-border-default)] bg-[var(--color-layer-02)] text-[var(--color-text-secondary)] transition-colors hover:bg-[var(--color-layer-03)]"
+                className="flex h-9 w-9 items-center justify-center rounded-[var(--radius-full)] border border-[var(--color-border-default)] bg-[var(--color-layer-02)] text-[var(--color-text-secondary)] transition-colors hover:bg-[var(--color-layer-03)]"
               >
                 <Sparkles className="h-4 w-4" />
               </button>
@@ -187,7 +187,7 @@ export default function TopBar({
             </Tooltip>
 
             <DropdownMenuContent
-              className="w-[200px] rounded-xl border border-[var(--color-border-default)] bg-[var(--color-layer-01)] p-0"
+              className="w-[200px] rounded-[var(--radius-xl)] border border-[var(--color-border-default)] bg-[var(--color-layer-01)] p-0"
               sideOffset={8}
               align="end"
               style={{

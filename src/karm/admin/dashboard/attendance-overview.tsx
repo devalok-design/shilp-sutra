@@ -133,7 +133,7 @@ export function AttendanceOverview({
                 return (
                   <div
                     key={status}
-                    className="flex w-full flex-col gap-[12px] rounded-md bg-[var(--color-layer-02)] p-[24px] md:rounded-lg"
+                    className="flex w-full flex-col gap-[12px] rounded-[var(--radius-md)] bg-[var(--color-layer-02)] p-[24px] md:rounded-[var(--radius-lg)]"
                   >
                     {usersList?.length > 0 && (
                       <h2 className="L3 capitalize text-[var(--color-text-tertiary)]">
@@ -162,7 +162,7 @@ export function AttendanceOverview({
             ([status, groupUsers]) => (
               <div
                 key={status}
-                className={`flex w-full flex-col gap-3 rounded-md bg-[var(--color-layer-02)] p-6 md:rounded-lg md:p-4 ${
+                className={`flex w-full flex-col gap-3 rounded-[var(--radius-md)] bg-[var(--color-layer-02)] p-6 md:rounded-[var(--radius-lg)] md:p-4 ${
                   status !== 'yetToMark'
                     ? 'border-r border-[var(--color-border-default)]'
                     : ''

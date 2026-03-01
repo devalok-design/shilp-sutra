@@ -167,7 +167,7 @@ function CommandPalette({
         <DialogPrimitive.Content
           className={cn(
             'fixed left-1/2 top-[20%] z-50 w-full max-w-[560px] -translate-x-1/2',
-            'overflow-hidden rounded-xl border border-[var(--color-border-default)] bg-[var(--color-layer-01)] shadow-2xl',
+            'overflow-hidden rounded-[var(--radius-xl)] border border-[var(--color-border-default)] bg-[var(--color-layer-01)] shadow-2xl',
             'data-[state=open]:animate-in data-[state=closed]:animate-out',
             'data-[state=closed]:fade-out-0 data-[state=open]:fade-in-0',
             'data-[state=closed]:zoom-out-95 data-[state=open]:zoom-in-95',
@@ -202,7 +202,7 @@ function CommandPalette({
               autoCorrect="off"
               spellCheck={false}
             />
-            <kbd className="hidden shrink-0 select-none rounded-md border border-[var(--color-border-default)] bg-[var(--color-layer-02)] px-1.5 py-0.5 text-[11px] font-medium text-[var(--color-text-placeholder)] sm:inline-flex">
+            <kbd className="hidden shrink-0 select-none rounded-[var(--radius-md)] border border-[var(--color-border-default)] bg-[var(--color-layer-02)] px-1.5 py-0.5 text-[11px] font-medium text-[var(--color-text-placeholder)] sm:inline-flex">
               Esc
             </kbd>
           </div>
@@ -244,7 +244,7 @@ function CommandPalette({
                       }}
                       onMouseEnter={() => setActiveIndex(itemIndex)}
                       className={cn(
-                        'flex w-full items-center gap-3 rounded-lg px-2.5 py-2 text-left transition-colors',
+                        'flex w-full items-center gap-3 rounded-[var(--radius-lg)] px-2.5 py-2 text-left transition-colors',
                         isActive
                           ? 'bg-[var(--color-layer-03)] text-[var(--color-text-primary)]'
                           : 'text-[var(--color-text-secondary)] hover:bg-[var(--color-layer-02)]',

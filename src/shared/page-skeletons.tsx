@@ -13,11 +13,11 @@ function DashboardSkeleton() {
         {Array.from({ length: 4 }).map((_, i) => (
           <div
             key={`stat-${i}`}
-            className="flex flex-col gap-3 rounded-xl border border-[var(--color-border-default)] bg-[var(--color-layer-01)] p-5"
+            className="flex flex-col gap-3 rounded-[var(--radius-xl)] border border-[var(--color-border-default)] bg-[var(--color-layer-01)] p-5"
           >
             <div className="flex items-center justify-between">
               <Skeleton className={cn('h-3 w-20', shimmer)} />
-              <Skeleton className={cn('h-8 w-8 rounded-lg', shimmer)} />
+              <Skeleton className={cn('h-8 w-8 rounded-[var(--radius-lg)]', shimmer)} />
             </div>
             <Skeleton className={cn('h-7 w-16', shimmer)} />
             <Skeleton className={cn('h-2.5 w-28', shimmer)} />
@@ -26,13 +26,13 @@ function DashboardSkeleton() {
       </div>
 
       {/* Attendance calendar placeholder */}
-      <div className="rounded-xl border border-[var(--color-border-default)] bg-[var(--color-layer-01)] p-6">
+      <div className="rounded-[var(--radius-xl)] border border-[var(--color-border-default)] bg-[var(--color-layer-01)] p-6">
         <div className="mb-6 flex items-center justify-between">
           <Skeleton className={cn('h-5 w-32', shimmer)} />
           <div className="flex items-center gap-2">
-            <Skeleton className={cn('h-8 w-8 rounded-lg', shimmer)} />
+            <Skeleton className={cn('h-8 w-8 rounded-[var(--radius-lg)]', shimmer)} />
             <Skeleton className={cn('h-4 w-28', shimmer)} />
-            <Skeleton className={cn('h-8 w-8 rounded-lg', shimmer)} />
+            <Skeleton className={cn('h-8 w-8 rounded-[var(--radius-lg)]', shimmer)} />
           </div>
         </div>
         {/* Weekday headers */}
@@ -46,7 +46,7 @@ function DashboardSkeleton() {
           {Array.from({ length: 35 }).map((_, i) => (
             <Skeleton
               key={`cal-${i}`}
-              className={cn('mx-auto h-10 w-10 rounded-full', shimmer)}
+              className={cn('mx-auto h-10 w-10 rounded-[var(--radius-full)]', shimmer)}
             />
           ))}
         </div>
@@ -68,15 +68,15 @@ function ProjectListSkeleton() {
           <Skeleton className={cn('h-6 w-28', shimmer)} />
           <Skeleton className={cn('h-3.5 w-40', shimmer)} />
         </div>
-        <Skeleton className={cn('h-9 w-32 rounded-lg', shimmer)} />
+        <Skeleton className={cn('h-9 w-32 rounded-[var(--radius-lg)]', shimmer)} />
       </div>
 
       {/* Filters */}
       <div className="flex flex-col gap-3 sm:flex-row sm:items-center">
-        <Skeleton className={cn('h-9 flex-1 rounded-lg', shimmer)} />
+        <Skeleton className={cn('h-9 flex-1 rounded-[var(--radius-lg)]', shimmer)} />
         <div className="flex gap-1.5">
           {Array.from({ length: 4 }).map((_, i) => (
-            <Skeleton key={`f-${i}`} className={cn('h-8 w-16 rounded-lg', shimmer)} />
+            <Skeleton key={`f-${i}`} className={cn('h-8 w-16 rounded-[var(--radius-lg)]', shimmer)} />
           ))}
         </div>
       </div>
@@ -86,12 +86,12 @@ function ProjectListSkeleton() {
         {Array.from({ length: 6 }).map((_, i) => (
           <div
             key={`proj-${i}`}
-            className="flex flex-col gap-4 rounded-xl border border-[var(--color-border-default)] bg-[var(--color-layer-01)] p-5"
+            className="flex flex-col gap-4 rounded-[var(--radius-xl)] border border-[var(--color-border-default)] bg-[var(--color-layer-01)] p-5"
           >
             {/* Top row: status + org */}
             <div className="flex items-center justify-between">
-              <Skeleton className={cn('h-5 w-16 rounded-full', shimmer)} />
-              <Skeleton className={cn('h-4 w-20 rounded-md', shimmer)} />
+              <Skeleton className={cn('h-5 w-16 rounded-[var(--radius-full)]', shimmer)} />
+              <Skeleton className={cn('h-4 w-20 rounded-[var(--radius-md)]', shimmer)} />
             </div>
             {/* Title + description */}
             <div className="flex flex-col gap-2">
@@ -105,7 +105,7 @@ function ProjectListSkeleton() {
                 {Array.from({ length: 3 }).map((_, j) => (
                   <Skeleton
                     key={`av-${i}-${j}`}
-                    className={cn('h-7 w-7 rounded-full', shimmer)}
+                    className={cn('h-7 w-7 rounded-[var(--radius-full)]', shimmer)}
                   />
                 ))}
               </div>
@@ -135,14 +135,14 @@ function DevsabhaSkeleton() {
       <div className="grid grid-cols-1 gap-4 lg:grid-cols-3">
         {/* Section 1: Main large card */}
         <div className="lg:col-span-2">
-          <div className="flex flex-col gap-4 rounded-xl border border-[var(--color-border-default)] bg-[var(--color-layer-01)] p-6">
+          <div className="flex flex-col gap-4 rounded-[var(--radius-xl)] border border-[var(--color-border-default)] bg-[var(--color-layer-01)] p-6">
             <Skeleton className={cn('h-5 w-40', shimmer)} />
             <div className="flex flex-col gap-3">
               {Array.from({ length: 4 }).map((_, i) => (
                 <div key={`ds-main-${i}`} className="flex items-center gap-3">
                   <Skeleton className={cn('h-4 w-4 rounded', shimmer)} />
                   <Skeleton className={cn('h-3.5 flex-1', shimmer)} />
-                  <Skeleton className={cn('h-5 w-16 rounded-full', shimmer)} />
+                  <Skeleton className={cn('h-5 w-16 rounded-[var(--radius-full)]', shimmer)} />
                 </div>
               ))}
             </div>
@@ -150,12 +150,12 @@ function DevsabhaSkeleton() {
         </div>
 
         {/* Section 2: Side card */}
-        <div className="flex flex-col gap-4 rounded-xl border border-[var(--color-border-default)] bg-[var(--color-layer-01)] p-6">
+        <div className="flex flex-col gap-4 rounded-[var(--radius-xl)] border border-[var(--color-border-default)] bg-[var(--color-layer-01)] p-6">
           <Skeleton className={cn('h-5 w-28', shimmer)} />
           <div className="flex flex-col gap-3">
             {Array.from({ length: 3 }).map((_, i) => (
               <div key={`ds-side-${i}`} className="flex items-center gap-3">
-                <Skeleton className={cn('h-8 w-8 rounded-full', shimmer)} />
+                <Skeleton className={cn('h-8 w-8 rounded-[var(--radius-full)]', shimmer)} />
                 <div className="flex flex-1 flex-col gap-1">
                   <Skeleton className={cn('h-3 w-24', shimmer)} />
                   <Skeleton className={cn('h-2.5 w-16', shimmer)} />
@@ -167,16 +167,16 @@ function DevsabhaSkeleton() {
 
         {/* Section 3: Full-width card */}
         <div className="lg:col-span-3">
-          <div className="flex flex-col gap-4 rounded-xl border border-[var(--color-border-default)] bg-[var(--color-layer-01)] p-6">
+          <div className="flex flex-col gap-4 rounded-[var(--radius-xl)] border border-[var(--color-border-default)] bg-[var(--color-layer-01)] p-6">
             <div className="flex items-center justify-between">
               <Skeleton className={cn('h-5 w-36', shimmer)} />
-              <Skeleton className={cn('h-8 w-24 rounded-lg', shimmer)} />
+              <Skeleton className={cn('h-8 w-24 rounded-[var(--radius-lg)]', shimmer)} />
             </div>
             <div className="grid grid-cols-1 gap-3 sm:grid-cols-2 lg:grid-cols-3">
               {Array.from({ length: 3 }).map((_, i) => (
                 <div
                   key={`ds-card-${i}`}
-                  className="flex flex-col gap-2 rounded-lg border border-[var(--color-border-default)] p-4"
+                  className="flex flex-col gap-2 rounded-[var(--radius-lg)] border border-[var(--color-border-default)] p-4"
                 >
                   <Skeleton className={cn('h-3.5 w-3/4', shimmer)} />
                   <Skeleton className={cn('h-3 w-full', shimmer)} />
@@ -189,7 +189,7 @@ function DevsabhaSkeleton() {
 
         {/* Section 4: Stats row */}
         <div className="lg:col-span-2">
-          <div className="flex flex-col gap-4 rounded-xl border border-[var(--color-border-default)] bg-[var(--color-layer-01)] p-6">
+          <div className="flex flex-col gap-4 rounded-[var(--radius-xl)] border border-[var(--color-border-default)] bg-[var(--color-layer-01)] p-6">
             <Skeleton className={cn('h-5 w-24', shimmer)} />
             <div className="grid grid-cols-2 gap-4 sm:grid-cols-4">
               {Array.from({ length: 4 }).map((_, i) => (
@@ -203,12 +203,12 @@ function DevsabhaSkeleton() {
         </div>
 
         {/* Section 5: Timeline */}
-        <div className="flex flex-col gap-4 rounded-xl border border-[var(--color-border-default)] bg-[var(--color-layer-01)] p-6">
+        <div className="flex flex-col gap-4 rounded-[var(--radius-xl)] border border-[var(--color-border-default)] bg-[var(--color-layer-01)] p-6">
           <Skeleton className={cn('h-5 w-20', shimmer)} />
           <div className="flex flex-col gap-4">
             {Array.from({ length: 3 }).map((_, i) => (
               <div key={`ds-time-${i}`} className="flex gap-3">
-                <Skeleton className={cn('h-3 w-3 shrink-0 rounded-full', shimmer)} />
+                <Skeleton className={cn('h-3 w-3 shrink-0 rounded-[var(--radius-full)]', shimmer)} />
                 <div className="flex flex-1 flex-col gap-1">
                   <Skeleton className={cn('h-3 w-full', shimmer)} />
                   <Skeleton className={cn('h-2.5 w-20', shimmer)} />
@@ -234,17 +234,17 @@ function BandwidthSkeleton() {
         {Array.from({ length: 3 }).map((_, i) => (
           <div
             key={`bw-card-${i}`}
-            className="flex flex-col gap-3 rounded-xl border border-[var(--color-border-default)] bg-[var(--color-layer-01)] p-5"
+            className="flex flex-col gap-3 rounded-[var(--radius-xl)] border border-[var(--color-border-default)] bg-[var(--color-layer-01)] p-5"
           >
             <Skeleton className={cn('h-3 w-24', shimmer)} />
             <Skeleton className={cn('h-7 w-16', shimmer)} />
-            <Skeleton className={cn('h-2 w-full rounded-full', shimmer)} />
+            <Skeleton className={cn('h-2 w-full rounded-[var(--radius-full)]', shimmer)} />
           </div>
         ))}
       </div>
 
       {/* Table */}
-      <div className="overflow-hidden rounded-xl border border-[var(--color-border-default)]">
+      <div className="overflow-hidden rounded-[var(--radius-xl)] border border-[var(--color-border-default)]">
         {/* Table header */}
         <div className="flex items-center gap-4 border-b border-[var(--color-border-default)] bg-[var(--color-layer-02)] px-5 py-3">
           {Array.from({ length: 5 }).map((_, i) => (
@@ -268,7 +268,7 @@ function BandwidthSkeleton() {
             )}
           >
             <div className="flex w-40 items-center gap-2.5">
-              <Skeleton className={cn('h-7 w-7 shrink-0 rounded-full', shimmer)} />
+              <Skeleton className={cn('h-7 w-7 shrink-0 rounded-[var(--radius-full)]', shimmer)} />
               <Skeleton className={cn('h-3 w-24', shimmer)} />
             </div>
             {Array.from({ length: 4 }).map((_, colIndex) => (
@@ -290,13 +290,13 @@ BandwidthSkeleton.displayName = 'BandwidthSkeleton'
 
 function TaskDetailSkeleton() {
   return (
-    <div className="flex h-full flex-col gap-0 rounded-xl border border-[var(--color-border-default)] bg-[var(--color-layer-01)]">
+    <div className="flex h-full flex-col gap-0 rounded-[var(--radius-xl)] border border-[var(--color-border-default)] bg-[var(--color-layer-01)]">
       {/* Header */}
       <div className="flex items-center justify-between border-b border-[var(--color-border-default)] px-5 py-4">
         <Skeleton className={cn('h-5 w-48', shimmer)} />
         <div className="flex items-center gap-2">
-          <Skeleton className={cn('h-7 w-7 rounded-lg', shimmer)} />
-          <Skeleton className={cn('h-7 w-7 rounded-lg', shimmer)} />
+          <Skeleton className={cn('h-7 w-7 rounded-[var(--radius-lg)]', shimmer)} />
+          <Skeleton className={cn('h-7 w-7 rounded-[var(--radius-lg)]', shimmer)} />
         </div>
       </div>
 
@@ -308,7 +308,7 @@ function TaskDetailSkeleton() {
             className="flex items-center gap-4 py-2.5"
           >
             <Skeleton className={cn('h-3 w-24 shrink-0', shimmer)} />
-            <Skeleton className={cn('h-6 w-32 rounded-md', shimmer)} />
+            <Skeleton className={cn('h-6 w-32 rounded-[var(--radius-md)]', shimmer)} />
           </div>
         ))}
       </div>

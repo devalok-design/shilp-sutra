@@ -230,7 +230,7 @@ function MemberPicker({
 function DefaultPriorityIndicator({ priority }: { priority: string }) {
   return (
     <div className="flex items-center gap-1.5">
-      <div className={cn('h-2 w-2 rounded-full', PRIORITY_DOT_COLORS[priority])} />
+      <div className={cn('h-2 w-2 rounded-[var(--radius-full)]', PRIORITY_DOT_COLORS[priority])} />
       <span className="text-[13px] font-body text-[var(--color-text-primary)]">
         {PRIORITY_LABELS[priority] || priority}
       </span>
@@ -324,7 +324,7 @@ function TaskProperties({
             <PopoverTrigger asChild>
               <button
                 type="button"
-                className="inline-flex items-center gap-1.5 rounded-md px-2 py-1 text-[13px] font-body text-[var(--color-text-primary)] transition-colors hover:bg-[var(--color-field)]"
+                className="inline-flex items-center gap-1.5 rounded-[var(--radius-md)] px-2 py-1 text-[13px] font-body text-[var(--color-text-primary)] transition-colors hover:bg-[var(--color-field)]"
               >
                 <span>{task.column.name}</span>
                 <ChevronDown className="h-3 w-3 text-[var(--color-text-placeholder)]" />
@@ -341,7 +341,7 @@ function TaskProperties({
                   type="button"
                   onClick={() => handleColumnChange(col.id)}
                   className={cn(
-                    'flex w-full items-center gap-2 rounded-md px-2.5 py-1.5 text-left text-[13px] font-body transition-colors',
+                    'flex w-full items-center gap-2 rounded-[var(--radius-md)] px-2.5 py-1.5 text-left text-[13px] font-body transition-colors',
                     'hover:bg-[var(--color-field)]',
                     col.id === task.columnId
                       ? 'text-[var(--color-interactive)]'
@@ -369,7 +369,7 @@ function TaskProperties({
           >
             <button
               type="button"
-              className="inline-flex items-center gap-2 rounded-md px-2 py-1 transition-colors hover:bg-[var(--color-field)]"
+              className="inline-flex items-center gap-2 rounded-[var(--radius-md)] px-2 py-1 transition-colors hover:bg-[var(--color-field)]"
             >
               {task.owner ? (
                 <>
@@ -401,7 +401,7 @@ function TaskProperties({
           {task.assignees.map((a) => (
             <div
               key={a.user.id}
-              className="inline-flex items-center gap-1 rounded-full bg-[var(--color-layer-02)] py-0.5 pl-0.5 pr-2"
+              className="inline-flex items-center gap-1 rounded-[var(--radius-full)] bg-[var(--color-layer-02)] py-0.5 pl-0.5 pr-2"
             >
               <Avatar className="h-4 w-4">
                 {a.user.image && (
@@ -418,7 +418,7 @@ function TaskProperties({
                 <button
                   type="button"
                   onClick={() => onUnassign(a.user.id)}
-                  className="ml-0.5 rounded-full p-0.5 transition-colors hover:bg-[var(--color-field)]"
+                  className="ml-0.5 rounded-[var(--radius-full)] p-0.5 transition-colors hover:bg-[var(--color-field)]"
                 >
                   <X className="h-2.5 w-2.5 text-[var(--color-text-placeholder)]" />
                 </button>
@@ -434,7 +434,7 @@ function TaskProperties({
             >
               <button
                 type="button"
-                className="inline-flex h-5 w-5 items-center justify-center rounded-full border border-dashed border-[var(--color-border-subtle)] transition-colors hover:bg-[var(--color-field)] hover:border-[var(--color-text-placeholder)]"
+                className="inline-flex h-5 w-5 items-center justify-center rounded-[var(--radius-full)] border border-dashed border-[var(--color-border-subtle)] transition-colors hover:bg-[var(--color-field)] hover:border-[var(--color-text-placeholder)]"
               >
                 <Plus className="h-3 w-3 text-[var(--color-text-placeholder)]" />
               </button>
@@ -454,7 +454,7 @@ function TaskProperties({
           <PopoverTrigger asChild>
             <button
               type="button"
-              className="rounded-md px-2 py-1 transition-colors hover:bg-[var(--color-field)]"
+              className="rounded-[var(--radius-md)] px-2 py-1 transition-colors hover:bg-[var(--color-field)]"
             >
               <PriorityIndicator priority={task.priority} />
             </button>
@@ -470,7 +470,7 @@ function TaskProperties({
                 type="button"
                 onClick={() => handlePriorityChange(p)}
                 className={cn(
-                  'flex w-full items-center gap-2 rounded-md px-2.5 py-1.5 transition-colors',
+                  'flex w-full items-center gap-2 rounded-[var(--radius-md)] px-2.5 py-1.5 transition-colors',
                   'hover:bg-[var(--color-field)]',
                   p === task.priority && 'bg-[var(--color-field)]',
                 )}
@@ -497,14 +497,14 @@ function TaskProperties({
               type="date"
               value={task.dueDate ? new Date(task.dueDate).toISOString().split('T')[0] : ''}
               onChange={(e) => handleDueDateChange(e.target.value ? new Date(e.target.value) : null)}
-              className="h-7 border-none bg-transparent px-2 text-[13px] font-body text-[var(--color-text-primary)] outline-none hover:bg-[var(--color-field)] rounded-md"
+              className="h-7 border-none bg-transparent px-2 text-[13px] font-body text-[var(--color-text-primary)] outline-none hover:bg-[var(--color-field)] rounded-[var(--radius-md)]"
             />
           )}
           {task.dueDate && (
             <button
               type="button"
               onClick={() => handleDueDateChange(null)}
-              className="rounded-md p-1 transition-colors hover:bg-[var(--color-field)]"
+              className="rounded-[var(--radius-md)] p-1 transition-colors hover:bg-[var(--color-field)]"
             >
               <X className="h-3 w-3 text-[var(--color-text-placeholder)]" />
             </button>
@@ -518,14 +518,14 @@ function TaskProperties({
           {task.labels.map((label) => (
             <span
               key={label}
-              className="inline-flex items-center gap-1 rounded-full bg-[var(--color-interactive)]/10 px-2 py-0.5 text-[11px] font-body font-medium text-[var(--color-interactive)]"
+              className="inline-flex items-center gap-1 rounded-[var(--radius-full)] bg-[var(--color-interactive)]/10 px-2 py-0.5 text-[11px] font-body font-medium text-[var(--color-interactive)]"
             >
               {label}
               {!readOnly && (
                 <button
                   type="button"
                   onClick={() => handleRemoveLabel(label)}
-                  className="rounded-full p-0.5 transition-colors hover:bg-[var(--color-field)]"
+                  className="rounded-[var(--radius-full)] p-0.5 transition-colors hover:bg-[var(--color-field)]"
                 >
                   <X className="h-2.5 w-2.5" />
                 </button>
@@ -556,7 +556,7 @@ function TaskProperties({
               <button
                 type="button"
                 onClick={() => setShowLabelInput(true)}
-                className="inline-flex h-5 w-5 items-center justify-center rounded-full border border-dashed border-[var(--color-border-subtle)] transition-colors hover:bg-[var(--color-field)] hover:border-[var(--color-text-placeholder)]"
+                className="inline-flex h-5 w-5 items-center justify-center rounded-[var(--radius-full)] border border-dashed border-[var(--color-border-subtle)] transition-colors hover:bg-[var(--color-field)] hover:border-[var(--color-text-placeholder)]"
               >
                 <Plus className="h-3 w-3 text-[var(--color-text-placeholder)]" />
               </button>
@@ -577,7 +577,7 @@ function TaskProperties({
             type="button"
             onClick={handleVisibilityToggle}
             className={cn(
-              'inline-flex items-center gap-1.5 rounded-full px-2.5 py-0.5 text-[11px] font-body font-semibold tracking-wide transition-colors',
+              'inline-flex items-center gap-1.5 rounded-[var(--radius-full)] px-2.5 py-0.5 text-[11px] font-body font-semibold tracking-wide transition-colors',
               task.visibility === 'EVERYONE'
                 ? 'bg-[var(--color-success-surface)] text-[var(--color-text-success)]'
                 : 'bg-[var(--color-layer-02)] text-[var(--color-text-tertiary)]',
@@ -585,7 +585,7 @@ function TaskProperties({
           >
             <span
               className={cn(
-                'h-1.5 w-1.5 rounded-full',
+                'h-1.5 w-1.5 rounded-[var(--radius-full)]',
                 task.visibility === 'EVERYONE'
                   ? 'bg-[var(--green-500)]'
                   : 'bg-[var(--neutral-400)]',

@@ -14,13 +14,13 @@ export const Default: Story = {
 }
 
 export const Circle: Story = {
-  render: () => <Skeleton className="h-12 w-12 rounded-full" />,
+  render: () => <Skeleton className="h-12 w-12 rounded-[var(--radius-full)]" />,
 }
 
 export const CardSkeleton: Story = {
   render: () => (
     <div className="flex flex-col gap-3 w-[300px]">
-      <Skeleton className="h-[125px] w-full rounded-xl" />
+      <Skeleton className="h-[125px] w-full rounded-[var(--radius-xl)]" />
       <div className="space-y-2">
         <Skeleton className="h-4 w-[250px]" />
         <Skeleton className="h-4 w-[200px]" />
@@ -34,7 +34,7 @@ export const ListSkeleton: Story = {
     <div className="flex flex-col gap-4 w-[400px]">
       {Array.from({ length: 4 }).map((_, i) => (
         <div key={i} className="flex items-center gap-3">
-          <Skeleton className="h-10 w-10 rounded-full" />
+          <Skeleton className="h-10 w-10 rounded-[var(--radius-full)]" />
           <div className="flex-1 space-y-2">
             <Skeleton className="h-4 w-3/4" />
             <Skeleton className="h-3 w-1/2" />

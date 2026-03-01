@@ -121,10 +121,10 @@ export function BreakAdminHeader({
                 <img
                   src={userImages[filters.selectedAssociate.id]}
                   alt={`${filters.selectedAssociate.name}'s avatar`}
-                  className="h-5 w-5 rounded-full"
+                  className="h-5 w-5 rounded-[var(--radius-full)]"
                 />
               ) : (
-                <div className="flex h-5 w-5 items-center justify-center rounded-full bg-[var(--color-layer-02)]">
+                <div className="flex h-5 w-5 items-center justify-center rounded-[var(--radius-full)] bg-[var(--color-layer-02)]">
                   <span className="text-[var(--color-interactive)]">
                     {filters.selectedAssociate.name.charAt(0)}
                   </span>
@@ -178,10 +178,10 @@ export function BreakAdminHeader({
                         <img
                           src={userImages[user.id]}
                           alt={`${user.name}'s avatar`}
-                          className="h-6 w-6 rounded-full"
+                          className="h-6 w-6 rounded-[var(--radius-full)]"
                         />
                       ) : (
-                        <div className="flex h-6 w-6 items-center justify-center rounded-full bg-gray-200">
+                        <div className="flex h-6 w-6 items-center justify-center rounded-[var(--radius-full)] bg-gray-200">
                           <span className="text-sm text-[var(--color-interactive)]">
                             {user.name.charAt(0)}
                           </span>

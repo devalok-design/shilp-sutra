@@ -49,7 +49,7 @@ const Badge = React.forwardRef<HTMLSpanElement, BadgeProps>(
       <span ref={ref} className={cn(badgeVariants({ variant, size }), className)} {...props}>
         {dot && (
           <span
-            className="h-1.5 w-1.5 rounded-full bg-current opacity-70 shrink-0"
+            className="h-1.5 w-1.5 rounded-[var(--radius-full)] bg-current opacity-70 shrink-0"
             aria-hidden="true"
           />
         )}
@@ -58,7 +58,7 @@ const Badge = React.forwardRef<HTMLSpanElement, BadgeProps>(
           <button
             type="button"
             onClick={onDismiss}
-            className="ml-0.5 rounded-full opacity-60 hover:opacity-100 focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-current"
+            className="ml-0.5 rounded-[var(--radius-full)] text-[var(--color-icon-secondary)] transition-colors hover:text-[var(--color-icon-primary)] hover:bg-[var(--color-field)] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--color-focus)]"
             aria-label="Remove"
           >
             <X className="h-3 w-3" />

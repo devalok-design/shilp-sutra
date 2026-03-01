@@ -166,7 +166,7 @@ export function LeaveRequests({
               <div className="flex items-center gap-3 border-b border-[var(--color-border-default)] p-4 md:border-none md:p-0 max-md:items-start">
                 <img
                   src={userImages[request.user?.id || '']}
-                  className="h-10 w-10 overflow-hidden rounded-full bg-[#FCF7F7]"
+                  className="h-10 w-10 overflow-hidden rounded-[var(--radius-full)] bg-[#FCF7F7]"
                   alt={request.user?.name?.[0] || 'U'}
                 />
                 <div className="flex max-w-[277px] flex-col items-start gap-1 sm:max-w-none">

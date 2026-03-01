@@ -121,7 +121,7 @@ export function BoardColumn({
   return (
     <div
       className={cn(
-        'flex h-full w-[300px] flex-shrink-0 flex-col rounded-xl border-l-[3px] bg-white/80 backdrop-blur-sm',
+        'flex h-full w-[300px] flex-shrink-0 flex-col rounded-[var(--radius-xl)] border-l-[3px] bg-white/80 backdrop-blur-sm',
         accentColor,
         isOverlay && 'shadow-xl',
       )}
@@ -150,7 +150,7 @@ export function BoardColumn({
           </h3>
         )}
 
-        <span className="flex h-5 min-w-[20px] items-center justify-center rounded-full bg-muted px-1.5 text-[11px] font-medium text-muted-foreground">
+        <span className="flex h-5 min-w-[20px] items-center justify-center rounded-[var(--radius-full)] bg-muted px-1.5 text-[11px] font-medium text-muted-foreground">
           {column.tasks.length}
         </span>
 
@@ -231,7 +231,7 @@ export function BoardColumn({
       <div
         ref={setNodeRef}
         className={cn(
-          'no-scrollbar flex flex-1 flex-col gap-2 overflow-y-auto px-2 pb-2 transition-colors duration-200',
+          'no-scrollbar flex flex-1 flex-col gap-2 overflow-y-auto px-2 pb-2 transition-colors duration-[var(--duration-moderate)]',
           isOver && 'bg-pink-50/50',
         )}
       >

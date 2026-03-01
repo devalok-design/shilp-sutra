@@ -23,17 +23,17 @@ export function DashboardSkeleton() {
           <DropdownMenu>
             <DropdownMenuTrigger className="T6-Reg flex items-center gap-2 text-[var(--color-text-secondary)]">
               <div className="flex items-center gap-2">
-                <Skeleton className="h-[25px] w-[50px] rounded-md bg-[var(--color-field)]" />
-                <Skeleton className="h-[25px] w-[50px] rounded-md bg-[var(--color-field)]" />
+                <Skeleton className="h-[25px] w-[50px] rounded-[var(--radius-md)] bg-[var(--color-field)]" />
+                <Skeleton className="h-[25px] w-[50px] rounded-[var(--radius-md)] bg-[var(--color-field)]" />
               </div>
               <FilledArrowIcon />
             </DropdownMenuTrigger>
           </DropdownMenu>
           <div className="flex w-full items-center justify-between gap-4 md:mt-0 md:w-auto md:justify-start max-md:mt-[17px] max-lg:gap-[0.5rem]">
             <div className="hidden md:flex">
-              <Skeleton className="h-[32px] w-[180px] rounded-md" />
+              <Skeleton className="h-[32px] w-[180px] rounded-[var(--radius-md)]" />
             </div>
-            <div className="flex w-[200px] items-center justify-between overflow-clip rounded-full border border-[var(--color-layer-03)]">
+            <div className="flex w-[200px] items-center justify-between overflow-clip rounded-[var(--radius-full)] border border-[var(--color-layer-03)]">
               <div className="flex h-[32px] w-[100px] items-center justify-center rounded-r-none bg-[var(--color-field)]">
                 <Skeleton className="h-[20px] w-[40px] rounded-r-none bg-[var(--color-layer-03)]" />
               </div>
@@ -57,11 +57,11 @@ export function DashboardSkeleton() {
           {Array.from({ length: 7 }).map((_, i) => (
             <div
               key={i}
-              className="flex w-full flex-col items-center rounded-t-lg pb-3.5 pt-4 max-md:rounded-lg"
+              className="flex w-full flex-col items-center rounded-t-[var(--radius-lg)] pb-3.5 pt-4 max-md:rounded-[var(--radius-lg)]"
             >
-              <Skeleton className="mb-2 h-[10px] w-[10px] rounded-lg bg-[var(--color-field)]" />
+              <Skeleton className="mb-2 h-[10px] w-[10px] rounded-[var(--radius-lg)] bg-[var(--color-field)]" />
               <div className="mx-1 my-1 flex items-center justify-center">
-                <Skeleton className="h-[40px] w-[40px] rounded-full bg-[var(--color-field)]" />
+                <Skeleton className="h-[40px] w-[40px] rounded-[var(--radius-full)] bg-[var(--color-field)]" />
               </div>
             </div>
           ))}
@@ -78,17 +78,17 @@ export function DashboardSkeleton() {
               {Array.from({ length: 3 }).map((_, index) => (
                 <div
                   key={index}
-                  className={`flex w-full flex-col gap-3 rounded-md bg-[var(--color-layer-02)] p-6 md:rounded-lg md:p-4 ${
+                  className={`flex w-full flex-col gap-3 rounded-[var(--radius-md)] bg-[var(--color-layer-02)] p-6 md:rounded-[var(--radius-lg)] md:p-4 ${
                     index !== 2 ? 'border-r border-[var(--color-border-default)]' : ''
                   } max-md:border-0 max-md:p-[16px]`}
                   style={{ minWidth: '200px' }}
                 >
-                  <Skeleton className="h-[20px] w-[120px] rounded-md bg-[var(--color-field)]" />
+                  <Skeleton className="h-[20px] w-[120px] rounded-[var(--radius-md)] bg-[var(--color-field)]" />
                   <div className="flex flex-wrap items-center gap-2">
                     {Array.from({ length: 4 }).map((_, imgIndex) => (
                       <Skeleton
                         key={imgIndex}
-                        className={`h-10 w-10 rounded-full bg-[var(--color-field)] ${
+                        className={`h-10 w-10 rounded-[var(--radius-full)] bg-[var(--color-field)] ${
                           imgIndex > 0 ? 'ml-[-5px]' : ''
                         }`}
                       />
@@ -118,15 +118,15 @@ export function DashboardSkeleton() {
                     className="flex items-center justify-between px-2 py-3.5"
                   >
                     <div className="flex items-center gap-3">
-                      <Skeleton className="h-10 w-10 rounded-full bg-[var(--color-field)]" />
+                      <Skeleton className="h-10 w-10 rounded-[var(--radius-full)] bg-[var(--color-field)]" />
                       <div className="flex flex-col gap-1">
-                        <Skeleton className="h-[20px] w-[120px] rounded-md bg-[var(--color-field)]" />
-                        <Skeleton className="h-[20px] w-[200px] rounded-md bg-[var(--color-field)]" />
+                        <Skeleton className="h-[20px] w-[120px] rounded-[var(--radius-md)] bg-[var(--color-field)]" />
+                        <Skeleton className="h-[20px] w-[200px] rounded-[var(--radius-md)] bg-[var(--color-field)]" />
                       </div>
                     </div>
                     <div className="flex items-center gap-3">
-                      <Skeleton className="h-[32px] w-[32px] rounded-full bg-[var(--color-field)]" />
-                      <Skeleton className="h-[32px] w-[32px] rounded-full bg-[var(--color-field)]" />
+                      <Skeleton className="h-[32px] w-[32px] rounded-[var(--radius-full)] bg-[var(--color-field)]" />
+                      <Skeleton className="h-[32px] w-[32px] rounded-[var(--radius-full)] bg-[var(--color-field)]" />
                     </div>
                   </div>
                 ))}

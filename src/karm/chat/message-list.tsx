@@ -50,7 +50,7 @@ const markdownComponents = {
     )
   },
   pre: ({ children }: { children?: React.ReactNode }) => (
-    <pre className="mb-2 overflow-x-auto rounded-lg bg-[var(--color-field)] p-3 text-sm">
+    <pre className="mb-2 overflow-x-auto rounded-[var(--radius-lg)] bg-[var(--color-field)] p-3 text-sm">
       {children}
     </pre>
   ),
@@ -91,7 +91,7 @@ export function MessageList({
     return (
       <div className="flex flex-1 items-center justify-center">
         <div className="flex flex-col items-center gap-2">
-          <div className="h-6 w-6 animate-spin rounded-full border-2 border-[var(--color-text-secondary)] border-t-transparent" />
+          <div className="h-6 w-6 animate-spin rounded-[var(--radius-full)] border-2 border-[var(--color-text-secondary)] border-t-transparent" />
           <p className="B3-Reg text-[var(--color-text-placeholder)]">
             Loading messages...
           </p>
@@ -105,7 +105,7 @@ export function MessageList({
     return (
       <div className="flex flex-1 items-center justify-center p-6">
         <div className="flex flex-col items-center gap-3 text-center">
-          <div className="flex h-12 w-12 items-center justify-center rounded-full bg-[var(--color-field)]">
+          <div className="flex h-12 w-12 items-center justify-center rounded-[var(--radius-full)] bg-[var(--color-field)]">
             <Bot className="h-6 w-6 text-[var(--color-text-secondary)]" />
           </div>
           <h3 className="B1-Reg text-[var(--color-text-primary)]">
@@ -126,7 +126,7 @@ export function MessageList({
           if (msg.role === 'SYSTEM') {
             return (
               <div key={msg.id} className="flex justify-center">
-                <div className="flex items-center gap-2 rounded-lg bg-red-50 px-3 py-2 dark:bg-red-950/30">
+                <div className="flex items-center gap-2 rounded-[var(--radius-lg)] bg-red-50 px-3 py-2 dark:bg-red-950/30">
                   <AlertCircle className="h-3.5 w-3.5 shrink-0 text-red-500" />
                   <p className="B3-Reg text-red-600 dark:text-red-400">
                     {msg.content}
@@ -140,10 +140,10 @@ export function MessageList({
             return (
               <div key={msg.id} className="flex justify-end">
                 <div className="flex max-w-[85%] items-start gap-2">
-                  <div className="rounded-2xl rounded-br-sm bg-[var(--color-interactive)] px-3.5 py-2.5 text-white">
+                  <div className="rounded-[var(--radius-2xl)] rounded-br-[var(--radius-sm)] bg-[var(--color-interactive)] px-3.5 py-2.5 text-white">
                     <p className="B2-Reg whitespace-pre-wrap">{msg.content}</p>
                   </div>
-                  <div className="flex h-7 w-7 shrink-0 items-center justify-center rounded-full bg-[var(--color-field)]">
+                  <div className="flex h-7 w-7 shrink-0 items-center justify-center rounded-[var(--radius-full)] bg-[var(--color-field)]">
                     <User className="h-3.5 w-3.5 text-[var(--color-text-secondary)]" />
                   </div>
                 </div>
@@ -155,10 +155,10 @@ export function MessageList({
           return (
             <div key={msg.id} className="flex justify-start">
               <div className="flex max-w-[85%] items-start gap-2">
-                <div className="flex h-7 w-7 shrink-0 items-center justify-center rounded-full bg-[var(--color-field)]">
+                <div className="flex h-7 w-7 shrink-0 items-center justify-center rounded-[var(--radius-full)] bg-[var(--color-field)]">
                   <Bot className="h-3.5 w-3.5 text-[var(--color-text-secondary)]" />
                 </div>
-                <div className="rounded-2xl rounded-bl-sm bg-[var(--color-field)] px-3.5 py-2.5">
+                <div className="rounded-[var(--radius-2xl)] rounded-bl-[var(--radius-sm)] bg-[var(--color-field)] px-3.5 py-2.5">
                   <div className="B2-Reg text-[var(--color-text-primary)]">
                     <ReactMarkdown components={markdownComponents}>
                       {msg.content}
@@ -174,10 +174,10 @@ export function MessageList({
         {isStreaming && streamingText && (
           <div className="flex justify-start">
             <div className="flex max-w-[85%] items-start gap-2">
-              <div className="flex h-7 w-7 shrink-0 items-center justify-center rounded-full bg-[var(--color-field)]">
+              <div className="flex h-7 w-7 shrink-0 items-center justify-center rounded-[var(--radius-full)] bg-[var(--color-field)]">
                 <Bot className="h-3.5 w-3.5 text-[var(--color-text-secondary)]" />
               </div>
-              <div className="rounded-2xl rounded-bl-sm bg-[var(--color-field)] px-3.5 py-2.5">
+              <div className="rounded-[var(--radius-2xl)] rounded-bl-[var(--radius-sm)] bg-[var(--color-field)] px-3.5 py-2.5">
                 <div className="B2-Reg text-[var(--color-text-primary)]">
                   <StreamingText text={streamingText} />
                 </div>
@@ -190,14 +190,14 @@ export function MessageList({
         {isStreaming && !streamingText && (
           <div className="flex justify-start">
             <div className="flex max-w-[85%] items-start gap-2">
-              <div className="flex h-7 w-7 shrink-0 items-center justify-center rounded-full bg-[var(--color-field)]">
+              <div className="flex h-7 w-7 shrink-0 items-center justify-center rounded-[var(--radius-full)] bg-[var(--color-field)]">
                 <Bot className="h-3.5 w-3.5 text-[var(--color-text-secondary)]" />
               </div>
-              <div className="rounded-2xl rounded-bl-sm bg-[var(--color-field)] px-3.5 py-2.5">
+              <div className="rounded-[var(--radius-2xl)] rounded-bl-[var(--radius-sm)] bg-[var(--color-field)] px-3.5 py-2.5">
                 <div className="flex items-center gap-1.5 py-1">
-                  <div className="h-2 w-2 animate-bounce rounded-full bg-[var(--color-text-placeholder)] [animation-delay:0ms]" />
-                  <div className="h-2 w-2 animate-bounce rounded-full bg-[var(--color-text-placeholder)] [animation-delay:150ms]" />
-                  <div className="h-2 w-2 animate-bounce rounded-full bg-[var(--color-text-placeholder)] [animation-delay:300ms]" />
+                  <div className="h-2 w-2 animate-bounce rounded-[var(--radius-full)] bg-[var(--color-text-placeholder)] [animation-delay:0ms]" />
+                  <div className="h-2 w-2 animate-bounce rounded-[var(--radius-full)] bg-[var(--color-text-placeholder)] [animation-delay:150ms]" />
+                  <div className="h-2 w-2 animate-bounce rounded-[var(--radius-full)] bg-[var(--color-text-placeholder)] [animation-delay:300ms]" />
                 </div>
               </div>
             </div>

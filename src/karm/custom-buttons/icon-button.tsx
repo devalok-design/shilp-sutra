@@ -113,7 +113,7 @@ const IconButton = React.forwardRef<HTMLButtonElement, IconButtonProps>(
           {content}
           {!disabled && isRippling && (
             <div
-              className="absolute w-[100px] h-[100px] rounded-full bg-[var(--color-text-on-color)] pointer-events-none opacity-50 animate-ripple-icon"
+              className="absolute w-[100px] h-[100px] rounded-[var(--radius-full)] bg-[var(--color-text-on-color)] pointer-events-none opacity-50 animate-ripple-icon"
               style={{
                 left: `${ripplePosition.x - 50}px`,
                 top: `${ripplePosition.y - 50}px`,

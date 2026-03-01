@@ -32,7 +32,7 @@ const SearchInput = React.forwardRef<HTMLInputElement, SearchInputProps>(
             'hover:bg-[var(--color-field-hover)]',
             'transition-colors duration-[var(--duration-fast)]',
             'focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--color-focus)] focus-visible:border-[var(--color-border-interactive)]',
-            'disabled:cursor-not-allowed disabled:opacity-40',
+            'disabled:cursor-not-allowed disabled:opacity-50',
             className,
           )}
           {...props}
@@ -46,7 +46,7 @@ const SearchInput = React.forwardRef<HTMLInputElement, SearchInputProps>(
           <button
             type="button"
             onClick={onClear}
-            className="absolute right-3 rounded-full h-5 w-5 flex items-center justify-center text-[var(--color-text-secondary)] hover:text-[var(--color-text-primary)] hover:bg-[var(--color-layer-02)] transition-colors"
+            className="absolute right-3 rounded-[var(--radius-full)] h-5 w-5 flex items-center justify-center text-[var(--color-text-secondary)] hover:text-[var(--color-text-primary)] hover:bg-[var(--color-layer-02)] transition-colors"
             aria-label="Clear search"
           >
             <X className="h-3.5 w-3.5" />

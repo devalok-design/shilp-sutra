@@ -85,7 +85,7 @@ function CalendarGrid({
         <button
           type="button"
           onClick={() => onMonthChange(subMonths(currentMonth, 1))}
-          className="inline-flex h-7 w-7 items-center justify-center rounded-md text-[var(--color-text-placeholder)] transition-colors hover:bg-[var(--color-field)] hover:text-[var(--color-text-secondary)]"
+          className="inline-flex h-7 w-7 items-center justify-center rounded-[var(--radius-md)] text-[var(--color-text-placeholder)] transition-colors hover:bg-[var(--color-field)] hover:text-[var(--color-text-secondary)]"
         >
           <ChevronLeft className="h-4 w-4" strokeWidth={1.5} />
         </button>
@@ -95,7 +95,7 @@ function CalendarGrid({
         <button
           type="button"
           onClick={() => onMonthChange(addMonths(currentMonth, 1))}
-          className="inline-flex h-7 w-7 items-center justify-center rounded-md text-[var(--color-text-placeholder)] transition-colors hover:bg-[var(--color-field)] hover:text-[var(--color-text-secondary)]"
+          className="inline-flex h-7 w-7 items-center justify-center rounded-[var(--radius-md)] text-[var(--color-text-placeholder)] transition-colors hover:bg-[var(--color-field)] hover:text-[var(--color-text-secondary)]"
         >
           <ChevronRight className="h-4 w-4" strokeWidth={1.5} />
         </button>
@@ -126,7 +126,7 @@ function CalendarGrid({
               onMouseEnter={() => onHover?.(d)}
               onMouseLeave={() => onHover?.(null)}
               className={cn(
-                'flex h-8 w-9 items-center justify-center rounded-md text-[13px] font-body transition-colors',
+                'flex h-8 w-9 items-center justify-center rounded-[var(--radius-md)] text-[13px] font-body transition-colors',
                 !inMonth && 'pointer-events-none opacity-0',
                 inMonth && !isSelected && !edge && !inRange &&
                   'text-[var(--color-text-primary)] hover:bg-[var(--color-field)]',
@@ -178,9 +178,9 @@ function DatePicker({
         <button
           type="button"
           className={cn(
-            'inline-flex h-9 items-center gap-2 rounded-lg border border-[var(--color-border-default)] bg-[var(--color-layer-01)] px-3 text-left transition-colors',
+            'inline-flex h-9 items-center gap-2 rounded-[var(--radius-lg)] border border-[var(--color-border-default)] bg-[var(--color-layer-01)] px-3 text-left transition-colors',
             'hover:border-[var(--border-secondary)]',
-            'focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-[var(--border-tertiary)]',
+            'focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--color-focus)] focus-visible:ring-offset-2',
             className,
           )}
         >
@@ -279,9 +279,9 @@ function DateRangePicker({
         <button
           type="button"
           className={cn(
-            'inline-flex h-9 items-center gap-2 rounded-lg border border-[var(--color-border-default)] bg-[var(--color-layer-01)] px-3 text-left transition-colors',
+            'inline-flex h-9 items-center gap-2 rounded-[var(--radius-lg)] border border-[var(--color-border-default)] bg-[var(--color-layer-01)] px-3 text-left transition-colors',
             'hover:border-[var(--border-secondary)]',
-            'focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-[var(--border-tertiary)]',
+            'focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--color-focus)] focus-visible:ring-offset-2',
             className,
           )}
         >

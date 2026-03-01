@@ -148,14 +148,14 @@ function FilesTab({
           onDragOver={handleDragOver}
           onDragLeave={handleDragLeave}
           className={cn(
-            'rounded-lg border-2 border-dashed transition-colors',
+            'rounded-[var(--radius-lg)] border-2 border-dashed transition-colors',
             dragOver
               ? 'border-[var(--color-interactive)] bg-[var(--color-interactive)]/5'
               : 'border-[var(--color-border-default)]',
           )}
         >
           <div className="flex flex-col items-center gap-2 py-6">
-            <div className="flex h-9 w-9 items-center justify-center rounded-lg bg-[var(--color-layer-02)]">
+            <div className="flex h-9 w-9 items-center justify-center rounded-[var(--radius-lg)] bg-[var(--color-layer-02)]">
               <Upload
                 className="h-4 w-4 text-[var(--color-text-placeholder)]"
                 strokeWidth={1.5}
@@ -166,7 +166,7 @@ function FilesTab({
                 type="button"
                 onClick={() => fileInputRef.current?.click()}
                 disabled={isUploading}
-                className="text-[13px] font-body font-medium text-[var(--color-interactive)] transition-colors hover:underline disabled:opacity-40"
+                className="text-[13px] font-body font-medium text-[var(--color-interactive)] transition-colors hover:underline disabled:opacity-50"
               >
                 {isUploading ? 'Uploading...' : 'Click to upload'}
               </button>
@@ -192,10 +192,10 @@ function FilesTab({
             return (
               <div
                 key={file.id}
-                className="group flex items-center gap-3 rounded-lg px-2 py-2 transition-colors hover:bg-[var(--color-field)]"
+                className="group flex items-center gap-3 rounded-[var(--radius-lg)] px-2 py-2 transition-colors hover:bg-[var(--color-field)]"
               >
                 {/* File icon */}
-                <div className="flex h-8 w-8 shrink-0 items-center justify-center rounded-lg bg-[var(--color-layer-02)]">
+                <div className="flex h-8 w-8 shrink-0 items-center justify-center rounded-[var(--radius-lg)] bg-[var(--color-layer-02)]">
                   <Icon
                     className="h-4 w-4 text-[var(--color-text-tertiary)]"
                     strokeWidth={1.5}
@@ -221,7 +221,7 @@ function FilesTab({
                       href={file.downloadUrl}
                       target="_blank"
                       rel="noopener noreferrer"
-                      className="inline-flex h-7 w-7 items-center justify-center rounded-md transition-colors hover:bg-[var(--color-layer-02)]"
+                      className="inline-flex h-7 w-7 items-center justify-center rounded-[var(--radius-md)] transition-colors hover:bg-[var(--color-layer-02)]"
                       title="Download"
                     >
                       <Download className="h-3.5 w-3.5 text-[var(--color-text-tertiary)]" />
@@ -232,7 +232,7 @@ function FilesTab({
                       <DialogTrigger asChild>
                         <button
                           type="button"
-                          className="inline-flex h-7 w-7 items-center justify-center rounded-md transition-colors hover:bg-[var(--color-error-surface)]"
+                          className="inline-flex h-7 w-7 items-center justify-center rounded-[var(--radius-md)] transition-colors hover:bg-[var(--color-error-surface)]"
                           title="Delete"
                         >
                           <Trash2 className="h-3.5 w-3.5 text-[var(--color-text-error)]" />

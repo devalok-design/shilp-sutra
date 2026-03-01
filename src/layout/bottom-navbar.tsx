@@ -70,7 +70,7 @@ function BottomNavLink({
       <div className="relative flex w-full flex-col items-center gap-1">
         <div
           className={cn(
-            'absolute top-0 h-[3px] w-full rounded-b-sm bg-[var(--color-interactive)] p-0 transition-opacity duration-300',
+            'absolute top-0 h-[3px] w-full rounded-b-[var(--radius-sm)] bg-[var(--color-interactive)] p-0 transition-opacity duration-[var(--duration-slow)]',
             isActive ? 'opacity-100' : 'opacity-0',
           )}
           aria-hidden="true"
@@ -121,7 +121,7 @@ export default function BottomNavbar({
         >
           <div className="absolute inset-0 bg-black/40" />
           <div
-            className="absolute bottom-[72px] left-0 right-0 rounded-t-2xl border-t border-[var(--color-border-default)] bg-[var(--color-layer-01)] p-4 pb-2"
+            className="absolute bottom-[72px] left-0 right-0 rounded-t-[var(--radius-2xl)] border-t border-[var(--color-border-default)] bg-[var(--color-layer-01)] p-4 pb-2"
             onClick={(e) => e.stopPropagation()}
           >
             <div className="mb-3 flex items-center justify-between">
@@ -131,7 +131,7 @@ export default function BottomNavbar({
               <button
                 onClick={() => setShowMore(false)}
                 aria-label="Close more menu"
-                className="flex h-8 w-8 items-center justify-center rounded-full hover:bg-[var(--color-layer-02)]"
+                className="flex h-8 w-8 items-center justify-center rounded-[var(--radius-full)] hover:bg-[var(--color-layer-02)]"
               >
                 <X className="h-4 w-4 text-[var(--color-text-secondary)]" aria-hidden="true" />
               </button>
@@ -143,7 +143,7 @@ export default function BottomNavbar({
                   href={item.href}
                   onClick={() => setShowMore(false)}
                   className={cn(
-                    'flex flex-col items-center gap-1.5 rounded-xl p-3 text-[11px] transition-colors',
+                    'flex flex-col items-center gap-1.5 rounded-[var(--radius-xl)] p-3 text-[11px] transition-colors',
                     isActive(item.href, item.exact)
                       ? 'bg-[var(--color-layer-02)] text-[var(--color-interactive)]'
                       : 'text-[var(--color-text-helper)] hover:bg-[var(--color-layer-02)]',
@@ -192,7 +192,7 @@ export default function BottomNavbar({
             <div className="relative flex w-full flex-col items-center gap-1">
               <div
                 className={cn(
-                  'absolute top-0 h-[3px] w-full rounded-b-sm bg-[var(--color-interactive)] p-0 transition-opacity duration-300',
+                  'absolute top-0 h-[3px] w-full rounded-b-[var(--radius-sm)] bg-[var(--color-interactive)] p-0 transition-opacity duration-[var(--duration-slow)]',
                   showMore || isMoreActive ? 'opacity-100' : 'opacity-0',
                 )}
                 aria-hidden="true"

@@ -41,14 +41,14 @@ export default function DailyBrief({
   // Shimmer skeleton while loading
   if (loading) {
     return (
-      <div className={`flex flex-col gap-3 rounded-2xl border border-[var(--color-border-default)] bg-[var(--color-layer-01)] p-5 ${className || ''}`}>
+      <div className={`flex flex-col gap-3 rounded-[var(--radius-2xl)] border border-[var(--color-border-default)] bg-[var(--color-layer-01)] p-5 ${className || ''}`}>
         <div className="flex items-center gap-2">
           <div className="h-4 w-4 animate-pulse rounded bg-[var(--color-layer-02)]" />
           <div className="h-4 w-24 animate-pulse rounded bg-[var(--color-layer-02)]" />
         </div>
         {[1, 2, 3].map((i) => (
           <div key={i} className="flex items-start gap-3">
-            <div className="mt-1.5 h-2 w-2 shrink-0 animate-pulse rounded-full bg-[var(--color-layer-02)]" />
+            <div className="mt-1.5 h-2 w-2 shrink-0 animate-pulse rounded-[var(--radius-full)] bg-[var(--color-layer-02)]" />
             <div
               className="h-4 animate-pulse rounded bg-[var(--color-layer-02)]"
               style={{ width: `${60 + i * 10}%` }}
@@ -62,7 +62,7 @@ export default function DailyBrief({
   if (!data || data.brief.length === 0) return null
 
   return (
-    <div className={`flex flex-col rounded-2xl border border-[var(--color-border-default)] bg-[var(--color-layer-01)] ${className || ''}`}>
+    <div className={`flex flex-col rounded-[var(--radius-2xl)] border border-[var(--color-border-default)] bg-[var(--color-layer-01)] ${className || ''}`}>
       <button
         type="button"
         onClick={() => setCollapsed(!collapsed)}
@@ -86,7 +86,7 @@ export default function DailyBrief({
           {data.brief.map((item, index) => (
             <div key={index} className="flex items-start gap-3">
               <div
-                className={`mt-1.5 h-2 w-2 shrink-0 rounded-full ${DOT_COLORS[index % DOT_COLORS.length]}`}
+                className={`mt-1.5 h-2 w-2 shrink-0 rounded-[var(--radius-full)] ${DOT_COLORS[index % DOT_COLORS.length]}`}
               />
               <div className="B2-Reg text-[var(--color-text-secondary)] [&_p]:mb-0 [&_strong]:font-semibold [&_code]:rounded [&_code]:bg-[var(--color-field)] [&_code]:px-1 [&_code]:py-0.5 [&_code]:text-xs [&_a]:text-[var(--color-interactive)] [&_a]:underline">
                 <ReactMarkdown>{item}</ReactMarkdown>

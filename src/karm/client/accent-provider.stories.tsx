@@ -16,7 +16,7 @@ type Story = StoryObj<typeof AccentProvider>
 const AccentVisualizerDecorator = (Story: React.ComponentType) => (
   <div>
     <Story />
-    <div className="flex flex-col gap-4 p-6 rounded-xl border border-[var(--color-border-subtle)]">
+    <div className="flex flex-col gap-4 p-6 rounded-[var(--radius-xl)] border border-[var(--color-border-subtle)]">
       <h3 className="text-sm font-semibold text-[var(--color-text-primary)]">
         AccentProvider injects CSS custom properties onto the document root. The
         swatches below read from the injected variables:
@@ -24,7 +24,7 @@ const AccentVisualizerDecorator = (Story: React.ComponentType) => (
       <div className="flex gap-3">
         <div className="flex flex-col items-center gap-1">
           <div
-            className="h-12 w-12 rounded-lg border"
+            className="h-12 w-12 rounded-[var(--radius-lg)] border"
             style={{ backgroundColor: 'var(--color-accent, #ccc)' }}
           />
           <span className="text-xs text-[var(--color-text-secondary)]">
@@ -33,7 +33,7 @@ const AccentVisualizerDecorator = (Story: React.ComponentType) => (
         </div>
         <div className="flex flex-col items-center gap-1">
           <div
-            className="h-12 w-12 rounded-lg border"
+            className="h-12 w-12 rounded-[var(--radius-lg)] border"
             style={{ backgroundColor: 'var(--color-accent-light, #eee)' }}
           />
           <span className="text-xs text-[var(--color-text-secondary)]">
@@ -42,7 +42,7 @@ const AccentVisualizerDecorator = (Story: React.ComponentType) => (
         </div>
         <div className="flex flex-col items-center gap-1">
           <div
-            className="h-12 w-12 rounded-lg border"
+            className="h-12 w-12 rounded-[var(--radius-lg)] border"
             style={{ backgroundColor: 'var(--color-accent-dark, #999)' }}
           />
           <span className="text-xs text-[var(--color-text-secondary)]">
@@ -52,13 +52,13 @@ const AccentVisualizerDecorator = (Story: React.ComponentType) => (
       </div>
       <div className="mt-2 flex items-center gap-3">
         <button
-          className="rounded-lg px-4 py-2 text-sm font-medium text-white"
+          className="rounded-[var(--radius-lg)] px-4 py-2 text-sm font-medium text-white"
           style={{ backgroundColor: 'var(--color-accent, #6366f1)' }}
         >
           Accent Button
         </button>
         <span
-          className="rounded-full px-3 py-1 text-xs font-medium"
+          className="rounded-[var(--radius-full)] px-3 py-1 text-xs font-medium"
           style={{
             backgroundColor: 'var(--color-accent-light, #eef2ff)',
             color: 'var(--color-accent, #6366f1)',

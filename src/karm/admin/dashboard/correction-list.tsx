@@ -73,7 +73,7 @@ export function CorrectionList({
           <div className="max-md:border-1 flex items-center justify-between px-2 py-3.5 max-md:rounded-[8px] max-md:border-[var(--color-border-default)]">
             <div className="flex items-center gap-3">
               <img
-                className="h-10 w-10 rounded-full border-2 max-md:mb-[auto]"
+                className="h-10 w-10 rounded-[var(--radius-full)] border-2 max-md:mb-[auto]"
                 src={
                   userImages[correction?.user?.id || ''] ||
                   (assetsBaseUrl
@@ -110,7 +110,7 @@ export function CorrectionList({
                 <Tooltip delayDuration={0}>
                   <TooltipTrigger asChild>
                     <button
-                      className={`rounded-full p-2 text-[var(--color-text-tertiary)] hover:text-[var(--color-text-secondary)] ${
+                      className={`rounded-[var(--radius-full)] p-2 text-[var(--color-text-tertiary)] hover:text-[var(--color-text-secondary)] ${
                         correction?.user?.id === currentUserId
                           ? 'cursor-not-allowed opacity-50'
                           : ''
@@ -144,7 +144,7 @@ export function CorrectionList({
                 <Tooltip delayDuration={0}>
                   <TooltipTrigger asChild>
                     <button
-                      className={`rounded-full p-2 ${
+                      className={`rounded-[var(--radius-full)] p-2 ${
                         correction?.user?.id === currentUserId
                           ? 'cursor-not-allowed opacity-50'
                           : ''

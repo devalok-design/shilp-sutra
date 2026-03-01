@@ -113,9 +113,9 @@ function SubtasksTab({
       {/* Progress bar */}
       {totalCount > 0 && (
         <div className="mb-4 flex items-center gap-3">
-          <div className="flex-1 h-1.5 rounded-full bg-[var(--color-field)] overflow-hidden">
+          <div className="flex-1 h-1.5 rounded-[var(--radius-full)] bg-[var(--color-field)] overflow-hidden">
             <div
-              className="h-full rounded-full bg-[var(--color-interactive)] transition-all duration-300"
+              className="h-full rounded-[var(--radius-full)] bg-[var(--color-interactive)] transition-[width] duration-[var(--duration-slow)]"
               style={{
                 width: `${totalCount > 0 ? (completedCount / totalCount) * 100 : 0}%`,
               }}
@@ -139,7 +139,7 @@ function SubtasksTab({
               <div
                 key={subtask.id}
                 className={cn(
-                  'group flex items-center gap-2.5 rounded-lg px-2 py-1.5 transition-colors',
+                  'group flex items-center gap-2.5 rounded-[var(--radius-lg)] px-2 py-1.5 transition-colors',
                   'hover:bg-[var(--color-field)] cursor-pointer',
                 )}
                 onClick={() => onClickSubtask?.(subtask.id)}
@@ -166,7 +166,7 @@ function SubtasksTab({
                 {/* Priority dot */}
                 <div
                   className={cn(
-                    'h-2 w-2 shrink-0 rounded-full',
+                    'h-2 w-2 shrink-0 rounded-[var(--radius-full)]',
                     PRIORITY_DOT_COLORS[subtask.priority],
                   )}
                 />
@@ -212,7 +212,7 @@ function SubtasksTab({
       {/* Add subtask -- hidden in readOnly mode */}
       {!readOnly && (
         isAdding ? (
-          <div className="mt-2 flex items-center gap-2 rounded-lg border border-[var(--color-border-default)] bg-[var(--color-layer-01)] px-3 py-2">
+          <div className="mt-2 flex items-center gap-2 rounded-[var(--radius-lg)] border border-[var(--color-border-default)] bg-[var(--color-layer-01)] px-3 py-2">
             <input
               ref={inputRef}
               type="text"
@@ -229,7 +229,7 @@ function SubtasksTab({
               type="button"
               onClick={handleSubmit}
               disabled={!newTitle.trim()}
-              className="inline-flex h-6 items-center gap-1 rounded-md bg-[var(--color-interactive)] px-2.5 text-[11px] font-body font-semibold text-[var(--color-text-on-color)] transition-colors hover:bg-[var(--color-interactive-hover)] disabled:opacity-40"
+              className="inline-flex h-6 items-center gap-1 rounded-[var(--radius-md)] bg-[var(--color-interactive)] px-2.5 text-[11px] font-body font-semibold text-[var(--color-text-on-color)] transition-colors hover:bg-[var(--color-interactive-hover)] disabled:opacity-50"
             >
               Add
             </button>
@@ -238,7 +238,7 @@ function SubtasksTab({
           <button
             type="button"
             onClick={() => setIsAdding(true)}
-            className="mt-2 inline-flex items-center gap-1.5 rounded-lg px-2 py-1.5 text-[13px] font-body text-[var(--color-text-placeholder)] transition-colors hover:bg-[var(--color-field)] hover:text-[var(--color-text-secondary)]"
+            className="mt-2 inline-flex items-center gap-1.5 rounded-[var(--radius-lg)] px-2 py-1.5 text-[13px] font-body text-[var(--color-text-placeholder)] transition-colors hover:bg-[var(--color-field)] hover:text-[var(--color-text-secondary)]"
           >
             <Plus className="h-3.5 w-3.5" strokeWidth={1.5} />
             Add subtask

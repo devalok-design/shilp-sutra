@@ -3,7 +3,7 @@ import { cva, type VariantProps } from 'class-variance-authority'
 import { cn } from '../ui/lib/utils'
 
 const contentCardVariants = cva(
-  'rounded-lg transition-all duration-200',
+  'rounded-[var(--radius-lg)] transition-[color,background-color,border-color,box-shadow] duration-[var(--duration-moderate)]',
   {
     variants: {
       variant: {

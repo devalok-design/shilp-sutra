@@ -475,7 +475,7 @@ export function AdminDashboard({
               tabIndex={0}
               className={`${
                 activeTimeFrame === 'weekly'
-                  ? 'w-full rounded-t-lg pb-3.5 pt-4 max-md:rounded-lg'
+                  ? 'w-full rounded-t-[var(--radius-lg)] pb-3.5 pt-4 max-md:rounded-[var(--radius-lg)]'
                   : 'pb-0 pt-0'
               } flex cursor-pointer flex-col items-center text-center ${
                 activeTimeFrame === 'weekly' && activeIndex === index
@@ -512,9 +512,9 @@ export function AdminDashboard({
           className={cn(
             'flex w-full flex-col rounded-[8px] bg-[var(--color-layer-02)] md:p-0 md:p-6 max-md:bg-transparent',
             {
-              'rounded-lg': !isFirstDate && !isLastDate,
-              'rounded-lg rounded-tl-none': isFirstDate && !isLastDate,
-              'rounded-b-lg rounded-tr-none': !isFirstDate && isLastDate,
+              'rounded-[var(--radius-lg)]': !isFirstDate && !isLastDate,
+              'rounded-[var(--radius-lg)] rounded-tl-none': isFirstDate && !isLastDate,
+              'rounded-b-[var(--radius-lg)] rounded-tr-none': !isFirstDate && isLastDate,
               'rounded-none': isFirstDate && isLastDate,
             },
           )}

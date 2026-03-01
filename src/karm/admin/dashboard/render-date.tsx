@@ -222,7 +222,7 @@ export function RenderDate({
     }
 
     if (state.today && !state.isBreak) {
-      backgroundColor = '#D33163'
+      backgroundColor = 'var(--color-interactive)'
       color = '#FFFFFF'
       boxShadow =
         '0px 4px 4px 0px rgba(255, 255, 255, 0.25) inset, 0px 0px 8px 0px var(--color-interactive-hover, #B6204A) inset'

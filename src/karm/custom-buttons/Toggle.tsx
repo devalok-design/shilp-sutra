@@ -231,7 +231,7 @@ const ToggleButton: React.FC<ToggleButtonProps> = ({
       ref={buttonRef}
       className={cn(
         // Base styles
-        'inline-flex items-center gap-2 rounded-[88px] border-none outline-none cursor-pointer transition-all duration-200 ease-in-out relative overflow-hidden',
+        'inline-flex items-center gap-2 rounded-[88px] border-none outline-none cursor-pointer transition-[color,background-color,border-color,box-shadow] duration-[var(--duration-moderate)] ease-in-out relative overflow-hidden',
         "font-['Ranade'] text-sm font-semibold leading-none text-center",
         'bg-[var(--color-layer-01,#fcf7f7)]',
         'text-[var(--color-text-tertiary,#6B6164)]',
@@ -276,7 +276,7 @@ const ToggleButton: React.FC<ToggleButtonProps> = ({
         <span
           key={ripple.id}
           className={cn(
-            'absolute rounded-full -translate-x-1/2 -translate-y-1/2 scale-0 animate-ripple pointer-events-none',
+            'absolute rounded-[var(--radius-full)] -translate-x-1/2 -translate-y-1/2 scale-0 animate-ripple pointer-events-none',
             rippleBg[color],
           )}
           style={{

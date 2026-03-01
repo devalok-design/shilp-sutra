@@ -51,7 +51,7 @@ export function ChatInput({
 
   return (
     <div className="border-t border-[var(--color-border-default)] bg-[var(--color-layer-01)] p-3">
-      <div className="flex items-end gap-2 rounded-xl border border-[var(--color-border-default)] bg-[var(--color-field)] px-3 py-2">
+      <div className="flex items-end gap-2 rounded-[var(--radius-xl)] border border-[var(--color-border-default)] bg-[var(--color-field)] px-3 py-2">
         <textarea
           ref={textareaRef}
           value={text}
@@ -68,7 +68,7 @@ export function ChatInput({
         {isStreaming ? (
           <button
             onClick={onCancel}
-            className="flex h-8 w-8 shrink-0 items-center justify-center rounded-lg bg-red-500 text-white transition-colors hover:bg-red-600"
+            className="flex h-8 w-8 shrink-0 items-center justify-center rounded-[var(--radius-lg)] bg-red-500 text-white transition-colors hover:bg-red-600"
             aria-label="Stop generating"
           >
             <Square className="h-3.5 w-3.5" />
@@ -77,7 +77,7 @@ export function ChatInput({
           <button
             onClick={handleSend}
             disabled={!text.trim()}
-            className="flex h-8 w-8 shrink-0 items-center justify-center rounded-lg bg-[var(--color-interactive)] text-white transition-colors hover:opacity-90 disabled:opacity-40"
+            className="flex h-8 w-8 shrink-0 items-center justify-center rounded-[var(--radius-lg)] bg-[var(--color-interactive)] text-white transition-colors hover:opacity-90 disabled:opacity-50"
             aria-label="Send message"
           >
             <Send className="h-3.5 w-3.5" />

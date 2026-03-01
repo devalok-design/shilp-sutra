@@ -40,9 +40,9 @@ function ToolbarButton({
       disabled={disabled}
       title={title}
       className={cn(
-        'inline-flex h-7 w-7 items-center justify-center rounded-md transition-colors',
+        'inline-flex h-7 w-7 items-center justify-center rounded-[var(--radius-md)] transition-colors',
         'hover:bg-[var(--color-field)]',
-        'disabled:pointer-events-none disabled:opacity-40',
+        'disabled:pointer-events-none disabled:opacity-50',
         isActive
           ? 'bg-[var(--color-field)] text-[var(--color-interactive)]'
           : 'text-[var(--color-text-placeholder)]',
@@ -189,7 +189,7 @@ function RichTextEditor({
           '[&_ul]:ml-4 [&_ul]:list-disc [&_ol]:ml-4 [&_ol]:list-decimal',
           '[&_li]:text-[var(--color-text-secondary)]',
           '[&_code]:rounded [&_code]:bg-[var(--color-layer-02)] [&_code]:px-1.5 [&_code]:py-0.5 [&_code]:text-[13px] [&_code]:text-[var(--color-interactive)]',
-          '[&_pre]:rounded-lg [&_pre]:bg-[var(--color-layer-02)] [&_pre]:p-3',
+          '[&_pre]:rounded-[var(--radius-lg)] [&_pre]:bg-[var(--color-layer-02)] [&_pre]:p-3',
           '[&_strong]:font-semibold [&_strong]:text-[var(--color-text-primary)]',
         ),
       },
@@ -204,7 +204,7 @@ function RichTextEditor({
   return (
     <div
       className={cn(
-        'overflow-hidden rounded-lg border border-[var(--color-border-default)] bg-[var(--color-layer-01)]',
+        'overflow-hidden rounded-[var(--radius-lg)] border border-[var(--color-border-default)] bg-[var(--color-layer-01)]',
         'transition-colors focus-within:border-[var(--border-secondary)]',
         className,
       )}
@@ -242,7 +242,7 @@ function RichTextViewer({ content, className }: RichTextViewerProps) {
           '[&_ul]:ml-4 [&_ul]:list-disc [&_ol]:ml-4 [&_ol]:list-decimal',
           '[&_li]:text-[var(--color-text-secondary)]',
           '[&_code]:rounded [&_code]:bg-[var(--color-layer-02)] [&_code]:px-1.5 [&_code]:py-0.5 [&_code]:text-[13px] [&_code]:text-[var(--color-interactive)]',
-          '[&_pre]:rounded-lg [&_pre]:bg-[var(--color-layer-02)] [&_pre]:p-3',
+          '[&_pre]:rounded-[var(--radius-lg)] [&_pre]:bg-[var(--color-layer-02)] [&_pre]:p-3',
           '[&_strong]:font-semibold [&_strong]:text-[var(--color-text-primary)]',
         ),
       },

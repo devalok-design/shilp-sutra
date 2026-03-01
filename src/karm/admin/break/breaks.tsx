@@ -82,10 +82,10 @@ export function Breaks({
                   <img
                     src={userImages[breakItem.userId]}
                     alt={''}
-                    className="h-7 w-full max-w-7 flex-shrink-0 rounded-full object-cover"
+                    className="h-7 w-full max-w-7 flex-shrink-0 rounded-[var(--radius-full)] object-cover"
                   />
                 ) : (
-                  <span className="flex h-7 w-full max-w-7 items-center justify-center rounded-full bg-[var(--mapped-borders-margin-tertiary)] text-xs font-medium uppercase text-[--color-text-primary]">
+                  <span className="flex h-7 w-full max-w-7 items-center justify-center rounded-[var(--radius-full)] bg-[var(--mapped-borders-margin-tertiary)] text-xs font-medium uppercase text-[--color-text-primary]">
                     {breakItem.user?.name?.[0] || 'U'}
                   </span>
                 )}

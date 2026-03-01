@@ -69,12 +69,12 @@ export function LeaveRequest({
         <div className="flex w-full items-center gap-3">
           {userImages[request.user?.id || ''] ? (
             <img
-              className="bg-red h-10 w-10 overflow-hidden rounded-full bg-[var(--color-layer-02)]"
+              className="bg-red h-10 w-10 overflow-hidden rounded-[var(--radius-full)] bg-[var(--color-layer-02)]"
               src={userImages[request.user?.id || '']}
               alt={''}
             />
           ) : (
-            <span className="flex h-7 w-full max-w-7 items-center justify-center rounded-full bg-[var(--mapped-borders-margin-tertiary)] text-xs font-medium uppercase text-[--color-text-primary]">
+            <span className="flex h-7 w-full max-w-7 items-center justify-center rounded-[var(--radius-full)] bg-[var(--mapped-borders-margin-tertiary)] text-xs font-medium uppercase text-[--color-text-primary]">
               {request.user?.name?.[0] || 'U'}
             </span>
           )}

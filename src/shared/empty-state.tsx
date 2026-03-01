@@ -31,7 +31,7 @@ function EmptyState({
     >
       <div
         className={cn(
-          'flex items-center justify-center rounded-xl bg-[var(--color-layer-02)]',
+          'flex items-center justify-center rounded-[var(--radius-xl)] bg-[var(--color-layer-02)]',
           compact ? 'h-10 w-10' : 'h-12 w-12',
         )}
       >

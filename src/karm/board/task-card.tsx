@@ -98,8 +98,8 @@ function TaskCardVisual({
   return (
     <div
       className={cn(
-        'group/card relative rounded-lg border border-border/60 bg-white p-3 shadow-sm',
-        'transition-all duration-150',
+        'group/card relative rounded-[var(--radius-lg)] border border-border/60 bg-white p-3 shadow-sm',
+        'transition-[color,background-color,border-color,box-shadow] duration-[var(--duration-moderate)]',
         'hover:shadow-md hover:border-border',
         'cursor-pointer',
         isDragging && !isDragOverlay && 'opacity-40',
@@ -136,7 +136,7 @@ function TaskCardVisual({
         {/* Priority dot */}
         <div
           className={cn(
-            'h-2 w-2 rounded-full flex-shrink-0',
+            'h-2 w-2 rounded-[var(--radius-full)] flex-shrink-0',
             PRIORITY_COLORS[task.priority],
           )}
           title={PRIORITY_LABELS[task.priority]}
@@ -192,7 +192,7 @@ function TaskCardVisual({
               </Avatar>
             ))}
             {extraCount > 0 && (
-              <div className="flex h-5 w-5 items-center justify-center rounded-full border border-white bg-muted text-[8px] font-medium text-muted-foreground">
+              <div className="flex h-5 w-5 items-center justify-center rounded-[var(--radius-full)] border border-white bg-muted text-[8px] font-medium text-muted-foreground">
                 +{extraCount}
               </div>
             )}

@@ -127,7 +127,7 @@ export function BreakRequestCard({
         {/* Left section - Break information or mobile cancel form */}
         {showMobileCancelForm && isSingleDayBreak ? (
           <div className="flex h-full w-full flex-col items-center justify-center px-[13px] pt-[17px]">
-            <div className="w-full gap-4 rounded-md bg-[var(--color-layer-01)] px-6 py-8 md:hidden">
+            <div className="w-full gap-4 rounded-[var(--radius-md)] bg-[var(--color-layer-01)] px-6 py-8 md:hidden">
               <div className="flex flex-col items-center gap-[12px]">
                 <div className="T7-Reg semibold text-center text-[var(--color-text-primary)]">
                   Cancel this break?
@@ -152,7 +152,7 @@ export function BreakRequestCard({
                 </button>
               </div>
               <button
-                className="absolute right-4 top-4 rounded-sm p-3 opacity-70 ring-offset-background transition-opacity hover:opacity-100 focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2 disabled:pointer-events-none data-[state=open]:bg-accent data-[state=open]:text-muted-foreground"
+                className="absolute right-4 top-4 rounded-[var(--radius-sm)] p-3 text-[var(--color-icon-secondary)] transition-colors hover:text-[var(--color-icon-primary)] hover:bg-[var(--color-field)] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--color-focus)] disabled:pointer-events-none"
                 onClick={() => setShowMobileCancelForm(false)}
               >
                 <CloseIcon className="h-6 w-6" />
@@ -296,7 +296,7 @@ export function BreakRequestCard({
                         type="checkbox"
                         checked={!deleteSingleDay}
                         onChange={(e) => setDeleteSingleDay(!e.target.checked)}
-                        className="rounded-full"
+                        className="rounded-[var(--radius-full)]"
                       />
                       <span className="text-[var(--color-text-secondary)]">
                         {getDaySuffix(

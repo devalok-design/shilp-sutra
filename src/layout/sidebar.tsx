@@ -77,9 +77,9 @@ function NavLink({ item, isActive }: { item: NavItem; isActive: boolean }) {
         isActive={isActive}
         tooltip={item.title}
         className={cn(
-          'relative gap-3 rounded-lg px-3 py-2.5 transition-all',
+          'relative gap-3 rounded-[var(--radius-lg)] px-3 py-2.5 transition-colors',
           isActive
-            ? "bg-[var(--color-interactive-subtle)] text-[var(--color-interactive)] after:absolute after:right-0 after:top-0 after:h-full after:w-0.5 after:rounded-l-full after:bg-[var(--color-interactive)] after:content-['']"
+            ? "bg-[var(--color-interactive-subtle)] text-[var(--color-interactive)] after:absolute after:right-0 after:top-0 after:h-full after:w-0.5 after:rounded-l-[var(--radius-full)] after:bg-[var(--color-interactive)] after:content-['']"
             : 'text-[var(--color-text-helper)] hover:bg-[var(--color-layer-02)] hover:text-[var(--color-text-primary)]',
         )}
       >

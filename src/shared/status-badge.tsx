@@ -3,7 +3,7 @@ import { cva, type VariantProps } from 'class-variance-authority'
 import { cn } from '../ui/lib/utils'
 
 const statusBadgeVariants = cva(
-  'inline-flex items-center gap-1.5 rounded-full font-body',
+  'inline-flex items-center gap-1.5 rounded-[var(--radius-full)] font-body',
   {
     variants: {
       status: {
@@ -66,7 +66,7 @@ function StatusBadge({
       {!hideDot && (
         <span
           className={cn(
-            'shrink-0 rounded-full',
+            'shrink-0 rounded-[var(--radius-full)]',
             size === 'sm' ? 'h-1.5 w-1.5' : 'h-2 w-2',
             dotColorMap[statusKey],
           )}

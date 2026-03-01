@@ -166,7 +166,7 @@ const CustomButton: React.FC<CustomButtonProps> = ({
       ref={buttonRef}
       className={cn(
         // Base styles
-        'inline-flex items-center justify-center gap-1 px-5 py-3 rounded-[88px] cursor-pointer transition-all duration-200 ease-in-out relative overflow-hidden',
+        'inline-flex items-center justify-center gap-1 px-5 py-3 rounded-[88px] cursor-pointer transition-[color,background-color,border-color,box-shadow] duration-[var(--duration-moderate)] ease-in-out relative overflow-hidden',
         "font-['Ranade'] text-sm font-semibold leading-none text-center",
         // Type (variant) base styles
         typeClasses[type],
@@ -197,7 +197,7 @@ const CustomButton: React.FC<CustomButtonProps> = ({
         <span
           key={ripple.id}
           className={cn(
-            'absolute rounded-full -translate-x-1/2 -translate-y-1/2 scale-0 animate-ripple pointer-events-none',
+            'absolute rounded-[var(--radius-full)] -translate-x-1/2 -translate-y-1/2 scale-0 animate-ripple pointer-events-none',
             rippleBg[type],
           )}
           style={{

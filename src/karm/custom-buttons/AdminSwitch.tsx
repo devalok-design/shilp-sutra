@@ -24,7 +24,7 @@ const AdminSwitch: React.FC<AdminSwitchProps> = ({
       disabled={disabled}
       className={cn(
         // Base styles
-        'relative w-[68px] h-10 rounded-[88px] transition-all duration-200 ease-in-out',
+        'relative w-[68px] h-10 rounded-[88px] transition-colors duration-[var(--duration-moderate)] ease-in-out',
         'bg-[var(--color-field)]',
         // Checked state
         'data-[state=checked]:bg-[var(--color-interactive-hover)]',
@@ -36,7 +36,7 @@ const AdminSwitch: React.FC<AdminSwitchProps> = ({
         '[&[data-state=checked]>span]:bg-center',
         '[&[data-state=checked]>span]:bg-[length:20px]',
         '[&[data-state=checked]>span]:transition-all',
-        '[&[data-state=checked]>span]:duration-200',
+        '[&[data-state=checked]>span]:duration-[var(--duration-moderate)]',
         '[&[data-state=checked]>span]:ease-in-out',
         // Thumb styles – unchecked
         '[&[data-state=unchecked]>span]:translate-x-[2px]',
@@ -46,7 +46,7 @@ const AdminSwitch: React.FC<AdminSwitchProps> = ({
         '[&[data-state=unchecked]>span]:bg-center',
         '[&[data-state=unchecked]>span]:bg-[length:20px]',
         '[&[data-state=unchecked]>span]:transition-all',
-        '[&[data-state=unchecked]>span]:duration-200',
+        '[&[data-state=unchecked]>span]:duration-[var(--duration-moderate)]',
         '[&[data-state=unchecked]>span]:ease-in-out',
         // Hover state (when not disabled)
         !disabled && 'hover:bg-[var(--color-field,#f7e9e9)]',

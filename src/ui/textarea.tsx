@@ -19,7 +19,7 @@ const Textarea = React.forwardRef<HTMLTextAreaElement, TextareaProps>(
           'hover:bg-[var(--color-field-hover)]',
           'transition-colors duration-[var(--duration-fast)]',
           'focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--color-focus)] focus-visible:border-[var(--color-border-interactive)]',
-          'disabled:cursor-not-allowed disabled:opacity-40',
+          'disabled:cursor-not-allowed disabled:opacity-50',
           'read-only:bg-[var(--color-layer-02)] read-only:cursor-default',
           state === 'error' && 'border-[var(--color-border-error)] focus-visible:ring-[var(--color-error)]',
           state === 'warning' && 'border-[var(--color-border-warning)] focus-visible:ring-[var(--color-warning)]',

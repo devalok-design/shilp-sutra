@@ -231,7 +231,7 @@ const Sidebar = forwardRef<
       >
         <div
           className={cn(
-            'relative h-svh w-[--sidebar-width] bg-transparent transition-[width] duration-200 ease-linear',
+            'relative h-svh w-[--sidebar-width] bg-transparent transition-[width] duration-[var(--duration-moderate)] ease-linear',
             'group-data-[collapsible=offcanvas]:w-0',
             'group-data-[side=right]:rotate-180',
             variant === 'floating' || variant === 'inset'
@@ -241,7 +241,7 @@ const Sidebar = forwardRef<
         />
         <div
           className={cn(
-            'fixed inset-y-0 z-10 hidden h-svh w-[--sidebar-width] transition-[left,right,width] duration-200 ease-linear md:flex',
+            'fixed inset-y-0 z-10 hidden h-svh w-[--sidebar-width] transition-[left,right,width] duration-[var(--duration-moderate)] ease-linear md:flex',
             side === 'left'
               ? 'left-0 group-data-[collapsible=offcanvas]:left-[calc(var(--sidebar-width)*-1)]'
               : 'right-0 group-data-[collapsible=offcanvas]:right-[calc(var(--sidebar-width)*-1)]',
@@ -254,7 +254,7 @@ const Sidebar = forwardRef<
         >
           <div
             data-sidebar="sidebar"
-            className="flex h-full w-full flex-col bg-[var(--color-layer-01)] group-data-[variant=floating]:rounded-lg group-data-[variant=floating]:border group-data-[variant=floating]:border-[var(--color-border-subtle)] group-data-[variant=floating]:shadow"
+            className="flex h-full w-full flex-col bg-[var(--color-layer-01)] group-data-[variant=floating]:rounded-[var(--radius-lg)] group-data-[variant=floating]:border group-data-[variant=floating]:border-[var(--color-border-subtle)] group-data-[variant=floating]:shadow"
           >
             {children}
           </div>
@@ -304,7 +304,7 @@ const SidebarRail = forwardRef<HTMLButtonElement, ComponentProps<'button'>>(
         onClick={toggleSidebar}
         title="Toggle Sidebar"
         className={cn(
-          'hover:after:bg-[var(--color-border-strong)] absolute inset-y-0 z-20 hidden w-4 -translate-x-1/2 transition-all ease-linear after:absolute after:inset-y-0 after:left-1/2 after:w-[2px] group-data-[side=left]:-right-4 group-data-[side=right]:left-0 sm:flex',
+          'hover:after:bg-[var(--color-border-strong)] absolute inset-y-0 z-20 hidden w-4 -translate-x-1/2 transition-colors ease-linear after:absolute after:inset-y-0 after:left-1/2 after:w-[2px] group-data-[side=left]:-right-4 group-data-[side=right]:left-0 sm:flex',
           '[[data-side=left]_&]:cursor-w-resize [[data-side=right]_&]:cursor-e-resize',
           '[[data-side=left][data-state=collapsed]_&]:cursor-e-resize [[data-side=right][data-state=collapsed]_&]:cursor-w-resize',
           'group-data-[collapsible=offcanvas]:translate-x-0 group-data-[collapsible=offcanvas]:after:left-full group-data-[collapsible=offcanvas]:hover:bg-[var(--color-layer-02)]',
@@ -326,7 +326,7 @@ const SidebarInset = forwardRef<HTMLDivElement, ComponentProps<'main'>>(
         ref={ref}
         className={cn(
           'relative flex min-h-svh flex-1 flex-col bg-[var(--color-background)]',
-          'peer-data-[variant=inset]:min-h-[calc(100svh-theme(spacing.4))] md:peer-data-[variant=inset]:m-2 md:peer-data-[state=collapsed]:peer-data-[variant=inset]:ml-2 md:peer-data-[variant=inset]:ml-0 md:peer-data-[variant=inset]:rounded-xl md:peer-data-[variant=inset]:shadow',
+          'peer-data-[variant=inset]:min-h-[calc(100svh-theme(spacing.4))] md:peer-data-[variant=inset]:m-2 md:peer-data-[state=collapsed]:peer-data-[variant=inset]:ml-2 md:peer-data-[variant=inset]:ml-0 md:peer-data-[variant=inset]:rounded-[var(--radius-xl)] md:peer-data-[variant=inset]:shadow',
           className,
         )}
         {...props}
@@ -442,7 +442,7 @@ const SidebarGroupLabel = forwardRef<
       ref={ref}
       data-sidebar="group-label"
       className={cn(
-        'flex h-8 shrink-0 items-center rounded-md px-2 text-xs font-medium text-[var(--color-text-secondary)] outline-none ring-[var(--color-focus)] transition-[margin,opa] duration-200 ease-linear focus-visible:ring-2 [&>svg]:size-4 [&>svg]:shrink-0',
+        'flex h-8 shrink-0 items-center rounded-[var(--radius-md)] px-2 text-xs font-medium text-[var(--color-text-secondary)] outline-none ring-[var(--color-focus)] transition-[margin,opa] duration-[var(--duration-moderate)] ease-linear focus-visible:ring-2 [&>svg]:size-4 [&>svg]:shrink-0',
         'group-data-[collapsible=icon]:-mt-8 group-data-[collapsible=icon]:opacity-0',
         className,
       )}
@@ -463,7 +463,7 @@ const SidebarGroupAction = forwardRef<
       ref={ref}
       data-sidebar="group-action"
       className={cn(
-        'hover:bg-[var(--color-layer-02)] absolute right-3 top-3.5 flex aspect-square w-5 items-center justify-center rounded-md p-0 text-[var(--color-text-primary)] outline-none ring-[var(--color-focus)] transition-transform hover:text-[var(--color-text-primary)] focus-visible:ring-2 [&>svg]:size-4 [&>svg]:shrink-0',
+        'hover:bg-[var(--color-layer-02)] absolute right-3 top-3.5 flex aspect-square w-5 items-center justify-center rounded-[var(--radius-md)] p-0 text-[var(--color-text-primary)] outline-none ring-[var(--color-focus)] transition-transform hover:text-[var(--color-text-primary)] focus-visible:ring-2 [&>svg]:size-4 [&>svg]:shrink-0',
         'after:absolute after:-inset-2 after:md:hidden',
         'group-data-[collapsible=icon]:hidden',
         className,
@@ -511,7 +511,7 @@ const SidebarMenuItem = forwardRef<HTMLLIElement, ComponentProps<'li'>>(
 SidebarMenuItem.displayName = 'SidebarMenuItem'
 
 const sidebarMenuButtonVariants = cva(
-  'peer/menu-button hover:bg-[var(--color-layer-02)] active:bg-[var(--color-interactive-subtle)] data-[active=true]:bg-[var(--color-interactive-subtle)] data-[state=open]:hover:bg-[var(--color-layer-02)] flex w-full items-center gap-2 overflow-hidden rounded-md p-2 text-left text-sm outline-none ring-[var(--color-focus)] transition-[width,height,padding] hover:text-[var(--color-text-primary)] focus-visible:ring-2 active:text-[var(--color-text-primary)] disabled:pointer-events-none disabled:opacity-50 group-has-[[data-sidebar=menu-action]]/menu-item:pr-8 aria-disabled:pointer-events-none aria-disabled:opacity-50 data-[active=true]:font-medium data-[active=true]:text-[var(--color-text-primary)] data-[state=open]:hover:text-[var(--color-text-primary)] group-data-[collapsible=icon]:!size-8 group-data-[collapsible=icon]:!p-2 [&>span:last-child]:truncate [&>svg]:size-4 [&>svg]:shrink-0',
+  'peer/menu-button hover:bg-[var(--color-layer-02)] active:bg-[var(--color-interactive-subtle)] data-[active=true]:bg-[var(--color-interactive-subtle)] data-[state=open]:hover:bg-[var(--color-layer-02)] flex w-full items-center gap-2 overflow-hidden rounded-[var(--radius-md)] p-2 text-left text-sm outline-none ring-[var(--color-focus)] transition-[width,height,padding] hover:text-[var(--color-text-primary)] focus-visible:ring-2 active:text-[var(--color-text-primary)] disabled:pointer-events-none disabled:opacity-50 group-has-[[data-sidebar=menu-action]]/menu-item:pr-8 aria-disabled:pointer-events-none aria-disabled:opacity-50 data-[active=true]:font-medium data-[active=true]:text-[var(--color-text-primary)] data-[state=open]:hover:text-[var(--color-text-primary)] group-data-[collapsible=icon]:!size-8 group-data-[collapsible=icon]:!p-2 [&>span:last-child]:truncate [&>svg]:size-4 [&>svg]:shrink-0',
   {
     variants: {
       variant: {
@@ -606,7 +606,7 @@ const SidebarMenuAction = forwardRef<
       ref={ref}
       data-sidebar="menu-action"
       className={cn(
-        'hover:bg-[var(--color-layer-02)] absolute right-1 top-1.5 flex aspect-square w-5 items-center justify-center rounded-md p-0 text-[var(--color-text-primary)] outline-none ring-[var(--color-focus)] transition-transform hover:text-[var(--color-text-primary)] focus-visible:ring-2 peer-hover/menu-button:text-[var(--color-text-primary)] [&>svg]:size-4 [&>svg]:shrink-0',
+        'hover:bg-[var(--color-layer-02)] absolute right-1 top-1.5 flex aspect-square w-5 items-center justify-center rounded-[var(--radius-md)] p-0 text-[var(--color-text-primary)] outline-none ring-[var(--color-focus)] transition-transform hover:text-[var(--color-text-primary)] focus-visible:ring-2 peer-hover/menu-button:text-[var(--color-text-primary)] [&>svg]:size-4 [&>svg]:shrink-0',
         'after:absolute after:-inset-2 after:md:hidden',
         'peer-data-[size=sm]/menu-button:top-1',
         'peer-data-[size=md]/menu-button:top-1.5',
@@ -628,7 +628,7 @@ const SidebarMenuBadge = forwardRef<HTMLDivElement, ComponentProps<'div'>>(
       ref={ref}
       data-sidebar="menu-badge"
       className={cn(
-        'pointer-events-none absolute right-1 flex h-5 min-w-5 select-none items-center justify-center rounded-md px-1 text-xs font-medium tabular-nums text-[var(--color-text-primary)]',
+        'pointer-events-none absolute right-1 flex h-5 min-w-5 select-none items-center justify-center rounded-[var(--radius-md)] px-1 text-xs font-medium tabular-nums text-[var(--color-text-primary)]',
         'peer-hover/menu-button:text-[var(--color-text-primary)] peer-data-[active=true]/menu-button:text-[var(--color-text-primary)]',
         'peer-data-[size=sm]/menu-button:top-1',
         'peer-data-[size=md]/menu-button:top-1.5',
@@ -656,12 +656,12 @@ const SidebarMenuSkeleton = forwardRef<
     <div
       ref={ref}
       data-sidebar="menu-skeleton"
-      className={cn('flex h-8 items-center gap-2 rounded-md px-2', className)}
+      className={cn('flex h-8 items-center gap-2 rounded-[var(--radius-md)] px-2', className)}
       {...props}
     >
       {showIcon && (
         <Skeleton
-          className="size-4 rounded-md"
+          className="size-4 rounded-[var(--radius-md)]"
           data-sidebar="menu-skeleton-icon"
         />
       )}
@@ -717,7 +717,7 @@ const SidebarMenuSubButton = forwardRef<
       data-size={size}
       data-active={isActive}
       className={cn(
-        'hover:bg-[var(--color-layer-02)] active:bg-[var(--color-interactive-subtle)] flex h-7 min-w-0 -translate-x-px items-center gap-2 overflow-hidden rounded-md px-2 text-[var(--color-text-primary)] outline-none ring-[var(--color-focus)] hover:text-[var(--color-text-primary)] focus-visible:ring-2 active:text-[var(--color-text-primary)] disabled:pointer-events-none disabled:opacity-50 aria-disabled:pointer-events-none aria-disabled:opacity-50 [&>span:last-child]:truncate [&>svg]:size-4 [&>svg]:shrink-0 [&>svg]:text-[var(--color-text-primary)]',
+        'hover:bg-[var(--color-layer-02)] active:bg-[var(--color-interactive-subtle)] flex h-7 min-w-0 -translate-x-px items-center gap-2 overflow-hidden rounded-[var(--radius-md)] px-2 text-[var(--color-text-primary)] outline-none ring-[var(--color-focus)] hover:text-[var(--color-text-primary)] focus-visible:ring-2 active:text-[var(--color-text-primary)] disabled:pointer-events-none disabled:opacity-50 aria-disabled:pointer-events-none aria-disabled:opacity-50 [&>span:last-child]:truncate [&>svg]:size-4 [&>svg]:shrink-0 [&>svg]:text-[var(--color-text-primary)]',
         'data-[active=true]:bg-[var(--color-interactive-subtle)] data-[active=true]:text-[var(--color-text-primary)]',
         size === 'sm' && 'text-xs',
         size === 'md' && 'text-sm',

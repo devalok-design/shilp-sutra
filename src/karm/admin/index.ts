@@ -21,7 +21,12 @@ export type {
 // Dashboard
 export {
   AdminDashboard,
-  type AdminDashboardProps,
+  type AdminDashboardRootProps,
+  type AdminDashboardCalendarProps,
+  type AdminDashboardAttendanceOverviewProps,
+  type AdminDashboardAssociateDetailProps,
+  type AdminDashboardLeaveRequestsProps,
+  type AdminDashboardContentProps,
   type TaskItem,
   type AttendanceCorrection,
   Calendar,

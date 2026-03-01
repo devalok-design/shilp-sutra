@@ -98,7 +98,12 @@ export {
   type ToggleOption,
   // Admin components
   AdminDashboard,
-  type AdminDashboardProps,
+  type AdminDashboardRootProps,
+  type AdminDashboardCalendarProps,
+  type AdminDashboardAttendanceOverviewProps,
+  type AdminDashboardAssociateDetailProps,
+  type AdminDashboardLeaveRequestsProps,
+  type AdminDashboardContentProps,
   Calendar,
   type CalendarProps,
   BreakRequestCard,

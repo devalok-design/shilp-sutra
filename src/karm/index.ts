@@ -69,7 +69,12 @@ export {
 // Admin components
 export {
   AdminDashboard,
-  type AdminDashboardProps,
+  type AdminDashboardRootProps,
+  type AdminDashboardCalendarProps,
+  type AdminDashboardAttendanceOverviewProps,
+  type AdminDashboardAssociateDetailProps,
+  type AdminDashboardLeaveRequestsProps,
+  type AdminDashboardContentProps,
   Calendar,
   type CalendarProps,
   BreakRequestCard,

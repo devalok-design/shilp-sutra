@@ -4,7 +4,12 @@
 
 export {
   AdminDashboard,
-  type AdminDashboardProps,
+  type AdminDashboardRootProps,
+  type AdminDashboardCalendarProps,
+  type AdminDashboardAttendanceOverviewProps,
+  type AdminDashboardAssociateDetailProps,
+  type AdminDashboardLeaveRequestsProps,
+  type AdminDashboardContentProps,
 } from './admin-dashboard'
 
 // Re-exported from sub-components for backwards compatibility

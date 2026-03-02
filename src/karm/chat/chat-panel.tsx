@@ -4,8 +4,14 @@ import { Sheet, SheetContent, SheetTitle } from '../../ui/sheet'
 import { MessageList, type ChatMessage } from './message-list'
 import { ChatInput } from './chat-input'
 import { ConversationList, type Conversation } from './conversation-list'
-import { useState, useEffect } from 'react'
+import { useState } from 'react'
 import { IconMessagePlus, IconHistory, IconX, IconChevronDown } from '@tabler/icons-react'
+import {
+  DropdownMenu,
+  DropdownMenuTrigger,
+  DropdownMenuContent,
+  DropdownMenuItem,
+} from '../../ui'
 
 // ============================================================
 // Types
@@ -75,18 +81,9 @@ export function ChatPanel({
   onDeleteConversation,
 }: ChatPanelProps) {
   const [showHistory, setShowHistory] = useState(false)
-  const [showAgentDropdown, setShowAgentDropdown] = useState(false)
 
   const selectedAgent =
     agents.find((a) => a.id === selectedAgentId) ?? agents[0]
-
-  // Close agent dropdown when clicking outside
-  useEffect(() => {
-    if (!showAgentDropdown) return
-    const handleClick = () => setShowAgentDropdown(false)
-    document.addEventListener('click', handleClick)
-    return () => document.removeEventListener('click', handleClick)
-  }, [showAgentDropdown])
 
   return (
     <Sheet open={isOpen} onOpenChange={onOpenChange}>
@@ -99,38 +96,31 @@ export function ChatPanel({
         {/* Header */}
         <div className="flex items-center gap-2 border-b border-[var(--color-border-default)] px-4 py-3">
           {/* Agent Selector */}
-          <div className="relative flex-1">
-            <button
-              onClick={(e) => {
-                e.stopPropagation()
-                setShowAgentDropdown(!showAgentDropdown)
-              }}
-              className="flex items-center gap-1.5 rounded-[var(--radius-lg)] px-2 py-1.5 transition-colors hover:bg-[var(--color-layer-02)]"
-            >
-              <span className="B1-Reg text-[var(--color-text-primary)]">
-                {selectedAgent?.name}
-              </span>
-              <span className="B3-Reg text-[var(--color-text-placeholder)]">
-                {selectedAgent?.desc}
-              </span>
-              <IconChevronDown className="h-3.5 w-3.5 text-[var(--color-text-placeholder)]" />
-            </button>
-
-            {/* Agent Dropdown */}
-            {showAgentDropdown && (
-              <div className="absolute left-0 top-full z-50 mt-1 w-64 rounded-[var(--radius-xl)] border border-[var(--color-border-default)] bg-[var(--color-layer-01)] py-1 shadow-lg">
+          <div className="flex-1">
+            <DropdownMenu>
+              <DropdownMenuTrigger asChild>
+                <button
+                  className="flex items-center gap-1.5 rounded-[var(--radius-lg)] px-2 py-1.5 transition-colors hover:bg-[var(--color-layer-02)]"
+                >
+                  <span className="B1-Reg text-[var(--color-text-primary)]">
+                    {selectedAgent?.name}
+                  </span>
+                  <span className="B3-Reg text-[var(--color-text-placeholder)]">
+                    {selectedAgent?.desc}
+                  </span>
+                  <IconChevronDown className="h-3.5 w-3.5 text-[var(--color-text-placeholder)]" />
+                </button>
+              </DropdownMenuTrigger>
+              <DropdownMenuContent align="start" className="w-64">
                 {agents.map((agent) => (
-                  <button
+                  <DropdownMenuItem
                     key={agent.id}
-                    onClick={() => {
-                      onSelectAgent?.(agent.id)
-                      setShowAgentDropdown(false)
-                    }}
-                    className={`flex w-full items-center gap-3 px-3 py-2.5 text-left transition-colors hover:bg-[var(--color-layer-02)] ${
+                    onClick={() => onSelectAgent?.(agent.id)}
+                    className={
                       selectedAgentId === agent.id
                         ? 'bg-[var(--color-layer-02)]'
                         : ''
-                    }`}
+                    }
                   >
                     <div className="flex flex-col">
                       <span className="B2-Reg text-[var(--color-text-primary)]">
@@ -140,10 +130,10 @@ export function ChatPanel({
                         {agent.desc}
                       </span>
                     </div>
-                  </button>
+                  </DropdownMenuItem>
                 ))}
-              </div>
-            )}
+              </DropdownMenuContent>
+            </DropdownMenu>
           </div>
 
           {/* New Chat */}

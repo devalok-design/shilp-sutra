@@ -59,6 +59,7 @@ const Combobox = React.forwardRef<HTMLButtonElement, ComboboxProps>(
     const searchInputRef = React.useRef<HTMLInputElement>(null)
     const listRef = React.useRef<HTMLUListElement>(null)
     const optionIdPrefix = React.useId()
+    const listboxId = React.useId()
 
     const selectedValues = React.useMemo<string[]>(() => {
       if (value === undefined || value === null) return []
@@ -97,7 +98,7 @@ const Combobox = React.forwardRef<HTMLButtonElement, ComboboxProps>(
     )
 
     const handleRemovePill = React.useCallback(
-      (e: React.MouseEvent, optionValue: string) => {
+      (e: React.SyntheticEvent, optionValue: string) => {
         e.stopPropagation()
         e.preventDefault()
         const newValue = selectedValues.filter((v) => v !== optionValue)
@@ -232,20 +233,15 @@ const Combobox = React.forwardRef<HTMLButtonElement, ComboboxProps>(
                   className="inline-flex items-center gap-ds-01 rounded-[var(--radius-md)] bg-[var(--color-interactive-subtle)] px-ds-03 py-[1px] text-ds-sm"
                 >
                   {option.label}
-                  <span
-                    role="button"
+                  <button
+                    type="button"
                     className="inline-flex items-center justify-center rounded-full outline-none hover:opacity-75"
                     onClick={(e) => handleRemovePill(e, val)}
-                    onKeyDown={(e) => {
-                      if (e.key === 'Enter' || e.key === ' ') {
-                        handleRemovePill(e as unknown as React.MouseEvent, val)
-                      }
-                    }}
                     aria-label={`Remove ${option.label}`}
                     tabIndex={-1}
                   >
-                    <IconX className="h-3 w-3" />
-                  </span>
+                    <IconX className="h-3 w-3" aria-hidden="true" />
+                  </button>
                 </span>
               )
             })}
@@ -274,6 +270,7 @@ const Combobox = React.forwardRef<HTMLButtonElement, ComboboxProps>(
 
     return (
       <PopoverPrimitive.Root open={open} onOpenChange={handleOpenChange}>
+        <div className={cn('relative', className)}>
         <PopoverPrimitive.Trigger asChild disabled={disabled}>
           <button
             ref={ref}
@@ -285,14 +282,14 @@ const Combobox = React.forwardRef<HTMLButtonElement, ComboboxProps>(
             disabled={disabled}
             className={cn(
               'flex h-[var(--size-md)] w-full items-center justify-between whitespace-nowrap rounded-[var(--radius-md)] border border-[var(--color-border-default)] bg-[var(--color-field)] px-ds-04 py-ds-03 text-ds-md',
+              'transition-colors duration-[var(--duration-fast)]',
               'focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--color-focus)] focus-visible:ring-offset-2 focus-visible:border-[var(--color-border-interactive)]',
               'disabled:cursor-not-allowed disabled:opacity-50',
-              className,
               triggerClassName,
             )}
           >
             {renderTriggerContent()}
-            <IconChevronDown className="ml-ds-02 h-[var(--icon-sm)] w-[var(--icon-sm)] shrink-0 opacity-50" />
+            <IconChevronDown className={cn("ml-ds-02 h-[var(--icon-sm)] w-[var(--icon-sm)] shrink-0 opacity-50 transition-transform duration-[var(--duration-fast)]", open && 'rotate-180')} aria-hidden="true" />
           </button>
         </PopoverPrimitive.Trigger>
 
@@ -311,7 +308,7 @@ const Combobox = React.forwardRef<HTMLButtonElement, ComboboxProps>(
           >
             {/* Search input */}
             <div className="flex items-center gap-ds-02 border-b border-[var(--color-border-subtle)] px-ds-04">
-              <IconSearch className="h-[var(--icon-sm)] w-[var(--icon-sm)] shrink-0 text-[var(--color-text-tertiary)]" />
+              <IconSearch className="h-[var(--icon-sm)] w-[var(--icon-sm)] shrink-0 text-[var(--color-text-tertiary)]" aria-hidden="true" />
               <input
                 ref={searchInputRef}
                 type="text"
@@ -323,10 +320,8 @@ const Combobox = React.forwardRef<HTMLButtonElement, ComboboxProps>(
                   setHighlightedIndex(-1)
                 }}
                 onKeyDown={handleKeyDown}
-                role="combobox"
                 aria-autocomplete="list"
-                aria-controls="combobox-listbox"
-                aria-expanded={true}
+                aria-controls={listboxId}
                 aria-activedescendant={
                   highlightedIndex >= 0
                     ? `${optionIdPrefix}-option-${highlightedIndex}`
@@ -344,7 +339,7 @@ const Combobox = React.forwardRef<HTMLButtonElement, ComboboxProps>(
             ) : (
               <ul
                 ref={listRef}
-                id="combobox-listbox"
+                id={listboxId}
                 role="listbox"
                 aria-multiselectable={multiple || undefined}
                 className="overflow-auto p-ds-02"
@@ -399,7 +394,7 @@ const Combobox = React.forwardRef<HTMLButtonElement, ComboboxProps>(
                         )}
                       </span>
                       {selected && (
-                        <IconCheck className="h-[var(--icon-sm)] w-[var(--icon-sm)] shrink-0" />
+                        <IconCheck className="h-[var(--icon-sm)] w-[var(--icon-sm)] shrink-0" aria-hidden="true" />
                       )}
                     </li>
                   )
@@ -408,6 +403,7 @@ const Combobox = React.forwardRef<HTMLButtonElement, ComboboxProps>(
             )}
           </PopoverPrimitive.Content>
         </PopoverPrimitive.Portal>
+        </div>
       </PopoverPrimitive.Root>
     )
   },

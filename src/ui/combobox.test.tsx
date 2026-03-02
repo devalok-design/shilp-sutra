@@ -247,7 +247,7 @@ describe('Combobox', () => {
     expect(ref.current).toBeInstanceOf(HTMLButtonElement)
   })
 
-  it('applies custom className to trigger', () => {
+  it('applies custom className to wrapper container', () => {
     render(
       <Combobox
         options={fruits}
@@ -255,7 +255,9 @@ describe('Combobox', () => {
         className="my-custom-class"
       />,
     )
-    expect(screen.getByRole('combobox')).toHaveClass('my-custom-class')
+    // className goes to the wrapper div, not the trigger button
+    const trigger = screen.getByRole('combobox')
+    expect(trigger.closest('.my-custom-class')).toBeTruthy()
   })
 
   it('applies triggerClassName to trigger element', () => {

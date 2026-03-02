@@ -1,4 +1,6 @@
 :root {
+  color-scheme: light;
+
   /* Font families — override these with next/font CSS variables */
   --font-sans:    "Google Sans", system-ui, sans-serif;
   --font-display: "Google Sans", system-ui, sans-serif;
@@ -241,6 +243,8 @@
 }
 
 .dark {
+  color-scheme: dark;
+
   /* Interactive */
   --color-interactive:          var(--pink-400);
   --color-interactive-hover:    var(--pink-300);

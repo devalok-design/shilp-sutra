@@ -7,13 +7,9 @@ import {
   AvatarImage,
   AvatarFallback,
 } from '../../ui/avatar'
-import {
-  Popover,
-  PopoverContent,
-  PopoverTrigger,
-} from '../../ui/popover'
 import { Badge } from '../../ui/badge'
 import { EmptyState } from '../../shared/empty-state'
+import { MemberPicker } from '../../shared/member-picker'
 import {
   IconGitPullRequest,
   IconPlus,
@@ -99,11 +95,10 @@ function ReviewTab({
 }: ReviewTabProps) {
   const [feedbackMap, setFeedbackMap] = React.useState<Record<string, string>>({})
   const [expandedId, setExpandedId] = React.useState<string | null>(null)
-  const [reviewerOpen, setReviewerOpen] = React.useState(false)
-  const [searchTerm, setSearchTerm] = React.useState('')
 
-  const filteredMembers = members.filter(
-    (m) => m.name.toLowerCase().includes(searchTerm.toLowerCase()),
+  const pickerMembers = React.useMemo(
+    () => members.map((m) => ({ id: m.id, name: m.name, avatar: m.image ?? undefined })),
+    [members],
   )
 
   const handleRespond = (
@@ -248,63 +243,19 @@ function ReviewTab({
       )}
 
       {/* Request Review */}
-      <Popover open={reviewerOpen} onOpenChange={setReviewerOpen}>
-        <PopoverTrigger asChild>
-          <button
-            type="button"
-            className="mt-3 inline-flex items-center gap-1.5 rounded-[var(--radius-lg)] px-2 py-1.5 text-[13px] font-body text-[var(--color-text-placeholder)] transition-colors hover:bg-[var(--color-field)] hover:text-[var(--color-text-secondary)]"
-          >
-            <IconPlus className="h-3.5 w-3.5" stroke={1.5} />
-            Request Review
-          </button>
-        </PopoverTrigger>
-        <PopoverContent
-          className="w-[220px] border-[var(--color-border-default)] bg-[var(--color-layer-01)] p-0"
-          align="start"
-          sideOffset={4}
+      <MemberPicker
+        members={pickerMembers}
+        selectedIds={[]}
+        onSelect={(memberId) => onRequestReview(memberId)}
+      >
+        <button
+          type="button"
+          className="mt-3 inline-flex items-center gap-1.5 rounded-[var(--radius-lg)] px-2 py-1.5 text-[13px] font-body text-[var(--color-text-placeholder)] transition-colors hover:bg-[var(--color-field)] hover:text-[var(--color-text-secondary)]"
         >
-          <div className="border-b border-[var(--color-border-default)] px-3 py-2">
-            <input
-              type="text"
-              placeholder="Search members..."
-              value={searchTerm}
-              onChange={(e) => setSearchTerm(e.target.value)}
-              className="w-full bg-transparent text-[13px] font-body text-[var(--color-text-primary)] placeholder:text-[var(--color-text-placeholder)] outline-none"
-            />
-          </div>
-          <div className="max-h-[200px] overflow-y-auto py-1">
-            {filteredMembers.map((member) => (
-              <button
-                key={member.id}
-                type="button"
-                onClick={() => {
-                  onRequestReview(member.id)
-                  setReviewerOpen(false)
-                  setSearchTerm('')
-                }}
-                className="flex w-full items-center gap-2.5 px-3 py-1.5 text-left transition-colors hover:bg-[var(--color-field)]"
-              >
-                <Avatar className="h-5 w-5">
-                  {member.image && (
-                    <AvatarImage src={member.image} alt={member.name} />
-                  )}
-                  <AvatarFallback className="bg-[var(--color-layer-03)] text-[8px] font-semibold text-[var(--color-text-on-color)]">
-                    {getInitials(member.name)}
-                  </AvatarFallback>
-                </Avatar>
-                <span className="flex-1 truncate text-[13px] font-body text-[var(--color-text-primary)]">
-                  {member.name}
-                </span>
-              </button>
-            ))}
-            {filteredMembers.length === 0 && (
-              <p className="px-3 py-4 text-center text-[12px] font-body text-[var(--color-text-placeholder)]">
-                No members found
-              </p>
-            )}
-          </div>
-        </PopoverContent>
-      </Popover>
+          <IconPlus className="h-3.5 w-3.5" stroke={1.5} />
+          Request Review
+        </button>
+      </MemberPicker>
     </div>
   )
 }

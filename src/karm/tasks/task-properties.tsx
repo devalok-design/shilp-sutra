@@ -26,6 +26,7 @@ import {
   IconChevronDown,
 } from '@tabler/icons-react'
 import { getInitials } from '../../shared/lib/string-utils'
+import { MemberPicker } from '../../shared/member-picker'
 import { PRIORITY_LABELS, PRIORITY_DOT_COLORS } from './task-constants'
 
 // ============================================================
@@ -120,92 +121,6 @@ function PropertyRow({
 }
 
 // ============================================================
-// Member Picker Popover
-// ============================================================
-
-function MemberPicker({
-  members,
-  selectedIds,
-  onSelect,
-  children,
-  multiple = false,
-}: {
-  members: Member[]
-  selectedIds: string[]
-  onSelect: (id: string) => void
-  children: React.ReactNode
-  multiple?: boolean
-}) {
-  const [open, setOpen] = React.useState(false)
-  const [search, setSearch] = React.useState('')
-
-  const filtered = members.filter(
-    (m) => m.name.toLowerCase().includes(search.toLowerCase()),
-  )
-
-  return (
-    <Popover open={open} onOpenChange={setOpen}>
-      <PopoverTrigger asChild>{children}</PopoverTrigger>
-      <PopoverContent
-        className="w-[220px] border-[var(--color-border-default)] bg-[var(--color-layer-01)] p-0"
-        align="start"
-        sideOffset={4}
-      >
-        <div className="border-b border-[var(--color-border-default)] px-3 py-2">
-          <input
-            type="text"
-            placeholder="Search members..."
-            value={search}
-            onChange={(e) => setSearch(e.target.value)}
-            className="w-full bg-transparent text-[13px] font-body text-[var(--color-text-primary)] placeholder:text-[var(--color-text-placeholder)] outline-none"
-          />
-        </div>
-        <div className="max-h-[200px] overflow-y-auto py-1">
-          {filtered.map((member) => {
-            const isSelected = selectedIds.includes(member.id)
-            return (
-              <button
-                key={member.id}
-                type="button"
-                onClick={() => {
-                  onSelect(member.id)
-                  if (!multiple) setOpen(false)
-                }}
-                className={cn(
-                  'flex w-full items-center gap-2.5 px-3 py-1.5 text-left transition-colors',
-                  'hover:bg-[var(--color-field)]',
-                  isSelected && 'bg-[var(--color-field)]',
-                )}
-              >
-                <Avatar className="h-5 w-5">
-                  {member.image && (
-                    <AvatarImage src={member.image} alt={member.name} />
-                  )}
-                  <AvatarFallback className="bg-[var(--color-layer-03)] text-[8px] font-semibold text-[var(--color-text-on-color)]">
-                    {getInitials(member.name)}
-                  </AvatarFallback>
-                </Avatar>
-                <span className="flex-1 truncate text-[13px] font-body text-[var(--color-text-primary)]">
-                  {member.name}
-                </span>
-                {isSelected && (
-                  <IconCheck className="h-3.5 w-3.5 shrink-0 text-[var(--color-interactive)]" />
-                )}
-              </button>
-            )
-          })}
-          {filtered.length === 0 && (
-            <p className="px-3 py-4 text-center text-[12px] font-body text-[var(--color-text-placeholder)]">
-              No members found
-            </p>
-          )}
-        </div>
-      </PopoverContent>
-    </Popover>
-  )
-}
-
-// ============================================================
 // Default Priority Indicator
 // ============================================================
 
@@ -241,6 +156,11 @@ function TaskProperties({
   const [showLabelInput, setShowLabelInput] = React.useState(false)
 
   const assigneeIds = task.assignees.map((a) => a.user.id)
+
+  const pickerMembers = React.useMemo(
+    () => members.map((m) => ({ id: m.id, name: m.name, avatar: m.image ?? undefined })),
+    [members],
+  )
 
   const handleColumnChange = (columnId: string) => {
     onUpdate('columnId', columnId)
@@ -345,7 +265,7 @@ function TaskProperties({
       {!readOnly && (
         <PropertyRow icon={UserIcon} label="Owner">
           <MemberPicker
-            members={members}
+            members={pickerMembers}
             selectedIds={task.ownerId ? [task.ownerId] : []}
             onSelect={handleOwnerChange}
           >
@@ -409,7 +329,7 @@ function TaskProperties({
           ))}
           {!readOnly && (
             <MemberPicker
-              members={members}
+              members={pickerMembers}
               selectedIds={assigneeIds}
               onSelect={handleAssigneeToggle}
               multiple

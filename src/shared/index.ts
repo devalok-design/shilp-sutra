@@ -40,3 +40,6 @@ export type { GlobalLoadingProps } from './global-loading'
 
 export { CommandPalette } from './command-palette'
 export type { CommandPaletteProps, CommandGroup, CommandItem } from './command-palette'
+
+export { MemberPicker } from './member-picker'
+export type { MemberPickerProps, MemberPickerMember } from './member-picker'

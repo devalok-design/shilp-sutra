@@ -189,7 +189,7 @@ export function PieChart({
                       y={ly}
                       textAnchor="middle"
                       dominantBaseline="central"
-                      className="pointer-events-none fill-[var(--color-text-on-color)] text-ds-xs font-medium"
+                      className="pointer-events-none fill-text-on-color text-ds-xs font-medium"
                     >
                       {pct}%
                     </text>
@@ -204,7 +204,7 @@ export function PieChart({
                   width={innerR * 1.4}
                   height={innerR * 1.4}
                 >
-                  <div className="flex h-full w-full items-center justify-center text-center text-[var(--color-text-primary)]">
+                  <div className="flex h-full w-full items-center justify-center text-center text-text-primary">
                     {centerLabel}
                   </div>
                 </foreignObject>

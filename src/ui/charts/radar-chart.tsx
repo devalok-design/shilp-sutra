@@ -176,7 +176,7 @@ export function RadarChart({
                     y={y}
                     textAnchor={textAnchor}
                     dominantBaseline="central"
-                    className="fill-[var(--color-text-secondary)] text-ds-xs"
+                    className="fill-text-secondary text-ds-xs"
                   >
                     {label}
                   </text>
@@ -279,7 +279,7 @@ export function RadarChart({
                                     className="inline-block h-2 w-2 rounded-full"
                                     style={{ backgroundColor: colors[sIdx] }}
                                   />
-                                  <span className="text-[var(--color-text-secondary)]">
+                                  <span className="text-text-secondary">
                                     {s.label}:
                                   </span>{' '}
                                   {val.toLocaleString()}

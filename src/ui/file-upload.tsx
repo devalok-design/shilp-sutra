@@ -200,17 +200,17 @@ const FileUpload = React.forwardRef<HTMLDivElement, FileUploadProps>(
             className={cn(
               'inline-flex items-center gap-ds-2 rounded-ds-md px-ds-3 py-ds-2',
               'text-[length:var(--font-size-sm)] font-medium',
-              'border border-[var(--color-border-default)]',
-              'bg-[var(--color-field)] text-[var(--color-text-secondary)]',
-              'hover:bg-[var(--color-interactive-subtle)]',
+              'border border-border',
+              'bg-field text-text-secondary',
+              'hover:bg-interactive-subtle',
               'disabled:opacity-50 disabled:cursor-not-allowed',
               'transition-colors',
             )}
           >
             {uploading ? (
-              <IconLoader2 className="h-[var(--icon-sm)] w-[var(--icon-sm)] animate-spin" />
+              <IconLoader2 className="h-ico-sm w-ico-sm animate-spin" />
             ) : (
-              <IconPaperclip className="h-[var(--icon-sm)] w-[var(--icon-sm)]" />
+              <IconPaperclip className="h-ico-sm w-ico-sm" />
             )}
             {label ?? 'Attach files'}
           </button>
@@ -234,7 +234,7 @@ const FileUpload = React.forwardRef<HTMLDivElement, FileUploadProps>(
             <p
               role="alert"
               aria-live="polite"
-              className="mt-ds-2 text-[length:var(--font-size-xs)] text-[var(--color-error)]"
+              className="mt-ds-2 text-[length:var(--font-size-xs)] text-error"
             >
               {displayError}
             </p>
@@ -269,18 +269,18 @@ const FileUpload = React.forwardRef<HTMLDivElement, FileUploadProps>(
             'flex flex-col items-center justify-center gap-ds-3 rounded-ds-lg',
             'border-2 border-dashed p-ds-8',
             'transition-colors cursor-pointer',
-            'border-[var(--color-border-default)] bg-[var(--color-field)]',
+            'border-border bg-field',
             isDragActive &&
-              'border-[var(--color-interactive)] bg-[var(--color-interactive-subtle)]',
+              'border-interactive bg-interactive-subtle',
             disabled && 'opacity-50 cursor-not-allowed',
           )}
         >
           {uploading ? (
-            <IconLoader2 className="h-8 w-8 animate-spin text-[var(--color-icon-secondary)]" />
+            <IconLoader2 className="h-8 w-8 animate-spin text-icon-secondary" />
           ) : (
-            <IconUpload className="h-8 w-8 text-[var(--color-icon-secondary)]" />
+            <IconUpload className="h-8 w-8 text-icon-secondary" />
           )}
-          <span id={inputId + '-label'} className="text-ds-sm text-[var(--color-text-secondary)]">
+          <span id={inputId + '-label'} className="text-ds-sm text-text-secondary">
             {defaultLabel}
           </span>
           {uploading ? (
@@ -290,16 +290,16 @@ const FileUpload = React.forwardRef<HTMLDivElement, FileUploadProps>(
                 aria-valuenow={progress}
                 aria-valuemin={0}
                 aria-valuemax={100}
-                className="h-2 w-full overflow-hidden rounded-full bg-[var(--color-field)]"
+                className="h-2 w-full overflow-hidden rounded-full bg-field"
               >
                 <div
-                  className="h-full rounded-full bg-[var(--color-interactive)] transition-all"
+                  className="h-full rounded-full bg-interactive transition-all"
                   style={{ width: `${progress}%` }}
                 />
               </div>
             </div>
           ) : (
-            <span className="text-[length:var(--font-size-xs)] text-[var(--color-text-tertiary)]">
+            <span className="text-[length:var(--font-size-xs)] text-text-tertiary">
               {defaultSublabel}
             </span>
           )}
@@ -323,7 +323,7 @@ const FileUpload = React.forwardRef<HTMLDivElement, FileUploadProps>(
         {displayError && (
           <p
             role="alert"
-            className="mt-ds-2 text-[length:var(--font-size-xs)] text-[var(--color-error)]"
+            className="mt-ds-2 text-[length:var(--font-size-xs)] text-error"
           >
             {displayError}
           </p>

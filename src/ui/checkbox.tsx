@@ -19,24 +19,24 @@ const Checkbox = React.forwardRef<
       ref={ref}
       checked={resolvedChecked}
       className={cn(
-        'peer h-[var(--icon-md)] w-[var(--icon-md)] shrink-0 rounded-[var(--radius-sm)]',
-        'border border-[var(--color-border-strong)]',
-        'bg-[var(--color-field)]',
-        'transition-colors duration-[var(--duration-fast)]',
-        'focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--color-focus)] focus-visible:ring-offset-2',
+        'peer h-ico-md w-ico-md shrink-0 rounded-ds-sm',
+        'border border-border-strong',
+        'bg-field',
+        'transition-colors duration-fast',
+        'focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-focus focus-visible:ring-offset-2',
         'disabled:cursor-not-allowed disabled:opacity-50',
-        'data-[state=checked]:bg-[var(--color-interactive)] data-[state=checked]:border-[var(--color-interactive)] data-[state=checked]:text-[var(--color-text-on-color)]',
-        'data-[state=indeterminate]:bg-[var(--color-interactive)] data-[state=indeterminate]:border-[var(--color-interactive)] data-[state=indeterminate]:text-[var(--color-text-on-color)]',
-        error && 'border-[var(--color-border-error)]',
+        'data-[state=checked]:bg-interactive data-[state=checked]:border-interactive data-[state=checked]:text-text-on-color',
+        'data-[state=indeterminate]:bg-interactive data-[state=indeterminate]:border-interactive data-[state=indeterminate]:text-text-on-color',
+        error && 'border-border-error',
         className,
       )}
       {...props}
     >
       <CheckboxPrimitive.Indicator className="flex items-center justify-center text-current">
         {resolvedChecked === 'indeterminate' ? (
-          <IconMinus className="h-[var(--icon-sm)] w-[var(--icon-sm)]" />
+          <IconMinus className="h-ico-sm w-ico-sm" />
         ) : (
-          <IconCheck className="h-[var(--icon-sm)] w-[var(--icon-sm)]" />
+          <IconCheck className="h-ico-sm w-ico-sm" />
         )}
       </CheckboxPrimitive.Indicator>
     </CheckboxPrimitive.Root>

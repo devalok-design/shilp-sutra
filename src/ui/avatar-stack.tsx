@@ -73,7 +73,7 @@ const AvatarStack = React.forwardRef<HTMLDivElement, AvatarStackProps>(
       const avatarElement = (
         <Avatar
           key={avatar.name}
-          className="border-2 border-[var(--color-layer-02)]"
+          className="border-2 border-layer-02"
           style={{
             width: size,
             height: size,
@@ -112,7 +112,7 @@ const AvatarStack = React.forwardRef<HTMLDivElement, AvatarStackProps>(
           <DropdownMenu>
             <DropdownMenuTrigger asChild>
               <div
-                className="text-ds-md font-semibold flex cursor-pointer items-center justify-center rounded-[var(--radius-full)] border-2 border-[var(--color-layer-02)] bg-[var(--color-layer-03)] text-[var(--color-interactive-hover)]"
+                className="text-ds-md font-semibold flex cursor-pointer items-center justify-center rounded-ds-full border-2 border-layer-02 bg-layer-03 text-interactive-hover"
                 style={{
                   width: size,
                   height: size,
@@ -123,7 +123,7 @@ const AvatarStack = React.forwardRef<HTMLDivElement, AvatarStackProps>(
               </div>
             </DropdownMenuTrigger>
             <DropdownMenuContent
-              className="max-h-[240px] w-[180px] overflow-y-auto rounded-[var(--radius-lg)] border border-[var(--color-border-subtle)] bg-[var(--color-layer-01)] p-0 shadow-[var(--shadow-02)]"
+              className="max-h-[240px] w-[180px] overflow-y-auto rounded-ds-lg border border-border-subtle bg-layer-01 p-0 shadow-02"
               sideOffset={5}
               align="end"
             >
@@ -132,7 +132,7 @@ const AvatarStack = React.forwardRef<HTMLDivElement, AvatarStackProps>(
                 return (
                   <DropdownMenuItem
                     key={avatar.name}
-                    className="flex w-full cursor-pointer items-center gap-[8px] px-[8px] py-[6px] hover:bg-[var(--color-field-hover)]"
+                    className="flex w-full cursor-pointer items-center gap-[8px] px-[8px] py-[6px] hover:bg-field-hover"
                   >
                     <Avatar className="h-[40px] w-[40px]">
                       <AvatarImage
@@ -145,7 +145,7 @@ const AvatarStack = React.forwardRef<HTMLDivElement, AvatarStackProps>(
                         {avatar.fallback}
                       </AvatarFallback>
                     </Avatar>
-                    <p className="text-ds-md text-[var(--color-text-secondary)]">
+                    <p className="text-ds-md text-text-secondary">
                       {avatar.name}
                     </p>
                   </DropdownMenuItem>

@@ -15,14 +15,14 @@ const Label = React.forwardRef<
   <LabelPrimitive.Root
     ref={ref}
     className={cn(
-      'font-sans text-ds-md font-medium text-[var(--color-text-primary)] leading-none peer-disabled:opacity-50',
+      'font-sans text-ds-md font-medium text-text-primary leading-none peer-disabled:opacity-50',
       className,
     )}
     {...props}
   >
     {children}
     {required && (
-      <span className="text-[var(--color-text-error)] ml-0.5" aria-hidden="true">*</span>
+      <span className="text-text-error ml-0.5" aria-hidden="true">*</span>
     )}
   </LabelPrimitive.Root>
 ))

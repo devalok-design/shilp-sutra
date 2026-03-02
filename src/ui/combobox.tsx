@@ -230,7 +230,7 @@ const Combobox = React.forwardRef<HTMLButtonElement, ComboboxProps>(
               return (
                 <span
                   key={val}
-                  className="inline-flex items-center gap-ds-01 rounded-[var(--radius-md)] bg-[var(--color-interactive-subtle)] px-ds-03 py-[1px] text-ds-sm"
+                  className="inline-flex items-center gap-ds-01 rounded-ds-md bg-interactive-subtle px-ds-03 py-[1px] text-ds-sm"
                 >
                   {option.label}
                   <button
@@ -246,7 +246,7 @@ const Combobox = React.forwardRef<HTMLButtonElement, ComboboxProps>(
               )
             })}
             {remaining > 0 && (
-              <span className="text-ds-sm text-[var(--color-text-secondary)]">
+              <span className="text-ds-sm text-text-secondary">
                 +{remaining} more
               </span>
             )}
@@ -262,7 +262,7 @@ const Combobox = React.forwardRef<HTMLButtonElement, ComboboxProps>(
       }
 
       return (
-        <span className="flex-1 truncate text-left text-[var(--color-text-placeholder)]">
+        <span className="flex-1 truncate text-left text-text-placeholder">
           {placeholder}
         </span>
       )
@@ -282,22 +282,22 @@ const Combobox = React.forwardRef<HTMLButtonElement, ComboboxProps>(
             aria-label={placeholder}
             disabled={disabled}
             className={cn(
-              'flex h-[var(--size-md)] w-full items-center justify-between whitespace-nowrap rounded-[var(--radius-md)] border border-[var(--color-border-default)] bg-[var(--color-field)] px-ds-04 py-ds-03 text-ds-md',
-              'transition-colors duration-[var(--duration-fast)]',
-              'focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--color-focus)] focus-visible:ring-offset-2 focus-visible:border-[var(--color-border-interactive)]',
+              'flex h-ds-md w-full items-center justify-between whitespace-nowrap rounded-ds-md border border-border bg-field px-ds-04 py-ds-03 text-ds-md',
+              'transition-colors duration-fast',
+              'focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-focus focus-visible:ring-offset-2 focus-visible:border-border-interactive',
               'disabled:cursor-not-allowed disabled:opacity-50',
               triggerClassName,
             )}
           >
             {renderTriggerContent()}
-            <IconChevronDown className={cn("ml-ds-02 h-[var(--icon-sm)] w-[var(--icon-sm)] shrink-0 opacity-50 transition-transform duration-[var(--duration-fast)]", open && 'rotate-180')} aria-hidden="true" />
+            <IconChevronDown className={cn("ml-ds-02 h-ico-sm w-ico-sm shrink-0 opacity-50 transition-transform duration-fast", open && 'rotate-180')} aria-hidden="true" />
           </button>
         </PopoverPrimitive.Trigger>
 
         <PopoverPrimitive.Portal>
           <PopoverPrimitive.Content
             className={cn(
-              'z-[var(--z-dropdown)] w-[var(--radix-popover-trigger-width)] overflow-hidden rounded-[var(--radius-lg)] border border-[var(--color-border-subtle)] bg-[var(--color-layer-01)] shadow-[var(--shadow-02)]',
+              'z-dropdown w-[var(--radix-popover-trigger-width)] overflow-hidden rounded-ds-lg border border-border-subtle bg-layer-01 shadow-02',
               'data-[state=open]:animate-in data-[state=closed]:animate-out data-[state=closed]:fade-out-0 data-[state=open]:fade-in-0 data-[state=closed]:zoom-out-95 data-[state=open]:zoom-in-95 data-[side=bottom]:slide-in-from-top-2 data-[side=top]:slide-in-from-bottom-2',
             )}
             sideOffset={4}
@@ -308,12 +308,12 @@ const Combobox = React.forwardRef<HTMLButtonElement, ComboboxProps>(
             }}
           >
             {/* Search input */}
-            <div className="flex items-center gap-ds-02 border-b border-[var(--color-border-subtle)] px-ds-04">
-              <IconSearch className="h-[var(--icon-sm)] w-[var(--icon-sm)] shrink-0 text-[var(--color-text-tertiary)]" aria-hidden="true" />
+            <div className="flex items-center gap-ds-02 border-b border-border-subtle px-ds-04">
+              <IconSearch className="h-ico-sm w-ico-sm shrink-0 text-text-tertiary" aria-hidden="true" />
               <input
                 ref={searchInputRef}
                 type="text"
-                className="flex-1 bg-transparent py-ds-03 text-ds-md outline-none placeholder:text-[var(--color-text-placeholder)]"
+                className="flex-1 bg-transparent py-ds-03 text-ds-md outline-none placeholder:text-text-placeholder"
                 placeholder={searchPlaceholder}
                 value={search}
                 onChange={(e) => {
@@ -334,7 +334,7 @@ const Combobox = React.forwardRef<HTMLButtonElement, ComboboxProps>(
 
             {/* Options list */}
             {filteredOptions.length === 0 ? (
-              <div className="px-ds-04 py-ds-05 text-center text-ds-md text-[var(--color-text-tertiary)]">
+              <div className="px-ds-04 py-ds-05 text-center text-ds-md text-text-tertiary">
                 {emptyMessage}
               </div>
             ) : (
@@ -356,11 +356,11 @@ const Combobox = React.forwardRef<HTMLButtonElement, ComboboxProps>(
                       aria-selected={selected}
                       aria-disabled={option.disabled || undefined}
                       className={cn(
-                        'relative flex cursor-pointer select-none items-center gap-ds-03 rounded-[var(--radius-md)] px-ds-04 py-ds-03 text-ds-md outline-none',
+                        'relative flex cursor-pointer select-none items-center gap-ds-03 rounded-ds-md px-ds-04 py-ds-03 text-ds-md outline-none',
                         'transition-colors',
                         highlightedIndex === index &&
-                          'bg-[var(--color-interactive-subtle)]',
-                        selected && 'text-[var(--color-interactive)]',
+                          'bg-interactive-subtle',
+                        selected && 'text-interactive',
                         option.disabled &&
                           'pointer-events-none opacity-50',
                       )}
@@ -376,7 +376,7 @@ const Combobox = React.forwardRef<HTMLButtonElement, ComboboxProps>(
                       }}
                     >
                       {option.icon && (
-                        <span className="flex h-[var(--icon-sm)] w-[var(--icon-sm)] items-center justify-center shrink-0">
+                        <span className="flex h-ico-sm w-ico-sm items-center justify-center shrink-0">
                           {option.icon}
                         </span>
                       )}
@@ -387,7 +387,7 @@ const Combobox = React.forwardRef<HTMLButtonElement, ComboboxProps>(
                           <>
                             <span>{option.label}</span>
                             {option.description && (
-                              <span className="text-ds-sm text-[var(--color-text-secondary)]">
+                              <span className="text-ds-sm text-text-secondary">
                                 {option.description}
                               </span>
                             )}
@@ -395,7 +395,7 @@ const Combobox = React.forwardRef<HTMLButtonElement, ComboboxProps>(
                         )}
                       </span>
                       {selected && (
-                        <IconCheck className="h-[var(--icon-sm)] w-[var(--icon-sm)] shrink-0" aria-hidden="true" />
+                        <IconCheck className="h-ico-sm w-ico-sm shrink-0" aria-hidden="true" />
                       )}
                     </li>
                   )

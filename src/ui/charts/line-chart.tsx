@@ -207,7 +207,7 @@ export function LineChart({
                                   className="inline-block h-2 w-2 rounded-full"
                                   style={{ backgroundColor: colors[sIdx] }}
                                 />
-                                <span className="text-[var(--color-text-secondary)]">
+                                <span className="text-text-secondary">
                                   {s.label}:
                                 </span>{' '}
                                 {Number(d[s.key]).toLocaleString()}

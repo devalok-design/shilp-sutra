@@ -58,7 +58,7 @@ const TableRow = React.forwardRef<
   <tr
     ref={ref}
     className={cn(
-      "transition-colors hover:bg-[var(--color-layer-02)] data-[state=selected]:bg-[var(--color-interactive-selected)]",
+      "transition-colors hover:bg-layer-02 data-[state=selected]:bg-interactive-selected",
       className
     )}
     {...props}
@@ -74,7 +74,7 @@ const TableHead = React.forwardRef<
     ref={ref}
     scope="col"
     className={cn(
-      "h-10 px-ds-03 text-left align-left font-medium text-[var(--color-text-secondary)] [&:has([role=checkbox])]:pr-0 [&>[role=checkbox]]:translate-y-[2px]",
+      "h-10 px-ds-03 text-left align-left font-medium text-text-secondary [&:has([role=checkbox])]:pr-0 [&>[role=checkbox]]:translate-y-[2px]",
       className
     )}
     {...props}
@@ -103,7 +103,7 @@ const TableCaption = React.forwardRef<
 >(({ className, ...props }, ref) => (
   <caption
     ref={ref}
-    className={cn("mt-ds-05 text-ds-md text-[var(--color-text-secondary)]", className)}
+    className={cn("mt-ds-05 text-ds-md text-text-secondary", className)}
     {...props}
   />
 ))

@@ -9,13 +9,13 @@ const bannerVariants = cva(
     variants: {
       variant: {
         info:
-          'bg-[var(--color-info-surface)] border-[var(--color-info-border)] text-[var(--color-info-text)]',
+          'bg-info-surface border-info-border text-info-text',
         success:
-          'bg-[var(--color-success-surface)] border-[var(--color-success-border)] text-[var(--color-success-text)]',
+          'bg-success-surface border-success-border text-success-text',
         warning:
-          'bg-[var(--color-warning-surface)] border-[var(--color-warning-border)] text-[var(--color-warning-text)]',
+          'bg-warning-surface border-warning-border text-warning-text',
         error:
-          'bg-[var(--color-error-surface)] border-[var(--color-error-border)] text-[var(--color-error-text)]',
+          'bg-error-surface border-error-border text-error-text',
       },
     },
     defaultVariants: { variant: 'info' },
@@ -43,17 +43,17 @@ const Banner = React.forwardRef<HTMLDivElement, BannerProps>(
 
     return (
       <div ref={ref} className={cn(bannerVariants({ variant }), className)} role="alert" {...props}>
-        <Icon className="h-[var(--icon-md)] w-[var(--icon-md)] shrink-0" aria-hidden="true" />
+        <Icon className="h-ico-md w-ico-md shrink-0" aria-hidden="true" />
         <span className="flex-1">{children}</span>
         {action && <span className="shrink-0">{action}</span>}
         {dismissible && onDismiss && (
           <button
             type="button"
             onClick={onDismiss}
-            className="shrink-0 rounded-[var(--radius-sm)] text-[var(--color-icon-secondary)] transition-colors hover:text-[var(--color-icon-primary)] hover:bg-[var(--color-field)] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--color-focus)]"
+            className="shrink-0 rounded-ds-sm text-icon-secondary transition-colors hover:text-icon-primary hover:bg-field focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-focus"
             aria-label="Dismiss"
           >
-            <IconX className="h-[var(--icon-sm)] w-[var(--icon-sm)]" />
+            <IconX className="h-ico-sm w-ico-sm" />
           </button>
         )}
       </div>

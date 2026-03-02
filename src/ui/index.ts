@@ -7,6 +7,9 @@ export { Label, type LabelProps } from './label'
 export { Separator } from './separator'
 export { default as VisuallyHidden } from './visually-hidden'
 
+// Autocomplete
+export { Autocomplete, type AutocompleteProps, type AutocompleteOption } from './autocomplete'
+
 // Form Controls
 export { Checkbox, type CheckboxProps } from './checkbox'
 export { RadioGroup, RadioGroupItem } from './radio'

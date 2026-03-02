@@ -1,0 +1,397 @@
+'use client'
+
+import * as React from 'react'
+import * as PopoverPrimitive from '@primitives/react-popover'
+import { IconCheck, IconChevronDown, IconSearch, IconX } from '@tabler/icons-react'
+import { cn } from './lib/utils'
+
+export interface ComboboxOption {
+  value: string
+  label: string
+  description?: string
+  icon?: React.ReactNode
+  disabled?: boolean
+}
+
+export interface ComboboxProps {
+  options: ComboboxOption[]
+  value?: string | string[]
+  onChange: (value: string | string[]) => void
+  placeholder?: string
+  searchPlaceholder?: string
+  emptyMessage?: string
+  multiple?: boolean
+  disabled?: boolean
+  className?: string
+  triggerClassName?: string
+  maxVisible?: number
+  renderOption?: (option: ComboboxOption, selected: boolean) => React.ReactNode
+}
+
+const Combobox = React.forwardRef<HTMLButtonElement, ComboboxProps>(
+  (
+    {
+      options,
+      value,
+      onChange,
+      placeholder = 'Select...',
+      searchPlaceholder = 'Search...',
+      emptyMessage = 'No results found',
+      multiple = false,
+      disabled = false,
+      className,
+      triggerClassName,
+      maxVisible = 2,
+      renderOption,
+    },
+    ref,
+  ) => {
+    const [open, setOpen] = React.useState(false)
+    const [search, setSearch] = React.useState('')
+    const [highlightedIndex, setHighlightedIndex] = React.useState(-1)
+    const searchInputRef = React.useRef<HTMLInputElement>(null)
+    const listRef = React.useRef<HTMLUListElement>(null)
+
+    const selectedValues = React.useMemo<string[]>(() => {
+      if (value === undefined || value === null) return []
+      if (Array.isArray(value)) return value
+      return [value]
+    }, [value])
+
+    const filteredOptions = React.useMemo(
+      () =>
+        search
+          ? options.filter((o) =>
+              o.label.toLowerCase().includes(search.toLowerCase()),
+            )
+          : options,
+      [options, search],
+    )
+
+    const isSelected = React.useCallback(
+      (optionValue: string) => selectedValues.includes(optionValue),
+      [selectedValues],
+    )
+
+    const handleSelect = React.useCallback(
+      (optionValue: string) => {
+        if (multiple) {
+          const newValue = selectedValues.includes(optionValue)
+            ? selectedValues.filter((v) => v !== optionValue)
+            : [...selectedValues, optionValue]
+          onChange(newValue)
+        } else {
+          onChange(optionValue)
+          setOpen(false)
+        }
+      },
+      [multiple, selectedValues, onChange],
+    )
+
+    const handleRemovePill = React.useCallback(
+      (e: React.MouseEvent, optionValue: string) => {
+        e.stopPropagation()
+        e.preventDefault()
+        const newValue = selectedValues.filter((v) => v !== optionValue)
+        onChange(newValue)
+      },
+      [selectedValues, onChange],
+    )
+
+    const handleOpenChange = React.useCallback(
+      (nextOpen: boolean) => {
+        if (disabled) return
+        setOpen(nextOpen)
+        if (!nextOpen) {
+          setSearch('')
+          setHighlightedIndex(-1)
+        }
+      },
+      [disabled],
+    )
+
+    // Auto-focus search input when popover opens
+    React.useEffect(() => {
+      if (open) {
+        // Use a small timeout to allow the popover to render
+        const timer = setTimeout(() => {
+          searchInputRef.current?.focus()
+        }, 0)
+        return () => clearTimeout(timer)
+      }
+    }, [open])
+
+    const findNextEnabledIndex = React.useCallback(
+      (currentIndex: number, direction: 1 | -1): number => {
+        const len = filteredOptions.length
+        if (len === 0) return -1
+
+        let nextIndex = currentIndex + direction
+        while (nextIndex >= 0 && nextIndex < len) {
+          if (!filteredOptions[nextIndex].disabled) return nextIndex
+          nextIndex += direction
+        }
+        return currentIndex
+      },
+      [filteredOptions],
+    )
+
+    const handleKeyDown = React.useCallback(
+      (e: React.KeyboardEvent) => {
+        switch (e.key) {
+          case 'ArrowDown': {
+            e.preventDefault()
+            const nextIdx = findNextEnabledIndex(highlightedIndex, 1)
+            setHighlightedIndex(nextIdx)
+            break
+          }
+          case 'ArrowUp': {
+            e.preventDefault()
+            const prevIdx = findNextEnabledIndex(highlightedIndex, -1)
+            setHighlightedIndex(prevIdx)
+            break
+          }
+          case 'Home': {
+            e.preventDefault()
+            const firstEnabled = filteredOptions.findIndex((o) => !o.disabled)
+            setHighlightedIndex(firstEnabled)
+            break
+          }
+          case 'End': {
+            e.preventDefault()
+            let lastEnabled = -1
+            for (let i = filteredOptions.length - 1; i >= 0; i--) {
+              if (!filteredOptions[i].disabled) {
+                lastEnabled = i
+                break
+              }
+            }
+            setHighlightedIndex(lastEnabled)
+            break
+          }
+          case 'Enter': {
+            e.preventDefault()
+            if (
+              highlightedIndex >= 0 &&
+              highlightedIndex < filteredOptions.length &&
+              !filteredOptions[highlightedIndex].disabled
+            ) {
+              handleSelect(filteredOptions[highlightedIndex].value)
+            }
+            break
+          }
+          case 'Escape': {
+            e.preventDefault()
+            setOpen(false)
+            setSearch('')
+            setHighlightedIndex(-1)
+            break
+          }
+        }
+      },
+      [highlightedIndex, filteredOptions, findNextEnabledIndex, handleSelect],
+    )
+
+    // Scroll highlighted option into view
+    React.useEffect(() => {
+      if (highlightedIndex >= 0 && listRef.current) {
+        const optionEl = listRef.current.children[highlightedIndex] as HTMLElement
+        if (optionEl) {
+          optionEl.scrollIntoView?.({ block: 'nearest' })
+        }
+      }
+    }, [highlightedIndex])
+
+    const getSelectedLabel = React.useCallback(() => {
+      if (selectedValues.length === 0) return null
+      const option = options.find((o) => o.value === selectedValues[0])
+      return option?.label ?? null
+    }, [selectedValues, options])
+
+    const renderTriggerContent = () => {
+      if (multiple && selectedValues.length > 0) {
+        const visiblePills = selectedValues.slice(0, maxVisible)
+        const remaining = selectedValues.length - maxVisible
+
+        return (
+          <span className="flex flex-1 flex-wrap items-center gap-ds-02 overflow-hidden">
+            {visiblePills.map((val) => {
+              const option = options.find((o) => o.value === val)
+              if (!option) return null
+              return (
+                <span
+                  key={val}
+                  className="inline-flex items-center gap-ds-01 rounded-[var(--radius-md)] bg-[var(--color-interactive-subtle)] px-ds-03 py-[1px] text-ds-sm"
+                >
+                  {option.label}
+                  <span
+                    role="button"
+                    className="inline-flex items-center justify-center rounded-full outline-none hover:opacity-75"
+                    onClick={(e) => handleRemovePill(e, val)}
+                    onKeyDown={(e) => {
+                      if (e.key === 'Enter' || e.key === ' ') {
+                        handleRemovePill(e as unknown as React.MouseEvent, val)
+                      }
+                    }}
+                    aria-label={`Remove ${option.label}`}
+                    tabIndex={-1}
+                  >
+                    <IconX className="h-3 w-3" />
+                  </span>
+                </span>
+              )
+            })}
+            {remaining > 0 && (
+              <span className="text-ds-sm text-[var(--color-text-secondary)]">
+                +{remaining} more
+              </span>
+            )}
+          </span>
+        )
+      }
+
+      if (!multiple && selectedValues.length === 1) {
+        const label = getSelectedLabel()
+        if (label) {
+          return <span className="flex-1 truncate text-left">{label}</span>
+        }
+      }
+
+      return (
+        <span className="flex-1 truncate text-left text-[var(--color-text-placeholder)]">
+          {placeholder}
+        </span>
+      )
+    }
+
+    return (
+      <PopoverPrimitive.Root open={open} onOpenChange={handleOpenChange}>
+        <PopoverPrimitive.Trigger asChild disabled={disabled}>
+          <button
+            ref={ref}
+            type="button"
+            role="combobox"
+            aria-expanded={open}
+            aria-haspopup="listbox"
+            aria-label={placeholder}
+            disabled={disabled}
+            className={cn(
+              'flex h-[var(--size-md)] w-full items-center justify-between whitespace-nowrap rounded-[var(--radius-md)] border border-[var(--color-border-default)] bg-[var(--color-field)] px-ds-04 py-ds-03 text-ds-md',
+              'focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--color-focus)] focus-visible:ring-offset-2 focus-visible:border-[var(--color-border-interactive)]',
+              'disabled:cursor-not-allowed disabled:opacity-50',
+              className,
+              triggerClassName,
+            )}
+          >
+            {renderTriggerContent()}
+            <IconChevronDown className="ml-ds-02 h-[var(--icon-sm)] w-[var(--icon-sm)] shrink-0 opacity-50" />
+          </button>
+        </PopoverPrimitive.Trigger>
+
+        <PopoverPrimitive.Portal>
+          <PopoverPrimitive.Content
+            className={cn(
+              'z-[var(--z-dropdown)] w-[var(--radix-popover-trigger-width)] overflow-hidden rounded-[var(--radius-lg)] border border-[var(--color-border-subtle)] bg-[var(--color-layer-01)] shadow-[var(--shadow-02)]',
+              'data-[state=open]:animate-in data-[state=closed]:animate-out data-[state=closed]:fade-out-0 data-[state=open]:fade-in-0 data-[state=closed]:zoom-out-95 data-[state=open]:zoom-in-95 data-[side=bottom]:slide-in-from-top-2 data-[side=top]:slide-in-from-bottom-2',
+            )}
+            sideOffset={4}
+            align="start"
+            onOpenAutoFocus={(e) => {
+              e.preventDefault()
+              searchInputRef.current?.focus()
+            }}
+          >
+            {/* Search input */}
+            <div className="flex items-center gap-ds-02 border-b border-[var(--color-border-subtle)] px-ds-04">
+              <IconSearch className="h-[var(--icon-sm)] w-[var(--icon-sm)] shrink-0 text-[var(--color-text-tertiary)]" />
+              <input
+                ref={searchInputRef}
+                type="text"
+                className="flex-1 bg-transparent py-ds-03 text-ds-md outline-none placeholder:text-[var(--color-text-placeholder)]"
+                placeholder={searchPlaceholder}
+                value={search}
+                onChange={(e) => {
+                  setSearch(e.target.value)
+                  setHighlightedIndex(-1)
+                }}
+                onKeyDown={handleKeyDown}
+                aria-label="Search options"
+              />
+            </div>
+
+            {/* Options list */}
+            {filteredOptions.length === 0 ? (
+              <div className="px-ds-04 py-ds-05 text-center text-ds-md text-[var(--color-text-tertiary)]">
+                {emptyMessage}
+              </div>
+            ) : (
+              <ul
+                ref={listRef}
+                role="listbox"
+                aria-multiselectable={multiple || undefined}
+                className="max-h-60 overflow-auto p-ds-02"
+              >
+                {filteredOptions.map((option, index) => {
+                  const selected = isSelected(option.value)
+                  return (
+                    <li
+                      key={option.value}
+                      role="option"
+                      aria-selected={selected}
+                      aria-disabled={option.disabled || undefined}
+                      className={cn(
+                        'relative flex cursor-pointer select-none items-center gap-ds-03 rounded-[var(--radius-md)] px-ds-04 py-ds-03 text-ds-md outline-none',
+                        'transition-colors',
+                        highlightedIndex === index &&
+                          'bg-[var(--color-interactive-subtle)]',
+                        selected && 'text-[var(--color-interactive)]',
+                        option.disabled &&
+                          'pointer-events-none opacity-50',
+                      )}
+                      onClick={() => {
+                        if (!option.disabled) {
+                          handleSelect(option.value)
+                        }
+                      }}
+                      onMouseEnter={() => {
+                        if (!option.disabled) {
+                          setHighlightedIndex(index)
+                        }
+                      }}
+                    >
+                      {option.icon && (
+                        <span className="flex h-[var(--icon-sm)] w-[var(--icon-sm)] items-center justify-center shrink-0">
+                          {option.icon}
+                        </span>
+                      )}
+                      <span className="flex flex-1 flex-col">
+                        {renderOption ? (
+                          renderOption(option, selected)
+                        ) : (
+                          <>
+                            <span>{option.label}</span>
+                            {option.description && (
+                              <span className="text-ds-sm text-[var(--color-text-secondary)]">
+                                {option.description}
+                              </span>
+                            )}
+                          </>
+                        )}
+                      </span>
+                      {selected && (
+                        <IconCheck className="h-[var(--icon-sm)] w-[var(--icon-sm)] shrink-0" />
+                      )}
+                    </li>
+                  )
+                })}
+              </ul>
+            )}
+          </PopoverPrimitive.Content>
+        </PopoverPrimitive.Portal>
+      </PopoverPrimitive.Root>
+    )
+  },
+)
+Combobox.displayName = 'Combobox'
+
+export { Combobox }

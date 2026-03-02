@@ -10,6 +10,9 @@ export { default as VisuallyHidden } from './visually-hidden'
 // Autocomplete
 export { Autocomplete, type AutocompleteProps, type AutocompleteOption } from './autocomplete'
 
+// Combobox
+export { Combobox, type ComboboxProps, type ComboboxOption } from './combobox'
+
 // Form Controls
 export { Checkbox, type CheckboxProps } from './checkbox'
 export { RadioGroup, RadioGroupItem } from './radio'

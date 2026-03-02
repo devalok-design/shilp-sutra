@@ -77,6 +77,13 @@ export {
   /** @deprecated Use Button from ui/ instead */
   IconButton,
   type IconButtonProps,
+  SegmentedControl,
+  SegmentedControlItem,
+  segmentedControlItemVariants,
+  type SegmentedControlSize,
+  type SegmentedControlColor,
+  type SegmentedControlOption,
+  /** @deprecated Use SegmentedControl instead */
   Toggle,
   type ToggleSize,
   type ToggleColor,

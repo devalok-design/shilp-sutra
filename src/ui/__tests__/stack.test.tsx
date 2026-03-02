@@ -30,6 +30,7 @@ describe('Stack', () => {
   })
 
   it('renders as custom element', () => {
+    // @ts-expect-error -- polymorphic `as` narrowing lost through forwardRef
     render(<Stack as="section" data-testid="stack">Content</Stack>)
     expect(screen.getByTestId('stack').tagName).toBe('SECTION')
   })

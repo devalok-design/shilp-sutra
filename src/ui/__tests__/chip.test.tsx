@@ -35,7 +35,7 @@ describe('Chip', () => {
 
   it('supports variant prop', () => {
     const { container } = render(<Chip label="Outlined" variant="outlined" />)
-    expect(container.firstChild?.className).toContain('border')
+    expect((container.firstChild as HTMLElement)?.className).toContain('border')
   })
 
   it('supports disabled state', () => {

@@ -14,6 +14,7 @@ describe('Container', () => {
   })
 
   it('supports as prop', () => {
+    // @ts-expect-error -- polymorphic `as` narrowing lost through forwardRef
     render(<Container as="main" data-testid="container">Content</Container>)
     expect(screen.getByTestId('container').tagName).toBe('MAIN')
   })

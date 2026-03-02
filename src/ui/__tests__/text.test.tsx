@@ -22,6 +22,7 @@ describe('Text', () => {
   })
 
   it('allows overriding the element with as prop', () => {
+    // @ts-expect-error -- polymorphic `as` narrowing lost through forwardRef
     render(<Text variant="heading-2xl" as="span">Override</Text>)
     const el = screen.getByText('Override')
     expect(el.tagName).toBe('SPAN')

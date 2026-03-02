@@ -212,6 +212,9 @@ export {
   useSidebar,
 } from './sidebar'
 
+// Interactive Tags
+export { Chip, chipVariants, type ChipProps } from './chip'
+
 // Transitions
 export { Fade, Collapse, Grow, Slide, type TransitionProps } from './transitions'
 

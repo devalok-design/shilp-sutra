@@ -7,6 +7,7 @@ import {
   AvatarImage,
   AvatarFallback,
 } from '../../ui/avatar'
+import { Progress } from '../../ui'
 import { EmptyState } from '../../shared/empty-state'
 import {
   IconSquareCheck,
@@ -98,14 +99,7 @@ function SubtasksTab({
       {/* Progress bar */}
       {totalCount > 0 && (
         <div className="mb-4 flex items-center gap-3">
-          <div className="flex-1 h-1.5 rounded-[var(--radius-full)] bg-[var(--color-field)] overflow-hidden">
-            <div
-              className="h-full rounded-[var(--radius-full)] bg-[var(--color-interactive)] transition-[width] duration-[var(--duration-slow)]"
-              style={{
-                width: `${totalCount > 0 ? (completedCount / totalCount) * 100 : 0}%`,
-              }}
-            />
-          </div>
+          <Progress value={totalCount > 0 ? (completedCount / totalCount) * 100 : 0} className="h-1.5" />
           <span className="shrink-0 text-[11px] font-body font-medium text-[var(--color-text-placeholder)]">
             {completedCount}/{totalCount}
           </span>

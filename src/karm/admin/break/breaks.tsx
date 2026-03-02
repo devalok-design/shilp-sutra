@@ -2,6 +2,7 @@
 
 import { MenuDotsIcon } from '../icons'
 import { Popover, PopoverContent, PopoverTrigger } from '../../../ui/popover'
+import { Tooltip, TooltipTrigger, TooltipContent } from '../../../ui'
 import { EditBreak } from './edit-break'
 import { formatOptionalDate } from '../utils/date-utils'
 import { renderStatus } from '../utils/render-status'
@@ -89,15 +90,15 @@ export function Breaks({
                     {breakItem.user?.name?.[0] || 'U'}
                   </span>
                 )}
-                <div className="group relative truncate">
-                  <span className="P3 text-[var(--color-text-primary)]">
-                    {breakItem.user?.name ||
-                      breakItem.user?.name?.split(' ')[0]}
-                  </span>
-                  <div className="P3 invisible absolute left-0 top-full z-10 mt-2 whitespace-nowrap rounded bg-[var(--neutral-900)] px-2 py-1 text-sm text-[var(--color-text-on-color)] shadow-lg group-hover:visible">
-                    {breakItem.user?.name}
-                  </div>
-                </div>
+                <Tooltip>
+                  <TooltipTrigger asChild>
+                    <span className="P3 truncate text-[var(--color-text-primary)]">
+                      {breakItem.user?.name ||
+                        breakItem.user?.name?.split(' ')[0]}
+                    </span>
+                  </TooltipTrigger>
+                  <TooltipContent>{breakItem.user?.name}</TooltipContent>
+                </Tooltip>
               </div>
 
               <div className="w-[19%] overflow-hidden px-3 py-2">

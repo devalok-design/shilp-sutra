@@ -96,26 +96,28 @@ export function LeaveRequest({
             <div className="flex w-full flex-wrap items-center gap-3">
               {isSingleDay ? (
                 <div className="flex w-full flex-wrap items-center gap-2">
-                  <div className="group relative">
-                    <p className="B1-Reg semibold line-clamp-2 cursor-default text-[var(--color-text-primary)]">
-                      {request.reason}
-                    </p>
-                    <div className="B1-Reg invisible absolute left-0 top-full z-[1600] mt-2 max-w-xs whitespace-normal rounded bg-[var(--neutral-900)] px-2 py-1 text-[var(--color-text-on-color)] shadow-lg group-hover:visible">
-                      {request.reason}
-                    </div>
-                  </div>
+                  <Tooltip>
+                    <TooltipTrigger asChild>
+                      <p className="B1-Reg semibold line-clamp-2 cursor-default text-[var(--color-text-primary)]">
+                        {request.reason}
+                      </p>
+                    </TooltipTrigger>
+                    <TooltipContent>{request.reason}</TooltipContent>
+                  </Tooltip>
                   <p className="B1-Reg text-[var(--color-text-tertiary)]">
                     • {formatDateWithWeekday(startDate)}
                   </p>
                 </div>
               ) : (
                 <>
-                  <p className="B1-Reg semibold line-clamp-2 cursor-default text-[var(--color-text-primary)]">
-                    {request.reason}
-                  </p>
-                  <div className="B1-Reg invisible absolute left-0 top-full z-[1600] mt-2 max-w-xs whitespace-normal rounded bg-[var(--neutral-900)] px-2 py-1 text-[var(--color-text-on-color)] shadow-lg group-hover:visible">
-                    {request.reason}
-                  </div>
+                  <Tooltip>
+                    <TooltipTrigger asChild>
+                      <p className="B1-Reg semibold line-clamp-2 cursor-default text-[var(--color-text-primary)]">
+                        {request.reason}
+                      </p>
+                    </TooltipTrigger>
+                    <TooltipContent>{request.reason}</TooltipContent>
+                  </Tooltip>
                   <p className="B1-Reg text-[var(--color-text-tertiary)]">
                     {formatDateWithWeekday(startDate)} to{' '}
                     {formatDateWithWeekday(endDate)},

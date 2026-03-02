@@ -6,6 +6,7 @@ import type { DraggableAttributes } from '@dnd-kit/core'
 import type { SyntheticListenerMap } from '@dnd-kit/core/dist/hooks/utilities'
 import { cn } from '../../ui/lib/utils'
 import { Avatar, AvatarFallback, AvatarImage } from '../../ui/avatar'
+import { Badge } from '../../ui'
 import { IconCalendar, IconGripVertical } from '@tabler/icons-react'
 import { getInitials } from '../../shared/lib/string-utils'
 import { PRIORITY_LABELS, PRIORITY_DOT_COLORS } from '../tasks/task-constants'
@@ -121,12 +122,9 @@ function TaskCardVisual({
         {task.labels.length > 0 && (
           <div className="flex items-center gap-1 overflow-hidden">
             {task.labels.slice(0, 2).map((label) => (
-              <span
-                key={label}
-                className="inline-flex max-w-[80px] truncate rounded-[var(--radius-sm)] bg-[var(--color-field)] px-1.5 py-0.5 text-[10px] font-medium text-[var(--color-text-tertiary)]"
-              >
+              <Badge key={label} size="sm" variant="neutral" className="max-w-[80px] truncate">
                 {label}
-              </span>
+              </Badge>
             ))}
             {task.labels.length > 2 && (
               <span className="text-[10px] text-[var(--color-text-tertiary)]">

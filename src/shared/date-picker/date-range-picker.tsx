@@ -1,7 +1,7 @@
 'use client'
 
 import * as React from 'react'
-import { format, isBefore, isAfter, setMonth, setYear } from 'date-fns'
+import { format, isBefore, isAfter, setMonth, setYear, addMonths } from 'date-fns'
 import { IconCalendarEvent } from '@tabler/icons-react'
 import { cn } from '../../ui/lib/utils'
 import {
@@ -12,6 +12,8 @@ import {
 import { CalendarGrid } from './calendar-grid'
 import { YearPicker } from './year-picker'
 import { MonthPicker } from './month-picker'
+import { Presets } from './presets'
+import type { PresetKey } from './presets'
 
 type CalendarView = 'days' | 'months' | 'years'
 
@@ -25,6 +27,10 @@ export interface DateRangePickerProps {
   minDate?: Date
   maxDate?: Date
   disabledDates?: (date: Date) => boolean
+  /** Show a presets sidebar with quick date range selections */
+  presets?: PresetKey[]
+  /** Number of calendar months to display side by side (default: 1) */
+  numberOfMonths?: number
 }
 
 export function DateRangePicker({
@@ -37,6 +43,8 @@ export function DateRangePicker({
   minDate,
   maxDate,
   disabledDates,
+  presets,
+  numberOfMonths = 1,
 }: DateRangePickerProps) {
   const [open, setOpen] = React.useState(false)
   const [currentMonth, setCurrentMonth] = React.useState(
@@ -50,6 +58,8 @@ export function DateRangePicker({
   )
   const [hoverDate, setHoverDate] = React.useState<Date | null>(null)
   const [view, setView] = React.useState<CalendarView>('days')
+
+  const monthCount = Math.max(1, numberOfMonths)
 
   React.useEffect(() => {
     setRangeStart(startDate ?? null)
@@ -75,6 +85,13 @@ export function DateRangePicker({
     }
   }
 
+  const handlePresetSelect = (start: Date, end: Date) => {
+    setRangeStart(start)
+    setRangeEnd(end)
+    onChange?.({ start, end })
+    setOpen(false)
+  }
+
   const handleHeaderClick = () => {
     setView((prev) => (prev === 'days' ? 'months' : 'years'))
   }
@@ -94,6 +111,52 @@ export function DateRangePicker({
       return `${format(rangeStart, formatStr)} - ${format(rangeEnd, formatStr)}`
     }
     return placeholder
+  }
+
+  const renderCalendarGrids = () => {
+    if (monthCount === 1) {
+      return (
+        <CalendarGrid
+          currentMonth={currentMonth}
+          rangeStart={rangeStart}
+          rangeEnd={rangeEnd}
+          hoverDate={hoverDate}
+          onSelect={handleSelect}
+          onHover={setHoverDate}
+          onMonthChange={setCurrentMonth}
+          onHeaderClick={handleHeaderClick}
+          disabledDates={disabledDates}
+          minDate={minDate}
+          maxDate={maxDate}
+        />
+      )
+    }
+
+    return (
+      <div className="flex flex-row gap-ds-04">
+        {Array.from({ length: monthCount }, (_, i) => (
+          <CalendarGrid
+            key={i}
+            currentMonth={addMonths(currentMonth, i)}
+            rangeStart={rangeStart}
+            rangeEnd={rangeEnd}
+            hoverDate={hoverDate}
+            onSelect={handleSelect}
+            onHover={setHoverDate}
+            onMonthChange={(date) => {
+              // Adjust so the first grid stays in sync
+              setCurrentMonth(addMonths(date, -i))
+            }}
+            onHeaderClick={handleHeaderClick}
+            disabledDates={disabledDates}
+            minDate={minDate}
+            maxDate={maxDate}
+            hidePrevNav={i > 0}
+            hideNextNav={i < monthCount - 1}
+          />
+        ))}
+      </div>
+    )
   }
 
   const renderView = () => {
@@ -119,23 +182,11 @@ export function DateRangePicker({
           />
         )
       default:
-        return (
-          <CalendarGrid
-            currentMonth={currentMonth}
-            rangeStart={rangeStart}
-            rangeEnd={rangeEnd}
-            hoverDate={hoverDate}
-            onSelect={handleSelect}
-            onHover={setHoverDate}
-            onMonthChange={setCurrentMonth}
-            onHeaderClick={handleHeaderClick}
-            disabledDates={disabledDates}
-            minDate={minDate}
-            maxDate={maxDate}
-          />
-        )
+        return renderCalendarGrids()
     }
   }
+
+  const hasPresets = presets && presets.length > 0
 
   return (
     <Popover open={open} onOpenChange={setOpen}>
@@ -170,7 +221,16 @@ export function DateRangePicker({
         align="start"
         sideOffset={4}
       >
-        {renderView()}
+        {hasPresets ? (
+          <div className="flex flex-row gap-ds-04">
+            <div className="min-w-[140px] border-r border-[var(--color-border-default)] pr-ds-04">
+              <Presets presets={presets} onSelect={handlePresetSelect} />
+            </div>
+            <div>{renderView()}</div>
+          </div>
+        ) : (
+          renderView()
+        )}
       </PopoverContent>
     </Popover>
   )

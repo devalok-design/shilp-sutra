@@ -36,6 +36,10 @@ export interface CalendarGridProps {
   disabledDates?: (date: Date) => boolean
   minDate?: Date
   maxDate?: Date
+  /** Hide the previous-month navigation arrow */
+  hidePrevNav?: boolean
+  /** Hide the next-month navigation arrow */
+  hideNextNav?: boolean
 }
 
 export function CalendarGrid({
@@ -51,6 +55,8 @@ export function CalendarGrid({
   disabledDates,
   minDate,
   maxDate,
+  hidePrevNav,
+  hideNextNav,
 }: CalendarGridProps) {
   const gridRef = React.useRef<HTMLDivElement>(null)
   const monthStart = startOfMonth(currentMonth)
@@ -154,14 +160,18 @@ export function CalendarGrid({
   return (
     <div className="w-[252px]">
       <div className="flex items-center justify-between px-ds-02 pb-ds-04">
-        <button
-          type="button"
-          onClick={() => onMonthChange(subMonths(currentMonth, 1))}
-          className="inline-flex h-7 w-7 items-center justify-center rounded-[var(--radius-md)] text-[var(--color-text-placeholder)] transition-colors hover:bg-[var(--color-field)] hover:text-[var(--color-text-secondary)]"
-          aria-label="Previous month"
-        >
-          <IconChevronLeft className="h-[var(--icon-sm)] w-[var(--icon-sm)]" stroke={1.5} />
-        </button>
+        {hidePrevNav ? (
+          <span className="h-7 w-7" />
+        ) : (
+          <button
+            type="button"
+            onClick={() => onMonthChange(subMonths(currentMonth, 1))}
+            className="inline-flex h-7 w-7 items-center justify-center rounded-[var(--radius-md)] text-[var(--color-text-placeholder)] transition-colors hover:bg-[var(--color-field)] hover:text-[var(--color-text-secondary)]"
+            aria-label="Previous month"
+          >
+            <IconChevronLeft className="h-[var(--icon-sm)] w-[var(--icon-sm)]" stroke={1.5} />
+          </button>
+        )}
         <button
           type="button"
           onClick={onHeaderClick}
@@ -174,14 +184,18 @@ export function CalendarGrid({
         >
           {format(currentMonth, 'MMMM yyyy')}
         </button>
-        <button
-          type="button"
-          onClick={() => onMonthChange(addMonths(currentMonth, 1))}
-          className="inline-flex h-7 w-7 items-center justify-center rounded-[var(--radius-md)] text-[var(--color-text-placeholder)] transition-colors hover:bg-[var(--color-field)] hover:text-[var(--color-text-secondary)]"
-          aria-label="Next month"
-        >
-          <IconChevronRight className="h-[var(--icon-sm)] w-[var(--icon-sm)]" stroke={1.5} />
-        </button>
+        {hideNextNav ? (
+          <span className="h-7 w-7" />
+        ) : (
+          <button
+            type="button"
+            onClick={() => onMonthChange(addMonths(currentMonth, 1))}
+            className="inline-flex h-7 w-7 items-center justify-center rounded-[var(--radius-md)] text-[var(--color-text-placeholder)] transition-colors hover:bg-[var(--color-field)] hover:text-[var(--color-text-secondary)]"
+            aria-label="Next month"
+          >
+            <IconChevronRight className="h-[var(--icon-sm)] w-[var(--icon-sm)]" stroke={1.5} />
+          </button>
+        )}
       </div>
 
       {/* eslint-disable-next-line jsx-a11y/no-static-element-interactions */}

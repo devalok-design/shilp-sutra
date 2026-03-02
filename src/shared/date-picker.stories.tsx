@@ -1,6 +1,7 @@
 import type { Meta, StoryObj } from '@storybook/react'
 import { useState } from 'react'
-import { DatePicker, DateRangePicker, CalendarGrid } from './date-picker'
+import { format } from 'date-fns'
+import { DatePicker, DateRangePicker, CalendarGrid, TimePicker, DateTimePicker } from './date-picker'
 
 // --- DatePicker ---
 
@@ -253,4 +254,102 @@ export const BothPickers: DatePickerStory = {
       </div>
     </div>
   ),
+}
+
+// --- DateRangePicker with Presets ---
+
+export const RangeWithPresets: DatePickerStory = {
+  render: () => (
+    <DateRangePicker
+      presets={['today', 'last7days', 'last30days', 'thisMonth', 'lastMonth']}
+    />
+  ),
+}
+
+export const RangeWithPresetsAndMultipleMonths: DatePickerStory = {
+  render: () => (
+    <DateRangePicker
+      presets={['today', 'yesterday', 'last7days', 'last30days', 'thisMonth', 'lastMonth', 'thisYear']}
+      numberOfMonths={2}
+    />
+  ),
+}
+
+export const RangeMultipleMonths: DatePickerStory = {
+  render: () => (
+    <DateRangePicker numberOfMonths={2} />
+  ),
+}
+
+export const RangeThreeMonths: DatePickerStory = {
+  render: () => (
+    <DateRangePicker numberOfMonths={3} />
+  ),
+}
+
+// --- TimePicker ---
+
+export const TimePickerDefault: DatePickerStory = {
+  render: () => <TimePicker />,
+}
+
+export const TimePicker24Hour: DatePickerStory = {
+  render: () => <TimePicker format="24h" />,
+}
+
+export const TimePickerWith15MinSteps: DatePickerStory = {
+  render: () => <TimePicker minuteStep={15} />,
+}
+
+export const TimePickerWithSeconds: DatePickerStory = {
+  render: () => <TimePicker showSeconds />,
+}
+
+export const TimePickerControlled: DatePickerStory = {
+  render: () => {
+    const ControlledTime = () => {
+      const [time, setTime] = useState<Date | null>(null)
+      return (
+        <div style={{ display: 'flex', flexDirection: 'column', gap: 12 }}>
+          <TimePicker value={time} onChange={setTime} />
+          <p style={{ fontSize: 13, color: 'var(--color-text-secondary)' }}>
+            Selected: {time ? format(time, 'h:mm a') : 'None'}
+          </p>
+        </div>
+      )
+    }
+    return <ControlledTime />
+  },
+}
+
+// --- DateTimePicker ---
+
+export const DateTimePickerDefault: DatePickerStory = {
+  render: () => <DateTimePicker />,
+}
+
+export const DateTimePickerWithConstraints: DatePickerStory = {
+  render: () => (
+    <DateTimePicker
+      minDate={new Date(2026, 0, 1)}
+      maxDate={new Date(2026, 11, 31)}
+    />
+  ),
+}
+
+export const DateTimePickerControlled: DatePickerStory = {
+  render: () => {
+    const ControlledDateTime = () => {
+      const [dt, setDt] = useState<Date | null>(null)
+      return (
+        <div style={{ display: 'flex', flexDirection: 'column', gap: 12 }}>
+          <DateTimePicker value={dt} onChange={setDt} />
+          <p style={{ fontSize: 13, color: 'var(--color-text-secondary)' }}>
+            Selected: {dt ? format(dt, 'MMM d, yyyy h:mm a') : 'None'}
+          </p>
+        </div>
+      )
+    }
+    return <ControlledDateTime />
+  },
 }

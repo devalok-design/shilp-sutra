@@ -206,7 +206,7 @@ export function BreakAdmin({
                   ? 'Attendance correction'
                   : 'Break request'}{' '}
               </span>
-              <span style={{ color: '#C3F0C2' }}>approved successfully</span>
+              <span style={{ color: 'var(--color-success-text)' }}>approved successfully</span>
             </>
           ),
           variant: 'default',
@@ -264,7 +264,7 @@ export function BreakAdmin({
                   ? 'Attendance correction'
                   : 'Break request'}{' '}
               </span>
-              <span style={{ color: '#F87179' }}>rejected</span>
+              <span style={{ color: 'var(--color-error-text)' }}>rejected</span>
             </>
           ),
           variant: 'default',

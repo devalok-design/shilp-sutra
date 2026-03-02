@@ -72,9 +72,9 @@ const disabledClasses: Record<ButtonVariant, string> = {
 
 /* ── ripple bg per variant ────────────────────────────────── */
 const rippleBg: Record<ButtonVariant, string> = {
-  filled: 'bg-[rgba(252,247,247,0.2)]',
-  tonal: 'bg-[rgba(140,128,132,0.2)]',
-  outline: 'bg-[rgba(140,128,132,0.2)]',
+  filled: 'bg-[rgba(255,255,255,0.2)]',
+  tonal: 'bg-[rgba(0,0,0,0.12)]',
+  outline: 'bg-[rgba(0,0,0,0.12)]',
   text: 'hidden',
 }
 

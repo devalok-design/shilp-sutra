@@ -114,7 +114,7 @@ function AttendanceStatus({
               width: '1px',
               height: '20px',
               opacity: 0.5,
-              background: 'var(--color-border-strong, #DD9EB8)',
+              background: 'var(--color-border-strong)',
             }}
           ></div>
         )}
@@ -295,7 +295,7 @@ export function AssociateDetail({
           <p className="L3 mb-4 uppercase text-[var(--color-text-tertiary)]">
             COMMENT
           </p>
-          <div className="flex w-full items-center justify-between rounded-[8px] border border-[var(--color-border-default,#F7E9E9)] bg-[var(--color-layer-01)] px-4 max-md:h-[48px]">
+          <div className="flex w-full items-center justify-between rounded-[8px] border border-[var(--color-border-default)] bg-[var(--color-layer-01)] px-4 max-md:h-[48px]">
             <input
               className="B2-Reg flex-1 border-none py-2 text-[var(--color-text-primary)] outline-none"
               defaultValue="Don't miss next time :)"

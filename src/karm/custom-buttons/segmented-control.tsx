@@ -87,13 +87,13 @@ const segmentedControlItemVariants = cva(
       // Filled + SVG icon fill
       {
         color: 'filled',
-        className: '[&_svg_path]:fill-[#FCF7F7]',
+        className: '[&_svg_path]:fill-[var(--color-icon-on-color)]',
       },
       // Filled + disabled SVG icon fill
       {
         color: 'filled',
         isDisabled: true,
-        className: '[&_svg_path]:fill-[#6B6164]',
+        className: '[&_svg_path]:fill-[var(--color-icon-disabled)]',
       },
       // Medium size last-child padding flip
       {
@@ -113,8 +113,8 @@ const segmentedControlItemVariants = cva(
 
 /* ── ripple bg per color ──────────────────────────────────── */
 const rippleBgMap: Record<string, string> = {
-  filled: 'bg-[rgba(252,247,247,0.2)]',
-  tonal: 'bg-[rgba(140,128,132,0.2)]',
+  filled: 'bg-[rgba(255,255,255,0.2)]',
+  tonal: 'bg-[rgba(0,0,0,0.12)]',
 }
 
 /* ── Types ─────────────────────────────────────────────────── */

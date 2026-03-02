@@ -12,7 +12,7 @@ import {
   DropdownMenuTrigger,
 } from '../../../ui/dropdown-menu'
 import { FilledArrowIcon, ArrowLeftIcon, ArrowForwardIcon } from '../icons'
-import { Toggle } from '../../custom-buttons/Toggle'
+import { Toggle } from '../../custom-buttons'
 import { isSameDay } from '../utils/date-utils'
 import { useCalendarNavigation } from './use-calendar-navigation'
 import { format } from 'date-fns'
@@ -185,7 +185,7 @@ export function Calendar({ onDateSelect, hasCorrection }: CalendarProps) {
                 {day.date}
               </span>
               {hasCorrection && hasCorrection(day.fullDate) && (
-                <div className="absolute z-10 mt-6 h-[6px] w-[6px] translate-y-[5px] rounded-[60px] bg-[var(--color-text-error)]"></div>
+                <div className="absolute z-10 mt-6 h-[6px] w-[6px] translate-y-[5px] rounded-[var(--radius-full)] bg-[var(--color-text-error)]"></div>
               )}
             </div>
           </div>

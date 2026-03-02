@@ -159,7 +159,7 @@ export function LeaveRequests({
               <div className="flex items-center gap-3 border-b border-[var(--color-border-default)] p-4 md:border-none md:p-0 max-md:items-start">
                 <img
                   src={userImages[request.user?.id || '']}
-                  className="h-10 w-10 overflow-hidden rounded-[var(--radius-full)] bg-[#FCF7F7]"
+                  className="h-10 w-10 overflow-hidden rounded-[var(--radius-full)] bg-[var(--color-interactive-subtle)]"
                   alt={request.user?.name?.[0] || 'U'}
                 />
                 <div className="flex max-w-[277px] flex-col items-start gap-1 sm:max-w-none">
@@ -225,7 +225,7 @@ export function LeaveRequests({
                         disabled={
                           interaction.isProcessing || request?.user?.id === currentUserId
                         }
-                        className={`rounded-[128px] p-2 ${
+                        className={`rounded-[var(--radius-full)] p-2 ${
                           interaction.activeRequest?.id === request.id &&
                           interaction.activeAction === 'rejectBreak'
                             ? 'bg-[var(--color-error-surface)]'
@@ -277,7 +277,7 @@ export function LeaveRequests({
                         disabled={
                           interaction.isProcessing || request?.user?.id === currentUserId
                         }
-                        className={`rounded-[128px] p-2 ${
+                        className={`rounded-[var(--radius-full)] p-2 ${
                           interaction.activeRequest?.id === request.id &&
                           interaction.activeAction === 'approveBreak'
                             ? 'bg-[var(--color-success-surface)]'
@@ -320,7 +320,7 @@ export function LeaveRequests({
                 <button
                   disabled={interaction.isProcessing}
                   onClick={() => handleRequestSubmit(request, interaction.activeAction)}
-                  className="my-auto flex hidden items-center justify-center rounded-[128px] p-2"
+                  className="my-auto flex hidden items-center justify-center rounded-[var(--radius-full)] p-2"
                 >
                   <SendIcon className="h-6 w-6" />
                 </button>

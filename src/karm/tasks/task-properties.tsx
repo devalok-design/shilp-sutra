@@ -489,8 +489,8 @@ function TaskProperties({
               className={cn(
                 'h-1.5 w-1.5 rounded-[var(--radius-full)]',
                 task.visibility === 'EVERYONE'
-                  ? 'bg-[var(--green-500)]'
-                  : 'bg-[var(--neutral-400)]',
+                  ? 'bg-[var(--color-success)]'
+                  : 'bg-[var(--color-icon-disabled)]',
               )}
             />
             {task.visibility === 'EVERYONE' ? 'Everyone' : 'Internal'}

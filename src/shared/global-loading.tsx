@@ -24,7 +24,7 @@ function GlobalLoading({ isLoading }: GlobalLoadingProps) {
       role="progressbar"
       aria-hidden={!isLoading}
       aria-valuetext={isLoading ? 'Loading' : undefined}
-      className="pointer-events-none fixed inset-x-0 top-0 z-50 h-1"
+      className="pointer-events-none fixed inset-x-0 top-0 z-toast h-1"
     >
       <div
         ref={ref}

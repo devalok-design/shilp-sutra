@@ -9,9 +9,9 @@ type IconButtonSize = 'small' | 'medium' | 'large'
 type IconButtonState = 'default' | 'focused' | 'hover' | 'pressed'
 
 const sizeClasses: Record<IconButtonSize, string> = {
-  small: 'h-7 w-7 rounded-[128px] [&_svg]:size-5',
-  medium: 'h-8 w-8 rounded-[128px] [&_svg]:size-6',
-  large: 'h-12 w-12 p-1 rounded-[128px] [&_svg]:size-6',
+  small: 'h-7 w-7 rounded-[var(--radius-full)] [&_svg]:size-5',
+  medium: 'h-8 w-8 rounded-[var(--radius-full)] [&_svg]:size-6',
+  large: 'h-12 w-12 p-1 rounded-[var(--radius-full)] [&_svg]:size-6',
 }
 
 const stateClasses: Record<IconButtonState, string> = {
@@ -111,7 +111,12 @@ const IconButton = React.forwardRef<HTMLButtonElement, IconButtonProps>(
         {...props}
         type="button"
       >
-        <div className={`relative z-10 w-full overflow-hidden h-full flex items-center justify-center rounded-[128px] ${size === 'large' ? 'p-2' : 'p-1'} ${!disabled && stateClasses[state]} ${disabled ? 'opacity-50 cursor-default hover:bg-transparent border-none' : ''}`}>
+        <div className={cn(
+          'relative z-10 w-full overflow-hidden h-full flex items-center justify-center rounded-[var(--radius-full)]',
+          size === 'large' ? 'p-2' : 'p-1',
+          !disabled && stateClasses[state],
+          disabled && 'opacity-50 cursor-default hover:bg-transparent border-none',
+        )}>
           {content}
           {!disabled && isRippling && (
             <div

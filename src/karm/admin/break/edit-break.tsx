@@ -587,7 +587,7 @@ export function EditBreak({
                                   day.fullDate === picker.selectedStartDate ||
                                   day.fullDate === picker.selectedEndDate ||
                                   isBreakDay(day.fullDate, existingBreaks, selectedLeave.id)
-                                    ? 'rounded-[var(--radius-full)] bg-[var(--color-interactive-accent)] shadow-[0px_4px_4px_0px_rgba(255,255,255,0.25)_inset,0px_0px_4px_0px_var(--purple-400,#AB9DED)_inset]'
+                                    ? 'rounded-[var(--radius-full)] bg-[var(--color-accent)] shadow-[0px_4px_4px_0px_rgba(255,255,255,0.25)_inset,0px_0px_4px_0px_var(--color-accent-hover)_inset]'
                                     : 'flex h-10 w-10 items-center justify-center'
                                 }
                                 ${

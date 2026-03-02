@@ -27,7 +27,7 @@ describe('Spinner', () => {
 
     rerender(<Spinner size="lg" />)
     svg = screen.getByRole('status').querySelector('svg')
-    expect(svg).toHaveClass('h-8', 'w-8')
+    expect(svg).toHaveClass('h-[var(--icon-lg)]', 'w-[var(--icon-lg)]')
   })
 
   it('applies the animate-spin class', () => {

@@ -327,7 +327,7 @@ const NotificationCenter = React.forwardRef<HTMLButtonElement, NotificationCente
       </Tooltip>
 
       <PopoverContent
-        className="w-[380px] rounded-[var(--radius-xl)] border border-[var(--color-border-default)] bg-[var(--color-layer-01)] p-0 shadow-lg"
+        className="w-[380px] rounded-[var(--radius-xl)] border border-[var(--color-border-default)] bg-[var(--color-layer-01)] p-0 shadow-03"
         sideOffset={8}
         align="end"
       >
@@ -379,7 +379,7 @@ const NotificationCenter = React.forwardRef<HTMLButtonElement, NotificationCente
               if (!items || items.length === 0) return null
               return (
                 <div key={group}>
-                  <div className="sticky top-0 z-10 bg-[var(--color-layer-01)] px-4 py-1.5">
+                  <div className="sticky top-0 z-raised bg-[var(--color-layer-01)] px-4 py-1.5">
                     <span className="text-xs font-medium text-[var(--color-text-placeholder)]">
                       {group}
                     </span>

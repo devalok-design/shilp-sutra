@@ -13,7 +13,7 @@ import {
 } from '../../../ui/dropdown-menu'
 import { CustomButton } from '../../custom-buttons/CustomButton'
 import { IconButton } from '../../custom-buttons/icon-button'
-import { Toggle } from '../../custom-buttons/Toggle'
+import { Toggle } from '../../custom-buttons'
 import {
   FilledArrowIcon,
   ArrowLeftIcon,
@@ -69,7 +69,7 @@ export function DashboardHeader({
             {selectedMonth}
             <FilledArrowIcon />
           </DropdownMenuTrigger>
-          <DropdownMenuContent className="custom-scrollbar absolute ml-10 max-h-[300px] overflow-y-auto rounded-[7px] border border-0 border-[var(--color-border-default)] p-0 shadow-md shadow-[rgba(77,10,28,0.2)]">
+          <DropdownMenuContent className="custom-scrollbar absolute ml-10 max-h-[300px] overflow-y-auto rounded-[7px] border border-0 border-[var(--color-border-default)] p-0 shadow-brand">
             {yearsList.map((year, index) => (
               <DropdownMenuItem
                 key={year}

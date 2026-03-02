@@ -108,7 +108,7 @@ function ErrorDisplay({ error, onReset }: ErrorDisplayProps) {
   return (
     <div className="flex min-h-[60vh] items-center justify-center p-4">
       <div
-        className="flex w-full max-w-lg flex-col items-center gap-6 rounded-[var(--radius-xl)] border border-[var(--color-border-default)] bg-[var(--color-layer-01)] p-8 text-center shadow-sm"
+        className="flex w-full max-w-lg flex-col items-center gap-6 rounded-[var(--radius-xl)] border border-[var(--color-border-default)] bg-[var(--color-layer-01)] p-8 text-center shadow-01"
       >
         {/* Error Icon */}
         <div

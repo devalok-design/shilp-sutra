@@ -3,8 +3,8 @@ import { cn } from './lib/utils'
 
 const sizeClasses = {
   sm: 'h-[var(--icon-sm)] w-[var(--icon-sm)]',
-  md: 'h-6 w-6',
-  lg: 'h-8 w-8',
+  md: 'h-[var(--icon-md)] w-[var(--icon-md)]',
+  lg: 'h-[var(--icon-lg)] w-[var(--icon-lg)]',
 } as const
 
 export interface SpinnerProps extends React.SVGAttributes<SVGSVGElement> {

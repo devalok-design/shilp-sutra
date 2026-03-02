@@ -121,10 +121,10 @@ const BottomNavbar = React.forwardRef<HTMLElement, BottomNavbarProps>(
         {/* More Menu Overlay */}
         {showMore && (
         <div
-          className="fixed inset-0 z-40 md:hidden"
+          className="fixed inset-0 z-overlay md:hidden"
           onClick={() => setShowMore(false)}
         >
-          <div className="absolute inset-0 bg-black/40" />
+          <div className="absolute inset-0 bg-overlay" />
           <div
             className="absolute bottom-[72px] left-0 right-0 rounded-t-[var(--radius-2xl)] border-t border-[var(--color-border-default)] bg-[var(--color-layer-01)] p-4 pb-2"
             onClick={(e) => e.stopPropagation()}
@@ -170,7 +170,7 @@ const BottomNavbar = React.forwardRef<HTMLElement, BottomNavbarProps>(
         ref={ref}
         aria-label="Mobile navigation"
         className={cn(
-          'fixed bottom-0 left-0 right-0 z-30 flex w-full flex-row items-start justify-between border-t border-[var(--color-border-default)] bg-[var(--color-layer-01)] px-4 pb-5 pt-0 md:hidden',
+          'fixed bottom-0 left-0 right-0 z-sticky flex w-full flex-row items-start justify-between border-t border-[var(--color-border-default)] bg-[var(--color-layer-01)] px-4 pb-5 pt-0 md:hidden',
           className,
         )}
       >

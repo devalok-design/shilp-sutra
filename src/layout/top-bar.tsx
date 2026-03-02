@@ -111,7 +111,7 @@ const TopBar = React.forwardRef<HTMLDivElement, TopBarProps>(
       <div
         ref={ref}
         className={cn(
-          'z-20 flex w-full items-center border-b border-[var(--color-border-default)] bg-[var(--color-layer-01)] px-4 py-3 md:px-6',
+          'z-sticky flex w-full items-center border-b border-[var(--color-border-default)] bg-[var(--color-layer-01)] px-4 py-3 md:px-6',
           className,
         )}
       >

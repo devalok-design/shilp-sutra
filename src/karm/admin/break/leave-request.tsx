@@ -187,7 +187,7 @@ export function LeaveRequest({
           </DialogHeader>
           <div className="flex flex-col">
             <div className="B2-Reg flex flex-col items-start justify-center gap-2 rounded-[8px] border border-[var(--color-border-subtle)] bg-[var(--color-layer-01)] p-[10px_16px_4px_16px] text-[var(--color-text-primary)]">
-              <label className="L4 text-[#8C8084]" htmlFor="comment">
+              <label className="L4 text-[var(--color-text-helper)]" htmlFor="comment">
                 Comment
               </label>
               <Textarea

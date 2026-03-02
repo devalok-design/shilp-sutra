@@ -17,7 +17,7 @@ import { IconButton } from '../../custom-buttons/icon-button'
 export function DashboardSkeleton() {
   return (
     <div className="flex w-full max-w-[var(--max-width)] flex-col items-center justify-center max-md:h-[100%] max-md:justify-start">
-      <div className="z-[1] flex w-full flex-col items-start justify-start rounded-[8px] border border-[var(--color-border-default,#F7E9E9)] bg-[var(--color-layer-02)] p-[16px] shadow-[0px_25px_40px_0px_var(--shadow-01,#E6E4E5)] max-md:h-[calc(100vh-201px)] max-md:max-h-[calc(100vh-201px)] max-md:overflow-y-auto max-md:border-0 max-md:px-4 max-md:pb-[0px] max-md:pt-[24px]">
+      <div className="z-raised flex w-full flex-col items-start justify-start rounded-[8px] border border-[var(--color-border-default)] bg-[var(--color-layer-02)] p-[16px] shadow-[var(--shadow-05)] max-md:h-[calc(100vh-201px)] max-md:max-h-[calc(100vh-201px)] max-md:overflow-y-auto max-md:border-0 max-md:px-4 max-md:pb-[0px] max-md:pt-[24px]">
         {/* Header Section */}
         <div className="mb-6 flex w-full flex-col items-start justify-between md:flex-row md:items-center">
           <DropdownMenu>

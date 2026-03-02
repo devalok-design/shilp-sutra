@@ -142,10 +142,7 @@ export function BreakRequestCard({
               <div className="mt-4 flex w-full flex-col gap-3">
                 <button
                   className="B2 semibold w-full rounded-[88px] border border-[var(--color-interactive)] bg-[var(--color-interactive)] px-[20px] py-[12px] text-center text-[var(--color-text-on-color)]"
-                  style={{
-                    boxShadow:
-                      '0px 1px 3px 0.05px rgba(24, 24, 27, 0.24), 0px 8px 16px 0px rgba(255, 255, 255, 0.16) inset, 0px 2px 0px 0px rgba(255, 255, 255, 0.10) inset',
-                  }}
+                  style={{ boxShadow: 'var(--shadow-02)' }}
                   onClick={handleCancelBreak}
                 >
                   Yes, cancel
@@ -249,10 +246,7 @@ export function BreakRequestCard({
                     <DialogClose asChild>
                       <button
                         className="B2 semibold w-full rounded-[88px] border border-[var(--color-interactive)] bg-[var(--color-interactive)] px-[20px] py-[12px] text-center text-[var(--color-text-on-color)]"
-                        style={{
-                          boxShadow:
-                            '0px 1px 3px 0.05px rgba(24, 24, 27, 0.24), 0px 8px 16px 0px rgba(255, 255, 255, 0.16) inset, 0px 2px 0px 0px rgba(255, 255, 255, 0.10) inset',
-                        }}
+                        style={{ boxShadow: 'var(--shadow-02)' }}
                         onClick={handleCancelBreak}
                       >
                         Yes, cancel
@@ -313,10 +307,7 @@ export function BreakRequestCard({
                   <DialogClose asChild>
                     <button
                       className="B2 semibold w-full rounded-[88px] border border-[var(--color-interactive)] bg-[var(--color-interactive)] px-[20px] py-[12px] text-center text-[var(--color-text-on-color)]"
-                      style={{
-                        boxShadow:
-                          '0px 1px 3px 0.05px rgba(24, 24, 27, 0.24), 0px 8px 16px 0px rgba(255, 255, 255, 0.16) inset, 0px 2px 0px 0px rgba(255, 255, 255, 0.10) inset',
-                      }}
+                      style={{ boxShadow: 'var(--shadow-02)' }}
                       onClick={handleCancelBreak}
                     >
                       Yes, cancel

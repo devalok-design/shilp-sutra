@@ -37,9 +37,9 @@ const COLUMN_ACCENTS = [
   'border-l-[var(--color-warning)]',
   'border-l-[var(--color-success)]',
   'border-l-[var(--color-interactive)]',
-  'border-l-[var(--blue-300)]',
-  'border-l-[var(--yellow-300)]',
-  'border-l-[var(--green-300)]',
+  'border-l-[var(--color-info-border)]',
+  'border-l-[var(--color-warning-border)]',
+  'border-l-[var(--color-success-border)]',
 ]
 
 // ============================================================
@@ -123,7 +123,7 @@ export function BoardColumn({
       className={cn(
         'flex h-full w-[300px] flex-shrink-0 flex-col rounded-[var(--radius-xl)] border-l-[3px] bg-[var(--color-layer-01)]/80 backdrop-blur-sm',
         accentColor,
-        isOverlay && 'shadow-xl',
+        isOverlay && 'shadow-04',
       )}
     >
       {/* Column Header */}

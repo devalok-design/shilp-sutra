@@ -76,3 +76,7 @@ export const CustomNoResults: Story = {
 export const SingleRow: Story = {
   render: () => <DataTable columns={columns} data={[data[0]]} />,
 }
+
+export const Sortable: Story = {
+  render: () => <DataTable columns={columns} data={data} sortable />,
+}

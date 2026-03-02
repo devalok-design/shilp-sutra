@@ -198,11 +198,11 @@ export function CalendarGrid({
         )}
       </div>
 
-      {/* eslint-disable-next-line jsx-a11y/no-static-element-interactions */}
       <div
         ref={gridRef}
         className="grid grid-cols-7 gap-0"
         role="grid"
+        tabIndex={0}
         aria-label="Calendar"
         onKeyDown={handleKeyDown}
       >
@@ -228,6 +228,7 @@ export function CalendarGrid({
             <button
               key={i}
               type="button"
+              role="gridcell"
               data-date={format(d, 'yyyy-MM-dd')}
               tabIndex={inMonth && !disabled ? 0 : -1}
               disabled={!inMonth || disabled}

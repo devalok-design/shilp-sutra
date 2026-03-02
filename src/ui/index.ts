@@ -212,6 +212,9 @@ export {
   useSidebar,
 } from './sidebar'
 
+// Typography
+export { Text, textVariants, type TextProps, type TextVariant } from './text'
+
 // Other
 export { Link, type LinkProps } from './link'
 export { AdjustmentType, default as renderAdjustmentType } from './render-adjustment-type'

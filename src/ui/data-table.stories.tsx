@@ -3,6 +3,7 @@ import { useState } from 'react'
 import { DataTable } from './data-table'
 import type { ColumnDef } from '@tanstack/react-table'
 import { Badge } from './badge'
+import { format, getDaysInMonth, startOfMonth, addDays } from 'date-fns'
 
 type Task = {
   id: string
@@ -396,4 +397,125 @@ function FullFeaturedDemo() {
 
 export const FullFeatured: Story = {
   render: () => <FullFeaturedDemo />,
+}
+
+// --- Time Off Calendar (Karm Demo) ---
+
+type TimeOffRow = { name: string } & Record<string, string | undefined>
+
+const timeOffEmployees = [
+  'Aisha Patel',
+  'Rahul Sharma',
+  'Priya Singh',
+  'Vikram Reddy',
+  'Neha Gupta',
+  'Arjun Malhotra',
+  'Deepa Nair',
+  'Karan Joshi',
+]
+
+/**
+ * Seed-based pseudo-random number generator so the story renders
+ * the same leave pattern on every mount (no flicker on HMR).
+ */
+function seededRandom(seed: number) {
+  let s = seed
+  return () => {
+    s = (s * 16807 + 0) % 2147483647
+    return (s - 1) / 2147483646
+  }
+}
+
+function buildTimeOffColumns(): ColumnDef<TimeOffRow>[] {
+  const today = new Date()
+  const daysInMonth = getDaysInMonth(today)
+  const monthStart = startOfMonth(today)
+
+  const dayColumns: ColumnDef<TimeOffRow>[] = Array.from(
+    { length: daysInMonth },
+    (_, i) => {
+      const date = addDays(monthStart, i)
+      const dayKey = format(date, 'yyyy-MM-dd')
+      const isWeekend = date.getDay() === 0 || date.getDay() === 6
+
+      return {
+        accessorKey: dayKey,
+        header: format(date, 'd'),
+        cell: ({ row }) => {
+          const status = row.getValue(dayKey) as string | undefined
+          if (!status) {
+            return isWeekend ? (
+              <span className="text-[var(--color-text-disabled)]">&mdash;</span>
+            ) : null
+          }
+          const variant = {
+            approved: 'green' as const,
+            pending: 'yellow' as const,
+            rejected: 'red' as const,
+            holiday: 'blue' as const,
+          }[status]
+          return (
+            <Badge variant={variant} size="sm">
+              {status[0].toUpperCase()}
+            </Badge>
+          )
+        },
+        enableSorting: false,
+        enableColumnFilter: false,
+        size: 40,
+      }
+    },
+  )
+
+  return [
+    {
+      accessorKey: 'name',
+      header: 'Employee',
+      enableSorting: false,
+      size: 160,
+    },
+    ...dayColumns,
+  ]
+}
+
+function generateTimeOffData(): TimeOffRow[] {
+  const today = new Date()
+  const daysInMonth = getDaysInMonth(today)
+  const monthStart = startOfMonth(today)
+  const rand = seededRandom(42)
+  const statuses = ['approved', 'pending', 'rejected'] as const
+
+  return timeOffEmployees.map((name) => {
+    const row: TimeOffRow = { name }
+    // Give each employee 2-6 random leave entries
+    const leaveCount = Math.floor(rand() * 5) + 2
+    for (let i = 0; i < leaveCount; i++) {
+      const dayIdx = Math.floor(rand() * daysInMonth)
+      const date = addDays(monthStart, dayIdx)
+      const key = format(date, 'yyyy-MM-dd')
+      row[key] = statuses[Math.floor(rand() * statuses.length)]
+    }
+    // Add one common holiday (15th of the month) for all employees
+    const holiday = addDays(monthStart, 14)
+    row[format(holiday, 'yyyy-MM-dd')] = 'holiday'
+    return row
+  })
+}
+
+const timeOffColumns = buildTimeOffColumns()
+const timeOffData = generateTimeOffData()
+
+/** Karm-style time-off / leave calendar view. */
+export const TimeOffCalendar: Story = {
+  render: () => (
+    <div className="max-w-[900px]">
+      <DataTable
+        columns={timeOffColumns}
+        data={timeOffData}
+        toolbar
+        density="compact"
+        columnPinning={{ left: ['name'] }}
+      />
+    </div>
+  ),
 }

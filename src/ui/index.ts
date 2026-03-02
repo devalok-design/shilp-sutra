@@ -212,6 +212,9 @@ export {
   useSidebar,
 } from './sidebar'
 
+// Workflow
+export { Stepper, Step, type StepperProps, type StepProps } from './stepper'
+
 // Interactive Tags
 export { Chip, chipVariants, type ChipProps } from './chip'
 

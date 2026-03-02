@@ -6,6 +6,13 @@
   --font-accent:  Ranade, sans-serif;
   --font-mono:    "SF Mono", "Fira Code", monospace;
 
+  /* ── Font Weights ──────────────────────────── */
+  --font-weight-light: 300;
+  --font-weight-regular: 400;
+  --font-weight-medium: 500;
+  --font-weight-semibold: 600;
+  --font-weight-bold: 700;
+
   --color-interactive:          var(--pink-500);
   --color-interactive-hover:    var(--pink-600);
   --color-interactive-active:   var(--pink-700);

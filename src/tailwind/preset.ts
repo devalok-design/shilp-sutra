@@ -11,6 +11,13 @@ const preset: Partial<Config> = {
         accent: ['var(--font-accent)', 'sans-serif'],
         mono: ['var(--font-mono)', 'monospace'],
       },
+      fontWeight: {
+        light: 'var(--font-weight-light)',
+        regular: 'var(--font-weight-regular)',
+        medium: 'var(--font-weight-medium)',
+        semibold: 'var(--font-weight-semibold)',
+        bold: 'var(--font-weight-bold)',
+      },
       borderWidth: {
         'ds-sm': 'var(--border-width-sm)',
         'ds-md': 'var(--border-width-md)',

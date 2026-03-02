@@ -19,9 +19,10 @@ const meta: Meta<typeof BarChart> = {
     barRadius: { control: { type: 'range', min: 0, max: 12, step: 1 } },
     height: { control: { type: 'number', min: 150, max: 600 } },
   },
+  parameters: { layout: 'padded' },
   decorators: [
     (Story) => (
-      <div className="w-full max-w-[700px]">
+      <div className="mx-auto w-full max-w-[700px]">
         <Story />
       </div>
     ),

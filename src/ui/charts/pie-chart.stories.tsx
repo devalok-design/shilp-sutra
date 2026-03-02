@@ -19,9 +19,10 @@ const meta: Meta<typeof PieChart> = {
     showLabels: { control: 'boolean' },
     animate: { control: 'boolean' },
   },
+  parameters: { layout: 'padded' },
   decorators: [
     (Story) => (
-      <div className="w-full max-w-[500px]">
+      <div className="mx-auto w-full max-w-[500px]">
         <Story />
       </div>
     ),

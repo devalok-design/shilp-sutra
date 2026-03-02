@@ -2,11 +2,12 @@ import * as React from 'react'
 import { useRef, useEffect } from 'react'
 import { axisBottom, axisLeft, axisRight, axisTop } from 'd3-axis'
 import { select } from 'd3-selection'
-import type { ScaleLinear, ScaleBand, ScaleTime } from 'd3-scale'
+import type { ScaleLinear, ScaleBand, ScalePoint, ScaleTime } from 'd3-scale'
 
 type AnyScale =
   | ScaleLinear<number, number>
   | ScaleBand<string>
+  | ScalePoint<string>
   | ScaleTime<number, number>
 
 interface AxisProps {

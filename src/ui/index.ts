@@ -215,6 +215,9 @@ export {
 // Typography
 export { Text, textVariants, type TextProps, type TextVariant } from './text'
 
+// Layout
+export { Stack, type StackProps } from './stack'
+
 // Other
 export { Link, type LinkProps } from './link'
 export { AdjustmentType, default as renderAdjustmentType } from './render-adjustment-type'

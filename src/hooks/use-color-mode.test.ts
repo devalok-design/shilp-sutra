@@ -7,6 +7,18 @@ describe('useColorMode', () => {
     localStorage.clear()
     document.documentElement.classList.remove('dark')
     document.cookie = 'theme=; max-age=0; path=/'
+
+    // jsdom does not provide matchMedia — supply a default stub
+    Object.defineProperty(window, 'matchMedia', {
+      writable: true,
+      configurable: true,
+      value: vi.fn().mockImplementation((query: string) => ({
+        matches: false,
+        media: query,
+        addEventListener: vi.fn(),
+        removeEventListener: vi.fn(),
+      })),
+    })
   })
 
   it('defaults to system when no preference saved', () => {
@@ -50,6 +62,7 @@ describe('useColorMode', () => {
   it('setColorMode("system") uses matchMedia', () => {
     Object.defineProperty(window, 'matchMedia', {
       writable: true,
+      configurable: true,
       value: vi.fn().mockImplementation((query: string) => ({
         matches: query === '(prefers-color-scheme: dark)',
         media: query,

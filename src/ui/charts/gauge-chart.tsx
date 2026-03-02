@@ -120,7 +120,7 @@ export function GaugeChart({
             y={label ? -4 : 0}
             textAnchor="middle"
             dominantBaseline="central"
-            className="fill-[var(--color-text-primary)] text-2xl font-semibold"
+            className="fill-text-primary text-2xl font-semibold"
           >
             {displayValue}
           </text>
@@ -132,7 +132,7 @@ export function GaugeChart({
               y={20}
               textAnchor="middle"
               dominantBaseline="central"
-              className="fill-[var(--color-text-secondary)] text-ds-xs"
+              className="fill-text-secondary text-ds-xs"
             >
               {label}
             </text>

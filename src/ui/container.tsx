@@ -9,8 +9,8 @@ type ContainerProps<T extends React.ElementType = 'div'> = {
 } & Omit<React.ComponentPropsWithRef<T>, 'as' | 'className' | 'children'>
 
 const maxWidthMap = {
-  default: 'max-w-[var(--max-width)]',
-  body: 'max-w-[var(--max-width-body)]',
+  default: 'max-w-layout',
+  body: 'max-w-layout-body',
   full: 'max-w-full',
 } as const
 

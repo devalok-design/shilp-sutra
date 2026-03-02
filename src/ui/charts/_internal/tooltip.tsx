@@ -20,11 +20,11 @@ export function ChartTooltip({ state, className }: ChartTooltipProps) {
   return (
     <div
       className={cn(
-        'pointer-events-none absolute z-[var(--z-tooltip)]',
-        'rounded-[var(--radius-md)] border border-[var(--color-border-default)]',
-        'bg-[var(--color-layer-01)] px-ds-03 py-ds-02',
-        'shadow-[var(--shadow-02)]',
-        'text-ds-sm text-[var(--color-text-primary)]',
+        'pointer-events-none absolute z-tooltip',
+        'rounded-ds-md border border-border',
+        'bg-layer-01 px-ds-03 py-ds-02',
+        'shadow-02',
+        'text-ds-sm text-text-primary',
         className,
       )}
       style={{ left: state.x + 12, top: state.y - 12 }}

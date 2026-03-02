@@ -4,18 +4,18 @@ import { cva, type VariantProps } from 'class-variance-authority'
 import { cn } from './lib/utils'
 
 const alertVariants = cva(
-  'relative flex gap-ds-04 rounded-[var(--radius-lg)] border p-ds-05',
+  'relative flex gap-ds-04 rounded-ds-lg border p-ds-05',
   {
     variants: {
       variant: {
         info:
-          'bg-[var(--color-info-surface)] border-[var(--color-info-border)] text-[var(--color-info-text)]',
+          'bg-info-surface border-info-border text-info-text',
         success:
-          'bg-[var(--color-success-surface)] border-[var(--color-success-border)] text-[var(--color-success-text)]',
+          'bg-success-surface border-success-border text-success-text',
         warning:
-          'bg-[var(--color-warning-surface)] border-[var(--color-warning-border)] text-[var(--color-warning-text)]',
+          'bg-warning-surface border-warning-border text-warning-text',
         error:
-          'bg-[var(--color-error-surface)] border-[var(--color-error-border)] text-[var(--color-error-text)]',
+          'bg-error-surface border-error-border text-error-text',
       },
     },
     defaultVariants: { variant: 'info' },
@@ -43,7 +43,7 @@ const Alert = React.forwardRef<HTMLDivElement, AlertProps>(
 
     return (
       <div ref={ref} className={cn(alertVariants({ variant }), className)} role="alert" {...props}>
-        <Icon className="mt-0.5 h-[var(--icon-md)] w-[var(--icon-md)] shrink-0" aria-hidden="true" />
+        <Icon className="mt-0.5 h-ico-md w-ico-md shrink-0" aria-hidden="true" />
         <div className="flex-1 min-w-0">
           {title && <p className="text-ds-md font-semibold mb-0.5">{title}</p>}
           <div className="text-ds-md opacity-90">{children}</div>
@@ -52,10 +52,10 @@ const Alert = React.forwardRef<HTMLDivElement, AlertProps>(
           <button
             type="button"
             onClick={onDismiss}
-            className="shrink-0 rounded-[var(--radius-sm)] text-[var(--color-icon-secondary)] transition-colors hover:text-[var(--color-icon-primary)] hover:bg-[var(--color-field)] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--color-focus)]"
+            className="shrink-0 rounded-ds-sm text-icon-secondary transition-colors hover:text-icon-primary hover:bg-field focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-focus"
             aria-label="Dismiss"
           >
-            <IconX className="h-[var(--icon-sm)] w-[var(--icon-sm)]" />
+            <IconX className="h-ico-sm w-ico-sm" />
           </button>
         )}
       </div>

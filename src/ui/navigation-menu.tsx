@@ -46,14 +46,14 @@ const NavigationMenuTrigger = React.forwardRef<
   <NavigationMenuPrimitive.Trigger
     ref={ref}
     className={cn(
-      'group inline-flex h-9 w-max items-center justify-center rounded-[var(--radius-md)] bg-transparent px-ds-05 py-ds-03 text-ds-md font-medium transition-colors hover:bg-[var(--color-field)] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--color-focus)] disabled:pointer-events-none disabled:opacity-50',
+      'group inline-flex h-9 w-max items-center justify-center rounded-ds-md bg-transparent px-ds-05 py-ds-03 text-ds-md font-medium transition-colors hover:bg-field focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-focus disabled:pointer-events-none disabled:opacity-50',
       className,
     )}
     {...props}
   >
     {children}{' '}
     <IconChevronDown
-      className="relative top-[1px] ml-ds-02 h-3 w-3 transition-transform duration-[var(--duration-moderate)] group-data-[state=open]:rotate-180"
+      className="relative top-[1px] ml-ds-02 h-3 w-3 transition-transform duration-moderate group-data-[state=open]:rotate-180"
       aria-hidden="true"
     />
   </NavigationMenuPrimitive.Trigger>
@@ -84,7 +84,7 @@ const NavigationMenuViewport = React.forwardRef<
   <div className={cn('absolute left-0 top-full flex justify-center')}>
     <NavigationMenuPrimitive.Viewport
       className={cn(
-        'origin-top-center relative mt-ds-02b h-[var(--radix-navigation-menu-viewport-height)] w-full overflow-hidden rounded-[var(--radius-lg)] border border-[var(--color-border-default)] bg-[var(--color-layer-01)] shadow-[var(--shadow-03)] data-[state=open]:animate-in data-[state=closed]:animate-out data-[state=closed]:zoom-out-95 data-[state=open]:zoom-in-90 md:w-[var(--radix-navigation-menu-viewport-width)]',
+        'origin-top-center relative mt-ds-02b h-[var(--radix-navigation-menu-viewport-height)] w-full overflow-hidden rounded-ds-lg border border-border bg-layer-01 shadow-03 data-[state=open]:animate-in data-[state=closed]:animate-out data-[state=closed]:zoom-out-95 data-[state=open]:zoom-in-90 md:w-[var(--radix-navigation-menu-viewport-width)]',
         className,
       )}
       ref={ref}
@@ -107,7 +107,7 @@ const NavigationMenuIndicator = React.forwardRef<
     )}
     {...props}
   >
-    <div className="relative top-[60%] h-2 w-2 rotate-45 rounded-tl-sm bg-[var(--color-border-default)] shadow-[var(--shadow-02)]" />
+    <div className="relative top-[60%] h-2 w-2 rotate-45 rounded-tl-sm bg-border shadow-02" />
   </NavigationMenuPrimitive.Indicator>
 ))
 NavigationMenuIndicator.displayName =

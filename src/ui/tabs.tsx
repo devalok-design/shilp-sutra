@@ -8,28 +8,28 @@ const Tabs = TabsPrimitive.Root
 const tabsListVariants = cva('inline-flex items-center', {
   variants: {
     variant: {
-      line: 'border-b border-[var(--color-border-default)] w-full gap-0',
+      line: 'border-b border-border w-full gap-0',
       contained:
-        'bg-[var(--color-layer-02)] p-ds-02 rounded-[var(--radius-lg)] gap-ds-02',
+        'bg-layer-02 p-ds-02 rounded-ds-lg gap-ds-02',
     },
   },
   defaultVariants: { variant: 'line' },
 })
 
 const tabsTriggerVariants = cva(
-  'inline-flex items-center justify-center whitespace-nowrap font-sans text-ds-md font-medium transition-[color,background-color,border-color,box-shadow] duration-[var(--duration-fast)] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--color-focus)] focus-visible:ring-offset-1 disabled:pointer-events-none disabled:opacity-50',
+  'inline-flex items-center justify-center whitespace-nowrap font-sans text-ds-md font-medium transition-[color,background-color,border-color,box-shadow] duration-fast focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-focus focus-visible:ring-offset-1 disabled:pointer-events-none disabled:opacity-50',
   {
     variants: {
       variant: {
         line: [
           'px-ds-05 py-ds-03 -mb-px border-b-2 border-transparent',
-          'text-[var(--color-text-secondary)] hover:text-[var(--color-text-primary)]',
-          'data-[state=active]:border-[var(--color-interactive)] data-[state=active]:text-[var(--color-interactive)]',
+          'text-text-secondary hover:text-text-primary',
+          'data-[state=active]:border-interactive data-[state=active]:text-interactive',
         ],
         contained: [
-          'px-ds-05 py-ds-02b rounded-[var(--radius-md)]',
-          'text-[var(--color-text-secondary)] hover:text-[var(--color-text-primary)]',
-          'data-[state=active]:bg-[var(--color-layer-01)] data-[state=active]:shadow-[var(--shadow-01)] data-[state=active]:text-[var(--color-text-primary)]',
+          'px-ds-05 py-ds-02b rounded-ds-md',
+          'text-text-secondary hover:text-text-primary',
+          'data-[state=active]:bg-layer-01 data-[state=active]:shadow-01 data-[state=active]:text-text-primary',
         ],
       },
     },
@@ -76,7 +76,7 @@ const TabsContent = React.forwardRef<
   <TabsPrimitive.Content
     ref={ref}
     className={cn(
-      'mt-ds-05 ring-offset-[var(--color-background)] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--color-focus)] focus-visible:ring-offset-2',
+      'mt-ds-05 ring-offset-background focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-focus focus-visible:ring-offset-2',
       className,
     )}
     {...props}

@@ -43,13 +43,13 @@ export interface DataTableToolbarProps<TData> {
 }
 
 const toolbarButtonClass = cn(
-  'h-8 px-ds-03 rounded-[var(--radius-md)]',
-  'border border-[var(--color-border-default)]',
-  'hover:bg-[var(--color-layer-02)]',
+  'h-8 px-ds-03 rounded-ds-md',
+  'border border-border',
+  'hover:bg-layer-02',
   'text-ds-sm flex items-center gap-ds-02 transition-colors',
 )
 
-const toolbarIconClass = 'text-[var(--color-icon-secondary)]'
+const toolbarIconClass = 'text-icon-secondary'
 
 function exportToCsv<TData>(table: Table<TData>) {
   const headers = table
@@ -119,7 +119,7 @@ export function DataTableToolbar<TData>({
             aria-label="Search all columns"
             className={cn(
               'flex-1 bg-transparent text-ds-md',
-              'text-[var(--color-text-primary)] placeholder:text-[var(--color-text-placeholder)]',
+              'text-text-primary placeholder:text-text-placeholder',
               'outline-none',
               'h-8',
             )}

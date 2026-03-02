@@ -42,11 +42,11 @@ function Stepper({ activeStep, orientation = 'horizontal', className, children }
                 className={cn(
                   'flex-1',
                   orientation === 'vertical'
-                    ? 'ml-ds-04 w-0.5 min-h-[var(--spacing-05)]'
-                    : 'h-0.5 min-w-[var(--spacing-05)]',
+                    ? 'ml-ds-04 w-0.5 min-h-ds-05'
+                    : 'h-0.5 min-w-ds-05',
                   index < activeStep
-                    ? 'bg-[var(--color-interactive)]'
-                    : 'bg-[var(--color-border-default)]',
+                    ? 'bg-interactive'
+                    : 'bg-border',
                 )}
                 aria-hidden="true"
               />
@@ -84,10 +84,10 @@ function Step({ label, description, icon, className, _index = 0 }: StepInternalP
     >
       <div
         className={cn(
-          'flex-shrink-0 flex items-center justify-center w-ds-sm h-ds-sm rounded-[var(--radius-full)] text-[length:var(--font-size-sm)] font-[number:var(--font-weight-semibold)] transition-colors duration-fast',
-          state === 'completed' && 'bg-[var(--color-interactive)] text-[var(--color-text-on-color)]',
-          state === 'active' && 'bg-[var(--color-interactive)] text-[var(--color-text-on-color)]',
-          state === 'pending' && 'bg-[var(--color-layer-02)] text-[var(--color-text-tertiary)] border border-[var(--color-border-default)]',
+          'flex-shrink-0 flex items-center justify-center w-ds-sm h-ds-sm rounded-ds-full text-[length:var(--font-size-sm)] font-[number:var(--font-weight-semibold)] transition-colors duration-fast',
+          state === 'completed' && 'bg-interactive text-text-on-color',
+          state === 'active' && 'bg-interactive text-text-on-color',
+          state === 'pending' && 'bg-layer-02 text-text-tertiary border border-border',
         )}
       >
         {icon || (state === 'completed' ? (
@@ -103,14 +103,14 @@ function Step({ label, description, icon, className, _index = 0 }: StepInternalP
           className={cn(
             'text-[length:var(--font-size-md)] font-[number:var(--font-weight-medium)] leading-[var(--line-height-snug)]',
             state === 'pending'
-              ? 'text-[var(--color-text-tertiary)]'
-              : 'text-[var(--color-text-primary)]',
+              ? 'text-text-tertiary'
+              : 'text-text-primary',
           )}
         >
           {label}
         </span>
         {description && (
-          <span className="text-[length:var(--font-size-sm)] text-[var(--color-text-secondary)] leading-[var(--line-height-relaxed)]">
+          <span className="text-[length:var(--font-size-sm)] text-text-secondary leading-[var(--line-height-relaxed)]">
             {description}
           </span>
         )}

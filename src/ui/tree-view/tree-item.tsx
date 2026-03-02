@@ -121,11 +121,11 @@ const TreeItem = React.forwardRef<HTMLLIElement, TreeItemProps>(
           onKeyDown={handleKeyDown}
           style={{ paddingLeft: depth * 20 + 8 }}
           className={cn(
-            'flex items-center gap-[var(--spacing-02)] py-[var(--spacing-02)] px-[var(--spacing-02)] rounded-[var(--radius-md)] cursor-pointer transition-colors duration-[var(--duration-fast)]',
-            'hover:bg-[var(--color-layer-02)]',
-            'focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--color-focus)]',
+            'flex items-center gap-ds-02 py-ds-02 px-ds-02 rounded-ds-md cursor-pointer transition-colors duration-fast',
+            'hover:bg-layer-02',
+            'focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-focus',
             isSelected &&
-              'bg-[var(--color-interactive-selected)] text-[var(--color-text-interactive)]',
+              'bg-interactive-selected text-text-interactive',
             disabled && 'opacity-40 cursor-not-allowed pointer-events-none',
           )}
         >
@@ -141,7 +141,7 @@ const TreeItem = React.forwardRef<HTMLLIElement, TreeItemProps>(
               <IconChevronRight
                 size={16}
                 className={cn(
-                  'transition-transform duration-[var(--duration-moderate)]',
+                  'transition-transform duration-moderate',
                   isExpanded && 'rotate-90',
                 )}
               />
@@ -167,7 +167,7 @@ const TreeItem = React.forwardRef<HTMLLIElement, TreeItemProps>(
 
           {/* Icon */}
           {icon && (
-            <span className="flex shrink-0 items-center text-[var(--color-icon-secondary)]">
+            <span className="flex shrink-0 items-center text-icon-secondary">
               {icon}
             </span>
           )}
@@ -177,7 +177,7 @@ const TreeItem = React.forwardRef<HTMLLIElement, TreeItemProps>(
 
           {/* Secondary label */}
           {secondaryLabel && (
-            <span className="ml-auto truncate text-ds-xs text-[var(--color-text-secondary)]">
+            <span className="ml-auto truncate text-ds-xs text-text-secondary">
               {secondaryLabel}
             </span>
           )}
@@ -185,7 +185,7 @@ const TreeItem = React.forwardRef<HTMLLIElement, TreeItemProps>(
           {/* Actions */}
           {actions && (
             <span
-              className="ml-auto flex shrink-0 items-center gap-[var(--spacing-01)]"
+              className="ml-auto flex shrink-0 items-center gap-ds-01"
               onClick={(e) => e.stopPropagation()}
               role="presentation"
             >
@@ -199,7 +199,7 @@ const TreeItem = React.forwardRef<HTMLLIElement, TreeItemProps>(
           <div
             role="group"
             className={cn(
-              'grid transition-[grid-template-rows] duration-[var(--duration-moderate)] ease-[var(--easing-standard)]',
+              'grid transition-[grid-template-rows] duration-moderate ease-standard',
               isExpanded ? 'grid-rows-[1fr]' : 'grid-rows-[0fr]',
             )}
           >

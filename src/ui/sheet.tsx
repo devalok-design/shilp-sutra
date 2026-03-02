@@ -19,7 +19,7 @@ const SheetOverlay = React.forwardRef<
 >(({ className, ...props }, ref) => (
   <SheetPrimitive.Overlay
     className={cn(
-      'fixed inset-0 z-[var(--z-modal)] bg-[var(--color-overlay)] data-[state=open]:animate-in data-[state=closed]:animate-out data-[state=closed]:fade-out-0 data-[state=open]:fade-in-0',
+      'fixed inset-0 z-modal bg-overlay data-[state=open]:animate-in data-[state=closed]:animate-out data-[state=closed]:fade-out-0 data-[state=open]:fade-in-0',
       className,
     )}
     {...props}
@@ -29,16 +29,16 @@ const SheetOverlay = React.forwardRef<
 SheetOverlay.displayName = SheetPrimitive.Overlay.displayName
 
 const sheetVariants = cva(
-  'fixed z-[var(--z-modal)] gap-ds-05 bg-[var(--color-layer-01)] p-ds-06 shadow-[var(--shadow-05)] transition ease-in-out data-[state=closed]:duration-[var(--duration-slow)] data-[state=open]:duration-[var(--duration-slow)] data-[state=open]:animate-in data-[state=closed]:animate-out',
+  'fixed z-modal gap-ds-05 bg-layer-01 p-ds-06 shadow-05 transition ease-in-out data-[state=closed]:duration-slow data-[state=open]:duration-slow data-[state=open]:animate-in data-[state=closed]:animate-out',
   {
     variants: {
       side: {
-        top: 'inset-x-0 top-0 border-b border-[var(--color-border-default)] data-[state=closed]:slide-out-to-top data-[state=open]:slide-in-from-top',
+        top: 'inset-x-0 top-0 border-b border-border data-[state=closed]:slide-out-to-top data-[state=open]:slide-in-from-top',
         bottom:
-          'inset-x-0 bottom-0 border-t border-[var(--color-border-default)] data-[state=closed]:slide-out-to-bottom data-[state=open]:slide-in-from-bottom',
-        left: 'inset-y-0 left-0 h-full w-3/4 border-r border-[var(--color-border-default)] data-[state=closed]:slide-out-to-left data-[state=open]:slide-in-from-left sm:max-w-sm',
+          'inset-x-0 bottom-0 border-t border-border data-[state=closed]:slide-out-to-bottom data-[state=open]:slide-in-from-bottom',
+        left: 'inset-y-0 left-0 h-full w-3/4 border-r border-border data-[state=closed]:slide-out-to-left data-[state=open]:slide-in-from-left sm:max-w-sm',
         right:
-          'inset-y-0 right-0 h-full w-3/4 border-l border-[var(--color-border-default)] data-[state=closed]:slide-out-to-right data-[state=open]:slide-in-from-right sm:max-w-sm',
+          'inset-y-0 right-0 h-full w-3/4 border-l border-border data-[state=closed]:slide-out-to-right data-[state=open]:slide-in-from-right sm:max-w-sm',
       },
     },
     defaultVariants: {
@@ -62,8 +62,8 @@ const SheetContent = React.forwardRef<
       className={cn(sheetVariants({ side }), className)}
       {...props}
     >
-      <SheetPrimitive.Close className="absolute right-ds-05 top-ds-05 rounded-[var(--radius-sm)] text-[var(--color-icon-secondary)] transition-colors hover:text-[var(--color-icon-primary)] hover:bg-[var(--color-field)] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--color-focus)] disabled:pointer-events-none">
-        <IconX className="h-[var(--icon-sm)] w-[var(--icon-sm)]" />
+      <SheetPrimitive.Close className="absolute right-ds-05 top-ds-05 rounded-ds-sm text-icon-secondary transition-colors hover:text-icon-primary hover:bg-field focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-focus disabled:pointer-events-none">
+        <IconX className="h-ico-sm w-ico-sm" />
         <span className="sr-only">Close</span>
       </SheetPrimitive.Close>
       {children}
@@ -106,7 +106,7 @@ const SheetTitle = React.forwardRef<
 >(({ className, ...props }, ref) => (
   <SheetPrimitive.Title
     ref={ref}
-    className={cn('text-ds-lg font-semibold text-[var(--color-text-primary)]', className)}
+    className={cn('text-ds-lg font-semibold text-text-primary', className)}
     {...props}
   />
 ))
@@ -118,7 +118,7 @@ const SheetDescription = React.forwardRef<
 >(({ className, ...props }, ref) => (
   <SheetPrimitive.Description
     ref={ref}
-    className={cn('text-ds-md text-[var(--color-text-secondary)]', className)}
+    className={cn('text-ds-md text-text-secondary', className)}
     {...props}
   />
 ))

@@ -4,24 +4,24 @@ import { cva, type VariantProps } from 'class-variance-authority'
 import { cn } from './lib/utils'
 
 const badgeVariants = cva(
-  'inline-flex items-center gap-ds-02b font-sans text-ds-sm font-medium rounded-[var(--radius-full)] border',
+  'inline-flex items-center gap-ds-02b font-sans text-ds-sm font-medium rounded-ds-full border',
   {
     variants: {
       variant: {
         neutral:
-          'bg-[var(--color-tag-neutral-bg)] text-[var(--color-tag-neutral-text)] border-[var(--color-tag-neutral-border)]',
+          'bg-tag-neutral-bg text-tag-neutral-text border-tag-neutral-border',
         blue:
-          'bg-[var(--color-tag-blue-bg)] text-[var(--color-tag-blue-text)] border-[var(--color-tag-blue-border)]',
+          'bg-tag-blue-bg text-tag-blue-text border-tag-blue-border',
         green:
-          'bg-[var(--color-tag-green-bg)] text-[var(--color-tag-green-text)] border-[var(--color-tag-green-border)]',
+          'bg-tag-green-bg text-tag-green-text border-tag-green-border',
         red:
-          'bg-[var(--color-tag-red-bg)] text-[var(--color-tag-red-text)] border-[var(--color-tag-red-border)]',
+          'bg-tag-red-bg text-tag-red-text border-tag-red-border',
         yellow:
-          'bg-[var(--color-tag-yellow-bg)] text-[var(--color-tag-yellow-text)] border-[var(--color-tag-yellow-border)]',
+          'bg-tag-yellow-bg text-tag-yellow-text border-tag-yellow-border',
         magenta:
-          'bg-[var(--color-tag-magenta-bg)] text-[var(--color-tag-magenta-text)] border-[var(--color-tag-magenta-border)]',
+          'bg-tag-magenta-bg text-tag-magenta-text border-tag-magenta-border',
         purple:
-          'bg-[var(--color-tag-purple-bg)] text-[var(--color-tag-purple-text)] border-[var(--color-tag-purple-border)]',
+          'bg-tag-purple-bg text-tag-purple-text border-tag-purple-border',
       },
       size: {
         sm: 'h-5 px-ds-03',
@@ -49,7 +49,7 @@ const Badge = React.forwardRef<HTMLSpanElement, BadgeProps>(
       <span ref={ref} className={cn(badgeVariants({ variant, size }), className)} {...props}>
         {dot && (
           <span
-            className="h-1.5 w-1.5 rounded-[var(--radius-full)] bg-current opacity-70 shrink-0"
+            className="h-1.5 w-1.5 rounded-ds-full bg-current opacity-70 shrink-0"
             aria-hidden="true"
           />
         )}
@@ -58,7 +58,7 @@ const Badge = React.forwardRef<HTMLSpanElement, BadgeProps>(
           <button
             type="button"
             onClick={onDismiss}
-            className="ml-0.5 rounded-[var(--radius-full)] text-[var(--color-icon-secondary)] transition-colors hover:text-[var(--color-icon-primary)] hover:bg-[var(--color-field)] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--color-focus)]"
+            className="ml-0.5 rounded-ds-full text-icon-secondary transition-colors hover:text-icon-primary hover:bg-field focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-focus"
             aria-label="Remove"
           >
             <IconX className="h-3 w-3" />

@@ -23,11 +23,11 @@ describe('Spinner', () => {
   it('applies size classes', () => {
     const { rerender } = render(<Spinner size="sm" />)
     let svg = screen.getByRole('status').querySelector('svg')
-    expect(svg).toHaveClass('h-[var(--icon-sm)]', 'w-[var(--icon-sm)]')
+    expect(svg).toHaveClass('h-ico-sm', 'w-ico-sm')
 
     rerender(<Spinner size="lg" />)
     svg = screen.getByRole('status').querySelector('svg')
-    expect(svg).toHaveClass('h-[var(--icon-lg)]', 'w-[var(--icon-lg)]')
+    expect(svg).toHaveClass('h-ico-lg', 'w-ico-lg')
   })
 
   it('applies the animate-spin class', () => {

@@ -2,9 +2,9 @@ import * as React from 'react'
 import { cn } from './lib/utils'
 
 const sizeClasses = {
-  sm: 'h-[var(--icon-sm)] w-[var(--icon-sm)]',
-  md: 'h-[var(--icon-md)] w-[var(--icon-md)]',
-  lg: 'h-[var(--icon-lg)] w-[var(--icon-lg)]',
+  sm: 'h-ico-sm w-ico-sm',
+  md: 'h-ico-md w-ico-md',
+  lg: 'h-ico-lg w-ico-lg',
 } as const
 
 export interface SpinnerProps extends React.SVGAttributes<SVGSVGElement> {

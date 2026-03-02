@@ -14,7 +14,7 @@ const BreadcrumbList = React.forwardRef<HTMLOListElement, React.ComponentPropsWi
     <ol
       ref={ref}
       className={cn(
-        'flex flex-wrap items-center gap-ds-02b break-words text-ds-md text-[var(--color-text-secondary)] sm:gap-2.5',
+        'flex flex-wrap items-center gap-ds-02b break-words text-ds-md text-text-secondary sm:gap-2.5',
         className,
       )}
       {...props}
@@ -40,7 +40,7 @@ const BreadcrumbLink = React.forwardRef<
     <Comp
       ref={ref}
       className={cn(
-        'transition-colors hover:text-[var(--color-text-primary)] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--color-focus)] rounded-[var(--radius-sm)]',
+        'transition-colors hover:text-text-primary focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-focus rounded-ds-sm',
         className,
       )}
       {...props}
@@ -54,7 +54,7 @@ const BreadcrumbPage = React.forwardRef<HTMLSpanElement, React.ComponentPropsWit
     <span
       ref={ref}
       aria-current="page"
-      className={cn('font-normal text-[var(--color-text-primary)]', className)}
+      className={cn('font-normal text-text-primary', className)}
       {...props}
     />
   ),
@@ -80,7 +80,7 @@ const BreadcrumbEllipsis = ({ className, ...props }: React.ComponentProps<'span'
     className={cn('flex h-9 w-9 items-center justify-center', className)}
     {...props}
   >
-    <IconDots className="h-[var(--icon-sm)] w-[var(--icon-sm)]" />
+    <IconDots className="h-ico-sm w-ico-sm" />
     <span className="sr-only">More</span>
   </span>
 )

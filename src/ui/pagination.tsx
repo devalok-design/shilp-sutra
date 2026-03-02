@@ -51,10 +51,10 @@ const PaginationLink = React.forwardRef<HTMLButtonElement, PaginationLinkProps>(
         ref={ref}
         aria-current={isActive ? 'page' : undefined}
         className={cn(
-          'inline-flex items-center justify-center h-9 w-9 rounded-[var(--radius-md)] text-ds-md font-medium transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--color-focus)] focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50',
+          'inline-flex items-center justify-center h-9 w-9 rounded-ds-md text-ds-md font-medium transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-focus focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50',
           isActive
-            ? 'bg-[var(--color-interactive)] text-[var(--color-text-on-color)]'
-            : 'hover:bg-[var(--color-field)] text-[var(--color-text-primary)]',
+            ? 'bg-interactive text-text-on-color'
+            : 'hover:bg-field text-text-primary',
           className,
         )}
         {...props}
@@ -74,7 +74,7 @@ const PaginationPrevious = React.forwardRef<
     className={cn('w-auto gap-ds-02 pl-2.5 pr-ds-04', className)}
     {...props}
   >
-    <IconChevronLeft className="h-[var(--icon-sm)] w-[var(--icon-sm)]" />
+    <IconChevronLeft className="h-ico-sm w-ico-sm" />
     <span>Previous</span>
   </PaginationLink>
 ))
@@ -91,7 +91,7 @@ const PaginationNext = React.forwardRef<
     {...props}
   >
     <span>Next</span>
-    <IconChevronRight className="h-[var(--icon-sm)] w-[var(--icon-sm)]" />
+    <IconChevronRight className="h-ico-sm w-ico-sm" />
   </PaginationLink>
 ))
 PaginationNext.displayName = 'PaginationNext'
@@ -104,12 +104,12 @@ const PaginationEllipsis = React.forwardRef<
     ref={ref}
     aria-hidden="true"
     className={cn(
-      'flex h-9 w-9 items-center justify-center text-[var(--color-text-secondary)]',
+      'flex h-9 w-9 items-center justify-center text-text-secondary',
       className,
     )}
     {...props}
   >
-    <IconDots className="h-[var(--icon-sm)] w-[var(--icon-sm)]" />
+    <IconDots className="h-ico-sm w-ico-sm" />
     <span className="sr-only">More pages</span>
   </span>
 ))

@@ -209,7 +209,7 @@ export function BarChart({
                             <div>
                               <div className="font-medium">{category}</div>
                               {isMultiSeries && (
-                                <div className="text-[var(--color-text-secondary)]">
+                                <div className="text-text-secondary">
                                   {seriesLabels?.[seriesIdx] ?? key}
                                 </div>
                               )}

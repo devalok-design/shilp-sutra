@@ -277,6 +277,7 @@ const Combobox = React.forwardRef<HTMLButtonElement, ComboboxProps>(
             type="button"
             role="combobox"
             aria-expanded={open}
+            aria-controls={listboxId}
             aria-haspopup="listbox"
             aria-label={placeholder}
             disabled={disabled}

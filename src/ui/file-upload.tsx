@@ -256,10 +256,11 @@ const FileUpload = React.forwardRef<HTMLDivElement, FileUploadProps>(
       >
         <div
           role="button"
-          tabIndex={disabled ? undefined : 0}
-          onClick={openPicker}
+          tabIndex={0}
+          aria-disabled={disabled || undefined}
+          onClick={disabled ? undefined : openPicker}
           onKeyDown={(e) => {
-            if (e.key === 'Enter' || e.key === ' ') {
+            if (!disabled && (e.key === 'Enter' || e.key === ' ')) {
               e.preventDefault()
               openPicker()
             }
@@ -273,7 +274,6 @@ const FileUpload = React.forwardRef<HTMLDivElement, FileUploadProps>(
               'border-[var(--color-interactive)] bg-[var(--color-interactive-subtle)]',
             disabled && 'opacity-50 cursor-not-allowed',
           )}
-          aria-disabled={disabled || undefined}
         >
           {uploading ? (
             <IconLoader2 className="h-8 w-8 animate-spin text-[var(--color-icon-secondary)]" />

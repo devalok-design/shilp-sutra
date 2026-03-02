@@ -127,7 +127,7 @@ export function MessageList({
             return (
               <div key={msg.id} className="flex justify-center">
                 <div className="flex items-center gap-2 rounded-[var(--radius-lg)] bg-[var(--color-error-surface)] px-3 py-2">
-                  <IconAlertCircle className="h-3.5 w-3.5 shrink-0 text-[var(--color-text-error)]" />
+                  <IconAlertCircle className="h-[var(--icon-sm)] w-[var(--icon-sm)] shrink-0 text-[var(--color-text-error)]" />
                   <p className="B3-Reg text-[var(--color-text-error)]">
                     {msg.content}
                   </p>
@@ -144,7 +144,7 @@ export function MessageList({
                     <p className="B2-Reg whitespace-pre-wrap">{msg.content}</p>
                   </div>
                   <div className="flex h-7 w-7 shrink-0 items-center justify-center rounded-[var(--radius-full)] bg-[var(--color-field)]">
-                    <IconUser className="h-3.5 w-3.5 text-[var(--color-text-secondary)]" />
+                    <IconUser className="h-[var(--icon-sm)] w-[var(--icon-sm)] text-[var(--color-text-secondary)]" />
                   </div>
                 </div>
               </div>
@@ -156,7 +156,7 @@ export function MessageList({
             <div key={msg.id} className="flex justify-start">
               <div className="flex max-w-[85%] items-start gap-2">
                 <div className="flex h-7 w-7 shrink-0 items-center justify-center rounded-[var(--radius-full)] bg-[var(--color-field)]">
-                  <IconRobot className="h-3.5 w-3.5 text-[var(--color-text-secondary)]" />
+                  <IconRobot className="h-[var(--icon-sm)] w-[var(--icon-sm)] text-[var(--color-text-secondary)]" />
                 </div>
                 <div className="rounded-[var(--radius-2xl)] rounded-bl-[var(--radius-sm)] bg-[var(--color-field)] px-3.5 py-2.5">
                   <div className="B2-Reg text-[var(--color-text-primary)]">
@@ -175,7 +175,7 @@ export function MessageList({
           <div className="flex justify-start">
             <div className="flex max-w-[85%] items-start gap-2">
               <div className="flex h-7 w-7 shrink-0 items-center justify-center rounded-[var(--radius-full)] bg-[var(--color-field)]">
-                <IconRobot className="h-3.5 w-3.5 text-[var(--color-text-secondary)]" />
+                <IconRobot className="h-[var(--icon-sm)] w-[var(--icon-sm)] text-[var(--color-text-secondary)]" />
               </div>
               <div className="rounded-[var(--radius-2xl)] rounded-bl-[var(--radius-sm)] bg-[var(--color-field)] px-3.5 py-2.5">
                 <div className="B2-Reg text-[var(--color-text-primary)]">
@@ -191,7 +191,7 @@ export function MessageList({
           <div className="flex justify-start">
             <div className="flex max-w-[85%] items-start gap-2">
               <div className="flex h-7 w-7 shrink-0 items-center justify-center rounded-[var(--radius-full)] bg-[var(--color-field)]">
-                <IconRobot className="h-3.5 w-3.5 text-[var(--color-text-secondary)]" />
+                <IconRobot className="h-[var(--icon-sm)] w-[var(--icon-sm)] text-[var(--color-text-secondary)]" />
               </div>
               <div className="rounded-[var(--radius-2xl)] rounded-bl-[var(--radius-sm)] bg-[var(--color-field)] px-3.5 py-2.5">
                 <div className="flex items-center gap-1.5 py-1">

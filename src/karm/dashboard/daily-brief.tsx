@@ -43,7 +43,7 @@ export default function DailyBrief({
     return (
       <div className={`flex flex-col gap-3 rounded-[var(--radius-2xl)] border border-[var(--color-border-default)] bg-[var(--color-layer-01)] p-5 ${className || ''}`}>
         <div className="flex items-center gap-2">
-          <div className="h-4 w-4 animate-pulse rounded bg-[var(--color-layer-02)]" />
+          <div className="h-[var(--icon-sm)] w-[var(--icon-sm)] animate-pulse rounded bg-[var(--color-layer-02)]" />
           <div className="h-4 w-24 animate-pulse rounded bg-[var(--color-layer-02)]" />
         </div>
         {[1, 2, 3].map((i) => (
@@ -69,15 +69,15 @@ export default function DailyBrief({
         className="flex items-center justify-between px-5 py-4 transition-colors hover:bg-[var(--color-layer-02)]"
       >
         <div className="flex items-center gap-2">
-          <IconSparkles className="h-4 w-4 text-[var(--color-interactive)]" />
+          <IconSparkles className="h-[var(--icon-sm)] w-[var(--icon-sm)] text-[var(--color-interactive)]" />
           <span className="B1-Reg font-semibold text-[var(--color-text-primary)]">
             Morning Brief
           </span>
         </div>
         {collapsed ? (
-          <IconChevronDown className="h-4 w-4 text-[var(--color-text-placeholder)]" />
+          <IconChevronDown className="h-[var(--icon-sm)] w-[var(--icon-sm)] text-[var(--color-text-placeholder)]" />
         ) : (
-          <IconChevronUp className="h-4 w-4 text-[var(--color-text-placeholder)]" />
+          <IconChevronUp className="h-[var(--icon-sm)] w-[var(--icon-sm)] text-[var(--color-text-placeholder)]" />
         )}
       </button>
 

@@ -108,14 +108,14 @@ export function Calendar({ onDateSelect, hasCorrection }: CalendarProps) {
               onClick={() => handleDateChange('prev')}
               className="rounded-[var(--radius-full)] p-1 hover:bg-[var(--color-layer-02)]"
             >
-              <ArrowLeftIcon className="h-5 w-5 text-[var(--color-text-secondary)]" />
+              <ArrowLeftIcon className="h-[var(--icon-md)] w-[var(--icon-md)] text-[var(--color-text-secondary)]" />
             </button>
             <button
               aria-label="Next"
               onClick={() => handleDateChange('next')}
               className="rounded-[var(--radius-full)] p-1 hover:bg-[var(--color-layer-02)]"
             >
-              <ArrowForwardIcon className="h-5 w-5 text-[var(--color-text-secondary)]" />
+              <ArrowForwardIcon className="h-[var(--icon-md)] w-[var(--icon-md)] text-[var(--color-text-secondary)]" />
             </button>
           </div>
         </div>

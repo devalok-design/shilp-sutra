@@ -112,7 +112,7 @@ function PropertyRow({
       )}
     >
       <div className="flex w-[120px] shrink-0 items-center gap-2 text-[var(--color-text-placeholder)]">
-        <Icon className="h-3.5 w-3.5" stroke={1.5} />
+        <Icon className="h-[var(--icon-sm)] w-[var(--icon-sm)]" stroke={1.5} />
         <span className="B3-Reg">{label}</span>
       </div>
       <div className="flex-1 min-w-0">{children}</div>
@@ -252,7 +252,7 @@ function TaskProperties({
                 >
                   {col.name}
                   {col.id === task.columnId && (
-                    <IconCheck className="ml-auto h-3.5 w-3.5" />
+                    <IconCheck className="ml-auto h-[var(--icon-sm)] w-[var(--icon-sm)]" />
                   )}
                 </button>
               ))}
@@ -275,7 +275,7 @@ function TaskProperties({
             >
               {task.owner ? (
                 <>
-                  <Avatar className="h-5 w-5">
+                  <Avatar className="h-[var(--icon-md)] w-[var(--icon-md)]">
                     {task.owner.image && (
                       <AvatarImage src={task.owner.image} alt={task.owner.name} />
                     )}
@@ -305,7 +305,7 @@ function TaskProperties({
               key={a.user.id}
               className="inline-flex items-center gap-1 rounded-[var(--radius-full)] bg-[var(--color-layer-02)] py-0.5 pl-0.5 pr-2"
             >
-              <Avatar className="h-4 w-4">
+              <Avatar className="h-[var(--icon-sm)] w-[var(--icon-sm)]">
                 {a.user.image && (
                   <AvatarImage src={a.user.image} alt={a.user.name} />
                 )}
@@ -336,7 +336,7 @@ function TaskProperties({
             >
               <button
                 type="button"
-                className="inline-flex h-5 w-5 items-center justify-center rounded-[var(--radius-full)] border border-dashed border-[var(--color-border-subtle)] transition-colors hover:bg-[var(--color-field)] hover:border-[var(--color-text-placeholder)]"
+                className="inline-flex h-[var(--icon-md)] w-[var(--icon-md)] items-center justify-center rounded-[var(--radius-full)] border border-dashed border-[var(--color-border-subtle)] transition-colors hover:bg-[var(--color-field)] hover:border-[var(--color-text-placeholder)]"
               >
                 <IconPlus className="h-3 w-3 text-[var(--color-text-placeholder)]" />
               </button>
@@ -458,7 +458,7 @@ function TaskProperties({
               <button
                 type="button"
                 onClick={() => setShowLabelInput(true)}
-                className="inline-flex h-5 w-5 items-center justify-center rounded-[var(--radius-full)] border border-dashed border-[var(--color-border-subtle)] transition-colors hover:bg-[var(--color-field)] hover:border-[var(--color-text-placeholder)]"
+                className="inline-flex h-[var(--icon-md)] w-[var(--icon-md)] items-center justify-center rounded-[var(--radius-full)] border border-dashed border-[var(--color-border-subtle)] transition-colors hover:bg-[var(--color-field)] hover:border-[var(--color-text-placeholder)]"
               >
                 <IconPlus className="h-3 w-3 text-[var(--color-text-placeholder)]" />
               </button>

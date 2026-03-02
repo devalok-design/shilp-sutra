@@ -80,7 +80,7 @@ const BreadcrumbEllipsis = ({ className, ...props }: React.ComponentProps<'span'
     className={cn('flex h-9 w-9 items-center justify-center', className)}
     {...props}
   >
-    <IconDots className="h-4 w-4" />
+    <IconDots className="h-[var(--icon-sm)] w-[var(--icon-sm)]" />
     <span className="sr-only">More</span>
   </span>
 )

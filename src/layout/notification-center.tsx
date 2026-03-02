@@ -312,7 +312,7 @@ const NotificationCenter = React.forwardRef<HTMLButtonElement, NotificationCente
                 className,
               )}
             >
-              <IconBell className="h-4 w-4" />
+              <IconBell className="h-[var(--icon-sm)] w-[var(--icon-sm)]" />
               {unreadCount > 0 && (
                 <span className="absolute -right-0.5 -top-0.5 flex h-4 min-w-4 items-center justify-center rounded-[var(--radius-full)] bg-[var(--color-interactive)] px-1 text-[10px] font-bold text-[var(--color-text-on-color)]">
                   {unreadCount > 99 ? '99+' : unreadCount}
@@ -349,7 +349,7 @@ const NotificationCenter = React.forwardRef<HTMLButtonElement, NotificationCente
               onClick={onMarkAllRead}
               className="flex items-center gap-1 text-xs text-[var(--color-text-placeholder)] transition-colors hover:text-[var(--color-interactive)]"
             >
-              <IconChecks className="h-3.5 w-3.5" />
+              <IconChecks className="h-[var(--icon-sm)] w-[var(--icon-sm)]" />
               Mark all read
             </button>
           )}
@@ -400,7 +400,7 @@ const NotificationCenter = React.forwardRef<HTMLButtonElement, NotificationCente
 
           {isLoading && (
             <div className="flex items-center justify-center py-4">
-              <div className="h-5 w-5 animate-spin rounded-[var(--radius-full)] border-2 border-[var(--color-border-default)] border-t-[var(--color-interactive)]" />
+              <div className="h-[var(--icon-md)] w-[var(--icon-md)] animate-spin rounded-[var(--radius-full)] border-2 border-[var(--color-border-default)] border-t-[var(--color-interactive)]" />
             </div>
           )}
         </div>

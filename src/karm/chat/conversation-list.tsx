@@ -71,7 +71,7 @@ export function ConversationList({
           onClick={onNewChat}
           className="flex items-center gap-1.5 rounded-[var(--radius-lg)] px-2.5 py-1.5 text-[var(--color-text-secondary)] transition-colors hover:bg-[var(--color-layer-02)]"
         >
-          <IconMessagePlus className="h-4 w-4" />
+          <IconMessagePlus className="h-[var(--icon-sm)] w-[var(--icon-sm)]" />
           <span className="B3-Reg">New Chat</span>
         </button>
       </div>
@@ -80,7 +80,7 @@ export function ConversationList({
       <div className="no-scrollbar flex-1 overflow-y-auto">
         {isLoading ? (
           <div className="flex items-center justify-center py-12">
-            <div className="h-5 w-5 animate-spin rounded-[var(--radius-full)] border-2 border-[var(--color-text-secondary)] border-t-transparent" />
+            <div className="h-[var(--icon-md)] w-[var(--icon-md)] animate-spin rounded-[var(--radius-full)] border-2 border-[var(--color-text-secondary)] border-t-transparent" />
           </div>
         ) : conversations.length === 0 ? (
           <div className="flex flex-col items-center justify-center gap-2 py-12">
@@ -123,7 +123,7 @@ export function ConversationList({
                       className="flex h-7 w-7 items-center justify-center rounded-[var(--radius-md)] text-[var(--color-text-placeholder)] transition-colors hover:bg-[var(--color-field)] hover:text-[var(--color-text-secondary)]"
                       aria-label="Archive conversation"
                     >
-                      <IconArchive className="h-3.5 w-3.5" />
+                      <IconArchive className="h-[var(--icon-sm)] w-[var(--icon-sm)]" />
                     </button>
                   )}
                   {onDelete && (
@@ -135,7 +135,7 @@ export function ConversationList({
                       className="flex h-7 w-7 items-center justify-center rounded-[var(--radius-md)] text-[var(--color-text-placeholder)] transition-colors hover:bg-[var(--color-error-surface)] hover:text-[var(--color-text-error)]"
                       aria-label="Delete conversation"
                     >
-                      <IconTrash className="h-3.5 w-3.5" />
+                      <IconTrash className="h-[var(--icon-sm)] w-[var(--icon-sm)]" />
                     </button>
                   )}
                 </div>

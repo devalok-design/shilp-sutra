@@ -77,7 +77,7 @@ function BottomNavLink({
           aria-hidden="true"
         />
         <div className="p-2.5">
-          <item.icon className="h-5 w-5" aria-hidden="true" />
+          <item.icon className="h-[var(--icon-md)] w-[var(--icon-md)]" aria-hidden="true" />
         </div>
         <span className="text-center leading-none">{item.title}</span>
       </div>
@@ -138,7 +138,7 @@ const BottomNavbar = React.forwardRef<HTMLElement, BottomNavbarProps>(
                 aria-label="Close more menu"
                 className="flex h-8 w-8 items-center justify-center rounded-[var(--radius-full)] hover:bg-[var(--color-layer-02)]"
               >
-                <IconX className="h-4 w-4 text-[var(--color-text-secondary)]" aria-hidden="true" />
+                <IconX className="h-[var(--icon-sm)] w-[var(--icon-sm)] text-[var(--color-text-secondary)]" aria-hidden="true" />
               </button>
             </div>
             <div className="grid grid-cols-4 gap-2">
@@ -154,7 +154,7 @@ const BottomNavbar = React.forwardRef<HTMLElement, BottomNavbarProps>(
                       : 'text-[var(--color-text-helper)] hover:bg-[var(--color-layer-02)]',
                   )}
                 >
-                  <item.icon className="h-5 w-5" />
+                  <item.icon className="h-[var(--icon-md)] w-[var(--icon-md)]" />
                   <span className="text-center leading-tight">
                     {item.title}
                   </span>
@@ -204,7 +204,7 @@ const BottomNavbar = React.forwardRef<HTMLElement, BottomNavbarProps>(
                 aria-hidden="true"
               />
               <div className="p-2.5">
-                <IconDots className="h-5 w-5" aria-hidden="true" />
+                <IconDots className="h-[var(--icon-md)] w-[var(--icon-md)]" aria-hidden="true" />
               </div>
               <span className="text-center leading-none">More</span>
             </div>

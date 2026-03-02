@@ -152,14 +152,14 @@ export default function NotificationPreferences({
             variant="secondary"
             onClick={() => setShowAddDialog(true)}
           >
-            <IconPlus className="mr-1.5 h-3.5 w-3.5" />
+            <IconPlus className="mr-1.5 h-[var(--icon-sm)] w-[var(--icon-sm)]" />
             Add Rule
           </Button>
         </CardHeader>
         <CardContent>
           {isLoading ? (
             <div className="flex items-center justify-center py-8">
-              <div className="h-5 w-5 animate-spin rounded-[var(--radius-full)] border-2 border-[var(--color-border-default)] border-t-[var(--color-interactive)]" />
+              <div className="h-[var(--icon-md)] w-[var(--icon-md)] animate-spin rounded-[var(--radius-full)] border-2 border-[var(--color-border-default)] border-t-[var(--color-interactive)]" />
             </div>
           ) : preferences.length === 0 ? (
             <div className="py-8 text-center">
@@ -186,7 +186,7 @@ export default function NotificationPreferences({
                   >
                     {/* Channel icon */}
                     <div className="flex h-8 w-8 shrink-0 items-center justify-center rounded-[var(--radius-lg)] bg-[var(--color-layer-02)]">
-                      <ChannelIcon className="h-4 w-4 text-[var(--color-text-secondary)]" />
+                      <ChannelIcon className="h-[var(--icon-sm)] w-[var(--icon-sm)] text-[var(--color-text-secondary)]" />
                     </div>
 
                     {/* Info */}
@@ -233,7 +233,7 @@ export default function NotificationPreferences({
                       onClick={() => onDelete?.(pref.id)}
                       className="shrink-0 rounded p-1.5 text-[var(--color-text-placeholder)] transition-colors hover:bg-[var(--color-layer-02)] hover:text-[var(--color-error)]"
                     >
-                      <IconTrash className="h-3.5 w-3.5" />
+                      <IconTrash className="h-[var(--icon-sm)] w-[var(--icon-sm)]" />
                     </button>
                   </div>
                 )

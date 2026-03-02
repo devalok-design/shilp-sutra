@@ -35,7 +35,7 @@ const PageHeader = React.forwardRef<HTMLDivElement, PageHeaderProps>(
               <React.Fragment key={index}>
                 {index > 0 && (
                   <IconChevronRight
-                    className="h-3.5 w-3.5 text-[var(--color-text-placeholder)]"
+                    className="h-[var(--icon-sm)] w-[var(--icon-sm)] text-[var(--color-text-placeholder)]"
                     stroke={1.5}
                   />
                 )}

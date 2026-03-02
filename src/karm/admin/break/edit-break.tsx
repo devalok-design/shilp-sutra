@@ -458,8 +458,8 @@ export function EditBreak({
                   >
                     {formatDateToLongForm(formData.startDate)}
                   </button>
-                  <div className="flex h-4 w-4 items-center">
-                    <ArrowRightIcon className="h-4 w-4 text-[var(--border-tertiary)]" />
+                  <div className="flex h-[var(--icon-sm)] w-[var(--icon-sm)] items-center">
+                    <ArrowRightIcon className="h-[var(--icon-sm)] w-[var(--icon-sm)] text-[var(--border-tertiary)]" />
                   </div>
                   <button
                     type="button"
@@ -485,7 +485,7 @@ export function EditBreak({
                         onClick={() => picker.navigateMonth('prev')}
                       >
                         <svg
-                          className="h-5 w-5"
+                          className="h-[var(--icon-md)] w-[var(--icon-md)]"
                           fill="none"
                           viewBox="0 0 24 24"
                           stroke="currentColor"
@@ -513,7 +513,7 @@ export function EditBreak({
                         onClick={() => picker.navigateMonth('next')}
                       >
                         <svg
-                          className="h-5 w-5"
+                          className="h-[var(--icon-md)] w-[var(--icon-md)]"
                           fill="none"
                           viewBox="0 0 24 24"
                           stroke="currentColor"

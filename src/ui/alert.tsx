@@ -55,7 +55,7 @@ const Alert = React.forwardRef<HTMLDivElement, AlertProps>(
             className="shrink-0 rounded-[var(--radius-sm)] text-[var(--color-icon-secondary)] transition-colors hover:text-[var(--color-icon-primary)] hover:bg-[var(--color-field)] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--color-focus)]"
             aria-label="Dismiss"
           >
-            <IconX className="h-4 w-4" />
+            <IconX className="h-[var(--icon-sm)] w-[var(--icon-sm)]" />
           </button>
         )}
       </div>

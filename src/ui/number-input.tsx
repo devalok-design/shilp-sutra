@@ -78,7 +78,7 @@ const NumberInput = React.forwardRef<HTMLInputElement, NumberInputProps>(
           disabled={disabled || value >= max}
           className="flex h-8 w-8 items-center justify-center border-0 text-[var(--color-text-placeholder)] transition-colors hover:text-[var(--color-text-secondary)]"
         >
-          <IconPlus className="h-4 w-4" />
+          <IconPlus className="h-[var(--icon-sm)] w-[var(--icon-sm)]" />
         </button>
       </div>
     )

@@ -94,7 +94,7 @@ export default function AttendanceCTA({
             </p>
           </div>
           <div className="flex items-center gap-2 rounded-[var(--radius-xl)] bg-[var(--color-success-surface)] px-4 py-2.5">
-            <div className="flex h-5 w-5 items-center justify-center rounded-[var(--radius-full)] bg-[var(--color-text-success)]">
+            <div className="flex h-[var(--icon-md)] w-[var(--icon-md)] items-center justify-center rounded-[var(--radius-full)] bg-[var(--color-text-success)]">
               <IconCheck className="h-3 w-3 text-[var(--color-text-on-color)]" />
             </div>
             <span className="B2-Reg font-semibold text-[var(--color-text-success)]">
@@ -124,7 +124,7 @@ export default function AttendanceCTA({
             </p>
           </div>
           <div className="flex items-center gap-2 rounded-[var(--radius-xl)] bg-[var(--color-warning-surface)] px-4 py-2.5">
-            <IconCoffee className="h-4 w-4 text-[var(--color-text-warning)]" />
+            <IconCoffee className="h-[var(--icon-sm)] w-[var(--icon-sm)] text-[var(--color-text-warning)]" />
             <span className="B2-Reg font-semibold text-[var(--color-text-warning)]">
               On break
               {attendance?.breakReason ? ` \u2014 ${attendance.breakReason}` : ''}
@@ -152,7 +152,7 @@ export default function AttendanceCTA({
             </p>
           </div>
           <div className="flex items-center gap-2 rounded-[var(--radius-xl)] bg-[var(--color-layer-02)] px-4 py-2.5">
-            <IconClock className="h-4 w-4 text-[var(--color-text-placeholder)]" />
+            <IconClock className="h-[var(--icon-sm)] w-[var(--icon-sm)] text-[var(--color-text-placeholder)]" />
             <span className="B2-Reg text-[var(--color-text-placeholder)]">
               Attendance window closed
             </span>

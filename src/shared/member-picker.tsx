@@ -67,7 +67,7 @@ const MemberPicker = React.forwardRef<HTMLDivElement, MemberPickerProps>(
           sideOffset={4}
         >
           <div className="flex items-center gap-2 border-b border-[var(--color-border-default)] px-3 py-2">
-            <IconSearch className="h-3.5 w-3.5 shrink-0 text-[var(--color-text-placeholder)]" stroke={1.5} />
+            <IconSearch className="h-[var(--icon-sm)] w-[var(--icon-sm)] shrink-0 text-[var(--color-text-placeholder)]" stroke={1.5} />
             <input
               type="text"
               placeholder={placeholder}
@@ -93,7 +93,7 @@ const MemberPicker = React.forwardRef<HTMLDivElement, MemberPickerProps>(
                     isSelected && 'bg-[var(--color-field)]',
                   )}
                 >
-                  <Avatar className="h-5 w-5">
+                  <Avatar className="h-[var(--icon-md)] w-[var(--icon-md)]">
                     {member.avatar && (
                       <AvatarImage src={member.avatar} alt={member.name} />
                     )}
@@ -105,7 +105,7 @@ const MemberPicker = React.forwardRef<HTMLDivElement, MemberPickerProps>(
                     {member.name}
                   </span>
                   {isSelected && (
-                    <IconCheck className="h-3.5 w-3.5 shrink-0 text-[var(--color-interactive)]" />
+                    <IconCheck className="h-[var(--icon-sm)] w-[var(--icon-sm)] shrink-0 text-[var(--color-interactive)]" />
                   )}
                 </button>
               )

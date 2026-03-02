@@ -65,7 +65,7 @@ function StatCard({ className, label, value, delta, icon, loading, ...props }: S
       </p>
       {delta && (
         <div className={cn('mt-2 flex items-center gap-1 text-xs font-medium', deltaColour)}>
-          <DeltaIcon className="h-3.5 w-3.5" aria-hidden="true" />
+          <DeltaIcon className="h-[var(--icon-sm)] w-[var(--icon-sm)]" aria-hidden="true" />
           <span>{delta.value}</span>
         </div>
       )}

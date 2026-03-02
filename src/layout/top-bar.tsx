@@ -141,7 +141,7 @@ const TopBar = React.forwardRef<HTMLDivElement, TopBarProps>(
               onClick={handleSearchClick}
               className="flex h-9 w-9 items-center justify-center rounded-[var(--radius-full)] border border-[var(--color-border-default)] bg-[var(--color-layer-02)] text-[var(--color-text-secondary)] transition-colors hover:bg-[var(--color-layer-03)]"
             >
-              <IconSearch className="h-4 w-4" />
+              <IconSearch className="h-[var(--icon-sm)] w-[var(--icon-sm)]" />
             </button>
           </TooltipTrigger>
           <TooltipContent side="bottom" align="center">
@@ -160,7 +160,7 @@ const TopBar = React.forwardRef<HTMLDivElement, TopBarProps>(
                 onClick={onAiChatClick}
                 className="flex h-9 w-9 items-center justify-center rounded-[var(--radius-full)] border border-[var(--color-border-default)] bg-[var(--color-layer-02)] text-[var(--color-text-secondary)] transition-colors hover:bg-[var(--color-layer-03)]"
               >
-                <IconSparkles className="h-4 w-4" />
+                <IconSparkles className="h-[var(--icon-sm)] w-[var(--icon-sm)]" />
               </button>
             </TooltipTrigger>
             <TooltipContent side="bottom" align="center">
@@ -213,7 +213,7 @@ const TopBar = React.forwardRef<HTMLDivElement, TopBarProps>(
                 className="flex w-full cursor-pointer items-center gap-2 px-4 py-3 hover:bg-[var(--color-layer-02)]"
                 onClick={() => onNavigate?.('/profile')}
               >
-                <IconUser className="h-4 w-4 text-[var(--color-text-secondary)]" />
+                <IconUser className="h-[var(--icon-sm)] w-[var(--icon-sm)] text-[var(--color-text-secondary)]" />
                 <span className="text-sm text-[var(--color-text-secondary)]">
                   Profile
                 </span>
@@ -224,9 +224,9 @@ const TopBar = React.forwardRef<HTMLDivElement, TopBarProps>(
                 onClick={toggleTheme}
               >
                 {theme === 'dark' ? (
-                  <IconSun className="h-4 w-4 text-[var(--color-text-secondary)]" />
+                  <IconSun className="h-[var(--icon-sm)] w-[var(--icon-sm)] text-[var(--color-text-secondary)]" />
                 ) : (
-                  <IconMoon className="h-4 w-4 text-[var(--color-text-secondary)]" />
+                  <IconMoon className="h-[var(--icon-sm)] w-[var(--icon-sm)] text-[var(--color-text-secondary)]" />
                 )}
                 <span className="text-sm text-[var(--color-text-secondary)]">
                   {theme === 'dark' ? 'Light Mode' : 'Dark Mode'}
@@ -240,7 +240,7 @@ const TopBar = React.forwardRef<HTMLDivElement, TopBarProps>(
                     className="flex w-full cursor-pointer items-center gap-2 px-4 py-3 hover:bg-[var(--color-layer-02)]"
                     onClick={onLogout}
                   >
-                    <IconLogout className="h-4 w-4 text-[var(--color-error)]" />
+                    <IconLogout className="h-[var(--icon-sm)] w-[var(--icon-sm)] text-[var(--color-error)]" />
                     <span className="text-sm text-[var(--color-error)]">
                       Logout
                     </span>

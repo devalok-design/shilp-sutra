@@ -74,7 +74,7 @@ const PaginationPrevious = React.forwardRef<
     className={cn('w-auto gap-1 pl-2.5 pr-3', className)}
     {...props}
   >
-    <IconChevronLeft className="h-4 w-4" />
+    <IconChevronLeft className="h-[var(--icon-sm)] w-[var(--icon-sm)]" />
     <span>Previous</span>
   </PaginationLink>
 ))
@@ -91,7 +91,7 @@ const PaginationNext = React.forwardRef<
     {...props}
   >
     <span>Next</span>
-    <IconChevronRight className="h-4 w-4" />
+    <IconChevronRight className="h-[var(--icon-sm)] w-[var(--icon-sm)]" />
   </PaginationLink>
 ))
 PaginationNext.displayName = 'PaginationNext'
@@ -109,7 +109,7 @@ const PaginationEllipsis = React.forwardRef<
     )}
     {...props}
   >
-    <IconDots className="h-4 w-4" />
+    <IconDots className="h-[var(--icon-sm)] w-[var(--icon-sm)]" />
     <span className="sr-only">More pages</span>
   </span>
 ))

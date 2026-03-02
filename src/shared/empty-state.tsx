@@ -43,7 +43,7 @@ const EmptyState = React.forwardRef<HTMLDivElement, EmptyStateProps>(
           <Icon
             className={cn(
               'text-[var(--color-text-placeholder)]',
-              compact ? 'h-5 w-5' : 'h-6 w-6',
+              compact ? 'h-[var(--icon-md)] w-[var(--icon-md)]' : 'h-6 w-6',
             )}
             stroke={1.5}
           />

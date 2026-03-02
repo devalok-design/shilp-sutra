@@ -16,7 +16,7 @@ function CardSkeleton({ className }: SkeletonProps) {
     >
       <div className="flex items-center justify-between pb-4">
         <Skeleton className="h-4 w-32 bg-[var(--color-field)]" />
-        <Skeleton className="h-4 w-4 rounded bg-[var(--color-field)]" />
+        <Skeleton className="h-[var(--icon-sm)] w-[var(--icon-sm)] rounded bg-[var(--color-field)]" />
       </div>
       <div className="space-y-3">
         <Skeleton className="h-3 w-full bg-[var(--color-field)]" />
@@ -113,7 +113,7 @@ function BoardSkeleton({
               <Skeleton className="h-3 w-20 bg-[var(--color-field)]" />
               <Skeleton className="h-4 w-5 rounded-[var(--radius-full)] bg-[var(--color-field)]" />
             </div>
-            <Skeleton className="h-4 w-4 rounded bg-[var(--color-field)]" />
+            <Skeleton className="h-[var(--icon-sm)] w-[var(--icon-sm)] rounded bg-[var(--color-field)]" />
           </div>
 
           {/* Column cards */}
@@ -128,7 +128,7 @@ function BoardSkeleton({
               </div>
               <div className="flex items-center justify-between pt-3">
                 <div className="flex items-center gap-1.5">
-                  <Skeleton className="h-5 w-5 rounded-[var(--radius-full)] bg-[var(--color-field)]" />
+                  <Skeleton className="h-[var(--icon-md)] w-[var(--icon-md)] rounded-[var(--radius-full)] bg-[var(--color-field)]" />
                   <Skeleton className="h-2.5 w-16 bg-[var(--color-field)]" />
                 </div>
                 <Skeleton className="h-4 w-12 rounded-[var(--radius-full)] bg-[var(--color-field)]" />

@@ -87,7 +87,7 @@ function CalendarGrid({
           onClick={() => onMonthChange(subMonths(currentMonth, 1))}
           className="inline-flex h-7 w-7 items-center justify-center rounded-[var(--radius-md)] text-[var(--color-text-placeholder)] transition-colors hover:bg-[var(--color-field)] hover:text-[var(--color-text-secondary)]"
         >
-          <IconChevronLeft className="h-4 w-4" stroke={1.5} />
+          <IconChevronLeft className="h-[var(--icon-sm)] w-[var(--icon-sm)]" stroke={1.5} />
         </button>
         <span className="B2-Reg semibold text-[var(--color-text-primary)]">
           {format(currentMonth, 'MMMM yyyy')}
@@ -97,7 +97,7 @@ function CalendarGrid({
           onClick={() => onMonthChange(addMonths(currentMonth, 1))}
           className="inline-flex h-7 w-7 items-center justify-center rounded-[var(--radius-md)] text-[var(--color-text-placeholder)] transition-colors hover:bg-[var(--color-field)] hover:text-[var(--color-text-secondary)]"
         >
-          <IconChevronRight className="h-4 w-4" stroke={1.5} />
+          <IconChevronRight className="h-[var(--icon-sm)] w-[var(--icon-sm)]" stroke={1.5} />
         </button>
       </div>
 
@@ -185,7 +185,7 @@ function DatePicker({
           )}
         >
           <IconCalendarEvent
-            className="h-4 w-4 text-[var(--color-text-placeholder)]"
+            className="h-[var(--icon-sm)] w-[var(--icon-sm)] text-[var(--color-text-placeholder)]"
             stroke={1.5}
           />
           <span
@@ -286,7 +286,7 @@ function DateRangePicker({
           )}
         >
           <IconCalendarEvent
-            className="h-4 w-4 text-[var(--color-text-placeholder)]"
+            className="h-[var(--icon-sm)] w-[var(--icon-sm)] text-[var(--color-text-placeholder)]"
             stroke={1.5}
           />
           <span

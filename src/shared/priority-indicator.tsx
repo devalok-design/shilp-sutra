@@ -79,7 +79,7 @@ const PriorityIndicator = React.forwardRef<HTMLDivElement, PriorityIndicatorProp
           title={config.label}
           {...props}
         >
-          <Icon className={cn('h-3.5 w-3.5', config.color)} stroke={2} />
+          <Icon className={cn('h-[var(--icon-sm)] w-[var(--icon-sm)]', config.color)} stroke={2} />
         </div>
       )
     }
@@ -96,7 +96,7 @@ const PriorityIndicator = React.forwardRef<HTMLDivElement, PriorityIndicatorProp
             config.bgColor,
           )}
         >
-          <Icon className={cn('h-3.5 w-3.5', config.color)} stroke={2} />
+          <Icon className={cn('h-[var(--icon-sm)] w-[var(--icon-sm)]', config.color)} stroke={2} />
         </div>
         <span className="B3-Reg text-[var(--color-text-secondary)]">
           {config.label}

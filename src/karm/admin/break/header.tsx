@@ -121,10 +121,10 @@ export function BreakAdminHeader({
                 <img
                   src={userImages[filters.selectedAssociate.id]}
                   alt={`${filters.selectedAssociate.name}'s avatar`}
-                  className="h-5 w-5 rounded-[var(--radius-full)]"
+                  className="h-[var(--icon-md)] w-[var(--icon-md)] rounded-[var(--radius-full)]"
                 />
               ) : (
-                <div className="flex h-5 w-5 items-center justify-center rounded-[var(--radius-full)] bg-[var(--color-layer-02)]">
+                <div className="flex h-[var(--icon-md)] w-[var(--icon-md)] items-center justify-center rounded-[var(--radius-full)] bg-[var(--color-layer-02)]">
                   <span className="text-[var(--color-interactive)]">
                     {filters.selectedAssociate.name.charAt(0)}
                   </span>
@@ -144,19 +144,19 @@ export function BreakAdminHeader({
               }
               className="border-0 p-0"
             >
-              <CrossIcon className="h-4 w-4 text-[var(--color-text-on-color)]" />
+              <CrossIcon className="h-[var(--icon-sm)] w-[var(--icon-sm)] text-[var(--color-text-on-color)]" />
             </button>
           </div>
         ) : (
           <DropdownMenu>
             <DropdownMenuTrigger className="B2-Reg flex flex-row items-center justify-between rounded-[6px] border border-[var(--color-border-subtle)] bg-[var(--color-layer-01)] px-2 py-1.5">
               <div className="flex items-center">
-                <PersonIcon className="h-4 w-4" />
+                <PersonIcon className="h-[var(--icon-sm)] w-[var(--icon-sm)]" />
                 <span className="B2-Reg mx-2 text-[var(--color-text-secondary)] max-lg:mx-0 max-lg:text-[12px]">
                   Associate
                 </span>
               </div>
-              <ArrowDropdownIcon className="h-4 w-4" />
+              <ArrowDropdownIcon className="h-[var(--icon-sm)] w-[var(--icon-sm)]" />
             </DropdownMenuTrigger>
             <DropdownMenuContent className="custom-scrollbar max-h-[400px] w-64 overflow-y-auto p-2">
               {users?.length === 0 ? (
@@ -239,7 +239,7 @@ export function BreakAdminHeader({
                 Date
               </span>
             </div>
-            <ArrowDropdownIcon className="h-4 w-4" />
+            <ArrowDropdownIcon className="h-[var(--icon-sm)] w-[var(--icon-sm)]" />
           </DropdownMenuTrigger>
           <DropdownMenuContent className="mr-32 p-3">
             <div className="flex w-[140px] flex-col items-center justify-start">

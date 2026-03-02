@@ -89,7 +89,7 @@ function NavLink({ item, isActive }: { item: NavItem; isActive: boolean }) {
           aria-label={item.title}
           aria-current={isActive ? 'page' : undefined}
         >
-          <item.icon className="h-5 w-5 shrink-0" aria-hidden="true" />
+          <item.icon className="h-[var(--icon-md)] w-[var(--icon-md)] shrink-0" aria-hidden="true" />
           <span className="text-base">{item.title}</span>
         </Link>
       </SidebarMenuButton>

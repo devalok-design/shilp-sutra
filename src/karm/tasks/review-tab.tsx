@@ -252,7 +252,7 @@ function ReviewTab({
           type="button"
           className="mt-3 inline-flex items-center gap-1.5 rounded-[var(--radius-lg)] px-2 py-1.5 text-[13px] font-body text-[var(--color-text-placeholder)] transition-colors hover:bg-[var(--color-field)] hover:text-[var(--color-text-secondary)]"
         >
-          <IconPlus className="h-3.5 w-3.5" stroke={1.5} />
+          <IconPlus className="h-[var(--icon-sm)] w-[var(--icon-sm)]" stroke={1.5} />
           Request Review
         </button>
       </MemberPicker>

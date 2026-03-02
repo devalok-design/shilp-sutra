@@ -244,7 +244,7 @@ function ConversationTab({
             disabled={!editorContent.replace(/<[^>]*>/g, '').trim()}
             className="inline-flex items-center gap-1.5 rounded-[var(--radius-lg)] bg-[var(--color-interactive)] px-3.5 py-1.5 text-[12px] font-body font-semibold text-[var(--color-text-on-color)] transition-colors hover:bg-[var(--color-interactive-hover)] disabled:opacity-50 disabled:cursor-not-allowed"
           >
-            <IconSend className="h-3.5 w-3.5" stroke={2} />
+            <IconSend className="h-[var(--icon-sm)] w-[var(--icon-sm)]" stroke={2} />
             Comment
           </button>
         </div>

@@ -2,7 +2,7 @@ import * as React from 'react'
 import { cn } from './lib/utils'
 
 const sizeClasses = {
-  sm: 'h-4 w-4',
+  sm: 'h-[var(--icon-sm)] w-[var(--icon-sm)]',
   md: 'h-6 w-6',
   lg: 'h-8 w-8',
 } as const

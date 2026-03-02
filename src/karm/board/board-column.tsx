@@ -174,7 +174,7 @@ export function BoardColumn({
             setTimeout(() => inputRef.current?.focus(), 50)
           }}
         >
-          <IconPlus className="h-3.5 w-3.5" />
+          <IconPlus className="h-[var(--icon-sm)] w-[var(--icon-sm)]" />
         </Button>
 
         {/* Column menu */}
@@ -185,7 +185,7 @@ export function BoardColumn({
               size="icon-md"
               className="h-6 w-6 opacity-0 group-hover:opacity-100 transition-opacity"
             >
-              <IconDots className="h-3.5 w-3.5" />
+              <IconDots className="h-[var(--icon-sm)] w-[var(--icon-sm)]" />
             </Button>
           </DropdownMenuTrigger>
           <DropdownMenuContent align="end" className="w-44">
@@ -195,7 +195,7 @@ export function BoardColumn({
                 setIsEditing(true)
               }}
             >
-              <IconPencil className="mr-2 h-3.5 w-3.5" />
+              <IconPencil className="mr-2 h-[var(--icon-sm)] w-[var(--icon-sm)]" />
               Rename
             </DropdownMenuItem>
             <DropdownMenuItem
@@ -205,12 +205,12 @@ export function BoardColumn({
             >
               {column.isClientVisible ? (
                 <>
-                  <IconEyeOff className="mr-2 h-3.5 w-3.5" />
+                  <IconEyeOff className="mr-2 h-[var(--icon-sm)] w-[var(--icon-sm)]" />
                   Hide from client
                 </>
               ) : (
                 <>
-                  <IconEye className="mr-2 h-3.5 w-3.5" />
+                  <IconEye className="mr-2 h-[var(--icon-sm)] w-[var(--icon-sm)]" />
                   Show to client
                 </>
               )}
@@ -220,7 +220,7 @@ export function BoardColumn({
               className="text-[var(--color-error)] focus:text-[var(--color-error)]"
               onClick={() => onDeleteColumn?.(column.id)}
             >
-              <IconTrash className="mr-2 h-3.5 w-3.5" />
+              <IconTrash className="mr-2 h-[var(--icon-sm)] w-[var(--icon-sm)]" />
               Delete column
             </DropdownMenuItem>
           </DropdownMenuContent>

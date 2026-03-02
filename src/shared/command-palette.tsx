@@ -252,7 +252,7 @@ function CommandPalette({
                     >
                       {ItemIcon && (
                         <ItemIcon
-                          className="h-4 w-4 shrink-0 text-[var(--color-text-placeholder)]"
+                          className="h-[var(--icon-sm)] w-[var(--icon-sm)] shrink-0 text-[var(--color-text-placeholder)]"
                           stroke={1.5}
                         />
                       )}
@@ -286,10 +286,10 @@ function CommandPalette({
           <div className="flex items-center gap-4 border-t border-[var(--color-border-default)] px-4 py-2">
             <div className="flex items-center gap-1.5">
               <div className="flex items-center gap-0.5">
-                <kbd className="inline-flex h-5 w-5 items-center justify-center rounded border border-[var(--color-border-default)] bg-[var(--color-layer-02)]">
+                <kbd className="inline-flex h-[var(--icon-md)] w-[var(--icon-md)] items-center justify-center rounded border border-[var(--color-border-default)] bg-[var(--color-layer-02)]">
                   <IconArrowUp className="h-2.5 w-2.5 text-[var(--color-text-placeholder)]" stroke={2} />
                 </kbd>
-                <kbd className="inline-flex h-5 w-5 items-center justify-center rounded border border-[var(--color-border-default)] bg-[var(--color-layer-02)]">
+                <kbd className="inline-flex h-[var(--icon-md)] w-[var(--icon-md)] items-center justify-center rounded border border-[var(--color-border-default)] bg-[var(--color-layer-02)]">
                   <IconArrowDown className="h-2.5 w-2.5 text-[var(--color-text-placeholder)]" stroke={2} />
                 </kbd>
               </div>

@@ -32,7 +32,7 @@ const ContextMenuSubTrigger = React.forwardRef<
     {...props}
   >
     {children}
-    <IconChevronRight className="ml-auto h-4 w-4" />
+    <IconChevronRight className="ml-auto h-[var(--icon-sm)] w-[var(--icon-sm)]" />
   </ContextMenuPrimitive.SubTrigger>
 ))
 ContextMenuSubTrigger.displayName = ContextMenuPrimitive.SubTrigger.displayName
@@ -100,9 +100,9 @@ const ContextMenuCheckboxItem = React.forwardRef<
     checked={checked}
     {...props}
   >
-    <span className="absolute left-2 flex h-3.5 w-3.5 items-center justify-center">
+    <span className="absolute left-2 flex h-[var(--icon-sm)] w-[var(--icon-sm)] items-center justify-center">
       <ContextMenuPrimitive.ItemIndicator>
-        <IconCheck className="h-4 w-4" />
+        <IconCheck className="h-[var(--icon-sm)] w-[var(--icon-sm)]" />
       </ContextMenuPrimitive.ItemIndicator>
     </span>
     {children}
@@ -123,9 +123,9 @@ const ContextMenuRadioItem = React.forwardRef<
     )}
     {...props}
   >
-    <span className="absolute left-2 flex h-3.5 w-3.5 items-center justify-center">
+    <span className="absolute left-2 flex h-[var(--icon-sm)] w-[var(--icon-sm)] items-center justify-center">
       <ContextMenuPrimitive.ItemIndicator>
-        <IconCircle className="h-4 w-4 fill-current" />
+        <IconCircle className="h-[var(--icon-sm)] w-[var(--icon-sm)] fill-current" />
       </ContextMenuPrimitive.ItemIndicator>
     </span>
     {children}

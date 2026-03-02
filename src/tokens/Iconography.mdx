@@ -9,22 +9,36 @@ Shilp Sutra uses [**Tabler Icons**](https://tabler.io/icons) (`@tabler/icons-rea
 
 ---
 
+## Sizing standard
+
+Always use **token-based sizing** for icons. This ensures consistency and allows global resizing via design tokens.
+
+| Token class | Size | Usage |
+|---|---|---|
+| `h-[var(--icon-sm)] w-[var(--icon-sm)]` | 16px | Small UI icons, dismiss buttons, inline indicators |
+| `h-[var(--icon-md)] w-[var(--icon-md)]` | 20px | Default — most icons in buttons, nav, list items |
+| `h-[var(--icon-lg)] w-[var(--icon-lg)]` | 24px | Prominent icons, empty state illustrations |
+| `h-[var(--icon-xl)] w-[var(--icon-xl)]` | 32px | Hero icons, large illustrations |
+
 ## Usage
 
 ```tsx
 import { IconPlus, IconSearch } from '@tabler/icons-react'
 
-// Using Tailwind classes for sizing (recommended in component code)
-<IconPlus className="h-4 w-4" />
+// Token-based sizing (recommended)
+<IconPlus className="h-[var(--icon-sm)] w-[var(--icon-sm)]" />
+
+// Default (20px) icon
+<IconSearch className="h-[var(--icon-md)] w-[var(--icon-md)]" />
+
+// Custom stroke weight (default is 2)
+<IconSettings className="h-[var(--icon-md)] w-[var(--icon-md)]" stroke={1.5} />
+
+// Inherits text color
+<IconHeart className="h-[var(--icon-sm)] w-[var(--icon-sm)] text-[var(--color-text-error)]" />
 
 // Using the size prop (useful in stories or one-off sizes)
 <IconSearch size={18} />
-
-// Custom stroke weight (default is 2)
-<IconSettings className="h-5 w-5" stroke={1.5} />
-
-// Inherits text color
-<IconHeart className="h-4 w-4 text-[var(--color-text-error)]" />
 ```
 
 ## Typing icon props

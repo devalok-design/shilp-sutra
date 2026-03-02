@@ -249,7 +249,7 @@ function ActivityTab({ activities, className }: ActivityTabProps) {
               <div className="relative z-10 flex h-[22px] w-[22px] shrink-0 items-center justify-center rounded-[var(--radius-full)] bg-[var(--color-layer-01)]">
                 <div
                   className={cn(
-                    'flex h-5 w-5 items-center justify-center rounded-[var(--radius-full)] bg-[var(--color-layer-02)]',
+                    'flex h-[var(--icon-md)] w-[var(--icon-md)] items-center justify-center rounded-[var(--radius-full)] bg-[var(--color-layer-02)]',
                   )}
                 >
                   <Icon

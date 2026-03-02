@@ -46,10 +46,10 @@ const SearchInput = React.forwardRef<HTMLInputElement, SearchInputProps>(
           <button
             type="button"
             onClick={onClear}
-            className="absolute right-3 rounded-[var(--radius-full)] h-5 w-5 flex items-center justify-center text-[var(--color-text-secondary)] hover:text-[var(--color-text-primary)] hover:bg-[var(--color-layer-02)] transition-colors"
+            className="absolute right-3 rounded-[var(--radius-full)] h-[var(--icon-md)] w-[var(--icon-md)] flex items-center justify-center text-[var(--color-text-secondary)] hover:text-[var(--color-text-primary)] hover:bg-[var(--color-layer-02)] transition-colors"
             aria-label="Clear search"
           >
-            <IconX className="h-3.5 w-3.5" />
+            <IconX className="h-[var(--icon-sm)] w-[var(--icon-sm)]" />
           </button>
         ) : null}
       </div>

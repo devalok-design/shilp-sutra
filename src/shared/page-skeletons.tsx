@@ -140,7 +140,7 @@ function DevsabhaSkeleton() {
             <div className="flex flex-col gap-3">
               {Array.from({ length: 4 }).map((_, i) => (
                 <div key={`ds-main-${i}`} className="flex items-center gap-3">
-                  <Skeleton className={cn('h-4 w-4 rounded', shimmer)} />
+                  <Skeleton className={cn('h-[var(--icon-sm)] w-[var(--icon-sm)] rounded', shimmer)} />
                   <Skeleton className={cn('h-3.5 flex-1', shimmer)} />
                   <Skeleton className={cn('h-5 w-16 rounded-[var(--radius-full)]', shimmer)} />
                 </div>

@@ -108,7 +108,7 @@ export function ChatPanel({
                   <span className="B3-Reg text-[var(--color-text-placeholder)]">
                     {selectedAgent?.desc}
                   </span>
-                  <IconChevronDown className="h-3.5 w-3.5 text-[var(--color-text-placeholder)]" />
+                  <IconChevronDown className="h-[var(--icon-sm)] w-[var(--icon-sm)] text-[var(--color-text-placeholder)]" />
                 </button>
               </DropdownMenuTrigger>
               <DropdownMenuContent align="start" className="w-64">
@@ -145,7 +145,7 @@ export function ChatPanel({
             className="flex h-8 w-8 items-center justify-center rounded-[var(--radius-lg)] text-[var(--color-text-secondary)] transition-colors hover:bg-[var(--color-layer-02)]"
             aria-label="New chat"
           >
-            <IconMessagePlus className="h-4 w-4" />
+            <IconMessagePlus className="h-[var(--icon-sm)] w-[var(--icon-sm)]" />
           </button>
 
           {/* IconHistory Toggle */}
@@ -158,7 +158,7 @@ export function ChatPanel({
             }`}
             aria-label="Conversation history"
           >
-            <IconHistory className="h-4 w-4" />
+            <IconHistory className="h-[var(--icon-sm)] w-[var(--icon-sm)]" />
           </button>
 
           {/* Close */}
@@ -167,7 +167,7 @@ export function ChatPanel({
             className="flex h-8 w-8 items-center justify-center rounded-[var(--radius-lg)] text-[var(--color-text-secondary)] transition-colors hover:bg-[var(--color-layer-02)]"
             aria-label="Close chat"
           >
-            <IconX className="h-4 w-4" />
+            <IconX className="h-[var(--icon-sm)] w-[var(--icon-sm)]" />
           </button>
         </div>
 

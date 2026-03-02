@@ -136,9 +136,9 @@ function SubtasksTab({
                   )}
                 >
                   {isComplete ? (
-                    <IconSquareCheck className="h-4 w-4 text-[var(--color-interactive)]" stroke={1.5} />
+                    <IconSquareCheck className="h-[var(--icon-sm)] w-[var(--icon-sm)] text-[var(--color-interactive)]" stroke={1.5} />
                   ) : (
-                    <IconSquare className="h-4 w-4 text-[var(--color-text-placeholder)]" stroke={1.5} />
+                    <IconSquare className="h-[var(--icon-sm)] w-[var(--icon-sm)] text-[var(--color-text-placeholder)]" stroke={1.5} />
                   )}
                 </button>
 
@@ -164,7 +164,7 @@ function SubtasksTab({
 
                 {/* Assignee */}
                 {firstAssignee && (
-                  <Avatar className="h-5 w-5 shrink-0">
+                  <Avatar className="h-[var(--icon-md)] w-[var(--icon-md)] shrink-0">
                     {firstAssignee.image && (
                       <AvatarImage src={firstAssignee.image} alt={firstAssignee.name} />
                     )}
@@ -219,7 +219,7 @@ function SubtasksTab({
             onClick={() => setIsAdding(true)}
             className="mt-2 inline-flex items-center gap-1.5 rounded-[var(--radius-lg)] px-2 py-1.5 text-[13px] font-body text-[var(--color-text-placeholder)] transition-colors hover:bg-[var(--color-field)] hover:text-[var(--color-text-secondary)]"
           >
-            <IconPlus className="h-3.5 w-3.5" stroke={1.5} />
+            <IconPlus className="h-[var(--icon-sm)] w-[var(--icon-sm)]" stroke={1.5} />
             Add subtask
           </button>
         )

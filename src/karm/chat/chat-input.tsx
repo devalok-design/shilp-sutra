@@ -71,7 +71,7 @@ export function ChatInput({
             className="flex h-8 w-8 shrink-0 items-center justify-center rounded-[var(--radius-lg)] bg-[var(--color-error)] text-[var(--color-text-on-color)] transition-colors hover:bg-[var(--red-700)]"
             aria-label="Stop generating"
           >
-            <IconSquare className="h-3.5 w-3.5" />
+            <IconSquare className="h-[var(--icon-sm)] w-[var(--icon-sm)]" />
           </button>
         ) : (
           <button
@@ -80,7 +80,7 @@ export function ChatInput({
             className="flex h-8 w-8 shrink-0 items-center justify-center rounded-[var(--radius-lg)] bg-[var(--color-interactive)] text-[var(--color-text-on-color)] transition-colors hover:opacity-90 disabled:opacity-50"
             aria-label="Send message"
           >
-            <IconSend className="h-3.5 w-3.5" />
+            <IconSend className="h-[var(--icon-sm)] w-[var(--icon-sm)]" />
           </button>
         )}
       </div>

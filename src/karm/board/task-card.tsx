@@ -98,7 +98,7 @@ function TaskCardVisual({
           {...(dragHandleProps?.listeners ?? {})}
           onClick={(e) => e.stopPropagation()}
         >
-          <IconGripVertical className="h-3.5 w-3.5 text-[var(--color-icon-secondary)]" />
+          <IconGripVertical className="h-[var(--icon-sm)] w-[var(--icon-sm)] text-[var(--color-icon-secondary)]" />
         </button>
         <div className="min-w-0 flex-1">
           <p className="text-sm font-medium leading-snug text-[var(--color-text-primary)] line-clamp-2">
@@ -154,7 +154,7 @@ function TaskCardVisual({
         {displayAssignees.length > 0 && (
           <div className="flex -space-x-1.5">
             {displayAssignees.map((assignee) => (
-              <Avatar key={assignee.id} className="h-5 w-5 border border-[var(--color-layer-01)]">
+              <Avatar key={assignee.id} className="h-[var(--icon-md)] w-[var(--icon-md)] border border-[var(--color-layer-01)]">
                 <AvatarImage
                   src={assignee.image || undefined}
                   alt={assignee.name}
@@ -165,7 +165,7 @@ function TaskCardVisual({
               </Avatar>
             ))}
             {extraCount > 0 && (
-              <div className="flex h-5 w-5 items-center justify-center rounded-[var(--radius-full)] border border-[var(--color-layer-01)] bg-[var(--color-field)] text-[8px] font-medium text-[var(--color-text-tertiary)]">
+              <div className="flex h-[var(--icon-md)] w-[var(--icon-md)] items-center justify-center rounded-[var(--radius-full)] border border-[var(--color-layer-01)] bg-[var(--color-field)] text-[8px] font-medium text-[var(--color-text-tertiary)]">
                 +{extraCount}
               </div>
             )}

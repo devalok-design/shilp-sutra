@@ -53,6 +53,48 @@ export const Controlled: DatePickerStory = {
   },
 }
 
+// --- Constraints ---
+
+export const WithConstraints: DatePickerStory = {
+  render: () => (
+    <DatePicker
+      minDate={new Date(2026, 0, 1)}
+      maxDate={new Date(2026, 11, 31)}
+      disabledDates={(d) => d.getDay() === 0 || d.getDay() === 6}
+    />
+  ),
+}
+
+export const WithMinMaxDates: DatePickerStory = {
+  render: () => {
+    const WithMinMax = () => {
+      const [date, setDate] = useState<Date | null>(null)
+      return (
+        <div style={{ display: 'flex', flexDirection: 'column', gap: 12 }}>
+          <DatePicker
+            value={date}
+            onChange={setDate}
+            minDate={new Date(2026, 2, 5)}
+            maxDate={new Date(2026, 2, 25)}
+            placeholder="Mar 5 - Mar 25 only"
+          />
+          <p style={{ fontSize: 13, color: 'var(--color-text-secondary)' }}>
+            Selected: {date ? date.toLocaleDateString() : 'None'}
+          </p>
+        </div>
+      )
+    }
+    return <WithMinMax />
+  },
+}
+
+// --- Year/Month Picker ---
+
+export const WithYearMonthPicker: DatePickerStory = {
+  render: () => <DatePicker />,
+  // This story demonstrates the month/year navigation by clicking the header
+}
+
 // --- DateRangePicker ---
 
 export const RangeDefault: DatePickerStory = {
@@ -97,6 +139,17 @@ export const RangeControlled: DatePickerStory = {
     }
     return <ControlledRange />
   },
+}
+
+export const RangeWithConstraints: DatePickerStory = {
+  render: () => (
+    <DateRangePicker
+      minDate={new Date(2026, 0, 1)}
+      maxDate={new Date(2026, 11, 31)}
+      disabledDates={(d) => d.getDay() === 0 || d.getDay() === 6}
+      placeholder="Pick weekdays in 2026"
+    />
+  ),
 }
 
 // --- CalendarGrid ---
@@ -157,6 +210,29 @@ export const CalendarGridWithRange: DatePickerStory = {
       )
     }
     return <CalendarGridRange />
+  },
+}
+
+export const CalendarGridDisabledDates: DatePickerStory = {
+  render: () => {
+    const CalendarGridDisabled = () => {
+      const [month, setMonth] = useState(new Date(2026, 2, 1))
+      const [selected, setSelected] = useState<Date | null>(null)
+      return (
+        <div style={{ padding: 16, border: '1px solid var(--color-border-default)', borderRadius: 12, display: 'inline-block', background: 'var(--color-layer-01)' }}>
+          <CalendarGrid
+            currentMonth={month}
+            selected={selected}
+            onSelect={setSelected}
+            onMonthChange={setMonth}
+            minDate={new Date(2026, 2, 5)}
+            maxDate={new Date(2026, 2, 25)}
+            disabledDates={(d) => d.getDay() === 0 || d.getDay() === 6}
+          />
+        </div>
+      )
+    }
+    return <CalendarGridDisabled />
   },
 }
 

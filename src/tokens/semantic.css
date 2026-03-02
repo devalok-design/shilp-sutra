@@ -19,6 +19,7 @@
   --color-layer-01:             var(--neutral-0);
   --color-layer-02:             var(--neutral-50);
   --color-layer-03:             var(--neutral-100);
+  --color-layer-accent-subtle:  var(--pink-50);
   --color-overlay:              rgba(5, 5, 5, 0.50);
   --color-field:                var(--neutral-50);
   --color-field-hover:          var(--neutral-100);
@@ -59,6 +60,7 @@
   --color-success-surface:      var(--green-50);
   --color-success-border:       var(--green-600);
   --color-error:                var(--red-600);
+  --color-error-hover:          var(--red-700);
   --color-error-surface:        var(--red-50);
   --color-error-border:         var(--red-600);
   --color-warning:              var(--yellow-600);
@@ -183,6 +185,7 @@
   --color-layer-01:             var(--neutral-900);
   --color-layer-02:             var(--neutral-800);
   --color-layer-03:             var(--neutral-700);
+  --color-layer-accent-subtle:  var(--pink-950);
   --color-overlay:              rgba(0, 0, 0, 0.70);
   /* Fields */
   --color-field:                var(--neutral-900);
@@ -230,6 +233,7 @@
   --color-success-border:       var(--green-400);
   --color-success-text:         var(--green-200);
   --color-error:                var(--red-500);
+  --color-error-hover:          var(--red-400);
   --color-error-surface:        var(--red-900);
   --color-error-border:         var(--red-400);
   --color-error-text:           var(--red-200);

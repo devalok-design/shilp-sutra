@@ -9,6 +9,7 @@ import {
 } from '../../ui/sheet'
 import VisuallyHidden from '../../ui/visually-hidden'
 import { Skeleton } from '../../ui/skeleton'
+import { Tabs, TabsList, TabsTrigger } from '../../ui'
 import { TaskProperties, type Member, type Column } from './task-properties'
 import { SubtasksTab, type Subtask } from './subtasks-tab'
 import { ReviewTab, type ReviewRequest } from './review-tab'
@@ -111,7 +112,7 @@ const TABS = [
   { id: 'review', label: 'Review', icon: IconGitPullRequest },
   { id: 'conversation', label: 'Conversation', icon: IconMessageCircle },
   { id: 'files', label: 'Files', icon: IconPaperclip },
-  { id: 'activity', label: 'IconActivity', icon: IconActivity },
+  { id: 'activity', label: 'Activity', icon: IconActivity },
 ] as const
 
 type TabId = typeof TABS[number]['id']
@@ -200,8 +201,8 @@ function TaskDetailPanel({
     }
   }, [open, clientMode])
 
-  const handleTabChange = (tabId: TabId) => {
-    setActiveTab(tabId)
+  const handleTabChange = (tabId: string) => {
+    setActiveTab(tabId as TabId)
     onTabChange?.(tabId)
   }
 
@@ -316,52 +317,17 @@ function TaskDetailPanel({
               </div>
 
               {/* Tab Bar */}
-              <div className="sticky top-0 z-10 border-b border-[var(--color-border-default)] bg-[var(--color-layer-01)] px-6">
-                <div className="flex gap-0">
-                  {visibleTabs.map((tab) => {
-                    const Icon = tab.icon
-                    const isActive = activeTab === tab.id
-
-                    let count: number | null = null
-                    if (tab.id === 'subtasks') count = task.subtasks.length
-                    if (tab.id === 'review') count = task.reviewRequests.length
-                    if (tab.id === 'conversation') count = displayComments.length
-                    if (tab.id === 'files') count = task.files.length
-
-                    return (
-                      <button
-                        key={tab.id}
-                        type="button"
-                        onClick={() => handleTabChange(tab.id)}
-                        className={cn(
-                          'relative flex items-center gap-1.5 px-3 py-2.5 text-[12px] font-body font-medium transition-colors',
-                          isActive
-                            ? 'text-[var(--color-interactive)]'
-                            : 'text-[var(--color-text-placeholder)] hover:text-[var(--color-text-secondary)]',
-                        )}
-                      >
-                        <Icon className="h-3.5 w-3.5" stroke={1.5} />
-                        <span>{tab.label}</span>
-                        {count !== null && count > 0 && (
-                          <span
-                            className={cn(
-                              'ml-0.5 inline-flex h-4 min-w-[16px] items-center justify-center rounded-[var(--radius-full)] px-1 text-[9px] font-semibold',
-                              isActive
-                                ? 'bg-[var(--color-interactive)]/15 text-[var(--color-interactive)]'
-                                : 'bg-[var(--color-field)] text-[var(--color-text-placeholder)]',
-                            )}
-                          >
-                            {count}
-                          </span>
-                        )}
-
-                        {isActive && (
-                          <span className="absolute bottom-0 left-2 right-2 h-[2px] rounded-[var(--radius-full)] bg-[var(--color-interactive)]" />
-                        )}
-                      </button>
-                    )
-                  })}
-                </div>
+              <div className="sticky top-0 z-10 bg-[var(--color-layer-01)] px-6">
+                <Tabs value={activeTab} onValueChange={handleTabChange}>
+                  <TabsList variant="line">
+                    {visibleTabs.map((tab) => (
+                      <TabsTrigger key={tab.id} value={tab.id}>
+                        <tab.icon className="h-[var(--icon-sm)] w-[var(--icon-sm)]" stroke={1.5} />
+                        {tab.label}
+                      </TabsTrigger>
+                    ))}
+                  </TabsList>
+                </Tabs>
               </div>
 
               {/* Tab Content */}

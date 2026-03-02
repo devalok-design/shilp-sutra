@@ -232,6 +232,9 @@ export { Text, textVariants, type TextProps, type TextVariant } from './text'
 export { Stack, type StackProps } from './stack'
 export { Container, type ContainerProps } from './container'
 
+// Tree View
+export { TreeView, type TreeViewProps, TreeItem, type TreeItemProps, useTree, type TreeNode } from './tree-view'
+
 // Other
 export { Link, type LinkProps } from './link'
 export { AdjustmentType, default as renderAdjustmentType } from './render-adjustment-type'

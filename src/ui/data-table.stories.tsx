@@ -1,4 +1,5 @@
 import type { Meta, StoryObj } from '@storybook/react'
+import { useState } from 'react'
 import { DataTable } from './data-table'
 import type { ColumnDef } from '@tanstack/react-table'
 import { Badge } from './badge'
@@ -135,4 +136,26 @@ export const PaginatedLargeDataset: Story = {
       pageSizeOptions={[5, 10, 25, 50]}
     />
   ),
+}
+
+function SelectableDemo() {
+  const [selected, setSelected] = useState<Task[]>([])
+
+  return (
+    <div className="space-y-ds-04">
+      <p className="text-ds-sm text-[var(--color-text-secondary)]">
+        {selected.length} of {filterData.length} row(s) selected
+      </p>
+      <DataTable
+        columns={columns}
+        data={filterData}
+        selectable
+        onSelectionChange={setSelected}
+      />
+    </div>
+  )
+}
+
+export const Selectable: Story = {
+  render: () => <SelectableDemo />,
 }

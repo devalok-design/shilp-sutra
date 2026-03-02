@@ -1,10 +1,11 @@
 'use client'
 
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import {
   type ColumnDef,
   type ColumnFiltersState,
   type PaginationState,
+  type RowSelectionState,
   type SortingState,
   type TableState,
   flexRender,
@@ -31,6 +32,7 @@ import {
   TableHeader,
   TableRow,
 } from './table'
+import { Checkbox } from './checkbox'
 import { cn } from './lib/utils'
 
 interface DataTableProps<TData, TValue> {
@@ -54,6 +56,10 @@ interface DataTableProps<TData, TValue> {
   pageSize?: number
   /** Options for the page size selector dropdown (default [10, 20, 50, 100]) */
   pageSizeOptions?: number[]
+  /** Enable row selection with checkboxes */
+  selectable?: boolean
+  /** Callback when row selection changes */
+  onSelectionChange?: (selectedRows: TData[]) => void
 }
 
 export function DataTable<TData, TValue>({
@@ -67,6 +73,8 @@ export function DataTable<TData, TValue>({
   paginated = false,
   pageSize: initialPageSize,
   pageSizeOptions,
+  selectable = false,
+  onSelectionChange,
 }: DataTableProps<TData, TValue>) {
   const [sorting, setSorting] = useState<SortingState>([])
   const [columnFilters, setColumnFilters] = useState<ColumnFiltersState>([])
@@ -75,6 +83,31 @@ export function DataTable<TData, TValue>({
     pageIndex: 0,
     pageSize: initialPageSize ?? 10,
   })
+  const [rowSelection, setRowSelection] = useState<RowSelectionState>({})
+
+  // Checkbox column prepended when selectable is enabled
+  const selectColumn: ColumnDef<TData, unknown> = {
+    id: '_select',
+    header: ({ table: t }) => (
+      <Checkbox
+        checked={t.getIsAllPageRowsSelected()}
+        indeterminate={t.getIsSomePageRowsSelected()}
+        onCheckedChange={(v) => t.toggleAllPageRowsSelected(!!v)}
+        aria-label="Select all rows"
+      />
+    ),
+    cell: ({ row }) => (
+      <Checkbox
+        checked={row.getIsSelected()}
+        onCheckedChange={(v) => row.toggleSelected(!!v)}
+        aria-label="Select row"
+      />
+    ),
+    enableSorting: false,
+    enableColumnFilter: false,
+  }
+
+  const allColumns = selectable ? [selectColumn, ...columns] : columns
 
   // Build state object once — sorting and filtering contribute independently
   const tableState: Partial<TableState> = {}
@@ -84,10 +117,11 @@ export function DataTable<TData, TValue>({
     tableState.globalFilter = globalFilterValue
   }
   if (paginated) tableState.pagination = pagination
+  if (selectable) tableState.rowSelection = rowSelection
 
   const table = useReactTable({
     data,
-    columns,
+    columns: allColumns,
     state: tableState,
     getCoreRowModel: getCoreRowModel(),
     ...(sortable && {
@@ -103,7 +137,20 @@ export function DataTable<TData, TValue>({
       onPaginationChange: setPagination,
       getPaginationRowModel: getPaginationRowModel(),
     }),
+    ...(selectable && {
+      onRowSelectionChange: setRowSelection,
+      enableRowSelection: true,
+    }),
   })
+
+  // Fire selection callback when row selection changes
+  useEffect(() => {
+    if (onSelectionChange) {
+      const selected = table.getFilteredSelectedRowModel().rows.map((r) => r.original)
+      onSelectionChange(selected)
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [rowSelection])
 
   return (
     <div className={cn(className)}>
@@ -228,7 +275,7 @@ export function DataTable<TData, TValue>({
           ) : (
             <TableRow>
               <TableCell
-                colSpan={columns.length}
+                colSpan={allColumns.length}
                 className="h-24 text-center text-[var(--color-text-tertiary)]"
               >
                 {noResultsText || 'No results.'}

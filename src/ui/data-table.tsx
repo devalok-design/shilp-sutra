@@ -3,13 +3,16 @@
 import { useState } from 'react'
 import {
   type ColumnDef,
+  type ColumnFiltersState,
   type SortingState,
+  type TableState,
   flexRender,
   getCoreRowModel,
+  getFilteredRowModel,
   getSortedRowModel,
   useReactTable,
 } from '@tanstack/react-table'
-import { IconArrowDown, IconArrowUp, IconArrowsSort } from '@tabler/icons-react'
+import { IconArrowDown, IconArrowUp, IconArrowsSort, IconSearch } from '@tabler/icons-react'
 
 import {
   Table,
@@ -32,6 +35,10 @@ interface DataTableProps<TData, TValue> {
   noResultsText?: string
   /** Enable column sorting (click headers to sort) */
   sortable?: boolean
+  /** Enable per-column filter inputs below headers */
+  filterable?: boolean
+  /** Enable a global search input above the table */
+  globalFilter?: boolean
 }
 
 export function DataTable<TData, TValue>({
@@ -40,22 +47,62 @@ export function DataTable<TData, TValue>({
   className,
   noResultsText,
   sortable = false,
+  filterable = false,
+  globalFilter = false,
 }: DataTableProps<TData, TValue>) {
   const [sorting, setSorting] = useState<SortingState>([])
+  const [columnFilters, setColumnFilters] = useState<ColumnFiltersState>([])
+  const [globalFilterValue, setGlobalFilterValue] = useState('')
+
+  // Build state object once — sorting and filtering contribute independently
+  const tableState: Partial<TableState> = {}
+  if (sortable) tableState.sorting = sorting
+  if (filterable || globalFilter) {
+    tableState.columnFilters = columnFilters
+    tableState.globalFilter = globalFilterValue
+  }
 
   const table = useReactTable({
     data,
     columns,
+    state: tableState,
     getCoreRowModel: getCoreRowModel(),
     ...(sortable && {
-      state: { sorting },
       onSortingChange: setSorting,
       getSortedRowModel: getSortedRowModel(),
+    }),
+    ...((filterable || globalFilter) && {
+      onColumnFiltersChange: setColumnFilters,
+      onGlobalFilterChange: setGlobalFilterValue,
+      getFilteredRowModel: getFilteredRowModel(),
     }),
   })
 
   return (
     <div className={cn(className)}>
+      {/* Global search input */}
+      {globalFilter && (
+        <div className="flex items-center gap-ds-03 pb-ds-04 border-b border-[var(--color-border-subtle)] mb-ds-04">
+          <IconSearch
+            size={16}
+            className="text-[var(--color-icon-secondary)]"
+            aria-hidden="true"
+          />
+          <input
+            type="text"
+            value={globalFilterValue}
+            onChange={(e) => setGlobalFilterValue(e.target.value)}
+            placeholder="Search all columns…"
+            aria-label="Search all columns"
+            className={cn(
+              'flex-1 bg-transparent text-ds-md',
+              'text-[var(--color-text-primary)] placeholder:text-[var(--color-text-placeholder)]',
+              'outline-none',
+            )}
+          />
+        </div>
+      )}
+
       <Table>
         <TableHeader>
           {table.getHeaderGroups().map((headerGroup) => (
@@ -108,6 +155,32 @@ export function DataTable<TData, TValue>({
                   </TableHead>
                 )
               })}
+            </TableRow>
+          ))}
+
+          {/* Column filter row */}
+          {filterable && table.getHeaderGroups().map((headerGroup) => (
+            <TableRow key={`${headerGroup.id}-filters`}>
+              {headerGroup.headers.map((header) => (
+                <TableHead key={`${header.id}-filter`} className="py-ds-01">
+                  {header.isPlaceholder || header.column.columnDef.enableColumnFilter === false ? null : (
+                    <input
+                      type="text"
+                      value={(header.column.getFilterValue() as string) ?? ''}
+                      onChange={(e) => header.column.setFilterValue(e.target.value)}
+                      placeholder={`Filter ${typeof header.column.columnDef.header === 'string' ? header.column.columnDef.header : ''}…`}
+                      aria-label={`Filter ${typeof header.column.columnDef.header === 'string' ? header.column.columnDef.header : header.column.id}`}
+                      className={cn(
+                        'h-7 w-full rounded-[var(--radius-md)]',
+                        'border border-[var(--color-border-default)] bg-[var(--color-field)]',
+                        'px-ds-02 text-ds-sm',
+                        'text-[var(--color-text-primary)] placeholder:text-[var(--color-text-placeholder)]',
+                        'outline-none focus:border-[var(--color-border-focus)]',
+                      )}
+                    />
+                  )}
+                </TableHead>
+              ))}
             </TableRow>
           ))}
         </TableHeader>

@@ -80,3 +80,28 @@ export const SingleRow: Story = {
 export const Sortable: Story = {
   render: () => <DataTable columns={columns} data={data} sortable />,
 }
+
+const filterData: Task[] = [
+  { id: 'TASK-001', title: 'Design system tokens', status: 'done', priority: 'high' },
+  { id: 'TASK-002', title: 'Component extraction', status: 'in-progress', priority: 'high' },
+  { id: 'TASK-003', title: 'Storybook setup', status: 'in-progress', priority: 'medium' },
+  { id: 'TASK-004', title: 'Write unit tests', status: 'todo', priority: 'medium' },
+  { id: 'TASK-005', title: 'Documentation', status: 'todo', priority: 'low' },
+  { id: 'TASK-006', title: 'Accessibility audit', status: 'in-progress', priority: 'high' },
+  { id: 'TASK-007', title: 'Deploy pipeline', status: 'done', priority: 'medium' },
+  { id: 'TASK-008', title: 'Dark mode support', status: 'todo', priority: 'high' },
+  { id: 'TASK-009', title: 'Performance optimization', status: 'in-progress', priority: 'medium' },
+  { id: 'TASK-010', title: 'Release v1.0', status: 'todo', priority: 'low' },
+]
+
+export const Filterable: Story = {
+  render: () => (
+    <DataTable
+      columns={columns}
+      data={filterData}
+      sortable
+      filterable
+      globalFilter
+    />
+  ),
+}

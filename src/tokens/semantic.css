@@ -56,6 +56,13 @@
   --color-border-warning:       var(--yellow-600);
   --color-focus:                var(--pink-500);
   --color-focus-inset:          var(--neutral-0);
+
+  /* ── Action State Opacities ────────────────── */
+  --action-hover-opacity: 0.04;
+  --action-selected-opacity: 0.08;
+  --action-disabled-opacity: 0.38;
+  --action-focus-opacity: 0.12;
+  --action-active-opacity: 0.12;
   --color-success:              var(--green-600);
   --color-success-surface:      var(--green-50);
   --color-success-border:       var(--green-600);
@@ -227,6 +234,12 @@
   /* Focus */
   --color-focus:                var(--pink-400);
   --color-focus-inset:          var(--neutral-950);
+  /* Action State Opacities */
+  --action-hover-opacity: 0.08;
+  --action-selected-opacity: 0.12;
+  --action-disabled-opacity: 0.38;
+  --action-focus-opacity: 0.12;
+  --action-active-opacity: 0.16;
   /* Status / Feedback */
   --color-success:              var(--green-500);
   --color-success-surface:      var(--green-900);

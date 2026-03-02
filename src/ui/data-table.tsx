@@ -4,15 +4,24 @@ import { useState } from 'react'
 import {
   type ColumnDef,
   type ColumnFiltersState,
+  type PaginationState,
   type SortingState,
   type TableState,
   flexRender,
   getCoreRowModel,
   getFilteredRowModel,
+  getPaginationRowModel,
   getSortedRowModel,
   useReactTable,
 } from '@tanstack/react-table'
-import { IconArrowDown, IconArrowUp, IconArrowsSort, IconSearch } from '@tabler/icons-react'
+import {
+  IconArrowDown,
+  IconArrowUp,
+  IconArrowsSort,
+  IconChevronLeft,
+  IconChevronRight,
+  IconSearch,
+} from '@tabler/icons-react'
 
 import {
   Table,
@@ -39,6 +48,12 @@ interface DataTableProps<TData, TValue> {
   filterable?: boolean
   /** Enable a global search input above the table */
   globalFilter?: boolean
+  /** Enable pagination controls below the table */
+  paginated?: boolean
+  /** Number of rows per page when paginated (default 10) */
+  pageSize?: number
+  /** Options for the page size selector dropdown (default [10, 20, 50, 100]) */
+  pageSizeOptions?: number[]
 }
 
 export function DataTable<TData, TValue>({
@@ -49,10 +64,17 @@ export function DataTable<TData, TValue>({
   sortable = false,
   filterable = false,
   globalFilter = false,
+  paginated = false,
+  pageSize: initialPageSize,
+  pageSizeOptions,
 }: DataTableProps<TData, TValue>) {
   const [sorting, setSorting] = useState<SortingState>([])
   const [columnFilters, setColumnFilters] = useState<ColumnFiltersState>([])
   const [globalFilterValue, setGlobalFilterValue] = useState('')
+  const [pagination, setPagination] = useState<PaginationState>({
+    pageIndex: 0,
+    pageSize: initialPageSize ?? 10,
+  })
 
   // Build state object once — sorting and filtering contribute independently
   const tableState: Partial<TableState> = {}
@@ -61,6 +83,7 @@ export function DataTable<TData, TValue>({
     tableState.columnFilters = columnFilters
     tableState.globalFilter = globalFilterValue
   }
+  if (paginated) tableState.pagination = pagination
 
   const table = useReactTable({
     data,
@@ -75,6 +98,10 @@ export function DataTable<TData, TValue>({
       onColumnFiltersChange: setColumnFilters,
       onGlobalFilterChange: setGlobalFilterValue,
       getFilteredRowModel: getFilteredRowModel(),
+    }),
+    ...(paginated && {
+      onPaginationChange: setPagination,
+      getPaginationRowModel: getPaginationRowModel(),
     }),
   })
 
@@ -210,6 +237,77 @@ export function DataTable<TData, TValue>({
           )}
         </TableBody>
       </Table>
+
+      {/* Pagination controls */}
+      {paginated && (
+        <div className="flex items-center justify-between px-ds-03 py-ds-04 border-t border-[var(--color-border-subtle)]">
+          <span className="text-ds-sm text-[var(--color-text-secondary)]">
+            {table.getFilteredRowModel().rows.length} total rows
+          </span>
+          <div className="flex items-center gap-ds-03">
+            {/* Page size selector */}
+            <select
+              value={table.getState().pagination.pageSize}
+              onChange={(e) => {
+                table.setPageSize(Number(e.target.value))
+              }}
+              aria-label="Rows per page"
+              className={cn(
+                'h-8 rounded-[var(--radius-md)]',
+                'border border-[var(--color-border-default)] bg-[var(--color-field)]',
+                'px-ds-03 text-ds-sm',
+                'text-[var(--color-text-primary)]',
+              )}
+            >
+              {(pageSizeOptions ?? [10, 20, 50, 100]).map((size) => (
+                <option key={size} value={size}>
+                  {size} rows
+                </option>
+              ))}
+            </select>
+
+            {/* Previous page button */}
+            <button
+              type="button"
+              disabled={!table.getCanPreviousPage()}
+              onClick={() => table.previousPage()}
+              aria-label="Previous page"
+              className={cn(
+                'h-8 w-8 flex items-center justify-center',
+                'rounded-[var(--radius-md)] border border-[var(--color-border-default)]',
+                'enabled:hover:bg-[var(--color-layer-02)]',
+                'disabled:opacity-40 disabled:cursor-not-allowed',
+                'transition-colors',
+              )}
+            >
+              <IconChevronLeft size={16} aria-hidden="true" />
+            </button>
+
+            {/* Page info */}
+            <span className="text-ds-sm text-[var(--color-text-secondary)]">
+              Page {table.getState().pagination.pageIndex + 1} of{' '}
+              {table.getPageCount()}
+            </span>
+
+            {/* Next page button */}
+            <button
+              type="button"
+              disabled={!table.getCanNextPage()}
+              onClick={() => table.nextPage()}
+              aria-label="Next page"
+              className={cn(
+                'h-8 w-8 flex items-center justify-center',
+                'rounded-[var(--radius-md)] border border-[var(--color-border-default)]',
+                'enabled:hover:bg-[var(--color-layer-02)]',
+                'disabled:opacity-40 disabled:cursor-not-allowed',
+                'transition-colors',
+              )}
+            >
+              <IconChevronRight size={16} aria-hidden="true" />
+            </button>
+          </div>
+        </div>
+      )}
     </div>
   )
 }

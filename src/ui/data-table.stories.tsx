@@ -105,3 +105,34 @@ export const Filterable: Story = {
     />
   ),
 }
+
+export const Paginated: Story = {
+  render: () => (
+    <DataTable
+      columns={columns}
+      data={filterData}
+      paginated
+      pageSize={3}
+    />
+  ),
+}
+
+const largeData: Task[] = Array.from({ length: 50 }, (_, i) => ({
+  id: `TASK-${String(i + 1).padStart(3, '0')}`,
+  title: `Task item ${i + 1}`,
+  status: (['todo', 'in-progress', 'done'] as const)[i % 3],
+  priority: (['low', 'medium', 'high'] as const)[i % 3],
+}))
+
+export const PaginatedLargeDataset: Story = {
+  render: () => (
+    <DataTable
+      columns={columns}
+      data={largeData}
+      sortable
+      paginated
+      pageSize={10}
+      pageSizeOptions={[5, 10, 25, 50]}
+    />
+  ),
+}

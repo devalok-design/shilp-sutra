@@ -84,7 +84,7 @@ export function EditBreakBalance({
       <DialogTrigger asChild>
         <Button
           variant="secondary"
-          className="text-ds-base border-border bg-layer-01 px-ds-05 py-ds-04 pr-ds-06 text-text-secondary shadow-[0_4px_8px_0_var(--shadow-02)]"
+          className="text-ds-base border-border bg-layer-01 px-ds-05 py-ds-04 pr-ds-06 text-text-secondary shadow-02"
         >
           <EditIcon />
           <span>Edit</span>

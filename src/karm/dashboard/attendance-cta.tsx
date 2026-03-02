@@ -80,7 +80,7 @@ export default function AttendanceCTA({
   // Marked state: compact strip
   if (isMarked && !isOnBreak) {
     return (
-      <div className="relative overflow-hidden rounded-ds-2xl border border-border bg-layer-01">
+      <div className="relative overflow-hidden rounded-ds-2xl border border-border bg-layer-01 shadow-01">
         <div className="flex items-center justify-between px-ds-06 py-ds-05b sm:px-ds-07">
           <div className="flex flex-col gap-ds-02">
             <h2 className="text-ds-2xl text-text-primary">
@@ -110,7 +110,7 @@ export default function AttendanceCTA({
   // On Break state
   if (isOnBreak) {
     return (
-      <div className="relative overflow-hidden rounded-ds-2xl border border-border bg-layer-01">
+      <div className="relative overflow-hidden rounded-ds-2xl border border-border bg-layer-01 shadow-01">
         <div className="flex items-center justify-between px-ds-06 py-ds-05b sm:px-ds-07">
           <div className="flex flex-col gap-ds-02">
             <h2 className="text-ds-2xl text-text-primary">
@@ -138,7 +138,7 @@ export default function AttendanceCTA({
   // Unmarked + cannot mark: attendance window closed
   if (!canMarkAttendance) {
     return (
-      <div className="relative overflow-hidden rounded-ds-2xl border border-border bg-layer-01">
+      <div className="relative overflow-hidden rounded-ds-2xl border border-border bg-layer-01 shadow-01">
         <div className="flex items-center justify-between px-ds-06 py-ds-06 sm:px-ds-07 sm:py-ds-07">
           <div className="flex flex-col gap-ds-02b">
             <h2 className="text-ds-3xl text-text-primary">

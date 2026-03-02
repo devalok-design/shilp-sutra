@@ -191,7 +191,7 @@ function SubtasksTab({
       {/* Add subtask -- hidden in readOnly mode */}
       {!readOnly && (
         isAdding ? (
-          <div className="mt-ds-03 flex items-center gap-ds-03 rounded-ds-lg border border-border bg-layer-01 px-ds-04 py-ds-03">
+          <div className="mt-ds-03 flex items-center gap-ds-03 rounded-ds-lg border border-border bg-layer-01 shadow-01 px-ds-04 py-ds-03">
             <input
               ref={inputRef}
               type="text"

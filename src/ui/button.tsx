@@ -1,7 +1,8 @@
 import { cva, type VariantProps } from 'class-variance-authority'
-import { Slot } from '@primitives/react-slot'
+import { Slot, Slottable } from '@primitives/react-slot'
 import * as React from 'react'
 import { cn } from './lib/utils'
+import { Spinner } from './spinner'
 
 export const buttonVariants = cva(
   'inline-flex items-center justify-center gap-ds-03 whitespace-nowrap font-sans B2-Semibold select-none border border-transparent transition-[color,background-color,border-color,box-shadow] duration-[var(--duration-fast)] ease-[var(--ease-standard)] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--color-focus)] focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50',
@@ -36,17 +37,139 @@ export const buttonVariants = cva(
   },
 )
 
+const iconSizeClass: Record<string, string> = {
+  sm: 'h-4 w-4',
+  md: 'h-[18px] w-[18px]',
+  lg: 'h-5 w-5',
+  'icon-sm': 'h-4 w-4',
+  'icon-md': 'h-[18px] w-[18px]',
+  'icon-lg': 'h-5 w-5',
+}
+
+const spinnerSizeMap: Record<string, 'sm' | 'md'> = {
+  sm: 'sm',
+  md: 'sm',
+  lg: 'md',
+  'icon-sm': 'sm',
+  'icon-md': 'sm',
+  'icon-lg': 'md',
+}
+
 export interface ButtonProps
   extends React.ButtonHTMLAttributes<HTMLButtonElement>,
     VariantProps<typeof buttonVariants> {
   asChild?: boolean
+  startIcon?: React.ReactNode
+  endIcon?: React.ReactNode
+  loading?: boolean
+  loadingPosition?: 'start' | 'end' | 'center'
+  fullWidth?: boolean
 }
 
 const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
-  ({ className, variant, size, asChild = false, ...props }, ref) => {
-    const Comp = asChild ? Slot : 'button'
+  (
+    {
+      className,
+      variant,
+      size,
+      asChild = false,
+      startIcon,
+      endIcon,
+      loading = false,
+      loadingPosition = 'start',
+      fullWidth = false,
+      disabled,
+      children,
+      ...props
+    },
+    ref,
+  ) => {
+    const resolvedSize = size ?? 'md'
+    const iconClass = iconSizeClass[resolvedSize]
+    const spinnerSize = spinnerSizeMap[resolvedSize]
+
+    const spinnerNode = loading ? (
+      <Spinner size={spinnerSize} />
+    ) : null
+
+    if (asChild) {
+      // Slot merges all props into the child element via cloneElement at runtime.
+      // We cast here because SlotProps only types React.HTMLAttributes<HTMLElement>,
+      // which excludes button-specific attrs like `disabled`.
+      const slotProps = {
+        className: cn(
+          buttonVariants({ variant, size, className }),
+          fullWidth && 'w-full',
+        ),
+        ref,
+        disabled: disabled || loading,
+        'aria-busy': loading || undefined,
+        ...props,
+      } as React.ComponentPropsWithRef<typeof Slot>
+      return (
+        <Slot {...slotProps}>
+          <Slottable>{children}</Slottable>
+        </Slot>
+      )
+    }
+
+    const renderStartSlot = () => {
+      if (loading && loadingPosition === 'start') {
+        return spinnerNode
+      }
+      if (startIcon) {
+        return (
+          <span className={cn('inline-flex shrink-0 items-center justify-center', iconClass)}>
+            {startIcon}
+          </span>
+        )
+      }
+      return null
+    }
+
+    const renderEndSlot = () => {
+      if (loading && loadingPosition === 'end') {
+        return spinnerNode
+      }
+      if (endIcon) {
+        return (
+          <span className={cn('inline-flex shrink-0 items-center justify-center', iconClass)}>
+            {endIcon}
+          </span>
+        )
+      }
+      return null
+    }
+
+    const renderChildren = () => {
+      if (loading && loadingPosition === 'center') {
+        return (
+          <span className="relative inline-flex items-center justify-center">
+            <span className="invisible">{children}</span>
+            <span className="absolute inset-0 flex items-center justify-center">
+              {spinnerNode}
+            </span>
+          </span>
+        )
+      }
+      return children
+    }
+
     return (
-      <Comp className={cn(buttonVariants({ variant, size, className }))} ref={ref} {...props} />
+      <button
+        className={cn(
+          buttonVariants({ variant, size, className }),
+          fullWidth && 'w-full',
+        )}
+        ref={ref}
+        disabled={disabled || loading}
+        aria-busy={loading || undefined}
+        {...props}
+      >
+        {renderStartSlot()}
+        {renderChildren()}
+        {renderEndSlot()}
+      </button>
     )
   },
 )

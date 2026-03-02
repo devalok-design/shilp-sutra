@@ -4,10 +4,12 @@ import { useEffect, useState } from 'react'
 import {
   type ColumnDef,
   type ColumnFiltersState,
+  type ColumnPinningState,
   type PaginationState,
   type RowSelectionState,
   type SortingState,
   type TableState,
+  type VisibilityState,
   flexRender,
   getCoreRowModel,
   getFilteredRowModel,
@@ -34,6 +36,13 @@ import {
 } from './table'
 import { Checkbox } from './checkbox'
 import { cn } from './lib/utils'
+import { DataTableToolbar, type Density } from './data-table-toolbar'
+
+const densityPaddingMap: Record<Density, string> = {
+  compact: 'py-ds-02',
+  standard: 'py-ds-05',
+  comfortable: 'py-ds-07',
+}
 
 interface DataTableProps<TData, TValue> {
   /** Column definitions passed to TanStack Table */
@@ -60,6 +69,12 @@ interface DataTableProps<TData, TValue> {
   selectable?: boolean
   /** Callback when row selection changes */
   onSelectionChange?: (selectedRows: TData[]) => void
+  /** Show toolbar above the table with column visibility, density, and export controls */
+  toolbar?: boolean
+  /** Row density — controls cell vertical padding */
+  density?: Density
+  /** Initial column pinning configuration */
+  columnPinning?: { left?: string[]; right?: string[] }
 }
 
 export function DataTable<TData, TValue>({
@@ -75,6 +90,9 @@ export function DataTable<TData, TValue>({
   pageSizeOptions,
   selectable = false,
   onSelectionChange,
+  toolbar = false,
+  density: initialDensity = 'standard',
+  columnPinning: initialColumnPinning,
 }: DataTableProps<TData, TValue>) {
   const [sorting, setSorting] = useState<SortingState>([])
   const [columnFilters, setColumnFilters] = useState<ColumnFiltersState>([])
@@ -84,6 +102,13 @@ export function DataTable<TData, TValue>({
     pageSize: initialPageSize ?? 10,
   })
   const [rowSelection, setRowSelection] = useState<RowSelectionState>({})
+  const [columnVisibility, setColumnVisibility] = useState<VisibilityState>({})
+  const [columnPinningState, setColumnPinningState] =
+    useState<ColumnPinningState>({
+      left: initialColumnPinning?.left ?? [],
+      right: initialColumnPinning?.right ?? [],
+    })
+  const [density, setDensity] = useState<Density>(initialDensity)
 
   // Checkbox column prepended when selectable is enabled
   const selectColumn: ColumnDef<TData, unknown> = {
@@ -105,12 +130,16 @@ export function DataTable<TData, TValue>({
     ),
     enableSorting: false,
     enableColumnFilter: false,
+    enableHiding: false,
   }
 
   const allColumns = selectable ? [selectColumn, ...columns] : columns
 
   // Build state object once — sorting and filtering contribute independently
-  const tableState: Partial<TableState> = {}
+  const tableState: Partial<TableState> = {
+    columnVisibility,
+    columnPinning: columnPinningState,
+  }
   if (sortable) tableState.sorting = sorting
   if (filterable || globalFilter) {
     tableState.columnFilters = columnFilters
@@ -123,6 +152,8 @@ export function DataTable<TData, TValue>({
     data,
     columns: allColumns,
     state: tableState,
+    onColumnVisibilityChange: setColumnVisibility,
+    onColumnPinningChange: setColumnPinningState,
     getCoreRowModel: getCoreRowModel(),
     ...(sortable && {
       onSortingChange: setSorting,
@@ -146,16 +177,53 @@ export function DataTable<TData, TValue>({
   // Fire selection callback when row selection changes
   useEffect(() => {
     if (onSelectionChange) {
-      const selected = table.getFilteredSelectedRowModel().rows.map((r) => r.original)
+      const selected = table
+        .getFilteredSelectedRowModel()
+        .rows.map((r) => r.original)
       onSelectionChange(selected)
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [rowSelection])
 
+  /** Compute sticky positioning styles for pinned columns */
+  function getPinnedCellStyle(columnId: string) {
+    const { left = [], right = [] } = columnPinningState
+    const leftIndex = left.indexOf(columnId)
+    const rightIndex = right.indexOf(columnId)
+
+    if (leftIndex !== -1) {
+      return {
+        className: 'sticky bg-[var(--color-layer-01)] z-10',
+        style: { left: 0 } as React.CSSProperties,
+      }
+    }
+    if (rightIndex !== -1) {
+      return {
+        className: 'sticky bg-[var(--color-layer-01)] z-10',
+        style: { right: 0 } as React.CSSProperties,
+      }
+    }
+    return { className: '', style: {} as React.CSSProperties }
+  }
+
+  const cellPadding = densityPaddingMap[density]
+
   return (
     <div className={cn(className)}>
-      {/* Global search input */}
-      {globalFilter && (
+      {/* Toolbar */}
+      {toolbar && (
+        <DataTableToolbar
+          table={table}
+          globalFilter={globalFilter}
+          globalFilterValue={globalFilterValue}
+          onGlobalFilterChange={setGlobalFilterValue}
+          density={density}
+          onDensityChange={setDensity}
+        />
+      )}
+
+      {/* Global search input — only show standalone when toolbar is disabled */}
+      {globalFilter && !toolbar && (
         <div className="flex items-center gap-ds-03 pb-ds-04 border-b border-[var(--color-border-subtle)] mb-ds-04">
           <IconSearch
             size={16}
@@ -166,7 +234,7 @@ export function DataTable<TData, TValue>({
             type="text"
             value={globalFilterValue}
             onChange={(e) => setGlobalFilterValue(e.target.value)}
-            placeholder="Search all columns…"
+            placeholder="Search all columns..."
             aria-label="Search all columns"
             className={cn(
               'flex-1 bg-transparent text-ds-md',
@@ -184,9 +252,14 @@ export function DataTable<TData, TValue>({
               {headerGroup.headers.map((header) => {
                 const canSort = sortable && header.column.getCanSort()
                 const sorted = header.column.getIsSorted()
+                const pinned = getPinnedCellStyle(header.column.id)
 
                 return (
-                  <TableHead key={header.id}>
+                  <TableHead
+                    key={header.id}
+                    className={pinned.className}
+                    style={pinned.style}
+                  >
                     {header.isPlaceholder ? null : canSort ? (
                       <button
                         type="button"
@@ -233,30 +306,36 @@ export function DataTable<TData, TValue>({
           ))}
 
           {/* Column filter row */}
-          {filterable && table.getHeaderGroups().map((headerGroup) => (
-            <TableRow key={`${headerGroup.id}-filters`}>
-              {headerGroup.headers.map((header) => (
-                <TableHead key={`${header.id}-filter`} className="py-ds-01">
-                  {header.isPlaceholder || header.column.columnDef.enableColumnFilter === false ? null : (
-                    <input
-                      type="text"
-                      value={(header.column.getFilterValue() as string) ?? ''}
-                      onChange={(e) => header.column.setFilterValue(e.target.value)}
-                      placeholder={`Filter ${typeof header.column.columnDef.header === 'string' ? header.column.columnDef.header : ''}…`}
-                      aria-label={`Filter ${typeof header.column.columnDef.header === 'string' ? header.column.columnDef.header : header.column.id}`}
-                      className={cn(
-                        'h-7 w-full rounded-[var(--radius-md)]',
-                        'border border-[var(--color-border-default)] bg-[var(--color-field)]',
-                        'px-ds-02 text-ds-sm',
-                        'text-[var(--color-text-primary)] placeholder:text-[var(--color-text-placeholder)]',
-                        'outline-none focus:border-[var(--color-border-focus)]',
-                      )}
-                    />
-                  )}
-                </TableHead>
-              ))}
-            </TableRow>
-          ))}
+          {filterable &&
+            table.getHeaderGroups().map((headerGroup) => (
+              <TableRow key={`${headerGroup.id}-filters`}>
+                {headerGroup.headers.map((header) => (
+                  <TableHead key={`${header.id}-filter`} className="py-ds-01">
+                    {header.isPlaceholder ||
+                    header.column.columnDef.enableColumnFilter === false ? null : (
+                      <input
+                        type="text"
+                        value={
+                          (header.column.getFilterValue() as string) ?? ''
+                        }
+                        onChange={(e) =>
+                          header.column.setFilterValue(e.target.value)
+                        }
+                        placeholder={`Filter ${typeof header.column.columnDef.header === 'string' ? header.column.columnDef.header : ''}...`}
+                        aria-label={`Filter ${typeof header.column.columnDef.header === 'string' ? header.column.columnDef.header : header.column.id}`}
+                        className={cn(
+                          'h-7 w-full rounded-[var(--radius-md)]',
+                          'border border-[var(--color-border-default)] bg-[var(--color-field)]',
+                          'px-ds-02 text-ds-sm',
+                          'text-[var(--color-text-primary)] placeholder:text-[var(--color-text-placeholder)]',
+                          'outline-none focus:border-[var(--color-border-focus)]',
+                        )}
+                      />
+                    )}
+                  </TableHead>
+                ))}
+              </TableRow>
+            ))}
         </TableHeader>
         <TableBody>
           {table.getRowModel().rows?.length ? (
@@ -265,11 +344,21 @@ export function DataTable<TData, TValue>({
                 key={row.id}
                 data-state={row.getIsSelected() && 'selected'}
               >
-                {row.getVisibleCells().map((cell) => (
-                  <TableCell key={cell.id} className="py-ds-05">
-                    {flexRender(cell.column.columnDef.cell, cell.getContext())}
-                  </TableCell>
-                ))}
+                {row.getVisibleCells().map((cell) => {
+                  const pinned = getPinnedCellStyle(cell.column.id)
+                  return (
+                    <TableCell
+                      key={cell.id}
+                      className={cn(cellPadding, pinned.className)}
+                      style={pinned.style}
+                    >
+                      {flexRender(
+                        cell.column.columnDef.cell,
+                        cell.getContext(),
+                      )}
+                    </TableCell>
+                  )
+                })}
               </TableRow>
             ))
           ) : (

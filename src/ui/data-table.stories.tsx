@@ -159,3 +159,54 @@ function SelectableDemo() {
 export const Selectable: Story = {
   render: () => <SelectableDemo />,
 }
+
+export const WithToolbar: Story = {
+  render: () => (
+    <DataTable
+      columns={columns}
+      data={filterData}
+      sortable
+      filterable
+      globalFilter
+      paginated
+      selectable
+      toolbar
+      density="standard"
+    />
+  ),
+}
+
+export const CompactDensity: Story = {
+  render: () => (
+    <DataTable
+      columns={columns}
+      data={filterData}
+      density="compact"
+      toolbar
+    />
+  ),
+}
+
+export const ComfortableDensity: Story = {
+  render: () => (
+    <DataTable
+      columns={columns}
+      data={filterData}
+      density="comfortable"
+      toolbar
+    />
+  ),
+}
+
+export const WithColumnPinning: Story = {
+  render: () => (
+    <div className="max-w-[500px] overflow-auto">
+      <DataTable
+        columns={columns}
+        data={filterData}
+        toolbar
+        columnPinning={{ left: ['id'], right: ['priority'] }}
+      />
+    </div>
+  ),
+}

@@ -1,0 +1,100 @@
+/* ═══════════════════════════════════════════════════════════════════
+   SEMANTIC TYPOGRAPHY VARIANTS
+   Maps raw type scale tokens → meaningful component names.
+
+   Migration guide from legacy classes:
+     T1-Reg  → heading-2xl    T5-Reg  → heading-sm
+     T2-Reg  → heading-xl     T6-Reg  → heading-xs
+     T3-Reg  → heading-lg     B1-Reg  → body-lg
+     T4-Reg  → heading-md     B2-Reg  → body-md
+     B2-Semibold → body-md-semibold
+     B3-Reg  → body-sm        B4-Reg  → body-xs
+     L1      → label-lg       L2      → label-md
+     L3      → label-sm       L4      → label-xs
+   ═══════════════════════════════════════════════════════════════════ */
+
+:root {
+  /* ── Heading Variants ──────────────────────── */
+  --typo-heading-2xl-size:     var(--font-size-6xl);
+  --typo-heading-2xl-weight:   var(--font-weight-regular);
+  --typo-heading-2xl-leading:  var(--line-height-tight);
+  --typo-heading-2xl-tracking: -0.02em;
+
+  --typo-heading-xl-size:      var(--font-size-5xl);
+  --typo-heading-xl-weight:    var(--font-weight-regular);
+  --typo-heading-xl-leading:   var(--line-height-tight);
+  --typo-heading-xl-tracking:  -0.02em;
+
+  --typo-heading-lg-size:      var(--font-size-4xl);
+  --typo-heading-lg-weight:    var(--font-weight-regular);
+  --typo-heading-lg-leading:   var(--line-height-tight);
+  --typo-heading-lg-tracking:  -0.02em;
+
+  --typo-heading-md-size:      var(--font-size-3xl);
+  --typo-heading-md-weight:    var(--font-weight-regular);
+  --typo-heading-md-leading:   var(--line-height-tight);
+  --typo-heading-md-tracking:  -0.02em;
+
+  --typo-heading-sm-size:      var(--font-size-2xl);
+  --typo-heading-sm-weight:    var(--font-weight-regular);
+  --typo-heading-sm-leading:   var(--line-height-snug);
+  --typo-heading-sm-tracking:  -0.02em;
+
+  --typo-heading-xs-size:      var(--font-size-xl);
+  --typo-heading-xs-weight:    var(--font-weight-regular);
+  --typo-heading-xs-leading:   var(--line-height-snug);
+  --typo-heading-xs-tracking:  0;
+
+  /* ── Body Variants ─────────────────────────── */
+  --typo-body-lg-size:         var(--font-size-base);
+  --typo-body-lg-weight:       var(--font-weight-regular);
+  --typo-body-lg-leading:      var(--line-height-relaxed);
+  --typo-body-lg-tracking:     -0.02em;
+
+  --typo-body-md-size:         var(--font-size-md);
+  --typo-body-md-weight:       var(--font-weight-regular);
+  --typo-body-md-leading:      var(--line-height-relaxed);
+  --typo-body-md-tracking:     -0.02em;
+
+  --typo-body-sm-size:         var(--font-size-sm);
+  --typo-body-sm-weight:       var(--font-weight-regular);
+  --typo-body-sm-leading:      var(--line-height-relaxed);
+  --typo-body-sm-tracking:     -0.02em;
+
+  --typo-body-xs-size:         var(--font-size-xs);
+  --typo-body-xs-weight:       var(--font-weight-regular);
+  --typo-body-xs-leading:      var(--line-height-relaxed);
+  --typo-body-xs-tracking:     -0.02em;
+
+  /* ── Label Variants (uppercase UI labels) ─── */
+  --typo-label-lg-size:        var(--font-size-base);
+  --typo-label-lg-weight:      var(--font-weight-semibold);
+  --typo-label-lg-leading:     var(--line-height-snug);
+  --typo-label-lg-tracking:    0.06em;
+
+  --typo-label-md-size:        var(--font-size-md);
+  --typo-label-md-weight:      var(--font-weight-semibold);
+  --typo-label-md-leading:     var(--line-height-snug);
+  --typo-label-md-tracking:    0.06em;
+
+  --typo-label-sm-size:        var(--font-size-sm);
+  --typo-label-sm-weight:      var(--font-weight-semibold);
+  --typo-label-sm-leading:     var(--line-height-snug);
+  --typo-label-sm-tracking:    0.06em;
+
+  --typo-label-xs-size:        var(--font-size-xs);
+  --typo-label-xs-weight:      var(--font-weight-semibold);
+  --typo-label-xs-leading:     var(--line-height-snug);
+  --typo-label-xs-tracking:    0.06em;
+
+  /* ── Caption & Overline ────────────────────── */
+  --typo-caption-size:         var(--font-size-sm);
+  --typo-caption-weight:       var(--font-weight-regular);
+  --typo-caption-leading:      var(--line-height-normal);
+  --typo-caption-tracking:     0.025em;
+
+  --typo-overline-size:        var(--font-size-sm);
+  --typo-overline-weight:      var(--font-weight-regular);
+  --typo-overline-leading:     var(--line-height-loose);
+  --typo-overline-tracking:    0.08em;
+}

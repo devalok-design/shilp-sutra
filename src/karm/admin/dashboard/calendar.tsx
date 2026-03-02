@@ -74,7 +74,7 @@ export function Calendar({ onDateSelect, hasCorrection }: CalendarProps) {
     <div className="w-full">
       <div className="flex-direction-row justify-flex-start mb-ds-06 flex w-full items-center">
         <DropdownMenu>
-          <DropdownMenuTrigger className="text-ds-xl flex items-center gap-ds-03 text-[var(--color-text-secondary)]">
+          <DropdownMenuTrigger className="text-ds-xl flex items-center gap-ds-03 text-text-secondary">
             {cal.selectedMonth}
             <FilledArrowIcon />
           </DropdownMenuTrigger>
@@ -106,16 +106,16 @@ export function Calendar({ onDateSelect, hasCorrection }: CalendarProps) {
             <button
               aria-label="Previous"
               onClick={() => handleDateChange('prev')}
-              className="rounded-[var(--radius-full)] p-ds-02 hover:bg-[var(--color-layer-02)]"
+              className="rounded-ds-full p-ds-02 hover:bg-layer-02"
             >
-              <ArrowLeftIcon className="h-[var(--icon-md)] w-[var(--icon-md)] text-[var(--color-text-secondary)]" />
+              <ArrowLeftIcon className="h-ico-md w-ico-md text-text-secondary" />
             </button>
             <button
               aria-label="Next"
               onClick={() => handleDateChange('next')}
-              className="rounded-[var(--radius-full)] p-ds-02 hover:bg-[var(--color-layer-02)]"
+              className="rounded-ds-full p-ds-02 hover:bg-layer-02"
             >
-              <ArrowForwardIcon className="h-[var(--icon-md)] w-[var(--icon-md)] text-[var(--color-text-secondary)]" />
+              <ArrowForwardIcon className="h-ico-md w-ico-md text-text-secondary" />
             </button>
           </div>
         </div>
@@ -129,7 +129,7 @@ export function Calendar({ onDateSelect, hasCorrection }: CalendarProps) {
         {cal.activeTimeFrame === 'monthly' &&
           ['SUN', 'MON', 'TUE', 'WED', 'THU', 'FRI', 'SAT'].map((weekDay) => (
             <div key={weekDay} className="pb-ds-03 pt-ds-05 text-center">
-              <span className="text-ds-sm font-semibold uppercase tracking-wider  text-[var(--color-text-tertiary)]">
+              <span className="text-ds-sm font-semibold uppercase tracking-wider  text-text-tertiary">
                 {weekDay}
               </span>
             </div>
@@ -143,11 +143,11 @@ export function Calendar({ onDateSelect, hasCorrection }: CalendarProps) {
             aria-label={day.isPadding ? undefined : format(day.fullDate, 'MMMM d, yyyy')}
             className={`${
               cal.activeTimeFrame === 'weekly'
-                ? 'w-full rounded-t-[var(--radius-lg)] pb-3.5 pt-ds-05'
+                ? 'w-full rounded-t-ds-lg pb-3.5 pt-ds-05'
                 : 'pb-0 pt-0'
             } flex cursor-pointer flex-col items-center text-center ${
               cal.activeTimeFrame === 'weekly' && cal.activeIndex === index
-                ? 'bg-[var(--color-layer-02)]'
+                ? 'bg-layer-02'
                 : ''
             } ${day.isPadding ? 'opacity-50' : ''} `}
             onClick={() => handleDayClick(index, day.fullDate)}
@@ -159,7 +159,7 @@ export function Calendar({ onDateSelect, hasCorrection }: CalendarProps) {
             }}
           >
             {cal.activeTimeFrame === 'weekly' && (
-              <span className="text-ds-sm font-semibold uppercase tracking-wider mb-ds-03  text-[var(--color-text-tertiary)]">
+              <span className="text-ds-sm font-semibold uppercase tracking-wider mb-ds-03  text-text-tertiary">
                 {day.day}
               </span>
             )}
@@ -167,25 +167,25 @@ export function Calendar({ onDateSelect, hasCorrection }: CalendarProps) {
               className={`mx-ds-02 my-ds-02 flex-col ${
                 cal.activeTimeFrame === 'monthly' &&
                 isSameDay(day.fullDate, new Date(cal.selectedDate))
-                  ? 'flex h-10 w-10 items-center justify-center rounded-[var(--radius-full)] bg-[var(--color-interactive-subtle)] shadow-[0px_4px_4px_0px_var(--color-inset-glow)_inset,0px_0px_4px_0px_var(--color-focus)_inset]'
+                  ? 'flex h-10 w-10 items-center justify-center rounded-ds-full bg-interactive-subtle shadow-[0px_4px_4px_0px_var(--color-inset-glow)_inset,0px_0px_4px_0px_var(--color-focus)_inset]'
                   : 'flex h-10 w-10 items-center justify-center'
               }`}
             >
               <span
-                className={`text-ds-base flex h-10 w-10 items-center justify-center rounded-[var(--radius-full)] ${
+                className={`text-ds-base flex h-10 w-10 items-center justify-center rounded-ds-full ${
                   day.isToday
-                    ? 'bg-[var(--color-interactive-hover)] p-ds-03 text-[var(--color-text-on-color)]'
-                    : 'text-[var(--color-text-secondary)]'
+                    ? 'bg-interactive-hover p-ds-03 text-text-on-color'
+                    : 'text-text-secondary'
                 } ${
                   day.isActive && !day.isToday
-                    ? 'bg-[var(--color-field)]'
+                    ? 'bg-field'
                     : ''
                 }`}
               >
                 {day.date}
               </span>
               {hasCorrection && hasCorrection(day.fullDate) && (
-                <div className="absolute z-10 mt-ds-06 h-[6px] w-[6px] translate-y-[5px] rounded-[var(--radius-full)] bg-[var(--color-text-error)]"></div>
+                <div className="absolute z-10 mt-ds-06 h-[6px] w-[6px] translate-y-[5px] rounded-ds-full bg-text-error"></div>
               )}
             </div>
           </div>

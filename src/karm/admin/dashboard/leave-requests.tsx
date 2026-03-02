@@ -153,19 +153,19 @@ export function LeaveRequests({
         {requests?.map((request) => (
           <div
             key={request.id}
-            className="flex flex-col justify-start rounded-[8px] border-b border-[var(--color-border-default)] md:gap-ds-05 md:border-b-0 max-md:border-none"
+            className="flex flex-col justify-start rounded-[8px] border-b border-border md:gap-ds-05 md:border-b-0 max-md:border-none"
           >
-            <div className="flex flex-col justify-between rounded-t-[8px] border border-[var(--color-border-default)] md:flex-row md:border-0 md:px-ds-03 md:py-3.5 max-md:border-b-0">
-              <div className="flex items-center gap-ds-04 border-b border-[var(--color-border-default)] p-ds-05 md:border-none md:p-0 max-md:items-start">
+            <div className="flex flex-col justify-between rounded-t-[8px] border border-border md:flex-row md:border-0 md:px-ds-03 md:py-3.5 max-md:border-b-0">
+              <div className="flex items-center gap-ds-04 border-b border-border p-ds-05 md:border-none md:p-0 max-md:items-start">
                 <img
                   src={userImages[request.user?.id || '']}
-                  className="h-10 w-10 overflow-hidden rounded-[var(--radius-full)] bg-[var(--color-interactive-subtle)]"
+                  className="h-10 w-10 overflow-hidden rounded-ds-full bg-interactive-subtle"
                   alt={request.user?.name?.[0] || 'U'}
                 />
                 <div className="flex max-w-[277px] flex-col items-start gap-ds-02 sm:max-w-none">
                   <div className="flex flex-row gap-ds-02b">
                     <div className="flex items-center gap-ds-03">
-                      <p className="text-ds-sm text-[var(--color-text-secondary)]">
+                      <p className="text-ds-sm text-text-secondary">
                         {request.user?.name}
                       </p>
                     </div>
@@ -173,25 +173,25 @@ export function LeaveRequests({
                   {/* for one day leave, display one line message & date */}
                   {isSingleDayRequest(request) ? (
                     <div className="flex w-full flex-col items-center gap-ds-03 md:flex-row md:flex-wrap max-md:items-start">
-                      <p className="B1 semibold text-[var(--color-text-primary)]">
+                      <p className="B1 semibold text-text-primary">
                         {removeAllEmojis(request.reason)}
                       </p>
-                      <p className="B1 hidden font-semibold text-[var(--color-text-tertiary)] md:block">
+                      <p className="B1 hidden font-semibold text-text-tertiary md:block">
                         &bull;
                       </p>
-                      <p className="text-ds-base text-[var(--color-text-tertiary)]">
+                      <p className="text-ds-base text-text-tertiary">
                         {formatDate(new Date(request.startDate))}
                       </p>
                     </div>
                   ) : (
                     <div className="flex flex-col items-start justify-start gap-ds-03">
-                      <p className="B1 semibold text-[var(--color-text-primary)]">
+                      <p className="B1 semibold text-text-primary">
                         {removeAllEmojis(request.reason)}
                       </p>
-                      <p className="text-ds-base text-[var(--color-text-tertiary)]">
+                      <p className="text-ds-base text-text-tertiary">
                         {formatDate(new Date(request.startDate))} to{' '}
                         {formatDate(new Date(request.endDate))}
-                        <span className="text-[var(--color-interactive-hover)]">
+                        <span className="text-interactive-hover">
                           {', '}
                           {request.numberOfDays} days
                         </span>
@@ -201,7 +201,7 @@ export function LeaveRequests({
                 </div>
               </div>
               <div className="flex h-full w-full items-center justify-between self-stretch sm:w-auto sm:justify-start">
-                <div className="flex w-1/2 justify-center border-r border-[var(--color-border-default)] p-ds-02 md:border-r-0">
+                <div className="flex w-1/2 justify-center border-r border-border p-ds-02 md:border-r-0">
                   <Tooltip delayDuration={0}>
                     <TooltipTrigger asChild>
                       <button
@@ -225,10 +225,10 @@ export function LeaveRequests({
                         disabled={
                           interaction.isProcessing || request?.user?.id === currentUserId
                         }
-                        className={`rounded-[var(--radius-full)] p-ds-03 ${
+                        className={`rounded-ds-full p-ds-03 ${
                           interaction.activeRequest?.id === request.id &&
                           interaction.activeAction === 'rejectBreak'
-                            ? 'bg-[var(--color-error-surface)]'
+                            ? 'bg-error-surface'
                             : ''
                         } ${
                           request?.user?.id === currentUserId
@@ -240,7 +240,7 @@ export function LeaveRequests({
                           className={`h-6 w-6 ${
                             interaction.activeRequest?.id === request.id &&
                             interaction.activeAction === 'rejectBreak'
-                              ? 'text-[var(--color-text-error)]'
+                              ? 'text-text-error'
                               : ''
                           }`}
                         />
@@ -253,7 +253,7 @@ export function LeaveRequests({
                     )}
                   </Tooltip>
                 </div>
-                <div className="flex w-1/2 justify-center bg-[var(--color-success-surface)] p-ds-02 md:bg-transparent">
+                <div className="flex w-1/2 justify-center bg-success-surface p-ds-02 md:bg-transparent">
                   <Tooltip delayDuration={0}>
                     <TooltipTrigger asChild>
                       <button
@@ -277,10 +277,10 @@ export function LeaveRequests({
                         disabled={
                           interaction.isProcessing || request?.user?.id === currentUserId
                         }
-                        className={`rounded-[var(--radius-full)] p-ds-03 ${
+                        className={`rounded-ds-full p-ds-03 ${
                           interaction.activeRequest?.id === request.id &&
                           interaction.activeAction === 'approveBreak'
-                            ? 'bg-[var(--color-success-surface)]'
+                            ? 'bg-success-surface'
                             : ''
                         } ${
                           request?.user?.id === currentUserId
@@ -304,9 +304,9 @@ export function LeaveRequests({
               interaction.activeRequest &&
               interaction.activeRequest?.id === request.id) ||
               isMobile) && (
-              <div className="flex flex-row items-start justify-between rounded-[8px] border-[1px] border-[var(--color-border-default)] py-ds-02 max-md:rounded-t-none">
+              <div className="flex flex-row items-start justify-between rounded-[8px] border-[1px] border-border py-ds-02 max-md:rounded-t-none">
                 <div className="flex w-full flex-col items-start justify-start gap-ds-02 px-ds-05 pb-ds-02 pt-[10px]">
-                  <div className="text-ds-xs font-semibold uppercase tracking-wider text-[var(--color-text-placeholder)]">
+                  <div className="text-ds-xs font-semibold uppercase tracking-wider text-text-placeholder">
                     comment
                   </div>
                   <input
@@ -314,13 +314,13 @@ export function LeaveRequests({
                     value={interaction.message}
                     onChange={(e) => interaction.setMessage(e?.target?.value)}
                     placeholder="Enter a Comment"
-                    className="text-ds-md w-full text-[var(--color-text-primary)] outline-none"
+                    className="text-ds-md w-full text-text-primary outline-none"
                   />
                 </div>
                 <button
                   disabled={interaction.isProcessing}
                   onClick={() => handleRequestSubmit(request, interaction.activeAction)}
-                  className="my-auto flex hidden items-center justify-center rounded-[var(--radius-full)] p-ds-03"
+                  className="my-auto flex hidden items-center justify-center rounded-ds-full p-ds-03"
                 >
                   <SendIcon className="h-6 w-6" />
                 </button>

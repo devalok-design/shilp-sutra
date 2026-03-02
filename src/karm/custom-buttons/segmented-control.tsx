@@ -9,11 +9,11 @@ import { useRipple } from './use-ripple'
 const segmentedControlItemVariants = cva(
   [
     'inline-flex items-center gap-ds-03 rounded-[88px] border-none outline-none cursor-pointer',
-    'transition-[color,background-color,border-color,box-shadow] duration-[var(--duration-moderate)] ease-in-out',
+    'transition-[color,background-color,border-color,box-shadow] duration-moderate ease-in-out',
     'relative overflow-hidden',
     'font-accent text-ds-md font-semibold leading-none text-center',
-    'bg-[var(--color-layer-01)]',
-    'text-[var(--color-text-tertiary)]',
+    'bg-layer-01',
+    'text-text-tertiary',
     'first:rounded-tr-none first:rounded-br-none',
     'last:rounded-tl-none last:rounded-bl-none',
   ],
@@ -25,8 +25,8 @@ const segmentedControlItemVariants = cva(
         big: 'h-14 px-ds-06 py-ds-05',
       },
       color: {
-        filled: "text-[var(--color-text-on-color)] [text-shadow:0px_1px_1px_var(--color-text-shadow)]",
-        tonal: 'text-[var(--color-text-tertiary)]',
+        filled: "text-text-on-color [text-shadow:0px_1px_1px_var(--color-text-shadow)]",
+        tonal: 'text-text-tertiary',
       },
       selected: {
         true: '',
@@ -47,7 +47,7 @@ const segmentedControlItemVariants = cva(
         selected: true,
         color: 'filled',
         className: [
-          'bg-[var(--color-interactive)]',
+          'bg-interactive',
           'shadow-[0px_1px_3px_0.05px_var(--color-interactive-hover),inset_0px_8px_16px_0px_var(--color-inset-glow-strong),inset_0px_2px_0px_0px_var(--color-inset-glow-subtle)]',
         ].join(' '),
       },
@@ -55,14 +55,14 @@ const segmentedControlItemVariants = cva(
       {
         selected: true,
         color: 'tonal',
-        className: 'bg-[var(--color-field)] !text-[var(--color-text-primary)]',
+        className: 'bg-field !text-text-primary',
       },
       // Hover + filled
       {
         isHovered: true,
         color: 'filled',
         className: [
-          'bg-[var(--color-interactive)]',
+          'bg-interactive',
           'shadow-[0px_4px_8px_0px_var(--color-interactive-hover),0px_1px_3px_0.05px_var(--color-layer-02),inset_0px_8px_16px_0px_var(--color-inset-glow-strong),inset_0px_2px_0px_0px_var(--color-inset-glow-subtle)]',
         ].join(' '),
       },
@@ -70,30 +70,30 @@ const segmentedControlItemVariants = cva(
       {
         isHovered: true,
         color: 'tonal',
-        className: 'text-[var(--color-text-primary)]',
+        className: 'text-text-primary',
       },
       // Disabled + filled
       {
         isDisabled: true,
         color: 'filled',
-        className: 'text-[var(--color-text-placeholder)]',
+        className: 'text-text-placeholder',
       },
       // Disabled + tonal
       {
         isDisabled: true,
         color: 'tonal',
-        className: 'text-[var(--color-text-placeholder)]',
+        className: 'text-text-placeholder',
       },
       // Filled + SVG icon fill
       {
         color: 'filled',
-        className: '[&_svg_path]:fill-[var(--color-icon-on-color)]',
+        className: '[&_svg_path]:fill-icon-on-color',
       },
       // Filled + disabled SVG icon fill
       {
         color: 'filled',
         isDisabled: true,
-        className: '[&_svg_path]:fill-[var(--color-icon-disabled)]',
+        className: '[&_svg_path]:fill-icon-disabled',
       },
       // Medium size last-child padding flip
       {
@@ -194,8 +194,8 @@ const SegmentedControl: React.FC<SegmentedControlProps> = ({
       ref={tablistRef}
       className={cn(
         'inline-flex gap-0 p-0 rounded-[88px]',
-        'bg-[var(--color-layer-02)]',
-        'border border-solid border-[var(--color-layer-03)]',
+        'bg-layer-02',
+        'border border-solid border-layer-03',
         className,
       )}
       role="tablist"
@@ -306,7 +306,7 @@ const SegmentedControlItem: React.FC<SegmentedControlItemProps> = ({
         <span
           key={ripple.id}
           className={cn(
-            'absolute rounded-[var(--radius-full)] -translate-x-1/2 -translate-y-1/2 scale-0 animate-ripple pointer-events-none',
+            'absolute rounded-ds-full -translate-x-1/2 -translate-y-1/2 scale-0 animate-ripple pointer-events-none',
             rippleBgMap[color],
           )}
           style={{

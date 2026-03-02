@@ -124,24 +124,24 @@ type TabId = typeof TABS[number]['id']
 function PanelSkeleton() {
   return (
     <div className="space-y-ds-06 p-ds-06">
-      <Skeleton className="h-7 w-3/4 bg-[var(--color-field)]" />
+      <Skeleton className="h-7 w-3/4 bg-field" />
       <div className="space-y-ds-04">
         {Array.from({ length: 6 }).map((_, i) => (
           <div key={i} className="flex items-center gap-ds-04">
-            <Skeleton className="h-4 w-[120px] bg-[var(--color-field)]" />
-            <Skeleton className="h-4 flex-1 bg-[var(--color-field)]" />
+            <Skeleton className="h-4 w-[120px] bg-field" />
+            <Skeleton className="h-4 flex-1 bg-field" />
           </div>
         ))}
       </div>
-      <div className="flex gap-ds-05 border-b border-[var(--color-border-default)] pb-ds-03">
+      <div className="flex gap-ds-05 border-b border-border pb-ds-03">
         {Array.from({ length: 5 }).map((_, i) => (
-          <Skeleton key={i} className="h-3 w-16 bg-[var(--color-field)]" />
+          <Skeleton key={i} className="h-3 w-16 bg-field" />
         ))}
       </div>
       <div className="space-y-ds-04">
-        <Skeleton className="h-10 w-full bg-[var(--color-field)]" />
-        <Skeleton className="h-10 w-full bg-[var(--color-field)]" />
-        <Skeleton className="h-10 w-4/5 bg-[var(--color-field)]" />
+        <Skeleton className="h-10 w-full bg-field" />
+        <Skeleton className="h-10 w-full bg-field" />
+        <Skeleton className="h-10 w-4/5 bg-field" />
       </div>
     </div>
   )
@@ -252,7 +252,7 @@ function TaskDetailPanel({
         className={cn(
           'w-full sm:max-w-none sm:w-[40%] min-w-[380px] p-0',
           'flex flex-col overflow-hidden',
-          'border-l border-[var(--color-border-default)] bg-[var(--color-layer-01)]',
+          'border-l border-border bg-layer-01',
         )}
       >
         <VisuallyHidden>
@@ -266,7 +266,7 @@ function TaskDetailPanel({
         ) : (
           <>
             {/* Header -- Title */}
-            <div className="shrink-0 border-b border-[var(--color-border-default)] px-ds-06 pb-ds-05 pt-ds-06">
+            <div className="shrink-0 border-b border-border px-ds-06 pb-ds-05 pt-ds-06">
               {!clientMode && editingTitle ? (
                 <input
                   ref={titleInputRef}
@@ -275,21 +275,21 @@ function TaskDetailPanel({
                   onChange={(e) => setTitleValue(e.target.value)}
                   onBlur={handleTitleBlur}
                   onKeyDown={handleTitleKeyDown}
-                  className="w-full bg-transparent text-ds-lg font-semibold text-[var(--color-text-primary)] outline-none"
+                  className="w-full bg-transparent text-ds-lg font-semibold text-text-primary outline-none"
                 />
               ) : (
                 <h2
                   onClick={clientMode ? undefined : () => setEditingTitle(true)}
                   className={cn(
-                    'text-ds-lg font-semibold text-[var(--color-text-primary)]',
-                    !clientMode && 'cursor-text hover:text-[var(--color-interactive)] transition-colors',
+                    'text-ds-lg font-semibold text-text-primary',
+                    !clientMode && 'cursor-text hover:text-interactive transition-colors',
                   )}
                 >
                   {task.title}
                 </h2>
               )}
               {task.parentTaskId && (
-                <p className="mt-ds-02 text-ds-sm text-[var(--color-text-placeholder)]">
+                <p className="mt-ds-02 text-ds-sm text-text-placeholder">
                   Subtask
                 </p>
               )}
@@ -298,7 +298,7 @@ function TaskDetailPanel({
             {/* Scrollable Body */}
             <div className="flex-1 overflow-y-auto">
               {/* Properties Section */}
-              <div className="border-b border-[var(--color-border-default)] px-ds-06 py-ds-05">
+              <div className="border-b border-border px-ds-06 py-ds-05">
                 <TaskProperties
                   task={task}
                   columns={columns}
@@ -317,12 +317,12 @@ function TaskDetailPanel({
               </div>
 
               {/* Tab Bar */}
-              <div className="sticky top-0 z-10 bg-[var(--color-layer-01)] px-ds-06">
+              <div className="sticky top-0 z-10 bg-layer-01 px-ds-06">
                 <Tabs value={activeTab} onValueChange={handleTabChange}>
                   <TabsList variant="line">
                     {visibleTabs.map((tab) => (
                       <TabsTrigger key={tab.id} value={tab.id}>
-                        <tab.icon className="h-[var(--icon-sm)] w-[var(--icon-sm)]" stroke={1.5} />
+                        <tab.icon className="h-ico-sm w-ico-sm" stroke={1.5} />
                         {tab.label}
                       </TabsTrigger>
                     ))}

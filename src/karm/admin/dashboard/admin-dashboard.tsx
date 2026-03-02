@@ -182,8 +182,8 @@ function AdminDashboardRoot({
 
   return (
     <AdminDashboardContext.Provider value={contextValue}>
-      <div className="flex w-full max-w-[var(--max-width)] flex-col items-center justify-center max-md:h-[100%] max-md:justify-start">
-        <div className="z-raised flex w-full flex-col items-start justify-start rounded-[8px] border border-[var(--color-border-default)] bg-[var(--color-layer-02)] p-[16px] shadow-[var(--shadow-05)] max-md:h-[calc(100vh-201px)] max-md:max-h-[calc(100vh-201px)] max-md:overflow-y-auto max-md:border-0 max-md:px-ds-05 max-md:pb-[0px] max-md:pt-[24px]">
+      <div className="flex w-full max-w-layout flex-col items-center justify-center max-md:h-[100%] max-md:justify-start">
+        <div className="z-raised flex w-full flex-col items-start justify-start rounded-[8px] border border-border bg-layer-02 p-[16px] shadow-05 max-md:h-[calc(100vh-201px)] max-md:max-h-[calc(100vh-201px)] max-md:overflow-y-auto max-md:border-0 max-md:px-ds-05 max-md:pb-[0px] max-md:pt-[24px]">
           {children}
         </div>
       </div>
@@ -308,7 +308,7 @@ function AdminDashboardCalendar({
         {cal.activeTimeFrame === 'monthly' &&
           ['SUN', 'MON', 'TUE', 'WED', 'THU', 'FRI', 'SAT'].map((weekDay) => (
             <div key={weekDay} className="pb-ds-03 pt-ds-05 text-center">
-              <span className="text-ds-sm font-semibold uppercase tracking-wider  text-[var(--color-text-tertiary)]">
+              <span className="text-ds-sm font-semibold uppercase tracking-wider  text-text-tertiary">
                 {weekDay}
               </span>
             </div>
@@ -321,13 +321,13 @@ function AdminDashboardCalendar({
             tabIndex={0}
             className={`${
               cal.activeTimeFrame === 'weekly'
-                ? 'w-full rounded-t-[var(--radius-lg)] pb-3.5 pt-ds-05 max-md:rounded-[var(--radius-lg)]'
+                ? 'w-full rounded-t-ds-lg pb-3.5 pt-ds-05 max-md:rounded-ds-lg'
                 : 'pb-0 pt-0'
             } flex cursor-pointer flex-col items-center text-center ${
               cal.activeTimeFrame === 'weekly' && cal.activeIndex === index
                 ? selectedUserAttendance?.status === 'BREAK'
-                  ? 'bg-[var(--color-layer-accent-subtle)]'
-                  : 'bg-[var(--color-layer-02)]'
+                  ? 'bg-layer-accent-subtle'
+                  : 'bg-layer-02'
                 : ''
             } ${day.isPadding ? 'opacity-50' : ''} `}
             onClick={() => handleDayClick(index, day.fullDate)}
@@ -336,7 +336,7 @@ function AdminDashboardCalendar({
             }
           >
             {cal.activeTimeFrame === 'weekly' && (
-              <span className="text-ds-sm font-semibold uppercase tracking-wider mb-ds-03  text-[var(--color-text-tertiary)]">
+              <span className="text-ds-sm font-semibold uppercase tracking-wider mb-ds-03  text-text-tertiary">
                 {day.day}
               </span>
             )}
@@ -548,8 +548,8 @@ function AdminDashboardLeaveRequests({
 
   return (
     <div className="w-full p-0 md:p-ds-06">
-      <div className="max-md:pt[16px] flex flex-col items-start overflow-hidden rounded-[8px] border-0 border-[var(--color-border-subtle)] bg-[var(--color-layer-01)] pt-ds-03 md:border max-md:pb-0">
-        <div className="flex w-full items-start border-b-[1px] border-b-[var(--color-border-default)] px-ds-06 md:border-b max-md:border-0 max-md:px-[0px]">
+      <div className="max-md:pt[16px] flex flex-col items-start overflow-hidden rounded-[8px] border-0 border-border-subtle bg-layer-01 pt-ds-03 md:border max-md:pb-0">
+        <div className="flex w-full items-start border-b-[1px] border-b-border px-ds-06 md:border-b max-md:border-0 max-md:px-[0px]">
           {requests.length > 0 && (
             <div
               role="button"
@@ -561,12 +561,12 @@ function AdminDashboardLeaveRequests({
               }
               className={`text-ds-sm font-semibold uppercase tracking-wider cursor-pointer px-ds-03 py-ds-04  ${
                 activeTab === 'leaveRequest'
-                  ? 'border-b-[1px] border-b-[var(--color-interactive-hover)] text-[var(--color-text-primary)]'
-                  : 'text-[var(--color-text-tertiary)]'
+                  ? 'border-b-[1px] border-b-interactive-hover text-text-primary'
+                  : 'text-text-tertiary'
               }`}
             >
               <span className="hidden sm:inline">break </span>Requests
-              <span className="text-[var(--color-interactive-hover)]">
+              <span className="text-interactive-hover">
                 ({requests.length})
               </span>
             </div>
@@ -584,12 +584,12 @@ function AdminDashboardLeaveRequests({
               }
               className={`text-ds-sm font-semibold uppercase tracking-wider cursor-pointer px-ds-03 py-ds-04  ${
                 activeTab === 'attendanceRequest'
-                  ? 'border-b-[1px] border-b-[var(--color-interactive-hover)] text-[var(--color-text-primary)]'
-                  : 'text-[var(--color-text-tertiary)]'
+                  ? 'border-b-[1px] border-b-interactive-hover text-text-primary'
+                  : 'text-text-tertiary'
               }`}
             >
               Attendance Correction{' '}
-              <span className="text-[var(--color-interactive-hover)]">
+              <span className="text-interactive-hover">
                 ({filteredAttendanceCorrections.length})
               </span>
             </div>
@@ -646,11 +646,11 @@ function AdminDashboardContent({ children }: AdminDashboardContentProps) {
   return (
     <div
       className={cn(
-        'flex w-full flex-col rounded-[8px] bg-[var(--color-layer-02)] md:p-ds-06 max-md:bg-transparent',
+        'flex w-full flex-col rounded-[8px] bg-layer-02 md:p-ds-06 max-md:bg-transparent',
         {
-          'rounded-[var(--radius-lg)]': !_isFirstDate && !_isLastDate,
-          'rounded-[var(--radius-lg)] rounded-tl-none': _isFirstDate && !_isLastDate,
-          'rounded-b-[var(--radius-lg)] rounded-tr-none': !_isFirstDate && _isLastDate,
+          'rounded-ds-lg': !_isFirstDate && !_isLastDate,
+          'rounded-ds-lg rounded-tl-none': _isFirstDate && !_isLastDate,
+          'rounded-b-ds-lg rounded-tr-none': !_isFirstDate && _isLastDate,
           'rounded-none': _isFirstDate && _isLastDate,
         },
       )}

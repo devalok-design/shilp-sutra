@@ -93,19 +93,19 @@ export function BreakAdminHeader({
   }
 
   return (
-    <div className="flex min-w-[800px] items-center justify-between bg-[var(--color-field)] px-ds-06 py-ds-05b max-md:justify-start max-md:gap-[20px] max-lg:min-w-[100%]">
+    <div className="flex min-w-[800px] items-center justify-between bg-field px-ds-06 py-ds-05b max-md:justify-start max-md:gap-[20px] max-lg:min-w-[100%]">
       <div className="flex flex-col gap-ds-05">
         {filters.selectedAssociate && (
           <>
-            <p className="text-ds-sm font-semibold uppercase tracking-wider text-[var(--color-text-tertiary)]">
+            <p className="text-ds-sm font-semibold uppercase tracking-wider text-text-tertiary">
               Break Balance
             </p>
             <div className="flex items-end">
-              <p className="text-ds-5xl semibold mr-ds-02 text-[var(--color-interactive)]">
+              <p className="text-ds-5xl semibold mr-ds-02 text-interactive">
                 {breakBalance?.remainingDays || 0}
               </p>
 
-              <p className="text-ds-2xl translate-y-[-5px] text-[var(--color-text-placeholder)]">
+              <p className="text-ds-2xl translate-y-[-5px] text-text-placeholder">
                 / {breakBalance?.breakBalance || 0}
               </p>
             </div>
@@ -115,23 +115,23 @@ export function BreakAdminHeader({
 
       <header className="flex items-center gap-ds-04">
         {filters.selectedAssociate ? (
-          <div className="text-ds-md flex flex-row items-center justify-start gap-ds-02 rounded-[6px] bg-[var(--color-interactive)] p-ds-02b text-[var(--color-text-on-color)]">
+          <div className="text-ds-md flex flex-row items-center justify-start gap-ds-02 rounded-[6px] bg-interactive p-ds-02b text-text-on-color">
             <div className="flex items-center justify-start gap-0.5">
               {userImages[filters.selectedAssociate.id] ? (
                 <img
                   src={userImages[filters.selectedAssociate.id]}
                   alt={`${filters.selectedAssociate.name}'s avatar`}
-                  className="h-[var(--icon-md)] w-[var(--icon-md)] rounded-[var(--radius-full)]"
+                  className="h-ico-md w-ico-md rounded-ds-full"
                 />
               ) : (
-                <div className="flex h-[var(--icon-md)] w-[var(--icon-md)] items-center justify-center rounded-[var(--radius-full)] bg-[var(--color-layer-02)]">
-                  <span className="text-[var(--color-interactive)]">
+                <div className="flex h-ico-md w-ico-md items-center justify-center rounded-ds-full bg-layer-02">
+                  <span className="text-interactive">
                     {filters.selectedAssociate.name.charAt(0)}
                   </span>
                 </div>
               )}
 
-              <span className="text-ds-md mx-0.5 text-[var(--color-text-on-color)]">
+              <span className="text-ds-md mx-0.5 text-text-on-color">
                 {filters.selectedAssociate.name}
               </span>
             </div>
@@ -144,19 +144,19 @@ export function BreakAdminHeader({
               }
               className="border-0 p-0"
             >
-              <CrossIcon className="h-[var(--icon-sm)] w-[var(--icon-sm)] text-[var(--color-text-on-color)]" />
+              <CrossIcon className="h-ico-sm w-ico-sm text-text-on-color" />
             </button>
           </div>
         ) : (
           <DropdownMenu>
-            <DropdownMenuTrigger className="text-ds-md flex flex-row items-center justify-between rounded-[6px] border border-[var(--color-border-subtle)] bg-[var(--color-layer-01)] px-ds-03 py-ds-02b">
+            <DropdownMenuTrigger className="text-ds-md flex flex-row items-center justify-between rounded-[6px] border border-border-subtle bg-layer-01 px-ds-03 py-ds-02b">
               <div className="flex items-center">
-                <PersonIcon className="h-[var(--icon-sm)] w-[var(--icon-sm)]" />
-                <span className="text-ds-md mx-ds-03 text-[var(--color-text-secondary)] max-lg:mx-0 max-lg:text-ds-sm">
+                <PersonIcon className="h-ico-sm w-ico-sm" />
+                <span className="text-ds-md mx-ds-03 text-text-secondary max-lg:mx-0 max-lg:text-ds-sm">
                   Associate
                 </span>
               </div>
-              <ArrowDropdownIcon className="h-[var(--icon-sm)] w-[var(--icon-sm)]" />
+              <ArrowDropdownIcon className="h-ico-sm w-ico-sm" />
             </DropdownMenuTrigger>
             <DropdownMenuContent className="custom-scrollbar max-h-[400px] w-64 overflow-y-auto p-ds-03">
               {users?.length === 0 ? (
@@ -178,16 +178,16 @@ export function BreakAdminHeader({
                         <img
                           src={userImages[user.id]}
                           alt={`${user.name}'s avatar`}
-                          className="h-6 w-6 rounded-[var(--radius-full)]"
+                          className="h-6 w-6 rounded-ds-full"
                         />
                       ) : (
-                        <div className="flex h-6 w-6 items-center justify-center rounded-[var(--radius-full)] bg-[var(--color-layer-03)]">
-                          <span className="text-ds-md text-[var(--color-interactive)]">
+                        <div className="flex h-6 w-6 items-center justify-center rounded-ds-full bg-layer-03">
+                          <span className="text-ds-md text-interactive">
                             {user.name.charAt(0)}
                           </span>
                         </div>
                       )}
-                      <span className="text-ds-md text-[var(--color-text-secondary)]">
+                      <span className="text-ds-md text-text-secondary">
                         {user.name}
                       </span>
                     </DropdownMenuItem>
@@ -200,7 +200,7 @@ export function BreakAdminHeader({
 
         {/* Date Filter */}
         {filters.dateFilterEnd && (
-          <div className="text-ds-md flex-direction-row flex items-center justify-between rounded-[6px] bg-[var(--color-interactive)] px-ds-03 py-[6px] text-[var(--color-text-on-color)]">
+          <div className="text-ds-md flex-direction-row flex items-center justify-between rounded-[6px] bg-interactive px-ds-03 py-[6px] text-text-on-color">
             <div className="flex items-center">
               <CalendarIcon />
               <span className="ml-[2px] mr-ds-02">
@@ -232,14 +232,14 @@ export function BreakAdminHeader({
             setFilters((prev) => ({ ...prev, isOpen: open }))
           }}
         >
-          <DropdownMenuTrigger className="text-ds-md flex-direction-row flex items-center justify-between rounded-[6px] border border-[var(--color-border-subtle)] bg-[var(--color-layer-01)] p-ds-02b">
+          <DropdownMenuTrigger className="text-ds-md flex-direction-row flex items-center justify-between rounded-[6px] border border-border-subtle bg-layer-01 p-ds-02b">
             <div className="flex items-center">
               <CalendarDateIcon />
-              <span className="mx-ds-03 text-[var(--color-text-secondary)]">
+              <span className="mx-ds-03 text-text-secondary">
                 Date
               </span>
             </div>
-            <ArrowDropdownIcon className="h-[var(--icon-sm)] w-[var(--icon-sm)]" />
+            <ArrowDropdownIcon className="h-ico-sm w-ico-sm" />
           </DropdownMenuTrigger>
           <DropdownMenuContent className="mr-32 p-ds-04">
             <div className="flex w-[140px] flex-col items-center justify-start">
@@ -250,7 +250,7 @@ export function BreakAdminHeader({
                   aria-label="Previous month"
                   onClick={handlePrev}
                 />
-                <span className="text-ds-md text-[var(--color-text-secondary)]">
+                <span className="text-ds-md text-text-secondary">
                   {monthMap[filters.currMonth].name}
                 </span>
                 <IconButton
@@ -272,7 +272,7 @@ export function BreakAdminHeader({
                     }))
                   }}
                 />
-                <span className="text-ds-md text-[var(--color-text-secondary)]">
+                <span className="text-ds-md text-text-secondary">
                   {filters.currYear}
                 </span>
                 <IconButton

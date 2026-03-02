@@ -133,10 +133,10 @@ export function AttendanceOverview({
                 return (
                   <div
                     key={status}
-                    className="flex w-full flex-col gap-[12px] rounded-[var(--radius-md)] bg-[var(--color-layer-02)] p-[24px] md:rounded-[var(--radius-lg)]"
+                    className="flex w-full flex-col gap-[12px] rounded-ds-md bg-layer-02 p-[24px] md:rounded-ds-lg"
                   >
                     {usersList?.length > 0 && (
-                      <h2 className="text-ds-sm font-semibold uppercase tracking-wider capitalize text-[var(--color-text-tertiary)]">
+                      <h2 className="text-ds-sm font-semibold uppercase tracking-wider capitalize text-text-tertiary">
                         {`On Break (${usersList?.length || 0})`}
                       </h2>
                     )}
@@ -162,14 +162,14 @@ export function AttendanceOverview({
             ([status, groupUsers]) => (
               <div
                 key={status}
-                className={`flex w-full flex-col gap-ds-04 rounded-[var(--radius-md)] bg-[var(--color-layer-02)] p-ds-06 md:rounded-[var(--radius-lg)] md:p-ds-05 ${
+                className={`flex w-full flex-col gap-ds-04 rounded-ds-md bg-layer-02 p-ds-06 md:rounded-ds-lg md:p-ds-05 ${
                   status !== 'yetToMark'
-                    ? 'border-r border-[var(--color-border-default)]'
+                    ? 'border-r border-border'
                     : ''
                 } max-md:border-0 max-md:p-[16px]`}
                 style={{ minWidth: '200px' }}
               >
-                <h2 className="text-ds-sm font-semibold uppercase tracking-wider capitalize text-[var(--color-text-tertiary)]">
+                <h2 className="text-ds-sm font-semibold uppercase tracking-wider capitalize text-text-tertiary">
                   {status === 'yetToMark'
                     ? 'Yet to Mark'
                     : status

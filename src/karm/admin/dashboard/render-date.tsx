@@ -154,7 +154,7 @@ export function RenderDate({
     'flex w-full items-center justify-center p-ds-02',
     isBreakStartOnly && 'rounded-l-[20px]',
     isBreakEndOnly && 'rounded-r-[20px]',
-    isBreakMidNonWeekly && 'bg-[var(--color-interactive-subtle)]',
+    isBreakMidNonWeekly && 'bg-interactive-subtle',
   )
 
   // ── Inner date circle classes (replaces getStyles) ──
@@ -164,7 +164,7 @@ export function RenderDate({
     // Base layout & transitions
     'flex h-10 w-10 items-center justify-center rounded-full text-ds-base relative overflow-hidden',
     'transition-[background-color,color,border] duration-200',
-    'outline-[var(--color-border-strong)] outline-solid outline-0',
+    'outline-border-strong outline-solid outline-0',
 
     // Cursor
     state.disabled ? 'cursor-default' : 'cursor-pointer',
@@ -172,19 +172,19 @@ export function RenderDate({
     // ── Base states (mutually exclusive in original if/else) ──
 
     // Disabled
-    state.disabled && 'bg-transparent text-[var(--color-text-disabled)]',
+    state.disabled && 'bg-transparent text-text-disabled',
 
     // Today (not break, not disabled)
     !state.disabled && state.today && !state.isBreak &&
-      'bg-[var(--color-interactive)] text-[var(--color-text-on-color)] shadow-[inset_0_4px_4px_var(--color-inset-glow),inset_0_0_8px_var(--color-interactive-hover)]',
+      'bg-interactive text-text-on-color shadow-[inset_0_4px_4px_var(--color-inset-glow),inset_0_0_8px_var(--color-interactive-hover)]',
 
     // Break (not disabled, not today-only)
     !state.disabled && state.isBreak && !isBreakMidNonWeekly &&
-      'bg-[var(--color-interactive-selected)] text-[var(--color-text-secondary)] shadow-[inset_0_4px_4px_var(--color-inset-glow),inset_0_0_4px_var(--color-focus)]',
+      'bg-interactive-selected text-text-secondary shadow-[inset_0_4px_4px_var(--color-inset-glow),inset_0_0_4px_var(--color-focus)]',
 
     // Break mid in non-weekly view overrides break base
     !state.disabled && state.isBreak && isBreakMidNonWeekly &&
-      'rounded-none bg-[var(--color-interactive-subtle)] text-[var(--color-text-secondary)] shadow-none',
+      'rounded-none bg-interactive-subtle text-text-secondary shadow-none',
 
     // Break border-radius overrides for non-weekly
     !state.disabled && state.isBreak && isBreakStartOnly &&
@@ -194,55 +194,55 @@ export function RenderDate({
 
     // Absent (not disabled, not today, not break)
     !state.disabled && !state.today && !state.isBreak && state.isAbsent &&
-      'bg-transparent text-[var(--color-error)]',
+      'bg-transparent text-error',
 
     // Present (not disabled, not today, not break, not absent)
     !state.disabled && !state.today && !state.isBreak && !state.isAbsent && state.isPresent &&
-      'bg-transparent text-[var(--color-text-primary)]',
+      'bg-transparent text-text-primary',
 
     // Default (not disabled, not today, not break, not absent, not present)
     !state.disabled && state.isDefault &&
-      'bg-transparent text-[var(--color-text-secondary)]',
+      'bg-transparent text-text-secondary',
 
     // ── Hover overrides ──
 
     // Hover on today (not break)
     state.hover && !state.disabled && state.today && !state.isBreak &&
-      'bg-[var(--color-interactive)] text-[var(--color-text-on-color)] shadow-[inset_0_4px_4px_var(--color-inset-glow),inset_0_0_8px_var(--color-interactive-hover)]',
+      'bg-interactive text-text-on-color shadow-[inset_0_4px_4px_var(--color-inset-glow),inset_0_0_8px_var(--color-interactive-hover)]',
 
     // Hover on present (not today, not break)
     state.hover && !state.disabled && !state.today && !state.isBreak && state.isPresent &&
-      'bg-[var(--color-field)] text-[var(--color-text-primary)]',
+      'bg-field text-text-primary',
 
     // Hover on default (not today, not break, not present)
     state.hover && !state.disabled && !state.today && !state.isBreak && !state.isPresent && state.isDefault &&
-      'bg-[var(--color-field)] text-[var(--color-text-secondary)]',
+      'bg-field text-text-secondary',
 
     // Hover on break (same visual as base break, but re-assert to match original)
     state.hover && !state.disabled && state.isBreak && !isBreakMidNonWeekly &&
-      'bg-[var(--color-interactive-selected)] text-[var(--color-text-secondary)] shadow-[inset_0_4px_4px_var(--color-inset-glow),inset_0_0_4px_var(--color-focus)]',
+      'bg-interactive-selected text-text-secondary shadow-[inset_0_4px_4px_var(--color-inset-glow),inset_0_0_4px_var(--color-focus)]',
     state.hover && !state.disabled && state.isBreak && isBreakMidNonWeekly &&
-      'rounded-none bg-[var(--color-interactive-subtle)] text-[var(--color-text-secondary)] shadow-none',
+      'rounded-none bg-interactive-subtle text-text-secondary shadow-none',
 
     // Hover on absent (not today, not break)
     state.hover && !state.disabled && !state.today && !state.isBreak && state.isAbsent &&
-      'bg-[var(--color-field)] text-[var(--color-error)]',
+      'bg-field text-error',
 
     // ── Focus ──
     state.focus && !state.pressed && 'outline-2',
 
     // ── Pressed ──
     state.pressed && (state.isPresent || state.isAbsent || state.isDefault || state.disabled) &&
-      'bg-[var(--color-error-surface)]',
+      'bg-error-surface',
 
     // ── Selected ──
     state.selected && 'font-semibold',
-    state.selected && activeTimeFrame === 'monthly' && 'text-[var(--color-text-primary)]',
+    state.selected && activeTimeFrame === 'monthly' && 'text-text-primary',
 
     // ── DisabledState (visual-only disabled, different from functional disabled) ──
-    state.disabledState && 'text-[var(--color-text-disabled)]',
+    state.disabledState && 'text-text-disabled',
     state.disabledState && state.today &&
-      'bg-[var(--color-text-disabled)] text-[var(--color-text-on-color)]',
+      'bg-text-disabled text-text-on-color',
   )
 
   return (
@@ -269,7 +269,7 @@ export function RenderDate({
       >
         {day.date}
         {state.isAbsent && (
-          <span className="absolute bottom-0 left-1/2 h-1.5 w-1.5 -translate-x-1/2 rounded-full bg-[var(--color-error)]" />
+          <span className="absolute bottom-0 left-1/2 h-1.5 w-1.5 -translate-x-1/2 rounded-full bg-error" />
         )}
       </div>
     </div>

@@ -56,14 +56,14 @@ interface ActionConfig {
 const ACTION_MAP: Record<string, ActionConfig> = {
   'task.created': {
     icon: IconPlus,
-    color: 'text-[var(--color-success-text)]',
-    dotColor: 'bg-[var(--color-success)]',
+    color: 'text-success-text',
+    dotColor: 'bg-success',
     getDescription: () => 'created this task',
   },
   'task.updated': {
     icon: IconEdit,
-    color: 'text-[var(--color-info-text)]',
-    dotColor: 'bg-[var(--color-info)]',
+    color: 'text-info-text',
+    dotColor: 'bg-info',
     getDescription: (entry) => {
       const meta = entry.metadata as Record<string, unknown> | null
       if (meta?.field === 'title') return 'updated the title'
@@ -77,8 +77,8 @@ const ACTION_MAP: Record<string, ActionConfig> = {
   },
   'task.moved': {
     icon: IconArrowRight,
-    color: 'text-[var(--color-warning-text)]',
-    dotColor: 'bg-[var(--color-warning)]',
+    color: 'text-warning-text',
+    dotColor: 'bg-warning',
     getDescription: (entry) => {
       const meta = entry.metadata as Record<string, unknown> | null
       const from = meta?.fromColumn || 'unknown'
@@ -88,8 +88,8 @@ const ACTION_MAP: Record<string, ActionConfig> = {
   },
   'task.assigned': {
     icon: IconUserPlus,
-    color: 'text-[var(--color-info-text)]',
-    dotColor: 'bg-[var(--color-info)]',
+    color: 'text-info-text',
+    dotColor: 'bg-info',
     getDescription: (entry) => {
       const meta = entry.metadata as Record<string, unknown> | null
       return `assigned ${meta?.assigneeName || 'a user'}`
@@ -97,8 +97,8 @@ const ACTION_MAP: Record<string, ActionConfig> = {
   },
   'task.unassigned': {
     icon: IconUserMinus,
-    color: 'text-[var(--color-text-secondary)]',
-    dotColor: 'bg-[var(--color-icon-disabled)]',
+    color: 'text-text-secondary',
+    dotColor: 'bg-icon-disabled',
     getDescription: (entry) => {
       const meta = entry.metadata as Record<string, unknown> | null
       return `removed ${meta?.assigneeName || 'a user'}`
@@ -106,14 +106,14 @@ const ACTION_MAP: Record<string, ActionConfig> = {
   },
   'task.commented': {
     icon: IconMessage,
-    color: 'text-[var(--color-interactive)]',
-    dotColor: 'bg-[var(--color-interactive)]',
+    color: 'text-interactive',
+    dotColor: 'bg-interactive',
     getDescription: () => 'added a comment',
   },
   'task.file_uploaded': {
     icon: IconPaperclip,
-    color: 'text-[var(--color-info-text)]',
-    dotColor: 'bg-[var(--color-info)]',
+    color: 'text-info-text',
+    dotColor: 'bg-info',
     getDescription: (entry) => {
       const meta = entry.metadata as Record<string, unknown> | null
       return `uploaded ${meta?.fileName || 'a file'}`
@@ -121,8 +121,8 @@ const ACTION_MAP: Record<string, ActionConfig> = {
   },
   'task.review_requested': {
     icon: IconGitPullRequest,
-    color: 'text-[var(--color-warning-text)]',
-    dotColor: 'bg-[var(--color-warning)]',
+    color: 'text-warning-text',
+    dotColor: 'bg-warning',
     getDescription: (entry) => {
       const meta = entry.metadata as Record<string, unknown> | null
       return `requested review from ${meta?.reviewerName || 'a reviewer'}`
@@ -130,8 +130,8 @@ const ACTION_MAP: Record<string, ActionConfig> = {
   },
   'task.review_completed': {
     icon: IconCircleCheck,
-    color: 'text-[var(--color-success-text)]',
-    dotColor: 'bg-[var(--color-success)]',
+    color: 'text-success-text',
+    dotColor: 'bg-success',
     getDescription: (entry) => {
       const meta = entry.metadata as Record<string, unknown> | null
       return `${meta?.status || 'reviewed'} the task`
@@ -139,8 +139,8 @@ const ACTION_MAP: Record<string, ActionConfig> = {
   },
   'task.visibility_changed': {
     icon: IconEye,
-    color: 'text-[var(--color-text-tertiary)]',
-    dotColor: 'bg-[var(--color-icon-secondary)]',
+    color: 'text-text-tertiary',
+    dotColor: 'bg-icon-secondary',
     getDescription: (entry) => {
       const meta = entry.metadata as Record<string, unknown> | null
       return `changed visibility to ${meta?.visibility || 'unknown'}`
@@ -148,8 +148,8 @@ const ACTION_MAP: Record<string, ActionConfig> = {
   },
   'task.priority_changed': {
     icon: IconFlag,
-    color: 'text-[var(--color-error-text)]',
-    dotColor: 'bg-[var(--color-error)]',
+    color: 'text-error-text',
+    dotColor: 'bg-error',
     getDescription: (entry) => {
       const meta = entry.metadata as Record<string, unknown> | null
       return `changed priority to ${meta?.priority || 'unknown'}`
@@ -157,14 +157,14 @@ const ACTION_MAP: Record<string, ActionConfig> = {
   },
   'task.labels_changed': {
     icon: IconTag,
-    color: 'text-[var(--color-info-text)]',
-    dotColor: 'bg-[var(--color-info)]',
+    color: 'text-info-text',
+    dotColor: 'bg-info',
     getDescription: () => 'updated labels',
   },
   'task.due_date_changed': {
     icon: IconCalendarEvent,
-    color: 'text-[var(--color-warning-text)]',
-    dotColor: 'bg-[var(--color-warning)]',
+    color: 'text-warning-text',
+    dotColor: 'bg-warning',
     getDescription: (entry) => {
       const meta = entry.metadata as Record<string, unknown> | null
       if (meta?.dueDate) return `set due date to ${meta.dueDate}`
@@ -175,8 +175,8 @@ const ACTION_MAP: Record<string, ActionConfig> = {
 
 const DEFAULT_ACTION: ActionConfig = {
   icon: IconActivity,
-  color: 'text-[var(--color-text-placeholder)]',
-  dotColor: 'bg-[var(--color-icon-disabled)]',
+  color: 'text-text-placeholder',
+  dotColor: 'bg-icon-disabled',
   getDescription: (entry) => entry.action,
 }
 
@@ -233,7 +233,7 @@ function ActivityTab({ activities, className }: ActivityTabProps) {
   return (
     <div className={cn('relative', className)}>
       {/* Timeline line */}
-      <div className="absolute left-[11px] top-2 bottom-2 w-px bg-[var(--color-border-default)]" />
+      <div className="absolute left-[11px] top-2 bottom-2 w-px bg-border" />
 
       {/* Entries */}
       <div className="space-y-ds-05">
@@ -246,10 +246,10 @@ function ActivityTab({ activities, className }: ActivityTabProps) {
           return (
             <div key={entry.id} className="relative flex gap-ds-04 pl-0">
               {/* Dot on timeline */}
-              <div className="relative z-10 flex h-[22px] w-[22px] shrink-0 items-center justify-center rounded-[var(--radius-full)] bg-[var(--color-layer-01)]">
+              <div className="relative z-10 flex h-[22px] w-[22px] shrink-0 items-center justify-center rounded-ds-full bg-layer-01">
                 <div
                   className={cn(
-                    'flex h-[var(--icon-md)] w-[var(--icon-md)] items-center justify-center rounded-[var(--radius-full)] bg-[var(--color-layer-02)]',
+                    'flex h-ico-md w-ico-md items-center justify-center rounded-ds-full bg-layer-02',
                   )}
                 >
                   <Icon
@@ -262,14 +262,14 @@ function ActivityTab({ activities, className }: ActivityTabProps) {
               {/* Content */}
               <div className="flex-1 min-w-0 pt-0.5">
                 <p className="text-ds-sm">
-                  <span className="font-medium text-[var(--color-text-primary)]">
+                  <span className="font-medium text-text-primary">
                     {actorName}
                   </span>
-                  <span className="text-[var(--color-text-tertiary)]">
+                  <span className="text-text-tertiary">
                     {' '}{description}
                   </span>
                 </p>
-                <p className="mt-0.5 text-ds-xs text-[var(--color-text-placeholder)]">
+                <p className="mt-0.5 text-ds-xs text-text-placeholder">
                   {formatTimestamp(entry.timestamp)}
                 </p>
               </div>

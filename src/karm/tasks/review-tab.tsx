@@ -125,7 +125,7 @@ function ReviewTab({
             return (
               <div
                 key={review.id}
-                className="rounded-[var(--radius-lg)] border border-[var(--color-border-default)] bg-[var(--color-layer-01)] p-ds-04"
+                className="rounded-ds-lg border border-border bg-layer-01 p-ds-04"
               >
                 {/* Header */}
                 <div className="flex items-center gap-2.5">
@@ -136,15 +136,15 @@ function ReviewTab({
                         alt={review.reviewer.name}
                       />
                     )}
-                    <AvatarFallback className="bg-[var(--color-layer-03)] text-[8px] font-semibold text-[var(--color-text-on-color)]">
+                    <AvatarFallback className="bg-layer-03 text-[8px] font-semibold text-text-on-color">
                       {getInitials(review.reviewer.name)}
                     </AvatarFallback>
                   </Avatar>
                   <div className="flex-1 min-w-0">
-                    <span className="text-ds-md font-medium text-[var(--color-text-primary)]">
+                    <span className="text-ds-md font-medium text-text-primary">
                       {review.reviewer.name}
                     </span>
-                    <span className="ml-ds-03 text-ds-sm text-[var(--color-text-placeholder)]">
+                    <span className="ml-ds-03 text-ds-sm text-text-placeholder">
                       requested by {review.requestedBy.name}
                     </span>
                   </div>
@@ -157,8 +157,8 @@ function ReviewTab({
 
                 {/* Feedback */}
                 {review.feedback && (
-                  <div className="mt-2.5 rounded-[var(--radius-md)] bg-[var(--color-layer-02)] px-ds-04 py-ds-03">
-                    <p className="text-ds-sm text-[var(--color-text-secondary)]">
+                  <div className="mt-2.5 rounded-ds-md bg-layer-02 px-ds-04 py-ds-03">
+                    <p className="text-ds-sm text-text-secondary">
                       {review.feedback}
                     </p>
                   </div>
@@ -179,7 +179,7 @@ function ReviewTab({
                           }
                           placeholder="Add feedback (optional)..."
                           rows={2}
-                          className="w-full resize-none rounded-[var(--radius-md)] border border-[var(--color-border-default)] bg-transparent px-2.5 py-ds-03 text-ds-sm text-[var(--color-text-primary)] placeholder:text-[var(--color-text-placeholder)] outline-none focus:border-[var(--color-border-subtle)]"
+                          className="w-full resize-none rounded-ds-md border border-border bg-transparent px-2.5 py-ds-03 text-ds-sm text-text-primary placeholder:text-text-placeholder outline-none focus:border-border-subtle"
                         />
                         <div className="flex items-center gap-ds-02b">
                           {RESPONSE_OPTIONS.map((opt) => {
@@ -190,13 +190,13 @@ function ReviewTab({
                                 type="button"
                                 onClick={() => handleRespond(review.id, opt.status)}
                                 className={cn(
-                                  'inline-flex items-center gap-ds-02 rounded-[var(--radius-md)] px-2.5 py-ds-02 text-ds-sm font-semibold transition-colors',
+                                  'inline-flex items-center gap-ds-02 rounded-ds-md px-2.5 py-ds-02 text-ds-sm font-semibold transition-colors',
                                   opt.status === 'APPROVED' &&
-                                    'bg-[var(--color-success-surface)] text-[var(--color-text-success)] hover:opacity-90',
+                                    'bg-success-surface text-text-success hover:opacity-90',
                                   opt.status === 'CHANGES_REQUESTED' &&
-                                    'bg-[var(--color-warning-surface)] text-[var(--color-text-warning)] hover:opacity-90',
+                                    'bg-warning-surface text-text-warning hover:opacity-90',
                                   opt.status === 'REJECTED' &&
-                                    'bg-[var(--color-error-surface)] text-[var(--color-text-error)] hover:opacity-90',
+                                    'bg-error-surface text-text-error hover:opacity-90',
                                 )}
                               >
                                 <Icon className="h-3 w-3" stroke={2} />
@@ -207,7 +207,7 @@ function ReviewTab({
                           <button
                             type="button"
                             onClick={() => setExpandedId(null)}
-                            className="ml-auto text-ds-sm text-[var(--color-text-placeholder)] hover:text-[var(--color-text-secondary)]"
+                            className="ml-auto text-ds-sm text-text-placeholder hover:text-text-secondary"
                           >
                             Cancel
                           </button>
@@ -217,7 +217,7 @@ function ReviewTab({
                       <button
                         type="button"
                         onClick={() => setExpandedId(review.id)}
-                        className="text-ds-sm font-medium text-[var(--color-interactive)] transition-colors hover:underline"
+                        className="text-ds-sm font-medium text-interactive transition-colors hover:underline"
                       >
                         Respond
                       </button>
@@ -226,7 +226,7 @@ function ReviewTab({
                 )}
 
                 {/* Timestamp */}
-                <p className="mt-ds-03 text-ds-xs text-[var(--color-text-placeholder)]">
+                <p className="mt-ds-03 text-ds-xs text-text-placeholder">
                   {formatDate(review.createdAt)}
                 </p>
               </div>
@@ -250,9 +250,9 @@ function ReviewTab({
       >
         <button
           type="button"
-          className="mt-ds-04 inline-flex items-center gap-ds-02b rounded-[var(--radius-lg)] px-ds-03 py-ds-02b text-ds-md text-[var(--color-text-placeholder)] transition-colors hover:bg-[var(--color-field)] hover:text-[var(--color-text-secondary)]"
+          className="mt-ds-04 inline-flex items-center gap-ds-02b rounded-ds-lg px-ds-03 py-ds-02b text-ds-md text-text-placeholder transition-colors hover:bg-field hover:text-text-secondary"
         >
-          <IconPlus className="h-[var(--icon-sm)] w-[var(--icon-sm)]" stroke={1.5} />
+          <IconPlus className="h-ico-sm w-ico-sm" stroke={1.5} />
           Request Review
         </button>
       </MemberPicker>

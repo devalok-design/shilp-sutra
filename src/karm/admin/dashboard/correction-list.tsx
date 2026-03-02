@@ -66,14 +66,14 @@ export function CorrectionList({
 
   return (
     <div
-      className={`flex max-h-[200px] w-full flex-col overflow-y-auto bg-[var(--color-layer-01)] px-ds-06 max-md:h-[calc(100vh-586px)] max-md:max-h-[calc(100vh-586px)] max-md:min-h-[372px] max-md:p-0 ${activeTimeFrame === 'weekly1' ? 'max-md:h-[calc(100vh-824px)] max-md:max-h-[calc(100vh-824px)]' : ''}`}
+      className={`flex max-h-[200px] w-full flex-col overflow-y-auto bg-layer-01 px-ds-06 max-md:h-[calc(100vh-586px)] max-md:max-h-[calc(100vh-586px)] max-md:min-h-[372px] max-md:p-0 ${activeTimeFrame === 'weekly1' ? 'max-md:h-[calc(100vh-824px)] max-md:max-h-[calc(100vh-824px)]' : ''}`}
     >
       {corrections.map((correction) => (
         <Fragment key={correction.id}>
-          <div className="max-md:border-1 flex items-center justify-between px-ds-03 py-3.5 max-md:rounded-[8px] max-md:border-[var(--color-border-default)]">
+          <div className="max-md:border-1 flex items-center justify-between px-ds-03 py-3.5 max-md:rounded-[8px] max-md:border-border">
             <div className="flex items-center gap-ds-04">
               <img
-                className="h-10 w-10 rounded-[var(--radius-full)] border-2 max-md:mb-[auto]"
+                className="h-10 w-10 rounded-ds-full border-2 max-md:mb-[auto]"
                 src={
                   userImages[correction?.user?.id || ''] ||
                   (assetsBaseUrl
@@ -85,19 +85,19 @@ export function CorrectionList({
                 alt={`${correction?.user?.name}'s Icon`}
               />
               <div className="flex flex-col gap-ds-02">
-                <p className="text-ds-sm text-[var(--color-text-secondary)]">
+                <p className="text-ds-sm text-text-secondary">
                   {correction?.user?.name}
                 </p>
                 <div className="flex w-full flex-wrap items-center gap-ds-03">
-                  <p className="B1 semibold text-[var(--color-text-primary)]">
+                  <p className="B1 semibold text-text-primary">
                     {correction?.reason}
                   </p>
                   {correction?.reason ? (
-                    <p className="B1 font-semibold text-[var(--color-text-tertiary)]">
+                    <p className="B1 font-semibold text-text-tertiary">
                       &bull;
                     </p>
                   ) : null}
-                  <p className="text-ds-base text-[var(--color-text-tertiary)]">
+                  <p className="text-ds-base text-text-tertiary">
                     {formatDateWithWeekday(
                       new Date(correction?.date),
                     )}
@@ -110,7 +110,7 @@ export function CorrectionList({
                 <Tooltip delayDuration={0}>
                   <TooltipTrigger asChild>
                     <button
-                      className={`rounded-[var(--radius-full)] p-ds-03 text-[var(--color-text-tertiary)] hover:text-[var(--color-text-secondary)] ${
+                      className={`rounded-ds-full p-ds-03 text-text-tertiary hover:text-text-secondary ${
                         correction?.user?.id === currentUserId
                           ? 'cursor-not-allowed opacity-50'
                           : ''
@@ -144,7 +144,7 @@ export function CorrectionList({
                 <Tooltip delayDuration={0}>
                   <TooltipTrigger asChild>
                     <button
-                      className={`rounded-[var(--radius-full)] p-ds-03 ${
+                      className={`rounded-ds-full p-ds-03 ${
                         correction?.user?.id === currentUserId
                           ? 'cursor-not-allowed opacity-50'
                           : ''
@@ -161,7 +161,7 @@ export function CorrectionList({
                         correction?.user?.id === currentUserId
                       }
                     >
-                      <TickIcon className="h-6 w-6 text-[var(--color-text-success)]" />
+                      <TickIcon className="h-6 w-6 text-text-success" />
                     </button>
                   </TooltipTrigger>
                   {correction?.user?.id === currentUserId && (

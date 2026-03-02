@@ -80,24 +80,24 @@ export default function AttendanceCTA({
   // Marked state: compact strip
   if (isMarked && !isOnBreak) {
     return (
-      <div className="relative overflow-hidden rounded-[var(--radius-2xl)] border border-[var(--color-border-default)] bg-[var(--color-layer-01)]">
+      <div className="relative overflow-hidden rounded-ds-2xl border border-border bg-layer-01">
         <div className="flex items-center justify-between px-ds-06 py-ds-05b sm:px-ds-07">
           <div className="flex flex-col gap-ds-02">
-            <h2 className="text-ds-2xl text-[var(--color-text-primary)]">
+            <h2 className="text-ds-2xl text-text-primary">
               {greeting},{' '}
-              <span className="font-semibold italic text-[var(--color-interactive)]">
+              <span className="font-semibold italic text-interactive">
                 {firstName}
               </span>
             </h2>
-            <p className="text-ds-md text-[var(--color-text-tertiary)]">
+            <p className="text-ds-md text-text-tertiary">
               {currentDate}
             </p>
           </div>
-          <div className="flex items-center gap-ds-03 rounded-[var(--radius-xl)] bg-[var(--color-success-surface)] px-ds-05 py-2.5">
-            <div className="flex h-[var(--icon-md)] w-[var(--icon-md)] items-center justify-center rounded-[var(--radius-full)] bg-[var(--color-text-success)]">
-              <IconCheck className="h-3 w-3 text-[var(--color-text-on-color)]" />
+          <div className="flex items-center gap-ds-03 rounded-ds-xl bg-success-surface px-ds-05 py-2.5">
+            <div className="flex h-ico-md w-ico-md items-center justify-center rounded-ds-full bg-text-success">
+              <IconCheck className="h-3 w-3 text-text-on-color" />
             </div>
-            <span className="text-ds-md font-semibold text-[var(--color-text-success)]">
+            <span className="text-ds-md font-semibold text-text-success">
               Marked at{' '}
               {timeIn ? formatTime(timeIn) : '--:--'}
             </span>
@@ -110,22 +110,22 @@ export default function AttendanceCTA({
   // On Break state
   if (isOnBreak) {
     return (
-      <div className="relative overflow-hidden rounded-[var(--radius-2xl)] border border-[var(--color-border-default)] bg-[var(--color-layer-01)]">
+      <div className="relative overflow-hidden rounded-ds-2xl border border-border bg-layer-01">
         <div className="flex items-center justify-between px-ds-06 py-ds-05b sm:px-ds-07">
           <div className="flex flex-col gap-ds-02">
-            <h2 className="text-ds-2xl text-[var(--color-text-primary)]">
+            <h2 className="text-ds-2xl text-text-primary">
               {greeting},{' '}
-              <span className="font-semibold italic text-[var(--color-interactive)]">
+              <span className="font-semibold italic text-interactive">
                 {firstName}
               </span>
             </h2>
-            <p className="text-ds-md text-[var(--color-text-tertiary)]">
+            <p className="text-ds-md text-text-tertiary">
               {currentDate}
             </p>
           </div>
-          <div className="flex items-center gap-ds-03 rounded-[var(--radius-xl)] bg-[var(--color-warning-surface)] px-ds-05 py-2.5">
-            <IconCoffee className="h-[var(--icon-sm)] w-[var(--icon-sm)] text-[var(--color-text-warning)]" />
-            <span className="text-ds-md font-semibold text-[var(--color-text-warning)]">
+          <div className="flex items-center gap-ds-03 rounded-ds-xl bg-warning-surface px-ds-05 py-2.5">
+            <IconCoffee className="h-ico-sm w-ico-sm text-text-warning" />
+            <span className="text-ds-md font-semibold text-text-warning">
               On break
               {attendance?.breakReason ? ` \u2014 ${attendance.breakReason}` : ''}
             </span>
@@ -138,22 +138,22 @@ export default function AttendanceCTA({
   // Unmarked + cannot mark: attendance window closed
   if (!canMarkAttendance) {
     return (
-      <div className="relative overflow-hidden rounded-[var(--radius-2xl)] border border-[var(--color-border-default)] bg-[var(--color-layer-01)]">
+      <div className="relative overflow-hidden rounded-ds-2xl border border-border bg-layer-01">
         <div className="flex items-center justify-between px-ds-06 py-ds-06 sm:px-ds-07 sm:py-ds-07">
           <div className="flex flex-col gap-ds-02b">
-            <h2 className="text-ds-3xl text-[var(--color-text-primary)]">
+            <h2 className="text-ds-3xl text-text-primary">
               {greeting},{' '}
-              <span className="font-semibold italic text-[var(--color-interactive)]">
+              <span className="font-semibold italic text-interactive">
                 {firstName}
               </span>
             </h2>
-            <p className="text-ds-base text-[var(--color-text-tertiary)]">
+            <p className="text-ds-base text-text-tertiary">
               {currentDate}
             </p>
           </div>
-          <div className="flex items-center gap-ds-03 rounded-[var(--radius-xl)] bg-[var(--color-layer-02)] px-ds-05 py-2.5">
-            <IconClock className="h-[var(--icon-sm)] w-[var(--icon-sm)] text-[var(--color-text-placeholder)]" />
-            <span className="text-ds-md text-[var(--color-text-placeholder)]">
+          <div className="flex items-center gap-ds-03 rounded-ds-xl bg-layer-02 px-ds-05 py-2.5">
+            <IconClock className="h-ico-sm w-ico-sm text-text-placeholder" />
+            <span className="text-ds-md text-text-placeholder">
               Attendance window closed
             </span>
           </div>
@@ -164,17 +164,17 @@ export default function AttendanceCTA({
 
   // Unmarked + can mark: large greeting with mark button
   return (
-    <div className="relative overflow-hidden rounded-[var(--radius-2xl)] border border-[var(--color-border-default)] bg-gradient-to-br from-[var(--color-interactive-subtle)] via-[var(--color-background)] to-[var(--color-success-surface)]">
+    <div className="relative overflow-hidden rounded-ds-2xl border border-border bg-gradient-to-br from-interactive-subtle via-background to-success-surface">
       <div className="flex items-center justify-between px-ds-06 py-ds-07 sm:px-ds-07 sm:py-10">
         <div className="flex flex-col gap-ds-02b">
-          <h2 className="text-ds-3xl text-[var(--color-text-primary)]">
+          <h2 className="text-ds-3xl text-text-primary">
             {greeting},{' '}
-            <span className="font-semibold italic text-[var(--color-interactive)]">
+            <span className="font-semibold italic text-interactive">
               {firstName}
             </span>
           </h2>
           <div className="flex items-center gap-ds-03">
-            <p className="text-ds-base text-[var(--color-text-tertiary)]">
+            <p className="text-ds-base text-text-tertiary">
               {currentDate}
             </p>
           </div>
@@ -184,7 +184,7 @@ export default function AttendanceCTA({
           type="button"
           onClick={onMarkAttendance}
           disabled={isSubmitting}
-          className="flex items-center gap-2.5 rounded-[var(--radius-xl)] bg-[var(--color-interactive)] px-7 py-3.5 font-semibold text-[var(--color-text-on-color)] shadow-02 transition-all hover:-translate-y-0.5 hover:shadow-03 active:translate-y-0 active:scale-[0.98] disabled:opacity-50"
+          className="flex items-center gap-2.5 rounded-ds-xl bg-interactive px-7 py-3.5 font-semibold text-text-on-color shadow-02 transition-all hover:-translate-y-0.5 hover:shadow-03 active:translate-y-0 active:scale-[0.98] disabled:opacity-50"
         >
           {isSubmitting ? 'Marking...' : 'Mark Attendance'}
           {!isSubmitting && (

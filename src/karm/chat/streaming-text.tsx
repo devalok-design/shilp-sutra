@@ -14,13 +14,13 @@ export function StreamingText({ text }: { text: string }) {
               return <code className={className}>{children}</code>
             }
             return (
-              <code className="rounded bg-[var(--color-field)] px-ds-02 py-0.5 text-ds-md">
+              <code className="rounded bg-field px-ds-02 py-0.5 text-ds-md">
                 {children}
               </code>
             )
           },
           pre: ({ children }) => (
-            <pre className="mb-ds-03 overflow-x-auto rounded-[var(--radius-lg)] bg-[var(--color-field)] p-ds-04 text-ds-md">
+            <pre className="mb-ds-03 overflow-x-auto rounded-ds-lg bg-field p-ds-04 text-ds-md">
               {children}
             </pre>
           ),
@@ -38,7 +38,7 @@ export function StreamingText({ text }: { text: string }) {
       >
         {text}
       </ReactMarkdown>
-      <span className="inline-block h-4 w-2 animate-pulse bg-[var(--color-text-secondary)] ml-0.5" />
+      <span className="inline-block h-4 w-2 animate-pulse bg-text-secondary ml-0.5" />
     </div>
   )
 }

@@ -50,8 +50,8 @@ export function ChatInput({
   )
 
   return (
-    <div className="border-t border-[var(--color-border-default)] bg-[var(--color-layer-01)] p-ds-04">
-      <div className="flex items-end gap-ds-03 rounded-[var(--radius-xl)] border border-[var(--color-border-default)] bg-[var(--color-field)] px-ds-04 py-ds-03">
+    <div className="border-t border-border bg-layer-01 p-ds-04">
+      <div className="flex items-end gap-ds-03 rounded-ds-xl border border-border bg-field px-ds-04 py-ds-03">
         <textarea
           ref={textareaRef}
           value={text}
@@ -63,29 +63,29 @@ export function ChatInput({
           placeholder={placeholder}
           disabled={isStreaming}
           rows={1}
-          className="text-ds-md no-scrollbar max-h-[160px] min-h-[24px] flex-1 resize-none bg-transparent text-[var(--color-text-primary)] placeholder:text-[var(--color-text-placeholder)] focus:outline-none disabled:opacity-50"
+          className="text-ds-md no-scrollbar max-h-[160px] min-h-[24px] flex-1 resize-none bg-transparent text-text-primary placeholder:text-text-placeholder focus:outline-none disabled:opacity-50"
         />
         {isStreaming ? (
           <button
             onClick={onCancel}
-            className="flex h-8 w-8 shrink-0 items-center justify-center rounded-[var(--radius-lg)] bg-[var(--color-error)] text-[var(--color-text-on-color)] transition-colors hover:bg-[var(--color-error-hover)]"
+            className="flex h-8 w-8 shrink-0 items-center justify-center rounded-ds-lg bg-error text-text-on-color transition-colors hover:bg-error-hover"
             aria-label="Stop generating"
           >
-            <IconSquare className="h-[var(--icon-sm)] w-[var(--icon-sm)]" />
+            <IconSquare className="h-ico-sm w-ico-sm" />
           </button>
         ) : (
           <button
             onClick={handleSend}
             disabled={!text.trim()}
-            className="flex h-8 w-8 shrink-0 items-center justify-center rounded-[var(--radius-lg)] bg-[var(--color-interactive)] text-[var(--color-text-on-color)] transition-colors hover:opacity-90 disabled:opacity-50"
+            className="flex h-8 w-8 shrink-0 items-center justify-center rounded-ds-lg bg-interactive text-text-on-color transition-colors hover:opacity-90 disabled:opacity-50"
             aria-label="Send message"
           >
-            <IconSend className="h-[var(--icon-sm)] w-[var(--icon-sm)]" />
+            <IconSend className="h-ico-sm w-ico-sm" />
           </button>
         )}
       </div>
       {disclaimer && (
-        <p className="text-ds-sm mt-ds-02b text-center text-[var(--color-text-placeholder)]">
+        <p className="text-ds-sm mt-ds-02b text-center text-text-placeholder">
           {disclaimer}
         </p>
       )}

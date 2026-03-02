@@ -37,7 +37,7 @@ const ClientPortalHeader = React.forwardRef<
       <header
         ref={ref}
         className={cn(
-          'flex h-16 items-center justify-between border-b border-[var(--color-border-subtle)] bg-[var(--color-layer-01)] px-ds-06',
+          'flex h-16 items-center justify-between border-b border-border-subtle bg-layer-01 px-ds-06',
           className,
         )}
         {...props}
@@ -47,14 +47,14 @@ const ClientPortalHeader = React.forwardRef<
             <img
               src={orgLogo}
               alt={orgName}
-              className="h-8 w-8 rounded-[var(--radius-md)] object-cover"
+              className="h-8 w-8 rounded-ds-md object-cover"
             />
           ) : (
-            <div className="flex h-8 w-8 items-center justify-center rounded-[var(--radius-md)] bg-[var(--color-interactive)] text-ds-sm font-semibold text-[var(--color-text-on-color)]">
+            <div className="flex h-8 w-8 items-center justify-center rounded-ds-md bg-interactive text-ds-sm font-semibold text-text-on-color">
               {initials}
             </div>
           )}
-          <span className="font-display text-ds-base font-semibold text-[var(--color-text-primary)]">
+          <span className="font-display text-ds-base font-semibold text-text-primary">
             {orgName}
           </span>
         </div>
@@ -63,11 +63,11 @@ const ClientPortalHeader = React.forwardRef<
           <div className="flex items-center gap-ds-03">
             <Avatar className="h-8 w-8">
               {userAvatar && <AvatarImage src={userAvatar} alt={userName} />}
-              <AvatarFallback className="bg-[var(--color-interactive-subtle)] text-ds-sm font-medium text-[var(--color-interactive)]">
+              <AvatarFallback className="bg-interactive-subtle text-ds-sm font-medium text-interactive">
                 {userInitials}
               </AvatarFallback>
             </Avatar>
-            <span className="hidden text-ds-md font-medium text-[var(--color-text-primary)] sm:inline">
+            <span className="hidden text-ds-md font-medium text-text-primary sm:inline">
               {userName}
             </span>
           </div>

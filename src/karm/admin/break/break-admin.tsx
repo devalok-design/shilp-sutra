@@ -298,8 +298,8 @@ export function BreakAdmin({
   // ============================================================
 
   return (
-    <div className="z-[1] flex w-full max-w-[var(--max-width)] flex-col items-center justify-center md:pt-0">
-      <div className="no-scrollbar w-full overflow-auto border border-[var(--color-border-subtle)] sm:rounded-[8px] max-md:rounded-none max-md:border-0">
+    <div className="z-[1] flex w-full max-w-layout flex-col items-center justify-center md:pt-0">
+      <div className="no-scrollbar w-full overflow-auto border border-border-subtle sm:rounded-[8px] max-md:rounded-none max-md:border-0">
         {/* Header */}
         <BreakAdminHeader
           filters={filters}
@@ -310,13 +310,13 @@ export function BreakAdmin({
         />
 
         {/* Body */}
-        <div className="no-scrollbar flex h-fit min-w-[800px] flex-col border-t-[1px] border-[var(--color-border-subtle)] bg-[var(--color-layer-02)] shadow-transparent max-lg:min-w-[100%] max-lg:overflow-x-auto">
-          <div className="flex w-full gap-ds-03 border-b-[1px] border-[var(--color-border-default)] px-ds-06 pt-ds-03 max-lg:min-w-[800px]">
+        <div className="no-scrollbar flex h-fit min-w-[800px] flex-col border-t-[1px] border-border-subtle bg-layer-02 shadow-transparent max-lg:min-w-[100%] max-lg:overflow-x-auto">
+          <div className="flex w-full gap-ds-03 border-b-[1px] border-border px-ds-06 pt-ds-03 max-lg:min-w-[800px]">
             <button
               className={`text-ds-sm font-semibold uppercase tracking-wider mb-[-1px] px-ds-03 py-ds-04 ${
                 activeTab === 'breaks'
-                  ? 'text-var(--color-text-primary) border-b-[1px] border-[var(--color-interactive-hover)]'
-                  : 'text-[var(--color-text-tertiary)]'
+                  ? 'text-var(--color-text-primary) border-b-[1px] border-interactive-hover'
+                  : 'text-text-tertiary'
               }`}
               onClick={() => setActiveTab('breaks')}
             >
@@ -325,24 +325,24 @@ export function BreakAdmin({
             <button
               className={`text-ds-sm font-semibold uppercase tracking-wider mb-[-1px] flex items-center gap-ds-02 px-ds-03 py-ds-04 ${
                 activeTab === 'requests'
-                  ? 'border-b-[1px] border-[var(--color-interactive-hover)] text-[var(--color-text-primary)]'
-                  : 'text-[var(--color-text-tertiary)]'
+                  ? 'border-b-[1px] border-interactive-hover text-text-primary'
+                  : 'text-text-tertiary'
               }`}
               onClick={() => setActiveTab('requests')}
             >
               REQUESTS{' '}
-              <span className="text-[var(--color-interactive-hover)]">{`(${pendingRequests.length})`}</span>
+              <span className="text-interactive-hover">{`(${pendingRequests.length})`}</span>
             </button>
             <button
               className={`text-ds-sm font-semibold uppercase tracking-wider mb-[-1px] flex items-center gap-ds-02 px-ds-03 py-ds-04 ${
                 activeTab === 'balance'
-                  ? 'border-b-[1px] border-[var(--color-interactive-hover)] text-[var(--color-text-primary)]'
-                  : 'text-[var(--color-text-tertiary)]'
+                  ? 'border-b-[1px] border-interactive-hover text-text-primary'
+                  : 'text-text-tertiary'
               }`}
               onClick={() => setActiveTab('balance')}
             >
               BALANCE{' '}
-              <span className="text-[var(--color-interactive-hover)]">{`(${breakBalanceData.length})`}</span>
+              <span className="text-interactive-hover">{`(${breakBalanceData.length})`}</span>
             </button>
           </div>
 
@@ -358,7 +358,7 @@ export function BreakAdmin({
                 onRefresh={onRefresh}
               />
             ) : activeTab === 'requests' ? (
-              <div className="no-scrollbar flex h-[400px] flex-col gap-ds-02 overflow-y-auto border-t border-t-[var(--color-border-default)] px-ds-06 pb-ds-02 pt-ds-02 max-md:h-[calc(100vh-317px)] max-md:border-0">
+              <div className="no-scrollbar flex h-[400px] flex-col gap-ds-02 overflow-y-auto border-t border-t-border px-ds-06 pb-ds-02 pt-ds-02 max-md:h-[calc(100vh-317px)] max-md:border-0">
                 {pendingRequests.map((request) => (
                   <LeaveRequest
                     key={request.id}

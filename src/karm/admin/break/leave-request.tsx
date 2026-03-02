@@ -63,29 +63,29 @@ export function LeaveRequest({
     <>
       <div
         key={request.id}
-        className="flex justify-between border-b border-[var(--color-border-default)] px-ds-03 py-[14px] last:border-b-0"
+        className="flex justify-between border-b border-border px-ds-03 py-[14px] last:border-b-0"
       >
         <div className="flex w-full items-center gap-ds-04">
           {userImages[request.user?.id || ''] ? (
             <img
-              className="bg-red h-10 w-10 overflow-hidden rounded-[var(--radius-full)] bg-[var(--color-layer-02)]"
+              className="bg-red h-10 w-10 overflow-hidden rounded-ds-full bg-layer-02"
               src={userImages[request.user?.id || '']}
               alt={''}
             />
           ) : (
-            <span className="flex h-7 w-full max-w-7 items-center justify-center rounded-[var(--radius-full)] bg-[var(--mapped-borders-margin-tertiary)] text-ds-sm font-medium uppercase text-[--color-text-primary]">
+            <span className="flex h-7 w-full max-w-7 items-center justify-center rounded-ds-full bg-[var(--mapped-borders-margin-tertiary)] text-ds-sm font-medium uppercase text-[--color-text-primary]">
               {request.user?.name?.[0] || 'U'}
             </span>
           )}
           <div className="flex w-auto max-w-[75%] flex-col items-start gap-[6px]">
             <div className="flex flex-row gap-ds-02b">
               <div className="flex items-center gap-ds-03">
-                <p className="text-ds-sm text-[var(--color-text-secondary)]">
+                <p className="text-ds-sm text-text-secondary">
                   {request.user?.name}
                 </p>
                 {request.correction && (
                   <>
-                    <div className="block h-3 w-[1px] bg-[var(--color-border-subtle)]"></div>{' '}
+                    <div className="block h-3 w-[1px] bg-border-subtle"></div>{' '}
                     <p className="text-ds-sm text-[var(--color-text-accent)]">
                       Attendance Corrections
                     </p>{' '}
@@ -98,13 +98,13 @@ export function LeaveRequest({
                 <div className="flex w-full flex-wrap items-center gap-ds-03">
                   <Tooltip>
                     <TooltipTrigger asChild>
-                      <p className="text-ds-base semibold line-clamp-2 cursor-default text-[var(--color-text-primary)]">
+                      <p className="text-ds-base semibold line-clamp-2 cursor-default text-text-primary">
                         {request.reason}
                       </p>
                     </TooltipTrigger>
                     <TooltipContent>{request.reason}</TooltipContent>
                   </Tooltip>
-                  <p className="text-ds-base text-[var(--color-text-tertiary)]">
+                  <p className="text-ds-base text-text-tertiary">
                     • {formatDateWithWeekday(startDate)}
                   </p>
                 </div>
@@ -112,16 +112,16 @@ export function LeaveRequest({
                 <>
                   <Tooltip>
                     <TooltipTrigger asChild>
-                      <p className="text-ds-base semibold line-clamp-2 cursor-default text-[var(--color-text-primary)]">
+                      <p className="text-ds-base semibold line-clamp-2 cursor-default text-text-primary">
                         {request.reason}
                       </p>
                     </TooltipTrigger>
                     <TooltipContent>{request.reason}</TooltipContent>
                   </Tooltip>
-                  <p className="text-ds-base text-[var(--color-text-tertiary)]">
+                  <p className="text-ds-base text-text-tertiary">
                     {formatDateWithWeekday(startDate)} to{' '}
                     {formatDateWithWeekday(endDate)},
-                    <span className="text-[var(--color-interactive-hover)]">
+                    <span className="text-interactive-hover">
                       {' '}
                       {request.numberOfDays} days
                     </span>
@@ -186,8 +186,8 @@ export function LeaveRequest({
             </DialogDescription>
           </DialogHeader>
           <div className="flex flex-col">
-            <div className="text-ds-md flex flex-col items-start justify-center gap-ds-03 rounded-[8px] border border-[var(--color-border-subtle)] bg-[var(--color-layer-01)] p-[10px_16px_4px_16px] text-[var(--color-text-primary)]">
-              <label className="text-ds-xs font-semibold uppercase tracking-wider text-[var(--color-text-helper)]" htmlFor="comment">
+            <div className="text-ds-md flex flex-col items-start justify-center gap-ds-03 rounded-[8px] border border-border-subtle bg-layer-01 p-[10px_16px_4px_16px] text-text-primary">
+              <label className="text-ds-xs font-semibold uppercase tracking-wider text-text-helper" htmlFor="comment">
                 Comment
               </label>
               <Textarea

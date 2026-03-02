@@ -32,14 +32,14 @@ export interface BoardColumnData {
 // ============================================================
 
 const COLUMN_ACCENTS = [
-  'border-l-[var(--color-info)]',
-  'border-l-[var(--color-accent)]',
-  'border-l-[var(--color-warning)]',
-  'border-l-[var(--color-success)]',
-  'border-l-[var(--color-interactive)]',
-  'border-l-[var(--color-info-border)]',
-  'border-l-[var(--color-warning-border)]',
-  'border-l-[var(--color-success-border)]',
+  'border-l-info',
+  'border-l-accent',
+  'border-l-warning',
+  'border-l-success',
+  'border-l-interactive',
+  'border-l-info-border',
+  'border-l-warning-border',
+  'border-l-success-border',
 ]
 
 // ============================================================
@@ -121,7 +121,7 @@ export function BoardColumn({
   return (
     <div
       className={cn(
-        'flex h-full w-[300px] flex-shrink-0 flex-col rounded-[var(--radius-xl)] border-l-[3px] bg-[var(--color-layer-01)]/80 backdrop-blur-sm',
+        'flex h-full w-[300px] flex-shrink-0 flex-col rounded-ds-xl border-l-[3px] bg-layer-01/80 backdrop-blur-sm',
         accentColor,
         isOverlay && 'shadow-04',
       )}
@@ -140,7 +140,7 @@ export function BoardColumn({
           />
         ) : (
           <h3
-            className="text-ds-md font-semibold text-[var(--color-text-primary)] truncate"
+            className="text-ds-md font-semibold text-text-primary truncate"
             onDoubleClick={() => {
               setEditName(column.name)
               setIsEditing(true)
@@ -150,14 +150,14 @@ export function BoardColumn({
           </h3>
         )}
 
-        <span className="flex h-5 min-w-[20px] items-center justify-center rounded-[var(--radius-full)] bg-[var(--color-field)] px-ds-02b text-ds-sm font-medium text-[var(--color-text-tertiary)]">
+        <span className="flex h-5 min-w-[20px] items-center justify-center rounded-ds-full bg-field px-ds-02b text-ds-sm font-medium text-text-tertiary">
           {column.tasks.length}
         </span>
 
         {/* Client visibility indicator */}
         {column.isClientVisible && (
           <IconEye
-            className="h-3 w-3 text-[var(--color-text-tertiary)]"
+            className="h-3 w-3 text-text-tertiary"
             aria-label="Visible to client"
           />
         )}
@@ -168,13 +168,13 @@ export function BoardColumn({
         <Button
           variant="ghost"
           size="icon-md"
-          className="h-6 w-6 opacity-0 group-hover:opacity-100 hover:bg-[var(--color-interactive-subtle)] hover:text-[var(--color-interactive)] transition-opacity"
+          className="h-6 w-6 opacity-0 group-hover:opacity-100 hover:bg-interactive-subtle hover:text-interactive transition-opacity"
           onClick={() => {
             setIsAdding(true)
             setTimeout(() => inputRef.current?.focus(), 50)
           }}
         >
-          <IconPlus className="h-[var(--icon-sm)] w-[var(--icon-sm)]" />
+          <IconPlus className="h-ico-sm w-ico-sm" />
         </Button>
 
         {/* Column menu */}
@@ -185,7 +185,7 @@ export function BoardColumn({
               size="icon-md"
               className="h-6 w-6 opacity-0 group-hover:opacity-100 transition-opacity"
             >
-              <IconDots className="h-[var(--icon-sm)] w-[var(--icon-sm)]" />
+              <IconDots className="h-ico-sm w-ico-sm" />
             </Button>
           </DropdownMenuTrigger>
           <DropdownMenuContent align="end" className="w-44">
@@ -195,7 +195,7 @@ export function BoardColumn({
                 setIsEditing(true)
               }}
             >
-              <IconPencil className="mr-ds-03 h-[var(--icon-sm)] w-[var(--icon-sm)]" />
+              <IconPencil className="mr-ds-03 h-ico-sm w-ico-sm" />
               Rename
             </DropdownMenuItem>
             <DropdownMenuItem
@@ -205,22 +205,22 @@ export function BoardColumn({
             >
               {column.isClientVisible ? (
                 <>
-                  <IconEyeOff className="mr-ds-03 h-[var(--icon-sm)] w-[var(--icon-sm)]" />
+                  <IconEyeOff className="mr-ds-03 h-ico-sm w-ico-sm" />
                   Hide from client
                 </>
               ) : (
                 <>
-                  <IconEye className="mr-ds-03 h-[var(--icon-sm)] w-[var(--icon-sm)]" />
+                  <IconEye className="mr-ds-03 h-ico-sm w-ico-sm" />
                   Show to client
                 </>
               )}
             </DropdownMenuItem>
             <DropdownMenuSeparator />
             <DropdownMenuItem
-              className="text-[var(--color-error)] focus:text-[var(--color-error)]"
+              className="text-error focus:text-error"
               onClick={() => onDeleteColumn?.(column.id)}
             >
-              <IconTrash className="mr-ds-03 h-[var(--icon-sm)] w-[var(--icon-sm)]" />
+              <IconTrash className="mr-ds-03 h-ico-sm w-ico-sm" />
               Delete column
             </DropdownMenuItem>
           </DropdownMenuContent>
@@ -231,8 +231,8 @@ export function BoardColumn({
       <div
         ref={setNodeRef}
         className={cn(
-          'no-scrollbar flex flex-1 flex-col gap-ds-03 overflow-y-auto px-ds-03 pb-ds-03 transition-colors duration-[var(--duration-moderate)]',
-          isOver && 'bg-[var(--color-interactive-subtle)]/50',
+          'no-scrollbar flex flex-1 flex-col gap-ds-03 overflow-y-auto px-ds-03 pb-ds-03 transition-colors duration-moderate',
+          isOver && 'bg-interactive-subtle/50',
         )}
       >
         <SortableContext items={taskIds} strategy={verticalListSortingStrategy}>
@@ -244,14 +244,14 @@ export function BoardColumn({
         {/* Empty state */}
         {column.tasks.length === 0 && !isAdding && (
           <div className="flex flex-1 items-center justify-center py-ds-07">
-            <p className="text-ds-sm text-[var(--color-text-placeholder)]">No tasks</p>
+            <p className="text-ds-sm text-text-placeholder">No tasks</p>
           </div>
         )}
       </div>
 
       {/* Quick-add input */}
       {isAdding ? (
-        <div className="border-t border-[var(--color-border-subtle)] p-ds-03">
+        <div className="border-t border-border-subtle p-ds-03">
           <Input
             ref={inputRef}
             value={newTitle}
@@ -267,7 +267,7 @@ export function BoardColumn({
           <div className="mt-ds-02b flex items-center gap-ds-02">
             <Button
               size="sm"
-              className="h-7 bg-[var(--color-interactive)] hover:bg-[var(--color-interactive-hover)] text-[var(--color-text-on-color)] text-ds-sm"
+              className="h-7 bg-interactive hover:bg-interactive-hover text-text-on-color text-ds-sm"
               onClick={handleAddTask}
               disabled={!newTitle.trim()}
             >
@@ -292,7 +292,7 @@ export function BoardColumn({
             setIsAdding(true)
             setTimeout(() => inputRef.current?.focus(), 50)
           }}
-          className="flex items-center gap-ds-02b border-t border-[var(--color-border-subtle)] px-ds-04 py-2.5 text-ds-sm text-[var(--color-text-placeholder)] transition-colors hover:bg-[var(--color-field)] hover:text-[var(--color-text-tertiary)]"
+          className="flex items-center gap-ds-02b border-t border-border-subtle px-ds-04 py-2.5 text-ds-sm text-text-placeholder transition-colors hover:bg-field hover:text-text-tertiary"
         >
           <IconPlus className="h-3 w-3" />
           Add task

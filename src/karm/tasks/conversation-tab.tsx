@@ -156,8 +156,8 @@ function ConversationTab({
                     className={cn(
                       'text-[9px] font-semibold',  /* avatar initials — below scale, leave as-is */
                       isClient
-                        ? 'bg-[var(--color-warning-surface)] text-[var(--color-text-warning)]'
-                        : 'bg-[var(--color-layer-03)] text-[var(--color-text-on-color)]',
+                        ? 'bg-warning-surface text-text-warning'
+                        : 'bg-layer-03 text-text-on-color',
                     )}
                   >
                     {getInitials(author.name)}
@@ -167,24 +167,24 @@ function ConversationTab({
                 {/* Comment body */}
                 <div className="flex-1 min-w-0">
                   <div className="flex items-baseline gap-ds-03">
-                    <span className="text-ds-md font-medium text-[var(--color-text-primary)]">
+                    <span className="text-ds-md font-medium text-text-primary">
                       {author.name}
                     </span>
                     {/* Badge: staff sees "Client" on client comments; client sees "Team" on staff comments */}
                     {clientMode ? (
                       !isClient && (
-                        <span className="rounded bg-[var(--color-layer-03)] px-ds-02 py-px text-[9px] font-semibold uppercase tracking-wider text-[var(--color-text-on-color)]">
+                        <span className="rounded bg-layer-03 px-ds-02 py-px text-[9px] font-semibold uppercase tracking-wider text-text-on-color">
                           Team
                         </span>
                       )
                     ) : (
                       isClient && (
-                        <span className="rounded bg-[var(--color-warning-surface)] px-ds-02 py-px text-[9px] font-semibold uppercase tracking-wider text-[var(--color-text-warning)]">
+                        <span className="rounded bg-warning-surface px-ds-02 py-px text-[9px] font-semibold uppercase tracking-wider text-text-warning">
                           Client
                         </span>
                       )
                     )}
-                    <span className="text-ds-sm text-[var(--color-text-placeholder)]">
+                    <span className="text-ds-sm text-text-placeholder">
                       {formatTimestamp(comment.createdAt)}
                     </span>
                   </div>
@@ -196,7 +196,7 @@ function ConversationTab({
                         className: '[&_.ProseMirror]:!min-h-0 [&_.ProseMirror]:!p-0',
                       })
                     ) : (
-                      <p className="text-ds-md text-[var(--color-text-secondary)] whitespace-pre-wrap">
+                      <p className="text-ds-md text-text-secondary whitespace-pre-wrap">
                         {stripHtml(comment.content)}
                       </p>
                     )}
@@ -218,7 +218,7 @@ function ConversationTab({
       {/* Comment input */}
       <div className="mt-ds-05 space-y-ds-03">
         {taskVisibility === 'EVERYONE' && !clientMode && (
-          <p className="text-ds-xs text-[var(--color-text-warning)]">
+          <p className="text-ds-xs text-text-warning">
             This task is visible to clients. Comments may be seen by external users.
           </p>
         )}
@@ -234,7 +234,7 @@ function ConversationTab({
             onChange={(e) => setEditorContent(e.target.value)}
             placeholder="Write a comment..."
             rows={3}
-            className="w-full resize-none rounded-[var(--radius-md)] border border-[var(--color-border-default)] bg-transparent px-ds-04 py-ds-03 text-ds-md text-[var(--color-text-primary)] placeholder:text-[var(--color-text-placeholder)] outline-none focus:border-[var(--color-border-subtle)]"
+            className="w-full resize-none rounded-ds-md border border-border bg-transparent px-ds-04 py-ds-03 text-ds-md text-text-primary placeholder:text-text-placeholder outline-none focus:border-border-subtle"
           />
         )}
         <div className="flex justify-end">
@@ -242,9 +242,9 @@ function ConversationTab({
             type="button"
             onClick={handlePost}
             disabled={!editorContent.replace(/<[^>]*>/g, '').trim()}
-            className="inline-flex items-center gap-ds-02b rounded-[var(--radius-lg)] bg-[var(--color-interactive)] px-3.5 py-ds-02b text-ds-sm font-semibold text-[var(--color-text-on-color)] transition-colors hover:bg-[var(--color-interactive-hover)] disabled:opacity-50 disabled:cursor-not-allowed"
+            className="inline-flex items-center gap-ds-02b rounded-ds-lg bg-interactive px-3.5 py-ds-02b text-ds-sm font-semibold text-text-on-color transition-colors hover:bg-interactive-hover disabled:opacity-50 disabled:cursor-not-allowed"
           >
-            <IconSend className="h-[var(--icon-sm)] w-[var(--icon-sm)]" stroke={2} />
+            <IconSend className="h-ico-sm w-ico-sm" stroke={2} />
             Comment
           </button>
         </div>

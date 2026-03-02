@@ -45,24 +45,24 @@ export function Breaks({
     <div className="m-0 flex h-[400px] w-full flex-col items-start justify-start p-0 max-md:h-auto">
       <div className="mx-auto mb-ds-05 mt-ds-04 flex w-[92%] items-center">
         <div className="w-[16%] min-w-[120px] overflow-hidden px-ds-04 py-ds-03">
-          <div className="text-ds-sm font-semibold uppercase tracking-wider text-[var(--color-text-tertiary)]">NAME</div>
+          <div className="text-ds-sm font-semibold uppercase tracking-wider text-text-tertiary">NAME</div>
         </div>
         <div className="w-[19%] overflow-hidden px-ds-04 py-ds-03">
-          <div className="text-ds-sm font-semibold uppercase tracking-wider text-[var(--color-text-tertiary)]">DATE</div>
+          <div className="text-ds-sm font-semibold uppercase tracking-wider text-text-tertiary">DATE</div>
         </div>
         <div className="w-[8%] overflow-hidden px-ds-04 py-ds-03">
-          <div className="text-ds-sm font-semibold uppercase tracking-wider w-full text-center text-[var(--color-text-tertiary)]">
+          <div className="text-ds-sm font-semibold uppercase tracking-wider w-full text-center text-text-tertiary">
             DAYS
           </div>
         </div>
         <div className="w-[22%] overflow-hidden px-ds-04 py-ds-03">
-          <div className="text-ds-sm font-semibold uppercase tracking-wider text-[var(--color-text-tertiary)]">REASON</div>
+          <div className="text-ds-sm font-semibold uppercase tracking-wider text-text-tertiary">REASON</div>
         </div>
         <div className="flex w-[14%] items-center justify-start overflow-hidden px-ds-04 py-ds-03">
-          <div className="text-ds-sm font-semibold uppercase tracking-wider text-[var(--color-text-tertiary)]">STATUS</div>
+          <div className="text-ds-sm font-semibold uppercase tracking-wider text-text-tertiary">STATUS</div>
         </div>
         <div className="w-[24%] overflow-hidden px-ds-04 py-ds-03">
-          <div className="text-ds-sm font-semibold uppercase tracking-wider text-[var(--color-text-tertiary)]">COMMENT</div>
+          <div className="text-ds-sm font-semibold uppercase tracking-wider text-text-tertiary">COMMENT</div>
         </div>
         <div className="w-12 overflow-hidden px-ds-04 py-ds-03"></div>
       </div>
@@ -76,23 +76,23 @@ export function Breaks({
           return (
             <div
               key={breakItem.id}
-              className="flex w-full items-center hover:bg-[var(--color-field)]"
+              className="flex w-full items-center hover:bg-field"
             >
               <div className="flex w-[16%] min-w-[120px] items-center gap-ds-03 overflow-hidden px-ds-04 py-ds-03">
                 {userImages[breakItem.userId] ? (
                   <img
                     src={userImages[breakItem.userId]}
                     alt={''}
-                    className="h-7 w-full max-w-7 flex-shrink-0 rounded-[var(--radius-full)] object-cover"
+                    className="h-7 w-full max-w-7 flex-shrink-0 rounded-ds-full object-cover"
                   />
                 ) : (
-                  <span className="flex h-7 w-full max-w-7 items-center justify-center rounded-[var(--radius-full)] bg-[var(--mapped-borders-margin-tertiary)] text-ds-sm font-medium uppercase text-[--color-text-primary]">
+                  <span className="flex h-7 w-full max-w-7 items-center justify-center rounded-ds-full bg-[var(--mapped-borders-margin-tertiary)] text-ds-sm font-medium uppercase text-[--color-text-primary]">
                     {breakItem.user?.name?.[0] || 'U'}
                   </span>
                 )}
                 <Tooltip>
                   <TooltipTrigger asChild>
-                    <span className="text-ds-md truncate text-[var(--color-text-primary)]">
+                    <span className="text-ds-md truncate text-text-primary">
                       {breakItem.user?.name ||
                         breakItem.user?.name?.split(' ')[0]}
                     </span>
@@ -102,7 +102,7 @@ export function Breaks({
               </div>
 
               <div className="w-[19%] overflow-hidden px-ds-04 py-ds-03">
-                <span className="text-ds-md whitespace-nowrap text-[var(--color-text-secondary)]">
+                <span className="text-ds-md whitespace-nowrap text-text-secondary">
                   {formatOptionalDate(startDate)}{' '}
                   {!isSingleDay_ && (
                     <>
@@ -113,25 +113,25 @@ export function Breaks({
               </div>
 
               <div className="flex w-[8%] items-center justify-center overflow-hidden px-ds-04 py-ds-03">
-                <span className="text-ds-md text-center text-[var(--color-text-secondary)]">
+                <span className="text-ds-md text-center text-text-secondary">
                   {breakItem.numberOfDays}
                 </span>
               </div>
 
               <div className="w-[22%] overflow-hidden px-ds-04 py-ds-03">
-                <span className="text-ds-md text-[var(--color-text-tertiary)]">
+                <span className="text-ds-md text-text-tertiary">
                   {breakItem.reason}
                 </span>
               </div>
 
               <div className="flex w-[14%] items-center justify-start overflow-hidden px-ds-04 py-ds-03">
-                <span className="text-ds-md text-[var(--color-text-tertiary)]">
+                <span className="text-ds-md text-text-tertiary">
                   {renderStatus(breakItem?.status, breakItem?.correction)}
                 </span>
               </div>
 
               <div className="w-[24%] overflow-hidden px-ds-04 py-ds-03">
-                <span className="text-ds-md text-[var(--color-text-tertiary)]">
+                <span className="text-ds-md text-text-tertiary">
                   {breakItem.adminComment || ' '}
                 </span>
               </div>

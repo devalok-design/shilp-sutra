@@ -35,13 +35,13 @@ function formatDueDate(dateStr: string) {
   const diffMs = date.getTime() - now.getTime()
   const diffDays = Math.ceil(diffMs / (1000 * 60 * 60 * 24))
 
-  if (diffDays < 0) return { label: 'Overdue', className: 'text-[var(--color-text-error)]' }
-  if (diffDays === 0) return { label: 'Today', className: 'text-[var(--color-warning)]' }
-  if (diffDays === 1) return { label: 'Tomorrow', className: 'text-[var(--color-text-warning)]' }
+  if (diffDays < 0) return { label: 'Overdue', className: 'text-text-error' }
+  if (diffDays === 0) return { label: 'Today', className: 'text-warning' }
+  if (diffDays === 1) return { label: 'Tomorrow', className: 'text-text-warning' }
 
   return {
     label: date.toLocaleDateString('en-IN', { month: 'short', day: 'numeric' }),
-    className: 'text-[var(--color-text-tertiary)]',
+    className: 'text-text-tertiary',
   }
 }
 
@@ -74,14 +74,14 @@ function TaskCardVisual({
   return (
     <div
       className={cn(
-        'group/card relative rounded-[var(--radius-lg)] border border-[var(--color-border-default)]/60 bg-[var(--color-layer-01)] p-ds-04 shadow-[var(--shadow-01)]',
-        'transition-[color,background-color,border-color,box-shadow] duration-[var(--duration-moderate)]',
-        'hover:shadow-[var(--shadow-02)] hover:border-[var(--color-border-default)]',
+        'group/card relative rounded-ds-lg border border-border/60 bg-layer-01 p-ds-04 shadow-01',
+        'transition-[color,background-color,border-color,box-shadow] duration-moderate',
+        'hover:shadow-02 hover:border-border',
         'cursor-pointer',
         isDragging && !isDragOverlay && 'opacity-40',
         isDragOverlay &&
-          'rotate-[2deg] shadow-[var(--shadow-03)] border-[var(--color-border-interactive)]/60 ring-1 ring-[var(--color-interactive)]/40',
-        task.isBlocked && 'border-l-2 border-l-[var(--color-error)]',
+          'rotate-[2deg] shadow-03 border-border-interactive/60 ring-1 ring-interactive/40',
+        task.isBlocked && 'border-l-2 border-l-error',
       )}
       onClick={() => onClickTask?.(task.id)}
     >
@@ -98,10 +98,10 @@ function TaskCardVisual({
           {...(dragHandleProps?.listeners ?? {})}
           onClick={(e) => e.stopPropagation()}
         >
-          <IconGripVertical className="h-[var(--icon-sm)] w-[var(--icon-sm)] text-[var(--color-icon-secondary)]" />
+          <IconGripVertical className="h-ico-sm w-ico-sm text-icon-secondary" />
         </button>
         <div className="min-w-0 flex-1">
-          <p className="text-ds-md font-medium text-[var(--color-text-primary)] line-clamp-2">
+          <p className="text-ds-md font-medium text-text-primary line-clamp-2">
             {task.title}
           </p>
         </div>
@@ -112,7 +112,7 @@ function TaskCardVisual({
         {/* Priority dot */}
         <div
           className={cn(
-            'h-2 w-2 rounded-[var(--radius-full)] flex-shrink-0',
+            'h-2 w-2 rounded-ds-full flex-shrink-0',
             PRIORITY_DOT_COLORS[task.priority],
           )}
           title={PRIORITY_LABELS[task.priority]}
@@ -127,7 +127,7 @@ function TaskCardVisual({
               </Badge>
             ))}
             {task.labels.length > 2 && (
-              <span className="text-ds-xs text-[var(--color-text-tertiary)]">
+              <span className="text-ds-xs text-text-tertiary">
                 +{task.labels.length - 2}
               </span>
             )}
@@ -154,18 +154,18 @@ function TaskCardVisual({
         {displayAssignees.length > 0 && (
           <div className="flex -space-x-ds-02b">
             {displayAssignees.map((assignee) => (
-              <Avatar key={assignee.id} className="h-[var(--icon-md)] w-[var(--icon-md)] border border-[var(--color-layer-01)]">
+              <Avatar key={assignee.id} className="h-ico-md w-ico-md border border-layer-01">
                 <AvatarImage
                   src={assignee.image || undefined}
                   alt={assignee.name}
                 />
-                <AvatarFallback className="text-[8px] bg-[var(--color-field)]">
+                <AvatarFallback className="text-[8px] bg-field">
                   {getInitials(assignee.name)}
                 </AvatarFallback>
               </Avatar>
             ))}
             {extraCount > 0 && (
-              <div className="flex h-[var(--icon-md)] w-[var(--icon-md)] items-center justify-center rounded-[var(--radius-full)] border border-[var(--color-layer-01)] bg-[var(--color-field)] text-[8px] font-medium text-[var(--color-text-tertiary)]">
+              <div className="flex h-ico-md w-ico-md items-center justify-center rounded-ds-full border border-layer-01 bg-field text-[8px] font-medium text-text-tertiary">
                 +{extraCount}
               </div>
             )}

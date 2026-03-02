@@ -36,13 +36,13 @@ const ProjectCard = React.forwardRef<HTMLDivElement, ProjectCardProps>(
       <div
         ref={ref}
         className={cn(
-          'group cursor-pointer rounded-[var(--radius-lg)] border border-[var(--color-border-subtle)] bg-[var(--color-layer-01)] p-ds-05b shadow-[var(--shadow-01)] transition-shadow duration-[var(--duration-moderate)] hover:shadow-[var(--shadow-02)]',
+          'group cursor-pointer rounded-ds-lg border border-border-subtle bg-layer-01 p-ds-05b shadow-01 transition-shadow duration-moderate hover:shadow-02',
           className,
         )}
         {...props}
       >
         <div className="mb-ds-04 flex items-start justify-between">
-          <h3 className="font-display text-ds-base font-semibold text-[var(--color-text-primary)]">
+          <h3 className="font-display text-ds-base font-semibold text-text-primary">
             {name}
           </h3>
           <Badge variant={statusVariantMap[status]} size="sm">
@@ -50,20 +50,20 @@ const ProjectCard = React.forwardRef<HTMLDivElement, ProjectCardProps>(
           </Badge>
         </div>
         {description && (
-          <p className="mb-ds-05 line-clamp-2 text-ds-md text-[var(--color-text-secondary)]">
+          <p className="mb-ds-05 line-clamp-2 text-ds-md text-text-secondary">
             {description}
           </p>
         )}
         <div className="space-y-ds-03">
-          <div className="flex items-center justify-between text-ds-sm text-[var(--color-text-helper)]">
+          <div className="flex items-center justify-between text-ds-sm text-text-helper">
             <span>
               {completedTasks} / {taskCount} tasks
             </span>
             <span>{progress}%</span>
           </div>
-          <div className="h-1.5 w-full overflow-hidden rounded-[var(--radius-full)] bg-[var(--color-layer-03)]">
+          <div className="h-1.5 w-full overflow-hidden rounded-ds-full bg-layer-03">
             <div
-              className="h-full rounded-[var(--radius-full)] bg-[var(--color-interactive)] transition-[width] duration-[var(--duration-slow)]"
+              className="h-full rounded-ds-full bg-interactive transition-[width] duration-slow"
               style={{ width: `${progress}%` }}
             />
           </div>

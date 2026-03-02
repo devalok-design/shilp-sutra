@@ -338,9 +338,9 @@ export function KanbanBoard({
           <Button
             variant="ghost"
             onClick={onAddColumn}
-            className="h-10 w-[300px] justify-start gap-ds-03 rounded-[var(--radius-xl)] border border-dashed border-[var(--color-border-default)]/60 bg-[var(--color-layer-01)]/40 text-[var(--color-text-tertiary)] hover:border-[var(--color-border-interactive)] hover:bg-[var(--color-interactive-subtle)]/50 hover:text-[var(--color-interactive)]"
+            className="h-10 w-[300px] justify-start gap-ds-03 rounded-ds-xl border border-dashed border-border/60 bg-layer-01/40 text-text-tertiary hover:border-border-interactive hover:bg-interactive-subtle/50 hover:text-interactive"
           >
-            <IconPlus className="h-[var(--icon-sm)] w-[var(--icon-sm)]" />
+            <IconPlus className="h-ico-sm w-ico-sm" />
             Add column
           </Button>
         </div>

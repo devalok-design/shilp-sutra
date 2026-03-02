@@ -89,26 +89,26 @@ export function ChatPanel({
     <Sheet open={isOpen} onOpenChange={onOpenChange}>
       <SheetContent
         side="right"
-        className="flex w-full flex-col gap-0 border-l border-[var(--color-border-default)] bg-[var(--color-layer-01)] p-0 sm:max-w-[480px] [&>button]:hidden"
+        className="flex w-full flex-col gap-0 border-l border-border bg-layer-01 p-0 sm:max-w-[480px] [&>button]:hidden"
       >
         <SheetTitle className="sr-only">AI Chat</SheetTitle>
 
         {/* Header */}
-        <div className="flex items-center gap-ds-03 border-b border-[var(--color-border-default)] px-ds-05 py-ds-04">
+        <div className="flex items-center gap-ds-03 border-b border-border px-ds-05 py-ds-04">
           {/* Agent Selector */}
           <div className="flex-1">
             <DropdownMenu>
               <DropdownMenuTrigger asChild>
                 <button
-                  className="flex items-center gap-ds-02b rounded-[var(--radius-lg)] px-ds-03 py-ds-02b transition-colors hover:bg-[var(--color-layer-02)]"
+                  className="flex items-center gap-ds-02b rounded-ds-lg px-ds-03 py-ds-02b transition-colors hover:bg-layer-02"
                 >
-                  <span className="text-ds-base text-[var(--color-text-primary)]">
+                  <span className="text-ds-base text-text-primary">
                     {selectedAgent?.name}
                   </span>
-                  <span className="text-ds-sm text-[var(--color-text-placeholder)]">
+                  <span className="text-ds-sm text-text-placeholder">
                     {selectedAgent?.desc}
                   </span>
-                  <IconChevronDown className="h-[var(--icon-sm)] w-[var(--icon-sm)] text-[var(--color-text-placeholder)]" />
+                  <IconChevronDown className="h-ico-sm w-ico-sm text-text-placeholder" />
                 </button>
               </DropdownMenuTrigger>
               <DropdownMenuContent align="start" className="w-64">
@@ -118,15 +118,15 @@ export function ChatPanel({
                     onClick={() => onSelectAgent?.(agent.id)}
                     className={
                       selectedAgentId === agent.id
-                        ? 'bg-[var(--color-layer-02)]'
+                        ? 'bg-layer-02'
                         : ''
                     }
                   >
                     <div className="flex flex-col">
-                      <span className="text-ds-md text-[var(--color-text-primary)]">
+                      <span className="text-ds-md text-text-primary">
                         {agent.name}
                       </span>
-                      <span className="text-ds-sm text-[var(--color-text-placeholder)]">
+                      <span className="text-ds-sm text-text-placeholder">
                         {agent.desc}
                       </span>
                     </div>
@@ -142,32 +142,32 @@ export function ChatPanel({
               onStartNewChat?.()
               setShowHistory(false)
             }}
-            className="flex h-8 w-8 items-center justify-center rounded-[var(--radius-lg)] text-[var(--color-text-secondary)] transition-colors hover:bg-[var(--color-layer-02)]"
+            className="flex h-8 w-8 items-center justify-center rounded-ds-lg text-text-secondary transition-colors hover:bg-layer-02"
             aria-label="New chat"
           >
-            <IconMessagePlus className="h-[var(--icon-sm)] w-[var(--icon-sm)]" />
+            <IconMessagePlus className="h-ico-sm w-ico-sm" />
           </button>
 
           {/* IconHistory Toggle */}
           <button
             onClick={() => setShowHistory(!showHistory)}
-            className={`flex h-8 w-8 items-center justify-center rounded-[var(--radius-lg)] transition-colors hover:bg-[var(--color-layer-02)] ${
+            className={`flex h-8 w-8 items-center justify-center rounded-ds-lg transition-colors hover:bg-layer-02 ${
               showHistory
-                ? 'bg-[var(--color-layer-02)] text-[var(--color-text-primary)]'
-                : 'text-[var(--color-text-secondary)]'
+                ? 'bg-layer-02 text-text-primary'
+                : 'text-text-secondary'
             }`}
             aria-label="Conversation history"
           >
-            <IconHistory className="h-[var(--icon-sm)] w-[var(--icon-sm)]" />
+            <IconHistory className="h-ico-sm w-ico-sm" />
           </button>
 
           {/* Close */}
           <button
             onClick={() => onOpenChange(false)}
-            className="flex h-8 w-8 items-center justify-center rounded-[var(--radius-lg)] text-[var(--color-text-secondary)] transition-colors hover:bg-[var(--color-layer-02)]"
+            className="flex h-8 w-8 items-center justify-center rounded-ds-lg text-text-secondary transition-colors hover:bg-layer-02"
             aria-label="Close chat"
           >
-            <IconX className="h-[var(--icon-sm)] w-[var(--icon-sm)]" />
+            <IconX className="h-ico-sm w-ico-sm" />
           </button>
         </div>
 

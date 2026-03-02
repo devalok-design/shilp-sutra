@@ -63,15 +63,15 @@ export function ConversationList({
   return (
     <div className="flex flex-1 flex-col overflow-hidden">
       {/* Header */}
-      <div className="flex items-center justify-between border-b border-[var(--color-border-default)] px-ds-05 py-ds-04">
-        <h3 className="text-ds-base text-[var(--color-text-primary)]">
+      <div className="flex items-center justify-between border-b border-border px-ds-05 py-ds-04">
+        <h3 className="text-ds-base text-text-primary">
           Conversations
         </h3>
         <button
           onClick={onNewChat}
-          className="flex items-center gap-ds-02b rounded-[var(--radius-lg)] px-2.5 py-ds-02b text-[var(--color-text-secondary)] transition-colors hover:bg-[var(--color-layer-02)]"
+          className="flex items-center gap-ds-02b rounded-ds-lg px-2.5 py-ds-02b text-text-secondary transition-colors hover:bg-layer-02"
         >
-          <IconMessagePlus className="h-[var(--icon-sm)] w-[var(--icon-sm)]" />
+          <IconMessagePlus className="h-ico-sm w-ico-sm" />
           <span className="text-ds-sm">New Chat</span>
         </button>
       </div>
@@ -80,12 +80,12 @@ export function ConversationList({
       <div className="no-scrollbar flex-1 overflow-y-auto">
         {isLoading ? (
           <div className="flex items-center justify-center py-12">
-            <div className="h-[var(--icon-md)] w-[var(--icon-md)] animate-spin rounded-[var(--radius-full)] border-2 border-[var(--color-text-secondary)] border-t-transparent" />
+            <div className="h-ico-md w-ico-md animate-spin rounded-ds-full border-2 border-text-secondary border-t-transparent" />
           </div>
         ) : conversations.length === 0 ? (
           <div className="flex flex-col items-center justify-center gap-ds-03 py-12">
-            <IconMessage className="h-8 w-8 text-[var(--color-text-placeholder)]" />
-            <p className="text-ds-md text-[var(--color-text-placeholder)]">
+            <IconMessage className="h-8 w-8 text-text-placeholder" />
+            <p className="text-ds-md text-text-placeholder">
               No conversations yet
             </p>
           </div>
@@ -94,9 +94,9 @@ export function ConversationList({
             {conversations.map((convo) => (
               <div
                 key={convo.id}
-                className={`group flex items-center gap-ds-04 border-b border-[var(--color-border-subtle)] px-ds-05 py-ds-04 transition-colors hover:bg-[var(--color-layer-02)] ${
+                className={`group flex items-center gap-ds-04 border-b border-border-subtle px-ds-05 py-ds-04 transition-colors hover:bg-layer-02 ${
                   activeConversationId === convo.id
-                    ? 'bg-[var(--color-layer-02)]'
+                    ? 'bg-layer-02'
                     : ''
                 }`}
               >
@@ -104,10 +104,10 @@ export function ConversationList({
                   onClick={() => onSelect(convo.id)}
                   className="flex min-w-0 flex-1 flex-col gap-0.5 text-left"
                 >
-                  <p className="text-ds-md truncate text-[var(--color-text-primary)]">
+                  <p className="text-ds-md truncate text-text-primary">
                     {convo.title || 'Untitled conversation'}
                   </p>
-                  <p className="text-ds-sm text-[var(--color-text-placeholder)]">
+                  <p className="text-ds-sm text-text-placeholder">
                     {formatRelativeTime(convo.updatedAt)}
                   </p>
                 </button>
@@ -120,10 +120,10 @@ export function ConversationList({
                         e.stopPropagation()
                         onArchive(convo.id)
                       }}
-                      className="flex h-7 w-7 items-center justify-center rounded-[var(--radius-md)] text-[var(--color-text-placeholder)] transition-colors hover:bg-[var(--color-field)] hover:text-[var(--color-text-secondary)]"
+                      className="flex h-7 w-7 items-center justify-center rounded-ds-md text-text-placeholder transition-colors hover:bg-field hover:text-text-secondary"
                       aria-label="Archive conversation"
                     >
-                      <IconArchive className="h-[var(--icon-sm)] w-[var(--icon-sm)]" />
+                      <IconArchive className="h-ico-sm w-ico-sm" />
                     </button>
                   )}
                   {onDelete && (
@@ -132,10 +132,10 @@ export function ConversationList({
                         e.stopPropagation()
                         onDelete(convo.id)
                       }}
-                      className="flex h-7 w-7 items-center justify-center rounded-[var(--radius-md)] text-[var(--color-text-placeholder)] transition-colors hover:bg-[var(--color-error-surface)] hover:text-[var(--color-text-error)]"
+                      className="flex h-7 w-7 items-center justify-center rounded-ds-md text-text-placeholder transition-colors hover:bg-error-surface hover:text-text-error"
                       aria-label="Delete conversation"
                     >
-                      <IconTrash className="h-[var(--icon-sm)] w-[var(--icon-sm)]" />
+                      <IconTrash className="h-ico-sm w-ico-sm" />
                     </button>
                   )}
                 </div>

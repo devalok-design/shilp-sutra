@@ -23,7 +23,7 @@ describe('Spinner', () => {
   it('applies size classes', () => {
     const { rerender } = render(<Spinner size="sm" />)
     let svg = screen.getByRole('status').querySelector('svg')
-    expect(svg).toHaveClass('h-4', 'w-4')
+    expect(svg).toHaveClass('h-[var(--icon-sm)]', 'w-[var(--icon-sm)]')
 
     rerender(<Spinner size="lg" />)
     svg = screen.getByRole('status').querySelector('svg')

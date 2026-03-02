@@ -19,8 +19,8 @@ export type { PriorityIndicatorProps, Priority } from './priority-indicator'
 export { RichTextEditor, RichTextViewer } from './rich-text-editor'
 export type { RichTextEditorProps, RichTextViewerProps } from './rich-text-editor'
 
-export { DatePicker, DateRangePicker, CalendarGrid } from './date-picker'
-export type { DatePickerProps, DateRangePickerProps } from './date-picker'
+export { DatePicker, DateRangePicker, CalendarGrid, useCalendar } from './date-picker'
+export type { DatePickerProps, DateRangePickerProps, CalendarGridProps } from './date-picker'
 
 export { CardSkeleton, TableSkeleton, BoardSkeleton, ListSkeleton } from './loading-skeleton'
 

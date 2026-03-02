@@ -210,3 +210,190 @@ export const WithColumnPinning: Story = {
     </div>
   ),
 }
+
+// --- Cell Editing ---
+
+/** Editable columns — ID is not editable, rest are */
+const editableColumns: ColumnDef<Task>[] = [
+  {
+    accessorKey: 'id',
+    header: 'ID',
+    meta: { enableEditing: false },
+  },
+  {
+    accessorKey: 'title',
+    header: 'Title',
+  },
+  {
+    accessorKey: 'status',
+    header: 'Status',
+  },
+  {
+    accessorKey: 'priority',
+    header: 'Priority',
+  },
+]
+
+function EditableDemo() {
+  const [tableData, setTableData] = useState<Task[]>([...filterData])
+  const [lastEdit, setLastEdit] = useState<string>('')
+
+  return (
+    <div className="space-y-ds-04">
+      <p className="text-ds-sm text-[var(--color-text-secondary)]">
+        Double-click a cell to edit. ID column is read-only.
+      </p>
+      {lastEdit && (
+        <p className="text-ds-sm text-[var(--color-text-brand)] font-medium">
+          Last edit: {lastEdit}
+        </p>
+      )}
+      <DataTable
+        columns={editableColumns}
+        data={tableData}
+        editable
+        onCellEdit={(rowIndex, columnId, value) => {
+          setLastEdit(`Row ${rowIndex}, column "${columnId}" => "${String(value)}"`)
+          setTableData((prev) => {
+            const next = [...prev]
+            next[rowIndex] = { ...next[rowIndex], [columnId]: value } as Task
+            return next
+          })
+        }}
+      />
+    </div>
+  )
+}
+
+export const Editable: Story = {
+  render: () => <EditableDemo />,
+}
+
+// --- Row Expansion ---
+
+function ExpandableDemo() {
+  return (
+    <div className="space-y-ds-04">
+      <p className="text-ds-sm text-[var(--color-text-secondary)]">
+        Click the chevron to expand a row and see its detail panel.
+      </p>
+      <DataTable
+        columns={columns}
+        data={filterData}
+        expandable
+        renderExpanded={(row) => (
+          <div className="space-y-ds-02">
+            <h4 className="text-ds-md font-semibold text-[var(--color-text-primary)]">
+              {row.title}
+            </h4>
+            <dl className="grid grid-cols-[auto_1fr] gap-x-ds-04 gap-y-ds-02 text-ds-sm">
+              <dt className="text-[var(--color-text-secondary)] font-medium">ID:</dt>
+              <dd className="text-[var(--color-text-primary)]">{row.id}</dd>
+              <dt className="text-[var(--color-text-secondary)] font-medium">Status:</dt>
+              <dd className="text-[var(--color-text-primary)]">{row.status}</dd>
+              <dt className="text-[var(--color-text-secondary)] font-medium">Priority:</dt>
+              <dd className="text-[var(--color-text-primary)]">{row.priority}</dd>
+              <dt className="text-[var(--color-text-secondary)] font-medium">Description:</dt>
+              <dd className="text-[var(--color-text-primary)]">
+                This is a detailed description of {row.title.toLowerCase()}.
+                It contains additional context that does not fit in the main table row.
+              </dd>
+            </dl>
+          </div>
+        )}
+      />
+    </div>
+  )
+}
+
+export const Expandable: Story = {
+  render: () => <ExpandableDemo />,
+}
+
+// --- Virtualized Large Dataset ---
+
+const hugeData: Task[] = Array.from({ length: 10000 }, (_, i) => ({
+  id: `TASK-${String(i + 1).padStart(5, '0')}`,
+  title: `Task item ${i + 1}`,
+  status: (['todo', 'in-progress', 'done'] as const)[i % 3],
+  priority: (['low', 'medium', 'high'] as const)[i % 3],
+}))
+
+/** Plain text columns for virtualized table (no Badge for performance) */
+const plainColumns: ColumnDef<Task>[] = [
+  { accessorKey: 'id', header: 'ID' },
+  { accessorKey: 'title', header: 'Title' },
+  { accessorKey: 'status', header: 'Status' },
+  { accessorKey: 'priority', header: 'Priority' },
+]
+
+export const VirtualizedLargeDataset: Story = {
+  render: () => (
+    <div className="space-y-ds-04">
+      <p className="text-ds-sm text-[var(--color-text-secondary)]">
+        10,000 rows rendered with virtualization. Scroll to see smooth performance.
+      </p>
+      <DataTable
+        columns={plainColumns}
+        data={hugeData}
+        virtualRows
+        virtualRowHeight={48}
+        maxHeight={600}
+        sortable
+      />
+    </div>
+  ),
+}
+
+// --- Full Featured ---
+
+function FullFeaturedDemo() {
+  const [tableData, setTableData] = useState<Task[]>([...filterData])
+  const [selected, setSelected] = useState<Task[]>([])
+  const [lastEdit, setLastEdit] = useState<string>('')
+
+  return (
+    <div className="space-y-ds-04">
+      <p className="text-ds-sm text-[var(--color-text-secondary)]">
+        All features enabled: sorting, filtering, pagination, selection, toolbar,
+        density, editable cells, and expandable rows.
+      </p>
+      <div className="flex gap-ds-04 text-ds-sm text-[var(--color-text-secondary)]">
+        <span>{selected.length} selected</span>
+        {lastEdit && <span>Last edit: {lastEdit}</span>}
+      </div>
+      <DataTable
+        columns={editableColumns}
+        data={tableData}
+        sortable
+        filterable
+        globalFilter
+        paginated
+        pageSize={5}
+        selectable
+        onSelectionChange={setSelected}
+        toolbar
+        density="standard"
+        editable
+        onCellEdit={(rowIndex, columnId, value) => {
+          setLastEdit(`[${rowIndex}].${columnId} = "${String(value)}"`)
+          setTableData((prev) => {
+            const next = [...prev]
+            next[rowIndex] = { ...next[rowIndex], [columnId]: value } as Task
+            return next
+          })
+        }}
+        expandable
+        renderExpanded={(row) => (
+          <div className="text-ds-sm text-[var(--color-text-primary)]">
+            <strong>Detail panel for {row.id}:</strong> {row.title} — Status: {row.status}, Priority: {row.priority}
+          </div>
+        )}
+      />
+    </div>
+  )
+}
+
+export const FullFeatured: Story = {
+  render: () => <FullFeaturedDemo />,
+}

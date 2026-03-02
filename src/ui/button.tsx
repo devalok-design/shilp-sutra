@@ -1,6 +1,7 @@
 import { cva, type VariantProps } from 'class-variance-authority'
 import { Slot, Slottable } from '@primitives/react-slot'
 import * as React from 'react'
+import { useButtonGroup } from './button-group'
 import { cn } from './lib/utils'
 import { Spinner } from './spinner'
 
@@ -91,7 +92,9 @@ const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
     },
     ref,
   ) => {
-    const resolvedSize = size ?? 'md'
+    const group = useButtonGroup()
+    const resolvedVariant = variant ?? group.variant
+    const resolvedSize = size ?? group.size ?? 'md'
     const iconClass = iconSizeClass[resolvedSize]
     const spinnerSize = spinnerSizeMap[resolvedSize]
 
@@ -105,7 +108,7 @@ const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
       // which excludes button-specific attrs like `disabled`.
       const slotProps = {
         className: cn(
-          buttonVariants({ variant, size, className }),
+          buttonVariants({ variant: resolvedVariant, size, className }),
           fullWidth && 'w-full',
         ),
         ref,
@@ -165,7 +168,7 @@ const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
     return (
       <button
         className={cn(
-          buttonVariants({ variant, size, className }),
+          buttonVariants({ variant: resolvedVariant, size, className }),
           fullWidth && 'w-full',
         )}
         ref={ref}

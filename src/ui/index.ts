@@ -1,5 +1,7 @@
 // Core
 export { Button, buttonVariants, type ButtonProps } from './button'
+export { IconButton, type IconButtonProps } from './icon-button'
+export { ButtonGroup, useButtonGroup, type ButtonGroupProps } from './button-group'
 export { Input, type InputProps, type InputState } from './input'
 export { Label, type LabelProps } from './label'
 export { Separator } from './separator'

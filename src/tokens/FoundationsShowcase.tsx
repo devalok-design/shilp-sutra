@@ -196,10 +196,29 @@ function SemanticColors() {
 
 /* ─── Typography ────────────────────────────────────────────────── */
 
+const semanticTypeScale = [
+  { variant: 'heading-2xl', size: '3.75rem (60px)', weight: '400', sample: 'Heading 2XL' },
+  { variant: 'heading-xl',  size: '3rem (48px)',    weight: '400', sample: 'Heading XL' },
+  { variant: 'heading-lg',  size: '2.25rem (36px)', weight: '400', sample: 'Heading LG' },
+  { variant: 'heading-md',  size: '2rem (32px)',    weight: '400', sample: 'Heading MD' },
+  { variant: 'heading-sm',  size: '1.5rem (24px)',  weight: '400', sample: 'Heading SM' },
+  { variant: 'heading-xs',  size: '1.25rem (20px)', weight: '400', sample: 'Heading XS' },
+  { variant: 'body-lg',     size: '1rem (16px)',     weight: '400', sample: 'Body LG — Primary reading text' },
+  { variant: 'body-md',     size: '0.875rem (14px)', weight: '400', sample: 'Body MD — Default UI text' },
+  { variant: 'body-sm',     size: '0.75rem (12px)',  weight: '400', sample: 'Body SM — Secondary text' },
+  { variant: 'body-xs',     size: '0.625rem (10px)', weight: '400', sample: 'Body XS — Fine print' },
+  { variant: 'label-lg',    size: '1rem (16px)',     weight: '600', sample: 'LABEL LG' },
+  { variant: 'label-md',    size: '0.875rem (14px)', weight: '600', sample: 'LABEL MD' },
+  { variant: 'label-sm',    size: '0.75rem (12px)',  weight: '600', sample: 'LABEL SM' },
+  { variant: 'label-xs',    size: '0.625rem (10px)', weight: '600', sample: 'LABEL XS' },
+  { variant: 'caption',     size: '0.75rem (12px)',  weight: '400', sample: 'Caption text' },
+  { variant: 'overline',    size: '0.75rem (12px)',  weight: '400', sample: 'OVERLINE TEXT' },
+]
+
 const titleScale = [
-  { cls: 'T1-Reg', label: 'T1', size: '62px' },
+  { cls: 'T1-Reg', label: 'T1', size: '60px' },
   { cls: 'T2-Reg', label: 'T2', size: '48px' },
-  { cls: 'T3-Reg', label: 'T3', size: '38px' },
+  { cls: 'T3-Reg', label: 'T3', size: '36px' },
   { cls: 'T4-Reg', label: 'T4', size: '32px' },
   { cls: 'T5-Reg', label: 'T5', size: '24px' },
   { cls: 'T6-Reg', label: 'T6', size: '20px' },
@@ -245,7 +264,29 @@ function TypographySamples() {
     <div style={sectionStyle}>
       <h2 style={headingStyle}>Typography</h2>
 
-      <h3 style={subheadingStyle}>Title Scale</h3>
+      <h3 style={subheadingStyle}>Semantic Type Scale</h3>
+      <p style={{ fontSize: '0.75rem', color: 'var(--color-text-tertiary)', marginBottom: '0.75rem' }}>
+        Use <code style={{ fontSize: '0.6875rem', background: 'var(--color-layer-03)', padding: '0.15em 0.4em', borderRadius: '4px' }}>&lt;Text variant="..."&gt;</code> for
+        all typography. Sizes driven by <code style={{ fontSize: '0.6875rem', background: 'var(--color-layer-03)', padding: '0.15em 0.4em', borderRadius: '4px' }}>--typo-*</code> CSS tokens.
+      </p>
+      {semanticTypeScale.map((t) => (
+        <div key={t.variant} style={rowStyle}>
+          <span style={{ ...metaStyle, minWidth: '12rem' }}>{t.variant} ({t.size})</span>
+          <span
+            style={{
+              fontSize: `var(--typo-${t.variant}-size)`,
+              fontWeight: `var(--typo-${t.variant}-weight)` as React.CSSProperties['fontWeight'],
+              lineHeight: `var(--typo-${t.variant}-leading)`,
+              letterSpacing: `var(--typo-${t.variant}-tracking)`,
+              textTransform: t.variant.startsWith('label') || t.variant === 'overline' ? 'uppercase' : undefined,
+            }}
+          >
+            {t.sample}
+          </span>
+        </div>
+      ))}
+
+      <h3 style={{ ...subheadingStyle, marginTop: '2rem' }}>Legacy Title Scale (deprecated)</h3>
       {titleScale.map((t) => (
         <div key={t.cls} style={rowStyle}>
           <span style={metaStyle}>{t.label} ({t.size})</span>
@@ -253,7 +294,7 @@ function TypographySamples() {
         </div>
       ))}
 
-      <h3 style={subheadingStyle}>Body Scale</h3>
+      <h3 style={subheadingStyle}>Legacy Body Scale (deprecated)</h3>
       {bodyScale.map((t) => (
         <div key={t.cls} style={rowStyle}>
           <span style={metaStyle}>{t.label} ({t.size})</span>
@@ -261,7 +302,7 @@ function TypographySamples() {
         </div>
       ))}
 
-      <h3 style={subheadingStyle}>Label Scale</h3>
+      <h3 style={subheadingStyle}>Legacy Label Scale (deprecated)</h3>
       {labelScale.map((t) => (
         <div key={t.cls} style={rowStyle}>
           <span style={metaStyle}>{t.label} ({t.size})</span>

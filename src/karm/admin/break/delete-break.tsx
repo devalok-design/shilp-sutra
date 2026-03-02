@@ -4,8 +4,8 @@ import { useState, useRef } from 'react'
 import { BreakDeleteIcon } from '../icons'
 import { useToast } from '../../../hooks/use-toast'
 import { Dialog, DialogContent, DialogTrigger } from '../../../ui/dialog'
-import { CustomButton } from '../../custom-buttons/CustomButton'
-import { IconButton } from '../../custom-buttons/icon-button'
+import { Button } from '../../../ui/button'
+import { IconButton } from '../../../ui/icon-button'
 
 // ============================================================
 // DeleteBreak — Confirmation dialog for deleting a break request
@@ -54,7 +54,7 @@ export function DeleteBreak({ id: _id, userId: _userId, onDelete }: DeleteBreakP
   return (
     <Dialog open={open} onOpenChange={setOpen}>
       <DialogTrigger asChild>
-        <IconButton icon={<BreakDeleteIcon />} size="medium" />
+        <IconButton icon={<BreakDeleteIcon />} size="md" aria-label="Delete break" />
       </DialogTrigger>
       <DialogContent className="flex w-[335px] flex-col items-center gap-ds-06 p-ds-06 max-md:w-[90%] max-md:rounded-[8px]">
         <div className="flex w-full max-w-[240px] flex-col items-center gap-ds-04 text-center">
@@ -66,13 +66,12 @@ export function DeleteBreak({ id: _id, userId: _userId, onDelete }: DeleteBreakP
           </p>
         </div>
         <form ref={formRef} onSubmit={handleDeleteLeave} className="w-full">
-          <CustomButton
+          <Button
             className="w-full"
-            type="filled"
-            text="Yes, Delete"
+            variant="primary"
             onClick={() => formRef.current?.requestSubmit()}
             disabled={isSubmitting}
-          />
+          >Yes, Delete</Button>
         </form>
       </DialogContent>
     </Dialog>

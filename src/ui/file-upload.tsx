@@ -4,18 +4,29 @@ import * as React from 'react'
 import { IconUpload, IconPaperclip, IconLoader2 } from '@tabler/icons-react'
 import { cn } from './lib/utils'
 
-export interface FileUploadProps {
+export interface FileUploadProps
+  extends Omit<React.HTMLAttributes<HTMLDivElement>, 'onError'> {
+  /** Accepted file types (e.g., "image/*", ".pdf,.doc") */
   accept?: string
+  /** Max file size in bytes (default: 10MB) */
   maxSize?: number
+  /** Allow multiple files */
   multiple?: boolean
+  /** Currently uploading */
   uploading?: boolean
+  /** Upload progress (0-100) */
   progress?: number
+  /** Callback when files are selected/dropped */
   onFiles: (files: File[]) => void
+  /** Error message to display */
   error?: string
+  /** Compact mode (inline button instead of drop zone) */
   compact?: boolean
+  /** Disabled */
   disabled?: boolean
-  className?: string
+  /** Custom label */
   label?: string
+  /** Custom sublabel */
   sublabel?: string
 }
 
@@ -55,6 +66,7 @@ const FileUpload = React.forwardRef<HTMLDivElement, FileUploadProps>(
       className,
       label,
       sublabel,
+      ...props
     },
     ref,
   ) => {
@@ -175,11 +187,12 @@ const FileUpload = React.forwardRef<HTMLDivElement, FileUploadProps>(
     )
 
     const defaultLabel = label ?? 'Drop files here or click to browse'
+    const defaultSublabel = sublabel ?? `Max file size: ${formatBytes(maxSize)}`
     const inputId = React.useId()
 
     if (compact) {
       return (
-        <div ref={ref} className={cn('inline-flex flex-col', className)}>
+        <div ref={ref} className={cn('inline-flex flex-col', className)} {...props}>
           <button
             type="button"
             onClick={openPicker}
@@ -195,9 +208,9 @@ const FileUpload = React.forwardRef<HTMLDivElement, FileUploadProps>(
             )}
           >
             {uploading ? (
-              <IconLoader2 className="h-4 w-4 animate-spin" />
+              <IconLoader2 className="h-[var(--icon-sm)] w-[var(--icon-sm)] animate-spin" />
             ) : (
-              <IconPaperclip className="h-4 w-4" />
+              <IconPaperclip className="h-[var(--icon-sm)] w-[var(--icon-sm)]" />
             )}
             {label ?? 'Attach files'}
           </button>
@@ -207,6 +220,7 @@ const FileUpload = React.forwardRef<HTMLDivElement, FileUploadProps>(
             type="file"
             className="sr-only"
             style={{ visibility: 'hidden' }}
+            aria-hidden="true"
             aria-label={label ?? 'Attach files'}
             accept={accept}
             multiple={multiple}
@@ -219,6 +233,7 @@ const FileUpload = React.forwardRef<HTMLDivElement, FileUploadProps>(
           {displayError && (
             <p
               role="alert"
+              aria-live="polite"
               className="mt-ds-2 text-[length:var(--font-size-xs)] text-[var(--color-error)]"
             >
               {displayError}
@@ -231,6 +246,7 @@ const FileUpload = React.forwardRef<HTMLDivElement, FileUploadProps>(
     return (
       <div
         ref={ref}
+        {...props}
         className={cn('flex flex-col', className)}
         data-drag-active={isDragActive ? 'true' : undefined}
         onDragEnter={handleDragEnter}
@@ -282,11 +298,11 @@ const FileUpload = React.forwardRef<HTMLDivElement, FileUploadProps>(
                 />
               </div>
             </div>
-          ) : sublabel ? (
+          ) : (
             <span className="text-[length:var(--font-size-xs)] text-[var(--color-text-tertiary)]">
-              {sublabel}
+              {defaultSublabel}
             </span>
-          ) : null}
+          )}
         </div>
         <input
           ref={inputRef}
@@ -294,6 +310,7 @@ const FileUpload = React.forwardRef<HTMLDivElement, FileUploadProps>(
           type="file"
           className="sr-only"
           style={{ visibility: 'hidden' }}
+          aria-hidden="true"
           aria-label={defaultLabel}
           accept={accept}
           multiple={multiple}

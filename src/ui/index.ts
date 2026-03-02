@@ -212,6 +212,9 @@ export {
   useSidebar,
 } from './sidebar'
 
+// Transitions
+export { Fade, Collapse, Grow, Slide, type TransitionProps } from './transitions'
+
 // Typography
 export { Text, textVariants, type TextProps, type TextVariant } from './text'
 

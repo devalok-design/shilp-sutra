@@ -1,5 +1,6 @@
 'use client'
 
+import * as React from 'react'
 import {
   format,
   startOfMonth,
@@ -14,6 +15,8 @@ import {
   isWithinInterval,
   isBefore,
   isAfter,
+  startOfDay,
+  lastDayOfMonth,
 } from 'date-fns'
 import { IconChevronLeft, IconChevronRight } from '@tabler/icons-react'
 import { cn } from '../../ui/lib/utils'
@@ -29,6 +32,10 @@ export interface CalendarGridProps {
   onSelect: (date: Date) => void
   onHover?: (date: Date | null) => void
   onMonthChange: (date: Date) => void
+  onHeaderClick?: () => void
+  disabledDates?: (date: Date) => boolean
+  minDate?: Date
+  maxDate?: Date
 }
 
 export function CalendarGrid({
@@ -40,7 +47,12 @@ export function CalendarGrid({
   onSelect,
   onHover,
   onMonthChange,
+  onHeaderClick,
+  disabledDates,
+  minDate,
+  maxDate,
 }: CalendarGridProps) {
+  const gridRef = React.useRef<HTMLDivElement>(null)
   const monthStart = startOfMonth(currentMonth)
   const monthEnd = endOfMonth(currentMonth)
   const calendarStart = startOfWeek(monthStart)
@@ -51,6 +63,13 @@ export function CalendarGrid({
   while (day <= calendarEnd) {
     days.push(day)
     day = addDays(day, 1)
+  }
+
+  const isDateDisabled = (date: Date): boolean => {
+    if (disabledDates?.(date)) return true
+    if (minDate && isBefore(date, startOfDay(minDate))) return true
+    if (maxDate && isAfter(date, startOfDay(maxDate))) return true
+    return false
   }
 
   const isInRange = (date: Date) => {
@@ -73,6 +92,65 @@ export function CalendarGrid({
     return false
   }
 
+  const focusDate = (target: Date) => {
+    if (!gridRef.current) return
+    const dateStr = format(target, 'yyyy-MM-dd')
+    const btn = gridRef.current.querySelector<HTMLButtonElement>(
+      `[data-date="${dateStr}"]`,
+    )
+    if (btn) {
+      btn.focus()
+    } else {
+      // Date is in a different month — navigate there and focus after render
+      onMonthChange(startOfMonth(target))
+    }
+  }
+
+  const handleKeyDown = (e: React.KeyboardEvent<HTMLDivElement>) => {
+    const target = e.target as HTMLElement
+    const dateStr = target.getAttribute('data-date')
+    if (!dateStr) return
+
+    const current = new Date(dateStr + 'T00:00:00')
+    let next: Date | null = null
+
+    switch (e.key) {
+      case 'ArrowLeft':
+        next = addDays(current, -1)
+        break
+      case 'ArrowRight':
+        next = addDays(current, 1)
+        break
+      case 'ArrowUp':
+        next = addDays(current, -7)
+        break
+      case 'ArrowDown':
+        next = addDays(current, 7)
+        break
+      case 'Home':
+        next = startOfMonth(current)
+        break
+      case 'End':
+        next = lastDayOfMonth(current)
+        break
+      case 'Enter':
+      case ' ': {
+        e.preventDefault()
+        if (!isDateDisabled(current) && isSameMonth(current, currentMonth)) {
+          onSelect(current)
+        }
+        return
+      }
+      default:
+        return
+    }
+
+    if (next) {
+      e.preventDefault()
+      focusDate(next)
+    }
+  }
+
   return (
     <div className="w-[252px]">
       <div className="flex items-center justify-between px-ds-02 pb-ds-04">
@@ -80,25 +158,44 @@ export function CalendarGrid({
           type="button"
           onClick={() => onMonthChange(subMonths(currentMonth, 1))}
           className="inline-flex h-7 w-7 items-center justify-center rounded-[var(--radius-md)] text-[var(--color-text-placeholder)] transition-colors hover:bg-[var(--color-field)] hover:text-[var(--color-text-secondary)]"
+          aria-label="Previous month"
         >
           <IconChevronLeft className="h-[var(--icon-sm)] w-[var(--icon-sm)]" stroke={1.5} />
         </button>
-        <span className="text-ds-md semibold text-[var(--color-text-primary)]">
+        <button
+          type="button"
+          onClick={onHeaderClick}
+          className={cn(
+            'text-ds-md semibold text-[var(--color-text-primary)]',
+            onHeaderClick &&
+              'cursor-pointer rounded-[var(--radius-md)] px-ds-02 transition-colors hover:bg-[var(--color-field)]',
+          )}
+          aria-label="Switch to month/year view"
+        >
           {format(currentMonth, 'MMMM yyyy')}
-        </span>
+        </button>
         <button
           type="button"
           onClick={() => onMonthChange(addMonths(currentMonth, 1))}
           className="inline-flex h-7 w-7 items-center justify-center rounded-[var(--radius-md)] text-[var(--color-text-placeholder)] transition-colors hover:bg-[var(--color-field)] hover:text-[var(--color-text-secondary)]"
+          aria-label="Next month"
         >
           <IconChevronRight className="h-[var(--icon-sm)] w-[var(--icon-sm)]" stroke={1.5} />
         </button>
       </div>
 
-      <div className="grid grid-cols-7 gap-0">
+      {/* eslint-disable-next-line jsx-a11y/no-static-element-interactions */}
+      <div
+        ref={gridRef}
+        className="grid grid-cols-7 gap-0"
+        role="grid"
+        aria-label="Calendar"
+        onKeyDown={handleKeyDown}
+      >
         {WEEKDAYS.map((wd) => (
           <div
             key={wd}
+            role="columnheader"
             className="flex h-8 items-center justify-center text-ds-xs font-semibold uppercase tracking-wider text-[var(--color-text-placeholder)]"
           >
             {wd}
@@ -107,6 +204,7 @@ export function CalendarGrid({
 
         {days.map((d, i) => {
           const inMonth = isSameMonth(d, currentMonth)
+          const disabled = isDateDisabled(d)
           const isSelected = selected && isSameDay(d, selected)
           const inRange = isInRange(d)
           const edge = isRangeEdge(d)
@@ -116,19 +214,28 @@ export function CalendarGrid({
             <button
               key={i}
               type="button"
-              onClick={() => onSelect(d)}
+              data-date={format(d, 'yyyy-MM-dd')}
+              tabIndex={inMonth && !disabled ? 0 : -1}
+              disabled={!inMonth || disabled}
+              onClick={() => {
+                if (inMonth && !disabled) onSelect(d)
+              }}
               onMouseEnter={() => onHover?.(d)}
               onMouseLeave={() => onHover?.(null)}
+              aria-label={format(d, 'EEEE, MMMM d, yyyy')}
+              aria-selected={isSelected || edge || undefined}
+              aria-disabled={!inMonth || disabled || undefined}
               className={cn(
                 'flex h-8 w-9 items-center justify-center rounded-[var(--radius-md)] text-ds-md font-body transition-colors',
                 !inMonth && 'pointer-events-none opacity-0',
-                inMonth && !isSelected && !edge && !inRange &&
+                inMonth && disabled && 'opacity-40 pointer-events-none cursor-not-allowed',
+                inMonth && !disabled && !isSelected && !edge && !inRange &&
                   'text-[var(--color-text-primary)] hover:bg-[var(--color-field)]',
                 inRange && !edge &&
                   'rounded-none bg-[var(--color-field)] text-[var(--color-text-primary)]',
                 (isSelected || edge) &&
                   'bg-[var(--color-interactive)] text-[var(--color-text-on-color)] hover:bg-[var(--color-interactive-hover)]',
-                isToday && !isSelected && !edge &&
+                isToday && !isSelected && !edge && !disabled &&
                   'font-semibold text-[var(--color-interactive)]',
               )}
             >

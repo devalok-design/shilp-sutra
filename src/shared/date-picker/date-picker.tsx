@@ -1,7 +1,7 @@
 'use client'
 
 import * as React from 'react'
-import { format } from 'date-fns'
+import { format, setMonth, setYear } from 'date-fns'
 import { IconCalendarEvent } from '@tabler/icons-react'
 import { cn } from '../../ui/lib/utils'
 import {
@@ -10,6 +10,10 @@ import {
   PopoverTrigger,
 } from '../../ui/popover'
 import { CalendarGrid } from './calendar-grid'
+import { YearPicker } from './year-picker'
+import { MonthPicker } from './month-picker'
+
+type CalendarView = 'days' | 'months' | 'years'
 
 export interface DatePickerProps {
   value?: Date | null
@@ -17,6 +21,9 @@ export interface DatePickerProps {
   placeholder?: string
   className?: string
   formatStr?: string
+  minDate?: Date
+  maxDate?: Date
+  disabledDates?: (date: Date) => boolean
 }
 
 export function DatePicker({
@@ -25,15 +32,76 @@ export function DatePicker({
   placeholder = 'Pick a date',
   className,
   formatStr = 'MMM d, yyyy',
+  minDate,
+  maxDate,
+  disabledDates,
 }: DatePickerProps) {
   const [open, setOpen] = React.useState(false)
   const [currentMonth, setCurrentMonth] = React.useState(
     value ?? new Date(),
   )
+  const [view, setView] = React.useState<CalendarView>('days')
+
+  // Reset view when popover closes
+  React.useEffect(() => {
+    if (!open) setView('days')
+  }, [open])
 
   const handleSelect = (date: Date) => {
     onChange?.(date)
     setOpen(false)
+  }
+
+  const handleHeaderClick = () => {
+    setView((prev) => (prev === 'days' ? 'months' : 'years'))
+  }
+
+  const handleMonthSelect = (month: number) => {
+    setCurrentMonth((prev) => setMonth(prev, month))
+    setView('days')
+  }
+
+  const handleYearSelect = (year: number) => {
+    setCurrentMonth((prev) => setYear(prev, year))
+    setView('months')
+  }
+
+  const renderView = () => {
+    switch (view) {
+      case 'years':
+        return (
+          <YearPicker
+            currentYear={currentMonth.getFullYear()}
+            selectedYear={value?.getFullYear()}
+            onYearSelect={handleYearSelect}
+            minDate={minDate}
+            maxDate={maxDate}
+          />
+        )
+      case 'months':
+        return (
+          <MonthPicker
+            currentYear={currentMonth.getFullYear()}
+            selectedMonth={value?.getMonth()}
+            onMonthSelect={handleMonthSelect}
+            minDate={minDate}
+            maxDate={maxDate}
+          />
+        )
+      default:
+        return (
+          <CalendarGrid
+            currentMonth={currentMonth}
+            selected={value}
+            onSelect={handleSelect}
+            onMonthChange={setCurrentMonth}
+            onHeaderClick={handleHeaderClick}
+            disabledDates={disabledDates}
+            minDate={minDate}
+            maxDate={maxDate}
+          />
+        )
+    }
   }
 
   return (
@@ -69,12 +137,7 @@ export function DatePicker({
         align="start"
         sideOffset={4}
       >
-        <CalendarGrid
-          currentMonth={currentMonth}
-          selected={value}
-          onSelect={handleSelect}
-          onMonthChange={setCurrentMonth}
-        />
+        {renderView()}
       </PopoverContent>
     </Popover>
   )

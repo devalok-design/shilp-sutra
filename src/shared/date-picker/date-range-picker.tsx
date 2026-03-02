@@ -1,7 +1,7 @@
 'use client'
 
 import * as React from 'react'
-import { format, isBefore, isAfter } from 'date-fns'
+import { format, isBefore, isAfter, setMonth, setYear } from 'date-fns'
 import { IconCalendarEvent } from '@tabler/icons-react'
 import { cn } from '../../ui/lib/utils'
 import {
@@ -10,6 +10,10 @@ import {
   PopoverTrigger,
 } from '../../ui/popover'
 import { CalendarGrid } from './calendar-grid'
+import { YearPicker } from './year-picker'
+import { MonthPicker } from './month-picker'
+
+type CalendarView = 'days' | 'months' | 'years'
 
 export interface DateRangePickerProps {
   startDate?: Date | null
@@ -18,6 +22,9 @@ export interface DateRangePickerProps {
   placeholder?: string
   className?: string
   formatStr?: string
+  minDate?: Date
+  maxDate?: Date
+  disabledDates?: (date: Date) => boolean
 }
 
 export function DateRangePicker({
@@ -27,6 +34,9 @@ export function DateRangePicker({
   placeholder = 'Pick a date range',
   className,
   formatStr = 'MMM d',
+  minDate,
+  maxDate,
+  disabledDates,
 }: DateRangePickerProps) {
   const [open, setOpen] = React.useState(false)
   const [currentMonth, setCurrentMonth] = React.useState(
@@ -39,11 +49,17 @@ export function DateRangePicker({
     endDate ?? null,
   )
   const [hoverDate, setHoverDate] = React.useState<Date | null>(null)
+  const [view, setView] = React.useState<CalendarView>('days')
 
   React.useEffect(() => {
     setRangeStart(startDate ?? null)
     setRangeEnd(endDate ?? null)
   }, [startDate, endDate])
+
+  // Reset view when popover closes
+  React.useEffect(() => {
+    if (!open) setView('days')
+  }, [open])
 
   const handleSelect = (date: Date) => {
     if (!rangeStart || (rangeStart && rangeEnd)) {
@@ -59,11 +75,66 @@ export function DateRangePicker({
     }
   }
 
+  const handleHeaderClick = () => {
+    setView((prev) => (prev === 'days' ? 'months' : 'years'))
+  }
+
+  const handleMonthSelect = (month: number) => {
+    setCurrentMonth((prev) => setMonth(prev, month))
+    setView('days')
+  }
+
+  const handleYearSelect = (year: number) => {
+    setCurrentMonth((prev) => setYear(prev, year))
+    setView('months')
+  }
+
   const displayText = () => {
     if (rangeStart && rangeEnd) {
       return `${format(rangeStart, formatStr)} - ${format(rangeEnd, formatStr)}`
     }
     return placeholder
+  }
+
+  const renderView = () => {
+    switch (view) {
+      case 'years':
+        return (
+          <YearPicker
+            currentYear={currentMonth.getFullYear()}
+            selectedYear={rangeStart?.getFullYear()}
+            onYearSelect={handleYearSelect}
+            minDate={minDate}
+            maxDate={maxDate}
+          />
+        )
+      case 'months':
+        return (
+          <MonthPicker
+            currentYear={currentMonth.getFullYear()}
+            selectedMonth={rangeStart?.getMonth()}
+            onMonthSelect={handleMonthSelect}
+            minDate={minDate}
+            maxDate={maxDate}
+          />
+        )
+      default:
+        return (
+          <CalendarGrid
+            currentMonth={currentMonth}
+            rangeStart={rangeStart}
+            rangeEnd={rangeEnd}
+            hoverDate={hoverDate}
+            onSelect={handleSelect}
+            onHover={setHoverDate}
+            onMonthChange={setCurrentMonth}
+            onHeaderClick={handleHeaderClick}
+            disabledDates={disabledDates}
+            minDate={minDate}
+            maxDate={maxDate}
+          />
+        )
+    }
   }
 
   return (
@@ -99,15 +170,7 @@ export function DateRangePicker({
         align="start"
         sideOffset={4}
       >
-        <CalendarGrid
-          currentMonth={currentMonth}
-          rangeStart={rangeStart}
-          rangeEnd={rangeEnd}
-          hoverDate={hoverDate}
-          onSelect={handleSelect}
-          onHover={setHoverDate}
-          onMonthChange={setCurrentMonth}
-        />
+        {renderView()}
       </PopoverContent>
     </Popover>
   )

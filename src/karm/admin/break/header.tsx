@@ -16,8 +16,8 @@ import {
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from '../../../ui/dropdown-menu'
-import { CustomButton } from '../../custom-buttons/CustomButton'
-import { IconButton } from '../../custom-buttons/icon-button'
+import { Button } from '../../../ui/button'
+import { IconButton } from '../../../ui/icon-button'
 import type { AdminUser } from '../types'
 
 // ============================================================
@@ -245,23 +245,26 @@ export function BreakAdminHeader({
             <div className="flex w-[140px] flex-col items-center justify-start">
               <div className="flex w-full items-center justify-between">
                 <IconButton
-                  size="small"
+                  size="sm"
                   icon={<ArrowLeftIcon />}
+                  aria-label="Previous month"
                   onClick={handlePrev}
                 />
                 <span className="B2-Reg text-[var(--color-text-secondary)]">
                   {monthMap[filters.currMonth].name}
                 </span>
                 <IconButton
-                  size="small"
+                  size="sm"
                   icon={<ArrowForwardIcon />}
+                  aria-label="Next month"
                   onClick={handleNext}
                 />
               </div>
               <div className="mt-ds-04 flex w-full items-center justify-between">
                 <IconButton
-                  size="small"
+                  size="sm"
                   icon={<ArrowLeftIcon />}
+                  aria-label="Previous year"
                   onClick={() => {
                     setFilters((prev) => ({
                       ...prev,
@@ -273,8 +276,9 @@ export function BreakAdminHeader({
                   {filters.currYear}
                 </span>
                 <IconButton
-                  size="small"
+                  size="sm"
                   icon={<ArrowForwardIcon />}
+                  aria-label="Next year"
                   onClick={() => {
                     setFilters((prev) => ({
                       ...prev,
@@ -283,12 +287,12 @@ export function BreakAdminHeader({
                   }}
                 />
               </div>
-              <CustomButton
-                className="mt-ds-05 w-full"
-                type="outline"
-                text="Filter"
+              <Button
+                className="mt-ds-05"
+                variant="secondary"
+                fullWidth
                 onClick={handleDateFilter}
-              />
+              >Filter</Button>
             </div>
           </DropdownMenuContent>
         </DropdownMenu>

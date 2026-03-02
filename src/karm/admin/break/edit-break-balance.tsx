@@ -12,7 +12,6 @@ import {
 } from '../../../ui/dialog'
 import { Button } from '../../../ui/button'
 import NumberInput from '../../../ui/number-input'
-import { CustomButton } from '../../custom-buttons/CustomButton'
 import type { BreakBalanceData } from '../types'
 
 // ============================================================
@@ -132,13 +131,12 @@ export function EditBreakBalance({
                   </div>
                 </div>
 
-                <CustomButton
-                  className="w-full"
-                  type="outline"
-                  text="Update"
+                <Button
+                  variant="secondary"
+                  fullWidth
                   onClick={() => formRef.current?.requestSubmit()}
                   disabled={isSubmitting}
-                />
+                >Update</Button>
               </form>
             </div>
           </DialogDescription>

@@ -69,14 +69,8 @@ export {
   ProjectCard,
 } from './client'
 
-// Custom button components
+// Segmented control components
 export {
-  CustomButton,
-  type ButtonVariant,
-  type ButtonType,
-  /** @deprecated Use Button from ui/ instead */
-  IconButton,
-  type IconButtonProps,
   SegmentedControl,
   SegmentedControlItem,
   segmentedControlItemVariants,

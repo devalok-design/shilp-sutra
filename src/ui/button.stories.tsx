@@ -1,5 +1,12 @@
 import type { Meta, StoryObj } from '@storybook/react'
 import { Button } from './button'
+import {
+  IconPlus,
+  IconArrowRight,
+  IconSend,
+  IconDownload,
+  IconTrash,
+} from '@tabler/icons-react'
 
 const meta: Meta<typeof Button> = {
   title: 'UI/Core/Button',
@@ -23,6 +30,14 @@ const meta: Meta<typeof Button> = {
     },
     disabled: { control: 'boolean' },
     asChild: { control: 'boolean' },
+    startIcon: { control: false },
+    endIcon: { control: false },
+    loading: { control: 'boolean' },
+    loadingPosition: {
+      control: 'select',
+      options: ['start', 'end', 'center'],
+    },
+    fullWidth: { control: 'boolean' },
   },
 }
 export default meta
@@ -155,6 +170,146 @@ export const AllSizes: Story = {
       <Button size="icon-sm">+</Button>
       <Button size="icon-md">+</Button>
       <Button size="icon-lg">+</Button>
+    </div>
+  ),
+}
+
+// --- New feature stories ---
+
+export const WithStartIcon: Story = {
+  args: {
+    variant: 'primary',
+    startIcon: <IconPlus size={16} />,
+    children: 'Add Item',
+  },
+}
+
+export const WithEndIcon: Story = {
+  args: {
+    variant: 'primary',
+    endIcon: <IconArrowRight size={16} />,
+    children: 'Continue',
+  },
+}
+
+export const WithBothIcons: Story = {
+  args: {
+    variant: 'secondary',
+    startIcon: <IconDownload size={16} />,
+    endIcon: <IconArrowRight size={16} />,
+    children: 'Download',
+  },
+}
+
+export const Loading: Story = {
+  args: {
+    variant: 'primary',
+    loading: true,
+    children: 'Saving...',
+  },
+}
+
+export const LoadingEnd: Story = {
+  args: {
+    variant: 'secondary',
+    loading: true,
+    loadingPosition: 'end',
+    endIcon: <IconSend size={16} />,
+    children: 'Sending',
+  },
+}
+
+export const LoadingCenter: Story = {
+  args: {
+    variant: 'primary',
+    loading: true,
+    loadingPosition: 'center',
+    children: 'Processing',
+  },
+}
+
+export const FullWidth: Story = {
+  render: () => (
+    <div className="max-w-sm">
+      <Button fullWidth>Full Width Button</Button>
+    </div>
+  ),
+}
+
+export const AllFeatures: Story = {
+  render: () => (
+    <div className="flex flex-col gap-8">
+      {/* Row 1: Buttons with startIcon across all variants */}
+      <div>
+        <p className="mb-2 text-sm font-semibold text-[var(--color-text-secondary)]">
+          Start Icon across variants
+        </p>
+        <div className="flex flex-wrap items-center gap-4">
+          <Button variant="primary" startIcon={<IconPlus size={16} />}>
+            Primary
+          </Button>
+          <Button variant="secondary" startIcon={<IconDownload size={16} />}>
+            Secondary
+          </Button>
+          <Button variant="ghost" startIcon={<IconPlus size={16} />}>
+            Ghost
+          </Button>
+          <Button variant="danger" startIcon={<IconTrash size={16} />}>
+            Danger
+          </Button>
+          <Button variant="danger-ghost" startIcon={<IconTrash size={16} />}>
+            Danger Ghost
+          </Button>
+          <Button variant="link" startIcon={<IconArrowRight size={16} />}>
+            Link
+          </Button>
+        </div>
+      </div>
+
+      {/* Row 2: Loading states (start, end, center) */}
+      <div>
+        <p className="mb-2 text-sm font-semibold text-[var(--color-text-secondary)]">
+          Loading positions
+        </p>
+        <div className="flex flex-wrap items-center gap-4">
+          <Button loading loadingPosition="start">
+            Loading Start
+          </Button>
+          <Button variant="secondary" loading loadingPosition="end" endIcon={<IconSend size={16} />}>
+            Loading End
+          </Button>
+          <Button loading loadingPosition="center">
+            Loading Center
+          </Button>
+        </div>
+      </div>
+
+      {/* Row 3: Sizes with icons (sm, md, lg) */}
+      <div>
+        <p className="mb-2 text-sm font-semibold text-[var(--color-text-secondary)]">
+          Sizes with icons
+        </p>
+        <div className="flex flex-wrap items-center gap-4">
+          <Button size="sm" startIcon={<IconPlus size={14} />}>
+            Small
+          </Button>
+          <Button size="md" startIcon={<IconPlus size={16} />}>
+            Medium
+          </Button>
+          <Button size="lg" startIcon={<IconPlus size={18} />}>
+            Large
+          </Button>
+          <Button size="sm" endIcon={<IconArrowRight size={14} />}>
+            Small
+          </Button>
+          <Button size="md" endIcon={<IconArrowRight size={16} />}>
+            Medium
+          </Button>
+          <Button size="lg" endIcon={<IconArrowRight size={18} />}>
+            Large
+          </Button>
+        </div>
+      </div>
     </div>
   ),
 }

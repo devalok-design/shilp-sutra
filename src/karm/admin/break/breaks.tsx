@@ -6,7 +6,7 @@ import { Tooltip, TooltipTrigger, TooltipContent } from '../../../ui'
 import { EditBreak } from './edit-break'
 import { formatOptionalDate } from '../utils/date-utils'
 import { renderStatus } from '../utils/render-status'
-import { IconButton } from '../../custom-buttons/icon-button'
+import { IconButton } from '../../../ui/icon-button'
 import { isSameDay } from 'date-fns'
 import type { BreakRequest } from '../types'
 
@@ -139,7 +139,7 @@ export function Breaks({
               <div className="flex w-12 justify-center px-ds-04 py-ds-03">
                 <Popover>
                   <PopoverTrigger>
-                    <IconButton icon={<MenuDotsIcon />} size="medium" />
+                    <IconButton icon={<MenuDotsIcon />} size="md" aria-label="More options" />
                   </PopoverTrigger>
                   <PopoverContent className="w-auto p-0">
                     <EditBreak

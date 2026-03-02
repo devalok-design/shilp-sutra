@@ -20,7 +20,6 @@ import {
   checkDateOverlap,
   isBreakDay,
 } from '../utils/date-range-utils'
-import { CustomButton } from '../../custom-buttons/CustomButton'
 import { isSameDay } from '../utils/date-utils'
 import { useBreakDatePicker } from './use-break-date-picker'
 import {
@@ -663,13 +662,12 @@ export function EditBreak({
                       onDelete={onDelete}
                     />
                   </div>
-                  <CustomButton
+                  <Button
                     className="w-fit"
-                    type="outline"
-                    text="Update"
+                    variant="secondary"
                     disabled={isSubmitting}
                     onClick={() => formRef.current?.requestSubmit()}
-                  />
+                  >Update</Button>
                 </div>
               </form>
             </div>

@@ -11,7 +11,7 @@ import {
 import { Textarea } from '../../../ui/textarea'
 import { CrossIcon, TickIcon } from '../icons'
 import { formatDateWithWeekday } from '../utils/date-utils'
-import { CustomButton } from '../../custom-buttons/CustomButton'
+import { Button } from '../../../ui/button'
 import { isSameDay } from 'date-fns'
 import {
   Tooltip,
@@ -198,10 +198,9 @@ export function LeaveRequest({
                 className={`resize-none border-none px-0 shadow-none placeholder:font-["Bricolage_Grotesque"]`}
               />
             </div>
-            <CustomButton
+            <Button
               className="mt-ds-06"
-              text={clickedAction === 'approve' ? 'Approve' : 'Reject'}
-              type="filled"
+              variant="primary"
               onClick={() => {
                 // Create a synthetic mouse event for the callback signature
                 const syntheticEvent = new window.MouseEvent(
@@ -213,7 +212,7 @@ export function LeaveRequest({
                   handleRejectRequest(syntheticEvent, request.id, comment)
                 }
               }}
-            />
+            >{clickedAction === 'approve' ? 'Approve' : 'Reject'}</Button>
           </div>
         </DialogContent>
       </Dialog>

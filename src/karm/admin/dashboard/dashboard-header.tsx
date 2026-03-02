@@ -11,8 +11,8 @@ import {
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from '../../../ui/dropdown-menu'
-import { CustomButton } from '../../custom-buttons/CustomButton'
-import { IconButton } from '../../custom-buttons/icon-button'
+import { Button } from '../../../ui/button'
+import { IconButton } from '../../../ui/icon-button'
 import { Toggle } from '../../custom-buttons'
 import {
   FilledArrowIcon,
@@ -88,11 +88,12 @@ export function DashboardHeader({
           </DropdownMenuContent>
         </DropdownMenu>
         {!isTodaySelected && (
-          <CustomButton
-            type="outline"
-            text="Today"
+          <Button
+            variant="secondary"
             onClick={onTodayClick}
-          />
+          >
+            Today
+          </Button>
         )}
       </div>
       <div className="flex w-full items-center justify-between gap-ds-05 md:mt-0 md:w-auto md:justify-start max-md:mt-[17px] max-lg:gap-[0.5rem]">
@@ -191,12 +192,14 @@ export function DashboardHeader({
         <div className="flex gap-0">
           <IconButton
             icon={<ArrowLeftIcon />}
-            size="small"
+            size="sm"
+            aria-label="Previous"
             onClick={() => onDateChange('prev')}
           />
           <IconButton
             icon={<ArrowForwardIcon />}
-            size="small"
+            size="sm"
+            aria-label="Next"
             onClick={() => onDateChange('next')}
           />
         </div>

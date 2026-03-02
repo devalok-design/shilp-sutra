@@ -8,7 +8,7 @@ import * as React from 'react'
 import { Skeleton } from '../../../ui/skeleton'
 import { DropdownMenu, DropdownMenuTrigger } from '../../../ui/dropdown-menu'
 import { FilledArrowIcon, ArrowLeftIcon, ArrowForwardIcon } from '../icons'
-import { IconButton } from '../../custom-buttons/icon-button'
+import { IconButton } from '../../../ui/icon-button'
 
 // ============================================================
 // Component
@@ -42,10 +42,11 @@ export function DashboardSkeleton() {
               </div>
             </div>
             <div className="flex gap-0">
-              <IconButton icon={<ArrowLeftIcon />} size="small" />
+              <IconButton icon={<ArrowLeftIcon />} size="sm" aria-label="Previous" />
               <IconButton
                 icon={<ArrowForwardIcon />}
-                size="small"
+                size="sm"
+                aria-label="Next"
                 onClick={() => {}}
               />
             </div>

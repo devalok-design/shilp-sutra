@@ -24,9 +24,16 @@ export interface ComboboxProps {
   disabled?: boolean
   className?: string
   triggerClassName?: string
+  /** Max visible items in the dropdown before scroll (default 6) */
   maxVisible?: number
   renderOption?: (option: ComboboxOption, selected: boolean) => React.ReactNode
 }
+
+/** Max pills shown in the trigger before "+N more" overflow */
+const MAX_VISIBLE_PILLS = 2
+
+/** Approximate height of a single option item in px */
+const ITEM_HEIGHT_PX = 36
 
 const Combobox = React.forwardRef<HTMLButtonElement, ComboboxProps>(
   (
@@ -41,7 +48,7 @@ const Combobox = React.forwardRef<HTMLButtonElement, ComboboxProps>(
       disabled = false,
       className,
       triggerClassName,
-      maxVisible = 2,
+      maxVisible = 6,
       renderOption,
     },
     ref,
@@ -51,6 +58,7 @@ const Combobox = React.forwardRef<HTMLButtonElement, ComboboxProps>(
     const [highlightedIndex, setHighlightedIndex] = React.useState(-1)
     const searchInputRef = React.useRef<HTMLInputElement>(null)
     const listRef = React.useRef<HTMLUListElement>(null)
+    const optionIdPrefix = React.useId()
 
     const selectedValues = React.useMemo<string[]>(() => {
       if (value === undefined || value === null) return []
@@ -210,8 +218,8 @@ const Combobox = React.forwardRef<HTMLButtonElement, ComboboxProps>(
 
     const renderTriggerContent = () => {
       if (multiple && selectedValues.length > 0) {
-        const visiblePills = selectedValues.slice(0, maxVisible)
-        const remaining = selectedValues.length - maxVisible
+        const visiblePills = selectedValues.slice(0, MAX_VISIBLE_PILLS)
+        const remaining = selectedValues.length - MAX_VISIBLE_PILLS
 
         return (
           <span className="flex flex-1 flex-wrap items-center gap-ds-02 overflow-hidden">
@@ -315,6 +323,15 @@ const Combobox = React.forwardRef<HTMLButtonElement, ComboboxProps>(
                   setHighlightedIndex(-1)
                 }}
                 onKeyDown={handleKeyDown}
+                role="combobox"
+                aria-autocomplete="list"
+                aria-controls="combobox-listbox"
+                aria-expanded={true}
+                aria-activedescendant={
+                  highlightedIndex >= 0
+                    ? `${optionIdPrefix}-option-${highlightedIndex}`
+                    : undefined
+                }
                 aria-label="Search options"
               />
             </div>
@@ -327,15 +344,18 @@ const Combobox = React.forwardRef<HTMLButtonElement, ComboboxProps>(
             ) : (
               <ul
                 ref={listRef}
+                id="combobox-listbox"
                 role="listbox"
                 aria-multiselectable={multiple || undefined}
-                className="max-h-60 overflow-auto p-ds-02"
+                className="overflow-auto p-ds-02"
+                style={{ maxHeight: `${maxVisible * ITEM_HEIGHT_PX}px` }}
               >
                 {filteredOptions.map((option, index) => {
                   const selected = isSelected(option.value)
                   return (
                     <li
                       key={option.value}
+                      id={`${optionIdPrefix}-option-${index}`}
                       role="option"
                       aria-selected={selected}
                       aria-disabled={option.disabled || undefined}

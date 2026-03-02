@@ -200,7 +200,7 @@ describe('Combobox', () => {
     expect(within(trigger).getByText('Banana')).toBeInTheDocument()
   })
 
-  it('shows +N more when pills exceed maxVisible (default 2)', () => {
+  it('shows +N more when pills exceed the fixed limit of 2', () => {
     render(
       <Combobox
         options={fruits}
@@ -217,23 +217,22 @@ describe('Combobox', () => {
     expect(within(trigger).getByText('+2 more')).toBeInTheDocument()
   })
 
-  it('respects custom maxVisible for pills', () => {
+  it('pill limit stays at 2 even when maxVisible is larger', () => {
     render(
       <Combobox
         options={fruits}
         value={['apple', 'banana', 'cherry', 'dragonfruit']}
         onChange={vi.fn()}
         multiple
-        maxVisible={3}
+        maxVisible={10}
       />,
     )
 
     const trigger = screen.getByRole('combobox')
     expect(within(trigger).getByText('Apple')).toBeInTheDocument()
     expect(within(trigger).getByText('Banana')).toBeInTheDocument()
-    expect(within(trigger).getByText('Cherry')).toBeInTheDocument()
-    expect(within(trigger).queryByText('Dragonfruit')).not.toBeInTheDocument()
-    expect(within(trigger).getByText('+1 more')).toBeInTheDocument()
+    expect(within(trigger).queryByText('Cherry')).not.toBeInTheDocument()
+    expect(within(trigger).getByText('+2 more')).toBeInTheDocument()
   })
 
   it('forwards ref (HTMLButtonElement)', () => {
@@ -306,6 +305,180 @@ describe('Combobox', () => {
     await user.click(screen.getByRole('combobox'))
     expect(screen.getByPlaceholderText('Search...')).toHaveValue('')
     expect(screen.getAllByRole('option')).toHaveLength(fruits.length)
+  })
+
+  it('skips disabled options when navigating with ArrowDown', async () => {
+    const onChange = vi.fn()
+    const user = userEvent.setup()
+    const optionsWithDisabled: ComboboxOption[] = [
+      { value: 'a', label: 'Alpha' },
+      { value: 'b', label: 'Bravo', disabled: true },
+      { value: 'c', label: 'Charlie' },
+    ]
+    render(<Combobox options={optionsWithDisabled} onChange={onChange} />)
+
+    await user.click(screen.getByRole('combobox'))
+
+    // ArrowDown from -1 -> 0 (Alpha), ArrowDown skips 1 (Bravo disabled) -> 2 (Charlie)
+    await user.keyboard('{ArrowDown}')
+    await user.keyboard('{ArrowDown}')
+    await user.keyboard('{Enter}')
+
+    expect(onChange).toHaveBeenCalledWith('c')
+  })
+
+  it('renders custom content via renderOption prop', async () => {
+    const user = userEvent.setup()
+    render(
+      <Combobox
+        options={fruits}
+        onChange={vi.fn()}
+        renderOption={(option) => (
+          <span data-testid="custom-option">{option.label.toUpperCase()}</span>
+        )}
+      />,
+    )
+
+    await user.click(screen.getByRole('combobox'))
+
+    const customOptions = screen.getAllByTestId('custom-option')
+    expect(customOptions).toHaveLength(fruits.length)
+    expect(customOptions[0]).toHaveTextContent('APPLE')
+  })
+
+  it('navigates to first option with Home key', async () => {
+    const onChange = vi.fn()
+    const user = userEvent.setup()
+    render(<Combobox options={fruits} onChange={onChange} />)
+
+    await user.click(screen.getByRole('combobox'))
+
+    // Move down a few times, then press Home
+    await user.keyboard('{ArrowDown}')
+    await user.keyboard('{ArrowDown}')
+    await user.keyboard('{ArrowDown}')
+    await user.keyboard('{Home}')
+    await user.keyboard('{Enter}')
+
+    expect(onChange).toHaveBeenCalledWith('apple')
+  })
+
+  it('navigates to last option with End key', async () => {
+    const onChange = vi.fn()
+    const user = userEvent.setup()
+    render(<Combobox options={fruits} onChange={onChange} />)
+
+    await user.click(screen.getByRole('combobox'))
+
+    await user.keyboard('{End}')
+    await user.keyboard('{Enter}')
+
+    expect(onChange).toHaveBeenCalledWith('elderberry')
+  })
+
+  it('renders option icon when provided', async () => {
+    const user = userEvent.setup()
+    const optionsWithIcon: ComboboxOption[] = [
+      { value: 'star', label: 'Star', icon: <span data-testid="star-icon">*</span> },
+      { value: 'plain', label: 'Plain' },
+    ]
+    render(<Combobox options={optionsWithIcon} onChange={vi.fn()} />)
+
+    await user.click(screen.getByRole('combobox'))
+
+    expect(screen.getByTestId('star-icon')).toBeInTheDocument()
+  })
+
+  it('renders option description when provided', async () => {
+    const user = userEvent.setup()
+    const optionsWithDesc: ComboboxOption[] = [
+      { value: 'a', label: 'Alpha', description: 'First letter' },
+      { value: 'b', label: 'Bravo' },
+    ]
+    render(<Combobox options={optionsWithDesc} onChange={vi.fn()} />)
+
+    await user.click(screen.getByRole('combobox'))
+
+    expect(screen.getByText('First letter')).toBeInTheDocument()
+  })
+
+  it('removes pill via X button and calls onChange without that value', async () => {
+    const onChange = vi.fn()
+    const user = userEvent.setup()
+    render(
+      <Combobox
+        options={fruits}
+        value={['apple', 'banana']}
+        onChange={onChange}
+        multiple
+      />,
+    )
+
+    const trigger = screen.getByRole('combobox')
+    const removeApple = within(trigger).getByLabelText('Remove Apple')
+    await user.click(removeApple)
+
+    expect(onChange).toHaveBeenCalledWith(['banana'])
+  })
+
+  it('keeps popover open after selection in multi-select mode', async () => {
+    const onChange = vi.fn()
+    const user = userEvent.setup()
+    render(
+      <Combobox
+        options={fruits}
+        value={[]}
+        onChange={onChange}
+        multiple
+      />,
+    )
+
+    await user.click(screen.getByRole('combobox'))
+    await user.click(screen.getByRole('option', { name: 'Apple' }))
+
+    // Popover should still be open
+    expect(screen.getByRole('listbox')).toBeInTheDocument()
+  })
+
+  it('closes popover after selection in single-select mode', async () => {
+    const onChange = vi.fn()
+    const user = userEvent.setup()
+    render(<Combobox options={fruits} onChange={onChange} />)
+
+    await user.click(screen.getByRole('combobox'))
+    await user.click(screen.getByRole('option', { name: 'Apple' }))
+
+    // Popover should close
+    expect(screen.queryByRole('listbox')).not.toBeInTheDocument()
+  })
+
+  it('sets aria-activedescendant on search input when option is highlighted', async () => {
+    const user = userEvent.setup()
+    render(<Combobox options={fruits} onChange={vi.fn()} />)
+
+    await user.click(screen.getByRole('combobox'))
+    const searchInput = screen.getByPlaceholderText('Search...')
+
+    // No highlight initially
+    expect(searchInput).not.toHaveAttribute('aria-activedescendant')
+
+    // Navigate down to first option
+    await user.keyboard('{ArrowDown}')
+
+    // Now aria-activedescendant should point to the first option's id
+    const firstOption = screen.getAllByRole('option')[0]
+    expect(searchInput).toHaveAttribute('aria-activedescendant', firstOption.id)
+  })
+
+  it('uses maxVisible to control listbox scroll height', async () => {
+    const user = userEvent.setup()
+    render(<Combobox options={fruits} onChange={vi.fn()} maxVisible={4} />)
+
+    await user.click(screen.getByRole('combobox'))
+
+    const listbox = screen.getByRole('listbox')
+    // 4 items * 36px = 144px
+    expect(listbox).toHaveStyle({ maxHeight: '144px' })
   })
 
   it('has no a11y violations', async () => {

@@ -36,13 +36,13 @@ const ProjectCard = React.forwardRef<HTMLDivElement, ProjectCardProps>(
       <div
         ref={ref}
         className={cn(
-          'group cursor-pointer rounded-[var(--radius-lg)] border border-[var(--color-border-subtle)] bg-[var(--color-layer-01)] p-5 shadow-[var(--shadow-01)] transition-shadow duration-[var(--duration-moderate)] hover:shadow-[var(--shadow-02)]',
+          'group cursor-pointer rounded-[var(--radius-lg)] border border-[var(--color-border-subtle)] bg-[var(--color-layer-01)] p-ds-05b shadow-[var(--shadow-01)] transition-shadow duration-[var(--duration-moderate)] hover:shadow-[var(--shadow-02)]',
           className,
         )}
         {...props}
       >
-        <div className="mb-3 flex items-start justify-between">
-          <h3 className="font-display text-base font-semibold text-[var(--color-text-primary)]">
+        <div className="mb-ds-04 flex items-start justify-between">
+          <h3 className="font-display B1-Reg font-semibold text-[var(--color-text-primary)]">
             {name}
           </h3>
           <Badge variant={statusVariantMap[status]} size="sm">
@@ -50,12 +50,12 @@ const ProjectCard = React.forwardRef<HTMLDivElement, ProjectCardProps>(
           </Badge>
         </div>
         {description && (
-          <p className="mb-4 line-clamp-2 text-sm text-[var(--color-text-secondary)]">
+          <p className="mb-ds-05 line-clamp-2 B2-Reg text-[var(--color-text-secondary)]">
             {description}
           </p>
         )}
-        <div className="space-y-2">
-          <div className="flex items-center justify-between text-xs text-[var(--color-text-helper)]">
+        <div className="space-y-ds-03">
+          <div className="flex items-center justify-between B3-Reg text-[var(--color-text-helper)]">
             <span>
               {completedTasks} / {taskCount} tasks
             </span>

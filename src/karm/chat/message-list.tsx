@@ -30,7 +30,7 @@ interface MessageListProps {
 
 const markdownComponents = {
   p: ({ children }: { children?: React.ReactNode }) => (
-    <p className="mb-2 last:mb-0">{children}</p>
+    <p className="mb-ds-03 last:mb-0">{children}</p>
   ),
   code: ({
     children,
@@ -44,24 +44,24 @@ const markdownComponents = {
       return <code className={className}>{children}</code>
     }
     return (
-      <code className="rounded bg-[var(--color-field)] px-1 py-0.5 text-sm">
+      <code className="rounded bg-[var(--color-field)] px-ds-02 py-0.5 B2-Reg">
         {children}
       </code>
     )
   },
   pre: ({ children }: { children?: React.ReactNode }) => (
-    <pre className="mb-2 overflow-x-auto rounded-[var(--radius-lg)] bg-[var(--color-field)] p-3 text-sm">
+    <pre className="mb-ds-03 overflow-x-auto rounded-[var(--radius-lg)] bg-[var(--color-field)] p-ds-04 B2-Reg">
       {children}
     </pre>
   ),
   ul: ({ children }: { children?: React.ReactNode }) => (
-    <ul className="mb-2 list-disc pl-4">{children}</ul>
+    <ul className="mb-ds-03 list-disc pl-ds-05">{children}</ul>
   ),
   ol: ({ children }: { children?: React.ReactNode }) => (
-    <ol className="mb-2 list-decimal pl-4">{children}</ol>
+    <ol className="mb-ds-03 list-decimal pl-ds-05">{children}</ol>
   ),
   li: ({ children }: { children?: React.ReactNode }) => (
-    <li className="mb-1">{children}</li>
+    <li className="mb-ds-02">{children}</li>
   ),
   strong: ({ children }: { children?: React.ReactNode }) => (
     <strong className="font-semibold">{children}</strong>
@@ -90,7 +90,7 @@ export function MessageList({
   if (isLoadingMessages) {
     return (
       <div className="flex flex-1 items-center justify-center">
-        <div className="flex flex-col items-center gap-2">
+        <div className="flex flex-col items-center gap-ds-03">
           <div className="h-6 w-6 animate-spin rounded-[var(--radius-full)] border-2 border-[var(--color-text-secondary)] border-t-transparent" />
           <p className="B3-Reg text-[var(--color-text-placeholder)]">
             Loading messages...
@@ -103,8 +103,8 @@ export function MessageList({
   // Empty state
   if (messages.length === 0 && !isStreaming) {
     return (
-      <div className="flex flex-1 items-center justify-center p-6">
-        <div className="flex flex-col items-center gap-3 text-center">
+      <div className="flex flex-1 items-center justify-center p-ds-06">
+        <div className="flex flex-col items-center gap-ds-04 text-center">
           <div className="flex h-12 w-12 items-center justify-center rounded-[var(--radius-full)] bg-[var(--color-field)]">
             <IconRobot className="h-6 w-6 text-[var(--color-text-secondary)]" />
           </div>
@@ -120,13 +120,13 @@ export function MessageList({
   }
 
   return (
-    <div ref={scrollRef} className="no-scrollbar flex-1 overflow-y-auto p-4">
-      <div className="flex flex-col gap-4">
+    <div ref={scrollRef} className="no-scrollbar flex-1 overflow-y-auto p-ds-05">
+      <div className="flex flex-col gap-ds-05">
         {messages.map((msg) => {
           if (msg.role === 'SYSTEM') {
             return (
               <div key={msg.id} className="flex justify-center">
-                <div className="flex items-center gap-2 rounded-[var(--radius-lg)] bg-[var(--color-error-surface)] px-3 py-2">
+                <div className="flex items-center gap-ds-03 rounded-[var(--radius-lg)] bg-[var(--color-error-surface)] px-ds-04 py-ds-03">
                   <IconAlertCircle className="h-[var(--icon-sm)] w-[var(--icon-sm)] shrink-0 text-[var(--color-text-error)]" />
                   <p className="B3-Reg text-[var(--color-text-error)]">
                     {msg.content}
@@ -139,7 +139,7 @@ export function MessageList({
           if (msg.role === 'USER') {
             return (
               <div key={msg.id} className="flex justify-end">
-                <div className="flex max-w-[85%] items-start gap-2">
+                <div className="flex max-w-[85%] items-start gap-ds-03">
                   <div className="rounded-[var(--radius-2xl)] rounded-br-[var(--radius-sm)] bg-[var(--color-interactive)] px-3.5 py-2.5 text-[var(--color-text-on-color)]">
                     <p className="B2-Reg whitespace-pre-wrap">{msg.content}</p>
                   </div>
@@ -154,7 +154,7 @@ export function MessageList({
           // ASSISTANT
           return (
             <div key={msg.id} className="flex justify-start">
-              <div className="flex max-w-[85%] items-start gap-2">
+              <div className="flex max-w-[85%] items-start gap-ds-03">
                 <div className="flex h-7 w-7 shrink-0 items-center justify-center rounded-[var(--radius-full)] bg-[var(--color-field)]">
                   <IconRobot className="h-[var(--icon-sm)] w-[var(--icon-sm)] text-[var(--color-text-secondary)]" />
                 </div>
@@ -173,7 +173,7 @@ export function MessageList({
         {/* Streaming assistant message */}
         {isStreaming && streamingText && (
           <div className="flex justify-start">
-            <div className="flex max-w-[85%] items-start gap-2">
+            <div className="flex max-w-[85%] items-start gap-ds-03">
               <div className="flex h-7 w-7 shrink-0 items-center justify-center rounded-[var(--radius-full)] bg-[var(--color-field)]">
                 <IconRobot className="h-[var(--icon-sm)] w-[var(--icon-sm)] text-[var(--color-text-secondary)]" />
               </div>
@@ -189,12 +189,12 @@ export function MessageList({
         {/* Streaming indicator when no text yet */}
         {isStreaming && !streamingText && (
           <div className="flex justify-start">
-            <div className="flex max-w-[85%] items-start gap-2">
+            <div className="flex max-w-[85%] items-start gap-ds-03">
               <div className="flex h-7 w-7 shrink-0 items-center justify-center rounded-[var(--radius-full)] bg-[var(--color-field)]">
                 <IconRobot className="h-[var(--icon-sm)] w-[var(--icon-sm)] text-[var(--color-text-secondary)]" />
               </div>
               <div className="rounded-[var(--radius-2xl)] rounded-bl-[var(--radius-sm)] bg-[var(--color-field)] px-3.5 py-2.5">
-                <div className="flex items-center gap-1.5 py-1">
+                <div className="flex items-center gap-ds-02b py-ds-02">
                   <div className="h-2 w-2 animate-bounce rounded-[var(--radius-full)] bg-[var(--color-text-placeholder)] [animation-delay:0ms]" />
                   <div className="h-2 w-2 animate-bounce rounded-[var(--radius-full)] bg-[var(--color-text-placeholder)] [animation-delay:150ms]" />
                   <div className="h-2 w-2 animate-bounce rounded-[var(--radius-full)] bg-[var(--color-text-placeholder)] [animation-delay:300ms]" />

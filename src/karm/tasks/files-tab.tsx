@@ -143,7 +143,7 @@ function FilesTab({
               : 'border-[var(--color-border-default)]',
           )}
         >
-          <div className="flex flex-col items-center gap-2 py-6">
+          <div className="flex flex-col items-center gap-ds-03 py-ds-06">
             <div className="flex h-9 w-9 items-center justify-center rounded-[var(--radius-lg)] bg-[var(--color-layer-02)]">
               <IconUpload
                 className="h-[var(--icon-sm)] w-[var(--icon-sm)] text-[var(--color-text-placeholder)]"
@@ -155,11 +155,11 @@ function FilesTab({
                 type="button"
                 onClick={() => fileInputRef.current?.click()}
                 disabled={isUploading}
-                className="text-[13px] font-body font-medium text-[var(--color-interactive)] transition-colors hover:underline disabled:opacity-50"
+                className="B2-Reg font-medium text-[var(--color-interactive)] transition-colors hover:underline disabled:opacity-50"
               >
                 {isUploading ? 'Uploading...' : 'Click to upload'}
               </button>
-              <span className="text-[13px] font-body text-[var(--color-text-placeholder)]">
+              <span className="B2-Reg text-[var(--color-text-placeholder)]">
                 {' '}or drag and drop
               </span>
             </div>
@@ -175,13 +175,13 @@ function FilesTab({
 
       {/* Files list */}
       {files.length > 0 ? (
-        <div className="mt-4 space-y-1">
+        <div className="mt-ds-05 space-y-ds-02">
           {files.map((file) => {
             const Icon = getFileIcon(file.fileType)
             return (
               <div
                 key={file.id}
-                className="group flex items-center gap-3 rounded-[var(--radius-lg)] px-2 py-2 transition-colors hover:bg-[var(--color-field)]"
+                className="group flex items-center gap-ds-04 rounded-[var(--radius-lg)] px-ds-03 py-ds-03 transition-colors hover:bg-[var(--color-field)]"
               >
                 {/* File icon */}
                 <div className="flex h-8 w-8 shrink-0 items-center justify-center rounded-[var(--radius-lg)] bg-[var(--color-layer-02)]">
@@ -193,18 +193,18 @@ function FilesTab({
 
                 {/* File info */}
                 <div className="flex-1 min-w-0">
-                  <p className="truncate text-[13px] font-body font-medium text-[var(--color-text-primary)]">
+                  <p className="truncate B2-Reg font-medium text-[var(--color-text-primary)]">
                     {file.title}
                   </p>
-                  <p className="text-[11px] font-body text-[var(--color-text-placeholder)]">
+                  <p className="B3-Reg text-[var(--color-text-placeholder)]">
                     {formatFileDate(file.createdAt)}
-                    <span className="mx-1.5">by</span>
+                    <span className="mx-ds-02b">by</span>
                     {file.uploadedBy.name}
                   </p>
                 </div>
 
                 {/* Actions */}
-                <div className="flex items-center gap-1 opacity-0 transition-opacity group-hover:opacity-100">
+                <div className="flex items-center gap-ds-02 opacity-0 transition-opacity group-hover:opacity-100">
                   {file.downloadUrl && (
                     <a
                       href={file.downloadUrl}
@@ -260,7 +260,7 @@ function FilesTab({
           })}
         </div>
       ) : (
-        <div className="mt-2">
+        <div className="mt-ds-03">
           <EmptyState
             icon={IconPaperclip}
             title="No files attached"

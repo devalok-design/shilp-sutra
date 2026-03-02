@@ -15,9 +15,9 @@ const contentCardVariants = cva(
           'border border-transparent bg-transparent hover:bg-[var(--color-layer-02)]',
       },
       padding: {
-        default: 'p-5',
-        compact: 'p-3',
-        spacious: 'p-6',
+        default: 'p-ds-05b',
+        compact: 'p-ds-04',
+        spacious: 'p-ds-06',
         none: 'p-0',
       },
     },
@@ -30,17 +30,17 @@ const contentCardVariants = cva(
 
 const getPadding = (padding: string | null | undefined) => {
   switch (padding) {
-    case 'compact': return 'px-3 py-2.5'
-    case 'spacious': return 'px-6 py-4'
-    default: return 'px-5 py-3.5'
+    case 'compact': return 'px-ds-04 py-2.5'
+    case 'spacious': return 'px-ds-06 py-ds-05'
+    default: return 'px-ds-05b py-3.5'
   }
 }
 
 const getContentPadding = (padding: string | null | undefined) => {
   switch (padding) {
-    case 'compact': return 'p-3'
-    case 'spacious': return 'p-6'
-    default: return 'p-5'
+    case 'compact': return 'p-ds-04'
+    case 'spacious': return 'p-ds-06'
+    default: return 'p-ds-05b'
   }
 }
 
@@ -94,7 +94,7 @@ const ContentCard = React.forwardRef<HTMLDivElement, ContentCardProps>(
                   </h3>
                 )}
                 {headerActions && (
-                  <div className="flex items-center gap-2">{headerActions}</div>
+                  <div className="flex items-center gap-ds-03">{headerActions}</div>
                 )}
               </>
             )}

@@ -115,7 +115,7 @@ export function BreakRequestCard({
   }
 
   return (
-    <div className="relative flex w-full flex-col gap-6 rounded-[8px] bg-[var(--color-layer-accent-subtle)]">
+    <div className="relative flex w-full flex-col gap-ds-06 rounded-[8px] bg-[var(--color-layer-accent-subtle)]">
       {assetsBaseUrl && (
         <img
           src={`${assetsBaseUrl}/break-background.svg`}
@@ -127,7 +127,7 @@ export function BreakRequestCard({
         {/* Left section - Break information or mobile cancel form */}
         {showMobileCancelForm && isSingleDayBreak ? (
           <div className="flex h-full w-full flex-col items-center justify-center px-[13px] pt-[17px]">
-            <div className="w-full gap-4 rounded-[var(--radius-md)] bg-[var(--color-layer-01)] px-6 py-8 md:hidden">
+            <div className="w-full gap-ds-05 rounded-[var(--radius-md)] bg-[var(--color-layer-01)] px-ds-06 py-ds-07 md:hidden">
               <div className="flex flex-col items-center gap-[12px]">
                 <div className="T7-Reg semibold text-center text-[var(--color-text-primary)]">
                   Cancel this break?
@@ -139,7 +139,7 @@ export function BreakRequestCard({
                   </span>
                 </div>
               </div>
-              <div className="mt-4 flex w-full flex-col gap-3">
+              <div className="mt-ds-05 flex w-full flex-col gap-ds-04">
                 <button
                   className="B2 semibold w-full rounded-[88px] border border-[var(--color-interactive)] bg-[var(--color-interactive)] px-[20px] py-[12px] text-center text-[var(--color-text-on-color)]"
                   style={{ boxShadow: 'var(--shadow-02)' }}
@@ -149,7 +149,7 @@ export function BreakRequestCard({
                 </button>
               </div>
               <button
-                className="absolute right-4 top-4 rounded-[var(--radius-sm)] p-3 text-[var(--color-icon-secondary)] transition-colors hover:text-[var(--color-icon-primary)] hover:bg-[var(--color-field)] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--color-focus)] disabled:pointer-events-none"
+                className="absolute right-ds-05 top-ds-05 rounded-[var(--radius-sm)] p-ds-04 text-[var(--color-icon-secondary)] transition-colors hover:text-[var(--color-icon-primary)] hover:bg-[var(--color-field)] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--color-focus)] disabled:pointer-events-none"
                 onClick={() => setShowMobileCancelForm(false)}
               >
                 <CloseIcon className="h-6 w-6" />
@@ -157,8 +157,8 @@ export function BreakRequestCard({
             </div>
           </div>
         ) : (
-          <div className="flex h-full w-full flex-col items-center justify-center gap-6 p-6 px-6 py-8 md:w-1/2 md:p-8">
-            <div className="flex flex-col items-center justify-end gap-4">
+          <div className="flex h-full w-full flex-col items-center justify-center gap-ds-06 p-ds-06 px-ds-06 py-ds-07 md:w-1/2 md:p-ds-07">
+            <div className="flex flex-col items-center justify-end gap-ds-05">
               <div className="L3 text-[var(--color-text-tertiary)]">
                 Reason
               </div>
@@ -166,7 +166,7 @@ export function BreakRequestCard({
                 {removeAllEmojis(breakRequest?.reason || ' ')}
               </div>
             </div>
-            <div className="flex flex-col items-center justify-end gap-4">
+            <div className="flex flex-col items-center justify-end gap-ds-05">
               <div className="L3 text-[var(--color-text-tertiary)]">
                 Break Period
               </div>
@@ -191,18 +191,18 @@ export function BreakRequestCard({
           </>
         )}
         <div
-          className={`flex w-full flex-col items-center justify-center px-4 ${
+          className={`flex w-full flex-col items-center justify-center px-ds-05 ${
             showMobileCancelForm ||
             breakRequest.status === 'APPROVED' ||
             breakRequest.status === 'REJECTED'
-              ? 'pb-6 pt-[9px]'
-              : 'py-6'
-          } md:w-1/2 md:px-6 md:py-4 max-md:pt-[34px]`}
+              ? 'pb-ds-06 pt-[9px]'
+              : 'py-ds-06'
+          } md:w-1/2 md:px-ds-06 md:py-ds-05 max-md:pt-[34px]`}
         >
-          <p className="L3 mb-6 uppercase text-[var(--color-text-tertiary)] max-md:mb-[16px]">
+          <p className="L3 mb-ds-06 uppercase text-[var(--color-text-tertiary)] max-md:mb-[16px]">
             Break Status
           </p>
-          <div className="mb-3 flex w-full flex-col items-center justify-start gap-[14px] rounded-3xl border border-[var(--color-border-subtle)] bg-[var(--color-layer-01)] px-4 py-3.5 text-center font-semibold text-[var(--color-text-primary)]">
+          <div className="mb-ds-04 flex w-full flex-col items-center justify-start gap-[14px] rounded-3xl border border-[var(--color-border-subtle)] bg-[var(--color-layer-01)] px-ds-05 py-3.5 text-center font-semibold text-[var(--color-text-primary)]">
             {renderStatus(breakRequest.status, false)}
             {breakRequest.status === 'APPROVED' && breakRequest.adminComment}
             {breakRequest.status === 'REJECTED' && breakRequest.adminComment}
@@ -228,7 +228,7 @@ export function BreakRequestCard({
                     </button>
                   </DialogTrigger>
                 )}
-                <DialogContent className="max-w-[329px] gap-3 rounded-[16px]">
+                <DialogContent className="max-w-[329px] gap-ds-04 rounded-[16px]">
                   <DialogHeader>
                     <div className="T7-Reg semibold text-center text-[var(--color-text-primary)]">
                       Cancel this break?
@@ -242,7 +242,7 @@ export function BreakRequestCard({
                       </span>
                     </div>
                   </div>
-                  <DialogFooter className="mt-3 sm:justify-start">
+                  <DialogFooter className="mt-ds-04 sm:justify-start">
                     <DialogClose asChild>
                       <button
                         className="B2 semibold w-full rounded-[88px] border border-[var(--color-interactive)] bg-[var(--color-interactive)] px-[20px] py-[12px] text-center text-[var(--color-text-on-color)]"
@@ -265,7 +265,7 @@ export function BreakRequestCard({
                   </button>
                 </DialogTrigger>
               )}
-              <DialogContent className="max-w-[329px] gap-3 rounded-[16px]">
+              <DialogContent className="max-w-[329px] gap-ds-04 rounded-[16px]">
                 <DialogHeader>
                   <div className="T7-Reg semibold flex text-center text-[var(--color-text-primary)]">
                     Cancel your break
@@ -273,7 +273,7 @@ export function BreakRequestCard({
                 </DialogHeader>
                 <div className="flex flex-col items-center justify-start">
                   <div className="flex w-full flex-col items-start">
-                    <label className="breakRequest-checkbox flex items-center space-x-2">
+                    <label className="breakRequest-checkbox flex items-center space-x-ds-03">
                       <input
                         type="checkbox"
                         checked={deleteSingleDay}
@@ -285,7 +285,7 @@ export function BreakRequestCard({
                         only
                       </span>
                     </label>
-                    <label className="breakRequest-checkbox mt-2 flex items-center space-x-2">
+                    <label className="breakRequest-checkbox mt-ds-03 flex items-center space-x-ds-03">
                       <input
                         type="checkbox"
                         checked={!deleteSingleDay}
@@ -303,7 +303,7 @@ export function BreakRequestCard({
                     </label>
                   </div>
                 </div>
-                <DialogFooter className="mt-3 sm:justify-start">
+                <DialogFooter className="mt-ds-04 sm:justify-start">
                   <DialogClose asChild>
                     <button
                       className="B2 semibold w-full rounded-[88px] border border-[var(--color-interactive)] bg-[var(--color-interactive)] px-[20px] py-[12px] text-center text-[var(--color-text-on-color)]"

@@ -184,7 +184,7 @@ function CommandPalette({
           </VisuallyHidden>
 
           {/* Search input */}
-          <div className="flex items-center gap-3 border-b border-[var(--color-border-default)] px-4 py-3">
+          <div className="flex items-center gap-ds-04 border-b border-[var(--color-border-default)] px-ds-05 py-ds-04">
             <IconSearch
               className="h-[18px] w-[18px] shrink-0 text-[var(--color-text-placeholder)]"
               stroke={1.5}
@@ -195,14 +195,14 @@ function CommandPalette({
               onChange={(e) => handleQueryChange(e.target.value)}
               placeholder={placeholder}
               className={cn(
-                'flex-1 bg-transparent text-[15px] text-[var(--color-text-primary)] outline-none',
+                'flex-1 bg-transparent B1-Reg text-[var(--color-text-primary)] outline-none',
                 'placeholder:text-[var(--color-text-placeholder)]',
               )}
               autoComplete="off"
               autoCorrect="off"
               spellCheck={false}
             />
-            <kbd className="hidden shrink-0 select-none rounded-[var(--radius-md)] border border-[var(--color-border-default)] bg-[var(--color-layer-02)] px-1.5 py-0.5 text-[11px] font-medium text-[var(--color-text-placeholder)] sm:inline-flex">
+            <kbd className="hidden shrink-0 select-none rounded-[var(--radius-md)] border border-[var(--color-border-default)] bg-[var(--color-layer-02)] px-ds-02b py-0.5 B3-Reg font-medium text-[var(--color-text-placeholder)] sm:inline-flex">
               Esc
             </kbd>
           </div>
@@ -210,20 +210,20 @@ function CommandPalette({
           {/* Results */}
           <div
             ref={listRef}
-            className="max-h-[320px] overflow-y-auto px-2 py-2"
+            className="max-h-[320px] overflow-y-auto px-ds-03 py-ds-03"
           >
             {filteredGroups.length === 0 && (
-              <div className="flex items-center justify-center py-8">
-                <p className="text-sm text-[var(--color-text-placeholder)]">
+              <div className="flex items-center justify-center py-ds-07">
+                <p className="B2-Reg text-[var(--color-text-placeholder)]">
                   {emptyMessage}
                 </p>
               </div>
             )}
 
             {filteredGroups.map((group) => (
-              <div key={group.label} className="mb-1">
-                <div className="px-2 pb-1 pt-2">
-                  <span className="text-[10px] font-medium uppercase tracking-wider text-[var(--color-text-placeholder)]">
+              <div key={group.label} className="mb-ds-02">
+                <div className="px-ds-03 pb-ds-02 pt-ds-03">
+                  <span className="L4 font-medium text-[var(--color-text-placeholder)]">
                     {group.label}
                   </span>
                 </div>
@@ -244,7 +244,7 @@ function CommandPalette({
                       }}
                       onMouseEnter={() => setActiveIndex(itemIndex)}
                       className={cn(
-                        'flex w-full items-center gap-3 rounded-[var(--radius-lg)] px-2.5 py-2 text-left transition-colors',
+                        'flex w-full items-center gap-ds-04 rounded-[var(--radius-lg)] px-2.5 py-ds-03 text-left transition-colors',
                         isActive
                           ? 'bg-[var(--color-layer-03)] text-[var(--color-text-primary)]'
                           : 'text-[var(--color-text-secondary)] hover:bg-[var(--color-layer-02)]',
@@ -257,15 +257,15 @@ function CommandPalette({
                         />
                       )}
                       <div className="flex flex-1 flex-col">
-                        <span className="text-sm">{item.label}</span>
+                        <span className="B2-Reg">{item.label}</span>
                         {item.description && (
-                          <span className="text-xs text-[var(--color-text-placeholder)]">
+                          <span className="B3-Reg text-[var(--color-text-placeholder)]">
                             {item.description}
                           </span>
                         )}
                       </div>
                       {item.shortcut && (
-                        <kbd className="shrink-0 rounded border border-[var(--color-border-default)] bg-[var(--color-layer-02)] px-1.5 py-0.5 text-[10px] font-medium text-[var(--color-text-placeholder)]">
+                        <kbd className="shrink-0 rounded border border-[var(--color-border-default)] bg-[var(--color-layer-02)] px-ds-02b py-0.5 B4-Reg font-medium text-[var(--color-text-placeholder)]">
                           {item.shortcut}
                         </kbd>
                       )}
@@ -283,8 +283,8 @@ function CommandPalette({
           </div>
 
           {/* Footer with keyboard hints */}
-          <div className="flex items-center gap-4 border-t border-[var(--color-border-default)] px-4 py-2">
-            <div className="flex items-center gap-1.5">
+          <div className="flex items-center gap-ds-05 border-t border-[var(--color-border-default)] px-ds-05 py-ds-03">
+            <div className="flex items-center gap-ds-02b">
               <div className="flex items-center gap-0.5">
                 <kbd className="inline-flex h-[var(--icon-md)] w-[var(--icon-md)] items-center justify-center rounded border border-[var(--color-border-default)] bg-[var(--color-layer-02)]">
                   <IconArrowUp className="h-2.5 w-2.5 text-[var(--color-text-placeholder)]" stroke={2} />
@@ -293,23 +293,23 @@ function CommandPalette({
                   <IconArrowDown className="h-2.5 w-2.5 text-[var(--color-text-placeholder)]" stroke={2} />
                 </kbd>
               </div>
-              <span className="text-[10px] text-[var(--color-text-placeholder)]">
+              <span className="B4-Reg text-[var(--color-text-placeholder)]">
                 Navigate
               </span>
             </div>
-            <div className="flex items-center gap-1.5">
-              <kbd className="inline-flex h-5 items-center justify-center rounded border border-[var(--color-border-default)] bg-[var(--color-layer-02)] px-1.5">
+            <div className="flex items-center gap-ds-02b">
+              <kbd className="inline-flex h-5 items-center justify-center rounded border border-[var(--color-border-default)] bg-[var(--color-layer-02)] px-ds-02b">
                 <IconCornerDownLeft className="h-2.5 w-2.5 text-[var(--color-text-placeholder)]" stroke={2} />
               </kbd>
-              <span className="text-[10px] text-[var(--color-text-placeholder)]">
+              <span className="B4-Reg text-[var(--color-text-placeholder)]">
                 Select
               </span>
             </div>
-            <div className="flex items-center gap-1.5">
-              <kbd className="inline-flex h-5 items-center justify-center rounded border border-[var(--color-border-default)] bg-[var(--color-layer-02)] px-1.5 text-[10px] font-medium text-[var(--color-text-placeholder)]">
+            <div className="flex items-center gap-ds-02b">
+              <kbd className="inline-flex h-5 items-center justify-center rounded border border-[var(--color-border-default)] bg-[var(--color-layer-02)] px-ds-02b B4-Reg font-medium text-[var(--color-text-placeholder)]">
                 Esc
               </kbd>
-              <span className="text-[10px] text-[var(--color-text-placeholder)]">
+              <span className="B4-Reg text-[var(--color-text-placeholder)]">
                 Close
               </span>
             </div>

@@ -117,7 +117,7 @@ function ReviewTab({
   return (
     <div className={cn('flex flex-col', className)}>
       {reviews.length > 0 ? (
-        <div className="space-y-3">
+        <div className="space-y-ds-04">
           {reviews.map((review) => {
             const statusInfo = REVIEW_STATUS_MAP[review.status]
             const isExpanded = expandedId === review.id
@@ -125,7 +125,7 @@ function ReviewTab({
             return (
               <div
                 key={review.id}
-                className="rounded-[var(--radius-lg)] border border-[var(--color-border-default)] bg-[var(--color-layer-01)] p-3"
+                className="rounded-[var(--radius-lg)] border border-[var(--color-border-default)] bg-[var(--color-layer-01)] p-ds-04"
               >
                 {/* Header */}
                 <div className="flex items-center gap-2.5">
@@ -141,10 +141,10 @@ function ReviewTab({
                     </AvatarFallback>
                   </Avatar>
                   <div className="flex-1 min-w-0">
-                    <span className="text-[13px] font-body font-medium text-[var(--color-text-primary)]">
+                    <span className="B2-Reg font-medium text-[var(--color-text-primary)]">
                       {review.reviewer.name}
                     </span>
-                    <span className="ml-2 text-[11px] font-body text-[var(--color-text-placeholder)]">
+                    <span className="ml-ds-03 B3-Reg text-[var(--color-text-placeholder)]">
                       requested by {review.requestedBy.name}
                     </span>
                   </div>
@@ -157,8 +157,8 @@ function ReviewTab({
 
                 {/* Feedback */}
                 {review.feedback && (
-                  <div className="mt-2.5 rounded-[var(--radius-md)] bg-[var(--color-layer-02)] px-3 py-2">
-                    <p className="text-[12px] font-body leading-relaxed text-[var(--color-text-secondary)]">
+                  <div className="mt-2.5 rounded-[var(--radius-md)] bg-[var(--color-layer-02)] px-ds-04 py-ds-03">
+                    <p className="B3-Reg text-[var(--color-text-secondary)]">
                       {review.feedback}
                     </p>
                   </div>
@@ -168,7 +168,7 @@ function ReviewTab({
                 {review.status === 'PENDING' && (
                   <div className="mt-2.5">
                     {isExpanded ? (
-                      <div className="space-y-2">
+                      <div className="space-y-ds-03">
                         <textarea
                           value={feedbackMap[review.id] || ''}
                           onChange={(e) =>
@@ -179,9 +179,9 @@ function ReviewTab({
                           }
                           placeholder="Add feedback (optional)..."
                           rows={2}
-                          className="w-full resize-none rounded-[var(--radius-md)] border border-[var(--color-border-default)] bg-transparent px-2.5 py-2 text-[12px] font-body text-[var(--color-text-primary)] placeholder:text-[var(--color-text-placeholder)] outline-none focus:border-[var(--color-border-subtle)]"
+                          className="w-full resize-none rounded-[var(--radius-md)] border border-[var(--color-border-default)] bg-transparent px-2.5 py-ds-03 B3-Reg text-[var(--color-text-primary)] placeholder:text-[var(--color-text-placeholder)] outline-none focus:border-[var(--color-border-subtle)]"
                         />
-                        <div className="flex items-center gap-1.5">
+                        <div className="flex items-center gap-ds-02b">
                           {RESPONSE_OPTIONS.map((opt) => {
                             const Icon = opt.icon
                             return (
@@ -190,7 +190,7 @@ function ReviewTab({
                                 type="button"
                                 onClick={() => handleRespond(review.id, opt.status)}
                                 className={cn(
-                                  'inline-flex items-center gap-1 rounded-[var(--radius-md)] px-2.5 py-1 text-[11px] font-body font-semibold transition-colors',
+                                  'inline-flex items-center gap-ds-02 rounded-[var(--radius-md)] px-2.5 py-ds-02 B3-Reg font-semibold transition-colors',
                                   opt.status === 'APPROVED' &&
                                     'bg-[var(--color-success-surface)] text-[var(--color-text-success)] hover:opacity-90',
                                   opt.status === 'CHANGES_REQUESTED' &&
@@ -207,7 +207,7 @@ function ReviewTab({
                           <button
                             type="button"
                             onClick={() => setExpandedId(null)}
-                            className="ml-auto text-[11px] font-body text-[var(--color-text-placeholder)] hover:text-[var(--color-text-secondary)]"
+                            className="ml-auto B3-Reg text-[var(--color-text-placeholder)] hover:text-[var(--color-text-secondary)]"
                           >
                             Cancel
                           </button>
@@ -217,7 +217,7 @@ function ReviewTab({
                       <button
                         type="button"
                         onClick={() => setExpandedId(review.id)}
-                        className="text-[12px] font-body font-medium text-[var(--color-interactive)] transition-colors hover:underline"
+                        className="B3-Reg font-medium text-[var(--color-interactive)] transition-colors hover:underline"
                       >
                         Respond
                       </button>
@@ -226,7 +226,7 @@ function ReviewTab({
                 )}
 
                 {/* Timestamp */}
-                <p className="mt-2 text-[10px] font-body text-[var(--color-text-placeholder)]">
+                <p className="mt-ds-03 B4-Reg text-[var(--color-text-placeholder)]">
                   {formatDate(review.createdAt)}
                 </p>
               </div>
@@ -250,7 +250,7 @@ function ReviewTab({
       >
         <button
           type="button"
-          className="mt-3 inline-flex items-center gap-1.5 rounded-[var(--radius-lg)] px-2 py-1.5 text-[13px] font-body text-[var(--color-text-placeholder)] transition-colors hover:bg-[var(--color-field)] hover:text-[var(--color-text-secondary)]"
+          className="mt-ds-04 inline-flex items-center gap-ds-02b rounded-[var(--radius-lg)] px-ds-03 py-ds-02b B2-Reg text-[var(--color-text-placeholder)] transition-colors hover:bg-[var(--color-field)] hover:text-[var(--color-text-secondary)]"
         >
           <IconPlus className="h-[var(--icon-sm)] w-[var(--icon-sm)]" stroke={1.5} />
           Request Review

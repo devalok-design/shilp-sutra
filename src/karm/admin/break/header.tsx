@@ -93,15 +93,15 @@ export function BreakAdminHeader({
   }
 
   return (
-    <div className="flex min-w-[800px] items-center justify-between bg-[var(--color-field)] px-6 py-5 max-md:justify-start max-md:gap-[20px] max-lg:min-w-[100%]">
-      <div className="flex flex-col gap-4">
+    <div className="flex min-w-[800px] items-center justify-between bg-[var(--color-field)] px-ds-06 py-ds-05b max-md:justify-start max-md:gap-[20px] max-lg:min-w-[100%]">
+      <div className="flex flex-col gap-ds-05">
         {filters.selectedAssociate && (
           <>
             <p className="L3 text-[var(--color-text-tertiary)]">
               Break Balance
             </p>
             <div className="flex items-end">
-              <p className="T2-Reg semibold mr-1 text-[var(--color-interactive)]">
+              <p className="T2-Reg semibold mr-ds-02 text-[var(--color-interactive)]">
                 {breakBalance?.remainingDays || 0}
               </p>
 
@@ -113,9 +113,9 @@ export function BreakAdminHeader({
         )}
       </div>
 
-      <header className="flex items-center gap-3">
+      <header className="flex items-center gap-ds-04">
         {filters.selectedAssociate ? (
-          <div className="B2-Reg flex flex-row items-center justify-start gap-1 rounded-[6px] bg-[var(--color-interactive)] p-1.5 text-[var(--color-text-on-color)]">
+          <div className="B2-Reg flex flex-row items-center justify-start gap-ds-02 rounded-[6px] bg-[var(--color-interactive)] p-ds-02b text-[var(--color-text-on-color)]">
             <div className="flex items-center justify-start gap-0.5">
               {userImages[filters.selectedAssociate.id] ? (
                 <img
@@ -149,16 +149,16 @@ export function BreakAdminHeader({
           </div>
         ) : (
           <DropdownMenu>
-            <DropdownMenuTrigger className="B2-Reg flex flex-row items-center justify-between rounded-[6px] border border-[var(--color-border-subtle)] bg-[var(--color-layer-01)] px-2 py-1.5">
+            <DropdownMenuTrigger className="B2-Reg flex flex-row items-center justify-between rounded-[6px] border border-[var(--color-border-subtle)] bg-[var(--color-layer-01)] px-ds-03 py-ds-02b">
               <div className="flex items-center">
                 <PersonIcon className="h-[var(--icon-sm)] w-[var(--icon-sm)]" />
-                <span className="B2-Reg mx-2 text-[var(--color-text-secondary)] max-lg:mx-0 max-lg:text-[12px]">
+                <span className="B2-Reg mx-ds-03 text-[var(--color-text-secondary)] max-lg:mx-0 max-lg:B3-Reg">
                   Associate
                 </span>
               </div>
               <ArrowDropdownIcon className="h-[var(--icon-sm)] w-[var(--icon-sm)]" />
             </DropdownMenuTrigger>
-            <DropdownMenuContent className="custom-scrollbar max-h-[400px] w-64 overflow-y-auto p-2">
+            <DropdownMenuContent className="custom-scrollbar max-h-[400px] w-64 overflow-y-auto p-ds-03">
               {users?.length === 0 ? (
                 <DropdownMenuItem disabled>No users available</DropdownMenuItem>
               ) : (
@@ -172,7 +172,7 @@ export function BreakAdminHeader({
                           selectedAssociate: user,
                         }))
                       }
-                      className="flex items-center gap-2 p-2"
+                      className="flex items-center gap-ds-03 p-ds-03"
                     >
                       {userImages[user.id] ? (
                         <img
@@ -182,7 +182,7 @@ export function BreakAdminHeader({
                         />
                       ) : (
                         <div className="flex h-6 w-6 items-center justify-center rounded-[var(--radius-full)] bg-[var(--color-layer-03)]">
-                          <span className="text-sm text-[var(--color-interactive)]">
+                          <span className="B2-Reg text-[var(--color-interactive)]">
                             {user.name.charAt(0)}
                           </span>
                         </div>
@@ -200,13 +200,13 @@ export function BreakAdminHeader({
 
         {/* Date Filter */}
         {filters.dateFilterEnd && (
-          <div className="B2-Reg flex-direction-row flex items-center justify-between rounded-[6px] bg-[var(--color-interactive)] px-2 py-[6px] text-[var(--color-text-on-color)]">
+          <div className="B2-Reg flex-direction-row flex items-center justify-between rounded-[6px] bg-[var(--color-interactive)] px-ds-03 py-[6px] text-[var(--color-text-on-color)]">
             <div className="flex items-center">
               <CalendarIcon />
-              <span className="ml-[2px] mr-1">
+              <span className="ml-[2px] mr-ds-02">
                 {monthMap[new Date(filters.dateFilterStart!).getMonth()].name},
               </span>
-              <span className="mr-1">
+              <span className="mr-ds-02">
                 {new Date(filters.dateFilterStart!).getFullYear()}
               </span>
             </div>
@@ -232,16 +232,16 @@ export function BreakAdminHeader({
             setFilters((prev) => ({ ...prev, isOpen: open }))
           }}
         >
-          <DropdownMenuTrigger className="B2-Reg flex-direction-row flex items-center justify-between rounded-[6px] border border-[var(--color-border-subtle)] bg-[var(--color-layer-01)] p-1.5">
+          <DropdownMenuTrigger className="B2-Reg flex-direction-row flex items-center justify-between rounded-[6px] border border-[var(--color-border-subtle)] bg-[var(--color-layer-01)] p-ds-02b">
             <div className="flex items-center">
               <CalendarDateIcon />
-              <span className="mx-2 text-[var(--color-text-secondary)]">
+              <span className="mx-ds-03 text-[var(--color-text-secondary)]">
                 Date
               </span>
             </div>
             <ArrowDropdownIcon className="h-[var(--icon-sm)] w-[var(--icon-sm)]" />
           </DropdownMenuTrigger>
-          <DropdownMenuContent className="mr-32 p-3">
+          <DropdownMenuContent className="mr-32 p-ds-04">
             <div className="flex w-[140px] flex-col items-center justify-start">
               <div className="flex w-full items-center justify-between">
                 <IconButton
@@ -258,7 +258,7 @@ export function BreakAdminHeader({
                   onClick={handleNext}
                 />
               </div>
-              <div className="mt-3 flex w-full items-center justify-between">
+              <div className="mt-ds-04 flex w-full items-center justify-between">
                 <IconButton
                   size="small"
                   icon={<ArrowLeftIcon />}
@@ -284,7 +284,7 @@ export function BreakAdminHeader({
                 />
               </div>
               <CustomButton
-                className="mt-4 w-full"
+                className="mt-ds-05 w-full"
                 type="outline"
                 text="Filter"
                 onClick={handleDateFilter}

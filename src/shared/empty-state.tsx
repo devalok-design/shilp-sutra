@@ -29,7 +29,7 @@ const EmptyState = React.forwardRef<HTMLDivElement, EmptyStateProps>(
         ref={ref}
         className={cn(
           'flex flex-col items-center justify-center text-center',
-          compact ? 'gap-3 py-8' : 'gap-4 py-16',
+          compact ? 'gap-ds-04 py-ds-07' : 'gap-ds-05 py-16',
           className,
         )}
         {...props}
@@ -49,7 +49,7 @@ const EmptyState = React.forwardRef<HTMLDivElement, EmptyStateProps>(
           />
         </div>
 
-        <div className="flex max-w-[280px] flex-col gap-1">
+        <div className="flex max-w-[280px] flex-col gap-ds-02">
           <h3
             className={cn(
               'text-[var(--color-text-primary)]',
@@ -70,7 +70,7 @@ const EmptyState = React.forwardRef<HTMLDivElement, EmptyStateProps>(
           )}
         </div>
 
-        {action && <div className="mt-1">{action}</div>}
+        {action && <div className="mt-ds-02">{action}</div>}
       </div>
     )
   },

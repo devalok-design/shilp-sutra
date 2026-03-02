@@ -23,7 +23,7 @@ const PaginationContent = React.forwardRef<
 >(({ className, ...props }, ref) => (
   <ul
     ref={ref}
-    className={cn('flex flex-row items-center gap-1', className)}
+    className={cn('flex flex-row items-center gap-ds-02', className)}
     {...props}
   />
 ))
@@ -51,7 +51,7 @@ const PaginationLink = React.forwardRef<HTMLButtonElement, PaginationLinkProps>(
         ref={ref}
         aria-current={isActive ? 'page' : undefined}
         className={cn(
-          'inline-flex items-center justify-center h-9 w-9 rounded-[var(--radius-md)] text-sm font-medium transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--color-focus)] focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50',
+          'inline-flex items-center justify-center h-9 w-9 rounded-[var(--radius-md)] B2-Reg font-medium transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--color-focus)] focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50',
           isActive
             ? 'bg-[var(--color-interactive)] text-[var(--color-text-on-color)]'
             : 'hover:bg-[var(--color-field)] text-[var(--color-text-primary)]',
@@ -71,7 +71,7 @@ const PaginationPrevious = React.forwardRef<
   <PaginationLink
     ref={ref}
     aria-label="Go to previous page"
-    className={cn('w-auto gap-1 pl-2.5 pr-3', className)}
+    className={cn('w-auto gap-ds-02 pl-2.5 pr-ds-04', className)}
     {...props}
   >
     <IconChevronLeft className="h-[var(--icon-sm)] w-[var(--icon-sm)]" />
@@ -87,7 +87,7 @@ const PaginationNext = React.forwardRef<
   <PaginationLink
     ref={ref}
     aria-label="Go to next page"
-    className={cn('w-auto gap-1 pl-3 pr-2.5', className)}
+    className={cn('w-auto gap-ds-02 pl-ds-04 pr-2.5', className)}
     {...props}
   >
     <span>Next</span>

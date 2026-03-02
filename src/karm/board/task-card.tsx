@@ -74,7 +74,7 @@ function TaskCardVisual({
   return (
     <div
       className={cn(
-        'group/card relative rounded-[var(--radius-lg)] border border-[var(--color-border-default)]/60 bg-[var(--color-layer-01)] p-3 shadow-[var(--shadow-01)]',
+        'group/card relative rounded-[var(--radius-lg)] border border-[var(--color-border-default)]/60 bg-[var(--color-layer-01)] p-ds-04 shadow-[var(--shadow-01)]',
         'transition-[color,background-color,border-color,box-shadow] duration-[var(--duration-moderate)]',
         'hover:shadow-[var(--shadow-02)] hover:border-[var(--color-border-default)]',
         'cursor-pointer',
@@ -86,7 +86,7 @@ function TaskCardVisual({
       onClick={() => onClickTask?.(task.id)}
     >
       {/* Drag handle + Title row */}
-      <div className="flex items-start gap-1.5">
+      <div className="flex items-start gap-ds-02b">
         <button
           className={cn(
             'mt-0.5 flex-shrink-0 cursor-grab rounded p-0.5 opacity-0 transition-opacity',
@@ -101,14 +101,14 @@ function TaskCardVisual({
           <IconGripVertical className="h-[var(--icon-sm)] w-[var(--icon-sm)] text-[var(--color-icon-secondary)]" />
         </button>
         <div className="min-w-0 flex-1">
-          <p className="text-sm font-medium leading-snug text-[var(--color-text-primary)] line-clamp-2">
+          <p className="B2-Reg font-medium text-[var(--color-text-primary)] line-clamp-2">
             {task.title}
           </p>
         </div>
       </div>
 
       {/* Metadata row */}
-      <div className="mt-2 flex items-center gap-2">
+      <div className="mt-ds-03 flex items-center gap-ds-03">
         {/* Priority dot */}
         <div
           className={cn(
@@ -120,14 +120,14 @@ function TaskCardVisual({
 
         {/* Labels */}
         {task.labels.length > 0 && (
-          <div className="flex items-center gap-1 overflow-hidden">
+          <div className="flex items-center gap-ds-02 overflow-hidden">
             {task.labels.slice(0, 2).map((label) => (
               <Badge key={label} size="sm" variant="neutral" className="max-w-[80px] truncate">
                 {label}
               </Badge>
             ))}
             {task.labels.length > 2 && (
-              <span className="text-[10px] text-[var(--color-text-tertiary)]">
+              <span className="B4-Reg text-[var(--color-text-tertiary)]">
                 +{task.labels.length - 2}
               </span>
             )}
@@ -141,7 +141,7 @@ function TaskCardVisual({
         {dueInfo && (
           <div
             className={cn(
-              'flex items-center gap-0.5 text-[11px]',
+              'flex items-center gap-0.5 B3-Reg',
               dueInfo.className,
             )}
           >
@@ -152,7 +152,7 @@ function TaskCardVisual({
 
         {/* Assignee avatars */}
         {displayAssignees.length > 0 && (
-          <div className="flex -space-x-1.5">
+          <div className="flex -space-x-ds-02b">
             {displayAssignees.map((assignee) => (
               <Avatar key={assignee.id} className="h-[var(--icon-md)] w-[var(--icon-md)] border border-[var(--color-layer-01)]">
                 <AvatarImage

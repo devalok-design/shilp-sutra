@@ -312,7 +312,7 @@ export function KanbanBoard({
     >
       <div
         ref={scrollRef}
-        className="no-scrollbar flex h-full gap-4 overflow-x-auto pb-4"
+        className="no-scrollbar flex h-full gap-ds-05 overflow-x-auto pb-ds-05"
       >
         <SortableContext
           items={columnIds}
@@ -338,7 +338,7 @@ export function KanbanBoard({
           <Button
             variant="ghost"
             onClick={onAddColumn}
-            className="h-10 w-[300px] justify-start gap-2 rounded-[var(--radius-xl)] border border-dashed border-[var(--color-border-default)]/60 bg-[var(--color-layer-01)]/40 text-[var(--color-text-tertiary)] hover:border-[var(--color-border-interactive)] hover:bg-[var(--color-interactive-subtle)]/50 hover:text-[var(--color-interactive)]"
+            className="h-10 w-[300px] justify-start gap-ds-03 rounded-[var(--radius-xl)] border border-dashed border-[var(--color-border-default)]/60 bg-[var(--color-layer-01)]/40 text-[var(--color-text-tertiary)] hover:border-[var(--color-border-interactive)] hover:bg-[var(--color-interactive-subtle)]/50 hover:text-[var(--color-interactive)]"
           >
             <IconPlus className="h-[var(--icon-sm)] w-[var(--icon-sm)]" />
             Add column

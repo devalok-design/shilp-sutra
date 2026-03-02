@@ -85,18 +85,18 @@ export function EditBreakBalance({
       <DialogTrigger asChild>
         <Button
           variant="secondary"
-          className="P2 border-[var(--color-border-default)] bg-[var(--color-layer-01)] px-4 py-3 pr-6 text-[var(--color-text-secondary)] shadow-[0_4px_8px_0_var(--shadow-02)]"
+          className="P2 border-[var(--color-border-default)] bg-[var(--color-layer-01)] px-ds-05 py-ds-04 pr-ds-06 text-[var(--color-text-secondary)] shadow-[0_4px_8px_0_var(--shadow-02)]"
         >
           <EditIcon />
           <span>Edit</span>
         </Button>
       </DialogTrigger>
-      <DialogContent className="w-[308px] p-6">
+      <DialogContent className="w-[308px] p-ds-06">
         <DialogHeader>
           <DialogDescription>
             <div className="flex flex-col items-center justify-start gap-[18px]">
               <p className="B2-Reg w-full text-left text-[var(--color-text-tertiary)]">
-                Edit break balance conversion of <br className="mb-1" />
+                Edit break balance conversion of <br className="mb-ds-02" />
                 <span className="semibold text-[var(--color-interactive)]">
                   {selectedLeave?.user?.name}
                 </span>
@@ -105,7 +105,7 @@ export function EditBreakBalance({
                 ref={formRef}
                 onSubmit={handleSubmit}
                 id="updatebreakbalanceform"
-                className="flex w-full flex-col gap-4"
+                className="flex w-full flex-col gap-ds-05"
               >
                 <div className="flex w-full items-center justify-between">
                   <div className="L3 uppercase text-[var(--color-text-placeholder)]">

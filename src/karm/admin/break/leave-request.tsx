@@ -63,9 +63,9 @@ export function LeaveRequest({
     <>
       <div
         key={request.id}
-        className="flex justify-between border-b border-[var(--color-border-default)] px-2 py-[14px] last:border-b-0"
+        className="flex justify-between border-b border-[var(--color-border-default)] px-ds-03 py-[14px] last:border-b-0"
       >
-        <div className="flex w-full items-center gap-3">
+        <div className="flex w-full items-center gap-ds-04">
           {userImages[request.user?.id || ''] ? (
             <img
               className="bg-red h-10 w-10 overflow-hidden rounded-[var(--radius-full)] bg-[var(--color-layer-02)]"
@@ -73,13 +73,13 @@ export function LeaveRequest({
               alt={''}
             />
           ) : (
-            <span className="flex h-7 w-full max-w-7 items-center justify-center rounded-[var(--radius-full)] bg-[var(--mapped-borders-margin-tertiary)] text-xs font-medium uppercase text-[--color-text-primary]">
+            <span className="flex h-7 w-full max-w-7 items-center justify-center rounded-[var(--radius-full)] bg-[var(--mapped-borders-margin-tertiary)] B3-Reg font-medium uppercase text-[--color-text-primary]">
               {request.user?.name?.[0] || 'U'}
             </span>
           )}
           <div className="flex w-auto max-w-[75%] flex-col items-start gap-[6px]">
-            <div className="flex flex-row gap-1.5">
-              <div className="flex items-center gap-2">
+            <div className="flex flex-row gap-ds-02b">
+              <div className="flex items-center gap-ds-03">
                 <p className="B3-Reg text-[var(--color-text-secondary)]">
                   {request.user?.name}
                 </p>
@@ -93,9 +93,9 @@ export function LeaveRequest({
                 )}
               </div>
             </div>
-            <div className="flex w-full flex-wrap items-center gap-3">
+            <div className="flex w-full flex-wrap items-center gap-ds-04">
               {isSingleDay ? (
-                <div className="flex w-full flex-wrap items-center gap-2">
+                <div className="flex w-full flex-wrap items-center gap-ds-03">
                   <Tooltip>
                     <TooltipTrigger asChild>
                       <p className="B1-Reg semibold line-clamp-2 cursor-default text-[var(--color-text-primary)]">
@@ -131,7 +131,7 @@ export function LeaveRequest({
             </div>
           </div>
         </div>
-        <div className="flex items-center gap-3">
+        <div className="flex items-center gap-ds-04">
           <Tooltip delayDuration={0}>
             <TooltipTrigger asChild>
               <div
@@ -139,7 +139,7 @@ export function LeaveRequest({
                   request.user?.id !== userId &&
                   handleRejectRequest(e, request.id)
                 }
-                className={`cursor-pointer p-2 ${request.user?.id === userId ? 'cursor-not-allowed opacity-50' : ''}`}
+                className={`cursor-pointer p-ds-03 ${request.user?.id === userId ? 'cursor-not-allowed opacity-50' : ''}`}
               >
                 <CrossIcon className="h-6 w-6" />
               </div>
@@ -186,7 +186,7 @@ export function LeaveRequest({
             </DialogDescription>
           </DialogHeader>
           <div className="flex flex-col">
-            <div className="B2-Reg flex flex-col items-start justify-center gap-2 rounded-[8px] border border-[var(--color-border-subtle)] bg-[var(--color-layer-01)] p-[10px_16px_4px_16px] text-[var(--color-text-primary)]">
+            <div className="B2-Reg flex flex-col items-start justify-center gap-ds-03 rounded-[8px] border border-[var(--color-border-subtle)] bg-[var(--color-layer-01)] p-[10px_16px_4px_16px] text-[var(--color-text-primary)]">
               <label className="L4 text-[var(--color-text-helper)]" htmlFor="comment">
                 Comment
               </label>
@@ -199,7 +199,7 @@ export function LeaveRequest({
               />
             </div>
             <CustomButton
-              className="mt-6"
+              className="mt-ds-06"
               text={clickedAction === 'approve' ? 'Approve' : 'Reject'}
               type="filled"
               onClick={() => {

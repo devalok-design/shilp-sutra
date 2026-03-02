@@ -116,7 +116,7 @@ export function AttendanceOverview({
       }}
     >
       <div
-        className="items-flex-start flex flex-row justify-start gap-3 px-0 pt-2 md:gap-0 md:px-6"
+        className="items-flex-start flex flex-row justify-start gap-ds-04 px-0 pt-ds-03 md:gap-0 md:px-ds-06"
         style={{ minWidth: 'max-content' }}
       >
         {isFutureDate ? (
@@ -162,7 +162,7 @@ export function AttendanceOverview({
             ([status, groupUsers]) => (
               <div
                 key={status}
-                className={`flex w-full flex-col gap-3 rounded-[var(--radius-md)] bg-[var(--color-layer-02)] p-6 md:rounded-[var(--radius-lg)] md:p-4 ${
+                className={`flex w-full flex-col gap-ds-04 rounded-[var(--radius-md)] bg-[var(--color-layer-02)] p-ds-06 md:rounded-[var(--radius-lg)] md:p-ds-05 ${
                   status !== 'yetToMark'
                     ? 'border-r border-[var(--color-border-default)]'
                     : ''

@@ -10,24 +10,24 @@ const tabsListVariants = cva('inline-flex items-center', {
     variant: {
       line: 'border-b border-[var(--color-border-default)] w-full gap-0',
       contained:
-        'bg-[var(--color-layer-02)] p-1 rounded-[var(--radius-lg)] gap-1',
+        'bg-[var(--color-layer-02)] p-ds-02 rounded-[var(--radius-lg)] gap-ds-02',
     },
   },
   defaultVariants: { variant: 'line' },
 })
 
 const tabsTriggerVariants = cva(
-  'inline-flex items-center justify-center whitespace-nowrap font-sans text-sm font-medium transition-[color,background-color,border-color,box-shadow] duration-[var(--duration-fast)] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--color-focus)] focus-visible:ring-offset-1 disabled:pointer-events-none disabled:opacity-50',
+  'inline-flex items-center justify-center whitespace-nowrap font-sans B2-Reg font-medium transition-[color,background-color,border-color,box-shadow] duration-[var(--duration-fast)] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--color-focus)] focus-visible:ring-offset-1 disabled:pointer-events-none disabled:opacity-50',
   {
     variants: {
       variant: {
         line: [
-          'px-4 py-2 -mb-px border-b-2 border-transparent',
+          'px-ds-05 py-ds-03 -mb-px border-b-2 border-transparent',
           'text-[var(--color-text-secondary)] hover:text-[var(--color-text-primary)]',
           'data-[state=active]:border-[var(--color-interactive)] data-[state=active]:text-[var(--color-interactive)]',
         ],
         contained: [
-          'px-4 py-1.5 rounded-[var(--radius-md)]',
+          'px-ds-05 py-ds-02b rounded-[var(--radius-md)]',
           'text-[var(--color-text-secondary)] hover:text-[var(--color-text-primary)]',
           'data-[state=active]:bg-[var(--color-layer-01)] data-[state=active]:shadow-[var(--shadow-01)] data-[state=active]:text-[var(--color-text-primary)]',
         ],
@@ -76,7 +76,7 @@ const TabsContent = React.forwardRef<
   <TabsPrimitive.Content
     ref={ref}
     className={cn(
-      'mt-4 ring-offset-[var(--color-background)] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--color-focus)] focus-visible:ring-offset-2',
+      'mt-ds-05 ring-offset-[var(--color-background)] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--color-focus)] focus-visible:ring-offset-2',
       className,
     )}
     {...props}

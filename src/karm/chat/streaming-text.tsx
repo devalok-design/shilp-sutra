@@ -7,30 +7,30 @@ export function StreamingText({ text }: { text: string }) {
     <div>
       <ReactMarkdown
         components={{
-          p: ({ children }) => <p className="mb-2 last:mb-0">{children}</p>,
+          p: ({ children }) => <p className="mb-ds-03 last:mb-0">{children}</p>,
           code: ({ children, className }) => {
             const isBlock = className?.includes('language-')
             if (isBlock) {
               return <code className={className}>{children}</code>
             }
             return (
-              <code className="rounded bg-[var(--color-field)] px-1 py-0.5 text-sm">
+              <code className="rounded bg-[var(--color-field)] px-ds-02 py-0.5 B2-Reg">
                 {children}
               </code>
             )
           },
           pre: ({ children }) => (
-            <pre className="mb-2 overflow-x-auto rounded-[var(--radius-lg)] bg-[var(--color-field)] p-3 text-sm">
+            <pre className="mb-ds-03 overflow-x-auto rounded-[var(--radius-lg)] bg-[var(--color-field)] p-ds-04 B2-Reg">
               {children}
             </pre>
           ),
           ul: ({ children }) => (
-            <ul className="mb-2 list-disc pl-4">{children}</ul>
+            <ul className="mb-ds-03 list-disc pl-ds-05">{children}</ul>
           ),
           ol: ({ children }) => (
-            <ol className="mb-2 list-decimal pl-4">{children}</ol>
+            <ol className="mb-ds-03 list-decimal pl-ds-05">{children}</ol>
           ),
-          li: ({ children }) => <li className="mb-1">{children}</li>,
+          li: ({ children }) => <li className="mb-ds-02">{children}</li>,
           strong: ({ children }) => (
             <strong className="font-semibold">{children}</strong>
           ),

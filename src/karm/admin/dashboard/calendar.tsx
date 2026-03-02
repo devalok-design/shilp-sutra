@@ -72,9 +72,9 @@ export function Calendar({ onDateSelect, hasCorrection }: CalendarProps) {
 
   return (
     <div className="w-full">
-      <div className="flex-direction-row justify-flex-start mb-6 flex w-full items-center">
+      <div className="flex-direction-row justify-flex-start mb-ds-06 flex w-full items-center">
         <DropdownMenu>
-          <DropdownMenuTrigger className="T6-Reg flex items-center gap-2 text-[var(--color-text-secondary)]">
+          <DropdownMenuTrigger className="T6-Reg flex items-center gap-ds-03 text-[var(--color-text-secondary)]">
             {cal.selectedMonth}
             <FilledArrowIcon />
           </DropdownMenuTrigger>
@@ -90,7 +90,7 @@ export function Calendar({ onDateSelect, hasCorrection }: CalendarProps) {
           </DropdownMenuContent>
         </DropdownMenu>
 
-        <div className="ml-auto flex items-center gap-4">
+        <div className="ml-auto flex items-center gap-ds-05">
           <Toggle
             size="medium"
             color="tonal"
@@ -106,14 +106,14 @@ export function Calendar({ onDateSelect, hasCorrection }: CalendarProps) {
             <button
               aria-label="Previous"
               onClick={() => handleDateChange('prev')}
-              className="rounded-[var(--radius-full)] p-1 hover:bg-[var(--color-layer-02)]"
+              className="rounded-[var(--radius-full)] p-ds-02 hover:bg-[var(--color-layer-02)]"
             >
               <ArrowLeftIcon className="h-[var(--icon-md)] w-[var(--icon-md)] text-[var(--color-text-secondary)]" />
             </button>
             <button
               aria-label="Next"
               onClick={() => handleDateChange('next')}
-              className="rounded-[var(--radius-full)] p-1 hover:bg-[var(--color-layer-02)]"
+              className="rounded-[var(--radius-full)] p-ds-02 hover:bg-[var(--color-layer-02)]"
             >
               <ArrowForwardIcon className="h-[var(--icon-md)] w-[var(--icon-md)] text-[var(--color-text-secondary)]" />
             </button>
@@ -128,7 +128,7 @@ export function Calendar({ onDateSelect, hasCorrection }: CalendarProps) {
       >
         {cal.activeTimeFrame === 'monthly' &&
           ['SUN', 'MON', 'TUE', 'WED', 'THU', 'FRI', 'SAT'].map((weekDay) => (
-            <div key={weekDay} className="pb-2 pt-4 text-center">
+            <div key={weekDay} className="pb-ds-03 pt-ds-05 text-center">
               <span className="L3 uppercase text-[var(--color-text-tertiary)]">
                 {weekDay}
               </span>
@@ -143,7 +143,7 @@ export function Calendar({ onDateSelect, hasCorrection }: CalendarProps) {
             aria-label={day.isPadding ? undefined : format(day.fullDate, 'MMMM d, yyyy')}
             className={`${
               cal.activeTimeFrame === 'weekly'
-                ? 'w-full rounded-t-[var(--radius-lg)] pb-3.5 pt-4'
+                ? 'w-full rounded-t-[var(--radius-lg)] pb-3.5 pt-ds-05'
                 : 'pb-0 pt-0'
             } flex cursor-pointer flex-col items-center text-center ${
               cal.activeTimeFrame === 'weekly' && cal.activeIndex === index
@@ -159,12 +159,12 @@ export function Calendar({ onDateSelect, hasCorrection }: CalendarProps) {
             }}
           >
             {cal.activeTimeFrame === 'weekly' && (
-              <span className="L3 mb-2 uppercase text-[var(--color-text-tertiary)]">
+              <span className="L3 mb-ds-03 uppercase text-[var(--color-text-tertiary)]">
                 {day.day}
               </span>
             )}
             <div
-              className={`mx-1 my-1 flex-col ${
+              className={`mx-ds-02 my-ds-02 flex-col ${
                 cal.activeTimeFrame === 'monthly' &&
                 isSameDay(day.fullDate, new Date(cal.selectedDate))
                   ? 'flex h-10 w-10 items-center justify-center rounded-[var(--radius-full)] bg-[var(--color-interactive-subtle)] shadow-[0px_4px_4px_0px_rgba(255,255,255,0.25)_inset,0px_0px_4px_0px_var(--color-focus)_inset]'
@@ -174,7 +174,7 @@ export function Calendar({ onDateSelect, hasCorrection }: CalendarProps) {
               <span
                 className={`B1-Reg flex h-10 w-10 items-center justify-center rounded-[var(--radius-full)] ${
                   day.isToday
-                    ? 'bg-[var(--color-interactive-hover)] p-2 text-[var(--color-text-on-color)]'
+                    ? 'bg-[var(--color-interactive-hover)] p-ds-03 text-[var(--color-text-on-color)]'
                     : 'text-[var(--color-text-secondary)]'
                 } ${
                   day.isActive && !day.isToday
@@ -185,7 +185,7 @@ export function Calendar({ onDateSelect, hasCorrection }: CalendarProps) {
                 {day.date}
               </span>
               {hasCorrection && hasCorrection(day.fullDate) && (
-                <div className="absolute z-10 mt-6 h-[6px] w-[6px] translate-y-[5px] rounded-[var(--radius-full)] bg-[var(--color-text-error)]"></div>
+                <div className="absolute z-10 mt-ds-06 h-[6px] w-[6px] translate-y-[5px] rounded-[var(--radius-full)] bg-[var(--color-text-error)]"></div>
               )}
             </div>
           </div>

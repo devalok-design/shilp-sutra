@@ -98,9 +98,9 @@ function SubtasksTab({
     <div className={cn('flex flex-col', className)}>
       {/* Progress bar */}
       {totalCount > 0 && (
-        <div className="mb-4 flex items-center gap-3">
+        <div className="mb-ds-05 flex items-center gap-ds-04">
           <Progress value={totalCount > 0 ? (completedCount / totalCount) * 100 : 0} className="h-1.5" />
-          <span className="shrink-0 text-[11px] font-body font-medium text-[var(--color-text-placeholder)]">
+          <span className="shrink-0 B3-Reg font-medium text-[var(--color-text-placeholder)]">
             {completedCount}/{totalCount}
           </span>
         </div>
@@ -118,7 +118,7 @@ function SubtasksTab({
               <div
                 key={subtask.id}
                 className={cn(
-                  'group flex items-center gap-2.5 rounded-[var(--radius-lg)] px-2 py-1.5 transition-colors',
+                  'group flex items-center gap-2.5 rounded-[var(--radius-lg)] px-ds-03 py-ds-02b transition-colors',
                   'hover:bg-[var(--color-field)] cursor-pointer',
                 )}
                 onClick={() => onClickSubtask?.(subtask.id)}
@@ -153,7 +153,7 @@ function SubtasksTab({
                 {/* Title */}
                 <span
                   className={cn(
-                    'flex-1 truncate text-[13px] font-body',
+                    'flex-1 truncate B2-Reg',
                     isComplete
                       ? 'text-[var(--color-text-placeholder)] line-through'
                       : 'text-[var(--color-text-primary)]',
@@ -191,7 +191,7 @@ function SubtasksTab({
       {/* Add subtask -- hidden in readOnly mode */}
       {!readOnly && (
         isAdding ? (
-          <div className="mt-2 flex items-center gap-2 rounded-[var(--radius-lg)] border border-[var(--color-border-default)] bg-[var(--color-layer-01)] px-3 py-2">
+          <div className="mt-ds-03 flex items-center gap-ds-03 rounded-[var(--radius-lg)] border border-[var(--color-border-default)] bg-[var(--color-layer-01)] px-ds-04 py-ds-03">
             <input
               ref={inputRef}
               type="text"
@@ -202,13 +202,13 @@ function SubtasksTab({
                 if (!newTitle.trim()) setIsAdding(false)
               }}
               placeholder="Subtask title..."
-              className="flex-1 bg-transparent text-[13px] font-body text-[var(--color-text-primary)] placeholder:text-[var(--color-text-placeholder)] outline-none"
+              className="flex-1 bg-transparent B2-Reg text-[var(--color-text-primary)] placeholder:text-[var(--color-text-placeholder)] outline-none"
             />
             <button
               type="button"
               onClick={handleSubmit}
               disabled={!newTitle.trim()}
-              className="inline-flex h-6 items-center gap-1 rounded-[var(--radius-md)] bg-[var(--color-interactive)] px-2.5 text-[11px] font-body font-semibold text-[var(--color-text-on-color)] transition-colors hover:bg-[var(--color-interactive-hover)] disabled:opacity-50"
+              className="inline-flex h-6 items-center gap-ds-02 rounded-[var(--radius-md)] bg-[var(--color-interactive)] px-2.5 B3-Reg font-semibold text-[var(--color-text-on-color)] transition-colors hover:bg-[var(--color-interactive-hover)] disabled:opacity-50"
             >
               Add
             </button>
@@ -217,7 +217,7 @@ function SubtasksTab({
           <button
             type="button"
             onClick={() => setIsAdding(true)}
-            className="mt-2 inline-flex items-center gap-1.5 rounded-[var(--radius-lg)] px-2 py-1.5 text-[13px] font-body text-[var(--color-text-placeholder)] transition-colors hover:bg-[var(--color-field)] hover:text-[var(--color-text-secondary)]"
+            className="mt-ds-03 inline-flex items-center gap-ds-02b rounded-[var(--radius-lg)] px-ds-03 py-ds-02b B2-Reg text-[var(--color-text-placeholder)] transition-colors hover:bg-[var(--color-field)] hover:text-[var(--color-text-secondary)]"
           >
             <IconPlus className="h-[var(--icon-sm)] w-[var(--icon-sm)]" stroke={1.5} />
             Add subtask

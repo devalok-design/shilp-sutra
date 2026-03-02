@@ -24,13 +24,13 @@ const PageHeader = React.forwardRef<HTMLDivElement, PageHeaderProps>(
       <div
         ref={ref}
         className={cn(
-          'flex flex-col gap-4 border-b border-[var(--color-border-default)] pb-6',
+          'flex flex-col gap-ds-05 border-b border-[var(--color-border-default)] pb-ds-06',
           className,
         )}
         {...props}
       >
         {breadcrumbs && breadcrumbs.length > 0 && (
-          <nav aria-label="Breadcrumb" className="flex items-center gap-1.5">
+          <nav aria-label="Breadcrumb" className="flex items-center gap-ds-02b">
             {breadcrumbs.map((crumb, index) => (
               <React.Fragment key={index}>
                 {index > 0 && (
@@ -63,8 +63,8 @@ const PageHeader = React.forwardRef<HTMLDivElement, PageHeaderProps>(
           </nav>
         )}
 
-        <div className="flex items-start justify-between gap-4">
-          <div className="flex flex-col gap-1.5">
+        <div className="flex items-start justify-between gap-ds-05">
+          <div className="flex flex-col gap-ds-02b">
             <h1
               className={cn(
                 'T5-Reg text-[var(--color-text-primary)]',
@@ -81,7 +81,7 @@ const PageHeader = React.forwardRef<HTMLDivElement, PageHeaderProps>(
           </div>
 
           {actions && (
-            <div className="flex shrink-0 items-center gap-2">{actions}</div>
+            <div className="flex shrink-0 items-center gap-ds-03">{actions}</div>
           )}
         </div>
       </div>

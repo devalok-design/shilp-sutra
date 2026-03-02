@@ -415,13 +415,13 @@ export function EditBreak({
       <DialogTrigger asChild>
         <Button
           variant="secondary"
-          className="P2 border-[var(--color-border-default)] bg-[var(--color-layer-01)] px-4 py-3 pr-6 text-[var(--color-text-secondary)] shadow-[0_4px_8px_0_var(--shadow-02)]"
+          className="P2 border-[var(--color-border-default)] bg-[var(--color-layer-01)] px-ds-05 py-ds-04 pr-ds-06 text-[var(--color-text-secondary)] shadow-[0_4px_8px_0_var(--shadow-02)]"
         >
           <EditIcon />
           <span>Edit</span>
         </Button>
       </DialogTrigger>
-      <DialogContent className="w-[440px] p-6 max-md:w-[90%] max-md:rounded-[8px]">
+      <DialogContent className="w-[440px] p-ds-06 max-md:w-[90%] max-md:rounded-[8px]">
         <DialogHeader>
           <DialogDescription>
             <div className="flex w-full flex-col items-center gap-[18px]">
@@ -435,9 +435,9 @@ export function EditBreak({
                 ref={formRef}
                 onSubmit={handleSubmit}
                 id="updateleaveform"
-                className="flex w-full flex-col gap-4"
+                className="flex w-full flex-col gap-ds-05"
               >
-                <div className="flex w-full flex-col gap-1 rounded-[8px] border border-[var(--color-border-subtle)] px-4 pb-2 pt-3.5">
+                <div className="flex w-full flex-col gap-ds-02 rounded-[8px] border border-[var(--color-border-subtle)] px-ds-05 pb-ds-03 pt-3.5">
                   <h2 className="L4 uppercase text-[var(--color-text-placeholder)]">
                     Reason
                   </h2>
@@ -446,7 +446,7 @@ export function EditBreak({
                   </p>
                 </div>
 
-                <div className="flex w-full items-center justify-center gap-1">
+                <div className="flex w-full items-center justify-center gap-ds-02">
                   <button
                     type="button"
                     onClick={() => handleOpenCalendar('start')}
@@ -454,7 +454,7 @@ export function EditBreak({
                       picker.showCalendar && picker.activeDate === 'start'
                         ? 'border-[var(--border-tertiary)]'
                         : 'border-[var(--color-border-default)]'
-                    } bg-[var(--color-layer-02)] px-[10px] py-[10px] text-[var(--color-text-secondary)] max-md:text-[12px]`}
+                    } bg-[var(--color-layer-02)] px-[10px] py-[10px] text-[var(--color-text-secondary)] max-md:B3-Reg`}
                   >
                     {formatDateToLongForm(formData.startDate)}
                   </button>
@@ -468,7 +468,7 @@ export function EditBreak({
                       picker.showCalendar && picker.activeDate === 'end'
                         ? 'border-[var(--border-tertiary)]'
                         : 'border-[var(--color-border-default)]'
-                    } bg-[var(--color-layer-02)] px-[10px] py-[10px] text-[var(--color-text-secondary)] max-md:text-[12px]`}
+                    } bg-[var(--color-layer-02)] px-[10px] py-[10px] text-[var(--color-text-secondary)] max-md:B3-Reg`}
                   >
                     {formatDateToLongForm(formData.endDate)}
                   </button>
@@ -481,7 +481,7 @@ export function EditBreak({
                     <div className="flex items-center justify-between">
                       <button
                         type="button"
-                        className="rounded-[var(--radius-full)] p-2 hover:bg-[var(--color-field-hover)]"
+                        className="rounded-[var(--radius-full)] p-ds-03 hover:bg-[var(--color-field-hover)]"
                         onClick={() => picker.navigateMonth('prev')}
                       >
                         <svg
@@ -509,7 +509,7 @@ export function EditBreak({
                       </div>
                       <button
                         type="button"
-                        className="rounded-[var(--radius-full)] p-2 hover:bg-[var(--color-field-hover)]"
+                        className="rounded-[var(--radius-full)] p-ds-03 hover:bg-[var(--color-field-hover)]"
                         onClick={() => picker.navigateMonth('next')}
                       >
                         <svg
@@ -533,7 +533,7 @@ export function EditBreak({
                       {/* Render week day headers for monthly view */}
                       {['SUN', 'MON', 'TUE', 'WED', 'THU', 'FRI', 'SAT'].map(
                         (weekDay) => (
-                          <div key={weekDay} className="pb-2 pt-4 text-center">
+                          <div key={weekDay} className="pb-ds-03 pt-ds-05 text-center">
                             <span className="L3 uppercase text-[var(--color-text-tertiary)]">
                               {weekDay}
                             </span>
@@ -577,7 +577,7 @@ export function EditBreak({
                           onClick={() => handleDayClick(day)}
                         >
                           <div
-                            className={`mx-1 my-1 ${
+                            className={`mx-ds-02 my-ds-02 ${
                               day.isPadding ? 'opacity-50' : ''
                             }`}
                           >
@@ -592,7 +592,7 @@ export function EditBreak({
                                 }
                                 ${
                                   day.isToday
-                                    ? 'bg-[var(--color-interactive-hover)] p-2 text-[var(--color-text-on-color)]'
+                                    ? 'bg-[var(--color-interactive-hover)] p-ds-03 text-[var(--color-text-on-color)]'
                                     : 'text-[var(--color-text-secondary)]'
                                 }
                               `}
@@ -606,20 +606,20 @@ export function EditBreak({
                   </div>
                 )}
 
-                <div className="flex w-full items-center justify-between rounded-[8px] border border-[var(--color-border-default)] px-4 py-3">
+                <div className="flex w-full items-center justify-between rounded-[8px] border border-[var(--color-border-default)] px-ds-05 py-ds-04">
                   <p className="L4 uppercase text-[var(--color-text-placeholder)]">
                     No of Days
                   </p>
-                  <p className="text-xl font-semibold text-[var(--color-text-primary)]">
+                  <p className="T6-Reg font-semibold text-[var(--color-text-primary)]">
                     {selectedLeave.numberOfDays}
                   </p>
                 </div>
-                <div className="flex w-full items-center justify-between rounded-[8px] border border-[var(--color-border-default)] px-4 py-3">
+                <div className="flex w-full items-center justify-between rounded-[8px] border border-[var(--color-border-default)] px-ds-05 py-ds-04">
                   <p className="L4 uppercase text-[var(--color-text-placeholder)]">
                     Status
                   </p>
                   <div
-                    className="relative flex cursor-pointer items-center gap-1"
+                    className="relative flex cursor-pointer items-center gap-ds-02"
                     onClick={() => setShowStatusOptions(!showStatusOptions)}
                   >
                     {renderStatus(formData.status)}
@@ -627,13 +627,13 @@ export function EditBreak({
                     {showStatusOptions && (
                       <div className="P2 absolute left-[10px] top-[25px] z-[4] flex flex-col overflow-hidden rounded-[7px] border border-[var(--color-border-default)] bg-[var(--color-layer-01)] shadow-[0px_4px_8px_0px_var(--shadow-02)]">
                         <div
-                          className="cursor-pointer border-b border-b-[var(--color-border-default)] bg-[var(--color-layer-01)] px-3 py-2"
+                          className="cursor-pointer border-b border-b-[var(--color-border-default)] bg-[var(--color-layer-01)] px-ds-04 py-ds-03"
                           onClick={() => handleStatusSelect('APPROVED')}
                         >
                           {renderStatus('APPROVED')}
                         </div>
                         <div
-                          className="cursor-pointer bg-[var(--color-layer-01)] px-3 py-2"
+                          className="cursor-pointer bg-[var(--color-layer-01)] px-ds-04 py-ds-03"
                           onClick={() => handleStatusSelect('REJECTED')}
                         >
                           {renderStatus('REJECTED')}
@@ -642,7 +642,7 @@ export function EditBreak({
                     )}
                   </div>
                 </div>
-                <div className="flex w-full flex-col gap-1 rounded-[8px] border border-[var(--color-border-subtle)] px-4 pb-2 pt-3.5">
+                <div className="flex w-full flex-col gap-ds-02 rounded-[8px] border border-[var(--color-border-subtle)] px-ds-05 pb-ds-03 pt-3.5">
                   <h2 className="L4 uppercase text-[var(--color-text-placeholder)]">
                     Comment
                   </h2>

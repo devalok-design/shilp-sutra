@@ -81,8 +81,8 @@ export default function AttendanceCTA({
   if (isMarked && !isOnBreak) {
     return (
       <div className="relative overflow-hidden rounded-[var(--radius-2xl)] border border-[var(--color-border-default)] bg-[var(--color-layer-01)]">
-        <div className="flex items-center justify-between px-6 py-5 sm:px-8">
-          <div className="flex flex-col gap-1">
+        <div className="flex items-center justify-between px-ds-06 py-ds-05b sm:px-ds-07">
+          <div className="flex flex-col gap-ds-02">
             <h2 className="T5-Reg text-[var(--color-text-primary)]">
               {greeting},{' '}
               <span className="font-semibold italic text-[var(--color-interactive)]">
@@ -93,7 +93,7 @@ export default function AttendanceCTA({
               {currentDate}
             </p>
           </div>
-          <div className="flex items-center gap-2 rounded-[var(--radius-xl)] bg-[var(--color-success-surface)] px-4 py-2.5">
+          <div className="flex items-center gap-ds-03 rounded-[var(--radius-xl)] bg-[var(--color-success-surface)] px-ds-05 py-2.5">
             <div className="flex h-[var(--icon-md)] w-[var(--icon-md)] items-center justify-center rounded-[var(--radius-full)] bg-[var(--color-text-success)]">
               <IconCheck className="h-3 w-3 text-[var(--color-text-on-color)]" />
             </div>
@@ -111,8 +111,8 @@ export default function AttendanceCTA({
   if (isOnBreak) {
     return (
       <div className="relative overflow-hidden rounded-[var(--radius-2xl)] border border-[var(--color-border-default)] bg-[var(--color-layer-01)]">
-        <div className="flex items-center justify-between px-6 py-5 sm:px-8">
-          <div className="flex flex-col gap-1">
+        <div className="flex items-center justify-between px-ds-06 py-ds-05b sm:px-ds-07">
+          <div className="flex flex-col gap-ds-02">
             <h2 className="T5-Reg text-[var(--color-text-primary)]">
               {greeting},{' '}
               <span className="font-semibold italic text-[var(--color-interactive)]">
@@ -123,7 +123,7 @@ export default function AttendanceCTA({
               {currentDate}
             </p>
           </div>
-          <div className="flex items-center gap-2 rounded-[var(--radius-xl)] bg-[var(--color-warning-surface)] px-4 py-2.5">
+          <div className="flex items-center gap-ds-03 rounded-[var(--radius-xl)] bg-[var(--color-warning-surface)] px-ds-05 py-2.5">
             <IconCoffee className="h-[var(--icon-sm)] w-[var(--icon-sm)] text-[var(--color-text-warning)]" />
             <span className="B2-Reg font-semibold text-[var(--color-text-warning)]">
               On break
@@ -139,8 +139,8 @@ export default function AttendanceCTA({
   if (!canMarkAttendance) {
     return (
       <div className="relative overflow-hidden rounded-[var(--radius-2xl)] border border-[var(--color-border-default)] bg-[var(--color-layer-01)]">
-        <div className="flex items-center justify-between px-6 py-6 sm:px-8 sm:py-8">
-          <div className="flex flex-col gap-1.5">
+        <div className="flex items-center justify-between px-ds-06 py-ds-06 sm:px-ds-07 sm:py-ds-07">
+          <div className="flex flex-col gap-ds-02b">
             <h2 className="T4-Reg text-[var(--color-text-primary)]">
               {greeting},{' '}
               <span className="font-semibold italic text-[var(--color-interactive)]">
@@ -151,7 +151,7 @@ export default function AttendanceCTA({
               {currentDate}
             </p>
           </div>
-          <div className="flex items-center gap-2 rounded-[var(--radius-xl)] bg-[var(--color-layer-02)] px-4 py-2.5">
+          <div className="flex items-center gap-ds-03 rounded-[var(--radius-xl)] bg-[var(--color-layer-02)] px-ds-05 py-2.5">
             <IconClock className="h-[var(--icon-sm)] w-[var(--icon-sm)] text-[var(--color-text-placeholder)]" />
             <span className="B2-Reg text-[var(--color-text-placeholder)]">
               Attendance window closed
@@ -165,15 +165,15 @@ export default function AttendanceCTA({
   // Unmarked + can mark: large greeting with mark button
   return (
     <div className="relative overflow-hidden rounded-[var(--radius-2xl)] border border-[var(--color-border-default)] bg-gradient-to-br from-[var(--color-interactive-subtle)] via-[var(--color-background)] to-[var(--color-success-surface)]">
-      <div className="flex items-center justify-between px-6 py-8 sm:px-8 sm:py-10">
-        <div className="flex flex-col gap-1.5">
+      <div className="flex items-center justify-between px-ds-06 py-ds-07 sm:px-ds-07 sm:py-10">
+        <div className="flex flex-col gap-ds-02b">
           <h2 className="T4-Reg text-[var(--color-text-primary)]">
             {greeting},{' '}
             <span className="font-semibold italic text-[var(--color-interactive)]">
               {firstName}
             </span>
           </h2>
-          <div className="flex items-center gap-2">
+          <div className="flex items-center gap-ds-03">
             <p className="B1-Reg text-[var(--color-text-tertiary)]">
               {currentDate}
             </p>

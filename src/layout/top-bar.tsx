@@ -111,12 +111,12 @@ const TopBar = React.forwardRef<HTMLDivElement, TopBarProps>(
       <div
         ref={ref}
         className={cn(
-          'z-sticky flex w-full items-center border-b border-[var(--color-border-default)] bg-[var(--color-layer-01)] px-4 py-3 md:px-6',
+          'z-sticky flex w-full items-center border-b border-[var(--color-border-default)] bg-[var(--color-layer-01)] px-ds-05 py-ds-04 md:px-ds-06',
           className,
         )}
       >
       {/* Left: Sidebar trigger + page title */}
-      <div className="flex items-center gap-3">
+      <div className="flex items-center gap-ds-04">
         <SidebarTrigger className="hidden text-[var(--color-text-secondary)] md:flex" />
 
         {/* Mobile Logo */}
@@ -126,14 +126,14 @@ const TopBar = React.forwardRef<HTMLDivElement, TopBarProps>(
 
         {/* Desktop page title */}
         {pageTitle && (
-          <h2 className="hidden text-lg font-normal text-[var(--color-text-primary)] md:block">
+          <h2 className="hidden T7-Reg text-[var(--color-text-primary)] md:block">
             {pageTitle}
           </h2>
         )}
       </div>
 
       {/* Right: Actions */}
-      <div className="ml-auto flex items-center gap-2 md:gap-4">
+      <div className="ml-auto flex items-center gap-ds-03 md:gap-ds-05">
         {/* IconSearch (Cmd+K) */}
         <Tooltip>
           <TooltipTrigger asChild>
@@ -175,7 +175,7 @@ const TopBar = React.forwardRef<HTMLDivElement, TopBarProps>(
             <Tooltip>
               <TooltipTrigger asChild>
                 <DropdownMenuTrigger asChild>
-                  <button className="flex items-center gap-2 outline-none">
+                  <button className="flex items-center gap-ds-03 outline-none">
                     <Avatar className="h-9 w-9 cursor-pointer">
                       {user.image ? (
                         <AvatarImage src={user.image} alt={user.name} />
@@ -198,29 +198,29 @@ const TopBar = React.forwardRef<HTMLDivElement, TopBarProps>(
               align="end"
             >
               {/* User Info */}
-              <div className="border-b border-[var(--color-border-default)] px-4 py-3">
-                <p className="text-sm text-[var(--color-text-primary)]">
+              <div className="border-b border-[var(--color-border-default)] px-ds-05 py-ds-04">
+                <p className="B2-Reg text-[var(--color-text-primary)]">
                   {user.name}
                 </p>
                 {user.email && (
-                  <p className="text-xs text-[var(--color-text-placeholder)]">
+                  <p className="B3-Reg text-[var(--color-text-placeholder)]">
                     {user.email}
                   </p>
                 )}
               </div>
 
               <DropdownMenuItem
-                className="flex w-full cursor-pointer items-center gap-2 px-4 py-3 hover:bg-[var(--color-layer-02)]"
+                className="flex w-full cursor-pointer items-center gap-ds-03 px-ds-05 py-ds-04 hover:bg-[var(--color-layer-02)]"
                 onClick={() => onNavigate?.('/profile')}
               >
                 <IconUser className="h-[var(--icon-sm)] w-[var(--icon-sm)] text-[var(--color-text-secondary)]" />
-                <span className="text-sm text-[var(--color-text-secondary)]">
+                <span className="B2-Reg text-[var(--color-text-secondary)]">
                   Profile
                 </span>
               </DropdownMenuItem>
 
               <DropdownMenuItem
-                className="flex w-full cursor-pointer items-center gap-2 px-4 py-3 hover:bg-[var(--color-layer-02)]"
+                className="flex w-full cursor-pointer items-center gap-ds-03 px-ds-05 py-ds-04 hover:bg-[var(--color-layer-02)]"
                 onClick={toggleTheme}
               >
                 {theme === 'dark' ? (
@@ -228,7 +228,7 @@ const TopBar = React.forwardRef<HTMLDivElement, TopBarProps>(
                 ) : (
                   <IconMoon className="h-[var(--icon-sm)] w-[var(--icon-sm)] text-[var(--color-text-secondary)]" />
                 )}
-                <span className="text-sm text-[var(--color-text-secondary)]">
+                <span className="B2-Reg text-[var(--color-text-secondary)]">
                   {theme === 'dark' ? 'Light Mode' : 'Dark Mode'}
                 </span>
               </DropdownMenuItem>
@@ -237,11 +237,11 @@ const TopBar = React.forwardRef<HTMLDivElement, TopBarProps>(
                 <>
                   <DropdownMenuSeparator className="bg-[var(--color-border-default)]" />
                   <DropdownMenuItem
-                    className="flex w-full cursor-pointer items-center gap-2 px-4 py-3 hover:bg-[var(--color-layer-02)]"
+                    className="flex w-full cursor-pointer items-center gap-ds-03 px-ds-05 py-ds-04 hover:bg-[var(--color-layer-02)]"
                     onClick={onLogout}
                   >
                     <IconLogout className="h-[var(--icon-sm)] w-[var(--icon-sm)] text-[var(--color-error)]" />
-                    <span className="text-sm text-[var(--color-error)]">
+                    <span className="B2-Reg text-[var(--color-error)]">
                       Logout
                     </span>
                   </DropdownMenuItem>

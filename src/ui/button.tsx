@@ -4,7 +4,7 @@ import * as React from 'react'
 import { cn } from './lib/utils'
 
 export const buttonVariants = cva(
-  'inline-flex items-center justify-center gap-2 whitespace-nowrap font-sans font-semibold text-sm select-none border border-transparent transition-[color,background-color,border-color,box-shadow] duration-[var(--duration-fast)] ease-[var(--ease-standard)] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--color-focus)] focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50',
+  'inline-flex items-center justify-center gap-ds-03 whitespace-nowrap font-sans B2-Semibold select-none border border-transparent transition-[color,background-color,border-color,box-shadow] duration-[var(--duration-fast)] ease-[var(--ease-standard)] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--color-focus)] focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50',
   {
     variants: {
       variant: {
@@ -21,9 +21,9 @@ export const buttonVariants = cva(
         link: 'text-[var(--color-text-link)] underline-offset-4 hover:underline',
       },
       size: {
-        sm: 'h-[var(--size-sm)] rounded-[var(--radius-md)] px-3',
-        md: 'h-[var(--size-md)] rounded-[var(--radius-md)] px-4',
-        lg: 'h-[var(--size-lg)] rounded-[var(--radius-lg)] px-6',
+        sm: 'h-[var(--size-sm)] rounded-[var(--radius-md)] px-ds-04',
+        md: 'h-[var(--size-md)] rounded-[var(--radius-md)] px-ds-05',
+        lg: 'h-[var(--size-lg)] rounded-[var(--radius-lg)] px-ds-06',
         'icon-sm': 'h-[var(--size-sm)] w-[var(--size-sm)] rounded-[var(--radius-md)]',
         'icon-md': 'h-[var(--size-md)] w-[var(--size-md)] rounded-[var(--radius-md)]',
         'icon-lg': 'h-[var(--size-lg)] w-[var(--size-lg)] rounded-[var(--radius-lg)]',

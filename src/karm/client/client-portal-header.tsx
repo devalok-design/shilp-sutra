@@ -37,12 +37,12 @@ const ClientPortalHeader = React.forwardRef<
       <header
         ref={ref}
         className={cn(
-          'flex h-16 items-center justify-between border-b border-[var(--color-border-subtle)] bg-[var(--color-layer-01)] px-6',
+          'flex h-16 items-center justify-between border-b border-[var(--color-border-subtle)] bg-[var(--color-layer-01)] px-ds-06',
           className,
         )}
         {...props}
       >
-        <div className="flex items-center gap-3">
+        <div className="flex items-center gap-ds-04">
           {orgLogo ? (
             <img
               src={orgLogo}
@@ -50,24 +50,24 @@ const ClientPortalHeader = React.forwardRef<
               className="h-8 w-8 rounded-[var(--radius-md)] object-cover"
             />
           ) : (
-            <div className="flex h-8 w-8 items-center justify-center rounded-[var(--radius-md)] bg-[var(--color-interactive)] text-xs font-semibold text-[var(--color-text-on-color)]">
+            <div className="flex h-8 w-8 items-center justify-center rounded-[var(--radius-md)] bg-[var(--color-interactive)] B3-Reg font-semibold text-[var(--color-text-on-color)]">
               {initials}
             </div>
           )}
-          <span className="font-display text-base font-semibold text-[var(--color-text-primary)]">
+          <span className="font-display B1-Reg font-semibold text-[var(--color-text-primary)]">
             {orgName}
           </span>
         </div>
-        <div className="flex items-center gap-3">
+        <div className="flex items-center gap-ds-04">
           {children}
-          <div className="flex items-center gap-2">
+          <div className="flex items-center gap-ds-03">
             <Avatar className="h-8 w-8">
               {userAvatar && <AvatarImage src={userAvatar} alt={userName} />}
-              <AvatarFallback className="bg-[var(--color-interactive-subtle)] text-xs font-medium text-[var(--color-interactive)]">
+              <AvatarFallback className="bg-[var(--color-interactive-subtle)] B3-Reg font-medium text-[var(--color-interactive)]">
                 {userInitials}
               </AvatarFallback>
             </Avatar>
-            <span className="hidden text-sm font-medium text-[var(--color-text-primary)] sm:inline">
+            <span className="hidden B2-Reg font-medium text-[var(--color-text-primary)] sm:inline">
               {userName}
             </span>
           </div>

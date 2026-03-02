@@ -62,13 +62,13 @@ function BottomNavLink({
       aria-label={item.title}
       aria-current={isActive ? 'page' : undefined}
       className={cn(
-        'flex h-16 max-w-[70px] flex-1 cursor-pointer flex-col items-center gap-1 p-1 pt-0 text-[11px]',
+        'flex h-16 max-w-[70px] flex-1 cursor-pointer flex-col items-center gap-ds-02 p-ds-02 pt-0 B3-Reg',
         isActive
           ? 'font-semibold text-[var(--color-interactive)]'
           : 'text-[var(--color-text-helper)]',
       )}
     >
-      <div className="relative flex w-full flex-col items-center gap-1">
+      <div className="relative flex w-full flex-col items-center gap-ds-02">
         <div
           className={cn(
             'absolute top-0 h-[3px] w-full rounded-b-[var(--radius-sm)] bg-[var(--color-interactive)] p-0 transition-opacity duration-[var(--duration-slow)]',
@@ -79,7 +79,7 @@ function BottomNavLink({
         <div className="p-2.5">
           <item.icon className="h-[var(--icon-md)] w-[var(--icon-md)]" aria-hidden="true" />
         </div>
-        <span className="text-center leading-none">{item.title}</span>
+        <span className="text-center">{item.title}</span>
       </div>
     </Link>
   )
@@ -126,11 +126,11 @@ const BottomNavbar = React.forwardRef<HTMLElement, BottomNavbarProps>(
         >
           <div className="absolute inset-0 bg-overlay" />
           <div
-            className="absolute bottom-[72px] left-0 right-0 rounded-t-[var(--radius-2xl)] border-t border-[var(--color-border-default)] bg-[var(--color-layer-01)] p-4 pb-2"
+            className="absolute bottom-[72px] left-0 right-0 rounded-t-[var(--radius-2xl)] border-t border-[var(--color-border-default)] bg-[var(--color-layer-01)] p-ds-05 pb-ds-03"
             onClick={(e) => e.stopPropagation()}
           >
-            <div className="mb-3 flex items-center justify-between">
-              <span className="text-sm font-semibold text-[var(--color-text-primary)]">
+            <div className="mb-ds-04 flex items-center justify-between">
+              <span className="B2-Semibold text-[var(--color-text-primary)]">
                 More
               </span>
               <button
@@ -141,21 +141,21 @@ const BottomNavbar = React.forwardRef<HTMLElement, BottomNavbarProps>(
                 <IconX className="h-[var(--icon-sm)] w-[var(--icon-sm)] text-[var(--color-text-secondary)]" aria-hidden="true" />
               </button>
             </div>
-            <div className="grid grid-cols-4 gap-2">
+            <div className="grid grid-cols-4 gap-ds-03">
               {moreItems.map((item) => (
                 <Link
                   key={item.href}
                   href={item.href}
                   onClick={() => setShowMore(false)}
                   className={cn(
-                    'flex flex-col items-center gap-1.5 rounded-[var(--radius-xl)] p-3 text-[11px] transition-colors',
+                    'flex flex-col items-center gap-ds-02b rounded-[var(--radius-xl)] p-ds-04 B3-Reg transition-colors',
                     isActive(item.href, item.exact)
                       ? 'bg-[var(--color-layer-02)] text-[var(--color-interactive)]'
                       : 'text-[var(--color-text-helper)] hover:bg-[var(--color-layer-02)]',
                   )}
                 >
                   <item.icon className="h-[var(--icon-md)] w-[var(--icon-md)]" />
-                  <span className="text-center leading-tight">
+                  <span className="text-center">
                     {item.title}
                   </span>
                 </Link>
@@ -170,7 +170,7 @@ const BottomNavbar = React.forwardRef<HTMLElement, BottomNavbarProps>(
         ref={ref}
         aria-label="Mobile navigation"
         className={cn(
-          'fixed bottom-0 left-0 right-0 z-sticky flex w-full flex-row items-start justify-between border-t border-[var(--color-border-default)] bg-[var(--color-layer-01)] px-4 pb-5 pt-0 md:hidden',
+          'fixed bottom-0 left-0 right-0 z-sticky flex w-full flex-row items-start justify-between border-t border-[var(--color-border-default)] bg-[var(--color-layer-01)] px-ds-05 pb-ds-05b pt-0 md:hidden',
           className,
         )}
       >
@@ -189,13 +189,13 @@ const BottomNavbar = React.forwardRef<HTMLElement, BottomNavbarProps>(
             aria-label="More navigation options"
             aria-expanded={showMore}
             className={cn(
-              'flex h-16 max-w-[70px] flex-1 cursor-pointer flex-col items-center gap-1 p-1 pt-0 text-[11px]',
+              'flex h-16 max-w-[70px] flex-1 cursor-pointer flex-col items-center gap-ds-02 p-ds-02 pt-0 B3-Reg',
               showMore || isMoreActive
                 ? 'font-semibold text-[var(--color-interactive)]'
                 : 'text-[var(--color-text-helper)]',
             )}
           >
-            <div className="relative flex w-full flex-col items-center gap-1">
+            <div className="relative flex w-full flex-col items-center gap-ds-02">
               <div
                 className={cn(
                   'absolute top-0 h-[3px] w-full rounded-b-[var(--radius-sm)] bg-[var(--color-interactive)] p-0 transition-opacity duration-[var(--duration-slow)]',
@@ -206,7 +206,7 @@ const BottomNavbar = React.forwardRef<HTMLElement, BottomNavbarProps>(
               <div className="p-2.5">
                 <IconDots className="h-[var(--icon-md)] w-[var(--icon-md)]" aria-hidden="true" />
               </div>
-              <span className="text-center leading-none">More</span>
+              <span className="text-center">More</span>
             </div>
           </button>
         )}

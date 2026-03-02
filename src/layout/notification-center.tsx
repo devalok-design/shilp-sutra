@@ -177,13 +177,13 @@ function NotificationItem({
       type="button"
       onClick={handleClick}
       className={cn(
-        'flex w-full items-start gap-3 px-4 py-3 text-left transition-colors',
+        'flex w-full items-start gap-ds-04 px-ds-05 py-ds-04 text-left transition-colors',
         'hover:bg-[var(--color-layer-02)]',
         !notification.isRead && 'bg-[var(--color-interactive)]/[0.03]',
       )}
     >
       {/* Tier indicator dot */}
-      <div className="mt-1.5 flex shrink-0">
+      <div className="mt-ds-02b flex shrink-0">
         <span
           className={cn(
             'h-2 w-2 rounded-[var(--radius-full)]',
@@ -197,19 +197,19 @@ function NotificationItem({
       <div className="min-w-0 flex-1">
         <p
           className={cn(
-            'truncate text-sm text-[var(--color-text-primary)]',
+            'truncate B2-Reg text-[var(--color-text-primary)]',
             !notification.isRead && 'font-semibold',
           )}
         >
           {notification.title}
         </p>
         {notification.body && (
-          <p className="mt-0.5 line-clamp-2 text-xs text-[var(--color-text-placeholder)]">
+          <p className="mt-0.5 line-clamp-2 B3-Reg text-[var(--color-text-placeholder)]">
             {notification.body}
           </p>
         )}
-        <div className="mt-1 flex items-center gap-2">
-          <span className="text-xs text-[var(--color-text-placeholder)]">
+        <div className="mt-ds-02 flex items-center gap-ds-03">
+          <span className="B3-Reg text-[var(--color-text-placeholder)]">
             {timeAgo(notification.createdAt)}
           </span>
           {notification.project && (
@@ -217,7 +217,7 @@ function NotificationItem({
               <span className="text-[var(--color-text-placeholder)]">
                 &middot;
               </span>
-              <span className="truncate text-xs text-[var(--color-text-placeholder)]">
+              <span className="truncate B3-Reg text-[var(--color-text-placeholder)]">
                 {notification.project.title}
               </span>
             </>
@@ -227,7 +227,7 @@ function NotificationItem({
 
       {/* Unread indicator */}
       {!notification.isRead && (
-        <div className="mt-1.5 shrink-0">
+        <div className="mt-ds-02b shrink-0">
           <span className="block h-2 w-2 rounded-[var(--radius-full)] bg-[var(--color-interactive)]" />
         </div>
       )}
@@ -314,7 +314,7 @@ const NotificationCenter = React.forwardRef<HTMLButtonElement, NotificationCente
             >
               <IconBell className="h-[var(--icon-sm)] w-[var(--icon-sm)]" />
               {unreadCount > 0 && (
-                <span className="absolute -right-0.5 -top-0.5 flex h-4 min-w-4 items-center justify-center rounded-[var(--radius-full)] bg-[var(--color-interactive)] px-1 text-[10px] font-bold text-[var(--color-text-on-color)]">
+                <span className="absolute -right-0.5 -top-0.5 flex h-4 min-w-4 items-center justify-center rounded-[var(--radius-full)] bg-[var(--color-interactive)] px-ds-02 B4-Reg font-semibold text-[var(--color-text-on-color)]">
                   {unreadCount > 99 ? '99+' : unreadCount}
                 </span>
               )}
@@ -332,13 +332,13 @@ const NotificationCenter = React.forwardRef<HTMLButtonElement, NotificationCente
         align="end"
       >
         {/* Header */}
-        <div className="flex items-center justify-between border-b border-[var(--color-border-default)] px-4 py-3">
-          <div className="flex items-center gap-2">
-            <h3 className="text-sm font-semibold text-[var(--color-text-primary)]">
+        <div className="flex items-center justify-between border-b border-[var(--color-border-default)] px-ds-05 py-ds-04">
+          <div className="flex items-center gap-ds-03">
+            <h3 className="B2-Semibold text-[var(--color-text-primary)]">
               Notifications
             </h3>
             {unreadCount > 0 && (
-              <span className="flex h-5 min-w-5 items-center justify-center rounded-[var(--radius-full)] bg-[var(--color-interactive)]/10 px-1.5 text-[11px] font-semibold text-[var(--color-interactive)]">
+              <span className="flex h-5 min-w-5 items-center justify-center rounded-[var(--radius-full)] bg-[var(--color-interactive)]/10 px-ds-02b B3-Reg font-semibold text-[var(--color-interactive)]">
                 {unreadCount}
               </span>
             )}
@@ -347,7 +347,7 @@ const NotificationCenter = React.forwardRef<HTMLButtonElement, NotificationCente
             <button
               type="button"
               onClick={onMarkAllRead}
-              className="flex items-center gap-1 text-xs text-[var(--color-text-placeholder)] transition-colors hover:text-[var(--color-interactive)]"
+              className="flex items-center gap-ds-02 B3-Reg text-[var(--color-text-placeholder)] transition-colors hover:text-[var(--color-interactive)]"
             >
               <IconChecks className="h-[var(--icon-sm)] w-[var(--icon-sm)]" />
               Mark all read
@@ -362,14 +362,14 @@ const NotificationCenter = React.forwardRef<HTMLButtonElement, NotificationCente
           className="max-h-[420px] overflow-y-auto"
         >
           {notifications.length === 0 ? (
-            <div className="flex flex-col items-center justify-center px-4 py-12">
+            <div className="flex flex-col items-center justify-center px-ds-05 py-12">
               <div className="flex h-12 w-12 items-center justify-center rounded-[var(--radius-full)] bg-[var(--color-layer-02)]">
                 <IconInbox className="h-6 w-6 text-[var(--color-text-placeholder)]" />
               </div>
-              <p className="mt-3 text-sm text-[var(--color-text-placeholder)]">
+              <p className="mt-ds-04 B2-Reg text-[var(--color-text-placeholder)]">
                 No notifications yet
               </p>
-              <p className="mt-1 text-xs text-[var(--color-text-placeholder)]">
+              <p className="mt-ds-02 B3-Reg text-[var(--color-text-placeholder)]">
                 You&apos;re all caught up!
               </p>
             </div>
@@ -379,8 +379,8 @@ const NotificationCenter = React.forwardRef<HTMLButtonElement, NotificationCente
               if (!items || items.length === 0) return null
               return (
                 <div key={group}>
-                  <div className="sticky top-0 z-raised bg-[var(--color-layer-01)] px-4 py-1.5">
-                    <span className="text-xs font-medium text-[var(--color-text-placeholder)]">
+                  <div className="sticky top-0 z-raised bg-[var(--color-layer-01)] px-ds-05 py-ds-02b">
+                    <span className="B3-Reg font-medium text-[var(--color-text-placeholder)]">
                       {group}
                     </span>
                   </div>
@@ -399,7 +399,7 @@ const NotificationCenter = React.forwardRef<HTMLButtonElement, NotificationCente
           )}
 
           {isLoading && (
-            <div className="flex items-center justify-center py-4">
+            <div className="flex items-center justify-center py-ds-05">
               <div className="h-[var(--icon-md)] w-[var(--icon-md)] animate-spin rounded-[var(--radius-full)] border-2 border-[var(--color-border-default)] border-t-[var(--color-interactive)]" />
             </div>
           )}

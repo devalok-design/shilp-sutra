@@ -63,13 +63,13 @@ export function ConversationList({
   return (
     <div className="flex flex-1 flex-col overflow-hidden">
       {/* Header */}
-      <div className="flex items-center justify-between border-b border-[var(--color-border-default)] px-4 py-3">
+      <div className="flex items-center justify-between border-b border-[var(--color-border-default)] px-ds-05 py-ds-04">
         <h3 className="B1-Reg text-[var(--color-text-primary)]">
           Conversations
         </h3>
         <button
           onClick={onNewChat}
-          className="flex items-center gap-1.5 rounded-[var(--radius-lg)] px-2.5 py-1.5 text-[var(--color-text-secondary)] transition-colors hover:bg-[var(--color-layer-02)]"
+          className="flex items-center gap-ds-02b rounded-[var(--radius-lg)] px-2.5 py-ds-02b text-[var(--color-text-secondary)] transition-colors hover:bg-[var(--color-layer-02)]"
         >
           <IconMessagePlus className="h-[var(--icon-sm)] w-[var(--icon-sm)]" />
           <span className="B3-Reg">New Chat</span>
@@ -83,7 +83,7 @@ export function ConversationList({
             <div className="h-[var(--icon-md)] w-[var(--icon-md)] animate-spin rounded-[var(--radius-full)] border-2 border-[var(--color-text-secondary)] border-t-transparent" />
           </div>
         ) : conversations.length === 0 ? (
-          <div className="flex flex-col items-center justify-center gap-2 py-12">
+          <div className="flex flex-col items-center justify-center gap-ds-03 py-12">
             <IconMessage className="h-8 w-8 text-[var(--color-text-placeholder)]" />
             <p className="B2-Reg text-[var(--color-text-placeholder)]">
               No conversations yet
@@ -94,7 +94,7 @@ export function ConversationList({
             {conversations.map((convo) => (
               <div
                 key={convo.id}
-                className={`group flex items-center gap-3 border-b border-[var(--color-border-subtle)] px-4 py-3 transition-colors hover:bg-[var(--color-layer-02)] ${
+                className={`group flex items-center gap-ds-04 border-b border-[var(--color-border-subtle)] px-ds-05 py-ds-04 transition-colors hover:bg-[var(--color-layer-02)] ${
                   activeConversationId === convo.id
                     ? 'bg-[var(--color-layer-02)]'
                     : ''
@@ -113,7 +113,7 @@ export function ConversationList({
                 </button>
 
                 {/* Context actions -- visible on hover */}
-                <div className="flex shrink-0 items-center gap-1 opacity-0 transition-opacity group-hover:opacity-100">
+                <div className="flex shrink-0 items-center gap-ds-02 opacity-0 transition-opacity group-hover:opacity-100">
                   {onArchive && (
                     <button
                       onClick={(e) => {

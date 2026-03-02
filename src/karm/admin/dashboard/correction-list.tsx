@@ -60,18 +60,18 @@ export function CorrectionList({
 
   if (corrections.length === 0) {
     return (
-      <div className="p-4 text-center">No pending corrections</div>
+      <div className="p-ds-05 text-center">No pending corrections</div>
     )
   }
 
   return (
     <div
-      className={`flex max-h-[200px] w-full flex-col overflow-y-auto bg-[var(--color-layer-01)] px-6 max-md:h-[calc(100vh-586px)] max-md:max-h-[calc(100vh-586px)] max-md:min-h-[372px] max-md:p-0 ${activeTimeFrame === 'weekly1' ? 'max-md:h-[calc(100vh-824px)] max-md:max-h-[calc(100vh-824px)]' : ''}`}
+      className={`flex max-h-[200px] w-full flex-col overflow-y-auto bg-[var(--color-layer-01)] px-ds-06 max-md:h-[calc(100vh-586px)] max-md:max-h-[calc(100vh-586px)] max-md:min-h-[372px] max-md:p-0 ${activeTimeFrame === 'weekly1' ? 'max-md:h-[calc(100vh-824px)] max-md:max-h-[calc(100vh-824px)]' : ''}`}
     >
       {corrections.map((correction) => (
         <Fragment key={correction.id}>
-          <div className="max-md:border-1 flex items-center justify-between px-2 py-3.5 max-md:rounded-[8px] max-md:border-[var(--color-border-default)]">
-            <div className="flex items-center gap-3">
+          <div className="max-md:border-1 flex items-center justify-between px-ds-03 py-3.5 max-md:rounded-[8px] max-md:border-[var(--color-border-default)]">
+            <div className="flex items-center gap-ds-04">
               <img
                 className="h-10 w-10 rounded-[var(--radius-full)] border-2 max-md:mb-[auto]"
                 src={
@@ -84,11 +84,11 @@ export function CorrectionList({
                 height={40}
                 alt={`${correction?.user?.name}'s Icon`}
               />
-              <div className="flex flex-col gap-1">
+              <div className="flex flex-col gap-ds-02">
                 <p className="B3-Reg text-[var(--color-text-secondary)]">
                   {correction?.user?.name}
                 </p>
-                <div className="flex w-full flex-wrap items-center gap-2">
+                <div className="flex w-full flex-wrap items-center gap-ds-03">
                   <p className="B1 semibold text-[var(--color-text-primary)]">
                     {correction?.reason}
                   </p>
@@ -105,12 +105,12 @@ export function CorrectionList({
                 </div>
               </div>
             </div>
-            <div className="ml-auto flex items-center gap-3 max-md:flex-col max-md:justify-center max-md:gap-0">
-              <div className="p-1">
+            <div className="ml-auto flex items-center gap-ds-04 max-md:flex-col max-md:justify-center max-md:gap-0">
+              <div className="p-ds-02">
                 <Tooltip delayDuration={0}>
                   <TooltipTrigger asChild>
                     <button
-                      className={`rounded-[var(--radius-full)] p-2 text-[var(--color-text-tertiary)] hover:text-[var(--color-text-secondary)] ${
+                      className={`rounded-[var(--radius-full)] p-ds-03 text-[var(--color-text-tertiary)] hover:text-[var(--color-text-secondary)] ${
                         correction?.user?.id === currentUserId
                           ? 'cursor-not-allowed opacity-50'
                           : ''
@@ -140,11 +140,11 @@ export function CorrectionList({
                   )}
                 </Tooltip>
               </div>
-              <div className="p-1">
+              <div className="p-ds-02">
                 <Tooltip delayDuration={0}>
                   <TooltipTrigger asChild>
                     <button
-                      className={`rounded-[var(--radius-full)] p-2 ${
+                      className={`rounded-[var(--radius-full)] p-ds-03 ${
                         correction?.user?.id === currentUserId
                           ? 'cursor-not-allowed opacity-50'
                           : ''

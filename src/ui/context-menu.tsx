@@ -25,8 +25,8 @@ const ContextMenuSubTrigger = React.forwardRef<
   <ContextMenuPrimitive.SubTrigger
     ref={ref}
     className={cn(
-      "flex cursor-default select-none items-center rounded-[var(--radius-md)] px-2 py-1.5 text-sm outline-none focus:bg-[var(--color-layer-02)] focus:text-[var(--color-text-primary)] data-[state=open]:bg-[var(--color-layer-02)] data-[state=open]:text-[var(--color-text-primary)]",
-      inset && "pl-8",
+      "flex cursor-default select-none items-center rounded-[var(--radius-md)] px-ds-03 py-ds-02b B2-Reg outline-none focus:bg-[var(--color-layer-02)] focus:text-[var(--color-text-primary)] data-[state=open]:bg-[var(--color-layer-02)] data-[state=open]:text-[var(--color-text-primary)]",
+      inset && "pl-ds-07",
       className
     )}
     {...props}
@@ -44,7 +44,7 @@ const ContextMenuSubContent = React.forwardRef<
   <ContextMenuPrimitive.SubContent
     ref={ref}
     className={cn(
-      "z-[var(--z-dropdown)] min-w-[8rem] overflow-hidden rounded-[var(--radius-lg)] border border-[var(--color-border-default)] bg-[var(--color-layer-01)] p-1 text-[var(--color-text-primary)] shadow-[var(--shadow-03)] data-[state=open]:animate-in data-[state=closed]:animate-out data-[state=closed]:fade-out-0 data-[state=open]:fade-in-0 data-[state=closed]:zoom-out-95 data-[state=open]:zoom-in-95 data-[side=bottom]:slide-in-from-top-2 data-[side=left]:slide-in-from-right-2 data-[side=right]:slide-in-from-left-2 data-[side=top]:slide-in-from-bottom-2",
+      "z-[var(--z-dropdown)] min-w-[8rem] overflow-hidden rounded-[var(--radius-lg)] border border-[var(--color-border-default)] bg-[var(--color-layer-01)] p-ds-02 text-[var(--color-text-primary)] shadow-[var(--shadow-03)] data-[state=open]:animate-in data-[state=closed]:animate-out data-[state=closed]:fade-out-0 data-[state=open]:fade-in-0 data-[state=closed]:zoom-out-95 data-[state=open]:zoom-in-95 data-[side=bottom]:slide-in-from-top-2 data-[side=left]:slide-in-from-right-2 data-[side=right]:slide-in-from-left-2 data-[side=top]:slide-in-from-bottom-2",
       className
     )}
     {...props}
@@ -60,7 +60,7 @@ const ContextMenuContent = React.forwardRef<
     <ContextMenuPrimitive.Content
       ref={ref}
       className={cn(
-        "z-[var(--z-dropdown)] overflow-hidden rounded-[var(--radius-lg)] border border-[var(--color-border-default)] bg-[var(--color-layer-01)] p-1 text-[var(--color-text-primary)] shadow-[var(--shadow-03)] data-[state=open]:animate-in data-[state=closed]:animate-out data-[state=closed]:fade-out-0 data-[state=open]:fade-in-0 data-[state=closed]:zoom-out-95 data-[state=open]:zoom-in-95 data-[side=bottom]:slide-in-from-top-2 data-[side=left]:slide-in-from-right-2 data-[side=right]:slide-in-from-left-2 data-[side=top]:slide-in-from-bottom-2",
+        "z-[var(--z-dropdown)] overflow-hidden rounded-[var(--radius-lg)] border border-[var(--color-border-default)] bg-[var(--color-layer-01)] p-ds-02 text-[var(--color-text-primary)] shadow-[var(--shadow-03)] data-[state=open]:animate-in data-[state=closed]:animate-out data-[state=closed]:fade-out-0 data-[state=open]:fade-in-0 data-[state=closed]:zoom-out-95 data-[state=open]:zoom-in-95 data-[side=bottom]:slide-in-from-top-2 data-[side=left]:slide-in-from-right-2 data-[side=right]:slide-in-from-left-2 data-[side=top]:slide-in-from-bottom-2",
         className
       )}
       {...props}
@@ -78,8 +78,8 @@ const ContextMenuItem = React.forwardRef<
   <ContextMenuPrimitive.Item
     ref={ref}
     className={cn(
-      "relative flex cursor-default select-none items-center rounded-[var(--radius-md)] px-2 py-1.5 text-sm outline-none focus:bg-[var(--color-layer-02)] focus:text-[var(--color-text-primary)] data-[disabled]:pointer-events-none data-[disabled]:opacity-50",
-      inset && "pl-8",
+      "relative flex cursor-default select-none items-center rounded-[var(--radius-md)] px-ds-03 py-ds-02b B2-Reg outline-none focus:bg-[var(--color-layer-02)] focus:text-[var(--color-text-primary)] data-[disabled]:pointer-events-none data-[disabled]:opacity-50",
+      inset && "pl-ds-07",
       className
     )}
     {...props}
@@ -94,13 +94,13 @@ const ContextMenuCheckboxItem = React.forwardRef<
   <ContextMenuPrimitive.CheckboxItem
     ref={ref}
     className={cn(
-      "relative flex cursor-default select-none items-center rounded-[var(--radius-md)] py-1.5 pl-8 pr-2 text-sm outline-none focus:bg-[var(--color-layer-02)] focus:text-[var(--color-text-primary)] data-[disabled]:pointer-events-none data-[disabled]:opacity-50",
+      "relative flex cursor-default select-none items-center rounded-[var(--radius-md)] py-ds-02b pl-ds-07 pr-ds-03 B2-Reg outline-none focus:bg-[var(--color-layer-02)] focus:text-[var(--color-text-primary)] data-[disabled]:pointer-events-none data-[disabled]:opacity-50",
       className
     )}
     checked={checked}
     {...props}
   >
-    <span className="absolute left-2 flex h-[var(--icon-sm)] w-[var(--icon-sm)] items-center justify-center">
+    <span className="absolute left-ds-03 flex h-[var(--icon-sm)] w-[var(--icon-sm)] items-center justify-center">
       <ContextMenuPrimitive.ItemIndicator>
         <IconCheck className="h-[var(--icon-sm)] w-[var(--icon-sm)]" />
       </ContextMenuPrimitive.ItemIndicator>
@@ -118,12 +118,12 @@ const ContextMenuRadioItem = React.forwardRef<
   <ContextMenuPrimitive.RadioItem
     ref={ref}
     className={cn(
-      "relative flex cursor-default select-none items-center rounded-[var(--radius-md)] py-1.5 pl-8 pr-2 text-sm outline-none focus:bg-[var(--color-layer-02)] focus:text-[var(--color-text-primary)] data-[disabled]:pointer-events-none data-[disabled]:opacity-50",
+      "relative flex cursor-default select-none items-center rounded-[var(--radius-md)] py-ds-02b pl-ds-07 pr-ds-03 B2-Reg outline-none focus:bg-[var(--color-layer-02)] focus:text-[var(--color-text-primary)] data-[disabled]:pointer-events-none data-[disabled]:opacity-50",
       className
     )}
     {...props}
   >
-    <span className="absolute left-2 flex h-[var(--icon-sm)] w-[var(--icon-sm)] items-center justify-center">
+    <span className="absolute left-ds-03 flex h-[var(--icon-sm)] w-[var(--icon-sm)] items-center justify-center">
       <ContextMenuPrimitive.ItemIndicator>
         <IconCircle className="h-[var(--icon-sm)] w-[var(--icon-sm)] fill-current" />
       </ContextMenuPrimitive.ItemIndicator>
@@ -142,8 +142,8 @@ const ContextMenuLabel = React.forwardRef<
   <ContextMenuPrimitive.Label
     ref={ref}
     className={cn(
-      "px-2 py-1.5 text-sm font-semibold text-[var(--color-text-primary)]",
-      inset && "pl-8",
+      "px-ds-03 py-ds-02b B2-Semibold text-[var(--color-text-primary)]",
+      inset && "pl-ds-07",
       className
     )}
     {...props}
@@ -157,7 +157,7 @@ const ContextMenuSeparator = React.forwardRef<
 >(({ className, ...props }, ref) => (
   <ContextMenuPrimitive.Separator
     ref={ref}
-    className={cn("-mx-1 my-1 h-px bg-[var(--color-border-subtle)]", className)}
+    className={cn("-mx-1 my-ds-02 h-px bg-[var(--color-border-subtle)]", className)}
     {...props}
   />
 ))
@@ -170,7 +170,7 @@ const ContextMenuShortcut = ({
   return (
     <span
       className={cn(
-        "ml-auto text-xs tracking-widest text-[var(--color-text-secondary)]",
+        "ml-auto B3-Reg text-[var(--color-text-secondary)]",
         className
       )}
       {...props}

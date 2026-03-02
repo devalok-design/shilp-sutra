@@ -29,7 +29,7 @@ const SheetOverlay = React.forwardRef<
 SheetOverlay.displayName = SheetPrimitive.Overlay.displayName
 
 const sheetVariants = cva(
-  'fixed z-[var(--z-modal)] gap-4 bg-[var(--color-layer-01)] p-6 shadow-[var(--shadow-05)] transition ease-in-out data-[state=closed]:duration-[var(--duration-slow)] data-[state=open]:duration-[var(--duration-slow)] data-[state=open]:animate-in data-[state=closed]:animate-out',
+  'fixed z-[var(--z-modal)] gap-ds-05 bg-[var(--color-layer-01)] p-ds-06 shadow-[var(--shadow-05)] transition ease-in-out data-[state=closed]:duration-[var(--duration-slow)] data-[state=open]:duration-[var(--duration-slow)] data-[state=open]:animate-in data-[state=closed]:animate-out',
   {
     variants: {
       side: {
@@ -62,7 +62,7 @@ const SheetContent = React.forwardRef<
       className={cn(sheetVariants({ side }), className)}
       {...props}
     >
-      <SheetPrimitive.Close className="absolute right-4 top-4 rounded-[var(--radius-sm)] text-[var(--color-icon-secondary)] transition-colors hover:text-[var(--color-icon-primary)] hover:bg-[var(--color-field)] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--color-focus)] disabled:pointer-events-none">
+      <SheetPrimitive.Close className="absolute right-ds-05 top-ds-05 rounded-[var(--radius-sm)] text-[var(--color-icon-secondary)] transition-colors hover:text-[var(--color-icon-primary)] hover:bg-[var(--color-field)] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--color-focus)] disabled:pointer-events-none">
         <IconX className="h-[var(--icon-sm)] w-[var(--icon-sm)]" />
         <span className="sr-only">Close</span>
       </SheetPrimitive.Close>
@@ -78,7 +78,7 @@ const SheetHeader = ({
 }: React.HTMLAttributes<HTMLDivElement>) => (
   <div
     className={cn(
-      'flex flex-col space-y-2 text-center sm:text-left',
+      'flex flex-col space-y-ds-03 text-center sm:text-left',
       className,
     )}
     {...props}
@@ -92,7 +92,7 @@ const SheetFooter = ({
 }: React.HTMLAttributes<HTMLDivElement>) => (
   <div
     className={cn(
-      'flex flex-col-reverse sm:flex-row sm:justify-end sm:space-x-2',
+      'flex flex-col-reverse sm:flex-row sm:justify-end sm:space-x-ds-03',
       className,
     )}
     {...props}
@@ -106,7 +106,7 @@ const SheetTitle = React.forwardRef<
 >(({ className, ...props }, ref) => (
   <SheetPrimitive.Title
     ref={ref}
-    className={cn('text-lg font-semibold text-[var(--color-text-primary)]', className)}
+    className={cn('T7-Reg font-semibold text-[var(--color-text-primary)]', className)}
     {...props}
   />
 ))
@@ -118,7 +118,7 @@ const SheetDescription = React.forwardRef<
 >(({ className, ...props }, ref) => (
   <SheetPrimitive.Description
     ref={ref}
-    className={cn('text-sm text-[var(--color-text-secondary)]', className)}
+    className={cn('B2-Reg text-[var(--color-text-secondary)]', className)}
     {...props}
   />
 ))

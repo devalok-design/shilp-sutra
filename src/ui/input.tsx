@@ -13,8 +13,8 @@ const Input = React.forwardRef<HTMLInputElement, InputProps>(
       <input
         type={type}
         className={cn(
-          'flex w-full font-sans text-sm',
-          'h-[var(--size-md)] px-3',
+          'flex w-full font-sans B2-Reg',
+          'h-[var(--size-md)] px-ds-04',
           'bg-[var(--color-field)] text-[var(--color-text-primary)]',
           'border border-[var(--color-border-default)] rounded-[var(--radius-md)]',
           'placeholder:text-[var(--color-text-placeholder)]',

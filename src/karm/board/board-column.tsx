@@ -127,7 +127,7 @@ export function BoardColumn({
       )}
     >
       {/* Column Header */}
-      <div className="flex items-center gap-2 px-3 py-3">
+      <div className="flex items-center gap-ds-03 px-ds-04 py-ds-04">
         {isEditing ? (
           <Input
             ref={editInputRef}
@@ -135,12 +135,12 @@ export function BoardColumn({
             onChange={(e) => setEditName(e.target.value)}
             onBlur={handleRename}
             onKeyDown={handleRenameKeyDown}
-            className="h-7 text-sm font-semibold"
+            className="h-7 B2-Semibold"
             autoFocus
           />
         ) : (
           <h3
-            className="text-sm font-semibold text-[var(--color-text-primary)] truncate"
+            className="B2-Semibold text-[var(--color-text-primary)] truncate"
             onDoubleClick={() => {
               setEditName(column.name)
               setIsEditing(true)
@@ -150,7 +150,7 @@ export function BoardColumn({
           </h3>
         )}
 
-        <span className="flex h-5 min-w-[20px] items-center justify-center rounded-[var(--radius-full)] bg-[var(--color-field)] px-1.5 text-[11px] font-medium text-[var(--color-text-tertiary)]">
+        <span className="flex h-5 min-w-[20px] items-center justify-center rounded-[var(--radius-full)] bg-[var(--color-field)] px-ds-02b B3-Reg font-medium text-[var(--color-text-tertiary)]">
           {column.tasks.length}
         </span>
 
@@ -195,7 +195,7 @@ export function BoardColumn({
                 setIsEditing(true)
               }}
             >
-              <IconPencil className="mr-2 h-[var(--icon-sm)] w-[var(--icon-sm)]" />
+              <IconPencil className="mr-ds-03 h-[var(--icon-sm)] w-[var(--icon-sm)]" />
               Rename
             </DropdownMenuItem>
             <DropdownMenuItem
@@ -205,12 +205,12 @@ export function BoardColumn({
             >
               {column.isClientVisible ? (
                 <>
-                  <IconEyeOff className="mr-2 h-[var(--icon-sm)] w-[var(--icon-sm)]" />
+                  <IconEyeOff className="mr-ds-03 h-[var(--icon-sm)] w-[var(--icon-sm)]" />
                   Hide from client
                 </>
               ) : (
                 <>
-                  <IconEye className="mr-2 h-[var(--icon-sm)] w-[var(--icon-sm)]" />
+                  <IconEye className="mr-ds-03 h-[var(--icon-sm)] w-[var(--icon-sm)]" />
                   Show to client
                 </>
               )}
@@ -220,7 +220,7 @@ export function BoardColumn({
               className="text-[var(--color-error)] focus:text-[var(--color-error)]"
               onClick={() => onDeleteColumn?.(column.id)}
             >
-              <IconTrash className="mr-2 h-[var(--icon-sm)] w-[var(--icon-sm)]" />
+              <IconTrash className="mr-ds-03 h-[var(--icon-sm)] w-[var(--icon-sm)]" />
               Delete column
             </DropdownMenuItem>
           </DropdownMenuContent>
@@ -231,7 +231,7 @@ export function BoardColumn({
       <div
         ref={setNodeRef}
         className={cn(
-          'no-scrollbar flex flex-1 flex-col gap-2 overflow-y-auto px-2 pb-2 transition-colors duration-[var(--duration-moderate)]',
+          'no-scrollbar flex flex-1 flex-col gap-ds-03 overflow-y-auto px-ds-03 pb-ds-03 transition-colors duration-[var(--duration-moderate)]',
           isOver && 'bg-[var(--color-interactive-subtle)]/50',
         )}
       >
@@ -243,15 +243,15 @@ export function BoardColumn({
 
         {/* Empty state */}
         {column.tasks.length === 0 && !isAdding && (
-          <div className="flex flex-1 items-center justify-center py-8">
-            <p className="text-xs text-[var(--color-text-placeholder)]">No tasks</p>
+          <div className="flex flex-1 items-center justify-center py-ds-07">
+            <p className="B3-Reg text-[var(--color-text-placeholder)]">No tasks</p>
           </div>
         )}
       </div>
 
       {/* Quick-add input */}
       {isAdding ? (
-        <div className="border-t border-[var(--color-border-subtle)] p-2">
+        <div className="border-t border-[var(--color-border-subtle)] p-ds-03">
           <Input
             ref={inputRef}
             value={newTitle}
@@ -261,13 +261,13 @@ export function BoardColumn({
               if (!newTitle.trim()) setIsAdding(false)
             }}
             placeholder="Task title..."
-            className="h-8 text-sm"
+            className="h-8 B2-Reg"
             autoFocus
           />
-          <div className="mt-1.5 flex items-center gap-1">
+          <div className="mt-ds-02b flex items-center gap-ds-02">
             <Button
               size="sm"
-              className="h-7 bg-[var(--color-interactive)] hover:bg-[var(--color-interactive-hover)] text-[var(--color-text-on-color)] text-xs"
+              className="h-7 bg-[var(--color-interactive)] hover:bg-[var(--color-interactive-hover)] text-[var(--color-text-on-color)] B3-Reg"
               onClick={handleAddTask}
               disabled={!newTitle.trim()}
             >
@@ -276,7 +276,7 @@ export function BoardColumn({
             <Button
               variant="ghost"
               size="sm"
-              className="h-7 text-xs"
+              className="h-7 B3-Reg"
               onClick={() => {
                 setNewTitle('')
                 setIsAdding(false)
@@ -292,7 +292,7 @@ export function BoardColumn({
             setIsAdding(true)
             setTimeout(() => inputRef.current?.focus(), 50)
           }}
-          className="flex items-center gap-1.5 border-t border-[var(--color-border-subtle)] px-3 py-2.5 text-xs text-[var(--color-text-placeholder)] transition-colors hover:bg-[var(--color-field)] hover:text-[var(--color-text-tertiary)]"
+          className="flex items-center gap-ds-02b border-t border-[var(--color-border-subtle)] px-ds-04 py-2.5 B3-Reg text-[var(--color-text-placeholder)] transition-colors hover:bg-[var(--color-field)] hover:text-[var(--color-text-tertiary)]"
         >
           <IconPlus className="h-3 w-3" />
           Add task

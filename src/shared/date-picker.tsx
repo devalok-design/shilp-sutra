@@ -81,7 +81,7 @@ function CalendarGrid({
 
   return (
     <div className="w-[252px]">
-      <div className="flex items-center justify-between px-1 pb-3">
+      <div className="flex items-center justify-between px-ds-02 pb-ds-04">
         <button
           type="button"
           onClick={() => onMonthChange(subMonths(currentMonth, 1))}
@@ -105,7 +105,7 @@ function CalendarGrid({
         {WEEKDAYS.map((wd) => (
           <div
             key={wd}
-            className="flex h-8 items-center justify-center text-[11px] font-semibold uppercase tracking-wider text-[var(--color-text-placeholder)]"
+            className="flex h-8 items-center justify-center L4 text-[var(--color-text-placeholder)]"
           >
             {wd}
           </div>
@@ -126,7 +126,7 @@ function CalendarGrid({
               onMouseEnter={() => onHover?.(d)}
               onMouseLeave={() => onHover?.(null)}
               className={cn(
-                'flex h-8 w-9 items-center justify-center rounded-[var(--radius-md)] text-[13px] font-body transition-colors',
+                'flex h-8 w-9 items-center justify-center rounded-[var(--radius-md)] B2-Reg font-body transition-colors',
                 !inMonth && 'pointer-events-none opacity-0',
                 inMonth && !isSelected && !edge && !inRange &&
                   'text-[var(--color-text-primary)] hover:bg-[var(--color-field)]',
@@ -178,7 +178,7 @@ function DatePicker({
         <button
           type="button"
           className={cn(
-            'inline-flex h-9 items-center gap-2 rounded-[var(--radius-lg)] border border-[var(--color-border-default)] bg-[var(--color-layer-01)] px-3 text-left transition-colors',
+            'inline-flex h-9 items-center gap-ds-03 rounded-[var(--radius-lg)] border border-[var(--color-border-default)] bg-[var(--color-layer-01)] px-ds-04 text-left transition-colors',
             'hover:border-[var(--border-secondary)]',
             'focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--color-focus)] focus-visible:ring-offset-2',
             className,
@@ -201,7 +201,7 @@ function DatePicker({
         </button>
       </PopoverTrigger>
       <PopoverContent
-        className="w-auto border-[var(--color-border-default)] bg-[var(--color-layer-01)] p-3"
+        className="w-auto border-[var(--color-border-default)] bg-[var(--color-layer-01)] p-ds-04"
         align="start"
         sideOffset={4}
       >
@@ -279,7 +279,7 @@ function DateRangePicker({
         <button
           type="button"
           className={cn(
-            'inline-flex h-9 items-center gap-2 rounded-[var(--radius-lg)] border border-[var(--color-border-default)] bg-[var(--color-layer-01)] px-3 text-left transition-colors',
+            'inline-flex h-9 items-center gap-ds-03 rounded-[var(--radius-lg)] border border-[var(--color-border-default)] bg-[var(--color-layer-01)] px-ds-04 text-left transition-colors',
             'hover:border-[var(--border-secondary)]',
             'focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--color-focus)] focus-visible:ring-offset-2',
             className,
@@ -302,7 +302,7 @@ function DateRangePicker({
         </button>
       </PopoverTrigger>
       <PopoverContent
-        className="w-auto border-[var(--color-border-default)] bg-[var(--color-layer-01)] p-3"
+        className="w-auto border-[var(--color-border-default)] bg-[var(--color-layer-01)] p-ds-04"
         align="start"
         sideOffset={4}
       >

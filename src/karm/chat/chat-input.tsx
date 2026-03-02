@@ -50,8 +50,8 @@ export function ChatInput({
   )
 
   return (
-    <div className="border-t border-[var(--color-border-default)] bg-[var(--color-layer-01)] p-3">
-      <div className="flex items-end gap-2 rounded-[var(--radius-xl)] border border-[var(--color-border-default)] bg-[var(--color-field)] px-3 py-2">
+    <div className="border-t border-[var(--color-border-default)] bg-[var(--color-layer-01)] p-ds-04">
+      <div className="flex items-end gap-ds-03 rounded-[var(--radius-xl)] border border-[var(--color-border-default)] bg-[var(--color-field)] px-ds-04 py-ds-03">
         <textarea
           ref={textareaRef}
           value={text}
@@ -85,7 +85,7 @@ export function ChatInput({
         )}
       </div>
       {disclaimer && (
-        <p className="B3-Reg mt-1.5 text-center text-[var(--color-text-placeholder)]">
+        <p className="B3-Reg mt-ds-02b text-center text-[var(--color-text-placeholder)]">
           {disclaimer}
         </p>
       )}

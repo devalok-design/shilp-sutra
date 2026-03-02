@@ -4,7 +4,7 @@ import { cva, type VariantProps } from 'class-variance-authority'
 import { cn } from './lib/utils'
 
 const alertVariants = cva(
-  'relative flex gap-3 rounded-[var(--radius-lg)] border p-4',
+  'relative flex gap-ds-04 rounded-[var(--radius-lg)] border p-ds-05',
   {
     variants: {
       variant: {
@@ -45,8 +45,8 @@ const Alert = React.forwardRef<HTMLDivElement, AlertProps>(
       <div ref={ref} className={cn(alertVariants({ variant }), className)} role="alert" {...props}>
         <Icon className="mt-0.5 h-[var(--icon-md)] w-[var(--icon-md)] shrink-0" aria-hidden="true" />
         <div className="flex-1 min-w-0">
-          {title && <p className="font-semibold text-sm mb-0.5">{title}</p>}
-          <div className="text-sm opacity-90">{children}</div>
+          {title && <p className="B2-Semibold mb-0.5">{title}</p>}
+          <div className="B2-Reg opacity-90">{children}</div>
         </div>
         {dismissible && onDismiss && (
           <button

@@ -236,7 +236,7 @@ function ActivityTab({ activities, className }: ActivityTabProps) {
       <div className="absolute left-[11px] top-2 bottom-2 w-px bg-[var(--color-border-default)]" />
 
       {/* Entries */}
-      <div className="space-y-4">
+      <div className="space-y-ds-05">
         {activities.map((entry) => {
           const config = ACTION_MAP[entry.action] || DEFAULT_ACTION
           const Icon = config.icon
@@ -244,7 +244,7 @@ function ActivityTab({ activities, className }: ActivityTabProps) {
           const description = config.getDescription(entry)
 
           return (
-            <div key={entry.id} className="relative flex gap-3 pl-0">
+            <div key={entry.id} className="relative flex gap-ds-04 pl-0">
               {/* Dot on timeline */}
               <div className="relative z-10 flex h-[22px] w-[22px] shrink-0 items-center justify-center rounded-[var(--radius-full)] bg-[var(--color-layer-01)]">
                 <div
@@ -261,7 +261,7 @@ function ActivityTab({ activities, className }: ActivityTabProps) {
 
               {/* Content */}
               <div className="flex-1 min-w-0 pt-0.5">
-                <p className="text-[12px] font-body leading-snug">
+                <p className="B3-Reg">
                   <span className="font-medium text-[var(--color-text-primary)]">
                     {actorName}
                   </span>
@@ -269,7 +269,7 @@ function ActivityTab({ activities, className }: ActivityTabProps) {
                     {' '}{description}
                   </span>
                 </p>
-                <p className="mt-0.5 text-[10px] font-body text-[var(--color-text-placeholder)]">
+                <p className="mt-0.5 B4-Reg text-[var(--color-text-placeholder)]">
                   {formatTimestamp(entry.timestamp)}
                 </p>
               </div>

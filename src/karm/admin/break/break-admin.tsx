@@ -311,9 +311,9 @@ export function BreakAdmin({
 
         {/* Body */}
         <div className="no-scrollbar flex h-fit min-w-[800px] flex-col border-t-[1px] border-[var(--color-border-subtle)] bg-[var(--color-layer-02)] shadow-transparent max-lg:min-w-[100%] max-lg:overflow-x-auto">
-          <div className="flex w-full gap-2 border-b-[1px] border-[var(--color-border-default)] px-6 pt-2 max-lg:min-w-[800px]">
+          <div className="flex w-full gap-ds-03 border-b-[1px] border-[var(--color-border-default)] px-ds-06 pt-ds-03 max-lg:min-w-[800px]">
             <button
-              className={`L3 mb-[-1px] px-2 py-3 ${
+              className={`L3 mb-[-1px] px-ds-03 py-ds-04 ${
                 activeTab === 'breaks'
                   ? 'text-var(--color-text-primary) border-b-[1px] border-[var(--color-interactive-hover)]'
                   : 'text-[var(--color-text-tertiary)]'
@@ -323,7 +323,7 @@ export function BreakAdmin({
               BREAKS
             </button>
             <button
-              className={`L3 mb-[-1px] flex items-center gap-1 px-2 py-3 ${
+              className={`L3 mb-[-1px] flex items-center gap-ds-02 px-ds-03 py-ds-04 ${
                 activeTab === 'requests'
                   ? 'border-b-[1px] border-[var(--color-interactive-hover)] text-[var(--color-text-primary)]'
                   : 'text-[var(--color-text-tertiary)]'
@@ -334,7 +334,7 @@ export function BreakAdmin({
               <span className="text-[var(--color-interactive-hover)]">{`(${pendingRequests.length})`}</span>
             </button>
             <button
-              className={`L3 mb-[-1px] flex items-center gap-1 px-2 py-3 ${
+              className={`L3 mb-[-1px] flex items-center gap-ds-02 px-ds-03 py-ds-04 ${
                 activeTab === 'balance'
                   ? 'border-b-[1px] border-[var(--color-interactive-hover)] text-[var(--color-text-primary)]'
                   : 'text-[var(--color-text-tertiary)]'
@@ -358,7 +358,7 @@ export function BreakAdmin({
                 onRefresh={onRefresh}
               />
             ) : activeTab === 'requests' ? (
-              <div className="no-scrollbar flex h-[400px] flex-col gap-1 overflow-y-auto border-t border-t-[var(--color-border-default)] px-6 pb-1 pt-1 max-md:h-[calc(100vh-317px)] max-md:border-0">
+              <div className="no-scrollbar flex h-[400px] flex-col gap-ds-02 overflow-y-auto border-t border-t-[var(--color-border-default)] px-ds-06 pb-ds-02 pt-ds-02 max-md:h-[calc(100vh-317px)] max-md:border-0">
                 {pendingRequests.map((request) => (
                   <LeaveRequest
                     key={request.id}

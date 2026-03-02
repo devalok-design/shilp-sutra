@@ -56,8 +56,8 @@ export function DeleteBreak({ id: _id, userId: _userId, onDelete }: DeleteBreakP
       <DialogTrigger asChild>
         <IconButton icon={<BreakDeleteIcon />} size="medium" />
       </DialogTrigger>
-      <DialogContent className="flex w-[335px] flex-col items-center gap-6 p-6 max-md:w-[90%] max-md:rounded-[8px]">
-        <div className="flex w-full max-w-[240px] flex-col items-center gap-3 text-center">
+      <DialogContent className="flex w-[335px] flex-col items-center gap-ds-06 p-ds-06 max-md:w-[90%] max-md:rounded-[8px]">
+        <div className="flex w-full max-w-[240px] flex-col items-center gap-ds-04 text-center">
           <p className="P6 text-center text-[var(--color-text-primary)]">
             Delete this break?
           </p>

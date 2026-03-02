@@ -147,24 +147,24 @@ export function LeaveRequests({
 
   return (
     <div
-      className={`no-scrollbar max-h-[230px] w-full overflow-y-auto px-0 md:px-6 max-md:h-[calc(100vh-586px)] max-md:max-h-[calc(100vh-586px)] max-md:min-h-[407.2px] ${activeTimeFrame === 'weekly1' ? 'max-md:h-[calc(100vh-824px)] max-md:max-h-[calc(100vh-824px)]' : ''}`}
+      className={`no-scrollbar max-h-[230px] w-full overflow-y-auto px-0 md:px-ds-06 max-md:h-[calc(100vh-586px)] max-md:max-h-[calc(100vh-586px)] max-md:min-h-[407.2px] ${activeTimeFrame === 'weekly1' ? 'max-md:h-[calc(100vh-824px)] max-md:max-h-[calc(100vh-824px)]' : ''}`}
     >
-      <div className="flex h-full flex-col gap-[8px] py-2 max-md:h-[max-content] max-md:gap-[16px] max-md:py-0 max-md:pb-[16px]">
+      <div className="flex h-full flex-col gap-[8px] py-ds-03 max-md:h-[max-content] max-md:gap-[16px] max-md:py-0 max-md:pb-[16px]">
         {requests?.map((request) => (
           <div
             key={request.id}
-            className="flex flex-col justify-start rounded-[8px] border-b border-[var(--color-border-default)] md:gap-4 md:border-b-0 max-md:border-none"
+            className="flex flex-col justify-start rounded-[8px] border-b border-[var(--color-border-default)] md:gap-ds-05 md:border-b-0 max-md:border-none"
           >
-            <div className="flex flex-col justify-between rounded-t-[8px] border border-[var(--color-border-default)] md:flex-row md:border-0 md:px-2 md:py-3.5 max-md:border-b-0">
-              <div className="flex items-center gap-3 border-b border-[var(--color-border-default)] p-4 md:border-none md:p-0 max-md:items-start">
+            <div className="flex flex-col justify-between rounded-t-[8px] border border-[var(--color-border-default)] md:flex-row md:border-0 md:px-ds-03 md:py-3.5 max-md:border-b-0">
+              <div className="flex items-center gap-ds-04 border-b border-[var(--color-border-default)] p-ds-05 md:border-none md:p-0 max-md:items-start">
                 <img
                   src={userImages[request.user?.id || '']}
                   className="h-10 w-10 overflow-hidden rounded-[var(--radius-full)] bg-[var(--color-interactive-subtle)]"
                   alt={request.user?.name?.[0] || 'U'}
                 />
-                <div className="flex max-w-[277px] flex-col items-start gap-1 sm:max-w-none">
-                  <div className="flex flex-row gap-1.5">
-                    <div className="flex items-center gap-2">
+                <div className="flex max-w-[277px] flex-col items-start gap-ds-02 sm:max-w-none">
+                  <div className="flex flex-row gap-ds-02b">
+                    <div className="flex items-center gap-ds-03">
                       <p className="B3-Reg text-[var(--color-text-secondary)]">
                         {request.user?.name}
                       </p>
@@ -172,7 +172,7 @@ export function LeaveRequests({
                   </div>
                   {/* for one day leave, display one line message & date */}
                   {isSingleDayRequest(request) ? (
-                    <div className="flex w-full flex-col items-center gap-2 md:flex-row md:flex-wrap max-md:items-start">
+                    <div className="flex w-full flex-col items-center gap-ds-03 md:flex-row md:flex-wrap max-md:items-start">
                       <p className="B1 semibold text-[var(--color-text-primary)]">
                         {removeAllEmojis(request.reason)}
                       </p>
@@ -184,7 +184,7 @@ export function LeaveRequests({
                       </p>
                     </div>
                   ) : (
-                    <div className="flex flex-col items-start justify-start gap-2">
+                    <div className="flex flex-col items-start justify-start gap-ds-03">
                       <p className="B1 semibold text-[var(--color-text-primary)]">
                         {removeAllEmojis(request.reason)}
                       </p>
@@ -201,7 +201,7 @@ export function LeaveRequests({
                 </div>
               </div>
               <div className="flex h-full w-full items-center justify-between self-stretch sm:w-auto sm:justify-start">
-                <div className="flex w-1/2 justify-center border-r border-[var(--color-border-default)] p-1 md:border-r-0">
+                <div className="flex w-1/2 justify-center border-r border-[var(--color-border-default)] p-ds-02 md:border-r-0">
                   <Tooltip delayDuration={0}>
                     <TooltipTrigger asChild>
                       <button
@@ -225,7 +225,7 @@ export function LeaveRequests({
                         disabled={
                           interaction.isProcessing || request?.user?.id === currentUserId
                         }
-                        className={`rounded-[var(--radius-full)] p-2 ${
+                        className={`rounded-[var(--radius-full)] p-ds-03 ${
                           interaction.activeRequest?.id === request.id &&
                           interaction.activeAction === 'rejectBreak'
                             ? 'bg-[var(--color-error-surface)]'
@@ -253,7 +253,7 @@ export function LeaveRequests({
                     )}
                   </Tooltip>
                 </div>
-                <div className="flex w-1/2 justify-center bg-[var(--color-success-surface)] p-1 md:bg-transparent">
+                <div className="flex w-1/2 justify-center bg-[var(--color-success-surface)] p-ds-02 md:bg-transparent">
                   <Tooltip delayDuration={0}>
                     <TooltipTrigger asChild>
                       <button
@@ -277,7 +277,7 @@ export function LeaveRequests({
                         disabled={
                           interaction.isProcessing || request?.user?.id === currentUserId
                         }
-                        className={`rounded-[var(--radius-full)] p-2 ${
+                        className={`rounded-[var(--radius-full)] p-ds-03 ${
                           interaction.activeRequest?.id === request.id &&
                           interaction.activeAction === 'approveBreak'
                             ? 'bg-[var(--color-success-surface)]'
@@ -304,8 +304,8 @@ export function LeaveRequests({
               interaction.activeRequest &&
               interaction.activeRequest?.id === request.id) ||
               isMobile) && (
-              <div className="flex flex-row items-start justify-between rounded-[8px] border-[1px] border-[var(--color-border-default)] py-1 max-md:rounded-t-none">
-                <div className="flex w-full flex-col items-start justify-start gap-1 px-4 pb-1 pt-[10px]">
+              <div className="flex flex-row items-start justify-between rounded-[8px] border-[1px] border-[var(--color-border-default)] py-ds-02 max-md:rounded-t-none">
+                <div className="flex w-full flex-col items-start justify-start gap-ds-02 px-ds-05 pb-ds-02 pt-[10px]">
                   <div className="L4 text-[var(--color-text-placeholder)]">
                     comment
                   </div>
@@ -320,7 +320,7 @@ export function LeaveRequests({
                 <button
                   disabled={interaction.isProcessing}
                   onClick={() => handleRequestSubmit(request, interaction.activeAction)}
-                  className="my-auto flex hidden items-center justify-center rounded-[var(--radius-full)] p-2"
+                  className="my-auto flex hidden items-center justify-center rounded-[var(--radius-full)] p-ds-03"
                 >
                   <SendIcon className="h-6 w-6" />
                 </button>

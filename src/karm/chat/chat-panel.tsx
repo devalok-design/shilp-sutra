@@ -94,13 +94,13 @@ export function ChatPanel({
         <SheetTitle className="sr-only">AI Chat</SheetTitle>
 
         {/* Header */}
-        <div className="flex items-center gap-2 border-b border-[var(--color-border-default)] px-4 py-3">
+        <div className="flex items-center gap-ds-03 border-b border-[var(--color-border-default)] px-ds-05 py-ds-04">
           {/* Agent Selector */}
           <div className="flex-1">
             <DropdownMenu>
               <DropdownMenuTrigger asChild>
                 <button
-                  className="flex items-center gap-1.5 rounded-[var(--radius-lg)] px-2 py-1.5 transition-colors hover:bg-[var(--color-layer-02)]"
+                  className="flex items-center gap-ds-02b rounded-[var(--radius-lg)] px-ds-03 py-ds-02b transition-colors hover:bg-[var(--color-layer-02)]"
                 >
                   <span className="B1-Reg text-[var(--color-text-primary)]">
                     {selectedAgent?.name}

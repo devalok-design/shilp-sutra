@@ -100,11 +100,11 @@ function AttendanceStatus({
     : null
 
   return (
-    <div className="flex w-full flex-col items-center justify-center px-[16px] py-[32px] sm:px-4 sm:py-6 md:px-6 md:py-4 md:pr-0">
-      <p className="L3 mb-6 uppercase text-[var(--color-text-tertiary)]">
+    <div className="flex w-full flex-col items-center justify-center px-[16px] py-[32px] sm:px-ds-05 sm:py-ds-06 md:px-ds-06 md:py-ds-05 md:pr-0">
+      <p className="L3 mb-ds-06 uppercase text-[var(--color-text-tertiary)]">
         Attendance status
       </p>
-      <div className="mb-3 flex w-full items-center justify-center gap-2 rounded-3xl border border-[var(--color-border-subtle)] px-4 py-3.5 text-center">
+      <div className="mb-ds-04 flex w-full items-center justify-center gap-ds-03 rounded-3xl border border-[var(--color-border-subtle)] px-ds-05 py-3.5 text-center">
         <span className="font-semibold text-[var(--color-interactive)]">
           {formattedStatus}
         </span>
@@ -161,10 +161,10 @@ function AttendanceEditDialog({
         </div>
       </DialogHeader>
       <div className="flex flex-col items-center justify-start">
-        <div className="T7-Reg mb-4 text-[var(--color-interactive)]">
+        <div className="T7-Reg mb-ds-05 text-[var(--color-interactive)]">
           {format(new Date(selectedDate), "dd MMMM ''yy")}
         </div>
-        <div className="mb-3 flex w-full items-center justify-center gap-2 rounded-3xl border border-[var(--color-border-subtle)] px-4 py-3.5 text-center font-semibold text-[var(--color-interactive)]">
+        <div className="mb-ds-04 flex w-full items-center justify-center gap-ds-03 rounded-3xl border border-[var(--color-border-subtle)] px-ds-05 py-3.5 text-center font-semibold text-[var(--color-interactive)]">
           {selectedUserAttendance?.status === 'PRESENT'
             ? 'PRESENT '
             : 'ABSENT'}
@@ -291,13 +291,13 @@ export function AssociateDetail({
             new Date(selectedDate),
             fnsStartOfDay(new Date()),
           )) ? (
-        <div className="flex w-full flex-col items-center justify-center p-6">
-          <p className="L3 mb-4 uppercase text-[var(--color-text-tertiary)]">
+        <div className="flex w-full flex-col items-center justify-center p-ds-06">
+          <p className="L3 mb-ds-05 uppercase text-[var(--color-text-tertiary)]">
             COMMENT
           </p>
-          <div className="flex w-full items-center justify-between rounded-[8px] border border-[var(--color-border-default)] bg-[var(--color-layer-01)] px-4 max-md:h-[48px]">
+          <div className="flex w-full items-center justify-between rounded-[8px] border border-[var(--color-border-default)] bg-[var(--color-layer-01)] px-ds-05 max-md:h-[48px]">
             <input
-              className="B2-Reg flex-1 border-none py-2 text-[var(--color-text-primary)] outline-none"
+              className="B2-Reg flex-1 border-none py-ds-03 text-[var(--color-text-primary)] outline-none"
               defaultValue="Don't miss next time :)"
             />
             <IconButton
@@ -317,13 +317,13 @@ export function AssociateDetail({
         </div>
       ) : (
         <div className="mb-auto flex w-full flex-col md:pr-[24px]">
-          <p className="L3 mb-[24px] uppercase text-[var(--color-interactive)]">
+          <p className="L3 mb-ds-06 uppercase text-[var(--color-interactive)]">
             Tasks for the day
           </p>
 
           {userTasks && (
             <>
-              <div className="no-scrollbar mb-[8px] flex max-h-[250px] flex-col gap-2 overflow-y-auto">
+              <div className="no-scrollbar mb-[8px] flex max-h-[250px] flex-col gap-ds-03 overflow-y-auto">
                 {userTasks.map((task, idx) => (
                   <div
                     key={task.id}
@@ -368,7 +368,7 @@ export function AssociateDetail({
                       )}
                     </div>
                     <p
-                      className={`P7 flex-1 overflow-hidden hyphens-auto break-all pr-4 ${
+                      className={`P7 flex-1 overflow-hidden hyphens-auto break-all pr-ds-05 ${
                         task.status === 'COMPLETED'
                           ? 'text-[var(--color-text-disabled)] line-through'
                           : 'text-[var(--color-text-secondary)]'
@@ -382,7 +382,7 @@ export function AssociateDetail({
               </div>
               {isSameDay(new Date(selectedDate), new Date()) && (
                 <form
-                  className="flex items-center gap-[5px] pb-4"
+                  className="flex items-center gap-[5px] pb-ds-05"
                   onSubmit={handleAddTask}
                 >
                   <div className="w-[24px]"></div>

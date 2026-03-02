@@ -66,17 +66,17 @@ const MemberPicker = React.forwardRef<HTMLDivElement, MemberPickerProps>(
           align="start"
           sideOffset={4}
         >
-          <div className="flex items-center gap-2 border-b border-[var(--color-border-default)] px-3 py-2">
+          <div className="flex items-center gap-ds-03 border-b border-[var(--color-border-default)] px-ds-04 py-ds-03">
             <IconSearch className="h-[var(--icon-sm)] w-[var(--icon-sm)] shrink-0 text-[var(--color-text-placeholder)]" stroke={1.5} />
             <input
               type="text"
               placeholder={placeholder}
               value={search}
               onChange={(e) => setSearch(e.target.value)}
-              className="w-full bg-transparent text-[13px] font-body text-[var(--color-text-primary)] placeholder:text-[var(--color-text-placeholder)] outline-none"
+              className="w-full bg-transparent B2-Reg font-body text-[var(--color-text-primary)] placeholder:text-[var(--color-text-placeholder)] outline-none"
             />
           </div>
-          <div className="max-h-[200px] overflow-y-auto py-1">
+          <div className="max-h-[200px] overflow-y-auto py-ds-02">
             {filtered.map((member) => {
               const isSelected = selectedIds.includes(member.id)
               return (
@@ -88,7 +88,7 @@ const MemberPicker = React.forwardRef<HTMLDivElement, MemberPickerProps>(
                     if (!multiple) setOpen(false)
                   }}
                   className={cn(
-                    'flex w-full items-center gap-2.5 px-3 py-1.5 text-left transition-colors',
+                    'flex w-full items-center gap-2.5 px-ds-04 py-ds-02b text-left transition-colors',
                     'hover:bg-[var(--color-field)]',
                     isSelected && 'bg-[var(--color-field)]',
                   )}
@@ -101,7 +101,7 @@ const MemberPicker = React.forwardRef<HTMLDivElement, MemberPickerProps>(
                       {getInitials(member.name)}
                     </AvatarFallback>
                   </Avatar>
-                  <span className="flex-1 truncate text-[13px] font-body text-[var(--color-text-primary)]">
+                  <span className="flex-1 truncate B2-Reg font-body text-[var(--color-text-primary)]">
                     {member.name}
                   </span>
                   {isSelected && (
@@ -111,7 +111,7 @@ const MemberPicker = React.forwardRef<HTMLDivElement, MemberPickerProps>(
               )
             })}
             {filtered.length === 0 && (
-              <p className="px-3 py-4 text-center text-[12px] font-body text-[var(--color-text-placeholder)]">
+              <p className="px-ds-04 py-ds-05 text-center B3-Reg font-body text-[var(--color-text-placeholder)]">
                 No members found
               </p>
             )}

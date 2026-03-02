@@ -143,8 +143,8 @@ export default function NotificationPreferences({
   return (
     <>
       <Card className={className}>
-        <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-3">
-          <CardTitle className="text-sm font-semibold">
+        <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-ds-04">
+          <CardTitle className="B2-Semibold">
             Notification Preferences
           </CardTitle>
           <Button
@@ -152,18 +152,18 @@ export default function NotificationPreferences({
             variant="secondary"
             onClick={() => setShowAddDialog(true)}
           >
-            <IconPlus className="mr-1.5 h-[var(--icon-sm)] w-[var(--icon-sm)]" />
+            <IconPlus className="mr-ds-02b h-[var(--icon-sm)] w-[var(--icon-sm)]" />
             Add Rule
           </Button>
         </CardHeader>
         <CardContent>
           {isLoading ? (
-            <div className="flex items-center justify-center py-8">
+            <div className="flex items-center justify-center py-ds-07">
               <div className="h-[var(--icon-md)] w-[var(--icon-md)] animate-spin rounded-[var(--radius-full)] border-2 border-[var(--color-border-default)] border-t-[var(--color-interactive)]" />
             </div>
           ) : preferences.length === 0 ? (
-            <div className="py-8 text-center">
-              <p className="text-sm text-[var(--color-text-placeholder)]">
+            <div className="py-ds-07 text-center">
+              <p className="B2-Reg text-[var(--color-text-placeholder)]">
                 No custom preferences set. All notifications are delivered by
                 default.
               </p>
@@ -179,7 +179,7 @@ export default function NotificationPreferences({
                   <div
                     key={pref.id}
                     className={cn(
-                      'flex items-center gap-4 py-3',
+                      'flex items-center gap-ds-05 py-ds-04',
                       i < preferences.length - 1 &&
                         'border-b border-[var(--color-border-default)]',
                     )}
@@ -191,10 +191,10 @@ export default function NotificationPreferences({
 
                     {/* Info */}
                     <div className="min-w-0 flex-1">
-                      <p className="text-sm font-medium text-[var(--color-text-primary)]">
+                      <p className="B2-Reg font-medium text-[var(--color-text-primary)]">
                         {channelInfo.label}
                       </p>
-                      <p className="text-xs text-[var(--color-text-placeholder)]">
+                      <p className="B3-Reg text-[var(--color-text-placeholder)]">
                         {getProjectName(pref.projectId)}
                       </p>
                     </div>
@@ -204,7 +204,7 @@ export default function NotificationPreferences({
                       value={pref.minTier}
                       onValueChange={(v) => onUpdateTier?.(pref, v)}
                     >
-                      <SelectTrigger className="h-7 w-[130px] text-xs">
+                      <SelectTrigger className="h-7 w-[130px] B3-Reg">
                         <SelectValue />
                       </SelectTrigger>
                       <SelectContent>
@@ -217,8 +217,8 @@ export default function NotificationPreferences({
                     </Select>
 
                     {/* Muted toggle */}
-                    <div className="flex items-center gap-1.5">
-                      <span className="text-xs text-[var(--color-text-placeholder)]">
+                    <div className="flex items-center gap-ds-02b">
+                      <span className="B3-Reg text-[var(--color-text-placeholder)]">
                         {pref.muted ? 'Muted' : 'Active'}
                       </span>
                       <Switch
@@ -231,7 +231,7 @@ export default function NotificationPreferences({
                     <button
                       type="button"
                       onClick={() => onDelete?.(pref.id)}
-                      className="shrink-0 rounded p-1.5 text-[var(--color-text-placeholder)] transition-colors hover:bg-[var(--color-layer-02)] hover:text-[var(--color-error)]"
+                      className="shrink-0 rounded p-ds-02b text-[var(--color-text-placeholder)] transition-colors hover:bg-[var(--color-layer-02)] hover:text-[var(--color-error)]"
                     >
                       <IconTrash className="h-[var(--icon-sm)] w-[var(--icon-sm)]" />
                     </button>
@@ -253,9 +253,9 @@ export default function NotificationPreferences({
               and project.
             </DialogDescription>
           </DialogHeader>
-          <div className="flex flex-col gap-4 pt-2">
-            <div className="flex flex-col gap-1.5">
-              <label className="text-xs font-medium text-[var(--color-text-secondary)]">
+          <div className="flex flex-col gap-ds-05 pt-ds-03">
+            <div className="flex flex-col gap-ds-02b">
+              <label className="B3-Reg font-medium text-[var(--color-text-secondary)]">
                 Scope
               </label>
               <Select value={newProjectId} onValueChange={setNewProjectId}>
@@ -275,8 +275,8 @@ export default function NotificationPreferences({
               </Select>
             </div>
 
-            <div className="flex flex-col gap-1.5">
-              <label className="text-xs font-medium text-[var(--color-text-secondary)]">
+            <div className="flex flex-col gap-ds-02b">
+              <label className="B3-Reg font-medium text-[var(--color-text-secondary)]">
                 Channel
               </label>
               <Select value={newChannel} onValueChange={setNewChannel}>
@@ -290,8 +290,8 @@ export default function NotificationPreferences({
               </Select>
             </div>
 
-            <div className="flex flex-col gap-1.5">
-              <label className="text-xs font-medium text-[var(--color-text-secondary)]">
+            <div className="flex flex-col gap-ds-02b">
+              <label className="B3-Reg font-medium text-[var(--color-text-secondary)]">
                 Minimum Tier
               </label>
               <Select value={newMinTier} onValueChange={setNewMinTier}>
@@ -309,13 +309,13 @@ export default function NotificationPreferences({
             </div>
 
             <div className="flex items-center justify-between">
-              <label className="text-sm text-[var(--color-text-primary)]">
+              <label className="B2-Reg text-[var(--color-text-primary)]">
                 Mute this channel
               </label>
               <Switch checked={newMuted} onCheckedChange={setNewMuted} />
             </div>
 
-            <div className="flex justify-end gap-2 pt-2">
+            <div className="flex justify-end gap-ds-03 pt-ds-03">
               <Button
                 variant="ghost"
                 onClick={() => {

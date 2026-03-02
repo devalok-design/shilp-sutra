@@ -8,10 +8,10 @@ import { useRipple } from './use-ripple'
 /* ── CVA for the item button ────────────────────────────────── */
 const segmentedControlItemVariants = cva(
   [
-    'inline-flex items-center gap-2 rounded-[88px] border-none outline-none cursor-pointer',
+    'inline-flex items-center gap-ds-03 rounded-[88px] border-none outline-none cursor-pointer',
     'transition-[color,background-color,border-color,box-shadow] duration-[var(--duration-moderate)] ease-in-out',
     'relative overflow-hidden',
-    'font-accent text-sm font-semibold leading-none text-center',
+    'font-accent B2-Semibold leading-none text-center',
     'bg-[var(--color-layer-01)]',
     'text-[var(--color-text-tertiary)]',
     'first:rounded-tr-none first:rounded-br-none',
@@ -20,9 +20,9 @@ const segmentedControlItemVariants = cva(
   {
     variants: {
       size: {
-        small: 'h-9 px-4 py-2',
-        medium: 'px-[10px] py-2 pl-3',
-        big: 'h-14 px-6 py-4',
+        small: 'h-9 px-ds-05 py-ds-03',
+        medium: 'px-[10px] py-ds-03 pl-ds-04',
+        big: 'h-14 px-ds-06 py-ds-05',
       },
       color: {
         filled: "text-[var(--color-text-on-color)] [text-shadow:0px_1px_1px_rgba(0,0,0,0.15)]",
@@ -98,7 +98,7 @@ const segmentedControlItemVariants = cva(
       // Medium size last-child padding flip
       {
         size: 'medium',
-        className: 'last:pl-[10px] last:pr-3',
+        className: 'last:pl-[10px] last:pr-ds-04',
       },
     ],
     defaultVariants: {
@@ -317,7 +317,7 @@ const SegmentedControlItem: React.FC<SegmentedControlItemProps> = ({
           }}
         />
       ))}
-      <span className="font-accent text-sm font-normal leading-none tracking-[-0.28px]">{text}</span>
+      <span className="font-accent B8-Reg leading-none">{text}</span>
     </button>
   )
 }

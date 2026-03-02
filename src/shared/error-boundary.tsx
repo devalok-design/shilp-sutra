@@ -106,9 +106,9 @@ function ErrorDisplay({ error, onReset }: ErrorDisplayProps) {
   const Icon = errorConfig.icon
 
   return (
-    <div className="flex min-h-[60vh] items-center justify-center p-4">
+    <div className="flex min-h-[60vh] items-center justify-center p-ds-05">
       <div
-        className="flex w-full max-w-lg flex-col items-center gap-6 rounded-[var(--radius-xl)] border border-[var(--color-border-default)] bg-[var(--color-layer-01)] p-8 text-center shadow-01"
+        className="flex w-full max-w-lg flex-col items-center gap-ds-06 rounded-[var(--radius-xl)] border border-[var(--color-border-default)] bg-[var(--color-layer-01)] p-ds-07 text-center shadow-01"
       >
         {/* Error Icon */}
         <div
@@ -123,7 +123,7 @@ function ErrorDisplay({ error, onReset }: ErrorDisplayProps) {
         </div>
 
         {/* Error IconInfoCircle */}
-        <div className="flex flex-col gap-2">
+        <div className="flex flex-col gap-ds-03">
           {status && (
             <span className="B3-Reg text-[var(--color-text-placeholder)]">
               Error {status}
@@ -139,7 +139,7 @@ function ErrorDisplay({ error, onReset }: ErrorDisplayProps) {
 
         {/* Actions */}
         {onReset && (
-          <div className="flex items-center gap-3">
+          <div className="flex items-center gap-ds-04">
             <Button
               variant="secondary"
               size="md"
@@ -152,11 +152,11 @@ function ErrorDisplay({ error, onReset }: ErrorDisplayProps) {
 
         {/* Dev stack trace */}
         {isDev && stack && (
-          <div className="w-full overflow-auto rounded-[var(--radius-lg)] border border-[var(--color-border-default)] bg-[var(--color-layer-02)] p-4 text-left">
-            <p className="B3-Reg mb-2 font-semibold text-[var(--color-text-primary)]">
+          <div className="w-full overflow-auto rounded-[var(--radius-lg)] border border-[var(--color-border-default)] bg-[var(--color-layer-02)] p-ds-05 text-left">
+            <p className="B3-Reg mb-ds-03 font-semibold text-[var(--color-text-primary)]">
               Stack Trace (development only)
             </p>
-            <pre className="whitespace-pre-wrap text-xs text-[var(--color-text-tertiary)]">
+            <pre className="whitespace-pre-wrap B3-Reg text-[var(--color-text-tertiary)]">
               {stack}
             </pre>
           </div>

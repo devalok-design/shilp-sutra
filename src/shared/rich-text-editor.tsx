@@ -55,7 +55,7 @@ function ToolbarButton({
 
 function Toolbar({ editor }: { editor: Editor }) {
   return (
-    <div className="flex flex-wrap items-center gap-0.5 border-b border-[var(--color-border-default)] px-3 py-1.5">
+    <div className="flex flex-wrap items-center gap-0.5 border-b border-[var(--color-border-default)] px-ds-04 py-ds-02b">
       <ToolbarButton
         onClick={() => editor.chain().focus().toggleBold().run()}
         isActive={editor.isActive('bold')}
@@ -80,7 +80,7 @@ function Toolbar({ editor }: { editor: Editor }) {
         <IconStrikethrough className="h-[var(--icon-sm)] w-[var(--icon-sm)]" stroke={2.5} />
       </ToolbarButton>
 
-      <div className="mx-1 h-4 w-px bg-[var(--color-border-default)]" />
+      <div className="mx-ds-02 h-4 w-px bg-[var(--color-border-default)]" />
 
       <ToolbarButton
         onClick={() =>
@@ -102,7 +102,7 @@ function Toolbar({ editor }: { editor: Editor }) {
         <IconH3 className="h-[var(--icon-sm)] w-[var(--icon-sm)]" stroke={2.5} />
       </ToolbarButton>
 
-      <div className="mx-1 h-4 w-px bg-[var(--color-border-default)]" />
+      <div className="mx-ds-02 h-4 w-px bg-[var(--color-border-default)]" />
 
       <ToolbarButton
         onClick={() => editor.chain().focus().toggleBulletList().run()}
@@ -128,7 +128,7 @@ function Toolbar({ editor }: { editor: Editor }) {
         <IconCode className="h-[var(--icon-sm)] w-[var(--icon-sm)]" stroke={2.5} />
       </ToolbarButton>
 
-      <div className="mx-1 h-4 w-px bg-[var(--color-border-default)]" />
+      <div className="mx-ds-02 h-4 w-px bg-[var(--color-border-default)]" />
 
       <ToolbarButton
         onClick={() => editor.chain().focus().undo().run()}
@@ -181,15 +181,15 @@ function RichTextEditor({
       attributes: {
         class: cn(
           'prose prose-sm max-w-none focus:outline-none',
-          'min-h-[120px] px-3 py-3',
-          'font-body text-[14px] leading-relaxed text-[var(--color-text-primary)]',
-          '[&_h2]:T6-Reg [&_h2]:mb-2 [&_h2]:mt-4 [&_h2]:text-[var(--color-text-primary)]',
-          '[&_h3]:B1-Reg [&_h3]:semibold [&_h3]:mb-1.5 [&_h3]:mt-3 [&_h3]:text-[var(--color-text-primary)]',
-          '[&_p]:mb-1.5 [&_p]:text-[var(--color-text-secondary)]',
-          '[&_ul]:ml-4 [&_ul]:list-disc [&_ol]:ml-4 [&_ol]:list-decimal',
+          'min-h-[120px] px-ds-04 py-ds-04',
+          'font-body B2-Reg leading-relaxed text-[var(--color-text-primary)]',
+          '[&_h2]:T6-Reg [&_h2]:mb-ds-03 [&_h2]:mt-ds-05 [&_h2]:text-[var(--color-text-primary)]',
+          '[&_h3]:B1-Reg [&_h3]:semibold [&_h3]:mb-ds-02b [&_h3]:mt-ds-04 [&_h3]:text-[var(--color-text-primary)]',
+          '[&_p]:mb-ds-02b [&_p]:text-[var(--color-text-secondary)]',
+          '[&_ul]:ml-ds-05 [&_ul]:list-disc [&_ol]:ml-ds-05 [&_ol]:list-decimal',
           '[&_li]:text-[var(--color-text-secondary)]',
-          '[&_code]:rounded [&_code]:bg-[var(--color-layer-02)] [&_code]:px-1.5 [&_code]:py-0.5 [&_code]:text-[13px] [&_code]:text-[var(--color-interactive)]',
-          '[&_pre]:rounded-[var(--radius-lg)] [&_pre]:bg-[var(--color-layer-02)] [&_pre]:p-3',
+          '[&_code]:rounded [&_code]:bg-[var(--color-layer-02)] [&_code]:px-ds-02b [&_code]:py-0.5 [&_code]:B2-Reg [&_code]:text-[var(--color-interactive)]',
+          '[&_pre]:rounded-[var(--radius-lg)] [&_pre]:bg-[var(--color-layer-02)] [&_pre]:p-ds-04',
           '[&_strong]:font-semibold [&_strong]:text-[var(--color-text-primary)]',
         ),
       },
@@ -235,14 +235,14 @@ function RichTextViewer({ content, className }: RichTextViewerProps) {
       attributes: {
         class: cn(
           'prose prose-sm max-w-none',
-          'font-body text-[14px] leading-relaxed text-[var(--color-text-primary)]',
-          '[&_h2]:T6-Reg [&_h2]:mb-2 [&_h2]:mt-4 [&_h2]:text-[var(--color-text-primary)]',
-          '[&_h3]:B1-Reg [&_h3]:semibold [&_h3]:mb-1.5 [&_h3]:mt-3 [&_h3]:text-[var(--color-text-primary)]',
-          '[&_p]:mb-1.5 [&_p]:text-[var(--color-text-secondary)]',
-          '[&_ul]:ml-4 [&_ul]:list-disc [&_ol]:ml-4 [&_ol]:list-decimal',
+          'font-body B2-Reg leading-relaxed text-[var(--color-text-primary)]',
+          '[&_h2]:T6-Reg [&_h2]:mb-ds-03 [&_h2]:mt-ds-05 [&_h2]:text-[var(--color-text-primary)]',
+          '[&_h3]:B1-Reg [&_h3]:semibold [&_h3]:mb-ds-02b [&_h3]:mt-ds-04 [&_h3]:text-[var(--color-text-primary)]',
+          '[&_p]:mb-ds-02b [&_p]:text-[var(--color-text-secondary)]',
+          '[&_ul]:ml-ds-05 [&_ul]:list-disc [&_ol]:ml-ds-05 [&_ol]:list-decimal',
           '[&_li]:text-[var(--color-text-secondary)]',
-          '[&_code]:rounded [&_code]:bg-[var(--color-layer-02)] [&_code]:px-1.5 [&_code]:py-0.5 [&_code]:text-[13px] [&_code]:text-[var(--color-interactive)]',
-          '[&_pre]:rounded-[var(--radius-lg)] [&_pre]:bg-[var(--color-layer-02)] [&_pre]:p-3',
+          '[&_code]:rounded [&_code]:bg-[var(--color-layer-02)] [&_code]:px-ds-02b [&_code]:py-0.5 [&_code]:B2-Reg [&_code]:text-[var(--color-interactive)]',
+          '[&_pre]:rounded-[var(--radius-lg)] [&_pre]:bg-[var(--color-layer-02)] [&_pre]:p-ds-04',
           '[&_strong]:font-semibold [&_strong]:text-[var(--color-text-primary)]',
         ),
       },

@@ -62,14 +62,14 @@ export function DashboardHeader({
   onDateChange,
 }: DashboardHeaderProps) {
   return (
-    <div className="mb-6 flex w-full flex-col items-start justify-between md:flex-row md:items-center">
-      <div className="flex w-full items-center justify-between gap-4 md:w-auto md:justify-start">
+    <div className="mb-ds-06 flex w-full flex-col items-start justify-between md:flex-row md:items-center">
+      <div className="flex w-full items-center justify-between gap-ds-05 md:w-auto md:justify-start">
         <DropdownMenu>
-          <DropdownMenuTrigger className="T6-Reg flex items-center gap-2 text-[var(--color-text-secondary)]">
+          <DropdownMenuTrigger className="T6-Reg flex items-center gap-ds-03 text-[var(--color-text-secondary)]">
             {selectedMonth}
             <FilledArrowIcon />
           </DropdownMenuTrigger>
-          <DropdownMenuContent className="custom-scrollbar absolute ml-10 max-h-[300px] overflow-y-auto rounded-[7px] border border-0 border-[var(--color-border-default)] p-0 shadow-brand">
+          <DropdownMenuContent className="custom-scrollbar absolute ml-ds-08 max-h-[300px] overflow-y-auto rounded-[7px] border border-0 border-[var(--color-border-default)] p-0 shadow-brand">
             {yearsList.map((year, index) => (
               <DropdownMenuItem
                 key={year}
@@ -79,7 +79,7 @@ export function DashboardHeader({
                 className={`p-0 ${index !== yearsList.length - 1 ? 'border-b border-b-[var(--color-border-default)]' : ''}`}
               >
                 <span
-                  className={`w-full py-3 pl-4 pr-6 ${selectedMonth === year ? 'B2-Semibold bg-[var(--color-interactive)] font-semibold text-[var(--color-text-on-color)]' : 'B2-Reg text-[var(--color-text-secondary)] hover:bg-[var(--color-layer-02)]'} ${index === 0 ? 'rounded-t-[7px]' : index === yearsList.length - 1 ? 'rounded-b-[7px]' : ''} `}
+                  className={`w-full py-ds-04 pl-ds-05 pr-ds-06 ${selectedMonth === year ? 'B2-Semibold bg-[var(--color-interactive)] text-[var(--color-text-on-color)]' : 'B2-Reg text-[var(--color-text-secondary)] hover:bg-[var(--color-layer-02)]'} ${index === 0 ? 'rounded-t-[7px]' : index === yearsList.length - 1 ? 'rounded-b-[7px]' : ''} `}
                 >
                   {year.split(' ')[1]}
                 </span>
@@ -95,7 +95,7 @@ export function DashboardHeader({
           />
         )}
       </div>
-      <div className="flex w-full items-center justify-between gap-4 md:mt-0 md:w-auto md:justify-start max-md:mt-[17px] max-lg:gap-[0.5rem]">
+      <div className="flex w-full items-center justify-between gap-ds-05 md:mt-0 md:w-auto md:justify-start max-md:mt-[17px] max-lg:gap-[0.5rem]">
         <div className="hidden md:flex">
           {selectedAssociate ? (
             <div className="B2-Reg flex-direction-row flex items-center justify-start rounded-[6px] bg-[var(--color-interactive)] px-[8px] py-[6px] text-[var(--color-text-on-color)]">
@@ -127,16 +127,16 @@ export function DashboardHeader({
             </div>
           ) : (
             <DropdownMenu>
-              <DropdownMenuTrigger className="B2-Reg flex-direction-row hidden items-center justify-between rounded-[6px] border border-[var(--color-border-subtle)] bg-[var(--color-layer-01)] px-2 py-1.5 md:flex">
+              <DropdownMenuTrigger className="B2-Reg flex-direction-row hidden items-center justify-between rounded-[6px] border border-[var(--color-border-subtle)] bg-[var(--color-layer-01)] px-ds-03 py-ds-02b md:flex">
                 <div className="flex items-center">
                   <PersonIcon className="h-[var(--icon-md)] w-[var(--icon-md)]" />
-                  <span className="B2-Reg ml-[2px] mr-[4px] text-[var(--color-text-secondary)] max-lg:mx-0 max-lg:text-[12px]">
+                  <span className="B2-Reg ml-[2px] mr-[4px] text-[var(--color-text-secondary)] max-lg:mx-0 max-lg:B3-Reg">
                     Associate
                   </span>
                 </div>
                 <ArrowDropdownIcon className="h-[var(--icon-sm)] w-[var(--icon-sm)]" />
               </DropdownMenuTrigger>
-              <DropdownMenuContent className="custom-scrollbar max-h-[400px] w-64 overflow-y-auto p-2">
+              <DropdownMenuContent className="custom-scrollbar max-h-[400px] w-64 overflow-y-auto p-ds-03">
                 {users?.length === 0 ? (
                   <DropdownMenuItem disabled>
                     No users available
@@ -152,7 +152,7 @@ export function DashboardHeader({
                         }
                         onSelectAssociate(selectedUser)
                       }}
-                      className="flex items-center gap-2 p-2"
+                      className="flex items-center gap-ds-03 p-ds-03"
                     >
                       {userImages[user.id] ? (
                         <img
@@ -162,7 +162,7 @@ export function DashboardHeader({
                         />
                       ) : (
                         <div className="flex h-6 w-6 items-center justify-center rounded-[var(--radius-full)] bg-[var(--color-layer-03)]">
-                          <span className="text-sm text-[var(--color-interactive)]">
+                          <span className="B2-Reg text-[var(--color-interactive)]">
                             {user.name.charAt(0)}
                           </span>
                         </div>

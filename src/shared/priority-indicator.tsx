@@ -42,7 +42,7 @@ const priorityConfig: Record<
 }
 
 const priorityVariants = cva(
-  'inline-flex items-center gap-1.5 font-body',
+  'inline-flex items-center gap-ds-02b font-body',
   {
     variants: {
       display: {
@@ -72,7 +72,7 @@ const PriorityIndicator = React.forwardRef<HTMLDivElement, PriorityIndicatorProp
         <div
           ref={ref}
           className={cn(
-            'inline-flex items-center justify-center rounded-[var(--radius-md)] p-1',
+            'inline-flex items-center justify-center rounded-[var(--radius-md)] p-ds-02',
             config.bgColor,
             className,
           )}

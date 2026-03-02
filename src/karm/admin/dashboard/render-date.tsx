@@ -151,7 +151,7 @@ export function RenderDate({
 
   // ── Outer wrapper classes (replaces getBGStyles) ──
   const bgClasses = cn(
-    'flex w-full items-center justify-center p-1',
+    'flex w-full items-center justify-center p-ds-02',
     isBreakStartOnly && 'rounded-l-[20px]',
     isBreakEndOnly && 'rounded-r-[20px]',
     isBreakMidNonWeekly && 'bg-[var(--color-interactive-subtle)]',
@@ -162,7 +162,7 @@ export function RenderDate({
   // tailwind-merge ensures the last conflicting class wins.
   const dateClasses = cn(
     // Base layout & transitions
-    'flex h-10 w-10 items-center justify-center rounded-full text-base font-normal relative overflow-hidden',
+    'flex h-10 w-10 items-center justify-center rounded-full B1-Reg relative overflow-hidden',
     'transition-[background-color,color,border] duration-200',
     'outline-[var(--color-border-strong)] outline-solid outline-0',
 

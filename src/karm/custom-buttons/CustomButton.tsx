@@ -45,8 +45,8 @@ const focusedClasses: Record<ButtonVariant, string> = {
     'bg-[var(--color-interactive)]',
     'shadow-[0px_1px_3px_0.05px_rgba(24,24,27,0.24),inset_0px_8px_16px_0px_rgba(255,255,255,0.16),inset_0px_2px_0px_0px_rgba(255,255,255,0.1)]',
   ].join(' '),
-  tonal: 'bg-[var(--color-layer-02,#fcf7f7)] shadow-none',
-  outline: 'border border-solid border-[var(--color-border-strong,#dd9eb8)]',
+  tonal: 'bg-[var(--color-layer-02)] shadow-none',
+  outline: 'border border-solid border-[var(--color-border-strong)]',
   text: '',
 }
 
@@ -55,19 +55,19 @@ const hoverClasses: Record<ButtonVariant, string> = {
   filled: [
     'border border-solid border-[var(--color-interactive)]',
     'bg-[var(--color-interactive)]',
-    'shadow-[0px_4px_8px_0px_var(--shadow-button-hover,#efd5d9),0px_1px_3px_0.05px_var(--color-layer-02,#fff),inset_0px_8px_16px_0px_rgba(255,255,255,0.16),inset_0px_2px_0px_0px_rgba(255,255,255,0.1)]',
+    'shadow-[0px_4px_8px_0px_var(--color-interactive-hover),0px_1px_3px_0.05px_var(--color-layer-02),inset_0px_8px_16px_0px_rgba(255,255,255,0.16),inset_0px_2px_0px_0px_rgba(255,255,255,0.1)]',
   ].join(' '),
-  tonal: 'bg-[var(--color-field,#f7e9e9)] text-[var(--color-text-primary,#3f181e)]',
-  outline: 'border border-solid border-[var(--color-border-strong,#dd9eb8)] bg-[var(--color-layer-02,#fff)] text-[var(--color-text-primary,#3f181e)]',
-  text: 'text-[var(--color-text-primary,#3f181e)]',
+  tonal: 'bg-[var(--color-field)] text-[var(--color-text-primary)]',
+  outline: 'border border-solid border-[var(--color-border-strong)] bg-[var(--color-layer-02)] text-[var(--color-text-primary)]',
+  text: 'text-[var(--color-text-primary)]',
 }
 
 /* ── disabled state per variant ───────────────────────────── */
 const disabledClasses: Record<ButtonVariant, string> = {
-  filled: 'bg-[var(--color-field-disabled,#d3ced0)] text-[var(--color-text-placeholder,#8c8084)]',
-  tonal: 'bg-[var(--color-field-disabled,#d3ced0)] text-[var(--color-text-placeholder,#8c8084)]',
-  outline: 'border border-solid border-[var(--color-text-disabled,#b7afb2)] text-[var(--color-text-placeholder,#8c8084)]',
-  text: 'text-[var(--color-text-placeholder,#8c8084)]',
+  filled: 'bg-[var(--color-interactive-disabled)] text-[var(--color-text-placeholder)]',
+  tonal: 'bg-[var(--color-interactive-disabled)] text-[var(--color-text-placeholder)]',
+  outline: 'border border-solid border-[var(--color-text-disabled)] text-[var(--color-text-placeholder)]',
+  text: 'text-[var(--color-text-placeholder)]',
 }
 
 /* ── ripple bg per variant ────────────────────────────────── */

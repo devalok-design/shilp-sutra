@@ -206,6 +206,8 @@ const preset: Partial<Config> = {
         moderate: 'var(--duration-moderate)',
         slow: 'var(--duration-slow)',
         medium: 'var(--duration-medium)',
+        enter: 'var(--duration-enter)',
+        exit: 'var(--duration-exit)',
         deliberate: 'var(--duration-deliberate)',
       },
       transitionTimingFunction: {

@@ -16,8 +16,8 @@ import {
   DialogHeader,
   DialogTrigger,
 } from '../../../ui/dialog'
-import { CustomButton } from '../../custom-buttons/CustomButton'
-import { IconButton } from '../../custom-buttons/icon-button'
+import { Button } from '../../../ui/button'
+import { IconButton } from '../../../ui/icon-button'
 import {
   EditIcon,
   SendIcon,
@@ -172,10 +172,9 @@ function AttendanceEditDialog({
       </div>
       <DialogFooter className="sm:justify-start">
         <DialogClose asChild>
-          <CustomButton
-            className="w-full"
-            type="filled"
-            text={`Mark as ${selectedUserAttendance?.status === 'PRESENT' ? 'absent' : 'present'}`}
+          <Button
+            variant="primary"
+            fullWidth
             onClick={() => {
               const isPresent = selectedUserAttendance?.status !== 'PRESENT'
               onUpdateAttendanceStatus?.({
@@ -184,7 +183,9 @@ function AttendanceEditDialog({
                 isPresent,
               })
             }}
-          />
+          >
+            {`Mark as ${selectedUserAttendance?.status === 'PRESENT' ? 'absent' : 'present'}`}
+          </Button>
         </DialogClose>
       </DialogFooter>
     </DialogContent>
@@ -247,7 +248,8 @@ export function AssociateDetail({
           <DialogTrigger asChild>
             <IconButton
               icon={<EditIcon />}
-              size="small"
+              size="sm"
+              aria-label="Edit"
               className="absolute right-2 top-2"
             />
           </DialogTrigger>
@@ -302,7 +304,8 @@ export function AssociateDetail({
             />
             <IconButton
               icon={<SendIcon />}
-              size="small"
+              size="sm"
+              aria-label="Update status"
               onClick={() => {
                 const isPresent =
                   selectedUserAttendance?.status !== 'PRESENT'

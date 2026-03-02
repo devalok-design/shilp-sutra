@@ -152,18 +152,18 @@ export default function NotificationPreferences({
             variant="secondary"
             onClick={() => setShowAddDialog(true)}
           >
-            <IconPlus className="mr-ds-02b h-[var(--icon-sm)] w-[var(--icon-sm)]" />
+            <IconPlus className="mr-ds-02b h-ico-sm w-ico-sm" />
             Add Rule
           </Button>
         </CardHeader>
         <CardContent>
           {isLoading ? (
             <div className="flex items-center justify-center py-ds-07">
-              <div className="h-[var(--icon-md)] w-[var(--icon-md)] animate-spin rounded-[var(--radius-full)] border-2 border-[var(--color-border-default)] border-t-[var(--color-interactive)]" />
+              <div className="h-ico-md w-ico-md animate-spin rounded-ds-full border-2 border-border border-t-interactive" />
             </div>
           ) : preferences.length === 0 ? (
             <div className="py-ds-07 text-center">
-              <p className="text-ds-md text-[var(--color-text-placeholder)]">
+              <p className="text-ds-md text-text-placeholder">
                 No custom preferences set. All notifications are delivered by
                 default.
               </p>
@@ -181,20 +181,20 @@ export default function NotificationPreferences({
                     className={cn(
                       'flex items-center gap-ds-05 py-ds-04',
                       i < preferences.length - 1 &&
-                        'border-b border-[var(--color-border-default)]',
+                        'border-b border-border',
                     )}
                   >
                     {/* Channel icon */}
-                    <div className="flex h-8 w-8 shrink-0 items-center justify-center rounded-[var(--radius-lg)] bg-[var(--color-layer-02)]">
-                      <ChannelIcon className="h-[var(--icon-sm)] w-[var(--icon-sm)] text-[var(--color-text-secondary)]" />
+                    <div className="flex h-8 w-8 shrink-0 items-center justify-center rounded-ds-lg bg-layer-02">
+                      <ChannelIcon className="h-ico-sm w-ico-sm text-text-secondary" />
                     </div>
 
                     {/* Info */}
                     <div className="min-w-0 flex-1">
-                      <p className="text-ds-md font-medium text-[var(--color-text-primary)]">
+                      <p className="text-ds-md font-medium text-text-primary">
                         {channelInfo.label}
                       </p>
-                      <p className="text-ds-sm text-[var(--color-text-placeholder)]">
+                      <p className="text-ds-sm text-text-placeholder">
                         {getProjectName(pref.projectId)}
                       </p>
                     </div>
@@ -218,7 +218,7 @@ export default function NotificationPreferences({
 
                     {/* Muted toggle */}
                     <div className="flex items-center gap-ds-02b">
-                      <span className="text-ds-sm text-[var(--color-text-placeholder)]">
+                      <span className="text-ds-sm text-text-placeholder">
                         {pref.muted ? 'Muted' : 'Active'}
                       </span>
                       <Switch
@@ -231,9 +231,9 @@ export default function NotificationPreferences({
                     <button
                       type="button"
                       onClick={() => onDelete?.(pref.id)}
-                      className="shrink-0 rounded p-ds-02b text-[var(--color-text-placeholder)] transition-colors hover:bg-[var(--color-layer-02)] hover:text-[var(--color-error)]"
+                      className="shrink-0 rounded p-ds-02b text-text-placeholder transition-colors hover:bg-layer-02 hover:text-error"
                     >
-                      <IconTrash className="h-[var(--icon-sm)] w-[var(--icon-sm)]" />
+                      <IconTrash className="h-ico-sm w-ico-sm" />
                     </button>
                   </div>
                 )
@@ -255,7 +255,7 @@ export default function NotificationPreferences({
           </DialogHeader>
           <div className="flex flex-col gap-ds-05 pt-ds-03">
             <div className="flex flex-col gap-ds-02b">
-              <label className="text-ds-sm font-medium text-[var(--color-text-secondary)]">
+              <label className="text-ds-sm font-medium text-text-secondary">
                 Scope
               </label>
               <Select value={newProjectId} onValueChange={setNewProjectId}>
@@ -276,7 +276,7 @@ export default function NotificationPreferences({
             </div>
 
             <div className="flex flex-col gap-ds-02b">
-              <label className="text-ds-sm font-medium text-[var(--color-text-secondary)]">
+              <label className="text-ds-sm font-medium text-text-secondary">
                 Channel
               </label>
               <Select value={newChannel} onValueChange={setNewChannel}>
@@ -291,7 +291,7 @@ export default function NotificationPreferences({
             </div>
 
             <div className="flex flex-col gap-ds-02b">
-              <label className="text-ds-sm font-medium text-[var(--color-text-secondary)]">
+              <label className="text-ds-sm font-medium text-text-secondary">
                 Minimum Tier
               </label>
               <Select value={newMinTier} onValueChange={setNewMinTier}>
@@ -309,7 +309,7 @@ export default function NotificationPreferences({
             </div>
 
             <div className="flex items-center justify-between">
-              <label className="text-ds-md text-[var(--color-text-primary)]">
+              <label className="text-ds-md text-text-primary">
                 Mute this channel
               </label>
               <Switch checked={newMuted} onCheckedChange={setNewMuted} />

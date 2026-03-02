@@ -78,10 +78,10 @@ function NavLink({ item, isActive }: { item: NavItem; isActive: boolean }) {
         isActive={isActive}
         tooltip={item.title}
         className={cn(
-          'relative gap-ds-04 rounded-[var(--radius-lg)] px-ds-04 py-2.5 transition-colors',
+          'relative gap-ds-04 rounded-ds-lg px-ds-04 py-2.5 transition-colors',
           isActive
-            ? "bg-[var(--color-interactive-subtle)] text-[var(--color-interactive)] after:absolute after:right-0 after:top-0 after:h-full after:w-0.5 after:rounded-l-[var(--radius-full)] after:bg-[var(--color-interactive)] after:content-['']"
-            : 'text-[var(--color-text-helper)] hover:bg-[var(--color-layer-02)] hover:text-[var(--color-text-primary)]',
+            ? "bg-interactive-subtle text-interactive after:absolute after:right-0 after:top-0 after:h-full after:w-0.5 after:rounded-l-ds-full after:bg-interactive after:content-['']"
+            : 'text-text-helper hover:bg-layer-02 hover:text-text-primary',
         )}
       >
         <Link
@@ -89,7 +89,7 @@ function NavLink({ item, isActive }: { item: NavItem; isActive: boolean }) {
           aria-label={item.title}
           aria-current={isActive ? 'page' : undefined}
         >
-          <item.icon className="h-[var(--icon-md)] w-[var(--icon-md)] shrink-0" aria-hidden="true" />
+          <item.icon className="h-ico-md w-ico-md shrink-0" aria-hidden="true" />
           <span className="text-ds-base">{item.title}</span>
         </Link>
       </SidebarMenuButton>
@@ -125,14 +125,14 @@ const AppSidebar = React.forwardRef<HTMLDivElement, AppSidebarProps>(
         ref={ref}
         aria-label="Main navigation"
         className={cn(
-          'z-raised hidden h-full flex-col border-r border-[var(--color-border-default)] bg-[var(--color-layer-01)] md:flex',
+          'z-raised hidden h-full flex-col border-r border-border bg-layer-01 md:flex',
           className,
         )}
       >
         {/* Logo Header */}
         <SidebarHeader className="px-ds-06 py-ds-06">
           {logo ?? (
-            <span className="text-ds-lg font-semibold text-[var(--color-text-primary)]">
+            <span className="text-ds-lg font-semibold text-text-primary">
               Logo
             </span>
           )}
@@ -145,15 +145,15 @@ const AppSidebar = React.forwardRef<HTMLDivElement, AppSidebarProps>(
               {user.image ? (
                 <AvatarImage src={user.image} alt={user.name} />
               ) : null}
-              <AvatarFallback className="bg-[var(--color-layer-03)] text-[var(--color-text-primary)]">
+              <AvatarFallback className="bg-layer-03 text-text-primary">
                 {user.name?.charAt(0).toUpperCase()}
               </AvatarFallback>
             </Avatar>
             <div className="flex min-w-0 flex-col">
-              <span className="truncate text-ds-md text-[var(--color-text-primary)]">
+              <span className="truncate text-ds-md text-text-primary">
                 {user.name}
               </span>
-              <span className="truncate text-ds-sm text-[var(--color-text-placeholder)]">
+              <span className="truncate text-ds-sm text-text-placeholder">
                 {user.designation || user.role}
               </span>
             </div>
@@ -168,7 +168,7 @@ const AppSidebar = React.forwardRef<HTMLDivElement, AppSidebarProps>(
             <div key={group.label}>
               {idx > 0 && <SidebarSeparator />}
               <SidebarGroup>
-                <SidebarGroupLabel className="px-ds-04 text-ds-sm text-[var(--color-text-placeholder)]">
+                <SidebarGroupLabel className="px-ds-04 text-ds-sm text-text-placeholder">
                   {group.label}
                 </SidebarGroupLabel>
                 <SidebarGroupContent>
@@ -194,10 +194,10 @@ const AppSidebar = React.forwardRef<HTMLDivElement, AppSidebarProps>(
               {footerLinks.map((link, i) => (
                 <div key={link.href} className="flex items-center gap-ds-03">
                   {i > 0 && (
-                    <div className="h-4 w-px bg-[var(--color-border-default)]" />
+                    <div className="h-4 w-px bg-border" />
                   )}
                   <Link
-                    className="text-ds-md text-[var(--color-text-placeholder)] transition-colors hover:text-[var(--color-interactive)]"
+                    className="text-ds-md text-text-placeholder transition-colors hover:text-interactive"
                     href={link.href}
                   >
                     {link.label}

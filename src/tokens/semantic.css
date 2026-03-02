@@ -220,6 +220,16 @@
   /* ── Gradients ─────────────────────────────────── */
   --gradient-brand-light:       linear-gradient(135deg, var(--pink-400), var(--purple-500));
   --gradient-brand-dark:        linear-gradient(135deg, var(--pink-600), var(--purple-700));
+
+  /* ── Chart Palette ──────────────────────────────── */
+  --chart-1: var(--pink-500);
+  --chart-2: var(--purple-500);
+  --chart-3: var(--blue-500);
+  --chart-4: var(--green-500);
+  --chart-5: var(--yellow-500);
+  --chart-6: var(--red-500);
+  --chart-7: #06b6d4;
+  --chart-8: #f97316;
 }
 
 .dark {
@@ -346,6 +356,16 @@
   /* ── Gradients ─────────────────────────────────── */
   --gradient-brand-light:       linear-gradient(135deg, var(--pink-500), var(--purple-600));
   --gradient-brand-dark:        linear-gradient(135deg, var(--pink-700), var(--purple-800));
+
+  /* ── Chart Palette (dark) ───────────────────────── */
+  --chart-1: var(--pink-400);
+  --chart-2: var(--purple-400);
+  --chart-3: var(--blue-400);
+  --chart-4: var(--green-400);
+  --chart-5: var(--yellow-400);
+  --chart-6: var(--red-400);
+  --chart-7: #22d3ee;
+  --chart-8: #fb923c;
 }
 
 /* ── Reduced Motion ──────────────────────────────────── */

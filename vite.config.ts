@@ -47,6 +47,7 @@ export default defineConfig({
         /^@tanstack\/.*/,
         /^@tiptap\/.*/,
         /^@dnd-kit\/.*/,
+        /^d3-.*/,
         '@tabler/icons-react',
         'date-fns',
         'react-markdown',

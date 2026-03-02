@@ -8,7 +8,7 @@ const contentCardVariants = cva(
     variants: {
       variant: {
         default:
-          'border border-border bg-layer-01 hover:shadow-02',
+          'border border-border bg-layer-01 shadow-01 hover:shadow-02',
         outline:
           'border border-[var(--border-secondary)] bg-transparent hover:border-[var(--border-tertiary)]',
         ghost:

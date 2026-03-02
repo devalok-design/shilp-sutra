@@ -127,7 +127,7 @@ export function BreakRequestCard({
         {/* Left section - Break information or mobile cancel form */}
         {showMobileCancelForm && isSingleDayBreak ? (
           <div className="flex h-full w-full flex-col items-center justify-center px-[13px] pt-[17px]">
-            <div className="w-full gap-ds-05 rounded-ds-md bg-layer-01 px-ds-06 py-ds-07 md:hidden">
+            <div className="w-full gap-ds-05 rounded-ds-md bg-layer-01 shadow-01 px-ds-06 py-ds-07 md:hidden">
               <div className="flex flex-col items-center gap-[12px]">
                 <div className="text-ds-lg semibold text-center text-text-primary">
                   Cancel this break?
@@ -202,7 +202,7 @@ export function BreakRequestCard({
           <p className="text-ds-sm font-semibold uppercase tracking-wider mb-ds-06  text-text-tertiary max-md:mb-[16px]">
             Break Status
           </p>
-          <div className="mb-ds-04 flex w-full flex-col items-center justify-start gap-[14px] rounded-3xl border border-border-subtle bg-layer-01 px-ds-05 py-3.5 text-center font-semibold text-text-primary">
+          <div className="mb-ds-04 flex w-full flex-col items-center justify-start gap-[14px] rounded-3xl border border-border-subtle bg-layer-01 shadow-01 px-ds-05 py-3.5 text-center font-semibold text-text-primary">
             {renderStatus(breakRequest.status, false)}
             {breakRequest.status === 'APPROVED' && breakRequest.adminComment}
             {breakRequest.status === 'REJECTED' && breakRequest.adminComment}

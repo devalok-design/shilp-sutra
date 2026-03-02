@@ -414,7 +414,7 @@ export function EditBreak({
       <DialogTrigger asChild>
         <Button
           variant="secondary"
-          className="text-ds-base border-border bg-layer-01 px-ds-05 py-ds-04 pr-ds-06 text-text-secondary shadow-[0_4px_8px_0_var(--shadow-02)]"
+          className="text-ds-base border-border bg-layer-01 px-ds-05 py-ds-04 pr-ds-06 text-text-secondary shadow-02"
         >
           <EditIcon />
           <span>Edit</span>
@@ -624,7 +624,7 @@ export function EditBreak({
                     {renderStatus(formData.status)}
                     <ArrowDownIcon />
                     {showStatusOptions && (
-                      <div className="text-ds-base absolute left-[10px] top-[25px] z-[4] flex flex-col overflow-hidden rounded-[7px] border border-border bg-layer-01 shadow-[0px_4px_8px_0px_var(--shadow-02)]">
+                      <div className="text-ds-base absolute left-[10px] top-[25px] z-[4] flex flex-col overflow-hidden rounded-[7px] border border-border bg-layer-01 shadow-02">
                         <div
                           className="cursor-pointer border-b border-b-border bg-layer-01 px-ds-04 py-ds-03"
                           onClick={() => handleStatusSelect('APPROVED')}

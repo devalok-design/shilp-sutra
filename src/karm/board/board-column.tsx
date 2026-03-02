@@ -121,7 +121,7 @@ export function BoardColumn({
   return (
     <div
       className={cn(
-        'flex h-full w-[300px] flex-shrink-0 flex-col rounded-ds-xl border-l-[3px] bg-layer-01/80 backdrop-blur-sm',
+        'flex h-full w-[300px] flex-shrink-0 flex-col rounded-ds-xl border-l-[3px] bg-layer-01 shadow-01',
         accentColor,
         isOverlay && 'shadow-04',
       )}

@@ -125,7 +125,7 @@ function ReviewTab({
             return (
               <div
                 key={review.id}
-                className="rounded-ds-lg border border-border bg-layer-01 p-ds-04"
+                className="rounded-ds-lg border border-border bg-layer-01 shadow-01 p-ds-04"
               >
                 {/* Header */}
                 <div className="flex items-center gap-2.5">

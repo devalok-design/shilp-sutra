@@ -548,7 +548,7 @@ function AdminDashboardLeaveRequests({
 
   return (
     <div className="w-full p-0 md:p-ds-06">
-      <div className="max-md:pt[16px] flex flex-col items-start overflow-hidden rounded-[8px] border-0 border-border-subtle bg-layer-01 pt-ds-03 md:border max-md:pb-0">
+      <div className="max-md:pt[16px] flex flex-col items-start overflow-hidden rounded-[8px] border-0 border-border-subtle bg-layer-01 shadow-01 pt-ds-03 md:border max-md:pb-0">
         <div className="flex w-full items-start border-b-[1px] border-b-border px-ds-06 md:border-b max-md:border-0 max-md:px-[0px]">
           {requests.length > 0 && (
             <div

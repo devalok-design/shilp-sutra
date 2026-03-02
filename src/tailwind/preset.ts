@@ -101,6 +101,10 @@ const preset: Partial<Config> = {
         'ds-lg': 'var(--size-lg)',
         'ds-xl': 'var(--size-xl)',
       },
+      maxWidth: {
+        layout: 'var(--max-width)',
+        'layout-body': 'var(--max-width-body)',
+      },
       colors: {
         'text-interactive': 'var(--color-text-interactive)',
         interactive: 'var(--color-interactive)',

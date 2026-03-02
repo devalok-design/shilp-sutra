@@ -29,12 +29,11 @@ function GlobalLoading({ isLoading }: GlobalLoadingProps) {
       <div
         ref={ref}
         className={cn(
-          'h-full transition-all duration-[var(--duration-slow)] ease-in-out',
+          'h-full bg-[var(--color-interactive)] transition-all duration-[var(--duration-slow)] ease-in-out',
           isLoading && 'w-4/5 opacity-100',
           !isLoading && animationComplete && 'w-0 opacity-0',
           !isLoading && !animationComplete && 'w-full opacity-100',
         )}
-        style={{ backgroundColor: 'var(--color-interactive)' }}
         onTransitionEnd={() => {
           if (!isLoading) {
             // After the "complete" animation finishes, hide the bar

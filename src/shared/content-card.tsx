@@ -28,6 +28,22 @@ const contentCardVariants = cva(
   },
 )
 
+const getPadding = (padding: string | null | undefined) => {
+  switch (padding) {
+    case 'compact': return 'px-3 py-2.5'
+    case 'spacious': return 'px-6 py-4'
+    default: return 'px-5 py-3.5'
+  }
+}
+
+const getContentPadding = (padding: string | null | undefined) => {
+  switch (padding) {
+    case 'compact': return 'p-3'
+    case 'spacious': return 'p-6'
+    default: return 'p-5'
+  }
+}
+
 interface ContentCardProps
   extends React.HTMLAttributes<HTMLDivElement>,
     VariantProps<typeof contentCardVariants> {
@@ -67,7 +83,7 @@ const ContentCard = React.forwardRef<HTMLDivElement, ContentCardProps>(
           <div
             className={cn(
               'flex items-center justify-between border-b border-[var(--color-border-default)]',
-              padding === 'compact' ? 'px-3 py-2.5' : padding === 'spacious' ? 'px-6 py-4' : 'px-5 py-3.5',
+              getPadding(padding),
             )}
           >
             {header ?? (
@@ -87,13 +103,7 @@ const ContentCard = React.forwardRef<HTMLDivElement, ContentCardProps>(
 
         <div
           className={cn(
-            hasHeader || footer
-              ? padding === 'compact'
-                ? 'p-3'
-                : padding === 'spacious'
-                  ? 'p-6'
-                  : 'p-5'
-              : '',
+            (hasHeader || footer) && getContentPadding(padding),
           )}
         >
           {children}
@@ -103,7 +113,7 @@ const ContentCard = React.forwardRef<HTMLDivElement, ContentCardProps>(
           <div
             className={cn(
               'border-t border-[var(--color-border-default)]',
-              padding === 'compact' ? 'px-3 py-2.5' : padding === 'spacious' ? 'px-6 py-4' : 'px-5 py-3.5',
+              getPadding(padding),
             )}
           >
             {footer}

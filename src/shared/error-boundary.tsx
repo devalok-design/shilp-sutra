@@ -3,6 +3,7 @@
 import * as React from 'react'
 import { IconAlertTriangle, IconBan, IconFileUnknown, IconServerOff } from '@tabler/icons-react'
 import { Button } from '../ui/button'
+import { cn } from '../ui/lib/utils'
 
 declare const process: { env: { NODE_ENV?: string } } | undefined
 
@@ -59,8 +60,8 @@ function getErrorConfig(status?: number) {
         title: 'Page not found',
         message:
           'The page you are looking for does not exist or has been moved.',
-        bgColor: 'var(--color-interactive-subtle)',
-        iconColor: 'var(--color-interactive)',
+        bgClass: 'bg-[var(--color-interactive-subtle)]',
+        iconClass: 'text-[var(--color-interactive)]',
       }
     case 403:
       return {
@@ -68,8 +69,8 @@ function getErrorConfig(status?: number) {
         title: 'Access denied',
         message:
           'You do not have permission to view this page. Contact your administrator if you believe this is a mistake.',
-        bgColor: 'var(--color-warning-surface)',
-        iconColor: 'var(--color-warning)',
+        bgClass: 'bg-[var(--color-warning-surface)]',
+        iconClass: 'text-[var(--color-warning)]',
       }
     case 500:
       return {
@@ -77,8 +78,8 @@ function getErrorConfig(status?: number) {
         title: 'Server error',
         message:
           'Something went wrong on our end. Please try again later or contact support if the issue persists.',
-        bgColor: 'var(--color-error-surface)',
-        iconColor: 'var(--color-error)',
+        bgClass: 'bg-[var(--color-error-surface)]',
+        iconClass: 'text-[var(--color-error)]',
       }
     default:
       return {
@@ -86,8 +87,8 @@ function getErrorConfig(status?: number) {
         title: 'Something went wrong',
         message:
           'An unexpected error occurred. Please try again or go back to the home page.',
-        bgColor: 'var(--color-interactive-subtle)',
-        iconColor: 'var(--color-interactive)',
+        bgClass: 'bg-[var(--color-interactive-subtle)]',
+        iconClass: 'text-[var(--color-interactive)]',
       }
   }
 }
@@ -111,12 +112,13 @@ function ErrorDisplay({ error, onReset }: ErrorDisplayProps) {
       >
         {/* Error Icon */}
         <div
-          className="flex h-16 w-16 items-center justify-center rounded-[var(--radius-2xl)]"
-          style={{ backgroundColor: errorConfig.bgColor }}
+          className={cn(
+            'flex h-16 w-16 items-center justify-center rounded-[var(--radius-2xl)]',
+            errorConfig.bgClass,
+          )}
         >
           <Icon
-            className="h-8 w-8"
-            style={{ color: errorConfig.iconColor }}
+            className={cn('h-8 w-8', errorConfig.iconClass)}
           />
         </div>
 

@@ -193,12 +193,9 @@ const TopBar = React.forwardRef<HTMLDivElement, TopBarProps>(
             </Tooltip>
 
             <DropdownMenuContent
-              className="w-[200px] rounded-[var(--radius-xl)] border border-[var(--color-border-default)] bg-[var(--color-layer-01)] p-0"
+              className="w-[200px] rounded-[var(--radius-xl)] border border-[var(--color-border-default)] bg-[var(--color-layer-01)] p-0 shadow-[var(--shadow-03)]"
               sideOffset={8}
               align="end"
-              style={{
-                boxShadow: '0px 25px 40px 0px var(--color-shadow, rgba(0,0,0,0.08))',
-              }}
             >
               {/* User Info */}
               <div className="border-b border-[var(--color-border-default)] px-4 py-3">

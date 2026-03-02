@@ -81,12 +81,7 @@ export {
   AccentProvider,
   ClientPortalHeader,
   ProjectCard,
-  // Custom button components
-  CustomButton,
-  type ButtonVariant,
-  type ButtonType,
-  IconButton,
-  type IconButtonProps,
+  // Segmented control components
   SegmentedControl,
   SegmentedControlItem,
   segmentedControlItemVariants,

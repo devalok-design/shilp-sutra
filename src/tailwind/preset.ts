@@ -190,6 +190,13 @@ const preset: Partial<Config> = {
         'tag-magenta-border': 'var(--color-tag-magenta-border)',
         'tag-purple-border': 'var(--color-tag-purple-border)',
         divider: 'var(--color-divider)',
+        'inset-glow': 'var(--color-inset-glow)',
+        'inset-glow-strong': 'var(--color-inset-glow-strong)',
+        'inset-glow-subtle': 'var(--color-inset-glow-subtle)',
+        'surface-overlay-light': 'var(--color-surface-overlay-light)',
+        'surface-overlay-dark': 'var(--color-surface-overlay-dark)',
+        'layer-accent-subtle': 'var(--color-layer-accent-subtle)',
+        'error-hover': 'var(--color-error-hover)',
       },
       keyframes: {
         ripple: {

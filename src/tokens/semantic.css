@@ -230,6 +230,14 @@
   --chart-6: var(--red-500);
   --chart-7: #06b6d4;
   --chart-8: #f97316;
+
+  /* ── Inset Glow & Overlay ─────────────────────────── */
+  --color-inset-glow:            rgba(255, 255, 255, 0.25);
+  --color-inset-glow-strong:     rgba(255, 255, 255, 0.16);
+  --color-inset-glow-subtle:     rgba(255, 255, 255, 0.10);
+  --color-surface-overlay-light: rgba(255, 255, 255, 0.20);
+  --color-surface-overlay-dark:  rgba(0, 0, 0, 0.12);
+  --color-text-shadow:           rgba(0, 0, 0, 0.15);
 }
 
 .dark {
@@ -341,6 +349,13 @@
   --color-tag-purple-bg:        var(--purple-900);
   --color-tag-purple-text:      var(--purple-200);
   --color-tag-purple-border:    var(--purple-800);
+  /* Inset Glow & Overlay */
+  --color-inset-glow:            rgba(255, 255, 255, 0.10);
+  --color-inset-glow-strong:     rgba(255, 255, 255, 0.08);
+  --color-inset-glow-subtle:     rgba(255, 255, 255, 0.05);
+  --color-surface-overlay-light: rgba(255, 255, 255, 0.08);
+  --color-surface-overlay-dark:  rgba(0, 0, 0, 0.25);
+  --color-text-shadow:           rgba(0, 0, 0, 0.40);
   /* Shadows */
   --shadow-01: 0 1px 2px rgba(0, 0, 0, 0.30);
   --shadow-02: 0 2px 6px rgba(0, 0, 0, 0.40);

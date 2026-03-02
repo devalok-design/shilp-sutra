@@ -101,7 +101,7 @@ function TaskCardVisual({
           <IconGripVertical className="h-[var(--icon-sm)] w-[var(--icon-sm)] text-[var(--color-icon-secondary)]" />
         </button>
         <div className="min-w-0 flex-1">
-          <p className="B2-Reg font-medium text-[var(--color-text-primary)] line-clamp-2">
+          <p className="text-ds-md font-medium text-[var(--color-text-primary)] line-clamp-2">
             {task.title}
           </p>
         </div>
@@ -127,7 +127,7 @@ function TaskCardVisual({
               </Badge>
             ))}
             {task.labels.length > 2 && (
-              <span className="B4-Reg text-[var(--color-text-tertiary)]">
+              <span className="text-ds-xs text-[var(--color-text-tertiary)]">
                 +{task.labels.length - 2}
               </span>
             )}
@@ -141,7 +141,7 @@ function TaskCardVisual({
         {dueInfo && (
           <div
             className={cn(
-              'flex items-center gap-0.5 B3-Reg',
+              'flex items-center gap-0.5 text-ds-sm',
               dueInfo.className,
             )}
           >

@@ -165,7 +165,7 @@ export function LeaveRequests({
                 <div className="flex max-w-[277px] flex-col items-start gap-ds-02 sm:max-w-none">
                   <div className="flex flex-row gap-ds-02b">
                     <div className="flex items-center gap-ds-03">
-                      <p className="B3-Reg text-[var(--color-text-secondary)]">
+                      <p className="text-ds-sm text-[var(--color-text-secondary)]">
                         {request.user?.name}
                       </p>
                     </div>
@@ -179,7 +179,7 @@ export function LeaveRequests({
                       <p className="B1 hidden font-semibold text-[var(--color-text-tertiary)] md:block">
                         &bull;
                       </p>
-                      <p className="B1-Reg text-[var(--color-text-tertiary)]">
+                      <p className="text-ds-base text-[var(--color-text-tertiary)]">
                         {formatDate(new Date(request.startDate))}
                       </p>
                     </div>
@@ -188,7 +188,7 @@ export function LeaveRequests({
                       <p className="B1 semibold text-[var(--color-text-primary)]">
                         {removeAllEmojis(request.reason)}
                       </p>
-                      <p className="B1-Reg text-[var(--color-text-tertiary)]">
+                      <p className="text-ds-base text-[var(--color-text-tertiary)]">
                         {formatDate(new Date(request.startDate))} to{' '}
                         {formatDate(new Date(request.endDate))}
                         <span className="text-[var(--color-interactive-hover)]">
@@ -306,7 +306,7 @@ export function LeaveRequests({
               isMobile) && (
               <div className="flex flex-row items-start justify-between rounded-[8px] border-[1px] border-[var(--color-border-default)] py-ds-02 max-md:rounded-t-none">
                 <div className="flex w-full flex-col items-start justify-start gap-ds-02 px-ds-05 pb-ds-02 pt-[10px]">
-                  <div className="L4 text-[var(--color-text-placeholder)]">
+                  <div className="text-ds-xs font-semibold uppercase tracking-wider text-[var(--color-text-placeholder)]">
                     comment
                   </div>
                   <input
@@ -314,7 +314,7 @@ export function LeaveRequests({
                     value={interaction.message}
                     onChange={(e) => interaction.setMessage(e?.target?.value)}
                     placeholder="Enter a Comment"
-                    className="P3 w-full text-[var(--color-text-primary)] outline-none"
+                    className="text-ds-md w-full text-[var(--color-text-primary)] outline-none"
                   />
                 </div>
                 <button

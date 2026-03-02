@@ -1,3 +1,7 @@
+/* ⚠️ DEPRECATED: These px-based classes are kept for backward compatibility.
+   Use <Text variant="..."> component or text-ds-* Tailwind classes instead.
+   See src/tokens/typography-semantic.css for the canonical type scale. */
+
 /* ═══════════════════════════════════════════════════════════════════
    TYPOGRAPHY — Font faces, type scale utilities, and prose styles
    ═══════════════════════════════════════════════════════════════════ */

@@ -11,7 +11,7 @@ const segmentedControlItemVariants = cva(
     'inline-flex items-center gap-ds-03 rounded-[88px] border-none outline-none cursor-pointer',
     'transition-[color,background-color,border-color,box-shadow] duration-[var(--duration-moderate)] ease-in-out',
     'relative overflow-hidden',
-    'font-accent B2-Semibold leading-none text-center',
+    'font-accent text-ds-md font-semibold leading-none text-center',
     'bg-[var(--color-layer-01)]',
     'text-[var(--color-text-tertiary)]',
     'first:rounded-tr-none first:rounded-br-none',
@@ -317,7 +317,7 @@ const SegmentedControlItem: React.FC<SegmentedControlItemProps> = ({
           }}
         />
       ))}
-      <span className="font-accent B8-Reg leading-none">{text}</span>
+      <span className="font-accent text-ds-md leading-none">{text}</span>
     </button>
   )
 }

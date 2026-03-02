@@ -74,7 +74,7 @@ export function Calendar({ onDateSelect, hasCorrection }: CalendarProps) {
     <div className="w-full">
       <div className="flex-direction-row justify-flex-start mb-ds-06 flex w-full items-center">
         <DropdownMenu>
-          <DropdownMenuTrigger className="T6-Reg flex items-center gap-ds-03 text-[var(--color-text-secondary)]">
+          <DropdownMenuTrigger className="text-ds-xl flex items-center gap-ds-03 text-[var(--color-text-secondary)]">
             {cal.selectedMonth}
             <FilledArrowIcon />
           </DropdownMenuTrigger>
@@ -129,7 +129,7 @@ export function Calendar({ onDateSelect, hasCorrection }: CalendarProps) {
         {cal.activeTimeFrame === 'monthly' &&
           ['SUN', 'MON', 'TUE', 'WED', 'THU', 'FRI', 'SAT'].map((weekDay) => (
             <div key={weekDay} className="pb-ds-03 pt-ds-05 text-center">
-              <span className="L3 uppercase text-[var(--color-text-tertiary)]">
+              <span className="text-ds-sm font-semibold uppercase tracking-wider  text-[var(--color-text-tertiary)]">
                 {weekDay}
               </span>
             </div>
@@ -159,7 +159,7 @@ export function Calendar({ onDateSelect, hasCorrection }: CalendarProps) {
             }}
           >
             {cal.activeTimeFrame === 'weekly' && (
-              <span className="L3 mb-ds-03 uppercase text-[var(--color-text-tertiary)]">
+              <span className="text-ds-sm font-semibold uppercase tracking-wider mb-ds-03  text-[var(--color-text-tertiary)]">
                 {day.day}
               </span>
             )}
@@ -172,7 +172,7 @@ export function Calendar({ onDateSelect, hasCorrection }: CalendarProps) {
               }`}
             >
               <span
-                className={`B1-Reg flex h-10 w-10 items-center justify-center rounded-[var(--radius-full)] ${
+                className={`text-ds-base flex h-10 w-10 items-center justify-center rounded-[var(--radius-full)] ${
                   day.isToday
                     ? 'bg-[var(--color-interactive-hover)] p-ds-03 text-[var(--color-text-on-color)]'
                     : 'text-[var(--color-text-secondary)]'

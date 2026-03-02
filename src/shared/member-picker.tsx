@@ -73,7 +73,7 @@ const MemberPicker = React.forwardRef<HTMLDivElement, MemberPickerProps>(
               placeholder={placeholder}
               value={search}
               onChange={(e) => setSearch(e.target.value)}
-              className="w-full bg-transparent B2-Reg font-body text-[var(--color-text-primary)] placeholder:text-[var(--color-text-placeholder)] outline-none"
+              className="w-full bg-transparent text-ds-md font-body text-[var(--color-text-primary)] placeholder:text-[var(--color-text-placeholder)] outline-none"
             />
           </div>
           <div className="max-h-[200px] overflow-y-auto py-ds-02">
@@ -101,7 +101,7 @@ const MemberPicker = React.forwardRef<HTMLDivElement, MemberPickerProps>(
                       {getInitials(member.name)}
                     </AvatarFallback>
                   </Avatar>
-                  <span className="flex-1 truncate B2-Reg font-body text-[var(--color-text-primary)]">
+                  <span className="flex-1 truncate text-ds-md font-body text-[var(--color-text-primary)]">
                     {member.name}
                   </span>
                   {isSelected && (
@@ -111,7 +111,7 @@ const MemberPicker = React.forwardRef<HTMLDivElement, MemberPickerProps>(
               )
             })}
             {filtered.length === 0 && (
-              <p className="px-ds-04 py-ds-05 text-center B3-Reg font-body text-[var(--color-text-placeholder)]">
+              <p className="px-ds-04 py-ds-05 text-center text-ds-sm font-body text-[var(--color-text-placeholder)]">
                 No members found
               </p>
             )}

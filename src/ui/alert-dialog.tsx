@@ -77,7 +77,7 @@ const AlertDialogTitle = React.forwardRef<
   <AlertDialogPrimitive.Title
     ref={ref}
     className={cn(
-      'T7-Reg font-semibold',
+      'text-ds-lg font-semibold',
       className,
     )}
     {...props}
@@ -91,7 +91,7 @@ const AlertDialogDescription = React.forwardRef<
 >(({ className, ...props }, ref) => (
   <AlertDialogPrimitive.Description
     ref={ref}
-    className={cn('B2-Reg text-[var(--color-text-secondary)]', className)}
+    className={cn('text-ds-md text-[var(--color-text-secondary)]', className)}
     {...props}
   />
 ))
@@ -105,7 +105,7 @@ const AlertDialogAction = React.forwardRef<
   <AlertDialogPrimitive.Action
     ref={ref}
     className={cn(
-      'inline-flex h-[var(--size-md)] items-center justify-center rounded-[var(--radius-md)] px-ds-05 B2-Semibold transition-colors bg-[var(--color-interactive)] text-[var(--color-text-on-color)] hover:bg-[var(--color-interactive-hover)] active:bg-[var(--color-interactive-active)] shadow-[var(--shadow-01)] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--color-focus)] focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50',
+      'inline-flex h-[var(--size-md)] items-center justify-center rounded-[var(--radius-md)] px-ds-05 text-ds-md font-semibold transition-colors bg-[var(--color-interactive)] text-[var(--color-text-on-color)] hover:bg-[var(--color-interactive-hover)] active:bg-[var(--color-interactive-active)] shadow-[var(--shadow-01)] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--color-focus)] focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50',
       className,
     )}
     {...props}
@@ -120,7 +120,7 @@ const AlertDialogCancel = React.forwardRef<
   <AlertDialogPrimitive.Cancel
     ref={ref}
     className={cn(
-      'inline-flex h-[var(--size-md)] items-center justify-center rounded-[var(--radius-md)] px-ds-05 B2-Semibold transition-colors bg-transparent text-[var(--color-text-secondary)] border border-[var(--color-border-default)] hover:bg-[var(--color-layer-02)] hover:text-[var(--color-text-primary)] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--color-focus)] focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50',
+      'inline-flex h-[var(--size-md)] items-center justify-center rounded-[var(--radius-md)] px-ds-05 text-ds-md font-semibold transition-colors bg-transparent text-[var(--color-text-secondary)] border border-[var(--color-border-default)] hover:bg-[var(--color-layer-02)] hover:text-[var(--color-text-primary)] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--color-focus)] focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50',
       className,
     )}
     {...props}

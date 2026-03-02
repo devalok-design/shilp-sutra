@@ -125,14 +125,14 @@ function ErrorDisplay({ error, onReset }: ErrorDisplayProps) {
         {/* Error IconInfoCircle */}
         <div className="flex flex-col gap-ds-03">
           {status && (
-            <span className="B3-Reg text-[var(--color-text-placeholder)]">
+            <span className="text-ds-sm text-[var(--color-text-placeholder)]">
               Error {status}
             </span>
           )}
-          <h2 className="T5-Reg font-semibold text-[var(--color-text-primary)]">
+          <h2 className="text-ds-2xl font-semibold text-[var(--color-text-primary)]">
             {errorConfig.title}
           </h2>
-          <p className="B1-Reg text-[var(--color-text-tertiary)]">
+          <p className="text-ds-base text-[var(--color-text-tertiary)]">
             {message || errorConfig.message}
           </p>
         </div>
@@ -153,10 +153,10 @@ function ErrorDisplay({ error, onReset }: ErrorDisplayProps) {
         {/* Dev stack trace */}
         {isDev && stack && (
           <div className="w-full overflow-auto rounded-[var(--radius-lg)] border border-[var(--color-border-default)] bg-[var(--color-layer-02)] p-ds-05 text-left">
-            <p className="B3-Reg mb-ds-03 font-semibold text-[var(--color-text-primary)]">
+            <p className="text-ds-sm mb-ds-03 font-semibold text-[var(--color-text-primary)]">
               Stack Trace (development only)
             </p>
-            <pre className="whitespace-pre-wrap B3-Reg text-[var(--color-text-tertiary)]">
+            <pre className="whitespace-pre-wrap text-ds-sm text-[var(--color-text-tertiary)]">
               {stack}
             </pre>
           </div>

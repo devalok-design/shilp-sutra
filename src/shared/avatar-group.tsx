@@ -20,8 +20,8 @@ const avatarSizeVariants = cva(
     variants: {
       size: {
         sm: 'h-6 w-6 text-[9px]',
-        md: 'h-8 w-8 B3-Reg',
-        lg: 'h-10 w-10 B2-Reg',
+        md: 'h-8 w-8 text-ds-sm',
+        lg: 'h-10 w-10 text-ds-md',
       },
     },
     defaultVariants: {
@@ -94,7 +94,7 @@ const AvatarGroup = React.forwardRef<HTMLDivElement, AvatarGroupProps>(
                   className="border-[var(--color-border-default)] bg-[var(--color-layer-01)] text-[var(--color-text-primary)]"
                   sideOffset={6}
                 >
-                  <p className="B3-Reg">{user.name}</p>
+                  <p className="text-ds-sm">{user.name}</p>
                 </TooltipContent>
               </Tooltip>
             )
@@ -120,7 +120,7 @@ const AvatarGroup = React.forwardRef<HTMLDivElement, AvatarGroupProps>(
               >
                 <div className="flex flex-col gap-0.5">
                   {users.slice(max).map((user, i) => (
-                    <p key={i} className="B3-Reg">{user.name}</p>
+                    <p key={i} className="text-ds-sm">{user.name}</p>
                   ))}
                 </div>
               </TooltipContent>

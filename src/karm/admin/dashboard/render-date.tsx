@@ -162,7 +162,7 @@ export function RenderDate({
   // tailwind-merge ensures the last conflicting class wins.
   const dateClasses = cn(
     // Base layout & transitions
-    'flex h-10 w-10 items-center justify-center rounded-full B1-Reg relative overflow-hidden',
+    'flex h-10 w-10 items-center justify-center rounded-full text-ds-base relative overflow-hidden',
     'transition-[background-color,color,border] duration-200',
     'outline-[var(--color-border-strong)] outline-solid outline-0',
 

@@ -45,8 +45,8 @@ const Alert = React.forwardRef<HTMLDivElement, AlertProps>(
       <div ref={ref} className={cn(alertVariants({ variant }), className)} role="alert" {...props}>
         <Icon className="mt-0.5 h-[var(--icon-md)] w-[var(--icon-md)] shrink-0" aria-hidden="true" />
         <div className="flex-1 min-w-0">
-          {title && <p className="B2-Semibold mb-0.5">{title}</p>}
-          <div className="B2-Reg opacity-90">{children}</div>
+          {title && <p className="text-ds-md font-semibold mb-0.5">{title}</p>}
+          <div className="text-ds-md opacity-90">{children}</div>
         </div>
         {dismissible && onDismiss && (
           <button

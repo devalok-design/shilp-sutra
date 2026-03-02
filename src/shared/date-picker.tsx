@@ -89,7 +89,7 @@ function CalendarGrid({
         >
           <IconChevronLeft className="h-[var(--icon-sm)] w-[var(--icon-sm)]" stroke={1.5} />
         </button>
-        <span className="B2-Reg semibold text-[var(--color-text-primary)]">
+        <span className="text-ds-md semibold text-[var(--color-text-primary)]">
           {format(currentMonth, 'MMMM yyyy')}
         </span>
         <button
@@ -105,7 +105,7 @@ function CalendarGrid({
         {WEEKDAYS.map((wd) => (
           <div
             key={wd}
-            className="flex h-8 items-center justify-center L4 text-[var(--color-text-placeholder)]"
+            className="flex h-8 items-center justify-center text-ds-xs font-semibold uppercase tracking-wider text-[var(--color-text-placeholder)]"
           >
             {wd}
           </div>
@@ -126,7 +126,7 @@ function CalendarGrid({
               onMouseEnter={() => onHover?.(d)}
               onMouseLeave={() => onHover?.(null)}
               className={cn(
-                'flex h-8 w-9 items-center justify-center rounded-[var(--radius-md)] B2-Reg font-body transition-colors',
+                'flex h-8 w-9 items-center justify-center rounded-[var(--radius-md)] text-ds-md font-body transition-colors',
                 !inMonth && 'pointer-events-none opacity-0',
                 inMonth && !isSelected && !edge && !inRange &&
                   'text-[var(--color-text-primary)] hover:bg-[var(--color-field)]',
@@ -190,7 +190,7 @@ function DatePicker({
           />
           <span
             className={cn(
-              'B2-Reg',
+              'text-ds-md',
               value
                 ? 'text-[var(--color-text-primary)]'
                 : 'text-[var(--color-text-placeholder)]',
@@ -291,7 +291,7 @@ function DateRangePicker({
           />
           <span
             className={cn(
-              'B2-Reg',
+              'text-ds-md',
               rangeStart && rangeEnd
                 ? 'text-[var(--color-text-primary)]'
                 : 'text-[var(--color-text-placeholder)]',

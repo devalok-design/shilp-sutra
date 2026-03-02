@@ -90,7 +90,7 @@ function NavLink({ item, isActive }: { item: NavItem; isActive: boolean }) {
           aria-current={isActive ? 'page' : undefined}
         >
           <item.icon className="h-[var(--icon-md)] w-[var(--icon-md)] shrink-0" aria-hidden="true" />
-          <span className="B1-Reg">{item.title}</span>
+          <span className="text-ds-base">{item.title}</span>
         </Link>
       </SidebarMenuButton>
     </SidebarMenuItem>
@@ -132,7 +132,7 @@ const AppSidebar = React.forwardRef<HTMLDivElement, AppSidebarProps>(
         {/* Logo Header */}
         <SidebarHeader className="px-ds-06 py-ds-06">
           {logo ?? (
-            <span className="T7-Reg font-semibold text-[var(--color-text-primary)]">
+            <span className="text-ds-lg font-semibold text-[var(--color-text-primary)]">
               Logo
             </span>
           )}
@@ -150,10 +150,10 @@ const AppSidebar = React.forwardRef<HTMLDivElement, AppSidebarProps>(
               </AvatarFallback>
             </Avatar>
             <div className="flex min-w-0 flex-col">
-              <span className="truncate B2-Reg text-[var(--color-text-primary)]">
+              <span className="truncate text-ds-md text-[var(--color-text-primary)]">
                 {user.name}
               </span>
-              <span className="truncate B3-Reg text-[var(--color-text-placeholder)]">
+              <span className="truncate text-ds-sm text-[var(--color-text-placeholder)]">
                 {user.designation || user.role}
               </span>
             </div>
@@ -168,7 +168,7 @@ const AppSidebar = React.forwardRef<HTMLDivElement, AppSidebarProps>(
             <div key={group.label}>
               {idx > 0 && <SidebarSeparator />}
               <SidebarGroup>
-                <SidebarGroupLabel className="px-ds-04 B3-Reg text-[var(--color-text-placeholder)]">
+                <SidebarGroupLabel className="px-ds-04 text-ds-sm text-[var(--color-text-placeholder)]">
                   {group.label}
                 </SidebarGroupLabel>
                 <SidebarGroupContent>
@@ -197,7 +197,7 @@ const AppSidebar = React.forwardRef<HTMLDivElement, AppSidebarProps>(
                     <div className="h-4 w-px bg-[var(--color-border-default)]" />
                   )}
                   <Link
-                    className="B2-Reg text-[var(--color-text-placeholder)] transition-colors hover:text-[var(--color-interactive)]"
+                    className="text-ds-md text-[var(--color-text-placeholder)] transition-colors hover:text-[var(--color-interactive)]"
                     href={link.href}
                   >
                     {link.label}

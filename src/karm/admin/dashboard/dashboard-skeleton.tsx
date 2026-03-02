@@ -21,7 +21,7 @@ export function DashboardSkeleton() {
         {/* Header Section */}
         <div className="mb-ds-06 flex w-full flex-col items-start justify-between md:flex-row md:items-center">
           <DropdownMenu>
-            <DropdownMenuTrigger className="T6-Reg flex items-center gap-ds-03 text-[var(--color-text-secondary)]">
+            <DropdownMenuTrigger className="text-ds-xl flex items-center gap-ds-03 text-[var(--color-text-secondary)]">
               <div className="flex items-center gap-ds-03">
                 <Skeleton className="h-[25px] w-[50px] rounded-[var(--radius-md)] bg-[var(--color-field)]" />
                 <Skeleton className="h-[25px] w-[50px] rounded-[var(--radius-md)] bg-[var(--color-field)]" />
@@ -105,10 +105,10 @@ export function DashboardSkeleton() {
             <div className="max-md:pt[16px] flex flex-col items-start overflow-hidden rounded-[8px] border-0 border-[var(--color-border-subtle)] bg-[var(--color-layer-01)] pt-ds-03 md:border max-md:pb-0">
               {/* Tab headers skeleton */}
               <div className="flex w-full items-start border-b-[1px] border-b-[var(--color-border-default)] px-ds-06 md:border-b max-md:border-0 max-md:px-[0px]">
-                <div className="L3 cursor-pointer border-b-[1.5px] border-b-[var(--color-interactive-hover)] px-ds-03 py-ds-04 font-semibold uppercase text-[var(--color-text-primary)]">
+                <div className="text-ds-sm font-semibold uppercase tracking-wider cursor-pointer border-b-[1.5px] border-b-[var(--color-interactive-hover)] px-ds-03 py-ds-04 font-semibold  text-[var(--color-text-primary)]">
                   REQUESTS(1)
                 </div>
-                <div className="L3 cursor-pointer px-ds-03 py-ds-04 uppercase text-[var(--color-text-tertiary)]">
+                <div className="text-ds-sm font-semibold uppercase tracking-wider cursor-pointer px-ds-03 py-ds-04  text-[var(--color-text-tertiary)]">
                   ATTENDANCE CORRECTION(1)
                 </div>
               </div>

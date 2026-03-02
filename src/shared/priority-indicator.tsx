@@ -98,7 +98,7 @@ const PriorityIndicator = React.forwardRef<HTMLDivElement, PriorityIndicatorProp
         >
           <Icon className={cn('h-[var(--icon-sm)] w-[var(--icon-sm)]', config.color)} stroke={2} />
         </div>
-        <span className="B3-Reg text-[var(--color-text-secondary)]">
+        <span className="text-ds-sm text-[var(--color-text-secondary)]">
           {config.label}
         </span>
       </div>

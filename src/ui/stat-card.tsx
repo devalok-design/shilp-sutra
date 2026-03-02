@@ -53,18 +53,18 @@ function StatCard({ className, label, value, delta, icon, loading, ...props }: S
       {...props}
     >
       <div className="flex items-center justify-between mb-ds-04">
-        <p className="B2-Reg font-medium text-[var(--color-text-secondary)]">{label}</p>
+        <p className="text-ds-md font-medium text-[var(--color-text-secondary)]">{label}</p>
         {icon && (
           <span className="text-[var(--color-text-secondary)]" aria-hidden="true">
             {icon}
           </span>
         )}
       </div>
-      <p className="T4-Reg font-semibold text-[var(--color-text-primary)] tabular-nums">
+      <p className="text-ds-3xl font-semibold text-[var(--color-text-primary)] tabular-nums">
         {value}
       </p>
       {delta && (
-        <div className={cn('mt-ds-03 flex items-center gap-ds-02 B3-Reg font-medium', deltaColour)}>
+        <div className={cn('mt-ds-03 flex items-center gap-ds-02 text-ds-sm font-medium', deltaColour)}>
           <DeltaIcon className="h-[var(--icon-sm)] w-[var(--icon-sm)]" aria-hidden="true" />
           <span>{delta.value}</span>
         </div>

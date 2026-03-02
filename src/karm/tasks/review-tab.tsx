@@ -141,10 +141,10 @@ function ReviewTab({
                     </AvatarFallback>
                   </Avatar>
                   <div className="flex-1 min-w-0">
-                    <span className="B2-Reg font-medium text-[var(--color-text-primary)]">
+                    <span className="text-ds-md font-medium text-[var(--color-text-primary)]">
                       {review.reviewer.name}
                     </span>
-                    <span className="ml-ds-03 B3-Reg text-[var(--color-text-placeholder)]">
+                    <span className="ml-ds-03 text-ds-sm text-[var(--color-text-placeholder)]">
                       requested by {review.requestedBy.name}
                     </span>
                   </div>
@@ -158,7 +158,7 @@ function ReviewTab({
                 {/* Feedback */}
                 {review.feedback && (
                   <div className="mt-2.5 rounded-[var(--radius-md)] bg-[var(--color-layer-02)] px-ds-04 py-ds-03">
-                    <p className="B3-Reg text-[var(--color-text-secondary)]">
+                    <p className="text-ds-sm text-[var(--color-text-secondary)]">
                       {review.feedback}
                     </p>
                   </div>
@@ -179,7 +179,7 @@ function ReviewTab({
                           }
                           placeholder="Add feedback (optional)..."
                           rows={2}
-                          className="w-full resize-none rounded-[var(--radius-md)] border border-[var(--color-border-default)] bg-transparent px-2.5 py-ds-03 B3-Reg text-[var(--color-text-primary)] placeholder:text-[var(--color-text-placeholder)] outline-none focus:border-[var(--color-border-subtle)]"
+                          className="w-full resize-none rounded-[var(--radius-md)] border border-[var(--color-border-default)] bg-transparent px-2.5 py-ds-03 text-ds-sm text-[var(--color-text-primary)] placeholder:text-[var(--color-text-placeholder)] outline-none focus:border-[var(--color-border-subtle)]"
                         />
                         <div className="flex items-center gap-ds-02b">
                           {RESPONSE_OPTIONS.map((opt) => {
@@ -190,7 +190,7 @@ function ReviewTab({
                                 type="button"
                                 onClick={() => handleRespond(review.id, opt.status)}
                                 className={cn(
-                                  'inline-flex items-center gap-ds-02 rounded-[var(--radius-md)] px-2.5 py-ds-02 B3-Reg font-semibold transition-colors',
+                                  'inline-flex items-center gap-ds-02 rounded-[var(--radius-md)] px-2.5 py-ds-02 text-ds-sm font-semibold transition-colors',
                                   opt.status === 'APPROVED' &&
                                     'bg-[var(--color-success-surface)] text-[var(--color-text-success)] hover:opacity-90',
                                   opt.status === 'CHANGES_REQUESTED' &&
@@ -207,7 +207,7 @@ function ReviewTab({
                           <button
                             type="button"
                             onClick={() => setExpandedId(null)}
-                            className="ml-auto B3-Reg text-[var(--color-text-placeholder)] hover:text-[var(--color-text-secondary)]"
+                            className="ml-auto text-ds-sm text-[var(--color-text-placeholder)] hover:text-[var(--color-text-secondary)]"
                           >
                             Cancel
                           </button>
@@ -217,7 +217,7 @@ function ReviewTab({
                       <button
                         type="button"
                         onClick={() => setExpandedId(review.id)}
-                        className="B3-Reg font-medium text-[var(--color-interactive)] transition-colors hover:underline"
+                        className="text-ds-sm font-medium text-[var(--color-interactive)] transition-colors hover:underline"
                       >
                         Respond
                       </button>
@@ -226,7 +226,7 @@ function ReviewTab({
                 )}
 
                 {/* Timestamp */}
-                <p className="mt-ds-03 B4-Reg text-[var(--color-text-placeholder)]">
+                <p className="mt-ds-03 text-ds-xs text-[var(--color-text-placeholder)]">
                   {formatDate(review.createdAt)}
                 </p>
               </div>
@@ -250,7 +250,7 @@ function ReviewTab({
       >
         <button
           type="button"
-          className="mt-ds-04 inline-flex items-center gap-ds-02b rounded-[var(--radius-lg)] px-ds-03 py-ds-02b B2-Reg text-[var(--color-text-placeholder)] transition-colors hover:bg-[var(--color-field)] hover:text-[var(--color-text-secondary)]"
+          className="mt-ds-04 inline-flex items-center gap-ds-02b rounded-[var(--radius-lg)] px-ds-03 py-ds-02b text-ds-md text-[var(--color-text-placeholder)] transition-colors hover:bg-[var(--color-field)] hover:text-[var(--color-text-secondary)]"
         >
           <IconPlus className="h-[var(--icon-sm)] w-[var(--icon-sm)]" stroke={1.5} />
           Request Review

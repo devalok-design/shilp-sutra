@@ -14,13 +14,13 @@ export function StreamingText({ text }: { text: string }) {
               return <code className={className}>{children}</code>
             }
             return (
-              <code className="rounded bg-[var(--color-field)] px-ds-02 py-0.5 B2-Reg">
+              <code className="rounded bg-[var(--color-field)] px-ds-02 py-0.5 text-ds-md">
                 {children}
               </code>
             )
           },
           pre: ({ children }) => (
-            <pre className="mb-ds-03 overflow-x-auto rounded-[var(--radius-lg)] bg-[var(--color-field)] p-ds-04 B2-Reg">
+            <pre className="mb-ds-03 overflow-x-auto rounded-[var(--radius-lg)] bg-[var(--color-field)] p-ds-04 text-ds-md">
               {children}
             </pre>
           ),

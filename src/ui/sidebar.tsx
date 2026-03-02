@@ -442,7 +442,7 @@ const SidebarGroupLabel = forwardRef<
       ref={ref}
       data-sidebar="group-label"
       className={cn(
-        'flex h-8 shrink-0 items-center rounded-[var(--radius-md)] px-ds-03 B3-Reg font-medium text-[var(--color-text-secondary)] outline-none ring-[var(--color-focus)] transition-[margin,opa] duration-[var(--duration-moderate)] ease-linear focus-visible:ring-2 [&>svg]:size-4 [&>svg]:shrink-0',
+        'flex h-8 shrink-0 items-center rounded-[var(--radius-md)] px-ds-03 text-ds-sm font-medium text-[var(--color-text-secondary)] outline-none ring-[var(--color-focus)] transition-[margin,opa] duration-[var(--duration-moderate)] ease-linear focus-visible:ring-2 [&>svg]:size-4 [&>svg]:shrink-0',
         'group-data-[collapsible=icon]:-mt-8 group-data-[collapsible=icon]:opacity-0',
         className,
       )}
@@ -479,7 +479,7 @@ const SidebarGroupContent = forwardRef<HTMLDivElement, ComponentProps<'div'>>(
     <div
       ref={ref}
       data-sidebar="group-content"
-      className={cn('w-full B2-Reg', className)}
+      className={cn('w-full text-ds-md', className)}
       {...props}
     />
   ),
@@ -511,7 +511,7 @@ const SidebarMenuItem = forwardRef<HTMLLIElement, ComponentProps<'li'>>(
 SidebarMenuItem.displayName = 'SidebarMenuItem'
 
 const sidebarMenuButtonVariants = cva(
-  'peer/menu-button hover:bg-[var(--color-layer-02)] active:bg-[var(--color-interactive-subtle)] data-[active=true]:bg-[var(--color-interactive-subtle)] data-[state=open]:hover:bg-[var(--color-layer-02)] flex w-full items-center gap-ds-03 overflow-hidden rounded-[var(--radius-md)] p-ds-03 text-left B2-Reg outline-none ring-[var(--color-focus)] transition-[width,height,padding] hover:text-[var(--color-text-primary)] focus-visible:ring-2 active:text-[var(--color-text-primary)] disabled:pointer-events-none disabled:opacity-50 group-has-[[data-sidebar=menu-action]]/menu-item:pr-ds-07 aria-disabled:pointer-events-none aria-disabled:opacity-50 data-[active=true]:font-medium data-[active=true]:text-[var(--color-text-primary)] data-[state=open]:hover:text-[var(--color-text-primary)] group-data-[collapsible=icon]:!size-8 group-data-[collapsible=icon]:!p-ds-03 [&>span:last-child]:truncate [&>svg]:size-4 [&>svg]:shrink-0',
+  'peer/menu-button hover:bg-[var(--color-layer-02)] active:bg-[var(--color-interactive-subtle)] data-[active=true]:bg-[var(--color-interactive-subtle)] data-[state=open]:hover:bg-[var(--color-layer-02)] flex w-full items-center gap-ds-03 overflow-hidden rounded-[var(--radius-md)] p-ds-03 text-left text-ds-md outline-none ring-[var(--color-focus)] transition-[width,height,padding] hover:text-[var(--color-text-primary)] focus-visible:ring-2 active:text-[var(--color-text-primary)] disabled:pointer-events-none disabled:opacity-50 group-has-[[data-sidebar=menu-action]]/menu-item:pr-ds-07 aria-disabled:pointer-events-none aria-disabled:opacity-50 data-[active=true]:font-medium data-[active=true]:text-[var(--color-text-primary)] data-[state=open]:hover:text-[var(--color-text-primary)] group-data-[collapsible=icon]:!size-8 group-data-[collapsible=icon]:!p-ds-03 [&>span:last-child]:truncate [&>svg]:size-4 [&>svg]:shrink-0',
   {
     variants: {
       variant: {
@@ -521,9 +521,9 @@ const sidebarMenuButtonVariants = cva(
           'hover:bg-[var(--color-layer-02)] bg-[var(--color-background)] shadow-[0_0_0_1px_var(--color-border-subtle)] hover:text-[var(--color-text-primary)] hover:shadow-[0_0_0_1px_var(--color-border-strong)]',
       },
       size: {
-        md: 'h-8 B2-Reg',
-        sm: 'h-7 B3-Reg',
-        lg: 'h-12 B2-Reg group-data-[collapsible=icon]:!p-0',
+        md: 'h-8 text-ds-md',
+        sm: 'h-7 text-ds-sm',
+        lg: 'h-12 text-ds-md group-data-[collapsible=icon]:!p-0',
       },
     },
     defaultVariants: {
@@ -628,7 +628,7 @@ const SidebarMenuBadge = forwardRef<HTMLDivElement, ComponentProps<'div'>>(
       ref={ref}
       data-sidebar="menu-badge"
       className={cn(
-        'pointer-events-none absolute right-ds-02 flex h-5 min-w-5 select-none items-center justify-center rounded-[var(--radius-md)] px-ds-02 B3-Reg font-medium tabular-nums text-[var(--color-text-primary)]',
+        'pointer-events-none absolute right-ds-02 flex h-5 min-w-5 select-none items-center justify-center rounded-[var(--radius-md)] px-ds-02 text-ds-sm font-medium tabular-nums text-[var(--color-text-primary)]',
         'peer-hover/menu-button:text-[var(--color-text-primary)] peer-data-[active=true]/menu-button:text-[var(--color-text-primary)]',
         'peer-data-[size=sm]/menu-button:top-1',
         'peer-data-[size=md]/menu-button:top-1.5',
@@ -719,8 +719,8 @@ const SidebarMenuSubButton = forwardRef<
       className={cn(
         'hover:bg-[var(--color-layer-02)] active:bg-[var(--color-interactive-subtle)] flex h-7 min-w-0 -translate-x-px items-center gap-ds-03 overflow-hidden rounded-[var(--radius-md)] px-ds-03 text-[var(--color-text-primary)] outline-none ring-[var(--color-focus)] hover:text-[var(--color-text-primary)] focus-visible:ring-2 active:text-[var(--color-text-primary)] disabled:pointer-events-none disabled:opacity-50 aria-disabled:pointer-events-none aria-disabled:opacity-50 [&>span:last-child]:truncate [&>svg]:size-4 [&>svg]:shrink-0 [&>svg]:text-[var(--color-text-primary)]',
         'data-[active=true]:bg-[var(--color-interactive-subtle)] data-[active=true]:text-[var(--color-text-primary)]',
-        size === 'sm' && 'B3-Reg',
-        size === 'md' && 'B2-Reg',
+        size === 'sm' && 'text-ds-sm',
+        size === 'md' && 'text-ds-md',
         'group-data-[collapsible=icon]:hidden',
         className,
       )}

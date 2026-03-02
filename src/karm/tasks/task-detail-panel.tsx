@@ -275,13 +275,13 @@ function TaskDetailPanel({
                   onChange={(e) => setTitleValue(e.target.value)}
                   onBlur={handleTitleBlur}
                   onKeyDown={handleTitleKeyDown}
-                  className="w-full bg-transparent T7-Reg font-semibold text-[var(--color-text-primary)] outline-none"
+                  className="w-full bg-transparent text-ds-lg font-semibold text-[var(--color-text-primary)] outline-none"
                 />
               ) : (
                 <h2
                   onClick={clientMode ? undefined : () => setEditingTitle(true)}
                   className={cn(
-                    'T7-Reg font-semibold text-[var(--color-text-primary)]',
+                    'text-ds-lg font-semibold text-[var(--color-text-primary)]',
                     !clientMode && 'cursor-text hover:text-[var(--color-interactive)] transition-colors',
                   )}
                 >
@@ -289,7 +289,7 @@ function TaskDetailPanel({
                 </h2>
               )}
               {task.parentTaskId && (
-                <p className="mt-ds-02 B3-Reg text-[var(--color-text-placeholder)]">
+                <p className="mt-ds-02 text-ds-sm text-[var(--color-text-placeholder)]">
                   Subtask
                 </p>
               )}

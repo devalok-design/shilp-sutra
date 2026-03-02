@@ -261,7 +261,7 @@ function ActivityTab({ activities, className }: ActivityTabProps) {
 
               {/* Content */}
               <div className="flex-1 min-w-0 pt-0.5">
-                <p className="B3-Reg">
+                <p className="text-ds-sm">
                   <span className="font-medium text-[var(--color-text-primary)]">
                     {actorName}
                   </span>
@@ -269,7 +269,7 @@ function ActivityTab({ activities, className }: ActivityTabProps) {
                     {' '}{description}
                   </span>
                 </p>
-                <p className="mt-0.5 B4-Reg text-[var(--color-text-placeholder)]">
+                <p className="mt-0.5 text-ds-xs text-[var(--color-text-placeholder)]">
                   {formatTimestamp(entry.timestamp)}
                 </p>
               </div>

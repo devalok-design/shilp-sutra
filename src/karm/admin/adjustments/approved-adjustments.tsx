@@ -27,7 +27,7 @@ function ApprovedAdjustments({
       <div className="bg-[var(--color-layer-02)] pb-[24px] pl-[16px] pt-[8px] md:p-ds-05">
         <div className="no-scrollbar w-full overflow-x-auto overflow-y-auto">
           <div className="min-w-[800px] max-md:w-[max-content]">
-            <div className="L3 sticky top-0 grid grid-cols-[200px_160px_80px_1fr_1fr_1fr] gap-ds-05 py-ds-03 uppercase text-[var(--color-text-placeholder)] sm:px-ds-06">
+            <div className="text-ds-sm font-semibold uppercase tracking-wider sticky top-0 grid grid-cols-[200px_160px_80px_1fr_1fr_1fr] gap-ds-05 py-ds-03  text-[var(--color-text-placeholder)] sm:px-ds-06">
               <div className="p-[10px] pl-ds-04">User</div>
               <div className="p-[10px] pl-ds-04">Date</div>
               <div className="p-[10px] text-center">Days</div>
@@ -35,7 +35,7 @@ function ApprovedAdjustments({
               <div className="p-[10px]">Reason</div>
               <div className="p-[10px]">Approved By</div>
             </div>
-            <div className="P3 no-scrollbar overflow-y-auto md:max-h-[414px] max-md:h-[calc(100vh-366px)] max-md:max-h-[calc(100vh-366px)] max-md:overflow-visible max-md:overflow-y-auto max-md:overflow-x-visible">
+            <div className="text-ds-md no-scrollbar overflow-y-auto md:max-h-[414px] max-md:h-[calc(100vh-366px)] max-md:max-h-[calc(100vh-366px)] max-md:overflow-visible max-md:overflow-y-auto max-md:overflow-x-visible">
               {adjustments.length === 0 ? (
                 <div className="flex justify-center p-ds-05 text-[var(--color-text-tertiary)]">
                   No approved adjustments found

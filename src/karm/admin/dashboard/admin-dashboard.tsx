@@ -308,7 +308,7 @@ function AdminDashboardCalendar({
         {cal.activeTimeFrame === 'monthly' &&
           ['SUN', 'MON', 'TUE', 'WED', 'THU', 'FRI', 'SAT'].map((weekDay) => (
             <div key={weekDay} className="pb-ds-03 pt-ds-05 text-center">
-              <span className="L3 uppercase text-[var(--color-text-tertiary)]">
+              <span className="text-ds-sm font-semibold uppercase tracking-wider  text-[var(--color-text-tertiary)]">
                 {weekDay}
               </span>
             </div>
@@ -336,7 +336,7 @@ function AdminDashboardCalendar({
             }
           >
             {cal.activeTimeFrame === 'weekly' && (
-              <span className="L3 mb-ds-03 uppercase text-[var(--color-text-tertiary)]">
+              <span className="text-ds-sm font-semibold uppercase tracking-wider mb-ds-03  text-[var(--color-text-tertiary)]">
                 {day.day}
               </span>
             )}
@@ -559,7 +559,7 @@ function AdminDashboardLeaveRequests({
                 e.key === 'Enter' &&
                 handleRequestTabSwitch('leaveRequest')
               }
-              className={`L3 cursor-pointer px-ds-03 py-ds-04 uppercase ${
+              className={`text-ds-sm font-semibold uppercase tracking-wider cursor-pointer px-ds-03 py-ds-04  ${
                 activeTab === 'leaveRequest'
                   ? 'border-b-[1px] border-b-[var(--color-interactive-hover)] text-[var(--color-text-primary)]'
                   : 'text-[var(--color-text-tertiary)]'
@@ -582,7 +582,7 @@ function AdminDashboardLeaveRequests({
                 e.key === 'Enter' &&
                 handleRequestTabSwitch('attendanceRequest')
               }
-              className={`L3 cursor-pointer px-ds-03 py-ds-04 uppercase ${
+              className={`text-ds-sm font-semibold uppercase tracking-wider cursor-pointer px-ds-03 py-ds-04  ${
                 activeTab === 'attendanceRequest'
                   ? 'border-b-[1px] border-b-[var(--color-interactive-hover)] text-[var(--color-text-primary)]'
                   : 'text-[var(--color-text-tertiary)]'

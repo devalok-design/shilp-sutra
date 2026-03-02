@@ -62,7 +62,7 @@ function BottomNavLink({
       aria-label={item.title}
       aria-current={isActive ? 'page' : undefined}
       className={cn(
-        'flex h-16 max-w-[70px] flex-1 cursor-pointer flex-col items-center gap-ds-02 p-ds-02 pt-0 B3-Reg',
+        'flex h-16 max-w-[70px] flex-1 cursor-pointer flex-col items-center gap-ds-02 p-ds-02 pt-0 text-ds-sm',
         isActive
           ? 'font-semibold text-[var(--color-interactive)]'
           : 'text-[var(--color-text-helper)]',
@@ -130,7 +130,7 @@ const BottomNavbar = React.forwardRef<HTMLElement, BottomNavbarProps>(
             onClick={(e) => e.stopPropagation()}
           >
             <div className="mb-ds-04 flex items-center justify-between">
-              <span className="B2-Semibold text-[var(--color-text-primary)]">
+              <span className="text-ds-md font-semibold text-[var(--color-text-primary)]">
                 More
               </span>
               <button
@@ -148,7 +148,7 @@ const BottomNavbar = React.forwardRef<HTMLElement, BottomNavbarProps>(
                   href={item.href}
                   onClick={() => setShowMore(false)}
                   className={cn(
-                    'flex flex-col items-center gap-ds-02b rounded-[var(--radius-xl)] p-ds-04 B3-Reg transition-colors',
+                    'flex flex-col items-center gap-ds-02b rounded-[var(--radius-xl)] p-ds-04 text-ds-sm transition-colors',
                     isActive(item.href, item.exact)
                       ? 'bg-[var(--color-layer-02)] text-[var(--color-interactive)]'
                       : 'text-[var(--color-text-helper)] hover:bg-[var(--color-layer-02)]',
@@ -189,7 +189,7 @@ const BottomNavbar = React.forwardRef<HTMLElement, BottomNavbarProps>(
             aria-label="More navigation options"
             aria-expanded={showMore}
             className={cn(
-              'flex h-16 max-w-[70px] flex-1 cursor-pointer flex-col items-center gap-ds-02 p-ds-02 pt-0 B3-Reg',
+              'flex h-16 max-w-[70px] flex-1 cursor-pointer flex-col items-center gap-ds-02 p-ds-02 pt-0 text-ds-sm',
               showMore || isMoreActive
                 ? 'font-semibold text-[var(--color-interactive)]'
                 : 'text-[var(--color-text-helper)]',

@@ -76,7 +76,7 @@ export function AvatarStack({
         <DropdownMenu>
           <DropdownMenuTrigger asChild>
             <div
-              className="B2-Semibold flex cursor-pointer items-center justify-center rounded-[var(--radius-full)] border-2 border-[var(--color-layer-02)] bg-[var(--color-layer-03)] text-[var(--color-interactive-hover)]"
+              className="text-ds-md font-semibold flex cursor-pointer items-center justify-center rounded-[var(--radius-full)] border-2 border-[var(--color-layer-02)] bg-[var(--color-layer-03)] text-[var(--color-interactive-hover)]"
               style={{
                 width: size,
                 height: size,
@@ -107,7 +107,7 @@ export function AvatarStack({
                   />
                   <AvatarFallback>{avatar.fallback}</AvatarFallback>
                 </Avatar>
-                <p className="B2-Reg text-[var(--color-text-secondary)]">
+                <p className="text-ds-md text-[var(--color-text-secondary)]">
                   {avatar.name}
                 </p>
               </DropdownMenuItem>

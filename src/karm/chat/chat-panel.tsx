@@ -102,10 +102,10 @@ export function ChatPanel({
                 <button
                   className="flex items-center gap-ds-02b rounded-[var(--radius-lg)] px-ds-03 py-ds-02b transition-colors hover:bg-[var(--color-layer-02)]"
                 >
-                  <span className="B1-Reg text-[var(--color-text-primary)]">
+                  <span className="text-ds-base text-[var(--color-text-primary)]">
                     {selectedAgent?.name}
                   </span>
-                  <span className="B3-Reg text-[var(--color-text-placeholder)]">
+                  <span className="text-ds-sm text-[var(--color-text-placeholder)]">
                     {selectedAgent?.desc}
                   </span>
                   <IconChevronDown className="h-[var(--icon-sm)] w-[var(--icon-sm)] text-[var(--color-text-placeholder)]" />
@@ -123,10 +123,10 @@ export function ChatPanel({
                     }
                   >
                     <div className="flex flex-col">
-                      <span className="B2-Reg text-[var(--color-text-primary)]">
+                      <span className="text-ds-md text-[var(--color-text-primary)]">
                         {agent.name}
                       </span>
-                      <span className="B3-Reg text-[var(--color-text-placeholder)]">
+                      <span className="text-ds-sm text-[var(--color-text-placeholder)]">
                         {agent.desc}
                       </span>
                     </div>

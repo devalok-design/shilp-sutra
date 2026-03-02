@@ -42,7 +42,7 @@ const ProjectCard = React.forwardRef<HTMLDivElement, ProjectCardProps>(
         {...props}
       >
         <div className="mb-ds-04 flex items-start justify-between">
-          <h3 className="font-display B1-Reg font-semibold text-[var(--color-text-primary)]">
+          <h3 className="font-display text-ds-base font-semibold text-[var(--color-text-primary)]">
             {name}
           </h3>
           <Badge variant={statusVariantMap[status]} size="sm">
@@ -50,12 +50,12 @@ const ProjectCard = React.forwardRef<HTMLDivElement, ProjectCardProps>(
           </Badge>
         </div>
         {description && (
-          <p className="mb-ds-05 line-clamp-2 B2-Reg text-[var(--color-text-secondary)]">
+          <p className="mb-ds-05 line-clamp-2 text-ds-md text-[var(--color-text-secondary)]">
             {description}
           </p>
         )}
         <div className="space-y-ds-03">
-          <div className="flex items-center justify-between B3-Reg text-[var(--color-text-helper)]">
+          <div className="flex items-center justify-between text-ds-sm text-[var(--color-text-helper)]">
             <span>
               {completedTasks} / {taskCount} tasks
             </span>

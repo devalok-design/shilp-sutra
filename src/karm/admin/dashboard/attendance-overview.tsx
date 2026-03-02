@@ -136,7 +136,7 @@ export function AttendanceOverview({
                     className="flex w-full flex-col gap-[12px] rounded-[var(--radius-md)] bg-[var(--color-layer-02)] p-[24px] md:rounded-[var(--radius-lg)]"
                   >
                     {usersList?.length > 0 && (
-                      <h2 className="L3 capitalize text-[var(--color-text-tertiary)]">
+                      <h2 className="text-ds-sm font-semibold uppercase tracking-wider capitalize text-[var(--color-text-tertiary)]">
                         {`On Break (${usersList?.length || 0})`}
                       </h2>
                     )}
@@ -169,7 +169,7 @@ export function AttendanceOverview({
                 } max-md:border-0 max-md:p-[16px]`}
                 style={{ minWidth: '200px' }}
               >
-                <h2 className="L3 capitalize text-[var(--color-text-tertiary)]">
+                <h2 className="text-ds-sm font-semibold uppercase tracking-wider capitalize text-[var(--color-text-tertiary)]">
                   {status === 'yetToMark'
                     ? 'Yet to Mark'
                     : status

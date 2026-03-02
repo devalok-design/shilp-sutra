@@ -135,12 +135,12 @@ export function BoardColumn({
             onChange={(e) => setEditName(e.target.value)}
             onBlur={handleRename}
             onKeyDown={handleRenameKeyDown}
-            className="h-7 B2-Semibold"
+            className="h-7 text-ds-md font-semibold"
             autoFocus
           />
         ) : (
           <h3
-            className="B2-Semibold text-[var(--color-text-primary)] truncate"
+            className="text-ds-md font-semibold text-[var(--color-text-primary)] truncate"
             onDoubleClick={() => {
               setEditName(column.name)
               setIsEditing(true)
@@ -150,7 +150,7 @@ export function BoardColumn({
           </h3>
         )}
 
-        <span className="flex h-5 min-w-[20px] items-center justify-center rounded-[var(--radius-full)] bg-[var(--color-field)] px-ds-02b B3-Reg font-medium text-[var(--color-text-tertiary)]">
+        <span className="flex h-5 min-w-[20px] items-center justify-center rounded-[var(--radius-full)] bg-[var(--color-field)] px-ds-02b text-ds-sm font-medium text-[var(--color-text-tertiary)]">
           {column.tasks.length}
         </span>
 
@@ -244,7 +244,7 @@ export function BoardColumn({
         {/* Empty state */}
         {column.tasks.length === 0 && !isAdding && (
           <div className="flex flex-1 items-center justify-center py-ds-07">
-            <p className="B3-Reg text-[var(--color-text-placeholder)]">No tasks</p>
+            <p className="text-ds-sm text-[var(--color-text-placeholder)]">No tasks</p>
           </div>
         )}
       </div>
@@ -261,13 +261,13 @@ export function BoardColumn({
               if (!newTitle.trim()) setIsAdding(false)
             }}
             placeholder="Task title..."
-            className="h-8 B2-Reg"
+            className="h-8 text-ds-md"
             autoFocus
           />
           <div className="mt-ds-02b flex items-center gap-ds-02">
             <Button
               size="sm"
-              className="h-7 bg-[var(--color-interactive)] hover:bg-[var(--color-interactive-hover)] text-[var(--color-text-on-color)] B3-Reg"
+              className="h-7 bg-[var(--color-interactive)] hover:bg-[var(--color-interactive-hover)] text-[var(--color-text-on-color)] text-ds-sm"
               onClick={handleAddTask}
               disabled={!newTitle.trim()}
             >
@@ -276,7 +276,7 @@ export function BoardColumn({
             <Button
               variant="ghost"
               size="sm"
-              className="h-7 B3-Reg"
+              className="h-7 text-ds-sm"
               onClick={() => {
                 setNewTitle('')
                 setIsAdding(false)
@@ -292,7 +292,7 @@ export function BoardColumn({
             setIsAdding(true)
             setTimeout(() => inputRef.current?.focus(), 50)
           }}
-          className="flex items-center gap-ds-02b border-t border-[var(--color-border-subtle)] px-ds-04 py-2.5 B3-Reg text-[var(--color-text-placeholder)] transition-colors hover:bg-[var(--color-field)] hover:text-[var(--color-text-tertiary)]"
+          className="flex items-center gap-ds-02b border-t border-[var(--color-border-subtle)] px-ds-04 py-2.5 text-ds-sm text-[var(--color-text-placeholder)] transition-colors hover:bg-[var(--color-field)] hover:text-[var(--color-text-tertiary)]"
         >
           <IconPlus className="h-3 w-3" />
           Add task

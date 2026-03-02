@@ -70,7 +70,7 @@ const NumberInput = React.forwardRef<HTMLInputElement, NumberInputProps>(
           max={max}
           step={step}
           disabled={disabled}
-          className="B1-Reg font-semibold w-9 border-0 text-center text-[var(--color-text-secondary)] [appearance:textfield] [&::-webkit-inner-spin-button]:appearance-none [&::-webkit-outer-spin-button]:appearance-none"
+          className="text-ds-base font-semibold w-9 border-0 text-center text-[var(--color-text-secondary)] [appearance:textfield] [&::-webkit-inner-spin-button]:appearance-none [&::-webkit-outer-spin-button]:appearance-none"
         />
 
         <button

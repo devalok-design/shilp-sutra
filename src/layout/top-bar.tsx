@@ -126,7 +126,7 @@ const TopBar = React.forwardRef<HTMLDivElement, TopBarProps>(
 
         {/* Desktop page title */}
         {pageTitle && (
-          <h2 className="hidden T7-Reg text-[var(--color-text-primary)] md:block">
+          <h2 className="hidden text-ds-lg text-[var(--color-text-primary)] md:block">
             {pageTitle}
           </h2>
         )}
@@ -199,11 +199,11 @@ const TopBar = React.forwardRef<HTMLDivElement, TopBarProps>(
             >
               {/* User Info */}
               <div className="border-b border-[var(--color-border-default)] px-ds-05 py-ds-04">
-                <p className="B2-Reg text-[var(--color-text-primary)]">
+                <p className="text-ds-md text-[var(--color-text-primary)]">
                   {user.name}
                 </p>
                 {user.email && (
-                  <p className="B3-Reg text-[var(--color-text-placeholder)]">
+                  <p className="text-ds-sm text-[var(--color-text-placeholder)]">
                     {user.email}
                   </p>
                 )}
@@ -214,7 +214,7 @@ const TopBar = React.forwardRef<HTMLDivElement, TopBarProps>(
                 onClick={() => onNavigate?.('/profile')}
               >
                 <IconUser className="h-[var(--icon-sm)] w-[var(--icon-sm)] text-[var(--color-text-secondary)]" />
-                <span className="B2-Reg text-[var(--color-text-secondary)]">
+                <span className="text-ds-md text-[var(--color-text-secondary)]">
                   Profile
                 </span>
               </DropdownMenuItem>
@@ -228,7 +228,7 @@ const TopBar = React.forwardRef<HTMLDivElement, TopBarProps>(
                 ) : (
                   <IconMoon className="h-[var(--icon-sm)] w-[var(--icon-sm)] text-[var(--color-text-secondary)]" />
                 )}
-                <span className="B2-Reg text-[var(--color-text-secondary)]">
+                <span className="text-ds-md text-[var(--color-text-secondary)]">
                   {theme === 'dark' ? 'Light Mode' : 'Dark Mode'}
                 </span>
               </DropdownMenuItem>
@@ -241,7 +241,7 @@ const TopBar = React.forwardRef<HTMLDivElement, TopBarProps>(
                     onClick={onLogout}
                   >
                     <IconLogout className="h-[var(--icon-sm)] w-[var(--icon-sm)] text-[var(--color-error)]" />
-                    <span className="B2-Reg text-[var(--color-error)]">
+                    <span className="text-ds-md text-[var(--color-error)]">
                       Logout
                     </span>
                   </DropdownMenuItem>

@@ -42,14 +42,14 @@ const PageHeader = React.forwardRef<HTMLDivElement, PageHeaderProps>(
                 {crumb.href ? (
                   <a
                     href={crumb.href}
-                    className="B3-Reg text-[var(--color-text-placeholder)] transition-colors hover:text-[var(--color-text-secondary)]"
+                    className="text-ds-sm text-[var(--color-text-placeholder)] transition-colors hover:text-[var(--color-text-secondary)]"
                   >
                     {crumb.label}
                   </a>
                 ) : (
                   <span
                     className={cn(
-                      'B3-Reg',
+                      'text-ds-sm',
                       index === breadcrumbs.length - 1
                         ? 'text-[var(--color-text-primary)]'
                         : 'text-[var(--color-text-placeholder)]',
@@ -67,14 +67,14 @@ const PageHeader = React.forwardRef<HTMLDivElement, PageHeaderProps>(
           <div className="flex flex-col gap-ds-02b">
             <h1
               className={cn(
-                'T5-Reg text-[var(--color-text-primary)]',
+                'text-ds-2xl text-[var(--color-text-primary)]',
                 titleClassName,
               )}
             >
               {title}
             </h1>
             {subtitle && (
-              <p className="B2-Reg text-[var(--color-text-placeholder)]">
+              <p className="text-ds-md text-[var(--color-text-placeholder)]">
                 {subtitle}
               </p>
             )}

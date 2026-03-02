@@ -25,7 +25,7 @@ const DropdownMenuSubTrigger = React.forwardRef<
   <DropdownMenuPrimitive.SubTrigger
     ref={ref}
     className={cn(
-      'flex cursor-default select-none items-center gap-ds-03 rounded-[var(--radius-md)] px-ds-03 py-ds-02b B2-Reg outline-none focus:bg-[var(--color-layer-02)] data-[state=open]:bg-[var(--color-layer-02)] [&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0',
+      'flex cursor-default select-none items-center gap-ds-03 rounded-[var(--radius-md)] px-ds-03 py-ds-02b text-ds-md outline-none focus:bg-[var(--color-layer-02)] data-[state=open]:bg-[var(--color-layer-02)] [&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0',
       inset && 'pl-ds-07',
       className,
     )}
@@ -82,7 +82,7 @@ const DropdownMenuItem = React.forwardRef<
   <DropdownMenuPrimitive.Item
     ref={ref}
     className={cn(
-      'relative flex cursor-default select-none items-center gap-ds-03 rounded-[var(--radius-md)] px-ds-03 py-ds-02b B2-Reg outline-none transition-colors focus:bg-[var(--color-layer-02)] focus:text-[var(--color-text-primary)] data-[disabled]:pointer-events-none data-[disabled]:opacity-50 [&>svg]:size-4 [&>svg]:shrink-0',
+      'relative flex cursor-default select-none items-center gap-ds-03 rounded-[var(--radius-md)] px-ds-03 py-ds-02b text-ds-md outline-none transition-colors focus:bg-[var(--color-layer-02)] focus:text-[var(--color-text-primary)] data-[disabled]:pointer-events-none data-[disabled]:opacity-50 [&>svg]:size-4 [&>svg]:shrink-0',
       inset && 'pl-ds-07',
       className,
     )}
@@ -98,7 +98,7 @@ const DropdownMenuCheckboxItem = React.forwardRef<
   <DropdownMenuPrimitive.CheckboxItem
     ref={ref}
     className={cn(
-      'relative flex cursor-default select-none items-center rounded-[var(--radius-md)] py-ds-02b pl-ds-07 pr-ds-03 B2-Reg outline-none transition-colors focus:bg-[var(--color-layer-02)] focus:text-[var(--color-text-primary)] data-[disabled]:pointer-events-none data-[disabled]:opacity-50',
+      'relative flex cursor-default select-none items-center rounded-[var(--radius-md)] py-ds-02b pl-ds-07 pr-ds-03 text-ds-md outline-none transition-colors focus:bg-[var(--color-layer-02)] focus:text-[var(--color-text-primary)] data-[disabled]:pointer-events-none data-[disabled]:opacity-50',
       className,
     )}
     checked={checked}
@@ -122,7 +122,7 @@ const DropdownMenuRadioItem = React.forwardRef<
   <DropdownMenuPrimitive.RadioItem
     ref={ref}
     className={cn(
-      'relative flex cursor-default select-none items-center rounded-[var(--radius-md)] py-ds-02b pl-ds-07 pr-ds-03 B2-Reg outline-none transition-colors focus:bg-[var(--color-layer-02)] focus:text-[var(--color-text-primary)] data-[disabled]:pointer-events-none data-[disabled]:opacity-50',
+      'relative flex cursor-default select-none items-center rounded-[var(--radius-md)] py-ds-02b pl-ds-07 pr-ds-03 text-ds-md outline-none transition-colors focus:bg-[var(--color-layer-02)] focus:text-[var(--color-text-primary)] data-[disabled]:pointer-events-none data-[disabled]:opacity-50',
       className,
     )}
     {...props}
@@ -146,7 +146,7 @@ const DropdownMenuLabel = React.forwardRef<
   <DropdownMenuPrimitive.Label
     ref={ref}
     className={cn(
-      'px-ds-03 py-ds-02b B2-Semibold',
+      'px-ds-03 py-ds-02b text-ds-md font-semibold',
       inset && 'pl-ds-07',
       className,
     )}
@@ -173,7 +173,7 @@ const DropdownMenuShortcut = ({
 }: React.HTMLAttributes<HTMLSpanElement>) => {
   return (
     <span
-      className={cn('ml-auto B3-Reg opacity-60', className)}
+      className={cn('ml-auto text-ds-sm opacity-60', className)}
       {...props}
     />
   )

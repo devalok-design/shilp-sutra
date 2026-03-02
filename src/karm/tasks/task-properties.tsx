@@ -113,7 +113,7 @@ function PropertyRow({
     >
       <div className="flex w-[120px] shrink-0 items-center gap-ds-03 text-[var(--color-text-placeholder)]">
         <Icon className="h-[var(--icon-sm)] w-[var(--icon-sm)]" stroke={1.5} />
-        <span className="B3-Reg">{label}</span>
+        <span className="text-ds-sm">{label}</span>
       </div>
       <div className="flex-1 min-w-0">{children}</div>
     </div>
@@ -128,7 +128,7 @@ function DefaultPriorityIndicator({ priority }: { priority: string }) {
   return (
     <div className="flex items-center gap-ds-02b">
       <div className={cn('h-2 w-2 rounded-[var(--radius-full)]', PRIORITY_DOT_COLORS[priority])} />
-      <span className="B2-Reg text-[var(--color-text-primary)]">
+      <span className="text-ds-md text-[var(--color-text-primary)]">
         {PRIORITY_LABELS[priority] || priority}
       </span>
     </div>
@@ -218,7 +218,7 @@ function TaskProperties({
       {/* Column */}
       <PropertyRow icon={IconColumns3} label="Column">
         {readOnly && !editableFields?.includes('columnId') ? (
-          <span className="px-ds-03 py-ds-02 B2-Reg text-[var(--color-text-primary)]">
+          <span className="px-ds-03 py-ds-02 text-ds-md text-[var(--color-text-primary)]">
             {task.column.name}
           </span>
         ) : (
@@ -226,7 +226,7 @@ function TaskProperties({
             <PopoverTrigger asChild>
               <button
                 type="button"
-                className="inline-flex items-center gap-ds-02b rounded-[var(--radius-md)] px-ds-03 py-ds-02 B2-Reg text-[var(--color-text-primary)] transition-colors hover:bg-[var(--color-field)]"
+                className="inline-flex items-center gap-ds-02b rounded-[var(--radius-md)] px-ds-03 py-ds-02 text-ds-md text-[var(--color-text-primary)] transition-colors hover:bg-[var(--color-field)]"
               >
                 <span>{task.column.name}</span>
                 <IconChevronDown className="h-3 w-3 text-[var(--color-text-placeholder)]" />
@@ -243,7 +243,7 @@ function TaskProperties({
                   type="button"
                   onClick={() => handleColumnChange(col.id)}
                   className={cn(
-                    'flex w-full items-center gap-ds-03 rounded-[var(--radius-md)] px-2.5 py-ds-02b text-left B2-Reg transition-colors',
+                    'flex w-full items-center gap-ds-03 rounded-[var(--radius-md)] px-2.5 py-ds-02b text-left text-ds-md transition-colors',
                     'hover:bg-[var(--color-field)]',
                     col.id === task.columnId
                       ? 'text-[var(--color-interactive)]'
@@ -283,12 +283,12 @@ function TaskProperties({
                       {getInitials(task.owner.name)}
                     </AvatarFallback>
                   </Avatar>
-                  <span className="B2-Reg text-[var(--color-text-primary)]">
+                  <span className="text-ds-md text-[var(--color-text-primary)]">
                     {task.owner.name}
                   </span>
                 </>
               ) : (
-                <span className="B2-Reg text-[var(--color-text-placeholder)]">
+                <span className="text-ds-md text-[var(--color-text-placeholder)]">
                   No owner
                 </span>
               )}
@@ -313,7 +313,7 @@ function TaskProperties({
                   {getInitials(a.user.name)}
                 </AvatarFallback>
               </Avatar>
-              <span className="B3-Reg text-[var(--color-text-secondary)]">
+              <span className="text-ds-sm text-[var(--color-text-secondary)]">
                 {a.user.name.split(' ')[0]}
               </span>
               {!readOnly && (
@@ -343,7 +343,7 @@ function TaskProperties({
             </MemberPicker>
           )}
           {readOnly && task.assignees.length === 0 && (
-            <span className="B2-Reg text-[var(--color-text-placeholder)]">
+            <span className="text-ds-md text-[var(--color-text-placeholder)]">
               None
             </span>
           )}
@@ -392,14 +392,14 @@ function TaskProperties({
               value: task.dueDate ? new Date(task.dueDate) : null,
               onChange: handleDueDateChange,
               placeholder: 'No due date',
-              className: 'h-7 border-none bg-transparent px-ds-03 B2-Reg hover:bg-[var(--color-field)]',
+              className: 'h-7 border-none bg-transparent px-ds-03 text-ds-md hover:bg-[var(--color-field)]',
             })
           ) : (
             <input
               type="date"
               value={task.dueDate ? new Date(task.dueDate).toISOString().split('T')[0] : ''}
               onChange={(e) => handleDueDateChange(e.target.value ? new Date(e.target.value) : null)}
-              className="h-7 border-none bg-transparent px-ds-03 B2-Reg text-[var(--color-text-primary)] outline-none hover:bg-[var(--color-field)] rounded-[var(--radius-md)]"
+              className="h-7 border-none bg-transparent px-ds-03 text-ds-md text-[var(--color-text-primary)] outline-none hover:bg-[var(--color-field)] rounded-[var(--radius-md)]"
             />
           )}
           {task.dueDate && (
@@ -420,7 +420,7 @@ function TaskProperties({
           {task.labels.map((label) => (
             <span
               key={label}
-              className="inline-flex items-center gap-ds-02 rounded-[var(--radius-full)] bg-[var(--color-interactive)]/10 px-ds-03 py-0.5 B3-Reg font-medium text-[var(--color-interactive)]"
+              className="inline-flex items-center gap-ds-02 rounded-[var(--radius-full)] bg-[var(--color-interactive)]/10 px-ds-03 py-0.5 text-ds-sm font-medium text-[var(--color-interactive)]"
             >
               {label}
               {!readOnly && (
@@ -450,7 +450,7 @@ function TaskProperties({
                   }}
                   onBlur={handleAddLabel}
                   placeholder="Label name"
-                  className="h-5 w-20 rounded border border-[var(--color-border-default)] bg-transparent px-ds-02b B3-Reg text-[var(--color-text-primary)] outline-none placeholder:text-[var(--color-text-placeholder)] focus:border-[var(--color-border-subtle)]"
+                  className="h-5 w-20 rounded border border-[var(--color-border-default)] bg-transparent px-ds-02b text-ds-sm text-[var(--color-text-primary)] outline-none placeholder:text-[var(--color-text-placeholder)] focus:border-[var(--color-border-subtle)]"
                   autoFocus
                 />
               </div>
@@ -465,7 +465,7 @@ function TaskProperties({
             )
           )}
           {readOnly && task.labels.length === 0 && (
-            <span className="B2-Reg text-[var(--color-text-placeholder)]">
+            <span className="text-ds-md text-[var(--color-text-placeholder)]">
               None
             </span>
           )}
@@ -479,7 +479,7 @@ function TaskProperties({
             type="button"
             onClick={handleVisibilityToggle}
             className={cn(
-              'inline-flex items-center gap-ds-02b rounded-[var(--radius-full)] px-2.5 py-0.5 B3-Reg font-semibold tracking-wide transition-colors',
+              'inline-flex items-center gap-ds-02b rounded-[var(--radius-full)] px-2.5 py-0.5 text-ds-sm font-semibold tracking-wide transition-colors',
               task.visibility === 'EVERYONE'
                 ? 'bg-[var(--color-success-surface)] text-[var(--color-text-success)]'
                 : 'bg-[var(--color-layer-02)] text-[var(--color-text-tertiary)]',

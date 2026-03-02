@@ -144,7 +144,7 @@ export default function NotificationPreferences({
     <>
       <Card className={className}>
         <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-ds-04">
-          <CardTitle className="B2-Semibold">
+          <CardTitle className="text-ds-md font-semibold">
             Notification Preferences
           </CardTitle>
           <Button
@@ -163,7 +163,7 @@ export default function NotificationPreferences({
             </div>
           ) : preferences.length === 0 ? (
             <div className="py-ds-07 text-center">
-              <p className="B2-Reg text-[var(--color-text-placeholder)]">
+              <p className="text-ds-md text-[var(--color-text-placeholder)]">
                 No custom preferences set. All notifications are delivered by
                 default.
               </p>
@@ -191,10 +191,10 @@ export default function NotificationPreferences({
 
                     {/* Info */}
                     <div className="min-w-0 flex-1">
-                      <p className="B2-Reg font-medium text-[var(--color-text-primary)]">
+                      <p className="text-ds-md font-medium text-[var(--color-text-primary)]">
                         {channelInfo.label}
                       </p>
-                      <p className="B3-Reg text-[var(--color-text-placeholder)]">
+                      <p className="text-ds-sm text-[var(--color-text-placeholder)]">
                         {getProjectName(pref.projectId)}
                       </p>
                     </div>
@@ -204,7 +204,7 @@ export default function NotificationPreferences({
                       value={pref.minTier}
                       onValueChange={(v) => onUpdateTier?.(pref, v)}
                     >
-                      <SelectTrigger className="h-7 w-[130px] B3-Reg">
+                      <SelectTrigger className="h-7 w-[130px] text-ds-sm">
                         <SelectValue />
                       </SelectTrigger>
                       <SelectContent>
@@ -218,7 +218,7 @@ export default function NotificationPreferences({
 
                     {/* Muted toggle */}
                     <div className="flex items-center gap-ds-02b">
-                      <span className="B3-Reg text-[var(--color-text-placeholder)]">
+                      <span className="text-ds-sm text-[var(--color-text-placeholder)]">
                         {pref.muted ? 'Muted' : 'Active'}
                       </span>
                       <Switch
@@ -255,7 +255,7 @@ export default function NotificationPreferences({
           </DialogHeader>
           <div className="flex flex-col gap-ds-05 pt-ds-03">
             <div className="flex flex-col gap-ds-02b">
-              <label className="B3-Reg font-medium text-[var(--color-text-secondary)]">
+              <label className="text-ds-sm font-medium text-[var(--color-text-secondary)]">
                 Scope
               </label>
               <Select value={newProjectId} onValueChange={setNewProjectId}>
@@ -276,7 +276,7 @@ export default function NotificationPreferences({
             </div>
 
             <div className="flex flex-col gap-ds-02b">
-              <label className="B3-Reg font-medium text-[var(--color-text-secondary)]">
+              <label className="text-ds-sm font-medium text-[var(--color-text-secondary)]">
                 Channel
               </label>
               <Select value={newChannel} onValueChange={setNewChannel}>
@@ -291,7 +291,7 @@ export default function NotificationPreferences({
             </div>
 
             <div className="flex flex-col gap-ds-02b">
-              <label className="B3-Reg font-medium text-[var(--color-text-secondary)]">
+              <label className="text-ds-sm font-medium text-[var(--color-text-secondary)]">
                 Minimum Tier
               </label>
               <Select value={newMinTier} onValueChange={setNewMinTier}>
@@ -309,7 +309,7 @@ export default function NotificationPreferences({
             </div>
 
             <div className="flex items-center justify-between">
-              <label className="B2-Reg text-[var(--color-text-primary)]">
+              <label className="text-ds-md text-[var(--color-text-primary)]">
                 Mute this channel
               </label>
               <Switch checked={newMuted} onCheckedChange={setNewMuted} />

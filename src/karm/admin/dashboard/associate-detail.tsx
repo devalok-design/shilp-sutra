@@ -101,7 +101,7 @@ function AttendanceStatus({
 
   return (
     <div className="flex w-full flex-col items-center justify-center px-[16px] py-[32px] sm:px-ds-05 sm:py-ds-06 md:px-ds-06 md:py-ds-05 md:pr-0">
-      <p className="L3 mb-ds-06 uppercase text-[var(--color-text-tertiary)]">
+      <p className="text-ds-sm font-semibold uppercase tracking-wider mb-ds-06  text-[var(--color-text-tertiary)]">
         Attendance status
       </p>
       <div className="mb-ds-04 flex w-full items-center justify-center gap-ds-03 rounded-3xl border border-[var(--color-border-subtle)] px-ds-05 py-3.5 text-center">
@@ -119,19 +119,19 @@ function AttendanceStatus({
           ></div>
         )}
         {!timeIn && status !== 'HOLIDAY' && status !== 'WEEKEND' && (
-          <span className="B2-Reg text-[var(--color-text-tertiary)]">
+          <span className="text-ds-md text-[var(--color-text-tertiary)]">
             Not marked
           </span>
         )}
         {!!timeIn && status === 'ABSENT' && (
-          <span className="B2-Reg text-[var(--color-text-tertiary)]">
+          <span className="text-ds-md text-[var(--color-text-tertiary)]">
             Removed
           </span>
         )}
       </div>
 
       {timeIn && (
-        <p className="B2-Reg m-0 text-center text-[var(--color-text-disabled)]">
+        <p className="text-ds-md m-0 text-center text-[var(--color-text-disabled)]">
           Marked at {timeIn}
         </p>
       )}
@@ -153,15 +153,15 @@ function AttendanceEditDialog({
   return (
     <DialogContent className="sm:max-w-md">
       <DialogHeader>
-        <div className="B2-Reg text-[var(--color-text-tertiary)]">
+        <div className="text-ds-md text-[var(--color-text-tertiary)]">
           Edit attendance of{' '}
-          <span className="B2-Bold semibold text-[var(--color-interactive)]">
+          <span className="text-ds-md font-bold semibold text-[var(--color-interactive)]">
             {selectedAssociate.name}
           </span>
         </div>
       </DialogHeader>
       <div className="flex flex-col items-center justify-start">
-        <div className="T7-Reg mb-ds-05 text-[var(--color-interactive)]">
+        <div className="text-ds-lg mb-ds-05 text-[var(--color-interactive)]">
           {format(new Date(selectedDate), "dd MMMM ''yy")}
         </div>
         <div className="mb-ds-04 flex w-full items-center justify-center gap-ds-03 rounded-3xl border border-[var(--color-border-subtle)] px-ds-05 py-3.5 text-center font-semibold text-[var(--color-interactive)]">
@@ -294,12 +294,12 @@ export function AssociateDetail({
             fnsStartOfDay(new Date()),
           )) ? (
         <div className="flex w-full flex-col items-center justify-center p-ds-06">
-          <p className="L3 mb-ds-05 uppercase text-[var(--color-text-tertiary)]">
+          <p className="text-ds-sm font-semibold uppercase tracking-wider mb-ds-05  text-[var(--color-text-tertiary)]">
             COMMENT
           </p>
           <div className="flex w-full items-center justify-between rounded-[8px] border border-[var(--color-border-default)] bg-[var(--color-layer-01)] px-ds-05 max-md:h-[48px]">
             <input
-              className="B2-Reg flex-1 border-none py-ds-03 text-[var(--color-text-primary)] outline-none"
+              className="text-ds-md flex-1 border-none py-ds-03 text-[var(--color-text-primary)] outline-none"
               defaultValue="Don't miss next time :)"
             />
             <IconButton
@@ -320,7 +320,7 @@ export function AssociateDetail({
         </div>
       ) : (
         <div className="mb-auto flex w-full flex-col md:pr-[24px]">
-          <p className="L3 mb-ds-06 uppercase text-[var(--color-interactive)]">
+          <p className="text-ds-sm font-semibold uppercase tracking-wider mb-ds-06  text-[var(--color-interactive)]">
             Tasks for the day
           </p>
 
@@ -371,7 +371,7 @@ export function AssociateDetail({
                       )}
                     </div>
                     <p
-                      className={`P7 flex-1 overflow-hidden hyphens-auto break-all pr-ds-05 ${
+                      className={`text-ds-md flex-1 overflow-hidden hyphens-auto break-all pr-ds-05 ${
                         task.status === 'COMPLETED'
                           ? 'text-[var(--color-text-disabled)] line-through'
                           : 'text-[var(--color-text-secondary)]'
@@ -393,7 +393,7 @@ export function AssociateDetail({
                     <AddIcon />
                   </button>
                   <textarea
-                    className="B2-Reg flex w-full resize-none items-center border-none bg-transparent !leading-6 text-[var(--color-text-secondary)] outline-none placeholder:leading-6"
+                    className="text-ds-md flex w-full resize-none items-center border-none bg-transparent !leading-6 text-[var(--color-text-secondary)] outline-none placeholder:leading-6"
                     placeholder="Add a task"
                     value={newTaskName}
                     onChange={(e) => setNewTaskName(e.target.value)}

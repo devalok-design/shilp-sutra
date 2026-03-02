@@ -64,7 +64,7 @@ export function ConversationList({
     <div className="flex flex-1 flex-col overflow-hidden">
       {/* Header */}
       <div className="flex items-center justify-between border-b border-[var(--color-border-default)] px-ds-05 py-ds-04">
-        <h3 className="B1-Reg text-[var(--color-text-primary)]">
+        <h3 className="text-ds-base text-[var(--color-text-primary)]">
           Conversations
         </h3>
         <button
@@ -72,7 +72,7 @@ export function ConversationList({
           className="flex items-center gap-ds-02b rounded-[var(--radius-lg)] px-2.5 py-ds-02b text-[var(--color-text-secondary)] transition-colors hover:bg-[var(--color-layer-02)]"
         >
           <IconMessagePlus className="h-[var(--icon-sm)] w-[var(--icon-sm)]" />
-          <span className="B3-Reg">New Chat</span>
+          <span className="text-ds-sm">New Chat</span>
         </button>
       </div>
 
@@ -85,7 +85,7 @@ export function ConversationList({
         ) : conversations.length === 0 ? (
           <div className="flex flex-col items-center justify-center gap-ds-03 py-12">
             <IconMessage className="h-8 w-8 text-[var(--color-text-placeholder)]" />
-            <p className="B2-Reg text-[var(--color-text-placeholder)]">
+            <p className="text-ds-md text-[var(--color-text-placeholder)]">
               No conversations yet
             </p>
           </div>
@@ -104,10 +104,10 @@ export function ConversationList({
                   onClick={() => onSelect(convo.id)}
                   className="flex min-w-0 flex-1 flex-col gap-0.5 text-left"
                 >
-                  <p className="B2-Reg truncate text-[var(--color-text-primary)]">
+                  <p className="text-ds-md truncate text-[var(--color-text-primary)]">
                     {convo.title || 'Untitled conversation'}
                   </p>
-                  <p className="B3-Reg text-[var(--color-text-placeholder)]">
+                  <p className="text-ds-sm text-[var(--color-text-placeholder)]">
                     {formatRelativeTime(convo.updatedAt)}
                   </p>
                 </button>

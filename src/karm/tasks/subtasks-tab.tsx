@@ -100,7 +100,7 @@ function SubtasksTab({
       {totalCount > 0 && (
         <div className="mb-ds-05 flex items-center gap-ds-04">
           <Progress value={totalCount > 0 ? (completedCount / totalCount) * 100 : 0} className="h-1.5" />
-          <span className="shrink-0 B3-Reg font-medium text-[var(--color-text-placeholder)]">
+          <span className="shrink-0 text-ds-sm font-medium text-[var(--color-text-placeholder)]">
             {completedCount}/{totalCount}
           </span>
         </div>
@@ -153,7 +153,7 @@ function SubtasksTab({
                 {/* Title */}
                 <span
                   className={cn(
-                    'flex-1 truncate B2-Reg',
+                    'flex-1 truncate text-ds-md',
                     isComplete
                       ? 'text-[var(--color-text-placeholder)] line-through'
                       : 'text-[var(--color-text-primary)]',
@@ -202,13 +202,13 @@ function SubtasksTab({
                 if (!newTitle.trim()) setIsAdding(false)
               }}
               placeholder="Subtask title..."
-              className="flex-1 bg-transparent B2-Reg text-[var(--color-text-primary)] placeholder:text-[var(--color-text-placeholder)] outline-none"
+              className="flex-1 bg-transparent text-ds-md text-[var(--color-text-primary)] placeholder:text-[var(--color-text-placeholder)] outline-none"
             />
             <button
               type="button"
               onClick={handleSubmit}
               disabled={!newTitle.trim()}
-              className="inline-flex h-6 items-center gap-ds-02 rounded-[var(--radius-md)] bg-[var(--color-interactive)] px-2.5 B3-Reg font-semibold text-[var(--color-text-on-color)] transition-colors hover:bg-[var(--color-interactive-hover)] disabled:opacity-50"
+              className="inline-flex h-6 items-center gap-ds-02 rounded-[var(--radius-md)] bg-[var(--color-interactive)] px-2.5 text-ds-sm font-semibold text-[var(--color-text-on-color)] transition-colors hover:bg-[var(--color-interactive-hover)] disabled:opacity-50"
             >
               Add
             </button>
@@ -217,7 +217,7 @@ function SubtasksTab({
           <button
             type="button"
             onClick={() => setIsAdding(true)}
-            className="mt-ds-03 inline-flex items-center gap-ds-02b rounded-[var(--radius-lg)] px-ds-03 py-ds-02b B2-Reg text-[var(--color-text-placeholder)] transition-colors hover:bg-[var(--color-field)] hover:text-[var(--color-text-secondary)]"
+            className="mt-ds-03 inline-flex items-center gap-ds-02b rounded-[var(--radius-lg)] px-ds-03 py-ds-02b text-ds-md text-[var(--color-text-placeholder)] transition-colors hover:bg-[var(--color-field)] hover:text-[var(--color-text-secondary)]"
           >
             <IconPlus className="h-[var(--icon-sm)] w-[var(--icon-sm)]" stroke={1.5} />
             Add subtask

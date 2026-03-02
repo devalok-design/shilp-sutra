@@ -65,7 +65,7 @@ export function DashboardHeader({
     <div className="mb-ds-06 flex w-full flex-col items-start justify-between md:flex-row md:items-center">
       <div className="flex w-full items-center justify-between gap-ds-05 md:w-auto md:justify-start">
         <DropdownMenu>
-          <DropdownMenuTrigger className="T6-Reg flex items-center gap-ds-03 text-[var(--color-text-secondary)]">
+          <DropdownMenuTrigger className="text-ds-xl flex items-center gap-ds-03 text-[var(--color-text-secondary)]">
             {selectedMonth}
             <FilledArrowIcon />
           </DropdownMenuTrigger>
@@ -79,7 +79,7 @@ export function DashboardHeader({
                 className={`p-0 ${index !== yearsList.length - 1 ? 'border-b border-b-[var(--color-border-default)]' : ''}`}
               >
                 <span
-                  className={`w-full py-ds-04 pl-ds-05 pr-ds-06 ${selectedMonth === year ? 'B2-Semibold bg-[var(--color-interactive)] text-[var(--color-text-on-color)]' : 'B2-Reg text-[var(--color-text-secondary)] hover:bg-[var(--color-layer-02)]'} ${index === 0 ? 'rounded-t-[7px]' : index === yearsList.length - 1 ? 'rounded-b-[7px]' : ''} `}
+                  className={`w-full py-ds-04 pl-ds-05 pr-ds-06 ${selectedMonth === year ? 'text-ds-md font-semibold bg-[var(--color-interactive)] text-[var(--color-text-on-color)]' : 'text-ds-md text-[var(--color-text-secondary)] hover:bg-[var(--color-layer-02)]'} ${index === 0 ? 'rounded-t-[7px]' : index === yearsList.length - 1 ? 'rounded-b-[7px]' : ''} `}
                 >
                   {year.split(' ')[1]}
                 </span>
@@ -99,7 +99,7 @@ export function DashboardHeader({
       <div className="flex w-full items-center justify-between gap-ds-05 md:mt-0 md:w-auto md:justify-start max-md:mt-[17px] max-lg:gap-[0.5rem]">
         <div className="hidden md:flex">
           {selectedAssociate ? (
-            <div className="B2-Reg flex-direction-row flex items-center justify-start rounded-[6px] bg-[var(--color-interactive)] px-[8px] py-[6px] text-[var(--color-text-on-color)]">
+            <div className="text-ds-md flex-direction-row flex items-center justify-start rounded-[6px] bg-[var(--color-interactive)] px-[8px] py-[6px] text-[var(--color-text-on-color)]">
               <div className="flex items-center justify-start gap-0">
                 {userImages[selectedAssociate.id] ? (
                   <img
@@ -115,7 +115,7 @@ export function DashboardHeader({
                   </div>
                 )}
 
-                <span className="B2-Reg ml-[2px] mr-[4px] text-[var(--color-text-on-color)]">
+                <span className="text-ds-md ml-[2px] mr-[4px] text-[var(--color-text-on-color)]">
                   {selectedAssociate.name}
                 </span>
               </div>
@@ -128,10 +128,10 @@ export function DashboardHeader({
             </div>
           ) : (
             <DropdownMenu>
-              <DropdownMenuTrigger className="B2-Reg flex-direction-row hidden items-center justify-between rounded-[6px] border border-[var(--color-border-subtle)] bg-[var(--color-layer-01)] px-ds-03 py-ds-02b md:flex">
+              <DropdownMenuTrigger className="text-ds-md flex-direction-row hidden items-center justify-between rounded-[6px] border border-[var(--color-border-subtle)] bg-[var(--color-layer-01)] px-ds-03 py-ds-02b md:flex">
                 <div className="flex items-center">
                   <PersonIcon className="h-[var(--icon-md)] w-[var(--icon-md)]" />
-                  <span className="B2-Reg ml-[2px] mr-[4px] text-[var(--color-text-secondary)] max-lg:mx-0 max-lg:B3-Reg">
+                  <span className="text-ds-md ml-[2px] mr-[4px] text-[var(--color-text-secondary)] max-lg:mx-0 max-lg:text-ds-sm">
                     Associate
                   </span>
                 </div>
@@ -163,12 +163,12 @@ export function DashboardHeader({
                         />
                       ) : (
                         <div className="flex h-6 w-6 items-center justify-center rounded-[var(--radius-full)] bg-[var(--color-layer-03)]">
-                          <span className="B2-Reg text-[var(--color-interactive)]">
+                          <span className="text-ds-md text-[var(--color-interactive)]">
                             {user.name.charAt(0)}
                           </span>
                         </div>
                       )}
-                      <span className="B2-Reg text-[var(--color-text-secondary)]">
+                      <span className="text-ds-md text-[var(--color-text-secondary)]">
                         {user.name}
                       </span>
                     </DropdownMenuItem>

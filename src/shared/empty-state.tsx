@@ -53,7 +53,7 @@ const EmptyState = React.forwardRef<HTMLDivElement, EmptyStateProps>(
           <h3
             className={cn(
               'text-[var(--color-text-primary)]',
-              compact ? 'B2-Reg semibold' : 'B1-Reg semibold',
+              compact ? 'text-ds-md semibold' : 'text-ds-base semibold',
             )}
           >
             {title}
@@ -62,7 +62,7 @@ const EmptyState = React.forwardRef<HTMLDivElement, EmptyStateProps>(
             <p
               className={cn(
                 'text-[var(--color-text-placeholder)]',
-                compact ? 'B3-Reg' : 'B2-Reg',
+                compact ? 'text-ds-sm' : 'text-ds-md',
               )}
             >
               {description}

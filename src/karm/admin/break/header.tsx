@@ -97,15 +97,15 @@ export function BreakAdminHeader({
       <div className="flex flex-col gap-ds-05">
         {filters.selectedAssociate && (
           <>
-            <p className="L3 text-[var(--color-text-tertiary)]">
+            <p className="text-ds-sm font-semibold uppercase tracking-wider text-[var(--color-text-tertiary)]">
               Break Balance
             </p>
             <div className="flex items-end">
-              <p className="T2-Reg semibold mr-ds-02 text-[var(--color-interactive)]">
+              <p className="text-ds-5xl semibold mr-ds-02 text-[var(--color-interactive)]">
                 {breakBalance?.remainingDays || 0}
               </p>
 
-              <p className="T5-Reg translate-y-[-5px] text-[var(--color-text-placeholder)]">
+              <p className="text-ds-2xl translate-y-[-5px] text-[var(--color-text-placeholder)]">
                 / {breakBalance?.breakBalance || 0}
               </p>
             </div>
@@ -115,7 +115,7 @@ export function BreakAdminHeader({
 
       <header className="flex items-center gap-ds-04">
         {filters.selectedAssociate ? (
-          <div className="B2-Reg flex flex-row items-center justify-start gap-ds-02 rounded-[6px] bg-[var(--color-interactive)] p-ds-02b text-[var(--color-text-on-color)]">
+          <div className="text-ds-md flex flex-row items-center justify-start gap-ds-02 rounded-[6px] bg-[var(--color-interactive)] p-ds-02b text-[var(--color-text-on-color)]">
             <div className="flex items-center justify-start gap-0.5">
               {userImages[filters.selectedAssociate.id] ? (
                 <img
@@ -131,7 +131,7 @@ export function BreakAdminHeader({
                 </div>
               )}
 
-              <span className="B2-Reg mx-0.5 text-[var(--color-text-on-color)]">
+              <span className="text-ds-md mx-0.5 text-[var(--color-text-on-color)]">
                 {filters.selectedAssociate.name}
               </span>
             </div>
@@ -149,10 +149,10 @@ export function BreakAdminHeader({
           </div>
         ) : (
           <DropdownMenu>
-            <DropdownMenuTrigger className="B2-Reg flex flex-row items-center justify-between rounded-[6px] border border-[var(--color-border-subtle)] bg-[var(--color-layer-01)] px-ds-03 py-ds-02b">
+            <DropdownMenuTrigger className="text-ds-md flex flex-row items-center justify-between rounded-[6px] border border-[var(--color-border-subtle)] bg-[var(--color-layer-01)] px-ds-03 py-ds-02b">
               <div className="flex items-center">
                 <PersonIcon className="h-[var(--icon-sm)] w-[var(--icon-sm)]" />
-                <span className="B2-Reg mx-ds-03 text-[var(--color-text-secondary)] max-lg:mx-0 max-lg:B3-Reg">
+                <span className="text-ds-md mx-ds-03 text-[var(--color-text-secondary)] max-lg:mx-0 max-lg:text-ds-sm">
                   Associate
                 </span>
               </div>
@@ -182,12 +182,12 @@ export function BreakAdminHeader({
                         />
                       ) : (
                         <div className="flex h-6 w-6 items-center justify-center rounded-[var(--radius-full)] bg-[var(--color-layer-03)]">
-                          <span className="B2-Reg text-[var(--color-interactive)]">
+                          <span className="text-ds-md text-[var(--color-interactive)]">
                             {user.name.charAt(0)}
                           </span>
                         </div>
                       )}
-                      <span className="B2-Reg text-[var(--color-text-secondary)]">
+                      <span className="text-ds-md text-[var(--color-text-secondary)]">
                         {user.name}
                       </span>
                     </DropdownMenuItem>
@@ -200,7 +200,7 @@ export function BreakAdminHeader({
 
         {/* Date Filter */}
         {filters.dateFilterEnd && (
-          <div className="B2-Reg flex-direction-row flex items-center justify-between rounded-[6px] bg-[var(--color-interactive)] px-ds-03 py-[6px] text-[var(--color-text-on-color)]">
+          <div className="text-ds-md flex-direction-row flex items-center justify-between rounded-[6px] bg-[var(--color-interactive)] px-ds-03 py-[6px] text-[var(--color-text-on-color)]">
             <div className="flex items-center">
               <CalendarIcon />
               <span className="ml-[2px] mr-ds-02">
@@ -232,7 +232,7 @@ export function BreakAdminHeader({
             setFilters((prev) => ({ ...prev, isOpen: open }))
           }}
         >
-          <DropdownMenuTrigger className="B2-Reg flex-direction-row flex items-center justify-between rounded-[6px] border border-[var(--color-border-subtle)] bg-[var(--color-layer-01)] p-ds-02b">
+          <DropdownMenuTrigger className="text-ds-md flex-direction-row flex items-center justify-between rounded-[6px] border border-[var(--color-border-subtle)] bg-[var(--color-layer-01)] p-ds-02b">
             <div className="flex items-center">
               <CalendarDateIcon />
               <span className="mx-ds-03 text-[var(--color-text-secondary)]">
@@ -250,7 +250,7 @@ export function BreakAdminHeader({
                   aria-label="Previous month"
                   onClick={handlePrev}
                 />
-                <span className="B2-Reg text-[var(--color-text-secondary)]">
+                <span className="text-ds-md text-[var(--color-text-secondary)]">
                   {monthMap[filters.currMonth].name}
                 </span>
                 <IconButton
@@ -272,7 +272,7 @@ export function BreakAdminHeader({
                     }))
                   }}
                 />
-                <span className="B2-Reg text-[var(--color-text-secondary)]">
+                <span className="text-ds-md text-[var(--color-text-secondary)]">
                   {filters.currYear}
                 </span>
                 <IconButton

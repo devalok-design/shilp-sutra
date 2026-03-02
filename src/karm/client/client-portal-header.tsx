@@ -50,11 +50,11 @@ const ClientPortalHeader = React.forwardRef<
               className="h-8 w-8 rounded-[var(--radius-md)] object-cover"
             />
           ) : (
-            <div className="flex h-8 w-8 items-center justify-center rounded-[var(--radius-md)] bg-[var(--color-interactive)] B3-Reg font-semibold text-[var(--color-text-on-color)]">
+            <div className="flex h-8 w-8 items-center justify-center rounded-[var(--radius-md)] bg-[var(--color-interactive)] text-ds-sm font-semibold text-[var(--color-text-on-color)]">
               {initials}
             </div>
           )}
-          <span className="font-display B1-Reg font-semibold text-[var(--color-text-primary)]">
+          <span className="font-display text-ds-base font-semibold text-[var(--color-text-primary)]">
             {orgName}
           </span>
         </div>
@@ -63,11 +63,11 @@ const ClientPortalHeader = React.forwardRef<
           <div className="flex items-center gap-ds-03">
             <Avatar className="h-8 w-8">
               {userAvatar && <AvatarImage src={userAvatar} alt={userName} />}
-              <AvatarFallback className="bg-[var(--color-interactive-subtle)] B3-Reg font-medium text-[var(--color-interactive)]">
+              <AvatarFallback className="bg-[var(--color-interactive-subtle)] text-ds-sm font-medium text-[var(--color-interactive)]">
                 {userInitials}
               </AvatarFallback>
             </Avatar>
-            <span className="hidden B2-Reg font-medium text-[var(--color-text-primary)] sm:inline">
+            <span className="hidden text-ds-md font-medium text-[var(--color-text-primary)] sm:inline">
               {userName}
             </span>
           </div>

@@ -70,7 +70,7 @@ export default function DailyBrief({
       >
         <div className="flex items-center gap-ds-03">
           <IconSparkles className="h-[var(--icon-sm)] w-[var(--icon-sm)] text-[var(--color-interactive)]" />
-          <span className="B1-Reg font-semibold text-[var(--color-text-primary)]">
+          <span className="text-ds-base font-semibold text-[var(--color-text-primary)]">
             Morning Brief
           </span>
         </div>
@@ -88,7 +88,7 @@ export default function DailyBrief({
               <div
                 className={`mt-ds-02b h-2 w-2 shrink-0 rounded-[var(--radius-full)] ${DOT_COLORS[index % DOT_COLORS.length]}`}
               />
-              <div className="B2-Reg text-[var(--color-text-secondary)] [&_p]:mb-0 [&_strong]:font-semibold [&_code]:rounded [&_code]:bg-[var(--color-field)] [&_code]:px-1 [&_code]:py-0.5 [&_code]:text-xs [&_a]:text-[var(--color-interactive)] [&_a]:underline">
+              <div className="text-ds-md text-[var(--color-text-secondary)] [&_p]:mb-0 [&_strong]:font-semibold [&_code]:rounded [&_code]:bg-[var(--color-field)] [&_code]:px-1 [&_code]:py-0.5 [&_code]:text-xs [&_a]:text-[var(--color-interactive)] [&_a]:underline">
                 <ReactMarkdown>{item}</ReactMarkdown>
               </div>
             </div>

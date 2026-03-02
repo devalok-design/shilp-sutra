@@ -155,11 +155,11 @@ function FilesTab({
                 type="button"
                 onClick={() => fileInputRef.current?.click()}
                 disabled={isUploading}
-                className="B2-Reg font-medium text-[var(--color-interactive)] transition-colors hover:underline disabled:opacity-50"
+                className="text-ds-md font-medium text-[var(--color-interactive)] transition-colors hover:underline disabled:opacity-50"
               >
                 {isUploading ? 'Uploading...' : 'Click to upload'}
               </button>
-              <span className="B2-Reg text-[var(--color-text-placeholder)]">
+              <span className="text-ds-md text-[var(--color-text-placeholder)]">
                 {' '}or drag and drop
               </span>
             </div>
@@ -193,10 +193,10 @@ function FilesTab({
 
                 {/* File info */}
                 <div className="flex-1 min-w-0">
-                  <p className="truncate B2-Reg font-medium text-[var(--color-text-primary)]">
+                  <p className="truncate text-ds-md font-medium text-[var(--color-text-primary)]">
                     {file.title}
                   </p>
-                  <p className="B3-Reg text-[var(--color-text-placeholder)]">
+                  <p className="text-ds-sm text-[var(--color-text-placeholder)]">
                     {formatFileDate(file.createdAt)}
                     <span className="mx-ds-02b">by</span>
                     {file.uploadedBy.name}

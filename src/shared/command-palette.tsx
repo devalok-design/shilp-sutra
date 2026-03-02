@@ -195,14 +195,14 @@ function CommandPalette({
               onChange={(e) => handleQueryChange(e.target.value)}
               placeholder={placeholder}
               className={cn(
-                'flex-1 bg-transparent B1-Reg text-[var(--color-text-primary)] outline-none',
+                'flex-1 bg-transparent text-ds-base text-[var(--color-text-primary)] outline-none',
                 'placeholder:text-[var(--color-text-placeholder)]',
               )}
               autoComplete="off"
               autoCorrect="off"
               spellCheck={false}
             />
-            <kbd className="hidden shrink-0 select-none rounded-[var(--radius-md)] border border-[var(--color-border-default)] bg-[var(--color-layer-02)] px-ds-02b py-0.5 B3-Reg font-medium text-[var(--color-text-placeholder)] sm:inline-flex">
+            <kbd className="hidden shrink-0 select-none rounded-[var(--radius-md)] border border-[var(--color-border-default)] bg-[var(--color-layer-02)] px-ds-02b py-0.5 text-ds-sm font-medium text-[var(--color-text-placeholder)] sm:inline-flex">
               Esc
             </kbd>
           </div>
@@ -214,7 +214,7 @@ function CommandPalette({
           >
             {filteredGroups.length === 0 && (
               <div className="flex items-center justify-center py-ds-07">
-                <p className="B2-Reg text-[var(--color-text-placeholder)]">
+                <p className="text-ds-md text-[var(--color-text-placeholder)]">
                   {emptyMessage}
                 </p>
               </div>
@@ -223,7 +223,7 @@ function CommandPalette({
             {filteredGroups.map((group) => (
               <div key={group.label} className="mb-ds-02">
                 <div className="px-ds-03 pb-ds-02 pt-ds-03">
-                  <span className="L4 font-medium text-[var(--color-text-placeholder)]">
+                  <span className="text-ds-xs font-semibold uppercase tracking-wider font-medium text-[var(--color-text-placeholder)]">
                     {group.label}
                   </span>
                 </div>
@@ -257,15 +257,15 @@ function CommandPalette({
                         />
                       )}
                       <div className="flex flex-1 flex-col">
-                        <span className="B2-Reg">{item.label}</span>
+                        <span className="text-ds-md">{item.label}</span>
                         {item.description && (
-                          <span className="B3-Reg text-[var(--color-text-placeholder)]">
+                          <span className="text-ds-sm text-[var(--color-text-placeholder)]">
                             {item.description}
                           </span>
                         )}
                       </div>
                       {item.shortcut && (
-                        <kbd className="shrink-0 rounded border border-[var(--color-border-default)] bg-[var(--color-layer-02)] px-ds-02b py-0.5 B4-Reg font-medium text-[var(--color-text-placeholder)]">
+                        <kbd className="shrink-0 rounded border border-[var(--color-border-default)] bg-[var(--color-layer-02)] px-ds-02b py-0.5 text-ds-xs font-medium text-[var(--color-text-placeholder)]">
                           {item.shortcut}
                         </kbd>
                       )}
@@ -293,7 +293,7 @@ function CommandPalette({
                   <IconArrowDown className="h-2.5 w-2.5 text-[var(--color-text-placeholder)]" stroke={2} />
                 </kbd>
               </div>
-              <span className="B4-Reg text-[var(--color-text-placeholder)]">
+              <span className="text-ds-xs text-[var(--color-text-placeholder)]">
                 Navigate
               </span>
             </div>
@@ -301,15 +301,15 @@ function CommandPalette({
               <kbd className="inline-flex h-5 items-center justify-center rounded border border-[var(--color-border-default)] bg-[var(--color-layer-02)] px-ds-02b">
                 <IconCornerDownLeft className="h-2.5 w-2.5 text-[var(--color-text-placeholder)]" stroke={2} />
               </kbd>
-              <span className="B4-Reg text-[var(--color-text-placeholder)]">
+              <span className="text-ds-xs text-[var(--color-text-placeholder)]">
                 Select
               </span>
             </div>
             <div className="flex items-center gap-ds-02b">
-              <kbd className="inline-flex h-5 items-center justify-center rounded border border-[var(--color-border-default)] bg-[var(--color-layer-02)] px-ds-02b B4-Reg font-medium text-[var(--color-text-placeholder)]">
+              <kbd className="inline-flex h-5 items-center justify-center rounded border border-[var(--color-border-default)] bg-[var(--color-layer-02)] px-ds-02b text-ds-xs font-medium text-[var(--color-text-placeholder)]">
                 Esc
               </kbd>
-              <span className="B4-Reg text-[var(--color-text-placeholder)]">
+              <span className="text-ds-xs text-[var(--color-text-placeholder)]">
                 Close
               </span>
             </div>

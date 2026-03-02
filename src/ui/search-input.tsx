@@ -24,7 +24,7 @@ const SearchInput = React.forwardRef<HTMLInputElement, SearchInputProps>(
           value={value}
           aria-busy={loading}
           className={cn(
-            'flex w-full font-sans B2-Reg',
+            'flex w-full font-sans text-ds-md',
             'h-[var(--size-md)] pl-10 pr-9',
             'bg-[var(--color-field)] text-[var(--color-text-primary)]',
             'border border-[var(--color-border-default)] rounded-[var(--radius-md)]',

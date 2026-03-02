@@ -25,7 +25,7 @@ const ContextMenuSubTrigger = React.forwardRef<
   <ContextMenuPrimitive.SubTrigger
     ref={ref}
     className={cn(
-      "flex cursor-default select-none items-center rounded-[var(--radius-md)] px-ds-03 py-ds-02b B2-Reg outline-none focus:bg-[var(--color-layer-02)] focus:text-[var(--color-text-primary)] data-[state=open]:bg-[var(--color-layer-02)] data-[state=open]:text-[var(--color-text-primary)]",
+      "flex cursor-default select-none items-center rounded-[var(--radius-md)] px-ds-03 py-ds-02b text-ds-md outline-none focus:bg-[var(--color-layer-02)] focus:text-[var(--color-text-primary)] data-[state=open]:bg-[var(--color-layer-02)] data-[state=open]:text-[var(--color-text-primary)]",
       inset && "pl-ds-07",
       className
     )}
@@ -78,7 +78,7 @@ const ContextMenuItem = React.forwardRef<
   <ContextMenuPrimitive.Item
     ref={ref}
     className={cn(
-      "relative flex cursor-default select-none items-center rounded-[var(--radius-md)] px-ds-03 py-ds-02b B2-Reg outline-none focus:bg-[var(--color-layer-02)] focus:text-[var(--color-text-primary)] data-[disabled]:pointer-events-none data-[disabled]:opacity-50",
+      "relative flex cursor-default select-none items-center rounded-[var(--radius-md)] px-ds-03 py-ds-02b text-ds-md outline-none focus:bg-[var(--color-layer-02)] focus:text-[var(--color-text-primary)] data-[disabled]:pointer-events-none data-[disabled]:opacity-50",
       inset && "pl-ds-07",
       className
     )}
@@ -94,7 +94,7 @@ const ContextMenuCheckboxItem = React.forwardRef<
   <ContextMenuPrimitive.CheckboxItem
     ref={ref}
     className={cn(
-      "relative flex cursor-default select-none items-center rounded-[var(--radius-md)] py-ds-02b pl-ds-07 pr-ds-03 B2-Reg outline-none focus:bg-[var(--color-layer-02)] focus:text-[var(--color-text-primary)] data-[disabled]:pointer-events-none data-[disabled]:opacity-50",
+      "relative flex cursor-default select-none items-center rounded-[var(--radius-md)] py-ds-02b pl-ds-07 pr-ds-03 text-ds-md outline-none focus:bg-[var(--color-layer-02)] focus:text-[var(--color-text-primary)] data-[disabled]:pointer-events-none data-[disabled]:opacity-50",
       className
     )}
     checked={checked}
@@ -118,7 +118,7 @@ const ContextMenuRadioItem = React.forwardRef<
   <ContextMenuPrimitive.RadioItem
     ref={ref}
     className={cn(
-      "relative flex cursor-default select-none items-center rounded-[var(--radius-md)] py-ds-02b pl-ds-07 pr-ds-03 B2-Reg outline-none focus:bg-[var(--color-layer-02)] focus:text-[var(--color-text-primary)] data-[disabled]:pointer-events-none data-[disabled]:opacity-50",
+      "relative flex cursor-default select-none items-center rounded-[var(--radius-md)] py-ds-02b pl-ds-07 pr-ds-03 text-ds-md outline-none focus:bg-[var(--color-layer-02)] focus:text-[var(--color-text-primary)] data-[disabled]:pointer-events-none data-[disabled]:opacity-50",
       className
     )}
     {...props}
@@ -142,7 +142,7 @@ const ContextMenuLabel = React.forwardRef<
   <ContextMenuPrimitive.Label
     ref={ref}
     className={cn(
-      "px-ds-03 py-ds-02b B2-Semibold text-[var(--color-text-primary)]",
+      "px-ds-03 py-ds-02b text-ds-md font-semibold text-[var(--color-text-primary)]",
       inset && "pl-ds-07",
       className
     )}
@@ -170,7 +170,7 @@ const ContextMenuShortcut = ({
   return (
     <span
       className={cn(
-        "ml-auto B3-Reg text-[var(--color-text-secondary)]",
+        "ml-auto text-ds-sm text-[var(--color-text-secondary)]",
         className
       )}
       {...props}

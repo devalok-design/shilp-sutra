@@ -85,7 +85,7 @@ export function CorrectionList({
                 alt={`${correction?.user?.name}'s Icon`}
               />
               <div className="flex flex-col gap-ds-02">
-                <p className="B3-Reg text-[var(--color-text-secondary)]">
+                <p className="text-ds-sm text-[var(--color-text-secondary)]">
                   {correction?.user?.name}
                 </p>
                 <div className="flex w-full flex-wrap items-center gap-ds-03">
@@ -97,7 +97,7 @@ export function CorrectionList({
                       &bull;
                     </p>
                   ) : null}
-                  <p className="B1-Reg text-[var(--color-text-tertiary)]">
+                  <p className="text-ds-base text-[var(--color-text-tertiary)]">
                     {formatDateWithWeekday(
                       new Date(correction?.date),
                     )}

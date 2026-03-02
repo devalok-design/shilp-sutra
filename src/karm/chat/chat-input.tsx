@@ -63,7 +63,7 @@ export function ChatInput({
           placeholder={placeholder}
           disabled={isStreaming}
           rows={1}
-          className="B2-Reg no-scrollbar max-h-[160px] min-h-[24px] flex-1 resize-none bg-transparent text-[var(--color-text-primary)] placeholder:text-[var(--color-text-placeholder)] focus:outline-none disabled:opacity-50"
+          className="text-ds-md no-scrollbar max-h-[160px] min-h-[24px] flex-1 resize-none bg-transparent text-[var(--color-text-primary)] placeholder:text-[var(--color-text-placeholder)] focus:outline-none disabled:opacity-50"
         />
         {isStreaming ? (
           <button
@@ -85,7 +85,7 @@ export function ChatInput({
         )}
       </div>
       {disclaimer && (
-        <p className="B3-Reg mt-ds-02b text-center text-[var(--color-text-placeholder)]">
+        <p className="text-ds-sm mt-ds-02b text-center text-[var(--color-text-placeholder)]">
           {disclaimer}
         </p>
       )}

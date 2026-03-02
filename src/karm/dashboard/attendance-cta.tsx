@@ -83,13 +83,13 @@ export default function AttendanceCTA({
       <div className="relative overflow-hidden rounded-[var(--radius-2xl)] border border-[var(--color-border-default)] bg-[var(--color-layer-01)]">
         <div className="flex items-center justify-between px-ds-06 py-ds-05b sm:px-ds-07">
           <div className="flex flex-col gap-ds-02">
-            <h2 className="T5-Reg text-[var(--color-text-primary)]">
+            <h2 className="text-ds-2xl text-[var(--color-text-primary)]">
               {greeting},{' '}
               <span className="font-semibold italic text-[var(--color-interactive)]">
                 {firstName}
               </span>
             </h2>
-            <p className="B2-Reg text-[var(--color-text-tertiary)]">
+            <p className="text-ds-md text-[var(--color-text-tertiary)]">
               {currentDate}
             </p>
           </div>
@@ -97,7 +97,7 @@ export default function AttendanceCTA({
             <div className="flex h-[var(--icon-md)] w-[var(--icon-md)] items-center justify-center rounded-[var(--radius-full)] bg-[var(--color-text-success)]">
               <IconCheck className="h-3 w-3 text-[var(--color-text-on-color)]" />
             </div>
-            <span className="B2-Reg font-semibold text-[var(--color-text-success)]">
+            <span className="text-ds-md font-semibold text-[var(--color-text-success)]">
               Marked at{' '}
               {timeIn ? formatTime(timeIn) : '--:--'}
             </span>
@@ -113,19 +113,19 @@ export default function AttendanceCTA({
       <div className="relative overflow-hidden rounded-[var(--radius-2xl)] border border-[var(--color-border-default)] bg-[var(--color-layer-01)]">
         <div className="flex items-center justify-between px-ds-06 py-ds-05b sm:px-ds-07">
           <div className="flex flex-col gap-ds-02">
-            <h2 className="T5-Reg text-[var(--color-text-primary)]">
+            <h2 className="text-ds-2xl text-[var(--color-text-primary)]">
               {greeting},{' '}
               <span className="font-semibold italic text-[var(--color-interactive)]">
                 {firstName}
               </span>
             </h2>
-            <p className="B2-Reg text-[var(--color-text-tertiary)]">
+            <p className="text-ds-md text-[var(--color-text-tertiary)]">
               {currentDate}
             </p>
           </div>
           <div className="flex items-center gap-ds-03 rounded-[var(--radius-xl)] bg-[var(--color-warning-surface)] px-ds-05 py-2.5">
             <IconCoffee className="h-[var(--icon-sm)] w-[var(--icon-sm)] text-[var(--color-text-warning)]" />
-            <span className="B2-Reg font-semibold text-[var(--color-text-warning)]">
+            <span className="text-ds-md font-semibold text-[var(--color-text-warning)]">
               On break
               {attendance?.breakReason ? ` \u2014 ${attendance.breakReason}` : ''}
             </span>
@@ -141,19 +141,19 @@ export default function AttendanceCTA({
       <div className="relative overflow-hidden rounded-[var(--radius-2xl)] border border-[var(--color-border-default)] bg-[var(--color-layer-01)]">
         <div className="flex items-center justify-between px-ds-06 py-ds-06 sm:px-ds-07 sm:py-ds-07">
           <div className="flex flex-col gap-ds-02b">
-            <h2 className="T4-Reg text-[var(--color-text-primary)]">
+            <h2 className="text-ds-3xl text-[var(--color-text-primary)]">
               {greeting},{' '}
               <span className="font-semibold italic text-[var(--color-interactive)]">
                 {firstName}
               </span>
             </h2>
-            <p className="B1-Reg text-[var(--color-text-tertiary)]">
+            <p className="text-ds-base text-[var(--color-text-tertiary)]">
               {currentDate}
             </p>
           </div>
           <div className="flex items-center gap-ds-03 rounded-[var(--radius-xl)] bg-[var(--color-layer-02)] px-ds-05 py-2.5">
             <IconClock className="h-[var(--icon-sm)] w-[var(--icon-sm)] text-[var(--color-text-placeholder)]" />
-            <span className="B2-Reg text-[var(--color-text-placeholder)]">
+            <span className="text-ds-md text-[var(--color-text-placeholder)]">
               Attendance window closed
             </span>
           </div>
@@ -167,14 +167,14 @@ export default function AttendanceCTA({
     <div className="relative overflow-hidden rounded-[var(--radius-2xl)] border border-[var(--color-border-default)] bg-gradient-to-br from-[var(--color-interactive-subtle)] via-[var(--color-background)] to-[var(--color-success-surface)]">
       <div className="flex items-center justify-between px-ds-06 py-ds-07 sm:px-ds-07 sm:py-10">
         <div className="flex flex-col gap-ds-02b">
-          <h2 className="T4-Reg text-[var(--color-text-primary)]">
+          <h2 className="text-ds-3xl text-[var(--color-text-primary)]">
             {greeting},{' '}
             <span className="font-semibold italic text-[var(--color-interactive)]">
               {firstName}
             </span>
           </h2>
           <div className="flex items-center gap-ds-03">
-            <p className="B1-Reg text-[var(--color-text-tertiary)]">
+            <p className="text-ds-base text-[var(--color-text-tertiary)]">
               {currentDate}
             </p>
           </div>

@@ -31,7 +31,7 @@ const FormHelperText = React.forwardRef<HTMLParagraphElement, FormHelperTextProp
   ({ className, state = 'helper', ...props }, ref) => (
     <p
       ref={ref}
-      className={cn('B3-Reg', helperStateClasses[state], className)}
+      className={cn('text-ds-sm', helperStateClasses[state], className)}
       {...props}
     />
   ),

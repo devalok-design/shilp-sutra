@@ -25,7 +25,7 @@ const segmentedControlItemVariants = cva(
         big: 'h-14 px-ds-06 py-ds-05',
       },
       color: {
-        filled: "text-[var(--color-text-on-color)] [text-shadow:0px_1px_1px_rgba(0,0,0,0.15)]",
+        filled: "text-[var(--color-text-on-color)] [text-shadow:0px_1px_1px_var(--color-text-shadow)]",
         tonal: 'text-[var(--color-text-tertiary)]',
       },
       selected: {
@@ -48,7 +48,7 @@ const segmentedControlItemVariants = cva(
         color: 'filled',
         className: [
           'bg-[var(--color-interactive)]',
-          'shadow-[0px_1px_3px_0.05px_var(--color-interactive-hover),inset_0px_8px_16px_0px_rgba(255,255,255,0.16),inset_0px_2px_0px_0px_rgba(255,255,255,0.1)]',
+          'shadow-[0px_1px_3px_0.05px_var(--color-interactive-hover),inset_0px_8px_16px_0px_var(--color-inset-glow-strong),inset_0px_2px_0px_0px_var(--color-inset-glow-subtle)]',
         ].join(' '),
       },
       // Selected + tonal
@@ -63,7 +63,7 @@ const segmentedControlItemVariants = cva(
         color: 'filled',
         className: [
           'bg-[var(--color-interactive)]',
-          'shadow-[0px_4px_8px_0px_var(--color-interactive-hover),0px_1px_3px_0.05px_var(--color-layer-02),inset_0px_8px_16px_0px_rgba(255,255,255,0.16),inset_0px_2px_0px_0px_rgba(255,255,255,0.1)]',
+          'shadow-[0px_4px_8px_0px_var(--color-interactive-hover),0px_1px_3px_0.05px_var(--color-layer-02),inset_0px_8px_16px_0px_var(--color-inset-glow-strong),inset_0px_2px_0px_0px_var(--color-inset-glow-subtle)]',
         ].join(' '),
       },
       // Hover + tonal
@@ -113,8 +113,8 @@ const segmentedControlItemVariants = cva(
 
 /* ── ripple bg per color ──────────────────────────────────── */
 const rippleBgMap: Record<string, string> = {
-  filled: 'bg-[rgba(255,255,255,0.2)]',
-  tonal: 'bg-[rgba(0,0,0,0.12)]',
+  filled: 'bg-surface-overlay-light',
+  tonal: 'bg-surface-overlay-dark',
 }
 
 /* ── Types ─────────────────────────────────────────────────── */

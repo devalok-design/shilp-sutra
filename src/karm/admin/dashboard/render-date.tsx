@@ -176,11 +176,11 @@ export function RenderDate({
 
     // Today (not break, not disabled)
     !state.disabled && state.today && !state.isBreak &&
-      'bg-[var(--color-interactive)] text-[var(--color-text-on-color)] shadow-[inset_0_4px_4px_rgba(255,255,255,0.25),inset_0_0_8px_var(--color-interactive-hover)]',
+      'bg-[var(--color-interactive)] text-[var(--color-text-on-color)] shadow-[inset_0_4px_4px_var(--color-inset-glow),inset_0_0_8px_var(--color-interactive-hover)]',
 
     // Break (not disabled, not today-only)
     !state.disabled && state.isBreak && !isBreakMidNonWeekly &&
-      'bg-[var(--color-interactive-selected)] text-[var(--color-text-secondary)] shadow-[inset_0_4px_4px_rgba(255,255,255,0.25),inset_0_0_4px_var(--color-focus)]',
+      'bg-[var(--color-interactive-selected)] text-[var(--color-text-secondary)] shadow-[inset_0_4px_4px_var(--color-inset-glow),inset_0_0_4px_var(--color-focus)]',
 
     // Break mid in non-weekly view overrides break base
     !state.disabled && state.isBreak && isBreakMidNonWeekly &&
@@ -208,7 +208,7 @@ export function RenderDate({
 
     // Hover on today (not break)
     state.hover && !state.disabled && state.today && !state.isBreak &&
-      'bg-[var(--color-interactive)] text-[var(--color-text-on-color)] shadow-[inset_0_4px_4px_rgba(255,255,255,0.25),inset_0_0_8px_var(--color-interactive-hover)]',
+      'bg-[var(--color-interactive)] text-[var(--color-text-on-color)] shadow-[inset_0_4px_4px_var(--color-inset-glow),inset_0_0_8px_var(--color-interactive-hover)]',
 
     // Hover on present (not today, not break)
     state.hover && !state.disabled && !state.today && !state.isBreak && state.isPresent &&
@@ -220,7 +220,7 @@ export function RenderDate({
 
     // Hover on break (same visual as base break, but re-assert to match original)
     state.hover && !state.disabled && state.isBreak && !isBreakMidNonWeekly &&
-      'bg-[var(--color-interactive-selected)] text-[var(--color-text-secondary)] shadow-[inset_0_4px_4px_rgba(255,255,255,0.25),inset_0_0_4px_var(--color-focus)]',
+      'bg-[var(--color-interactive-selected)] text-[var(--color-text-secondary)] shadow-[inset_0_4px_4px_var(--color-inset-glow),inset_0_0_4px_var(--color-focus)]',
     state.hover && !state.disabled && state.isBreak && isBreakMidNonWeekly &&
       'rounded-none bg-[var(--color-interactive-subtle)] text-[var(--color-text-secondary)] shadow-none',
 

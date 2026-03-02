@@ -164,7 +164,7 @@ export default function AttendanceCTA({
 
   // Unmarked + can mark: large greeting with mark button
   return (
-    <div className="relative overflow-hidden rounded-[var(--radius-2xl)] border border-[var(--color-border-default)] bg-gradient-to-br from-[#fcf7f7] via-white to-[rgba(225,248,224,0.3)]">
+    <div className="relative overflow-hidden rounded-[var(--radius-2xl)] border border-[var(--color-border-default)] bg-gradient-to-br from-[var(--pink-50)] via-[var(--neutral-0)] to-[var(--green-50)]">
       <div className="flex items-center justify-between px-6 py-8 sm:px-8 sm:py-10">
         <div className="flex flex-col gap-1.5">
           <h2 className="T4-Reg text-[var(--color-text-primary)]">
@@ -184,7 +184,7 @@ export default function AttendanceCTA({
           type="button"
           onClick={onMarkAttendance}
           disabled={isSubmitting}
-          className="flex items-center gap-2.5 rounded-[14px] bg-[var(--color-interactive)] px-7 py-3.5 font-semibold text-[var(--color-text-on-color)] shadow-md transition-all hover:-translate-y-0.5 hover:shadow-lg active:translate-y-0 active:scale-[0.98] disabled:opacity-50"
+          className="flex items-center gap-2.5 rounded-[var(--radius-xl)] bg-[var(--color-interactive)] px-7 py-3.5 font-semibold text-[var(--color-text-on-color)] shadow-md transition-all hover:-translate-y-0.5 hover:shadow-lg active:translate-y-0 active:scale-[0.98] disabled:opacity-50"
         >
           {isSubmitting ? 'Marking...' : 'Mark Attendance'}
           {!isSubmitting && (

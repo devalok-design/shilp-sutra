@@ -40,12 +40,12 @@ function ToolbarButton({
       disabled={disabled}
       title={title}
       className={cn(
-        'inline-flex h-7 w-7 items-center justify-center rounded-[var(--radius-md)] transition-colors',
-        'hover:bg-[var(--color-field)]',
+        'inline-flex h-7 w-7 items-center justify-center rounded-ds-md transition-colors',
+        'hover:bg-field',
         'disabled:pointer-events-none disabled:opacity-50',
         isActive
-          ? 'bg-[var(--color-field)] text-[var(--color-interactive)]'
-          : 'text-[var(--color-text-placeholder)]',
+          ? 'bg-field text-interactive'
+          : 'text-text-placeholder',
       )}
     >
       {children}
@@ -55,13 +55,13 @@ function ToolbarButton({
 
 function Toolbar({ editor }: { editor: Editor }) {
   return (
-    <div className="flex flex-wrap items-center gap-0.5 border-b border-[var(--color-border-default)] px-ds-04 py-ds-02b">
+    <div className="flex flex-wrap items-center gap-0.5 border-b border-border px-ds-04 py-ds-02b">
       <ToolbarButton
         onClick={() => editor.chain().focus().toggleBold().run()}
         isActive={editor.isActive('bold')}
         title="Bold"
       >
-        <IconBold className="h-[var(--icon-sm)] w-[var(--icon-sm)]" stroke={2.5} />
+        <IconBold className="h-ico-sm w-ico-sm" stroke={2.5} />
       </ToolbarButton>
 
       <ToolbarButton
@@ -69,7 +69,7 @@ function Toolbar({ editor }: { editor: Editor }) {
         isActive={editor.isActive('italic')}
         title="Italic"
       >
-        <IconItalic className="h-[var(--icon-sm)] w-[var(--icon-sm)]" stroke={2.5} />
+        <IconItalic className="h-ico-sm w-ico-sm" stroke={2.5} />
       </ToolbarButton>
 
       <ToolbarButton
@@ -77,10 +77,10 @@ function Toolbar({ editor }: { editor: Editor }) {
         isActive={editor.isActive('strike')}
         title="Strikethrough"
       >
-        <IconStrikethrough className="h-[var(--icon-sm)] w-[var(--icon-sm)]" stroke={2.5} />
+        <IconStrikethrough className="h-ico-sm w-ico-sm" stroke={2.5} />
       </ToolbarButton>
 
-      <div className="mx-ds-02 h-4 w-px bg-[var(--color-border-default)]" />
+      <div className="mx-ds-02 h-4 w-px bg-border" />
 
       <ToolbarButton
         onClick={() =>
@@ -89,7 +89,7 @@ function Toolbar({ editor }: { editor: Editor }) {
         isActive={editor.isActive('heading', { level: 2 })}
         title="Heading 2"
       >
-        <IconH2 className="h-[var(--icon-sm)] w-[var(--icon-sm)]" stroke={2.5} />
+        <IconH2 className="h-ico-sm w-ico-sm" stroke={2.5} />
       </ToolbarButton>
 
       <ToolbarButton
@@ -99,17 +99,17 @@ function Toolbar({ editor }: { editor: Editor }) {
         isActive={editor.isActive('heading', { level: 3 })}
         title="Heading 3"
       >
-        <IconH3 className="h-[var(--icon-sm)] w-[var(--icon-sm)]" stroke={2.5} />
+        <IconH3 className="h-ico-sm w-ico-sm" stroke={2.5} />
       </ToolbarButton>
 
-      <div className="mx-ds-02 h-4 w-px bg-[var(--color-border-default)]" />
+      <div className="mx-ds-02 h-4 w-px bg-border" />
 
       <ToolbarButton
         onClick={() => editor.chain().focus().toggleBulletList().run()}
         isActive={editor.isActive('bulletList')}
         title="Bullet list"
       >
-        <IconList className="h-[var(--icon-sm)] w-[var(--icon-sm)]" stroke={2.5} />
+        <IconList className="h-ico-sm w-ico-sm" stroke={2.5} />
       </ToolbarButton>
 
       <ToolbarButton
@@ -117,7 +117,7 @@ function Toolbar({ editor }: { editor: Editor }) {
         isActive={editor.isActive('orderedList')}
         title="Ordered list"
       >
-        <IconListNumbers className="h-[var(--icon-sm)] w-[var(--icon-sm)]" stroke={2.5} />
+        <IconListNumbers className="h-ico-sm w-ico-sm" stroke={2.5} />
       </ToolbarButton>
 
       <ToolbarButton
@@ -125,17 +125,17 @@ function Toolbar({ editor }: { editor: Editor }) {
         isActive={editor.isActive('codeBlock')}
         title="Code block"
       >
-        <IconCode className="h-[var(--icon-sm)] w-[var(--icon-sm)]" stroke={2.5} />
+        <IconCode className="h-ico-sm w-ico-sm" stroke={2.5} />
       </ToolbarButton>
 
-      <div className="mx-ds-02 h-4 w-px bg-[var(--color-border-default)]" />
+      <div className="mx-ds-02 h-4 w-px bg-border" />
 
       <ToolbarButton
         onClick={() => editor.chain().focus().undo().run()}
         disabled={!editor.can().undo()}
         title="Undo"
       >
-        <IconArrowBackUp className="h-[var(--icon-sm)] w-[var(--icon-sm)]" stroke={2} />
+        <IconArrowBackUp className="h-ico-sm w-ico-sm" stroke={2} />
       </ToolbarButton>
 
       <ToolbarButton
@@ -143,7 +143,7 @@ function Toolbar({ editor }: { editor: Editor }) {
         disabled={!editor.can().redo()}
         title="Redo"
       >
-        <IconArrowForwardUp className="h-[var(--icon-sm)] w-[var(--icon-sm)]" stroke={2} />
+        <IconArrowForwardUp className="h-ico-sm w-ico-sm" stroke={2} />
       </ToolbarButton>
     </div>
   )
@@ -172,7 +172,7 @@ function RichTextEditor({
       Placeholder.configure({
         placeholder,
         emptyEditorClass:
-          'before:content-[attr(data-placeholder)] before:text-[var(--color-text-placeholder)] before:float-left before:h-0 before:pointer-events-none',
+          'before:content-[attr(data-placeholder)] before:text-text-placeholder before:float-left before:h-0 before:pointer-events-none',
       }),
     ],
     content,
@@ -182,15 +182,15 @@ function RichTextEditor({
         class: cn(
           'prose prose-sm max-w-none focus:outline-none',
           'min-h-[120px] px-ds-04 py-ds-04',
-          'font-body text-ds-md leading-relaxed text-[var(--color-text-primary)]',
-          '[&_h2]:text-ds-xl [&_h2]:mb-ds-03 [&_h2]:mt-ds-05 [&_h2]:text-[var(--color-text-primary)]',
-          '[&_h3]:text-ds-base [&_h3]:semibold [&_h3]:mb-ds-02b [&_h3]:mt-ds-04 [&_h3]:text-[var(--color-text-primary)]',
-          '[&_p]:mb-ds-02b [&_p]:text-[var(--color-text-secondary)]',
+          'font-body text-ds-md leading-relaxed text-text-primary',
+          '[&_h2]:text-ds-xl [&_h2]:mb-ds-03 [&_h2]:mt-ds-05 [&_h2]:text-text-primary',
+          '[&_h3]:text-ds-base [&_h3]:semibold [&_h3]:mb-ds-02b [&_h3]:mt-ds-04 [&_h3]:text-text-primary',
+          '[&_p]:mb-ds-02b [&_p]:text-text-secondary',
           '[&_ul]:ml-ds-05 [&_ul]:list-disc [&_ol]:ml-ds-05 [&_ol]:list-decimal',
-          '[&_li]:text-[var(--color-text-secondary)]',
-          '[&_code]:rounded [&_code]:bg-[var(--color-layer-02)] [&_code]:px-ds-02b [&_code]:py-0.5 [&_code]:text-ds-md [&_code]:text-[var(--color-interactive)]',
-          '[&_pre]:rounded-[var(--radius-lg)] [&_pre]:bg-[var(--color-layer-02)] [&_pre]:p-ds-04',
-          '[&_strong]:font-semibold [&_strong]:text-[var(--color-text-primary)]',
+          '[&_li]:text-text-secondary',
+          '[&_code]:rounded [&_code]:bg-layer-02 [&_code]:px-ds-02b [&_code]:py-0.5 [&_code]:text-ds-md [&_code]:text-interactive',
+          '[&_pre]:rounded-ds-lg [&_pre]:bg-layer-02 [&_pre]:p-ds-04',
+          '[&_strong]:font-semibold [&_strong]:text-text-primary',
         ),
       },
     },
@@ -204,7 +204,7 @@ function RichTextEditor({
   return (
     <div
       className={cn(
-        'overflow-hidden rounded-[var(--radius-lg)] border border-[var(--color-border-default)] bg-[var(--color-layer-01)]',
+        'overflow-hidden rounded-ds-lg border border-border bg-layer-01',
         'transition-colors focus-within:border-[var(--border-secondary)]',
         className,
       )}
@@ -235,15 +235,15 @@ function RichTextViewer({ content, className }: RichTextViewerProps) {
       attributes: {
         class: cn(
           'prose prose-sm max-w-none',
-          'font-body text-ds-md leading-relaxed text-[var(--color-text-primary)]',
-          '[&_h2]:text-ds-xl [&_h2]:mb-ds-03 [&_h2]:mt-ds-05 [&_h2]:text-[var(--color-text-primary)]',
-          '[&_h3]:text-ds-base [&_h3]:semibold [&_h3]:mb-ds-02b [&_h3]:mt-ds-04 [&_h3]:text-[var(--color-text-primary)]',
-          '[&_p]:mb-ds-02b [&_p]:text-[var(--color-text-secondary)]',
+          'font-body text-ds-md leading-relaxed text-text-primary',
+          '[&_h2]:text-ds-xl [&_h2]:mb-ds-03 [&_h2]:mt-ds-05 [&_h2]:text-text-primary',
+          '[&_h3]:text-ds-base [&_h3]:semibold [&_h3]:mb-ds-02b [&_h3]:mt-ds-04 [&_h3]:text-text-primary',
+          '[&_p]:mb-ds-02b [&_p]:text-text-secondary',
           '[&_ul]:ml-ds-05 [&_ul]:list-disc [&_ol]:ml-ds-05 [&_ol]:list-decimal',
-          '[&_li]:text-[var(--color-text-secondary)]',
-          '[&_code]:rounded [&_code]:bg-[var(--color-layer-02)] [&_code]:px-ds-02b [&_code]:py-0.5 [&_code]:text-ds-md [&_code]:text-[var(--color-interactive)]',
-          '[&_pre]:rounded-[var(--radius-lg)] [&_pre]:bg-[var(--color-layer-02)] [&_pre]:p-ds-04',
-          '[&_strong]:font-semibold [&_strong]:text-[var(--color-text-primary)]',
+          '[&_li]:text-text-secondary',
+          '[&_code]:rounded [&_code]:bg-layer-02 [&_code]:px-ds-02b [&_code]:py-0.5 [&_code]:text-ds-md [&_code]:text-interactive',
+          '[&_pre]:rounded-ds-lg [&_pre]:bg-layer-02 [&_pre]:p-ds-04',
+          '[&_strong]:font-semibold [&_strong]:text-text-primary',
         ),
       },
     },

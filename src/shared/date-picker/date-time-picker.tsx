@@ -199,7 +199,7 @@ export function DateTimePicker({
 
   // Compact time selector styles
   const selectBase =
-    'h-8 rounded-[var(--radius-md)] border border-[var(--color-border-default)] bg-[var(--color-layer-01)] px-ds-02 text-ds-md text-[var(--color-text-primary)] transition-colors hover:border-[var(--border-secondary)] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--color-focus)] cursor-pointer appearance-none'
+    'h-8 rounded-ds-md border border-border bg-layer-01 px-ds-02 text-ds-md text-text-primary transition-colors hover:border-[var(--border-secondary)] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-focus cursor-pointer appearance-none'
 
   return (
     <Popover open={open} onOpenChange={setOpen}>
@@ -207,23 +207,23 @@ export function DateTimePicker({
         <button
           type="button"
           className={cn(
-            'inline-flex h-9 items-center gap-ds-03 rounded-[var(--radius-lg)] border border-[var(--color-border-default)] bg-[var(--color-layer-01)] px-ds-04 text-left transition-colors',
+            'inline-flex h-9 items-center gap-ds-03 rounded-ds-lg border border-border bg-layer-01 px-ds-04 text-left transition-colors',
             'hover:border-[var(--border-secondary)]',
-            'focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--color-focus)] focus-visible:ring-offset-2',
+            'focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-focus focus-visible:ring-offset-2',
             className,
           )}
           aria-label={displayText ? `Selected: ${displayText}` : placeholder}
         >
           <IconCalendarClock
-            className="h-[var(--icon-sm)] w-[var(--icon-sm)] text-[var(--color-text-placeholder)]"
+            className="h-ico-sm w-ico-sm text-text-placeholder"
             stroke={1.5}
           />
           <span
             className={cn(
               'text-ds-md',
               displayText
-                ? 'text-[var(--color-text-primary)]'
-                : 'text-[var(--color-text-placeholder)]',
+                ? 'text-text-primary'
+                : 'text-text-placeholder',
             )}
           >
             {displayText ?? placeholder}
@@ -231,7 +231,7 @@ export function DateTimePicker({
         </button>
       </PopoverTrigger>
       <PopoverContent
-        className="w-auto border-[var(--color-border-default)] bg-[var(--color-layer-01)] p-ds-04"
+        className="w-auto border-border bg-layer-01 p-ds-04"
         align="start"
         sideOffset={4}
       >
@@ -241,8 +241,8 @@ export function DateTimePicker({
 
           {/* Time selection row */}
           {view === 'days' && (
-            <div className="flex items-center gap-ds-02 border-t border-[var(--color-border-default)] pt-ds-04">
-              <span className="text-ds-xs font-semibold uppercase tracking-wider text-[var(--color-text-placeholder)]">
+            <div className="flex items-center gap-ds-02 border-t border-border pt-ds-04">
+              <span className="text-ds-xs font-semibold uppercase tracking-wider text-text-placeholder">
                 Time
               </span>
 
@@ -261,7 +261,7 @@ export function DateTimePicker({
                 ))}
               </select>
 
-              <span className="text-ds-md font-semibold text-[var(--color-text-placeholder)]">
+              <span className="text-ds-md font-semibold text-text-placeholder">
                 :
               </span>
 

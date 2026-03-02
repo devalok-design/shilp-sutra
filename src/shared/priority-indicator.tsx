@@ -17,26 +17,26 @@ const priorityConfig: Record<
 > = {
   LOW: {
     icon: IconArrowDown,
-    color: 'text-[var(--color-info-text)]',
-    bgColor: 'bg-[var(--color-info-surface)]',
+    color: 'text-info-text',
+    bgColor: 'bg-info-surface',
     label: 'Low',
   },
   MEDIUM: {
     icon: IconMinus,
-    color: 'text-[var(--color-warning-text)]',
-    bgColor: 'bg-[var(--color-warning-surface)]',
+    color: 'text-warning-text',
+    bgColor: 'bg-warning-surface',
     label: 'Medium',
   },
   HIGH: {
     icon: IconArrowUp,
-    color: 'text-[var(--color-error-text)]',
-    bgColor: 'bg-[var(--color-error-surface)]',
+    color: 'text-error-text',
+    bgColor: 'bg-error-surface',
     label: 'High',
   },
   URGENT: {
     icon: IconAlertTriangle,
-    color: 'text-[var(--color-error-text)]',
-    bgColor: 'bg-[var(--color-error-surface)]',
+    color: 'text-error-text',
+    bgColor: 'bg-error-surface',
     label: 'Urgent',
   },
 }
@@ -72,14 +72,14 @@ const PriorityIndicator = React.forwardRef<HTMLDivElement, PriorityIndicatorProp
         <div
           ref={ref}
           className={cn(
-            'inline-flex items-center justify-center rounded-[var(--radius-md)] p-ds-02',
+            'inline-flex items-center justify-center rounded-ds-md p-ds-02',
             config.bgColor,
             className,
           )}
           title={config.label}
           {...props}
         >
-          <Icon className={cn('h-[var(--icon-sm)] w-[var(--icon-sm)]', config.color)} stroke={2} />
+          <Icon className={cn('h-ico-sm w-ico-sm', config.color)} stroke={2} />
         </div>
       )
     }
@@ -92,13 +92,13 @@ const PriorityIndicator = React.forwardRef<HTMLDivElement, PriorityIndicatorProp
       >
         <div
           className={cn(
-            'inline-flex items-center justify-center rounded-[var(--radius-md)] p-0.5',
+            'inline-flex items-center justify-center rounded-ds-md p-0.5',
             config.bgColor,
           )}
         >
-          <Icon className={cn('h-[var(--icon-sm)] w-[var(--icon-sm)]', config.color)} stroke={2} />
+          <Icon className={cn('h-ico-sm w-ico-sm', config.color)} stroke={2} />
         </div>
-        <span className="text-ds-sm text-[var(--color-text-secondary)]">
+        <span className="text-ds-sm text-text-secondary">
           {config.label}
         </span>
       </div>

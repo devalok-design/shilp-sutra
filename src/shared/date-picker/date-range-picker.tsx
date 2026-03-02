@@ -194,22 +194,22 @@ export function DateRangePicker({
         <button
           type="button"
           className={cn(
-            'inline-flex h-9 items-center gap-ds-03 rounded-[var(--radius-lg)] border border-[var(--color-border-default)] bg-[var(--color-layer-01)] px-ds-04 text-left transition-colors',
+            'inline-flex h-9 items-center gap-ds-03 rounded-ds-lg border border-border bg-layer-01 px-ds-04 text-left transition-colors',
             'hover:border-[var(--border-secondary)]',
-            'focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--color-focus)] focus-visible:ring-offset-2',
+            'focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-focus focus-visible:ring-offset-2',
             className,
           )}
         >
           <IconCalendarEvent
-            className="h-[var(--icon-sm)] w-[var(--icon-sm)] text-[var(--color-text-placeholder)]"
+            className="h-ico-sm w-ico-sm text-text-placeholder"
             stroke={1.5}
           />
           <span
             className={cn(
               'text-ds-md',
               rangeStart && rangeEnd
-                ? 'text-[var(--color-text-primary)]'
-                : 'text-[var(--color-text-placeholder)]',
+                ? 'text-text-primary'
+                : 'text-text-placeholder',
             )}
           >
             {displayText()}
@@ -217,13 +217,13 @@ export function DateRangePicker({
         </button>
       </PopoverTrigger>
       <PopoverContent
-        className="w-auto border-[var(--color-border-default)] bg-[var(--color-layer-01)] p-ds-04"
+        className="w-auto border-border bg-layer-01 p-ds-04"
         align="start"
         sideOffset={4}
       >
         {hasPresets ? (
           <div className="flex flex-row gap-ds-04">
-            <div className="min-w-[140px] border-r border-[var(--color-border-default)] pr-ds-04">
+            <div className="min-w-[140px] border-r border-border pr-ds-04">
               <Presets presets={presets} onSelect={handlePresetSelect} />
             </div>
             <div>{renderView()}</div>

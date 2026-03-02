@@ -36,14 +36,14 @@ const EmptyState = React.forwardRef<HTMLDivElement, EmptyStateProps>(
       >
         <div
           className={cn(
-            'flex items-center justify-center rounded-[var(--radius-xl)] bg-[var(--color-layer-02)]',
+            'flex items-center justify-center rounded-ds-xl bg-layer-02',
             compact ? 'h-10 w-10' : 'h-12 w-12',
           )}
         >
           <Icon
             className={cn(
-              'text-[var(--color-text-placeholder)]',
-              compact ? 'h-[var(--icon-md)] w-[var(--icon-md)]' : 'h-6 w-6',
+              'text-text-placeholder',
+              compact ? 'h-ico-md w-ico-md' : 'h-6 w-6',
             )}
             stroke={1.5}
           />
@@ -52,7 +52,7 @@ const EmptyState = React.forwardRef<HTMLDivElement, EmptyStateProps>(
         <div className="flex max-w-[280px] flex-col gap-ds-02">
           <h3
             className={cn(
-              'text-[var(--color-text-primary)]',
+              'text-text-primary',
               compact ? 'text-ds-md semibold' : 'text-ds-base semibold',
             )}
           >
@@ -61,7 +61,7 @@ const EmptyState = React.forwardRef<HTMLDivElement, EmptyStateProps>(
           {description && (
             <p
               className={cn(
-                'text-[var(--color-text-placeholder)]',
+                'text-text-placeholder',
                 compact ? 'text-ds-sm' : 'text-ds-md',
               )}
             >

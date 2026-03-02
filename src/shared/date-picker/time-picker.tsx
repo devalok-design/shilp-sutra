@@ -158,11 +158,11 @@ export function TimePicker({
     'flex flex-col gap-ds-01 overflow-y-auto max-h-[200px] px-ds-01 scrollbar-thin'
 
   const itemBase =
-    'flex h-8 w-full items-center justify-center rounded-[var(--radius-md)] text-ds-md transition-colors cursor-pointer'
+    'flex h-8 w-full items-center justify-center rounded-ds-md text-ds-md transition-colors cursor-pointer'
   const itemSelected =
-    'bg-[var(--color-interactive)] text-[var(--color-text-on-color)]'
+    'bg-interactive text-text-on-color'
   const itemDefault =
-    'text-[var(--color-text-primary)] hover:bg-[var(--color-field)]'
+    'text-text-primary hover:bg-field'
 
   return (
     <Popover open={open} onOpenChange={setOpen}>
@@ -171,24 +171,24 @@ export function TimePicker({
           type="button"
           disabled={disabled}
           className={cn(
-            'inline-flex h-9 items-center gap-ds-03 rounded-[var(--radius-lg)] border border-[var(--color-border-default)] bg-[var(--color-layer-01)] px-ds-04 text-left transition-colors',
+            'inline-flex h-9 items-center gap-ds-03 rounded-ds-lg border border-border bg-layer-01 px-ds-04 text-left transition-colors',
             'hover:border-[var(--border-secondary)]',
-            'focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--color-focus)] focus-visible:ring-offset-2',
+            'focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-focus focus-visible:ring-offset-2',
             disabled && 'opacity-50 pointer-events-none',
             className,
           )}
           aria-label={displayText ? `Selected time: ${displayText}` : placeholder}
         >
           <IconClock
-            className="h-[var(--icon-sm)] w-[var(--icon-sm)] text-[var(--color-text-placeholder)]"
+            className="h-ico-sm w-ico-sm text-text-placeholder"
             stroke={1.5}
           />
           <span
             className={cn(
               'text-ds-md',
               displayText
-                ? 'text-[var(--color-text-primary)]'
-                : 'text-[var(--color-text-placeholder)]',
+                ? 'text-text-primary'
+                : 'text-text-placeholder',
             )}
           >
             {displayText ?? placeholder}
@@ -196,14 +196,14 @@ export function TimePicker({
         </button>
       </PopoverTrigger>
       <PopoverContent
-        className="w-auto border-[var(--color-border-default)] bg-[var(--color-layer-01)] p-ds-04"
+        className="w-auto border-border bg-layer-01 p-ds-04"
         align="start"
         sideOffset={4}
       >
         <div className="flex gap-ds-03" role="group" aria-label="Time picker">
           {/* Hours column */}
           <div className="flex flex-col items-center gap-ds-02">
-            <span className="text-ds-xs font-semibold uppercase tracking-wider text-[var(--color-text-placeholder)]">
+            <span className="text-ds-xs font-semibold uppercase tracking-wider text-text-placeholder">
               Hr
             </span>
             <div className={cn(columnClass, 'min-w-[48px]')}>
@@ -227,7 +227,7 @@ export function TimePicker({
 
           {/* Minutes column */}
           <div className="flex flex-col items-center gap-ds-02">
-            <span className="text-ds-xs font-semibold uppercase tracking-wider text-[var(--color-text-placeholder)]">
+            <span className="text-ds-xs font-semibold uppercase tracking-wider text-text-placeholder">
               Min
             </span>
             <div className={cn(columnClass, 'min-w-[48px]')}>
@@ -252,7 +252,7 @@ export function TimePicker({
           {/* Seconds column */}
           {showSeconds && (
             <div className="flex flex-col items-center gap-ds-02">
-              <span className="text-ds-xs font-semibold uppercase tracking-wider text-[var(--color-text-placeholder)]">
+              <span className="text-ds-xs font-semibold uppercase tracking-wider text-text-placeholder">
                 Sec
               </span>
               <div className={cn(columnClass, 'min-w-[48px]')}>
@@ -278,7 +278,7 @@ export function TimePicker({
           {/* AM/PM toggle for 12h format */}
           {timeFormat === '12h' && (
             <div className="flex flex-col items-center gap-ds-02">
-              <span className="text-ds-xs font-semibold uppercase tracking-wider text-[var(--color-text-placeholder)]">
+              <span className="text-ds-xs font-semibold uppercase tracking-wider text-text-placeholder">
                 &nbsp;
               </span>
               <div className="flex flex-col gap-ds-01 px-ds-01">

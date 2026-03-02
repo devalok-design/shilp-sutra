@@ -24,7 +24,7 @@ const PageHeader = React.forwardRef<HTMLDivElement, PageHeaderProps>(
       <div
         ref={ref}
         className={cn(
-          'flex flex-col gap-ds-05 border-b border-[var(--color-border-default)] pb-ds-06',
+          'flex flex-col gap-ds-05 border-b border-border pb-ds-06',
           className,
         )}
         {...props}
@@ -35,14 +35,14 @@ const PageHeader = React.forwardRef<HTMLDivElement, PageHeaderProps>(
               <React.Fragment key={index}>
                 {index > 0 && (
                   <IconChevronRight
-                    className="h-[var(--icon-sm)] w-[var(--icon-sm)] text-[var(--color-text-placeholder)]"
+                    className="h-ico-sm w-ico-sm text-text-placeholder"
                     stroke={1.5}
                   />
                 )}
                 {crumb.href ? (
                   <a
                     href={crumb.href}
-                    className="text-ds-sm text-[var(--color-text-placeholder)] transition-colors hover:text-[var(--color-text-secondary)]"
+                    className="text-ds-sm text-text-placeholder transition-colors hover:text-text-secondary"
                   >
                     {crumb.label}
                   </a>
@@ -51,8 +51,8 @@ const PageHeader = React.forwardRef<HTMLDivElement, PageHeaderProps>(
                     className={cn(
                       'text-ds-sm',
                       index === breadcrumbs.length - 1
-                        ? 'text-[var(--color-text-primary)]'
-                        : 'text-[var(--color-text-placeholder)]',
+                        ? 'text-text-primary'
+                        : 'text-text-placeholder',
                     )}
                   >
                     {crumb.label}
@@ -67,14 +67,14 @@ const PageHeader = React.forwardRef<HTMLDivElement, PageHeaderProps>(
           <div className="flex flex-col gap-ds-02b">
             <h1
               className={cn(
-                'text-ds-2xl text-[var(--color-text-primary)]',
+                'text-ds-2xl text-text-primary',
                 titleClassName,
               )}
             >
               {title}
             </h1>
             {subtitle && (
-              <p className="text-ds-md text-[var(--color-text-placeholder)]">
+              <p className="text-ds-md text-text-placeholder">
                 {subtitle}
               </p>
             )}

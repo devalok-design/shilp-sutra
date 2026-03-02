@@ -22,7 +22,7 @@ export function YearPicker({
 
   return (
     <div className="w-[252px]">
-      <div className="text-center pb-ds-04 text-ds-md font-semibold text-[var(--color-text-primary)]">
+      <div className="text-center pb-ds-04 text-ds-md font-semibold text-text-primary">
         {startYear} &ndash; {startYear + 11}
       </div>
       <div className="grid grid-cols-3 gap-ds-02">
@@ -39,13 +39,13 @@ export function YearPicker({
               disabled={isDisabled || false}
               onClick={() => !isDisabled && onYearSelect(year)}
               className={cn(
-                'h-9 rounded-[var(--radius-md)] text-ds-md transition-colors',
+                'h-9 rounded-ds-md text-ds-md transition-colors',
                 isDisabled && 'opacity-40 pointer-events-none cursor-not-allowed',
                 isSelected &&
-                  'bg-[var(--color-interactive)] text-[var(--color-text-on-color)]',
+                  'bg-interactive text-text-on-color',
                 !isSelected &&
                   !isDisabled &&
-                  'hover:bg-[var(--color-field)] text-[var(--color-text-primary)]',
+                  'hover:bg-field text-text-primary',
               )}
             >
               {year}

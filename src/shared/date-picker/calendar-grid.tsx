@@ -166,19 +166,19 @@ export function CalendarGrid({
           <button
             type="button"
             onClick={() => onMonthChange(subMonths(currentMonth, 1))}
-            className="inline-flex h-7 w-7 items-center justify-center rounded-[var(--radius-md)] text-[var(--color-text-placeholder)] transition-colors hover:bg-[var(--color-field)] hover:text-[var(--color-text-secondary)]"
+            className="inline-flex h-7 w-7 items-center justify-center rounded-ds-md text-text-placeholder transition-colors hover:bg-field hover:text-text-secondary"
             aria-label="Previous month"
           >
-            <IconChevronLeft className="h-[var(--icon-sm)] w-[var(--icon-sm)]" stroke={1.5} />
+            <IconChevronLeft className="h-ico-sm w-ico-sm" stroke={1.5} />
           </button>
         )}
         <button
           type="button"
           onClick={onHeaderClick}
           className={cn(
-            'text-ds-md semibold text-[var(--color-text-primary)]',
+            'text-ds-md semibold text-text-primary',
             onHeaderClick &&
-              'cursor-pointer rounded-[var(--radius-md)] px-ds-02 transition-colors hover:bg-[var(--color-field)]',
+              'cursor-pointer rounded-ds-md px-ds-02 transition-colors hover:bg-field',
           )}
           aria-label="Switch to month/year view"
         >
@@ -190,10 +190,10 @@ export function CalendarGrid({
           <button
             type="button"
             onClick={() => onMonthChange(addMonths(currentMonth, 1))}
-            className="inline-flex h-7 w-7 items-center justify-center rounded-[var(--radius-md)] text-[var(--color-text-placeholder)] transition-colors hover:bg-[var(--color-field)] hover:text-[var(--color-text-secondary)]"
+            className="inline-flex h-7 w-7 items-center justify-center rounded-ds-md text-text-placeholder transition-colors hover:bg-field hover:text-text-secondary"
             aria-label="Next month"
           >
-            <IconChevronRight className="h-[var(--icon-sm)] w-[var(--icon-sm)]" stroke={1.5} />
+            <IconChevronRight className="h-ico-sm w-ico-sm" stroke={1.5} />
           </button>
         )}
       </div>
@@ -210,7 +210,7 @@ export function CalendarGrid({
           <div
             key={wd}
             role="columnheader"
-            className="flex h-8 items-center justify-center text-ds-xs font-semibold uppercase tracking-wider text-[var(--color-text-placeholder)]"
+            className="flex h-8 items-center justify-center text-ds-xs font-semibold uppercase tracking-wider text-text-placeholder"
           >
             {wd}
           </div>
@@ -241,17 +241,17 @@ export function CalendarGrid({
               aria-selected={isSelected || edge || undefined}
               aria-disabled={!inMonth || disabled || undefined}
               className={cn(
-                'flex h-8 w-9 items-center justify-center rounded-[var(--radius-md)] text-ds-md font-body transition-colors',
+                'flex h-8 w-9 items-center justify-center rounded-ds-md text-ds-md font-body transition-colors',
                 !inMonth && 'pointer-events-none opacity-0',
                 inMonth && disabled && 'opacity-40 pointer-events-none cursor-not-allowed',
                 inMonth && !disabled && !isSelected && !edge && !inRange &&
-                  'text-[var(--color-text-primary)] hover:bg-[var(--color-field)]',
+                  'text-text-primary hover:bg-field',
                 inRange && !edge &&
-                  'rounded-none bg-[var(--color-field)] text-[var(--color-text-primary)]',
+                  'rounded-none bg-field text-text-primary',
                 (isSelected || edge) &&
-                  'bg-[var(--color-interactive)] text-[var(--color-text-on-color)] hover:bg-[var(--color-interactive-hover)]',
+                  'bg-interactive text-text-on-color hover:bg-interactive-hover',
                 isToday && !isSelected && !edge && !disabled &&
-                  'font-semibold text-[var(--color-interactive)]',
+                  'font-semibold text-interactive',
               )}
             >
               {format(d, 'd')}

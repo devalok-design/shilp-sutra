@@ -29,7 +29,7 @@ function GlobalLoading({ isLoading }: GlobalLoadingProps) {
       <div
         ref={ref}
         className={cn(
-          'h-full bg-[var(--color-interactive)] transition-all duration-[var(--duration-slow)] ease-in-out',
+          'h-full bg-interactive transition-all duration-slow ease-in-out',
           isLoading && 'w-4/5 opacity-100',
           !isLoading && animationComplete && 'w-0 opacity-0',
           !isLoading && !animationComplete && 'w-full opacity-100',

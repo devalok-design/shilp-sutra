@@ -3,18 +3,18 @@ import { cva, type VariantProps } from 'class-variance-authority'
 import { cn } from '../ui/lib/utils'
 
 const statusBadgeVariants = cva(
-  'inline-flex items-center gap-ds-02b rounded-[var(--radius-full)] font-body',
+  'inline-flex items-center gap-ds-02b rounded-ds-full font-body',
   {
     variants: {
       status: {
-        active: 'bg-[var(--color-success-surface)] text-[var(--color-text-success)]',
-        pending: 'bg-[var(--color-warning-surface)] text-[var(--color-text-warning)]',
-        approved: 'bg-[var(--color-success-surface)] text-[var(--color-text-success)]',
-        rejected: 'bg-[var(--color-error-surface)] text-[var(--color-text-error)]',
-        completed: 'bg-[var(--color-success-surface)] text-[var(--color-text-success)]',
-        blocked: 'bg-[var(--color-error-surface)] text-[var(--color-text-error)]',
-        cancelled: 'bg-[var(--color-layer-02)] text-[var(--color-text-placeholder)]',
-        draft: 'bg-[var(--color-layer-02)] text-[var(--color-text-tertiary)]',
+        active: 'bg-success-surface text-text-success',
+        pending: 'bg-warning-surface text-text-warning',
+        approved: 'bg-success-surface text-text-success',
+        rejected: 'bg-error-surface text-text-error',
+        completed: 'bg-success-surface text-text-success',
+        blocked: 'bg-error-surface text-text-error',
+        cancelled: 'bg-layer-02 text-text-placeholder',
+        draft: 'bg-layer-02 text-text-tertiary',
       },
       size: {
         sm: 'px-ds-03 py-0.5 text-ds-xs font-semibold',
@@ -29,14 +29,14 @@ const statusBadgeVariants = cva(
 )
 
 const dotColorMap: Record<string, string> = {
-  active: 'bg-[var(--color-success)]',
-  pending: 'bg-[var(--color-warning)]',
-  approved: 'bg-[var(--color-success)]',
-  rejected: 'bg-[var(--color-error)]',
-  completed: 'bg-[var(--color-success)]',
-  blocked: 'bg-[var(--color-error)]',
-  cancelled: 'bg-[var(--color-icon-disabled)]',
-  draft: 'bg-[var(--color-icon-secondary)]',
+  active: 'bg-success',
+  pending: 'bg-warning',
+  approved: 'bg-success',
+  rejected: 'bg-error',
+  completed: 'bg-success',
+  blocked: 'bg-error',
+  cancelled: 'bg-icon-disabled',
+  draft: 'bg-icon-secondary',
 }
 
 interface StatusBadgeProps
@@ -61,7 +61,7 @@ const StatusBadge = React.forwardRef<HTMLSpanElement, StatusBadgeProps>(
         {!hideDot && (
           <span
             className={cn(
-              'shrink-0 rounded-[var(--radius-full)]',
+              'shrink-0 rounded-ds-full',
               size === 'sm' ? 'h-1.5 w-1.5' : 'h-2 w-2',
               dotColorMap[statusKey],
             )}

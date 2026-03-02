@@ -3,16 +3,16 @@ import { cva, type VariantProps } from 'class-variance-authority'
 import { cn } from '../ui/lib/utils'
 
 const contentCardVariants = cva(
-  'rounded-[var(--radius-lg)] transition-[color,background-color,border-color,box-shadow] duration-[var(--duration-moderate)]',
+  'rounded-ds-lg transition-[color,background-color,border-color,box-shadow] duration-moderate',
   {
     variants: {
       variant: {
         default:
-          'border border-[var(--color-border-default)] bg-[var(--color-layer-01)] hover:shadow-[var(--shadow-02)]',
+          'border border-border bg-layer-01 hover:shadow-02',
         outline:
           'border border-[var(--border-secondary)] bg-transparent hover:border-[var(--border-tertiary)]',
         ghost:
-          'border border-transparent bg-transparent hover:bg-[var(--color-layer-02)]',
+          'border border-transparent bg-transparent hover:bg-layer-02',
       },
       padding: {
         default: 'p-ds-05b',
@@ -82,14 +82,14 @@ const ContentCard = React.forwardRef<HTMLDivElement, ContentCardProps>(
         {hasHeader && (
           <div
             className={cn(
-              'flex items-center justify-between border-b border-[var(--color-border-default)]',
+              'flex items-center justify-between border-b border-border',
               getPadding(padding),
             )}
           >
             {header ?? (
               <>
                 {headerTitle && (
-                  <h3 className="text-ds-base semibold text-[var(--color-text-primary)]">
+                  <h3 className="text-ds-base semibold text-text-primary">
                     {headerTitle}
                   </h3>
                 )}
@@ -112,7 +112,7 @@ const ContentCard = React.forwardRef<HTMLDivElement, ContentCardProps>(
         {footer && (
           <div
             className={cn(
-              'border-t border-[var(--color-border-default)]',
+              'border-t border-border',
               getPadding(padding),
             )}
           >

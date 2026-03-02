@@ -100,10 +100,10 @@ export function Presets({ presets, onSelect, className }: PresetsProps) {
               onSelect(start, end)
             }}
             className={cn(
-              'h-8 w-full rounded-[var(--radius-md)] px-ds-03 text-left text-ds-sm',
-              'text-[var(--color-text-primary)] transition-colors',
-              'hover:bg-[var(--color-field)]',
-              'focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--color-focus)]',
+              'h-8 w-full rounded-ds-md px-ds-03 text-left text-ds-sm',
+              'text-text-primary transition-colors',
+              'hover:bg-field',
+              'focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-focus',
             )}
           >
             {preset.label}

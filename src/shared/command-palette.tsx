@@ -167,7 +167,7 @@ function CommandPalette({
         <DialogPrimitive.Content
           className={cn(
             'fixed left-1/2 top-[20%] z-modal w-full max-w-[560px] -translate-x-1/2',
-            'overflow-hidden rounded-[var(--radius-xl)] border border-[var(--color-border-default)] bg-[var(--color-layer-01)] shadow-05',
+            'overflow-hidden rounded-ds-xl border border-border bg-layer-01 shadow-05',
             'data-[state=open]:animate-in data-[state=closed]:animate-out',
             'data-[state=closed]:fade-out-0 data-[state=open]:fade-in-0',
             'data-[state=closed]:zoom-out-95 data-[state=open]:zoom-in-95',
@@ -184,9 +184,9 @@ function CommandPalette({
           </VisuallyHidden>
 
           {/* Search input */}
-          <div className="flex items-center gap-ds-04 border-b border-[var(--color-border-default)] px-ds-05 py-ds-04">
+          <div className="flex items-center gap-ds-04 border-b border-border px-ds-05 py-ds-04">
             <IconSearch
-              className="h-[18px] w-[18px] shrink-0 text-[var(--color-text-placeholder)]"
+              className="h-[18px] w-[18px] shrink-0 text-text-placeholder"
               stroke={1.5}
             />
             <input
@@ -195,14 +195,14 @@ function CommandPalette({
               onChange={(e) => handleQueryChange(e.target.value)}
               placeholder={placeholder}
               className={cn(
-                'flex-1 bg-transparent text-ds-base text-[var(--color-text-primary)] outline-none',
-                'placeholder:text-[var(--color-text-placeholder)]',
+                'flex-1 bg-transparent text-ds-base text-text-primary outline-none',
+                'placeholder:text-text-placeholder',
               )}
               autoComplete="off"
               autoCorrect="off"
               spellCheck={false}
             />
-            <kbd className="hidden shrink-0 select-none rounded-[var(--radius-md)] border border-[var(--color-border-default)] bg-[var(--color-layer-02)] px-ds-02b py-0.5 text-ds-sm font-medium text-[var(--color-text-placeholder)] sm:inline-flex">
+            <kbd className="hidden shrink-0 select-none rounded-ds-md border border-border bg-layer-02 px-ds-02b py-0.5 text-ds-sm font-medium text-text-placeholder sm:inline-flex">
               Esc
             </kbd>
           </div>
@@ -214,7 +214,7 @@ function CommandPalette({
           >
             {filteredGroups.length === 0 && (
               <div className="flex items-center justify-center py-ds-07">
-                <p className="text-ds-md text-[var(--color-text-placeholder)]">
+                <p className="text-ds-md text-text-placeholder">
                   {emptyMessage}
                 </p>
               </div>
@@ -223,7 +223,7 @@ function CommandPalette({
             {filteredGroups.map((group) => (
               <div key={group.label} className="mb-ds-02">
                 <div className="px-ds-03 pb-ds-02 pt-ds-03">
-                  <span className="text-ds-xs font-semibold uppercase tracking-wider font-medium text-[var(--color-text-placeholder)]">
+                  <span className="text-ds-xs font-semibold uppercase tracking-wider font-medium text-text-placeholder">
                     {group.label}
                   </span>
                 </div>
@@ -244,34 +244,34 @@ function CommandPalette({
                       }}
                       onMouseEnter={() => setActiveIndex(itemIndex)}
                       className={cn(
-                        'flex w-full items-center gap-ds-04 rounded-[var(--radius-lg)] px-2.5 py-ds-03 text-left transition-colors',
+                        'flex w-full items-center gap-ds-04 rounded-ds-lg px-2.5 py-ds-03 text-left transition-colors',
                         isActive
-                          ? 'bg-[var(--color-layer-03)] text-[var(--color-text-primary)]'
-                          : 'text-[var(--color-text-secondary)] hover:bg-[var(--color-layer-02)]',
+                          ? 'bg-layer-03 text-text-primary'
+                          : 'text-text-secondary hover:bg-layer-02',
                       )}
                     >
                       {ItemIcon && (
                         <ItemIcon
-                          className="h-[var(--icon-sm)] w-[var(--icon-sm)] shrink-0 text-[var(--color-text-placeholder)]"
+                          className="h-ico-sm w-ico-sm shrink-0 text-text-placeholder"
                           stroke={1.5}
                         />
                       )}
                       <div className="flex flex-1 flex-col">
                         <span className="text-ds-md">{item.label}</span>
                         {item.description && (
-                          <span className="text-ds-sm text-[var(--color-text-placeholder)]">
+                          <span className="text-ds-sm text-text-placeholder">
                             {item.description}
                           </span>
                         )}
                       </div>
                       {item.shortcut && (
-                        <kbd className="shrink-0 rounded border border-[var(--color-border-default)] bg-[var(--color-layer-02)] px-ds-02b py-0.5 text-ds-xs font-medium text-[var(--color-text-placeholder)]">
+                        <kbd className="shrink-0 rounded border border-border bg-layer-02 px-ds-02b py-0.5 text-ds-xs font-medium text-text-placeholder">
                           {item.shortcut}
                         </kbd>
                       )}
                       {isActive && (
                         <IconCornerDownLeft
-                          className="h-3 w-3 shrink-0 text-[var(--color-text-placeholder)]"
+                          className="h-3 w-3 shrink-0 text-text-placeholder"
                           stroke={1.5}
                         />
                       )}
@@ -283,33 +283,33 @@ function CommandPalette({
           </div>
 
           {/* Footer with keyboard hints */}
-          <div className="flex items-center gap-ds-05 border-t border-[var(--color-border-default)] px-ds-05 py-ds-03">
+          <div className="flex items-center gap-ds-05 border-t border-border px-ds-05 py-ds-03">
             <div className="flex items-center gap-ds-02b">
               <div className="flex items-center gap-0.5">
-                <kbd className="inline-flex h-[var(--icon-md)] w-[var(--icon-md)] items-center justify-center rounded border border-[var(--color-border-default)] bg-[var(--color-layer-02)]">
-                  <IconArrowUp className="h-2.5 w-2.5 text-[var(--color-text-placeholder)]" stroke={2} />
+                <kbd className="inline-flex h-ico-md w-ico-md items-center justify-center rounded border border-border bg-layer-02">
+                  <IconArrowUp className="h-2.5 w-2.5 text-text-placeholder" stroke={2} />
                 </kbd>
-                <kbd className="inline-flex h-[var(--icon-md)] w-[var(--icon-md)] items-center justify-center rounded border border-[var(--color-border-default)] bg-[var(--color-layer-02)]">
-                  <IconArrowDown className="h-2.5 w-2.5 text-[var(--color-text-placeholder)]" stroke={2} />
+                <kbd className="inline-flex h-ico-md w-ico-md items-center justify-center rounded border border-border bg-layer-02">
+                  <IconArrowDown className="h-2.5 w-2.5 text-text-placeholder" stroke={2} />
                 </kbd>
               </div>
-              <span className="text-ds-xs text-[var(--color-text-placeholder)]">
+              <span className="text-ds-xs text-text-placeholder">
                 Navigate
               </span>
             </div>
             <div className="flex items-center gap-ds-02b">
-              <kbd className="inline-flex h-5 items-center justify-center rounded border border-[var(--color-border-default)] bg-[var(--color-layer-02)] px-ds-02b">
-                <IconCornerDownLeft className="h-2.5 w-2.5 text-[var(--color-text-placeholder)]" stroke={2} />
+              <kbd className="inline-flex h-5 items-center justify-center rounded border border-border bg-layer-02 px-ds-02b">
+                <IconCornerDownLeft className="h-2.5 w-2.5 text-text-placeholder" stroke={2} />
               </kbd>
-              <span className="text-ds-xs text-[var(--color-text-placeholder)]">
+              <span className="text-ds-xs text-text-placeholder">
                 Select
               </span>
             </div>
             <div className="flex items-center gap-ds-02b">
-              <kbd className="inline-flex h-5 items-center justify-center rounded border border-[var(--color-border-default)] bg-[var(--color-layer-02)] px-ds-02b text-ds-xs font-medium text-[var(--color-text-placeholder)]">
+              <kbd className="inline-flex h-5 items-center justify-center rounded border border-border bg-layer-02 px-ds-02b text-ds-xs font-medium text-text-placeholder">
                 Esc
               </kbd>
-              <span className="text-ds-xs text-[var(--color-text-placeholder)]">
+              <span className="text-ds-xs text-text-placeholder">
                 Close
               </span>
             </div>

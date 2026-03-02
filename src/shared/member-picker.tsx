@@ -62,18 +62,18 @@ const MemberPicker = React.forwardRef<HTMLDivElement, MemberPickerProps>(
         <PopoverTrigger asChild>{children}</PopoverTrigger>
         <PopoverContent
           ref={ref}
-          className="w-[220px] border-[var(--color-border-default)] bg-[var(--color-layer-01)] p-0"
+          className="w-[220px] border-border bg-layer-01 p-0"
           align="start"
           sideOffset={4}
         >
-          <div className="flex items-center gap-ds-03 border-b border-[var(--color-border-default)] px-ds-04 py-ds-03">
-            <IconSearch className="h-[var(--icon-sm)] w-[var(--icon-sm)] shrink-0 text-[var(--color-text-placeholder)]" stroke={1.5} />
+          <div className="flex items-center gap-ds-03 border-b border-border px-ds-04 py-ds-03">
+            <IconSearch className="h-ico-sm w-ico-sm shrink-0 text-text-placeholder" stroke={1.5} />
             <input
               type="text"
               placeholder={placeholder}
               value={search}
               onChange={(e) => setSearch(e.target.value)}
-              className="w-full bg-transparent text-ds-md font-body text-[var(--color-text-primary)] placeholder:text-[var(--color-text-placeholder)] outline-none"
+              className="w-full bg-transparent text-ds-md font-body text-text-primary placeholder:text-text-placeholder outline-none"
             />
           </div>
           <div className="max-h-[200px] overflow-y-auto py-ds-02">
@@ -89,29 +89,29 @@ const MemberPicker = React.forwardRef<HTMLDivElement, MemberPickerProps>(
                   }}
                   className={cn(
                     'flex w-full items-center gap-2.5 px-ds-04 py-ds-02b text-left transition-colors',
-                    'hover:bg-[var(--color-field)]',
-                    isSelected && 'bg-[var(--color-field)]',
+                    'hover:bg-field',
+                    isSelected && 'bg-field',
                   )}
                 >
-                  <Avatar className="h-[var(--icon-md)] w-[var(--icon-md)]">
+                  <Avatar className="h-ico-md w-ico-md">
                     {member.avatar && (
                       <AvatarImage src={member.avatar} alt={member.name} />
                     )}
-                    <AvatarFallback className="bg-[var(--color-layer-03)] text-[8px] font-semibold text-[var(--color-text-on-color)]">
+                    <AvatarFallback className="bg-layer-03 text-[8px] font-semibold text-text-on-color">
                       {getInitials(member.name)}
                     </AvatarFallback>
                   </Avatar>
-                  <span className="flex-1 truncate text-ds-md font-body text-[var(--color-text-primary)]">
+                  <span className="flex-1 truncate text-ds-md font-body text-text-primary">
                     {member.name}
                   </span>
                   {isSelected && (
-                    <IconCheck className="h-[var(--icon-sm)] w-[var(--icon-sm)] shrink-0 text-[var(--color-interactive)]" />
+                    <IconCheck className="h-ico-sm w-ico-sm shrink-0 text-interactive" />
                   )}
                 </button>
               )
             })}
             {filtered.length === 0 && (
-              <p className="px-ds-04 py-ds-05 text-center text-ds-sm font-body text-[var(--color-text-placeholder)]">
+              <p className="px-ds-04 py-ds-05 text-center text-ds-sm font-body text-text-placeholder">
                 No members found
               </p>
             )}

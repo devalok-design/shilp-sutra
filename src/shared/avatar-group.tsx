@@ -15,7 +15,7 @@ import {
 import { getInitials } from './lib/string-utils'
 
 const avatarSizeVariants = cva(
-  'shrink-0 overflow-hidden rounded-[var(--radius-full)] border-2 border-[var(--color-layer-01)]',
+  'shrink-0 overflow-hidden rounded-ds-full border-2 border-layer-01',
   {
     variants: {
       size: {
@@ -78,7 +78,7 @@ const AvatarGroup = React.forwardRef<HTMLDivElement, AvatarGroupProps>(
                   <AvatarImage src={user.image} alt={user.name} />
                 )}
                 <AvatarFallback
-                  className="bg-[var(--color-field)] font-body font-semibold text-[var(--color-text-on-color)]"
+                  className="bg-field font-body font-semibold text-text-on-color"
                 >
                   {initials}
                 </AvatarFallback>
@@ -91,7 +91,7 @@ const AvatarGroup = React.forwardRef<HTMLDivElement, AvatarGroupProps>(
               <Tooltip key={index}>
                 <TooltipTrigger asChild>{avatar}</TooltipTrigger>
                 <TooltipContent
-                  className="border-[var(--color-border-default)] bg-[var(--color-layer-01)] text-[var(--color-text-primary)]"
+                  className="border-border bg-layer-01 text-text-primary"
                   sideOffset={6}
                 >
                   <p className="text-ds-sm">{user.name}</p>
@@ -107,7 +107,7 @@ const AvatarGroup = React.forwardRef<HTMLDivElement, AvatarGroupProps>(
                   className={cn(
                     avatarSizeVariants({ size }),
                     overlapClass,
-                    'flex cursor-default items-center justify-center bg-[var(--color-layer-03)] font-body font-semibold text-[var(--color-text-on-color)]',
+                    'flex cursor-default items-center justify-center bg-layer-03 font-body font-semibold text-text-on-color',
                   )}
                   style={{ zIndex: 0 }}
                 >
@@ -115,7 +115,7 @@ const AvatarGroup = React.forwardRef<HTMLDivElement, AvatarGroupProps>(
                 </div>
               </TooltipTrigger>
               <TooltipContent
-                className="border-[var(--color-border-default)] bg-[var(--color-layer-01)] text-[var(--color-text-primary)]"
+                className="border-border bg-layer-01 text-text-primary"
                 sideOffset={6}
               >
                 <div className="flex flex-col gap-0.5">

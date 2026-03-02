@@ -10,22 +10,22 @@ function CardSkeleton({ className }: SkeletonProps) {
   return (
     <div
       className={cn(
-        'rounded-[var(--radius-lg)] border border-[var(--color-border-default)] bg-[var(--color-layer-01)] p-ds-05b',
+        'rounded-ds-lg border border-border bg-layer-01 p-ds-05b',
         className,
       )}
     >
       <div className="flex items-center justify-between pb-ds-05">
-        <Skeleton className="h-4 w-32 bg-[var(--color-field)]" />
-        <Skeleton className="h-[var(--icon-sm)] w-[var(--icon-sm)] rounded bg-[var(--color-field)]" />
+        <Skeleton className="h-4 w-32 bg-field" />
+        <Skeleton className="h-ico-sm w-ico-sm rounded bg-field" />
       </div>
       <div className="space-y-ds-04">
-        <Skeleton className="h-3 w-full bg-[var(--color-field)]" />
-        <Skeleton className="h-3 w-4/5 bg-[var(--color-field)]" />
-        <Skeleton className="h-3 w-3/5 bg-[var(--color-field)]" />
+        <Skeleton className="h-3 w-full bg-field" />
+        <Skeleton className="h-3 w-4/5 bg-field" />
+        <Skeleton className="h-3 w-3/5 bg-field" />
       </div>
       <div className="flex items-center gap-ds-03 pt-ds-05">
-        <Skeleton className="h-6 w-6 rounded-[var(--radius-full)] bg-[var(--color-field)]" />
-        <Skeleton className="h-3 w-20 bg-[var(--color-field)]" />
+        <Skeleton className="h-6 w-6 rounded-ds-full bg-field" />
+        <Skeleton className="h-3 w-20 bg-field" />
       </div>
     </div>
   )
@@ -46,17 +46,17 @@ function TableSkeleton({
   return (
     <div
       className={cn(
-        'overflow-hidden rounded-[var(--radius-lg)] border border-[var(--color-border-default)]',
+        'overflow-hidden rounded-ds-lg border border-border',
         className,
       )}
     >
       {/* Header */}
-      <div className="flex items-center gap-ds-05 border-b border-[var(--color-border-default)] bg-[var(--color-layer-02)] px-ds-05 py-ds-04">
+      <div className="flex items-center gap-ds-05 border-b border-border bg-layer-02 px-ds-05 py-ds-04">
         {Array.from({ length: columns }).map((_, i) => (
           <Skeleton
             key={`head-${i}`}
             className={cn(
-              'h-3 bg-[var(--color-field)]',
+              'h-3 bg-field',
               i === 0 ? 'w-40' : 'flex-1',
             )}
           />
@@ -69,14 +69,14 @@ function TableSkeleton({
           key={`row-${rowIndex}`}
           className={cn(
             'flex items-center gap-ds-05 px-ds-05 py-3.5',
-            rowIndex < rows - 1 && 'border-b border-[var(--color-border-default)]',
+            rowIndex < rows - 1 && 'border-b border-border',
           )}
         >
           {Array.from({ length: columns }).map((_, colIndex) => (
             <Skeleton
               key={`cell-${rowIndex}-${colIndex}`}
               className={cn(
-                'h-3 bg-[var(--color-field)]',
+                'h-3 bg-field',
                 colIndex === 0 ? 'w-40' : 'flex-1',
               )}
             />
@@ -109,29 +109,29 @@ function BoardSkeleton({
           {/* Column header */}
           <div className="flex items-center justify-between px-ds-02 py-ds-03">
             <div className="flex items-center gap-ds-03">
-              <Skeleton className="h-3 w-3 rounded bg-[var(--color-field)]" />
-              <Skeleton className="h-3 w-20 bg-[var(--color-field)]" />
-              <Skeleton className="h-4 w-5 rounded-[var(--radius-full)] bg-[var(--color-field)]" />
+              <Skeleton className="h-3 w-3 rounded bg-field" />
+              <Skeleton className="h-3 w-20 bg-field" />
+              <Skeleton className="h-4 w-5 rounded-ds-full bg-field" />
             </div>
-            <Skeleton className="h-[var(--icon-sm)] w-[var(--icon-sm)] rounded bg-[var(--color-field)]" />
+            <Skeleton className="h-ico-sm w-ico-sm rounded bg-field" />
           </div>
 
           {/* Column cards */}
           {Array.from({ length: cardsPerColumn }).map((_, cardIndex) => (
             <div
               key={`card-${colIndex}-${cardIndex}`}
-              className="rounded-[var(--radius-lg)] border border-[var(--color-border-default)] bg-[var(--color-layer-01)] p-3.5"
+              className="rounded-ds-lg border border-border bg-layer-01 p-3.5"
             >
               <div className="space-y-2.5">
-                <Skeleton className="h-3 w-4/5 bg-[var(--color-field)]" />
-                <Skeleton className="h-3 w-3/5 bg-[var(--color-field)]" />
+                <Skeleton className="h-3 w-4/5 bg-field" />
+                <Skeleton className="h-3 w-3/5 bg-field" />
               </div>
               <div className="flex items-center justify-between pt-ds-04">
                 <div className="flex items-center gap-ds-02b">
-                  <Skeleton className="h-[var(--icon-md)] w-[var(--icon-md)] rounded-[var(--radius-full)] bg-[var(--color-field)]" />
-                  <Skeleton className="h-2.5 w-16 bg-[var(--color-field)]" />
+                  <Skeleton className="h-ico-md w-ico-md rounded-ds-full bg-field" />
+                  <Skeleton className="h-2.5 w-16 bg-field" />
                 </div>
-                <Skeleton className="h-4 w-12 rounded-[var(--radius-full)] bg-[var(--color-field)]" />
+                <Skeleton className="h-4 w-12 rounded-ds-full bg-field" />
               </div>
             </div>
           ))}
@@ -160,17 +160,17 @@ function ListSkeleton({
           key={`list-${i}`}
           className={cn(
             'flex items-center gap-ds-04 py-ds-04',
-            i < rows - 1 && 'border-b border-[var(--color-border-default)]',
+            i < rows - 1 && 'border-b border-border',
           )}
         >
           {showAvatar && (
-            <Skeleton className="h-8 w-8 shrink-0 rounded-[var(--radius-full)] bg-[var(--color-field)]" />
+            <Skeleton className="h-8 w-8 shrink-0 rounded-ds-full bg-field" />
           )}
           <div className="flex flex-1 flex-col gap-ds-02b">
-            <Skeleton className="h-3 w-2/5 bg-[var(--color-field)]" />
-            <Skeleton className="h-2.5 w-3/5 bg-[var(--color-field)]" />
+            <Skeleton className="h-3 w-2/5 bg-field" />
+            <Skeleton className="h-2.5 w-3/5 bg-field" />
           </div>
-          <Skeleton className="h-5 w-14 rounded-[var(--radius-full)] bg-[var(--color-field)]" />
+          <Skeleton className="h-5 w-14 rounded-ds-full bg-field" />
         </div>
       ))}
     </div>

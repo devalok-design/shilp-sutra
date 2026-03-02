@@ -60,8 +60,8 @@ function getErrorConfig(status?: number) {
         title: 'Page not found',
         message:
           'The page you are looking for does not exist or has been moved.',
-        bgClass: 'bg-[var(--color-interactive-subtle)]',
-        iconClass: 'text-[var(--color-interactive)]',
+        bgClass: 'bg-interactive-subtle',
+        iconClass: 'text-interactive',
       }
     case 403:
       return {
@@ -69,8 +69,8 @@ function getErrorConfig(status?: number) {
         title: 'Access denied',
         message:
           'You do not have permission to view this page. Contact your administrator if you believe this is a mistake.',
-        bgClass: 'bg-[var(--color-warning-surface)]',
-        iconClass: 'text-[var(--color-warning)]',
+        bgClass: 'bg-warning-surface',
+        iconClass: 'text-warning',
       }
     case 500:
       return {
@@ -78,8 +78,8 @@ function getErrorConfig(status?: number) {
         title: 'Server error',
         message:
           'Something went wrong on our end. Please try again later or contact support if the issue persists.',
-        bgClass: 'bg-[var(--color-error-surface)]',
-        iconClass: 'text-[var(--color-error)]',
+        bgClass: 'bg-error-surface',
+        iconClass: 'text-error',
       }
     default:
       return {
@@ -87,8 +87,8 @@ function getErrorConfig(status?: number) {
         title: 'Something went wrong',
         message:
           'An unexpected error occurred. Please try again or go back to the home page.',
-        bgClass: 'bg-[var(--color-interactive-subtle)]',
-        iconClass: 'text-[var(--color-interactive)]',
+        bgClass: 'bg-interactive-subtle',
+        iconClass: 'text-interactive',
       }
   }
 }
@@ -108,12 +108,12 @@ function ErrorDisplay({ error, onReset }: ErrorDisplayProps) {
   return (
     <div className="flex min-h-[60vh] items-center justify-center p-ds-05">
       <div
-        className="flex w-full max-w-lg flex-col items-center gap-ds-06 rounded-[var(--radius-xl)] border border-[var(--color-border-default)] bg-[var(--color-layer-01)] p-ds-07 text-center shadow-01"
+        className="flex w-full max-w-lg flex-col items-center gap-ds-06 rounded-ds-xl border border-border bg-layer-01 p-ds-07 text-center shadow-01"
       >
         {/* Error Icon */}
         <div
           className={cn(
-            'flex h-16 w-16 items-center justify-center rounded-[var(--radius-2xl)]',
+            'flex h-16 w-16 items-center justify-center rounded-ds-2xl',
             errorConfig.bgClass,
           )}
         >
@@ -125,14 +125,14 @@ function ErrorDisplay({ error, onReset }: ErrorDisplayProps) {
         {/* Error IconInfoCircle */}
         <div className="flex flex-col gap-ds-03">
           {status && (
-            <span className="text-ds-sm text-[var(--color-text-placeholder)]">
+            <span className="text-ds-sm text-text-placeholder">
               Error {status}
             </span>
           )}
-          <h2 className="text-ds-2xl font-semibold text-[var(--color-text-primary)]">
+          <h2 className="text-ds-2xl font-semibold text-text-primary">
             {errorConfig.title}
           </h2>
-          <p className="text-ds-base text-[var(--color-text-tertiary)]">
+          <p className="text-ds-base text-text-tertiary">
             {message || errorConfig.message}
           </p>
         </div>
@@ -152,11 +152,11 @@ function ErrorDisplay({ error, onReset }: ErrorDisplayProps) {
 
         {/* Dev stack trace */}
         {isDev && stack && (
-          <div className="w-full overflow-auto rounded-[var(--radius-lg)] border border-[var(--color-border-default)] bg-[var(--color-layer-02)] p-ds-05 text-left">
-            <p className="text-ds-sm mb-ds-03 font-semibold text-[var(--color-text-primary)]">
+          <div className="w-full overflow-auto rounded-ds-lg border border-border bg-layer-02 p-ds-05 text-left">
+            <p className="text-ds-sm mb-ds-03 font-semibold text-text-primary">
               Stack Trace (development only)
             </p>
-            <pre className="whitespace-pre-wrap text-ds-sm text-[var(--color-text-tertiary)]">
+            <pre className="whitespace-pre-wrap text-ds-sm text-text-tertiary">
               {stack}
             </pre>
           </div>

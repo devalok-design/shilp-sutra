@@ -13,6 +13,9 @@ export { Autocomplete, type AutocompleteProps, type AutocompleteOption } from '.
 // Combobox
 export { Combobox, type ComboboxProps, type ComboboxOption } from './combobox'
 
+// FileUpload
+export { FileUpload, type FileUploadProps } from './file-upload'
+
 // Form Controls
 export { Checkbox, type CheckboxProps } from './checkbox'
 export { RadioGroup, RadioGroupItem } from './radio'

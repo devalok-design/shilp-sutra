@@ -1,4 +1,4 @@
-import type React from 'react'
+import * as React from 'react'
 import { Avatar, AvatarFallback, AvatarImage } from './avatar'
 import { Tooltip, TooltipContent, TooltipTrigger } from './tooltip'
 import {
@@ -24,97 +24,140 @@ interface AvatarStackProps extends React.HTMLAttributes<HTMLDivElement> {
   disableTooltip?: boolean
 }
 
-export function AvatarStack({
-  avatars,
-  maxAvatars = 4,
-  size = 40,
-  overlap = 8,
-  disableTooltip = true,
-  className,
-  ...props
-}: AvatarStackProps) {
-  const displayAvatars = avatars.slice(0, maxAvatars)
-  const remainingAvatars = avatars.slice(maxAvatars)
-  const remainingCount = remainingAvatars.length
+/**
+ * Color palette for avatar fallbacks, using design system tag tokens.
+ * Each avatar without an image gets a deterministic color based on its name.
+ */
+const AVATAR_PALETTE = [
+  { bg: 'var(--color-tag-blue-bg)', text: 'var(--color-tag-blue-text)' },
+  { bg: 'var(--color-tag-green-bg)', text: 'var(--color-tag-green-text)' },
+  { bg: 'var(--color-tag-magenta-bg)', text: 'var(--color-tag-magenta-text)' },
+  { bg: 'var(--color-tag-purple-bg)', text: 'var(--color-tag-purple-text)' },
+  { bg: 'var(--color-tag-red-bg)', text: 'var(--color-tag-red-text)' },
+  { bg: 'var(--color-tag-yellow-bg)', text: 'var(--color-tag-yellow-text)' },
+] as const
 
-  const renderAvatar = (avatar: AvatarData, index: number) => {
-    const avatarElement = (
-      <Avatar
-        key={index}
-        className="border-2 border-[var(--color-layer-02)]"
-        style={{
-          width: size,
-          height: size,
-          marginRight: -overlap,
-          zIndex: index + 1,
-        }}
-      >
-        <AvatarImage src={avatar.src} alt={avatar.alt || avatar.name} />
-        <AvatarFallback>{avatar.fallback}</AvatarFallback>
-      </Avatar>
-    )
+/** Simple string hash to pick a consistent palette color per name */
+function hashName(name: string): number {
+  let hash = 0
+  for (let i = 0; i < name.length; i++) {
+    hash = ((hash << 5) - hash) + name.charCodeAt(i)
+    hash |= 0
+  }
+  return Math.abs(hash)
+}
 
-    if (disableTooltip) {
-      return avatarElement
+function getAvatarColor(name: string) {
+  return AVATAR_PALETTE[hashName(name) % AVATAR_PALETTE.length]
+}
+
+const AvatarStack = React.forwardRef<HTMLDivElement, AvatarStackProps>(
+  (
+    {
+      avatars,
+      maxAvatars = 4,
+      size = 40,
+      overlap = 8,
+      disableTooltip = true,
+      className,
+      ...props
+    },
+    ref,
+  ) => {
+    const displayAvatars = avatars.slice(0, maxAvatars)
+    const remainingAvatars = avatars.slice(maxAvatars)
+    const remainingCount = remainingAvatars.length
+
+    const renderAvatar = (avatar: AvatarData, index: number) => {
+      const color = getAvatarColor(avatar.name)
+      const avatarElement = (
+        <Avatar
+          key={avatar.name}
+          className="border-2 border-[var(--color-layer-02)]"
+          style={{
+            width: size,
+            height: size,
+            marginRight: -overlap,
+            zIndex: index + 1,
+          }}
+        >
+          <AvatarImage src={avatar.src} alt={avatar.alt || avatar.name} />
+          <AvatarFallback
+            style={{ backgroundColor: color.bg, color: color.text }}
+          >
+            {avatar.fallback}
+          </AvatarFallback>
+        </Avatar>
+      )
+
+      if (disableTooltip) {
+        return avatarElement
+      }
+
+      return (
+        <Tooltip key={avatar.name}>
+          <TooltipTrigger asChild>{avatarElement}</TooltipTrigger>
+          <TooltipContent>
+            <p>{avatar.name}</p>
+          </TooltipContent>
+        </Tooltip>
+      )
     }
 
     return (
-      <Tooltip key={index}>
-        <TooltipTrigger asChild>{avatarElement}</TooltipTrigger>
-        <TooltipContent>
-          <p>{avatar.name}</p>
-        </TooltipContent>
-      </Tooltip>
-    )
-  }
+      <div ref={ref} className={cn('flex flex-wrap items-center', className)} {...props}>
+        {displayAvatars.map((avatar, index) => renderAvatar(avatar, index))}
 
-  return (
-    <div className={cn('flex flex-wrap items-center', className)} {...props}>
-      {displayAvatars.map((avatar, index) => renderAvatar(avatar, index))}
-
-      {remainingCount > 0 && (
-        <DropdownMenu>
-          <DropdownMenuTrigger asChild>
-            <div
-              className="text-ds-md font-semibold flex cursor-pointer items-center justify-center rounded-[var(--radius-full)] border-2 border-[var(--color-layer-02)] bg-[var(--color-layer-03)] text-[var(--color-interactive-hover)]"
-              style={{
-                width: size,
-                height: size,
-                zIndex: displayAvatars.length + 1,
-              }}
-            >
-              +{remainingCount}
-            </div>
-          </DropdownMenuTrigger>
-          <DropdownMenuContent
-            className="max-h-[240px] w-[180px] overflow-y-auto rounded-[var(--radius-lg)] border border-[var(--color-border-subtle)] bg-[var(--color-layer-01)] p-0 shadow-[var(--shadow-02)]"
-            sideOffset={5}
-            align="end"
-          >
-            {remainingAvatars.map((avatar, index) => (
-              <DropdownMenuItem
-                key={index}
-                className={cn(
-                  'flex w-full cursor-pointer items-center gap-[8px] px-[8px] py-[6px] hover:bg-[var(--color-field-hover)]',
-                  index !== remainingAvatars.length - 1 &&
-                    'border-b border-b-[var(--color-border-subtle)]',
-                )}
+        {remainingCount > 0 && (
+          <DropdownMenu>
+            <DropdownMenuTrigger asChild>
+              <div
+                className="text-ds-md font-semibold flex cursor-pointer items-center justify-center rounded-[var(--radius-full)] border-2 border-[var(--color-layer-02)] bg-[var(--color-layer-03)] text-[var(--color-interactive-hover)]"
+                style={{
+                  width: size,
+                  height: size,
+                  zIndex: displayAvatars.length + 1,
+                }}
               >
-                <Avatar className="h-[40px] w-[40px]">
-                  <AvatarImage
-                    src={avatar.src}
-                    alt={avatar.alt || avatar.name}
-                  />
-                  <AvatarFallback>{avatar.fallback}</AvatarFallback>
-                </Avatar>
-                <p className="text-ds-md text-[var(--color-text-secondary)]">
-                  {avatar.name}
-                </p>
-              </DropdownMenuItem>
-            ))}
-          </DropdownMenuContent>
-        </DropdownMenu>
-      )}
-    </div>
-  )
-}
+                +{remainingCount}
+              </div>
+            </DropdownMenuTrigger>
+            <DropdownMenuContent
+              className="max-h-[240px] w-[180px] overflow-y-auto rounded-[var(--radius-lg)] border border-[var(--color-border-subtle)] bg-[var(--color-layer-01)] p-0 shadow-[var(--shadow-02)]"
+              sideOffset={5}
+              align="end"
+            >
+              {remainingAvatars.map((avatar) => {
+                const color = getAvatarColor(avatar.name)
+                return (
+                  <DropdownMenuItem
+                    key={avatar.name}
+                    className="flex w-full cursor-pointer items-center gap-[8px] px-[8px] py-[6px] hover:bg-[var(--color-field-hover)]"
+                  >
+                    <Avatar className="h-[40px] w-[40px]">
+                      <AvatarImage
+                        src={avatar.src}
+                        alt={avatar.alt || avatar.name}
+                      />
+                      <AvatarFallback
+                        style={{ backgroundColor: color.bg, color: color.text }}
+                      >
+                        {avatar.fallback}
+                      </AvatarFallback>
+                    </Avatar>
+                    <p className="text-ds-md text-[var(--color-text-secondary)]">
+                      {avatar.name}
+                    </p>
+                  </DropdownMenuItem>
+                )
+              })}
+            </DropdownMenuContent>
+          </DropdownMenu>
+        )}
+      </div>
+    )
+  },
+)
+AvatarStack.displayName = 'AvatarStack'
+
+export { AvatarStack }

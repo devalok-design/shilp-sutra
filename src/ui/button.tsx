@@ -108,7 +108,7 @@ const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
       // which excludes button-specific attrs like `disabled`.
       const slotProps = {
         className: cn(
-          buttonVariants({ variant: resolvedVariant, size, className }),
+          buttonVariants({ variant: resolvedVariant, size: resolvedSize, className }),
           fullWidth && 'w-full',
         ),
         ref,
@@ -168,7 +168,7 @@ const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
     return (
       <button
         className={cn(
-          buttonVariants({ variant: resolvedVariant, size, className }),
+          buttonVariants({ variant: resolvedVariant, size: resolvedSize, className }),
           fullWidth && 'w-full',
         )}
         ref={ref}

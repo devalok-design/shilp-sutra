@@ -2,6 +2,7 @@
 
 import * as React from 'react'
 import { IconMinus, IconPlus } from '@tabler/icons-react'
+import { cn } from './lib/utils'
 
 export interface NumberInputProps {
   value?: number
@@ -22,7 +23,7 @@ const NumberInput = React.forwardRef<HTMLInputElement, NumberInputProps>(
       max = Number.MAX_SAFE_INTEGER,
       step = 1,
       disabled = false,
-      className = '',
+      className,
     },
     ref,
   ) => {
@@ -51,14 +52,19 @@ const NumberInput = React.forwardRef<HTMLInputElement, NumberInputProps>(
 
     return (
       <div
-        className={`flex items-center justify-between rounded-[36px] border border-[var(--color-border-default)] ${className}`}
+        className={cn(
+          'flex items-center justify-between rounded-[var(--radius-full)] border border-[var(--color-border-default)]',
+          className,
+        )}
       >
         <button
+          type="button"
           onClick={handleDecrement}
           disabled={disabled || value <= min}
+          aria-label="Decrease value"
           className="flex h-8 w-8 items-center justify-center border-0 text-[var(--color-text-placeholder)] transition-colors hover:text-[var(--color-text-secondary)]"
         >
-          <IconMinus className="h-3 w-4" />
+          <IconMinus className="h-[var(--icon-sm)] w-[var(--icon-sm)]" />
         </button>
 
         <input
@@ -74,8 +80,10 @@ const NumberInput = React.forwardRef<HTMLInputElement, NumberInputProps>(
         />
 
         <button
+          type="button"
           onClick={handleIncrement}
           disabled={disabled || value >= max}
+          aria-label="Increase value"
           className="flex h-8 w-8 items-center justify-center border-0 text-[var(--color-text-placeholder)] transition-colors hover:text-[var(--color-text-secondary)]"
         >
           <IconPlus className="h-[var(--icon-sm)] w-[var(--icon-sm)]" />
@@ -86,4 +94,4 @@ const NumberInput = React.forwardRef<HTMLInputElement, NumberInputProps>(
 )
 NumberInput.displayName = 'NumberInput'
 
-export default NumberInput
+export { NumberInput }

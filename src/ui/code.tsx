@@ -5,7 +5,7 @@ interface CodeProps extends React.HTMLAttributes<HTMLElement> {
   variant?: 'inline' | 'block'
 }
 
-const Code = React.forwardRef<HTMLElement, CodeProps>(
+const Code = React.forwardRef<HTMLPreElement | HTMLElement, CodeProps>(
   ({ className, variant = 'inline', children, ...props }, ref) => {
     if (variant === 'block') {
       return (

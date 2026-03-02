@@ -27,7 +27,7 @@ export {
   SelectScrollDownButton,
 } from './select'
 export { Textarea, type TextareaProps } from './textarea'
-export { default as NumberInput, type NumberInputProps } from './number-input'
+export { NumberInput, type NumberInputProps } from './number-input'
 export { SearchInput, type SearchInputProps } from './search-input'
 export { InputOTP, InputOTPGroup, InputOTPSlot, InputOTPSeparator } from './input-otp'
 export { FormField, FormHelperText, type FormHelperState, type FormHelperTextProps } from './form'

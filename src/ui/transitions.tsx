@@ -1,5 +1,6 @@
 import * as React from 'react'
 import { cn } from './lib/utils'
+import { useReducedMotion } from './lib/use-reduced-motion'
 
 type TransitionProps = {
   open: boolean
@@ -11,6 +12,7 @@ type TransitionProps = {
 
 const Fade = React.forwardRef<HTMLDivElement, TransitionProps>(
   ({ open, duration, className, children, unmountOnClose = false, ...props }, ref) => {
+    const reducedMotion = useReducedMotion()
     if (unmountOnClose && !open) return null
     return (
       <div
@@ -18,7 +20,7 @@ const Fade = React.forwardRef<HTMLDivElement, TransitionProps>(
         className={cn('transition-opacity ease-entrance', className)}
         style={{
           opacity: open ? 1 : 0,
-          transitionDuration: duration || 'var(--duration-enter)',
+          transitionDuration: reducedMotion ? '0ms' : (duration || 'var(--duration-enter)'),
         }}
         {...props}
       >
@@ -31,6 +33,7 @@ Fade.displayName = 'Fade'
 
 const Collapse = React.forwardRef<HTMLDivElement, TransitionProps>(
   ({ open, duration, className, children, ...props }, ref) => {
+    const reducedMotion = useReducedMotion()
     const contentRef = React.useRef<HTMLDivElement>(null)
     const [height, setHeight] = React.useState<number | undefined>(open ? undefined : 0)
 
@@ -52,7 +55,7 @@ const Collapse = React.forwardRef<HTMLDivElement, TransitionProps>(
         className={cn('overflow-hidden transition-[height] ease-standard', className)}
         style={{
           height: height !== undefined ? `${height}px` : 'auto',
-          transitionDuration: duration || 'var(--duration-moderate)',
+          transitionDuration: reducedMotion ? '0ms' : (duration || 'var(--duration-moderate)'),
         }}
         {...props}
       >
@@ -65,6 +68,7 @@ Collapse.displayName = 'Collapse'
 
 const Grow = React.forwardRef<HTMLDivElement, TransitionProps>(
   ({ open, duration, className, children, unmountOnClose = false, ...props }, ref) => {
+    const reducedMotion = useReducedMotion()
     if (unmountOnClose && !open) return null
     return (
       <div
@@ -73,7 +77,7 @@ const Grow = React.forwardRef<HTMLDivElement, TransitionProps>(
         style={{
           opacity: open ? 1 : 0,
           transform: open ? 'scale(1)' : 'scale(0)',
-          transitionDuration: duration || 'var(--duration-enter)',
+          transitionDuration: reducedMotion ? '0ms' : (duration || 'var(--duration-enter)'),
         }}
         {...props}
       >
@@ -88,6 +92,7 @@ const Slide = React.forwardRef<
   HTMLDivElement,
   TransitionProps & { direction?: 'up' | 'down' | 'left' | 'right' }
 >(({ open, direction = 'up', duration, className, children, unmountOnClose = false, ...props }, ref) => {
+  const reducedMotion = useReducedMotion()
   if (unmountOnClose && !open) return null
   const translateMap = {
     up: 'translateY(100%)',
@@ -101,7 +106,7 @@ const Slide = React.forwardRef<
       className={cn('transition-transform ease-entrance', className)}
       style={{
         transform: open ? 'translate(0)' : translateMap[direction],
-        transitionDuration: duration || 'var(--duration-enter)',
+        transitionDuration: reducedMotion ? '0ms' : (duration || 'var(--duration-enter)'),
       }}
       {...props}
     >

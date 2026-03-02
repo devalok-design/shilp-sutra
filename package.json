@@ -48,6 +48,10 @@
       "import": "./dist/karm/admin/index.js",
       "types": "./dist/karm/admin/index.d.ts"
     },
+    "./karm/custom-buttons": {
+      "import": "./dist/karm/custom-buttons/index.js",
+      "types": "./dist/karm/custom-buttons/index.d.ts"
+    },
     "./tailwind": {
       "import": "./dist/tailwind/index.js",
       "types": "./dist/tailwind/index.d.ts"

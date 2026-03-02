@@ -11,7 +11,7 @@ import {
   DialogTrigger,
 } from '../../../ui/dialog'
 import { Button } from '../../../ui/button'
-import NumberInput from '../../../ui/number-input'
+import { NumberInput } from '../../../ui/number-input'
 import type { BreakBalanceData } from '../types'
 
 // ============================================================

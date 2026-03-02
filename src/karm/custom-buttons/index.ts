@@ -1,6 +1,4 @@
 export { CustomButton, type ButtonVariant, type ButtonType } from './CustomButton'
-export { FAB, type FABSize } from './FAB'
-export { ExtendedFAB, type ExtendedFABSize, type ExtendedFABColor } from './ExtendedFAB'
+/** @deprecated Use Button from ui/ instead */
 export { IconButton, type IconButtonProps } from './icon-button'
-export { AdminSwitch } from './AdminSwitch'
 export { Toggle, type ToggleSize, type ToggleColor, type ToggleOption } from './Toggle'

@@ -21,6 +21,7 @@ const stateClasses: Record<IconButtonState, string> = {
   pressed: 'bg-[var(--color-layer-02)]',
 }
 
+/** @deprecated Use Button from ui/ instead */
 export interface IconButtonProps extends React.ButtonHTMLAttributes<HTMLButtonElement> {
   asChild?: boolean
   icon?: React.ReactNode
@@ -29,6 +30,7 @@ export interface IconButtonProps extends React.ButtonHTMLAttributes<HTMLButtonEl
   onClick?: (e: React.MouseEvent<HTMLButtonElement>) => void
 }
 
+/** @deprecated Use Button from ui/ instead */
 const IconButton = React.forwardRef<HTMLButtonElement, IconButtonProps>(
   ({ className, size = 'medium', asChild = false, icon, children, disabled = false, onClick, ...props }, ref) => {
     const Comp = asChild ? Slot : 'button'

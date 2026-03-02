@@ -1,6 +1,6 @@
 // Layout components -- application shell
 export {
-  default as AppSidebar,
+  AppSidebar,
   type NavItem,
   type NavGroup,
   type SidebarUser,
@@ -8,20 +8,20 @@ export {
 } from './sidebar'
 
 export {
-  default as TopBar,
+  TopBar,
   type TopBarUser,
   type TopBarProps,
 } from './top-bar'
 
 export {
-  default as BottomNavbar,
+  BottomNavbar,
   type BottomNavItem,
   type BottomNavbarUser,
   type BottomNavbarProps,
 } from './bottom-navbar'
 
 export {
-  default as NotificationCenter,
+  NotificationCenter,
   type Notification,
   type NotificationCenterProps,
 } from './notification-center'

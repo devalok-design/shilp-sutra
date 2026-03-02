@@ -1,5 +1,5 @@
 import type { Meta, StoryObj } from '@storybook/react'
-import NotificationCenter from './notification-center'
+import { NotificationCenter } from './notification-center'
 import type { Notification } from './notification-center'
 
 // ── Helpers ──────────────────────────────────────────────────

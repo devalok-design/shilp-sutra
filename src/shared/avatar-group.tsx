@@ -43,99 +43,94 @@ interface AvatarGroupProps
   showTooltip?: boolean
 }
 
-function AvatarGroup({
-  users,
-  max = 4,
-  size,
-  showTooltip = true,
-  className,
-  ...props
-}: AvatarGroupProps) {
-  const displayed = users.slice(0, max)
-  const overflow = users.length - max
+const AvatarGroup = React.forwardRef<HTMLDivElement, AvatarGroupProps>(
+  ({ users, max = 4, size, showTooltip = true, className, ...props }, ref) => {
+    const displayed = users.slice(0, max)
+    const overflow = users.length - max
 
-  const overlapMap = {
-    sm: '-ml-1.5',
-    md: '-ml-2',
-    lg: '-ml-2.5',
-  }
-  const overlapClass = overlapMap[size ?? 'md']
+    const overlapMap = {
+      sm: '-ml-1.5',
+      md: '-ml-2',
+      lg: '-ml-2.5',
+    }
+    const overlapClass = overlapMap[size ?? 'md']
 
-  return (
-    <TooltipProvider>
-      <div
-        className={cn('flex items-center', className)}
-        {...props}
-      >
-        {displayed.map((user, index) => {
-          const initials = getInitials(user.name)
+    return (
+      <TooltipProvider>
+        <div
+          ref={ref}
+          className={cn('flex items-center', className)}
+          {...props}
+        >
+          {displayed.map((user, index) => {
+            const initials = getInitials(user.name)
 
-          const avatar = (
-            <Avatar
-              key={index}
-              className={cn(
-                avatarSizeVariants({ size }),
-                index > 0 && overlapClass,
-              )}
-              style={{ zIndex: displayed.length - index }}
-            >
-              {user.image && (
-                <AvatarImage src={user.image} alt={user.name} />
-              )}
-              <AvatarFallback
-                className="bg-[var(--color-field)] font-body font-semibold text-[var(--color-text-on-color)]"
+            const avatar = (
+              <Avatar
+                key={index}
+                className={cn(
+                  avatarSizeVariants({ size }),
+                  index > 0 && overlapClass,
+                )}
+                style={{ zIndex: displayed.length - index }}
               >
-                {initials}
-              </AvatarFallback>
-            </Avatar>
-          )
+                {user.image && (
+                  <AvatarImage src={user.image} alt={user.name} />
+                )}
+                <AvatarFallback
+                  className="bg-[var(--color-field)] font-body font-semibold text-[var(--color-text-on-color)]"
+                >
+                  {initials}
+                </AvatarFallback>
+              </Avatar>
+            )
 
-          if (!showTooltip) return avatar
+            if (!showTooltip) return avatar
 
-          return (
-            <Tooltip key={index}>
-              <TooltipTrigger asChild>{avatar}</TooltipTrigger>
+            return (
+              <Tooltip key={index}>
+                <TooltipTrigger asChild>{avatar}</TooltipTrigger>
+                <TooltipContent
+                  className="border-[var(--color-border-default)] bg-[var(--color-layer-01)] text-[var(--color-text-primary)]"
+                  sideOffset={6}
+                >
+                  <p className="B3-Reg">{user.name}</p>
+                </TooltipContent>
+              </Tooltip>
+            )
+          })}
+
+          {overflow > 0 && (
+            <Tooltip>
+              <TooltipTrigger asChild>
+                <div
+                  className={cn(
+                    avatarSizeVariants({ size }),
+                    overlapClass,
+                    'flex cursor-default items-center justify-center bg-[var(--color-layer-03)] font-body font-semibold text-[var(--color-text-on-color)]',
+                  )}
+                  style={{ zIndex: 0 }}
+                >
+                  +{overflow}
+                </div>
+              </TooltipTrigger>
               <TooltipContent
                 className="border-[var(--color-border-default)] bg-[var(--color-layer-01)] text-[var(--color-text-primary)]"
                 sideOffset={6}
               >
-                <p className="B3-Reg">{user.name}</p>
+                <div className="flex flex-col gap-0.5">
+                  {users.slice(max).map((user, i) => (
+                    <p key={i} className="B3-Reg">{user.name}</p>
+                  ))}
+                </div>
               </TooltipContent>
             </Tooltip>
-          )
-        })}
-
-        {overflow > 0 && (
-          <Tooltip>
-            <TooltipTrigger asChild>
-              <div
-                className={cn(
-                  avatarSizeVariants({ size }),
-                  overlapClass,
-                  'flex cursor-default items-center justify-center bg-[var(--color-layer-03)] font-body font-semibold text-[var(--color-text-on-color)]',
-                )}
-                style={{ zIndex: 0 }}
-              >
-                +{overflow}
-              </div>
-            </TooltipTrigger>
-            <TooltipContent
-              className="border-[var(--color-border-default)] bg-[var(--color-layer-01)] text-[var(--color-text-primary)]"
-              sideOffset={6}
-            >
-              <div className="flex flex-col gap-0.5">
-                {users.slice(max).map((user, i) => (
-                  <p key={i} className="B3-Reg">{user.name}</p>
-                ))}
-              </div>
-            </TooltipContent>
-          </Tooltip>
-        )}
-      </div>
-    </TooltipProvider>
-  )
-}
-
+          )}
+        </div>
+      </TooltipProvider>
+    )
+  },
+)
 AvatarGroup.displayName = 'AvatarGroup'
 
 export { AvatarGroup }

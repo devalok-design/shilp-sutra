@@ -37,77 +37,82 @@ interface ContentCardProps
   footer?: React.ReactNode
 }
 
-function ContentCard({
-  variant,
-  padding,
-  header,
-  headerTitle,
-  headerActions,
-  footer,
-  className,
-  children,
-  ...props
-}: ContentCardProps) {
-  const hasHeader = header || headerTitle || headerActions
+const ContentCard = React.forwardRef<HTMLDivElement, ContentCardProps>(
+  (
+    {
+      variant,
+      padding,
+      header,
+      headerTitle,
+      headerActions,
+      footer,
+      className,
+      children,
+      ...props
+    },
+    ref,
+  ) => {
+    const hasHeader = header || headerTitle || headerActions
 
-  return (
-    <div
-      className={cn(
-        contentCardVariants({ variant, padding: hasHeader || footer ? 'none' : padding }),
-        className,
-      )}
-      {...props}
-    >
-      {hasHeader && (
-        <div
-          className={cn(
-            'flex items-center justify-between border-b border-[var(--color-border-default)]',
-            padding === 'compact' ? 'px-3 py-2.5' : padding === 'spacious' ? 'px-6 py-4' : 'px-5 py-3.5',
-          )}
-        >
-          {header ?? (
-            <>
-              {headerTitle && (
-                <h3 className="B1-Reg semibold text-[var(--color-text-primary)]">
-                  {headerTitle}
-                </h3>
-              )}
-              {headerActions && (
-                <div className="flex items-center gap-2">{headerActions}</div>
-              )}
-            </>
-          )}
-        </div>
-      )}
-
+    return (
       <div
+        ref={ref}
         className={cn(
-          hasHeader || footer
-            ? padding === 'compact'
-              ? 'p-3'
-              : padding === 'spacious'
-                ? 'p-6'
-                : 'p-5'
-            : '',
+          contentCardVariants({ variant, padding: hasHeader || footer ? 'none' : padding }),
+          className,
         )}
+        {...props}
       >
-        {children}
-      </div>
+        {hasHeader && (
+          <div
+            className={cn(
+              'flex items-center justify-between border-b border-[var(--color-border-default)]',
+              padding === 'compact' ? 'px-3 py-2.5' : padding === 'spacious' ? 'px-6 py-4' : 'px-5 py-3.5',
+            )}
+          >
+            {header ?? (
+              <>
+                {headerTitle && (
+                  <h3 className="B1-Reg semibold text-[var(--color-text-primary)]">
+                    {headerTitle}
+                  </h3>
+                )}
+                {headerActions && (
+                  <div className="flex items-center gap-2">{headerActions}</div>
+                )}
+              </>
+            )}
+          </div>
+        )}
 
-      {footer && (
         <div
           className={cn(
-            'border-t border-[var(--color-border-default)]',
-            padding === 'compact' ? 'px-3 py-2.5' : padding === 'spacious' ? 'px-6 py-4' : 'px-5 py-3.5',
+            hasHeader || footer
+              ? padding === 'compact'
+                ? 'p-3'
+                : padding === 'spacious'
+                  ? 'p-6'
+                  : 'p-5'
+              : '',
           )}
         >
-          {footer}
+          {children}
         </div>
-      )}
-    </div>
-  )
-}
 
+        {footer && (
+          <div
+            className={cn(
+              'border-t border-[var(--color-border-default)]',
+              padding === 'compact' ? 'px-3 py-2.5' : padding === 'spacious' ? 'px-6 py-4' : 'px-5 py-3.5',
+            )}
+          >
+            {footer}
+          </div>
+        )}
+      </div>
+    )
+  },
+)
 ContentCard.displayName = 'ContentCard'
 
 export { ContentCard, contentCardVariants }

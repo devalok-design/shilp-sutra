@@ -1,7 +1,7 @@
 import type { Meta, StoryObj } from '@storybook/react'
-import TopBar from './top-bar'
+import { TopBar } from './top-bar'
 import { SidebarProvider } from '../ui/sidebar'
-import NotificationCenter from './notification-center'
+import { NotificationCenter } from './notification-center'
 import type { TopBarUser } from './top-bar'
 
 // ── Mock Data ────────────────────────────────────────────────

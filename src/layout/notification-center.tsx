@@ -6,6 +6,7 @@
  * Props-driven: accepts notifications array and callbacks instead of
  * reading from Zustand stores or using Remix useNavigate.
  */
+import * as React from 'react'
 import { useRef, useCallback } from 'react'
 import {
   Popover,
@@ -238,21 +239,25 @@ function NotificationItem({
 // NotificationCenter
 // -----------------------------------------------------------------------
 
-export default function NotificationCenter({
-  notifications = [],
-  unreadCount: unreadCountProp,
-  open,
-  onOpenChange,
-  isLoading = false,
-  hasMore = false,
-  onFetchMore,
-  onMarkRead,
-  onMarkAllRead,
-  onNavigate,
-  getNotificationRoute,
-  className,
-}: NotificationCenterProps) {
-  const scrollRef = useRef<HTMLDivElement>(null)
+const NotificationCenter = React.forwardRef<HTMLButtonElement, NotificationCenterProps>(
+  (
+    {
+      notifications = [],
+      unreadCount: unreadCountProp,
+      open,
+      onOpenChange,
+      isLoading = false,
+      hasMore = false,
+      onFetchMore,
+      onMarkRead,
+      onMarkAllRead,
+      onNavigate,
+      getNotificationRoute,
+      className,
+    },
+    ref,
+  ) => {
+    const scrollRef = useRef<HTMLDivElement>(null)
 
   const unreadCount =
     unreadCountProp ?? notifications.filter((n) => !n.isRead).length
@@ -301,6 +306,7 @@ export default function NotificationCenter({
         <TooltipTrigger asChild>
           <PopoverTrigger asChild>
             <button
+              ref={ref}
               className={cn(
                 'relative flex h-9 w-9 items-center justify-center rounded-[var(--radius-full)] border border-[var(--color-border-default)] bg-[var(--color-layer-02)] text-[var(--color-text-secondary)] transition-colors hover:bg-[var(--color-layer-03)]',
                 className,
@@ -400,7 +406,9 @@ export default function NotificationCenter({
         </div>
       </PopoverContent>
     </Popover>
-  )
-}
-
+    )
+  },
+)
 NotificationCenter.displayName = 'NotificationCenter'
+
+export { NotificationCenter }

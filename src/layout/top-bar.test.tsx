@@ -38,7 +38,7 @@ vi.mock('../ui/dropdown-menu', () => ({
   DropdownMenuSeparator: () => <hr />,
 }))
 
-import TopBar from './top-bar'
+import { TopBar } from './top-bar'
 
 describe('TopBar', () => {
   beforeEach(() => {

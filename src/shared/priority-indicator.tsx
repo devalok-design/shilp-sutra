@@ -62,51 +62,49 @@ interface PriorityIndicatorProps
   priority: Priority
 }
 
-function PriorityIndicator({
-  priority,
-  display,
-  className,
-  ...props
-}: PriorityIndicatorProps) {
-  const config = priorityConfig[priority]
-  const Icon = config.icon
+const PriorityIndicator = React.forwardRef<HTMLDivElement, PriorityIndicatorProps>(
+  ({ priority, display, className, ...props }, ref) => {
+    const config = priorityConfig[priority]
+    const Icon = config.icon
 
-  if (display === 'compact') {
+    if (display === 'compact') {
+      return (
+        <div
+          ref={ref}
+          className={cn(
+            'inline-flex items-center justify-center rounded-[var(--radius-md)] p-1',
+            config.bgColor,
+            className,
+          )}
+          title={config.label}
+          {...props}
+        >
+          <Icon className={cn('h-3.5 w-3.5', config.color)} stroke={2} />
+        </div>
+      )
+    }
+
     return (
       <div
-        className={cn(
-          'inline-flex items-center justify-center rounded-[var(--radius-md)] p-1',
-          config.bgColor,
-          className,
-        )}
-        title={config.label}
+        ref={ref}
+        className={cn(priorityVariants({ display }), className)}
         {...props}
       >
-        <Icon className={cn('h-3.5 w-3.5', config.color)} stroke={2} />
+        <div
+          className={cn(
+            'inline-flex items-center justify-center rounded-[var(--radius-md)] p-0.5',
+            config.bgColor,
+          )}
+        >
+          <Icon className={cn('h-3.5 w-3.5', config.color)} stroke={2} />
+        </div>
+        <span className="B3-Reg text-[var(--color-text-secondary)]">
+          {config.label}
+        </span>
       </div>
     )
-  }
-
-  return (
-    <div
-      className={cn(priorityVariants({ display }), className)}
-      {...props}
-    >
-      <div
-        className={cn(
-          'inline-flex items-center justify-center rounded-[var(--radius-md)] p-0.5',
-          config.bgColor,
-        )}
-      >
-        <Icon className={cn('h-3.5 w-3.5', config.color)} stroke={2} />
-      </div>
-      <span className="B3-Reg text-[var(--color-text-secondary)]">
-        {config.label}
-      </span>
-    </div>
-  )
-}
-
+  },
+)
 PriorityIndicator.displayName = 'PriorityIndicator'
 
 export { PriorityIndicator }

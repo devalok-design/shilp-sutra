@@ -1,5 +1,5 @@
 import type { Meta, StoryObj } from '@storybook/react'
-import BottomNavbar from './bottom-navbar'
+import { BottomNavbar } from './bottom-navbar'
 import {
   IconLayoutDashboard,
   IconCalendarCheck,

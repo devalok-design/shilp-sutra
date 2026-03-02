@@ -4,6 +4,7 @@
  * TopBar -- Application top bar with sidebar trigger, user menu, and action
  * buttons. All data is props-driven (no Zustand stores or Remix hooks).
  */
+import * as React from 'react'
 import { useState, useEffect } from 'react'
 import { Avatar, AvatarFallback, AvatarImage } from '../ui/avatar'
 import {
@@ -57,58 +58,63 @@ export interface TopBarProps {
 // TopBar
 // -----------------------------------------------------------------------
 
-export default function TopBar({
-  pageTitle = '',
-  user,
-  onNavigate,
-  onLogout,
-  onSearchClick,
-  onAiChatClick,
-  mobileLogo,
-  notificationSlot,
-  className,
-}: TopBarProps) {
-  const [theme, setTheme] = useState<'light' | 'dark'>('light')
+const TopBar = React.forwardRef<HTMLDivElement, TopBarProps>(
+  (
+    {
+      pageTitle = '',
+      user,
+      onNavigate,
+      onLogout,
+      onSearchClick,
+      onAiChatClick,
+      mobileLogo,
+      notificationSlot,
+      className,
+    },
+    ref,
+  ) => {
+    const [theme, setTheme] = useState<'light' | 'dark'>('light')
 
-  useEffect(() => {
-    const savedTheme = localStorage.getItem('theme')
-    if (savedTheme === 'dark') {
-      document.documentElement.classList.add('dark')
-      setTheme('dark')
+    useEffect(() => {
+      const savedTheme = localStorage.getItem('theme')
+      if (savedTheme === 'dark') {
+        document.documentElement.classList.add('dark')
+        setTheme('dark')
+      }
+    }, [])
+
+    const toggleTheme = () => {
+      document.documentElement.classList.toggle('dark')
+      const themeToSet = document.documentElement.classList.contains('dark')
+        ? 'dark'
+        : 'light'
+      localStorage.setItem('theme', themeToSet)
+      setTheme(themeToSet)
     }
-  }, [])
 
-  const toggleTheme = () => {
-    document.documentElement.classList.toggle('dark')
-    const themeToSet = document.documentElement.classList.contains('dark')
-      ? 'dark'
-      : 'light'
-    localStorage.setItem('theme', themeToSet)
-    setTheme(themeToSet)
-  }
-
-  const handleSearchClick = () => {
-    if (onSearchClick) {
-      onSearchClick()
-    } else {
-      // Fallback: dispatch Ctrl+K to open the command palette
-      document.dispatchEvent(
-        new KeyboardEvent('keydown', {
-          key: 'k',
-          ctrlKey: true,
-          bubbles: true,
-        }),
-      )
+    const handleSearchClick = () => {
+      if (onSearchClick) {
+        onSearchClick()
+      } else {
+        // Fallback: dispatch Ctrl+K to open the command palette
+        document.dispatchEvent(
+          new KeyboardEvent('keydown', {
+            key: 'k',
+            ctrlKey: true,
+            bubbles: true,
+          }),
+        )
+      }
     }
-  }
 
-  return (
-    <div
-      className={cn(
-        'z-20 flex w-full items-center border-b border-[var(--color-border-default)] bg-[var(--color-layer-01)] px-4 py-3 md:px-6',
-        className,
-      )}
-    >
+    return (
+      <div
+        ref={ref}
+        className={cn(
+          'z-20 flex w-full items-center border-b border-[var(--color-border-default)] bg-[var(--color-layer-01)] px-4 py-3 md:px-6',
+          className,
+        )}
+      >
       {/* Left: Sidebar trigger + page title */}
       <div className="flex items-center gap-3">
         <SidebarTrigger className="hidden text-[var(--color-text-secondary)] md:flex" />
@@ -249,7 +255,9 @@ export default function TopBar({
         )}
       </div>
     </div>
-  )
-}
-
+    )
+  },
+)
 TopBar.displayName = 'TopBar'
+
+export { TopBar }

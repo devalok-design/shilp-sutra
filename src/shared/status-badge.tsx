@@ -46,38 +46,33 @@ interface StatusBadgeProps
   hideDot?: boolean
 }
 
-function StatusBadge({
-  status,
-  size,
-  label,
-  hideDot = false,
-  className,
-  ...props
-}: StatusBadgeProps) {
-  const statusKey = status ?? 'pending'
-  const displayLabel =
-    label ?? statusKey.charAt(0).toUpperCase() + statusKey.slice(1)
+const StatusBadge = React.forwardRef<HTMLSpanElement, StatusBadgeProps>(
+  ({ status, size, label, hideDot = false, className, ...props }, ref) => {
+    const statusKey = status ?? 'pending'
+    const displayLabel =
+      label ?? statusKey.charAt(0).toUpperCase() + statusKey.slice(1)
 
-  return (
-    <span
-      className={cn(statusBadgeVariants({ status, size }), className)}
-      {...props}
-    >
-      {!hideDot && (
-        <span
-          className={cn(
-            'shrink-0 rounded-[var(--radius-full)]',
-            size === 'sm' ? 'h-1.5 w-1.5' : 'h-2 w-2',
-            dotColorMap[statusKey],
-          )}
-          aria-hidden="true"
-        />
-      )}
-      {displayLabel}
-    </span>
-  )
-}
-
+    return (
+      <span
+        ref={ref}
+        className={cn(statusBadgeVariants({ status, size }), className)}
+        {...props}
+      >
+        {!hideDot && (
+          <span
+            className={cn(
+              'shrink-0 rounded-[var(--radius-full)]',
+              size === 'sm' ? 'h-1.5 w-1.5' : 'h-2 w-2',
+              dotColorMap[statusKey],
+            )}
+            aria-hidden="true"
+          />
+        )}
+        {displayLabel}
+      </span>
+    )
+  },
+)
 StatusBadge.displayName = 'StatusBadge'
 
 export { StatusBadge, statusBadgeVariants }

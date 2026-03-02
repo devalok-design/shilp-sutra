@@ -1,5 +1,5 @@
 import type { Meta, StoryObj } from '@storybook/react'
-import AppSidebar from './sidebar'
+import { AppSidebar } from './sidebar'
 import { SidebarProvider } from '../ui/sidebar'
 import {
   IconLayoutDashboard,

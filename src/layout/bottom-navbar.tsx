@@ -6,6 +6,7 @@
  * Props-driven: accepts currentPath, user, navItems instead of
  * reading from Remix hooks or Zustand stores.
  */
+import * as React from 'react'
 import Link from 'next/link'
 import { useState } from 'react'
 import { IconDots, IconX } from '@tabler/icons-react'
@@ -88,33 +89,37 @@ function BottomNavLink({
 // BottomNavbar
 // -----------------------------------------------------------------------
 
-export default function BottomNavbar({
-  currentPath = '/',
-  user,
-  primaryItems = [],
-  moreItems = [],
-  className,
-}: BottomNavbarProps) {
-  const [showMore, setShowMore] = useState(false)
+const BottomNavbar = React.forwardRef<HTMLElement, BottomNavbarProps>(
+  (
+    {
+      currentPath = '/',
+      user,
+      primaryItems = [],
+      moreItems = [],
+      className,
+    },
+    ref,
+  ) => {
+    const [showMore, setShowMore] = useState(false)
 
-  const isActive = (path: string, exact = false) => {
-    if (exact || path === '/') {
-      return currentPath === path
+    const isActive = (path: string, exact = false) => {
+      if (exact || path === '/') {
+        return currentPath === path
+      }
+      return currentPath.startsWith(path)
     }
-    return currentPath.startsWith(path)
-  }
 
-  // Check if any "more" item is active
-  const isMoreActive = moreItems.some((item) =>
-    isActive(item.href, item.exact),
-  )
+    // Check if any "more" item is active
+    const isMoreActive = moreItems.some((item) =>
+      isActive(item.href, item.exact),
+    )
 
-  if (!user) return null
+    if (!user) return null
 
-  return (
-    <>
-      {/* More Menu Overlay */}
-      {showMore && (
+    return (
+      <>
+        {/* More Menu Overlay */}
+        {showMore && (
         <div
           className="fixed inset-0 z-40 md:hidden"
           onClick={() => setShowMore(false)}
@@ -162,6 +167,7 @@ export default function BottomNavbar({
 
       {/* Bottom Navigation Bar */}
       <nav
+        ref={ref}
         aria-label="Mobile navigation"
         className={cn(
           'fixed bottom-0 left-0 right-0 z-30 flex w-full flex-row items-start justify-between border-t border-[var(--color-border-default)] bg-[var(--color-layer-01)] px-4 pb-5 pt-0 md:hidden',
@@ -206,7 +212,9 @@ export default function BottomNavbar({
         )}
       </nav>
     </>
-  )
-}
-
+    )
+  },
+)
 BottomNavbar.displayName = 'BottomNavbar'
+
+export { BottomNavbar }

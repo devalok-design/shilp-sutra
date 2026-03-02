@@ -8,6 +8,7 @@
  * Props-driven: accepts user info, currentPath, and navItems instead of
  * reading from Remix hooks or Zustand stores.
  */
+import * as React from 'react'
 import Link from 'next/link'
 import {
   Sidebar as ShadcnSidebar,
@@ -100,109 +101,116 @@ function NavLink({ item, isActive }: { item: NavItem; isActive: boolean }) {
 // AppSidebar
 // -----------------------------------------------------------------------
 
-export default function AppSidebar({
-  currentPath = '/',
-  user,
-  navGroups = [],
-  logo,
-  footerLinks = [],
-  className,
-}: AppSidebarProps) {
-  const isActive = (path: string, exact = false) => {
-    if (exact || path === '/') {
-      return currentPath === path
+const AppSidebar = React.forwardRef<HTMLDivElement, AppSidebarProps>(
+  (
+    {
+      currentPath = '/',
+      user,
+      navGroups = [],
+      logo,
+      footerLinks = [],
+      className,
+    },
+    ref,
+  ) => {
+    const isActive = (path: string, exact = false) => {
+      if (exact || path === '/') {
+        return currentPath === path
+      }
+      return currentPath.startsWith(path)
     }
-    return currentPath.startsWith(path)
-  }
 
-  return (
-    <ShadcnSidebar
-      aria-label="Main navigation"
-      className={cn(
-        'z-10 hidden h-full flex-col border-r border-[var(--color-border-default)] bg-[var(--color-layer-01)] md:flex',
-        className,
-      )}
-    >
-      {/* Logo Header */}
-      <SidebarHeader className="px-6 py-6">
-        {logo ?? (
-          <span className="text-lg font-semibold text-[var(--color-text-primary)]">
-            Logo
-          </span>
+    return (
+      <ShadcnSidebar
+        ref={ref}
+        aria-label="Main navigation"
+        className={cn(
+          'z-10 hidden h-full flex-col border-r border-[var(--color-border-default)] bg-[var(--color-layer-01)] md:flex',
+          className,
         )}
-      </SidebarHeader>
-
-      {/* User Info */}
-      {user && (
-        <div className="flex items-center gap-3 px-6 pb-4">
-          <Avatar className="h-9 w-9">
-            {user.image ? (
-              <AvatarImage src={user.image} alt={user.name} />
-            ) : null}
-            <AvatarFallback className="bg-[var(--color-layer-03)] text-[var(--color-text-primary)]">
-              {user.name?.charAt(0).toUpperCase()}
-            </AvatarFallback>
-          </Avatar>
-          <div className="flex min-w-0 flex-col">
-            <span className="truncate text-sm text-[var(--color-text-primary)]">
-              {user.name}
+      >
+        {/* Logo Header */}
+        <SidebarHeader className="px-6 py-6">
+          {logo ?? (
+            <span className="text-lg font-semibold text-[var(--color-text-primary)]">
+              Logo
             </span>
-            <span className="truncate text-xs text-[var(--color-text-placeholder)]">
-              {user.designation || user.role}
-            </span>
+          )}
+        </SidebarHeader>
+
+        {/* User Info */}
+        {user && (
+          <div className="flex items-center gap-3 px-6 pb-4">
+            <Avatar className="h-9 w-9">
+              {user.image ? (
+                <AvatarImage src={user.image} alt={user.name} />
+              ) : null}
+              <AvatarFallback className="bg-[var(--color-layer-03)] text-[var(--color-text-primary)]">
+                {user.name?.charAt(0).toUpperCase()}
+              </AvatarFallback>
+            </Avatar>
+            <div className="flex min-w-0 flex-col">
+              <span className="truncate text-sm text-[var(--color-text-primary)]">
+                {user.name}
+              </span>
+              <span className="truncate text-xs text-[var(--color-text-placeholder)]">
+                {user.designation || user.role}
+              </span>
+            </div>
           </div>
-        </div>
-      )}
+        )}
 
-      <SidebarSeparator />
+        <SidebarSeparator />
 
-      {/* Navigation Groups */}
-      <SidebarContent className="no-scrollbar px-3">
-        {navGroups.map((group, idx) => (
-          <div key={group.label}>
-            {idx > 0 && <SidebarSeparator />}
-            <SidebarGroup>
-              <SidebarGroupLabel className="px-3 text-xs text-[var(--color-text-placeholder)]">
-                {group.label}
-              </SidebarGroupLabel>
-              <SidebarGroupContent>
-                <SidebarMenu>
-                  {group.items.map((item) => (
-                    <NavLink
-                      key={item.href}
-                      item={item}
-                      isActive={isActive(item.href, item.exact)}
-                    />
-                  ))}
-                </SidebarMenu>
-              </SidebarGroupContent>
-            </SidebarGroup>
-          </div>
-        ))}
-      </SidebarContent>
+        {/* Navigation Groups */}
+        <SidebarContent className="no-scrollbar px-3">
+          {navGroups.map((group, idx) => (
+            <div key={group.label}>
+              {idx > 0 && <SidebarSeparator />}
+              <SidebarGroup>
+                <SidebarGroupLabel className="px-3 text-xs text-[var(--color-text-placeholder)]">
+                  {group.label}
+                </SidebarGroupLabel>
+                <SidebarGroupContent>
+                  <SidebarMenu>
+                    {group.items.map((item) => (
+                      <NavLink
+                        key={item.href}
+                        item={item}
+                        isActive={isActive(item.href, item.exact)}
+                      />
+                    ))}
+                  </SidebarMenu>
+                </SidebarGroupContent>
+              </SidebarGroup>
+            </div>
+          ))}
+        </SidebarContent>
 
-      {/* Footer */}
-      {footerLinks.length > 0 && (
-        <SidebarFooter className="px-6 py-4">
-          <div className="flex items-center justify-start gap-2">
-            {footerLinks.map((link, i) => (
-              <div key={link.href} className="flex items-center gap-2">
-                {i > 0 && (
-                  <div className="h-4 w-px bg-[var(--color-border-default)]" />
-                )}
-                <Link
-                  className="text-sm text-[var(--color-text-placeholder)] transition-colors hover:text-[var(--color-interactive)]"
-                  href={link.href}
-                >
-                  {link.label}
-                </Link>
-              </div>
-            ))}
-          </div>
-        </SidebarFooter>
-      )}
-    </ShadcnSidebar>
-  )
-}
-
+        {/* Footer */}
+        {footerLinks.length > 0 && (
+          <SidebarFooter className="px-6 py-4">
+            <div className="flex items-center justify-start gap-2">
+              {footerLinks.map((link, i) => (
+                <div key={link.href} className="flex items-center gap-2">
+                  {i > 0 && (
+                    <div className="h-4 w-px bg-[var(--color-border-default)]" />
+                  )}
+                  <Link
+                    className="text-sm text-[var(--color-text-placeholder)] transition-colors hover:text-[var(--color-interactive)]"
+                    href={link.href}
+                  >
+                    {link.label}
+                  </Link>
+                </div>
+              ))}
+            </div>
+          </SidebarFooter>
+        )}
+      </ShadcnSidebar>
+    )
+  },
+)
 AppSidebar.displayName = 'AppSidebar'
+
+export { AppSidebar }

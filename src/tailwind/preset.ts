@@ -166,6 +166,7 @@ const preset: Partial<Config> = {
         'tag-yellow-border': 'var(--color-tag-yellow-border)',
         'tag-magenta-border': 'var(--color-tag-magenta-border)',
         'tag-purple-border': 'var(--color-tag-purple-border)',
+        divider: 'var(--color-divider)',
       },
       keyframes: {
         ripple: {

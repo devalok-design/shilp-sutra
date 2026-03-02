@@ -61,6 +61,7 @@
   --color-border-error:         var(--red-600);
   --color-border-success:       var(--green-600);
   --color-border-warning:       var(--yellow-600);
+  --color-divider:                var(--neutral-200);
   --color-focus:                var(--pink-500);
   --color-focus-inset:          var(--neutral-0);
 
@@ -247,6 +248,7 @@
   --color-border-error:         var(--red-400);
   --color-border-success:       var(--green-400);
   --color-border-warning:       var(--yellow-400);
+  --color-divider:                var(--neutral-700);
   /* Focus */
   --color-focus:                var(--pink-400);
   --color-focus-inset:          var(--neutral-950);

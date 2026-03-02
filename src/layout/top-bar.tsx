@@ -5,7 +5,7 @@
  * buttons. All data is props-driven (no Zustand stores or Remix hooks).
  */
 import * as React from 'react'
-import { useState, useEffect } from 'react'
+import { useColorMode } from '../hooks/use-color-mode'
 import { Avatar, AvatarFallback, AvatarImage } from '../ui/avatar'
 import {
   DropdownMenu,
@@ -73,24 +73,7 @@ const TopBar = React.forwardRef<HTMLDivElement, TopBarProps>(
     },
     ref,
   ) => {
-    const [theme, setTheme] = useState<'light' | 'dark'>('light')
-
-    useEffect(() => {
-      const savedTheme = localStorage.getItem('theme')
-      if (savedTheme === 'dark') {
-        document.documentElement.classList.add('dark')
-        setTheme('dark')
-      }
-    }, [])
-
-    const toggleTheme = () => {
-      document.documentElement.classList.toggle('dark')
-      const themeToSet = document.documentElement.classList.contains('dark')
-        ? 'dark'
-        : 'light'
-      localStorage.setItem('theme', themeToSet)
-      setTheme(themeToSet)
-    }
+    const { colorMode, toggleColorMode } = useColorMode()
 
     const handleSearchClick = () => {
       if (onSearchClick) {
@@ -221,15 +204,15 @@ const TopBar = React.forwardRef<HTMLDivElement, TopBarProps>(
 
               <DropdownMenuItem
                 className="flex w-full cursor-pointer items-center gap-ds-03 px-ds-05 py-ds-04 hover:bg-layer-02"
-                onClick={toggleTheme}
+                onClick={toggleColorMode}
               >
-                {theme === 'dark' ? (
+                {colorMode === 'dark' ? (
                   <IconSun className="h-ico-sm w-ico-sm text-text-secondary" />
                 ) : (
                   <IconMoon className="h-ico-sm w-ico-sm text-text-secondary" />
                 )}
                 <span className="text-ds-md text-text-secondary">
-                  {theme === 'dark' ? 'Light Mode' : 'Dark Mode'}
+                  {colorMode === 'dark' ? 'Light Mode' : 'Dark Mode'}
                 </span>
               </DropdownMenuItem>
 

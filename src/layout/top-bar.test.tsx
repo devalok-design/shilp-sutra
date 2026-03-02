@@ -43,6 +43,19 @@ import { TopBar } from './top-bar'
 describe('TopBar', () => {
   beforeEach(() => {
     localStorage.clear()
+    document.documentElement.classList.remove('dark')
+
+    // jsdom does not provide matchMedia — supply a stub for useColorMode
+    Object.defineProperty(window, 'matchMedia', {
+      writable: true,
+      configurable: true,
+      value: vi.fn().mockImplementation((query: string) => ({
+        matches: false,
+        media: query,
+        addEventListener: vi.fn(),
+        removeEventListener: vi.fn(),
+      })),
+    })
   })
 
   it('renders without crashing', () => {

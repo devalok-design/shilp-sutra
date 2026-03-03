@@ -25,6 +25,7 @@ const GlobalLoading = React.forwardRef<HTMLDivElement, GlobalLoadingProps>(
     <div
       ref={forwardedRef}
       role="progressbar"
+      aria-label="Page loading"
       aria-hidden={!isLoading}
       aria-valuetext={isLoading ? 'Loading' : undefined}
       className="pointer-events-none fixed inset-x-0 top-0 z-toast h-1"

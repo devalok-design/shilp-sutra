@@ -164,7 +164,7 @@ function TaskCardVisual({
         {dueInfo && (
           <div
             className={cn(
-              'flex items-center gap-0.5 text-ds-sm',
+              'flex items-center gap-0.5 text-ds-xs',
               dueInfo.className,
             )}
           >

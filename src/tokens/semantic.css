@@ -176,19 +176,28 @@
   --radius-xl: 16px;
   --radius-2xl: 24px;
   --radius-full: 9999px;
+  /* ── Motion: Durations (Carbon-inspired scale) ── */
   --duration-instant: 0ms;
-  --duration-fast: 100ms;
-  --duration-moderate: 200ms;
-  --duration-slow: 400ms;
-  --duration-deliberate: 700ms;
-  --ease-standard: cubic-bezier(0.2, 0, 0.38, 0.9);
-  --ease-entrance: cubic-bezier(0, 0, 0.38, 0.9);
-  --ease-exit: cubic-bezier(0.2, 0, 1, 0.9);
+  --duration-fast-01: 70ms;
+  --duration-fast-02: 110ms;
+  --duration-moderate-01: 150ms;
+  --duration-moderate-02: 240ms;
+  --duration-slow-01: 400ms;
+  --duration-slow-02: 700ms;
+
+  /* ── Motion: Easing — Productive (task-focused, utilitarian) ── */
+  --ease-productive-standard: cubic-bezier(0.2, 0, 0.38, 0.9);
+  --ease-productive-entrance: cubic-bezier(0, 0, 0.38, 0.9);
+  --ease-productive-exit: cubic-bezier(0.2, 0, 1, 0.9);
+
+  /* ── Motion: Easing — Expressive (attention-grabbing, dramatic) ── */
+  --ease-expressive-standard: cubic-bezier(0.4, 0.14, 0.3, 1);
+  --ease-expressive-entrance: cubic-bezier(0, 0, 0.3, 1);
+  --ease-expressive-exit: cubic-bezier(0.4, 0.14, 1, 1);
+
+  /* ── Motion: Easing — Utility ── */
   --ease-bounce: cubic-bezier(0.34, 1.56, 0.64, 1);
   --ease-linear: linear;
-  --duration-medium: 300ms;
-  --duration-enter: 225ms;
-  --duration-exit: 195ms;
   --shadow-01: 0 1px 2px rgba(0, 0, 0, 0.10);
   --shadow-02: 0 2px 6px rgba(0, 0, 0, 0.12);
   --shadow-03: 0 4px 16px rgba(0, 0, 0, 0.14);

@@ -10,7 +10,7 @@ describe('Badge', () => {
   })
 
   it('applies variant classes via CVA', () => {
-    const { container } = render(<Badge variant="red">Error</Badge>)
+    const { container } = render(<Badge variant="error">Error</Badge>)
     const badge = container.querySelector('span')!
     expect(badge.className).toContain('inline-flex')
   })

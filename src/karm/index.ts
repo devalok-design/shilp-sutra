@@ -100,7 +100,7 @@ export {
   type ProjectCardProps,
 } from './client'
 
-// Segmented control components
+// Segmented control components (canonical location: ui/)
 export {
   SegmentedControl,
   type SegmentedControlProps,
@@ -110,7 +110,7 @@ export {
   type SegmentedControlSize,
   type SegmentedControlColor,
   type SegmentedControlOption,
-} from './custom-buttons'
+} from '../ui/segmented-control'
 
 // Admin components
 export {

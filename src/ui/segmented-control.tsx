@@ -140,13 +140,6 @@ export interface SegmentedControlOption {
   icon?: React.ComponentType<{ className?: string }>
 }
 
-/** @deprecated Use SegmentedControlSize */
-export type ToggleSize = SegmentedControlSize
-/** @deprecated Use SegmentedControlColor */
-export type ToggleColor = SegmentedControlColor
-/** @deprecated Use SegmentedControlOption */
-export type ToggleOption = SegmentedControlOption
-
 export interface SegmentedControlProps {
   size: SegmentedControlSize
   color: SegmentedControlColor

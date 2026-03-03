@@ -16,15 +16,7 @@
       "import": "./dist/composed/index.js",
       "types": "./dist/composed/index.d.ts"
     },
-    "./shared": {
-      "import": "./dist/composed/index.js",
-      "types": "./dist/composed/index.d.ts"
-    },
     "./shell": {
-      "import": "./dist/shell/index.js",
-      "types": "./dist/shell/index.d.ts"
-    },
-    "./layout": {
       "import": "./dist/shell/index.js",
       "types": "./dist/shell/index.d.ts"
     },
@@ -55,10 +47,6 @@
     "./karm/admin": {
       "import": "./dist/karm/admin/index.js",
       "types": "./dist/karm/admin/index.d.ts"
-    },
-    "./karm/custom-buttons": {
-      "import": "./dist/karm/custom-buttons/index.js",
-      "types": "./dist/karm/custom-buttons/index.d.ts"
     },
     "./tailwind": {
       "import": "./dist/tailwind/index.js",

@@ -12,7 +12,7 @@ import {
   DropdownMenuTrigger,
 } from '../../../ui/dropdown-menu'
 import { FilledArrowIcon, ArrowLeftIcon, ArrowForwardIcon } from '../icons'
-import { Toggle } from '../../custom-buttons'
+import { SegmentedControl as Toggle } from '../../../ui/segmented-control'
 import { isSameDay } from '../utils/date-utils'
 import { useCalendarNavigation } from './use-calendar-navigation'
 import { format } from 'date-fns'

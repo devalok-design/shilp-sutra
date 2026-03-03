@@ -52,8 +52,6 @@ export {
   type ListSkeletonProps,
   DashboardSkeleton,
   ProjectListSkeleton,
-  DevsabhaSkeleton,
-  BandwidthSkeleton,
   TaskDetailSkeleton,
   ErrorDisplay,
   type ErrorDisplayProps,
@@ -69,6 +67,9 @@ export {
 } from './composed'
 export * from './shell'
 export {
+  // Page skeletons (domain-specific)
+  DevsabhaSkeleton,
+  BandwidthSkeleton,
   // Board components
   KanbanBoard,
   type BoardData,

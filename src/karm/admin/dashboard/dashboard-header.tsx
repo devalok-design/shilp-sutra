@@ -14,7 +14,7 @@ import {
 } from '../../../ui/dropdown-menu'
 import { Button } from '../../../ui/button'
 import { IconButton } from '../../../ui/icon-button'
-import { Toggle } from '../../custom-buttons'
+import { SegmentedControl as Toggle } from '../../../ui/segmented-control'
 import {
   FilledArrowIcon,
   ArrowLeftIcon,

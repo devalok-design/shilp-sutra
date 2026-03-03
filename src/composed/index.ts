@@ -28,8 +28,6 @@ export type { CardSkeletonProps, TableSkeletonProps, BoardSkeletonProps, ListSke
 export {
   DashboardSkeleton,
   ProjectListSkeleton,
-  DevsabhaSkeleton,
-  BandwidthSkeleton,
   TaskDetailSkeleton,
 } from './page-skeletons'
 

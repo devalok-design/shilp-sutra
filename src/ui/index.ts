@@ -105,8 +105,6 @@ export { Spinner, type SpinnerProps } from './spinner'
 export { Card, CardHeader, CardFooter, CardTitle, CardDescription, CardContent, type CardProps } from './card'
 export { Badge, badgeVariants, type BadgeProps } from './badge'
 export { Avatar, AvatarImage, AvatarFallback, avatarVariants, type AvatarProps, type AvatarStatus } from './avatar'
-/** @deprecated Use AvatarGroup from composed/ instead */
-export { AvatarStack, type AvatarData, type AvatarStackProps } from './avatar-stack'
 export { Table, TableHeader, TableBody, TableFooter, TableHead, TableRow, TableCell, TableCaption } from './table'
 export { DataTable, type DataTableProps } from './data-table'
 export { DataTableToolbar, type DataTableToolbarProps, type Density } from './data-table-toolbar'

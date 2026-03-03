@@ -18,12 +18,13 @@ export interface ApprovedAdjustmentsProps {
 // Component
 // ============================================================
 
-function ApprovedAdjustments({
+const ApprovedAdjustments = React.forwardRef<HTMLDivElement, ApprovedAdjustmentsProps>(
+  function ApprovedAdjustments({
   adjustments,
   adminId,
-}: ApprovedAdjustmentsProps) {
+}, ref) {
   return (
-    <div className="no-scrollbar w-full overflow-auto border border-border-subtle sm:rounded-[8px] max-md:rounded-none max-md:border-0">
+    <div ref={ref} className="no-scrollbar w-full overflow-auto border border-border-subtle sm:rounded-[8px] max-md:rounded-none max-md:border-0">
       <div className="bg-layer-02 pb-[24px] pl-[16px] pt-[8px] md:p-ds-05">
         <div className="no-scrollbar w-full overflow-x-auto overflow-y-auto">
           <div className="min-w-[800px] max-md:w-[max-content]">
@@ -74,7 +75,8 @@ function ApprovedAdjustments({
       </div>
     </div>
   )
-}
+},
+)
 
 ApprovedAdjustments.displayName = 'ApprovedAdjustments'
 

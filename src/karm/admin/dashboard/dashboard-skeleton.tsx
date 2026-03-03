@@ -14,9 +14,10 @@ import { IconButton } from '../../../ui/icon-button'
 // Component
 // ============================================================
 
-export function DashboardSkeleton() {
+export const DashboardSkeleton = React.forwardRef<HTMLDivElement>(
+  function DashboardSkeleton(_props, ref) {
   return (
-    <div className="flex w-full max-w-layout flex-col items-center justify-center max-md:h-[100%] max-md:justify-start">
+    <div ref={ref} className="flex w-full max-w-layout flex-col items-center justify-center max-md:h-[100%] max-md:justify-start">
       <div className="z-raised flex w-full flex-col items-start justify-start rounded-[8px] border border-border bg-layer-02 p-[16px] shadow-05 max-md:h-[calc(100vh-201px)] max-md:max-h-[calc(100vh-201px)] max-md:overflow-y-auto max-md:border-0 max-md:px-ds-05 max-md:pb-[0px] max-md:pt-[24px]">
         {/* Header Section */}
         <div className="mb-ds-06 flex w-full flex-col items-start justify-between md:flex-row md:items-center">
@@ -138,6 +139,7 @@ export function DashboardSkeleton() {
       </div>
     </div>
   )
-}
+},
+)
 
 DashboardSkeleton.displayName = 'DashboardSkeleton'

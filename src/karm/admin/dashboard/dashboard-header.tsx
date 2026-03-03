@@ -5,6 +5,7 @@
 // Extracted from admin-dashboard.tsx
 // ============================================================
 
+import * as React from 'react'
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -47,7 +48,8 @@ export interface DashboardHeaderProps {
 // Component
 // ============================================================
 
-export function DashboardHeader({
+export const DashboardHeader = React.forwardRef<HTMLDivElement, DashboardHeaderProps>(
+  function DashboardHeader({
   selectedMonth,
   yearsList,
   isTodaySelected,
@@ -60,9 +62,9 @@ export function DashboardHeader({
   onSelectAssociate,
   onTimeFrameChange,
   onDateChange,
-}: DashboardHeaderProps) {
+}, ref) {
   return (
-    <div className="mb-ds-06 flex w-full flex-col items-start justify-between md:flex-row md:items-center">
+    <div ref={ref} className="mb-ds-06 flex w-full flex-col items-start justify-between md:flex-row md:items-center">
       <div className="flex w-full items-center justify-between gap-ds-05 md:w-auto md:justify-start">
         <DropdownMenu>
           <DropdownMenuTrigger className="text-ds-xl flex items-center gap-ds-03 text-text-secondary">
@@ -206,6 +208,7 @@ export function DashboardHeader({
       </div>
     </div>
   )
-}
+},
+)
 
 DashboardHeader.displayName = 'DashboardHeader'

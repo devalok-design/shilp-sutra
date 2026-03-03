@@ -19,7 +19,7 @@ const DialogOverlay = React.forwardRef<
   <DialogPrimitive.Overlay
     ref={ref}
     className={cn(
-      'fixed inset-0 z-modal bg-overlay data-[state=open]:animate-in data-[state=closed]:animate-out data-[state=closed]:fade-out-0 data-[state=open]:fade-in-0',
+      'fixed inset-0 z-overlay bg-overlay data-[state=open]:animate-in data-[state=closed]:animate-out data-[state=closed]:fade-out-0 data-[state=open]:fade-in-0',
       className,
     )}
     {...props}
@@ -50,6 +50,24 @@ const DialogContent = React.forwardRef<
   </DialogPortal>
 ))
 DialogContent.displayName = DialogPrimitive.Content.displayName
+
+/**
+ * DialogContentRaw -- a minimal forwardRef wrapper around the primitive Content.
+ * Unlike DialogContent, it does NOT include Portal, Overlay, or CloseButton.
+ * Use this when you need full control over portal/overlay/close behaviour
+ * (e.g. CommandPalette in shared/).
+ */
+const DialogContentRaw = React.forwardRef<
+  React.ElementRef<typeof DialogPrimitive.Content>,
+  React.ComponentPropsWithoutRef<typeof DialogPrimitive.Content>
+>(({ className, ...props }, ref) => (
+  <DialogPrimitive.Content
+    ref={ref}
+    className={cn(className)}
+    {...props}
+  />
+))
+DialogContentRaw.displayName = 'DialogContentRaw'
 
 const DialogHeader = ({
   className,
@@ -113,6 +131,7 @@ export {
   DialogTrigger,
   DialogClose,
   DialogContent,
+  DialogContentRaw,
   DialogHeader,
   DialogFooter,
   DialogTitle,

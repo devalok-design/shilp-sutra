@@ -1,5 +1,7 @@
 'use client'
 
+import * as React from 'react'
+import { Avatar, AvatarImage, AvatarFallback } from '../../../ui/avatar'
 import type { BreakBalanceData } from '../types'
 
 // ============================================================
@@ -17,13 +19,14 @@ export interface BreakBalanceProps {
   }) => void
 }
 
-export function BreakBalance({
+export const BreakBalance = React.forwardRef<HTMLDivElement, BreakBalanceProps>(
+  function BreakBalance({
   breakBalanceData,
   userImages,
   onSaveBalance: _onSaveBalance,
-}: BreakBalanceProps) {
+}, ref) {
   return (
-    <div className="m-0 flex h-[400px] flex-col items-start justify-start p-0 max-md:h-auto">
+    <div ref={ref} className="m-0 flex h-[400px] flex-col items-start justify-start p-0 max-md:h-auto">
       <div className="m-0 mx-[4%] mb-ds-05 mt-ds-04 flex w-[92%] items-start justify-start gap-ds-03 p-0 text-text-placeholder">
         <div className="text-ds-sm font-semibold uppercase tracking-wider w-[16.4%] min-w-[120px] px-ds-04 py-[10px] text-text-tertiary">
           NAME
@@ -40,19 +43,10 @@ export function BreakBalance({
             className="flex w-full flex-row items-center justify-start gap-ds-03 !border-0 text-left hover:bg-field"
           >
             <div className="flex w-1/6 min-w-[120px] items-center gap-ds-03 p-ds-04">
-              <div className="flex h-7 w-7 items-center justify-center rounded-ds-full bg-error-surface">
-                {userImages[breakItem.userId] ? (
-                  <img
-                    src={userImages[breakItem.userId]}
-                    alt={''}
-                    className="h-7 w-7 flex-shrink-0 rounded-ds-full object-cover"
-                  />
-                ) : (
-                  <span className="flex h-7 w-full max-w-7 items-center justify-center rounded-ds-full bg-[var(--mapped-borders-margin-tertiary)] text-ds-sm font-medium uppercase text-[--color-text-primary]">
-                    {breakItem.user?.name?.[0] || 'U'}
-                  </span>
-                )}
-              </div>
+              <Avatar className="h-7 w-7">
+                <AvatarImage src={userImages[breakItem.userId]} alt={breakItem.user?.name || ''} />
+                <AvatarFallback>{breakItem.user?.name?.[0] || 'U'}</AvatarFallback>
+              </Avatar>
               <div className="w-[calc(100%-36px)]">
                 <span className="text-ds-md block w-full cursor-default truncate text-text-primary">
                   {breakItem.user?.firstName ??
@@ -68,6 +62,7 @@ export function BreakBalance({
       </div>
     </div>
   )
-}
+},
+)
 
 BreakBalance.displayName = 'BreakBalance'

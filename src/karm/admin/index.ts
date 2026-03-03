@@ -36,6 +36,17 @@ export {
   LeaveRequests,
   type LeaveRequestsProps,
   DashboardSkeleton as AdminDashboardSkeleton,
+  RenderDate,
+  type RenderDateProps,
+  type DateAttendanceInfo,
+  DashboardHeader,
+  type DashboardHeaderProps,
+  AttendanceOverview,
+  type AttendanceOverviewProps,
+  AssociateDetail,
+  type AssociateDetailProps,
+  CorrectionList,
+  type CorrectionListProps,
 } from './dashboard'
 
 // Break management

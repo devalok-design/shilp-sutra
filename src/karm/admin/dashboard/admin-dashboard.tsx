@@ -15,7 +15,7 @@
 //   </AdminDashboard.Root>
 // ============================================================
 
-import {
+import React, {
   createContext,
   useCallback,
   useContext,
@@ -123,16 +123,22 @@ export interface AdminDashboardRootProps {
 // Root Component
 // ============================================================
 
-function AdminDashboardRoot({
-  currentUserId,
-  currentUserRole,
-  currentUser,
-  assetsBaseUrl = '',
-  userImages = {},
-  isLoading = false,
-  onAssociateChange,
-  children,
-}: AdminDashboardRootProps) {
+const AdminDashboardRoot = React.forwardRef<
+  HTMLDivElement,
+  AdminDashboardRootProps
+>(function AdminDashboardRoot(
+  {
+    currentUserId,
+    currentUserRole,
+    currentUser,
+    assetsBaseUrl = '',
+    userImages = {},
+    isLoading = false,
+    onAssociateChange,
+    children,
+  },
+  ref,
+) {
   const cal = useCalendarNavigation()
   const [activeTab, setActiveTab] = useState('leaveRequest')
   const [selectedAssociate, setSelectedAssociateRaw] = useState<AdminUser | null>(
@@ -182,14 +188,17 @@ function AdminDashboardRoot({
 
   return (
     <AdminDashboardContext.Provider value={contextValue}>
-      <div className="flex w-full max-w-layout flex-col items-center justify-center max-md:h-[100%] max-md:justify-start">
+      <div
+        ref={ref}
+        className="flex w-full max-w-layout flex-col items-center justify-center max-md:h-[100%] max-md:justify-start"
+      >
         <div className="z-raised flex w-full flex-col items-start justify-start rounded-[8px] border border-border bg-layer-02 p-[16px] shadow-05 max-md:h-[calc(100vh-201px)] max-md:max-h-[calc(100vh-201px)] max-md:overflow-y-auto max-md:border-0 max-md:px-ds-05 max-md:pb-[0px] max-md:pt-[24px]">
           {children}
         </div>
       </div>
     </AdminDashboardContext.Provider>
   )
-}
+})
 
 AdminDashboardRoot.displayName = 'AdminDashboard.Root'
 
@@ -214,13 +223,19 @@ export interface AdminDashboardCalendarProps {
 // Calendar Component
 // ============================================================
 
-function AdminDashboardCalendar({
-  dateAttendanceMap = null,
-  onDateChange,
-  onTimeFrameChange,
-  users = [],
-  selectedUserAttendance = null,
-}: AdminDashboardCalendarProps) {
+const AdminDashboardCalendar = React.forwardRef<
+  HTMLDivElement,
+  AdminDashboardCalendarProps
+>(function AdminDashboardCalendar(
+  {
+    dateAttendanceMap = null,
+    onDateChange,
+    onTimeFrameChange,
+    users = [],
+    selectedUserAttendance = null,
+  },
+  ref,
+) {
   const { cal, selectedAssociate, setSelectedAssociate, userImages, setActiveTab } =
     useAdminDashboardContext()
 
@@ -282,7 +297,7 @@ function AdminDashboardCalendar({
   // ============================================================
 
   return (
-    <>
+    <div ref={ref}>
       {/* Header: Month selector + Associate filter + Toggle + Arrows */}
       <DashboardHeader
         selectedMonth={cal.selectedMonth}
@@ -315,10 +330,11 @@ function AdminDashboardCalendar({
           ))}
 
         {cal.days.map((day, index) => (
-          <div
+          <button
+            type="button"
             key={index}
-            role="button"
-            tabIndex={0}
+            tabIndex={day.isPadding ? -1 : 0}
+            aria-label={day.isPadding ? undefined : format(day.fullDate, 'MMMM d, yyyy')}
             className={`${
               cal.activeTimeFrame === 'weekly'
                 ? 'w-full rounded-t-ds-lg pb-3.5 pt-ds-05 max-md:rounded-ds-lg'
@@ -331,9 +347,6 @@ function AdminDashboardCalendar({
                 : ''
             } ${day.isPadding ? 'opacity-50' : ''} `}
             onClick={() => handleDayClick(index, day.fullDate)}
-            onKeyDown={(e) =>
-              e.key === 'Enter' && handleDayClick(index, day.fullDate)
-            }
           >
             {cal.activeTimeFrame === 'weekly' && (
               <span className="text-ds-sm font-semibold uppercase tracking-wider mb-ds-03  text-text-tertiary">
@@ -347,12 +360,12 @@ function AdminDashboardCalendar({
               dateAttendanceMap={selectedAssociate ? dateAttendanceMap : null}
               activeTimeFrame={cal.activeTimeFrame}
             />
-          </div>
+          </button>
         ))}
       </div>
-    </>
+    </div>
   )
-}
+})
 
 AdminDashboardCalendar.displayName = 'AdminDashboard.Calendar'
 
@@ -371,25 +384,30 @@ export interface AdminDashboardAttendanceOverviewProps {
 // AttendanceOverview Component
 // ============================================================
 
-function AdminDashboardAttendanceOverview({
-  groupedAttendance = null,
-  users = [],
-}: AdminDashboardAttendanceOverviewProps) {
+const AdminDashboardAttendanceOverview = React.forwardRef<
+  HTMLDivElement,
+  AdminDashboardAttendanceOverviewProps
+>(function AdminDashboardAttendanceOverview(
+  { groupedAttendance = null, users = [] },
+  ref,
+) {
   const { cal, selectedAssociate, userImages } = useAdminDashboardContext()
 
   // Only render when no associate is selected
   if (selectedAssociate) return null
 
   return (
-    <AttendanceOverview
-      isFutureDate={cal.isFutureDate}
-      users={users}
-      groupedAttendance={groupedAttendance}
-      userImages={userImages}
-      selectedDate={cal.selectedDate}
-    />
+    <div ref={ref}>
+      <AttendanceOverview
+        isFutureDate={cal.isFutureDate}
+        users={users}
+        groupedAttendance={groupedAttendance}
+        userImages={userImages}
+        selectedDate={cal.selectedDate}
+      />
+    </div>
   )
-}
+})
 
 AdminDashboardAttendanceOverview.displayName = 'AdminDashboard.AttendanceOverview'
 
@@ -439,42 +457,50 @@ export interface AdminDashboardAssociateDetailProps {
 // AssociateDetail Component
 // ============================================================
 
-function AdminDashboardAssociateDetail({
-  attendance = null,
-  tasks = [],
-  breakRequest = null,
-  onUpdateAttendanceStatus,
-  onToggleTaskStatus,
-  onAddTask,
-  onReorderTasks,
-  onCancelBreak,
-  onRefreshSelectedUserAttendance,
-  onRefreshAttendanceData,
-}: AdminDashboardAssociateDetailProps) {
+const AdminDashboardAssociateDetail = React.forwardRef<
+  HTMLDivElement,
+  AdminDashboardAssociateDetailProps
+>(function AdminDashboardAssociateDetail(
+  {
+    attendance = null,
+    tasks = [],
+    breakRequest = null,
+    onUpdateAttendanceStatus,
+    onToggleTaskStatus,
+    onAddTask,
+    onReorderTasks,
+    onCancelBreak,
+    onRefreshSelectedUserAttendance,
+    onRefreshAttendanceData,
+  },
+  ref,
+) {
   const { cal, selectedAssociate, assetsBaseUrl } = useAdminDashboardContext()
 
   // Only render when an associate IS selected
   if (!selectedAssociate) return null
 
   return (
-    <AssociateDetail
-      selectedAssociate={selectedAssociate}
-      selectedDate={cal.selectedDate}
-      selectedUserAttendance={attendance}
-      userTasks={tasks}
-      selectedBreakRequest={breakRequest}
-      isFutureDate={cal.isFutureDate}
-      assetsBaseUrl={assetsBaseUrl}
-      onUpdateAttendanceStatus={onUpdateAttendanceStatus}
-      onToggleTaskStatus={onToggleTaskStatus}
-      onAddTask={onAddTask}
-      onReorderTasks={onReorderTasks}
-      onCancelBreak={onCancelBreak}
-      onRefreshSelectedUserAttendance={onRefreshSelectedUserAttendance}
-      onRefreshAttendanceData={onRefreshAttendanceData}
-    />
+    <div ref={ref}>
+      <AssociateDetail
+        selectedAssociate={selectedAssociate}
+        selectedDate={cal.selectedDate}
+        selectedUserAttendance={attendance}
+        userTasks={tasks}
+        selectedBreakRequest={breakRequest}
+        isFutureDate={cal.isFutureDate}
+        assetsBaseUrl={assetsBaseUrl}
+        onUpdateAttendanceStatus={onUpdateAttendanceStatus}
+        onToggleTaskStatus={onToggleTaskStatus}
+        onAddTask={onAddTask}
+        onReorderTasks={onReorderTasks}
+        onCancelBreak={onCancelBreak}
+        onRefreshSelectedUserAttendance={onRefreshSelectedUserAttendance}
+        onRefreshAttendanceData={onRefreshAttendanceData}
+      />
+    </div>
   )
-}
+})
 
 AdminDashboardAssociateDetail.displayName = 'AdminDashboard.AssociateDetail'
 
@@ -509,14 +535,20 @@ export interface AdminDashboardLeaveRequestsProps {
 // LeaveRequests Component
 // ============================================================
 
-function AdminDashboardLeaveRequests({
-  requests = [],
-  corrections = [],
-  onApproveBreak,
-  onRejectBreak,
-  onApproveCorrection,
-  onRejectCorrection,
-}: AdminDashboardLeaveRequestsProps) {
+const AdminDashboardLeaveRequests = React.forwardRef<
+  HTMLDivElement,
+  AdminDashboardLeaveRequestsProps
+>(function AdminDashboardLeaveRequests(
+  {
+    requests = [],
+    corrections = [],
+    onApproveBreak,
+    onRejectBreak,
+    onApproveCorrection,
+    onRejectCorrection,
+  },
+  ref,
+) {
   const { currentUserId, userImages, cal, activeTab, setActiveTab, assetsBaseUrl } =
     useAdminDashboardContext()
 
@@ -547,18 +579,14 @@ function AdminDashboardLeaveRequests({
   }
 
   return (
-    <div className="w-full p-0 md:p-ds-06">
+    <div ref={ref} className="w-full p-0 md:p-ds-06">
       <div className="max-md:pt[16px] flex flex-col items-start overflow-hidden rounded-[8px] border-0 border-border-subtle bg-layer-01 shadow-01 pt-ds-03 md:border max-md:pb-0">
         <div className="flex w-full items-start border-b-[1px] border-b-border px-ds-06 md:border-b max-md:border-0 max-md:px-[0px]">
           {requests.length > 0 && (
-            <div
-              role="button"
-              tabIndex={0}
+            <button
+              type="button"
               onClick={() => handleRequestTabSwitch('leaveRequest')}
-              onKeyDown={(e) =>
-                e.key === 'Enter' &&
-                handleRequestTabSwitch('leaveRequest')
-              }
+              aria-current={activeTab === 'leaveRequest' ? 'true' : undefined}
               className={`text-ds-sm font-semibold uppercase tracking-wider cursor-pointer px-ds-03 py-ds-04  ${
                 activeTab === 'leaveRequest'
                   ? 'border-b-[1px] border-b-interactive-hover text-text-primary'
@@ -569,19 +597,15 @@ function AdminDashboardLeaveRequests({
               <span className="text-interactive-hover">
                 ({requests.length})
               </span>
-            </div>
+            </button>
           )}
           {filteredAttendanceCorrections.length > 0 && (
-            <div
-              role="button"
-              tabIndex={0}
+            <button
+              type="button"
               onClick={() =>
                 handleRequestTabSwitch('attendanceRequest')
               }
-              onKeyDown={(e) =>
-                e.key === 'Enter' &&
-                handleRequestTabSwitch('attendanceRequest')
-              }
+              aria-current={activeTab === 'attendanceRequest' ? 'true' : undefined}
               className={`text-ds-sm font-semibold uppercase tracking-wider cursor-pointer px-ds-03 py-ds-04  ${
                 activeTab === 'attendanceRequest'
                   ? 'border-b-[1px] border-b-interactive-hover text-text-primary'
@@ -592,7 +616,7 @@ function AdminDashboardLeaveRequests({
               <span className="text-interactive-hover">
                 ({filteredAttendanceCorrections.length})
               </span>
-            </div>
+            </button>
           )}
         </div>
 
@@ -624,7 +648,7 @@ function AdminDashboardLeaveRequests({
       </div>
     </div>
   )
-}
+})
 
 AdminDashboardLeaveRequests.displayName = 'AdminDashboard.LeaveRequests'
 
@@ -637,7 +661,10 @@ export interface AdminDashboardContentProps {
   children: ReactNode
 }
 
-function AdminDashboardContent({ children }: AdminDashboardContentProps) {
+const AdminDashboardContent = React.forwardRef<
+  HTMLDivElement,
+  AdminDashboardContentProps
+>(function AdminDashboardContent({ children }, ref) {
   const { cal } = useAdminDashboardContext()
 
   const _isFirstDate = cal.isFirstDate()
@@ -645,6 +672,7 @@ function AdminDashboardContent({ children }: AdminDashboardContentProps) {
 
   return (
     <div
+      ref={ref}
       className={cn(
         'flex w-full flex-col rounded-[8px] bg-layer-02 md:p-ds-06 max-md:bg-transparent',
         {
@@ -658,7 +686,7 @@ function AdminDashboardContent({ children }: AdminDashboardContentProps) {
       {children}
     </div>
   )
-}
+})
 
 AdminDashboardContent.displayName = 'AdminDashboard.Content'
 

@@ -1,5 +1,6 @@
 'use client'
 
+import * as React from 'react'
 import { useState, useRef } from 'react'
 import { useDroppable } from '@dnd-kit/core'
 import { SortableContext, verticalListSortingStrategy } from '@dnd-kit/sortable'
@@ -46,7 +47,7 @@ const COLUMN_ACCENTS = [
 // Component
 // ============================================================
 
-interface BoardColumnProps {
+export interface BoardColumnProps {
   column: BoardColumnData
   index: number
   isOverlay?: boolean
@@ -57,7 +58,8 @@ interface BoardColumnProps {
   onToggleVisibility?: (columnId: string, visible: boolean) => void
 }
 
-export function BoardColumn({
+export const BoardColumn = React.forwardRef<HTMLDivElement, BoardColumnProps>(
+  function BoardColumn({
   column,
   index,
   isOverlay,
@@ -66,7 +68,7 @@ export function BoardColumn({
   onRenameColumn,
   onDeleteColumn,
   onToggleVisibility,
-}: BoardColumnProps) {
+}, ref) {
   const [isAdding, setIsAdding] = useState(false)
   const [newTitle, setNewTitle] = useState('')
   const [isEditing, setIsEditing] = useState(false)
@@ -120,6 +122,7 @@ export function BoardColumn({
 
   return (
     <div
+      ref={ref}
       className={cn(
         'flex h-full w-[300px] flex-shrink-0 flex-col rounded-ds-xl border-l-[3px] bg-layer-01 shadow-01',
         accentColor,
@@ -300,4 +303,7 @@ export function BoardColumn({
       )}
     </div>
   )
-}
+},
+)
+
+BoardColumn.displayName = 'BoardColumn'

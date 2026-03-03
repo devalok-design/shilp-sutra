@@ -542,10 +542,11 @@ export function EditBreak({
 
                       {/* Render calendar days */}
                       {days.map((day, index) => (
-                        <div
+                        <button
+                          type="button"
                           key={index}
-                          role="button"
-                          tabIndex={0}
+                          tabIndex={day.isPadding ? -1 : 0}
+                          aria-label={day.isPadding ? undefined : format(new Date(day.fullDate), 'MMMM d, yyyy')}
                           className={`
                             ${
                               isInSelectedRange(day.fullDate) &&
@@ -599,7 +600,7 @@ export function EditBreak({
                               {day.date}
                             </span>
                           </div>
-                        </div>
+                        </button>
                       ))}
                     </div>
                   </div>
@@ -617,23 +618,37 @@ export function EditBreak({
                   <p className="text-ds-xs font-semibold uppercase tracking-wider  text-text-placeholder">
                     Status
                   </p>
-                  <div
-                    className="relative flex cursor-pointer items-center gap-ds-02"
-                    onClick={() => setShowStatusOptions(!showStatusOptions)}
-                  >
-                    {renderStatus(formData.status)}
-                    <ArrowDownIcon />
+                  <div className="relative flex items-center gap-ds-02">
+                    <button
+                      type="button"
+                      className="flex cursor-pointer items-center gap-ds-02"
+                      aria-label="Change status"
+                      aria-haspopup="listbox"
+                      aria-expanded={showStatusOptions}
+                      onClick={() => setShowStatusOptions(!showStatusOptions)}
+                    >
+                      {renderStatus(formData.status)}
+                      <ArrowDownIcon />
+                    </button>
                     {showStatusOptions && (
-                      <div className="text-ds-base absolute left-[10px] top-[25px] z-[4] flex flex-col overflow-hidden rounded-[7px] border border-border bg-layer-01 shadow-02">
+                      <div className="text-ds-base absolute left-[10px] top-[25px] z-[4] flex flex-col overflow-hidden rounded-[7px] border border-border bg-layer-01 shadow-02" role="listbox">
                         <div
-                          className="cursor-pointer border-b border-b-border bg-layer-01 px-ds-04 py-ds-03"
+                          className="cursor-pointer border-b border-b-border bg-layer-01 px-ds-04 py-ds-03 text-left"
+                          role="option"
+                          tabIndex={0}
+                          aria-selected={formData.status === 'APPROVED'}
                           onClick={() => handleStatusSelect('APPROVED')}
+                          onKeyDown={(e) => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); handleStatusSelect('APPROVED') } }}
                         >
                           {renderStatus('APPROVED')}
                         </div>
                         <div
-                          className="cursor-pointer bg-layer-01 px-ds-04 py-ds-03"
+                          className="cursor-pointer bg-layer-01 px-ds-04 py-ds-03 text-left"
+                          role="option"
+                          tabIndex={0}
+                          aria-selected={formData.status === 'REJECTED'}
                           onClick={() => handleStatusSelect('REJECTED')}
+                          onKeyDown={(e) => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); handleStatusSelect('REJECTED') } }}
                         >
                           {renderStatus('REJECTED')}
                         </div>

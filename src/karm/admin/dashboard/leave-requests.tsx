@@ -46,14 +46,15 @@ export interface LeaveRequestsProps {
 // Component
 // ============================================================
 
-export function LeaveRequests({
+export const LeaveRequests = React.forwardRef<HTMLDivElement, LeaveRequestsProps>(
+  function LeaveRequests({
   requests,
   currentUserId,
   userImages = {},
   activeTimeFrame,
   onApproveBreak,
   onRejectBreak,
-}: LeaveRequestsProps) {
+}, ref) {
   const interaction = useLeaveRequestInteraction()
   const isMobile = useIsMobile()
 
@@ -147,6 +148,7 @@ export function LeaveRequests({
 
   return (
     <div
+      ref={ref}
       className={`no-scrollbar max-h-[230px] w-full overflow-y-auto px-0 md:px-ds-06 max-md:h-[calc(100vh-586px)] max-md:max-h-[calc(100vh-586px)] max-md:min-h-[407.2px] ${activeTimeFrame === 'weekly1' ? 'max-md:h-[calc(100vh-824px)] max-md:max-h-[calc(100vh-824px)]' : ''}`}
     >
       <div className="flex h-full flex-col gap-[8px] py-ds-03 max-md:h-[max-content] max-md:gap-[16px] max-md:py-0 max-md:pb-[16px]">
@@ -331,6 +333,7 @@ export function LeaveRequests({
       </div>
     </div>
   )
-}
+},
+)
 
 LeaveRequests.displayName = 'LeaveRequests'

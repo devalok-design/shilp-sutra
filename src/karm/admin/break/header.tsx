@@ -1,5 +1,6 @@
 'use client'
 
+import * as React from 'react'
 import { Fragment } from 'react'
 import {
   CrossIcon,
@@ -56,13 +57,14 @@ export interface BreakAdminHeaderProps {
   users: AdminUser[]
 }
 
-export function BreakAdminHeader({
+export const BreakAdminHeader = React.forwardRef<HTMLDivElement, BreakAdminHeaderProps>(
+  function BreakAdminHeader({
   filters,
   onFilterChange,
   breakBalance,
   userImages,
   users,
-}: BreakAdminHeaderProps) {
+}, ref) {
   const setFilters = (
     updater: (prev: BreakAdminFilters) => BreakAdminFilters,
   ) => {
@@ -93,7 +95,7 @@ export function BreakAdminHeader({
   }
 
   return (
-    <div className="flex min-w-[800px] items-center justify-between bg-field px-ds-06 py-ds-05b max-md:justify-start max-md:gap-[20px] max-lg:min-w-[100%]">
+    <div ref={ref} className="flex min-w-[800px] items-center justify-between bg-field px-ds-06 py-ds-05b max-md:justify-start max-md:gap-[20px] max-lg:min-w-[100%]">
       <div className="flex flex-col gap-ds-05">
         {filters.selectedAssociate && (
           <>
@@ -299,6 +301,7 @@ export function BreakAdminHeader({
       </header>
     </div>
   )
-}
+},
+)
 
 BreakAdminHeader.displayName = 'BreakAdminHeader'

@@ -104,7 +104,8 @@ function stripHtml(html: string): string {
 // Conversation Tab
 // ============================================================
 
-function ConversationTab({
+const ConversationTab = React.forwardRef<HTMLDivElement, ConversationTabProps>(
+  function ConversationTab({
   comments,
   taskVisibility,
   onPostComment,
@@ -112,7 +113,7 @@ function ConversationTab({
   clientMode = false,
   renderEditor,
   renderViewer,
-}: ConversationTabProps) {
+}, ref) {
   const [editorContent, setEditorContent] = React.useState('')
   const scrollRef = React.useRef<HTMLDivElement>(null)
 
@@ -134,7 +135,7 @@ function ConversationTab({
   }, [comments.length])
 
   return (
-    <div className={cn('flex flex-col', className)}>
+    <div ref={ref} className={cn('flex flex-col', className)}>
       {/* Comments list */}
       {comments.length > 0 ? (
         <div
@@ -251,7 +252,8 @@ function ConversationTab({
       </div>
     </div>
   )
-}
+},
+)
 
 ConversationTab.displayName = 'ConversationTab'
 

@@ -1,9 +1,11 @@
 'use client'
 
+import * as React from 'react'
 import { useState, useRef, useCallback, type KeyboardEvent } from 'react'
 import { IconSend, IconSquare } from '@tabler/icons-react'
+import { Button } from '../../ui/button'
 
-interface ChatInputProps {
+export interface ChatInputProps {
   onSubmit: (message: string) => void
   onCancel?: () => void
   isStreaming?: boolean
@@ -11,13 +13,14 @@ interface ChatInputProps {
   disclaimer?: string
 }
 
-export function ChatInput({
+export const ChatInput = React.forwardRef<HTMLDivElement, ChatInputProps>(
+  function ChatInput({
   onSubmit,
   onCancel,
   isStreaming = false,
   placeholder = 'Ask Karm AI...',
   disclaimer = 'AI responses may be inaccurate. Verify important information.',
-}: ChatInputProps) {
+}, ref) {
   const [text, setText] = useState('')
   const textareaRef = useRef<HTMLTextAreaElement>(null)
 
@@ -50,7 +53,7 @@ export function ChatInput({
   )
 
   return (
-    <div className="border-t border-border bg-layer-01 p-ds-04">
+    <div ref={ref} className="border-t border-border bg-layer-01 p-ds-04">
       <div className="flex items-end gap-ds-03 rounded-ds-xl border border-border bg-field px-ds-04 py-ds-03">
         <textarea
           ref={textareaRef}
@@ -66,22 +69,13 @@ export function ChatInput({
           className="text-ds-md no-scrollbar max-h-[160px] min-h-[24px] flex-1 resize-none bg-transparent text-text-primary placeholder:text-text-placeholder focus:outline-none disabled:opacity-50"
         />
         {isStreaming ? (
-          <button
-            onClick={onCancel}
-            className="flex h-8 w-8 shrink-0 items-center justify-center rounded-ds-lg bg-error text-text-on-color transition-colors hover:bg-error-hover"
-            aria-label="Stop generating"
-          >
+          <Button variant="danger" size="icon-sm" className="h-8 w-8 shrink-0 rounded-ds-lg" onClick={onCancel} aria-label="Stop generating">
             <IconSquare className="h-ico-sm w-ico-sm" />
-          </button>
+          </Button>
         ) : (
-          <button
-            onClick={handleSend}
-            disabled={!text.trim()}
-            className="flex h-8 w-8 shrink-0 items-center justify-center rounded-ds-lg bg-interactive text-text-on-color transition-colors hover:opacity-90 disabled:opacity-50"
-            aria-label="Send message"
-          >
+          <Button size="icon-sm" className="h-8 w-8 shrink-0 rounded-ds-lg" onClick={handleSend} disabled={!text.trim()} aria-label="Send message">
             <IconSend className="h-ico-sm w-ico-sm" />
-          </button>
+          </Button>
         )}
       </div>
       {disclaimer && (
@@ -91,4 +85,7 @@ export function ChatInput({
       )}
     </div>
   )
-}
+},
+)
+
+ChatInput.displayName = 'ChatInput'

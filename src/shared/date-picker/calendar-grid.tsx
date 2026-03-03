@@ -42,7 +42,8 @@ export interface CalendarGridProps {
   hideNextNav?: boolean
 }
 
-export function CalendarGrid({
+export const CalendarGrid = React.forwardRef<HTMLDivElement, CalendarGridProps>(
+  function CalendarGrid({
   currentMonth,
   selected,
   rangeStart,
@@ -57,7 +58,7 @@ export function CalendarGrid({
   maxDate,
   hidePrevNav,
   hideNextNav,
-}: CalendarGridProps) {
+}, forwardedRef) {
   const gridRef = React.useRef<HTMLDivElement>(null)
   const monthStart = startOfMonth(currentMonth)
   const monthEnd = endOfMonth(currentMonth)
@@ -158,7 +159,7 @@ export function CalendarGrid({
   }
 
   return (
-    <div className="w-[252px]">
+    <div ref={forwardedRef} className="w-[252px]">
       <div className="flex items-center justify-between px-ds-02 pb-ds-04">
         {hidePrevNav ? (
           <span className="h-7 w-7" />
@@ -261,4 +262,7 @@ export function CalendarGrid({
       </div>
     </div>
   )
-}
+},
+)
+
+CalendarGrid.displayName = 'CalendarGrid'

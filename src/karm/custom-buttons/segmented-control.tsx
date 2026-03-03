@@ -133,7 +133,7 @@ export type ToggleColor = SegmentedControlColor
 /** @deprecated Use SegmentedControlOption */
 export type ToggleOption = SegmentedControlOption
 
-interface SegmentedControlProps {
+export interface SegmentedControlProps {
   size: SegmentedControlSize
   color: SegmentedControlColor
   options: SegmentedControlOption[]
@@ -144,7 +144,8 @@ interface SegmentedControlProps {
 }
 
 /* ── SegmentedControl (root) ──────────────────────────────── */
-const SegmentedControl: React.FC<SegmentedControlProps> = ({
+const SegmentedControl = React.forwardRef<HTMLDivElement, SegmentedControlProps>(
+  function SegmentedControl({
   size,
   color,
   options,
@@ -152,9 +153,14 @@ const SegmentedControl: React.FC<SegmentedControlProps> = ({
   onSelect,
   disabled = false,
   className = '',
-}) => {
+}, forwardedRef) {
   const [focusedId, setFocusedId] = useState<string | null>(null)
-  const tablistRef = useRef<HTMLDivElement>(null)
+  const tablistRef = useRef<HTMLDivElement | null>(null)
+  const mergedRef = React.useCallback((node: HTMLDivElement | null) => {
+    tablistRef.current = node
+    if (typeof forwardedRef === 'function') forwardedRef(node)
+    else if (forwardedRef) (forwardedRef as React.MutableRefObject<HTMLDivElement | null>).current = node
+  }, [forwardedRef])
 
   // Handle keyboard navigation
   const handleKeyDown = (event: React.KeyboardEvent<HTMLDivElement>) => {
@@ -191,7 +197,7 @@ const SegmentedControl: React.FC<SegmentedControlProps> = ({
 
   return (
     <div
-      ref={tablistRef}
+      ref={mergedRef}
       className={cn(
         'inline-flex gap-0 p-0 rounded-[88px]',
         'bg-layer-02',
@@ -219,11 +225,12 @@ const SegmentedControl: React.FC<SegmentedControlProps> = ({
       ))}
     </div>
   )
-}
+},
+)
 SegmentedControl.displayName = 'SegmentedControl'
 
 /* ── SegmentedControlItem ─────────────────────────────────── */
-interface SegmentedControlItemProps {
+export interface SegmentedControlItemProps {
   size: SegmentedControlSize
   color: SegmentedControlColor
   text: string
@@ -235,7 +242,8 @@ interface SegmentedControlItemProps {
   onBlur: () => void
 }
 
-const SegmentedControlItem: React.FC<SegmentedControlItemProps> = ({
+const SegmentedControlItem = React.forwardRef<HTMLButtonElement, SegmentedControlItemProps>(
+  function SegmentedControlItem({
   size,
   color,
   text,
@@ -245,7 +253,7 @@ const SegmentedControlItem: React.FC<SegmentedControlItemProps> = ({
   isFocused,
   onFocus,
   onBlur,
-}) => {
+}, ref) {
   const [state, setState] = useState<'default' | 'hover' | 'pressed'>('default')
   const { ripples, createRipple } = useRipple()
 
@@ -275,6 +283,7 @@ const SegmentedControlItem: React.FC<SegmentedControlItemProps> = ({
 
   return (
     <button
+      ref={ref}
       className={cn(
         segmentedControlItemVariants({
           size,
@@ -320,7 +329,8 @@ const SegmentedControlItem: React.FC<SegmentedControlItemProps> = ({
       <span className="font-accent text-ds-md leading-none">{text}</span>
     </button>
   )
-}
+},
+)
 SegmentedControlItem.displayName = 'SegmentedControlItem'
 
 export { SegmentedControl, SegmentedControlItem, segmentedControlItemVariants }

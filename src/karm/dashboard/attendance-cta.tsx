@@ -1,5 +1,6 @@
 'use client'
 
+import * as React from 'react'
 import { IconCheck, IconClock, IconCoffee } from '@tabler/icons-react'
 
 // ============================================================
@@ -16,7 +17,7 @@ interface AttendanceData {
   breakReason: string | null
 }
 
-interface AttendanceCTAProps {
+export interface AttendanceCTAProps {
   userName: string
   attendance: AttendanceData | null
   canMarkAttendance: boolean
@@ -60,14 +61,15 @@ function defaultFormatTime(timeStr: string): string {
 // Component
 // ============================================================
 
-export default function AttendanceCTA({
+const AttendanceCTA = React.forwardRef<HTMLDivElement, AttendanceCTAProps>(
+  function AttendanceCTA({
   userName,
   attendance,
   canMarkAttendance,
   onMarkAttendance,
   isSubmitting = false,
   formatTime = defaultFormatTime,
-}: AttendanceCTAProps) {
+}, ref) {
   const status = attendance?.attendance?.status ?? 'Not_Marked'
   const isMarked = status === 'PRESENT' || isSubmitting
   const isOnBreak = status === 'BREAK'
@@ -80,7 +82,7 @@ export default function AttendanceCTA({
   // Marked state: compact strip
   if (isMarked && !isOnBreak) {
     return (
-      <div className="relative overflow-hidden rounded-ds-2xl border border-border bg-layer-01 shadow-01">
+      <div ref={ref} className="relative overflow-hidden rounded-ds-2xl border border-border bg-layer-01 shadow-01">
         <div className="flex items-center justify-between px-ds-06 py-ds-05b sm:px-ds-07">
           <div className="flex flex-col gap-ds-02">
             <h2 className="text-ds-2xl text-text-primary">
@@ -110,7 +112,7 @@ export default function AttendanceCTA({
   // On Break state
   if (isOnBreak) {
     return (
-      <div className="relative overflow-hidden rounded-ds-2xl border border-border bg-layer-01 shadow-01">
+      <div ref={ref} className="relative overflow-hidden rounded-ds-2xl border border-border bg-layer-01 shadow-01">
         <div className="flex items-center justify-between px-ds-06 py-ds-05b sm:px-ds-07">
           <div className="flex flex-col gap-ds-02">
             <h2 className="text-ds-2xl text-text-primary">
@@ -138,7 +140,7 @@ export default function AttendanceCTA({
   // Unmarked + cannot mark: attendance window closed
   if (!canMarkAttendance) {
     return (
-      <div className="relative overflow-hidden rounded-ds-2xl border border-border bg-layer-01 shadow-01">
+      <div ref={ref} className="relative overflow-hidden rounded-ds-2xl border border-border bg-layer-01 shadow-01">
         <div className="flex items-center justify-between px-ds-06 py-ds-06 sm:px-ds-07 sm:py-ds-07">
           <div className="flex flex-col gap-ds-02b">
             <h2 className="text-ds-3xl text-text-primary">
@@ -164,7 +166,7 @@ export default function AttendanceCTA({
 
   // Unmarked + can mark: large greeting with mark button
   return (
-    <div className="relative overflow-hidden rounded-ds-2xl border border-border bg-gradient-to-br from-interactive-subtle via-background to-success-surface">
+    <div ref={ref} className="relative overflow-hidden rounded-ds-2xl border border-border bg-gradient-to-br from-interactive-subtle via-background to-success-surface">
       <div className="flex items-center justify-between px-ds-06 py-ds-07 sm:px-ds-07 sm:py-10">
         <div className="flex flex-col gap-ds-02b">
           <h2 className="text-ds-3xl text-text-primary">
@@ -205,4 +207,9 @@ export default function AttendanceCTA({
       </div>
     </div>
   )
-}
+},
+)
+
+AttendanceCTA.displayName = 'AttendanceCTA'
+
+export default AttendanceCTA

@@ -3,7 +3,7 @@ import { cn } from '../ui/lib/utils'
 import type { Icon as TablerIcon } from '@tabler/icons-react'
 import { IconInbox } from '@tabler/icons-react'
 
-interface EmptyStateProps extends React.HTMLAttributes<HTMLDivElement> {
+export interface EmptyStateProps extends React.HTMLAttributes<HTMLDivElement> {
   icon?: TablerIcon
   title: string
   description?: string
@@ -78,4 +78,3 @@ const EmptyState = React.forwardRef<HTMLDivElement, EmptyStateProps>(
 EmptyState.displayName = 'EmptyState'
 
 export { EmptyState }
-export type { EmptyStateProps }

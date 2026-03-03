@@ -1,5 +1,6 @@
 'use client'
 
+import * as React from 'react'
 import { cn } from '../../ui/lib/utils'
 
 const MONTHS = [
@@ -15,15 +16,16 @@ export interface MonthPickerProps {
   maxDate?: Date
 }
 
-export function MonthPicker({
+export const MonthPicker = React.forwardRef<HTMLDivElement, MonthPickerProps>(
+  function MonthPicker({
   currentYear,
   selectedMonth,
   onMonthSelect,
   minDate,
   maxDate,
-}: MonthPickerProps) {
+}, ref) {
   return (
-    <div className="w-[252px]">
+    <div ref={ref} className="w-[252px]">
       <div className="text-center pb-ds-04 text-ds-md font-semibold text-text-primary">
         {currentYear}
       </div>
@@ -63,6 +65,7 @@ export function MonthPicker({
       </div>
     </div>
   )
-}
+},
+)
 
 MonthPicker.displayName = 'MonthPicker'

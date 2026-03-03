@@ -51,7 +51,8 @@ interface SubtasksTabProps {
 // Subtasks Tab
 // ============================================================
 
-function SubtasksTab({
+const SubtasksTab = React.forwardRef<HTMLDivElement, SubtasksTabProps>(
+  function SubtasksTab({
   subtasks,
   terminalColumnId,
   onCreateSubtask,
@@ -59,7 +60,7 @@ function SubtasksTab({
   onClickSubtask,
   className,
   readOnly = false,
-}: SubtasksTabProps) {
+}, ref) {
   const [newTitle, setNewTitle] = React.useState('')
   const [isAdding, setIsAdding] = React.useState(false)
   const inputRef = React.useRef<HTMLInputElement>(null)
@@ -95,7 +96,7 @@ function SubtasksTab({
   }, [isAdding])
 
   return (
-    <div className={cn('flex flex-col', className)}>
+    <div ref={ref} className={cn('flex flex-col', className)}>
       {/* Progress bar */}
       {totalCount > 0 && (
         <div className="mb-ds-05 flex items-center gap-ds-04">
@@ -226,7 +227,8 @@ function SubtasksTab({
       )}
     </div>
   )
-}
+},
+)
 
 SubtasksTab.displayName = 'SubtasksTab'
 

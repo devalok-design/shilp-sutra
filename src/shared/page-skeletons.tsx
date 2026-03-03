@@ -1,3 +1,4 @@
+import * as React from 'react'
 import { Skeleton } from '../ui/skeleton'
 import { cn } from '../ui/lib/utils'
 
@@ -5,9 +6,10 @@ const shimmer = 'bg-field'
 
 // --- Dashboard Skeleton ---
 
-function DashboardSkeleton() {
+const DashboardSkeleton = React.forwardRef<HTMLDivElement>(
+  function DashboardSkeleton(_props, ref) {
   return (
-    <div className="flex flex-col gap-ds-06">
+    <div ref={ref} className="flex flex-col gap-ds-06">
       {/* Stat cards grid */}
       <div className="grid grid-cols-1 gap-ds-05 sm:grid-cols-2 lg:grid-cols-4">
         {Array.from({ length: 4 }).map((_, i) => (
@@ -53,15 +55,17 @@ function DashboardSkeleton() {
       </div>
     </div>
   )
-}
+},
+)
 
 DashboardSkeleton.displayName = 'DashboardSkeleton'
 
 // --- Project List Skeleton ---
 
-function ProjectListSkeleton() {
+const ProjectListSkeleton = React.forwardRef<HTMLDivElement>(
+  function ProjectListSkeleton(_props, ref) {
   return (
-    <div className="flex flex-col gap-ds-06">
+    <div ref={ref} className="flex flex-col gap-ds-06">
       {/* Header */}
       <div className="flex flex-col gap-ds-05 sm:flex-row sm:items-center sm:justify-between">
         <div className="flex flex-col gap-ds-03">
@@ -116,15 +120,17 @@ function ProjectListSkeleton() {
       </div>
     </div>
   )
-}
+},
+)
 
 ProjectListSkeleton.displayName = 'ProjectListSkeleton'
 
 // --- Devsabha Skeleton ---
 
-function DevsabhaSkeleton() {
+const DevsabhaSkeleton = React.forwardRef<HTMLDivElement>(
+  function DevsabhaSkeleton(_props, ref) {
   return (
-    <div className="flex flex-col gap-ds-06">
+    <div ref={ref} className="flex flex-col gap-ds-06">
       {/* Page header */}
       <div className="flex flex-col gap-ds-03">
         <Skeleton className={cn('h-6 w-32', shimmer)} />
@@ -220,15 +226,17 @@ function DevsabhaSkeleton() {
       </div>
     </div>
   )
-}
+},
+)
 
 DevsabhaSkeleton.displayName = 'DevsabhaSkeleton'
 
 // --- Bandwidth Skeleton ---
 
-function BandwidthSkeleton() {
+const BandwidthSkeleton = React.forwardRef<HTMLDivElement>(
+  function BandwidthSkeleton(_props, ref) {
   return (
-    <div className="flex flex-col gap-ds-06">
+    <div ref={ref} className="flex flex-col gap-ds-06">
       {/* Summary cards */}
       <div className="grid grid-cols-1 gap-ds-05 sm:grid-cols-3">
         {Array.from({ length: 3 }).map((_, i) => (
@@ -282,15 +290,17 @@ function BandwidthSkeleton() {
       </div>
     </div>
   )
-}
+},
+)
 
 BandwidthSkeleton.displayName = 'BandwidthSkeleton'
 
 // --- Task Detail Skeleton ---
 
-function TaskDetailSkeleton() {
+const TaskDetailSkeleton = React.forwardRef<HTMLDivElement>(
+  function TaskDetailSkeleton(_props, ref) {
   return (
-    <div className="flex h-full flex-col gap-0 rounded-ds-xl border border-border bg-layer-01">
+    <div ref={ref} className="flex h-full flex-col gap-0 rounded-ds-xl border border-border bg-layer-01">
       {/* Header */}
       <div className="flex items-center justify-between border-b border-border px-ds-05b py-ds-05">
         <Skeleton className={cn('h-5 w-48', shimmer)} />
@@ -332,7 +342,8 @@ function TaskDetailSkeleton() {
       </div>
     </div>
   )
-}
+},
+)
 
 TaskDetailSkeleton.displayName = 'TaskDetailSkeleton'
 

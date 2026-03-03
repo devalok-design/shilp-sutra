@@ -149,7 +149,7 @@ function Toolbar({ editor }: { editor: Editor }) {
   )
 }
 
-interface RichTextEditorProps {
+export interface RichTextEditorProps {
   content?: string
   placeholder?: string
   onChange?: (html: string) => void
@@ -157,13 +157,14 @@ interface RichTextEditorProps {
   editable?: boolean
 }
 
-function RichTextEditor({
+const RichTextEditor = React.forwardRef<HTMLDivElement, RichTextEditorProps>(
+  function RichTextEditor({
   content = '',
   placeholder = 'Start writing...',
   onChange,
   className,
   editable = true,
-}: RichTextEditorProps) {
+}, ref) {
   const editor = useEditor({
     extensions: [
       StarterKit.configure({
@@ -203,6 +204,7 @@ function RichTextEditor({
 
   return (
     <div
+      ref={ref}
       className={cn(
         'overflow-hidden rounded-ds-lg border border-border bg-layer-01',
         'transition-colors focus-within:border-[var(--border-secondary)]',
@@ -213,16 +215,18 @@ function RichTextEditor({
       <EditorContent editor={editor} />
     </div>
   )
-}
+},
+)
 
 RichTextEditor.displayName = 'RichTextEditor'
 
-interface RichTextViewerProps {
+export interface RichTextViewerProps {
   content: string
   className?: string
 }
 
-function RichTextViewer({ content, className }: RichTextViewerProps) {
+const RichTextViewer = React.forwardRef<HTMLDivElement, RichTextViewerProps>(
+  function RichTextViewer({ content, className }, ref) {
   const editor = useEditor({
     extensions: [
       StarterKit.configure({
@@ -252,13 +256,13 @@ function RichTextViewer({ content, className }: RichTextViewerProps) {
   if (!editor) return null
 
   return (
-    <div className={className}>
+    <div ref={ref} className={className}>
       <EditorContent editor={editor} />
     </div>
   )
-}
+},
+)
 
 RichTextViewer.displayName = 'RichTextViewer'
 
 export { RichTextEditor, RichTextViewer }
-export type { RichTextEditorProps, RichTextViewerProps }

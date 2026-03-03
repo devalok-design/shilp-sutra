@@ -1,5 +1,6 @@
 'use client'
 
+import * as React from 'react'
 import { useSortable } from '@dnd-kit/sortable'
 import { CSS } from '@dnd-kit/utilities'
 import type { DraggableAttributes } from '@dnd-kit/core'
@@ -96,6 +97,8 @@ function TaskCardVisual({
           )}
           {...(dragHandleProps?.attributes ?? {})}
           {...(dragHandleProps?.listeners ?? {})}
+          aria-label={`Drag handle for task: ${task.title}`}
+          aria-roledescription="sortable"
           onClick={(e) => e.stopPropagation()}
         >
           <IconGripVertical className="h-ico-sm w-ico-sm text-icon-secondary" />
@@ -180,7 +183,7 @@ function TaskCardVisual({
 // Sortable Task Card (used inside SortableContext)
 // ============================================================
 
-interface TaskCardProps {
+export interface TaskCardProps {
   task: BoardTask
   onClickTask?: (taskId: string) => void
 }
@@ -222,10 +225,18 @@ export function TaskCard({ task, onClickTask }: TaskCardProps) {
 // Overlay Task Card (used inside DragOverlay, no sortable hooks)
 // ============================================================
 
-interface TaskCardOverlayProps {
+export interface TaskCardOverlayProps {
   task: BoardTask
 }
 
-export function TaskCardOverlay({ task }: TaskCardOverlayProps) {
-  return <TaskCardVisual task={task} isDragOverlay />
-}
+export const TaskCardOverlay = React.forwardRef<HTMLDivElement, TaskCardOverlayProps>(
+  function TaskCardOverlay({ task }, ref) {
+  return (
+    <div ref={ref}>
+      <TaskCardVisual task={task} isDragOverlay />
+    </div>
+  )
+},
+)
+
+TaskCardOverlay.displayName = 'TaskCardOverlay'

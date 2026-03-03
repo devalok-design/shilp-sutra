@@ -1,5 +1,6 @@
 'use client'
 
+import * as React from 'react'
 import { useState } from 'react'
 import ReactMarkdown from 'react-markdown'
 import { IconChevronDown, IconChevronUp, IconSparkles } from '@tabler/icons-react'
@@ -13,7 +14,7 @@ export interface BriefData {
   generatedAt: string
 }
 
-interface DailyBriefProps {
+export interface DailyBriefProps {
   data: BriefData | null
   loading?: boolean
   className?: string
@@ -31,17 +32,18 @@ const DOT_COLORS = [
   'bg-accent',
 ]
 
-export default function DailyBrief({
+const DailyBrief = React.forwardRef<HTMLDivElement, DailyBriefProps>(
+  function DailyBrief({
   data,
   loading = false,
   className,
-}: DailyBriefProps) {
+}, ref) {
   const [collapsed, setCollapsed] = useState(false)
 
   // Shimmer skeleton while loading
   if (loading) {
     return (
-      <div className={`flex flex-col gap-ds-04 rounded-ds-2xl border border-border bg-layer-01 shadow-01 p-ds-05b ${className || ''}`}>
+      <div ref={ref} className={`flex flex-col gap-ds-04 rounded-ds-2xl border border-border bg-layer-01 shadow-01 p-ds-05b ${className || ''}`}>
         <div className="flex items-center gap-ds-03">
           <div className="h-ico-sm w-ico-sm animate-pulse rounded bg-layer-02" />
           <div className="h-4 w-24 animate-pulse rounded bg-layer-02" />
@@ -62,7 +64,7 @@ export default function DailyBrief({
   if (!data || data.brief.length === 0) return null
 
   return (
-    <div className={`flex flex-col rounded-ds-2xl border border-border bg-layer-01 shadow-01 ${className || ''}`}>
+    <div ref={ref} className={`flex flex-col rounded-ds-2xl border border-border bg-layer-01 shadow-01 ${className || ''}`}>
       <button
         type="button"
         onClick={() => setCollapsed(!collapsed)}
@@ -97,4 +99,9 @@ export default function DailyBrief({
       )}
     </div>
   )
-}
+},
+)
+
+DailyBrief.displayName = 'DailyBrief'
+
+export default DailyBrief

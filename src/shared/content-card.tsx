@@ -44,7 +44,7 @@ const getContentPadding = (padding: string | null | undefined) => {
   }
 }
 
-interface ContentCardProps
+export interface ContentCardProps
   extends React.HTMLAttributes<HTMLDivElement>,
     VariantProps<typeof contentCardVariants> {
   header?: React.ReactNode
@@ -126,4 +126,3 @@ const ContentCard = React.forwardRef<HTMLDivElement, ContentCardProps>(
 ContentCard.displayName = 'ContentCard'
 
 export { ContentCard, contentCardVariants }
-export type { ContentCardProps }

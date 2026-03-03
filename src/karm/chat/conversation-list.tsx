@@ -1,5 +1,6 @@
 'use client'
 
+import * as React from 'react'
 import { IconMessage, IconArchive, IconTrash, IconMessagePlus } from '@tabler/icons-react'
 
 // ============================================================
@@ -12,7 +13,7 @@ export interface Conversation {
   updatedAt: string
 }
 
-interface ConversationListProps {
+export interface ConversationListProps {
   conversations: Conversation[]
   activeConversationId?: string | null
   isLoading?: boolean
@@ -51,7 +52,8 @@ function formatRelativeTime(dateStr: string): string {
 // Component
 // ============================================================
 
-export function ConversationList({
+export const ConversationList = React.forwardRef<HTMLDivElement, ConversationListProps>(
+  function ConversationList({
   conversations,
   activeConversationId,
   isLoading = false,
@@ -59,9 +61,9 @@ export function ConversationList({
   onNewChat,
   onArchive,
   onDelete,
-}: ConversationListProps) {
+}, ref) {
   return (
-    <div className="flex flex-1 flex-col overflow-hidden">
+    <div ref={ref} className="flex flex-1 flex-col overflow-hidden">
       {/* Header */}
       <div className="flex items-center justify-between border-b border-border px-ds-05 py-ds-04">
         <h3 className="text-ds-base text-text-primary">
@@ -146,4 +148,7 @@ export function ConversationList({
       </div>
     </div>
   )
-}
+},
+)
+
+ConversationList.displayName = 'ConversationList'

@@ -30,12 +30,12 @@ const avatarSizeVariants = cva(
   },
 )
 
-interface AvatarUser {
+export interface AvatarUser {
   name: string
   image?: string | null
 }
 
-interface AvatarGroupProps
+export interface AvatarGroupProps
   extends React.HTMLAttributes<HTMLDivElement>,
     VariantProps<typeof avatarSizeVariants> {
   users: AvatarUser[]
@@ -134,4 +134,3 @@ const AvatarGroup = React.forwardRef<HTMLDivElement, AvatarGroupProps>(
 AvatarGroup.displayName = 'AvatarGroup'
 
 export { AvatarGroup }
-export type { AvatarGroupProps, AvatarUser }

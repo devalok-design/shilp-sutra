@@ -11,6 +11,7 @@ import {
 import { Textarea } from '../../../ui/textarea'
 import { CrossIcon, TickIcon } from '../icons'
 import { formatDateWithWeekday } from '../utils/date-utils'
+import { Avatar, AvatarImage, AvatarFallback } from '../../../ui/avatar'
 import { Button } from '../../../ui/button'
 import { isSameDay } from 'date-fns'
 import {
@@ -28,12 +29,12 @@ export interface LeaveRequestProps {
   request: BreakRequest
   userImages: Record<string, string>
   handleRejectRequest: (
-    event: MouseEvent<HTMLDivElement, globalThis.MouseEvent>,
+    event: MouseEvent<HTMLButtonElement, globalThis.MouseEvent>,
     id: string,
     comment?: string,
   ) => void
   handleApproveRequest: (
-    event: MouseEvent<HTMLDivElement, globalThis.MouseEvent>,
+    event: MouseEvent<HTMLButtonElement, globalThis.MouseEvent>,
     id: string,
     comment?: string,
   ) => void
@@ -66,17 +67,10 @@ export function LeaveRequest({
         className="flex justify-between border-b border-border px-ds-03 py-[14px] last:border-b-0"
       >
         <div className="flex w-full items-center gap-ds-04">
-          {userImages[request.user?.id || ''] ? (
-            <img
-              className="bg-red h-10 w-10 overflow-hidden rounded-ds-full bg-layer-02"
-              src={userImages[request.user?.id || '']}
-              alt={''}
-            />
-          ) : (
-            <span className="flex h-7 w-full max-w-7 items-center justify-center rounded-ds-full bg-[var(--mapped-borders-margin-tertiary)] text-ds-sm font-medium uppercase text-[--color-text-primary]">
-              {request.user?.name?.[0] || 'U'}
-            </span>
-          )}
+          <Avatar className="h-10 w-10">
+            <AvatarImage src={userImages[request.user?.id || '']} alt={request.user?.name || ''} />
+            <AvatarFallback>{(request.user?.name || '?')[0]}</AvatarFallback>
+          </Avatar>
           <div className="flex w-auto max-w-[75%] flex-col items-start gap-[6px]">
             <div className="flex flex-row gap-ds-02b">
               <div className="flex items-center gap-ds-03">
@@ -134,15 +128,18 @@ export function LeaveRequest({
         <div className="flex items-center gap-ds-04">
           <Tooltip delayDuration={0}>
             <TooltipTrigger asChild>
-              <div
-                onClick={(e: MouseEvent<HTMLDivElement>) =>
+              <Button
+                variant="ghost"
+                size="icon-sm"
+                onClick={(e) =>
                   request.user?.id !== userId &&
-                  handleRejectRequest(e, request.id)
+                  handleRejectRequest(e as unknown as MouseEvent<HTMLButtonElement>, request.id)
                 }
-                className={`cursor-pointer p-ds-03 ${request.user?.id === userId ? 'cursor-not-allowed opacity-50' : ''}`}
+                disabled={request.user?.id === userId}
+                aria-label="Reject break request"
               >
                 <CrossIcon className="h-6 w-6" />
-              </div>
+              </Button>
             </TooltipTrigger>
             {request.user?.id === userId && (
               <TooltipContent>
@@ -153,15 +150,18 @@ export function LeaveRequest({
 
           <Tooltip delayDuration={0}>
             <TooltipTrigger asChild>
-              <div
-                onClick={(e: MouseEvent<HTMLDivElement>) =>
+              <Button
+                variant="ghost"
+                size="icon-sm"
+                onClick={(e) =>
                   request.user?.id !== userId &&
-                  handleApproveRequest(e, request.id)
+                  handleApproveRequest(e as unknown as MouseEvent<HTMLButtonElement>, request.id)
                 }
-                className={`cursor-pointer ${request.user?.id === userId ? 'cursor-not-allowed opacity-50' : ''}`}
+                disabled={request.user?.id === userId}
+                aria-label="Approve break request"
               >
                 <TickIcon className="h-6 w-6" />
-              </div>
+              </Button>
             </TooltipTrigger>
             {request.user?.id === userId && (
               <TooltipContent>
@@ -205,7 +205,7 @@ export function LeaveRequest({
                 // Create a synthetic mouse event for the callback signature
                 const syntheticEvent = new window.MouseEvent(
                   'click',
-                ) as unknown as MouseEvent<HTMLDivElement>
+                ) as unknown as MouseEvent<HTMLButtonElement>
                 if (clickedAction === 'approve') {
                   handleApproveRequest(syntheticEvent, request.id, comment)
                 } else if (clickedAction === 'reject') {

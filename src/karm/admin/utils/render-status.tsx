@@ -14,18 +14,18 @@ interface StatusConfig {
 }
 
 const CORRECTION_STATUS_MAP: Record<string, StatusConfig> = {
-  APPROVED: { text: 'Corrected', variant: 'purple' },
-  PENDING: { text: 'Pending', variant: 'yellow' },
-  REJECTED: { text: 'Denied', variant: 'red' },
-  MISSING: { text: 'Missed', variant: 'red' },
+  APPROVED: { text: 'Corrected', variant: 'accent' },
+  PENDING: { text: 'Pending', variant: 'warning' },
+  REJECTED: { text: 'Denied', variant: 'error' },
+  MISSING: { text: 'Missed', variant: 'error' },
 }
 
 const STATUS_MAP: Record<string, StatusConfig> = {
-  APPROVED: { text: 'Approved', variant: 'green' },
-  PENDING: { text: 'Pending', variant: 'yellow' },
-  REJECTED: { text: 'Denied', variant: 'red' },
-  CANCELLED: { text: 'Redacted', variant: 'red' },
-  MISSING: { text: 'Missed', variant: 'red' },
+  APPROVED: { text: 'Approved', variant: 'success' },
+  PENDING: { text: 'Pending', variant: 'warning' },
+  REJECTED: { text: 'Denied', variant: 'error' },
+  CANCELLED: { text: 'Redacted', variant: 'error' },
+  MISSING: { text: 'Missed', variant: 'error' },
 }
 
 export function renderStatus(

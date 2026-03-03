@@ -8,13 +8,13 @@ export const PRIORITY_LABELS: Record<string, string> = {
 }
 
 export const PRIORITY_DOT_COLORS: Record<string, string> = {
-  LOW: 'bg-[var(--color-info)]',
+  LOW: 'bg-[var(--color-category-slate)]',
   MEDIUM: 'bg-[var(--color-warning)]',
   HIGH: 'bg-[var(--color-error)]',
   URGENT: 'bg-[var(--color-error)]',
 }
 
-export type BadgeVariant = 'neutral' | 'blue' | 'green' | 'red' | 'yellow' | 'magenta' | 'purple'
+export type BadgeVariant = 'neutral' | 'info' | 'success' | 'error' | 'warning' | 'brand' | 'accent' | 'teal' | 'amber' | 'slate' | 'indigo' | 'cyan' | 'orange' | 'emerald'
 
 export interface ReviewStatusConfig {
   variant: BadgeVariant
@@ -22,8 +22,8 @@ export interface ReviewStatusConfig {
 }
 
 export const REVIEW_STATUS_MAP: Record<string, ReviewStatusConfig> = {
-  PENDING: { variant: 'yellow', label: 'Pending' },
-  APPROVED: { variant: 'green', label: 'Approved' },
-  CHANGES_REQUESTED: { variant: 'magenta', label: 'Changes Requested' },
-  REJECTED: { variant: 'red', label: 'Rejected' },
+  PENDING: { variant: 'warning', label: 'Pending' },
+  APPROVED: { variant: 'success', label: 'Approved' },
+  CHANGES_REQUESTED: { variant: 'brand', label: 'Changes Requested' },
+  REJECTED: { variant: 'error', label: 'Rejected' },
 }

@@ -12,9 +12,9 @@ export interface ProjectCardProps extends React.HTMLAttributes<HTMLDivElement> {
 }
 
 const statusVariantMap = {
-  active: 'green' as const,
-  completed: 'blue' as const,
-  paused: 'yellow' as const,
+  active: 'success' as const,
+  completed: 'info' as const,
+  paused: 'warning' as const,
 }
 
 const ProjectCard = React.forwardRef<HTMLDivElement, ProjectCardProps>(

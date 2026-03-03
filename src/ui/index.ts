@@ -110,7 +110,7 @@ export { Table, TableHeader, TableBody, TableFooter, TableHead, TableRow, TableC
 export { DataTable, type DataTableProps } from './data-table'
 export { DataTableToolbar, type DataTableToolbarProps, type Density } from './data-table-toolbar'
 export { Progress, progressTrackVariants, progressIndicatorVariants, type ProgressProps } from './progress'
-export { Skeleton } from './skeleton'
+export { Skeleton, skeletonVariants, type SkeletonProps } from './skeleton'
 export { StatCard, type StatCardProps } from './stat-card'
 export { Code, type CodeProps } from './code'
 export { AspectRatio } from './aspect-ratio'

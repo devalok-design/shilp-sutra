@@ -5,6 +5,16 @@ const meta: Meta<typeof Skeleton> = {
   title: 'UI/Data Display/Skeleton',
   component: Skeleton,
   tags: ['autodocs'],
+  argTypes: {
+    variant: {
+      control: 'select',
+      options: ['rectangle', 'circle', 'text'],
+    },
+    animation: {
+      control: 'select',
+      options: ['pulse', 'shimmer', 'none'],
+    },
+  },
 }
 export default meta
 type Story = StoryObj<typeof Skeleton>
@@ -13,8 +23,58 @@ export const Default: Story = {
   render: () => <Skeleton className="h-4 w-[250px]" />,
 }
 
+export const Rectangle: Story = {
+  args: { variant: 'rectangle' },
+  render: (args) => <Skeleton {...args} className="h-20 w-[300px]" />,
+}
+
 export const Circle: Story = {
-  render: () => <Skeleton className="h-12 w-12 rounded-[var(--radius-full)]" />,
+  args: { variant: 'circle' },
+  render: (args) => <Skeleton {...args} className="h-12 w-12" />,
+}
+
+export const Text: Story = {
+  args: { variant: 'text' },
+  render: (args) => (
+    <div className="space-y-2 w-[350px]">
+      <Skeleton {...args} className="w-3/4" />
+      <Skeleton {...args} />
+      <Skeleton {...args} />
+      <Skeleton {...args} className="w-2/3" />
+    </div>
+  ),
+}
+
+export const Pulse: Story = {
+  args: { animation: 'pulse' },
+  render: (args) => <Skeleton {...args} className="h-4 w-[250px]" />,
+}
+
+export const Shimmer: Story = {
+  args: { animation: 'shimmer' },
+  render: (args) => <Skeleton {...args} className="h-4 w-[250px]" />,
+}
+
+export const NoAnimation: Story = {
+  args: { animation: 'none' },
+  render: (args) => <Skeleton {...args} className="h-4 w-[250px]" />,
+}
+
+export const ShimmerCircle: Story = {
+  args: { variant: 'circle', animation: 'shimmer' },
+  render: (args) => <Skeleton {...args} className="h-12 w-12" />,
+}
+
+export const ShimmerText: Story = {
+  args: { variant: 'text', animation: 'shimmer' },
+  render: (args) => (
+    <div className="space-y-2 w-[350px]">
+      <Skeleton {...args} className="w-3/4" />
+      <Skeleton {...args} />
+      <Skeleton {...args} />
+      <Skeleton {...args} className="w-2/3" />
+    </div>
+  ),
 }
 
 export const CardSkeleton: Story = {
@@ -34,10 +94,10 @@ export const ListSkeleton: Story = {
     <div className="flex flex-col gap-4 w-[400px]">
       {Array.from({ length: 4 }).map((_, i) => (
         <div key={i} className="flex items-center gap-3">
-          <Skeleton className="h-10 w-10 rounded-[var(--radius-full)]" />
+          <Skeleton variant="circle" className="h-10 w-10" />
           <div className="flex-1 space-y-2">
-            <Skeleton className="h-4 w-3/4" />
-            <Skeleton className="h-3 w-1/2" />
+            <Skeleton variant="text" className="w-3/4" />
+            <Skeleton variant="text" className="w-1/2" />
           </div>
         </div>
       ))}
@@ -73,6 +133,33 @@ export const TextBlock: Story = {
       <Skeleton className="h-4 w-full" />
       <Skeleton className="h-4 w-full" />
       <Skeleton className="h-4 w-3/4" />
+    </div>
+  ),
+}
+
+export const AllVariants: Story = {
+  render: () => (
+    <div className="space-y-8">
+      <div>
+        <h3 className="text-ds-sm font-medium mb-3 text-text-secondary">
+          Shapes
+        </h3>
+        <div className="flex items-center gap-6">
+          <Skeleton variant="rectangle" className="h-16 w-32" />
+          <Skeleton variant="circle" className="h-16 w-16" />
+          <Skeleton variant="text" className="w-48" />
+        </div>
+      </div>
+      <div>
+        <h3 className="text-ds-sm font-medium mb-3 text-text-secondary">
+          Animations
+        </h3>
+        <div className="space-y-3 w-[300px]">
+          <Skeleton animation="pulse" className="h-4" />
+          <Skeleton animation="shimmer" className="h-4" />
+          <Skeleton animation="none" className="h-4" />
+        </div>
+      </div>
     </div>
   ),
 }

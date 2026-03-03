@@ -228,6 +228,10 @@ const preset: Partial<Config> = {
           '0%': { transform: 'translateX(-100%)' },
           '100%': { transform: 'translateX(250%)' },
         },
+        'skeleton-shimmer': {
+          '0%': { backgroundPosition: '-200% 0' },
+          '100%': { backgroundPosition: '200% 0' },
+        },
       },
       animation: {
         ripple: 'ripple var(--duration-slow) linear',
@@ -235,6 +239,8 @@ const preset: Partial<Config> = {
         shake: 'shake 1s var(--ease-standard) infinite',
         'progress-indeterminate':
           'progress-indeterminate 1.5s var(--ease-standard) infinite',
+        'skeleton-shimmer':
+          'skeleton-shimmer 1.5s ease-in-out infinite',
       },
       backgroundImage: {
         'gradient-brand': 'var(--gradient-brand-light)',

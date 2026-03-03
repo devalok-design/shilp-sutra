@@ -1,0 +1,153 @@
+import { Meta } from '@storybook/blocks'
+
+<Meta title="Foundations/Motion" />
+
+# Motion System
+
+shilp-sutra uses a **productive/expressive** motion model inspired by Carbon Design System.
+
+## Two Modes
+
+### Productive Motion
+Utilitarian and unobtrusive. Used when users are focused on completing tasks.
+- Button hover states
+- Dropdown menus opening
+- Table sorting
+- Toggle switches
+- Form input focus
+
+### Expressive Motion
+Enthusiastic and vibrant. Reserved for significant moments.
+- Modal/dialog entrance
+- Toast notifications appearing
+- System alerts
+- Primary action confirmation
+- Page-level transitions
+
+## Duration Scale
+
+| Token | Value | Tailwind Class | Use Case |
+|-------|-------|---------------|----------|
+| `--duration-instant` | 0ms | `duration-instant` | Disabled states, immediate |
+| `--duration-fast-01` | 70ms | `duration-fast-01` | Button press, toggle, icon swap |
+| `--duration-fast-02` | 110ms | `duration-fast-02` | Fade in/out, color shifts |
+| `--duration-moderate-01` | 150ms | `duration-moderate-01` | Tooltip, small dropdown |
+| `--duration-moderate-02` | 240ms | `duration-moderate-02` | Accordion, toast, dialog |
+| `--duration-slow-01` | 400ms | `duration-slow-01` | Modal entrance, large panel |
+| `--duration-slow-02` | 700ms | `duration-slow-02` | Overlay dimming, background |
+
+**Rule of thumb:** The larger the element or distance traveled, the longer the duration.
+
+## Easing Curves
+
+### Productive Easings
+
+| Token | Tailwind Class | When to Use |
+|-------|---------------|-------------|
+| `--ease-productive-standard` | `ease-productive-standard` | Element transforms in place (sort, resize, reposition) |
+| `--ease-productive-entrance` | `ease-productive-entrance` | Element appears (dropdown, tooltip, fade-in) |
+| `--ease-productive-exit` | `ease-productive-exit` | Element disappears (close, dismiss) |
+
+### Expressive Easings
+
+| Token | Tailwind Class | When to Use |
+|-------|---------------|-------------|
+| `--ease-expressive-standard` | `ease-expressive-standard` | Dramatic transform (hero animation, attention) |
+| `--ease-expressive-entrance` | `ease-expressive-entrance` | Dramatic appearance (modal, toast, alert) |
+| `--ease-expressive-exit` | `ease-expressive-exit` | Dramatic departure (dismissing important UI) |
+
+### Utility Easings
+
+| Token | Tailwind Class | When to Use |
+|-------|---------------|-------------|
+| `--ease-bounce` | `ease-bounce` | Playful micro-interactions (typing indicator) |
+| `--ease-linear` | `ease-linear` | Continuous animations (spinner, progress bar, shimmer) |
+
+## Decision Tree
+
+```
+Is this a task-focused micro-interaction?
+├── YES → Use PRODUCTIVE mode
+│   ├── Element stays visible? → ease-productive-standard
+│   ├── Element appearing? → ease-productive-entrance
+│   └── Element leaving? → ease-productive-exit
+└── NO → Is this an attention-grabbing moment?
+    ├── YES → Use EXPRESSIVE mode
+    │   ├── Element stays visible? → ease-expressive-standard
+    │   ├── Element appearing? → ease-expressive-entrance
+    │   └── Element leaving? → ease-expressive-exit
+    └── NO → Is it continuous/looping?
+        ├── YES → ease-linear
+        └── NO → ease-productive-standard (safe default)
+```
+
+## Usage in Components
+
+### Tailwind Classes (preferred)
+
+```tsx
+// Button hover — productive, fast
+<button className="transition-colors duration-fast-01 ease-productive-standard">
+
+// Modal entrance — expressive, moderate
+<div className="transition-all duration-moderate-02 ease-expressive-entrance">
+
+// Spinner — continuous, linear
+<div className="animate-spin ease-linear">
+```
+
+### CSS Custom Properties
+
+```css
+.my-element {
+  transition: opacity var(--duration-fast-02) var(--ease-productive-entrance);
+}
+```
+
+### TypeScript Utility
+
+```tsx
+import { motion, duration } from '@devalok/shilp-sutra'
+
+// Get easing curve string
+motion('standard', 'productive')
+// → 'cubic-bezier(0.2, 0, 0.38, 0.9)'
+
+// Get duration string
+duration('moderate-02')
+// → '240ms'
+
+// Use in inline styles
+<div style={{
+  transition: `transform ${duration('moderate-02')} ${motion('entrance', 'expressive')}`
+}} />
+```
+
+## Accessibility
+
+shilp-sutra respects `prefers-reduced-motion: reduce` at the global level. When a user has reduced motion enabled:
+
+- All `animation-duration` values collapse to 0.01ms
+- All `transition-duration` values collapse to 0.01ms
+- `scroll-behavior` reverts to `auto`
+
+No action needed from consumers — this is handled automatically.
+
+## Component Motion Reference
+
+| Component | Duration | Easing | Mode |
+|-----------|----------|--------|------|
+| Button | fast-01 (70ms) | productive-standard | Productive |
+| Content Card | fast-02 (110ms) | productive-standard | Productive |
+| Task Card | fast-02 (110ms) | productive-standard | Productive |
+| Dropdown Menu | moderate-01 (150ms) | productive-entrance | Productive |
+| Tooltip | fast-02 (110ms) | productive-entrance | Productive |
+| Accordion | moderate-02 (240ms) | productive-standard | Productive |
+| Dialog | moderate-02 (240ms) | expressive-entrance | Expressive |
+| Sheet | moderate-02 (240ms) | expressive-entrance | Expressive |
+| Toast | moderate-02 (240ms) | expressive-entrance | Expressive |
+| Command Palette | moderate-02 (240ms) | expressive-entrance | Expressive |
+| Attendance CTA | moderate-01 (150ms) | expressive-standard | Expressive |
+| Global Loading | slow-01 (400ms) | productive-standard | Productive |
+| Skeleton shimmer | slow-02 (700ms) | linear | Productive |
+| Progress bar | slow-02 (700ms) | linear | Productive |

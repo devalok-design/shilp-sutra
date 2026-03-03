@@ -90,6 +90,7 @@ export function EditBreakBalance({
           <span>Edit</span>
         </Button>
       </DialogTrigger>
+      {/* intentional: dialog fixed width — narrow balance edit form */}
       <DialogContent className="w-[308px] p-ds-06">
         <DialogHeader>
           <DialogDescription>

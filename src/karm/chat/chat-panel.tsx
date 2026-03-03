@@ -93,6 +93,7 @@ const ChatPanel = React.forwardRef<HTMLDivElement, ChatPanelProps>(
       <SheetContent
         ref={ref}
         side="right"
+        /* intentional: chat panel capped at 480px to prevent oversized side panel */
         className="flex w-full flex-col gap-0 border-l border-border bg-layer-01 p-0 sm:max-w-[480px] [&>button]:hidden"
       >
         <SheetTitle className="sr-only">AI Chat</SheetTitle>

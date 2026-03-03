@@ -178,11 +178,11 @@ export const RenderDate = React.forwardRef<HTMLDivElement, RenderDateProps>(
 
     // Today (not break, not disabled)
     !state.disabled && state.today && !state.isBreak &&
-      'bg-interactive text-text-on-color shadow-[inset_0_4px_4px_var(--color-inset-glow),inset_0_0_8px_var(--color-interactive-hover)]',
+      'bg-interactive text-text-on-color ring-2 ring-inset ring-interactive',
 
     // Break (not disabled, not today-only)
     !state.disabled && state.isBreak && !isBreakMidNonWeekly &&
-      'bg-interactive-selected text-text-secondary shadow-[inset_0_4px_4px_var(--color-inset-glow),inset_0_0_4px_var(--color-focus)]',
+      'bg-interactive-selected text-text-secondary ring-2 ring-inset ring-interactive',
 
     // Break mid in non-weekly view overrides break base
     !state.disabled && state.isBreak && isBreakMidNonWeekly &&
@@ -210,7 +210,7 @@ export const RenderDate = React.forwardRef<HTMLDivElement, RenderDateProps>(
 
     // Hover on today (not break)
     state.hover && !state.disabled && state.today && !state.isBreak &&
-      'bg-interactive text-text-on-color shadow-[inset_0_4px_4px_var(--color-inset-glow),inset_0_0_8px_var(--color-interactive-hover)]',
+      'bg-interactive text-text-on-color ring-2 ring-inset ring-interactive',
 
     // Hover on present (not today, not break)
     state.hover && !state.disabled && !state.today && !state.isBreak && state.isPresent &&
@@ -222,7 +222,7 @@ export const RenderDate = React.forwardRef<HTMLDivElement, RenderDateProps>(
 
     // Hover on break (same visual as base break, but re-assert to match original)
     state.hover && !state.disabled && state.isBreak && !isBreakMidNonWeekly &&
-      'bg-interactive-selected text-text-secondary shadow-[inset_0_4px_4px_var(--color-inset-glow),inset_0_0_4px_var(--color-focus)]',
+      'bg-interactive-selected text-text-secondary ring-2 ring-inset ring-interactive',
     state.hover && !state.disabled && state.isBreak && isBreakMidNonWeekly &&
       'rounded-ds-none bg-interactive-subtle text-text-secondary shadow-none',
 

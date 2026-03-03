@@ -478,6 +478,7 @@ const BreakAdminRoot = React.forwardRef<HTMLDivElement, BreakAdminProps>(
             {children ?? (
               <>
                 <Header />
+                {/* intentional: min-w-[800px] ensures table columns don't collapse on medium screens */}
                 <div className="no-scrollbar flex h-fit min-w-[800px] flex-col border-t-[1px] border-border-subtle bg-layer-02 shadow-transparent max-lg:min-w-[100%] max-lg:overflow-x-auto">
                   <TabBar />
                   <div className="w-full border-0 max-lg:min-w-[800px]">
@@ -651,6 +652,7 @@ const RequestsPanel = React.forwardRef<
     <div
       ref={ref}
       className={cn(
+        /* intentional: h-[400px] is the fixed panel height for break tab content areas */
         'no-scrollbar flex h-[400px] flex-col gap-ds-02 overflow-y-auto border-t border-t-border px-ds-06 pb-ds-02 pt-ds-02 max-md:h-[calc(100vh-317px)] max-md:border-0',
         className,
       )}

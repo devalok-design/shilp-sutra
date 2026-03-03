@@ -149,7 +149,7 @@ export const LeaveRequests = React.forwardRef<HTMLDivElement, LeaveRequestsProps
   return (
     <div
       ref={ref}
-      className={`no-scrollbar max-h-[230px] w-full overflow-y-auto px-0 md:px-ds-06 max-md:h-[calc(100vh-586px)] max-md:max-h-[calc(100vh-586px)] max-md:min-h-[407.2px] ${activeTimeFrame === 'weekly1' ? 'max-md:h-[calc(100vh-824px)] max-md:max-h-[calc(100vh-824px)]' : ''}`}
+      className="no-scrollbar max-h-[230px] w-full overflow-y-auto px-0 md:px-ds-06 max-md:flex-1 max-md:max-h-none max-md:min-h-[407.2px]"
     >
       <div className="flex h-full flex-col gap-ds-03 py-ds-03 max-md:h-[max-content] max-md:gap-ds-05 max-md:py-0 max-md:pb-ds-05">
         {requests?.map((request) => (

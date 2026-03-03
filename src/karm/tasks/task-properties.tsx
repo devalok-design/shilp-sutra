@@ -81,6 +81,8 @@ interface TaskPropertiesProps {
     placeholder: string
     className?: string
   }) => React.ReactNode
+  /** Called when switching visibility to EVERYONE. If omitted, the change applies immediately. */
+  onConfirmVisibilityChange?: () => void
 }
 
 // ============================================================
@@ -152,6 +154,7 @@ const TaskProperties = React.forwardRef<HTMLDivElement, TaskPropertiesProps>(
   editableFields,
   renderPriorityIndicator,
   renderDatePicker,
+  onConfirmVisibilityChange,
 }, ref) {
   const [labelInput, setLabelInput] = React.useState('')
   const [showLabelInput, setShowLabelInput] = React.useState(false)
@@ -203,10 +206,9 @@ const TaskProperties = React.forwardRef<HTMLDivElement, TaskPropertiesProps>(
   const handleVisibilityToggle = () => {
     const newVisibility = task.visibility === 'INTERNAL' ? 'EVERYONE' : 'INTERNAL'
 
-    if (newVisibility === 'EVERYONE' && task.visibility === 'INTERNAL') {
-      if (!window.confirm('This will make this task visible to project clients. Continue?')) {
-        return
-      }
+    if (newVisibility === 'EVERYONE' && onConfirmVisibilityChange) {
+      onConfirmVisibilityChange()
+      return
     }
 
     onUpdate('visibility', newVisibility)

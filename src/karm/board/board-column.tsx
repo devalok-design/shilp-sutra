@@ -124,6 +124,7 @@ export const BoardColumn = React.forwardRef<HTMLDivElement, BoardColumnProps>(
     <div
       ref={ref}
       className={cn(
+        /* intentional: board column fixed width — matches add-column button */
         'flex h-full w-[300px] flex-shrink-0 flex-col rounded-ds-xl border-l-[3px] bg-layer-01 shadow-01',
         accentColor,
         isOverlay && 'shadow-04',

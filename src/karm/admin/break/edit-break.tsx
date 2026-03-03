@@ -420,6 +420,7 @@ export function EditBreak({
           <span>Edit</span>
         </Button>
       </DialogTrigger>
+      {/* intentional: dialog fixed width — edit-break form layout */}
       <DialogContent className="w-[440px] p-ds-06 max-md:w-[90%] max-md:rounded-ds-lg">
         <DialogHeader>
           <DialogDescription>
@@ -587,7 +588,7 @@ export function EditBreak({
                                   day.fullDate === picker.selectedStartDate ||
                                   day.fullDate === picker.selectedEndDate ||
                                   isBreakDay(day.fullDate, existingBreaks, selectedLeave.id)
-                                    ? 'rounded-ds-full bg-accent shadow-[0px_4px_4px_0px_var(--color-inset-glow)_inset,0px_0px_4px_0px_var(--color-accent-hover)_inset]'
+                                    ? 'rounded-ds-full bg-accent ring-2 ring-inset ring-accent'
                                     : 'flex h-ds-md w-ds-md items-center justify-center'
                                 }
                                 ${

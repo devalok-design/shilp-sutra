@@ -1,10 +1,27 @@
 import * as React from 'react'
 import { cn } from './lib/utils'
 
+type SpacingToken =
+  | 'ds-01'
+  | 'ds-02'
+  | 'ds-02b'
+  | 'ds-03'
+  | 'ds-04'
+  | 'ds-05'
+  | 'ds-05b'
+  | 'ds-06'
+  | 'ds-07'
+  | 'ds-08'
+  | 'ds-09'
+  | 'ds-10'
+  | 'ds-11'
+  | 'ds-12'
+  | 'ds-13'
+
 type StackProps<T extends React.ElementType = 'div'> = {
   as?: T
   direction?: 'vertical' | 'horizontal'
-  gap?: string
+  gap?: SpacingToken
   align?: 'start' | 'center' | 'end' | 'stretch' | 'baseline'
   justify?: 'start' | 'center' | 'end' | 'between' | 'around' | 'evenly'
   wrap?: boolean
@@ -53,4 +70,4 @@ const Stack = React.forwardRef<HTMLElement, StackProps>(
 )
 Stack.displayName = 'Stack'
 
-export { Stack, type StackProps }
+export { Stack, type SpacingToken, type StackProps }

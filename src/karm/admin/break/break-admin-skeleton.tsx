@@ -30,7 +30,7 @@ export const BreakAdminSkeleton = React.forwardRef<HTMLDivElement>(
           <Skeleton className="h-ds-md w-24" />
         </div>
 
-        {/* Table Content */}
+        {/* Table Content — h-[400px] mirrors BreakAdmin panel height */}
         <div className="h-[400px] border-0 px-ds-06 py-ds-05">
           {/* Table Header */}
           <div className="mb-ds-05 ml-ds-06 grid grid-cols-6 items-center gap-ds-05 py-ds-03">

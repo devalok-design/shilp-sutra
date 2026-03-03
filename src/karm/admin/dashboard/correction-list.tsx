@@ -70,7 +70,7 @@ export const CorrectionList = React.forwardRef<HTMLDivElement, CorrectionListPro
   return (
     <div
       ref={ref}
-      className={`flex max-h-[200px] w-full flex-col overflow-y-auto bg-layer-01 px-ds-06 max-md:h-[calc(100vh-586px)] max-md:max-h-[calc(100vh-586px)] max-md:min-h-[372px] max-md:p-0 ${activeTimeFrame === 'weekly1' ? 'max-md:h-[calc(100vh-824px)] max-md:max-h-[calc(100vh-824px)]' : ''}`}
+      className="flex max-h-[200px] w-full flex-col overflow-y-auto bg-layer-01 px-ds-06 max-md:flex-1 max-md:max-h-none max-md:min-h-[372px] max-md:p-0"
     >
       {corrections.map((correction) => (
         <Fragment key={correction.id}>

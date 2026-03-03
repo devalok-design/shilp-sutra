@@ -17,8 +17,8 @@ const statusBadgeVariants = cva(
         draft: 'bg-layer-02 text-text-tertiary',
       },
       size: {
-        sm: 'px-ds-03 py-0.5 text-ds-xs font-semibold',
-        md: 'px-2.5 py-ds-02 text-ds-sm font-medium',
+        sm: 'px-ds-03 py-ds-01 text-ds-xs font-semibold',
+        md: 'px-ds-04 py-ds-02 text-ds-sm font-medium',
       },
     },
     defaultVariants: {

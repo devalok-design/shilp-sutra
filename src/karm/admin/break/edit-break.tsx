@@ -436,7 +436,7 @@ export function EditBreak({
                 id="updateleaveform"
                 className="flex w-full flex-col gap-ds-05"
               >
-                <div className="flex w-full flex-col gap-ds-02 rounded-ds-lg border border-border-subtle px-ds-05 pb-ds-03 pt-3.5">
+                <div className="flex w-full flex-col gap-ds-02 rounded-ds-lg border border-border-subtle px-ds-05 pb-ds-03 pt-ds-04">
                   <h2 className="text-ds-xs font-semibold uppercase tracking-wider  text-text-placeholder">
                     Reason
                   </h2>
@@ -453,7 +453,7 @@ export function EditBreak({
                       picker.showCalendar && picker.activeDate === 'start'
                         ? 'border-[var(--border-tertiary)]'
                         : 'border-border'
-                    } bg-layer-02 px-[10px] py-[10px] text-text-secondary max-md:text-ds-sm`}
+                    } bg-layer-02 px-ds-03 py-ds-03 text-text-secondary max-md:text-ds-sm`}
                   >
                     {formatDateToLongForm(formData.startDate)}
                   </button>
@@ -467,7 +467,7 @@ export function EditBreak({
                       picker.showCalendar && picker.activeDate === 'end'
                         ? 'border-[var(--border-tertiary)]'
                         : 'border-border'
-                    } bg-layer-02 px-[10px] py-[10px] text-text-secondary max-md:text-ds-sm`}
+                    } bg-layer-02 px-ds-03 py-ds-03 text-text-secondary max-md:text-ds-sm`}
                   >
                     {formatDateToLongForm(formData.endDate)}
                   </button>
@@ -656,7 +656,7 @@ export function EditBreak({
                     )}
                   </div>
                 </div>
-                <div className="flex w-full flex-col gap-ds-02 rounded-ds-lg border border-border-subtle px-ds-05 pb-ds-03 pt-3.5">
+                <div className="flex w-full flex-col gap-ds-02 rounded-ds-lg border border-border-subtle px-ds-05 pb-ds-03 pt-ds-04">
                   <h2 className="text-ds-xs font-semibold uppercase tracking-wider  text-text-placeholder">
                     Comment
                   </h2>

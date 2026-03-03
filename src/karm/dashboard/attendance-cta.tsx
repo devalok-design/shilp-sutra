@@ -95,7 +95,7 @@ const AttendanceCTA = React.forwardRef<HTMLDivElement, AttendanceCTAProps>(
               {currentDate}
             </p>
           </div>
-          <div className="flex items-center gap-ds-03 rounded-ds-xl bg-success-surface px-ds-05 py-2.5">
+          <div className="flex items-center gap-ds-03 rounded-ds-xl bg-success-surface px-ds-05 py-ds-03">
             <div className="flex h-ico-md w-ico-md items-center justify-center rounded-ds-full bg-text-success">
               <IconCheck className="h-ico-sm w-ico-sm text-text-on-color" />
             </div>
@@ -125,7 +125,7 @@ const AttendanceCTA = React.forwardRef<HTMLDivElement, AttendanceCTAProps>(
               {currentDate}
             </p>
           </div>
-          <div className="flex items-center gap-ds-03 rounded-ds-xl bg-warning-surface px-ds-05 py-2.5">
+          <div className="flex items-center gap-ds-03 rounded-ds-xl bg-warning-surface px-ds-05 py-ds-03">
             <IconCoffee className="h-ico-sm w-ico-sm text-text-warning" />
             <span className="text-ds-md font-semibold text-text-warning">
               On break
@@ -153,7 +153,7 @@ const AttendanceCTA = React.forwardRef<HTMLDivElement, AttendanceCTAProps>(
               {currentDate}
             </p>
           </div>
-          <div className="flex items-center gap-ds-03 rounded-ds-xl bg-layer-02 px-ds-05 py-2.5">
+          <div className="flex items-center gap-ds-03 rounded-ds-xl bg-layer-02 px-ds-05 py-ds-03">
             <IconClock className="h-ico-sm w-ico-sm text-text-placeholder" />
             <span className="text-ds-md text-text-placeholder">
               Attendance window closed
@@ -167,7 +167,7 @@ const AttendanceCTA = React.forwardRef<HTMLDivElement, AttendanceCTAProps>(
   // Unmarked + can mark: large greeting with mark button
   return (
     <div ref={ref} className="relative overflow-hidden rounded-ds-2xl border border-border bg-gradient-to-br from-interactive-subtle via-background to-success-surface">
-      <div className="flex items-center justify-between px-ds-06 py-ds-07 sm:px-ds-07 sm:py-10">
+      <div className="flex items-center justify-between px-ds-06 py-ds-07 sm:px-ds-07 sm:py-ds-08">
         <div className="flex flex-col gap-ds-02b">
           <h2 className="text-ds-3xl text-text-primary">
             {greeting},{' '}
@@ -186,7 +186,7 @@ const AttendanceCTA = React.forwardRef<HTMLDivElement, AttendanceCTAProps>(
           type="button"
           onClick={onMarkAttendance}
           disabled={isSubmitting}
-          className="flex items-center gap-2.5 rounded-ds-xl bg-interactive px-7 py-3.5 font-semibold text-text-on-color shadow-02 transition-all hover:-translate-y-0.5 hover:shadow-03 active:translate-y-0 active:scale-[0.98] disabled:opacity-[0.38]"
+          className="flex items-center gap-ds-03 rounded-ds-xl bg-interactive px-ds-06 py-ds-04 font-semibold text-text-on-color shadow-02 transition-all hover:-translate-y-0.5 hover:shadow-03 active:translate-y-0 active:scale-[0.98] disabled:opacity-[0.38]"
         >
           {isSubmitting ? 'Marking...' : 'Mark Attendance'}
           {!isSubmitting && (

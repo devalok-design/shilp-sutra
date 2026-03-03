@@ -129,7 +129,7 @@ const ReviewTab = React.forwardRef<HTMLDivElement, ReviewTabProps>(
                 className="rounded-ds-lg border border-border bg-layer-01 shadow-01 p-ds-04"
               >
                 {/* Header */}
-                <div className="flex items-center gap-2.5">
+                <div className="flex items-center gap-ds-03">
                   <Avatar className="h-6 w-6 shrink-0">
                     {review.reviewer.image && (
                       <AvatarImage
@@ -158,7 +158,7 @@ const ReviewTab = React.forwardRef<HTMLDivElement, ReviewTabProps>(
 
                 {/* Feedback */}
                 {review.feedback && (
-                  <div className="mt-2.5 rounded-ds-md bg-layer-02 px-ds-04 py-ds-03">
+                  <div className="mt-ds-03 rounded-ds-md bg-layer-02 px-ds-04 py-ds-03">
                     <p className="text-ds-sm text-text-secondary">
                       {review.feedback}
                     </p>
@@ -167,7 +167,7 @@ const ReviewTab = React.forwardRef<HTMLDivElement, ReviewTabProps>(
 
                 {/* Actions for pending reviews */}
                 {review.status === 'PENDING' && (
-                  <div className="mt-2.5">
+                  <div className="mt-ds-03">
                     {isExpanded ? (
                       <div className="space-y-ds-03">
                         <textarea
@@ -180,7 +180,7 @@ const ReviewTab = React.forwardRef<HTMLDivElement, ReviewTabProps>(
                           }
                           placeholder="Add feedback (optional)..."
                           rows={2}
-                          className="w-full resize-none rounded-ds-md border border-border bg-transparent px-2.5 py-ds-03 text-ds-sm text-text-primary placeholder:text-text-placeholder outline-none focus:border-border-subtle"
+                          className="w-full resize-none rounded-ds-md border border-border bg-transparent px-ds-03 py-ds-03 text-ds-sm text-text-primary placeholder:text-text-placeholder outline-none focus:border-border-subtle"
                         />
                         <div className="flex items-center gap-ds-02b">
                           {RESPONSE_OPTIONS.map((opt) => {
@@ -191,7 +191,7 @@ const ReviewTab = React.forwardRef<HTMLDivElement, ReviewTabProps>(
                                 type="button"
                                 onClick={() => handleRespond(review.id, opt.status)}
                                 className={cn(
-                                  'inline-flex items-center gap-ds-02 rounded-ds-md px-2.5 py-ds-02 text-ds-sm font-semibold transition-colors',
+                                  'inline-flex items-center gap-ds-02 rounded-ds-md px-ds-03 py-ds-02 text-ds-sm font-semibold transition-colors',
                                   opt.status === 'APPROVED' &&
                                     'bg-success-surface text-text-success hover:opacity-90',
                                   opt.status === 'CHANGES_REQUESTED' &&

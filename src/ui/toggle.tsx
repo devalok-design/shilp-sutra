@@ -16,8 +16,8 @@ const toggleVariants = cva(
       },
       size: {
         sm: 'h-ds-sm px-ds-03 text-ds-sm',
-        md: 'h-9 px-ds-04 text-ds-md',
-        lg: 'h-ds-md px-ds-04 text-ds-md',
+        md: 'h-ds-md px-ds-04 text-ds-md',
+        lg: 'h-ds-lg px-ds-05 text-ds-base',
       },
     },
     defaultVariants: {

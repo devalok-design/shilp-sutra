@@ -84,7 +84,7 @@ const DailyBrief = React.forwardRef<HTMLDivElement, DailyBriefProps>(
       </button>
 
       {!collapsed && (
-        <div className="flex flex-col gap-2.5 border-t border-border px-ds-05b pb-ds-05b pt-ds-05">
+        <div className="flex flex-col gap-ds-03 border-t border-border px-ds-05b pb-ds-05b pt-ds-05">
           {data.brief.map((item, index) => (
             <div key={index} className="flex items-start gap-ds-04">
               <div

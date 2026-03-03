@@ -174,7 +174,7 @@ export const BreakRequestCard = React.forwardRef<HTMLDivElement, BreakRequestPro
                 {breakRequest.numberOfDays > 1 && (
                   <>- {formatDate(new Date(breakRequest.endDate))} </>
                 )}
-                <span className="text-ds-lg text-text-secondary opacity-60">
+                <span className="text-ds-lg text-text-placeholder">
                   {`(${breakRequest.numberOfDays} day${
                     breakRequest.numberOfDays > 1 ? 's' : ''
                   })`}
@@ -201,7 +201,7 @@ export const BreakRequestCard = React.forwardRef<HTMLDivElement, BreakRequestPro
           <p className="text-ds-sm font-semibold uppercase tracking-wider mb-ds-06  text-text-tertiary max-md:mb-ds-05">
             Break Status
           </p>
-          <div className="mb-ds-04 flex w-full flex-col items-center justify-start gap-ds-04 rounded-3xl border border-border-subtle bg-layer-01 shadow-01 px-ds-05 py-3.5 text-center font-semibold text-text-primary">
+          <div className="mb-ds-04 flex w-full flex-col items-center justify-start gap-ds-04 rounded-ds-2xl border border-border-subtle bg-layer-01 shadow-01 px-ds-05 py-ds-04 text-center font-semibold text-text-primary">
             {renderStatus(breakRequest.status, false)}
             {breakRequest.status === 'APPROVED' && breakRequest.adminComment}
             {breakRequest.status === 'REJECTED' && breakRequest.adminComment}

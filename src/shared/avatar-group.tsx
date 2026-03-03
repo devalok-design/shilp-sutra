@@ -19,9 +19,9 @@ const avatarSizeVariants = cva(
   {
     variants: {
       size: {
-        sm: 'h-6 w-6 text-ds-xs',
-        md: 'h-8 w-8 text-ds-sm',
-        lg: 'h-10 w-10 text-ds-md',
+        sm: 'h-ds-xs w-ds-xs text-ds-xs',
+        md: 'h-ds-sm w-ds-sm text-ds-sm',
+        lg: 'h-ds-md w-ds-md text-ds-md',
       },
     },
     defaultVariants: {
@@ -49,9 +49,9 @@ const AvatarGroup = React.forwardRef<HTMLDivElement, AvatarGroupProps>(
     const overflow = users.length - max
 
     const overlapMap = {
-      sm: '-ml-1.5',
-      md: '-ml-2',
-      lg: '-ml-2.5',
+      sm: '-ml-ds-02b',
+      md: '-ml-ds-03',
+      lg: '-ml-ds-04',
     }
     const overlapClass = overlapMap[size ?? 'md']
 
@@ -118,7 +118,7 @@ const AvatarGroup = React.forwardRef<HTMLDivElement, AvatarGroupProps>(
                 className="border-border bg-layer-01 text-text-primary"
                 sideOffset={6}
               >
-                <div className="flex flex-col gap-0.5">
+                <div className="flex flex-col gap-ds-01">
                   {users.slice(max).map((user, i) => (
                     <p key={i} className="text-ds-sm">{user.name}</p>
                   ))}

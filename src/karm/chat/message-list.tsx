@@ -147,7 +147,7 @@ export const MessageList = React.forwardRef<HTMLDivElement, MessageListProps>(
             return (
               <div key={msg.id} className="flex justify-end">
                 <div className="flex max-w-[85%] items-start gap-ds-03">
-                  <div className="rounded-ds-2xl rounded-br-ds-sm bg-interactive px-3.5 py-2.5 text-text-on-color">
+                  <div className="rounded-ds-2xl rounded-br-ds-sm bg-interactive px-ds-04 py-ds-03 text-text-on-color">
                     <p className="text-ds-md whitespace-pre-wrap">{msg.content}</p>
                   </div>
                   <div className="flex h-7 w-7 shrink-0 items-center justify-center rounded-ds-full bg-field">
@@ -165,7 +165,7 @@ export const MessageList = React.forwardRef<HTMLDivElement, MessageListProps>(
                 <div className="flex h-7 w-7 shrink-0 items-center justify-center rounded-ds-full bg-field">
                   <IconRobot className="h-ico-sm w-ico-sm text-text-secondary" />
                 </div>
-                <div className="rounded-ds-2xl rounded-bl-ds-sm bg-field px-3.5 py-2.5">
+                <div className="rounded-ds-2xl rounded-bl-ds-sm bg-field px-ds-04 py-ds-03">
                   <div className="text-ds-md text-text-primary">
                     <ReactMarkdown components={markdownComponents}>
                       {msg.content}
@@ -184,7 +184,7 @@ export const MessageList = React.forwardRef<HTMLDivElement, MessageListProps>(
               <div className="flex h-7 w-7 shrink-0 items-center justify-center rounded-ds-full bg-field">
                 <IconRobot className="h-ico-sm w-ico-sm text-text-secondary" />
               </div>
-              <div className="rounded-ds-2xl rounded-bl-ds-sm bg-field px-3.5 py-2.5">
+              <div className="rounded-ds-2xl rounded-bl-ds-sm bg-field px-ds-04 py-ds-03">
                 <div className="text-ds-md text-text-primary">
                   <StreamingText text={streamingText} />
                 </div>
@@ -200,7 +200,7 @@ export const MessageList = React.forwardRef<HTMLDivElement, MessageListProps>(
               <div className="flex h-7 w-7 shrink-0 items-center justify-center rounded-ds-full bg-field">
                 <IconRobot className="h-ico-sm w-ico-sm text-text-secondary" />
               </div>
-              <div className="rounded-ds-2xl rounded-bl-ds-sm bg-field px-3.5 py-2.5">
+              <div className="rounded-ds-2xl rounded-bl-ds-sm bg-field px-ds-04 py-ds-03">
                 <div className="flex items-center gap-ds-02b py-ds-02">
                   <div className="h-2 w-2 animate-bounce rounded-ds-full bg-text-placeholder [animation-delay:0ms]" />
                   <div className="h-2 w-2 animate-bounce rounded-ds-full bg-text-placeholder [animation-delay:150ms]" />

@@ -154,8 +154,8 @@ export const RenderDate = React.forwardRef<HTMLDivElement, RenderDateProps>(
   // ── Outer wrapper classes (replaces getBGStyles) ──
   const bgClasses = cn(
     'flex w-full items-center justify-center p-ds-02',
-    isBreakStartOnly && 'rounded-l-[20px]',
-    isBreakEndOnly && 'rounded-r-[20px]',
+    isBreakStartOnly && 'rounded-l-ds-2xl',
+    isBreakEndOnly && 'rounded-r-ds-2xl',
     isBreakMidNonWeekly && 'bg-interactive-subtle',
   )
 
@@ -190,9 +190,9 @@ export const RenderDate = React.forwardRef<HTMLDivElement, RenderDateProps>(
 
     // Break border-radius overrides for non-weekly
     !state.disabled && state.isBreak && isBreakStartOnly &&
-      'rounded-l-[20px] rounded-r-none',
+      'rounded-l-ds-2xl rounded-r-none',
     !state.disabled && state.isBreak && isBreakEndOnly &&
-      'rounded-l-none rounded-r-[20px]',
+      'rounded-l-none rounded-r-ds-2xl',
 
     // Absent (not disabled, not today, not break)
     !state.disabled && !state.today && !state.isBreak && state.isAbsent &&

@@ -8,6 +8,21 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## [Unreleased]
 
 ### Added
+- Carbon-inspired productive/expressive motion system with 7 duration tokens and 8 easing curves
+- `motion()` and `duration()` TypeScript utilities for programmatic motion access
+- Storybook "Foundations/Motion" guide with interactive duration/easing demos
+- Motion tokens added to Accordion, Tooltip, Dialog, Sheet, Dropdown Menu, Toast
+
+### Changed
+- All motion-using components migrated to new productive/expressive token system (Button, Content Card, Task Card, Board Column, Attendance CTA, Global Loading, Skeleton, Progress, Transitions, Date Picker, Command Palette)
+
+### Removed
+- Old duration tokens: `--duration-fast`, `--duration-moderate`, `--duration-slow`, `--duration-deliberate`, `--duration-medium`, `--duration-enter`, `--duration-exit`
+- Old easing tokens: `--ease-standard`, `--ease-entrance`, `--ease-exit`
+- Old Tailwind duration utilities: `duration-fast`, `duration-moderate`, `duration-slow`, `duration-deliberate`, `duration-medium`, `duration-enter`, `duration-exit`
+- Old Tailwind easing utilities: `ease-standard`, `ease-entrance`, `ease-exit`
+
+### Added
 - `--size-sm-plus` (36px) and `--size-xs-plus` (28px) sizing tokens
 - Chart color tokens (`chart-1` through `chart-8`) in Tailwind preset
 - `focus-inset` color token in Tailwind preset

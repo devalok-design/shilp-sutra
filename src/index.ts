@@ -67,7 +67,7 @@ export {
   type MemberPickerProps,
   type MemberPickerMember,
 } from './composed'
-export * from './layout'
+export * from './shell'
 export {
   // Board components
   KanbanBoard,

@@ -5,8 +5,8 @@
 //   - ui/ components (../../ui/*)
 //   - ui/lib/utils (cn utility)
 //   - ui/lib/slot (Slot for asChild pattern)
-//   - shared/ components (../../shared/*)
-//   - layout/ components (../../layout/*)
+//   - composed/ components (../../composed/*)
+//   - shell/ components (../../shell/*)
 //   - hooks/ (../../hooks/*)
 //   - Within karm/ (sibling modules)
 //

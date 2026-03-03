@@ -20,9 +20,13 @@
       "import": "./dist/composed/index.js",
       "types": "./dist/composed/index.d.ts"
     },
+    "./shell": {
+      "import": "./dist/shell/index.js",
+      "types": "./dist/shell/index.d.ts"
+    },
     "./layout": {
-      "import": "./dist/layout/index.js",
-      "types": "./dist/layout/index.d.ts"
+      "import": "./dist/shell/index.js",
+      "types": "./dist/shell/index.d.ts"
     },
     "./karm": {
       "import": "./dist/karm/index.js",

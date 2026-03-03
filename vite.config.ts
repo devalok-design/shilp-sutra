@@ -23,7 +23,7 @@ export default defineConfig({
       entry: {
         'ui/index': resolve(__dirname, 'src/ui/index.ts'),
         'composed/index': resolve(__dirname, 'src/composed/index.ts'),
-        'layout/index': resolve(__dirname, 'src/layout/index.ts'),
+        'shell/index': resolve(__dirname, 'src/shell/index.ts'),
         'karm/index': resolve(__dirname, 'src/karm/index.ts'),
         'karm/board/index': resolve(__dirname, 'src/karm/board/index.ts'),
         'karm/tasks/index': resolve(__dirname, 'src/karm/tasks/index.ts'),

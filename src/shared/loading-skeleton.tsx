@@ -2,11 +2,11 @@ import * as React from 'react'
 import { cn } from '../ui/lib/utils'
 import { Skeleton } from '../ui/skeleton'
 
-interface SkeletonProps {
+export interface CardSkeletonProps {
   className?: string
 }
 
-const CardSkeleton = React.forwardRef<HTMLDivElement, SkeletonProps>(
+const CardSkeleton = React.forwardRef<HTMLDivElement, CardSkeletonProps>(
   function CardSkeleton({ className }, ref) {
   return (
     <div
@@ -36,7 +36,7 @@ const CardSkeleton = React.forwardRef<HTMLDivElement, SkeletonProps>(
 
 CardSkeleton.displayName = 'CardSkeleton'
 
-interface TableSkeletonProps extends SkeletonProps {
+export interface TableSkeletonProps extends CardSkeletonProps {
   rows?: number
   columns?: number
 }
@@ -95,7 +95,7 @@ const TableSkeleton = React.forwardRef<HTMLDivElement, TableSkeletonProps>(
 
 TableSkeleton.displayName = 'TableSkeleton'
 
-interface BoardSkeletonProps extends SkeletonProps {
+export interface BoardSkeletonProps extends CardSkeletonProps {
   columns?: number
   cardsPerColumn?: number
 }
@@ -151,7 +151,7 @@ const BoardSkeleton = React.forwardRef<HTMLDivElement, BoardSkeletonProps>(
 
 BoardSkeleton.displayName = 'BoardSkeleton'
 
-interface ListSkeletonProps extends SkeletonProps {
+export interface ListSkeletonProps extends CardSkeletonProps {
   rows?: number
   showAvatar?: boolean
 }

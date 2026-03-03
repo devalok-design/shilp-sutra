@@ -2,12 +2,12 @@ import * as React from 'react'
 import { cn } from '../ui/lib/utils'
 import { IconChevronRight } from '@tabler/icons-react'
 
-interface Breadcrumb {
+export interface Breadcrumb {
   label: string
   href?: string
 }
 
-interface PageHeaderProps extends React.HTMLAttributes<HTMLDivElement> {
+export interface PageHeaderProps extends React.HTMLAttributes<HTMLDivElement> {
   title: string
   subtitle?: string
   actions?: React.ReactNode
@@ -91,4 +91,3 @@ const PageHeader = React.forwardRef<HTMLDivElement, PageHeaderProps>(
 PageHeader.displayName = 'PageHeader'
 
 export { PageHeader }
-export type { PageHeaderProps, Breadcrumb }

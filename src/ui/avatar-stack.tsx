@@ -16,7 +16,7 @@ export interface AvatarData {
   name: string
 }
 
-interface AvatarStackProps extends React.HTMLAttributes<HTMLDivElement> {
+export interface AvatarStackProps extends React.HTMLAttributes<HTMLDivElement> {
   avatars: AvatarData[]
   maxAvatars?: number
   size?: number

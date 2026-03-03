@@ -70,7 +70,7 @@ export interface BoardData {
   columns: BoardColumnData[]
 }
 
-interface KanbanBoardProps {
+export interface KanbanBoardProps {
   initialData: BoardData
   onTaskMove?: (taskId: string, toColumnId: string, newOrder: number) => void
   onTaskAdd?: (columnId: string, title: string) => void

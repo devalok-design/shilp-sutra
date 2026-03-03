@@ -4,7 +4,7 @@ import * as React from 'react'
 import { cn } from '../../ui/lib/utils'
 import { Avatar, AvatarFallback, AvatarImage } from '../../ui/avatar'
 
-interface ClientPortalHeaderProps extends React.HTMLAttributes<HTMLElement> {
+export interface ClientPortalHeaderProps extends React.HTMLAttributes<HTMLElement> {
   orgName: string
   orgLogo?: string | null
   userName: string

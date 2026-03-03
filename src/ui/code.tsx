@@ -1,7 +1,7 @@
 import * as React from 'react'
 import { cn } from './lib/utils'
 
-interface CodeProps extends React.HTMLAttributes<HTMLElement> {
+export interface CodeProps extends React.HTMLAttributes<HTMLElement> {
   variant?: 'inline' | 'block'
 }
 

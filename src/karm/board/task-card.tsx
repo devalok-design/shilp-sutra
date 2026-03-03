@@ -183,7 +183,7 @@ function TaskCardVisual({
 // Sortable Task Card (used inside SortableContext)
 // ============================================================
 
-interface TaskCardProps {
+export interface TaskCardProps {
   task: BoardTask
   onClickTask?: (taskId: string) => void
 }
@@ -225,7 +225,7 @@ export function TaskCard({ task, onClickTask }: TaskCardProps) {
 // Overlay Task Card (used inside DragOverlay, no sortable hooks)
 // ============================================================
 
-interface TaskCardOverlayProps {
+export interface TaskCardOverlayProps {
   task: BoardTask
 }
 

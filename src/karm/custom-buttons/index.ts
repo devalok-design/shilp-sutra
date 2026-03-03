@@ -5,6 +5,8 @@ export {
   type SegmentedControlSize,
   type SegmentedControlColor,
   type SegmentedControlOption,
+  type SegmentedControlProps,
+  type SegmentedControlItemProps,
 } from './segmented-control'
 /** @deprecated Use SegmentedControl instead */
 export { SegmentedControl as Toggle } from './segmented-control'

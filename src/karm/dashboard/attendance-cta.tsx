@@ -17,7 +17,7 @@ interface AttendanceData {
   breakReason: string | null
 }
 
-interface AttendanceCTAProps {
+export interface AttendanceCTAProps {
   userName: string
   attendance: AttendanceData | null
   canMarkAttendance: boolean

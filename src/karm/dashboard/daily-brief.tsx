@@ -14,7 +14,7 @@ export interface BriefData {
   generatedAt: string
 }
 
-interface DailyBriefProps {
+export interface DailyBriefProps {
   data: BriefData | null
   loading?: boolean
   className?: string

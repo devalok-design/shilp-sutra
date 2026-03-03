@@ -79,6 +79,7 @@ export {
   SheetFooter,
   SheetTitle,
   SheetDescription,
+  type SheetContentProps,
 } from './sheet'
 export {
   Toast,
@@ -88,6 +89,8 @@ export {
   ToastProvider,
   ToastTitle,
   ToastViewport,
+  type ToastProps,
+  type ToastActionElement,
 } from './toast'
 export { Toaster } from './toaster'
 export { Tooltip, TooltipTrigger, TooltipContent, TooltipProvider } from './tooltip'
@@ -102,14 +105,14 @@ export { Spinner, type SpinnerProps } from './spinner'
 export { Card, CardHeader, CardFooter, CardTitle, CardDescription, CardContent, type CardProps } from './card'
 export { Badge, badgeVariants, type BadgeProps } from './badge'
 export { Avatar, AvatarImage, AvatarFallback } from './avatar'
-export { AvatarStack, type AvatarData } from './avatar-stack'
+export { AvatarStack, type AvatarData, type AvatarStackProps } from './avatar-stack'
 export { Table, TableHeader, TableBody, TableFooter, TableHead, TableRow, TableCell, TableCaption } from './table'
-export { DataTable } from './data-table'
+export { DataTable, type DataTableProps } from './data-table'
 export { DataTableToolbar, type DataTableToolbarProps, type Density } from './data-table-toolbar'
 export { Progress } from './progress'
 export { Skeleton } from './skeleton'
 export { StatCard, type StatCardProps } from './stat-card'
-export { Code } from './code'
+export { Code, type CodeProps } from './code'
 export { AspectRatio } from './aspect-ratio'
 
 // Navigation

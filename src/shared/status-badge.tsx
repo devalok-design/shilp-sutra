@@ -39,7 +39,7 @@ const dotColorMap: Record<string, string> = {
   draft: 'bg-icon-secondary',
 }
 
-interface StatusBadgeProps
+export interface StatusBadgeProps
   extends Omit<React.HTMLAttributes<HTMLSpanElement>, 'children'>,
     VariantProps<typeof statusBadgeVariants> {
   label?: string
@@ -76,4 +76,3 @@ const StatusBadge = React.forwardRef<HTMLSpanElement, StatusBadgeProps>(
 StatusBadge.displayName = 'StatusBadge'
 
 export { StatusBadge, statusBadgeVariants }
-export type { StatusBadgeProps }

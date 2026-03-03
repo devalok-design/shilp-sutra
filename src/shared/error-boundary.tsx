@@ -7,7 +7,7 @@ import { cn } from '../ui/lib/utils'
 
 declare const process: { env: { NODE_ENV?: string } } | undefined
 
-interface ErrorDisplayProps {
+export interface ErrorDisplayProps {
   error: unknown
   onReset?: () => void
 }
@@ -171,4 +171,3 @@ const ErrorDisplay = React.forwardRef<HTMLDivElement, ErrorDisplayProps>(
 ErrorDisplay.displayName = 'ErrorDisplay'
 
 export { ErrorDisplay }
-export type { ErrorDisplayProps }

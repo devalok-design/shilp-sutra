@@ -3,7 +3,7 @@
 import * as React from 'react'
 import ReactMarkdown from 'react-markdown'
 
-interface StreamingTextProps {
+export interface StreamingTextProps {
   text: string
 }
 

@@ -47,7 +47,7 @@ const COLUMN_ACCENTS = [
 // Component
 // ============================================================
 
-interface BoardColumnProps {
+export interface BoardColumnProps {
   column: BoardColumnData
   index: number
   isOverlay?: boolean

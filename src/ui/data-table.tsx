@@ -51,7 +51,7 @@ const densityPaddingMap: Record<Density, string> = {
 /** Editing state: which cell is currently in edit mode */
 type EditingCell = { rowIndex: number; columnId: string } | null
 
-interface DataTableProps<TData, TValue> {
+export interface DataTableProps<TData, TValue> {
   /** Column definitions passed to TanStack Table */
   columns: ColumnDef<TData, TValue>[]
   /** Row data */

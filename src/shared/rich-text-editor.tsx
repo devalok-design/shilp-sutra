@@ -149,7 +149,7 @@ function Toolbar({ editor }: { editor: Editor }) {
   )
 }
 
-interface RichTextEditorProps {
+export interface RichTextEditorProps {
   content?: string
   placeholder?: string
   onChange?: (html: string) => void
@@ -220,7 +220,7 @@ const RichTextEditor = React.forwardRef<HTMLDivElement, RichTextEditorProps>(
 
 RichTextEditor.displayName = 'RichTextEditor'
 
-interface RichTextViewerProps {
+export interface RichTextViewerProps {
   content: string
   className?: string
 }
@@ -266,4 +266,3 @@ const RichTextViewer = React.forwardRef<HTMLDivElement, RichTextViewerProps>(
 RichTextViewer.displayName = 'RichTextViewer'
 
 export { RichTextEditor, RichTextViewer }
-export type { RichTextEditorProps, RichTextViewerProps }

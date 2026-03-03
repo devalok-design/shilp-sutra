@@ -4,7 +4,7 @@ import * as React from 'react'
 import { useState, useRef, useCallback, type KeyboardEvent } from 'react'
 import { IconSend, IconSquare } from '@tabler/icons-react'
 
-interface ChatInputProps {
+export interface ChatInputProps {
   onSubmit: (message: string) => void
   onCancel?: () => void
   isStreaming?: boolean

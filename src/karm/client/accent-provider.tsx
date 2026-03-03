@@ -2,7 +2,7 @@
 
 import { useEffect } from 'react'
 
-interface AccentProviderProps {
+export interface AccentProviderProps {
   /** CSS custom properties string, e.g. "--color-accent: #d33163; --color-accent-light: #f7e9e9;" */
   accentCss?: string | null
 }

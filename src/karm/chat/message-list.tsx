@@ -16,7 +16,7 @@ export interface ChatMessage {
   content: string
 }
 
-interface MessageListProps {
+export interface MessageListProps {
   messages: ChatMessage[]
   isStreaming?: boolean
   streamingText?: string

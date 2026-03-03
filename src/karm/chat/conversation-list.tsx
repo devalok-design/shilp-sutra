@@ -13,7 +13,7 @@ export interface Conversation {
   updatedAt: string
 }
 
-interface ConversationListProps {
+export interface ConversationListProps {
   conversations: Conversation[]
   activeConversationId?: string | null
   isLoading?: boolean

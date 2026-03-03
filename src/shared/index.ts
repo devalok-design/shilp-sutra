@@ -19,10 +19,11 @@ export type { PriorityIndicatorProps, Priority } from './priority-indicator'
 export { RichTextEditor, RichTextViewer } from './rich-text-editor'
 export type { RichTextEditorProps, RichTextViewerProps } from './rich-text-editor'
 
-export { DatePicker, DateRangePicker, CalendarGrid, TimePicker, DateTimePicker, Presets, useCalendar } from './date-picker'
-export type { DatePickerProps, DateRangePickerProps, CalendarGridProps, TimePickerProps, DateTimePickerProps, PresetsProps, PresetKey } from './date-picker'
+export { DatePicker, DateRangePicker, CalendarGrid, TimePicker, DateTimePicker, Presets, useCalendar, YearPicker, MonthPicker } from './date-picker'
+export type { DatePickerProps, DateRangePickerProps, CalendarGridProps, TimePickerProps, DateTimePickerProps, PresetsProps, PresetKey, YearPickerProps, MonthPickerProps } from './date-picker'
 
 export { CardSkeleton, TableSkeleton, BoardSkeleton, ListSkeleton } from './loading-skeleton'
+export type { CardSkeletonProps, TableSkeletonProps, BoardSkeletonProps, ListSkeletonProps } from './loading-skeleton'
 
 export {
   DashboardSkeleton,

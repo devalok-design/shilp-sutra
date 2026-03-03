@@ -2,7 +2,7 @@ import * as React from 'react'
 import { cn } from '../../ui/lib/utils'
 import { Badge } from '../../ui/badge'
 
-interface ProjectCardProps extends React.HTMLAttributes<HTMLDivElement> {
+export interface ProjectCardProps extends React.HTMLAttributes<HTMLDivElement> {
   name: string
   description?: string | null
   status: 'active' | 'completed' | 'paused'

@@ -4,7 +4,7 @@ import * as React from 'react'
 import { useEffect, useRef, useState } from 'react'
 import { cn } from '../ui/lib/utils'
 
-interface GlobalLoadingProps {
+export interface GlobalLoadingProps {
   isLoading: boolean
 }
 
@@ -54,4 +54,3 @@ const GlobalLoading = React.forwardRef<HTMLDivElement, GlobalLoadingProps>(
 GlobalLoading.displayName = 'GlobalLoading'
 
 export { GlobalLoading }
-export type { GlobalLoadingProps }

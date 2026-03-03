@@ -133,7 +133,7 @@ export type ToggleColor = SegmentedControlColor
 /** @deprecated Use SegmentedControlOption */
 export type ToggleOption = SegmentedControlOption
 
-interface SegmentedControlProps {
+export interface SegmentedControlProps {
   size: SegmentedControlSize
   color: SegmentedControlColor
   options: SegmentedControlOption[]
@@ -230,7 +230,7 @@ const SegmentedControl = React.forwardRef<HTMLDivElement, SegmentedControlProps>
 SegmentedControl.displayName = 'SegmentedControl'
 
 /* ── SegmentedControlItem ─────────────────────────────────── */
-interface SegmentedControlItemProps {
+export interface SegmentedControlItemProps {
   size: SegmentedControlSize
   color: SegmentedControlColor
   text: string

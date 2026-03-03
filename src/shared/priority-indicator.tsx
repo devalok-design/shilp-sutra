@@ -9,7 +9,7 @@ import {
 } from '@tabler/icons-react'
 import type { Icon as TablerIcon } from '@tabler/icons-react'
 
-type Priority = 'LOW' | 'MEDIUM' | 'HIGH' | 'URGENT'
+export type Priority = 'LOW' | 'MEDIUM' | 'HIGH' | 'URGENT'
 
 const priorityConfig: Record<
   Priority,
@@ -56,7 +56,7 @@ const priorityVariants = cva(
   },
 )
 
-interface PriorityIndicatorProps
+export interface PriorityIndicatorProps
   extends Omit<React.HTMLAttributes<HTMLDivElement>, 'children'>,
     VariantProps<typeof priorityVariants> {
   priority: Priority
@@ -108,4 +108,3 @@ const PriorityIndicator = React.forwardRef<HTMLDivElement, PriorityIndicatorProp
 PriorityIndicator.displayName = 'PriorityIndicator'
 
 export { PriorityIndicator }
-export type { PriorityIndicatorProps, Priority }

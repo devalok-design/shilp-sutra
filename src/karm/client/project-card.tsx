@@ -62,7 +62,7 @@ const ProjectCard = React.forwardRef<HTMLDivElement, ProjectCardProps>(
             </span>
             <span>{progress}%</span>
           </div>
-          <Progress value={progress} className="h-1.5" />
+          <Progress value={progress} className="h-1.5" aria-label="Project progress" />
         </div>
       </div>
     )

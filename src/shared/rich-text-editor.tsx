@@ -42,7 +42,7 @@ function ToolbarButton({
       className={cn(
         'inline-flex h-7 w-7 items-center justify-center rounded-ds-md transition-colors',
         'hover:bg-field',
-        'disabled:pointer-events-none disabled:opacity-50',
+        'disabled:pointer-events-none disabled:opacity-[0.38]',
         isActive
           ? 'bg-field text-interactive'
           : 'text-text-placeholder',

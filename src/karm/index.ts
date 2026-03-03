@@ -49,12 +49,16 @@ export {
   type AuditLogEntry,
   ConversationTab,
   type ConversationTabProps,
+  type Comment,
   FilesTab,
   type FilesTabProps,
+  type TaskFile,
   ReviewTab,
   type ReviewTabProps,
+  type ReviewRequest,
   SubtasksTab,
   type SubtasksTabProps,
+  type Subtask,
 } from './tasks'
 
 // Chat components

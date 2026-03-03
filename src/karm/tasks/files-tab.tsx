@@ -156,7 +156,7 @@ const FilesTab = React.forwardRef<HTMLDivElement, FilesTabProps>(
                 type="button"
                 onClick={() => fileInputRef.current?.click()}
                 disabled={isUploading}
-                className="text-ds-md font-medium text-interactive transition-colors hover:underline disabled:opacity-50"
+                className="text-ds-md font-medium text-interactive transition-colors hover:underline disabled:opacity-[0.38]"
               >
                 {isUploading ? 'Uploading...' : 'Click to upload'}
               </button>

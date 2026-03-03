@@ -21,7 +21,7 @@ const Input = React.forwardRef<HTMLInputElement, InputProps>(
           'hover:bg-field-hover',
           'transition-colors duration-fast',
           'focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-focus focus-visible:border-border-interactive',
-          'disabled:cursor-not-allowed disabled:opacity-50',
+          'disabled:cursor-not-allowed disabled:opacity-[0.38]',
           'read-only:bg-layer-02 read-only:cursor-default',
           state === 'error' && 'border-border-error focus-visible:ring-error',
           state === 'warning' && 'border-border-warning focus-visible:ring-warning',

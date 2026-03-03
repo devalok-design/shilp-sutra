@@ -285,7 +285,7 @@ const Combobox = React.forwardRef<HTMLButtonElement, ComboboxProps>(
               'flex h-ds-md w-full items-center justify-between whitespace-nowrap rounded-ds-md border border-border bg-field px-ds-04 py-ds-03 text-ds-md',
               'transition-colors duration-fast',
               'focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-focus focus-visible:ring-offset-2 focus-visible:border-border-interactive',
-              'disabled:cursor-not-allowed disabled:opacity-50',
+              'disabled:cursor-not-allowed disabled:opacity-[0.38]',
               triggerClassName,
             )}
           >

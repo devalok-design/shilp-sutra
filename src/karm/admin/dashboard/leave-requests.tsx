@@ -234,7 +234,7 @@ export const LeaveRequests = React.forwardRef<HTMLDivElement, LeaveRequestsProps
                             : ''
                         } ${
                           request?.user?.id === currentUserId
-                            ? 'cursor-not-allowed opacity-50'
+                            ? 'cursor-not-allowed opacity-[0.38]'
                             : ''
                         } max-md:flex max-md:w-full max-md:justify-center`}
                       >
@@ -286,7 +286,7 @@ export const LeaveRequests = React.forwardRef<HTMLDivElement, LeaveRequestsProps
                             : ''
                         } ${
                           request?.user?.id === currentUserId
-                            ? 'cursor-not-allowed opacity-50'
+                            ? 'cursor-not-allowed opacity-[0.38]'
                             : ''
                         } max-md:flex max-md:w-full max-md:justify-center`}
                       >

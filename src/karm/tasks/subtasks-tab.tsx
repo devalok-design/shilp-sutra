@@ -209,7 +209,7 @@ const SubtasksTab = React.forwardRef<HTMLDivElement, SubtasksTabProps>(
               type="button"
               onClick={handleSubmit}
               disabled={!newTitle.trim()}
-              className="inline-flex h-6 items-center gap-ds-02 rounded-ds-md bg-interactive px-2.5 text-ds-sm font-semibold text-text-on-color transition-colors hover:bg-interactive-hover disabled:opacity-50"
+              className="inline-flex h-6 items-center gap-ds-02 rounded-ds-md bg-interactive px-2.5 text-ds-sm font-semibold text-text-on-color transition-colors hover:bg-interactive-hover disabled:opacity-[0.38]"
             >
               Add
             </button>

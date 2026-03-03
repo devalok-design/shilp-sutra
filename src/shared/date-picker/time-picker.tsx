@@ -174,7 +174,7 @@ export function TimePicker({
             'inline-flex h-9 items-center gap-ds-03 rounded-ds-lg border border-border bg-layer-01 px-ds-04 text-left transition-colors',
             'hover:border-[var(--border-secondary)]',
             'focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-focus focus-visible:ring-offset-2',
-            disabled && 'opacity-50 pointer-events-none',
+            disabled && 'opacity-[0.38] pointer-events-none',
             className,
           )}
           aria-label={displayText ? `Selected time: ${displayText}` : placeholder}

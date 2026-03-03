@@ -116,7 +116,7 @@ export const CorrectionList = React.forwardRef<HTMLDivElement, CorrectionListPro
                     <button
                       className={`rounded-ds-full p-ds-03 text-text-tertiary hover:text-text-secondary ${
                         correction?.user?.id === currentUserId
-                          ? 'cursor-not-allowed opacity-50'
+                          ? 'cursor-not-allowed opacity-[0.38]'
                           : ''
                       }`}
                       onClick={() =>
@@ -150,7 +150,7 @@ export const CorrectionList = React.forwardRef<HTMLDivElement, CorrectionListPro
                     <button
                       className={`rounded-ds-full p-ds-03 ${
                         correction?.user?.id === currentUserId
-                          ? 'cursor-not-allowed opacity-50'
+                          ? 'cursor-not-allowed opacity-[0.38]'
                           : ''
                       }`}
                       onClick={() =>

@@ -511,7 +511,7 @@ const SidebarMenuItem = forwardRef<HTMLLIElement, ComponentProps<'li'>>(
 SidebarMenuItem.displayName = 'SidebarMenuItem'
 
 const sidebarMenuButtonVariants = cva(
-  'peer/menu-button hover:bg-layer-02 active:bg-interactive-subtle data-[active=true]:bg-interactive-subtle data-[state=open]:hover:bg-layer-02 flex w-full items-center gap-ds-03 overflow-hidden rounded-ds-md p-ds-03 text-left outline-none ring-focus transition-[width,height,padding] hover:text-text-primary focus-visible:ring-2 active:text-text-primary disabled:pointer-events-none disabled:opacity-50 group-has-[[data-sidebar=menu-action]]/menu-item:pr-ds-07 aria-disabled:pointer-events-none aria-disabled:opacity-50 data-[active=true]:font-medium data-[active=true]:text-text-primary data-[state=open]:hover:text-text-primary group-data-[collapsible=icon]:!size-8 group-data-[collapsible=icon]:!p-ds-03 [&>span:last-child]:truncate [&>svg]:size-4 [&>svg]:shrink-0',
+  'peer/menu-button hover:bg-layer-02 active:bg-interactive-subtle data-[active=true]:bg-interactive-subtle data-[state=open]:hover:bg-layer-02 flex w-full items-center gap-ds-03 overflow-hidden rounded-ds-md p-ds-03 text-left outline-none ring-focus transition-[width,height,padding] hover:text-text-primary focus-visible:ring-2 active:text-text-primary disabled:pointer-events-none disabled:opacity-[0.38] group-has-[[data-sidebar=menu-action]]/menu-item:pr-ds-07 aria-disabled:pointer-events-none aria-disabled:opacity-[0.38] data-[active=true]:font-medium data-[active=true]:text-text-primary data-[state=open]:hover:text-text-primary group-data-[collapsible=icon]:!size-8 group-data-[collapsible=icon]:!p-ds-03 [&>span:last-child]:truncate [&>svg]:size-4 [&>svg]:shrink-0',
   {
     variants: {
       variant: {
@@ -717,7 +717,7 @@ const SidebarMenuSubButton = forwardRef<
       data-size={size}
       data-active={isActive}
       className={cn(
-        'hover:bg-layer-02 active:bg-interactive-subtle flex h-7 min-w-0 -translate-x-px items-center gap-ds-03 overflow-hidden rounded-ds-md px-ds-03 text-text-primary outline-none ring-focus hover:text-text-primary focus-visible:ring-2 active:text-text-primary disabled:pointer-events-none disabled:opacity-50 aria-disabled:pointer-events-none aria-disabled:opacity-50 [&>span:last-child]:truncate [&>svg]:size-4 [&>svg]:shrink-0 [&>svg]:text-text-primary',
+        'hover:bg-layer-02 active:bg-interactive-subtle flex h-7 min-w-0 -translate-x-px items-center gap-ds-03 overflow-hidden rounded-ds-md px-ds-03 text-text-primary outline-none ring-focus hover:text-text-primary focus-visible:ring-2 active:text-text-primary disabled:pointer-events-none disabled:opacity-[0.38] aria-disabled:pointer-events-none aria-disabled:opacity-[0.38] [&>span:last-child]:truncate [&>svg]:size-4 [&>svg]:shrink-0 [&>svg]:text-text-primary',
         'data-[active=true]:bg-interactive-subtle data-[active=true]:text-text-primary',
         size === 'sm' && 'text-ds-sm',
         size === 'md' && 'text-ds-md',

@@ -32,7 +32,7 @@ const SearchInput = React.forwardRef<HTMLInputElement, SearchInputProps>(
             'hover:bg-field-hover',
             'transition-colors duration-fast',
             'focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-focus focus-visible:border-border-interactive',
-            'disabled:cursor-not-allowed disabled:opacity-50',
+            'disabled:cursor-not-allowed disabled:opacity-[0.38]',
             className,
           )}
           {...props}

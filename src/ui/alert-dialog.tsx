@@ -105,7 +105,7 @@ const AlertDialogAction = React.forwardRef<
   <AlertDialogPrimitive.Action
     ref={ref}
     className={cn(
-      'inline-flex h-ds-md items-center justify-center rounded-ds-md px-ds-05 text-ds-md font-semibold transition-colors bg-interactive text-text-on-color hover:bg-interactive-hover active:bg-interactive-active shadow-01 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-focus focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50',
+      'inline-flex h-ds-md items-center justify-center rounded-ds-md px-ds-05 text-ds-md font-semibold transition-colors bg-interactive text-text-on-color hover:bg-interactive-hover active:bg-interactive-active shadow-01 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-focus focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-[0.38]',
       className,
     )}
     {...props}
@@ -120,7 +120,7 @@ const AlertDialogCancel = React.forwardRef<
   <AlertDialogPrimitive.Cancel
     ref={ref}
     className={cn(
-      'inline-flex h-ds-md items-center justify-center rounded-ds-md px-ds-05 text-ds-md font-semibold transition-colors bg-transparent text-text-secondary border border-border hover:bg-layer-02 hover:text-text-primary focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-focus focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50',
+      'inline-flex h-ds-md items-center justify-center rounded-ds-md px-ds-05 text-ds-md font-semibold transition-colors bg-transparent text-text-secondary border border-border hover:bg-layer-02 hover:text-text-primary focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-focus focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-[0.38]',
       className,
     )}
     {...props}

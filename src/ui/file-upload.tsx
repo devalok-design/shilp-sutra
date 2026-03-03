@@ -203,7 +203,7 @@ const FileUpload = React.forwardRef<HTMLDivElement, FileUploadProps>(
               'border border-border',
               'bg-field text-text-secondary',
               'hover:bg-interactive-subtle',
-              'disabled:opacity-50 disabled:cursor-not-allowed',
+              'disabled:opacity-[0.38] disabled:cursor-not-allowed',
               'transition-colors',
             )}
           >
@@ -272,7 +272,7 @@ const FileUpload = React.forwardRef<HTMLDivElement, FileUploadProps>(
             'border-border bg-field',
             isDragActive &&
               'border-interactive bg-interactive-subtle',
-            disabled && 'opacity-50 cursor-not-allowed',
+            disabled && 'opacity-[0.38] cursor-not-allowed',
           )}
         >
           {uploading ? (

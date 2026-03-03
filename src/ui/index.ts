@@ -267,3 +267,5 @@ export * from './charts'
 
 // Utilities
 export { cn } from './lib/utils'
+export { motion, duration, easings, durations } from './lib/motion'
+export type { MotionMode, MotionCategory, DurationToken } from './lib/motion'

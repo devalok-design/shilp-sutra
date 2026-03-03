@@ -1,5 +1,6 @@
 import { useState } from 'react'
 import type { Meta, StoryObj } from '@storybook/react'
+import { within, userEvent, expect } from '@storybook/test'
 import { Autocomplete, type AutocompleteOption } from './autocomplete'
 
 const fruitOptions: AutocompleteOption[] = [
@@ -88,6 +89,26 @@ export const Controlled: Story = {
         </p>
       </div>
     )
+  },
+  play: async ({ canvasElement }) => {
+    const canvas = within(canvasElement)
+    const input = canvas.getByRole('combobox')
+
+    // Type to filter options
+    await userEvent.type(input, 'Che')
+
+    // The dropdown should show Cherry as a match
+    const option = await canvas.findByRole('option', { name: /cherry/i })
+    await expect(option).toBeVisible()
+
+    // Click to select
+    await userEvent.click(option)
+
+    // Verify the input now shows the selected value
+    await expect(input).toHaveValue('Cherry')
+
+    // Verify the selected label text updates
+    await expect(canvas.getByText('Selected: Cherry')).toBeVisible()
   },
 }
 

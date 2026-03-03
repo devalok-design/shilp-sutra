@@ -1,5 +1,6 @@
 import { useState } from 'react'
 import type { Meta, StoryObj } from '@storybook/react'
+import { within, userEvent, expect } from '@storybook/test'
 import { Stepper, Step } from './stepper'
 
 const meta: Meta<typeof Stepper> = {
@@ -160,6 +161,26 @@ function InteractiveDemo() {
 
 export const Interactive: Story = {
   render: () => <InteractiveDemo />,
+  play: async ({ canvasElement }) => {
+    const canvas = within(canvasElement)
+
+    // Verify initial state: step 1 of 4
+    await expect(canvas.getByText('Step 1 of 4: Details')).toBeVisible()
+
+    // Click Next to advance to step 2
+    const nextButton = canvas.getByRole('button', { name: /next/i })
+    await userEvent.click(nextButton)
+    await expect(canvas.getByText('Step 2 of 4: Address')).toBeVisible()
+
+    // Click Next again to advance to step 3
+    await userEvent.click(nextButton)
+    await expect(canvas.getByText('Step 3 of 4: Payment')).toBeVisible()
+
+    // Click Back to go back to step 2
+    const backButton = canvas.getByRole('button', { name: /back/i })
+    await userEvent.click(backButton)
+    await expect(canvas.getByText('Step 2 of 4: Address')).toBeVisible()
+  },
 }
 
 export const AllVariants: Story = {

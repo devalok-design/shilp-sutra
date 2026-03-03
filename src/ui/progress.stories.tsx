@@ -130,3 +130,49 @@ export const AllStages: Story = {
     </div>
   ),
 }
+
+export const AllVariants: Story = {
+  render: () => {
+    const sizes = ['sm', 'md', 'lg'] as const
+    const colors = ['default', 'success', 'warning', 'danger'] as const
+
+    return (
+      <div className="flex flex-col gap-ds-06 max-w-md">
+        {sizes.map((size) => (
+          <div key={size}>
+            <p className="mb-ds-03 text-ds-sm font-semibold text-text-secondary capitalize">Size: {size}</p>
+            <div className="flex flex-col gap-ds-03">
+              {colors.map((color) => (
+                <div key={`${size}-${color}`} className="flex flex-col gap-ds-02b">
+                  <span className="text-ds-xs text-text-secondary capitalize">{color}</span>
+                  <Progress size={size} color={color} value={65} />
+                </div>
+              ))}
+            </div>
+          </div>
+        ))}
+
+        <div>
+          <p className="mb-ds-03 text-ds-sm font-semibold text-text-secondary">Indeterminate</p>
+          <div className="flex flex-col gap-ds-03">
+            {colors.map((color) => (
+              <div key={`indeterminate-${color}`} className="flex flex-col gap-ds-02b">
+                <span className="text-ds-xs text-text-secondary capitalize">{color}</span>
+                <Progress color={color} />
+              </div>
+            ))}
+          </div>
+        </div>
+
+        <div>
+          <p className="mb-ds-03 text-ds-sm font-semibold text-text-secondary">With Label</p>
+          <div className="flex flex-col gap-ds-03">
+            {colors.map((color) => (
+              <Progress key={`label-${color}`} color={color} value={72} showLabel />
+            ))}
+          </div>
+        </div>
+      </div>
+    )
+  },
+}

@@ -58,3 +58,53 @@ export const Large: Story = {
     'aria-label': 'Toggle bold',
   },
 }
+
+export const AllVariants: Story = {
+  render: () => {
+    const variants = ['default', 'outline'] as const
+    const sizes = ['sm', 'md', 'lg'] as const
+
+    return (
+      <div className="flex flex-col gap-ds-06">
+        {variants.map((variant) => (
+          <div key={variant}>
+            <p className="mb-ds-03 text-ds-sm font-semibold text-text-secondary capitalize">{variant}</p>
+            <div className="flex flex-wrap items-center gap-ds-03">
+              {sizes.map((size) => (
+                <Toggle key={`${variant}-${size}`} variant={variant} size={size} aria-label={`Toggle ${variant} ${size}`}>
+                  {size.toUpperCase()}
+                </Toggle>
+              ))}
+            </div>
+          </div>
+        ))}
+
+        <div>
+          <p className="mb-ds-03 text-ds-sm font-semibold text-text-secondary">Pressed (on)</p>
+          <div className="flex flex-wrap items-center gap-ds-03">
+            {variants.map((variant) =>
+              sizes.map((size) => (
+                <Toggle key={`pressed-${variant}-${size}`} variant={variant} size={size} defaultPressed aria-label={`Toggle pressed ${variant} ${size}`}>
+                  {size.toUpperCase()}
+                </Toggle>
+              ))
+            )}
+          </div>
+        </div>
+
+        <div>
+          <p className="mb-ds-03 text-ds-sm font-semibold text-text-secondary">Disabled</p>
+          <div className="flex flex-wrap items-center gap-ds-03">
+            {variants.map((variant) =>
+              sizes.map((size) => (
+                <Toggle key={`disabled-${variant}-${size}`} variant={variant} size={size} disabled aria-label={`Toggle disabled ${variant} ${size}`}>
+                  {size.toUpperCase()}
+                </Toggle>
+              ))
+            )}
+          </div>
+        </div>
+      </div>
+    )
+  },
+}

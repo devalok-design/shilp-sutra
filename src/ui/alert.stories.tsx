@@ -1,4 +1,5 @@
 import type { Meta, StoryObj } from '@storybook/react'
+import { within, userEvent, expect, fn } from '@storybook/test'
 import { Alert } from './alert'
 
 const meta: Meta<typeof Alert> = {
@@ -62,25 +63,70 @@ export const Dismissible: Story = {
     title: 'Dismissible Alert',
     children: 'You can dismiss this alert by clicking the X button.',
     dismissible: true,
-    onDismiss: () => {},
+    onDismiss: fn(),
+  },
+  play: async ({ canvasElement, args }) => {
+    const canvas = within(canvasElement)
+
+    // Verify the alert content is visible
+    await expect(canvas.getByText('Dismissible Alert')).toBeVisible()
+    await expect(canvas.getByText('You can dismiss this alert by clicking the X button.')).toBeVisible()
+
+    // Click the dismiss button
+    const dismissButton = canvas.getByRole('button', { name: /dismiss/i })
+    await expect(dismissButton).toBeVisible()
+    await userEvent.click(dismissButton)
+
+    // Verify onDismiss was called
+    await expect(args.onDismiss).toHaveBeenCalledTimes(1)
   },
 }
 
 export const AllVariants: Story = {
-  render: () => (
-    <div className="flex flex-col gap-4 max-w-lg">
-      <Alert variant="info" title="Info">
-        A new version of the platform is available.
-      </Alert>
-      <Alert variant="success" title="Success">
-        Attendance marked successfully for today.
-      </Alert>
-      <Alert variant="warning" title="Warning">
-        You have 2 pending break requests to review.
-      </Alert>
-      <Alert variant="error" title="Error">
-        Could not connect to the database. Retrying...
-      </Alert>
-    </div>
-  ),
+  render: () => {
+    const variants = ['info', 'success', 'warning', 'error'] as const
+    const messages: Record<typeof variants[number], string> = {
+      info: 'A new version of the platform is available.',
+      success: 'Attendance marked successfully for today.',
+      warning: 'You have 2 pending break requests to review.',
+      error: 'Could not connect to the database. Retrying...',
+    }
+
+    return (
+      <div className="flex flex-col gap-ds-06 max-w-lg">
+        <div>
+          <p className="mb-ds-03 text-ds-sm font-semibold text-text-secondary">With Title</p>
+          <div className="flex flex-col gap-ds-03">
+            {variants.map((variant) => (
+              <Alert key={variant} variant={variant} title={variant.charAt(0).toUpperCase() + variant.slice(1)}>
+                {messages[variant]}
+              </Alert>
+            ))}
+          </div>
+        </div>
+
+        <div>
+          <p className="mb-ds-03 text-ds-sm font-semibold text-text-secondary">Without Title</p>
+          <div className="flex flex-col gap-ds-03">
+            {variants.map((variant) => (
+              <Alert key={`no-title-${variant}`} variant={variant}>
+                {messages[variant]}
+              </Alert>
+            ))}
+          </div>
+        </div>
+
+        <div>
+          <p className="mb-ds-03 text-ds-sm font-semibold text-text-secondary">Dismissible</p>
+          <div className="flex flex-col gap-ds-03">
+            {variants.map((variant) => (
+              <Alert key={`dismiss-${variant}`} variant={variant} title={variant.charAt(0).toUpperCase() + variant.slice(1)} dismissible onDismiss={() => {}}>
+                {messages[variant]}
+              </Alert>
+            ))}
+          </div>
+        </div>
+      </div>
+    )
+  },
 }

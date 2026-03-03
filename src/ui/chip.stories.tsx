@@ -1,4 +1,5 @@
 import type { Meta, StoryObj } from '@storybook/react'
+import { within, userEvent, expect, fn } from '@storybook/test'
 import { Chip } from './chip'
 
 const meta: Meta<typeof Chip> = {
@@ -58,14 +59,38 @@ export const Clickable: Story = {
   args: {
     label: 'Click me',
     color: 'primary',
-    onClick: () => {},
+    onClick: fn(),
+  },
+  play: async ({ canvasElement, args }) => {
+    const canvas = within(canvasElement)
+
+    // Click the chip
+    const chip = canvas.getByRole('button', { name: /click me/i })
+    await userEvent.click(chip)
+
+    // Verify onClick was called
+    await expect(args.onClick).toHaveBeenCalledTimes(1)
   },
 }
 
 export const Dismissible: Story = {
   args: {
     label: 'Dismissible',
-    onDelete: () => {},
+    onDelete: fn(),
+  },
+  play: async ({ canvasElement, args }) => {
+    const canvas = within(canvasElement)
+
+    // Verify the chip and its dismiss button are visible
+    await expect(canvas.getByText('Dismissible')).toBeVisible()
+    const dismissButton = canvas.getByRole('button', { name: /remove dismissible/i })
+    await expect(dismissButton).toBeVisible()
+
+    // Click the dismiss button
+    await userEvent.click(dismissButton)
+
+    // Verify onDelete was called
+    await expect(args.onDelete).toHaveBeenCalledTimes(1)
   },
 }
 

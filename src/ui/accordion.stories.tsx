@@ -72,6 +72,19 @@ export const Multiple: Story = {
       </AccordionItem>
     </Accordion>
   ),
+  play: async ({ canvasElement }) => {
+    const canvas = within(canvasElement)
+
+    // Open the first item
+    await userEvent.click(canvas.getByText('Getting Started'))
+    await expect(canvas.getByText(/Install the package/)).toBeVisible()
+
+    // Open the second item — both should remain open in "multiple" mode
+    await userEvent.click(canvas.getByText('Theming'))
+    await expect(canvas.getByText(/CSS custom properties/)).toBeVisible()
+    // First item should still be visible
+    await expect(canvas.getByText(/Install the package/)).toBeVisible()
+  },
 }
 
 export const DefaultOpen: Story = {

@@ -91,6 +91,17 @@ export const WithAction: Story = {
       <ToastClose />
     </Toast>
   ),
+  play: async ({ canvasElement }) => {
+    const canvas = within(canvasElement)
+
+    // Verify the toast content is visible
+    await expect(canvas.getByText('Meeting Reminder')).toBeVisible()
+    await expect(canvas.getByText('Devsabha starts in 15 minutes.')).toBeVisible()
+
+    // Verify the action button is present and visible
+    const actionButton = canvas.getByRole('button', { name: /join/i })
+    await expect(actionButton).toBeVisible()
+  },
 }
 
 export const DestructiveWithAction: Story = {

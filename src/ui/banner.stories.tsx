@@ -81,12 +81,50 @@ export const WithActionAndDismissible: Story = {
 }
 
 export const AllVariants: Story = {
-  render: () => (
-    <div className="flex flex-col">
-      <Banner variant="info">Information: System maintenance scheduled for tonight.</Banner>
-      <Banner variant="success">Success: All services are running normally.</Banner>
-      <Banner variant="warning">Warning: Disk usage is above 80%.</Banner>
-      <Banner variant="error">Error: Database connection lost.</Banner>
-    </div>
-  ),
+  render: () => {
+    const variants = ['info', 'success', 'warning', 'error'] as const
+    const messages: Record<typeof variants[number], string> = {
+      info: 'System maintenance scheduled for tonight.',
+      success: 'All services are running normally.',
+      warning: 'Disk usage is above 80%.',
+      error: 'Database connection lost.',
+    }
+
+    return (
+      <div className="flex flex-col gap-ds-06">
+        <div>
+          <p className="mb-ds-03 text-ds-sm font-semibold text-text-secondary">Default</p>
+          <div className="flex flex-col">
+            {variants.map((variant) => (
+              <Banner key={variant} variant={variant}>
+                {messages[variant]}
+              </Banner>
+            ))}
+          </div>
+        </div>
+
+        <div>
+          <p className="mb-ds-03 text-ds-sm font-semibold text-text-secondary">Dismissible</p>
+          <div className="flex flex-col">
+            {variants.map((variant) => (
+              <Banner key={`dismiss-${variant}`} variant={variant} dismissible onDismiss={() => {}}>
+                {messages[variant]}
+              </Banner>
+            ))}
+          </div>
+        </div>
+
+        <div>
+          <p className="mb-ds-03 text-ds-sm font-semibold text-text-secondary">With Action</p>
+          <div className="flex flex-col">
+            {variants.map((variant) => (
+              <Banner key={`action-${variant}`} variant={variant} action={<Button variant="ghost" size="sm">Action</Button>}>
+                {messages[variant]}
+              </Banner>
+            ))}
+          </div>
+        </div>
+      </div>
+    )
+  },
 }

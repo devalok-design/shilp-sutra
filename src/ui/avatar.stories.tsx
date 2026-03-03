@@ -73,3 +73,50 @@ export const Group: Story = {
     </div>
   ),
 }
+
+export const AllVariants: Story = {
+  render: () => {
+    const sizes = ['xs', 'sm', 'md', 'lg', 'xl'] as const
+    const statuses = ['online', 'offline', 'busy', 'away'] as const
+
+    return (
+      <div className="flex flex-col gap-ds-06">
+        <div>
+          <p className="mb-ds-03 text-ds-sm font-semibold text-text-secondary">Sizes (with fallback)</p>
+          <div className="flex flex-wrap items-center gap-ds-03">
+            {sizes.map((size) => (
+              <Avatar key={size} size={size}>
+                <AvatarFallback>{size.toUpperCase()}</AvatarFallback>
+              </Avatar>
+            ))}
+          </div>
+        </div>
+
+        <div>
+          <p className="mb-ds-03 text-ds-sm font-semibold text-text-secondary">Sizes (with image)</p>
+          <div className="flex flex-wrap items-center gap-ds-03">
+            {sizes.map((size) => (
+              <Avatar key={size} size={size}>
+                <AvatarImage src="https://github.com/shadcn.png" alt={`Avatar ${size}`} />
+                <AvatarFallback>{size.toUpperCase()}</AvatarFallback>
+              </Avatar>
+            ))}
+          </div>
+        </div>
+
+        {statuses.map((status) => (
+          <div key={status}>
+            <p className="mb-ds-03 text-ds-sm font-semibold text-text-secondary capitalize">Status: {status}</p>
+            <div className="flex flex-wrap items-center gap-ds-03">
+              {sizes.map((size) => (
+                <Avatar key={`${status}-${size}`} size={size} status={status}>
+                  <AvatarFallback>{size.toUpperCase()}</AvatarFallback>
+                </Avatar>
+              ))}
+            </div>
+          </div>
+        ))}
+      </div>
+    )
+  },
+}

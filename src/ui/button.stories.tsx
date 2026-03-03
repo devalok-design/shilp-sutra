@@ -148,30 +148,63 @@ export const Disabled: Story = {
 }
 
 export const AllVariants: Story = {
-  render: () => (
-    <div className="flex flex-wrap items-center gap-4">
-      <Button variant="primary">Primary</Button>
-      <Button variant="secondary">Secondary</Button>
-      <Button variant="ghost">Ghost</Button>
-      <Button variant="danger">Danger</Button>
-      <Button variant="danger-ghost">Danger Ghost</Button>
-      <Button variant="secondary">Outline</Button>
-      <Button variant="link">Link</Button>
-    </div>
-  ),
+  render: () => {
+    const variants = ['primary', 'secondary', 'ghost', 'danger', 'danger-ghost', 'link'] as const
+    const sizes = ['sm', 'md', 'lg'] as const
+    return (
+      <div className="flex flex-col gap-ds-06">
+        {variants.map((variant) => (
+          <div key={variant}>
+            <p className="mb-ds-03 text-ds-sm font-semibold text-text-secondary capitalize">{variant}</p>
+            <div className="flex flex-wrap items-center gap-ds-03">
+              {sizes.map((size) => (
+                <Button key={`${variant}-${size}`} variant={variant} size={size}>
+                  {size}
+                </Button>
+              ))}
+            </div>
+          </div>
+        ))}
+
+        <div>
+          <p className="mb-ds-03 text-ds-sm font-semibold text-text-secondary">Disabled</p>
+          <div className="flex flex-wrap items-center gap-ds-03">
+            {variants.map((variant) => (
+              <Button key={variant} variant={variant} disabled>
+                {variant}
+              </Button>
+            ))}
+          </div>
+        </div>
+
+        <div>
+          <p className="mb-ds-03 text-ds-sm font-semibold text-text-secondary">Loading</p>
+          <div className="flex flex-wrap items-center gap-ds-03">
+            {variants.map((variant) => (
+              <Button key={variant} variant={variant} loading>
+                {variant}
+              </Button>
+            ))}
+          </div>
+        </div>
+      </div>
+    )
+  },
 }
 
 export const AllSizes: Story = {
-  render: () => (
-    <div className="flex flex-wrap items-center gap-4">
-      <Button size="sm">Small</Button>
-      <Button size="md">Medium</Button>
-      <Button size="lg">Large</Button>
-      <Button size="icon-sm">+</Button>
-      <Button size="icon-md">+</Button>
-      <Button size="icon-lg">+</Button>
-    </div>
-  ),
+  render: () => {
+    const sizes = ['sm', 'md', 'lg', 'icon-sm', 'icon-md', 'icon-lg'] as const
+    return (
+      <div className="flex flex-wrap items-center gap-ds-03">
+        {sizes.map((size) => (
+          <Button key={size} size={size}>
+            {size.startsWith('icon') ? '+' : size}
+          </Button>
+        ))}
+      </div>
+    )
+  },
 }
 
 // --- New feature stories ---

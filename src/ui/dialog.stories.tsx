@@ -87,6 +87,21 @@ export const Confirmation: Story = {
       </DialogContent>
     </Dialog>
   ),
+  play: async ({ canvasElement }) => {
+    const canvas = within(canvasElement)
+
+    // Open the confirmation dialog
+    await userEvent.click(canvas.getByRole('button', { name: /delete account/i }))
+    const dialog = await within(document.body).findByRole('dialog')
+    await expect(dialog).toBeVisible()
+    await expect(within(dialog).getByText('Are you sure?')).toBeVisible()
+
+    // Close the dialog via the Cancel button
+    await userEvent.click(within(dialog).getByRole('button', { name: /cancel/i }))
+
+    // Verify the dialog is no longer in the DOM
+    await expect(within(document.body).queryByRole('dialog')).toBeNull()
+  },
 }
 
 export const SimpleMessage: Story = {

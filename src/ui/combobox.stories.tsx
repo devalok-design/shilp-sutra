@@ -119,6 +119,29 @@ export const MultiSelect: Story = {
       </div>
     )
   },
+  play: async ({ canvasElement }) => {
+    const canvas = within(canvasElement)
+
+    // Verify pre-selected pills are visible
+    await expect(canvas.getByText('Apple')).toBeVisible()
+    await expect(canvas.getByText('Cherry')).toBeVisible()
+
+    // Open the popover
+    const trigger = canvas.getByRole('combobox')
+    await userEvent.click(trigger)
+
+    // Select an additional option (Banana)
+    const listbox = await within(document.body).findByRole('listbox')
+    const bananaOption = within(listbox).getByText('Banana')
+    await userEvent.click(bananaOption)
+
+    // Verify the new pill appears (Banana replaces Cherry in visible pills since max 2 visible)
+    // Close popover first
+    await userEvent.keyboard('{Escape}')
+
+    // The "+1 more" indicator should appear since we now have 3 selected
+    await expect(canvas.getByText('+1 more')).toBeVisible()
+  },
 }
 
 // ---------------------------------------------------------------------------

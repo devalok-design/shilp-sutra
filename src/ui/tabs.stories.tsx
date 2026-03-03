@@ -72,6 +72,20 @@ export const Contained: Story = {
       </TabsContent>
     </Tabs>
   ),
+  play: async ({ canvasElement }) => {
+    const canvas = within(canvasElement)
+
+    // Verify initial content
+    await expect(canvas.getByText('Showing all items.')).toBeVisible()
+
+    // Click the "Archived" tab
+    await userEvent.click(canvas.getByRole('tab', { name: /archived/i }))
+    await expect(canvas.getByText('Showing archived items only.')).toBeVisible()
+
+    // Click the "Active" tab
+    await userEvent.click(canvas.getByRole('tab', { name: /active/i }))
+    await expect(canvas.getByText('Showing active items only.')).toBeVisible()
+  },
 }
 
 export const Disabled: Story = {

@@ -69,6 +69,22 @@ export const WithGroups: Story = {
       </SelectContent>
     </Select>
   ),
+  play: async ({ canvasElement }) => {
+    const canvas = within(canvasElement)
+
+    // Open the select dropdown
+    const trigger = canvas.getByRole('combobox')
+    await userEvent.click(trigger)
+
+    // Verify group labels are visible
+    const listbox = await within(document.body).findByRole('listbox')
+    await expect(within(listbox).getByText('North America')).toBeVisible()
+    await expect(within(listbox).getByText('Asia')).toBeVisible()
+
+    // Verify options from both groups are visible
+    await expect(within(listbox).getByText('Eastern (EST)')).toBeVisible()
+    await expect(within(listbox).getByText('India (IST)')).toBeVisible()
+  },
 }
 
 export const WithLabel: Story = {

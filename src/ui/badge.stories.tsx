@@ -114,29 +114,48 @@ export const Large: Story = {
 }
 
 export const AllVariants: Story = {
-  render: () => (
-    <div className="flex flex-wrap items-center gap-2">
-      <Badge variant="neutral">Neutral</Badge>
-      <Badge variant="info">Info</Badge>
-      <Badge variant="success">Success</Badge>
-      <Badge variant="error">Error</Badge>
-      <Badge variant="warning">Warning</Badge>
-      <Badge variant="brand">Brand</Badge>
-      <Badge variant="accent">Accent</Badge>
-      <Badge variant="teal">Teal</Badge>
-      <Badge variant="amber">Amber</Badge>
-      <Badge variant="slate">Slate</Badge>
-      <Badge variant="indigo">Indigo</Badge>
-      <Badge variant="cyan">Cyan</Badge>
-      <Badge variant="orange">Orange</Badge>
-      <Badge variant="emerald">Emerald</Badge>
-    </div>
-  ),
+  render: () => {
+    const variants = ['neutral', 'info', 'success', 'error', 'warning', 'brand', 'accent', 'teal', 'amber', 'slate', 'indigo', 'cyan', 'orange', 'emerald'] as const
+    const sizes = ['sm', 'md', 'lg'] as const
+
+    return (
+      <div className="flex flex-col gap-ds-06">
+        {sizes.map((size) => (
+          <div key={size}>
+            <p className="mb-ds-03 text-ds-sm font-semibold text-text-secondary capitalize">Size: {size}</p>
+            <div className="flex flex-wrap items-center gap-ds-03">
+              {variants.map((variant) => (
+                <Badge key={`${size}-${variant}`} variant={variant} size={size}>{variant}</Badge>
+              ))}
+            </div>
+          </div>
+        ))}
+
+        <div>
+          <p className="mb-ds-03 text-ds-sm font-semibold text-text-secondary">With Dot</p>
+          <div className="flex flex-wrap items-center gap-ds-03">
+            {variants.map((variant) => (
+              <Badge key={`dot-${variant}`} variant={variant} dot>{variant}</Badge>
+            ))}
+          </div>
+        </div>
+
+        <div>
+          <p className="mb-ds-03 text-ds-sm font-semibold text-text-secondary">Dismissible</p>
+          <div className="flex flex-wrap items-center gap-ds-03">
+            {variants.map((variant) => (
+              <Badge key={`dismiss-${variant}`} variant={variant} onDismiss={() => {}}>{variant}</Badge>
+            ))}
+          </div>
+        </div>
+      </div>
+    )
+  },
 }
 
 export const AllSizes: Story = {
   render: () => (
-    <div className="flex flex-wrap items-center gap-2">
+    <div className="flex flex-wrap items-center gap-ds-03">
       <Badge size="sm">Small</Badge>
       <Badge size="md">Medium</Badge>
       <Badge size="lg">Large</Badge>

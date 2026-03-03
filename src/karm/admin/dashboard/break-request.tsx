@@ -56,7 +56,8 @@ export interface BreakRequestProps {
 // Component
 // ============================================================
 
-export function BreakRequestCard({
+export const BreakRequestCard = React.forwardRef<HTMLDivElement, BreakRequestProps>(
+  function BreakRequestCard({
   selectedDate,
   userId,
   breakRequest,
@@ -64,7 +65,7 @@ export function BreakRequestCard({
   onCancelBreak,
   onRefreshAttendance,
   onRefreshGroupedAttendance,
-}: BreakRequestProps) {
+}, ref) {
   const [deleteSingleDay, setDeleteSingleDay] = useState(true)
   const [showMobileCancelForm, setShowMobileCancelForm] = useState(false)
 
@@ -115,7 +116,7 @@ export function BreakRequestCard({
   }
 
   return (
-    <div className="relative flex w-full flex-col gap-ds-06 rounded-[8px] bg-layer-accent-subtle">
+    <div ref={ref} className="relative flex w-full flex-col gap-ds-06 rounded-[8px] bg-layer-accent-subtle">
       {assetsBaseUrl && (
         <img
           src={`${assetsBaseUrl}/break-background.svg`}
@@ -321,6 +322,7 @@ export function BreakRequestCard({
       </div>
     </div>
   )
-}
+},
+)
 
 BreakRequestCard.displayName = 'BreakRequestCard'

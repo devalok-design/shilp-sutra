@@ -85,9 +85,10 @@ const PRESET_MAP: Record<PresetKey, PresetDefinition> = {
   },
 }
 
-export function Presets({ presets, onSelect, className }: PresetsProps) {
+export const Presets = React.forwardRef<HTMLDivElement, PresetsProps>(
+  function Presets({ presets, onSelect, className }, ref) {
   return (
-    <div className={cn('flex flex-col gap-ds-01', className)}>
+    <div ref={ref} className={cn('flex flex-col gap-ds-01', className)}>
       {presets.map((key) => {
         const preset = PRESET_MAP[key]
         if (!preset) return null
@@ -112,6 +113,7 @@ export function Presets({ presets, onSelect, className }: PresetsProps) {
       })}
     </div>
   )
-}
+},
+)
 
 Presets.displayName = 'Presets'

@@ -1,5 +1,6 @@
 'use client'
 
+import * as React from 'react'
 import { useEffect, useRef, useState } from 'react'
 import { cn } from '../ui/lib/utils'
 
@@ -7,7 +8,8 @@ interface GlobalLoadingProps {
   isLoading: boolean
 }
 
-function GlobalLoading({ isLoading }: GlobalLoadingProps) {
+const GlobalLoading = React.forwardRef<HTMLDivElement, GlobalLoadingProps>(
+  function GlobalLoading({ isLoading }, forwardedRef) {
   const ref = useRef<HTMLDivElement>(null)
   const [animationComplete, setAnimationComplete] = useState(true)
 
@@ -21,6 +23,7 @@ function GlobalLoading({ isLoading }: GlobalLoadingProps) {
 
   return (
     <div
+      ref={forwardedRef}
       role="progressbar"
       aria-hidden={!isLoading}
       aria-valuetext={isLoading ? 'Loading' : undefined}
@@ -45,7 +48,8 @@ function GlobalLoading({ isLoading }: GlobalLoadingProps) {
       />
     </div>
   )
-}
+},
+)
 
 GlobalLoading.displayName = 'GlobalLoading'
 

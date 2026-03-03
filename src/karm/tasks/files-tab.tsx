@@ -88,14 +88,15 @@ function formatFileDate(dateStr: string) {
 // Files Tab
 // ============================================================
 
-function FilesTab({
+const FilesTab = React.forwardRef<HTMLDivElement, FilesTabProps>(
+  function FilesTab({
   files,
   onUpload,
   onDelete,
   isUploading = false,
   className,
   readOnly = false,
-}: FilesTabProps) {
+}, ref) {
   const fileInputRef = React.useRef<HTMLInputElement>(null)
   const [dragOver, setDragOver] = React.useState(false)
 
@@ -129,7 +130,7 @@ function FilesTab({
   }
 
   return (
-    <div className={cn('flex flex-col', className)}>
+    <div ref={ref} className={cn('flex flex-col', className)}>
       {/* Upload zone -- hidden in readOnly mode */}
       {!readOnly && (
         <div
@@ -271,7 +272,8 @@ function FilesTab({
       )}
     </div>
   )
-}
+},
+)
 
 FilesTab.displayName = 'FilesTab'
 

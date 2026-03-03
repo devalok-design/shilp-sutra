@@ -1,5 +1,6 @@
 'use client'
 
+import * as React from 'react'
 import { useState, useCallback, type MouseEvent } from 'react'
 import { useToast } from '../../../hooks/use-toast'
 import { BreakBalance } from './break-balance'
@@ -103,7 +104,8 @@ export interface BreakAdminProps {
   realtimeCallbacks?: RealtimeCallbacks
 }
 
-export function BreakAdmin({
+export const BreakAdmin = React.forwardRef<HTMLDivElement, BreakAdminProps>(
+  function BreakAdmin({
   currentUser,
   breaks,
   pendingRequests,
@@ -129,7 +131,7 @@ export function BreakAdmin({
   onSaveBalance,
   onFetchMonthBreaks,
   realtimeCallbacks: _realtimeCallbacks,
-}: BreakAdminProps) {
+}, ref) {
   const [activeTab, setActiveTab] = useState<'breaks' | 'requests' | 'balance'>(
     'breaks',
   )
@@ -298,7 +300,7 @@ export function BreakAdmin({
   // ============================================================
 
   return (
-    <div className="z-[1] flex w-full max-w-layout flex-col items-center justify-center md:pt-0">
+    <div ref={ref} className="z-[1] flex w-full max-w-layout flex-col items-center justify-center md:pt-0">
       <div className="no-scrollbar w-full overflow-auto border border-border-subtle sm:rounded-[8px] max-md:rounded-none max-md:border-0">
         {/* Header */}
         <BreakAdminHeader
@@ -397,6 +399,7 @@ export function BreakAdmin({
       </div>
     </div>
   )
-}
+},
+)
 
 BreakAdmin.displayName = 'BreakAdmin'

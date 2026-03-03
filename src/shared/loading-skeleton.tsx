@@ -6,9 +6,11 @@ interface SkeletonProps {
   className?: string
 }
 
-function CardSkeleton({ className }: SkeletonProps) {
+const CardSkeleton = React.forwardRef<HTMLDivElement, SkeletonProps>(
+  function CardSkeleton({ className }, ref) {
   return (
     <div
+      ref={ref}
       className={cn(
         'rounded-ds-lg border border-border bg-layer-01 p-ds-05b',
         className,
@@ -29,7 +31,8 @@ function CardSkeleton({ className }: SkeletonProps) {
       </div>
     </div>
   )
-}
+},
+)
 
 CardSkeleton.displayName = 'CardSkeleton'
 
@@ -38,13 +41,15 @@ interface TableSkeletonProps extends SkeletonProps {
   columns?: number
 }
 
-function TableSkeleton({
+const TableSkeleton = React.forwardRef<HTMLDivElement, TableSkeletonProps>(
+  function TableSkeleton({
   rows = 5,
   columns = 4,
   className,
-}: TableSkeletonProps) {
+}, ref) {
   return (
     <div
+      ref={ref}
       className={cn(
         'overflow-hidden rounded-ds-lg border border-border',
         className,
@@ -85,7 +90,8 @@ function TableSkeleton({
       ))}
     </div>
   )
-}
+},
+)
 
 TableSkeleton.displayName = 'TableSkeleton'
 
@@ -94,13 +100,14 @@ interface BoardSkeletonProps extends SkeletonProps {
   cardsPerColumn?: number
 }
 
-function BoardSkeleton({
+const BoardSkeleton = React.forwardRef<HTMLDivElement, BoardSkeletonProps>(
+  function BoardSkeleton({
   columns = 4,
   cardsPerColumn = 3,
   className,
-}: BoardSkeletonProps) {
+}, ref) {
   return (
-    <div className={cn('flex gap-ds-05 overflow-x-auto', className)}>
+    <div ref={ref} className={cn('flex gap-ds-05 overflow-x-auto', className)}>
       {Array.from({ length: columns }).map((_, colIndex) => (
         <div
           key={`col-${colIndex}`}
@@ -139,7 +146,8 @@ function BoardSkeleton({
       ))}
     </div>
   )
-}
+},
+)
 
 BoardSkeleton.displayName = 'BoardSkeleton'
 
@@ -148,13 +156,14 @@ interface ListSkeletonProps extends SkeletonProps {
   showAvatar?: boolean
 }
 
-function ListSkeleton({
+const ListSkeleton = React.forwardRef<HTMLDivElement, ListSkeletonProps>(
+  function ListSkeleton({
   rows = 6,
   showAvatar = true,
   className,
-}: ListSkeletonProps) {
+}, ref) {
   return (
-    <div className={cn('flex flex-col', className)}>
+    <div ref={ref} className={cn('flex flex-col', className)}>
       {Array.from({ length: rows }).map((_, i) => (
         <div
           key={`list-${i}`}
@@ -175,7 +184,8 @@ function ListSkeleton({
       ))}
     </div>
   )
-}
+},
+)
 
 ListSkeleton.displayName = 'ListSkeleton'
 

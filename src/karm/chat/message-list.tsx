@@ -1,6 +1,7 @@
 'use client'
 
-import { useRef, useEffect } from 'react'
+import * as React from 'react'
+import { useRef, useEffect, useCallback } from 'react'
 import { StreamingText } from './streaming-text'
 import { IconRobot, IconUser, IconAlertCircle } from '@tabler/icons-react'
 import ReactMarkdown from 'react-markdown'
@@ -72,15 +73,21 @@ const markdownComponents = {
 // Component
 // ============================================================
 
-export function MessageList({
+export const MessageList = React.forwardRef<HTMLDivElement, MessageListProps>(
+  function MessageList({
   messages,
   isStreaming = false,
   streamingText = '',
   isLoadingMessages = false,
   emptyTitle = 'Karm AI',
   emptyDescription = 'Ask me about tasks, projects, attendance, or anything else.',
-}: MessageListProps) {
-  const scrollRef = useRef<HTMLDivElement>(null)
+}, forwardedRef) {
+  const scrollRef = useRef<HTMLDivElement | null>(null)
+  const mergedRef = useCallback((node: HTMLDivElement | null) => {
+    scrollRef.current = node
+    if (typeof forwardedRef === 'function') forwardedRef(node)
+    else if (forwardedRef) (forwardedRef as React.MutableRefObject<HTMLDivElement | null>).current = node
+  }, [forwardedRef])
 
   useEffect(() => {
     const el = scrollRef.current
@@ -89,7 +96,7 @@ export function MessageList({
 
   if (isLoadingMessages) {
     return (
-      <div className="flex flex-1 items-center justify-center">
+      <div ref={forwardedRef} className="flex flex-1 items-center justify-center">
         <div className="flex flex-col items-center gap-ds-03">
           <div className="h-6 w-6 animate-spin rounded-ds-full border-2 border-text-secondary border-t-transparent" />
           <p className="text-ds-sm text-text-placeholder">
@@ -103,7 +110,7 @@ export function MessageList({
   // Empty state
   if (messages.length === 0 && !isStreaming) {
     return (
-      <div className="flex flex-1 items-center justify-center p-ds-06">
+      <div ref={forwardedRef} className="flex flex-1 items-center justify-center p-ds-06">
         <div className="flex flex-col items-center gap-ds-04 text-center">
           <div className="flex h-12 w-12 items-center justify-center rounded-ds-full bg-field">
             <IconRobot className="h-6 w-6 text-text-secondary" />
@@ -120,7 +127,7 @@ export function MessageList({
   }
 
   return (
-    <div ref={scrollRef} className="no-scrollbar flex-1 overflow-y-auto p-ds-05">
+    <div ref={mergedRef} className="no-scrollbar flex-1 overflow-y-auto p-ds-05">
       <div className="flex flex-col gap-ds-05" role="log" aria-label="Chat messages">
         {messages.map((msg) => {
           if (msg.role === 'SYSTEM') {
@@ -206,4 +213,7 @@ export function MessageList({
       </div>
     </div>
   )
-}
+},
+)
+
+MessageList.displayName = 'MessageList'

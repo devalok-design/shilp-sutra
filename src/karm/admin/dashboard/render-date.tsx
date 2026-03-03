@@ -5,6 +5,7 @@
 // Extracted from admin-dashboard.tsx
 // ============================================================
 
+import * as React from 'react'
 import { useEffect, useState } from 'react'
 import { cn } from '../../../ui/lib/utils'
 import {
@@ -36,13 +37,14 @@ export interface RenderDateProps {
 // Component
 // ============================================================
 
-export function RenderDate({
+export const RenderDate = React.forwardRef<HTMLDivElement, RenderDateProps>(
+  function RenderDate({
   day,
   isAdmin,
   dateAttendanceMap,
   selectedDate,
   activeTimeFrame,
-}: RenderDateProps) {
+}, ref) {
   const [state, setState] = useState({
     today: day.isToday,
     isPresent: null as boolean | null,
@@ -246,7 +248,7 @@ export function RenderDate({
   )
 
   return (
-    <div className={bgClasses}>
+    <div ref={ref} className={bgClasses}>
       <div
         className={dateClasses}
         tabIndex={0}
@@ -274,6 +276,7 @@ export function RenderDate({
       </div>
     </div>
   )
-}
+},
+)
 
 RenderDate.displayName = 'RenderDate'

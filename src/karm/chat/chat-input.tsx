@@ -1,5 +1,6 @@
 'use client'
 
+import * as React from 'react'
 import { useState, useRef, useCallback, type KeyboardEvent } from 'react'
 import { IconSend, IconSquare } from '@tabler/icons-react'
 
@@ -11,13 +12,14 @@ interface ChatInputProps {
   disclaimer?: string
 }
 
-export function ChatInput({
+export const ChatInput = React.forwardRef<HTMLDivElement, ChatInputProps>(
+  function ChatInput({
   onSubmit,
   onCancel,
   isStreaming = false,
   placeholder = 'Ask Karm AI...',
   disclaimer = 'AI responses may be inaccurate. Verify important information.',
-}: ChatInputProps) {
+}, ref) {
   const [text, setText] = useState('')
   const textareaRef = useRef<HTMLTextAreaElement>(null)
 
@@ -50,7 +52,7 @@ export function ChatInput({
   )
 
   return (
-    <div className="border-t border-border bg-layer-01 p-ds-04">
+    <div ref={ref} className="border-t border-border bg-layer-01 p-ds-04">
       <div className="flex items-end gap-ds-03 rounded-ds-xl border border-border bg-field px-ds-04 py-ds-03">
         <textarea
           ref={textareaRef}
@@ -91,4 +93,7 @@ export function ChatInput({
       )}
     </div>
   )
-}
+},
+)
+
+ChatInput.displayName = 'ChatInput'

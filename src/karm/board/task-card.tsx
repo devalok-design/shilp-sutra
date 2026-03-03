@@ -1,5 +1,6 @@
 'use client'
 
+import * as React from 'react'
 import { useSortable } from '@dnd-kit/sortable'
 import { CSS } from '@dnd-kit/utilities'
 import type { DraggableAttributes } from '@dnd-kit/core'
@@ -228,6 +229,14 @@ interface TaskCardOverlayProps {
   task: BoardTask
 }
 
-export function TaskCardOverlay({ task }: TaskCardOverlayProps) {
-  return <TaskCardVisual task={task} isDragOverlay />
-}
+export const TaskCardOverlay = React.forwardRef<HTMLDivElement, TaskCardOverlayProps>(
+  function TaskCardOverlay({ task }, ref) {
+  return (
+    <div ref={ref}>
+      <TaskCardVisual task={task} isDragOverlay />
+    </div>
+  )
+},
+)
+
+TaskCardOverlay.displayName = 'TaskCardOverlay'

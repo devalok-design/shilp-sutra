@@ -30,7 +30,8 @@ export interface CalendarProps {
 // Component
 // ============================================================
 
-export function Calendar({ onDateSelect, hasCorrection }: CalendarProps) {
+export const Calendar = React.forwardRef<HTMLDivElement, CalendarProps>(
+  function Calendar({ onDateSelect, hasCorrection }, ref) {
   const cal = useCalendarNavigation()
 
   // ============================================================
@@ -71,7 +72,7 @@ export function Calendar({ onDateSelect, hasCorrection }: CalendarProps) {
   // ============================================================
 
   return (
-    <div className="w-full">
+    <div ref={ref} className="w-full">
       <div className="flex-direction-row justify-flex-start mb-ds-06 flex w-full items-center">
         <DropdownMenu>
           <DropdownMenuTrigger className="text-ds-xl flex items-center gap-ds-03 text-text-secondary">
@@ -187,6 +188,7 @@ export function Calendar({ onDateSelect, hasCorrection }: CalendarProps) {
       </div>
     </div>
   )
-}
+},
+)
 
 Calendar.displayName = 'Calendar'

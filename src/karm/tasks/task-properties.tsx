@@ -139,7 +139,8 @@ function DefaultPriorityIndicator({ priority }: { priority: string }) {
 // Task Properties Component
 // ============================================================
 
-function TaskProperties({
+const TaskProperties = React.forwardRef<HTMLDivElement, TaskPropertiesProps>(
+  function TaskProperties({
   task,
   columns,
   members,
@@ -151,7 +152,7 @@ function TaskProperties({
   editableFields,
   renderPriorityIndicator,
   renderDatePicker,
-}: TaskPropertiesProps) {
+}, ref) {
   const [labelInput, setLabelInput] = React.useState('')
   const [showLabelInput, setShowLabelInput] = React.useState(false)
 
@@ -214,7 +215,7 @@ function TaskProperties({
   const PriorityIndicator = renderPriorityIndicator || DefaultPriorityIndicator
 
   return (
-    <div className={cn('space-y-0.5', className)}>
+    <div ref={ref} className={cn('space-y-0.5', className)}>
       {/* Column */}
       <PropertyRow icon={IconColumns3} label="Column">
         {readOnly && !editableFields?.includes('columnId') ? (
@@ -499,7 +500,8 @@ function TaskProperties({
       )}
     </div>
   )
-}
+},
+)
 
 TaskProperties.displayName = 'TaskProperties'
 

@@ -86,13 +86,14 @@ const RESPONSE_OPTIONS: {
 // Review Tab
 // ============================================================
 
-function ReviewTab({
+const ReviewTab = React.forwardRef<HTMLDivElement, ReviewTabProps>(
+  function ReviewTab({
   reviews,
   members,
   onRequestReview,
   onUpdateStatus,
   className,
-}: ReviewTabProps) {
+}, ref) {
   const [feedbackMap, setFeedbackMap] = React.useState<Record<string, string>>({})
   const [expandedId, setExpandedId] = React.useState<string | null>(null)
 
@@ -115,7 +116,7 @@ function ReviewTab({
   }
 
   return (
-    <div className={cn('flex flex-col', className)}>
+    <div ref={ref} className={cn('flex flex-col', className)}>
       {reviews.length > 0 ? (
         <div className="space-y-ds-04">
           {reviews.map((review) => {
@@ -258,7 +259,8 @@ function ReviewTab({
       </MemberPicker>
     </div>
   )
-}
+},
+)
 
 ReviewTab.displayName = 'ReviewTab'
 

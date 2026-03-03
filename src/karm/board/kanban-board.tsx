@@ -1,5 +1,6 @@
 'use client'
 
+import * as React from 'react'
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react'
 import { createPortal } from 'react-dom'
 import {
@@ -84,7 +85,8 @@ interface KanbanBoardProps {
 // Component
 // ============================================================
 
-export function KanbanBoard({
+export const KanbanBoard = React.forwardRef<HTMLDivElement, KanbanBoardProps>(
+  function KanbanBoard({
   initialData,
   onTaskMove,
   onTaskAdd,
@@ -93,11 +95,16 @@ export function KanbanBoard({
   onColumnToggleVisibility,
   onClickTask,
   onAddColumn,
-}: KanbanBoardProps) {
+}, forwardedRef) {
   const [board, setBoard] = useState<BoardData>(initialData)
   const [activeTask, setActiveTask] = useState<BoardTask | null>(null)
   const [mounted, setMounted] = useState(false)
-  const scrollRef = useRef<HTMLDivElement>(null)
+  const scrollRef = useRef<HTMLDivElement | null>(null)
+  const mergedRef = useCallback((node: HTMLDivElement | null) => {
+    scrollRef.current = node
+    if (typeof forwardedRef === 'function') forwardedRef(node)
+    else if (forwardedRef) (forwardedRef as React.MutableRefObject<HTMLDivElement | null>).current = node
+  }, [forwardedRef])
 
   // Sync board when initialData changes
   useEffect(() => {
@@ -311,7 +318,7 @@ export function KanbanBoard({
       accessibility={{ announcements }}
     >
       <div
-        ref={scrollRef}
+        ref={mergedRef}
         className="no-scrollbar flex h-full gap-ds-05 overflow-x-auto pb-ds-05"
       >
         <SortableContext
@@ -356,4 +363,7 @@ export function KanbanBoard({
         )}
     </DndContext>
   )
-}
+},
+)
+
+KanbanBoard.displayName = 'KanbanBoard'

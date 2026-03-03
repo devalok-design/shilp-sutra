@@ -217,10 +217,12 @@ function getActorName(entry: AuditLogEntry): string {
 // IconActivity Tab
 // ============================================================
 
-function ActivityTab({ activities, className }: ActivityTabProps) {
+const ActivityTab = React.forwardRef<HTMLDivElement, ActivityTabProps>(
+  function ActivityTab({ activities, className }, ref) {
   if (activities.length === 0) {
     return (
       <EmptyState
+        ref={ref}
         icon={IconActivity}
         title="No activity yet"
         description="Actions on this task will appear here"
@@ -231,7 +233,7 @@ function ActivityTab({ activities, className }: ActivityTabProps) {
   }
 
   return (
-    <div className={cn('relative', className)}>
+    <div ref={ref} className={cn('relative', className)}>
       {/* Timeline line */}
       <div className="absolute left-[11px] top-2 bottom-2 w-px bg-border" />
 
@@ -279,7 +281,8 @@ function ActivityTab({ activities, className }: ActivityTabProps) {
       </div>
     </div>
   )
-}
+},
+)
 
 ActivityTab.displayName = 'ActivityTab'
 

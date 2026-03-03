@@ -6,7 +6,7 @@
 // ============================================================
 
 import * as React from 'react'
-import { useRef, useState } from 'react'
+import { useRef, useState, useCallback } from 'react'
 import { AvatarStack } from '../../../ui/avatar-stack'
 import type {
   AdminUser,
@@ -66,14 +66,20 @@ function onBreakGroup(
 // Component
 // ============================================================
 
-export function AttendanceOverview({
+export const AttendanceOverview = React.forwardRef<HTMLDivElement, AttendanceOverviewProps>(
+  function AttendanceOverview({
   isFutureDate,
   users,
   groupedAttendance,
   userImages,
   selectedDate,
-}: AttendanceOverviewProps) {
-  const scrollContainerRef = useRef<HTMLDivElement>(null)
+}, forwardedRef) {
+  const scrollContainerRef = useRef<HTMLDivElement | null>(null)
+  const mergedRef = useCallback((node: HTMLDivElement | null) => {
+    scrollContainerRef.current = node
+    if (typeof forwardedRef === 'function') forwardedRef(node)
+    else if (forwardedRef) (forwardedRef as React.MutableRefObject<HTMLDivElement | null>).current = node
+  }, [forwardedRef])
   const [isDragging, setIsDragging] = useState(false)
   const [startX, setStartX] = useState(0)
   const [scrollLeft, setScrollLeft] = useState(0)
@@ -104,7 +110,7 @@ export function AttendanceOverview({
 
   return (
     <div
-      ref={scrollContainerRef}
+      ref={mergedRef}
       className="hide-scrollbar w-full cursor-grab overflow-x-auto active:cursor-grabbing max-md:pb-[16px]"
       onMouseDown={handleMouseDown}
       onMouseMove={handleMouseMove}
@@ -197,6 +203,7 @@ export function AttendanceOverview({
       </div>
     </div>
   )
-}
+},
+)
 
 AttendanceOverview.displayName = 'AttendanceOverview'

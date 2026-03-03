@@ -5,6 +5,7 @@
 // Extracted from admin-dashboard.tsx
 // ============================================================
 
+import * as React from 'react'
 import { Fragment } from 'react'
 import { Tooltip, TooltipContent, TooltipTrigger } from '../../../ui/tooltip'
 import { CrossIcon, TickIcon } from '../icons'
@@ -38,7 +39,8 @@ export interface CorrectionListProps {
 // Component
 // ============================================================
 
-export function CorrectionList({
+export const CorrectionList = React.forwardRef<HTMLDivElement, CorrectionListProps>(
+  function CorrectionList({
   corrections,
   currentUserId,
   userImages,
@@ -46,7 +48,7 @@ export function CorrectionList({
   activeTimeFrame,
   onApproveCorrection,
   onRejectCorrection,
-}: CorrectionListProps) {
+}, ref) {
   const handleCorrectionAction = async (
     correction: AttendanceCorrection,
     status: CorrectionStatus,
@@ -60,12 +62,13 @@ export function CorrectionList({
 
   if (corrections.length === 0) {
     return (
-      <div className="p-ds-05 text-center">No pending corrections</div>
+      <div ref={ref} className="p-ds-05 text-center">No pending corrections</div>
     )
   }
 
   return (
     <div
+      ref={ref}
       className={`flex max-h-[200px] w-full flex-col overflow-y-auto bg-layer-01 px-ds-06 max-md:h-[calc(100vh-586px)] max-md:max-h-[calc(100vh-586px)] max-md:min-h-[372px] max-md:p-0 ${activeTimeFrame === 'weekly1' ? 'max-md:h-[calc(100vh-824px)] max-md:max-h-[calc(100vh-824px)]' : ''}`}
     >
       {corrections.map((correction) => (
@@ -180,6 +183,7 @@ export function CorrectionList({
       ))}
     </div>
   )
-}
+},
+)
 
 CorrectionList.displayName = 'CorrectionList'

@@ -93,7 +93,8 @@ function getErrorConfig(status?: number) {
   }
 }
 
-function ErrorDisplay({ error, onReset }: ErrorDisplayProps) {
+const ErrorDisplay = React.forwardRef<HTMLDivElement, ErrorDisplayProps>(
+  function ErrorDisplay({ error, onReset }, ref) {
   const status = getStatusFromError(error)
   const message = getMessageFromError(error)
   const stack = getStackFromError(error)
@@ -106,7 +107,7 @@ function ErrorDisplay({ error, onReset }: ErrorDisplayProps) {
   const Icon = errorConfig.icon
 
   return (
-    <div className="flex min-h-[60vh] items-center justify-center p-ds-05">
+    <div ref={ref} className="flex min-h-[60vh] items-center justify-center p-ds-05">
       <div
         className="flex w-full max-w-lg flex-col items-center gap-ds-06 rounded-ds-xl border border-border bg-layer-01 p-ds-07 text-center shadow-01"
       >
@@ -164,7 +165,8 @@ function ErrorDisplay({ error, onReset }: ErrorDisplayProps) {
       </div>
     </div>
   )
-}
+},
+)
 
 ErrorDisplay.displayName = 'ErrorDisplay'
 

@@ -196,7 +196,8 @@ function AttendanceEditDialog({
 // Component
 // ============================================================
 
-export function AssociateDetail({
+export const AssociateDetail = React.forwardRef<HTMLDivElement, AssociateDetailProps>(
+  function AssociateDetail({
   selectedAssociate,
   selectedDate,
   selectedUserAttendance,
@@ -211,7 +212,7 @@ export function AssociateDetail({
   onCancelBreak,
   onRefreshSelectedUserAttendance,
   onRefreshAttendanceData,
-}: AssociateDetailProps) {
+}, ref) {
   const [newTaskName, setNewTaskName] = useState('')
   const [draggedTaskIndex, setDraggedTaskIndex] = useState<number | null>(null)
   const [hoveredTaskIndex, setHoveredTaskIndex] = useState<number | null>(null)
@@ -242,7 +243,7 @@ export function AssociateDetail({
   }
 
   return (
-    <div className="relative flex items-center justify-between md:items-stretch">
+    <div ref={ref} className="relative flex items-center justify-between md:items-stretch">
       {!isFutureDate && selectedUserAttendance?.status !== 'BREAK' && (
         <Dialog>
           <DialogTrigger asChild>
@@ -431,6 +432,7 @@ export function AssociateDetail({
       )}
     </div>
   )
-}
+},
+)
 
 AssociateDetail.displayName = 'AssociateDetail'

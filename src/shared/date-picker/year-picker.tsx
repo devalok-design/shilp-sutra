@@ -1,5 +1,6 @@
 'use client'
 
+import * as React from 'react'
 import { cn } from '../../ui/lib/utils'
 
 export interface YearPickerProps {
@@ -10,18 +11,19 @@ export interface YearPickerProps {
   maxDate?: Date
 }
 
-export function YearPicker({
+export const YearPicker = React.forwardRef<HTMLDivElement, YearPickerProps>(
+  function YearPicker({
   currentYear,
   selectedYear,
   onYearSelect,
   minDate,
   maxDate,
-}: YearPickerProps) {
+}, ref) {
   const startYear = Math.floor(currentYear / 10) * 10
   const years = Array.from({ length: 12 }, (_, i) => startYear + i)
 
   return (
-    <div className="w-[252px]">
+    <div ref={ref} className="w-[252px]">
       <div className="text-center pb-ds-04 text-ds-md font-semibold text-text-primary">
         {startYear} &ndash; {startYear + 11}
       </div>
@@ -55,6 +57,7 @@ export function YearPicker({
       </div>
     </div>
   )
-}
+},
+)
 
 YearPicker.displayName = 'YearPicker'

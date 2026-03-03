@@ -7,7 +7,7 @@
 
 import * as React from 'react'
 import { useRef, useState, useCallback } from 'react'
-import { AvatarGroup } from '../../../shared/avatar-group'
+import { AvatarGroup } from '../../../composed/avatar-group'
 import type {
   AdminUser,
   AttendanceRecord,

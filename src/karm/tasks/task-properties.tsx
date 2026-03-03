@@ -25,8 +25,8 @@ import {
   IconX,
   IconChevronDown,
 } from '@tabler/icons-react'
-import { getInitials } from '../../shared/lib/string-utils'
-import { MemberPicker } from '../../shared/member-picker'
+import { getInitials } from '../../composed/lib/string-utils'
+import { MemberPicker } from '../../composed/member-picker'
 import { PRIORITY_LABELS, PRIORITY_DOT_COLORS } from './task-constants'
 
 // ============================================================

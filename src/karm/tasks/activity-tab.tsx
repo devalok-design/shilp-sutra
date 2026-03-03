@@ -2,7 +2,7 @@
 
 import * as React from 'react'
 import { cn } from '../../ui/lib/utils'
-import { EmptyState } from '../../shared/empty-state'
+import { EmptyState } from '../../composed/empty-state'
 import {
   IconActivity,
   IconArrowRight,

@@ -12,9 +12,13 @@
       "import": "./dist/ui/index.js",
       "types": "./dist/ui/index.d.ts"
     },
+    "./composed": {
+      "import": "./dist/composed/index.js",
+      "types": "./dist/composed/index.d.ts"
+    },
     "./shared": {
-      "import": "./dist/shared/index.js",
-      "types": "./dist/shared/index.d.ts"
+      "import": "./dist/composed/index.js",
+      "types": "./dist/composed/index.d.ts"
     },
     "./layout": {
       "import": "./dist/layout/index.js",

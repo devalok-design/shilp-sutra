@@ -10,7 +10,7 @@ import { cn } from '../../ui/lib/utils'
 import { Avatar, AvatarFallback, AvatarImage } from '../../ui/avatar'
 import { Badge } from '../../ui'
 import { IconCalendar, IconGripVertical } from '@tabler/icons-react'
-import { getInitials } from '../../shared/lib/string-utils'
+import { getInitials } from '../../composed/lib/string-utils'
 import { PRIORITY_LABELS, PRIORITY_DOT_COLORS } from '../tasks/task-constants'
 
 // ============================================================

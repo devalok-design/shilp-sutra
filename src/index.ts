@@ -66,7 +66,7 @@ export {
   MemberPicker,
   type MemberPickerProps,
   type MemberPickerMember,
-} from './shared'
+} from './composed'
 export * from './layout'
 export {
   // Board components

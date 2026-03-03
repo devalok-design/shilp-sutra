@@ -32,7 +32,7 @@ import {
   IconLink,
   IconPackage,
 } from '@tabler/icons-react'
-import { CommandPalette, type CommandGroup, type CommandItem } from '../shared/command-palette'
+import { CommandPalette, type CommandGroup, type CommandItem } from '../composed/command-palette'
 
 // -----------------------------------------------------------------------
 // Types

@@ -8,8 +8,8 @@ import {
   AvatarFallback,
 } from '../../ui/avatar'
 import { Badge } from '../../ui/badge'
-import { EmptyState } from '../../shared/empty-state'
-import { MemberPicker } from '../../shared/member-picker'
+import { EmptyState } from '../../composed/empty-state'
+import { MemberPicker } from '../../composed/member-picker'
 import {
   IconGitPullRequest,
   IconPlus,
@@ -17,7 +17,7 @@ import {
   IconX,
   IconMessage,
 } from '@tabler/icons-react'
-import { getInitials } from '../../shared/lib/string-utils'
+import { getInitials } from '../../composed/lib/string-utils'
 import { REVIEW_STATUS_MAP } from './task-constants'
 
 // ============================================================

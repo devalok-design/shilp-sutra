@@ -13,7 +13,7 @@ import {
   DialogClose,
 } from '../../ui/dialog'
 import { Button } from '../../ui/button'
-import { EmptyState } from '../../shared/empty-state'
+import { EmptyState } from '../../composed/empty-state'
 import {
   IconFile as FileIcon,
   IconFileText,

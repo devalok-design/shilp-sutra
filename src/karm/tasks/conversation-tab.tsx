@@ -7,9 +7,9 @@ import {
   AvatarImage,
   AvatarFallback,
 } from '../../ui/avatar'
-import { EmptyState } from '../../shared/empty-state'
+import { EmptyState } from '../../composed/empty-state'
 import { IconMessageCircle, IconSend } from '@tabler/icons-react'
-import { getInitials } from '../../shared/lib/string-utils'
+import { getInitials } from '../../composed/lib/string-utils'
 
 // ============================================================
 // Types

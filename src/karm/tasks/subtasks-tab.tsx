@@ -8,14 +8,14 @@ import {
   AvatarFallback,
 } from '../../ui/avatar'
 import { Progress } from '../../ui'
-import { EmptyState } from '../../shared/empty-state'
+import { EmptyState } from '../../composed/empty-state'
 import {
   IconSquareCheck,
   IconSquare,
   IconPlus,
   IconListCheck,
 } from '@tabler/icons-react'
-import { getInitials } from '../../shared/lib/string-utils'
+import { getInitials } from '../../composed/lib/string-utils'
 import { PRIORITY_DOT_COLORS } from './task-constants'
 
 // ============================================================

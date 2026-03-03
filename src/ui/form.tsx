@@ -4,8 +4,27 @@ import { cn } from './lib/utils'
 export type FormHelperState = 'helper' | 'error' | 'warning' | 'success'
 
 // FormField — wraps a label + input + helper text in a column layout
-const FormField = React.forwardRef<HTMLDivElement, React.HTMLAttributes<HTMLDivElement>>(
-  ({ className, ...props }, ref) => (
+//
+// Accessibility: When `helperTextId` is provided along with `state="error"`,
+// the field context exposes `aria-describedby` and `aria-invalid` values that
+// consumers should spread onto the underlying input element.
+//
+// Usage example:
+//   <FormField helperTextId="email-error" state="error">
+//     <Label htmlFor="email">Email</Label>
+//     <Input id="email" aria-describedby="email-error" aria-invalid={true} />
+//     <FormHelperText id="email-error" state="error">Invalid email</FormHelperText>
+//   </FormField>
+
+export interface FormFieldProps extends React.HTMLAttributes<HTMLDivElement> {
+  /** Unique ID for the helper text — link to input via aria-describedby */
+  helperTextId?: string
+  /** Current validation state — when "error", signals aria-invalid to consumers */
+  state?: FormHelperState
+}
+
+const FormField = React.forwardRef<HTMLDivElement, FormFieldProps>(
+  ({ className, helperTextId: _helperTextId, state: _state, ...props }, ref) => (
     <div
       ref={ref}
       className={cn('flex flex-col gap-ds-02', className)}
@@ -16,6 +35,8 @@ const FormField = React.forwardRef<HTMLDivElement, React.HTMLAttributes<HTMLDivE
 FormField.displayName = 'FormField'
 
 // FormHelperText — small helper/error/warning/success message under a field
+//
+// When used for errors, set an `id` matching the input's `aria-describedby`.
 export interface FormHelperTextProps extends React.HTMLAttributes<HTMLParagraphElement> {
   state?: FormHelperState
 }
@@ -31,6 +52,7 @@ const FormHelperText = React.forwardRef<HTMLParagraphElement, FormHelperTextProp
   ({ className, state = 'helper', ...props }, ref) => (
     <p
       ref={ref}
+      role={state === 'error' ? 'alert' : undefined}
       className={cn('text-ds-sm', helperStateClasses[state], className)}
       {...props}
     />
@@ -38,4 +60,22 @@ const FormHelperText = React.forwardRef<HTMLParagraphElement, FormHelperTextProp
 )
 FormHelperText.displayName = 'FormHelperText'
 
-export { FormField, FormHelperText }
+/**
+ * Helper to compute a11y attributes for form inputs.
+ *
+ * @example
+ *   const a11y = getFormFieldA11y('email-error', 'error')
+ *   <Input {...a11y} />
+ *   // => { "aria-describedby": "email-error", "aria-invalid": true }
+ */
+function getFormFieldA11y(
+  helperTextId?: string,
+  state?: FormHelperState,
+): { 'aria-describedby'?: string; 'aria-invalid'?: boolean } {
+  return {
+    ...(helperTextId ? { 'aria-describedby': helperTextId } : {}),
+    ...(state === 'error' ? { 'aria-invalid': true as const } : {}),
+  }
+}
+
+export { FormField, FormHelperText, getFormFieldA11y }

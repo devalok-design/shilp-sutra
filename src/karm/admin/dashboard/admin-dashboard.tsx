@@ -331,9 +331,12 @@ function AdminDashboardCalendar({
                 : ''
             } ${day.isPadding ? 'opacity-50' : ''} `}
             onClick={() => handleDayClick(index, day.fullDate)}
-            onKeyDown={(e) =>
-              e.key === 'Enter' && handleDayClick(index, day.fullDate)
-            }
+            onKeyDown={(e) => {
+              if (e.key === 'Enter' || e.key === ' ') {
+                e.preventDefault()
+                handleDayClick(index, day.fullDate)
+              }
+            }}
           >
             {cal.activeTimeFrame === 'weekly' && (
               <span className="text-ds-sm font-semibold uppercase tracking-wider mb-ds-03  text-text-tertiary">
@@ -551,14 +554,9 @@ function AdminDashboardLeaveRequests({
       <div className="max-md:pt[16px] flex flex-col items-start overflow-hidden rounded-[8px] border-0 border-border-subtle bg-layer-01 shadow-01 pt-ds-03 md:border max-md:pb-0">
         <div className="flex w-full items-start border-b-[1px] border-b-border px-ds-06 md:border-b max-md:border-0 max-md:px-[0px]">
           {requests.length > 0 && (
-            <div
-              role="button"
-              tabIndex={0}
+            <button
+              type="button"
               onClick={() => handleRequestTabSwitch('leaveRequest')}
-              onKeyDown={(e) =>
-                e.key === 'Enter' &&
-                handleRequestTabSwitch('leaveRequest')
-              }
               className={`text-ds-sm font-semibold uppercase tracking-wider cursor-pointer px-ds-03 py-ds-04  ${
                 activeTab === 'leaveRequest'
                   ? 'border-b-[1px] border-b-interactive-hover text-text-primary'
@@ -569,17 +567,12 @@ function AdminDashboardLeaveRequests({
               <span className="text-interactive-hover">
                 ({requests.length})
               </span>
-            </div>
+            </button>
           )}
           {filteredAttendanceCorrections.length > 0 && (
-            <div
-              role="button"
-              tabIndex={0}
+            <button
+              type="button"
               onClick={() =>
-                handleRequestTabSwitch('attendanceRequest')
-              }
-              onKeyDown={(e) =>
-                e.key === 'Enter' &&
                 handleRequestTabSwitch('attendanceRequest')
               }
               className={`text-ds-sm font-semibold uppercase tracking-wider cursor-pointer px-ds-03 py-ds-04  ${
@@ -592,7 +585,7 @@ function AdminDashboardLeaveRequests({
               <span className="text-interactive-hover">
                 ({filteredAttendanceCorrections.length})
               </span>
-            </div>
+            </button>
           )}
         </div>
 

@@ -28,12 +28,12 @@ export interface LeaveRequestProps {
   request: BreakRequest
   userImages: Record<string, string>
   handleRejectRequest: (
-    event: MouseEvent<HTMLDivElement, globalThis.MouseEvent>,
+    event: MouseEvent<HTMLButtonElement, globalThis.MouseEvent>,
     id: string,
     comment?: string,
   ) => void
   handleApproveRequest: (
-    event: MouseEvent<HTMLDivElement, globalThis.MouseEvent>,
+    event: MouseEvent<HTMLButtonElement, globalThis.MouseEvent>,
     id: string,
     comment?: string,
   ) => void
@@ -134,15 +134,18 @@ export function LeaveRequest({
         <div className="flex items-center gap-ds-04">
           <Tooltip delayDuration={0}>
             <TooltipTrigger asChild>
-              <div
-                onClick={(e: MouseEvent<HTMLDivElement>) =>
+              <button
+                type="button"
+                onClick={(e: MouseEvent<HTMLButtonElement>) =>
                   request.user?.id !== userId &&
                   handleRejectRequest(e, request.id)
                 }
-                className={`cursor-pointer p-ds-03 ${request.user?.id === userId ? 'cursor-not-allowed opacity-50' : ''}`}
+                disabled={request.user?.id === userId}
+                aria-label="Reject break request"
+                className={`p-ds-03 ${request.user?.id === userId ? 'cursor-not-allowed opacity-50' : 'cursor-pointer'}`}
               >
                 <CrossIcon className="h-6 w-6" />
-              </div>
+              </button>
             </TooltipTrigger>
             {request.user?.id === userId && (
               <TooltipContent>
@@ -153,15 +156,18 @@ export function LeaveRequest({
 
           <Tooltip delayDuration={0}>
             <TooltipTrigger asChild>
-              <div
-                onClick={(e: MouseEvent<HTMLDivElement>) =>
+              <button
+                type="button"
+                onClick={(e: MouseEvent<HTMLButtonElement>) =>
                   request.user?.id !== userId &&
                   handleApproveRequest(e, request.id)
                 }
-                className={`cursor-pointer ${request.user?.id === userId ? 'cursor-not-allowed opacity-50' : ''}`}
+                disabled={request.user?.id === userId}
+                aria-label="Approve break request"
+                className={`${request.user?.id === userId ? 'cursor-not-allowed opacity-50' : 'cursor-pointer'}`}
               >
                 <TickIcon className="h-6 w-6" />
-              </div>
+              </button>
             </TooltipTrigger>
             {request.user?.id === userId && (
               <TooltipContent>
@@ -205,7 +211,7 @@ export function LeaveRequest({
                 // Create a synthetic mouse event for the callback signature
                 const syntheticEvent = new window.MouseEvent(
                   'click',
-                ) as unknown as MouseEvent<HTMLDivElement>
+                ) as unknown as MouseEvent<HTMLButtonElement>
                 if (clickedAction === 'approve') {
                   handleApproveRequest(syntheticEvent, request.id, comment)
                 } else if (clickedAction === 'reject') {

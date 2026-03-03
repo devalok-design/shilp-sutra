@@ -353,7 +353,8 @@ export function AssociateDetail({
                     ) : (
                       <DragIcon />
                     )}
-                    <div
+                    <button
+                      type="button"
                       onClick={() => {
                         onToggleTaskStatus?.(
                           task.id,
@@ -362,6 +363,7 @@ export function AssociateDetail({
                             : 'COMPLETED',
                         )
                       }}
+                      aria-label={task.status === 'COMPLETED' ? `Mark "${task.title}" as incomplete` : `Mark "${task.title}" as complete`}
                       className="cursor-pointer"
                     >
                       {task.status === 'COMPLETED' ? (
@@ -369,7 +371,7 @@ export function AssociateDetail({
                       ) : (
                         <CheckboxIcon />
                       )}
-                    </div>
+                    </button>
                     <p
                       className={`text-ds-md flex-1 overflow-hidden hyphens-auto break-all pr-ds-05 ${
                         task.status === 'COMPLETED'

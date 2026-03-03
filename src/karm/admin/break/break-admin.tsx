@@ -173,7 +173,7 @@ export function BreakAdmin({
 
   const handleApproveRequest = useCallback(
     async (
-      event: MouseEvent<HTMLDivElement, globalThis.MouseEvent>,
+      event: MouseEvent<HTMLButtonElement, globalThis.MouseEvent>,
       requestId: string,
       comment?: string,
     ) => {
@@ -231,7 +231,7 @@ export function BreakAdmin({
 
   const handleRejectRequest = useCallback(
     async (
-      event: MouseEvent<HTMLDivElement, globalThis.MouseEvent>,
+      event: MouseEvent<HTMLButtonElement, globalThis.MouseEvent>,
       requestId: string,
       comment?: string,
     ) => {

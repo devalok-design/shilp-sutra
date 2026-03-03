@@ -574,6 +574,12 @@ export function EditBreak({
                             ${picker.selectedStartDate === picker.selectedEndDate ? 'same-date' : ''}
                           `}
                           onClick={() => handleDayClick(day)}
+                          onKeyDown={(e) => {
+                            if (e.key === 'Enter' || e.key === ' ') {
+                              e.preventDefault()
+                              handleDayClick(day)
+                            }
+                          }}
                         >
                           <div
                             className={`mx-ds-02 my-ds-02 ${
@@ -617,26 +623,37 @@ export function EditBreak({
                   <p className="text-ds-xs font-semibold uppercase tracking-wider  text-text-placeholder">
                     Status
                   </p>
-                  <div
-                    className="relative flex cursor-pointer items-center gap-ds-02"
-                    onClick={() => setShowStatusOptions(!showStatusOptions)}
-                  >
-                    {renderStatus(formData.status)}
-                    <ArrowDownIcon />
+                  <div className="relative flex items-center gap-ds-02">
+                    <button
+                      type="button"
+                      className="flex cursor-pointer items-center gap-ds-02"
+                      aria-label="Change status"
+                      aria-expanded={showStatusOptions}
+                      onClick={() => setShowStatusOptions(!showStatusOptions)}
+                    >
+                      {renderStatus(formData.status)}
+                      <ArrowDownIcon />
+                    </button>
                     {showStatusOptions && (
-                      <div className="text-ds-base absolute left-[10px] top-[25px] z-[4] flex flex-col overflow-hidden rounded-[7px] border border-border bg-layer-01 shadow-02">
-                        <div
-                          className="cursor-pointer border-b border-b-border bg-layer-01 px-ds-04 py-ds-03"
+                      <div className="text-ds-base absolute left-[10px] top-[25px] z-[4] flex flex-col overflow-hidden rounded-[7px] border border-border bg-layer-01 shadow-02" role="listbox">
+                        <button
+                          type="button"
+                          className="cursor-pointer border-b border-b-border bg-layer-01 px-ds-04 py-ds-03 text-left"
+                          role="option"
+                          aria-selected={formData.status === 'APPROVED'}
                           onClick={() => handleStatusSelect('APPROVED')}
                         >
                           {renderStatus('APPROVED')}
-                        </div>
-                        <div
-                          className="cursor-pointer bg-layer-01 px-ds-04 py-ds-03"
+                        </button>
+                        <button
+                          type="button"
+                          className="cursor-pointer bg-layer-01 px-ds-04 py-ds-03 text-left"
+                          role="option"
+                          aria-selected={formData.status === 'REJECTED'}
                           onClick={() => handleStatusSelect('REJECTED')}
                         >
                           {renderStatus('REJECTED')}
-                        </div>
+                        </button>
                       </div>
                     )}
                   </div>

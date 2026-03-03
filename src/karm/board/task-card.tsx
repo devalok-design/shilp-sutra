@@ -96,6 +96,8 @@ function TaskCardVisual({
           )}
           {...(dragHandleProps?.attributes ?? {})}
           {...(dragHandleProps?.listeners ?? {})}
+          aria-label={`Drag handle for task: ${task.title}`}
+          aria-roledescription="sortable"
           onClick={(e) => e.stopPropagation()}
         >
           <IconGripVertical className="h-ico-sm w-ico-sm text-icon-secondary" />

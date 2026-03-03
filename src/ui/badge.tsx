@@ -19,9 +19,9 @@ const badgeVariants = cva(
         warning:
           'bg-warning-surface text-warning-text border-warning-border',
         brand:
-          'bg-interactive-subtle text-text-brand border-[var(--pink-200)]',
+          'bg-interactive-subtle text-text-brand border-interactive',
         accent:
-          'bg-accent-subtle text-[var(--color-accent)] border-[var(--purple-200)]',
+          'bg-accent-subtle text-accent border-accent',
         teal:
           'bg-category-teal-surface text-category-teal-text border-category-teal-border',
         amber:

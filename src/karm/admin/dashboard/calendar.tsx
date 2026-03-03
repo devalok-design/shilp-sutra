@@ -73,7 +73,7 @@ export const Calendar = React.forwardRef<HTMLDivElement, CalendarProps>(
 
   return (
     <div ref={ref} className="w-full">
-      <div className="flex-direction-row justify-flex-start mb-ds-06 flex w-full items-center">
+      <div className="mb-ds-06 flex w-full items-center justify-start">
         <DropdownMenu>
           <DropdownMenuTrigger className="text-ds-xl flex items-center gap-ds-03 text-text-secondary">
             {cal.selectedMonth}

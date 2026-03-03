@@ -244,7 +244,7 @@ export const CalendarGrid = React.forwardRef<HTMLDivElement, CalendarGridProps>(
               className={cn(
                 'flex h-8 w-9 items-center justify-center rounded-ds-md text-ds-md font-body transition-colors',
                 !inMonth && 'pointer-events-none opacity-0',
-                inMonth && disabled && 'opacity-40 pointer-events-none cursor-not-allowed',
+                inMonth && disabled && 'opacity-[0.38] pointer-events-none cursor-not-allowed',
                 inMonth && !disabled && !isSelected && !edge && !inRange &&
                   'text-text-primary hover:bg-field',
                 inRange && !edge &&

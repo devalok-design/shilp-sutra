@@ -551,7 +551,7 @@ const TabBar = React.forwardRef<
       <button
         className={`text-ds-sm font-semibold uppercase tracking-wider mb-[-1px] px-ds-03 py-ds-04 ${
           activeTab === 'breaks'
-            ? 'text-var(--color-text-primary) border-b-[1px] border-interactive-hover'
+            ? 'text-text-primary border-b-[1px] border-interactive-hover'
             : 'text-text-tertiary'
         }`}
         onClick={() => setActiveTab('breaks')}

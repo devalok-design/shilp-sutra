@@ -198,7 +198,7 @@ const FileUpload = React.forwardRef<HTMLDivElement, FileUploadProps>(
             onClick={openPicker}
             disabled={disabled}
             className={cn(
-              'inline-flex items-center gap-ds-2 rounded-ds-md px-ds-3 py-ds-2',
+              'inline-flex items-center gap-ds-02 rounded-ds-md px-ds-03 py-ds-02',
               'text-[length:var(--font-size-sm)] font-medium',
               'border border-border',
               'bg-field text-text-secondary',
@@ -234,7 +234,7 @@ const FileUpload = React.forwardRef<HTMLDivElement, FileUploadProps>(
             <p
               role="alert"
               aria-live="polite"
-              className="mt-ds-2 text-[length:var(--font-size-xs)] text-error"
+              className="mt-ds-02 text-[length:var(--font-size-xs)] text-error"
             >
               {displayError}
             </p>
@@ -266,8 +266,8 @@ const FileUpload = React.forwardRef<HTMLDivElement, FileUploadProps>(
             }
           }}
           className={cn(
-            'flex flex-col items-center justify-center gap-ds-3 rounded-ds-lg',
-            'border-2 border-dashed p-ds-8',
+            'flex flex-col items-center justify-center gap-ds-03 rounded-ds-lg',
+            'border-2 border-dashed p-ds-08',
             'transition-colors cursor-pointer',
             'border-border bg-field',
             isDragActive &&
@@ -323,7 +323,7 @@ const FileUpload = React.forwardRef<HTMLDivElement, FileUploadProps>(
         {displayError && (
           <p
             role="alert"
-            className="mt-ds-2 text-[length:var(--font-size-xs)] text-error"
+            className="mt-ds-02 text-[length:var(--font-size-xs)] text-error"
           >
             {displayError}
           </p>

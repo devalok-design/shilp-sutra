@@ -126,7 +126,7 @@ const TreeItem = React.forwardRef<HTMLLIElement, TreeItemProps>(
             'focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-focus',
             isSelected &&
               'bg-interactive-selected text-text-interactive',
-            disabled && 'opacity-40 cursor-not-allowed pointer-events-none',
+            disabled && 'opacity-[0.38] cursor-not-allowed pointer-events-none',
           )}
         >
           {/* Expand chevron */}

@@ -7,7 +7,7 @@
      T2-Reg  → heading-xl     T6-Reg  → heading-xs
      T3-Reg  → heading-lg     B1-Reg  → body-lg
      T4-Reg  → heading-md     B2-Reg  → body-md
-     B2-Semibold → body-md-semibold
+     B2-Semibold → body-md (use font-semibold utility)
      B3-Reg  → body-sm        B4-Reg  → body-xs
      L1      → label-lg       L2      → label-md
      L3      → label-sm       L4      → label-xs

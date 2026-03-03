@@ -680,7 +680,7 @@ export function DataTable<TData, TValue>({
                 'h-8 w-8 flex items-center justify-center',
                 'rounded-ds-md border border-border',
                 'enabled:hover:bg-layer-02',
-                'disabled:opacity-40 disabled:cursor-not-allowed',
+                'disabled:opacity-[0.38] disabled:cursor-not-allowed',
                 'transition-colors',
               )}
             >
@@ -703,7 +703,7 @@ export function DataTable<TData, TValue>({
                 'h-8 w-8 flex items-center justify-center',
                 'rounded-ds-md border border-border',
                 'enabled:hover:bg-layer-02',
-                'disabled:opacity-40 disabled:cursor-not-allowed',
+                'disabled:opacity-[0.38] disabled:cursor-not-allowed',
                 'transition-colors',
               )}
             >

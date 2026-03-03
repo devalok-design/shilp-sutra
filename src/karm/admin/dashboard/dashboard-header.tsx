@@ -101,7 +101,7 @@ export const DashboardHeader = React.forwardRef<HTMLDivElement, DashboardHeaderP
       <div className="flex w-full items-center justify-between gap-ds-05 md:mt-0 md:w-auto md:justify-start max-md:mt-[17px] max-lg:gap-[0.5rem]">
         <div className="hidden md:flex">
           {selectedAssociate ? (
-            <div className="text-ds-md flex-direction-row flex items-center justify-start rounded-ds-md bg-interactive px-ds-03 py-ds-02b text-text-on-color">
+            <div className="text-ds-md flex items-center justify-start rounded-ds-md bg-interactive px-ds-03 py-ds-02b text-text-on-color">
               <div className="flex items-center justify-start gap-0">
                 {userImages[selectedAssociate.id] ? (
                   <img
@@ -130,7 +130,7 @@ export const DashboardHeader = React.forwardRef<HTMLDivElement, DashboardHeaderP
             </div>
           ) : (
             <DropdownMenu>
-              <DropdownMenuTrigger className="text-ds-md flex-direction-row hidden items-center justify-between rounded-ds-md border border-border-subtle bg-layer-01 px-ds-03 py-ds-02b md:flex">
+              <DropdownMenuTrigger className="text-ds-md hidden items-center justify-between rounded-ds-md border border-border-subtle bg-layer-01 px-ds-03 py-ds-02b md:flex">
                 <div className="flex items-center">
                   <PersonIcon className="h-ico-md w-ico-md" />
                   <span className="text-ds-md ml-ds-01 mr-ds-02 text-text-secondary max-lg:mx-0 max-lg:text-ds-sm">

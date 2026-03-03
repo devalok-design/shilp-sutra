@@ -202,7 +202,7 @@ export const BreakAdminHeader = React.forwardRef<HTMLDivElement, BreakAdminHeade
 
         {/* Date Filter */}
         {filters.dateFilterEnd && (
-          <div className="text-ds-md flex-direction-row flex items-center justify-between rounded-ds-md bg-interactive px-ds-03 py-ds-02b text-text-on-color">
+          <div className="text-ds-md flex items-center justify-between rounded-ds-md bg-interactive px-ds-03 py-ds-02b text-text-on-color">
             <div className="flex items-center">
               <CalendarIcon />
               <span className="ml-ds-01 mr-ds-02">
@@ -234,7 +234,7 @@ export const BreakAdminHeader = React.forwardRef<HTMLDivElement, BreakAdminHeade
             setFilters((prev) => ({ ...prev, isOpen: open }))
           }}
         >
-          <DropdownMenuTrigger className="text-ds-md flex-direction-row flex items-center justify-between rounded-ds-md border border-border-subtle bg-layer-01 p-ds-02b">
+          <DropdownMenuTrigger className="text-ds-md flex items-center justify-between rounded-ds-md border border-border-subtle bg-layer-01 p-ds-02b">
             <div className="flex items-center">
               <CalendarDateIcon />
               <span className="mx-ds-03 text-text-secondary">

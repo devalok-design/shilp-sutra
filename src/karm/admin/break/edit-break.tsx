@@ -631,7 +631,7 @@ export function EditBreak({
                       <ArrowDownIcon />
                     </button>
                     {showStatusOptions && (
-                      <div className="text-ds-base absolute left-[10px] top-[25px] z-[4] flex flex-col overflow-hidden rounded-ds-md border border-border bg-layer-01 shadow-02" role="listbox">
+                      <div className="text-ds-base absolute left-[10px] top-[25px] z-raised flex flex-col overflow-hidden rounded-ds-md border border-border bg-layer-01 shadow-02" role="listbox">
                         <div
                           className="cursor-pointer border-b border-b-border bg-layer-01 px-ds-04 py-ds-03 text-left"
                           role="option"

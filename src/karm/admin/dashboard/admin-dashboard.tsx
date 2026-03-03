@@ -688,7 +688,7 @@ const AdminDashboardContent = React.forwardRef<
           'rounded-ds-lg': !_isFirstDate && !_isLastDate,
           'rounded-ds-lg rounded-tl-none': _isFirstDate && !_isLastDate,
           'rounded-b-ds-lg rounded-tr-none': !_isFirstDate && _isLastDate,
-          'rounded-none': _isFirstDate && _isLastDate,
+          'rounded-ds-none': _isFirstDate && _isLastDate,
         },
       )}
     >

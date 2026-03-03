@@ -24,7 +24,7 @@ const ApprovedAdjustments = React.forwardRef<HTMLDivElement, ApprovedAdjustments
   adminId,
 }, ref) {
   return (
-    <div ref={ref} className="no-scrollbar w-full overflow-auto border border-border-subtle sm:rounded-ds-lg max-md:rounded-none max-md:border-0">
+    <div ref={ref} className="no-scrollbar w-full overflow-auto border border-border-subtle sm:rounded-ds-lg max-md:rounded-ds-none max-md:border-0">
       <div className="bg-layer-02 pb-ds-06 pl-ds-05 pt-ds-03 md:p-ds-05">
         <div className="no-scrollbar w-full overflow-x-auto overflow-y-auto">
           <div className="min-w-[800px] max-md:w-[max-content]">

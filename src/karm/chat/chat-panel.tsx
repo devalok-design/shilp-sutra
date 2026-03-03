@@ -146,7 +146,7 @@ const ChatPanel = React.forwardRef<HTMLDivElement, ChatPanelProps>(
               onStartNewChat?.()
               setShowHistory(false)
             }}
-            className="flex h-8 w-8 items-center justify-center rounded-ds-lg text-text-secondary transition-colors hover:bg-layer-02"
+            className="flex h-ds-sm w-ds-sm items-center justify-center rounded-ds-lg text-text-secondary transition-colors hover:bg-layer-02"
             aria-label="New chat"
           >
             <IconMessagePlus className="h-ico-sm w-ico-sm" />
@@ -155,7 +155,7 @@ const ChatPanel = React.forwardRef<HTMLDivElement, ChatPanelProps>(
           {/* IconHistory Toggle */}
           <button
             onClick={() => setShowHistory(!showHistory)}
-            className={`flex h-8 w-8 items-center justify-center rounded-ds-lg transition-colors hover:bg-layer-02 ${
+            className={`flex h-ds-sm w-ds-sm items-center justify-center rounded-ds-lg transition-colors hover:bg-layer-02 ${
               showHistory
                 ? 'bg-layer-02 text-text-primary'
                 : 'text-text-secondary'
@@ -168,7 +168,7 @@ const ChatPanel = React.forwardRef<HTMLDivElement, ChatPanelProps>(
           {/* Close */}
           <button
             onClick={() => onOpenChange(false)}
-            className="flex h-8 w-8 items-center justify-center rounded-ds-lg text-text-secondary transition-colors hover:bg-layer-02"
+            className="flex h-ds-sm w-ds-sm items-center justify-center rounded-ds-lg text-text-secondary transition-colors hover:bg-layer-02"
             aria-label="Close chat"
           >
             <IconX className="h-ico-sm w-ico-sm" />

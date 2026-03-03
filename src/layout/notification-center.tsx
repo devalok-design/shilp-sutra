@@ -308,7 +308,7 @@ const NotificationCenter = React.forwardRef<HTMLButtonElement, NotificationCente
             <button
               ref={ref}
               className={cn(
-                'relative flex h-9 w-9 items-center justify-center rounded-ds-full border border-border bg-layer-02 text-text-secondary transition-colors hover:bg-layer-03',
+                'relative flex h-ds-sm-plus w-ds-sm-plus items-center justify-center rounded-ds-full border border-border bg-layer-02 text-text-secondary transition-colors hover:bg-layer-03',
                 className,
               )}
             >

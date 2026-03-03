@@ -47,10 +47,10 @@ const ClientPortalHeader = React.forwardRef<
             <img
               src={orgLogo}
               alt={orgName}
-              className="h-8 w-8 rounded-ds-md object-cover"
+              className="h-ds-sm w-ds-sm rounded-ds-md object-cover"
             />
           ) : (
-            <div className="flex h-8 w-8 items-center justify-center rounded-ds-md bg-interactive text-ds-sm font-semibold text-text-on-color">
+            <div className="flex h-ds-sm w-ds-sm items-center justify-center rounded-ds-md bg-interactive text-ds-sm font-semibold text-text-on-color">
               {initials}
             </div>
           )}
@@ -61,7 +61,7 @@ const ClientPortalHeader = React.forwardRef<
         <div className="flex items-center gap-ds-04">
           {children}
           <div className="flex items-center gap-ds-03">
-            <Avatar className="h-8 w-8">
+            <Avatar className="h-ds-sm w-ds-sm">
               {userAvatar && <AvatarImage src={userAvatar} alt={userName} />}
               <AvatarFallback className="bg-interactive-subtle text-ds-sm font-medium text-interactive">
                 {userInitials}

@@ -185,7 +185,7 @@ export default function NotificationPreferences({
                     )}
                   >
                     {/* Channel icon */}
-                    <div className="flex h-8 w-8 shrink-0 items-center justify-center rounded-ds-lg bg-layer-02">
+                    <div className="flex h-ds-sm w-ds-sm shrink-0 items-center justify-center rounded-ds-lg bg-layer-02">
                       <ChannelIcon className="h-ico-sm w-ico-sm text-text-secondary" />
                     </div>
 
@@ -204,7 +204,7 @@ export default function NotificationPreferences({
                       value={pref.minTier}
                       onValueChange={(v) => onUpdateTier?.(pref, v)}
                     >
-                      <SelectTrigger className="h-7 w-[130px] text-ds-sm">
+                      <SelectTrigger className="h-ds-xs-plus w-[130px] text-ds-sm">
                         <SelectValue />
                       </SelectTrigger>
                       <SelectContent>

@@ -11,7 +11,7 @@ const NavigationMenu = React.forwardRef<
   <NavigationMenuPrimitive.Root
     ref={ref}
     className={cn(
-      'relative z-10 flex max-w-max flex-1 items-center justify-center',
+      'relative z-raised flex max-w-max flex-1 items-center justify-center',
       className,
     )}
     {...props}
@@ -46,7 +46,7 @@ const NavigationMenuTrigger = React.forwardRef<
   <NavigationMenuPrimitive.Trigger
     ref={ref}
     className={cn(
-      'group inline-flex h-9 w-max items-center justify-center rounded-ds-md bg-transparent px-ds-05 py-ds-03 text-ds-md font-medium transition-colors hover:bg-field focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-focus disabled:pointer-events-none disabled:opacity-[0.38]',
+      'group inline-flex h-ds-sm-plus w-max items-center justify-center rounded-ds-md bg-transparent px-ds-05 py-ds-03 text-ds-md font-medium transition-colors hover:bg-field focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-focus disabled:pointer-events-none disabled:opacity-[0.38]',
       className,
     )}
     {...props}
@@ -102,7 +102,7 @@ const NavigationMenuIndicator = React.forwardRef<
   <NavigationMenuPrimitive.Indicator
     ref={ref}
     className={cn(
-      'top-full z-[1] flex h-1.5 items-end justify-center overflow-hidden data-[state=visible]:animate-in data-[state=hidden]:animate-out data-[state=hidden]:fade-out data-[state=visible]:fade-in',
+      'top-full z-base flex h-1.5 items-end justify-center overflow-hidden data-[state=visible]:animate-in data-[state=hidden]:animate-out data-[state=hidden]:fade-out data-[state=visible]:fade-in',
       className,
     )}
     {...props}

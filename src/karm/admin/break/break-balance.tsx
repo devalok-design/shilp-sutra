@@ -43,7 +43,7 @@ export const BreakBalance = React.forwardRef<HTMLDivElement, BreakBalanceProps>(
             className="flex w-full flex-row items-center justify-start gap-ds-03 !border-0 text-left hover:bg-field"
           >
             <div className="flex w-1/6 min-w-[120px] items-center gap-ds-03 p-ds-04">
-              <Avatar className="h-7 w-7">
+              <Avatar className="h-ds-xs-plus w-ds-xs-plus">
                 <AvatarImage src={userImages[breakItem.userId]} alt={breakItem.user?.name || ''} />
                 <AvatarFallback>{breakItem.user?.name?.[0] || 'U'}</AvatarFallback>
               </Avatar>

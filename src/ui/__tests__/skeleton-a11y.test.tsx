@@ -54,7 +54,7 @@ describe('Skeleton rendering', () => {
       <Skeleton variant="circle" className="h-12 w-12" />,
     )
     const el = container.firstChild as HTMLElement
-    expect(el.className).toContain('rounded-full')
+    expect(el.className).toContain('rounded-ds-full')
     expect(el.className).toContain('aspect-square')
   })
 

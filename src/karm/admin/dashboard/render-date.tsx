@@ -164,7 +164,7 @@ export const RenderDate = React.forwardRef<HTMLDivElement, RenderDateProps>(
   // tailwind-merge ensures the last conflicting class wins.
   const dateClasses = cn(
     // Base layout & transitions
-    'flex h-10 w-10 items-center justify-center rounded-full text-ds-base relative overflow-hidden',
+    'flex h-10 w-10 items-center justify-center rounded-ds-full text-ds-base relative overflow-hidden',
     'transition-[background-color,color,border] duration-200',
     'outline-border-strong outline-solid outline-0',
 
@@ -186,7 +186,7 @@ export const RenderDate = React.forwardRef<HTMLDivElement, RenderDateProps>(
 
     // Break mid in non-weekly view overrides break base
     !state.disabled && state.isBreak && isBreakMidNonWeekly &&
-      'rounded-none bg-interactive-subtle text-text-secondary shadow-none',
+      'rounded-ds-none bg-interactive-subtle text-text-secondary shadow-none',
 
     // Break border-radius overrides for non-weekly
     !state.disabled && state.isBreak && isBreakStartOnly &&
@@ -224,7 +224,7 @@ export const RenderDate = React.forwardRef<HTMLDivElement, RenderDateProps>(
     state.hover && !state.disabled && state.isBreak && !isBreakMidNonWeekly &&
       'bg-interactive-selected text-text-secondary shadow-[inset_0_4px_4px_var(--color-inset-glow),inset_0_0_4px_var(--color-focus)]',
     state.hover && !state.disabled && state.isBreak && isBreakMidNonWeekly &&
-      'rounded-none bg-interactive-subtle text-text-secondary shadow-none',
+      'rounded-ds-none bg-interactive-subtle text-text-secondary shadow-none',
 
     // Hover on absent (not today, not break)
     state.hover && !state.disabled && !state.today && !state.isBreak && state.isAbsent &&
@@ -271,7 +271,7 @@ export const RenderDate = React.forwardRef<HTMLDivElement, RenderDateProps>(
       >
         {day.date}
         {state.isAbsent && (
-          <span className="absolute bottom-0 left-1/2 h-1.5 w-1.5 -translate-x-1/2 rounded-full bg-error" />
+          <span className="absolute bottom-0 left-1/2 h-1.5 w-1.5 -translate-x-1/2 rounded-ds-full bg-error" />
         )}
       </div>
     </div>

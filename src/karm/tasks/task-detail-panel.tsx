@@ -124,7 +124,7 @@ type TabId = typeof TABS[number]['id']
 function PanelSkeleton() {
   return (
     <div className="space-y-ds-06 p-ds-06">
-      <Skeleton className="h-7 w-3/4 bg-field" />
+      <Skeleton className="h-ds-xs-plus w-3/4 bg-field" />
       <div className="space-y-ds-04">
         {Array.from({ length: 6 }).map((_, i) => (
           <div key={i} className="flex items-center gap-ds-04">
@@ -317,7 +317,7 @@ function TaskDetailPanel({
               </div>
 
               {/* Tab Bar */}
-              <div className="sticky top-0 z-10 bg-layer-01 px-ds-06">
+              <div className="sticky top-0 z-raised bg-layer-01 px-ds-06">
                 <Tabs value={activeTab} onValueChange={handleTabChange}>
                   <TabsList variant="line">
                     {visibleTabs.map((tab) => (

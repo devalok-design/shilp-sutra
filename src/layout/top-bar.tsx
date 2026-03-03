@@ -122,7 +122,7 @@ const TopBar = React.forwardRef<HTMLDivElement, TopBarProps>(
           <TooltipTrigger asChild>
             <button
               onClick={handleSearchClick}
-              className="flex h-9 w-9 items-center justify-center rounded-ds-full border border-border bg-layer-02 text-text-secondary transition-colors hover:bg-layer-03"
+              className="flex h-ds-sm-plus w-ds-sm-plus items-center justify-center rounded-ds-full border border-border bg-layer-02 text-text-secondary transition-colors hover:bg-layer-03"
             >
               <IconSearch className="h-ico-sm w-ico-sm" />
             </button>
@@ -141,7 +141,7 @@ const TopBar = React.forwardRef<HTMLDivElement, TopBarProps>(
             <TooltipTrigger asChild>
               <button
                 onClick={onAiChatClick}
-                className="flex h-9 w-9 items-center justify-center rounded-ds-full border border-border bg-layer-02 text-text-secondary transition-colors hover:bg-layer-03"
+                className="flex h-ds-sm-plus w-ds-sm-plus items-center justify-center rounded-ds-full border border-border bg-layer-02 text-text-secondary transition-colors hover:bg-layer-03"
               >
                 <IconSparkles className="h-ico-sm w-ico-sm" />
               </button>
@@ -159,7 +159,7 @@ const TopBar = React.forwardRef<HTMLDivElement, TopBarProps>(
               <TooltipTrigger asChild>
                 <DropdownMenuTrigger asChild>
                   <button className="flex items-center gap-ds-03 outline-none">
-                    <Avatar className="h-9 w-9 cursor-pointer">
+                    <Avatar className="h-ds-sm-plus w-ds-sm-plus cursor-pointer">
                       {user.image ? (
                         <AvatarImage src={user.image} alt={user.name} />
                       ) : null}

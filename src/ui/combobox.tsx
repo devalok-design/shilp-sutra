@@ -235,7 +235,7 @@ const Combobox = React.forwardRef<HTMLButtonElement, ComboboxProps>(
                   {option.label}
                   <button
                     type="button"
-                    className="inline-flex items-center justify-center rounded-full outline-none hover:opacity-75"
+                    className="inline-flex items-center justify-center rounded-ds-full outline-none hover:opacity-75"
                     onClick={(e) => handleRemovePill(e, val)}
                     aria-label={`Remove ${option.label}`}
                     tabIndex={-1}

@@ -276,9 +276,9 @@ const FileUpload = React.forwardRef<HTMLDivElement, FileUploadProps>(
           )}
         >
           {uploading ? (
-            <IconLoader2 className="h-8 w-8 animate-spin text-icon-secondary" />
+            <IconLoader2 className="h-ds-sm w-ds-sm animate-spin text-icon-secondary" />
           ) : (
-            <IconUpload className="h-8 w-8 text-icon-secondary" />
+            <IconUpload className="h-ds-sm w-ds-sm text-icon-secondary" />
           )}
           <span id={inputId + '-label'} className="text-ds-sm text-text-secondary">
             {defaultLabel}
@@ -290,10 +290,10 @@ const FileUpload = React.forwardRef<HTMLDivElement, FileUploadProps>(
                 aria-valuenow={progress}
                 aria-valuemin={0}
                 aria-valuemax={100}
-                className="h-2 w-full overflow-hidden rounded-full bg-field"
+                className="h-2 w-full overflow-hidden rounded-ds-full bg-field"
               >
                 <div
-                  className="h-full rounded-full bg-interactive transition-all"
+                  className="h-full rounded-ds-full bg-interactive transition-all"
                   style={{ width: `${progress}%` }}
                 />
               </div>

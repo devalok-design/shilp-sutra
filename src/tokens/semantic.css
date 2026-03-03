@@ -196,7 +196,9 @@
   --shadow-05: 0 16px 48px rgba(0, 0, 0, 0.22);
   --shadow-brand: 0 4px 16px rgba(211, 49, 99, 0.25);
   --size-xs: 24px;
+  --size-xs-plus: 28px;
   --size-sm: 32px;
+  --size-sm-plus: 36px;
   --size-md: 40px;
   --size-lg: 48px;
   --size-xl: 56px;

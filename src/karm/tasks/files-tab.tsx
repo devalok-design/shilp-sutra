@@ -145,7 +145,7 @@ const FilesTab = React.forwardRef<HTMLDivElement, FilesTabProps>(
           )}
         >
           <div className="flex flex-col items-center gap-ds-03 py-ds-06">
-            <div className="flex h-9 w-9 items-center justify-center rounded-ds-lg bg-layer-02">
+            <div className="flex h-ds-sm-plus w-ds-sm-plus items-center justify-center rounded-ds-lg bg-layer-02">
               <IconUpload
                 className="h-ico-sm w-ico-sm text-text-placeholder"
                 stroke={1.5}
@@ -185,7 +185,7 @@ const FilesTab = React.forwardRef<HTMLDivElement, FilesTabProps>(
                 className="group flex items-center gap-ds-04 rounded-ds-lg px-ds-03 py-ds-03 transition-colors hover:bg-field"
               >
                 {/* File icon */}
-                <div className="flex h-8 w-8 shrink-0 items-center justify-center rounded-ds-lg bg-layer-02">
+                <div className="flex h-ds-sm w-ds-sm shrink-0 items-center justify-center rounded-ds-lg bg-layer-02">
                   <Icon
                     className="h-ico-sm w-ico-sm text-text-tertiary"
                     stroke={1.5}
@@ -211,7 +211,7 @@ const FilesTab = React.forwardRef<HTMLDivElement, FilesTabProps>(
                       href={file.downloadUrl}
                       target="_blank"
                       rel="noopener noreferrer"
-                      className="inline-flex h-7 w-7 items-center justify-center rounded-ds-md transition-colors hover:bg-layer-02"
+                      className="inline-flex h-ds-xs-plus w-ds-xs-plus items-center justify-center rounded-ds-md transition-colors hover:bg-layer-02"
                       title="Download"
                     >
                       <IconDownload className="h-ico-sm w-ico-sm text-text-tertiary" />
@@ -222,7 +222,7 @@ const FilesTab = React.forwardRef<HTMLDivElement, FilesTabProps>(
                       <DialogTrigger asChild>
                         <button
                           type="button"
-                          className="inline-flex h-7 w-7 items-center justify-center rounded-ds-md transition-colors hover:bg-error-surface"
+                          className="inline-flex h-ds-xs-plus w-ds-xs-plus items-center justify-center rounded-ds-md transition-colors hover:bg-error-surface"
                           title="Delete"
                         >
                           <IconTrash className="h-ico-sm w-ico-sm text-text-error" />

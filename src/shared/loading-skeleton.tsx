@@ -173,7 +173,7 @@ const ListSkeleton = React.forwardRef<HTMLDivElement, ListSkeletonProps>(
           )}
         >
           {showAvatar && (
-            <Skeleton className="h-8 w-8 shrink-0 rounded-ds-full bg-field" />
+            <Skeleton className="h-ds-sm w-ds-sm shrink-0 rounded-ds-full bg-field" />
           )}
           <div className="flex flex-1 flex-col gap-ds-02b">
             <Skeleton className="h-3 w-2/5 bg-field" />

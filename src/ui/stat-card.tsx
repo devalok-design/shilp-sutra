@@ -24,7 +24,7 @@ function StatCard({ className, label, value, delta, icon, loading, ...props }: S
         {...props}
       >
         <div className="h-3.5 w-24 rounded-ds-sm bg-skeleton-base animate-pulse mb-ds-05" />
-        <div className="h-8 w-32 rounded-ds-md bg-skeleton-base animate-pulse mb-ds-03" />
+        <div className="h-ds-sm w-32 rounded-ds-md bg-skeleton-base animate-pulse mb-ds-03" />
         <div className="h-3 w-16 rounded-ds-sm bg-skeleton-base animate-pulse" />
       </div>
     )

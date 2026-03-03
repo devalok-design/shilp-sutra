@@ -141,7 +141,7 @@ const AppSidebar = React.forwardRef<HTMLDivElement, AppSidebarProps>(
         {/* User Info */}
         {user && (
           <div className="flex items-center gap-ds-04 px-ds-06 pb-ds-05">
-            <Avatar className="h-9 w-9">
+            <Avatar className="h-ds-sm-plus w-ds-sm-plus">
               {user.image ? (
                 <AvatarImage src={user.image} alt={user.name} />
               ) : null}

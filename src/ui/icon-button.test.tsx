@@ -18,14 +18,14 @@ describe('IconButton', () => {
     expect(screen.getByRole('button')).toHaveAccessibleName('Delete')
   })
 
-  it('applies circle shape with rounded-full', () => {
+  it('applies circle shape with rounded-ds-full', () => {
     render(<IconButton icon={<TestIcon />} aria-label="Menu" shape="circle" />)
-    expect(screen.getByRole('button')).toHaveClass('rounded-full')
+    expect(screen.getByRole('button')).toHaveClass('rounded-ds-full')
   })
 
   it('defaults to square shape', () => {
     render(<IconButton icon={<TestIcon />} aria-label="Menu" />)
-    expect(screen.getByRole('button')).not.toHaveClass('rounded-full')
+    expect(screen.getByRole('button')).not.toHaveClass('rounded-ds-full')
   })
 
   it('forwards variant prop to underlying Button', () => {

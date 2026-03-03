@@ -101,7 +101,7 @@ export const Presets = React.forwardRef<HTMLDivElement, PresetsProps>(
               onSelect(start, end)
             }}
             className={cn(
-              'h-8 w-full rounded-ds-md px-ds-03 text-left text-ds-sm',
+              'h-ds-sm w-full rounded-ds-md px-ds-03 text-left text-ds-sm',
               'text-text-primary transition-colors',
               'hover:bg-field',
               'focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-focus',

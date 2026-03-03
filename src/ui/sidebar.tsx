@@ -241,7 +241,7 @@ const Sidebar = forwardRef<
         />
         <div
           className={cn(
-            'fixed inset-y-0 z-10 hidden h-svh w-[--sidebar-width] transition-[left,right,width] duration-moderate ease-linear md:flex',
+            'fixed inset-y-0 z-raised hidden h-svh w-[--sidebar-width] transition-[left,right,width] duration-moderate ease-linear md:flex',
             side === 'left'
               ? 'left-0 group-data-[collapsible=offcanvas]:left-[calc(var(--sidebar-width)*-1)]'
               : 'right-0 group-data-[collapsible=offcanvas]:right-[calc(var(--sidebar-width)*-1)]',
@@ -277,7 +277,7 @@ const SidebarTrigger = forwardRef<
       data-sidebar="trigger"
       variant="ghost"
       size="icon-md"
-      className={cn('h-7 w-7', className)}
+      className={cn('h-ds-xs-plus w-ds-xs-plus', className)}
       onClick={(event) => {
         onClick?.(event)
         toggleSidebar()
@@ -304,7 +304,7 @@ const SidebarRail = forwardRef<HTMLButtonElement, ComponentProps<'button'>>(
         onClick={toggleSidebar}
         title="Toggle Sidebar"
         className={cn(
-          'hover:after:bg-border-strong absolute inset-y-0 z-20 hidden w-4 -translate-x-1/2 transition-colors ease-linear after:absolute after:inset-y-0 after:left-1/2 after:w-[2px] group-data-[side=left]:-right-4 group-data-[side=right]:left-0 sm:flex',
+          'hover:after:bg-border-strong absolute inset-y-0 z-raised hidden w-4 -translate-x-1/2 transition-colors ease-linear after:absolute after:inset-y-0 after:left-1/2 after:w-[2px] group-data-[side=left]:-right-4 group-data-[side=right]:left-0 sm:flex',
           '[[data-side=left]_&]:cursor-w-resize [[data-side=right]_&]:cursor-e-resize',
           '[[data-side=left][data-state=collapsed]_&]:cursor-e-resize [[data-side=right][data-state=collapsed]_&]:cursor-w-resize',
           'group-data-[collapsible=offcanvas]:translate-x-0 group-data-[collapsible=offcanvas]:after:left-full group-data-[collapsible=offcanvas]:hover:bg-layer-02',
@@ -345,7 +345,7 @@ const SidebarInput = forwardRef<
       ref={ref}
       data-sidebar="input"
       className={cn(
-        'h-8 w-full bg-layer-01 shadow-none focus-visible:ring-2 focus-visible:ring-focus',
+        'h-ds-sm w-full bg-layer-01 shadow-none focus-visible:ring-2 focus-visible:ring-focus',
         className,
       )}
       {...props}
@@ -442,7 +442,7 @@ const SidebarGroupLabel = forwardRef<
       ref={ref}
       data-sidebar="group-label"
       className={cn(
-        'flex h-8 shrink-0 items-center rounded-ds-md px-ds-03 text-ds-sm font-medium text-text-secondary outline-none ring-focus transition-[margin,opa] duration-moderate ease-linear focus-visible:ring-2 [&>svg]:size-4 [&>svg]:shrink-0',
+        'flex h-ds-sm shrink-0 items-center rounded-ds-md px-ds-03 text-ds-sm font-medium text-text-secondary outline-none ring-focus transition-[margin,opa] duration-moderate ease-linear focus-visible:ring-2 [&>svg]:size-4 [&>svg]:shrink-0',
         'group-data-[collapsible=icon]:-mt-8 group-data-[collapsible=icon]:opacity-0',
         className,
       )}
@@ -522,7 +522,7 @@ const sidebarMenuButtonVariants = cva(
       },
       size: {
         md: 'h-ds-sm text-ds-md',
-        sm: 'h-7 text-ds-sm',
+        sm: 'h-ds-xs-plus text-ds-sm',
         lg: 'h-ds-lg text-ds-md group-data-[collapsible=icon]:!p-0',
       },
     },
@@ -656,7 +656,7 @@ const SidebarMenuSkeleton = forwardRef<
     <div
       ref={ref}
       data-sidebar="menu-skeleton"
-      className={cn('flex h-8 items-center gap-ds-03 rounded-ds-md px-ds-03', className)}
+      className={cn('flex h-ds-sm items-center gap-ds-03 rounded-ds-md px-ds-03', className)}
       {...props}
     >
       {showIcon && (
@@ -717,7 +717,7 @@ const SidebarMenuSubButton = forwardRef<
       data-size={size}
       data-active={isActive}
       className={cn(
-        'hover:bg-layer-02 active:bg-interactive-subtle flex h-7 min-w-0 -translate-x-px items-center gap-ds-03 overflow-hidden rounded-ds-md px-ds-03 text-text-primary outline-none ring-focus hover:text-text-primary focus-visible:ring-2 active:text-text-primary disabled:pointer-events-none disabled:opacity-[0.38] aria-disabled:pointer-events-none aria-disabled:opacity-[0.38] [&>span:last-child]:truncate [&>svg]:size-4 [&>svg]:shrink-0 [&>svg]:text-text-primary',
+        'hover:bg-layer-02 active:bg-interactive-subtle flex h-ds-xs-plus min-w-0 -translate-x-px items-center gap-ds-03 overflow-hidden rounded-ds-md px-ds-03 text-text-primary outline-none ring-focus hover:text-text-primary focus-visible:ring-2 active:text-text-primary disabled:pointer-events-none disabled:opacity-[0.38] aria-disabled:pointer-events-none aria-disabled:opacity-[0.38] [&>span:last-child]:truncate [&>svg]:size-4 [&>svg]:shrink-0 [&>svg]:text-text-primary',
         'data-[active=true]:bg-interactive-subtle data-[active=true]:text-text-primary',
         size === 'sm' && 'text-ds-sm',
         size === 'md' && 'text-ds-md',

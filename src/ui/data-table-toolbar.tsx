@@ -43,7 +43,7 @@ export interface DataTableToolbarProps<TData> {
 }
 
 const toolbarButtonClass = cn(
-  'h-8 px-ds-03 rounded-ds-md',
+  'h-ds-sm px-ds-03 rounded-ds-md',
   'border border-border',
   'hover:bg-layer-02',
   'text-ds-sm flex items-center gap-ds-02 transition-colors',
@@ -121,7 +121,7 @@ export function DataTableToolbar<TData>({
               'flex-1 bg-transparent text-ds-md',
               'text-text-primary placeholder:text-text-placeholder',
               'outline-none',
-              'h-8',
+              'h-ds-sm',
             )}
           />
         </div>

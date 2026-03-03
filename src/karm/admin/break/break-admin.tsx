@@ -472,9 +472,9 @@ const BreakAdminRoot = React.forwardRef<HTMLDivElement, BreakAdminProps>(
       <BreakAdminContext.Provider value={contextValue}>
         <div
           ref={ref}
-          className="z-[1] flex w-full max-w-layout flex-col items-center justify-center md:pt-0"
+          className="z-base flex w-full max-w-layout flex-col items-center justify-center md:pt-0"
         >
-          <div className="no-scrollbar w-full overflow-auto border border-border-subtle sm:rounded-ds-lg max-md:rounded-none max-md:border-0">
+          <div className="no-scrollbar w-full overflow-auto border border-border-subtle sm:rounded-ds-lg max-md:rounded-ds-none max-md:border-0">
             {children ?? (
               <>
                 <Header />

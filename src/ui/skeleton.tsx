@@ -6,7 +6,7 @@ const skeletonVariants = cva('bg-skeleton-base', {
   variants: {
     variant: {
       rectangle: 'rounded-ds-md',
-      circle: 'rounded-full aspect-square',
+      circle: 'rounded-ds-full aspect-square',
       text: 'rounded-ds-sm h-4 w-full',
     },
     animation: {

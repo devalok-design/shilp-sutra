@@ -136,7 +136,7 @@ const BottomNavbar = React.forwardRef<HTMLElement, BottomNavbarProps>(
               <button
                 onClick={() => setShowMore(false)}
                 aria-label="Close more menu"
-                className="flex h-8 w-8 items-center justify-center rounded-ds-full hover:bg-layer-02"
+                className="flex h-ds-sm w-ds-sm items-center justify-center rounded-ds-full hover:bg-layer-02"
               >
                 <IconX className="h-ico-sm w-ico-sm text-text-secondary" aria-hidden="true" />
               </button>

@@ -393,14 +393,14 @@ const TaskProperties = React.forwardRef<HTMLDivElement, TaskPropertiesProps>(
               value: task.dueDate ? new Date(task.dueDate) : null,
               onChange: handleDueDateChange,
               placeholder: 'No due date',
-              className: 'h-7 border-none bg-transparent px-ds-03 text-ds-md hover:bg-field',
+              className: 'h-ds-xs-plus border-none bg-transparent px-ds-03 text-ds-md hover:bg-field',
             })
           ) : (
             <input
               type="date"
               value={task.dueDate ? new Date(task.dueDate).toISOString().split('T')[0] : ''}
               onChange={(e) => handleDueDateChange(e.target.value ? new Date(e.target.value) : null)}
-              className="h-7 border-none bg-transparent px-ds-03 text-ds-md text-text-primary outline-none hover:bg-field rounded-ds-md"
+              className="h-ds-xs-plus border-none bg-transparent px-ds-03 text-ds-md text-text-primary outline-none hover:bg-field rounded-ds-md"
             />
           )}
           {task.dueDate && (

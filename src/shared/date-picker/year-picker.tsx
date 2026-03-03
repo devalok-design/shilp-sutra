@@ -41,7 +41,7 @@ export const YearPicker = React.forwardRef<HTMLDivElement, YearPickerProps>(
               disabled={isDisabled || false}
               onClick={() => !isDisabled && onYearSelect(year)}
               className={cn(
-                'h-9 rounded-ds-md text-ds-md transition-colors',
+                'h-ds-sm-plus rounded-ds-md text-ds-md transition-colors',
                 isDisabled && 'opacity-[0.38] pointer-events-none cursor-not-allowed',
                 isSelected &&
                   'bg-interactive text-text-on-color',

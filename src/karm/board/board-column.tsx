@@ -138,7 +138,7 @@ export const BoardColumn = React.forwardRef<HTMLDivElement, BoardColumnProps>(
             onChange={(e) => setEditName(e.target.value)}
             onBlur={handleRename}
             onKeyDown={handleRenameKeyDown}
-            className="h-7 text-ds-md font-semibold"
+            className="h-ds-xs-plus text-ds-md font-semibold"
             autoFocus
           />
         ) : (
@@ -264,13 +264,13 @@ export const BoardColumn = React.forwardRef<HTMLDivElement, BoardColumnProps>(
               if (!newTitle.trim()) setIsAdding(false)
             }}
             placeholder="Task title..."
-            className="h-8 text-ds-md"
+            className="h-ds-sm text-ds-md"
             autoFocus
           />
           <div className="mt-ds-02b flex items-center gap-ds-02">
             <Button
               size="sm"
-              className="h-7 bg-interactive hover:bg-interactive-hover text-text-on-color text-ds-sm"
+              className="h-ds-xs-plus bg-interactive hover:bg-interactive-hover text-text-on-color text-ds-sm"
               onClick={handleAddTask}
               disabled={!newTitle.trim()}
             >
@@ -279,7 +279,7 @@ export const BoardColumn = React.forwardRef<HTMLDivElement, BoardColumnProps>(
             <Button
               variant="ghost"
               size="sm"
-              className="h-7 text-ds-sm"
+              className="h-ds-xs-plus text-ds-sm"
               onClick={() => {
                 setNewTitle('')
                 setIsAdding(false)

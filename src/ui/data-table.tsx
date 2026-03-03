@@ -146,7 +146,7 @@ function CellEditInput({
         }
       }}
       className={cn(
-        'h-7 w-full rounded-ds-md',
+        'h-ds-xs-plus w-full rounded-ds-md',
         'border border-border-interactive bg-field',
         'px-ds-02 text-ds-sm',
         'text-text-primary placeholder:text-text-placeholder',
@@ -321,13 +321,13 @@ export function DataTable<TData, TValue>({
 
     if (leftIndex !== -1) {
       return {
-        className: 'sticky bg-layer-01 z-10',
+        className: 'sticky bg-layer-01 z-raised',
         style: { left: 0 } as React.CSSProperties,
       }
     }
     if (rightIndex !== -1) {
       return {
-        className: 'sticky bg-layer-01 z-10',
+        className: 'sticky bg-layer-01 z-raised',
         style: { right: 0 } as React.CSSProperties,
       }
     }
@@ -576,7 +576,7 @@ export function DataTable<TData, TValue>({
                       placeholder={`Filter ${typeof header.column.columnDef.header === 'string' ? header.column.columnDef.header : ''}...`}
                       aria-label={`Filter ${typeof header.column.columnDef.header === 'string' ? header.column.columnDef.header : header.column.id}`}
                       className={cn(
-                        'h-7 w-full rounded-ds-md',
+                        'h-ds-xs-plus w-full rounded-ds-md',
                         'border border-border bg-field',
                         'px-ds-02 text-ds-sm',
                         'text-text-primary placeholder:text-text-placeholder',
@@ -657,7 +657,7 @@ export function DataTable<TData, TValue>({
               }}
               aria-label="Rows per page"
               className={cn(
-                'h-8 rounded-ds-md',
+                'h-ds-sm rounded-ds-md',
                 'border border-border bg-field',
                 'px-ds-03 text-ds-sm',
                 'text-text-primary',
@@ -677,7 +677,7 @@ export function DataTable<TData, TValue>({
               onClick={() => table.previousPage()}
               aria-label="Previous page"
               className={cn(
-                'h-8 w-8 flex items-center justify-center',
+                'h-ds-sm w-ds-sm flex items-center justify-center',
                 'rounded-ds-md border border-border',
                 'enabled:hover:bg-layer-02',
                 'disabled:opacity-[0.38] disabled:cursor-not-allowed',
@@ -700,7 +700,7 @@ export function DataTable<TData, TValue>({
               onClick={() => table.nextPage()}
               aria-label="Next page"
               className={cn(
-                'h-8 w-8 flex items-center justify-center',
+                'h-ds-sm w-ds-sm flex items-center justify-center',
                 'rounded-ds-md border border-border',
                 'enabled:hover:bg-layer-02',
                 'disabled:opacity-[0.38] disabled:cursor-not-allowed',

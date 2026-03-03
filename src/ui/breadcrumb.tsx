@@ -77,7 +77,7 @@ const BreadcrumbEllipsis = ({ className, ...props }: React.ComponentProps<'span'
   <span
     role="presentation"
     aria-hidden="true"
-    className={cn('flex h-9 w-9 items-center justify-center', className)}
+    className={cn('flex h-ds-sm-plus w-ds-sm-plus items-center justify-center', className)}
     {...props}
   >
     <IconDots className="h-ico-sm w-ico-sm" />

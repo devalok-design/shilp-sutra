@@ -47,6 +47,7 @@ const preset: Partial<Config> = {
         'ds-lg': 'var(--border-width-lg)',
       },
       borderRadius: {
+        'ds-none': '0',
         'ds-sm': 'var(--radius-sm)',
         'ds-default': 'var(--radius-default)',
         'ds-md': 'var(--radius-md)',
@@ -74,7 +75,9 @@ const preset: Partial<Config> = {
       },
       width: {
         'ds-xs': 'var(--size-xs)',
+        'ds-xs-plus': 'var(--size-xs-plus)',
         'ds-sm': 'var(--size-sm)',
+        'ds-sm-plus': 'var(--size-sm-plus)',
         'ds-md': 'var(--size-md)',
         'ds-lg': 'var(--size-lg)',
         'ds-xl': 'var(--size-xl)',
@@ -85,7 +88,9 @@ const preset: Partial<Config> = {
       },
       height: {
         'ds-xs': 'var(--size-xs)',
+        'ds-xs-plus': 'var(--size-xs-plus)',
         'ds-sm': 'var(--size-sm)',
+        'ds-sm-plus': 'var(--size-sm-plus)',
         'ds-md': 'var(--size-md)',
         'ds-lg': 'var(--size-lg)',
         'ds-xl': 'var(--size-xl)',
@@ -96,7 +101,9 @@ const preset: Partial<Config> = {
       },
       minHeight: {
         'ds-xs': 'var(--size-xs)',
+        'ds-xs-plus': 'var(--size-xs-plus)',
         'ds-sm': 'var(--size-sm)',
+        'ds-sm-plus': 'var(--size-sm-plus)',
         'ds-md': 'var(--size-md)',
         'ds-lg': 'var(--size-lg)',
         'ds-xl': 'var(--size-xl)',
@@ -104,6 +111,13 @@ const preset: Partial<Config> = {
       maxWidth: {
         layout: 'var(--max-width)',
         'layout-body': 'var(--max-width-body)',
+      },
+      minWidth: {
+        'ds-xs': 'var(--size-xs)',
+        'ds-sm': 'var(--size-sm)',
+        'ds-md': 'var(--size-md)',
+        'ds-lg': 'var(--size-lg)',
+        'ds-xl': 'var(--size-xl)',
       },
       colors: {
         'text-interactive': 'var(--color-text-interactive)',
@@ -149,6 +163,7 @@ const preset: Partial<Config> = {
         'border-success': 'var(--color-border-success)',
         'border-warning': 'var(--color-border-warning)',
         focus: 'var(--color-focus)',
+        'focus-inset': 'var(--color-focus-inset)',
         success: 'var(--color-success)',
         'success-surface': 'var(--color-success-surface)',
         error: 'var(--color-error)',
@@ -208,6 +223,14 @@ const preset: Partial<Config> = {
         'surface-overlay-dark': 'var(--color-surface-overlay-dark)',
         'layer-accent-subtle': 'var(--color-layer-accent-subtle)',
         'error-hover': 'var(--color-error-hover)',
+        'chart-1': 'var(--chart-1)',
+        'chart-2': 'var(--chart-2)',
+        'chart-3': 'var(--chart-3)',
+        'chart-4': 'var(--chart-4)',
+        'chart-5': 'var(--chart-5)',
+        'chart-6': 'var(--chart-6)',
+        'chart-7': 'var(--chart-7)',
+        'chart-8': 'var(--chart-8)',
       },
       keyframes: {
         ripple: {

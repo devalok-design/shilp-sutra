@@ -149,7 +149,7 @@ const ConversationTab = React.forwardRef<HTMLDivElement, ConversationTabProps>(
             return (
               <div key={comment.id} className="flex gap-2.5">
                 {/* Avatar */}
-                <Avatar className="h-7 w-7 shrink-0 mt-0.5">
+                <Avatar className="h-ds-xs-plus w-ds-xs-plus shrink-0 mt-0.5">
                   {author.image && (
                     <AvatarImage src={author.image} alt={author.name} />
                   )}

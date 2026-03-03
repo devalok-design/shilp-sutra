@@ -276,7 +276,7 @@ export function RadarChart({
                                   className="flex items-center gap-ds-02"
                                 >
                                   <span
-                                    className="inline-block h-2 w-2 rounded-full"
+                                    className="inline-block h-2 w-2 rounded-ds-full"
                                     style={{ backgroundColor: colors[sIdx] }}
                                   />
                                   <span className="text-text-secondary">

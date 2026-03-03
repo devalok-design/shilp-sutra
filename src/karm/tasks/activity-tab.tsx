@@ -248,7 +248,7 @@ const ActivityTab = React.forwardRef<HTMLDivElement, ActivityTabProps>(
           return (
             <div key={entry.id} className="relative flex gap-ds-04 pl-0">
               {/* Dot on timeline */}
-              <div className="relative z-10 flex h-[22px] w-[22px] shrink-0 items-center justify-center rounded-ds-full bg-layer-01">
+              <div className="relative z-raised flex h-[22px] w-[22px] shrink-0 items-center justify-center rounded-ds-full bg-layer-01">
                 <div
                   className={cn(
                     'flex h-ico-md w-ico-md items-center justify-center rounded-ds-full bg-layer-02',

@@ -119,7 +119,7 @@ const ErrorDisplay = React.forwardRef<HTMLDivElement, ErrorDisplayProps>(
           )}
         >
           <Icon
-            className={cn('h-8 w-8', errorConfig.iconClass)}
+            className={cn('h-ds-sm w-ds-sm', errorConfig.iconClass)}
           />
         </div>
 

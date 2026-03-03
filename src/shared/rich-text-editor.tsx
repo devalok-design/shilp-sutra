@@ -40,7 +40,7 @@ function ToolbarButton({
       disabled={disabled}
       title={title}
       className={cn(
-        'inline-flex h-7 w-7 items-center justify-center rounded-ds-md transition-colors',
+        'inline-flex h-ds-xs-plus w-ds-xs-plus items-center justify-center rounded-ds-md transition-colors',
         'hover:bg-field',
         'disabled:pointer-events-none disabled:opacity-[0.38]',
         isActive

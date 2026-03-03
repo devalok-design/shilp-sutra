@@ -20,7 +20,7 @@ const segmentedControlItemVariants = cva(
   {
     variants: {
       size: {
-        sm: 'h-9 px-ds-05 py-ds-03 text-ds-sm',
+        sm: 'h-ds-sm-plus px-ds-05 py-ds-03 text-ds-sm',
         md: 'px-ds-02b py-ds-03 pl-ds-04 text-ds-md',
         lg: 'h-14 px-ds-06 py-ds-05 text-ds-md',
       },

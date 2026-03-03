@@ -150,7 +150,7 @@ export const MessageList = React.forwardRef<HTMLDivElement, MessageListProps>(
                   <div className="rounded-ds-2xl rounded-br-ds-sm bg-interactive px-ds-04 py-ds-03 text-text-on-color">
                     <p className="text-ds-md whitespace-pre-wrap">{msg.content}</p>
                   </div>
-                  <div className="flex h-7 w-7 shrink-0 items-center justify-center rounded-ds-full bg-field">
+                  <div className="flex h-ds-xs-plus w-ds-xs-plus shrink-0 items-center justify-center rounded-ds-full bg-field">
                     <IconUser className="h-ico-sm w-ico-sm text-text-secondary" />
                   </div>
                 </div>
@@ -162,7 +162,7 @@ export const MessageList = React.forwardRef<HTMLDivElement, MessageListProps>(
           return (
             <div key={msg.id} className="flex justify-start">
               <div className="flex max-w-[85%] items-start gap-ds-03">
-                <div className="flex h-7 w-7 shrink-0 items-center justify-center rounded-ds-full bg-field">
+                <div className="flex h-ds-xs-plus w-ds-xs-plus shrink-0 items-center justify-center rounded-ds-full bg-field">
                   <IconRobot className="h-ico-sm w-ico-sm text-text-secondary" />
                 </div>
                 <div className="rounded-ds-2xl rounded-bl-ds-sm bg-field px-ds-04 py-ds-03">
@@ -181,7 +181,7 @@ export const MessageList = React.forwardRef<HTMLDivElement, MessageListProps>(
         {isStreaming && streamingText && (
           <div className="flex justify-start">
             <div className="flex max-w-[85%] items-start gap-ds-03">
-              <div className="flex h-7 w-7 shrink-0 items-center justify-center rounded-ds-full bg-field">
+              <div className="flex h-ds-xs-plus w-ds-xs-plus shrink-0 items-center justify-center rounded-ds-full bg-field">
                 <IconRobot className="h-ico-sm w-ico-sm text-text-secondary" />
               </div>
               <div className="rounded-ds-2xl rounded-bl-ds-sm bg-field px-ds-04 py-ds-03">
@@ -197,7 +197,7 @@ export const MessageList = React.forwardRef<HTMLDivElement, MessageListProps>(
         {isStreaming && !streamingText && (
           <div className="flex justify-start">
             <div className="flex max-w-[85%] items-start gap-ds-03">
-              <div className="flex h-7 w-7 shrink-0 items-center justify-center rounded-ds-full bg-field">
+              <div className="flex h-ds-xs-plus w-ds-xs-plus shrink-0 items-center justify-center rounded-ds-full bg-field">
                 <IconRobot className="h-ico-sm w-ico-sm text-text-secondary" />
               </div>
               <div className="rounded-ds-2xl rounded-bl-ds-sm bg-field px-ds-04 py-ds-03">

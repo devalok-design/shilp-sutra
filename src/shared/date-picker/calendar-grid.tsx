@@ -162,12 +162,12 @@ export const CalendarGrid = React.forwardRef<HTMLDivElement, CalendarGridProps>(
     <div ref={forwardedRef} className="w-[252px]">
       <div className="flex items-center justify-between px-ds-02 pb-ds-04">
         {hidePrevNav ? (
-          <span className="h-7 w-7" />
+          <span className="h-ds-xs-plus w-ds-xs-plus" />
         ) : (
           <button
             type="button"
             onClick={() => onMonthChange(subMonths(currentMonth, 1))}
-            className="inline-flex h-7 w-7 items-center justify-center rounded-ds-md text-text-placeholder transition-colors hover:bg-field hover:text-text-secondary"
+            className="inline-flex h-ds-xs-plus w-ds-xs-plus items-center justify-center rounded-ds-md text-text-placeholder transition-colors hover:bg-field hover:text-text-secondary"
             aria-label="Previous month"
           >
             <IconChevronLeft className="h-ico-sm w-ico-sm" stroke={1.5} />
@@ -186,12 +186,12 @@ export const CalendarGrid = React.forwardRef<HTMLDivElement, CalendarGridProps>(
           {format(currentMonth, 'MMMM yyyy')}
         </button>
         {hideNextNav ? (
-          <span className="h-7 w-7" />
+          <span className="h-ds-xs-plus w-ds-xs-plus" />
         ) : (
           <button
             type="button"
             onClick={() => onMonthChange(addMonths(currentMonth, 1))}
-            className="inline-flex h-7 w-7 items-center justify-center rounded-ds-md text-text-placeholder transition-colors hover:bg-field hover:text-text-secondary"
+            className="inline-flex h-ds-xs-plus w-ds-xs-plus items-center justify-center rounded-ds-md text-text-placeholder transition-colors hover:bg-field hover:text-text-secondary"
             aria-label="Next month"
           >
             <IconChevronRight className="h-ico-sm w-ico-sm" stroke={1.5} />
@@ -211,7 +211,7 @@ export const CalendarGrid = React.forwardRef<HTMLDivElement, CalendarGridProps>(
           <div
             key={wd}
             role="columnheader"
-            className="flex h-8 items-center justify-center text-ds-xs font-semibold uppercase tracking-wider text-text-placeholder"
+            className="flex h-ds-sm items-center justify-center text-ds-xs font-semibold uppercase tracking-wider text-text-placeholder"
           >
             {wd}
           </div>
@@ -242,13 +242,13 @@ export const CalendarGrid = React.forwardRef<HTMLDivElement, CalendarGridProps>(
               aria-selected={isSelected || edge || undefined}
               aria-disabled={!inMonth || disabled || undefined}
               className={cn(
-                'flex h-8 w-9 items-center justify-center rounded-ds-md text-ds-md font-body transition-colors',
+                'flex h-ds-sm w-ds-sm-plus items-center justify-center rounded-ds-md text-ds-md font-body transition-colors',
                 !inMonth && 'pointer-events-none opacity-0',
                 inMonth && disabled && 'opacity-[0.38] pointer-events-none cursor-not-allowed',
                 inMonth && !disabled && !isSelected && !edge && !inRange &&
                   'text-text-primary hover:bg-field',
                 inRange && !edge &&
-                  'rounded-none bg-field text-text-primary',
+                  'rounded-ds-none bg-field text-text-primary',
                 (isSelected || edge) &&
                   'bg-interactive text-text-on-color hover:bg-interactive-hover',
                 isToday && !isSelected && !edge && !disabled &&

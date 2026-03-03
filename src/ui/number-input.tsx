@@ -62,7 +62,7 @@ const NumberInput = React.forwardRef<HTMLInputElement, NumberInputProps>(
           onClick={handleDecrement}
           disabled={disabled || value <= min}
           aria-label="Decrease value"
-          className="flex h-8 w-8 items-center justify-center border-0 text-text-placeholder transition-colors hover:text-text-secondary"
+          className="flex h-ds-sm w-ds-sm items-center justify-center border-0 text-text-placeholder transition-colors hover:text-text-secondary"
         >
           <IconMinus className="h-ico-sm w-ico-sm" />
         </button>
@@ -76,7 +76,7 @@ const NumberInput = React.forwardRef<HTMLInputElement, NumberInputProps>(
           max={max}
           step={step}
           disabled={disabled}
-          className="text-ds-base font-semibold w-9 border-0 text-center text-text-secondary [appearance:textfield] [&::-webkit-inner-spin-button]:appearance-none [&::-webkit-outer-spin-button]:appearance-none"
+          className="text-ds-base font-semibold w-ds-sm-plus border-0 text-center text-text-secondary [appearance:textfield] [&::-webkit-inner-spin-button]:appearance-none [&::-webkit-outer-spin-button]:appearance-none"
         />
 
         <button
@@ -84,7 +84,7 @@ const NumberInput = React.forwardRef<HTMLInputElement, NumberInputProps>(
           onClick={handleIncrement}
           disabled={disabled || value >= max}
           aria-label="Increase value"
-          className="flex h-8 w-8 items-center justify-center border-0 text-text-placeholder transition-colors hover:text-text-secondary"
+          className="flex h-ds-sm w-ds-sm items-center justify-center border-0 text-text-placeholder transition-colors hover:text-text-secondary"
         >
           <IconPlus className="h-ico-sm w-ico-sm" />
         </button>

@@ -86,7 +86,7 @@ export const ConversationList = React.forwardRef<HTMLDivElement, ConversationLis
           </div>
         ) : conversations.length === 0 ? (
           <div className="flex flex-col items-center justify-center gap-ds-03 py-12">
-            <IconMessage className="h-8 w-8 text-text-placeholder" />
+            <IconMessage className="h-ds-sm w-ds-sm text-text-placeholder" />
             <p className="text-ds-md text-text-placeholder">
               No conversations yet
             </p>
@@ -122,7 +122,7 @@ export const ConversationList = React.forwardRef<HTMLDivElement, ConversationLis
                         e.stopPropagation()
                         onArchive(convo.id)
                       }}
-                      className="flex h-7 w-7 items-center justify-center rounded-ds-md text-text-placeholder transition-colors hover:bg-field hover:text-text-secondary"
+                      className="flex h-ds-xs-plus w-ds-xs-plus items-center justify-center rounded-ds-md text-text-placeholder transition-colors hover:bg-field hover:text-text-secondary"
                       aria-label="Archive conversation"
                     >
                       <IconArchive className="h-ico-sm w-ico-sm" />
@@ -134,7 +134,7 @@ export const ConversationList = React.forwardRef<HTMLDivElement, ConversationLis
                         e.stopPropagation()
                         onDelete(convo.id)
                       }}
-                      className="flex h-7 w-7 items-center justify-center rounded-ds-md text-text-placeholder transition-colors hover:bg-error-surface hover:text-text-error"
+                      className="flex h-ds-xs-plus w-ds-xs-plus items-center justify-center rounded-ds-md text-text-placeholder transition-colors hover:bg-error-surface hover:text-text-error"
                       aria-label="Delete conversation"
                     >
                       <IconTrash className="h-ico-sm w-ico-sm" />

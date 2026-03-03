@@ -13,7 +13,7 @@ describe('SegmentedControl', () => {
   it('has no a11y violations', async () => {
     const { container } = render(
       <SegmentedControl
-        size="medium"
+        size="md"
         color="tonal"
         options={options}
         selectedId="weekly"
@@ -27,7 +27,7 @@ describe('SegmentedControl', () => {
   it('renders all options', () => {
     render(
       <SegmentedControl
-        size="medium"
+        size="md"
         color="tonal"
         options={options}
         selectedId="weekly"
@@ -41,7 +41,7 @@ describe('SegmentedControl', () => {
   it('has tablist role', () => {
     render(
       <SegmentedControl
-        size="medium"
+        size="md"
         color="tonal"
         options={options}
         selectedId="weekly"
@@ -54,7 +54,7 @@ describe('SegmentedControl', () => {
   it('marks selected tab with aria-selected', () => {
     render(
       <SegmentedControl
-        size="medium"
+        size="md"
         color="tonal"
         options={options}
         selectedId="weekly"
@@ -69,7 +69,7 @@ describe('SegmentedControl', () => {
   it('renders disabled state', () => {
     render(
       <SegmentedControl
-        size="medium"
+        size="md"
         color="tonal"
         options={options}
         selectedId="weekly"
@@ -86,7 +86,7 @@ describe('SegmentedControl', () => {
   it('renders with filled color variant', async () => {
     const { container } = render(
       <SegmentedControl
-        size="medium"
+        size="md"
         color="filled"
         options={options}
         selectedId="weekly"

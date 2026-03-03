@@ -172,7 +172,7 @@ export function TimePicker({
           disabled={disabled}
           className={cn(
             'inline-flex h-9 items-center gap-ds-03 rounded-ds-lg border border-border bg-layer-01 px-ds-04 text-left transition-colors',
-            'hover:border-[var(--border-secondary)]',
+            'hover:border-border-strong',
             'focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-focus focus-visible:ring-offset-2',
             disabled && 'opacity-[0.38] pointer-events-none',
             className,

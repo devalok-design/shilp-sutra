@@ -10,7 +10,7 @@ const contentCardVariants = cva(
         default:
           'border border-border bg-layer-01 shadow-01 hover:shadow-02',
         outline:
-          'border border-[var(--border-secondary)] bg-transparent hover:border-[var(--border-tertiary)]',
+          'border border-border-subtle bg-transparent hover:border-border-strong',
         ghost:
           'border border-transparent bg-transparent hover:bg-layer-02',
       },
@@ -30,9 +30,9 @@ const contentCardVariants = cva(
 
 const getPadding = (padding: string | null | undefined) => {
   switch (padding) {
-    case 'compact': return 'px-ds-04 py-2.5'
+    case 'compact': return 'px-ds-04 py-ds-03'
     case 'spacious': return 'px-ds-06 py-ds-05'
-    default: return 'px-ds-05b py-3.5'
+    default: return 'px-ds-05b py-ds-04'
   }
 }
 

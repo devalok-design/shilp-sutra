@@ -207,7 +207,7 @@ const RichTextEditor = React.forwardRef<HTMLDivElement, RichTextEditorProps>(
       ref={ref}
       className={cn(
         'overflow-hidden rounded-ds-lg border border-border bg-layer-01',
-        'transition-colors focus-within:border-[var(--border-secondary)]',
+        'transition-colors focus-within:border-border-strong',
         className,
       )}
     >

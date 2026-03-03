@@ -451,7 +451,7 @@ export function EditBreak({
                     onClick={() => handleOpenCalendar('start')}
                     className={`text-ds-md flex w-full items-center justify-center gap-ds-03 rounded-ds-full border ${
                       picker.showCalendar && picker.activeDate === 'start'
-                        ? 'border-[var(--border-tertiary)]'
+                        ? 'border-border-strong'
                         : 'border-border'
                     } bg-layer-02 px-ds-03 py-ds-03 text-text-secondary max-md:text-ds-sm`}
                   >
@@ -465,7 +465,7 @@ export function EditBreak({
                     onClick={() => handleOpenCalendar('end')}
                     className={`text-ds-md flex w-full items-center justify-center gap-ds-03 rounded-ds-full border ${
                       picker.showCalendar && picker.activeDate === 'end'
-                        ? 'border-[var(--border-tertiary)]'
+                        ? 'border-border-strong'
                         : 'border-border'
                     } bg-layer-02 px-ds-03 py-ds-03 text-text-secondary max-md:text-ds-sm`}
                   >

@@ -362,7 +362,7 @@ const Combobox = React.forwardRef<HTMLButtonElement, ComboboxProps>(
                           'bg-interactive-subtle',
                         selected && 'text-interactive',
                         option.disabled &&
-                          'pointer-events-none opacity-50',
+                          'pointer-events-none opacity-[0.38]',
                       )}
                       onClick={() => {
                         if (!option.disabled) {

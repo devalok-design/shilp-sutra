@@ -230,7 +230,7 @@ function CommandPalette({
             {filteredGroups.map((group) => (
               <div key={group.label} className="mb-ds-02">
                 <div className="px-ds-03 pb-ds-02 pt-ds-03">
-                  <span className="text-ds-xs font-semibold uppercase tracking-wider font-medium text-text-placeholder">
+                  <span className="text-ds-xs font-semibold uppercase tracking-wider text-text-placeholder">
                     {group.label}
                   </span>
                 </div>

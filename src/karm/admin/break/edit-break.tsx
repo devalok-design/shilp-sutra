@@ -458,7 +458,7 @@ export function EditBreak({
                     {formatDateToLongForm(formData.startDate)}
                   </button>
                   <div className="flex h-ico-sm w-ico-sm items-center">
-                    <ArrowRightIcon className="h-ico-sm w-ico-sm text-[var(--border-tertiary)]" />
+                    <ArrowRightIcon className="h-ico-sm w-ico-sm text-icon-secondary" />
                   </div>
                   <button
                     type="button"

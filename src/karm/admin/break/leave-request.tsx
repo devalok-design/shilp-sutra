@@ -80,7 +80,7 @@ export function LeaveRequest({
                 {request.correction && (
                   <>
                     <div className="block h-3 w-[1px] bg-border-subtle"></div>{' '}
-                    <p className="text-ds-sm text-[var(--color-text-accent)]">
+                    <p className="text-ds-sm text-interactive">
                       Attendance Corrections
                     </p>{' '}
                   </>

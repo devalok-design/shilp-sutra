@@ -3,11 +3,18 @@
 /**
  * CommandPalette -- Keyboard-driven command palette (Ctrl+K / Cmd+K).
  *
- * Adapted from Karm V2. Uses @radix-ui/react-dialog as the overlay.
+ * Adapted from Karm V2. Uses ui/Dialog as the overlay.
  * All V1 color tokens replaced with semantic design-system tokens.
  */
 import * as React from 'react'
-import * as DialogPrimitive from '@primitives/react-dialog'
+import {
+  Dialog,
+  DialogPortal,
+  DialogOverlay,
+  DialogContentRaw,
+  DialogTitle,
+  DialogDescription,
+} from '../ui/dialog'
 import { IconSearch, IconCornerDownLeft, IconArrowUp, IconArrowDown } from '@tabler/icons-react'
 import type { Icon as TablerIcon } from '@tabler/icons-react'
 import { cn } from '../ui/lib/utils'
@@ -159,12 +166,12 @@ function CommandPalette({
   }, [filteredGroups])
 
   return (
-    <DialogPrimitive.Root open={open} onOpenChange={setOpen}>
-      <DialogPrimitive.Portal>
-        <DialogPrimitive.Overlay
+    <Dialog open={open} onOpenChange={setOpen}>
+      <DialogPortal>
+        <DialogOverlay
           className="fixed inset-0 z-overlay bg-overlay data-[state=open]:animate-in data-[state=closed]:animate-out data-[state=closed]:fade-out-0 data-[state=open]:fade-in-0"
         />
-        <DialogPrimitive.Content
+        <DialogContentRaw
           className={cn(
             'fixed left-1/2 top-[20%] z-modal w-full max-w-[560px] -translate-x-1/2',
             'overflow-hidden rounded-ds-xl border border-border bg-layer-01 shadow-05',
@@ -177,10 +184,10 @@ function CommandPalette({
           onKeyDown={handleKeyDown}
         >
           <VisuallyHidden>
-            <DialogPrimitive.Title>Command Palette</DialogPrimitive.Title>
-            <DialogPrimitive.Description>
+            <DialogTitle>Command Palette</DialogTitle>
+            <DialogDescription>
               Search or jump to pages, projects, tasks, and actions
-            </DialogPrimitive.Description>
+            </DialogDescription>
           </VisuallyHidden>
 
           {/* Search input */}
@@ -314,9 +321,9 @@ function CommandPalette({
               </span>
             </div>
           </div>
-        </DialogPrimitive.Content>
-      </DialogPrimitive.Portal>
-    </DialogPrimitive.Root>
+        </DialogContentRaw>
+      </DialogPortal>
+    </Dialog>
   )
 }
 

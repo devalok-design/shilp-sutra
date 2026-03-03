@@ -180,7 +180,7 @@ const CommandPalette = React.forwardRef<HTMLDivElement, CommandPaletteProps>(
           className={cn(
             'fixed left-1/2 top-[20%] z-modal w-full max-w-[560px] -translate-x-1/2',
             'overflow-hidden rounded-ds-xl border border-border bg-layer-01 shadow-05',
-            'data-[state=open]:animate-in data-[state=closed]:animate-out',
+            'duration-moderate-02 data-[state=open]:animate-in data-[state=closed]:animate-out',
             'data-[state=closed]:fade-out-0 data-[state=open]:fade-in-0',
             'data-[state=closed]:zoom-out-95 data-[state=open]:zoom-in-95',
             'data-[state=closed]:slide-out-to-left-1/2 data-[state=open]:slide-in-from-left-1/2',
@@ -256,7 +256,7 @@ const CommandPalette = React.forwardRef<HTMLDivElement, CommandPaletteProps>(
                       }}
                       onMouseEnter={() => setActiveIndex(itemIndex)}
                       className={cn(
-                        'flex w-full items-center gap-ds-04 rounded-ds-lg px-ds-03 py-ds-03 text-left transition-colors',
+                        'flex w-full items-center gap-ds-04 rounded-ds-lg px-ds-03 py-ds-03 text-left transition-colors duration-fast-01 ease-productive-standard',
                         isActive
                           ? 'bg-layer-03 text-text-primary'
                           : 'text-text-secondary hover:bg-layer-02',

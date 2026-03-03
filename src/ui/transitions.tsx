@@ -17,10 +17,10 @@ const Fade = React.forwardRef<HTMLDivElement, TransitionProps>(
     return (
       <div
         ref={ref}
-        className={cn('transition-opacity ease-entrance', className)}
+        className={cn('transition-opacity ease-productive-entrance', className)}
         style={{
           opacity: open ? 1 : 0,
-          transitionDuration: reducedMotion ? '0ms' : (duration || 'var(--duration-enter)'),
+          transitionDuration: reducedMotion ? '0ms' : (duration || 'var(--duration-moderate-02)'),
         }}
         {...props}
       >
@@ -52,10 +52,10 @@ const Collapse = React.forwardRef<HTMLDivElement, TransitionProps>(
     return (
       <div
         ref={ref}
-        className={cn('overflow-hidden transition-[height] ease-standard', className)}
+        className={cn('overflow-hidden transition-[height] ease-productive-standard', className)}
         style={{
           height: height !== undefined ? `${height}px` : 'auto',
-          transitionDuration: reducedMotion ? '0ms' : (duration || 'var(--duration-moderate)'),
+          transitionDuration: reducedMotion ? '0ms' : (duration || 'var(--duration-moderate-02)'),
         }}
         {...props}
       >
@@ -73,11 +73,11 @@ const Grow = React.forwardRef<HTMLDivElement, TransitionProps>(
     return (
       <div
         ref={ref}
-        className={cn('transition-[opacity,transform] ease-entrance', className)}
+        className={cn('transition-[opacity,transform] ease-productive-entrance', className)}
         style={{
           opacity: open ? 1 : 0,
           transform: open ? 'scale(1)' : 'scale(0)',
-          transitionDuration: reducedMotion ? '0ms' : (duration || 'var(--duration-enter)'),
+          transitionDuration: reducedMotion ? '0ms' : (duration || 'var(--duration-moderate-02)'),
         }}
         {...props}
       >
@@ -103,10 +103,10 @@ const Slide = React.forwardRef<
   return (
     <div
       ref={ref}
-      className={cn('transition-transform ease-entrance', className)}
+      className={cn('transition-transform ease-productive-entrance', className)}
       style={{
         transform: open ? 'translate(0)' : translateMap[direction],
-        transitionDuration: reducedMotion ? '0ms' : (duration || 'var(--duration-enter)'),
+        transitionDuration: reducedMotion ? '0ms' : (duration || 'var(--duration-moderate-02)'),
       }}
       {...props}
     >

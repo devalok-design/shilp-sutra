@@ -235,7 +235,7 @@ export const BoardColumn = React.forwardRef<HTMLDivElement, BoardColumnProps>(
       <div
         ref={setNodeRef}
         className={cn(
-          'no-scrollbar flex flex-1 flex-col gap-ds-03 overflow-y-auto px-ds-03 pb-ds-03 transition-colors duration-moderate',
+          'no-scrollbar flex flex-1 flex-col gap-ds-03 overflow-y-auto px-ds-03 pb-ds-03 transition-colors duration-fast-02 ease-productive-standard',
           isOver && 'bg-interactive-subtle/50',
         )}
       >

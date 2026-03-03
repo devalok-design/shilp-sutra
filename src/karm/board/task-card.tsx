@@ -52,7 +52,7 @@ function formatDueDate(dateStr: string) {
 // ============================================================
 
 const taskCardVariants = cva(
-  'group/card relative rounded-ds-lg border border-border/60 bg-layer-01 p-ds-04 shadow-01 transition-[color,background-color,border-color,box-shadow] duration-moderate hover:shadow-02 hover:border-border cursor-pointer',
+  'group/card relative rounded-ds-lg border border-border/60 bg-layer-01 p-ds-04 shadow-01 transition-[color,background-color,border-color,box-shadow] duration-fast-02 ease-productive-standard hover:shadow-02 hover:border-border cursor-pointer',
   {
     variants: {
       state: {

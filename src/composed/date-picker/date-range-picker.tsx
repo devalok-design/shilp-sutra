@@ -199,7 +199,7 @@ const DateRangePicker = React.forwardRef<HTMLButtonElement, DateRangePickerProps
           ref={ref}
           type="button"
           className={cn(
-            'inline-flex h-ds-sm-plus items-center gap-ds-03 rounded-ds-lg border border-border bg-layer-01 px-ds-04 text-left transition-colors',
+            'inline-flex h-ds-sm-plus items-center gap-ds-03 rounded-ds-lg border border-border bg-layer-01 px-ds-04 text-left transition-colors duration-fast-01 ease-productive-standard',
             'hover:border-border-strong',
             'focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-focus focus-visible:ring-offset-2',
             className,

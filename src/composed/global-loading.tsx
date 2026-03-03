@@ -33,7 +33,7 @@ const GlobalLoading = React.forwardRef<HTMLDivElement, GlobalLoadingProps>(
       <div
         ref={ref}
         className={cn(
-          'h-full bg-interactive transition-all duration-slow ease-in-out',
+          'h-full bg-interactive transition-all duration-slow-01 ease-productive-standard',
           isLoading && 'w-4/5 opacity-100',
           !isLoading && animationComplete && 'w-0 opacity-0',
           !isLoading && !animationComplete && 'w-full opacity-100',

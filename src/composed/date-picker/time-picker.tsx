@@ -162,7 +162,7 @@ const TimePicker = React.forwardRef<HTMLButtonElement, TimePickerProps>(
     'flex flex-col gap-ds-01 overflow-y-auto max-h-[200px] px-ds-01 scrollbar-thin'
 
   const itemBase =
-    'flex h-ds-sm w-full items-center justify-center rounded-ds-md text-ds-md transition-colors cursor-pointer'
+    'flex h-ds-sm w-full items-center justify-center rounded-ds-md text-ds-md transition-colors duration-fast-01 ease-productive-standard cursor-pointer'
   const itemSelected =
     'bg-interactive text-text-on-color'
   const itemDefault =
@@ -176,7 +176,7 @@ const TimePicker = React.forwardRef<HTMLButtonElement, TimePickerProps>(
           type="button"
           disabled={disabled}
           className={cn(
-            'inline-flex h-ds-sm-plus items-center gap-ds-03 rounded-ds-lg border border-border bg-layer-01 px-ds-04 text-left transition-colors',
+            'inline-flex h-ds-sm-plus items-center gap-ds-03 rounded-ds-lg border border-border bg-layer-01 px-ds-04 text-left transition-colors duration-fast-01 ease-productive-standard',
             'hover:border-border-strong',
             'focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-focus focus-visible:ring-offset-2',
             disabled && 'opacity-[0.38] pointer-events-none',

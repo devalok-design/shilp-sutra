@@ -167,7 +167,7 @@ export const CalendarGrid = React.forwardRef<HTMLDivElement, CalendarGridProps>(
           <button
             type="button"
             onClick={() => onMonthChange(subMonths(currentMonth, 1))}
-            className="inline-flex h-ds-xs-plus w-ds-xs-plus items-center justify-center rounded-ds-md text-text-placeholder transition-colors hover:bg-field hover:text-text-secondary"
+            className="inline-flex h-ds-xs-plus w-ds-xs-plus items-center justify-center rounded-ds-md text-text-placeholder transition-colors duration-fast-01 ease-productive-standard hover:bg-field hover:text-text-secondary"
             aria-label="Previous month"
           >
             <IconChevronLeft className="h-ico-sm w-ico-sm" stroke={1.5} />
@@ -179,7 +179,7 @@ export const CalendarGrid = React.forwardRef<HTMLDivElement, CalendarGridProps>(
           className={cn(
             'text-ds-md font-semibold text-text-primary',
             onHeaderClick &&
-              'cursor-pointer rounded-ds-md px-ds-02 transition-colors hover:bg-field',
+              'cursor-pointer rounded-ds-md px-ds-02 transition-colors duration-fast-01 ease-productive-standard hover:bg-field',
           )}
           aria-label="Switch to month/year view"
         >
@@ -191,7 +191,7 @@ export const CalendarGrid = React.forwardRef<HTMLDivElement, CalendarGridProps>(
           <button
             type="button"
             onClick={() => onMonthChange(addMonths(currentMonth, 1))}
-            className="inline-flex h-ds-xs-plus w-ds-xs-plus items-center justify-center rounded-ds-md text-text-placeholder transition-colors hover:bg-field hover:text-text-secondary"
+            className="inline-flex h-ds-xs-plus w-ds-xs-plus items-center justify-center rounded-ds-md text-text-placeholder transition-colors duration-fast-01 ease-productive-standard hover:bg-field hover:text-text-secondary"
             aria-label="Next month"
           >
             <IconChevronRight className="h-ico-sm w-ico-sm" stroke={1.5} />
@@ -242,7 +242,7 @@ export const CalendarGrid = React.forwardRef<HTMLDivElement, CalendarGridProps>(
               aria-selected={isSelected || edge || undefined}
               aria-disabled={!inMonth || disabled || undefined}
               className={cn(
-                'flex h-ds-sm w-ds-sm-plus items-center justify-center rounded-ds-md text-ds-md font-body transition-colors',
+                'flex h-ds-sm w-ds-sm-plus items-center justify-center rounded-ds-md text-ds-md font-body transition-colors duration-fast-01 ease-productive-standard',
                 !inMonth && 'pointer-events-none opacity-0',
                 inMonth && disabled && 'opacity-[0.38] pointer-events-none cursor-not-allowed',
                 inMonth && !disabled && !isSelected && !edge && !inRange &&

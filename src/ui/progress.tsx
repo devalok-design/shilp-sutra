@@ -88,7 +88,7 @@ const Progress = React.forwardRef<
             className={cn(
               progressIndicatorVariants({ color }),
               isIndeterminate &&
-                'w-2/5 animate-[progress-indeterminate_1.5s_ease-in-out_infinite] motion-reduce:animate-none',
+                'w-2/5 animate-progress-indeterminate motion-reduce:animate-none',
               indicatorClassName,
             )}
             style={

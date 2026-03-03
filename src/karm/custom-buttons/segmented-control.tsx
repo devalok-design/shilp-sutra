@@ -8,7 +8,7 @@ import { useRipple } from './use-ripple'
 /* ── CVA for the item button ────────────────────────────────── */
 const segmentedControlItemVariants = cva(
   [
-    'inline-flex items-center gap-ds-03 rounded-[88px] border-none outline-none cursor-pointer',
+    'inline-flex items-center gap-ds-03 rounded-ds-full border-none outline-none cursor-pointer',
     'transition-[color,background-color,border-color,box-shadow] duration-moderate ease-in-out',
     'relative overflow-hidden',
     'font-accent text-ds-md font-semibold leading-none text-center',
@@ -199,7 +199,7 @@ const SegmentedControl = React.forwardRef<HTMLDivElement, SegmentedControlProps>
     <div
       ref={mergedRef}
       className={cn(
-        'inline-flex gap-0 p-0 rounded-[88px]',
+        'inline-flex gap-0 p-0 rounded-ds-full',
         'bg-layer-02',
         'border border-solid border-layer-03',
         className,

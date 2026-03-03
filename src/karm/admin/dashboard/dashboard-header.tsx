@@ -71,7 +71,7 @@ export const DashboardHeader = React.forwardRef<HTMLDivElement, DashboardHeaderP
             {selectedMonth}
             <FilledArrowIcon />
           </DropdownMenuTrigger>
-          <DropdownMenuContent className="custom-scrollbar absolute ml-ds-08 max-h-[300px] overflow-y-auto rounded-[7px] border border-0 border-border p-0 shadow-brand">
+          <DropdownMenuContent className="custom-scrollbar absolute ml-ds-08 max-h-[300px] overflow-y-auto rounded-ds-md border border-0 border-border p-0 shadow-brand">
             {yearsList.map((year, index) => (
               <DropdownMenuItem
                 key={year}
@@ -101,7 +101,7 @@ export const DashboardHeader = React.forwardRef<HTMLDivElement, DashboardHeaderP
       <div className="flex w-full items-center justify-between gap-ds-05 md:mt-0 md:w-auto md:justify-start max-md:mt-[17px] max-lg:gap-[0.5rem]">
         <div className="hidden md:flex">
           {selectedAssociate ? (
-            <div className="text-ds-md flex-direction-row flex items-center justify-start rounded-[6px] bg-interactive px-[8px] py-[6px] text-text-on-color">
+            <div className="text-ds-md flex-direction-row flex items-center justify-start rounded-ds-md bg-interactive px-ds-03 py-ds-02b text-text-on-color">
               <div className="flex items-center justify-start gap-0">
                 {userImages[selectedAssociate.id] ? (
                   <img
@@ -117,7 +117,7 @@ export const DashboardHeader = React.forwardRef<HTMLDivElement, DashboardHeaderP
                   </div>
                 )}
 
-                <span className="text-ds-md ml-[2px] mr-[4px] text-text-on-color">
+                <span className="text-ds-md ml-ds-01 mr-ds-02 text-text-on-color">
                   {selectedAssociate.name}
                 </span>
               </div>
@@ -130,10 +130,10 @@ export const DashboardHeader = React.forwardRef<HTMLDivElement, DashboardHeaderP
             </div>
           ) : (
             <DropdownMenu>
-              <DropdownMenuTrigger className="text-ds-md flex-direction-row hidden items-center justify-between rounded-[6px] border border-border-subtle bg-layer-01 px-ds-03 py-ds-02b md:flex">
+              <DropdownMenuTrigger className="text-ds-md flex-direction-row hidden items-center justify-between rounded-ds-md border border-border-subtle bg-layer-01 px-ds-03 py-ds-02b md:flex">
                 <div className="flex items-center">
                   <PersonIcon className="h-ico-md w-ico-md" />
-                  <span className="text-ds-md ml-[2px] mr-[4px] text-text-secondary max-lg:mx-0 max-lg:text-ds-sm">
+                  <span className="text-ds-md ml-ds-01 mr-ds-02 text-text-secondary max-lg:mx-0 max-lg:text-ds-sm">
                     Associate
                   </span>
                 </div>

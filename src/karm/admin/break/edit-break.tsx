@@ -252,7 +252,7 @@ export function EditBreak({
     const { text, className } = statusMap[status] || statusMap['REJECTED']
     return (
       <div
-        className={`text-ds-sm w-fit rounded-[24px] px-[6px] py-[4px] capitalize ${className}`}
+        className={`text-ds-sm w-fit rounded-ds-2xl px-ds-02b py-ds-02 capitalize ${className}`}
       >
         {text}
       </div>
@@ -420,10 +420,10 @@ export function EditBreak({
           <span>Edit</span>
         </Button>
       </DialogTrigger>
-      <DialogContent className="w-[440px] p-ds-06 max-md:w-[90%] max-md:rounded-[8px]">
+      <DialogContent className="w-[440px] p-ds-06 max-md:w-[90%] max-md:rounded-ds-lg">
         <DialogHeader>
           <DialogDescription>
-            <div className="flex w-full flex-col items-center gap-[18px]">
+            <div className="flex w-full flex-col items-center gap-ds-05">
               <p className="text-ds-md w-full text-left text-text-tertiary">
                 Edit break details of{' '}
                 <span className="semibold text-interactive">
@@ -436,7 +436,7 @@ export function EditBreak({
                 id="updateleaveform"
                 className="flex w-full flex-col gap-ds-05"
               >
-                <div className="flex w-full flex-col gap-ds-02 rounded-[8px] border border-border-subtle px-ds-05 pb-ds-03 pt-3.5">
+                <div className="flex w-full flex-col gap-ds-02 rounded-ds-lg border border-border-subtle px-ds-05 pb-ds-03 pt-3.5">
                   <h2 className="text-ds-xs font-semibold uppercase tracking-wider  text-text-placeholder">
                     Reason
                   </h2>
@@ -449,7 +449,7 @@ export function EditBreak({
                   <button
                     type="button"
                     onClick={() => handleOpenCalendar('start')}
-                    className={`text-ds-md flex w-full items-center justify-center gap-[10px] rounded-[48px] border ${
+                    className={`text-ds-md flex w-full items-center justify-center gap-ds-03 rounded-ds-full border ${
                       picker.showCalendar && picker.activeDate === 'start'
                         ? 'border-[var(--border-tertiary)]'
                         : 'border-border'
@@ -463,7 +463,7 @@ export function EditBreak({
                   <button
                     type="button"
                     onClick={() => handleOpenCalendar('end')}
-                    className={`text-ds-md flex w-full items-center justify-center gap-[10px] rounded-[48px] border ${
+                    className={`text-ds-md flex w-full items-center justify-center gap-ds-03 rounded-ds-full border ${
                       picker.showCalendar && picker.activeDate === 'end'
                         ? 'border-[var(--border-tertiary)]'
                         : 'border-border'
@@ -606,7 +606,7 @@ export function EditBreak({
                   </div>
                 )}
 
-                <div className="flex w-full items-center justify-between rounded-[8px] border border-border px-ds-05 py-ds-04">
+                <div className="flex w-full items-center justify-between rounded-ds-lg border border-border px-ds-05 py-ds-04">
                   <p className="text-ds-xs font-semibold uppercase tracking-wider  text-text-placeholder">
                     No of Days
                   </p>
@@ -614,7 +614,7 @@ export function EditBreak({
                     {selectedLeave.numberOfDays}
                   </p>
                 </div>
-                <div className="flex w-full items-center justify-between rounded-[8px] border border-border px-ds-05 py-ds-04">
+                <div className="flex w-full items-center justify-between rounded-ds-lg border border-border px-ds-05 py-ds-04">
                   <p className="text-ds-xs font-semibold uppercase tracking-wider  text-text-placeholder">
                     Status
                   </p>
@@ -631,7 +631,7 @@ export function EditBreak({
                       <ArrowDownIcon />
                     </button>
                     {showStatusOptions && (
-                      <div className="text-ds-base absolute left-[10px] top-[25px] z-[4] flex flex-col overflow-hidden rounded-[7px] border border-border bg-layer-01 shadow-02" role="listbox">
+                      <div className="text-ds-base absolute left-[10px] top-[25px] z-[4] flex flex-col overflow-hidden rounded-ds-md border border-border bg-layer-01 shadow-02" role="listbox">
                         <div
                           className="cursor-pointer border-b border-b-border bg-layer-01 px-ds-04 py-ds-03 text-left"
                           role="option"
@@ -656,7 +656,7 @@ export function EditBreak({
                     )}
                   </div>
                 </div>
-                <div className="flex w-full flex-col gap-ds-02 rounded-[8px] border border-border-subtle px-ds-05 pb-ds-03 pt-3.5">
+                <div className="flex w-full flex-col gap-ds-02 rounded-ds-lg border border-border-subtle px-ds-05 pb-ds-03 pt-3.5">
                   <h2 className="text-ds-xs font-semibold uppercase tracking-wider  text-text-placeholder">
                     Comment
                   </h2>

@@ -64,14 +64,14 @@ export function LeaveRequest({
     <>
       <div
         key={request.id}
-        className="flex justify-between border-b border-border px-ds-03 py-[14px] last:border-b-0"
+        className="flex justify-between border-b border-border px-ds-03 py-ds-04 last:border-b-0"
       >
         <div className="flex w-full items-center gap-ds-04">
           <Avatar className="h-10 w-10">
             <AvatarImage src={userImages[request.user?.id || '']} alt={request.user?.name || ''} />
             <AvatarFallback>{(request.user?.name || '?')[0]}</AvatarFallback>
           </Avatar>
-          <div className="flex w-auto max-w-[75%] flex-col items-start gap-[6px]">
+          <div className="flex w-auto max-w-[75%] flex-col items-start gap-ds-02b">
             <div className="flex flex-row gap-ds-02b">
               <div className="flex items-center gap-ds-03">
                 <p className="text-ds-sm text-text-secondary">
@@ -186,7 +186,7 @@ export function LeaveRequest({
             </DialogDescription>
           </DialogHeader>
           <div className="flex flex-col">
-            <div className="text-ds-md flex flex-col items-start justify-center gap-ds-03 rounded-[8px] border border-border-subtle bg-layer-01 shadow-01 p-[10px_16px_4px_16px] text-text-primary">
+            <div className="text-ds-md flex flex-col items-start justify-center gap-ds-03 rounded-ds-lg border border-border-subtle bg-layer-01 shadow-01 p-[10px_16px_4px_16px] text-text-primary">
               <label className="text-ds-xs font-semibold uppercase tracking-wider text-text-helper" htmlFor="comment">
                 Comment
               </label>

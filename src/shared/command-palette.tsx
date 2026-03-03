@@ -193,7 +193,7 @@ function CommandPalette({
           {/* Search input */}
           <div className="flex items-center gap-ds-04 border-b border-border px-ds-05 py-ds-04">
             <IconSearch
-              className="h-[18px] w-[18px] shrink-0 text-text-placeholder"
+              className="h-ico-sm w-ico-sm shrink-0 text-text-placeholder"
               stroke={1.5}
             />
             <input

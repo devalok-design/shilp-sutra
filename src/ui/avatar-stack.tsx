@@ -132,9 +132,9 @@ const AvatarStack = React.forwardRef<HTMLDivElement, AvatarStackProps>(
                 return (
                   <DropdownMenuItem
                     key={avatar.name}
-                    className="flex w-full cursor-pointer items-center gap-[8px] px-[8px] py-[6px] hover:bg-field-hover"
+                    className="flex w-full cursor-pointer items-center gap-ds-03 px-ds-03 py-ds-02b hover:bg-field-hover"
                   >
-                    <Avatar className="h-[40px] w-[40px]">
+                    <Avatar className="h-ds-md w-ds-md">
                       <AvatarImage
                         src={avatar.src}
                         alt={avatar.alt || avatar.name}

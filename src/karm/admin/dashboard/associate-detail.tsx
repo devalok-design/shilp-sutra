@@ -100,7 +100,7 @@ function AttendanceStatus({
     : null
 
   return (
-    <div className="flex w-full flex-col items-center justify-center px-[16px] py-[32px] sm:px-ds-05 sm:py-ds-06 md:px-ds-06 md:py-ds-05 md:pr-0">
+    <div className="flex w-full flex-col items-center justify-center px-ds-05 py-ds-07 sm:px-ds-05 sm:py-ds-06 md:px-ds-06 md:py-ds-05 md:pr-0">
       <p className="text-ds-sm font-semibold uppercase tracking-wider mb-ds-06  text-text-tertiary">
         Attendance status
       </p>
@@ -298,7 +298,7 @@ export const AssociateDetail = React.forwardRef<HTMLDivElement, AssociateDetailP
           <p className="text-ds-sm font-semibold uppercase tracking-wider mb-ds-05  text-text-tertiary">
             COMMENT
           </p>
-          <div className="flex w-full items-center justify-between rounded-[8px] border border-border bg-layer-01 px-ds-05 max-md:h-[48px]">
+          <div className="flex w-full items-center justify-between rounded-ds-lg border border-border bg-layer-01 px-ds-05 max-md:h-ds-lg">
             <input
               className="text-ds-md flex-1 border-none py-ds-03 text-text-primary outline-none"
               defaultValue="Don't miss next time :)"
@@ -320,18 +320,18 @@ export const AssociateDetail = React.forwardRef<HTMLDivElement, AssociateDetailP
           </div>
         </div>
       ) : (
-        <div className="mb-auto flex w-full flex-col md:pr-[24px]">
+        <div className="mb-auto flex w-full flex-col md:pr-ds-06">
           <p className="text-ds-sm font-semibold uppercase tracking-wider mb-ds-06  text-interactive">
             Tasks for the day
           </p>
 
           {userTasks && (
             <>
-              <div className="no-scrollbar mb-[8px] flex max-h-[250px] flex-col gap-ds-03 overflow-y-auto">
+              <div className="no-scrollbar mb-ds-03 flex max-h-[250px] flex-col gap-ds-03 overflow-y-auto">
                 {userTasks.map((task, idx) => (
                   <div
                     key={task.id}
-                    className={`task-item mb-[8px] flex items-center gap-[5px] ${
+                    className={`task-item mb-ds-03 flex items-center gap-ds-02 ${
                       draggedTaskIndex === idx ? 'dragging' : ''
                     }`}
                     draggable
@@ -388,10 +388,10 @@ export const AssociateDetail = React.forwardRef<HTMLDivElement, AssociateDetailP
               </div>
               {isSameDay(new Date(selectedDate), new Date()) && (
                 <form
-                  className="flex items-center gap-[5px] pb-ds-05"
+                  className="flex items-center gap-ds-02 pb-ds-05"
                   onSubmit={handleAddTask}
                 >
-                  <div className="w-[24px]"></div>
+                  <div className="w-ds-06"></div>
                   <button type="submit" className="appearance-none">
                     <AddIcon />
                   </button>

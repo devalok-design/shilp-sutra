@@ -74,7 +74,7 @@ export const CorrectionList = React.forwardRef<HTMLDivElement, CorrectionListPro
     >
       {corrections.map((correction) => (
         <Fragment key={correction.id}>
-          <div className="max-md:border-1 flex items-center justify-between px-ds-03 py-3.5 max-md:rounded-[8px] max-md:border-border">
+          <div className="max-md:border-1 flex items-center justify-between px-ds-03 py-3.5 max-md:rounded-ds-lg max-md:border-border">
             <div className="flex items-center gap-ds-04">
               <Avatar className="h-10 w-10 border-2 max-md:mb-[auto]">
                 <AvatarImage

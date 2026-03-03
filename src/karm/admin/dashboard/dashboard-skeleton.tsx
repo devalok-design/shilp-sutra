@@ -18,7 +18,7 @@ export const DashboardSkeleton = React.forwardRef<HTMLDivElement>(
   function DashboardSkeleton(_props, ref) {
   return (
     <div ref={ref} className="flex w-full max-w-layout flex-col items-center justify-center max-md:h-[100%] max-md:justify-start">
-      <div className="z-raised flex w-full flex-col items-start justify-start rounded-[8px] border border-border bg-layer-02 p-[16px] shadow-05 max-md:h-[calc(100vh-201px)] max-md:max-h-[calc(100vh-201px)] max-md:overflow-y-auto max-md:border-0 max-md:px-ds-05 max-md:pb-[0px] max-md:pt-[24px]">
+      <div className="z-raised flex w-full flex-col items-start justify-start rounded-ds-lg border border-border bg-layer-02 p-ds-05 shadow-05 max-md:h-[calc(100vh-201px)] max-md:max-h-[calc(100vh-201px)] max-md:overflow-y-auto max-md:border-0 max-md:px-ds-05 max-md:pb-0 max-md:pt-ds-06">
         {/* Header Section */}
         <div className="mb-ds-06 flex w-full flex-col items-start justify-between md:flex-row md:items-center">
           <DropdownMenu>
@@ -32,13 +32,13 @@ export const DashboardSkeleton = React.forwardRef<HTMLDivElement>(
           </DropdownMenu>
           <div className="flex w-full items-center justify-between gap-ds-05 md:mt-0 md:w-auto md:justify-start max-md:mt-[17px] max-lg:gap-[0.5rem]">
             <div className="hidden md:flex">
-              <Skeleton className="h-[32px] w-[180px] rounded-ds-md" />
+              <Skeleton className="h-ds-sm w-[180px] rounded-ds-md" />
             </div>
             <div className="flex w-[200px] items-center justify-between overflow-clip rounded-ds-full border border-layer-03">
-              <div className="flex h-[32px] w-[100px] items-center justify-center rounded-r-none bg-field">
+              <div className="flex h-ds-sm w-[100px] items-center justify-center rounded-r-none bg-field">
                 <Skeleton className="h-[20px] w-[40px] rounded-r-none bg-layer-03" />
               </div>
-              <div className="flex h-[32px] w-[100px] items-center justify-center">
+              <div className="flex h-ds-sm w-[100px] items-center justify-center">
                 <Skeleton className="h-[20px] w-[40px] bg-layer-03" />
               </div>
             </div>
@@ -63,16 +63,16 @@ export const DashboardSkeleton = React.forwardRef<HTMLDivElement>(
             >
               <Skeleton className="mb-ds-03 h-[10px] w-[10px] rounded-ds-lg bg-field" />
               <div className="mx-ds-02 my-ds-02 flex items-center justify-center">
-                <Skeleton className="h-[40px] w-[40px] rounded-ds-full bg-field" />
+                <Skeleton className="h-ds-md w-ds-md rounded-ds-full bg-field" />
               </div>
             </div>
           ))}
         </div>
 
         {/* Main Content Section */}
-        <div className="flex w-full flex-col rounded-[8px] bg-layer-02 md:p-0 md:p-ds-06 max-md:bg-transparent">
+        <div className="flex w-full flex-col rounded-ds-lg bg-layer-02 md:p-0 md:p-ds-06 max-md:bg-transparent">
           {/* User Groups Section */}
-          <div className="no-scrollbar w-full cursor-grab overflow-x-auto active:cursor-grabbing max-md:pb-[16px]">
+          <div className="no-scrollbar w-full cursor-grab overflow-x-auto active:cursor-grabbing max-md:pb-ds-05">
             <div
               className="items-flex-start flex flex-row justify-start gap-ds-04 px-0 pt-ds-03 md:gap-0 md:px-ds-06"
               style={{ minWidth: 'max-content' }}
@@ -82,7 +82,7 @@ export const DashboardSkeleton = React.forwardRef<HTMLDivElement>(
                   key={index}
                   className={`flex w-full flex-col gap-ds-04 rounded-ds-md bg-layer-02 p-ds-06 md:rounded-ds-lg md:p-ds-05 ${
                     index !== 2 ? 'border-r border-border' : ''
-                  } max-md:border-0 max-md:p-[16px]`}
+                  } max-md:border-0 max-md:p-ds-05`}
                   style={{ minWidth: '200px' }}
                 >
                   <Skeleton className="h-[20px] w-[120px] rounded-ds-md bg-field" />
@@ -103,9 +103,9 @@ export const DashboardSkeleton = React.forwardRef<HTMLDivElement>(
 
           {/* Requests Section */}
           <div className="w-full p-0 md:p-ds-06">
-            <div className="max-md:pt[16px] flex flex-col items-start overflow-hidden rounded-[8px] border-0 border-border-subtle bg-layer-01 shadow-01 pt-ds-03 md:border max-md:pb-0">
+            <div className="max-md:pt[16px] flex flex-col items-start overflow-hidden rounded-ds-lg border-0 border-border-subtle bg-layer-01 shadow-01 pt-ds-03 md:border max-md:pb-0">
               {/* Tab headers skeleton */}
-              <div className="flex w-full items-start border-b-[1px] border-b-border px-ds-06 md:border-b max-md:border-0 max-md:px-[0px]">
+              <div className="flex w-full items-start border-b-[1px] border-b-border px-ds-06 md:border-b max-md:border-0 max-md:px-0">
                 <div className="text-ds-sm font-semibold uppercase tracking-wider cursor-pointer border-b-[1.5px] border-b-interactive-hover px-ds-03 py-ds-04 font-semibold  text-text-primary">
                   REQUESTS(1)
                 </div>
@@ -127,8 +127,8 @@ export const DashboardSkeleton = React.forwardRef<HTMLDivElement>(
                       </div>
                     </div>
                     <div className="flex items-center gap-ds-04">
-                      <Skeleton className="h-[32px] w-[32px] rounded-ds-full bg-field" />
-                      <Skeleton className="h-[32px] w-[32px] rounded-ds-full bg-field" />
+                      <Skeleton className="h-ds-sm w-ds-sm rounded-ds-full bg-field" />
+                      <Skeleton className="h-ds-sm w-ds-sm rounded-ds-full bg-field" />
                     </div>
                   </div>
                 ))}

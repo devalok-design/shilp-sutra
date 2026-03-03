@@ -118,20 +118,20 @@ export const BreakRequestCard = React.forwardRef<HTMLDivElement, BreakRequestPro
   }
 
   return (
-    <div ref={ref} className="relative flex w-full flex-col gap-ds-06 rounded-[8px] bg-layer-accent-subtle">
+    <div ref={ref} className="relative flex w-full flex-col gap-ds-06 rounded-ds-lg bg-layer-accent-subtle">
       {assetsBaseUrl && (
         <img
           src={`${assetsBaseUrl}/break-background.svg`}
           alt="Break Background"
-          className="absolute bottom-0 z-0 h-full min-h-[236px] rounded-[8px] object-cover"
+          className="absolute bottom-0 z-0 h-full min-h-[236px] rounded-ds-lg object-cover"
         />
       )}
-      <div className="relative flex min-h-[236px] flex-col items-center justify-between rounded-[8px] md:flex-row">
+      <div className="relative flex min-h-[236px] flex-col items-center justify-between rounded-ds-lg md:flex-row">
         {/* Left section - Break information or mobile cancel form */}
         {showMobileCancelForm && isSingleDayBreak ? (
-          <div className="flex h-full w-full flex-col items-center justify-center px-[13px] pt-[17px]">
+          <div className="flex h-full w-full flex-col items-center justify-center px-ds-04 pt-[17px]">
             <div className="w-full gap-ds-05 rounded-ds-md bg-layer-01 shadow-01 px-ds-06 py-ds-07 md:hidden">
-              <div className="flex flex-col items-center gap-[12px]">
+              <div className="flex flex-col items-center gap-ds-04">
                 <div className="text-ds-lg semibold text-center text-text-primary">
                   Cancel this break?
                 </div>
@@ -198,10 +198,10 @@ export const BreakRequestCard = React.forwardRef<HTMLDivElement, BreakRequestPro
               : 'py-ds-06'
           } md:w-1/2 md:px-ds-06 md:py-ds-05 max-md:pt-[34px]`}
         >
-          <p className="text-ds-sm font-semibold uppercase tracking-wider mb-ds-06  text-text-tertiary max-md:mb-[16px]">
+          <p className="text-ds-sm font-semibold uppercase tracking-wider mb-ds-06  text-text-tertiary max-md:mb-ds-05">
             Break Status
           </p>
-          <div className="mb-ds-04 flex w-full flex-col items-center justify-start gap-[14px] rounded-3xl border border-border-subtle bg-layer-01 shadow-01 px-ds-05 py-3.5 text-center font-semibold text-text-primary">
+          <div className="mb-ds-04 flex w-full flex-col items-center justify-start gap-ds-04 rounded-3xl border border-border-subtle bg-layer-01 shadow-01 px-ds-05 py-3.5 text-center font-semibold text-text-primary">
             {renderStatus(breakRequest.status, false)}
             {breakRequest.status === 'APPROVED' && breakRequest.adminComment}
             {breakRequest.status === 'REJECTED' && breakRequest.adminComment}
@@ -227,7 +227,7 @@ export const BreakRequestCard = React.forwardRef<HTMLDivElement, BreakRequestPro
                     </button>
                   </DialogTrigger>
                 )}
-                <DialogContent className="max-w-[329px] gap-ds-04 rounded-[16px]">
+                <DialogContent className="max-w-[329px] gap-ds-04 rounded-ds-xl">
                   <DialogHeader>
                     <div className="text-ds-lg semibold text-center text-text-primary">
                       Cancel this break?
@@ -260,7 +260,7 @@ export const BreakRequestCard = React.forwardRef<HTMLDivElement, BreakRequestPro
                   </button>
                 </DialogTrigger>
               )}
-              <DialogContent className="max-w-[329px] gap-ds-04 rounded-[16px]">
+              <DialogContent className="max-w-[329px] gap-ds-04 rounded-ds-xl">
                 <DialogHeader>
                   <div className="text-ds-lg semibold flex text-center text-text-primary">
                     Cancel your break

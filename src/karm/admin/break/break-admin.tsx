@@ -301,7 +301,7 @@ export const BreakAdmin = React.forwardRef<HTMLDivElement, BreakAdminProps>(
 
   return (
     <div ref={ref} className="z-[1] flex w-full max-w-layout flex-col items-center justify-center md:pt-0">
-      <div className="no-scrollbar w-full overflow-auto border border-border-subtle sm:rounded-[8px] max-md:rounded-none max-md:border-0">
+      <div className="no-scrollbar w-full overflow-auto border border-border-subtle sm:rounded-ds-lg max-md:rounded-none max-md:border-0">
         {/* Header */}
         <BreakAdminHeader
           filters={filters}

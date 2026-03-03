@@ -95,7 +95,7 @@ export const BreakAdminHeader = React.forwardRef<HTMLDivElement, BreakAdminHeade
   }
 
   return (
-    <div ref={ref} className="flex min-w-[800px] items-center justify-between bg-field px-ds-06 py-ds-05b max-md:justify-start max-md:gap-[20px] max-lg:min-w-[100%]">
+    <div ref={ref} className="flex min-w-[800px] items-center justify-between bg-field px-ds-06 py-ds-05b max-md:justify-start max-md:gap-ds-05b max-lg:min-w-[100%]">
       <div className="flex flex-col gap-ds-05">
         {filters.selectedAssociate && (
           <>
@@ -117,7 +117,7 @@ export const BreakAdminHeader = React.forwardRef<HTMLDivElement, BreakAdminHeade
 
       <header className="flex items-center gap-ds-04">
         {filters.selectedAssociate ? (
-          <div className="text-ds-md flex flex-row items-center justify-start gap-ds-02 rounded-[6px] bg-interactive p-ds-02b text-text-on-color">
+          <div className="text-ds-md flex flex-row items-center justify-start gap-ds-02 rounded-ds-md bg-interactive p-ds-02b text-text-on-color">
             <div className="flex items-center justify-start gap-0.5">
               {userImages[filters.selectedAssociate.id] ? (
                 <img
@@ -151,7 +151,7 @@ export const BreakAdminHeader = React.forwardRef<HTMLDivElement, BreakAdminHeade
           </div>
         ) : (
           <DropdownMenu>
-            <DropdownMenuTrigger className="text-ds-md flex flex-row items-center justify-between rounded-[6px] border border-border-subtle bg-layer-01 px-ds-03 py-ds-02b">
+            <DropdownMenuTrigger className="text-ds-md flex flex-row items-center justify-between rounded-ds-md border border-border-subtle bg-layer-01 px-ds-03 py-ds-02b">
               <div className="flex items-center">
                 <PersonIcon className="h-ico-sm w-ico-sm" />
                 <span className="text-ds-md mx-ds-03 text-text-secondary max-lg:mx-0 max-lg:text-ds-sm">
@@ -202,10 +202,10 @@ export const BreakAdminHeader = React.forwardRef<HTMLDivElement, BreakAdminHeade
 
         {/* Date Filter */}
         {filters.dateFilterEnd && (
-          <div className="text-ds-md flex-direction-row flex items-center justify-between rounded-[6px] bg-interactive px-ds-03 py-[6px] text-text-on-color">
+          <div className="text-ds-md flex-direction-row flex items-center justify-between rounded-ds-md bg-interactive px-ds-03 py-ds-02b text-text-on-color">
             <div className="flex items-center">
               <CalendarIcon />
-              <span className="ml-[2px] mr-ds-02">
+              <span className="ml-ds-01 mr-ds-02">
                 {monthMap[new Date(filters.dateFilterStart!).getMonth()].name},
               </span>
               <span className="mr-ds-02">
@@ -223,7 +223,7 @@ export const BreakAdminHeader = React.forwardRef<HTMLDivElement, BreakAdminHeade
               }}
               className="border-0 bg-transparent p-0"
             >
-              <CrossIcon className="h-[18px] w-[18px]" />
+              <CrossIcon className="h-ico-sm w-ico-sm" />
             </button>
           </div>
         )}
@@ -234,7 +234,7 @@ export const BreakAdminHeader = React.forwardRef<HTMLDivElement, BreakAdminHeade
             setFilters((prev) => ({ ...prev, isOpen: open }))
           }}
         >
-          <DropdownMenuTrigger className="text-ds-md flex-direction-row flex items-center justify-between rounded-[6px] border border-border-subtle bg-layer-01 p-ds-02b">
+          <DropdownMenuTrigger className="text-ds-md flex-direction-row flex items-center justify-between rounded-ds-md border border-border-subtle bg-layer-01 p-ds-02b">
             <div className="flex items-center">
               <CalendarDateIcon />
               <span className="mx-ds-03 text-text-secondary">

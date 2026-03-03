@@ -180,7 +180,7 @@ export const Calendar = React.forwardRef<HTMLDivElement, CalendarProps>(
                 {day.date}
               </span>
               {hasCorrection && hasCorrection(day.fullDate) && (
-                <div className="absolute z-10 mt-ds-06 h-[6px] w-[6px] translate-y-[5px] rounded-ds-full bg-text-error"></div>
+                <div className="absolute z-10 mt-ds-06 h-ds-02b w-ds-02b translate-y-[5px] rounded-ds-full bg-text-error"></div>
               )}
             </div>
           </button>

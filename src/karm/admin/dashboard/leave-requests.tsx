@@ -151,13 +151,13 @@ export const LeaveRequests = React.forwardRef<HTMLDivElement, LeaveRequestsProps
       ref={ref}
       className={`no-scrollbar max-h-[230px] w-full overflow-y-auto px-0 md:px-ds-06 max-md:h-[calc(100vh-586px)] max-md:max-h-[calc(100vh-586px)] max-md:min-h-[407.2px] ${activeTimeFrame === 'weekly1' ? 'max-md:h-[calc(100vh-824px)] max-md:max-h-[calc(100vh-824px)]' : ''}`}
     >
-      <div className="flex h-full flex-col gap-[8px] py-ds-03 max-md:h-[max-content] max-md:gap-[16px] max-md:py-0 max-md:pb-[16px]">
+      <div className="flex h-full flex-col gap-ds-03 py-ds-03 max-md:h-[max-content] max-md:gap-ds-05 max-md:py-0 max-md:pb-ds-05">
         {requests?.map((request) => (
           <div
             key={request.id}
-            className="flex flex-col justify-start rounded-[8px] border-b border-border md:gap-ds-05 md:border-b-0 max-md:border-none"
+            className="flex flex-col justify-start rounded-ds-lg border-b border-border md:gap-ds-05 md:border-b-0 max-md:border-none"
           >
-            <div className="flex flex-col justify-between rounded-t-[8px] border border-border md:flex-row md:border-0 md:px-ds-03 md:py-3.5 max-md:border-b-0">
+            <div className="flex flex-col justify-between rounded-t-ds-lg border border-border md:flex-row md:border-0 md:px-ds-03 md:py-3.5 max-md:border-b-0">
               <div className="flex items-center gap-ds-04 border-b border-border p-ds-05 md:border-none md:p-0 max-md:items-start">
                 <img
                   src={userImages[request.user?.id || '']}
@@ -306,7 +306,7 @@ export const LeaveRequests = React.forwardRef<HTMLDivElement, LeaveRequestsProps
               interaction.activeRequest &&
               interaction.activeRequest?.id === request.id) ||
               isMobile) && (
-              <div className="flex flex-row items-start justify-between rounded-[8px] border-[1px] border-border py-ds-02 max-md:rounded-t-none">
+              <div className="flex flex-row items-start justify-between rounded-ds-lg border-[1px] border-border py-ds-02 max-md:rounded-t-none">
                 <div className="flex w-full flex-col items-start justify-start gap-ds-02 px-ds-05 pb-ds-02 pt-[10px]">
                   <div className="text-ds-xs font-semibold uppercase tracking-wider text-text-placeholder">
                     comment

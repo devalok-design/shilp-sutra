@@ -66,7 +66,7 @@ export const ChatInput = React.forwardRef<HTMLDivElement, ChatInputProps>(
           placeholder={placeholder}
           disabled={isStreaming}
           rows={1}
-          className="text-ds-md no-scrollbar max-h-[160px] min-h-[24px] flex-1 resize-none bg-transparent text-text-primary placeholder:text-text-placeholder focus:outline-none disabled:opacity-50"
+          className="text-ds-md no-scrollbar max-h-[160px] min-h-ds-xs flex-1 resize-none bg-transparent text-text-primary placeholder:text-text-placeholder focus:outline-none disabled:opacity-50"
         />
         {isStreaming ? (
           <Button variant="danger" size="icon-sm" className="h-8 w-8 shrink-0 rounded-ds-lg" onClick={onCancel} aria-label="Stop generating">

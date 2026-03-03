@@ -10,13 +10,13 @@ import { Skeleton } from '../../../ui/skeleton'
 export const BreakAdminSkeleton = React.forwardRef<HTMLDivElement>(
   function BreakAdminSkeleton(_props, ref) {
   return (
-    <div ref={ref} className="z-[1] h-fit w-full max-w-layout-body overflow-hidden border-[1px] border-border-subtle bg-field sm:rounded-[8px]">
+    <div ref={ref} className="z-[1] h-fit w-full max-w-layout-body overflow-hidden border-[1px] border-border-subtle bg-field sm:rounded-ds-lg">
       {/* Header Section */}
       <div className="flex items-center justify-end bg-field px-ds-06 py-ds-05b">
         <header className="flex items-center">
           <div className="flex items-center gap-ds-04">
-            <Skeleton className="h-9 w-32 rounded-[6px]" />
-            <Skeleton className="h-9 w-32 rounded-[6px]" />
+            <Skeleton className="h-9 w-32 rounded-ds-md" />
+            <Skeleton className="h-9 w-32 rounded-ds-md" />
           </div>
         </header>
       </div>

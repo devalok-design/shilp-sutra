@@ -93,7 +93,7 @@ export function EditBreakBalance({
       <DialogContent className="w-[308px] p-ds-06">
         <DialogHeader>
           <DialogDescription>
-            <div className="flex flex-col items-center justify-start gap-[18px]">
+            <div className="flex flex-col items-center justify-start gap-ds-05">
               <p className="text-ds-md w-full text-left text-text-tertiary">
                 Edit break balance conversion of <br className="mb-ds-02" />
                 <span className="semibold text-interactive">

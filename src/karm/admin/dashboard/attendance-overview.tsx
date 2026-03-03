@@ -111,7 +111,7 @@ export const AttendanceOverview = React.forwardRef<HTMLDivElement, AttendanceOve
   return (
     <div
       ref={mergedRef}
-      className="hide-scrollbar w-full cursor-grab overflow-x-auto active:cursor-grabbing max-md:pb-[16px]"
+      className="hide-scrollbar w-full cursor-grab overflow-x-auto active:cursor-grabbing max-md:pb-ds-05"
       onMouseDown={handleMouseDown}
       onMouseMove={handleMouseMove}
       onMouseUp={handleMouseUp}
@@ -139,7 +139,7 @@ export const AttendanceOverview = React.forwardRef<HTMLDivElement, AttendanceOve
                 return (
                   <div
                     key={status}
-                    className="flex w-full flex-col gap-[12px] rounded-ds-md bg-layer-02 p-[24px] md:rounded-ds-lg"
+                    className="flex w-full flex-col gap-ds-04 rounded-ds-md bg-layer-02 p-ds-06 md:rounded-ds-lg"
                   >
                     {usersList?.length > 0 && (
                       <h2 className="text-ds-sm font-semibold uppercase tracking-wider capitalize text-text-tertiary">
@@ -172,7 +172,7 @@ export const AttendanceOverview = React.forwardRef<HTMLDivElement, AttendanceOve
                   status !== 'yetToMark'
                     ? 'border-r border-border'
                     : ''
-                } max-md:border-0 max-md:p-[16px]`}
+                } max-md:border-0 max-md:p-ds-05`}
                 style={{ minWidth: '200px' }}
               >
                 <h2 className="text-ds-sm font-semibold uppercase tracking-wider capitalize text-text-tertiary">

@@ -192,7 +192,7 @@ const AdminDashboardRoot = React.forwardRef<
         ref={ref}
         className="flex w-full max-w-layout flex-col items-center justify-center max-md:h-[100%] max-md:justify-start"
       >
-        <div className="z-raised flex w-full flex-col items-start justify-start rounded-[8px] border border-border bg-layer-02 p-[16px] shadow-05 max-md:h-[calc(100vh-201px)] max-md:max-h-[calc(100vh-201px)] max-md:overflow-y-auto max-md:border-0 max-md:px-ds-05 max-md:pb-[0px] max-md:pt-[24px]">
+        <div className="z-raised flex w-full flex-col items-start justify-start rounded-ds-lg border border-border bg-layer-02 p-ds-05 shadow-05 max-md:h-[calc(100vh-201px)] max-md:max-h-[calc(100vh-201px)] max-md:overflow-y-auto max-md:border-0 max-md:px-ds-05 max-md:pb-0 max-md:pt-ds-06">
           {children}
         </div>
       </div>
@@ -580,8 +580,8 @@ const AdminDashboardLeaveRequests = React.forwardRef<
 
   return (
     <div ref={ref} className="w-full p-0 md:p-ds-06">
-      <div className="max-md:pt[16px] flex flex-col items-start overflow-hidden rounded-[8px] border-0 border-border-subtle bg-layer-01 shadow-01 pt-ds-03 md:border max-md:pb-0">
-        <div className="flex w-full items-start border-b-[1px] border-b-border px-ds-06 md:border-b max-md:border-0 max-md:px-[0px]">
+      <div className="max-md:pt[16px] flex flex-col items-start overflow-hidden rounded-ds-lg border-0 border-border-subtle bg-layer-01 shadow-01 pt-ds-03 md:border max-md:pb-0">
+        <div className="flex w-full items-start border-b-[1px] border-b-border px-ds-06 md:border-b max-md:border-0 max-md:px-0">
           {requests.length > 0 && (
             <button
               type="button"
@@ -674,7 +674,7 @@ const AdminDashboardContent = React.forwardRef<
     <div
       ref={ref}
       className={cn(
-        'flex w-full flex-col rounded-[8px] bg-layer-02 md:p-ds-06 max-md:bg-transparent',
+        'flex w-full flex-col rounded-ds-lg bg-layer-02 md:p-ds-06 max-md:bg-transparent',
         {
           'rounded-ds-lg': !_isFirstDate && !_isLastDate,
           'rounded-ds-lg rounded-tl-none': _isFirstDate && !_isLastDate,

@@ -19,4 +19,6 @@ const VisuallyHidden = ({ children }: { children: React.ReactNode }) => {
   )
 }
 
+VisuallyHidden.displayName = 'VisuallyHidden'
+
 export default VisuallyHidden

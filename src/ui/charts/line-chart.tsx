@@ -251,3 +251,4 @@ export function LineChart({
     </div>
   )
 }
+LineChart.displayName = 'LineChart'

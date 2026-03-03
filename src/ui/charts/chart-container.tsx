@@ -56,3 +56,4 @@ export function ChartContainer({
     </div>
   )
 }
+ChartContainer.displayName = 'ChartContainer'

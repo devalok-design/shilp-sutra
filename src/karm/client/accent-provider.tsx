@@ -47,4 +47,6 @@ function AccentProvider({ accentCss }: AccentProviderProps) {
   return null
 }
 
+AccentProvider.displayName = 'AccentProvider'
+
 export { AccentProvider }

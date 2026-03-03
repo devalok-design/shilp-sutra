@@ -80,6 +80,7 @@ export function ChatPanel({
   onArchiveConversation,
   onDeleteConversation,
 }: ChatPanelProps) {
+
   const [showHistory, setShowHistory] = useState(false)
 
   const selectedAgent =
@@ -207,3 +208,4 @@ export function ChatPanel({
     </Sheet>
   )
 }
+ChatPanel.displayName = 'ChatPanel'

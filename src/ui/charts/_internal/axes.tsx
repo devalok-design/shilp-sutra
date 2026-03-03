@@ -81,3 +81,4 @@ export function Axis({
     </g>
   )
 }
+Axis.displayName = 'Axis'

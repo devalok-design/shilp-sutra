@@ -33,3 +33,4 @@ export function Toaster() {
     </ToastProvider>
   )
 }
+Toaster.displayName = 'Toaster'

@@ -119,4 +119,7 @@ function Step({ label, description, icon, className, _index = 0 }: StepInternalP
   )
 }
 
+Stepper.displayName = 'Stepper'
+Step.displayName = 'Step'
+
 export { Stepper, Step, type StepperProps, type StepProps }

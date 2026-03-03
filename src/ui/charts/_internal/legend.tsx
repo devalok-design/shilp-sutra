@@ -35,5 +35,6 @@ export function Legend({ items, position = 'bottom', className }: LegendProps) {
     </div>
   )
 }
+Legend.displayName = 'Legend'
 
 export type { LegendItem, LegendProps }

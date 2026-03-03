@@ -230,3 +230,4 @@ export function PieChart({
     </div>
   )
 }
+PieChart.displayName = 'PieChart'

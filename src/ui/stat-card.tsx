@@ -73,4 +73,6 @@ function StatCard({ className, label, value, delta, icon, loading, ...props }: S
   )
 }
 
+StatCard.displayName = 'StatCard'
+
 export { StatCard }

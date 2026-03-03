@@ -408,3 +408,4 @@ export function AreaChart({
     </div>
   )
 }
+AreaChart.displayName = 'AreaChart'

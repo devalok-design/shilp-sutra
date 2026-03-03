@@ -241,6 +241,8 @@ export function TaskCard({ task, onClickTask }: TaskCardProps) {
   )
 }
 
+TaskCard.displayName = 'TaskCard'
+
 // ============================================================
 // Overlay Task Card (used inside DragOverlay, no sortable hooks)
 // ============================================================

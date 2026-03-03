@@ -271,3 +271,4 @@ export function BarChart({
     </div>
   )
 }
+BarChart.displayName = 'BarChart'

@@ -314,3 +314,4 @@ export function RadarChart({
     </div>
   )
 }
+RadarChart.displayName = 'RadarChart'

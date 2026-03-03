@@ -35,4 +35,6 @@ function Skeleton({ className, variant, animation, ...props }: SkeletonProps) {
   )
 }
 
+Skeleton.displayName = 'Skeleton'
+
 export { Skeleton, skeletonVariants, type SkeletonProps }

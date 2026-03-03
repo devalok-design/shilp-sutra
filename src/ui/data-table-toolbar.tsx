@@ -192,3 +192,4 @@ export function DataTableToolbar<TData>({
     </div>
   )
 }
+DataTableToolbar.displayName = 'DataTableToolbar'

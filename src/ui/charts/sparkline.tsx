@@ -175,3 +175,4 @@ export function Sparkline({
     </svg>
   )
 }
+Sparkline.displayName = 'Sparkline'

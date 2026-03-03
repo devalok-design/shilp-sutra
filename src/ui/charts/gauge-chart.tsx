@@ -142,3 +142,4 @@ export function GaugeChart({
     </div>
   )
 }
+GaugeChart.displayName = 'GaugeChart'

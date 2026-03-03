@@ -33,6 +33,7 @@ export function ChartTooltip({ state, className }: ChartTooltipProps) {
     </div>
   )
 }
+ChartTooltip.displayName = 'ChartTooltip'
 
 /** Hook to manage chart tooltip state */
 export function useChartTooltip() {

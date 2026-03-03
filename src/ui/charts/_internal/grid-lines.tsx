@@ -53,3 +53,4 @@ export function GridLines({
     </g>
   )
 }
+GridLines.displayName = 'GridLines'

@@ -4,7 +4,7 @@ import { durations } from './lib/motion'
 
 const meta: Meta = {
   title: 'Foundations/Motion',
-  tags: ['autodocs'],
+  tags: [],
 }
 export default meta
 

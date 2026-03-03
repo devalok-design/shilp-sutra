@@ -136,9 +136,9 @@ export function Calendar({ onDateSelect, hasCorrection }: CalendarProps) {
           ))}
 
         {cal.days.map((day, index) => (
-          <div
+          <button
+            type="button"
             key={index}
-            role="button"
             tabIndex={day.isPadding ? -1 : 0}
             aria-label={day.isPadding ? undefined : format(day.fullDate, 'MMMM d, yyyy')}
             className={`${
@@ -151,12 +151,6 @@ export function Calendar({ onDateSelect, hasCorrection }: CalendarProps) {
                 : ''
             } ${day.isPadding ? 'opacity-50' : ''} `}
             onClick={() => handleDayClick(index, day.fullDate)}
-            onKeyDown={(e) => {
-              if (e.key === 'Enter' || e.key === ' ') {
-                e.preventDefault()
-                handleDayClick(index, day.fullDate)
-              }
-            }}
           >
             {cal.activeTimeFrame === 'weekly' && (
               <span className="text-ds-sm font-semibold uppercase tracking-wider mb-ds-03  text-text-tertiary">
@@ -188,7 +182,7 @@ export function Calendar({ onDateSelect, hasCorrection }: CalendarProps) {
                 <div className="absolute z-10 mt-ds-06 h-[6px] w-[6px] translate-y-[5px] rounded-ds-full bg-text-error"></div>
               )}
             </div>
-          </div>
+          </button>
         ))}
       </div>
     </div>

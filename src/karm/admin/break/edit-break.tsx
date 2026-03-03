@@ -542,10 +542,9 @@ export function EditBreak({
 
                       {/* Render calendar days */}
                       {days.map((day, index) => (
-                        <div
+                        <button
+                          type="button"
                           key={index}
-                          role="button"
-                          tabIndex={0}
                           className={`
                             ${
                               isInSelectedRange(day.fullDate) &&
@@ -574,12 +573,6 @@ export function EditBreak({
                             ${picker.selectedStartDate === picker.selectedEndDate ? 'same-date' : ''}
                           `}
                           onClick={() => handleDayClick(day)}
-                          onKeyDown={(e) => {
-                            if (e.key === 'Enter' || e.key === ' ') {
-                              e.preventDefault()
-                              handleDayClick(day)
-                            }
-                          }}
                         >
                           <div
                             className={`mx-ds-02 my-ds-02 ${
@@ -605,7 +598,7 @@ export function EditBreak({
                               {day.date}
                             </span>
                           </div>
-                        </div>
+                        </button>
                       ))}
                     </div>
                   </div>

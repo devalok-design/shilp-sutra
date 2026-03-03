@@ -315,10 +315,9 @@ function AdminDashboardCalendar({
           ))}
 
         {cal.days.map((day, index) => (
-          <div
+          <button
+            type="button"
             key={index}
-            role="button"
-            tabIndex={0}
             className={`${
               cal.activeTimeFrame === 'weekly'
                 ? 'w-full rounded-t-ds-lg pb-3.5 pt-ds-05 max-md:rounded-ds-lg'
@@ -331,12 +330,6 @@ function AdminDashboardCalendar({
                 : ''
             } ${day.isPadding ? 'opacity-50' : ''} `}
             onClick={() => handleDayClick(index, day.fullDate)}
-            onKeyDown={(e) => {
-              if (e.key === 'Enter' || e.key === ' ') {
-                e.preventDefault()
-                handleDayClick(index, day.fullDate)
-              }
-            }}
           >
             {cal.activeTimeFrame === 'weekly' && (
               <span className="text-ds-sm font-semibold uppercase tracking-wider mb-ds-03  text-text-tertiary">
@@ -350,7 +343,7 @@ function AdminDashboardCalendar({
               dateAttendanceMap={selectedAssociate ? dateAttendanceMap : null}
               activeTimeFrame={cal.activeTimeFrame}
             />
-          </div>
+          </button>
         ))}
       </div>
     </>

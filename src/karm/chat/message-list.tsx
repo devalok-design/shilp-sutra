@@ -120,7 +120,7 @@ export function MessageList({
   }
 
   return (
-    <div ref={scrollRef} className="no-scrollbar flex-1 overflow-y-auto p-ds-05" aria-live="polite" aria-relevant="additions">
+    <div ref={scrollRef} className="no-scrollbar flex-1 overflow-y-auto p-ds-05">
       <div className="flex flex-col gap-ds-05" role="log">
         {messages.map((msg) => {
           if (msg.role === 'SYSTEM') {

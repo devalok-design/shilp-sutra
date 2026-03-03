@@ -35,7 +35,7 @@ pnpm install</code></pre>
 // --- Editor stories ---
 
 const editorMeta: Meta<typeof RichTextEditor> = {
-  title: 'Shared/RichTextEditor',
+  title: 'Composed/RichTextEditor',
   component: RichTextEditor,
   tags: ['autodocs'],
   decorators: [

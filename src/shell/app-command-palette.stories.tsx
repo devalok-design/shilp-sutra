@@ -86,7 +86,7 @@ const extraActionsGroup: CommandGroup = {
 // ── Meta ─────────────────────────────────────────────────────
 
 const meta: Meta<typeof AppCommandPalette> = {
-  title: 'Layout/AppCommandPalette',
+  title: 'Shell/AppCommandPalette',
   component: AppCommandPalette,
   tags: ['autodocs'],
   parameters: {

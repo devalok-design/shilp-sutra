@@ -16,7 +16,7 @@ const mockMembers: MemberPickerMember[] = [
 // ── Meta ────────────────────────────────────────────────────
 
 const meta: Meta<typeof MemberPicker> = {
-  title: 'Shared/MemberPicker',
+  title: 'Composed/MemberPicker',
   component: MemberPicker,
   tags: ['autodocs'],
   parameters: {

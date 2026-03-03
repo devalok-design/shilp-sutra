@@ -45,7 +45,7 @@ const moreItems: BottomNavItem[] = [
 // ── Meta ─────────────────────────────────────────────────────
 
 const meta: Meta<typeof BottomNavbar> = {
-  title: 'Layout/BottomNavbar',
+  title: 'Shell/BottomNavbar',
   component: BottomNavbar,
   tags: ['autodocs'],
   parameters: {

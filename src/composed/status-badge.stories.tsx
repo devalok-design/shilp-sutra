@@ -2,7 +2,7 @@ import type { Meta, StoryObj } from '@storybook/react'
 import { StatusBadge } from './status-badge'
 
 const meta: Meta<typeof StatusBadge> = {
-  title: 'Shared/StatusBadge',
+  title: 'Composed/StatusBadge',
   component: StatusBadge,
   tags: ['autodocs'],
   argTypes: {

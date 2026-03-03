@@ -12,7 +12,7 @@ const mockUsers = [
 ]
 
 const meta: Meta<typeof AvatarGroup> = {
-  title: 'Shared/AvatarGroup',
+  title: 'Composed/AvatarGroup',
   component: AvatarGroup,
   tags: ['autodocs'],
   argTypes: {

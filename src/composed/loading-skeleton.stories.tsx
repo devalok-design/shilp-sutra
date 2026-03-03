@@ -2,7 +2,7 @@ import type { Meta, StoryObj } from '@storybook/react'
 import { CardSkeleton, TableSkeleton, BoardSkeleton, ListSkeleton } from './loading-skeleton'
 
 const meta: Meta = {
-  title: 'Shared/LoadingSkeleton',
+  title: 'Composed/LoadingSkeleton',
   tags: ['autodocs'],
 }
 export default meta

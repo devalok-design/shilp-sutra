@@ -2,7 +2,7 @@ import type { Meta, StoryObj } from '@storybook/react'
 import { PriorityIndicator } from './priority-indicator'
 
 const meta: Meta<typeof PriorityIndicator> = {
-  title: 'Shared/PriorityIndicator',
+  title: 'Composed/PriorityIndicator',
   component: PriorityIndicator,
   tags: ['autodocs'],
   argTypes: {

@@ -2,13 +2,12 @@ import type { Meta, StoryObj } from '@storybook/react'
 import {
   DashboardSkeleton,
   ProjectListSkeleton,
-  DevsabhaSkeleton,
-  BandwidthSkeleton,
   TaskDetailSkeleton,
 } from './page-skeletons'
+import { DevsabhaSkeleton, BandwidthSkeleton } from '../karm/page-skeletons'
 
 const meta: Meta = {
-  title: 'Shared/PageSkeletons',
+  title: 'Composed/PageSkeletons',
   tags: ['autodocs'],
   decorators: [
     (Story) => (

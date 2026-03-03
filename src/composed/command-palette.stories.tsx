@@ -128,7 +128,7 @@ const settingsGroup: CommandGroup = {
 const allGroups = [navigationGroup, actionsGroup, settingsGroup]
 
 const meta: Meta<typeof CommandPalette> = {
-  title: 'Shared/CommandPalette',
+  title: 'Composed/CommandPalette',
   component: CommandPalette,
   tags: ['autodocs'],
   parameters: {

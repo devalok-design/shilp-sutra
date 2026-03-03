@@ -2,7 +2,7 @@ import type { Meta, StoryObj } from '@storybook/react'
 import { ContentCard } from './content-card'
 
 const meta: Meta<typeof ContentCard> = {
-  title: 'Shared/ContentCard',
+  title: 'Composed/ContentCard',
   component: ContentCard,
   tags: ['autodocs'],
   decorators: [

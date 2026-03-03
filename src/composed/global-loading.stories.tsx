@@ -3,7 +3,7 @@ import type { Meta, StoryObj } from '@storybook/react'
 import { GlobalLoading } from './global-loading'
 
 const meta: Meta<typeof GlobalLoading> = {
-  title: 'Shared/GlobalLoading',
+  title: 'Composed/GlobalLoading',
   component: GlobalLoading,
   tags: ['autodocs'],
   parameters: {

@@ -21,7 +21,7 @@ const mockUserWithImage: TopBarUser = {
 // ── Meta ─────────────────────────────────────────────────────
 
 const meta: Meta<typeof TopBar> = {
-  title: 'Layout/TopBar',
+  title: 'Shell/TopBar',
   component: TopBar,
   tags: ['autodocs'],
   parameters: {

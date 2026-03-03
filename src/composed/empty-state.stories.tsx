@@ -11,7 +11,7 @@ import {
 } from '@tabler/icons-react'
 
 const meta: Meta<typeof EmptyState> = {
-  title: 'Shared/EmptyState',
+  title: 'Composed/EmptyState',
   component: EmptyState,
   tags: ['autodocs'],
   decorators: [

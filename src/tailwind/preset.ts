@@ -224,11 +224,17 @@ const preset: Partial<Config> = {
           '60%': { transform: 'translateX(3px)' },
           '70%, 100%': { transform: 'translateX(0)' },
         },
+        'progress-indeterminate': {
+          '0%': { transform: 'translateX(-100%)' },
+          '100%': { transform: 'translateX(250%)' },
+        },
       },
       animation: {
         ripple: 'ripple var(--duration-slow) linear',
         'ripple-icon': 'ripple var(--duration-medium) linear forwards',
         shake: 'shake 1s var(--ease-standard) infinite',
+        'progress-indeterminate':
+          'progress-indeterminate 1.5s var(--ease-standard) infinite',
       },
       backgroundImage: {
         'gradient-brand': 'var(--gradient-brand-light)',

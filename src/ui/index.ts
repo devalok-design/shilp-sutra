@@ -109,7 +109,7 @@ export { AvatarStack, type AvatarData, type AvatarStackProps } from './avatar-st
 export { Table, TableHeader, TableBody, TableFooter, TableHead, TableRow, TableCell, TableCaption } from './table'
 export { DataTable, type DataTableProps } from './data-table'
 export { DataTableToolbar, type DataTableToolbarProps, type Density } from './data-table-toolbar'
-export { Progress } from './progress'
+export { Progress, progressTrackVariants, progressIndicatorVariants, type ProgressProps } from './progress'
 export { Skeleton } from './skeleton'
 export { StatCard, type StatCardProps } from './stat-card'
 export { Code, type CodeProps } from './code'

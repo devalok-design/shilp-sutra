@@ -6,7 +6,7 @@ import { cn } from './lib/utils'
 import { Spinner } from './spinner'
 
 export const buttonVariants = cva(
-  'inline-flex items-center justify-center gap-ds-03 whitespace-nowrap font-sans text-ds-md font-semibold select-none border border-transparent transition-[color,background-color,border-color,box-shadow] duration-fast ease-standard focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-focus focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50',
+  'inline-flex items-center justify-center gap-ds-03 whitespace-nowrap font-sans font-semibold select-none border border-transparent transition-[color,background-color,border-color,box-shadow] duration-fast ease-standard focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-focus focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50',
   {
     variants: {
       variant: {
@@ -23,9 +23,9 @@ export const buttonVariants = cva(
         link: 'text-text-link underline-offset-4 hover:underline',
       },
       size: {
-        sm: 'h-ds-sm rounded-ds-md px-ds-04',
-        md: 'h-ds-md rounded-ds-md px-ds-05',
-        lg: 'h-ds-lg rounded-ds-lg px-ds-06',
+        sm: 'h-ds-sm rounded-ds-md px-ds-04 text-ds-sm',
+        md: 'h-ds-md rounded-ds-md px-ds-05 text-ds-md',
+        lg: 'h-ds-lg rounded-ds-lg px-ds-06 text-ds-base',
         'icon-sm': 'h-ds-sm w-ds-sm rounded-ds-md',
         'icon-md': 'h-ds-md w-ds-md rounded-ds-md',
         'icon-lg': 'h-ds-lg w-ds-lg rounded-ds-lg',

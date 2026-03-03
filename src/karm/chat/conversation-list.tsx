@@ -66,7 +66,7 @@ export const ConversationList = React.forwardRef<HTMLDivElement, ConversationLis
     <div ref={ref} className="flex flex-1 flex-col overflow-hidden">
       {/* Header */}
       <div className="flex items-center justify-between border-b border-border px-ds-05 py-ds-04">
-        <h3 className="text-ds-base text-text-primary">
+        <h3 className="text-ds-md font-semibold text-text-primary">
           Conversations
         </h3>
         <button

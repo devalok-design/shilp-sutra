@@ -175,10 +175,10 @@ export const LeaveRequests = React.forwardRef<HTMLDivElement, LeaveRequestsProps
                   {/* for one day leave, display one line message & date */}
                   {isSingleDayRequest(request) ? (
                     <div className="flex w-full flex-col items-center gap-ds-03 md:flex-row md:flex-wrap max-md:items-start">
-                      <p className="B1 semibold text-text-primary">
+                      <p className="text-ds-base font-semibold text-text-primary">
                         {removeAllEmojis(request.reason)}
                       </p>
-                      <p className="B1 hidden font-semibold text-text-tertiary md:block">
+                      <p className="text-ds-base hidden font-semibold text-text-tertiary md:block">
                         &bull;
                       </p>
                       <p className="text-ds-base text-text-tertiary">
@@ -187,7 +187,7 @@ export const LeaveRequests = React.forwardRef<HTMLDivElement, LeaveRequestsProps
                     </div>
                   ) : (
                     <div className="flex flex-col items-start justify-start gap-ds-03">
-                      <p className="B1 semibold text-text-primary">
+                      <p className="text-ds-base font-semibold text-text-primary">
                         {removeAllEmojis(request.reason)}
                       </p>
                       <p className="text-ds-base text-text-tertiary">

@@ -6,6 +6,8 @@
 
 import * as React from 'react'
 import { useEffect, useState } from 'react'
+import { Button } from '../../../ui/button'
+import { Checkbox } from '../../../ui/checkbox'
 import {
   Dialog,
   DialogClose,
@@ -141,13 +143,9 @@ export const BreakRequestCard = React.forwardRef<HTMLDivElement, BreakRequestPro
                 </div>
               </div>
               <div className="mt-ds-05 flex w-full flex-col gap-ds-04">
-                <button
-                  className="B2 semibold w-full rounded-[88px] border border-interactive bg-interactive px-[20px] py-[12px] text-center text-text-on-color"
-                  style={{ boxShadow: 'var(--shadow-02)' }}
-                  onClick={handleCancelBreak}
-                >
+                <Button variant="primary" className="w-full rounded-full" onClick={handleCancelBreak}>
                   Yes, cancel
-                </button>
+                </Button>
               </div>
               <button
                 className="absolute right-ds-05 top-ds-05 rounded-ds-sm p-ds-04 text-icon-secondary transition-colors hover:text-icon-primary hover:bg-field focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-focus disabled:pointer-events-none"
@@ -245,13 +243,9 @@ export const BreakRequestCard = React.forwardRef<HTMLDivElement, BreakRequestPro
                   </div>
                   <DialogFooter className="mt-ds-04 sm:justify-start">
                     <DialogClose asChild>
-                      <button
-                        className="B2 semibold w-full rounded-[88px] border border-interactive bg-interactive px-[20px] py-[12px] text-center text-text-on-color"
-                        style={{ boxShadow: 'var(--shadow-02)' }}
-                        onClick={handleCancelBreak}
-                      >
+                      <Button variant="primary" className="w-full rounded-full" onClick={handleCancelBreak}>
                         Yes, cancel
-                      </button>
+                      </Button>
                     </DialogClose>
                   </DialogFooter>
                 </DialogContent>
@@ -275,11 +269,9 @@ export const BreakRequestCard = React.forwardRef<HTMLDivElement, BreakRequestPro
                 <div className="flex flex-col items-center justify-start">
                   <div className="flex w-full flex-col items-start">
                     <label className="breakRequest-checkbox flex items-center space-x-ds-03">
-                      <input
-                        type="checkbox"
+                      <Checkbox
                         checked={deleteSingleDay}
-                        onChange={(e) => setDeleteSingleDay(e.target.checked)}
-                        className="roundec-full"
+                        onCheckedChange={(checked) => setDeleteSingleDay(checked === true)}
                       />
                       <span className="text-text-secondary">
                         {getDaySuffix(new Date(selectedDate).getDate())} break
@@ -287,11 +279,9 @@ export const BreakRequestCard = React.forwardRef<HTMLDivElement, BreakRequestPro
                       </span>
                     </label>
                     <label className="breakRequest-checkbox mt-ds-03 flex items-center space-x-ds-03">
-                      <input
-                        type="checkbox"
+                      <Checkbox
                         checked={!deleteSingleDay}
-                        onChange={(e) => setDeleteSingleDay(!e.target.checked)}
-                        className="rounded-ds-full"
+                        onCheckedChange={(checked) => setDeleteSingleDay(checked !== true)}
                       />
                       <span className="text-text-secondary">
                         {getDaySuffix(
@@ -306,13 +296,9 @@ export const BreakRequestCard = React.forwardRef<HTMLDivElement, BreakRequestPro
                 </div>
                 <DialogFooter className="mt-ds-04 sm:justify-start">
                   <DialogClose asChild>
-                    <button
-                      className="B2 semibold w-full rounded-[88px] border border-interactive bg-interactive px-[20px] py-[12px] text-center text-text-on-color"
-                      style={{ boxShadow: 'var(--shadow-02)' }}
-                      onClick={handleCancelBreak}
-                    >
+                    <Button variant="primary" className="w-full rounded-full" onClick={handleCancelBreak}>
                       Yes, cancel
-                    </button>
+                    </Button>
                   </DialogClose>
                 </DialogFooter>
               </DialogContent>

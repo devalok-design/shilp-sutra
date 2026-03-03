@@ -7,6 +7,7 @@
 
 import * as React from 'react'
 import { Fragment } from 'react'
+import { Avatar, AvatarImage, AvatarFallback } from '../../../ui/avatar'
 import { Tooltip, TooltipContent, TooltipTrigger } from '../../../ui/tooltip'
 import { CrossIcon, TickIcon } from '../icons'
 import { formatDateWithWeekday } from '../utils/date-utils'
@@ -75,18 +76,18 @@ export const CorrectionList = React.forwardRef<HTMLDivElement, CorrectionListPro
         <Fragment key={correction.id}>
           <div className="max-md:border-1 flex items-center justify-between px-ds-03 py-3.5 max-md:rounded-[8px] max-md:border-border">
             <div className="flex items-center gap-ds-04">
-              <img
-                className="h-10 w-10 rounded-ds-full border-2 max-md:mb-[auto]"
-                src={
-                  userImages[correction?.user?.id || ''] ||
-                  (assetsBaseUrl
-                    ? assetsBaseUrl + '/Goutham.png'
-                    : '')
-                }
-                width={40}
-                height={40}
-                alt={`${correction?.user?.name}'s Icon`}
-              />
+              <Avatar className="h-10 w-10 border-2 max-md:mb-[auto]">
+                <AvatarImage
+                  src={
+                    userImages[correction?.user?.id || ''] ||
+                    (assetsBaseUrl
+                      ? assetsBaseUrl + '/Goutham.png'
+                      : '')
+                  }
+                  alt={`${correction?.user?.name}'s Icon`}
+                />
+                <AvatarFallback>{correction?.user?.name?.[0] || 'U'}</AvatarFallback>
+              </Avatar>
               <div className="flex flex-col gap-ds-02">
                 <p className="text-ds-sm text-text-secondary">
                   {correction?.user?.name}

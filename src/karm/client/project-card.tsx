@@ -1,6 +1,7 @@
 import * as React from 'react'
 import { cn } from '../../ui/lib/utils'
 import { Badge } from '../../ui/badge'
+import { Progress } from '../../ui/progress'
 
 export interface ProjectCardProps extends React.HTMLAttributes<HTMLDivElement> {
   name: string
@@ -61,12 +62,7 @@ const ProjectCard = React.forwardRef<HTMLDivElement, ProjectCardProps>(
             </span>
             <span>{progress}%</span>
           </div>
-          <div className="h-1.5 w-full overflow-hidden rounded-ds-full bg-layer-03">
-            <div
-              className="h-full rounded-ds-full bg-interactive transition-[width] duration-slow"
-              style={{ width: `${progress}%` }}
-            />
-          </div>
+          <Progress value={progress} className="h-1.5" />
         </div>
       </div>
     )

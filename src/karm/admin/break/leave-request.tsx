@@ -92,7 +92,7 @@ export function LeaveRequest({
                 <div className="flex w-full flex-wrap items-center gap-ds-03">
                   <Tooltip>
                     <TooltipTrigger asChild>
-                      <p className="text-ds-base semibold line-clamp-2 cursor-default text-text-primary">
+                      <p className="text-ds-base font-semibold line-clamp-2 cursor-default text-text-primary">
                         {request.reason}
                       </p>
                     </TooltipTrigger>
@@ -106,7 +106,7 @@ export function LeaveRequest({
                 <>
                   <Tooltip>
                     <TooltipTrigger asChild>
-                      <p className="text-ds-base semibold line-clamp-2 cursor-default text-text-primary">
+                      <p className="text-ds-base font-semibold line-clamp-2 cursor-default text-text-primary">
                         {request.reason}
                       </p>
                     </TooltipTrigger>

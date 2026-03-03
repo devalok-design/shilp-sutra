@@ -177,7 +177,7 @@ export const CalendarGrid = React.forwardRef<HTMLDivElement, CalendarGridProps>(
           type="button"
           onClick={onHeaderClick}
           className={cn(
-            'text-ds-md semibold text-text-primary',
+            'text-ds-md font-semibold text-text-primary',
             onHeaderClick &&
               'cursor-pointer rounded-ds-md px-ds-02 transition-colors hover:bg-field',
           )}

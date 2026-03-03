@@ -89,7 +89,7 @@ const ContentCard = React.forwardRef<HTMLDivElement, ContentCardProps>(
             {header ?? (
               <>
                 {headerTitle && (
-                  <h3 className="text-ds-base semibold text-text-primary">
+                  <h3 className="text-ds-base font-semibold text-text-primary">
                     {headerTitle}
                   </h3>
                 )}

@@ -97,7 +97,7 @@ const AttendanceCTA = React.forwardRef<HTMLDivElement, AttendanceCTAProps>(
           </div>
           <div className="flex items-center gap-ds-03 rounded-ds-xl bg-success-surface px-ds-05 py-2.5">
             <div className="flex h-ico-md w-ico-md items-center justify-center rounded-ds-full bg-text-success">
-              <IconCheck className="h-3 w-3 text-text-on-color" />
+              <IconCheck className="h-ico-sm w-ico-sm text-text-on-color" />
             </div>
             <span className="text-ds-md font-semibold text-text-success">
               Marked at{' '}

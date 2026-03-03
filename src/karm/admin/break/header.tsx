@@ -103,7 +103,7 @@ export const BreakAdminHeader = React.forwardRef<HTMLDivElement, BreakAdminHeade
               Break Balance
             </p>
             <div className="flex items-end">
-              <p className="text-ds-5xl semibold mr-ds-02 text-interactive">
+              <p className="text-ds-5xl font-semibold mr-ds-02 text-interactive">
                 {breakBalance?.remainingDays || 0}
               </p>
 

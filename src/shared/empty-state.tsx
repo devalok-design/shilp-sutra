@@ -53,7 +53,7 @@ const EmptyState = React.forwardRef<HTMLDivElement, EmptyStateProps>(
           <h3
             className={cn(
               'text-text-primary',
-              compact ? 'text-ds-md semibold' : 'text-ds-base semibold',
+              compact ? 'text-ds-md font-semibold' : 'text-ds-base font-semibold',
             )}
           >
             {title}

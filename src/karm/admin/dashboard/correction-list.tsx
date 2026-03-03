@@ -93,11 +93,11 @@ export const CorrectionList = React.forwardRef<HTMLDivElement, CorrectionListPro
                   {correction?.user?.name}
                 </p>
                 <div className="flex w-full flex-wrap items-center gap-ds-03">
-                  <p className="B1 semibold text-text-primary">
+                  <p className="text-ds-base font-semibold text-text-primary">
                     {correction?.reason}
                   </p>
                   {correction?.reason ? (
-                    <p className="B1 font-semibold text-text-tertiary">
+                    <p className="text-ds-base font-semibold text-text-tertiary">
                       &bull;
                     </p>
                   ) : null}

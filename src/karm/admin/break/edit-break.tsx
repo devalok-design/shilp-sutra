@@ -426,7 +426,7 @@ export function EditBreak({
             <div className="flex w-full flex-col items-center gap-ds-05">
               <p className="text-ds-md w-full text-left text-text-tertiary">
                 Edit break details of{' '}
-                <span className="semibold text-interactive">
+                <span className="font-semibold text-interactive">
                   {selectedLeave?.user?.name}
                 </span>
               </p>

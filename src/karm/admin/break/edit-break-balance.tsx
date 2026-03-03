@@ -96,7 +96,7 @@ export function EditBreakBalance({
             <div className="flex flex-col items-center justify-start gap-ds-05">
               <p className="text-ds-md w-full text-left text-text-tertiary">
                 Edit break balance conversion of <br className="mb-ds-02" />
-                <span className="semibold text-interactive">
+                <span className="font-semibold text-interactive">
                   {selectedLeave?.user?.name}
                 </span>
               </p>
@@ -125,7 +125,7 @@ export function EditBreakBalance({
                     Carry forward
                   </div>
                   <div className="flex w-[100px] items-center justify-center">
-                    <div className="text-ds-base semibold text-text-secondary">
+                    <div className="text-ds-base font-semibold text-text-secondary">
                       {carryForward}
                     </div>
                   </div>

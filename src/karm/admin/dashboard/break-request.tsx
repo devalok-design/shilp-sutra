@@ -132,12 +132,12 @@ export const BreakRequestCard = React.forwardRef<HTMLDivElement, BreakRequestPro
           <div className="flex h-full w-full flex-col items-center justify-center px-ds-04 pt-[17px]">
             <div className="w-full gap-ds-05 rounded-ds-md bg-layer-01 shadow-01 px-ds-06 py-ds-07 md:hidden">
               <div className="flex flex-col items-center gap-ds-04">
-                <div className="text-ds-lg semibold text-center text-text-primary">
+                <div className="text-ds-lg font-semibold text-center text-text-primary">
                   Cancel this break?
                 </div>
                 <div className="text-ds-base max-w-[240px] text-center text-text-tertiary max-md:leading-[100%]">
                   You&apos;re about to cancel the break scheduled for{' '}
-                  <span className="semibold text-text-secondary">
+                  <span className="font-semibold text-text-secondary">
                     {formatBreakDate(breakRequest.startDate)}
                   </span>
                 </div>
@@ -161,7 +161,7 @@ export const BreakRequestCard = React.forwardRef<HTMLDivElement, BreakRequestPro
               <div className="text-ds-sm font-semibold uppercase tracking-wider text-text-tertiary">
                 Reason
               </div>
-              <div className="text-ds-lg semibold text-text-primary">
+              <div className="text-ds-lg font-semibold text-text-primary">
                 {removeAllEmojis(breakRequest?.reason || ' ')}
               </div>
             </div>
@@ -169,7 +169,7 @@ export const BreakRequestCard = React.forwardRef<HTMLDivElement, BreakRequestPro
               <div className="text-ds-sm font-semibold uppercase tracking-wider text-text-tertiary">
                 Break Period
               </div>
-              <div className="text-ds-lg semibold text-text-primary">
+              <div className="text-ds-lg font-semibold text-text-primary">
                 {formatDate(new Date(breakRequest.startDate))}{' '}
                 {breakRequest.numberOfDays > 1 && (
                   <>- {formatDate(new Date(breakRequest.endDate))} </>
@@ -229,14 +229,14 @@ export const BreakRequestCard = React.forwardRef<HTMLDivElement, BreakRequestPro
                 )}
                 <DialogContent className="max-w-[329px] gap-ds-04 rounded-ds-xl">
                   <DialogHeader>
-                    <div className="text-ds-lg semibold text-center text-text-primary">
+                    <div className="text-ds-lg font-semibold text-center text-text-primary">
                       Cancel this break?
                     </div>
                   </DialogHeader>
                   <div className="flex flex-col items-center justify-start">
                     <div className="text-ds-base max-w-[241px] text-center text-text-tertiary">
                       You&apos;re about to cancel the break scheduled for{' '}
-                      <span className="semibold text-text-secondary">
+                      <span className="font-semibold text-text-secondary">
                         {formatBreakDate(breakRequest.startDate)}
                       </span>
                     </div>
@@ -262,7 +262,7 @@ export const BreakRequestCard = React.forwardRef<HTMLDivElement, BreakRequestPro
               )}
               <DialogContent className="max-w-[329px] gap-ds-04 rounded-ds-xl">
                 <DialogHeader>
-                  <div className="text-ds-lg semibold flex text-center text-text-primary">
+                  <div className="text-ds-lg font-semibold flex text-center text-text-primary">
                     Cancel your break
                   </div>
                 </DialogHeader>

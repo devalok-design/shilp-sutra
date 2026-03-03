@@ -100,7 +100,7 @@ const SubtasksTab = React.forwardRef<HTMLDivElement, SubtasksTabProps>(
       {/* Progress bar */}
       {totalCount > 0 && (
         <div className="mb-ds-05 flex items-center gap-ds-04">
-          <Progress value={totalCount > 0 ? (completedCount / totalCount) * 100 : 0} className="h-1.5" />
+          <Progress value={totalCount > 0 ? (completedCount / totalCount) * 100 : 0} className="h-ds-02b" />
           <span className="shrink-0 text-ds-sm font-medium text-text-placeholder">
             {completedCount}/{totalCount}
           </span>
@@ -109,7 +109,7 @@ const SubtasksTab = React.forwardRef<HTMLDivElement, SubtasksTabProps>(
 
       {/* Subtask list */}
       {subtasks.length > 0 ? (
-        <div className="space-y-0.5">
+        <div className="space-y-ds-01">
           {subtasks.map((subtask) => {
             const isComplete =
               subtask.column?.isTerminal || subtask.columnId === terminalColumnId
@@ -119,7 +119,7 @@ const SubtasksTab = React.forwardRef<HTMLDivElement, SubtasksTabProps>(
               <div
                 key={subtask.id}
                 className={cn(
-                  'group flex items-center gap-2.5 rounded-ds-lg px-ds-03 py-ds-02b transition-colors',
+                  'group flex items-center gap-ds-03 rounded-ds-lg px-ds-03 py-ds-02b transition-colors',
                   'hover:bg-field cursor-pointer',
                 )}
                 onClick={() => onClickSubtask?.(subtask.id)}
@@ -132,7 +132,7 @@ const SubtasksTab = React.forwardRef<HTMLDivElement, SubtasksTabProps>(
                     if (!readOnly) onToggleSubtask(subtask.id, !isComplete)
                   }}
                   className={cn(
-                    'shrink-0 rounded p-0.5 transition-colors',
+                    'shrink-0 rounded p-ds-01 transition-colors',
                     readOnly ? 'cursor-default' : 'hover:bg-layer-02',
                   )}
                 >
@@ -209,7 +209,7 @@ const SubtasksTab = React.forwardRef<HTMLDivElement, SubtasksTabProps>(
               type="button"
               onClick={handleSubmit}
               disabled={!newTitle.trim()}
-              className="inline-flex h-6 items-center gap-ds-02 rounded-ds-md bg-interactive px-2.5 text-ds-sm font-semibold text-text-on-color transition-colors hover:bg-interactive-hover disabled:opacity-[0.38]"
+              className="inline-flex h-6 items-center gap-ds-02 rounded-ds-md bg-interactive px-ds-03 text-ds-sm font-semibold text-text-on-color transition-colors hover:bg-interactive-hover disabled:opacity-[0.38]"
             >
               Add
             </button>

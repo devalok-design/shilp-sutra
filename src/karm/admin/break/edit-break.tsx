@@ -582,13 +582,13 @@ export function EditBreak({
                             }`}
                           >
                             <span
-                              className={`text-ds-base flex h-10 w-10 items-center justify-center rounded-ds-full
+                              className={`text-ds-base flex h-ds-md w-ds-md items-center justify-center rounded-ds-full
                                 ${
                                   day.fullDate === picker.selectedStartDate ||
                                   day.fullDate === picker.selectedEndDate ||
                                   isBreakDay(day.fullDate, existingBreaks, selectedLeave.id)
                                     ? 'rounded-ds-full bg-accent shadow-[0px_4px_4px_0px_var(--color-inset-glow)_inset,0px_0px_4px_0px_var(--color-accent-hover)_inset]'
-                                    : 'flex h-10 w-10 items-center justify-center'
+                                    : 'flex h-ds-md w-ds-md items-center justify-center'
                                 }
                                 ${
                                   day.isToday
@@ -670,7 +670,7 @@ export function EditBreak({
                   />
                 </div>
                 <div className="flex w-full justify-between">
-                  <div className="flex h-10 w-10 items-center justify-center">
+                  <div className="flex h-ds-md w-ds-md items-center justify-center">
                     <DeleteBreak
                       id={selectedLeave.id}
                       userId={selectedLeave.userId}

@@ -76,7 +76,7 @@ function BottomNavLink({
           )}
           aria-hidden="true"
         />
-        <div className="p-2.5">
+        <div className="p-ds-03">
           <item.icon className="h-ico-md w-ico-md" aria-hidden="true" />
         </div>
         <span className="text-center">{item.title}</span>
@@ -203,7 +203,7 @@ const BottomNavbar = React.forwardRef<HTMLElement, BottomNavbarProps>(
                 )}
                 aria-hidden="true"
               />
-              <div className="p-2.5">
+              <div className="p-ds-03">
                 <IconDots className="h-ico-md w-ico-md" aria-hidden="true" />
               </div>
               <span className="text-center">More</span>

@@ -67,7 +67,7 @@ export function LeaveRequest({
         className="flex justify-between border-b border-border px-ds-03 py-ds-04 last:border-b-0"
       >
         <div className="flex w-full items-center gap-ds-04">
-          <Avatar className="h-10 w-10">
+          <Avatar className="h-ds-md w-ds-md">
             <AvatarImage src={userImages[request.user?.id || '']} alt={request.user?.name || ''} />
             <AvatarFallback>{(request.user?.name || '?')[0]}</AvatarFallback>
           </Avatar>
@@ -138,7 +138,7 @@ export function LeaveRequest({
                 disabled={request.user?.id === userId}
                 aria-label="Reject break request"
               >
-                <CrossIcon className="h-6 w-6" />
+                <CrossIcon className="h-ico-lg w-ico-lg" />
               </Button>
             </TooltipTrigger>
             {request.user?.id === userId && (
@@ -160,7 +160,7 @@ export function LeaveRequest({
                 disabled={request.user?.id === userId}
                 aria-label="Approve break request"
               >
-                <TickIcon className="h-6 w-6" />
+                <TickIcon className="h-ico-lg w-ico-lg" />
               </Button>
             </TooltipTrigger>
             {request.user?.id === userId && (

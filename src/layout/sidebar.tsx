@@ -78,9 +78,9 @@ function NavLink({ item, isActive }: { item: NavItem; isActive: boolean }) {
         isActive={isActive}
         tooltip={item.title}
         className={cn(
-          'relative gap-ds-04 rounded-ds-lg px-ds-04 py-2.5 transition-colors',
+          'relative gap-ds-04 rounded-ds-lg px-ds-04 py-ds-03 transition-colors',
           isActive
-            ? "bg-interactive-subtle text-interactive after:absolute after:right-0 after:top-0 after:h-full after:w-0.5 after:rounded-l-ds-full after:bg-interactive after:content-['']"
+            ? "bg-interactive-subtle text-interactive after:absolute after:right-0 after:top-0 after:h-full after:w-ds-01 after:rounded-l-ds-full after:bg-interactive after:content-['']"
             : 'text-text-helper hover:bg-layer-02 hover:text-text-primary',
         )}
       >

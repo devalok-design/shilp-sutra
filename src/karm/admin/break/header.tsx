@@ -118,7 +118,7 @@ export const BreakAdminHeader = React.forwardRef<HTMLDivElement, BreakAdminHeade
       <header className="flex items-center gap-ds-04">
         {filters.selectedAssociate ? (
           <div className="text-ds-md flex flex-row items-center justify-start gap-ds-02 rounded-ds-md bg-interactive p-ds-02b text-text-on-color">
-            <div className="flex items-center justify-start gap-0.5">
+            <div className="flex items-center justify-start gap-ds-01">
               {userImages[filters.selectedAssociate.id] ? (
                 <img
                   src={userImages[filters.selectedAssociate.id]}
@@ -133,7 +133,7 @@ export const BreakAdminHeader = React.forwardRef<HTMLDivElement, BreakAdminHeade
                 </div>
               )}
 
-              <span className="text-ds-md mx-0.5 text-text-on-color">
+              <span className="text-ds-md mx-ds-01 text-text-on-color">
                 {filters.selectedAssociate.name}
               </span>
             </div>
@@ -180,10 +180,10 @@ export const BreakAdminHeader = React.forwardRef<HTMLDivElement, BreakAdminHeade
                         <img
                           src={userImages[user.id]}
                           alt={`${user.name}'s avatar`}
-                          className="h-6 w-6 rounded-ds-full"
+                          className="h-ds-xs w-ds-xs rounded-ds-full"
                         />
                       ) : (
-                        <div className="flex h-6 w-6 items-center justify-center rounded-ds-full bg-layer-03">
+                        <div className="flex h-ds-xs w-ds-xs items-center justify-center rounded-ds-full bg-layer-03">
                           <span className="text-ds-md text-interactive">
                             {user.name.charAt(0)}
                           </span>

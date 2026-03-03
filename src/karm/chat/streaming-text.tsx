@@ -20,7 +20,7 @@ export const StreamingText = React.forwardRef<HTMLDivElement, StreamingTextProps
               return <code className={className}>{children}</code>
             }
             return (
-              <code className="rounded bg-field px-ds-02 py-0.5 text-ds-md">
+              <code className="rounded bg-field px-ds-02 py-ds-01 text-ds-md">
                 {children}
               </code>
             )
@@ -44,7 +44,7 @@ export const StreamingText = React.forwardRef<HTMLDivElement, StreamingTextProps
       >
         {text}
       </ReactMarkdown>
-      <span className="inline-block h-4 w-2 animate-pulse bg-text-secondary ml-0.5" />
+      <span className="inline-block h-4 w-2 animate-pulse bg-text-secondary ml-ds-01" />
     </div>
   )
 },

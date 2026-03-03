@@ -139,9 +139,9 @@ function PanelSkeleton() {
         ))}
       </div>
       <div className="space-y-ds-04">
-        <Skeleton className="h-10 w-full bg-field" />
-        <Skeleton className="h-10 w-full bg-field" />
-        <Skeleton className="h-10 w-4/5 bg-field" />
+        <Skeleton className="h-ds-md w-full bg-field" />
+        <Skeleton className="h-ds-md w-full bg-field" />
+        <Skeleton className="h-ds-md w-4/5 bg-field" />
       </div>
     </div>
   )

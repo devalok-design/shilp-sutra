@@ -41,11 +41,11 @@ const statusLabelMap: Record<AvatarStatus, string> = {
  * xs/sm get a smaller dot, md gets medium, lg/xl get a larger dot.
  */
 const statusDotSizeMap: Record<string, string> = {
-  xs: 'h-1.5 w-1.5',
+  xs: 'h-ds-02b w-ds-02b',
   sm: 'h-2 w-2',
-  md: 'h-2.5 w-2.5',
+  md: 'h-ds-03 w-ds-03',
   lg: 'h-3 w-3',
-  xl: 'h-3.5 w-3.5',
+  xl: 'h-ds-04 w-ds-04',
 }
 
 export interface AvatarProps

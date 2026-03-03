@@ -40,12 +40,12 @@ export const buttonVariants = cva(
 
 /** Map button size to icon wrapper size class */
 const iconSizeClass: Record<string, string> = {
-  sm: 'h-4 w-4 [&>svg]:h-4 [&>svg]:w-4',
+  sm: 'h-ico-sm w-ico-sm [&>svg]:h-ico-sm [&>svg]:w-ico-sm',
   md: 'h-ico-sm w-ico-sm [&>svg]:h-ico-sm [&>svg]:w-ico-sm',
-  lg: 'h-5 w-5 [&>svg]:h-5 [&>svg]:w-5',
-  'icon-sm': 'h-4 w-4 [&>svg]:h-4 [&>svg]:w-4',
+  lg: 'h-ico-md w-ico-md [&>svg]:h-ico-md [&>svg]:w-ico-md',
+  'icon-sm': 'h-ico-sm w-ico-sm [&>svg]:h-ico-sm [&>svg]:w-ico-sm',
   'icon-md': 'h-ico-sm w-ico-sm [&>svg]:h-ico-sm [&>svg]:w-ico-sm',
-  'icon-lg': 'h-5 w-5 [&>svg]:h-5 [&>svg]:w-5',
+  'icon-lg': 'h-ico-md w-ico-md [&>svg]:h-ico-md [&>svg]:w-ico-md',
 }
 
 /** Map button size to spinner size */

@@ -463,7 +463,7 @@ const SidebarGroupAction = forwardRef<
       ref={ref}
       data-sidebar="group-action"
       className={cn(
-        'hover:bg-layer-02 absolute right-ds-04 top-3.5 flex aspect-square w-5 items-center justify-center rounded-ds-md p-0 text-text-primary outline-none ring-focus transition-transform hover:text-text-primary focus-visible:ring-2 [&>svg]:size-4 [&>svg]:shrink-0',
+        'hover:bg-layer-02 absolute right-ds-04 top-ds-04 flex aspect-square w-5 items-center justify-center rounded-ds-md p-0 text-text-primary outline-none ring-focus transition-transform hover:text-text-primary focus-visible:ring-2 [&>svg]:size-4 [&>svg]:shrink-0',
         'after:absolute after:-inset-2 after:md:hidden',
         'group-data-[collapsible=icon]:hidden',
         className,
@@ -606,11 +606,11 @@ const SidebarMenuAction = forwardRef<
       ref={ref}
       data-sidebar="menu-action"
       className={cn(
-        'hover:bg-layer-02 absolute right-ds-02 top-1.5 flex aspect-square w-5 items-center justify-center rounded-ds-md p-0 text-text-primary outline-none ring-focus transition-transform hover:text-text-primary focus-visible:ring-2 peer-hover/menu-button:text-text-primary [&>svg]:size-4 [&>svg]:shrink-0',
+        'hover:bg-layer-02 absolute right-ds-02 top-ds-02b flex aspect-square w-5 items-center justify-center rounded-ds-md p-0 text-text-primary outline-none ring-focus transition-transform hover:text-text-primary focus-visible:ring-2 peer-hover/menu-button:text-text-primary [&>svg]:size-4 [&>svg]:shrink-0',
         'after:absolute after:-inset-2 after:md:hidden',
         'peer-data-[size=sm]/menu-button:top-1',
-        'peer-data-[size=md]/menu-button:top-1.5',
-        'peer-data-[size=lg]/menu-button:top-2.5',
+        'peer-data-[size=md]/menu-button:top-ds-02b',
+        'peer-data-[size=lg]/menu-button:top-ds-03',
         'group-data-[collapsible=icon]:hidden',
         showOnHover &&
           'group-focus-within/menu-item:opacity-100 group-hover/menu-item:opacity-100 data-[state=open]:opacity-100 peer-data-[active=true]/menu-button:text-text-primary md:opacity-0',
@@ -631,8 +631,8 @@ const SidebarMenuBadge = forwardRef<HTMLDivElement, ComponentProps<'div'>>(
         'pointer-events-none absolute right-ds-02 flex h-5 min-w-5 select-none items-center justify-center rounded-ds-md px-ds-02 text-ds-sm font-medium tabular-nums text-text-primary',
         'peer-hover/menu-button:text-text-primary peer-data-[active=true]/menu-button:text-text-primary',
         'peer-data-[size=sm]/menu-button:top-1',
-        'peer-data-[size=md]/menu-button:top-1.5',
-        'peer-data-[size=lg]/menu-button:top-2.5',
+        'peer-data-[size=md]/menu-button:top-ds-02b',
+        'peer-data-[size=lg]/menu-button:top-ds-03',
         'group-data-[collapsible=icon]:hidden',
         className,
       )}
@@ -685,7 +685,7 @@ const SidebarMenuSub = forwardRef<HTMLUListElement, ComponentProps<'ul'>>(
       ref={ref}
       data-sidebar="menu-sub"
       className={cn(
-        'mx-3.5 flex min-w-0 translate-x-px flex-col gap-ds-02 border-l border-border-subtle px-2.5 py-0.5',
+        'mx-ds-04 flex min-w-0 translate-x-px flex-col gap-ds-02 border-l border-border-subtle px-ds-03 py-ds-01',
         'group-data-[collapsible=icon]:hidden',
         className,
       )}

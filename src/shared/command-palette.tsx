@@ -214,7 +214,7 @@ const CommandPalette = React.forwardRef<HTMLDivElement, CommandPaletteProps>(
               autoCorrect="off"
               spellCheck={false}
             />
-            <kbd className="hidden shrink-0 select-none rounded-ds-md border border-border bg-layer-02 px-ds-02b py-0.5 text-ds-sm font-medium text-text-placeholder sm:inline-flex">
+            <kbd className="hidden shrink-0 select-none rounded-ds-md border border-border bg-layer-02 px-ds-02b py-ds-01 text-ds-sm font-medium text-text-placeholder sm:inline-flex">
               Esc
             </kbd>
           </div>
@@ -256,7 +256,7 @@ const CommandPalette = React.forwardRef<HTMLDivElement, CommandPaletteProps>(
                       }}
                       onMouseEnter={() => setActiveIndex(itemIndex)}
                       className={cn(
-                        'flex w-full items-center gap-ds-04 rounded-ds-lg px-2.5 py-ds-03 text-left transition-colors',
+                        'flex w-full items-center gap-ds-04 rounded-ds-lg px-ds-03 py-ds-03 text-left transition-colors',
                         isActive
                           ? 'bg-layer-03 text-text-primary'
                           : 'text-text-secondary hover:bg-layer-02',
@@ -277,7 +277,7 @@ const CommandPalette = React.forwardRef<HTMLDivElement, CommandPaletteProps>(
                         )}
                       </div>
                       {item.shortcut && (
-                        <kbd className="shrink-0 rounded border border-border bg-layer-02 px-ds-02b py-0.5 text-ds-xs font-medium text-text-placeholder">
+                        <kbd className="shrink-0 rounded border border-border bg-layer-02 px-ds-02b py-ds-01 text-ds-xs font-medium text-text-placeholder">
                           {item.shortcut}
                         </kbd>
                       )}
@@ -297,12 +297,12 @@ const CommandPalette = React.forwardRef<HTMLDivElement, CommandPaletteProps>(
           {/* Footer with keyboard hints */}
           <div className="flex items-center gap-ds-05 border-t border-border px-ds-05 py-ds-03">
             <div className="flex items-center gap-ds-02b">
-              <div className="flex items-center gap-0.5">
+              <div className="flex items-center gap-ds-01">
                 <kbd className="inline-flex h-ico-md w-ico-md items-center justify-center rounded border border-border bg-layer-02">
-                  <IconArrowUp className="h-2.5 w-2.5 text-text-placeholder" stroke={2} />
+                  <IconArrowUp className="h-ds-03 w-ds-03 text-text-placeholder" stroke={2} />
                 </kbd>
                 <kbd className="inline-flex h-ico-md w-ico-md items-center justify-center rounded border border-border bg-layer-02">
-                  <IconArrowDown className="h-2.5 w-2.5 text-text-placeholder" stroke={2} />
+                  <IconArrowDown className="h-ds-03 w-ds-03 text-text-placeholder" stroke={2} />
                 </kbd>
               </div>
               <span className="text-ds-xs text-text-placeholder">
@@ -311,7 +311,7 @@ const CommandPalette = React.forwardRef<HTMLDivElement, CommandPaletteProps>(
             </div>
             <div className="flex items-center gap-ds-02b">
               <kbd className="inline-flex h-5 items-center justify-center rounded border border-border bg-layer-02 px-ds-02b">
-                <IconCornerDownLeft className="h-2.5 w-2.5 text-text-placeholder" stroke={2} />
+                <IconCornerDownLeft className="h-ds-03 w-ds-03 text-text-placeholder" stroke={2} />
               </kbd>
               <span className="text-ds-xs text-text-placeholder">
                 Select

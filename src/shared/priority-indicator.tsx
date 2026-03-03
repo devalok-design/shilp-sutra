@@ -92,7 +92,7 @@ const PriorityIndicator = React.forwardRef<HTMLDivElement, PriorityIndicatorProp
       >
         <div
           className={cn(
-            'inline-flex items-center justify-center rounded-ds-md p-0.5',
+            'inline-flex items-center justify-center rounded-ds-md p-ds-01',
             config.bgColor,
           )}
         >

@@ -147,9 +147,9 @@ const ConversationTab = React.forwardRef<HTMLDivElement, ConversationTabProps>(
             const isClient = comment.authorType === 'CLIENT'
 
             return (
-              <div key={comment.id} className="flex gap-2.5">
+              <div key={comment.id} className="flex gap-ds-03">
                 {/* Avatar */}
-                <Avatar className="h-ds-xs-plus w-ds-xs-plus shrink-0 mt-0.5">
+                <Avatar className="h-ds-xs-plus w-ds-xs-plus shrink-0 mt-ds-01">
                   {author.image && (
                     <AvatarImage src={author.image} alt={author.name} />
                   )}
@@ -243,7 +243,7 @@ const ConversationTab = React.forwardRef<HTMLDivElement, ConversationTabProps>(
             type="button"
             onClick={handlePost}
             disabled={!editorContent.replace(/<[^>]*>/g, '').trim()}
-            className="inline-flex items-center gap-ds-02b rounded-ds-lg bg-interactive px-3.5 py-ds-02b text-ds-sm font-semibold text-text-on-color transition-colors hover:bg-interactive-hover disabled:opacity-[0.38] disabled:cursor-not-allowed"
+            className="inline-flex items-center gap-ds-02b rounded-ds-lg bg-interactive px-ds-04 py-ds-02b text-ds-sm font-semibold text-text-on-color transition-colors hover:bg-interactive-hover disabled:opacity-[0.38] disabled:cursor-not-allowed"
           >
             <IconSend className="h-ico-sm w-ico-sm" stroke={2} />
             Comment

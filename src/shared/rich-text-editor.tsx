@@ -55,7 +55,7 @@ function ToolbarButton({
 
 function Toolbar({ editor }: { editor: Editor }) {
   return (
-    <div className="flex flex-wrap items-center gap-0.5 border-b border-border px-ds-04 py-ds-02b">
+    <div className="flex flex-wrap items-center gap-ds-01 border-b border-border px-ds-04 py-ds-02b">
       <ToolbarButton
         onClick={() => editor.chain().focus().toggleBold().run()}
         isActive={editor.isActive('bold')}
@@ -189,7 +189,7 @@ const RichTextEditor = React.forwardRef<HTMLDivElement, RichTextEditorProps>(
           '[&_p]:mb-ds-02b [&_p]:text-text-secondary',
           '[&_ul]:ml-ds-05 [&_ul]:list-disc [&_ol]:ml-ds-05 [&_ol]:list-decimal',
           '[&_li]:text-text-secondary',
-          '[&_code]:rounded [&_code]:bg-layer-02 [&_code]:px-ds-02b [&_code]:py-0.5 [&_code]:text-ds-md [&_code]:text-interactive',
+          '[&_code]:rounded [&_code]:bg-layer-02 [&_code]:px-ds-02b [&_code]:py-ds-01 [&_code]:text-ds-md [&_code]:text-interactive',
           '[&_pre]:rounded-ds-lg [&_pre]:bg-layer-02 [&_pre]:p-ds-04',
           '[&_strong]:font-semibold [&_strong]:text-text-primary',
         ),
@@ -245,7 +245,7 @@ const RichTextViewer = React.forwardRef<HTMLDivElement, RichTextViewerProps>(
           '[&_p]:mb-ds-02b [&_p]:text-text-secondary',
           '[&_ul]:ml-ds-05 [&_ul]:list-disc [&_ol]:ml-ds-05 [&_ol]:list-decimal',
           '[&_li]:text-text-secondary',
-          '[&_code]:rounded [&_code]:bg-layer-02 [&_code]:px-ds-02b [&_code]:py-0.5 [&_code]:text-ds-md [&_code]:text-interactive',
+          '[&_code]:rounded [&_code]:bg-layer-02 [&_code]:px-ds-02b [&_code]:py-ds-01 [&_code]:text-ds-md [&_code]:text-interactive',
           '[&_pre]:rounded-ds-lg [&_pre]:bg-layer-02 [&_pre]:p-ds-04',
           '[&_strong]:font-semibold [&_strong]:text-text-primary',
         ),

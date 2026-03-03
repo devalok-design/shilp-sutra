@@ -37,13 +37,13 @@ const EmptyState = React.forwardRef<HTMLDivElement, EmptyStateProps>(
         <div
           className={cn(
             'flex items-center justify-center rounded-ds-xl bg-layer-02',
-            compact ? 'h-10 w-10' : 'h-12 w-12',
+            compact ? 'h-ds-md w-ds-md' : 'h-ds-lg w-ds-lg',
           )}
         >
           <Icon
             className={cn(
               'text-text-placeholder',
-              compact ? 'h-ico-md w-ico-md' : 'h-6 w-6',
+              compact ? 'h-ico-md w-ico-md' : 'h-ico-lg w-ico-lg',
             )}
             stroke={1.5}
           />

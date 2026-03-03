@@ -42,8 +42,8 @@ function Stepper({ activeStep, orientation = 'horizontal', className, children }
                 className={cn(
                   'flex-1',
                   orientation === 'vertical'
-                    ? 'ml-ds-04 w-0.5 min-h-ds-05'
-                    : 'h-0.5 min-w-ds-05',
+                    ? 'ml-ds-04 w-ds-01 min-h-ds-05'
+                    : 'h-ds-01 min-w-ds-05',
                   index < activeStep
                     ? 'bg-interactive'
                     : 'bg-border',

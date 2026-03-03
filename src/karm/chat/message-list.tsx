@@ -45,7 +45,7 @@ const markdownComponents = {
       return <code className={className}>{children}</code>
     }
     return (
-      <code className="rounded bg-field px-ds-02 py-0.5 text-ds-md">
+      <code className="rounded bg-field px-ds-02 py-ds-01 text-ds-md">
         {children}
       </code>
     )
@@ -98,7 +98,7 @@ export const MessageList = React.forwardRef<HTMLDivElement, MessageListProps>(
     return (
       <div ref={forwardedRef} className="flex flex-1 items-center justify-center">
         <div className="flex flex-col items-center gap-ds-03">
-          <div className="h-6 w-6 animate-spin rounded-ds-full border-2 border-text-secondary border-t-transparent" />
+          <div className="h-ds-xs w-ds-xs animate-spin rounded-ds-full border-2 border-text-secondary border-t-transparent" />
           <p className="text-ds-sm text-text-placeholder">
             Loading messages...
           </p>
@@ -112,8 +112,8 @@ export const MessageList = React.forwardRef<HTMLDivElement, MessageListProps>(
     return (
       <div ref={forwardedRef} className="flex flex-1 items-center justify-center p-ds-06">
         <div className="flex flex-col items-center gap-ds-04 text-center">
-          <div className="flex h-12 w-12 items-center justify-center rounded-ds-full bg-field">
-            <IconRobot className="h-6 w-6 text-text-secondary" />
+          <div className="flex h-ds-lg w-ds-lg items-center justify-center rounded-ds-full bg-field">
+            <IconRobot className="h-ico-lg w-ico-lg text-text-secondary" />
           </div>
           <h3 className="text-ds-base text-text-primary">
             {emptyTitle}

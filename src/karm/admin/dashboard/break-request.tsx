@@ -151,7 +151,7 @@ export const BreakRequestCard = React.forwardRef<HTMLDivElement, BreakRequestPro
                 className="absolute right-ds-05 top-ds-05 rounded-ds-sm p-ds-04 text-icon-secondary transition-colors hover:text-icon-primary hover:bg-field focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-focus disabled:pointer-events-none"
                 onClick={() => setShowMobileCancelForm(false)}
               >
-                <CloseIcon className="h-6 w-6" />
+                <CloseIcon className="h-ico-lg w-ico-lg" />
               </button>
             </div>
           </div>

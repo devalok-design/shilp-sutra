@@ -22,7 +22,7 @@ const Label = React.forwardRef<
   >
     {children}
     {required && (
-      <span className="text-text-error ml-0.5" aria-hidden="true">*</span>
+      <span className="text-text-error ml-ds-01" aria-hidden="true">*</span>
     )}
   </LabelPrimitive.Root>
 ))

@@ -215,7 +215,7 @@ const TaskProperties = React.forwardRef<HTMLDivElement, TaskPropertiesProps>(
   const PriorityIndicator = renderPriorityIndicator || DefaultPriorityIndicator
 
   return (
-    <div ref={ref} className={cn('space-y-0.5', className)}>
+    <div ref={ref} className={cn('space-y-ds-01', className)}>
       {/* Column */}
       <PropertyRow icon={IconColumns3} label="Column">
         {readOnly && !editableFields?.includes('columnId') ? (
@@ -244,7 +244,7 @@ const TaskProperties = React.forwardRef<HTMLDivElement, TaskPropertiesProps>(
                   type="button"
                   onClick={() => handleColumnChange(col.id)}
                   className={cn(
-                    'flex w-full items-center gap-ds-03 rounded-ds-md px-2.5 py-ds-02b text-left text-ds-md transition-colors',
+                    'flex w-full items-center gap-ds-03 rounded-ds-md px-ds-03 py-ds-02b text-left text-ds-md transition-colors',
                     'hover:bg-field',
                     col.id === task.columnId
                       ? 'text-interactive'
@@ -304,7 +304,7 @@ const TaskProperties = React.forwardRef<HTMLDivElement, TaskPropertiesProps>(
           {task.assignees.map((a) => (
             <div
               key={a.user.id}
-              className="inline-flex items-center gap-ds-02 rounded-ds-full bg-layer-02 py-0.5 pl-0.5 pr-ds-03"
+              className="inline-flex items-center gap-ds-02 rounded-ds-full bg-layer-02 py-ds-01 pl-ds-01 pr-ds-03"
             >
               <Avatar className="h-ico-sm w-ico-sm">
                 {a.user.image && (
@@ -321,9 +321,9 @@ const TaskProperties = React.forwardRef<HTMLDivElement, TaskPropertiesProps>(
                 <button
                   type="button"
                   onClick={() => onUnassign(a.user.id)}
-                  className="ml-0.5 rounded-ds-full p-0.5 transition-colors hover:bg-field"
+                  className="ml-ds-01 rounded-ds-full p-ds-01 transition-colors hover:bg-field"
                 >
-                  <IconX className="h-2.5 w-2.5 text-text-placeholder" />
+                  <IconX className="h-ds-03 w-ds-03 text-text-placeholder" />
                 </button>
               )}
             </div>
@@ -373,7 +373,7 @@ const TaskProperties = React.forwardRef<HTMLDivElement, TaskPropertiesProps>(
                 type="button"
                 onClick={() => handlePriorityChange(p)}
                 className={cn(
-                  'flex w-full items-center gap-ds-03 rounded-ds-md px-2.5 py-ds-02b transition-colors',
+                  'flex w-full items-center gap-ds-03 rounded-ds-md px-ds-03 py-ds-02b transition-colors',
                   'hover:bg-field',
                   p === task.priority && 'bg-field',
                 )}
@@ -421,16 +421,16 @@ const TaskProperties = React.forwardRef<HTMLDivElement, TaskPropertiesProps>(
           {task.labels.map((label) => (
             <span
               key={label}
-              className="inline-flex items-center gap-ds-02 rounded-ds-full bg-interactive/10 px-ds-03 py-0.5 text-ds-sm font-medium text-interactive"
+              className="inline-flex items-center gap-ds-02 rounded-ds-full bg-interactive/10 px-ds-03 py-ds-01 text-ds-sm font-medium text-interactive"
             >
               {label}
               {!readOnly && (
                 <button
                   type="button"
                   onClick={() => handleRemoveLabel(label)}
-                  className="rounded-ds-full p-0.5 transition-colors hover:bg-field"
+                  className="rounded-ds-full p-ds-01 transition-colors hover:bg-field"
                 >
-                  <IconX className="h-2.5 w-2.5" />
+                  <IconX className="h-ds-03 w-ds-03" />
                 </button>
               )}
             </span>
@@ -480,7 +480,7 @@ const TaskProperties = React.forwardRef<HTMLDivElement, TaskPropertiesProps>(
             type="button"
             onClick={handleVisibilityToggle}
             className={cn(
-              'inline-flex items-center gap-ds-02b rounded-ds-full px-2.5 py-0.5 text-ds-sm font-semibold tracking-wide transition-colors',
+              'inline-flex items-center gap-ds-02b rounded-ds-full px-ds-03 py-ds-01 text-ds-sm font-semibold tracking-wide transition-colors',
               task.visibility === 'EVERYONE'
                 ? 'bg-success-surface text-text-success'
                 : 'bg-layer-02 text-text-tertiary',
@@ -488,7 +488,7 @@ const TaskProperties = React.forwardRef<HTMLDivElement, TaskPropertiesProps>(
           >
             <span
               className={cn(
-                'h-1.5 w-1.5 rounded-ds-full',
+                'h-ds-02b w-ds-02b rounded-ds-full',
                 task.visibility === 'EVERYONE'
                   ? 'bg-success'
                   : 'bg-icon-disabled',

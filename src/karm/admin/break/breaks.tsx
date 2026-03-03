@@ -66,7 +66,7 @@ export const Breaks = React.forwardRef<HTMLDivElement, BreaksProps>(
         <div className="w-[24%] overflow-hidden px-ds-04 py-ds-03">
           <div className="text-ds-sm font-semibold uppercase tracking-wider text-text-tertiary">COMMENT</div>
         </div>
-        <div className="w-12 overflow-hidden px-ds-04 py-ds-03"></div>
+        <div className="w-ds-lg overflow-hidden px-ds-04 py-ds-03"></div>
       </div>
 
       <div className="no-scrollbar mx-auto flex w-[92%] flex-col gap-ds-05 overflow-y-auto max-md:h-[calc(100vh-373px)]">
@@ -138,7 +138,7 @@ export const Breaks = React.forwardRef<HTMLDivElement, BreaksProps>(
                 </span>
               </div>
 
-              <div className="flex w-12 justify-center px-ds-04 py-ds-03">
+              <div className="flex w-ds-lg justify-center px-ds-04 py-ds-03">
                 <Popover>
                   <PopoverTrigger>
                     <IconButton icon={<MenuDotsIcon />} size="md" aria-label="More options" />

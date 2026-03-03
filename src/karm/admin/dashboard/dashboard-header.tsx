@@ -161,10 +161,10 @@ export const DashboardHeader = React.forwardRef<HTMLDivElement, DashboardHeaderP
                         <img
                           src={userImages[user.id]}
                           alt={`${user.name}'s avatar`}
-                          className="h-6 w-6 rounded-ds-full"
+                          className="h-ds-xs w-ds-xs rounded-ds-full"
                         />
                       ) : (
-                        <div className="flex h-6 w-6 items-center justify-center rounded-ds-full bg-layer-03">
+                        <div className="flex h-ds-xs w-ds-xs items-center justify-center rounded-ds-full bg-layer-03">
                           <span className="text-ds-md text-interactive">
                             {user.name.charAt(0)}
                           </span>

@@ -48,7 +48,7 @@ const DashboardSkeleton = React.forwardRef<HTMLDivElement>(
           {Array.from({ length: 35 }).map((_, i) => (
             <Skeleton
               key={`cal-${i}`}
-              className={cn('mx-auto h-10 w-10 rounded-ds-full', shimmer)}
+              className={cn('mx-auto h-ds-md w-ds-md rounded-ds-full', shimmer)}
             />
           ))}
         </div>
@@ -113,7 +113,7 @@ const ProjectListSkeleton = React.forwardRef<HTMLDivElement>(
                   />
                 ))}
               </div>
-              <Skeleton className={cn('h-3.5 w-10', shimmer)} />
+              <Skeleton className={cn('h-ds-04 w-ds-md', shimmer)} />
             </div>
           </div>
         ))}
@@ -201,7 +201,7 @@ const DevsabhaSkeleton = React.forwardRef<HTMLDivElement>(
               {Array.from({ length: 4 }).map((_, i) => (
                 <div key={`ds-stat-${i}`} className="flex flex-col gap-ds-03">
                   <Skeleton className={cn('h-3 w-16', shimmer)} />
-                  <Skeleton className={cn('h-6 w-12', shimmer)} />
+                  <Skeleton className={cn('h-6 w-ds-lg', shimmer)} />
                 </div>
               ))}
             </div>
@@ -271,11 +271,11 @@ const BandwidthSkeleton = React.forwardRef<HTMLDivElement>(
           <div
             key={`bw-row-${rowIndex}`}
             className={cn(
-              'flex items-center gap-ds-05 px-ds-05b py-3.5',
+              'flex items-center gap-ds-05 px-ds-05b py-ds-04',
               rowIndex < 5 && 'border-b border-border',
             )}
           >
-            <div className="flex w-40 items-center gap-2.5">
+            <div className="flex w-40 items-center gap-ds-03">
               <Skeleton className={cn('h-ds-xs-plus w-ds-xs-plus shrink-0 rounded-ds-full', shimmer)} />
               <Skeleton className={cn('h-3 w-24', shimmer)} />
             </div>
@@ -315,7 +315,7 @@ const TaskDetailSkeleton = React.forwardRef<HTMLDivElement>(
         {Array.from({ length: 5 }).map((_, i) => (
           <div
             key={`prop-${i}`}
-            className="flex items-center gap-ds-05 py-2.5"
+            className="flex items-center gap-ds-05 py-ds-03"
           >
             <Skeleton className={cn('h-3 w-24 shrink-0', shimmer)} />
             <Skeleton className={cn('h-6 w-32 rounded-ds-md', shimmer)} />

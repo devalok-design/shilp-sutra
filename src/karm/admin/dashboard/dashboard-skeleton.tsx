@@ -59,7 +59,7 @@ export const DashboardSkeleton = React.forwardRef<HTMLDivElement>(
           {Array.from({ length: 7 }).map((_, i) => (
             <div
               key={i}
-              className="flex w-full flex-col items-center rounded-t-ds-lg pb-3.5 pt-ds-05 max-md:rounded-ds-lg"
+              className="flex w-full flex-col items-center rounded-t-ds-lg pb-ds-04 pt-ds-05 max-md:rounded-ds-lg"
             >
               <Skeleton className="mb-ds-03 h-[10px] w-[10px] rounded-ds-lg bg-field" />
               <div className="mx-ds-02 my-ds-02 flex items-center justify-center">
@@ -90,7 +90,7 @@ export const DashboardSkeleton = React.forwardRef<HTMLDivElement>(
                     {Array.from({ length: 4 }).map((_, imgIndex) => (
                       <Skeleton
                         key={imgIndex}
-                        className={`h-10 w-10 rounded-ds-full bg-field ${
+                        className={`h-ds-md w-ds-md rounded-ds-full bg-field ${
                           imgIndex > 0 ? 'ml-[-5px]' : ''
                         }`}
                       />
@@ -117,10 +117,10 @@ export const DashboardSkeleton = React.forwardRef<HTMLDivElement>(
                 {Array.from({ length: 2 }).map((_, index) => (
                   <div
                     key={index}
-                    className="flex items-center justify-between px-ds-03 py-3.5"
+                    className="flex items-center justify-between px-ds-03 py-ds-04"
                   >
                     <div className="flex items-center gap-ds-04">
-                      <Skeleton className="h-10 w-10 rounded-ds-full bg-field" />
+                      <Skeleton className="h-ds-md w-ds-md rounded-ds-full bg-field" />
                       <div className="flex flex-col gap-ds-02">
                         <Skeleton className="h-[20px] w-[120px] rounded-ds-md bg-field" />
                         <Skeleton className="h-[20px] w-[200px] rounded-ds-md bg-field" />

@@ -26,7 +26,7 @@ const CardSkeleton = React.forwardRef<HTMLDivElement, CardSkeletonProps>(
         <Skeleton className="h-3 w-3/5 bg-field" />
       </div>
       <div className="flex items-center gap-ds-03 pt-ds-05">
-        <Skeleton className="h-6 w-6 rounded-ds-full bg-field" />
+        <Skeleton className="h-ds-xs w-ds-xs rounded-ds-full bg-field" />
         <Skeleton className="h-3 w-20 bg-field" />
       </div>
     </div>
@@ -73,7 +73,7 @@ const TableSkeleton = React.forwardRef<HTMLDivElement, TableSkeletonProps>(
         <div
           key={`row-${rowIndex}`}
           className={cn(
-            'flex items-center gap-ds-05 px-ds-05 py-3.5',
+            'flex items-center gap-ds-05 px-ds-05 py-ds-04',
             rowIndex < rows - 1 && 'border-b border-border',
           )}
         >
@@ -111,7 +111,7 @@ const BoardSkeleton = React.forwardRef<HTMLDivElement, BoardSkeletonProps>(
       {Array.from({ length: columns }).map((_, colIndex) => (
         <div
           key={`col-${colIndex}`}
-          className="flex w-[272px] shrink-0 flex-col gap-2.5"
+          className="flex w-[272px] shrink-0 flex-col gap-ds-03"
         >
           {/* Column header */}
           <div className="flex items-center justify-between px-ds-02 py-ds-03">
@@ -127,18 +127,18 @@ const BoardSkeleton = React.forwardRef<HTMLDivElement, BoardSkeletonProps>(
           {Array.from({ length: cardsPerColumn }).map((_, cardIndex) => (
             <div
               key={`card-${colIndex}-${cardIndex}`}
-              className="rounded-ds-lg border border-border bg-layer-01 p-3.5"
+              className="rounded-ds-lg border border-border bg-layer-01 p-ds-04"
             >
-              <div className="space-y-2.5">
+              <div className="space-y-ds-03">
                 <Skeleton className="h-3 w-4/5 bg-field" />
                 <Skeleton className="h-3 w-3/5 bg-field" />
               </div>
               <div className="flex items-center justify-between pt-ds-04">
                 <div className="flex items-center gap-ds-02b">
                   <Skeleton className="h-ico-md w-ico-md rounded-ds-full bg-field" />
-                  <Skeleton className="h-2.5 w-16 bg-field" />
+                  <Skeleton className="h-ds-03 w-16 bg-field" />
                 </div>
-                <Skeleton className="h-4 w-12 rounded-ds-full bg-field" />
+                <Skeleton className="h-4 w-ds-lg rounded-ds-full bg-field" />
               </div>
             </div>
           ))}
@@ -177,7 +177,7 @@ const ListSkeleton = React.forwardRef<HTMLDivElement, ListSkeletonProps>(
           )}
           <div className="flex flex-1 flex-col gap-ds-02b">
             <Skeleton className="h-3 w-2/5 bg-field" />
-            <Skeleton className="h-2.5 w-3/5 bg-field" />
+            <Skeleton className="h-ds-03 w-3/5 bg-field" />
           </div>
           <Skeleton className="h-5 w-14 rounded-ds-full bg-field" />
         </div>

@@ -162,12 +162,12 @@ export const Calendar = React.forwardRef<HTMLDivElement, CalendarProps>(
               className={`mx-ds-02 my-ds-02 flex-col ${
                 cal.activeTimeFrame === 'monthly' &&
                 isSameDay(day.fullDate, new Date(cal.selectedDate))
-                  ? 'flex h-10 w-10 items-center justify-center rounded-ds-full bg-interactive-subtle shadow-[0px_4px_4px_0px_var(--color-inset-glow)_inset,0px_0px_4px_0px_var(--color-focus)_inset]'
-                  : 'flex h-10 w-10 items-center justify-center'
+                  ? 'flex h-ds-md w-ds-md items-center justify-center rounded-ds-full bg-interactive-subtle shadow-[0px_4px_4px_0px_var(--color-inset-glow)_inset,0px_0px_4px_0px_var(--color-focus)_inset]'
+                  : 'flex h-ds-md w-ds-md items-center justify-center'
               }`}
             >
               <span
-                className={`text-ds-base flex h-10 w-10 items-center justify-center rounded-ds-full ${
+                className={`text-ds-base flex h-ds-md w-ds-md items-center justify-center rounded-ds-full ${
                   day.isToday
                     ? 'bg-interactive-hover p-ds-03 text-text-on-color'
                     : 'text-text-secondary'

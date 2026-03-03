@@ -204,7 +204,7 @@ function NotificationItem({
           {notification.title}
         </p>
         {notification.body && (
-          <p className="mt-0.5 line-clamp-2 text-ds-sm text-text-placeholder">
+          <p className="mt-ds-01 line-clamp-2 text-ds-sm text-text-placeholder">
             {notification.body}
           </p>
         )}
@@ -314,7 +314,7 @@ const NotificationCenter = React.forwardRef<HTMLButtonElement, NotificationCente
             >
               <IconBell className="h-ico-sm w-ico-sm" />
               {unreadCount > 0 && (
-                <span className="absolute -right-0.5 -top-0.5 flex h-4 min-w-4 items-center justify-center rounded-ds-full bg-interactive px-ds-02 text-ds-xs font-semibold text-text-on-color">
+                <span className="absolute -right-ds-01 -top-ds-01 flex h-4 min-w-4 items-center justify-center rounded-ds-full bg-interactive px-ds-02 text-ds-xs font-semibold text-text-on-color">
                   {unreadCount > 99 ? '99+' : unreadCount}
                 </span>
               )}
@@ -363,8 +363,8 @@ const NotificationCenter = React.forwardRef<HTMLButtonElement, NotificationCente
         >
           {notifications.length === 0 ? (
             <div className="flex flex-col items-center justify-center px-ds-05 py-12">
-              <div className="flex h-12 w-12 items-center justify-center rounded-ds-full bg-layer-02">
-                <IconInbox className="h-6 w-6 text-text-placeholder" />
+              <div className="flex h-ds-lg w-ds-lg items-center justify-center rounded-ds-full bg-layer-02">
+                <IconInbox className="h-ico-lg w-ico-lg text-text-placeholder" />
               </div>
               <p className="mt-ds-04 text-ds-md text-text-placeholder">
                 No notifications yet

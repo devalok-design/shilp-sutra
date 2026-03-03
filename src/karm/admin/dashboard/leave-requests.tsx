@@ -157,11 +157,11 @@ export const LeaveRequests = React.forwardRef<HTMLDivElement, LeaveRequestsProps
             key={request.id}
             className="flex flex-col justify-start rounded-ds-lg border-b border-border md:gap-ds-05 md:border-b-0 max-md:border-none"
           >
-            <div className="flex flex-col justify-between rounded-t-ds-lg border border-border md:flex-row md:border-0 md:px-ds-03 md:py-3.5 max-md:border-b-0">
+            <div className="flex flex-col justify-between rounded-t-ds-lg border border-border md:flex-row md:border-0 md:px-ds-03 md:py-ds-04 max-md:border-b-0">
               <div className="flex items-center gap-ds-04 border-b border-border p-ds-05 md:border-none md:p-0 max-md:items-start">
                 <img
                   src={userImages[request.user?.id || '']}
-                  className="h-10 w-10 overflow-hidden rounded-ds-full bg-interactive-subtle"
+                  className="h-ds-md w-ds-md overflow-hidden rounded-ds-full bg-interactive-subtle"
                   alt={request.user?.name?.[0] || 'U'}
                 />
                 <div className="flex max-w-[277px] flex-col items-start gap-ds-02 sm:max-w-none">
@@ -239,7 +239,7 @@ export const LeaveRequests = React.forwardRef<HTMLDivElement, LeaveRequestsProps
                         } max-md:flex max-md:w-full max-md:justify-center`}
                       >
                         <CrossIcon
-                          className={`h-6 w-6 ${
+                          className={`h-ico-lg w-ico-lg ${
                             interaction.activeRequest?.id === request.id &&
                             interaction.activeAction === 'rejectBreak'
                               ? 'text-text-error'
@@ -290,7 +290,7 @@ export const LeaveRequests = React.forwardRef<HTMLDivElement, LeaveRequestsProps
                             : ''
                         } max-md:flex max-md:w-full max-md:justify-center`}
                       >
-                        <TickIcon className="h-6 w-6" />
+                        <TickIcon className="h-ico-lg w-ico-lg" />
                       </button>
                     </TooltipTrigger>
                     {request?.user?.id === currentUserId && (
@@ -324,7 +324,7 @@ export const LeaveRequests = React.forwardRef<HTMLDivElement, LeaveRequestsProps
                   onClick={() => handleRequestSubmit(request, interaction.activeAction)}
                   className="my-auto flex hidden items-center justify-center rounded-ds-full p-ds-03"
                 >
-                  <SendIcon className="h-6 w-6" />
+                  <SendIcon className="h-ico-lg w-ico-lg" />
                 </button>
               </div>
             )}

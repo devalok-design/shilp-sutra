@@ -164,7 +164,7 @@ export const RenderDate = React.forwardRef<HTMLDivElement, RenderDateProps>(
   // tailwind-merge ensures the last conflicting class wins.
   const dateClasses = cn(
     // Base layout & transitions
-    'flex h-10 w-10 items-center justify-center rounded-ds-full text-ds-base relative overflow-hidden',
+    'flex h-ds-md w-ds-md items-center justify-center rounded-ds-full text-ds-base relative overflow-hidden',
     'transition-[background-color,color,border] duration-200',
     'outline-border-strong outline-solid outline-0',
 
@@ -271,7 +271,7 @@ export const RenderDate = React.forwardRef<HTMLDivElement, RenderDateProps>(
       >
         {day.date}
         {state.isAbsent && (
-          <span className="absolute bottom-0 left-1/2 h-1.5 w-1.5 -translate-x-1/2 rounded-ds-full bg-error" />
+          <span className="absolute bottom-0 left-1/2 h-ds-02b w-ds-02b -translate-x-1/2 rounded-ds-full bg-error" />
         )}
       </div>
     </div>

@@ -338,7 +338,7 @@ const AdminDashboardCalendar = React.forwardRef<
             aria-label={day.isPadding ? undefined : format(day.fullDate, 'MMMM d, yyyy')}
             className={`${
               cal.activeTimeFrame === 'weekly'
-                ? 'w-full rounded-t-ds-lg pb-3.5 pt-ds-05 max-md:rounded-ds-lg'
+                ? 'w-full rounded-t-ds-lg pb-ds-04 pt-ds-05 max-md:rounded-ds-lg'
                 : 'pb-0 pt-0'
             } flex cursor-pointer flex-col items-center text-center ${
               cal.activeTimeFrame === 'weekly' && cal.activeIndex === index

@@ -171,7 +171,7 @@ export const BoardColumn = React.forwardRef<HTMLDivElement, BoardColumnProps>(
         <Button
           variant="ghost"
           size="icon-md"
-          className="h-6 w-6 opacity-0 group-hover:opacity-100 hover:bg-interactive-subtle hover:text-interactive transition-opacity"
+          className="h-ds-xs w-ds-xs opacity-0 group-hover:opacity-100 hover:bg-interactive-subtle hover:text-interactive transition-opacity"
           onClick={() => {
             setIsAdding(true)
             setTimeout(() => inputRef.current?.focus(), 50)
@@ -186,7 +186,7 @@ export const BoardColumn = React.forwardRef<HTMLDivElement, BoardColumnProps>(
             <Button
               variant="ghost"
               size="icon-md"
-              className="h-6 w-6 opacity-0 group-hover:opacity-100 transition-opacity"
+              className="h-ds-xs w-ds-xs opacity-0 group-hover:opacity-100 transition-opacity"
             >
               <IconDots className="h-ico-sm w-ico-sm" />
             </Button>
@@ -295,7 +295,7 @@ export const BoardColumn = React.forwardRef<HTMLDivElement, BoardColumnProps>(
             setIsAdding(true)
             setTimeout(() => inputRef.current?.focus(), 50)
           }}
-          className="flex items-center gap-ds-02b border-t border-border-subtle px-ds-04 py-2.5 text-ds-sm text-text-placeholder transition-colors hover:bg-field hover:text-text-tertiary"
+          className="flex items-center gap-ds-02b border-t border-border-subtle px-ds-04 py-ds-03 text-ds-sm text-text-placeholder transition-colors hover:bg-field hover:text-text-tertiary"
         >
           <IconPlus className="h-3 w-3" />
           Add task

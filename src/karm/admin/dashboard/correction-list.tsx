@@ -74,9 +74,9 @@ export const CorrectionList = React.forwardRef<HTMLDivElement, CorrectionListPro
     >
       {corrections.map((correction) => (
         <Fragment key={correction.id}>
-          <div className="max-md:border-1 flex items-center justify-between px-ds-03 py-3.5 max-md:rounded-ds-lg max-md:border-border">
+          <div className="max-md:border-1 flex items-center justify-between px-ds-03 py-ds-04 max-md:rounded-ds-lg max-md:border-border">
             <div className="flex items-center gap-ds-04">
-              <Avatar className="h-10 w-10 border-2 max-md:mb-[auto]">
+              <Avatar className="h-ds-md w-ds-md border-2 max-md:mb-[auto]">
                 <AvatarImage
                   src={
                     userImages[correction?.user?.id || ''] ||
@@ -131,7 +131,7 @@ export const CorrectionList = React.forwardRef<HTMLDivElement, CorrectionListPro
                         correction?.user?.id === currentUserId
                       }
                     >
-                      <CrossIcon className="h-6 w-6" />
+                      <CrossIcon className="h-ico-lg w-ico-lg" />
                     </button>
                   </TooltipTrigger>
                   {correction?.user?.id === currentUserId && (
@@ -165,7 +165,7 @@ export const CorrectionList = React.forwardRef<HTMLDivElement, CorrectionListPro
                         correction?.user?.id === currentUserId
                       }
                     >
-                      <TickIcon className="h-6 w-6 text-text-success" />
+                      <TickIcon className="h-ico-lg w-ico-lg text-text-success" />
                     </button>
                   </TooltipTrigger>
                   {correction?.user?.id === currentUserId && (

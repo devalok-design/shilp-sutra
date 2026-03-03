@@ -262,7 +262,7 @@ const ActivityTab = React.forwardRef<HTMLDivElement, ActivityTabProps>(
               </div>
 
               {/* Content */}
-              <div className="flex-1 min-w-0 pt-0.5">
+              <div className="flex-1 min-w-0 pt-ds-01">
                 <p className="text-ds-sm">
                   <span className="font-medium text-text-primary">
                     {actorName}
@@ -271,7 +271,7 @@ const ActivityTab = React.forwardRef<HTMLDivElement, ActivityTabProps>(
                     {' '}{description}
                   </span>
                 </p>
-                <p className="mt-0.5 text-ds-xs text-text-placeholder">
+                <p className="mt-ds-01 text-ds-xs text-text-placeholder">
                   {formatTimestamp(entry.timestamp)}
                 </p>
               </div>

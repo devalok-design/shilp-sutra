@@ -110,7 +110,7 @@ function TaskCardVisual({
       <div className="flex items-start gap-ds-02b">
         <button
           className={cn(
-            'mt-0.5 flex-shrink-0 cursor-grab rounded p-0.5 opacity-0 transition-opacity',
+            'mt-ds-01 flex-shrink-0 cursor-grab rounded p-ds-01 opacity-0 transition-opacity',
             'group-hover/card:opacity-40 hover:!opacity-100',
             'active:cursor-grabbing',
             isDragOverlay && 'opacity-40',
@@ -164,7 +164,7 @@ function TaskCardVisual({
         {dueInfo && (
           <div
             className={cn(
-              'flex items-center gap-0.5 text-ds-xs',
+              'flex items-center gap-ds-01 text-ds-xs',
               dueInfo.className,
             )}
           >

@@ -130,7 +130,7 @@ const ReviewTab = React.forwardRef<HTMLDivElement, ReviewTabProps>(
               >
                 {/* Header */}
                 <div className="flex items-center gap-ds-03">
-                  <Avatar className="h-6 w-6 shrink-0">
+                  <Avatar className="h-ds-xs w-ds-xs shrink-0">
                     {review.reviewer.image && (
                       <AvatarImage
                         src={review.reviewer.image}

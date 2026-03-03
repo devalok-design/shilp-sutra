@@ -71,7 +71,7 @@ export const ConversationList = React.forwardRef<HTMLDivElement, ConversationLis
         </h3>
         <button
           onClick={onNewChat}
-          className="flex items-center gap-ds-02b rounded-ds-lg px-2.5 py-ds-02b text-text-secondary transition-colors hover:bg-layer-02"
+          className="flex items-center gap-ds-02b rounded-ds-lg px-ds-03 py-ds-02b text-text-secondary transition-colors hover:bg-layer-02"
         >
           <IconMessagePlus className="h-ico-sm w-ico-sm" />
           <span className="text-ds-sm">New Chat</span>
@@ -104,7 +104,7 @@ export const ConversationList = React.forwardRef<HTMLDivElement, ConversationLis
               >
                 <button
                   onClick={() => onSelect(convo.id)}
-                  className="flex min-w-0 flex-1 flex-col gap-0.5 text-left"
+                  className="flex min-w-0 flex-1 flex-col gap-ds-01 text-left"
                 >
                   <p className="text-ds-md truncate text-text-primary">
                     {convo.title || 'Untitled conversation'}

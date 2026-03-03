@@ -1,4 +1,4 @@
-import { type HTMLAttributes } from 'react'
+import * as React from 'react'
 import { cva, type VariantProps } from 'class-variance-authority'
 import { cn } from './lib/utils'
 
@@ -22,19 +22,21 @@ const skeletonVariants = cva('bg-skeleton-base', {
   },
 })
 
-interface SkeletonProps
-  extends HTMLAttributes<HTMLDivElement>,
+export interface SkeletonProps
+  extends React.HTMLAttributes<HTMLDivElement>,
     VariantProps<typeof skeletonVariants> {}
 
-function Skeleton({ className, variant, animation, ...props }: SkeletonProps) {
-  return (
-    <div
-      className={cn(skeletonVariants({ variant, animation }), className)}
-      {...props}
-    />
-  )
-}
-
+const Skeleton = React.forwardRef<HTMLDivElement, SkeletonProps>(
+  ({ className, variant, animation, ...props }, ref) => {
+    return (
+      <div
+        ref={ref}
+        className={cn(skeletonVariants({ variant, animation }), className)}
+        {...props}
+      />
+    )
+  },
+)
 Skeleton.displayName = 'Skeleton'
 
-export { Skeleton, skeletonVariants, type SkeletonProps }
+export { Skeleton, skeletonVariants }

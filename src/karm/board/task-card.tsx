@@ -208,40 +208,56 @@ export interface TaskCardProps {
   onClickTask?: (taskId: string) => void
 }
 
-export function TaskCard({ task, onClickTask }: TaskCardProps) {
-  const {
-    attributes,
-    listeners,
-    setNodeRef,
-    transform,
-    transition,
-    isDragging,
-  } = useSortable({
-    id: task.id,
-    data: {
-      type: 'task',
-      task,
-    },
-  })
+const TaskCard = React.forwardRef<HTMLDivElement, TaskCardProps>(
+  function TaskCard({ task, onClickTask }, ref) {
+    const {
+      attributes,
+      listeners,
+      setNodeRef,
+      transform,
+      transition,
+      isDragging,
+    } = useSortable({
+      id: task.id,
+      data: {
+        type: 'task',
+        task,
+      },
+    })
 
-  const style = {
-    transform: CSS.Transform.toString(transform),
-    transition,
-  }
+    const composedRef = React.useCallback(
+      (node: HTMLDivElement | null) => {
+        setNodeRef(node)
+        if (typeof ref === 'function') {
+          ref(node)
+        } else if (ref) {
+          (ref as React.MutableRefObject<HTMLDivElement | null>).current = node
+        }
+      },
+      [ref, setNodeRef],
+    )
 
-  return (
-    <div ref={setNodeRef} style={style}>
-      <TaskCardVisual
-        task={task}
-        isDragging={isDragging}
-        dragHandleProps={{ attributes, listeners }}
-        onClickTask={onClickTask}
-      />
-    </div>
-  )
-}
+    const style = {
+      transform: CSS.Transform.toString(transform),
+      transition,
+    }
+
+    return (
+      <div ref={composedRef} style={style}>
+        <TaskCardVisual
+          task={task}
+          isDragging={isDragging}
+          dragHandleProps={{ attributes, listeners }}
+          onClickTask={onClickTask}
+        />
+      </div>
+    )
+  },
+)
 
 TaskCard.displayName = 'TaskCard'
+
+export { TaskCard }
 
 // ============================================================
 // Overlay Task Card (used inside DragOverlay, no sortable hooks)

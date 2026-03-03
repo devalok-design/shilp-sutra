@@ -1,5 +1,6 @@
 'use client'
 
+import * as React from 'react'
 import { Sheet, SheetContent, SheetTitle } from '../../ui/sheet'
 import { MessageList, type ChatMessage } from './message-list'
 import { ChatInput } from './chat-input'
@@ -60,26 +61,27 @@ const DEFAULT_AGENTS: Agent[] = [
 // Component
 // ============================================================
 
-export function ChatPanel({
-  isOpen,
-  onOpenChange,
-  messages,
-  conversations,
-  agents = DEFAULT_AGENTS,
-  selectedAgentId = 'devadoot',
-  activeConversationId,
-  isStreaming = false,
-  streamingText = '',
-  isLoadingMessages = false,
-  isLoadingConversations = false,
-  onSendMessage,
-  onCancelStream,
-  onSelectAgent,
-  onStartNewChat,
-  onSelectConversation,
-  onArchiveConversation,
-  onDeleteConversation,
-}: ChatPanelProps) {
+const ChatPanel = React.forwardRef<HTMLDivElement, ChatPanelProps>(
+  function ChatPanel({
+    isOpen,
+    onOpenChange,
+    messages,
+    conversations,
+    agents = DEFAULT_AGENTS,
+    selectedAgentId = 'devadoot',
+    activeConversationId,
+    isStreaming = false,
+    streamingText = '',
+    isLoadingMessages = false,
+    isLoadingConversations = false,
+    onSendMessage,
+    onCancelStream,
+    onSelectAgent,
+    onStartNewChat,
+    onSelectConversation,
+    onArchiveConversation,
+    onDeleteConversation,
+  }, ref) {
 
   const [showHistory, setShowHistory] = useState(false)
 
@@ -89,6 +91,7 @@ export function ChatPanel({
   return (
     <Sheet open={isOpen} onOpenChange={onOpenChange}>
       <SheetContent
+        ref={ref}
         side="right"
         className="flex w-full flex-col gap-0 border-l border-border bg-layer-01 p-0 sm:max-w-[480px] [&>button]:hidden"
       >
@@ -207,5 +210,9 @@ export function ChatPanel({
       </SheetContent>
     </Sheet>
   )
-}
+  },
+)
+
 ChatPanel.displayName = 'ChatPanel'
+
+export { ChatPanel }

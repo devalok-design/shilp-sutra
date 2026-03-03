@@ -195,7 +195,7 @@ export function LeaveRequest({
                 defaultValue={comment}
                 onChange={(e) => setComment(e.target.value)}
                 placeholder="Enjoy your break"
-                className={`resize-none border-none px-0 shadow-none placeholder:font-["Bricolage_Grotesque"]`}
+                className="resize-none border-none px-0 shadow-none placeholder:font-accent"
               />
             </div>
             <Button

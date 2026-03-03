@@ -33,19 +33,23 @@ export interface DateRangePickerProps {
   numberOfMonths?: number
 }
 
-export function DateRangePicker({
-  startDate,
-  endDate,
-  onChange,
-  placeholder = 'Pick a date range',
-  className,
-  formatStr = 'MMM d',
-  minDate,
-  maxDate,
-  disabledDates,
-  presets,
-  numberOfMonths = 1,
-}: DateRangePickerProps) {
+const DateRangePicker = React.forwardRef<HTMLButtonElement, DateRangePickerProps>(
+  function DateRangePicker(
+    {
+      startDate,
+      endDate,
+      onChange,
+      placeholder = 'Pick a date range',
+      className,
+      formatStr = 'MMM d',
+      minDate,
+      maxDate,
+      disabledDates,
+      presets,
+      numberOfMonths = 1,
+    },
+    ref,
+  ) {
   const [open, setOpen] = React.useState(false)
   const [currentMonth, setCurrentMonth] = React.useState(
     startDate ?? new Date(),
@@ -192,6 +196,7 @@ export function DateRangePicker({
     <Popover open={open} onOpenChange={setOpen}>
       <PopoverTrigger asChild>
         <button
+          ref={ref}
           type="button"
           className={cn(
             'inline-flex h-9 items-center gap-ds-03 rounded-ds-lg border border-border bg-layer-01 px-ds-04 text-left transition-colors',
@@ -234,6 +239,9 @@ export function DateRangePicker({
       </PopoverContent>
     </Popover>
   )
-}
+  },
+)
 
 DateRangePicker.displayName = 'DateRangePicker'
+
+export { DateRangePicker }

@@ -88,7 +88,7 @@ export const Breaks = React.forwardRef<HTMLDivElement, BreaksProps>(
                     className="h-7 w-full max-w-7 flex-shrink-0 rounded-ds-full object-cover"
                   />
                 ) : (
-                  <span className="flex h-7 w-full max-w-7 items-center justify-center rounded-ds-full bg-[var(--mapped-borders-margin-tertiary)] text-ds-sm font-medium uppercase text-[--color-text-primary]">
+                  <span className="flex h-7 w-full max-w-7 items-center justify-center rounded-ds-full bg-layer-02 text-ds-sm font-medium uppercase text-text-primary">
                     {breakItem.user?.name?.[0] || 'U'}
                   </span>
                 )}

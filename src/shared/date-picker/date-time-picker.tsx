@@ -54,17 +54,21 @@ function generateRange(start: number, end: number, step: number): number[] {
   return result
 }
 
-export function DateTimePicker({
-  value,
-  onChange,
-  minDate,
-  maxDate,
-  disabledDates,
-  timeFormat = '12h',
-  minuteStep = 1,
-  placeholder = 'Pick date & time',
-  className,
-}: DateTimePickerProps) {
+const DateTimePicker = React.forwardRef<HTMLButtonElement, DateTimePickerProps>(
+  function DateTimePicker(
+    {
+      value,
+      onChange,
+      minDate,
+      maxDate,
+      disabledDates,
+      timeFormat = '12h',
+      minuteStep = 1,
+      placeholder = 'Pick date & time',
+      className,
+    },
+    ref,
+  ) {
   const [open, setOpen] = React.useState(false)
   const [currentMonth, setCurrentMonth] = React.useState(value ?? new Date())
   const [view, setView] = React.useState<CalendarView>('days')
@@ -205,6 +209,7 @@ export function DateTimePicker({
     <Popover open={open} onOpenChange={setOpen}>
       <PopoverTrigger asChild>
         <button
+          ref={ref}
           type="button"
           className={cn(
             'inline-flex h-9 items-center gap-ds-03 rounded-ds-lg border border-border bg-layer-01 px-ds-04 text-left transition-colors',
@@ -301,6 +306,9 @@ export function DateTimePicker({
       </PopoverContent>
     </Popover>
   )
-}
+  },
+)
 
 DateTimePicker.displayName = 'DateTimePicker'
+
+export { DateTimePicker }

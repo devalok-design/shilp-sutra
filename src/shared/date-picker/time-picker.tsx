@@ -43,17 +43,21 @@ function padTwo(n: number): string {
   return n.toString().padStart(2, '0')
 }
 
-export function TimePicker({
-  value,
-  onChange,
-  format: timeFormat = '12h',
-  minuteStep = 1,
-  secondStep = 1,
-  showSeconds = false,
-  placeholder = 'Pick a time',
-  className,
-  disabled = false,
-}: TimePickerProps) {
+const TimePicker = React.forwardRef<HTMLButtonElement, TimePickerProps>(
+  function TimePicker(
+    {
+      value,
+      onChange,
+      format: timeFormat = '12h',
+      minuteStep = 1,
+      secondStep = 1,
+      showSeconds = false,
+      placeholder = 'Pick a time',
+      className,
+      disabled = false,
+    },
+    ref,
+  ) {
   const [open, setOpen] = React.useState(false)
 
   // Derive display parts from value
@@ -168,6 +172,7 @@ export function TimePicker({
     <Popover open={open} onOpenChange={setOpen}>
       <PopoverTrigger asChild>
         <button
+          ref={ref}
           type="button"
           disabled={disabled}
           className={cn(
@@ -305,6 +310,9 @@ export function TimePicker({
       </PopoverContent>
     </Popover>
   )
-}
+  },
+)
 
 TimePicker.displayName = 'TimePicker'
+
+export { TimePicker }

@@ -1,24 +1,14 @@
 import * as React from 'react'
+import { cn } from './lib/utils'
 
-const VisuallyHidden = ({ children }: { children: React.ReactNode }) => {
-  return (
-    <span
-      style={{
-        border: 0,
-        clip: 'rect(0 0 0 0)',
-        height: '1px',
-        margin: '-1px',
-        padding: 0,
-        position: 'absolute',
-        width: '1px',
-        whiteSpace: 'nowrap',
-      }}
-    >
-      {children}
-    </span>
-  )
-}
+export interface VisuallyHiddenProps
+  extends React.HTMLAttributes<HTMLSpanElement> {}
 
+const VisuallyHidden = React.forwardRef<HTMLSpanElement, VisuallyHiddenProps>(
+  ({ className, ...props }, ref) => {
+    return <span ref={ref} className={cn('sr-only', className)} {...props} />
+  },
+)
 VisuallyHidden.displayName = 'VisuallyHidden'
 
-export default VisuallyHidden
+export { VisuallyHidden }

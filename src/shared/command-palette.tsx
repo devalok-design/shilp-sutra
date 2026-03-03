@@ -18,7 +18,7 @@ import {
 import { IconSearch, IconCornerDownLeft, IconArrowUp, IconArrowDown } from '@tabler/icons-react'
 import type { Icon as TablerIcon } from '@tabler/icons-react'
 import { cn } from '../ui/lib/utils'
-import VisuallyHidden from '../ui/visually-hidden'
+import { VisuallyHidden } from '../ui/visually-hidden'
 
 // -----------------------------------------------------------------------
 // Types
@@ -49,12 +49,16 @@ export interface CommandPaletteProps {
 // CommandPalette
 // -----------------------------------------------------------------------
 
-function CommandPalette({
-  groups = [],
-  placeholder = 'Search or jump to...',
-  onSearch,
-  emptyMessage = 'No results found.',
-}: CommandPaletteProps) {
+const CommandPalette = React.forwardRef<HTMLDivElement, CommandPaletteProps>(
+  function CommandPalette(
+    {
+      groups = [],
+      placeholder = 'Search or jump to...',
+      onSearch,
+      emptyMessage = 'No results found.',
+    },
+    ref,
+  ) {
   const [open, setOpen] = React.useState(false)
   const [query, setQuery] = React.useState('')
   const [activeIndex, setActiveIndex] = React.useState(0)
@@ -172,6 +176,7 @@ function CommandPalette({
           className="fixed inset-0 z-overlay bg-overlay data-[state=open]:animate-in data-[state=closed]:animate-out data-[state=closed]:fade-out-0 data-[state=open]:fade-in-0"
         />
         <DialogContentRaw
+          ref={ref}
           className={cn(
             'fixed left-1/2 top-[20%] z-modal w-full max-w-[560px] -translate-x-1/2',
             'overflow-hidden rounded-ds-xl border border-border bg-layer-01 shadow-05',
@@ -325,7 +330,8 @@ function CommandPalette({
       </DialogPortal>
     </Dialog>
   )
-}
+  },
+)
 
 CommandPalette.displayName = 'CommandPalette'
 

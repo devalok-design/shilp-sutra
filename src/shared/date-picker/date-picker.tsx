@@ -26,16 +26,20 @@ export interface DatePickerProps {
   disabledDates?: (date: Date) => boolean
 }
 
-export function DatePicker({
-  value,
-  onChange,
-  placeholder = 'Pick a date',
-  className,
-  formatStr = 'MMM d, yyyy',
-  minDate,
-  maxDate,
-  disabledDates,
-}: DatePickerProps) {
+const DatePicker = React.forwardRef<HTMLButtonElement, DatePickerProps>(
+  function DatePicker(
+    {
+      value,
+      onChange,
+      placeholder = 'Pick a date',
+      className,
+      formatStr = 'MMM d, yyyy',
+      minDate,
+      maxDate,
+      disabledDates,
+    },
+    ref,
+  ) {
   const [open, setOpen] = React.useState(false)
   const [currentMonth, setCurrentMonth] = React.useState(
     value ?? new Date(),
@@ -108,6 +112,7 @@ export function DatePicker({
     <Popover open={open} onOpenChange={setOpen}>
       <PopoverTrigger asChild>
         <button
+          ref={ref}
           type="button"
           className={cn(
             'inline-flex h-9 items-center gap-ds-03 rounded-ds-lg border border-border bg-layer-01 px-ds-04 text-left transition-colors',
@@ -141,6 +146,9 @@ export function DatePicker({
       </PopoverContent>
     </Popover>
   )
-}
+  },
+)
 
 DatePicker.displayName = 'DatePicker'
+
+export { DatePicker }

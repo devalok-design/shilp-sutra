@@ -5,7 +5,7 @@ export { ButtonGroup, useButtonGroup, type ButtonGroupProps } from './button-gro
 export { Input, type InputProps, type InputState } from './input'
 export { Label, type LabelProps } from './label'
 export { Separator } from './separator'
-export { default as VisuallyHidden } from './visually-hidden'
+export { VisuallyHidden, type VisuallyHiddenProps } from './visually-hidden'
 
 // Autocomplete
 export { Autocomplete, type AutocompleteProps, type AutocompleteOption } from './autocomplete'

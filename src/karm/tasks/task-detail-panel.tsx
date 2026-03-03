@@ -7,7 +7,7 @@ import {
   SheetContent,
   SheetTitle,
 } from '../../ui/sheet'
-import VisuallyHidden from '../../ui/visually-hidden'
+import { VisuallyHidden } from '../../ui/visually-hidden'
 import { Skeleton } from '../../ui/skeleton'
 import { Tabs, TabsList, TabsTrigger } from '../../ui'
 import { TaskProperties, type Member, type Column } from './task-properties'

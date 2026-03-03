@@ -511,7 +511,7 @@ const SidebarMenuItem = forwardRef<HTMLLIElement, ComponentProps<'li'>>(
 SidebarMenuItem.displayName = 'SidebarMenuItem'
 
 const sidebarMenuButtonVariants = cva(
-  'peer/menu-button hover:bg-layer-02 active:bg-interactive-subtle data-[active=true]:bg-interactive-subtle data-[state=open]:hover:bg-layer-02 flex w-full items-center gap-ds-03 overflow-hidden rounded-ds-md p-ds-03 text-left text-ds-md outline-none ring-focus transition-[width,height,padding] hover:text-text-primary focus-visible:ring-2 active:text-text-primary disabled:pointer-events-none disabled:opacity-50 group-has-[[data-sidebar=menu-action]]/menu-item:pr-ds-07 aria-disabled:pointer-events-none aria-disabled:opacity-50 data-[active=true]:font-medium data-[active=true]:text-text-primary data-[state=open]:hover:text-text-primary group-data-[collapsible=icon]:!size-8 group-data-[collapsible=icon]:!p-ds-03 [&>span:last-child]:truncate [&>svg]:size-4 [&>svg]:shrink-0',
+  'peer/menu-button hover:bg-layer-02 active:bg-interactive-subtle data-[active=true]:bg-interactive-subtle data-[state=open]:hover:bg-layer-02 flex w-full items-center gap-ds-03 overflow-hidden rounded-ds-md p-ds-03 text-left outline-none ring-focus transition-[width,height,padding] hover:text-text-primary focus-visible:ring-2 active:text-text-primary disabled:pointer-events-none disabled:opacity-50 group-has-[[data-sidebar=menu-action]]/menu-item:pr-ds-07 aria-disabled:pointer-events-none aria-disabled:opacity-50 data-[active=true]:font-medium data-[active=true]:text-text-primary data-[state=open]:hover:text-text-primary group-data-[collapsible=icon]:!size-8 group-data-[collapsible=icon]:!p-ds-03 [&>span:last-child]:truncate [&>svg]:size-4 [&>svg]:shrink-0',
   {
     variants: {
       variant: {
@@ -521,9 +521,9 @@ const sidebarMenuButtonVariants = cva(
           'hover:bg-layer-02 bg-background shadow-[0_0_0_1px_var(--color-border-subtle)] hover:text-text-primary hover:shadow-[0_0_0_1px_var(--color-border-strong)]',
       },
       size: {
-        md: 'h-8 text-ds-md',
+        md: 'h-ds-sm text-ds-md',
         sm: 'h-7 text-ds-sm',
-        lg: 'h-12 text-ds-md group-data-[collapsible=icon]:!p-0',
+        lg: 'h-ds-lg text-ds-md group-data-[collapsible=icon]:!p-0',
       },
     },
     defaultVariants: {

@@ -169,7 +169,7 @@ const SubtasksTab = React.forwardRef<HTMLDivElement, SubtasksTabProps>(
                     {firstAssignee.image && (
                       <AvatarImage src={firstAssignee.image} alt={firstAssignee.name} />
                     )}
-                    <AvatarFallback className="bg-layer-03 text-[7px] font-semibold text-text-on-color">
+                    <AvatarFallback className="bg-layer-03 text-ds-xs font-semibold text-text-on-color">
                       {getInitials(firstAssignee.name)}
                     </AvatarFallback>
                   </Avatar>

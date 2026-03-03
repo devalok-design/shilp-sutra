@@ -4,7 +4,7 @@ import { cva, type VariantProps } from 'class-variance-authority'
 import { cn } from './lib/utils'
 
 const badgeVariants = cva(
-  'inline-flex items-center gap-ds-02b font-sans text-ds-sm font-medium rounded-ds-full border',
+  'inline-flex items-center gap-ds-02b font-sans font-medium rounded-ds-full border',
   {
     variants: {
       variant: {
@@ -38,9 +38,9 @@ const badgeVariants = cva(
           'bg-category-emerald-surface text-category-emerald-text border-category-emerald-border',
       },
       size: {
-        sm: 'h-5 px-ds-03',
-        md: 'h-6 px-2.5',
-        lg: 'h-7 px-ds-04',
+        sm: 'h-5 px-ds-03 text-ds-xs',
+        md: 'h-ds-xs px-ds-03 text-ds-sm',
+        lg: 'h-7 px-ds-04 text-ds-md',
       },
     },
     defaultVariants: {

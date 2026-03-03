@@ -11,7 +11,7 @@ const segmentedControlItemVariants = cva(
     'inline-flex items-center gap-ds-03 rounded-ds-full border-none outline-none cursor-pointer',
     'transition-[color,background-color,border-color,box-shadow] duration-moderate ease-in-out',
     'relative overflow-hidden',
-    'font-accent text-ds-md font-semibold leading-none text-center',
+    'font-accent font-semibold leading-none text-center',
     'bg-layer-01',
     'text-text-tertiary',
     'first:rounded-tr-none first:rounded-br-none',
@@ -20,9 +20,9 @@ const segmentedControlItemVariants = cva(
   {
     variants: {
       size: {
-        small: 'h-9 px-ds-05 py-ds-03',
-        medium: 'px-[10px] py-ds-03 pl-ds-04',
-        big: 'h-14 px-ds-06 py-ds-05',
+        sm: 'h-9 px-ds-05 py-ds-03 text-ds-sm',
+        md: 'px-ds-02b py-ds-03 pl-ds-04 text-ds-md',
+        lg: 'h-14 px-ds-06 py-ds-05 text-ds-md',
       },
       color: {
         filled: "text-text-on-color [text-shadow:0px_1px_1px_var(--color-text-shadow)]",
@@ -97,12 +97,12 @@ const segmentedControlItemVariants = cva(
       },
       // Medium size last-child padding flip
       {
-        size: 'medium',
-        className: 'last:pl-[10px] last:pr-ds-04',
+        size: 'md',
+        className: 'last:pl-ds-02b last:pr-ds-04',
       },
     ],
     defaultVariants: {
-      size: 'medium',
+      size: 'md',
       color: 'tonal',
       selected: false,
       isHovered: false,
@@ -117,13 +117,27 @@ const rippleBgMap: Record<string, string> = {
   tonal: 'bg-surface-overlay-dark',
 }
 
+/* ── Size mapping for backward compatibility ──────────────── */
+const sizeLegacyMap: Record<string, SegmentedControlSize> = {
+  small: 'sm',
+  medium: 'md',
+  big: 'lg',
+}
+
+/** Resolve legacy size names (small/medium/big) to standard (sm/md/lg). */
+function resolveSize(size: SegmentedControlSize): 'sm' | 'md' | 'lg' {
+  return (sizeLegacyMap[size] ?? size) as 'sm' | 'md' | 'lg'
+}
+
 /* ── Types ─────────────────────────────────────────────────── */
-export type SegmentedControlSize = 'small' | 'medium' | 'big'
+export type SegmentedControlSize = 'sm' | 'md' | 'lg' | 'small' | 'medium' | 'big'
 export type SegmentedControlColor = 'filled' | 'tonal'
 
 export interface SegmentedControlOption {
   id: string
   text: string
+  /** Optional icon component rendered before the text label. */
+  icon?: React.ComponentType<{ className?: string }>
 }
 
 /** @deprecated Use SegmentedControlSize */
@@ -154,6 +168,7 @@ const SegmentedControl = React.forwardRef<HTMLDivElement, SegmentedControlProps>
   disabled = false,
   className = '',
 }, forwardedRef) {
+  const resolved = resolveSize(size)
   const [focusedId, setFocusedId] = useState<string | null>(null)
   const tablistRef = useRef<HTMLDivElement | null>(null)
   const mergedRef = React.useCallback((node: HTMLDivElement | null) => {
@@ -201,7 +216,7 @@ const SegmentedControl = React.forwardRef<HTMLDivElement, SegmentedControlProps>
       className={cn(
         'inline-flex gap-0 p-0 rounded-ds-full',
         'bg-layer-02',
-        'border border-solid border-layer-03',
+        'border border-solid border-border',
         className,
       )}
       role="tablist"
@@ -212,9 +227,10 @@ const SegmentedControl = React.forwardRef<HTMLDivElement, SegmentedControlProps>
       {options.map((option) => (
         <SegmentedControlItem
           key={option.id}
-          size={size}
+          size={resolved}
           color={color}
           text={option.text}
+          icon={option.icon}
           isSelected={option.id === selectedId}
           onClick={() => onSelect(option.id)}
           disabled={disabled}
@@ -231,9 +247,11 @@ SegmentedControl.displayName = 'SegmentedControl'
 
 /* ── SegmentedControlItem ─────────────────────────────────── */
 export interface SegmentedControlItemProps {
-  size: SegmentedControlSize
+  size: 'sm' | 'md' | 'lg'
   color: SegmentedControlColor
   text: string
+  /** Optional icon component rendered before the text label. */
+  icon?: React.ComponentType<{ className?: string }>
   isSelected: boolean
   onClick: () => void
   disabled?: boolean
@@ -247,6 +265,7 @@ const SegmentedControlItem = React.forwardRef<HTMLButtonElement, SegmentedContro
   size,
   color,
   text,
+  icon: Icon,
   isSelected,
   onClick,
   disabled = false,
@@ -326,7 +345,8 @@ const SegmentedControlItem = React.forwardRef<HTMLButtonElement, SegmentedContro
           }}
         />
       ))}
-      <span className="font-accent text-ds-md leading-none">{text}</span>
+      {Icon && <Icon className="h-ico-sm w-ico-sm shrink-0" />}
+      <span className="font-accent leading-none">{text}</span>
     </button>
   )
 },

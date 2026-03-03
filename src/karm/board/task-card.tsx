@@ -5,6 +5,7 @@ import { useSortable } from '@dnd-kit/sortable'
 import { CSS } from '@dnd-kit/utilities'
 import type { DraggableAttributes } from '@dnd-kit/core'
 import type { SyntheticListenerMap } from '@dnd-kit/core/dist/hooks/utilities'
+import { cva } from 'class-variance-authority'
 import { cn } from '../../ui/lib/utils'
 import { Avatar, AvatarFallback, AvatarImage } from '../../ui/avatar'
 import { Badge } from '../../ui'
@@ -47,6 +48,31 @@ function formatDueDate(dateStr: string) {
 }
 
 // ============================================================
+// Card variants
+// ============================================================
+
+const taskCardVariants = cva(
+  'group/card relative rounded-ds-lg border border-border/60 bg-layer-01 p-ds-04 shadow-01 transition-[color,background-color,border-color,box-shadow] duration-moderate hover:shadow-02 hover:border-border cursor-pointer',
+  {
+    variants: {
+      state: {
+        default: '',
+        dragging: 'opacity-40',
+        overlay: 'rotate-[2deg] shadow-03 border-border-interactive/60 ring-1 ring-interactive/40',
+      },
+      blocked: {
+        true: 'border-l-2 border-l-error',
+        false: '',
+      },
+    },
+    defaultVariants: {
+      state: 'default',
+      blocked: false,
+    },
+  },
+)
+
+// ============================================================
 // Visual Card (shared between sortable and overlay)
 // ============================================================
 
@@ -74,16 +100,10 @@ function TaskCardVisual({
 
   return (
     <div
-      className={cn(
-        'group/card relative rounded-ds-lg border border-border/60 bg-layer-01 p-ds-04 shadow-01',
-        'transition-[color,background-color,border-color,box-shadow] duration-moderate',
-        'hover:shadow-02 hover:border-border',
-        'cursor-pointer',
-        isDragging && !isDragOverlay && 'opacity-40',
-        isDragOverlay &&
-          'rotate-[2deg] shadow-03 border-border-interactive/60 ring-1 ring-interactive/40',
-        task.isBlocked && 'border-l-2 border-l-error',
-      )}
+      className={taskCardVariants({
+        state: isDragOverlay ? 'overlay' : isDragging ? 'dragging' : 'default',
+        blocked: task.isBlocked,
+      })}
       onClick={() => onClickTask?.(task.id)}
     >
       {/* Drag handle + Title row */}
@@ -162,13 +182,13 @@ function TaskCardVisual({
                   src={assignee.image || undefined}
                   alt={assignee.name}
                 />
-                <AvatarFallback className="text-[8px] bg-field">
+                <AvatarFallback className="text-ds-xs bg-field">
                   {getInitials(assignee.name)}
                 </AvatarFallback>
               </Avatar>
             ))}
             {extraCount > 0 && (
-              <div className="flex h-ico-md w-ico-md items-center justify-center rounded-ds-full border border-layer-01 bg-field text-[8px] font-medium text-text-tertiary">
+              <div className="flex h-ico-md w-ico-md items-center justify-center rounded-ds-full border border-layer-01 bg-field text-ds-xs font-medium text-text-tertiary">
                 +{extraCount}
               </div>
             )}

@@ -137,7 +137,7 @@ const ReviewTab = React.forwardRef<HTMLDivElement, ReviewTabProps>(
                         alt={review.reviewer.name}
                       />
                     )}
-                    <AvatarFallback className="bg-layer-03 text-[8px] font-semibold text-text-on-color">
+                    <AvatarFallback className="bg-layer-03 text-ds-xs font-semibold text-text-on-color">
                       {getInitials(review.reviewer.name)}
                     </AvatarFallback>
                   </Avatar>

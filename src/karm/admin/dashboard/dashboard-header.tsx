@@ -182,7 +182,7 @@ export const DashboardHeader = React.forwardRef<HTMLDivElement, DashboardHeaderP
         </div>
 
         <Toggle
-          size="medium"
+          size="md"
           color="tonal"
           options={[
             { id: 'weekly', text: 'Weekly' },

@@ -155,7 +155,7 @@ const ConversationTab = React.forwardRef<HTMLDivElement, ConversationTabProps>(
                   )}
                   <AvatarFallback
                     className={cn(
-                      'text-[9px] font-semibold',  /* avatar initials — below scale, leave as-is */
+                      'text-ds-xs font-semibold',  /* avatar initials — below scale, leave as-is */
                       isClient
                         ? 'bg-warning-surface text-text-warning'
                         : 'bg-layer-03 text-text-on-color',
@@ -174,13 +174,13 @@ const ConversationTab = React.forwardRef<HTMLDivElement, ConversationTabProps>(
                     {/* Badge: staff sees "Client" on client comments; client sees "Team" on staff comments */}
                     {clientMode ? (
                       !isClient && (
-                        <span className="rounded bg-layer-03 px-ds-02 py-px text-[9px] font-semibold uppercase tracking-wider text-text-on-color">
+                        <span className="rounded bg-layer-03 px-ds-02 py-px text-ds-xs font-semibold uppercase tracking-wider text-text-on-color">
                           Team
                         </span>
                       )
                     ) : (
                       isClient && (
-                        <span className="rounded bg-warning-surface px-ds-02 py-px text-[9px] font-semibold uppercase tracking-wider text-text-warning">
+                        <span className="rounded bg-warning-surface px-ds-02 py-px text-ds-xs font-semibold uppercase tracking-wider text-text-warning">
                           Client
                         </span>
                       )

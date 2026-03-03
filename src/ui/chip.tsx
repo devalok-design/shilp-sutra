@@ -3,7 +3,7 @@ import { cva, type VariantProps } from 'class-variance-authority'
 import { cn } from './lib/utils'
 
 const chipVariants = cva(
-  'inline-flex items-center gap-ds-02 font-sans text-[length:var(--font-size-sm)] leading-[var(--line-height-relaxed)] rounded-ds-full transition-colors duration-fast',
+  'inline-flex items-center gap-ds-02 font-sans leading-[var(--line-height-relaxed)] rounded-ds-full transition-colors duration-fast',
   {
     variants: {
       variant: {
@@ -11,8 +11,8 @@ const chipVariants = cva(
         outlined: 'bg-transparent text-text-primary border border-border',
       },
       size: {
-        sm: 'h-ds-xs px-ds-03',
-        md: 'h-ds-sm px-ds-04',
+        sm: 'h-ds-xs px-ds-03 text-ds-xs',
+        md: 'h-ds-sm px-ds-04 text-ds-sm',
       },
       color: {
         default: '',

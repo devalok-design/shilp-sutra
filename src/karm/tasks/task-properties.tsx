@@ -280,7 +280,7 @@ const TaskProperties = React.forwardRef<HTMLDivElement, TaskPropertiesProps>(
                     {task.owner.image && (
                       <AvatarImage src={task.owner.image} alt={task.owner.name} />
                     )}
-                    <AvatarFallback className="bg-layer-03 text-[8px] font-semibold text-text-on-color">
+                    <AvatarFallback className="bg-layer-03 text-ds-xs font-semibold text-text-on-color">
                       {getInitials(task.owner.name)}
                     </AvatarFallback>
                   </Avatar>
@@ -310,7 +310,7 @@ const TaskProperties = React.forwardRef<HTMLDivElement, TaskPropertiesProps>(
                 {a.user.image && (
                   <AvatarImage src={a.user.image} alt={a.user.name} />
                 )}
-                <AvatarFallback className="bg-layer-03 text-[7px] font-semibold text-text-on-color">
+                <AvatarFallback className="bg-layer-03 text-ds-xs font-semibold text-text-on-color">
                   {getInitials(a.user.name)}
                 </AvatarFallback>
               </Avatar>

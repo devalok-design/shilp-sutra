@@ -11,7 +11,7 @@ const segmentedControlItemVariants = cva(
     'inline-flex items-center gap-ds-03 rounded-ds-full border-none outline-none cursor-pointer',
     'transition-[color,background-color,border-color,box-shadow] duration-moderate ease-in-out',
     'relative overflow-hidden',
-    'font-accent text-ds-md font-semibold leading-none text-center',
+    'font-accent font-semibold leading-none text-center',
     'bg-layer-01',
     'text-text-tertiary',
     'first:rounded-tr-none first:rounded-br-none',
@@ -20,9 +20,9 @@ const segmentedControlItemVariants = cva(
   {
     variants: {
       size: {
-        sm: 'h-9 px-ds-05 py-ds-03',
-        md: 'px-ds-02b py-ds-03 pl-ds-04',
-        lg: 'h-14 px-ds-06 py-ds-05',
+        sm: 'h-9 px-ds-05 py-ds-03 text-ds-sm',
+        md: 'px-ds-02b py-ds-03 pl-ds-04 text-ds-md',
+        lg: 'h-14 px-ds-06 py-ds-05 text-ds-md',
       },
       color: {
         filled: "text-text-on-color [text-shadow:0px_1px_1px_var(--color-text-shadow)]",
@@ -346,7 +346,7 @@ const SegmentedControlItem = React.forwardRef<HTMLButtonElement, SegmentedContro
         />
       ))}
       {Icon && <Icon className="h-ico-sm w-ico-sm shrink-0" />}
-      <span className="font-accent text-ds-md leading-none">{text}</span>
+      <span className="font-accent leading-none">{text}</span>
     </button>
   )
 },

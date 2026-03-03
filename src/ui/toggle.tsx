@@ -5,7 +5,7 @@ import { cva, type VariantProps } from 'class-variance-authority'
 import { cn } from './lib/utils'
 
 const toggleVariants = cva(
-  'inline-flex items-center justify-center gap-ds-03 rounded-ds-md text-ds-md font-medium transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-focus focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 data-[state=on]:bg-interactive-subtle data-[state=on]:text-interactive',
+  'inline-flex items-center justify-center gap-ds-03 rounded-ds-md font-medium transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-focus focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 data-[state=on]:bg-interactive-subtle data-[state=on]:text-interactive',
   {
     variants: {
       variant: {
@@ -15,9 +15,9 @@ const toggleVariants = cva(
           'border border-border bg-transparent hover:bg-field',
       },
       size: {
-        sm: 'h-ds-sm px-ds-03',
-        md: 'h-9 px-ds-04',
-        lg: 'h-ds-md px-ds-04',
+        sm: 'h-ds-sm px-ds-03 text-ds-sm',
+        md: 'h-9 px-ds-04 text-ds-md',
+        lg: 'h-ds-md px-ds-04 text-ds-md',
       },
     },
     defaultVariants: {

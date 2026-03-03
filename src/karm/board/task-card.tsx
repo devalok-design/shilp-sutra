@@ -182,13 +182,13 @@ function TaskCardVisual({
                   src={assignee.image || undefined}
                   alt={assignee.name}
                 />
-                <AvatarFallback className="text-[8px] bg-field">
+                <AvatarFallback className="text-ds-xs bg-field">
                   {getInitials(assignee.name)}
                 </AvatarFallback>
               </Avatar>
             ))}
             {extraCount > 0 && (
-              <div className="flex h-ico-md w-ico-md items-center justify-center rounded-ds-full border border-layer-01 bg-field text-[8px] font-medium text-text-tertiary">
+              <div className="flex h-ico-md w-ico-md items-center justify-center rounded-ds-full border border-layer-01 bg-field text-ds-xs font-medium text-text-tertiary">
                 +{extraCount}
               </div>
             )}

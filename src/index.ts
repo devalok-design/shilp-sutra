@@ -128,15 +128,6 @@ export {
   type ClientPortalHeaderProps,
   ProjectCard,
   type ProjectCardProps,
-  // Segmented control components
-  SegmentedControl,
-  type SegmentedControlProps,
-  SegmentedControlItem,
-  type SegmentedControlItemProps,
-  segmentedControlItemVariants,
-  type SegmentedControlSize,
-  type SegmentedControlColor,
-  type SegmentedControlOption,
   // Admin components
   AdminDashboard,
   type AdminDashboardRootProps,

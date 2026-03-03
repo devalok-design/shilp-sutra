@@ -248,6 +248,18 @@ export { Container, type ContainerProps } from './container'
 // Tree View
 export { TreeView, type TreeViewProps, TreeItem, type TreeItemProps, useTree, type TreeNode } from './tree-view'
 
+// Segmented Control
+export {
+  SegmentedControl,
+  SegmentedControlItem,
+  segmentedControlItemVariants,
+  type SegmentedControlSize,
+  type SegmentedControlColor,
+  type SegmentedControlOption,
+  type SegmentedControlProps,
+  type SegmentedControlItemProps,
+} from './segmented-control'
+
 // Other
 export { Link, type LinkProps } from './link'
 

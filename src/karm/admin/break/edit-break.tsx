@@ -545,6 +545,8 @@ export function EditBreak({
                         <button
                           type="button"
                           key={index}
+                          tabIndex={day.isPadding ? -1 : 0}
+                          aria-label={day.isPadding ? undefined : format(new Date(day.fullDate), 'MMMM d, yyyy')}
                           className={`
                             ${
                               isInSelectedRange(day.fullDate) &&
@@ -621,6 +623,7 @@ export function EditBreak({
                       type="button"
                       className="flex cursor-pointer items-center gap-ds-02"
                       aria-label="Change status"
+                      aria-haspopup="listbox"
                       aria-expanded={showStatusOptions}
                       onClick={() => setShowStatusOptions(!showStatusOptions)}
                     >
@@ -629,24 +632,26 @@ export function EditBreak({
                     </button>
                     {showStatusOptions && (
                       <div className="text-ds-base absolute left-[10px] top-[25px] z-[4] flex flex-col overflow-hidden rounded-[7px] border border-border bg-layer-01 shadow-02" role="listbox">
-                        <button
-                          type="button"
+                        <div
                           className="cursor-pointer border-b border-b-border bg-layer-01 px-ds-04 py-ds-03 text-left"
                           role="option"
+                          tabIndex={0}
                           aria-selected={formData.status === 'APPROVED'}
                           onClick={() => handleStatusSelect('APPROVED')}
+                          onKeyDown={(e) => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); handleStatusSelect('APPROVED') } }}
                         >
                           {renderStatus('APPROVED')}
-                        </button>
-                        <button
-                          type="button"
+                        </div>
+                        <div
                           className="cursor-pointer bg-layer-01 px-ds-04 py-ds-03 text-left"
                           role="option"
+                          tabIndex={0}
                           aria-selected={formData.status === 'REJECTED'}
                           onClick={() => handleStatusSelect('REJECTED')}
+                          onKeyDown={(e) => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); handleStatusSelect('REJECTED') } }}
                         >
                           {renderStatus('REJECTED')}
-                        </button>
+                        </div>
                       </div>
                     )}
                   </div>

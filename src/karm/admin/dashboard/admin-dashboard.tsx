@@ -318,6 +318,8 @@ function AdminDashboardCalendar({
           <button
             type="button"
             key={index}
+            tabIndex={day.isPadding ? -1 : 0}
+            aria-label={day.isPadding ? undefined : format(day.fullDate, 'MMMM d, yyyy')}
             className={`${
               cal.activeTimeFrame === 'weekly'
                 ? 'w-full rounded-t-ds-lg pb-3.5 pt-ds-05 max-md:rounded-ds-lg'
@@ -550,6 +552,7 @@ function AdminDashboardLeaveRequests({
             <button
               type="button"
               onClick={() => handleRequestTabSwitch('leaveRequest')}
+              aria-current={activeTab === 'leaveRequest' ? 'true' : undefined}
               className={`text-ds-sm font-semibold uppercase tracking-wider cursor-pointer px-ds-03 py-ds-04  ${
                 activeTab === 'leaveRequest'
                   ? 'border-b-[1px] border-b-interactive-hover text-text-primary'
@@ -568,6 +571,7 @@ function AdminDashboardLeaveRequests({
               onClick={() =>
                 handleRequestTabSwitch('attendanceRequest')
               }
+              aria-current={activeTab === 'attendanceRequest' ? 'true' : undefined}
               className={`text-ds-sm font-semibold uppercase tracking-wider cursor-pointer px-ds-03 py-ds-04  ${
                 activeTab === 'attendanceRequest'
                   ? 'border-b-[1px] border-b-interactive-hover text-text-primary'

@@ -121,7 +121,7 @@ export function MessageList({
 
   return (
     <div ref={scrollRef} className="no-scrollbar flex-1 overflow-y-auto p-ds-05">
-      <div className="flex flex-col gap-ds-05" role="log">
+      <div className="flex flex-col gap-ds-05" role="log" aria-label="Chat messages">
         {messages.map((msg) => {
           if (msg.role === 'SYSTEM') {
             return (

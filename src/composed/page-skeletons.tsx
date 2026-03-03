@@ -126,6 +126,7 @@ const ProjectListSkeleton = React.forwardRef<HTMLDivElement>(
 ProjectListSkeleton.displayName = 'ProjectListSkeleton'
 
 /** @deprecated Import from karm/ instead */
+// eslint-disable-next-line no-restricted-imports -- intentional deprecated re-export shim
 export { DevsabhaSkeleton, BandwidthSkeleton } from '../karm/page-skeletons'
 
 // --- Task Detail Skeleton ---

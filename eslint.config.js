@@ -75,4 +75,65 @@ export default tseslint.config(
       'no-console': ['warn', { allow: ['warn', 'error'] }],
     },
   },
+
+  // ── Module boundary enforcement ─────────────────────────────────
+  // ui/ cannot import from composed/, shell/, or karm/
+  {
+    files: ['src/ui/**/*.{ts,tsx}'],
+    rules: {
+      'no-restricted-imports': [
+        'warn',
+        {
+          patterns: [
+            { group: ['**/composed/*', '**/composed'], message: 'ui/ must not import from composed/' },
+            { group: ['**/shell/*', '**/shell'], message: 'ui/ must not import from shell/' },
+            { group: ['**/karm/*', '**/karm'], message: 'ui/ must not import from karm/' },
+          ],
+        },
+      ],
+    },
+  },
+  // composed/ cannot import from karm/
+  {
+    files: ['src/composed/**/*.{ts,tsx}'],
+    rules: {
+      'no-restricted-imports': [
+        'warn',
+        {
+          patterns: [
+            { group: ['**/karm/*', '**/karm'], message: 'composed/ must not import from karm/' },
+          ],
+        },
+      ],
+    },
+  },
+  // shell/ cannot import from karm/
+  {
+    files: ['src/shell/**/*.{ts,tsx}'],
+    rules: {
+      'no-restricted-imports': [
+        'warn',
+        {
+          patterns: [
+            { group: ['**/karm/*', '**/karm'], message: 'shell/ must not import from karm/' },
+          ],
+        },
+      ],
+    },
+  },
+  // karm/ cannot import from primitives/_internal/
+  {
+    files: ['src/karm/**/*.{ts,tsx}'],
+    rules: {
+      'no-restricted-imports': [
+        'warn',
+        {
+          patterns: [
+            { group: ['**/primitives/_internal/*', '**/primitives/_internal'], message: 'karm/ must not import from primitives/_internal/' },
+            { group: ['@primitives/*'], message: 'karm/ must not import from @primitives/' },
+          ],
+        },
+      ],
+    },
+  },
 )

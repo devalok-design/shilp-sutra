@@ -8,7 +8,22 @@ const meta: Meta<typeof Badge> = {
   argTypes: {
     variant: {
       control: 'select',
-      options: ['neutral', 'blue', 'green', 'red', 'yellow', 'magenta', 'purple'],
+      options: [
+        'neutral',
+        'info',
+        'success',
+        'error',
+        'warning',
+        'brand',
+        'accent',
+        'teal',
+        'amber',
+        'slate',
+        'indigo',
+        'cyan',
+        'orange',
+        'emerald',
+      ],
     },
     size: {
       control: 'radio',
@@ -26,51 +41,51 @@ export const Default: Story = {
   },
 }
 
-export const Blue: Story = {
+export const Info: Story = {
   args: {
-    variant: 'blue',
+    variant: 'info',
     children: 'In Progress',
   },
 }
 
-export const Green: Story = {
+export const Success: Story = {
   args: {
-    variant: 'green',
+    variant: 'success',
     children: 'Completed',
   },
 }
 
-export const Red: Story = {
+export const Error: Story = {
   args: {
-    variant: 'red',
+    variant: 'error',
     children: 'Urgent',
   },
 }
 
-export const Yellow: Story = {
+export const Warning: Story = {
   args: {
-    variant: 'yellow',
+    variant: 'warning',
     children: 'Pending',
   },
 }
 
-export const Magenta: Story = {
+export const Brand: Story = {
   args: {
-    variant: 'magenta',
+    variant: 'brand',
     children: 'Review',
   },
 }
 
-export const Purple: Story = {
+export const Accent: Story = {
   args: {
-    variant: 'purple',
+    variant: 'accent',
     children: 'Design',
   },
 }
 
 export const WithDot: Story = {
   args: {
-    variant: 'green',
+    variant: 'success',
     dot: true,
     children: 'Active',
   },
@@ -78,7 +93,7 @@ export const WithDot: Story = {
 
 export const Dismissible: Story = {
   args: {
-    variant: 'blue',
+    variant: 'info',
     children: 'Tag',
     onDismiss: () => {},
   },
@@ -102,12 +117,19 @@ export const AllVariants: Story = {
   render: () => (
     <div className="flex flex-wrap items-center gap-2">
       <Badge variant="neutral">Neutral</Badge>
-      <Badge variant="blue">Blue</Badge>
-      <Badge variant="green">Green</Badge>
-      <Badge variant="red">Red</Badge>
-      <Badge variant="yellow">Yellow</Badge>
-      <Badge variant="magenta">Magenta</Badge>
-      <Badge variant="purple">Purple</Badge>
+      <Badge variant="info">Info</Badge>
+      <Badge variant="success">Success</Badge>
+      <Badge variant="error">Error</Badge>
+      <Badge variant="warning">Warning</Badge>
+      <Badge variant="brand">Brand</Badge>
+      <Badge variant="accent">Accent</Badge>
+      <Badge variant="teal">Teal</Badge>
+      <Badge variant="amber">Amber</Badge>
+      <Badge variant="slate">Slate</Badge>
+      <Badge variant="indigo">Indigo</Badge>
+      <Badge variant="cyan">Cyan</Badge>
+      <Badge variant="orange">Orange</Badge>
+      <Badge variant="emerald">Emerald</Badge>
     </div>
   ),
 }
@@ -125,9 +147,9 @@ export const AllSizes: Story = {
 export const WithDots: Story = {
   render: () => (
     <div className="flex flex-wrap items-center gap-2">
-      <Badge variant="green" dot>Online</Badge>
-      <Badge variant="yellow" dot>Away</Badge>
-      <Badge variant="red" dot>Busy</Badge>
+      <Badge variant="success" dot>Online</Badge>
+      <Badge variant="warning" dot>Away</Badge>
+      <Badge variant="error" dot>Busy</Badge>
       <Badge variant="neutral" dot>Offline</Badge>
     </div>
   ),

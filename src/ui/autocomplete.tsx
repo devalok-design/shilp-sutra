@@ -127,7 +127,7 @@ const Autocomplete = React.forwardRef<HTMLInputElement, AutocompleteProps>(
           className={cn(
             'flex h-ds-md w-full rounded-ds-md border border-border bg-field px-ds-04 py-ds-03 font-sans text-[length:var(--font-size-md)] text-text-primary placeholder:text-text-placeholder',
             'outline-none focus:ring-2 focus:ring-focus focus:ring-offset-[var(--border-focus-offset)]',
-            'transition-colors duration-fast',
+            'transition-colors duration-fast-01',
             disabled && 'opacity-[var(--action-disabled-opacity,0.38)] cursor-not-allowed',
           )}
           onChange={(e) => {
@@ -163,7 +163,7 @@ const Autocomplete = React.forwardRef<HTMLInputElement, AutocompleteProps>(
                   role="option"
                   aria-selected={highlightedIndex === index}
                   className={cn(
-                    'cursor-pointer px-ds-04 py-ds-03 text-[length:var(--font-size-md)] text-text-primary transition-colors duration-fast',
+                    'cursor-pointer px-ds-04 py-ds-03 text-[length:var(--font-size-md)] text-text-primary transition-colors duration-fast-01',
                     highlightedIndex === index && 'bg-interactive-selected',
                     value?.value === option.value && 'font-[number:var(--font-weight-semibold)]',
                   )}

@@ -283,14 +283,14 @@ const Combobox = React.forwardRef<HTMLButtonElement, ComboboxProps>(
             disabled={disabled}
             className={cn(
               'flex h-ds-md w-full items-center justify-between whitespace-nowrap rounded-ds-md border border-border bg-field px-ds-04 py-ds-03 text-ds-md',
-              'transition-colors duration-fast',
+              'transition-colors duration-fast-01',
               'focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-focus focus-visible:ring-offset-2 focus-visible:border-border-interactive',
               'disabled:cursor-not-allowed disabled:opacity-[0.38]',
               triggerClassName,
             )}
           >
             {renderTriggerContent()}
-            <IconChevronDown className={cn("ml-ds-02 h-ico-sm w-ico-sm shrink-0 opacity-50 transition-transform duration-fast", open && 'rotate-180')} aria-hidden="true" />
+            <IconChevronDown className={cn("ml-ds-02 h-ico-sm w-ico-sm shrink-0 opacity-50 transition-transform duration-fast-01", open && 'rotate-180')} aria-hidden="true" />
           </button>
         </PopoverPrimitive.Trigger>
 

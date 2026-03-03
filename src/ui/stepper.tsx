@@ -84,7 +84,7 @@ function Step({ label, description, icon, className, _index = 0 }: StepInternalP
     >
       <div
         className={cn(
-          'flex-shrink-0 flex items-center justify-center w-ds-sm h-ds-sm rounded-ds-full text-[length:var(--font-size-sm)] font-[number:var(--font-weight-semibold)] transition-colors duration-fast',
+          'flex-shrink-0 flex items-center justify-center w-ds-sm h-ds-sm rounded-ds-full text-[length:var(--font-size-sm)] font-[number:var(--font-weight-semibold)] transition-colors duration-fast-01',
           state === 'completed' && 'bg-interactive text-text-on-color',
           state === 'active' && 'bg-interactive text-text-on-color',
           state === 'pending' && 'bg-layer-02 text-text-tertiary border border-border',

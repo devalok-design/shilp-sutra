@@ -471,14 +471,20 @@ function ZIndexTable() {
 
 const motionTokens = [
   { token: '--duration-instant', value: '0ms', category: 'Duration' },
-  { token: '--duration-fast', value: '100ms', category: 'Duration' },
-  { token: '--duration-moderate', value: '200ms', category: 'Duration' },
-  { token: '--duration-slow', value: '400ms', category: 'Duration' },
-  { token: '--duration-deliberate', value: '700ms', category: 'Duration' },
-  { token: '--ease-standard', value: 'cubic-bezier(0.2, 0, 0.38, 0.9)', category: 'Easing' },
-  { token: '--ease-entrance', value: 'cubic-bezier(0, 0, 0.38, 0.9)', category: 'Easing' },
-  { token: '--ease-exit', value: 'cubic-bezier(0.2, 0, 1, 0.9)', category: 'Easing' },
+  { token: '--duration-fast-01', value: '70ms', category: 'Duration' },
+  { token: '--duration-fast-02', value: '110ms', category: 'Duration' },
+  { token: '--duration-moderate-01', value: '150ms', category: 'Duration' },
+  { token: '--duration-moderate-02', value: '240ms', category: 'Duration' },
+  { token: '--duration-slow-01', value: '400ms', category: 'Duration' },
+  { token: '--duration-slow-02', value: '700ms', category: 'Duration' },
+  { token: '--ease-productive-standard', value: 'cubic-bezier(0.2, 0, 0.38, 0.9)', category: 'Easing' },
+  { token: '--ease-productive-entrance', value: 'cubic-bezier(0, 0, 0.38, 0.9)', category: 'Easing' },
+  { token: '--ease-productive-exit', value: 'cubic-bezier(0.2, 0, 1, 0.9)', category: 'Easing' },
+  { token: '--ease-expressive-standard', value: 'cubic-bezier(0.4, 0.14, 0.3, 1)', category: 'Easing' },
+  { token: '--ease-expressive-entrance', value: 'cubic-bezier(0, 0, 0.3, 1)', category: 'Easing' },
+  { token: '--ease-expressive-exit', value: 'cubic-bezier(0.4, 0.14, 1, 1)', category: 'Easing' },
   { token: '--ease-bounce', value: 'cubic-bezier(0.34, 1.56, 0.64, 1)', category: 'Easing' },
+  { token: '--ease-linear', value: 'linear', category: 'Easing' },
 ]
 
 function MotionTable() {

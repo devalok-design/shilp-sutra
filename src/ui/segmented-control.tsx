@@ -9,7 +9,7 @@ import { useRipple } from './lib/use-ripple'
 const segmentedControlItemVariants = cva(
   [
     'inline-flex items-center gap-ds-03 rounded-ds-full border-none outline-none cursor-pointer',
-    'transition-[color,background-color,border-color,box-shadow] duration-moderate ease-in-out',
+    'transition-[color,background-color,border-color,box-shadow] duration-moderate-02 ease-productive-standard',
     'relative overflow-hidden',
     'font-accent font-semibold leading-none text-center',
     'bg-layer-01',

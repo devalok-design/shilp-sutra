@@ -72,7 +72,7 @@ function BottomNavLink({
       <div className="relative flex w-full flex-col items-center gap-ds-02">
         <div
           className={cn(
-            'absolute top-0 h-[3px] w-full rounded-b-ds-sm bg-interactive p-0 transition-opacity duration-slow',
+            'absolute top-0 h-[3px] w-full rounded-b-ds-sm bg-interactive p-0 transition-opacity duration-slow-01',
             isActive ? 'opacity-100' : 'opacity-0',
           )}
           aria-hidden="true"
@@ -201,7 +201,7 @@ const BottomNavbar = React.forwardRef<HTMLElement, BottomNavbarProps>(
             <div className="relative flex w-full flex-col items-center gap-ds-02">
               <div
                 className={cn(
-                  'absolute top-0 h-[3px] w-full rounded-b-ds-sm bg-interactive p-0 transition-opacity duration-slow',
+                  'absolute top-0 h-[3px] w-full rounded-b-ds-sm bg-interactive p-0 transition-opacity duration-slow-01',
                   showMore || isMoreActive ? 'opacity-100' : 'opacity-0',
                 )}
                 aria-hidden="true"

@@ -29,7 +29,7 @@ const SheetOverlay = React.forwardRef<
 SheetOverlay.displayName = SheetPrimitive.Overlay.displayName
 
 const sheetVariants = cva(
-  'fixed z-modal gap-ds-05 bg-layer-01 p-ds-06 shadow-05 transition ease-in-out duration-moderate-02 data-[state=open]:animate-in data-[state=closed]:animate-out',
+  'fixed z-modal gap-ds-05 bg-layer-01 p-ds-06 shadow-05 transition ease-productive-standard duration-moderate-02 data-[state=open]:animate-in data-[state=closed]:animate-out',
   {
     variants: {
       side: {

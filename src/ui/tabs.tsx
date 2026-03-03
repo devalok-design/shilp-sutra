@@ -17,7 +17,7 @@ const tabsListVariants = cva('inline-flex items-center', {
 })
 
 const tabsTriggerVariants = cva(
-  'inline-flex items-center justify-center whitespace-nowrap font-sans text-ds-md font-medium transition-[color,background-color,border-color,box-shadow] duration-fast focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-focus focus-visible:ring-offset-1 disabled:pointer-events-none disabled:opacity-[0.38]',
+  'inline-flex items-center justify-center whitespace-nowrap font-sans text-ds-md font-medium transition-[color,background-color,border-color,box-shadow] duration-fast-01 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-focus focus-visible:ring-offset-1 disabled:pointer-events-none disabled:opacity-[0.38]',
   {
     variants: {
       variant: {

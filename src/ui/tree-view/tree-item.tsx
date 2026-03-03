@@ -121,7 +121,7 @@ const TreeItem = React.forwardRef<HTMLLIElement, TreeItemProps>(
           onKeyDown={handleKeyDown}
           style={{ paddingLeft: depth * 20 + 8 }}
           className={cn(
-            'flex items-center gap-ds-02 py-ds-02 px-ds-02 rounded-ds-md cursor-pointer transition-colors duration-fast',
+            'flex items-center gap-ds-02 py-ds-02 px-ds-02 rounded-ds-md cursor-pointer transition-colors duration-fast-01',
             'hover:bg-layer-02',
             'focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-focus',
             isSelected &&
@@ -141,7 +141,7 @@ const TreeItem = React.forwardRef<HTMLLIElement, TreeItemProps>(
               <IconChevronRight
                 size={16}
                 className={cn(
-                  'transition-transform duration-moderate',
+                  'transition-transform duration-moderate-02',
                   isExpanded && 'rotate-90',
                 )}
               />
@@ -199,7 +199,7 @@ const TreeItem = React.forwardRef<HTMLLIElement, TreeItemProps>(
           <div
             role="group"
             className={cn(
-              'grid transition-[grid-template-rows] duration-moderate ease-standard',
+              'grid transition-[grid-template-rows] duration-moderate-02-02 ease-productive-standard',
               isExpanded ? 'grid-rows-[1fr]' : 'grid-rows-[0fr]',
             )}
           >

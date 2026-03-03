@@ -231,7 +231,7 @@ const Sidebar = forwardRef<
       >
         <div
           className={cn(
-            'relative h-svh w-[--sidebar-width] bg-transparent transition-[width] duration-moderate ease-linear',
+            'relative h-svh w-[--sidebar-width] bg-transparent transition-[width] duration-moderate-02 ease-linear',
             'group-data-[collapsible=offcanvas]:w-0',
             'group-data-[side=right]:rotate-180',
             variant === 'floating' || variant === 'inset'
@@ -241,7 +241,7 @@ const Sidebar = forwardRef<
         />
         <div
           className={cn(
-            'fixed inset-y-0 z-raised hidden h-svh w-[--sidebar-width] transition-[left,right,width] duration-moderate ease-linear md:flex',
+            'fixed inset-y-0 z-raised hidden h-svh w-[--sidebar-width] transition-[left,right,width] duration-moderate-02 ease-linear md:flex',
             side === 'left'
               ? 'left-0 group-data-[collapsible=offcanvas]:left-[calc(var(--sidebar-width)*-1)]'
               : 'right-0 group-data-[collapsible=offcanvas]:right-[calc(var(--sidebar-width)*-1)]',
@@ -442,7 +442,7 @@ const SidebarGroupLabel = forwardRef<
       ref={ref}
       data-sidebar="group-label"
       className={cn(
-        'flex h-ds-sm shrink-0 items-center rounded-ds-md px-ds-03 text-ds-sm font-medium text-text-secondary outline-none ring-focus transition-[margin,opa] duration-moderate ease-linear focus-visible:ring-2 [&>svg]:size-4 [&>svg]:shrink-0',
+        'flex h-ds-sm shrink-0 items-center rounded-ds-md px-ds-03 text-ds-sm font-medium text-text-secondary outline-none ring-focus transition-[margin,opa] duration-moderate-02 ease-linear focus-visible:ring-2 [&>svg]:size-4 [&>svg]:shrink-0',
         'group-data-[collapsible=icon]:-mt-8 group-data-[collapsible=icon]:opacity-0',
         className,
       )}

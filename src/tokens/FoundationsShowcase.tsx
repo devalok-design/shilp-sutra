@@ -229,35 +229,6 @@ const semanticTypeScale = [
   { variant: 'overline',    size: '0.75rem (12px)',  weight: '400', sample: 'OVERLINE TEXT' },
 ]
 
-const titleScale = [
-  { cls: 'T1-Reg', label: 'T1', size: '60px' },
-  { cls: 'T2-Reg', label: 'T2', size: '48px' },
-  { cls: 'T3-Reg', label: 'T3', size: '36px' },
-  { cls: 'T4-Reg', label: 'T4', size: '32px' },
-  { cls: 'T5-Reg', label: 'T5', size: '24px' },
-  { cls: 'T6-Reg', label: 'T6', size: '20px' },
-  { cls: 'T7-Reg', label: 'T7', size: '18px' },
-]
-
-const bodyScale = [
-  { cls: 'B1-Reg', label: 'B1', size: '16px' },
-  { cls: 'B2-Reg', label: 'B2', size: '14px' },
-  { cls: 'B3-Reg', label: 'B3', size: '12px' },
-  { cls: 'B4-Reg', label: 'B4', size: '10px' },
-  { cls: 'B5-Reg', label: 'B5', size: '16px / 140%' },
-  { cls: 'B6-Reg', label: 'B6', size: '14px / 600' },
-  { cls: 'B7-Reg', label: 'B7', size: '12px' },
-  { cls: 'B8-Reg', label: 'B8', size: '14px' },
-]
-
-const labelScale = [
-  { cls: 'L1', label: 'L1', size: '16px' },
-  { cls: 'L2', label: 'L2', size: '14px' },
-  { cls: 'L3', label: 'L3', size: '12px' },
-  { cls: 'L4', label: 'L4', size: '10px' },
-  { cls: 'L6', label: 'L6', size: '14px' },
-]
-
 function TypographySamples() {
   const rowStyle: React.CSSProperties = {
     display: 'flex',
@@ -300,29 +271,6 @@ function TypographySamples() {
         </div>
       ))}
 
-      <h3 style={{ ...subheadingStyle, marginTop: '2rem' }}>Legacy Title Scale (deprecated)</h3>
-      {titleScale.map((t) => (
-        <div key={t.cls} style={rowStyle}>
-          <span style={metaStyle}>{t.label} ({t.size})</span>
-          <span className={t.cls}>The quick brown fox</span>
-        </div>
-      ))}
-
-      <h3 style={subheadingStyle}>Legacy Body Scale (deprecated)</h3>
-      {bodyScale.map((t) => (
-        <div key={t.cls} style={rowStyle}>
-          <span style={metaStyle}>{t.label} ({t.size})</span>
-          <span className={t.cls}>The quick brown fox jumps over the lazy dog</span>
-        </div>
-      ))}
-
-      <h3 style={subheadingStyle}>Legacy Label Scale (deprecated)</h3>
-      {labelScale.map((t) => (
-        <div key={t.cls} style={rowStyle}>
-          <span style={metaStyle}>{t.label} ({t.size})</span>
-          <span className={t.cls}>Label text sample</span>
-        </div>
-      ))}
     </div>
   )
 }

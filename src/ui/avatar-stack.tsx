@@ -25,16 +25,16 @@ export interface AvatarStackProps extends React.HTMLAttributes<HTMLDivElement> {
 }
 
 /**
- * Color palette for avatar fallbacks, using design system tag tokens.
+ * Color palette for avatar fallbacks, using semantic + category tokens.
  * Each avatar without an image gets a deterministic color based on its name.
  */
 const AVATAR_PALETTE = [
-  { bg: 'var(--color-tag-blue-bg)', text: 'var(--color-tag-blue-text)' },
-  { bg: 'var(--color-tag-green-bg)', text: 'var(--color-tag-green-text)' },
-  { bg: 'var(--color-tag-magenta-bg)', text: 'var(--color-tag-magenta-text)' },
-  { bg: 'var(--color-tag-purple-bg)', text: 'var(--color-tag-purple-text)' },
-  { bg: 'var(--color-tag-red-bg)', text: 'var(--color-tag-red-text)' },
-  { bg: 'var(--color-tag-yellow-bg)', text: 'var(--color-tag-yellow-text)' },
+  { bg: 'var(--color-category-cyan-surface)', text: 'var(--color-category-cyan-text)' },
+  { bg: 'var(--color-category-emerald-surface)', text: 'var(--color-category-emerald-text)' },
+  { bg: 'var(--color-interactive-subtle)', text: 'var(--color-text-brand)' },
+  { bg: 'var(--color-accent-subtle)', text: 'var(--color-accent)' },
+  { bg: 'var(--color-category-orange-surface)', text: 'var(--color-category-orange-text)' },
+  { bg: 'var(--color-category-amber-surface)', text: 'var(--color-category-amber-text)' },
 ] as const
 
 /** Simple string hash to pick a consistent palette color per name */

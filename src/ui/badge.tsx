@@ -9,19 +9,33 @@ const badgeVariants = cva(
     variants: {
       variant: {
         neutral:
-          'bg-tag-neutral-bg text-tag-neutral-text border-tag-neutral-border',
-        blue:
-          'bg-tag-blue-bg text-tag-blue-text border-tag-blue-border',
-        green:
-          'bg-tag-green-bg text-tag-green-text border-tag-green-border',
-        red:
-          'bg-tag-red-bg text-tag-red-text border-tag-red-border',
-        yellow:
-          'bg-tag-yellow-bg text-tag-yellow-text border-tag-yellow-border',
-        magenta:
-          'bg-tag-magenta-bg text-tag-magenta-text border-tag-magenta-border',
-        purple:
-          'bg-tag-purple-bg text-tag-purple-text border-tag-purple-border',
+          'bg-field text-text-secondary border-border',
+        info:
+          'bg-info-surface text-info-text border-info-border',
+        success:
+          'bg-success-surface text-success-text border-success-border',
+        error:
+          'bg-error-surface text-error-text border-error-border',
+        warning:
+          'bg-warning-surface text-warning-text border-warning-border',
+        brand:
+          'bg-interactive-subtle text-text-brand border-[var(--pink-200)]',
+        accent:
+          'bg-accent-subtle text-[var(--color-accent)] border-[var(--purple-200)]',
+        teal:
+          'bg-category-teal-surface text-category-teal-text border-category-teal-border',
+        amber:
+          'bg-category-amber-surface text-category-amber-text border-category-amber-border',
+        slate:
+          'bg-category-slate-surface text-category-slate-text border-category-slate-border',
+        indigo:
+          'bg-category-indigo-surface text-category-indigo-text border-category-indigo-border',
+        cyan:
+          'bg-category-cyan-surface text-category-cyan-text border-category-cyan-border',
+        orange:
+          'bg-category-orange-surface text-category-orange-text border-category-orange-border',
+        emerald:
+          'bg-category-emerald-surface text-category-emerald-text border-category-emerald-border',
       },
       size: {
         sm: 'h-5 px-ds-03',

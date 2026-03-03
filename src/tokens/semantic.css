@@ -120,29 +120,39 @@
   --color-success-text:         var(--green-700);
   --color-warning-text:         var(--yellow-700);
   --color-error-text:           var(--red-700);
+
+  /* ── Category Colors (Sapta Varna) ───────────────────── */
+  --color-category-teal:            var(--teal-600);
+  --color-category-teal-surface:    var(--teal-50);
+  --color-category-teal-border:     var(--teal-200);
+  --color-category-teal-text:       var(--teal-700);
+  --color-category-amber:           var(--amber-600);
+  --color-category-amber-surface:   var(--amber-50);
+  --color-category-amber-border:    var(--amber-200);
+  --color-category-amber-text:      var(--amber-700);
+  --color-category-slate:           var(--slate-600);
+  --color-category-slate-surface:   var(--slate-50);
+  --color-category-slate-border:    var(--slate-200);
+  --color-category-slate-text:      var(--slate-700);
+  --color-category-indigo:          var(--indigo-600);
+  --color-category-indigo-surface:  var(--indigo-50);
+  --color-category-indigo-border:   var(--indigo-200);
+  --color-category-indigo-text:     var(--indigo-700);
+  --color-category-cyan:            var(--cyan-600);
+  --color-category-cyan-surface:    var(--cyan-50);
+  --color-category-cyan-border:     var(--cyan-200);
+  --color-category-cyan-text:       var(--cyan-700);
+  --color-category-orange:          var(--orange-600);
+  --color-category-orange-surface:  var(--orange-50);
+  --color-category-orange-border:   var(--orange-200);
+  --color-category-orange-text:     var(--orange-700);
+  --color-category-emerald:         var(--emerald-600);
+  --color-category-emerald-surface: var(--emerald-50);
+  --color-category-emerald-border:  var(--emerald-200);
+  --color-category-emerald-text:    var(--emerald-700);
+
   --color-skeleton-base:        var(--neutral-100);
   --color-skeleton-shimmer:     var(--neutral-50);
-  --color-tag-neutral-bg:       var(--neutral-100);
-  --color-tag-neutral-text:     var(--neutral-800);
-  --color-tag-blue-bg:          var(--blue-50);
-  --color-tag-blue-text:        var(--blue-600);
-  --color-tag-green-bg:         var(--green-50);
-  --color-tag-green-text:       var(--green-600);
-  --color-tag-red-bg:           var(--red-50);
-  --color-tag-red-text:         var(--red-600);
-  --color-tag-yellow-bg:        var(--yellow-50);
-  --color-tag-yellow-text:      var(--yellow-600);
-  --color-tag-magenta-bg:       var(--pink-100);
-  --color-tag-magenta-text:     var(--pink-700);
-  --color-tag-purple-bg:        var(--purple-50);
-  --color-tag-purple-text:      var(--purple-600);
-  --color-tag-neutral-border:   var(--neutral-200);
-  --color-tag-blue-border:      var(--blue-100);
-  --color-tag-green-border:     var(--green-100);
-  --color-tag-red-border:       var(--red-100);
-  --color-tag-yellow-border:    var(--yellow-100);
-  --color-tag-magenta-border:   var(--pink-200);
-  --color-tag-purple-border:    var(--purple-200);
   --spacing-01: 2px;
   --spacing-02: 4px;
   --spacing-02b: 6px;
@@ -230,8 +240,8 @@
   --chart-4: var(--green-500);
   --chart-5: var(--yellow-500);
   --chart-6: var(--red-500);
-  --chart-7: #06b6d4;
-  --chart-8: #f97316;
+  --chart-7: var(--cyan-500);
+  --chart-8: var(--orange-500);
 
   /* ── Inset Glow & Overlay ─────────────────────────── */
   --color-inset-glow:            rgba(255, 255, 255, 0.25);
@@ -328,31 +338,40 @@
   --color-info-surface:         var(--blue-900);
   --color-info-border:          var(--blue-400);
   --color-info-text:            var(--blue-200);
+
+  /* ── Category Colors (Sapta Varna) ───────────────────── */
+  --color-category-teal:            var(--teal-500);
+  --color-category-teal-surface:    var(--teal-950);
+  --color-category-teal-border:     var(--teal-400);
+  --color-category-teal-text:       var(--teal-200);
+  --color-category-amber:           var(--amber-500);
+  --color-category-amber-surface:   var(--amber-950);
+  --color-category-amber-border:    var(--amber-400);
+  --color-category-amber-text:      var(--amber-200);
+  --color-category-slate:           var(--slate-500);
+  --color-category-slate-surface:   var(--slate-950);
+  --color-category-slate-border:    var(--slate-400);
+  --color-category-slate-text:      var(--slate-200);
+  --color-category-indigo:          var(--indigo-500);
+  --color-category-indigo-surface:  var(--indigo-950);
+  --color-category-indigo-border:   var(--indigo-400);
+  --color-category-indigo-text:     var(--indigo-200);
+  --color-category-cyan:            var(--cyan-500);
+  --color-category-cyan-surface:    var(--cyan-950);
+  --color-category-cyan-border:     var(--cyan-400);
+  --color-category-cyan-text:       var(--cyan-200);
+  --color-category-orange:          var(--orange-500);
+  --color-category-orange-surface:  var(--orange-950);
+  --color-category-orange-border:   var(--orange-400);
+  --color-category-orange-text:     var(--orange-200);
+  --color-category-emerald:         var(--emerald-500);
+  --color-category-emerald-surface: var(--emerald-950);
+  --color-category-emerald-border:  var(--emerald-400);
+  --color-category-emerald-text:    var(--emerald-200);
+
   /* Skeleton */
   --color-skeleton-base:        var(--neutral-800);
   --color-skeleton-shimmer:     var(--neutral-700);
-  /* Tags */
-  --color-tag-neutral-bg:       var(--neutral-800);
-  --color-tag-neutral-text:     var(--neutral-200);
-  --color-tag-neutral-border:   var(--neutral-700);
-  --color-tag-blue-bg:          var(--blue-700);
-  --color-tag-blue-text:        var(--blue-100);
-  --color-tag-blue-border:      var(--blue-600);
-  --color-tag-green-bg:         var(--green-700);
-  --color-tag-green-text:       var(--green-100);
-  --color-tag-green-border:     var(--green-600);
-  --color-tag-red-bg:           var(--red-700);
-  --color-tag-red-text:         var(--red-100);
-  --color-tag-red-border:       var(--red-600);
-  --color-tag-yellow-bg:        var(--yellow-700);
-  --color-tag-yellow-text:      var(--yellow-100);
-  --color-tag-yellow-border:    var(--yellow-600);
-  --color-tag-magenta-bg:       var(--pink-900);
-  --color-tag-magenta-text:     var(--pink-200);
-  --color-tag-magenta-border:   var(--pink-800);
-  --color-tag-purple-bg:        var(--purple-900);
-  --color-tag-purple-text:      var(--purple-200);
-  --color-tag-purple-border:    var(--purple-800);
   /* Inset Glow & Overlay */
   --color-inset-glow:            rgba(255, 255, 255, 0.10);
   --color-inset-glow-strong:     rgba(255, 255, 255, 0.08);
@@ -383,8 +402,8 @@
   --chart-4: var(--green-400);
   --chart-5: var(--yellow-400);
   --chart-6: var(--red-400);
-  --chart-7: #22d3ee;
-  --chart-8: #fb923c;
+  --chart-7: var(--cyan-400);
+  --chart-8: var(--orange-400);
 }
 
 /* ── Reduced Motion ──────────────────────────────────── */

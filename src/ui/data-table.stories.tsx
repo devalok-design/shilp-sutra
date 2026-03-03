@@ -26,7 +26,7 @@ const columns: ColumnDef<Task>[] = [
     header: 'Status',
     cell: ({ row }) => {
       const status = row.getValue('status') as string
-      const variant = status === 'done' ? 'green' : status === 'in-progress' ? 'blue' : 'neutral'
+      const variant = status === 'done' ? 'success' : status === 'in-progress' ? 'info' : 'neutral'
       return <Badge variant={variant}>{status}</Badge>
     },
   },
@@ -35,7 +35,7 @@ const columns: ColumnDef<Task>[] = [
     header: 'Priority',
     cell: ({ row }) => {
       const priority = row.getValue('priority') as string
-      const variant = priority === 'high' ? 'red' : priority === 'medium' ? 'yellow' : 'neutral'
+      const variant = priority === 'high' ? 'error' : priority === 'medium' ? 'warning' : 'neutral'
       return <Badge variant={variant}>{priority}</Badge>
     },
   },
@@ -449,10 +449,10 @@ function buildTimeOffColumns(): ColumnDef<TimeOffRow>[] {
             ) : null
           }
           const variant = {
-            approved: 'green' as const,
-            pending: 'yellow' as const,
-            rejected: 'red' as const,
-            holiday: 'blue' as const,
+            approved: 'success' as const,
+            pending: 'warning' as const,
+            rejected: 'error' as const,
+            holiday: 'info' as const,
           }[status]
           return (
             <Badge variant={variant} size="sm">

@@ -25,9 +25,9 @@ export interface DailyBriefProps {
 // ============================================================
 
 const DOT_COLORS = [
-  'bg-warning',
-  'bg-success',
-  'bg-info',
+  'bg-category-amber',
+  'bg-category-teal',
+  'bg-category-cyan',
   'bg-interactive',
   'bg-accent',
 ]

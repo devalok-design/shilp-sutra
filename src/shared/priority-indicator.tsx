@@ -17,8 +17,8 @@ const priorityConfig: Record<
 > = {
   LOW: {
     icon: IconArrowDown,
-    color: 'text-info-text',
-    bgColor: 'bg-info-surface',
+    color: 'text-category-slate-text',
+    bgColor: 'bg-category-slate-surface',
     label: 'Low',
   },
   MEDIUM: {

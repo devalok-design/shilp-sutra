@@ -62,8 +62,8 @@ const ACTION_MAP: Record<string, ActionConfig> = {
   },
   'task.updated': {
     icon: IconEdit,
-    color: 'text-info-text',
-    dotColor: 'bg-info',
+    color: 'text-category-slate-text',
+    dotColor: 'bg-category-slate',
     getDescription: (entry) => {
       const meta = entry.metadata as Record<string, unknown> | null
       if (meta?.field === 'title') return 'updated the title'
@@ -88,8 +88,8 @@ const ACTION_MAP: Record<string, ActionConfig> = {
   },
   'task.assigned': {
     icon: IconUserPlus,
-    color: 'text-info-text',
-    dotColor: 'bg-info',
+    color: 'text-category-cyan-text',
+    dotColor: 'bg-category-cyan',
     getDescription: (entry) => {
       const meta = entry.metadata as Record<string, unknown> | null
       return `assigned ${meta?.assigneeName || 'a user'}`
@@ -112,8 +112,8 @@ const ACTION_MAP: Record<string, ActionConfig> = {
   },
   'task.file_uploaded': {
     icon: IconPaperclip,
-    color: 'text-info-text',
-    dotColor: 'bg-info',
+    color: 'text-category-indigo-text',
+    dotColor: 'bg-category-indigo',
     getDescription: (entry) => {
       const meta = entry.metadata as Record<string, unknown> | null
       return `uploaded ${meta?.fileName || 'a file'}`
@@ -157,8 +157,8 @@ const ACTION_MAP: Record<string, ActionConfig> = {
   },
   'task.labels_changed': {
     icon: IconTag,
-    color: 'text-info-text',
-    dotColor: 'bg-info',
+    color: 'text-category-amber-text',
+    dotColor: 'bg-category-amber',
     getDescription: () => 'updated labels',
   },
   'task.due_date_changed': {

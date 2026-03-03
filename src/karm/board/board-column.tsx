@@ -33,14 +33,14 @@ export interface BoardColumnData {
 // ============================================================
 
 const COLUMN_ACCENTS = [
-  'border-l-info',
+  'border-l-category-cyan',
+  'border-l-category-amber',
+  'border-l-category-teal',
+  'border-l-category-indigo',
+  'border-l-category-orange',
+  'border-l-category-emerald',
+  'border-l-category-slate',
   'border-l-accent',
-  'border-l-warning',
-  'border-l-success',
-  'border-l-interactive',
-  'border-l-info-border',
-  'border-l-warning-border',
-  'border-l-success-border',
 ]
 
 // ============================================================

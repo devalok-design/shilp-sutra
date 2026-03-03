@@ -77,11 +77,6 @@ export {
   type SegmentedControlSize,
   type SegmentedControlColor,
   type SegmentedControlOption,
-  /** @deprecated Use SegmentedControl instead */
-  Toggle,
-  type ToggleSize,
-  type ToggleColor,
-  type ToggleOption,
 } from './custom-buttons'
 
 // Admin components

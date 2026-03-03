@@ -68,7 +68,7 @@ export function LeaveRequest({
         <div className="flex w-full items-center gap-ds-04">
           {userImages[request.user?.id || ''] ? (
             <img
-              className="bg-red h-10 w-10 overflow-hidden rounded-ds-full bg-layer-02"
+              className="h-10 w-10 overflow-hidden rounded-ds-full bg-layer-02"
               src={userImages[request.user?.id || '']}
               alt={''}
             />

@@ -250,7 +250,6 @@ export { TreeView, type TreeViewProps, TreeItem, type TreeItemProps, useTree, ty
 
 // Other
 export { Link, type LinkProps } from './link'
-export { AdjustmentType, default as renderAdjustmentType } from './render-adjustment-type'
 
 // Charts
 export * from './charts'

@@ -155,6 +155,8 @@ export {
   BreakAdminSkeleton,
   ApprovedAdjustments,
   type ApprovedAdjustmentsProps,
+  AdjustmentType,
+  renderAdjustmentType,
   type AdminUser,
   type AttendanceRecord,
   type GroupedAttendance,

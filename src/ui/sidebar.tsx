@@ -521,9 +521,9 @@ const sidebarMenuButtonVariants = cva(
           'hover:bg-layer-02 bg-background shadow-[0_0_0_1px_var(--color-border-subtle)] hover:text-text-primary hover:shadow-[0_0_0_1px_var(--color-border-strong)]',
       },
       size: {
-        md: 'h-8 text-ds-md',
+        md: 'h-ds-sm text-ds-md',
         sm: 'h-7 text-ds-sm',
-        lg: 'h-12 text-ds-md group-data-[collapsible=icon]:!p-0',
+        lg: 'h-ds-lg text-ds-md group-data-[collapsible=icon]:!p-0',
       },
     },
     defaultVariants: {

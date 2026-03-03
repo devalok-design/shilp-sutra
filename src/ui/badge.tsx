@@ -39,7 +39,7 @@ const badgeVariants = cva(
       },
       size: {
         sm: 'h-5 px-ds-03',
-        md: 'h-6 px-2.5',
+        md: 'h-ds-xs px-ds-03',
         lg: 'h-7 px-ds-04',
       },
     },

@@ -15,9 +15,9 @@ const toggleVariants = cva(
           'border border-border bg-transparent hover:bg-field',
       },
       size: {
-        sm: 'h-8 px-ds-03',
+        sm: 'h-ds-sm px-ds-03',
         md: 'h-9 px-ds-04',
-        lg: 'h-10 px-ds-04',
+        lg: 'h-ds-md px-ds-04',
       },
     },
     defaultVariants: {

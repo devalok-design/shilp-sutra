@@ -11,8 +11,8 @@ const chipVariants = cva(
         outlined: 'bg-transparent text-text-primary border border-border',
       },
       size: {
-        sm: 'h-6 px-ds-03',
-        md: 'h-8 px-ds-04',
+        sm: 'h-ds-xs px-ds-03',
+        md: 'h-ds-sm px-ds-04',
       },
       color: {
         default: '',

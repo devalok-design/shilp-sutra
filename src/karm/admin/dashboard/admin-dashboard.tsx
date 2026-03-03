@@ -24,6 +24,7 @@ import React, {
   useState,
   type ReactNode,
 } from 'react'
+import { cva } from 'class-variance-authority'
 import { cn } from '../../../ui/lib/utils'
 import { DashboardSkeleton } from './dashboard-skeleton'
 import { DashboardHeader } from './dashboard-header'
@@ -535,6 +536,22 @@ export interface AdminDashboardLeaveRequestsProps {
 // LeaveRequests Component
 // ============================================================
 
+// ── Tab button variants for request sections ──
+const requestTabVariants = cva(
+  'text-ds-sm font-semibold uppercase tracking-wider cursor-pointer px-ds-03 py-ds-04',
+  {
+    variants: {
+      active: {
+        true: 'border-b-[1px] border-b-interactive-hover text-text-primary',
+        false: 'text-text-tertiary',
+      },
+    },
+    defaultVariants: {
+      active: false,
+    },
+  },
+)
+
 const AdminDashboardLeaveRequests = React.forwardRef<
   HTMLDivElement,
   AdminDashboardLeaveRequestsProps
@@ -587,11 +604,7 @@ const AdminDashboardLeaveRequests = React.forwardRef<
               type="button"
               onClick={() => handleRequestTabSwitch('leaveRequest')}
               aria-current={activeTab === 'leaveRequest' ? 'true' : undefined}
-              className={`text-ds-sm font-semibold uppercase tracking-wider cursor-pointer px-ds-03 py-ds-04  ${
-                activeTab === 'leaveRequest'
-                  ? 'border-b-[1px] border-b-interactive-hover text-text-primary'
-                  : 'text-text-tertiary'
-              }`}
+              className={requestTabVariants({ active: activeTab === 'leaveRequest' })}
             >
               <span className="hidden sm:inline">break </span>Requests
               <span className="text-interactive-hover">
@@ -606,11 +619,7 @@ const AdminDashboardLeaveRequests = React.forwardRef<
                 handleRequestTabSwitch('attendanceRequest')
               }
               aria-current={activeTab === 'attendanceRequest' ? 'true' : undefined}
-              className={`text-ds-sm font-semibold uppercase tracking-wider cursor-pointer px-ds-03 py-ds-04  ${
-                activeTab === 'attendanceRequest'
-                  ? 'border-b-[1px] border-b-interactive-hover text-text-primary'
-                  : 'text-text-tertiary'
-              }`}
+              className={requestTabVariants({ active: activeTab === 'attendanceRequest' })}
             >
               Attendance Correction{' '}
               <span className="text-interactive-hover">

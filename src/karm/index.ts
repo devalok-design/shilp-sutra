@@ -19,6 +19,9 @@
 // @devalok/shilp-sutra-karm in the future.
 // ============================================================
 
+// Page skeletons (domain-specific)
+export { DevsabhaSkeleton, BandwidthSkeleton } from './page-skeletons'
+
 // Board components
 export {
   KanbanBoard,

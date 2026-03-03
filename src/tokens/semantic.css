@@ -389,10 +389,6 @@
   --shadow-05: 0 16px 48px rgba(0, 0, 0, 0.70);
   --shadow-brand: 0 4px 16px rgba(211, 49, 99, 0.35);
 
-  /* ── Layout ─────────────────────────────────── */
-  --max-width:      1280px;
-  --max-width-body: 960px;
-
   /* ── Gradients ─────────────────────────────────── */
   --gradient-brand-light:       linear-gradient(135deg, var(--pink-500), var(--purple-600));
   --gradient-brand-dark:        linear-gradient(135deg, var(--pink-700), var(--purple-800));

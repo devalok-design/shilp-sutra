@@ -51,7 +51,8 @@ export interface SidebarUser {
   role?: string
 }
 
-export interface AppSidebarProps {
+export interface AppSidebarProps
+  extends React.HTMLAttributes<HTMLDivElement> {
   /** Currently active pathname -- used to highlight the active nav item */
   currentPath?: string
   /** User information displayed in the sidebar header */
@@ -110,6 +111,7 @@ const AppSidebar = React.forwardRef<HTMLDivElement, AppSidebarProps>(
       logo,
       footerLinks = [],
       className,
+      ...props
     },
     ref,
   ) => {
@@ -122,6 +124,7 @@ const AppSidebar = React.forwardRef<HTMLDivElement, AppSidebarProps>(
 
     return (
       <ShadcnSidebar
+        {...props}
         ref={ref}
         aria-label="Main navigation"
         className={cn(

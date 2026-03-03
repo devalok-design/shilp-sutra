@@ -29,7 +29,8 @@ export interface BottomNavbarUser {
   role?: string
 }
 
-export interface BottomNavbarProps {
+export interface BottomNavbarProps
+  extends React.HTMLAttributes<HTMLElement> {
   /** Currently active pathname */
   currentPath?: string
   /** User information (used to determine admin status, presence) */
@@ -97,6 +98,7 @@ const BottomNavbar = React.forwardRef<HTMLElement, BottomNavbarProps>(
       primaryItems = [],
       moreItems = [],
       className,
+      ...props
     },
     ref,
   ) => {
@@ -167,6 +169,7 @@ const BottomNavbar = React.forwardRef<HTMLElement, BottomNavbarProps>(
 
       {/* Bottom Navigation Bar */}
       <nav
+        {...props}
         ref={ref}
         aria-label="Mobile navigation"
         className={cn(

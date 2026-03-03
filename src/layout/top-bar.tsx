@@ -33,7 +33,8 @@ export interface TopBarUser {
   image?: string | null
 }
 
-export interface TopBarProps {
+export interface TopBarProps
+  extends React.HTMLAttributes<HTMLDivElement> {
   /** Page title displayed on desktop */
   pageTitle?: string
   /** Current user information for the avatar dropdown */
@@ -70,6 +71,7 @@ const TopBar = React.forwardRef<HTMLDivElement, TopBarProps>(
       mobileLogo,
       notificationSlot,
       className,
+      ...props
     },
     ref,
   ) => {
@@ -92,6 +94,7 @@ const TopBar = React.forwardRef<HTMLDivElement, TopBarProps>(
 
     return (
       <div
+        {...props}
         ref={ref}
         className={cn(
           'z-sticky flex w-full items-center border-b border-border bg-layer-01 px-ds-05 py-ds-04 md:px-ds-06',

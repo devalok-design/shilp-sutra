@@ -38,7 +38,8 @@ export interface Notification {
   project?: { title: string } | null
 }
 
-export interface NotificationCenterProps {
+export interface NotificationCenterProps
+  extends React.ButtonHTMLAttributes<HTMLButtonElement> {
   /** List of notifications to display */
   notifications?: Notification[]
   /** Count of unread notifications (derived from notifications if not provided) */
@@ -254,6 +255,7 @@ const NotificationCenter = React.forwardRef<HTMLButtonElement, NotificationCente
       onNavigate,
       getNotificationRoute,
       className,
+      ...props
     },
     ref,
   ) => {
@@ -306,6 +308,7 @@ const NotificationCenter = React.forwardRef<HTMLButtonElement, NotificationCente
         <TooltipTrigger asChild>
           <PopoverTrigger asChild>
             <button
+              {...props}
               ref={ref}
               className={cn(
                 'relative flex h-ds-sm-plus w-ds-sm-plus items-center justify-center rounded-ds-full border border-border bg-layer-02 text-text-secondary transition-colors hover:bg-layer-03',

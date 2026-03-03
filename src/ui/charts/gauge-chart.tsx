@@ -42,7 +42,7 @@ export function GaugeChart({
   label,
   valueLabel,
   color,
-  trackColor = 'var(--color-border-subtle, #e2e8f0)',
+  trackColor = 'var(--color-border-subtle)',
   height = 200,
   startAngle = -120,
   endAngle = 120,
@@ -120,7 +120,7 @@ export function GaugeChart({
             y={label ? -4 : 0}
             textAnchor="middle"
             dominantBaseline="central"
-            className="fill-text-primary text-2xl font-semibold"
+            className="fill-text-primary text-ds-2xl font-semibold"
           >
             {displayValue}
           </text>

@@ -187,7 +187,10 @@ export {
   PaginationPrevious,
   PaginationNext,
   PaginationEllipsis,
+  PaginationNav,
+  generatePagination,
   type PaginationLinkProps,
+  type PaginationNavProps,
 } from './pagination'
 export {
   NavigationMenu,

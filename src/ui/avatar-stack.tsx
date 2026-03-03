@@ -51,6 +51,7 @@ function getAvatarColor(name: string) {
   return AVATAR_PALETTE[hashName(name) % AVATAR_PALETTE.length]
 }
 
+/** @deprecated Use AvatarGroup from composed/ instead. Will be removed in Phase 2. */
 const AvatarStack = React.forwardRef<HTMLDivElement, AvatarStackProps>(
   (
     {

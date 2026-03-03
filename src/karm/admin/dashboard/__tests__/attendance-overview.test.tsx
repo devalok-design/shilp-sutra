@@ -143,10 +143,10 @@ describe('AttendanceOverview', () => {
 
   it('renders avatar fallback initials for users', () => {
     renderOverview()
-    // AvatarStack renders fallback chars: A, B, C
-    expect(screen.getByText('A')).toBeInTheDocument()
-    expect(screen.getByText('B')).toBeInTheDocument()
-    expect(screen.getByText('C')).toBeInTheDocument()
+    // AvatarGroup uses getInitials(): AS, BJ, CL
+    expect(screen.getByText('AS')).toBeInTheDocument()
+    expect(screen.getByText('BJ')).toBeInTheDocument()
+    expect(screen.getByText('CL')).toBeInTheDocument()
   })
 
   it('renders empty groups with (0) count', () => {

@@ -7,7 +7,7 @@
 
 import * as React from 'react'
 import { useRef, useState, useCallback } from 'react'
-import { AvatarStack } from '../../../ui/avatar-stack'
+import { AvatarGroup } from '../../../shared/avatar-group'
 import type {
   AdminUser,
   AttendanceRecord,
@@ -148,14 +148,13 @@ export const AttendanceOverview = React.forwardRef<HTMLDivElement, AttendanceOve
                     )}
                     <div className="flex w-full flex-wrap items-center">
                       {usersList?.length > 0 && (
-                        <AvatarStack
-                          avatars={usersList?.map((user) => ({
-                            src: userImages[user.id],
-                            alt: `${user.name}'s avatar`,
-                            fallback: user.name?.charAt(0) || 'U',
+                        <AvatarGroup
+                          users={usersList?.map((user) => ({
+                            image: userImages[user.id],
                             name: user.name || 'User',
                           }))}
-                          maxAvatars={4}
+                          max={4}
+                          showTooltip={false}
                         />
                       )}
                     </div>
@@ -184,16 +183,15 @@ export const AttendanceOverview = React.forwardRef<HTMLDivElement, AttendanceOve
                   ({(groupUsers as Array<{ user: AdminUser }>).length})
                 </h2>
                 <div className="flex cursor-pointer flex-wrap items-center">
-                  <AvatarStack
-                    avatars={(groupUsers as Array<{ user: AdminUser }>).map(
+                  <AvatarGroup
+                    users={(groupUsers as Array<{ user: AdminUser }>).map(
                       ({ user }) => ({
-                        src: userImages[user.id],
-                        alt: `${user.name}'s avatar`,
-                        fallback: user.name.charAt(0),
+                        image: userImages[user.id],
                         name: user.name,
                       }),
                     )}
-                    maxAvatars={4}
+                    max={4}
+                    showTooltip={false}
                   />
                 </div>
               </div>

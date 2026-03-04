@@ -1,5 +1,6 @@
 import * as React from 'react'
 import { cn } from '../../ui/lib/utils'
+import { getKarmSvgComponents } from './svg-components'
 
 // --- Types ---
 
@@ -42,15 +43,15 @@ const pxMap: Record<KarmLogoSize, number> = {
   xl: 80,
 }
 
-// --- SVG Registration ---
+// --- SVG lookup ---
 
 type SvgComponent = React.ForwardRefExoticComponent<
   React.SVGAttributes<SVGSVGElement> & React.RefAttributes<SVGSVGElement>
 >
 
-const svgComponents: Record<string, SvgComponent> = {}
+const svgComponents: Record<string, SvgComponent> = { ...getKarmSvgComponents() }
 
-/** Register an inline SVG component for a given type-color combination */
+/** Register an additional inline SVG component for a given type-color combination */
 export function _registerKarmSvg(key: string, component: SvgComponent) {
   svgComponents[key] = component
 }

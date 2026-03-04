@@ -1,5 +1,4 @@
 import * as React from 'react'
-import { _registerKarmSvg } from './karm-logo'
 
 const BRAND = '#D33163'
 const BLACK = '#000000'
@@ -121,17 +120,22 @@ function createKarmWordmarkIcon(displayName: string, fill: string) {
   return Component
 }
 
-// Register all Karm icon color variants
-_registerKarmSvg('icon-brand', createKarmIcon('KarmIconBrand', BRAND))
-_registerKarmSvg('icon-black', createKarmIcon('KarmIconBlack', BLACK))
-_registerKarmSvg('icon-white', createKarmIcon('KarmIconWhite', WHITE))
+type SvgComponent = React.ForwardRefExoticComponent<
+  React.SVGAttributes<SVGSVGElement> & React.RefAttributes<SVGSVGElement>
+>
 
-// Wordmark (3 colors)
-_registerKarmSvg('wordmark-brand', createKarmWordmark('KarmWordmarkBrand', BRAND))
-_registerKarmSvg('wordmark-black', createKarmWordmark('KarmWordmarkBlack', BLACK))
-_registerKarmSvg('wordmark-white', createKarmWordmark('KarmWordmarkWhite', WHITE))
+const _karmSvgComponents: Record<string, SvgComponent> = {
+  'icon-brand': createKarmIcon('KarmIconBrand', BRAND),
+  'icon-black': createKarmIcon('KarmIconBlack', BLACK),
+  'icon-white': createKarmIcon('KarmIconWhite', WHITE),
+  'wordmark-brand': createKarmWordmark('KarmWordmarkBrand', BRAND),
+  'wordmark-black': createKarmWordmark('KarmWordmarkBlack', BLACK),
+  'wordmark-white': createKarmWordmark('KarmWordmarkWhite', WHITE),
+  'wordmark-icon-brand': createKarmWordmarkIcon('KarmWordmarkIconBrand', BRAND),
+  'wordmark-icon-black': createKarmWordmarkIcon('KarmWordmarkIconBlack', BLACK),
+  'wordmark-icon-white': createKarmWordmarkIcon('KarmWordmarkIconWhite', WHITE),
+}
 
-// Wordmark-icon (3 colors)
-_registerKarmSvg('wordmark-icon-brand', createKarmWordmarkIcon('KarmWordmarkIconBrand', BRAND))
-_registerKarmSvg('wordmark-icon-black', createKarmWordmarkIcon('KarmWordmarkIconBlack', BLACK))
-_registerKarmSvg('wordmark-icon-white', createKarmWordmarkIcon('KarmWordmarkIconWhite', WHITE))
+export function getKarmSvgComponents(): Record<string, SvgComponent> {
+  return _karmSvgComponents
+}

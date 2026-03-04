@@ -3,7 +3,7 @@ import type { Meta, StoryObj } from '@storybook/react'
 import { Fade, Collapse, Grow, Slide } from './transitions'
 
 const meta: Meta = {
-  title: 'UI/Animation/Transitions',
+  title: 'Foundations/Motion/Transitions',
   tags: ['autodocs'],
   argTypes: {
     open: {

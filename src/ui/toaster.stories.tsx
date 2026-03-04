@@ -48,7 +48,7 @@ function DestructiveToastDemo() {
       type="button"
       onClick={() =>
         toast({
-          variant: 'destructive',
+          variant: 'error',
           title: 'Deletion failed',
           description: 'Could not delete the resource. Please try again.',
         })
@@ -109,7 +109,7 @@ function MultipleToastsDemo() {
         type="button"
         onClick={() =>
           toast({
-            variant: 'destructive',
+            variant: 'error',
             title: 'Error occurred',
             description: 'An unexpected error happened.',
           })
@@ -146,7 +146,7 @@ function AllVariantsDemo() {
         type="button"
         onClick={() =>
           toast({
-            variant: 'destructive',
+            variant: 'error',
             title: 'Destructive toast',
             description: 'Something went wrong.',
           })
@@ -159,14 +159,14 @@ function AllVariantsDemo() {
         type="button"
         onClick={() =>
           toast({
-            variant: 'karam',
-            title: 'Karm toast',
+            variant: 'success',
+            title: 'Task complete',
             description: 'Task moved to "Done".',
           })
         }
         className="rounded-ds-md border border-border px-ds-04 py-ds-02 text-[length:var(--font-size-sm)] text-text-primary hover:bg-layer-02 transition-colors"
       >
-        Karm
+        Success
       </button>
       <button
         type="button"

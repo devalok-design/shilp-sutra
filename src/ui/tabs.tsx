@@ -47,15 +47,18 @@ export interface TabsListProps
 const TabsList = React.forwardRef<
   React.ElementRef<typeof TabsPrimitive.List>,
   TabsListProps
->(({ className, variant = 'line', ...props }, ref) => (
-  <TabsListContext.Provider value={{ variant }}>
+>(({ className, variant, ...props }, ref) => {
+  const resolvedVariant = variant ?? 'line'
+  return (
+  <TabsListContext.Provider value={{ variant: resolvedVariant }}>
     <TabsPrimitive.List
       ref={ref}
-      className={cn(tabsListVariants({ variant }), className)}
+      className={cn(tabsListVariants({ variant: resolvedVariant }), className)}
       {...props}
     />
   </TabsListContext.Provider>
-))
+  )
+})
 TabsList.displayName = TabsPrimitive.List.displayName
 
 export interface TabsTriggerProps

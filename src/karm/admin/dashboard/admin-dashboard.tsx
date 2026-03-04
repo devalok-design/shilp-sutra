@@ -317,9 +317,11 @@ const AdminDashboardCalendar = React.forwardRef<
 
       {/* Calendar Grid */}
       <div
-        className={`calender ${
-          cal.activeTimeFrame === 'weekly' ? 'flex' : 'grid grid-cols-7 gap-0'
-        } w-full items-center`}
+        className={cn(
+          'calender',
+          cal.activeTimeFrame === 'weekly' ? 'flex' : 'grid grid-cols-7 gap-0',
+          'w-full items-center',
+        )}
       >
         {cal.activeTimeFrame === 'monthly' &&
           ['SUN', 'MON', 'TUE', 'WED', 'THU', 'FRI', 'SAT'].map((weekDay) => (
@@ -336,17 +338,18 @@ const AdminDashboardCalendar = React.forwardRef<
             key={index}
             tabIndex={day.isPadding ? -1 : 0}
             aria-label={day.isPadding ? undefined : format(day.fullDate, 'MMMM d, yyyy')}
-            className={`${
+            className={cn(
               cal.activeTimeFrame === 'weekly'
                 ? 'w-full rounded-t-ds-lg pb-ds-04 pt-ds-05 max-md:rounded-ds-lg'
-                : 'pb-0 pt-0'
-            } flex cursor-pointer flex-col items-center text-center ${
+                : 'pb-0 pt-0',
+              'flex cursor-pointer flex-col items-center text-center',
               cal.activeTimeFrame === 'weekly' && cal.activeIndex === index
                 ? selectedUserAttendance?.status === 'BREAK'
                   ? 'bg-layer-accent-subtle'
                   : 'bg-layer-02'
-                : ''
-            } ${day.isPadding ? 'opacity-50' : ''} `}
+                : '',
+              day.isPadding && 'opacity-50',
+            )}
             onClick={() => handleDayClick(index, day.fullDate)}
           >
             {cal.activeTimeFrame === 'weekly' && (

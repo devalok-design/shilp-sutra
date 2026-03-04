@@ -1,4 +1,5 @@
 import type { Meta, StoryObj } from '@storybook/react'
+import { cn } from './lib/utils'
 import { Stack } from './stack'
 
 const meta: Meta<typeof Stack> = {
@@ -30,7 +31,7 @@ type Story = StoryObj<typeof Stack>
 
 const Box = ({ children, wide }: { children: React.ReactNode; wide?: boolean }) => (
   <div
-    className={`rounded-ds-md border border-border bg-layer-02 px-ds-04 py-ds-03 text-ds-sm text-text-primary ${wide ? 'w-32' : ''}`}
+    className={cn('rounded-ds-md border border-border bg-layer-02 px-ds-04 py-ds-03 text-ds-sm text-text-primary', wide && 'w-32')}
   >
     {children}
   </div>

@@ -13,6 +13,7 @@ import {
 } from '../../../ui/dropdown-menu'
 import { FilledArrowIcon, ArrowLeftIcon, ArrowForwardIcon } from '../icons'
 import { SegmentedControl as Toggle } from '../../../ui/segmented-control'
+import { cn } from '../../../ui/lib/utils'
 import { isSameDay } from '../utils/date-utils'
 import { useCalendarNavigation } from './use-calendar-navigation'
 import { format } from 'date-fns'
@@ -123,9 +124,11 @@ export const Calendar = React.forwardRef<HTMLDivElement, CalendarProps>(
       </div>
 
       <div
-        className={`calendar ${
-          cal.activeTimeFrame === 'weekly' ? 'flex' : 'grid grid-cols-7 gap-0'
-        } w-full items-center overflow-hidden`}
+        className={cn(
+          'calendar',
+          cal.activeTimeFrame === 'weekly' ? 'flex' : 'grid grid-cols-7 gap-0',
+          'w-full items-center overflow-hidden',
+        )}
       >
         {cal.activeTimeFrame === 'monthly' &&
           ['SUN', 'MON', 'TUE', 'WED', 'THU', 'FRI', 'SAT'].map((weekDay) => (
@@ -142,15 +145,14 @@ export const Calendar = React.forwardRef<HTMLDivElement, CalendarProps>(
             key={index}
             tabIndex={day.isPadding ? -1 : 0}
             aria-label={day.isPadding ? undefined : format(day.fullDate, 'MMMM d, yyyy')}
-            className={`${
+            className={cn(
               cal.activeTimeFrame === 'weekly'
                 ? 'w-full rounded-t-ds-lg pb-ds-04 pt-ds-05'
-                : 'pb-0 pt-0'
-            } flex cursor-pointer flex-col items-center text-center ${
-              cal.activeTimeFrame === 'weekly' && cal.activeIndex === index
-                ? 'bg-layer-02'
-                : ''
-            } ${day.isPadding ? 'opacity-50' : ''} `}
+                : 'pb-0 pt-0',
+              'flex cursor-pointer flex-col items-center text-center',
+              cal.activeTimeFrame === 'weekly' && cal.activeIndex === index && 'bg-layer-02',
+              day.isPadding && 'opacity-50',
+            )}
             onClick={() => handleDayClick(index, day.fullDate)}
           >
             {cal.activeTimeFrame === 'weekly' && (
@@ -159,23 +161,22 @@ export const Calendar = React.forwardRef<HTMLDivElement, CalendarProps>(
               </span>
             )}
             <div
-              className={`mx-ds-02 my-ds-02 flex-col ${
+              className={cn(
+                'mx-ds-02 my-ds-02 flex-col',
+                'flex h-ds-md w-ds-md items-center justify-center',
                 cal.activeTimeFrame === 'monthly' &&
-                isSameDay(day.fullDate, new Date(cal.selectedDate))
-                  ? 'flex h-ds-md w-ds-md items-center justify-center rounded-ds-full bg-interactive-subtle ring-2 ring-inset ring-interactive'
-                  : 'flex h-ds-md w-ds-md items-center justify-center'
-              }`}
+                  isSameDay(day.fullDate, new Date(cal.selectedDate)) &&
+                  'rounded-ds-full bg-interactive-subtle ring-2 ring-inset ring-interactive',
+              )}
             >
               <span
-                className={`text-ds-base flex h-ds-md w-ds-md items-center justify-center rounded-ds-full ${
+                className={cn(
+                  'text-ds-base flex h-ds-md w-ds-md items-center justify-center rounded-ds-full',
                   day.isToday
                     ? 'bg-interactive-hover p-ds-03 text-text-on-color'
-                    : 'text-text-secondary'
-                } ${
-                  day.isActive && !day.isToday
-                    ? 'bg-field'
-                    : ''
-                }`}
+                    : 'text-text-secondary',
+                  day.isActive && !day.isToday && 'bg-field',
+                )}
               >
                 {day.date}
               </span>

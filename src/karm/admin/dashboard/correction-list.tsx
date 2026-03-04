@@ -9,6 +9,7 @@ import * as React from 'react'
 import { Fragment } from 'react'
 import { Avatar, AvatarImage, AvatarFallback } from '../../../ui/avatar'
 import { Tooltip, TooltipContent, TooltipTrigger } from '../../../ui/tooltip'
+import { cn } from '../../../ui/lib/utils'
 import { CrossIcon, TickIcon } from '../icons'
 import { formatDateWithWeekday } from '../utils/date-utils'
 import type { AdminUser, CorrectionStatus } from '../types'
@@ -114,11 +115,7 @@ export const CorrectionList = React.forwardRef<HTMLDivElement, CorrectionListPro
                 <Tooltip delayDuration={0}>
                   <TooltipTrigger asChild>
                     <button
-                      className={`rounded-ds-full p-ds-03 text-text-tertiary hover:text-text-secondary ${
-                        correction?.user?.id === currentUserId
-                          ? 'cursor-not-allowed opacity-[0.38]'
-                          : ''
-                      }`}
+                      className={cn('rounded-ds-full p-ds-03 text-text-tertiary hover:text-text-secondary', correction?.user?.id === currentUserId ? 'cursor-not-allowed opacity-[0.38]' : '')}
                       onClick={() =>
                         correction?.user?.id !==
                           currentUserId &&
@@ -148,11 +145,7 @@ export const CorrectionList = React.forwardRef<HTMLDivElement, CorrectionListPro
                 <Tooltip delayDuration={0}>
                   <TooltipTrigger asChild>
                     <button
-                      className={`rounded-ds-full p-ds-03 ${
-                        correction?.user?.id === currentUserId
-                          ? 'cursor-not-allowed opacity-[0.38]'
-                          : ''
-                      }`}
+                      className={cn('rounded-ds-full p-ds-03', correction?.user?.id === currentUserId ? 'cursor-not-allowed opacity-[0.38]' : '')}
                       onClick={() =>
                         correction?.user?.id !==
                           currentUserId &&

@@ -6,6 +6,7 @@ import { MessageList, type ChatMessage } from './message-list'
 import { ChatInput } from './chat-input'
 import { ConversationList, type Conversation } from './conversation-list'
 import { useState } from 'react'
+import { cn } from '../../ui/lib/utils'
 import { IconMessagePlus, IconHistory, IconX, IconChevronDown } from '@tabler/icons-react'
 import {
   DropdownMenu,
@@ -156,11 +157,12 @@ const ChatPanel = React.forwardRef<HTMLDivElement, ChatPanelProps>(
           {/* IconHistory Toggle */}
           <button
             onClick={() => setShowHistory(!showHistory)}
-            className={`flex h-ds-sm w-ds-sm items-center justify-center rounded-ds-lg transition-colors hover:bg-layer-02 ${
+            className={cn(
+              'flex h-ds-sm w-ds-sm items-center justify-center rounded-ds-lg transition-colors hover:bg-layer-02',
               showHistory
                 ? 'bg-layer-02 text-text-primary'
-                : 'text-text-secondary'
-            }`}
+                : 'text-text-secondary',
+            )}
             aria-label="Conversation history"
           >
             <IconHistory className="h-ico-sm w-ico-sm" />

@@ -550,32 +550,20 @@ const TabBar = React.forwardRef<
       {...props}
     >
       <button
-        className={`text-ds-sm font-semibold uppercase tracking-wider mb-[-1px] px-ds-03 py-ds-04 ${
-          activeTab === 'breaks'
-            ? 'text-text-primary border-b-[1px] border-interactive-hover'
-            : 'text-text-tertiary'
-        }`}
+        className={cn('text-ds-sm font-semibold uppercase tracking-wider mb-[-1px] px-ds-03 py-ds-04', activeTab === 'breaks' ? 'text-text-primary border-b-[1px] border-interactive-hover' : 'text-text-tertiary')}
         onClick={() => setActiveTab('breaks')}
       >
         BREAKS
       </button>
       <button
-        className={`text-ds-sm font-semibold uppercase tracking-wider mb-[-1px] flex items-center gap-ds-02 px-ds-03 py-ds-04 ${
-          activeTab === 'requests'
-            ? 'border-b-[1px] border-interactive-hover text-text-primary'
-            : 'text-text-tertiary'
-        }`}
+        className={cn('text-ds-sm font-semibold uppercase tracking-wider mb-[-1px] flex items-center gap-ds-02 px-ds-03 py-ds-04', activeTab === 'requests' ? 'border-b-[1px] border-interactive-hover text-text-primary' : 'text-text-tertiary')}
         onClick={() => setActiveTab('requests')}
       >
         REQUESTS{' '}
         <span className="text-interactive-hover">{`(${pendingRequests.length})`}</span>
       </button>
       <button
-        className={`text-ds-sm font-semibold uppercase tracking-wider mb-[-1px] flex items-center gap-ds-02 px-ds-03 py-ds-04 ${
-          activeTab === 'balance'
-            ? 'border-b-[1px] border-interactive-hover text-text-primary'
-            : 'text-text-tertiary'
-        }`}
+        className={cn('text-ds-sm font-semibold uppercase tracking-wider mb-[-1px] flex items-center gap-ds-02 px-ds-03 py-ds-04', activeTab === 'balance' ? 'border-b-[1px] border-interactive-hover text-text-primary' : 'text-text-tertiary')}
         onClick={() => setActiveTab('balance')}
       >
         BALANCE{' '}

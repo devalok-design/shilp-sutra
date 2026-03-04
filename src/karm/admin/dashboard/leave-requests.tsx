@@ -8,6 +8,7 @@ import * as React from 'react'
 import { useEffect } from 'react'
 import { Tooltip, TooltipContent, TooltipTrigger } from '../../../ui/tooltip'
 import { CrossIcon, TickIcon, SendIcon } from '../icons'
+import { cn } from '../../../ui/lib/utils'
 import { useIsMobile } from '../../../hooks/use-mobile'
 import { formatDate } from '../utils/date-utils'
 import { removeAllEmojis } from '../utils/emoji-utils'
@@ -227,24 +228,23 @@ export const LeaveRequests = React.forwardRef<HTMLDivElement, LeaveRequestsProps
                         disabled={
                           interaction.isProcessing || request?.user?.id === currentUserId
                         }
-                        className={`rounded-ds-full p-ds-03 ${
+                        className={cn(
+                          'rounded-ds-full p-ds-03',
                           interaction.activeRequest?.id === request.id &&
-                          interaction.activeAction === 'rejectBreak'
-                            ? 'bg-error-surface'
-                            : ''
-                        } ${
-                          request?.user?.id === currentUserId
-                            ? 'cursor-not-allowed opacity-[0.38]'
-                            : ''
-                        } max-md:flex max-md:w-full max-md:justify-center`}
+                            interaction.activeAction === 'rejectBreak' &&
+                            'bg-error-surface',
+                          request?.user?.id === currentUserId &&
+                            'cursor-not-allowed opacity-[0.38]',
+                          'max-md:flex max-md:w-full max-md:justify-center',
+                        )}
                       >
                         <CrossIcon
-                          className={`h-ico-lg w-ico-lg ${
+                          className={cn(
+                            'h-ico-lg w-ico-lg',
                             interaction.activeRequest?.id === request.id &&
-                            interaction.activeAction === 'rejectBreak'
-                              ? 'text-text-error'
-                              : ''
-                          }`}
+                              interaction.activeAction === 'rejectBreak' &&
+                              'text-text-error',
+                          )}
                         />
                       </button>
                     </TooltipTrigger>
@@ -279,16 +279,15 @@ export const LeaveRequests = React.forwardRef<HTMLDivElement, LeaveRequestsProps
                         disabled={
                           interaction.isProcessing || request?.user?.id === currentUserId
                         }
-                        className={`rounded-ds-full p-ds-03 ${
+                        className={cn(
+                          'rounded-ds-full p-ds-03',
                           interaction.activeRequest?.id === request.id &&
-                          interaction.activeAction === 'approveBreak'
-                            ? 'bg-success-surface'
-                            : ''
-                        } ${
-                          request?.user?.id === currentUserId
-                            ? 'cursor-not-allowed opacity-[0.38]'
-                            : ''
-                        } max-md:flex max-md:w-full max-md:justify-center`}
+                            interaction.activeAction === 'approveBreak' &&
+                            'bg-success-surface',
+                          request?.user?.id === currentUserId &&
+                            'cursor-not-allowed opacity-[0.38]',
+                          'max-md:flex max-md:w-full max-md:justify-center',
+                        )}
                       >
                         <TickIcon className="h-ico-lg w-ico-lg" />
                       </button>

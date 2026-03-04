@@ -27,6 +27,7 @@ import {
   CheckboxIcon,
   CheckboxActiveIcon,
 } from '../icons'
+import { cn } from '../../../ui/lib/utils'
 import { isSameDay } from '../utils/date-utils'
 import { BreakRequestCard } from './break-request'
 import { format, isBefore, startOfDay as fnsStartOfDay } from 'date-fns'
@@ -331,9 +332,7 @@ export const AssociateDetail = React.forwardRef<HTMLDivElement, AssociateDetailP
                 {userTasks.map((task, idx) => (
                   <div
                     key={task.id}
-                    className={`task-item mb-ds-03 flex items-center gap-ds-02 ${
-                      draggedTaskIndex === idx ? 'dragging' : ''
-                    }`}
+                    className={cn('task-item mb-ds-03 flex items-center gap-ds-02', draggedTaskIndex === idx ? 'dragging' : '')}
                     draggable
                     onDragStart={(e) => handleDragStart(e, idx)}
                     onDragOver={(e) => e.preventDefault()}
@@ -374,11 +373,7 @@ export const AssociateDetail = React.forwardRef<HTMLDivElement, AssociateDetailP
                       )}
                     </button>
                     <p
-                      className={`text-ds-md flex-1 overflow-hidden hyphens-auto break-all pr-ds-05 ${
-                        task.status === 'COMPLETED'
-                          ? 'text-text-disabled line-through'
-                          : 'text-text-secondary'
-                      }`}
+                      className={cn('text-ds-md flex-1 overflow-hidden hyphens-auto break-all pr-ds-05', task.status === 'COMPLETED' ? 'text-text-disabled line-through' : 'text-text-secondary')}
                       style={{ wordBreak: 'break-word', minWidth: 0 }}
                     >
                       {task.title}

@@ -23,6 +23,7 @@ import {
   CrossIcon,
   PersonIcon,
 } from '../icons'
+import { cn } from '../../../ui/lib/utils'
 import type { AdminUser } from '../types'
 
 // ============================================================
@@ -78,10 +79,10 @@ export const DashboardHeader = React.forwardRef<HTMLDivElement, DashboardHeaderP
                 onSelect={() => {
                   onMonthSelection(year)
                 }}
-                className={`p-0 ${index !== yearsList.length - 1 ? 'border-b border-b-border' : ''}`}
+                className={cn('p-0', index !== yearsList.length - 1 ? 'border-b border-b-border' : '')}
               >
                 <span
-                  className={`w-full py-ds-04 pl-ds-05 pr-ds-06 ${selectedMonth === year ? 'text-ds-md font-semibold bg-interactive text-text-on-color' : 'text-ds-md text-text-secondary hover:bg-layer-02'} ${index === 0 ? 'rounded-t-[7px]' : index === yearsList.length - 1 ? 'rounded-b-[7px]' : ''} `}
+                  className={cn('w-full py-ds-04 pl-ds-05 pr-ds-06', selectedMonth === year ? 'text-ds-md font-semibold bg-interactive text-text-on-color' : 'text-ds-md text-text-secondary hover:bg-layer-02', index === 0 ? 'rounded-t-[7px]' : index === yearsList.length - 1 ? 'rounded-b-[7px]' : '')}
                 >
                   {year.split(' ')[1]}
                 </span>

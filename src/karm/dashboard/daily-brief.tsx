@@ -89,7 +89,7 @@ const DailyBrief = React.forwardRef<HTMLDivElement, DailyBriefProps>(
           {data.brief.map((item, index) => (
             <div key={index} className="flex items-start gap-ds-04">
               <div
-                className={`mt-ds-02b h-2 w-2 shrink-0 rounded-ds-full ${DOT_COLORS[index % DOT_COLORS.length]}`}
+                className={cn('mt-ds-02b h-2 w-2 shrink-0 rounded-ds-full', DOT_COLORS[index % DOT_COLORS.length])}
               />
               <div className="text-ds-md text-text-secondary [&_p]:mb-0 [&_strong]:font-semibold [&_code]:rounded [&_code]:bg-field [&_code]:px-1 [&_code]:py-ds-01 [&_code]:text-ds-sm [&_a]:text-interactive [&_a]:underline">
                 <ReactMarkdown>{item}</ReactMarkdown>

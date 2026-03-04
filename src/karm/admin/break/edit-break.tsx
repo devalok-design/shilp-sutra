@@ -451,11 +451,10 @@ export function EditBreak({
                   <button
                     type="button"
                     onClick={() => handleOpenCalendar('start')}
-                    className={`text-ds-md flex w-full items-center justify-center gap-ds-03 rounded-ds-full border ${
-                      picker.showCalendar && picker.activeDate === 'start'
-                        ? 'border-border-strong'
-                        : 'border-border'
-                    } bg-layer-02 px-ds-03 py-ds-03 text-text-secondary max-md:text-ds-sm`}
+                    className={cn(
+                      'text-ds-md flex w-full items-center justify-center gap-ds-03 rounded-ds-full border bg-layer-02 px-ds-03 py-ds-03 text-text-secondary max-md:text-ds-sm',
+                      picker.showCalendar && picker.activeDate === 'start' ? 'border-border-strong' : 'border-border',
+                    )}
                   >
                     {formatDateToLongForm(formData.startDate)}
                   </button>
@@ -465,11 +464,10 @@ export function EditBreak({
                   <button
                     type="button"
                     onClick={() => handleOpenCalendar('end')}
-                    className={`text-ds-md flex w-full items-center justify-center gap-ds-03 rounded-ds-full border ${
-                      picker.showCalendar && picker.activeDate === 'end'
-                        ? 'border-border-strong'
-                        : 'border-border'
-                    } bg-layer-02 px-ds-03 py-ds-03 text-text-secondary max-md:text-ds-sm`}
+                    className={cn(
+                      'text-ds-md flex w-full items-center justify-center gap-ds-03 rounded-ds-full border bg-layer-02 px-ds-03 py-ds-03 text-text-secondary max-md:text-ds-sm',
+                      picker.showCalendar && picker.activeDate === 'end' ? 'border-border-strong' : 'border-border',
+                    )}
                   >
                     {formatDateToLongForm(formData.endDate)}
                   </button>
@@ -549,55 +547,44 @@ export function EditBreak({
                           key={index}
                           tabIndex={day.isPadding ? -1 : 0}
                           aria-label={day.isPadding ? undefined : format(new Date(day.fullDate), 'MMMM d, yyyy')}
-                          className={`
-                            ${
+                          className={cn(
+                            'flex cursor-pointer flex-col items-center pb-0 pt-0 text-center',
+                            isInSelectedRange(day.fullDate) &&
+                              !(day.fullDate === picker.selectedStartDate) &&
+                              !(day.fullDate === picker.selectedEndDate) &&
+                              'bg-layer-accent-subtle',
+                            day.isPadding && 'opacity-50',
+                            day.fullDate === picker.selectedStartDate &&
                               isInSelectedRange(day.fullDate) &&
-                              (day.fullDate === picker.selectedStartDate ||
-                                day.fullDate === picker.selectedEndDate)
-                                ? 'pb-0 pt-0'
-                                : isInSelectedRange(day.fullDate)
-                                  ? 'bg-layer-accent-subtle pb-0 pt-0'
-                                  : 'pb-0 pt-0'
-                            }
-                            flex cursor-pointer flex-col items-center text-center
-                            ${day.isPadding ? 'opacity-50' : ''}
-                            ${
-                              day.fullDate === picker.selectedStartDate &&
-                              isInSelectedRange(day.fullDate)
-                                ? 'start-date mini'
-                                : day.fullDate === picker.selectedEndDate &&
-                                    isInSelectedRange(day.fullDate)
-                                  ? 'end-date mini'
-                                  : isInSelectedRange(day.fullDate) &&
-                                      !(day.fullDate === picker.selectedStartDate) &&
-                                      !(day.fullDate === picker.selectedEndDate)
-                                    ? 'in-range-date'
-                                    : ''
-                            }
-                            ${picker.selectedStartDate === picker.selectedEndDate ? 'same-date' : ''}
-                          `}
+                              'start-date mini',
+                            day.fullDate === picker.selectedEndDate &&
+                              isInSelectedRange(day.fullDate) &&
+                              'end-date mini',
+                            isInSelectedRange(day.fullDate) &&
+                              !(day.fullDate === picker.selectedStartDate) &&
+                              !(day.fullDate === picker.selectedEndDate) &&
+                              'in-range-date',
+                            picker.selectedStartDate === picker.selectedEndDate && 'same-date',
+                          )}
                           onClick={() => handleDayClick(day)}
                         >
                           <div
-                            className={`mx-ds-02 my-ds-02 ${
-                              day.isPadding ? 'opacity-50' : ''
-                            }`}
+                            className={cn(
+                              'mx-ds-02 my-ds-02',
+                              day.isPadding && 'opacity-50',
+                            )}
                           >
                             <span
-                              className={`text-ds-base flex h-ds-md w-ds-md items-center justify-center rounded-ds-full
-                                ${
-                                  day.fullDate === picker.selectedStartDate ||
+                              className={cn(
+                                'text-ds-base flex h-ds-md w-ds-md items-center justify-center rounded-ds-full',
+                                (day.fullDate === picker.selectedStartDate ||
                                   day.fullDate === picker.selectedEndDate ||
-                                  isBreakDay(day.fullDate, existingBreaks, selectedLeave.id)
-                                    ? 'rounded-ds-full bg-accent ring-2 ring-inset ring-accent'
-                                    : 'flex h-ds-md w-ds-md items-center justify-center'
-                                }
-                                ${
-                                  day.isToday
-                                    ? 'bg-interactive-hover p-ds-03 text-text-on-color'
-                                    : 'text-text-secondary'
-                                }
-                              `}
+                                  isBreakDay(day.fullDate, existingBreaks, selectedLeave.id)) &&
+                                  'bg-accent ring-2 ring-inset ring-accent',
+                                day.isToday
+                                  ? 'bg-interactive-hover p-ds-03 text-text-on-color'
+                                  : 'text-text-secondary',
+                              )}
                             >
                               {day.date}
                             </span>

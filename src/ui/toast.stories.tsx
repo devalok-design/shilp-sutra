@@ -24,7 +24,7 @@ const meta: Meta<typeof Toast> = {
     (Story) => (
       <ToastProvider>
         <Story />
-        <ToastViewport />
+        <ToastViewport className="relative top-auto right-auto bottom-auto left-auto flex w-full max-w-[420px] flex-col gap-ds-03 p-0" />
       </ToastProvider>
     ),
   ],
@@ -35,7 +35,7 @@ type Story = StoryObj<typeof Toast>
 export const Default: Story = {
   render: () => (
     <Toast open>
-      <div className="grid gap-1">
+      <div className="grid gap-ds-02">
         <ToastTitle>Notification</ToastTitle>
         <ToastDescription>Your changes have been saved.</ToastDescription>
       </div>
@@ -45,69 +45,84 @@ export const Default: Story = {
   play: async ({ canvasElement }) => {
     const canvas = within(canvasElement)
     await expect(canvas.getByText('Notification')).toBeVisible()
-    await expect(canvas.getByText('Your changes have been saved.')).toBeVisible()
+    await expect(
+      canvas.getByText('Your changes have been saved.'),
+    ).toBeVisible()
     const closeButton = canvas.getByRole('button')
     await expect(closeButton).toBeVisible()
   },
 }
 
-export const Error: Story = {
-  tags: ['!autodocs'],
-  render: () => (
-    <Toast variant="error" open>
-      <div className="grid gap-1">
-        <ToastTitle>Error</ToastTitle>
-        <ToastDescription>Something went wrong. Please try again.</ToastDescription>
-      </div>
-      <ToastClose />
-    </Toast>
-  ),
-}
-
 export const Success: Story = {
-  tags: ['!autodocs'],
   render: () => (
     <Toast variant="success" open>
-      <div className="grid gap-1">
+      <div className="grid gap-ds-02">
         <ToastTitle>Success</ToastTitle>
         <ToastDescription>Operation completed successfully.</ToastDescription>
       </div>
       <ToastClose />
     </Toast>
   ),
+  play: async ({ canvasElement }) => {
+    const canvas = within(canvasElement)
+    await expect(canvas.getByText('Success')).toBeVisible()
+  },
 }
 
 export const Warning: Story = {
-  tags: ['!autodocs'],
   render: () => (
     <Toast variant="warning" open>
-      <div className="grid gap-1">
+      <div className="grid gap-ds-02">
         <ToastTitle>Warning</ToastTitle>
         <ToastDescription>Please review before proceeding.</ToastDescription>
       </div>
       <ToastClose />
     </Toast>
   ),
+  play: async ({ canvasElement }) => {
+    const canvas = within(canvasElement)
+    await expect(canvas.getByText('Warning')).toBeVisible()
+  },
+}
+
+export const Error: Story = {
+  render: () => (
+    <Toast variant="error" open>
+      <div className="grid gap-ds-02">
+        <ToastTitle>Error</ToastTitle>
+        <ToastDescription>
+          Something went wrong. Please try again.
+        </ToastDescription>
+      </div>
+      <ToastClose />
+    </Toast>
+  ),
+  play: async ({ canvasElement }) => {
+    const canvas = within(canvasElement)
+    await expect(canvas.getByText('Error')).toBeVisible()
+  },
 }
 
 export const Info: Story = {
-  tags: ['!autodocs'],
   render: () => (
     <Toast variant="info" open>
-      <div className="grid gap-1">
+      <div className="grid gap-ds-02">
         <ToastTitle>Information</ToastTitle>
         <ToastDescription>A new update is available.</ToastDescription>
       </div>
       <ToastClose />
     </Toast>
   ),
+  play: async ({ canvasElement }) => {
+    const canvas = within(canvasElement)
+    await expect(canvas.getByText('Information')).toBeVisible()
+  },
 }
 
 export const WithAction: Story = {
-  tags: ['!autodocs'],
   render: () => (
     <Toast open>
-      <div className="grid gap-1">
+      <div className="grid gap-ds-02">
         <ToastTitle>Meeting Reminder</ToastTitle>
         <ToastDescription>Devsabha starts in 15 minutes.</ToastDescription>
       </div>
@@ -118,58 +133,74 @@ export const WithAction: Story = {
   play: async ({ canvasElement }) => {
     const canvas = within(canvasElement)
     await expect(canvas.getByText('Meeting Reminder')).toBeVisible()
-    await expect(canvas.getByText('Devsabha starts in 15 minutes.')).toBeVisible()
+    await expect(
+      canvas.getByText('Devsabha starts in 15 minutes.'),
+    ).toBeVisible()
     const actionButton = canvas.getByRole('button', { name: /join/i })
     await expect(actionButton).toBeVisible()
   },
 }
 
 export const ErrorWithAction: Story = {
-  tags: ['!autodocs'],
   render: () => (
     <Toast variant="error" open>
-      <div className="grid gap-1">
+      <div className="grid gap-ds-02">
         <ToastTitle>Deletion Failed</ToastTitle>
-        <ToastDescription>Could not delete the project. Try again?</ToastDescription>
+        <ToastDescription>
+          Could not delete the project. Try again?
+        </ToastDescription>
       </div>
       <ToastAction altText="Try again">Retry</ToastAction>
       <ToastClose />
     </Toast>
   ),
+  play: async ({ canvasElement }) => {
+    const canvas = within(canvasElement)
+    await expect(canvas.getByText('Deletion Failed')).toBeVisible()
+    const retryButton = canvas.getByRole('button', { name: /retry/i })
+    await expect(retryButton).toBeVisible()
+  },
 }
 
 export const AllVariants: Story = {
   render: () => (
-    <div className="flex flex-col gap-4">
-      <Toast open variant="default" className="relative static">
-        <div className="grid gap-1">
+    <div className="flex flex-col gap-ds-04">
+      <Toast open variant="default">
+        <div className="grid gap-ds-02">
           <ToastTitle>Default</ToastTitle>
           <ToastDescription>Standard notification message.</ToastDescription>
         </div>
+        <ToastClose />
       </Toast>
-      <Toast open variant="success" className="relative static">
-        <div className="grid gap-1">
+      <Toast open variant="success">
+        <div className="grid gap-ds-02">
           <ToastTitle>Success</ToastTitle>
-          <ToastDescription>Operation completed successfully.</ToastDescription>
+          <ToastDescription>
+            Operation completed successfully.
+          </ToastDescription>
         </div>
+        <ToastClose />
       </Toast>
-      <Toast open variant="warning" className="relative static">
-        <div className="grid gap-1">
+      <Toast open variant="warning">
+        <div className="grid gap-ds-02">
           <ToastTitle>Warning</ToastTitle>
           <ToastDescription>Please review before proceeding.</ToastDescription>
         </div>
+        <ToastClose />
       </Toast>
-      <Toast open variant="error" className="relative static">
-        <div className="grid gap-1">
+      <Toast open variant="error">
+        <div className="grid gap-ds-02">
           <ToastTitle>Error</ToastTitle>
           <ToastDescription>Error notification message.</ToastDescription>
         </div>
+        <ToastClose />
       </Toast>
-      <Toast open variant="info" className="relative static">
-        <div className="grid gap-1">
+      <Toast open variant="info">
+        <div className="grid gap-ds-02">
           <ToastTitle>Info</ToastTitle>
           <ToastDescription>Informational notification.</ToastDescription>
         </div>
+        <ToastClose />
       </Toast>
     </div>
   ),

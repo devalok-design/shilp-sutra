@@ -7,6 +7,7 @@
 
 import * as React from 'react'
 import { useRef, useState, useCallback } from 'react'
+import { cn } from '../../../ui/lib/utils'
 import { AvatarGroup } from '../../../composed/avatar-group'
 import type {
   AdminUser,
@@ -167,11 +168,7 @@ export const AttendanceOverview = React.forwardRef<HTMLDivElement, AttendanceOve
             ([status, groupUsers]) => (
               <div
                 key={status}
-                className={`flex w-full flex-col gap-ds-04 rounded-ds-md bg-layer-02 p-ds-06 md:rounded-ds-lg md:p-ds-05 ${
-                  status !== 'yetToMark'
-                    ? 'border-r border-border'
-                    : ''
-                } max-md:border-0 max-md:p-ds-05`}
+                className={cn('flex w-full flex-col gap-ds-04 rounded-ds-md bg-layer-02 p-ds-06 md:rounded-ds-lg md:p-ds-05', status !== 'yetToMark' ? 'border-r border-border' : '', 'max-md:border-0 max-md:p-ds-05')}
                 style={{ minWidth: '200px' }}
               >
                 <h2 className="text-ds-sm font-semibold uppercase tracking-wider capitalize text-text-tertiary">

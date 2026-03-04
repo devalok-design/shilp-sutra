@@ -9,7 +9,7 @@ const meta: Meta<typeof Toaster> = {
   tags: ['autodocs'],
   decorators: [
     (Story) => (
-      <div className="min-h-[300px]">
+      <div className="relative min-h-[350px]">
         <Story />
         <Toaster />
       </div>
@@ -18,6 +18,9 @@ const meta: Meta<typeof Toaster> = {
 }
 export default meta
 type Story = StoryObj<typeof Toaster>
+
+const triggerClass =
+  'rounded-ds-md border border-border bg-layer-01 px-ds-04 py-ds-02 text-ds-sm text-text-primary transition-colors hover:bg-layer-02 active:bg-layer-03'
 
 function DefaultToastDemo() {
   const { toast } = useToast()
@@ -30,7 +33,7 @@ function DefaultToastDemo() {
           description: 'Your project settings have been updated.',
         })
       }
-      className="rounded-ds-md border border-border px-ds-04 py-ds-02 text-[length:var(--font-size-sm)] text-text-primary hover:bg-layer-02 transition-colors"
+      className={triggerClass}
     >
       Show Toast
     </button>
@@ -53,9 +56,9 @@ function DestructiveToastDemo() {
           description: 'Could not delete the resource. Please try again.',
         })
       }
-      className="rounded-ds-md border border-border px-ds-04 py-ds-02 text-[length:var(--font-size-sm)] text-text-primary hover:bg-layer-02 transition-colors"
+      className={triggerClass}
     >
-      Show Destructive Toast
+      Show Error Toast
     </button>
   )
 }
@@ -76,7 +79,7 @@ function WithActionDemo() {
           action: <ToastAction altText="Undo deletion">Undo</ToastAction>,
         })
       }
-      className="rounded-ds-md border border-border px-ds-04 py-ds-02 text-[length:var(--font-size-sm)] text-text-primary hover:bg-layer-02 transition-colors"
+      className={triggerClass}
     >
       Show Toast with Action
     </button>
@@ -101,7 +104,7 @@ function MultipleToastsDemo() {
             description: `This is toast message number ${count}.`,
           })
         }}
-        className="rounded-ds-md border border-border px-ds-04 py-ds-02 text-[length:var(--font-size-sm)] text-text-primary hover:bg-layer-02 transition-colors"
+        className={triggerClass}
       >
         Add Toast
       </button>
@@ -114,7 +117,7 @@ function MultipleToastsDemo() {
             description: 'An unexpected error happened.',
           })
         }
-        className="rounded-ds-md border border-border px-ds-04 py-ds-02 text-[length:var(--font-size-sm)] text-text-primary hover:bg-layer-02 transition-colors"
+        className={triggerClass}
       >
         Add Error Toast
       </button>
@@ -138,22 +141,9 @@ function AllVariantsDemo() {
             description: 'A standard notification.',
           })
         }
-        className="rounded-ds-md border border-border px-ds-04 py-ds-02 text-[length:var(--font-size-sm)] text-text-primary hover:bg-layer-02 transition-colors"
+        className={triggerClass}
       >
         Default
-      </button>
-      <button
-        type="button"
-        onClick={() =>
-          toast({
-            variant: 'error',
-            title: 'Destructive toast',
-            description: 'Something went wrong.',
-          })
-        }
-        className="rounded-ds-md border border-border px-ds-04 py-ds-02 text-[length:var(--font-size-sm)] text-text-primary hover:bg-layer-02 transition-colors"
-      >
-        Destructive
       </button>
       <button
         type="button"
@@ -164,9 +154,48 @@ function AllVariantsDemo() {
             description: 'Task moved to "Done".',
           })
         }
-        className="rounded-ds-md border border-border px-ds-04 py-ds-02 text-[length:var(--font-size-sm)] text-text-primary hover:bg-layer-02 transition-colors"
+        className={triggerClass}
       >
         Success
+      </button>
+      <button
+        type="button"
+        onClick={() =>
+          toast({
+            variant: 'warning',
+            title: 'Warning toast',
+            description: 'Please review before proceeding.',
+          })
+        }
+        className={triggerClass}
+      >
+        Warning
+      </button>
+      <button
+        type="button"
+        onClick={() =>
+          toast({
+            variant: 'error',
+            title: 'Error toast',
+            description: 'Something went wrong.',
+          })
+        }
+        className={triggerClass}
+      >
+        Error
+      </button>
+      <button
+        type="button"
+        onClick={() =>
+          toast({
+            variant: 'info',
+            title: 'Info toast',
+            description: 'A new update is available.',
+          })
+        }
+        className={triggerClass}
+      >
+        Info
       </button>
       <button
         type="button"
@@ -177,7 +206,7 @@ function AllVariantsDemo() {
             action: <ToastAction altText="Undo archive">Undo</ToastAction>,
           })
         }
-        className="rounded-ds-md border border-border px-ds-04 py-ds-02 text-[length:var(--font-size-sm)] text-text-primary hover:bg-layer-02 transition-colors"
+        className={triggerClass}
       >
         With Action
       </button>

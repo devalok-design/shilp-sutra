@@ -16,6 +16,7 @@ import {
   DialogHeader,
   DialogTrigger,
 } from '../../../ui/dialog'
+import { cn } from '../../../ui/lib/utils'
 import { CloseIcon } from '../icons'
 import { formatDate, getDaySuffix } from '../utils/date-utils'
 import { removeAllEmojis } from '../utils/emoji-utils'
@@ -190,13 +191,7 @@ export const BreakRequestCard = React.forwardRef<HTMLDivElement, BreakRequestPro
           </>
         )}
         <div
-          className={`flex w-full flex-col items-center justify-center px-ds-05 ${
-            showMobileCancelForm ||
-            breakRequest.status === 'APPROVED' ||
-            breakRequest.status === 'REJECTED'
-              ? 'pb-ds-06 pt-[9px]'
-              : 'py-ds-06'
-          } md:w-1/2 md:px-ds-06 md:py-ds-05 max-md:pt-[34px]`}
+          className={cn('flex w-full flex-col items-center justify-center px-ds-05', showMobileCancelForm || breakRequest.status === 'APPROVED' || breakRequest.status === 'REJECTED' ? 'pb-ds-06 pt-[9px]' : 'py-ds-06', 'md:w-1/2 md:px-ds-06 md:py-ds-05 max-md:pt-[34px]')}
         >
           <p className="text-ds-sm font-semibold uppercase tracking-wider mb-ds-06  text-text-tertiary max-md:mb-ds-05">
             Break Status

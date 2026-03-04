@@ -2,6 +2,7 @@
 
 import * as React from 'react'
 import { IconMessage, IconArchive, IconTrash, IconMessagePlus } from '@tabler/icons-react'
+import { cn } from '../../ui/lib/utils'
 
 // ============================================================
 // Types
@@ -96,11 +97,10 @@ export const ConversationList = React.forwardRef<HTMLDivElement, ConversationLis
             {conversations.map((convo) => (
               <div
                 key={convo.id}
-                className={`group flex items-center gap-ds-04 border-b border-border-subtle px-ds-05 py-ds-04 transition-colors hover:bg-layer-02 ${
-                  activeConversationId === convo.id
-                    ? 'bg-layer-02'
-                    : ''
-                }`}
+                className={cn(
+                  'group flex items-center gap-ds-04 border-b border-border-subtle px-ds-05 py-ds-04 transition-colors hover:bg-layer-02',
+                  activeConversationId === convo.id && 'bg-layer-02',
+                )}
               >
                 <button
                   onClick={() => onSelect(convo.id)}

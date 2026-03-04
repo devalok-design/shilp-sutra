@@ -5,6 +5,7 @@
 // ============================================================
 
 import * as React from 'react'
+import { cn } from '../../../ui/lib/utils'
 import { Skeleton } from '../../../ui/skeleton'
 import { DropdownMenu, DropdownMenuTrigger } from '../../../ui/dropdown-menu'
 import { FilledArrowIcon, ArrowLeftIcon, ArrowForwardIcon } from '../icons'
@@ -80,9 +81,7 @@ export const DashboardSkeleton = React.forwardRef<HTMLDivElement>(
               {Array.from({ length: 3 }).map((_, index) => (
                 <div
                   key={index}
-                  className={`flex w-full flex-col gap-ds-04 rounded-ds-md bg-layer-02 p-ds-06 md:rounded-ds-lg md:p-ds-05 ${
-                    index !== 2 ? 'border-r border-border' : ''
-                  } max-md:border-0 max-md:p-ds-05`}
+                  className={cn('flex w-full flex-col gap-ds-04 rounded-ds-md bg-layer-02 p-ds-06 md:rounded-ds-lg md:p-ds-05', index !== 2 ? 'border-r border-border' : '', 'max-md:border-0 max-md:p-ds-05')}
                   style={{ minWidth: '200px' }}
                 >
                   <Skeleton className="h-[20px] w-[120px] rounded-ds-md bg-field" />
@@ -90,9 +89,7 @@ export const DashboardSkeleton = React.forwardRef<HTMLDivElement>(
                     {Array.from({ length: 4 }).map((_, imgIndex) => (
                       <Skeleton
                         key={imgIndex}
-                        className={`h-ds-md w-ds-md rounded-ds-full bg-field ${
-                          imgIndex > 0 ? 'ml-[-5px]' : ''
-                        }`}
+                        className={cn('h-ds-md w-ds-md rounded-ds-full bg-field', imgIndex > 0 ? 'ml-[-5px]' : '')}
                       />
                     ))}
                   </div>

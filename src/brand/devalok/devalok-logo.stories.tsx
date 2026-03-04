@@ -1,5 +1,5 @@
 import type { Meta, StoryObj } from '@storybook/react'
-import { DevalokLogo } from './devalok-logo'
+import { DevalokLogo } from '.'
 
 const meta: Meta<typeof DevalokLogo> = {
   title: 'Brand/Devalok/Logo',

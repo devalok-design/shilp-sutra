@@ -43,6 +43,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - `cn()` pattern fix in DailyBrief (template literal → cn utility)
 - **Tabs** `TabsListContext` type error — `VariantProps` null handling with explicit coalescing
 - **Toaster stories** updated stale `destructive`/`karam` variant references to `error`/`success`
+- `calender` → `calendar` CSS class typo in edit-break and admin-dashboard
+- Arbitrary `p-[10px_16px_4px_16px]` → `px-ds-05 pb-ds-01 pt-ds-03` in leave-request
 
 ### Changed
 - Added `forwardRef` to 17 components per CONTRIBUTING.md checklist
@@ -57,6 +59,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Progress bar `h-1.5` → `h-ds-02b` (exact 6px match)
 - Stack `gap` prop type-restricted to `SpacingToken` union (15 ds-* values only)
 - Documented intentional arbitrary pixel values in karm/admin (10 comments)
+- Replaced all template literal `className` patterns with `cn()` utility (30+ instances, 16 files)
+- Replaced `100vh` with `100dvh` in 4 mobile viewport scroll containers for better browser chrome handling
+- Replaced ~100 raw CSS `var(--color-*)` / `var(--radius-*)` patterns in story files with Tailwind utilities
 
 ### Removed
 - Legacy `typography.css` from import chain (all components use `typography-semantic.css`)

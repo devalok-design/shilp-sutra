@@ -13,6 +13,7 @@ import {
 import { Button } from '../../../ui/button'
 import { DeleteBreak } from './delete-break'
 import { removeAllEmojis } from '../utils/emoji-utils'
+import { cn } from '../../../ui/lib/utils'
 import {
   isDateInRange,
   isDateSameOrAfter,
@@ -252,7 +253,7 @@ export function EditBreak({
     const { text, className } = statusMap[status] || statusMap['REJECTED']
     return (
       <div
-        className={`text-ds-sm w-fit rounded-ds-2xl px-ds-02b py-ds-02 capitalize ${className}`}
+        className={cn('text-ds-sm w-fit rounded-ds-2xl px-ds-02b py-ds-02 capitalize', className)}
       >
         {text}
       </div>

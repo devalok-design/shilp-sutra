@@ -528,7 +528,7 @@ export function EditBreak({
                     </div>
 
                     {/* Calendar Grid */}
-                    <div className="calender grid w-full grid-cols-7 items-center gap-0 overflow-hidden">
+                    <div className="calendar grid w-full grid-cols-7 items-center gap-0 overflow-hidden">
                       {/* Render week day headers for monthly view */}
                       {['SUN', 'MON', 'TUE', 'WED', 'THU', 'FRI', 'SAT'].map(
                         (weekDay) => (

@@ -186,7 +186,7 @@ export function LeaveRequest({
             </DialogDescription>
           </DialogHeader>
           <div className="flex flex-col">
-            <div className="text-ds-md flex flex-col items-start justify-center gap-ds-03 rounded-ds-lg border border-border-subtle bg-layer-01 shadow-01 p-[10px_16px_4px_16px] text-text-primary">
+            <div className="text-ds-md flex flex-col items-start justify-center gap-ds-03 rounded-ds-lg border border-border-subtle bg-layer-01 shadow-01 px-ds-05 pb-ds-01 pt-ds-03 text-text-primary">
               <label className="text-ds-xs font-semibold uppercase tracking-wider text-text-helper" htmlFor="comment">
                 Comment
               </label>

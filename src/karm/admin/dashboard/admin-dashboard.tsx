@@ -318,7 +318,7 @@ const AdminDashboardCalendar = React.forwardRef<
       {/* Calendar Grid */}
       <div
         className={cn(
-          'calender',
+          'calendar',
           cal.activeTimeFrame === 'weekly' ? 'flex' : 'grid grid-cols-7 gap-0',
           'w-full items-center',
         )}

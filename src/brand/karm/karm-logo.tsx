@@ -55,18 +55,6 @@ export function _registerKarmSvg(key: string, component: SvgComponent) {
   svgComponents[key] = component
 }
 
-// --- Static asset types (wordmark/wordmark-icon — no SVG sources yet) ---
-
-const staticTypes = new Set<KarmLogoType>(['wordmark', 'wordmark-icon'])
-
-function getStaticAssetPath(type: KarmLogoType, color: string): string {
-  // Karm wordmark assets use the logo-light/logo-dark PNGs
-  if (color === 'white' || color === 'brand') {
-    return new URL(`../assets/karm/logo-dark.png`, import.meta.url).href
-  }
-  return new URL(`../assets/karm/logo-light.png`, import.meta.url).href
-}
-
 // --- Utility ---
 
 function resolveColor(color: KarmLogoColor): 'brand' | 'black' | 'white' {
@@ -109,23 +97,7 @@ const KarmLogo = React.forwardRef<HTMLElement, KarmLogoProps>(
     const key = `${resolvedType}-${resolvedColor}`
     const isDecorative = role === 'presentation' || ariaHidden === true
 
-    if (staticTypes.has(resolvedType)) {
-      return (
-        <img
-          ref={ref as React.Ref<HTMLImageElement>}
-          src={getStaticAssetPath(resolvedType, resolvedColor)}
-          alt={isDecorative ? '' : ariaLabel}
-          role={role}
-          aria-label={isDecorative ? undefined : ariaLabel}
-          aria-hidden={isDecorative ? true : undefined}
-          className={cn(sizeMap[size], className)}
-          draggable={false}
-          {...props}
-        />
-      )
-    }
-
-    // Inline SVG (icon type)
+    // All types are now inline SVGs
     const SvgComponent = svgComponents[key]
 
     if (!SvgComponent) {

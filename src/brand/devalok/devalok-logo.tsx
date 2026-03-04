@@ -12,6 +12,7 @@ const logoTypes = [
   'wordmark',
   'dass',
   'shloka',
+  'chakra',
 ] as const
 
 export type DevalokLogoType = (typeof logoTypes)[number]
@@ -79,7 +80,7 @@ const staticTypes = new Set<DevalokLogoType>([
 
 function getStaticAssetPath(type: DevalokLogoType, color: string): string {
   return new URL(
-    `../assets/devalok/logos/${type}-${color}.svg`,
+    `../assets/devalok/logos/${type}-${color}.png`,
     import.meta.url,
   ).href
 }

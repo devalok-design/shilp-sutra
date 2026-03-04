@@ -20,6 +20,9 @@ beforeEach(() => {
   _registerSvg('wordmark-white', MockSvg)
   _registerSvg('wordmark-black', MockSvg)
   _registerSvg('dass-brand', MockSvg)
+  _registerSvg('chakra-brand', MockSvg)
+  _registerSvg('chakra-black', MockSvg)
+  _registerSvg('chakra-white', MockSvg)
   // Reset dark mode
   document.documentElement.classList.remove('dark')
 })
@@ -97,6 +100,17 @@ describe('DevalokLogo (inline SVG types)', () => {
     )
     expect(container.firstChild).toBeNull()
   })
+
+  it('renders chakra type as inline SVG', () => {
+    render(<DevalokLogo type="chakra" color="brand" />)
+    expect(screen.getByRole('img')).toBeInTheDocument()
+    expect(screen.getByRole('img')).toHaveAttribute('focusable', 'false')
+  })
+
+  it('renders chakra with correct size class', () => {
+    render(<DevalokLogo type="chakra" color="brand" size="sm" />)
+    expect(screen.getByRole('img')).toHaveClass('h-8', 'w-auto')
+  })
 })
 
 describe('DevalokLogo (static image types)', () => {
@@ -118,6 +132,12 @@ describe('DevalokLogo (static image types)', () => {
     const img = container.querySelector('img')!
     expect(img).toHaveAttribute('alt', '')
     expect(img).toHaveAttribute('aria-hidden', 'true')
+  })
+
+  it('uses .png extension for static asset path', () => {
+    render(<DevalokLogo type="monogram" color="brand" />)
+    const img = screen.getByRole('img') as HTMLImageElement
+    expect(img.src).toMatch(/\.png$/)
   })
 
   it('applies size class to img', () => {

@@ -87,6 +87,15 @@ const dassPaths = (fill: string) => (
 // For shloka, the SVG is too complex to inline efficiently. We register it as a static type instead.
 // The shloka SVG will be loaded via the same static <img> approach as monogram types.
 
+// --- Chakra (Swadhisthana — used as favicon/badge mark) ---
+
+const chakraPaths = (fill: string) => (
+  <path
+    fill={fill}
+    d="M25.97,21.39c-0.9-1.85,0.08-3.95-1.72-5.39c1.76-1.44,0.8-3.55,1.69-5.39c0.05-0.12,0.04-0.25-0.02-0.35c-0.06-0.1-0.16-0.18-0.29-0.19c-2.05-0.15-3.35-2.04-5.5-1.21c-0.39-2.21-2.7-2.44-3.84-4.13c-0.08-0.1-0.19-0.16-0.31-0.16c-0.12,0-0.23,0.05-0.31,0.16c-1.14,1.69-3.43,1.92-3.82,4.13c-2.14-0.83-3.47,1.07-5.52,1.21c-0.13,0.01-0.23,0.09-0.29,0.19c-0.06,0.1-0.07,0.23-0.02,0.35c0.9,1.85-0.08,3.95,1.72,5.39c-1.76,1.44-0.8,3.55-1.69,5.39C6,21.51,6.02,21.64,6.07,21.74c0.06,0.1,0.16,0.18,0.29,0.19c2.05,0.15,3.38,2.06,5.52,1.23c0.39,2.21,2.67,2.43,3.82,4.12c0.08,0.1,0.19,0.16,0.31,0.16c0.12,0,0.23-0.05,0.31-0.16c1.14-1.69,3.42-1.92,3.81-4.13c2.14,0.83,3.48-1.07,5.53-1.22c0.13-0.01,0.23-0.09,0.29-0.19C26.01,21.64,26.02,21.51,25.97,21.39z"
+  />
+)
+
 // --- Register all components ---
 
 // Wordmark (3 colors)
@@ -98,3 +107,8 @@ _registerSvg('wordmark-white', createSvgComponent('WordmarkWhite', '0 0 2089.68 
 _registerSvg('dass-brand', createSvgComponent('DassBrand', '0 0 2087.16 976.24', dassPaths, BRAND))
 _registerSvg('dass-black', createSvgComponent('DassBlack', '0 0 2087.16 976.24', dassPaths, BLACK))
 _registerSvg('dass-white', createSvgComponent('DassWhite', '0 0 2087.16 976.24', dassPaths, WHITE))
+
+// Chakra (3 colors)
+_registerSvg('chakra-brand', createSvgComponent('ChakraBrand', '0 0 32 32', chakraPaths, BRAND))
+_registerSvg('chakra-black', createSvgComponent('ChakraBlack', '0 0 32 32', chakraPaths, BLACK))
+_registerSvg('chakra-white', createSvgComponent('ChakraWhite', '0 0 32 32', chakraPaths, WHITE))

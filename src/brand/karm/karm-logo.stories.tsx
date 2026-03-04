@@ -43,6 +43,29 @@ export const AllTypes: Story = {
   ),
 }
 
+export const Wordmark: Story = {
+  args: { type: 'wordmark', color: 'brand', size: 'lg' },
+}
+
+export const WordmarkIcon: Story = {
+  name: 'Wordmark + Icon',
+  args: { type: 'wordmark-icon', color: 'brand', size: 'lg' },
+}
+
+export const Sizes: Story = {
+  name: 'All Sizes',
+  render: () => (
+    <div className="flex items-end gap-4">
+      {(['xs', 'sm', 'md', 'lg', 'xl'] as const).map((size) => (
+        <div key={size} className="flex flex-col items-center gap-2">
+          <KarmLogo type="wordmark-icon" color="brand" size={size} />
+          <span className="text-xs text-text-secondary">{size}</span>
+        </div>
+      ))}
+    </div>
+  ),
+}
+
 export const ColorVariants: Story = {
   name: 'Color Variants',
   render: () => (

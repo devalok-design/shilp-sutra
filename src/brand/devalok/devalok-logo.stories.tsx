@@ -17,6 +17,7 @@ const meta: Meta<typeof DevalokLogo> = {
         'wordmark',
         'dass',
         'shloka',
+        'chakra',
       ],
     },
     color: {
@@ -44,6 +45,11 @@ export const Dass: Story = {
   args: { type: 'dass', color: 'brand', size: 'lg' },
 }
 
+export const Chakra: Story = {
+  name: 'Chakra (Favicon Mark)',
+  args: { type: 'chakra', color: 'brand', size: 'lg' },
+}
+
 export const AllTypes: Story = {
   name: 'All Logo Types',
   render: () => (
@@ -58,6 +64,7 @@ export const AllTypes: Story = {
           'wordmark',
           'dass',
           'shloka',
+          'chakra',
         ] as const
       ).map((type) => (
         <div key={type} className="flex items-center gap-4">

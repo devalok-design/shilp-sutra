@@ -17,6 +17,12 @@ beforeEach(() => {
   _registerKarmSvg('icon-brand', MockSvg)
   _registerKarmSvg('icon-white', MockSvg)
   _registerKarmSvg('icon-black', MockSvg)
+  _registerKarmSvg('wordmark-brand', MockSvg)
+  _registerKarmSvg('wordmark-white', MockSvg)
+  _registerKarmSvg('wordmark-black', MockSvg)
+  _registerKarmSvg('wordmark-icon-brand', MockSvg)
+  _registerKarmSvg('wordmark-icon-white', MockSvg)
+  _registerKarmSvg('wordmark-icon-black', MockSvg)
   document.documentElement.classList.remove('dark')
 })
 
@@ -60,11 +66,17 @@ describe('KarmLogo (inline SVG: icon)', () => {
   })
 })
 
-describe('KarmLogo (static image: wordmark)', () => {
-  it('renders img for wordmark type', () => {
+describe('KarmLogo (inline SVG: wordmark)', () => {
+  it('renders SVG for wordmark type', () => {
     render(<KarmLogo type="wordmark" color="brand" />)
-    const img = screen.getByRole('img')
-    expect(img.tagName).toBe('IMG')
+    const el = screen.getByRole('img')
+    expect(el.tagName).toBe('svg')
+  })
+
+  it('renders SVG for wordmark-icon type', () => {
+    render(<KarmLogo type="wordmark-icon" color="brand" />)
+    const el = screen.getByRole('img')
+    expect(el.tagName).toBe('svg')
   })
 
   it('simplifies wordmark to icon at xs size', () => {

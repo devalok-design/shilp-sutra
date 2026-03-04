@@ -14,14 +14,15 @@ The Devalok logo tells the story of creation through sacred Indian imagery: a ha
 
 | Type | Description | Rendering |
 |------|-------------|-----------|
-| **monogram** | Hand + lotus icon only | Static SVG |
-| **monogram-wordmark** | Icon + "DEVALOK" text | Static SVG |
-| **monogram-shell** | Icon + decorative circular shell | Static SVG |
-| **monogram-shell-wordmark** | Full lockup with all elements | Static SVG |
-| **monogram-coin-wordmark** | Icon + coin element + text | Static SVG |
+| **monogram** | Hand + lotus icon only | Static PNG |
+| **monogram-wordmark** | Icon + "DEVALOK" text | Static PNG |
+| **monogram-shell** | Icon + decorative circular shell | Static PNG |
+| **monogram-shell-wordmark** | Full lockup with all elements | Static PNG |
+| **monogram-coin-wordmark** | Icon + coin element + text | Static PNG |
 | **wordmark** | "DEVALOK" text only | Inline SVG |
 | **dass** | "DASS" (Design and Strategy Studio) wordmark | Inline SVG |
-| **shloka** | Sanskrit verse wordmark | Static SVG |
+| **shloka** | Sanskrit verse wordmark | Static PNG |
+| **chakra** | Swadhisthana Chakra (favicon mark) | Inline SVG |
 
 ---
 
@@ -32,8 +33,8 @@ Karm (कर्म) — the Studio Operating System — uses a geometric 8-point
 | Type | Description | Rendering |
 |------|-------------|-----------|
 | **icon** | Geometric mandala icon | Inline SVG |
-| **wordmark** | "Karm" text only | Static image |
-| **wordmark-icon** | Icon + "Karm" text | Static image |
+| **wordmark** | "Karm" text only | Inline SVG |
+| **wordmark-icon** | Icon + "Karm" text | Inline SVG |
 
 ---
 
@@ -55,6 +56,18 @@ import { KarmLogo } from '@devalok/shilp-sutra/brand/karm'
   <DevalokLogo type="monogram" size="sm" />
 </DevalokLogo.Link>
 ```
+
+---
+
+## Favicon vs Logo
+
+The **Swadhisthana Chakra** (`type="chakra"`) is the Devalok favicon mark — a simplified geometric form distinct from the full monogram logo. Use it for:
+
+- Browser favicons and PWA icons (via `getDevalokFaviconPath()`)
+- Small inline brand marks where the full monogram is too detailed
+- As a React component: `<DevalokLogo type="chakra" size="sm" />`
+
+The full **monogram** remains the primary logo for headers, about pages, and marketing collateral.
 
 ---
 

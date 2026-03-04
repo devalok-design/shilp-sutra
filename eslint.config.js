@@ -7,11 +7,11 @@ export default tseslint.config(
   // ── Global ignores ──────────────────────────────────────────────────
   {
     ignores: [
-      'dist/**',
+      '**/dist/**',
       'node_modules/**',
       '**/*.stories.tsx',
       '.storybook/**',
-      'src/primitives/**',
+      'packages/core/src/primitives/**',
     ],
   },
 
@@ -20,7 +20,7 @@ export default tseslint.config(
 
   // ── Project-wide settings for TS/TSX source ─────────────────────────
   {
-    files: ['src/**/*.{ts,tsx}'],
+    files: ['packages/*/src/**/*.{ts,tsx}'],
     plugins: {
       'react-hooks': reactHooks,
       'jsx-a11y': jsxA11y,
@@ -79,7 +79,7 @@ export default tseslint.config(
   // ── Module boundary enforcement ─────────────────────────────────
   // ui/ cannot import from composed/, shell/, or karm/
   {
-    files: ['src/ui/**/*.{ts,tsx}'],
+    files: ['packages/core/src/ui/**/*.{ts,tsx}'],
     rules: {
       'no-restricted-imports': [
         'warn',
@@ -95,7 +95,7 @@ export default tseslint.config(
   },
   // composed/ cannot import from karm/
   {
-    files: ['src/composed/**/*.{ts,tsx}'],
+    files: ['packages/core/src/composed/**/*.{ts,tsx}'],
     rules: {
       'no-restricted-imports': [
         'warn',
@@ -109,7 +109,7 @@ export default tseslint.config(
   },
   // shell/ cannot import from karm/
   {
-    files: ['src/shell/**/*.{ts,tsx}'],
+    files: ['packages/core/src/shell/**/*.{ts,tsx}'],
     rules: {
       'no-restricted-imports': [
         'warn',
@@ -123,7 +123,7 @@ export default tseslint.config(
   },
   // karm/ cannot import from primitives/_internal/
   {
-    files: ['src/karm/**/*.{ts,tsx}'],
+    files: ['packages/karm/src/**/*.{ts,tsx}'],
     rules: {
       'no-restricted-imports': [
         'warn',

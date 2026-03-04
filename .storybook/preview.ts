@@ -1,9 +1,9 @@
 import React from 'react'
 import type { Preview } from '@storybook/react'
 import type { Decorator } from '@storybook/react'
-import { TooltipProvider } from '../src/ui/tooltip'
+import { TooltipProvider } from '../packages/core/src/ui/tooltip'
 import theme from './theme'
-import '../src/tokens/index.css'
+import '../packages/core/src/tokens/index.css'
 import '../storybook.css'
 
 /* ── Dark-mode toolbar decorator ──────────────────────────────────
@@ -84,6 +84,7 @@ const preview: Preview = {
       storySort: {
         order: [
           'Getting Started',
+          'About',
           'Foundations',
           'Iconography',
           'UI', [
@@ -96,8 +97,8 @@ const preview: Preview = {
             'Other',
             '*',
           ],
-          'Shared', ['Introduction', '*'],
-          'Layout', ['Introduction', '*'],
+          'Composed', ['Introduction', '*'],
+          'Shell', ['Introduction', '*'],
           'Brand', [
             'Introduction',
             'Devalok', ['Logo'],

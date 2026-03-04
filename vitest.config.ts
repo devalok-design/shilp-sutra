@@ -6,15 +6,15 @@ export default defineConfig({
   plugins: [react()],
   resolve: {
     alias: {
-      '@primitives': resolve(__dirname, 'src/primitives'),
-      '@': resolve(__dirname, 'src'),
+      '@primitives': resolve(__dirname, 'packages/core/src/primitives'),
+      '@': resolve(__dirname, 'packages/core/src'),
     },
   },
   test: {
     environment: 'jsdom',
     globals: true,
-    setupFiles: ['./src/test-setup.ts'],
-    include: ['src/**/*.test.{ts,tsx}'],
+    setupFiles: ['./packages/core/src/test-setup.ts'],
+    include: ['packages/*/src/**/*.test.{ts,tsx}'],
     css: true,
   },
 })

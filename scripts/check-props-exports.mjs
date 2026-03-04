@@ -26,7 +26,7 @@ import { fileURLToPath } from 'url'
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url))
 const ROOT = path.resolve(__dirname, '..')
-const UI_DIR = path.join(ROOT, 'src', 'ui')
+const UI_DIR = path.join(ROOT, 'packages', 'core', 'src', 'ui')
 
 // Match: export interface FooProps, export type FooProps
 const PROPS_PATTERN = /export\s+(?:interface|type)\s+(\w+Props)\b/g

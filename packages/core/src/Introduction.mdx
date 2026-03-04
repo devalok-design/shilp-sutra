@@ -1,0 +1,158 @@
+import { Meta } from '@storybook/blocks'
+
+<Meta title="Getting Started" />
+
+# Shilp Sutra Design System
+
+Welcome to **Shilp Sutra** -- the design system powering Devalok applications. It provides a comprehensive set of tokens, primitives, composed components, shell layouts, and domain-specific modules for building consistent, accessible, and themeable interfaces.
+
+The system is published as three packages so you can install only what you need:
+
+| Package | Purpose |
+|---------|---------|
+| `@devalok/shilp-sutra` | **Core** -- tokens, UI primitives, composed components, shell layouts |
+| `@devalok/shilp-sutra-brand` | **Brand** -- logo components for Devalok, Karm, and other brands |
+| `@devalok/shilp-sutra-karm` | **Karm** -- domain-specific project management components |
+
+---
+
+## What is included
+
+| Layer | Count | Description |
+|-------|-------|-------------|
+| **Design Tokens** | 3 tiers | Primitives, semantic tokens, and Tailwind integration |
+| **UI Primitives** | 52 | Low-level Radix UI-based components |
+| **Composed Components** | 14 | Higher-level reusable patterns |
+| **Shell Components** | 6 | App shell and navigation structures |
+| **Karm Modules** | 43 | Domain-specific project management components |
+
+---
+
+## Quick links
+
+- [**Foundations**](?path=/docs/foundations--docs) -- Color palettes, spacing, typography, shadows, and motion
+- [**Iconography**](?path=/docs/iconography--docs) -- 5,000+ Tabler Icons with sizes, strokes, and usage patterns
+- [**UI Primitives**](?path=/docs/ui-introduction--docs) -- Buttons, inputs, dialogs, tables, and more
+- [**Composed**](?path=/docs/composed-introduction--docs) -- PageHeader, DatePicker, RichTextEditor, and more
+- [**Shell**](?path=/docs/shell-introduction--docs) -- AppSidebar, TopBar, BottomNavbar, and more
+- [**Karm**](?path=/docs/karm-introduction--docs) -- Kanban boards, task details, chat, admin panels
+
+---
+
+## Iconography
+
+Shilp Sutra uses [**Tabler Icons**](https://tabler.io/icons) (`@tabler/icons-react`) -- a collection of 5,000+ MIT-licensed, stroke-based icons on a consistent 24x24 grid.
+
+```tsx
+import { IconPlus, IconSearch, IconSettings } from '@tabler/icons-react'
+
+// Size via Tailwind classes (recommended)
+<IconPlus className="h-4 w-4" />
+
+// Size via prop
+<IconSearch size={18} />
+
+// Custom stroke width (default: 2)
+<IconSettings className="h-5 w-5" stroke={1.5} />
+```
+
+For the type of an icon component, use `Icon` from `@tabler/icons-react`:
+
+```tsx
+import type { Icon as TablerIcon } from '@tabler/icons-react'
+
+interface Props {
+  icon?: TablerIcon
+}
+```
+
+See the [**Iconography page**](?path=/docs/iconography--docs) for the full catalog of icons used in the design system, size variations, stroke options, and usage patterns.
+
+---
+
+## Token architecture
+
+Shilp Sutra uses a three-tier token system:
+
+```
+Primitives  -->  Semantic  -->  Tailwind
+(raw values)    (intent-based)  (utility classes)
+```
+
+1. **Primitives** -- Raw color palettes (pink, purple, neutral, green, red, yellow, blue) with 50-950 scales. Never referenced directly in component code.
+2. **Semantic** -- Intent-based tokens like `--color-interactive`, `--color-text-primary`, `--spacing-05`. These are what components consume.
+3. **Tailwind** -- The semantic tokens are mapped to Tailwind CSS utilities via `tailwind.config`, so you can use classes like `bg-interactive` or `text-text-primary`.
+
+---
+
+## Installation
+
+```bash
+# Core design system (required)
+pnpm add @devalok/shilp-sutra
+
+# Brand logos (optional)
+pnpm add @devalok/shilp-sutra-brand
+
+# Karm domain components (optional)
+pnpm add @devalok/shilp-sutra-karm
+```
+
+### Setup
+
+Import the token stylesheet in your app entry point:
+
+```ts
+import '@devalok/shilp-sutra/tokens/index.css'
+```
+
+Add the Tailwind preset to your `tailwind.config.ts`:
+
+```ts
+import shilpSutraPreset from '@devalok/shilp-sutra/tailwind-preset'
+
+export default {
+  presets: [shilpSutraPreset],
+  content: [
+    './src/**/*.{ts,tsx}',
+    './node_modules/@devalok/shilp-sutra/dist/**/*.js',
+    './node_modules/@devalok/shilp-sutra-brand/dist/**/*.js',
+    './node_modules/@devalok/shilp-sutra-karm/dist/**/*.js',
+  ],
+}
+```
+
+### Component usage
+
+```tsx
+// Core UI primitives
+import { Button, Dialog, Input } from '@devalok/shilp-sutra/ui'
+
+// Composed higher-level components
+import { PageHeader, DatePicker } from '@devalok/shilp-sutra/composed'
+
+// Shell / layout components
+import { AppSidebar, TopBar } from '@devalok/shilp-sutra/shell'
+
+// Brand logos (separate package)
+import { DevalokLogo } from '@devalok/shilp-sutra-brand/devalok'
+import { KarmLogo } from '@devalok/shilp-sutra-brand/karm'
+
+// Karm domain components (separate package)
+import { KanbanBoard } from '@devalok/shilp-sutra-karm/board'
+import { ChatPanel } from '@devalok/shilp-sutra-karm/chat'
+```
+
+---
+
+## Dark mode
+
+Dark mode is toggled by adding the `.dark` class to a parent element (typically `<html>` or `<body>`). All semantic tokens have `.dark` overrides that automatically remap to darker palette values.
+
+```html
+<html class="dark">
+  <!-- All components switch to dark theme -->
+</html>
+```
+
+In Storybook, use the theme switcher in the toolbar to toggle between light and dark modes.

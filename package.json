@@ -1,131 +1,24 @@
 {
-  "name": "@devalok/shilp-sutra",
+  "name": "@devalok/shilp-sutra-workspace",
   "version": "0.1.0",
   "description": "Devalok Design System — tokens, components, and patterns for Next.js",
   "type": "module",
-  "sideEffects": [
-    "**/*.css",
-    "**/svg-components.tsx"
-  ],
-  "exports": {
-    "./tokens": "./dist/tokens/index.css",
-    "./ui": {
-      "import": "./dist/ui/index.js",
-      "types": "./dist/ui/index.d.ts"
-    },
-    "./composed": {
-      "import": "./dist/composed/index.js",
-      "types": "./dist/composed/index.d.ts"
-    },
-    "./shell": {
-      "import": "./dist/shell/index.js",
-      "types": "./dist/shell/index.d.ts"
-    },
-    "./karm": {
-      "import": "./dist/karm/index.js",
-      "types": "./dist/karm/index.d.ts"
-    },
-    "./karm/board": {
-      "import": "./dist/karm/board/index.js",
-      "types": "./dist/karm/board/index.d.ts"
-    },
-    "./karm/tasks": {
-      "import": "./dist/karm/tasks/index.js",
-      "types": "./dist/karm/tasks/index.d.ts"
-    },
-    "./karm/chat": {
-      "import": "./dist/karm/chat/index.js",
-      "types": "./dist/karm/chat/index.d.ts"
-    },
-    "./karm/dashboard": {
-      "import": "./dist/karm/dashboard/index.js",
-      "types": "./dist/karm/dashboard/index.d.ts"
-    },
-    "./karm/client": {
-      "import": "./dist/karm/client/index.js",
-      "types": "./dist/karm/client/index.d.ts"
-    },
-    "./karm/admin": {
-      "import": "./dist/karm/admin/index.js",
-      "types": "./dist/karm/admin/index.d.ts"
-    },
-    "./brand": {
-      "import": "./dist/brand/index.js",
-      "types": "./dist/brand/index.d.ts"
-    },
-    "./brand/devalok": {
-      "import": "./dist/brand/devalok/index.js",
-      "types": "./dist/brand/devalok/index.d.ts"
-    },
-    "./brand/karm": {
-      "import": "./dist/brand/karm/index.js",
-      "types": "./dist/brand/karm/index.d.ts"
-    },
-    "./brand/assets/*": "./dist/brand/assets/*",
-    "./tailwind": {
-      "import": "./dist/tailwind/index.js",
-      "types": "./dist/tailwind/index.d.ts"
-    },
-    "./fonts/*": "./fonts/*"
-  },
-  "files": [
-    "dist",
-    "fonts",
-    "README.md"
-  ],
+  "private": true,
   "scripts": {
     "dev": "storybook dev -p 6006",
-    "build": "vite build && pnpm build:tokens",
-    "build:tokens": "node scripts/copy-tokens.mjs",
+    "build": "pnpm -r build",
+    "build:core": "pnpm --filter @devalok/shilp-sutra build",
+    "build:brand": "pnpm --filter @devalok/shilp-sutra-brand build",
+    "build:karm": "pnpm --filter @devalok/shilp-sutra-karm build",
     "build-storybook": "storybook build",
-    "typecheck": "tsc --noEmit",
-    "lint": "eslint src/",
-    "lint:fix": "eslint src/ --fix",
+    "typecheck": "pnpm -r typecheck",
+    "lint": "pnpm -r lint",
+    "lint:fix": "pnpm -r lint:fix",
     "lint:props": "node scripts/check-props-exports.mjs",
-    "format": "prettier --write \"src/**/*.{ts,tsx,css}\"",
-    "format:check": "prettier --check \"src/**/*.{ts,tsx,css}\"",
-    "test": "vitest run",
-    "test:watch": "vitest",
-    "prepublishOnly": "pnpm build"
-  },
-  "peerDependencies": {
-    "next": ">=14",
-    "react": "^18 || ^19",
-    "react-dom": "^18 || ^19"
-  },
-  "peerDependenciesMeta": {
-    "next": {
-      "optional": true
-    }
-  },
-  "dependencies": {
-    "@dnd-kit/core": "^6.3.1",
-    "@dnd-kit/sortable": "^10.0.0",
-    "@dnd-kit/utilities": "^3.2.2",
-    "@floating-ui/react-dom": "^2.1.7",
-    "@tabler/icons-react": "^3.37.1",
-    "@tanstack/react-table": "^8.21.2",
-    "@tanstack/react-virtual": "^3.13.19",
-    "@tiptap/extension-placeholder": "^2.11.5",
-    "@tiptap/react": "^2.11.5",
-    "@tiptap/starter-kit": "^2.11.5",
-    "aria-hidden": "^1.2.4",
-    "class-variance-authority": "^0.7.1",
-    "clsx": "^2.1.1",
-    "d3-array": "^3.2.4",
-    "d3-axis": "^3.0.0",
-    "d3-format": "^3.1.2",
-    "d3-interpolate": "^3.0.1",
-    "d3-scale": "^4.0.2",
-    "d3-selection": "^3.0.0",
-    "d3-shape": "^3.2.0",
-    "d3-time-format": "^4.1.0",
-    "d3-transition": "^3.0.1",
-    "date-fns": "^4.1.0",
-    "input-otp": "^1.4.2",
-    "react-markdown": "^10.1.0",
-    "react-remove-scroll": "^2.6.3",
-    "tailwind-merge": "^3.0.1"
+    "format": "prettier --write \"packages/*/src/**/*.{ts,tsx,css}\"",
+    "format:check": "prettier --check \"packages/*/src/**/*.{ts,tsx,css}\"",
+    "test": "pnpm -r test",
+    "test:watch": "pnpm -r test:watch"
   },
   "devDependencies": {
     "@storybook/addon-a11y": "^8.6.0",
@@ -178,6 +71,5 @@
     "type": "git",
     "url": "https://github.com/devalok-design/shilp-sutra.git"
   },
-  "license": "UNLICENSED",
-  "private": false
+  "license": "MIT"
 }

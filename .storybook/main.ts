@@ -2,7 +2,10 @@ import type { StorybookConfig } from '@storybook/react-vite'
 import remarkGfm from 'remark-gfm'
 
 const config: StorybookConfig = {
-  stories: ['../src/**/*.stories.@(js|jsx|ts|tsx)', '../src/**/*.mdx'],
+  stories: [
+    '../packages/*/src/**/*.stories.@(js|jsx|ts|tsx)',
+    '../packages/*/src/**/*.mdx',
+  ],
   addons: [
     {
       name: '@storybook/addon-essentials',
@@ -32,7 +35,7 @@ const config: StorybookConfig = {
   typescript: {
     reactDocgen: 'react-docgen-typescript',
   },
-  staticDirs: ['../fonts'],
+  staticDirs: ['../packages/core/fonts'],
 }
 
 export default config

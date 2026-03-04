@@ -22,7 +22,7 @@ const DashboardSkeleton = React.forwardRef<HTMLDivElement>(
               <Skeleton className={cn('h-ds-sm w-ds-sm rounded-ds-lg', shimmer)} />
             </div>
             <Skeleton className={cn('h-ds-xs-plus w-16', shimmer)} />
-            <Skeleton className={cn('h-2.5 w-28', shimmer)} />
+            <Skeleton className={cn('h-ds-03 w-28', shimmer)} />
           </div>
         ))}
       </div>
@@ -70,7 +70,7 @@ const ProjectListSkeleton = React.forwardRef<HTMLDivElement>(
       <div className="flex flex-col gap-ds-05 sm:flex-row sm:items-center sm:justify-between">
         <div className="flex flex-col gap-ds-03">
           <Skeleton className={cn('h-6 w-28', shimmer)} />
-          <Skeleton className={cn('h-3.5 w-40', shimmer)} />
+          <Skeleton className={cn('h-ds-04 w-40', shimmer)} />
         </div>
         <Skeleton className={cn('h-ds-sm-plus w-32 rounded-ds-lg', shimmer)} />
       </div>

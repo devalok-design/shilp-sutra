@@ -13,7 +13,7 @@ const DevsabhaSkeleton = React.forwardRef<HTMLDivElement>(
       {/* Page header */}
       <div className="flex flex-col gap-ds-03">
         <Skeleton className={cn('h-6 w-32', shimmer)} />
-        <Skeleton className={cn('h-3.5 w-56', shimmer)} />
+        <Skeleton className={cn('h-ds-04 w-56', shimmer)} />
       </div>
 
       {/* 5-section grid */}
@@ -26,7 +26,7 @@ const DevsabhaSkeleton = React.forwardRef<HTMLDivElement>(
               {Array.from({ length: 4 }).map((_, i) => (
                 <div key={`ds-main-${i}`} className="flex items-center gap-ds-04">
                   <Skeleton className={cn('h-ico-sm w-ico-sm rounded', shimmer)} />
-                  <Skeleton className={cn('h-3.5 flex-1', shimmer)} />
+                  <Skeleton className={cn('h-ds-04 flex-1', shimmer)} />
                   <Skeleton className={cn('h-5 w-16 rounded-ds-full', shimmer)} />
                 </div>
               ))}
@@ -43,7 +43,7 @@ const DevsabhaSkeleton = React.forwardRef<HTMLDivElement>(
                 <Skeleton className={cn('h-ds-sm w-ds-sm rounded-ds-full', shimmer)} />
                 <div className="flex flex-1 flex-col gap-ds-02">
                   <Skeleton className={cn('h-3 w-24', shimmer)} />
-                  <Skeleton className={cn('h-2.5 w-16', shimmer)} />
+                  <Skeleton className={cn('h-ds-03 w-16', shimmer)} />
                 </div>
               </div>
             ))}
@@ -63,7 +63,7 @@ const DevsabhaSkeleton = React.forwardRef<HTMLDivElement>(
                   key={`ds-card-${i}`}
                   className="flex flex-col gap-ds-03 rounded-ds-lg border border-border p-ds-05"
                 >
-                  <Skeleton className={cn('h-3.5 w-3/4', shimmer)} />
+                  <Skeleton className={cn('h-ds-04 w-3/4', shimmer)} />
                   <Skeleton className={cn('h-3 w-full', shimmer)} />
                   <Skeleton className={cn('h-3 w-1/2', shimmer)} />
                 </div>
@@ -96,7 +96,7 @@ const DevsabhaSkeleton = React.forwardRef<HTMLDivElement>(
                 <Skeleton className={cn('h-3 w-3 shrink-0 rounded-ds-full', shimmer)} />
                 <div className="flex flex-1 flex-col gap-ds-02">
                   <Skeleton className={cn('h-3 w-full', shimmer)} />
-                  <Skeleton className={cn('h-2.5 w-20', shimmer)} />
+                  <Skeleton className={cn('h-ds-03 w-20', shimmer)} />
                 </div>
               </div>
             ))}

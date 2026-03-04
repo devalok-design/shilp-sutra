@@ -31,6 +31,8 @@ export {
   SelectValue,
   SelectScrollUpButton,
   SelectScrollDownButton,
+  type SelectTriggerProps,
+  selectTriggerVariants,
 } from './select'
 export { Textarea, type TextareaProps } from './textarea'
 export { NumberInput, type NumberInputProps } from './number-input'

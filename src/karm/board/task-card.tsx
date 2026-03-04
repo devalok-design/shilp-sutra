@@ -7,10 +7,9 @@ import type { DraggableAttributes } from '@dnd-kit/core'
 import type { SyntheticListenerMap } from '@dnd-kit/core/dist/hooks/utilities'
 import { cva } from 'class-variance-authority'
 import { cn } from '../../ui/lib/utils'
-import { Avatar, AvatarFallback, AvatarImage } from '../../ui/avatar'
 import { Badge } from '../../ui'
+import { AvatarGroup } from '../../composed/avatar-group'
 import { IconCalendar, IconGripVertical } from '@tabler/icons-react'
-import { getInitials } from '../../composed/lib/string-utils'
 import { PRIORITY_LABELS, PRIORITY_DOT_COLORS } from '../tasks/task-constants'
 
 // ============================================================
@@ -95,8 +94,6 @@ function TaskCardVisual({
   onClickTask,
 }: TaskCardVisualProps) {
   const dueInfo = task.dueDate ? formatDueDate(task.dueDate) : null
-  const displayAssignees = task.assignees.slice(0, 2)
-  const extraCount = task.assignees.length - 2
 
   return (
     <div
@@ -164,35 +161,23 @@ function TaskCardVisual({
         {dueInfo && (
           <div
             className={cn(
-              'flex items-center gap-ds-01 text-ds-xs',
+              'flex items-center gap-ds-01 text-ds-xs leading-tight',
               dueInfo.className,
             )}
           >
-            <IconCalendar className="h-3 w-3" />
+            <IconCalendar className="h-2.5 w-2.5" />
             <span>{dueInfo.label}</span>
           </div>
         )}
 
         {/* Assignee avatars */}
-        {displayAssignees.length > 0 && (
-          <div className="flex -space-x-ds-02b">
-            {displayAssignees.map((assignee) => (
-              <Avatar key={assignee.id} className="h-ico-md w-ico-md border border-layer-01">
-                <AvatarImage
-                  src={assignee.image || undefined}
-                  alt={assignee.name}
-                />
-                <AvatarFallback className="text-ds-xs bg-field">
-                  {getInitials(assignee.name)}
-                </AvatarFallback>
-              </Avatar>
-            ))}
-            {extraCount > 0 && (
-              <div className="flex h-ico-md w-ico-md items-center justify-center rounded-ds-full border border-layer-01 bg-field text-ds-xs font-medium text-text-tertiary">
-                +{extraCount}
-              </div>
-            )}
-          </div>
+        {task.assignees.length > 0 && (
+          <AvatarGroup
+            users={task.assignees}
+            size="sm"
+            max={2}
+            showTooltip={false}
+          />
         )}
       </div>
     </div>

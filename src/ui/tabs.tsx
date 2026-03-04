@@ -17,6 +17,7 @@ import { cn } from './lib/utils'
  * all `TabsTrigger` children. You do NOT need to repeat `variant` on each trigger — but you CAN
  * override it per-trigger if needed.
  *
+ * @compound
  * @example
  * // Default line variant:
  * <Tabs defaultValue="overview">

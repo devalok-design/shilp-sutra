@@ -25,6 +25,7 @@ import { cn } from './lib/utils'
  * - `DropdownMenuGroup` — semantic grouping wrapper (no visual output)
  * - `DropdownMenuPortal` — low-level portal wrapper (exported for custom positioning; used internally by DropdownMenuContent)
  *
+ * @compound
  * @example
  * // Standard action menu:
  * <DropdownMenu>

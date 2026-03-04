@@ -21,6 +21,8 @@ import { cn } from './lib/utils'
  * - `SheetPortal` — low-level portal wrapper (exported for custom layout; used internally by SheetContent)
  * - `SheetOverlay` — the backdrop element (exported for custom overlay styling)
  *
+ * @compound
+ *
  * Note: The `side` prop goes on `SheetContent`, NOT on `Sheet`.
  * A close button is auto-rendered in the top corner of `SheetContent`.
  *

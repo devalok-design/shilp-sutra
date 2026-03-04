@@ -14,9 +14,10 @@ import { cn } from './lib/utils'
  * - `AccordionContent` — the collapsible body revealed when the item is open
  *
  * **`type` prop (required on root):**
- * - `"single"` — only one panel open at a time (use with `defaultValue` or `value`/`onValueChange`)
- * - `"multiple"` — multiple panels can be open simultaneously (use with `defaultValue` or `value`/`onValueChange` as arrays)
+ * - `"single"` — only one panel open at a time; supports `collapsible` prop to re-close the active item
+ * - `"multiple"` — multiple panels open simultaneously (value is `string[]`); `collapsible` is NOT valid here
  *
+ * @compound
  * @example
  * // Single-open FAQ accordion:
  * <Accordion type="single" defaultValue="item-1" collapsible>

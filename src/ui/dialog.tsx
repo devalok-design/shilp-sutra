@@ -20,6 +20,7 @@ import { cn } from './lib/utils'
  * - `DialogPortal` — low-level portal wrapper (exported for custom layout; used internally by DialogContent)
  * - `DialogOverlay` — the backdrop element (exported for custom overlay styling or positioning)
  *
+ * @compound
  * @example
  * // Confirmation dialog:
  * <Dialog>

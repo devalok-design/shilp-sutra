@@ -10,6 +10,8 @@ const badgeVariants = cva(
       variant: {
         neutral:
           'bg-field text-text-secondary border-border',
+        solid:
+          'bg-interactive text-text-on-interactive border-transparent',
         info:
           'bg-info-surface text-info-text border-info-border',
         success:

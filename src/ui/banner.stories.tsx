@@ -9,9 +9,8 @@ const meta: Meta<typeof Banner> = {
   argTypes: {
     variant: {
       control: 'select',
-      options: ['info', 'success', 'warning', 'error'],
+      options: ['info', 'success', 'warning', 'error', 'neutral'],
     },
-    dismissible: { control: 'boolean' },
   },
 }
 export default meta
@@ -61,7 +60,6 @@ export const Dismissible: Story = {
   args: {
     variant: 'warning',
     children: 'Your trial period ends tomorrow.',
-    dismissible: true,
     onDismiss: () => {},
   },
 }
@@ -75,7 +73,6 @@ export const WithActionAndDismissible: Story = {
         Update
       </Button>
     ),
-    dismissible: true,
     onDismiss: () => {},
   },
 }
@@ -107,7 +104,7 @@ export const AllVariants: Story = {
           <p className="mb-ds-03 text-ds-sm font-semibold text-text-secondary">Dismissible</p>
           <div className="flex flex-col">
             {variants.map((variant) => (
-              <Banner key={`dismiss-${variant}`} variant={variant} dismissible onDismiss={() => {}}>
+              <Banner key={`dismiss-${variant}`} variant={variant} onDismiss={() => {}}>
                 {messages[variant]}
               </Banner>
             ))}

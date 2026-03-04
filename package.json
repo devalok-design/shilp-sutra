@@ -4,7 +4,8 @@
   "description": "Devalok Design System — tokens, components, and patterns for Next.js",
   "type": "module",
   "sideEffects": [
-    "**/*.css"
+    "**/*.css",
+    "**/svg-components.tsx"
   ],
   "exports": {
     "./tokens": "./dist/tokens/index.css",
@@ -48,6 +49,19 @@
       "import": "./dist/karm/admin/index.js",
       "types": "./dist/karm/admin/index.d.ts"
     },
+    "./brand": {
+      "import": "./dist/brand/index.js",
+      "types": "./dist/brand/index.d.ts"
+    },
+    "./brand/devalok": {
+      "import": "./dist/brand/devalok/index.js",
+      "types": "./dist/brand/devalok/index.d.ts"
+    },
+    "./brand/karm": {
+      "import": "./dist/brand/karm/index.js",
+      "types": "./dist/brand/karm/index.d.ts"
+    },
+    "./brand/assets/*": "./dist/brand/assets/*",
     "./tailwind": {
       "import": "./dist/tailwind/index.js",
       "types": "./dist/tailwind/index.d.ts"

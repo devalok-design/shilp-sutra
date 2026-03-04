@@ -72,7 +72,7 @@ export function EditBreakBalance({
       toast({
         title: 'Error',
         description: 'Failed to update break balance',
-        variant: 'destructive',
+        variant: 'error',
       })
     } finally {
       setIsSubmitting(false)

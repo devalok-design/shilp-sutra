@@ -1,0 +1,74 @@
+import { Meta } from '@storybook/blocks'
+
+<Meta title="Brand/Introduction" />
+
+# Brand Assets
+
+The brand module provides React components and static assets for **Devalok** and **Karm** brand identities. These are opt-in — consumers who don't need brand assets pay zero bundle cost.
+
+---
+
+## Devalok (8 logo types)
+
+The Devalok logo tells the story of creation through sacred Indian imagery: a hand in Gyan mudra (gesture of knowledge), the Lotus of Time, 14 Leaves representing the Vedic Loks, and the Trimurti dots.
+
+| Type | Description | Rendering |
+|------|-------------|-----------|
+| **monogram** | Hand + lotus icon only | Static SVG |
+| **monogram-wordmark** | Icon + "DEVALOK" text | Static SVG |
+| **monogram-shell** | Icon + decorative circular shell | Static SVG |
+| **monogram-shell-wordmark** | Full lockup with all elements | Static SVG |
+| **monogram-coin-wordmark** | Icon + coin element + text | Static SVG |
+| **wordmark** | "DEVALOK" text only | Inline SVG |
+| **dass** | "DASS" (Design and Strategy Studio) wordmark | Inline SVG |
+| **shloka** | Sanskrit verse wordmark | Static SVG |
+
+---
+
+## Karm (3 logo types)
+
+Karm (कर्म) — the Studio Operating System — uses a geometric 8-pointed mandala icon inspired by sacred geometry.
+
+| Type | Description | Rendering |
+|------|-------------|-----------|
+| **icon** | Geometric mandala icon | Inline SVG |
+| **wordmark** | "Karm" text only | Static image |
+| **wordmark-icon** | Icon + "Karm" text | Static image |
+
+---
+
+## Usage
+
+```tsx
+import { DevalokLogo } from '@devalok/shilp-sutra/brand/devalok'
+import { KarmLogo } from '@devalok/shilp-sutra/brand/karm'
+
+// Auto-switches color for dark mode
+<DevalokLogo type="monogram-wordmark" />
+<KarmLogo type="icon" />
+
+// Explicit color
+<DevalokLogo type="monogram" color="brand" size="lg" />
+
+// Nav link with proper a11y
+<DevalokLogo.Link href="/">
+  <DevalokLogo type="monogram" size="sm" />
+</DevalokLogo.Link>
+```
+
+---
+
+## Guidelines
+
+### Do
+
+- Use the monogram at small sizes (below 32px)
+- Maintain minimum clear space (0.5em around all sides)
+- Use `color="auto"` to respect user's dark mode preference
+
+### Don't
+
+- Don't render the full lockup below 80px height
+- Don't use the black variant on dark backgrounds
+- Don't modify logo colors — use the provided color variants
+- Don't stretch or distort the logo (all components preserve aspect ratio)

@@ -10,7 +10,7 @@ const meta: Meta<typeof ButtonGroup> = {
   argTypes: {
     variant: {
       control: 'select',
-      options: ['primary', 'secondary', 'ghost', 'danger', 'danger-ghost', 'link'],
+      options: ['primary', 'secondary', 'ghost', 'error', 'error-ghost', 'link'],
     },
     size: {
       control: 'select',
@@ -77,7 +77,7 @@ export const OverrideChild: Story = {
   render: () => (
     <ButtonGroup variant="secondary">
       <Button>Keep</Button>
-      <Button variant="danger">Delete</Button>
+      <Button variant="error">Delete</Button>
       <Button>Cancel</Button>
     </ButtonGroup>
   ),

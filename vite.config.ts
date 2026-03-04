@@ -9,7 +9,7 @@ export default defineConfig({
     dts({
       outDir: 'dist',
       include: ['src/**/*.ts', 'src/**/*.tsx'],
-      exclude: ['src/**/*.stories.tsx'],
+      exclude: ['src/**/*.stories.tsx', 'src/**/*.test.tsx', 'src/**/*.test.ts'],
     }),
   ],
   resolve: {
@@ -31,6 +31,9 @@ export default defineConfig({
         'karm/dashboard/index': resolve(__dirname, 'src/karm/dashboard/index.ts'),
         'karm/client/index': resolve(__dirname, 'src/karm/client/index.ts'),
         'karm/admin/index': resolve(__dirname, 'src/karm/admin/index.ts'),
+        'brand/index': resolve(__dirname, 'src/brand/index.ts'),
+        'brand/devalok/index': resolve(__dirname, 'src/brand/devalok/index.ts'),
+        'brand/karm/index': resolve(__dirname, 'src/brand/karm/index.ts'),
         'tailwind/index': resolve(__dirname, 'src/tailwind/index.ts'),
       },
       formats: ['es'],

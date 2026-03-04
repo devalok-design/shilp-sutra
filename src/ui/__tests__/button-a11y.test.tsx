@@ -17,7 +17,7 @@ describe('Button accessibility', () => {
   })
 
   it('should have no violations with danger variant', async () => {
-    const { container } = render(<Button variant="danger">Delete</Button>)
+    const { container } = render(<Button variant="error">Delete</Button>)
     const results = await axe(container)
     expect(results).toHaveNoViolations()
   })

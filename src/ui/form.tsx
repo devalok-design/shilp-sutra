@@ -3,33 +3,25 @@ import { cn } from './lib/utils'
 
 export type FormHelperState = 'helper' | 'error' | 'warning' | 'success'
 
-// FormField — wraps a label + input + helper text in a column layout
-//
-// Accessibility: When `helperTextId` is provided along with `state="error"`,
-// the field context exposes `aria-describedby` and `aria-invalid` values that
-// consumers should spread onto the underlying input element.
-//
-// Usage example:
-//   <FormField helperTextId="email-error" state="error">
-//     <Label htmlFor="email">Email</Label>
-//     <Input id="email" aria-describedby="email-error" aria-invalid={true} />
-//     <FormHelperText id="email-error" state="error">Invalid email</FormHelperText>
-//   </FormField>
+type FormFieldContextValue = { state: FormHelperState }
+const FormFieldContext = React.createContext<FormFieldContextValue>({ state: 'helper' })
 
 export interface FormFieldProps extends React.HTMLAttributes<HTMLDivElement> {
   /** Unique ID for the helper text — link to input via aria-describedby */
   helperTextId?: string
-  /** Current validation state — when "error", signals aria-invalid to consumers */
+  /** Current validation state — propagated to children via context */
   state?: FormHelperState
 }
 
 const FormField = React.forwardRef<HTMLDivElement, FormFieldProps>(
-  ({ className, helperTextId: _helperTextId, state: _state, ...props }, ref) => (
-    <div
-      ref={ref}
-      className={cn('flex flex-col gap-ds-02', className)}
-      {...props}
-    />
+  ({ className, helperTextId: _helperTextId, state = 'helper', ...props }, ref) => (
+    <FormFieldContext.Provider value={{ state }}>
+      <div
+        ref={ref}
+        className={cn('flex flex-col gap-ds-02', className)}
+        {...props}
+      />
+    </FormFieldContext.Provider>
   ),
 )
 FormField.displayName = 'FormField'
@@ -49,14 +41,19 @@ const helperStateClasses: Record<FormHelperState, string> = {
 }
 
 const FormHelperText = React.forwardRef<HTMLParagraphElement, FormHelperTextProps>(
-  ({ className, state = 'helper', ...props }, ref) => (
-    <p
-      ref={ref}
-      role={state === 'error' ? 'alert' : undefined}
-      className={cn('text-ds-sm', helperStateClasses[state], className)}
-      {...props}
-    />
-  ),
+  ({ className, state: stateProp, ...props }, ref) => {
+    const context = React.useContext(FormFieldContext)
+    const state = stateProp ?? context.state
+
+    return (
+      <p
+        ref={ref}
+        role={state === 'error' ? 'alert' : undefined}
+        className={cn('text-ds-sm', helperStateClasses[state], className)}
+        {...props}
+      />
+    )
+  },
 )
 FormHelperText.displayName = 'FormHelperText'
 
@@ -78,4 +75,4 @@ function getFormFieldA11y(
   }
 }
 
-export { FormField, FormHelperText, getFormFieldA11y }
+export { FormField, FormFieldContext, FormHelperText, getFormFieldA11y }

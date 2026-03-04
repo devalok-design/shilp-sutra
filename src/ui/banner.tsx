@@ -16,29 +16,31 @@ const bannerVariants = cva(
           'bg-warning-surface border-warning-border text-warning-text',
         error:
           'bg-error-surface border-error-border text-error-text',
+        neutral:
+          'bg-layer-02 border-border text-text-primary [&>svg]:text-text-secondary',
       },
     },
     defaultVariants: { variant: 'info' },
   },
 )
 
-const BANNER_ICONS = {
+const BANNER_ICONS: Record<string, React.ComponentType<{ className?: string }>> = {
   info:    IconInfoCircle,
   success: IconCircleCheck,
   warning: IconAlertTriangle,
   error:   IconAlertCircle,
+  neutral: IconInfoCircle,
 }
 
 export interface BannerProps
   extends React.HTMLAttributes<HTMLDivElement>,
     VariantProps<typeof bannerVariants> {
   action?: React.ReactNode
-  dismissible?: boolean
   onDismiss?: () => void
 }
 
 const Banner = React.forwardRef<HTMLDivElement, BannerProps>(
-  ({ className, variant = 'info', action, dismissible, onDismiss, children, ...props }, ref) => {
+  ({ className, variant = 'info', action, onDismiss, children, ...props }, ref) => {
     const Icon = BANNER_ICONS[variant ?? 'info']
 
     return (
@@ -46,7 +48,7 @@ const Banner = React.forwardRef<HTMLDivElement, BannerProps>(
         <Icon className="h-ico-md w-ico-md shrink-0" aria-hidden="true" />
         <span className="flex-1">{children}</span>
         {action && <span className="shrink-0">{action}</span>}
-        {dismissible && onDismiss && (
+        {onDismiss && (
           <button
             type="button"
             onClick={onDismiss}

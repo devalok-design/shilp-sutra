@@ -5,6 +5,9 @@ import { cn } from './lib/utils'
 
 const Tabs = TabsPrimitive.Root
 
+type TabsVariant = 'line' | 'contained'
+const TabsListContext = React.createContext<{ variant: TabsVariant }>({ variant: 'line' })
+
 const tabsListVariants = cva('inline-flex items-center', {
   variants: {
     variant: {
@@ -44,12 +47,14 @@ export interface TabsListProps
 const TabsList = React.forwardRef<
   React.ElementRef<typeof TabsPrimitive.List>,
   TabsListProps
->(({ className, variant, ...props }, ref) => (
-  <TabsPrimitive.List
-    ref={ref}
-    className={cn(tabsListVariants({ variant }), className)}
-    {...props}
-  />
+>(({ className, variant = 'line', ...props }, ref) => (
+  <TabsListContext.Provider value={{ variant }}>
+    <TabsPrimitive.List
+      ref={ref}
+      className={cn(tabsListVariants({ variant }), className)}
+      {...props}
+    />
+  </TabsListContext.Provider>
 ))
 TabsList.displayName = TabsPrimitive.List.displayName
 
@@ -60,13 +65,18 @@ export interface TabsTriggerProps
 const TabsTrigger = React.forwardRef<
   React.ElementRef<typeof TabsPrimitive.Trigger>,
   TabsTriggerProps
->(({ className, variant, ...props }, ref) => (
-  <TabsPrimitive.Trigger
-    ref={ref}
-    className={cn(tabsTriggerVariants({ variant }), className)}
-    {...props}
-  />
-))
+>(({ className, variant: variantProp, ...props }, ref) => {
+  const context = React.useContext(TabsListContext)
+  const variant = variantProp ?? context.variant
+
+  return (
+    <TabsPrimitive.Trigger
+      ref={ref}
+      className={cn(tabsTriggerVariants({ variant }), className)}
+      {...props}
+    />
+  )
+})
 TabsTrigger.displayName = TabsPrimitive.Trigger.displayName
 
 const TabsContent = React.forwardRef<

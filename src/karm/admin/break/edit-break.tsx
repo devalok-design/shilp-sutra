@@ -217,7 +217,7 @@ export function EditBreak({
       toast({
         title: 'Error',
         description: 'Failed to update break request',
-        variant: 'destructive',
+        variant: 'error',
       })
     } finally {
       setIsSubmitting(false)
@@ -321,7 +321,7 @@ export function EditBreak({
       toast({
         title: 'Error',
         description: 'This date is already part of another break request.',
-        variant: 'destructive',
+        variant: 'error',
       })
       return
     }
@@ -336,7 +336,7 @@ export function EditBreak({
             title: 'Error',
             description:
               'The selected date range overlaps with an existing break request.',
-            variant: 'destructive',
+            variant: 'error',
           })
           return
         }
@@ -363,7 +363,7 @@ export function EditBreak({
             title: 'Error',
             description:
               'The selected date range overlaps with an existing break request.',
-            variant: 'destructive',
+            variant: 'error',
           })
           return
         }

@@ -30,12 +30,12 @@ describe('Alert', () => {
     expect(screen.getByRole('alert').className).toContain('success')
   })
 
-  it('shows dismiss button when dismissible with onDismiss', async () => {
+  it('shows dismiss button when with onDismiss', async () => {
     const user = userEvent.setup()
     const onDismiss = vi.fn()
 
     render(
-      <Alert dismissible onDismiss={onDismiss}>
+      <Alert onDismiss={onDismiss}>
         Dismissible alert
       </Alert>,
     )

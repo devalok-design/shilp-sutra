@@ -13,14 +13,14 @@ export const buttonVariants = cva(
         primary:
           'bg-interactive text-text-on-color hover:bg-interactive-hover active:bg-interactive-active shadow-01 hover:shadow-brand',
         secondary:
-          'bg-transparent text-interactive border-border-interactive hover:bg-interactive-subtle',
+          'bg-transparent text-interactive border-border-interactive hover:bg-interactive-subtle active:bg-layer-active',
         ghost:
-          'bg-transparent text-text-secondary hover:bg-layer-02 hover:text-text-primary',
-        danger:
-          'bg-error text-text-on-color hover:bg-error-hover shadow-01',
-        'danger-ghost':
-          'bg-transparent text-error border border-border-error hover:bg-error-surface',
-        link: 'text-text-link underline-offset-4 hover:underline',
+          'bg-transparent text-text-secondary hover:bg-layer-02 hover:text-text-primary active:bg-layer-active',
+        error:
+          'bg-error text-text-on-color hover:bg-error-hover active:bg-error-hover shadow-01',
+        'error-ghost':
+          'bg-transparent text-error border border-border-error hover:bg-error-surface active:bg-error-surface',
+        link: 'text-text-link underline-offset-4 hover:underline active:opacity-80',
       },
       size: {
         sm: 'h-ds-sm rounded-ds-md px-ds-04 text-ds-sm',

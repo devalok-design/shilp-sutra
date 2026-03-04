@@ -98,6 +98,11 @@ const preview: Preview = {
           ],
           'Shared', ['Introduction', '*'],
           'Layout', ['Introduction', '*'],
+          'Brand', [
+            'Introduction',
+            'Devalok', ['Logo'],
+            'Karm', ['Logo'],
+          ],
           'Karm', [
             'Introduction',
             'Board',

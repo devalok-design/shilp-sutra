@@ -68,7 +68,7 @@ export const Confirmation: Story = {
   render: () => (
     <Dialog>
       <DialogTrigger asChild>
-        <Button variant="danger">Delete Account</Button>
+        <Button variant="error">Delete Account</Button>
       </DialogTrigger>
       <DialogContent>
         <DialogHeader>
@@ -82,7 +82,7 @@ export const Confirmation: Story = {
           <DialogClose asChild>
             <Button variant="ghost">Cancel</Button>
           </DialogClose>
-          <Button variant="danger">Delete</Button>
+          <Button variant="error">Delete</Button>
         </DialogFooter>
       </DialogContent>
     </Dialog>

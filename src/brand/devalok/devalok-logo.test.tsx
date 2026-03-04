@@ -96,7 +96,8 @@ describe('DevalokLogo (inline SVG types)', () => {
 
   it('returns null for unregistered SVG key', () => {
     const { container } = render(
-      <DevalokLogo type="dass" color="black" />,
+      // Cast to any to simulate an unknown type not in the registry
+      <DevalokLogo type={'unknown-type' as any} color="brand" />,
     )
     expect(container.firstChild).toBeNull()
   })

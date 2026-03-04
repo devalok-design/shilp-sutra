@@ -2,6 +2,46 @@ import { IconMinus, IconTrendingDown, IconTrendingUp } from '@tabler/icons-react
 import * as React from 'react'
 import { cn } from './lib/utils'
 
+/**
+ * Props for StatCard — a dashboard metric tile displaying a label, a large numeric value,
+ * an optional trend delta (with directional arrow icon), and an optional header icon.
+ *
+ * **Delta direction:** `'up'` renders a green trending-up arrow, `'down'` renders a red
+ * trending-down arrow, `'neutral'` renders a grey dash. The `delta.value` is a formatted
+ * string (e.g. `"+8%"` or `"−120"`).
+ *
+ * **Loading state:** Pass `loading={true}` to render a pulse-skeleton placeholder instead of data.
+ *
+ * @example
+ * // Revenue metric with a positive trend:
+ * <StatCard
+ *   label="Monthly Revenue"
+ *   value="$48,200"
+ *   delta={{ value: "+12%", direction: "up" }}
+ *   icon={<IconCurrencyDollar />}
+ * />
+ *
+ * @example
+ * // Open ticket count with a downward trend (good for support queues):
+ * <StatCard
+ *   label="Open Tickets"
+ *   value={142}
+ *   delta={{ value: "−18", direction: "down" }}
+ * />
+ *
+ * @example
+ * // Loading skeleton while data is fetching:
+ * <StatCard label="Users" value={0} loading={isFetching} />
+ *
+ * @example
+ * // Simple metric with no trend (stable, neutral):
+ * <StatCard
+ *   label="Storage Used"
+ *   value="4.2 GB"
+ *   delta={{ value: "No change", direction: "neutral" }}
+ * />
+ * // These are just a few ways — feel free to combine props creatively!
+ */
 export interface StatCardProps extends React.HTMLAttributes<HTMLDivElement> {
   label: string
   value: string | number

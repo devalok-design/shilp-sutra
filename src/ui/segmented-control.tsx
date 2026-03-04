@@ -133,6 +133,10 @@ function resolveSize(size: SegmentedControlSize): 'sm' | 'md' | 'lg' {
 export type SegmentedControlSize = 'sm' | 'md' | 'lg' | 'small' | 'medium' | 'big'
 export type SegmentedControlColor = 'filled' | 'tonal'
 
+/**
+ * A single option in a `<SegmentedControl>`. The `id` must be unique across all options in
+ * the same control — it is used as the selection key for `selectedId` and `onSelect`.
+ */
 export interface SegmentedControlOption {
   id: string
   text: string
@@ -140,6 +144,48 @@ export interface SegmentedControlOption {
   icon?: React.ComponentType<{ className?: string }>
 }
 
+/**
+ * Props for SegmentedControl — a pill-shaped tab-row for mutually exclusive option selection,
+ * similar to a radio group but styled as a single connected control.
+ *
+ * **`size`:** `'sm'` | `'md'` (default) | `'lg'`. Legacy aliases `'small'` | `'medium'` | `'big'` are
+ * also accepted for backward compatibility but prefer the canonical form.
+ *
+ * **`color`:** `'tonal'` (default, subdued) | `'filled'` (vibrant brand color when selected).
+ *
+ * **Options:** Each option needs a unique `id`, a display `text`, and an optional `icon` component.
+ *
+ * **Controlled only:** `selectedId` + `onSelect` are required. There is no uncontrolled mode.
+ *
+ * @example
+ * // View mode switcher (list vs grid vs board):
+ * <SegmentedControl
+ *   size="md"
+ *   color="tonal"
+ *   options={[
+ *     { id: 'list', text: 'List' },
+ *     { id: 'grid', text: 'Grid' },
+ *     { id: 'board', text: 'Board' },
+ *   ]}
+ *   selectedId={viewMode}
+ *   onSelect={setViewMode}
+ * />
+ *
+ * @example
+ * // Time range selector with filled color (more prominent):
+ * <SegmentedControl
+ *   size="sm"
+ *   color="filled"
+ *   options={[
+ *     { id: '7d', text: '7D' },
+ *     { id: '30d', text: '30D' },
+ *     { id: '90d', text: '90D' },
+ *   ]}
+ *   selectedId={range}
+ *   onSelect={setRange}
+ * />
+ * // These are just a few ways — feel free to combine props creatively!
+ */
 export interface SegmentedControlProps {
   size: SegmentedControlSize
   color: SegmentedControlColor
@@ -239,6 +285,36 @@ const SegmentedControl = React.forwardRef<HTMLDivElement, SegmentedControlProps>
 SegmentedControl.displayName = 'SegmentedControl'
 
 /* ── SegmentedControlItem ─────────────────────────────────── */
+/**
+ * Props for SegmentedControlItem — the individual button segment within a `<SegmentedControl>`.
+ * Normally you don't use this directly; compose via `<SegmentedControl options={...} />` instead.
+ * Use `SegmentedControlItem` directly only when building a fully custom segmented tab row.
+ *
+ * **Note:** `isFocused`, `onFocus`, and `onBlur` are managed by the parent `SegmentedControl`.
+ * You must wire them yourself when using the item standalone.
+ *
+ * @example
+ * // Standalone custom segmented row (without parent SegmentedControl):
+ * const [view, setView] = useState<'list' | 'grid'>('list')
+ * const [focused, setFocused] = useState<string | null>(null)
+ *
+ * <div role="tablist" className="inline-flex rounded-full border border-border bg-layer-02">
+ *   <SegmentedControlItem
+ *     size="md" color="tonal" text="List"
+ *     isSelected={view === 'list'} isFocused={focused === 'list'}
+ *     onClick={() => setView('list')}
+ *     onFocus={() => setFocused('list')} onBlur={() => setFocused(null)}
+ *   />
+ *   <SegmentedControlItem
+ *     size="md" color="tonal" text="Grid" icon={IconLayoutGrid}
+ *     isSelected={view === 'grid'} isFocused={focused === 'grid'}
+ *     onClick={() => setView('grid')}
+ *     onFocus={() => setFocused('grid')} onBlur={() => setFocused(null)}
+ *   />
+ * </div>
+ *
+ * // These are just a few ways — feel free to combine props creatively!
+ */
 export interface SegmentedControlItemProps {
   size: 'sm' | 'md' | 'lg'
   color: SegmentedControlColor

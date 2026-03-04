@@ -32,6 +32,41 @@ const ALERT_ICONS: Record<string, React.ComponentType<{ className?: string }>> =
   neutral: IconInfoCircle,
 }
 
+/**
+ * Props for Alert — an inline message block with a colored icon, optional title, optional body,
+ * and an optional dismiss button. Renders with `role="alert"` for screen reader announcements.
+ *
+ * **Variants:** `info` (default, blue tones) | `success` | `warning` | `error` | `neutral`
+ * The matching icon (info circle, checkmark, triangle, alert circle) is auto-selected by variant.
+ *
+ * **Alert vs Banner:** Alert is inline (inside page content). Banner is a full-width notification
+ * strip rendered at the top of a page/section (see `<Banner>`).
+ *
+ * **Dismissible:** Provide `onDismiss` to show an × button. Absence of the prop = non-dismissible.
+ *
+ * @example
+ * // Informational tip inside a settings form:
+ * <Alert title="Tip" variant="info">
+ *   Changes take effect after you save and reload the page.
+ * </Alert>
+ *
+ * @example
+ * // Error feedback after a failed API call (dismissible):
+ * <Alert variant="error" title="Save failed" onDismiss={() => setError(null)}>
+ *   Your changes could not be saved. Please try again.
+ * </Alert>
+ *
+ * @example
+ * // Success confirmation after publishing:
+ * <Alert variant="success" title="Published!">
+ *   Your post is now live and visible to all subscribers.
+ * </Alert>
+ *
+ * @example
+ * // Neutral inline note (no colored intent):
+ * <Alert variant="neutral">This field is auto-populated from your profile.</Alert>
+ * // These are just a few ways — feel free to combine props creatively!
+ */
 export interface AlertProps
   extends React.HTMLAttributes<HTMLDivElement>,
     VariantProps<typeof alertVariants> {

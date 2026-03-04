@@ -27,6 +27,34 @@ const textareaVariants = cva(
   },
 )
 
+/**
+ * Props for Textarea — a resizable multi-line text input with size variants and validation state coloring,
+ * sharing the same `InputState` type as `<Input>`.
+ *
+ * **Sizes:** `sm` (min 60px) | `md` (min 80px, default) | `lg` (min 120px) — all are vertically resizable.
+ *
+ * **Validation states:** `state="error"` | `"warning"` | `"success"` — changes border color and focus ring.
+ * HTML's native `size` attribute is omitted; use `rows` for initial height or CSS `min-height`.
+ *
+ * **Pair with FormField:** Use inside `<FormField>` to get a label, helper text, and associated `state`.
+ *
+ * @example
+ * // Basic description textarea in a form:
+ * <Textarea placeholder="Describe the issue..." rows={4} />
+ *
+ * @example
+ * // Error state when validation fails:
+ * <Textarea state="error" value={bio} onChange={(e) => setBio(e.target.value)} />
+ *
+ * @example
+ * // Large textarea for a full email draft composer:
+ * <Textarea size="lg" placeholder="Write your message..." className="min-h-[200px]" />
+ *
+ * @example
+ * // Read-only view of a previously submitted note:
+ * <Textarea readOnly value={submission.notes} size="md" />
+ * // These are just a few ways — feel free to combine props creatively!
+ */
 export interface TextareaProps
   extends Omit<React.TextareaHTMLAttributes<HTMLTextAreaElement>, 'size'>,
     VariantProps<typeof textareaVariants> {

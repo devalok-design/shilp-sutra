@@ -5,6 +5,10 @@ import * as PopoverPrimitive from '@primitives/react-popover'
 import { IconCheck, IconChevronDown, IconSearch, IconX } from '@tabler/icons-react'
 import { cn } from './lib/utils'
 
+/**
+ * Option shape for a Combobox dropdown item.
+ * `value` must be unique across all options — it is the key used in selection state.
+ */
 export interface ComboboxOption {
   value: string
   label: string
@@ -13,6 +17,52 @@ export interface ComboboxOption {
   disabled?: boolean
 }
 
+/**
+ * Props for Combobox — a searchable single or multi-select dropdown with built-in keyboard
+ * navigation, pill overflow ("+ N more"), and an optional custom option renderer.
+ *
+ * **Single vs multi:** `multiple={false}` (default) — `value` is a `string`. When `multiple={true}`,
+ * `value` is `string[]` and selected items appear as dismissible pills in the trigger.
+ *
+ * **`onChange` signature:** always `(value: string | string[]) => void`. Check `multiple` to determine
+ * which type you'll receive.
+ *
+ * **Custom rendering:** Use `renderOption` to return custom JSX per option (e.g. avatars, badges).
+ *
+ * @example
+ * // Single-select country picker:
+ * <Combobox
+ *   options={[{ value: 'in', label: 'India' }, { value: 'us', label: 'United States' }]}
+ *   value={country}
+ *   onChange={(v) => setCountry(v as string)}
+ *   placeholder="Select country"
+ * />
+ *
+ * @example
+ * // Multi-select tag picker with pill display:
+ * <Combobox
+ *   multiple
+ *   options={tagOptions}
+ *   value={selectedTags}
+ *   onChange={(v) => setSelectedTags(v as string[])}
+ *   placeholder="Select tags..."
+ * />
+ *
+ * @example
+ * // Custom option renderer (user avatars in assignee picker):
+ * <Combobox
+ *   options={users.map(u => ({ value: u.id, label: u.name }))}
+ *   value={assigneeId}
+ *   onChange={(v) => setAssigneeId(v as string)}
+ *   renderOption={(option, selected) => (
+ *     <span className="flex items-center gap-ds-03">
+ *       <Avatar size="xs"><AvatarFallback>{option.label[0]}</AvatarFallback></Avatar>
+ *       {option.label}
+ *     </span>
+ *   )}
+ * />
+ * // These are just a few ways — feel free to combine props creatively!
+ */
 export interface ComboboxProps {
   options: ComboboxOption[]
   value?: string | string[]

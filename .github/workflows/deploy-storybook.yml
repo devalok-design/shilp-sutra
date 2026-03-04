@@ -47,6 +47,9 @@ jobs:
       - name: Lint
         run: pnpm lint
 
+      - name: Check Props exports
+        run: pnpm lint:props
+
       - name: Test
         run: pnpm test
 

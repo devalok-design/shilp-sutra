@@ -58,6 +58,47 @@ const spinnerSizeMap: Record<string, 'sm' | 'md'> = {
   'icon-lg': 'md',
 }
 
+/**
+ * Props for Button — the primary action component with 6 variants, 6 size options, icon slots,
+ * and a built-in loading state that disables interaction and shows a spinner.
+ *
+ * **Variants:** `primary` (pink brand glow, default) | `secondary` (outlined interactive) |
+ * `ghost` (transparent, for toolbars) | `error` (destructive fill) | `error-ghost` (outlined error) |
+ * `link` (underline, inline text actions)
+ *
+ * **Sizes:** `sm` | `md` (default) | `lg` for text buttons;
+ * `icon-sm` | `icon-md` | `icon-lg` for square icon-only buttons (prefer `IconButton` for icon-only).
+ *
+ * **Loading:** When `loading={true}` the button is disabled and aria-busy is set.
+ * Use `loadingPosition` to control where the spinner appears.
+ *
+ * @example
+ * // Primary save action (default variant):
+ * <Button onClick={handleSave}>Save changes</Button>
+ *
+ * @example
+ * // Destructive delete with confirmation icon and loading state:
+ * <Button variant="error" startIcon={<IconTrash />} loading={isDeleting}>
+ *   Delete project
+ * </Button>
+ *
+ * @example
+ * // Ghost toolbar action (compact icon-adjacent button):
+ * <Button variant="ghost" size="sm" startIcon={<IconEdit />}>
+ *   Edit
+ * </Button>
+ *
+ * @example
+ * // Full-width form submit with centered loading spinner:
+ * <Button fullWidth loading={isPending} loadingPosition="center">
+ *   Sign in
+ * </Button>
+ *
+ * @example
+ * // Link variant for inline text actions (renders as a <button>):
+ * <Button variant="link" onClick={openTerms}>View terms of service</Button>
+ * // These are just a few ways — feel free to combine props creatively!
+ */
 export interface ButtonProps
   extends React.ButtonHTMLAttributes<HTMLButtonElement>,
     VariantProps<typeof buttonVariants> {

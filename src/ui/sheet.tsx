@@ -5,6 +5,52 @@ import { IconX } from '@tabler/icons-react'
 
 import { cn } from './lib/utils'
 
+/**
+ * Sheet compound component — accessible sliding panel anchored to a screen edge, with focus trap
+ * and Escape dismissal. Built on the Dialog primitive.
+ *
+ * **Parts (in composition order):**
+ * - `Sheet` — manages open/closed state (this root)
+ * - `SheetTrigger` — element that opens the sheet (use `asChild` to render your own button)
+ * - `SheetContent` — the sliding panel (use `side="right"|"left"|"top"|"bottom"`, default `"right"`)
+ * - `SheetHeader` — optional layout wrapper for title + description
+ * - `SheetTitle` — required for accessibility (sets the sheet's ARIA label)
+ * - `SheetDescription` — optional subtitle text
+ * - `SheetFooter` — optional layout wrapper for action buttons
+ * - `SheetClose` — manual close trigger (a close button is already built into SheetContent)
+ * - `SheetPortal` — low-level portal wrapper (exported for custom layout; used internally by SheetContent)
+ * - `SheetOverlay` — the backdrop element (exported for custom overlay styling)
+ *
+ * @compound
+ *
+ * Note: The `side` prop goes on `SheetContent`, NOT on `Sheet`.
+ * A close button is auto-rendered in the top corner of `SheetContent`.
+ *
+ * @example
+ * // Right-side settings panel (default):
+ * <Sheet>
+ *   <SheetTrigger asChild><Button>Open settings</Button></SheetTrigger>
+ *   <SheetContent>
+ *     <SheetHeader>
+ *       <SheetTitle>Account settings</SheetTitle>
+ *       <SheetDescription>Manage your profile and preferences.</SheetDescription>
+ *     </SheetHeader>
+ *   </SheetContent>
+ * </Sheet>
+ *
+ * @example
+ * // Bottom sheet for a mobile-friendly action drawer:
+ * <Sheet>
+ *   <SheetTrigger asChild><Button variant="ghost">More options</Button></SheetTrigger>
+ *   <SheetContent side="bottom">
+ *     <SheetTitle>Actions</SheetTitle>
+ *     <div className="flex flex-col gap-ds-03 mt-ds-05">
+ *       <Button variant="error-ghost" fullWidth>Delete item</Button>
+ *       <Button variant="secondary" fullWidth>Duplicate</Button>
+ *     </div>
+ *   </SheetContent>
+ * </Sheet>
+ */
 const Sheet = SheetPrimitive.Root
 
 const SheetTrigger = SheetPrimitive.Trigger
@@ -47,6 +93,42 @@ const sheetVariants = cva(
   },
 )
 
+/**
+ * Props for SheetContent — the sliding panel content that appears from one of four screen edges.
+ * Built on the Dialog primitive: accessible, focus-trapped, and dismissible with Escape.
+ *
+ * **`side` variants:** `right` (default, slide from right) | `left` | `top` | `bottom`
+ *
+ * **Usage pattern:** Wrap the whole sheet in `<Sheet>`, add a `<SheetTrigger>`, and put content
+ * inside `<SheetContent>`. Use `<SheetHeader>`, `<SheetTitle>`, and `<SheetDescription>` for
+ * accessible structure. A close button is auto-rendered in the top corner.
+ *
+ * @example
+ * // Right-side settings panel (default):
+ * <Sheet>
+ *   <SheetTrigger asChild><Button>Open settings</Button></SheetTrigger>
+ *   <SheetContent>
+ *     <SheetHeader>
+ *       <SheetTitle>Account settings</SheetTitle>
+ *       <SheetDescription>Manage your profile and preferences.</SheetDescription>
+ *     </SheetHeader>
+ *   </SheetContent>
+ * </Sheet>
+ *
+ * @example
+ * // Bottom sheet for a mobile-friendly action drawer:
+ * <Sheet>
+ *   <SheetTrigger asChild><Button variant="ghost">More options</Button></SheetTrigger>
+ *   <SheetContent side="bottom">
+ *     <SheetTitle>Actions</SheetTitle>
+ *     <div className="flex flex-col gap-ds-03 mt-ds-05">
+ *       <Button variant="error-ghost" fullWidth>Delete item</Button>
+ *       <Button variant="secondary" fullWidth>Duplicate</Button>
+ *     </div>
+ *   </SheetContent>
+ * </Sheet>
+ * // These are just a few ways — feel free to combine props creatively!
+ */
 export interface SheetContentProps
   extends React.ComponentPropsWithoutRef<typeof SheetPrimitive.Content>,
     VariantProps<typeof sheetVariants> {}

@@ -28,6 +28,36 @@ const inputVariants = cva(
   },
 )
 
+/**
+ * Props for Input — a single-line text field with size variants, validation state coloring,
+ * and icon adornments (start/end slots).
+ *
+ * **Sizes:** `sm` (32px) | `md` (40px, default) | `lg` (48px) — note: uses `size` prop not `inputSize`.
+ * HTML's native `size` attribute is excluded — use CSS width instead.
+ *
+ * **Validation states:** `state="error"` colors the border red and sets `aria-invalid`.
+ * Use with `<FormField>` to show helper text below the input.
+ *
+ * **Icon adornments:** `startIcon` and `endIcon` accept any React node (prefer SVG icons at 16px).
+ * The icon is pointer-events-none (decorative); for a clickable end icon use `endIcon` + a sibling button.
+ *
+ * @example
+ * // Basic email field with placeholder:
+ * <Input type="email" placeholder="you@example.com" />
+ *
+ * @example
+ * // Search input with a leading icon:
+ * <Input size="md" startIcon={<IconSearch />} placeholder="Search projects..." />
+ *
+ * @example
+ * // Validated error state (pair with FormField for label + helper text):
+ * <Input state="error" value={email} onChange={handleChange} />
+ *
+ * @example
+ * // Read-only field (shows a muted background, non-editable):
+ * <Input readOnly value="https://devalok.com/api/key/abc123" endIcon={<IconCopy />} />
+ * // These are just a few ways — feel free to combine props creatively!
+ */
 export interface InputProps
   extends Omit<React.InputHTMLAttributes<HTMLInputElement>, 'size'>,
     VariantProps<typeof inputVariants> {

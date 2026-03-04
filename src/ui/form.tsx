@@ -6,10 +6,35 @@ export type FormHelperState = 'helper' | 'error' | 'warning' | 'success'
 type FormFieldContextValue = { state: FormHelperState }
 const FormFieldContext = React.createContext<FormFieldContextValue>({ state: 'helper' })
 
+/**
+ * FormField — vertical flex container that provides validation state to children via React context.
+ *
+ * **Accessibility wiring:** The `helperTextId` prop is informational only — it is NOT automatically
+ * propagated to inputs. Use `getFormFieldA11y(id, state)` to wire `aria-describedby` manually.
+ *
+ * @example
+ * const helperTextId = 'email-error'
+ *
+ * <FormField state="error">
+ *   <Label htmlFor="email">Email</Label>
+ *   <Input
+ *     id="email"
+ *     state="error"
+ *     {...getFormFieldA11y(helperTextId, 'error')}
+ *   />
+ *   <FormHelperText id={helperTextId} state="error">
+ *     Please enter a valid email address.
+ *   </FormHelperText>
+ * </FormField>
+ */
 export interface FormFieldProps extends React.HTMLAttributes<HTMLDivElement> {
-  /** Unique ID for the helper text — link to input via aria-describedby */
+  /**
+   * ID that will be placed on the `FormHelperText` element.
+   * Informational only — does NOT auto-wire `aria-describedby`.
+   * Use `getFormFieldA11y(helperTextId, state)` spread onto the Input instead.
+   */
   helperTextId?: string
-  /** Current validation state — propagated to children via context */
+  /** Current validation state — propagated to child `FormHelperText` via context */
   state?: FormHelperState
 }
 

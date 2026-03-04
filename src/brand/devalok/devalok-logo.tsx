@@ -1,5 +1,23 @@
 import * as React from 'react'
 import { cn } from '../../ui/lib/utils'
+import monogramBrand from '../assets/devalok/logos/monogram-brand.png'
+import monogramBlack from '../assets/devalok/logos/monogram-black.png'
+import monogramWhite from '../assets/devalok/logos/monogram-white.png'
+import monogramWordmarkBrand from '../assets/devalok/logos/monogram-wordmark-brand.png'
+import monogramWordmarkBlack from '../assets/devalok/logos/monogram-wordmark-black.png'
+import monogramWordmarkWhite from '../assets/devalok/logos/monogram-wordmark-white.png'
+import monogramShellBrand from '../assets/devalok/logos/monogram-shell-brand.png'
+import monogramShellBlack from '../assets/devalok/logos/monogram-shell-black.png'
+import monogramShellWhite from '../assets/devalok/logos/monogram-shell-white.png'
+import monogramShellWordmarkBrand from '../assets/devalok/logos/monogram-shell-wordmark-brand.png'
+import monogramShellWordmarkBlack from '../assets/devalok/logos/monogram-shell-wordmark-black.png'
+import monogramShellWordmarkWhite from '../assets/devalok/logos/monogram-shell-wordmark-white.png'
+import monogramCoinWordmarkBrand from '../assets/devalok/logos/monogram-coin-wordmark-brand.png'
+import monogramCoinWordmarkBlack from '../assets/devalok/logos/monogram-coin-wordmark-black.png'
+import monogramCoinWordmarkWhite from '../assets/devalok/logos/monogram-coin-wordmark-white.png'
+import shlokaBrand from '../assets/devalok/logos/shloka-brand.png'
+import shlokaBlack from '../assets/devalok/logos/shloka-black.png'
+import shlokaWhite from '../assets/devalok/logos/shloka-white.png'
 
 // --- Types ---
 
@@ -67,7 +85,7 @@ export function _registerSvg(key: string, component: SvgComponent) {
   svgComponents[key] = component
 }
 
-// --- Static asset types (large SVGs served as <img>) ---
+// --- Static asset types (large PNGs served as <img>) ---
 
 const staticTypes = new Set<DevalokLogoType>([
   'monogram',
@@ -78,11 +96,29 @@ const staticTypes = new Set<DevalokLogoType>([
   'shloka',
 ])
 
+const staticAssets: Record<string, string> = {
+  'monogram-brand': monogramBrand,
+  'monogram-black': monogramBlack,
+  'monogram-white': monogramWhite,
+  'monogram-wordmark-brand': monogramWordmarkBrand,
+  'monogram-wordmark-black': monogramWordmarkBlack,
+  'monogram-wordmark-white': monogramWordmarkWhite,
+  'monogram-shell-brand': monogramShellBrand,
+  'monogram-shell-black': monogramShellBlack,
+  'monogram-shell-white': monogramShellWhite,
+  'monogram-shell-wordmark-brand': monogramShellWordmarkBrand,
+  'monogram-shell-wordmark-black': monogramShellWordmarkBlack,
+  'monogram-shell-wordmark-white': monogramShellWordmarkWhite,
+  'monogram-coin-wordmark-brand': monogramCoinWordmarkBrand,
+  'monogram-coin-wordmark-black': monogramCoinWordmarkBlack,
+  'monogram-coin-wordmark-white': monogramCoinWordmarkWhite,
+  'shloka-brand': shlokaBrand,
+  'shloka-black': shlokaBlack,
+  'shloka-white': shlokaWhite,
+}
+
 function getStaticAssetPath(type: DevalokLogoType, color: string): string {
-  return new URL(
-    `../assets/devalok/logos/${type}-${color}.png`,
-    import.meta.url,
-  ).href
+  return staticAssets[`${type}-${color}`] ?? ''
 }
 
 // --- Utility ---

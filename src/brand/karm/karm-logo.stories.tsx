@@ -1,5 +1,5 @@
 import type { Meta, StoryObj } from '@storybook/react'
-import { KarmLogo } from './karm-logo'
+import { KarmLogo } from '.'
 
 const meta: Meta<typeof KarmLogo> = {
   title: 'Brand/Karm/Logo',

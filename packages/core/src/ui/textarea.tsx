@@ -65,6 +65,7 @@ const Textarea = React.forwardRef<HTMLTextAreaElement, TextareaProps>(
   ({ className, state, size, ...props }, ref) => {
     return (
       <textarea
+        aria-invalid={state === 'error' || undefined}
         className={cn(
           textareaVariants({ size }),
           state === 'error' && 'border-border-error focus-visible:ring-error',

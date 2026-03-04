@@ -82,7 +82,7 @@ export default tseslint.config(
     files: ['packages/core/src/ui/**/*.{ts,tsx}'],
     rules: {
       'no-restricted-imports': [
-        'warn',
+        'error',
         {
           patterns: [
             { group: ['**/composed/*', '**/composed'], message: 'ui/ must not import from composed/' },
@@ -98,7 +98,7 @@ export default tseslint.config(
     files: ['packages/core/src/composed/**/*.{ts,tsx}'],
     rules: {
       'no-restricted-imports': [
-        'warn',
+        'error',
         {
           patterns: [
             { group: ['**/karm/*', '**/karm'], message: 'composed/ must not import from karm/' },
@@ -112,7 +112,7 @@ export default tseslint.config(
     files: ['packages/core/src/shell/**/*.{ts,tsx}'],
     rules: {
       'no-restricted-imports': [
-        'warn',
+        'error',
         {
           patterns: [
             { group: ['**/karm/*', '**/karm'], message: 'shell/ must not import from karm/' },
@@ -126,7 +126,7 @@ export default tseslint.config(
     files: ['packages/karm/src/**/*.{ts,tsx}'],
     rules: {
       'no-restricted-imports': [
-        'warn',
+        'error',
         {
           patterns: [
             { group: ['**/primitives/_internal/*', '**/primitives/_internal'], message: 'karm/ must not import from primitives/_internal/' },

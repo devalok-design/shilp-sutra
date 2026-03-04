@@ -21,6 +21,10 @@
       "import": "./dist/shell/index.js",
       "types": "./dist/shell/index.d.ts"
     },
+    "./hooks": {
+      "import": "./dist/hooks/index.js",
+      "types": "./dist/hooks/index.d.ts"
+    },
     "./tailwind": {
       "import": "./dist/tailwind/index.js",
       "types": "./dist/tailwind/index.d.ts"

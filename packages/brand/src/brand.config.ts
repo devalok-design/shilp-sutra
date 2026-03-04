@@ -1,4 +1,4 @@
-export const BRAND_VERSION = '1.0.0'
+export const BRAND_VERSION = '0.1.0'
 
 export const brandConfig = {
   devalok: {

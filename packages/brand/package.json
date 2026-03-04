@@ -28,7 +28,8 @@
   ],
   "scripts": {
     "build": "vite build && node scripts/copy-assets.mjs",
-    "typecheck": "tsc --noEmit"
+    "typecheck": "tsc --noEmit",
+    "lint": "eslint src/"
   },
   "peerDependencies": {
     "react": "^18 || ^19",

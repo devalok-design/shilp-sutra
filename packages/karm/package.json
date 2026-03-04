@@ -43,7 +43,8 @@
   ],
   "scripts": {
     "build": "vite build",
-    "typecheck": "tsc --noEmit"
+    "typecheck": "tsc --noEmit",
+    "lint": "eslint src/"
   },
   "peerDependencies": {
     "@devalok/shilp-sutra": ">=0.1.0",

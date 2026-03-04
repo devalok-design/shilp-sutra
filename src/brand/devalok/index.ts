@@ -1,5 +1,3 @@
-import './svg-components'
-
 export {
   DevalokLogo,
   DevalokLogoLink,

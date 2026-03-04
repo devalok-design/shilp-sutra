@@ -1,5 +1,4 @@
 import * as React from 'react'
-import { _registerSvg } from './devalok-logo'
 
 const BRAND = '#D33163'
 const BLACK = '#000000'
@@ -96,19 +95,22 @@ const chakraPaths = (fill: string) => (
   />
 )
 
-// --- Register all components ---
+type SvgComponent = React.ForwardRefExoticComponent<
+  React.SVGAttributes<SVGSVGElement> & React.RefAttributes<SVGSVGElement>
+>
 
-// Wordmark (3 colors)
-_registerSvg('wordmark-brand', createSvgComponent('WordmarkBrand', '0 0 2089.68 830.34', wordmarkPaths, BRAND))
-_registerSvg('wordmark-black', createSvgComponent('WordmarkBlack', '0 0 2089.68 830.34', wordmarkPaths, BLACK))
-_registerSvg('wordmark-white', createSvgComponent('WordmarkWhite', '0 0 2089.68 830.34', wordmarkPaths, WHITE))
+const _devalokSvgComponents: Record<string, SvgComponent> = {
+  'wordmark-brand': createSvgComponent('WordmarkBrand', '0 0 2089.68 830.34', wordmarkPaths, BRAND),
+  'wordmark-black': createSvgComponent('WordmarkBlack', '0 0 2089.68 830.34', wordmarkPaths, BLACK),
+  'wordmark-white': createSvgComponent('WordmarkWhite', '0 0 2089.68 830.34', wordmarkPaths, WHITE),
+  'dass-brand': createSvgComponent('DassBrand', '0 0 2087.16 976.24', dassPaths, BRAND),
+  'dass-black': createSvgComponent('DassBlack', '0 0 2087.16 976.24', dassPaths, BLACK),
+  'dass-white': createSvgComponent('DassWhite', '0 0 2087.16 976.24', dassPaths, WHITE),
+  'chakra-brand': createSvgComponent('ChakraBrand', '0 0 32 32', chakraPaths, BRAND),
+  'chakra-black': createSvgComponent('ChakraBlack', '0 0 32 32', chakraPaths, BLACK),
+  'chakra-white': createSvgComponent('ChakraWhite', '0 0 32 32', chakraPaths, WHITE),
+}
 
-// Dass (3 colors)
-_registerSvg('dass-brand', createSvgComponent('DassBrand', '0 0 2087.16 976.24', dassPaths, BRAND))
-_registerSvg('dass-black', createSvgComponent('DassBlack', '0 0 2087.16 976.24', dassPaths, BLACK))
-_registerSvg('dass-white', createSvgComponent('DassWhite', '0 0 2087.16 976.24', dassPaths, WHITE))
-
-// Chakra (3 colors)
-_registerSvg('chakra-brand', createSvgComponent('ChakraBrand', '0 0 32 32', chakraPaths, BRAND))
-_registerSvg('chakra-black', createSvgComponent('ChakraBlack', '0 0 32 32', chakraPaths, BLACK))
-_registerSvg('chakra-white', createSvgComponent('ChakraWhite', '0 0 32 32', chakraPaths, WHITE))
+export function getDevalokSvgComponents(): Record<string, SvgComponent> {
+  return _devalokSvgComponents
+}

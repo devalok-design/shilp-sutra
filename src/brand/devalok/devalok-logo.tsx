@@ -1,5 +1,6 @@
 import * as React from 'react'
 import { cn } from '../../ui/lib/utils'
+import { getDevalokSvgComponents } from './svg-components'
 import monogramBrand from '../assets/devalok/logos/monogram-brand.png'
 import monogramBlack from '../assets/devalok/logos/monogram-black.png'
 import monogramWhite from '../assets/devalok/logos/monogram-white.png'
@@ -72,15 +73,15 @@ const pxMap: Record<DevalokLogoSize, number> = {
   xl: 80,
 }
 
-// --- SVG Registration (for inline-able types: wordmark, dass) ---
+// --- SVG lookup (wordmark, dass, chakra rendered inline) ---
 
 type SvgComponent = React.ForwardRefExoticComponent<
   React.SVGAttributes<SVGSVGElement> & React.RefAttributes<SVGSVGElement>
 >
 
-const svgComponents: Record<string, SvgComponent> = {}
+const svgComponents: Record<string, SvgComponent> = { ...getDevalokSvgComponents() }
 
-/** Register an inline SVG component for a given type-color combination */
+/** Register an additional inline SVG component for a given type-color combination */
 export function _registerSvg(key: string, component: SvgComponent) {
   svgComponents[key] = component
 }

@@ -99,6 +99,13 @@ export { Tooltip, TooltipTrigger, TooltipContent, TooltipProvider } from './tool
 export { Popover, PopoverTrigger, PopoverContent, PopoverAnchor } from './popover'
 export { HoverCard, HoverCardTrigger, HoverCardContent } from './hover-card'
 export { Collapsible, CollapsibleTrigger, CollapsibleContent } from './collapsible'
+// ---------------------------------------------------------------------------
+// Notifications — pick the right one:
+//   Alert   — inline, static feedback within a form or page section (no user action needed to show)
+//   Banner  — persistent, page-level notice shown above main content (survives navigation)
+//   Toast   — imperative, transient, action-triggered (fires on user action, auto-dismisses)
+//             Requires <Toaster /> mounted once at layout root + useToast() hook or toast() function
+// ---------------------------------------------------------------------------
 export { Alert, alertVariants, type AlertProps } from './alert'
 export { Banner, bannerVariants, type BannerProps } from './banner'
 export { Spinner, type SpinnerProps } from './spinner'

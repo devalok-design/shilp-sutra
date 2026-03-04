@@ -71,12 +71,11 @@ export const DashboardSkeleton = React.forwardRef<HTMLDivElement>(
         </div>
 
         {/* Main Content Section */}
-        <div className="flex w-full flex-col rounded-ds-lg bg-layer-02 md:p-0 md:p-ds-06 max-md:bg-transparent">
+        <div className="flex w-full flex-col rounded-ds-lg bg-layer-02 md:p-ds-06 max-md:bg-transparent">
           {/* User Groups Section */}
           <div className="no-scrollbar w-full cursor-grab overflow-x-auto active:cursor-grabbing max-md:pb-ds-05">
             <div
-              className="items-flex-start flex flex-row justify-start gap-ds-04 px-0 pt-ds-03 md:gap-0 md:px-ds-06"
-              style={{ minWidth: 'max-content' }}
+              className="flex items-start justify-start gap-ds-04 px-0 pt-ds-03 md:gap-0 md:px-ds-06 min-w-max"
             >
               {Array.from({ length: 3 }).map((_, index) => (
                 <div

@@ -201,7 +201,7 @@ const TreeItem = React.forwardRef<HTMLLIElement, TreeItemProps>(
           <div
             role="group"
             className={cn(
-              'grid transition-[grid-template-rows] duration-moderate-02-02 ease-productive-standard',
+              'grid transition-[grid-template-rows] duration-moderate-02 ease-productive-standard',
               isExpanded ? 'grid-rows-[1fr]' : 'grid-rows-[0fr]',
             )}
           >

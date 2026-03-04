@@ -339,7 +339,7 @@ const BreakAdminRoot = React.forwardRef<HTMLDivElement, BreakAdminProps>(
                     ? 'Attendance correction'
                     : 'Break request'}{' '}
                 </span>
-                <span style={{ color: 'var(--color-success-text)' }}>
+                <span className="text-success-text">
                   approved successfully
                 </span>
               </>
@@ -399,7 +399,7 @@ const BreakAdminRoot = React.forwardRef<HTMLDivElement, BreakAdminProps>(
                     ? 'Attendance correction'
                     : 'Break request'}{' '}
                 </span>
-                <span style={{ color: 'var(--color-error-text)' }}>
+                <span className="text-error-text">
                   rejected
                 </span>
               </>
@@ -436,33 +436,62 @@ const BreakAdminRoot = React.forwardRef<HTMLDivElement, BreakAdminProps>(
     // Context value (memoized)
     // ============================================================
 
-    const contextValue: BreakAdminContextValue = {
-      currentUser,
-      activeTab,
-      setActiveTab,
-      isProcessing,
-      breaks,
-      pendingRequests,
-      cashoutRequests: _cashoutRequests,
-      breakBalanceData,
-      breakBalance,
-      userImages,
-      users,
-      existingBreaks,
-      filters,
-      handleFilterChange,
-      handleApproveRequest,
-      handleRejectRequest,
-      acceptedCommentBox,
-      rejectedCommentBox,
-      setAcceptedCommentBox,
-      setRejectedCommentBox,
-      onRefresh,
-      onSaveBreak,
-      onDeleteBreak,
-      onSaveBalance,
-      onFetchMonthBreaks,
-    }
+    const contextValue: BreakAdminContextValue = useMemo(
+      () => ({
+        currentUser,
+        activeTab,
+        setActiveTab,
+        isProcessing,
+        breaks,
+        pendingRequests,
+        cashoutRequests: _cashoutRequests,
+        breakBalanceData,
+        breakBalance,
+        userImages,
+        users,
+        existingBreaks,
+        filters,
+        handleFilterChange,
+        handleApproveRequest,
+        handleRejectRequest,
+        acceptedCommentBox,
+        rejectedCommentBox,
+        setAcceptedCommentBox,
+        setRejectedCommentBox,
+        onRefresh,
+        onSaveBreak,
+        onDeleteBreak,
+        onSaveBalance,
+        onFetchMonthBreaks,
+      }),
+      [
+        currentUser,
+        activeTab,
+        setActiveTab,
+        isProcessing,
+        breaks,
+        pendingRequests,
+        _cashoutRequests,
+        breakBalanceData,
+        breakBalance,
+        userImages,
+        users,
+        existingBreaks,
+        filters,
+        handleFilterChange,
+        handleApproveRequest,
+        handleRejectRequest,
+        acceptedCommentBox,
+        rejectedCommentBox,
+        setAcceptedCommentBox,
+        setRejectedCommentBox,
+        onRefresh,
+        onSaveBreak,
+        onDeleteBreak,
+        onSaveBalance,
+        onFetchMonthBreaks,
+      ],
+    )
 
     // ============================================================
     // Render

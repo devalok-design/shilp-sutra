@@ -156,7 +156,7 @@ function AttendanceEditDialog({
       <DialogHeader>
         <div className="text-ds-md text-text-tertiary">
           Edit attendance of{' '}
-          <span className="text-ds-md font-bold font-semibold text-interactive">
+          <span className="text-ds-md font-semibold text-interactive">
             {selectedAssociate.name}
           </span>
         </div>

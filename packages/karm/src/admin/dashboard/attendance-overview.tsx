@@ -124,8 +124,7 @@ export const AttendanceOverview = React.forwardRef<HTMLDivElement, AttendanceOve
       }}
     >
       <div
-        className="items-flex-start flex flex-row justify-start gap-ds-04 px-0 pt-ds-03 md:gap-0 md:px-ds-06"
-        style={{ minWidth: 'max-content' }}
+        className="flex items-start justify-start gap-ds-04 px-0 pt-ds-03 md:gap-0 md:px-ds-06 min-w-max"
       >
         {isFutureDate ? (
           <div className="min-h-28">

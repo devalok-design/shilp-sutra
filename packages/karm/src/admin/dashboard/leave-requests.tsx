@@ -321,7 +321,7 @@ export const LeaveRequests = React.forwardRef<HTMLDivElement, LeaveRequestsProps
                 <button
                   disabled={interaction.isProcessing}
                   onClick={() => handleRequestSubmit(request, interaction.activeAction)}
-                  className="my-auto flex hidden items-center justify-center rounded-ds-full p-ds-03"
+                  className="my-auto flex items-center justify-center rounded-ds-full p-ds-03"
                 >
                   <SendIcon className="h-ico-lg w-ico-lg" />
                 </button>

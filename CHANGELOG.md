@@ -41,6 +41,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Hardcoded font family in `leave-request.tsx`
 - `window.confirm()` anti-pattern replaced with callback prop in TaskProperties
 - `cn()` pattern fix in DailyBrief (template literal → cn utility)
+- **Tabs** `TabsListContext` type error — `VariantProps` null handling with explicit coalescing
+- **Toaster stories** updated stale `destructive`/`karam` variant references to `error`/`success`
 
 ### Changed
 - Added `forwardRef` to 17 components per CONTRIBUTING.md checklist
@@ -51,8 +53,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Replaced ~100 raw half-step spacing values with `ds-*` tokens (0.5→ds-01, 1.5→ds-02b, 2.5→ds-03, 3.5→ds-04)
 - Replaced `p-[10px]` with `p-ds-03` in admin tables (15 instances)
 - Replaced raw `h-10`/`w-10` → `h-ds-md`/`w-ds-md`, `w-12` → `w-ds-lg` across components
-- Replaced viewport calc heights with flex overflow pattern in admin dashboard (4 files)
-- Replaced 6 arbitrary `shadow-[...]` with `ring-2 ring-inset ring-interactive`/`ring-accent`
+- Breadcrumb separator icons `h-3.5 w-3.5` → `h-ico-sm w-ico-sm` (icon token alignment)
+- Progress bar `h-1.5` → `h-ds-02b` (exact 6px match)
 - Stack `gap` prop type-restricted to `SpacingToken` union (15 ds-* values only)
 - Documented intentional arbitrary pixel values in karm/admin (10 comments)
 

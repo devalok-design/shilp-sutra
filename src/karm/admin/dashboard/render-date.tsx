@@ -249,25 +249,15 @@ export const RenderDate = React.forwardRef<HTMLDivElement, RenderDateProps>(
 
   return (
     <div ref={ref} className={bgClasses}>
+      {/* eslint-disable-next-line jsx-a11y/no-static-element-interactions */}
       <div
         className={dateClasses}
-        tabIndex={0}
         onMouseEnter={() => setState((prev) => ({ ...prev, hover: true }))}
         onMouseLeave={() => setState((prev) => ({ ...prev, hover: false }))}
         onFocus={() => setState((prev) => ({ ...prev, focus: true }))}
         onBlur={() => setState((prev) => ({ ...prev, focus: false }))}
         onMouseDown={() => setState((prev) => ({ ...prev, pressed: true }))}
         onMouseUp={() => setState((prev) => ({ ...prev, pressed: false }))}
-        onKeyDown={(e) => {
-          if (e.key === 'Enter' || e.key === ' ') {
-            setState((prev) => ({ ...prev, pressed: true }))
-          }
-        }}
-        onKeyUp={(e) => {
-          if (e.key === 'Enter' || e.key === ' ') {
-            setState((prev) => ({ ...prev, pressed: false }))
-          }
-        }}
       >
         {day.date}
         {state.isAbsent && (

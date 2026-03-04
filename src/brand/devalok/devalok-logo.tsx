@@ -22,7 +22,7 @@ import shlokaWhite from '../assets/devalok/logos/shloka-white.png'
 
 // --- Types ---
 
-const logoTypes = [
+const _logoTypes = [
   'monogram',
   'monogram-wordmark',
   'monogram-shell',
@@ -34,7 +34,7 @@ const logoTypes = [
   'chakra',
 ] as const
 
-export type DevalokLogoType = (typeof logoTypes)[number]
+export type DevalokLogoType = (typeof _logoTypes)[number]
 export type DevalokLogoColor = 'brand' | 'black' | 'white' | 'auto'
 export type DevalokLogoSize = 'xs' | 'sm' | 'md' | 'lg' | 'xl'
 

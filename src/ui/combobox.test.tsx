@@ -136,7 +136,7 @@ describe('Combobox', () => {
     render(<Combobox options={fruits} onChange={onChange} />)
 
     await user.click(screen.getByRole('combobox'))
-    const searchInput = screen.getByPlaceholderText('Search...')
+    screen.getByPlaceholderText('Search...')
 
     await user.keyboard('{ArrowDown}')
     await user.keyboard('{ArrowDown}')

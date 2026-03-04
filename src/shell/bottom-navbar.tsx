@@ -123,13 +123,23 @@ const BottomNavbar = React.forwardRef<HTMLElement, BottomNavbarProps>(
         {/* More Menu Overlay */}
         {showMore && (
         <div
+          role="button"
+          tabIndex={0}
           className="fixed inset-0 z-overlay md:hidden"
           onClick={() => setShowMore(false)}
+          onKeyDown={(e) => {
+            if (e.key === 'Enter' || e.key === ' ') {
+              e.preventDefault()
+              setShowMore(false)
+            }
+          }}
         >
           <div className="absolute inset-0 bg-overlay" />
+          {/* eslint-disable-next-line jsx-a11y/no-static-element-interactions -- stopPropagation prevents closing when clicking inside menu */}
           <div
             className="absolute bottom-[72px] left-0 right-0 rounded-t-ds-2xl border-t border-border bg-layer-01 p-ds-05 pb-ds-03"
             onClick={(e) => e.stopPropagation()}
+            onKeyDown={(e) => e.stopPropagation()}
           >
             <div className="mb-ds-04 flex items-center justify-between">
               <span className="text-ds-md font-semibold text-text-primary">

@@ -132,6 +132,7 @@ export const BoardColumn = React.forwardRef<HTMLDivElement, BoardColumnProps>(
     >
       {/* Column Header */}
       <div className="flex items-center gap-ds-03 px-ds-04 py-ds-04">
+        {/* eslint-disable jsx-a11y/no-autofocus -- intentional: input appears after user double-clicks to rename column */}
         {isEditing ? (
           <Input
             ref={editInputRef}
@@ -153,6 +154,7 @@ export const BoardColumn = React.forwardRef<HTMLDivElement, BoardColumnProps>(
             {column.name}
           </h3>
         )}
+        {/* eslint-enable jsx-a11y/no-autofocus */}
 
         <span className="flex h-5 min-w-[20px] items-center justify-center rounded-ds-full bg-field px-ds-02b text-ds-sm font-medium text-text-tertiary">
           {column.tasks.length}
@@ -256,6 +258,7 @@ export const BoardColumn = React.forwardRef<HTMLDivElement, BoardColumnProps>(
       {/* Quick-add input */}
       {isAdding ? (
         <div className="border-t border-border-subtle p-ds-03">
+          {/* eslint-disable jsx-a11y/no-autofocus -- intentional: input appears after user clicks "Add task" */}
           <Input
             ref={inputRef}
             value={newTitle}
@@ -268,6 +271,7 @@ export const BoardColumn = React.forwardRef<HTMLDivElement, BoardColumnProps>(
             className="h-ds-sm text-ds-md"
             autoFocus
           />
+          {/* eslint-enable jsx-a11y/no-autofocus */}
           <div className="mt-ds-02b flex items-center gap-ds-02">
             <Button
               size="sm"

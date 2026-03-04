@@ -440,6 +440,7 @@ const TaskProperties = React.forwardRef<HTMLDivElement, TaskPropertiesProps>(
           {!readOnly && (
             showLabelInput ? (
               <div className="inline-flex items-center gap-ds-02">
+                {/* eslint-disable jsx-a11y/no-autofocus -- intentional: input appears after user clicks "+" to add label */}
                 <input
                   type="text"
                   value={labelInput}
@@ -456,6 +457,7 @@ const TaskProperties = React.forwardRef<HTMLDivElement, TaskPropertiesProps>(
                   className="h-5 w-20 rounded border border-border bg-transparent px-ds-02b text-ds-sm text-text-primary outline-none placeholder:text-text-placeholder focus:border-border-subtle"
                   autoFocus
                 />
+                {/* eslint-enable jsx-a11y/no-autofocus */}
               </div>
             ) : (
               <button

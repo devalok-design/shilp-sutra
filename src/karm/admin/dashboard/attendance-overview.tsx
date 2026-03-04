@@ -110,6 +110,7 @@ export const AttendanceOverview = React.forwardRef<HTMLDivElement, AttendanceOve
   }
 
   return (
+    // eslint-disable-next-line jsx-a11y/no-static-element-interactions -- drag-to-scroll UX enhancement on scrollable container
     <div
       ref={mergedRef}
       className="hide-scrollbar w-full cursor-grab overflow-x-auto active:cursor-grabbing max-md:pb-ds-05"

@@ -103,7 +103,7 @@ describe('SearchInput', () => {
   })
 
   it('shows loading spinner instead of clear button when loading', () => {
-    const { container } = render(
+    render(
       <SearchInput
         placeholder="Search"
         value="query"
@@ -118,9 +118,9 @@ describe('SearchInput', () => {
 
   it('has no a11y violations', async () => {
     const { container } = render(
-      <label>
+      <label htmlFor="search-a11y">
         Search
-        <SearchInput placeholder="Search..." />
+        <SearchInput id="search-a11y" placeholder="Search..." />
       </label>,
     )
     const results = await axe(container)

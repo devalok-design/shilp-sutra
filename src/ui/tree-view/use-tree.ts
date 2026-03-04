@@ -17,11 +17,13 @@ interface UseTreeOptions {
 }
 
 export function useTree(options: UseTreeOptions = {}) {
+  const { defaultExpanded, defaultSelected, multiSelect, onSelect, onExpand } = options
+
   const [expanded, setExpanded] = useState<Set<string>>(
-    new Set(options.defaultExpanded ?? []),
+    new Set(defaultExpanded ?? []),
   )
   const [selected, setSelected] = useState<Set<string>>(
-    new Set(options.defaultSelected ?? []),
+    new Set(defaultSelected ?? []),
   )
 
   const toggle = useCallback(
@@ -30,29 +32,29 @@ export function useTree(options: UseTreeOptions = {}) {
         const next = new Set(prev)
         if (next.has(id)) next.delete(id)
         else next.add(id)
-        options.onExpand?.(Array.from(next))
+        onExpand?.(Array.from(next))
         return next
       })
     },
-    [options.onExpand],
+    [onExpand],
   )
 
   const select = useCallback(
     (id: string, event?: React.MouseEvent) => {
       setSelected((prev) => {
         let next: Set<string>
-        if (options.multiSelect && event?.ctrlKey) {
+        if (multiSelect && event?.ctrlKey) {
           next = new Set(prev)
           if (next.has(id)) next.delete(id)
           else next.add(id)
         } else {
           next = new Set([id])
         }
-        options.onSelect?.(Array.from(next))
+        onSelect?.(Array.from(next))
         return next
       })
     },
-    [options.multiSelect, options.onSelect],
+    [multiSelect, onSelect],
   )
 
   return {

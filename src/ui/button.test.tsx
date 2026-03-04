@@ -65,7 +65,7 @@ describe('Button', () => {
         Text
       </Button>,
     )
-    const button = screen.getByRole('button')
+    screen.getByRole('button')
     expect(screen.getByTestId('start')).toBeInTheDocument()
     expect(screen.getByTestId('end')).toBeInTheDocument()
   })

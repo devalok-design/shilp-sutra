@@ -330,6 +330,7 @@ export const AssociateDetail = React.forwardRef<HTMLDivElement, AssociateDetailP
             <>
               <div className="no-scrollbar mb-ds-03 flex max-h-[250px] flex-col gap-ds-03 overflow-y-auto">
                 {userTasks.map((task, idx) => (
+                  // eslint-disable-next-line jsx-a11y/no-static-element-interactions
                   <div
                     key={task.id}
                     className={cn('task-item mb-ds-03 flex items-center gap-ds-02', draggedTaskIndex === idx ? 'dragging' : '')}

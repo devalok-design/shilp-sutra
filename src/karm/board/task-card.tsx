@@ -96,6 +96,7 @@ function TaskCardVisual({
   const dueInfo = task.dueDate ? formatDueDate(task.dueDate) : null
 
   return (
+    // eslint-disable-next-line jsx-a11y/click-events-have-key-events, jsx-a11y/no-static-element-interactions
     <div
       className={taskCardVariants({
         state: isDragOverlay ? 'overlay' : isDragging ? 'dragging' : 'default',

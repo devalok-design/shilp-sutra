@@ -255,11 +255,11 @@ export default function NotificationPreferences({
           </DialogHeader>
           <div className="flex flex-col gap-ds-05 pt-ds-03">
             <div className="flex flex-col gap-ds-02b">
-              <label className="text-ds-sm font-medium text-text-secondary">
+              <label htmlFor="pref-scope" className="text-ds-sm font-medium text-text-secondary">
                 Scope
               </label>
               <Select value={newProjectId} onValueChange={setNewProjectId}>
-                <SelectTrigger>
+                <SelectTrigger id="pref-scope">
                   <SelectValue placeholder="Select scope" />
                 </SelectTrigger>
                 <SelectContent>
@@ -276,11 +276,11 @@ export default function NotificationPreferences({
             </div>
 
             <div className="flex flex-col gap-ds-02b">
-              <label className="text-ds-sm font-medium text-text-secondary">
+              <label htmlFor="pref-channel" className="text-ds-sm font-medium text-text-secondary">
                 Channel
               </label>
               <Select value={newChannel} onValueChange={setNewChannel}>
-                <SelectTrigger>
+                <SelectTrigger id="pref-channel">
                   <SelectValue />
                 </SelectTrigger>
                 <SelectContent>
@@ -291,11 +291,11 @@ export default function NotificationPreferences({
             </div>
 
             <div className="flex flex-col gap-ds-02b">
-              <label className="text-ds-sm font-medium text-text-secondary">
+              <label htmlFor="pref-min-tier" className="text-ds-sm font-medium text-text-secondary">
                 Minimum Tier
               </label>
               <Select value={newMinTier} onValueChange={setNewMinTier}>
-                <SelectTrigger>
+                <SelectTrigger id="pref-min-tier">
                   <SelectValue />
                 </SelectTrigger>
                 <SelectContent>
@@ -309,10 +309,10 @@ export default function NotificationPreferences({
             </div>
 
             <div className="flex items-center justify-between">
-              <label className="text-ds-md text-text-primary">
+              <label htmlFor="pref-muted" className="text-ds-md text-text-primary">
                 Mute this channel
               </label>
-              <Switch checked={newMuted} onCheckedChange={setNewMuted} />
+              <Switch id="pref-muted" checked={newMuted} onCheckedChange={setNewMuted} />
             </div>
 
             <div className="flex justify-end gap-ds-03 pt-ds-03">

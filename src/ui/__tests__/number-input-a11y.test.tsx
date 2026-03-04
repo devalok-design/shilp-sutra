@@ -6,6 +6,7 @@ import { NumberInput } from '../number-input'
 describe('NumberInput accessibility', () => {
   it('should have no violations with an implicit label wrapper', async () => {
     const { container } = render(
+      // eslint-disable-next-line jsx-a11y/label-has-associated-control
       <label>
         Quantity
         <NumberInput value={5} onChange={() => {}} />
@@ -17,6 +18,7 @@ describe('NumberInput accessibility', () => {
 
   it('should have no violations when disabled', async () => {
     const { container } = render(
+      // eslint-disable-next-line jsx-a11y/label-has-associated-control
       <label>
         Quantity
         <NumberInput value={0} onChange={() => {}} disabled />
@@ -28,6 +30,7 @@ describe('NumberInput accessibility', () => {
 
   it('should have no violations with min and max bounds', async () => {
     const { container } = render(
+      // eslint-disable-next-line jsx-a11y/label-has-associated-control
       <label>
         Rating
         <NumberInput value={3} onChange={() => {}} min={0} max={10} />

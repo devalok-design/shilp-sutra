@@ -4,6 +4,64 @@ import { IconCheck, IconChevronRight, IconCircle } from '@tabler/icons-react'
 
 import { cn } from './lib/utils'
 
+/**
+ * DropdownMenu compound component — accessible floating menu triggered by a button, with full
+ * keyboard navigation and focus management.
+ *
+ * **Parts (in composition order):**
+ * - `DropdownMenu` — manages open/closed state (this root)
+ * - `DropdownMenuTrigger` — element that opens the menu (use `asChild` to render your own button)
+ * - `DropdownMenuContent` — the floating menu panel (renders in a portal automatically)
+ * - `DropdownMenuItem` — clickable menu item (use `onSelect` for actions)
+ * - `DropdownMenuCheckboxItem` — item with a checkbox indicator
+ * - `DropdownMenuRadioGroup` — wraps radio items for exclusive selection
+ * - `DropdownMenuRadioItem` — item with a radio indicator (must be inside `DropdownMenuRadioGroup`)
+ * - `DropdownMenuSub` — root for a nested submenu
+ * - `DropdownMenuSubTrigger` — item that reveals a submenu on hover/focus
+ * - `DropdownMenuSubContent` — the nested submenu panel
+ * - `DropdownMenuLabel` — non-interactive group label (not selectable)
+ * - `DropdownMenuSeparator` — horizontal divider between sections
+ * - `DropdownMenuShortcut` — right-aligned keyboard shortcut hint text (display only)
+ * - `DropdownMenuGroup` — semantic grouping wrapper (no visual output)
+ *
+ * @example
+ * // Standard action menu:
+ * <DropdownMenu>
+ *   <DropdownMenuTrigger asChild>
+ *     <Button variant="ghost" size="icon"><IconDotsVertical /></Button>
+ *   </DropdownMenuTrigger>
+ *   <DropdownMenuContent align="end">
+ *     <DropdownMenuLabel>My account</DropdownMenuLabel>
+ *     <DropdownMenuSeparator />
+ *     <DropdownMenuItem>
+ *       <IconUser className="mr-ds-03" />Profile
+ *       <DropdownMenuShortcut>⌘P</DropdownMenuShortcut>
+ *     </DropdownMenuItem>
+ *     <DropdownMenuItem>Settings</DropdownMenuItem>
+ *     <DropdownMenuSeparator />
+ *     <DropdownMenuItem className="text-error">Sign out</DropdownMenuItem>
+ *   </DropdownMenuContent>
+ * </DropdownMenu>
+ *
+ * @example
+ * // Menu with checkbox items and a nested submenu:
+ * <DropdownMenu>
+ *   <DropdownMenuTrigger asChild><Button>View options</Button></DropdownMenuTrigger>
+ *   <DropdownMenuContent>
+ *     <DropdownMenuCheckboxItem checked={showPanel} onCheckedChange={setShowPanel}>
+ *       Show side panel
+ *     </DropdownMenuCheckboxItem>
+ *     <DropdownMenuSeparator />
+ *     <DropdownMenuSub>
+ *       <DropdownMenuSubTrigger>More tools</DropdownMenuSubTrigger>
+ *       <DropdownMenuSubContent>
+ *         <DropdownMenuItem>Export CSV</DropdownMenuItem>
+ *         <DropdownMenuItem>Export PDF</DropdownMenuItem>
+ *       </DropdownMenuSubContent>
+ *     </DropdownMenuSub>
+ *   </DropdownMenuContent>
+ * </DropdownMenu>
+ */
 const DropdownMenu = DropdownMenuPrimitive.Root
 
 const DropdownMenuTrigger = DropdownMenuPrimitive.Trigger

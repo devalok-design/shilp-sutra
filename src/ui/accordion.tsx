@@ -4,6 +4,50 @@ import { IconChevronDown } from '@tabler/icons-react'
 
 import { cn } from './lib/utils'
 
+/**
+ * Accordion compound component — vertically stacked, collapsible content sections.
+ *
+ * **Parts (in composition order):**
+ * - `Accordion` — root; controls single vs. multiple open panels (this root)
+ * - `AccordionItem` — individual collapsible section (requires `value` prop)
+ * - `AccordionTrigger` — the clickable header row (chevron icon auto-renders and rotates)
+ * - `AccordionContent` — the collapsible body revealed when the item is open
+ *
+ * **`type` prop (required on root):**
+ * - `"single"` — only one panel open at a time (use with `defaultValue` or `value`/`onValueChange`)
+ * - `"multiple"` — multiple panels can be open simultaneously (use with `defaultValue` or `value`/`onValueChange` as arrays)
+ *
+ * @example
+ * // Single-open FAQ accordion:
+ * <Accordion type="single" defaultValue="item-1" collapsible>
+ *   <AccordionItem value="item-1">
+ *     <AccordionTrigger>What is Shilp Sutra?</AccordionTrigger>
+ *     <AccordionContent>
+ *       A React design system built for Next.js App Router, with full accessibility baked in.
+ *     </AccordionContent>
+ *   </AccordionItem>
+ *   <AccordionItem value="item-2">
+ *     <AccordionTrigger>Is dark mode supported?</AccordionTrigger>
+ *     <AccordionContent>
+ *       Yes — add the <code>.dark</code> class to the root element to activate it.
+ *     </AccordionContent>
+ *   </AccordionItem>
+ * </Accordion>
+ *
+ * @example
+ * // Multiple-open controlled accordion:
+ * const [open, setOpen] = useState<string[]>(['billing'])
+ * <Accordion type="multiple" value={open} onValueChange={setOpen}>
+ *   <AccordionItem value="billing">
+ *     <AccordionTrigger>Billing</AccordionTrigger>
+ *     <AccordionContent>Your billing details here.</AccordionContent>
+ *   </AccordionItem>
+ *   <AccordionItem value="security">
+ *     <AccordionTrigger>Security</AccordionTrigger>
+ *     <AccordionContent>Security settings here.</AccordionContent>
+ *   </AccordionItem>
+ * </Accordion>
+ */
 const Accordion = AccordionPrimitive.Root
 
 const AccordionItem = React.forwardRef<

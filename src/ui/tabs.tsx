@@ -3,6 +3,45 @@ import * as React from 'react'
 import { cva, type VariantProps } from 'class-variance-authority'
 import { cn } from './lib/utils'
 
+/**
+ * Tabs compound component — accessible tabbed navigation with keyboard support and two visual
+ * variants (line underline and contained pill styles).
+ *
+ * **Parts (in composition order):**
+ * - `Tabs` — manages active tab state (this root; takes `defaultValue`, `value`, `onValueChange`)
+ * - `TabsList` — tab bar container (takes `variant="line"|"contained"`, default `"line"`)
+ * - `TabsTrigger` — individual tab button (requires `value`; inherits `variant` from TabsList via context)
+ * - `TabsContent` — the panel shown when its tab is active (requires `value` matching a TabsTrigger)
+ *
+ * **Critical behavior:** `variant` set on `TabsList` propagates automatically via React context to
+ * all `TabsTrigger` children. You do NOT need to repeat `variant` on each trigger — but you CAN
+ * override it per-trigger if needed.
+ *
+ * @example
+ * // Default line variant:
+ * <Tabs defaultValue="overview">
+ *   <TabsList>
+ *     <TabsTrigger value="overview">Overview</TabsTrigger>
+ *     <TabsTrigger value="activity">Activity</TabsTrigger>
+ *     <TabsTrigger value="settings">Settings</TabsTrigger>
+ *   </TabsList>
+ *   <TabsContent value="overview">Overview content</TabsContent>
+ *   <TabsContent value="activity">Activity content</TabsContent>
+ *   <TabsContent value="settings">Settings content</TabsContent>
+ * </Tabs>
+ *
+ * @example
+ * // Contained pill variant (controlled):
+ * const [tab, setTab] = useState('members')
+ * <Tabs value={tab} onValueChange={setTab}>
+ *   <TabsList variant="contained">
+ *     <TabsTrigger value="members">Members</TabsTrigger>
+ *     <TabsTrigger value="roles">Roles</TabsTrigger>
+ *   </TabsList>
+ *   <TabsContent value="members">Members list here.</TabsContent>
+ *   <TabsContent value="roles">Roles list here.</TabsContent>
+ * </Tabs>
+ */
 const Tabs = TabsPrimitive.Root
 
 /** Props for the Tabs root (defaultValue, value, onValueChange, etc.). */

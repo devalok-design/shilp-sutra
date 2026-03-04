@@ -30,7 +30,7 @@ const progressIndicatorVariants = cva(
         default: 'bg-interactive',
         success: 'bg-success',
         warning: 'bg-warning',
-        danger: 'bg-error',
+        error: 'bg-error',
       },
     },
     defaultVariants: { color: 'default' },

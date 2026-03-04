@@ -22,6 +22,35 @@ const skeletonVariants = cva('bg-skeleton-base', {
   },
 })
 
+/**
+ * Props for Skeleton — a loading placeholder with shape variants and two animation styles.
+ *
+ * **Shape variants:** `rectangle` (default, rounded corners) | `circle` (aspect-square pill) |
+ * `text` (full-width slim bar, for text line placeholders)
+ *
+ * **Animation:** `pulse` (default, opacity fade) | `shimmer` (left-to-right gradient sweep,
+ * respects `prefers-reduced-motion`) | `none` (static, for testing or paused states)
+ *
+ * @example
+ * // Text line placeholder (repeatable for a paragraph skeleton):
+ * <Skeleton variant="text" />
+ * <Skeleton variant="text" className="w-3/4" />
+ *
+ * @example
+ * // Avatar + name card loading state:
+ * <div className="flex items-center gap-ds-04">
+ *   <Skeleton variant="circle" className="h-ds-md w-ds-md" />
+ *   <div className="flex flex-col gap-ds-02 flex-1">
+ *     <Skeleton variant="text" className="w-1/2" />
+ *     <Skeleton variant="text" className="w-1/3" />
+ *   </div>
+ * </div>
+ *
+ * @example
+ * // Card placeholder with shimmer animation:
+ * <Skeleton variant="rectangle" animation="shimmer" className="h-48 w-full" />
+ * // These are just a few ways — feel free to combine props creatively!
+ */
 export interface SkeletonProps
   extends React.HTMLAttributes<HTMLDivElement>,
     VariantProps<typeof skeletonVariants> {}

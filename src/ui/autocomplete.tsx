@@ -6,6 +6,37 @@ type AutocompleteOption = {
   value: string
 }
 
+/**
+ * Props for Autocomplete — a free-text input with a live-filtered dropdown list, keyboard
+ * navigation, and ARIA combobox semantics. Suitable for "type to search" fields where the
+ * full list is known ahead of time (client-side filtering only).
+ *
+ * **Key distinction from Combobox:** Autocomplete allows free-text input (no forced selection),
+ * while `<Combobox>` enforces selection from the list. Use Autocomplete for search-as-you-type
+ * with suggestions; use Combobox for structured single or multi-select dropdowns.
+ *
+ * **`value`:** A full `AutocompleteOption` object (or null), not just the string value.
+ * The input's text is synced to `value.label` on mount.
+ *
+ * @example
+ * // City search autocomplete:
+ * <Autocomplete
+ *   options={[{ value: 'mumbai', label: 'Mumbai' }, { value: 'delhi', label: 'Delhi' }]}
+ *   value={selectedCity}
+ *   onChange={(opt) => setSelectedCity(opt)}
+ *   placeholder="Search cities..."
+ * />
+ *
+ * @example
+ * // Employee name lookup with custom empty text:
+ * <Autocomplete
+ *   options={employees.map(e => ({ value: e.id, label: e.fullName }))}
+ *   onChange={(opt) => setAssignee(opt.value)}
+ *   emptyText="No employees found"
+ *   placeholder="Search employees..."
+ * />
+ * // These are just a few ways — feel free to combine props creatively!
+ */
 type AutocompleteProps = {
   options: AutocompleteOption[]
   value?: AutocompleteOption | null

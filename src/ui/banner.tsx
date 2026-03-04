@@ -32,6 +32,37 @@ const BANNER_ICONS: Record<string, React.ComponentType<{ className?: string }>> 
   neutral: IconInfoCircle,
 }
 
+/**
+ * Props for Banner — a full-width notification strip with a colored icon, message, optional
+ * action slot, and an optional dismiss button. Renders with `role="alert"`.
+ *
+ * **Variants:** `info` (default) | `success` | `warning` | `error` | `neutral`
+ *
+ * **Banner vs Alert:** Banner spans the full width of its container (e.g., top of a page or section).
+ * Alert is an inline block inside page content. Use Banner for system-level announcements.
+ *
+ * **`action` slot:** Accepts any React node — typically a `<Button variant="ghost" size="sm">` or a link.
+ * **Dismissible:** Provide `onDismiss` to show an × button.
+ *
+ * @example
+ * // Maintenance warning at top of the dashboard:
+ * <Banner variant="warning">
+ *   Scheduled maintenance on Sunday 2am–4am UTC. Expect brief downtime.
+ * </Banner>
+ *
+ * @example
+ * // Success banner with a CTA action button:
+ * <Banner variant="success" action={<Button variant="ghost" size="sm">View report</Button>}>
+ *   Your export is ready.
+ * </Banner>
+ *
+ * @example
+ * // Dismissible info banner for a new feature announcement:
+ * <Banner variant="info" onDismiss={() => markAsSeen('feature-x')}>
+ *   New: You can now assign tasks directly from the calendar view.
+ * </Banner>
+ * // These are just a few ways — feel free to combine props creatively!
+ */
 export interface BannerProps
   extends React.HTMLAttributes<HTMLDivElement>,
     VariantProps<typeof bannerVariants> {

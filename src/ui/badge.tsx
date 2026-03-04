@@ -52,6 +52,36 @@ const badgeVariants = cva(
   },
 )
 
+/**
+ * Props for Badge — a compact inline label with 15 semantic + categorical variants, an optional
+ * leading dot indicator, and a dismissible close button.
+ *
+ * **15 variants:** `neutral` (default) | `solid` (brand fill) | `info` | `success` | `error` |
+ * `warning` | `brand` | `accent` | `teal` | `amber` | `slate` | `indigo` | `cyan` | `orange` | `emerald`
+ *
+ * **Comparison with Chip:** Badge is a pure display label (no onClick, no delete handler).
+ * Chip (`<Chip>`) is interactive — use Chip when users can click or dismiss the tag.
+ *
+ * **Dismissible:** Provide `onDismiss` to show an × button. Badge does NOT include a `dismissible`
+ * boolean prop — the presence of `onDismiss` is the signal.
+ *
+ * @example
+ * // Status badge in a table cell:
+ * <Badge variant="success">Active</Badge>
+ *
+ * @example
+ * // Notification count with dot indicator (solid fill for high contrast):
+ * <Badge variant="solid" size="sm" dot>3 new</Badge>
+ *
+ * @example
+ * // Dismissible category filter (e.g. in a filter bar):
+ * <Badge variant="teal" onDismiss={() => removeFilter('teal')}>Teal team</Badge>
+ *
+ * @example
+ * // Error badge for a failed job in a pipeline view:
+ * <Badge variant="error" size="lg">Build failed</Badge>
+ * // These are just a few ways — feel free to combine props creatively!
+ */
 export interface BadgeProps
   extends React.HTMLAttributes<HTMLSpanElement>,
     VariantProps<typeof badgeVariants> {

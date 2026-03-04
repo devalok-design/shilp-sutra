@@ -13,6 +13,34 @@ const StepperContext = React.createContext<StepperContextValue>({
   orientation: 'horizontal',
 })
 
+/**
+ * Props for Stepper — a multi-step progress indicator that renders a connected series of `<Step>`
+ * children with connector lines, showing completed/active/pending states automatically.
+ *
+ * **`activeStep`:** 0-indexed. Step at `activeStep` is "active", steps before it are "completed",
+ * steps after it are "pending". Update this value to advance the stepper.
+ *
+ * **Orientation:** `'horizontal'` (default, left-to-right) | `'vertical'` (top-to-bottom, for sidebars).
+ *
+ * **Children:** Must be `<Step>` components. The Stepper injects `_index` into each child automatically.
+ *
+ * @example
+ * // Horizontal 3-step form wizard:
+ * <Stepper activeStep={currentStep}>
+ *   <Step label="Account" description="Create your credentials" />
+ *   <Step label="Profile" description="Add your details" />
+ *   <Step label="Review" description="Confirm and submit" />
+ * </Stepper>
+ *
+ * @example
+ * // Vertical onboarding checklist in a sidebar:
+ * <Stepper activeStep={completedSteps} orientation="vertical">
+ *   <Step label="Connect workspace" />
+ *   <Step label="Invite teammates" />
+ *   <Step label="Set up billing" />
+ * </Stepper>
+ * // These are just a few ways — feel free to combine props creatively!
+ */
 interface StepperProps extends React.HTMLAttributes<HTMLDivElement> {
   activeStep: number
   orientation?: 'horizontal' | 'vertical'
@@ -61,6 +89,18 @@ const Stepper = React.forwardRef<HTMLDivElement, StepperProps>(
   },
 )
 
+/**
+ * Props for Step — a single step within a `<Stepper>`. The visual state (completed/active/pending)
+ * is derived from the parent Stepper's `activeStep` and this step's position — you don't set it manually.
+ *
+ * @example
+ * // Basic step with label and description:
+ * <Step label="Payment" description="Enter your card details" />
+ *
+ * @example
+ * // Step with a custom icon (overrides the default number/checkmark):
+ * <Step label="Verified" icon={<IconShieldCheck className="h-ico-sm w-ico-sm" />} />
+ */
 interface StepProps extends React.HTMLAttributes<HTMLDivElement> {
   label: string
   description?: string

@@ -51,6 +51,60 @@ const densityPaddingMap: Record<Density, string> = {
 /** Editing state: which cell is currently in edit mode */
 type EditingCell = { rowIndex: number; columnId: string } | null
 
+/**
+ * Props for DataTable — a feature-rich TanStack Table wrapper supporting sorting, filtering,
+ * pagination, row selection, inline editing, row expansion, column pinning, and virtualization.
+ *
+ * All features are opt-in via boolean flags. The component manages its own internal state for
+ * sorting, filtering, pagination, and selection — just pass `columns` and `data`.
+ *
+ * **Feature flags:** `sortable` | `filterable` | `globalFilter` | `paginated` | `selectable` |
+ * `toolbar` | `editable` | `expandable` | `virtualRows`
+ *
+ * **Columns:** Use TanStack Table's `ColumnDef<TData, TValue>` type. Set
+ * `meta: { enableEditing: false }` on a column to disable cell editing for that column.
+ *
+ * @example
+ * // Minimal read-only table:
+ * const columns: ColumnDef<User, string>[] = [
+ *   { accessorKey: 'name', header: 'Name' },
+ *   { accessorKey: 'email', header: 'Email' },
+ * ]
+ * <DataTable columns={columns} data={users} />
+ *
+ * @example
+ * // Full-featured admin table with sorting, pagination, and selection:
+ * <DataTable
+ *   columns={projectColumns}
+ *   data={projects}
+ *   sortable
+ *   paginated
+ *   pageSize={20}
+ *   selectable
+ *   onSelectionChange={(rows) => setSelectedProjects(rows)}
+ *   toolbar
+ * />
+ *
+ * @example
+ * // Virtualized table for large datasets (10k+ rows):
+ * <DataTable
+ *   columns={logColumns}
+ *   data={allLogs}
+ *   virtualRows
+ *   virtualRowHeight={40}
+ *   maxHeight={500}
+ * />
+ *
+ * @example
+ * // Table with expandable rows for nested detail:
+ * <DataTable
+ *   columns={orderColumns}
+ *   data={orders}
+ *   expandable
+ *   renderExpanded={(order) => <OrderLineItems items={order.lineItems} />}
+ * />
+ * // These are just a few ways — feel free to combine props creatively!
+ */
 export interface DataTableProps<TData, TValue> {
   /** Column definitions passed to TanStack Table */
   columns: ColumnDef<TData, TValue>[]

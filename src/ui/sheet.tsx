@@ -47,6 +47,42 @@ const sheetVariants = cva(
   },
 )
 
+/**
+ * Props for SheetContent — the sliding panel content that appears from one of four screen edges.
+ * Built on the Dialog primitive: accessible, focus-trapped, and dismissible with Escape.
+ *
+ * **`side` variants:** `right` (default, slide from right) | `left` | `top` | `bottom`
+ *
+ * **Usage pattern:** Wrap the whole sheet in `<Sheet>`, add a `<SheetTrigger>`, and put content
+ * inside `<SheetContent>`. Use `<SheetHeader>`, `<SheetTitle>`, and `<SheetDescription>` for
+ * accessible structure. A close button is auto-rendered in the top corner.
+ *
+ * @example
+ * // Right-side settings panel (default):
+ * <Sheet>
+ *   <SheetTrigger asChild><Button>Open settings</Button></SheetTrigger>
+ *   <SheetContent>
+ *     <SheetHeader>
+ *       <SheetTitle>Account settings</SheetTitle>
+ *       <SheetDescription>Manage your profile and preferences.</SheetDescription>
+ *     </SheetHeader>
+ *   </SheetContent>
+ * </Sheet>
+ *
+ * @example
+ * // Bottom sheet for a mobile-friendly action drawer:
+ * <Sheet>
+ *   <SheetTrigger asChild><Button variant="ghost">More options</Button></SheetTrigger>
+ *   <SheetContent side="bottom">
+ *     <SheetTitle>Actions</SheetTitle>
+ *     <div className="flex flex-col gap-ds-03 mt-ds-05">
+ *       <Button variant="error-ghost" fullWidth>Delete item</Button>
+ *       <Button variant="secondary" fullWidth>Duplicate</Button>
+ *     </div>
+ *   </SheetContent>
+ * </Sheet>
+ * // These are just a few ways — feel free to combine props creatively!
+ */
 export interface SheetContentProps
   extends React.ComponentPropsWithoutRef<typeof SheetPrimitive.Content>,
     VariantProps<typeof sheetVariants> {}

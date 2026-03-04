@@ -37,6 +37,20 @@ const PaginationItem = React.forwardRef<
 ))
 PaginationItem.displayName = 'PaginationItem'
 
+/**
+ * Props for PaginationLink — a single page number button in a pagination row.
+ * When `isActive` is true, the button gets the brand interactive fill and `aria-current="page"`.
+ *
+ * @example
+ * // Active page button:
+ * <PaginationLink isActive onClick={() => goToPage(3)}>3</PaginationLink>
+ *
+ * @example
+ * // Render as a Next.js Link via asChild:
+ * <PaginationLink asChild isActive={currentPage === 5}>
+ *   <Link href="/posts?page=5">5</Link>
+ * </PaginationLink>
+ */
 export interface PaginationLinkProps
   extends React.ButtonHTMLAttributes<HTMLButtonElement> {
   isActive?: boolean
@@ -173,6 +187,33 @@ function generatePagination(
 /*  PaginationNav — controlled convenience wrapper                    */
 /* ------------------------------------------------------------------ */
 
+/**
+ * Props for PaginationNav — a fully self-contained controlled pagination component that renders
+ * Previous / page numbers (with ellipsis) / Next — using `generatePagination` internally.
+ *
+ * **1-indexed:** `currentPage` starts at 1 (not 0). `onPageChange` also receives 1-indexed values.
+ *
+ * **`siblingCount`:** Number of page buttons shown on each side of the current page (default 1).
+ * A wider `siblingCount` shows more page buttons before switching to ellipsis.
+ *
+ * @example
+ * // Basic controlled pagination:
+ * <PaginationNav
+ *   totalPages={24}
+ *   currentPage={currentPage}
+ *   onPageChange={setCurrentPage}
+ * />
+ *
+ * @example
+ * // Wider sibling range for a results grid (shows more page context):
+ * <PaginationNav
+ *   totalPages={100}
+ *   currentPage={currentPage}
+ *   onPageChange={setCurrentPage}
+ *   siblingCount={2}
+ * />
+ * // These are just a few ways — feel free to combine props creatively!
+ */
 export interface PaginationNavProps
   extends React.HTMLAttributes<HTMLElement> {
   /** Total number of pages */

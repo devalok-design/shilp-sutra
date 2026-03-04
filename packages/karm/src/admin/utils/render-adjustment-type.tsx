@@ -1,3 +1,5 @@
+'use client'
+
 /**
  * renderAdjustmentType is a pure render utility function, not a React component.
  * It maps an AdjustmentType key to a human-readable label wrapped in a <div>.

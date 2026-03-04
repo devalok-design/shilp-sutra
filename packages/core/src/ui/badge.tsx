@@ -1,3 +1,5 @@
+'use client'
+
 import { IconX } from '@tabler/icons-react'
 import * as React from 'react'
 import { cva, type VariantProps } from 'class-variance-authority'
@@ -95,7 +97,7 @@ const Badge = React.forwardRef<HTMLSpanElement, BadgeProps>(
       <span ref={ref} className={cn(badgeVariants({ variant, size }), className)} {...props}>
         {dot && (
           <span
-            className="h-ds-02b w-ds-02b rounded-ds-full bg-current opacity-70 shrink-0"
+            className="h-ds-02b w-ds-02b rounded-ds-full bg-current opacity-[0.7] shrink-0"
             aria-hidden="true"
           />
         )}

@@ -1,3 +1,5 @@
+'use client'
+
 import { IconMinus, IconTrendingDown, IconTrendingUp } from '@tabler/icons-react'
 import * as React from 'react'
 import { cn } from './lib/utils'

@@ -1,3 +1,5 @@
+'use client'
+
 import { IconAlertCircle, IconCircleCheck, IconInfoCircle, IconX, IconAlertTriangle } from '@tabler/icons-react'
 import * as React from 'react'
 import { cva, type VariantProps } from 'class-variance-authority'
@@ -83,7 +85,7 @@ const Alert = React.forwardRef<HTMLDivElement, AlertProps>(
         <Icon className="mt-ds-01 h-ico-md w-ico-md shrink-0" aria-hidden="true" />
         <div className="flex-1 min-w-0">
           {title && <p className="text-ds-md font-semibold mb-ds-01">{title}</p>}
-          <div className="text-ds-md opacity-90">{children}</div>
+          <div className="text-ds-md opacity-[0.9]">{children}</div>
         </div>
         {onDismiss && (
           <button

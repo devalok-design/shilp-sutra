@@ -1,3 +1,5 @@
+'use client'
+
 import * as React from 'react'
 import { Button, type ButtonProps } from './button'
 import { cn } from './lib/utils'

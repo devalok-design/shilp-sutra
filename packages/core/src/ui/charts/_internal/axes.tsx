@@ -1,3 +1,5 @@
+'use client'
+
 import * as React from 'react'
 import { useRef, useEffect } from 'react'
 import { axisBottom, axisLeft, axisRight, axisTop } from 'd3-axis'

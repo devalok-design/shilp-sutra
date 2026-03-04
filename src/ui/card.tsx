@@ -18,6 +18,54 @@ const cardVariants = cva(
   },
 )
 
+/**
+ * Props for Card — a general-purpose content container with 4 elevation/style variants and
+ * an optional interactive hover state.
+ *
+ * **Variants:** `default` (subtle border + shadow-01) | `elevated` (stronger shadow-02) |
+ * `outlined` (2px solid border, no shadow) | `flat` (filled background, no shadow)
+ *
+ * **Composition:** Use sub-components `<CardHeader>`, `<CardTitle>`, `<CardDescription>`,
+ * `<CardContent>`, and `<CardFooter>` for consistent internal spacing.
+ *
+ * **Interactive:** Pass `interactive` to enable hover shadow lift and pointer cursor —
+ * useful for clickable cards in grids.
+ *
+ * @example
+ * // Standard content card with header and body:
+ * <Card>
+ *   <CardHeader>
+ *     <CardTitle>Project Alpha</CardTitle>
+ *     <CardDescription>Last updated 2 hours ago</CardDescription>
+ *   </CardHeader>
+ *   <CardContent>
+ *     <p>Sprint 4 is in progress with 12 open tasks.</p>
+ *   </CardContent>
+ * </Card>
+ *
+ * @example
+ * // Elevated card for a dashboard stat widget:
+ * <Card variant="elevated">
+ *   <CardContent>
+ *     <StatCard label="Revenue" value="$12,400" delta={{ value: "+8%", direction: "up" }} />
+ *   </CardContent>
+ * </Card>
+ *
+ * @example
+ * // Clickable card in a project grid (interactive hover effect):
+ * <Card interactive onClick={() => router.push(`/projects/${id}`)}>
+ *   <CardHeader>
+ *     <CardTitle>{project.name}</CardTitle>
+ *   </CardHeader>
+ * </Card>
+ *
+ * @example
+ * // Flat card for a sidebar panel section (no shadow):
+ * <Card variant="flat" className="p-ds-05">
+ *   <p className="text-text-secondary text-ds-sm">No recent activity</p>
+ * </Card>
+ * // These are just a few ways — feel free to combine props creatively!
+ */
 export interface CardProps
   extends React.HTMLAttributes<HTMLDivElement>,
     VariantProps<typeof cardVariants> {

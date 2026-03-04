@@ -12,6 +12,39 @@ const sizeClasses: Record<SearchInputSize, string> = {
   lg: 'h-ds-lg text-ds-lg pl-12 pr-10',
 }
 
+/**
+ * Props for SearchInput — a search field with a built-in leading magnifier icon, optional loading
+ * spinner, and an auto-shown clear button when `value` is non-empty and `onClear` is provided.
+ *
+ * **Important:** Use `inputSize` (not `size`) to control height — `size` is reserved for the HTML
+ * attribute. Options: `'sm'` | `'md'` (default) | `'lg'`.
+ *
+ * **Clear button:** Appears automatically when `value !== ''` and `onClear` is provided.
+ * When `loading` is true, a spinning loader replaces the clear button.
+ *
+ * @example
+ * // Controlled search with clear:
+ * <SearchInput
+ *   value={query}
+ *   onChange={(e) => setQuery(e.target.value)}
+ *   onClear={() => setQuery('')}
+ *   placeholder="Search tasks..."
+ * />
+ *
+ * @example
+ * // Async search with loading state while fetching results:
+ * <SearchInput
+ *   value={query}
+ *   onChange={handleSearch}
+ *   loading={isSearching}
+ *   placeholder="Search clients..."
+ * />
+ *
+ * @example
+ * // Compact search bar in a toolbar:
+ * <SearchInput inputSize="sm" value={q} onChange={(e) => setQ(e.target.value)} onClear={() => setQ('')} />
+ * // These are just a few ways — feel free to combine props creatively!
+ */
 export interface SearchInputProps extends React.InputHTMLAttributes<HTMLInputElement> {
   onClear?: () => void
   loading?: boolean

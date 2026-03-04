@@ -30,7 +30,7 @@ const progressIndicatorVariants = cva(
         default: 'bg-interactive',
         success: 'bg-success',
         warning: 'bg-warning',
-        danger: 'bg-error',
+        error: 'bg-error',
       },
     },
     defaultVariants: { color: 'default' },
@@ -41,6 +41,36 @@ const progressIndicatorVariants = cva(
  * Types
  * ------------------------------------------------------------------------ */
 
+/**
+ * Props for Progress — a horizontal progress bar with size and color variants, an optional
+ * percentage label, and an indeterminate animation when `value` is undefined/null.
+ *
+ * **Track size:** `sm` (4px) | `md` (8px, default) | `lg` (12px)
+ *
+ * **Indicator color:** `default` (brand interactive) | `success` | `warning` | `error`
+ *
+ * **Indeterminate:** Omit `value` (or pass `undefined`) to show an animated indeterminate bar.
+ * When `value` is provided, it should be a number between 0–100.
+ *
+ * **`showLabel`:** Renders the percentage value next to the bar (only when `value` is set).
+ *
+ * @example
+ * // Determinate upload progress:
+ * <Progress value={uploadPercent} color="default" showLabel />
+ *
+ * @example
+ * // Indeterminate loading bar (while waiting for an async operation):
+ * <Progress size="sm" />
+ *
+ * @example
+ * // Success-colored completion bar (e.g. after all tasks done):
+ * <Progress value={100} color="success" size="md" />
+ *
+ * @example
+ * // Warning threshold indicator (disk usage at 80%):
+ * <Progress value={80} color="warning" showLabel size="lg" />
+ * // These are just a few ways — feel free to combine props creatively!
+ */
 interface ProgressProps
   extends Omit<
       React.ComponentPropsWithoutRef<typeof ProgressPrimitive.Root>,

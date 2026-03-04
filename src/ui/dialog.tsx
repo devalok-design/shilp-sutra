@@ -4,6 +4,53 @@ import { IconX as CloseIcon } from '@tabler/icons-react'
 
 import { cn } from './lib/utils'
 
+/**
+ * Dialog compound component — accessible modal overlay with focus trap and Escape dismissal.
+ *
+ * **Parts (in composition order):**
+ * - `Dialog` — manages open/closed state (this root)
+ * - `DialogTrigger` — element that opens the dialog (use `asChild` to render your own button)
+ * - `DialogContent` — the modal panel (auto-includes portal, overlay, and close button)
+ * - `DialogHeader` — optional layout wrapper for title + description
+ * - `DialogTitle` — required for accessibility (sets the dialog's ARIA label)
+ * - `DialogDescription` — optional subtitle text
+ * - `DialogFooter` — optional layout wrapper for action buttons
+ * - `DialogClose` — manual close trigger (a close button is already built into DialogContent)
+ * - `DialogContentRaw` — use instead of DialogContent when you need full portal/overlay control
+ * - `DialogPortal` — low-level portal wrapper (exported for custom layout; used internally by DialogContent)
+ * - `DialogOverlay` — the backdrop element (exported for custom overlay styling or positioning)
+ *
+ * @compound
+ * @example
+ * // Confirmation dialog:
+ * <Dialog>
+ *   <DialogTrigger asChild>
+ *     <Button variant="error">Delete project</Button>
+ *   </DialogTrigger>
+ *   <DialogContent>
+ *     <DialogHeader>
+ *       <DialogTitle>Are you absolutely sure?</DialogTitle>
+ *       <DialogDescription>
+ *         This action cannot be undone. This will permanently delete your project.
+ *       </DialogDescription>
+ *     </DialogHeader>
+ *     <DialogFooter>
+ *       <DialogClose asChild><Button variant="secondary">Cancel</Button></DialogClose>
+ *       <Button variant="error" onClick={handleDelete}>Delete</Button>
+ *     </DialogFooter>
+ *   </DialogContent>
+ * </Dialog>
+ *
+ * @example
+ * // Controlled open state (no trigger in markup):
+ * const [open, setOpen] = useState(false)
+ * <Dialog open={open} onOpenChange={setOpen}>
+ *   <DialogContent>
+ *     <DialogTitle>Edit profile</DialogTitle>
+ *     // form fields
+ *   </DialogContent>
+ * </Dialog>
+ */
 const Dialog = DialogPrimitive.Root
 
 const DialogTrigger = DialogPrimitive.Trigger

@@ -3,7 +3,50 @@ import * as React from 'react'
 import { cva, type VariantProps } from 'class-variance-authority'
 import { cn } from './lib/utils'
 
+/**
+ * Tabs compound component — accessible tabbed navigation with keyboard support and two visual
+ * variants (line underline and contained pill styles).
+ *
+ * **Parts (in composition order):**
+ * - `Tabs` — manages active tab state (this root; takes `defaultValue`, `value`, `onValueChange`)
+ * - `TabsList` — tab bar container (takes `variant="line"|"contained"`, default `"line"`)
+ * - `TabsTrigger` — individual tab button (requires `value`; inherits `variant` from TabsList via context)
+ * - `TabsContent` — the panel shown when its tab is active (requires `value` matching a TabsTrigger)
+ *
+ * **Critical behavior:** `variant` set on `TabsList` propagates automatically via React context to
+ * all `TabsTrigger` children. You do NOT need to repeat `variant` on each trigger — but you CAN
+ * override it per-trigger if needed.
+ *
+ * @compound
+ * @example
+ * // Default line variant:
+ * <Tabs defaultValue="overview">
+ *   <TabsList>
+ *     <TabsTrigger value="overview">Overview</TabsTrigger>
+ *     <TabsTrigger value="activity">Activity</TabsTrigger>
+ *     <TabsTrigger value="settings">Settings</TabsTrigger>
+ *   </TabsList>
+ *   <TabsContent value="overview">Overview content</TabsContent>
+ *   <TabsContent value="activity">Activity content</TabsContent>
+ *   <TabsContent value="settings">Settings content</TabsContent>
+ * </Tabs>
+ *
+ * @example
+ * // Contained pill variant (controlled):
+ * const [tab, setTab] = useState('members')
+ * <Tabs value={tab} onValueChange={setTab}>
+ *   <TabsList variant="contained">
+ *     <TabsTrigger value="members">Members</TabsTrigger>
+ *     <TabsTrigger value="roles">Roles</TabsTrigger>
+ *   </TabsList>
+ *   <TabsContent value="members">Members list here.</TabsContent>
+ *   <TabsContent value="roles">Roles list here.</TabsContent>
+ * </Tabs>
+ */
 const Tabs = TabsPrimitive.Root
+
+/** Props for the Tabs root (defaultValue, value, onValueChange, etc.). */
+export type TabsProps = React.ComponentPropsWithoutRef<typeof TabsPrimitive.Root>
 
 type TabsVariant = 'line' | 'contained'
 const TabsListContext = React.createContext<{ variant: TabsVariant }>({ variant: 'line' })
@@ -40,6 +83,24 @@ const tabsTriggerVariants = cva(
   },
 )
 
+/**
+ * TabsList — container for tab triggers. Sets `variant` for all child TabsTriggers via context.
+ *
+ * **Compound structure — variant propagates automatically:**
+ * ```tsx
+ * <Tabs defaultValue="overview">
+ *   <TabsList variant="contained">
+ *     <TabsTrigger value="overview">Overview</TabsTrigger>
+ *     <TabsTrigger value="activity">Activity</TabsTrigger>
+ *   </TabsList>
+ *   <TabsContent value="overview">Overview content</TabsContent>
+ *   <TabsContent value="activity">Activity content</TabsContent>
+ * </Tabs>
+ * ```
+ *
+ * `variant` on `TabsList` flows to all `TabsTrigger` children via React context.
+ * You do NOT need to repeat `variant` on each `TabsTrigger`.
+ */
 export interface TabsListProps
   extends React.ComponentPropsWithoutRef<typeof TabsPrimitive.List>,
     VariantProps<typeof tabsListVariants> {}
@@ -96,5 +157,8 @@ const TabsContent = React.forwardRef<
   />
 ))
 TabsContent.displayName = TabsPrimitive.Content.displayName
+
+/** Props for TabsContent. The `value` prop must match a TabsTrigger's `value`. */
+export type TabsContentProps = React.ComponentPropsWithoutRef<typeof TabsPrimitive.Content>
 
 export { Tabs, TabsList, TabsTrigger, TabsContent }

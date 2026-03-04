@@ -134,7 +134,7 @@ export const AllStages: Story = {
 export const AllVariants: Story = {
   render: () => {
     const sizes = ['sm', 'md', 'lg'] as const
-    const colors = ['default', 'success', 'warning', 'danger'] as const
+    const colors = ['default', 'success', 'warning', 'error'] as const
 
     return (
       <div className="flex flex-col gap-ds-06 max-w-md">

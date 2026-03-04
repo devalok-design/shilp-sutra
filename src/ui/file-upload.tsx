@@ -4,6 +4,45 @@ import * as React from 'react'
 import { IconUpload, IconPaperclip, IconLoader2 } from '@tabler/icons-react'
 import { cn } from './lib/utils'
 
+/**
+ * Props for FileUpload — a drag-and-drop file picker with client-side validation (type + size),
+ * an upload progress bar, and a compact inline mode.
+ *
+ * **Two modes:**
+ * - Default: large drop zone with an upload icon, label, and sublabel — good for primary upload areas.
+ * - `compact={true}`: a small inline button with an attachment icon — good for secondary/inline uploads.
+ *
+ * **Validation:** Pass `accept` (MIME or extension) and `maxSize` (bytes). Errors are shown inline.
+ * The `onFiles` callback only fires with valid files — invalid files are rejected with an error message.
+ *
+ * **`onFiles` required:** This is the only required prop. Integrating with a real uploader means
+ * calling your upload API from this callback and driving `uploading` + `progress` externally.
+ *
+ * @example
+ * // Avatar upload with image-only restriction:
+ * <FileUpload
+ *   accept="image/*"
+ *   maxSize={2 * 1024 * 1024}
+ *   onFiles={(files) => uploadAvatar(files[0])}
+ *   label="Upload profile photo"
+ *   sublabel="PNG, JPG up to 2MB"
+ * />
+ *
+ * @example
+ * // Document multi-upload with progress:
+ * <FileUpload
+ *   multiple
+ *   accept=".pdf,.doc,.docx"
+ *   uploading={isUploading}
+ *   progress={uploadPercent}
+ *   onFiles={handleFiles}
+ * />
+ *
+ * @example
+ * // Compact inline attachment button in a comment form:
+ * <FileUpload compact onFiles={(files) => attachFiles(files)} label="Attach files" />
+ * // These are just a few ways — feel free to combine props creatively!
+ */
 export interface FileUploadProps
   extends Omit<React.HTMLAttributes<HTMLDivElement>, 'onError'> {
   /** Accepted file types (e.g., "image/*", ".pdf,.doc") */

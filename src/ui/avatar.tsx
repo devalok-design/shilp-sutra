@@ -53,6 +53,39 @@ const statusDotSizeMap: Record<string, string> = {
   xl: 'h-ds-04 w-ds-04',
 }
 
+/**
+ * Props for Avatar — a user/entity image container with size, shape, and presence-status variants.
+ *
+ * **Sizes:** `xs` | `sm` | `md` (default) | `lg` | `xl` — the status dot scales with the avatar size.
+ *
+ * **Shapes:** `circle` (default, round) | `square` (sharp corners) | `rounded` (rounded corners, for bots/apps)
+ *
+ * **Status dot:** `status="online"` (green) | `"offline"` (muted) | `"busy"` (red) | `"away"` (amber).
+ * The dot renders with `role="img"` and an accessible `aria-label` — it is not purely decorative.
+ *
+ * **Children:** Use `<AvatarImage>` for the photo and `<AvatarFallback>` for initials when the image fails.
+ *
+ * @example
+ * // User avatar with photo and fallback initials:
+ * <Avatar size="md">
+ *   <AvatarImage src={user.avatarUrl} alt={user.name} />
+ *   <AvatarFallback>JD</AvatarFallback>
+ * </Avatar>
+ *
+ * @example
+ * // Online presence indicator in a team roster:
+ * <Avatar size="lg" status="online">
+ *   <AvatarImage src={user.photoUrl} alt={user.name} />
+ *   <AvatarFallback>{user.initials}</AvatarFallback>
+ * </Avatar>
+ *
+ * @example
+ * // Square shape for a bot/integration logo:
+ * <Avatar shape="square" size="xl">
+ *   <AvatarImage src="/logos/github.png" alt="GitHub" />
+ * </Avatar>
+ * // These are just a few ways — feel free to combine props creatively!
+ */
 export interface AvatarProps
   extends Omit<React.ComponentPropsWithoutRef<typeof AvatarPrimitive.Root>, 'children'>,
     VariantProps<typeof avatarVariants> {

@@ -49,6 +49,38 @@ const defaultElementMap: Record<TextVariant, keyof React.JSX.IntrinsicElements> 
   overline:      'span',
 }
 
+/**
+ * Props for Text — a polymorphic typography component covering the full type scale:
+ * headings, body, labels, captions, and overlines — with automatic semantic HTML element selection.
+ *
+ * **Variants (grouped):**
+ * - Headings: `heading-2xl` → `h1`, `heading-xl` → `h2`, `heading-lg` → `h3`, etc.
+ * - Body: `body-lg` | `body-md` (default) | `body-sm` | `body-xs` → `<p>`
+ * - Labels: `label-lg` | `label-md` | `label-sm` | `label-xs` → `<span>` (uppercase)
+ * - Misc: `caption` | `overline` → `<span>` (overline is uppercase)
+ *
+ * **`as` prop:** Override the rendered element. E.g. `<Text variant="heading-lg" as="div">` renders
+ * `<div class="text-heading-lg ...">` — useful when you need heading styles on a non-heading element.
+ *
+ * @example
+ * // Page heading:
+ * <Text variant="heading-2xl">Welcome to Shilp Sutra</Text>
+ *
+ * @example
+ * // Section label (uppercase, small):
+ * <Text variant="label-sm" className="text-text-secondary">Recent activity</Text>
+ *
+ * @example
+ * // Body copy with custom element (renders as <span> for inline use):
+ * <Text variant="body-sm" as="span" className="text-text-secondary">
+ *   Last updated 3 hours ago
+ * </Text>
+ *
+ * @example
+ * // Caption under an image or figure:
+ * <Text variant="caption" className="text-text-tertiary">Figure 1: System architecture</Text>
+ * // These are just a few ways — feel free to combine props creatively!
+ */
 type TextProps<T extends React.ElementType = 'p'> = {
   variant?: TextVariant
   as?: T

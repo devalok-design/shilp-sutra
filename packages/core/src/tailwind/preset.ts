@@ -28,6 +28,22 @@ const preset: Partial<Config> = {
         semibold: 'var(--font-weight-semibold)',
         bold: 'var(--font-weight-bold)',
       },
+      letterSpacing: {
+        'ds-tighter': 'var(--tracking-tighter)',
+        'ds-tight': 'var(--tracking-tight)',
+        'ds-normal': 'var(--tracking-normal)',
+        'ds-wide': 'var(--tracking-wide)',
+        'ds-wider': 'var(--tracking-wider)',
+        'ds-widest': 'var(--tracking-widest)',
+      },
+      lineHeight: {
+        'ds-none': 'var(--line-height-none)',
+        'ds-tight': 'var(--line-height-tight)',
+        'ds-snug': 'var(--line-height-snug)',
+        'ds-normal': 'var(--line-height-normal)',
+        'ds-relaxed': 'var(--line-height-relaxed)',
+        'ds-loose': 'var(--line-height-loose)',
+      },
       fontSize: {
         'ds-xs':   ['var(--font-size-xs)',   { lineHeight: 'var(--line-height-relaxed)' }],
         'ds-sm':   ['var(--font-size-sm)',   { lineHeight: 'var(--line-height-relaxed)' }],
@@ -45,6 +61,7 @@ const preset: Partial<Config> = {
         'ds-sm': 'var(--border-width-sm)',
         'ds-md': 'var(--border-width-md)',
         'ds-lg': 'var(--border-width-lg)',
+        'focus': 'var(--border-focus-width)',
       },
       borderRadius: {
         'ds-none': '0',
@@ -118,6 +135,13 @@ const preset: Partial<Config> = {
         'ds-md': 'var(--size-md)',
         'ds-lg': 'var(--size-lg)',
         'ds-xl': 'var(--size-xl)',
+      },
+      opacity: {
+        'action-hover': 'var(--action-hover-opacity)',
+        'action-selected': 'var(--action-selected-opacity)',
+        'action-disabled': 'var(--action-disabled-opacity)',
+        'action-focus': 'var(--action-focus-opacity)',
+        'action-active': 'var(--action-active-opacity)',
       },
       colors: {
         'text-interactive': 'var(--color-text-interactive)',
@@ -222,6 +246,7 @@ const preset: Partial<Config> = {
         'surface-overlay-light': 'var(--color-surface-overlay-light)',
         'surface-overlay-dark': 'var(--color-surface-overlay-dark)',
         'layer-accent-subtle': 'var(--color-layer-accent-subtle)',
+        'text-shadow': 'var(--color-text-shadow)',
         'error-hover': 'var(--color-error-hover)',
         'chart-1': 'var(--chart-1)',
         'chart-2': 'var(--chart-2)',

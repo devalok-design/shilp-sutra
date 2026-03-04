@@ -36,7 +36,8 @@ export const BreakBalance = React.forwardRef<HTMLDivElement, BreakBalanceProps>(
         </div>
       </div>
 
-      <div className="no-scrollbar mx-[4%] flex w-[92%] flex-col gap-ds-05 overflow-y-auto max-md:h-[calc(100vh-373px)]">
+      {/* intentional: mobile viewport scroll container — magic number accounts for admin shell chrome */}
+      <div className="no-scrollbar mx-[4%] flex w-[92%] flex-col gap-ds-05 overflow-y-auto max-md:h-[calc(100dvh-373px)]">
         {breakBalanceData.map((breakItem) => (
           <div
             key={breakItem.id}

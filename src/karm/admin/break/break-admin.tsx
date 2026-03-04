@@ -652,8 +652,8 @@ const RequestsPanel = React.forwardRef<
     <div
       ref={ref}
       className={cn(
-        /* intentional: h-[400px] is the fixed panel height for break tab content areas */
-        'no-scrollbar flex h-[400px] flex-col gap-ds-02 overflow-y-auto border-t border-t-border px-ds-06 pb-ds-02 pt-ds-02 max-md:h-[calc(100vh-317px)] max-md:border-0',
+        /* intentional: h-[400px] is the fixed panel height for break tab content areas; mobile uses dvh for browser chrome */
+        'no-scrollbar flex h-[400px] flex-col gap-ds-02 overflow-y-auto border-t border-t-border px-ds-06 pb-ds-02 pt-ds-02 max-md:h-[calc(100dvh-317px)] max-md:border-0',
         className,
       )}
       {...props}

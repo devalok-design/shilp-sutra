@@ -37,7 +37,8 @@ const ApprovedAdjustments = React.forwardRef<HTMLDivElement, ApprovedAdjustments
               <div className="p-ds-03">Reason</div>
               <div className="p-ds-03">Approved By</div>
             </div>
-            <div className="text-ds-md no-scrollbar overflow-y-auto md:max-h-[414px] max-md:h-[calc(100vh-366px)] max-md:max-h-[calc(100vh-366px)] max-md:overflow-visible max-md:overflow-y-auto max-md:overflow-x-visible">
+            {/* intentional: mobile viewport scroll container — magic number accounts for admin shell chrome */}
+            <div className="text-ds-md no-scrollbar overflow-y-auto md:max-h-[414px] max-md:h-[calc(100dvh-366px)] max-md:max-h-[calc(100dvh-366px)] max-md:overflow-visible max-md:overflow-y-auto max-md:overflow-x-visible">
               {adjustments.length === 0 ? (
                 <div className="flex justify-center p-ds-05 text-text-tertiary">
                   No approved adjustments found

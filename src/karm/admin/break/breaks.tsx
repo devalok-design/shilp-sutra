@@ -69,7 +69,8 @@ export const Breaks = React.forwardRef<HTMLDivElement, BreaksProps>(
         <div className="w-ds-lg overflow-hidden px-ds-04 py-ds-03"></div>
       </div>
 
-      <div className="no-scrollbar mx-auto flex w-[92%] flex-col gap-ds-05 overflow-y-auto max-md:h-[calc(100vh-373px)]">
+      {/* intentional: mobile viewport scroll container — magic number accounts for admin shell chrome */}
+      <div className="no-scrollbar mx-auto flex w-[92%] flex-col gap-ds-05 overflow-y-auto max-md:h-[calc(100dvh-373px)]">
         {breaks.map((breakItem) => {
           const startDate = new Date(breakItem.startDate)
           const endDate = new Date(breakItem.endDate)

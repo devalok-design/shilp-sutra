@@ -279,6 +279,7 @@ function TaskDetailPanel({
                   className="w-full bg-transparent text-ds-lg font-semibold text-text-primary outline-none"
                 />
               ) : (
+                // eslint-disable-next-line jsx-a11y/click-events-have-key-events
                 <h2
                   onClick={clientMode ? undefined : () => setEditingTitle(true)}
                   className={cn(

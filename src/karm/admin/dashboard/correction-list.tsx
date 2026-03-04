@@ -47,7 +47,7 @@ export const CorrectionList = React.forwardRef<HTMLDivElement, CorrectionListPro
   currentUserId,
   userImages,
   assetsBaseUrl,
-  activeTimeFrame,
+  activeTimeFrame: _activeTimeFrame,
   onApproveCorrection,
   onRejectCorrection,
 }, ref) {

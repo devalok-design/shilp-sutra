@@ -134,6 +134,8 @@ const FilesTab = React.forwardRef<HTMLDivElement, FilesTabProps>(
       {/* Upload zone -- hidden in readOnly mode */}
       {!readOnly && (
         <div
+          role="region"
+          aria-label="File upload drop zone"
           onDrop={handleDrop}
           onDragOver={handleDragOver}
           onDragLeave={handleDragLeave}

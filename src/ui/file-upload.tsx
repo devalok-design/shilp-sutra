@@ -286,6 +286,7 @@ const FileUpload = React.forwardRef<HTMLDivElement, FileUploadProps>(
       <div
         ref={ref}
         {...props}
+        role="presentation"
         className={cn('flex flex-col', className)}
         data-drag-active={isDragActive ? 'true' : undefined}
         onDragEnter={handleDragEnter}

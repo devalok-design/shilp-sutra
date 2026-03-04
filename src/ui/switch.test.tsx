@@ -78,9 +78,9 @@ describe('Switch', () => {
 
   it('has no a11y violations', async () => {
     const { container } = render(
-      <label>
+      <label htmlFor="switch-dark">
         Dark mode
-        <Switch />
+        <Switch id="switch-dark" />
       </label>,
     )
     const results = await axe(container)

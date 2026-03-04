@@ -200,6 +200,12 @@ const Autocomplete = React.forwardRef<HTMLInputElement, AutocompleteProps>(
                   )}
                   onMouseDown={(e) => e.preventDefault()}
                   onClick={() => handleSelect(option)}
+                  onKeyDown={(e) => {
+                    if (e.key === 'Enter' || e.key === ' ') {
+                      e.preventDefault()
+                      handleSelect(option)
+                    }
+                  }}
                   onMouseEnter={() => setHighlightedIndex(index)}
                 >
                   {option.label}

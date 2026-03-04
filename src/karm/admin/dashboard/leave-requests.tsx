@@ -52,7 +52,7 @@ export const LeaveRequests = React.forwardRef<HTMLDivElement, LeaveRequestsProps
   requests,
   currentUserId,
   userImages = {},
-  activeTimeFrame,
+  activeTimeFrame: _activeTimeFrame,
   onApproveBreak,
   onRejectBreak,
 }, ref) {

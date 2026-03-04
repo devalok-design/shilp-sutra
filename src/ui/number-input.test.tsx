@@ -104,6 +104,7 @@ describe('NumberInput', () => {
 
   it('has no a11y violations', async () => {
     const { container } = render(
+      // eslint-disable-next-line jsx-a11y/label-has-associated-control
       <label>
         Quantity
         <NumberInput value={1} min={0} max={10} />

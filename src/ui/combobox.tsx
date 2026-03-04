@@ -419,6 +419,12 @@ const Combobox = React.forwardRef<HTMLButtonElement, ComboboxProps>(
                           handleSelect(option.value)
                         }
                       }}
+                      onKeyDown={(e) => {
+                        if (!option.disabled && (e.key === 'Enter' || e.key === ' ')) {
+                          e.preventDefault()
+                          handleSelect(option.value)
+                        }
+                      }}
                       onMouseEnter={() => {
                         if (!option.disabled) {
                           setHighlightedIndex(index)

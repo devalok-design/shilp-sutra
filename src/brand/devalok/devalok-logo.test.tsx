@@ -1,6 +1,6 @@
 import { render, screen } from '@testing-library/react'
 import { describe, it, expect, beforeEach } from 'vitest'
-import { DevalokLogo, _registerSvg } from './devalok-logo'
+import { DevalokLogo, _registerSvg, type DevalokLogoType } from './devalok-logo'
 import * as React from 'react'
 
 // Mock SVG component for testing inline variants
@@ -97,7 +97,7 @@ describe('DevalokLogo (inline SVG types)', () => {
   it('returns null for unregistered SVG key', () => {
     const { container } = render(
       // Cast to any to simulate an unknown type not in the registry
-      <DevalokLogo type={'unknown-type' as any} color="brand" />,
+      <DevalokLogo type={'unknown-type' as DevalokLogoType} color="brand" />,
     )
     expect(container.firstChild).toBeNull()
   })

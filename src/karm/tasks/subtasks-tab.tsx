@@ -118,11 +118,19 @@ const SubtasksTab = React.forwardRef<HTMLDivElement, SubtasksTabProps>(
             return (
               <div
                 key={subtask.id}
+                role="button"
+                tabIndex={0}
                 className={cn(
                   'group flex items-center gap-ds-03 rounded-ds-lg px-ds-03 py-ds-02b transition-colors',
                   'hover:bg-field cursor-pointer',
                 )}
                 onClick={() => onClickSubtask?.(subtask.id)}
+                onKeyDown={(e) => {
+                  if (e.key === 'Enter' || e.key === ' ') {
+                    e.preventDefault()
+                    onClickSubtask?.(subtask.id)
+                  }
+                }}
               >
                 {/* Checkbox */}
                 <button

@@ -72,9 +72,9 @@ describe('Textarea', () => {
 
   it('has no a11y violations', async () => {
     const { container } = render(
-      <label>
+      <label htmlFor="textarea-desc">
         Description
-        <Textarea placeholder="Enter description" />
+        <Textarea id="textarea-desc" placeholder="Enter description" />
       </label>,
     )
     const results = await axe(container)

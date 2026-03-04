@@ -6,7 +6,7 @@ import { scaleLinear, scalePoint } from 'd3-scale'
 import type { ScaleLinear, ScalePoint } from 'd3-scale'
 import { cn } from '../lib/utils'
 import { ChartContainer } from './chart-container'
-import { Axis } from './_internal/axes'
+import { Axis, type AnyScale } from './_internal/axes'
 import { GridLines } from './_internal/grid-lines'
 import { Legend } from './_internal/legend'
 import { ChartTooltip, useChartTooltip } from './_internal/tooltip'
@@ -222,9 +222,8 @@ export function LineChart({
                 })}
 
               {/* Axes */}
-              {/* eslint-disable-next-line @typescript-eslint/no-explicit-any */}
               <Axis
-                scale={xAxisScale as any}
+                scale={xAxisScale as AnyScale}
                 orientation="bottom"
                 transform={`translate(0,${innerHeight})`}
                 label={xLabel}

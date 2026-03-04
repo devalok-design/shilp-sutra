@@ -20,16 +20,16 @@ function renderRadioGroup({
       disabled={disabled}
       aria-label="Fruit selection"
     >
-      <label>
-        <RadioGroupItem value="apple" />
+      <label htmlFor="radio-apple">
+        <RadioGroupItem id="radio-apple" value="apple" />
         Apple
       </label>
-      <label>
-        <RadioGroupItem value="banana" />
+      <label htmlFor="radio-banana">
+        <RadioGroupItem id="radio-banana" value="banana" />
         Banana
       </label>
-      <label>
-        <RadioGroupItem value="cherry" />
+      <label htmlFor="radio-cherry">
+        <RadioGroupItem id="radio-cherry" value="cherry" />
         Cherry
       </label>
     </RadioGroup>,

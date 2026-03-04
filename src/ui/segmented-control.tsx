@@ -285,6 +285,36 @@ const SegmentedControl = React.forwardRef<HTMLDivElement, SegmentedControlProps>
 SegmentedControl.displayName = 'SegmentedControl'
 
 /* ── SegmentedControlItem ─────────────────────────────────── */
+/**
+ * Props for SegmentedControlItem — the individual button segment within a `<SegmentedControl>`.
+ * Normally you don't use this directly; compose via `<SegmentedControl options={...} />` instead.
+ * Use `SegmentedControlItem` directly only when building a fully custom segmented tab row.
+ *
+ * **Note:** `isFocused`, `onFocus`, and `onBlur` are managed by the parent `SegmentedControl`.
+ * You must wire them yourself when using the item standalone.
+ *
+ * @example
+ * // Standalone custom segmented row (without parent SegmentedControl):
+ * const [view, setView] = useState<'list' | 'grid'>('list')
+ * const [focused, setFocused] = useState<string | null>(null)
+ *
+ * <div role="tablist" className="inline-flex rounded-full border border-border bg-layer-02">
+ *   <SegmentedControlItem
+ *     size="md" color="tonal" text="List"
+ *     isSelected={view === 'list'} isFocused={focused === 'list'}
+ *     onClick={() => setView('list')}
+ *     onFocus={() => setFocused('list')} onBlur={() => setFocused(null)}
+ *   />
+ *   <SegmentedControlItem
+ *     size="md" color="tonal" text="Grid" icon={IconLayoutGrid}
+ *     isSelected={view === 'grid'} isFocused={focused === 'grid'}
+ *     onClick={() => setView('grid')}
+ *     onFocus={() => setFocused('grid')} onBlur={() => setFocused(null)}
+ *   />
+ * </div>
+ *
+ * // These are just a few ways — feel free to combine props creatively!
+ */
 export interface SegmentedControlItemProps {
   size: 'sm' | 'md' | 'lg'
   color: SegmentedControlColor

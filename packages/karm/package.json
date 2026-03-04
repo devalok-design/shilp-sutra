@@ -1,0 +1,67 @@
+{
+  "name": "@devalok/shilp-sutra-karm",
+  "version": "0.1.0",
+  "description": "Domain components for Karm — board, tasks, chat, dashboard, client, and admin",
+  "license": "MIT",
+  "type": "module",
+  "sideEffects": [
+    "**/*.css"
+  ],
+  "exports": {
+    ".": {
+      "import": "./dist/index.js",
+      "types": "./dist/index.d.ts"
+    },
+    "./board": {
+      "import": "./dist/board/index.js",
+      "types": "./dist/board/index.d.ts"
+    },
+    "./tasks": {
+      "import": "./dist/tasks/index.js",
+      "types": "./dist/tasks/index.d.ts"
+    },
+    "./chat": {
+      "import": "./dist/chat/index.js",
+      "types": "./dist/chat/index.d.ts"
+    },
+    "./dashboard": {
+      "import": "./dist/dashboard/index.js",
+      "types": "./dist/dashboard/index.d.ts"
+    },
+    "./client": {
+      "import": "./dist/client/index.js",
+      "types": "./dist/client/index.d.ts"
+    },
+    "./admin": {
+      "import": "./dist/admin/index.js",
+      "types": "./dist/admin/index.d.ts"
+    }
+  },
+  "files": [
+    "dist",
+    "README.md"
+  ],
+  "scripts": {
+    "build": "vite build",
+    "typecheck": "tsc --noEmit"
+  },
+  "peerDependencies": {
+    "@devalok/shilp-sutra": ">=0.1.0",
+    "react": "^18 || ^19",
+    "react-dom": "^18 || ^19"
+  },
+  "devDependencies": {
+    "@devalok/shilp-sutra": "workspace:*"
+  },
+  "dependencies": {
+    "@dnd-kit/core": "^6.3.1",
+    "@dnd-kit/sortable": "^10.0.0",
+    "@dnd-kit/utilities": "^3.2.2",
+    "@tabler/icons-react": "^3.37.1",
+    "class-variance-authority": "^0.7.1",
+    "clsx": "^2.1.1",
+    "date-fns": "^4.1.0",
+    "react-markdown": "^10.1.0",
+    "tailwind-merge": "^3.0.1"
+  }
+}

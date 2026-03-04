@@ -189,7 +189,7 @@ function NotificationItem({
           className={cn(
             'h-2 w-2 rounded-ds-full',
             TIER_COLORS[notification.tier] || TIER_COLORS.INFO,
-            notification.isRead && 'opacity-40',
+            notification.isRead && 'opacity-[0.38]',
           )}
         />
       </div>

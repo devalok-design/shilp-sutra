@@ -57,7 +57,7 @@ const taskCardVariants = cva(
     variants: {
       state: {
         default: '',
-        dragging: 'opacity-40',
+        dragging: 'opacity-[0.38]',
         overlay: 'rotate-[2deg] shadow-03 border-border-interactive/60 ring-1 ring-interactive/40',
       },
       blocked: {
@@ -111,9 +111,9 @@ function TaskCardVisual({
         <button
           className={cn(
             'mt-ds-01 flex-shrink-0 cursor-grab rounded p-ds-01 opacity-0 transition-opacity',
-            'group-hover/card:opacity-40 hover:!opacity-100',
+            'group-hover/card:opacity-[0.38] hover:!opacity-100',
             'active:cursor-grabbing',
-            isDragOverlay && 'opacity-40',
+            isDragOverlay && 'opacity-[0.38]',
           )}
           {...(dragHandleProps?.attributes ?? {})}
           {...(dragHandleProps?.listeners ?? {})}

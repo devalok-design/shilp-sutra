@@ -129,7 +129,7 @@ export const Disabled: Story = {
 
 const variants = ['filled', 'outlined'] as const
 const sizes = ['sm', 'md', 'lg'] as const
-const colors = ['default', 'primary', 'success', 'error', 'warning'] as const
+const colors = ['default', 'primary', 'success', 'error', 'warning', 'info', 'teal', 'amber', 'slate', 'indigo', 'cyan', 'orange', 'emerald'] as const
 
 export const AllVariants: Story = {
   render: () => (

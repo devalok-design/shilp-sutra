@@ -4,13 +4,23 @@ import { IconSearch, IconX, IconLoader2 } from '@tabler/icons-react'
 import * as React from 'react'
 import { cn } from './lib/utils'
 
+type SearchInputSize = 'sm' | 'md' | 'lg'
+
+const sizeClasses: Record<SearchInputSize, string> = {
+  sm: 'h-ds-sm text-ds-sm pl-ds-08 pr-ds-07',
+  md: 'h-ds-md text-ds-md pl-10 pr-9',
+  lg: 'h-ds-lg text-ds-lg pl-12 pr-10',
+}
+
 export interface SearchInputProps extends React.InputHTMLAttributes<HTMLInputElement> {
   onClear?: () => void
   loading?: boolean
+  /** @default 'md' */
+  inputSize?: SearchInputSize
 }
 
 const SearchInput = React.forwardRef<HTMLInputElement, SearchInputProps>(
-  ({ className, value, onClear, loading, ...props }, ref) => {
+  ({ className, value, onClear, loading, inputSize = 'md', ...props }, ref) => {
     const hasValue = value !== undefined && value !== ''
 
     return (
@@ -24,8 +34,8 @@ const SearchInput = React.forwardRef<HTMLInputElement, SearchInputProps>(
           value={value}
           aria-busy={loading}
           className={cn(
-            'flex w-full font-sans text-ds-md',
-            'h-ds-md pl-10 pr-9',
+            'flex w-full font-sans',
+            sizeClasses[inputSize],
             'bg-field text-text-primary',
             'border border-border rounded-ds-md',
             'placeholder:text-text-placeholder',

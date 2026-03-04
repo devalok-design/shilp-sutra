@@ -22,7 +22,7 @@ const meta: Meta<typeof IconButton> = {
   argTypes: {
     variant: {
       control: 'select',
-      options: ['primary', 'secondary', 'ghost', 'danger', 'danger-ghost', 'link'],
+      options: ['primary', 'secondary', 'ghost', 'error', 'error-ghost', 'link'],
     },
     size: {
       control: 'select',
@@ -66,12 +66,12 @@ export const AllVariants: Story = {
         aria-label="Settings"
       />
       <IconButton
-        variant="danger"
+        variant="error"
         icon={<IconTrash size={20} />}
         aria-label="Delete"
       />
       <IconButton
-        variant="danger-ghost"
+        variant="error-ghost"
         icon={<IconX size={20} />}
         aria-label="Dismiss"
       />
@@ -127,7 +127,7 @@ export const Circle: Story = {
       />
       <IconButton
         shape="circle"
-        variant="danger"
+        variant="error"
         icon={<IconTrash size={20} />}
         aria-label="Delete"
       />

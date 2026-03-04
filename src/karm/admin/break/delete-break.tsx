@@ -44,7 +44,7 @@ export function DeleteBreak({ id: _id, userId: _userId, onDelete }: DeleteBreakP
       toast({
         title: 'Error',
         description: 'Failed to delete break request',
-        variant: 'destructive',
+        variant: 'error',
       })
     } finally {
       setIsSubmitting(false)

@@ -19,8 +19,8 @@ const meta: Meta<typeof Button> = {
         'primary',
         'secondary',
         'ghost',
-        'danger',
-        'danger-ghost',
+        'error',
+        'error-ghost',
         'link',
       ],
     },
@@ -72,14 +72,14 @@ export const Ghost: Story = {
 
 export const Danger: Story = {
   args: {
-    variant: 'danger',
+    variant: 'error',
     children: 'Danger',
   },
 }
 
 export const DangerGhost: Story = {
   args: {
-    variant: 'danger-ghost',
+    variant: 'error-ghost',
     children: 'Danger Ghost',
   },
 }
@@ -149,7 +149,7 @@ export const Disabled: Story = {
 
 export const AllVariants: Story = {
   render: () => {
-    const variants = ['primary', 'secondary', 'ghost', 'danger', 'danger-ghost', 'link'] as const
+    const variants = ['primary', 'secondary', 'ghost', 'error', 'error-ghost', 'link'] as const
     const sizes = ['sm', 'md', 'lg'] as const
     return (
       <div className="flex flex-col gap-ds-06">
@@ -287,10 +287,10 @@ export const AllFeatures: Story = {
           <Button variant="ghost" startIcon={<IconPlus size={16} />}>
             Ghost
           </Button>
-          <Button variant="danger" startIcon={<IconTrash size={16} />}>
+          <Button variant="error" startIcon={<IconTrash size={16} />}>
             Danger
           </Button>
-          <Button variant="danger-ghost" startIcon={<IconTrash size={16} />}>
+          <Button variant="error-ghost" startIcon={<IconTrash size={16} />}>
             Danger Ghost
           </Button>
           <Button variant="link" startIcon={<IconArrowRight size={16} />}>

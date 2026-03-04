@@ -244,7 +244,7 @@ const FilesTab = React.forwardRef<HTMLDivElement, FilesTabProps>(
                           </DialogClose>
                           <DialogClose asChild>
                             <Button
-                              variant="danger"
+                              variant="error"
                               size="sm"
                               onClick={() => onDelete(file.id)}
                             >

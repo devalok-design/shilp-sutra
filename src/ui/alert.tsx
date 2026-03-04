@@ -16,29 +16,31 @@ const alertVariants = cva(
           'bg-warning-surface border-warning-border text-warning-text',
         error:
           'bg-error-surface border-error-border text-error-text',
+        neutral:
+          'bg-layer-02 border-border text-text-primary [&>svg]:text-text-secondary',
       },
     },
     defaultVariants: { variant: 'info' },
   },
 )
 
-const ALERT_ICONS = {
+const ALERT_ICONS: Record<string, React.ComponentType<{ className?: string }>> = {
   info:    IconInfoCircle,
   success: IconCircleCheck,
   warning: IconAlertTriangle,
   error:   IconAlertCircle,
+  neutral: IconInfoCircle,
 }
 
 export interface AlertProps
   extends React.HTMLAttributes<HTMLDivElement>,
     VariantProps<typeof alertVariants> {
   title?: string
-  dismissible?: boolean
   onDismiss?: () => void
 }
 
 const Alert = React.forwardRef<HTMLDivElement, AlertProps>(
-  ({ className, variant = 'info', title, dismissible, onDismiss, children, ...props }, ref) => {
+  ({ className, variant = 'info', title, onDismiss, children, ...props }, ref) => {
     const Icon = ALERT_ICONS[variant ?? 'info']
 
     return (
@@ -48,7 +50,7 @@ const Alert = React.forwardRef<HTMLDivElement, AlertProps>(
           {title && <p className="text-ds-md font-semibold mb-ds-01">{title}</p>}
           <div className="text-ds-md opacity-90">{children}</div>
         </div>
-        {dismissible && onDismiss && (
+        {onDismiss && (
           <button
             type="button"
             onClick={onDismiss}

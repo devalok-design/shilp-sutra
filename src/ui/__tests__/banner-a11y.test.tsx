@@ -30,7 +30,7 @@ describe('Banner accessibility', () => {
 
   it('should have no violations when dismissible', async () => {
     const { container } = render(
-      <Banner variant="info" dismissible onDismiss={() => {}}>
+      <Banner variant="info" onDismiss={() => {}}>
         Dismissible banner message.
       </Banner>,
     )

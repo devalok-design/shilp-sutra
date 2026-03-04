@@ -56,7 +56,7 @@ export const Destructive: Story = {
   render: () => (
     <AlertDialog>
       <AlertDialogTrigger asChild>
-        <Button variant="danger">Delete Item</Button>
+        <Button variant="error">Delete Item</Button>
       </AlertDialogTrigger>
       <AlertDialogContent>
         <AlertDialogHeader>

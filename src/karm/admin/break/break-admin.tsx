@@ -355,7 +355,7 @@ const BreakAdminRoot = React.forwardRef<HTMLDivElement, BreakAdminProps>(
               error instanceof Error
                 ? error.message
                 : 'Failed to approve request',
-            variant: 'destructive',
+            variant: 'error',
           })
         } finally {
           setIsProcessing(false)
@@ -415,7 +415,7 @@ const BreakAdminRoot = React.forwardRef<HTMLDivElement, BreakAdminProps>(
               error instanceof Error
                 ? error.message
                 : 'Failed to reject request',
-            variant: 'destructive',
+            variant: 'error',
           })
         } finally {
           setIsProcessing(false)

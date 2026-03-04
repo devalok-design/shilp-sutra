@@ -9,10 +9,9 @@ const meta: Meta<typeof Alert> = {
   argTypes: {
     variant: {
       control: 'select',
-      options: ['info', 'success', 'warning', 'error'],
+      options: ['info', 'success', 'warning', 'error', 'neutral'],
     },
     title: { control: 'text' },
-    dismissible: { control: 'boolean' },
   },
 }
 export default meta
@@ -62,7 +61,6 @@ export const Dismissible: Story = {
     variant: 'warning',
     title: 'Dismissible Alert',
     children: 'You can dismiss this alert by clicking the X button.',
-    dismissible: true,
     onDismiss: fn(),
   },
   play: async ({ canvasElement, args }) => {
@@ -120,7 +118,7 @@ export const AllVariants: Story = {
           <p className="mb-ds-03 text-ds-sm font-semibold text-text-secondary">Dismissible</p>
           <div className="flex flex-col gap-ds-03">
             {variants.map((variant) => (
-              <Alert key={`dismiss-${variant}`} variant={variant} title={variant.charAt(0).toUpperCase() + variant.slice(1)} dismissible onDismiss={() => {}}>
+              <Alert key={`dismiss-${variant}`} variant={variant} title={variant.charAt(0).toUpperCase() + variant.slice(1)} onDismiss={() => {}}>
                 {messages[variant]}
               </Alert>
             ))}

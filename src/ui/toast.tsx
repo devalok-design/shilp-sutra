@@ -29,10 +29,14 @@ const toastVariants = cva(
       variant: {
         default:
           'border-border bg-layer-01 text-text-primary',
-        destructive:
-          'destructive group border-border-error bg-layer-01 text-text-primary',
-        karam:
-          'bg-layer-01 text-text-primary border-border',
+        success:
+          'border-success-border bg-success-surface text-success-text',
+        warning:
+          'border-warning-border bg-warning-surface text-warning-text',
+        error:
+          'destructive group border-border-error bg-error-surface text-error-text',
+        info:
+          'border-info-border bg-info-surface text-info-text',
       },
     },
     defaultVariants: {

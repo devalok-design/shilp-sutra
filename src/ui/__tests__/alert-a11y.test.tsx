@@ -44,9 +44,9 @@ describe('Alert accessibility', () => {
     expect(results).toHaveNoViolations()
   })
 
-  it('should have no violations with dismissible button', async () => {
+  it('should have no violations with button', async () => {
     const { container } = render(
-      <Alert variant="info" dismissible onDismiss={() => {}}>
+      <Alert variant="info" onDismiss={() => {}}>
         Dismissible alert message.
       </Alert>,
     )

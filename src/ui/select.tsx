@@ -1,6 +1,7 @@
 import * as React from 'react'
 import * as SelectPrimitive from '@primitives/react-select'
 import { IconCheck, IconChevronDown, IconChevronUp } from '@tabler/icons-react'
+import { cva, type VariantProps } from 'class-variance-authority'
 
 import { cn } from './lib/utils'
 
@@ -10,16 +11,31 @@ const SelectGroup = SelectPrimitive.Group
 
 const SelectValue = SelectPrimitive.Value
 
+const selectTriggerVariants = cva(
+  'flex w-full items-center justify-between whitespace-nowrap rounded-ds-md border border-border bg-field placeholder:text-text-placeholder focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-focus focus-visible:ring-offset-2 focus-visible:border-border-interactive disabled:cursor-not-allowed disabled:opacity-[0.38] [&>span]:line-clamp-1',
+  {
+    variants: {
+      size: {
+        sm: 'h-ds-sm text-ds-sm px-ds-03',
+        md: 'h-ds-md text-ds-md px-ds-04',
+        lg: 'h-ds-lg text-ds-lg px-ds-05',
+      },
+    },
+    defaultVariants: { size: 'md' },
+  },
+)
+
+export interface SelectTriggerProps
+  extends React.ComponentPropsWithoutRef<typeof SelectPrimitive.Trigger>,
+    VariantProps<typeof selectTriggerVariants> {}
+
 const SelectTrigger = React.forwardRef<
   React.ElementRef<typeof SelectPrimitive.Trigger>,
-  React.ComponentPropsWithoutRef<typeof SelectPrimitive.Trigger>
->(({ className, children, ...props }, ref) => (
+  SelectTriggerProps
+>(({ className, children, size, ...props }, ref) => (
   <SelectPrimitive.Trigger
     ref={ref}
-    className={cn(
-      'flex h-ds-md w-full items-center justify-between whitespace-nowrap rounded-ds-md border border-border bg-field px-ds-04 py-ds-03 text-ds-md placeholder:text-text-placeholder focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-focus focus-visible:ring-offset-2 focus-visible:border-border-interactive disabled:cursor-not-allowed disabled:opacity-[0.38] [&>span]:line-clamp-1',
-      className,
-    )}
+    className={cn(selectTriggerVariants({ size }), className)}
     {...props}
   >
     {children}

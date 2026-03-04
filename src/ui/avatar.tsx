@@ -5,7 +5,7 @@ import { cva, type VariantProps } from "class-variance-authority"
 import { cn } from "./lib/utils"
 
 export const avatarVariants = cva(
-  'relative flex shrink-0 overflow-hidden rounded-ds-full',
+  'relative flex shrink-0 overflow-hidden',
   {
     variants: {
       size: {
@@ -15,8 +15,13 @@ export const avatarVariants = cva(
         lg: 'h-ds-lg w-ds-lg',
         xl: 'h-ds-xl w-ds-xl',
       },
+      shape: {
+        circle: 'rounded-ds-full',
+        square: 'rounded-ds-none',
+        rounded: 'rounded-ds-md',
+      },
     },
-    defaultVariants: { size: 'md' },
+    defaultVariants: { size: 'md', shape: 'circle' },
   }
 )
 
@@ -59,13 +64,15 @@ export interface AvatarProps
 const Avatar = React.forwardRef<
   React.ElementRef<typeof AvatarPrimitive.Root>,
   AvatarProps
->(({ className, size, status, children, ...props }, ref) => (
-  <AvatarPrimitive.Root
-    ref={ref}
-    className={cn(avatarVariants({ size }), className)}
-    {...props}
-  >
-    {children}
+>(({ className, size, shape, status, children, ...props }, ref) => (
+  <span className="relative inline-flex shrink-0">
+    <AvatarPrimitive.Root
+      ref={ref}
+      className={cn(avatarVariants({ size, shape }), className)}
+      {...props}
+    >
+      {children}
+    </AvatarPrimitive.Root>
     {status && (
       <span
         className={cn(
@@ -77,7 +84,7 @@ const Avatar = React.forwardRef<
         aria-label={statusLabelMap[status]}
       />
     )}
-  </AvatarPrimitive.Root>
+  </span>
 ))
 Avatar.displayName = AvatarPrimitive.Root.displayName
 

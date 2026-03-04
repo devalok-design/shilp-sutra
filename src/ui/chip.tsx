@@ -13,6 +13,7 @@ const chipVariants = cva(
       size: {
         sm: 'h-ds-xs px-ds-03 text-ds-xs',
         md: 'h-ds-sm px-ds-04 text-ds-sm',
+        lg: 'h-ds-md px-ds-05 text-ds-base gap-ds-03',
       },
       color: {
         default: '',
@@ -20,6 +21,14 @@ const chipVariants = cva(
         success: '',
         error: '',
         warning: '',
+        info: '',
+        teal: '',
+        amber: '',
+        slate: '',
+        indigo: '',
+        cyan: '',
+        orange: '',
+        emerald: '',
       },
     },
     compoundVariants: [
@@ -27,10 +36,26 @@ const chipVariants = cva(
       { variant: 'filled', color: 'success', className: 'bg-success-surface text-success-text border-success-border' },
       { variant: 'filled', color: 'error', className: 'bg-error-surface text-error-text border-error-border' },
       { variant: 'filled', color: 'warning', className: 'bg-warning-surface text-warning-text border-warning-border' },
+      { variant: 'filled', color: 'info', className: 'bg-info-surface text-info-text border-info-border' },
+      { variant: 'filled', color: 'teal', className: 'bg-category-teal-surface text-category-teal-text border-category-teal-border' },
+      { variant: 'filled', color: 'amber', className: 'bg-category-amber-surface text-category-amber-text border-category-amber-border' },
+      { variant: 'filled', color: 'slate', className: 'bg-category-slate-surface text-category-slate-text border-category-slate-border' },
+      { variant: 'filled', color: 'indigo', className: 'bg-category-indigo-surface text-category-indigo-text border-category-indigo-border' },
+      { variant: 'filled', color: 'cyan', className: 'bg-category-cyan-surface text-category-cyan-text border-category-cyan-border' },
+      { variant: 'filled', color: 'orange', className: 'bg-category-orange-surface text-category-orange-text border-category-orange-border' },
+      { variant: 'filled', color: 'emerald', className: 'bg-category-emerald-surface text-category-emerald-text border-category-emerald-border' },
       { variant: 'outlined', color: 'primary', className: 'border-border-interactive text-text-interactive' },
       { variant: 'outlined', color: 'success', className: 'border-border-success text-success-text' },
       { variant: 'outlined', color: 'error', className: 'border-border-error text-error-text' },
       { variant: 'outlined', color: 'warning', className: 'border-border-warning text-warning-text' },
+      { variant: 'outlined', color: 'info', className: 'border-info-border text-info-text' },
+      { variant: 'outlined', color: 'teal', className: 'border-category-teal-border text-category-teal-text' },
+      { variant: 'outlined', color: 'amber', className: 'border-category-amber-border text-category-amber-text' },
+      { variant: 'outlined', color: 'slate', className: 'border-category-slate-border text-category-slate-text' },
+      { variant: 'outlined', color: 'indigo', className: 'border-category-indigo-border text-category-indigo-text' },
+      { variant: 'outlined', color: 'cyan', className: 'border-category-cyan-border text-category-cyan-text' },
+      { variant: 'outlined', color: 'orange', className: 'border-category-orange-border text-category-orange-text' },
+      { variant: 'outlined', color: 'emerald', className: 'border-category-emerald-border text-category-emerald-text' },
     ],
     defaultVariants: {
       variant: 'filled',
@@ -40,9 +65,11 @@ const chipVariants = cva(
   },
 )
 
+type ChipColor = 'default' | 'primary' | 'success' | 'error' | 'warning' | 'info' | 'teal' | 'amber' | 'slate' | 'indigo' | 'cyan' | 'orange' | 'emerald'
+
 type ChipProps = Omit<VariantProps<typeof chipVariants>, 'color'> & {
   label: string
-  color?: 'default' | 'primary' | 'success' | 'error' | 'warning'
+  color?: ChipColor
   icon?: React.ReactNode
   onClick?: React.MouseEventHandler
   onDelete?: () => void

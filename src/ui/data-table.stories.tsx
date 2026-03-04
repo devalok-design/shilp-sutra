@@ -144,7 +144,7 @@ function SelectableDemo() {
 
   return (
     <div className="space-y-ds-04">
-      <p className="text-ds-sm text-[var(--color-text-secondary)]">
+      <p className="text-ds-sm text-text-secondary">
         {selected.length} of {filterData.length} row(s) selected
       </p>
       <DataTable
@@ -241,11 +241,11 @@ function EditableDemo() {
 
   return (
     <div className="space-y-ds-04">
-      <p className="text-ds-sm text-[var(--color-text-secondary)]">
+      <p className="text-ds-sm text-text-secondary">
         Double-click a cell to edit. ID column is read-only.
       </p>
       {lastEdit && (
-        <p className="text-ds-sm text-[var(--color-text-brand)] font-medium">
+        <p className="text-ds-sm text-text-brand font-medium">
           Last edit: {lastEdit}
         </p>
       )}
@@ -275,7 +275,7 @@ export const Editable: Story = {
 function ExpandableDemo() {
   return (
     <div className="space-y-ds-04">
-      <p className="text-ds-sm text-[var(--color-text-secondary)]">
+      <p className="text-ds-sm text-text-secondary">
         Click the chevron to expand a row and see its detail panel.
       </p>
       <DataTable
@@ -284,18 +284,18 @@ function ExpandableDemo() {
         expandable
         renderExpanded={(row) => (
           <div className="space-y-ds-02">
-            <h4 className="text-ds-md font-semibold text-[var(--color-text-primary)]">
+            <h4 className="text-ds-md font-semibold text-text-primary">
               {row.title}
             </h4>
             <dl className="grid grid-cols-[auto_1fr] gap-x-ds-04 gap-y-ds-02 text-ds-sm">
-              <dt className="text-[var(--color-text-secondary)] font-medium">ID:</dt>
-              <dd className="text-[var(--color-text-primary)]">{row.id}</dd>
-              <dt className="text-[var(--color-text-secondary)] font-medium">Status:</dt>
-              <dd className="text-[var(--color-text-primary)]">{row.status}</dd>
-              <dt className="text-[var(--color-text-secondary)] font-medium">Priority:</dt>
-              <dd className="text-[var(--color-text-primary)]">{row.priority}</dd>
-              <dt className="text-[var(--color-text-secondary)] font-medium">Description:</dt>
-              <dd className="text-[var(--color-text-primary)]">
+              <dt className="text-text-secondary font-medium">ID:</dt>
+              <dd className="text-text-primary">{row.id}</dd>
+              <dt className="text-text-secondary font-medium">Status:</dt>
+              <dd className="text-text-primary">{row.status}</dd>
+              <dt className="text-text-secondary font-medium">Priority:</dt>
+              <dd className="text-text-primary">{row.priority}</dd>
+              <dt className="text-text-secondary font-medium">Description:</dt>
+              <dd className="text-text-primary">
                 This is a detailed description of {row.title.toLowerCase()}.
                 It contains additional context that does not fit in the main table row.
               </dd>
@@ -331,7 +331,7 @@ const plainColumns: ColumnDef<Task>[] = [
 export const VirtualizedLargeDataset: Story = {
   render: () => (
     <div className="space-y-ds-04">
-      <p className="text-ds-sm text-[var(--color-text-secondary)]">
+      <p className="text-ds-sm text-text-secondary">
         10,000 rows rendered with virtualization. Scroll to see smooth performance.
       </p>
       <DataTable
@@ -355,11 +355,11 @@ function FullFeaturedDemo() {
 
   return (
     <div className="space-y-ds-04">
-      <p className="text-ds-sm text-[var(--color-text-secondary)]">
+      <p className="text-ds-sm text-text-secondary">
         All features enabled: sorting, filtering, pagination, selection, toolbar,
         density, editable cells, and expandable rows.
       </p>
-      <div className="flex gap-ds-04 text-ds-sm text-[var(--color-text-secondary)]">
+      <div className="flex gap-ds-04 text-ds-sm text-text-secondary">
         <span>{selected.length} selected</span>
         {lastEdit && <span>Last edit: {lastEdit}</span>}
       </div>
@@ -386,7 +386,7 @@ function FullFeaturedDemo() {
         }}
         expandable
         renderExpanded={(row) => (
-          <div className="text-ds-sm text-[var(--color-text-primary)]">
+          <div className="text-ds-sm text-text-primary">
             <strong>Detail panel for {row.id}:</strong> {row.title} — Status: {row.status}, Priority: {row.priority}
           </div>
         )}
@@ -445,7 +445,7 @@ function buildTimeOffColumns(): ColumnDef<TimeOffRow>[] {
           const status = row.getValue(dayKey) as string | undefined
           if (!status) {
             return isWeekend ? (
-              <span className="text-[var(--color-text-disabled)]">&mdash;</span>
+              <span className="text-text-disabled">&mdash;</span>
             ) : null
           }
           const variant = {

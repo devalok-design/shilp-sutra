@@ -29,11 +29,11 @@ export const Default: Story = {
           </Avatar>
           <div className="space-y-1">
             <h4 className="text-sm font-semibold">@nextjs</h4>
-            <p className="text-sm text-[var(--color-text-secondary)]">
+            <p className="text-sm text-text-secondary">
               The React Framework -- created and maintained by @vercel.
             </p>
             <div className="flex items-center pt-2">
-              <span className="text-xs text-[var(--color-text-secondary)]">
+              <span className="text-xs text-text-secondary">
                 Joined December 2021
               </span>
             </div>

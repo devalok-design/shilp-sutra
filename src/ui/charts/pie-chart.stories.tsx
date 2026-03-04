@@ -67,7 +67,7 @@ export const WithCenterLabel: Story = {
     variant: 'donut',
     centerLabel: (
       <div>
-        <div className="text-2xl font-bold">70</div>
+        <div className="text-ds-2xl font-bold">70</div>
         <div>Total</div>
       </div>
     ),

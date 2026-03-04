@@ -52,7 +52,7 @@ export const ExternalLink: Story = {
 
 export const InParagraph: Story = {
   render: () => (
-    <p className="text-sm max-w-md text-[var(--color-text-secondary)]">
+    <p className="text-sm max-w-md text-text-secondary">
       For more information about the Devalok design system, visit our{' '}
       <Link href="#">documentation</Link>. If you have questions, reach out
       on <Link href="#">Slack</Link> or file an{' '}

@@ -274,7 +274,7 @@ export const AllFeatures: Story = {
     <div className="flex flex-col gap-8">
       {/* Row 1: Buttons with startIcon across all variants */}
       <div>
-        <p className="mb-2 text-sm font-semibold text-[var(--color-text-secondary)]">
+        <p className="mb-2 text-sm font-semibold text-text-secondary">
           Start Icon across variants
         </p>
         <div className="flex flex-wrap items-center gap-4">
@@ -301,7 +301,7 @@ export const AllFeatures: Story = {
 
       {/* Row 2: Loading states (start, end, center) */}
       <div>
-        <p className="mb-2 text-sm font-semibold text-[var(--color-text-secondary)]">
+        <p className="mb-2 text-sm font-semibold text-text-secondary">
           Loading positions
         </p>
         <div className="flex flex-wrap items-center gap-4">
@@ -319,7 +319,7 @@ export const AllFeatures: Story = {
 
       {/* Row 3: Sizes with icons (sm, md, lg) */}
       <div>
-        <p className="mb-2 text-sm font-semibold text-[var(--color-text-secondary)]">
+        <p className="mb-2 text-sm font-semibold text-text-secondary">
           Sizes with icons
         </p>
         <div className="flex flex-wrap items-center gap-4">

@@ -53,21 +53,21 @@ const sparkData = [4, 7, 3, 8, 5, 9, 6, 10, 7, 12]
 export const Dashboard: StoryObj = {
   render: () => (
     <div className="space-y-ds-06">
-      <h2 className="text-2xl font-semibold text-[var(--color-text-primary)]">
+      <h2 className="text-ds-2xl font-semibold text-text-primary">
         Analytics Dashboard
       </h2>
       <div className="grid grid-cols-2 gap-ds-06">
         {/* Bar Chart */}
-        <div className="rounded-[var(--radius-lg)] border border-[var(--color-border-subtle)] p-ds-05">
-          <h3 className="mb-ds-04 text-ds-md font-medium text-[var(--color-text-secondary)]">
+        <div className="rounded-ds-lg border border-border-subtle p-ds-05">
+          <h3 className="mb-ds-04 text-ds-md font-medium text-text-secondary">
             Monthly Revenue
           </h3>
           <BarChart data={barData} xKey="month" yKey="value" height={250} />
         </div>
 
         {/* Line Chart */}
-        <div className="rounded-[var(--radius-lg)] border border-[var(--color-border-subtle)] p-ds-05">
-          <h3 className="mb-ds-04 text-ds-md font-medium text-[var(--color-text-secondary)]">
+        <div className="rounded-ds-lg border border-border-subtle p-ds-05">
+          <h3 className="mb-ds-04 text-ds-md font-medium text-text-secondary">
             Revenue vs Costs
           </h3>
           <LineChart
@@ -84,8 +84,8 @@ export const Dashboard: StoryObj = {
         </div>
 
         {/* Area Chart */}
-        <div className="rounded-[var(--radius-lg)] border border-[var(--color-border-subtle)] p-ds-05">
-          <h3 className="mb-ds-04 text-ds-md font-medium text-[var(--color-text-secondary)]">
+        <div className="rounded-ds-lg border border-border-subtle p-ds-05">
+          <h3 className="mb-ds-04 text-ds-md font-medium text-text-secondary">
             Revenue Trend
           </h3>
           <AreaChart
@@ -98,16 +98,16 @@ export const Dashboard: StoryObj = {
         </div>
 
         {/* Pie Chart */}
-        <div className="rounded-[var(--radius-lg)] border border-[var(--color-border-subtle)] p-ds-05">
-          <h3 className="mb-ds-04 text-ds-md font-medium text-[var(--color-text-secondary)]">
+        <div className="rounded-ds-lg border border-border-subtle p-ds-05">
+          <h3 className="mb-ds-04 text-ds-md font-medium text-text-secondary">
             Leave Status
           </h3>
           <PieChart data={pieData} variant="donut" showLegend height={250} />
         </div>
 
         {/* Radar Chart */}
-        <div className="rounded-[var(--radius-lg)] border border-[var(--color-border-subtle)] p-ds-05">
-          <h3 className="mb-ds-04 text-ds-md font-medium text-[var(--color-text-secondary)]">
+        <div className="rounded-ds-lg border border-border-subtle p-ds-05">
+          <h3 className="mb-ds-04 text-ds-md font-medium text-text-secondary">
             Skills Assessment
           </h3>
           <RadarChart
@@ -120,8 +120,8 @@ export const Dashboard: StoryObj = {
         </div>
 
         {/* Gauges + Sparklines */}
-        <div className="rounded-[var(--radius-lg)] border border-[var(--color-border-subtle)] p-ds-05">
-          <h3 className="mb-ds-04 text-ds-md font-medium text-[var(--color-text-secondary)]">
+        <div className="rounded-ds-lg border border-border-subtle p-ds-05">
+          <h3 className="mb-ds-04 text-ds-md font-medium text-text-secondary">
             KPI Summary
           </h3>
           <div className="flex items-center justify-around">
@@ -135,7 +135,7 @@ export const Dashboard: StoryObj = {
               <GaugeChart value={45} label="Utilization" color="chart-2" height={120} />
             </div>
           </div>
-          <div className="mt-ds-05 flex items-center justify-around text-ds-sm text-[var(--color-text-secondary)]">
+          <div className="mt-ds-05 flex items-center justify-around text-ds-sm text-text-secondary">
             <div className="flex items-center gap-ds-02">
               Revenue <Sparkline data={sparkData} variant="line" color="chart-1" />
             </div>

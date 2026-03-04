@@ -92,7 +92,7 @@ const meta = {
   },
   decorators: [
     (Story) => (
-      <div className="w-[720px] rounded-lg border border-[var(--color-border-default)] bg-[var(--color-layer-01)]">
+      <div className="w-[720px] rounded-lg border border-border bg-layer-01">
         <Story />
       </div>
     ),

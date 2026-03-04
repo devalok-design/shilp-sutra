@@ -27,7 +27,7 @@ type Story = StoryObj<typeof ContextMenu>
 export const Default: Story = {
   render: () => (
     <ContextMenu>
-      <ContextMenuTrigger className="flex h-[200px] w-[350px] items-center justify-center rounded-[var(--radius-lg)] border border-dashed border-[var(--color-border-default)] text-sm text-[var(--color-text-secondary)]">
+      <ContextMenuTrigger className="flex h-[200px] w-[350px] items-center justify-center rounded-ds-lg border border-dashed border-border text-sm text-text-secondary">
         Right-click here
       </ContextMenuTrigger>
       <ContextMenuContent className="w-64">
@@ -57,7 +57,7 @@ export const Default: Story = {
 export const WithSubmenu: Story = {
   render: () => (
     <ContextMenu>
-      <ContextMenuTrigger className="flex h-[200px] w-[350px] items-center justify-center rounded-[var(--radius-lg)] border border-dashed border-[var(--color-border-default)] text-sm text-[var(--color-text-secondary)]">
+      <ContextMenuTrigger className="flex h-[200px] w-[350px] items-center justify-center rounded-ds-lg border border-dashed border-border text-sm text-text-secondary">
         Right-click here
       </ContextMenuTrigger>
       <ContextMenuContent className="w-64">
@@ -89,7 +89,7 @@ export const WithCheckboxAndRadio: Story = {
 
     return (
       <ContextMenu>
-        <ContextMenuTrigger className="flex h-[200px] w-[350px] items-center justify-center rounded-[var(--radius-lg)] border border-dashed border-[var(--color-border-default)] text-sm text-[var(--color-text-secondary)]">
+        <ContextMenuTrigger className="flex h-[200px] w-[350px] items-center justify-center rounded-ds-lg border border-dashed border-border text-sm text-text-secondary">
           Right-click here
         </ContextMenuTrigger>
         <ContextMenuContent className="w-64">

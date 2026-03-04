@@ -68,7 +68,7 @@ export const Destructive: Story = {
         </AlertDialogHeader>
         <AlertDialogFooter>
           <AlertDialogCancel>Cancel</AlertDialogCancel>
-          <AlertDialogAction className="bg-[var(--color-error)] text-[var(--color-text-on-color)] hover:bg-[var(--red-700)]">
+          <AlertDialogAction className="bg-error text-text-on-color hover:bg-red-700">
             Delete
           </AlertDialogAction>
         </AlertDialogFooter>

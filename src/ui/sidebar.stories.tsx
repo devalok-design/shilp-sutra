@@ -82,16 +82,16 @@ export const Default: Story = {
           </SidebarGroup>
         </SidebarContent>
         <SidebarFooter className="p-4">
-          <p className="text-xs text-[var(--color-text-secondary)]">Karm v2.0</p>
+          <p className="text-xs text-text-secondary">Karm v2.0</p>
         </SidebarFooter>
       </Sidebar>
       <SidebarInset>
-        <header className="flex items-center gap-2 p-4 border-b border-[var(--color-border-subtle)]">
+        <header className="flex items-center gap-2 p-4 border-b border-border-subtle">
           <SidebarTrigger />
           <h1 className="text-sm font-medium">Dashboard</h1>
         </header>
         <div className="p-6">
-          <p className="text-sm text-[var(--color-text-secondary)]">
+          <p className="text-sm text-text-secondary">
             Main content area. Toggle the sidebar with the button or Ctrl+B.
           </p>
         </div>
@@ -126,12 +126,12 @@ export const WithActiveItem: Story = {
         </SidebarContent>
       </Sidebar>
       <SidebarInset>
-        <header className="flex items-center gap-2 p-4 border-b border-[var(--color-border-subtle)]">
+        <header className="flex items-center gap-2 p-4 border-b border-border-subtle">
           <SidebarTrigger />
           <h1 className="text-sm font-medium">Projects</h1>
         </header>
         <div className="p-6">
-          <p className="text-sm text-[var(--color-text-secondary)]">
+          <p className="text-sm text-text-secondary">
             "Projects" is the active navigation item.
           </p>
         </div>
@@ -165,12 +165,12 @@ export const CollapsedByDefault: Story = {
         </SidebarContent>
       </Sidebar>
       <SidebarInset>
-        <header className="flex items-center gap-2 p-4 border-b border-[var(--color-border-subtle)]">
+        <header className="flex items-center gap-2 p-4 border-b border-border-subtle">
           <SidebarTrigger />
           <h1 className="text-sm font-medium">Dashboard</h1>
         </header>
         <div className="p-6">
-          <p className="text-sm text-[var(--color-text-secondary)]">
+          <p className="text-sm text-text-secondary">
             Sidebar starts collapsed. Hover over icons to see tooltips.
           </p>
         </div>

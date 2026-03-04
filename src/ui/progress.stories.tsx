@@ -93,7 +93,7 @@ export const ThreeQuarters: Story = {
 export const CustomIndicator: Story = {
   args: {
     value: 80,
-    indicatorClassName: 'bg-[var(--color-success)]',
+    indicatorClassName: 'bg-success',
   },
   decorators: [
     (Story) => (
@@ -108,23 +108,23 @@ export const AllStages: Story = {
   render: () => (
     <div className="flex flex-col gap-4 max-w-md">
       <div className="flex flex-col gap-1">
-        <span className="text-sm text-[var(--color-text-secondary)]">0%</span>
+        <span className="text-sm text-text-secondary">0%</span>
         <Progress value={0} />
       </div>
       <div className="flex flex-col gap-1">
-        <span className="text-sm text-[var(--color-text-secondary)]">25%</span>
+        <span className="text-sm text-text-secondary">25%</span>
         <Progress value={25} />
       </div>
       <div className="flex flex-col gap-1">
-        <span className="text-sm text-[var(--color-text-secondary)]">50%</span>
+        <span className="text-sm text-text-secondary">50%</span>
         <Progress value={50} />
       </div>
       <div className="flex flex-col gap-1">
-        <span className="text-sm text-[var(--color-text-secondary)]">75%</span>
+        <span className="text-sm text-text-secondary">75%</span>
         <Progress value={75} />
       </div>
       <div className="flex flex-col gap-1">
-        <span className="text-sm text-[var(--color-text-secondary)]">100%</span>
+        <span className="text-sm text-text-secondary">100%</span>
         <Progress value={100} />
       </div>
     </div>

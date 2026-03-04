@@ -181,3 +181,27 @@ export {
   type GroupedAttendance,
   type RealtimeCallbacks,
 } from './karm'
+// Brand assets
+export {
+  BRAND_VERSION,
+  brandConfig,
+  type BrandName,
+  DevalokLogo,
+  DevalokLogoLink,
+  type DevalokLogoProps,
+  type DevalokLogoLinkProps,
+  type DevalokLogoType,
+  type DevalokLogoColor,
+  type DevalokLogoSize,
+  KarmLogo,
+  KarmLogoLink,
+  type KarmLogoProps,
+  type KarmLogoLinkProps,
+  type KarmLogoType,
+  type KarmLogoColor,
+  type KarmLogoSize,
+  getDevalokFaviconPath,
+  generateDevalokFavicon,
+  getKarmFaviconPath,
+  generateKarmFavicon,
+} from './brand'

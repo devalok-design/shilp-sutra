@@ -67,6 +67,40 @@ const chipVariants = cva(
 
 type ChipColor = 'default' | 'primary' | 'success' | 'error' | 'warning' | 'info' | 'teal' | 'amber' | 'slate' | 'indigo' | 'cyan' | 'orange' | 'emerald'
 
+/**
+ * Props for Chip — a compact label-tag component with a two-axis variant system.
+ *
+ * **Two axes:**
+ * - `variant` controls **shape**: `"filled"` (solid background, default) | `"outlined"` (border only)
+ * - `color` controls **intent/category**: `"default"` | `"primary"` | `"success"` | `"error"` |
+ *   `"warning"` | `"info"` | `"teal"` | `"amber"` | `"slate"` | `"indigo"` | `"cyan"` | `"orange"` | `"emerald"`
+ *
+ * **Comparison with Badge:** Badge uses `variant=` for intent (e.g. `variant="success"`).
+ * Chip uses `color=` for intent. They are different — don't mix them up.
+ *
+ * **Important:** Use the `label` prop, NOT `children`. Chip does not render children.
+ *
+ * @example
+ * // Basic label chip:
+ * <Chip label="In Progress" />
+ *
+ * // With intent color (use color=, not variant=):
+ * <Chip label="High Priority" color="warning" />
+ * <Chip label="Done" color="success" variant="outlined" />
+ *
+ * // Dismissible chip (e.g. in a filter bar):
+ * <Chip label="React" color="info" onDelete={() => removeFilter('react')} />
+ *
+ * // Clickable chip (renders as <button>):
+ * <Chip label="View details" color="primary" onClick={() => openPanel(id)} />
+ *
+ * // WRONG — children are not rendered (TypeScript error in strict mode):
+ * // <Chip>High Priority</Chip>
+ *
+ * // Badge comparison:
+ * // <Badge variant="success">Done</Badge>  ← Badge uses variant= for intent
+ * // <Chip label="Done" color="success" />  ← Chip uses color= for intent
+ */
 type ChipProps = Omit<VariantProps<typeof chipVariants>, 'color'> & {
   label: string
   color?: ChipColor

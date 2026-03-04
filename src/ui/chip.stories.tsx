@@ -10,16 +10,21 @@ const meta: Meta<typeof Chip> = {
     variant: {
       control: 'select',
       options: ['filled', 'outlined'],
+      description: 'Shape: filled (solid bg) or outlined (border only)',
     },
     size: {
       control: 'select',
-      options: ['sm', 'md'],
+      options: ['sm', 'md', 'lg'],
     },
     color: {
       control: 'select',
-      options: ['default', 'primary', 'success', 'error', 'warning'],
+      options: ['default', 'primary', 'success', 'error', 'warning', 'info', 'teal', 'amber', 'slate', 'indigo', 'cyan', 'orange', 'emerald'],
+      description: 'Intent/category color. Use color= on Chip (vs variant= on Badge)',
     },
-    label: { control: 'text' },
+    label: {
+      control: 'text',
+      description: 'Text label — use this, not children',
+    },
     disabled: { control: 'boolean' },
   },
 }
@@ -123,7 +128,7 @@ export const Disabled: Story = {
 }
 
 const variants = ['filled', 'outlined'] as const
-const sizes = ['sm', 'md'] as const
+const sizes = ['sm', 'md', 'lg'] as const
 const colors = ['default', 'primary', 'success', 'error', 'warning'] as const
 
 export const AllVariants: Story = {

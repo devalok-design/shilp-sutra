@@ -23,6 +23,7 @@ import { cn } from './lib/utils'
  * - `DropdownMenuSeparator` — horizontal divider between sections
  * - `DropdownMenuShortcut` — right-aligned keyboard shortcut hint text (display only)
  * - `DropdownMenuGroup` — semantic grouping wrapper (no visual output)
+ * - `DropdownMenuPortal` — low-level portal wrapper (exported for custom positioning; used internally by DropdownMenuContent)
  *
  * @example
  * // Standard action menu:

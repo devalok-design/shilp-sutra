@@ -17,6 +17,8 @@ import { cn } from './lib/utils'
  * - `DialogFooter` — optional layout wrapper for action buttons
  * - `DialogClose` — manual close trigger (a close button is already built into DialogContent)
  * - `DialogContentRaw` — use instead of DialogContent when you need full portal/overlay control
+ * - `DialogPortal` — low-level portal wrapper (exported for custom layout; used internally by DialogContent)
+ * - `DialogOverlay` — the backdrop element (exported for custom overlay styling or positioning)
  *
  * @example
  * // Confirmation dialog:

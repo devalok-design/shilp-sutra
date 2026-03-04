@@ -18,6 +18,8 @@ import { cn } from './lib/utils'
  * - `SheetDescription` — optional subtitle text
  * - `SheetFooter` — optional layout wrapper for action buttons
  * - `SheetClose` — manual close trigger (a close button is already built into SheetContent)
+ * - `SheetPortal` — low-level portal wrapper (exported for custom layout; used internally by SheetContent)
+ * - `SheetOverlay` — the backdrop element (exported for custom overlay styling)
  *
  * Note: The `side` prop goes on `SheetContent`, NOT on `Sheet`.
  * A close button is auto-rendered in the top corner of `SheetContent`.

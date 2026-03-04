@@ -5,6 +5,9 @@ import { cn } from './lib/utils'
 
 const Tabs = TabsPrimitive.Root
 
+/** Props for the Tabs root (defaultValue, value, onValueChange, etc.). */
+export type TabsProps = React.ComponentPropsWithoutRef<typeof TabsPrimitive.Root>
+
 type TabsVariant = 'line' | 'contained'
 const TabsListContext = React.createContext<{ variant: TabsVariant }>({ variant: 'line' })
 
@@ -40,6 +43,24 @@ const tabsTriggerVariants = cva(
   },
 )
 
+/**
+ * TabsList — container for tab triggers. Sets `variant` for all child TabsTriggers via context.
+ *
+ * **Compound structure — variant propagates automatically:**
+ * ```tsx
+ * <Tabs defaultValue="overview">
+ *   <TabsList variant="contained">
+ *     <TabsTrigger value="overview">Overview</TabsTrigger>
+ *     <TabsTrigger value="activity">Activity</TabsTrigger>
+ *   </TabsList>
+ *   <TabsContent value="overview">Overview content</TabsContent>
+ *   <TabsContent value="activity">Activity content</TabsContent>
+ * </Tabs>
+ * ```
+ *
+ * `variant` on `TabsList` flows to all `TabsTrigger` children via React context.
+ * You do NOT need to repeat `variant` on each `TabsTrigger`.
+ */
 export interface TabsListProps
   extends React.ComponentPropsWithoutRef<typeof TabsPrimitive.List>,
     VariantProps<typeof tabsListVariants> {}
@@ -96,5 +117,8 @@ const TabsContent = React.forwardRef<
   />
 ))
 TabsContent.displayName = TabsPrimitive.Content.displayName
+
+/** Props for TabsContent. The `value` prop must match a TabsTrigger's `value`. */
+export type TabsContentProps = React.ComponentPropsWithoutRef<typeof TabsPrimitive.Content>
 
 export { Tabs, TabsList, TabsTrigger, TabsContent }

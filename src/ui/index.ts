@@ -118,7 +118,7 @@ export { AspectRatio } from './aspect-ratio'
 
 // Navigation
 export { Accordion, AccordionItem, AccordionTrigger, AccordionContent } from './accordion'
-export { Tabs, TabsList, TabsTrigger, TabsContent, type TabsListProps, type TabsTriggerProps } from './tabs'
+export { Tabs, TabsList, TabsTrigger, TabsContent, type TabsProps, type TabsListProps, type TabsTriggerProps, type TabsContentProps } from './tabs'
 export {
   Breadcrumb,
   BreadcrumbList,

@@ -22,8 +22,8 @@ type SpacingToken =
 
 type StackProps<T extends React.ElementType = 'div'> = {
   as?: T
-  direction?: 'vertical' | 'horizontal'
-  gap?: SpacingToken
+  direction?: 'vertical' | 'horizontal' | 'row' | 'column'
+  gap?: SpacingToken | number
   align?: 'start' | 'center' | 'end' | 'stretch' | 'baseline'
   justify?: 'start' | 'center' | 'end' | 'between' | 'around' | 'evenly'
   wrap?: boolean
@@ -84,8 +84,8 @@ const Stack = React.forwardRef<HTMLElement, StackProps>(
         ref,
         className: cn(
           'flex',
-          direction === 'vertical' ? 'flex-col' : 'flex-row',
-          gap && gapMap[gap],
+          (direction === 'vertical' || direction === 'column') ? 'flex-col' : 'flex-row',
+          gap != null && gapMap[String(gap)],
           align && alignMap[align],
           justify && justifyMap[justify],
           wrap && 'flex-wrap',

@@ -47,4 +47,24 @@ describe('Stack', () => {
     const { container } = render(<Stack wrap>Content</Stack>)
     expect(container.firstChild).toHaveClass('flex-wrap')
   })
+
+  it('supports direction="row" as alias for horizontal', () => {
+    const { container } = render(<Stack direction="row">Content</Stack>)
+    expect(container.firstChild).toHaveClass('flex-row')
+  })
+
+  it('supports direction="column" as alias for vertical', () => {
+    const { container } = render(<Stack direction="column">Content</Stack>)
+    expect(container.firstChild).toHaveClass('flex-col')
+  })
+
+  it('accepts numeric gap values', () => {
+    const { container } = render(<Stack gap={4}>Content</Stack>)
+    expect(container.firstChild).toHaveClass('gap-ds-04')
+  })
+
+  it('still applies token string gap', () => {
+    const { container } = render(<Stack gap="ds-05">Content</Stack>)
+    expect(container.firstChild).toHaveClass('gap-ds-05')
+  })
 })

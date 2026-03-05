@@ -16,8 +16,8 @@ const sizeClasses: Record<SearchInputSize, string> = {
  * Props for SearchInput — a search field with a built-in leading magnifier icon, optional loading
  * spinner, and an auto-shown clear button when `value` is non-empty and `onClear` is provided.
  *
- * **Important:** Use `inputSize` (not `size`) to control height — `size` is reserved for the HTML
- * attribute. Options: `'sm'` | `'md'` (default) | `'lg'`.
+ * **Sizes:** `sm` | `md` (default) | `lg` — matches Input's `size` prop API.
+ * HTML's native `size` attribute is excluded — use CSS width instead.
  *
  * **Clear button:** Appears automatically when `value !== ''` and `onClear` is provided.
  * When `loading` is true, a spinning loader replaces the clear button.
@@ -42,18 +42,18 @@ const sizeClasses: Record<SearchInputSize, string> = {
  *
  * @example
  * // Compact search bar in a toolbar:
- * <SearchInput inputSize="sm" value={q} onChange={(e) => setQ(e.target.value)} onClear={() => setQ('')} />
+ * <SearchInput size="sm" value={q} onChange={(e) => setQ(e.target.value)} onClear={() => setQ('')} />
  * // These are just a few ways — feel free to combine props creatively!
  */
-export interface SearchInputProps extends React.InputHTMLAttributes<HTMLInputElement> {
+export interface SearchInputProps extends Omit<React.InputHTMLAttributes<HTMLInputElement>, 'size'> {
   onClear?: () => void
   loading?: boolean
   /** @default 'md' */
-  inputSize?: SearchInputSize
+  size?: SearchInputSize
 }
 
 const SearchInput = React.forwardRef<HTMLInputElement, SearchInputProps>(
-  ({ className, value, onClear, loading, inputSize = 'md', ...props }, ref) => {
+  ({ className, value, onClear, loading, size = 'md', ...props }, ref) => {
     const hasValue = value !== undefined && value !== ''
 
     return (
@@ -68,7 +68,7 @@ const SearchInput = React.forwardRef<HTMLInputElement, SearchInputProps>(
           aria-busy={loading}
           className={cn(
             'flex w-full font-sans',
-            sizeClasses[inputSize],
+            sizeClasses[size],
             'bg-field text-text-primary',
             'border border-border rounded-ds-md',
             'placeholder:text-text-placeholder',

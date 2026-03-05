@@ -34,7 +34,7 @@ const inputVariants = cva(
  * Props for Input — a single-line text field with size variants, validation state coloring,
  * and icon adornments (start/end slots).
  *
- * **Sizes:** `sm` (32px) | `md` (40px, default) | `lg` (48px) — note: uses `size` prop not `inputSize`.
+ * **Sizes:** `sm` (32px) | `md` (40px, default) | `lg` (48px) — matches SearchInput's `size` prop.
  * HTML's native `size` attribute is excluded — use CSS width instead.
  *
  * **Validation states:** `state="error"` colors the border red and sets `aria-invalid`.

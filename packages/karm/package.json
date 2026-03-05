@@ -42,7 +42,7 @@
     "README.md"
   ],
   "scripts": {
-    "build": "vite build",
+    "build": "vite build && node scripts/inject-use-client.mjs",
     "typecheck": "tsc --noEmit",
     "lint": "eslint src/"
   },

@@ -93,7 +93,30 @@ const KarmLogo = React.forwardRef<HTMLElement, KarmLogoProps>(
     },
     ref,
   ) => {
-    const resolvedColor = resolveColor(color)
+    const [resolvedColor, setResolvedColor] = React.useState<'brand' | 'black' | 'white'>(() => {
+      if (color !== 'auto') return color
+      if (typeof document === 'undefined') return 'brand'
+      return document.documentElement.classList.contains('dark') ? 'white' : 'brand'
+    })
+
+    React.useEffect(() => {
+      if (color !== 'auto') {
+        setResolvedColor(color)
+        return
+      }
+      const update = () =>
+        setResolvedColor(
+          document.documentElement.classList.contains('dark') ? 'white' : 'brand'
+        )
+      update()
+      const observer = new MutationObserver(update)
+      observer.observe(document.documentElement, {
+        attributes: true,
+        attributeFilter: ['class'],
+      })
+      return () => observer.disconnect()
+    }, [color])
+
     const resolvedType = shouldSimplify(type, size, simplifyBelow)
       ? 'icon'
       : type

@@ -1,3 +1,5 @@
+'use client'
+
 import { useState } from 'react'
 import { subMonths, addMonths, setMonth, setYear } from 'date-fns'
 

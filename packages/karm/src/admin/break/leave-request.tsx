@@ -29,12 +29,12 @@ export interface LeaveRequestProps {
   request: BreakRequest
   userImages: Record<string, string>
   handleRejectRequest: (
-    event: MouseEvent<HTMLButtonElement, globalThis.MouseEvent>,
+    event: MouseEvent<HTMLButtonElement, globalThis.MouseEvent> | undefined,
     id: string,
     comment?: string,
   ) => void
   handleApproveRequest: (
-    event: MouseEvent<HTMLButtonElement, globalThis.MouseEvent>,
+    event: MouseEvent<HTMLButtonElement, globalThis.MouseEvent> | undefined,
     id: string,
     comment?: string,
   ) => void
@@ -202,14 +202,10 @@ export function LeaveRequest({
               className="mt-ds-06"
               variant="primary"
               onClick={() => {
-                // Create a synthetic mouse event for the callback signature
-                const syntheticEvent = new window.MouseEvent(
-                  'click',
-                ) as unknown as MouseEvent<HTMLButtonElement>
                 if (clickedAction === 'approve') {
-                  handleApproveRequest(syntheticEvent, request.id, comment)
+                  handleApproveRequest(undefined, request.id, comment)
                 } else if (clickedAction === 'reject') {
-                  handleRejectRequest(syntheticEvent, request.id, comment)
+                  handleRejectRequest(undefined, request.id, comment)
                 }
               }}
             >{clickedAction === 'approve' ? 'Approve' : 'Reject'}</Button>

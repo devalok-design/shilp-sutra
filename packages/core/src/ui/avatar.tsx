@@ -49,9 +49,9 @@ const statusLabelMap: Record<AvatarStatus, string> = {
  */
 const statusDotSizeMap: Record<string, string> = {
   xs: 'h-ds-02b w-ds-02b',
-  sm: 'h-2 w-2',
+  sm: 'h-[8px] w-[8px]',
   md: 'h-ds-03 w-ds-03',
-  lg: 'h-3 w-3',
+  lg: 'h-[12px] w-[12px]',
   xl: 'h-ds-04 w-ds-04',
 }
 

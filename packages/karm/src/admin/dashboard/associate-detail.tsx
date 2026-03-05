@@ -105,7 +105,7 @@ function AttendanceStatus({
       <p className="text-ds-sm font-semibold uppercase tracking-wider mb-ds-06  text-text-tertiary">
         Attendance status
       </p>
-      <div className="mb-ds-04 flex w-full items-center justify-center gap-ds-03 rounded-3xl border border-border-subtle px-ds-05 py-ds-04 text-center">
+      <div className="mb-ds-04 flex w-full items-center justify-center gap-ds-03 rounded-ds-3xl border border-border-subtle px-ds-05 py-ds-04 text-center">
         <span className="font-semibold text-interactive">
           {formattedStatus}
         </span>
@@ -158,7 +158,7 @@ function AttendanceEditDialog({
         <div className="text-ds-lg mb-ds-05 text-interactive">
           {format(new Date(selectedDate), "dd MMMM ''yy")}
         </div>
-        <div className="mb-ds-04 flex w-full items-center justify-center gap-ds-03 rounded-3xl border border-border-subtle px-ds-05 py-ds-04 text-center font-semibold text-interactive">
+        <div className="mb-ds-04 flex w-full items-center justify-center gap-ds-03 rounded-ds-3xl border border-border-subtle px-ds-05 py-ds-04 text-center font-semibold text-interactive">
           {selectedUserAttendance?.status === 'PRESENT'
             ? 'PRESENT '
             : 'ABSENT'}
@@ -414,7 +414,7 @@ export const AssociateDetail = React.forwardRef<HTMLDivElement, AssociateDetailP
       )}
       {!isFutureDate && selectedUserAttendance?.status !== 'BREAK' && (
         <>
-          <div className="block h-[auto] w-[2px] bg-border-subtle"></div>
+          <div className="block h-full w-[2px] bg-border-subtle"></div>
           <AttendanceStatus selectedUserAttendance={selectedUserAttendance} />
         </>
       )}

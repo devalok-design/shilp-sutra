@@ -80,7 +80,7 @@ function Toolbar({ editor }: { editor: Editor }) {
         <IconStrikethrough className="h-ico-sm w-ico-sm" stroke={2.5} />
       </ToolbarButton>
 
-      <div className="mx-ds-02 h-4 w-px bg-border" />
+      <div className="mx-ds-02 h-[16px] w-px bg-border" />
 
       <ToolbarButton
         onClick={() =>
@@ -102,7 +102,7 @@ function Toolbar({ editor }: { editor: Editor }) {
         <IconH3 className="h-ico-sm w-ico-sm" stroke={2.5} />
       </ToolbarButton>
 
-      <div className="mx-ds-02 h-4 w-px bg-border" />
+      <div className="mx-ds-02 h-[16px] w-px bg-border" />
 
       <ToolbarButton
         onClick={() => editor.chain().focus().toggleBulletList().run()}
@@ -128,7 +128,7 @@ function Toolbar({ editor }: { editor: Editor }) {
         <IconCode className="h-ico-sm w-ico-sm" stroke={2.5} />
       </ToolbarButton>
 
-      <div className="mx-ds-02 h-4 w-px bg-border" />
+      <div className="mx-ds-02 h-[16px] w-px bg-border" />
 
       <ToolbarButton
         onClick={() => editor.chain().focus().undo().run()}
@@ -199,6 +199,12 @@ const RichTextEditor = React.forwardRef<HTMLDivElement, RichTextEditorProps>(
       onChange?.(ed.getHTML())
     },
   })
+
+  React.useEffect(() => {
+    if (editor && content !== editor.getHTML()) {
+      editor.commands.setContent(content, false)
+    }
+  }, [editor, content])
 
   if (!editor) return null
 

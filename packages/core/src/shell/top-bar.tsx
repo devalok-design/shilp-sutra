@@ -126,9 +126,10 @@ const TopBar = React.forwardRef<HTMLDivElement, TopBarProps>(
             <button
               type="button"
               onClick={handleSearchClick}
+              aria-label="Search (Ctrl+K)"
               className="flex h-ds-sm-plus w-ds-sm-plus items-center justify-center rounded-ds-full border border-border bg-layer-02 text-text-secondary transition-colors hover:bg-layer-03"
             >
-              <IconSearch className="h-ico-sm w-ico-sm" />
+              <IconSearch className="h-ico-sm w-ico-sm" aria-hidden="true" />
             </button>
           </TooltipTrigger>
           <TooltipContent side="bottom" align="center">
@@ -146,9 +147,10 @@ const TopBar = React.forwardRef<HTMLDivElement, TopBarProps>(
               <button
                 type="button"
                 onClick={onAiChatClick}
+                aria-label="AI Chat"
                 className="flex h-ds-sm-plus w-ds-sm-plus items-center justify-center rounded-ds-full border border-border bg-layer-02 text-text-secondary transition-colors hover:bg-layer-03"
               >
-                <IconSparkles className="h-ico-sm w-ico-sm" />
+                <IconSparkles className="h-ico-sm w-ico-sm" aria-hidden="true" />
               </button>
             </TooltipTrigger>
             <TooltipContent side="bottom" align="center">

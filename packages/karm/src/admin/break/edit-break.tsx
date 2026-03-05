@@ -1,6 +1,7 @@
 'use client'
 
 import { useState, useEffect, useRef } from 'react'
+import { IconChevronLeft, IconChevronRight } from '@tabler/icons-react'
 import { EditIcon, ArrowRightIcon, ArrowDownIcon } from '../icons'
 import { useToast } from '@/hooks/use-toast'
 import {
@@ -483,19 +484,7 @@ export function EditBreak({
                         className="rounded-ds-full p-ds-03 hover:bg-field-hover"
                         onClick={() => picker.navigateMonth('prev')}
                       >
-                        <svg
-                          className="h-ico-md w-ico-md"
-                          fill="none"
-                          viewBox="0 0 24 24"
-                          stroke="currentColor"
-                        >
-                          <path
-                            strokeLinecap="round"
-                            strokeLinejoin="round"
-                            strokeWidth={2}
-                            d="M15 19l-7-7 7-7"
-                          />
-                        </svg>
+                        <IconChevronLeft className="h-ico-md w-ico-md" />
                       </button>
                       <div className="text-ds-md font-semibold uppercase">
                         {new Date(picker.currentYear, picker.currentMonth).toLocaleString(
@@ -511,19 +500,7 @@ export function EditBreak({
                         className="rounded-ds-full p-ds-03 hover:bg-field-hover"
                         onClick={() => picker.navigateMonth('next')}
                       >
-                        <svg
-                          className="h-ico-md w-ico-md"
-                          fill="none"
-                          viewBox="0 0 24 24"
-                          stroke="currentColor"
-                        >
-                          <path
-                            strokeLinecap="round"
-                            strokeLinejoin="round"
-                            strokeWidth={2}
-                            d="M9 5l7 7-7 7"
-                          />
-                        </svg>
+                        <IconChevronRight className="h-ico-md w-ico-md" />
                       </button>
                     </div>
 

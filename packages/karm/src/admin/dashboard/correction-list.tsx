@@ -75,15 +75,12 @@ export const CorrectionList = React.forwardRef<HTMLDivElement, CorrectionListPro
     >
       {corrections.map((correction) => (
         <Fragment key={correction.id}>
-          <div className="max-md:border-1 flex items-center justify-between px-ds-03 py-ds-04 max-md:rounded-ds-lg max-md:border-border">
+          <div className="max-md:border flex items-center justify-between px-ds-03 py-ds-04 max-md:rounded-ds-lg max-md:border-border">
             <div className="flex items-center gap-ds-04">
               <Avatar className="h-ds-md w-ds-md border-2 max-md:mb-[auto]">
                 <AvatarImage
                   src={
-                    userImages[correction?.user?.id || ''] ||
-                    (assetsBaseUrl
-                      ? assetsBaseUrl + '/Goutham.png'
-                      : '')
+                    userImages[correction?.user?.id || ''] || ''
                   }
                   alt={`${correction?.user?.name}'s Icon`}
                 />

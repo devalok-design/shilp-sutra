@@ -1,6 +1,7 @@
 'use client'
 
 import * as React from 'react'
+import { IconX } from '@tabler/icons-react'
 import { cva, type VariantProps } from 'class-variance-authority'
 import { cn } from './lib/utils'
 
@@ -121,7 +122,7 @@ const Chip = React.forwardRef<HTMLElement, ChipProps>(
       ? 'cursor-pointer hover:bg-field-hover'
       : ''
     const disabledClass = disabled
-      ? 'opacity-[var(--action-disabled-opacity,0.38)] cursor-not-allowed'
+      ? 'opacity-action-disabled cursor-not-allowed'
       : ''
 
     return React.createElement(
@@ -147,10 +148,7 @@ const Chip = React.forwardRef<HTMLElement, ChipProps>(
               onDelete()
             }}
           >
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2} strokeLinecap="round" strokeLinejoin="round">
-              <line x1="18" y1="6" x2="6" y2="18" />
-              <line x1="6" y1="6" x2="18" y2="18" />
-            </svg>
+            <IconX className="h-ico-sm w-ico-sm" />
           </button>
         )}
       </>,

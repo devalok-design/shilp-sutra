@@ -149,6 +149,7 @@ export const BreakRequestCard = React.forwardRef<HTMLDivElement, BreakRequestPro
                 </Button>
               </div>
               <button
+                aria-label="Close cancel form"
                 className="absolute right-ds-05 top-ds-05 rounded-ds-sm p-ds-04 text-icon-secondary transition-colors hover:text-icon-primary hover:bg-field focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-focus disabled:pointer-events-none"
                 onClick={() => setShowMobileCancelForm(false)}
               >

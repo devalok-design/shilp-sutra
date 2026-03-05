@@ -31,7 +31,7 @@ const EmptyState = React.forwardRef<HTMLDivElement, EmptyStateProps>(
         ref={ref}
         className={cn(
           'flex flex-col items-center justify-center text-center',
-          compact ? 'gap-ds-04 py-ds-07' : 'gap-ds-05 py-16',
+          compact ? 'gap-ds-04 py-ds-07' : 'gap-ds-05 py-ds-10',
           className,
         )}
         {...props}

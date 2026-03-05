@@ -201,7 +201,7 @@ const AppSidebar = React.forwardRef<HTMLDivElement, AppSidebarProps>(
               {footerLinks.map((link, i) => (
                 <div key={link.href} className="flex items-center gap-ds-03">
                   {i > 0 && (
-                    <div className="h-4 w-px bg-border" />
+                    <div className="h-[16px] w-px bg-border" />
                   )}
                   <Link
                     className="text-ds-md text-text-placeholder transition-colors hover:text-interactive"

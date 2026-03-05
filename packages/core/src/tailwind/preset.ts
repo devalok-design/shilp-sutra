@@ -280,6 +280,10 @@ const preset: Partial<Config> = {
           '0%': { backgroundPosition: '-200% 0' },
           '100%': { backgroundPosition: '200% 0' },
         },
+        'caret-blink': {
+          '0%,70%,100%': { opacity: '1' },
+          '20%,50%': { opacity: '0' },
+        },
       },
       animation: {
         ripple: 'ripple var(--duration-slow-01) linear',
@@ -289,6 +293,7 @@ const preset: Partial<Config> = {
           'progress-indeterminate var(--duration-slow-02) var(--ease-productive-standard) infinite',
         'skeleton-shimmer':
           'skeleton-shimmer var(--duration-slow-02) var(--ease-linear) infinite',
+        'caret-blink': 'caret-blink 1.25s ease-out infinite',
       },
       backgroundImage: {
         'gradient-brand': 'var(--gradient-brand-light)',

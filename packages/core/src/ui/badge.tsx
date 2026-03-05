@@ -42,7 +42,7 @@ const badgeVariants = cva(
           'bg-category-emerald-surface text-category-emerald-text border-category-emerald-border',
       },
       size: {
-        sm: 'h-5 px-ds-03 text-ds-xs',
+        sm: 'h-[20px] px-ds-03 text-ds-xs',
         md: 'h-ds-xs px-ds-03 text-ds-sm',
         lg: 'h-ds-xs-plus px-ds-04 text-ds-md',
       },
@@ -109,7 +109,7 @@ const Badge = React.forwardRef<HTMLSpanElement, BadgeProps>(
             className="ml-ds-01 rounded-ds-full text-icon-secondary transition-colors hover:text-icon-primary hover:bg-field focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-focus"
             aria-label="Remove"
           >
-            <IconX className="h-3 w-3" />
+            <IconX className="h-ico-sm w-ico-sm" />
           </button>
         )}
       </span>

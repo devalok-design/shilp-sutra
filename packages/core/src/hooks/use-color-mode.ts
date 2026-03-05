@@ -6,6 +6,7 @@ export type ColorMode = 'light' | 'dark' | 'system'
 
 function resolveMode(mode: ColorMode): 'light' | 'dark' {
   if (mode === 'system') {
+    if (typeof window === 'undefined') return 'light'
     return window.matchMedia('(prefers-color-scheme: dark)').matches
       ? 'dark'
       : 'light'

@@ -187,7 +187,7 @@ function NotificationItem({
       <div className="mt-ds-02b flex shrink-0">
         <span
           className={cn(
-            'h-2 w-2 rounded-ds-full',
+            'h-[8px] w-[8px] rounded-ds-full',
             TIER_COLORS[notification.tier] || TIER_COLORS.INFO,
             notification.isRead && 'opacity-[0.38]',
           )}
@@ -229,7 +229,7 @@ function NotificationItem({
       {/* Unread indicator */}
       {!notification.isRead && (
         <div className="mt-ds-02b shrink-0">
-          <span className="block h-2 w-2 rounded-ds-full bg-interactive" />
+          <span className="block h-[8px] w-[8px] rounded-ds-full bg-interactive" />
         </div>
       )}
     </button>
@@ -310,12 +310,13 @@ const NotificationCenter = React.forwardRef<HTMLButtonElement, NotificationCente
             <button
               {...props}
               ref={ref}
+              aria-label={unreadCount > 0 ? `Notifications, ${unreadCount} unread` : 'Notifications'}
               className={cn(
                 'relative flex h-ds-sm-plus w-ds-sm-plus items-center justify-center rounded-ds-full border border-border bg-layer-02 text-text-secondary transition-colors hover:bg-layer-03',
                 className,
               )}
             >
-              <IconBell className="h-ico-sm w-ico-sm" />
+              <IconBell className="h-ico-sm w-ico-sm" aria-hidden="true" />
               {unreadCount > 0 && (
                 <span className="absolute -right-ds-01 -top-ds-01 flex h-4 min-w-4 items-center justify-center rounded-ds-full bg-interactive px-ds-02 text-ds-xs font-semibold text-text-on-color">
                   {unreadCount > 99 ? '99+' : unreadCount}
@@ -365,7 +366,7 @@ const NotificationCenter = React.forwardRef<HTMLButtonElement, NotificationCente
           className="max-h-[420px] overflow-y-auto"
         >
           {notifications.length === 0 ? (
-            <div className="flex flex-col items-center justify-center px-ds-05 py-12">
+            <div className="flex flex-col items-center justify-center px-ds-05 py-ds-09">
               <div className="flex h-ds-lg w-ds-lg items-center justify-center rounded-ds-full bg-layer-02">
                 <IconInbox className="h-ico-lg w-ico-lg text-text-placeholder" />
               </div>

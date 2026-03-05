@@ -37,7 +37,7 @@ function formatDueDate(dateStr: string) {
   const diffDays = Math.ceil(diffMs / (1000 * 60 * 60 * 24))
 
   if (diffDays < 0) return { label: 'Overdue', className: 'text-text-error' }
-  if (diffDays === 0) return { label: 'Today', className: 'text-warning' }
+  if (diffDays === 0) return { label: 'Today', className: 'text-text-warning' }
   if (diffDays === 1) return { label: 'Tomorrow', className: 'text-text-warning' }
 
   return {

@@ -13,7 +13,6 @@ const segmentedControlItemVariants = cva(
     'relative overflow-hidden',
     'font-accent font-semibold leading-none text-center',
     'bg-layer-01',
-    'text-text-tertiary',
     'first:rounded-tr-none first:rounded-br-none',
     'last:rounded-tl-none last:rounded-bl-none',
   ],
@@ -22,7 +21,7 @@ const segmentedControlItemVariants = cva(
       size: {
         sm: 'h-ds-sm-plus px-ds-05 py-ds-03 text-ds-sm',
         md: 'px-ds-02b py-ds-03 pl-ds-04 text-ds-md',
-        lg: 'h-14 px-ds-06 py-ds-05 text-ds-md',
+        lg: 'h-[56px] px-ds-06 py-ds-05 text-ds-md',
       },
       color: {
         filled: "text-text-on-color [text-shadow:0px_1px_1px_var(--color-text-shadow)]",
@@ -55,7 +54,7 @@ const segmentedControlItemVariants = cva(
       {
         selected: true,
         color: 'tonal',
-        className: 'bg-field !text-text-primary',
+        className: 'bg-field text-text-primary',
       },
       // Hover + filled
       {
@@ -260,7 +259,7 @@ const SegmentedControl = React.forwardRef<HTMLDivElement, SegmentedControlProps>
       )}
       role="tablist"
       onKeyDown={handleKeyDown}
-      tabIndex={0}
+      tabIndex={-1}
       aria-label="Segmented control options"
     >
       {options.map((option) => (

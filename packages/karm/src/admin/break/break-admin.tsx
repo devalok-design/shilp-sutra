@@ -79,13 +79,13 @@ interface BreakAdminContextValue {
   handleFilterChange: (newFilters: BreakAdminFilters) => void
   /** Approve request handler */
   handleApproveRequest: (
-    event: MouseEvent<HTMLButtonElement, globalThis.MouseEvent>,
+    event: MouseEvent<HTMLButtonElement, globalThis.MouseEvent> | undefined,
     requestId: string,
     comment?: string,
   ) => void
   /** Reject request handler */
   handleRejectRequest: (
-    event: MouseEvent<HTMLButtonElement, globalThis.MouseEvent>,
+    event: MouseEvent<HTMLButtonElement, globalThis.MouseEvent> | undefined,
     requestId: string,
     comment?: string,
   ) => void
@@ -306,13 +306,13 @@ const BreakAdminRoot = React.forwardRef<HTMLDivElement, BreakAdminProps>(
 
     const handleApproveRequest = useCallback(
       async (
-        event: MouseEvent<HTMLButtonElement, globalThis.MouseEvent>,
+        event: MouseEvent<HTMLButtonElement, globalThis.MouseEvent> | undefined,
         requestId: string,
         comment?: string,
       ) => {
         if (isProcessing) return
         if (!comment) {
-          const isModKeyPressed = event.metaKey || event.ctrlKey
+          const isModKeyPressed = event?.metaKey || event?.ctrlKey
           if (isModKeyPressed) {
             setAcceptedCommentBox(requestId)
             return
@@ -345,7 +345,7 @@ const BreakAdminRoot = React.forwardRef<HTMLDivElement, BreakAdminProps>(
               </>
             ),
             variant: 'default',
-            style: { marginBottom: '16px', border: 'None' },
+            style: { marginBottom: 'var(--spacing-04)', border: 'none' },
           })
         } catch (error) {
           console.error('Error approving request:', error)
@@ -366,13 +366,13 @@ const BreakAdminRoot = React.forwardRef<HTMLDivElement, BreakAdminProps>(
 
     const handleRejectRequest = useCallback(
       async (
-        event: MouseEvent<HTMLButtonElement, globalThis.MouseEvent>,
+        event: MouseEvent<HTMLButtonElement, globalThis.MouseEvent> | undefined,
         requestId: string,
         comment?: string,
       ) => {
         if (isProcessing) return
         if (!comment) {
-          const isModKeyPressed = event.metaKey || event.ctrlKey
+          const isModKeyPressed = event?.metaKey || event?.ctrlKey
           if (isModKeyPressed) {
             setRejectedCommentBox(requestId)
             return
@@ -405,7 +405,7 @@ const BreakAdminRoot = React.forwardRef<HTMLDivElement, BreakAdminProps>(
               </>
             ),
             variant: 'default',
-            style: { marginBottom: '16px', border: 'None' },
+            style: { marginBottom: 'var(--spacing-04)', border: 'none' },
           })
         } catch (error) {
           console.error('Error rejecting request:', error)
@@ -425,15 +425,7 @@ const BreakAdminRoot = React.forwardRef<HTMLDivElement, BreakAdminProps>(
     )
 
     // ============================================================
-    // Loading state
-    // ============================================================
-
-    if (isLoading) {
-      return <BreakAdminSkeleton />
-    }
-
-    // ============================================================
-    // Context value (memoized)
+    // Context value (memoized — must be above early returns per Rules of Hooks)
     // ============================================================
 
     const contextValue: BreakAdminContextValue = useMemo(
@@ -492,6 +484,14 @@ const BreakAdminRoot = React.forwardRef<HTMLDivElement, BreakAdminProps>(
         onFetchMonthBreaks,
       ],
     )
+
+    // ============================================================
+    // Loading state
+    // ============================================================
+
+    if (isLoading) {
+      return <BreakAdminSkeleton />
+    }
 
     // ============================================================
     // Render

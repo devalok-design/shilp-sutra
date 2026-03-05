@@ -283,7 +283,7 @@ const CommandPalette = React.forwardRef<HTMLDivElement, CommandPaletteProps>(
                       )}
                       {isActive && (
                         <IconCornerDownLeft
-                          className="h-3 w-3 shrink-0 text-text-placeholder"
+                          className="h-ico-sm w-ico-sm shrink-0 text-text-placeholder"
                           stroke={1.5}
                         />
                       )}
@@ -310,7 +310,7 @@ const CommandPalette = React.forwardRef<HTMLDivElement, CommandPaletteProps>(
               </span>
             </div>
             <div className="flex items-center gap-ds-02b">
-              <kbd className="inline-flex h-5 items-center justify-center rounded border border-border bg-layer-02 px-ds-02b">
+              <kbd className="inline-flex h-[20px] items-center justify-center rounded-ds-md border border-border bg-layer-02 px-ds-02b">
                 <IconCornerDownLeft className="h-ds-03 w-ds-03 text-text-placeholder" stroke={2} />
               </kbd>
               <span className="text-ds-xs text-text-placeholder">
@@ -318,7 +318,7 @@ const CommandPalette = React.forwardRef<HTMLDivElement, CommandPaletteProps>(
               </span>
             </div>
             <div className="flex items-center gap-ds-02b">
-              <kbd className="inline-flex h-5 items-center justify-center rounded border border-border bg-layer-02 px-ds-02b text-ds-xs font-medium text-text-placeholder">
+              <kbd className="inline-flex h-[20px] items-center justify-center rounded-ds-md border border-border bg-layer-02 px-ds-02b text-ds-xs font-medium text-text-placeholder">
                 Esc
               </kbd>
               <span className="text-ds-xs text-text-placeholder">

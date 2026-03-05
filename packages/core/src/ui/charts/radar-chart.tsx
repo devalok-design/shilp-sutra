@@ -197,7 +197,7 @@ export function RadarChart({
                     y={y}
                     textAnchor="start"
                     dominantBaseline="auto"
-                    className="fill-[var(--color-text-muted)] text-ds-xs"
+                    className="fill-text-tertiary text-ds-xs"
                   >
                     {levelValue}
                   </text>

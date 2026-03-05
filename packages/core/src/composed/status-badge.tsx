@@ -64,7 +64,7 @@ const StatusBadge = React.forwardRef<HTMLSpanElement, StatusBadgeProps>(
           <span
             className={cn(
               'shrink-0 rounded-ds-full',
-              size === 'sm' ? 'h-ds-02b w-ds-02b' : 'h-2 w-2',
+              size === 'sm' ? 'h-ds-02b w-ds-02b' : 'h-[8px] w-[8px]',
               dotColorMap[statusKey],
             )}
             aria-hidden="true"

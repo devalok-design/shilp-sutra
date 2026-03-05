@@ -200,6 +200,7 @@ const BottomNavbar = React.forwardRef<HTMLElement, BottomNavbarProps>(
         {/* More Button */}
         {moreItems.length > 0 && (
           <button
+            type="button"
             onClick={() => setShowMore(!showMore)}
             aria-label="More navigation options"
             aria-expanded={showMore}

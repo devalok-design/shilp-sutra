@@ -73,7 +73,7 @@ import { ChatPanel } from '@devalok/shilp-sutra-karm/chat'
 | `@devalok/shilp-sutra/ui` | 52 Radix-based UI primitives |
 | `@devalok/shilp-sutra/composed` | 13 higher-level reusable components |
 | `@devalok/shilp-sutra/shell` | 6 app shell components (sidebar, top-bar, navbar, notifications) |
-| `@devalok/shilp-sutra/fonts/*` | Google Sans and Ranade variable font files |
+| `@devalok/shilp-sutra/fonts/*` | Inter and Ranade variable font files (WOFF2) |
 
 ### @devalok/shilp-sutra-brand
 
@@ -153,7 +153,7 @@ pnpm format             # Prettier
 - class-variance-authority (CVA)
 - Vite 5.4 (library mode build)
 - Storybook 8 (development + documentation)
-- Google Sans + Ranade variable fonts
+- Inter + Ranade variable fonts (WOFF2)
 
 ## Credits
 
@@ -161,7 +161,7 @@ pnpm format             # Prettier
 - [Carbon Design System](https://carbondesignsystem.com) — Motion system inspiration
 - [Tailwind CSS](https://tailwindcss.com) — Utility-first CSS framework
 - [class-variance-authority](https://cva.style) — Variant management
-- [Google Sans](https://fonts.google.com) — Typography (SIL Open Font License)
+- [Inter](https://rsms.me/inter/) — Typography (SIL Open Font License)
 - [Ranade by Indian Type Foundry](https://www.fontshare.com/fonts/ranade) — Display typography
 - [Storybook](https://storybook.js.org) — Component documentation
 - Sapta Varna — Cultural color system heritage

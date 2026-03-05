@@ -2,9 +2,9 @@
   color-scheme: light;
 
   /* Font families — override these with next/font CSS variables */
-  --font-sans:    "Google Sans", system-ui, sans-serif;
-  --font-display: "Google Sans", system-ui, sans-serif;
-  --font-body:    "Google Sans", system-ui, sans-serif;
+  --font-sans:    "Inter", system-ui, sans-serif;
+  --font-display: "Inter", system-ui, sans-serif;
+  --font-body:    "Inter", system-ui, sans-serif;
   --font-accent:  Ranade, sans-serif;
   --font-mono:    "SF Mono", "Fira Code", monospace;
 

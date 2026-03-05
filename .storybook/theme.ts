@@ -21,6 +21,6 @@ export default create({
   barSelectedColor: '#D33163',
   barBg: '#FFFFFF',
 
-  fontBase: '"Google Sans", system-ui, sans-serif',
+  fontBase: '"Inter", system-ui, sans-serif',
   fontCode: '"SF Mono", "Fira Code", monospace',
 })

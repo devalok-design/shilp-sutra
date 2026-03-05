@@ -8,17 +8,17 @@
 
 /* ── Font Faces ─────────────────────────────────────────────────── */
 
-/* Google Sans (primary UI font) — Variable font: supports weights 100-900 */
+/* Inter (primary UI font) — Variable font: supports weights 100-900 */
 @font-face {
-  font-family: 'Google Sans';
-  src: url('../../fonts/GoogleSans-Variable.ttf') format('truetype');
+  font-family: 'Inter';
+  src: url('../../fonts/Inter-Variable.woff2') format('woff2');
   font-weight: 100 900;
   font-style: normal;
   font-display: swap;
 }
 @font-face {
-  font-family: 'Google Sans';
-  src: url('../../fonts/GoogleSans-Italic-Variable.ttf') format('truetype');
+  font-family: 'Inter';
+  src: url('../../fonts/Inter-Italic-Variable.woff2') format('woff2');
   font-weight: 100 900;
   font-style: italic;
   font-display: swap;
@@ -27,13 +27,13 @@
 /* Ranade (accent — brand moments, hero headings, special callouts) */
 @font-face {
   font-family: 'Ranade';
-  src: url('../../fonts/Ranade-Variable.ttf') format('truetype');
+  src: url('../../fonts/Ranade-Variable.woff2') format('woff2');
   font-weight: 100 900;
   font-display: swap;
 }
 @font-face {
   font-family: 'Ranade';
-  src: url('../../fonts/Ranade-VariableItalic.ttf') format('truetype');
+  src: url('../../fonts/Ranade-VariableItalic.woff2') format('woff2');
   font-weight: 100 900;
   font-style: italic;
   font-display: swap;

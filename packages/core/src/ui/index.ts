@@ -37,7 +37,7 @@ export { FileUpload, type FileUploadProps } from './file-upload'
 // Form Controls
 export { Checkbox, type CheckboxProps } from './checkbox'
 export { RadioGroup, RadioGroupItem } from './radio'
-export { Switch } from './switch'
+export { Switch, type SwitchProps } from './switch'
 export {
   Select,
   SelectContent,
@@ -57,7 +57,7 @@ export { NumberInput, type NumberInputProps } from './number-input'
 export { SearchInput, type SearchInputProps } from './search-input'
 export { InputOTP, InputOTPGroup, InputOTPSlot, InputOTPSeparator } from './input-otp'
 export { FormField, FormHelperText, getFormFieldA11y, type FormFieldProps, type FormHelperState, type FormHelperTextProps } from './form'
-export { Slider } from './slider'
+export { Slider, type SliderProps } from './slider'
 export { Toggle, toggleVariants } from './toggle'
 export { ToggleGroup, ToggleGroupItem } from './toggle-group'
 

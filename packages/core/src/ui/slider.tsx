@@ -28,4 +28,6 @@ const Slider = React.forwardRef<
 ))
 Slider.displayName = SliderPrimitive.Root.displayName
 
+export type SliderProps = React.ComponentPropsWithoutRef<typeof SliderPrimitive.Root>
+
 export { Slider }

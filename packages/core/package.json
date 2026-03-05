@@ -1,6 +1,6 @@
 {
   "name": "@devalok/shilp-sutra",
-  "version": "0.2.0",
+  "version": "0.2.1",
   "description": "Devalok Design System — tokens, components, and patterns for Next.js",
   "license": "MIT",
   "type": "module",
@@ -103,7 +103,11 @@
     "./hooks/use-mobile": { "import": "./dist/hooks/use-mobile.js", "types": "./dist/hooks/use-mobile.d.ts" },
     "./hooks/use-toast": { "import": "./dist/hooks/use-toast.js", "types": "./dist/hooks/use-toast.d.ts" },
 
-    "./tailwind": { "import": "./dist/tailwind/index.js", "types": "./dist/tailwind/index.d.ts" },
+    "./tailwind": {
+      "require": "./dist/tailwind/index.cjs",
+      "import": "./dist/tailwind/index.js",
+      "types": "./dist/tailwind/index.d.ts"
+    },
     "./fonts/*": "./fonts/*"
   },
   "files": [
@@ -112,7 +116,7 @@
     "README.md"
   ],
   "scripts": {
-    "build": "vite build && pnpm build:tokens && node scripts/fix-dts-primitives.mjs && node scripts/inject-use-client.mjs",
+    "build": "vite build && pnpm build:tokens && node scripts/fix-dts-primitives.mjs && node scripts/inject-use-client.mjs && node scripts/build-tailwind-cjs.mjs",
     "build:tokens": "node scripts/copy-tokens.mjs",
     "typecheck": "tsc --noEmit",
     "lint": "eslint src/",

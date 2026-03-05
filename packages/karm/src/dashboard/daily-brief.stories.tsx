@@ -115,6 +115,6 @@ export const WithCustomClassName: Story = {
   name: 'With Custom className',
   args: {
     data: TYPICAL_BRIEF,
-    className: 'border-2 border-blue-300',
+    className: 'border-2 border-border-interactive',
   },
 }

@@ -1,3 +1,5 @@
+'use client'
+
 import { useState, useEffect } from 'react'
 
 /** Hook to detect prefers-reduced-motion */

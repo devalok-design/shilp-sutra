@@ -288,12 +288,12 @@ export function DataTable<TData, TValue>({
         type="button"
         onClick={() => row.toggleExpanded()}
         aria-label={row.getIsExpanded() ? 'Collapse row' : 'Expand row'}
-        className="flex items-center justify-center p-ds-01 rounded hover:bg-layer-02 transition-colors"
+        className="flex items-center justify-center p-ds-01 rounded-ds-sm hover:bg-layer-02 transition-colors"
       >
         <IconChevronRight
           size={16}
           className={cn(
-            'transition-transform duration-200',
+            'transition-transform duration-moderate-02',
             row.getIsExpanded() && 'rotate-90',
           )}
           aria-hidden="true"
@@ -572,7 +572,7 @@ export function DataTable<TData, TValue>({
                       className={cn(
                         'flex items-center gap-ds-01 font-medium',
                         'cursor-pointer select-none',
-                        '-ml-ds-01 rounded px-ds-01 py-ds-01',
+                        '-ml-ds-01 rounded-ds-sm px-ds-01 py-ds-01',
                         'hover:bg-layer-02 transition-colors',
                       )}
                       onClick={header.column.getToggleSortingHandler()}
@@ -584,17 +584,17 @@ export function DataTable<TData, TValue>({
                       )}
                       {sorted === 'asc' ? (
                         <IconArrowUp
-                          className="size-4 text-text-secondary"
+                          className="h-ico-sm w-ico-sm text-text-secondary"
                           aria-hidden="true"
                         />
                       ) : sorted === 'desc' ? (
                         <IconArrowDown
-                          className="size-4 text-text-secondary"
+                          className="h-ico-sm w-ico-sm text-text-secondary"
                           aria-hidden="true"
                         />
                       ) : (
                         <IconArrowsSort
-                          className="size-4 text-text-tertiary"
+                          className="h-ico-sm w-ico-sm text-text-tertiary"
                           aria-hidden="true"
                         />
                       )}

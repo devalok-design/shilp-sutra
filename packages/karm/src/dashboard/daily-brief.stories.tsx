@@ -1,5 +1,5 @@
 import type { Meta, StoryObj } from '@storybook/react'
-import DailyBrief, { type BriefData } from './daily-brief'
+import { DailyBrief, type BriefData } from './daily-brief'
 
 const meta: Meta<typeof DailyBrief> = {
   title: 'Karm/Dashboard/DailyBrief',

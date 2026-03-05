@@ -442,7 +442,7 @@ const SidebarGroupLabel = forwardRef<
       ref={ref}
       data-sidebar="group-label"
       className={cn(
-        'flex h-ds-sm shrink-0 items-center rounded-ds-md px-ds-03 text-ds-sm font-medium text-text-secondary outline-none ring-focus transition-[margin,opa] duration-moderate-02 ease-linear focus-visible:ring-2 [&>svg]:size-4 [&>svg]:shrink-0',
+        'flex h-ds-sm shrink-0 items-center rounded-ds-md px-ds-03 text-ds-sm font-medium text-text-secondary outline-none ring-focus transition-[margin,opa] duration-moderate-02 ease-linear focus-visible:ring-2 [&>svg]:h-ico-sm [&>svg]:w-ico-sm [&>svg]:shrink-0',
         'group-data-[collapsible=icon]:-mt-8 group-data-[collapsible=icon]:opacity-0',
         className,
       )}
@@ -463,7 +463,7 @@ const SidebarGroupAction = forwardRef<
       ref={ref}
       data-sidebar="group-action"
       className={cn(
-        'hover:bg-layer-02 absolute right-ds-04 top-ds-04 flex aspect-square w-5 items-center justify-center rounded-ds-md p-0 text-text-primary outline-none ring-focus transition-transform hover:text-text-primary focus-visible:ring-2 [&>svg]:size-4 [&>svg]:shrink-0',
+        'hover:bg-layer-02 absolute right-ds-04 top-ds-04 flex aspect-square w-5 items-center justify-center rounded-ds-md p-0 text-text-primary outline-none ring-focus transition-transform hover:text-text-primary focus-visible:ring-2 [&>svg]:h-ico-sm [&>svg]:w-ico-sm [&>svg]:shrink-0',
         'after:absolute after:-inset-2 after:md:hidden',
         'group-data-[collapsible=icon]:hidden',
         className,
@@ -511,7 +511,7 @@ const SidebarMenuItem = forwardRef<HTMLLIElement, ComponentProps<'li'>>(
 SidebarMenuItem.displayName = 'SidebarMenuItem'
 
 const sidebarMenuButtonVariants = cva(
-  'peer/menu-button hover:bg-layer-02 active:bg-interactive-subtle data-[active=true]:bg-interactive-subtle data-[state=open]:hover:bg-layer-02 flex w-full items-center gap-ds-03 overflow-hidden rounded-ds-md p-ds-03 text-left outline-none ring-focus transition-[width,height,padding] hover:text-text-primary focus-visible:ring-2 active:text-text-primary disabled:pointer-events-none disabled:opacity-[0.38] group-has-[[data-sidebar=menu-action]]/menu-item:pr-ds-07 aria-disabled:pointer-events-none aria-disabled:opacity-[0.38] data-[active=true]:font-medium data-[active=true]:text-text-primary data-[state=open]:hover:text-text-primary group-data-[collapsible=icon]:!size-8 group-data-[collapsible=icon]:!p-ds-03 [&>span:last-child]:truncate [&>svg]:size-4 [&>svg]:shrink-0',
+  'peer/menu-button hover:bg-layer-02 active:bg-interactive-subtle data-[active=true]:bg-interactive-subtle data-[state=open]:hover:bg-layer-02 flex w-full items-center gap-ds-03 overflow-hidden rounded-ds-md p-ds-03 text-left outline-none ring-focus transition-[width,height,padding] hover:text-text-primary focus-visible:ring-2 active:text-text-primary disabled:pointer-events-none disabled:opacity-[0.38] group-has-[[data-sidebar=menu-action]]/menu-item:pr-ds-07 aria-disabled:pointer-events-none aria-disabled:opacity-[0.38] data-[active=true]:font-medium data-[active=true]:text-text-primary data-[state=open]:hover:text-text-primary group-data-[collapsible=icon]:!size-8 group-data-[collapsible=icon]:!p-ds-03 [&>span:last-child]:truncate [&>svg]:h-ico-sm [&>svg]:w-ico-sm [&>svg]:shrink-0',
   {
     variants: {
       variant: {
@@ -606,7 +606,7 @@ const SidebarMenuAction = forwardRef<
       ref={ref}
       data-sidebar="menu-action"
       className={cn(
-        'hover:bg-layer-02 absolute right-ds-02 top-ds-02b flex aspect-square w-5 items-center justify-center rounded-ds-md p-0 text-text-primary outline-none ring-focus transition-transform hover:text-text-primary focus-visible:ring-2 peer-hover/menu-button:text-text-primary [&>svg]:size-4 [&>svg]:shrink-0',
+        'hover:bg-layer-02 absolute right-ds-02 top-ds-02b flex aspect-square w-5 items-center justify-center rounded-ds-md p-0 text-text-primary outline-none ring-focus transition-transform hover:text-text-primary focus-visible:ring-2 peer-hover/menu-button:text-text-primary [&>svg]:h-ico-sm [&>svg]:w-ico-sm [&>svg]:shrink-0',
         'after:absolute after:-inset-2 after:md:hidden',
         'peer-data-[size=sm]/menu-button:top-1',
         'peer-data-[size=md]/menu-button:top-ds-02b',
@@ -661,7 +661,7 @@ const SidebarMenuSkeleton = forwardRef<
     >
       {showIcon && (
         <Skeleton
-          className="size-4 rounded-ds-md"
+          className="h-ico-sm w-ico-sm rounded-ds-md"
           data-sidebar="menu-skeleton-icon"
         />
       )}
@@ -717,7 +717,7 @@ const SidebarMenuSubButton = forwardRef<
       data-size={size}
       data-active={isActive}
       className={cn(
-        'hover:bg-layer-02 active:bg-interactive-subtle flex h-ds-xs-plus min-w-0 -translate-x-px items-center gap-ds-03 overflow-hidden rounded-ds-md px-ds-03 text-text-primary outline-none ring-focus hover:text-text-primary focus-visible:ring-2 active:text-text-primary disabled:pointer-events-none disabled:opacity-[0.38] aria-disabled:pointer-events-none aria-disabled:opacity-[0.38] [&>span:last-child]:truncate [&>svg]:size-4 [&>svg]:shrink-0 [&>svg]:text-text-primary',
+        'hover:bg-layer-02 active:bg-interactive-subtle flex h-ds-xs-plus min-w-0 -translate-x-px items-center gap-ds-03 overflow-hidden rounded-ds-md px-ds-03 text-text-primary outline-none ring-focus hover:text-text-primary focus-visible:ring-2 active:text-text-primary disabled:pointer-events-none disabled:opacity-[0.38] aria-disabled:pointer-events-none aria-disabled:opacity-[0.38] [&>span:last-child]:truncate [&>svg]:h-ico-sm [&>svg]:w-ico-sm [&>svg]:shrink-0 [&>svg]:text-text-primary',
         'data-[active=true]:bg-interactive-subtle data-[active=true]:text-text-primary',
         size === 'sm' && 'text-ds-sm',
         size === 'md' && 'text-ds-md',

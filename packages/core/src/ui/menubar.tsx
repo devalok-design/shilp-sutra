@@ -56,7 +56,7 @@ const MenubarSubTrigger = React.forwardRef<
   <MenubarPrimitive.SubTrigger
     ref={ref}
     className={cn(
-      'flex cursor-default select-none items-center gap-ds-03 rounded-ds-md px-ds-03 py-ds-02b text-ds-md outline-none focus:bg-layer-02 data-[state=open]:bg-layer-02 [&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0',
+      'flex cursor-default select-none items-center gap-ds-03 rounded-ds-md px-ds-03 py-ds-02b text-ds-md outline-none focus:bg-layer-02 data-[state=open]:bg-layer-02 [&_svg]:pointer-events-none [&_svg]:h-ico-sm [&_svg]:w-ico-sm [&_svg]:shrink-0',
       inset && 'pl-ds-07',
       className,
     )}
@@ -118,7 +118,7 @@ const MenubarItem = React.forwardRef<
   <MenubarPrimitive.Item
     ref={ref}
     className={cn(
-      'relative flex cursor-default select-none items-center gap-ds-03 rounded-ds-md px-ds-03 py-ds-02b text-ds-md outline-none transition-colors focus:bg-layer-02 focus:text-text-primary data-[disabled]:pointer-events-none data-[disabled]:opacity-[0.38] [&>svg]:size-4 [&>svg]:shrink-0',
+      'relative flex cursor-default select-none items-center gap-ds-03 rounded-ds-md px-ds-03 py-ds-02b text-ds-md outline-none transition-colors focus:bg-layer-02 focus:text-text-primary data-[disabled]:pointer-events-none data-[disabled]:opacity-[0.38] [&>svg]:h-ico-sm [&>svg]:w-ico-sm [&>svg]:shrink-0',
       inset && 'pl-ds-07',
       className,
     )}

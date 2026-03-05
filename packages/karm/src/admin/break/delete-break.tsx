@@ -1,5 +1,6 @@
 'use client'
 
+import * as React from 'react'
 import { useState, useRef } from 'react'
 import { BreakDeleteIcon } from '../icons'
 import { useToast } from '@/hooks/use-toast'
@@ -17,7 +18,7 @@ export interface DeleteBreakProps {
   onDelete?: () => void
 }
 
-export function DeleteBreak({ id: _id, userId: _userId, onDelete }: DeleteBreakProps) {
+export const DeleteBreak = React.forwardRef<HTMLDivElement, DeleteBreakProps>(function DeleteBreak({ id: _id, userId: _userId, onDelete }, _ref) {
   const [isSubmitting, setIsSubmitting] = useState(false)
   const { toast } = useToast()
   const [open, setOpen] = useState(false)
@@ -77,6 +78,6 @@ export function DeleteBreak({ id: _id, userId: _userId, onDelete }: DeleteBreakP
       </DialogContent>
     </Dialog>
   )
-}
+})
 
 DeleteBreak.displayName = 'DeleteBreak'

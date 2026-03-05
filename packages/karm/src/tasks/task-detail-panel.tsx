@@ -128,14 +128,14 @@ function PanelSkeleton() {
       <div className="space-y-ds-04">
         {Array.from({ length: 6 }).map((_, i) => (
           <div key={i} className="flex items-center gap-ds-04">
-            <Skeleton className="h-4 w-[120px] bg-field" />
-            <Skeleton className="h-4 flex-1 bg-field" />
+            <Skeleton className="h-[16px] w-[120px] bg-field" />
+            <Skeleton className="h-[16px] flex-1 bg-field" />
           </div>
         ))}
       </div>
       <div className="flex gap-ds-05 border-b border-border pb-ds-03">
         {Array.from({ length: 5 }).map((_, i) => (
-          <Skeleton key={i} className="h-3 w-16 bg-field" />
+          <Skeleton key={i} className="h-[12px] w-[64px] bg-field" />
         ))}
       </div>
       <div className="space-y-ds-04">
@@ -151,7 +151,7 @@ function PanelSkeleton() {
 // Task Detail Panel
 // ============================================================
 
-function TaskDetailPanel({
+const TaskDetailPanel = React.forwardRef<HTMLDivElement, TaskDetailPanelProps>(function TaskDetailPanel({
   task,
   loading = false,
   open,
@@ -179,7 +179,7 @@ function TaskDetailPanel({
   renderPriorityIndicator,
   renderDatePicker,
   isUploading = false,
-}: TaskDetailPanelProps) {
+}, _ref) {
   const [activeTab, setActiveTab] = React.useState<TabId>(clientMode ? 'conversation' : 'subtasks')
   const [editingTitle, setEditingTitle] = React.useState(false)
   const [titleValue, setTitleValue] = React.useState('')
@@ -387,7 +387,7 @@ function TaskDetailPanel({
       </SheetContent>
     </Sheet>
   )
-}
+})
 
 TaskDetailPanel.displayName = 'TaskDetailPanel'
 

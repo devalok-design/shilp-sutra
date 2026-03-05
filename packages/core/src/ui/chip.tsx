@@ -125,17 +125,15 @@ const Chip = React.forwardRef<HTMLElement, ChipProps>(
       ? 'opacity-action-disabled cursor-not-allowed'
       : ''
 
-    return React.createElement(
-      Component,
-      {
-        ref,
-        className: cn(chipVariants({ variant, size, color }), interactiveClass, disabledClass, className),
-        onClick: isClickable ? onClick : undefined,
-        disabled: isClickable ? disabled : undefined,
-        type: isClickable ? 'button' : undefined,
-        ...props,
-      },
-      <>
+    return (
+      <Component
+        ref={ref as React.Ref<HTMLButtonElement & HTMLSpanElement>}
+        className={cn(chipVariants({ variant, size, color }), interactiveClass, disabledClass, className)}
+        onClick={isClickable ? onClick : undefined}
+        disabled={isClickable ? disabled : undefined}
+        type={isClickable ? 'button' : undefined}
+        {...props}
+      >
         {icon && <span className="flex-shrink-0 [&>svg]:w-ico-sm [&>svg]:h-ico-sm">{icon}</span>}
         <span>{label}</span>
         {onDelete && (
@@ -151,7 +149,7 @@ const Chip = React.forwardRef<HTMLElement, ChipProps>(
             <IconX className="h-ico-sm w-ico-sm" />
           </button>
         )}
-      </>,
+      </Component>
     )
   },
 )

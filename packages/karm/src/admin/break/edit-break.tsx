@@ -1,5 +1,6 @@
 'use client'
 
+import * as React from 'react'
 import { useState, useEffect, useRef } from 'react'
 import { IconChevronLeft, IconChevronRight } from '@tabler/icons-react'
 import { EditIcon, ArrowRightIcon, ArrowDownIcon } from '../icons'
@@ -62,13 +63,13 @@ export interface EditBreakProps {
   onDelete?: () => void
 }
 
-export function EditBreak({
+export const EditBreak = React.forwardRef<HTMLDivElement, EditBreakProps>(function EditBreak({
   selectedLeave,
   existingBreaks: existingBreaksProp,
   onFetchMonthBreaks,
   onSave,
   onDelete,
-}: EditBreakProps) {
+}, _ref) {
   // ============================================================
   // Local UI state (not calendar-related)
   // ============================================================
@@ -657,6 +658,6 @@ export function EditBreak({
       </DialogContent>
     </Dialog>
   )
-}
+})
 
 EditBreak.displayName = 'EditBreak'

@@ -1,5 +1,6 @@
 'use client'
 
+import * as React from 'react'
 import { useState, type MouseEvent } from 'react'
 import {
   Dialog,
@@ -44,7 +45,7 @@ export interface LeaveRequestProps {
   userId: string
 }
 
-export function LeaveRequest({
+export const LeaveRequest = React.forwardRef<HTMLDivElement, LeaveRequestProps>(function LeaveRequest({
   request,
   userImages,
   handleRejectRequest,
@@ -53,7 +54,7 @@ export function LeaveRequest({
   onCommentBoxClose,
   clickedAction,
   userId,
-}: LeaveRequestProps) {
+}, ref) {
   const [comment, setComment] = useState('')
 
   const startDate = new Date(request.startDate)
@@ -63,6 +64,7 @@ export function LeaveRequest({
   return (
     <>
       <div
+        ref={ref}
         key={request.id}
         className="flex justify-between border-b border-border px-ds-03 py-ds-04 last:border-b-0"
       >
@@ -214,6 +216,6 @@ export function LeaveRequest({
       </Dialog>
     </>
   )
-}
+})
 
 LeaveRequest.displayName = 'LeaveRequest'

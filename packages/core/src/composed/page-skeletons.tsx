@@ -20,11 +20,11 @@ const DashboardSkeleton = React.forwardRef<HTMLDivElement>(
             className="flex flex-col gap-ds-04 rounded-ds-xl border border-border bg-layer-01 p-ds-05b"
           >
             <div className="flex items-center justify-between">
-              <Skeleton className={cn('h-3 w-20', shimmer)} />
+              <Skeleton className={cn('h-[12px] w-[80px]', shimmer)} />
               <Skeleton className={cn('h-ds-sm w-ds-sm rounded-ds-lg', shimmer)} />
             </div>
-            <Skeleton className={cn('h-ds-xs-plus w-16', shimmer)} />
-            <Skeleton className={cn('h-ds-03 w-28', shimmer)} />
+            <Skeleton className={cn('h-ds-xs-plus w-[64px]', shimmer)} />
+            <Skeleton className={cn('h-ds-03 w-[112px]', shimmer)} />
           </div>
         ))}
       </div>
@@ -32,17 +32,17 @@ const DashboardSkeleton = React.forwardRef<HTMLDivElement>(
       {/* Attendance calendar placeholder */}
       <div className="rounded-ds-xl border border-border bg-layer-01 p-ds-06">
         <div className="mb-ds-06 flex items-center justify-between">
-          <Skeleton className={cn('h-5 w-32', shimmer)} />
+          <Skeleton className={cn('h-[20px] w-[128px]', shimmer)} />
           <div className="flex items-center gap-ds-03">
             <Skeleton className={cn('h-ds-sm w-ds-sm rounded-ds-lg', shimmer)} />
-            <Skeleton className={cn('h-4 w-28', shimmer)} />
+            <Skeleton className={cn('h-[16px] w-[112px]', shimmer)} />
             <Skeleton className={cn('h-ds-sm w-ds-sm rounded-ds-lg', shimmer)} />
           </div>
         </div>
         {/* Weekday headers */}
         <div className="mb-ds-03 grid grid-cols-7 gap-ds-03">
           {Array.from({ length: 7 }).map((_, i) => (
-            <Skeleton key={`wh-${i}`} className={cn('mx-auto h-3 w-8', shimmer)} />
+            <Skeleton key={`wh-${i}`} className={cn('mx-auto h-[12px] w-[32px]', shimmer)} />
           ))}
         </div>
         {/* Calendar grid */}
@@ -71,10 +71,10 @@ const ProjectListSkeleton = React.forwardRef<HTMLDivElement>(
       {/* Header */}
       <div className="flex flex-col gap-ds-05 sm:flex-row sm:items-center sm:justify-between">
         <div className="flex flex-col gap-ds-03">
-          <Skeleton className={cn('h-6 w-28', shimmer)} />
-          <Skeleton className={cn('h-ds-04 w-40', shimmer)} />
+          <Skeleton className={cn('h-[24px] w-[112px]', shimmer)} />
+          <Skeleton className={cn('h-ds-04 w-[160px]', shimmer)} />
         </div>
-        <Skeleton className={cn('h-ds-sm-plus w-32 rounded-ds-lg', shimmer)} />
+        <Skeleton className={cn('h-ds-sm-plus w-[128px] rounded-ds-lg', shimmer)} />
       </div>
 
       {/* Filters */}
@@ -82,7 +82,7 @@ const ProjectListSkeleton = React.forwardRef<HTMLDivElement>(
         <Skeleton className={cn('h-ds-sm-plus flex-1 rounded-ds-lg', shimmer)} />
         <div className="flex gap-ds-02b">
           {Array.from({ length: 4 }).map((_, i) => (
-            <Skeleton key={`f-${i}`} className={cn('h-ds-sm w-16 rounded-ds-lg', shimmer)} />
+            <Skeleton key={`f-${i}`} className={cn('h-ds-sm w-[64px] rounded-ds-lg', shimmer)} />
           ))}
         </div>
       </div>
@@ -96,14 +96,14 @@ const ProjectListSkeleton = React.forwardRef<HTMLDivElement>(
           >
             {/* Top row: status + org */}
             <div className="flex items-center justify-between">
-              <Skeleton className={cn('h-5 w-16 rounded-ds-full', shimmer)} />
-              <Skeleton className={cn('h-4 w-20 rounded-ds-md', shimmer)} />
+              <Skeleton className={cn('h-[20px] w-[64px] rounded-ds-full', shimmer)} />
+              <Skeleton className={cn('h-[16px] w-[80px] rounded-ds-md', shimmer)} />
             </div>
             {/* Title + description */}
             <div className="flex flex-col gap-ds-03">
-              <Skeleton className={cn('h-4 w-3/4', shimmer)} />
-              <Skeleton className={cn('h-3 w-full', shimmer)} />
-              <Skeleton className={cn('h-3 w-2/3', shimmer)} />
+              <Skeleton className={cn('h-[16px] w-3/4', shimmer)} />
+              <Skeleton className={cn('h-[12px] w-full', shimmer)} />
+              <Skeleton className={cn('h-[12px] w-2/3', shimmer)} />
             </div>
             {/* Bottom row: members + count */}
             <div className="flex items-center justify-between pt-ds-02">
@@ -135,7 +135,7 @@ const TaskDetailSkeleton = React.forwardRef<HTMLDivElement>(
     <div ref={ref} className="flex h-full flex-col gap-0 rounded-ds-xl border border-border bg-layer-01">
       {/* Header */}
       <div className="flex items-center justify-between border-b border-border px-ds-05b py-ds-05">
-        <Skeleton className={cn('h-5 w-48', shimmer)} />
+        <Skeleton className={cn('h-[20px] w-[192px]', shimmer)} />
         <div className="flex items-center gap-ds-03">
           <Skeleton className={cn('h-ds-xs-plus w-ds-xs-plus rounded-ds-lg', shimmer)} />
           <Skeleton className={cn('h-ds-xs-plus w-ds-xs-plus rounded-ds-lg', shimmer)} />
@@ -149,8 +149,8 @@ const TaskDetailSkeleton = React.forwardRef<HTMLDivElement>(
             key={`prop-${i}`}
             className="flex items-center gap-ds-05 py-ds-03"
           >
-            <Skeleton className={cn('h-3 w-24 shrink-0', shimmer)} />
-            <Skeleton className={cn('h-6 w-32 rounded-ds-md', shimmer)} />
+            <Skeleton className={cn('h-[12px] w-[96px] shrink-0', shimmer)} />
+            <Skeleton className={cn('h-[24px] w-[128px] rounded-ds-md', shimmer)} />
           </div>
         ))}
       </div>
@@ -159,18 +159,18 @@ const TaskDetailSkeleton = React.forwardRef<HTMLDivElement>(
       <div className="border-b border-border px-ds-05b">
         <div className="flex gap-ds-05 py-ds-04">
           {Array.from({ length: 3 }).map((_, i) => (
-            <Skeleton key={`tab-${i}`} className={cn('h-4 w-16', shimmer)} />
+            <Skeleton key={`tab-${i}`} className={cn('h-[16px] w-[64px]', shimmer)} />
           ))}
         </div>
       </div>
 
       {/* Tab content */}
       <div className="flex flex-1 flex-col gap-ds-04 px-ds-05b py-ds-05">
-        <Skeleton className={cn('h-3 w-full', shimmer)} />
-        <Skeleton className={cn('h-3 w-4/5', shimmer)} />
-        <Skeleton className={cn('h-3 w-3/5', shimmer)} />
-        <Skeleton className={cn('mt-ds-03 h-3 w-full', shimmer)} />
-        <Skeleton className={cn('h-3 w-2/3', shimmer)} />
+        <Skeleton className={cn('h-[12px] w-full', shimmer)} />
+        <Skeleton className={cn('h-[12px] w-4/5', shimmer)} />
+        <Skeleton className={cn('h-[12px] w-3/5', shimmer)} />
+        <Skeleton className={cn('mt-ds-03 h-[12px] w-full', shimmer)} />
+        <Skeleton className={cn('h-[12px] w-2/3', shimmer)} />
       </div>
     </div>
   )

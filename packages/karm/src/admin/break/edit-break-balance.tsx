@@ -1,5 +1,6 @@
 'use client'
 
+import * as React from 'react'
 import { useState, useEffect, useRef } from 'react'
 import { EditIcon } from '../icons'
 import { useToast } from '@/hooks/use-toast'
@@ -28,10 +29,10 @@ export interface EditBreakBalanceProps {
   }) => void
 }
 
-export function EditBreakBalance({
+export const EditBreakBalance = React.forwardRef<HTMLDivElement, EditBreakBalanceProps>(function EditBreakBalance({
   selectedLeave,
   onSave,
-}: EditBreakBalanceProps) {
+}, _ref) {
   const [isSubmitting, setIsSubmitting] = useState(false)
   const [cashOutValue, setCashOutValue] = useState(
     typeof selectedLeave?.cashout === 'number' ? selectedLeave.cashout : 0,
@@ -145,6 +146,6 @@ export function EditBreakBalance({
       </DialogContent>
     </Dialog>
   )
-}
+})
 
 EditBreakBalance.displayName = 'EditBreakBalance'

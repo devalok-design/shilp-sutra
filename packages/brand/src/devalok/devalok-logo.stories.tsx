@@ -117,11 +117,11 @@ export const Sizes: Story = {
 export const UsageGuidelines: Story = {
   name: 'Usage Guidelines',
   render: () => (
-    <div className="flex flex-col gap-10 max-w-2xl">
+    <div className="flex flex-col gap-ds-10 max-w-2xl">
 
       {/* Prime space — full monogram */}
       <div>
-        <p className="text-ds-sm font-semibold text-text-primary mb-1">
+        <p className="text-ds-sm font-semibold text-text-primary mb-ds-01">
           Prime spaces — use the full monogram
         </p>
         <p className="text-ds-xs text-text-secondary mb-ds-04">
@@ -129,14 +129,14 @@ export const UsageGuidelines: Story = {
           the centrepiece with generous whitespace on all sides. Minimum clear
           space: 0.5× the logo height on every side.
         </p>
-        <div className="flex items-center justify-center p-16 rounded-ds-md border border-border bg-layer-01">
+        <div className="flex items-center justify-center p-ds-10 rounded-ds-md border border-border bg-layer-01">
           <DevalokLogo type="monogram-wordmark" color="brand" size="xl" />
         </div>
       </div>
 
       {/* Compact / repeated — chakra only */}
       <div>
-        <p className="text-ds-sm font-semibold text-text-primary mb-1">
+        <p className="text-ds-sm font-semibold text-text-primary mb-ds-01">
           All other contexts — use the Chakra
         </p>
         <p className="text-ds-xs text-text-secondary mb-ds-04">
@@ -162,7 +162,7 @@ export const UsageGuidelines: Story = {
 
       {/* Don't do this */}
       <div>
-        <p className="text-ds-sm font-semibold text-error mb-1">
+        <p className="text-ds-sm font-semibold text-error mb-ds-01">
           Don't — full monogram in compact contexts
         </p>
         <p className="text-ds-xs text-text-secondary mb-ds-04">

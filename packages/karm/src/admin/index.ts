@@ -78,7 +78,7 @@ export {
 } from './adjustments'
 
 // Utilities (re-export for consumer convenience)
-export { AdjustmentType, default as renderAdjustmentType } from './utils/render-adjustment-type'
+export { AdjustmentType, renderAdjustmentType } from './utils/render-adjustment-type'
 export { renderStatus } from './utils/render-status'
 export {
   formatDate,

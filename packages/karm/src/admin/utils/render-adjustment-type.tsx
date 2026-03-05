@@ -27,4 +27,4 @@ function renderAdjustmentType(type: keyof typeof AdjustmentType): JSX.Element {
   return <div>{ADJUSTMENT_TYPE_LABELS[type]}</div>
 }
 
-export default renderAdjustmentType
+export { renderAdjustmentType }

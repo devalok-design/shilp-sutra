@@ -1,5 +1,5 @@
 import type { Meta, StoryObj } from '@storybook/react'
-import renderAdjustmentType, { AdjustmentType } from './render-adjustment-type'
+import { renderAdjustmentType, AdjustmentType } from './render-adjustment-type'
 
 const meta: Meta = {
   title: 'Karm/Admin/Utils/RenderAdjustmentType',

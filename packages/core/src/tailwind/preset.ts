@@ -1,19 +1,24 @@
 import type { Config } from 'tailwindcss'
 
 const preset: Partial<Config> = {
+  /**
+   * Dark mode uses the `.dark` class strategy. If your app uses `darkMode: 'media'`,
+   * set it explicitly in your own tailwind.config — your config takes precedence.
+   */
   darkMode: 'class',
   theme: {
-    // Breakpoints must be static values — CSS custom properties cannot be used
-    // in @media queries (compiled at build time). These mirror the tokens in
-    // semantic.css (--breakpoint-sm … --breakpoint-2xl).
-    screens: {
-      sm: '640px',
-      md: '768px',
-      lg: '1024px',
-      xl: '1280px',
-      '2xl': '1536px',
-    },
     extend: {
+      // Breakpoints must be static values — CSS custom properties cannot be used
+      // in @media queries (compiled at build time). These mirror the tokens in
+      // semantic.css (--breakpoint-sm … --breakpoint-2xl).
+      // Placed inside `extend` so deployer breakpoints are merged, not replaced.
+      screens: {
+        sm: '640px',
+        md: '768px',
+        lg: '1024px',
+        xl: '1280px',
+        '2xl': '1536px',
+      },
       fontFamily: {
         sans: ['var(--font-sans)', 'system-ui', 'sans-serif'],
         display: ['var(--font-display)', 'system-ui', 'sans-serif'],

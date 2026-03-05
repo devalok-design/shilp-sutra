@@ -5,6 +5,66 @@ All notable changes to `@devalok/shilp-sutra` will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.1.1] - 2026-03-05
+
+### Fixed — Critical Runtime Issues
+- **BreakAdmin** `useMemo` called after conditional return — Rules of Hooks violation causing runtime crashes when loading state toggles
+- **InputOTP** `animate-caret-blink` keyframe added to Tailwind preset — caret animation was silently broken
+- **RadarChart** `--color-text-muted` replaced with `fill-text-tertiary` — chart axis labels were invisible
+- **CorrectionList** invalid `border-1` class replaced with `border` — mobile borders were silently absent
+- **AssociateDetail** `h-[auto]` replaced with `h-full` — vertical divider collapsed to 0px
+- **LeaveRequest** fragile synthetic `MouseEvent` construction refactored to optional event parameter
+
+### Fixed — Architecture & Compatibility
+- **Shell components** decoupled from Next.js — replaced hard `next/link` import with polymorphic `LinkProvider`/`useLink` context; non-Next consumers get plain `<a>` tags by default
+- **Brand logos** `resolveColor('auto')` made reactive to dark mode via `MutationObserver` — logo color now updates when `.dark` class toggles
+- **Brand** `cn()` extended to cover all 11 `text-ds-*` sizes (was only 3, causing silent merge failures for larger sizes)
+- **AppCommandPalette**, **useCalendar** — added missing `'use client'` directives
+- **use-color-mode** — added SSR guard to `resolveMode` preventing server-side crashes
+- **RichTextEditor** — added content sync effect so editor updates when `content` prop changes externally
+- **useToast** — fixed `@/ui/toast` alias to relative import for consistency
+
+### Fixed — Accessibility
+- **Autocomplete** `focus:ring` → `focus-visible:ring` — focus ring no longer shows on mouse click
+- **SegmentedControl** `tabIndex={0}` → `tabIndex={-1}` on tablist wrapper — fixes double-focus keyboard navigation bug
+- **SegmentedControl** removed `!important` override — resolved specificity by restructuring base CVA classes
+- **TopBar** search/AI buttons, **NotificationCenter** bell button, **BreakRequest** close button — added `aria-label` for screen readers
+- **TopBar** search/AI/avatar buttons, **BottomNavbar** More button — added `type="button"` to prevent form submission
+- **Textarea** — added `aria-invalid` for error state (matching Input pattern)
+
+### Fixed — Token Compliance (60+ instances)
+- Replaced raw `h-N`/`w-N` with explicit arbitrary values across Badge, Avatar, Skeleton, PageSkeleton, GlobalLoading, Dividers, SegmentedControl, CommandPalette
+- Replaced `h-3 w-3` icon sizes with `h-ico-sm w-ico-sm` on NavigationMenu, CommandPalette, Badge icons
+- Replaced `leading-none tracking-tight` → `leading-ds-none tracking-ds-tight` in Card
+- Replaced `leading-[150%]` → `leading-ds-relaxed` in Code
+- Replaced `opacity-[var(--action-disabled-opacity,0.38)]` → `opacity-action-disabled` in Chip
+- Replaced `pl-10 pr-9` and icon offsets with explicit arbitrary values in SearchInput
+- Replaced `py-12`/`py-16` with `py-ds-09`/`py-ds-10` in NotificationCenter and EmptyState
+- Replaced `text-warning` → `text-text-warning` in TaskCard (dark mode contrast fix)
+- Replaced `rounded-3xl` → `rounded-ds-3xl` in AssociateDetail
+- Replaced ~300 raw Tailwind classes with design system tokens in story files (99% reduction in violations)
+
+### Fixed — Code Quality
+- **Chip** converted from `React.createElement` to JSX syntax
+- **Karm chat** deduplicated `markdownComponents` into shared `markdown-components.tsx` module
+- **Karm** replaced 5 inline SVGs with Tabler icon components (Chip, AttendanceCTA, EditBreak calendar nav)
+- **Karm** wrapped 5 dialog components in `forwardRef` for consistency (DeleteBreak, EditBreak, EditBreakBalance, LeaveRequest, TaskDetailPanel)
+- **Karm** `renderAdjustmentType` converted from default to named export
+- **BreakAdmin** toast `border: 'None'` → `'none'` (valid CSS), `marginBottom` → token spacing
+- **CorrectionList** removed hardcoded `Goutham.png` dev placeholder from published package
+- **Data-table** fixed `useEffect` exhaustive-deps with proper dependency array
+- **Stack** replaced dynamic `gap-${N}` with static lookup map (Tailwind JIT safety)
+- **Module boundary** ESLint rules escalated from `warn` to `error`
+
+### Added
+- `LinkProvider` and `useLink` exports from `@devalok/shilp-sutra/shell` for framework-agnostic link injection
+- `caret-blink` animation keyframe in Tailwind preset
+- `./hooks` public export path for `useToast`, `useColorMode`, `useIsMobile`
+- 19 missing semantic tokens exposed in Tailwind preset (letter-spacing, line-height, opacity, focus width)
+- Lint scripts added to brand and karm packages
+
+---
+
 ## [Unreleased]
 
 ### Added

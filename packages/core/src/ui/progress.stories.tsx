@@ -106,25 +106,25 @@ export const CustomIndicator: Story = {
 
 export const AllStages: Story = {
   render: () => (
-    <div className="flex flex-col gap-4 max-w-md">
-      <div className="flex flex-col gap-1">
-        <span className="text-sm text-text-secondary">0%</span>
+    <div className="flex flex-col gap-ds-04 max-w-md">
+      <div className="flex flex-col gap-ds-01">
+        <span className="text-ds-sm text-text-secondary">0%</span>
         <Progress value={0} />
       </div>
-      <div className="flex flex-col gap-1">
-        <span className="text-sm text-text-secondary">25%</span>
+      <div className="flex flex-col gap-ds-01">
+        <span className="text-ds-sm text-text-secondary">25%</span>
         <Progress value={25} />
       </div>
-      <div className="flex flex-col gap-1">
-        <span className="text-sm text-text-secondary">50%</span>
+      <div className="flex flex-col gap-ds-01">
+        <span className="text-ds-sm text-text-secondary">50%</span>
         <Progress value={50} />
       </div>
-      <div className="flex flex-col gap-1">
-        <span className="text-sm text-text-secondary">75%</span>
+      <div className="flex flex-col gap-ds-01">
+        <span className="text-ds-sm text-text-secondary">75%</span>
         <Progress value={75} />
       </div>
-      <div className="flex flex-col gap-1">
-        <span className="text-sm text-text-secondary">100%</span>
+      <div className="flex flex-col gap-ds-01">
+        <span className="text-ds-sm text-text-secondary">100%</span>
         <Progress value={100} />
       </div>
     </div>

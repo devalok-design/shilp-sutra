@@ -54,7 +54,7 @@ export const WithIcon: Story = {
     label: 'Revenue',
     value: '$45,231',
     delta: { value: '+20.1% from last month', direction: 'up' },
-    icon: <span className="text-lg">$</span>,
+    icon: <span className="text-ds-lg">$</span>,
   },
   decorators: [(Story) => <div className="w-[280px]"><Story /></div>],
 }
@@ -70,7 +70,7 @@ export const Loading: Story = {
 
 export const Dashboard: Story = {
   render: () => (
-    <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+    <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-ds-04">
       <StatCard
         label="Total Lokwasi"
         value={24}

@@ -134,6 +134,6 @@ export const CustomTitleClass: Story = {
   args: {
     title: 'Analytics',
     subtitle: 'Real-time performance metrics and insights.',
-    titleClassName: 'text-2xl font-bold',
+    titleClassName: 'text-ds-2xl font-bold',
   },
 }

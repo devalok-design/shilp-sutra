@@ -12,7 +12,7 @@ type Story = StoryObj<typeof VisuallyHidden>
 export const Default: Story = {
   render: () => (
     <div>
-      <p className="text-sm text-text-secondary mb-4">
+      <p className="text-ds-sm text-text-secondary mb-ds-04">
         The text below is visually hidden but accessible to screen readers.
         Inspect the DOM to see it.
       </p>
@@ -26,7 +26,7 @@ export const Default: Story = {
 
 export const IconButtonExample: Story = {
   render: () => (
-    <div className="flex gap-4">
+    <div className="flex gap-ds-04">
       <button className="inline-flex items-center justify-center w-10 h-10 rounded-ds-md border border-border">
         <span aria-hidden="true">+</span>
         <VisuallyHidden>Add item</VisuallyHidden>

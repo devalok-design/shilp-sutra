@@ -88,7 +88,7 @@ function SortableWrapper({
   return (
     <DndContext>
       <SortableContext items={taskIds} strategy={verticalListSortingStrategy}>
-        <div className="w-[280px] space-y-2">{children}</div>
+        <div className="w-[280px] space-y-ds-02">{children}</div>
       </SortableContext>
     </DndContext>
   )
@@ -208,7 +208,7 @@ export const AllPriorities: Story = {
           items={priorities.map((p) => `prio-${p}`)}
           strategy={verticalListSortingStrategy}
         >
-          <div className="w-[280px] space-y-2">
+          <div className="w-[280px] space-y-ds-02">
             {priorities.map((priority) => (
               <TaskCard
                 key={priority}

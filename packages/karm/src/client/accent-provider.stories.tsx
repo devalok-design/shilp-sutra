@@ -16,49 +16,49 @@ type Story = StoryObj<typeof AccentProvider>
 const AccentVisualizerDecorator = (Story: React.ComponentType) => (
   <div>
     <Story />
-    <div className="flex flex-col gap-4 p-6 rounded-ds-xl border border-border-subtle">
-      <h3 className="text-sm font-semibold text-text-primary">
+    <div className="flex flex-col gap-ds-04 p-ds-06 rounded-ds-xl border border-border-subtle">
+      <h3 className="text-ds-sm font-semibold text-text-primary">
         AccentProvider injects CSS custom properties onto the document root. The
         swatches below read from the injected variables:
       </h3>
-      <div className="flex gap-3">
-        <div className="flex flex-col items-center gap-1">
+      <div className="flex gap-ds-03">
+        <div className="flex flex-col items-center gap-ds-01">
           <div
             className="h-12 w-12 rounded-ds-lg border"
             style={{ backgroundColor: 'var(--color-accent, #ccc)' }}
           />
-          <span className="text-xs text-text-secondary">
+          <span className="text-ds-xs text-text-secondary">
             --color-accent
           </span>
         </div>
-        <div className="flex flex-col items-center gap-1">
+        <div className="flex flex-col items-center gap-ds-01">
           <div
             className="h-12 w-12 rounded-ds-lg border"
             style={{ backgroundColor: 'var(--color-accent-light, #eee)' }}
           />
-          <span className="text-xs text-text-secondary">
+          <span className="text-ds-xs text-text-secondary">
             --color-accent-light
           </span>
         </div>
-        <div className="flex flex-col items-center gap-1">
+        <div className="flex flex-col items-center gap-ds-01">
           <div
             className="h-12 w-12 rounded-ds-lg border"
             style={{ backgroundColor: 'var(--color-accent-dark, #999)' }}
           />
-          <span className="text-xs text-text-secondary">
+          <span className="text-ds-xs text-text-secondary">
             --color-accent-dark
           </span>
         </div>
       </div>
-      <div className="mt-2 flex items-center gap-3">
+      <div className="mt-ds-02 flex items-center gap-ds-03">
         <button
-          className="rounded-ds-lg px-4 py-2 text-sm font-medium text-white"
+          className="rounded-ds-lg px-ds-04 py-ds-02 text-ds-sm font-medium text-white"
           style={{ backgroundColor: 'var(--color-accent, #6366f1)' }}
         >
           Accent Button
         </button>
         <span
-          className="rounded-ds-full px-3 py-1 text-xs font-medium"
+          className="rounded-ds-full px-ds-03 py-1 text-ds-xs font-medium"
           style={{
             backgroundColor: 'var(--color-accent-light, #eef2ff)',
             color: 'var(--color-accent, #6366f1)',

@@ -89,7 +89,7 @@ export const WithGroups: Story = {
 
 export const WithLabel: Story = {
   render: () => (
-    <div className="flex flex-col gap-2">
+    <div className="flex flex-col gap-ds-02">
       <Label>Priority</Label>
       <Select defaultValue="medium">
         <SelectTrigger className="w-[240px]">

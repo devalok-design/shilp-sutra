@@ -69,7 +69,7 @@ export const ReadOnly: Story = {
 
 export const WithLabel: Story = {
   render: () => (
-    <div className="flex flex-col gap-2 max-w-md">
+    <div className="flex flex-col gap-ds-02 max-w-md">
       <Label htmlFor="description">Description</Label>
       <Textarea
         id="description"
@@ -82,20 +82,20 @@ export const WithLabel: Story = {
 
 export const AllStates: Story = {
   render: () => (
-    <div className="flex flex-col gap-4 max-w-md">
-      <div className="flex flex-col gap-1">
+    <div className="flex flex-col gap-ds-04 max-w-md">
+      <div className="flex flex-col gap-ds-01">
         <Label>Default</Label>
         <Textarea placeholder="Default state" />
       </div>
-      <div className="flex flex-col gap-1">
+      <div className="flex flex-col gap-ds-01">
         <Label>Error</Label>
         <Textarea state="error" defaultValue="Invalid content" />
       </div>
-      <div className="flex flex-col gap-1">
+      <div className="flex flex-col gap-ds-01">
         <Label>Warning</Label>
         <Textarea state="warning" defaultValue="Review needed" />
       </div>
-      <div className="flex flex-col gap-1">
+      <div className="flex flex-col gap-ds-01">
         <Label>Success</Label>
         <Textarea state="success" defaultValue="Verified content" />
       </div>

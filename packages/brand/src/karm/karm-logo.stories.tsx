@@ -30,10 +30,10 @@ export const Default: Story = {
 export const AllTypes: Story = {
   name: 'All Logo Types',
   render: () => (
-    <div className="flex flex-col gap-6">
+    <div className="flex flex-col gap-ds-06">
       {(['icon', 'wordmark', 'wordmark-icon'] as const).map((type) => (
-        <div key={type} className="flex items-center gap-4">
-          <span className="w-32 text-sm font-mono text-text-secondary">
+        <div key={type} className="flex items-center gap-ds-04">
+          <span className="w-32 text-ds-sm font-mono text-text-secondary">
             {type}
           </span>
           <KarmLogo type={type} color="brand" size="lg" />
@@ -55,11 +55,11 @@ export const WordmarkIcon: Story = {
 export const Sizes: Story = {
   name: 'All Sizes',
   render: () => (
-    <div className="flex items-end gap-4">
+    <div className="flex items-end gap-ds-04">
       {(['xs', 'sm', 'md', 'lg', 'xl'] as const).map((size) => (
-        <div key={size} className="flex flex-col items-center gap-2">
+        <div key={size} className="flex flex-col items-center gap-ds-02">
           <KarmLogo type="wordmark-icon" color="brand" size={size} />
-          <span className="text-xs text-text-secondary">{size}</span>
+          <span className="text-ds-xs text-text-secondary">{size}</span>
         </div>
       ))}
     </div>
@@ -69,18 +69,18 @@ export const Sizes: Story = {
 export const ColorVariants: Story = {
   name: 'Color Variants',
   render: () => (
-    <div className="flex flex-col gap-6">
-      <div className="flex items-center gap-4 p-4 rounded bg-layer-01">
+    <div className="flex flex-col gap-ds-06">
+      <div className="flex items-center gap-ds-04 p-ds-04 rounded-ds-md bg-layer-01">
         <KarmLogo type="icon" color="brand" size="lg" />
-        <span className="text-sm text-text-secondary">Brand (#D33163)</span>
+        <span className="text-ds-sm text-text-secondary">Brand (#D33163)</span>
       </div>
-      <div className="flex items-center gap-4 p-4 rounded bg-layer-01">
+      <div className="flex items-center gap-ds-04 p-ds-04 rounded-ds-md bg-layer-01">
         <KarmLogo type="icon" color="black" size="lg" />
-        <span className="text-sm text-text-secondary">Black</span>
+        <span className="text-ds-sm text-text-secondary">Black</span>
       </div>
-      <div className="flex items-center gap-4 p-4 rounded bg-layer-inverse">
+      <div className="flex items-center gap-ds-04 p-ds-04 rounded-ds-md bg-layer-inverse">
         <KarmLogo type="icon" color="white" size="lg" />
-        <span className="text-sm text-white/60">White</span>
+        <span className="text-ds-sm text-white/60">White</span>
       </div>
     </div>
   ),

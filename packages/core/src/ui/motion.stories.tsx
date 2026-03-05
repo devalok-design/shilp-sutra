@@ -814,7 +814,7 @@ export const ScenarioFormSubmission: StoryObj = {
               <IconCheck className="h-ico-md w-ico-md text-success-text" />
               <div>
                 <p className="text-ds-sm font-medium text-success-text">Message sent successfully</p>
-                <p className="text-ds-xs text-success-text opacity-80">We'll get back to you soon.</p>
+                <p className="text-ds-xs text-success-text opacity-[0.8]">We'll get back to you soon.</p>
               </div>
             </div>
           </Fade>

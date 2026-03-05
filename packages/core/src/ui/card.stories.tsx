@@ -28,11 +28,11 @@ export const Default: Story = {
         <CardDescription>Latest status on the design system migration.</CardDescription>
       </CardHeader>
       <CardContent>
-        <p className="text-sm">
+        <p className="text-ds-sm">
           The component library has been extracted and all primitives are ready for review.
         </p>
       </CardContent>
-      <CardFooter className="gap-2">
+      <CardFooter className="gap-ds-02">
         <Button variant="primary" size="sm">View Details</Button>
         <Button variant="ghost" size="sm">Dismiss</Button>
       </CardFooter>
@@ -48,7 +48,7 @@ export const Interactive: Story = {
         <CardDescription>Hover to see the interactive effect.</CardDescription>
       </CardHeader>
       <CardContent>
-        <p className="text-sm">
+        <p className="text-ds-sm">
           This card has a hover shadow and border change to indicate interactivity.
         </p>
       </CardContent>
@@ -59,8 +59,8 @@ export const Interactive: Story = {
 export const Simple: Story = {
   render: () => (
     <Card className="w-[350px]">
-      <CardContent className="pt-6">
-        <p className="text-sm">A simple card with only content, no header or footer.</p>
+      <CardContent className="pt-ds-06">
+        <p className="text-ds-sm">A simple card with only content, no header or footer.</p>
       </CardContent>
     </Card>
   ),

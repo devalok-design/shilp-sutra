@@ -23,17 +23,17 @@ export const Default: Story = {
         <NavigationMenuItem>
           <NavigationMenuTrigger>Getting Started</NavigationMenuTrigger>
           <NavigationMenuContent>
-            <ul className="grid w-[400px] gap-3 p-4">
+            <ul className="grid w-[400px] gap-ds-03 p-ds-04">
               <li>
                 <NavigationMenuLink asChild>
                   <a
                     href="#"
-                    className="block select-none space-y-1 rounded-ds-md p-3 leading-none no-underline outline-none transition-colors hover:bg-field"
+                    className="block select-none space-y-ds-01 rounded-ds-md p-ds-03 leading-none no-underline outline-none transition-colors hover:bg-field"
                   >
-                    <div className="text-sm font-medium leading-none">
+                    <div className="text-ds-sm font-medium leading-none">
                       Introduction
                     </div>
-                    <p className="line-clamp-2 text-sm leading-snug text-text-secondary">
+                    <p className="line-clamp-2 text-ds-sm leading-snug text-text-secondary">
                       Re-usable components built with Radix UI and Tailwind CSS.
                     </p>
                   </a>
@@ -43,12 +43,12 @@ export const Default: Story = {
                 <NavigationMenuLink asChild>
                   <a
                     href="#"
-                    className="block select-none space-y-1 rounded-ds-md p-3 leading-none no-underline outline-none transition-colors hover:bg-field"
+                    className="block select-none space-y-ds-01 rounded-ds-md p-ds-03 leading-none no-underline outline-none transition-colors hover:bg-field"
                   >
-                    <div className="text-sm font-medium leading-none">
+                    <div className="text-ds-sm font-medium leading-none">
                       Installation
                     </div>
-                    <p className="line-clamp-2 text-sm leading-snug text-text-secondary">
+                    <p className="line-clamp-2 text-ds-sm leading-snug text-text-secondary">
                       How to install dependencies and structure your app.
                     </p>
                   </a>
@@ -60,17 +60,17 @@ export const Default: Story = {
         <NavigationMenuItem>
           <NavigationMenuTrigger>Components</NavigationMenuTrigger>
           <NavigationMenuContent>
-            <ul className="grid w-[400px] gap-3 p-4 md:grid-cols-2">
+            <ul className="grid w-[400px] gap-ds-03 p-ds-04 md:grid-cols-2">
               <li>
                 <NavigationMenuLink asChild>
                   <a
                     href="#"
-                    className="block select-none space-y-1 rounded-ds-md p-3 leading-none no-underline outline-none transition-colors hover:bg-field"
+                    className="block select-none space-y-ds-01 rounded-ds-md p-ds-03 leading-none no-underline outline-none transition-colors hover:bg-field"
                   >
-                    <div className="text-sm font-medium leading-none">
+                    <div className="text-ds-sm font-medium leading-none">
                       Alert Dialog
                     </div>
-                    <p className="line-clamp-2 text-sm leading-snug text-text-secondary">
+                    <p className="line-clamp-2 text-ds-sm leading-snug text-text-secondary">
                       A modal dialog that interrupts the user.
                     </p>
                   </a>
@@ -80,12 +80,12 @@ export const Default: Story = {
                 <NavigationMenuLink asChild>
                   <a
                     href="#"
-                    className="block select-none space-y-1 rounded-ds-md p-3 leading-none no-underline outline-none transition-colors hover:bg-field"
+                    className="block select-none space-y-ds-01 rounded-ds-md p-ds-03 leading-none no-underline outline-none transition-colors hover:bg-field"
                   >
-                    <div className="text-sm font-medium leading-none">
+                    <div className="text-ds-sm font-medium leading-none">
                       Hover Card
                     </div>
-                    <p className="line-clamp-2 text-sm leading-snug text-text-secondary">
+                    <p className="line-clamp-2 text-ds-sm leading-snug text-text-secondary">
                       For sighted users to preview content behind a link.
                     </p>
                   </a>

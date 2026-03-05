@@ -99,7 +99,7 @@ export const ReadOnly: Story = {
 
 export const WithLabel: Story = {
   render: () => (
-    <div className="flex flex-col gap-2">
+    <div className="flex flex-col gap-ds-02">
       <Label htmlFor="email-input">Email address</Label>
       <Input id="email-input" type="email" placeholder="you@example.com" />
     </div>
@@ -108,28 +108,28 @@ export const WithLabel: Story = {
 
 export const AllStates: Story = {
   render: () => (
-    <div className="flex flex-col gap-4 max-w-sm">
-      <div className="flex flex-col gap-1">
+    <div className="flex flex-col gap-ds-04 max-w-sm">
+      <div className="flex flex-col gap-ds-01">
         <Label>Default</Label>
         <Input placeholder="Default state" />
       </div>
-      <div className="flex flex-col gap-1">
+      <div className="flex flex-col gap-ds-01">
         <Label>Error</Label>
         <Input state="error" defaultValue="Invalid value" />
       </div>
-      <div className="flex flex-col gap-1">
+      <div className="flex flex-col gap-ds-01">
         <Label>Warning</Label>
         <Input state="warning" defaultValue="Needs attention" />
       </div>
-      <div className="flex flex-col gap-1">
+      <div className="flex flex-col gap-ds-01">
         <Label>Success</Label>
         <Input state="success" defaultValue="Looks good" />
       </div>
-      <div className="flex flex-col gap-1">
+      <div className="flex flex-col gap-ds-01">
         <Label>Disabled</Label>
         <Input disabled defaultValue="Disabled" />
       </div>
-      <div className="flex flex-col gap-1">
+      <div className="flex flex-col gap-ds-01">
         <Label>Read Only</Label>
         <Input readOnly defaultValue="Read only" />
       </div>

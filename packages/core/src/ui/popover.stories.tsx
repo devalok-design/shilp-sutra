@@ -19,19 +19,19 @@ export const Default: Story = {
         <Button variant="secondary">Open Popover</Button>
       </PopoverTrigger>
       <PopoverContent>
-        <div className="grid gap-4">
-          <div className="space-y-2">
+        <div className="grid gap-ds-04">
+          <div className="space-y-ds-02">
             <h4 className="font-medium leading-none">Dimensions</h4>
-            <p className="text-sm text-text-secondary">
+            <p className="text-ds-sm text-text-secondary">
               Set the dimensions for the layer.
             </p>
           </div>
-          <div className="grid gap-2">
-            <div className="flex flex-col gap-1">
+          <div className="grid gap-ds-02">
+            <div className="flex flex-col gap-ds-01">
               <Label htmlFor="width">Width</Label>
               <Input id="width" defaultValue="100%" />
             </div>
-            <div className="flex flex-col gap-1">
+            <div className="flex flex-col gap-ds-01">
               <Label htmlFor="height">Height</Label>
               <Input id="height" defaultValue="25px" />
             </div>
@@ -49,7 +49,7 @@ export const SimpleContent: Story = {
         <Button variant="ghost">Info</Button>
       </PopoverTrigger>
       <PopoverContent className="w-60">
-        <p className="text-sm">
+        <p className="text-ds-sm">
           This is a simple popover with just text content.
         </p>
       </PopoverContent>
@@ -64,7 +64,7 @@ export const AlignStart: Story = {
         <Button variant="secondary">Align Start</Button>
       </PopoverTrigger>
       <PopoverContent align="start">
-        <p className="text-sm">Aligned to start</p>
+        <p className="text-ds-sm">Aligned to start</p>
       </PopoverContent>
     </Popover>
   ),
@@ -77,7 +77,7 @@ export const AlignEnd: Story = {
         <Button variant="secondary">Align End</Button>
       </PopoverTrigger>
       <PopoverContent align="end">
-        <p className="text-sm">Aligned to end</p>
+        <p className="text-ds-sm">Aligned to end</p>
       </PopoverContent>
     </Popover>
   ),

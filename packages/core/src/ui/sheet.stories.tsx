@@ -34,12 +34,12 @@ export const Right: Story = {
             Make changes to your profile here. Click save when done.
           </SheetDescription>
         </SheetHeader>
-        <div className="grid gap-4 py-4">
-          <div className="flex flex-col gap-2">
+        <div className="grid gap-ds-04 py-ds-04">
+          <div className="flex flex-col gap-ds-02">
             <Label htmlFor="sheet-name">Name</Label>
             <Input id="sheet-name" defaultValue="Pedro Duarte" />
           </div>
-          <div className="flex flex-col gap-2">
+          <div className="flex flex-col gap-ds-02">
             <Label htmlFor="sheet-username">Username</Label>
             <Input id="sheet-username" defaultValue="@peduarte" />
           </div>
@@ -66,7 +66,7 @@ export const Left: Story = {
           <SheetTitle>Navigation</SheetTitle>
           <SheetDescription>Browse sections of the application.</SheetDescription>
         </SheetHeader>
-        <div className="py-4 flex flex-col gap-2">
+        <div className="py-ds-04 flex flex-col gap-ds-02">
           <Button variant="ghost" className="justify-start">Dashboard</Button>
           <Button variant="ghost" className="justify-start">Projects</Button>
           <Button variant="ghost" className="justify-start">Team</Button>
@@ -106,7 +106,7 @@ export const Bottom: Story = {
             Manage your cookie settings. You can enable or disable different types of cookies below.
           </SheetDescription>
         </SheetHeader>
-        <SheetFooter className="mt-4">
+        <SheetFooter className="mt-ds-04">
           <SheetClose asChild>
             <Button variant="ghost">Decline All</Button>
           </SheetClose>

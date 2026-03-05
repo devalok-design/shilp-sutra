@@ -78,7 +78,7 @@ const meta = {
   },
   decorators: [
     (Story) => (
-      <div className="flex items-center justify-center p-8">
+      <div className="flex items-center justify-center p-ds-08">
         <Story />
       </div>
     ),

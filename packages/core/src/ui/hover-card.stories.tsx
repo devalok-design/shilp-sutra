@@ -16,24 +16,24 @@ export const Default: Story = {
       <HoverCardTrigger asChild>
         <a
           href="#"
-          className="text-sm font-medium underline underline-offset-4"
+          className="text-ds-sm font-medium underline underline-offset-4"
         >
           @nextjs
         </a>
       </HoverCardTrigger>
       <HoverCardContent className="w-80">
-        <div className="flex justify-between space-x-4">
+        <div className="flex justify-between space-x-ds-04">
           <Avatar>
             <AvatarImage src="https://github.com/vercel.png" />
             <AvatarFallback>VC</AvatarFallback>
           </Avatar>
-          <div className="space-y-1">
-            <h4 className="text-sm font-semibold">@nextjs</h4>
-            <p className="text-sm text-text-secondary">
+          <div className="space-y-ds-01">
+            <h4 className="text-ds-sm font-semibold">@nextjs</h4>
+            <p className="text-ds-sm text-text-secondary">
               The React Framework -- created and maintained by @vercel.
             </p>
-            <div className="flex items-center pt-2">
-              <span className="text-xs text-text-secondary">
+            <div className="flex items-center pt-ds-02">
+              <span className="text-ds-xs text-text-secondary">
                 Joined December 2021
               </span>
             </div>

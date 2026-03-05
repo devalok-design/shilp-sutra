@@ -165,7 +165,7 @@ export const AllSizes: Story = {
 
 export const WithDots: Story = {
   render: () => (
-    <div className="flex flex-wrap items-center gap-2">
+    <div className="flex flex-wrap items-center gap-ds-02">
       <Badge variant="success" dot>Online</Badge>
       <Badge variant="warning" dot>Away</Badge>
       <Badge variant="error" dot>Busy</Badge>

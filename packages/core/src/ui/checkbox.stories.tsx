@@ -64,7 +64,7 @@ export const DisabledChecked: Story = {
 
 export const WithLabel: Story = {
   render: () => (
-    <div className="flex items-center gap-2">
+    <div className="flex items-center gap-ds-02">
       <Checkbox id="terms" />
       <Label htmlFor="terms">Accept terms and conditions</Label>
     </div>
@@ -73,28 +73,28 @@ export const WithLabel: Story = {
 
 export const AllStates: Story = {
   render: () => (
-    <div className="flex flex-col gap-4">
-      <div className="flex items-center gap-2">
+    <div className="flex flex-col gap-ds-04">
+      <div className="flex items-center gap-ds-02">
         <Checkbox id="unchecked" />
         <Label htmlFor="unchecked">Unchecked</Label>
       </div>
-      <div className="flex items-center gap-2">
+      <div className="flex items-center gap-ds-02">
         <Checkbox id="checked" defaultChecked />
         <Label htmlFor="checked">Checked</Label>
       </div>
-      <div className="flex items-center gap-2">
+      <div className="flex items-center gap-ds-02">
         <Checkbox id="indeterminate" indeterminate />
         <Label htmlFor="indeterminate">Indeterminate</Label>
       </div>
-      <div className="flex items-center gap-2">
+      <div className="flex items-center gap-ds-02">
         <Checkbox id="error" error />
         <Label htmlFor="error">Error</Label>
       </div>
-      <div className="flex items-center gap-2">
+      <div className="flex items-center gap-ds-02">
         <Checkbox id="disabled" disabled />
         <Label htmlFor="disabled">Disabled</Label>
       </div>
-      <div className="flex items-center gap-2">
+      <div className="flex items-center gap-ds-02">
         <Checkbox id="disabled-checked" disabled defaultChecked />
         <Label htmlFor="disabled-checked">Disabled Checked</Label>
       </div>

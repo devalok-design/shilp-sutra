@@ -6,7 +6,7 @@ const meta: Meta<typeof FileUpload> = {
   title: 'UI/Form Controls/FileUpload',
   component: FileUpload,
   tags: ['autodocs'],
-  decorators: [(Story) => <div className="p-8 max-w-lg"><Story /></div>],
+  decorators: [(Story) => <div className="p-ds-08 max-w-lg"><Story /></div>],
   args: {
     onFiles: (files) => console.log('Files selected:', files),
   },

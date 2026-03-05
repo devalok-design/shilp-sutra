@@ -12,23 +12,23 @@ type Story = StoryObj<typeof Collapsible>
 
 export const Default: Story = {
   render: () => (
-    <Collapsible className="w-80 space-y-2">
-      <div className="flex items-center justify-between space-x-4">
-        <h4 className="text-sm font-semibold">Starred repositories</h4>
+    <Collapsible className="w-80 space-y-ds-02">
+      <div className="flex items-center justify-between space-x-ds-04">
+        <h4 className="text-ds-sm font-semibold">Starred repositories</h4>
         <CollapsibleTrigger asChild>
           <Button variant="ghost" size="sm">
             Toggle
           </Button>
         </CollapsibleTrigger>
       </div>
-      <div className="rounded-md border border-border px-4 py-2 text-sm">
+      <div className="rounded-ds-md border border-border px-ds-04 py-ds-02 text-ds-sm">
         @radix-ui/primitives
       </div>
-      <CollapsibleContent className="space-y-2">
-        <div className="rounded-md border border-border px-4 py-2 text-sm">
+      <CollapsibleContent className="space-y-ds-02">
+        <div className="rounded-ds-md border border-border px-ds-04 py-ds-02 text-ds-sm">
           @radix-ui/colors
         </div>
-        <div className="rounded-md border border-border px-4 py-2 text-sm">
+        <div className="rounded-ds-md border border-border px-ds-04 py-ds-02 text-ds-sm">
           @stitches/react
         </div>
       </CollapsibleContent>
@@ -38,23 +38,23 @@ export const Default: Story = {
 
 export const DefaultOpen: Story = {
   render: () => (
-    <Collapsible defaultOpen className="w-80 space-y-2">
-      <div className="flex items-center justify-between space-x-4">
-        <h4 className="text-sm font-semibold">Starred repositories</h4>
+    <Collapsible defaultOpen className="w-80 space-y-ds-02">
+      <div className="flex items-center justify-between space-x-ds-04">
+        <h4 className="text-ds-sm font-semibold">Starred repositories</h4>
         <CollapsibleTrigger asChild>
           <Button variant="ghost" size="sm">
             Toggle
           </Button>
         </CollapsibleTrigger>
       </div>
-      <div className="rounded-md border border-border px-4 py-2 text-sm">
+      <div className="rounded-ds-md border border-border px-ds-04 py-ds-02 text-ds-sm">
         @radix-ui/primitives
       </div>
-      <CollapsibleContent className="space-y-2">
-        <div className="rounded-md border border-border px-4 py-2 text-sm">
+      <CollapsibleContent className="space-y-ds-02">
+        <div className="rounded-ds-md border border-border px-ds-04 py-ds-02 text-ds-sm">
           @radix-ui/colors
         </div>
-        <div className="rounded-md border border-border px-4 py-2 text-sm">
+        <div className="rounded-ds-md border border-border px-ds-04 py-ds-02 text-ds-sm">
           @stitches/react
         </div>
       </CollapsibleContent>

@@ -271,13 +271,13 @@ export const FullWidth: Story = {
 
 export const AllFeatures: Story = {
   render: () => (
-    <div className="flex flex-col gap-8">
+    <div className="flex flex-col gap-ds-07">
       {/* Row 1: Buttons with startIcon across all variants */}
       <div>
-        <p className="mb-2 text-sm font-semibold text-text-secondary">
+        <p className="mb-ds-02 text-ds-sm font-semibold text-text-secondary">
           Start Icon across variants
         </p>
-        <div className="flex flex-wrap items-center gap-4">
+        <div className="flex flex-wrap items-center gap-ds-04">
           <Button variant="primary" startIcon={<IconPlus size={16} />}>
             Primary
           </Button>
@@ -301,10 +301,10 @@ export const AllFeatures: Story = {
 
       {/* Row 2: Loading states (start, end, center) */}
       <div>
-        <p className="mb-2 text-sm font-semibold text-text-secondary">
+        <p className="mb-ds-02 text-ds-sm font-semibold text-text-secondary">
           Loading positions
         </p>
-        <div className="flex flex-wrap items-center gap-4">
+        <div className="flex flex-wrap items-center gap-ds-04">
           <Button loading loadingPosition="start">
             Loading Start
           </Button>
@@ -319,10 +319,10 @@ export const AllFeatures: Story = {
 
       {/* Row 3: Sizes with icons (sm, md, lg) */}
       <div>
-        <p className="mb-2 text-sm font-semibold text-text-secondary">
+        <p className="mb-ds-02 text-ds-sm font-semibold text-text-secondary">
           Sizes with icons
         </p>
-        <div className="flex flex-wrap items-center gap-4">
+        <div className="flex flex-wrap items-center gap-ds-04">
           <Button size="sm" startIcon={<IconPlus size={14} />}>
             Small
           </Button>

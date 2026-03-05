@@ -44,17 +44,17 @@ export const Vertical: Story = {
 
 export const BetweenText: Story = {
   render: () => (
-    <div className="max-w-md space-y-4">
+    <div className="max-w-md space-y-ds-04">
       <div>
-        <h4 className="text-sm font-medium">Section One</h4>
-        <p className="text-sm text-text-secondary">
+        <h4 className="text-ds-sm font-medium">Section One</h4>
+        <p className="text-ds-sm text-text-secondary">
           Content for the first section.
         </p>
       </div>
       <Separator />
       <div>
-        <h4 className="text-sm font-medium">Section Two</h4>
-        <p className="text-sm text-text-secondary">
+        <h4 className="text-ds-sm font-medium">Section Two</h4>
+        <p className="text-ds-sm text-text-secondary">
           Content for the second section.
         </p>
       </div>
@@ -64,12 +64,12 @@ export const BetweenText: Story = {
 
 export const VerticalInline: Story = {
   render: () => (
-    <div className="flex items-center gap-4 h-6">
-      <span className="text-sm">Home</span>
+    <div className="flex items-center gap-ds-04 h-6">
+      <span className="text-ds-sm">Home</span>
       <Separator orientation="vertical" />
-      <span className="text-sm">Settings</span>
+      <span className="text-ds-sm">Settings</span>
       <Separator orientation="vertical" />
-      <span className="text-sm">Profile</span>
+      <span className="text-ds-sm">Profile</span>
     </div>
   ),
 }

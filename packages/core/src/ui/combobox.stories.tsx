@@ -52,7 +52,7 @@ const meta: Meta<typeof Combobox> = {
   title: 'UI/Form Controls/Combobox',
   component: Combobox,
   tags: ['autodocs'],
-  decorators: [(Story) => <div className="p-8"><Story /></div>],
+  decorators: [(Story) => <div className="p-ds-08"><Story /></div>],
 }
 export default meta
 type Story = StoryObj<typeof Combobox>
@@ -173,7 +173,7 @@ export const CustomRenderOption: Story = {
 
     const renderOption = (option: ComboboxOption, _selected: boolean) => (
       <span className="flex items-center gap-ds-03">
-        <span className="flex h-6 w-6 shrink-0 items-center justify-center rounded-full bg-interactive-subtle text-ds-sm font-medium text-interactive">
+        <span className="flex h-6 w-6 shrink-0 items-center justify-center rounded-ds-full bg-interactive-subtle text-ds-sm font-medium text-interactive">
           {option.label
             .split(' ')
             .map((part) => part[0])

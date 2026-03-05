@@ -117,7 +117,7 @@ export const CardGrid: Story = {
     () => (
       <div
         style={{ maxWidth: 860 }}
-        className="grid grid-cols-1 gap-4 sm:grid-cols-2"
+        className="grid grid-cols-1 gap-ds-04 sm:grid-cols-2"
       >
         <ProjectCard
           name="Client Portal Redesign"

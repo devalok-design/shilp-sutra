@@ -84,7 +84,7 @@ export const Left: Story = {
 
 export const AllSides: Story = {
   render: () => (
-    <div className="flex items-center gap-8 p-12">
+    <div className="flex items-center gap-ds-07 p-ds-10">
       <Tooltip>
         <TooltipTrigger asChild>
           <Button variant="ghost">Top</Button>

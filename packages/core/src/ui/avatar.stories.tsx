@@ -37,21 +37,21 @@ export const SingleLetter: Story = {
 
 export const Sizes: Story = {
   render: () => (
-    <div className="flex items-center gap-4">
+    <div className="flex items-center gap-ds-04">
       <Avatar className="h-6 w-6">
-        <AvatarFallback className="text-xs">XS</AvatarFallback>
+        <AvatarFallback className="text-ds-xs">XS</AvatarFallback>
       </Avatar>
       <Avatar className="h-8 w-8">
-        <AvatarFallback className="text-xs">SM</AvatarFallback>
+        <AvatarFallback className="text-ds-xs">SM</AvatarFallback>
       </Avatar>
       <Avatar>
         <AvatarFallback>MD</AvatarFallback>
       </Avatar>
       <Avatar className="h-14 w-14">
-        <AvatarFallback className="text-lg">LG</AvatarFallback>
+        <AvatarFallback className="text-ds-lg">LG</AvatarFallback>
       </Avatar>
       <Avatar className="h-20 w-20">
-        <AvatarFallback className="text-xl">XL</AvatarFallback>
+        <AvatarFallback className="text-ds-xl">XL</AvatarFallback>
       </Avatar>
     </div>
   ),
@@ -59,7 +59,7 @@ export const Sizes: Story = {
 
 export const Group: Story = {
   render: () => (
-    <div className="flex items-center gap-2">
+    <div className="flex items-center gap-ds-02">
       <Avatar>
         <AvatarImage src="https://github.com/shadcn.png" alt="User 1" />
         <AvatarFallback>U1</AvatarFallback>

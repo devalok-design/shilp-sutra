@@ -104,7 +104,7 @@ const meta: Meta<typeof TaskProperties> = {
   },
   decorators: [
     (Story) => (
-      <div className="w-[400px] rounded-ds-lg border border-border bg-layer-01 p-4">
+      <div className="w-[400px] rounded-ds-lg border border-border bg-layer-01 p-ds-04">
         <Story />
       </div>
     ),
@@ -173,10 +173,10 @@ export const ReadOnlyWithEditableFields: Story = {
 /** All four priority levels for visual comparison */
 export const AllPriorities: Story = {
   render: (args) => (
-    <div className="space-y-6">
+    <div className="space-y-ds-06">
       {(['LOW', 'MEDIUM', 'HIGH', 'URGENT'] as const).map((priority) => (
-        <div key={priority} className="rounded-ds-lg border border-border bg-layer-01 p-4">
-          <p className="mb-2 text-[11px] font-semibold uppercase tracking-wider text-text-placeholder">
+        <div key={priority} className="rounded-ds-lg border border-border bg-layer-01 p-ds-04">
+          <p className="mb-ds-02 text-[11px] font-semibold uppercase tracking-wider text-text-placeholder">
             {priority}
           </p>
           <TaskProperties

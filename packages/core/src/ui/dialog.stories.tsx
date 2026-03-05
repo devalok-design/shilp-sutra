@@ -35,12 +35,12 @@ export const Default: Story = {
             Make changes to your profile here. Click save when you are done.
           </DialogDescription>
         </DialogHeader>
-        <div className="grid gap-4 py-4">
-          <div className="flex flex-col gap-2">
+        <div className="grid gap-ds-04 py-ds-04">
+          <div className="flex flex-col gap-ds-02">
             <Label htmlFor="name">Name</Label>
             <Input id="name" defaultValue="Pedro Duarte" />
           </div>
-          <div className="flex flex-col gap-2">
+          <div className="flex flex-col gap-ds-02">
             <Label htmlFor="username">Username</Label>
             <Input id="username" defaultValue="@peduarte" />
           </div>

@@ -17,7 +17,7 @@ type Story = StoryObj<typeof Code>
 
 export const Inline: Story = {
   render: () => (
-    <p className="text-sm">
+    <p className="text-ds-sm">
       Run <Code>pnpm install</Code> to install dependencies.
     </p>
   ),
@@ -37,7 +37,7 @@ function App() {
 
 export const InlineInParagraph: Story = {
   render: () => (
-    <p className="text-sm max-w-md">
+    <p className="text-ds-sm max-w-md">
       The <Code>requireUser(request)</Code> guard throws a redirect to{' '}
       <Code>/login</Code> if the user is unauthenticated. Use{' '}
       <Code>requireRole()</Code> for role-based access control.

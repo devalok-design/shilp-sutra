@@ -97,7 +97,7 @@ export const WithTextarea: Story = {
 
 export const AllHelperStates: Story = {
   render: () => (
-    <div className="flex flex-col gap-2 max-w-sm">
+    <div className="flex flex-col gap-ds-02 max-w-sm">
       <FormHelperText state="helper">Helper text (default)</FormHelperText>
       <FormHelperText state="error">Error message text</FormHelperText>
       <FormHelperText state="warning">Warning message text</FormHelperText>
@@ -108,7 +108,7 @@ export const AllHelperStates: Story = {
 
 export const CompleteForm: Story = {
   render: () => (
-    <div className="flex flex-col gap-6 max-w-md">
+    <div className="flex flex-col gap-ds-06 max-w-md">
       <FormField>
         <Label htmlFor="form-name" required>
           Name

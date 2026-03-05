@@ -49,7 +49,7 @@ export const Default: Story = {
 
 export const AllVariants: Story = {
   render: () => (
-    <div className="flex flex-wrap items-center gap-4">
+    <div className="flex flex-wrap items-center gap-ds-04">
       <IconButton
         variant="primary"
         icon={<IconPlus size={20} />}
@@ -81,7 +81,7 @@ export const AllVariants: Story = {
 
 export const AllSizes: Story = {
   render: () => (
-    <div className="flex flex-wrap items-center gap-4">
+    <div className="flex flex-wrap items-center gap-ds-04">
       <IconButton
         size="sm"
         variant="ghost"
@@ -106,7 +106,7 @@ export const AllSizes: Story = {
 
 export const Circle: Story = {
   render: () => (
-    <div className="flex flex-wrap items-center gap-4">
+    <div className="flex flex-wrap items-center gap-ds-04">
       <IconButton
         shape="circle"
         variant="primary"
@@ -155,7 +155,7 @@ export const Disabled: Story = {
 
 export const Toolbar: Story = {
   render: () => (
-    <div className="flex items-center gap-1 rounded-lg border border-border bg-surface p-1">
+    <div className="flex items-center gap-ds-01 rounded-ds-lg border border-border bg-surface p-ds-01">
       <IconButton
         variant="ghost"
         size="md"

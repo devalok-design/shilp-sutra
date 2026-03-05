@@ -127,7 +127,7 @@ function InteractiveDemo() {
           type="button"
           disabled={activeStep === 0}
           onClick={() => setActiveStep((s) => s - 1)}
-          className="rounded-ds-md border border-border px-ds-04 py-ds-02 text-[length:var(--font-size-sm)] text-text-primary hover:bg-layer-02 transition-colors disabled:opacity-40 disabled:cursor-not-allowed"
+          className="rounded-ds-md border border-border px-ds-04 py-ds-02 text-[length:var(--font-size-sm)] text-text-primary hover:bg-layer-02 transition-colors disabled:opacity-[0.4] disabled:cursor-not-allowed"
         >
           Back
         </button>
@@ -135,7 +135,7 @@ function InteractiveDemo() {
           type="button"
           disabled={activeStep > steps.length - 1}
           onClick={() => setActiveStep((s) => s + 1)}
-          className="rounded-ds-md bg-interactive px-ds-04 py-ds-02 text-[length:var(--font-size-sm)] text-text-on-color hover:opacity-90 transition-opacity disabled:opacity-40 disabled:cursor-not-allowed"
+          className="rounded-ds-md bg-interactive px-ds-04 py-ds-02 text-[length:var(--font-size-sm)] text-text-on-color hover:opacity-[0.9] transition-opacity disabled:opacity-[0.4] disabled:cursor-not-allowed"
         >
           {activeStep >= steps.length ? 'Done' : 'Next'}
         </button>

@@ -28,7 +28,7 @@ export const Required: Story = {
 
 export const WithInput: Story = {
   render: () => (
-    <div className="flex flex-col gap-2">
+    <div className="flex flex-col gap-ds-02">
       <Label htmlFor="name">Full name</Label>
       <Input id="name" placeholder="Enter your name" />
     </div>
@@ -37,7 +37,7 @@ export const WithInput: Story = {
 
 export const RequiredWithInput: Story = {
   render: () => (
-    <div className="flex flex-col gap-2">
+    <div className="flex flex-col gap-ds-02">
       <Label htmlFor="email" required>
         Email address
       </Label>

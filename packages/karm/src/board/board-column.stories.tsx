@@ -207,7 +207,7 @@ export const AllAccentColors: Story = {
           items={columnNames.map((_, i) => `column-accent-${i}`)}
           strategy={horizontalListSortingStrategy}
         >
-          <div className="flex gap-4 overflow-x-auto">
+          <div className="flex gap-ds-04 overflow-x-auto">
             {columnNames.map((name, i) => (
               <div key={i} className="group h-[200px]">
                 <BoardColumn

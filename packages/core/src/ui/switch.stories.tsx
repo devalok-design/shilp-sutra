@@ -39,7 +39,7 @@ export const DisabledChecked: Story = {
 
 export const WithLabel: Story = {
   render: () => (
-    <div className="flex items-center gap-3">
+    <div className="flex items-center gap-ds-03">
       <Switch id="notifications" />
       <Label htmlFor="notifications">Enable notifications</Label>
     </div>
@@ -48,7 +48,7 @@ export const WithLabel: Story = {
 
 export const FormExample: Story = {
   render: () => (
-    <div className="flex flex-col gap-4 max-w-sm">
+    <div className="flex flex-col gap-ds-04 max-w-sm">
       <div className="flex items-center justify-between">
         <Label htmlFor="email-switch">Email notifications</Label>
         <Switch id="email-switch" defaultChecked />

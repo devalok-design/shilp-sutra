@@ -28,7 +28,7 @@ export const Single: Story = {
       <AccordionItem value="item-2">
         <AccordionTrigger>How do I install it?</AccordionTrigger>
         <AccordionContent>
-          Run <code className="text-xs bg-[var(--color-layer-03)] px-1 py-0.5 rounded">pnpm add @devalok/shilp-sutra</code> in your project directory.
+          Run <code className="text-ds-xs bg-[var(--color-layer-03)] px-ds-01 py-0.5 rounded-ds-md">pnpm add @devalok/shilp-sutra</code> in your project directory.
         </AccordionContent>
       </AccordionItem>
       <AccordionItem value="item-3">

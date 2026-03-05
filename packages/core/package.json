@@ -37,7 +37,7 @@
     "README.md"
   ],
   "scripts": {
-    "build": "vite build && pnpm build:tokens",
+    "build": "vite build && pnpm build:tokens && node scripts/inject-use-client.mjs",
     "build:tokens": "node scripts/copy-tokens.mjs",
     "typecheck": "tsc --noEmit",
     "lint": "eslint src/",

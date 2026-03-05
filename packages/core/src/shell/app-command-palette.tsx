@@ -189,7 +189,7 @@ function buildDefaultAdminItems(
 // AppCommandPalette
 // -----------------------------------------------------------------------
 
-export default function AppCommandPalette({
+export function AppCommandPalette({
   user,
   extraGroups = [],
   onNavigate,

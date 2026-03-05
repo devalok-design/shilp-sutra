@@ -212,4 +212,4 @@ const AttendanceCTA = React.forwardRef<HTMLDivElement, AttendanceCTAProps>(
 
 AttendanceCTA.displayName = 'AttendanceCTA'
 
-export default AttendanceCTA
+export { AttendanceCTA }

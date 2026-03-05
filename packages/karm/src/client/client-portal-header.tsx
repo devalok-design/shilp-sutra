@@ -37,7 +37,7 @@ const ClientPortalHeader = React.forwardRef<
       <header
         ref={ref}
         className={cn(
-          'flex h-16 items-center justify-between border-b border-border-subtle bg-layer-01 px-ds-06',
+          'flex h-ds-lg items-center justify-between border-b border-border-subtle bg-layer-01 px-ds-06',
           className,
         )}
         {...props}

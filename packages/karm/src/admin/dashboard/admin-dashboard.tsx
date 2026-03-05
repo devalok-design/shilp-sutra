@@ -348,7 +348,7 @@ const AdminDashboardCalendar = React.forwardRef<
                   ? 'bg-layer-accent-subtle'
                   : 'bg-layer-02'
                 : '',
-              day.isPadding && 'opacity-50',
+              day.isPadding && 'opacity-[0.5]',
             )}
             onClick={() => handleDayClick(index, day.fullDate)}
           >

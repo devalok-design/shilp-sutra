@@ -91,7 +91,7 @@ const TIER_LABELS: Record<string, string> = {
 // NotificationPreferences
 // -----------------------------------------------------------------------
 
-export default function NotificationPreferences({
+export function NotificationPreferences({
   preferences = [],
   projects = [],
   isLoading = false,

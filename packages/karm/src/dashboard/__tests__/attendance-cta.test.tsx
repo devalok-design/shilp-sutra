@@ -1,7 +1,7 @@
 import { render, screen } from '@testing-library/react'
 import { axe } from 'vitest-axe'
 import { describe, it, expect, vi } from 'vitest'
-import AttendanceCTA from '../attendance-cta'
+import { AttendanceCTA } from '../attendance-cta'
 
 describe('AttendanceCTA', () => {
   it('has no a11y violations in unmarked state', async () => {

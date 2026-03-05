@@ -105,4 +105,4 @@ const DailyBrief = React.forwardRef<HTMLDivElement, DailyBriefProps>(
 
 DailyBrief.displayName = 'DailyBrief'
 
-export default DailyBrief
+export { DailyBrief }

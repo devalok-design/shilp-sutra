@@ -166,7 +166,7 @@ export function LineChart({
                             cy={cy}
                             r={dotSize}
                             fill={colors[seriesIdx]}
-                            className="transition-opacity hover:opacity-80"
+                            className="transition-opacity hover:opacity-[0.8]"
                           />
                         )
                       })}

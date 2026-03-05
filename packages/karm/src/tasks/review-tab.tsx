@@ -193,11 +193,11 @@ const ReviewTab = React.forwardRef<HTMLDivElement, ReviewTabProps>(
                                 className={cn(
                                   'inline-flex items-center gap-ds-02 rounded-ds-md px-ds-03 py-ds-02 text-ds-sm font-semibold transition-colors',
                                   opt.status === 'APPROVED' &&
-                                    'bg-success-surface text-text-success hover:opacity-90',
+                                    'bg-success-surface text-text-success hover:opacity-[0.9]',
                                   opt.status === 'CHANGES_REQUESTED' &&
-                                    'bg-warning-surface text-text-warning hover:opacity-90',
+                                    'bg-warning-surface text-text-warning hover:opacity-[0.9]',
                                   opt.status === 'REJECTED' &&
-                                    'bg-error-surface text-text-error hover:opacity-90',
+                                    'bg-error-surface text-text-error hover:opacity-[0.9]',
                                 )}
                               >
                                 <Icon className="h-3 w-3" stroke={2} />

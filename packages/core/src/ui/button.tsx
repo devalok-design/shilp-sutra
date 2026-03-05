@@ -22,7 +22,7 @@ export const buttonVariants = cva(
           'bg-error text-text-on-color hover:bg-error-hover active:bg-error-hover shadow-01',
         'error-ghost':
           'bg-transparent text-error border border-border-error hover:bg-error-surface active:bg-error-surface',
-        link: 'text-text-link underline-offset-4 hover:underline active:opacity-80',
+        link: 'text-text-link underline-offset-4 hover:underline active:opacity-[0.8]',
       },
       size: {
         sm: 'h-ds-sm rounded-ds-md px-ds-04 text-ds-sm',

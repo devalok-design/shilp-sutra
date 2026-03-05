@@ -1,5 +1,5 @@
 import type { Meta, StoryObj } from '@storybook/react'
-import AttendanceCTA from './attendance-cta'
+import { AttendanceCTA } from './attendance-cta'
 
 const meta: Meta<typeof AttendanceCTA> = {
   title: 'Karm/Dashboard/AttendanceCTA',

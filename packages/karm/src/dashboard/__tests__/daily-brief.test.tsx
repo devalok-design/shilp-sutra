@@ -1,7 +1,7 @@
 import { render, screen } from '@testing-library/react'
 import { axe } from 'vitest-axe'
 import { describe, it, expect } from 'vitest'
-import DailyBrief from '../daily-brief'
+import { DailyBrief } from '../daily-brief'
 import type { BriefData } from '../daily-brief'
 
 const briefData: BriefData = {

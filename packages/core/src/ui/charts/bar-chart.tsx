@@ -197,7 +197,7 @@ export function BarChart({
                       height={Math.max(0, h)}
                       rx={barRadius}
                       fill={barColor}
-                      className="transition-opacity hover:opacity-80"
+                      className="transition-opacity hover:opacity-[0.8]"
                       onMouseMove={(e) => {
                         if (showTooltip) {
                           const rect = e.currentTarget

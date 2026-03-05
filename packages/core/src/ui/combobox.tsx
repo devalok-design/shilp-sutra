@@ -340,7 +340,7 @@ const Combobox = React.forwardRef<HTMLButtonElement, ComboboxProps>(
             )}
           >
             {renderTriggerContent()}
-            <IconChevronDown className={cn("ml-ds-02 h-ico-sm w-ico-sm shrink-0 opacity-50 transition-transform duration-fast-01", open && 'rotate-180')} aria-hidden="true" />
+            <IconChevronDown className={cn("ml-ds-02 h-ico-sm w-ico-sm shrink-0 opacity-[0.5] transition-transform duration-fast-01", open && 'rotate-180')} aria-hidden="true" />
           </button>
         </PopoverPrimitive.Trigger>
 

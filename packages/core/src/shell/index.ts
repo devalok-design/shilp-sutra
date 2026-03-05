@@ -27,14 +27,14 @@ export {
 } from './notification-center'
 
 export {
-  default as NotificationPreferences,
+  NotificationPreferences,
   type NotificationPreference,
   type NotificationProject,
   type NotificationPreferencesProps,
 } from './notification-preferences'
 
 export {
-  default as AppCommandPalette,
+  AppCommandPalette,
   type SearchResult,
   type AppCommandPaletteUser,
   type AppCommandPaletteProps,

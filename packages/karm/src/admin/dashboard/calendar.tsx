@@ -151,7 +151,7 @@ export const Calendar = React.forwardRef<HTMLDivElement, CalendarProps>(
                 : 'pb-0 pt-0',
               'flex cursor-pointer flex-col items-center text-center',
               cal.activeTimeFrame === 'weekly' && cal.activeIndex === index && 'bg-layer-02',
-              day.isPadding && 'opacity-50',
+              day.isPadding && 'opacity-[0.5]',
             )}
             onClick={() => handleDayClick(index, day.fullDate)}
           >

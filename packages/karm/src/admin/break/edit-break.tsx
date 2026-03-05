@@ -553,7 +553,7 @@ export function EditBreak({
                               !(day.fullDate === picker.selectedStartDate) &&
                               !(day.fullDate === picker.selectedEndDate) &&
                               'bg-layer-accent-subtle',
-                            day.isPadding && 'opacity-50',
+                            day.isPadding && 'opacity-[0.5]',
                             day.fullDate === picker.selectedStartDate &&
                               isInSelectedRange(day.fullDate) &&
                               'start-date mini',
@@ -571,7 +571,7 @@ export function EditBreak({
                           <div
                             className={cn(
                               'mx-ds-02 my-ds-02',
-                              day.isPadding && 'opacity-50',
+                              day.isPadding && 'opacity-[0.5]',
                             )}
                           >
                             <span

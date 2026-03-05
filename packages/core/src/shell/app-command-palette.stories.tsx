@@ -1,5 +1,5 @@
 import type { Meta, StoryObj } from '@storybook/react'
-import AppCommandPalette from './app-command-palette'
+import { AppCommandPalette } from './app-command-palette'
 import type { SearchResult, AppCommandPaletteUser } from './app-command-palette'
 import type { CommandGroup } from '../composed/command-palette'
 import { IconBolt, IconGitBranch, IconClock } from '@tabler/icons-react'

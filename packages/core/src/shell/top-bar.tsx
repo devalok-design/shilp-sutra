@@ -124,6 +124,7 @@ const TopBar = React.forwardRef<HTMLDivElement, TopBarProps>(
         <Tooltip>
           <TooltipTrigger asChild>
             <button
+              type="button"
               onClick={handleSearchClick}
               className="flex h-ds-sm-plus w-ds-sm-plus items-center justify-center rounded-ds-full border border-border bg-layer-02 text-text-secondary transition-colors hover:bg-layer-03"
             >
@@ -143,6 +144,7 @@ const TopBar = React.forwardRef<HTMLDivElement, TopBarProps>(
           <Tooltip>
             <TooltipTrigger asChild>
               <button
+                type="button"
                 onClick={onAiChatClick}
                 className="flex h-ds-sm-plus w-ds-sm-plus items-center justify-center rounded-ds-full border border-border bg-layer-02 text-text-secondary transition-colors hover:bg-layer-03"
               >
@@ -161,7 +163,7 @@ const TopBar = React.forwardRef<HTMLDivElement, TopBarProps>(
             <Tooltip>
               <TooltipTrigger asChild>
                 <DropdownMenuTrigger asChild>
-                  <button className="flex items-center gap-ds-03 outline-none">
+                  <button type="button" className="flex items-center gap-ds-03 outline-none">
                     <Avatar className="h-ds-sm-plus w-ds-sm-plus cursor-pointer">
                       {user.image ? (
                         <AvatarImage src={user.image} alt={user.name} />

@@ -7,7 +7,7 @@
  * reading from Remix hooks or Zustand stores.
  */
 import * as React from 'react'
-import Link from 'next/link'
+import { useLink } from './link-context'
 import { useState } from 'react'
 import { IconDots, IconX } from '@tabler/icons-react'
 import { cn } from '../ui/lib/utils'
@@ -56,6 +56,7 @@ function BottomNavLink({
   isActive: boolean
   onClick?: () => void
 }) {
+  const Link = useLink()
   return (
     <Link
       href={item.href}
@@ -102,6 +103,7 @@ const BottomNavbar = React.forwardRef<HTMLElement, BottomNavbarProps>(
     },
     ref,
   ) => {
+    const Link = useLink()
     const [showMore, setShowMore] = useState(false)
 
     const isActive = (path: string, exact = false) => {

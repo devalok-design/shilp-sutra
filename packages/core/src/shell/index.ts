@@ -1,4 +1,6 @@
 // Layout components -- application shell
+export { LinkProvider, useLink } from './link-context'
+
 export {
   AppSidebar,
   type NavItem,

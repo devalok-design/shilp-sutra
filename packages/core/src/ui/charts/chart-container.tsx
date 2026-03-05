@@ -47,7 +47,7 @@ export function ChartContainer({
   return (
     <div ref={containerRef} className={cn('relative w-full', className)}>
       {width > 0 && (
-        <svg width={width} height={height} role="img">
+        <svg width={width} height={height} role="img" aria-label="Chart">
           <g transform={`translate(${margin.left},${margin.top})`}>
             {children({ width: innerWidth, height: innerHeight, margin })}
           </g>

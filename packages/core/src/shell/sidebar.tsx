@@ -11,7 +11,7 @@
  * reading from Remix hooks or Zustand stores.
  */
 import * as React from 'react'
-import Link from 'next/link'
+import { useLink } from './link-context'
 import {
   Sidebar as ShadcnSidebar,
   SidebarContent,
@@ -74,6 +74,7 @@ export interface AppSidebarProps
 // -----------------------------------------------------------------------
 
 function NavLink({ item, isActive }: { item: NavItem; isActive: boolean }) {
+  const Link = useLink()
   return (
     <SidebarMenuItem>
       <SidebarMenuButton
@@ -117,6 +118,7 @@ const AppSidebar = React.forwardRef<HTMLDivElement, AppSidebarProps>(
     },
     ref,
   ) => {
+    const Link = useLink()
     const isActive = (path: string, exact = false) => {
       if (exact || path === '/') {
         return currentPath === path

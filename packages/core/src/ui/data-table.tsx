@@ -364,8 +364,7 @@ export function DataTable<TData, TValue>({
         .rows.map((r) => r.original)
       onSelectionChange(selected)
     }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [rowSelection])
+  }, [rowSelection, onSelectionChange, table])
 
   /** Compute sticky positioning styles for pinned columns */
   function getPinnedCellStyle(columnId: string) {

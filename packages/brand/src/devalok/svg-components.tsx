@@ -22,7 +22,7 @@ function createSvgComponent(
       viewBox={viewBox}
       {...props}
     >
-      <title>Devalok</title>
+      <title>{props['aria-label'] ?? 'Devalok'}</title>
       {renderPaths(fill)}
     </svg>
   ))

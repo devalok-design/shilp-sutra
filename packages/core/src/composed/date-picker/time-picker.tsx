@@ -159,7 +159,7 @@ const TimePicker = React.forwardRef<HTMLButtonElement, TimePickerProps>(
   const selectedHour = timeFormat === '12h' ? hours12 : hours24
 
   const columnClass =
-    'flex flex-col gap-ds-01 overflow-y-auto max-h-[200px] px-ds-01 scrollbar-thin'
+    'flex flex-col gap-ds-01 overflow-y-auto max-h-[200px] px-ds-01'
 
   const itemBase =
     'flex h-ds-sm w-full items-center justify-center rounded-ds-md text-ds-md transition-colors duration-fast-01 ease-productive-standard cursor-pointer'

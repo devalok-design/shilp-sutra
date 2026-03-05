@@ -15,13 +15,13 @@ const fruits: ComboboxOption[] = [
 
 describe('Combobox', () => {
   it('renders with placeholder', () => {
-    render(<Combobox options={fruits} onChange={vi.fn()} placeholder="Pick a fruit" />)
+    render(<Combobox options={fruits} onValueChange={vi.fn()} placeholder="Pick a fruit" />)
     expect(screen.getByRole('combobox')).toHaveTextContent('Pick a fruit')
   })
 
   it('opens popover on trigger click and shows search input', async () => {
     const user = userEvent.setup()
-    render(<Combobox options={fruits} onChange={vi.fn()} placeholder="Pick a fruit" />)
+    render(<Combobox options={fruits} onValueChange={vi.fn()} placeholder="Pick a fruit" />)
 
     await user.click(screen.getByRole('combobox'))
 
@@ -32,7 +32,7 @@ describe('Combobox', () => {
 
   it('filters options when typing in search', async () => {
     const user = userEvent.setup()
-    render(<Combobox options={fruits} onChange={vi.fn()} />)
+    render(<Combobox options={fruits} onValueChange={vi.fn()} />)
 
     await user.click(screen.getByRole('combobox'))
     await user.type(screen.getByPlaceholderText('Search...'), 'ban')
@@ -42,25 +42,25 @@ describe('Combobox', () => {
     expect(screen.queryByRole('option', { name: 'Cherry' })).not.toBeInTheDocument()
   })
 
-  it('calls onChange on option click (single select)', async () => {
-    const onChange = vi.fn()
+  it('calls onValueChange on option click (single select)', async () => {
+    const onValueChange = vi.fn()
     const user = userEvent.setup()
-    render(<Combobox options={fruits} onChange={onChange} />)
+    render(<Combobox options={fruits} onValueChange={onValueChange} />)
 
     await user.click(screen.getByRole('combobox'))
     await user.click(screen.getByRole('option', { name: 'Banana' }))
 
-    expect(onChange).toHaveBeenCalledWith('banana')
+    expect(onValueChange).toHaveBeenCalledWith('banana')
   })
 
   it('supports multi-select with array value', async () => {
-    const onChange = vi.fn()
+    const onValueChange = vi.fn()
     const user = userEvent.setup()
     render(
       <Combobox
         options={fruits}
         value={['apple']}
-        onChange={onChange}
+        onValueChange={onValueChange}
         multiple
       />,
     )
@@ -68,17 +68,17 @@ describe('Combobox', () => {
     await user.click(screen.getByRole('combobox'))
     await user.click(screen.getByRole('option', { name: 'Cherry' }))
 
-    expect(onChange).toHaveBeenCalledWith(['apple', 'cherry'])
+    expect(onValueChange).toHaveBeenCalledWith(['apple', 'cherry'])
   })
 
   it('deselects in multi-select when clicking selected option', async () => {
-    const onChange = vi.fn()
+    const onValueChange = vi.fn()
     const user = userEvent.setup()
     render(
       <Combobox
         options={fruits}
         value={['apple', 'banana']}
-        onChange={onChange}
+        onValueChange={onValueChange}
         multiple
       />,
     )
@@ -86,7 +86,7 @@ describe('Combobox', () => {
     await user.click(screen.getByRole('combobox'))
     await user.click(screen.getByRole('option', { name: 'Banana' }))
 
-    expect(onChange).toHaveBeenCalledWith(['apple'])
+    expect(onValueChange).toHaveBeenCalledWith(['apple'])
   })
 
   it('shows empty message when no results match', async () => {
@@ -94,7 +94,7 @@ describe('Combobox', () => {
     render(
       <Combobox
         options={fruits}
-        onChange={vi.fn()}
+        onValueChange={vi.fn()}
         emptyMessage="No fruits found"
       />,
     )
@@ -108,7 +108,7 @@ describe('Combobox', () => {
 
   it('shows default empty message when none provided', async () => {
     const user = userEvent.setup()
-    render(<Combobox options={fruits} onChange={vi.fn()} />)
+    render(<Combobox options={fruits} onValueChange={vi.fn()} />)
 
     await user.click(screen.getByRole('combobox'))
     await user.type(screen.getByPlaceholderText('Search...'), 'xyz')
@@ -117,13 +117,13 @@ describe('Combobox', () => {
   })
 
   it('renders disabled state', () => {
-    render(<Combobox options={fruits} onChange={vi.fn()} disabled placeholder="Pick" />)
+    render(<Combobox options={fruits} onValueChange={vi.fn()} disabled placeholder="Pick" />)
     expect(screen.getByRole('combobox')).toBeDisabled()
   })
 
   it('does not open popover when disabled', async () => {
     const user = userEvent.setup()
-    render(<Combobox options={fruits} onChange={vi.fn()} disabled />)
+    render(<Combobox options={fruits} onValueChange={vi.fn()} disabled />)
 
     await user.click(screen.getByRole('combobox'))
 
@@ -131,9 +131,9 @@ describe('Combobox', () => {
   })
 
   it('navigates options with keyboard (ArrowDown, Enter)', async () => {
-    const onChange = vi.fn()
+    const onValueChange = vi.fn()
     const user = userEvent.setup()
-    render(<Combobox options={fruits} onChange={onChange} />)
+    render(<Combobox options={fruits} onValueChange={onValueChange} />)
 
     await user.click(screen.getByRole('combobox'))
     screen.getByPlaceholderText('Search...')
@@ -142,13 +142,13 @@ describe('Combobox', () => {
     await user.keyboard('{ArrowDown}')
     await user.keyboard('{Enter}')
 
-    expect(onChange).toHaveBeenCalledWith('banana')
+    expect(onValueChange).toHaveBeenCalledWith('banana')
   })
 
   it('navigates options with ArrowUp', async () => {
-    const onChange = vi.fn()
+    const onValueChange = vi.fn()
     const user = userEvent.setup()
-    render(<Combobox options={fruits} onChange={onChange} />)
+    render(<Combobox options={fruits} onValueChange={onValueChange} />)
 
     await user.click(screen.getByRole('combobox'))
 
@@ -158,12 +158,12 @@ describe('Combobox', () => {
     await user.keyboard('{ArrowUp}')
     await user.keyboard('{Enter}')
 
-    expect(onChange).toHaveBeenCalledWith('banana')
+    expect(onValueChange).toHaveBeenCalledWith('banana')
   })
 
   it('closes on Escape', async () => {
     const user = userEvent.setup()
-    render(<Combobox options={fruits} onChange={vi.fn()} />)
+    render(<Combobox options={fruits} onValueChange={vi.fn()} />)
 
     await user.click(screen.getByRole('combobox'))
     expect(screen.getByRole('listbox')).toBeInTheDocument()
@@ -174,7 +174,7 @@ describe('Combobox', () => {
 
   it('shows selected check mark (aria-selected)', async () => {
     const user = userEvent.setup()
-    render(<Combobox options={fruits} value="banana" onChange={vi.fn()} />)
+    render(<Combobox options={fruits} value="banana" onValueChange={vi.fn()} />)
 
     await user.click(screen.getByRole('combobox'))
 
@@ -190,7 +190,7 @@ describe('Combobox', () => {
       <Combobox
         options={fruits}
         value={['apple', 'banana']}
-        onChange={vi.fn()}
+        onValueChange={vi.fn()}
         multiple
       />,
     )
@@ -205,7 +205,7 @@ describe('Combobox', () => {
       <Combobox
         options={fruits}
         value={['apple', 'banana', 'cherry', 'dragonfruit']}
-        onChange={vi.fn()}
+        onValueChange={vi.fn()}
         multiple
       />,
     )
@@ -222,7 +222,7 @@ describe('Combobox', () => {
       <Combobox
         options={fruits}
         value={['apple', 'banana', 'cherry', 'dragonfruit']}
-        onChange={vi.fn()}
+        onValueChange={vi.fn()}
         multiple
         maxVisible={10}
       />,
@@ -241,7 +241,7 @@ describe('Combobox', () => {
       <Combobox
         ref={ref as React.Ref<HTMLButtonElement>}
         options={fruits}
-        onChange={vi.fn()}
+        onValueChange={vi.fn()}
       />,
     )
     expect(ref.current).toBeInstanceOf(HTMLButtonElement)
@@ -251,7 +251,7 @@ describe('Combobox', () => {
     render(
       <Combobox
         options={fruits}
-        onChange={vi.fn()}
+        onValueChange={vi.fn()}
         className="my-custom-class"
       />,
     )
@@ -264,7 +264,7 @@ describe('Combobox', () => {
     render(
       <Combobox
         options={fruits}
-        onChange={vi.fn()}
+        onValueChange={vi.fn()}
         triggerClassName="trigger-custom"
       />,
     )
@@ -276,7 +276,7 @@ describe('Combobox', () => {
     render(
       <Combobox
         options={fruits}
-        onChange={vi.fn()}
+        onValueChange={vi.fn()}
         searchPlaceholder="Type to filter..."
       />,
     )
@@ -290,7 +290,7 @@ describe('Combobox', () => {
       <Combobox
         options={fruits}
         value="cherry"
-        onChange={vi.fn()}
+        onValueChange={vi.fn()}
       />,
     )
     expect(screen.getByRole('combobox')).toHaveTextContent('Cherry')
@@ -298,7 +298,7 @@ describe('Combobox', () => {
 
   it('clears search input when popover reopens', async () => {
     const user = userEvent.setup()
-    render(<Combobox options={fruits} onChange={vi.fn()} />)
+    render(<Combobox options={fruits} onValueChange={vi.fn()} />)
 
     await user.click(screen.getByRole('combobox'))
     await user.type(screen.getByPlaceholderText('Search...'), 'ban')
@@ -310,14 +310,14 @@ describe('Combobox', () => {
   })
 
   it('skips disabled options when navigating with ArrowDown', async () => {
-    const onChange = vi.fn()
+    const onValueChange = vi.fn()
     const user = userEvent.setup()
     const optionsWithDisabled: ComboboxOption[] = [
       { value: 'a', label: 'Alpha' },
       { value: 'b', label: 'Bravo', disabled: true },
       { value: 'c', label: 'Charlie' },
     ]
-    render(<Combobox options={optionsWithDisabled} onChange={onChange} />)
+    render(<Combobox options={optionsWithDisabled} onValueChange={onValueChange} />)
 
     await user.click(screen.getByRole('combobox'))
 
@@ -326,7 +326,7 @@ describe('Combobox', () => {
     await user.keyboard('{ArrowDown}')
     await user.keyboard('{Enter}')
 
-    expect(onChange).toHaveBeenCalledWith('c')
+    expect(onValueChange).toHaveBeenCalledWith('c')
   })
 
   it('renders custom content via renderOption prop', async () => {
@@ -334,7 +334,7 @@ describe('Combobox', () => {
     render(
       <Combobox
         options={fruits}
-        onChange={vi.fn()}
+        onValueChange={vi.fn()}
         renderOption={(option) => (
           <span data-testid="custom-option">{option.label.toUpperCase()}</span>
         )}
@@ -349,9 +349,9 @@ describe('Combobox', () => {
   })
 
   it('navigates to first option with Home key', async () => {
-    const onChange = vi.fn()
+    const onValueChange = vi.fn()
     const user = userEvent.setup()
-    render(<Combobox options={fruits} onChange={onChange} />)
+    render(<Combobox options={fruits} onValueChange={onValueChange} />)
 
     await user.click(screen.getByRole('combobox'))
 
@@ -362,20 +362,20 @@ describe('Combobox', () => {
     await user.keyboard('{Home}')
     await user.keyboard('{Enter}')
 
-    expect(onChange).toHaveBeenCalledWith('apple')
+    expect(onValueChange).toHaveBeenCalledWith('apple')
   })
 
   it('navigates to last option with End key', async () => {
-    const onChange = vi.fn()
+    const onValueChange = vi.fn()
     const user = userEvent.setup()
-    render(<Combobox options={fruits} onChange={onChange} />)
+    render(<Combobox options={fruits} onValueChange={onValueChange} />)
 
     await user.click(screen.getByRole('combobox'))
 
     await user.keyboard('{End}')
     await user.keyboard('{Enter}')
 
-    expect(onChange).toHaveBeenCalledWith('elderberry')
+    expect(onValueChange).toHaveBeenCalledWith('elderberry')
   })
 
   it('renders option icon when provided', async () => {
@@ -384,7 +384,7 @@ describe('Combobox', () => {
       { value: 'star', label: 'Star', icon: <span data-testid="star-icon">*</span> },
       { value: 'plain', label: 'Plain' },
     ]
-    render(<Combobox options={optionsWithIcon} onChange={vi.fn()} />)
+    render(<Combobox options={optionsWithIcon} onValueChange={vi.fn()} />)
 
     await user.click(screen.getByRole('combobox'))
 
@@ -397,21 +397,21 @@ describe('Combobox', () => {
       { value: 'a', label: 'Alpha', description: 'First letter' },
       { value: 'b', label: 'Bravo' },
     ]
-    render(<Combobox options={optionsWithDesc} onChange={vi.fn()} />)
+    render(<Combobox options={optionsWithDesc} onValueChange={vi.fn()} />)
 
     await user.click(screen.getByRole('combobox'))
 
     expect(screen.getByText('First letter')).toBeInTheDocument()
   })
 
-  it('removes pill via X button and calls onChange without that value', async () => {
-    const onChange = vi.fn()
+  it('removes pill via X button and calls onValueChange without that value', async () => {
+    const onValueChange = vi.fn()
     const user = userEvent.setup()
     render(
       <Combobox
         options={fruits}
         value={['apple', 'banana']}
-        onChange={onChange}
+        onValueChange={onValueChange}
         multiple
       />,
     )
@@ -420,17 +420,17 @@ describe('Combobox', () => {
     const removeApple = within(trigger).getByLabelText('Remove Apple')
     await user.click(removeApple)
 
-    expect(onChange).toHaveBeenCalledWith(['banana'])
+    expect(onValueChange).toHaveBeenCalledWith(['banana'])
   })
 
   it('keeps popover open after selection in multi-select mode', async () => {
-    const onChange = vi.fn()
+    const onValueChange = vi.fn()
     const user = userEvent.setup()
     render(
       <Combobox
         options={fruits}
         value={[]}
-        onChange={onChange}
+        onValueChange={onValueChange}
         multiple
       />,
     )
@@ -443,9 +443,9 @@ describe('Combobox', () => {
   })
 
   it('closes popover after selection in single-select mode', async () => {
-    const onChange = vi.fn()
+    const onValueChange = vi.fn()
     const user = userEvent.setup()
-    render(<Combobox options={fruits} onChange={onChange} />)
+    render(<Combobox options={fruits} onValueChange={onValueChange} />)
 
     await user.click(screen.getByRole('combobox'))
     await user.click(screen.getByRole('option', { name: 'Apple' }))
@@ -456,7 +456,7 @@ describe('Combobox', () => {
 
   it('sets aria-activedescendant on search input when option is highlighted', async () => {
     const user = userEvent.setup()
-    render(<Combobox options={fruits} onChange={vi.fn()} />)
+    render(<Combobox options={fruits} onValueChange={vi.fn()} />)
 
     await user.click(screen.getByRole('combobox'))
     const searchInput = screen.getByPlaceholderText('Search...')
@@ -474,7 +474,7 @@ describe('Combobox', () => {
 
   it('uses maxVisible to control listbox scroll height', async () => {
     const user = userEvent.setup()
-    render(<Combobox options={fruits} onChange={vi.fn()} maxVisible={4} />)
+    render(<Combobox options={fruits} onValueChange={vi.fn()} maxVisible={4} />)
 
     await user.click(screen.getByRole('combobox'))
 
@@ -487,7 +487,7 @@ describe('Combobox', () => {
     const { container } = render(
       <Combobox
         options={fruits}
-        onChange={vi.fn()}
+        onValueChange={vi.fn()}
         placeholder="Select a fruit"
       />,
     )

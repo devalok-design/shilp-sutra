@@ -81,7 +81,7 @@ export const Controlled: Story = {
         <Autocomplete
           options={fruitOptions}
           value={selected}
-          onChange={setSelected}
+          onValueChange={setSelected}
           placeholder="Pick a fruit..."
         />
         <p className="text-ds-sm text-text-secondary">

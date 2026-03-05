@@ -8,56 +8,55 @@ import { cn } from './lib/utils'
  * Props for NumberInput — a stepper control with "−" and "+" buttons flanking a numeric input,
  * clamped between `min` and `max`. The decrement/increment buttons are disabled when bounds are reached.
  *
- * **Controlled only:** Pass `value` + `onChange` for controlled usage. Uncontrolled usage is
- * possible but the buttons won't update the displayed value without `onChange`.
+ * **Controlled only:** Pass `value` + `onValueChange` for controlled usage. Uncontrolled usage is
+ * possible but the buttons won't update the displayed value without `onValueChange`.
  *
  * **Step:** The `step` prop controls how much each button press increments/decrements (default 1).
  * Direct text input is also clamped to `[min, max]` on change.
  *
  * @example
  * // Quantity selector with 1–99 range:
- * <NumberInput value={qty} onChange={setQty} min={1} max={99} />
+ * <NumberInput value={qty} onValueChange={setQty} min={1} max={99} />
  *
  * @example
  * // Rating input (1–10, step 1):
- * <NumberInput value={rating} onChange={setRating} min={1} max={10} />
+ * <NumberInput value={rating} onValueChange={setRating} min={1} max={10} />
  *
  * @example
  * // Fine-grained opacity control (0–100, step 5):
- * <NumberInput value={opacity} onChange={setOpacity} min={0} max={100} step={5} />
+ * <NumberInput value={opacity} onValueChange={setOpacity} min={0} max={100} step={5} />
  *
  * @example
  * // Disabled number display (read-only-like):
- * <NumberInput value={autoCalcValue} onChange={() => {}} disabled />
+ * <NumberInput value={autoCalcValue} onValueChange={() => {}} disabled />
  * // These are just a few ways — feel free to combine props creatively!
  */
-export interface NumberInputProps {
+export interface NumberInputProps extends Omit<React.InputHTMLAttributes<HTMLInputElement>, 'value' | 'onChange' | 'type' | 'size'> {
   value?: number
-  onChange?: (value: number) => void
+  onValueChange?: (value: number) => void
   min?: number
   max?: number
   step?: number
-  disabled?: boolean
-  className?: string
 }
 
 const NumberInput = React.forwardRef<HTMLInputElement, NumberInputProps>(
   (
     {
       value = 0,
-      onChange = (_value: number) => {},
+      onValueChange,
       min = Number.MIN_SAFE_INTEGER,
       max = Number.MAX_SAFE_INTEGER,
       step = 1,
       disabled = false,
       className,
+      ...rest
     },
     ref,
   ) => {
     const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
       const newValue = parseInt(e.target.value) || 0
       if (newValue >= min && newValue <= max) {
-        onChange(newValue)
+        onValueChange?.(newValue)
       }
     }
 
@@ -65,7 +64,7 @@ const NumberInput = React.forwardRef<HTMLInputElement, NumberInputProps>(
       e.preventDefault() // Prevent form submission
       const newValue = value + step
       if (newValue <= max) {
-        onChange(newValue)
+        onValueChange?.(newValue)
       }
     }
 
@@ -73,7 +72,7 @@ const NumberInput = React.forwardRef<HTMLInputElement, NumberInputProps>(
       e.preventDefault() // Prevent form submission
       const newValue = value - step
       if (newValue >= min) {
-        onChange(newValue)
+        onValueChange?.(newValue)
       }
     }
 
@@ -104,6 +103,7 @@ const NumberInput = React.forwardRef<HTMLInputElement, NumberInputProps>(
           step={step}
           disabled={disabled}
           className="bg-transparent text-ds-base font-semibold w-ds-sm-plus border-0 text-center text-text-secondary [appearance:textfield] [&::-webkit-inner-spin-button]:appearance-none [&::-webkit-outer-spin-button]:appearance-none"
+          {...rest}
         />
 
         <button

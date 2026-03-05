@@ -24,7 +24,7 @@ export interface ComboboxOption {
  * **Single vs multi:** `multiple={false}` (default) — `value` is a `string`. When `multiple={true}`,
  * `value` is `string[]` and selected items appear as dismissible pills in the trigger.
  *
- * **`onChange` signature:** always `(value: string | string[]) => void`. Check `multiple` to determine
+ * **`onValueChange` signature:** always `(value: string | string[]) => void`. Check `multiple` to determine
  * which type you'll receive.
  *
  * **Custom rendering:** Use `renderOption` to return custom JSX per option (e.g. avatars, badges).
@@ -34,7 +34,7 @@ export interface ComboboxOption {
  * <Combobox
  *   options={[{ value: 'in', label: 'India' }, { value: 'us', label: 'United States' }]}
  *   value={country}
- *   onChange={(v) => setCountry(v as string)}
+ *   onValueChange={(v) => setCountry(v as string)}
  *   placeholder="Select country"
  * />
  *
@@ -44,7 +44,7 @@ export interface ComboboxOption {
  *   multiple
  *   options={tagOptions}
  *   value={selectedTags}
- *   onChange={(v) => setSelectedTags(v as string[])}
+ *   onValueChange={(v) => setSelectedTags(v as string[])}
  *   placeholder="Select tags..."
  * />
  *
@@ -53,7 +53,7 @@ export interface ComboboxOption {
  * <Combobox
  *   options={users.map(u => ({ value: u.id, label: u.name }))}
  *   value={assigneeId}
- *   onChange={(v) => setAssigneeId(v as string)}
+ *   onValueChange={(v) => setAssigneeId(v as string)}
  *   renderOption={(option, selected) => (
  *     <span className="flex items-center gap-ds-03">
  *       <Avatar size="xs"><AvatarFallback>{option.label[0]}</AvatarFallback></Avatar>
@@ -63,16 +63,15 @@ export interface ComboboxOption {
  * />
  * // These are just a few ways — feel free to combine props creatively!
  */
-export interface ComboboxProps {
+export interface ComboboxProps extends Omit<React.HTMLAttributes<HTMLDivElement>, 'onChange'> {
   options: ComboboxOption[]
   value?: string | string[]
-  onChange: (value: string | string[]) => void
+  onValueChange: (value: string | string[]) => void
   placeholder?: string
   searchPlaceholder?: string
   emptyMessage?: string
   multiple?: boolean
   disabled?: boolean
-  className?: string
   triggerClassName?: string
   /** Max visible items in the dropdown before scroll (default 6) */
   maxVisible?: number
@@ -90,7 +89,7 @@ const Combobox = React.forwardRef<HTMLButtonElement, ComboboxProps>(
     {
       options,
       value,
-      onChange,
+      onValueChange,
       placeholder = 'Select...',
       searchPlaceholder = 'Search...',
       emptyMessage = 'No results found',
@@ -100,6 +99,7 @@ const Combobox = React.forwardRef<HTMLButtonElement, ComboboxProps>(
       triggerClassName,
       maxVisible = 6,
       renderOption,
+      ...rest
     },
     ref,
   ) => {
@@ -138,13 +138,13 @@ const Combobox = React.forwardRef<HTMLButtonElement, ComboboxProps>(
           const newValue = selectedValues.includes(optionValue)
             ? selectedValues.filter((v) => v !== optionValue)
             : [...selectedValues, optionValue]
-          onChange(newValue)
+          onValueChange(newValue)
         } else {
-          onChange(optionValue)
+          onValueChange(optionValue)
           setOpen(false)
         }
       },
-      [multiple, selectedValues, onChange],
+      [multiple, selectedValues, onValueChange],
     )
 
     const handleRemovePill = React.useCallback(
@@ -152,9 +152,9 @@ const Combobox = React.forwardRef<HTMLButtonElement, ComboboxProps>(
         e.stopPropagation()
         e.preventDefault()
         const newValue = selectedValues.filter((v) => v !== optionValue)
-        onChange(newValue)
+        onValueChange(newValue)
       },
-      [selectedValues, onChange],
+      [selectedValues, onValueChange],
     )
 
     const handleOpenChange = React.useCallback(
@@ -320,7 +320,7 @@ const Combobox = React.forwardRef<HTMLButtonElement, ComboboxProps>(
 
     return (
       <PopoverPrimitive.Root open={open} onOpenChange={handleOpenChange}>
-        <div className={cn('relative', className)}>
+        <div className={cn('relative', className)} {...rest}>
         <PopoverPrimitive.Trigger asChild disabled={disabled}>
           <button
             ref={ref}

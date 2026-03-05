@@ -9,7 +9,7 @@ describe('NumberInput accessibility', () => {
       // eslint-disable-next-line jsx-a11y/label-has-associated-control
       <label>
         Quantity
-        <NumberInput value={5} onChange={() => {}} />
+        <NumberInput value={5} onValueChange={() => {}} />
       </label>,
     )
     const results = await axe(container)
@@ -21,7 +21,7 @@ describe('NumberInput accessibility', () => {
       // eslint-disable-next-line jsx-a11y/label-has-associated-control
       <label>
         Quantity
-        <NumberInput value={0} onChange={() => {}} disabled />
+        <NumberInput value={0} onValueChange={() => {}} disabled />
       </label>,
     )
     const results = await axe(container)
@@ -33,7 +33,7 @@ describe('NumberInput accessibility', () => {
       // eslint-disable-next-line jsx-a11y/label-has-associated-control
       <label>
         Rating
-        <NumberInput value={3} onChange={() => {}} min={0} max={10} />
+        <NumberInput value={3} onValueChange={() => {}} min={0} max={10} />
       </label>,
     )
     const results = await axe(container)

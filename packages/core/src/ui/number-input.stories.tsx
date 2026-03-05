@@ -19,7 +19,7 @@ type Story = StoryObj<typeof NumberInput>
 
 const NumberInputControlled = (props: React.ComponentProps<typeof NumberInput>) => {
   const [value, setValue] = useState(props.value ?? 0)
-  return <NumberInput {...props} value={value} onChange={setValue} />
+  return <NumberInput {...props} value={value} onValueChange={setValue} />
 }
 
 export const Default: Story = {

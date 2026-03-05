@@ -114,7 +114,7 @@ export const EditBreakBalance = React.forwardRef<HTMLDivElement, EditBreakBalanc
                   </div>
                   <NumberInput
                     value={cashOutValue}
-                    onChange={setCashOutValue}
+                    onValueChange={setCashOutValue}
                     min={0}
                     max={100}
                     step={1}

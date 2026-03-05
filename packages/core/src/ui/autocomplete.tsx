@@ -25,7 +25,7 @@ type AutocompleteOption = {
  * <Autocomplete
  *   options={[{ value: 'mumbai', label: 'Mumbai' }, { value: 'delhi', label: 'Delhi' }]}
  *   value={selectedCity}
- *   onChange={(opt) => setSelectedCity(opt)}
+ *   onValueChange={(opt) => setSelectedCity(opt)}
  *   placeholder="Search cities..."
  * />
  *
@@ -33,7 +33,7 @@ type AutocompleteOption = {
  * // Employee name lookup with custom empty text:
  * <Autocomplete
  *   options={employees.map(e => ({ value: e.id, label: e.fullName }))}
- *   onChange={(opt) => setAssignee(opt.value)}
+ *   onValueChange={(opt) => setAssignee(opt.value)}
  *   emptyText="No employees found"
  *   placeholder="Search employees..."
  * />
@@ -42,7 +42,7 @@ type AutocompleteOption = {
 type AutocompleteProps = {
   options: AutocompleteOption[]
   value?: AutocompleteOption | null
-  onChange?: (option: AutocompleteOption) => void
+  onValueChange?: (option: AutocompleteOption) => void
   placeholder?: string
   emptyText?: string
   disabled?: boolean
@@ -55,7 +55,7 @@ const Autocomplete = React.forwardRef<HTMLInputElement, AutocompleteProps>(
     {
       options,
       value,
-      onChange,
+      onValueChange,
       placeholder,
       emptyText = 'No options',
       disabled,
@@ -106,9 +106,9 @@ const Autocomplete = React.forwardRef<HTMLInputElement, AutocompleteProps>(
         setQuery(option.label)
         setIsOpen(false)
         setHighlightedIndex(-1)
-        onChange?.(option)
+        onValueChange?.(option)
       },
-      [onChange],
+      [onValueChange],
     )
 
     const handleKeyDown = React.useCallback(

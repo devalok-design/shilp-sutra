@@ -30,13 +30,13 @@ describe('Autocomplete', () => {
     expect(screen.queryByText('Apple')).not.toBeInTheDocument()
   })
 
-  it('calls onChange when option selected', () => {
-    const onChange = vi.fn()
-    render(<Autocomplete options={options} placeholder="Search" onChange={onChange} />)
+  it('calls onValueChange when option selected', () => {
+    const onValueChange = vi.fn()
+    render(<Autocomplete options={options} placeholder="Search" onValueChange={onValueChange} />)
     const input = screen.getByPlaceholderText('Search')
     fireEvent.focus(input)
     fireEvent.click(screen.getByText('Banana'))
-    expect(onChange).toHaveBeenCalledWith({ label: 'Banana', value: 'banana' })
+    expect(onValueChange).toHaveBeenCalledWith({ label: 'Banana', value: 'banana' })
   })
 
   it('shows empty state when no results', () => {

@@ -21,53 +21,53 @@ describe('NumberInput', () => {
     expect(screen.getByRole('button', { name: 'Decrease value' })).toBeInTheDocument()
   })
 
-  it('calls onChange with incremented value on increment click', async () => {
-    const onChange = vi.fn()
+  it('calls onValueChange with incremented value on increment click', async () => {
+    const onValueChange = vi.fn()
     const user = userEvent.setup()
-    render(<NumberInput value={3} onChange={onChange} />)
+    render(<NumberInput value={3} onValueChange={onValueChange} />)
 
     await user.click(screen.getByRole('button', { name: 'Increase value' }))
 
-    expect(onChange).toHaveBeenCalledWith(4)
+    expect(onValueChange).toHaveBeenCalledWith(4)
   })
 
-  it('calls onChange with decremented value on decrement click', async () => {
-    const onChange = vi.fn()
+  it('calls onValueChange with decremented value on decrement click', async () => {
+    const onValueChange = vi.fn()
     const user = userEvent.setup()
-    render(<NumberInput value={3} onChange={onChange} />)
+    render(<NumberInput value={3} onValueChange={onValueChange} />)
 
     await user.click(screen.getByRole('button', { name: 'Decrease value' }))
 
-    expect(onChange).toHaveBeenCalledWith(2)
+    expect(onValueChange).toHaveBeenCalledWith(2)
   })
 
   it('respects step prop', async () => {
-    const onChange = vi.fn()
+    const onValueChange = vi.fn()
     const user = userEvent.setup()
-    render(<NumberInput value={10} step={5} onChange={onChange} />)
+    render(<NumberInput value={10} step={5} onValueChange={onValueChange} />)
 
     await user.click(screen.getByRole('button', { name: 'Increase value' }))
-    expect(onChange).toHaveBeenCalledWith(15)
+    expect(onValueChange).toHaveBeenCalledWith(15)
   })
 
   it('does not increment beyond max', async () => {
-    const onChange = vi.fn()
+    const onValueChange = vi.fn()
     const user = userEvent.setup()
-    render(<NumberInput value={10} max={10} onChange={onChange} />)
+    render(<NumberInput value={10} max={10} onValueChange={onValueChange} />)
 
     await user.click(screen.getByRole('button', { name: 'Increase value' }))
 
-    expect(onChange).not.toHaveBeenCalled()
+    expect(onValueChange).not.toHaveBeenCalled()
   })
 
   it('does not decrement below min', async () => {
-    const onChange = vi.fn()
+    const onValueChange = vi.fn()
     const user = userEvent.setup()
-    render(<NumberInput value={0} min={0} onChange={onChange} />)
+    render(<NumberInput value={0} min={0} onValueChange={onValueChange} />)
 
     await user.click(screen.getByRole('button', { name: 'Decrease value' }))
 
-    expect(onChange).not.toHaveBeenCalled()
+    expect(onValueChange).not.toHaveBeenCalled()
   })
 
   it('disables increment button when value equals max', () => {

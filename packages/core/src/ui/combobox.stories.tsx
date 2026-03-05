@@ -68,7 +68,7 @@ export const Default: Story = {
         <Combobox
           options={fruits}
           value={value}
-          onChange={(v) => setValue(v as string)}
+          onValueChange={(v) => setValue(v as string)}
           placeholder="Select a fruit..."
           searchPlaceholder="Search fruits..."
         />
@@ -112,7 +112,7 @@ export const MultiSelect: Story = {
         <Combobox
           options={fruits}
           value={value}
-          onChange={(v) => setValue(v as string[])}
+          onValueChange={(v) => setValue(v as string[])}
           placeholder="Select fruits..."
           multiple
         />
@@ -155,7 +155,7 @@ export const WithDescriptionsAndIcons: Story = {
         <Combobox
           options={teamMembers}
           value={value}
-          onChange={(v) => setValue(v as string)}
+          onValueChange={(v) => setValue(v as string)}
           placeholder="Select a team member..."
           searchPlaceholder="Search by name..."
         />
@@ -196,7 +196,7 @@ export const CustomRenderOption: Story = {
         <Combobox
           options={teamMembers}
           value={value}
-          onChange={(v) => setValue(v as string)}
+          onValueChange={(v) => setValue(v as string)}
           placeholder="Choose assignee..."
           renderOption={renderOption}
         />
@@ -214,7 +214,7 @@ export const Disabled: Story = {
       <Combobox
         options={fruits}
         value="apple"
-        onChange={() => {}}
+        onValueChange={() => {}}
         placeholder="Disabled combobox"
         disabled
       />
@@ -233,7 +233,7 @@ export const EmptyState: Story = {
         <Combobox
           options={[]}
           value={value}
-          onChange={(v) => setValue(v as string)}
+          onValueChange={(v) => setValue(v as string)}
           placeholder="Select..."
           emptyMessage="No options available. Try a different search."
         />
@@ -258,7 +258,7 @@ export const ManyPills: Story = {
         <Combobox
           options={fruits}
           value={value}
-          onChange={(v) => setValue(v as string[])}
+          onValueChange={(v) => setValue(v as string[])}
           placeholder="Select fruits..."
           multiple
         />

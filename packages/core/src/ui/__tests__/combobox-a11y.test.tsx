@@ -15,7 +15,7 @@ describe('Combobox accessibility', () => {
       <Combobox
         options={options}
         value=""
-        onChange={() => {}}
+        onValueChange={() => {}}
         placeholder="Select a fruit"
       />,
     )
@@ -28,7 +28,7 @@ describe('Combobox accessibility', () => {
       <Combobox
         options={options}
         value="apple"
-        onChange={() => {}}
+        onValueChange={() => {}}
         placeholder="Select a fruit"
       />,
     )
@@ -41,7 +41,7 @@ describe('Combobox accessibility', () => {
       <Combobox
         options={options}
         value=""
-        onChange={() => {}}
+        onValueChange={() => {}}
         placeholder="Select a fruit"
         disabled
       />,
@@ -55,7 +55,7 @@ describe('Combobox accessibility', () => {
       <Combobox
         options={options}
         value={['apple', 'banana']}
-        onChange={() => {}}
+        onValueChange={() => {}}
         placeholder="Select fruits"
         multiple
       />,

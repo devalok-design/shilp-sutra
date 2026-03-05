@@ -138,6 +138,7 @@ export const BreakAdminHeader = React.forwardRef<HTMLDivElement, BreakAdminHeade
               </span>
             </div>
             <button
+              aria-label="Clear filter"
               onClick={() =>
                 setFilters((prev) => ({
                   ...prev,
@@ -214,6 +215,7 @@ export const BreakAdminHeader = React.forwardRef<HTMLDivElement, BreakAdminHeade
             </div>
 
             <button
+              aria-label="Clear filter"
               onClick={() => {
                 setFilters((prev) => ({
                   ...prev,

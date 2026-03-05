@@ -123,6 +123,7 @@ export const DashboardHeader = React.forwardRef<HTMLDivElement, DashboardHeaderP
                 </span>
               </div>
               <button
+                aria-label="Clear filter"
                 onClick={() => onSelectAssociate(null)}
                 className="border-0 bg-transparent p-0"
               >

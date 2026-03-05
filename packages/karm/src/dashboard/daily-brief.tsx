@@ -68,6 +68,7 @@ const DailyBrief = React.forwardRef<HTMLDivElement, DailyBriefProps>(
     <div ref={ref} className={cn('flex flex-col rounded-ds-2xl border border-border bg-layer-01 shadow-01', className)}>
       <button
         type="button"
+        aria-label="Toggle brief"
         onClick={() => setCollapsed(!collapsed)}
         className="flex items-center justify-between px-ds-05b py-ds-05 transition-colors hover:bg-layer-02"
       >

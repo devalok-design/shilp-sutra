@@ -208,6 +208,7 @@ export const LeaveRequests = React.forwardRef<HTMLDivElement, LeaveRequestsProps
                   <Tooltip delayDuration={0}>
                     <TooltipTrigger asChild>
                       <button
+                        aria-label="Reject request"
                         onMouseEnter={() => {
                           handleMouseEnter(request, 'rejectBreak')
                         }}
@@ -259,6 +260,7 @@ export const LeaveRequests = React.forwardRef<HTMLDivElement, LeaveRequestsProps
                   <Tooltip delayDuration={0}>
                     <TooltipTrigger asChild>
                       <button
+                        aria-label="Approve request"
                         onMouseEnter={() => {
                           handleMouseEnter(request, 'approveBreak')
                         }}
@@ -319,6 +321,7 @@ export const LeaveRequests = React.forwardRef<HTMLDivElement, LeaveRequestsProps
                   />
                 </div>
                 <button
+                  aria-label="Send comment"
                   disabled={interaction.isProcessing}
                   onClick={() => handleRequestSubmit(request, interaction.activeAction)}
                   className="my-auto flex items-center justify-center rounded-ds-full p-ds-03"

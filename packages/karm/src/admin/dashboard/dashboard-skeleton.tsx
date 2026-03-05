@@ -80,8 +80,7 @@ export const DashboardSkeleton = React.forwardRef<HTMLDivElement>(
               {Array.from({ length: 3 }).map((_, index) => (
                 <div
                   key={index}
-                  className={cn('flex w-full flex-col gap-ds-04 rounded-ds-md bg-layer-02 p-ds-06 md:rounded-ds-lg md:p-ds-05', index !== 2 ? 'border-r border-border' : '', 'max-md:border-0 max-md:p-ds-05')}
-                  style={{ minWidth: '200px' }}
+                  className={cn('flex w-full flex-col gap-ds-04 rounded-ds-md bg-layer-02 p-ds-06 md:rounded-ds-lg md:p-ds-05', index !== 2 ? 'border-r border-border' : '', 'max-md:border-0 max-md:p-ds-05', 'min-w-[200px]')}
                 >
                   <Skeleton className="h-[20px] w-[120px] rounded-ds-md bg-field" />
                   <div className="flex flex-wrap items-center gap-ds-03">

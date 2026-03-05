@@ -110,14 +110,7 @@ function AttendanceStatus({
           {formattedStatus}
         </span>
         {formattedStatus === 'Absent' && (
-          <div
-            style={{
-              width: '1px',
-              height: '20px',
-              opacity: 0.5,
-              background: 'var(--color-border-strong)',
-            }}
-          ></div>
+          <div className="w-px h-5 opacity-[0.5] bg-border-strong" />
         )}
         {!timeIn && status !== 'HOLIDAY' && status !== 'WEEKEND' && (
           <span className="text-ds-md text-text-tertiary">
@@ -374,8 +367,7 @@ export const AssociateDetail = React.forwardRef<HTMLDivElement, AssociateDetailP
                       )}
                     </button>
                     <p
-                      className={cn('text-ds-md flex-1 overflow-hidden hyphens-auto break-all pr-ds-05', task.status === 'COMPLETED' ? 'text-text-disabled line-through' : 'text-text-secondary')}
-                      style={{ wordBreak: 'break-word', minWidth: 0 }}
+                      className={cn('text-ds-md flex-1 overflow-hidden hyphens-auto break-all pr-ds-05 break-words min-w-0', task.status === 'COMPLETED' ? 'text-text-disabled line-through' : 'text-text-secondary')}
                     >
                       {task.title}
                     </p>

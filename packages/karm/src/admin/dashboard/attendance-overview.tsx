@@ -168,8 +168,7 @@ export const AttendanceOverview = React.forwardRef<HTMLDivElement, AttendanceOve
             ([status, groupUsers]) => (
               <div
                 key={status}
-                className={cn('flex w-full flex-col gap-ds-04 rounded-ds-md bg-layer-02 p-ds-06 md:rounded-ds-lg md:p-ds-05', status !== 'yetToMark' ? 'border-r border-border' : '', 'max-md:border-0 max-md:p-ds-05')}
-                style={{ minWidth: '200px' }}
+                className={cn('flex w-full flex-col gap-ds-04 rounded-ds-md bg-layer-02 p-ds-06 md:rounded-ds-lg md:p-ds-05', status !== 'yetToMark' ? 'border-r border-border' : '', 'max-md:border-0 max-md:p-ds-05', 'min-w-[200px]')}
               >
                 <h2 className="text-ds-sm font-semibold uppercase tracking-wider capitalize text-text-tertiary">
                   {status === 'yetToMark'

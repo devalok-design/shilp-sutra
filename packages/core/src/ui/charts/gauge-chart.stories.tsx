@@ -47,7 +47,7 @@ export const FormattedLabel: Story = {
     value: 85,
     valueLabel: (v: number) => `${v}%`,
     label: 'Completion',
-    color: '#22c55e',
+    color: 'var(--color-success-text)',
   },
 }
 

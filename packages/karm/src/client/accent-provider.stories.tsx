@@ -58,7 +58,7 @@ const AccentVisualizerDecorator = (Story: React.ComponentType) => (
           Accent Button
         </button>
         <span
-          className="rounded-ds-full px-ds-03 py-1 text-ds-xs font-medium"
+          className="rounded-ds-full px-ds-03 py-ds-01 text-ds-xs font-medium"
           style={{
             backgroundColor: 'var(--color-accent-light, #eef2ff)',
             color: 'var(--color-accent, #6366f1)',

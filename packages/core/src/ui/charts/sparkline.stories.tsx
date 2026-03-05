@@ -44,7 +44,7 @@ export const Area: Story = {
 export const Colored: Story = {
   args: {
     data: sparkData,
-    color: '#22c55e',
+    color: 'var(--color-success-text)',
   },
 }
 

@@ -238,7 +238,7 @@ const FileUpload = React.forwardRef<HTMLDivElement, FileUploadProps>(
             disabled={disabled}
             className={cn(
               'inline-flex items-center gap-ds-02 rounded-ds-md px-ds-03 py-ds-02',
-              'text-[length:var(--font-size-sm)] font-medium',
+              'text-ds-sm font-medium',
               'border border-border',
               'bg-field text-text-secondary',
               'hover:bg-interactive-subtle',
@@ -273,7 +273,7 @@ const FileUpload = React.forwardRef<HTMLDivElement, FileUploadProps>(
             <p
               role="alert"
               aria-live="polite"
-              className="mt-ds-02 text-[length:var(--font-size-xs)] text-error"
+              className="mt-ds-02 text-ds-xs text-error"
             >
               {displayError}
             </p>
@@ -339,7 +339,7 @@ const FileUpload = React.forwardRef<HTMLDivElement, FileUploadProps>(
               </div>
             </div>
           ) : (
-            <span className="text-[length:var(--font-size-xs)] text-text-tertiary">
+            <span className="text-ds-xs text-text-tertiary">
               {defaultSublabel}
             </span>
           )}
@@ -363,7 +363,7 @@ const FileUpload = React.forwardRef<HTMLDivElement, FileUploadProps>(
         {displayError && (
           <p
             role="alert"
-            className="mt-ds-02 text-[length:var(--font-size-xs)] text-error"
+            className="mt-ds-02 text-ds-xs text-error"
           >
             {displayError}
           </p>

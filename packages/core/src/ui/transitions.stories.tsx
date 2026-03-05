@@ -23,7 +23,7 @@ const meta: Meta = {
 export default meta
 
 const demoBox = (
-  <div className="rounded-ds-md bg-interactive p-ds-05 text-text-on-color text-[length:var(--font-size-md)]">
+  <div className="rounded-ds-md bg-interactive p-ds-05 text-text-on-color text-ds-md">
     Transition content
   </div>
 )
@@ -41,7 +41,7 @@ function ToggleDemo({
       <button
         type="button"
         onClick={() => setOpen((prev) => !prev)}
-        className="rounded-ds-md border border-border px-ds-04 py-ds-02 text-[length:var(--font-size-sm)] text-text-primary hover:bg-layer-02 transition-colors"
+        className="rounded-ds-md border border-border px-ds-04 py-ds-02 text-ds-sm text-text-primary hover:bg-layer-02 transition-colors"
       >
         {open ? `Hide ${label}` : `Show ${label}`}
       </button>
@@ -76,13 +76,13 @@ export const CollapseTransition: StoryObj = {
       {(open) => (
         <Collapse open={open}>
           <div className="space-y-ds-03">
-            <div className="rounded-ds-md bg-layer-02 p-ds-04 text-text-primary text-[length:var(--font-size-md)]">
+            <div className="rounded-ds-md bg-layer-02 p-ds-04 text-text-primary text-ds-md">
               First collapsible item
             </div>
-            <div className="rounded-ds-md bg-layer-02 p-ds-04 text-text-primary text-[length:var(--font-size-md)]">
+            <div className="rounded-ds-md bg-layer-02 p-ds-04 text-text-primary text-ds-md">
               Second collapsible item
             </div>
-            <div className="rounded-ds-md bg-layer-02 p-ds-04 text-text-primary text-[length:var(--font-size-md)]">
+            <div className="rounded-ds-md bg-layer-02 p-ds-04 text-text-primary text-ds-md">
               Third collapsible item
             </div>
           </div>
@@ -164,35 +164,35 @@ export const AllTransitions: StoryObj = {
         <button
           type="button"
           onClick={() => setOpen((prev) => !prev)}
-          className="rounded-ds-md border border-border px-ds-04 py-ds-02 text-[length:var(--font-size-sm)] text-text-primary hover:bg-layer-02 transition-colors"
+          className="rounded-ds-md border border-border px-ds-04 py-ds-02 text-ds-sm text-text-primary hover:bg-layer-02 transition-colors"
         >
           {open ? 'Hide All' : 'Show All'}
         </button>
 
         <div className="grid grid-cols-2 gap-ds-05">
           <div className="space-y-ds-03">
-            <span className="text-[length:var(--font-size-sm)] font-[number:var(--font-weight-semibold)] text-text-secondary">
+            <span className="text-ds-sm font-semibold text-text-secondary">
               Fade
             </span>
             <Fade open={open}>{demoBox}</Fade>
           </div>
 
           <div className="space-y-ds-03">
-            <span className="text-[length:var(--font-size-sm)] font-[number:var(--font-weight-semibold)] text-text-secondary">
+            <span className="text-ds-sm font-semibold text-text-secondary">
               Grow
             </span>
             <Grow open={open}>{demoBox}</Grow>
           </div>
 
           <div className="space-y-ds-03">
-            <span className="text-[length:var(--font-size-sm)] font-[number:var(--font-weight-semibold)] text-text-secondary">
+            <span className="text-ds-sm font-semibold text-text-secondary">
               Collapse
             </span>
             <Collapse open={open}>{demoBox}</Collapse>
           </div>
 
           <div className="space-y-ds-03">
-            <span className="text-[length:var(--font-size-sm)] font-[number:var(--font-weight-semibold)] text-text-secondary">
+            <span className="text-ds-sm font-semibold text-text-secondary">
               Slide (up)
             </span>
             <div className="overflow-hidden rounded-ds-md">

@@ -152,7 +152,7 @@ function FullFeaturedToolbarDemo() {
 
   return (
     <div className="space-y-ds-04">
-      <p className="text-[length:var(--font-size-sm)] text-text-secondary">
+      <p className="text-ds-sm text-text-secondary">
         {selected.length} of {data.length} row(s) selected
       </p>
       <DataTable
@@ -180,7 +180,7 @@ export const AllDensities: Story = {
   render: () => (
     <div className="space-y-ds-08">
       <div className="space-y-ds-03">
-        <span className="text-[length:var(--font-size-sm)] font-[number:var(--font-weight-semibold)] text-text-secondary">
+        <span className="text-ds-sm font-semibold text-text-secondary">
           Compact
         </span>
         <DataTable
@@ -191,7 +191,7 @@ export const AllDensities: Story = {
         />
       </div>
       <div className="space-y-ds-03">
-        <span className="text-[length:var(--font-size-sm)] font-[number:var(--font-weight-semibold)] text-text-secondary">
+        <span className="text-ds-sm font-semibold text-text-secondary">
           Standard
         </span>
         <DataTable
@@ -202,7 +202,7 @@ export const AllDensities: Story = {
         />
       </div>
       <div className="space-y-ds-03">
-        <span className="text-[length:var(--font-size-sm)] font-[number:var(--font-weight-semibold)] text-text-secondary">
+        <span className="text-ds-sm font-semibold text-text-secondary">
           Comfortable
         </span>
         <DataTable

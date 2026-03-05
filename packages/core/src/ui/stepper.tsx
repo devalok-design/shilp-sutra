@@ -131,7 +131,7 @@ const Step = React.forwardRef<HTMLDivElement, StepInternalProps>(
       >
         <div
           className={cn(
-            'flex-shrink-0 flex items-center justify-center w-ds-sm h-ds-sm rounded-ds-full text-[length:var(--font-size-sm)] font-[number:var(--font-weight-semibold)] transition-colors duration-fast-01',
+            'flex-shrink-0 flex items-center justify-center w-ds-sm h-ds-sm rounded-ds-full text-ds-sm font-semibold transition-colors duration-fast-01',
             state === 'completed' && 'bg-interactive text-text-on-color',
             state === 'active' && 'bg-interactive text-text-on-color',
             state === 'pending' && 'bg-layer-02 text-text-tertiary border border-border',
@@ -148,7 +148,7 @@ const Step = React.forwardRef<HTMLDivElement, StepInternalProps>(
         <div className="flex flex-col">
           <span
             className={cn(
-              'text-[length:var(--font-size-md)] font-[number:var(--font-weight-medium)] leading-[var(--line-height-snug)]',
+              'text-ds-md font-medium leading-ds-snug',
               state === 'pending'
                 ? 'text-text-tertiary'
                 : 'text-text-primary',
@@ -157,7 +157,7 @@ const Step = React.forwardRef<HTMLDivElement, StepInternalProps>(
             {label}
           </span>
           {description && (
-            <span className="text-[length:var(--font-size-sm)] text-text-secondary leading-[var(--line-height-relaxed)]">
+            <span className="text-ds-sm text-text-secondary leading-ds-relaxed">
               {description}
             </span>
           )}

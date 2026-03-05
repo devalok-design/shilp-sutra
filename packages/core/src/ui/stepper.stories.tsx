@@ -127,7 +127,7 @@ function InteractiveDemo() {
           type="button"
           disabled={activeStep === 0}
           onClick={() => setActiveStep((s) => s - 1)}
-          className="rounded-ds-md border border-border px-ds-04 py-ds-02 text-[length:var(--font-size-sm)] text-text-primary hover:bg-layer-02 transition-colors disabled:opacity-[0.4] disabled:cursor-not-allowed"
+          className="rounded-ds-md border border-border px-ds-04 py-ds-02 text-ds-sm text-text-primary hover:bg-layer-02 transition-colors disabled:opacity-[0.4] disabled:cursor-not-allowed"
         >
           Back
         </button>
@@ -135,7 +135,7 @@ function InteractiveDemo() {
           type="button"
           disabled={activeStep > steps.length - 1}
           onClick={() => setActiveStep((s) => s + 1)}
-          className="rounded-ds-md bg-interactive px-ds-04 py-ds-02 text-[length:var(--font-size-sm)] text-text-on-color hover:opacity-[0.9] transition-opacity disabled:opacity-[0.4] disabled:cursor-not-allowed"
+          className="rounded-ds-md bg-interactive px-ds-04 py-ds-02 text-ds-sm text-text-on-color hover:opacity-[0.9] transition-opacity disabled:opacity-[0.4] disabled:cursor-not-allowed"
         >
           {activeStep >= steps.length ? 'Done' : 'Next'}
         </button>
@@ -143,14 +143,14 @@ function InteractiveDemo() {
           <button
             type="button"
             onClick={() => setActiveStep(0)}
-            className="rounded-ds-md border border-border px-ds-04 py-ds-02 text-[length:var(--font-size-sm)] text-text-primary hover:bg-layer-02 transition-colors"
+            className="rounded-ds-md border border-border px-ds-04 py-ds-02 text-ds-sm text-text-primary hover:bg-layer-02 transition-colors"
           >
             Reset
           </button>
         )}
       </div>
 
-      <p className="text-[length:var(--font-size-sm)] text-text-secondary">
+      <p className="text-ds-sm text-text-secondary">
         {activeStep > steps.length - 1
           ? 'All steps completed.'
           : `Step ${activeStep + 1} of ${steps.length}: ${steps[activeStep]}`}
@@ -187,7 +187,7 @@ export const AllVariants: Story = {
   render: () => (
     <div className="space-y-ds-08">
       <div className="space-y-ds-03">
-        <span className="text-[length:var(--font-size-sm)] font-[number:var(--font-weight-semibold)] text-text-secondary">
+        <span className="text-ds-sm font-semibold text-text-secondary">
           Horizontal — Step 0 active
         </span>
         <Stepper activeStep={0}>
@@ -198,7 +198,7 @@ export const AllVariants: Story = {
       </div>
 
       <div className="space-y-ds-03">
-        <span className="text-[length:var(--font-size-sm)] font-[number:var(--font-weight-semibold)] text-text-secondary">
+        <span className="text-ds-sm font-semibold text-text-secondary">
           Horizontal — Step 1 active
         </span>
         <Stepper activeStep={1}>
@@ -209,7 +209,7 @@ export const AllVariants: Story = {
       </div>
 
       <div className="space-y-ds-03">
-        <span className="text-[length:var(--font-size-sm)] font-[number:var(--font-weight-semibold)] text-text-secondary">
+        <span className="text-ds-sm font-semibold text-text-secondary">
           Horizontal — All completed
         </span>
         <Stepper activeStep={3}>
@@ -220,7 +220,7 @@ export const AllVariants: Story = {
       </div>
 
       <div className="space-y-ds-03">
-        <span className="text-[length:var(--font-size-sm)] font-[number:var(--font-weight-semibold)] text-text-secondary">
+        <span className="text-ds-sm font-semibold text-text-secondary">
           Vertical — Step 2 active
         </span>
         <Stepper activeStep={2} orientation="vertical">

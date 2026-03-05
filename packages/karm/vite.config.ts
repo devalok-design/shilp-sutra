@@ -62,7 +62,7 @@ export default defineConfig({
             if (subpath.startsWith('ui/')) return `@devalok/shilp-sutra/ui`
             if (subpath.startsWith('composed/')) return `@devalok/shilp-sutra/composed`
             if (subpath.startsWith('shell/')) return `@devalok/shilp-sutra/shell`
-            if (subpath.startsWith('hooks/')) return `@devalok/shilp-sutra/ui`
+            if (subpath.startsWith('hooks/')) return `@devalok/shilp-sutra/hooks`
             if (subpath.startsWith('tailwind/')) return `@devalok/shilp-sutra/tailwind`
             return `@devalok/shilp-sutra/ui`
           }

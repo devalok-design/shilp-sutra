@@ -1,5 +1,3 @@
-'use client'
-
 import * as React from 'react'
 import { cn } from './lib/utils'
 
@@ -22,8 +20,8 @@ type SpacingToken =
 
 type StackProps<T extends React.ElementType = 'div'> = {
   as?: T
-  direction?: 'vertical' | 'horizontal'
-  gap?: SpacingToken
+  direction?: 'vertical' | 'horizontal' | 'row' | 'column'
+  gap?: SpacingToken | number
   align?: 'start' | 'center' | 'end' | 'stretch' | 'baseline'
   justify?: 'start' | 'center' | 'end' | 'between' | 'around' | 'evenly'
   wrap?: boolean
@@ -58,6 +56,11 @@ const gapMap: Record<string, string> = {
   '6': 'gap-ds-06',
   '7': 'gap-ds-07',
   '8': 'gap-ds-08',
+  '9': 'gap-ds-09',
+  '10': 'gap-ds-10',
+  '11': 'gap-ds-11',
+  '12': 'gap-ds-12',
+  '13': 'gap-ds-13',
   'ds-01': 'gap-ds-01',
   'ds-02': 'gap-ds-02',
   'ds-02b': 'gap-ds-02b',
@@ -84,8 +87,8 @@ const Stack = React.forwardRef<HTMLElement, StackProps>(
         ref,
         className: cn(
           'flex',
-          direction === 'vertical' ? 'flex-col' : 'flex-row',
-          gap && gapMap[gap],
+          (direction === 'vertical' || direction === 'column') ? 'flex-col' : 'flex-row',
+          gap != null && gapMap[String(gap)],
           align && alignMap[align],
           justify && justifyMap[justify],
           wrap && 'flex-wrap',

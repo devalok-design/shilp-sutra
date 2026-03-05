@@ -1,5 +1,3 @@
-'use client'
-
 import * as React from 'react'
 import { cva, type VariantProps } from 'class-variance-authority'
 import { cn } from './lib/utils'
@@ -85,7 +83,7 @@ const defaultElementMap: Record<TextVariant, keyof React.JSX.IntrinsicElements> 
  */
 type TextProps<T extends React.ElementType = 'p'> = {
   variant?: TextVariant
-  as?: T
+  as?: React.ElementType
   className?: string
   children?: React.ReactNode
 } & Omit<React.ComponentPropsWithRef<T>, 'as' | 'variant' | 'className' | 'children'>

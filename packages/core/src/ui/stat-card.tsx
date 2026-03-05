@@ -51,7 +51,7 @@ export interface StatCardProps extends React.HTMLAttributes<HTMLDivElement> {
     value: string
     direction: 'up' | 'down' | 'neutral'
   }
-  icon?: React.ReactNode
+  icon?: React.ReactNode | React.ComponentType<{ className?: string }>
   loading?: boolean
 }
 
@@ -101,7 +101,9 @@ const StatCard = React.forwardRef<HTMLDivElement, StatCardProps>(
           <p className="text-ds-md font-medium text-text-secondary">{label}</p>
           {icon && (
             <span className="text-text-secondary" aria-hidden="true">
-              {icon}
+              {typeof icon === 'function'
+                ? React.createElement(icon as React.ComponentType<{ className?: string }>, { className: 'h-ico-lg w-ico-lg' })
+                : icon}
             </span>
           )}
         </div>

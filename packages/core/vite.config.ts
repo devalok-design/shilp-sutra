@@ -24,6 +24,7 @@ export default defineConfig({
         'ui/index': resolve(__dirname, 'src/ui/index.ts'),
         'composed/index': resolve(__dirname, 'src/composed/index.ts'),
         'shell/index': resolve(__dirname, 'src/shell/index.ts'),
+        'hooks/index': resolve(__dirname, 'src/hooks/index.ts'),
         'tailwind/index': resolve(__dirname, 'src/tailwind/index.ts'),
       },
       formats: ['es'],

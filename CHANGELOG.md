@@ -5,6 +5,31 @@ All notable changes to `@devalok/shilp-sutra` will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.2.0] - 2026-03-05
+
+### Added — Next.js App Router Compatibility
+- **`"use client"` directive** injected into all client-only components via post-build script — Server Components can now import shilp-sutra without `TypeError: e.createContext is not a function`
+- **Per-component exports** for granular imports: `@devalok/shilp-sutra/ui/text`, `./ui/dialog`, `./composed/page-header`, etc. — enables importing server-safe components without pulling in client code
+- **Server-safe components** identified and excluded from `"use client"`: Text, Skeleton, Spinner, Stack, Container, Table, Code, VisuallyHidden (ui); ContentCard, EmptyState, PageHeader, LoadingSkeleton, PageSkeletons, PriorityIndicator, StatusBadge (composed)
+
+### Fixed — Type Resolution
+- **`@primitives/*` type references** in published `.d.ts` files rewritten to relative paths — consumers no longer need ambient type stubs for 26 vendored Radix packages
+
+### Added — API Improvements
+- **Stack** `direction` prop now accepts `"row"` / `"column"` as aliases for `"horizontal"` / `"vertical"`
+- **Stack** `gap` prop now accepts numeric values (e.g., `gap={4}` → `gap-ds-04`) in addition to token strings
+- **StatCard** `icon` prop now accepts `React.ComponentType` (e.g., `icon={IconBolt}`) in addition to `ReactNode`
+
+### Fixed — API Consistency
+- **Text** `as` prop widened to accept any `React.ElementType` — `<Text as="h1">` no longer causes TypeScript errors
+- **SearchInput** `inputSize` prop renamed to `size` to match Input API (HTML `size` attribute is `Omit`-ted)
+- **Label** children rendering verified and covered by tests — issue was caused by the `@primitives` type leak, not a runtime bug
+
+### Added — Documentation
+- JSDoc module comments on `ui/index.ts`, `composed/index.ts`, `shell/index.ts` listing server-safe components and import patterns
+
+---
+
 ## [0.1.1] - 2026-03-05
 
 ### Fixed — Critical Runtime Issues

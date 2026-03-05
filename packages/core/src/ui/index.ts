@@ -1,3 +1,21 @@
+/**
+ * @module @devalok/shilp-sutra/ui
+ *
+ * Core UI primitives: buttons, inputs, dialogs, cards, tables, badges, navigation, and more.
+ * Most components require client-side React ("use client").
+ *
+ * **Server-safe components** (import individually for Server Components):
+ * `Text`, `Skeleton`, `Spinner`, `Stack`, `Container`, `Table`, `Code`, `VisuallyHidden`
+ *
+ * @example
+ * // Server Component — import individually:
+ * import { Text } from '@devalok/shilp-sutra/ui/text'
+ * import { Stack } from '@devalok/shilp-sutra/ui/stack'
+ *
+ * // Client Component — barrel import:
+ * import { Button, Dialog } from '@devalok/shilp-sutra/ui'
+ */
+
 // Core
 export { Button, buttonVariants, type ButtonProps } from './button'
 export { IconButton, type IconButtonProps } from './icon-button'

@@ -1,3 +1,18 @@
+/**
+ * @module @devalok/shilp-sutra/composed
+ *
+ * Higher-level composed components built from UI primitives: page headers, date pickers,
+ * rich text editors, skeleton loaders, and domain-specific patterns.
+ *
+ * **Server-safe components** (import individually for Server Components):
+ * `ContentCard`, `EmptyState`, `PageHeader`, `LoadingSkeleton`, `PageSkeletons`,
+ * `PriorityIndicator`, `StatusBadge`
+ *
+ * @example
+ * import { PageHeader } from '@devalok/shilp-sutra/composed/page-header'
+ * import { DatePicker } from '@devalok/shilp-sutra/composed/date-picker'
+ */
+
 export { PageHeader } from './page-header'
 export type { PageHeaderProps, Breadcrumb } from './page-header'
 

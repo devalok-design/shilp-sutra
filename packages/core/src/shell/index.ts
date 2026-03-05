@@ -1,3 +1,14 @@
+/**
+ * @module @devalok/shilp-sutra/shell
+ *
+ * Application shell components: sidebar, top bar, bottom nav, notifications, and command palette.
+ * All shell components require client-side React ("use client").
+ *
+ * @example
+ * import { AppSidebar } from '@devalok/shilp-sutra/shell/sidebar'
+ * import { TopBar } from '@devalok/shilp-sutra/shell/top-bar'
+ */
+
 // Layout components -- application shell
 export { LinkProvider, useLink } from './link-context'
 

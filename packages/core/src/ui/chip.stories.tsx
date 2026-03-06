@@ -9,8 +9,8 @@ const meta: Meta<typeof Chip> = {
   argTypes: {
     variant: {
       control: 'select',
-      options: ['filled', 'outlined'],
-      description: 'Shape: filled (solid bg) or outlined (border only)',
+      options: ['subtle', 'outline'],
+      description: 'Shape: subtle (surface bg) or outline (border only)',
     },
     size: {
       control: 'select',
@@ -37,18 +37,18 @@ export const Default: Story = {
   },
 }
 
-export const FilledPrimary: Story = {
+export const SubtlePrimary: Story = {
   args: {
     label: 'Primary',
-    variant: 'filled',
+    variant: 'subtle',
     color: 'primary',
   },
 }
 
-export const OutlinedPrimary: Story = {
+export const OutlinePrimary: Story = {
   args: {
     label: 'Primary',
-    variant: 'outlined',
+    variant: 'outline',
     color: 'primary',
   },
 }
@@ -127,7 +127,7 @@ export const Disabled: Story = {
   },
 }
 
-const variants = ['filled', 'outlined'] as const
+const variants = ['subtle', 'outline'] as const
 const sizes = ['sm', 'md', 'lg'] as const
 const colors = ['default', 'primary', 'success', 'error', 'warning', 'info', 'teal', 'amber', 'slate', 'indigo', 'cyan', 'orange', 'emerald'] as const
 
@@ -175,8 +175,8 @@ export const AllVariants: Story = {
       <div>
         <p className="mb-ds-03 text-ds-sm font-semibold text-text-secondary">Disabled</p>
         <div className="flex flex-wrap items-center gap-ds-03">
-          <Chip label="Filled" variant="filled" color="primary" disabled onClick={() => {}} />
-          <Chip label="Outlined" variant="outlined" color="primary" disabled onClick={() => {}} />
+          <Chip label="Subtle" variant="subtle" color="primary" disabled onClick={() => {}} />
+          <Chip label="Outline" variant="outline" color="primary" disabled onClick={() => {}} />
         </div>
       </div>
     </div>

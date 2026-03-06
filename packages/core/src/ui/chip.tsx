@@ -10,8 +10,8 @@ const chipVariants = cva(
   {
     variants: {
       variant: {
-        filled: 'bg-layer-02 text-text-primary border border-transparent',
-        outlined: 'bg-transparent text-text-primary border border-border',
+        subtle: 'bg-layer-02 text-text-primary border border-transparent',
+        outline: 'bg-transparent text-text-primary border border-border',
       },
       size: {
         sm: 'h-ds-xs px-ds-03 text-ds-xs',
@@ -35,33 +35,33 @@ const chipVariants = cva(
       },
     },
     compoundVariants: [
-      { variant: 'filled', color: 'primary', className: 'bg-interactive text-text-on-color' },
-      { variant: 'filled', color: 'success', className: 'bg-success-surface text-success-text border-success-border' },
-      { variant: 'filled', color: 'error', className: 'bg-error-surface text-error-text border-error-border' },
-      { variant: 'filled', color: 'warning', className: 'bg-warning-surface text-warning-text border-warning-border' },
-      { variant: 'filled', color: 'info', className: 'bg-info-surface text-info-text border-info-border' },
-      { variant: 'filled', color: 'teal', className: 'bg-category-teal-surface text-category-teal-text border-category-teal-border' },
-      { variant: 'filled', color: 'amber', className: 'bg-category-amber-surface text-category-amber-text border-category-amber-border' },
-      { variant: 'filled', color: 'slate', className: 'bg-category-slate-surface text-category-slate-text border-category-slate-border' },
-      { variant: 'filled', color: 'indigo', className: 'bg-category-indigo-surface text-category-indigo-text border-category-indigo-border' },
-      { variant: 'filled', color: 'cyan', className: 'bg-category-cyan-surface text-category-cyan-text border-category-cyan-border' },
-      { variant: 'filled', color: 'orange', className: 'bg-category-orange-surface text-category-orange-text border-category-orange-border' },
-      { variant: 'filled', color: 'emerald', className: 'bg-category-emerald-surface text-category-emerald-text border-category-emerald-border' },
-      { variant: 'outlined', color: 'primary', className: 'border-border-interactive text-text-interactive' },
-      { variant: 'outlined', color: 'success', className: 'border-border-success text-success-text' },
-      { variant: 'outlined', color: 'error', className: 'border-border-error text-error-text' },
-      { variant: 'outlined', color: 'warning', className: 'border-border-warning text-warning-text' },
-      { variant: 'outlined', color: 'info', className: 'border-info-border text-info-text' },
-      { variant: 'outlined', color: 'teal', className: 'border-category-teal-border text-category-teal-text' },
-      { variant: 'outlined', color: 'amber', className: 'border-category-amber-border text-category-amber-text' },
-      { variant: 'outlined', color: 'slate', className: 'border-category-slate-border text-category-slate-text' },
-      { variant: 'outlined', color: 'indigo', className: 'border-category-indigo-border text-category-indigo-text' },
-      { variant: 'outlined', color: 'cyan', className: 'border-category-cyan-border text-category-cyan-text' },
-      { variant: 'outlined', color: 'orange', className: 'border-category-orange-border text-category-orange-text' },
-      { variant: 'outlined', color: 'emerald', className: 'border-category-emerald-border text-category-emerald-text' },
+      { variant: 'subtle', color: 'primary', className: 'bg-interactive text-text-on-color' },
+      { variant: 'subtle', color: 'success', className: 'bg-success-surface text-success-text border-success-border' },
+      { variant: 'subtle', color: 'error', className: 'bg-error-surface text-error-text border-error-border' },
+      { variant: 'subtle', color: 'warning', className: 'bg-warning-surface text-warning-text border-warning-border' },
+      { variant: 'subtle', color: 'info', className: 'bg-info-surface text-info-text border-info-border' },
+      { variant: 'subtle', color: 'teal', className: 'bg-category-teal-surface text-category-teal-text border-category-teal-border' },
+      { variant: 'subtle', color: 'amber', className: 'bg-category-amber-surface text-category-amber-text border-category-amber-border' },
+      { variant: 'subtle', color: 'slate', className: 'bg-category-slate-surface text-category-slate-text border-category-slate-border' },
+      { variant: 'subtle', color: 'indigo', className: 'bg-category-indigo-surface text-category-indigo-text border-category-indigo-border' },
+      { variant: 'subtle', color: 'cyan', className: 'bg-category-cyan-surface text-category-cyan-text border-category-cyan-border' },
+      { variant: 'subtle', color: 'orange', className: 'bg-category-orange-surface text-category-orange-text border-category-orange-border' },
+      { variant: 'subtle', color: 'emerald', className: 'bg-category-emerald-surface text-category-emerald-text border-category-emerald-border' },
+      { variant: 'outline', color: 'primary', className: 'border-border-interactive text-text-interactive' },
+      { variant: 'outline', color: 'success', className: 'border-border-success text-success-text' },
+      { variant: 'outline', color: 'error', className: 'border-border-error text-error-text' },
+      { variant: 'outline', color: 'warning', className: 'border-border-warning text-warning-text' },
+      { variant: 'outline', color: 'info', className: 'border-info-border text-info-text' },
+      { variant: 'outline', color: 'teal', className: 'border-category-teal-border text-category-teal-text' },
+      { variant: 'outline', color: 'amber', className: 'border-category-amber-border text-category-amber-text' },
+      { variant: 'outline', color: 'slate', className: 'border-category-slate-border text-category-slate-text' },
+      { variant: 'outline', color: 'indigo', className: 'border-category-indigo-border text-category-indigo-text' },
+      { variant: 'outline', color: 'cyan', className: 'border-category-cyan-border text-category-cyan-text' },
+      { variant: 'outline', color: 'orange', className: 'border-category-orange-border text-category-orange-text' },
+      { variant: 'outline', color: 'emerald', className: 'border-category-emerald-border text-category-emerald-text' },
     ],
     defaultVariants: {
-      variant: 'filled',
+      variant: 'subtle',
       size: 'md',
       color: 'default',
     },
@@ -74,7 +74,7 @@ type ChipColor = 'default' | 'primary' | 'success' | 'error' | 'warning' | 'info
  * Props for Chip — a compact label-tag component with a two-axis variant system.
  *
  * **Two axes:**
- * - `variant` controls **shape**: `"filled"` (solid background, default) | `"outlined"` (border only)
+ * - `variant` controls **shape**: `"subtle"` (surface background, default) | `"outline"` (border only)
  * - `color` controls **intent/category**: `"default"` | `"primary"` | `"success"` | `"error"` |
  *   `"warning"` | `"info"` | `"teal"` | `"amber"` | `"slate"` | `"indigo"` | `"cyan"` | `"orange"` | `"emerald"`
  *
@@ -89,7 +89,7 @@ type ChipColor = 'default' | 'primary' | 'success' | 'error' | 'warning' | 'info
  *
  * // With intent color (use color=, not variant=):
  * <Chip label="High Priority" color="warning" />
- * <Chip label="Done" color="success" variant="outlined" />
+ * <Chip label="Done" color="success" variant="outline" />
  *
  * // Dismissible chip (e.g. in a filter bar):
  * <Chip label="React" color="info" onDelete={() => removeFilter('react')} />

@@ -4,14 +4,14 @@ import { describe, it, expect } from 'vitest'
 import { Chip } from '../chip'
 
 describe('Chip accessibility', () => {
-  it('should have no violations with filled variant', async () => {
-    const { container } = render(<Chip label="Filled chip" variant="filled" />)
+  it('should have no violations with subtle variant', async () => {
+    const { container } = render(<Chip label="Subtle chip" variant="subtle" />)
     const results = await axe(container)
     expect(results).toHaveNoViolations()
   })
 
-  it('should have no violations with outlined variant', async () => {
-    const { container } = render(<Chip label="Outlined chip" variant="outlined" />)
+  it('should have no violations with outline variant', async () => {
+    const { container } = render(<Chip label="Outline chip" variant="outline" />)
     const results = await axe(container)
     expect(results).toHaveNoViolations()
   })

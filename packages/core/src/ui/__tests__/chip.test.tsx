@@ -25,12 +25,12 @@ describe('Chip', () => {
     expect(onClick).toHaveBeenCalledOnce()
   })
 
-  it('renders delete button when onDelete provided', () => {
-    const onDelete = vi.fn()
-    render(<Chip label="Deletable" onDelete={onDelete} />)
+  it('renders dismiss button when onDismiss provided', () => {
+    const onDismiss = vi.fn()
+    render(<Chip label="Deletable" onDismiss={onDismiss} />)
     const deleteBtn = screen.getByRole('button', { name: /remove/i })
     fireEvent.click(deleteBtn)
-    expect(onDelete).toHaveBeenCalledOnce()
+    expect(onDismiss).toHaveBeenCalledOnce()
   })
 
   it('supports variant prop', () => {

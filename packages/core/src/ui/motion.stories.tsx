@@ -336,7 +336,7 @@ export const FastMicroInteractions: StoryObj = {
                 key={label}
                 label={label}
                 variant="outline"
-                onDelete={() => setChips((prev) => prev.filter((c) => c !== label))}
+                onDismiss={() => setChips((prev) => prev.filter((c) => c !== label))}
               />
             ))}
             {chips.length === 0 && (

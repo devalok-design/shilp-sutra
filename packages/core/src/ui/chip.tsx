@@ -92,7 +92,7 @@ type ChipColor = 'default' | 'primary' | 'success' | 'error' | 'warning' | 'info
  * <Chip label="Done" color="success" variant="outline" />
  *
  * // Dismissible chip (e.g. in a filter bar):
- * <Chip label="React" color="info" onDelete={() => removeFilter('react')} />
+ * <Chip label="React" color="info" onDismiss={() => removeFilter('react')} />
  *
  * // Clickable chip (renders as <button>):
  * <Chip label="View details" color="primary" onClick={() => openPanel(id)} />
@@ -109,13 +109,13 @@ type ChipProps = Omit<VariantProps<typeof chipVariants>, 'color'> & {
   color?: ChipColor
   icon?: React.ReactNode
   onClick?: React.MouseEventHandler
-  onDelete?: () => void
+  onDismiss?: () => void
   disabled?: boolean
   className?: string
 }
 
 const Chip = React.forwardRef<HTMLElement, ChipProps>(
-  ({ label, variant, size, color, icon, onClick, onDelete, disabled, className, ...props }, ref) => {
+  ({ label, variant, size, color, icon, onClick, onDismiss, disabled, className, ...props }, ref) => {
     const isClickable = !!onClick
     const Component = isClickable ? 'button' : 'span'
     const interactiveClass = isClickable && !disabled
@@ -136,14 +136,14 @@ const Chip = React.forwardRef<HTMLElement, ChipProps>(
       >
         {icon && <span className="flex-shrink-0 [&>svg]:w-ico-sm [&>svg]:h-ico-sm">{icon}</span>}
         <span>{label}</span>
-        {onDelete && (
+        {onDismiss && (
           <button
             type="button"
             aria-label={`Remove ${label}`}
             className="flex-shrink-0 min-h-6 min-w-6 flex items-center justify-center rounded-ds-full p-ds-01 hover:bg-layer-03 transition-colors duration-fast-01 [&>svg]:w-ico-sm [&>svg]:h-ico-sm"
             onClick={(e) => {
               e.stopPropagation()
-              onDelete()
+              onDismiss()
             }}
           >
             <IconX className="h-ico-sm w-ico-sm" />

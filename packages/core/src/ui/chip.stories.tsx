@@ -81,7 +81,7 @@ export const Clickable: Story = {
 export const Dismissible: Story = {
   args: {
     label: 'Dismissible',
-    onDelete: fn(),
+    onDismiss: fn(),
   },
   play: async ({ canvasElement, args }) => {
     const canvas = within(canvasElement)
@@ -94,8 +94,8 @@ export const Dismissible: Story = {
     // Click the dismiss button
     await userEvent.click(dismissButton)
 
-    // Verify onDelete was called
-    await expect(args.onDelete).toHaveBeenCalledTimes(1)
+    // Verify onDismiss was called
+    await expect(args.onDismiss).toHaveBeenCalledTimes(1)
   },
 }
 
@@ -103,7 +103,7 @@ export const DismissiblePrimary: Story = {
   args: {
     label: 'Remove me',
     color: 'primary',
-    onDelete: () => {},
+    onDismiss: () => {},
   },
 }
 
@@ -166,7 +166,7 @@ export const AllVariants: Story = {
               key={`dismiss-${color}`}
               label={color}
               color={color}
-              onDelete={() => {}}
+              onDismiss={() => {}}
             />
           ))}
         </div>

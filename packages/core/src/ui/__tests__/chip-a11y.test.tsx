@@ -23,17 +23,17 @@ describe('Chip accessibility', () => {
   })
 
   it('should have no violations when dismissible', async () => {
-    const { container } = render(<Chip label="Removable chip" onDelete={() => {}} />)
+    const { container } = render(<Chip label="Removable chip" onDismiss={() => {}} />)
     const results = await axe(container)
     expect(results).toHaveNoViolations()
   })
 
-  // Known issue: when both onClick and onDelete are set, the Chip renders a
+  // Known issue: when both onClick and onDismiss are set, the Chip renders a
   // <button> as the root with a nested delete <button>, which violates
   // nested-interactive. This test documents the violation.
   it('should flag nested-interactive violation when clickable and dismissible', async () => {
     const { container } = render(
-      <Chip label="Interactive chip" onClick={() => {}} onDelete={() => {}} />,
+      <Chip label="Interactive chip" onClick={() => {}} onDismiss={() => {}} />,
     )
     const results = await axe(container)
     const nestedRule = results.violations.find(

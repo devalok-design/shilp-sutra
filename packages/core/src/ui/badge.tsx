@@ -145,7 +145,7 @@ const Badge = React.forwardRef<HTMLSpanElement, BadgeProps>(
           <button
             type="button"
             onClick={onDismiss}
-            className="ml-ds-01 rounded-ds-full text-icon-secondary transition-colors hover:text-icon-primary hover:bg-field focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-focus"
+            className="ml-ds-01 min-h-6 min-w-6 flex items-center justify-center rounded-ds-full text-icon-secondary transition-colors hover:text-icon-primary hover:bg-field focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-focus"
             aria-label="Remove"
           >
             <IconX className="h-ico-sm w-ico-sm" />

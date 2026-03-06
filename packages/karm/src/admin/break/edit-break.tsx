@@ -191,7 +191,7 @@ export const EditBreak = React.forwardRef<HTMLDivElement, EditBreakProps>(functi
       toast({
         title: 'Action Required',
         description: 'Please update the status',
-        variant: 'default',
+        color: 'default',
       })
       return
     }
@@ -213,14 +213,14 @@ export const EditBreak = React.forwardRef<HTMLDivElement, EditBreakProps>(functi
 
       toast({
         description: 'Break request updated successfully',
-        variant: 'default',
+        color: 'default',
       })
     } catch (error) {
       console.error('Error updating break request:', error)
       toast({
         title: 'Error',
         description: 'Failed to update break request',
-        variant: 'error',
+        color: 'error',
       })
     } finally {
       setIsSubmitting(false)
@@ -324,7 +324,7 @@ export const EditBreak = React.forwardRef<HTMLDivElement, EditBreakProps>(functi
       toast({
         title: 'Error',
         description: 'This date is already part of another break request.',
-        variant: 'error',
+        color: 'error',
       })
       return
     }
@@ -339,7 +339,7 @@ export const EditBreak = React.forwardRef<HTMLDivElement, EditBreakProps>(functi
             title: 'Error',
             description:
               'The selected date range overlaps with an existing break request.',
-            variant: 'error',
+            color: 'error',
           })
           return
         }
@@ -366,7 +366,7 @@ export const EditBreak = React.forwardRef<HTMLDivElement, EditBreakProps>(functi
             title: 'Error',
             description:
               'The selected date range overlaps with an existing break request.',
-            variant: 'error',
+            color: 'error',
           })
           return
         }
@@ -416,7 +416,7 @@ export const EditBreak = React.forwardRef<HTMLDivElement, EditBreakProps>(functi
     <Dialog>
       <DialogTrigger asChild>
         <Button
-          variant="secondary"
+          variant="outline"
           className="text-ds-base border-border bg-layer-01 px-ds-05 py-ds-04 pr-ds-06 text-text-secondary shadow-02"
         >
           <EditIcon />
@@ -646,7 +646,7 @@ export const EditBreak = React.forwardRef<HTMLDivElement, EditBreakProps>(functi
                   </div>
                   <Button
                     className="w-fit"
-                    variant="secondary"
+                    variant="outline"
                     disabled={isSubmitting}
                     onClick={() => formRef.current?.requestSubmit()}
                   >Update</Button>

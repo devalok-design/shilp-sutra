@@ -6,6 +6,7 @@ import type { ButtonProps } from './button'
 
 interface ButtonGroupContextValue {
   variant?: ButtonProps['variant']
+  color?: ButtonProps['color']
   size?: ButtonProps['size']
 }
 
@@ -25,8 +26,8 @@ export function useButtonGroup() {
  * **Visual joining:** Adjacent button borders are merged with negative margins and border-radius overrides.
  *
  * @example
- * // Horizontal toolbar action group (secondary variant shared):
- * <ButtonGroup variant="secondary" size="sm">
+ * // Horizontal toolbar action group (outline variant shared):
+ * <ButtonGroup variant="outline" size="sm">
  *   <Button startIcon={<IconBold />}>Bold</Button>
  *   <Button startIcon={<IconItalic />}>Italic</Button>
  *   <Button startIcon={<IconUnderline />}>Underline</Button>
@@ -37,12 +38,12 @@ export function useButtonGroup() {
  * <ButtonGroup orientation="vertical" variant="ghost" size="md">
  *   <Button>Profile</Button>
  *   <Button>Settings</Button>
- *   <Button variant="error-ghost">Danger zone</Button>
+ *   <Button variant="ghost" color="error">Danger zone</Button>
  * </ButtonGroup>
  *
  * @example
- * // Split button pattern (primary action + dropdown trigger):
- * <ButtonGroup variant="primary" size="md">
+ * // Split button pattern (solid action + dropdown trigger):
+ * <ButtonGroup variant="solid" size="md">
  *   <Button onClick={handlePublish}>Publish</Button>
  *   <Button size="icon-md" aria-label="More publish options"><IconChevronDown /></Button>
  * </ButtonGroup>
@@ -51,6 +52,8 @@ export function useButtonGroup() {
 export interface ButtonGroupProps extends React.HTMLAttributes<HTMLDivElement> {
   /** Shared variant applied to all child Buttons (children can override) */
   variant?: ButtonProps['variant']
+  /** Shared color applied to all child Buttons (children can override) */
+  color?: ButtonProps['color']
   /** Shared size applied to all child Buttons (children can override) */
   size?: ButtonProps['size']
   /** Layout direction. Default: 'horizontal' */
@@ -58,8 +61,8 @@ export interface ButtonGroupProps extends React.HTMLAttributes<HTMLDivElement> {
 }
 
 const ButtonGroup = React.forwardRef<HTMLDivElement, ButtonGroupProps>(
-  ({ className, variant, size, orientation = 'horizontal', children, ...props }, ref) => {
-    const contextValue = React.useMemo(() => ({ variant, size }), [variant, size])
+  ({ className, variant, color, size, orientation = 'horizontal', children, ...props }, ref) => {
+    const contextValue = React.useMemo(() => ({ variant, color, size }), [variant, color, size])
 
     return (
       <ButtonGroupContext.Provider value={contextValue}>

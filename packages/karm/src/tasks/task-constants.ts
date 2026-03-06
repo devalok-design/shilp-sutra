@@ -14,16 +14,16 @@ export const PRIORITY_DOT_COLORS: Record<string, string> = {
   URGENT: 'bg-[var(--color-error)]',
 }
 
-export type BadgeVariant = 'neutral' | 'info' | 'success' | 'error' | 'warning' | 'brand' | 'accent' | 'teal' | 'amber' | 'slate' | 'indigo' | 'cyan' | 'orange' | 'emerald'
+export type BadgeColor = 'default' | 'info' | 'success' | 'error' | 'warning' | 'brand' | 'accent' | 'teal' | 'amber' | 'slate' | 'indigo' | 'cyan' | 'orange' | 'emerald'
 
 export interface ReviewStatusConfig {
-  variant: BadgeVariant
+  color: BadgeColor
   label: string
 }
 
 export const REVIEW_STATUS_MAP: Record<string, ReviewStatusConfig> = {
-  PENDING: { variant: 'warning', label: 'Pending' },
-  APPROVED: { variant: 'success', label: 'Approved' },
-  CHANGES_REQUESTED: { variant: 'brand', label: 'Changes Requested' },
-  REJECTED: { variant: 'error', label: 'Rejected' },
+  PENDING: { color: 'warning', label: 'Pending' },
+  APPROVED: { color: 'success', label: 'Approved' },
+  CHANGES_REQUESTED: { color: 'brand', label: 'Changes Requested' },
+  REJECTED: { color: 'error', label: 'Rejected' },
 }

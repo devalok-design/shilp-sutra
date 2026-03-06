@@ -36,7 +36,7 @@ export const DeleteBreak = React.forwardRef<HTMLDivElement, DeleteBreakProps>(fu
 
       toast({
         description: 'Break request deleted successfully',
-        variant: 'default',
+        color: 'default',
       })
 
       setOpen(false)
@@ -45,7 +45,7 @@ export const DeleteBreak = React.forwardRef<HTMLDivElement, DeleteBreakProps>(fu
       toast({
         title: 'Error',
         description: 'Failed to delete break request',
-        variant: 'error',
+        color: 'error',
       })
     } finally {
       setIsSubmitting(false)
@@ -70,7 +70,7 @@ export const DeleteBreak = React.forwardRef<HTMLDivElement, DeleteBreakProps>(fu
         <form ref={formRef} onSubmit={handleDeleteLeave} className="w-full">
           <Button
             className="w-full"
-            variant="primary"
+            variant="solid"
             onClick={() => formRef.current?.requestSubmit()}
             disabled={isSubmitting}
           >Yes, Delete</Button>

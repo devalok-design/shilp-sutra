@@ -10,7 +10,7 @@ describe('Button', () => {
   })
 
   it('applies variant classes', () => {
-    render(<Button variant="error">Delete</Button>)
+    render(<Button variant="solid" color="error">Delete</Button>)
     expect(screen.getByRole('button')).toBeInTheDocument()
   })
 

@@ -10,22 +10,22 @@ import type { BadgeProps } from '@/ui/badge'
 
 interface StatusConfig {
   text: string
-  variant: NonNullable<BadgeProps['variant']>
+  color: NonNullable<BadgeProps['color']>
 }
 
 const CORRECTION_STATUS_MAP: Record<string, StatusConfig> = {
-  APPROVED: { text: 'Corrected', variant: 'accent' },
-  PENDING: { text: 'Pending', variant: 'warning' },
-  REJECTED: { text: 'Denied', variant: 'error' },
-  MISSING: { text: 'Missed', variant: 'error' },
+  APPROVED: { text: 'Corrected', color: 'accent' },
+  PENDING: { text: 'Pending', color: 'warning' },
+  REJECTED: { text: 'Denied', color: 'error' },
+  MISSING: { text: 'Missed', color: 'error' },
 }
 
 const STATUS_MAP: Record<string, StatusConfig> = {
-  APPROVED: { text: 'Approved', variant: 'success' },
-  PENDING: { text: 'Pending', variant: 'warning' },
-  REJECTED: { text: 'Denied', variant: 'error' },
-  CANCELLED: { text: 'Redacted', variant: 'error' },
-  MISSING: { text: 'Missed', variant: 'error' },
+  APPROVED: { text: 'Approved', color: 'success' },
+  PENDING: { text: 'Pending', color: 'warning' },
+  REJECTED: { text: 'Denied', color: 'error' },
+  CANCELLED: { text: 'Redacted', color: 'error' },
+  MISSING: { text: 'Missed', color: 'error' },
 }
 
 export function renderStatus(
@@ -36,10 +36,10 @@ export function renderStatus(
   const fallback = correction
     ? CORRECTION_STATUS_MAP.REJECTED
     : STATUS_MAP.REJECTED
-  const { text, variant } = map[status] || fallback
+  const { text, color } = map[status] || fallback
 
   return (
-    <Badge variant={variant} size="sm">
+    <Badge color={color} size="sm">
       {text}
     </Badge>
   )

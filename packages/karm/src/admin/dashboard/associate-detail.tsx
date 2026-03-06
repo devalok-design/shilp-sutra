@@ -167,7 +167,7 @@ function AttendanceEditDialog({
       <DialogFooter className="sm:justify-start">
         <DialogClose asChild>
           <Button
-            variant="primary"
+            variant="solid"
             fullWidth
             onClick={() => {
               const isPresent = selectedUserAttendance?.status !== 'PRESENT'

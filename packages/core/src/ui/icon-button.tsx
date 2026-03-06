@@ -24,7 +24,7 @@ type IconButtonSize = 'sm' | 'md' | 'lg'
  *
  * **Size:** `'sm'` | `'md'` (default) | `'lg'` — maps to `icon-sm/md/lg` sizes internally.
  *
- * **All `Button` variants** are supported: `primary`, `secondary`, `ghost`, `error`, `error-ghost`, `link`.
+ * **All `Button` variants** are supported: `solid`, `outline`, `ghost`, `link` x `default`, `error`.
  *
  * @example
  * // Ghost toolbar icon button:
@@ -35,12 +35,12 @@ type IconButtonSize = 'sm' | 'md' | 'lg'
  * <IconButton icon={<IconX />} shape="circle" variant="ghost" size="sm" aria-label="Close dialog" />
  *
  * @example
- * // Primary floating action button:
- * <IconButton icon={<IconPlus />} variant="primary" size="lg" aria-label="Create new project" />
+ * // Solid floating action button:
+ * <IconButton icon={<IconPlus />} variant="solid" size="lg" aria-label="Create new project" />
  *
  * @example
  * // Error icon button with loading state (e.g. confirm delete):
- * <IconButton icon={<IconTrash />} variant="error" loading={isDeleting} aria-label="Delete" />
+ * <IconButton icon={<IconTrash />} variant="solid" color="error" loading={isDeleting} aria-label="Delete" />
  * // These are just a few ways — feel free to combine props creatively!
  */
 export interface IconButtonProps

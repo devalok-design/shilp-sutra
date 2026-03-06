@@ -293,7 +293,7 @@ export const BreakAdminHeader = React.forwardRef<HTMLDivElement, BreakAdminHeade
               </div>
               <Button
                 className="mt-ds-05"
-                variant="secondary"
+                variant="outline"
                 fullWidth
                 onClick={handleDateFilter}
               >Filter</Button>

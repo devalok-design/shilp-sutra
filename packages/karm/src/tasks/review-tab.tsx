@@ -150,7 +150,7 @@ const ReviewTab = React.forwardRef<HTMLDivElement, ReviewTabProps>(
                     </span>
                   </div>
                   <Badge
-                    variant={statusInfo.variant}
+                    color={statusInfo.color}
                   >
                     {statusInfo.label}
                   </Badge>

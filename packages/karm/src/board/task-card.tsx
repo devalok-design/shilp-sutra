@@ -143,7 +143,7 @@ function TaskCardVisual({
         {task.labels.length > 0 && (
           <div className="flex items-center gap-ds-02 overflow-hidden">
             {task.labels.slice(0, 2).map((label) => (
-              <Badge key={label} size="sm" variant="neutral" className="max-w-[80px] truncate">
+              <Badge key={label} size="sm" className="max-w-[80px] truncate">
                 {label}
               </Badge>
             ))}

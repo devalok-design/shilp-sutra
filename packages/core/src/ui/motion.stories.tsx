@@ -269,10 +269,10 @@ export const FastMicroInteractions: StoryObj = {
         <div className="space-y-ds-03">
           <h4 className="text-ds-md font-medium text-text-primary">Button hover & press</h4>
           <div className="flex flex-wrap gap-ds-03">
-            <Button variant="primary">Primary</Button>
-            <Button variant="secondary">Secondary</Button>
+            <Button variant="solid">Solid</Button>
+            <Button variant="outline">Outline</Button>
             <Button variant="ghost">Ghost</Button>
-            <Button variant="error">Error</Button>
+            <Button variant="solid" color="error">Error</Button>
             <Button variant="link">Link</Button>
           </div>
           <TokenBadge>transition-[color,background-color,border-color,box-shadow] duration-fast-01</TokenBadge>
@@ -418,7 +418,7 @@ export const MediumReveals: StoryObj = {
             <div className="flex gap-ds-04">
               <Tooltip>
                 <TooltipTrigger asChild>
-                  <Button variant="secondary" startIcon={<IconUser />}>
+                  <Button variant="outline" startIcon={<IconUser />}>
                     Hover me
                   </Button>
                 </TooltipTrigger>
@@ -477,7 +477,7 @@ export const MediumReveals: StoryObj = {
                   </div>
                 </div>
                 <DialogFooter>
-                  <Button variant="secondary">Cancel</Button>
+                  <Button variant="outline">Cancel</Button>
                   <Button>Confirm</Button>
                 </DialogFooter>
               </DialogContent>
@@ -491,7 +491,7 @@ export const MediumReveals: StoryObj = {
             <div className="flex gap-ds-03">
               <Sheet>
                 <SheetTrigger asChild>
-                  <Button variant="secondary">Open Right Sheet</Button>
+                  <Button variant="outline">Open Right Sheet</Button>
                 </SheetTrigger>
                 <SheetContent>
                   <SheetHeader>
@@ -590,7 +590,7 @@ export const SlowAndContinuous: StoryObj = {
             <div className="space-y-ds-02">
               <span className="text-ds-sm text-text-secondary">Determinate</span>
               <Progress value={progress} showLabel />
-              <Button variant="secondary" size="sm" onClick={startProgress}>
+              <Button variant="outline" size="sm" onClick={startProgress}>
                 {progress >= 100 ? 'Restart' : 'Start'}
               </Button>
             </div>
@@ -628,7 +628,7 @@ export const SlowAndContinuous: StoryObj = {
           <div className="flex flex-wrap gap-ds-03">
             <Button loading loadingPosition="start">Saving...</Button>
             <Button loading loadingPosition="center">Processing</Button>
-            <Button variant="secondary" loading loadingPosition="end">Uploading...</Button>
+            <Button variant="outline" loading loadingPosition="end">Uploading...</Button>
           </div>
           <TokenBadge>Spinner inherits animate-spin from parent context</TokenBadge>
         </div>
@@ -872,7 +872,7 @@ export const ScenarioDashboardLoading: StoryObj = {
             Scenario: Dashboard Loading
           </SectionLabel>
           <div className="flex items-center gap-ds-03 mb-ds-04">
-            <Button variant="secondary" size="sm" onClick={reload}>
+            <Button variant="outline" size="sm" onClick={reload}>
               Reload
             </Button>
             <span className="text-ds-xs text-text-secondary">
@@ -893,7 +893,7 @@ export const ScenarioDashboardLoading: StoryObj = {
               <Fade open={!loading}>
                 <div className="flex items-center justify-between w-full">
                   <h3 className="text-ds-lg font-semibold text-text-primary">Dashboard</h3>
-                  <Button size="sm" variant="secondary">Export</Button>
+                  <Button size="sm" variant="outline">Export</Button>
                 </div>
               </Fade>
             )}
@@ -909,16 +909,16 @@ export const ScenarioDashboardLoading: StoryObj = {
                   </div>
                 ))
               : [
-                  { label: 'Tasks', value: '42', variant: 'info' as const },
-                  { label: 'Completed', value: '28', variant: 'success' as const },
-                  { label: 'Overdue', value: '3', variant: 'error' as const },
+                  { label: 'Tasks', value: '42', color: 'info' as const },
+                  { label: 'Completed', value: '28', color: 'success' as const },
+                  { label: 'Overdue', value: '3', color: 'error' as const },
                 ].map((stat) => (
                   <Fade key={stat.label} open={!loading}>
                     <div className="rounded-ds-md bg-layer-02 p-ds-04">
                       <p className="text-ds-xs text-text-secondary">{stat.label}</p>
                       <div className="flex items-center gap-ds-02 mt-ds-01">
                         <span className="text-ds-xl font-semibold text-text-primary">{stat.value}</span>
-                        <Badge variant={stat.variant} size="sm">{stat.label}</Badge>
+                        <Badge color={stat.color} size="sm">{stat.label}</Badge>
                       </div>
                     </div>
                   </Fade>
@@ -987,9 +987,9 @@ export const ScenarioNotificationCenter: StoryObj = {
   name: 'Scenario: Notification Center',
   render: () => {
     const [notifications, setNotifications] = useState([
-      { id: 1, title: 'New task assigned', desc: 'Review the motion system stories', time: '2m ago', variant: 'info' as const },
-      { id: 2, title: 'Build succeeded', desc: 'CI pipeline passed all checks', time: '15m ago', variant: 'success' as const },
-      { id: 3, title: 'Deadline approaching', desc: 'Sprint review is tomorrow', time: '1h ago', variant: 'warning' as const },
+      { id: 1, title: 'New task assigned', desc: 'Review the motion system stories', time: '2m ago', color: 'info' as const },
+      { id: 2, title: 'Build succeeded', desc: 'CI pipeline passed all checks', time: '15m ago', color: 'success' as const },
+      { id: 3, title: 'Deadline approaching', desc: 'Sprint review is tomorrow', time: '1h ago', color: 'warning' as const },
     ])
 
     const dismiss = (id: number) => {
@@ -998,9 +998,9 @@ export const ScenarioNotificationCenter: StoryObj = {
 
     const restore = () => {
       setNotifications([
-        { id: 1, title: 'New task assigned', desc: 'Review the motion system stories', time: '2m ago', variant: 'info' as const },
-        { id: 2, title: 'Build succeeded', desc: 'CI pipeline passed all checks', time: '15m ago', variant: 'success' as const },
-        { id: 3, title: 'Deadline approaching', desc: 'Sprint review is tomorrow', time: '1h ago', variant: 'warning' as const },
+        { id: 1, title: 'New task assigned', desc: 'Review the motion system stories', time: '2m ago', color: 'info' as const },
+        { id: 2, title: 'Build succeeded', desc: 'CI pipeline passed all checks', time: '15m ago', color: 'success' as const },
+        { id: 3, title: 'Deadline approaching', desc: 'Sprint review is tomorrow', time: '1h ago', color: 'warning' as const },
       ])
     }
 
@@ -1019,10 +1019,10 @@ export const ScenarioNotificationCenter: StoryObj = {
         <div className="flex items-center gap-ds-04">
           <Sheet>
             <SheetTrigger asChild>
-              <Button variant="secondary" startIcon={<IconBell />}>
+              <Button variant="outline" startIcon={<IconBell />}>
                 Notifications
                 {notifications.length > 0 && (
-                  <Badge variant="error" size="sm" className="ml-ds-02">
+                  <Badge color="error" size="sm" className="ml-ds-02">
                     {notifications.length}
                   </Badge>
                 )}
@@ -1049,8 +1049,8 @@ export const ScenarioNotificationCenter: StoryObj = {
                       key={n.id}
                       className="flex items-start gap-ds-03 rounded-ds-md border border-border p-ds-04 transition-colors duration-fast-01 hover:bg-layer-02"
                     >
-                      <Badge variant={n.variant} size="sm" dot>
-                        {n.variant}
+                      <Badge color={n.color} size="sm" dot>
+                        {n.color}
                       </Badge>
                       <div className="flex-1 min-w-0">
                         <p className="text-ds-sm font-medium text-text-primary">{n.title}</p>
@@ -1153,7 +1153,7 @@ export const ReducedMotionDemo: StoryObj = {
 
         <div ref={containerRef} className="space-y-ds-04">
           <Button
-            variant="secondary"
+            variant="outline"
             onClick={() => setShowContent((p) => !p)}
           >
             Toggle content

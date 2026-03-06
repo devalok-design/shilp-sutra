@@ -25,7 +25,7 @@ export const Right: Story = {
   render: () => (
     <Sheet>
       <SheetTrigger asChild>
-        <Button variant="secondary">Open Sheet (Right)</Button>
+        <Button variant="outline">Open Sheet (Right)</Button>
       </SheetTrigger>
       <SheetContent side="right">
         <SheetHeader>
@@ -48,7 +48,7 @@ export const Right: Story = {
           <SheetClose asChild>
             <Button variant="ghost">Cancel</Button>
           </SheetClose>
-          <Button variant="primary">Save</Button>
+          <Button variant="solid">Save</Button>
         </SheetFooter>
       </SheetContent>
     </Sheet>
@@ -59,7 +59,7 @@ export const Left: Story = {
   render: () => (
     <Sheet>
       <SheetTrigger asChild>
-        <Button variant="secondary">Open Sheet (Left)</Button>
+        <Button variant="outline">Open Sheet (Left)</Button>
       </SheetTrigger>
       <SheetContent side="left">
         <SheetHeader>
@@ -81,7 +81,7 @@ export const Top: Story = {
   render: () => (
     <Sheet>
       <SheetTrigger asChild>
-        <Button variant="secondary">Open Sheet (Top)</Button>
+        <Button variant="outline">Open Sheet (Top)</Button>
       </SheetTrigger>
       <SheetContent side="top">
         <SheetHeader>
@@ -97,7 +97,7 @@ export const Bottom: Story = {
   render: () => (
     <Sheet>
       <SheetTrigger asChild>
-        <Button variant="secondary">Open Sheet (Bottom)</Button>
+        <Button variant="outline">Open Sheet (Bottom)</Button>
       </SheetTrigger>
       <SheetContent side="bottom">
         <SheetHeader>
@@ -110,7 +110,7 @@ export const Bottom: Story = {
           <SheetClose asChild>
             <Button variant="ghost">Decline All</Button>
           </SheetClose>
-          <Button variant="primary">Accept All</Button>
+          <Button variant="solid">Accept All</Button>
         </SheetFooter>
       </SheetContent>
     </Sheet>

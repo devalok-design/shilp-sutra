@@ -344,7 +344,7 @@ const BreakAdminRoot = React.forwardRef<HTMLDivElement, BreakAdminProps>(
                 </span>
               </>
             ),
-            variant: 'default',
+            color: 'default',
             style: { marginBottom: 'var(--spacing-04)', border: 'none' },
           })
         } catch (error) {
@@ -355,7 +355,7 @@ const BreakAdminRoot = React.forwardRef<HTMLDivElement, BreakAdminProps>(
               error instanceof Error
                 ? error.message
                 : 'Failed to approve request',
-            variant: 'error',
+            color: 'error',
           })
         } finally {
           setIsProcessing(false)
@@ -404,7 +404,7 @@ const BreakAdminRoot = React.forwardRef<HTMLDivElement, BreakAdminProps>(
                 </span>
               </>
             ),
-            variant: 'default',
+            color: 'default',
             style: { marginBottom: 'var(--spacing-04)', border: 'none' },
           })
         } catch (error) {
@@ -415,7 +415,7 @@ const BreakAdminRoot = React.forwardRef<HTMLDivElement, BreakAdminProps>(
               error instanceof Error
                 ? error.message
                 : 'Failed to reject request',
-            variant: 'error',
+            color: 'error',
           })
         } finally {
           setIsProcessing(false)

@@ -202,7 +202,7 @@ export const LeaveRequest = React.forwardRef<HTMLDivElement, LeaveRequestProps>(
             </div>
             <Button
               className="mt-ds-06"
-              variant="primary"
+              variant="solid"
               onClick={() => {
                 if (clickedAction === 'approve') {
                   handleApproveRequest(undefined, request.id, comment)

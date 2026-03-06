@@ -10,7 +10,7 @@ const meta: Meta<typeof ButtonGroup> = {
   argTypes: {
     variant: {
       control: 'select',
-      options: ['primary', 'secondary', 'ghost', 'error', 'error-ghost', 'link'],
+      options: ['solid', 'outline', 'ghost', 'link'],
     },
     size: {
       control: 'select',
@@ -28,7 +28,7 @@ type Story = StoryObj<typeof ButtonGroup>
 /** Default horizontal group with three buttons using the secondary variant. */
 export const Default: Story = {
   args: {
-    variant: 'secondary',
+    variant: 'outline',
   },
   render: (args) => (
     <ButtonGroup {...args}>
@@ -42,7 +42,7 @@ export const Default: Story = {
 /** Vertical orientation stacks buttons top-to-bottom. */
 export const Vertical: Story = {
   render: () => (
-    <ButtonGroup orientation="vertical" variant="secondary">
+    <ButtonGroup orientation="vertical" variant="outline">
       <Button>Top</Button>
       <Button>Middle</Button>
       <Button>Bottom</Button>
@@ -53,7 +53,7 @@ export const Vertical: Story = {
 /** All child buttons inherit the primary variant from the group. */
 export const SharedVariant: Story = {
   render: () => (
-    <ButtonGroup variant="primary">
+    <ButtonGroup variant="solid">
       <Button>Save</Button>
       <Button>Update</Button>
       <Button>Publish</Button>
@@ -64,7 +64,7 @@ export const SharedVariant: Story = {
 /** All child buttons inherit the small size from the group. */
 export const SharedSize: Story = {
   render: () => (
-    <ButtonGroup size="sm" variant="secondary">
+    <ButtonGroup size="sm" variant="outline">
       <Button>Small</Button>
       <Button>Buttons</Button>
       <Button>Group</Button>
@@ -75,9 +75,9 @@ export const SharedSize: Story = {
 /** The middle button overrides the group variant with danger. */
 export const OverrideChild: Story = {
   render: () => (
-    <ButtonGroup variant="secondary">
+    <ButtonGroup variant="outline">
       <Button>Keep</Button>
-      <Button variant="error">Delete</Button>
+      <Button variant="solid" color="error">Delete</Button>
       <Button>Cancel</Button>
     </ButtonGroup>
   ),
@@ -87,7 +87,7 @@ export const OverrideChild: Story = {
 export const WithIcons: Story = {
   render: () => (
     <div className="flex flex-col gap-ds-06">
-      <ButtonGroup variant="secondary">
+      <ButtonGroup variant="outline">
         <Button startIcon={<IconBold />}>Bold</Button>
         <Button startIcon={<IconItalic />}>Italic</Button>
         <Button startIcon={<IconUnderline />}>Underline</Button>

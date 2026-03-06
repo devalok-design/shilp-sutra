@@ -29,7 +29,7 @@ export const Block: Story = {
       {`import { Button } from '@devalok/shilp-sutra'
 
 function App() {
-  return <Button variant="primary">Click me</Button>
+  return <Button variant="solid">Click me</Button>
 }`}
     </Code>
   ),

@@ -26,7 +26,7 @@ export const Default: Story = {
   render: () => (
     <Dialog>
       <DialogTrigger asChild>
-        <Button variant="primary">Open Dialog</Button>
+        <Button variant="solid">Open Dialog</Button>
       </DialogTrigger>
       <DialogContent>
         <DialogHeader>
@@ -49,7 +49,7 @@ export const Default: Story = {
           <DialogClose asChild>
             <Button variant="ghost">Cancel</Button>
           </DialogClose>
-          <Button variant="primary">Save changes</Button>
+          <Button variant="solid">Save changes</Button>
         </DialogFooter>
       </DialogContent>
     </Dialog>
@@ -68,7 +68,7 @@ export const Confirmation: Story = {
   render: () => (
     <Dialog>
       <DialogTrigger asChild>
-        <Button variant="error">Delete Account</Button>
+        <Button variant="solid" color="error">Delete Account</Button>
       </DialogTrigger>
       <DialogContent>
         <DialogHeader>
@@ -82,7 +82,7 @@ export const Confirmation: Story = {
           <DialogClose asChild>
             <Button variant="ghost">Cancel</Button>
           </DialogClose>
-          <Button variant="error">Delete</Button>
+          <Button variant="solid" color="error">Delete</Button>
         </DialogFooter>
       </DialogContent>
     </Dialog>
@@ -108,7 +108,7 @@ export const SimpleMessage: Story = {
   render: () => (
     <Dialog>
       <DialogTrigger asChild>
-        <Button variant="secondary">Show Info</Button>
+        <Button variant="outline">Show Info</Button>
       </DialogTrigger>
       <DialogContent>
         <DialogHeader>
@@ -119,7 +119,7 @@ export const SimpleMessage: Story = {
         </DialogHeader>
         <DialogFooter>
           <DialogClose asChild>
-            <Button variant="primary">Got it</Button>
+            <Button variant="solid">Got it</Button>
           </DialogClose>
         </DialogFooter>
       </DialogContent>

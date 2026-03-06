@@ -15,14 +15,11 @@ const meta: Meta<typeof Button> = {
   argTypes: {
     variant: {
       control: 'select',
-      options: [
-        'primary',
-        'secondary',
-        'ghost',
-        'error',
-        'error-ghost',
-        'link',
-      ],
+      options: ['solid', 'outline', 'ghost', 'link'],
+    },
+    color: {
+      control: 'select',
+      options: ['default', 'error'],
     },
     size: {
       control: 'select',
@@ -51,14 +48,14 @@ export const Default: Story = {
 
 export const Primary: Story = {
   args: {
-    variant: 'primary',
+    variant: 'solid',
     children: 'Primary',
   },
 }
 
 export const Secondary: Story = {
   args: {
-    variant: 'secondary',
+    variant: 'outline',
     children: 'Secondary',
   },
 }
@@ -72,21 +69,21 @@ export const Ghost: Story = {
 
 export const Danger: Story = {
   args: {
-    variant: 'error',
+    variant: 'solid', color: 'error',
     children: 'Danger',
   },
 }
 
 export const DangerGhost: Story = {
   args: {
-    variant: 'error-ghost',
+    variant: 'outline', color: 'error',
     children: 'Danger Ghost',
   },
 }
 
 export const Outline: Story = {
   args: {
-    variant: 'secondary',
+    variant: 'outline',
     children: 'Outline',
   },
 }
@@ -149,16 +146,24 @@ export const Disabled: Story = {
 
 export const AllVariants: Story = {
   render: () => {
-    const variants = ['primary', 'secondary', 'ghost', 'error', 'error-ghost', 'link'] as const
+    const combos = [
+      { variant: 'solid', color: 'default', label: 'solid' },
+      { variant: 'outline', color: 'default', label: 'outline' },
+      { variant: 'ghost', color: 'default', label: 'ghost' },
+      { variant: 'solid', color: 'error', label: 'solid+error' },
+      { variant: 'outline', color: 'error', label: 'outline+error' },
+      { variant: 'ghost', color: 'error', label: 'ghost+error' },
+      { variant: 'link', color: 'default', label: 'link' },
+    ] as const
     const sizes = ['sm', 'md', 'lg'] as const
     return (
       <div className="flex flex-col gap-ds-06">
-        {variants.map((variant) => (
-          <div key={variant}>
-            <p className="mb-ds-03 text-ds-sm font-semibold text-text-secondary capitalize">{variant}</p>
+        {combos.map(({ variant, color, label }) => (
+          <div key={label}>
+            <p className="mb-ds-03 text-ds-sm font-semibold text-text-secondary capitalize">{label}</p>
             <div className="flex flex-wrap items-center gap-ds-03">
               {sizes.map((size) => (
-                <Button key={`${variant}-${size}`} variant={variant} size={size}>
+                <Button key={`${label}-${size}`} variant={variant} color={color} size={size}>
                   {size}
                 </Button>
               ))}
@@ -169,9 +174,9 @@ export const AllVariants: Story = {
         <div>
           <p className="mb-ds-03 text-ds-sm font-semibold text-text-secondary">Disabled</p>
           <div className="flex flex-wrap items-center gap-ds-03">
-            {variants.map((variant) => (
-              <Button key={variant} variant={variant} disabled>
-                {variant}
+            {combos.map(({ variant, color, label }) => (
+              <Button key={label} variant={variant} color={color} disabled>
+                {label}
               </Button>
             ))}
           </div>
@@ -180,9 +185,9 @@ export const AllVariants: Story = {
         <div>
           <p className="mb-ds-03 text-ds-sm font-semibold text-text-secondary">Loading</p>
           <div className="flex flex-wrap items-center gap-ds-03">
-            {variants.map((variant) => (
-              <Button key={variant} variant={variant} loading>
-                {variant}
+            {combos.map(({ variant, color, label }) => (
+              <Button key={label} variant={variant} color={color} loading>
+                {label}
               </Button>
             ))}
           </div>
@@ -211,7 +216,7 @@ export const AllSizes: Story = {
 
 export const WithStartIcon: Story = {
   args: {
-    variant: 'primary',
+    variant: 'solid',
     startIcon: <IconPlus size={16} />,
     children: 'Add Item',
   },
@@ -219,7 +224,7 @@ export const WithStartIcon: Story = {
 
 export const WithEndIcon: Story = {
   args: {
-    variant: 'primary',
+    variant: 'solid',
     endIcon: <IconArrowRight size={16} />,
     children: 'Continue',
   },
@@ -227,7 +232,7 @@ export const WithEndIcon: Story = {
 
 export const WithBothIcons: Story = {
   args: {
-    variant: 'secondary',
+    variant: 'outline',
     startIcon: <IconDownload size={16} />,
     endIcon: <IconArrowRight size={16} />,
     children: 'Download',
@@ -236,7 +241,7 @@ export const WithBothIcons: Story = {
 
 export const Loading: Story = {
   args: {
-    variant: 'primary',
+    variant: 'solid',
     loading: true,
     children: 'Saving...',
   },
@@ -244,7 +249,7 @@ export const Loading: Story = {
 
 export const LoadingEnd: Story = {
   args: {
-    variant: 'secondary',
+    variant: 'outline',
     loading: true,
     loadingPosition: 'end',
     endIcon: <IconSend size={16} />,
@@ -254,7 +259,7 @@ export const LoadingEnd: Story = {
 
 export const LoadingCenter: Story = {
   args: {
-    variant: 'primary',
+    variant: 'solid',
     loading: true,
     loadingPosition: 'center',
     children: 'Processing',
@@ -278,20 +283,20 @@ export const AllFeatures: Story = {
           Start Icon across variants
         </p>
         <div className="flex flex-wrap items-center gap-ds-04">
-          <Button variant="primary" startIcon={<IconPlus size={16} />}>
-            Primary
+          <Button variant="solid" startIcon={<IconPlus size={16} />}>
+            Solid
           </Button>
-          <Button variant="secondary" startIcon={<IconDownload size={16} />}>
-            Secondary
+          <Button variant="outline" startIcon={<IconDownload size={16} />}>
+            Outline
           </Button>
           <Button variant="ghost" startIcon={<IconPlus size={16} />}>
             Ghost
           </Button>
-          <Button variant="error" startIcon={<IconTrash size={16} />}>
-            Danger
+          <Button variant="solid" color="error" startIcon={<IconTrash size={16} />}>
+            Solid Error
           </Button>
-          <Button variant="error-ghost" startIcon={<IconTrash size={16} />}>
-            Danger Ghost
+          <Button variant="outline" color="error" startIcon={<IconTrash size={16} />}>
+            Outline Error
           </Button>
           <Button variant="link" startIcon={<IconArrowRight size={16} />}>
             Link
@@ -308,7 +313,7 @@ export const AllFeatures: Story = {
           <Button loading loadingPosition="start">
             Loading Start
           </Button>
-          <Button variant="secondary" loading loadingPosition="end" endIcon={<IconSend size={16} />}>
+          <Button variant="outline" loading loadingPosition="end" endIcon={<IconSend size={16} />}>
             Loading End
           </Button>
           <Button loading loadingPosition="center">

@@ -16,7 +16,7 @@ export const Default: Story = {
   render: () => (
     <Popover>
       <PopoverTrigger asChild>
-        <Button variant="secondary">Open Popover</Button>
+        <Button variant="outline">Open Popover</Button>
       </PopoverTrigger>
       <PopoverContent>
         <div className="grid gap-ds-04">
@@ -61,7 +61,7 @@ export const AlignStart: Story = {
   render: () => (
     <Popover>
       <PopoverTrigger asChild>
-        <Button variant="secondary">Align Start</Button>
+        <Button variant="outline">Align Start</Button>
       </PopoverTrigger>
       <PopoverContent align="start">
         <p className="text-ds-sm">Aligned to start</p>
@@ -74,7 +74,7 @@ export const AlignEnd: Story = {
   render: () => (
     <Popover>
       <PopoverTrigger asChild>
-        <Button variant="secondary">Align End</Button>
+        <Button variant="outline">Align End</Button>
       </PopoverTrigger>
       <PopoverContent align="end">
         <p className="text-ds-sm">Aligned to end</p>

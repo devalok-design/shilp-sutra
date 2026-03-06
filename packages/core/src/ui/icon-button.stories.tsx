@@ -22,7 +22,7 @@ const meta: Meta<typeof IconButton> = {
   argTypes: {
     variant: {
       control: 'select',
-      options: ['primary', 'secondary', 'ghost', 'error', 'error-ghost', 'link'],
+      options: ['solid', 'outline', 'ghost', 'link'],
     },
     size: {
       control: 'select',
@@ -51,12 +51,12 @@ export const AllVariants: Story = {
   render: () => (
     <div className="flex flex-wrap items-center gap-ds-04">
       <IconButton
-        variant="primary"
+        variant="solid"
         icon={<IconPlus size={20} />}
         aria-label="Add item"
       />
       <IconButton
-        variant="secondary"
+        variant="outline"
         icon={<IconSearch size={20} />}
         aria-label="Search"
       />
@@ -66,12 +66,14 @@ export const AllVariants: Story = {
         aria-label="Settings"
       />
       <IconButton
-        variant="error"
+        variant="solid"
+        color="error"
         icon={<IconTrash size={20} />}
         aria-label="Delete"
       />
       <IconButton
-        variant="error-ghost"
+        variant="outline"
+        color="error"
         icon={<IconX size={20} />}
         aria-label="Dismiss"
       />
@@ -109,13 +111,13 @@ export const Circle: Story = {
     <div className="flex flex-wrap items-center gap-ds-04">
       <IconButton
         shape="circle"
-        variant="primary"
+        variant="solid"
         icon={<IconPlus size={20} />}
         aria-label="Add"
       />
       <IconButton
         shape="circle"
-        variant="secondary"
+        variant="outline"
         icon={<IconBell size={20} />}
         aria-label="Notifications"
       />
@@ -127,7 +129,8 @@ export const Circle: Story = {
       />
       <IconButton
         shape="circle"
-        variant="error"
+        variant="solid"
+        color="error"
         icon={<IconTrash size={20} />}
         aria-label="Delete"
       />

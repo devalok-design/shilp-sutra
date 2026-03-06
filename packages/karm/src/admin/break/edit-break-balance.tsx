@@ -66,14 +66,14 @@ export const EditBreakBalance = React.forwardRef<HTMLDivElement, EditBreakBalanc
 
       toast({
         description: 'Break balance updated successfully',
-        variant: 'default',
+        color: 'default',
       })
     } catch (error) {
       console.error('Error updating break balance:', error)
       toast({
         title: 'Error',
         description: 'Failed to update break balance',
-        variant: 'error',
+        color: 'error',
       })
     } finally {
       setIsSubmitting(false)
@@ -84,7 +84,7 @@ export const EditBreakBalance = React.forwardRef<HTMLDivElement, EditBreakBalanc
     <Dialog>
       <DialogTrigger asChild>
         <Button
-          variant="secondary"
+          variant="outline"
           className="text-ds-base border-border bg-layer-01 px-ds-05 py-ds-04 pr-ds-06 text-text-secondary shadow-02"
         >
           <EditIcon />
@@ -134,7 +134,7 @@ export const EditBreakBalance = React.forwardRef<HTMLDivElement, EditBreakBalanc
                 </div>
 
                 <Button
-                  variant="secondary"
+                  variant="outline"
                   fullWidth
                   onClick={() => formRef.current?.requestSubmit()}
                   disabled={isSubmitting}

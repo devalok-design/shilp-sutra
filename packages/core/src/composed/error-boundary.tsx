@@ -142,7 +142,7 @@ const ErrorDisplay = React.forwardRef<HTMLDivElement, ErrorDisplayProps>(
         {onReset && (
           <div className="flex items-center gap-ds-04">
             <Button
-              variant="secondary"
+              variant="outline"
               size="md"
               onClick={onReset}
             >

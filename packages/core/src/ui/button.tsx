@@ -12,17 +12,14 @@ export const buttonVariants = cva(
   {
     variants: {
       variant: {
-        primary:
-          'bg-interactive text-text-on-color hover:bg-interactive-hover active:bg-interactive-active shadow-01 hover:shadow-brand',
-        secondary:
-          'bg-transparent text-interactive border-border-interactive hover:bg-interactive-subtle active:bg-layer-active',
-        ghost:
-          'bg-transparent text-text-secondary hover:bg-layer-02 hover:text-text-primary active:bg-layer-active',
-        error:
-          'bg-error text-text-on-color hover:bg-error-hover active:bg-error-hover shadow-01',
-        'error-ghost':
-          'bg-transparent text-error border border-border-error hover:bg-error-surface active:bg-error-surface',
+        solid: '',
+        outline: '',
+        ghost: '',
         link: 'text-text-link underline-offset-4 hover:underline active:opacity-[0.8]',
+      },
+      color: {
+        default: '',
+        error: '',
       },
       size: {
         sm: 'h-ds-sm rounded-ds-md px-ds-04 text-ds-sm',
@@ -33,8 +30,23 @@ export const buttonVariants = cva(
         'icon-lg': 'h-ds-lg w-ds-lg rounded-ds-lg',
       },
     },
+    compoundVariants: [
+      // solid + default (primary)
+      { variant: 'solid', color: 'default', className: 'bg-interactive text-text-on-color hover:bg-interactive-hover active:bg-interactive-active shadow-01 hover:shadow-brand' },
+      // solid + error
+      { variant: 'solid', color: 'error', className: 'bg-error text-text-on-color hover:bg-error-hover active:bg-error-hover shadow-01' },
+      // outline + default (secondary)
+      { variant: 'outline', color: 'default', className: 'bg-transparent text-interactive border-border-interactive hover:bg-interactive-subtle active:bg-layer-active' },
+      // outline + error (error-ghost)
+      { variant: 'outline', color: 'error', className: 'bg-transparent text-error border border-border-error hover:bg-error-surface active:bg-error-surface' },
+      // ghost + default
+      { variant: 'ghost', color: 'default', className: 'bg-transparent text-text-secondary hover:bg-layer-02 hover:text-text-primary active:bg-layer-active' },
+      // ghost + error
+      { variant: 'ghost', color: 'error', className: 'bg-transparent text-error hover:bg-error-surface hover:text-error active:bg-error-surface' },
+    ],
     defaultVariants: {
-      variant: 'primary',
+      variant: 'solid',
+      color: 'default',
       size: 'md',
     },
   },
@@ -61,12 +73,13 @@ const spinnerSizeMap: Record<string, 'sm' | 'md'> = {
 }
 
 /**
- * Props for Button — the primary action component with 6 variants, 6 size options, icon slots,
- * and a built-in loading state that disables interaction and shows a spinner.
+ * Props for Button — the primary action component with a two-axis variant system,
+ * 6 size options, icon slots, and a built-in loading state.
  *
- * **Variants:** `primary` (pink brand glow, default) | `secondary` (outlined interactive) |
- * `ghost` (transparent, for toolbars) | `error` (destructive fill) | `error-ghost` (outlined error) |
- * `link` (underline, inline text actions)
+ * **Two axes:**
+ * - `variant` controls **visual style**: `"solid"` (default, filled brand) | `"outline"` (bordered) |
+ *   `"ghost"` (transparent, for toolbars) | `"link"` (underline, inline text actions)
+ * - `color` controls **semantic intent**: `"default"` (brand interactive) | `"error"` (destructive)
  *
  * **Sizes:** `sm` | `md` (default) | `lg` for text buttons;
  * `icon-sm` | `icon-md` | `icon-lg` for square icon-only buttons (prefer `IconButton` for icon-only).
@@ -75,12 +88,12 @@ const spinnerSizeMap: Record<string, 'sm' | 'md'> = {
  * Use `loadingPosition` to control where the spinner appears.
  *
  * @example
- * // Primary save action (default variant):
+ * // Primary save action (default variant + color):
  * <Button onClick={handleSave}>Save changes</Button>
  *
  * @example
  * // Destructive delete with confirmation icon and loading state:
- * <Button variant="error" startIcon={<IconTrash />} loading={isDeleting}>
+ * <Button variant="solid" color="error" startIcon={<IconTrash />} loading={isDeleting}>
  *   Delete project
  * </Button>
  *
@@ -122,6 +135,7 @@ const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
     {
       className,
       variant,
+      color,
       size,
       asChild = false,
       startIcon,
@@ -137,6 +151,7 @@ const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
   ) => {
     const group = useButtonGroup()
     const resolvedVariant = variant ?? group.variant
+    const resolvedColor = color ?? group.color
     const resolvedSize = size ?? group.size ?? 'md'
     const iconClass = iconSizeClass[resolvedSize]
     const spinnerSize = spinnerSizeMap[resolvedSize]
@@ -151,7 +166,7 @@ const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
       // which excludes button-specific attrs like `disabled`.
       const slotProps = {
         className: cn(
-          buttonVariants({ variant: resolvedVariant, size: resolvedSize, className }),
+          buttonVariants({ variant: resolvedVariant, color: resolvedColor, size: resolvedSize, className }),
           fullWidth && 'w-full',
         ),
         ref,
@@ -211,7 +226,7 @@ const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
     return (
       <button
         className={cn(
-          buttonVariants({ variant: resolvedVariant, size: resolvedSize, className }),
+          buttonVariants({ variant: resolvedVariant, color: resolvedColor, size: resolvedSize, className }),
           fullWidth && 'w-full',
         )}
         ref={ref}

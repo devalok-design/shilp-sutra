@@ -4,20 +4,20 @@ import { describe, it, expect } from 'vitest'
 import { Button } from '../button'
 
 describe('Button accessibility', () => {
-  it('should have no violations with primary variant', async () => {
-    const { container } = render(<Button variant="primary">Primary</Button>)
+  it('should have no violations with solid variant', async () => {
+    const { container } = render(<Button variant="solid">Solid</Button>)
     const results = await axe(container)
     expect(results).toHaveNoViolations()
   })
 
-  it('should have no violations with secondary variant', async () => {
-    const { container } = render(<Button variant="secondary">Secondary</Button>)
+  it('should have no violations with outline variant', async () => {
+    const { container } = render(<Button variant="outline">Outline</Button>)
     const results = await axe(container)
     expect(results).toHaveNoViolations()
   })
 
-  it('should have no violations with danger variant', async () => {
-    const { container } = render(<Button variant="error">Delete</Button>)
+  it('should have no violations with error color', async () => {
+    const { container } = render(<Button variant="solid" color="error">Delete</Button>)
     const results = await axe(container)
     expect(results).toHaveNoViolations()
   })

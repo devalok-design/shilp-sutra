@@ -49,7 +49,7 @@ describe('ButtonGroup', () => {
 
   it('passes shared variant to children via context', () => {
     render(
-      <ButtonGroup variant="error">
+      <ButtonGroup variant="solid" color="error">
         <Button>Delete</Button>
         <Button>Remove</Button>
       </ButtonGroup>,

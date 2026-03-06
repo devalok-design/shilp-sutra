@@ -92,7 +92,7 @@ export const DashboardHeader = React.forwardRef<HTMLDivElement, DashboardHeaderP
         </DropdownMenu>
         {!isTodaySelected && (
           <Button
-            variant="secondary"
+            variant="outline"
             onClick={onTodayClick}
           >
             Today

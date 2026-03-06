@@ -144,7 +144,7 @@ export const BreakRequestCard = React.forwardRef<HTMLDivElement, BreakRequestPro
                 </div>
               </div>
               <div className="mt-ds-05 flex w-full flex-col gap-ds-04">
-                <Button variant="primary" className="w-full rounded-ds-full" onClick={handleCancelBreak}>
+                <Button variant="solid" className="w-full rounded-ds-full" onClick={handleCancelBreak}>
                   Yes, cancel
                 </Button>
               </div>
@@ -239,7 +239,7 @@ export const BreakRequestCard = React.forwardRef<HTMLDivElement, BreakRequestPro
                   </div>
                   <DialogFooter className="mt-ds-04 sm:justify-start">
                     <DialogClose asChild>
-                      <Button variant="primary" className="w-full rounded-ds-full" onClick={handleCancelBreak}>
+                      <Button variant="solid" className="w-full rounded-ds-full" onClick={handleCancelBreak}>
                         Yes, cancel
                       </Button>
                     </DialogClose>
@@ -292,7 +292,7 @@ export const BreakRequestCard = React.forwardRef<HTMLDivElement, BreakRequestPro
                 </div>
                 <DialogFooter className="mt-ds-04 sm:justify-start">
                   <DialogClose asChild>
-                    <Button variant="primary" className="w-full rounded-ds-full" onClick={handleCancelBreak}>
+                    <Button variant="solid" className="w-full rounded-ds-full" onClick={handleCancelBreak}>
                       Yes, cancel
                     </Button>
                   </DialogClose>

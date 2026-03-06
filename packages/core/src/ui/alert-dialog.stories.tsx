@@ -25,7 +25,7 @@ export const Default: Story = {
   render: () => (
     <AlertDialog>
       <AlertDialogTrigger asChild>
-        <Button variant="primary">Open Alert Dialog</Button>
+        <Button variant="solid">Open Alert Dialog</Button>
       </AlertDialogTrigger>
       <AlertDialogContent>
         <AlertDialogHeader>
@@ -56,7 +56,7 @@ export const Destructive: Story = {
   render: () => (
     <AlertDialog>
       <AlertDialogTrigger asChild>
-        <Button variant="error">Delete Item</Button>
+        <Button variant="solid" color="error">Delete Item</Button>
       </AlertDialogTrigger>
       <AlertDialogContent>
         <AlertDialogHeader>

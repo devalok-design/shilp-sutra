@@ -31,7 +31,7 @@ export const Default: Story = {
   render: () => (
     <DropdownMenu>
       <DropdownMenuTrigger asChild>
-        <Button variant="secondary">Open Menu</Button>
+        <Button variant="outline">Open Menu</Button>
       </DropdownMenuTrigger>
       <DropdownMenuContent className="w-56">
         <DropdownMenuLabel>My Account</DropdownMenuLabel>
@@ -69,7 +69,7 @@ export const WithSubmenu: Story = {
   render: () => (
     <DropdownMenu>
       <DropdownMenuTrigger asChild>
-        <Button variant="secondary">Actions</Button>
+        <Button variant="outline">Actions</Button>
       </DropdownMenuTrigger>
       <DropdownMenuContent className="w-56">
         <DropdownMenuItem>New File</DropdownMenuItem>
@@ -99,7 +99,7 @@ export const WithCheckboxItems: Story = {
     return (
       <DropdownMenu>
         <DropdownMenuTrigger asChild>
-          <Button variant="secondary">View Columns</Button>
+          <Button variant="outline">View Columns</Button>
         </DropdownMenuTrigger>
         <DropdownMenuContent className="w-56">
           <DropdownMenuLabel>Toggle Columns</DropdownMenuLabel>
@@ -126,7 +126,7 @@ export const WithRadioItems: Story = {
     return (
       <DropdownMenu>
         <DropdownMenuTrigger asChild>
-          <Button variant="secondary">Sort By</Button>
+          <Button variant="outline">Sort By</Button>
         </DropdownMenuTrigger>
         <DropdownMenuContent className="w-56">
           <DropdownMenuLabel>Sort Order</DropdownMenuLabel>
@@ -147,7 +147,7 @@ export const WithDisabledItems: Story = {
   render: () => (
     <DropdownMenu>
       <DropdownMenuTrigger asChild>
-        <Button variant="secondary">Options</Button>
+        <Button variant="outline">Options</Button>
       </DropdownMenuTrigger>
       <DropdownMenuContent className="w-56">
         <DropdownMenuItem>Edit</DropdownMenuItem>

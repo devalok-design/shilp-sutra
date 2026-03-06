@@ -29,7 +29,7 @@ describe('IconButton', () => {
   })
 
   it('forwards variant prop to underlying Button', () => {
-    render(<IconButton icon={<TestIcon />} aria-label="Delete" variant="error" />)
+    render(<IconButton icon={<TestIcon />} aria-label="Delete" variant="solid" color="error" />)
     expect(screen.getByRole('button')).toBeInTheDocument()
   })
 

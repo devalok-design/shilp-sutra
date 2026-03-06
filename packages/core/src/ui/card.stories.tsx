@@ -33,7 +33,7 @@ export const Default: Story = {
         </p>
       </CardContent>
       <CardFooter className="gap-ds-02">
-        <Button variant="primary" size="sm">View Details</Button>
+        <Button variant="solid" size="sm">View Details</Button>
         <Button variant="ghost" size="sm">Dismiss</Button>
       </CardFooter>
     </Card>
@@ -75,7 +75,7 @@ export const WithFooter: Story = {
       </CardHeader>
       <CardFooter className="justify-between">
         <Button variant="ghost">Cancel</Button>
-        <Button variant="primary">Confirm</Button>
+        <Button variant="solid">Confirm</Button>
       </CardFooter>
     </Card>
   ),

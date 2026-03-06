@@ -344,7 +344,7 @@ const BreakAdminRoot = React.forwardRef<HTMLDivElement, BreakAdminProps>(
                 </span>
               </>
             ),
-            color: 'default',
+            color: 'neutral',
             style: { marginBottom: 'var(--spacing-04)', border: 'none' },
           })
         } catch (error) {
@@ -404,7 +404,7 @@ const BreakAdminRoot = React.forwardRef<HTMLDivElement, BreakAdminProps>(
                 </span>
               </>
             ),
-            color: 'default',
+            color: 'neutral',
             style: { marginBottom: 'var(--spacing-04)', border: 'none' },
           })
         } catch (error) {

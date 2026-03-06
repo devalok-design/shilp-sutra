@@ -191,7 +191,7 @@ export const EditBreak = React.forwardRef<HTMLDivElement, EditBreakProps>(functi
       toast({
         title: 'Action Required',
         description: 'Please update the status',
-        color: 'default',
+        color: 'neutral',
       })
       return
     }
@@ -213,7 +213,7 @@ export const EditBreak = React.forwardRef<HTMLDivElement, EditBreakProps>(functi
 
       toast({
         description: 'Break request updated successfully',
-        color: 'default',
+        color: 'neutral',
       })
     } catch (error) {
       console.error('Error updating break request:', error)

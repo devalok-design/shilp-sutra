@@ -66,7 +66,7 @@ export const EditBreakBalance = React.forwardRef<HTMLDivElement, EditBreakBalanc
 
       toast({
         description: 'Break balance updated successfully',
-        color: 'default',
+        color: 'neutral',
       })
     } catch (error) {
       console.error('Error updating break balance:', error)

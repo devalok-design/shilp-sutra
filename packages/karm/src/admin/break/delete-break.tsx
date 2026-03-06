@@ -36,7 +36,7 @@ export const DeleteBreak = React.forwardRef<HTMLDivElement, DeleteBreakProps>(fu
 
       toast({
         description: 'Break request deleted successfully',
-        color: 'default',
+        color: 'neutral',
       })
 
       setOpen(false)

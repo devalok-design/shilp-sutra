@@ -179,7 +179,7 @@ const TaskDetailPanel = React.forwardRef<HTMLDivElement, TaskDetailPanelProps>(f
   renderPriorityIndicator,
   renderDatePicker,
   isUploading = false,
-}, _ref) {
+}, ref) {
   const [activeTab, setActiveTab] = React.useState<TabId>(clientMode ? 'conversation' : 'subtasks')
   const [editingTitle, setEditingTitle] = React.useState(false)
   const [titleValue, setTitleValue] = React.useState('')
@@ -248,6 +248,7 @@ const TaskDetailPanel = React.forwardRef<HTMLDivElement, TaskDetailPanelProps>(f
   return (
     <Sheet open={open} onOpenChange={onOpenChange}>
       <SheetContent
+        ref={ref}
         side="right"
         className={cn(
           /* intentional: task detail side panel takes 40% of screen, min 380px for form usability */

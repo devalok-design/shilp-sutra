@@ -96,6 +96,7 @@
     "./composed/rich-text-editor": { "import": "./dist/composed/rich-text-editor.js", "types": "./dist/composed/rich-text-editor.d.ts" },
     "./composed/simple-tooltip": { "import": "./dist/composed/simple-tooltip.js", "types": "./dist/composed/simple-tooltip.d.ts" },
     "./composed/status-badge": { "import": "./dist/composed/status-badge.js", "types": "./dist/composed/status-badge.d.ts" },
+    "./composed/schedule-view": { "import": "./dist/composed/schedule-view.js", "types": "./dist/composed/schedule-view.d.ts" },
     "./composed/date-picker": { "import": "./dist/composed/date-picker/index.js", "types": "./dist/composed/date-picker/index.d.ts" },
 
     "./shell": { "import": "./dist/shell/index.js", "types": "./dist/shell/index.d.ts" },

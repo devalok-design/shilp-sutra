@@ -209,7 +209,7 @@ const ConversationTab = React.forwardRef<HTMLDivElement, ConversationTabProps>(
         </div>
       ) : (
         <EmptyState
-          icon={IconMessageCircle}
+          icon={<IconMessageCircle />}
           title="No comments yet"
           description="Start a conversation about this task"
           compact

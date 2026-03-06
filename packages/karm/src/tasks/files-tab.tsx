@@ -266,7 +266,7 @@ const FilesTab = React.forwardRef<HTMLDivElement, FilesTabProps>(
       ) : (
         <div className="mt-ds-03">
           <EmptyState
-            icon={IconPaperclip}
+            icon={<IconPaperclip />}
             title="No files attached"
             description="Upload files to share with your team"
             compact

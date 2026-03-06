@@ -54,7 +54,7 @@ const colorDotMap: Record<string, string> = {
 }
 
 export interface StatusBadgeProps
-  extends Omit<React.HTMLAttributes<HTMLSpanElement>, 'children'>,
+  extends Omit<React.HTMLAttributes<HTMLSpanElement>, 'children' | 'color'>,
     VariantProps<typeof statusBadgeVariants> {
   label?: string
   hideDot?: boolean
@@ -81,7 +81,7 @@ const StatusBadge = React.forwardRef<HTMLSpanElement, StatusBadgeProps>(
       <span
         ref={ref}
         className={cn(
-          statusBadgeVariants({ status: statusKey, color: colorKey, size }),
+          statusBadgeVariants({ status: statusKey as StatusBadgeProps['status'], color: colorKey, size }),
           className,
         )}
         {...props}

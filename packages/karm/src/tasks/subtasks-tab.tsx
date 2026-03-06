@@ -189,7 +189,7 @@ const SubtasksTab = React.forwardRef<HTMLDivElement, SubtasksTabProps>(
       ) : (
         !isAdding && (
           <EmptyState
-            icon={IconListCheck}
+            icon={<IconListCheck />}
             title="No subtasks"
             description="Break this task into smaller pieces"
             compact

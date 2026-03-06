@@ -12,7 +12,7 @@ const cardVariants = cva(
       variant: {
         default: 'bg-layer-01 border border-border-subtle shadow-01',
         elevated: 'bg-layer-01 border border-border-subtle shadow-02',
-        outlined: 'bg-transparent border-2 border-border shadow-none',
+        outline: 'bg-transparent border-2 border-border shadow-none',
         flat: 'bg-layer-02 border-none shadow-none',
       },
     },
@@ -25,7 +25,7 @@ const cardVariants = cva(
  * an optional interactive hover state.
  *
  * **Variants:** `default` (subtle border + shadow-01) | `elevated` (stronger shadow-02) |
- * `outlined` (2px solid border, no shadow) | `flat` (filled background, no shadow)
+ * `outline` (2px solid border, no shadow) | `flat` (filled background, no shadow)
  *
  * **Composition:** Use sub-components `<CardHeader>`, `<CardTitle>`, `<CardDescription>`,
  * `<CardContent>`, and `<CardFooter>` for consistent internal spacing.

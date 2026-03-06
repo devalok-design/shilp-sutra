@@ -7,7 +7,7 @@ const __dirname = dirname(fileURLToPath(import.meta.url))
 const srcAssets = join(__dirname, '..', 'src', 'assets')
 const distAssets = join(__dirname, '..', 'dist', 'assets')
 
-const assetExtensions = new Set(['.svg', '.png', '.ico', '.webmanifest'])
+const assetExtensions = new Set(['.svg', '.png', '.webp', '.ico', '.webmanifest'])
 
 function copyAssetsRecursive(src, dest) {
   mkdirSync(dest, { recursive: true })

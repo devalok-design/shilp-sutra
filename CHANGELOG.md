@@ -5,6 +5,34 @@ All notable changes to `@devalok/shilp-sutra` will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.4.2] — 2026-03-06
+
+The **Consistency Audit** release. Aligns variant naming, event handlers, and export completeness across the entire component library.
+
+### Changed (BREAKING)
+- **Chip**: `variant="filled"` → `"subtle"`, `variant="outlined"` → `"outline"`, `onDelete` → `onDismiss`
+- **SegmentedControl**: `color` prop renamed to `variant` (values `filled`/`tonal` unchanged)
+- **Toast**: `color="default"` → `color="neutral"`
+- **Card**: `variant="outlined"` → `variant="outline"`
+
+### Fixed
+- **Button/Badge/ButtonGroup**: `Omit<HTMLAttributes, 'color'>` resolves TS2320 conflict with CVA color prop — CI typecheck was failing
+- **Button**: `className` was passed inside `buttonVariants()` (silently dropped by CVA) — now separate `cn()` argument
+- **Toggle**: Same `className` fix as Button
+- **ProjectCard**: Was passing color values (`success`/`info`/`warning`) to Badge `variant` prop instead of `color`
+- **AlertDialogHeader/Footer**: Now wrapped in `React.forwardRef` (matches Dialog/Sheet pattern)
+- **TaskDetailPanel**: Ref parameter was discarded as `_ref` — now forwarded to `SheetContent`
+- **Switch**: `React.ComponentRef` → `React.ElementRef` for consistency
+- **DateRangePicker**: Default `formatStr` changed from `'MMM d'` to `'MMM d, yyyy'` to match DatePicker
+
+### Added
+- 11 new Props type exports: `AccordionItemProps`, `AccordionTriggerProps`, `AccordionContentProps`, `RadioGroupProps`, `RadioGroupItemProps`, `ToggleProps`, `ToggleGroupProps`, `ToggleGroupItemProps`, `CollapsibleProps`, `SeparatorProps`, `HoverCardContentProps`
+- 4 variant/type exports: `inputVariants`, `cardVariants`, `textareaVariants`, `SpacingToken`
+- TreeItem now accepts `className` prop
+- Karm barrel: admin types (`UserRole`, `AttendanceStatus`, `DayInfo`, etc.) and 14 utility functions re-exported from package root
+
+---
+
 ## [0.3.1] — 2026-03-06
 
 ### Fixed

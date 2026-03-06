@@ -10,6 +10,84 @@ Format based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/) &middot
 
 ---
 
+## 0.4.2 &mdash; 2026-03-06
+
+### Breaking Changes
+
+> **Migration effort: low.** All changes are renames &mdash; find-and-replace.
+
+#### Chip: variant + event renames
+
+```tsx
+{/* Before */}
+<Chip variant="filled" color="primary" onDelete={handleDelete} />
+<Chip variant="outlined" />
+
+{/* After */}
+<Chip variant="subtle" color="primary" onDismiss={handleDismiss} />
+<Chip variant="outline" />
+```
+
+| Old | New |
+|-----|-----|
+| `variant="filled"` | `variant="subtle"` |
+| `variant="outlined"` | `variant="outline"` |
+| `onDelete` | `onDismiss` |
+
+#### SegmentedControl: `color` &rarr; `variant`
+
+```tsx
+{/* Before */}
+<SegmentedControl color="filled" />
+
+{/* After */}
+<SegmentedControl variant="filled" />
+```
+
+#### Toast: `color="default"` &rarr; `color="neutral"`
+
+```tsx
+{/* Before */}
+toast({ color: 'default', title: 'Saved' })
+
+{/* After */}
+toast({ color: 'neutral', title: 'Saved' })
+```
+
+#### Card: `variant="outlined"` &rarr; `variant="outline"`
+
+```tsx
+{/* Before */}
+<Card variant="outlined" />
+
+{/* After */}
+<Card variant="outline" />
+```
+
+### Fixed
+
+| Issue | Fix |
+|-------|-----|
+| Button/Badge/ButtonGroup TypeScript error | `Omit<HTMLAttributes, 'color'>` resolves TS2320 conflict with CVA `color` prop |
+| Button `className` silently dropped | `className` passed as separate `cn()` argument instead of inside `buttonVariants()` |
+| Toggle `className` silently dropped | Same fix &mdash; `className` moved out of `toggleVariants()` |
+| ProjectCard Badge misuse | `variant={status}` &rarr; `color={status}` (was passing color values to variant prop) |
+| AlertDialogHeader/Footer missing ref | Wrapped in `React.forwardRef` (matches Dialog, Sheet pattern) |
+| TaskDetailPanel dropped ref | `_ref` parameter now forwarded to `SheetContent` |
+| Switch ref type | `React.ComponentRef` &rarr; `React.ElementRef` for consistency |
+| DateRangePicker format mismatch | Default `formatStr` changed from `'MMM d'` to `'MMM d, yyyy'` to match DatePicker |
+
+### Added
+
+| What | Details |
+|------|---------|
+| **11 Props type exports** | `AccordionItemProps`, `AccordionTriggerProps`, `AccordionContentProps`, `RadioGroupProps`, `RadioGroupItemProps`, `ToggleProps`, `ToggleGroupProps`, `ToggleGroupItemProps`, `CollapsibleProps`, `SeparatorProps`, `HoverCardContentProps` |
+| **4 variant exports** | `inputVariants`, `cardVariants`, `textareaVariants`, `SpacingToken` |
+| **TreeItem `className`** | Now accepts and merges consumer `className` |
+| **Karm barrel exports** | Admin types (`UserRole`, `AttendanceStatus`, etc.) and 14 utility functions now re-exported from package root |
+
+---
+
 ## 0.3.1 &mdash; 2026-03-06
 
 ### Fixed

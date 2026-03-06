@@ -24,6 +24,8 @@ export interface TreeItemProps {
   children?: React.ReactNode
   /** Depth level (used internally) */
   depth?: number
+  /** Additional CSS class names */
+  className?: string
 }
 
 const TreeItem = React.forwardRef<HTMLLIElement, TreeItemProps>(
@@ -37,6 +39,7 @@ const TreeItem = React.forwardRef<HTMLLIElement, TreeItemProps>(
       disabled = false,
       children,
       depth = 0,
+      className,
     },
     ref,
   ) => {
@@ -129,6 +132,7 @@ const TreeItem = React.forwardRef<HTMLLIElement, TreeItemProps>(
             isSelected &&
               'bg-interactive-selected text-text-interactive',
             disabled && 'opacity-[0.38] cursor-not-allowed pointer-events-none',
+            className,
           )}
         >
           {/* Expand chevron */}

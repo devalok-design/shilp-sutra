@@ -41,7 +41,7 @@ const DateRangePicker = React.forwardRef<HTMLButtonElement, DateRangePickerProps
       onChange,
       placeholder = 'Pick a date range',
       className,
-      formatStr = 'MMM d',
+      formatStr = 'MMM d, yyyy',
       minDate,
       maxDate,
       disabledDates,

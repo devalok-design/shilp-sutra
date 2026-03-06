@@ -10,7 +10,7 @@ export interface SwitchProps extends React.ComponentPropsWithoutRef<typeof Switc
 }
 
 const Switch = React.forwardRef<
-  React.ComponentRef<typeof SwitchPrimitives.Root>,
+  React.ElementRef<typeof SwitchPrimitives.Root>,
   SwitchProps
 >(({ className, error, ...props }, ref) => (
   <SwitchPrimitives.Root

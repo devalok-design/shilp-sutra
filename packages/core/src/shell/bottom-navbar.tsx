@@ -19,7 +19,7 @@ import { cn } from '../ui/lib/utils'
 export interface BottomNavItem {
   title: string
   href: string
-  icon: React.ComponentType<{ className?: string }>
+  icon: React.ReactNode
   /** When true, the route matches only when the path is exactly equal */
   exact?: boolean
 }
@@ -79,7 +79,7 @@ function BottomNavLink({
           aria-hidden="true"
         />
         <div className="p-ds-03">
-          <item.icon className="h-ico-md w-ico-md" aria-hidden="true" />
+          <span className="[&>svg]:h-ico-md [&>svg]:w-ico-md" aria-hidden="true">{item.icon}</span>
         </div>
         <span className="text-center">{item.title}</span>
       </div>
@@ -168,7 +168,7 @@ const BottomNavbar = React.forwardRef<HTMLElement, BottomNavbarProps>(
                       : 'text-text-helper hover:bg-layer-02',
                   )}
                 >
-                  <item.icon className="h-ico-md w-ico-md" />
+                  <span className="[&>svg]:h-ico-md [&>svg]:w-ico-md">{item.icon}</span>
                   <span className="text-center">
                     {item.title}
                   </span>

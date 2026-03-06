@@ -35,7 +35,7 @@ import { cn } from '../ui/lib/utils'
 export interface NavItem {
   title: string
   href: string
-  icon: React.ComponentType<{ className?: string }>
+  icon: React.ReactNode
   /** When true, the route matches only when the path is exactly equal */
   exact?: boolean
 }
@@ -93,7 +93,7 @@ function NavLink({ item, isActive }: { item: NavItem; isActive: boolean }) {
           aria-label={item.title}
           aria-current={isActive ? 'page' : undefined}
         >
-          <item.icon className="h-ico-md w-ico-md shrink-0" aria-hidden="true" />
+          <span className="[&>svg]:h-ico-md [&>svg]:w-ico-md shrink-0" aria-hidden="true">{item.icon}</span>
           <span className="text-ds-base">{item.title}</span>
         </Link>
       </SidebarMenuButton>

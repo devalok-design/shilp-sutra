@@ -27,7 +27,7 @@ import { cn } from './lib/utils'
  * // Confirmation dialog:
  * <Dialog>
  *   <DialogTrigger asChild>
- *     <Button variant="error">Delete project</Button>
+ *     <Button variant="solid" color="error">Delete project</Button>
  *   </DialogTrigger>
  *   <DialogContent>
  *     <DialogHeader>
@@ -37,8 +37,8 @@ import { cn } from './lib/utils'
  *       </DialogDescription>
  *     </DialogHeader>
  *     <DialogFooter>
- *       <DialogClose asChild><Button variant="secondary">Cancel</Button></DialogClose>
- *       <Button variant="error" onClick={handleDelete}>Delete</Button>
+ *       <DialogClose asChild><Button variant="outline">Cancel</Button></DialogClose>
+ *       <Button variant="solid" color="error" onClick={handleDelete}>Delete</Button>
  *     </DialogFooter>
  *   </DialogContent>
  * </Dialog>

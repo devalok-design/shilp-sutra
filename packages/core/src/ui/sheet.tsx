@@ -47,8 +47,8 @@ import { cn } from './lib/utils'
  *   <SheetContent side="bottom">
  *     <SheetTitle>Actions</SheetTitle>
  *     <div className="flex flex-col gap-ds-03 mt-ds-05">
- *       <Button variant="error-ghost" fullWidth>Delete item</Button>
- *       <Button variant="secondary" fullWidth>Duplicate</Button>
+ *       <Button variant="outline" color="error" fullWidth>Delete item</Button>
+ *       <Button variant="outline" fullWidth>Duplicate</Button>
  *     </div>
  *   </SheetContent>
  * </Sheet>
@@ -124,8 +124,8 @@ const sheetVariants = cva(
  *   <SheetContent side="bottom">
  *     <SheetTitle>Actions</SheetTitle>
  *     <div className="flex flex-col gap-ds-03 mt-ds-05">
- *       <Button variant="error-ghost" fullWidth>Delete item</Button>
- *       <Button variant="secondary" fullWidth>Duplicate</Button>
+ *       <Button variant="outline" color="error" fullWidth>Delete item</Button>
+ *       <Button variant="outline" fullWidth>Duplicate</Button>
  *     </div>
  *   </SheetContent>
  * </Sheet>

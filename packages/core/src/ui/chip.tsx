@@ -78,8 +78,8 @@ type ChipColor = 'default' | 'primary' | 'success' | 'error' | 'warning' | 'info
  * - `color` controls **intent/category**: `"default"` | `"primary"` | `"success"` | `"error"` |
  *   `"warning"` | `"info"` | `"teal"` | `"amber"` | `"slate"` | `"indigo"` | `"cyan"` | `"orange"` | `"emerald"`
  *
- * **Comparison with Badge:** Badge uses `variant=` for intent (e.g. `variant="success"`).
- * Chip uses `color=` for intent. They are different — don't mix them up.
+ * **Comparison with Badge:** Badge now uses `color=` for intent (e.g. `color="success"`), same as Chip.
+ * Badge also has `variant=` for visual style (`subtle` | `solid` | `outline`).
  *
  * **Important:** Use the `label` prop, NOT `children`. Chip does not render children.
  *
@@ -101,7 +101,7 @@ type ChipColor = 'default' | 'primary' | 'success' | 'error' | 'warning' | 'info
  * // <Chip>High Priority</Chip>
  *
  * // Badge comparison:
- * // <Badge variant="success">Done</Badge>  ← Badge uses variant= for intent
+ * // <Badge color="success">Done</Badge>  ← Badge uses color= for intent
  * // <Chip label="Done" color="success" />  ← Chip uses color= for intent
  */
 type ChipProps = Omit<VariantProps<typeof chipVariants>, 'color'> & {

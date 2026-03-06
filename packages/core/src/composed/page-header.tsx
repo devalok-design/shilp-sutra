@@ -8,7 +8,7 @@ export interface Breadcrumb {
 }
 
 export interface PageHeaderProps extends React.HTMLAttributes<HTMLDivElement> {
-  title: string
+  title?: string
   subtitle?: string
   actions?: React.ReactNode
   breadcrumbs?: Breadcrumb[]
@@ -20,6 +20,9 @@ const PageHeader = React.forwardRef<HTMLDivElement, PageHeaderProps>(
     { title, subtitle, actions, breadcrumbs, titleClassName, className, ...props },
     ref,
   ) => {
+    const resolvedTitle =
+      title ?? breadcrumbs?.[breadcrumbs.length - 1]?.label ?? ''
+
     return (
       <div
         ref={ref}
@@ -63,27 +66,31 @@ const PageHeader = React.forwardRef<HTMLDivElement, PageHeaderProps>(
           </nav>
         )}
 
-        <div className="flex items-start justify-between gap-ds-05">
-          <div className="flex flex-col gap-ds-02b">
-            <h1
-              className={cn(
-                'text-ds-2xl text-text-primary',
-                titleClassName,
+        {(resolvedTitle || subtitle || actions) && (
+          <div className="flex items-start justify-between gap-ds-05">
+            <div className="flex flex-col gap-ds-02b">
+              {resolvedTitle && (
+                <h1
+                  className={cn(
+                    'text-ds-2xl text-text-primary',
+                    titleClassName,
+                  )}
+                >
+                  {resolvedTitle}
+                </h1>
               )}
-            >
-              {title}
-            </h1>
-            {subtitle && (
-              <p className="text-ds-md text-text-placeholder">
-                {subtitle}
-              </p>
+              {subtitle && (
+                <p className="text-ds-md text-text-placeholder">
+                  {subtitle}
+                </p>
+              )}
+            </div>
+
+            {actions && (
+              <div className="flex shrink-0 items-center gap-ds-03">{actions}</div>
             )}
           </div>
-
-          {actions && (
-            <div className="flex shrink-0 items-center gap-ds-03">{actions}</div>
-          )}
-        </div>
+        )}
       </div>
     )
   },

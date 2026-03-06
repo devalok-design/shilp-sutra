@@ -5,6 +5,21 @@ All notable changes to `@devalok/shilp-sutra` will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.6.0] — 2026-03-06
+
+The **Karm Feedback** release. Improves developer experience with Storybook documentation, import guides, and migration helpers.
+
+### Added
+- **Storybook package labels**: All 41 karm story files and 2 barrel-isolated core stories now display package name and import path in the docs tab via `parameters.docs.description.component`
+- **Import Guide**: New Storybook MDX page ("Guides/Import Paths") documenting barrel imports, barrel-isolated components, per-component RSC imports, and karm sub-path exports
+- **shadcn/ui Migration Guide**: New Storybook MDX page ("Guides/Coming from shadcn") mapping shadcn variant names to shilp-sutra's two-axis variant+color system
+- **Karm README**: Updated with component inventory, module descriptions, and import paths
+
+### Changed
+- **Karm README**: Expanded with full component inventory by module, when-to-use guidance, and Tailwind content configuration
+
+---
+
 ## [0.5.0] — 2026-03-06
 
 The **Next.js Compatibility** release. Fixes build failures when integrating with Next.js 15 App Router and pnpm strict mode.

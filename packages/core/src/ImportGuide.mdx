@@ -1,0 +1,48 @@
+import { Meta } from '@storybook/blocks'
+
+<Meta title="Guides/Import Paths" />
+
+# Import Guide
+
+## Barrel Imports
+
+| Module | Import |
+|--------|--------|
+| UI | `import { Button } from '@devalok/shilp-sutra'` |
+| Composed | `import { PageHeader } from '@devalok/shilp-sutra/composed'` |
+| Shell | `import { AppSidebar } from '@devalok/shilp-sutra/shell'` |
+| Hooks | `import { useMobile } from '@devalok/shilp-sutra/hooks'` |
+| Tailwind | `import { shilpSutraPreset } from '@devalok/shilp-sutra/tailwind'` |
+
+## Barrel-Isolated Components
+
+These are NOT in the main barrel to avoid pulling in heavy deps via Next.js webpack:
+
+| Component | Import |
+|-----------|--------|
+| DataTable | `import { DataTable } from '@devalok/shilp-sutra/ui/data-table'` |
+| DataTableToolbar | `import { DataTableToolbar } from '@devalok/shilp-sutra/ui/data-table-toolbar'` |
+| Charts | `import { BarChart } from '@devalok/shilp-sutra/ui/charts'` |
+
+## Per-Component Imports (Server Components)
+
+For RSC, import individually to avoid "use client" contamination:
+
+| Component | Import |
+|-----------|--------|
+| Text | `import { Text } from '@devalok/shilp-sutra/ui/text'` |
+| Skeleton | `import { Skeleton } from '@devalok/shilp-sutra/ui/skeleton'` |
+| EmptyState | `import { EmptyState } from '@devalok/shilp-sutra/composed/empty-state'` |
+| PageHeader | `import { PageHeader } from '@devalok/shilp-sutra/composed/page-header'` |
+| StatusBadge | `import { StatusBadge } from '@devalok/shilp-sutra/composed/status-badge'` |
+
+## Karm Package (`@devalok/shilp-sutra-karm`)
+
+| Module | Import |
+|--------|--------|
+| Board | `import { KanbanBoard } from '@devalok/shilp-sutra-karm/board'` |
+| Tasks | `import { TaskDetailPanel } from '@devalok/shilp-sutra-karm/tasks'` |
+| Chat | `import { ChatPanel } from '@devalok/shilp-sutra-karm/chat'` |
+| Dashboard | `import { AttendanceCTA } from '@devalok/shilp-sutra-karm/dashboard'` |
+| Client | `import { ClientPortalHeader } from '@devalok/shilp-sutra-karm/client'` |
+| Admin | `import { AdminDashboard } from '@devalok/shilp-sutra-karm/admin'` |

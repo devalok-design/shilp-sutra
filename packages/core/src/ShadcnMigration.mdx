@@ -1,0 +1,42 @@
+import { Meta } from '@storybook/blocks'
+
+<Meta title="Guides/Coming from shadcn" />
+
+# Coming from shadcn/ui?
+
+Shilp Sutra uses a **two-axis variant system** (`variant` + `color`) instead of shadcn's single `variant` prop.
+
+## Button
+
+| shadcn/ui | shilp-sutra |
+|-----------|-------------|
+| `variant="default"` | `variant="solid"` |
+| `variant="destructive"` | `variant="solid" color="error"` |
+| `variant="outline"` | `variant="outline"` |
+| `variant="secondary"` | `variant="subtle"` |
+| `variant="ghost"` | `variant="ghost"` |
+| `variant="link"` | `variant="link"` |
+
+## Badge
+
+| shadcn/ui | shilp-sutra |
+|-----------|-------------|
+| `variant="default"` | `variant="solid"` |
+| `variant="destructive"` | `variant="solid" color="error"` |
+| `variant="secondary"` | `variant="subtle"` |
+| `variant="outline"` | `variant="outline"` |
+
+## Alert
+
+| shadcn/ui | shilp-sutra |
+|-----------|-------------|
+| `variant="default"` | `color="info"` (or `variant="subtle" color="info"`) |
+| `variant="destructive"` | `color="error"` (or `variant="filled" color="error"`) |
+
+## Key Differences
+
+- **Two-axis system:** Most components accept `variant` (visual style) + `color` (semantic meaning) as separate props
+- **Color palette:** `primary`, `success`, `warning`, `error`, `info`, `neutral`
+- **Icon props:** Pass JSX elements `icon={<IconName />}`, not component references
+- **Tooltip:** Use `<SimpleTooltip content="text">` for the common case
+- **StatusBadge:** Use `color` prop for custom statuses: `<StatusBadge color="success" label="Present" />`

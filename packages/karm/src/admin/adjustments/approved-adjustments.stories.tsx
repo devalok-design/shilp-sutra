@@ -51,7 +51,14 @@ const meta = {
   title: 'Karm/Admin/Adjustments/ApprovedAdjustments',
   component: ApprovedAdjustments,
   tags: ['autodocs'],
-  parameters: { layout: 'padded' },
+  parameters: {
+    layout: 'padded',
+    docs: {
+      description: {
+        component: '**Package:** `@devalok/shilp-sutra-karm` · **Import:** `import { ApprovedAdjustments } from "@devalok/shilp-sutra-karm/admin"`',
+      },
+    },
+  },
   decorators: [(Story) => <div style={{ maxWidth: 960 }}><Story /></div>],
 } satisfies Meta<typeof ApprovedAdjustments>
 

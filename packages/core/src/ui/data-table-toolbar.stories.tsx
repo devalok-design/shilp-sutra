@@ -69,6 +69,13 @@ const data: Employee[] = [
 const meta: Meta = {
   title: 'UI/Data Display/DataTableToolbar',
   tags: ['autodocs'],
+  parameters: {
+    docs: {
+      description: {
+        component: '**Barrel-isolated** — import via `import { DataTableToolbar } from "@devalok/shilp-sutra/ui/data-table-toolbar"` (not available from the main `ui` barrel).',
+      },
+    },
+  },
 }
 export default meta
 type Story = StoryObj

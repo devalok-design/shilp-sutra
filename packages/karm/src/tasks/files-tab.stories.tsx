@@ -150,6 +150,11 @@ const meta: Meta<typeof FilesTab> = {
   tags: ['autodocs'],
   parameters: {
     layout: 'centered',
+    docs: {
+      description: {
+        component: '**Package:** `@devalok/shilp-sutra-karm` · **Import:** `import { FilesTab } from "@devalok/shilp-sutra-karm/tasks"`',
+      },
+    },
   },
   args: {
     onUpload: fn(),

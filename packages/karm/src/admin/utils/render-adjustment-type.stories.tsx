@@ -4,6 +4,13 @@ import { renderAdjustmentType, AdjustmentType } from './render-adjustment-type'
 const meta: Meta = {
   title: 'Karm/Admin/Utils/RenderAdjustmentType',
   tags: ['autodocs'],
+  parameters: {
+    docs: {
+      description: {
+        component: '**Package:** `@devalok/shilp-sutra-karm` · **Import:** `import { renderAdjustmentType } from "@devalok/shilp-sutra-karm/admin"`',
+      },
+    },
+  },
   argTypes: {
     type: {
       control: 'select',

@@ -7,6 +7,11 @@ const meta: Meta<typeof AttendanceCTA> = {
   tags: ['autodocs'],
   parameters: {
     layout: 'padded',
+    docs: {
+      description: {
+        component: '**Package:** `@devalok/shilp-sutra-karm` · **Import:** `import { AttendanceCTA } from "@devalok/shilp-sutra-karm/dashboard"`',
+      },
+    },
   },
   decorators: [
     (Story) => (

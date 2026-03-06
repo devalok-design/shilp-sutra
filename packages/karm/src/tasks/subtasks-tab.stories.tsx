@@ -109,6 +109,11 @@ const meta: Meta<typeof SubtasksTab> = {
   tags: ['autodocs'],
   parameters: {
     layout: 'centered',
+    docs: {
+      description: {
+        component: '**Package:** `@devalok/shilp-sutra-karm` · **Import:** `import { SubtasksTab } from "@devalok/shilp-sutra-karm/tasks"`',
+      },
+    },
   },
   args: {
     projectId: 'proj-1',

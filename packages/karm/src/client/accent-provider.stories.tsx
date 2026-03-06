@@ -7,6 +7,11 @@ const meta: Meta<typeof AccentProvider> = {
   tags: ['autodocs'],
   parameters: {
     layout: 'padded',
+    docs: {
+      description: {
+        component: '**Package:** `@devalok/shilp-sutra-karm` · **Import:** `import { AccentProvider } from "@devalok/shilp-sutra-karm/client"`',
+      },
+    },
   },
 }
 export default meta

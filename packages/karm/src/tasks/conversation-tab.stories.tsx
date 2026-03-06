@@ -163,6 +163,11 @@ const meta: Meta<typeof ConversationTab> = {
   tags: ['autodocs'],
   parameters: {
     layout: 'centered',
+    docs: {
+      description: {
+        component: '**Package:** `@devalok/shilp-sutra-karm` · **Import:** `import { ConversationTab } from "@devalok/shilp-sutra-karm/tasks"`',
+      },
+    },
   },
   args: {
     onPostComment: fn(),

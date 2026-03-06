@@ -248,6 +248,11 @@ const meta: Meta<typeof KanbanBoard> = {
   tags: ['autodocs'],
   parameters: {
     layout: 'fullscreen',
+    docs: {
+      description: {
+        component: '**Package:** `@devalok/shilp-sutra-karm` · **Import:** `import { KanbanBoard } from "@devalok/shilp-sutra-karm/board"`',
+      },
+    },
   },
   decorators: [
     (Story) => (

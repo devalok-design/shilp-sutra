@@ -343,6 +343,11 @@ const meta: Meta<typeof TaskDetailPanel> = {
   tags: ['autodocs'],
   parameters: {
     layout: 'fullscreen',
+    docs: {
+      description: {
+        component: '**Package:** `@devalok/shilp-sutra-karm` · **Import:** `import { TaskDetailPanel } from "@devalok/shilp-sutra-karm/tasks"`',
+      },
+    },
   },
   args: {
     open: false,

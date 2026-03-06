@@ -9,6 +9,11 @@ const meta: Meta<typeof ChatPanel> = {
   tags: ['autodocs'],
   parameters: {
     layout: 'fullscreen',
+    docs: {
+      description: {
+        component: '**Package:** `@devalok/shilp-sutra-karm` · **Import:** `import { ChatPanel } from "@devalok/shilp-sutra-karm/chat"`',
+      },
+    },
   },
   argTypes: {
     onSendMessage: { action: 'sendMessage' },

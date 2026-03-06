@@ -141,6 +141,11 @@ const meta = {
   tags: ['autodocs'],
   parameters: {
     layout: 'padded',
+    docs: {
+      description: {
+        component: '**Package:** `@devalok/shilp-sutra-karm` · **Import:** `import { BreakAdmin } from "@devalok/shilp-sutra-karm/admin"`',
+      },
+    },
   },
   args: {
     onApproveRequest: fn(),

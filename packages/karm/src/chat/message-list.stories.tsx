@@ -7,6 +7,11 @@ const meta: Meta<typeof MessageList> = {
   tags: ['autodocs'],
   parameters: {
     layout: 'padded',
+    docs: {
+      description: {
+        component: '**Package:** `@devalok/shilp-sutra-karm` · **Import:** `import { MessageList } from "@devalok/shilp-sutra-karm/chat"`',
+      },
+    },
   },
   decorators: [
     (Story) => (

@@ -12,6 +12,11 @@ const meta = {
   tags: ['autodocs'],
   parameters: {
     layout: 'centered',
+    docs: {
+      description: {
+        component: '**Package:** `@devalok/shilp-sutra-karm` · **Import:** `import { DeleteBreak } from "@devalok/shilp-sutra-karm/admin"`',
+      },
+    },
   },
   args: {
     onDelete: fn(),

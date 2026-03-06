@@ -53,6 +53,13 @@ const meta: Meta<typeof DataTable> = {
   title: 'UI/Data Display/DataTable',
   component: DataTable,
   tags: ['autodocs'],
+  parameters: {
+    docs: {
+      description: {
+        component: '**Barrel-isolated** — import via `import { DataTable } from "@devalok/shilp-sutra/ui/data-table"` (not available from the main `ui` barrel).',
+      },
+    },
+  },
 }
 export default meta
 type Story = StoryObj<typeof DataTable>

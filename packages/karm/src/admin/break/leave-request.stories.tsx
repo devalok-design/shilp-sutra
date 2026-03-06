@@ -72,6 +72,11 @@ const meta = {
   tags: ['autodocs'],
   parameters: {
     layout: 'padded',
+    docs: {
+      description: {
+        component: '**Package:** `@devalok/shilp-sutra-karm` · **Import:** `import { LeaveRequest } from "@devalok/shilp-sutra-karm/admin"`',
+      },
+    },
   },
   args: {
     handleRejectRequest: fn(),

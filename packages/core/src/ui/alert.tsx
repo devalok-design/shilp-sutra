@@ -70,7 +70,7 @@ const ALERT_ICONS: Record<string, React.ComponentType<{ className?: string }>> =
  * // These are just a few ways — feel free to combine props creatively!
  */
 export interface AlertProps
-  extends React.HTMLAttributes<HTMLDivElement>,
+  extends Omit<React.HTMLAttributes<HTMLDivElement>, 'color'>,
     VariantProps<typeof alertVariants> {
   title?: string
   onDismiss?: () => void

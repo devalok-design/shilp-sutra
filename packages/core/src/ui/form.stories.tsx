@@ -1,5 +1,5 @@
 import type { Meta, StoryObj } from '@storybook/react'
-import { FormField, FormHelperText, getFormFieldA11y } from './form'
+import { FormField, FormHelperText } from './form'
 import { Label } from './label'
 import { Input } from './input'
 import { Textarea } from './textarea'
@@ -23,66 +23,54 @@ export const Default: Story = {
 }
 
 export const ErrorState: Story = {
-  render: () => {
-    const helperTextId = 'email-error-hint'
-    return (
-      <FormField className="max-w-sm" state="error">
-        <Label htmlFor="email" required>
-          Email
-        </Label>
-        <Input
-          id="email"
-          state="error"
-          defaultValue="not-an-email"
-          {...getFormFieldA11y(helperTextId, 'error')}
-        />
-        <FormHelperText id={helperTextId} state="error">
-          Please enter a valid email address.
-        </FormHelperText>
-      </FormField>
-    )
-  },
+  render: () => (
+    <FormField className="max-w-sm" state="error">
+      <Label htmlFor="email" required>
+        Email
+      </Label>
+      <Input
+        id="email"
+        state="error"
+        defaultValue="not-an-email"
+      />
+      <FormHelperText>
+        Please enter a valid email address.
+      </FormHelperText>
+    </FormField>
+  ),
 }
 
 export const WarningState: Story = {
-  render: () => {
-    const helperTextId = 'password-warning-hint'
-    return (
-      <FormField className="max-w-sm" state="warning">
-        <Label htmlFor="password">Password</Label>
-        <Input
-          id="password"
-          type="password"
-          state="warning"
-          defaultValue="weak"
-          {...getFormFieldA11y(helperTextId, 'warning')}
-        />
-        <FormHelperText id={helperTextId} state="warning">
-          Password strength is weak. Consider adding numbers and symbols.
-        </FormHelperText>
-      </FormField>
-    )
-  },
+  render: () => (
+    <FormField className="max-w-sm" state="warning">
+      <Label htmlFor="password">Password</Label>
+      <Input
+        id="password"
+        type="password"
+        state="warning"
+        defaultValue="weak"
+      />
+      <FormHelperText>
+        Password strength is weak. Consider adding numbers and symbols.
+      </FormHelperText>
+    </FormField>
+  ),
 }
 
 export const SuccessState: Story = {
-  render: () => {
-    const helperTextId = 'username-success-hint'
-    return (
-      <FormField className="max-w-sm" state="success">
-        <Label htmlFor="username">Username</Label>
-        <Input
-          id="username"
-          state="success"
-          defaultValue="devalok_user"
-          {...getFormFieldA11y(helperTextId, 'success')}
-        />
-        <FormHelperText id={helperTextId} state="success">
-          Username is available.
-        </FormHelperText>
-      </FormField>
-    )
-  },
+  render: () => (
+    <FormField className="max-w-sm" state="success">
+      <Label htmlFor="username">Username</Label>
+      <Input
+        id="username"
+        state="success"
+        defaultValue="devalok_user"
+      />
+      <FormHelperText>
+        Username is available.
+      </FormHelperText>
+    </FormField>
+  ),
 }
 
 export const WithTextarea: Story = {

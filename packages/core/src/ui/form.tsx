@@ -5,51 +5,57 @@ import { cn } from './lib/utils'
 
 export type FormHelperState = 'helper' | 'error' | 'warning' | 'success'
 
-type FormFieldContextValue = { state: FormHelperState }
-const FormFieldContext = React.createContext<FormFieldContextValue>({ state: 'helper' })
+interface FormFieldContextValue {
+  state?: FormHelperState
+  helperTextId?: string
+  required?: boolean
+}
+const FormFieldContext = React.createContext<FormFieldContextValue>({})
 
 /**
- * FormField — vertical flex container that provides validation state to children via React context.
+ * FormField — vertical flex container that provides validation state and
+ * aria-describedby wiring to children via React context.
  *
- * **Accessibility wiring:** The `helperTextId` prop is informational only — it is NOT automatically
- * propagated to inputs. Use `getFormFieldA11y(id, state)` to wire `aria-describedby` manually.
+ * **Automatic a11y wiring:** FormField generates a stable ID (or uses a provided `helperTextId`)
+ * and passes it to `FormHelperText` via context. Use the `useFormField()` hook in custom inputs
+ * to read `{ state, helperTextId, required }` and spread onto your input element.
  *
  * @example
- * const helperTextId = 'email-error'
- *
  * <FormField state="error">
  *   <Label htmlFor="email">Email</Label>
- *   <Input
- *     id="email"
- *     state="error"
- *     {...getFormFieldA11y(helperTextId, 'error')}
- *   />
- *   <FormHelperText id={helperTextId} state="error">
- *     Please enter a valid email address.
- *   </FormHelperText>
+ *   <Input id="email" state="error" />
+ *   <FormHelperText>Please enter a valid email address.</FormHelperText>
  * </FormField>
  */
 export interface FormFieldProps extends React.HTMLAttributes<HTMLDivElement> {
   /**
-   * ID that will be placed on the `FormHelperText` element.
-   * Informational only — does NOT auto-wire `aria-describedby`.
-   * Use `getFormFieldA11y(helperTextId, state)` spread onto the Input instead.
+   * Custom ID for the helper text element. If omitted, an auto-generated ID is used.
+   * Pass this to `useFormField()` consumers that need to set `aria-describedby`.
    */
   helperTextId?: string
   /** Current validation state — propagated to child `FormHelperText` via context */
   state?: FormHelperState
+  /** Whether the field is required — available to children via `useFormField()` */
+  required?: boolean
 }
 
 const FormField = React.forwardRef<HTMLDivElement, FormFieldProps>(
-  ({ className, helperTextId: _helperTextId, state = 'helper', ...props }, ref) => (
-    <FormFieldContext.Provider value={{ state }}>
-      <div
-        ref={ref}
-        className={cn('flex flex-col gap-ds-02', className)}
-        {...props}
-      />
-    </FormFieldContext.Provider>
-  ),
+  ({ className, helperTextId, state = 'helper', required, children, ...props }, ref) => {
+    const autoId = React.useId()
+    const resolvedId = helperTextId || `${autoId}-helper`
+
+    return (
+      <FormFieldContext.Provider value={{ state, helperTextId: resolvedId, required }}>
+        <div
+          ref={ref}
+          className={cn('flex flex-col gap-ds-02', className)}
+          {...props}
+        >
+          {children}
+        </div>
+      </FormFieldContext.Provider>
+    )
+  },
 )
 FormField.displayName = 'FormField'
 
@@ -68,13 +74,15 @@ const helperStateClasses: Record<FormHelperState, string> = {
 }
 
 const FormHelperText = React.forwardRef<HTMLParagraphElement, FormHelperTextProps>(
-  ({ className, state: stateProp, ...props }, ref) => {
+  ({ className, id: idProp, state: stateProp, ...props }, ref) => {
     const context = React.useContext(FormFieldContext)
-    const state = stateProp ?? context.state
+    const state = stateProp ?? context.state ?? 'helper'
+    const id = idProp ?? context.helperTextId
 
     return (
       <p
         ref={ref}
+        id={id}
         role={state === 'error' ? 'alert' : undefined}
         className={cn('text-ds-sm', helperStateClasses[state], className)}
         {...props}
@@ -85,21 +93,24 @@ const FormHelperText = React.forwardRef<HTMLParagraphElement, FormHelperTextProp
 FormHelperText.displayName = 'FormHelperText'
 
 /**
- * Helper to compute a11y attributes for form inputs.
+ * Hook to read FormField context — returns `{ state, helperTextId, required }`.
+ * Use in custom input components to auto-wire `aria-describedby` and `aria-invalid`.
  *
  * @example
- *   const a11y = getFormFieldA11y('email-error', 'error')
- *   <Input {...a11y} />
- *   // => { "aria-describedby": "email-error", "aria-invalid": true }
+ * function MyCustomInput(props) {
+ *   const { state, helperTextId, required } = useFormField()
+ *   return (
+ *     <input
+ *       aria-describedby={helperTextId}
+ *       aria-invalid={state === 'error' || undefined}
+ *       aria-required={required}
+ *       {...props}
+ *     />
+ *   )
+ * }
  */
-function getFormFieldA11y(
-  helperTextId?: string,
-  state?: FormHelperState,
-): { 'aria-describedby'?: string; 'aria-invalid'?: boolean } {
-  return {
-    ...(helperTextId ? { 'aria-describedby': helperTextId } : {}),
-    ...(state === 'error' ? { 'aria-invalid': true as const } : {}),
-  }
+export function useFormField(): FormFieldContextValue {
+  return React.useContext(FormFieldContext)
 }
 
-export { FormField, FormFieldContext, FormHelperText, getFormFieldA11y }
+export { FormField, FormFieldContext, FormHelperText }

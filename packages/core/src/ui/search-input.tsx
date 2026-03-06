@@ -82,7 +82,7 @@ const SearchInput = React.forwardRef<HTMLInputElement, SearchInputProps>(
         />
         {loading ? (
           <IconLoader2
-            className="absolute right-[0.75rem] h-ico-md w-ico-md text-text-secondary animate-spin pointer-events-none"
+            className="absolute right-[0.75rem] h-ico-md w-ico-md text-text-secondary animate-spin motion-reduce:animate-none pointer-events-none"
             aria-hidden="true"
           />
         ) : hasValue && onClear ? (

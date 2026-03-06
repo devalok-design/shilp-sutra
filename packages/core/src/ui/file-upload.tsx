@@ -247,7 +247,7 @@ const FileUpload = React.forwardRef<HTMLDivElement, FileUploadProps>(
             )}
           >
             {uploading ? (
-              <IconLoader2 className="h-ico-sm w-ico-sm animate-spin" />
+              <IconLoader2 className="h-ico-sm w-ico-sm animate-spin motion-reduce:animate-none" />
             ) : (
               <IconPaperclip className="h-ico-sm w-ico-sm" />
             )}
@@ -316,7 +316,7 @@ const FileUpload = React.forwardRef<HTMLDivElement, FileUploadProps>(
           )}
         >
           {uploading ? (
-            <IconLoader2 className="h-ds-sm w-ds-sm animate-spin text-icon-secondary" />
+            <IconLoader2 className="h-ds-sm w-ds-sm animate-spin motion-reduce:animate-none text-icon-secondary" />
           ) : (
             <IconUpload className="h-ds-sm w-ds-sm text-icon-secondary" />
           )}

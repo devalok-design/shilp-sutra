@@ -48,7 +48,7 @@ const Spinner = React.forwardRef<SVGSVGElement, SpinnerProps>(
       <span role="status">
         <svg
           ref={ref}
-          className={cn('animate-spin', sizeClasses[size], className)}
+          className={cn('animate-spin motion-reduce:animate-none', sizeClasses[size], className)}
           viewBox="0 0 24 24"
           fill="none"
           xmlns="http://www.w3.org/2000/svg"

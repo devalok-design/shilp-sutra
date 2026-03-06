@@ -45,7 +45,7 @@ import {
  * import { toast } from '@devalok/shilp-sutra'
  * toast({ title: 'Deleted', color: 'error' })
  *
- * // Valid colors: 'default' | 'success' | 'warning' | 'error' | 'info'
+ * // Valid colors: 'neutral' | 'success' | 'warning' | 'error' | 'info'
  */
 export function Toaster() {
   const { toasts } = useToast()

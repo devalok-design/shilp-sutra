@@ -17,7 +17,7 @@ const meta: Meta<typeof Toast> = {
   argTypes: {
     color: {
       control: 'select',
-      options: ['default', 'success', 'warning', 'error', 'info'],
+      options: ['neutral', 'success', 'warning', 'error', 'info'],
     },
   },
   decorators: [
@@ -165,7 +165,7 @@ export const ErrorWithAction: Story = {
 export const AllVariants: Story = {
   render: () => (
     <div className="flex flex-col gap-ds-04">
-      <Toast open color="default">
+      <Toast open color="neutral">
         <div className="grid gap-ds-02">
           <ToastTitle>Default</ToastTitle>
           <ToastDescription>Standard notification message.</ToastDescription>

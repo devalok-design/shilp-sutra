@@ -2,7 +2,7 @@ import { render, screen } from '@testing-library/react'
 import { describe, it, expect } from 'vitest'
 import { ToastProvider, ToastViewport, Toast, ToastTitle, ToastDescription } from './toast'
 
-function renderToast(props: { color?: 'default' | 'success' | 'warning' | 'error' | 'info' } = {}) {
+function renderToast(props: { color?: 'neutral' | 'success' | 'warning' | 'error' | 'info' } = {}) {
   return render(
     <ToastProvider>
       <Toast open {...props}>

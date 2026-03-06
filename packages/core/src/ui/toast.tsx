@@ -25,7 +25,7 @@ const ToastViewport = React.forwardRef<
 ToastViewport.displayName = ToastPrimitives.Viewport.displayName
 
 /**
- * Toast color styles. Valid `color` values: `'default'` | `'success'` | `'warning'` | `'error'` | `'info'`.
+ * Toast color styles. Valid `color` values: `'neutral'` | `'success'` | `'warning'` | `'error'` | `'info'`.
  *
  * Note: `'destructive'` and `'karam'` are NOT valid color values and do not exist in this CVA definition.
  * The CSS class `destructive` appears internally as a group selector — it is not a prop value.
@@ -35,7 +35,7 @@ const toastVariants = cva(
   {
     variants: {
       color: {
-        default:
+        neutral:
           'border-border bg-layer-01 text-text-primary',
         success:
           'border-success-border bg-success-surface text-success-text',
@@ -48,7 +48,7 @@ const toastVariants = cva(
       },
     },
     defaultVariants: {
-      color: 'default',
+      color: 'neutral',
     },
   },
 )

@@ -1,6 +1,6 @@
 {
   "name": "@devalok/shilp-sutra",
-  "version": "0.3.0",
+  "version": "0.3.1",
   "description": "Devalok Design System — tokens, components, and patterns for Next.js",
   "license": "MIT",
   "type": "module",

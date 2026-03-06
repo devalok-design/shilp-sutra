@@ -9,7 +9,7 @@ const bannerVariants = cva(
   'flex items-center gap-ds-04 px-ds-06 py-ds-04 text-ds-md font-medium border-b',
   {
     variants: {
-      variant: {
+      color: {
         info:
           'bg-info-surface border-info-border text-info-text',
         success:
@@ -22,7 +22,7 @@ const bannerVariants = cva(
           'bg-layer-02 border-border text-text-primary [&>svg]:text-text-secondary',
       },
     },
-    defaultVariants: { variant: 'info' },
+    defaultVariants: { color: 'info' },
   },
 )
 
@@ -38,7 +38,7 @@ const BANNER_ICONS: Record<string, React.ComponentType<{ className?: string }>> 
  * Props for Banner — a full-width notification strip with a colored icon, message, optional
  * action slot, and an optional dismiss button. Renders with `role="alert"`.
  *
- * **Variants:** `info` (default) | `success` | `warning` | `error` | `neutral`
+ * **Colors:** `info` (default) | `success` | `warning` | `error` | `neutral`
  *
  * **Banner vs Alert:** Banner spans the full width of its container (e.g., top of a page or section).
  * Alert is an inline block inside page content. Use Banner for system-level announcements.
@@ -48,19 +48,19 @@ const BANNER_ICONS: Record<string, React.ComponentType<{ className?: string }>> 
  *
  * @example
  * // Maintenance warning at top of the dashboard:
- * <Banner variant="warning">
+ * <Banner color="warning">
  *   Scheduled maintenance on Sunday 2am–4am UTC. Expect brief downtime.
  * </Banner>
  *
  * @example
  * // Success banner with a CTA action button:
- * <Banner variant="success" action={<Button variant="ghost" size="sm">View report</Button>}>
+ * <Banner color="success" action={<Button variant="ghost" size="sm">View report</Button>}>
  *   Your export is ready.
  * </Banner>
  *
  * @example
  * // Dismissible info banner for a new feature announcement:
- * <Banner variant="info" onDismiss={() => markAsSeen('feature-x')}>
+ * <Banner color="info" onDismiss={() => markAsSeen('feature-x')}>
  *   New: You can now assign tasks directly from the calendar view.
  * </Banner>
  * // These are just a few ways — feel free to combine props creatively!
@@ -73,11 +73,11 @@ export interface BannerProps
 }
 
 const Banner = React.forwardRef<HTMLDivElement, BannerProps>(
-  ({ className, variant = 'info', action, onDismiss, children, ...props }, ref) => {
-    const Icon = BANNER_ICONS[variant ?? 'info']
+  ({ className, color = 'info', action, onDismiss, children, ...props }, ref) => {
+    const Icon = BANNER_ICONS[color ?? 'info']
 
     return (
-      <div ref={ref} className={cn(bannerVariants({ variant }), className)} role="alert" {...props}>
+      <div ref={ref} className={cn(bannerVariants({ color }), className)} role="alert" {...props}>
         <Icon className="h-ico-md w-ico-md shrink-0" aria-hidden="true" />
         <span className="flex-1">{children}</span>
         {action && <span className="shrink-0">{action}</span>}

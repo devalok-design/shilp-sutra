@@ -9,7 +9,7 @@ const alertVariants = cva(
   'relative flex gap-ds-04 rounded-ds-lg border p-ds-05',
   {
     variants: {
-      variant: {
+      color: {
         info:
           'bg-info-surface border-info-border text-info-text',
         success:
@@ -22,7 +22,7 @@ const alertVariants = cva(
           'bg-layer-02 border-border text-text-primary [&>svg]:text-text-secondary',
       },
     },
-    defaultVariants: { variant: 'info' },
+    defaultVariants: { color: 'info' },
   },
 )
 
@@ -38,8 +38,8 @@ const ALERT_ICONS: Record<string, React.ComponentType<{ className?: string }>> =
  * Props for Alert — an inline message block with a colored icon, optional title, optional body,
  * and an optional dismiss button. Renders with `role="alert"` for screen reader announcements.
  *
- * **Variants:** `info` (default, blue tones) | `success` | `warning` | `error` | `neutral`
- * The matching icon (info circle, checkmark, triangle, alert circle) is auto-selected by variant.
+ * **Colors:** `info` (default, blue tones) | `success` | `warning` | `error` | `neutral`
+ * The matching icon (info circle, checkmark, triangle, alert circle) is auto-selected by color.
  *
  * **Alert vs Banner:** Alert is inline (inside page content). Banner is a full-width notification
  * strip rendered at the top of a page/section (see `<Banner>`).
@@ -48,25 +48,25 @@ const ALERT_ICONS: Record<string, React.ComponentType<{ className?: string }>> =
  *
  * @example
  * // Informational tip inside a settings form:
- * <Alert title="Tip" variant="info">
+ * <Alert title="Tip" color="info">
  *   Changes take effect after you save and reload the page.
  * </Alert>
  *
  * @example
  * // Error feedback after a failed API call (dismissible):
- * <Alert variant="error" title="Save failed" onDismiss={() => setError(null)}>
+ * <Alert color="error" title="Save failed" onDismiss={() => setError(null)}>
  *   Your changes could not be saved. Please try again.
  * </Alert>
  *
  * @example
  * // Success confirmation after publishing:
- * <Alert variant="success" title="Published!">
+ * <Alert color="success" title="Published!">
  *   Your post is now live and visible to all subscribers.
  * </Alert>
  *
  * @example
  * // Neutral inline note (no colored intent):
- * <Alert variant="neutral">This field is auto-populated from your profile.</Alert>
+ * <Alert color="neutral">This field is auto-populated from your profile.</Alert>
  * // These are just a few ways — feel free to combine props creatively!
  */
 export interface AlertProps
@@ -77,11 +77,11 @@ export interface AlertProps
 }
 
 const Alert = React.forwardRef<HTMLDivElement, AlertProps>(
-  ({ className, variant = 'info', title, onDismiss, children, ...props }, ref) => {
-    const Icon = ALERT_ICONS[variant ?? 'info']
+  ({ className, color = 'info', title, onDismiss, children, ...props }, ref) => {
+    const Icon = ALERT_ICONS[color ?? 'info']
 
     return (
-      <div ref={ref} className={cn(alertVariants({ variant }), className)} role="alert" {...props}>
+      <div ref={ref} className={cn(alertVariants({ color }), className)} role="alert" {...props}>
         <Icon className="mt-ds-01 h-ico-md w-ico-md shrink-0" aria-hidden="true" />
         <div className="flex-1 min-w-0">
           {title && <p className="text-ds-md font-semibold mb-ds-01">{title}</p>}

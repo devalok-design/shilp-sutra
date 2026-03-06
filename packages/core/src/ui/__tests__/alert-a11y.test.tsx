@@ -4,9 +4,9 @@ import { describe, it, expect } from 'vitest'
 import { Alert } from '../alert'
 
 describe('Alert accessibility', () => {
-  it('should have no violations with info variant', async () => {
+  it('should have no violations with info color', async () => {
     const { container } = render(
-      <Alert variant="info" title="Information">
+      <Alert color="info" title="Information">
         This is an informational message.
       </Alert>,
     )
@@ -14,9 +14,9 @@ describe('Alert accessibility', () => {
     expect(results).toHaveNoViolations()
   })
 
-  it('should have no violations with error variant', async () => {
+  it('should have no violations with error color', async () => {
     const { container } = render(
-      <Alert variant="error" title="Error">
+      <Alert color="error" title="Error">
         Something went wrong.
       </Alert>,
     )
@@ -24,9 +24,9 @@ describe('Alert accessibility', () => {
     expect(results).toHaveNoViolations()
   })
 
-  it('should have no violations with success variant', async () => {
+  it('should have no violations with success color', async () => {
     const { container } = render(
-      <Alert variant="success" title="Success">
+      <Alert color="success" title="Success">
         Operation completed successfully.
       </Alert>,
     )
@@ -34,9 +34,9 @@ describe('Alert accessibility', () => {
     expect(results).toHaveNoViolations()
   })
 
-  it('should have no violations with warning variant', async () => {
+  it('should have no violations with warning color', async () => {
     const { container } = render(
-      <Alert variant="warning" title="Warning">
+      <Alert color="warning" title="Warning">
         Please review before continuing.
       </Alert>,
     )
@@ -46,7 +46,7 @@ describe('Alert accessibility', () => {
 
   it('should have no violations with button', async () => {
     const { container } = render(
-      <Alert variant="info" onDismiss={() => {}}>
+      <Alert color="info" onDismiss={() => {}}>
         Dismissible alert message.
       </Alert>,
     )

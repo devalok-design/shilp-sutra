@@ -22,11 +22,11 @@ describe('Alert', () => {
   })
 
   it('applies variant classes via CVA', () => {
-    const { rerender } = render(<Alert variant="error">Error</Alert>)
+    const { rerender } = render(<Alert color="error">Error</Alert>)
     const alertEl = screen.getByRole('alert')
     expect(alertEl.className).toContain('error')
 
-    rerender(<Alert variant="success">Success</Alert>)
+    rerender(<Alert color="success">Success</Alert>)
     expect(screen.getByRole('alert').className).toContain('success')
   })
 

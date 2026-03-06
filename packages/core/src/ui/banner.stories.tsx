@@ -7,7 +7,7 @@ const meta: Meta<typeof Banner> = {
   component: Banner,
   tags: ['autodocs'],
   argTypes: {
-    variant: {
+    color: {
       control: 'select',
       options: ['info', 'success', 'warning', 'error', 'neutral'],
     },
@@ -18,35 +18,35 @@ type Story = StoryObj<typeof Banner>
 
 export const Info: Story = {
   args: {
-    variant: 'info',
+    color: 'info',
     children: 'A new version of the platform is available.',
   },
 }
 
 export const Success: Story = {
   args: {
-    variant: 'success',
+    color: 'success',
     children: 'Deployment completed successfully.',
   },
 }
 
 export const Warning: Story = {
   args: {
-    variant: 'warning',
+    color: 'warning',
     children: 'Your subscription expires in 3 days.',
   },
 }
 
 export const Error: Story = {
   args: {
-    variant: 'error',
+    color: 'error',
     children: 'Service disruption detected. Our team is working on it.',
   },
 }
 
 export const WithAction: Story = {
   args: {
-    variant: 'info',
+    color: 'info',
     children: 'A newer version is available.',
     action: (
       <Button variant="ghost" size="sm">
@@ -58,7 +58,7 @@ export const WithAction: Story = {
 
 export const Dismissible: Story = {
   args: {
-    variant: 'warning',
+    color: 'warning',
     children: 'Your trial period ends tomorrow.',
     onDismiss: () => {},
   },
@@ -66,7 +66,7 @@ export const Dismissible: Story = {
 
 export const WithActionAndDismissible: Story = {
   args: {
-    variant: 'error',
+    color: 'error',
     children: 'Payment failed. Please update your billing info.',
     action: (
       <Button variant="ghost" size="sm">
@@ -93,7 +93,7 @@ export const AllVariants: Story = {
           <p className="mb-ds-03 text-ds-sm font-semibold text-text-secondary">Default</p>
           <div className="flex flex-col">
             {variants.map((variant) => (
-              <Banner key={variant} variant={variant}>
+              <Banner key={variant} color={variant}>
                 {messages[variant]}
               </Banner>
             ))}
@@ -104,7 +104,7 @@ export const AllVariants: Story = {
           <p className="mb-ds-03 text-ds-sm font-semibold text-text-secondary">Dismissible</p>
           <div className="flex flex-col">
             {variants.map((variant) => (
-              <Banner key={`dismiss-${variant}`} variant={variant} onDismiss={() => {}}>
+              <Banner key={`dismiss-${variant}`} color={variant} onDismiss={() => {}}>
                 {messages[variant]}
               </Banner>
             ))}
@@ -115,7 +115,7 @@ export const AllVariants: Story = {
           <p className="mb-ds-03 text-ds-sm font-semibold text-text-secondary">With Action</p>
           <div className="flex flex-col">
             {variants.map((variant) => (
-              <Banner key={`action-${variant}`} variant={variant} action={<Button variant="ghost" size="sm">Action</Button>}>
+              <Banner key={`action-${variant}`} color={variant} action={<Button variant="ghost" size="sm">Action</Button>}>
                 {messages[variant]}
               </Banner>
             ))}

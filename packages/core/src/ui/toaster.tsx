@@ -35,7 +35,7 @@ import {
  * function SaveButton() {
  *   const { toast } = useToast()
  *   return (
- *     <button onClick={() => toast({ title: 'Saved!', description: 'Changes saved.', variant: 'success' })}>
+ *     <button onClick={() => toast({ title: 'Saved!', description: 'Changes saved.', color: 'success' })}>
  *       Save
  *     </button>
  *   )
@@ -43,9 +43,9 @@ import {
  *
  * // Or use the imperative function directly (no hook needed):
  * import { toast } from '@devalok/shilp-sutra'
- * toast({ title: 'Deleted', variant: 'error' })
+ * toast({ title: 'Deleted', color: 'error' })
  *
- * // Valid variants: 'default' | 'success' | 'warning' | 'error' | 'info'
+ * // Valid colors: 'default' | 'success' | 'warning' | 'error' | 'info'
  */
 export function Toaster() {
   const { toasts } = useToast()

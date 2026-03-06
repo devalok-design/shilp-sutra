@@ -51,7 +51,7 @@ function DestructiveToastDemo() {
       type="button"
       onClick={() =>
         toast({
-          variant: 'error',
+          color: 'error',
           title: 'Deletion failed',
           description: 'Could not delete the resource. Please try again.',
         })
@@ -112,7 +112,7 @@ function MultipleToastsDemo() {
         type="button"
         onClick={() =>
           toast({
-            variant: 'error',
+            color: 'error',
             title: 'Error occurred',
             description: 'An unexpected error happened.',
           })
@@ -149,7 +149,7 @@ function AllVariantsDemo() {
         type="button"
         onClick={() =>
           toast({
-            variant: 'success',
+            color: 'success',
             title: 'Task complete',
             description: 'Task moved to "Done".',
           })
@@ -162,7 +162,7 @@ function AllVariantsDemo() {
         type="button"
         onClick={() =>
           toast({
-            variant: 'warning',
+            color: 'warning',
             title: 'Warning toast',
             description: 'Please review before proceeding.',
           })
@@ -175,7 +175,7 @@ function AllVariantsDemo() {
         type="button"
         onClick={() =>
           toast({
-            variant: 'error',
+            color: 'error',
             title: 'Error toast',
             description: 'Something went wrong.',
           })
@@ -188,7 +188,7 @@ function AllVariantsDemo() {
         type="button"
         onClick={() =>
           toast({
-            variant: 'info',
+            color: 'info',
             title: 'Info toast',
             description: 'A new update is available.',
           })

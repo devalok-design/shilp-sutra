@@ -2,7 +2,7 @@ import { render, screen } from '@testing-library/react'
 import { describe, it, expect } from 'vitest'
 import { ToastProvider, ToastViewport, Toast, ToastTitle, ToastDescription } from './toast'
 
-function renderToast(props: { variant?: 'default' | 'success' | 'warning' | 'error' | 'info' } = {}) {
+function renderToast(props: { color?: 'default' | 'success' | 'warning' | 'error' | 'info' } = {}) {
   return render(
     <ToastProvider>
       <Toast open {...props}>
@@ -29,8 +29,8 @@ describe('Toast', () => {
     expect(screen.getByText('Toast Description')).toBeInTheDocument()
   })
 
-  it('accepts variant prop without error', () => {
-    renderToast({ variant: 'error' })
+  it('accepts color prop without error', () => {
+    renderToast({ color: 'error' })
     expect(screen.getByText('Toast Title')).toBeInTheDocument()
   })
 })

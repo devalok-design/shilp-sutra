@@ -7,7 +7,7 @@ const meta: Meta<typeof Alert> = {
   component: Alert,
   tags: ['autodocs'],
   argTypes: {
-    variant: {
+    color: {
       control: 'select',
       options: ['info', 'success', 'warning', 'error', 'neutral'],
     },
@@ -19,7 +19,7 @@ type Story = StoryObj<typeof Alert>
 
 export const Info: Story = {
   args: {
-    variant: 'info',
+    color: 'info',
     title: 'Information',
     children: 'This is an informational alert with helpful context.',
   },
@@ -27,7 +27,7 @@ export const Info: Story = {
 
 export const Success: Story = {
   args: {
-    variant: 'success',
+    color: 'success',
     title: 'Success',
     children: 'Your changes have been saved successfully.',
   },
@@ -35,7 +35,7 @@ export const Success: Story = {
 
 export const Warning: Story = {
   args: {
-    variant: 'warning',
+    color: 'warning',
     title: 'Warning',
     children: 'Your session will expire in 5 minutes. Save your work.',
   },
@@ -43,7 +43,7 @@ export const Warning: Story = {
 
 export const Error: Story = {
   args: {
-    variant: 'error',
+    color: 'error',
     title: 'Error',
     children: 'Failed to save changes. Please try again.',
   },
@@ -51,14 +51,14 @@ export const Error: Story = {
 
 export const WithoutTitle: Story = {
   args: {
-    variant: 'info',
+    color: 'info',
     children: 'This alert has no title, just a message.',
   },
 }
 
 export const Dismissible: Story = {
   args: {
-    variant: 'warning',
+    color: 'warning',
     title: 'Dismissible Alert',
     children: 'You can dismiss this alert by clicking the X button.',
     onDismiss: fn(),
@@ -96,7 +96,7 @@ export const AllVariants: Story = {
           <p className="mb-ds-03 text-ds-sm font-semibold text-text-secondary">With Title</p>
           <div className="flex flex-col gap-ds-03">
             {variants.map((variant) => (
-              <Alert key={variant} variant={variant} title={variant.charAt(0).toUpperCase() + variant.slice(1)}>
+              <Alert key={variant} color={variant} title={variant.charAt(0).toUpperCase() + variant.slice(1)}>
                 {messages[variant]}
               </Alert>
             ))}
@@ -107,7 +107,7 @@ export const AllVariants: Story = {
           <p className="mb-ds-03 text-ds-sm font-semibold text-text-secondary">Without Title</p>
           <div className="flex flex-col gap-ds-03">
             {variants.map((variant) => (
-              <Alert key={`no-title-${variant}`} variant={variant}>
+              <Alert key={`no-title-${variant}`} color={variant}>
                 {messages[variant]}
               </Alert>
             ))}
@@ -118,7 +118,7 @@ export const AllVariants: Story = {
           <p className="mb-ds-03 text-ds-sm font-semibold text-text-secondary">Dismissible</p>
           <div className="flex flex-col gap-ds-03">
             {variants.map((variant) => (
-              <Alert key={`dismiss-${variant}`} variant={variant} title={variant.charAt(0).toUpperCase() + variant.slice(1)} onDismiss={() => {}}>
+              <Alert key={`dismiss-${variant}`} color={variant} title={variant.charAt(0).toUpperCase() + variant.slice(1)} onDismiss={() => {}}>
                 {messages[variant]}
               </Alert>
             ))}

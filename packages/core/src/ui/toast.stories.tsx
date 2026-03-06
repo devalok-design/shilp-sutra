@@ -15,7 +15,7 @@ const meta: Meta<typeof Toast> = {
   component: Toast,
   tags: ['autodocs'],
   argTypes: {
-    variant: {
+    color: {
       control: 'select',
       options: ['default', 'success', 'warning', 'error', 'info'],
     },
@@ -55,7 +55,7 @@ export const Default: Story = {
 
 export const Success: Story = {
   render: () => (
-    <Toast variant="success" open>
+    <Toast color="success" open>
       <div className="grid gap-ds-02">
         <ToastTitle>Success</ToastTitle>
         <ToastDescription>Operation completed successfully.</ToastDescription>
@@ -71,7 +71,7 @@ export const Success: Story = {
 
 export const Warning: Story = {
   render: () => (
-    <Toast variant="warning" open>
+    <Toast color="warning" open>
       <div className="grid gap-ds-02">
         <ToastTitle>Warning</ToastTitle>
         <ToastDescription>Please review before proceeding.</ToastDescription>
@@ -87,7 +87,7 @@ export const Warning: Story = {
 
 export const Error: Story = {
   render: () => (
-    <Toast variant="error" open>
+    <Toast color="error" open>
       <div className="grid gap-ds-02">
         <ToastTitle>Error</ToastTitle>
         <ToastDescription>
@@ -105,7 +105,7 @@ export const Error: Story = {
 
 export const Info: Story = {
   render: () => (
-    <Toast variant="info" open>
+    <Toast color="info" open>
       <div className="grid gap-ds-02">
         <ToastTitle>Information</ToastTitle>
         <ToastDescription>A new update is available.</ToastDescription>
@@ -143,7 +143,7 @@ export const WithAction: Story = {
 
 export const ErrorWithAction: Story = {
   render: () => (
-    <Toast variant="error" open>
+    <Toast color="error" open>
       <div className="grid gap-ds-02">
         <ToastTitle>Deletion Failed</ToastTitle>
         <ToastDescription>
@@ -165,14 +165,14 @@ export const ErrorWithAction: Story = {
 export const AllVariants: Story = {
   render: () => (
     <div className="flex flex-col gap-ds-04">
-      <Toast open variant="default">
+      <Toast open color="default">
         <div className="grid gap-ds-02">
           <ToastTitle>Default</ToastTitle>
           <ToastDescription>Standard notification message.</ToastDescription>
         </div>
         <ToastClose />
       </Toast>
-      <Toast open variant="success">
+      <Toast open color="success">
         <div className="grid gap-ds-02">
           <ToastTitle>Success</ToastTitle>
           <ToastDescription>
@@ -181,21 +181,21 @@ export const AllVariants: Story = {
         </div>
         <ToastClose />
       </Toast>
-      <Toast open variant="warning">
+      <Toast open color="warning">
         <div className="grid gap-ds-02">
           <ToastTitle>Warning</ToastTitle>
           <ToastDescription>Please review before proceeding.</ToastDescription>
         </div>
         <ToastClose />
       </Toast>
-      <Toast open variant="error">
+      <Toast open color="error">
         <div className="grid gap-ds-02">
           <ToastTitle>Error</ToastTitle>
           <ToastDescription>Error notification message.</ToastDescription>
         </div>
         <ToastClose />
       </Toast>
-      <Toast open variant="info">
+      <Toast open color="info">
         <div className="grid gap-ds-02">
           <ToastTitle>Info</ToastTitle>
           <ToastDescription>Informational notification.</ToastDescription>

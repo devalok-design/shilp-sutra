@@ -25,16 +25,16 @@ const ToastViewport = React.forwardRef<
 ToastViewport.displayName = ToastPrimitives.Viewport.displayName
 
 /**
- * Toast variant styles. Valid `variant` values: `'default'` | `'success'` | `'warning'` | `'error'` | `'info'`.
+ * Toast color styles. Valid `color` values: `'default'` | `'success'` | `'warning'` | `'error'` | `'info'`.
  *
- * Note: `'destructive'` and `'karam'` are NOT valid variant values and do not exist in this CVA definition.
+ * Note: `'destructive'` and `'karam'` are NOT valid color values and do not exist in this CVA definition.
  * The CSS class `destructive` appears internally as a group selector — it is not a prop value.
  */
 const toastVariants = cva(
   'group pointer-events-auto relative flex w-full items-center justify-between space-x-ds-03 overflow-hidden rounded-ds-md border p-ds-05 pr-ds-06 shadow-03 transition-all duration-moderate-02 data-[swipe=cancel]:translate-x-0 data-[swipe=end]:translate-x-[var(--radix-toast-swipe-end-x)] data-[swipe=move]:translate-x-[var(--radix-toast-swipe-move-x)] data-[swipe=move]:transition-none data-[state=open]:animate-in data-[state=closed]:animate-out data-[swipe=end]:animate-out data-[state=closed]:fade-out-80 data-[state=closed]:slide-out-to-right-full data-[state=open]:slide-in-from-top-full data-[state=open]:sm:slide-in-from-bottom-full',
   {
     variants: {
-      variant: {
+      color: {
         default:
           'border-border bg-layer-01 text-text-primary',
         success:
@@ -48,7 +48,7 @@ const toastVariants = cva(
       },
     },
     defaultVariants: {
-      variant: 'default',
+      color: 'default',
     },
   },
 )
@@ -57,13 +57,13 @@ const Toast = React.forwardRef<
   React.ElementRef<typeof ToastPrimitives.Root>,
   React.ComponentPropsWithoutRef<typeof ToastPrimitives.Root> &
     VariantProps<typeof toastVariants>
->(({ className, variant, ...props }, ref) => {
+>(({ className, color, ...props }, ref) => {
   return (
     <ToastPrimitives.Root
       ref={ref}
       role="status"
       aria-live="polite"
-      className={cn(toastVariants({ variant }), className)}
+      className={cn(toastVariants({ color }), className)}
       {...props}
     />
   )
@@ -134,10 +134,10 @@ ToastDescription.displayName = ToastPrimitives.Description.displayName
  * @example
  * // Imperative approach (recommended for user-triggered notifications):
  * const { toast } = useToast()
- * toast({ title: 'Saved!', variant: 'success' })
+ * toast({ title: 'Saved!', color: 'success' })
  *
  * // Declarative (for tests/Storybook only):
- * <Toast open variant="error">
+ * <Toast open color="error">
  *   <ToastTitle>Error</ToastTitle>
  *   <ToastDescription>Something went wrong.</ToastDescription>
  *   <ToastClose />

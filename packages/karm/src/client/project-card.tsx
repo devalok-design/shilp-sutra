@@ -13,7 +13,7 @@ export interface ProjectCardProps extends React.HTMLAttributes<HTMLDivElement> {
   completedTasks?: number
 }
 
-const statusVariantMap = {
+const statusColorMap = {
   active: 'success' as const,
   completed: 'info' as const,
   paused: 'warning' as const,
@@ -48,7 +48,7 @@ const ProjectCard = React.forwardRef<HTMLDivElement, ProjectCardProps>(
           <h3 className="font-display text-ds-base font-semibold text-text-primary">
             {name}
           </h3>
-          <Badge variant={statusVariantMap[status]} size="sm">
+          <Badge color={statusColorMap[status]} size="sm">
             {status}
           </Badge>
         </div>

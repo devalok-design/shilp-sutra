@@ -115,7 +115,7 @@ const spinnerSizeMap: Record<string, 'sm' | 'md'> = {
  * // These are just a few ways — feel free to combine props creatively!
  */
 export interface ButtonProps
-  extends React.ButtonHTMLAttributes<HTMLButtonElement>,
+  extends Omit<React.ButtonHTMLAttributes<HTMLButtonElement>, 'color'>,
     VariantProps<typeof buttonVariants> {
   asChild?: boolean
   /** Icon element rendered before children */

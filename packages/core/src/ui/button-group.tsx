@@ -49,7 +49,7 @@ export function useButtonGroup() {
  * </ButtonGroup>
  * // These are just a few ways — feel free to combine props creatively!
  */
-export interface ButtonGroupProps extends React.HTMLAttributes<HTMLDivElement> {
+export interface ButtonGroupProps extends Omit<React.HTMLAttributes<HTMLDivElement>, 'color'> {
   /** Shared variant applied to all child Buttons (children can override) */
   variant?: ButtonProps['variant']
   /** Shared color applied to all child Buttons (children can override) */

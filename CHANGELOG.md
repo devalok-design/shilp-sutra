@@ -5,6 +5,37 @@ All notable changes to `@devalok/shilp-sutra` will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.5.0] — 2026-03-06
+
+The **Next.js Compatibility** release. Fixes build failures when integrating with Next.js 15 App Router and pnpm strict mode.
+
+### Changed (BREAKING)
+- **EmptyState**: `icon` prop changed from `TablerIcon` (component ref) to `React.ReactNode` — use `icon={<MyIcon />}` instead of `icon={MyIcon}`
+- **EmptyState**: Default icon is now the Devalok swadhisthana chakra (inline SVG) instead of Tabler's `IconInbox` — zero external dependencies
+- **ui barrel**: `DataTable`, `DataTableToolbar`, and all chart components removed from `@devalok/shilp-sutra/ui` barrel export
+
+### Fixed
+- **Next.js build failures**: Importing lightweight components (e.g. `Button`) from the `ui` barrel no longer triggers `Module not found` errors for optional peer deps (`d3-*`, `@tanstack/*`, `@tabler/icons-react`)
+- **pnpm strict hoisting**: Consumers no longer need `.npmrc` `public-hoist-pattern` overrides for optional peer deps
+- **EmptyState RSC**: Component is now fully React Server Component compatible — no `@tabler/icons-react` dependency, `icon` prop accepts `ReactNode` (serializable across server/client boundary)
+
+### Migration Guide
+
+**EmptyState icon prop:**
+```diff
+- <EmptyState icon={IconError404} title="Not found" />
++ <EmptyState icon={<IconError404 />} title="Not found" />
+```
+
+**DataTable / Charts imports:**
+```diff
+- import { DataTable } from '@devalok/shilp-sutra/ui'
++ import { DataTable } from '@devalok/shilp-sutra/ui/data-table'
+
+- import { BarChart } from '@devalok/shilp-sutra/ui'
++ import { BarChart } from '@devalok/shilp-sutra/ui/charts'
+```
+
 ## [0.4.2] — 2026-03-06
 
 The **Consistency Audit** release. Aligns variant naming, event handlers, and export completeness across the entire component library.

@@ -40,4 +40,10 @@ describe('EmptyState', () => {
     )
     expect(container.firstElementChild).toHaveClass('my-empty')
   })
+
+  it('renders default chakra SVG when no icon prop is provided', () => {
+    const { container } = render(<EmptyState title="Empty" />)
+    const svg = container.querySelector('svg')
+    expect(svg).toBeInTheDocument()
+  })
 })

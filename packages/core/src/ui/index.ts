@@ -133,8 +133,6 @@ export { Card, cardVariants, CardHeader, CardFooter, CardTitle, CardDescription,
 export { Badge, badgeVariants, type BadgeProps } from './badge'
 export { Avatar, AvatarImage, AvatarFallback, avatarVariants, type AvatarProps, type AvatarStatus } from './avatar'
 export { Table, TableHeader, TableBody, TableFooter, TableHead, TableRow, TableCell, TableCaption } from './table'
-export { DataTable, type DataTableProps } from './data-table'
-export { DataTableToolbar, type DataTableToolbarProps, type Density } from './data-table-toolbar'
 export { Progress, progressTrackVariants, progressIndicatorVariants, type ProgressProps } from './progress'
 export { Skeleton, skeletonVariants, type SkeletonProps } from './skeleton'
 export { StatCard, type StatCardProps } from './stat-card'
@@ -288,9 +286,6 @@ export {
 
 // Other
 export { Link, type LinkProps } from './link'
-
-// Charts
-export * from './charts'
 
 // Utilities
 export { cn } from './lib/utils'

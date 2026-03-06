@@ -22,6 +22,9 @@ export default defineConfig({
     lib: {
       entry: {
         'ui/index': resolve(__dirname, 'src/ui/index.ts'),
+        'ui/charts/index': resolve(__dirname, 'src/ui/charts/index.ts'),
+        'ui/data-table': resolve(__dirname, 'src/ui/data-table.tsx'),
+        'ui/data-table-toolbar': resolve(__dirname, 'src/ui/data-table-toolbar.tsx'),
         'composed/index': resolve(__dirname, 'src/composed/index.ts'),
         'shell/index': resolve(__dirname, 'src/shell/index.ts'),
         'hooks/index': resolve(__dirname, 'src/hooks/index.ts'),

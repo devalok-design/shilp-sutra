@@ -5,6 +5,41 @@ All notable changes to `@devalok/shilp-sutra` will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.3.0] — 2026-03-06
+
+### Added
+- Root `"."` export — `import { Button } from '@devalok/shilp-sutra'` now works
+- `main` and `module` fields for legacy bundler compatibility
+- Per-component exports: `./ui/charts`, `./ui/tree-view`, `./composed/date-picker`
+- `useFormField()` hook for automatic aria-describedby wiring
+- `SwitchProps`, `SliderProps` type exports
+- Switch `error` prop (matches Checkbox API)
+- "use client" directives in karm package
+- Inter font (WOFF2) replacing Google Sans
+- WebP brand assets alongside PNGs
+
+### Changed (BREAKING)
+- **Dependencies**: D3, TipTap, TanStack, @tabler/icons-react, date-fns, input-otp, react-markdown are now optional peer dependencies — install only what you use
+- **Fonts**: Google Sans replaced with Inter (licensing). All fonts converted from TTF to WOFF2
+- **Button**: `variant="primary"` → `variant="solid"`, `variant="secondary"` → `variant="outline"`, `variant="error"` → `color="error"`
+- **Badge**: Single `variant` axis split into `variant` (subtle/solid/outline) + `color` (default/info/success/error/...)
+- **Alert/Banner/Toast**: `variant` prop renamed to `color` for semantic intent
+- **NumberInput/Combobox/Autocomplete**: `onChange` renamed to `onValueChange`
+- **NumberInput/Combobox**: Now extend HTMLAttributes — accept all standard HTML props
+- **FormField**: Auto-wires `aria-describedby` via context. `getFormFieldA11y()` removed
+- **Karm**: Peer dep tightened to `@devalok/shilp-sutra >=0.3.0`
+
+### Fixed
+- Karm hooks path rewrite bug (hooks/ was mapped to /ui instead of /hooks)
+- Badge solid variant phantom token `text-on-interactive` → `text-on-color`
+- Tailwind preset `screens` moved to `theme.extend` (no longer replaces deployer breakpoints)
+- All dismiss/close buttons now meet WCAG 2.5.8 minimum 24px touch target
+- Spinner/loader animations respect `prefers-reduced-motion`
+- Toast close button now always visible (was hidden until hover)
+- DialogHeader/Footer, SheetHeader/Footer now support ref forwarding
+
+---
+
 ## [0.2.1] - 2026-03-05
 
 ### Fixed

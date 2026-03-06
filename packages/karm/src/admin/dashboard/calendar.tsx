@@ -95,7 +95,7 @@ export const Calendar = React.forwardRef<HTMLDivElement, CalendarProps>(
         <div className="ml-auto flex items-center gap-ds-05">
           <Toggle
             size="md"
-            color="tonal"
+            variant="tonal"
             options={[
               { id: 'weekly', text: 'Weekly' },
               { id: 'monthly', text: 'Monthly' },

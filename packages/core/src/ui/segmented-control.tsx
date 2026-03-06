@@ -23,7 +23,7 @@ const segmentedControlItemVariants = cva(
         md: 'px-ds-02b py-ds-03 pl-ds-04 text-ds-md',
         lg: 'h-[56px] px-ds-06 py-ds-05 text-ds-md',
       },
-      color: {
+      variant: {
         filled: "text-text-on-color [text-shadow:0px_1px_1px_var(--color-text-shadow)]",
         tonal: 'text-text-tertiary',
       },
@@ -44,7 +44,7 @@ const segmentedControlItemVariants = cva(
       // Selected + filled
       {
         selected: true,
-        color: 'filled',
+        variant: 'filled',
         className: [
           'bg-interactive',
           'shadow-[0px_1px_3px_0.05px_var(--color-interactive-hover),inset_0px_8px_16px_0px_var(--color-inset-glow-strong),inset_0px_2px_0px_0px_var(--color-inset-glow-subtle)]',
@@ -53,13 +53,13 @@ const segmentedControlItemVariants = cva(
       // Selected + tonal
       {
         selected: true,
-        color: 'tonal',
+        variant: 'tonal',
         className: 'bg-field text-text-primary',
       },
       // Hover + filled
       {
         isHovered: true,
-        color: 'filled',
+        variant: 'filled',
         className: [
           'bg-interactive',
           'shadow-[0px_4px_8px_0px_var(--color-interactive-hover),0px_1px_3px_0.05px_var(--color-layer-02),inset_0px_8px_16px_0px_var(--color-inset-glow-strong),inset_0px_2px_0px_0px_var(--color-inset-glow-subtle)]',
@@ -68,29 +68,29 @@ const segmentedControlItemVariants = cva(
       // Hover + tonal
       {
         isHovered: true,
-        color: 'tonal',
+        variant: 'tonal',
         className: 'text-text-primary',
       },
       // Disabled + filled
       {
         isDisabled: true,
-        color: 'filled',
+        variant: 'filled',
         className: 'text-text-placeholder',
       },
       // Disabled + tonal
       {
         isDisabled: true,
-        color: 'tonal',
+        variant: 'tonal',
         className: 'text-text-placeholder',
       },
       // Filled + SVG icon fill
       {
-        color: 'filled',
+        variant: 'filled',
         className: '[&_svg_path]:fill-icon-on-color',
       },
       // Filled + disabled SVG icon fill
       {
-        color: 'filled',
+        variant: 'filled',
         isDisabled: true,
         className: '[&_svg_path]:fill-icon-disabled',
       },
@@ -102,7 +102,7 @@ const segmentedControlItemVariants = cva(
     ],
     defaultVariants: {
       size: 'md',
-      color: 'tonal',
+      variant: 'tonal',
       selected: false,
       isHovered: false,
       isDisabled: false,
@@ -110,7 +110,7 @@ const segmentedControlItemVariants = cva(
   },
 )
 
-/* ── ripple bg per color ──────────────────────────────────── */
+/* ── ripple bg per variant ────────────────────────────────── */
 const rippleBgMap: Record<string, string> = {
   filled: 'bg-surface-overlay-light',
   tonal: 'bg-surface-overlay-dark',
@@ -130,7 +130,7 @@ function resolveSize(size: SegmentedControlSize): 'sm' | 'md' | 'lg' {
 
 /* ── Types ─────────────────────────────────────────────────── */
 export type SegmentedControlSize = 'sm' | 'md' | 'lg' | 'small' | 'medium' | 'big'
-export type SegmentedControlColor = 'filled' | 'tonal'
+export type SegmentedControlVariant = 'filled' | 'tonal'
 
 /**
  * A single option in a `<SegmentedControl>`. The `id` must be unique across all options in
@@ -150,7 +150,7 @@ export interface SegmentedControlOption {
  * **`size`:** `'sm'` | `'md'` (default) | `'lg'`. Legacy aliases `'small'` | `'medium'` | `'big'` are
  * also accepted for backward compatibility but prefer the canonical form.
  *
- * **`color`:** `'tonal'` (default, subdued) | `'filled'` (vibrant brand color when selected).
+ * **`variant`:** `'tonal'` (default, subdued) | `'filled'` (vibrant brand color when selected).
  *
  * **Options:** Each option needs a unique `id`, a display `text`, and an optional `icon` component.
  *
@@ -160,7 +160,7 @@ export interface SegmentedControlOption {
  * // View mode switcher (list vs grid vs board):
  * <SegmentedControl
  *   size="md"
- *   color="tonal"
+ *   variant="tonal"
  *   options={[
  *     { id: 'list', text: 'List' },
  *     { id: 'grid', text: 'Grid' },
@@ -171,10 +171,10 @@ export interface SegmentedControlOption {
  * />
  *
  * @example
- * // Time range selector with filled color (more prominent):
+ * // Time range selector with filled variant (more prominent):
  * <SegmentedControl
  *   size="sm"
- *   color="filled"
+ *   variant="filled"
  *   options={[
  *     { id: '7d', text: '7D' },
  *     { id: '30d', text: '30D' },
@@ -187,7 +187,7 @@ export interface SegmentedControlOption {
  */
 export interface SegmentedControlProps {
   size: SegmentedControlSize
-  color: SegmentedControlColor
+  variant: SegmentedControlVariant
   options: SegmentedControlOption[]
   selectedId: string
   onSelect: (id: string) => void
@@ -199,7 +199,7 @@ export interface SegmentedControlProps {
 const SegmentedControl = React.forwardRef<HTMLDivElement, SegmentedControlProps>(
   function SegmentedControl({
   size,
-  color,
+  variant,
   options,
   selectedId,
   onSelect,
@@ -266,7 +266,7 @@ const SegmentedControl = React.forwardRef<HTMLDivElement, SegmentedControlProps>
         <SegmentedControlItem
           key={option.id}
           size={resolved}
-          color={color}
+          variant={variant}
           text={option.text}
           icon={option.icon}
           isSelected={option.id === selectedId}
@@ -299,13 +299,13 @@ SegmentedControl.displayName = 'SegmentedControl'
  *
  * <div role="tablist" className="inline-flex rounded-full border border-border bg-layer-02">
  *   <SegmentedControlItem
- *     size="md" color="tonal" text="List"
+ *     size="md" variant="tonal" text="List"
  *     isSelected={view === 'list'} isFocused={focused === 'list'}
  *     onClick={() => setView('list')}
  *     onFocus={() => setFocused('list')} onBlur={() => setFocused(null)}
  *   />
  *   <SegmentedControlItem
- *     size="md" color="tonal" text="Grid" icon={IconLayoutGrid}
+ *     size="md" variant="tonal" text="Grid" icon={IconLayoutGrid}
  *     isSelected={view === 'grid'} isFocused={focused === 'grid'}
  *     onClick={() => setView('grid')}
  *     onFocus={() => setFocused('grid')} onBlur={() => setFocused(null)}
@@ -316,7 +316,7 @@ SegmentedControl.displayName = 'SegmentedControl'
  */
 export interface SegmentedControlItemProps {
   size: 'sm' | 'md' | 'lg'
-  color: SegmentedControlColor
+  variant: SegmentedControlVariant
   text: string
   /** Optional icon component rendered before the text label. */
   icon?: React.ComponentType<{ className?: string }>
@@ -331,7 +331,7 @@ export interface SegmentedControlItemProps {
 const SegmentedControlItem = React.forwardRef<HTMLButtonElement, SegmentedControlItemProps>(
   function SegmentedControlItem({
   size,
-  color,
+  variant,
   text,
   icon: Icon,
   isSelected,
@@ -374,7 +374,7 @@ const SegmentedControlItem = React.forwardRef<HTMLButtonElement, SegmentedContro
       className={cn(
         segmentedControlItemVariants({
           size,
-          color,
+          variant,
           selected: isSelected,
           isHovered: state === 'hover',
           isDisabled: disabled,
@@ -403,7 +403,7 @@ const SegmentedControlItem = React.forwardRef<HTMLButtonElement, SegmentedContro
           key={ripple.id}
           className={cn(
             'absolute rounded-ds-full -translate-x-1/2 -translate-y-1/2 scale-0 animate-ripple pointer-events-none',
-            rippleBgMap[color],
+            rippleBgMap[variant],
           )}
           style={{
             left: ripple.x,

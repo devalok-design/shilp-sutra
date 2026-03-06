@@ -280,7 +280,7 @@ export {
   SegmentedControlItem,
   segmentedControlItemVariants,
   type SegmentedControlSize,
-  type SegmentedControlColor,
+  type SegmentedControlVariant,
   type SegmentedControlOption,
   type SegmentedControlProps,
   type SegmentedControlItemProps,

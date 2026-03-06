@@ -5,7 +5,7 @@ import {
   SegmentedControl,
   type SegmentedControlOption,
   type SegmentedControlSize,
-  type SegmentedControlColor,
+  type SegmentedControlVariant,
 } from './segmented-control'
 
 // ── Mock options ────────────────────────────────────────────
@@ -47,7 +47,7 @@ const meta: Meta<typeof SegmentedControl> = {
       control: 'select',
       options: ['sm', 'md', 'lg'],
     },
-    color: {
+    variant: {
       control: 'select',
       options: ['filled', 'tonal'],
     },
@@ -64,13 +64,13 @@ type Story = StoryObj<typeof SegmentedControl>
 
 function ControlledDemo({
   size = 'md',
-  color = 'filled',
+  variant = 'filled',
   options = textOptions,
   disabled = false,
   defaultId,
 }: {
   size?: SegmentedControlSize
-  color?: SegmentedControlColor
+  variant?: SegmentedControlVariant
   options?: SegmentedControlOption[]
   disabled?: boolean
   defaultId?: string
@@ -80,7 +80,7 @@ function ControlledDemo({
   return (
     <SegmentedControl
       size={size}
-      color={color}
+      variant={variant}
       options={options}
       selectedId={selectedId}
       onSelect={setSelectedId}
@@ -94,7 +94,7 @@ function ControlledDemo({
 export const Default: Story = {
   args: {
     size: 'md',
-    color: 'filled',
+    variant: 'filled',
     options: textOptions,
     selectedId: 'board',
   },
@@ -103,7 +103,7 @@ export const Default: Story = {
 export const Tonal: Story = {
   args: {
     size: 'md',
-    color: 'tonal',
+    variant: 'tonal',
     options: textOptions,
     selectedId: 'board',
   },
@@ -112,7 +112,7 @@ export const Tonal: Story = {
 export const Small: Story = {
   args: {
     size: 'sm',
-    color: 'filled',
+    variant: 'filled',
     options: textOptions,
     selectedId: 'list',
   },
@@ -121,7 +121,7 @@ export const Small: Story = {
 export const Large: Story = {
   args: {
     size: 'lg',
-    color: 'filled',
+    variant: 'filled',
     options: textOptions,
     selectedId: 'calendar',
   },
@@ -130,7 +130,7 @@ export const Large: Story = {
 export const WithIcons: Story = {
   args: {
     size: 'md',
-    color: 'filled',
+    variant: 'filled',
     options: iconOptions,
     selectedId: 'board',
   },
@@ -139,7 +139,7 @@ export const WithIcons: Story = {
 export const WithIconsTonal: Story = {
   args: {
     size: 'md',
-    color: 'tonal',
+    variant: 'tonal',
     options: iconOptions,
     selectedId: 'list',
   },
@@ -148,7 +148,7 @@ export const WithIconsTonal: Story = {
 export const MixedIconsAndText: Story = {
   args: {
     size: 'md',
-    color: 'filled',
+    variant: 'filled',
     options: mixedOptions,
     selectedId: 'overview',
   },
@@ -157,7 +157,7 @@ export const MixedIconsAndText: Story = {
 export const TwoOptions: Story = {
   args: {
     size: 'md',
-    color: 'filled',
+    variant: 'filled',
     options: twoOptions,
     selectedId: 'active',
   },
@@ -166,7 +166,7 @@ export const TwoOptions: Story = {
 export const Disabled: Story = {
   args: {
     size: 'md',
-    color: 'filled',
+    variant: 'filled',
     options: textOptions,
     selectedId: 'board',
     disabled: true,
@@ -176,7 +176,7 @@ export const Disabled: Story = {
 export const DisabledTonal: Story = {
   args: {
     size: 'md',
-    color: 'tonal',
+    variant: 'tonal',
     options: iconOptions,
     selectedId: 'list',
     disabled: true,
@@ -219,27 +219,27 @@ export const AllSizes: Story = {
 export const AllVariants: Story = {
   render: () => (
     <div style={{ display: 'flex', flexDirection: 'column', gap: 24 }}>
-      {/* Filled color */}
+      {/* Filled variant */}
       <div>
         <p className="mb-ds-04 text-ds-md font-accent font-semibold text-text-primary">
           Filled
         </p>
         <div style={{ display: 'flex', flexDirection: 'column', gap: 12 }}>
-          <ControlledDemo size="sm" color="filled" options={iconOptions} />
-          <ControlledDemo size="md" color="filled" options={iconOptions} />
-          <ControlledDemo size="lg" color="filled" options={iconOptions} />
+          <ControlledDemo size="sm" variant="filled" options={iconOptions} />
+          <ControlledDemo size="md" variant="filled" options={iconOptions} />
+          <ControlledDemo size="lg" variant="filled" options={iconOptions} />
         </div>
       </div>
 
-      {/* Tonal color */}
+      {/* Tonal variant */}
       <div>
         <p className="mb-ds-04 text-ds-md font-accent font-semibold text-text-primary">
           Tonal
         </p>
         <div style={{ display: 'flex', flexDirection: 'column', gap: 12 }}>
-          <ControlledDemo size="sm" color="tonal" options={iconOptions} />
-          <ControlledDemo size="md" color="tonal" options={iconOptions} />
-          <ControlledDemo size="lg" color="tonal" options={iconOptions} />
+          <ControlledDemo size="sm" variant="tonal" options={iconOptions} />
+          <ControlledDemo size="md" variant="tonal" options={iconOptions} />
+          <ControlledDemo size="lg" variant="tonal" options={iconOptions} />
         </div>
       </div>
 
@@ -249,8 +249,8 @@ export const AllVariants: Story = {
           Text only
         </p>
         <div style={{ display: 'flex', flexDirection: 'column', gap: 12 }}>
-          <ControlledDemo size="md" color="filled" options={textOptions} />
-          <ControlledDemo size="md" color="tonal" options={textOptions} />
+          <ControlledDemo size="md" variant="filled" options={textOptions} />
+          <ControlledDemo size="md" variant="tonal" options={textOptions} />
         </div>
       </div>
 
@@ -260,8 +260,8 @@ export const AllVariants: Story = {
           Disabled
         </p>
         <div style={{ display: 'flex', flexDirection: 'column', gap: 12 }}>
-          <ControlledDemo size="md" color="filled" options={iconOptions} disabled />
-          <ControlledDemo size="md" color="tonal" options={iconOptions} disabled />
+          <ControlledDemo size="md" variant="filled" options={iconOptions} disabled />
+          <ControlledDemo size="md" variant="tonal" options={iconOptions} disabled />
         </div>
       </div>
     </div>

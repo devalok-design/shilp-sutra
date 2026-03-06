@@ -14,7 +14,7 @@ describe('SegmentedControl', () => {
     const { container } = render(
       <SegmentedControl
         size="md"
-        color="tonal"
+        variant="tonal"
         options={options}
         selectedId="weekly"
         onSelect={vi.fn()}
@@ -28,7 +28,7 @@ describe('SegmentedControl', () => {
     render(
       <SegmentedControl
         size="md"
-        color="tonal"
+        variant="tonal"
         options={options}
         selectedId="weekly"
         onSelect={vi.fn()}
@@ -42,7 +42,7 @@ describe('SegmentedControl', () => {
     render(
       <SegmentedControl
         size="md"
-        color="tonal"
+        variant="tonal"
         options={options}
         selectedId="weekly"
         onSelect={vi.fn()}
@@ -55,7 +55,7 @@ describe('SegmentedControl', () => {
     render(
       <SegmentedControl
         size="md"
-        color="tonal"
+        variant="tonal"
         options={options}
         selectedId="weekly"
         onSelect={vi.fn()}
@@ -70,7 +70,7 @@ describe('SegmentedControl', () => {
     render(
       <SegmentedControl
         size="md"
-        color="tonal"
+        variant="tonal"
         options={options}
         selectedId="weekly"
         onSelect={vi.fn()}
@@ -83,11 +83,11 @@ describe('SegmentedControl', () => {
     })
   })
 
-  it('renders with filled color variant', async () => {
+  it('renders with filled variant', async () => {
     const { container } = render(
       <SegmentedControl
         size="md"
-        color="filled"
+        variant="filled"
         options={options}
         selectedId="weekly"
         onSelect={vi.fn()}

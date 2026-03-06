@@ -108,7 +108,7 @@ export {
   type SegmentedControlItemProps,
   segmentedControlItemVariants,
   type SegmentedControlSize,
-  type SegmentedControlColor,
+  type SegmentedControlVariant,
   type SegmentedControlOption,
 } from '@/ui/segmented-control'
 

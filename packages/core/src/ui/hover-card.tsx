@@ -28,4 +28,6 @@ const HoverCardContent = React.forwardRef<
 ))
 HoverCardContent.displayName = HoverCardPrimitive.Content.displayName
 
+export type HoverCardContentProps = React.ComponentPropsWithoutRef<typeof HoverCardPrimitive.Content>
+
 export { HoverCard, HoverCardTrigger, HoverCardContent }

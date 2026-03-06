@@ -42,4 +42,7 @@ const Toggle = React.forwardRef<
 ))
 Toggle.displayName = TogglePrimitive.Root.displayName
 
+export type ToggleProps = React.ComponentPropsWithoutRef<typeof TogglePrimitive.Root> &
+  VariantProps<typeof toggleVariants>
+
 export { Toggle, toggleVariants }

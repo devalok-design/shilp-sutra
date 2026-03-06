@@ -236,7 +236,7 @@ const ReviewTab = React.forwardRef<HTMLDivElement, ReviewTabProps>(
         </div>
       ) : (
         <EmptyState
-          icon={IconGitPullRequest}
+          icon={<IconGitPullRequest />}
           title="No reviews yet"
           description="Request a review from a team member"
           compact

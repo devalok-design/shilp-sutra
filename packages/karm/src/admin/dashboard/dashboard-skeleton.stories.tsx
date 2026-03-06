@@ -11,6 +11,11 @@ const meta = {
   tags: ['autodocs'],
   parameters: {
     layout: 'padded',
+    docs: {
+      description: {
+        component: '**Package:** `@devalok/shilp-sutra-karm` · **Import:** `import { DashboardSkeleton } from "@devalok/shilp-sutra-karm/admin"`',
+      },
+    },
   },
 } satisfies Meta<typeof DashboardSkeleton>
 

@@ -223,7 +223,7 @@ const ActivityTab = React.forwardRef<HTMLDivElement, ActivityTabProps>(
     return (
       <EmptyState
         ref={ref}
-        icon={IconActivity}
+        icon={<IconActivity />}
         title="No activity yet"
         description="Actions on this task will appear here"
         compact

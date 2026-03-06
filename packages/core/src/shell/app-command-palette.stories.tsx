@@ -64,20 +64,20 @@ const extraActionsGroup: CommandGroup = {
     {
       id: 'action-standup',
       label: 'Start Daily Standup',
-      icon: IconBolt,
+      icon: <IconBolt />,
       shortcut: 'Ctrl+Shift+S',
       onSelect: () => console.log('Start standup'),
     },
     {
       id: 'action-branch',
       label: 'Create Feature Branch',
-      icon: IconGitBranch,
+      icon: <IconGitBranch />,
       onSelect: () => console.log('Create branch'),
     },
     {
       id: 'action-timesheet',
       label: 'Log Timesheet Entry',
-      icon: IconClock,
+      icon: <IconClock />,
       onSelect: () => console.log('Log timesheet'),
     },
   ],

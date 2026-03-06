@@ -62,6 +62,11 @@ const meta = {
   tags: ['autodocs'],
   parameters: {
     layout: 'padded',
+    docs: {
+      description: {
+        component: '**Package:** `@devalok/shilp-sutra-karm` · **Import:** `import { BreakAdminHeader } from "@devalok/shilp-sutra-karm/admin"`',
+      },
+    },
   },
   args: {
     onFilterChange: fn(),

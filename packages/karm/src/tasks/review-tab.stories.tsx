@@ -97,6 +97,11 @@ const meta: Meta<typeof ReviewTab> = {
   tags: ['autodocs'],
   parameters: {
     layout: 'centered',
+    docs: {
+      description: {
+        component: '**Package:** `@devalok/shilp-sutra-karm` · **Import:** `import { ReviewTab } from "@devalok/shilp-sutra-karm/tasks"`',
+      },
+    },
   },
   args: {
     onRequestReview: fn(),

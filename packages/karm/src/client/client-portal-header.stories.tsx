@@ -7,6 +7,11 @@ const meta: Meta<typeof ClientPortalHeader> = {
   tags: ['autodocs'],
   parameters: {
     layout: 'fullscreen',
+    docs: {
+      description: {
+        component: '**Package:** `@devalok/shilp-sutra-karm` · **Import:** `import { ClientPortalHeader } from "@devalok/shilp-sutra-karm/client"`',
+      },
+    },
   },
 }
 export default meta

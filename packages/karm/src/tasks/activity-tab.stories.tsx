@@ -218,6 +218,11 @@ const meta: Meta<typeof ActivityTab> = {
   tags: ['autodocs'],
   parameters: {
     layout: 'centered',
+    docs: {
+      description: {
+        component: '**Package:** `@devalok/shilp-sutra-karm` · **Import:** `import { ActivityTab } from "@devalok/shilp-sutra-karm/tasks"`',
+      },
+    },
   },
   decorators: [
     (Story) => (

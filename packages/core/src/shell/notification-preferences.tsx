@@ -6,6 +6,7 @@
  * Props-driven: accepts preferences array, projects, and callbacks.
  * No internal fetching -- the consumer is responsible for data loading.
  */
+import * as React from 'react'
 import { useState } from 'react'
 import { Button } from '../ui/button'
 import {
@@ -76,9 +77,9 @@ export interface NotificationPreferencesProps {
 // Constants
 // -----------------------------------------------------------------------
 
-const CHANNEL_LABELS: Record<string, { label: string; icon: typeof IconBell }> = {
-  IN_APP: { label: 'In-App', icon: IconBell },
-  GOOGLE_CHAT: { label: 'Google Chat', icon: IconMessage },
+const CHANNEL_LABELS: Record<string, { label: string; icon: React.ReactNode }> = {
+  IN_APP: { label: 'In-App', icon: <IconBell /> },
+  GOOGLE_CHAT: { label: 'Google Chat', icon: <IconMessage /> },
 }
 
 const TIER_LABELS: Record<string, string> = {
@@ -173,8 +174,6 @@ export function NotificationPreferences({
               {preferences.map((pref, i) => {
                 const channelInfo =
                   CHANNEL_LABELS[pref.channel] || CHANNEL_LABELS.IN_APP
-                const ChannelIcon = channelInfo.icon
-
                 return (
                   <div
                     key={pref.id}
@@ -186,7 +185,7 @@ export function NotificationPreferences({
                   >
                     {/* Channel icon */}
                     <div className="flex h-ds-sm w-ds-sm shrink-0 items-center justify-center rounded-ds-lg bg-layer-02">
-                      <ChannelIcon className="h-ico-sm w-ico-sm text-text-secondary" />
+                      <span className="[&>svg]:h-ico-sm [&>svg]:w-ico-sm text-text-secondary" aria-hidden="true">{channelInfo.icon}</span>
                     </div>
 
                     {/* Info */}

@@ -75,6 +75,11 @@ const meta = {
   tags: ['autodocs'],
   parameters: {
     layout: 'centered',
+    docs: {
+      description: {
+        component: '**Package:** `@devalok/shilp-sutra-karm` · **Import:** `import { RenderDate } from "@devalok/shilp-sutra-karm/admin"`',
+      },
+    },
   },
   decorators: [
     (Story) => (

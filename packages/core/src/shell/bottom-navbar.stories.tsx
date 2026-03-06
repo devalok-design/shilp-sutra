@@ -27,19 +27,19 @@ const associateUser: BottomNavbarUser = {
 }
 
 const primaryItems: BottomNavItem[] = [
-  { title: 'Home', href: '/', icon: IconLayoutDashboard, exact: true },
-  { title: 'Attendance', href: '/attendance', icon: IconCalendarCheck },
-  { title: 'Projects', href: '/projects', icon: IconLayoutKanban },
-  { title: 'Tasks', href: '/my-tasks', icon: IconListCheck },
+  { title: 'Home', href: '/', icon: <IconLayoutDashboard />, exact: true },
+  { title: 'Attendance', href: '/attendance', icon: <IconCalendarCheck /> },
+  { title: 'Projects', href: '/projects', icon: <IconLayoutKanban /> },
+  { title: 'Tasks', href: '/my-tasks', icon: <IconListCheck /> },
 ]
 
 const moreItems: BottomNavItem[] = [
-  { title: 'Breaks', href: '/breaks', icon: IconUmbrella },
-  { title: 'Devsabha', href: '/devsabha', icon: IconBook },
-  { title: 'Adjustments', href: '/adjustments', icon: IconAdjustmentsHorizontal },
-  { title: 'Profile', href: '/profile', icon: IconUserCircle },
-  { title: 'Admin', href: '/admin', icon: IconShieldCheck },
-  { title: 'IconSettings', href: '/admin/system-config', icon: IconSettings },
+  { title: 'Breaks', href: '/breaks', icon: <IconUmbrella /> },
+  { title: 'Devsabha', href: '/devsabha', icon: <IconBook /> },
+  { title: 'Adjustments', href: '/adjustments', icon: <IconAdjustmentsHorizontal /> },
+  { title: 'Profile', href: '/profile', icon: <IconUserCircle /> },
+  { title: 'Admin', href: '/admin', icon: <IconShieldCheck /> },
+  { title: 'IconSettings', href: '/admin/system-config', icon: <IconSettings /> },
 ]
 
 // ── Meta ─────────────────────────────────────────────────────

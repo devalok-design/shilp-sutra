@@ -1,5 +1,5 @@
 export { CalendarGrid } from './calendar-grid'
-export type { CalendarGridProps } from './calendar-grid'
+export type { CalendarGridProps, CalendarEvent } from './calendar-grid'
 export { DatePicker } from './date-picker'
 export type { DatePickerProps } from './date-picker'
 export { DateRangePicker } from './date-range-picker'

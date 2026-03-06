@@ -73,6 +73,11 @@ const meta = {
   tags: ['autodocs'],
   parameters: {
     layout: 'centered',
+    docs: {
+      description: {
+        component: '**Package:** `@devalok/shilp-sutra-karm` · **Import:** `import { EditBreakBalance } from "@devalok/shilp-sutra-karm/admin"`',
+      },
+    },
   },
   argTypes: {
     onSave: { action: 'save' },

@@ -104,6 +104,11 @@ const meta: Meta<typeof TaskCard> = {
   tags: ['autodocs'],
   parameters: {
     layout: 'centered',
+    docs: {
+      description: {
+        component: '**Package:** `@devalok/shilp-sutra-karm` · **Import:** `import { TaskCard } from "@devalok/shilp-sutra-karm/board"`',
+      },
+    },
   },
   decorators: [
     (Story, context) => (

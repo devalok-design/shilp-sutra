@@ -44,6 +44,28 @@ describe('PageHeader', () => {
     expect(results).toHaveNoViolations()
   })
 
+  it('auto-derives title from last breadcrumb when title is omitted', () => {
+    const { getByRole } = render(
+      <PageHeader breadcrumbs={[{ label: 'Home', href: '/' }, { label: 'Dashboard' }]} />,
+    )
+    expect(getByRole('heading', { level: 1 })).toHaveTextContent('Dashboard')
+  })
+
+  it('explicit title takes precedence over breadcrumbs', () => {
+    const { getByRole } = render(
+      <PageHeader title="Custom Title" breadcrumbs={[{ label: 'Home', href: '/' }, { label: 'Dashboard' }]} />,
+    )
+    expect(getByRole('heading', { level: 1 })).toHaveTextContent('Custom Title')
+  })
+
+  it('should have no a11y violations with auto-derived title', async () => {
+    const { container } = render(
+      <PageHeader breadcrumbs={[{ label: 'Home', href: '/' }, { label: 'Settings' }]} />,
+    )
+    const results = await axe(container)
+    expect(results).toHaveNoViolations()
+  })
+
   it('should have no accessibility violations with all props', async () => {
     const { container } = render(
       <PageHeader

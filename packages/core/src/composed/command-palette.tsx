@@ -16,7 +16,6 @@ import {
   DialogDescription,
 } from '../ui/dialog'
 import { IconSearch, IconCornerDownLeft, IconArrowUp, IconArrowDown } from '@tabler/icons-react'
-import type { Icon as TablerIcon } from '@tabler/icons-react'
 import { cn } from '../ui/lib/utils'
 import { VisuallyHidden } from '../ui/visually-hidden'
 
@@ -28,7 +27,7 @@ export interface CommandItem {
   id: string
   label: string
   description?: string
-  icon?: TablerIcon
+  icon?: React.ReactNode
   shortcut?: string
   onSelect: () => void
 }
@@ -243,8 +242,6 @@ const CommandPalette = React.forwardRef<HTMLDivElement, CommandPaletteProps>(
                 {group.items.map((item) => {
                   const itemIndex = itemIndexMap.get(item.id) ?? 0
                   const isActive = itemIndex === activeIndex
-                  const ItemIcon = item.icon
-
                   return (
                     <button
                       key={item.id}
@@ -262,11 +259,10 @@ const CommandPalette = React.forwardRef<HTMLDivElement, CommandPaletteProps>(
                           : 'text-text-secondary hover:bg-layer-02',
                       )}
                     >
-                      {ItemIcon && (
-                        <ItemIcon
-                          className="h-ico-sm w-ico-sm shrink-0 text-text-placeholder"
-                          stroke={1.5}
-                        />
+                      {item.icon && (
+                        <span className="[&>svg]:h-ico-sm [&>svg]:w-ico-sm shrink-0 text-text-placeholder" aria-hidden="true">
+                          {item.icon}
+                        </span>
                       )}
                       <div className="flex flex-1 flex-col">
                         <span className="text-ds-md">{item.label}</span>

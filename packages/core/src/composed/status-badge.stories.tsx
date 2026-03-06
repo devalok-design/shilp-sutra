@@ -19,9 +19,13 @@ const meta: Meta<typeof StatusBadge> = {
         'draft',
       ],
     },
+    color: {
+      control: 'select',
+      options: ['success', 'warning', 'error', 'info', 'neutral'],
+    },
     size: {
       control: 'select',
-      options: ['sm', 'default'],
+      options: ['sm', 'md'],
     },
   },
 }
@@ -138,6 +142,81 @@ export const AllStatusesSmall: Story = {
       <StatusBadge status="blocked" size="sm" />
       <StatusBadge status="cancelled" size="sm" />
       <StatusBadge status="draft" size="sm" />
+    </div>
+  ),
+}
+
+// --- Color prop stories ---
+
+export const ColorSuccess: Story = {
+  args: {
+    color: 'success',
+  },
+}
+
+export const ColorWarning: Story = {
+  args: {
+    color: 'warning',
+  },
+}
+
+export const ColorError: Story = {
+  args: {
+    color: 'error',
+  },
+}
+
+export const ColorInfo: Story = {
+  args: {
+    color: 'info',
+  },
+}
+
+export const ColorNeutral: Story = {
+  args: {
+    color: 'neutral',
+  },
+}
+
+export const ColorWithCustomLabel: Story = {
+  args: {
+    color: 'success',
+    label: 'Connected',
+  },
+}
+
+export const AllColors: Story = {
+  render: () => (
+    <div style={{ display: 'flex', flexWrap: 'wrap', gap: 8, alignItems: 'center' }}>
+      <StatusBadge color="success" />
+      <StatusBadge color="warning" />
+      <StatusBadge color="error" />
+      <StatusBadge color="info" />
+      <StatusBadge color="neutral" />
+    </div>
+  ),
+}
+
+export const AllColorsSmall: Story = {
+  render: () => (
+    <div style={{ display: 'flex', flexWrap: 'wrap', gap: 8, alignItems: 'center' }}>
+      <StatusBadge color="success" size="sm" />
+      <StatusBadge color="warning" size="sm" />
+      <StatusBadge color="error" size="sm" />
+      <StatusBadge color="info" size="sm" />
+      <StatusBadge color="neutral" size="sm" />
+    </div>
+  ),
+}
+
+export const ColorWithCustomLabels: Story = {
+  render: () => (
+    <div style={{ display: 'flex', flexWrap: 'wrap', gap: 8, alignItems: 'center' }}>
+      <StatusBadge color="success" label="Connected" />
+      <StatusBadge color="warning" label="Degraded" />
+      <StatusBadge color="error" label="Offline" />
+      <StatusBadge color="info" label="Syncing" />
+      <StatusBadge color="neutral" label="Unknown" />
     </div>
   ),
 }

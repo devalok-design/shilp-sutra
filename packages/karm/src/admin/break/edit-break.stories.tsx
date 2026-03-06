@@ -52,6 +52,11 @@ const meta = {
   tags: ['autodocs'],
   parameters: {
     layout: 'centered',
+    docs: {
+      description: {
+        component: '**Package:** `@devalok/shilp-sutra-karm` · **Import:** `import { EditBreak } from "@devalok/shilp-sutra-karm/admin"`',
+      },
+    },
   },
   args: {
     onSave: fn(),

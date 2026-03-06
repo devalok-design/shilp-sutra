@@ -7,6 +7,11 @@ const meta: Meta<typeof DailyBrief> = {
   tags: ['autodocs'],
   parameters: {
     layout: 'padded',
+    docs: {
+      description: {
+        component: '**Package:** `@devalok/shilp-sutra-karm` · **Import:** `import { DailyBrief } from "@devalok/shilp-sutra-karm/dashboard"`',
+      },
+    },
   },
   decorators: [
     (Story) => (

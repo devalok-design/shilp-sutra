@@ -7,6 +7,11 @@ const meta: Meta<typeof ProjectCard> = {
   tags: ['autodocs'],
   parameters: {
     layout: 'padded',
+    docs: {
+      description: {
+        component: '**Package:** `@devalok/shilp-sutra-karm` · **Import:** `import { ProjectCard } from "@devalok/shilp-sutra-karm/client"`',
+      },
+    },
   },
   decorators: [
     (Story) => (

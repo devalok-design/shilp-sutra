@@ -49,4 +49,75 @@ describe('StatusBadge', () => {
     const results = await axe(container)
     expect(results).toHaveNoViolations()
   })
+
+  // --- color prop tests ---
+
+  const allColors = [
+    'success',
+    'warning',
+    'error',
+    'info',
+    'neutral',
+  ] as const
+
+  it.each(allColors)(
+    'should have no accessibility violations with color="%s"',
+    async (color) => {
+      const { container } = render(<StatusBadge color={color} />)
+      const results = await axe(container)
+      expect(results).toHaveNoViolations()
+    },
+  )
+
+  it('should render color variant classes when color prop is set', () => {
+    const { container } = render(<StatusBadge color="success" />)
+    const badge = container.firstElementChild!
+    expect(badge.className).toContain('bg-success-surface')
+    expect(badge.className).toContain('text-text-success')
+  })
+
+  it('should use color name as default label when color is set without label or status', () => {
+    const { getByText } = render(<StatusBadge color="warning" />)
+    expect(getByText('Warning')).toBeTruthy()
+  })
+
+  it('should prefer explicit label over color name', () => {
+    const { getByText } = render(<StatusBadge color="error" label="Failed" />)
+    expect(getByText('Failed')).toBeTruthy()
+  })
+
+  it('should use color variant styling even when status is also provided', () => {
+    const { container } = render(<StatusBadge status="active" color="error" />)
+    const badge = container.firstElementChild!
+    // color should win over status
+    expect(badge.className).toContain('bg-error-surface')
+    expect(badge.className).toContain('text-text-error')
+  })
+
+  it('should render correct dot color for color prop', () => {
+    const { container } = render(<StatusBadge color="info" />)
+    const dot = container.querySelector('[aria-hidden="true"]')!
+    expect(dot.className).toContain('bg-info')
+  })
+
+  it('should render neutral color variant correctly', () => {
+    const { container, getByText } = render(<StatusBadge color="neutral" />)
+    const badge = container.firstElementChild!
+    expect(badge.className).toContain('bg-layer-02')
+    expect(badge.className).toContain('text-text-tertiary')
+    expect(getByText('Neutral')).toBeTruthy()
+  })
+
+  it('should work with color prop and size sm', () => {
+    const { container } = render(<StatusBadge color="success" size="sm" />)
+    const badge = container.firstElementChild!
+    expect(badge.className).toContain('bg-success-surface')
+    expect(badge.className).toContain('text-ds-xs')
+  })
+
+  it('should work with color prop and hideDot', () => {
+    const { container } = render(<StatusBadge color="warning" hideDot />)
+    const dot = container.querySelector('[aria-hidden="true"]')
+    expect(dot).toBeNull()
+  })
 })

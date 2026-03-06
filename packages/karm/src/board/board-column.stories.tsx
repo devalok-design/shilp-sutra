@@ -108,6 +108,11 @@ const meta: Meta<typeof BoardColumn> = {
   tags: ['autodocs'],
   parameters: {
     layout: 'centered',
+    docs: {
+      description: {
+        component: '**Package:** `@devalok/shilp-sutra-karm` · **Import:** `import { BoardColumn } from "@devalok/shilp-sutra-karm/board"`',
+      },
+    },
   },
   decorators: [
     (Story) => (

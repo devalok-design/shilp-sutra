@@ -94,6 +94,11 @@ const meta: Meta<typeof TaskProperties> = {
   tags: ['autodocs'],
   parameters: {
     layout: 'centered',
+    docs: {
+      description: {
+        component: '**Package:** `@devalok/shilp-sutra-karm` · **Import:** `import { TaskProperties } from "@devalok/shilp-sutra-karm/tasks"`',
+      },
+    },
   },
   args: {
     columns,

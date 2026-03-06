@@ -23,6 +23,12 @@ import { cn } from '../../ui/lib/utils'
 
 const WEEKDAYS = ['Su', 'Mo', 'Tu', 'We', 'Th', 'Fr', 'Sa']
 
+export interface CalendarEvent {
+  date: Date
+  color?: string
+  label?: string
+}
+
 export interface CalendarGridProps {
   currentMonth: Date
   selected?: Date | null
@@ -40,6 +46,8 @@ export interface CalendarGridProps {
   hidePrevNav?: boolean
   /** Hide the next-month navigation arrow */
   hideNextNav?: boolean
+  /** Events to display as dot indicators on dates */
+  events?: CalendarEvent[]
 }
 
 export const CalendarGrid = React.forwardRef<HTMLDivElement, CalendarGridProps>(
@@ -58,8 +66,22 @@ export const CalendarGrid = React.forwardRef<HTMLDivElement, CalendarGridProps>(
   maxDate,
   hidePrevNav,
   hideNextNav,
+  events,
 }, forwardedRef) {
   const gridRef = React.useRef<HTMLDivElement>(null)
+
+  const eventsByDate = React.useMemo(() => {
+    const map = new Map<string, CalendarEvent[]>()
+    if (!events) return map
+    for (const evt of events) {
+      const key = format(evt.date, 'yyyy-MM-dd')
+      const arr = map.get(key) ?? []
+      arr.push(evt)
+      map.set(key, arr)
+    }
+    return map
+  }, [events])
+
   const monthStart = startOfMonth(currentMonth)
   const monthEnd = endOfMonth(currentMonth)
   const calendarStart = startOfWeek(monthStart)
@@ -224,13 +246,15 @@ export const CalendarGrid = React.forwardRef<HTMLDivElement, CalendarGridProps>(
           const inRange = isInRange(d)
           const edge = isRangeEdge(d)
           const isToday = isSameDay(d, new Date())
+          const dateKey = format(d, 'yyyy-MM-dd')
+          const dayEvents = eventsByDate.get(dateKey) ?? []
 
           return (
             <button
               key={i}
               type="button"
               role="gridcell"
-              data-date={format(d, 'yyyy-MM-dd')}
+              data-date={dateKey}
               tabIndex={inMonth && !disabled ? 0 : -1}
               disabled={!inMonth || disabled}
               onClick={() => {
@@ -242,7 +266,7 @@ export const CalendarGrid = React.forwardRef<HTMLDivElement, CalendarGridProps>(
               aria-selected={isSelected || edge || undefined}
               aria-disabled={!inMonth || disabled || undefined}
               className={cn(
-                'flex h-ds-sm w-ds-sm-plus items-center justify-center rounded-ds-md text-ds-md font-body transition-colors duration-fast-01 ease-productive-standard',
+                'relative flex h-ds-sm w-ds-sm-plus items-center justify-center rounded-ds-md text-ds-md font-body transition-colors duration-fast-01 ease-productive-standard',
                 !inMonth && 'pointer-events-none opacity-0',
                 inMonth && disabled && 'opacity-[0.38] pointer-events-none cursor-not-allowed',
                 inMonth && !disabled && !isSelected && !edge && !inRange &&
@@ -256,6 +280,18 @@ export const CalendarGrid = React.forwardRef<HTMLDivElement, CalendarGridProps>(
               )}
             >
               {format(d, 'd')}
+              {dayEvents.length > 0 && (
+                <span className="flex gap-px justify-center absolute bottom-[2px] left-0 right-0">
+                  {dayEvents.slice(0, 3).map((evt, idx) => (
+                    <span
+                      key={idx}
+                      data-event-dot
+                      className="h-[4px] w-[4px] rounded-ds-full"
+                      style={{ backgroundColor: evt.color ?? 'var(--color-interactive)' }}
+                    />
+                  ))}
+                </span>
+              )}
             </button>
           )
         })}

@@ -7,6 +7,11 @@ const meta: Meta<typeof StreamingText> = {
   tags: ['autodocs'],
   parameters: {
     layout: 'padded',
+    docs: {
+      description: {
+        component: '**Package:** `@devalok/shilp-sutra-karm` · **Import:** `import { StreamingText } from "@devalok/shilp-sutra-karm/chat"`',
+      },
+    },
   },
   decorators: [
     (Story) => (

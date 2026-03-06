@@ -11,6 +11,11 @@ const meta = {
   tags: ['autodocs'],
   parameters: {
     layout: 'centered',
+    docs: {
+      description: {
+        component: '**Package:** `@devalok/shilp-sutra-karm` · **Import:** `import { Calendar } from "@devalok/shilp-sutra-karm/admin"`',
+      },
+    },
   },
   argTypes: {
     onDateSelect: { action: 'dateSelected' },

@@ -8,8 +8,12 @@ const meta: Meta<typeof Badge> = {
   argTypes: {
     variant: {
       control: 'select',
+      options: ['subtle', 'solid', 'outline'],
+    },
+    color: {
+      control: 'select',
       options: [
-        'neutral',
+        'default',
         'info',
         'success',
         'error',
@@ -43,49 +47,49 @@ export const Default: Story = {
 
 export const Info: Story = {
   args: {
-    variant: 'info',
+    color: 'info',
     children: 'In Progress',
   },
 }
 
 export const Success: Story = {
   args: {
-    variant: 'success',
+    color: 'success',
     children: 'Completed',
   },
 }
 
 export const Error: Story = {
   args: {
-    variant: 'error',
+    color: 'error',
     children: 'Urgent',
   },
 }
 
 export const Warning: Story = {
   args: {
-    variant: 'warning',
+    color: 'warning',
     children: 'Pending',
   },
 }
 
 export const Brand: Story = {
   args: {
-    variant: 'brand',
+    color: 'brand',
     children: 'Review',
   },
 }
 
 export const Accent: Story = {
   args: {
-    variant: 'accent',
+    color: 'accent',
     children: 'Design',
   },
 }
 
 export const WithDot: Story = {
   args: {
-    variant: 'success',
+    color: 'success',
     dot: true,
     children: 'Active',
   },
@@ -93,7 +97,7 @@ export const WithDot: Story = {
 
 export const Dismissible: Story = {
   args: {
-    variant: 'info',
+    color: 'info',
     children: 'Tag',
     onDismiss: () => {},
   },
@@ -115,27 +119,37 @@ export const Large: Story = {
 
 export const AllVariants: Story = {
   render: () => {
-    const variants = ['neutral', 'info', 'success', 'error', 'warning', 'brand', 'accent', 'teal', 'amber', 'slate', 'indigo', 'cyan', 'orange', 'emerald'] as const
+    const colors = ['default', 'info', 'success', 'error', 'warning', 'brand', 'accent', 'teal', 'amber', 'slate', 'indigo', 'cyan', 'orange', 'emerald'] as const
+    const variants = ['subtle', 'solid', 'outline'] as const
     const sizes = ['sm', 'md', 'lg'] as const
 
     return (
       <div className="flex flex-col gap-ds-06">
-        {sizes.map((size) => (
-          <div key={size}>
-            <p className="mb-ds-03 text-ds-sm font-semibold text-text-secondary capitalize">Size: {size}</p>
+        {variants.map((variant) => (
+          <div key={variant}>
+            <p className="mb-ds-03 text-ds-sm font-semibold text-text-secondary capitalize">Variant: {variant}</p>
             <div className="flex flex-wrap items-center gap-ds-03">
-              {variants.map((variant) => (
-                <Badge key={`${size}-${variant}`} variant={variant} size={size}>{variant}</Badge>
+              {colors.map((color) => (
+                <Badge key={`${variant}-${color}`} variant={variant} color={color} size="md">{color}</Badge>
               ))}
             </div>
           </div>
         ))}
 
         <div>
+          <p className="mb-ds-03 text-ds-sm font-semibold text-text-secondary">Sizes (subtle)</p>
+          <div className="flex flex-wrap items-center gap-ds-03">
+            {sizes.map((size) => (
+              <Badge key={size} size={size}>{size}</Badge>
+            ))}
+          </div>
+        </div>
+
+        <div>
           <p className="mb-ds-03 text-ds-sm font-semibold text-text-secondary">With Dot</p>
           <div className="flex flex-wrap items-center gap-ds-03">
-            {variants.map((variant) => (
-              <Badge key={`dot-${variant}`} variant={variant} dot>{variant}</Badge>
+            {colors.map((color) => (
+              <Badge key={`dot-${color}`} color={color} dot>{color}</Badge>
             ))}
           </div>
         </div>
@@ -143,8 +157,8 @@ export const AllVariants: Story = {
         <div>
           <p className="mb-ds-03 text-ds-sm font-semibold text-text-secondary">Dismissible</p>
           <div className="flex flex-wrap items-center gap-ds-03">
-            {variants.map((variant) => (
-              <Badge key={`dismiss-${variant}`} variant={variant} onDismiss={() => {}}>{variant}</Badge>
+            {colors.map((color) => (
+              <Badge key={`dismiss-${color}`} color={color} onDismiss={() => {}}>{color}</Badge>
             ))}
           </div>
         </div>
@@ -166,10 +180,10 @@ export const AllSizes: Story = {
 export const WithDots: Story = {
   render: () => (
     <div className="flex flex-wrap items-center gap-ds-02">
-      <Badge variant="success" dot>Online</Badge>
-      <Badge variant="warning" dot>Away</Badge>
-      <Badge variant="error" dot>Busy</Badge>
-      <Badge variant="neutral" dot>Offline</Badge>
+      <Badge color="success" dot>Online</Badge>
+      <Badge color="warning" dot>Away</Badge>
+      <Badge color="error" dot>Busy</Badge>
+      <Badge dot>Offline</Badge>
     </div>
   ),
 }

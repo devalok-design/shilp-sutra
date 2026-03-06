@@ -1,0 +1,219 @@
+import { Meta } from '@storybook/blocks'
+
+<Meta title="Changelog" />
+
+# Changelog
+
+All notable changes to the Shilp Sutra design system.
+
+Format based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/) &middot; [Semantic Versioning](https://semver.org/spec/v2.0.0.html)
+
+---
+
+## 0.3.0 &mdash; 2026-03-06
+
+The **Mega Audit** release. A comprehensive expert audit identified 38 issues across architecture, component APIs, accessibility, and DX. This release fixes all of them.
+
+### Added
+
+| What | Details |
+|------|---------|
+| **Root export** | `import { Button } from '@devalok/shilp-sutra'` now works |
+| **Legacy bundler fields** | `main` and `module` for tools that don't support `exports` |
+| **New exports** | `./ui/charts`, `./ui/tree-view`, `./composed/date-picker` |
+| **`useFormField()` hook** | Automatic `aria-describedby` wiring for form controls |
+| **Type exports** | `SwitchProps`, `SliderProps` now publicly available |
+| **Switch `error` prop** | Matches Checkbox error state API |
+| **Karm `"use client"`** | All karm components include the directive |
+| **Inter font** | Replaces Google Sans (SIL OFL licensed, WOFF2) |
+| **WebP brand assets** | 76% size reduction alongside existing PNGs |
+
+### Breaking Changes
+
+> **Migration effort: low.** Most changes are simple renames.
+
+#### Dependencies &rarr; Optional Peer Dependencies
+
+Heavy dependencies are now optional &mdash; install only what you use:
+
+```bash
+# Before: all installed automatically
+# After: install what your app needs
+pnpm add d3 recharts                    # if using Charts
+pnpm add @tiptap/react @tiptap/starter-kit  # if using RichTextEditor
+pnpm add @tanstack/react-table          # if using DataTable
+pnpm add date-fns                       # if using DatePicker
+```
+
+#### Fonts: Google Sans &rarr; Inter
+
+Google Sans was proprietary. Inter is open-source (SIL OFL) and visually similar.
+
+```css
+/* Before */
+font-family: "Google Sans", system-ui, sans-serif;
+
+/* After — automatic if using our tokens */
+font-family: "Inter", system-ui, sans-serif;
+```
+
+#### Button: variant/color axis
+
+```tsx
+{/* Before */}
+<Button variant="primary">Save</Button>
+<Button variant="secondary">Cancel</Button>
+<Button variant="error">Delete</Button>
+
+{/* After */}
+<Button variant="solid">Save</Button>
+<Button variant="outline">Cancel</Button>
+<Button variant="solid" color="error">Delete</Button>
+```
+
+| Old `variant` | New `variant` | New `color` |
+|---------------|---------------|-------------|
+| `primary` | `solid` | — |
+| `secondary` | `outline` | — |
+| `ghost` | `ghost` | — |
+| `link` | `link` | — |
+| `error` | `solid` | `error` |
+| `error-ghost` | `outline` | `error` |
+
+#### Badge: variant/color split
+
+```tsx
+{/* Before — single axis */}
+<Badge variant="info">Status</Badge>
+
+{/* After — two axes */}
+<Badge variant="subtle" color="info">Status</Badge>
+<Badge variant="solid" color="success">Done</Badge>
+<Badge variant="outline" color="error">Failed</Badge>
+```
+
+#### Alert / Banner / Toast: `variant` &rarr; `color`
+
+```tsx
+{/* Before */}
+<Alert variant="warning">Watch out</Alert>
+<Banner variant="error">Outage</Banner>
+
+{/* After */}
+<Alert color="warning">Watch out</Alert>
+<Banner color="error">Outage</Banner>
+```
+
+#### Custom value controls: `onChange` &rarr; `onValueChange`
+
+Avoids collision with the native `onChange` from `HTMLAttributes`.
+
+```tsx
+{/* Before */}
+<NumberInput onChange={(v) => setValue(v)} />
+<Combobox onChange={(v) => setSelected(v)} />
+<Autocomplete onChange={(v) => setQuery(v)} />
+
+{/* After */}
+<NumberInput onValueChange={(v) => setValue(v)} />
+<Combobox onValueChange={(v) => setSelected(v)} />
+<Autocomplete onValueChange={(v) => setQuery(v)} />
+```
+
+#### FormField: context-based wiring
+
+```tsx
+{/* Before — manual */}
+<FormField>
+  <FormLabel htmlFor="email">Email</FormLabel>
+  <Input id="email" aria-describedby="email-help" />
+  <FormHelperText id="email-help">We won't share it</FormHelperText>
+</FormField>
+
+{/* After — automatic */}
+<FormField>
+  <FormLabel>Email</FormLabel>
+  <Input {...useFormField()} />
+  <FormHelperText>We won't share it</FormHelperText>
+</FormField>
+```
+
+`getFormFieldA11y()` has been removed in favor of the `useFormField()` hook.
+
+### Fixed
+
+| Issue | Fix |
+|-------|-----|
+| Karm hooks path rewrite | `hooks/` was mapped to `/ui` instead of `/hooks` |
+| Badge phantom token | `text-on-interactive` &rarr; `text-on-color` |
+| Tailwind `screens` override | Moved to `theme.extend` so deployer breakpoints are preserved |
+| Touch targets | All dismiss/close buttons now &ge; 24px (WCAG 2.5.8) |
+| Motion accessibility | Spinners respect `prefers-reduced-motion` |
+| Toast close button | Always visible (was hidden until hover) |
+| Ref forwarding | `DialogHeader/Footer`, `SheetHeader/Footer` now support refs |
+
+---
+
+## 0.2.1 &mdash; 2026-03-05
+
+### Fixed
+- **Tailwind preset** `require` condition added to `./tailwind` export &mdash; CJS config loaders can now `require('@devalok/shilp-sutra/tailwind')` directly.
+
+---
+
+## 0.2.0 &mdash; 2026-03-05
+
+### Next.js App Router Compatibility
+
+- **`"use client"` directives** injected into all client-only components via post-build script
+- **Per-component exports** for granular imports: `@devalok/shilp-sutra/ui/text`, `./ui/dialog`, etc.
+- **Server-safe components** excluded from `"use client"`: Text, Skeleton, Spinner, Stack, Container, Table, Code, VisuallyHidden, ContentCard, EmptyState, PageHeader, LoadingSkeleton, PageSkeletons, PriorityIndicator, StatusBadge
+
+### Type Resolution Fix
+- `@primitives/*` type references in `.d.ts` files rewritten to relative paths &mdash; no more ambient type stubs needed
+
+### API Improvements
+- **Stack** `direction` accepts `"row"` / `"column"` aliases
+- **Stack** `gap` accepts numeric values (e.g., `gap={4}`)
+- **StatCard** `icon` accepts `React.ComponentType`
+- **Text** `as` prop widened to any `React.ElementType`
+- **SearchInput** `inputSize` renamed to `size`
+
+---
+
+## 0.1.1 &mdash; 2026-03-05
+
+### Critical Runtime Fixes
+- **BreakAdmin** `useMemo` after conditional return &mdash; Rules of Hooks violation
+- **InputOTP** `animate-caret-blink` keyframe added to preset
+- **RadarChart** invisible axis labels fixed
+- **CorrectionList** missing mobile borders
+- **AssociateDetail** collapsed vertical divider
+- **LeaveRequest** fragile synthetic `MouseEvent`
+
+### Architecture
+- **Shell components** decoupled from Next.js via `LinkProvider`/`useLink` context
+- **Brand logos** dark mode reactive via `MutationObserver`
+- Missing `'use client'` directives added
+
+### Accessibility (12 fixes)
+- `focus:ring` &rarr; `focus-visible:ring` on Autocomplete
+- Double-focus keyboard bug in SegmentedControl
+- 6 missing `aria-label` attributes
+- 5 missing `type="button"` attributes
+- `aria-invalid` added to Textarea
+
+### Token Compliance
+- 60+ raw Tailwind classes replaced with design system tokens
+- ~300 story file violations fixed
+
+---
+
+## 0.1.0 &mdash; 2026-02-28
+
+### Initial Release
+- 114 components across `ui/`, `composed/`, `shell/`, `karm/` modules
+- 3-tier design token system (primitives &rarr; semantic &rarr; Tailwind)
+- Vendored Radix UI primitives (zero `@radix-ui` runtime deps)
+- Dark mode via `.dark` class toggle
+- Storybook 8.6 with 95 stories

@@ -403,7 +403,9 @@
   "files": [
     "dist",
     "fonts",
-    "README.md"
+    "README.md",
+    "llms.txt",
+    "llms-full.txt"
   ],
   "scripts": {
     "build": "vite build && pnpm build:tokens && node scripts/fix-dts-primitives.mjs && node scripts/inject-use-client.mjs && node scripts/build-tailwind-cjs.mjs",

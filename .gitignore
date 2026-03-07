@@ -5,4 +5,5 @@ storybook-static/
 .DS_Store
 .worktrees/
 .claude/
+!.claude/commands/
 *.pdf

@@ -39,7 +39,7 @@ If you have shadcn/ui knowledge, these are the differences that WILL trip you up
 | Toast variant="destructive" | Toast color="error" | Toast uses color= not variant= |
 | Badge variant="destructive" | Badge variant="solid" color="error" | Two-axis: variant + color |
 | Alert + AlertTitle + AlertDescription | <Alert title="..." color="error"> | Single component, not compound |
-| Form + FormField + FormItem + FormLabel + FormControl + FormDescription + FormMessage | FormField + Label + Input + FormHelperText + getFormFieldA11y() | Simpler API, manual a11y wiring |
+| Form + FormField + FormItem + FormLabel + FormControl + FormDescription + FormMessage | FormField + Label + Input + FormHelperText + useFormField() | Simpler API, hook-based a11y wiring |
 | Pagination | PaginationRoot | Root component name differs |
 
 ### The Two-Axis Variant System
@@ -124,8 +124,8 @@ NOTIFICATION SELECTION GUIDE:
 
 ### Form Pattern
 - FormField: state(helper|error|warning|success) > Label + Input + FormHelperText
-- Wire accessibility manually: <Input {...getFormFieldA11y(helperTextId, state)} />
-- getFormFieldA11y returns { aria-describedby, aria-invalid }
+- useFormField() hook returns { state, helperTextId, required } from FormField context
+- Wire accessibility: const { state, helperTextId } = useFormField(); then aria-describedby={helperTextId}, aria-invalid={state === 'error'}
 
 ### Composed Components
 - PageHeader: title, subtitle, breadcrumbs[], actions(ReactNode)

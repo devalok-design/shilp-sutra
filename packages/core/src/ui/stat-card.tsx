@@ -45,7 +45,10 @@ import { cn } from './lib/utils'
  * // These are just a few ways — feel free to combine props creatively!
  */
 export interface StatCardProps extends React.HTMLAttributes<HTMLDivElement> {
-  label: string
+  /** Heading text for the metric. `title` is an alias for `label`. */
+  label?: string
+  /** Alias for `label` — use whichever feels natural. */
+  title?: string
   value: string | number
   delta?: {
     value: string
@@ -56,7 +59,8 @@ export interface StatCardProps extends React.HTMLAttributes<HTMLDivElement> {
 }
 
 const StatCard = React.forwardRef<HTMLDivElement, StatCardProps>(
-  ({ className, label, value, delta, icon, loading, ...props }, ref) => {
+  ({ className, label, title, value, delta, icon, loading, ...props }, ref) => {
+    const resolvedLabel = title ?? label ?? ''
     if (loading) {
       return (
         <div
@@ -98,7 +102,7 @@ const StatCard = React.forwardRef<HTMLDivElement, StatCardProps>(
         {...props}
       >
         <div className="flex items-center justify-between mb-ds-04">
-          <p className="text-ds-md font-medium text-text-secondary">{label}</p>
+          <p className="text-ds-md font-medium text-text-secondary">{resolvedLabel}</p>
           {icon && (
             <span className="text-text-secondary" aria-hidden="true">
               {typeof icon === 'function'

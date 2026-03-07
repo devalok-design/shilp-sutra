@@ -11,8 +11,10 @@ const badgeVariants = cva(
     variants: {
       variant: {
         subtle: '',
+        secondary: '',    // alias → subtle
         solid: '',
         outline: '',
+        destructive: '',  // alias → solid + error
       },
       color: {
         default: '',
@@ -39,6 +41,11 @@ const badgeVariants = cva(
     compoundVariants: [
       // subtle (surface bg)
       { variant: 'subtle', color: 'default', className: 'bg-field text-text-secondary border-border' },
+      // "secondary" alias → same as subtle + default
+      { variant: 'secondary', color: 'default', className: 'bg-field text-text-secondary border-border' },
+      // "destructive" alias → solid + error
+      { variant: 'destructive', color: 'default', className: 'bg-error text-text-on-color border-transparent' },
+      { variant: 'destructive', color: 'error', className: 'bg-error text-text-on-color border-transparent' },
       { variant: 'subtle', color: 'info', className: 'bg-info-surface text-info-text border-info-border' },
       { variant: 'subtle', color: 'success', className: 'bg-success-surface text-success-text border-success-border' },
       { variant: 'subtle', color: 'error', className: 'bg-error-surface text-error-text border-error-border' },

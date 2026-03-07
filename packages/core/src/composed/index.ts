@@ -63,3 +63,5 @@ export type { SimpleTooltipProps } from './simple-tooltip'
 
 export { ScheduleView } from './schedule-view'
 export type { ScheduleViewProps, ScheduleEvent } from './schedule-view'
+
+export { getInitials } from './lib/string-utils'

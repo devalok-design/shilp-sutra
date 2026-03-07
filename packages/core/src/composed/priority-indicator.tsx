@@ -9,10 +9,10 @@ import {
 } from '@tabler/icons-react'
 import type { Icon as TablerIcon } from '@tabler/icons-react'
 
-export type Priority = 'LOW' | 'MEDIUM' | 'HIGH' | 'URGENT'
+export type Priority = 'LOW' | 'MEDIUM' | 'HIGH' | 'URGENT' | 'low' | 'medium' | 'high' | 'urgent'
 
 const priorityConfig: Record<
-  Priority,
+  Uppercase<Priority>,
   { icon: TablerIcon; color: string; bgColor: string; label: string }
 > = {
   LOW: {
@@ -64,7 +64,8 @@ export interface PriorityIndicatorProps
 
 const PriorityIndicator = React.forwardRef<HTMLDivElement, PriorityIndicatorProps>(
   ({ priority, display, className, ...props }, ref) => {
-    const config = priorityConfig[priority]
+    const normalizedPriority = priority.toUpperCase() as 'LOW' | 'MEDIUM' | 'HIGH' | 'URGENT'
+    const config = priorityConfig[normalizedPriority]
     const Icon = config.icon
 
     if (display === 'compact') {

@@ -13,8 +13,10 @@ export const buttonVariants = cva(
     variants: {
       variant: {
         solid: '',
+        default: '',    // alias → solid
         outline: '',
         ghost: '',
+        destructive: '', // alias → solid + error
         link: 'text-text-link underline-offset-4 hover:underline active:opacity-[0.8]',
       },
       color: {
@@ -25,6 +27,7 @@ export const buttonVariants = cva(
         sm: 'h-ds-sm rounded-ds-md px-ds-04 text-ds-sm',
         md: 'h-ds-md rounded-ds-md px-ds-05 text-ds-md',
         lg: 'h-ds-lg rounded-ds-lg px-ds-06 text-ds-base',
+        icon: 'h-ds-md w-ds-md rounded-ds-md', // alias → icon-md
         'icon-sm': 'h-ds-sm w-ds-sm rounded-ds-md',
         'icon-md': 'h-ds-md w-ds-md rounded-ds-md',
         'icon-lg': 'h-ds-lg w-ds-lg rounded-ds-lg',
@@ -33,6 +36,12 @@ export const buttonVariants = cva(
     compoundVariants: [
       // solid + default (primary)
       { variant: 'solid', color: 'default', className: 'bg-interactive text-text-on-color hover:bg-interactive-hover active:bg-interactive-active shadow-01 hover:shadow-brand' },
+      // "default" alias → same as solid + default
+      { variant: 'default', color: 'default', className: 'bg-interactive text-text-on-color hover:bg-interactive-hover active:bg-interactive-active shadow-01 hover:shadow-brand' },
+      { variant: 'default', color: 'error', className: 'bg-error text-text-on-color hover:bg-error-hover active:bg-error-hover shadow-01' },
+      // "destructive" alias → solid + error
+      { variant: 'destructive', color: 'default', className: 'bg-error text-text-on-color hover:bg-error-hover active:bg-error-hover shadow-01' },
+      { variant: 'destructive', color: 'error', className: 'bg-error text-text-on-color hover:bg-error-hover active:bg-error-hover shadow-01' },
       // solid + error
       { variant: 'solid', color: 'error', className: 'bg-error text-text-on-color hover:bg-error-hover active:bg-error-hover shadow-01' },
       // outline + default (secondary)
@@ -57,6 +66,7 @@ const iconSizeClass: Record<string, string> = {
   sm: 'h-ico-sm w-ico-sm [&>svg]:h-ico-sm [&>svg]:w-ico-sm',
   md: 'h-ico-sm w-ico-sm [&>svg]:h-ico-sm [&>svg]:w-ico-sm',
   lg: 'h-ico-md w-ico-md [&>svg]:h-ico-md [&>svg]:w-ico-md',
+  icon: 'h-ico-sm w-ico-sm [&>svg]:h-ico-sm [&>svg]:w-ico-sm',
   'icon-sm': 'h-ico-sm w-ico-sm [&>svg]:h-ico-sm [&>svg]:w-ico-sm',
   'icon-md': 'h-ico-sm w-ico-sm [&>svg]:h-ico-sm [&>svg]:w-ico-sm',
   'icon-lg': 'h-ico-md w-ico-md [&>svg]:h-ico-md [&>svg]:w-ico-md',
@@ -67,6 +77,7 @@ const spinnerSizeMap: Record<string, 'sm' | 'md'> = {
   sm: 'sm',
   md: 'sm',
   lg: 'md',
+  icon: 'sm',
   'icon-sm': 'sm',
   'icon-md': 'sm',
   'icon-lg': 'md',

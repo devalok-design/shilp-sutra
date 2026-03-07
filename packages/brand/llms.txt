@@ -1,0 +1,87 @@
+# @devalok/shilp-sutra-brand
+
+> Logo components and brand assets for Devalok and Karm.
+> Provides React components, favicon helpers, and raw asset imports.
+
+## Install & Import
+
+pnpm add @devalok/shilp-sutra-brand
+
+// Logo components:
+import { DevalokLogo, KarmLogo } from '@devalok/shilp-sutra-brand'
+
+// Per-brand imports:
+import { DevalokLogo, generateDevalokFavicon } from '@devalok/shilp-sutra-brand/devalok'
+import { KarmLogo, generateKarmFavicon } from '@devalok/shilp-sutra-brand/karm'
+
+// Raw asset files:
+import monogram from '@devalok/shilp-sutra-brand/assets/devalok/logos/monogram-brand.png'
+
+## Components
+
+### DevalokLogo
+- type: 'monogram' | 'monogram-wordmark' | 'monogram-shell' | 'monogram-shell-wordmark' | 'monogram-coin-wordmark' | 'wordmark' | 'dass' | 'shloka' | 'chakra'
+- color: 'brand' | 'black' | 'white' | 'auto' (auto = dark mode aware via .dark class)
+- size: 'xs' (24px) | 'sm' (32px) | 'md' (40px) | 'lg' (56px) | 'xl' (80px)
+- simplifyBelow: number (auto-simplify to monogram below this width, default 32)
+- aria-label, aria-hidden, role, className
+
+### DevalokLogo.Link
+- Compound anchor wrapper: <DevalokLogo.Link href="/"><DevalokLogo type="monogram" /></DevalokLogo.Link>
+- Extends React.AnchorHTMLAttributes
+
+### KarmLogo
+- type: 'icon' | 'wordmark' | 'wordmark-icon'
+- color: 'brand' | 'black' | 'white' | 'auto'
+- size: 'xs' | 'sm' | 'md' | 'lg' | 'xl' (same px mapping as DevalokLogo)
+- Same accessibility props as DevalokLogo
+
+### KarmLogo.Link
+- Same pattern as DevalokLogo.Link
+
+## Favicon Helpers
+
+### generateDevalokFavicon(options?)
+Returns Next.js metadata-compatible icon config.
+  options.color: 'brand' | 'black' | 'white' (default: 'brand')
+
+Usage in Next.js layout.tsx:
+  import { generateDevalokFavicon } from '@devalok/shilp-sutra-brand/devalok'
+  export const metadata = { ...generateDevalokFavicon({ color: 'brand' }) }
+
+### generateKarmFavicon(options?)
+Same pattern, returns icon + apple + manifest paths.
+  import { generateKarmFavicon } from '@devalok/shilp-sutra-brand/karm'
+  export const metadata = { ...generateKarmFavicon({ color: 'brand' }) }
+
+### getDevalokFaviconPath(options?) / getKarmFaviconPath(options?)
+Returns a single favicon file path string.
+  options: { color, size, format }
+
+## Raw Asset Paths
+
+Assets available via wildcard import: @devalok/shilp-sutra-brand/assets/*
+
+Devalok logos (PNG/SVG/WebP, 3 colors each):
+  assets/devalok/logos/monogram-{brand,black,white}.png
+  assets/devalok/logos/monogram-wordmark-{brand,black,white}.png
+  assets/devalok/logos/monogram-shell-{brand,black,white}.png
+  assets/devalok/logos/monogram-shell-wordmark-{brand,black,white}.png
+  assets/devalok/logos/monogram-coin-wordmark-{brand,black,white}.png
+  assets/devalok/logos/shloka-{brand,black,white}.png
+
+Devalok favicons:
+  assets/devalok/favicons/favicon-{brand,black,white}.svg
+  assets/devalok/favicons/favicon-{brand,black,white}-{16,32,96,180,512}.png
+
+Karm favicons:
+  assets/karm/favicons/favicon-brand.ico
+  assets/karm/favicons/favicon-{brand,black,white}.svg
+  assets/karm/favicons/favicon-brand-{96,180,192,512}.png
+
+## Key Notes
+
+- color="auto" uses MutationObserver on .dark class for dark mode switching
+- Large PNG logos (monogram, shloka) render as <img>; smaller SVGs inline as React components
+- Karm logos are all inline SVG (no PNG assets)
+- Brand colors: brand=#D33163, brandDark=#B8284F

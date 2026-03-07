@@ -1,0 +1,121 @@
+# @devalok/shilp-sutra-karm
+
+> Domain-specific UI components for the Karm team-management platform.
+> Built on top of @devalok/shilp-sutra (core design system).
+> Peer dependency: @devalok/shilp-sutra >=0.3.0
+
+## Install & Import
+
+pnpm add @devalok/shilp-sutra-karm
+
+// Per-module imports (recommended):
+import { KanbanBoard } from '@devalok/shilp-sutra-karm/board'
+import { TaskDetailPanel } from '@devalok/shilp-sutra-karm/tasks'
+import { ChatPanel } from '@devalok/shilp-sutra-karm/chat'
+import { AttendanceCTA, DailyBrief } from '@devalok/shilp-sutra-karm/dashboard'
+import { AccentProvider, ClientPortalHeader, ProjectCard } from '@devalok/shilp-sutra-karm/client'
+import { AdminDashboard, BreakAdmin } from '@devalok/shilp-sutra-karm/admin'
+
+// Or from root barrel:
+import { KanbanBoard, TaskDetailPanel, ChatPanel } from '@devalok/shilp-sutra-karm'
+
+## Module Reference
+
+### Board (`/board`)
+- KanbanBoard: initialData(BoardData), onTaskMove, onTaskAdd, onColumnRename, onColumnDelete, onClickTask, onAddColumn
+- BoardColumn: column(BoardColumnData), index, onAddTask, onClickTask, onRenameColumn, onDeleteColumn
+- TaskCard: task(BoardTask), onClickTask
+- TaskCardOverlay: task(BoardTask) — drag overlay variant
+
+BoardTask shape: { id, title, priority, labels[], dueDate, isBlocked, assignees[] }
+BoardData shape: { columns: [{ id, name, isClientVisible, tasks[] }] }
+
+Uses dnd-kit for drag-and-drop. KanbanBoard manages all DnD state internally.
+
+### Tasks (`/tasks`)
+- TaskDetailPanel: task(FullTask|null), open, onOpenChange, columns[], members[], activities[], clientMode?, onTitleUpdate, onPropertyUpdate, onAssign, onUnassign, onCreateSubtask, onToggleSubtask, onRequestReview, onUpdateReviewStatus + more callbacks
+- TaskProperties: task, columns[], members[], onUpdate, onAssign, onUnassign, readOnly?, editableFields?, renderPriorityIndicator?, renderDatePicker?
+- ActivityTab: activities(AuditLogEntry[])
+- ConversationTab: comments[], taskVisibility, onPostComment, clientMode?, renderEditor?, renderViewer?
+- FilesTab: files[], onUpload, onDelete, isUploading?, readOnly?
+- ReviewTab: reviews[], members[], onRequestReview, onUpdateStatus
+- SubtasksTab: subtasks[], onCreateSubtask, onToggleSubtask, onClickSubtask?, readOnly?
+
+TaskDetailPanel opens as a Sheet with tabs: Properties, Subtasks, Review, Conversation, Files, Activity.
+Supports clientMode for read-only client portal views.
+Priority values: 'LOW' | 'MEDIUM' | 'HIGH' | 'URGENT'
+Visibility: 'INTERNAL' | 'EVERYONE'
+
+### Chat (`/chat`)
+- ChatPanel: isOpen, onOpenChange, messages[], conversations[], agents?[], selectedAgentId?, isStreaming?, streamingText?, onSendMessage, onCancelStream?, onSelectAgent?, onStartNewChat?, onSelectConversation?, onArchiveConversation?, onDeleteConversation?
+- ChatInput: onSubmit, onCancel?, isStreaming?, placeholder?, disclaimer?
+- MessageList: messages[], isStreaming?, streamingText?, isLoadingMessages?
+- ConversationList: conversations[], activeConversationId?, onSelect, onNewChat, onArchive?, onDelete?
+- StreamingText: text(string) — markdown renderer with animated cursor
+
+ChatMessage shape: { id, role: 'USER'|'ASSISTANT'|'SYSTEM', content }
+Agent shape: { id, name, desc }
+Conversation shape: { id, title, updatedAt }
+
+### Dashboard (`/dashboard`)
+- AttendanceCTA: userName, attendance, canMarkAttendance, onMarkAttendance?, isSubmitting?, formatTime?
+- DailyBrief: data({ brief: string[], generatedAt }|null), loading?
+
+### Client Portal (`/client`)
+- AccentProvider: accentCss?(string) — injects CSS custom properties on document root
+- ClientPortalHeader: orgName, orgLogo?, userName, userAvatar?
+- ProjectCard: name, description?, status('active'|'completed'|'paused'), taskCount?, completedTasks?
+
+### Admin (`/admin`)
+AdminDashboard and BreakAdmin are COMPOUND components with sub-components accessed via dot notation.
+
+AdminDashboard compound:
+  <AdminDashboard.Root currentUserId={...} currentUserRole={...} assetsBaseUrl={...} userImages={...}>
+    <AdminDashboard.Calendar dateAttendanceMap={...} />
+    <AdminDashboard.AttendanceOverview groupedAttendance={...} users={...} />
+    <AdminDashboard.LeaveRequests requests={...} corrections={...} />
+    <AdminDashboard.AssociateDetail attendance={...} tasks={...} corrections={...} />
+  </AdminDashboard.Root>
+
+BreakAdmin compound:
+  <BreakAdmin.Root currentUser={...} breaks={...} users={...} breakBalanceData={...} userImages={...} onApproveRequest={...} onRejectRequest={...} ...>
+    <BreakAdmin.Header />
+    <BreakAdmin.Breaks />
+    <BreakAdmin.LeaveRequest />
+    <BreakAdmin.BreakBalance />
+    <BreakAdmin.EditBreak />
+    <BreakAdmin.EditBreakBalance />
+    <BreakAdmin.DeleteBreak />
+    <BreakAdmin.ApprovedAdjustments />
+  </BreakAdmin.Root>
+
+UserRole: 'Apprentice' | 'Associate' | 'Admin' | 'SuperAdmin'
+AttendanceStatus: 'PRESENT' | 'ABSENT' | 'BREAK' | 'Not_Marked' | 'HOLIDAY' | 'WEEKEND'
+BreakRequestStatus: 'PENDING' | 'APPROVED' | 'REJECTED' | 'CANCELLED'
+
+### Utility Exports
+- Date formatting: formatDate, formatDateIST, formatTimeIST, formatDateWithWeekday, formatOptionalDate
+- Date helpers: getDaySuffix, isSameDay, getWeekDays, getMonthDays, getStartOfDay, getEndOfDay
+- String helpers: removeAllEmojis, removeEmojiAtStart
+- Rendering: renderAdjustmentType, renderStatus
+
+### Loading Skeletons
+- DevsabhaSkeleton, BandwidthSkeleton — domain-specific page skeletons
+
+## Key Patterns
+
+- All components are callback-driven (emit updates via on* props, no internal state management)
+- Admin components use compound pattern with React Context (AdminDashboard.Root provides context to children)
+- Client mode: TaskDetailPanel, TaskProperties, FilesTab support readOnly + editableFields for client portal
+- Chat supports streaming: pass isStreaming + streamingText for live AI responses
+- Board uses dnd-kit: KanbanBoard handles all drag state, emits onTaskMove with final position
+- All dates default to IST (Asia/Kolkata) timezone in admin utilities
+
+## Common Mistakes -- DO NOT
+
+- DO NOT manage DnD state outside KanbanBoard — it handles sensors, collision detection, and sorting internally
+- DO NOT forget to pass both open AND onOpenChange to TaskDetailPanel (it's a controlled Sheet)
+- DO NOT use AdminDashboard sub-components outside AdminDashboard.Root — they depend on context
+- DO NOT use BreakAdmin sub-components outside BreakAdmin.Root — same compound pattern
+- DO NOT pass raw Date objects for task dates — use ISO strings (the components parse them internally)
+- DO NOT forget the peer dependency: @devalok/shilp-sutra must be installed for UI primitives

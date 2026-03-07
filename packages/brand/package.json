@@ -1,6 +1,6 @@
 {
   "name": "@devalok/shilp-sutra-brand",
-  "version": "0.4.0",
+  "version": "0.4.1",
   "description": "Brand logos and SVG assets for the Devalok Design System",
   "license": "MIT",
   "type": "module",
@@ -24,7 +24,8 @@
   },
   "files": [
     "dist",
-    "README.md"
+    "README.md",
+    "llms.txt"
   ],
   "scripts": {
     "build": "vite build && node scripts/copy-assets.mjs",

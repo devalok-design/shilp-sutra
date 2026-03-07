@@ -1,0 +1,1753 @@
+# @devalok/shilp-sutra — Full Component Reference
+
+> Exhaustive API reference for AI coding agents.
+> For a concise cheatsheet, see llms.txt instead.
+> All variant values and props verified from source CVA definitions.
+>
+> Package: @devalok/shilp-sutra
+> Version: 0.6.1
+
+---
+
+## Architecture Notes
+
+### The Two-Axis Variant System
+
+Many components use TWO props where shadcn/ui uses one:
+- `variant` controls SHAPE/SURFACE: solid, outline, ghost, subtle, filled, etc.
+- `color` controls INTENT/SEMANTICS: default, error, success, warning, info, etc.
+
+Components with two-axis system: Button, Badge, Alert, Chip, Toast, Banner, Progress, StatusBadge
+
+### Server-Safe Components (no "use client")
+
+These can be imported directly in Next.js Server Components:
+- UI: Text, Skeleton, Spinner, Stack, Container, Table (and sub-components), Code, VisuallyHidden
+- Composed: ContentCard, EmptyState, PageHeader, LoadingSkeleton, PageSkeletons, PriorityIndicator, StatusBadge
+
+Use per-component imports for server components:
+  import { Text } from '@devalok/shilp-sutra/ui/text'
+  import { PageHeader } from '@devalok/shilp-sutra/composed/page-header'
+
+DO NOT use barrel imports in Server Components — they include "use client" components.
+
+### Toast Setup Pattern
+
+1. Mount <Toaster /> once at your root layout.
+2. Call useToast() or the imperative toast() function from any component.
+3. Valid colors: 'neutral' | 'success' | 'warning' | 'error' | 'info'
+
+### Form Accessibility Pattern
+
+Use <FormField> + useFormField() hook:
+  <FormField state="error">
+    <Label htmlFor="email">Email</Label>
+    <Input id="email" state="error" />
+    <FormHelperText>Error message here.</FormHelperText>
+  </FormField>
+
+useFormField() returns { state, helperTextId, required } from context.
+Wire manually: <Input aria-describedby={helperTextId} aria-invalid={state === 'error'} />
+
+Note: getFormFieldA11y() was removed in favor of useFormField() hook.
+
+---
+
+# UI COMPONENTS
+# Alphabetical within this section.
+# Import from: @devalok/shilp-sutra/ui/<kebab-name>
+
+---
+
+## Accordion
+- Import: @devalok/shilp-sutra/ui/accordion
+- Server-safe: No
+- Props (Accordion root):
+    type: "single" | "multiple" (REQUIRED)
+    defaultValue: string (single) | string[] (multiple)
+    value: string | string[] (controlled)
+    onValueChange: (value) => void
+    collapsible: boolean (only valid when type="single")
+- Compound:
+    Accordion (root)
+      AccordionItem (value: string, REQUIRED)
+        AccordionTrigger (clickable header, chevron auto-renders)
+        AccordionContent (collapsible body)
+- Defaults: none (type is required)
+- Example:
+  <Accordion type="single" defaultValue="item-1" collapsible>
+    <AccordionItem value="item-1">
+      <AccordionTrigger>Question?</AccordionTrigger>
+      <AccordionContent>Answer.</AccordionContent>
+    </AccordionItem>
+  </Accordion>
+- Gotchas:
+    - type is REQUIRED — omitting it causes runtime error
+    - collapsible only works with type="single"
+
+## Alert
+- Import: @devalok/shilp-sutra/ui/alert
+- Server-safe: No
+- Props:
+    variant: "subtle" | "filled" | "outline"
+    color: "info" | "success" | "warning" | "error" | "neutral"
+    title: string (optional)
+    onDismiss: () => void (optional, shows X button when provided)
+    children: ReactNode (body text)
+- Defaults: variant="subtle", color="info"
+- Example:
+  <Alert color="error" title="Save failed" onDismiss={() => setError(null)}>
+    Your changes could not be saved.
+  </Alert>
+- Gotchas:
+    - NOT a compound component — use title prop, NOT <AlertTitle>
+    - DO NOT use variant="destructive" — use color="error"
+    - Renders role="alert" automatically
+    - Icon is auto-selected by color (info=circle, success=check, warning=triangle, error=alert)
+
+## AlertDialog
+- Import: @devalok/shilp-sutra/ui/alert-dialog
+- Server-safe: No
+- Props: Standard Radix AlertDialog props (open, onOpenChange, defaultOpen)
+- Compound:
+    AlertDialog (root)
+      AlertDialogTrigger
+      AlertDialogContent
+        AlertDialogHeader
+          AlertDialogTitle
+          AlertDialogDescription
+        AlertDialogFooter
+          AlertDialogCancel
+          AlertDialogAction
+- Example:
+  <AlertDialog>
+    <AlertDialogTrigger asChild>
+      <Button color="error">Delete</Button>
+    </AlertDialogTrigger>
+    <AlertDialogContent>
+      <AlertDialogHeader>
+        <AlertDialogTitle>Are you sure?</AlertDialogTitle>
+        <AlertDialogDescription>This cannot be undone.</AlertDialogDescription>
+      </AlertDialogHeader>
+      <AlertDialogFooter>
+        <AlertDialogCancel>Cancel</AlertDialogCancel>
+        <AlertDialogAction>Delete</AlertDialogAction>
+      </AlertDialogFooter>
+    </AlertDialogContent>
+  </AlertDialog>
+- Gotchas: AlertDialogAction does NOT have color="error" styling — add it yourself via className or wrap a Button
+
+## AspectRatio
+- Import: @devalok/shilp-sutra/ui/aspect-ratio
+- Server-safe: No
+- Props:
+    ratio: number (e.g. 16/9, 4/3, 1)
+- Example:
+  <AspectRatio ratio={16 / 9}>
+    <img src="/photo.jpg" alt="Photo" className="object-cover w-full h-full" />
+  </AspectRatio>
+
+## Autocomplete
+- Import: @devalok/shilp-sutra/ui/autocomplete
+- Server-safe: No
+- Props:
+    options: AutocompleteOption[] (REQUIRED) — { value: string, label: string }
+    value: AutocompleteOption | null
+    onValueChange: (option: AutocompleteOption) => void
+    placeholder: string
+    emptyText: string (default: "No options")
+    disabled: boolean
+    className: string
+    id: string
+- Example:
+  <Autocomplete
+    options={[{ value: 'mumbai', label: 'Mumbai' }]}
+    value={selectedCity}
+    onValueChange={setSelectedCity}
+    placeholder="Search cities..."
+  />
+- Gotchas:
+    - Allows free-text input (no forced selection) — use Combobox for forced selection
+    - value is an object { value, label }, NOT just a string
+
+## Avatar
+- Import: @devalok/shilp-sutra/ui/avatar
+- Server-safe: No
+- Props (Avatar root):
+    size: "xs" | "sm" | "md" | "lg" | "xl"
+    shape: "circle" | "square" | "rounded"
+    status: "online" | "offline" | "busy" | "away"
+- Defaults: size="md", shape="circle"
+- Compound:
+    Avatar (root with size/shape/status)
+      AvatarImage (src, alt)
+      AvatarFallback (children = initials text)
+- Example:
+  <Avatar size="lg" status="online">
+    <AvatarImage src={user.photoUrl} alt={user.name} />
+    <AvatarFallback>JD</AvatarFallback>
+  </Avatar>
+- Gotchas:
+    - Status dot renders with role="img" and aria-label (accessible, not decorative)
+    - Dot size scales automatically with avatar size
+
+## Badge
+- Import: @devalok/shilp-sutra/ui/badge
+- Server-safe: No
+- Props:
+    variant: "subtle" | "solid" | "outline" | "secondary" (alias->subtle) | "destructive" (alias->solid+error)
+    color: "default" | "info" | "success" | "error" | "warning" | "brand" | "accent" | "teal" | "amber" | "slate" | "indigo" | "cyan" | "orange" | "emerald"
+    size: "sm" | "md" | "lg"
+    dot: boolean (shows leading dot indicator)
+    onDismiss: () => void (shows X button when provided)
+    children: ReactNode
+- Defaults: variant="subtle", color="default", size="md"
+- Example:
+  <Badge variant="solid" color="success">Active</Badge>
+  <Badge color="teal" onDismiss={() => removeFilter('teal')}>Teal team</Badge>
+- Gotchas:
+    - DO NOT use variant="destructive" — use variant="solid" color="error"
+    - Badge is display-only; for interactive tags use Chip
+
+## Banner
+- Import: @devalok/shilp-sutra/ui/banner
+- Server-safe: No
+- Props:
+    color: "info" | "success" | "warning" | "error" | "neutral"
+    action: ReactNode (optional action slot, typically a ghost Button)
+    onDismiss: () => void (optional, shows X button)
+    children: ReactNode (message text)
+- Defaults: color="info"
+- Example:
+  <Banner color="warning" onDismiss={() => dismiss()}>
+    Scheduled maintenance on Sunday.
+  </Banner>
+- Gotchas:
+    - Banner is full-width (spans container). Alert is inline.
+    - Renders role="alert" automatically
+
+## Breadcrumb
+- Import: @devalok/shilp-sutra/ui/breadcrumb
+- Server-safe: No
+- Compound:
+    Breadcrumb (root nav)
+      BreadcrumbList (ol)
+        BreadcrumbItem (li)
+          BreadcrumbLink (for clickable items) | BreadcrumbPage (for current page)
+        BreadcrumbSeparator (auto-rendered or custom)
+        BreadcrumbEllipsis (for collapsed items)
+- Example:
+  <Breadcrumb>
+    <BreadcrumbList>
+      <BreadcrumbItem><BreadcrumbLink href="/">Home</BreadcrumbLink></BreadcrumbItem>
+      <BreadcrumbSeparator />
+      <BreadcrumbItem><BreadcrumbPage>Settings</BreadcrumbPage></BreadcrumbItem>
+    </BreadcrumbList>
+  </Breadcrumb>
+
+## Button
+- Import: @devalok/shilp-sutra/ui/button
+- Server-safe: No
+- Props:
+    variant: "solid" | "default" (alias->solid) | "outline" | "ghost" | "link" | "destructive" (alias->solid+error)
+    color: "default" | "error"
+    size: "sm" | "md" | "lg" | "icon" | "icon-sm" | "icon-md" | "icon-lg"
+    startIcon: ReactNode
+    endIcon: ReactNode
+    loading: boolean (disables button, shows spinner)
+    loadingPosition: "start" | "end" | "center" (default: "start")
+    fullWidth: boolean
+    asChild: boolean
+- Defaults: variant="solid", color="default", size="md"
+- Example:
+  <Button variant="solid" color="error" startIcon={<IconTrash />} loading={isDeleting}>
+    Delete project
+  </Button>
+- Gotchas:
+    - DO NOT use variant="destructive" — use variant="solid" color="error"
+    - DO NOT use variant="secondary" — use variant="outline" or variant="ghost"
+    - DO NOT use size="default" — use size="md"
+    - DO NOT use color="danger" — use color="error"
+    - Inherits variant/color/size from ButtonGroup context if present
+
+## ButtonGroup
+- Import: @devalok/shilp-sutra/ui/button-group
+- Server-safe: No
+- Props:
+    variant: ButtonProps['variant'] (propagated to children)
+    color: ButtonProps['color'] (propagated to children)
+    size: ButtonProps['size'] (propagated to children)
+    orientation: "horizontal" | "vertical" (default: "horizontal")
+- Example:
+  <ButtonGroup variant="outline" size="sm">
+    <Button>Bold</Button>
+    <Button>Italic</Button>
+  </ButtonGroup>
+- Gotchas: Children can override variant/size individually
+
+## Card
+- Import: @devalok/shilp-sutra/ui/card
+- Server-safe: No
+- Props (Card root):
+    variant: "default" | "elevated" | "outline" | "flat"
+    interactive: boolean (enables hover shadow lift + pointer cursor)
+- Defaults: variant="default"
+- Compound:
+    Card (root)
+      CardHeader
+        CardTitle
+        CardDescription
+      CardContent
+      CardFooter
+- Example:
+  <Card variant="elevated" interactive onClick={() => navigate(url)}>
+    <CardHeader>
+      <CardTitle>Project</CardTitle>
+      <CardDescription>Last updated 2h ago</CardDescription>
+    </CardHeader>
+    <CardContent><p>Content here</p></CardContent>
+  </Card>
+
+## Checkbox
+- Import: @devalok/shilp-sutra/ui/checkbox
+- Server-safe: No
+- Props:
+    checked: boolean | "indeterminate"
+    onCheckedChange: (checked: boolean | "indeterminate") => void
+    error: boolean (shows red border)
+    indeterminate: boolean (overrides checked, shows dash icon)
+    disabled: boolean
+- Example:
+  <Checkbox checked={agreed} onCheckedChange={(v) => setAgreed(v === true)} />
+- Gotchas: indeterminate overrides checked visually
+
+## Chip
+- Import: @devalok/shilp-sutra/ui/chip
+- Server-safe: No
+- Props:
+    label: string (REQUIRED — use this, NOT children)
+    variant: "subtle" | "outline"
+    color: "default" | "primary" | "success" | "error" | "warning" | "info" | "teal" | "amber" | "slate" | "indigo" | "cyan" | "orange" | "emerald"
+    size: "sm" | "md" | "lg"
+    icon: ReactNode
+    onClick: MouseEventHandler (renders as <button> when provided)
+    onDismiss: () => void (shows X button)
+    disabled: boolean
+- Defaults: variant="subtle", size="md", color="default"
+- Example:
+  <Chip label="In Progress" color="warning" />
+  <Chip label="React" color="info" onDismiss={() => removeFilter('react')} />
+- Gotchas:
+    - MUST use label prop — children are NOT rendered
+    - <Chip>text</Chip> is WRONG — use <Chip label="text" />
+
+## Code
+- Import: @devalok/shilp-sutra/ui/code
+- Server-safe: Yes
+- Props:
+    variant: "inline" | "block"
+    children: ReactNode
+- Defaults: variant="inline"
+- Example:
+  <Code>onClick</Code>
+  <Code variant="block">{`const x = 1;\nconsole.log(x);`}</Code>
+- Gotchas: "block" renders as <pre><code>, "inline" renders as <code>
+
+## Collapsible
+- Import: @devalok/shilp-sutra/ui/collapsible
+- Server-safe: No
+- Props: Standard Radix Collapsible props (open, onOpenChange, defaultOpen)
+- Compound:
+    Collapsible (root)
+      CollapsibleTrigger
+      CollapsibleContent
+- Example:
+  <Collapsible>
+    <CollapsibleTrigger>Toggle</CollapsibleTrigger>
+    <CollapsibleContent>Hidden content</CollapsibleContent>
+  </Collapsible>
+
+## Combobox
+- Import: @devalok/shilp-sutra/ui/combobox
+- Server-safe: No
+- Props:
+    options: ComboboxOption[] (REQUIRED) — { value: string, label: string, description?: string, icon?: ReactNode, disabled?: boolean }
+    value: string | string[]
+    onValueChange: (value: string | string[]) => void (REQUIRED)
+    placeholder: string (default: "Select...")
+    searchPlaceholder: string (default: "Search...")
+    emptyMessage: string (default: "No results found")
+    multiple: boolean (default: false)
+    disabled: boolean
+    triggerClassName: string
+    maxVisible: number (default: 6, max dropdown items before scroll)
+    renderOption: (option, selected) => ReactNode
+- Example:
+  <Combobox
+    multiple
+    options={tagOptions}
+    value={selectedTags}
+    onValueChange={(v) => setSelectedTags(v as string[])}
+    placeholder="Select tags..."
+  />
+- Gotchas:
+    - Enforces selection from list (unlike Autocomplete which allows free text)
+    - In multi mode, selected items appear as pills with "+N more" overflow
+
+## Container
+- Import: @devalok/shilp-sutra/ui/container
+- Server-safe: Yes
+- Props:
+    maxWidth: "default" | "body" | "full"
+    as: ElementType (default: "div")
+- Defaults: maxWidth="default"
+- Example:
+  <Container maxWidth="body">
+    <p>Centered content</p>
+  </Container>
+
+## ContextMenu
+- Import: @devalok/shilp-sutra/ui/context-menu
+- Server-safe: No
+- Compound:
+    ContextMenu (root)
+      ContextMenuTrigger (right-click target)
+      ContextMenuContent
+        ContextMenuItem
+        ContextMenuCheckboxItem
+        ContextMenuRadioGroup > ContextMenuRadioItem
+        ContextMenuLabel
+        ContextMenuSeparator
+        ContextMenuSub > ContextMenuSubTrigger, ContextMenuSubContent
+- Example:
+  <ContextMenu>
+    <ContextMenuTrigger>Right-click me</ContextMenuTrigger>
+    <ContextMenuContent>
+      <ContextMenuItem>Edit</ContextMenuItem>
+      <ContextMenuItem>Delete</ContextMenuItem>
+    </ContextMenuContent>
+  </ContextMenu>
+
+## Dialog
+- Import: @devalok/shilp-sutra/ui/dialog
+- Server-safe: No
+- Compound:
+    Dialog (root)
+      DialogTrigger
+      DialogContent
+        DialogHeader
+          DialogTitle
+          DialogDescription
+        [body content]
+        DialogFooter
+      DialogClose
+- Example:
+  <Dialog>
+    <DialogTrigger asChild><Button>Open</Button></DialogTrigger>
+    <DialogContent>
+      <DialogHeader>
+        <DialogTitle>Edit Profile</DialogTitle>
+        <DialogDescription>Make changes to your profile.</DialogDescription>
+      </DialogHeader>
+      <div>Form fields here</div>
+      <DialogFooter>
+        <Button>Save</Button>
+      </DialogFooter>
+    </DialogContent>
+  </Dialog>
+
+## DropdownMenu
+- Import: @devalok/shilp-sutra/ui/dropdown-menu
+- Server-safe: No
+- Compound:
+    DropdownMenu (root)
+      DropdownMenuTrigger
+      DropdownMenuContent
+        DropdownMenuLabel
+        DropdownMenuSeparator
+        DropdownMenuItem (+ DropdownMenuShortcut for keyboard hints)
+        DropdownMenuCheckboxItem
+        DropdownMenuRadioGroup > DropdownMenuRadioItem
+        DropdownMenuGroup
+        DropdownMenuSub > DropdownMenuSubTrigger, DropdownMenuSubContent
+- Example:
+  <DropdownMenu>
+    <DropdownMenuTrigger asChild><Button variant="ghost">Menu</Button></DropdownMenuTrigger>
+    <DropdownMenuContent>
+      <DropdownMenuItem>Profile</DropdownMenuItem>
+      <DropdownMenuSeparator />
+      <DropdownMenuItem>Logout</DropdownMenuItem>
+    </DropdownMenuContent>
+  </DropdownMenu>
+
+## FileUpload
+- Import: @devalok/shilp-sutra/ui/file-upload
+- Server-safe: No
+- Props:
+    onFiles: (files: File[]) => void (REQUIRED)
+    accept: string (MIME or extension, e.g. "image/*", ".pdf,.doc")
+    maxSize: number (bytes, default: 10MB)
+    multiple: boolean
+    uploading: boolean
+    progress: number (0-100)
+    error: string
+    compact: boolean (inline button mode vs drop zone)
+    disabled: boolean
+    label: string
+    sublabel: string
+- Example:
+  <FileUpload
+    accept="image/*"
+    maxSize={2 * 1024 * 1024}
+    onFiles={(files) => uploadAvatar(files[0])}
+    label="Upload profile photo"
+    sublabel="PNG, JPG up to 2MB"
+  />
+- Gotchas:
+    - compact=true renders a small inline button; false (default) renders a large drag-and-drop zone
+    - Client-side validation: invalid files are rejected before onFiles is called
+
+## FormField / FormHelperText / useFormField
+- Import: @devalok/shilp-sutra/ui/form
+- Server-safe: No
+- Props (FormField):
+    state: "helper" | "error" | "warning" | "success" (default: "helper")
+    helperTextId: string (auto-generated if omitted)
+    required: boolean
+- Props (FormHelperText):
+    state: "helper" | "error" | "warning" | "success" (inherits from FormField context)
+- Hook: useFormField() => { state, helperTextId, required }
+- Example:
+  <FormField state="error">
+    <Label htmlFor="email">Email</Label>
+    <Input id="email" state="error" />
+    <FormHelperText>Please enter a valid email.</FormHelperText>
+  </FormField>
+- Gotchas:
+    - getFormFieldA11y() was REMOVED — use useFormField() hook instead
+    - FormHelperText auto-reads state and id from FormField context
+    - FormHelperText renders role="alert" when state="error"
+
+## HoverCard
+- Import: @devalok/shilp-sutra/ui/hover-card
+- Server-safe: No
+- Compound:
+    HoverCard (root)
+      HoverCardTrigger
+      HoverCardContent
+- Example:
+  <HoverCard>
+    <HoverCardTrigger asChild><span>Hover me</span></HoverCardTrigger>
+    <HoverCardContent>Preview content</HoverCardContent>
+  </HoverCard>
+
+## IconButton
+- Import: @devalok/shilp-sutra/ui/icon-button
+- Server-safe: No
+- Props:
+    icon: ReactNode (REQUIRED)
+    aria-label: string (REQUIRED — WCAG AA mandatory)
+    shape: "square" | "circle" (default: "square")
+    size: "sm" | "md" | "lg" (default: "md")
+    variant: same as Button (solid, outline, ghost, link)
+    color: same as Button (default, error)
+    loading: boolean
+    disabled: boolean
+- Example:
+  <IconButton icon={<IconEdit />} variant="ghost" aria-label="Edit item" />
+  <IconButton icon={<IconX />} shape="circle" variant="ghost" size="sm" aria-label="Close" />
+- Gotchas:
+    - aria-label is enforced by TypeScript — you MUST provide it
+    - Prefer IconButton over Button with size="icon-*" for icon-only buttons
+
+## Input
+- Import: @devalok/shilp-sutra/ui/input
+- Server-safe: No
+- Props:
+    size: "sm" | "md" | "lg"
+    state: "default" | "error" | "warning" | "success"
+    startIcon: ReactNode
+    endIcon: ReactNode
+    (plus all standard HTML input attributes except native "size")
+- Defaults: size="md"
+- Example:
+  <Input type="email" placeholder="you@example.com" state="error" startIcon={<IconMail />} />
+- Gotchas:
+    - HTML native "size" attribute is excluded — use CSS width instead
+    - state="error" sets aria-invalid automatically
+
+## InputOTP
+- Import: @devalok/shilp-sutra/ui/input-otp
+- Server-safe: No
+- Props (InputOTP): Standard input-otp props (maxLength, pattern, etc.)
+- Compound:
+    InputOTP (root)
+      InputOTPGroup
+        InputOTPSlot (index: number, REQUIRED)
+      InputOTPSeparator
+- Example:
+  <InputOTP maxLength={6}>
+    <InputOTPGroup>
+      <InputOTPSlot index={0} />
+      <InputOTPSlot index={1} />
+      <InputOTPSlot index={2} />
+    </InputOTPGroup>
+    <InputOTPSeparator />
+    <InputOTPGroup>
+      <InputOTPSlot index={3} />
+      <InputOTPSlot index={4} />
+      <InputOTPSlot index={5} />
+    </InputOTPGroup>
+  </InputOTP>
+
+## Label
+- Import: @devalok/shilp-sutra/ui/label
+- Server-safe: No
+- Props:
+    required: boolean (shows red asterisk)
+    htmlFor: string
+    (plus standard Radix Label props)
+- Example:
+  <Label htmlFor="email" required>Email Address</Label>
+
+## Link
+- Import: @devalok/shilp-sutra/ui/link
+- Server-safe: No
+- Props:
+    inline: boolean (default: true — "inline" or "block" display)
+    asChild: boolean (merge with child element, e.g. Next.js Link)
+    (plus standard anchor attributes)
+- Example:
+  <Link href="/docs">Documentation</Link>
+  <Link asChild><NextLink href="/about">About</NextLink></Link>
+
+## Menubar
+- Import: @devalok/shilp-sutra/ui/menubar
+- Server-safe: No
+- Compound:
+    Menubar (root)
+      MenubarMenu
+        MenubarTrigger
+        MenubarContent
+          MenubarItem (+ MenubarShortcut)
+          MenubarCheckboxItem
+          MenubarRadioGroup > MenubarRadioItem
+          MenubarLabel
+          MenubarSeparator
+          MenubarSub > MenubarSubTrigger, MenubarSubContent
+- Example:
+  <Menubar>
+    <MenubarMenu>
+      <MenubarTrigger>File</MenubarTrigger>
+      <MenubarContent>
+        <MenubarItem>New<MenubarShortcut>Ctrl+N</MenubarShortcut></MenubarItem>
+        <MenubarSeparator />
+        <MenubarItem>Exit</MenubarItem>
+      </MenubarContent>
+    </MenubarMenu>
+  </Menubar>
+
+## NavigationMenu
+- Import: @devalok/shilp-sutra/ui/navigation-menu
+- Server-safe: No
+- Compound:
+    NavigationMenu (root)
+      NavigationMenuList
+        NavigationMenuItem
+          NavigationMenuTrigger (for items with content panels)
+          NavigationMenuContent (dropdown panel)
+          NavigationMenuLink (for direct links)
+      NavigationMenuIndicator
+      NavigationMenuViewport
+- Example:
+  <NavigationMenu>
+    <NavigationMenuList>
+      <NavigationMenuItem>
+        <NavigationMenuTrigger>Products</NavigationMenuTrigger>
+        <NavigationMenuContent>
+          <ul>...</ul>
+        </NavigationMenuContent>
+      </NavigationMenuItem>
+      <NavigationMenuItem>
+        <NavigationMenuLink href="/about">About</NavigationMenuLink>
+      </NavigationMenuItem>
+    </NavigationMenuList>
+  </NavigationMenu>
+
+## NumberInput
+- Import: @devalok/shilp-sutra/ui/number-input
+- Server-safe: No
+- Props:
+    value: number (default: 0)
+    onValueChange: (value: number) => void
+    min: number
+    max: number
+    step: number (default: 1)
+    disabled: boolean
+- Example:
+  <NumberInput value={qty} onValueChange={setQty} min={1} max={99} />
+- Gotchas: Controlled only — buttons won't work without onValueChange
+
+## Pagination
+- Import: @devalok/shilp-sutra/ui/pagination
+- Server-safe: No
+- Compound:
+    PaginationRoot (nav)
+      PaginationContent (ul)
+        PaginationItem (li)
+          PaginationLink (isActive: boolean, asChild: boolean)
+          PaginationPrevious
+          PaginationNext
+          PaginationEllipsis
+    PaginationNav (convenience wrapper)
+- Utility: generatePagination(current: number, total: number, siblingCount: number) => (number | 'ellipsis')[]
+- Example:
+  <PaginationRoot>
+    <PaginationContent>
+      <PaginationItem><PaginationPrevious onClick={() => setPage(p - 1)} /></PaginationItem>
+      {generatePagination(page, totalPages, 1).map((item, i) =>
+        item === 'ellipsis'
+          ? <PaginationItem key={i}><PaginationEllipsis /></PaginationItem>
+          : <PaginationItem key={i}><PaginationLink isActive={item === page} onClick={() => setPage(item)}>{item}</PaginationLink></PaginationItem>
+      )}
+      <PaginationItem><PaginationNext onClick={() => setPage(p + 1)} /></PaginationItem>
+    </PaginationContent>
+  </PaginationRoot>
+- Gotchas: Root component is PaginationRoot (NOT Pagination)
+
+## Popover
+- Import: @devalok/shilp-sutra/ui/popover
+- Server-safe: No
+- Compound:
+    Popover (root)
+      PopoverTrigger
+      PopoverContent
+      PopoverAnchor (optional anchor point)
+- Example:
+  <Popover>
+    <PopoverTrigger asChild><Button>Open</Button></PopoverTrigger>
+    <PopoverContent>Content here</PopoverContent>
+  </Popover>
+
+## Progress
+- Import: @devalok/shilp-sutra/ui/progress
+- Server-safe: No
+- Props:
+    value: number (0-100) — omit for indeterminate
+    size: "sm" | "md" | "lg" (track height)
+    color: "default" | "success" | "warning" | "error" (indicator color)
+    showLabel: boolean (shows percentage text)
+    indicatorClassName: string
+- Defaults: size="md", color="default"
+- Example:
+  <Progress value={75} color="success" showLabel />
+  <Progress size="sm" />  {/* indeterminate */}
+- Gotchas: Omit value (or pass undefined) for indeterminate animation
+
+## RadioGroup
+- Import: @devalok/shilp-sutra/ui/radio
+- Server-safe: No
+- Compound:
+    RadioGroup (root, value, onValueChange, defaultValue)
+      RadioGroupItem (value: string, REQUIRED)
+- Example:
+  <RadioGroup defaultValue="option-1" onValueChange={setValue}>
+    <div className="flex items-center gap-2">
+      <RadioGroupItem value="option-1" id="r1" />
+      <Label htmlFor="r1">Option 1</Label>
+    </div>
+    <div className="flex items-center gap-2">
+      <RadioGroupItem value="option-2" id="r2" />
+      <Label htmlFor="r2">Option 2</Label>
+    </div>
+  </RadioGroup>
+
+## ScrollArea
+- Import: @devalok/shilp-sutra/ui/scroll-area
+- Server-safe: No
+- Props: Standard Radix ScrollArea props
+- Note: Provides custom-styled scrollbars
+
+## SearchInput
+- Import: @devalok/shilp-sutra/ui/search-input
+- Server-safe: No
+- Props:
+    size: "sm" | "md" | "lg" (default: "md")
+    loading: boolean (shows spinner instead of clear button)
+    onClear: () => void (shows X button when value is non-empty)
+    value: string
+    onChange: ChangeEventHandler
+    (plus standard input attributes except native "size")
+- Example:
+  <SearchInput
+    value={query}
+    onChange={(e) => setQuery(e.target.value)}
+    onClear={() => setQuery('')}
+    placeholder="Search tasks..."
+    loading={isSearching}
+  />
+
+## SegmentedControl
+- Import: @devalok/shilp-sutra/ui/segmented-control
+- Server-safe: No
+- Props (SegmentedControl root):
+    size: "sm" | "md" | "lg" (REQUIRED) — also accepts legacy "small" | "medium" | "big"
+    variant: "filled" | "tonal" (REQUIRED)
+    options: SegmentedControlOption[] (REQUIRED) — { id: string, text: string, icon?: ComponentType }
+    selectedId: string (REQUIRED)
+    onSelect: (id: string) => void (REQUIRED)
+    disabled: boolean
+- Defaults: None — size and variant are required
+- Example:
+  <SegmentedControl
+    size="md"
+    variant="tonal"
+    options={[
+      { id: 'list', text: 'List' },
+      { id: 'grid', text: 'Grid' },
+    ]}
+    selectedId={viewMode}
+    onSelect={setViewMode}
+  />
+- Gotchas:
+    - Controlled only — selectedId + onSelect are required
+    - Uses data-driven API (options prop), not compound children
+
+## Select
+- Import: @devalok/shilp-sutra/ui/select
+- Server-safe: No
+- Props (SelectTrigger):
+    size: "sm" | "md" | "lg"
+- Defaults: size="md" (on SelectTrigger)
+- Compound:
+    Select (root — value, onValueChange, defaultValue)
+      SelectTrigger (size goes HERE, not on Select root)
+        SelectValue (placeholder)
+      SelectContent
+        SelectGroup (optional grouping)
+          SelectLabel (group header)
+          SelectItem (value: string, REQUIRED)
+        SelectSeparator
+- Example:
+  <Select onValueChange={setValue}>
+    <SelectTrigger size="lg">
+      <SelectValue placeholder="Choose..." />
+    </SelectTrigger>
+    <SelectContent>
+      <SelectItem value="a">Option A</SelectItem>
+      <SelectItem value="b">Option B</SelectItem>
+    </SelectContent>
+  </Select>
+- Gotchas:
+    - Size goes on SelectTrigger, NOT on Select root
+    - <Select size="lg"> is silently ignored (no TypeScript error)
+
+## Separator
+- Import: @devalok/shilp-sutra/ui/separator
+- Server-safe: No
+- Props:
+    orientation: "horizontal" | "vertical" (default: "horizontal")
+    decorative: boolean (default: true)
+- Example:
+  <Separator />
+  <Separator orientation="vertical" className="h-6" />
+
+## Sheet
+- Import: @devalok/shilp-sutra/ui/sheet
+- Server-safe: No
+- Props (SheetContent):
+    side: "top" | "bottom" | "left" | "right"
+- Compound:
+    Sheet (root)
+      SheetTrigger
+      SheetContent (side prop)
+        SheetHeader
+          SheetTitle
+          SheetDescription
+        [body content]
+        SheetFooter
+      SheetClose
+- Example:
+  <Sheet>
+    <SheetTrigger asChild><Button>Open</Button></SheetTrigger>
+    <SheetContent side="right">
+      <SheetHeader>
+        <SheetTitle>Settings</SheetTitle>
+      </SheetHeader>
+      <div>Content</div>
+    </SheetContent>
+  </Sheet>
+
+## Sidebar
+- Import: @devalok/shilp-sutra/ui/sidebar
+- Server-safe: No
+- Compound (full tree):
+    SidebarProvider (context provider — must wrap everything)
+      Sidebar (root panel)
+        SidebarHeader
+        SidebarContent
+          SidebarGroup
+            SidebarGroupLabel
+            SidebarGroupAction
+            SidebarGroupContent
+              SidebarMenu
+                SidebarMenuItem
+                  SidebarMenuButton (tooltip, isActive)
+                  SidebarMenuAction
+                  SidebarMenuBadge
+                  SidebarMenuSub
+                    SidebarMenuSubItem
+                      SidebarMenuSubButton (isActive)
+        SidebarFooter
+        SidebarSeparator
+        SidebarRail
+      SidebarInset (main content area)
+      SidebarTrigger (hamburger button)
+      SidebarInput (search input in sidebar)
+      SidebarMenuSkeleton (loading placeholder)
+- Hook: useSidebar() => { state, open, setOpen, openMobile, setOpenMobile, isMobile, toggleSidebar }
+- Example:
+  <SidebarProvider>
+    <Sidebar>
+      <SidebarHeader>Logo</SidebarHeader>
+      <SidebarContent>
+        <SidebarGroup>
+          <SidebarGroupLabel>Navigation</SidebarGroupLabel>
+          <SidebarGroupContent>
+            <SidebarMenu>
+              <SidebarMenuItem>
+                <SidebarMenuButton isActive>
+                  <IconHome /> Dashboard
+                </SidebarMenuButton>
+              </SidebarMenuItem>
+            </SidebarMenu>
+          </SidebarGroupContent>
+        </SidebarGroup>
+      </SidebarContent>
+    </Sidebar>
+    <SidebarInset>
+      <SidebarTrigger />
+      <main>Page content</main>
+    </SidebarInset>
+  </SidebarProvider>
+- Gotchas:
+    - SidebarProvider MUST wrap both Sidebar and SidebarInset
+    - Use SidebarMenuButton for nav items (supports tooltip in collapsed state)
+
+## Skeleton
+- Import: @devalok/shilp-sutra/ui/skeleton
+- Server-safe: Yes
+- Props:
+    variant: "rectangle" | "circle" | "text"
+    animation: "pulse" | "shimmer" | "none"
+- Defaults: variant="rectangle", animation="pulse"
+- Example:
+  <Skeleton variant="text" className="w-3/4" />
+  <Skeleton variant="circle" className="h-12 w-12" />
+  <Skeleton variant="rectangle" animation="shimmer" className="h-48 w-full" />
+- Gotchas: shimmer respects prefers-reduced-motion
+
+## Slider
+- Import: @devalok/shilp-sutra/ui/slider
+- Server-safe: No
+- Props: Standard Radix Slider props (value, onValueChange, defaultValue, min, max, step, aria-label)
+- Example:
+  <Slider defaultValue={[50]} max={100} step={1} aria-label="Volume" />
+- Gotchas: value is number[] (array), not a single number
+
+## Spinner
+- Import: @devalok/shilp-sutra/ui/spinner
+- Server-safe: Yes
+- Props:
+    size: "sm" | "md" | "lg"
+- Defaults: size="md"
+- Example:
+  <Spinner size="lg" />
+- Gotchas:
+    - Renders role="status" with sr-only "Loading..." text — no need for aria-label
+    - Button has built-in loading prop — prefer that over manual Spinner composition
+
+## Stack
+- Import: @devalok/shilp-sutra/ui/stack
+- Server-safe: Yes
+- Props:
+    direction: "vertical" | "horizontal" | "row" | "column" (default: "vertical")
+    gap: SpacingToken | number — tokens: "ds-01".."ds-13", or numbers 0-13
+    align: "start" | "center" | "end" | "stretch" | "baseline"
+    justify: "start" | "center" | "end" | "between" | "around" | "evenly"
+    wrap: boolean
+    as: ElementType (default: "div")
+- Example:
+  <Stack direction="horizontal" gap="ds-04" align="center">
+    <Avatar size="sm" />
+    <Text variant="body-md">User Name</Text>
+  </Stack>
+
+## StatCard
+- Import: @devalok/shilp-sutra/ui/stat-card
+- Server-safe: No
+- Props:
+    label: string (heading text) — alias: title
+    title: string (alias for label)
+    value: string | number (REQUIRED)
+    delta: { value: string, direction: "up" | "down" | "neutral" }
+    icon: ReactNode | ComponentType<{ className?: string }>
+    loading: boolean (renders skeleton)
+- Example:
+  <StatCard
+    label="Revenue"
+    value="$48,200"
+    delta={{ value: "+12%", direction: "up" }}
+    icon={<IconCurrencyDollar />}
+  />
+- Gotchas: delta.direction "up" = green, "down" = red, "neutral" = grey
+
+## Stepper / Step
+- Import: @devalok/shilp-sutra/ui/stepper
+- Server-safe: No
+- Props (Stepper):
+    activeStep: number (REQUIRED, 0-indexed)
+    orientation: "horizontal" | "vertical" (default: "horizontal")
+    children: <Step> elements
+- Props (Step):
+    label: string (REQUIRED)
+    description: string
+    icon: ReactNode (overrides default number/checkmark)
+- Example:
+  <Stepper activeStep={1}>
+    <Step label="Account" description="Create credentials" />
+    <Step label="Profile" description="Add details" />
+    <Step label="Review" />
+  </Stepper>
+- Gotchas: Steps before activeStep are "completed", at activeStep is "active", after is "pending"
+
+## Switch
+- Import: @devalok/shilp-sutra/ui/switch
+- Server-safe: No
+- Props:
+    checked: boolean
+    onCheckedChange: (checked: boolean) => void
+    error: boolean (shows red border/bg)
+    disabled: boolean
+- Example:
+  <Switch checked={enabled} onCheckedChange={setEnabled} />
+
+## Table
+- Import: @devalok/shilp-sutra/ui/table
+- Server-safe: Yes
+- Compound:
+    Table (root <table>)
+      TableHeader (<thead>)
+        TableRow (<tr>)
+          TableHead (<th>)
+      TableBody (<tbody>)
+        TableRow (<tr>)
+          TableCell (<td>)
+      TableFooter (<tfoot>)
+      TableCaption (<caption>)
+- Example:
+  <Table>
+    <TableHeader>
+      <TableRow>
+        <TableHead>Name</TableHead>
+        <TableHead>Status</TableHead>
+      </TableRow>
+    </TableHeader>
+    <TableBody>
+      <TableRow>
+        <TableCell>Project Alpha</TableCell>
+        <TableCell><Badge color="success">Active</Badge></TableCell>
+      </TableRow>
+    </TableBody>
+  </Table>
+
+## Tabs
+- Import: @devalok/shilp-sutra/ui/tabs
+- Server-safe: No
+- Props (Tabs root): defaultValue, value, onValueChange
+- Props (TabsList): variant: "line" | "contained" (default: "line")
+- Props (TabsTrigger): value: string (REQUIRED), variant (inherits from TabsList)
+- Props (TabsContent): value: string (REQUIRED)
+- Compound:
+    Tabs (root)
+      TabsList (variant)
+        TabsTrigger (value)
+      TabsContent (value)
+- Defaults: TabsList variant="line"
+- Example:
+  <Tabs defaultValue="overview">
+    <TabsList variant="contained">
+      <TabsTrigger value="overview">Overview</TabsTrigger>
+      <TabsTrigger value="activity">Activity</TabsTrigger>
+    </TabsList>
+    <TabsContent value="overview">Overview content</TabsContent>
+    <TabsContent value="activity">Activity content</TabsContent>
+  </Tabs>
+- Gotchas:
+    - variant goes on TabsList, NOT on individual TabsTrigger (propagates via context)
+    - DO NOT put variant on TabsTrigger — it inherits from TabsList
+
+## Text
+- Import: @devalok/shilp-sutra/ui/text
+- Server-safe: Yes
+- Props:
+    variant: "heading-2xl" | "heading-xl" | "heading-lg" | "heading-md" | "heading-sm" | "heading-xs" | "body-lg" | "body-md" | "body-sm" | "body-xs" | "label-lg" | "label-md" | "label-sm" | "label-xs" | "caption" | "overline"
+    as: ElementType (override the auto-selected HTML element)
+- Defaults: variant="body-md"
+- Default element mapping:
+    heading-2xl -> h1, heading-xl -> h2, heading-lg -> h3, heading-md -> h4, heading-sm -> h5, heading-xs -> h6
+    body-* -> p, label-* -> span, caption -> span, overline -> span
+- Example:
+  <Text variant="heading-2xl">Page Title</Text>
+  <Text variant="body-sm" as="span">Inline text</Text>
+  <Text variant="label-sm" className="text-text-secondary">SECTION LABEL</Text>
+- Gotchas:
+    - label-* and overline variants are automatically uppercase
+    - Use "as" prop to override the HTML element when needed
+
+## Textarea
+- Import: @devalok/shilp-sutra/ui/textarea
+- Server-safe: No
+- Props:
+    size: "sm" | "md" | "lg"
+    state: "default" | "error" | "warning" | "success"
+    (plus standard textarea attributes except native "size")
+- Defaults: size="md"
+- Example:
+  <Textarea size="lg" state="error" placeholder="Describe the issue..." />
+- Gotchas: state="error" sets aria-invalid automatically; all sizes are vertically resizable
+
+## Toast / Toaster
+- Import: @devalok/shilp-sutra/ui/toast, @devalok/shilp-sutra/ui/toaster
+- Server-safe: No
+- Props (Toast):
+    color: "neutral" | "success" | "warning" | "error" | "info"
+- Defaults: color="neutral"
+- Compound (declarative — for tests/Storybook only):
+    ToastProvider
+      Toast (color)
+        ToastTitle
+        ToastDescription
+        ToastAction (altText required)
+        ToastClose
+      ToastViewport
+- Imperative usage (recommended):
+  // 1. Mount <Toaster /> once at root layout
+  <Toaster />
+  // 2. Call from anywhere:
+  const { toast } = useToast()
+  toast({ title: 'Saved!', description: 'Changes saved.', color: 'success' })
+  // Or use the direct function (no hook):
+  import { toast } from '@devalok/shilp-sutra/hooks/use-toast'
+  toast({ title: 'Deleted', color: 'error' })
+- Gotchas:
+    - DO NOT use color="destructive" — use color="error"
+    - DO NOT use variant="destructive" — Toast has NO variant prop, only color
+    - Max 2 toasts visible simultaneously (TOAST_LIMIT=2)
+    - Auto-dismisses after 5 seconds (TOAST_REMOVE_DELAY=5000)
+
+## Toggle
+- Import: @devalok/shilp-sutra/ui/toggle
+- Server-safe: No
+- Props:
+    variant: "default" | "outline"
+    size: "sm" | "md" | "lg"
+    pressed: boolean
+    onPressedChange: (pressed: boolean) => void
+    defaultPressed: boolean
+- Defaults: variant="default", size="md"
+- Example:
+  <Toggle aria-label="Toggle bold" pressed={isBold} onPressedChange={setIsBold}>
+    <IconBold />
+  </Toggle>
+
+## ToggleGroup
+- Import: @devalok/shilp-sutra/ui/toggle-group
+- Server-safe: No
+- Props (ToggleGroup):
+    type: "single" | "multiple"
+    variant: "default" | "outline" (propagated to items)
+    size: "sm" | "md" | "lg" (propagated to items)
+    value: string | string[]
+    onValueChange: (value) => void
+- Compound:
+    ToggleGroup (root)
+      ToggleGroupItem (value: string)
+- Example:
+  <ToggleGroup type="single" variant="outline" size="sm" value={alignment} onValueChange={setAlignment}>
+    <ToggleGroupItem value="left"><IconAlignLeft /></ToggleGroupItem>
+    <ToggleGroupItem value="center"><IconAlignCenter /></ToggleGroupItem>
+    <ToggleGroupItem value="right"><IconAlignRight /></ToggleGroupItem>
+  </ToggleGroup>
+
+## Tooltip
+- Import: @devalok/shilp-sutra/ui/tooltip
+- Server-safe: No
+- Compound:
+    TooltipProvider (REQUIRED at layout root or wrapping tooltip usage, controls delay)
+      Tooltip (root)
+        TooltipTrigger
+        TooltipContent
+- Example:
+  <TooltipProvider>
+    <Tooltip>
+      <TooltipTrigger asChild><Button>Hover me</Button></TooltipTrigger>
+      <TooltipContent>Tooltip text</TooltipContent>
+    </Tooltip>
+  </TooltipProvider>
+- Gotchas: TooltipProvider is REQUIRED — without it, tooltips won't show
+
+## Transitions (Fade, Collapse, Grow, Slide)
+- Import: @devalok/shilp-sutra/ui/transitions
+- Server-safe: No
+- Props (shared TransitionProps):
+    open: boolean (REQUIRED)
+    duration: string (CSS duration, default: "var(--duration-moderate-02)")
+    unmountOnClose: boolean (Fade, Grow, Slide only)
+    children: ReactNode
+- Props (Slide only):
+    direction: "up" | "down" | "left" | "right" (default: "up")
+- Example:
+  <Fade open={isVisible}><div>Fading content</div></Fade>
+  <Collapse open={isExpanded}><div>Collapsible content</div></Collapse>
+  <Grow open={isVisible}><div>Scaling content</div></Grow>
+  <Slide open={isVisible} direction="left"><div>Sliding panel</div></Slide>
+- Gotchas: All transitions respect prefers-reduced-motion (duration set to 0ms)
+
+## TreeView / TreeItem
+- Import: @devalok/shilp-sutra/ui/tree-view
+- Server-safe: No
+- Props (TreeView):
+    items: TreeNode[] (data-driven mode) — { id, label, icon?, disabled?, children? }
+    defaultExpanded: string[]
+    defaultSelected: string[]
+    multiSelect: boolean
+    checkboxes: boolean
+    onSelect: (ids: string[]) => void
+    onExpand: (ids: string[]) => void
+    children: ReactNode (declarative mode)
+- Props (TreeItem):
+    itemId: string (REQUIRED)
+    label: string
+    icon: ReactNode
+    disabled: boolean
+    depth: number
+    children: ReactNode (nested TreeItems)
+- Hook: useTree({ defaultExpanded, defaultSelected, multiSelect, onSelect, onExpand })
+- Example (data-driven):
+  <TreeView
+    items={[
+      { id: '1', label: 'Folder', children: [
+        { id: '1.1', label: 'File A' },
+        { id: '1.2', label: 'File B' },
+      ]},
+    ]}
+    defaultExpanded={['1']}
+    onSelect={(ids) => console.log(ids)}
+  />
+- Example (declarative):
+  <TreeView>
+    <TreeItem itemId="1" label="Folder">
+      <TreeItem itemId="1.1" label="File A" />
+    </TreeItem>
+  </TreeView>
+
+## VisuallyHidden
+- Import: @devalok/shilp-sutra/ui/visually-hidden
+- Server-safe: Yes
+- Props: standard span attributes
+- Example:
+  <VisuallyHidden>Screen reader only text</VisuallyHidden>
+
+---
+
+# COMPOSED COMPONENTS
+# Alphabetical within this section.
+# Import from: @devalok/shilp-sutra/composed/<kebab-name>
+
+---
+
+## AvatarGroup
+- Import: @devalok/shilp-sutra/composed/avatar-group
+- Server-safe: No
+- Props:
+    users: AvatarUser[] (REQUIRED) — { name: string, image?: string | null }
+    max: number (default: 4, overflow shows "+N" badge)
+    size: "sm" | "md" | "lg"
+    showTooltip: boolean (default: true)
+- Defaults: size="md", max=4, showTooltip=true
+- Example:
+  <AvatarGroup
+    users={[{ name: 'Alice', image: '/alice.jpg' }, { name: 'Bob' }]}
+    max={3}
+    size="md"
+  />
+- Gotchas: Wraps TooltipProvider internally — no need to add one
+
+## CommandPalette
+- Import: @devalok/shilp-sutra/composed/command-palette
+- Server-safe: No
+- Props:
+    groups: CommandGroup[] — { label: string, items: CommandItem[] }
+    placeholder: string (default: "Search or jump to...")
+    onSearch: (query: string) => void
+    emptyMessage: string (default: "No results found.")
+- CommandItem shape: { id, label, description?, icon?, shortcut?, onSelect: () => void }
+- Example:
+  <CommandPalette
+    groups={[{
+      label: 'Navigation',
+      items: [{ id: 'dash', label: 'Dashboard', onSelect: () => navigate('/') }],
+    }]}
+  />
+- Gotchas: Opens with Ctrl+K / Cmd+K by default
+
+## ContentCard
+- Import: @devalok/shilp-sutra/composed/content-card
+- Server-safe: Yes
+- Props:
+    variant: "default" | "outline" | "ghost"
+    padding: "default" | "compact" | "spacious" | "none"
+    header: ReactNode (custom header content)
+    headerTitle: string (simple text header)
+    headerActions: ReactNode (actions in header area)
+    footer: ReactNode
+    children: ReactNode (body)
+- Defaults: variant="default", padding="default"
+- Example:
+  <ContentCard headerTitle="Team Members" headerActions={<Button size="sm">Add</Button>}>
+    <p>Member list here</p>
+  </ContentCard>
+
+## DatePicker
+- Import: @devalok/shilp-sutra/composed/date-picker
+- Server-safe: No
+- Props:
+    value: Date | null
+    onChange: (date: Date | null) => void
+    placeholder: string (default: "Pick a date")
+    formatStr: string (default: "MMM d, yyyy")
+    minDate: Date
+    maxDate: Date
+    disabledDates: (date: Date) => boolean
+    className: string
+- Example:
+  <DatePicker value={date} onChange={setDate} placeholder="Select date" />
+
+## DateRangePicker
+- Import: @devalok/shilp-sutra/composed/date-picker
+- Server-safe: No
+- Props:
+    startDate: Date | null
+    endDate: Date | null
+    onChange: (range: { start: Date | null, end: Date | null }) => void
+    placeholder: string (default: "Pick a date range")
+    formatStr: string (default: "MMM d, yyyy")
+    minDate: Date
+    maxDate: Date
+    disabledDates: (date: Date) => boolean
+    presets: PresetKey[] (shows quick-select sidebar)
+    numberOfMonths: number (default: 1)
+- Example:
+  <DateRangePicker
+    startDate={start}
+    endDate={end}
+    onChange={({ start, end }) => { setStart(start); setEnd(end); }}
+  />
+
+## DateTimePicker
+- Import: @devalok/shilp-sutra/composed/date-picker
+- Server-safe: No
+- Props:
+    value: Date | null
+    onChange: (date: Date | null) => void
+    minDate: Date
+    maxDate: Date
+    disabledDates: (date: Date) => boolean
+    timeFormat: "12h" | "24h"
+    minuteStep: number
+    placeholder: string
+    className: string
+- Example:
+  <DateTimePicker value={dateTime} onChange={setDateTime} timeFormat="12h" minuteStep={15} />
+
+## EmptyState
+- Import: @devalok/shilp-sutra/composed/empty-state
+- Server-safe: Yes
+- Props:
+    title: string (REQUIRED)
+    description: string
+    icon: ReactNode (default: Devalok chakra icon)
+    action: ReactNode (e.g. a Button)
+    compact: boolean (smaller layout)
+- Example:
+  <EmptyState
+    title="No tasks found"
+    description="Create your first task to get started."
+    action={<Button>Create Task</Button>}
+  />
+
+## ErrorDisplay
+- Import: @devalok/shilp-sutra/composed/error-boundary
+- Server-safe: No
+- Props:
+    error: unknown (REQUIRED — Error object, status object, or string)
+    onReset: () => void (optional retry button)
+- Example:
+  <ErrorDisplay error={error} onReset={() => refetch()} />
+- Gotchas:
+    - Auto-detects HTTP status codes (404, 403, 500) and shows appropriate icon/message
+    - Shows stack trace in development mode only
+
+## GlobalLoading
+- Import: @devalok/shilp-sutra/composed/global-loading
+- Server-safe: No
+- Props:
+    isLoading: boolean (REQUIRED)
+- Example:
+  <GlobalLoading isLoading={isNavigating} />
+- Gotchas: Fixed-position bar at top of viewport (z-toast layer)
+
+## LoadingSkeleton (CardSkeleton, TableSkeleton, BoardSkeleton, ListSkeleton)
+- Import: @devalok/shilp-sutra/composed/loading-skeleton
+- Server-safe: Yes
+- Props (CardSkeleton): className
+- Props (TableSkeleton): rows (default: 5), columns (default: 4), className
+- Props (BoardSkeleton): columns (default: 4), cardsPerColumn (default: 3), className
+- Props (ListSkeleton): rows (default: 6), showAvatar (default: true), className
+- Example:
+  <CardSkeleton />
+  <TableSkeleton rows={8} columns={5} />
+  <BoardSkeleton columns={3} cardsPerColumn={4} />
+  <ListSkeleton rows={10} showAvatar={false} />
+
+## MemberPicker
+- Import: @devalok/shilp-sutra/composed/member-picker
+- Server-safe: No
+- Props:
+    members: MemberPickerMember[] (REQUIRED) — { id, name, avatar? }
+    selectedIds: string[] (REQUIRED)
+    onSelect: (memberId: string) => void (REQUIRED)
+    multiple: boolean (default: false)
+    placeholder: string (default: "Search members...")
+    children: ReactNode (trigger element)
+- Example:
+  <MemberPicker members={teamMembers} selectedIds={assignees} onSelect={toggleAssignee} multiple>
+    <Button variant="outline">Assign Members</Button>
+  </MemberPicker>
+
+## PageHeader
+- Import: @devalok/shilp-sutra/composed/page-header
+- Server-safe: Yes
+- Props:
+    title: string (falls back to last breadcrumb label if omitted)
+    subtitle: string
+    actions: ReactNode (action buttons)
+    breadcrumbs: Breadcrumb[] — { label: string, href?: string }
+    titleClassName: string
+- Example:
+  <PageHeader
+    title="Project Settings"
+    subtitle="Configure your project preferences"
+    breadcrumbs={[
+      { label: 'Home', href: '/' },
+      { label: 'Projects', href: '/projects' },
+      { label: 'Settings' },
+    ]}
+    actions={<Button>Save</Button>}
+  />
+
+## PageSkeletons (DashboardSkeleton, ProjectListSkeleton, TaskDetailSkeleton)
+- Import: @devalok/shilp-sutra/composed/page-skeletons
+- Server-safe: Yes
+- Props: None (no configurable props)
+- Example:
+  <DashboardSkeleton />
+  <ProjectListSkeleton />
+  <TaskDetailSkeleton />
+
+## PriorityIndicator
+- Import: @devalok/shilp-sutra/composed/priority-indicator
+- Server-safe: Yes
+- Props:
+    priority: "LOW" | "MEDIUM" | "HIGH" | "URGENT" (case-insensitive)
+    display: "compact" | "full" (default: "full")
+- Example:
+  <PriorityIndicator priority="HIGH" />
+  <PriorityIndicator priority="low" display="compact" />
+- Gotchas: Case-insensitive — "low" and "LOW" both work
+
+## RichTextEditor / RichTextViewer
+- Import: @devalok/shilp-sutra/composed/rich-text-editor
+- Server-safe: No
+- Props (RichTextEditor):
+    content: string (HTML string)
+    placeholder: string (default: "Start writing...")
+    onChange: (html: string) => void
+    className: string
+    editable: boolean (default: true)
+- Props (RichTextViewer):
+    content: string (REQUIRED, HTML string)
+    className: string
+- Example:
+  <RichTextEditor content={html} onChange={setHtml} placeholder="Write your message..." />
+  <RichTextViewer content={savedHtml} />
+- Gotchas: Requires @tiptap/react, @tiptap/starter-kit, @tiptap/extension-placeholder as peer deps
+
+## ScheduleView
+- Import: @devalok/shilp-sutra/composed/schedule-view
+- Server-safe: No
+- Props:
+    view: "day" | "week" (REQUIRED)
+    date: Date (REQUIRED — current day or any date in target week)
+    events: ScheduleEvent[] (REQUIRED) — { id, title, start: Date, end: Date, color? }
+    onEventClick: (event: ScheduleEvent) => void
+    onSlotClick: (start: Date, end: Date) => void
+    startHour: number (default: 8)
+    endHour: number (default: 18, exclusive)
+    slotDuration: number (minutes, default: 30)
+- Event colors: "primary" | "success" | "warning" | "error" | "info" | "neutral"
+- Example:
+  <ScheduleView
+    view="week"
+    date={new Date()}
+    events={calendarEvents}
+    onEventClick={(e) => openEvent(e.id)}
+  />
+
+## SimpleTooltip
+- Import: @devalok/shilp-sutra/composed/simple-tooltip
+- Server-safe: No
+- Props:
+    content: ReactNode (REQUIRED — tooltip content)
+    side: "top" | "right" | "bottom" | "left" (default: "top")
+    align: "start" | "center" | "end" (default: "center")
+    delayDuration: number (ms, default: 300)
+    children: ReactNode (trigger element)
+- Example:
+  <SimpleTooltip content="Edit this item">
+    <IconButton icon={<IconEdit />} aria-label="Edit" />
+  </SimpleTooltip>
+- Gotchas: Wraps the full Tooltip compound (Provider + Tooltip + Trigger + Content) into one component
+
+## StatusBadge
+- Import: @devalok/shilp-sutra/composed/status-badge
+- Server-safe: Yes
+- Props:
+    status: "active" | "pending" | "approved" | "rejected" | "completed" | "blocked" | "cancelled" | "draft"
+    color: "success" | "warning" | "error" | "info" | "neutral" (overrides status styling when set)
+    size: "sm" | "md"
+    label: string (auto-derived from status/color if omitted)
+    hideDot: boolean (default: false)
+- Defaults: size="md"
+- Example:
+  <StatusBadge status="active" />
+  <StatusBadge color="warning" label="In Review" size="sm" />
+- Gotchas: When color is set, it takes priority over status for styling
+
+---
+
+# SHELL COMPONENTS
+# Application-level layout components.
+# Import from: @devalok/shilp-sutra/shell/<kebab-name>
+
+---
+
+## AppCommandPalette
+- Import: @devalok/shilp-sutra/shell/app-command-palette
+- Server-safe: No
+- Props:
+    user: AppCommandPaletteUser | null — { name, role? }
+    extraGroups: CommandGroup[]
+    onNavigate: (path: string) => void
+    onSearch: (query: string) => void
+    searchResults: SearchResult[] — { id, title, snippet?, entityType, projectId?, metadata? }
+    onSelectResult: (result: SearchResult) => void
+- Example:
+  <AppCommandPalette
+    user={{ name: 'John', role: 'admin' }}
+    onNavigate={(path) => router.push(path)}
+    searchResults={results}
+    onSelectResult={(r) => router.push(`/${r.entityType}/${r.id}`)}
+  />
+
+## AppSidebar
+- Import: @devalok/shilp-sutra/shell/sidebar
+- Server-safe: No
+- Props:
+    currentPath: string (highlights active nav item)
+    user: SidebarUser | null — { name, email?, image?, designation?, role? }
+    navGroups: NavGroup[] — { label: string, items: NavItem[] }
+    logo: ReactNode
+    footerLinks: Array<{ label: string, href: string }>
+    className: string
+- NavItem shape: { title, href, icon: ReactNode, exact?: boolean }
+- Example:
+  <AppSidebar
+    currentPath="/dashboard"
+    user={{ name: 'Jane', email: 'jane@example.com' }}
+    navGroups={[{
+      label: 'Main',
+      items: [
+        { title: 'Dashboard', href: '/dashboard', icon: <IconHome /> },
+        { title: 'Projects', href: '/projects', icon: <IconFolder /> },
+      ],
+    }]}
+  />
+- Gotchas: Must be wrapped in SidebarProvider (from ui/sidebar)
+
+## BottomNavbar
+- Import: @devalok/shilp-sutra/shell/bottom-navbar
+- Server-safe: No
+- Props:
+    currentPath: string
+    user: BottomNavbarUser | null — { name, role? }
+    primaryItems: BottomNavItem[] (max 4 recommended) — { title, href, icon, exact? }
+    moreItems: BottomNavItem[] (overflow items in "More" menu)
+    className: string
+- Example:
+  <BottomNavbar
+    currentPath="/dashboard"
+    primaryItems={[
+      { title: 'Home', href: '/', icon: <IconHome /> },
+      { title: 'Tasks', href: '/tasks', icon: <IconChecklist /> },
+    ]}
+  />
+
+## LinkProvider
+- Import: @devalok/shilp-sutra/shell/link-context
+- Server-safe: No
+- Props:
+    component: ForwardRefComponent (e.g. Next.js Link, Remix Link)
+    children: ReactNode
+- Hook: useLink() => LinkComponent
+- Example:
+  import Link from 'next/link'
+  <LinkProvider component={Link}>
+    <AppSidebar ... />
+    <BottomNavbar ... />
+  </LinkProvider>
+- Gotchas: Without LinkProvider, shell components render plain <a> tags
+
+## NotificationCenter
+- Import: @devalok/shilp-sutra/shell/notification-center
+- Server-safe: No
+- Props:
+    notifications: Notification[] — { id, title, body?, tier: "INFO"|"IMPORTANT"|"CRITICAL", isRead, createdAt, entityType?, entityId?, projectId?, project? }
+    unreadCount: number (derived from notifications if not provided)
+    open: boolean (controlled mode)
+    onOpenChange: (open: boolean) => void
+    isLoading: boolean
+    hasMore: boolean
+    onFetchMore: () => void
+    onMarkRead: (id: string) => void
+    onMarkAllRead: () => void
+    onNotificationClick: (notification: Notification) => void
+- Example:
+  <NotificationCenter
+    notifications={notifications}
+    onMarkRead={markAsRead}
+    onMarkAllRead={markAllAsRead}
+    onNotificationClick={(n) => router.push(`/notifications/${n.id}`)}
+  />
+
+## NotificationPreferences
+- Import: @devalok/shilp-sutra/shell/notification-preferences
+- Server-safe: No
+- Props:
+    preferences: NotificationPreference[] — { id, userId?, projectId, channel, minTier, muted }
+    projects: NotificationProject[] — { id, title }
+    isLoading: boolean
+    onSave: (preference: { projectId, channel, minTier, muted }) => void
+    onDelete: (id: string) => void
+- Example:
+  <NotificationPreferences
+    preferences={prefs}
+    projects={projectList}
+    onSave={handleSavePref}
+    onDelete={handleDeletePref}
+  />
+
+## TopBar
+- Import: @devalok/shilp-sutra/shell/top-bar
+- Server-safe: No
+- Props:
+    pageTitle: string
+    user: TopBarUser | null — { name, email?, image? }
+    onNavigate: (path: string) => void
+    onLogout: () => void
+    onSearchClick: () => void
+    onAiChatClick: () => void
+    mobileLogo: ReactNode
+    notificationSlot: ReactNode (render NotificationCenter here)
+    className: string
+- Example:
+  <TopBar
+    pageTitle="Dashboard"
+    user={{ name: 'John', email: 'john@example.com' }}
+    onNavigate={(p) => router.push(p)}
+    onLogout={handleLogout}
+    notificationSlot={<NotificationCenter notifications={notifications} />}
+  />
+
+---
+
+# HOOKS
+# Import from: @devalok/shilp-sutra/hooks/<hook-name>
+
+---
+
+## useToast
+- Import: @devalok/shilp-sutra/hooks/use-toast
+- Returns: { toasts, toast, dismiss }
+- toast(options): options = { title?, description?, color?, action? }
+    color: "neutral" | "success" | "warning" | "error" | "info"
+    Returns: { id, dismiss, update }
+- dismiss(toastId?: string): dismiss specific or all toasts
+- Example:
+  const { toast } = useToast()
+  toast({ title: 'Saved!', color: 'success' })
+  toast({ title: 'Error', description: 'Something went wrong.', color: 'error' })
+- Also available: import { toast } from '@devalok/shilp-sutra/hooks/use-toast' (imperative, no hook)
+
+## useColorMode
+- Import: @devalok/shilp-sutra/hooks/use-color-mode
+- Returns: { colorMode, setColorMode, toggleColorMode }
+- colorMode: "light" | "dark" | "system"
+- setColorMode(mode: "light" | "dark" | "system"): sets .dark class on html, persists to localStorage + cookie
+- toggleColorMode(): toggles between light and dark
+- Example:
+  const { colorMode, toggleColorMode } = useColorMode()
+  <Button onClick={toggleColorMode}>{colorMode === 'dark' ? 'Light' : 'Dark'}</Button>
+
+## useIsMobile
+- Import: @devalok/shilp-sutra/hooks/use-mobile
+- Returns: boolean (true if viewport width < 768px)
+- Example:
+  const isMobile = useIsMobile()
+  {isMobile ? <BottomNavbar /> : <AppSidebar />}
+
+---
+
+# UTILITIES
+# Import from: @devalok/shilp-sutra (barrel) or per-component path
+
+---
+
+## cn (className merge utility)
+- Import: @devalok/shilp-sutra (barrel export)
+- Usage: cn('base-class', condition && 'conditional-class', className)
+- Merges Tailwind classes with clsx + twMerge
+
+## getInitials
+- Import: @devalok/shilp-sutra/composed (barrel export)
+- Usage: getInitials("John Doe") => "JD"
+
+## generatePagination
+- Import: @devalok/shilp-sutra/ui/pagination
+- Usage: generatePagination(currentPage, totalPages, siblingCount)
+- Returns: (number | 'ellipsis')[]
+
+## motion / duration / easings / durations
+- Import: @devalok/shilp-sutra (barrel export)
+- Design system motion tokens for custom animations

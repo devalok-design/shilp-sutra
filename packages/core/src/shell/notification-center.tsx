@@ -166,7 +166,7 @@ function NotificationItem({
       onClick={handleClick}
       onKeyDown={handleKeyDown}
       className={cn(
-        'group relative flex w-full items-start gap-ds-04 px-ds-05 py-ds-04 text-left transition-colors',
+        'group relative flex w-full cursor-pointer items-start gap-ds-04 px-ds-05 py-ds-04 text-left transition-colors',
         'hover:bg-layer-02',
         !notification.isRead && 'bg-interactive/[0.03]',
       )}
@@ -230,7 +230,8 @@ function NotificationItem({
             e.stopPropagation()
             onDismiss(notification.id)
           }}
-          className="absolute right-ds-03 top-ds-03 hidden rounded-ds-sm p-ds-01 text-text-placeholder hover:bg-layer-03 hover:text-text-secondary group-hover:flex"
+          onKeyDown={(e) => e.stopPropagation()}
+          className="absolute right-ds-03 top-ds-03 hidden rounded-ds-sm p-ds-01 text-text-placeholder hover:bg-layer-03 hover:text-text-secondary group-hover:flex group-focus-within:flex"
         >
           <IconX className="h-ico-xs w-ico-xs" />
         </button>

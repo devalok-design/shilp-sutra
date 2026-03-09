@@ -55,6 +55,8 @@ export interface AppCommandPaletteUser {
 export interface AppCommandPaletteProps {
   /** Current user (used to determine admin access) */
   user?: AppCommandPaletteUser | null
+  /** When true, shows admin command groups regardless of user.role. Takes precedence over role-based detection. */
+  isAdmin?: boolean
   /** Additional command groups to show */
   extraGroups?: CommandGroup[]
   /** Called when the user selects a navigation target */
@@ -191,6 +193,7 @@ function buildDefaultAdminItems(
 
 export function AppCommandPalette({
   user,
+  isAdmin: isAdminProp,
   extraGroups = [],
   onNavigate,
   onSearch,
@@ -199,7 +202,7 @@ export function AppCommandPalette({
   onSearchResultSelect,
 }: AppCommandPaletteProps) {
   const isAdmin =
-    user?.role === 'Admin' || user?.role === 'SuperAdmin'
+    isAdminProp ?? (user?.role === 'Admin' || user?.role === 'SuperAdmin')
 
   const nav = useCallback(
     (to: string) => {

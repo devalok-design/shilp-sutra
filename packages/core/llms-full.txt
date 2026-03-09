@@ -390,12 +390,12 @@ Note: getFormFieldA11y() was removed in favor of useFormField() hook.
 - Server-safe: No
 - Props:
     options: ComboboxOption[] (REQUIRED) — { value: string, label: string, description?: string, icon?: ReactNode, disabled?: boolean }
-    value: string | string[]
-    onValueChange: (value: string | string[]) => void (REQUIRED)
+    DISCRIMINATED UNION — type depends on `multiple` flag:
+    Single (default): multiple?: false, value: string, onValueChange: (value: string) => void
+    Multiple: multiple: true, value: string[], onValueChange: (value: string[]) => void
     placeholder: string (default: "Select...")
     searchPlaceholder: string (default: "Search...")
     emptyMessage: string (default: "No results found")
-    multiple: boolean (default: false)
     disabled: boolean
     triggerClassName: string
     maxVisible: number (default: 6, max dropdown items before scroll)
@@ -405,7 +405,7 @@ Note: getFormFieldA11y() was removed in favor of useFormField() hook.
     multiple
     options={tagOptions}
     value={selectedTags}
-    onValueChange={(v) => setSelectedTags(v as string[])}
+    onValueChange={setSelectedTags}
     placeholder="Select tags..."
   />
 - Gotchas:
@@ -593,6 +593,7 @@ Note: getFormFieldA11y() was removed in favor of useFormField() hook.
 - Gotchas:
     - HTML native "size" attribute is excluded — use CSS width instead
     - state="error" sets aria-invalid automatically
+    - Inside FormField: auto-inherits state, aria-describedby, aria-required from context (explicit props override)
 
 ## InputOTP
 - Import: @devalok/shilp-sutra/ui/input-otp
@@ -1134,6 +1135,7 @@ Note: getFormFieldA11y() was removed in favor of useFormField() hook.
 - Example:
   <Textarea size="lg" state="error" placeholder="Describe the issue..." />
 - Gotchas: state="error" sets aria-invalid automatically; all sizes are vertically resizable
+    - Inside FormField: auto-inherits state, aria-describedby, aria-required from context (explicit props override)
 
 ## Toast / Toaster
 - Import: @devalok/shilp-sutra/ui/toast, @devalok/shilp-sutra/ui/toaster

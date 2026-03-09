@@ -5,6 +5,57 @@ All notable changes to `@devalok/shilp-sutra` will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.8.0] — 2026-03-09
+
+The **Mega-Audit** release. Comprehensive design system audit fixing 48 issues across accessibility, type safety, security, token consistency, and build correctness.
+
+### Changed (BREAKING)
+- **Combobox**: Props now use discriminated union — `multiple: true` requires `value: string[]` and `onValueChange: (value: string[]) => void`; `multiple?: false` requires `value: string` and `onValueChange: (value: string) => void`
+- **StatusBadge**: Props now use discriminated union — pass either `status` or `color`, not both
+
+### Added
+- **ConversationTab** (karm): `richText` prop for built-in RichTextEditor/Viewer support
+- **Semantic token**: `layer-active` for pressed/active states
+- **Semantic token**: `text-info` for informational text color
+- **Tailwind peer dep**: `tailwindcss ^3.4.0` declared as optional peer dependency
+- **useComposedRef** (karm): Utility hook for merging multiple refs
+
+### Fixed
+- **RichTextEditor**: Emoji picker now renders above the editor (not clipped by overflow)
+- **RichTextEditor**: Link/image URL injection prevented via protocol validation (`http`, `https`, `mailto` only)
+- **RichTextEditor**: Escape key in emoji picker no longer closes parent dialogs
+- **Input/Textarea**: Now consume FormField context automatically (`aria-describedby`, `aria-invalid`, `aria-required`)
+- **NumberInput**: FormField context consumption, `aria-label` fallback, `parseInt` radix parameter
+- **ColorInput**: Added `aria-label` to hex color input
+- **CommandPalette**: Full ARIA combobox pattern (`role="combobox"`, `aria-expanded`, `aria-activedescendant`)
+- **TaskCard** (karm): Keyboard accessible (`role="button"`, `tabIndex`, Enter/Space handling)
+- **BoardColumn** (karm): Icon-only buttons now have `aria-label`, keyboard-focusable
+- **StreamingText** (karm): Added `aria-live="polite"` for screen readers
+- **ChatInput** (karm): Added `aria-label` on textarea
+- **FilesTab** (karm): URL protocol validation on download links
+- **Markdown renderer** (karm): URL protocol validation on rendered links
+- **Stale .js artifacts**: Removed 15 compiled `.js` files shadowing `.tsx` sources in module resolution
+- **Typecheck**: All tiptap extensions added as devDependencies for complete type resolution
+- **Token consistency**: `text-placeholder` contrast improved (`neutral-400` → `neutral-500`)
+- **Badge**: `text-[10px]` → `text-ds-xs` for token consistency
+- **Icon sizing**: 7 components migrated from `min-h-6 min-w-6` → `min-h-ds-xs min-w-ds-xs`
+
+### Removed
+- **SegmentedControl** re-export from karm (was stale — use core's directly)
+
+---
+
+## [0.7.0] — 2026-03-09
+
+### Added
+- **RichTextEditor/Viewer**: Full-featured tiptap-based rich text editing with toolbar, mentions, emoji, image, alignment
+- **TopBar**: `userMenuItems` prop for custom dropdown items
+
+### Fixed
+- **Audit findings**: Various component fixes from design system audit round 1
+
+---
+
 ## [0.6.0] — 2026-03-06
 
 The **Karm Feedback** release. Improves developer experience with Storybook documentation, import guides, and migration helpers.

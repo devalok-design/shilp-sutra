@@ -11,6 +11,7 @@
     "build:brand": "pnpm --filter @devalok/shilp-sutra-brand build",
     "build:karm": "pnpm --filter @devalok/shilp-sutra-karm build",
     "build-storybook": "storybook build",
+    "build:playground": "cd apps/playground && pnpm build",
     "typecheck": "pnpm -r typecheck",
     "lint": "pnpm -r lint",
     "lint:fix": "pnpm -r lint:fix",

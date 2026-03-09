@@ -62,6 +62,8 @@ export interface NotificationCenterProps
   onNavigate?: (path: string) => void
   /** Resolve a notification to a navigation path. Return null if no navigation. */
   getNotificationRoute?: (notification: Notification) => string | null
+  /** Custom empty state to display when there are no notifications */
+  emptyState?: React.ReactNode
   /** Content rendered below the notification list as a footer */
   footerSlot?: React.ReactNode
   /** Additional className */
@@ -223,6 +225,7 @@ const NotificationCenter = React.forwardRef<HTMLButtonElement, NotificationCente
       onMarkAllRead,
       onNavigate,
       getNotificationRoute,
+      emptyState,
       footerSlot,
       className,
       ...props
@@ -336,17 +339,19 @@ const NotificationCenter = React.forwardRef<HTMLButtonElement, NotificationCente
           className="max-h-[420px] overflow-y-auto"
         >
           {notifications.length === 0 ? (
-            <div className="flex flex-col items-center justify-center px-ds-05 py-ds-09">
-              <div className="flex h-ds-lg w-ds-lg items-center justify-center rounded-ds-full bg-layer-02">
-                <IconInbox className="h-ico-lg w-ico-lg text-text-placeholder" />
+            emptyState || (
+              <div className="flex flex-col items-center justify-center px-ds-05 py-ds-09">
+                <div className="flex h-ds-lg w-ds-lg items-center justify-center rounded-ds-full bg-layer-02">
+                  <IconInbox className="h-ico-lg w-ico-lg text-text-placeholder" />
+                </div>
+                <p className="mt-ds-04 text-ds-md text-text-placeholder">
+                  No notifications yet
+                </p>
+                <p className="mt-ds-02 text-ds-sm text-text-placeholder">
+                  You&apos;re all caught up!
+                </p>
               </div>
-              <p className="mt-ds-04 text-ds-md text-text-placeholder">
-                No notifications yet
-              </p>
-              <p className="mt-ds-02 text-ds-sm text-text-placeholder">
-                You&apos;re all caught up!
-              </p>
-            </div>
+            )
           ) : (
             groupOrder.map((group) => {
               const items = grouped[group]

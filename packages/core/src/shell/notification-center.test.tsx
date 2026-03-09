@@ -87,4 +87,22 @@ describe('NotificationCenter', () => {
       expect(screen.queryByText('View all')).not.toBeInTheDocument()
     })
   })
+
+  describe('emptyState', () => {
+    it('renders custom empty state when provided and notifications are empty', () => {
+      render(
+        <NotificationCenter
+          notifications={[]}
+          emptyState={<p>No unread notifications</p>}
+        />,
+      )
+      expect(screen.getByText('No unread notifications')).toBeInTheDocument()
+      expect(screen.queryByText('No notifications yet')).not.toBeInTheDocument()
+    })
+
+    it('renders default empty state when emptyState is not provided', () => {
+      render(<NotificationCenter notifications={[]} />)
+      expect(screen.getByText('No notifications yet')).toBeInTheDocument()
+    })
+  })
 })

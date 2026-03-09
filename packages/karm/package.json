@@ -1,6 +1,6 @@
 {
   "name": "@devalok/shilp-sutra-karm",
-  "version": "0.8.1",
+  "version": "0.8.2",
   "description": "Domain components for Karm — board, tasks, chat, dashboard, client, and admin",
   "license": "MIT",
   "type": "module",
@@ -13,30 +13,37 @@
   "exports": {
     ".": {
       "import": "./dist/index.js",
+      "default": "./dist/index.js",
       "types": "./dist/index.d.ts"
     },
     "./board": {
       "import": "./dist/board/index.js",
+      "default": "./dist/board/index.js",
       "types": "./dist/board/index.d.ts"
     },
     "./tasks": {
       "import": "./dist/tasks/index.js",
+      "default": "./dist/tasks/index.js",
       "types": "./dist/tasks/index.d.ts"
     },
     "./chat": {
       "import": "./dist/chat/index.js",
+      "default": "./dist/chat/index.js",
       "types": "./dist/chat/index.d.ts"
     },
     "./dashboard": {
       "import": "./dist/dashboard/index.js",
+      "default": "./dist/dashboard/index.js",
       "types": "./dist/dashboard/index.d.ts"
     },
     "./client": {
       "import": "./dist/client/index.js",
+      "default": "./dist/client/index.js",
       "types": "./dist/client/index.d.ts"
     },
     "./admin": {
       "import": "./dist/admin/index.js",
+      "default": "./dist/admin/index.js",
       "types": "./dist/admin/index.d.ts"
     }
   },

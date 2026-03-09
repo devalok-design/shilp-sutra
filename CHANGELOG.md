@@ -5,6 +5,15 @@ All notable changes to `@devalok/shilp-sutra` will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.8.3] — 2026-03-10
+
+### Fixed
+- **Exports map**: Added `"default"` condition fallback to all package exports — fixes Next.js 15 webpack resolution without needing `conditionNames` workarounds
+- **Missing export**: Added `./ui/lib/utils` to exports map — fixes `Module not found` when shilp-sutra-karm imports this internal path
+
+### shilp-sutra-karm 0.8.2
+- **Exports map**: Added `"default"` condition fallback to all package exports
+
 ## [0.8.2] — 2026-03-10
 
 ### Fixed

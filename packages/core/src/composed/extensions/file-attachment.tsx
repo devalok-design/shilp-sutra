@@ -9,10 +9,11 @@ function formatFileSize(bytes: number): string {
 }
 
 function FileAttachmentView({ node }: NodeViewProps) {
+  const safeUrl = /^https?:\/\//.test(node.attrs.url) ? node.attrs.url : '#'
   return (
     <NodeViewWrapper className="my-ds-02">
       <a
-        href={node.attrs.url}
+        href={safeUrl}
         target="_blank"
         rel="noopener noreferrer"
         className="inline-flex items-center gap-ds-03 rounded-ds-md border border-border bg-layer-02 px-ds-04 py-ds-03 text-ds-sm text-text-primary transition-colors hover:border-border-strong hover:bg-layer-03"

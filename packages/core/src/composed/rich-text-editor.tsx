@@ -41,6 +41,26 @@ import {
   IconMoodSmile,
 } from '@tabler/icons-react'
 
+const PROSE_CLASSES = [
+  'prose prose-sm max-w-none',
+  'font-body text-ds-md leading-relaxed text-text-primary',
+  '[&_h2]:text-ds-xl [&_h2]:mb-ds-03 [&_h2]:mt-ds-05 [&_h2]:text-text-primary',
+  '[&_h3]:text-ds-base [&_h3]:font-semibold [&_h3]:mb-ds-02b [&_h3]:mt-ds-04 [&_h3]:text-text-primary',
+  '[&_p]:mb-ds-02b [&_p]:text-text-secondary',
+  '[&_ul]:ml-ds-05 [&_ul]:list-disc [&_ol]:ml-ds-05 [&_ol]:list-decimal',
+  '[&_li]:text-text-secondary',
+  '[&_code]:rounded [&_code]:bg-layer-02 [&_code]:px-ds-02b [&_code]:py-ds-01 [&_code]:text-ds-md [&_code]:text-interactive',
+  '[&_pre]:rounded-ds-lg [&_pre]:bg-layer-02 [&_pre]:p-ds-04',
+  '[&_strong]:font-semibold [&_strong]:text-text-primary',
+  '[&_blockquote]:border-l-[3px] [&_blockquote]:border-interactive/30 [&_blockquote]:pl-ds-04 [&_blockquote]:italic [&_blockquote]:text-text-placeholder',
+  '[&_mark]:rounded-sm [&_mark]:bg-warning/20 [&_mark]:px-[2px]',
+  '[&_ul[data-type="taskList"]]:ml-0 [&_ul[data-type="taskList"]]:list-none [&_li[data-type="taskItem"]]:flex [&_li[data-type="taskItem"]]:items-start [&_li[data-type="taskItem"]]:gap-ds-02',
+  '[&_hr]:my-ds-04 [&_hr]:border-border',
+  '[&_a]:text-interactive [&_a]:underline [&_a]:decoration-interactive/40 hover:[&_a]:decoration-interactive',
+  '[&_img]:max-w-full [&_img]:rounded-ds-md [&_img]:my-ds-03',
+  '[&_.mention]:rounded-ds-sm [&_.mention]:bg-interactive/10 [&_.mention]:px-ds-02 [&_.mention]:py-[1px] [&_.mention]:font-medium [&_.mention]:text-interactive',
+] as const
+
 interface ToolbarButtonProps {
   onClick: () => void
   isActive?: boolean
@@ -62,6 +82,7 @@ function ToolbarButton({
       onClick={onClick}
       disabled={disabled}
       title={title}
+      aria-pressed={isActive}
       className={cn(
         'inline-flex h-ds-xs-plus w-ds-xs-plus items-center justify-center rounded-ds-md transition-colors',
         'hover:bg-field',
@@ -117,6 +138,7 @@ function LinkButton({ editor }: { editor: Editor }) {
       {showInput && (
         <form
           onSubmit={handleSubmit}
+          aria-label="Edit link URL"
           className="absolute left-0 top-full z-popover mt-ds-01 flex items-center gap-ds-02 rounded-ds-md border border-border bg-layer-01 p-ds-02 shadow-02"
         >
           <input
@@ -414,24 +436,9 @@ const RichTextEditor = React.forwardRef<HTMLDivElement, RichTextEditorProps>(
       },
       attributes: {
         class: cn(
-          'prose prose-sm max-w-none focus:outline-none',
+          ...PROSE_CLASSES,
+          'focus:outline-none',
           'min-h-[120px] px-ds-04 py-ds-04',
-          'font-body text-ds-md leading-relaxed text-text-primary',
-          '[&_h2]:text-ds-xl [&_h2]:mb-ds-03 [&_h2]:mt-ds-05 [&_h2]:text-text-primary',
-          '[&_h3]:text-ds-base [&_h3]:font-semibold [&_h3]:mb-ds-02b [&_h3]:mt-ds-04 [&_h3]:text-text-primary',
-          '[&_p]:mb-ds-02b [&_p]:text-text-secondary',
-          '[&_ul]:ml-ds-05 [&_ul]:list-disc [&_ol]:ml-ds-05 [&_ol]:list-decimal',
-          '[&_li]:text-text-secondary',
-          '[&_code]:rounded [&_code]:bg-layer-02 [&_code]:px-ds-02b [&_code]:py-ds-01 [&_code]:text-ds-md [&_code]:text-interactive',
-          '[&_pre]:rounded-ds-lg [&_pre]:bg-layer-02 [&_pre]:p-ds-04',
-          '[&_strong]:font-semibold [&_strong]:text-text-primary',
-          '[&_blockquote]:border-l-[3px] [&_blockquote]:border-interactive/30 [&_blockquote]:pl-ds-04 [&_blockquote]:italic [&_blockquote]:text-text-placeholder',
-          '[&_mark]:rounded-sm [&_mark]:bg-warning/20 [&_mark]:px-[2px]',
-          '[&_ul[data-type="taskList"]]:ml-0 [&_ul[data-type="taskList"]]:list-none [&_li[data-type="taskItem"]]:flex [&_li[data-type="taskItem"]]:items-start [&_li[data-type="taskItem"]]:gap-ds-02',
-          '[&_hr]:my-ds-04 [&_hr]:border-border',
-          '[&_a]:text-interactive [&_a]:underline [&_a]:decoration-interactive/40 hover:[&_a]:decoration-interactive',
-          '[&_img]:max-w-full [&_img]:rounded-ds-md [&_img]:my-ds-03',
-          '[&_.mention]:rounded-ds-sm [&_.mention]:bg-interactive/10 [&_.mention]:px-ds-02 [&_.mention]:py-[1px] [&_.mention]:font-medium [&_.mention]:text-interactive',
         ),
       },
     },
@@ -563,25 +570,7 @@ const RichTextViewer = React.forwardRef<HTMLDivElement, RichTextViewerProps>(
     editable: false,
     editorProps: {
       attributes: {
-        class: cn(
-          'prose prose-sm max-w-none',
-          'font-body text-ds-md leading-relaxed text-text-primary',
-          '[&_h2]:text-ds-xl [&_h2]:mb-ds-03 [&_h2]:mt-ds-05 [&_h2]:text-text-primary',
-          '[&_h3]:text-ds-base [&_h3]:font-semibold [&_h3]:mb-ds-02b [&_h3]:mt-ds-04 [&_h3]:text-text-primary',
-          '[&_p]:mb-ds-02b [&_p]:text-text-secondary',
-          '[&_ul]:ml-ds-05 [&_ul]:list-disc [&_ol]:ml-ds-05 [&_ol]:list-decimal',
-          '[&_li]:text-text-secondary',
-          '[&_code]:rounded [&_code]:bg-layer-02 [&_code]:px-ds-02b [&_code]:py-ds-01 [&_code]:text-ds-md [&_code]:text-interactive',
-          '[&_pre]:rounded-ds-lg [&_pre]:bg-layer-02 [&_pre]:p-ds-04',
-          '[&_strong]:font-semibold [&_strong]:text-text-primary',
-          '[&_blockquote]:border-l-[3px] [&_blockquote]:border-interactive/30 [&_blockquote]:pl-ds-04 [&_blockquote]:italic [&_blockquote]:text-text-placeholder',
-          '[&_mark]:rounded-sm [&_mark]:bg-warning/20 [&_mark]:px-[2px]',
-          '[&_ul[data-type="taskList"]]:ml-0 [&_ul[data-type="taskList"]]:list-none [&_li[data-type="taskItem"]]:flex [&_li[data-type="taskItem"]]:items-start [&_li[data-type="taskItem"]]:gap-ds-02',
-          '[&_hr]:my-ds-04 [&_hr]:border-border',
-          '[&_a]:text-interactive [&_a]:underline [&_a]:decoration-interactive/40 hover:[&_a]:decoration-interactive',
-          '[&_img]:max-w-full [&_img]:rounded-ds-md [&_img]:my-ds-03',
-          '[&_.mention]:rounded-ds-sm [&_.mention]:bg-interactive/10 [&_.mention]:px-ds-02 [&_.mention]:py-[1px] [&_.mention]:font-medium [&_.mention]:text-interactive',
-        ),
+        class: cn(...PROSE_CLASSES),
       },
     },
   })

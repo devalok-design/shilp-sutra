@@ -138,7 +138,8 @@ NOTIFICATION SELECTION GUIDE:
 - PriorityIndicator: priority(LOW|MEDIUM|HIGH|URGENT) display(compact|full)
 - SimpleTooltip: wraps Tooltip compound into single component
 - DatePicker, DateRangePicker, DateTimePicker, TimePicker
-- RichTextEditor, RichTextViewer
+- RichTextEditor: Tiptap editor — bold/italic/underline/strike/highlight, headings, blockquote, lists (bullet/ordered/task), code, links, images (paste/drop/upload), file attachments, @mentions, emoji picker + :shortcode:, text alignment, HR. Props: onImageUpload?, onFileUpload?, mentions?, onMentionSearch?, onMentionSelect?
+- RichTextViewer: read-only renderer for RichTextEditor HTML content (renders all above content types)
 - CommandPalette, MemberPicker
 - ErrorDisplay, GlobalLoading
 - Loading skeletons: CardSkeleton, TableSkeleton, BoardSkeleton, ListSkeleton, DashboardSkeleton, etc.

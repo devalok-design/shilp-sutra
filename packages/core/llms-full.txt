@@ -1534,13 +1534,41 @@ Note: getFormFieldA11y() was removed in favor of useFormField() hook.
     onChange: (html: string) => void
     className: string
     editable: boolean (default: true)
+    onImageUpload?: (file: File) => Promise<string> — return URL. If omitted, images paste as base64
+    onFileUpload?: (file: File) => Promise<{ url: string; name: string; size: number }> — enables file attachments. If omitted, non-image files ignored
+    mentions?: MentionItem[] — static list for @mention autocomplete
+    onMentionSearch?: (query: string) => Promise<MentionItem[]> — async search, takes precedence over static mentions
+    onMentionSelect?: (item: MentionItem) => void — callback when mention selected
+- MentionItem: { id: string; label: string; avatar?: string }
 - Props (RichTextViewer):
     content: string (REQUIRED, HTML string)
     className: string
+- Features:
+    Formatting: bold, italic, underline, strikethrough, highlight, headings (H2/H3), blockquote
+    Lists: bullet, ordered, task lists (checkboxes)
+    Code: inline code, code blocks
+    Links: auto-link, inline URL editor popover
+    Images: paste/drop/toolbar upload, base64 fallback or custom upload callback
+    File attachments: drop/paste/toolbar, renders as download card [icon filename (size)]
+    Mentions: type @ for autocomplete dropdown (static or async)
+    Emoji: toolbar picker (emoji-mart, lazy loaded) + :shortcode: inline suggestions
+    Text alignment: left/center/right
+    Horizontal rule
 - Example:
   <RichTextEditor content={html} onChange={setHtml} placeholder="Write your message..." />
+  <RichTextEditor
+    content={html}
+    onChange={setHtml}
+    mentions={[{ id: '1', label: 'Aarav' }]}
+    onImageUpload={async (file) => uploadAndReturnUrl(file)}
+    onFileUpload={async (file) => ({ url: uploadUrl, name: file.name, size: file.size })}
+  />
   <RichTextViewer content={savedHtml} />
-- Gotchas: Requires @tiptap/react, @tiptap/starter-kit, @tiptap/extension-placeholder as peer deps
+- Gotchas:
+    Requires Tiptap peer deps: @tiptap/react, @tiptap/starter-kit, @tiptap/extension-placeholder, plus extension-specific peers (image, link, underline, highlight, task-list, task-item, text-align, mention, suggestion)
+    Emoji picker requires @emoji-mart/react + @emoji-mart/data peers
+    Images without onImageUpload are stored as base64 in HTML — large images bloat content
+    Mention rendering in viewer always works (no mention props needed, just the HTML)
 
 ## ScheduleView
 - Import: @devalok/shilp-sutra/composed/schedule-view

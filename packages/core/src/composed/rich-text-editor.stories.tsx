@@ -1,5 +1,14 @@
 import type { Meta, StoryObj } from '@storybook/react'
+import { fn } from '@storybook/test'
 import { RichTextEditor, RichTextViewer } from './rich-text-editor'
+import type { MentionItem } from './rich-text-editor'
+
+const sampleMentions: MentionItem[] = [
+  { id: '1', label: 'Aarav Sharma' },
+  { id: '2', label: 'Priya Patel' },
+  { id: '3', label: 'Vikram Singh' },
+  { id: '4', label: 'Ananya Gupta' },
+]
 
 const sampleHtml = `
 <h2>Project Requirements</h2>
@@ -120,5 +129,81 @@ export const EditorAndViewer: EditorStory = {
         <RichTextViewer content={sampleHtml} />
       </div>
     </div>
+  ),
+}
+
+// --- New feature stories ---
+
+const richContent = `
+<h2>Enhanced Content Demo</h2>
+<p>This shows <u>underline</u>, <mark>highlight</mark>, <strong>bold</strong>, and <s>strikethrough</s>.</p>
+<blockquote><p>This is a blockquote — great for callouts or quotes.</p></blockquote>
+<ul data-type="taskList">
+  <li data-type="taskItem" data-checked="true"><p>Completed task</p></li>
+  <li data-type="taskItem" data-checked="false"><p>Pending task</p></li>
+</ul>
+<p style="text-align: center">This paragraph is center-aligned.</p>
+<hr>
+<p>A horizontal rule above separates sections.</p>
+<p>Visit <a href="https://example.com" rel="noopener noreferrer" target="_blank">example.com</a> for more details.</p>
+`.trim()
+
+export const WithAllFormatting: EditorStory = {
+  args: {
+    content: richContent,
+  },
+}
+
+export const WithImageUpload: EditorStory = {
+  args: {
+    placeholder: 'Paste or drop an image...',
+    onImageUpload: fn(async (_file: File) => 'https://placehold.co/400x200/1a1a2e/e0e0e0?text=Uploaded+Image'),
+  },
+}
+
+export const WithFileUpload: EditorStory = {
+  args: {
+    placeholder: 'Drop files here...',
+    onImageUpload: fn(async (_file: File) => 'https://placehold.co/400x200/1a1a2e/e0e0e0?text=Uploaded'),
+    onFileUpload: fn(async (file: File) => ({ url: '#', name: file.name, size: file.size })),
+  },
+}
+
+export const WithMentions: EditorStory = {
+  args: {
+    placeholder: 'Type @ to mention someone...',
+    mentions: sampleMentions,
+    onMentionSelect: fn(),
+  },
+}
+
+export const FullFeatured: EditorStory = {
+  args: {
+    placeholder: 'Type @ for mentions, : for emoji, paste images...',
+    mentions: sampleMentions,
+    onImageUpload: fn(async (_file: File) => 'https://placehold.co/400x200/1a1a2e/e0e0e0?text=Uploaded'),
+    onFileUpload: fn(async (file: File) => ({ url: '#', name: file.name, size: file.size })),
+    onMentionSelect: fn(),
+  },
+}
+
+const viewerRichContent = `
+<h2>All Content Types</h2>
+<p>Text with <strong>bold</strong>, <em>italic</em>, <u>underline</u>, <s>strike</s>, and <mark>highlight</mark>.</p>
+<p>A link: <a href="https://example.com" rel="noopener noreferrer" target="_blank">Click here</a></p>
+<blockquote><p>A blockquote for emphasis.</p></blockquote>
+<ul data-type="taskList">
+  <li data-type="taskItem" data-checked="true"><p>Done</p></li>
+  <li data-type="taskItem" data-checked="false"><p>Not done</p></li>
+</ul>
+<img src="https://placehold.co/600x200/1a1a2e/e0e0e0?text=Sample+Image" alt="Sample">
+<p>Mention: <span data-type="mention" data-id="1" class="mention">@Aarav Sharma</span> is assigned.</p>
+<hr>
+<p style="text-align: center">Center-aligned closing note.</p>
+`.trim()
+
+export const ViewerFullContent: EditorStory = {
+  render: () => (
+    <RichTextViewer content={viewerRichContent} />
   ),
 }

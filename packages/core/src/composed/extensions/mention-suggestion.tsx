@@ -2,12 +2,7 @@ import type { SuggestionProps, SuggestionKeyDownProps } from '@tiptap/suggestion
 import * as React from 'react'
 import { createRoot, type Root } from 'react-dom/client'
 import { cn } from '../../ui/lib/utils'
-
-export interface MentionItem {
-  id: string
-  label: string
-  avatar?: string
-}
+import type { MentionItem } from '../rich-text-editor'
 
 interface MentionListRef {
   onKeyDown: (props: SuggestionKeyDownProps) => boolean

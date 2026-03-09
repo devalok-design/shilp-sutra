@@ -81,6 +81,10 @@
       "import": "./dist/ui/code.js",
       "types": "./dist/ui/code.d.ts"
     },
+    "./ui/color-input": {
+      "import": "./dist/ui/color-input.js",
+      "types": "./dist/ui/color-input.d.ts"
+    },
     "./ui/collapsible": {
       "import": "./dist/ui/collapsible.js",
       "types": "./dist/ui/collapsible.d.ts"
@@ -288,6 +292,10 @@
     "./composed/command-palette": {
       "import": "./dist/composed/command-palette.js",
       "types": "./dist/composed/command-palette.d.ts"
+    },
+    "./composed/confirm-dialog": {
+      "import": "./dist/composed/confirm-dialog.js",
+      "types": "./dist/composed/confirm-dialog.d.ts"
     },
     "./composed/content-card": {
       "import": "./dist/composed/content-card.js",

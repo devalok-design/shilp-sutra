@@ -233,7 +233,7 @@ function NotificationItem({
           onKeyDown={(e) => e.stopPropagation()}
           className="absolute right-ds-03 top-ds-03 hidden rounded-ds-sm p-ds-01 text-text-placeholder hover:bg-layer-03 hover:text-text-secondary group-hover:flex group-focus-within:flex"
         >
-          <IconX className="h-ico-xs w-ico-xs" />
+          <IconX className="h-ico-sm w-ico-sm" />
         </button>
       )}
     </div>

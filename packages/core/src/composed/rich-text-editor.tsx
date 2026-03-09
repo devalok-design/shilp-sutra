@@ -15,6 +15,7 @@ import Mention from '@tiptap/extension-mention'
 import { FileAttachment } from './extensions/file-attachment'
 import { createSuggestionRenderer } from './extensions/mention-suggestion'
 import { EmojiSuggestion } from './extensions/emoji-suggestion'
+import { useColorMode } from '../hooks/use-color-mode'
 import { cn } from '../ui/lib/utils'
 import {
   IconBold,
@@ -272,19 +273,22 @@ const LazyPicker = React.lazy(() => import('@emoji-mart/react'))
 
 function EmojiPickerLazy({ onSelect }: { onSelect: (native: string) => void }) {
   const [data, setData] = React.useState<unknown>(null)
+  const { colorMode } = useColorMode()
 
   React.useEffect(() => {
     import('@emoji-mart/data').then((mod) => setData(mod.default))
   }, [])
 
-  if (!data) return <div className="flex h-[350px] w-[352px] items-center justify-center rounded-ds-lg border border-border bg-layer-01 shadow-02"><span className="text-ds-sm text-text-placeholder">Loading...</span></div>
+  const fallback = <div className="flex h-[350px] w-[352px] items-center justify-center rounded-ds-lg border border-border bg-layer-01 shadow-02"><span className="text-ds-sm text-text-placeholder">Loading...</span></div>
+
+  if (!data) return fallback
 
   return (
-    <React.Suspense fallback={<div className="flex h-[350px] w-[352px] items-center justify-center rounded-ds-lg border border-border bg-layer-01 shadow-02"><span className="text-ds-sm text-text-placeholder">Loading...</span></div>}>
+    <React.Suspense fallback={fallback}>
       <LazyPicker
         data={data}
         onEmojiSelect={(emoji: { native: string }) => onSelect(emoji.native)}
-        theme="light"
+        theme={colorMode === 'dark' ? 'dark' : 'light'}
         previewPosition="none"
         skinTonePosition="none"
       />
@@ -484,6 +488,7 @@ const RichTextEditor = React.forwardRef<HTMLDivElement, RichTextEditorProps>(
         ref={imageInputRef}
         type="file"
         accept="image/*"
+        aria-label="Upload image"
         className="hidden"
         onChange={(e) => {
           const file = e.target.files?.[0]
@@ -495,6 +500,7 @@ const RichTextEditor = React.forwardRef<HTMLDivElement, RichTextEditorProps>(
         <input
           ref={fileInputRef}
           type="file"
+          aria-label="Upload file"
           className="hidden"
           onChange={(e) => {
             const file = e.target.files?.[0]

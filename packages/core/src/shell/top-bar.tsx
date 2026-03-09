@@ -233,7 +233,13 @@ const TopBar = React.forwardRef<HTMLDivElement, TopBarProps>(
 
               {/* Custom user menu items */}
               {userMenuItems?.map((item, index) => {
-                const textColor = item.color ? `text-${item.color}` : 'text-text-secondary'
+                const colorMap: Record<string, string> = {
+                  error: 'text-error',
+                  success: 'text-success',
+                  warning: 'text-warning',
+                  info: 'text-info',
+                }
+                const textColor = item.color ? (colorMap[item.color] ?? 'text-text-secondary') : 'text-text-secondary'
                 return (
                   <React.Fragment key={item.label + index}>
                     {item.separator && <DropdownMenuSeparator className="bg-border" />}

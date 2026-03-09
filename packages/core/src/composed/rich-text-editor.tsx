@@ -10,6 +10,8 @@ import TaskList from '@tiptap/extension-task-list'
 import TaskItem from '@tiptap/extension-task-item'
 import TextAlign from '@tiptap/extension-text-align'
 import Link from '@tiptap/extension-link'
+import Image from '@tiptap/extension-image'
+import { FileAttachment } from './extensions/file-attachment'
 import { cn } from '../ui/lib/utils'
 import {
   IconBold,
@@ -241,12 +243,28 @@ function Toolbar({ editor, onImageClick, onFileClick, onEmojiClick }: {
   )
 }
 
+export interface MentionItem {
+  id: string
+  label: string
+  avatar?: string
+}
+
 export interface RichTextEditorProps {
   content?: string
   placeholder?: string
   onChange?: (html: string) => void
   className?: string
   editable?: boolean
+  /** Called when an image is pasted/dropped. Return a URL. If not provided, images inline as base64. */
+  onImageUpload?: (file: File) => Promise<string>
+  /** Called when a non-image file is dropped/pasted. If not provided, non-image files are ignored. */
+  onFileUpload?: (file: File) => Promise<{ url: string; name: string; size: number }>
+  /** Static list of mentionable items */
+  mentions?: MentionItem[]
+  /** Async mention search. Takes precedence over static list. */
+  onMentionSearch?: (query: string) => Promise<MentionItem[]>
+  /** Called when a mention is selected */
+  onMentionSelect?: (item: MentionItem) => void
 }
 
 const RichTextEditor = React.forwardRef<HTMLDivElement, RichTextEditorProps>(
@@ -256,7 +274,41 @@ const RichTextEditor = React.forwardRef<HTMLDivElement, RichTextEditorProps>(
   onChange,
   className,
   editable = true,
+  onImageUpload,
+  onFileUpload,
+  mentions: _mentions,
+  onMentionSearch: _onMentionSearch,
+  onMentionSelect: _onMentionSelect,
 }, ref) {
+  const editorRef = React.useRef<ReturnType<typeof useEditor>>(null)
+  const imageInputRef = React.useRef<HTMLInputElement>(null)
+  const fileInputRef = React.useRef<HTMLInputElement>(null)
+
+  const handleImageInsert = async (file: File) => {
+    const ed = editorRef.current
+    if (!ed) return
+    if (onImageUpload) {
+      const url = await onImageUpload(file)
+      ed.chain().focus().setImage({ src: url }).run()
+    } else {
+      const reader = new FileReader()
+      reader.onload = () => {
+        ed.chain().focus().setImage({ src: reader.result as string }).run()
+      }
+      reader.readAsDataURL(file)
+    }
+  }
+
+  const handleFileInsert = async (file: File) => {
+    const ed = editorRef.current
+    if (!ed || !onFileUpload) return
+    const result = await onFileUpload(file)
+    ed.chain().focus().insertContent({
+      type: 'fileAttachment',
+      attrs: { url: result.url, name: result.name, size: result.size },
+    }).run()
+  }
+
   const editor = useEditor({
     extensions: [
       StarterKit.configure({
@@ -279,10 +331,44 @@ const RichTextEditor = React.forwardRef<HTMLDivElement, RichTextEditorProps>(
           target: '_blank',
         },
       }),
+      Image.configure({
+        allowBase64: true,
+        HTMLAttributes: {
+          class: 'max-w-full rounded-ds-md',
+        },
+      }),
+      FileAttachment,
     ],
     content,
     editable,
     editorProps: {
+      handleDrop: (_view, event, _slice, moved) => {
+        if (moved || !event.dataTransfer?.files.length) return false
+        const file = event.dataTransfer.files[0]
+        if (!file) return false
+        if (file.type.startsWith('image/')) {
+          handleImageInsert(file)
+          return true
+        }
+        if (onFileUpload) {
+          handleFileInsert(file)
+          return true
+        }
+        return false
+      },
+      handlePaste: (_view, event) => {
+        const file = event.clipboardData?.files[0]
+        if (!file) return false
+        if (file.type.startsWith('image/')) {
+          handleImageInsert(file)
+          return true
+        }
+        if (onFileUpload) {
+          handleFileInsert(file)
+          return true
+        }
+        return false
+      },
       attributes: {
         class: cn(
           'prose prose-sm max-w-none focus:outline-none',
@@ -301,6 +387,7 @@ const RichTextEditor = React.forwardRef<HTMLDivElement, RichTextEditorProps>(
           '[&_ul[data-type="taskList"]]:ml-0 [&_ul[data-type="taskList"]]:list-none [&_li[data-type="taskItem"]]:flex [&_li[data-type="taskItem"]]:items-start [&_li[data-type="taskItem"]]:gap-ds-02',
           '[&_hr]:my-ds-04 [&_hr]:border-border',
           '[&_a]:text-interactive [&_a]:underline [&_a]:decoration-interactive/40 hover:[&_a]:decoration-interactive',
+          '[&_img]:max-w-full [&_img]:rounded-ds-md [&_img]:my-ds-03',
         ),
       },
     },
@@ -308,6 +395,10 @@ const RichTextEditor = React.forwardRef<HTMLDivElement, RichTextEditorProps>(
       onChange?.(ed.getHTML())
     },
   })
+
+  React.useEffect(() => {
+    editorRef.current = editor
+  }, [editor])
 
   React.useEffect(() => {
     if (editor && content !== editor.getHTML()) {
@@ -326,7 +417,36 @@ const RichTextEditor = React.forwardRef<HTMLDivElement, RichTextEditorProps>(
         className,
       )}
     >
-      {editable && <Toolbar editor={editor} />}
+      <input
+        ref={imageInputRef}
+        type="file"
+        accept="image/*"
+        className="hidden"
+        onChange={(e) => {
+          const file = e.target.files?.[0]
+          if (file) handleImageInsert(file)
+          e.target.value = ''
+        }}
+      />
+      {onFileUpload && (
+        <input
+          ref={fileInputRef}
+          type="file"
+          className="hidden"
+          onChange={(e) => {
+            const file = e.target.files?.[0]
+            if (file) handleFileInsert(file)
+            e.target.value = ''
+          }}
+        />
+      )}
+      {editable && (
+        <Toolbar
+          editor={editor}
+          onImageClick={() => imageInputRef.current?.click()}
+          onFileClick={onFileUpload ? () => fileInputRef.current?.click() : undefined}
+        />
+      )}
       <EditorContent editor={editor} />
     </div>
   )
@@ -359,6 +479,13 @@ const RichTextViewer = React.forwardRef<HTMLDivElement, RichTextViewerProps>(
           target: '_blank',
         },
       }),
+      Image.configure({
+        allowBase64: true,
+        HTMLAttributes: {
+          class: 'max-w-full rounded-ds-md',
+        },
+      }),
+      FileAttachment,
     ],
     content,
     editable: false,
@@ -380,6 +507,7 @@ const RichTextViewer = React.forwardRef<HTMLDivElement, RichTextViewerProps>(
           '[&_ul[data-type="taskList"]]:ml-0 [&_ul[data-type="taskList"]]:list-none [&_li[data-type="taskItem"]]:flex [&_li[data-type="taskItem"]]:items-start [&_li[data-type="taskItem"]]:gap-ds-02',
           '[&_hr]:my-ds-04 [&_hr]:border-border',
           '[&_a]:text-interactive [&_a]:underline [&_a]:decoration-interactive/40 hover:[&_a]:decoration-interactive',
+          '[&_img]:max-w-full [&_img]:rounded-ds-md [&_img]:my-ds-03',
         ),
       },
     },

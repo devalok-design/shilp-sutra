@@ -3,6 +3,7 @@
 import * as React from 'react'
 import { IconMinus, IconPlus } from '@tabler/icons-react'
 import { cn } from './lib/utils'
+import { useFormField } from './form'
 
 /**
  * Props for NumberInput — a stepper control with "−" and "+" buttons flanking a numeric input,
@@ -49,12 +50,18 @@ const NumberInput = React.forwardRef<HTMLInputElement, NumberInputProps>(
       step = 1,
       disabled = false,
       className,
+      'aria-label': ariaLabelProp,
       ...rest
     },
     ref,
   ) => {
+    const fieldCtx = useFormField()
+    // If no explicit aria-label and not inside a FormField (no id to associate with Label),
+    // provide a sensible default
+    const ariaLabel = ariaLabelProp ?? (rest.id || fieldCtx.helperTextId ? undefined : 'Numeric value')
+
     const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-      const newValue = parseInt(e.target.value) || 0
+      const newValue = parseInt(e.target.value, 10) || 0
       if (newValue >= min && newValue <= max) {
         onValueChange?.(newValue)
       }
@@ -102,6 +109,8 @@ const NumberInput = React.forwardRef<HTMLInputElement, NumberInputProps>(
           max={max}
           step={step}
           disabled={disabled}
+          aria-label={ariaLabel}
+          aria-describedby={rest['aria-describedby'] ?? fieldCtx.helperTextId}
           className="bg-transparent text-ds-base font-semibold w-ds-sm-plus border-0 text-center text-text-secondary [appearance:textfield] [&::-webkit-inner-spin-button]:appearance-none [&::-webkit-outer-spin-button]:appearance-none"
           {...rest}
         />

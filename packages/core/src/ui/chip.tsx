@@ -5,6 +5,7 @@ import { IconX } from '@tabler/icons-react'
 import { cva, type VariantProps } from 'class-variance-authority'
 import { cn } from './lib/utils'
 
+// TODO(v1): rename color="primary" → color="brand" for consistency with Badge (breaking change)
 const chipVariants = cva(
   'inline-flex items-center gap-ds-02 font-sans leading-ds-relaxed rounded-ds-full transition-colors duration-fast-01',
   {
@@ -140,7 +141,7 @@ const Chip = React.forwardRef<HTMLElement, ChipProps>(
           <button
             type="button"
             aria-label={`Remove ${label}`}
-            className="flex-shrink-0 min-h-6 min-w-6 flex items-center justify-center rounded-ds-full p-ds-01 hover:bg-layer-03 transition-colors duration-fast-01 [&>svg]:w-ico-sm [&>svg]:h-ico-sm"
+            className="flex-shrink-0 min-h-ds-xs min-w-ds-xs flex items-center justify-center rounded-ds-full p-ds-01 hover:bg-layer-03 transition-colors duration-fast-01 [&>svg]:w-ico-sm [&>svg]:h-ico-sm"
             onClick={(e) => {
               e.stopPropagation()
               onDismiss()

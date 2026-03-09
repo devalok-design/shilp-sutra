@@ -44,4 +44,26 @@ export const markdownComponents = {
   strong: ({ children }: { children?: React.ReactNode }) => (
     <strong className="font-semibold">{children}</strong>
   ),
+  a: ({
+    href,
+    children,
+    ...props
+  }: {
+    href?: string
+    children?: React.ReactNode
+  }) => {
+    const safeHref =
+      href && /^(https?:\/\/|mailto:)/i.test(href) ? href : '#'
+    return (
+      <a
+        href={safeHref}
+        target="_blank"
+        rel="noopener noreferrer"
+        className="text-interactive underline hover:text-interactive-hover"
+        {...props}
+      >
+        {children}
+      </a>
+    )
+  },
 }

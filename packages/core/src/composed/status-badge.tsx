@@ -53,35 +53,65 @@ const colorDotMap: Record<string, string> = {
   neutral: 'bg-icon-secondary',
 }
 
-export interface StatusBadgeProps
-  extends Omit<React.HTMLAttributes<HTMLSpanElement>, 'children' | 'color'>,
-    VariantProps<typeof statusBadgeVariants> {
+interface StatusBadgeBaseProps extends Omit<React.HTMLAttributes<HTMLSpanElement>, 'children' | 'color'> {
   label?: string
   hideDot?: boolean
+  size?: VariantProps<typeof statusBadgeVariants>['size']
 }
+
+interface StatusBadgeWithStatus extends StatusBadgeBaseProps {
+  status?: VariantProps<typeof statusBadgeVariants>['status']
+  color?: never
+}
+
+interface StatusBadgeWithColor extends StatusBadgeBaseProps {
+  status?: never
+  color: 'success' | 'warning' | 'error' | 'info' | 'neutral'
+}
+
+export type StatusBadgeProps = StatusBadgeWithStatus | StatusBadgeWithColor
 
 const StatusBadge = React.forwardRef<HTMLSpanElement, StatusBadgeProps>(
   ({ status, color, size, label, hideDot = false, className, ...props }, ref) => {
-    // When color is set, it takes priority over status for styling
-    const useColor = color != null
-    const statusKey = useColor ? undefined : (status ?? 'pending')
-    const colorKey = useColor ? color : undefined
+    if (color != null) {
+      // Color branch — color is the styling key
+      const displayLabel = label ?? (color.charAt(0).toUpperCase() + color.slice(1))
+      const dotColor = colorDotMap[color]
 
-    const displayLabel =
-      label ??
-      (useColor
-        ? color.charAt(0).toUpperCase() + color.slice(1)
-        : (statusKey!.charAt(0).toUpperCase() + statusKey!.slice(1)))
+      return (
+        <span
+          ref={ref}
+          className={cn(
+            statusBadgeVariants({ color, size }),
+            className,
+          )}
+          {...props}
+        >
+          {!hideDot && (
+            <span
+              className={cn(
+                'shrink-0 rounded-ds-full',
+                size === 'sm' ? 'h-ds-02b w-ds-02b' : 'h-[8px] w-[8px]',
+                dotColor,
+              )}
+              aria-hidden="true"
+            />
+          )}
+          {displayLabel}
+        </span>
+      )
+    }
 
-    const dotColor = useColor
-      ? colorDotMap[color]
-      : dotColorMap[statusKey!]
+    // Status branch — derive styling from status (default: 'pending')
+    const statusKey = status ?? 'pending'
+    const displayLabel = label ?? (statusKey.charAt(0).toUpperCase() + statusKey.slice(1))
+    const dotColor = dotColorMap[statusKey]
 
     return (
       <span
         ref={ref}
         className={cn(
-          statusBadgeVariants({ status: statusKey as StatusBadgeProps['status'], color: colorKey, size }),
+          statusBadgeVariants({ status: statusKey, size }),
           className,
         )}
         {...props}

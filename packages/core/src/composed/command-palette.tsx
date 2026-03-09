@@ -63,6 +63,8 @@ const CommandPalette = React.forwardRef<HTMLDivElement, CommandPaletteProps>(
   const [activeIndex, setActiveIndex] = React.useState(0)
   const inputRef = React.useRef<HTMLInputElement>(null)
   const listRef = React.useRef<HTMLDivElement>(null)
+  const instanceId = React.useId()
+  const listboxId = `command-palette-listbox-${instanceId}`
 
   // Filter groups based on query
   const filteredGroups = React.useMemo(() => {
@@ -205,6 +207,11 @@ const CommandPalette = React.forwardRef<HTMLDivElement, CommandPaletteProps>(
               value={query}
               onChange={(e) => handleQueryChange(e.target.value)}
               placeholder={placeholder}
+              role="combobox"
+              aria-expanded={true}
+              aria-controls={listboxId}
+              aria-activedescendant={filteredItems[activeIndex] ? `command-item-${instanceId}-${filteredItems[activeIndex].id}` : undefined}
+              aria-autocomplete="list"
               className={cn(
                 'flex-1 bg-transparent text-ds-base text-text-primary outline-none',
                 'placeholder:text-text-placeholder',
@@ -221,6 +228,9 @@ const CommandPalette = React.forwardRef<HTMLDivElement, CommandPaletteProps>(
           {/* Results */}
           <div
             ref={listRef}
+            id={listboxId}
+            role="listbox"
+            aria-label="Command results"
             className="max-h-[320px] overflow-y-auto px-ds-03 py-ds-03"
           >
             {filteredGroups.length === 0 && (
@@ -245,7 +255,10 @@ const CommandPalette = React.forwardRef<HTMLDivElement, CommandPaletteProps>(
                   return (
                     <button
                       key={item.id}
+                      id={`command-item-${instanceId}-${item.id}`}
                       type="button"
+                      role="option"
+                      aria-selected={isActive}
                       data-command-index={itemIndex}
                       onClick={() => {
                         item.onSelect()

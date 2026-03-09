@@ -3,6 +3,7 @@
 import * as React from 'react'
 import { cva, type VariantProps } from 'class-variance-authority'
 import { cn } from './lib/utils'
+import { useFormField } from './form'
 
 export type InputState = 'default' | 'error' | 'warning' | 'success'
 
@@ -69,7 +70,12 @@ export interface InputProps
 }
 
 const Input = React.forwardRef<HTMLInputElement, InputProps>(
-  ({ className, type, state, size, startIcon, endIcon, ...props }, ref) => {
+  ({ className, type, state: stateProp, size, startIcon, endIcon, ...props }, ref) => {
+    const fieldCtx = useFormField()
+    // Merge FormField context — explicit props always win
+    const state = stateProp ?? (fieldCtx.state === 'helper' ? undefined : fieldCtx.state as InputState | undefined)
+    const ariaDescribedBy = props['aria-describedby'] ?? fieldCtx.helperTextId
+    const ariaRequired = props['aria-required'] ?? fieldCtx.required
     const inputEl = (
       <input
         type={type}
@@ -83,6 +89,8 @@ const Input = React.forwardRef<HTMLInputElement, InputProps>(
           className,
         )}
         aria-invalid={state === 'error' || undefined}
+        aria-describedby={ariaDescribedBy}
+        aria-required={ariaRequired || undefined}
         ref={ref}
         {...props}
       />

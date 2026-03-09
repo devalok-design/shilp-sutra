@@ -8,6 +8,10 @@ import {
   AvatarFallback,
 } from '@/ui/avatar'
 import { EmptyState } from '@/composed/empty-state'
+import {
+  RichTextEditor,
+  RichTextViewer,
+} from '@/composed/rich-text-editor'
 import { IconMessageCircle, IconSend } from '@tabler/icons-react'
 import { getInitials } from '@/composed/lib/string-utils'
 
@@ -41,6 +45,8 @@ interface ConversationTabProps {
   className?: string
   /** When true, the viewer is a client -- adjusts warnings, labels, and author type */
   clientMode?: boolean
+  /** Enable built-in RichTextEditor/Viewer (requires tiptap peer deps). Overrides renderEditor/renderViewer. */
+  richText?: boolean
   /** Optional rich text editor component. Falls back to plain textarea. */
   renderEditor?: (props: {
     content: string
@@ -111,11 +117,31 @@ const ConversationTab = React.forwardRef<HTMLDivElement, ConversationTabProps>(
   onPostComment,
   className,
   clientMode = false,
-  renderEditor,
-  renderViewer,
+  richText = false,
+  renderEditor: renderEditorProp,
+  renderViewer: renderViewerProp,
 }, ref) {
   const [editorContent, setEditorContent] = React.useState('')
   const scrollRef = React.useRef<HTMLDivElement>(null)
+
+  // Resolve editor/viewer: explicit render props take priority, then richText mode, then plain fallback
+  const renderEditor = renderEditorProp ?? (richText
+    ? (props: { content: string; onChange: (c: string) => void; placeholder: string }) => (
+        <RichTextEditor
+          content={props.content}
+          onChange={props.onChange}
+          placeholder={props.placeholder}
+          editable
+          className="min-h-[80px]"
+        />
+      )
+    : undefined)
+
+  const renderViewer = renderViewerProp ?? (richText
+    ? (props: { content: string; className?: string }) => (
+        <RichTextViewer content={props.content} className={props.className} />
+      )
+    : undefined)
 
   const handlePost = () => {
     const trimmed = editorContent.trim()

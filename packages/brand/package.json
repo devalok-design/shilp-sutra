@@ -4,6 +4,9 @@
   "description": "Brand logos and SVG assets for the Devalok Design System",
   "license": "MIT",
   "type": "module",
+  "main": "./dist/index.js",
+  "module": "./dist/index.js",
+  "types": "./dist/index.d.ts",
   "sideEffects": [
     "**/*.css"
   ],
@@ -30,7 +33,8 @@
   "scripts": {
     "build": "vite build && node scripts/copy-assets.mjs",
     "typecheck": "tsc --noEmit",
-    "lint": "eslint src/"
+    "lint": "eslint src/",
+    "prepublishOnly": "pnpm build"
   },
   "peerDependencies": {
     "react": "^18 || ^19",

@@ -58,6 +58,7 @@
   --color-layer-01:             var(--neutral-0);
   --color-layer-02:             var(--neutral-50);
   --color-layer-03:             var(--neutral-100);
+  --color-layer-active:         var(--neutral-200);
   --color-layer-accent-subtle:  var(--pink-50);
   --color-overlay:              rgba(5, 5, 5, 0.50);
   --color-field:                var(--neutral-50);
@@ -67,7 +68,7 @@
   --color-text-primary:         var(--neutral-900);
   --color-text-secondary:       var(--neutral-700);
   --color-text-tertiary:        var(--neutral-600);
-  --color-text-placeholder:     var(--neutral-400);
+  --color-text-placeholder:     var(--neutral-500);
   --color-text-helper:          var(--neutral-600);
   --color-text-disabled:        var(--neutral-400);
   --color-text-error:           var(--red-600);
@@ -283,6 +284,7 @@
   --color-layer-01:             var(--neutral-900);
   --color-layer-02:             var(--neutral-800);
   --color-layer-03:             var(--neutral-700);
+  --color-layer-active:         var(--neutral-700);
   --color-layer-accent-subtle:  var(--pink-950);
   --color-overlay:              rgba(0, 0, 0, 0.70);
   /* Fields */

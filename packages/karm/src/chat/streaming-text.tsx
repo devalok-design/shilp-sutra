@@ -11,7 +11,7 @@ export interface StreamingTextProps {
 export const StreamingText = React.forwardRef<HTMLDivElement, StreamingTextProps>(
   function StreamingText({ text }, ref) {
   return (
-    <div ref={ref}>
+    <div ref={ref} aria-live="polite">
       <ReactMarkdown components={markdownComponents}>
         {text}
       </ReactMarkdown>

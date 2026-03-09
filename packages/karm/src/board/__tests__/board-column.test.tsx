@@ -37,11 +37,7 @@ function renderColumn(column: BoardColumnData = columnData) {
 describe('BoardColumn', () => {
   it('has no a11y violations', async () => {
     const { container } = renderColumn()
-    // Known violation: icon-only buttons (add task, column menu) lack
-    // aria-labels — tracked for fix in a11y sweep
-    const results = await axe(container, {
-      rules: { 'button-name': { enabled: false } },
-    })
+    const results = await axe(container)
     expect(results).toHaveNoViolations()
   })
 

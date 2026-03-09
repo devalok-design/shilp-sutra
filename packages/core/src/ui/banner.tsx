@@ -85,7 +85,7 @@ const Banner = React.forwardRef<HTMLDivElement, BannerProps>(
           <button
             type="button"
             onClick={onDismiss}
-            className="shrink-0 min-h-6 min-w-6 flex items-center justify-center rounded-ds-sm text-icon-secondary transition-colors hover:text-icon-primary hover:bg-field focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-focus"
+            className="shrink-0 min-h-ds-xs min-w-ds-xs flex items-center justify-center rounded-ds-sm text-icon-secondary transition-colors hover:text-icon-primary hover:bg-field focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-focus"
             aria-label="Dismiss"
           >
             <IconX className="h-ico-sm w-ico-sm" />

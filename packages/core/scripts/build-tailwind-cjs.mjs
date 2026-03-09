@@ -23,5 +23,12 @@ const cjs = presetSrc
   }) + '\nmodule.exports = ' +
   presetSrc.match(/^const\s+(\w+)\s*=/m)[1] + ';\nmodule.exports.default = module.exports;\n'
 
+// Validate that the ESM→CJS conversion removed all export statements
+if (/\bexport\s/.test(cjs)) {
+  console.error('ERROR: CJS conversion failed — output still contains ESM export statements.')
+  console.error('The Rollup output format may have changed. Update the regex in build-tailwind-cjs.mjs.')
+  process.exit(1)
+}
+
 await writeFile(resolve(dist, 'index.cjs'), cjs)
 console.log('✓ Built dist/tailwind/index.cjs (CommonJS)')

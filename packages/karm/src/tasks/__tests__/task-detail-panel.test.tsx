@@ -54,15 +54,11 @@ describe('TaskDetailPanel', () => {
       />,
     )
     // Sheet renders via portal, so check document.body
-    // Known violations: TaskProperties icon-only buttons lack aria-labels,
-    // date input lacks label, Sheet dialog description, Radix Tabs
-    // aria-controls pointing to lazily-rendered panel — tracked for fix
+    // aria-valid-attr-value: Radix TabsTrigger emits aria-controls pointing
+    // to TabsContent panels that don't exist because content is rendered
+    // manually — this is a known Radix structural limitation
     const results = await axe(document.body, {
-      rules: {
-        'button-name': { enabled: false },
-        'label': { enabled: false },
-        'aria-valid-attr-value': { enabled: false },
-      },
+      rules: { 'aria-valid-attr-value': { enabled: false } },
     })
     expect(results).toHaveNoViolations()
   })

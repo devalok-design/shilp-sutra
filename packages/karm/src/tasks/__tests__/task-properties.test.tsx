@@ -40,14 +40,7 @@ describe('TaskProperties', () => {
         onUnassign={vi.fn()}
       />,
     )
-    // Known violations: icon-only remove/add/clear buttons lack aria-labels,
-    // date input lacks label — tracked for fix in a11y sweep
-    const results = await axe(container, {
-      rules: {
-        'button-name': { enabled: false },
-        'label': { enabled: false },
-      },
-    })
+    const results = await axe(container)
     expect(results).toHaveNoViolations()
   })
 

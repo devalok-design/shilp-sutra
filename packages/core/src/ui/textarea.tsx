@@ -4,6 +4,7 @@ import * as React from 'react'
 import { cva, type VariantProps } from 'class-variance-authority'
 import { cn } from './lib/utils'
 import type { InputState } from './input'
+import { useFormField } from './form'
 
 const textareaVariants = cva(
   [
@@ -64,10 +65,18 @@ export interface TextareaProps
 }
 
 const Textarea = React.forwardRef<HTMLTextAreaElement, TextareaProps>(
-  ({ className, state, size, ...props }, ref) => {
+  ({ className, state: stateProp, size, ...props }, ref) => {
+    const fieldCtx = useFormField()
+    // Merge FormField context — explicit props always win
+    const state = stateProp ?? (fieldCtx.state === 'helper' ? undefined : fieldCtx.state as InputState | undefined)
+    const ariaDescribedBy = props['aria-describedby'] ?? fieldCtx.helperTextId
+    const ariaRequired = props['aria-required'] ?? fieldCtx.required
+
     return (
       <textarea
         aria-invalid={state === 'error' || undefined}
+        aria-describedby={ariaDescribedBy}
+        aria-required={ariaRequired || undefined}
         className={cn(
           textareaVariants({ size }),
           state === 'error' && 'border-border-error focus-visible:ring-error',

@@ -81,14 +81,9 @@ function renderCorrectionList(
 // ============================================================
 
 describe('CorrectionList', () => {
-  it('has no a11y violations (excluding known button-name issue)', async () => {
-    // NOTE: CorrectionList's approve/reject buttons use icon-only SVGs
-    // without aria-label. This is a known a11y gap in the source component.
-    // We disable the button-name rule here and document it for future fix.
+  it('has no a11y violations', async () => {
     const { container } = renderCorrectionList()
-    const results = await axe(container, {
-      rules: { 'button-name': { enabled: false } },
-    })
+    const results = await axe(container)
     expect(results).toHaveNoViolations()
   })
 

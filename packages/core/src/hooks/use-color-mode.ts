@@ -17,7 +17,8 @@ function resolveMode(mode: ColorMode): 'light' | 'dark' {
 export function useColorMode() {
   const [mode, setModeState] = useState<ColorMode>(() => {
     if (typeof window === 'undefined') return 'system'
-    return (localStorage.getItem('theme') as ColorMode) ?? 'system'
+    const stored = localStorage.getItem('theme')
+    return stored === 'light' || stored === 'dark' || stored === 'system' ? stored : 'system'
   })
 
   const setColorMode = useCallback((newMode: ColorMode) => {

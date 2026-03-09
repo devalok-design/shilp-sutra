@@ -64,6 +64,7 @@ export const ChatInput = React.forwardRef<HTMLDivElement, ChatInputProps>(
           }}
           onKeyDown={handleKeyDown}
           placeholder={placeholder}
+          aria-label="Type a message"
           disabled={isStreaming}
           rows={1}
           className="text-ds-md no-scrollbar max-h-[160px] min-h-ds-xs flex-1 resize-none bg-transparent text-text-primary placeholder:text-text-placeholder focus:outline-none disabled:opacity-[0.38]"

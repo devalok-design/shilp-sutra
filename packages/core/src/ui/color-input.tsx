@@ -50,6 +50,7 @@ const ColorInput = React.forwardRef<HTMLInputElement, ColorInputProps>(
           {/* Hex text input */}
           <input
             type="text"
+            aria-label="Hex color value"
             value={value}
             disabled={disabled}
             onChange={(e) => {

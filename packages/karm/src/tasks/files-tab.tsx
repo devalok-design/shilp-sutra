@@ -210,7 +210,7 @@ const FilesTab = React.forwardRef<HTMLDivElement, FilesTabProps>(
                 <div className="flex items-center gap-ds-02 opacity-0 transition-opacity group-hover:opacity-100">
                   {file.downloadUrl && (
                     <a
-                      href={file.downloadUrl}
+                      href={/^https?:\/\//.test(file.downloadUrl) ? file.downloadUrl : '#'}
                       target="_blank"
                       rel="noopener noreferrer"
                       className="inline-flex h-ds-xs-plus w-ds-xs-plus items-center justify-center rounded-ds-md transition-colors hover:bg-layer-02"

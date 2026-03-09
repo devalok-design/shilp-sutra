@@ -6,11 +6,7 @@ import { DashboardSkeleton } from '../dashboard-skeleton'
 describe('DashboardSkeleton', () => {
   it('has no a11y violations', async () => {
     const { container } = render(<DashboardSkeleton />)
-    // Known violation: DropdownMenuTrigger in skeleton state renders with
-    // only skeleton placeholders (no visible text) — tracked for fix
-    const results = await axe(container, {
-      rules: { 'button-name': { enabled: false } },
-    })
+    const results = await axe(container)
     expect(results).toHaveNoViolations()
   })
 

@@ -1,7 +1,8 @@
 'use client'
 
 import * as React from 'react'
-import { useRef, useEffect, useCallback } from 'react'
+import { useRef, useEffect } from 'react'
+import { useComposedRef } from '../utils/use-composed-ref'
 import { StreamingText } from './streaming-text'
 import { IconRobot, IconUser, IconAlertCircle } from '@tabler/icons-react'
 import ReactMarkdown from 'react-markdown'
@@ -40,11 +41,7 @@ export const MessageList = React.forwardRef<HTMLDivElement, MessageListProps>(
   emptyDescription = 'Ask me about tasks, projects, attendance, or anything else.',
 }, forwardedRef) {
   const scrollRef = useRef<HTMLDivElement | null>(null)
-  const mergedRef = useCallback((node: HTMLDivElement | null) => {
-    scrollRef.current = node
-    if (typeof forwardedRef === 'function') forwardedRef(node)
-    else if (forwardedRef) (forwardedRef as React.MutableRefObject<HTMLDivElement | null>).current = node
-  }, [forwardedRef])
+  const mergedRef = useComposedRef(scrollRef, forwardedRef)
 
   useEffect(() => {
     const el = scrollRef.current

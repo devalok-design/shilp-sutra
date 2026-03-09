@@ -23,7 +23,7 @@ export const DashboardSkeleton = React.forwardRef<HTMLDivElement>(
         {/* Header Section */}
         <div className="mb-ds-06 flex w-full flex-col items-start justify-between md:flex-row md:items-center">
           <DropdownMenu>
-            <DropdownMenuTrigger className="text-ds-xl flex items-center gap-ds-03 text-text-secondary">
+            <DropdownMenuTrigger className="text-ds-xl flex items-center gap-ds-03 text-text-secondary" aria-label="Select period">
               <div className="flex items-center gap-ds-03">
                 <Skeleton className="h-[25px] w-[50px] rounded-ds-md bg-field" />
                 <Skeleton className="h-[25px] w-[50px] rounded-ds-md bg-field" />

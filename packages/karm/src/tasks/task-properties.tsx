@@ -324,6 +324,7 @@ const TaskProperties = React.forwardRef<HTMLDivElement, TaskPropertiesProps>(
                   type="button"
                   onClick={() => onUnassign(a.user.id)}
                   className="ml-ds-01 rounded-ds-full p-ds-01 transition-colors hover:bg-field"
+                  aria-label={`Remove ${a.user.name}`}
                 >
                   <IconX className="h-ds-03 w-ds-03 text-text-placeholder" />
                 </button>
@@ -340,6 +341,7 @@ const TaskProperties = React.forwardRef<HTMLDivElement, TaskPropertiesProps>(
               <button
                 type="button"
                 className="inline-flex h-ico-md w-ico-md items-center justify-center rounded-ds-full border border-dashed border-border-subtle transition-colors hover:bg-field hover:border-text-placeholder"
+                aria-label="Add assignee"
               >
                 <IconPlus className="h-3 w-3 text-text-placeholder" />
               </button>
@@ -402,6 +404,7 @@ const TaskProperties = React.forwardRef<HTMLDivElement, TaskPropertiesProps>(
               type="date"
               value={task.dueDate ? new Date(task.dueDate).toISOString().split('T')[0] : ''}
               onChange={(e) => handleDueDateChange(e.target.value ? new Date(e.target.value) : null)}
+              aria-label="Due date"
               className="h-ds-xs-plus border-none bg-transparent px-ds-03 text-ds-md text-text-primary outline-none hover:bg-field rounded-ds-md"
             />
           )}
@@ -410,6 +413,7 @@ const TaskProperties = React.forwardRef<HTMLDivElement, TaskPropertiesProps>(
               type="button"
               onClick={() => handleDueDateChange(null)}
               className="rounded-ds-md p-ds-02 transition-colors hover:bg-field"
+              aria-label="Clear due date"
             >
               <IconX className="h-3 w-3 text-text-placeholder" />
             </button>
@@ -431,6 +435,7 @@ const TaskProperties = React.forwardRef<HTMLDivElement, TaskPropertiesProps>(
                   type="button"
                   onClick={() => handleRemoveLabel(label)}
                   className="rounded-ds-full p-ds-01 transition-colors hover:bg-field"
+                  aria-label={`Remove label ${label}`}
                 >
                   <IconX className="h-ds-03 w-ds-03" />
                 </button>
@@ -445,6 +450,7 @@ const TaskProperties = React.forwardRef<HTMLDivElement, TaskPropertiesProps>(
                   type="text"
                   value={labelInput}
                   onChange={(e) => setLabelInput(e.target.value)}
+                  aria-label="New label name"
                   onKeyDown={(e) => {
                     if (e.key === 'Enter') handleAddLabel()
                     if (e.key === 'Escape') {
@@ -464,6 +470,7 @@ const TaskProperties = React.forwardRef<HTMLDivElement, TaskPropertiesProps>(
                 type="button"
                 onClick={() => setShowLabelInput(true)}
                 className="inline-flex h-ico-md w-ico-md items-center justify-center rounded-ds-full border border-dashed border-border-subtle transition-colors hover:bg-field hover:border-text-placeholder"
+                aria-label="Add label"
               >
                 <IconPlus className="h-3 w-3 text-text-placeholder" />
               </button>

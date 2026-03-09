@@ -4,6 +4,11 @@ import * as React from 'react'
 
 const MOBILE_BREAKPOINT = 768
 
+/**
+ * Returns `false` during SSR and before the first client-side effect.
+ * If you need to distinguish "not yet measured" from "not mobile",
+ * use the raw state instead.
+ */
 export function useIsMobile() {
   const [isMobile, setIsMobile] = React.useState<boolean | undefined>(undefined)
 

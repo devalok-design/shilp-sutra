@@ -34,11 +34,7 @@ describe('KanbanBoard', () => {
     const { container } = render(
       <KanbanBoard initialData={minimalBoard} />,
     )
-    // Known violation: BoardColumn icon-only buttons (add task, column menu)
-    // lack aria-labels — tracked for fix in a11y sweep
-    const results = await axe(container, {
-      rules: { 'button-name': { enabled: false } },
-    })
+    const results = await axe(container)
     expect(results).toHaveNoViolations()
   })
 

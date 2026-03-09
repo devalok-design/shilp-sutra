@@ -35,7 +35,7 @@ describe('Badge', () => {
     const { container } = render(<Badge size="xs">Tiny</Badge>)
     const badge = container.querySelector('span')!
     expect(badge.className).toContain('h-[16px]')
-    expect(badge.className).toContain('text-[10px]')
+    expect(badge.className).toContain('text-ds-xs')
   })
 
   it('merges custom className', () => {

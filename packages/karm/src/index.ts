@@ -100,18 +100,6 @@ export {
   type ProjectCardProps,
 } from './client'
 
-// Segmented control components (canonical location: ui/)
-export {
-  SegmentedControl,
-  type SegmentedControlProps,
-  SegmentedControlItem,
-  type SegmentedControlItemProps,
-  segmentedControlItemVariants,
-  type SegmentedControlSize,
-  type SegmentedControlVariant,
-  type SegmentedControlOption,
-} from '@/ui/segmented-control'
-
 // Admin components
 export {
   AdminDashboard,

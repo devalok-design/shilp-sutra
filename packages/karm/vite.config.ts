@@ -58,13 +58,24 @@ export default defineConfig({
           const coreMatch = id.replace(/\\/g, '/').match(/packages\/core\/src\/(.+?)(?:\.\w+)?$/)
           if (coreMatch) {
             const subpath = coreMatch[1]
-            // Map core subpaths to the correct package export
-            if (subpath.startsWith('ui/')) return `@devalok/shilp-sutra/ui`
-            if (subpath.startsWith('composed/')) return `@devalok/shilp-sutra/composed`
-            if (subpath.startsWith('shell/')) return `@devalok/shilp-sutra/shell`
-            if (subpath.startsWith('hooks/')) return `@devalok/shilp-sutra/hooks`
-            if (subpath.startsWith('tailwind/')) return `@devalok/shilp-sutra/tailwind`
-            return `@devalok/shilp-sutra/ui`
+            // Map core subpaths to the correct package export, preserving per-component paths
+            const categories = ['ui', 'composed', 'shell', 'hooks', 'tailwind']
+            for (const cat of categories) {
+              if (subpath.startsWith(`${cat}/`)) {
+                // Check if this is a barrel index import (e.g. "ui/index")
+                if (subpath === `${cat}/index`) return `@devalok/shilp-sutra/${cat}`
+                // Strip trailing /index for subdirectory components (e.g. "ui/charts/index")
+                const cleaned = subpath.replace(/\/index$/, '')
+                return `@devalok/shilp-sutra/${cleaned}`
+              }
+              if (subpath === cat) return `@devalok/shilp-sutra/${cat}`
+            }
+            // Primitives and tokens stay under the base package
+            if (subpath.startsWith('primitives/') || subpath.startsWith('tokens/')) {
+              return `@devalok/shilp-sutra`
+            }
+            // Fallback: use per-component path under ui
+            return `@devalok/shilp-sutra/${subpath}`
           }
           return id
         },

@@ -25,7 +25,7 @@ async function getEmojiList(): Promise<EmojiSuggestionItem[]> {
   if (emojiList) return emojiList
   // Dynamic import to avoid bundling emoji data when not used
   const mod = await import('@emoji-mart/data')
-  const data: EmojiMartData = mod.default ?? mod
+  const data = (mod.default ?? mod) as EmojiMartData
   emojiList = Object.values(data.emojis).map((e) => ({
     id: e.id,
     name: e.name,

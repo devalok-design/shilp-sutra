@@ -174,7 +174,8 @@ export const BoardColumn = React.forwardRef<HTMLDivElement, BoardColumnProps>(
         <Button
           variant="ghost"
           size="icon-md"
-          className="h-ds-xs w-ds-xs opacity-0 group-hover:opacity-100 hover:bg-interactive-subtle hover:text-interactive transition-opacity"
+          className="h-ds-xs w-ds-xs opacity-0 group-hover:opacity-100 group-focus-within:opacity-100 focus:opacity-100 hover:bg-interactive-subtle hover:text-interactive transition-opacity"
+          aria-label="Add task"
           onClick={() => {
             setIsAdding(true)
             setTimeout(() => inputRef.current?.focus(), 50)
@@ -189,7 +190,8 @@ export const BoardColumn = React.forwardRef<HTMLDivElement, BoardColumnProps>(
             <Button
               variant="ghost"
               size="icon-md"
-              className="h-ds-xs w-ds-xs opacity-0 group-hover:opacity-100 transition-opacity"
+              className="h-ds-xs w-ds-xs opacity-0 group-hover:opacity-100 group-focus-within:opacity-100 focus:opacity-100 transition-opacity"
+              aria-label="Column options"
             >
               <IconDots className="h-ico-sm w-ico-sm" />
             </Button>

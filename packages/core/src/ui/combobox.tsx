@@ -21,11 +21,12 @@ export interface ComboboxOption {
  * Props for Combobox — a searchable single or multi-select dropdown with built-in keyboard
  * navigation, pill overflow ("+ N more"), and an optional custom option renderer.
  *
- * **Single vs multi:** `multiple={false}` (default) — `value` is a `string`. When `multiple={true}`,
- * `value` is `string[]` and selected items appear as dismissible pills in the trigger.
+ * **Single vs multi:** `multiple={false}` (default) — `value` is a `string` and `onValueChange`
+ * receives a `string`. When `multiple={true}`, `value` is `string[]`, `onValueChange` receives
+ * `string[]`, and selected items appear as dismissible pills in the trigger.
  *
- * **`onValueChange` signature:** always `(value: string | string[]) => void`. Check `multiple` to determine
- * which type you'll receive.
+ * The props form a **discriminated union** on `multiple` — TypeScript will narrow `value` and
+ * `onValueChange` automatically, so no manual casts are needed.
  *
  * **Custom rendering:** Use `renderOption` to return custom JSX per option (e.g. avatars, badges).
  *
@@ -34,7 +35,7 @@ export interface ComboboxOption {
  * <Combobox
  *   options={[{ value: 'in', label: 'India' }, { value: 'us', label: 'United States' }]}
  *   value={country}
- *   onValueChange={(v) => setCountry(v as string)}
+ *   onValueChange={(v) => setCountry(v)}
  *   placeholder="Select country"
  * />
  *
@@ -44,7 +45,7 @@ export interface ComboboxOption {
  *   multiple
  *   options={tagOptions}
  *   value={selectedTags}
- *   onValueChange={(v) => setSelectedTags(v as string[])}
+ *   onValueChange={(v) => setSelectedTags(v)}
  *   placeholder="Select tags..."
  * />
  *
@@ -53,7 +54,7 @@ export interface ComboboxOption {
  * <Combobox
  *   options={users.map(u => ({ value: u.id, label: u.name }))}
  *   value={assigneeId}
- *   onValueChange={(v) => setAssigneeId(v as string)}
+ *   onValueChange={(v) => setAssigneeId(v)}
  *   renderOption={(option, selected) => (
  *     <span className="flex items-center gap-ds-03">
  *       <Avatar size="xs"><AvatarFallback>{option.label[0]}</AvatarFallback></Avatar>
@@ -63,20 +64,31 @@ export interface ComboboxOption {
  * />
  * // These are just a few ways — feel free to combine props creatively!
  */
-export interface ComboboxProps extends Omit<React.HTMLAttributes<HTMLDivElement>, 'onChange'> {
+interface ComboboxBaseProps extends Omit<React.HTMLAttributes<HTMLDivElement>, 'onChange'> {
   options: ComboboxOption[]
-  value?: string | string[]
-  onValueChange: (value: string | string[]) => void
   placeholder?: string
   searchPlaceholder?: string
   emptyMessage?: string
-  multiple?: boolean
   disabled?: boolean
   triggerClassName?: string
   /** Max visible items in the dropdown before scroll (default 6) */
   maxVisible?: number
   renderOption?: (option: ComboboxOption, selected: boolean) => React.ReactNode
 }
+
+interface ComboboxSingleProps extends ComboboxBaseProps {
+  multiple?: false
+  value?: string
+  onValueChange: (value: string) => void
+}
+
+interface ComboboxMultipleProps extends ComboboxBaseProps {
+  multiple: true
+  value?: string[]
+  onValueChange: (value: string[]) => void
+}
+
+export type ComboboxProps = ComboboxSingleProps | ComboboxMultipleProps
 
 /** Max pills shown in the trigger before "+N more" overflow */
 const MAX_VISIBLE_PILLS = 2
@@ -138,9 +150,9 @@ const Combobox = React.forwardRef<HTMLButtonElement, ComboboxProps>(
           const newValue = selectedValues.includes(optionValue)
             ? selectedValues.filter((v) => v !== optionValue)
             : [...selectedValues, optionValue]
-          onValueChange(newValue)
+          ;(onValueChange as (value: string[]) => void)(newValue)
         } else {
-          onValueChange(optionValue)
+          ;(onValueChange as (value: string) => void)(optionValue)
           setOpen(false)
         }
       },
@@ -152,7 +164,7 @@ const Combobox = React.forwardRef<HTMLButtonElement, ComboboxProps>(
         e.stopPropagation()
         e.preventDefault()
         const newValue = selectedValues.filter((v) => v !== optionValue)
-        onValueChange(newValue)
+        ;(onValueChange as (value: string[]) => void)(newValue)
       },
       [selectedValues, onValueChange],
     )

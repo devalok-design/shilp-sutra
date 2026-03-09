@@ -1,10 +1,12 @@
 'use client'
 
 import * as React from 'react'
+import { useComposedRef } from '../utils/use-composed-ref'
 import { useSortable } from '@dnd-kit/sortable'
 import { CSS } from '@dnd-kit/utilities'
 import type { DraggableAttributes } from '@dnd-kit/core'
-import type { SyntheticListenerMap } from '@dnd-kit/core/dist/hooks/utilities'
+// eslint-disable-next-line @typescript-eslint/ban-types
+type SyntheticListenerMap = Record<string, Function> | undefined
 import { cva } from 'class-variance-authority'
 import { cn } from '@/ui/lib/utils'
 import { Badge } from '@/ui'
@@ -96,13 +98,20 @@ function TaskCardVisual({
   const dueInfo = task.dueDate ? formatDueDate(task.dueDate) : null
 
   return (
-    // eslint-disable-next-line jsx-a11y/click-events-have-key-events, jsx-a11y/no-static-element-interactions
     <div
+      role="button"
+      tabIndex={0}
       className={taskCardVariants({
         state: isDragOverlay ? 'overlay' : isDragging ? 'dragging' : 'default',
         blocked: task.isBlocked,
       })}
       onClick={() => onClickTask?.(task.id)}
+      onKeyDown={(e) => {
+        if (e.key === 'Enter' || e.key === ' ') {
+          e.preventDefault()
+          onClickTask?.(task.id)
+        }
+      }}
     >
       {/* Drag handle + Title row */}
       <div className="flex items-start gap-ds-02b">
@@ -211,17 +220,7 @@ const TaskCard = React.forwardRef<HTMLDivElement, TaskCardProps>(
       },
     })
 
-    const composedRef = React.useCallback(
-      (node: HTMLDivElement | null) => {
-        setNodeRef(node)
-        if (typeof ref === 'function') {
-          ref(node)
-        } else if (ref) {
-          (ref as React.MutableRefObject<HTMLDivElement | null>).current = node
-        }
-      },
-      [ref, setNodeRef],
-    )
+    const composedRef = useComposedRef(setNodeRef, ref)
 
     const style = {
       transform: CSS.Transform.toString(transform),

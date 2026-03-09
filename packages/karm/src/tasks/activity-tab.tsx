@@ -65,7 +65,7 @@ const ACTION_MAP: Record<string, ActionConfig> = {
     color: 'text-category-slate-text',
     dotColor: 'bg-category-slate',
     getDescription: (entry) => {
-      const meta = entry.metadata as Record<string, unknown> | null
+      const meta = entry.metadata
       if (meta?.field === 'title') return 'updated the title'
       if (meta?.field === 'description') return 'updated the description'
       if (meta?.field === 'priority')
@@ -80,7 +80,7 @@ const ACTION_MAP: Record<string, ActionConfig> = {
     color: 'text-warning-text',
     dotColor: 'bg-warning',
     getDescription: (entry) => {
-      const meta = entry.metadata as Record<string, unknown> | null
+      const meta = entry.metadata
       const from = meta?.fromColumn || 'unknown'
       const to = meta?.toColumn || 'unknown'
       return `moved from ${from} to ${to}`
@@ -91,7 +91,7 @@ const ACTION_MAP: Record<string, ActionConfig> = {
     color: 'text-category-cyan-text',
     dotColor: 'bg-category-cyan',
     getDescription: (entry) => {
-      const meta = entry.metadata as Record<string, unknown> | null
+      const meta = entry.metadata
       return `assigned ${meta?.assigneeName || 'a user'}`
     },
   },
@@ -100,7 +100,7 @@ const ACTION_MAP: Record<string, ActionConfig> = {
     color: 'text-text-secondary',
     dotColor: 'bg-icon-disabled',
     getDescription: (entry) => {
-      const meta = entry.metadata as Record<string, unknown> | null
+      const meta = entry.metadata
       return `removed ${meta?.assigneeName || 'a user'}`
     },
   },
@@ -115,7 +115,7 @@ const ACTION_MAP: Record<string, ActionConfig> = {
     color: 'text-category-indigo-text',
     dotColor: 'bg-category-indigo',
     getDescription: (entry) => {
-      const meta = entry.metadata as Record<string, unknown> | null
+      const meta = entry.metadata
       return `uploaded ${meta?.fileName || 'a file'}`
     },
   },
@@ -124,7 +124,7 @@ const ACTION_MAP: Record<string, ActionConfig> = {
     color: 'text-warning-text',
     dotColor: 'bg-warning',
     getDescription: (entry) => {
-      const meta = entry.metadata as Record<string, unknown> | null
+      const meta = entry.metadata
       return `requested review from ${meta?.reviewerName || 'a reviewer'}`
     },
   },
@@ -133,7 +133,7 @@ const ACTION_MAP: Record<string, ActionConfig> = {
     color: 'text-success-text',
     dotColor: 'bg-success',
     getDescription: (entry) => {
-      const meta = entry.metadata as Record<string, unknown> | null
+      const meta = entry.metadata
       return `${meta?.status || 'reviewed'} the task`
     },
   },
@@ -142,7 +142,7 @@ const ACTION_MAP: Record<string, ActionConfig> = {
     color: 'text-text-tertiary',
     dotColor: 'bg-icon-secondary',
     getDescription: (entry) => {
-      const meta = entry.metadata as Record<string, unknown> | null
+      const meta = entry.metadata
       return `changed visibility to ${meta?.visibility || 'unknown'}`
     },
   },
@@ -151,7 +151,7 @@ const ACTION_MAP: Record<string, ActionConfig> = {
     color: 'text-error-text',
     dotColor: 'bg-error',
     getDescription: (entry) => {
-      const meta = entry.metadata as Record<string, unknown> | null
+      const meta = entry.metadata
       return `changed priority to ${meta?.priority || 'unknown'}`
     },
   },
@@ -166,7 +166,7 @@ const ACTION_MAP: Record<string, ActionConfig> = {
     color: 'text-warning-text',
     dotColor: 'bg-warning',
     getDescription: (entry) => {
-      const meta = entry.metadata as Record<string, unknown> | null
+      const meta = entry.metadata
       if (meta?.dueDate) return `set due date to ${meta.dueDate}`
       return 'updated the due date'
     },
@@ -206,7 +206,7 @@ function formatTimestamp(dateStr: string) {
 }
 
 function getActorName(entry: AuditLogEntry): string {
-  const meta = entry.metadata as Record<string, unknown> | null
+  const meta = entry.metadata
   if (meta?.actorName) return meta.actorName as string
   if (entry.actorType === 'SYSTEM') return 'System'
   if (entry.actorType === 'AGENT') return 'AI Agent'

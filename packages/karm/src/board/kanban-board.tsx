@@ -2,6 +2,7 @@
 
 import * as React from 'react'
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react'
+import { useComposedRef } from '../utils/use-composed-ref'
 import { createPortal } from 'react-dom'
 import {
   DndContext,
@@ -100,11 +101,7 @@ export const KanbanBoard = React.forwardRef<HTMLDivElement, KanbanBoardProps>(
   const [activeTask, setActiveTask] = useState<BoardTask | null>(null)
   const [mounted, setMounted] = useState(false)
   const scrollRef = useRef<HTMLDivElement | null>(null)
-  const mergedRef = useCallback((node: HTMLDivElement | null) => {
-    scrollRef.current = node
-    if (typeof forwardedRef === 'function') forwardedRef(node)
-    else if (forwardedRef) (forwardedRef as React.MutableRefObject<HTMLDivElement | null>).current = node
-  }, [forwardedRef])
+  const mergedRef = useComposedRef(scrollRef, forwardedRef)
 
   // Sync board when initialData changes
   useEffect(() => {

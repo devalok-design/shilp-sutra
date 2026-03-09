@@ -344,7 +344,9 @@ const RichTextEditor = React.forwardRef<HTMLDivElement, RichTextEditorProps>(
     if (!ed) return
     if (onImageUpload) {
       const url = await onImageUpload(file)
-      ed.chain().focus().setImage({ src: url }).run()
+      if (url && /^https?:\/\//i.test(url)) {
+        ed.chain().focus().setImage({ src: url }).run()
+      }
     } else {
       const reader = new FileReader()
       reader.onload = () => {
@@ -381,6 +383,8 @@ const RichTextEditor = React.forwardRef<HTMLDivElement, RichTextEditorProps>(
       TextAlign.configure({ types: ['heading', 'paragraph'] }),
       Link.configure({
         openOnClick: false,
+        protocols: ['http', 'https', 'mailto'],
+        validate: (href: string) => /^(https?:\/\/|mailto:)/i.test(href),
         HTMLAttributes: {
           rel: 'noopener noreferrer',
           target: '_blank',
@@ -476,60 +480,68 @@ const RichTextEditor = React.forwardRef<HTMLDivElement, RichTextEditorProps>(
   if (!editor) return null
 
   return (
-    <div
-      ref={ref}
-      className={cn(
-        'overflow-hidden rounded-ds-lg border border-border bg-layer-01',
-        'transition-colors focus-within:border-border-strong',
-        className,
+    <div ref={ref} className={cn('relative', className)}>
+      {/* Emoji picker rendered outside the overflow-hidden box so it isn't clipped */}
+      {showEmojiPicker && (
+        <div
+          ref={emojiPickerRef}
+          className="absolute bottom-full right-0 z-popover mb-ds-02"
+          onKeyDown={(e) => {
+            if (e.key === 'Escape') {
+              e.stopPropagation()
+              setShowEmojiPicker(false)
+            }
+          }}
+        >
+          <EmojiPickerLazy
+            onSelect={(native: string) => {
+              editor.chain().focus().insertContent(native).run()
+              setShowEmojiPicker(false)
+            }}
+          />
+        </div>
       )}
-    >
-      <input
-        ref={imageInputRef}
-        type="file"
-        accept="image/*"
-        aria-label="Upload image"
-        className="hidden"
-        onChange={(e) => {
-          const file = e.target.files?.[0]
-          if (file) handleImageInsert(file)
-          e.target.value = ''
-        }}
-      />
-      {onFileUpload && (
+      <div
+        className={cn(
+          'overflow-hidden rounded-ds-lg border border-border bg-layer-01',
+          'transition-colors focus-within:border-border-strong',
+        )}
+      >
         <input
-          ref={fileInputRef}
+          ref={imageInputRef}
           type="file"
-          aria-label="Upload file"
+          accept="image/*"
+          aria-label="Upload image"
           className="hidden"
           onChange={(e) => {
             const file = e.target.files?.[0]
-            if (file) handleFileInsert(file)
+            if (file) handleImageInsert(file)
             e.target.value = ''
           }}
         />
-      )}
-      {editable && (
-        <div className="relative">
+        {onFileUpload && (
+          <input
+            ref={fileInputRef}
+            type="file"
+            aria-label="Upload file"
+            className="hidden"
+            onChange={(e) => {
+              const file = e.target.files?.[0]
+              if (file) handleFileInsert(file)
+              e.target.value = ''
+            }}
+          />
+        )}
+        {editable && (
           <Toolbar
             editor={editor}
             onImageClick={() => imageInputRef.current?.click()}
             onFileClick={onFileUpload ? () => fileInputRef.current?.click() : undefined}
             onEmojiClick={() => setShowEmojiPicker((prev) => !prev)}
           />
-          {showEmojiPicker && (
-            <div ref={emojiPickerRef} className="absolute right-0 top-full z-popover">
-              <EmojiPickerLazy
-                onSelect={(native: string) => {
-                  editor.chain().focus().insertContent(native).run()
-                  setShowEmojiPicker(false)
-                }}
-              />
-            </div>
-          )}
-        </div>
-      )}
-      <EditorContent editor={editor} />
+        )}
+        <EditorContent editor={editor} />
+      </div>
     </div>
   )
 },
@@ -556,6 +568,8 @@ const RichTextViewer = React.forwardRef<HTMLDivElement, RichTextViewerProps>(
       TextAlign.configure({ types: ['heading', 'paragraph'] }),
       Link.configure({
         openOnClick: true,
+        protocols: ['http', 'https', 'mailto'],
+        validate: (href: string) => /^(https?:\/\/|mailto:)/i.test(href),
         HTMLAttributes: {
           rel: 'noopener noreferrer',
           target: '_blank',

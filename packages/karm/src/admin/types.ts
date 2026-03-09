@@ -125,11 +125,11 @@ export interface DayInfo {
 
 /** SSE real-time event callbacks */
 export interface RealtimeCallbacks {
-  onBreakRequestCreated?: (data: unknown) => void
-  onBreakRequestApproved?: (data: unknown) => void
-  onBreakRequestRejected?: (data: unknown) => void
-  onBreakRequestCancelled?: (data: unknown) => void
-  onAttendanceCorrectionCreated?: (data: unknown) => void
-  onAttendanceCorrectionProcessed?: (data: unknown) => void
+  onBreakRequestCreated?: (data: BreakRequest) => void
+  onBreakRequestApproved?: (data: BreakRequest) => void
+  onBreakRequestRejected?: (data: BreakRequest) => void
+  onBreakRequestCancelled?: (data: BreakRequest) => void
+  onAttendanceCorrectionCreated?: (data: AttendanceRecord) => void
+  onAttendanceCorrectionProcessed?: (data: AttendanceRecord) => void
   onTaskUpdated?: (data: unknown) => void
 }

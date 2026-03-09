@@ -551,6 +551,7 @@
     "@tabler/icons-react": "^3.37.1",
     "@tanstack/react-table": "^8.21.2",
     "@tanstack/react-virtual": "^3.13.19",
+    "@tiptap/core": "^2.27.2",
     "@tiptap/extension-highlight": "^2.27.2",
     "@tiptap/extension-image": "^2.27.2",
     "@tiptap/extension-link": "^2.27.2",

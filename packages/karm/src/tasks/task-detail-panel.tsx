@@ -48,7 +48,7 @@ export interface FullTask {
   assignees: { user: Member }[]
   subtasks: Subtask[]
   reviewRequests: ReviewRequest[]
-  comments: Comment[]
+  comments?: Comment[]
   files: TaskFile[]
   createdAt: string
   updatedAt: string

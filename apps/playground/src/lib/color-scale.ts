@@ -91,23 +91,29 @@ const SHADE_STOPS = [50, 100, 200, 300, 400, 500, 600, 700, 800, 900, 950] as co
 type Shade = (typeof SHADE_STOPS)[number]
 
 /**
- * Target lightness values for each shade stop in OKLCH (0–1 scale).
- * Derived from Evil Martians' Harmony approach — these map to
- * perceptually uniform lightness steps.
+ * Normalized position of each shade on the lightness axis (0 = lightest, 1 = darkest).
+ * Derived from Evil Martians' Harmony lightness curve — the spacing between stops
+ * is perceptually even in OKLCH. 500 sits at ~0.449 (not 0.5) because palettes
+ * need more room in the light range than the dark range.
  */
-const TARGET_L: Record<Shade, number> = {
-  50:  0.9778,
-  100: 0.9356,
-  200: 0.8811,
-  300: 0.8267,
-  400: 0.7422,
-  500: 0.6478,
-  600: 0.5733,
-  700: 0.4689,
-  800: 0.3944,
-  900: 0.3200,
-  950: 0.2378,
+const T: Record<Shade, number> = {
+  50:  0.003,
+  100: 0.060,
+  200: 0.134,
+  300: 0.207,
+  400: 0.321,
+  500: 0.449,
+  600: 0.550,
+  700: 0.691,
+  800: 0.791,
+  900: 0.892,
+  950: 1.000,
 }
+const T_500 = T[500]
+
+/** Lightness endpoints — near-white and near-black in OKLCH */
+const L_MAX = 0.98
+const L_MIN = 0.24
 
 /**
  * Chroma scale factors relative to the base color's chroma.
@@ -129,16 +135,35 @@ const CHROMA_FACTOR: Record<Shade, number> = {
 
 /**
  * Generate a full color scale from a single base hex color using OKLCH.
- * The base color anchors the hue and max chroma. Lightness uses fixed
- * perceptually-uniform targets; chroma scales proportionally.
- * Out-of-gamut colors are clipped via binary search on chroma.
+ *
+ * The base color is placed exactly at the 500 stop. Lightness for other
+ * stops is interpolated relative to the base: lighter shades toward L_MAX,
+ * darker shades toward L_MIN, using the Harmony curve's perceptually-even
+ * spacing. Chroma scales proportionally from the base. Out-of-gamut colors
+ * are clipped via binary search on chroma.
  */
 export function generateColorScale(baseHex: string): Record<Shade, string> {
-  const [, baseC, baseH] = hexToOklch(baseHex)
+  const [baseL, baseC, baseH] = hexToOklch(baseHex)
 
   const scale = {} as Record<Shade, string>
   for (const shade of SHADE_STOPS) {
-    const L = TARGET_L[shade]
+    if (shade === 500) {
+      scale[500] = baseHex
+      continue
+    }
+
+    const t = T[shade]
+    let L: number
+    if (t < T_500) {
+      // Lighter than base: interpolate from L_MAX down to baseL
+      const frac = t / T_500
+      L = L_MAX + (baseL - L_MAX) * frac
+    } else {
+      // Darker than base: interpolate from baseL down to L_MIN
+      const frac = (t - T_500) / (1 - T_500)
+      L = baseL + (L_MIN - baseL) * frac
+    }
+
     const C = baseC * CHROMA_FACTOR[shade]
     const [clL, clC, clH] = gamutClipOklch(L, C, baseH)
     scale[shade] = oklchToHex(clL, clC, clH)

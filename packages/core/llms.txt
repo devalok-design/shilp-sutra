@@ -4,6 +4,11 @@
 > Built on the same primitives as shadcn/ui but with key API differences.
 > Read this file BEFORE writing any UI code. Do NOT guess from shadcn/ui knowledge.
 
+## BREAKING CHANGES (v0.8.0)
+- Combobox: Now uses discriminated union. Single: `multiple?: false, value: string, onValueChange: (v: string) => void`. Multiple: `multiple: true, value: string[], onValueChange: (v: string[]) => void`. No more `v as string[]` casts.
+- StatusBadge: Pass either `status` OR `color`, not both (discriminated union).
+- Input/Textarea: Now auto-inherit state, aria-describedby, aria-required from FormField context. Explicit props override.
+
 ## Install & Setup
 
 pnpm add @devalok/shilp-sutra
@@ -127,12 +132,13 @@ NOTIFICATION SELECTION GUIDE:
 - FormField: state(helper|error|warning|success) > Label + Input + FormHelperText
 - useFormField() hook returns { state, helperTextId, required } from FormField context
 - Wire accessibility: const { state, helperTextId } = useFormField(); then aria-describedby={helperTextId}, aria-invalid={state === 'error'}
+- Input/Textarea auto-wire from FormField context (no manual hookup needed). Explicit props override.
 
 ### Composed Components
 - ConfirmDialog: open, onOpenChange, title, description, onConfirm + confirmText, cancelText, color(default|error), loading
 - PageHeader: title, subtitle, breadcrumbs[], actions(ReactNode)
 - AvatarGroup: users[], max(number), size(sm|md|lg), showTooltip
-- StatusBadge: status(active|pending|approved|rejected|completed|blocked|cancelled|draft) color(success|warning|error|info|neutral) size(sm|md)
+- StatusBadge: DISCRIMINATED UNION — pass status OR color, not both. status(active|pending|approved|rejected|completed|blocked|cancelled|draft) color(success|warning|error|info|neutral) size(sm|md)
 - ContentCard: variant(default|outline|ghost) padding(default|compact|spacious|none)
 - EmptyState: icon, title(required), description, action(ReactNode), compact
 - PriorityIndicator: priority(LOW|MEDIUM|HIGH|URGENT) display(compact|full)

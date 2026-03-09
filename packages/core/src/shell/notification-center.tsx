@@ -18,7 +18,7 @@ import {
   TooltipContent,
   TooltipTrigger,
 } from '../ui/tooltip'
-import { IconBell, IconChecks, IconInbox } from '@tabler/icons-react'
+import { IconBell, IconChecks, IconInbox, IconX } from '@tabler/icons-react'
 import { cn } from '../ui/lib/utils'
 
 // -----------------------------------------------------------------------
@@ -68,6 +68,8 @@ export interface NotificationCenterProps
   emptyState?: React.ReactNode
   /** Content rendered below the notification list as a footer */
   footerSlot?: React.ReactNode
+  /** Called when the user dismisses a notification. Renders an X button per row when provided. */
+  onDismiss?: (id: string) => void
   /** Additional className for the popover content container */
   popoverClassName?: string
   /** Additional className */
@@ -131,11 +133,13 @@ function NotificationItem({
   onRead,
   onNavigate,
   getRoute,
+  onDismiss,
 }: {
   notification: Notification
   onRead: (id: string) => void
   onNavigate: (path: string) => void
   getRoute: (notification: Notification) => string | null
+  onDismiss?: (id: string) => void
 }) {
   const route = getRoute(notification)
 
@@ -148,12 +152,21 @@ function NotificationItem({
     }
   }
 
+  const handleKeyDown = (e: React.KeyboardEvent) => {
+    if (e.key === 'Enter' || e.key === ' ') {
+      e.preventDefault()
+      handleClick()
+    }
+  }
+
   return (
-    <button
-      type="button"
+    <div
+      role="button"
+      tabIndex={0}
       onClick={handleClick}
+      onKeyDown={handleKeyDown}
       className={cn(
-        'flex w-full items-start gap-ds-04 px-ds-05 py-ds-04 text-left transition-colors',
+        'group relative flex w-full items-start gap-ds-04 px-ds-05 py-ds-04 text-left transition-colors',
         'hover:bg-layer-02',
         !notification.isRead && 'bg-interactive/[0.03]',
       )}
@@ -207,7 +220,22 @@ function NotificationItem({
           <span className="block h-[8px] w-[8px] rounded-ds-full bg-interactive" />
         </div>
       )}
-    </button>
+
+      {/* Dismiss button */}
+      {onDismiss && (
+        <button
+          type="button"
+          aria-label={`Dismiss notification: ${notification.title}`}
+          onClick={(e) => {
+            e.stopPropagation()
+            onDismiss(notification.id)
+          }}
+          className="absolute right-ds-03 top-ds-03 hidden rounded-ds-sm p-ds-01 text-text-placeholder hover:bg-layer-03 hover:text-text-secondary group-hover:flex"
+        >
+          <IconX className="h-ico-xs w-ico-xs" />
+        </button>
+      )}
+    </div>
   )
 }
 
@@ -229,6 +257,7 @@ const NotificationCenter = React.forwardRef<HTMLButtonElement, NotificationCente
       onMarkAllRead,
       onNavigate,
       getNotificationRoute,
+      onDismiss,
       headerActions,
       emptyState,
       footerSlot,
@@ -382,6 +411,7 @@ const NotificationCenter = React.forwardRef<HTMLButtonElement, NotificationCente
                       onRead={handleMarkRead}
                       onNavigate={handleNavigate}
                       getRoute={getRoute}
+                      onDismiss={onDismiss}
                     />
                   ))}
                 </div>

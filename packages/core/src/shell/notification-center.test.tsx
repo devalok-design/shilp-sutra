@@ -143,4 +143,70 @@ describe('NotificationCenter', () => {
       expect(popover).toHaveClass('max-h-[600px]')
     })
   })
+
+  describe('onDismiss', () => {
+    it('renders dismiss button when onDismiss is provided', () => {
+      render(
+        <NotificationCenter
+          notifications={[makeNotification()]}
+          onDismiss={vi.fn()}
+        />,
+      )
+      expect(screen.getByLabelText(/dismiss notification/i)).toBeInTheDocument()
+    })
+
+    it('does not render dismiss button when onDismiss is not provided', () => {
+      render(
+        <NotificationCenter
+          notifications={[makeNotification()]}
+        />,
+      )
+      expect(screen.queryByLabelText(/dismiss notification/i)).not.toBeInTheDocument()
+    })
+
+    it('calls onDismiss with notification id when dismiss is clicked', async () => {
+      const user = userEvent.setup()
+      const onDismiss = vi.fn()
+      render(
+        <NotificationCenter
+          notifications={[makeNotification({ id: 'n42' })]}
+          onDismiss={onDismiss}
+        />,
+      )
+      await user.click(screen.getByLabelText(/dismiss notification/i))
+      expect(onDismiss).toHaveBeenCalledWith('n42')
+    })
+
+    it('does not trigger navigation when dismiss is clicked', async () => {
+      const user = userEvent.setup()
+      const onNavigate = vi.fn()
+      const onDismiss = vi.fn()
+      render(
+        <NotificationCenter
+          notifications={[makeNotification()]}
+          onNavigate={onNavigate}
+          onDismiss={onDismiss}
+          getNotificationRoute={() => '/some-route'}
+        />,
+      )
+      await user.click(screen.getByLabelText(/dismiss notification/i))
+      expect(onDismiss).toHaveBeenCalled()
+      expect(onNavigate).not.toHaveBeenCalled()
+    })
+
+    it('notification row still navigates when clicked (not on dismiss)', async () => {
+      const user = userEvent.setup()
+      const onNavigate = vi.fn()
+      render(
+        <NotificationCenter
+          notifications={[makeNotification()]}
+          onNavigate={onNavigate}
+          onDismiss={vi.fn()}
+          getNotificationRoute={() => '/route'}
+        />,
+      )
+      await user.click(screen.getByText('Test notification'))
+      expect(onNavigate).toHaveBeenCalledWith('/route')
+    })
+  })
 })

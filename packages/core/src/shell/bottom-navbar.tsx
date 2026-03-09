@@ -118,8 +118,6 @@ const BottomNavbar = React.forwardRef<HTMLElement, BottomNavbarProps>(
       isActive(item.href, item.exact),
     )
 
-    if (!user) return null
-
     return (
       <>
         {/* More Menu Overlay */}

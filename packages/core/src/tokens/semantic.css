@@ -226,6 +226,7 @@
   --z-sticky: 1100;
   --z-overlay: 1200;
   --z-modal: 1300;
+  --z-popover: 1400;
   --z-toast: 1500;
   --z-tooltip: 1600;
 
@@ -411,6 +412,12 @@
   --chart-6: var(--red-400);
   --chart-7: var(--cyan-400);
   --chart-8: var(--orange-400);
+}
+
+/* Ensure Radix popper content (Select, Combobox, Popover, etc.)
+   renders above Sheet/Dialog overlays */
+[data-radix-popper-content-wrapper] {
+  z-index: var(--z-popover) !important;
 }
 
 /* ── Reduced Motion ──────────────────────────────────── */

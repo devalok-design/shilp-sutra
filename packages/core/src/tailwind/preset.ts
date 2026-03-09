@@ -338,6 +338,7 @@ const preset: Partial<Config> = {
         sticky: 'var(--z-sticky)',
         overlay: 'var(--z-overlay)',
         modal: 'var(--z-modal)',
+        popover: 'var(--z-popover)',
         toast: 'var(--z-toast)',
         tooltip: 'var(--z-tooltip)',
       },

@@ -59,6 +59,14 @@ jobs:
       - name: Build Storybook
         run: pnpm build-storybook
 
+      - name: Build Playground
+        run: pnpm build:playground
+
+      - name: Merge Playground into Storybook output
+        run: |
+          mkdir -p storybook-static/playground
+          cp -r apps/playground/dist/* storybook-static/playground/
+
       - name: Setup Pages
         uses: actions/configure-pages@v5
 

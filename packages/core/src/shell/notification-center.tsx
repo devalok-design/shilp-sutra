@@ -115,39 +115,6 @@ const TIER_COLORS: Record<string, string> = {
 }
 
 // -----------------------------------------------------------------------
-// Default entity route resolver
-// -----------------------------------------------------------------------
-
-function defaultGetEntityRoute(notification: Notification): string | null {
-  if (!notification.entityType) return null
-
-  switch (notification.entityType) {
-    case 'TASK':
-      return notification.projectId
-        ? `/projects/${notification.projectId}/board`
-        : null
-    case 'BREAK_REQUEST':
-      return '/breaks'
-    case 'ATTENDANCE':
-      return '/attendance'
-    case 'CLIENT_REQUEST':
-      return notification.projectId
-        ? `/projects/${notification.projectId}/requests`
-        : null
-    case 'REVIEW_REQUEST':
-      return notification.projectId
-        ? `/projects/${notification.projectId}/board`
-        : null
-    case 'PROJECT':
-      return notification.projectId
-        ? `/projects/${notification.projectId}/board`
-        : '/projects'
-    default:
-      return null
-  }
-}
-
-// -----------------------------------------------------------------------
 // NotificationItem (internal)
 // -----------------------------------------------------------------------
 
@@ -264,7 +231,7 @@ const NotificationCenter = React.forwardRef<HTMLButtonElement, NotificationCente
   const unreadCount =
     unreadCountProp ?? notifications.filter((n) => !n.isRead).length
 
-  const getRoute = getNotificationRoute ?? defaultGetEntityRoute
+  const getRoute = getNotificationRoute ?? (() => null)
 
   const handleNavigate = useCallback(
     (path: string) => {

@@ -64,4 +64,7 @@ export type { SimpleTooltipProps } from './simple-tooltip'
 export { ScheduleView } from './schedule-view'
 export type { ScheduleViewProps, ScheduleEvent } from './schedule-view'
 
+export { ConfirmDialog } from './confirm-dialog'
+export type { ConfirmDialogProps } from './confirm-dialog'
+
 export { getInitials } from './lib/string-utils'

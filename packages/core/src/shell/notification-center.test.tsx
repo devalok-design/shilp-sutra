@@ -70,4 +70,21 @@ describe('NotificationCenter', () => {
     expect(getNotificationRoute).toHaveBeenCalledOnce()
     expect(onNavigate).toHaveBeenCalledWith('/custom/route')
   })
+
+  describe('footerSlot', () => {
+    it('renders footer content when footerSlot is provided', () => {
+      render(
+        <NotificationCenter
+          notifications={[]}
+          footerSlot={<a href="/notifications">View all</a>}
+        />,
+      )
+      expect(screen.getByText('View all')).toBeInTheDocument()
+    })
+
+    it('does not render footer when footerSlot is not provided', () => {
+      render(<NotificationCenter notifications={[]} />)
+      expect(screen.queryByText('View all')).not.toBeInTheDocument()
+    })
+  })
 })

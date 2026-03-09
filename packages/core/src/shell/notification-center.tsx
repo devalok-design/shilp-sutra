@@ -62,6 +62,8 @@ export interface NotificationCenterProps
   onNavigate?: (path: string) => void
   /** Resolve a notification to a navigation path. Return null if no navigation. */
   getNotificationRoute?: (notification: Notification) => string | null
+  /** Content rendered below the notification list as a footer */
+  footerSlot?: React.ReactNode
   /** Additional className */
   className?: string
 }
@@ -221,6 +223,7 @@ const NotificationCenter = React.forwardRef<HTMLButtonElement, NotificationCente
       onMarkAllRead,
       onNavigate,
       getNotificationRoute,
+      footerSlot,
       className,
       ...props
     },
@@ -375,6 +378,11 @@ const NotificationCenter = React.forwardRef<HTMLButtonElement, NotificationCente
             </div>
           )}
         </div>
+        {footerSlot && (
+          <div className="border-t border-border px-ds-05 py-ds-03">
+            {footerSlot}
+          </div>
+        )}
       </PopoverContent>
     </Popover>
     )

@@ -242,7 +242,7 @@ importers:
         specifier: ^2.27.2
         version: 2.27.2(@tiptap/core@2.27.2(@tiptap/pm@2.27.2))(@tiptap/pm@2.27.2)(@tiptap/suggestion@2.27.2(@tiptap/core@2.27.2(@tiptap/pm@2.27.2))(@tiptap/pm@2.27.2))
       '@tiptap/extension-placeholder':
-        specifier: ^2.11.5
+        specifier: ^2.27.2
         version: 2.27.2(@tiptap/core@2.27.2(@tiptap/pm@2.27.2))(@tiptap/pm@2.27.2)
       '@tiptap/extension-task-item':
         specifier: ^2.27.2
@@ -257,10 +257,10 @@ importers:
         specifier: ^2.27.2
         version: 2.27.2(@tiptap/core@2.27.2(@tiptap/pm@2.27.2))
       '@tiptap/react':
-        specifier: ^2.11.5
+        specifier: ^2.27.2
         version: 2.27.2(@tiptap/core@2.27.2(@tiptap/pm@2.27.2))(@tiptap/pm@2.27.2)(react-dom@19.2.4(react@19.2.4))(react@19.2.4)
       '@tiptap/starter-kit':
-        specifier: ^2.11.5
+        specifier: ^2.27.2
         version: 2.27.2
       '@tiptap/suggestion':
         specifier: ^2.27.2
@@ -314,7 +314,7 @@ importers:
         specifier: ^3.2.2
         version: 3.2.2(react@19.2.4)
       '@tabler/icons-react':
-        specifier: ^3.37.1
+        specifier: ^3.0.0
         version: 3.37.1(react@19.2.4)
       class-variance-authority:
         specifier: ^0.7.1

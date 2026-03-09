@@ -7,3 +7,8 @@ storybook-static/
 .claude/
 !.claude/commands/
 *.pdf
+
+# Prevent stale compiled .js from shadowing .tsx sources
+packages/*/src/**/*.js
+!packages/*/src/primitives/**/*.js
+!packages/*/src/scripts/**/*.js

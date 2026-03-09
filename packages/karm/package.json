@@ -1,6 +1,6 @@
 {
   "name": "@devalok/shilp-sutra-karm",
-  "version": "0.7.0",
+  "version": "0.8.0",
   "description": "Domain components for Karm — board, tasks, chat, dashboard, client, and admin",
   "license": "MIT",
   "type": "module",

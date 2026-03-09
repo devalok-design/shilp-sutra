@@ -305,7 +305,7 @@ const RichTextEditor = React.forwardRef<HTMLDivElement, RichTextEditorProps>(
   onFileUpload,
   mentions,
   onMentionSearch,
-  onMentionSelect,
+  onMentionSelect: _onMentionSelect,
 }, ref) {
   const editorRef = React.useRef<ReturnType<typeof useEditor>>(null)
   const [showEmojiPicker, setShowEmojiPicker] = React.useState(false)

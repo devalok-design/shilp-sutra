@@ -33,6 +33,25 @@ export interface TopBarUser {
   image?: string | null
 }
 
+export interface UserMenuItem {
+  /** Display label */
+  label: string
+  /** Optional icon (ReactNode) */
+  icon?: React.ReactNode
+  /** Navigate via onNavigate when clicked */
+  href?: string
+  /** Custom click handler */
+  onClick?: () => void
+  /** Render a separator before this item */
+  separator?: boolean
+  /** Text color semantic token (e.g. "error") — maps to text-{color} */
+  color?: string
+  /** Badge content — string for count, true for dot indicator */
+  badge?: string | boolean
+  /** Whether the item is disabled */
+  disabled?: boolean
+}
+
 export interface TopBarProps
   extends React.HTMLAttributes<HTMLDivElement> {
   /** Page title displayed on desktop */
@@ -51,6 +70,8 @@ export interface TopBarProps
   mobileLogo?: React.ReactNode
   /** Notification center slot -- render your NotificationCenter here */
   notificationSlot?: React.ReactNode
+  /** Custom menu items rendered between Profile and Dark/Light Mode */
+  userMenuItems?: UserMenuItem[]
   /** Additional className */
   className?: string
 }
@@ -70,6 +91,7 @@ const TopBar = React.forwardRef<HTMLDivElement, TopBarProps>(
       onAiChatClick,
       mobileLogo,
       notificationSlot,
+      userMenuItems,
       className,
       ...props
     },
@@ -208,6 +230,46 @@ const TopBar = React.forwardRef<HTMLDivElement, TopBarProps>(
                   Profile
                 </span>
               </DropdownMenuItem>
+
+              {/* Custom user menu items */}
+              {userMenuItems?.map((item, index) => {
+                const textColor = item.color ? `text-${item.color}` : 'text-text-secondary'
+                return (
+                  <React.Fragment key={item.label + index}>
+                    {item.separator && <DropdownMenuSeparator className="bg-border" />}
+                    <DropdownMenuItem
+                      className={cn(
+                        'flex w-full cursor-pointer items-center gap-ds-03 px-ds-05 py-ds-04 hover:bg-layer-02',
+                        item.disabled && 'pointer-events-none opacity-[0.38]',
+                      )}
+                      disabled={item.disabled}
+                      onClick={() => {
+                        if (item.disabled) return
+                        if (item.onClick) item.onClick()
+                        else if (item.href) onNavigate?.(item.href)
+                      }}
+                    >
+                      {item.icon && (
+                        <span className={cn('[&>svg]:h-ico-sm [&>svg]:w-ico-sm', textColor)}>
+                          {item.icon}
+                        </span>
+                      )}
+                      <span className={cn('text-ds-md', textColor)}>
+                        {item.label}
+                      </span>
+                      {item.badge != null && item.badge !== false && (
+                        typeof item.badge === 'string' ? (
+                          <span className="ml-auto inline-flex h-[18px] min-w-[18px] items-center justify-center rounded-ds-full bg-error px-ds-02 text-[10px] font-semibold leading-none text-text-on-color">
+                            {item.badge}
+                          </span>
+                        ) : (
+                          <span className="ml-auto h-[8px] w-[8px] rounded-ds-full bg-error" />
+                        )
+                      )}
+                    </DropdownMenuItem>
+                  </React.Fragment>
+                )
+              })}
 
               <DropdownMenuItem
                 className="flex w-full cursor-pointer items-center gap-ds-03 px-ds-05 py-ds-04 hover:bg-layer-02"

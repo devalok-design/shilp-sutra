@@ -98,4 +98,65 @@ describe('TopBar', () => {
     const { container } = render(<TopBar className="custom-topbar" />)
     expect(container.firstElementChild).toHaveClass('custom-topbar')
   })
+
+  it('renders custom userMenuItems', () => {
+    render(
+      <TopBar
+        user={{ name: 'Test User' }}
+        userMenuItems={[
+          { label: 'Changelog', href: '/changelog' },
+          { label: 'Shortcuts', onClick: vi.fn() },
+        ]}
+      />,
+    )
+    expect(screen.getByText('Changelog')).toBeInTheDocument()
+    expect(screen.getByText('Shortcuts')).toBeInTheDocument()
+  })
+
+  it('calls onNavigate when userMenuItem with href is clicked', async () => {
+    const user = userEvent.setup()
+    const onNavigate = vi.fn()
+    render(
+      <TopBar
+        user={{ name: 'Test User' }}
+        onNavigate={onNavigate}
+        userMenuItems={[
+          { label: 'Settings', href: '/settings' },
+        ]}
+      />,
+    )
+    await user.click(screen.getByText('Settings'))
+    expect(onNavigate).toHaveBeenCalledWith('/settings')
+  })
+
+  it('calls onClick when userMenuItem with onClick is clicked', async () => {
+    const user = userEvent.setup()
+    const onClick = vi.fn()
+    render(
+      <TopBar
+        user={{ name: 'Test User' }}
+        userMenuItems={[
+          { label: 'Open Modal', onClick },
+        ]}
+      />,
+    )
+    await user.click(screen.getByText('Open Modal'))
+    expect(onClick).toHaveBeenCalledOnce()
+  })
+
+  it('renders badge on userMenuItems', () => {
+    render(
+      <TopBar
+        user={{ name: 'Test User' }}
+        userMenuItems={[
+          { label: 'Updates', href: '/updates', badge: '3' },
+          { label: 'New', href: '/new', badge: true },
+        ]}
+      />,
+    )
+    expect(screen.getByText('3')).toBeInTheDocument()
+    // Dot badge renders as an empty span
+    expect(screen.getByText('Updates')).toBeInTheDocument()
+    expect(screen.getByText('New')).toBeInTheDocument()
+  })
 })

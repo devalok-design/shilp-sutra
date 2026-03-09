@@ -1776,7 +1776,15 @@ Note: getFormFieldA11y() was removed in favor of useFormField() hook.
     onAiChatClick: () => void
     mobileLogo: ReactNode
     notificationSlot: ReactNode (render NotificationCenter here)
+    userMenuItems?: UserMenuItem[] — custom items between Profile and Dark/Light Mode toggle
     className: string
+- UserMenuItem: { label: string, icon?: ReactNode, href?: string, onClick?: () => void, separator?: boolean, color?: string, badge?: string | boolean, disabled?: boolean }
+    href — navigates via onNavigate callback
+    onClick — custom action (takes precedence over href)
+    separator — renders a DropdownMenuSeparator before this item
+    color — semantic text color (e.g. "error" → text-error)
+    badge — string for count badge, true for dot indicator
+    disabled — greys out the item
 - Example:
   <TopBar
     pageTitle="Dashboard"
@@ -1784,6 +1792,10 @@ Note: getFormFieldA11y() was removed in favor of useFormField() hook.
     onNavigate={(p) => router.push(p)}
     onLogout={handleLogout}
     notificationSlot={<NotificationCenter notifications={notifications} />}
+    userMenuItems={[
+      { label: 'Changelog', icon: <IconNews />, href: '/changelog', badge: '3' },
+      { label: 'Shortcuts', icon: <IconKeyboard />, onClick: () => openModal() },
+    ]}
   />
 
 ---

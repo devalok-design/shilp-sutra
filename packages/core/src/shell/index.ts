@@ -23,6 +23,7 @@ export {
 export {
   TopBar,
   type TopBarUser,
+  type UserMenuItem,
   type TopBarProps,
 } from './top-bar'
 

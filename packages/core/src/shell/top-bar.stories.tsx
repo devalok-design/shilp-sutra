@@ -1,8 +1,10 @@
 import type { Meta, StoryObj } from '@storybook/react'
+import { fn } from '@storybook/test'
 import { TopBar } from './top-bar'
 import { SidebarProvider } from '../ui/sidebar'
 import { NotificationCenter } from './notification-center'
 import type { TopBarUser } from './top-bar'
+import { IconNews, IconKeyboard, IconBell, IconLanguage } from '@tabler/icons-react'
 
 // ── Mock Data ────────────────────────────────────────────────
 
@@ -152,5 +154,29 @@ export const MinimalNoLogout: Story = {
   argTypes: {
     onLogout: { action: undefined },
     onAiChatClick: { action: undefined },
+  },
+}
+
+export const WithUserMenuItems: Story = {
+  args: {
+    pageTitle: 'Dashboard',
+    user: mockUser,
+    userMenuItems: [
+      { label: 'Changelog', icon: <IconNews />, href: '/changelog', badge: '3' },
+      { label: 'Keyboard Shortcuts', icon: <IconKeyboard />, onClick: fn() },
+      { separator: true, label: 'Notification Preferences', icon: <IconBell />, href: '/settings/notifications' },
+      { label: 'Language', icon: <IconLanguage />, href: '/settings/language', disabled: true },
+    ],
+  },
+}
+
+export const WithUserMenuBadges: Story = {
+  args: {
+    pageTitle: 'Dashboard',
+    user: mockUser,
+    userMenuItems: [
+      { label: 'What\'s New', icon: <IconNews />, href: '/changelog', badge: true },
+      { label: 'Updates', icon: <IconBell />, href: '/updates', badge: '12' },
+    ],
   },
 }

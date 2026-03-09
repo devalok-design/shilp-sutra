@@ -145,7 +145,7 @@ NOTIFICATION SELECTION GUIDE:
 - Loading skeletons: CardSkeleton, TableSkeleton, BoardSkeleton, ListSkeleton, DashboardSkeleton, etc.
 
 ### Shell Components (app-level layout)
-- TopBar: pageTitle, user, onNavigate, onLogout, notificationSlot, mobileLogo
+- TopBar: pageTitle, user, onNavigate, onLogout, notificationSlot, mobileLogo, userMenuItems?(UserMenuItem[] — custom items between Profile and theme toggle, supports icon, href, onClick, separator, badge, disabled, color)
 - AppSidebar: navigation tree with NavItem[], NavGroup[]
 - BottomNavbar: mobile navigation, user is optional (not required to render)
 - NotificationCenter: notifications[], onMarkRead, onMarkAllRead, onNavigate, getNotificationRoute?(returns string|null, fallback null), footerSlot?, emptyState?, headerActions?, popoverClassName?, onDismiss?(id)

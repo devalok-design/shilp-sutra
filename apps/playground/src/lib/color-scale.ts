@@ -40,49 +40,56 @@ const SHADE_STOPS = [50, 100, 200, 300, 400, 500, 600, 700, 800, 900, 950] as co
 type Shade = (typeof SHADE_STOPS)[number]
 
 /**
+ * Lightness ratios derived from median of all 13 chromatic scales in primitives.css.
+ * Each value = median(L[shade] / L[500]) across pink, purple, green, red, yellow,
+ * blue, teal, amber, slate, indigo, cyan, orange, emerald.
+ */
+const L_RATIO: Record<Shade, number> = {
+  50:  2.092,
+  100: 1.895,
+  200: 1.821,
+  300: 1.569,
+  400: 1.258,
+  500: 1.000,
+  600: 0.853,
+  700: 0.688,
+  800: 0.544,
+  900: 0.380,
+  950: 0.231,
+}
+
+/**
+ * Saturation ratios — empirically nearly flat (0.94–1.08).
+ * The hand-tuned scales barely change saturation across shades.
+ */
+const S_RATIO: Record<Shade, number> = {
+  50:  1.053,
+  100: 1.053,
+  200: 1.028,
+  300: 0.978,
+  400: 0.944,
+  500: 1.000,
+  600: 1.043,
+  700: 1.000,
+  800: 1.041,
+  900: 1.019,
+  950: 1.075,
+}
+
+/**
  * Generate a full color scale from a single base color.
- * The base color is placed at the 500 stop.
- * Lighter shades increase lightness + slightly decrease saturation.
- * Darker shades decrease lightness + slightly increase saturation.
+ * The base color is placed at the 500 stop. Lightness and saturation
+ * ratios are derived from the median curves of shilp-sutra's 13
+ * hand-tuned chromatic scales in primitives.css.
  */
 export function generateColorScale(baseHex: string): Record<Shade, string> {
   const [h, s, l] = hexToHsl(baseHex)
 
-  // Target lightness for each stop — calibrated to match shilp-sutra's hand-tuned scales
-  const lightnessMap: Record<Shade, number> = {
-    50: Math.min(97, l + (97 - l) * 0.95),
-    100: Math.min(93, l + (93 - l) * 0.85),
-    200: Math.min(87, l + (87 - l) * 0.75),
-    300: Math.min(78, l + (78 - l) * 0.60),
-    400: l + (78 - l) * 0.30,
-    500: l,
-    600: l * 0.78,
-    700: l * 0.60,
-    800: l * 0.42,
-    900: l * 0.28,
-    950: l * 0.17,
-  }
-
-  // Saturation adjustments — keep saturation high to preserve color identity.
-  // Warm hues (yellow, orange, amber) lose their color at low saturation,
-  // so the lighter shades must stay vibrant rather than fading to gray.
-  const saturationMap: Record<Shade, number> = {
-    50: Math.min(100, s * 0.85),
-    100: Math.min(100, s * 0.88),
-    200: Math.min(100, s * 0.90),
-    300: Math.min(100, s * 0.92),
-    400: Math.min(100, s * 0.96),
-    500: s,
-    600: Math.min(100, s * 1.02),
-    700: Math.min(100, s * 1.05),
-    800: Math.min(100, s * 1.0),
-    900: Math.min(100, s * 0.95),
-    950: Math.min(100, s * 0.90),
-  }
-
   const scale = {} as Record<Shade, string>
   for (const shade of SHADE_STOPS) {
-    scale[shade] = hslToHex(h, saturationMap[shade], lightnessMap[shade])
+    const targetL = Math.min(100, Math.max(0, l * L_RATIO[shade]))
+    const targetS = Math.min(100, Math.max(0, s * S_RATIO[shade]))
+    scale[shade] = hslToHex(h, targetS, targetL)
   }
   return scale
 }

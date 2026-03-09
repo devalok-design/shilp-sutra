@@ -11,7 +11,10 @@ import TaskItem from '@tiptap/extension-task-item'
 import TextAlign from '@tiptap/extension-text-align'
 import Link from '@tiptap/extension-link'
 import Image from '@tiptap/extension-image'
+import Mention from '@tiptap/extension-mention'
 import { FileAttachment } from './extensions/file-attachment'
+import { createSuggestionRenderer } from './extensions/mention-suggestion'
+import { EmojiSuggestion } from './extensions/emoji-suggestion'
 import { cn } from '../ui/lib/utils'
 import {
   IconBold,
@@ -243,6 +246,30 @@ function Toolbar({ editor, onImageClick, onFileClick, onEmojiClick }: {
   )
 }
 
+const LazyPicker = React.lazy(() => import('@emoji-mart/react'))
+
+function EmojiPickerLazy({ onSelect }: { onSelect: (native: string) => void }) {
+  const [data, setData] = React.useState<unknown>(null)
+
+  React.useEffect(() => {
+    import('@emoji-mart/data').then((mod) => setData(mod.default))
+  }, [])
+
+  if (!data) return <div className="flex h-[350px] w-[352px] items-center justify-center rounded-ds-lg border border-border bg-layer-01 shadow-02"><span className="text-ds-sm text-text-placeholder">Loading...</span></div>
+
+  return (
+    <React.Suspense fallback={<div className="flex h-[350px] w-[352px] items-center justify-center rounded-ds-lg border border-border bg-layer-01 shadow-02"><span className="text-ds-sm text-text-placeholder">Loading...</span></div>}>
+      <LazyPicker
+        data={data}
+        onEmojiSelect={(emoji: { native: string }) => onSelect(emoji.native)}
+        theme="light"
+        previewPosition="none"
+        skinTonePosition="none"
+      />
+    </React.Suspense>
+  )
+}
+
 export interface MentionItem {
   id: string
   label: string
@@ -276,11 +303,13 @@ const RichTextEditor = React.forwardRef<HTMLDivElement, RichTextEditorProps>(
   editable = true,
   onImageUpload,
   onFileUpload,
-  mentions: _mentions,
-  onMentionSearch: _onMentionSearch,
-  onMentionSelect: _onMentionSelect,
+  mentions,
+  onMentionSearch,
+  onMentionSelect,
 }, ref) {
   const editorRef = React.useRef<ReturnType<typeof useEditor>>(null)
+  const [showEmojiPicker, setShowEmojiPicker] = React.useState(false)
+  const emojiPickerRef = React.useRef<HTMLDivElement>(null)
   const imageInputRef = React.useRef<HTMLInputElement>(null)
   const fileInputRef = React.useRef<HTMLInputElement>(null)
 
@@ -338,6 +367,20 @@ const RichTextEditor = React.forwardRef<HTMLDivElement, RichTextEditorProps>(
         },
       }),
       FileAttachment,
+      ...(mentions || onMentionSearch ? [
+        Mention.configure({
+          HTMLAttributes: { class: 'mention' },
+          suggestion: {
+            items: async ({ query }: { query: string }) => {
+              if (onMentionSearch) return await onMentionSearch(query)
+              if (mentions) return mentions.filter(m => m.label.toLowerCase().includes(query.toLowerCase())).slice(0, 8)
+              return []
+            },
+            render: createSuggestionRenderer(),
+          },
+        }),
+      ] : []),
+      EmojiSuggestion,
     ],
     content,
     editable,
@@ -388,6 +431,7 @@ const RichTextEditor = React.forwardRef<HTMLDivElement, RichTextEditorProps>(
           '[&_hr]:my-ds-04 [&_hr]:border-border',
           '[&_a]:text-interactive [&_a]:underline [&_a]:decoration-interactive/40 hover:[&_a]:decoration-interactive',
           '[&_img]:max-w-full [&_img]:rounded-ds-md [&_img]:my-ds-03',
+          '[&_.mention]:rounded-ds-sm [&_.mention]:bg-interactive/10 [&_.mention]:px-ds-02 [&_.mention]:py-[1px] [&_.mention]:font-medium [&_.mention]:text-interactive',
         ),
       },
     },
@@ -399,6 +443,18 @@ const RichTextEditor = React.forwardRef<HTMLDivElement, RichTextEditorProps>(
   React.useEffect(() => {
     editorRef.current = editor
   }, [editor])
+
+  // Close emoji picker on click outside
+  React.useEffect(() => {
+    if (!showEmojiPicker) return
+    const handleClickOutside = (e: MouseEvent) => {
+      if (emojiPickerRef.current && !emojiPickerRef.current.contains(e.target as Node)) {
+        setShowEmojiPicker(false)
+      }
+    }
+    document.addEventListener('mousedown', handleClickOutside)
+    return () => document.removeEventListener('mousedown', handleClickOutside)
+  }, [showEmojiPicker])
 
   React.useEffect(() => {
     if (editor && content !== editor.getHTML()) {
@@ -441,11 +497,24 @@ const RichTextEditor = React.forwardRef<HTMLDivElement, RichTextEditorProps>(
         />
       )}
       {editable && (
-        <Toolbar
-          editor={editor}
-          onImageClick={() => imageInputRef.current?.click()}
-          onFileClick={onFileUpload ? () => fileInputRef.current?.click() : undefined}
-        />
+        <div className="relative">
+          <Toolbar
+            editor={editor}
+            onImageClick={() => imageInputRef.current?.click()}
+            onFileClick={onFileUpload ? () => fileInputRef.current?.click() : undefined}
+            onEmojiClick={() => setShowEmojiPicker((prev) => !prev)}
+          />
+          {showEmojiPicker && (
+            <div ref={emojiPickerRef} className="absolute right-0 top-full z-popover">
+              <EmojiPickerLazy
+                onSelect={(native: string) => {
+                  editor.chain().focus().insertContent(native).run()
+                  setShowEmojiPicker(false)
+                }}
+              />
+            </div>
+          )}
+        </div>
       )}
       <EditorContent editor={editor} />
     </div>
@@ -486,6 +555,9 @@ const RichTextViewer = React.forwardRef<HTMLDivElement, RichTextViewerProps>(
         },
       }),
       FileAttachment,
+      Mention.configure({
+        HTMLAttributes: { class: 'mention' },
+      }),
     ],
     content,
     editable: false,
@@ -508,6 +580,7 @@ const RichTextViewer = React.forwardRef<HTMLDivElement, RichTextViewerProps>(
           '[&_hr]:my-ds-04 [&_hr]:border-border',
           '[&_a]:text-interactive [&_a]:underline [&_a]:decoration-interactive/40 hover:[&_a]:decoration-interactive',
           '[&_img]:max-w-full [&_img]:rounded-ds-md [&_img]:my-ds-03',
+          '[&_.mention]:rounded-ds-sm [&_.mention]:bg-interactive/10 [&_.mention]:px-ds-02 [&_.mention]:py-[1px] [&_.mention]:font-medium [&_.mention]:text-interactive',
         ),
       },
     },

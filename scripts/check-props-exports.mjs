@@ -68,8 +68,16 @@ function isExported(name, content) {
   return pattern.test(content)
 }
 
+// Files excluded from barrel (available only via per-component imports)
+const EXCLUDED_FILES = new Set([
+  'data-table.tsx',
+  'data-table-toolbar.tsx',
+])
+
 // Scan all src/ui/**/*.tsx recursively
-const sourceFiles = collectTsx(UI_DIR)
+const sourceFiles = collectTsx(UI_DIR).filter(
+  (f) => !EXCLUDED_FILES.has(path.basename(f)),
+)
 
 const allProps = []
 const missing = []

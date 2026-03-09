@@ -197,7 +197,7 @@ Note: getFormFieldA11y() was removed in favor of useFormField() hook.
 - Props:
     variant: "subtle" | "solid" | "outline" | "secondary" (alias->subtle) | "destructive" (alias->solid+error)
     color: "default" | "info" | "success" | "error" | "warning" | "brand" | "accent" | "teal" | "amber" | "slate" | "indigo" | "cyan" | "orange" | "emerald"
-    size: "sm" | "md" | "lg"
+    size: "xs" | "sm" | "md" | "lg"
     dot: boolean (shows leading dot indicator)
     onDismiss: () => void (shows X button when provided)
     children: ReactNode
@@ -352,6 +352,24 @@ Note: getFormFieldA11y() was removed in favor of useFormField() hook.
   <Code>onClick</Code>
   <Code variant="block">{`const x = 1;\nconsole.log(x);`}</Code>
 - Gotchas: "block" renders as <pre><code>, "inline" renders as <code>
+
+## ColorInput
+- Import: @devalok/shilp-sutra/ui/color-input
+- Server-safe: No
+- Props:
+    value: string (hex color, e.g. "#d33163")
+    onChange: (value: string) => void
+    presets: string[] (optional preset color swatches)
+    disabled: boolean
+    className: string
+- Defaults: value="#000000", disabled=false
+- Example:
+  <ColorInput
+    value={color}
+    onChange={setColor}
+    presets={['#d33163', '#2563eb', '#16a34a']}
+  />
+- Gotchas: Uses native color picker under the hood; value must be a valid hex string
 
 ## Collapsible
 - Import: @devalok/shilp-sutra/ui/collapsible
@@ -1302,6 +1320,36 @@ Note: getFormFieldA11y() was removed in favor of useFormField() hook.
   />
 - Gotchas: Opens with Ctrl+K / Cmd+K by default
 
+## ConfirmDialog
+- Import: @devalok/shilp-sutra/composed/confirm-dialog
+- Server-safe: No
+- Props:
+    open: boolean (REQUIRED, controlled)
+    onOpenChange: (open: boolean) => void (REQUIRED)
+    title: string (REQUIRED)
+    description: string (REQUIRED)
+    confirmText: string (default: "Confirm")
+    cancelText: string (default: "Cancel")
+    color: "default" | "error" (controls confirm button color)
+    loading: boolean (default: false, disables buttons and shows spinner)
+    onConfirm: () => void | Promise<void> (REQUIRED)
+- Defaults: confirmText="Confirm", cancelText="Cancel", color="default", loading=false
+- Example:
+  const [open, setOpen] = useState(false)
+  <ConfirmDialog
+    open={open}
+    onOpenChange={setOpen}
+    title="Delete project?"
+    description="This action cannot be undone."
+    color="error"
+    confirmText="Delete"
+    loading={isDeleting}
+    onConfirm={async () => { await deleteProject(); setOpen(false) }}
+  />
+- Gotchas:
+    - Dialog stays open after confirm — consumer must close it via onOpenChange
+    - Built on AlertDialog internally
+
 ## ContentCard
 - Import: @devalok/shilp-sutra/composed/content-card
 - Server-safe: Yes
@@ -1558,17 +1606,20 @@ Note: getFormFieldA11y() was removed in favor of useFormField() hook.
 - Server-safe: No
 - Props:
     user: AppCommandPaletteUser | null — { name, role? }
+    isAdmin: boolean (shows admin command groups regardless of user.role; takes precedence over role-based detection)
     extraGroups: CommandGroup[]
     onNavigate: (path: string) => void
     onSearch: (query: string) => void
     searchResults: SearchResult[] — { id, title, snippet?, entityType, projectId?, metadata? }
-    onSelectResult: (result: SearchResult) => void
+    isSearching: boolean (shows loading state while search is in progress)
+    onSearchResultSelect: (result: SearchResult) => void
 - Example:
   <AppCommandPalette
     user={{ name: 'John', role: 'admin' }}
+    isAdmin={true}
     onNavigate={(path) => router.push(path)}
     searchResults={results}
-    onSelectResult={(r) => router.push(`/${r.entityType}/${r.id}`)}
+    onSearchResultSelect={(r) => router.push(`/${r.entityType}/${r.id}`)}
   />
 
 ## AppSidebar
@@ -1601,7 +1652,7 @@ Note: getFormFieldA11y() was removed in favor of useFormField() hook.
 - Server-safe: No
 - Props:
     currentPath: string
-    user: BottomNavbarUser | null — { name, role? }
+    user: BottomNavbarUser | null (optional) — { name, role? }. Not required to render.
     primaryItems: BottomNavItem[] (max 4 recommended) — { title, href, icon, exact? }
     moreItems: BottomNavItem[] (overflow items in "More" menu)
     className: string
@@ -1670,13 +1721,18 @@ Note: getFormFieldA11y() was removed in favor of useFormField() hook.
     preferences: NotificationPreference[] — { id, userId?, projectId, channel, minTier, muted }
     projects: NotificationProject[] — { id, title }
     isLoading: boolean
-    onSave: (preference: { projectId, channel, minTier, muted }) => void
-    onDelete: (id: string) => void
+    onSave: (preference: { projectId, channel, minTier, muted }) => void | Promise<void>
+    onToggleMute: (preference: NotificationPreference) => void | Promise<void>
+    onUpdateTier: (preference: NotificationPreference, newTier: string) => void | Promise<void>
+    onDelete: (preferenceId: string) => void | Promise<void>
+    className: string
 - Example:
   <NotificationPreferences
     preferences={prefs}
     projects={projectList}
     onSave={handleSavePref}
+    onToggleMute={handleToggleMute}
+    onUpdateTier={handleUpdateTier}
     onDelete={handleDeletePref}
   />
 

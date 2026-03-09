@@ -65,6 +65,7 @@ Components with two-axis system: Button, Badge, Alert, Chip, Toast, Banner, Prog
 - SearchInput: size(sm|md|lg) + loading, onClear
 - NumberInput: value + onValueChange, min, max, step (controlled only)
 - Textarea: size(sm|md|lg) state(default|error|warning|success)
+- ColorInput: value(hex string) onChange(value) presets(string[]) disabled
 - Checkbox: checked, onCheckedChange, error(boolean), indeterminate(boolean)
 - Switch: checked, onCheckedChange, error(boolean)
 - RadioGroup > RadioGroupItem(value)
@@ -87,7 +88,7 @@ NOTIFICATION SELECTION GUIDE:
   - Toast: transient notification triggered by user action (needs Toaster + useToast)
 
 ### Data Display
-- Badge: variant(subtle|solid|outline) color(default|info|success|error|warning|brand|accent + 7 category colors) size(sm|md|lg) + onDismiss
+- Badge: variant(subtle|solid|outline) color(default|info|success|error|warning|brand|accent + 7 category colors) size(xs|sm|md|lg) + onDismiss
 - Chip: variant(subtle|outline) color(default|primary|success|error|warning|info + 7 category) size(sm|md|lg) label(string, REQUIRED) + onDismiss, onClick
 - Avatar: size(xs|sm|md|lg|xl) shape(circle|square|rounded) status(online|offline|busy|away) > AvatarImage + AvatarFallback
 - Card: variant(default|elevated|outline|flat) interactive(boolean) > CardHeader > CardTitle, CardDescription; CardContent; CardFooter
@@ -128,6 +129,7 @@ NOTIFICATION SELECTION GUIDE:
 - Wire accessibility: const { state, helperTextId } = useFormField(); then aria-describedby={helperTextId}, aria-invalid={state === 'error'}
 
 ### Composed Components
+- ConfirmDialog: open, onOpenChange, title, description, onConfirm + confirmText, cancelText, color(default|error), loading
 - PageHeader: title, subtitle, breadcrumbs[], actions(ReactNode)
 - AvatarGroup: users[], max(number), size(sm|md|lg), showTooltip
 - StatusBadge: status(active|pending|approved|rejected|completed|blocked|cancelled|draft) color(success|warning|error|info|neutral) size(sm|md)
@@ -144,9 +146,9 @@ NOTIFICATION SELECTION GUIDE:
 ### Shell Components (app-level layout)
 - TopBar: pageTitle, user, onNavigate, onLogout, notificationSlot, mobileLogo
 - AppSidebar: navigation tree with NavItem[], NavGroup[]
-- BottomNavbar: mobile navigation
+- BottomNavbar: mobile navigation, user is optional (not required to render)
 - NotificationCenter: notifications[], onMarkRead, onMarkAllRead, onNavigate, getNotificationRoute?(returns string|null, fallback null), footerSlot?, emptyState?, headerActions?, popoverClassName?, onDismiss?(id)
-- AppCommandPalette: search results, user info
+- AppCommandPalette: user, isAdmin, onNavigate, onSearch, searchResults, isSearching, onSearchResultSelect
 
 ### Hooks
 - useToast(): returns { toast, toasts, dismiss } — toast({ title, description, color })

@@ -22,7 +22,7 @@ import { KanbanBoard, TaskDetailPanel, ChatPanel } from '@devalok/shilp-sutra-ka
 ## Module Reference
 
 ### Board (`/board`)
-- KanbanBoard: initialData(BoardData), onTaskMove, onTaskAdd, onColumnRename, onColumnDelete, onClickTask, onAddColumn
+- KanbanBoard: initialData(BoardData), onTaskMove, onTaskAdd, onColumnRename, onColumnDelete, onColumnToggleVisibility, onClickTask, onAddColumn
 - BoardColumn: column(BoardColumnData), index, onAddTask, onClickTask, onRenameColumn, onDeleteColumn
 - TaskCard: task(BoardTask), onClickTask
 - TaskCardOverlay: task(BoardTask) — drag overlay variant
@@ -31,6 +31,21 @@ BoardTask shape: { id, title, priority, labels[], dueDate, isBlocked, assignees[
 BoardData shape: { columns: [{ id, name, isClientVisible, tasks[] }] }
 
 Uses dnd-kit for drag-and-drop. KanbanBoard manages all DnD state internally.
+
+Column management callbacks: `onColumnRename`, `onColumnDelete`, `onColumnToggleVisibility`, and `onAddColumn`
+are fire-and-forget — the board renders an "Add column" button and column header menus only when the
+corresponding callbacks are provided. The consumer must build their own confirmation UI (e.g., ConfirmDialog)
+and state updates. Example wiring a custom column header action:
+
+  <KanbanBoard
+    initialData={boardData}
+    onColumnRename={(columnId, name) => updateColumn(columnId, { name })}
+    onColumnDelete={(columnId) => {
+      setColumnToDelete(columnId)   // open your own ConfirmDialog
+    }}
+    onColumnToggleVisibility={(columnId, visible) => updateColumn(columnId, { isClientVisible: visible })}
+    onAddColumn={() => setShowNewColumnDialog(true)}
+  />
 
 ### Tasks (`/tasks`)
 - TaskDetailPanel: task(FullTask|null), open, onOpenChange, columns[], members[], activities[], clientMode?, onTitleUpdate, onPropertyUpdate, onAssign, onUnassign, onCreateSubtask, onToggleSubtask, onRequestReview, onUpdateReviewStatus + more callbacks

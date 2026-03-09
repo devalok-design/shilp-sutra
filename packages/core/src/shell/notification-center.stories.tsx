@@ -116,6 +116,7 @@ const meta: Meta<typeof NotificationCenter> = {
     onNavigate: { action: 'navigate' },
     onFetchMore: { action: 'fetchMore' },
     onOpenChange: { action: 'openChange' },
+    onDismiss: { action: 'dismiss' },
   },
 }
 export default meta
@@ -236,5 +237,63 @@ export const MixedTiers: Story = {
         project: { title: 'Karm V2' },
       },
     ],
+  },
+}
+
+export const WithFooter: Story = {
+  args: {
+    notifications: mockNotifications,
+    footerSlot: (
+      <a href="/notifications" className="flex items-center justify-center text-ds-sm text-interactive hover:underline">
+        View all notifications
+      </a>
+    ),
+  },
+}
+
+export const CustomEmptyState: Story = {
+  args: {
+    notifications: [],
+    emptyState: (
+      <div className="flex flex-col items-center justify-center px-ds-05 py-ds-09">
+        <p className="text-ds-md text-text-placeholder">No unread notifications</p>
+        <a href="/notifications" className="mt-ds-02 text-ds-sm text-interactive hover:underline">
+          View history
+        </a>
+      </div>
+    ),
+  },
+}
+
+export const WithHeaderActions: Story = {
+  args: {
+    notifications: mockNotifications,
+    headerActions: (
+      <button
+        type="button"
+        className="flex items-center justify-center rounded-ds-sm p-ds-01 text-text-placeholder hover:bg-layer-02 hover:text-text-secondary"
+        aria-label="Notification settings"
+      >
+        ⚙
+      </button>
+    ),
+  },
+}
+
+export const WithDismiss: Story = {
+  name: 'Per-Notification Dismiss',
+  args: {
+    notifications: mockNotifications.map((n) => ({ ...n, isRead: false })),
+  },
+  argTypes: {
+    onDismiss: { action: 'dismiss' },
+  },
+}
+
+export const CustomWidth: Story = {
+  name: 'Custom Popover Width',
+  args: {
+    notifications: mockNotifications,
+    popoverClassName: 'w-[500px]',
   },
 }

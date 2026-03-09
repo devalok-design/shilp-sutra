@@ -210,6 +210,9 @@ importers:
       tailwind-merge:
         specifier: ^3.0.1
         version: 3.5.0
+      tailwindcss:
+        specifier: ^3.4.0
+        version: 3.4.19
     devDependencies:
       '@emoji-mart/data':
         specifier: ^1.2.1

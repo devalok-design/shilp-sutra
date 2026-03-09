@@ -105,4 +105,28 @@ describe('NotificationCenter', () => {
       expect(screen.getByText('No notifications yet')).toBeInTheDocument()
     })
   })
+
+  describe('headerActions', () => {
+    it('renders header actions alongside mark-all-read', () => {
+      render(
+        <NotificationCenter
+          notifications={[makeNotification()]}
+          onMarkAllRead={vi.fn()}
+          headerActions={<button>Settings</button>}
+        />,
+      )
+      expect(screen.getByText('Settings')).toBeInTheDocument()
+      expect(screen.getByText('Mark all read')).toBeInTheDocument()
+    })
+
+    it('renders header actions even when no unread notifications', () => {
+      render(
+        <NotificationCenter
+          notifications={[makeNotification({ isRead: true })]}
+          headerActions={<button>Settings</button>}
+        />,
+      )
+      expect(screen.getByText('Settings')).toBeInTheDocument()
+    })
+  })
 })

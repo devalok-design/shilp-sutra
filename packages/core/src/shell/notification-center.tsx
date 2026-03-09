@@ -62,6 +62,8 @@ export interface NotificationCenterProps
   onNavigate?: (path: string) => void
   /** Resolve a notification to a navigation path. Return null if no navigation. */
   getNotificationRoute?: (notification: Notification) => string | null
+  /** Additional actions rendered in the header (e.g., settings button) */
+  headerActions?: React.ReactNode
   /** Custom empty state to display when there are no notifications */
   emptyState?: React.ReactNode
   /** Content rendered below the notification list as a footer */
@@ -225,6 +227,7 @@ const NotificationCenter = React.forwardRef<HTMLButtonElement, NotificationCente
       onMarkAllRead,
       onNavigate,
       getNotificationRoute,
+      headerActions,
       emptyState,
       footerSlot,
       className,
@@ -320,16 +323,19 @@ const NotificationCenter = React.forwardRef<HTMLButtonElement, NotificationCente
               </span>
             )}
           </div>
-          {unreadCount > 0 && onMarkAllRead && (
-            <button
-              type="button"
-              onClick={onMarkAllRead}
-              className="flex items-center gap-ds-02 text-ds-sm text-text-placeholder transition-colors hover:text-interactive"
-            >
-              <IconChecks className="h-ico-sm w-ico-sm" />
-              Mark all read
-            </button>
-          )}
+          <div className="flex items-center gap-ds-03">
+            {unreadCount > 0 && onMarkAllRead && (
+              <button
+                type="button"
+                onClick={onMarkAllRead}
+                className="flex items-center gap-ds-02 text-ds-sm text-text-placeholder transition-colors hover:text-interactive"
+              >
+                <IconChecks className="h-ico-sm w-ico-sm" />
+                Mark all read
+              </button>
+            )}
+            {headerActions}
+          </div>
         </div>
 
         {/* Notification list */}

@@ -63,16 +63,18 @@ export function generateColorScale(baseHex: string): Record<Shade, string> {
     950: l * 0.17,
   }
 
-  // Saturation adjustments — lighter shades are slightly less saturated
+  // Saturation adjustments — keep saturation high to preserve color identity.
+  // Warm hues (yellow, orange, amber) lose their color at low saturation,
+  // so the lighter shades must stay vibrant rather than fading to gray.
   const saturationMap: Record<Shade, number> = {
-    50: s * 0.3,
-    100: s * 0.45,
-    200: s * 0.55,
-    300: s * 0.65,
-    400: s * 0.85,
+    50: Math.min(100, s * 0.85),
+    100: Math.min(100, s * 0.88),
+    200: Math.min(100, s * 0.90),
+    300: Math.min(100, s * 0.92),
+    400: Math.min(100, s * 0.96),
     500: s,
-    600: Math.min(100, s * 1.05),
-    700: Math.min(100, s * 1.08),
+    600: Math.min(100, s * 1.02),
+    700: Math.min(100, s * 1.05),
     800: Math.min(100, s * 1.0),
     900: Math.min(100, s * 0.95),
     950: Math.min(100, s * 0.90),

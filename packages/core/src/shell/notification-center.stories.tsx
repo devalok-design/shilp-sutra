@@ -285,9 +285,6 @@ export const WithDismiss: Story = {
   args: {
     notifications: mockNotifications.map((n) => ({ ...n, isRead: false })),
   },
-  argTypes: {
-    onDismiss: { action: 'dismiss' },
-  },
 }
 
 export const CustomWidth: Story = {

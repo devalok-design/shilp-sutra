@@ -194,6 +194,21 @@ describe('NotificationCenter', () => {
       expect(onNavigate).not.toHaveBeenCalled()
     })
 
+    it('activates notification via Enter key', async () => {
+      const user = userEvent.setup()
+      const onNavigate = vi.fn()
+      render(
+        <NotificationCenter
+          notifications={[makeNotification()]}
+          onNavigate={onNavigate}
+          getNotificationRoute={() => '/route'}
+        />,
+      )
+      screen.getByText('Test notification').closest('[role="button"]')!.focus()
+      await user.keyboard('{Enter}')
+      expect(onNavigate).toHaveBeenCalledWith('/route')
+    })
+
     it('notification row still navigates when clicked (not on dismiss)', async () => {
       const user = userEvent.setup()
       const onNavigate = vi.fn()

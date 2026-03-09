@@ -33,26 +33,26 @@ export default defineConfig({
       formats: ['es'],
     },
     rollupOptions: {
-      external: (id, parentId, isResolved) => {
+      external: (id) => {
         // Externalize anything resolved from core package
         if (id.includes('packages/core/src/')) return true
         if (id.includes('packages\\core\\src\\')) return true
-        // Standard externals
-        const externals = [
-          'react', 'react-dom', 'react/jsx-runtime',
-          'clsx', 'tailwind-merge', 'class-variance-authority',
-          '@tabler/icons-react', 'react-markdown', 'date-fns',
-        ]
-        if (externals.includes(id)) return true
-        if (/^@devalok\/shilp-sutra(\/.*)?$/.test(id)) return true
-        if (/^@dnd-kit\//.test(id)) return true
-        if (/^date-fns\//.test(id)) return true
-        if (/^next(\/.*)?$/.test(id)) return true
+        // React
+        if (/^react($|\/)/.test(id)) return true
+        if (/^react-dom($|\/)/.test(id)) return true
+        // Peer deps
+        if (/^@devalok\/shilp-sutra($|\/)/.test(id)) return true
+        if (/^@tabler\/icons-react($|\/)/.test(id)) return true
+        if (/^next($|\/)/.test(id)) return true
+        // Everything else gets bundled (@dnd-kit, react-markdown, date-fns, clsx, cva, tailwind-merge)
         return false
       },
       output: {
-        preserveModules: true,
-        preserveModulesRoot: 'src',
+        entryFileNames: '[name].js',
+        chunkFileNames: '_chunks/[name].js',
+        manualChunks(id) {
+          if (id.includes('node_modules')) return 'vendor'
+        },
         paths: (id) => {
           // Rewrite resolved absolute core paths to @devalok/shilp-sutra imports
           const coreMatch = id.replace(/\\/g, '/').match(/packages\/core\/src\/(.+?)(?:\.\w+)?$/)

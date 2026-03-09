@@ -9,6 +9,7 @@ import Highlight from '@tiptap/extension-highlight'
 import TaskList from '@tiptap/extension-task-list'
 import TaskItem from '@tiptap/extension-task-item'
 import TextAlign from '@tiptap/extension-text-align'
+import Link from '@tiptap/extension-link'
 import { cn } from '../ui/lib/utils'
 import {
   IconBold,
@@ -70,13 +71,73 @@ function ToolbarButton({
   )
 }
 
+function LinkButton({ editor }: { editor: Editor }) {
+  const [showInput, setShowInput] = React.useState(false)
+  const [url, setUrl] = React.useState('')
+  const inputRef = React.useRef<HTMLInputElement>(null)
+
+  const handleToggle = () => {
+    if (editor.isActive('link')) {
+      editor.chain().focus().unsetLink().run()
+      return
+    }
+    const previousUrl = editor.getAttributes('link').href || ''
+    setUrl(previousUrl)
+    setShowInput(true)
+    setTimeout(() => inputRef.current?.focus(), 0)
+  }
+
+  const handleSubmit = (e: React.FormEvent) => {
+    e.preventDefault()
+    if (url.trim()) {
+      editor.chain().focus().setLink({ href: url.trim() }).run()
+    }
+    setShowInput(false)
+    setUrl('')
+  }
+
+  const handleKeyDown = (e: React.KeyboardEvent) => {
+    if (e.key === 'Escape') {
+      setShowInput(false)
+      setUrl('')
+      editor.commands.focus()
+    }
+  }
+
+  return (
+    <div className="relative">
+      <ToolbarButton onClick={handleToggle} isActive={editor.isActive('link')} title="Link">
+        <IconLink className="h-ico-sm w-ico-sm" stroke={2} />
+      </ToolbarButton>
+      {showInput && (
+        <form
+          onSubmit={handleSubmit}
+          className="absolute left-0 top-full z-popover mt-ds-01 flex items-center gap-ds-02 rounded-ds-md border border-border bg-layer-01 p-ds-02 shadow-02"
+        >
+          <input
+            ref={inputRef}
+            type="url"
+            value={url}
+            onChange={(e) => setUrl(e.target.value)}
+            onKeyDown={handleKeyDown}
+            placeholder="https://..."
+            className="h-ds-sm w-[240px] rounded-ds-sm border border-border bg-layer-01 px-ds-03 text-ds-sm text-text-primary focus:border-interactive focus:outline-none"
+          />
+          <button type="submit" className="h-ds-sm rounded-ds-sm bg-interactive px-ds-03 text-ds-sm text-text-on-color hover:bg-interactive/90">
+            Apply
+          </button>
+        </form>
+      )}
+    </div>
+  )
+}
+
 function ToolbarDivider() {
   return <div className="mx-ds-02 h-[16px] w-px bg-border" />
 }
 
-function Toolbar({ editor, onLinkClick, onImageClick, onFileClick, onEmojiClick }: {
+function Toolbar({ editor, onImageClick, onFileClick, onEmojiClick }: {
   editor: Editor
-  onLinkClick?: () => void
   onImageClick?: () => void
   onFileClick?: () => void
   onEmojiClick?: () => void
@@ -132,11 +193,7 @@ function Toolbar({ editor, onLinkClick, onImageClick, onFileClick, onEmojiClick 
       <ToolbarDivider />
 
       {/* Media & Links */}
-      {onLinkClick && (
-        <ToolbarButton onClick={onLinkClick} isActive={editor.isActive('link')} title="Link">
-          <IconLink className="h-ico-sm w-ico-sm" stroke={2} />
-        </ToolbarButton>
-      )}
+      <LinkButton editor={editor} />
       {onImageClick && (
         <ToolbarButton onClick={onImageClick} title="Insert image">
           <IconPhoto className="h-ico-sm w-ico-sm" stroke={2} />
@@ -215,6 +272,13 @@ const RichTextEditor = React.forwardRef<HTMLDivElement, RichTextEditorProps>(
       TaskList,
       TaskItem.configure({ nested: true }),
       TextAlign.configure({ types: ['heading', 'paragraph'] }),
+      Link.configure({
+        openOnClick: false,
+        HTMLAttributes: {
+          rel: 'noopener noreferrer',
+          target: '_blank',
+        },
+      }),
     ],
     content,
     editable,
@@ -236,6 +300,7 @@ const RichTextEditor = React.forwardRef<HTMLDivElement, RichTextEditorProps>(
           '[&_mark]:rounded-sm [&_mark]:bg-warning/20 [&_mark]:px-[2px]',
           '[&_ul[data-type="taskList"]]:ml-0 [&_ul[data-type="taskList"]]:list-none [&_li[data-type="taskItem"]]:flex [&_li[data-type="taskItem"]]:items-start [&_li[data-type="taskItem"]]:gap-ds-02',
           '[&_hr]:my-ds-04 [&_hr]:border-border',
+          '[&_a]:text-interactive [&_a]:underline [&_a]:decoration-interactive/40 hover:[&_a]:decoration-interactive',
         ),
       },
     },
@@ -287,6 +352,13 @@ const RichTextViewer = React.forwardRef<HTMLDivElement, RichTextViewerProps>(
       TaskList,
       TaskItem.configure({ nested: true }),
       TextAlign.configure({ types: ['heading', 'paragraph'] }),
+      Link.configure({
+        openOnClick: true,
+        HTMLAttributes: {
+          rel: 'noopener noreferrer',
+          target: '_blank',
+        },
+      }),
     ],
     content,
     editable: false,
@@ -307,6 +379,7 @@ const RichTextViewer = React.forwardRef<HTMLDivElement, RichTextViewerProps>(
           '[&_mark]:rounded-sm [&_mark]:bg-warning/20 [&_mark]:px-[2px]',
           '[&_ul[data-type="taskList"]]:ml-0 [&_ul[data-type="taskList"]]:list-none [&_li[data-type="taskItem"]]:flex [&_li[data-type="taskItem"]]:items-start [&_li[data-type="taskItem"]]:gap-ds-02',
           '[&_hr]:my-ds-04 [&_hr]:border-border',
+          '[&_a]:text-interactive [&_a]:underline [&_a]:decoration-interactive/40 hover:[&_a]:decoration-interactive',
         ),
       },
     },

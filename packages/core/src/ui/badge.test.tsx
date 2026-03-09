@@ -31,6 +31,13 @@ describe('Badge', () => {
     expect(onDismiss).toHaveBeenCalledOnce()
   })
 
+  it('applies xs size classes for compact contexts', () => {
+    const { container } = render(<Badge size="xs">Tiny</Badge>)
+    const badge = container.querySelector('span')!
+    expect(badge.className).toContain('h-[16px]')
+    expect(badge.className).toContain('text-[10px]')
+  })
+
   it('merges custom className', () => {
     const { container } = render(<Badge className="extra-class">Custom</Badge>)
     expect(container.querySelector('span')).toHaveClass('extra-class')

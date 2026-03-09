@@ -33,6 +33,7 @@ const badgeVariants = cva(
         emerald: '',
       },
       size: {
+        xs: 'h-[16px] px-ds-02b text-[10px]',
         sm: 'h-[20px] px-ds-03 text-ds-xs',
         md: 'h-ds-xs px-ds-03 text-ds-sm',
         lg: 'h-ds-xs-plus px-ds-04 text-ds-md',

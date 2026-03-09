@@ -145,7 +145,7 @@ NOTIFICATION SELECTION GUIDE:
 - TopBar: pageTitle, user, onNavigate, onLogout, notificationSlot, mobileLogo
 - AppSidebar: navigation tree with NavItem[], NavGroup[]
 - BottomNavbar: mobile navigation
-- NotificationCenter: notifications[], onDismiss, onRead
+- NotificationCenter: notifications[], onMarkRead, onMarkAllRead, onNavigate, getNotificationRoute?(returns string|null, fallback null), footerSlot?, emptyState?, headerActions?, popoverClassName?, onDismiss?(id)
 - AppCommandPalette: search results, user info
 
 ### Hooks

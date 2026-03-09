@@ -1642,13 +1642,25 @@ Note: getFormFieldA11y() was removed in favor of useFormField() hook.
     onFetchMore: () => void
     onMarkRead: (id: string) => void
     onMarkAllRead: () => void
-    onNotificationClick: (notification: Notification) => void
+    onNavigate: (path: string) => void — called when a notification with a route is clicked
+    getNotificationRoute: (notification: Notification) => string | null — returns route for a notification; defaults to () => null when not provided (no hardcoded routes)
+    footerSlot: ReactNode — content rendered in a sticky footer below the scroll area (e.g., "View all" link)
+    emptyState: ReactNode — replaces the default empty state UI when there are no notifications
+    headerActions: ReactNode — extra action buttons rendered after the "Mark all read" button in the header
+    popoverClassName: string — override default popover dimensions via className
+    onDismiss: (id: string) => void — when provided, each notification shows a dismiss/close button; called with the notification id
 - Example:
   <NotificationCenter
     notifications={notifications}
     onMarkRead={markAsRead}
     onMarkAllRead={markAllAsRead}
-    onNotificationClick={(n) => router.push(`/notifications/${n.id}`)}
+    onNavigate={(path) => router.push(path)}
+    getNotificationRoute={(n) => n.entityType === 'task' ? `/tasks/${n.entityId}` : null}
+    onDismiss={(id) => dismissNotification(id)}
+    footerSlot={<Link href="/notifications">View all notifications</Link>}
+    emptyState={<p>You're all caught up!</p>}
+    headerActions={<Button variant="ghost" size="sm">Settings</Button>}
+    popoverClassName="w-[480px]"
   />
 
 ## NotificationPreferences

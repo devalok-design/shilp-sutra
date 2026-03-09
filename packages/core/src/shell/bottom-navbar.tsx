@@ -95,7 +95,7 @@ const BottomNavbar = React.forwardRef<HTMLElement, BottomNavbarProps>(
   (
     {
       currentPath = '/',
-      user,
+      user: _user,
       primaryItems = [],
       moreItems = [],
       className,

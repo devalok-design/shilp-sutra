@@ -27,6 +27,7 @@ const ColorInput = React.forwardRef<HTMLInputElement, ColorInputProps>(
         <div className="flex items-center gap-ds-03">
           {/* Color swatch / native picker */}
           <label
+            aria-label="Pick a color"
             className={cn(
               'relative flex h-ds-sm w-ds-sm shrink-0 cursor-pointer items-center justify-center overflow-hidden rounded-ds-md border border-border transition-colors hover:border-border-strong',
               disabled && 'cursor-not-allowed opacity-50',

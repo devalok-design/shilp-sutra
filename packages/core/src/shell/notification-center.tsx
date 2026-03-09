@@ -68,6 +68,8 @@ export interface NotificationCenterProps
   emptyState?: React.ReactNode
   /** Content rendered below the notification list as a footer */
   footerSlot?: React.ReactNode
+  /** Additional className for the popover content container */
+  popoverClassName?: string
   /** Additional className */
   className?: string
 }
@@ -230,6 +232,7 @@ const NotificationCenter = React.forwardRef<HTMLButtonElement, NotificationCente
       headerActions,
       emptyState,
       footerSlot,
+      popoverClassName,
       className,
       ...props
     },
@@ -307,7 +310,10 @@ const NotificationCenter = React.forwardRef<HTMLButtonElement, NotificationCente
       </Tooltip>
 
       <PopoverContent
-        className="w-[380px] rounded-ds-xl border border-border bg-layer-01 p-0 shadow-03"
+        className={cn(
+          'w-[380px] rounded-ds-xl border border-border bg-layer-01 p-0 shadow-03',
+          popoverClassName,
+        )}
         sideOffset={8}
         align="end"
       >

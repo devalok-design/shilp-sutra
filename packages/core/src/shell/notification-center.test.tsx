@@ -129,4 +129,18 @@ describe('NotificationCenter', () => {
       expect(screen.getByText('Settings')).toBeInTheDocument()
     })
   })
+
+  describe('popoverClassName', () => {
+    it('merges custom className into popover content', () => {
+      render(
+        <NotificationCenter
+          notifications={[]}
+          popoverClassName="w-[500px] max-h-[600px]"
+        />,
+      )
+      const popover = screen.getByTestId('popover-content')
+      expect(popover).toHaveClass('w-[500px]')
+      expect(popover).toHaveClass('max-h-[600px]')
+    })
+  })
 })

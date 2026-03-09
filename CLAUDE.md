@@ -9,6 +9,25 @@
 - **Lint**: `pnpm lint`
 - **Typecheck**: `pnpm typecheck`
 
+## Publishing Checklist (MANDATORY)
+
+**Do NOT run `npm publish` until EVERY item is confirmed. No exceptions.**
+
+When releasing a new version:
+1. **Typecheck**: `pnpm typecheck` passes
+2. **Tests**: `pnpm test` — all pass
+3. **Build**: `pnpm build` — all packages build
+4. **CHANGELOG.md**: Updated with all changes, breaking changes clearly marked
+5. **llms.txt**: Breaking changes section updated. Any new/changed component APIs documented.
+6. **llms-full.txt**: Per-component entries updated for changed APIs
+7. **Version bump**: Correct semver (breaking = minor while 0.x, patch for fixes)
+8. **Git commit + push**: All docs and version bumps committed
+9. **FINAL REVIEW**: Re-read the diff of all changes since last release. Confirm docs match code.
+10. **npm publish**: Only now — `npm publish --access public` per changed package
+11. **Send DS Notice**: If breaking changes, file issue on consumer repos via /send-karm-notice
+
+If you realize docs were incomplete after publishing, immediately publish a patch version.
+
 ## Consumer AI Agent Feedback Protocol
 
 This repo receives feedback from AI agents working on consumer apps (e.g., Karm).

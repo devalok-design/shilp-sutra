@@ -23,14 +23,20 @@ export default defineConfig({
     },
     rollupOptions: {
       external: (id) => {
-        // Externalize PNG imports — they'll be handled as static assets
+        // Externalize PNG imports — handled as static assets
         if (id.endsWith('.png')) return true
-        const externals = ['react', 'react-dom', 'react/jsx-runtime', 'clsx', 'tailwind-merge']
-        return externals.includes(id)
+        // React — external
+        if (/^react($|\/)/.test(id)) return true
+        if (/^react-dom($|\/)/.test(id)) return true
+        // Everything else (clsx, tailwind-merge) gets bundled
+        return false
       },
       output: {
-        preserveModules: true,
-        preserveModulesRoot: 'src',
+        entryFileNames: '[name].js',
+        chunkFileNames: '_chunks/[name].js',
+        manualChunks(id) {
+          if (id.includes('node_modules')) return 'vendor'
+        },
       },
     },
     cssCodeSplit: true,

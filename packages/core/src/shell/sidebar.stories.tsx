@@ -15,7 +15,7 @@ import {
   IconUserPlus,
   IconSettings,
 } from '@tabler/icons-react'
-import type { NavGroup, SidebarUser } from './sidebar'
+import type { NavGroup, NavItem, SidebarFooterConfig, SidebarUser } from './sidebar'
 
 // ── Mock Data ────────────────────────────────────────────────
 
@@ -197,5 +197,135 @@ export const DeepNestedActiveRoute: Story = {
     user: mockUser,
     navGroups: [mainNavGroup, secondaryNavGroup, adminNavGroup],
     footerLinks: mockFooterLinks,
+  },
+}
+
+// ── New Mock Data (S9-S14) ──────────────────────────────────
+
+const navGroupWithChildren: NavGroup = {
+  label: 'Work',
+  items: [
+    { title: 'Dashboard', href: '/', icon: <IconLayoutDashboard />, exact: true },
+    { title: 'My Tasks', href: '/my-tasks', icon: <IconListCheck />, badge: 5 },
+    {
+      title: 'Projects',
+      href: '/projects',
+      icon: <IconLayoutKanban />,
+      children: [
+        { title: 'Karm V2', href: '/projects/abc/board' },
+        { title: 'Website Redesign', href: '/projects/def/board' },
+        { title: 'Design System', href: '/projects/ghi/board' },
+      ],
+    },
+  ],
+}
+
+const navGroupWithAction: NavGroup = {
+  label: 'Projects',
+  items: [
+    { title: 'All Projects', href: '/projects', icon: <IconLayoutKanban /> },
+  ],
+  action: <button aria-label="New project"><IconUserPlus size={14} /></button>,
+}
+
+// ── New Stories (S9-S14) ────────────────────────────────────
+
+export const CollapsibleChildren: Story = {
+  args: {
+    currentPath: '/projects/abc/board',
+    user: mockUser,
+    navGroups: [navGroupWithChildren, secondaryNavGroup],
+    footerLinks: mockFooterLinks,
+  },
+}
+
+export const WithBadges: Story = {
+  args: {
+    currentPath: '/',
+    user: mockUser,
+    navGroups: [
+      {
+        label: 'Main',
+        items: [
+          { title: 'Dashboard', href: '/', icon: <IconLayoutDashboard />, exact: true },
+          { title: 'My Tasks', href: '/my-tasks', icon: <IconListCheck />, badge: 12 },
+          { title: 'Messages', href: '/messages', icon: <IconBook />, badge: 'New' },
+          { title: 'Inbox', href: '/inbox', icon: <IconCalendarCheck />, badge: 150 },
+        ],
+      },
+    ],
+    footerLinks: mockFooterLinks,
+  },
+}
+
+export const WithGroupAction: Story = {
+  args: {
+    currentPath: '/projects',
+    user: mockUser,
+    navGroups: [navGroupWithAction],
+    footerLinks: mockFooterLinks,
+  },
+}
+
+export const StructuredFooter: Story = {
+  args: {
+    currentPath: '/',
+    user: mockUser,
+    navGroups: [mainNavGroup],
+    footer: {
+      slot: (
+        <a href="/changelog" className="text-ds-sm text-text-placeholder hover:text-interactive">
+          What's new in v2.4?
+        </a>
+      ),
+      links: [
+        { label: 'Terms', href: '/terms' },
+        { label: 'Privacy', href: '/privacy-policy' },
+      ],
+      version: 'v2.4.1',
+    },
+  },
+}
+
+export const WithHeaderSlot: Story = {
+  args: {
+    currentPath: '/',
+    user: mockUser,
+    navGroups: [mainNavGroup, secondaryNavGroup],
+    headerSlot: (
+      <div className="flex items-center gap-ds-03 rounded-ds-lg bg-layer-02 px-ds-04 py-ds-05">
+        <div className="h-3 w-3 rounded-full bg-green-500" />
+        <span className="text-ds-sm text-text-primary">Online — 9:42 AM</span>
+      </div>
+    ),
+    footerLinks: mockFooterLinks,
+  },
+}
+
+export const AllFeatures: Story = {
+  args: {
+    currentPath: '/projects/abc/board',
+    user: mockUser,
+    navGroups: [navGroupWithChildren, secondaryNavGroup],
+    headerSlot: (
+      <div className="flex items-center gap-ds-03 rounded-ds-lg bg-layer-02 px-ds-04 py-ds-05">
+        <div className="h-3 w-3 rounded-full bg-green-500" />
+        <span className="text-ds-sm text-text-primary">Online — 9:42 AM</span>
+      </div>
+    ),
+    preFooterSlot: (
+      <div className="px-ds-04 py-ds-03">
+        <div className="rounded-ds-lg bg-layer-02 px-ds-04 py-ds-03 text-ds-sm text-text-placeholder">
+          Upgrade to Pro for unlimited projects
+        </div>
+      </div>
+    ),
+    footer: {
+      links: [
+        { label: 'Terms', href: '/terms' },
+        { label: 'Privacy', href: '/privacy' },
+      ],
+      version: 'v2.4.1',
+    },
   },
 }

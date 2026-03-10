@@ -45,3 +45,40 @@ describe('AppSidebar', () => {
     expect(screen.getByText('Dashboard')).toBeInTheDocument()
   })
 })
+
+describe('S13 — content slots', () => {
+  const baseProps = {
+    navGroups: [
+      {
+        label: 'Main',
+        items: [{ title: 'Dashboard', href: '/', icon: <TestIcon />, exact: true }],
+      },
+    ],
+  }
+
+  it('renders headerSlot between user info and navigation', () => {
+    renderSidebar({
+      ...baseProps,
+      user: { name: 'Test User' },
+      headerSlot: <div data-testid="header-slot">Widget</div>,
+    })
+    expect(screen.getByTestId('header-slot')).toBeInTheDocument()
+    expect(screen.getByText('Widget')).toBeInTheDocument()
+  })
+
+  it('renders preFooterSlot between navigation and footer', () => {
+    renderSidebar({
+      ...baseProps,
+      preFooterSlot: <div data-testid="pre-footer-slot">Banner</div>,
+      footerLinks: [{ label: 'Terms', href: '/terms' }],
+    })
+    expect(screen.getByTestId('pre-footer-slot')).toBeInTheDocument()
+    expect(screen.getByText('Banner')).toBeInTheDocument()
+  })
+
+  it('does not render extra DOM when slots are not provided', () => {
+    const { container } = renderSidebar(baseProps)
+    expect(container.querySelector('[data-testid="header-slot"]')).toBeNull()
+    expect(container.querySelector('[data-testid="pre-footer-slot"]')).toBeNull()
+  })
+})

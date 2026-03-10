@@ -75,6 +75,10 @@ export interface AppSidebarProps
   logo?: React.ReactNode
   /** Footer links rendered at the bottom of the sidebar */
   footerLinks?: Array<{ label: string; href: string }>
+  /** Content rendered between user header and navigation */
+  headerSlot?: React.ReactNode
+  /** Content rendered between navigation and footer */
+  preFooterSlot?: React.ReactNode
   /** Additional className for the root sidebar element */
   className?: string
 }
@@ -122,6 +126,8 @@ const AppSidebar = React.forwardRef<HTMLDivElement, AppSidebarProps>(
       user,
       navGroups = [],
       logo,
+      headerSlot,
+      preFooterSlot,
       footerLinks = [],
       className,
       ...props
@@ -179,6 +185,14 @@ const AppSidebar = React.forwardRef<HTMLDivElement, AppSidebarProps>(
 
         <SidebarSeparator />
 
+        {/* Header Slot (S13) */}
+        {headerSlot && (
+          <>
+            {headerSlot}
+            <SidebarSeparator />
+          </>
+        )}
+
         {/* Navigation Groups */}
         <SidebarContent className="no-scrollbar px-ds-04">
           {navGroups.map((group, idx) => (
@@ -203,6 +217,14 @@ const AppSidebar = React.forwardRef<HTMLDivElement, AppSidebarProps>(
             </div>
           ))}
         </SidebarContent>
+
+        {/* Pre-Footer Slot (S13) */}
+        {preFooterSlot && (
+          <>
+            <SidebarSeparator />
+            {preFooterSlot}
+          </>
+        )}
 
         {/* Footer */}
         {footerLinks.length > 0 && (

@@ -72,7 +72,7 @@ const Stepper = React.forwardRef<HTMLDivElement, StepperProps>(
               {index < steps.length - 1 && (
                 <div
                   className={cn(
-                    'flex-1',
+                    'flex-1 transition-colors duration-moderate-01 ease-productive-standard',
                     orientation === 'vertical'
                       ? 'ml-ds-04 w-ds-01 min-h-ds-05'
                       : 'h-ds-01 min-w-ds-05',
@@ -138,7 +138,7 @@ const Step = React.forwardRef<HTMLDivElement, StepInternalProps>(
           )}
         >
           {icon || (state === 'completed' ? (
-            <svg className="w-ico-sm h-ico-sm" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2.5} strokeLinecap="round" strokeLinejoin="round">
+            <svg className="w-ico-sm h-ico-sm animate-check-pop" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2.5} strokeLinecap="round" strokeLinejoin="round">
               <polyline points="20 6 9 17 4 12" />
             </svg>
           ) : (

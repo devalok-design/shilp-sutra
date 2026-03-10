@@ -101,9 +101,15 @@ export interface AlertProps
 const Alert = React.forwardRef<HTMLDivElement, AlertProps>(
   ({ className, variant = 'subtle', color = 'info', title, onDismiss, children, ...props }, ref) => {
     const Icon = ALERT_ICONS[color ?? 'info']
+    const [isDismissing, setIsDismissing] = React.useState(false)
+
+    const handleDismiss = React.useCallback(() => {
+      setIsDismissing(true)
+      setTimeout(() => onDismiss?.(), 150) // matches duration-moderate-01
+    }, [onDismiss])
 
     return (
-      <div ref={ref} className={cn(alertVariants({ variant, color }), className)} role="alert" {...props}>
+      <div ref={ref} className={cn(alertVariants({ variant, color }), isDismissing && 'animate-slide-out-up', className)} role="alert" {...props}>
         <Icon className="mt-ds-01 h-ico-md w-ico-md shrink-0" aria-hidden="true" />
         <div className="flex-1 min-w-0">
           {title && <p className="text-ds-md font-semibold mb-ds-01">{title}</p>}
@@ -112,7 +118,7 @@ const Alert = React.forwardRef<HTMLDivElement, AlertProps>(
         {onDismiss && (
           <button
             type="button"
-            onClick={onDismiss}
+            onClick={handleDismiss}
             className="shrink-0 min-h-ds-xs min-w-ds-xs flex items-center justify-center rounded-ds-sm text-icon-secondary transition-colors hover:text-icon-primary hover:bg-field focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-focus"
             aria-label="Dismiss"
           >

@@ -75,16 +75,22 @@ export interface BannerProps
 const Banner = React.forwardRef<HTMLDivElement, BannerProps>(
   ({ className, color = 'info', action, onDismiss, children, ...props }, ref) => {
     const Icon = BANNER_ICONS[color ?? 'info']
+    const [isDismissing, setIsDismissing] = React.useState(false)
+
+    const handleDismiss = React.useCallback(() => {
+      setIsDismissing(true)
+      setTimeout(() => onDismiss?.(), 150) // matches duration-moderate-01
+    }, [onDismiss])
 
     return (
-      <div ref={ref} className={cn(bannerVariants({ color }), className)} role="alert" {...props}>
+      <div ref={ref} className={cn(bannerVariants({ color }), isDismissing && 'animate-collapse-out overflow-hidden', className)} role="alert" {...props}>
         <Icon className="h-ico-md w-ico-md shrink-0" aria-hidden="true" />
         <span className="flex-1">{children}</span>
         {action && <span className="shrink-0">{action}</span>}
         {onDismiss && (
           <button
             type="button"
-            onClick={onDismiss}
+            onClick={handleDismiss}
             className="shrink-0 min-h-ds-xs min-w-ds-xs flex items-center justify-center rounded-ds-sm text-icon-secondary transition-colors hover:text-icon-primary hover:bg-field focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-focus"
             aria-label="Dismiss"
           >

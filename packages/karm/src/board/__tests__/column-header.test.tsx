@@ -56,7 +56,7 @@ interface WrapperOptions {
   onColumnDelete?: (id: string) => void
   onColumnToggleVisibility?: (id: string, visible: boolean) => void
   onColumnWipLimitChange?: (id: string, limit: number | null) => void
-  onTaskAdd?: (columnId: string, title: string) => void
+  onTaskAdd?: (columnId: string, options: { title: string; ownerId?: string; dueDate?: string }) => void
 }
 
 function renderHeader(opts: WrapperOptions = {}) {

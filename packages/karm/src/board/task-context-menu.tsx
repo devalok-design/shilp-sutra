@@ -25,8 +25,8 @@ import {
   IconTrash,
 } from '@tabler/icons-react'
 import { useBoardContext } from './board-context'
+import { collectAllMembers, collectAllLabels } from './board-utils'
 import { PRIORITY_COLORS } from './board-constants'
-import type { BoardMember } from './board-types'
 
 // ============================================================
 // Helpers
@@ -38,40 +38,6 @@ const PRIORITY_OPTIONS = [
   { value: 'HIGH', label: 'High', icon: IconArrowUp },
   { value: 'URGENT', label: 'Urgent', icon: IconAlertTriangle },
 ] as const
-
-function collectAllMembers(
-  columns: { tasks: { owner: BoardMember | null; assignees: BoardMember[] }[] }[],
-): BoardMember[] {
-  const seen = new Set<string>()
-  const members: BoardMember[] = []
-  for (const col of columns) {
-    for (const task of col.tasks) {
-      if (task.owner && !seen.has(task.owner.id)) {
-        seen.add(task.owner.id)
-        members.push(task.owner)
-      }
-      for (const a of task.assignees) {
-        if (!seen.has(a.id)) {
-          seen.add(a.id)
-          members.push(a)
-        }
-      }
-    }
-  }
-  return members
-}
-
-function collectAllLabels(
-  columns: { tasks: { labels: string[] }[] }[],
-): string[] {
-  const set = new Set<string>()
-  for (const col of columns) {
-    for (const task of col.tasks) {
-      for (const l of task.labels) set.add(l)
-    }
-  }
-  return Array.from(set).sort()
-}
 
 // ============================================================
 // Component

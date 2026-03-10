@@ -151,6 +151,7 @@ function TaskCardVisual({
     <div
       role="group"
       tabIndex={0}
+      data-task-id={task.id}
       aria-label={`Task ${task.taskId}: ${task.title}`}
       className={cn(
         taskCardVariants({
@@ -403,6 +404,7 @@ function TaskCardCompactVisual({
     <div
       role="group"
       tabIndex={0}
+      data-task-id={task.id}
       aria-label={`Task ${task.taskId}: ${task.title}`}
       className={cn(
         'relative',

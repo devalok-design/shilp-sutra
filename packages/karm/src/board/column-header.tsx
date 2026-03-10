@@ -27,6 +27,7 @@ import {
   IconCheck,
 } from '@tabler/icons-react'
 import { useBoardContext } from './board-context'
+import { collectAllMembers } from './board-utils'
 import { COLUMN_ACCENT_COLORS } from './board-constants'
 import type { BoardColumn, BoardMember } from './board-types'
 
@@ -116,26 +117,6 @@ export interface ColumnHeaderProps {
 // ============================================================
 // Component
 // ============================================================
-
-function collectAllMembers(columns: BoardColumn[]): BoardMember[] {
-  const seen = new Set<string>()
-  const members: BoardMember[] = []
-  for (const col of columns) {
-    for (const task of col.tasks) {
-      if (task.owner && !seen.has(task.owner.id)) {
-        seen.add(task.owner.id)
-        members.push(task.owner)
-      }
-      for (const a of task.assignees) {
-        if (!seen.has(a.id)) {
-          seen.add(a.id)
-          members.push(a)
-        }
-      }
-    }
-  }
-  return members
-}
 
 export function ColumnHeader({ column, index }: ColumnHeaderProps) {
   const {

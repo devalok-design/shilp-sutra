@@ -58,8 +58,7 @@ export function useBoardKeyboard(containerRef: RefObject<HTMLElement | null>) {
   )
 
   const scrollTaskIntoView = useCallback((taskId: string) => {
-    const el = document.querySelector(`[aria-label*="${taskId}"]`) ??
-      document.querySelector(`[data-task-id="${taskId}"]`)
+    const el = document.querySelector(`[data-task-id="${taskId}"]`)
     if (el) {
       el.scrollIntoView({ block: 'nearest', behavior: 'smooth' })
     }

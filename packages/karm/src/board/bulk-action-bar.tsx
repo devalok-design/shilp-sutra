@@ -21,7 +21,7 @@ import {
   IconTrash,
 } from '@tabler/icons-react'
 import { useBoardContext } from './board-context'
-import type { BoardMember } from './board-types'
+import { collectAllMembers } from './board-utils'
 import { PRIORITY_COLORS } from './board-constants'
 
 // ============================================================
@@ -29,28 +29,6 @@ import { PRIORITY_COLORS } from './board-constants'
 // ============================================================
 
 const PRIORITIES = ['LOW', 'MEDIUM', 'HIGH', 'URGENT'] as const
-
-function collectAllMembers(
-  columns: { tasks: { owner: BoardMember | null; assignees: BoardMember[] }[] }[],
-): BoardMember[] {
-  const seen = new Set<string>()
-  const members: BoardMember[] = []
-  for (const col of columns) {
-    for (const task of col.tasks) {
-      if (task.owner && !seen.has(task.owner.id)) {
-        seen.add(task.owner.id)
-        members.push(task.owner)
-      }
-      for (const a of task.assignees) {
-        if (!seen.has(a.id)) {
-          seen.add(a.id)
-          members.push(a)
-        }
-      }
-    }
-  }
-  return members
-}
 
 // ============================================================
 // Component

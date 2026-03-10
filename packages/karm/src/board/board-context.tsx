@@ -134,7 +134,7 @@ export function BoardProvider({
   }, [])
   const selectRange = useCallback(
     (fromId: string, toId: string) => {
-      const allTasks = columns.flatMap((c) => c.tasks)
+      const allTasks = filteredColumns.flatMap((c) => c.tasks)
       const fromIdx = allTasks.findIndex((t) => t.id === fromId)
       const toIdx = allTasks.findIndex((t) => t.id === toId)
       if (fromIdx === -1 || toIdx === -1) return
@@ -146,7 +146,7 @@ export function BoardProvider({
         return next
       })
     },
-    [columns],
+    [filteredColumns],
   )
   const selectAll = useCallback(() => {
     const allIds = filteredColumns.flatMap((c) => c.tasks.map((t) => t.id))

@@ -111,12 +111,14 @@ const StatCard = React.forwardRef<HTMLDivElement, StatCardProps>(
             </span>
           )}
         </div>
-        <p className="text-ds-3xl font-semibold text-text-primary tabular-nums">
-          {value}
-        </p>
+        <div className="overflow-hidden">
+          <p className="inline-block animate-count-up text-ds-3xl font-semibold text-text-primary tabular-nums">
+            {value}
+          </p>
+        </div>
         {delta && (
           <div className={cn('mt-ds-03 flex items-center gap-ds-02 text-ds-sm font-medium', deltaColour)}>
-            <DeltaIcon className="h-ico-sm w-ico-sm" aria-hidden="true" />
+            <DeltaIcon className="h-ico-sm w-ico-sm animate-stamp" aria-hidden="true" />
             <span>{delta.value}</span>
           </div>
         )}

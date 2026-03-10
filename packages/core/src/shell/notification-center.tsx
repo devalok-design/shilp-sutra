@@ -166,7 +166,7 @@ function NotificationItem({
       onClick={handleClick}
       onKeyDown={handleKeyDown}
       className={cn(
-        'group relative flex w-full cursor-pointer items-start gap-ds-04 px-ds-05 py-ds-04 text-left transition-colors',
+        'group relative flex w-full cursor-pointer items-start gap-ds-04 px-ds-05 py-ds-04 text-left transition-[color,transform] duration-fast-02 hover:translate-x-0.5',
         'hover:bg-layer-02',
         !notification.isRead && 'bg-interactive/[0.03]',
       )}
@@ -231,7 +231,7 @@ function NotificationItem({
             onDismiss(notification.id)
           }}
           onKeyDown={(e) => e.stopPropagation()}
-          className="absolute right-ds-03 top-ds-03 hidden rounded-ds-sm p-ds-01 text-text-placeholder hover:bg-layer-03 hover:text-text-secondary group-hover:flex group-focus-within:flex"
+          className="absolute right-ds-03 top-ds-03 hidden rounded-ds-sm p-ds-01 text-text-placeholder transition-colors duration-fast-02 hover:bg-layer-03 hover:text-text-secondary group-hover:flex group-focus-within:flex"
         >
           <IconX className="h-ico-sm w-ico-sm" />
         </button>
@@ -327,7 +327,7 @@ const NotificationCenter = React.forwardRef<HTMLButtonElement, NotificationCente
             >
               <IconBell className="h-ico-sm w-ico-sm" aria-hidden="true" />
               {unreadCount > 0 && (
-                <span className="absolute -right-ds-01 -top-ds-01 flex h-4 min-w-4 items-center justify-center rounded-ds-full bg-interactive px-ds-02 text-ds-xs font-semibold text-text-on-color">
+                <span className="absolute -right-ds-01 -top-ds-01 flex h-4 min-w-4 items-center justify-center rounded-ds-full bg-interactive px-ds-02 text-ds-xs font-semibold text-text-on-color animate-wiggle">
                   {unreadCount > 99 ? '99+' : unreadCount}
                 </span>
               )}

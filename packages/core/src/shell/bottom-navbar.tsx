@@ -64,7 +64,7 @@ function BottomNavLink({
       aria-label={item.title}
       aria-current={isActive ? 'page' : undefined}
       className={cn(
-        'flex h-16 max-w-[70px] flex-1 cursor-pointer flex-col items-center gap-ds-02 p-ds-02 pt-0 text-ds-sm',
+        'flex h-16 max-w-[70px] flex-1 cursor-pointer flex-col items-center gap-ds-02 p-ds-02 pt-0 text-ds-sm active:animate-subtle-bounce',
         isActive
           ? 'font-semibold text-interactive'
           : 'text-text-helper',
@@ -73,8 +73,8 @@ function BottomNavLink({
       <div className="relative flex w-full flex-col items-center gap-ds-02">
         <div
           className={cn(
-            'absolute top-0 h-[3px] w-full rounded-b-ds-sm bg-interactive p-0 transition-opacity duration-slow-01',
-            isActive ? 'opacity-100' : 'opacity-0',
+            'absolute top-0 h-[3px] w-full rounded-b-ds-sm bg-interactive p-0 transition-[opacity,transform] duration-moderate-01',
+            isActive ? 'opacity-100 animate-tab-indicator' : 'opacity-0 scale-x-0',
           )}
           aria-hidden="true"
         />
@@ -203,7 +203,7 @@ const BottomNavbar = React.forwardRef<HTMLElement, BottomNavbarProps>(
             aria-label="More navigation options"
             aria-expanded={showMore}
             className={cn(
-              'flex h-16 max-w-[70px] flex-1 cursor-pointer flex-col items-center gap-ds-02 p-ds-02 pt-0 text-ds-sm',
+              'flex h-16 max-w-[70px] flex-1 cursor-pointer flex-col items-center gap-ds-02 p-ds-02 pt-0 text-ds-sm active:animate-subtle-bounce',
               showMore || isMoreActive
                 ? 'font-semibold text-interactive'
                 : 'text-text-helper',
@@ -212,8 +212,8 @@ const BottomNavbar = React.forwardRef<HTMLElement, BottomNavbarProps>(
             <div className="relative flex w-full flex-col items-center gap-ds-02">
               <div
                 className={cn(
-                  'absolute top-0 h-[3px] w-full rounded-b-ds-sm bg-interactive p-0 transition-opacity duration-slow-01',
-                  showMore || isMoreActive ? 'opacity-100' : 'opacity-0',
+                  'absolute top-0 h-[3px] w-full rounded-b-ds-sm bg-interactive p-0 transition-[opacity,transform] duration-moderate-01',
+                  showMore || isMoreActive ? 'opacity-100 animate-tab-indicator' : 'opacity-0 scale-x-0',
                 )}
                 aria-hidden="true"
               />

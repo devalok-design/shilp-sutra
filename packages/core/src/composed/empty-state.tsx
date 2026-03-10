@@ -55,7 +55,7 @@ const EmptyState = React.forwardRef<HTMLDivElement, EmptyStateProps>(
       >
         <div
           className={cn(
-            'flex items-center justify-center rounded-ds-xl bg-layer-02',
+            'flex items-center justify-center rounded-ds-xl bg-layer-02 animate-float',
             compact ? 'h-ds-md w-ds-md' : 'h-ds-lg w-ds-lg',
           )}
         >

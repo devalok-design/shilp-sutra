@@ -5,6 +5,27 @@ All notable changes to `@devalok/shilp-sutra` will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [Unreleased]
+
+### Changed (BREAKING)
+- **Build**: All runtime dependencies (`@floating-ui/react-dom`, `aria-hidden`, `react-remove-scroll`, `clsx`, `class-variance-authority`, `tailwind-merge`) are now bundled into the compiled output instead of listed as `dependencies`. Consumers who were importing these packages directly (not through shilp-sutra) must install them separately.
+- **Tiptap**: All `@tiptap/*` packages moved from `peerDependencies` to bundled build-time dependencies. Consumers no longer need to install tiptap separately — the RichTextEditor ships as a self-contained bundle. Tiptap code is in a dedicated `_chunks/tiptap.js` chunk (only loaded when importing `composed/rich-text-editor`).
+
+### Fixed
+- **React #527**: Eliminated dual React instances in Next.js 15 + pnpm consumers by bundling all runtime deps into `_chunks/vendor.js` and tiptap into `_chunks/tiptap.js`. Only `react`, `react-dom`, and remaining peer dependencies stay external.
+
+### shilp-sutra-karm
+- **Build**: All runtime dependencies (`@dnd-kit/*`, `react-markdown`, `date-fns`, `clsx`, `cva`, `tailwind-merge`) bundled into compiled output.
+
+### shilp-sutra-brand
+- **Build**: `clsx` and `tailwind-merge` bundled into compiled output.
+
+### Migration
+Add to `next.config.js` (required for Next.js + pnpm consumers):
+```js
+transpilePackages: ["@devalok/shilp-sutra", "@devalok/shilp-sutra-karm", "@devalok/shilp-sutra-brand"]
+```
+
 ## [0.8.4] — 2026-03-10
 
 ### Fixed

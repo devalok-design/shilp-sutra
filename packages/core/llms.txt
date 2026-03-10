@@ -13,6 +13,13 @@
 
 pnpm add @devalok/shilp-sutra
 
+### Next.js Setup (Required for Next.js + pnpm)
+
+Add to next.config.js:
+```js
+transpilePackages: ["@devalok/shilp-sutra", "@devalok/shilp-sutra-karm", "@devalok/shilp-sutra-brand"]
+```
+
 // Import components (barrel):
 import { Button, Card, Dialog } from '@devalok/shilp-sutra'
 

@@ -82,3 +82,55 @@ describe('S13 — content slots', () => {
     expect(container.querySelector('[data-testid="pre-footer-slot"]')).toBeNull()
   })
 })
+
+describe('S10 — badge', () => {
+  it('renders a numeric badge on a nav item', () => {
+    const groups: NavGroup[] = [
+      {
+        label: 'Main',
+        items: [
+          { title: 'My Tasks', href: '/tasks', icon: <TestIcon />, badge: 5 },
+        ],
+      },
+    ]
+    renderSidebar({ navGroups: groups })
+    expect(screen.getByText('5')).toBeInTheDocument()
+  })
+
+  it('renders a string badge on a nav item', () => {
+    const groups: NavGroup[] = [
+      {
+        label: 'Main',
+        items: [
+          { title: 'Messages', href: '/messages', icon: <TestIcon />, badge: 'New' },
+        ],
+      },
+    ]
+    renderSidebar({ navGroups: groups })
+    expect(screen.getByText('New')).toBeInTheDocument()
+  })
+
+  it('caps numeric badges at 99+', () => {
+    const groups: NavGroup[] = [
+      {
+        label: 'Main',
+        items: [
+          { title: 'Inbox', href: '/inbox', icon: <TestIcon />, badge: 150 },
+        ],
+      },
+    ]
+    renderSidebar({ navGroups: groups })
+    expect(screen.getByText('99+')).toBeInTheDocument()
+  })
+
+  it('does not render badge when not provided', () => {
+    const groups: NavGroup[] = [
+      {
+        label: 'Main',
+        items: [{ title: 'Home', href: '/', icon: <TestIcon />, exact: true }],
+      },
+    ]
+    const { container } = renderSidebar({ navGroups: groups })
+    expect(container.querySelector('[data-sidebar="menu-badge"]')).toBeNull()
+  })
+})

@@ -48,6 +48,8 @@ export interface NavItem {
   icon: React.ReactNode
   /** When true, the route matches only when the path is exactly equal */
   exact?: boolean
+  /** Badge rendered on the right side of the nav item */
+  badge?: string | number
 }
 
 export interface NavGroup {
@@ -89,6 +91,13 @@ export interface AppSidebarProps
 
 function NavLink({ item, isActive }: { item: NavItem; isActive: boolean }) {
   const Link = useLink()
+  const badgeContent =
+    item.badge != null
+      ? typeof item.badge === 'number' && item.badge > 99
+        ? '99+'
+        : String(item.badge)
+      : null
+
   return (
     <SidebarMenuItem>
       <SidebarMenuButton
@@ -111,6 +120,7 @@ function NavLink({ item, isActive }: { item: NavItem; isActive: boolean }) {
           <span className="text-ds-base">{item.title}</span>
         </Link>
       </SidebarMenuButton>
+      {badgeContent && <SidebarMenuBadge>{badgeContent}</SidebarMenuBadge>}
     </SidebarMenuItem>
   )
 }

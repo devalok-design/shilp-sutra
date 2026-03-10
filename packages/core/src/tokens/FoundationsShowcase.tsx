@@ -41,7 +41,7 @@ const labelStyle: React.CSSProperties = {
 /* ─── Color Palettes ────────────────────────────────────────────── */
 
 const palettes = [
-  { name: 'Pink', prefix: '--pink', steps: [50, 100, 200, 300, 400, 500, 600, 700, 800, 900, 950] },
+  { name: 'Pink', prefix: '--pink', steps: [50, 100, 200, 300, 400, 500, 600, 700, 800, 900, 950, 1000] },
   { name: 'Purple', prefix: '--purple', steps: [50, 100, 200, 300, 400, 500, 600, 700, 800, 900, 950] },
   { name: 'Neutral', prefix: '--neutral', steps: [0, 50, 100, 200, 300, 400, 500, 600, 700, 800, 900, 950] },
   { name: 'Green', prefix: '--green', steps: [50, 100, 200, 300, 400, 500, 600, 700, 800, 900, 950] },

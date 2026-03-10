@@ -1,34 +1,38 @@
 import React from 'react'
-import type { Preview } from '@storybook/react'
-import type { Decorator } from '@storybook/react'
+import type { Preview, Decorator } from '@storybook/react'
 import { TooltipProvider } from '../packages/core/src/ui/tooltip'
 import theme from './theme'
 import '../packages/core/src/tokens/index.css'
 import '../storybook.css'
 
-/* ── Dark-mode toolbar decorator ──────────────────────────────────
-   Toggles the `.dark` class on <html> based on the toolbar selection.
-   Works alongside the storybook-dark-mode addon, which handles the
-   Storybook UI chrome theme.  This decorator controls the *preview*
-   iframe so components render with the correct CSS custom-property set. */
-function ThemeWrapper({ theme: selectedTheme, children }: { theme: string; children: React.ReactNode }) {
-  React.useEffect(() => {
-    document.documentElement.classList.toggle('dark', selectedTheme === 'dark')
-    return () => {
-      document.documentElement.classList.remove('dark')
-    }
-  }, [selectedTheme])
-
-  return React.createElement(React.Fragment, null, children)
-}
-
 const withThemeToggle: Decorator = (Story, context) => {
   const selectedTheme = (context.globals.theme as string) || 'light'
+  const isDark = selectedTheme === 'dark'
+
+  // Toggle .dark on html AND body in the preview iframe
+  React.useEffect(() => {
+    const html = document.documentElement
+    const body = document.body
+    if (isDark) {
+      html.classList.add('dark')
+      body.classList.add('dark')
+    } else {
+      html.classList.remove('dark')
+      body.classList.remove('dark')
+    }
+  }, [isDark])
 
   return React.createElement(
-    ThemeWrapper,
-    { theme: selectedTheme },
-    React.createElement(Story)
+    TooltipProvider,
+    null,
+    React.createElement(
+      'div',
+      {
+        className: isDark ? 'dark story-surface' : 'story-surface',
+        style: { background: 'var(--color-background)', padding: '2rem', borderRadius: '8px' },
+      },
+      React.createElement(Story)
+    )
   )
 }
 
@@ -36,7 +40,7 @@ const preview: Preview = {
   globalTypes: {
     theme: {
       name: 'Theme',
-      description: 'Toggle light / dark mode for component preview',
+      description: 'Toggle light / dark mode',
       toolbar: {
         icon: 'sun',
         items: [
@@ -53,16 +57,6 @@ const preview: Preview = {
   },
   decorators: [
     withThemeToggle,
-    (Story) =>
-      React.createElement(
-        TooltipProvider,
-        null,
-        React.createElement(
-          'div',
-          { className: 'story-surface', style: { background: 'var(--color-background)', padding: '2rem', borderRadius: '8px' } },
-          React.createElement(Story)
-        )
-      ),
   ],
   parameters: {
     backgrounds: { disable: true },
@@ -72,12 +66,6 @@ const preview: Preview = {
         color: /(background|color)$/i,
         date: /Date$/i,
       },
-    },
-    darkMode: {
-      darkClass: ['dark'],
-      lightClass: [],
-      stylePreview: true,
-      classTarget: 'html',
     },
     docs: { theme },
     options: {

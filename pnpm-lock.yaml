@@ -171,45 +171,28 @@ importers:
 
   packages/brand:
     dependencies:
-      clsx:
-        specifier: ^2.1.1
-        version: 2.1.1
       react:
         specifier: ^18 || ^19
         version: 19.2.4
       react-dom:
         specifier: ^18 || ^19
         version: 19.2.4(react@19.2.4)
+    devDependencies:
+      clsx:
+        specifier: ^2.1.1
+        version: 2.1.1
       tailwind-merge:
         specifier: ^3.0.1
         version: 3.5.0
 
   packages/core:
     dependencies:
-      '@floating-ui/react-dom':
-        specifier: ^2.1.7
-        version: 2.1.7(react-dom@19.2.4(react@19.2.4))(react@19.2.4)
-      aria-hidden:
-        specifier: ^1.2.4
-        version: 1.2.6
-      class-variance-authority:
-        specifier: ^0.7.1
-        version: 0.7.1
-      clsx:
-        specifier: ^2.1.1
-        version: 2.1.1
       react:
         specifier: ^18 || ^19
         version: 19.2.4
       react-dom:
         specifier: ^18 || ^19
         version: 19.2.4(react@19.2.4)
-      react-remove-scroll:
-        specifier: ^2.6.3
-        version: 2.7.2(@types/react@18.3.28)(react@19.2.4)
-      tailwind-merge:
-        specifier: ^3.0.1
-        version: 3.5.0
       tailwindcss:
         specifier: ^3.4.0
         version: 3.4.19
@@ -220,6 +203,9 @@ importers:
       '@emoji-mart/react':
         specifier: ^1.1.1
         version: 1.1.1(emoji-mart@5.6.0)(react@19.2.4)
+      '@floating-ui/react-dom':
+        specifier: ^2.1.7
+        version: 2.1.7(react-dom@19.2.4(react@19.2.4))(react@19.2.4)
       '@tabler/icons-react':
         specifier: ^3.37.1
         version: 3.37.1(react@19.2.4)
@@ -268,6 +254,15 @@ importers:
       '@tiptap/suggestion':
         specifier: ^2.27.2
         version: 2.27.2(@tiptap/core@2.27.2(@tiptap/pm@2.27.2))(@tiptap/pm@2.27.2)
+      aria-hidden:
+        specifier: ^1.2.4
+        version: 1.2.6
+      class-variance-authority:
+        specifier: ^0.7.1
+        version: 0.7.1
+      clsx:
+        specifier: ^2.1.1
+        version: 2.1.1
       d3-array:
         specifier: ^3.2.4
         version: 3.2.4
@@ -304,9 +299,28 @@ importers:
       react-markdown:
         specifier: ^10.1.0
         version: 10.1.0(@types/react@18.3.28)(react@19.2.4)
+      react-remove-scroll:
+        specifier: ^2.6.3
+        version: 2.7.2(@types/react@18.3.28)(react@19.2.4)
+      tailwind-merge:
+        specifier: ^3.0.1
+        version: 3.5.0
 
   packages/karm:
     dependencies:
+      '@tabler/icons-react':
+        specifier: ^3.0.0
+        version: 3.37.1(react@19.2.4)
+      react:
+        specifier: ^18 || ^19
+        version: 19.2.4
+      react-dom:
+        specifier: ^18 || ^19
+        version: 19.2.4(react@19.2.4)
+    devDependencies:
+      '@devalok/shilp-sutra':
+        specifier: workspace:*
+        version: link:../core
       '@dnd-kit/core':
         specifier: ^6.3.1
         version: 6.3.1(react-dom@19.2.4(react@19.2.4))(react@19.2.4)
@@ -316,9 +330,6 @@ importers:
       '@dnd-kit/utilities':
         specifier: ^3.2.2
         version: 3.2.2(react@19.2.4)
-      '@tabler/icons-react':
-        specifier: ^3.0.0
-        version: 3.37.1(react@19.2.4)
       class-variance-authority:
         specifier: ^0.7.1
         version: 0.7.1
@@ -328,22 +339,12 @@ importers:
       date-fns:
         specifier: ^4.1.0
         version: 4.1.0
-      react:
-        specifier: ^18 || ^19
-        version: 19.2.4
-      react-dom:
-        specifier: ^18 || ^19
-        version: 19.2.4(react@19.2.4)
       react-markdown:
         specifier: ^10.1.0
         version: 10.1.0(@types/react@18.3.28)(react@19.2.4)
       tailwind-merge:
         specifier: ^3.0.1
         version: 3.5.0
-    devDependencies:
-      '@devalok/shilp-sutra':
-        specifier: workspace:*
-        version: link:../core
 
 packages:
 

@@ -79,7 +79,6 @@ export default defineConfig({
         /^react-dom($|\/)/,
         /^next($|\/)/,
         /^@tanstack\//,
-        /^@tiptap\//,
         /^@emoji-mart\//,
         /^d3-/,
         /^@tabler\/icons-react($|\/)/,
@@ -92,7 +91,11 @@ export default defineConfig({
         entryFileNames: '[name].js',
         chunkFileNames: '_chunks/[name].js',
         manualChunks(id) {
-          if (id.includes('node_modules')) return 'vendor'
+          if (id.includes('node_modules')) {
+            if (id.includes('@tiptap/') || id.includes('prosemirror'))
+              return 'tiptap'
+            return 'vendor'
+          }
           if (id.includes('primitives/')) return 'primitives'
         },
       },

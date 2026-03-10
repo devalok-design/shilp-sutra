@@ -5,6 +5,11 @@ All notable changes to `@devalok/shilp-sutra` will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.9.1] — 2026-03-10
+
+### Fixed
+- **Server components broken**: `_chunks/vendor.js` had `"use client"` injected, breaking server-safe components (Skeleton, StatusBadge, etc.) that import cva/clsx. Split vendor chunk into `vendor-utils.js` (pure functions, no directive) and `vendor-client.js` (`"use client"`, @floating-ui + react-remove-scroll + transitive deps).
+
 ## [0.9.0] — 2026-03-10
 
 ### Changed (BREAKING)

@@ -40,6 +40,9 @@ const SERVER_SAFE = new Set([
   // utility modules
   'ui/lib/utils',
   'ui/lib/motion',
+
+  // vendor-utils chunk — pure functions (clsx, cva, tailwind-merge), no React
+  '_chunks/vendor-utils',
 ])
 
 // ── Directories to skip entirely ────────────────────────────────────────────

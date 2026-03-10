@@ -94,7 +94,20 @@ export default defineConfig({
           if (id.includes('node_modules')) {
             if (id.includes('@tiptap/') || id.includes('prosemirror'))
               return 'tiptap'
-            return 'vendor'
+            // Client-only deps that use React hooks/DOM — includes transitive deps
+            if (
+              id.includes('@floating-ui/') ||
+              id.includes('aria-hidden') ||
+              id.includes('react-remove-scroll') ||
+              id.includes('react-style-singleton') ||
+              id.includes('use-callback-ref') ||
+              id.includes('use-sidecar') ||
+              id.includes('react-clientside-effect') ||
+              id.includes('get-nonce')
+            )
+              return 'vendor-client'
+            // Pure utilities (clsx, cva, tailwind-merge) — must NOT have "use client"
+            return 'vendor-utils'
           }
           if (id.includes('primitives/')) return 'primitives'
         },

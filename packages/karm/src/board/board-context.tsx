@@ -1,3 +1,5 @@
+'use client'
+
 // packages/karm/src/board/board-context.tsx
 import {
   createContext,

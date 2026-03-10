@@ -55,6 +55,8 @@ export interface NavItem {
 export interface NavGroup {
   label: string
   items: NavItem[]
+  /** Action rendered next to the group label (e.g., a "+" button) */
+  action?: React.ReactNode
 }
 
 export interface SidebarUser {
@@ -212,6 +214,9 @@ const AppSidebar = React.forwardRef<HTMLDivElement, AppSidebarProps>(
                 <SidebarGroupLabel className="px-ds-04 text-ds-sm text-text-placeholder">
                   {group.label}
                 </SidebarGroupLabel>
+                {group.action && (
+                  <SidebarGroupAction asChild>{group.action}</SidebarGroupAction>
+                )}
                 <SidebarGroupContent>
                   <SidebarMenu>
                     {group.items.map((item) => (

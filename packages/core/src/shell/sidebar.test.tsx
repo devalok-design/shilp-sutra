@@ -134,3 +134,28 @@ describe('S10 — badge', () => {
     expect(container.querySelector('[data-sidebar="menu-badge"]')).toBeNull()
   })
 })
+
+describe('S11 — group action', () => {
+  it('renders an action button next to the group label', () => {
+    const groups: NavGroup[] = [
+      {
+        label: 'Projects',
+        items: [{ title: 'All', href: '/projects', icon: <TestIcon /> }],
+        action: <button aria-label="New project" data-testid="group-action">+</button>,
+      },
+    ]
+    renderSidebar({ navGroups: groups })
+    expect(screen.getByTestId('group-action')).toBeInTheDocument()
+  })
+
+  it('does not render group action when not provided', () => {
+    const groups: NavGroup[] = [
+      {
+        label: 'Main',
+        items: [{ title: 'Home', href: '/', icon: <TestIcon />, exact: true }],
+      },
+    ]
+    const { container } = renderSidebar({ navGroups: groups })
+    expect(container.querySelector('[data-sidebar="group-action"]')).toBeNull()
+  })
+})

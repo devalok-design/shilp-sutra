@@ -120,7 +120,7 @@ const Chip = React.forwardRef<HTMLElement, ChipProps>(
     const isClickable = !!onClick
     const Component = isClickable ? 'button' : 'span'
     const interactiveClass = isClickable && !disabled
-      ? 'cursor-pointer hover:bg-field-hover'
+      ? 'cursor-pointer hover:bg-field-hover active:scale-95'
       : ''
     const disabledClass = disabled
       ? 'opacity-action-disabled cursor-not-allowed'
@@ -141,7 +141,7 @@ const Chip = React.forwardRef<HTMLElement, ChipProps>(
           <button
             type="button"
             aria-label={`Remove ${label}`}
-            className="flex-shrink-0 min-h-ds-xs min-w-ds-xs flex items-center justify-center rounded-ds-full p-ds-01 hover:bg-layer-03 transition-colors duration-fast-01 [&>svg]:w-ico-sm [&>svg]:h-ico-sm"
+            className="flex-shrink-0 min-h-ds-xs min-w-ds-xs flex items-center justify-center rounded-ds-full p-ds-01 hover:bg-layer-03 hover:rotate-90 transition-[color,transform] duration-fast-02 [&>svg]:w-ico-sm [&>svg]:h-ico-sm"
             onClick={(e) => {
               e.stopPropagation()
               onDismiss()

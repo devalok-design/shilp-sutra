@@ -81,7 +81,7 @@ const Card = React.forwardRef<HTMLDivElement, CardProps>(
       className={cn(
         cardVariants({ variant }),
         interactive &&
-          'hover:shadow-02 hover:border-border-strong cursor-pointer transition-shadow duration-fast-01',
+          'hover:shadow-02 hover:border-border-strong hover:-translate-y-px active:scale-[0.98] cursor-pointer transition-all duration-fast-02 ease-productive-standard',
         className,
       )}
       {...props}

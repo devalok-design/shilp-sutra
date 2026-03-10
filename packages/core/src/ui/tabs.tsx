@@ -72,7 +72,7 @@ const tabsTriggerVariants = cva(
         line: [
           'px-ds-05 py-ds-03 -mb-px border-b-2 border-transparent',
           'text-text-secondary hover:text-text-primary',
-          'data-[state=active]:border-interactive data-[state=active]:text-interactive',
+          'data-[state=active]:border-interactive data-[state=active]:text-interactive data-[state=active]:animate-tab-indicator',
         ],
         contained: [
           'px-ds-05 py-ds-02b rounded-ds-md',

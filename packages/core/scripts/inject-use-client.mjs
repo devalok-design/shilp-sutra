@@ -43,6 +43,9 @@ const SERVER_SAFE = new Set([
 
   // vendor-utils chunk — pure functions (clsx, cva, tailwind-merge), no React
   '_chunks/vendor-utils',
+
+  // shared utils chunk — cn() helper (clsx + tailwind-merge), pure function
+  '_chunks/utils',
 ])
 
 // ── Directories to skip entirely ────────────────────────────────────────────

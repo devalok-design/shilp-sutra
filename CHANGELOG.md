@@ -5,6 +5,11 @@ All notable changes to `@devalok/shilp-sutra` will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.9.2] — 2026-03-10
+
+### Fixed
+- **Server components broken (cont.)**: `_chunks/utils.js` (the `cn()` helper — clsx + tailwind-merge) also had `"use client"` injected, breaking server-safe components that import it (PageHeader, StatusBadge, EmptyState, Skeleton, etc.). Added to inject-use-client skip list.
+
 ## [0.9.1] — 2026-03-10
 
 ### Fixed

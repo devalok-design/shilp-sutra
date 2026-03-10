@@ -4,6 +4,11 @@
 > Built on the same primitives as shadcn/ui but with key API differences.
 > Read this file BEFORE writing any UI code. Do NOT guess from shadcn/ui knowledge.
 
+## BREAKING CHANGES (v0.11.0 — dark mode)
+- Dark mode interactive colors shifted: --color-interactive pink-400→pink-500, --color-interactive-hover pink-300→pink-600, --color-interactive-active pink-200→pink-700, --color-interactive-subtle pink-950→pink-1000
+- Dark mode text status colors shifted: --color-text-error red-200→red-300, --color-text-success green-200→green-300, --color-text-warning yellow-200→yellow-300, --color-text-link blue-200→blue-300, --color-text-brand pink-300→pink-400
+- New primitive token: --pink-1000 (#150208) near-black
+
 ## BREAKING CHANGES (v0.8.0)
 - Combobox: Now uses discriminated union. Single: `multiple?: false, value: string, onValueChange: (v: string) => void`. Multiple: `multiple: true, value: string[], onValueChange: (v: string[]) => void`. No more `v as string[]` casts.
 - StatusBadge: Pass either `status` OR `color`, not both (discriminated union).

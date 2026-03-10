@@ -5,6 +5,18 @@ All notable changes to `@devalok/shilp-sutra` will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.11.0] - 2026-03-10
+
+### Added
+- **Tokens**: `--pink-1000` (#150208) near-black primitive for deep dark mode surfaces
+
+### Changed (BREAKING — dark mode)
+- **Dark mode interactive colors**: `--color-interactive` pink-400→pink-500, `--color-interactive-hover` pink-300→pink-600, `--color-interactive-active` pink-200→pink-700, `--color-interactive-subtle` pink-950→pink-1000
+- **Dark mode text status colors**: `--color-text-error` red-200→red-300, `--color-text-success` green-200→green-300, `--color-text-warning` yellow-200→yellow-300, `--color-text-link` blue-200→blue-300, `--color-text-brand` pink-300→pink-400
+
+### Fixed
+- **Foundations Showcase**: Pink palette now displays 1000 swatch
+
 ## [0.10.0] - 2026-03-10
 
 ### Added

@@ -344,6 +344,207 @@ const TaskCard = React.forwardRef<HTMLDivElement, TaskCardProps>(
 TaskCard.displayName = 'TaskCard'
 
 // ============================================================
+// Compact Card variants
+// ============================================================
+
+const taskCardCompactVariants = cva(
+  'group/card flex items-center gap-ds-02 py-ds-02 px-ds-03 border-b border-border-subtle bg-layer-01 transition-all duration-fast-02 ease-productive-standard cursor-pointer hover:bg-layer-active',
+  {
+    variants: {
+      selected: {
+        true: 'ring-2 ring-accent bg-interactive-subtle/30',
+        false: '',
+      },
+      dimmed: {
+        true: 'opacity-40',
+        false: '',
+      },
+    },
+    defaultVariants: {
+      selected: false,
+      dimmed: false,
+    },
+  },
+)
+
+// ============================================================
+// Compact Visual Card
+// ============================================================
+
+function TaskCardCompactVisual({
+  task,
+  isDragging,
+  isDragOverlay,
+  dragHandleProps,
+}: TaskCardVisualProps) {
+  const {
+    selectedTaskIds,
+    toggleTaskSelection,
+    focusedTaskId,
+    currentUserId,
+    highlightMyTasks,
+    onClickTask,
+  } = useBoardContext()
+
+  const isSelected = selectedTaskIds.has(task.id)
+  const anySelected = selectedTaskIds.size > 0
+  const isFocused = focusedTaskId === task.id
+  const PriorityIcon = PRIORITY_ICON_MAP[task.priority]
+  const priorityColor = PRIORITY_COLORS[task.priority]
+
+  const isDimmed =
+    highlightMyTasks &&
+    currentUserId != null &&
+    task.owner?.id !== currentUserId &&
+    !task.assignees.some((a) => a.id === currentUserId)
+
+  return (
+    <div
+      role="group"
+      tabIndex={0}
+      aria-label={`Task ${task.taskId}: ${task.title}`}
+      className={cn(
+        taskCardCompactVariants({
+          selected: isSelected,
+          dimmed: isDimmed,
+        }),
+        isDragging && 'opacity-[0.38]',
+        isDragOverlay && 'shadow-03 backdrop-blur-sm ring-1 ring-interactive/40',
+        isFocused && 'ring-2 ring-focus',
+      )}
+      onClick={() => onClickTask(task.id)}
+      onKeyDown={(e) => {
+        if (e.key === 'Enter' || e.key === ' ') {
+          e.preventDefault()
+          onClickTask(task.id)
+        }
+      }}
+    >
+      {/* Checkbox */}
+      <div
+        className={cn(
+          'flex-shrink-0 transition-opacity',
+          anySelected ? 'opacity-100' : 'opacity-0 group-hover/card:opacity-100',
+        )}
+      >
+        <Checkbox
+          checked={isSelected}
+          onCheckedChange={() => toggleTaskSelection(task.id)}
+          onClick={(e: React.MouseEvent) => e.stopPropagation()}
+          aria-label={`Select task ${task.taskId}`}
+          className="h-3.5 w-3.5"
+        />
+      </div>
+
+      {/* Priority icon */}
+      <PriorityIcon className={cn('h-3.5 w-3.5 flex-shrink-0', priorityColor)} />
+
+      {/* Task ID */}
+      <span className="text-ds-xs font-mono text-text-tertiary flex-shrink-0">
+        {task.taskId}
+      </span>
+
+      {/* Title */}
+      <span className="text-ds-sm text-text-primary line-clamp-1 flex-1 min-w-0">
+        {task.title}
+      </span>
+
+      {/* Subtask count (text only, no bar) */}
+      {task.subtaskCount > 0 && (
+        <span className="text-ds-xs text-text-tertiary flex-shrink-0">
+          {task.subtasksDone}/{task.subtaskCount}
+        </span>
+      )}
+
+      {/* Owner avatar */}
+      {task.owner && (
+        <div
+          className="flex-shrink-0 ring-2 ring-accent/40 rounded-full h-5 w-5 flex items-center justify-center bg-layer-02 text-ds-xs text-text-secondary overflow-hidden"
+          title={task.owner.name}
+        >
+          {task.owner.image ? (
+            <img
+              src={task.owner.image}
+              alt={task.owner.name}
+              className="h-full w-full object-cover"
+            />
+          ) : (
+            <span>{task.owner.name.charAt(0).toUpperCase()}</span>
+          )}
+        </div>
+      )}
+    </div>
+  )
+}
+
+// ============================================================
+// Sortable Compact Task Card
+// ============================================================
+
+export interface TaskCardCompactProps {
+  task: BoardTask
+}
+
+const TaskCardCompact = React.forwardRef<HTMLDivElement, TaskCardCompactProps>(
+  function TaskCardCompact({ task }, ref) {
+    const {
+      attributes,
+      listeners,
+      setNodeRef,
+      transform,
+      transition,
+      isDragging,
+    } = useSortable({
+      id: task.id,
+      data: {
+        type: 'task',
+        task,
+      },
+    })
+
+    const composedRef = useComposedRef(setNodeRef, ref)
+
+    const style = {
+      transform: CSS.Transform.toString(transform),
+      transition,
+    }
+
+    return (
+      <div ref={composedRef} style={style}>
+        <TaskCardCompactVisual
+          task={task}
+          isDragging={isDragging}
+          dragHandleProps={{ attributes, listeners }}
+        />
+      </div>
+    )
+  },
+)
+
+TaskCardCompact.displayName = 'TaskCardCompact'
+
+// ============================================================
+// Compact Overlay Task Card
+// ============================================================
+
+export interface TaskCardCompactOverlayProps {
+  task: BoardTask
+}
+
+const TaskCardCompactOverlay = React.forwardRef<
+  HTMLDivElement,
+  TaskCardCompactOverlayProps
+>(function TaskCardCompactOverlay({ task }, ref) {
+  return (
+    <div ref={ref}>
+      <TaskCardCompactVisual task={task} isDragOverlay />
+    </div>
+  )
+})
+
+TaskCardCompactOverlay.displayName = 'TaskCardCompactOverlay'
+
+// ============================================================
 // Overlay Task Card (used inside DragOverlay, no sortable hooks)
 // ============================================================
 
@@ -367,3 +568,7 @@ export { TaskCard }
 export type { TaskCardProps }
 export { TaskCardOverlay }
 export type { TaskCardOverlayProps }
+export { TaskCardCompact }
+export type { TaskCardCompactProps }
+export { TaskCardCompactOverlay }
+export type { TaskCardCompactOverlayProps }

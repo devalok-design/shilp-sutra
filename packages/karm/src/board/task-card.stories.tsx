@@ -1,7 +1,12 @@
 import type { Meta, StoryObj } from '@storybook/react'
 import { DndContext } from '@dnd-kit/core'
 import { SortableContext, verticalListSortingStrategy } from '@dnd-kit/sortable'
-import { TaskCard, TaskCardOverlay } from './task-card'
+import {
+  TaskCard,
+  TaskCardOverlay,
+  TaskCardCompact,
+  TaskCardCompactOverlay,
+} from './task-card'
 import { BoardProvider } from './board-context'
 import type { BoardTask } from './board-types'
 
@@ -181,6 +186,62 @@ export const AllPriorities: Story = {
       </BoardWrapper>
     )
   },
+}
+
+// ============================================================
+// Compact Stories
+// ============================================================
+
+/** Compact single-row view of a task card — dense list item layout */
+export const Compact: StoryObj<typeof TaskCardCompact> = {
+  args: { task: baseTask },
+  render: (args) => (
+    <BoardWrapper tasks={[baseTask]}>
+      <TaskCardCompact {...args} />
+    </BoardWrapper>
+  ),
+}
+
+/** Compact card with only required fields — no owner, no subtasks */
+export const CompactMinimal: StoryObj<typeof TaskCardCompact> = {
+  args: { task: minimalTask },
+  render: (args) => (
+    <BoardWrapper tasks={[minimalTask]}>
+      <TaskCardCompact {...args} />
+    </BoardWrapper>
+  ),
+}
+
+/** All four priority levels in compact mode for comparison */
+export const CompactAllPriorities: StoryObj<typeof TaskCardCompact> = {
+  render: () => {
+    const priorities: BoardTask['priority'][] = ['LOW', 'MEDIUM', 'HIGH', 'URGENT']
+    const tasks: BoardTask[] = priorities.map((p, i) => ({
+      ...baseTask,
+      id: `compact-prio-${p}`,
+      taskId: `KRM-${30 + i}`,
+      title: `${p.charAt(0) + p.slice(1).toLowerCase()} priority task`,
+      priority: p,
+    }))
+    return (
+      <BoardWrapper tasks={tasks}>
+        {tasks.map((t) => (
+          <TaskCardCompact key={t.id} task={t} />
+        ))}
+      </BoardWrapper>
+    )
+  },
+}
+
+/** Compact overlay variant shown during drag */
+export const CompactDragOverlay: StoryObj<typeof TaskCardCompactOverlay> = {
+  render: () => (
+    <BoardProvider initialData={{ columns: [{ id: 'c1', name: 'Todo', tasks: [baseTask] }] }}>
+      <div className="w-[400px]">
+        <TaskCardCompactOverlay task={baseTask} />
+      </div>
+    </BoardProvider>
+  ),
 }
 
 /** TaskCardOverlay variant shown during drag */

@@ -3,7 +3,7 @@ import { describe, it, expect } from 'vitest'
 import { axe } from 'vitest-axe'
 import { DndContext } from '@dnd-kit/core'
 import { SortableContext, verticalListSortingStrategy } from '@dnd-kit/sortable'
-import { TaskCard } from '../task-card'
+import { TaskCard, TaskCardCompact } from '../task-card'
 import { BoardProvider } from '../board-context'
 import type { BoardTask } from '../board-types'
 
@@ -156,5 +156,33 @@ describe('TaskCard', () => {
     // HIGH uses IconArrowUp which renders an svg with tabler-icon-arrow-up class
     const icon = container.querySelector('.tabler-icon-arrow-up')
     expect(icon).toBeInTheDocument()
+  })
+})
+
+describe('TaskCardCompact', () => {
+  it('has no a11y violations', async () => {
+    const { container } = render(<TaskCardCompact task={mockTask} />, { wrapper: Wrapper })
+    expect(await axe(container)).toHaveNoViolations()
+  })
+
+  it('renders task ID', () => {
+    render(<TaskCardCompact task={mockTask} />, { wrapper: Wrapper })
+    expect(screen.getByText('KRM-42')).toBeInTheDocument()
+  })
+
+  it('renders title with single line clamp', () => {
+    render(<TaskCardCompact task={mockTask} />, { wrapper: Wrapper })
+    const title = screen.getByText('Implement authentication flow')
+    expect(title).toHaveClass('line-clamp-1')
+  })
+
+  it('renders subtask count as text only', () => {
+    render(<TaskCardCompact task={mockTask} />, { wrapper: Wrapper })
+    expect(screen.getByText('3/5')).toBeInTheDocument()
+  })
+
+  it('renders owner initial', () => {
+    render(<TaskCardCompact task={mockTask} />, { wrapper: Wrapper })
+    expect(screen.getByText('A')).toBeInTheDocument()
   })
 })

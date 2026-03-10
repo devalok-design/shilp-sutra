@@ -5,7 +5,7 @@ import {
   horizontalListSortingStrategy,
 } from '@dnd-kit/sortable'
 import { BoardColumn, type BoardColumnData } from './board-column'
-import type { BoardTask } from './task-card'
+import type { BoardTask } from './board-types'
 
 // ============================================================
 // Mock Data

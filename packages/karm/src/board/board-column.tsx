@@ -15,7 +15,8 @@ import {
   DropdownMenuTrigger,
 } from '@/ui/dropdown-menu'
 import { IconPlus, IconDots, IconPencil, IconTrash, IconEye, IconEyeOff } from '@tabler/icons-react'
-import { TaskCard, type BoardTask } from './task-card'
+import { TaskCard } from './task-card'
+import type { BoardTask } from './board-types'
 
 // ============================================================
 // Types

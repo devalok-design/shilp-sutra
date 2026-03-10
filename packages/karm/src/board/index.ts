@@ -1,6 +1,7 @@
 export { KanbanBoard, type BoardData, type KanbanBoardProps } from './kanban-board'
 export { BoardColumn, type BoardColumnData, type BoardColumnProps } from './board-column'
-export { TaskCard, TaskCardOverlay, type BoardTask, type TaskCardProps, type TaskCardOverlayProps } from './task-card'
+export { TaskCard, TaskCardOverlay, type TaskCardProps, type TaskCardOverlayProps } from './task-card'
+export type { BoardTask } from './board-types'
 
 export type {
   BoardTask as BoardTaskV2, BoardMember, BoardColumn as BoardColumnV2, BoardData as BoardDataV2,

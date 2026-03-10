@@ -1,6 +1,6 @@
 import type { Meta, StoryObj } from '@storybook/react'
 import { KanbanBoard, type BoardData } from './kanban-board'
-import type { BoardTask } from './task-card'
+import type { BoardTask } from './board-types'
 
 // ============================================================
 // Mock Data Factory

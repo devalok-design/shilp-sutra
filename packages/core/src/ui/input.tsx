@@ -22,9 +22,9 @@ const inputVariants = cva(
   {
     variants: {
       size: {
-        sm: 'h-ds-sm text-ds-sm px-ds-03',
-        md: 'h-ds-md text-ds-base px-ds-04',
-        lg: 'h-ds-lg text-ds-lg px-ds-05',
+        sm: 'h-ds-sm text-ds-sm pl-ds-03 pr-ds-03',
+        md: 'h-ds-md text-ds-base pl-ds-04 pr-ds-04',
+        lg: 'h-ds-lg text-ds-lg pl-ds-05 pr-ds-05',
       },
     },
     defaultVariants: { size: 'md' },
@@ -81,8 +81,8 @@ const Input = React.forwardRef<HTMLInputElement, InputProps>(
         type={type}
         className={cn(
           inputVariants({ size }),
-          startIcon && 'pl-ds-08',
-          endIcon && 'pr-ds-08',
+          startIcon && 'pl-ds-06b',
+          endIcon && 'pr-ds-06b',
           state === 'error' && 'border-border-error focus-visible:ring-error',
           state === 'warning' && 'border-border-warning focus-visible:ring-warning',
           state === 'success' && 'border-border-success focus-visible:ring-success',

@@ -1,3 +1,4 @@
+import React, { useEffect } from 'react'
 import type { Meta, StoryObj } from '@storybook/react'
 import { DndContext } from '@dnd-kit/core'
 import { SortableContext, verticalListSortingStrategy } from '@dnd-kit/sortable'
@@ -7,12 +8,18 @@ import {
   TaskCardCompact,
   TaskCardCompactOverlay,
 } from './task-card'
-import { BoardProvider } from './board-context'
+import { BoardProvider, useBoardContext } from './board-context'
 import type { BoardTask } from './board-types'
 
 // ============================================================
 // Mock Data
 // ============================================================
+
+const AVATAR_IMAGES = {
+  arjun: 'https://i.pravatar.cc/150?u=arjun',
+  priya: 'https://i.pravatar.cc/150?u=priya',
+  kavita: 'https://i.pravatar.cc/150?u=kavita',
+}
 
 const baseTask: BoardTask = {
   id: 'task-1',
@@ -30,6 +37,18 @@ const baseTask: BoardTask = {
   ],
   subtaskCount: 5,
   subtasksDone: 3,
+}
+
+const taskWithImages: BoardTask = {
+  ...baseTask,
+  id: 'task-img',
+  taskId: 'KRM-50',
+  title: 'Design system avatar integration',
+  owner: { id: 'u1', name: 'Arjun Mehta', image: AVATAR_IMAGES.arjun },
+  assignees: [
+    { id: 'u2', name: 'Priya Sharma', image: AVATAR_IMAGES.priya },
+    { id: 'u3', name: 'Kavita Reddy', image: AVATAR_IMAGES.kavita },
+  ],
 }
 
 const urgentBlockedTask: BoardTask = {
@@ -188,6 +207,42 @@ export const AllPriorities: Story = {
   },
 }
 
+/** Long title that gets truncated with line-clamp-2 */
+export const LongTitle: Story = {
+  render: () => {
+    const longTask: BoardTask = {
+      ...baseTask,
+      id: 'long-1',
+      taskId: 'KRM-99',
+      title:
+        'Refactor the entire authentication middleware to support multi-tenant OAuth2 with PKCE flow, refresh token rotation, and cross-origin session management for all microservices',
+    }
+    return (
+      <BoardWrapper tasks={[longTask]}>
+        <TaskCard task={longTask} />
+      </BoardWrapper>
+    )
+  },
+}
+
+/** Long title in compact mode — single line truncation */
+export const LongTitleCompact: StoryObj<typeof TaskCardCompact> = {
+  render: () => {
+    const longTask: BoardTask = {
+      ...baseTask,
+      id: 'long-compact-1',
+      taskId: 'KRM-100',
+      title:
+        'Refactor the entire authentication middleware to support multi-tenant OAuth2 with PKCE flow, refresh token rotation, and cross-origin session management for all microservices',
+    }
+    return (
+      <BoardWrapper tasks={[longTask]}>
+        <TaskCardCompact task={longTask} />
+      </BoardWrapper>
+    )
+  },
+}
+
 // ============================================================
 // Compact Stories
 // ============================================================
@@ -244,6 +299,49 @@ export const CompactDragOverlay: StoryObj<typeof TaskCardCompactOverlay> = {
   ),
 }
 
+/** Cards with avatar images — owner + assignees have profile photos */
+export const WithAvatarImages: Story = {
+  args: { task: taskWithImages },
+  decorators: [
+    (Story) => (
+      <BoardWrapper tasks={[taskWithImages]}>
+        <Story />
+      </BoardWrapper>
+    ),
+  ],
+}
+
+/** Compact card with avatar images */
+export const CompactWithAvatarImages: StoryObj<typeof TaskCardCompact> = {
+  render: () => (
+    <BoardWrapper tasks={[taskWithImages]}>
+      <TaskCardCompact task={taskWithImages} />
+    </BoardWrapper>
+  ),
+}
+
+/** Mix of image and fallback avatars */
+export const MixedAvatars: Story = {
+  render: () => {
+    const mixed: BoardTask = {
+      ...baseTask,
+      id: 'task-mixed',
+      taskId: 'KRM-51',
+      title: 'Mixed avatar types — some with images, some with initials',
+      owner: { id: 'u1', name: 'Arjun Mehta', image: AVATAR_IMAGES.arjun },
+      assignees: [
+        { id: 'u2', name: 'Priya Sharma', image: null },
+        { id: 'u3', name: 'Kavita Reddy', image: AVATAR_IMAGES.kavita },
+      ],
+    }
+    return (
+      <BoardWrapper tasks={[mixed]}>
+        <TaskCard task={mixed} />
+      </BoardWrapper>
+    )
+  },
+}
+
 /** TaskCardOverlay variant shown during drag */
 export const DragOverlay: StoryObj<typeof TaskCardOverlay> = {
   render: () => (
@@ -260,5 +358,79 @@ export const DragOverlay: StoryObj<typeof TaskCardOverlay> = {
           'The drag overlay variant shown while a card is being dragged. Has a slight rotation and elevated shadow.',
       },
     },
+  },
+}
+
+// ============================================================
+// Selection & State Stories
+// ============================================================
+
+/** Helper to pre-select tasks in the board context */
+function SelectTasksEffect({ taskIds }: { taskIds: string[] }) {
+  const { toggleTaskSelection } = useBoardContext()
+  const didSelect = React.useRef(false)
+  useEffect(() => {
+    if (!didSelect.current) {
+      didSelect.current = true
+      taskIds.forEach((id) => toggleTaskSelection(id))
+    }
+  }, [taskIds, toggleTaskSelection])
+  return null
+}
+
+/** Selected state — ring + subtle glow to indicate the card is part of a selection */
+export const Selected: Story = {
+  render: () => {
+    const tasks = [baseTask, minimalTask]
+    return (
+      <BoardProvider initialData={{ columns: [{ id: 'c1', name: 'Todo', tasks }] }}>
+        <DndContext>
+          <SortableContext items={tasks.map((t) => t.id)} strategy={verticalListSortingStrategy}>
+            <SelectTasksEffect taskIds={['task-1']} />
+            <div className="w-[300px] space-y-ds-02">
+              <TaskCard task={baseTask} />
+              <TaskCard task={minimalTask} />
+            </div>
+          </SortableContext>
+        </DndContext>
+      </BoardProvider>
+    )
+  },
+}
+
+/** Card with EVERYONE visibility — shows the globe badge */
+export const ClientVisible: Story = {
+  render: () => {
+    const visibleTask: BoardTask = {
+      ...baseTask,
+      id: 'task-visible',
+      taskId: 'KRM-42',
+      title: 'Client-visible task with EVERYONE visibility',
+      visibility: 'EVERYONE',
+    }
+    return (
+      <BoardWrapper tasks={[visibleTask]}>
+        <TaskCard task={visibleTask} />
+      </BoardWrapper>
+    )
+  },
+}
+
+/** Blocked card — red border accent + lock icon */
+export const Blocked: Story = {
+  render: () => {
+    const blockedTask: BoardTask = {
+      ...baseTask,
+      id: 'task-blocked',
+      taskId: 'KRM-77',
+      title: 'Blocked by dependency — waiting on API team',
+      isBlocked: true,
+      priority: 'URGENT',
+    }
+    return (
+      <BoardWrapper tasks={[blockedTask]}>
+        <TaskCard task={blockedTask} />
+      </BoardWrapper>
+    )
   },
 }

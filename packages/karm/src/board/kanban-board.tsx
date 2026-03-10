@@ -23,9 +23,14 @@ import {
   horizontalListSortingStrategy,
   sortableKeyboardCoordinates,
 } from '@dnd-kit/sortable'
-import { BoardColumn, type BoardColumnData } from './board-column'
-import { TaskCardOverlay } from './task-card'
-import type { BoardTask } from './board-types'
+import { BoardProvider, useBoardContext, type BoardProviderProps } from './board-context'
+import { BoardToolbar } from './board-toolbar'
+import { BulkActionBar } from './bulk-action-bar'
+import { BoardColumn } from './board-column'
+import { TaskCardOverlay, TaskCardCompactOverlay } from './task-card'
+import { useBoardKeyboard } from './use-board-keyboard'
+import { COLUMN_WIDTH } from './board-constants'
+import type { BoardTask, BoardColumn as BoardColumnType, NewTaskOptions } from './board-types'
 import { IconPlus } from '@tabler/icons-react'
 import { Button } from '@/ui/button'
 
@@ -68,64 +73,43 @@ function createAnnouncements() {
 // Types
 // ============================================================
 
-export interface BoardData {
-  columns: BoardColumnData[]
-}
-
-export interface KanbanBoardProps {
-  initialData: BoardData
-  onTaskMove?: (taskId: string, toColumnId: string, newOrder: number) => void
-  onTaskAdd?: (columnId: string, title: string) => void
-  onColumnRename?: (columnId: string, name: string) => void
-  onColumnDelete?: (columnId: string) => void
-  onColumnToggleVisibility?: (columnId: string, visible: boolean) => void
-  onClickTask?: (taskId: string) => void
-  onAddColumn?: () => void
+export interface KanbanBoardProps extends Omit<BoardProviderProps, 'children'> {
+  /** Additional className for the outer wrapper */
+  className?: string
 }
 
 // ============================================================
-// Component
+// Inner canvas (needs BoardContext)
 // ============================================================
 
-export const KanbanBoard = React.forwardRef<HTMLDivElement, KanbanBoardProps>(
-  function KanbanBoard({
-  initialData,
-  onTaskMove,
-  onTaskAdd,
-  onColumnRename,
-  onColumnDelete,
-  onColumnToggleVisibility,
-  onClickTask,
-  onAddColumn,
-}, forwardedRef) {
-  const [board, setBoard] = useState<BoardData>(initialData)
-  const [activeTask, setActiveTask] = useState<BoardTask | null>(null)
+function BoardCanvas({ className }: { className?: string }) {
+  const {
+    columns,
+    viewMode,
+    activeTask,
+    setActiveTask,
+    onTaskMove,
+    onAddColumn,
+  } = useBoardContext()
+
   const [mounted, setMounted] = useState(false)
   const scrollRef = useRef<HTMLDivElement | null>(null)
-  const mergedRef = useComposedRef(scrollRef, forwardedRef)
+  const canvasRef = useRef<HTMLDivElement | null>(null)
 
-  // Sync board when initialData changes
-  useEffect(() => {
-    setBoard(initialData)
-  }, [initialData])
+  // Keyboard navigation
+  useBoardKeyboard(canvasRef)
 
-  // Track mount for portal rendering
   useEffect(() => {
     setMounted(true)
   }, [])
 
-  // Sensors with activation constraints
+  // Sensors
   const sensors = useSensors(
     useSensor(PointerSensor, {
-      activationConstraint: {
-        distance: 5,
-      },
+      activationConstraint: { distance: 5 },
     }),
     useSensor(TouchSensor, {
-      activationConstraint: {
-        delay: 200,
-        tolerance: 5,
-      },
+      activationConstraint: { delay: 200, tolerance: 5 },
     }),
     useSensor(KeyboardSensor, {
       coordinateGetter: sortableKeyboardCoordinates,
@@ -134,12 +118,9 @@ export const KanbanBoard = React.forwardRef<HTMLDivElement, KanbanBoardProps>(
 
   const announcements = useMemo(() => createAnnouncements(), [])
 
-  const columns = board.columns
   const columnIds = columns.map((c) => `column-${c.id}`)
 
-  // --------------------------------------------------------
   // Find which column a task lives in
-  // --------------------------------------------------------
   const findColumnByTaskId = useCallback(
     (taskId: UniqueIdentifier): string | null => {
       for (const col of columns) {
@@ -152,47 +133,16 @@ export const KanbanBoard = React.forwardRef<HTMLDivElement, KanbanBoardProps>(
     [columns],
   )
 
-  // --------------------------------------------------------
-  // Local state helpers
-  // --------------------------------------------------------
-  const moveTaskInState = useCallback(
-    (
-      taskId: string,
-      fromColumnId: string,
-      toColumnId: string,
-      toIndex: number,
-    ) => {
-      setBoard((prev) => {
-        const newColumns = prev.columns.map((col) => ({
-          ...col,
-          tasks: [...col.tasks],
-        }))
-
-        const fromCol = newColumns.find((c) => c.id === fromColumnId)
-        const toCol = newColumns.find((c) => c.id === toColumnId)
-        if (!fromCol || !toCol) return prev
-
-        const taskIndex = fromCol.tasks.findIndex((t) => t.id === taskId)
-        if (taskIndex === -1) return prev
-
-        const [task] = fromCol.tasks.splice(taskIndex, 1)
-        toCol.tasks.splice(toIndex, 0, task)
-
-        return { columns: newColumns }
-      })
+  // DnD handlers
+  const handleDragStart = useCallback(
+    (event: DragStartEvent) => {
+      const data = event.active.data.current
+      if (data?.type === 'task') {
+        setActiveTask(data.task as BoardTask)
+      }
     },
-    [],
+    [setActiveTask],
   )
-
-  // --------------------------------------------------------
-  // Drag handlers
-  // --------------------------------------------------------
-  const handleDragStart = useCallback((event: DragStartEvent) => {
-    const data = event.active.data.current
-    if (data?.type === 'task') {
-      setActiveTask(data.task as BoardTask)
-    }
-  }, [])
 
   const handleDragOver = useCallback(
     (event: DragOverEvent) => {
@@ -202,11 +152,9 @@ export const KanbanBoard = React.forwardRef<HTMLDivElement, KanbanBoardProps>(
       const activeId = active.id as string
       const overId = over.id as string
 
-      // Determine source column
       const activeColumnId = findColumnByTaskId(activeId)
       if (!activeColumnId) return
 
-      // Determine target column
       let overColumnId: string | null = null
       let overIndex = 0
 
@@ -224,10 +172,10 @@ export const KanbanBoard = React.forwardRef<HTMLDivElement, KanbanBoardProps>(
 
       if (!overColumnId || activeColumnId === overColumnId) return
 
-      // Only move between columns during dragOver
-      moveTaskInState(activeId, activeColumnId, overColumnId, overIndex)
+      // Cross-column move during drag
+      onTaskMove(activeId, overColumnId, overIndex)
     },
-    [columns, findColumnByTaskId, moveTaskInState],
+    [columns, findColumnByTaskId, onTaskMove],
   )
 
   const handleDragEnd = useCallback(
@@ -262,49 +210,10 @@ export const KanbanBoard = React.forwardRef<HTMLDivElement, KanbanBoardProps>(
         newOrder = col?.tasks.findIndex((t) => t.id === overId) ?? 0
       }
 
-      // Reorder within same column
-      if (activeColumnId === targetColumnId) {
-        const col = columns.find((c) => c.id === targetColumnId)
-        const oldIndex = col?.tasks.findIndex((t) => t.id === activeId)
-        if (oldIndex !== undefined && oldIndex !== newOrder) {
-          moveTaskInState(activeId, activeColumnId, targetColumnId, newOrder)
-        }
-      }
-
-      // Notify parent
-      onTaskMove?.(activeId, targetColumnId, newOrder)
+      onTaskMove(activeId, targetColumnId, newOrder)
     },
-    [columns, findColumnByTaskId, moveTaskInState, onTaskMove],
+    [columns, findColumnByTaskId, setActiveTask, onTaskMove],
   )
-
-  const handleAddTask = (columnId: string, title: string) => {
-    onTaskAdd?.(columnId, title)
-  }
-
-  const handleRenameColumn = (columnId: string, name: string) => {
-    setBoard((prev) => ({
-      columns: prev.columns.map((c) =>
-        c.id === columnId ? { ...c, name } : c,
-      ),
-    }))
-    onColumnRename?.(columnId, name)
-  }
-
-  const handleDeleteColumn = (columnId: string) => {
-    setBoard((prev) => ({
-      columns: prev.columns.filter((c) => c.id !== columnId),
-    }))
-    onColumnDelete?.(columnId)
-  }
-
-  const handleToggleVisibility = (columnId: string, visible: boolean) => {
-    setBoard((prev) => ({
-      columns: prev.columns.map((c) =>
-        c.id === columnId ? { ...c, isClientVisible: visible } : c,
-      ),
-    }))
-    onColumnToggleVisibility?.(columnId, visible)
-  }
 
   return (
     <DndContext
@@ -316,24 +225,21 @@ export const KanbanBoard = React.forwardRef<HTMLDivElement, KanbanBoardProps>(
       accessibility={{ announcements }}
     >
       <div
-        ref={mergedRef}
-        className="no-scrollbar flex h-full gap-ds-05 overflow-x-auto pb-ds-05"
+        ref={canvasRef}
+        tabIndex={0}
+        className="no-scrollbar flex h-full gap-ds-05 overflow-x-auto pb-ds-05 outline-none"
       >
         <SortableContext
           items={columnIds}
           strategy={horizontalListSortingStrategy}
         >
           {columns.map((column, index) => (
-            <div key={column.id} className="group flex-shrink-0">
-              <BoardColumn
-                column={column}
-                index={index}
-                onAddTask={handleAddTask}
-                onClickTask={onClickTask}
-                onRenameColumn={handleRenameColumn}
-                onDeleteColumn={handleDeleteColumn}
-                onToggleVisibility={handleToggleVisibility}
-              />
+            <div
+              key={column.id}
+              className="flex-shrink-0 animate-slide-right delay-stagger-50"
+              style={{ '--stagger-index': index } as React.CSSProperties}
+            >
+              <BoardColumn column={column} index={index} />
             </div>
           ))}
         </SortableContext>
@@ -343,7 +249,7 @@ export const KanbanBoard = React.forwardRef<HTMLDivElement, KanbanBoardProps>(
           <Button
             variant="ghost"
             onClick={onAddColumn}
-            className="h-ds-md w-[300px] justify-start gap-ds-03 rounded-ds-xl border border-dashed border-border/60 bg-layer-02 text-text-tertiary hover:border-border-interactive hover:bg-interactive-subtle/50 hover:text-interactive"
+            className="h-ds-md w-[320px] justify-start gap-ds-03 rounded-ds-xl border border-dashed border-border/60 bg-layer-02 text-text-tertiary hover:border-border-interactive hover:bg-interactive-subtle/50 hover:text-interactive"
           >
             <IconPlus className="h-ico-sm w-ico-sm" />
             Add column
@@ -351,17 +257,42 @@ export const KanbanBoard = React.forwardRef<HTMLDivElement, KanbanBoardProps>(
         </div>
       </div>
 
-      {/* Drag overlay -- rendered in portal for smooth visuals */}
+      {/* Drag overlay — rendered in portal */}
       {mounted &&
         createPortal(
-          <DragOverlay dropAnimation={null}>
-            {activeTask ? <TaskCardOverlay task={activeTask} /> : null}
+          <DragOverlay dropAnimation={{ duration: 240, easing: 'cubic-bezier(0.34, 1.56, 0.64, 1)' }}>
+            {activeTask ? (
+              viewMode === 'compact' ? (
+                <TaskCardCompactOverlay task={activeTask} />
+              ) : (
+                <TaskCardOverlay task={activeTask} />
+              )
+            ) : null}
           </DragOverlay>,
           document.body,
         )}
     </DndContext>
   )
-},
+}
+
+// ============================================================
+// KanbanBoard — public orchestrator
+// ============================================================
+
+export const KanbanBoard = React.forwardRef<HTMLDivElement, KanbanBoardProps>(
+  function KanbanBoard({ className, ...providerProps }, ref) {
+    return (
+      <div ref={ref} className={className}>
+        <BoardProvider {...providerProps}>
+          <div className="flex flex-col gap-ds-03">
+            <BoardToolbar />
+            <BulkActionBar />
+            <BoardCanvas />
+          </div>
+        </BoardProvider>
+      </div>
+    )
+  },
 )
 
 KanbanBoard.displayName = 'KanbanBoard'

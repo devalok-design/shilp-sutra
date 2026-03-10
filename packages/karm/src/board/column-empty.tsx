@@ -113,7 +113,7 @@ export interface ColumnEmptyProps {
   /** Column index — used to cycle through illustrations */
   index: number
   /** Called when the user clicks "Add a task" */
-  onAddTask: () => void
+  onAddTask?: () => void
   /** When true, renders a drop-target hint instead of the default empty state */
   isDropTarget?: boolean
   className?: string

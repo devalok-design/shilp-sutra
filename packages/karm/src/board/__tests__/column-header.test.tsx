@@ -95,7 +95,7 @@ describe('ColumnHeader', () => {
 
   it('renders column name', () => {
     renderHeader()
-    expect(screen.getByText('In Progress')).toBeInTheDocument()
+    expect(screen.getByText(/In Progress/)).toBeInTheDocument()
   })
 
   it('renders accent dot', () => {
@@ -104,32 +104,32 @@ describe('ColumnHeader', () => {
     expect(dot).toBeInTheDocument()
   })
 
-  it('renders task count without WIP limit', () => {
+  it('renders task count in brackets next to column name', () => {
     renderHeader()
-    expect(screen.getByLabelText('2 tasks')).toBeInTheDocument()
-    expect(screen.getByLabelText('2 tasks')).toHaveTextContent('2')
+    const heading = screen.getByLabelText('In Progress, 2 tasks')
+    expect(heading).toHaveTextContent('In Progress(2)')
   })
 
   // ---- WIP indicator ----
 
-  it('renders WIP format "count/limit" when wipLimit is set', () => {
+  it('renders WIP limit badge when wipLimit is set', () => {
     const column: BoardColumn = { ...baseColumn, wipLimit: 5 }
     renderHeader({ column })
-    expect(screen.getByLabelText('2 of 5 tasks')).toHaveTextContent('2/5')
+    expect(screen.getByLabelText('WIP limit: 5')).toHaveTextContent('/ 5')
   })
 
   it('renders WIP exceeded styling when tasks exceed limit', () => {
     const column: BoardColumn = { ...baseColumn, wipLimit: 1 }
     renderHeader({ column })
-    const badge = screen.getByLabelText('2 of 1 tasks, WIP limit exceeded')
-    expect(badge).toHaveTextContent('2/1')
+    const badge = screen.getByLabelText('WIP limit: 1, exceeded')
+    expect(badge).toHaveTextContent('/ 1')
     expect(badge).toHaveClass('text-error')
   })
 
   it('renders WIP badge without exceeded styling when tasks equal limit', () => {
     const column: BoardColumn = { ...baseColumn, wipLimit: 2 }
     renderHeader({ column })
-    const badge = screen.getByLabelText('2 of 2 tasks')
+    const badge = screen.getByLabelText('WIP limit: 2')
     expect(badge).not.toHaveClass('text-error')
   })
 
@@ -148,7 +148,7 @@ describe('ColumnHeader', () => {
   it('enters rename mode on double-click of column name', async () => {
     const user = userEvent.setup()
     renderHeader()
-    await user.dblClick(screen.getByText('In Progress'))
+    await user.dblClick(screen.getByText(/In Progress/))
     expect(screen.getByLabelText('Column name')).toBeInTheDocument()
   })
 
@@ -157,7 +157,7 @@ describe('ColumnHeader', () => {
     const user = userEvent.setup()
     renderHeader({ onColumnRename })
 
-    await user.dblClick(screen.getByText('In Progress'))
+    await user.dblClick(screen.getByText(/In Progress/))
     const input = screen.getByLabelText('Column name')
     await user.clear(input)
     await user.type(input, 'Doing{Enter}')
@@ -170,11 +170,11 @@ describe('ColumnHeader', () => {
     const user = userEvent.setup()
     renderHeader({ onColumnRename })
 
-    await user.dblClick(screen.getByText('In Progress'))
+    await user.dblClick(screen.getByText(/In Progress/))
     await user.keyboard('{Escape}')
 
     expect(onColumnRename).not.toHaveBeenCalled()
-    expect(screen.getByText('In Progress')).toBeInTheDocument()
+    expect(screen.getByText(/In Progress/)).toBeInTheDocument()
   })
 
   // ---- Column menu: Visibility ----
@@ -232,7 +232,7 @@ describe('ColumnHeader', () => {
     expect(screen.getByLabelText('New task title')).toBeInTheDocument()
   })
 
-  it('calls onTaskAdd with trimmed title on Enter', async () => {
+  it('calls onTaskAdd with options object on Enter', async () => {
     const onTaskAdd = vi.fn()
     const user = userEvent.setup()
     renderHeader({ onTaskAdd })
@@ -240,17 +240,22 @@ describe('ColumnHeader', () => {
     await user.click(screen.getByLabelText('Add task'))
     await user.type(screen.getByLabelText('New task title'), 'New feature{Enter}')
 
-    expect(onTaskAdd).toHaveBeenCalledWith('col-1', 'New feature')
+    expect(onTaskAdd).toHaveBeenCalledWith('col-1', {
+      title: 'New feature',
+      ownerId: null,
+      dueDate: null,
+    })
   })
 
-  it('hides add task input when Cancel is clicked', async () => {
+  it('collapses add task form when Cancel is clicked', async () => {
     const user = userEvent.setup()
     renderHeader()
 
     await user.click(screen.getByLabelText('Add task'))
-    await user.click(screen.getByRole('button', { name: 'Cancel' }))
+    await user.click(screen.getByRole('button', { name: 'Cancel adding task' }))
 
-    expect(screen.queryByLabelText('New task title')).not.toBeInTheDocument()
+    // Form is still in DOM but collapsed and unfocusable
+    expect(screen.getByLabelText('New task title')).toHaveAttribute('tabindex', '-1')
   })
 
   // ---- Accent color cycling ----

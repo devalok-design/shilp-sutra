@@ -21,6 +21,10 @@ import {
   IconEye,
   IconEyeOff,
   IconGauge,
+  IconCalendar,
+  IconUser,
+  IconX,
+  IconCheck,
 } from '@tabler/icons-react'
 import { useBoardContext } from './board-context'
 import { COLUMN_ACCENT_COLORS } from './board-constants'
@@ -113,8 +117,29 @@ export interface ColumnHeaderProps {
 // Component
 // ============================================================
 
+function collectAllMembers(columns: BoardColumn[]): BoardMember[] {
+  const seen = new Set<string>()
+  const members: BoardMember[] = []
+  for (const col of columns) {
+    for (const task of col.tasks) {
+      if (task.owner && !seen.has(task.owner.id)) {
+        seen.add(task.owner.id)
+        members.push(task.owner)
+      }
+      for (const a of task.assignees) {
+        if (!seen.has(a.id)) {
+          seen.add(a.id)
+          members.push(a)
+        }
+      }
+    }
+  }
+  return members
+}
+
 export function ColumnHeader({ column, index }: ColumnHeaderProps) {
   const {
+    rawColumns,
     onColumnRename,
     onColumnDelete,
     onColumnToggleVisibility,
@@ -128,7 +153,11 @@ export function ColumnHeader({ column, index }: ColumnHeaderProps) {
 
   const [isAdding, setIsAdding] = useState(false)
   const [newTitle, setNewTitle] = useState('')
+  const [newOwnerId, setNewOwnerId] = useState<string | null>(null)
+  const [newDueDate, setNewDueDate] = useState('')
   const addInputRef = useRef<HTMLInputElement>(null)
+
+  const allMembers = collectAllMembers(rawColumns)
 
   const accentColor = COLUMN_ACCENT_COLORS[index % COLUMN_ACCENT_COLORS.length]
   const taskCount = column.tasks.length
@@ -161,36 +190,48 @@ export function ColumnHeader({ column, index }: ColumnHeaderProps) {
 
   // ---- Add task handlers ----
 
+  const resetAddForm = () => {
+    setNewTitle('')
+    setNewOwnerId(null)
+    setNewDueDate('')
+    setIsAdding(false)
+  }
+
   const handleAddTask = () => {
     const trimmed = newTitle.trim()
     if (trimmed) {
-      onTaskAdd(column.id, trimmed)
-      setNewTitle('')
-      setIsAdding(false)
+      onTaskAdd(column.id, {
+        title: trimmed,
+        ownerId: newOwnerId,
+        dueDate: newDueDate || null,
+      })
+      resetAddForm()
     }
   }
 
   const handleAddKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
     if (e.key === 'Enter') handleAddTask()
-    if (e.key === 'Escape') {
-      setNewTitle('')
-      setIsAdding(false)
+    if (e.key === 'Escape') resetAddForm()
+  }
+
+  const toggleAddTask = () => {
+    if (isAdding) {
+      resetAddForm()
+    } else {
+      setIsAdding(true)
+      setTimeout(() => addInputRef.current?.focus(), 50)
     }
   }
 
-  const openAddTask = () => {
-    setIsAdding(true)
-    setTimeout(() => addInputRef.current?.focus(), 50)
-  }
-
   return (
-    <div className="flex flex-col gap-ds-02">
+    <div className="group/header flex flex-col gap-ds-02">
       {/* Primary header row */}
-      <div className="group/header flex items-center gap-ds-02 px-ds-04 pt-ds-03 pb-ds-02">
+      <div className="flex items-center gap-ds-02 px-ds-04 pt-ds-03 pb-ds-02">
         {/* Accent dot */}
         <span
           className={cn('h-2.5 w-2.5 flex-shrink-0 rounded-full', accentColor)}
           aria-hidden="true"
+          title={column.name}
         />
 
         {/* Column name — normal or inline edit */}
@@ -211,19 +252,25 @@ export function ColumnHeader({ column, index }: ColumnHeaderProps) {
             className="flex-1 truncate text-ds-sm font-semibold text-text-primary"
             onDoubleClick={startRenaming}
             title={column.name}
+            aria-label={
+              wipLimit != null
+                ? `${column.name}, ${taskCount} of ${wipLimit} tasks${isWipExceeded ? ', WIP limit exceeded' : ''}`
+                : `${column.name}, ${taskCount} tasks`
+            }
           >
             {column.name}
+            <span className="ml-ds-02 text-ds-xs font-normal text-text-tertiary">({taskCount})</span>
           </h3>
         )}
 
-        {/* Task count / WIP badge */}
+        {/* WIP badge — only shown when limit is set */}
         {isEditingWip ? (
           <WipEditor
             columnId={column.id}
             currentLimit={wipLimit}
             onClose={() => setIsEditingWip(false)}
           />
-        ) : (
+        ) : wipLimit != null ? (
           <span
             className={cn(
               'flex-shrink-0 text-ds-xs tabular-nums',
@@ -231,15 +278,11 @@ export function ColumnHeader({ column, index }: ColumnHeaderProps) {
                 ? 'font-semibold text-error'
                 : 'text-text-tertiary',
             )}
-            aria-label={
-              wipLimit != null
-                ? `${taskCount} of ${wipLimit} tasks${isWipExceeded ? ', WIP limit exceeded' : ''}`
-                : `${taskCount} tasks`
-            }
+            aria-label={`WIP limit: ${wipLimit}${isWipExceeded ? ', exceeded' : ''}`}
           >
-            {wipLimit != null ? `${taskCount}/${wipLimit}` : taskCount}
+            / {wipLimit}
           </span>
-        )}
+        ) : null}
 
         {/* Add task button — hover-visible */}
         <Button
@@ -251,7 +294,8 @@ export function ColumnHeader({ column, index }: ColumnHeaderProps) {
             'hover:bg-interactive-subtle hover:text-interactive',
           )}
           aria-label="Add task"
-          onClick={openAddTask}
+          title="Add task"
+          onClick={toggleAddTask}
         >
           <IconPlus className="h-ico-sm w-ico-sm" />
         </Button>
@@ -267,6 +311,7 @@ export function ColumnHeader({ column, index }: ColumnHeaderProps) {
                 'group-hover/header:opacity-100 focus:opacity-100',
               )}
               aria-label="Column options"
+              title="Column options"
             >
               <IconDots className="h-ico-sm w-ico-sm" />
             </Button>
@@ -321,46 +366,131 @@ export function ColumnHeader({ column, index }: ColumnHeaderProps) {
         </div>
       )}
 
-      {/* Quick-add task inline input */}
-      {isAdding && (
-        <div className="px-ds-04 pb-ds-03">
-          {/* eslint-disable-next-line jsx-a11y/no-autofocus -- intentional: input appears after user clicks "Add task" */}
-          <Input
-            ref={addInputRef}
-            value={newTitle}
-            onChange={(e) => setNewTitle(e.target.value)}
-            onKeyDown={handleAddKeyDown}
-            onBlur={() => {
-              if (!newTitle.trim()) setIsAdding(false)
-            }}
-            placeholder="Task title..."
-            aria-label="New task title"
-            size="sm"
-            autoFocus
-          />
-          <div className="mt-ds-02 flex items-center gap-ds-02">
-            <Button
+      {/* Quick-add task form — animated expand/collapse */}
+      <div
+        className={cn(
+          'grid transition-[grid-template-rows,opacity] duration-moderate-02 ease-expressive-entrance',
+          isAdding ? 'grid-rows-[1fr] opacity-100' : 'grid-rows-[0fr] opacity-0',
+        )}
+      >
+        <div className="overflow-hidden">
+          <div className="px-ds-04 pb-ds-03 flex flex-col gap-ds-02">
+            {/* eslint-disable-next-line jsx-a11y/no-autofocus -- intentional: input appears after user clicks "Add task" */}
+            <Input
+              ref={addInputRef}
+              value={newTitle}
+              onChange={(e) => setNewTitle(e.target.value)}
+              onKeyDown={handleAddKeyDown}
+              placeholder="Task title..."
+              aria-label="New task title"
               size="sm"
-              className="h-ds-xs-plus bg-interactive hover:bg-interactive-hover text-text-on-color text-ds-sm"
-              onClick={handleAddTask}
-              disabled={!newTitle.trim()}
-            >
-              Add
-            </Button>
-            <Button
-              variant="ghost"
-              size="sm"
-              className="h-ds-xs-plus text-ds-sm"
-              onClick={() => {
-                setNewTitle('')
-                setIsAdding(false)
-              }}
-            >
-              Cancel
-            </Button>
+              tabIndex={isAdding ? 0 : -1}
+              autoFocus={isAdding}
+            />
+
+            {/* Options row: lead + date icons, then confirm/cancel */}
+            <div className="flex items-center gap-ds-01">
+              {/* Lead picker */}
+              <DropdownMenu>
+                <DropdownMenuTrigger asChild>
+                  <button
+                    className={cn(
+                      'flex items-center justify-center h-6 w-6 rounded-ds-md transition-colors',
+                      newOwnerId
+                        ? 'text-interactive bg-interactive-subtle'
+                        : 'text-text-tertiary hover:text-text-primary hover:bg-layer-active',
+                    )}
+                    title={newOwnerId
+                      ? `Lead: ${allMembers.find((m) => m.id === newOwnerId)?.name}`
+                      : 'Assign task lead'}
+                    aria-label="Assign task lead"
+                    tabIndex={isAdding ? 0 : -1}
+                  >
+                    <IconUser className="h-3.5 w-3.5" />
+                  </button>
+                </DropdownMenuTrigger>
+                <DropdownMenuContent align="start" className="w-44 max-h-48 overflow-y-auto">
+                  {allMembers.length === 0 && (
+                    <div className="px-ds-03 py-ds-02 text-ds-xs text-text-tertiary">
+                      No members found
+                    </div>
+                  )}
+                  {newOwnerId && (
+                    <>
+                      <DropdownMenuItem onClick={() => setNewOwnerId(null)}>
+                        <IconX className="mr-ds-02 h-3 w-3 text-text-tertiary" />
+                        Clear lead
+                      </DropdownMenuItem>
+                      <DropdownMenuSeparator />
+                    </>
+                  )}
+                  {allMembers.map((member) => (
+                    <DropdownMenuItem
+                      key={member.id}
+                      onClick={() => setNewOwnerId(member.id)}
+                      className={cn(newOwnerId === member.id && 'bg-interactive-subtle')}
+                    >
+                      {member.name}
+                    </DropdownMenuItem>
+                  ))}
+                </DropdownMenuContent>
+              </DropdownMenu>
+
+              {/* Due date — calendar icon triggers hidden date input */}
+              <label
+                className={cn(
+                  'relative flex items-center justify-center h-6 w-6 rounded-ds-md cursor-pointer transition-colors',
+                  newDueDate
+                    ? 'text-interactive bg-interactive-subtle'
+                    : 'text-text-tertiary hover:text-text-primary hover:bg-layer-active',
+                )}
+                title={newDueDate ? `Due: ${newDueDate}` : 'Set due date'}
+                aria-label="Set due date"
+              >
+                <IconCalendar className="h-3.5 w-3.5" />
+                <input
+                  type="date"
+                  value={newDueDate}
+                  onChange={(e) => setNewDueDate(e.target.value)}
+                  className="absolute inset-0 opacity-0 cursor-pointer w-full h-full"
+                  aria-label="Due date"
+                  tabIndex={isAdding ? 0 : -1}
+                />
+              </label>
+
+              <div className="flex-1" />
+
+              {/* Confirm */}
+              <button
+                onClick={handleAddTask}
+                disabled={!newTitle.trim()}
+                className={cn(
+                  'flex items-center justify-center h-6 w-6 rounded-ds-md transition-colors',
+                  newTitle.trim()
+                    ? 'text-success hover:bg-success-surface'
+                    : 'text-text-quaternary cursor-not-allowed',
+                )}
+                title="Confirm add task"
+                aria-label="Confirm add task"
+                tabIndex={isAdding ? 0 : -1}
+              >
+                <IconCheck className="h-3.5 w-3.5" />
+              </button>
+
+              {/* Cancel */}
+              <button
+                onClick={resetAddForm}
+                className="flex items-center justify-center h-6 w-6 rounded-ds-md text-text-tertiary hover:text-text-primary hover:bg-layer-active transition-colors"
+                title="Cancel"
+                aria-label="Cancel adding task"
+                tabIndex={isAdding ? 0 : -1}
+              >
+                <IconX className="h-3.5 w-3.5" />
+              </button>
+            </div>
           </div>
         </div>
-      )}
+      </div>
     </div>
   )
 }

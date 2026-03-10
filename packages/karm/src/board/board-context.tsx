@@ -15,6 +15,7 @@ import type {
   BoardTask,
   BoardViewMode,
   BulkAction,
+  NewTaskOptions,
 } from './board-types'
 import { DEFAULT_FILTERS } from './board-constants'
 import { useFilteredColumns } from './use-board-filters'
@@ -41,7 +42,7 @@ interface BoardContextValue {
   activeTask: BoardTask | null
   setActiveTask: (task: BoardTask | null) => void
   onTaskMove: (taskId: string, toColumnId: string, newOrder: number) => void
-  onTaskAdd: (columnId: string, title: string) => void
+  onTaskAdd: (columnId: string, options: NewTaskOptions) => void
   onBulkAction: (action: BulkAction) => void
   onColumnReorder: (columnId: string, newIndex: number) => void
   onColumnRename: (columnId: string, name: string) => void
@@ -73,7 +74,7 @@ export interface BoardProviderProps {
   currentUserId?: string | null
   children: ReactNode
   onTaskMove?: (taskId: string, toColumnId: string, newOrder: number) => void
-  onTaskAdd?: (columnId: string, title: string) => void
+  onTaskAdd?: (columnId: string, options: NewTaskOptions) => void
   onBulkAction?: (action: BulkAction) => void
   onColumnReorder?: (columnId: string, newIndex: number) => void
   onColumnRename?: (columnId: string, name: string) => void

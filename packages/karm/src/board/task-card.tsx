@@ -7,8 +7,7 @@ import { CSS } from '@dnd-kit/utilities'
 import { cva } from 'class-variance-authority'
 import { cn } from '@/ui/lib/utils'
 import { Checkbox } from '@/ui'
-import { Progress } from '@/ui'
-import { AvatarGroup } from '@/composed/avatar-group'
+import { Avatar, AvatarImage, AvatarFallback } from '@/ui/avatar'
 import {
   IconArrowDown,
   IconArrowUp,
@@ -18,6 +17,7 @@ import {
   IconCalendar,
   IconEye,
   IconLock,
+  IconSubtask,
 } from '@tabler/icons-react'
 import { useBoardContext } from './board-context'
 import type { BoardTask } from './board-types'
@@ -55,11 +55,11 @@ const PRIORITY_ICON_MAP = {
 // ============================================================
 
 const taskCardVariants = cva(
-  'group/card relative rounded-ds-lg border border-border-subtle bg-layer-01 p-ds-03 transition-all duration-fast-02 ease-productive-standard cursor-pointer',
+  'group/card relative rounded-ds-lg border border-transparent bg-layer-01 pl-3 pr-ds-03 py-ds-03 transition-all duration-fast-02 ease-productive-standard cursor-pointer',
   {
     variants: {
       state: {
-        default: 'shadow-01 hover:shadow-02 hover:border-border',
+        default: 'shadow-01 hover:shadow-02 hover:-translate-y-px hover:border-border',
         dragging: 'opacity-[0.38]',
         overlay: 'rotate-[2deg] shadow-03 backdrop-blur-sm ring-1 ring-interactive/40',
       },
@@ -68,7 +68,7 @@ const taskCardVariants = cva(
         false: '',
       },
       selected: {
-        true: 'ring-2 ring-accent bg-interactive-subtle/30',
+        true: 'ring-1 ring-accent/50 shadow-[0_0_6px_rgba(var(--accent-rgb,99,102,241),0.15)] animate-glow-pulse',
         false: '',
       },
       dimmed: {
@@ -94,9 +94,18 @@ interface TaskCardVisualProps {
   isDragging?: boolean
   isDragOverlay?: boolean
   dragHandleProps?: {
-    attributes: Record<string, unknown>
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    attributes: Record<string, any>
     listeners: Record<string, Function> | undefined
   }
+}
+
+function getInitials(name: string): string {
+  const trimmed = name.trim()
+  if (!trimmed) return ''
+  const parts = trimmed.split(/\s+/)
+  if (parts.length >= 2) return (parts[0][0] + parts[1][0]).toUpperCase()
+  return trimmed.slice(0, 2).toUpperCase()
 }
 
 function TaskCardVisual({
@@ -121,16 +130,22 @@ function TaskCardVisual({
   const PriorityIcon = PRIORITY_ICON_MAP[task.priority]
   const priorityColor = PRIORITY_COLORS[task.priority]
 
-  // Dimmed logic: if highlightMyTasks and currentUserId is set,
-  // dim if user is NOT owner AND NOT in assignees
   const isDimmed =
     highlightMyTasks &&
     currentUserId != null &&
     task.owner?.id !== currentUserId &&
     !task.assignees.some((a) => a.id === currentUserId)
 
-  const subtaskPercent =
-    task.subtaskCount > 0 ? (task.subtasksDone / task.subtaskCount) * 100 : 0
+  // Build avatar stack: owner first (with glow), then assignees
+  const avatarUsers: { name: string; image: string | null; isOwner: boolean }[] = []
+  if (task.owner) {
+    avatarUsers.push({ name: task.owner.name, image: task.owner.image, isOwner: true })
+  }
+  for (const a of task.assignees) {
+    // Skip if same as owner
+    if (task.owner && a.id === task.owner.id) continue
+    avatarUsers.push({ name: a.name, image: a.image, isOwner: false })
+  }
 
   return (
     <div
@@ -144,7 +159,9 @@ function TaskCardVisual({
           selected: isSelected,
           dimmed: isDimmed,
         }),
-        isFocused && 'ring-2 ring-focus',
+        isDragOverlay && 'scale-[1.03] rotate-[1.5deg] shadow-03',
+        isDragging && 'opacity-40',
+        isFocused && 'ring-1 ring-focus',
       )}
       onClick={() => onClickTask(task.id)}
       onKeyDown={(e) => {
@@ -154,31 +171,29 @@ function TaskCardVisual({
         }
       }}
     >
-      {/* Row 1 — Header */}
+      {/* Selection checkbox — absolute overlay, top-left corner */}
+      <div
+        className={cn(
+          'absolute -top-2 -left-2 z-10 transition-opacity',
+          anySelected || isSelected
+            ? 'opacity-100 animate-scale-bounce'
+            : 'opacity-0 group-hover/card:opacity-100',
+        )}
+      >
+        <Checkbox
+          checked={isSelected}
+          onCheckedChange={() => toggleTaskSelection(task.id)}
+          onClick={(e: React.MouseEvent) => e.stopPropagation()}
+          aria-label={`Select task ${task.taskId}`}
+          className="rounded-full bg-layer-01 shadow-01"
+        />
+      </div>
+
+      {/* Row 1 — Header: TaskID + Priority + drag handle */}
       <div className="flex items-center gap-ds-02">
-        {/* Selection checkbox — visible on hover OR when any card selected */}
-        <div
-          className={cn(
-            'flex-shrink-0 transition-opacity',
-            anySelected ? 'opacity-100' : 'opacity-0 group-hover/card:opacity-100',
-          )}
-        >
-          <Checkbox
-            checked={isSelected}
-            onCheckedChange={() => toggleTaskSelection(task.id)}
-            onClick={(e: React.MouseEvent) => e.stopPropagation()}
-            aria-label={`Select task ${task.taskId}`}
-            className="h-3.5 w-3.5"
-          />
-        </div>
+        <span className="text-ds-xs font-mono leading-none text-text-tertiary">{task.taskId}</span>
+        <PriorityIcon className={cn('h-3 w-3 flex-shrink-0', priorityColor)} title={`Priority: ${task.priority}`} />
 
-        {/* Task ID badge */}
-        <span className="text-ds-xs font-mono text-text-tertiary">{task.taskId}</span>
-
-        {/* Priority icon */}
-        <PriorityIcon className={cn('h-3.5 w-3.5 flex-shrink-0', priorityColor)} />
-
-        {/* Spacer */}
         <div className="flex-1" />
 
         {/* Drag handle */}
@@ -204,37 +219,8 @@ function TaskCardVisual({
         {task.title}
       </p>
 
-      {/* Row 3 — Labels */}
-      {task.labels.length > 0 && (
-        <div className="mt-ds-02 flex items-center gap-ds-02 overflow-hidden">
-          {task.labels.slice(0, 3).map((label) => (
-            <span
-              key={label}
-              className="text-ds-xs bg-layer-02 text-text-secondary rounded-full px-ds-02 py-[2px] truncate max-w-[80px]"
-            >
-              {label}
-            </span>
-          ))}
-          {task.labels.length > 3 && (
-            <span className="text-ds-xs text-text-tertiary">
-              +{task.labels.length - 3}
-            </span>
-          )}
-        </div>
-      )}
-
-      {/* Row 4 — Subtask progress */}
-      {task.subtaskCount > 0 && (
-        <div className="mt-ds-02 flex items-center gap-ds-02">
-          <Progress size="sm" value={subtaskPercent} className="flex-1" aria-label={`Subtask progress: ${task.subtasksDone} of ${task.subtaskCount}`} />
-          <span className="text-ds-xs text-text-tertiary">
-            {task.subtasksDone}/{task.subtaskCount}
-          </span>
-        </div>
-      )}
-
-      {/* Row 5 — Bottom metadata */}
-      <div className="mt-ds-02 flex items-center gap-ds-02">
+      {/* Row 3 — Bottom metadata: due date, subtasks, badges, avatars */}
+      <div className="mt-ds-03 flex items-center gap-ds-02">
         {/* Due date */}
         {dueInfo && (
           <div
@@ -242,22 +228,34 @@ function TaskCardVisual({
               'flex items-center gap-ds-01 text-ds-xs leading-tight',
               dueInfo.className,
             )}
+            title={`Due: ${dueInfo.label}`}
           >
             <IconCalendar className="h-3 w-3" />
             <span>{dueInfo.label}</span>
           </div>
         )}
 
+        {/* Subtask count */}
+        {task.subtaskCount > 0 && (
+          <div
+            className="flex items-center gap-ds-01 text-ds-xs text-text-tertiary"
+            title={`Subtasks: ${task.subtasksDone} of ${task.subtaskCount} done`}
+          >
+            <IconSubtask className="h-3 w-3" />
+            <span>{task.subtasksDone}/{task.subtaskCount}</span>
+          </div>
+        )}
+
         {/* Visibility badge */}
         {task.visibility === 'EVERYONE' && (
-          <span className="flex items-center text-text-tertiary" aria-label="Client visible">
+          <span className="flex items-center text-text-tertiary" aria-label="Client visible" title="Visible to client">
             <IconEye className="h-3 w-3" />
           </span>
         )}
 
         {/* Blocked badge */}
         {task.isBlocked && (
-          <span className="flex items-center text-error" aria-label="Blocked">
+          <span className="flex items-center text-error" aria-label="Blocked" title="Blocked">
             <IconLock className="h-3 w-3" />
           </span>
         )}
@@ -265,32 +263,33 @@ function TaskCardVisual({
         {/* Spacer */}
         <div className="flex-1" />
 
-        {/* Owner avatar */}
-        {task.owner && (
-          <div
-            className="flex-shrink-0 ring-2 ring-accent/40 rounded-full h-ds-xs w-ds-xs flex items-center justify-center bg-layer-02 text-ds-xs text-text-secondary overflow-hidden"
-            title={task.owner.name}
-          >
-            {task.owner.image ? (
-              <img
-                src={task.owner.image}
-                alt={task.owner.name}
-                className="h-full w-full object-cover"
-              />
-            ) : (
-              <span>{task.owner.name.charAt(0).toUpperCase()}</span>
+        {/* Avatar stack: owner (with glow) + assignees */}
+        {avatarUsers.length > 0 && (
+          <div className="flex items-center flex-shrink-0">
+            {avatarUsers.slice(0, 3).map((user, i) => (
+              <Avatar
+                key={i}
+                size="xs"
+                className={cn(
+                  'text-ds-xs border-2 border-layer-01',
+                  i > 0 && '-ml-ds-02b',
+                  user.isOwner && 'shadow-[0_0_0_1.5px_rgba(var(--accent-rgb,99,102,241),0.35),0_0_6px_rgba(var(--accent-rgb,99,102,241),0.2)]',
+                )}
+                style={{ zIndex: avatarUsers.length - i }}
+                title={user.name}
+              >
+                {user.image && <AvatarImage src={user.image} alt={user.name} />}
+                <AvatarFallback className="font-body font-semibold">
+                  {getInitials(user.name)}
+                </AvatarFallback>
+              </Avatar>
+            ))}
+            {avatarUsers.length > 3 && (
+              <span className="ml-ds-01 text-ds-xs text-text-tertiary">
+                +{avatarUsers.length - 3}
+              </span>
             )}
           </div>
-        )}
-
-        {/* Assignee avatars */}
-        {task.assignees.length > 0 && (
-          <AvatarGroup
-            users={task.assignees}
-            size="sm"
-            max={2}
-            showTooltip={false}
-          />
         )}
       </div>
     </div>
@@ -348,11 +347,11 @@ TaskCard.displayName = 'TaskCard'
 // ============================================================
 
 const taskCardCompactVariants = cva(
-  'group/card flex items-center gap-ds-02 py-ds-02 px-ds-03 border-b border-border-subtle bg-layer-01 transition-all duration-fast-02 ease-productive-standard cursor-pointer hover:bg-layer-active',
+  'group/card flex items-center gap-ds-02 py-2 pl-3 pr-ds-03 border border-transparent rounded-ds-lg bg-layer-01 transition-all duration-fast-02 ease-productive-standard cursor-pointer hover:bg-layer-active hover:shadow-02 hover:-translate-y-px',
   {
     variants: {
       selected: {
-        true: 'ring-2 ring-accent bg-interactive-subtle/30',
+        true: 'ring-1 ring-accent/50 shadow-[0_0_6px_rgba(var(--accent-rgb,99,102,241),0.15)] animate-glow-pulse',
         false: '',
       },
       dimmed: {
@@ -375,7 +374,6 @@ function TaskCardCompactVisual({
   task,
   isDragging,
   isDragOverlay,
-  dragHandleProps,
 }: TaskCardVisualProps) {
   const {
     selectedTaskIds,
@@ -398,19 +396,23 @@ function TaskCardCompactVisual({
     task.owner?.id !== currentUserId &&
     !task.assignees.some((a) => a.id === currentUserId)
 
+  // Owner avatar for compact — just the first person (owner or first assignee)
+  const leadUser = task.owner ?? task.assignees[0] ?? null
+
   return (
     <div
       role="group"
       tabIndex={0}
       aria-label={`Task ${task.taskId}: ${task.title}`}
       className={cn(
+        'relative',
         taskCardCompactVariants({
           selected: isSelected,
           dimmed: isDimmed,
         }),
-        isDragging && 'opacity-[0.38]',
-        isDragOverlay && 'shadow-03 backdrop-blur-sm ring-1 ring-interactive/40',
-        isFocused && 'ring-2 ring-focus',
+        isDragging && 'opacity-40',
+        isDragOverlay && 'scale-[1.03] rotate-[1.5deg] shadow-03',
+        isFocused && 'ring-1 ring-focus',
       )}
       onClick={() => onClickTask(task.id)}
       onKeyDown={(e) => {
@@ -420,11 +422,13 @@ function TaskCardCompactVisual({
         }
       }}
     >
-      {/* Checkbox */}
+      {/* Selection checkbox — absolute overlay */}
       <div
         className={cn(
-          'flex-shrink-0 transition-opacity',
-          anySelected ? 'opacity-100' : 'opacity-0 group-hover/card:opacity-100',
+          'absolute -top-1.5 -left-1.5 z-10 transition-opacity',
+          anySelected || isSelected
+            ? 'opacity-100 animate-scale-bounce'
+            : 'opacity-0 group-hover/card:opacity-100',
         )}
       >
         <Checkbox
@@ -432,12 +436,12 @@ function TaskCardCompactVisual({
           onCheckedChange={() => toggleTaskSelection(task.id)}
           onClick={(e: React.MouseEvent) => e.stopPropagation()}
           aria-label={`Select task ${task.taskId}`}
-          className="h-3.5 w-3.5"
+          className="rounded-full bg-layer-01 shadow-01"
         />
       </div>
 
       {/* Priority icon */}
-      <PriorityIcon className={cn('h-3.5 w-3.5 flex-shrink-0', priorityColor)} />
+      <PriorityIcon className={cn('h-3.5 w-3.5 flex-shrink-0', priorityColor)} title={`Priority: ${task.priority}`} />
 
       {/* Task ID */}
       <span className="text-ds-xs font-mono text-text-tertiary flex-shrink-0">
@@ -449,27 +453,26 @@ function TaskCardCompactVisual({
         {task.title}
       </span>
 
-      {/* Subtask count (text only, no bar) */}
+      {/* Subtask count */}
       {task.subtaskCount > 0 && (
         <span className="text-ds-xs text-text-tertiary flex-shrink-0">
           {task.subtasksDone}/{task.subtaskCount}
         </span>
       )}
 
-      {/* Owner avatar */}
-      {task.owner && (
+      {/* Lead avatar — tiny for compact */}
+      {leadUser && (
         <div
-          className="flex-shrink-0 ring-2 ring-accent/40 rounded-full h-5 w-5 flex items-center justify-center bg-layer-02 text-ds-xs text-text-secondary overflow-hidden"
-          title={task.owner.name}
+          className={cn(
+            'flex h-[14px] w-[14px] shrink-0 items-center justify-center rounded-full border border-layer-01 bg-interactive-subtle text-[6px] font-semibold leading-none text-interactive overflow-hidden',
+            task.owner && 'shadow-[0_0_0_1px_rgba(var(--accent-rgb,99,102,241),0.35),0_0_4px_rgba(var(--accent-rgb,99,102,241),0.2)]',
+          )}
+          title={leadUser.name}
         >
-          {task.owner.image ? (
-            <img
-              src={task.owner.image}
-              alt={task.owner.name}
-              className="h-full w-full object-cover"
-            />
+          {leadUser.image ? (
+            <img src={leadUser.image} alt={leadUser.name} className="h-full w-full object-cover" />
           ) : (
-            <span>{task.owner.name.charAt(0).toUpperCase()}</span>
+            getInitials(leadUser.name)
           )}
         </div>
       )}
@@ -564,11 +567,4 @@ const TaskCardOverlay = React.forwardRef<HTMLDivElement, TaskCardOverlayProps>(
 
 TaskCardOverlay.displayName = 'TaskCardOverlay'
 
-export { TaskCard }
-export type { TaskCardProps }
-export { TaskCardOverlay }
-export type { TaskCardOverlayProps }
-export { TaskCardCompact }
-export type { TaskCardCompactProps }
-export { TaskCardCompactOverlay }
-export type { TaskCardCompactOverlayProps }
+export { TaskCard, TaskCardOverlay, TaskCardCompact, TaskCardCompactOverlay }

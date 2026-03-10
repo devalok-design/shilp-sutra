@@ -54,20 +54,15 @@ describe('BoardColumn', () => {
     expect(screen.getByText('To Do')).toBeInTheDocument()
   })
 
-  it('renders task count', () => {
+  it('renders task count in column name', () => {
     renderColumn()
-    expect(screen.getByLabelText('1 tasks')).toBeInTheDocument()
+    expect(screen.getByLabelText('To Do, 1 tasks')).toBeInTheDocument()
   })
 
   it('renders tasks in default mode', () => {
     renderColumn()
     expect(screen.getByText('First task')).toBeInTheDocument()
     expect(screen.getByText('KRM-1')).toBeInTheDocument()
-  })
-
-  it('renders add task button at bottom', () => {
-    renderColumn()
-    expect(screen.getByText('Add task')).toBeInTheDocument()
   })
 
   it('renders empty state with illustration when no tasks', () => {

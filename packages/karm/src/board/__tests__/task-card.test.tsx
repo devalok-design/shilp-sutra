@@ -50,20 +50,15 @@ describe('TaskCard', () => {
     expect(screen.getByText('Implement authentication flow')).toBeInTheDocument()
   })
 
-  it('renders labels', () => {
-    render(<TaskCard task={mockTask} />, { wrapper: Wrapper })
-    expect(screen.getByText('frontend')).toBeInTheDocument()
-    expect(screen.getByText('auth')).toBeInTheDocument()
-  })
-
-  it('renders subtask progress', () => {
+  it('renders subtask count in bottom row', () => {
     render(<TaskCard task={mockTask} />, { wrapper: Wrapper })
     expect(screen.getByText('3/5')).toBeInTheDocument()
   })
 
-  it('renders owner avatar initials', () => {
+  it('renders owner avatar initials in avatar stack', () => {
     render(<TaskCard task={mockTask} />, { wrapper: Wrapper })
-    expect(screen.getByText('A')).toBeInTheDocument()
+    // Owner "Alice" → 2-char initials "AL"
+    expect(screen.getByText('AL')).toBeInTheDocument()
   })
 
   it('renders blocked indicator when blocked', () => {
@@ -103,23 +98,7 @@ describe('TaskCard', () => {
     expect(screen.getByLabelText(/drag handle/i)).toBeInTheDocument()
   })
 
-  it('does not render labels row when no labels', () => {
-    const noLabelsTask = { ...mockTask, labels: [] }
-    render(<TaskCard task={noLabelsTask} />, {
-      wrapper: ({ children }: { children: React.ReactNode }) => (
-        <BoardProvider initialData={{ columns: [{ id: 'c1', name: 'Todo', tasks: [noLabelsTask] }] }}>
-          <DndContext>
-            <SortableContext items={[noLabelsTask.id]} strategy={verticalListSortingStrategy}>
-              {children}
-            </SortableContext>
-          </DndContext>
-        </BoardProvider>
-      ),
-    })
-    expect(screen.queryByText('frontend')).not.toBeInTheDocument()
-  })
-
-  it('does not render subtask progress when subtaskCount is 0', () => {
+  it('does not render subtask count when subtaskCount is 0', () => {
     const noSubtaskTask = { ...mockTask, subtaskCount: 0, subtasksDone: 0 }
     render(<TaskCard task={noSubtaskTask} />, {
       wrapper: ({ children }: { children: React.ReactNode }) => (
@@ -133,22 +112,6 @@ describe('TaskCard', () => {
       ),
     })
     expect(screen.queryByText('0/0')).not.toBeInTheDocument()
-  })
-
-  it('shows overflow count for more than 3 labels', () => {
-    const manyLabelsTask = { ...mockTask, labels: ['a', 'b', 'c', 'd', 'e'] }
-    render(<TaskCard task={manyLabelsTask} />, {
-      wrapper: ({ children }: { children: React.ReactNode }) => (
-        <BoardProvider initialData={{ columns: [{ id: 'c1', name: 'Todo', tasks: [manyLabelsTask] }] }}>
-          <DndContext>
-            <SortableContext items={[manyLabelsTask.id]} strategy={verticalListSortingStrategy}>
-              {children}
-            </SortableContext>
-          </DndContext>
-        </BoardProvider>
-      ),
-    })
-    expect(screen.getByText('+2')).toBeInTheDocument()
   })
 
   it('renders priority icon for HIGH priority', () => {
@@ -181,8 +144,9 @@ describe('TaskCardCompact', () => {
     expect(screen.getByText('3/5')).toBeInTheDocument()
   })
 
-  it('renders owner initial', () => {
+  it('renders owner initials in compact mode', () => {
     render(<TaskCardCompact task={mockTask} />, { wrapper: Wrapper })
-    expect(screen.getByText('A')).toBeInTheDocument()
+    // Owner "Alice" → 2-char initials "AL"
+    expect(screen.getByText('AL')).toBeInTheDocument()
   })
 })

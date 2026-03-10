@@ -1,6 +1,6 @@
 import type { Meta, StoryObj } from '@storybook/react'
-import { KanbanBoard, type BoardData } from './kanban-board'
-import type { BoardTask } from './board-types'
+import { KanbanBoard } from './kanban-board'
+import type { BoardData, BoardTask } from './board-types'
 
 // ============================================================
 // Mock Data Factory
@@ -10,19 +10,24 @@ function createTask(
   overrides: Partial<BoardTask> & { id: string; title: string },
 ): BoardTask {
   return {
+    taskId: overrides.id.toUpperCase().replace('TASK-', 'KRM-'),
     priority: 'MEDIUM',
     labels: [],
     dueDate: null,
     isBlocked: false,
+    visibility: 'INTERNAL',
+    owner: null,
     assignees: [],
+    subtaskCount: 0,
+    subtasksDone: 0,
     ...overrides,
   }
 }
 
 const teamMembers = {
-  arjun: { id: 'u1', name: 'Arjun Mehta', image: null },
-  priya: { id: 'u2', name: 'Priya Sharma', image: null },
-  kavita: { id: 'u3', name: 'Kavita Reddy', image: null },
+  arjun: { id: 'u1', name: 'Arjun Mehta', image: 'https://i.pravatar.cc/150?u=arjun' },
+  priya: { id: 'u2', name: 'Priya Sharma', image: 'https://i.pravatar.cc/150?u=priya' },
+  kavita: { id: 'u3', name: 'Kavita Reddy', image: 'https://i.pravatar.cc/150?u=kavita' },
   rahul: { id: 'u4', name: 'Rahul Verma', image: null },
   deepa: { id: 'u5', name: 'Deepa Nair', image: null },
 }
@@ -62,6 +67,8 @@ const fullBoardData: BoardData = {
           labels: ['frontend', 'feature'],
           dueDate: new Date(Date.now() + 5 * 86400000).toISOString(),
           assignees: [teamMembers.priya],
+          subtaskCount: 3,
+          subtasksDone: 1,
         }),
         createTask({
           id: 'task-4',
@@ -77,6 +84,8 @@ const fullBoardData: BoardData = {
           priority: 'MEDIUM',
           labels: ['testing'],
           assignees: [teamMembers.kavita],
+          subtaskCount: 8,
+          subtasksDone: 5,
         }),
       ],
     },
@@ -91,7 +100,10 @@ const fullBoardData: BoardData = {
           priority: 'HIGH',
           labels: ['frontend', 'core'],
           dueDate: new Date(Date.now() + 1 * 86400000).toISOString(),
+          owner: teamMembers.arjun,
           assignees: [teamMembers.arjun],
+          subtaskCount: 5,
+          subtasksDone: 3,
         }),
         createTask({
           id: 'task-7',
@@ -100,7 +112,10 @@ const fullBoardData: BoardData = {
           labels: ['bug', 'production'],
           dueDate: new Date(Date.now() - 86400000).toISOString(),
           isBlocked: true,
+          owner: teamMembers.rahul,
           assignees: [teamMembers.rahul],
+          subtaskCount: 3,
+          subtasksDone: 1,
         }),
       ],
     },
@@ -114,6 +129,7 @@ const fullBoardData: BoardData = {
           title: 'Add pagination to project listing page',
           priority: 'MEDIUM',
           labels: ['frontend'],
+          visibility: 'EVERYONE',
           assignees: [teamMembers.priya, teamMembers.kavita],
         }),
       ],
@@ -142,15 +158,43 @@ const fullBoardData: BoardData = {
   ],
 }
 
-const emptyBoardData: BoardData = {
+const wipBoardData: BoardData = {
   columns: [
-    { id: 'col-todo', name: 'To Do', isClientVisible: false, tasks: [] },
+    {
+      id: 'col-todo',
+      name: 'To Do',
+      wipLimit: 5,
+      tasks: [
+        createTask({ id: 'wip-1', title: 'Design landing page mockups', labels: ['design'] }),
+        createTask({ id: 'wip-2', title: 'Set up monitoring alerts', priority: 'HIGH', labels: ['devops'] }),
+      ],
+    },
     {
       id: 'col-in-progress',
       name: 'In Progress',
+      wipLimit: 2,
       isClientVisible: true,
-      tasks: [],
+      tasks: [
+        createTask({ id: 'wip-3', title: 'Implement WebSocket auth', priority: 'HIGH', assignees: [teamMembers.arjun] }),
+        createTask({ id: 'wip-4', title: 'Build notification center', priority: 'URGENT', assignees: [teamMembers.priya] }),
+        createTask({ id: 'wip-5', title: 'Fix CSS grid layout on Safari', priority: 'HIGH', labels: ['bug'], assignees: [teamMembers.kavita] }),
+      ],
     },
+    {
+      id: 'col-done',
+      name: 'Done',
+      isClientVisible: true,
+      tasks: [
+        createTask({ id: 'wip-6', title: 'Add rate limiter middleware', assignees: [teamMembers.deepa] }),
+      ],
+    },
+  ],
+}
+
+const emptyBoardData: BoardData = {
+  columns: [
+    { id: 'col-todo', name: 'To Do', isClientVisible: false, tasks: [] },
+    { id: 'col-in-progress', name: 'In Progress', isClientVisible: true, tasks: [] },
     { id: 'col-done', name: 'Done', isClientVisible: true, tasks: [] },
   ],
 }
@@ -162,80 +206,38 @@ const singleColumnData: BoardData = {
       name: 'Inbox',
       isClientVisible: false,
       tasks: [
+        createTask({ id: 'task-11', title: 'Triage new customer bug reports', priority: 'HIGH', labels: ['triage'] }),
         createTask({
-          id: 'task-11',
-          title: 'Triage new customer bug reports',
-          priority: 'HIGH',
-          labels: ['triage'],
+          id: 'task-12', title: 'Review pull request #342', priority: 'MEDIUM', labels: ['review'],
+          owner: teamMembers.arjun, assignees: [teamMembers.priya],
         }),
-        createTask({
-          id: 'task-12',
-          title: 'Review pull request #342',
-          priority: 'MEDIUM',
-          labels: ['review'],
-        }),
+        createTask({ id: 'task-13', title: 'Update deployment runbook', priority: 'LOW', labels: ['docs'] }),
       ],
     },
   ],
 }
 
 const heavyBoardData: BoardData = {
-  columns: [
-    {
-      id: 'col-backlog',
-      name: 'Backlog',
-      isClientVisible: false,
-      tasks: Array.from({ length: 8 }, (_, i) =>
-        createTask({
-          id: `heavy-${i}`,
-          title: `Backlog task ${i + 1}: ${['Refactor auth module', 'Add dark mode support', 'Create email templates', 'Update dependencies', 'Optimize images', 'Add analytics tracking', 'Write E2E tests', 'Review security audit'][i]}`,
-          priority: (['LOW', 'MEDIUM', 'HIGH', 'URGENT'] as const)[i % 4],
-          labels: [
-            ['backend'],
-            ['frontend', 'design'],
-            ['email'],
-            ['maintenance'],
-            ['performance'],
-            ['analytics'],
-            ['testing'],
-            ['security'],
-          ][i],
-          assignees:
-            i % 2 === 0
-              ? [teamMembers.arjun]
-              : [teamMembers.priya, teamMembers.kavita],
-        }),
-      ),
-    },
-    {
-      id: 'col-in-progress',
-      name: 'In Progress',
-      isClientVisible: true,
-      tasks: Array.from({ length: 4 }, (_, i) =>
-        createTask({
-          id: `heavy-ip-${i}`,
-          title: `In progress task ${i + 1}: ${['Build notification system', 'Implement search indexing', 'Create admin dashboard', 'Fix mobile responsiveness'][i]}`,
-          priority: (['HIGH', 'URGENT', 'MEDIUM', 'HIGH'] as const)[i],
-          labels: [['notifications'], ['search'], ['admin'], ['mobile']][i],
-          dueDate: new Date(Date.now() + (i - 1) * 86400000).toISOString(),
-          assignees: [teamMembers.rahul],
-        }),
-      ),
-    },
-    {
-      id: 'col-done',
-      name: 'Done',
-      isClientVisible: true,
-      tasks: Array.from({ length: 6 }, (_, i) =>
-        createTask({
-          id: `heavy-done-${i}`,
-          title: `Completed task ${i + 1}`,
-          priority: 'LOW',
-          assignees: [teamMembers.deepa],
-        }),
-      ),
-    },
-  ],
+  columns: Array.from({ length: 8 }, (_, colIdx) => {
+    const colNames = ['Backlog', 'Triage', 'To Do', 'In Progress', 'Review', 'QA', 'Staging', 'Done']
+    return {
+      id: `heavy-col-${colIdx}`,
+      name: colNames[colIdx],
+      isClientVisible: colIdx >= 5,
+      tasks: Array.from({ length: colIdx === 0 ? 10 : colIdx < 4 ? 6 : 3 }, (_, taskIdx) => {
+        const globalIdx = colIdx * 10 + taskIdx
+        return createTask({
+          id: `heavy-${globalIdx}`,
+          title: `${colNames[colIdx]} task ${taskIdx + 1}`,
+          priority: (['LOW', 'MEDIUM', 'HIGH', 'URGENT'] as const)[globalIdx % 4],
+          labels: [['backend', 'frontend', 'devops', 'testing', 'design', 'docs'][globalIdx % 6]],
+          assignees: globalIdx % 3 === 0 ? [teamMembers.arjun] : globalIdx % 3 === 1 ? [teamMembers.priya, teamMembers.kavita] : [],
+          subtaskCount: globalIdx % 5,
+          subtasksDone: Math.floor((globalIdx % 5) * 0.6),
+        })
+      }),
+    }
+  }),
 }
 
 // ============================================================
@@ -264,11 +266,20 @@ const meta: Meta<typeof KanbanBoard> = {
   argTypes: {
     onTaskMove: { action: 'taskMove' },
     onTaskAdd: { action: 'taskAdd' },
+    onBulkAction: { action: 'bulkAction' },
+    onColumnReorder: { action: 'columnReorder' },
     onColumnRename: { action: 'columnRename' },
     onColumnDelete: { action: 'columnDelete' },
     onColumnToggleVisibility: { action: 'columnToggleVisibility' },
+    onColumnWipLimitChange: { action: 'columnWipLimitChange' },
     onClickTask: { action: 'clickTask' },
     onAddColumn: { action: 'addColumn' },
+    onQuickPriorityChange: { action: 'quickPriorityChange' },
+    onQuickAssign: { action: 'quickAssign' },
+    onQuickDueDateChange: { action: 'quickDueDateChange' },
+    onQuickLabelAdd: { action: 'quickLabelAdd' },
+    onQuickVisibilityChange: { action: 'quickVisibilityChange' },
+    onQuickDelete: { action: 'quickDelete' },
   },
 }
 
@@ -279,14 +290,22 @@ type Story = StoryObj<typeof KanbanBoard>
 // Stories
 // ============================================================
 
-/** Full project board with 5 columns, realistic tasks, and various states */
+/** Full project board with 5 columns, realistic tasks with avatars, labels, subtasks, and due dates */
 export const FullBoard: Story = {
   args: {
     initialData: fullBoardData,
+    currentUserId: 'u1',
   },
 }
 
-/** Board with empty columns -- useful for new projects */
+/** Board with WIP limits — "In Progress" column exceeds its limit of 2 */
+export const WithWipLimits: Story = {
+  args: {
+    initialData: wipBoardData,
+  },
+}
+
+/** Board with empty columns — useful for new projects */
 export const EmptyColumns: Story = {
   args: {
     initialData: emptyBoardData,
@@ -300,14 +319,14 @@ export const SingleColumn: Story = {
   },
 }
 
-/** Board with many tasks per column to test scrolling and performance */
+/** 8 columns, 50+ tasks — performance and horizontal scroll test */
 export const HeavyBoard: Story = {
   args: {
     initialData: heavyBoardData,
   },
 }
 
-/** Board with no columns at all -- just the "Add column" button */
+/** Board with no columns at all — just the "Add column" button */
 export const NoColumns: Story = {
   args: {
     initialData: { columns: [] },

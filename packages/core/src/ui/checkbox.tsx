@@ -48,7 +48,7 @@ const Checkbox = React.forwardRef<
       ref={ref}
       checked={resolvedChecked}
       className={cn(
-        'peer h-ico-md w-ico-md shrink-0 rounded-ds-sm',
+        'peer flex items-center justify-center h-ico-md w-ico-md shrink-0 rounded-ds-sm',
         'border border-border-strong',
         'bg-field',
         'transition-colors duration-fast-01',
@@ -65,7 +65,7 @@ const Checkbox = React.forwardRef<
         {resolvedChecked === 'indeterminate' ? (
           <IconMinus className="h-ico-sm w-ico-sm" />
         ) : (
-          <IconCheck className="h-ico-sm w-ico-sm" />
+          <IconCheck className="h-3 w-3" />
         )}
       </CheckboxPrimitive.Indicator>
     </CheckboxPrimitive.Root>

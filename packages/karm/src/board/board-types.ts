@@ -43,6 +43,12 @@ export interface BoardFilters {
 
 export type BoardViewMode = 'default' | 'compact'
 
+export interface NewTaskOptions {
+  title: string
+  ownerId?: string | null
+  dueDate?: string | null
+}
+
 export interface BulkAction {
   type: 'move' | 'priority' | 'assign' | 'label' | 'dueDate' | 'delete' | 'visibility'
   taskIds: string[]

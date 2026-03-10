@@ -80,7 +80,7 @@ const AvatarGroup = React.forwardRef<HTMLDivElement, AvatarGroupProps>(
                   <AvatarImage src={user.image} alt={user.name} />
                 )}
                 <AvatarFallback
-                  className="bg-field font-body font-semibold text-text-on-color"
+                  className="font-body font-semibold"
                 >
                   {initials}
                 </AvatarFallback>
@@ -109,7 +109,7 @@ const AvatarGroup = React.forwardRef<HTMLDivElement, AvatarGroupProps>(
                   className={cn(
                     avatarSizeVariants({ size }),
                     overlapClass,
-                    'flex cursor-default items-center justify-center bg-layer-03 font-body font-semibold text-text-on-color',
+                    'flex cursor-default items-center justify-center bg-interactive-subtle font-body font-semibold text-interactive',
                   )}
                   style={{ zIndex: 0 }}
                 >

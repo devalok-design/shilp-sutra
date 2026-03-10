@@ -1,11 +1,9 @@
 import type { Meta, StoryObj } from '@storybook/react'
 import { DndContext } from '@dnd-kit/core'
-import {
-  SortableContext,
-  horizontalListSortingStrategy,
-} from '@dnd-kit/sortable'
-import { BoardColumn, type BoardColumnData } from './board-column'
-import type { BoardTask } from './board-types'
+import { SortableContext, verticalListSortingStrategy } from '@dnd-kit/sortable'
+import { BoardColumn } from './board-column'
+import { BoardProvider } from './board-context'
+import type { BoardTask, BoardColumn as BoardColumnType } from './board-types'
 
 // ============================================================
 // Mock Data
@@ -14,87 +12,106 @@ import type { BoardTask } from './board-types'
 const mockTasks: BoardTask[] = [
   {
     id: 'task-1',
+    taskId: 'KRM-1',
     title: 'Set up CI/CD pipeline for staging environment',
     priority: 'HIGH',
     labels: ['devops', 'infrastructure'],
     dueDate: new Date(Date.now() + 3 * 86400000).toISOString(),
     isBlocked: false,
-    assignees: [{ id: 'u1', name: 'Arjun Mehta', image: null }],
+    visibility: 'INTERNAL',
+    owner: { id: 'u1', name: 'Arjun Mehta', image: null },
+    assignees: [{ id: 'u4', name: 'Rohan Gupta', image: null }],
+    subtaskCount: 4,
+    subtasksDone: 2,
   },
   {
     id: 'task-2',
+    taskId: 'KRM-2',
     title: 'Implement OAuth2 refresh token rotation',
     priority: 'URGENT',
     labels: ['security'],
     dueDate: new Date(Date.now() - 86400000).toISOString(),
     isBlocked: true,
-    assignees: [
-      { id: 'u2', name: 'Priya Sharma', image: null },
-      { id: 'u3', name: 'Kavita Reddy', image: null },
-    ],
+    visibility: 'EVERYONE',
+    owner: { id: 'u2', name: 'Priya Sharma', image: null },
+    assignees: [{ id: 'u3', name: 'Kavita Reddy', image: null }],
+    subtaskCount: 3,
+    subtasksDone: 1,
   },
   {
     id: 'task-3',
+    taskId: 'KRM-3',
     title: 'Add unit tests for payment service',
     priority: 'MEDIUM',
     labels: ['testing'],
     dueDate: new Date(Date.now() + 7 * 86400000).toISOString(),
     isBlocked: false,
+    visibility: 'INTERNAL',
+    owner: null,
     assignees: [],
+    subtaskCount: 0,
+    subtasksDone: 0,
   },
   {
     id: 'task-4',
+    taskId: 'KRM-4',
     title: 'Update API documentation for v2 endpoints',
     priority: 'LOW',
     labels: ['docs'],
     dueDate: null,
     isBlocked: false,
-    assignees: [{ id: 'u1', name: 'Arjun Mehta', image: null }],
+    visibility: 'INTERNAL',
+    owner: { id: 'u1', name: 'Arjun Mehta', image: null },
+    assignees: [],
+    subtaskCount: 2,
+    subtasksDone: 2,
   },
 ]
 
-const columnWithTasks: BoardColumnData = {
+const columnWithTasks: BoardColumnType = {
   id: 'col-in-progress',
   name: 'In Progress',
   isClientVisible: false,
   tasks: mockTasks,
 }
 
-const emptyColumn: BoardColumnData = {
+const emptyColumn: BoardColumnType = {
   id: 'col-backlog',
   name: 'Backlog',
   isClientVisible: false,
   tasks: [],
 }
 
-const clientVisibleColumn: BoardColumnData = {
-  id: 'col-review',
-  name: 'Client Review',
-  isClientVisible: true,
-  tasks: [mockTasks[0], mockTasks[2]],
-}
-
-const singleTaskColumn: BoardColumnData = {
-  id: 'col-done',
-  name: 'Done',
-  isClientVisible: true,
-  tasks: [mockTasks[3]],
+const wipExceededColumn: BoardColumnType = {
+  id: 'col-wip',
+  name: 'In Review',
+  isClientVisible: false,
+  wipLimit: 2,
+  tasks: mockTasks.slice(0, 3), // 3 tasks, limit 2
 }
 
 // ============================================================
-// DnD Wrapper
+// Wrapper
 // ============================================================
 
-function DndWrapper({ children }: { children: React.ReactNode }) {
+function BoardWrapper({
+  children,
+  column,
+}: {
+  children: React.ReactNode
+  column: BoardColumnType
+}) {
   return (
-    <DndContext>
-      <SortableContext
-        items={['column-wrapper']}
-        strategy={horizontalListSortingStrategy}
-      >
-        <div className="group">{children}</div>
-      </SortableContext>
-    </DndContext>
+    <BoardProvider initialData={{ columns: [column] }}>
+      <DndContext>
+        <SortableContext
+          items={column.tasks.map((t) => t.id)}
+          strategy={verticalListSortingStrategy}
+        >
+          <div className="h-[600px]">{children}</div>
+        </SortableContext>
+      </DndContext>
+    </BoardProvider>
   )
 }
 
@@ -110,25 +127,10 @@ const meta: Meta<typeof BoardColumn> = {
     layout: 'centered',
     docs: {
       description: {
-        component: '**Package:** `@devalok/shilp-sutra-karm` · **Import:** `import { BoardColumn } from "@devalok/shilp-sutra-karm/board"`',
+        component:
+          '**Package:** `@devalok/shilp-sutra-karm` · **Import:** `import { BoardColumn } from "@devalok/shilp-sutra-karm/board"`',
       },
     },
-  },
-  decorators: [
-    (Story) => (
-      <DndWrapper>
-        <div className="h-[600px]">
-          <Story />
-        </div>
-      </DndWrapper>
-    ),
-  ],
-  argTypes: {
-    onAddTask: { action: 'addTask' },
-    onClickTask: { action: 'clickTask' },
-    onRenameColumn: { action: 'renameColumn' },
-    onDeleteColumn: { action: 'deleteColumn' },
-    onToggleVisibility: { action: 'toggleVisibility' },
   },
 }
 
@@ -141,104 +143,67 @@ type Story = StoryObj<typeof BoardColumn>
 
 /** Column with multiple tasks showing various priorities, labels, and assignees */
 export const WithTasks: Story = {
-  args: {
-    column: columnWithTasks,
-    index: 1,
-    onAddTask: () => {},
-  },
+  args: { column: columnWithTasks, index: 1 },
+  decorators: [
+    (Story) => (
+      <BoardWrapper column={columnWithTasks}>
+        <Story />
+      </BoardWrapper>
+    ),
+  ],
 }
 
-/** Empty column showing the "No tasks" placeholder */
+/** Empty column showing line-art illustration + CTA */
 export const Empty: Story = {
-  args: {
-    column: emptyColumn,
-    index: 0,
-    onAddTask: () => {},
-  },
+  args: { column: emptyColumn, index: 0 },
+  decorators: [
+    (Story) => (
+      <BoardWrapper column={emptyColumn}>
+        <Story />
+      </BoardWrapper>
+    ),
+  ],
 }
 
-/** Column marked as visible to clients (shows eye icon in header) */
-export const ClientVisible: Story = {
-  args: {
-    column: clientVisibleColumn,
-    index: 4,
-    onAddTask: () => {},
-  },
+/** WIP limit exceeded — red dot, error surface tint, count shows "3/2" in red */
+export const WipExceeded: Story = {
+  args: { column: wipExceededColumn, index: 2 },
+  decorators: [
+    (Story) => (
+      <BoardWrapper column={wipExceededColumn}>
+        <Story />
+      </BoardWrapper>
+    ),
+  ],
 }
 
-/** Column with a single task */
-export const SingleTask: Story = {
-  args: {
-    column: singleTaskColumn,
-    index: 3,
-    onAddTask: () => {},
-  },
-}
-
-/** First column index (blue accent border) */
-export const FirstColumnAccent: Story = {
-  args: {
-    column: { ...columnWithTasks, name: 'To Do' },
-    index: 0,
-    onAddTask: () => {},
-  },
-}
-
-/** Fifth column index (pink accent border) */
-export const FifthColumnAccent: Story = {
-  args: {
-    column: { ...columnWithTasks, name: 'Deployed' },
-    index: 4,
-    onAddTask: () => {},
-  },
-}
-
-/** All column accent colors displayed together */
+/** All 8 column accent colors displayed side-by-side */
 export const AllAccentColors: Story = {
   render: () => {
     const columnNames = [
-      'To Do',
-      'In Progress',
-      'Review',
-      'QA',
-      'Staging',
-      'Deployed',
-      'Archived',
-      'Done',
+      'To Do', 'In Progress', 'Review', 'QA',
+      'Staging', 'Deployed', 'Archived', 'Done',
     ]
+    const columns: BoardColumnType[] = columnNames.map((name, i) => ({
+      id: `accent-${i}`,
+      name,
+      tasks: [],
+    }))
     return (
-      <DndContext>
-        <SortableContext
-          items={columnNames.map((_, i) => `column-accent-${i}`)}
-          strategy={horizontalListSortingStrategy}
-        >
+      <BoardProvider initialData={{ columns }}>
+        <DndContext>
           <div className="flex gap-ds-04 overflow-x-auto">
-            {columnNames.map((name, i) => (
-              <div key={i} className="group h-[200px]">
-                <BoardColumn
-                  column={{
-                    id: `accent-${i}`,
-                    name,
-                    tasks: [],
-                    isClientVisible: false,
-                  }}
-                  index={i}
-                  onAddTask={() => {}}
-                />
-              </div>
+            {columns.map((col, i) => (
+              <SortableContext key={col.id} items={[]} strategy={verticalListSortingStrategy}>
+                <div className="h-[250px]">
+                  <BoardColumn column={col} index={i} />
+                </div>
+              </SortableContext>
             ))}
           </div>
-        </SortableContext>
-      </DndContext>
+        </DndContext>
+      </BoardProvider>
     )
   },
-  parameters: {
-    layout: 'padded',
-    docs: {
-      description: {
-        story:
-          'Shows all 8 column accent colors cycling through: blue, violet, amber, emerald, pink, cyan, orange, teal.',
-      },
-    },
-  },
+  parameters: { layout: 'padded' },
 }

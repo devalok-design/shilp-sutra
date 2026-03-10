@@ -159,3 +159,63 @@ describe('S11 — group action', () => {
     expect(container.querySelector('[data-sidebar="group-action"]')).toBeNull()
   })
 })
+
+describe('S12 — structured footer', () => {
+  const baseGroups: NavGroup[] = [
+    {
+      label: 'Main',
+      items: [{ title: 'Home', href: '/', icon: <TestIcon />, exact: true }],
+    },
+  ]
+
+  it('renders footer with links separated by dividers', () => {
+    renderSidebar({
+      navGroups: baseGroups,
+      footer: {
+        links: [
+          { label: 'Terms', href: '/terms' },
+          { label: 'Privacy', href: '/privacy' },
+        ],
+      },
+    })
+    expect(screen.getByText('Terms')).toBeInTheDocument()
+    expect(screen.getByText('Privacy')).toBeInTheDocument()
+  })
+
+  it('renders footer version text', () => {
+    renderSidebar({
+      navGroups: baseGroups,
+      footer: { version: 'v2.4.1' },
+    })
+    expect(screen.getByText('v2.4.1')).toBeInTheDocument()
+  })
+
+  it('renders footer slot content', () => {
+    renderSidebar({
+      navGroups: baseGroups,
+      footer: {
+        slot: <div data-testid="footer-slot">What's new?</div>,
+        links: [{ label: 'Terms', href: '/terms' }],
+      },
+    })
+    expect(screen.getByTestId('footer-slot')).toBeInTheDocument()
+  })
+
+  it('prefers footer over footerLinks when both provided', () => {
+    renderSidebar({
+      navGroups: baseGroups,
+      footer: { version: 'v1.0' },
+      footerLinks: [{ label: 'Old', href: '/old' }],
+    })
+    expect(screen.getByText('v1.0')).toBeInTheDocument()
+    expect(screen.queryByText('Old')).toBeNull()
+  })
+
+  it('falls back to footerLinks when footer is not provided', () => {
+    renderSidebar({
+      navGroups: baseGroups,
+      footerLinks: [{ label: 'Help', href: '/help' }],
+    })
+    expect(screen.getByText('Help')).toBeInTheDocument()
+  })
+})

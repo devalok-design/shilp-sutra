@@ -67,6 +67,15 @@ export interface SidebarUser {
   role?: string
 }
 
+export interface SidebarFooterConfig {
+  /** Legal/utility links rendered as a row separated by dividers */
+  links?: Array<{ label: string; href: string }>
+  /** Version or build info text rendered below links */
+  version?: string
+  /** Custom content rendered above the links row */
+  slot?: React.ReactNode
+}
+
 export interface AppSidebarProps
   extends React.HTMLAttributes<HTMLDivElement> {
   /** Currently active pathname -- used to highlight the active nav item */
@@ -79,6 +88,8 @@ export interface AppSidebarProps
   logo?: React.ReactNode
   /** Footer links rendered at the bottom of the sidebar */
   footerLinks?: Array<{ label: string; href: string }>
+  /** Structured footer config (takes precedence over footerLinks) */
+  footer?: SidebarFooterConfig
   /** Content rendered between user header and navigation */
   headerSlot?: React.ReactNode
   /** Content rendered between navigation and footer */
@@ -141,6 +152,7 @@ const AppSidebar = React.forwardRef<HTMLDivElement, AppSidebarProps>(
       headerSlot,
       preFooterSlot,
       footerLinks = [],
+      footer,
       className,
       ...props
     },
@@ -242,7 +254,35 @@ const AppSidebar = React.forwardRef<HTMLDivElement, AppSidebarProps>(
         )}
 
         {/* Footer */}
-        {footerLinks.length > 0 && (
+        {footer ? (
+          <SidebarFooter className="px-ds-06 py-ds-05">
+            {footer.slot && (
+              <div className="border-t border-border pb-ds-04 pt-ds-04">
+                {footer.slot}
+              </div>
+            )}
+            {footer.links && footer.links.length > 0 && (
+              <div className="flex items-center justify-start gap-ds-03">
+                {footer.links.map((link, i) => (
+                  <div key={link.href} className="flex items-center gap-ds-03">
+                    {i > 0 && <span className="text-text-placeholder">·</span>}
+                    <Link
+                      className="text-ds-sm text-text-placeholder transition-colors hover:text-interactive"
+                      href={link.href}
+                    >
+                      {link.label}
+                    </Link>
+                  </div>
+                ))}
+              </div>
+            )}
+            {footer.version && (
+              <p className="text-center text-ds-sm text-text-placeholder">
+                {footer.version}
+              </p>
+            )}
+          </SidebarFooter>
+        ) : footerLinks.length > 0 ? (
           <SidebarFooter className="px-ds-06 py-ds-05">
             <div className="flex items-center justify-start gap-ds-03">
               {footerLinks.map((link, i) => (
@@ -260,7 +300,7 @@ const AppSidebar = React.forwardRef<HTMLDivElement, AppSidebarProps>(
               ))}
             </div>
           </SidebarFooter>
-        )}
+        ) : null}
       </ShadcnSidebar>
     )
   },

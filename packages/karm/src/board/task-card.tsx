@@ -5,7 +5,8 @@ import { useComposedRef } from '../utils/use-composed-ref'
 import { useSortable } from '@dnd-kit/sortable'
 import { CSS } from '@dnd-kit/utilities'
 import type { DraggableAttributes } from '@dnd-kit/core'
-type SyntheticListenerMap = Record<string, (...args: unknown[]) => void> | undefined
+// eslint-disable-next-line @typescript-eslint/no-unsafe-function-type -- matches @dnd-kit's internal type
+type SyntheticListenerMap = Record<string, Function>
 import { cva } from 'class-variance-authority'
 import { cn } from '@/ui/lib/utils'
 import { Badge } from '@/ui'

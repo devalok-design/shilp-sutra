@@ -87,6 +87,7 @@ const preset: Partial<Config> = {
         'ds-05': 'var(--spacing-05)',
         'ds-05b': 'var(--spacing-05b)',
         'ds-06': 'var(--spacing-06)',
+        'ds-06b': 'var(--spacing-06b)',
         'ds-07': 'var(--spacing-07)',
         'ds-08': 'var(--spacing-08)',
         'ds-09': 'var(--spacing-09)',
@@ -291,6 +292,43 @@ const preset: Partial<Config> = {
           '0%,70%,100%': { opacity: '1' },
           '20%,50%': { opacity: '0' },
         },
+        'fade-in': {
+          '0%': { opacity: '0' },
+          '100%': { opacity: '1' },
+        },
+        'fade-out': {
+          '0%': { opacity: '1' },
+          '100%': { opacity: '0' },
+        },
+        'slide-up': {
+          '0%': { opacity: '0', transform: 'translateY(8px)' },
+          '100%': { opacity: '1', transform: 'translateY(0)' },
+        },
+        'slide-right': {
+          '0%': { opacity: '0', transform: 'translateX(20px)' },
+          '100%': { opacity: '1', transform: 'translateX(0)' },
+        },
+        'scale-in': {
+          '0%': { opacity: '0', transform: 'scale(0.96)' },
+          '100%': { opacity: '1', transform: 'scale(1)' },
+        },
+        'scale-out': {
+          '0%': { opacity: '1', transform: 'scale(1)' },
+          '100%': { opacity: '0', transform: 'scale(0.96)' },
+        },
+        'glow-pulse': {
+          '0%, 100%': { boxShadow: '0 0 0 0 rgba(99, 102, 241, 0)' },
+          '50%': { boxShadow: '0 0 8px 2px rgba(99, 102, 241, 0.15)' },
+        },
+        'scale-bounce': {
+          '0%': { transform: 'scale(0.85)' },
+          '60%': { transform: 'scale(1.04)' },
+          '100%': { transform: 'scale(1)' },
+        },
+        'lift': {
+          '0%': { transform: 'scale(1) translateY(0)' },
+          '100%': { transform: 'scale(1.03) translateY(-2px)' },
+        },
       },
       animation: {
         ripple: 'ripple var(--duration-slow-01) linear',
@@ -301,6 +339,15 @@ const preset: Partial<Config> = {
         'skeleton-shimmer':
           'skeleton-shimmer var(--duration-slow-02) var(--ease-linear) infinite',
         'caret-blink': 'caret-blink 1.25s ease-out infinite',
+        'fade-in': 'fade-in var(--duration-moderate-02) var(--ease-expressive-entrance) both',
+        'fade-out': 'fade-out var(--duration-moderate-01) var(--ease-expressive-exit) both',
+        'slide-up': 'slide-up var(--duration-moderate-02) var(--ease-expressive-entrance) both',
+        'slide-right': 'slide-right var(--duration-moderate-02) var(--ease-expressive-entrance) both',
+        'scale-in': 'scale-in var(--duration-moderate-02) var(--ease-expressive-entrance) both',
+        'scale-out': 'scale-out var(--duration-moderate-01) var(--ease-expressive-exit) both',
+        'glow-pulse': 'glow-pulse var(--duration-slow-01) var(--ease-expressive-standard) 1',
+        'scale-bounce': 'scale-bounce var(--duration-moderate-02) var(--ease-bounce) both',
+        'lift': 'lift var(--duration-moderate-02) var(--ease-expressive-entrance) both',
       },
       backgroundImage: {
         'gradient-brand': 'var(--gradient-brand-light)',
@@ -346,6 +393,18 @@ const preset: Partial<Config> = {
       },
     },
   },
+  plugins: [
+    function ({ addUtilities }: { addUtilities: Function }) {
+      addUtilities({
+        '.delay-stagger': {
+          animationDelay: 'calc(var(--stagger-index, 0) * 30ms)',
+        },
+        '.delay-stagger-50': {
+          animationDelay: 'calc(var(--stagger-index, 0) * 50ms)',
+        },
+      })
+    },
+  ],
 }
 
 export default preset

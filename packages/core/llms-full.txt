@@ -1677,6 +1677,96 @@ Note: getFormFieldA11y() was removed in favor of useFormField() hook.
   />
 - Gotchas: Must be wrapped in SidebarProvider (from ui/sidebar)
 
+### AppSidebar v0.10.0 additions
+
+New props on AppSidebarProps:
+    footer: SidebarFooterConfig — structured footer (takes precedence over footerLinks)
+    headerSlot: ReactNode — content between user info and navigation
+    preFooterSlot: ReactNode — content between navigation and footer
+    renderItem: (item: NavItem, defaultRender: () => ReactNode) => ReactNode | null — custom item rendering
+
+New fields on NavItem:
+    badge: string | number — badge rendered on the right side (numbers > 99 display as "99+")
+    children: NavSubItem[] — renders as collapsible sub-list with chevron toggle
+    defaultOpen: boolean — whether collapsible is open by default (auto-opens when a child is active)
+
+New type NavSubItem: { title: string, href: string, icon?: ReactNode, exact?: boolean }
+
+New fields on NavGroup:
+    action: ReactNode — action button rendered next to the group label
+
+New type SidebarFooterConfig:
+    links: Array<{ label: string, href: string }> — legal/utility links as a row
+    version: string — version or build info text
+    slot: ReactNode — custom content above the links row
+
+Deprecated props:
+    footerLinks — use footer.links instead (footerLinks still works for backwards compat)
+
+- S9: Collapsible nav items
+  ```tsx
+  // Collapsible nav items
+  {
+    title: "Projects",
+    href: "/projects",
+    icon: <IconLayoutKanban />,
+    children: [
+      { title: "Karm V2", href: "/projects/abc/board" },
+      { title: "Website Redesign", href: "/projects/def/board" },
+    ],
+  }
+  ```
+
+- S10: Nav item badge
+  ```tsx
+  { title: "My Tasks", href: "/my-tasks", icon: <IconChecklist />, badge: 5 }
+  { title: "Messages", href: "/messages", icon: <IconMessage />, badge: "New" }
+  // Numbers > 99 display as "99+"
+  ```
+
+- S11: Nav group action
+  ```tsx
+  {
+    label: "WORK",
+    items: [...],
+    action: <button onClick={...} aria-label="New project"><IconPlus size={14} /></button>,
+  }
+  ```
+
+- S12: Structured footer
+  ```tsx
+  <AppSidebar
+    footer={{
+      links: [{ label: "Terms", href: "/terms" }, { label: "Privacy", href: "/privacy" }],
+      version: "v2.4.1",
+      slot: <a href="/changelog">What's new?</a>,
+    }}
+  />
+  // footer takes precedence over footerLinks. footerLinks still works for backwards compat.
+  ```
+
+- S13: Header and pre-footer slots
+  ```tsx
+  <AppSidebar
+    headerSlot={<DharaWidget userId={user.id} />}
+    preFooterSlot={<UpgradeBanner />}
+    navGroups={navGroups}
+  />
+  // Slots auto-add SidebarSeparator. No extra DOM when not provided.
+  ```
+
+- S14: Custom item rendering
+  ```tsx
+  <AppSidebar
+    renderItem={(item, defaultRender) => {
+      if (item.href === "/my-tasks") {
+        return <CustomTasksItem item={item} />
+      }
+      return null // use default for all other items
+    }}
+  />
+  ```
+
 ## BottomNavbar
 - Import: @devalok/shilp-sutra/shell/bottom-navbar
 - Server-safe: No

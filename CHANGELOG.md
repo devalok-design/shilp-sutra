@@ -5,6 +5,19 @@ All notable changes to `@devalok/shilp-sutra` will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.10.0] - 2026-03-10
+
+### Added
+- **AppSidebar**: Collapsible nav items with `children` array and `NavSubItem` type (S9)
+- **AppSidebar**: Nav item `badge` prop for counts/labels, caps at 99+ (S10)
+- **AppSidebar**: Nav group `action` prop for buttons next to group labels (S11)
+- **AppSidebar**: Structured `footer` prop with `SidebarFooterConfig` — links, version, slot (S12)
+- **AppSidebar**: `headerSlot` and `preFooterSlot` content slots (S13)
+- **AppSidebar**: `renderItem` escape hatch for custom item rendering (S14)
+
+### Deprecated
+- **AppSidebar**: `footerLinks` prop — use `footer.links` instead
+
 ## [0.9.2] — 2026-03-10
 
 ### Fixed

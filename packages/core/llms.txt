@@ -160,6 +160,17 @@ NOTIFICATION SELECTION GUIDE:
 ### Shell Components (app-level layout)
 - TopBar: pageTitle, user, onNavigate, onLogout, notificationSlot, mobileLogo, userMenuItems?(UserMenuItem[] — custom items between Profile and theme toggle, supports icon, href, onClick, separator, badge, disabled, color)
 - AppSidebar: navigation tree with NavItem[], NavGroup[]
+
+### AppSidebar (v0.10.0 additions)
+- NavItem.children?: NavSubItem[] — collapsible sub-list with chevron toggle
+- NavItem.defaultOpen?: boolean — control initial collapsed state
+- NavItem.badge?: string | number — badge on nav item (99+ cap for numbers)
+- NavGroup.action?: ReactNode — action button next to group label
+- footer?: SidebarFooterConfig — structured footer with links, version, slot (replaces footerLinks)
+- headerSlot?: ReactNode — content between user info and navigation
+- preFooterSlot?: ReactNode — content between navigation and footer
+- renderItem?: (item, defaultRender) => ReactNode | null — custom item rendering
+
 - BottomNavbar: mobile navigation, user is optional (not required to render)
 - NotificationCenter: notifications[], onMarkRead, onMarkAllRead, onNavigate, getNotificationRoute?(returns string|null, fallback null), footerSlot?, emptyState?, headerActions?, popoverClassName?, onDismiss?(id)
 - AppCommandPalette: user, isAdmin, onNavigate, onSearch, searchResults, isSearching, onSearchResultSelect

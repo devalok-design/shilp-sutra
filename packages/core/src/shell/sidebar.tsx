@@ -42,6 +42,13 @@ import { cn } from '../ui/lib/utils'
 // Types
 // -----------------------------------------------------------------------
 
+export interface NavSubItem {
+  title: string
+  href: string
+  icon?: React.ReactNode
+  exact?: boolean
+}
+
 export interface NavItem {
   title: string
   href: string
@@ -50,6 +57,10 @@ export interface NavItem {
   exact?: boolean
   /** Badge rendered on the right side of the nav item */
   badge?: string | number
+  /** Optional child items — renders as collapsible sub-list with chevron */
+  children?: NavSubItem[]
+  /** Whether the collapsible is open by default. Auto-opens when a child is active. */
+  defaultOpen?: boolean
 }
 
 export interface NavGroup {
@@ -99,10 +110,41 @@ export interface AppSidebarProps
 }
 
 // -----------------------------------------------------------------------
+// ChevronRight (inline SVG icon for collapsible toggle)
+// -----------------------------------------------------------------------
+
+function ChevronRight({ className }: { className?: string }) {
+  return (
+    <svg
+      xmlns="http://www.w3.org/2000/svg"
+      width="16"
+      height="16"
+      viewBox="0 0 24 24"
+      fill="none"
+      stroke="currentColor"
+      strokeWidth="2"
+      strokeLinecap="round"
+      strokeLinejoin="round"
+      className={className}
+    >
+      <path d="m9 18 6-6-6-6" />
+    </svg>
+  )
+}
+
+// -----------------------------------------------------------------------
 // NavLink (internal)
 // -----------------------------------------------------------------------
 
-function NavLink({ item, isActive }: { item: NavItem; isActive: boolean }) {
+function NavLink({
+  item,
+  isActive,
+  isPathActive,
+}: {
+  item: NavItem
+  isActive: boolean
+  isPathActive: (path: string, exact?: boolean) => boolean
+}) {
   const Link = useLink()
   const badgeContent =
     item.badge != null
@@ -111,6 +153,80 @@ function NavLink({ item, isActive }: { item: NavItem; isActive: boolean }) {
         : String(item.badge)
       : null
 
+  // S9: Collapsible children
+  if (item.children && item.children.length > 0) {
+    const hasActiveChild = item.children.some((child) =>
+      isPathActive(child.href, child.exact),
+    )
+    const shouldOpen = hasActiveChild || isActive || (item.defaultOpen ?? false)
+
+    return (
+      <Collapsible defaultOpen={shouldOpen} className="group/collapsible">
+        <SidebarMenuItem>
+          <SidebarMenuButton
+            asChild
+            isActive={isActive || hasActiveChild}
+            tooltip={item.title}
+            className={cn(
+              'relative gap-ds-04 rounded-ds-lg px-ds-04 py-ds-03 transition-colors',
+              isActive || hasActiveChild
+                ? "bg-interactive-subtle text-interactive after:absolute after:right-0 after:top-0 after:h-full after:w-ds-01 after:rounded-l-ds-full after:bg-interactive after:content-['']"
+                : 'text-text-helper hover:bg-layer-02 hover:text-text-primary',
+            )}
+          >
+            <Link
+              href={item.href}
+              aria-label={item.title}
+              aria-current={isActive ? 'page' : undefined}
+            >
+              <span className="[&>svg]:h-ico-md [&>svg]:w-ico-md shrink-0" aria-hidden="true">
+                {item.icon}
+              </span>
+              <span className="text-ds-base">{item.title}</span>
+            </Link>
+          </SidebarMenuButton>
+          {badgeContent && <SidebarMenuBadge>{badgeContent}</SidebarMenuBadge>}
+          <CollapsibleTrigger asChild>
+            <button
+              className="absolute right-ds-02 top-1/2 flex h-5 w-5 -translate-y-1/2 items-center justify-center rounded-ds-md text-text-helper transition-transform hover:bg-layer-02 hover:text-text-primary group-data-[collapsible=icon]:hidden"
+              aria-label={`Toggle ${item.title}`}
+            >
+              <ChevronRight className="h-4 w-4 transition-transform duration-200 group-data-[state=open]/collapsible:rotate-90" />
+            </button>
+          </CollapsibleTrigger>
+          <CollapsibleContent>
+            <SidebarMenuSub>
+              {item.children.map((child) => {
+                const childActive = isPathActive(child.href, child.exact)
+                return (
+                  <SidebarMenuSubItem key={child.href}>
+                    <SidebarMenuSubButton
+                      asChild
+                      isActive={childActive}
+                    >
+                      <Link
+                        href={child.href}
+                        aria-current={childActive ? 'page' : undefined}
+                      >
+                        {child.icon && (
+                          <span className="[&>svg]:h-ico-sm [&>svg]:w-ico-sm shrink-0" aria-hidden="true">
+                            {child.icon}
+                          </span>
+                        )}
+                        <span>{child.title}</span>
+                      </Link>
+                    </SidebarMenuSubButton>
+                  </SidebarMenuSubItem>
+                )
+              })}
+            </SidebarMenuSub>
+          </CollapsibleContent>
+        </SidebarMenuItem>
+      </Collapsible>
+    )
+  }
+
+  // Default: flat nav item
   return (
     <SidebarMenuItem>
       <SidebarMenuButton
@@ -236,6 +352,7 @@ const AppSidebar = React.forwardRef<HTMLDivElement, AppSidebarProps>(
                         key={item.href}
                         item={item}
                         isActive={isActive(item.href, item.exact)}
+                        isPathActive={isActive}
                       />
                     ))}
                   </SidebarMenu>

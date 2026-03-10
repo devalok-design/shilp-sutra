@@ -3,7 +3,7 @@ import userEvent from '@testing-library/user-event'
 import { describe, it, expect, vi, beforeEach } from 'vitest'
 import { AppSidebar } from './sidebar'
 import { SidebarProvider } from '../ui/sidebar'
-import type { NavGroup, NavItem } from './sidebar'
+import type { NavGroup, NavItem, NavSubItem } from './sidebar'
 
 // jsdom does not provide matchMedia — supply a stub for useMobile / useColorMode
 beforeEach(() => {
@@ -217,5 +217,107 @@ describe('S12 — structured footer', () => {
       footerLinks: [{ label: 'Help', href: '/help' }],
     })
     expect(screen.getByText('Help')).toBeInTheDocument()
+  })
+})
+
+describe('S9 — collapsible nav items', () => {
+  const makeGroups = (items: NavItem[]): NavGroup[] => [
+    { label: 'Work', items },
+  ]
+
+  it('renders child items when parent has children and is active', () => {
+    const groups = makeGroups([
+      {
+        title: 'Projects',
+        href: '/projects',
+        icon: <TestIcon />,
+        children: [
+          { title: 'Karm V2', href: '/projects/abc/board' },
+          { title: 'Website', href: '/projects/def/board' },
+        ],
+      },
+    ])
+    renderSidebar({ navGroups: groups, currentPath: '/projects' })
+    expect(screen.getByText('Projects')).toBeInTheDocument()
+    expect(screen.getByText('Karm V2')).toBeVisible()
+    expect(screen.getByText('Website')).toBeVisible()
+  })
+
+  it('auto-expands when a child href matches currentPath', () => {
+    const groups = makeGroups([
+      {
+        title: 'Projects',
+        href: '/projects',
+        icon: <TestIcon />,
+        children: [
+          { title: 'Karm V2', href: '/projects/abc/board' },
+          { title: 'Website', href: '/projects/def/board' },
+        ],
+      },
+    ])
+    renderSidebar({ navGroups: groups, currentPath: '/projects/abc/board' })
+    expect(screen.getByText('Karm V2')).toBeVisible()
+  })
+
+  it('renders a chevron toggle button', () => {
+    const groups = makeGroups([
+      {
+        title: 'Projects',
+        href: '/projects',
+        icon: <TestIcon />,
+        children: [
+          { title: 'Karm V2', href: '/projects/abc/board' },
+        ],
+      },
+    ])
+    renderSidebar({ navGroups: groups, currentPath: '/projects' })
+    const chevron = screen.getByRole('button', { name: /toggle projects/i })
+    expect(chevron).toBeInTheDocument()
+  })
+
+  it('toggles children visibility on chevron click', async () => {
+    const user = userEvent.setup()
+    const groups = makeGroups([
+      {
+        title: 'Projects',
+        href: '/projects',
+        icon: <TestIcon />,
+        defaultOpen: false,
+        children: [
+          { title: 'Karm V2', href: '/projects/abc/board' },
+        ],
+      },
+    ])
+    // currentPath does NOT match parent or child, so auto-expand won't kick in
+    renderSidebar({ navGroups: groups, currentPath: '/' })
+    const chevron = screen.getByRole('button', { name: /toggle projects/i })
+
+    // Click to open
+    await user.click(chevron)
+    expect(screen.getByText('Karm V2')).toBeVisible()
+  })
+
+  it('parent link still navigates to href', () => {
+    const groups = makeGroups([
+      {
+        title: 'Projects',
+        href: '/projects',
+        icon: <TestIcon />,
+        children: [
+          { title: 'Karm V2', href: '/projects/abc/board' },
+        ],
+      },
+    ])
+    renderSidebar({ navGroups: groups, currentPath: '/' })
+    const link = screen.getByRole('link', { name: /projects/i })
+    expect(link).toHaveAttribute('href', '/projects')
+  })
+
+  it('renders nav items without children normally', () => {
+    const groups = makeGroups([
+      { title: 'Dashboard', href: '/', icon: <TestIcon />, exact: true },
+    ])
+    renderSidebar({ navGroups: groups, currentPath: '/' })
+    expect(screen.getByText('Dashboard')).toBeInTheDocument()
   })
 })

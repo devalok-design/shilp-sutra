@@ -135,6 +135,15 @@ function ChevronRight({ className }: { className?: string }) {
 }
 
 // -----------------------------------------------------------------------
+// Shared styles
+// -----------------------------------------------------------------------
+
+const navItemBase = 'relative gap-ds-04 rounded-ds-lg px-ds-04 py-ds-03 transition-colors'
+const navItemActive =
+  "bg-interactive-subtle text-interactive after:absolute after:right-0 after:top-0 after:h-full after:w-ds-01 after:rounded-l-ds-full after:bg-interactive after:content-['']"
+const navItemInactive = 'text-text-helper hover:bg-layer-02 hover:text-text-primary'
+
+// -----------------------------------------------------------------------
 // NavLink (internal)
 // -----------------------------------------------------------------------
 
@@ -170,10 +179,8 @@ function NavLink({
             isActive={isActive || hasActiveChild}
             tooltip={item.title}
             className={cn(
-              'relative gap-ds-04 rounded-ds-lg px-ds-04 py-ds-03 transition-colors',
-              isActive || hasActiveChild
-                ? "bg-interactive-subtle text-interactive after:absolute after:right-0 after:top-0 after:h-full after:w-ds-01 after:rounded-l-ds-full after:bg-interactive after:content-['']"
-                : 'text-text-helper hover:bg-layer-02 hover:text-text-primary',
+              navItemBase,
+              isActive || hasActiveChild ? navItemActive : navItemInactive,
             )}
           >
             <Link
@@ -236,10 +243,8 @@ function NavLink({
         isActive={isActive}
         tooltip={item.title}
         className={cn(
-          'relative gap-ds-04 rounded-ds-lg px-ds-04 py-ds-03 transition-colors',
-          isActive
-            ? "bg-interactive-subtle text-interactive after:absolute after:right-0 after:top-0 after:h-full after:w-ds-01 after:rounded-l-ds-full after:bg-interactive after:content-['']"
-            : 'text-text-helper hover:bg-layer-02 hover:text-text-primary',
+          navItemBase,
+          isActive ? navItemActive : navItemInactive,
         )}
       >
         <Link
@@ -387,7 +392,7 @@ const AppSidebar = React.forwardRef<HTMLDivElement, AppSidebarProps>(
         {footer ? (
           <SidebarFooter className="px-ds-06 py-ds-05">
             {footer.slot && (
-              <div className="border-t border-border pb-ds-04 pt-ds-04">
+              <div className="pb-ds-04">
                 {footer.slot}
               </div>
             )}

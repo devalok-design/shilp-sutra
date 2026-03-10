@@ -5,6 +5,30 @@ All notable changes to `@devalok/shilp-sutra` will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.12.0] - 2026-03-11
+
+### Added
+- **Tailwind preset**: 9 animation keyframes (`fade-in`, `fade-out`, `slide-up`, `slide-right`, `scale-in`, `scale-out`, `glow-pulse`, `scale-bounce`, `lift`) with design-token-based durations and easings
+- **Tailwind preset**: 9 animation utilities — `animate-fade-in`, `animate-fade-out`, `animate-slide-up`, `animate-slide-right`, `animate-scale-in`, `animate-scale-out`, `animate-glow-pulse`, `animate-scale-bounce`, `animate-lift`
+- **Tailwind preset**: Stagger delay plugins — `.delay-stagger` (30ms × `--stagger-index`) and `.delay-stagger-50` (50ms × `--stagger-index`) for cascading entrance animations
+
+### Changed
+- **Input**: Softer resting border (`border-border-subtle` instead of `border-border`), subtler focus ring (`ring-1 ring-focus/50` instead of `ring-2 ring-focus`)
+- **Input**: Reverted split `pl-*/pr-*` size variants back to `px-*`; icon padding uses `pl-ds-07`/`pr-ds-07` (was `pl-ds-06b`/`pr-ds-06b`)
+
+### shilp-sutra-karm [0.10.0]
+
+### Added
+- **Board rework**: Complete board system rewrite with `BoardProvider` context, `KanbanBoard` orchestrator, `BoardToolbar` with search/filters/view modes, `BulkActionBar` for multi-select actions, `TaskContextMenu` with right-click quick actions
+- **BoardColumn**: Glass-effect column with WIP limit indicators, droppable zones, stagger-animated card entry
+- **TaskCard**: Enriched card with priority indicators, assignee avatars, label badges, subtask progress, due date chips, selection checkboxes, hover lift, drag overlay effects
+- **TaskCardCompact**: Dense single-line view mode for compact boards
+- **ColumnHeader**: Accent-dot column headers with WIP limits, task counts, avatar stack, inline add/rename
+- **ColumnEmpty**: Line-art illustrated empty states per column type
+- **Keyboard navigation**: Arrow keys move focus across cards/columns, Enter opens, Space toggles selection, Escape clears
+- **Animation system**: Staggered card/column entrance, hover lift, selection glow pulse, checkbox bounce, context menu scale-in, filter chip cascade, bulk action bar slide
+- **Drag & drop**: @dnd-kit integration with cross-column moves, custom drop animation (expressive easing), drag overlay with rotation + shadow
+
 ## [0.11.0] - 2026-03-10
 
 ### Added

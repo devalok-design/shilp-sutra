@@ -220,6 +220,49 @@ describe('S12 — structured footer', () => {
   })
 })
 
+describe('S14 — renderItem', () => {
+  it('uses custom render when renderItem returns a ReactNode', () => {
+    const groups: NavGroup[] = [
+      {
+        label: 'Main',
+        items: [
+          { title: 'Dashboard', href: '/', icon: <TestIcon />, exact: true },
+          { title: 'Tasks', href: '/tasks', icon: <TestIcon /> },
+        ],
+      },
+    ]
+    renderSidebar({
+      navGroups: groups,
+      renderItem: (item, defaultRender) => {
+        if (item.href === '/tasks') {
+          return <div data-testid="custom-tasks">Custom: {item.title}</div>
+        }
+        return null
+      },
+    })
+    expect(screen.getByTestId('custom-tasks')).toBeInTheDocument()
+    expect(screen.getByText('Custom: Tasks')).toBeInTheDocument()
+    // Dashboard should render with default
+    expect(screen.getByText('Dashboard')).toBeInTheDocument()
+  })
+
+  it('uses default render when renderItem returns null', () => {
+    const groups: NavGroup[] = [
+      {
+        label: 'Main',
+        items: [
+          { title: 'Home', href: '/', icon: <TestIcon />, exact: true },
+        ],
+      },
+    ]
+    renderSidebar({
+      navGroups: groups,
+      renderItem: () => null,
+    })
+    expect(screen.getByText('Home')).toBeInTheDocument()
+  })
+})
+
 describe('S9 — collapsible nav items', () => {
   const makeGroups = (items: NavItem[]): NavGroup[] => [
     { label: 'Work', items },

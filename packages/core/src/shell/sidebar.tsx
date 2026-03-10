@@ -105,6 +105,8 @@ export interface AppSidebarProps
   headerSlot?: React.ReactNode
   /** Content rendered between navigation and footer */
   preFooterSlot?: React.ReactNode
+  /** Override rendering for specific nav items. Return null to use default rendering. */
+  renderItem?: (item: NavItem, defaultRender: () => React.ReactNode) => React.ReactNode | null
   /** Additional className for the root sidebar element */
   className?: string
 }
@@ -269,6 +271,7 @@ const AppSidebar = React.forwardRef<HTMLDivElement, AppSidebarProps>(
       preFooterSlot,
       footerLinks = [],
       footer,
+      renderItem,
       className,
       ...props
     },
@@ -347,14 +350,24 @@ const AppSidebar = React.forwardRef<HTMLDivElement, AppSidebarProps>(
                 )}
                 <SidebarGroupContent>
                   <SidebarMenu>
-                    {group.items.map((item) => (
-                      <NavLink
-                        key={item.href}
-                        item={item}
-                        isActive={isActive(item.href, item.exact)}
-                        isPathActive={isActive}
-                      />
-                    ))}
+                    {group.items.map((item) => {
+                      const defaultRender = () => (
+                        <NavLink
+                          item={item}
+                          isActive={isActive(item.href, item.exact)}
+                          isPathActive={isActive}
+                        />
+                      )
+
+                      if (renderItem) {
+                        const custom = renderItem(item, defaultRender)
+                        if (custom !== null) {
+                          return <React.Fragment key={item.href}>{custom}</React.Fragment>
+                        }
+                      }
+
+                      return <React.Fragment key={item.href}>{defaultRender()}</React.Fragment>
+                    })}
                   </SidebarMenu>
                 </SidebarGroupContent>
               </SidebarGroup>

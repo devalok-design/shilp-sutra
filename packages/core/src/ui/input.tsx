@@ -11,20 +11,20 @@ const inputVariants = cva(
   [
     'flex w-full font-sans',
     'bg-field text-text-primary',
-    'border border-border rounded-ds-md',
+    'border border-border-subtle rounded-ds-md',
     'placeholder:text-text-placeholder',
     'hover:bg-field-hover',
     'transition-colors duration-fast-01',
-    'focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-focus focus-visible:border-border-interactive',
+    'focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-focus/50 focus-visible:border-border-subtle',
     'disabled:cursor-not-allowed disabled:opacity-[0.38]',
     'read-only:bg-layer-02 read-only:cursor-default',
   ],
   {
     variants: {
       size: {
-        sm: 'h-ds-sm text-ds-sm pl-ds-03 pr-ds-03',
-        md: 'h-ds-md text-ds-base pl-ds-04 pr-ds-04',
-        lg: 'h-ds-lg text-ds-lg pl-ds-05 pr-ds-05',
+        sm: 'h-ds-sm text-ds-sm px-ds-03',
+        md: 'h-ds-md text-ds-base px-ds-04',
+        lg: 'h-ds-lg text-ds-lg px-ds-05',
       },
     },
     defaultVariants: { size: 'md' },
@@ -81,8 +81,8 @@ const Input = React.forwardRef<HTMLInputElement, InputProps>(
         type={type}
         className={cn(
           inputVariants({ size }),
-          startIcon && 'pl-ds-06b',
-          endIcon && 'pr-ds-06b',
+          startIcon && 'pl-ds-07',
+          endIcon && 'pr-ds-07',
           state === 'error' && 'border-border-error focus-visible:ring-error',
           state === 'warning' && 'border-border-warning focus-visible:ring-warning',
           state === 'success' && 'border-border-success focus-visible:ring-success',

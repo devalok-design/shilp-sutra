@@ -5,7 +5,7 @@ All notable changes to `@devalok/shilp-sutra` will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
-## [Unreleased]
+## [0.9.0] — 2026-03-10
 
 ### Changed (BREAKING)
 - **Build**: All runtime dependencies (`@floating-ui/react-dom`, `aria-hidden`, `react-remove-scroll`, `clsx`, `class-variance-authority`, `tailwind-merge`) are now bundled into the compiled output instead of listed as `dependencies`. Consumers who were importing these packages directly (not through shilp-sutra) must install them separately.

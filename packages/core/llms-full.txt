@@ -1567,7 +1567,7 @@ Note: getFormFieldA11y() was removed in favor of useFormField() hook.
   />
   <RichTextViewer content={savedHtml} />
 - Gotchas:
-    Requires Tiptap peer deps: @tiptap/react, @tiptap/starter-kit, @tiptap/extension-placeholder, plus extension-specific peers (image, link, underline, highlight, task-list, task-item, text-align, mention, suggestion)
+    Tiptap is bundled — no need to install @tiptap/* packages separately (they are inlined into the build output)
     Emoji picker requires @emoji-mart/react + @emoji-mart/data peers
     Images without onImageUpload are stored as base64 in HTML — large images bloat content
     Mention rendering in viewer always works (no mention props needed, just the HTML)

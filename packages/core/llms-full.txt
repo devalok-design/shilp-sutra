@@ -5,7 +5,7 @@
 > All variant values and props verified from source CVA definitions.
 >
 > Package: @devalok/shilp-sutra
-> Version: 0.12.0
+> Version: 0.13.0
 
 ---
 
@@ -1428,9 +1428,11 @@ Note: getFormFieldA11y() was removed in favor of useFormField() hook.
 - Props:
     title: string (REQUIRED)
     description: string
-    icon: ReactNode (default: Devalok chakra icon)
+    icon: ReactNode | ComponentType<{ className?: string }> (default: Devalok chakra icon)
     action: ReactNode (e.g. a Button)
     compact: boolean (smaller layout)
+- Gotchas:
+    - icon accepts both JSX elements (`<IconFolder />`) and component references (`IconFolder`). Component references are auto-instantiated with correct sizing classes.
 - Example:
   <EmptyState
     title="No tasks found"
@@ -1697,9 +1699,16 @@ New fields on NavGroup:
     action: ReactNode — action button rendered next to the group label
 
 New type SidebarFooterConfig:
-    links: Array<{ label: string, href: string }> — legal/utility links as a row
-    version: string — version or build info text
+    links: Array<{ label: string, href: string }> — legal/utility links rendered inline with · dividers
+    version: string — version or build info text rendered inline after links
     slot: ReactNode — custom content above the links row
+    promo: SidebarPromo — dismissable promo/upsell banner
+
+New type SidebarPromo:
+    text: string — promo message text
+    icon: ReactNode — optional icon rendered above the text
+    action: { label: string, href?: string, onClick?: () => void } — CTA button
+    onDismiss: () => void — when provided, renders a dismiss X button
 
 Deprecated props:
     footerLinks — use footer.links instead (footerLinks still works for backwards compat)
@@ -1805,7 +1814,8 @@ Deprecated props:
 - Import: @devalok/shilp-sutra/shell/notification-center
 - Server-safe: No
 - Props:
-    notifications: Notification[] — { id, title, body?, tier: "INFO"|"IMPORTANT"|"CRITICAL", isRead, createdAt, entityType?, entityId?, projectId?, project? }
+    notifications: Notification[] — { id, title, body?, tier: "INFO"|"IMPORTANT"|"CRITICAL", isRead, createdAt, entityType?, entityId?, projectId?, project?, actions?: NotificationAction[] }
+    NotificationAction: { label: string, variant?: "primary"|"default"|"danger", onClick: (id: string) => void }
     unreadCount: number (derived from notifications if not provided)
     open: boolean (controlled mode)
     onOpenChange: (open: boolean) => void

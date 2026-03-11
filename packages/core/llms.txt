@@ -4,6 +4,15 @@
 > Built on the same primitives as shadcn/ui but with key API differences.
 > Read this file BEFORE writing any UI code. Do NOT guess from shadcn/ui knowledge.
 
+## CHANGES (v0.13.0)
+- EmptyState: icon prop now accepts ComponentType (e.g. Tabler icon references) in addition to ReactNode
+- NotificationCenter: Notification.actions?: NotificationAction[] — inline action buttons (Approve/Deny) per notification
+- NotificationCenter: Tier dot now doubles as read/unread marker; separate unread dot removed
+- AppSidebar: footer.promo?: SidebarPromo — dismissable promo banner with icon, text, action button
+- AppSidebar: Footer links + version render on same line with · dividers
+- Collapsible: Now uses height-based expand/collapse animation (animate-collapsible-down/up)
+- Tailwind preset: 4 new keyframes + utilities — accordion-down, accordion-up, collapsible-down, collapsible-up
+
 ## CHANGES (v0.12.0)
 - Input: Softer resting border (border-subtle instead of border), subtler focus ring (ring-1 ring-focus/50 instead of ring-2 ring-focus)
 - Tailwind preset: 9 animation keyframes + utilities (fade-in, fade-out, slide-up, slide-right, scale-in, scale-out, glow-pulse, scale-bounce, lift)
@@ -157,7 +166,7 @@ NOTIFICATION SELECTION GUIDE:
 - AvatarGroup: users[], max(number), size(sm|md|lg), showTooltip
 - StatusBadge: DISCRIMINATED UNION — pass status OR color, not both. status(active|pending|approved|rejected|completed|blocked|cancelled|draft) color(success|warning|error|info|neutral) size(sm|md)
 - ContentCard: variant(default|outline|ghost) padding(default|compact|spacious|none)
-- EmptyState: icon, title(required), description, action(ReactNode), compact
+- EmptyState: icon(ReactNode or ComponentType), title(required), description, action(ReactNode), compact
 - PriorityIndicator: priority(LOW|MEDIUM|HIGH|URGENT) display(compact|full)
 - SimpleTooltip: wraps Tooltip compound into single component
 - DatePicker, DateRangePicker, DateTimePicker, TimePicker
@@ -176,13 +185,13 @@ NOTIFICATION SELECTION GUIDE:
 - NavItem.defaultOpen?: boolean — control initial collapsed state
 - NavItem.badge?: string | number — badge on nav item (99+ cap for numbers)
 - NavGroup.action?: ReactNode — action button next to group label
-- footer?: SidebarFooterConfig — structured footer with links, version, slot (replaces footerLinks)
+- footer?: SidebarFooterConfig — structured footer with links, version, slot, promo (replaces footerLinks)
 - headerSlot?: ReactNode — content between user info and navigation
 - preFooterSlot?: ReactNode — content between navigation and footer
 - renderItem?: (item, defaultRender) => ReactNode | null — custom item rendering
 
 - BottomNavbar: mobile navigation, user is optional (not required to render)
-- NotificationCenter: notifications[], onMarkRead, onMarkAllRead, onNavigate, getNotificationRoute?(returns string|null, fallback null), footerSlot?, emptyState?, headerActions?, popoverClassName?, onDismiss?(id)
+- NotificationCenter: notifications[], onMarkRead, onMarkAllRead, onNavigate, getNotificationRoute?(returns string|null, fallback null), footerSlot?, emptyState?, headerActions?, popoverClassName?, onDismiss?(id). Notification.actions?: NotificationAction[] for inline buttons (e.g. Approve/Deny)
 - AppCommandPalette: user, isAdmin, onNavigate, onSearch, searchResults, isSearching, onSearchResultSelect
 
 ### Hooks

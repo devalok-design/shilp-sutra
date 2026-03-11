@@ -5,6 +5,31 @@ All notable changes to `@devalok/shilp-sutra` will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.13.0] - 2026-03-11
+
+### Added
+- **Tailwind preset**: 4 new keyframes — `accordion-down`, `accordion-up`, `collapsible-down`, `collapsible-up` using Radix CSS custom properties for smooth height-based animations
+- **Tailwind preset**: 4 new animation utilities — `animate-accordion-down`, `animate-accordion-up`, `animate-collapsible-down`, `animate-collapsible-up` with design-token durations and easings
+- **NotificationCenter**: `NotificationAction` type and `actions` prop on `Notification` — inline action buttons (e.g. Approve/Deny) per notification row
+- **AppSidebar**: `SidebarPromo` type and `footer.promo` prop — dismissable promo/upsell banner with icon, text, and action button
+- **AppSidebar**: Footer links and version now render on a single line separated by `·` dividers
+
+### Changed
+- **EmptyState**: `icon` prop now accepts `React.ComponentType<{ className?: string }>` in addition to `ReactNode` — component references (e.g. Tabler icons) are auto-instantiated with correct sizing
+- **NotificationCenter**: Tier dot now doubles as read/unread marker (opacity-based) — removed separate unread indicator dot that clashed with dismiss button
+- **Collapsible**: Default animation changed from fade-only to height-based expand/collapse using `animate-collapsible-down`/`animate-collapsible-up`
+- **AppSidebar**: Collapsible chevron wrapped in fixed-height container to prevent drift when children expand; chevron now animates rotation with design-token easing
+
+### Fixed
+- **AppSidebar**: Collapsible chevron no longer drifts into child elements when sub-list expands (positioning anchor bug)
+- **BottomNavbar stories**: Navbar now visible in Storybook at desktop viewport width via style override in decorator
+
+### shilp-sutra-karm [0.11.0]
+
+### Changed
+- **ConversationTab**: `richText` prop now defaults to `true` — RichTextEditor/Viewer used by default instead of plain textarea
+- **ConversationTab stories**: Widened decorator from 400px to 520px; added `PlainTextFallback` story
+
 ## [0.12.0] - 2026-03-11
 
 ### Added

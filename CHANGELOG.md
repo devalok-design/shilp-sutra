@@ -5,6 +5,24 @@ All notable changes to `@devalok/shilp-sutra` will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.14.0] - 2026-03-11
+
+### Added
+- **AppSidebar**: `footer.version` now accepts `string | { label: string; href: string }` — version can link to changelog (S9)
+
+### Changed
+- **TabsTrigger**: Added `gap-ds-02` (4px) between icon and label for better spacing
+- **Select, Combobox, Autocomplete, DropdownMenu, ContextMenu, Menubar, HoverCard**: Promoted from `z-dropdown` (1000) to `z-popover` (1400) — fixes dropdown content rendering behind Sheet/Dialog overlays (U1/K1)
+
+### shilp-sutra-karm [0.12.0]
+
+### Added
+- **TaskDetailPanel**: `headerSlot` prop — inject custom content (GDrive links, quick actions) between title and properties (K4)
+- **TaskDetailPanel**: `extraTabs` prop with `ExtraTab` type — inject custom tab panels before/after built-in tabs (K5)
+- **TaskDetailPanel**: `onUploadDeliverable` callback — separate deliverable version uploads from generic file attachments (K8)
+- **FullTask**: `metadata?: Record<string, unknown>` — extensible bag for consumer-defined data (K7)
+- **TaskFile**: `externalUrl` and `externalLabel` — external link icon rendered alongside download button (K6)
+
 ## [0.13.0] - 2026-03-11
 
 ### Added

@@ -4,6 +4,11 @@
 > Built on the same primitives as shadcn/ui but with key API differences.
 > Read this file BEFORE writing any UI code. Do NOT guess from shadcn/ui knowledge.
 
+## CHANGES (v0.14.0)
+- **BREAKING z-index**: Select, Combobox, Autocomplete, DropdownMenu, ContextMenu, Menubar, HoverCard promoted from z-dropdown (1000) to z-popover (1400). Fixes dropdowns rendering behind Sheet/Dialog. If you had custom z-index overrides (e.g. `[data-radix-popper-content-wrapper] { z-index: 1400 !important }`) you can now remove them.
+- TabsTrigger: Added gap-ds-02 (4px) between icon and label
+- AppSidebar: footer.version now accepts string | { label, href } for clickable version links
+
 ## CHANGES (v0.13.0)
 - EmptyState: icon prop now accepts ComponentType (e.g. Tabler icon references) in addition to ReactNode
 - NotificationCenter: Notification.actions?: NotificationAction[] — inline action buttons (Approve/Deny) per notification

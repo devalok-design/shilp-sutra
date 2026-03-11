@@ -5,7 +5,7 @@
 > All variant values and props verified from source CVA definitions.
 >
 > Package: @devalok/shilp-sutra
-> Version: 0.13.0
+> Version: 0.14.0
 
 ---
 
@@ -1700,7 +1700,7 @@ New fields on NavGroup:
 
 New type SidebarFooterConfig:
     links: Array<{ label: string, href: string }> — legal/utility links rendered inline with · dividers
-    version: string — version or build info text rendered inline after links
+    version: string | { label: string, href: string } — version text or clickable version link, rendered inline after links
     slot: ReactNode — custom content above the links row
     promo: SidebarPromo — dismissable promo/upsell banner
 

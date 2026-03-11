@@ -3,7 +3,7 @@
 import * as React from 'react'
 import { useState } from 'react'
 import ReactMarkdown from 'react-markdown'
-import { IconChevronDown, IconChevronUp, IconSparkles } from '@tabler/icons-react'
+import { IconChevronDown, IconChevronUp, IconRefresh, IconSparkles } from '@tabler/icons-react'
 import { cn } from '@/ui/lib/utils'
 
 // ============================================================
@@ -18,7 +18,29 @@ export interface BriefData {
 export interface DailyBriefProps {
   data: BriefData | null
   loading?: boolean
+  onRefresh?: () => void
+  unavailable?: boolean
+  collapsible?: boolean
+  defaultCollapsed?: boolean
+  title?: string
   className?: string
+}
+
+// ============================================================
+// Helpers
+// ============================================================
+
+function formatRelativeTime(dateStr: string): string {
+  const d = new Date(dateStr)
+  const now = new Date()
+  const diffMs = now.getTime() - d.getTime()
+  const diffMin = Math.floor(diffMs / 60000)
+  if (diffMin < 1) return 'just now'
+  if (diffMin < 60) return `${diffMin}m ago`
+  const diffHr = Math.floor(diffMin / 60)
+  if (diffHr < 24) return `${diffHr}h ago`
+  const diffDay = Math.floor(diffHr / 24)
+  return `${diffDay}d ago`
 }
 
 // ============================================================
@@ -37,12 +59,18 @@ const DailyBrief = React.forwardRef<HTMLDivElement, DailyBriefProps>(
   function DailyBrief({
   data,
   loading = false,
+  onRefresh,
+  unavailable = false,
+  collapsible = true,
+  defaultCollapsed = false,
+  title,
   className,
 }, ref) {
-  const [collapsed, setCollapsed] = useState(false)
+  const [collapsed, setCollapsed] = useState(defaultCollapsed)
+  const displayTitle = title ?? 'Morning Brief'
 
   // Shimmer skeleton while loading
-  if (loading) {
+  if (loading && !data) {
     return (
       <div ref={ref} className={cn('flex flex-col gap-ds-04 rounded-ds-2xl border border-border bg-layer-01 shadow-01 p-ds-05b', className)}>
         <div className="flex items-center gap-ds-03">
@@ -62,30 +90,71 @@ const DailyBrief = React.forwardRef<HTMLDivElement, DailyBriefProps>(
     )
   }
 
+  if (unavailable) {
+    return (
+      <div ref={ref} className={cn('flex items-center gap-ds-03 rounded-ds-2xl border border-border bg-layer-01 shadow-01 px-ds-05b py-ds-05', className)}>
+        <IconSparkles className="h-ico-sm w-ico-sm text-text-placeholder" />
+        <span className="text-ds-sm text-text-placeholder">AI brief unavailable</span>
+      </div>
+    )
+  }
+
   if (!data || data.brief.length === 0) return null
+
+  const showContent = !collapsible || !collapsed
 
   return (
     <div ref={ref} className={cn('flex flex-col rounded-ds-2xl border border-border bg-layer-01 shadow-01', className)}>
-      <button
-        type="button"
-        aria-label="Toggle brief"
-        onClick={() => setCollapsed(!collapsed)}
-        className="flex items-center justify-between px-ds-05b py-ds-05 transition-colors hover:bg-layer-02"
-      >
-        <div className="flex items-center gap-ds-03">
-          <IconSparkles className="h-ico-sm w-ico-sm text-interactive" />
-          <span className="text-ds-base font-semibold text-text-primary">
-            Morning Brief
-          </span>
-        </div>
-        {collapsed ? (
-          <IconChevronDown className="h-ico-sm w-ico-sm text-text-placeholder" />
+      <div className="flex items-center justify-between px-ds-05b py-ds-05">
+        {collapsible ? (
+          <button
+            type="button"
+            aria-label="Toggle brief"
+            onClick={() => setCollapsed(!collapsed)}
+            className="flex flex-1 items-center gap-ds-03 transition-colors hover:opacity-80"
+          >
+            <IconSparkles className="h-ico-sm w-ico-sm text-interactive" />
+            <span className="text-ds-base font-semibold text-text-primary">
+              {displayTitle}
+            </span>
+          </button>
         ) : (
-          <IconChevronUp className="h-ico-sm w-ico-sm text-text-placeholder" />
+          <div className="flex items-center gap-ds-03">
+            <IconSparkles className="h-ico-sm w-ico-sm text-interactive" />
+            <span className="text-ds-base font-semibold text-text-primary">
+              {displayTitle}
+            </span>
+          </div>
         )}
-      </button>
+        <div className="flex items-center gap-ds-02">
+          {onRefresh && (
+            <button
+              type="button"
+              onClick={onRefresh}
+              aria-label="Refresh brief"
+              className="p-0.5 rounded hover:bg-layer-02 transition-colors"
+            >
+              <IconRefresh className={cn('h-ico-sm w-ico-sm text-text-placeholder', loading && 'animate-spin')} />
+            </button>
+          )}
+          {collapsible && (
+            <button
+              type="button"
+              aria-label="Toggle brief"
+              onClick={() => setCollapsed(!collapsed)}
+              className="p-0.5 rounded hover:bg-layer-02 transition-colors"
+            >
+              {collapsed ? (
+                <IconChevronDown className="h-ico-sm w-ico-sm text-text-placeholder" />
+              ) : (
+                <IconChevronUp className="h-ico-sm w-ico-sm text-text-placeholder" />
+              )}
+            </button>
+          )}
+        </div>
+      </div>
 
-      {!collapsed && (
+      {showContent && (
         <div className="flex flex-col gap-ds-03 border-t border-border px-ds-05b pb-ds-05b pt-ds-05">
           {data.brief.map((item, index) => (
             <div key={index} className="flex items-start gap-ds-04">
@@ -97,6 +166,9 @@ const DailyBrief = React.forwardRef<HTMLDivElement, DailyBriefProps>(
               </div>
             </div>
           ))}
+          <div className="mt-ds-02 text-ds-xs text-text-placeholder">
+            Generated {formatRelativeTime(data.generatedAt)}
+          </div>
         </div>
       )}
     </div>

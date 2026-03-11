@@ -25,6 +25,15 @@ import { cn } from '../ui/lib/utils'
 // Types
 // -----------------------------------------------------------------------
 
+export interface NotificationAction {
+  /** Button label */
+  label: string
+  /** Visual style — 'primary' is filled, 'default' is ghost, 'danger' is red ghost */
+  variant?: 'primary' | 'default' | 'danger'
+  /** Called when the action button is clicked. Receives the notification id. */
+  onClick: (id: string) => void
+}
+
 export interface Notification {
   id: string
   title: string
@@ -36,6 +45,8 @@ export interface Notification {
   entityId?: string | null
   projectId?: string | null
   project?: { title: string } | null
+  /** Inline action buttons (e.g. Approve / Deny). Max 2–3 recommended. */
+  actions?: NotificationAction[]
 }
 
 export interface NotificationCenterProps
@@ -171,13 +182,13 @@ function NotificationItem({
         !notification.isRead && 'bg-interactive/[0.03]',
       )}
     >
-      {/* Tier indicator dot */}
+      {/* Tier dot — doubles as read/unread marker */}
       <div className="mt-ds-02b flex shrink-0">
         <span
           className={cn(
-            'h-[8px] w-[8px] rounded-ds-full',
+            'h-[8px] w-[8px] rounded-ds-full transition-opacity duration-fast-02',
             TIER_COLORS[notification.tier] || TIER_COLORS.INFO,
-            notification.isRead && 'opacity-[0.38]',
+            notification.isRead ? 'opacity-[0.2]' : 'opacity-100',
           )}
         />
       </div>
@@ -212,14 +223,34 @@ function NotificationItem({
             </>
           )}
         </div>
-      </div>
 
-      {/* Unread indicator */}
-      {!notification.isRead && (
-        <div className="mt-ds-02b shrink-0">
-          <span className="block h-[8px] w-[8px] rounded-ds-full bg-interactive" />
-        </div>
-      )}
+        {/* Inline actions */}
+        {notification.actions && notification.actions.length > 0 && (
+          <div className="mt-ds-03 flex items-center gap-ds-02">
+            {notification.actions.map((action) => (
+              <button
+                key={action.label}
+                type="button"
+                onClick={(e) => {
+                  e.stopPropagation()
+                  action.onClick(notification.id)
+                }}
+                onKeyDown={(e) => e.stopPropagation()}
+                className={cn(
+                  'rounded-ds-md px-ds-03 py-ds-01 text-ds-sm font-medium transition-colors duration-fast-02',
+                  action.variant === 'primary'
+                    ? 'bg-interactive text-text-on-color hover:bg-interactive-hover'
+                    : action.variant === 'danger'
+                      ? 'text-error hover:bg-error/10'
+                      : 'text-text-secondary hover:bg-layer-03',
+                )}
+              >
+                {action.label}
+              </button>
+            ))}
+          </div>
+        )}
+      </div>
 
       {/* Dismiss button */}
       {onDismiss && (

@@ -64,20 +64,30 @@ const meta: Meta<typeof BottomNavbar> = {
           position: 'relative',
           margin: '0 auto',
           background: 'var(--color-background, #f5f5f5)',
+          /** Container query context — navbar uses md:hidden so we constrain width */
+          containerType: 'inline-size',
         }}
       >
-        <div style={{ padding: 16 }}>
-          <p
-            style={{
-              color: 'var(--color-text-secondary, #666)',
-              fontSize: 14,
-            }}
-          >
-            Scroll content area. The bottom navbar is fixed at the bottom of the
-            viewport.
-          </p>
+        {/* Force navbar visible: override md:hidden since Storybook canvas is desktop-width */}
+        <style>{`
+          .bottom-nav-story [aria-label="Mobile navigation"] {
+            display: flex !important;
+            position: absolute !important;
+          }
+        `}</style>
+        <div className="bottom-nav-story" style={{ width: '100%', height: '100%', position: 'relative' }}>
+          <div style={{ padding: 16 }}>
+            <p
+              style={{
+                color: 'var(--color-text-secondary, #666)',
+                fontSize: 14,
+              }}
+            >
+              Scroll content area. The bottom navbar is fixed at the bottom.
+            </p>
+          </div>
+          <Story />
         </div>
-        <Story />
       </div>
     ),
   ],

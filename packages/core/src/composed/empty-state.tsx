@@ -2,7 +2,7 @@ import * as React from 'react'
 import { cn } from '../ui/lib/utils'
 
 export interface EmptyStateProps extends React.HTMLAttributes<HTMLDivElement> {
-  icon?: React.ReactNode
+  icon?: React.ReactNode | React.ComponentType<{ className?: string }>
   title: string
   description?: string
   action?: React.ReactNode
@@ -34,14 +34,20 @@ const EmptyState = React.forwardRef<HTMLDivElement, EmptyStateProps>(
     },
     ref,
   ) => {
-    const resolvedIcon = icon ?? (
-      <DevalokChakraIcon
-        className={cn(
-          'text-text-placeholder',
-          compact ? 'h-ico-md w-ico-md' : 'h-ico-lg w-ico-lg',
-        )}
-      />
-    )
+    const iconSizeClass = compact ? 'h-ico-md w-ico-md' : 'h-ico-lg w-ico-lg'
+    const isComponentType =
+      icon != null && !React.isValidElement(icon) && (typeof icon === 'function' || (typeof icon === 'object' && '$$typeof' in (icon as object)))
+    const resolvedIcon = icon
+      ? isComponentType
+        ? React.createElement(icon as React.ComponentType<{ className?: string }>, {
+            className: cn('text-text-placeholder', iconSizeClass),
+          })
+        : icon
+      : (
+        <DevalokChakraIcon
+          className={cn('text-text-placeholder', iconSizeClass)}
+        />
+      )
 
     return (
       <div

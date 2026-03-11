@@ -14,6 +14,7 @@ import {
   IconClipboardList,
   IconUserPlus,
   IconSettings,
+  IconSparkles,
 } from '@tabler/icons-react'
 import type { NavGroup, NavItem, SidebarFooterConfig, SidebarUser } from './sidebar'
 
@@ -275,7 +276,7 @@ export const StructuredFooter: Story = {
     footer: {
       slot: (
         <a href="/changelog" className="text-ds-sm text-text-placeholder hover:text-interactive">
-          What's new in v2.4?
+          What&apos;s new in v2.4?
         </a>
       ),
       links: [
@@ -302,6 +303,27 @@ export const WithHeaderSlot: Story = {
   },
 }
 
+export const FooterWithPromo: Story = {
+  args: {
+    currentPath: '/',
+    user: mockUser,
+    navGroups: [mainNavGroup, secondaryNavGroup],
+    footer: {
+      promo: {
+        icon: <IconSparkles />,
+        text: 'Upgrade to Pro for unlimited projects',
+        action: { label: 'Upgrade', href: '/billing/upgrade' },
+        onDismiss: () => {},
+      },
+      links: [
+        { label: 'Terms', href: '/terms' },
+        { label: 'Privacy', href: '/privacy' },
+      ],
+      version: 'v2.4.1',
+    },
+  },
+}
+
 export const AllFeatures: Story = {
   args: {
     currentPath: '/projects/abc/board',
@@ -313,14 +335,13 @@ export const AllFeatures: Story = {
         <span className="text-ds-sm text-text-primary">Online — 9:42 AM</span>
       </div>
     ),
-    preFooterSlot: (
-      <div className="px-ds-04 py-ds-03">
-        <div className="rounded-ds-lg bg-layer-02 px-ds-04 py-ds-03 text-ds-sm text-text-placeholder">
-          Upgrade to Pro for unlimited projects
-        </div>
-      </div>
-    ),
     footer: {
+      promo: {
+        icon: <IconSparkles />,
+        text: 'Upgrade to Pro for unlimited projects',
+        action: { label: 'Upgrade', href: '/billing/upgrade' },
+        onDismiss: () => {},
+      },
       links: [
         { label: 'Terms', href: '/terms' },
         { label: 'Privacy', href: '/privacy' },

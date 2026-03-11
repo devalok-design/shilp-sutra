@@ -174,7 +174,7 @@ const meta: Meta<typeof ConversationTab> = {
   },
   decorators: [
     (Story) => (
-      <div className="w-[400px]">
+      <div className="w-[520px]">
         <Story />
       </div>
     ),
@@ -230,7 +230,7 @@ export const VisibilityWarning: Story = {
   },
 }
 
-/** Comment with HTML content stripped to plain text by default viewer */
+/** Comment with HTML content rendered via RichTextViewer */
 export const HtmlContent: Story = {
   args: {
     comments: htmlComment,
@@ -243,5 +243,14 @@ export const SingleComment: Story = {
   args: {
     comments: [internalComments[0]],
     taskVisibility: 'INTERNAL',
+  },
+}
+
+/** Plain textarea fallback (richText disabled) */
+export const PlainTextFallback: Story = {
+  args: {
+    comments: internalComments,
+    taskVisibility: 'INTERNAL',
+    richText: false,
   },
 }

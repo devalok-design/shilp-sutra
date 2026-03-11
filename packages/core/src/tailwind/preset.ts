@@ -385,6 +385,22 @@ const preset: Partial<Config> = {
           '0%': { gridTemplateRows: '0fr', opacity: '0' },
           '100%': { gridTemplateRows: '1fr', opacity: '1' },
         },
+        'accordion-down': {
+          '0%': { height: '0', opacity: '0' },
+          '100%': { height: 'var(--radix-accordion-content-height)', opacity: '1' },
+        },
+        'accordion-up': {
+          '0%': { height: 'var(--radix-accordion-content-height)', opacity: '1' },
+          '100%': { height: '0', opacity: '0' },
+        },
+        'collapsible-down': {
+          '0%': { height: '0', opacity: '0' },
+          '100%': { height: 'var(--radix-collapsible-content-height)', opacity: '1' },
+        },
+        'collapsible-up': {
+          '0%': { height: 'var(--radix-collapsible-content-height)', opacity: '1' },
+          '100%': { height: '0', opacity: '0' },
+        },
         'shimmer-sweep': {
           '0%': { backgroundPosition: '-200% 0' },
           '100%': { backgroundPosition: '200% 0' },
@@ -448,6 +464,10 @@ const preset: Partial<Config> = {
         'rubber-band': 'rubber-band var(--duration-moderate-02) var(--ease-productive-standard) both',
         'collapse-out': 'collapse-out var(--duration-moderate-01) var(--ease-productive-exit) both',
         'expand-in': 'expand-in var(--duration-moderate-02) var(--ease-expressive-entrance) both',
+        'accordion-down': 'accordion-down var(--duration-moderate-02) var(--ease-expressive-entrance) both',
+        'accordion-up': 'accordion-up var(--duration-moderate-01) var(--ease-productive-exit) both',
+        'collapsible-down': 'collapsible-down var(--duration-moderate-02) var(--ease-expressive-entrance) both',
+        'collapsible-up': 'collapsible-up var(--duration-moderate-01) var(--ease-productive-exit) both',
         'shimmer-sweep': 'shimmer-sweep var(--duration-slow-02) var(--ease-linear) infinite',
         'swing-in': 'swing-in var(--duration-moderate-02) var(--ease-expressive-entrance) both',
         'pop-in': 'pop-in var(--duration-moderate-02) var(--ease-bounce) both',

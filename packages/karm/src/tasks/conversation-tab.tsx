@@ -45,7 +45,7 @@ interface ConversationTabProps {
   className?: string
   /** When true, the viewer is a client -- adjusts warnings, labels, and author type */
   clientMode?: boolean
-  /** Enable built-in RichTextEditor/Viewer (requires tiptap peer deps). Overrides renderEditor/renderViewer. */
+  /** Enable built-in RichTextEditor/Viewer. Defaults to true. Set false for plain textarea fallback. */
   richText?: boolean
   /** Optional rich text editor component. Falls back to plain textarea. */
   renderEditor?: (props: {
@@ -117,7 +117,7 @@ const ConversationTab = React.forwardRef<HTMLDivElement, ConversationTabProps>(
   onPostComment,
   className,
   clientMode = false,
-  richText = false,
+  richText = true,
   renderEditor: renderEditorProp,
   renderViewer: renderViewerProp,
 }, ref) {

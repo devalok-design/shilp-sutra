@@ -78,13 +78,26 @@ export interface SidebarUser {
   role?: string
 }
 
+export interface SidebarPromo {
+  /** Promo message text */
+  text: string
+  /** Optional icon rendered before the text */
+  icon?: React.ReactNode
+  /** Action button rendered in the promo banner */
+  action?: { label: string; href?: string; onClick?: () => void }
+  /** When provided, renders a dismiss (X) button that calls this handler */
+  onDismiss?: () => void
+}
+
 export interface SidebarFooterConfig {
   /** Legal/utility links rendered as a row separated by dividers */
   links?: Array<{ label: string; href: string }>
-  /** Version or build info text rendered below links */
+  /** Version or build info text rendered inline after links */
   version?: string
   /** Custom content rendered above the links row */
   slot?: React.ReactNode
+  /** Promo/upsell banner rendered above the links row */
+  promo?: SidebarPromo
 }
 
 export interface AppSidebarProps
@@ -134,6 +147,26 @@ function ChevronRight({ className }: { className?: string }) {
   )
 }
 
+function CloseIcon({ className }: { className?: string }) {
+  return (
+    <svg
+      xmlns="http://www.w3.org/2000/svg"
+      width="16"
+      height="16"
+      viewBox="0 0 24 24"
+      fill="none"
+      stroke="currentColor"
+      strokeWidth="2"
+      strokeLinecap="round"
+      strokeLinejoin="round"
+      className={className}
+    >
+      <path d="M18 6 6 18" />
+      <path d="m6 6 12 12" />
+    </svg>
+  )
+}
+
 // -----------------------------------------------------------------------
 // Shared styles
 // -----------------------------------------------------------------------
@@ -174,36 +207,39 @@ function NavLink({
     return (
       <Collapsible defaultOpen={shouldOpen} className="group/collapsible">
         <SidebarMenuItem>
-          <SidebarMenuButton
-            asChild
-            isActive={isActive || hasActiveChild}
-            tooltip={item.title}
-            className={cn(
-              navItemBase,
-              isActive || hasActiveChild ? navItemActive : navItemInactive,
-            )}
-          >
-            <Link
-              href={item.href}
-              aria-label={item.title}
-              aria-current={isActive ? 'page' : undefined}
+          {/* Button row — chevron is anchored here, not on the full <li> */}
+          <div className="relative">
+            <SidebarMenuButton
+              asChild
+              isActive={isActive || hasActiveChild}
+              tooltip={item.title}
+              className={cn(
+                navItemBase,
+                isActive || hasActiveChild ? navItemActive : navItemInactive,
+              )}
             >
-              <span className="[&>svg]:h-ico-md [&>svg]:w-ico-md shrink-0" aria-hidden="true">
-                {item.icon}
-              </span>
-              <span className="text-ds-base">{item.title}</span>
-            </Link>
-          </SidebarMenuButton>
-          {badgeContent && <SidebarMenuBadge>{badgeContent}</SidebarMenuBadge>}
-          <CollapsibleTrigger asChild>
-            <button
-              className="absolute right-ds-02 top-1/2 flex h-5 w-5 -translate-y-1/2 items-center justify-center rounded-ds-md text-text-helper transition-transform hover:bg-layer-02 hover:text-text-primary group-data-[collapsible=icon]:hidden"
-              aria-label={`Toggle ${item.title}`}
-            >
-              <ChevronRight className="h-4 w-4 transition-transform duration-200 group-data-[state=open]/collapsible:rotate-90" />
-            </button>
-          </CollapsibleTrigger>
-          <CollapsibleContent>
+              <Link
+                href={item.href}
+                aria-label={item.title}
+                aria-current={isActive ? 'page' : undefined}
+              >
+                <span className="[&>svg]:h-ico-md [&>svg]:w-ico-md shrink-0" aria-hidden="true">
+                  {item.icon}
+                </span>
+                <span className="text-ds-base">{item.title}</span>
+              </Link>
+            </SidebarMenuButton>
+            {badgeContent && <SidebarMenuBadge>{badgeContent}</SidebarMenuBadge>}
+            <CollapsibleTrigger asChild>
+              <button
+                className="absolute right-ds-02 top-1/2 flex h-5 w-5 -translate-y-1/2 items-center justify-center rounded-ds-md text-text-helper transition-colors hover:bg-layer-02 hover:text-text-primary group-data-[collapsible=icon]:hidden"
+                aria-label={`Toggle ${item.title}`}
+              >
+                <ChevronRight className="h-4 w-4 transition-transform duration-fast-02 ease-productive-standard group-data-[state=open]/collapsible:rotate-90" />
+              </button>
+            </CollapsibleTrigger>
+          </div>
+          <CollapsibleContent className="overflow-hidden data-[state=closed]:animate-collapsible-up data-[state=open]:animate-collapsible-down">
             <SidebarMenuSub>
               {item.children.map((child) => {
                 const childActive = isPathActive(child.href, child.exact)
@@ -390,48 +426,84 @@ const AppSidebar = React.forwardRef<HTMLDivElement, AppSidebarProps>(
 
         {/* Footer */}
         {footer ? (
-          <SidebarFooter className="px-ds-06 py-ds-05">
-            {footer.slot && (
-              <div className="pb-ds-04">
-                {footer.slot}
+          <SidebarFooter className="gap-ds-03 px-ds-06 py-ds-05">
+            {footer.slot && <div>{footer.slot}</div>}
+
+            {/* Promo banner */}
+            {footer.promo && (
+              <div className="relative rounded-ds-lg border border-border-subtle bg-layer-02 p-ds-04">
+                {footer.promo.onDismiss && (
+                  <button
+                    onClick={footer.promo.onDismiss}
+                    aria-label="Dismiss"
+                    className="absolute right-ds-02 top-ds-02 flex h-5 w-5 items-center justify-center rounded-ds-md text-text-helper transition-colors hover:bg-layer-03 hover:text-text-primary"
+                  >
+                    <CloseIcon className="h-3.5 w-3.5" />
+                  </button>
+                )}
+                <div className="flex flex-col gap-ds-03">
+                  {footer.promo.icon && (
+                    <span className="text-interactive [&>svg]:h-ico-md [&>svg]:w-ico-md" aria-hidden="true">
+                      {footer.promo.icon}
+                    </span>
+                  )}
+                  <div className="flex min-w-0 flex-col gap-ds-03">
+                    <p className="text-ds-sm text-text-primary">{footer.promo.text}</p>
+                    {footer.promo.action && (
+                      footer.promo.action.href ? (
+                        <Link
+                          href={footer.promo.action.href}
+                          onClick={footer.promo.action.onClick}
+                          className="inline-flex self-start rounded-ds-md bg-interactive px-ds-04 py-ds-02 text-ds-sm font-medium text-text-on-color transition-colors hover:bg-interactive-hover"
+                        >
+                          {footer.promo.action.label}
+                        </Link>
+                      ) : (
+                        <button
+                          onClick={footer.promo.action.onClick}
+                          className="inline-flex self-start rounded-ds-md bg-interactive px-ds-04 py-ds-02 text-ds-sm font-medium text-text-on-color transition-colors hover:bg-interactive-hover"
+                        >
+                          {footer.promo.action.label}
+                        </button>
+                      )
+                    )}
+                  </div>
+                </div>
               </div>
             )}
-            {footer.links && footer.links.length > 0 && (
-              <div className="flex items-center justify-start gap-ds-03">
-                {footer.links.map((link, i) => (
-                  <div key={link.href} className="flex items-center gap-ds-03">
-                    {i > 0 && <span className="text-text-placeholder">·</span>}
+
+            {/* Links + version on same line */}
+            {(footer.links?.length || footer.version) && (
+              <div className="flex items-center gap-ds-03 text-ds-sm text-text-placeholder">
+                {footer.links?.map((link, i) => (
+                  <React.Fragment key={link.href}>
+                    {i > 0 && <span>·</span>}
                     <Link
-                      className="text-ds-sm text-text-placeholder transition-colors hover:text-interactive"
+                      className="transition-colors hover:text-interactive"
                       href={link.href}
                     >
                       {link.label}
                     </Link>
-                  </div>
+                  </React.Fragment>
                 ))}
+                {footer.links?.length && footer.version && <span>·</span>}
+                {footer.version && <span>{footer.version}</span>}
               </div>
-            )}
-            {footer.version && (
-              <p className="text-center text-ds-sm text-text-placeholder">
-                {footer.version}
-              </p>
             )}
           </SidebarFooter>
         ) : footerLinks.length > 0 ? (
           <SidebarFooter className="px-ds-06 py-ds-05">
-            <div className="flex items-center justify-start gap-ds-03">
+            <div className="flex items-center gap-ds-03 text-ds-sm text-text-placeholder">
               {footerLinks.map((link, i) => (
-                <div key={link.href} className="flex items-center gap-ds-03">
-                  {i > 0 && (
-                    <div className="h-[16px] w-px bg-border" />
-                  )}
+                <React.Fragment key={link.href}>
+                  {i > 0 && <span>·</span>}
                   <Link
-                    className="text-ds-md text-text-placeholder transition-colors hover:text-interactive"
+                    className="transition-colors hover:text-interactive"
                     href={link.href}
                   >
                     {link.label}
                   </Link>
-                </div>
+                </React.Fragment>
               ))}
             </div>
           </SidebarFooter>

@@ -294,3 +294,56 @@ export const CustomWidth: Story = {
     popoverClassName: 'w-[500px]',
   },
 }
+
+export const WithActions: Story = {
+  name: 'Actionable Notifications',
+  args: {
+    notifications: [
+      {
+        id: 'act-1',
+        title: 'Break request: Priya Mehta',
+        body: 'Requested sick leave for March 12–13.',
+        tier: 'IMPORTANT' as const,
+        isRead: false,
+        createdAt: minutesAgo(8),
+        entityType: 'BREAK_REQUEST',
+        entityId: 'break-501',
+        project: null,
+        actions: [
+          { label: 'Approve', variant: 'primary' as const, onClick: () => {} },
+          { label: 'Deny', variant: 'danger' as const, onClick: () => {} },
+        ],
+      },
+      {
+        id: 'act-2',
+        title: 'Attendance correction: Ravi Kumar',
+        body: 'Missed punch-out on March 10. Requesting correction to 6:30 PM.',
+        tier: 'IMPORTANT' as const,
+        isRead: false,
+        createdAt: minutesAgo(25),
+        entityType: 'ATTENDANCE',
+        entityId: 'att-601',
+        project: null,
+        actions: [
+          { label: 'Approve', variant: 'primary' as const, onClick: () => {} },
+          { label: 'Deny', variant: 'danger' as const, onClick: () => {} },
+        ],
+      },
+      {
+        id: 'act-3',
+        title: 'Review requested: Homepage wireframes',
+        body: 'Ravi shared new wireframes for the homepage.',
+        tier: 'INFO' as const,
+        isRead: false,
+        createdAt: hoursAgo(1),
+        entityType: 'REVIEW_REQUEST',
+        projectId: 'proj-3',
+        project: { title: 'Website Redesign' },
+        actions: [
+          { label: 'Review', variant: 'default' as const, onClick: () => {} },
+        ],
+      },
+      ...mockNotifications.slice(4),
+    ],
+  },
+}

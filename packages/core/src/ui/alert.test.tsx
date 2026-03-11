@@ -1,4 +1,4 @@
-import { render, screen } from '@testing-library/react'
+import { render, screen, waitFor } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 import { describe, it, expect, vi } from 'vitest'
 import { Alert } from './alert'
@@ -44,7 +44,7 @@ describe('Alert', () => {
     expect(dismissBtn).toBeInTheDocument()
 
     await user.click(dismissBtn)
-    expect(onDismiss).toHaveBeenCalledOnce()
+    await waitFor(() => expect(onDismiss).toHaveBeenCalledOnce())
   })
 
   it('does not show dismiss button when not dismissible', () => {

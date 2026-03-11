@@ -1,4 +1,4 @@
-import { render, screen } from '@testing-library/react'
+import { render, screen, waitFor } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 import { describe, it, expect, vi } from 'vitest'
 import { Alert, alertVariants } from '../alert'
@@ -27,7 +27,7 @@ describe('Alert', () => {
     const btn = screen.getByRole('button', { name: /dismiss/i })
     expect(btn).toBeInTheDocument()
     await userEvent.click(btn)
-    expect(onDismiss).toHaveBeenCalledOnce()
+    await waitFor(() => expect(onDismiss).toHaveBeenCalledOnce())
   })
 
   it('does not render dismiss button when onDismiss is absent', () => {

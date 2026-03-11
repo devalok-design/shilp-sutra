@@ -93,6 +93,11 @@ function BoardCanvas({ className }: { className?: string }) {
   } = useBoardContext()
 
   const [mounted, setMounted] = useState(false)
+  const [dragPreview, setDragPreview] = useState<{
+    taskId: string
+    columnId: string
+    index: number
+  } | null>(null)
   const scrollRef = useRef<HTMLDivElement | null>(null)
   const canvasRef = useRef<HTMLDivElement | null>(null)
 
@@ -147,7 +152,10 @@ function BoardCanvas({ className }: { className?: string }) {
   const handleDragOver = useCallback(
     (event: DragOverEvent) => {
       const { active, over } = event
-      if (!over) return
+      if (!over) {
+        setDragPreview(null)
+        return
+      }
 
       const activeId = active.id as string
       const overId = over.id as string
@@ -170,18 +178,29 @@ function BoardCanvas({ className }: { className?: string }) {
         }
       }
 
-      if (!overColumnId || activeColumnId === overColumnId) return
+      if (!overColumnId) {
+        setDragPreview(null)
+        return
+      }
 
-      // Cross-column move during drag
-      onTaskMove(activeId, overColumnId, overIndex)
+      // Same column — no preview needed
+      if (activeColumnId === overColumnId) {
+        setDragPreview(null)
+        return
+      }
+
+      // Show silhouette in target column instead of moving the task
+      setDragPreview({ taskId: activeId, columnId: overColumnId, index: overIndex })
     },
-    [columns, findColumnByTaskId, onTaskMove],
+    [columns, findColumnByTaskId],
   )
 
   const handleDragEnd = useCallback(
     (event: DragEndEvent) => {
       const { active, over } = event
+      const preview = dragPreview
       setActiveTask(null)
+      setDragPreview(null)
 
       if (!over) return
 
@@ -191,6 +210,13 @@ function BoardCanvas({ className }: { className?: string }) {
       const activeColumnId = findColumnByTaskId(activeId)
       if (!activeColumnId) return
 
+      // If we had a cross-column preview, use it for the move
+      if (preview && preview.taskId === activeId) {
+        onTaskMove(activeId, preview.columnId, preview.index)
+        return
+      }
+
+      // Same-column reorder or drop on column header
       let targetColumnId: string
       let newOrder: number
 
@@ -212,8 +238,13 @@ function BoardCanvas({ className }: { className?: string }) {
 
       onTaskMove(activeId, targetColumnId, newOrder)
     },
-    [columns, findColumnByTaskId, setActiveTask, onTaskMove],
+    [columns, dragPreview, findColumnByTaskId, setActiveTask, onTaskMove],
   )
+
+  const handleDragCancel = useCallback(() => {
+    setActiveTask(null)
+    setDragPreview(null)
+  }, [setActiveTask])
 
   return (
     <DndContext
@@ -222,6 +253,7 @@ function BoardCanvas({ className }: { className?: string }) {
       onDragStart={handleDragStart}
       onDragOver={handleDragOver}
       onDragEnd={handleDragEnd}
+      onDragCancel={handleDragCancel}
       accessibility={{ announcements }}
     >
       <div
@@ -239,7 +271,12 @@ function BoardCanvas({ className }: { className?: string }) {
               className="flex-shrink-0 animate-slide-right delay-stagger-50"
               style={{ '--stagger-index': index } as React.CSSProperties}
             >
-              <BoardColumn column={column} index={index} />
+              <BoardColumn
+                column={column}
+                index={index}
+                dragPreview={dragPreview?.columnId === column.id ? dragPreview : undefined}
+                draggedTask={activeTask}
+              />
             </div>
           ))}
         </SortableContext>

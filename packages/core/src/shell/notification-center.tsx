@@ -177,7 +177,7 @@ function NotificationItem({
       onClick={handleClick}
       onKeyDown={handleKeyDown}
       className={cn(
-        'group relative flex w-full cursor-pointer items-start gap-ds-04 px-ds-05 py-ds-04 text-left transition-[color,transform] duration-fast-02 hover:translate-x-0.5',
+        'group relative flex w-full cursor-pointer items-start gap-ds-04 px-ds-05 py-ds-04 text-left transition-colors duration-fast-02',
         'hover:bg-layer-02',
         !notification.isRead && 'bg-interactive/[0.03]',
       )}

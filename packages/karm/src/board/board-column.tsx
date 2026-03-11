@@ -11,7 +11,7 @@ import { ColumnEmpty } from './column-empty'
 import { TaskCard, TaskCardCompact } from './task-card'
 import { TaskContextMenu } from './task-context-menu'
 import { COLUMN_WIDTH } from './board-constants'
-import type { BoardColumn as BoardColumnType } from './board-types'
+import type { BoardColumn as BoardColumnType, BoardTask } from './board-types'
 
 // ============================================================
 // Types
@@ -21,6 +21,26 @@ export interface BoardColumnProps {
   column: BoardColumnType
   index: number
   isOverlay?: boolean
+  /** Preview state for a task being dragged into this column */
+  dragPreview?: { taskId: string; columnId: string; index: number }
+  /** The task currently being dragged (for silhouette rendering) */
+  draggedTask?: BoardTask | null
+}
+
+// ============================================================
+// Ghost silhouette shown at the drop target position
+// ============================================================
+
+function TaskGhost() {
+  return (
+    <div
+      className="rounded-ds-lg border-2 border-dashed border-interactive/40 bg-interactive/[0.06] px-ds-04 py-ds-05"
+      aria-hidden
+    >
+      <div className="h-ds-xs-plus w-3/4 rounded-ds-md bg-interactive/10" />
+      <div className="mt-ds-02 h-[12px] w-1/2 rounded-ds-md bg-interactive/[0.06]" />
+    </div>
+  )
 }
 
 // ============================================================
@@ -28,7 +48,7 @@ export interface BoardColumnProps {
 // ============================================================
 
 export const BoardColumn = React.forwardRef<HTMLDivElement, BoardColumnProps>(
-  function BoardColumn({ column, index, isOverlay }, ref) {
+  function BoardColumn({ column, index, isOverlay, dragPreview, draggedTask }, ref) {
     const { viewMode } = useBoardContext()
 
     const { setNodeRef: setDroppableRef, isOver } = useDroppable({
@@ -66,28 +86,40 @@ export const BoardColumn = React.forwardRef<HTMLDivElement, BoardColumnProps>(
         >
           <SortableContext items={taskIds} strategy={verticalListSortingStrategy}>
             {column.tasks.map((task, taskIdx) => (
-              <div
-                key={task.id}
-                className="animate-slide-up delay-stagger"
-                style={{ '--stagger-index': taskIdx } as React.CSSProperties}
-              >
-                <TaskContextMenu taskId={task.id}>
-                  {viewMode === 'compact' ? (
-                    <TaskCardCompact task={task} />
-                  ) : (
-                    <TaskCard task={task} />
-                  )}
-                </TaskContextMenu>
-              </div>
+              <React.Fragment key={task.id}>
+                {/* Ghost silhouette at this position */}
+                {dragPreview && dragPreview.index === taskIdx && (
+                  <TaskGhost />
+                )}
+                <div
+                  className="animate-slide-up delay-stagger"
+                  style={{ '--stagger-index': taskIdx } as React.CSSProperties}
+                >
+                  <TaskContextMenu taskId={task.id}>
+                    {viewMode === 'compact' ? (
+                      <TaskCardCompact task={task} />
+                    ) : (
+                      <TaskCard task={task} />
+                    )}
+                  </TaskContextMenu>
+                </div>
+              </React.Fragment>
             ))}
+            {/* Ghost at end of list */}
+            {dragPreview && dragPreview.index >= column.tasks.length && (
+              <TaskGhost />
+            )}
           </SortableContext>
 
           {/* Empty state */}
-          {column.tasks.length === 0 && (
+          {column.tasks.length === 0 && !dragPreview && (
             <ColumnEmpty
               index={index}
               isDropTarget={isOver}
             />
+          )}
+          {column.tasks.length === 0 && dragPreview && (
+            <TaskGhost />
           )}
         </div>
 

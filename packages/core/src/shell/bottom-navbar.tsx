@@ -22,6 +22,8 @@ export interface BottomNavItem {
   icon: React.ReactNode
   /** When true, the route matches only when the path is exactly equal */
   exact?: boolean
+  /** Notification badge count. 0 or undefined = hidden, 1–99 = shown, >99 = "99+" */
+  badge?: number
 }
 
 export interface BottomNavbarUser {
@@ -41,6 +43,27 @@ export interface BottomNavbarProps
   moreItems?: BottomNavItem[]
   /** Additional className for the nav element */
   className?: string
+}
+
+// -----------------------------------------------------------------------
+// NavBadge (internal)
+// -----------------------------------------------------------------------
+
+function NavBadge({ count }: { count: number }) {
+  if (!count || count <= 0) return null
+  const display = count > 99 ? '99+' : String(count)
+  const isMultiDigit = count >= 10
+  return (
+    <span
+      aria-label={`${count} notifications`}
+      className={cn(
+        'absolute -right-1.5 -top-1 flex h-4 min-w-4 items-center justify-center rounded-full bg-error text-[10px] font-semibold leading-none text-on-error animate-in zoom-in-75',
+        isMultiDigit ? 'px-0.5' : '',
+      )}
+    >
+      {display}
+    </span>
+  )
 }
 
 // -----------------------------------------------------------------------
@@ -78,8 +101,9 @@ function BottomNavLink({
           )}
           aria-hidden="true"
         />
-        <div className="p-ds-03">
+        <div className="relative p-ds-03">
           <span className="[&>svg]:h-ico-md [&>svg]:w-ico-md" aria-hidden="true">{item.icon}</span>
+          {item.badge != null && <NavBadge count={item.badge} />}
         </div>
         <span className="text-center">{item.title}</span>
       </div>

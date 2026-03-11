@@ -1,6 +1,7 @@
 import { render, screen } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 import { describe, it, expect, vi, beforeEach } from 'vitest'
+import { axe } from 'vitest-axe'
 import { AppSidebar } from './sidebar'
 import { SidebarProvider } from '../ui/sidebar'
 import type { NavGroup, NavItem, NavSubItem } from './sidebar'
@@ -362,5 +363,47 @@ describe('S9 — collapsible nav items', () => {
     ])
     renderSidebar({ navGroups: groups, currentPath: '/' })
     expect(screen.getByText('Dashboard')).toBeInTheDocument()
+  })
+})
+
+describe('F1 — preFooterClassName', () => {
+  const baseGroups: NavGroup[] = [
+    {
+      label: 'Main',
+      items: [{ title: 'Home', href: '/', icon: <TestIcon />, exact: true }],
+    },
+  ]
+
+  it('applies preFooterClassName to the wrapper div around preFooterSlot', () => {
+    renderSidebar({
+      navGroups: baseGroups,
+      preFooterSlot: <div data-testid="pre-footer-content">Content</div>,
+      preFooterClassName: 'overflow-y-auto max-h-[200px]',
+    })
+    const content = screen.getByTestId('pre-footer-content')
+    const wrapper = content.parentElement!
+    expect(wrapper.tagName).toBe('DIV')
+    expect(wrapper.className).toBe('overflow-y-auto max-h-[200px]')
+  })
+
+  it('renders preFooterSlot in a wrapper div without className when preFooterClassName is omitted', () => {
+    renderSidebar({
+      navGroups: baseGroups,
+      preFooterSlot: <div data-testid="pre-footer-content">Content</div>,
+    })
+    const content = screen.getByTestId('pre-footer-content')
+    const wrapper = content.parentElement!
+    expect(wrapper.tagName).toBe('DIV')
+    expect(wrapper.className).toBe('')
+  })
+
+  it('has no accessibility violations with preFooterClassName', async () => {
+    const { container } = renderSidebar({
+      navGroups: baseGroups,
+      preFooterSlot: <div>Promo banner</div>,
+      preFooterClassName: 'overflow-y-auto max-h-[200px]',
+    })
+    const results = await axe(container)
+    expect(results).toHaveNoViolations()
   })
 })

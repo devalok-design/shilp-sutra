@@ -118,6 +118,8 @@ export interface AppSidebarProps
   headerSlot?: React.ReactNode
   /** Content rendered between navigation and footer */
   preFooterSlot?: React.ReactNode
+  /** className applied to the wrapper div around preFooterSlot */
+  preFooterClassName?: string
   /** Override rendering for specific nav items. Return null to use default rendering. */
   renderItem?: (item: NavItem, defaultRender: () => React.ReactNode) => React.ReactNode | null
   /** Additional className for the root sidebar element */
@@ -310,6 +312,7 @@ const AppSidebar = React.forwardRef<HTMLDivElement, AppSidebarProps>(
       logo,
       headerSlot,
       preFooterSlot,
+      preFooterClassName,
       footerLinks = [],
       footer,
       renderItem,
@@ -420,7 +423,9 @@ const AppSidebar = React.forwardRef<HTMLDivElement, AppSidebarProps>(
         {preFooterSlot && (
           <>
             <SidebarSeparator />
-            {preFooterSlot}
+            <div className={preFooterClassName}>
+              {preFooterSlot}
+            </div>
           </>
         )}
 

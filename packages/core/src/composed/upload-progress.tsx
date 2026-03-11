@@ -39,6 +39,8 @@ export interface UploadProgressProps
   onRemove?: (fileId: string) => void
   /** Called when user retries a failed upload */
   onRetry?: (fileId: string) => void
+  /** Called when user dismisses all terminal files */
+  onDismissAll?: () => void
   /** Show compact single-line items vs expanded items */
   variant?: 'default' | 'compact'
   /** Whether to show file size */
@@ -50,9 +52,12 @@ export interface UploadProgressProps
  * ------------------------------------------------------------------------ */
 
 function formatFileSize(bytes: number): string {
+  if (!bytes || bytes < 0 || !Number.isFinite(bytes)) return '0 B'
   if (bytes < 1024) return `${bytes} B`
   if (bytes < 1024 * 1024) return `${(bytes / 1024).toFixed(1)} KB`
-  return `${(bytes / (1024 * 1024)).toFixed(1)} MB`
+  if (bytes < 1024 * 1024 * 1024)
+    return `${(bytes / (1024 * 1024)).toFixed(1)} MB`
+  return `${(bytes / (1024 * 1024 * 1024)).toFixed(2)} GB`
 }
 
 const IMAGE_EXTENSIONS = new Set([
@@ -112,6 +117,23 @@ function FileIcon({
   file: UploadFile
   className?: string
 }) {
+  if (file.previewUrl) {
+    return (
+      <div
+        className={cn(
+          'h-8 w-8 shrink-0 overflow-hidden rounded-ds-md',
+          className,
+        )}
+      >
+        <img
+          src={file.previewUrl}
+          alt=""
+          className="h-full w-full object-cover"
+        />
+      </div>
+    )
+  }
+
   if (file.status === 'complete') {
     return (
       <div
@@ -146,7 +168,10 @@ function FileIcon({
           className,
         )}
       >
-        <IconLoader2 size={16} className="animate-spin text-text-secondary" />
+        <IconLoader2
+          size={16}
+          className="animate-spin text-text-secondary"
+        />
       </div>
     )
   }
@@ -164,49 +189,6 @@ function FileIcon({
       <Icon size={16} className="text-text-secondary" />
     </div>
   )
-}
-
-function ActionButton({
-  file,
-  onRemove,
-  onRetry,
-}: {
-  file: UploadFile
-  onRemove?: (fileId: string) => void
-  onRetry?: (fileId: string) => void
-}) {
-  if (file.status === 'error' && onRetry) {
-    return (
-      <button
-        type="button"
-        onClick={() => onRetry(file.id)}
-        className="flex h-6 w-6 shrink-0 items-center justify-center rounded-ds-md text-text-secondary transition-colors duration-fast-01 hover:bg-layer-03 hover:text-text-primary"
-        aria-label={`Retry upload for ${file.name}`}
-      >
-        <IconRefresh size={14} />
-      </button>
-    )
-  }
-
-  if (
-    (file.status === 'uploading' ||
-      file.status === 'complete' ||
-      file.status === 'error') &&
-    onRemove
-  ) {
-    return (
-      <button
-        type="button"
-        onClick={() => onRemove(file.id)}
-        className="flex h-6 w-6 shrink-0 items-center justify-center rounded-ds-md text-text-secondary transition-colors duration-fast-01 hover:bg-layer-03 hover:text-text-primary"
-        aria-label={`${file.status === 'uploading' ? 'Cancel upload for' : 'Remove'} ${file.name}`}
-      >
-        <IconX size={14} />
-      </button>
-    )
-  }
-
-  return null
 }
 
 /* ---------------------------------------------------------------------------
@@ -232,7 +214,10 @@ function DefaultFileRow({
   return (
     <div
       className="animate-slide-up px-ds-04 py-ds-03"
-      style={{ animationDelay: `${index * 30}ms`, animationFillMode: 'both' }}
+      style={{
+        animationDelay: `${index * 30}ms`,
+        animationFillMode: 'both',
+      }}
     >
       {/* Top line: icon, name, size, action */}
       <div className="flex items-center gap-ds-03">
@@ -259,17 +244,18 @@ function DefaultFileRow({
               </span>
             )}
             {file.status === 'error' && file.error && (
-              <span className="text-ds-xs text-text-error">{file.error}</span>
+              <span className="text-ds-xs text-text-error">
+                {file.error}
+              </span>
             )}
           </div>
         </div>
 
-        {file.status === 'uploading' &&
-          file.progress !== undefined && (
-            <span className="shrink-0 text-ds-xs tabular-nums text-text-secondary">
-              {file.progress}%
-            </span>
-          )}
+        {file.status === 'uploading' && file.progress !== undefined && (
+          <span className="shrink-0 text-ds-xs tabular-nums text-text-secondary">
+            {file.progress}%
+          </span>
+        )}
 
         <div className="flex shrink-0 items-center gap-ds-01">
           {file.status === 'error' && onRetry && (
@@ -282,7 +268,29 @@ function DefaultFileRow({
               <IconRefresh size={14} />
             </button>
           )}
-          <ActionButton file={file} onRemove={onRemove} onRetry={undefined} />
+          {(file.status === 'error' ||
+            file.status === 'complete' ||
+            file.status === 'pending') &&
+            onRemove && (
+              <button
+                type="button"
+                onClick={() => onRemove(file.id)}
+                className="flex h-6 w-6 items-center justify-center rounded-ds-md text-text-secondary transition-colors duration-fast-01 hover:bg-layer-03 hover:text-text-primary"
+                aria-label={`Remove ${file.name}`}
+              >
+                <IconX size={14} />
+              </button>
+            )}
+          {file.status === 'uploading' && onRemove && (
+            <button
+              type="button"
+              onClick={() => onRemove(file.id)}
+              className="flex h-6 w-6 items-center justify-center rounded-ds-md text-text-secondary transition-colors duration-fast-01 hover:bg-layer-03 hover:text-text-primary"
+              aria-label={`Cancel upload for ${file.name}`}
+            >
+              <IconX size={14} />
+            </button>
+          )}
         </div>
       </div>
 
@@ -320,7 +328,10 @@ function CompactFileRow({
   return (
     <div
       className="flex items-center gap-ds-03 px-ds-03 py-ds-02 animate-slide-up"
-      style={{ animationDelay: `${index * 30}ms`, animationFillMode: 'both' }}
+      style={{
+        animationDelay: `${index * 30}ms`,
+        animationFillMode: 'both',
+      }}
     >
       <FileIcon file={file} className="h-6 w-6" />
 
@@ -367,7 +378,29 @@ function CompactFileRow({
             <IconRefresh size={12} />
           </button>
         )}
-        <ActionButton file={file} onRemove={onRemove} onRetry={undefined} />
+        {(file.status === 'error' ||
+          file.status === 'complete' ||
+          file.status === 'pending') &&
+          onRemove && (
+            <button
+              type="button"
+              onClick={() => onRemove(file.id)}
+              className="flex h-5 w-5 items-center justify-center rounded-ds-md text-text-secondary transition-colors duration-fast-01 hover:bg-layer-03 hover:text-text-primary"
+              aria-label={`Remove ${file.name}`}
+            >
+              <IconX size={12} />
+            </button>
+          )}
+        {file.status === 'uploading' && onRemove && (
+          <button
+            type="button"
+            onClick={() => onRemove(file.id)}
+            className="flex h-5 w-5 items-center justify-center rounded-ds-md text-text-secondary transition-colors duration-fast-01 hover:bg-layer-03 hover:text-text-primary"
+            aria-label={`Cancel upload for ${file.name}`}
+          >
+            <IconX size={12} />
+          </button>
+        )}
       </div>
     </div>
   )
@@ -383,6 +416,7 @@ const UploadProgress = React.forwardRef<HTMLDivElement, UploadProgressProps>(
       files,
       onRemove,
       onRetry,
+      onDismissAll,
       variant = 'default',
       showSize = true,
       className,
@@ -391,6 +425,13 @@ const UploadProgress = React.forwardRef<HTMLDivElement, UploadProgressProps>(
     ref,
   ) => {
     if (files.length === 0) return null
+
+    const completedCount = files.filter(
+      (f) => f.status === 'complete',
+    ).length
+    const allTerminal = files.every(
+      (f) => f.status === 'complete' || f.status === 'error',
+    )
 
     return (
       <div
@@ -403,7 +444,24 @@ const UploadProgress = React.forwardRef<HTMLDivElement, UploadProgressProps>(
         aria-label="File uploads"
         {...props}
       >
-        <div className="divide-y divide-border-subtle">
+        {/* Summary header */}
+        <div className="flex items-center justify-between border-b border-border-subtle px-ds-04 py-ds-03">
+          <span className="text-ds-sm text-text-secondary">
+            {completedCount} of {files.length} uploaded
+          </span>
+          {allTerminal && onDismissAll && (
+            <button
+              type="button"
+              onClick={onDismissAll}
+              className="text-ds-sm text-interactive hover:text-interactive-hover transition-colors"
+            >
+              Dismiss all
+            </button>
+          )}
+        </div>
+
+        {/* Scrollable file list */}
+        <div className="max-h-[360px] overflow-y-auto divide-y divide-border-subtle">
           {files.map((file, index) =>
             variant === 'compact' ? (
               <CompactFileRow
@@ -423,6 +481,20 @@ const UploadProgress = React.forwardRef<HTMLDivElement, UploadProgressProps>(
                 onRetry={onRetry}
               />
             ),
+          )}
+        </div>
+
+        {/* Screen reader announcements */}
+        <div className="sr-only" aria-live="polite" aria-atomic="false">
+          {files.map((f) =>
+            f.status === 'complete' ? (
+              <span key={`sr-${f.id}`}>{f.name} upload complete.</span>
+            ) : f.status === 'error' ? (
+              <span key={`sr-${f.id}`}>
+                {f.name} upload failed
+                {f.error ? `: ${f.error}` : ''}.
+              </span>
+            ) : null,
           )}
         </div>
       </div>

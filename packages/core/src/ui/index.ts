@@ -149,6 +149,10 @@ export {
   type SkeletonInputProps,
   SkeletonChart,
   type SkeletonChartProps,
+  SkeletonImage,
+  type SkeletonImageProps,
+  SkeletonGroup,
+  type SkeletonGroupProps,
 } from './skeleton'
 export { StatCard, type StatCardProps } from './stat-card'
 export { Code, type CodeProps } from './code'

@@ -137,6 +137,88 @@ const imageFiles: UploadFile[] = [
   },
 ]
 
+const longNameFiles: UploadFile[] = [
+  {
+    id: '1',
+    name: 'this-is-a-really-long-file-name-that-should-be-truncated-properly-in-both-default-and-compact.pdf',
+    size: 2_100_000,
+    progress: 55,
+    status: 'uploading',
+  },
+  {
+    id: '2',
+    name: 'another-extremely-long-filename-with-many-words-to-test-the-truncation-behavior-of-the-component.docx',
+    size: 890_000,
+    progress: 100,
+    status: 'complete',
+  },
+  {
+    id: '3',
+    name: '2026-03-12-quarterly-financial-report-with-appendices-and-supplementary-data-tables-final-v2.xlsx',
+    size: 4_500_000,
+    progress: 30,
+    status: 'error',
+    error: 'Network timeout — please retry',
+  },
+]
+
+const manyFiles: UploadFile[] = Array.from({ length: 14 }, (_, i) => ({
+  id: String(i + 1),
+  name: `document-${String(i + 1).padStart(2, '0')}.pdf`,
+  size: Math.round(100_000 + Math.random() * 10_000_000),
+  progress:
+    i < 3
+      ? undefined
+      : i < 7
+        ? Math.round(20 + Math.random() * 70)
+        : 100,
+  status: (
+    i < 3
+      ? 'pending'
+      : i < 5
+        ? 'uploading'
+        : i < 7
+          ? 'processing'
+          : i < 12
+            ? 'complete'
+            : 'error'
+  ) as UploadFile['status'],
+  error: i >= 12 ? 'Upload failed' : undefined,
+}))
+
+const compactErrorFiles: UploadFile[] = [
+  {
+    id: '1',
+    name: 'report.pdf',
+    size: 2_100_000,
+    progress: 100,
+    status: 'complete',
+  },
+  {
+    id: '2',
+    name: 'data-export.csv',
+    size: 500_000,
+    progress: 44,
+    status: 'error',
+    error: 'Permission denied',
+  },
+  {
+    id: '3',
+    name: 'backup.zip',
+    size: 35_000_000,
+    progress: 8,
+    status: 'error',
+    error: 'File too large',
+  },
+  {
+    id: '4',
+    name: 'notes.txt',
+    size: 1_200,
+    progress: 72,
+    status: 'uploading',
+  },
+]
+
 /* ---------------------------------------------------------------------------
  * Stories
  * ------------------------------------------------------------------------ */
@@ -185,6 +267,7 @@ export const AllComplete: Story = {
   args: {
     files: allComplete,
     onRemove: (id) => console.log('Remove:', id),
+    onDismissAll: () => console.log('Dismiss all'),
   },
 }
 
@@ -193,5 +276,52 @@ export const ImageUploads: Story = {
     files: imageFiles,
     onRemove: (id) => console.log('Remove:', id),
     onRetry: (id) => console.log('Retry:', id),
+  },
+}
+
+export const EmptyFiles: Story = {
+  args: {
+    files: [],
+    onRemove: (id) => console.log('Remove:', id),
+  },
+}
+
+export const LongFileNames: Story = {
+  args: {
+    files: longNameFiles,
+    onRemove: (id) => console.log('Remove:', id),
+    onRetry: (id) => console.log('Retry:', id),
+  },
+}
+
+export const ManyFiles: Story = {
+  args: {
+    files: manyFiles,
+    onRemove: (id) => console.log('Remove:', id),
+    onRetry: (id) => console.log('Retry:', id),
+  },
+}
+
+export const CompactWithErrors: Story = {
+  args: {
+    files: compactErrorFiles,
+    variant: 'compact',
+    onRemove: (id) => console.log('Remove:', id),
+    onRetry: (id) => console.log('Retry:', id),
+  },
+}
+
+export const ZeroByte: Story = {
+  args: {
+    files: [
+      {
+        id: '1',
+        name: 'empty-placeholder.txt',
+        size: 0,
+        progress: 100,
+        status: 'complete',
+      },
+    ],
+    onRemove: (id) => console.log('Remove:', id),
   },
 }

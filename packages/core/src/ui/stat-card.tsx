@@ -51,6 +51,10 @@ export interface StatCardProps extends React.HTMLAttributes<HTMLDivElement> {
   /** Alias for `label` — use whichever feels natural. */
   title?: string
   value: string | number
+  /** Prefix before value, e.g. "$" */
+  prefix?: string
+  /** Suffix after value, e.g. "users" */
+  suffix?: string
   delta?: {
     value: string
     direction: 'up' | 'down' | 'neutral'
@@ -71,6 +75,8 @@ export interface StatCardProps extends React.HTMLAttributes<HTMLDivElement> {
   onClick?: () => void
   /** Href — makes the card a link (uses the LinkContext Link component) */
   href?: string
+  /** Footer content rendered below the card body, e.g. "View details →" */
+  footer?: React.ReactNode
 }
 
 const accentBorderMap: Record<NonNullable<StatCardProps['accent']>, string> = {
@@ -81,7 +87,8 @@ const accentBorderMap: Record<NonNullable<StatCardProps['accent']>, string> = {
   info: 'border-l-info',
 }
 
-function buildSparklinePath(data: number[], width: number, height: number): string {
+function buildSparklinePath(raw: number[], width: number, height: number): string {
+  const data = raw.filter((v) => Number.isFinite(v))
   if (data.length < 2) return ''
   const min = Math.min(...data)
   const max = Math.max(...data)
@@ -104,9 +111,18 @@ function Sparkline({
   colorClass: string
 }) {
   const id = React.useId()
+  const pathRef = React.useRef<SVGPathElement>(null)
+  const [pathLength, setPathLength] = React.useState(0)
   const svgWidth = 80
   const svgHeight = 32
   const path = buildSparklinePath(data, svgWidth, svgHeight)
+
+  React.useEffect(() => {
+    if (pathRef.current) {
+      setPathLength(pathRef.current.getTotalLength())
+    }
+  }, [path])
+
   if (!path) return null
 
   // Build area fill path (close to bottom-right then bottom-left)
@@ -127,6 +143,7 @@ function Sparkline({
         </defs>
         <path d={areaPath} fill={`url(#sparkline-fill-${id})`} />
         <path
+          ref={pathRef}
           d={path}
           fill="none"
           stroke="currentColor"
@@ -134,24 +151,27 @@ function Sparkline({
           strokeLinecap="round"
           strokeLinejoin="round"
           style={{
-            strokeDasharray: 999,
-            strokeDashoffset: 999,
-            animation: 'sparkline-draw 1s ease-out forwards',
+            opacity: pathLength === 0 ? 0 : 1,
+            strokeDasharray: pathLength,
+            strokeDashoffset: pathLength,
+            animation: pathLength > 0 ? `sparkline-draw-${id.replace(/:/g, '')} 1s ease-out forwards` : 'none',
           }}
         />
       </svg>
-      <style>{`@keyframes sparkline-draw { to { stroke-dashoffset: 0; } }`}</style>
+      {pathLength > 0 && (
+        <style>{`@keyframes sparkline-draw-${id.replace(/:/g, '')} { to { stroke-dashoffset: 0; } }`}</style>
+      )}
     </div>
   )
 }
 
-function ProgressBar({ progress }: { progress: number }) {
+function ProgressBar({ progress, label }: { progress: number; label: string }) {
   const clamped = Math.max(0, Math.min(100, progress))
   const barColor =
     clamped >= 90 ? 'bg-success' : clamped >= 70 ? 'bg-warning' : 'bg-interactive'
 
   return (
-    <div className="h-1 w-full rounded-ds-full bg-layer-02 mt-ds-04" role="progressbar" aria-valuenow={clamped} aria-valuemin={0} aria-valuemax={100}>
+    <div className="h-1 w-full rounded-ds-full bg-layer-02 mt-ds-04" role="progressbar" aria-label={`${label} progress`} aria-valuenow={clamped} aria-valuemin={0} aria-valuemax={100}>
       <div
         className={cn('h-full rounded-ds-full transition-all duration-moderate-02', barColor)}
         style={{ width: `${clamped}%` }}
@@ -167,6 +187,8 @@ const StatCard = React.forwardRef<HTMLDivElement, StatCardProps>(
       label,
       title,
       value,
+      prefix,
+      suffix,
       delta,
       icon,
       loading,
@@ -177,6 +199,7 @@ const StatCard = React.forwardRef<HTMLDivElement, StatCardProps>(
       sparkline,
       onClick,
       href,
+      footer,
       ...props
     },
     ref,
@@ -184,6 +207,8 @@ const StatCard = React.forwardRef<HTMLDivElement, StatCardProps>(
     const Link = useLink()
     const resolvedLabel = title ?? label ?? ''
     const isClickable = !!(onClick || href)
+    const computedAriaLabel =
+      isClickable && !props['aria-label'] ? `View ${resolvedLabel}` : props['aria-label']
 
     if (loading) {
       return (
@@ -244,14 +269,20 @@ const StatCard = React.forwardRef<HTMLDivElement, StatCardProps>(
           </div>
         </div>
         <div className="overflow-hidden">
-          <p className="inline-block animate-count-up text-ds-3xl font-semibold text-text-primary tabular-nums">
-            {value}
+          <p className="inline-block animate-count-up text-ds-3xl font-semibold text-text-primary">
+            {prefix && (
+              <span className="text-text-secondary text-ds-lg">{prefix}</span>
+            )}
+            <span className="tabular-nums">{value}</span>
+            {suffix && (
+              <span className="text-text-secondary text-ds-lg">{suffix}</span>
+            )}
           </p>
         </div>
         {secondaryLabel && (
           <p className="text-ds-sm text-text-placeholder mt-ds-01">{secondaryLabel}</p>
         )}
-        {progress != null && <ProgressBar progress={progress} />}
+        {progress != null && <ProgressBar progress={progress} label={resolvedLabel} />}
         {delta && (
           <div
             className={cn(
@@ -264,6 +295,11 @@ const StatCard = React.forwardRef<HTMLDivElement, StatCardProps>(
             {comparisonLabel && (
               <span className="text-text-placeholder font-normal">{comparisonLabel}</span>
             )}
+          </div>
+        )}
+        {footer && (
+          <div className="mt-ds-04 pt-ds-04 border-t border-border-subtle text-ds-sm">
+            {footer}
           </div>
         )}
       </>
@@ -282,7 +318,9 @@ const StatCard = React.forwardRef<HTMLDivElement, StatCardProps>(
         <Link
           ref={ref as React.Ref<HTMLAnchorElement>}
           href={href}
+          onClick={onClick}
           className={cn(cardClasses, 'block no-underline')}
+          aria-label={computedAriaLabel}
           {...(props as React.AnchorHTMLAttributes<HTMLAnchorElement>)}
         >
           {cardContent}
@@ -297,6 +335,7 @@ const StatCard = React.forwardRef<HTMLDivElement, StatCardProps>(
         onClick={onClick}
         role={onClick ? 'button' : undefined}
         tabIndex={onClick ? 0 : undefined}
+        aria-label={computedAriaLabel}
         onKeyDown={
           onClick
             ? (e: React.KeyboardEvent) => {

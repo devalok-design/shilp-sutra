@@ -172,7 +172,8 @@ export const DashboardGrid: Story = {
     <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-ds-04">
       <StatCard
         label="Revenue"
-        value="$48,200"
+        value="48,200"
+        prefix="$"
         delta={{ value: '+12%', direction: 'up' }}
         comparisonLabel="vs last month"
         accent="success"
@@ -205,4 +206,97 @@ export const DashboardGrid: Story = {
       />
     </div>
   ),
+}
+
+/* ── Edge case and new feature stories ── */
+
+export const ProgressEdgeCases: Story = {
+  render: () => (
+    <div className="grid grid-cols-1 sm:grid-cols-3 gap-ds-04">
+      <StatCard
+        label="Not Started"
+        value="0%"
+        progress={0}
+        secondaryLabel="of 100 target"
+      />
+      <StatCard
+        label="Complete"
+        value="100%"
+        progress={100}
+        accent="success"
+        secondaryLabel="target reached"
+      />
+      <StatCard
+        label="Overflow (clamped)"
+        value="142%"
+        progress={142}
+        accent="warning"
+        secondaryLabel="over target — clamped to 100"
+      />
+    </div>
+  ),
+}
+
+export const SparklineFlatLine: Story = {
+  args: {
+    label: 'Flat Metric',
+    value: 5,
+    sparkline: [5, 5, 5, 5, 5],
+  },
+  decorators: [(Story) => <div className="w-[320px]"><Story /></div>],
+}
+
+export const SparklineSinglePoint: Story = {
+  args: {
+    label: 'Single Data Point',
+    value: 42,
+    sparkline: [42],
+  },
+  decorators: [(Story) => <div className="w-[320px]"><Story /></div>],
+}
+
+export const WithPrefixSuffix: Story = {
+  args: {
+    label: 'Total Revenue',
+    value: '48,200',
+    prefix: '$',
+    suffix: ' revenue',
+    delta: { value: '+12%', direction: 'up' },
+  },
+  decorators: [(Story) => <div className="w-[320px]"><Story /></div>],
+}
+
+export const WithFooter: Story = {
+  args: {
+    label: 'Active Users',
+    value: '1,842',
+    delta: { value: '+8%', direction: 'up' },
+    footer: (
+      <a href="#" className="text-interactive hover:underline">
+        View details &rarr;
+      </a>
+    ),
+  },
+  decorators: [(Story) => <div className="w-[320px]"><Story /></div>],
+}
+
+export const ClickableWithHref: Story = {
+  args: {
+    label: 'Open Tickets',
+    value: 42,
+    delta: { value: '-5', direction: 'down' },
+    href: '/tickets',
+    onClick: () => console.log('StatCard link clicked'),
+  },
+  decorators: [(Story) => <div className="w-[280px]"><Story /></div>],
+}
+
+export const LoadingWithAccent: Story = {
+  args: {
+    label: 'Revenue',
+    value: 0,
+    loading: true,
+    accent: 'success',
+  },
+  decorators: [(Story) => <div className="w-[280px]"><Story /></div>],
 }

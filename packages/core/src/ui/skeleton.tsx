@@ -10,7 +10,7 @@ const skeletonVariants = cva('bg-skeleton-base', {
       text: 'rounded-ds-sm h-4 w-full',
     },
     animation: {
-      pulse: 'animate-pulse',
+      pulse: 'animate-pulse motion-reduce:animate-none',
       shimmer:
         'bg-[length:200%_100%] bg-gradient-to-r from-skeleton-base via-skeleton-shimmer to-skeleton-base animate-skeleton-shimmer motion-reduce:animate-none',
       none: '',
@@ -60,6 +60,7 @@ const Skeleton = React.forwardRef<HTMLDivElement, SkeletonProps>(
     return (
       <div
         ref={ref}
+        aria-hidden="true"
         className={cn(skeletonVariants({ variant, animation }), className)}
         {...props}
       />
@@ -151,19 +152,20 @@ const SkeletonText = React.forwardRef<HTMLDivElement, SkeletonTextProps>(
     },
     ref,
   ) => {
+    const safeLines = Math.max(1, lines ?? 3)
     return (
       <div
         ref={ref}
         className={cn('flex flex-col', textSpacingClasses[spacing], className)}
         {...props}
       >
-        {Array.from({ length: lines }).map((_, i) => (
+        {Array.from({ length: safeLines }).map((_, i) => (
           <div
             key={i}
             className={cn(
               'h-3.5 rounded-ds-sm bg-skeleton-base',
               animationClasses[animation],
-              i === lines - 1 ? lastLineWidthClasses[lastLineWidth] : 'w-full',
+              i === safeLines - 1 ? lastLineWidthClasses[lastLineWidth] : 'w-full',
             )}
           />
         ))}
@@ -190,19 +192,20 @@ const buttonWidthClasses = {
 
 export interface SkeletonButtonProps extends React.HTMLAttributes<HTMLDivElement> {
   size?: 'sm' | 'md' | 'lg'
-  width?: 'auto' | 'full'
+  width?: 'auto' | 'full' | 'icon'
   animation?: SkeletonAnimation
 }
 
 const SkeletonButton = React.forwardRef<HTMLDivElement, SkeletonButtonProps>(
   ({ className, size = 'md', width = 'auto', animation = 'pulse', ...props }, ref) => {
+    const isIcon = width === 'icon'
     return (
       <div
         ref={ref}
         className={cn(
           'bg-skeleton-base rounded-ds-md',
           buttonSizeClasses[size],
-          buttonWidthClasses[width][size],
+          isIcon ? 'aspect-square' : buttonWidthClasses[width as 'auto' | 'full'][size],
           animationClasses[animation],
           className,
         )}
@@ -261,13 +264,14 @@ export interface SkeletonChartProps extends React.HTMLAttributes<HTMLDivElement>
 
 const SkeletonChart = React.forwardRef<HTMLDivElement, SkeletonChartProps>(
   ({ className, bars = 7, height = 'h-40', animation = 'pulse', ...props }, ref) => {
+    const safeBars = Math.max(1, bars ?? 7)
     return (
       <div
         ref={ref}
         className={cn('flex items-end gap-ds-02', height, className)}
         {...props}
       >
-        {Array.from({ length: bars }).map((_, i) => {
+        {Array.from({ length: safeBars }).map((_, i) => {
           const barHeight = BAR_HEIGHTS[i % BAR_HEIGHTS.length]
           return (
             <div
@@ -286,6 +290,74 @@ const SkeletonChart = React.forwardRef<HTMLDivElement, SkeletonChartProps>(
 )
 SkeletonChart.displayName = 'SkeletonChart'
 
+// ---------------------------------------------------------------------------
+// SkeletonImage
+// ---------------------------------------------------------------------------
+
+export interface SkeletonImageProps extends React.HTMLAttributes<HTMLDivElement> {
+  width?: string
+  height?: string
+  animation?: SkeletonAnimation
+}
+
+const SkeletonImage = React.forwardRef<HTMLDivElement, SkeletonImageProps>(
+  ({ className, width = 'w-full', height = 'h-40', animation = 'pulse', ...props }, ref) => {
+    return (
+      <div
+        ref={ref}
+        className={cn(
+          'bg-skeleton-base rounded-ds-md relative flex items-center justify-center',
+          width,
+          height,
+          animationClasses[animation],
+          className,
+        )}
+        {...props}
+      >
+        <svg
+          xmlns="http://www.w3.org/2000/svg"
+          width="24"
+          height="24"
+          viewBox="0 0 24 24"
+          fill="none"
+          stroke="currentColor"
+          strokeWidth="1.5"
+          strokeLinecap="round"
+          strokeLinejoin="round"
+          className="text-skeleton-shimmer opacity-40"
+          aria-hidden="true"
+        >
+          <rect x="3" y="3" width="18" height="18" rx="2" ry="2" />
+          <circle cx="8.5" cy="8.5" r="1.5" />
+          <polyline points="21 15 16 10 5 21" />
+        </svg>
+      </div>
+    )
+  },
+)
+SkeletonImage.displayName = 'SkeletonImage'
+
+// ---------------------------------------------------------------------------
+// SkeletonGroup
+// ---------------------------------------------------------------------------
+
+export interface SkeletonGroupProps extends React.HTMLAttributes<HTMLDivElement> {
+  /** Accessible label for the loading state */
+  label?: string
+}
+
+const SkeletonGroup = React.forwardRef<HTMLDivElement, SkeletonGroupProps>(
+  ({ label = 'Loading', children, ...props }, ref) => {
+    return (
+      <div ref={ref} role="status" aria-label={label} aria-busy="true" {...props}>
+        <span className="sr-only">{label}...</span>
+        {children}
+      </div>
+    )
+  },
+)
+SkeletonGroup.displayName = 'SkeletonGroup'
+
 export {
   Skeleton,
   skeletonVariants,
@@ -294,4 +366,6 @@ export {
   SkeletonButton,
   SkeletonInput,
   SkeletonChart,
+  SkeletonImage,
+  SkeletonGroup,
 }

@@ -6,6 +6,8 @@ import {
   SkeletonButton,
   SkeletonInput,
   SkeletonChart,
+  SkeletonImage,
+  SkeletonGroup,
 } from './skeleton'
 
 const meta: Meta<typeof Skeleton> = {
@@ -380,6 +382,92 @@ export const FormSkeleton: Story = {
         <SkeletonButton size="md" />
         <SkeletonButton size="md" />
       </div>
+    </div>
+  ),
+}
+
+export const TextSingleLine: Story = {
+  name: 'SkeletonText — Single Line',
+  render: () => (
+    <div className="w-[350px]">
+      <SkeletonText lines={1} />
+    </div>
+  ),
+}
+
+export const TextManyLines: Story = {
+  name: 'SkeletonText — Many Lines (10)',
+  render: () => (
+    <div className="w-[350px]">
+      <SkeletonText lines={10} />
+    </div>
+  ),
+}
+
+export const ButtonIconOnly: Story = {
+  name: 'SkeletonButton — Icon Only',
+  render: () => (
+    <div className="flex items-center gap-ds-04">
+      <div className="flex flex-col items-center gap-ds-02">
+        <SkeletonButton size="sm" width="icon" />
+        <span className="text-ds-xs text-text-secondary">sm</span>
+      </div>
+      <div className="flex flex-col items-center gap-ds-02">
+        <SkeletonButton size="md" width="icon" />
+        <span className="text-ds-xs text-text-secondary">md</span>
+      </div>
+      <div className="flex flex-col items-center gap-ds-02">
+        <SkeletonButton size="lg" width="icon" />
+        <span className="text-ds-xs text-text-secondary">lg</span>
+      </div>
+    </div>
+  ),
+}
+
+export const ImageDefault: Story = {
+  name: 'SkeletonImage — Default',
+  render: () => (
+    <div className="w-[400px]">
+      <SkeletonImage />
+    </div>
+  ),
+}
+
+export const ImageCustomSize: Story = {
+  name: 'SkeletonImage — Custom Size',
+  render: () => (
+    <div className="space-y-ds-04">
+      <SkeletonImage width="w-64" height="h-32" />
+      <SkeletonImage width="w-80" height="h-60" animation="shimmer" />
+    </div>
+  ),
+}
+
+export const GroupAccessible: Story = {
+  name: 'SkeletonGroup — Accessible Wrapper',
+  render: () => (
+    <SkeletonGroup label="Loading user profile" className="w-[400px] space-y-ds-04">
+      <div className="flex items-center gap-ds-03">
+        <SkeletonAvatar size="lg" />
+        <div className="flex-1 space-y-ds-02">
+          <SkeletonText lines={2} lastLineWidth="half" />
+        </div>
+      </div>
+      <SkeletonImage height="h-32" />
+      <SkeletonText lines={4} />
+      <div className="flex gap-ds-03">
+        <SkeletonButton size="md" />
+        <SkeletonButton size="md" />
+      </div>
+    </SkeletonGroup>
+  ),
+}
+
+export const ChartShimmerWide: Story = {
+  name: 'SkeletonChart — Shimmer Wide (12 bars)',
+  render: () => (
+    <div className="w-[600px]">
+      <SkeletonChart bars={12} animation="shimmer" height="h-48" />
     </div>
   ),
 }

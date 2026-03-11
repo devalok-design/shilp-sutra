@@ -1,6 +1,6 @@
 'use client'
 
-import React, { useCallback, useEffect, useRef, useState } from 'react'
+import React, { useCallback, useEffect, useMemo, useRef, useState } from 'react'
 import {
   type ColumnDef,
   type ColumnFiltersState,
@@ -11,6 +11,7 @@ import {
   type RowSelectionState,
   type SortingState,
   type TableState,
+  type Updater,
   type VisibilityState,
   flexRender,
   getCoreRowModel,
@@ -28,6 +29,7 @@ import {
   IconChevronLeft,
   IconChevronRight,
   IconSearch,
+  IconX,
 } from '@tabler/icons-react'
 
 import {
@@ -38,7 +40,9 @@ import {
   TableHeader,
   TableRow,
 } from './table'
+import { Button } from './button'
 import { Checkbox } from './checkbox'
+import { Skeleton } from './skeleton'
 import { cn } from './lib/utils'
 import { DataTableToolbar, type Density } from './data-table-toolbar'
 
@@ -50,6 +54,14 @@ const densityPaddingMap: Record<Density, string> = {
 
 /** Editing state: which cell is currently in edit mode */
 type EditingCell = { rowIndex: number; columnId: string } | null
+
+/** Bulk action definition for the floating action bar */
+export interface BulkAction<TData> {
+  label: string
+  onClick: (selectedRows: TData[]) => void
+  color?: 'default' | 'error'
+  disabled?: boolean
+}
 
 /**
  * Props for DataTable — a feature-rich TanStack Table wrapper supporting sorting, filtering,
@@ -156,6 +168,51 @@ export interface DataTableProps<TData, TValue> {
   virtualRowHeight?: number
   /** Maximum height of the scrollable container in pixels (default 600) */
   maxHeight?: number
+
+  // --- Server-side sorting ---
+  /** Callback for server-side sorting. When provided, sorting is manual (no client-side sort). */
+  onSort?: (key: string, direction: 'asc' | 'desc' | false) => void
+
+  // --- Empty state ---
+  /** Custom ReactNode to render when data is empty (replaces noResultsText) */
+  emptyState?: React.ReactNode
+
+  // --- Loading ---
+  /** Show shimmer skeleton rows instead of data */
+  loading?: boolean
+
+  // --- Controlled selection ---
+  /** Controlled set of selected row IDs — syncs internal selection state */
+  selectedIds?: Set<string>
+  /** Per-row filter to determine if a row is selectable */
+  selectableFilter?: (row: TData) => boolean
+  /** Custom row ID getter */
+  getRowId?: (row: TData) => string
+
+  // --- Server-side pagination ---
+  /** Server-side pagination config. When provided, pagination is manual. */
+  pagination?: {
+    page: number
+    pageSize: number
+    total: number
+    onPageChange: (page: number) => void
+  }
+
+  // --- Single-expand mode ---
+  /** When true, only one row can be expanded at a time */
+  singleExpand?: boolean
+
+  // --- Sticky header ---
+  /** When true, the table header sticks to the top on scroll */
+  stickyHeader?: boolean
+
+  // --- Row click ---
+  /** Callback when a row is clicked (not fired from interactive elements) */
+  onRowClick?: (row: TData) => void
+
+  // --- Bulk actions ---
+  /** Actions shown in a floating bar when rows are selected */
+  bulkActions?: BulkAction<TData>[]
 }
 
 /**
@@ -211,6 +268,10 @@ function CellEditInput({
   )
 }
 
+/** Interactive element selectors for row click filtering */
+const INTERACTIVE_SELECTOR =
+  'button, a, input, select, textarea, [role="checkbox"]'
+
 export function DataTable<TData, TValue>({
   columns,
   data,
@@ -234,13 +295,24 @@ export function DataTable<TData, TValue>({
   virtualRows = false,
   virtualRowHeight = 48,
   maxHeight = 600,
+  onSort,
+  emptyState,
+  loading = false,
+  selectedIds,
+  selectableFilter,
+  getRowId: getRowIdProp,
+  pagination: serverPagination,
+  singleExpand = false,
+  stickyHeader = false,
+  onRowClick,
+  bulkActions,
 }: DataTableProps<TData, TValue>) {
   const [sorting, setSorting] = useState<SortingState>([])
   const [columnFilters, setColumnFilters] = useState<ColumnFiltersState>([])
   const [globalFilterValue, setGlobalFilterValue] = useState('')
-  const [pagination, setPagination] = useState<PaginationState>({
-    pageIndex: 0,
-    pageSize: initialPageSize ?? 10,
+  const [paginationState, setPaginationState] = useState<PaginationState>({
+    pageIndex: serverPagination ? serverPagination.page - 1 : 0,
+    pageSize: serverPagination?.pageSize ?? initialPageSize ?? 10,
   })
   const [rowSelection, setRowSelection] = useState<RowSelectionState>({})
   const [columnVisibility, setColumnVisibility] = useState<VisibilityState>({})
@@ -256,6 +328,89 @@ export function DataTable<TData, TValue>({
   // Ref for the virtual scroll container
   const scrollContainerRef = useRef<HTMLDivElement>(null)
 
+  // Sync controlled selectedIds to internal rowSelection
+  useEffect(() => {
+    if (selectedIds) {
+      const newSelection: RowSelectionState = {}
+      selectedIds.forEach((id) => {
+        newSelection[id] = true
+      })
+      setRowSelection(newSelection)
+    }
+  }, [selectedIds])
+
+  // Sync server pagination page to internal state
+  useEffect(() => {
+    if (serverPagination) {
+      setPaginationState((prev) => ({
+        ...prev,
+        pageIndex: serverPagination.page - 1,
+        pageSize: serverPagination.pageSize,
+      }))
+    }
+  }, [serverPagination?.page, serverPagination?.pageSize]) // eslint-disable-line react-hooks/exhaustive-deps
+
+  // Server-side sorting handler
+  const handleSortingChange = useCallback(
+    (updater: Updater<SortingState>) => {
+      setSorting((prev) => {
+        const next = typeof updater === 'function' ? updater(prev) : updater
+        if (onSort) {
+          if (next.length === 0 && prev.length > 0) {
+            // Sorting cleared
+            onSort(prev[0].id, false)
+          } else if (next.length > 0) {
+            onSort(next[0].id, next[0].desc ? 'desc' : 'asc')
+          }
+        }
+        return next
+      })
+    },
+    [onSort],
+  )
+
+  // Single-expand handler
+  const handleExpandedChange = useCallback(
+    (updater: Updater<ExpandedState>) => {
+      setExpanded((prev) => {
+        const next = typeof updater === 'function' ? updater(prev) : updater
+        if (!singleExpand) return next
+        // If next is boolean true (expand all), just use it
+        if (next === true) return next
+        if (typeof next !== 'object') return next
+        // Determine which row was just toggled on
+        const prevKeys = typeof prev === 'object' ? Object.keys(prev).filter((k) => (prev as Record<string, boolean>)[k]) : []
+        const nextKeys = Object.keys(next).filter((k) => (next as Record<string, boolean>)[k])
+        // Find newly expanded row
+        const newlyExpanded = nextKeys.filter((k) => !prevKeys.includes(k))
+        if (newlyExpanded.length > 0) {
+          // Keep only the most recently expanded row
+          return { [newlyExpanded[newlyExpanded.length - 1]]: true } as ExpandedState
+        }
+        // If no new rows, means a row was collapsed — return as-is
+        return next
+      })
+    },
+    [singleExpand],
+  )
+
+  // Server-side pagination handler
+  const handlePaginationChange = useCallback(
+    (updater: Updater<PaginationState>) => {
+      setPaginationState((prev) => {
+        const next = typeof updater === 'function' ? updater(prev) : updater
+        if (serverPagination) {
+          // Only call onPageChange if the page actually changed
+          if (next.pageIndex !== prev.pageIndex) {
+            serverPagination.onPageChange(next.pageIndex + 1)
+          }
+        }
+        return next
+      })
+    },
+    [serverPagination],
+  )
+
   // Checkbox column prepended when selectable is enabled
   const selectColumn: ColumnDef<TData, unknown> = {
     id: '_select',
@@ -270,6 +425,7 @@ export function DataTable<TData, TValue>({
     cell: ({ row }) => (
       <Checkbox
         checked={row.getIsSelected()}
+        disabled={!row.getCanSelect()}
         onCheckedChange={(v) => row.toggleSelected(!!v)}
         aria-label="Select row"
       />
@@ -312,6 +468,10 @@ export function DataTable<TData, TValue>({
     ...columns,
   ]
 
+  // Determine if using server-side pagination
+  const useServerPagination = !!serverPagination
+  const showPagination = paginated || useServerPagination
+
   // Build state object once — sorting and filtering contribute independently
   const tableState: Partial<TableState> = {
     columnVisibility,
@@ -322,9 +482,12 @@ export function DataTable<TData, TValue>({
     tableState.columnFilters = columnFilters
     tableState.globalFilter = globalFilterValue
   }
-  if (paginated) tableState.pagination = pagination
+  if (showPagination) tableState.pagination = paginationState
   if (selectable) tableState.rowSelection = rowSelection
   if (expandable) tableState.expanded = expanded
+
+  // Determine server-side sort mode
+  const isServerSort = sortable && !!onSort
 
   const table = useReactTable({
     data,
@@ -334,25 +497,41 @@ export function DataTable<TData, TValue>({
     onColumnPinningChange: setColumnPinningState,
     getCoreRowModel: getCoreRowModel(),
     ...(sortable && {
-      onSortingChange: setSorting,
-      getSortedRowModel: getSortedRowModel(),
+      onSortingChange: isServerSort ? handleSortingChange : setSorting,
+      ...(isServerSort
+        ? { manualSorting: true }
+        : { getSortedRowModel: getSortedRowModel() }),
     }),
     ...((filterable || globalFilter) && {
       onColumnFiltersChange: setColumnFilters,
       onGlobalFilterChange: setGlobalFilterValue,
       getFilteredRowModel: getFilteredRowModel(),
     }),
-    ...(paginated && {
-      onPaginationChange: setPagination,
-      getPaginationRowModel: getPaginationRowModel(),
+    ...(showPagination && {
+      onPaginationChange: useServerPagination
+        ? handlePaginationChange
+        : setPaginationState,
+      ...(useServerPagination
+        ? {
+            manualPagination: true,
+            pageCount: Math.ceil(
+              serverPagination!.total / serverPagination!.pageSize,
+            ),
+          }
+        : { getPaginationRowModel: getPaginationRowModel() }),
     }),
     ...(selectable && {
       onRowSelectionChange: setRowSelection,
-      enableRowSelection: true,
+      enableRowSelection: selectableFilter
+        ? (row: Row<TData>) => selectableFilter(row.original)
+        : true,
     }),
     ...(expandable && {
-      onExpandedChange: setExpanded,
+      onExpandedChange: singleExpand ? handleExpandedChange : setExpanded,
       getExpandedRowModel: getExpandedRowModel(),
+    }),
+    ...(getRowIdProp && {
+      getRowId: (row: TData) => getRowIdProp(row),
     }),
   })
 
@@ -414,6 +593,22 @@ export function DataTable<TData, TValue>({
     overscan: 10,
   })
 
+  // Number of skeleton rows for loading state
+  const skeletonRowCount = serverPagination?.pageSize ?? initialPageSize ?? 5
+  // Number of visible columns for skeleton
+  const visibleColumnCount = allColumns.length
+
+  /** Handle row click, filtering out interactive element origins */
+  const handleRowClick = useCallback(
+    (row: TData, e: React.MouseEvent<HTMLTableRowElement>) => {
+      if (!onRowClick) return
+      const target = e.target as HTMLElement
+      if (target.closest(INTERACTIVE_SELECTOR)) return
+      onRowClick(row)
+    },
+    [onRowClick],
+  )
+
   /** Render a single data row (shared between virtual and non-virtual paths) */
   function renderDataRow(
     row: Row<TData>,
@@ -425,7 +620,16 @@ export function DataTable<TData, TValue>({
         key={row.id}
         data-state={row.getIsSelected() && 'selected'}
         style={style}
-        className={virtualRows ? 'absolute w-full flex' : undefined}
+        className={cn(
+          virtualRows ? 'absolute w-full flex' : undefined,
+          onRowClick && 'cursor-pointer',
+        )}
+        onClick={
+          onRowClick
+            ? (e: React.MouseEvent<HTMLTableRowElement>) =>
+                handleRowClick(row.original, e)
+            : undefined
+        }
       >
         {visibleCells.map((cell) => {
           const pinned = getPinnedCellStyle(cell.column.id)
@@ -492,17 +696,45 @@ export function DataTable<TData, TValue>({
     )
   }
 
+  /** Render skeleton loading rows */
+  function renderSkeletonRows() {
+    return (
+      <TableBody>
+        {Array.from({ length: skeletonRowCount }, (_, rowIdx) => (
+          <TableRow key={`skeleton-${rowIdx}`}>
+            {Array.from({ length: visibleColumnCount }, (_, colIdx) => (
+              <TableCell
+                key={`skeleton-${rowIdx}-${colIdx}`}
+                className={cellPadding}
+              >
+                <Skeleton variant="text" className="h-4 w-full" animation="pulse" />
+              </TableCell>
+            ))}
+          </TableRow>
+        ))}
+      </TableBody>
+    )
+  }
+
   /** Render the table body — virtual or standard */
   function renderTableBody() {
+    // Loading state: show skeleton rows
+    if (loading) {
+      return renderSkeletonRows()
+    }
+
     if (!rows.length) {
       return (
         <TableBody>
           <TableRow>
             <TableCell
               colSpan={allColumns.length}
-              className="h-24 text-center text-text-tertiary"
+              className={cn(
+                'h-24 text-center',
+                !emptyState && 'text-text-tertiary',
+              )}
             >
-              {noResultsText || 'No results.'}
+              {emptyState || noResultsText || 'No results.'}
             </TableCell>
           </TableRow>
         </TableBody>
@@ -548,10 +780,27 @@ export function DataTable<TData, TValue>({
     )
   }
 
+  // Get selected rows for bulk actions
+  const selectedRows = useMemo(() => {
+    if (!bulkActions || !selectable) return []
+    return table.getFilteredSelectedRowModel().rows.map((r) => r.original)
+  }, [bulkActions, selectable, table, rowSelection]) // eslint-disable-line react-hooks/exhaustive-deps
+
+  const hasSelectedRows = selectedRows.length > 0
+
+  // Total rows for pagination display
+  const totalRowCount = useServerPagination
+    ? serverPagination!.total
+    : table.getFilteredRowModel().rows.length
+
   // Determine if we need a scroll wrapper for virtualization
   const tableContent = (
     <Table>
-      <TableHeader>
+      <TableHeader
+        className={cn(
+          stickyHeader && 'sticky top-0 z-10 bg-surface',
+        )}
+      >
         {table.getHeaderGroups().map((headerGroup) => (
           <TableRow key={headerGroup.id}>
             {headerGroup.headers.map((header) => {
@@ -696,32 +945,34 @@ export function DataTable<TData, TValue>({
       )}
 
       {/* Pagination controls */}
-      {paginated && (
+      {showPagination && (
         <div className="flex items-center justify-between px-ds-03 py-ds-04 border-t border-border-subtle">
           <span className="text-ds-sm text-text-secondary">
-            {table.getFilteredRowModel().rows.length} total rows
+            {totalRowCount} total rows
           </span>
           <div className="flex items-center gap-ds-03">
             {/* Page size selector */}
-            <select
-              value={table.getState().pagination.pageSize}
-              onChange={(e) => {
-                table.setPageSize(Number(e.target.value))
-              }}
-              aria-label="Rows per page"
-              className={cn(
-                'h-ds-sm rounded-ds-md',
-                'border border-border bg-field',
-                'px-ds-03 text-ds-sm',
-                'text-text-primary',
-              )}
-            >
-              {(pageSizeOptions ?? [10, 20, 50, 100]).map((size) => (
-                <option key={size} value={size}>
-                  {size} rows
-                </option>
-              ))}
-            </select>
+            {!useServerPagination && (
+              <select
+                value={table.getState().pagination.pageSize}
+                onChange={(e) => {
+                  table.setPageSize(Number(e.target.value))
+                }}
+                aria-label="Rows per page"
+                className={cn(
+                  'h-ds-sm rounded-ds-md',
+                  'border border-border bg-field',
+                  'px-ds-03 text-ds-sm',
+                  'text-text-primary',
+                )}
+              >
+                {(pageSizeOptions ?? [10, 20, 50, 100]).map((size) => (
+                  <option key={size} value={size}>
+                    {size} rows
+                  </option>
+                ))}
+              </select>
+            )}
 
             {/* Previous page button */}
             <button
@@ -763,6 +1014,48 @@ export function DataTable<TData, TValue>({
               <IconChevronRight size={16} aria-hidden="true" />
             </button>
           </div>
+        </div>
+      )}
+
+      {/* Bulk action bar */}
+      {bulkActions && selectable && hasSelectedRows && (
+        <div
+          className={cn(
+            'fixed bottom-6 left-1/2 -translate-x-1/2 z-50',
+            'flex items-center gap-ds-04 px-ds-05 py-ds-03',
+            'rounded-ds-lg border border-border bg-surface shadow-lg',
+            'animate-in slide-in-from-bottom-2',
+          )}
+          role="toolbar"
+          aria-label="Bulk actions"
+        >
+          <span className="text-ds-sm font-medium text-text-primary whitespace-nowrap">
+            {selectedRows.length} selected
+          </span>
+          <div className="h-5 w-px bg-border" aria-hidden="true" />
+          {bulkActions.map((action) => (
+            <Button
+              key={action.label}
+              size="sm"
+              variant={action.color === 'error' ? 'destructive' : 'outline'}
+              disabled={action.disabled}
+              onClick={() => action.onClick(selectedRows)}
+            >
+              {action.label}
+            </Button>
+          ))}
+          <button
+            type="button"
+            onClick={() => table.resetRowSelection()}
+            aria-label="Clear selection"
+            className={cn(
+              'flex items-center justify-center p-ds-01',
+              'rounded-ds-sm hover:bg-layer-02 transition-colors',
+              'text-text-secondary hover:text-text-primary',
+            )}
+          >
+            <IconX size={16} aria-hidden="true" />
+          </button>
         </div>
       )}
     </div>

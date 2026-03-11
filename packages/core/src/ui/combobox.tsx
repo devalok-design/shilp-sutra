@@ -359,7 +359,7 @@ const Combobox = React.forwardRef<HTMLButtonElement, ComboboxProps>(
         <PopoverPrimitive.Portal>
           <PopoverPrimitive.Content
             className={cn(
-              'z-dropdown w-[var(--radix-popover-trigger-width)] overflow-hidden rounded-ds-lg border border-border-subtle bg-layer-01 shadow-02',
+              'z-popover w-[var(--radix-popover-trigger-width)] overflow-hidden rounded-ds-lg border border-border-subtle bg-layer-01 shadow-02',
               'data-[state=open]:animate-in data-[state=closed]:animate-out data-[state=closed]:fade-out-0 data-[state=open]:fade-in-0 data-[state=closed]:zoom-out-95 data-[state=open]:zoom-in-95 data-[side=bottom]:slide-in-from-top-2 data-[side=top]:slide-in-from-bottom-2',
             )}
             sideOffset={4}

@@ -180,7 +180,7 @@ const Autocomplete = React.forwardRef<HTMLInputElement, AutocompleteProps>(
             ref={listRef}
             role="listbox"
             className={cn(
-              'absolute z-dropdown mt-ds-02 w-full overflow-auto rounded-ds-md border border-border bg-layer-01 shadow-02',
+              'absolute z-popover mt-ds-02 w-full overflow-auto rounded-ds-md border border-border bg-layer-01 shadow-02',
               'max-h-60',
             )}
           >

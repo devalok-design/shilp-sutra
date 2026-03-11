@@ -1,4 +1,4 @@
-export { TaskDetailPanel, type TaskDetailPanelProps, type FullTask } from './task-detail-panel'
+export { TaskDetailPanel, type TaskDetailPanelProps, type FullTask, type ExtraTab } from './task-detail-panel'
 export { TaskProperties, type TaskPropertiesProps, type TaskData, type Member, type Column } from './task-properties'
 export { ActivityTab, type ActivityTabProps, type AuditLogEntry } from './activity-tab'
 export { ConversationTab, type ConversationTabProps, type Comment } from './conversation-tab'

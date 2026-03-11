@@ -23,6 +23,7 @@ import {
   IconFileZip,
   IconUpload,
   IconDownload,
+  IconExternalLink,
   IconTrash,
   IconPaperclip,
 } from '@tabler/icons-react'
@@ -44,6 +45,10 @@ export interface TaskFile {
     image: string | null
   }
   createdAt: string
+  /** External link (e.g. Google Drive) displayed alongside the download button */
+  externalUrl?: string
+  /** Label for the external link tooltip (default: "Open externally") */
+  externalLabel?: string
 }
 
 interface FilesTabProps {
@@ -208,6 +213,17 @@ const FilesTab = React.forwardRef<HTMLDivElement, FilesTabProps>(
 
                 {/* Actions */}
                 <div className="flex items-center gap-ds-02 opacity-0 transition-opacity group-hover:opacity-100">
+                  {file.externalUrl && (
+                    <a
+                      href={file.externalUrl}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="inline-flex h-ds-xs-plus w-ds-xs-plus items-center justify-center rounded-ds-md transition-colors hover:bg-layer-02"
+                      title={file.externalLabel ?? 'Open externally'}
+                    >
+                      <IconExternalLink className="h-ico-sm w-ico-sm text-text-tertiary" />
+                    </a>
+                  )}
                   {file.downloadUrl && (
                     <a
                       href={/^https?:\/\//.test(file.downloadUrl) ? file.downloadUrl : '#'}

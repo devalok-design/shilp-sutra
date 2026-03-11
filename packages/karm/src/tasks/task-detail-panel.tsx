@@ -52,6 +52,21 @@ export interface FullTask {
   files: TaskFile[]
   createdAt: string
   updatedAt: string
+  /** Consumer-defined metadata bag. Ignored by the component, available in render props/callbacks. */
+  metadata?: Record<string, unknown>
+}
+
+export interface ExtraTab {
+  /** Unique tab key */
+  id: string
+  /** Tab trigger text */
+  label: string
+  /** Optional icon in tab trigger */
+  icon?: React.ReactNode
+  /** Tab panel content */
+  content: React.ReactNode
+  /** Position relative to built-in tabs. Default: 'after' */
+  position?: 'before' | 'after'
 }
 
 interface TaskDetailPanelProps {
@@ -68,6 +83,10 @@ interface TaskDetailPanelProps {
   clientMode?: boolean
   /** Fields the client can edit (only used when clientMode=true) */
   clientEditableFields?: string[]
+  /** Content rendered in the header area between title and properties */
+  headerSlot?: React.ReactNode
+  /** Additional tab panels injected alongside built-in tabs */
+  extraTabs?: ExtraTab[]
 
   // Callbacks
   onTitleUpdate?: (title: string) => void
@@ -80,6 +99,8 @@ interface TaskDetailPanelProps {
   onUpdateReviewStatus?: (reviewId: string, status: string, feedback?: string) => void
   onPostComment?: (content: string, authorType: 'INTERNAL' | 'CLIENT') => void
   onUploadFile?: (file: File, title?: string) => void
+  /** Upload a deliverable version (separate from generic file attachments) */
+  onUploadDeliverable?: (file: File, deliverableId?: string) => void
   onDeleteFile?: (fileId: string) => void
   onTabChange?: (tab: string) => void
 
@@ -162,6 +183,8 @@ const TaskDetailPanel = React.forwardRef<HTMLDivElement, TaskDetailPanelProps>(f
   enrichedComments,
   clientMode = false,
   clientEditableFields = ['priority', 'dueDate'],
+  headerSlot,
+  extraTabs = [],
   onTitleUpdate,
   onPropertyUpdate,
   onAssign,
@@ -172,6 +195,7 @@ const TaskDetailPanel = React.forwardRef<HTMLDivElement, TaskDetailPanelProps>(f
   onUpdateReviewStatus,
   onPostComment,
   onUploadFile,
+  onUploadDeliverable,
   onDeleteFile,
   onTabChange,
   renderEditor,
@@ -180,7 +204,7 @@ const TaskDetailPanel = React.forwardRef<HTMLDivElement, TaskDetailPanelProps>(f
   renderDatePicker,
   isUploading = false,
 }, ref) {
-  const [activeTab, setActiveTab] = React.useState<TabId>(clientMode ? 'conversation' : 'subtasks')
+  const [activeTab, setActiveTab] = React.useState<string>(clientMode ? 'conversation' : 'subtasks')
   const [editingTitle, setEditingTitle] = React.useState(false)
   const [titleValue, setTitleValue] = React.useState('')
   const titleInputRef = React.useRef<HTMLInputElement>(null)
@@ -202,7 +226,7 @@ const TaskDetailPanel = React.forwardRef<HTMLDivElement, TaskDetailPanelProps>(f
   }, [open, clientMode])
 
   const handleTabChange = (tabId: string) => {
-    setActiveTab(tabId as TabId)
+    setActiveTab(tabId)
     onTabChange?.(tabId)
   }
 
@@ -242,6 +266,9 @@ const TaskDetailPanel = React.forwardRef<HTMLDivElement, TaskDetailPanelProps>(f
   const visibleTabs = clientMode
     ? TABS.filter((t) => t.id === 'conversation')
     : TABS
+
+  const beforeTabs = extraTabs.filter((t) => t.position === 'before')
+  const afterTabs = extraTabs.filter((t) => t.position !== 'before')
 
   const displayComments = enrichedComments || task?.comments || []
 
@@ -296,6 +323,11 @@ const TaskDetailPanel = React.forwardRef<HTMLDivElement, TaskDetailPanelProps>(f
                   Subtask
                 </p>
               )}
+              {headerSlot && (
+                <div className="mt-ds-03 flex items-center gap-ds-03">
+                  {headerSlot}
+                </div>
+              )}
             </div>
 
             {/* Scrollable Body */}
@@ -323,9 +355,21 @@ const TaskDetailPanel = React.forwardRef<HTMLDivElement, TaskDetailPanelProps>(f
               <div className="sticky top-0 z-raised bg-layer-01 px-ds-06">
                 <Tabs value={activeTab} onValueChange={handleTabChange}>
                   <TabsList variant="line">
+                    {beforeTabs.map((tab) => (
+                      <TabsTrigger key={tab.id} value={tab.id}>
+                        {tab.icon && <span className="[&>svg]:h-ico-sm [&>svg]:w-ico-sm shrink-0">{tab.icon}</span>}
+                        {tab.label}
+                      </TabsTrigger>
+                    ))}
                     {visibleTabs.map((tab) => (
                       <TabsTrigger key={tab.id} value={tab.id}>
                         <tab.icon className="h-ico-sm w-ico-sm" stroke={1.5} />
+                        {tab.label}
+                      </TabsTrigger>
+                    ))}
+                    {afterTabs.map((tab) => (
+                      <TabsTrigger key={tab.id} value={tab.id}>
+                        {tab.icon && <span className="[&>svg]:h-ico-sm [&>svg]:w-ico-sm shrink-0">{tab.icon}</span>}
                         {tab.label}
                       </TabsTrigger>
                     ))}
@@ -380,6 +424,13 @@ const TaskDetailPanel = React.forwardRef<HTMLDivElement, TaskDetailPanelProps>(f
 
                 {activeTab === 'activity' && (
                   <ActivityTab activities={activities} />
+                )}
+
+                {/* Extra tab content */}
+                {extraTabs.map((tab) =>
+                  activeTab === tab.id ? (
+                    <React.Fragment key={tab.id}>{tab.content}</React.Fragment>
+                  ) : null,
                 )}
               </div>
             </div>

@@ -92,8 +92,8 @@ export interface SidebarPromo {
 export interface SidebarFooterConfig {
   /** Legal/utility links rendered as a row separated by dividers */
   links?: Array<{ label: string; href: string }>
-  /** Version or build info text rendered inline after links */
-  version?: string
+  /** Version or build info text (or link) rendered inline after links */
+  version?: string | { label: string; href: string }
   /** Custom content rendered above the links row */
   slot?: React.ReactNode
   /** Promo/upsell banner rendered above the links row */
@@ -487,7 +487,11 @@ const AppSidebar = React.forwardRef<HTMLDivElement, AppSidebarProps>(
                   </React.Fragment>
                 ))}
                 {footer.links?.length && footer.version && <span>·</span>}
-                {footer.version && <span>{footer.version}</span>}
+                {footer.version && (
+                  typeof footer.version === 'string'
+                    ? <span>{footer.version}</span>
+                    : <Link className="transition-colors hover:text-interactive" href={footer.version.href}>{footer.version.label}</Link>
+                )}
               </div>
             )}
           </SidebarFooter>

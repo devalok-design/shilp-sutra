@@ -5,6 +5,21 @@ All notable changes to `@devalok/shilp-sutra` will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.15.0] - 2026-03-11
+
+### Added
+- **CommandPalette**: Staggered slide-up entrance animations for items (30ms delay cascade), fade-in for groups/empty state/footer, scale-in for search icon, active item icon/shortcut color transitions to interactive
+
+### Changed
+- **Input, Select, SearchInput, Textarea**: `lg` size font changed from `text-ds-lg` (18px) to `text-ds-md` (14px) — all input sizes now use 14px for consistency
+- **Input, Textarea, NumberInput, ColorInput**: `md` size font standardized to `text-ds-md` (14px) from mixed values
+
+### shilp-sutra-karm [0.13.0]
+
+### Changed
+- **KanbanBoard**: Drag-and-drop now defers task move until drop — task stays in source column during drag, ghost silhouette appears at target position
+- **BoardColumn**: Added `TaskGhost` placeholder component with dashed border for drag preview, `dragPreview` and `draggedTask` props
+
 ## [0.14.0] - 2026-03-11
 
 ### Added

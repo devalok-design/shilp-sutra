@@ -4,6 +4,10 @@
 > Built on the same primitives as shadcn/ui but with key API differences.
 > Read this file BEFORE writing any UI code. Do NOT guess from shadcn/ui knowledge.
 
+## CHANGES (v0.15.0)
+- **Input font standardization**: All input sizes (sm, md, lg) now use text-ds-md (14px). Previously lg used text-ds-lg (18px). Affects Input, Select, SearchInput, Textarea.
+- CommandPalette: Staggered slide-up animations for items, fade-in for groups, scale-in search icon, active item color transitions
+
 ## CHANGES (v0.14.0)
 - **BREAKING z-index**: Select, Combobox, Autocomplete, DropdownMenu, ContextMenu, Menubar, HoverCard promoted from z-dropdown (1000) to z-popover (1400). Fixes dropdowns rendering behind Sheet/Dialog. If you had custom z-index overrides (e.g. `[data-radix-popper-content-wrapper] { z-index: 1400 !important }`) you can now remove them.
 - TabsTrigger: Added gap-ds-02 (4px) between icon and label

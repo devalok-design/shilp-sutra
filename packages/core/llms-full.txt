@@ -595,6 +595,7 @@ Note: getFormFieldA11y() was removed in favor of useFormField() hook.
     - state="error" sets aria-invalid automatically
     - Inside FormField: auto-inherits state, aria-describedby, aria-required from context (explicit props override)
     - Resting border is border-subtle (soft); focus ring is ring-1 at 50% opacity (v0.12.0)
+    - All sizes (sm, md, lg) use text-ds-md (14px) font — size only affects height and padding (v0.15.0)
 
 ## InputOTP
 - Import: @devalok/shilp-sutra/ui/input-otp
@@ -1321,7 +1322,9 @@ Note: getFormFieldA11y() was removed in favor of useFormField() hook.
       items: [{ id: 'dash', label: 'Dashboard', onSelect: () => navigate('/') }],
     }]}
   />
-- Gotchas: Opens with Ctrl+K / Cmd+K by default
+- Gotchas:
+    - Opens with Ctrl+K / Cmd+K by default
+    - Items animate in with staggered slide-up (30ms delay cascade); groups fade in; active item icon/shortcut highlight in interactive color (v0.15.0)
 
 ## ConfirmDialog
 - Import: @devalok/shilp-sutra/composed/confirm-dialog

@@ -252,13 +252,13 @@ const StatCard = React.forwardRef<HTMLDivElement, StatCardProps>(
     const cardContent = (
       <>
         <div className="flex items-center justify-between mb-ds-04">
-          <p className="text-ds-md font-medium text-text-secondary">{resolvedLabel}</p>
+          <p className="text-ds-md font-medium text-text-secondary animate-fade-in">{resolvedLabel}</p>
           <div className="flex items-center gap-ds-03">
             {sparkline && sparkline.length >= 2 && (
               <Sparkline data={sparkline} colorClass={sparklineColor} />
             )}
             {icon && (
-              <span className="text-text-secondary" aria-hidden="true">
+              <span className="text-text-secondary animate-scale-in" aria-hidden="true">
                 {typeof icon === 'function'
                   ? React.createElement(icon as React.ComponentType<{ className?: string }>, {
                       className: 'h-ico-lg w-ico-lg',
@@ -280,15 +280,20 @@ const StatCard = React.forwardRef<HTMLDivElement, StatCardProps>(
           </p>
         </div>
         {secondaryLabel && (
-          <p className="text-ds-sm text-text-placeholder mt-ds-01">{secondaryLabel}</p>
+          <p className="text-ds-sm text-text-placeholder mt-ds-01 animate-fade-in" style={{ animationDelay: '100ms' }}>{secondaryLabel}</p>
         )}
-        {progress != null && <ProgressBar progress={progress} label={resolvedLabel} />}
+        {progress != null && (
+          <div className="animate-fade-in" style={{ animationDelay: '150ms' }}>
+            <ProgressBar progress={progress} label={resolvedLabel} />
+          </div>
+        )}
         {delta && (
           <div
             className={cn(
-              'mt-ds-03 flex items-center gap-ds-02 text-ds-sm font-medium',
+              'mt-ds-03 flex items-center gap-ds-02 text-ds-sm font-medium animate-slide-up',
               deltaColour,
             )}
+            style={{ animationDelay: '200ms' }}
           >
             <DeltaIcon className="h-ico-sm w-ico-sm animate-stamp" aria-hidden="true" />
             <span>{delta.value}</span>
@@ -298,7 +303,7 @@ const StatCard = React.forwardRef<HTMLDivElement, StatCardProps>(
           </div>
         )}
         {footer && (
-          <div className="mt-ds-04 pt-ds-04 border-t border-border-subtle text-ds-sm">
+          <div className="mt-ds-04 pt-ds-04 border-t border-border-subtle text-ds-sm animate-fade-in" style={{ animationDelay: '250ms' }}>
             {footer}
           </div>
         )}

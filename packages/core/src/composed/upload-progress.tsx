@@ -138,11 +138,11 @@ function FileIcon({
     return (
       <div
         className={cn(
-          'flex h-8 w-8 shrink-0 items-center justify-center rounded-ds-md bg-success-surface animate-check-pop',
+          'flex h-8 w-8 shrink-0 items-center justify-center rounded-ds-md bg-success-surface animate-scale-in',
           className,
         )}
       >
-        <IconCheck size={16} className="text-text-success" />
+        <IconCheck size={16} className="text-text-success animate-check-pop" />
       </div>
     )
   }
@@ -151,11 +151,11 @@ function FileIcon({
     return (
       <div
         className={cn(
-          'flex h-8 w-8 shrink-0 items-center justify-center rounded-ds-md bg-error-surface animate-shake',
+          'flex h-8 w-8 shrink-0 items-center justify-center rounded-ds-md bg-error-surface animate-scale-in',
           className,
         )}
       >
-        <IconAlertCircle size={16} className="text-text-error" />
+        <IconAlertCircle size={16} className="text-text-error animate-shake" />
       </div>
     )
   }
@@ -164,7 +164,7 @@ function FileIcon({
     return (
       <div
         className={cn(
-          'flex h-8 w-8 shrink-0 items-center justify-center rounded-ds-md bg-layer-02',
+          'flex h-8 w-8 shrink-0 items-center justify-center rounded-ds-md bg-layer-02 animate-fade-in',
           className,
         )}
       >
@@ -181,7 +181,7 @@ function FileIcon({
   return (
     <div
       className={cn(
-        'flex h-8 w-8 shrink-0 items-center justify-center rounded-ds-md bg-layer-02',
+        'flex h-8 w-8 shrink-0 items-center justify-center rounded-ds-md bg-layer-02 transition-opacity duration-fast-02',
         file.status === 'pending' && 'opacity-50',
         className,
       )}
@@ -213,7 +213,7 @@ function DefaultFileRow({
 
   return (
     <div
-      className="animate-slide-up px-ds-04 py-ds-03"
+      className="animate-slide-up px-ds-04 py-ds-03 transition-colors duration-fast-02 hover:bg-layer-02/50"
       style={{
         animationDelay: `${index * 30}ms`,
         animationFillMode: 'both',
@@ -252,7 +252,7 @@ function DefaultFileRow({
         </div>
 
         {file.status === 'uploading' && file.progress !== undefined && (
-          <span className="shrink-0 text-ds-xs tabular-nums text-text-secondary">
+          <span className="shrink-0 text-ds-xs tabular-nums text-text-secondary transition-opacity duration-fast-01">
             {file.progress}%
           </span>
         )}
@@ -327,7 +327,7 @@ function CompactFileRow({
 
   return (
     <div
-      className="flex items-center gap-ds-03 px-ds-03 py-ds-02 animate-slide-up"
+      className="flex items-center gap-ds-03 px-ds-03 py-ds-02 animate-slide-up transition-colors duration-fast-02 hover:bg-layer-02/50"
       style={{
         animationDelay: `${index * 30}ms`,
         animationFillMode: 'both',
@@ -429,15 +429,22 @@ const UploadProgress = React.forwardRef<HTMLDivElement, UploadProgressProps>(
     const completedCount = files.filter(
       (f) => f.status === 'complete',
     ).length
+    const errorCount = files.filter((f) => f.status === 'error').length
     const allTerminal = files.every(
       (f) => f.status === 'complete' || f.status === 'error',
     )
+    const allComplete = files.every((f) => f.status === 'complete')
 
     return (
       <div
         ref={ref}
         className={cn(
-          'rounded-ds-xl border border-border-subtle bg-layer-01 shadow-01 overflow-hidden animate-fade-in',
+          'rounded-ds-xl border bg-layer-01 shadow-01 overflow-hidden animate-fade-in transition-colors duration-moderate-02',
+          allComplete
+            ? 'border-success/40'
+            : errorCount > 0 && allTerminal
+              ? 'border-error/30'
+              : 'border-border-subtle',
           className,
         )}
         role="region"
@@ -445,15 +452,26 @@ const UploadProgress = React.forwardRef<HTMLDivElement, UploadProgressProps>(
         {...props}
       >
         {/* Summary header */}
-        <div className="flex items-center justify-between border-b border-border-subtle px-ds-04 py-ds-03">
-          <span className="text-ds-sm text-text-secondary">
-            {completedCount} of {files.length} uploaded
+        <div className={cn(
+          'flex items-center justify-between border-b px-ds-04 py-ds-03 transition-colors duration-moderate-02',
+          allComplete ? 'border-success/20 bg-success-surface/30' : 'border-border-subtle',
+        )}>
+          <span className={cn(
+            'text-ds-sm transition-colors duration-fast-02',
+            allComplete ? 'font-medium text-text-success' : 'text-text-secondary',
+          )}>
+            {allComplete
+              ? `All ${files.length} files uploaded`
+              : `${completedCount} of ${files.length} uploaded`}
+            {errorCount > 0 && !allComplete && (
+              <span className="text-text-error"> · {errorCount} failed</span>
+            )}
           </span>
           {allTerminal && onDismissAll && (
             <button
               type="button"
               onClick={onDismissAll}
-              className="text-ds-sm text-interactive hover:text-interactive-hover transition-colors"
+              className="animate-fade-in text-ds-sm text-interactive hover:text-interactive-hover transition-colors duration-fast-02"
             >
               Dismiss all
             </button>

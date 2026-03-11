@@ -7,6 +7,8 @@ export interface EmptyStateProps extends React.HTMLAttributes<HTMLDivElement> {
   description?: string
   action?: React.ReactNode
   compact?: boolean
+  /** Icon size. Defaults to 'sm' when compact, 'md' otherwise. */
+  iconSize?: 'sm' | 'md' | 'lg'
 }
 
 const DevalokChakraIcon = ({ className }: { className?: string }) => (
@@ -29,12 +31,19 @@ const EmptyState = React.forwardRef<HTMLDivElement, EmptyStateProps>(
       description,
       action,
       compact = false,
+      iconSize,
       className,
       ...props
     },
     ref,
   ) => {
-    const iconSizeClass = compact ? 'h-ico-md w-ico-md' : 'h-ico-lg w-ico-lg'
+    const resolvedIconSize = iconSize ?? (compact ? 'sm' : 'md')
+    const iconSizeMap = {
+      sm: 'h-ico-sm w-ico-sm',
+      md: 'h-ico-lg w-ico-lg',
+      lg: 'h-ico-xl w-ico-xl',
+    } as const
+    const iconSizeClass = iconSizeMap[resolvedIconSize]
     const isComponentType =
       icon != null && !React.isValidElement(icon) && (typeof icon === 'function' || (typeof icon === 'object' && '$$typeof' in (icon as object)))
     const resolvedIcon = icon
@@ -63,6 +72,7 @@ const EmptyState = React.forwardRef<HTMLDivElement, EmptyStateProps>(
           className={cn(
             'flex items-center justify-center rounded-ds-xl bg-layer-02 animate-float',
             compact ? 'h-ds-md w-ds-md' : 'h-ds-lg w-ds-lg',
+            !isComponentType && icon != null && iconSizeClass,
           )}
         >
           {resolvedIcon}

@@ -23,7 +23,7 @@ const inputVariants = cva(
     variants: {
       size: {
         sm: 'h-ds-sm text-ds-sm px-ds-03',
-        md: 'h-ds-md text-ds-base px-ds-04',
+        md: 'h-ds-md text-ds-md px-ds-04',
         lg: 'h-ds-lg text-ds-lg px-ds-05',
       },
     },

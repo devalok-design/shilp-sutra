@@ -22,7 +22,7 @@ const textareaVariants = cva(
     variants: {
       size: {
         sm: 'min-h-[60px] text-ds-sm px-ds-03 py-ds-02',
-        md: 'min-h-[80px] text-ds-base px-ds-04 py-ds-03',
+        md: 'min-h-[80px] text-ds-md px-ds-04 py-ds-03',
         lg: 'min-h-[120px] text-ds-lg px-ds-05 py-ds-04',
       },
     },

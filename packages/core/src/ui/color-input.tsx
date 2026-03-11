@@ -67,7 +67,7 @@ const ColorInput = React.forwardRef<HTMLInputElement, ColorInputProps>(
             }}
             maxLength={7}
             className={cn(
-              'h-ds-sm w-[90px] rounded-ds-md border border-border bg-layer-01 px-ds-03 font-mono text-ds-sm text-text-primary transition-colors',
+              'h-ds-sm w-[90px] rounded-ds-md border border-border bg-layer-01 px-ds-03 font-mono text-ds-md text-text-primary transition-colors',
               'focus:border-interactive focus:outline-none focus:ring-1 focus:ring-interactive',
               disabled && 'cursor-not-allowed opacity-50',
             )}

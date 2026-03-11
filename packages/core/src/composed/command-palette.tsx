@@ -199,7 +199,7 @@ const CommandPalette = React.forwardRef<HTMLDivElement, CommandPaletteProps>(
           {/* Search input */}
           <div className="flex items-center gap-ds-04 border-b border-border px-ds-05 py-ds-04">
             <IconSearch
-              className="h-ico-sm w-ico-sm shrink-0 text-text-placeholder"
+              className="h-ico-sm w-ico-sm shrink-0 animate-scale-in text-text-placeholder"
               stroke={1.5}
             />
             <input
@@ -234,15 +234,15 @@ const CommandPalette = React.forwardRef<HTMLDivElement, CommandPaletteProps>(
             className="max-h-[320px] overflow-y-auto px-ds-03 py-ds-03"
           >
             {filteredGroups.length === 0 && (
-              <div className="flex items-center justify-center py-ds-07">
+              <div className="flex animate-fade-in items-center justify-center py-ds-07">
                 <p className="text-ds-md text-text-placeholder">
                   {emptyMessage}
                 </p>
               </div>
             )}
 
-            {filteredGroups.map((group) => (
-              <div key={group.label} className="mb-ds-02">
+            {filteredGroups.map((group, groupIdx) => (
+              <div key={group.label} className="mb-ds-02 animate-fade-in" style={{ animationDelay: `${groupIdx * 60}ms` }}>
                 <div className="px-ds-03 pb-ds-02 pt-ds-03">
                   <span className="text-ds-xs font-semibold uppercase tracking-wider text-text-placeholder">
                     {group.label}
@@ -266,14 +266,27 @@ const CommandPalette = React.forwardRef<HTMLDivElement, CommandPaletteProps>(
                       }}
                       onMouseEnter={() => setActiveIndex(itemIndex)}
                       className={cn(
-                        'flex w-full items-center gap-ds-04 rounded-ds-lg px-ds-03 py-ds-03 text-left transition-colors duration-fast-01 ease-productive-standard',
+                        'flex w-full items-center gap-ds-04 rounded-ds-lg px-ds-03 py-ds-03 text-left transition-all duration-fast-02 ease-productive-standard',
                         isActive
                           ? 'bg-layer-03 text-text-primary'
                           : 'text-text-secondary hover:bg-layer-02',
                       )}
+                      style={{
+                        animationName: 'slide-up',
+                        animationDuration: 'var(--duration-moderate-02)',
+                        animationTimingFunction: 'var(--ease-expressive-entrance)',
+                        animationFillMode: 'both',
+                        animationDelay: `${itemIndex * 30}ms`,
+                      }}
                     >
                       {item.icon && (
-                        <span className="[&>svg]:h-ico-sm [&>svg]:w-ico-sm shrink-0 text-text-placeholder" aria-hidden="true">
+                        <span
+                          className={cn(
+                            '[&>svg]:h-ico-sm [&>svg]:w-ico-sm shrink-0 transition-colors duration-fast-02',
+                            isActive ? 'text-interactive' : 'text-text-placeholder',
+                          )}
+                          aria-hidden="true"
+                        >
                           {item.icon}
                         </span>
                       )}
@@ -286,13 +299,16 @@ const CommandPalette = React.forwardRef<HTMLDivElement, CommandPaletteProps>(
                         )}
                       </div>
                       {item.shortcut && (
-                        <kbd className="shrink-0 rounded border border-border bg-layer-02 px-ds-02b py-ds-01 text-ds-xs font-medium text-text-placeholder">
+                        <kbd className={cn(
+                          'shrink-0 rounded border border-border px-ds-02b py-ds-01 text-ds-xs font-medium transition-colors duration-fast-02',
+                          isActive ? 'bg-interactive/10 text-interactive border-interactive/30' : 'bg-layer-02 text-text-placeholder',
+                        )}>
                           {item.shortcut}
                         </kbd>
                       )}
                       {isActive && (
                         <IconCornerDownLeft
-                          className="h-ico-sm w-ico-sm shrink-0 text-text-placeholder"
+                          className="h-ico-sm w-ico-sm shrink-0 animate-fade-in text-text-placeholder"
                           stroke={1.5}
                         />
                       )}
@@ -304,7 +320,7 @@ const CommandPalette = React.forwardRef<HTMLDivElement, CommandPaletteProps>(
           </div>
 
           {/* Footer with keyboard hints */}
-          <div className="flex items-center gap-ds-05 border-t border-border px-ds-05 py-ds-03">
+          <div className="flex animate-fade-in items-center gap-ds-05 border-t border-border px-ds-05 py-ds-03">
             <div className="flex items-center gap-ds-02b">
               <div className="flex items-center gap-ds-01">
                 <kbd className="inline-flex h-ico-md w-ico-md items-center justify-center rounded border border-border bg-layer-02">

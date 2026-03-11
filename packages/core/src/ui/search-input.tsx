@@ -9,7 +9,7 @@ type SearchInputSize = 'sm' | 'md' | 'lg'
 const sizeClasses: Record<SearchInputSize, string> = {
   sm: 'h-ds-sm text-ds-sm pl-ds-08 pr-ds-07',
   md: 'h-ds-md text-ds-md pl-[2.5rem] pr-[2.25rem]',
-  lg: 'h-ds-lg text-ds-lg pl-[3rem] pr-[2.5rem]',
+  lg: 'h-ds-lg text-ds-md pl-[3rem] pr-[2.5rem]',
 }
 
 /**

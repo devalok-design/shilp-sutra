@@ -70,4 +70,7 @@ export type { ConfirmDialogProps } from './confirm-dialog'
 export { UploadProgress, formatFileSize } from './upload-progress'
 export type { UploadProgressProps, UploadFile } from './upload-progress'
 
+export { ActivityFeed } from './activity-feed'
+export type { ActivityItem, ActivityFeedProps } from './activity-feed'
+
 export { getInitials } from './lib/string-utils'

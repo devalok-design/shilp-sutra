@@ -135,7 +135,21 @@ export { Badge, badgeVariants, type BadgeProps } from './badge'
 export { Avatar, AvatarImage, AvatarFallback, avatarVariants, type AvatarProps, type AvatarStatus } from './avatar'
 export { Table, TableHeader, TableBody, TableFooter, TableHead, TableRow, TableCell, TableCaption } from './table'
 export { Progress, progressTrackVariants, progressIndicatorVariants, type ProgressProps } from './progress'
-export { Skeleton, skeletonVariants, type SkeletonProps } from './skeleton'
+export {
+  Skeleton,
+  skeletonVariants,
+  type SkeletonProps,
+  SkeletonAvatar,
+  type SkeletonAvatarProps,
+  SkeletonText,
+  type SkeletonTextProps,
+  SkeletonButton,
+  type SkeletonButtonProps,
+  SkeletonInput,
+  type SkeletonInputProps,
+  SkeletonChart,
+  type SkeletonChartProps,
+} from './skeleton'
 export { StatCard, type StatCardProps } from './stat-card'
 export { Code, type CodeProps } from './code'
 export { AspectRatio } from './aspect-ratio'

@@ -9,6 +9,11 @@ const meta: Meta<typeof StatCard> = {
     label: { control: 'text' },
     value: { control: 'text' },
     loading: { control: 'boolean' },
+    accent: {
+      control: 'select',
+      options: ['default', 'success', 'warning', 'error', 'info'],
+    },
+    progress: { control: { type: 'range', min: 0, max: 100 } },
   },
 }
 export default meta
@@ -90,6 +95,113 @@ export const Dashboard: Story = {
         label="Attendance Rate"
         value="96%"
         delta={{ value: 'No change', direction: 'neutral' }}
+      />
+    </div>
+  ),
+}
+
+/* ── New stories for enhanced features ── */
+
+export const WithSparkline: Story = {
+  args: {
+    label: 'Monthly Revenue',
+    value: '$48,200',
+    delta: { value: '+12%', direction: 'up' },
+    sparkline: [22, 28, 25, 31, 27, 35, 33, 40, 38, 42, 45, 48],
+  },
+  decorators: [(Story) => <div className="w-[320px]"><Story /></div>],
+}
+
+export const WithProgress: Story = {
+  args: {
+    label: 'Quarterly Target',
+    value: '$48,200',
+    secondaryLabel: 'of $50,000 target',
+    progress: 86,
+  },
+  decorators: [(Story) => <div className="w-[320px]"><Story /></div>],
+}
+
+export const WithAccent: Story = {
+  args: {
+    label: 'Error Rate',
+    value: '2.4%',
+    delta: { value: '+0.8%', direction: 'up' },
+    accent: 'error',
+  },
+  decorators: [(Story) => <div className="w-[280px]"><Story /></div>],
+}
+
+export const WithComparison: Story = {
+  args: {
+    label: 'Active Users',
+    value: '1,842',
+    delta: { value: '+12%', direction: 'up' },
+    comparisonLabel: 'vs last month',
+  },
+  decorators: [(Story) => <div className="w-[320px]"><Story /></div>],
+}
+
+export const Clickable: Story = {
+  args: {
+    label: 'Open Tickets',
+    value: 42,
+    delta: { value: '-5', direction: 'down' },
+    onClick: () => alert('StatCard clicked!'),
+  },
+  decorators: [(Story) => <div className="w-[280px]"><Story /></div>],
+}
+
+export const FullFeatured: Story = {
+  args: {
+    label: 'Monthly Revenue',
+    value: '$48,200',
+    delta: { value: '+12%', direction: 'up' },
+    comparisonLabel: 'vs last month',
+    secondaryLabel: 'of $50,000 target',
+    progress: 96,
+    accent: 'success',
+    sparkline: [22, 28, 25, 31, 27, 35, 33, 40, 38, 42, 45, 48],
+    onClick: () => alert('View revenue details'),
+  },
+  decorators: [(Story) => <div className="w-[360px]"><Story /></div>],
+}
+
+export const DashboardGrid: Story = {
+  render: () => (
+    <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-ds-04">
+      <StatCard
+        label="Revenue"
+        value="$48,200"
+        delta={{ value: '+12%', direction: 'up' }}
+        comparisonLabel="vs last month"
+        accent="success"
+        sparkline={[22, 28, 25, 31, 27, 35, 33, 40, 38, 42, 45, 48]}
+        onClick={() => {}}
+      />
+      <StatCard
+        label="Active Users"
+        value="1,842"
+        delta={{ value: '+8%', direction: 'up' }}
+        comparisonLabel="vs last week"
+        accent="info"
+        sparkline={[150, 162, 158, 170, 165, 175, 180, 184]}
+      />
+      <StatCard
+        label="Conversion Rate"
+        value="3.2%"
+        delta={{ value: '-0.4%', direction: 'down' }}
+        comparisonLabel="vs last month"
+        accent="warning"
+        secondaryLabel="target: 4.0%"
+        progress={72}
+      />
+      <StatCard
+        label="Error Rate"
+        value="0.12%"
+        delta={{ value: '+0.02%', direction: 'up' }}
+        accent="error"
+        sparkline={[0.08, 0.09, 0.1, 0.11, 0.09, 0.1, 0.12]}
       />
     </div>
   ),

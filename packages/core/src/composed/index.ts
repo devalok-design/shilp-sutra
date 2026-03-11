@@ -67,4 +67,7 @@ export type { ScheduleViewProps, ScheduleEvent } from './schedule-view'
 export { ConfirmDialog } from './confirm-dialog'
 export type { ConfirmDialogProps } from './confirm-dialog'
 
+export { UploadProgress, formatFileSize } from './upload-progress'
+export type { UploadProgressProps, UploadFile } from './upload-progress'
+
 export { getInitials } from './lib/string-utils'

@@ -1,5 +1,12 @@
 import type { Meta, StoryObj } from '@storybook/react'
-import { Skeleton } from './skeleton'
+import {
+  Skeleton,
+  SkeletonAvatar,
+  SkeletonText,
+  SkeletonButton,
+  SkeletonInput,
+  SkeletonChart,
+} from './skeleton'
 
 const meta: Meta<typeof Skeleton> = {
   title: 'UI/Data Display/Skeleton',
@@ -159,6 +166,219 @@ export const AllVariants: Story = {
           <Skeleton animation="shimmer" className="h-4" />
           <Skeleton animation="none" className="h-4" />
         </div>
+      </div>
+    </div>
+  ),
+}
+
+// ---------------------------------------------------------------------------
+// Sub-component stories
+// ---------------------------------------------------------------------------
+
+export const AvatarSizes: Story = {
+  name: 'SkeletonAvatar — All Sizes',
+  render: () => (
+    <div className="flex items-center gap-ds-06">
+      <div className="flex flex-col items-center gap-ds-02">
+        <SkeletonAvatar size="sm" />
+        <span className="text-ds-xs text-text-secondary">sm</span>
+      </div>
+      <div className="flex flex-col items-center gap-ds-02">
+        <SkeletonAvatar size="md" />
+        <span className="text-ds-xs text-text-secondary">md</span>
+      </div>
+      <div className="flex flex-col items-center gap-ds-02">
+        <SkeletonAvatar size="lg" />
+        <span className="text-ds-xs text-text-secondary">lg</span>
+      </div>
+      <div className="flex flex-col items-center gap-ds-02">
+        <SkeletonAvatar size="xl" />
+        <span className="text-ds-xs text-text-secondary">xl</span>
+      </div>
+    </div>
+  ),
+}
+
+export const AvatarShimmer: Story = {
+  name: 'SkeletonAvatar — Shimmer',
+  render: () => (
+    <div className="flex items-center gap-ds-06">
+      <SkeletonAvatar size="sm" animation="shimmer" />
+      <SkeletonAvatar size="md" animation="shimmer" />
+      <SkeletonAvatar size="lg" animation="shimmer" />
+      <SkeletonAvatar size="xl" animation="shimmer" />
+    </div>
+  ),
+}
+
+export const TextDefault: Story = {
+  name: 'SkeletonText — Default (3 lines)',
+  render: () => (
+    <div className="w-[350px]">
+      <SkeletonText />
+    </div>
+  ),
+}
+
+export const TextCustomLines: Story = {
+  name: 'SkeletonText — Custom Lines',
+  render: () => (
+    <div className="w-[350px] space-y-ds-06">
+      <div>
+        <span className="text-ds-xs text-text-secondary mb-2 block">2 lines</span>
+        <SkeletonText lines={2} />
+      </div>
+      <div>
+        <span className="text-ds-xs text-text-secondary mb-2 block">5 lines</span>
+        <SkeletonText lines={5} />
+      </div>
+    </div>
+  ),
+}
+
+export const TextHalfWidth: Story = {
+  name: 'SkeletonText — Half Width Last Line',
+  render: () => (
+    <div className="w-[350px]">
+      <SkeletonText lines={4} lastLineWidth="half" />
+    </div>
+  ),
+}
+
+export const TextShimmer: Story = {
+  name: 'SkeletonText — Shimmer',
+  render: () => (
+    <div className="w-[350px]">
+      <SkeletonText animation="shimmer" />
+    </div>
+  ),
+}
+
+export const ButtonSizes: Story = {
+  name: 'SkeletonButton — Sizes',
+  render: () => (
+    <div className="flex items-center gap-ds-04">
+      <div className="flex flex-col items-center gap-ds-02">
+        <SkeletonButton size="sm" />
+        <span className="text-ds-xs text-text-secondary">sm</span>
+      </div>
+      <div className="flex flex-col items-center gap-ds-02">
+        <SkeletonButton size="md" />
+        <span className="text-ds-xs text-text-secondary">md</span>
+      </div>
+      <div className="flex flex-col items-center gap-ds-02">
+        <SkeletonButton size="lg" />
+        <span className="text-ds-xs text-text-secondary">lg</span>
+      </div>
+    </div>
+  ),
+}
+
+export const ButtonFullWidth: Story = {
+  name: 'SkeletonButton — Full Width',
+  render: () => (
+    <div className="w-[300px] space-y-ds-03">
+      <SkeletonButton size="sm" width="full" />
+      <SkeletonButton size="md" width="full" />
+      <SkeletonButton size="lg" width="full" />
+    </div>
+  ),
+}
+
+export const ButtonShimmer: Story = {
+  name: 'SkeletonButton — Shimmer',
+  render: () => (
+    <div className="flex items-center gap-ds-04">
+      <SkeletonButton size="sm" animation="shimmer" />
+      <SkeletonButton size="md" animation="shimmer" />
+      <SkeletonButton size="lg" animation="shimmer" />
+    </div>
+  ),
+}
+
+export const InputSizes: Story = {
+  name: 'SkeletonInput — Sizes',
+  render: () => (
+    <div className="w-[350px] space-y-ds-04">
+      <div>
+        <span className="text-ds-xs text-text-secondary mb-1 block">sm</span>
+        <SkeletonInput size="sm" />
+      </div>
+      <div>
+        <span className="text-ds-xs text-text-secondary mb-1 block">md</span>
+        <SkeletonInput size="md" />
+      </div>
+      <div>
+        <span className="text-ds-xs text-text-secondary mb-1 block">lg</span>
+        <SkeletonInput size="lg" />
+      </div>
+    </div>
+  ),
+}
+
+export const InputShimmer: Story = {
+  name: 'SkeletonInput — Shimmer',
+  render: () => (
+    <div className="w-[350px] space-y-ds-03">
+      <SkeletonInput animation="shimmer" />
+    </div>
+  ),
+}
+
+export const ChartDefault: Story = {
+  name: 'SkeletonChart — Default (7 bars)',
+  render: () => (
+    <div className="w-[400px]">
+      <SkeletonChart />
+    </div>
+  ),
+}
+
+export const ChartCustomBars: Story = {
+  name: 'SkeletonChart — Custom Bar Count',
+  render: () => (
+    <div className="w-[400px] space-y-ds-06">
+      <div>
+        <span className="text-ds-xs text-text-secondary mb-2 block">4 bars</span>
+        <SkeletonChart bars={4} />
+      </div>
+      <div>
+        <span className="text-ds-xs text-text-secondary mb-2 block">12 bars</span>
+        <SkeletonChart bars={12} />
+      </div>
+    </div>
+  ),
+}
+
+export const ChartShimmer: Story = {
+  name: 'SkeletonChart — Shimmer',
+  render: () => (
+    <div className="w-[400px]">
+      <SkeletonChart animation="shimmer" height="h-48" />
+    </div>
+  ),
+}
+
+export const FormSkeleton: Story = {
+  name: 'Composed — Form Skeleton',
+  render: () => (
+    <div className="w-[400px] space-y-ds-06">
+      <div className="space-y-ds-02">
+        <Skeleton variant="text" className="w-16 h-3" />
+        <SkeletonInput size="md" />
+      </div>
+      <div className="space-y-ds-02">
+        <Skeleton variant="text" className="w-20 h-3" />
+        <SkeletonInput size="md" />
+      </div>
+      <div className="space-y-ds-02">
+        <Skeleton variant="text" className="w-24 h-3" />
+        <SkeletonInput size="lg" />
+      </div>
+      <SkeletonText lines={2} lastLineWidth="half" spacing="sm" />
+      <div className="flex gap-ds-03 pt-ds-02">
+        <SkeletonButton size="md" />
+        <SkeletonButton size="md" />
       </div>
     </div>
   ),

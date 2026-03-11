@@ -203,7 +203,7 @@ const ScratchpadWidget = React.forwardRef<HTMLDivElement, ScratchpadWidgetProps>
                     type="button"
                     onClick={() => onDelete(item.id)}
                     aria-label={`Delete ${item.text}`}
-                    className="flex h-ico-md w-ico-md items-center justify-center rounded-ds-sm opacity-0 transition-opacity group-hover:opacity-100 hover:bg-layer-03"
+                    className="flex h-ico-md w-ico-md items-center justify-center rounded-ds-sm opacity-0 transition-opacity group-hover:opacity-100 group-focus-within:opacity-100 hover:bg-layer-03"
                   >
                     <IconX className="h-3 w-3 text-text-placeholder" />
                   </button>

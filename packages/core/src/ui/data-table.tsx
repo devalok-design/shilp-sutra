@@ -698,18 +698,27 @@ export function DataTable<TData, TValue>({
 
   /** Render skeleton loading rows */
   function renderSkeletonRows() {
+    const skeletonWidths = ['w-3/4', 'w-1/2', 'w-2/3', 'w-full']
     return (
       <TableBody>
         {Array.from({ length: skeletonRowCount }, (_, rowIdx) => (
           <TableRow key={`skeleton-${rowIdx}`}>
-            {Array.from({ length: visibleColumnCount }, (_, colIdx) => (
-              <TableCell
-                key={`skeleton-${rowIdx}-${colIdx}`}
-                className={cellPadding}
-              >
-                <Skeleton variant="text" className="h-4 w-full" animation="pulse" />
-              </TableCell>
-            ))}
+            {Array.from({ length: visibleColumnCount }, (_, colIdx) => {
+              const colId = allColumns[colIdx]?.id ?? allColumns[colIdx]?.header
+              const isSelect = colId === '_select'
+              return (
+                <TableCell
+                  key={`skeleton-${rowIdx}-${colIdx}`}
+                  className={cellPadding}
+                >
+                  {isSelect ? (
+                    <Skeleton variant="text" className="h-4 w-4" animation="pulse" />
+                  ) : (
+                    <Skeleton variant="text" className={cn('h-4', skeletonWidths[colIdx % skeletonWidths.length])} animation="pulse" />
+                  )}
+                </TableCell>
+              )
+            })}
           </TableRow>
         ))}
       </TableBody>

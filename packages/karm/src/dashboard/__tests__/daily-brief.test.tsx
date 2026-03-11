@@ -113,7 +113,9 @@ describe('DailyBrief', () => {
   it('supports defaultCollapsed — content hidden initially', () => {
     render(<DailyBrief data={briefData} defaultCollapsed />)
     expect(screen.getByText('Morning Brief')).toBeInTheDocument()
-    expect(screen.queryByText(/3 tasks/)).not.toBeInTheDocument()
+    // With grid collapse animation, content is in DOM but visually hidden via overflow-hidden + grid-rows-[0fr]
+    const contentText = screen.getByText(/3 tasks/)
+    expect(contentText.closest('.overflow-hidden')?.parentElement).toHaveClass('grid-rows-[0fr]')
   })
 
   it('supports custom title', () => {

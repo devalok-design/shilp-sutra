@@ -63,9 +63,9 @@ const SidebarScratchpad = React.forwardRef<HTMLDivElement, SidebarScratchpadProp
           <div className="overflow-hidden">
             <div className="flex flex-col gap-0.5 px-ds-03 pb-ds-02">
               {items.map((item) => (
-                <div
+                <label
                   key={item.id}
-                  className="flex items-center gap-ds-02 rounded-ds-sm px-ds-02 py-0.5 transition-colors hover:bg-layer-02"
+                  className="flex cursor-pointer items-center gap-ds-02 rounded-ds-sm px-ds-02 py-0.5 transition-colors hover:bg-layer-02"
                 >
                   <Checkbox
                     checked={item.done}
@@ -81,7 +81,7 @@ const SidebarScratchpad = React.forwardRef<HTMLDivElement, SidebarScratchpadProp
                   >
                     {item.text}
                   </span>
-                </div>
+                </label>
               ))}
             </div>
           </div>

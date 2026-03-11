@@ -2,6 +2,7 @@
 
 import * as React from 'react'
 import { cn } from '../ui/lib/utils'
+import { IconChevronRight } from '@tabler/icons-react'
 import { Avatar, AvatarFallback, AvatarImage } from '../ui/avatar'
 import { Button } from '../ui/button'
 import { Skeleton } from '../ui/skeleton'
@@ -73,12 +74,12 @@ function ActivityEntry({
   item: ActivityItem
   compact: boolean
 }) {
-  const [expanded, setExpanded] = React.useState(false)
+  const [expandedDetail, setExpandedDetail] = React.useState(false)
   const color = item.color ?? 'default'
 
   const handleActionClick = () => {
     if (item.detail) {
-      setExpanded((prev) => !prev)
+      setExpandedDetail((prev) => !prev)
     }
   }
 
@@ -94,11 +95,11 @@ function ActivityEntry({
 
       {/* Avatar (non-compact only) */}
       {!compact && item.actor && (
-        <Avatar className="h-4 w-4 shrink-0 text-[8px]">
+        <Avatar className="h-5 w-5 shrink-0 text-[9px]">
           {item.actor.image && (
             <AvatarImage src={item.actor.image} alt={item.actor.name} />
           )}
-          <AvatarFallback className="text-[8px]">
+          <AvatarFallback className="text-[9px]">
             {getInitials(item.actor.name)}
           </AvatarFallback>
         </Avatar>
@@ -106,10 +107,13 @@ function ActivityEntry({
 
       {/* Content */}
       <div className="flex min-w-0 flex-1 flex-col">
-        <div className="flex items-baseline justify-between gap-ds-02">
-          <div className={cn('min-w-0 flex-1', compact ? 'text-ds-xs' : 'text-ds-sm')}>
+        <div className="flex items-center justify-between gap-ds-02">
+          <div className={cn('min-w-0 flex-1 flex items-center gap-ds-01 flex-wrap', compact ? 'text-ds-xs' : 'text-ds-sm')}>
             {item.actor && (
               <span className="font-medium text-text-primary">{item.actor.name} </span>
+            )}
+            {item.detail && (
+              <IconChevronRight className={cn('h-3 w-3 shrink-0 text-text-placeholder transition-transform', expandedDetail && 'rotate-90')} />
             )}
             <span
               className={cn(
@@ -137,7 +141,7 @@ function ActivityEntry({
           <time
             className={cn(
               'shrink-0 whitespace-nowrap text-text-placeholder',
-              compact ? 'text-ds-xs' : 'text-ds-xs',
+              compact ? 'text-ds-xs' : 'text-ds-sm',
             )}
             dateTime={
               (typeof item.timestamp === 'string'
@@ -151,7 +155,7 @@ function ActivityEntry({
         </div>
 
         {/* Expandable detail */}
-        {expanded && item.detail && (
+        {expandedDetail && item.detail && (
           <div className="mt-ds-02 animate-in fade-in slide-in-from-top-1 text-ds-sm text-text-secondary">
             {item.detail}
           </div>

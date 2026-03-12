@@ -394,21 +394,27 @@ export function DataTable<TData, TValue>({
     [singleExpand],
   )
 
+  // Stable ref for server pagination callback to avoid useCallback invalidation
+  const onPageChangeRef = useRef(serverPagination?.onPageChange)
+  useEffect(() => {
+    onPageChangeRef.current = serverPagination?.onPageChange
+  }, [serverPagination?.onPageChange])
+
   // Server-side pagination handler
   const handlePaginationChange = useCallback(
     (updater: Updater<PaginationState>) => {
       setPaginationState((prev) => {
         const next = typeof updater === 'function' ? updater(prev) : updater
-        if (serverPagination) {
+        if (onPageChangeRef.current) {
           // Only call onPageChange if the page actually changed
           if (next.pageIndex !== prev.pageIndex) {
-            serverPagination.onPageChange(next.pageIndex + 1)
+            onPageChangeRef.current(next.pageIndex + 1)
           }
         }
         return next
       })
     },
-    [serverPagination],
+    [],
   )
 
   // Checkbox column prepended when selectable is enabled
@@ -535,15 +541,22 @@ export function DataTable<TData, TValue>({
     }),
   })
 
+  // Stable ref for onSelectionChange to avoid effect re-fires
+  const onSelectionChangeRef = useRef(onSelectionChange)
+  useEffect(() => {
+    onSelectionChangeRef.current = onSelectionChange
+  }, [onSelectionChange])
+
   // Fire selection callback when row selection changes
   useEffect(() => {
-    if (onSelectionChange) {
-      const selected = table
-        .getFilteredSelectedRowModel()
-        .rows.map((r) => r.original)
-      onSelectionChange(selected)
-    }
-  }, [rowSelection, onSelectionChange, table])
+    if (!onSelectionChangeRef.current) return
+    const selectedRowIds = Object.keys(rowSelection).filter((k) => rowSelection[k])
+    const selected = data.filter((_, i) => {
+      const id = getRowIdProp ? getRowIdProp(data[i]) : String(i)
+      return selectedRowIds.includes(id)
+    })
+    onSelectionChangeRef.current(selected)
+  }, [rowSelection, data, getRowIdProp]) // eslint-disable-line react-hooks/exhaustive-deps
 
   /** Compute sticky positioning styles for pinned columns */
   function getPinnedCellStyle(columnId: string) {
@@ -789,11 +802,15 @@ export function DataTable<TData, TValue>({
     )
   }
 
-  // Get selected rows for bulk actions
+  // Get selected rows for bulk actions (derived from rowSelection + data, not table instance)
   const selectedRows = useMemo(() => {
     if (!bulkActions || !selectable) return []
-    return table.getFilteredSelectedRowModel().rows.map((r) => r.original)
-  }, [bulkActions, selectable, table, rowSelection]) // eslint-disable-line react-hooks/exhaustive-deps
+    const selectedRowIds = Object.keys(rowSelection).filter((k) => rowSelection[k])
+    return data.filter((_, i) => {
+      const id = getRowIdProp ? getRowIdProp(data[i]) : String(i)
+      return selectedRowIds.includes(id)
+    })
+  }, [bulkActions, selectable, rowSelection, data, getRowIdProp])
 
   const hasSelectedRows = selectedRows.length > 0
 

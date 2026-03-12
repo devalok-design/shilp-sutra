@@ -5,6 +5,14 @@ All notable changes to `@devalok/shilp-sutra` will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.16.1] - 2026-03-12
+
+### Fixed
+- **DataTable**: `serverPagination` object reference in `useCallback` dependency caused stale closure — now uses stable ref for `onPageChange`
+- **DataTable**: `onSelectionChange` effect fired every render due to `table` in dependency array — now derives selected rows from `rowSelection` + `data` directly
+- **DataTable**: `selectedRows` useMemo for bulk actions had same `table` dependency issue — fixed to use stable derivation
+- **ScratchpadWidget**: Removed unused `onReorder` prop from interface
+
 ## [0.16.0] - 2026-03-12
 
 ### Added

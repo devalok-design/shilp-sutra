@@ -24,7 +24,6 @@ export interface ScratchpadWidgetProps {
   onToggle: (id: string, done: boolean) => void
   onAdd: (text: string) => void
   onDelete: (id: string) => void
-  onReorder?: (items: ScratchpadItem[]) => void
   title?: string
   resetLabel?: string
   emptyText?: string

@@ -1,16 +1,17 @@
 'use client'
 
 import * as React from 'react'
+import { cn } from '@/ui/lib/utils'
 import { Skeleton } from '@/ui/skeleton'
 
 // ============================================================
 // BreakAdminSkeleton — Loading placeholder for Break Admin page
 // ============================================================
 
-export const BreakAdminSkeleton = React.forwardRef<HTMLDivElement>(
-  function BreakAdminSkeleton(_props, ref) {
+export const BreakAdminSkeleton = React.forwardRef<HTMLDivElement, React.HTMLAttributes<HTMLDivElement>>(
+  function BreakAdminSkeleton({ className, ...props }, ref) {
   return (
-    <div ref={ref} className="z-base h-fit w-full max-w-layout-body overflow-hidden border-[1px] border-border-subtle bg-field sm:rounded-ds-lg">
+    <div ref={ref} className={cn("z-base h-fit w-full max-w-layout-body overflow-hidden border-[1px] border-border-subtle bg-field sm:rounded-ds-lg", className)} {...props}>
       {/* Header Section */}
       <div className="flex items-center justify-end bg-field px-ds-06 py-ds-05b">
         <header className="flex items-center">

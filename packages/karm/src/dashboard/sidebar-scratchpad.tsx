@@ -11,12 +11,11 @@ import type { ScratchpadItem } from './scratchpad-widget'
 // Types
 // ============================================================
 
-export interface SidebarScratchpadProps {
+export interface SidebarScratchpadProps extends React.HTMLAttributes<HTMLDivElement> {
   items: ScratchpadItem[]
   onToggle: (id: string, done: boolean) => void
   defaultOpen?: boolean
   badgeCount?: number
-  className?: string
 }
 
 // ============================================================
@@ -25,13 +24,13 @@ export interface SidebarScratchpadProps {
 
 const SidebarScratchpad = React.forwardRef<HTMLDivElement, SidebarScratchpadProps>(
   function SidebarScratchpad(
-    { items, onToggle, defaultOpen = true, badgeCount, className },
+    { items, onToggle, defaultOpen = true, badgeCount, className, ...props },
     ref,
   ) {
     const [open, setOpen] = useState(defaultOpen)
 
     return (
-      <div ref={ref} className={cn('flex flex-col', className)}>
+      <div ref={ref} className={cn('flex flex-col', className)} {...props}>
         {/* Collapsible header */}
         <button
           type="button"

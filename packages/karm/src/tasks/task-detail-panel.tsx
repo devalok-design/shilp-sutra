@@ -69,7 +69,7 @@ export interface ExtraTab {
   position?: 'before' | 'after'
 }
 
-interface TaskDetailPanelProps {
+interface TaskDetailPanelProps extends Omit<React.HTMLAttributes<HTMLDivElement>, 'children'> {
   task: FullTask | null
   loading?: boolean
   open: boolean
@@ -203,6 +203,8 @@ const TaskDetailPanel = React.forwardRef<HTMLDivElement, TaskDetailPanelProps>(f
   renderPriorityIndicator,
   renderDatePicker,
   isUploading = false,
+  className,
+  ...props
 }, ref) {
   const [activeTab, setActiveTab] = React.useState<string>(clientMode ? 'conversation' : 'subtasks')
   const [editingTitle, setEditingTitle] = React.useState(false)
@@ -282,7 +284,9 @@ const TaskDetailPanel = React.forwardRef<HTMLDivElement, TaskDetailPanelProps>(f
           'w-full sm:max-w-none sm:w-[40%] min-w-[380px] p-0',
           'flex flex-col overflow-hidden',
           'border-l border-border bg-layer-01',
+          className,
         )}
+        {...props}
       >
         <VisuallyHidden>
           <SheetTitle>

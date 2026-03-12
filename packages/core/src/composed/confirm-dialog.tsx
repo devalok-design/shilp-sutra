@@ -10,8 +10,9 @@ import {
   AlertDialogTitle,
 } from '../ui/alert-dialog'
 import { Button } from '../ui/button'
+import { cn } from '../ui/lib/utils'
 
-export interface ConfirmDialogProps {
+export interface ConfirmDialogProps extends Omit<React.ComponentPropsWithoutRef<'div'>, 'color'> {
   /** Whether the dialog is open */
   open: boolean
   /** Called when the dialog open state changes */
@@ -42,10 +43,12 @@ const ConfirmDialog = ({
   color = 'default',
   loading = false,
   onConfirm,
+  className,
+  ...props
 }: ConfirmDialogProps) => {
   return (
     <AlertDialog open={open} onOpenChange={onOpenChange}>
-      <AlertDialogContent>
+      <AlertDialogContent className={className} {...props}>
         <AlertDialogHeader>
           <AlertDialogTitle>{title}</AlertDialogTitle>
           <AlertDialogDescription>{description}</AlertDialogDescription>

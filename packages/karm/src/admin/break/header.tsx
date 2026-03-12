@@ -2,6 +2,7 @@
 
 import * as React from 'react'
 import { Fragment } from 'react'
+import { cn } from '@/ui/lib/utils'
 import {
   CrossIcon,
   PersonIcon,
@@ -49,7 +50,7 @@ export interface BreakAdminFilters {
   isOpen: boolean
 }
 
-export interface BreakAdminHeaderProps {
+export interface BreakAdminHeaderProps extends React.HTMLAttributes<HTMLDivElement> {
   filters: BreakAdminFilters
   onFilterChange: (filters: BreakAdminFilters) => void
   breakBalance?: { remainingDays: number; breakBalance: number } | null
@@ -64,6 +65,8 @@ export const BreakAdminHeader = React.forwardRef<HTMLDivElement, BreakAdminHeade
   breakBalance,
   userImages,
   users,
+  className,
+  ...props
 }, ref) {
   const setFilters = (
     updater: (prev: BreakAdminFilters) => BreakAdminFilters,
@@ -95,7 +98,7 @@ export const BreakAdminHeader = React.forwardRef<HTMLDivElement, BreakAdminHeade
   }
 
   return (
-    <div ref={ref} className="flex min-w-[800px] items-center justify-between bg-field px-ds-06 py-ds-05b max-md:justify-start max-md:gap-ds-05b max-lg:min-w-[100%]">
+    <div ref={ref} className={cn("flex min-w-[800px] items-center justify-between bg-field px-ds-06 py-ds-05b max-md:justify-start max-md:gap-ds-05b max-lg:min-w-[100%]", className)} {...props}>
       <div className="flex flex-col gap-ds-05">
         {filters.selectedAssociate && (
           <>

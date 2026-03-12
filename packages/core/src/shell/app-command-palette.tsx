@@ -33,6 +33,7 @@ import {
   IconPackage,
 } from '@tabler/icons-react'
 import { CommandPalette, type CommandGroup, type CommandItem } from '../composed/command-palette'
+import { cn } from '../ui/lib/utils'
 
 // -----------------------------------------------------------------------
 // Types
@@ -52,7 +53,8 @@ export interface AppCommandPaletteUser {
   role?: string
 }
 
-export interface AppCommandPaletteProps {
+export interface AppCommandPaletteProps
+  extends Omit<React.ComponentPropsWithoutRef<'div'>, 'onSearch'> {
   /** Current user (used to determine admin access) */
   user?: AppCommandPaletteUser | null
   /** When true, shows admin command groups regardless of user.role. Takes precedence over role-based detection. */
@@ -200,6 +202,8 @@ export function AppCommandPalette({
   searchResults = [],
   isSearching = false,
   onSearchResultSelect,
+  className,
+  ...props
 }: AppCommandPaletteProps) {
   const isAdmin =
     isAdminProp ?? (user?.role === 'Admin' || user?.role === 'SuperAdmin')
@@ -315,6 +319,8 @@ export function AppCommandPalette({
       placeholder="Search or jump to..."
       onSearch={handleSearch}
       emptyMessage="No results found. Try a different search term."
+      className={cn(className)}
+      {...props}
     />
   )
 }

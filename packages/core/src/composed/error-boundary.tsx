@@ -7,7 +7,7 @@ import { cn } from '../ui/lib/utils'
 
 declare const process: { env: { NODE_ENV?: string } } | undefined
 
-export interface ErrorDisplayProps {
+export interface ErrorDisplayProps extends React.ComponentPropsWithoutRef<'div'> {
   error: unknown
   onReset?: () => void
 }
@@ -94,7 +94,7 @@ function getErrorConfig(status?: number) {
 }
 
 const ErrorDisplay = React.forwardRef<HTMLDivElement, ErrorDisplayProps>(
-  function ErrorDisplay({ error, onReset }, ref) {
+  function ErrorDisplay({ error, onReset, className, ...props }, ref) {
   const status = getStatusFromError(error)
   const message = getMessageFromError(error)
   const stack = getStackFromError(error)
@@ -107,7 +107,7 @@ const ErrorDisplay = React.forwardRef<HTMLDivElement, ErrorDisplayProps>(
   const Icon = errorConfig.icon
 
   return (
-    <div ref={ref} className="flex min-h-[60vh] items-center justify-center p-ds-05">
+    <div ref={ref} {...props} className={cn("flex min-h-[60vh] items-center justify-center p-ds-05", className)}>
       <div
         className="flex w-full max-w-lg flex-col items-center gap-ds-06 rounded-ds-xl border border-border bg-layer-01 p-ds-07 text-center shadow-01"
       >

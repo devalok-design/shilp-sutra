@@ -2,6 +2,7 @@
 
 import * as React from 'react'
 import { useRef, useEffect } from 'react'
+import { cn } from '@/ui/lib/utils'
 import { useComposedRef } from '../utils/use-composed-ref'
 import { StreamingText } from './streaming-text'
 import { IconRobot, IconUser, IconAlertCircle } from '@tabler/icons-react'
@@ -18,7 +19,7 @@ export interface ChatMessage {
   content: string
 }
 
-export interface MessageListProps {
+export interface MessageListProps extends React.HTMLAttributes<HTMLDivElement> {
   messages: ChatMessage[]
   isStreaming?: boolean
   streamingText?: string
@@ -39,6 +40,8 @@ export const MessageList = React.forwardRef<HTMLDivElement, MessageListProps>(
   isLoadingMessages = false,
   emptyTitle = 'Karm AI',
   emptyDescription = 'Ask me about tasks, projects, attendance, or anything else.',
+  className,
+  ...props
 }, forwardedRef) {
   const scrollRef = useRef<HTMLDivElement | null>(null)
   const mergedRef = useComposedRef(scrollRef, forwardedRef)
@@ -50,7 +53,7 @@ export const MessageList = React.forwardRef<HTMLDivElement, MessageListProps>(
 
   if (isLoadingMessages) {
     return (
-      <div ref={forwardedRef} className="flex flex-1 items-center justify-center">
+      <div ref={forwardedRef} className={cn("flex flex-1 items-center justify-center", className)} {...props}>
         <div className="flex flex-col items-center gap-ds-03">
           <div className="h-ds-xs w-ds-xs animate-spin rounded-ds-full border-2 border-text-secondary border-t-transparent" />
           <p className="text-ds-sm text-text-placeholder">
@@ -64,7 +67,7 @@ export const MessageList = React.forwardRef<HTMLDivElement, MessageListProps>(
   // Empty state
   if (messages.length === 0 && !isStreaming) {
     return (
-      <div ref={forwardedRef} className="flex flex-1 items-center justify-center p-ds-06">
+      <div ref={forwardedRef} className={cn("flex flex-1 items-center justify-center p-ds-06", className)} {...props}>
         <div className="flex flex-col items-center gap-ds-04 text-center">
           <div className="flex h-ds-lg w-ds-lg items-center justify-center rounded-ds-full bg-field">
             <IconRobot className="h-ico-lg w-ico-lg text-text-secondary" />
@@ -81,7 +84,7 @@ export const MessageList = React.forwardRef<HTMLDivElement, MessageListProps>(
   }
 
   return (
-    <div ref={mergedRef} className="no-scrollbar flex-1 overflow-y-auto p-ds-05">
+    <div ref={mergedRef} className={cn("no-scrollbar flex-1 overflow-y-auto p-ds-05", className)} {...props}>
       <div className="flex flex-col gap-ds-05" role="log" aria-label="Chat messages">
         {messages.map((msg) => {
           if (msg.role === 'SYSTEM') {

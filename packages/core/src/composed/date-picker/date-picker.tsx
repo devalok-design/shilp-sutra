@@ -15,7 +15,7 @@ import { MonthPicker } from './month-picker'
 
 type CalendarView = 'days' | 'months' | 'years'
 
-export interface DatePickerProps {
+export interface DatePickerProps extends Omit<React.ComponentPropsWithoutRef<'button'>, 'onChange' | 'value'> {
   value?: Date | null
   onChange?: (date: Date | null) => void
   placeholder?: string
@@ -37,6 +37,7 @@ const DatePicker = React.forwardRef<HTMLButtonElement, DatePickerProps>(
       minDate,
       maxDate,
       disabledDates,
+      ...props
     },
     ref,
   ) {
@@ -114,6 +115,7 @@ const DatePicker = React.forwardRef<HTMLButtonElement, DatePickerProps>(
         <button
           ref={ref}
           type="button"
+          {...props}
           className={cn(
             'inline-flex h-ds-sm-plus items-center gap-ds-03 rounded-ds-lg border border-border bg-layer-01 px-ds-04 text-left transition-colors duration-fast-01 ease-productive-standard',
             'hover:border-border-strong',

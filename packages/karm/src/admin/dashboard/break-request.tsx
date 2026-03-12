@@ -33,7 +33,7 @@ import type { BreakRequest as BreakRequestType } from '../types'
 // Props
 // ============================================================
 
-export interface BreakRequestProps {
+export interface BreakRequestProps extends React.HTMLAttributes<HTMLDivElement> {
   /** The currently selected date */
   selectedDate: string | Date
   /** The user ID whose break is displayed */
@@ -68,6 +68,8 @@ export const BreakRequestCard = React.forwardRef<HTMLDivElement, BreakRequestPro
   onCancelBreak,
   onRefreshAttendance,
   onRefreshGroupedAttendance,
+  className,
+  ...props
 }, ref) {
   const [deleteSingleDay, setDeleteSingleDay] = useState(true)
   const [showMobileCancelForm, setShowMobileCancelForm] = useState(false)
@@ -119,7 +121,7 @@ export const BreakRequestCard = React.forwardRef<HTMLDivElement, BreakRequestPro
   }
 
   return (
-    <div ref={ref} className="relative flex w-full flex-col gap-ds-06 rounded-ds-lg bg-layer-accent-subtle">
+    <div ref={ref} className={cn("relative flex w-full flex-col gap-ds-06 rounded-ds-lg bg-layer-accent-subtle", className)} {...props}>
       {assetsBaseUrl && (
         <img
           src={`${assetsBaseUrl}/break-background.svg`}

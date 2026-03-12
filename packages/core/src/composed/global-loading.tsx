@@ -4,12 +4,12 @@ import * as React from 'react'
 import { useEffect, useRef, useState } from 'react'
 import { cn } from '../ui/lib/utils'
 
-export interface GlobalLoadingProps {
+export interface GlobalLoadingProps extends React.ComponentPropsWithoutRef<'div'> {
   isLoading: boolean
 }
 
 const GlobalLoading = React.forwardRef<HTMLDivElement, GlobalLoadingProps>(
-  function GlobalLoading({ isLoading }, forwardedRef) {
+  function GlobalLoading({ isLoading, className, ...props }, forwardedRef) {
   const ref = useRef<HTMLDivElement>(null)
   const [animationComplete, setAnimationComplete] = useState(true)
 
@@ -28,7 +28,8 @@ const GlobalLoading = React.forwardRef<HTMLDivElement, GlobalLoadingProps>(
       aria-label="Page loading"
       aria-hidden={!isLoading}
       aria-valuetext={isLoading ? 'Loading' : undefined}
-      className="pointer-events-none fixed inset-x-0 top-0 z-toast h-1"
+      {...props}
+      className={cn("pointer-events-none fixed inset-x-0 top-0 z-toast h-1", className)}
     >
       <div
         ref={ref}

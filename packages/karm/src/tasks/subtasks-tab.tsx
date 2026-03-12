@@ -33,7 +33,7 @@ export interface Subtask {
   }[]
 }
 
-interface SubtasksTabProps {
+interface SubtasksTabProps extends React.HTMLAttributes<HTMLDivElement> {
   subtasks: Subtask[]
   terminalColumnId?: string
   projectId: string
@@ -42,7 +42,6 @@ interface SubtasksTabProps {
   onCreateSubtask: (title: string) => void
   onToggleSubtask: (taskId: string, isComplete: boolean) => void
   onClickSubtask?: (taskId: string) => void
-  className?: string
   /** When true, hide create/toggle controls (client view) */
   readOnly?: boolean
 }
@@ -60,6 +59,7 @@ const SubtasksTab = React.forwardRef<HTMLDivElement, SubtasksTabProps>(
   onClickSubtask,
   className,
   readOnly = false,
+  ...props
 }, ref) {
   const [newTitle, setNewTitle] = React.useState('')
   const [isAdding, setIsAdding] = React.useState(false)
@@ -96,7 +96,7 @@ const SubtasksTab = React.forwardRef<HTMLDivElement, SubtasksTabProps>(
   }, [isAdding])
 
   return (
-    <div ref={ref} className={cn('flex flex-col', className)}>
+    <div ref={ref} className={cn('flex flex-col', className)} {...props}>
       {/* Progress bar */}
       {totalCount > 0 && (
         <div className="mb-ds-05 flex items-center gap-ds-04">

@@ -33,7 +33,9 @@ const PRIORITIES = ['LOW', 'MEDIUM', 'HIGH', 'URGENT'] as const
 // Component
 // ============================================================
 
-export function BulkActionBar() {
+export interface BulkActionBarProps extends React.HTMLAttributes<HTMLDivElement> {}
+
+export function BulkActionBar({ className, ...props }: BulkActionBarProps) {
   const {
     columns,
     members,
@@ -56,7 +58,9 @@ export function BulkActionBar() {
       className={cn(
         'grid transition-[grid-template-rows,opacity] duration-moderate-02 ease-expressive-entrance',
         count > 0 ? 'grid-rows-[1fr] opacity-100' : 'grid-rows-[0fr] opacity-0',
+        className,
       )}
+      {...props}
       aria-live="polite"
     >
       <div className="overflow-hidden">

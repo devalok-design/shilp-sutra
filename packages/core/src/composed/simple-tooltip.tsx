@@ -8,7 +8,7 @@ import {
   TooltipTrigger,
 } from '../ui/tooltip'
 
-export interface SimpleTooltipProps {
+export interface SimpleTooltipProps extends Omit<React.ComponentPropsWithoutRef<'div'>, 'content'> {
   content: React.ReactNode
   side?: 'top' | 'right' | 'bottom' | 'left'
   align?: 'start' | 'center' | 'end'
@@ -22,11 +22,13 @@ const SimpleTooltip = ({
   align = 'center',
   delayDuration = 300,
   children,
+  className,
+  ...props
 }: SimpleTooltipProps) => (
   <TooltipProvider delayDuration={delayDuration}>
     <Tooltip>
       <TooltipTrigger asChild>{children}</TooltipTrigger>
-      <TooltipContent side={side} align={align}>
+      <TooltipContent side={side} align={align} className={className} {...props}>
         {content}
       </TooltipContent>
     </Tooltip>

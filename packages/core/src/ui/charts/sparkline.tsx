@@ -1,11 +1,12 @@
 'use client'
 
+import * as React from 'react'
 import { line, area, curveMonotoneX } from 'd3-shape'
 import { scaleLinear } from 'd3-scale'
 import { cn } from '../lib/utils'
 import { resolveColor } from './_internal/colors'
 
-export interface SparklineProps {
+export interface SparklineProps extends Omit<React.SVGAttributes<SVGSVGElement>, 'children'> {
   /** Numeric data points */
   data: number[]
   /** Visual variant */
@@ -32,6 +33,7 @@ export function Sparkline({
   showLastDot = false,
   strokeWidth = 1.5,
   className,
+  ...props
 }: SparklineProps) {
   const resolvedColor = resolveColor(color, 0)
 
@@ -69,6 +71,7 @@ export function Sparkline({
         role="img"
         aria-label="Sparkline bar chart"
         className={cn('inline-block align-middle', className)}
+        {...props}
       >
         {data.map((value, i) => {
           const x = padding + i * (barWidth + barGap)
@@ -115,6 +118,7 @@ export function Sparkline({
         role="img"
         aria-label="Sparkline area chart"
         className={cn('inline-block align-middle', className)}
+        {...props}
       >
         <path d={areaD} fill={resolvedColor} opacity={0.2} />
         <path
@@ -155,6 +159,7 @@ export function Sparkline({
       role="img"
       aria-label="Sparkline chart"
       className={cn('inline-block align-middle', className)}
+      {...props}
     >
       <path
         d={pathD}

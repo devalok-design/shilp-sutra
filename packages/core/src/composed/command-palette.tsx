@@ -37,7 +37,7 @@ export interface CommandGroup {
   items: CommandItem[]
 }
 
-export interface CommandPaletteProps {
+export interface CommandPaletteProps extends React.ComponentPropsWithoutRef<'div'> {
   groups?: CommandGroup[]
   placeholder?: string
   onSearch?: (query: string) => void
@@ -55,6 +55,8 @@ const CommandPalette = React.forwardRef<HTMLDivElement, CommandPaletteProps>(
       placeholder = 'Search or jump to...',
       onSearch,
       emptyMessage = 'No results found.',
+      className,
+      ...props
     },
     ref,
   ) {
@@ -178,6 +180,7 @@ const CommandPalette = React.forwardRef<HTMLDivElement, CommandPaletteProps>(
         />
         <DialogContentRaw
           ref={ref}
+          {...props}
           className={cn(
             'fixed left-1/2 top-[20%] z-modal w-full max-w-[560px] -translate-x-1/2',
             'overflow-hidden rounded-ds-xl border border-border bg-layer-01 shadow-05',
@@ -186,6 +189,7 @@ const CommandPalette = React.forwardRef<HTMLDivElement, CommandPaletteProps>(
             'data-[state=closed]:zoom-out-95 data-[state=open]:zoom-in-95',
             'data-[state=closed]:slide-out-to-left-1/2 data-[state=open]:slide-in-from-left-1/2',
             'data-[state=closed]:slide-out-to-top-2 data-[state=open]:slide-in-from-top-2',
+            className,
           )}
           onKeyDown={handleKeyDown}
         >

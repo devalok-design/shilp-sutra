@@ -18,7 +18,7 @@ export interface ScratchpadItem {
   done: boolean
 }
 
-export interface ScratchpadWidgetProps {
+export interface ScratchpadWidgetProps extends Omit<React.HTMLAttributes<HTMLDivElement>, 'title'> {
   items: ScratchpadItem[]
   maxItems?: number
   onToggle: (id: string, done: boolean) => void
@@ -29,7 +29,6 @@ export interface ScratchpadWidgetProps {
   emptyText?: string
   emptyIcon?: React.ComponentType<{ className?: string }>
   loading?: boolean
-  className?: string
 }
 
 // ============================================================
@@ -96,6 +95,7 @@ const ScratchpadWidget = React.forwardRef<HTMLDivElement, ScratchpadWidgetProps>
       emptyIcon: EmptyIcon,
       loading = false,
       className,
+      ...props
     },
     ref,
   ) {
@@ -139,6 +139,7 @@ const ScratchpadWidget = React.forwardRef<HTMLDivElement, ScratchpadWidgetProps>
             'flex flex-col gap-ds-04 rounded-ds-2xl border border-border bg-layer-01 shadow-01 p-ds-05b',
             className,
           )}
+          {...props}
         >
           <div className="flex items-center justify-between">
             <div className="h-4 w-28 animate-pulse rounded bg-layer-02" />
@@ -164,6 +165,7 @@ const ScratchpadWidget = React.forwardRef<HTMLDivElement, ScratchpadWidgetProps>
           'flex flex-col rounded-ds-2xl border border-border bg-layer-01 shadow-01',
           className,
         )}
+        {...props}
       >
         {/* Header */}
         <div className="flex items-center justify-between px-ds-05b py-ds-05">

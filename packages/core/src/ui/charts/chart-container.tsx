@@ -6,7 +6,7 @@ import { cn } from '../lib/utils'
 import type { ChartMargin } from './_internal/types'
 import { DEFAULT_MARGIN } from './_internal/types'
 
-export interface ChartContainerProps {
+export interface ChartContainerProps extends Omit<React.HTMLAttributes<HTMLDivElement>, 'children'> {
   /** Fixed height in pixels */
   height?: number
   /** Chart margins */
@@ -25,6 +25,7 @@ export function ChartContainer({
   margin: marginOverride,
   className,
   children,
+  ...props
 }: ChartContainerProps) {
   const containerRef = useRef<HTMLDivElement>(null)
   const [width, setWidth] = useState(0)
@@ -45,7 +46,7 @@ export function ChartContainer({
   const innerHeight = Math.max(0, height - margin.top - margin.bottom)
 
   return (
-    <div ref={containerRef} className={cn('relative w-full', className)}>
+    <div ref={containerRef} className={cn('relative w-full', className)} {...props}>
       {width > 0 && (
         <svg width={width} height={height} role="img" aria-label="Chart">
           <g transform={`translate(${margin.left},${margin.top})`}>

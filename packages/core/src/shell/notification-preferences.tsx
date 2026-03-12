@@ -46,7 +46,8 @@ export interface NotificationProject {
   title: string
 }
 
-export interface NotificationPreferencesProps {
+export interface NotificationPreferencesProps
+  extends Omit<React.ComponentPropsWithoutRef<'div'>, 'onSave'> {
   /** Current preference rules */
   preferences?: NotificationPreference[]
   /** Available projects for scoping rules */
@@ -101,6 +102,7 @@ export function NotificationPreferences({
   onUpdateTier,
   onDelete,
   className,
+  ...props
 }: NotificationPreferencesProps) {
   const [showAddDialog, setShowAddDialog] = useState(false)
   const [newProjectId, setNewProjectId] = useState<string>('global')
@@ -143,7 +145,7 @@ export function NotificationPreferences({
 
   return (
     <>
-      <Card className={className}>
+      <Card className={className} {...props}>
         <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-ds-04">
           <CardTitle className="text-ds-md font-semibold">
             Notification Preferences

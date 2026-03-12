@@ -15,7 +15,7 @@ export interface BriefData {
   generatedAt: string
 }
 
-export interface DailyBriefProps {
+export interface DailyBriefProps extends React.HTMLAttributes<HTMLDivElement> {
   data: BriefData | null
   loading?: boolean
   onRefresh?: () => void
@@ -23,7 +23,6 @@ export interface DailyBriefProps {
   collapsible?: boolean
   defaultCollapsed?: boolean
   title?: string
-  className?: string
 }
 
 // ============================================================
@@ -65,6 +64,7 @@ const DailyBrief = React.forwardRef<HTMLDivElement, DailyBriefProps>(
   defaultCollapsed = false,
   title,
   className,
+  ...props
 }, ref) {
   const [collapsed, setCollapsed] = useState(defaultCollapsed)
   const displayTitle = title ?? 'Morning Brief'
@@ -72,7 +72,7 @@ const DailyBrief = React.forwardRef<HTMLDivElement, DailyBriefProps>(
   // Shimmer skeleton while loading
   if (loading && !data) {
     return (
-      <div ref={ref} className={cn('flex flex-col gap-ds-04 rounded-ds-2xl border border-border bg-layer-01 shadow-01 p-ds-05b', className)}>
+      <div ref={ref} className={cn('flex flex-col gap-ds-04 rounded-ds-2xl border border-border bg-layer-01 shadow-01 p-ds-05b', className)} {...props}>
         <div className="flex items-center gap-ds-03">
           <div className="h-ico-sm w-ico-sm animate-pulse rounded bg-layer-02" />
           <div className="h-4 w-24 animate-pulse rounded bg-layer-02" />
@@ -92,7 +92,7 @@ const DailyBrief = React.forwardRef<HTMLDivElement, DailyBriefProps>(
 
   if (unavailable) {
     return (
-      <div ref={ref} className={cn('flex items-center gap-ds-03 rounded-ds-2xl border border-border bg-layer-01 shadow-01 px-ds-05b py-ds-05', className)}>
+      <div ref={ref} className={cn('flex items-center gap-ds-03 rounded-ds-2xl border border-border bg-layer-01 shadow-01 px-ds-05b py-ds-05', className)} {...props}>
         <IconSparkles className="h-ico-sm w-ico-sm text-text-placeholder" />
         <span className="text-ds-sm text-text-placeholder">AI brief unavailable</span>
       </div>
@@ -104,7 +104,7 @@ const DailyBrief = React.forwardRef<HTMLDivElement, DailyBriefProps>(
   const showContent = !collapsible || !collapsed
 
   return (
-    <div ref={ref} className={cn('flex flex-col rounded-ds-2xl border border-border bg-layer-01 shadow-01', className)}>
+    <div ref={ref} className={cn('flex flex-col rounded-ds-2xl border border-border bg-layer-01 shadow-01', className)} {...props}>
       <div className="flex items-center justify-between px-ds-05b py-ds-05">
         {collapsible ? (
           <button

@@ -49,7 +49,7 @@ export interface TaskItem {
   priority?: string
 }
 
-export interface AssociateDetailProps {
+export interface AssociateDetailProps extends React.HTMLAttributes<HTMLDivElement> {
   selectedAssociate: AdminUser
   selectedDate: string
   selectedUserAttendance: AttendanceRecord | null
@@ -206,6 +206,8 @@ export const AssociateDetail = React.forwardRef<HTMLDivElement, AssociateDetailP
   onCancelBreak,
   onRefreshSelectedUserAttendance,
   onRefreshAttendanceData,
+  className,
+  ...props
 }, ref) {
   const [newTaskName, setNewTaskName] = useState('')
   const [draggedTaskIndex, setDraggedTaskIndex] = useState<number | null>(null)
@@ -237,7 +239,7 @@ export const AssociateDetail = React.forwardRef<HTMLDivElement, AssociateDetailP
   }
 
   return (
-    <div ref={ref} className="relative flex items-center justify-between md:items-stretch">
+    <div ref={ref} className={cn("relative flex items-center justify-between md:items-stretch", className)} {...props}>
       {!isFutureDate && selectedUserAttendance?.status !== 'BREAK' && (
         <Dialog>
           <DialogTrigger asChild>

@@ -108,7 +108,7 @@ function WipEditor({ columnId, currentLimit, onClose }: WipEditorProps) {
 // Props
 // ============================================================
 
-export interface ColumnHeaderProps {
+export interface ColumnHeaderProps extends React.HTMLAttributes<HTMLDivElement> {
   column: BoardColumn
   index: number
 }
@@ -117,7 +117,7 @@ export interface ColumnHeaderProps {
 // Component
 // ============================================================
 
-export function ColumnHeader({ column, index }: ColumnHeaderProps) {
+export function ColumnHeader({ column, index, className, ...props }: ColumnHeaderProps) {
   const {
     members,
     onColumnRename,
@@ -204,7 +204,7 @@ export function ColumnHeader({ column, index }: ColumnHeaderProps) {
   }
 
   return (
-    <div className="group/header flex flex-col gap-ds-02">
+    <div className={cn("group/header flex flex-col gap-ds-02", className)} {...props}>
       {/* Primary header row */}
       <div className="flex items-center gap-ds-02 px-ds-04 pt-ds-03 pb-ds-02">
         {/* Accent dot */}

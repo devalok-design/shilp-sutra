@@ -38,11 +38,10 @@ export interface Comment {
   clientAuthor?: { id: string; name: string; email: string } | null
 }
 
-interface ConversationTabProps {
+interface ConversationTabProps extends React.HTMLAttributes<HTMLDivElement> {
   comments: Comment[]
   taskVisibility: 'INTERNAL' | 'EVERYONE'
   onPostComment: (content: string, authorType: 'INTERNAL' | 'CLIENT') => void
-  className?: string
   /** When true, the viewer is a client -- adjusts warnings, labels, and author type */
   clientMode?: boolean
   /** Enable built-in RichTextEditor/Viewer. Defaults to true. Set false for plain textarea fallback. */
@@ -120,6 +119,7 @@ const ConversationTab = React.forwardRef<HTMLDivElement, ConversationTabProps>(
   richText = true,
   renderEditor: renderEditorProp,
   renderViewer: renderViewerProp,
+  ...props
 }, ref) {
   const [editorContent, setEditorContent] = React.useState('')
   const scrollRef = React.useRef<HTMLDivElement>(null)
@@ -161,7 +161,7 @@ const ConversationTab = React.forwardRef<HTMLDivElement, ConversationTabProps>(
   }, [comments.length])
 
   return (
-    <div ref={ref} className={cn('flex flex-col', className)}>
+    <div ref={ref} className={cn('flex flex-col', className)} {...props}>
       {/* Comments list */}
       {comments.length > 0 ? (
         <div

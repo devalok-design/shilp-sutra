@@ -17,7 +17,7 @@ import type { BoardColumn as BoardColumnType, BoardTask } from './board-types'
 // Types
 // ============================================================
 
-export interface BoardColumnProps {
+export interface BoardColumnProps extends React.HTMLAttributes<HTMLDivElement> {
   column: BoardColumnType
   index: number
   isOverlay?: boolean
@@ -48,7 +48,7 @@ function TaskGhost() {
 // ============================================================
 
 export const BoardColumn = React.forwardRef<HTMLDivElement, BoardColumnProps>(
-  function BoardColumn({ column, index, isOverlay, dragPreview, draggedTask }, ref) {
+  function BoardColumn({ column, index, isOverlay, dragPreview, draggedTask, className, ...props }, ref) {
     const { viewMode } = useBoardContext()
 
     const { setNodeRef: setDroppableRef, isOver } = useDroppable({
@@ -70,8 +70,10 @@ export const BoardColumn = React.forwardRef<HTMLDivElement, BoardColumnProps>(
           'flex h-full flex-shrink-0 flex-col rounded-ds-xl bg-layer-01/40 backdrop-blur-[2px] border border-border-subtle/20 hover:border-border-subtle/40 transition-colors p-1',
           isOverlay && 'shadow-04',
           isWipExceeded && 'bg-error-surface/50',
+          className,
         )}
-        style={{ width: COLUMN_WIDTH }}
+        {...props}
+        style={{ ...props.style, width: COLUMN_WIDTH }}
       >
         {/* Column Header */}
         <ColumnHeader column={column} index={index} />

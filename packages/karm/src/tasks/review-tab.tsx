@@ -47,7 +47,7 @@ interface Member {
   image?: string | null
 }
 
-interface ReviewTabProps {
+interface ReviewTabProps extends React.HTMLAttributes<HTMLDivElement> {
   reviews: ReviewRequest[]
   members: Member[]
   onRequestReview: (reviewerId: string) => void
@@ -56,7 +56,6 @@ interface ReviewTabProps {
     status: ReviewRequest['status'],
     feedback?: string,
   ) => void
-  className?: string
 }
 
 // ============================================================
@@ -93,6 +92,7 @@ const ReviewTab = React.forwardRef<HTMLDivElement, ReviewTabProps>(
   onRequestReview,
   onUpdateStatus,
   className,
+  ...props
 }, ref) {
   const [feedbackMap, setFeedbackMap] = React.useState<Record<string, string>>({})
   const [expandedId, setExpandedId] = React.useState<string | null>(null)
@@ -116,7 +116,7 @@ const ReviewTab = React.forwardRef<HTMLDivElement, ReviewTabProps>(
   }
 
   return (
-    <div ref={ref} className={cn('flex flex-col', className)}>
+    <div ref={ref} className={cn('flex flex-col', className)} {...props}>
       {reviews.length > 0 ? (
         <div className="space-y-ds-04">
           {reviews.map((review) => {

@@ -4,8 +4,9 @@ import * as React from 'react'
 import { useState, useRef, useCallback, type KeyboardEvent } from 'react'
 import { IconSend, IconSquare } from '@tabler/icons-react'
 import { Button } from '@/ui/button'
+import { cn } from '@/ui/lib/utils'
 
-export interface ChatInputProps {
+export interface ChatInputProps extends Omit<React.HTMLAttributes<HTMLDivElement>, 'onSubmit'> {
   onSubmit: (message: string) => void
   onCancel?: () => void
   isStreaming?: boolean
@@ -20,6 +21,8 @@ export const ChatInput = React.forwardRef<HTMLDivElement, ChatInputProps>(
   isStreaming = false,
   placeholder = 'Ask Karm AI...',
   disclaimer = 'AI responses may be inaccurate. Verify important information.',
+  className,
+  ...props
 }, ref) {
   const [text, setText] = useState('')
   const textareaRef = useRef<HTMLTextAreaElement>(null)
@@ -53,7 +56,7 @@ export const ChatInput = React.forwardRef<HTMLDivElement, ChatInputProps>(
   )
 
   return (
-    <div ref={ref} className="border-t border-border bg-layer-01 p-ds-04">
+    <div ref={ref} className={cn("border-t border-border bg-layer-01 p-ds-04", className)} {...props}>
       <div className="flex items-end gap-ds-03 rounded-ds-xl border border-border bg-field px-ds-04 py-ds-03">
         <textarea
           ref={textareaRef}

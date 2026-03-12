@@ -2,6 +2,7 @@
 
 import * as React from 'react'
 import { useState, type MouseEvent } from 'react'
+import { cn } from '@/ui/lib/utils'
 import {
   Dialog,
   DialogContent,
@@ -26,7 +27,7 @@ import type { BreakRequest } from '../types'
 // LeaveRequest — Single pending request row with approve/reject actions
 // ============================================================
 
-export interface LeaveRequestProps {
+export interface LeaveRequestProps extends React.HTMLAttributes<HTMLDivElement> {
   request: BreakRequest
   userImages: Record<string, string>
   handleRejectRequest: (
@@ -54,6 +55,8 @@ export const LeaveRequest = React.forwardRef<HTMLDivElement, LeaveRequestProps>(
   onCommentBoxClose,
   clickedAction,
   userId,
+  className,
+  ...props
 }, ref) {
   const [comment, setComment] = useState('')
 
@@ -66,7 +69,8 @@ export const LeaveRequest = React.forwardRef<HTMLDivElement, LeaveRequestProps>(
       <div
         ref={ref}
         key={request.id}
-        className="flex justify-between border-b border-border px-ds-03 py-ds-04 last:border-b-0"
+        className={cn("flex justify-between border-b border-border px-ds-03 py-ds-04 last:border-b-0", className)}
+        {...props}
       >
         <div className="flex w-full items-center gap-ds-04">
           <Avatar className="h-ds-md w-ds-md">

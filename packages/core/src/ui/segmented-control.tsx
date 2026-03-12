@@ -185,7 +185,7 @@ export interface SegmentedControlOption {
  * />
  * // These are just a few ways — feel free to combine props creatively!
  */
-export interface SegmentedControlProps {
+export interface SegmentedControlProps extends Omit<React.HTMLAttributes<HTMLDivElement>, 'onSelect'> {
   size: SegmentedControlSize
   variant: SegmentedControlVariant
   options: SegmentedControlOption[]
@@ -205,6 +205,7 @@ const SegmentedControl = React.forwardRef<HTMLDivElement, SegmentedControlProps>
   onSelect,
   disabled = false,
   className = '',
+  ...props
 }, forwardedRef) {
   const resolved = resolveSize(size)
   const [focusedId, setFocusedId] = useState<string | null>(null)
@@ -261,6 +262,7 @@ const SegmentedControl = React.forwardRef<HTMLDivElement, SegmentedControlProps>
       onKeyDown={handleKeyDown}
       tabIndex={-1}
       aria-label="Segmented control options"
+      {...props}
     >
       {options.map((option) => (
         <SegmentedControlItem

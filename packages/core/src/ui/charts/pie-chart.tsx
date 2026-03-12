@@ -16,7 +16,7 @@ interface PieSlice {
   color?: string
 }
 
-export interface PieChartProps {
+export interface PieChartProps extends Omit<React.HTMLAttributes<HTMLDivElement>, 'children'> {
   /** Data with label and value */
   data: PieSlice[]
   /** Pie or donut variant */
@@ -55,6 +55,7 @@ export function PieChart({
   animate = true,
   className,
   centerLabel,
+  ...props
 }: PieChartProps) {
   const containerRef = useRef<HTMLDivElement>(null)
   const [containerWidth, setContainerWidth] = useState(0)
@@ -108,7 +109,7 @@ export function PieChart({
     .outerRadius(labelRadius)
 
   return (
-    <div ref={containerRef} className={cn('relative w-full', className)}>
+    <div ref={containerRef} className={cn('relative w-full', className)} {...props}>
       {containerWidth > 0 && (
         <>
           <svg

@@ -39,7 +39,7 @@ type AutocompleteOption = {
  * />
  * // These are just a few ways — feel free to combine props creatively!
  */
-type AutocompleteProps = {
+type AutocompleteProps = React.HTMLAttributes<HTMLDivElement> & {
   options: AutocompleteOption[]
   value?: AutocompleteOption | null
   onValueChange?: (option: AutocompleteOption) => void
@@ -61,6 +61,7 @@ const Autocomplete = React.forwardRef<HTMLInputElement, AutocompleteProps>(
       disabled,
       className,
       id: externalId,
+      ...props
     },
     ref,
   ) => {
@@ -145,7 +146,7 @@ const Autocomplete = React.forwardRef<HTMLInputElement, AutocompleteProps>(
       highlightedIndex >= 0 ? `${optionIdPrefix}-${highlightedIndex}` : undefined
 
     return (
-      <div className={cn('relative', className)}>
+      <div className={cn('relative', className)} {...props}>
         <input
           ref={composedRef}
           type="text"

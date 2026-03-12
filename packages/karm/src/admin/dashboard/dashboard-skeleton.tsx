@@ -15,10 +15,10 @@ import { IconButton } from '@/ui/icon-button'
 // Component
 // ============================================================
 
-export const DashboardSkeleton = React.forwardRef<HTMLDivElement>(
-  function DashboardSkeleton(_props, ref) {
+export const DashboardSkeleton = React.forwardRef<HTMLDivElement, React.HTMLAttributes<HTMLDivElement>>(
+  function DashboardSkeleton({ className, ...props }, ref) {
   return (
-    <div ref={ref} className="flex w-full max-w-layout flex-col items-center justify-center max-md:h-[100%] max-md:justify-start">
+    <div ref={ref} className={cn("flex w-full max-w-layout flex-col items-center justify-center max-md:h-[100%] max-md:justify-start", className)} {...props}>
       <div className="z-raised flex w-full flex-col items-start justify-start rounded-ds-lg border border-border bg-layer-02 p-ds-05 shadow-05 max-md:flex-1 max-md:min-h-0 max-md:overflow-y-auto max-md:border-0 max-md:px-ds-05 max-md:pb-0 max-md:pt-ds-06">
         {/* Header Section */}
         <div className="mb-ds-06 flex w-full flex-col items-start justify-between md:flex-row md:items-center">

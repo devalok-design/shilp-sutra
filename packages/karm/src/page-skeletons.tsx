@@ -8,10 +8,10 @@ const shimmer = 'bg-field'
 
 // --- Devsabha Skeleton ---
 
-const DevsabhaSkeleton = React.forwardRef<HTMLDivElement>(
-  function DevsabhaSkeleton(_props, ref) {
+const DevsabhaSkeleton = React.forwardRef<HTMLDivElement, React.HTMLAttributes<HTMLDivElement>>(
+  function DevsabhaSkeleton({ className, ...props }, ref) {
   return (
-    <div ref={ref} className="flex flex-col gap-ds-06">
+    <div ref={ref} className={cn("flex flex-col gap-ds-06", className)} {...props}>
       {/* Page header */}
       <div className="flex flex-col gap-ds-03">
         <Skeleton className={cn('h-6 w-32', shimmer)} />
@@ -114,10 +114,10 @@ DevsabhaSkeleton.displayName = 'DevsabhaSkeleton'
 
 // --- Bandwidth Skeleton ---
 
-const BandwidthSkeleton = React.forwardRef<HTMLDivElement>(
-  function BandwidthSkeleton(_props, ref) {
+const BandwidthSkeleton = React.forwardRef<HTMLDivElement, React.HTMLAttributes<HTMLDivElement>>(
+  function BandwidthSkeleton({ className, ...props }, ref) {
   return (
-    <div ref={ref} className="flex flex-col gap-ds-06">
+    <div ref={ref} className={cn("flex flex-col gap-ds-06", className)} {...props}>
       {/* Summary cards */}
       <div className="grid grid-cols-1 gap-ds-05 sm:grid-cols-3">
         {Array.from({ length: 3 }).map((_, i) => (

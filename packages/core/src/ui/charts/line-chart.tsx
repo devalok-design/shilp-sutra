@@ -14,7 +14,7 @@ import { resolveColor } from './_internal/colors'
 import { useReducedMotion, getTransitionDuration } from './_internal/animation'
 import type { DataPoint, Series } from './_internal/types'
 
-export interface LineChartProps {
+export interface LineChartProps extends Omit<React.HTMLAttributes<HTMLDivElement>, 'children'> {
   /** Data array */
   data: DataPoint[]
   /** Key for x-axis */
@@ -62,6 +62,7 @@ export function LineChart({
   xLabel,
   yLabel,
   className,
+  ...props
 }: LineChartProps) {
   const { tooltip, show, hide } = useChartTooltip()
   const reducedMotion = useReducedMotion()
@@ -74,7 +75,7 @@ export function LineChart({
   const colors = series.map((s, i) => resolveColor(s.color, i))
 
   return (
-    <div className={cn('relative', className)}>
+    <div className={cn('relative', className)} {...props}>
       <ChartContainer height={height}>
         {({ width, height: innerHeight, margin }) => {
           void margin

@@ -2,6 +2,7 @@
 
 import * as React from 'react'
 import { useState, useEffect, useRef } from 'react'
+import { cn } from '@/ui/lib/utils'
 import { EditIcon } from '../icons'
 import { useToast } from '@/hooks/use-toast'
 import {
@@ -19,7 +20,7 @@ import type { BreakBalanceData } from '../types'
 // EditBreakBalance — Dialog for editing break balance (cashout / carry forward)
 // ============================================================
 
-export interface EditBreakBalanceProps {
+export interface EditBreakBalanceProps extends React.HTMLAttributes<HTMLDivElement> {
   selectedLeave: BreakBalanceData
   onSave?: (data: {
     userId: string
@@ -32,6 +33,8 @@ export interface EditBreakBalanceProps {
 export const EditBreakBalance = React.forwardRef<HTMLDivElement, EditBreakBalanceProps>(function EditBreakBalance({
   selectedLeave,
   onSave,
+  className,
+  ...props
 }, _ref) {
   const [isSubmitting, setIsSubmitting] = useState(false)
   const [cashOutValue, setCashOutValue] = useState(
@@ -92,7 +95,7 @@ export const EditBreakBalance = React.forwardRef<HTMLDivElement, EditBreakBalanc
         </Button>
       </DialogTrigger>
       {/* intentional: dialog fixed width — narrow balance edit form */}
-      <DialogContent className="w-[308px] p-ds-06">
+      <DialogContent className={cn("w-[308px] p-ds-06", className)} {...props}>
         <DialogHeader>
           <DialogDescription>
             <div className="flex flex-col items-center justify-start gap-ds-05">

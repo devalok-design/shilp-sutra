@@ -3,7 +3,7 @@
 import * as React from 'react'
 import { cn } from './lib/utils'
 
-export interface ColorInputProps {
+export interface ColorInputProps extends Omit<React.HTMLAttributes<HTMLDivElement>, 'onChange'> {
   /** Current color value (hex string, e.g. "#d33163") */
   value?: string
   /** Called when the color changes */
@@ -17,13 +17,13 @@ export interface ColorInputProps {
 }
 
 const ColorInput = React.forwardRef<HTMLInputElement, ColorInputProps>(
-  ({ value = '#000000', onChange, presets, disabled = false, className }, ref) => {
+  ({ value = '#000000', onChange, presets, disabled = false, className, ...props }, ref) => {
     const handleChange = (newValue: string) => {
       onChange?.(newValue)
     }
 
     return (
-      <div className={cn('flex flex-col gap-ds-03', className)}>
+      <div className={cn('flex flex-col gap-ds-03', className)} {...props}>
         <div className="flex items-center gap-ds-03">
           {/* Color swatch / native picker */}
           <label

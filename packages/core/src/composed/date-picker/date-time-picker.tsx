@@ -21,7 +21,7 @@ import { MonthPicker } from './month-picker'
 
 type CalendarView = 'days' | 'months' | 'years'
 
-export interface DateTimePickerProps {
+export interface DateTimePickerProps extends Omit<React.ComponentPropsWithoutRef<'button'>, 'onChange' | 'value'> {
   /** The currently selected date and time. */
   value?: Date | null
   /** Callback fired when the date/time changes. */
@@ -66,6 +66,7 @@ const DateTimePicker = React.forwardRef<HTMLButtonElement, DateTimePickerProps>(
       minuteStep = 1,
       placeholder = 'Pick date & time',
       className,
+      ...props
     },
     ref,
   ) {
@@ -211,6 +212,7 @@ const DateTimePicker = React.forwardRef<HTMLButtonElement, DateTimePickerProps>(
         <button
           ref={ref}
           type="button"
+          {...props}
           className={cn(
             'inline-flex h-ds-sm-plus items-center gap-ds-03 rounded-ds-lg border border-border bg-layer-01 px-ds-04 text-left transition-colors duration-fast-01 ease-productive-standard',
             'hover:border-border-strong',

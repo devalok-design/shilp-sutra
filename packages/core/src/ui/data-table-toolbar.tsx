@@ -32,7 +32,7 @@ const densityCycle: Record<Density, Density> = {
   comfortable: 'compact',
 }
 
-export interface DataTableToolbarProps<TData> {
+export interface DataTableToolbarProps<TData> extends Omit<React.HTMLAttributes<HTMLDivElement>, 'onChange'> {
   table: Table<TData>
   globalFilter?: boolean
   globalFilterValue: string
@@ -96,13 +96,15 @@ export function DataTableToolbar<TData>({
   density,
   onDensityChange,
   enableExport = true,
+  className,
+  ...props
 }: DataTableToolbarProps<TData>) {
   const toggleableColumns = table
     .getAllColumns()
     .filter((col) => col.getCanHide() && col.id !== '_select')
 
   return (
-    <div className="flex items-center gap-ds-03 pb-ds-04">
+    <div className={cn('flex items-center gap-ds-03 pb-ds-04', className)} {...props}>
       {/* Global search */}
       {globalFilter && (
         <div className="flex flex-1 items-center gap-ds-02">

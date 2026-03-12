@@ -2,6 +2,7 @@
 
 import * as React from 'react'
 import { useState, useRef } from 'react'
+import { cn } from '@/ui/lib/utils'
 import { BreakDeleteIcon } from '../icons'
 import { useToast } from '@/hooks/use-toast'
 import { Dialog, DialogContent, DialogTrigger } from '@/ui/dialog'
@@ -12,13 +13,13 @@ import { IconButton } from '@/ui/icon-button'
 // DeleteBreak — Confirmation dialog for deleting a break request
 // ============================================================
 
-export interface DeleteBreakProps {
+export interface DeleteBreakProps extends React.HTMLAttributes<HTMLDivElement> {
   id: string
   userId: string
   onDelete?: () => void
 }
 
-export const DeleteBreak = React.forwardRef<HTMLDivElement, DeleteBreakProps>(function DeleteBreak({ id: _id, userId: _userId, onDelete }, _ref) {
+export const DeleteBreak = React.forwardRef<HTMLDivElement, DeleteBreakProps>(function DeleteBreak({ id: _id, userId: _userId, onDelete, className, ...props }, _ref) {
   const [isSubmitting, setIsSubmitting] = useState(false)
   const { toast } = useToast()
   const [open, setOpen] = useState(false)
@@ -58,7 +59,7 @@ export const DeleteBreak = React.forwardRef<HTMLDivElement, DeleteBreakProps>(fu
         <IconButton icon={<BreakDeleteIcon />} size="md" aria-label="Delete break" />
       </DialogTrigger>
       {/* intentional: dialog fixed width — compact confirmation dialog */}
-      <DialogContent className="flex w-[335px] flex-col items-center gap-ds-06 p-ds-06 max-md:w-[90%] max-md:rounded-ds-lg">
+      <DialogContent className={cn("flex w-[335px] flex-col items-center gap-ds-06 p-ds-06 max-md:w-[90%] max-md:rounded-ds-lg", className)} {...props}>
         <div className="flex w-full max-w-[240px] flex-col items-center gap-ds-04 text-center">
           <p className="text-ds-lg font-semibold text-center text-text-primary">
             Delete this break?

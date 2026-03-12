@@ -20,7 +20,7 @@ import type {
 // Types
 // ============================================================
 
-export interface AttendanceOverviewProps {
+export interface AttendanceOverviewProps extends React.HTMLAttributes<HTMLDivElement> {
   isFutureDate: boolean
   users: AdminUser[]
   groupedAttendance: GroupedAttendance | null
@@ -74,6 +74,8 @@ export const AttendanceOverview = React.forwardRef<HTMLDivElement, AttendanceOve
   groupedAttendance,
   userImages,
   selectedDate,
+  className,
+  ...props
 }, forwardedRef) {
   const scrollContainerRef = useRef<HTMLDivElement | null>(null)
   const mergedRef = useCallback((node: HTMLDivElement | null) => {
@@ -113,7 +115,8 @@ export const AttendanceOverview = React.forwardRef<HTMLDivElement, AttendanceOve
     // eslint-disable-next-line jsx-a11y/no-static-element-interactions -- drag-to-scroll UX enhancement on scrollable container
     <div
       ref={mergedRef}
-      className="hide-scrollbar w-full cursor-grab overflow-x-auto active:cursor-grabbing max-md:pb-ds-05"
+      className={cn("hide-scrollbar w-full cursor-grab overflow-x-auto active:cursor-grabbing max-md:pb-ds-05", className)}
+      {...props}
       onMouseDown={handleMouseDown}
       onMouseMove={handleMouseMove}
       onMouseUp={handleMouseUp}

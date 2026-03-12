@@ -1,6 +1,7 @@
 'use client'
 
 import * as React from 'react'
+import { cn } from '@/ui/lib/utils'
 import { MenuDotsIcon } from '../icons'
 import { Popover, PopoverContent, PopoverTrigger } from '@/ui/popover'
 import { Tooltip, TooltipTrigger, TooltipContent } from '@/ui'
@@ -15,7 +16,7 @@ import type { BreakRequest } from '../types'
 // Breaks — Break list table showing all breaks
 // ============================================================
 
-export interface BreaksProps {
+export interface BreaksProps extends React.HTMLAttributes<HTMLDivElement> {
   breaks: BreakRequest[]
   userImages: Record<string, string>
   existingBreaks?: BreakRequest[]
@@ -42,9 +43,11 @@ export const Breaks = React.forwardRef<HTMLDivElement, BreaksProps>(
   onSave,
   onDelete,
   onRefresh: _onRefresh,
+  className,
+  ...props
 }, ref) {
   return (
-    <div ref={ref} className="m-0 flex h-[400px] w-full flex-col items-start justify-start p-0 max-md:h-auto">
+    <div ref={ref} className={cn("m-0 flex h-[400px] w-full flex-col items-start justify-start p-0 max-md:h-auto", className)} {...props}>
       <div className="mx-auto mb-ds-05 mt-ds-04 flex w-[92%] items-center">
         <div className="w-[16%] min-w-[120px] overflow-hidden px-ds-04 py-ds-03">
           <div className="text-ds-sm font-semibold uppercase tracking-wider text-text-tertiary">NAME</div>

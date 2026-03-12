@@ -22,7 +22,7 @@ import { format } from 'date-fns'
 // Props
 // ============================================================
 
-export interface CalendarProps {
+export interface CalendarProps extends React.HTMLAttributes<HTMLDivElement> {
   onDateSelect: (date: Date) => void
   hasCorrection?: (date: Date) => boolean
 }
@@ -32,7 +32,7 @@ export interface CalendarProps {
 // ============================================================
 
 export const Calendar = React.forwardRef<HTMLDivElement, CalendarProps>(
-  function Calendar({ onDateSelect, hasCorrection }, ref) {
+  function Calendar({ onDateSelect, hasCorrection, className, ...props }, ref) {
   const cal = useCalendarNavigation()
 
   // ============================================================
@@ -73,7 +73,7 @@ export const Calendar = React.forwardRef<HTMLDivElement, CalendarProps>(
   // ============================================================
 
   return (
-    <div ref={ref} className="w-full">
+    <div ref={ref} className={cn("w-full", className)} {...props}>
       <div className="mb-ds-06 flex w-full items-center justify-start">
         <DropdownMenu>
           <DropdownMenuTrigger className="text-ds-xl flex items-center gap-ds-03 text-text-secondary">

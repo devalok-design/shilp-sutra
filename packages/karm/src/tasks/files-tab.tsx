@@ -51,12 +51,11 @@ export interface TaskFile {
   externalLabel?: string
 }
 
-interface FilesTabProps {
+interface FilesTabProps extends React.HTMLAttributes<HTMLDivElement> {
   files: TaskFile[]
   onUpload: (file: File, title?: string) => void
   onDelete: (fileId: string) => void
   isUploading?: boolean
-  className?: string
   /** When true, hide upload/delete controls (client view) */
   readOnly?: boolean
 }
@@ -101,6 +100,7 @@ const FilesTab = React.forwardRef<HTMLDivElement, FilesTabProps>(
   isUploading = false,
   className,
   readOnly = false,
+  ...props
 }, ref) {
   const fileInputRef = React.useRef<HTMLInputElement>(null)
   const [dragOver, setDragOver] = React.useState(false)
@@ -135,7 +135,7 @@ const FilesTab = React.forwardRef<HTMLDivElement, FilesTabProps>(
   }
 
   return (
-    <div ref={ref} className={cn('flex flex-col', className)}>
+    <div ref={ref} className={cn('flex flex-col', className)} {...props}>
       {/* Upload zone -- hidden in readOnly mode */}
       {!readOnly && (
         <div

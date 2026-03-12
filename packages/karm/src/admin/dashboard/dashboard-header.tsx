@@ -30,7 +30,7 @@ import type { AdminUser } from '../types'
 // Types
 // ============================================================
 
-export interface DashboardHeaderProps {
+export interface DashboardHeaderProps extends React.HTMLAttributes<HTMLDivElement> {
   selectedMonth: string
   yearsList: string[]
   isTodaySelected: boolean
@@ -63,9 +63,11 @@ export const DashboardHeader = React.forwardRef<HTMLDivElement, DashboardHeaderP
   onSelectAssociate,
   onTimeFrameChange,
   onDateChange,
+  className,
+  ...props
 }, ref) {
   return (
-    <div ref={ref} className="mb-ds-06 flex w-full flex-col items-start justify-between md:flex-row md:items-center">
+    <div ref={ref} className={cn("mb-ds-06 flex w-full flex-col items-start justify-between md:flex-row md:items-center", className)} {...props}>
       <div className="flex w-full items-center justify-between gap-ds-05 md:w-auto md:justify-start">
         <DropdownMenu>
           <DropdownMenuTrigger className="text-ds-xl flex items-center gap-ds-03 text-text-secondary">

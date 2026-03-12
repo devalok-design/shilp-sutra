@@ -1,11 +1,12 @@
 'use client'
 
+import * as React from 'react'
 import { arc } from 'd3-shape'
 import { cn } from '../lib/utils'
 import { resolveColor } from './_internal/colors'
 import { useReducedMotion, getTransitionDuration } from './_internal/animation'
 
-export interface GaugeChartProps {
+export interface GaugeChartProps extends Omit<React.HTMLAttributes<HTMLDivElement>, 'children' | 'color'> {
   /** Current value */
   value: number
   /** Maximum value (default: 100) */
@@ -49,6 +50,7 @@ export function GaugeChart({
   thickness = 16,
   animate = true,
   className,
+  ...props
 }: GaugeChartProps) {
   const reducedMotion = useReducedMotion()
   const duration = getTransitionDuration(reducedMotion, animate ? 600 : 0)
@@ -92,6 +94,7 @@ export function GaugeChart({
   return (
     <div
       className={cn('inline-flex flex-col items-center', className)}
+      {...props}
       role="meter"
       aria-valuenow={clampedValue}
       aria-valuemin={min}

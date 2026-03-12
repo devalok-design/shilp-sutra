@@ -47,7 +47,7 @@ interface CalendarDay {
   isWeekend: boolean
 }
 
-export interface EditBreakProps {
+export interface EditBreakProps extends React.HTMLAttributes<HTMLDivElement> {
   selectedLeave: BreakRequest & { numberOfDays: number }
   existingBreaks?: BreakRequest[]
   onFetchMonthBreaks?: (month: number, year: number) => Promise<BreakRequest[]>
@@ -69,6 +69,8 @@ export const EditBreak = React.forwardRef<HTMLDivElement, EditBreakProps>(functi
   onFetchMonthBreaks,
   onSave,
   onDelete,
+  className,
+  ...props
 }, _ref) {
   // ============================================================
   // Local UI state (not calendar-related)
@@ -424,7 +426,7 @@ export const EditBreak = React.forwardRef<HTMLDivElement, EditBreakProps>(functi
         </Button>
       </DialogTrigger>
       {/* intentional: dialog fixed width — edit-break form layout */}
-      <DialogContent className="w-[440px] p-ds-06 max-md:w-[90%] max-md:rounded-ds-lg">
+      <DialogContent className={cn("w-[440px] p-ds-06 max-md:w-[90%] max-md:rounded-ds-lg", className)} {...props}>
         <DialogHeader>
           <DialogDescription>
             <div className="flex w-full flex-col items-center gap-ds-05">

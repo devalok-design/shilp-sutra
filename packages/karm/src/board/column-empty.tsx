@@ -109,17 +109,16 @@ const ILLUSTRATIONS = [
 // Component
 // ============================================================
 
-export interface ColumnEmptyProps {
+export interface ColumnEmptyProps extends React.HTMLAttributes<HTMLDivElement> {
   /** Column index — used to cycle through illustrations */
   index: number
   /** Called when the user clicks "Add a task" */
   onAddTask?: () => void
   /** When true, renders a drop-target hint instead of the default empty state */
   isDropTarget?: boolean
-  className?: string
 }
 
-export function ColumnEmpty({ index, onAddTask, isDropTarget = false, className }: ColumnEmptyProps) {
+export function ColumnEmpty({ index, onAddTask, isDropTarget = false, className, ...props }: ColumnEmptyProps) {
   const Illustration = ILLUSTRATIONS[index % ILLUSTRATIONS.length]
 
   return (
@@ -128,6 +127,7 @@ export function ColumnEmpty({ index, onAddTask, isDropTarget = false, className 
         'flex flex-col items-center justify-center gap-ds-03 py-ds-07 text-center',
         className,
       )}
+      {...props}
     >
       <span className="text-text-quaternary">
         <Illustration />

@@ -29,7 +29,7 @@ export interface CalendarEvent {
   label?: string
 }
 
-export interface CalendarGridProps {
+export interface CalendarGridProps extends Omit<React.ComponentPropsWithoutRef<'div'>, 'onSelect'> {
   currentMonth: Date
   selected?: Date | null
   rangeStart?: Date | null
@@ -67,6 +67,8 @@ export const CalendarGrid = React.forwardRef<HTMLDivElement, CalendarGridProps>(
   hidePrevNav,
   hideNextNav,
   events,
+  className,
+  ...props
 }, forwardedRef) {
   const gridRef = React.useRef<HTMLDivElement>(null)
 
@@ -181,7 +183,7 @@ export const CalendarGrid = React.forwardRef<HTMLDivElement, CalendarGridProps>(
   }
 
   return (
-    <div ref={forwardedRef} className="w-[252px]">
+    <div ref={forwardedRef} {...props} className={cn("w-[252px]", className)}>
       <div className="flex items-center justify-between px-ds-02 pb-ds-04">
         {hidePrevNav ? (
           <span className="h-ds-xs-plus w-ds-xs-plus" />

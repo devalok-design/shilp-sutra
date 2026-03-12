@@ -21,7 +21,7 @@ export type PresetKey =
   | 'lastMonth'
   | 'thisYear'
 
-export interface PresetsProps {
+export interface PresetsProps extends Omit<React.ComponentPropsWithoutRef<'div'>, 'onSelect'> {
   presets: PresetKey[]
   onSelect: (start: Date, end: Date) => void
   className?: string
@@ -86,9 +86,9 @@ const PRESET_MAP: Record<PresetKey, PresetDefinition> = {
 }
 
 export const Presets = React.forwardRef<HTMLDivElement, PresetsProps>(
-  function Presets({ presets, onSelect, className }, ref) {
+  function Presets({ presets, onSelect, className, ...props }, ref) {
   return (
-    <div ref={ref} className={cn('flex flex-col gap-ds-01', className)}>
+    <div ref={ref} {...props} className={cn('flex flex-col gap-ds-01', className)}>
       {presets.map((key) => {
         const preset = PRESET_MAP[key]
         if (!preset) return null

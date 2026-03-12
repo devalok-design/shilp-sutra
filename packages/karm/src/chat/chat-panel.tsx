@@ -25,7 +25,7 @@ export interface Agent {
   desc: string
 }
 
-export interface ChatPanelProps {
+export interface ChatPanelProps extends Omit<React.HTMLAttributes<HTMLDivElement>, 'children'> {
   isOpen: boolean
   onOpenChange: (open: boolean) => void
   messages: ChatMessage[]
@@ -82,6 +82,8 @@ const ChatPanel = React.forwardRef<HTMLDivElement, ChatPanelProps>(
     onSelectConversation,
     onArchiveConversation,
     onDeleteConversation,
+    className,
+    ...props
   }, ref) {
 
   const [showHistory, setShowHistory] = useState(false)
@@ -95,7 +97,8 @@ const ChatPanel = React.forwardRef<HTMLDivElement, ChatPanelProps>(
         ref={ref}
         side="right"
         /* intentional: chat panel capped at 480px to prevent oversized side panel */
-        className="flex w-full flex-col gap-0 border-l border-border bg-layer-01 p-0 sm:max-w-[480px] [&>button]:hidden"
+        className={cn("flex w-full flex-col gap-0 border-l border-border bg-layer-01 p-0 sm:max-w-[480px] [&>button]:hidden", className)}
+        {...props}
       >
         <SheetTitle className="sr-only">AI Chat</SheetTitle>
 

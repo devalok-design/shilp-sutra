@@ -2,15 +2,16 @@ import * as React from 'react'
 import { cn } from '../ui/lib/utils'
 import { Skeleton } from '../ui/skeleton'
 
-export interface CardSkeletonProps {
+export interface CardSkeletonProps extends React.ComponentPropsWithoutRef<'div'> {
   className?: string
 }
 
 const CardSkeleton = React.forwardRef<HTMLDivElement, CardSkeletonProps>(
-  function CardSkeleton({ className }, ref) {
+  function CardSkeleton({ className, ...props }, ref) {
   return (
     <div
       ref={ref}
+      {...props}
       className={cn(
         'rounded-ds-lg border border-border bg-layer-01 p-ds-05b',
         className,
@@ -46,10 +47,12 @@ const TableSkeleton = React.forwardRef<HTMLDivElement, TableSkeletonProps>(
   rows = 5,
   columns = 4,
   className,
+  ...props
 }, ref) {
   return (
     <div
       ref={ref}
+      {...props}
       className={cn(
         'overflow-hidden rounded-ds-lg border border-border',
         className,
@@ -105,9 +108,10 @@ const BoardSkeleton = React.forwardRef<HTMLDivElement, BoardSkeletonProps>(
   columns = 4,
   cardsPerColumn = 3,
   className,
+  ...props
 }, ref) {
   return (
-    <div ref={ref} className={cn('flex gap-ds-05 overflow-x-auto', className)}>
+    <div ref={ref} {...props} className={cn('flex gap-ds-05 overflow-x-auto', className)}>
       {Array.from({ length: columns }).map((_, colIndex) => (
         <div
           key={`col-${colIndex}`}
@@ -161,9 +165,10 @@ const ListSkeleton = React.forwardRef<HTMLDivElement, ListSkeletonProps>(
   rows = 6,
   showAvatar = true,
   className,
+  ...props
 }, ref) {
   return (
-    <div ref={ref} className={cn('flex flex-col', className)}>
+    <div ref={ref} {...props} className={cn('flex flex-col', className)}>
       {Array.from({ length: rows }).map((_, i) => (
         <div
           key={`list-${i}`}

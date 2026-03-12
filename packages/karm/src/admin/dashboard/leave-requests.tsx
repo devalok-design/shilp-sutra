@@ -20,7 +20,7 @@ import type { BreakRequest } from '../types'
 // Props
 // ============================================================
 
-export interface LeaveRequestsProps {
+export interface LeaveRequestsProps extends React.HTMLAttributes<HTMLDivElement> {
   /** List of pending break requests */
   requests: BreakRequest[]
   /** Current user ID (used to prevent self-approval) */
@@ -55,6 +55,8 @@ export const LeaveRequests = React.forwardRef<HTMLDivElement, LeaveRequestsProps
   activeTimeFrame: _activeTimeFrame,
   onApproveBreak,
   onRejectBreak,
+  className,
+  ...props
 }, ref) {
   const interaction = useLeaveRequestInteraction()
   const isMobile = useIsMobile()
@@ -150,7 +152,8 @@ export const LeaveRequests = React.forwardRef<HTMLDivElement, LeaveRequestsProps
   return (
     <div
       ref={ref}
-      className="no-scrollbar max-h-[230px] w-full overflow-y-auto px-0 md:px-ds-06 max-md:flex-1 max-md:max-h-none max-md:min-h-[407.2px]"
+      className={cn("no-scrollbar max-h-[230px] w-full overflow-y-auto px-0 md:px-ds-06 max-md:flex-1 max-md:max-h-none max-md:min-h-[407.2px]", className)}
+      {...props}
     >
       <div className="flex h-full flex-col gap-ds-03 py-ds-03 max-md:h-[max-content] max-md:gap-ds-05 max-md:py-0 max-md:pb-ds-05">
         {requests?.map((request) => (

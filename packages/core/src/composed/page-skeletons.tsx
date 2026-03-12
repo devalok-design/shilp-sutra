@@ -6,10 +6,12 @@ const shimmer = 'bg-field'
 
 // --- Dashboard Skeleton ---
 
-const DashboardSkeleton = React.forwardRef<HTMLDivElement>(
-  function DashboardSkeleton(_props, ref) {
+export interface DashboardSkeletonProps extends React.ComponentPropsWithoutRef<'div'> {}
+
+const DashboardSkeleton = React.forwardRef<HTMLDivElement, DashboardSkeletonProps>(
+  function DashboardSkeleton({ className, ...props }, ref) {
   return (
-    <div ref={ref} className="flex flex-col gap-ds-06">
+    <div ref={ref} {...props} className={cn("flex flex-col gap-ds-06", className)}>
       {/* Stat cards grid */}
       <div className="grid grid-cols-1 gap-ds-05 sm:grid-cols-2 lg:grid-cols-4">
         {Array.from({ length: 4 }).map((_, i) => (
@@ -62,10 +64,12 @@ DashboardSkeleton.displayName = 'DashboardSkeleton'
 
 // --- Project List Skeleton ---
 
-const ProjectListSkeleton = React.forwardRef<HTMLDivElement>(
-  function ProjectListSkeleton(_props, ref) {
+export interface ProjectListSkeletonProps extends React.ComponentPropsWithoutRef<'div'> {}
+
+const ProjectListSkeleton = React.forwardRef<HTMLDivElement, ProjectListSkeletonProps>(
+  function ProjectListSkeleton({ className, ...props }, ref) {
   return (
-    <div ref={ref} className="flex flex-col gap-ds-06">
+    <div ref={ref} {...props} className={cn("flex flex-col gap-ds-06", className)}>
       {/* Header */}
       <div className="flex flex-col gap-ds-05 sm:flex-row sm:items-center sm:justify-between">
         <div className="flex flex-col gap-ds-03">
@@ -127,10 +131,12 @@ ProjectListSkeleton.displayName = 'ProjectListSkeleton'
 
 // --- Task Detail Skeleton ---
 
-const TaskDetailSkeleton = React.forwardRef<HTMLDivElement>(
-  function TaskDetailSkeleton(_props, ref) {
+export interface TaskDetailSkeletonProps extends React.ComponentPropsWithoutRef<'div'> {}
+
+const TaskDetailSkeleton = React.forwardRef<HTMLDivElement, TaskDetailSkeletonProps>(
+  function TaskDetailSkeleton({ className, ...props }, ref) {
   return (
-    <div ref={ref} className="flex h-full flex-col gap-0 rounded-ds-xl border border-border bg-layer-01">
+    <div ref={ref} {...props} className={cn("flex h-full flex-col gap-0 rounded-ds-xl border border-border bg-layer-01", className)}>
       {/* Header */}
       <div className="flex items-center justify-between border-b border-border px-ds-05b py-ds-05">
         <Skeleton className={cn('h-[20px] w-[192px]', shimmer)} />

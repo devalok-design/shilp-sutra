@@ -22,7 +22,7 @@ import { resolveColor } from './_internal/colors'
 import { useReducedMotion, getTransitionDuration } from './_internal/animation'
 import type { DataPoint, Series } from './_internal/types'
 
-export interface AreaChartProps {
+export interface AreaChartProps extends Omit<React.HTMLAttributes<HTMLDivElement>, 'children'> {
   /** Data array */
   data: DataPoint[]
   /** Key for x-axis */
@@ -78,6 +78,7 @@ export function AreaChart({
   xLabel,
   yLabel,
   className,
+  ...props
 }: AreaChartProps) {
   const { tooltip, show, hide } = useChartTooltip()
   const reducedMotion = useReducedMotion()
@@ -93,7 +94,7 @@ export function AreaChart({
   const chartId = React.useId()
 
   return (
-    <div className={cn('relative', className)}>
+    <div className={cn('relative', className)} {...props}>
       <ChartContainer height={height}>
         {({ width, height: innerHeight, margin }) => {
           void margin

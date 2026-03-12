@@ -101,7 +101,7 @@ function useAdminDashboardContext(): AdminDashboardContextValue {
 // Root Props
 // ============================================================
 
-export interface AdminDashboardRootProps {
+export interface AdminDashboardRootProps extends React.HTMLAttributes<HTMLDivElement> {
   /** Current authenticated user's ID */
   currentUserId: string
   /** Current user's role */
@@ -137,6 +137,8 @@ const AdminDashboardRoot = React.forwardRef<
     isLoading = false,
     onAssociateChange,
     children,
+    className,
+    ...props
   },
   ref,
 ) {
@@ -191,7 +193,8 @@ const AdminDashboardRoot = React.forwardRef<
     <AdminDashboardContext.Provider value={contextValue}>
       <div
         ref={ref}
-        className="flex w-full max-w-layout flex-col items-center justify-center max-md:h-[100%] max-md:justify-start"
+        className={cn("flex w-full max-w-layout flex-col items-center justify-center max-md:h-[100%] max-md:justify-start", className)}
+        {...props}
       >
         <div className="z-raised flex w-full flex-col items-start justify-start rounded-ds-lg border border-border bg-layer-02 p-ds-05 shadow-05 max-md:flex-1 max-md:min-h-0 max-md:overflow-y-auto max-md:border-0 max-md:px-ds-05 max-md:pb-0 max-md:pt-ds-06">
           {children}
@@ -207,7 +210,7 @@ AdminDashboardRoot.displayName = 'AdminDashboard.Root'
 // Calendar Props
 // ============================================================
 
-export interface AdminDashboardCalendarProps {
+export interface AdminDashboardCalendarProps extends React.HTMLAttributes<HTMLDivElement> {
   /** Map of date string (YYYY-MM-DD) -> attendance info */
   dateAttendanceMap?: Map<string, DateAttendanceInfo> | null
   /** Called when the selected date changes */
@@ -234,6 +237,8 @@ const AdminDashboardCalendar = React.forwardRef<
     onTimeFrameChange,
     users = [],
     selectedUserAttendance = null,
+    className,
+    ...props
   },
   ref,
 ) {
@@ -298,7 +303,7 @@ const AdminDashboardCalendar = React.forwardRef<
   // ============================================================
 
   return (
-    <div ref={ref}>
+    <div ref={ref} className={className} {...props}>
       {/* Header: Month selector + Associate filter + Toggle + Arrows */}
       <DashboardHeader
         selectedMonth={cal.selectedMonth}
@@ -377,7 +382,7 @@ AdminDashboardCalendar.displayName = 'AdminDashboard.Calendar'
 // AttendanceOverview Props
 // ============================================================
 
-export interface AdminDashboardAttendanceOverviewProps {
+export interface AdminDashboardAttendanceOverviewProps extends React.HTMLAttributes<HTMLDivElement> {
   /** Grouped attendance data for the selected date */
   groupedAttendance?: GroupedAttendance | null
   /** Full list of users */
@@ -392,7 +397,7 @@ const AdminDashboardAttendanceOverview = React.forwardRef<
   HTMLDivElement,
   AdminDashboardAttendanceOverviewProps
 >(function AdminDashboardAttendanceOverview(
-  { groupedAttendance = null, users = [] },
+  { groupedAttendance = null, users = [], className, ...props },
   ref,
 ) {
   const { cal, selectedAssociate, userImages } = useAdminDashboardContext()
@@ -401,7 +406,7 @@ const AdminDashboardAttendanceOverview = React.forwardRef<
   if (selectedAssociate) return null
 
   return (
-    <div ref={ref}>
+    <div ref={ref} className={className} {...props}>
       <AttendanceOverview
         isFutureDate={cal.isFutureDate}
         users={users}
@@ -419,7 +424,7 @@ AdminDashboardAttendanceOverview.displayName = 'AdminDashboard.AttendanceOvervie
 // AssociateDetail Props
 // ============================================================
 
-export interface AdminDashboardAssociateDetailProps {
+export interface AdminDashboardAssociateDetailProps extends React.HTMLAttributes<HTMLDivElement> {
   /** Attendance record for the selected associate + date */
   attendance?: AttendanceRecord | null
   /** Tasks for the selected associate */
@@ -476,6 +481,8 @@ const AdminDashboardAssociateDetail = React.forwardRef<
     onCancelBreak,
     onRefreshSelectedUserAttendance,
     onRefreshAttendanceData,
+    className,
+    ...props
   },
   ref,
 ) {
@@ -485,7 +492,7 @@ const AdminDashboardAssociateDetail = React.forwardRef<
   if (!selectedAssociate) return null
 
   return (
-    <div ref={ref}>
+    <div ref={ref} className={className} {...props}>
       <AssociateDetail
         selectedAssociate={selectedAssociate}
         selectedDate={cal.selectedDate}
@@ -512,7 +519,7 @@ AdminDashboardAssociateDetail.displayName = 'AdminDashboard.AssociateDetail'
 // LeaveRequests Props
 // ============================================================
 
-export interface AdminDashboardLeaveRequestsProps {
+export interface AdminDashboardLeaveRequestsProps extends React.HTMLAttributes<HTMLDivElement> {
   /** Pending break/leave requests */
   requests?: BreakRequest[]
   /** Pending attendance corrections */
@@ -566,6 +573,8 @@ const AdminDashboardLeaveRequests = React.forwardRef<
     onRejectBreak,
     onApproveCorrection,
     onRejectCorrection,
+    className,
+    ...props
   },
   ref,
 ) {
@@ -599,7 +608,7 @@ const AdminDashboardLeaveRequests = React.forwardRef<
   }
 
   return (
-    <div ref={ref} className="w-full p-0 md:p-ds-06">
+    <div ref={ref} className={cn("w-full p-0 md:p-ds-06", className)} {...props}>
       <div className="max-md:pt-[16px] flex flex-col items-start overflow-hidden rounded-ds-lg border-0 border-border-subtle bg-layer-01 shadow-01 pt-ds-03 md:border max-md:pb-0">
         <div className="flex w-full items-start border-b-[1px] border-b-border px-ds-06 md:border-b max-md:border-0 max-md:px-0">
           {requests.length > 0 && (
@@ -668,7 +677,7 @@ AdminDashboardLeaveRequests.displayName = 'AdminDashboard.LeaveRequests'
 // Content Wrapper (handles rounded corners based on selected date)
 // ============================================================
 
-export interface AdminDashboardContentProps {
+export interface AdminDashboardContentProps extends React.HTMLAttributes<HTMLDivElement> {
   /** Children (AttendanceOverview, AssociateDetail, LeaveRequests) */
   children: ReactNode
 }
@@ -676,7 +685,7 @@ export interface AdminDashboardContentProps {
 const AdminDashboardContent = React.forwardRef<
   HTMLDivElement,
   AdminDashboardContentProps
->(function AdminDashboardContent({ children }, ref) {
+>(function AdminDashboardContent({ children, className: contentClassName, ...props }, ref) {
   const { cal } = useAdminDashboardContext()
 
   const _isFirstDate = cal.isFirstDate()
@@ -693,7 +702,9 @@ const AdminDashboardContent = React.forwardRef<
           'rounded-b-ds-lg rounded-tr-none': !_isFirstDate && _isLastDate,
           'rounded-ds-none': _isFirstDate && _isLastDate,
         },
+        contentClassName,
       )}
+      {...props}
     >
       {children}
     </div>

@@ -60,14 +60,13 @@ interface TaskData {
   visibility: 'INTERNAL' | 'EVERYONE'
 }
 
-interface TaskPropertiesProps {
+interface TaskPropertiesProps extends React.HTMLAttributes<HTMLDivElement> {
   task: TaskData
   columns: Column[]
   members: Member[]
   onUpdate: (field: string, value: unknown) => void
   onAssign: (userId: string) => void
   onUnassign: (userId: string) => void
-  className?: string
   /** When true, most fields are display-only except those in editableFields */
   readOnly?: boolean
   /** Field names the client can still edit (e.g. ['priority', 'dueDate']) */
@@ -155,6 +154,7 @@ const TaskProperties = React.forwardRef<HTMLDivElement, TaskPropertiesProps>(
   renderPriorityIndicator,
   renderDatePicker,
   onConfirmVisibilityChange,
+  ...props
 }, ref) {
   const [labelInput, setLabelInput] = React.useState('')
   const [showLabelInput, setShowLabelInput] = React.useState(false)
@@ -217,7 +217,7 @@ const TaskProperties = React.forwardRef<HTMLDivElement, TaskPropertiesProps>(
   const PriorityIndicator = renderPriorityIndicator || DefaultPriorityIndicator
 
   return (
-    <div ref={ref} className={cn('space-y-ds-01', className)}>
+    <div ref={ref} className={cn('space-y-ds-01', className)} {...props}>
       {/* Column */}
       <PropertyRow icon={IconColumns3} label="Column">
         {readOnly && !editableFields?.includes('columnId') ? (

@@ -25,7 +25,7 @@ export interface DateAttendanceInfo {
   isBreakApproved?: boolean
 }
 
-export interface RenderDateProps {
+export interface RenderDateProps extends React.HTMLAttributes<HTMLDivElement> {
   day: DayInfo
   isAdmin: boolean
   selectedDate: string | Date
@@ -44,6 +44,8 @@ export const RenderDate = React.forwardRef<HTMLDivElement, RenderDateProps>(
   dateAttendanceMap,
   selectedDate,
   activeTimeFrame,
+  className,
+  ...props
 }, ref) {
   const [state, setState] = useState({
     today: day.isToday,
@@ -248,7 +250,7 @@ export const RenderDate = React.forwardRef<HTMLDivElement, RenderDateProps>(
   )
 
   return (
-    <div ref={ref} className={bgClasses}>
+    <div ref={ref} className={cn(bgClasses, className)} {...props}>
       {/* eslint-disable-next-line jsx-a11y/no-static-element-interactions */}
       <div
         className={dateClasses}

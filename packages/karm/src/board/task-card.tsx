@@ -301,12 +301,12 @@ function TaskCardVisual({
 // Sortable Task Card (used inside SortableContext)
 // ============================================================
 
-export interface TaskCardProps {
+export interface TaskCardProps extends React.HTMLAttributes<HTMLDivElement> {
   task: BoardTask
 }
 
 const TaskCard = React.forwardRef<HTMLDivElement, TaskCardProps>(
-  function TaskCard({ task }, ref) {
+  function TaskCard({ task, className, ...props }, ref) {
     const {
       attributes,
       listeners,
@@ -330,7 +330,7 @@ const TaskCard = React.forwardRef<HTMLDivElement, TaskCardProps>(
     }
 
     return (
-      <div ref={composedRef} style={style}>
+      <div ref={composedRef} style={style} className={className} {...props}>
         <TaskCardVisual
           task={task}
           isDragging={isDragging}
@@ -486,12 +486,12 @@ function TaskCardCompactVisual({
 // Sortable Compact Task Card
 // ============================================================
 
-export interface TaskCardCompactProps {
+export interface TaskCardCompactProps extends React.HTMLAttributes<HTMLDivElement> {
   task: BoardTask
 }
 
 const TaskCardCompact = React.forwardRef<HTMLDivElement, TaskCardCompactProps>(
-  function TaskCardCompact({ task }, ref) {
+  function TaskCardCompact({ task, className, ...props }, ref) {
     const {
       attributes,
       listeners,
@@ -515,7 +515,7 @@ const TaskCardCompact = React.forwardRef<HTMLDivElement, TaskCardCompactProps>(
     }
 
     return (
-      <div ref={composedRef} style={style}>
+      <div ref={composedRef} style={style} className={className} {...props}>
         <TaskCardCompactVisual
           task={task}
           isDragging={isDragging}
@@ -532,16 +532,16 @@ TaskCardCompact.displayName = 'TaskCardCompact'
 // Compact Overlay Task Card
 // ============================================================
 
-export interface TaskCardCompactOverlayProps {
+export interface TaskCardCompactOverlayProps extends React.HTMLAttributes<HTMLDivElement> {
   task: BoardTask
 }
 
 const TaskCardCompactOverlay = React.forwardRef<
   HTMLDivElement,
   TaskCardCompactOverlayProps
->(function TaskCardCompactOverlay({ task }, ref) {
+>(function TaskCardCompactOverlay({ task, className, ...props }, ref) {
   return (
-    <div ref={ref}>
+    <div ref={ref} className={className} {...props}>
       <TaskCardCompactVisual task={task} isDragOverlay />
     </div>
   )
@@ -553,14 +553,14 @@ TaskCardCompactOverlay.displayName = 'TaskCardCompactOverlay'
 // Overlay Task Card (used inside DragOverlay, no sortable hooks)
 // ============================================================
 
-export interface TaskCardOverlayProps {
+export interface TaskCardOverlayProps extends React.HTMLAttributes<HTMLDivElement> {
   task: BoardTask
 }
 
 const TaskCardOverlay = React.forwardRef<HTMLDivElement, TaskCardOverlayProps>(
-  function TaskCardOverlay({ task }, ref) {
+  function TaskCardOverlay({ task, className, ...props }, ref) {
     return (
-      <div ref={ref}>
+      <div ref={ref} className={className} {...props}>
         <TaskCardVisual task={task} isDragOverlay />
       </div>
     )

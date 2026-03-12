@@ -12,7 +12,7 @@ import { resolveColor } from './_internal/colors'
 import { useReducedMotion, getTransitionDuration } from './_internal/animation'
 import type { DataPoint, ChartColor } from './_internal/types'
 
-export interface BarChartProps {
+export interface BarChartProps extends Omit<React.HTMLAttributes<HTMLDivElement>, 'children' | 'color'> {
   /** Data array */
   data: DataPoint[]
   /** Key for x-axis categories */
@@ -66,6 +66,7 @@ export function BarChart({
   yLabel,
   seriesLabels,
   className,
+  ...props
 }: BarChartProps) {
   const { tooltip, show, hide } = useChartTooltip()
   const reducedMotion = useReducedMotion()
@@ -99,7 +100,7 @@ export function BarChart({
       ]
 
   return (
-    <div className={cn('relative', className)}>
+    <div className={cn('relative', className)} {...props}>
       <ChartContainer height={height}>
         {({ width, height: innerHeight, margin }) => {
           // Suppress unused-var lint for margin (available for extensions)

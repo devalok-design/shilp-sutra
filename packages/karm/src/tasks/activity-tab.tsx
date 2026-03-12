@@ -37,9 +37,8 @@ export interface AuditLogEntry {
   metadata: Record<string, unknown> | null
 }
 
-interface ActivityTabProps {
+interface ActivityTabProps extends React.HTMLAttributes<HTMLDivElement> {
   activities: AuditLogEntry[]
-  className?: string
 }
 
 // ============================================================
@@ -218,7 +217,7 @@ function getActorName(entry: AuditLogEntry): string {
 // ============================================================
 
 const ActivityTab = React.forwardRef<HTMLDivElement, ActivityTabProps>(
-  function ActivityTab({ activities, className }, ref) {
+  function ActivityTab({ activities, className, ...props }, ref) {
   if (activities.length === 0) {
     return (
       <EmptyState
@@ -228,12 +227,13 @@ const ActivityTab = React.forwardRef<HTMLDivElement, ActivityTabProps>(
         description="Actions on this task will appear here"
         compact
         className={className}
+        {...props}
       />
     )
   }
 
   return (
-    <div ref={ref} className={cn('relative', className)}>
+    <div ref={ref} className={cn('relative', className)} {...props}>
       {/* Timeline line */}
       <div className="absolute left-[11px] top-2 bottom-2 w-px bg-border" />
 

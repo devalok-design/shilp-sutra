@@ -302,7 +302,7 @@ export interface MentionItem {
   avatar?: string
 }
 
-export interface RichTextEditorProps {
+export interface RichTextEditorProps extends Omit<React.ComponentPropsWithoutRef<'div'>, 'onChange' | 'content'> {
   content?: string
   placeholder?: string
   onChange?: (html: string) => void
@@ -332,6 +332,7 @@ const RichTextEditor = React.forwardRef<HTMLDivElement, RichTextEditorProps>(
   mentions,
   onMentionSearch,
   onMentionSelect: _onMentionSelect,
+  ...props
 }, ref) {
   const editorRef = React.useRef<ReturnType<typeof useEditor>>(null)
   const [showEmojiPicker, setShowEmojiPicker] = React.useState(false)
@@ -480,7 +481,7 @@ const RichTextEditor = React.forwardRef<HTMLDivElement, RichTextEditorProps>(
   if (!editor) return null
 
   return (
-    <div ref={ref} className={cn('relative', className)}>
+    <div ref={ref} {...props} className={cn('relative', className)}>
       {/* Emoji picker rendered outside the overflow-hidden box so it isn't clipped */}
       {showEmojiPicker && (
         <div
@@ -549,13 +550,13 @@ const RichTextEditor = React.forwardRef<HTMLDivElement, RichTextEditorProps>(
 
 RichTextEditor.displayName = 'RichTextEditor'
 
-export interface RichTextViewerProps {
+export interface RichTextViewerProps extends Omit<React.ComponentPropsWithoutRef<'div'>, 'content'> {
   content: string
   className?: string
 }
 
 const RichTextViewer = React.forwardRef<HTMLDivElement, RichTextViewerProps>(
-  function RichTextViewer({ content, className }, ref) {
+  function RichTextViewer({ content, className, ...props }, ref) {
   const editor = useEditor({
     extensions: [
       StarterKit.configure({
@@ -598,7 +599,7 @@ const RichTextViewer = React.forwardRef<HTMLDivElement, RichTextViewerProps>(
   if (!editor) return null
 
   return (
-    <div ref={ref} className={className}>
+    <div ref={ref} {...props} className={className}>
       <EditorContent editor={editor} />
     </div>
   )

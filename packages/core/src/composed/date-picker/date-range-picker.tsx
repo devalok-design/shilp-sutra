@@ -17,7 +17,7 @@ import type { PresetKey } from './presets'
 
 type CalendarView = 'days' | 'months' | 'years'
 
-export interface DateRangePickerProps {
+export interface DateRangePickerProps extends Omit<React.ComponentPropsWithoutRef<'button'>, 'onChange'> {
   startDate?: Date | null
   endDate?: Date | null
   onChange?: (range: { start: Date | null; end: Date | null }) => void
@@ -47,6 +47,7 @@ const DateRangePicker = React.forwardRef<HTMLButtonElement, DateRangePickerProps
       disabledDates,
       presets,
       numberOfMonths = 1,
+      ...props
     },
     ref,
   ) {
@@ -198,6 +199,7 @@ const DateRangePicker = React.forwardRef<HTMLButtonElement, DateRangePickerProps
         <button
           ref={ref}
           type="button"
+          {...props}
           className={cn(
             'inline-flex h-ds-sm-plus items-center gap-ds-03 rounded-ds-lg border border-border bg-layer-01 px-ds-04 text-left transition-colors duration-fast-01 ease-productive-standard',
             'hover:border-border-strong',

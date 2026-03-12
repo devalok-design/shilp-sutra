@@ -14,7 +14,7 @@ export interface Conversation {
   updatedAt: string
 }
 
-export interface ConversationListProps {
+export interface ConversationListProps extends Omit<React.HTMLAttributes<HTMLDivElement>, 'onSelect'> {
   conversations: Conversation[]
   activeConversationId?: string | null
   isLoading?: boolean
@@ -62,9 +62,11 @@ export const ConversationList = React.forwardRef<HTMLDivElement, ConversationLis
   onNewChat,
   onArchive,
   onDelete,
+  className,
+  ...props
 }, ref) {
   return (
-    <div ref={ref} className="flex flex-1 flex-col overflow-hidden">
+    <div ref={ref} className={cn("flex flex-1 flex-col overflow-hidden", className)} {...props}>
       {/* Header */}
       <div className="flex items-center justify-between border-b border-border px-ds-05 py-ds-04">
         <h3 className="text-ds-md font-semibold text-text-primary">

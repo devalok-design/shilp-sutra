@@ -10,7 +10,7 @@ import {
   PopoverTrigger,
 } from '../../ui/popover'
 
-export interface TimePickerProps {
+export interface TimePickerProps extends Omit<React.ComponentPropsWithoutRef<'button'>, 'onChange' | 'value'> {
   /** The currently selected time (as a Date object). */
   value?: Date | null
   /** Callback fired when the time changes. */
@@ -55,6 +55,7 @@ const TimePicker = React.forwardRef<HTMLButtonElement, TimePickerProps>(
       placeholder = 'Pick a time',
       className,
       disabled = false,
+      ...props
     },
     ref,
   ) {
@@ -175,6 +176,7 @@ const TimePicker = React.forwardRef<HTMLButtonElement, TimePickerProps>(
           ref={ref}
           type="button"
           disabled={disabled}
+          {...props}
           className={cn(
             'inline-flex h-ds-sm-plus items-center gap-ds-03 rounded-ds-lg border border-border bg-layer-01 px-ds-04 text-left transition-colors duration-fast-01 ease-productive-standard',
             'hover:border-border-strong',

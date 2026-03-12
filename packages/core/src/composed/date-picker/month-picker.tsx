@@ -8,7 +8,7 @@ const MONTHS = [
   'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec',
 ]
 
-export interface MonthPickerProps {
+export interface MonthPickerProps extends React.ComponentPropsWithoutRef<'div'> {
   currentYear: number
   selectedMonth?: number // 0-11
   onMonthSelect: (month: number) => void
@@ -23,9 +23,11 @@ export const MonthPicker = React.forwardRef<HTMLDivElement, MonthPickerProps>(
   onMonthSelect,
   minDate,
   maxDate,
+  className,
+  ...props
 }, ref) {
   return (
-    <div ref={ref} className="w-[252px]">
+    <div ref={ref} {...props} className={cn("w-[252px]", className)}>
       <div className="text-center pb-ds-04 text-ds-md font-semibold text-text-primary">
         {currentYear}
       </div>

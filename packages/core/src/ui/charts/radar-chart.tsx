@@ -9,7 +9,7 @@ import { ChartTooltip, useChartTooltip } from './_internal/tooltip'
 import { resolveColor } from './_internal/colors'
 import { useReducedMotion, getTransitionDuration } from './_internal/animation'
 
-export interface RadarChartProps {
+export interface RadarChartProps extends Omit<React.HTMLAttributes<HTMLDivElement>, 'children'> {
   /** Data array (one entry per data point / axis) */
   data: Record<string, string | number>[]
   /** Axis labels (3-8 axes) */
@@ -48,6 +48,7 @@ export function RadarChart({
   showLegend = false,
   animate = true,
   className,
+  ...props
 }: RadarChartProps) {
   const containerRef = useRef<HTMLDivElement>(null)
   const [containerWidth, setContainerWidth] = useState(0)
@@ -107,7 +108,7 @@ export function RadarChart({
   }
 
   return (
-    <div ref={containerRef} className={cn('relative w-full', className)}>
+    <div ref={containerRef} className={cn('relative w-full', className)} {...props}>
       {containerWidth > 0 && (
         <>
           <svg

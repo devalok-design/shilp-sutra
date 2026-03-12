@@ -1,5 +1,7 @@
 'use client'
 
+import * as React from 'react'
+import { cn } from './lib/utils'
 import { useToast } from '../hooks/use-toast'
 import {
   Toast,
@@ -47,26 +49,28 @@ import {
  *
  * // Valid colors: 'neutral' | 'success' | 'warning' | 'error' | 'info'
  */
-export function Toaster() {
+export function Toaster({ className, ...props }: React.HTMLAttributes<HTMLDivElement>) {
   const { toasts } = useToast()
 
   return (
     <ToastProvider>
-      {toasts.map(function ({ id, title, description, action, ...props }) {
-        return (
-          <Toast key={id} {...props}>
-            <div className="grid gap-ds-02">
-              {title && <ToastTitle>{title}</ToastTitle>}
-              {description && (
-                <ToastDescription>{description}</ToastDescription>
-              )}
-            </div>
-            {action}
-            <ToastClose />
-          </Toast>
-        )
-      })}
-      <ToastViewport />
+      <div className={cn(className)} {...props}>
+        {toasts.map(function ({ id, title, description, action, ...toastProps }) {
+          return (
+            <Toast key={id} {...toastProps}>
+              <div className="grid gap-ds-02">
+                {title && <ToastTitle>{title}</ToastTitle>}
+                {description && (
+                  <ToastDescription>{description}</ToastDescription>
+                )}
+              </div>
+              {action}
+              <ToastClose />
+            </Toast>
+          )
+        })}
+        <ToastViewport />
+      </div>
     </ToastProvider>
   )
 }

@@ -1,6 +1,7 @@
 'use client'
 
 import * as React from 'react'
+import { cn } from '@/ui/lib/utils'
 import { formatDate } from '../utils/date-utils'
 import type { Adjustment } from '../types'
 
@@ -8,7 +9,7 @@ import type { Adjustment } from '../types'
 // Types
 // ============================================================
 
-export interface ApprovedAdjustmentsProps {
+export interface ApprovedAdjustmentsProps extends React.HTMLAttributes<HTMLDivElement> {
   adjustments: Adjustment[]
   /** Current admin user ID — used to show "You" for self-approved items */
   adminId: string
@@ -22,9 +23,11 @@ const ApprovedAdjustments = React.forwardRef<HTMLDivElement, ApprovedAdjustments
   function ApprovedAdjustments({
   adjustments,
   adminId,
+  className,
+  ...props
 }, ref) {
   return (
-    <div ref={ref} className="no-scrollbar w-full overflow-auto border border-border-subtle sm:rounded-ds-lg max-md:rounded-ds-none max-md:border-0">
+    <div ref={ref} className={cn("no-scrollbar w-full overflow-auto border border-border-subtle sm:rounded-ds-lg max-md:rounded-ds-none max-md:border-0", className)} {...props}>
       <div className="bg-layer-02 pb-ds-06 pl-ds-05 pt-ds-03 md:p-ds-05">
         <div className="no-scrollbar w-full overflow-x-auto overflow-y-auto">
           {/* intentional: min-w-[800px] ensures table columns don't collapse */}

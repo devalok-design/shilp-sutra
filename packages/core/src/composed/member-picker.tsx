@@ -25,7 +25,7 @@ export interface MemberPickerMember {
   avatar?: string
 }
 
-export interface MemberPickerProps {
+export interface MemberPickerProps extends Omit<React.ComponentPropsWithoutRef<'div'>, 'onSelect'> {
   members: MemberPickerMember[]
   selectedIds: string[]
   onSelect: (memberId: string) => void
@@ -47,6 +47,8 @@ const MemberPicker = React.forwardRef<HTMLDivElement, MemberPickerProps>(
       children,
       multiple = false,
       placeholder = 'Search members...',
+      className,
+      ...props
     },
     ref,
   ) => {
@@ -62,7 +64,8 @@ const MemberPicker = React.forwardRef<HTMLDivElement, MemberPickerProps>(
         <PopoverTrigger asChild>{children}</PopoverTrigger>
         <PopoverContent
           ref={ref}
-          className="w-[220px] border-border bg-layer-01 p-0"
+          {...props}
+          className={cn("w-[220px] border-border bg-layer-01 p-0", className)}
           align="start"
           sideOffset={4}
         >

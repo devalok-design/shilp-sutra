@@ -23,7 +23,7 @@ export function useTreeContext() {
 }
 
 // ─── Props ──────────────────────────────────────────────────────────
-export interface TreeViewProps {
+export interface TreeViewProps extends Omit<React.HTMLAttributes<HTMLUListElement>, 'onSelect'> {
   /** Data-driven mode: pass items array */
   items?: TreeNode[]
   /** Initially expanded node IDs */
@@ -94,6 +94,7 @@ const TreeView = React.forwardRef<HTMLUListElement, TreeViewProps>(
       onExpand,
       className,
       children,
+      ...props
     },
     ref,
   ) => {
@@ -190,6 +191,7 @@ const TreeView = React.forwardRef<HTMLUListElement, TreeViewProps>(
           aria-multiselectable={multiSelect || undefined}
           onKeyDown={handleKeyDown}
           className={cn('m-0 list-none p-0', className)}
+          {...props}
         >
           {content}
         </ul>

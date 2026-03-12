@@ -27,7 +27,7 @@ export interface AttendanceCorrection {
   user?: AdminUser
 }
 
-export interface CorrectionListProps {
+export interface CorrectionListProps extends React.HTMLAttributes<HTMLDivElement> {
   corrections: AttendanceCorrection[]
   currentUserId: string
   userImages: Record<string, string>
@@ -50,6 +50,8 @@ export const CorrectionList = React.forwardRef<HTMLDivElement, CorrectionListPro
   activeTimeFrame: _activeTimeFrame,
   onApproveCorrection,
   onRejectCorrection,
+  className,
+  ...props
 }, ref) {
   const handleCorrectionAction = async (
     correction: AttendanceCorrection,
@@ -64,14 +66,15 @@ export const CorrectionList = React.forwardRef<HTMLDivElement, CorrectionListPro
 
   if (corrections.length === 0) {
     return (
-      <div ref={ref} className="p-ds-05 text-center">No pending corrections</div>
+      <div ref={ref} className={cn("p-ds-05 text-center", className)} {...props}>No pending corrections</div>
     )
   }
 
   return (
     <div
       ref={ref}
-      className="flex max-h-[200px] w-full flex-col overflow-y-auto bg-layer-01 px-ds-06 max-md:flex-1 max-md:max-h-none max-md:min-h-[372px] max-md:p-0"
+      className={cn("flex max-h-[200px] w-full flex-col overflow-y-auto bg-layer-01 px-ds-06 max-md:flex-1 max-md:max-h-none max-md:min-h-[372px] max-md:p-0", className)}
+      {...props}
     >
       {corrections.map((correction) => (
         <Fragment key={correction.id}>

@@ -138,7 +138,7 @@ function useBreakAdminContext(): BreakAdminContextValue {
 // Root Props (same as the original BreakAdminProps)
 // ============================================================
 
-export interface BreakAdminProps {
+export interface BreakAdminProps extends React.HTMLAttributes<HTMLDivElement> {
   /** Current admin user */
   currentUser: Pick<AdminUser, 'id' | 'name' | 'role'>
   /** All breaks data */
@@ -259,6 +259,8 @@ const BreakAdminRoot = React.forwardRef<HTMLDivElement, BreakAdminProps>(
       onFetchMonthBreaks,
       realtimeCallbacks: _realtimeCallbacks,
       children,
+      className,
+      ...props
     },
     ref,
   ) {
@@ -501,7 +503,8 @@ const BreakAdminRoot = React.forwardRef<HTMLDivElement, BreakAdminProps>(
       <BreakAdminContext.Provider value={contextValue}>
         <div
           ref={ref}
-          className="z-base flex w-full max-w-layout flex-col items-center justify-center md:pt-0"
+          className={cn("z-base flex w-full max-w-layout flex-col items-center justify-center md:pt-0", className)}
+          {...props}
         >
           <div className="no-scrollbar w-full overflow-auto border border-border-subtle sm:rounded-ds-lg max-md:rounded-ds-none max-md:border-0">
             {children ?? (

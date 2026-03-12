@@ -3,7 +3,7 @@
 import * as React from 'react'
 import { cn } from '../../ui/lib/utils'
 
-export interface YearPickerProps {
+export interface YearPickerProps extends React.ComponentPropsWithoutRef<'div'> {
   currentYear: number
   selectedYear?: number
   onYearSelect: (year: number) => void
@@ -18,12 +18,14 @@ export const YearPicker = React.forwardRef<HTMLDivElement, YearPickerProps>(
   onYearSelect,
   minDate,
   maxDate,
+  className,
+  ...props
 }, ref) {
   const startYear = Math.floor(currentYear / 10) * 10
   const years = Array.from({ length: 12 }, (_, i) => startYear + i)
 
   return (
-    <div ref={ref} className="w-[252px]">
+    <div ref={ref} {...props} className={cn("w-[252px]", className)}>
       <div className="text-center pb-ds-04 text-ds-md font-semibold text-text-primary">
         {startYear} &ndash; {startYear + 11}
       </div>

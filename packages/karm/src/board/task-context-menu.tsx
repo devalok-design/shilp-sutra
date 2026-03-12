@@ -46,9 +46,10 @@ const PRIORITY_OPTIONS = [
 export interface TaskContextMenuProps {
   taskId: string
   children: React.ReactNode
+  className?: string
 }
 
-export function TaskContextMenu({ taskId, children }: TaskContextMenuProps) {
+export function TaskContextMenu({ taskId, children, className }: TaskContextMenuProps) {
   const {
     rawColumns,
     members,
@@ -68,7 +69,7 @@ export function TaskContextMenu({ taskId, children }: TaskContextMenuProps) {
   return (
     <ContextMenu>
       <ContextMenuTrigger>{children}</ContextMenuTrigger>
-      <ContextMenuContent className="w-52 animate-scale-in">
+      <ContextMenuContent className={cn("w-52 animate-scale-in", className)}>
         {/* Priority submenu */}
         <ContextMenuSub>
           <ContextMenuSubTrigger>

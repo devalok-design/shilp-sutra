@@ -29,6 +29,7 @@ import { KanbanBoard, TaskDetailPanel, ChatPanel } from '@devalok/shilp-sutra-ka
 
 BoardTask shape: { id, title, priority, labels[], dueDate, isBlocked, assignees[] }
 BoardData shape: { columns: [{ id, name, isClientVisible, tasks[] }] }
+Constants: COLUMN_WIDTH(320), COLUMN_ACCENT_COLORS(8 category bg colors), PRIORITY_ICONS({ LOW: 'IconArrowDown', MEDIUM: 'IconArrowRight', HIGH: 'IconArrowUp', URGENT: 'IconAlertTriangle' }), PRIORITY_COLORS({ LOW: 'text-text-tertiary', MEDIUM: 'text-warning', HIGH: 'text-error', URGENT: 'text-error' }), DEFAULT_FILTERS({ search: '', assignees: [], priorities: [], labels: [], dueDateRange: null })
 
 Uses dnd-kit for drag-and-drop. KanbanBoard manages all DnD state internally.
 Pass `members` prop for explicit member list in assignment dropdowns — required for new/empty projects with no task assignees yet. Falls back to deriving members from task data when omitted.
@@ -57,7 +58,8 @@ and state updates. Example wiring a custom column header action:
 - ReviewTab: reviews[], members[], onRequestReview, onUpdateStatus
 - SubtasksTab: subtasks[], onCreateSubtask, onToggleSubtask, onClickSubtask?, readOnly?
 
-TaskDetailPanel opens as a Sheet with tabs: Properties, Subtasks, Review, Conversation, Files, Activity.
+Type: ExtraTab = { id: string, label: string, icon?: ReactNode, content: ReactNode, position?: 'before' | 'after' }
+TaskDetailPanel opens as a Sheet with tabs: Properties, Subtasks, Review, Conversation, Files, Activity. Supports extraTabs?: ExtraTab[] for custom tabs.
 Supports clientMode for read-only client portal views.
 Priority values: 'LOW' | 'MEDIUM' | 'HIGH' | 'URGENT'
 Visibility: 'INTERNAL' | 'EVERYONE'

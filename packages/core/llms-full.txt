@@ -187,6 +187,7 @@ Note: getFormFieldA11y() was removed in favor of useFormField() hook.
     <AvatarImage src={user.photoUrl} alt={user.name} />
     <AvatarFallback>JD</AvatarFallback>
   </Avatar>
+- Type: AvatarStatus = 'online' | 'offline' | 'busy' | 'away'
 - Gotchas:
     - Status dot renders with role="img" and aria-label (accessible, not decorative)
     - Dot size scales automatically with avatar size
@@ -534,6 +535,7 @@ Note: getFormFieldA11y() was removed in favor of useFormField() hook.
     required: boolean
 - Props (FormHelperText):
     state: "helper" | "error" | "warning" | "success" (inherits from FormField context)
+- Type: FormHelperState = 'helper' | 'error' | 'warning' | 'success'
 - Hook: useFormField() => { state, helperTextId, required }
 - Example:
   <FormField state="error">
@@ -581,9 +583,10 @@ Note: getFormFieldA11y() was removed in favor of useFormField() hook.
 ## Input
 - Import: @devalok/shilp-sutra/ui/input
 - Server-safe: No
+- Type: InputState = 'default' | 'error' | 'warning' | 'success'
 - Props:
     size: "sm" | "md" | "lg"
-    state: "default" | "error" | "warning" | "success"
+    state: InputState
     startIcon: ReactNode
     endIcon: ReactNode
     (plus all standard HTML input attributes except native "size")
@@ -814,10 +817,13 @@ Note: getFormFieldA11y() was removed in favor of useFormField() hook.
 - Props (SegmentedControl root):
     size: "sm" | "md" | "lg" (REQUIRED) — also accepts legacy "small" | "medium" | "big"
     variant: "filled" | "tonal" (REQUIRED)
-    options: SegmentedControlOption[] (REQUIRED) — { id: string, text: string, icon?: ComponentType }
+    options: SegmentedControlOption[] (REQUIRED)
     selectedId: string (REQUIRED)
     onSelect: (id: string) => void (REQUIRED)
     disabled: boolean
+- Type: SegmentedControlOption = { id: string, text: string, icon?: ComponentType<{ className?: string }> }
+- Type: SegmentedControlSize = 'sm' | 'md' | 'lg' | 'small' | 'medium' | 'big' (legacy aliases)
+- Type: SegmentedControlVariant = 'filled' | 'tonal'
 - Defaults: None — size and variant are required
 - Example:
   <SegmentedControl
@@ -1111,8 +1117,9 @@ Note: getFormFieldA11y() was removed in favor of useFormField() hook.
 ## Text
 - Import: @devalok/shilp-sutra/ui/text
 - Server-safe: Yes
+- Type: TextVariant = 'heading-2xl' | 'heading-xl' | 'heading-lg' | 'heading-md' | 'heading-sm' | 'heading-xs' | 'body-lg' | 'body-md' | 'body-sm' | 'body-xs' | 'label-lg' | 'label-md' | 'label-sm' | 'label-xs' | 'caption' | 'overline'
 - Props:
-    variant: "heading-2xl" | "heading-xl" | "heading-lg" | "heading-md" | "heading-sm" | "heading-xs" | "body-lg" | "body-md" | "body-sm" | "body-xs" | "label-lg" | "label-md" | "label-sm" | "label-xs" | "caption" | "overline"
+    variant: TextVariant
     as: ElementType (override the auto-selected HTML element)
 - Defaults: variant="body-md"
 - Default element mapping:
@@ -1631,6 +1638,7 @@ Note: getFormFieldA11y() was removed in favor of useFormField() hook.
     emptyState: ReactNode — empty state content
     compact: boolean — tighter spacing, no avatars, smaller text
     maxInitialItems: number — truncate with "Show all (N)" toggle
+- Type: ActivityItem = { id: string, actor?: { name: string, image?: string }, action: string | ReactNode, timestamp: Date | string, icon?: ReactNode, color?: 'default' | 'success' | 'warning' | 'error' | 'info', detail?: ReactNode }
 - Example:
   <ActivityFeed
     items={[
@@ -1724,8 +1732,9 @@ Note: getFormFieldA11y() was removed in favor of useFormField() hook.
 ## PriorityIndicator
 - Import: @devalok/shilp-sutra/composed/priority-indicator
 - Server-safe: Yes
+- Type: Priority = 'LOW' | 'MEDIUM' | 'HIGH' | 'URGENT' | 'low' | 'medium' | 'high' | 'urgent'
 - Props:
-    priority: "LOW" | "MEDIUM" | "HIGH" | "URGENT" (case-insensitive)
+    priority: Priority
     display: "compact" | "full" (default: "full")
 - Example:
   <PriorityIndicator priority="HIGH" />
@@ -1881,9 +1890,11 @@ Note: getFormFieldA11y() was removed in favor of useFormField() hook.
     extraGroups: CommandGroup[]
     onNavigate: (path: string) => void
     onSearch: (query: string) => void
-    searchResults: SearchResult[] — { id, title, snippet?, entityType, projectId?, metadata? }
+    searchResults: SearchResult[]
     isSearching: boolean (shows loading state while search is in progress)
     onSearchResultSelect: (result: SearchResult) => void
+- Type: SearchResult = { id: string, title: string, snippet?: string, entityType: string, projectId?: string | null, metadata?: Record<string, unknown> }
+- Type: AppCommandPaletteUser = { name: string, role?: string }
 - Example:
   <AppCommandPalette
     user={{ name: 'John', role: 'admin' }}
@@ -1903,7 +1914,10 @@ Note: getFormFieldA11y() was removed in favor of useFormField() hook.
     logo: ReactNode
     footerLinks: Array<{ label: string, href: string }>
     className: string
-- NavItem shape: { title, href, icon: ReactNode, exact?: boolean }
+- Type: NavItem = { title: string, href: string, icon: ReactNode, exact?: boolean, badge?: string | number, children?: NavSubItem[], defaultOpen?: boolean }
+- Type: NavSubItem = { title: string, href: string, icon?: ReactNode, exact?: boolean }
+- Type: NavGroup = { label: string, items: NavItem[], action?: ReactNode }
+- Type: SidebarUser = { name: string, email?: string, image?: string | null, designation?: string, role?: string }
 - Example:
   <AppSidebar
     currentPath="/dashboard"
@@ -2021,10 +2035,12 @@ Deprecated props:
 - Server-safe: No
 - Props:
     currentPath: string
-    user: BottomNavbarUser | null (optional) — { name, role? }. Not required to render.
-    primaryItems: BottomNavItem[] (max 4 recommended) — { title, href, icon, exact?, badge?: number }
+    user: BottomNavbarUser | null (optional). Not required to render.
+    primaryItems: BottomNavItem[] (max 4 recommended)
     moreItems: BottomNavItem[] (overflow items in "More" menu)
     className: string
+- Type: BottomNavItem = { title: string, href: string, icon: ReactNode, exact?: boolean, badge?: number }
+- Type: BottomNavbarUser = { name: string, role?: string }
 - Example:
   <BottomNavbar
     currentPath="/dashboard"
@@ -2053,8 +2069,9 @@ Deprecated props:
 - Import: @devalok/shilp-sutra/shell/notification-center
 - Server-safe: No
 - Props:
-    notifications: Notification[] — { id, title, body?, tier: "INFO"|"IMPORTANT"|"CRITICAL", isRead, createdAt, entityType?, entityId?, projectId?, project?, actions?: NotificationAction[] }
-    NotificationAction: { label: string, variant?: "primary"|"default"|"danger", onClick: (id: string) => void }
+    notifications: Notification[]
+- Type: Notification = { id: string, title: string, body?: string | null, tier: 'INFO' | 'IMPORTANT' | 'CRITICAL', isRead: boolean, createdAt: string, entityType?: string | null, entityId?: string | null, projectId?: string | null, project?: { title: string } | null, actions?: NotificationAction[] }
+- Type: NotificationAction = { label: string, variant?: 'primary' | 'default' | 'danger', onClick: (id: string) => void }
     unreadCount: number (derived from notifications if not provided)
     open: boolean (controlled mode)
     onOpenChange: (open: boolean) => void
@@ -2088,8 +2105,10 @@ Deprecated props:
 - Import: @devalok/shilp-sutra/shell/notification-preferences
 - Server-safe: No
 - Props:
-    preferences: NotificationPreference[] — { id, userId?, projectId, channel, minTier, muted }
-    projects: NotificationProject[] — { id, title }
+    preferences: NotificationPreference[]
+    projects: NotificationProject[]
+- Type: NotificationPreference = { id: string, userId?: string, projectId: string | null, channel: string, minTier: string, muted: boolean }
+- Type: NotificationProject = { id: string, title: string }
     isLoading: boolean
     onSave: (preference: { projectId, channel, minTier, muted }) => void | Promise<void>
     onToggleMute: (preference: NotificationPreference) => void | Promise<void>
@@ -2120,7 +2139,8 @@ Deprecated props:
     notificationSlot: ReactNode (render NotificationCenter here)
     userMenuItems?: UserMenuItem[] — custom items between Profile and Dark/Light Mode toggle
     className: string
-- UserMenuItem: { label: string, icon?: ReactNode, href?: string, onClick?: () => void, separator?: boolean, color?: string, badge?: string | boolean, disabled?: boolean }
+- Type: TopBarUser = { name: string, email?: string, image?: string | null }
+- Type: UserMenuItem = { label: string, icon?: ReactNode, href?: string, onClick?: () => void, separator?: boolean, color?: string, badge?: string | boolean, disabled?: boolean }
     href — navigates via onNavigate callback
     onClick — custom action (takes precedence over href)
     separator — renders a DropdownMenuSeparator before this item
@@ -2201,3 +2221,10 @@ Deprecated props:
 ## motion / duration / easings / durations
 - Import: @devalok/shilp-sutra (barrel export)
 - Design system motion tokens for custom animations
+- Type: MotionMode = 'productive' | 'expressive'
+- Type: MotionCategory = 'standard' | 'entrance' | 'exit'
+- Type: DurationToken = 'instant' | 'fast-01' | 'fast-02' | 'moderate-01' | 'moderate-02' | 'slow-01' | 'slow-02'
+- Function: motion(category: MotionCategory, mode: MotionMode) => string — returns CSS cubic-bezier string
+- Function: duration(token: DurationToken) => string — returns CSS duration string (e.g. '150ms')
+- Object: easings — Record<MotionMode, Record<MotionCategory, string>> — all cubic-bezier values
+- Object: durations — Record<DurationToken, string> — { instant: '0ms', fast-01: '70ms', fast-02: '110ms', moderate-01: '150ms', moderate-02: '240ms', slow-01: '400ms', slow-02: '700ms' }

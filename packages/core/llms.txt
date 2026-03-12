@@ -108,7 +108,7 @@ Components with two-axis system: Button, Badge, Alert, Chip, Toast, Banner, Prog
 ### Inputs & Controls
 - Button: variant(solid|default|outline|ghost|link) color(default|error) size(sm|md|lg|icon) + loading, startIcon, endIcon, asChild
 - IconButton: icon(ReactNode, required) shape(square|circle) size(sm|md|lg) + aria-label required
-- Input: size(sm|md|lg) state(default|error|warning|success) + startIcon, endIcon
+- Input: size(sm|md|lg) state(InputState) + startIcon, endIcon. Type: InputState = 'default' | 'error' | 'warning' | 'success'
 - SearchInput: size(sm|md|lg) + loading, onClear
 - NumberInput: value + onValueChange, min, max, step (controlled only)
 - Textarea: size(sm|md|lg) state(default|error|warning|success)
@@ -119,7 +119,7 @@ Components with two-axis system: Button, Badge, Alert, Chip, Toast, Banner, Prog
 - Select > SelectTrigger(size) > SelectValue; SelectContent > SelectItem(value)
 - Toggle: variant(default|outline) size(sm|md|lg)
 - ToggleGroup > ToggleGroupItem (variant/size propagate from root)
-- SegmentedControl > SegmentedControlItem: variant(filled|tonal) size(sm|md|lg)
+- SegmentedControl > SegmentedControlItem: variant(filled|tonal) size(sm|md|lg). Types: SegmentedControlOption = { id, text, icon? }, SegmentedControlSize = 'sm' | 'md' | 'lg', SegmentedControlVariant = 'filled' | 'tonal'
 - Slider: standard Radix slider
 
 ### Feedback & Notifications
@@ -137,10 +137,10 @@ NOTIFICATION SELECTION GUIDE:
 ### Data Display
 - Badge: variant(subtle|solid|outline) color(default|info|success|error|warning|brand|accent + 7 category colors) size(xs|sm|md|lg) + onDismiss
 - Chip: variant(subtle|outline) color(default|primary|success|error|warning|info + 7 category) size(sm|md|lg) label(string, REQUIRED) + onDismiss, onClick
-- Avatar: size(xs|sm|md|lg|xl) shape(circle|square|rounded) status(online|offline|busy|away) > AvatarImage + AvatarFallback
+- Avatar: size(xs|sm|md|lg|xl) shape(circle|square|rounded) status(AvatarStatus) > AvatarImage + AvatarFallback. Type: AvatarStatus = 'online' | 'offline' | 'busy' | 'away'
 - Card: variant(default|elevated|outline|flat) interactive(boolean) > CardHeader > CardTitle, CardDescription; CardContent; CardFooter
 - Table > TableHeader > TableRow > TableHead; TableBody > TableRow > TableCell; TableFooter; TableCaption
-- Text: variant(heading-2xl|heading-xl|heading-lg|heading-md|heading-sm|heading-xs|body-lg|body-md|body-sm|body-xs|label-lg|label-md|label-sm|label-xs|caption|overline) as(element)
+- Text: variant(TextVariant) as(element). Type: TextVariant = 'heading-2xl' | 'heading-xl' | 'heading-lg' | 'heading-md' | 'heading-sm' | 'heading-xs' | 'body-lg' | 'body-md' | 'body-sm' | 'body-xs' | 'label-lg' | 'label-md' | 'label-sm' | 'label-xs' | 'caption' | 'overline'
 - Code: variant(inline|block)
 - Skeleton: variant(rectangle|circle|text) animation(pulse|shimmer|none)
 - StatCard: title, value, description, trend, icon
@@ -171,7 +171,7 @@ NOTIFICATION SELECTION GUIDE:
 - Sidebar: complex — see llms-full.txt for complete tree
 
 ### Form Pattern
-- FormField: state(helper|error|warning|success) > Label + Input + FormHelperText
+- FormField: state(FormHelperState) > Label + Input + FormHelperText. Type: FormHelperState = 'helper' | 'error' | 'warning' | 'success'
 - useFormField() hook returns { state, helperTextId, required } from FormField context
 - Wire accessibility: const { state, helperTextId } = useFormField(); then aria-describedby={helperTextId}, aria-invalid={state === 'error'}
 - Input/Textarea auto-wire from FormField context (no manual hookup needed). Explicit props override.
@@ -183,7 +183,7 @@ NOTIFICATION SELECTION GUIDE:
 - StatusBadge: DISCRIMINATED UNION — pass status OR color, not both. status(active|pending|approved|rejected|completed|blocked|cancelled|draft) color(success|warning|error|info|neutral) size(sm|md)
 - ContentCard: variant(default|outline|ghost) padding(default|compact|spacious|none)
 - EmptyState: icon(ReactNode or ComponentType), title(required), description, action(ReactNode), compact
-- PriorityIndicator: priority(LOW|MEDIUM|HIGH|URGENT) display(compact|full)
+- PriorityIndicator: priority(Priority) display(compact|full). Type: Priority = 'LOW' | 'MEDIUM' | 'HIGH' | 'URGENT' | 'low' | 'medium' | 'high' | 'urgent'
 - SimpleTooltip: wraps Tooltip compound into single component
 - DatePicker, DateRangePicker, DateTimePicker
 - TimePicker: standalone time selector — value(Date|null), onChange, format('12h'|'24h'), minuteStep, showSeconds, disabled
@@ -195,14 +195,15 @@ NOTIFICATION SELECTION GUIDE:
 - UploadProgress: file upload tracker — files(UploadFile[]), onRemove, onRetry, onDismissAll, variant(default|compact), showSize. Status: pending|uploading|processing|complete|error. Also exports formatFileSize()
 - RichTextEditor: Tiptap editor — bold/italic/underline/strike/highlight, headings, blockquote, lists (bullet/ordered/task), code, links, images (paste/drop/upload), file attachments, @mentions, emoji picker + :shortcode:, text alignment, HR. Props: onImageUpload?, onFileUpload?, mentions?, onMentionSearch?, onMentionSelect?
 - RichTextViewer: read-only renderer for RichTextEditor HTML content (renders all above content types)
+- ActivityFeed: items(ActivityItem[]), onLoadMore, loading, hasMore, emptyState, compact, maxInitialItems. Type: ActivityItem = { id, actor?, action, timestamp, icon?, color?, detail? }
 - CommandPalette, MemberPicker
 - ErrorDisplay, GlobalLoading
 - Loading skeletons: CardSkeleton, TableSkeleton, BoardSkeleton, ListSkeleton
 - Page skeletons: DashboardSkeleton, ProjectListSkeleton, TaskDetailSkeleton (no props, server-safe)
 
 ### Shell Components (app-level layout)
-- TopBar: pageTitle, user, onNavigate, onLogout, notificationSlot, mobileLogo, userMenuItems?(UserMenuItem[] — custom items between Profile and theme toggle, supports icon, href, onClick, separator, badge, disabled, color)
-- AppSidebar: navigation tree with NavItem[], NavGroup[]
+- TopBar: pageTitle, user, onNavigate, onLogout, notificationSlot, mobileLogo, userMenuItems?(UserMenuItem[]). Types: TopBarUser = { name, email?, image? }, UserMenuItem = { label, icon?, href?, onClick?, separator?, color?, badge?, disabled? }
+- AppSidebar: navigation tree with NavItem[], NavGroup[]. Types: NavItem = { title, href, icon, exact?, badge?, children?, defaultOpen? }, NavSubItem = { title, href, icon?, exact? }, NavGroup = { label, items, action? }, SidebarUser = { name, email?, image?, designation?, role? }
 
 ### AppSidebar (v0.10.0 additions)
 - NavItem.children?: NavSubItem[] — collapsible sub-list with chevron toggle
@@ -214,10 +215,14 @@ NOTIFICATION SELECTION GUIDE:
 - preFooterSlot?: ReactNode — content between navigation and footer
 - renderItem?: (item, defaultRender) => ReactNode | null — custom item rendering
 
-- BottomNavbar: mobile navigation, user is optional (not required to render)
-- NotificationCenter: notifications[], onMarkRead, onMarkAllRead, onNavigate, getNotificationRoute?(returns string|null, fallback null), footerSlot?, emptyState?, headerActions?, popoverClassName?, onDismiss?(id). Notification.actions?: NotificationAction[] for inline buttons (e.g. Approve/Deny)
-- AppCommandPalette: user, isAdmin, onNavigate, onSearch, searchResults, isSearching, onSearchResultSelect
+- BottomNavbar: mobile navigation, user is optional. Types: BottomNavItem = { title, href, icon, exact?, badge? }, BottomNavbarUser = { name, role? }
+- NotificationCenter: notifications[], onMarkRead, onMarkAllRead, onNavigate, getNotificationRoute?, footerSlot?, emptyState?, headerActions?, popoverClassName?, onDismiss?(id). Types: Notification = { id, title, body?, tier, isRead, createdAt, entityType?, entityId?, projectId?, project?, actions? }, NotificationAction = { label, variant?, onClick }
+- NotificationPreferences: preferences[], projects[], onSave, onToggleMute, onUpdateTier, onDelete. Types: NotificationPreference = { id, userId?, projectId, channel, minTier, muted }, NotificationProject = { id, title }
+- AppCommandPalette: user, isAdmin, onNavigate, onSearch, searchResults, isSearching, onSearchResultSelect. Types: SearchResult = { id, title, snippet?, entityType, projectId?, metadata? }, AppCommandPaletteUser = { name, role? }
 - LinkProvider: wraps app with router-agnostic Link component — component(ForwardRefComponent), children. useLink() hook returns the Link component.
+
+### Motion Tokens
+- motion(category, mode) => CSS cubic-bezier string. duration(token) => CSS duration string. easings: Record<MotionMode, Record<MotionCategory, string>>. durations: Record<DurationToken, string> = { instant: '0ms', fast-01: '70ms', fast-02: '110ms', moderate-01: '150ms', moderate-02: '240ms', slow-01: '400ms', slow-02: '700ms' }
 
 ### Hooks
 - useToast(): returns { toast, toasts, dismiss } — toast({ title, description, color }). Also: import { toast } from '@devalok/shilp-sutra/hooks/use-toast' for imperative usage without hook

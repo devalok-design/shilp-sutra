@@ -3,7 +3,6 @@ import { useState } from 'react'
 import { DataTable } from './data-table'
 import type { ColumnDef } from '@tanstack/react-table'
 import { Badge } from './badge'
-import { format, getDaysInMonth, startOfMonth, addDays } from 'date-fns'
 
 type Task = {
   id: string
@@ -27,7 +26,7 @@ const columns: ColumnDef<Task>[] = [
     cell: ({ row }) => {
       const status = row.getValue('status') as string
       const variant = status === 'done' ? 'success' : status === 'in-progress' ? 'info' : 'neutral'
-      return <Badge variant={variant}>{status}</Badge>
+      return <Badge color={variant}>{status}</Badge>
     },
   },
   {
@@ -36,7 +35,7 @@ const columns: ColumnDef<Task>[] = [
     cell: ({ row }) => {
       const priority = row.getValue('priority') as string
       const variant = priority === 'high' ? 'error' : priority === 'medium' ? 'warning' : 'neutral'
-      return <Badge variant={variant}>{priority}</Badge>
+      return <Badge color={variant}>{priority}</Badge>
     },
   },
 ]
@@ -433,21 +432,29 @@ function seededRandom(seed: number) {
   }
 }
 
+function formatDate(d: Date): string {
+  const y = d.getFullYear()
+  const m = String(d.getMonth() + 1).padStart(2, '0')
+  const day = String(d.getDate()).padStart(2, '0')
+  return `${y}-${m}-${day}`
+}
+
 function buildTimeOffColumns(): ColumnDef<TimeOffRow>[] {
   const today = new Date()
-  const daysInMonth = getDaysInMonth(today)
-  const monthStart = startOfMonth(today)
+  const year = today.getFullYear()
+  const month = today.getMonth()
+  const daysInMonth = new Date(year, month + 1, 0).getDate()
 
   const dayColumns: ColumnDef<TimeOffRow>[] = Array.from(
     { length: daysInMonth },
     (_, i) => {
-      const date = addDays(monthStart, i)
-      const dayKey = format(date, 'yyyy-MM-dd')
+      const date = new Date(year, month, i + 1)
+      const dayKey = formatDate(date)
       const isWeekend = date.getDay() === 0 || date.getDay() === 6
 
       return {
         accessorKey: dayKey,
-        header: format(date, 'd'),
+        header: String(i + 1),
         cell: ({ row }) => {
           const status = row.getValue(dayKey) as string | undefined
           if (!status) {
@@ -455,14 +462,14 @@ function buildTimeOffColumns(): ColumnDef<TimeOffRow>[] {
               <span className="text-text-disabled">&mdash;</span>
             ) : null
           }
-          const variant = {
+          const color = {
             approved: 'success' as const,
             pending: 'warning' as const,
             rejected: 'error' as const,
             holiday: 'info' as const,
           }[status]
           return (
-            <Badge variant={variant} size="sm">
+            <Badge color={color} size="sm">
               {status[0].toUpperCase()}
             </Badge>
           )
@@ -487,24 +494,22 @@ function buildTimeOffColumns(): ColumnDef<TimeOffRow>[] {
 
 function generateTimeOffData(): TimeOffRow[] {
   const today = new Date()
-  const daysInMonth = getDaysInMonth(today)
-  const monthStart = startOfMonth(today)
+  const year = today.getFullYear()
+  const month = today.getMonth()
+  const daysInMonth = new Date(year, month + 1, 0).getDate()
   const rand = seededRandom(42)
   const statuses = ['approved', 'pending', 'rejected'] as const
 
   return timeOffEmployees.map((name) => {
     const row: TimeOffRow = { name }
-    // Give each employee 2-6 random leave entries
     const leaveCount = Math.floor(rand() * 5) + 2
     for (let i = 0; i < leaveCount; i++) {
       const dayIdx = Math.floor(rand() * daysInMonth)
-      const date = addDays(monthStart, dayIdx)
-      const key = format(date, 'yyyy-MM-dd')
-      row[key] = statuses[Math.floor(rand() * statuses.length)]
+      const date = new Date(year, month, dayIdx + 1)
+      row[formatDate(date)] = statuses[Math.floor(rand() * statuses.length)]
     }
-    // Add one common holiday (15th of the month) for all employees
-    const holiday = addDays(monthStart, 14)
-    row[format(holiday, 'yyyy-MM-dd')] = 'holiday'
+    // Common holiday on the 15th
+    row[formatDate(new Date(year, month, 15))] = 'holiday'
     return row
   })
 }

@@ -526,3 +526,196 @@ export const TimeOffCalendar: Story = {
     </div>
   ),
 }
+
+// --- Loading State ---
+
+export const Loading: Story = {
+  render: () => (
+    <DataTable
+      columns={columns}
+      data={[]}
+      loading
+      paginated
+      pageSize={5}
+    />
+  ),
+}
+
+// --- Empty State ---
+
+export const EmptyState: Story = {
+  render: () => (
+    <DataTable
+      columns={columns}
+      data={[]}
+      emptyState={
+        <div className="flex flex-col items-center gap-ds-03 py-ds-07">
+          <span className="text-ds-lg text-text-placeholder">No projects found</span>
+          <span className="text-ds-sm text-text-placeholder">Create your first project to get started.</span>
+        </div>
+      }
+    />
+  ),
+}
+
+// --- Server-Side Pagination ---
+
+function ServerSidePaginationDemo() {
+  const [page, setPage] = useState(1)
+  const pageSize = 3
+  const total = filterData.length
+  const pageData = filterData.slice((page - 1) * pageSize, page * pageSize)
+
+  return (
+    <div className="space-y-ds-04">
+      <p className="text-ds-sm text-text-secondary">
+        Server-side pagination — page {page} of {Math.ceil(total / pageSize)}, {total} total rows.
+      </p>
+      <DataTable
+        columns={columns}
+        data={pageData}
+        pagination={{ page, pageSize, total, onPageChange: setPage }}
+        getRowId={(row) => row.id}
+      />
+    </div>
+  )
+}
+
+export const ServerSidePagination: Story = {
+  render: () => <ServerSidePaginationDemo />,
+}
+
+// --- Server-Side Sort ---
+
+function ServerSideSortDemo() {
+  const [sortedData, setSortedData] = useState([...filterData])
+
+  return (
+    <div className="space-y-ds-04">
+      <p className="text-ds-sm text-text-secondary">
+        Server-side sorting — onSort callback handles the sort, no client-side sort model.
+      </p>
+      <DataTable
+        columns={columns}
+        data={sortedData}
+        sortable
+        onSort={(key, direction) => {
+          if (!direction) {
+            setSortedData([...filterData])
+            return
+          }
+          const sorted = [...filterData].sort((a, b) => {
+            const aVal = String((a as Record<string, unknown>)[key] ?? '')
+            const bVal = String((b as Record<string, unknown>)[key] ?? '')
+            return direction === 'asc' ? aVal.localeCompare(bVal) : bVal.localeCompare(aVal)
+          })
+          setSortedData(sorted)
+        }}
+        getRowId={(row) => row.id}
+      />
+    </div>
+  )
+}
+
+export const ServerSideSort: Story = {
+  render: () => <ServerSideSortDemo />,
+}
+
+// --- Controlled Selection ---
+
+function ControlledSelectionDemo() {
+  const [selectedIds, setSelectedIds] = useState<Set<string>>(new Set(['TASK-001', 'TASK-003']))
+
+  return (
+    <div className="space-y-ds-04">
+      <p className="text-ds-sm text-text-secondary">
+        Selected: {selectedIds.size === 0 ? 'none' : Array.from(selectedIds).join(', ')}
+      </p>
+      <DataTable
+        columns={columns}
+        data={filterData}
+        selectable
+        selectedIds={selectedIds}
+        onSelectionChange={(rows) => setSelectedIds(new Set(rows.map((r) => r.id)))}
+        getRowId={(row) => row.id}
+      />
+    </div>
+  )
+}
+
+export const ControlledSelection: Story = {
+  render: () => <ControlledSelectionDemo />,
+}
+
+// --- Bulk Actions ---
+
+export const BulkActions: Story = {
+  render: () => (
+    <DataTable
+      columns={columns}
+      data={filterData}
+      selectable
+      getRowId={(row) => row.id}
+      bulkActions={[
+        { label: 'Archive', onClick: (rows) => alert(`Archive ${rows.length} rows`) },
+        { label: 'Add Label', onClick: (rows) => alert(`Label ${rows.length} rows`) },
+        { label: 'Delete', onClick: (rows) => alert(`Delete ${rows.length} rows`), color: 'error' },
+      ]}
+    />
+  ),
+}
+
+// --- Sticky Header ---
+
+export const StickyHeader: Story = {
+  render: () => (
+    <div style={{ maxHeight: 300, overflow: 'auto' }}>
+      <DataTable
+        columns={columns}
+        data={largeData.slice(0, 30)}
+        stickyHeader
+        sortable
+      />
+    </div>
+  ),
+}
+
+// --- Single Expand ---
+
+export const SingleExpand: Story = {
+  render: () => (
+    <DataTable
+      columns={columns}
+      data={filterData}
+      expandable
+      singleExpand
+      getRowId={(row) => row.id}
+      renderExpanded={(row) => (
+        <div className="text-ds-sm space-y-ds-02">
+          <p><strong>Task:</strong> {row.title}</p>
+          <p><strong>Status:</strong> {row.status}</p>
+          <p><strong>Priority:</strong> {row.priority}</p>
+          <p>Only one row can be expanded at a time.</p>
+        </div>
+      )}
+    />
+  ),
+}
+
+// --- OnRowClick ---
+
+export const OnRowClick: Story = {
+  render: () => (
+    <div className="space-y-ds-04">
+      <p className="text-ds-sm text-text-secondary">
+        Click a row to see the alert. Interactive elements (checkboxes, buttons) do not trigger the row click.
+      </p>
+      <DataTable
+        columns={columns}
+        data={filterData}
+        getRowId={(row) => row.id}
+        onRowClick={(row) => alert(`Clicked: ${row.title}`)}
+      />
+    </div>
+  ),
+}

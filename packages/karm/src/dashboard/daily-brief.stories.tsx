@@ -123,3 +123,40 @@ export const WithCustomClassName: Story = {
     className: 'border-2 border-border-interactive',
   },
 }
+
+export const Unavailable: Story = {
+  name: 'Unavailable',
+  args: {
+    data: null,
+    unavailable: true,
+  },
+}
+
+export const Collapsible: Story = {
+  name: 'Collapsible (Default Collapsed)',
+  args: {
+    data: TYPICAL_BRIEF,
+    collapsible: true,
+    defaultCollapsed: true,
+  },
+}
+
+export const WithRefresh: Story = {
+  name: 'With Refresh Button',
+  args: {
+    data: TYPICAL_BRIEF,
+    onRefresh: () => {},
+  },
+  argTypes: {
+    onRefresh: { action: 'refresh' },
+  },
+}
+
+export const CustomTitle: Story = {
+  name: 'Custom Title',
+  args: {
+    data: SHORT_BRIEF,
+    title: 'Team Pulse',
+    collapsible: false,
+  },
+}

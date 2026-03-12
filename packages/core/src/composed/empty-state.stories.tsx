@@ -189,3 +189,35 @@ export const TitleOnly: Story = {
     title: 'Nothing here',
   },
 }
+
+// --- iconSize variants ---
+
+export const SmallIcon: Story = {
+  name: 'Icon Size: sm',
+  args: {
+    icon: IconInbox,
+    title: 'Small icon',
+    description: 'iconSize="sm" — smallest icon container.',
+    iconSize: 'sm',
+  },
+}
+
+export const MediumIcon: Story = {
+  name: 'Icon Size: md',
+  args: {
+    icon: IconInbox,
+    title: 'Medium icon',
+    description: 'iconSize="md" — default for non-compact.',
+    iconSize: 'md',
+  },
+}
+
+export const LargeIcon: Story = {
+  name: 'Icon Size: lg',
+  args: {
+    icon: IconFolderOpen,
+    title: 'Large icon',
+    description: 'iconSize="lg" — prominent empty states.',
+    iconSize: 'lg',
+  },
+}

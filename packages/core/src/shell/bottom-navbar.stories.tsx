@@ -182,3 +182,18 @@ export const MinimalThreeItems: Story = {
     moreItems: [],
   },
 }
+
+export const WithBadges: Story = {
+  name: 'With Badges',
+  args: {
+    currentPath: '/',
+    user: mockUser,
+    primaryItems: [
+      { title: 'Home', href: '/', icon: <IconLayoutDashboard />, exact: true, badge: 0 },
+      { title: 'Attendance', href: '/attendance', icon: <IconCalendarCheck />, badge: 3 },
+      { title: 'Projects', href: '/projects', icon: <IconLayoutKanban />, badge: 12 },
+      { title: 'Tasks', href: '/my-tasks', icon: <IconListCheck />, badge: 147 },
+    ],
+    moreItems,
+  },
+}

@@ -1,59 +1,34 @@
+# AI-Readable Component Reference (llms.txt) Implementation Plan
+
+> **For Claude:** REQUIRED SUB-SKILL: Use superpowers:executing-plans to implement this plan task-by-task.
+
+**Goal:** Create `llms.txt` and `llms-full.txt` files that ship with the @devalok/shilp-sutra npm package, enabling AI agents to use components correctly on first attempt.
+
+**Architecture:** Two static text files in `packages/core/` — a concise cheatsheet (~200 lines) and an exhaustive reference (~800+ lines). Added to package.json `files` array. No runtime code changes. Karm's CLAUDE.md gets a one-liner pointing to the files.
+
+**Tech Stack:** Plain text (Markdown-flavored), pnpm, npm publish
+
+**Test command:** `pnpm build` (verify files are included in dist)
+
+---
+
+## Task 1: Create `llms.txt` — Concise AI Cheatsheet
+
+**Files:**
+- Create: `packages/core/llms.txt`
+
+**Step 1: Create the file**
+
+```text
 # @devalok/shilp-sutra
 
 > Radix UI + Tailwind CSS + CVA design system for Devalok apps.
 > Built on the same primitives as shadcn/ui but with key API differences.
 > Read this file BEFORE writing any UI code. Do NOT guess from shadcn/ui knowledge.
 
-## CHANGES (v0.16.0)
-- **DataTable server-side features**: `onSort` callback (manual sorting), `pagination` prop (server-side pagination with page/total/onPageChange), `selectedIds` + `selectableFilter` (controlled selection), `loading` shimmer, `emptyState` ReactNode, `singleExpand`, `stickyHeader`, `onRowClick`, `bulkActions` floating bar
-- **ActivityFeed**: New composed component — `@devalok/shilp-sutra/composed/activity-feed` — vertical timeline with colored dots, actor avatars, expandable detail, compact mode, load more
-- EmptyState: `iconSize?: 'sm' | 'md' | 'lg'` prop for icon dimension control
-- BottomNavbar: `badge?: number` on BottomNavItem for notification counts (99+ cap)
-- AppSidebar: `preFooterClassName?: string` for scrollable preFooterSlot
-
-## CHANGES (v0.15.0)
-- **Input font standardization**: All input sizes (sm, md, lg) now use text-ds-md (14px). Previously lg used text-ds-lg (18px). Affects Input, Select, SearchInput, Textarea.
-- CommandPalette: Staggered slide-up animations for items, fade-in for groups, scale-in search icon, active item color transitions
-
-## CHANGES (v0.14.0)
-- **BREAKING z-index**: Select, Combobox, Autocomplete, DropdownMenu, ContextMenu, Menubar, HoverCard promoted from z-dropdown (1000) to z-popover (1400). Fixes dropdowns rendering behind Sheet/Dialog. If you had custom z-index overrides (e.g. `[data-radix-popper-content-wrapper] { z-index: 1400 !important }`) you can now remove them.
-- TabsTrigger: Added gap-ds-02 (4px) between icon and label
-- AppSidebar: footer.version now accepts string | { label, href } for clickable version links
-
-## CHANGES (v0.13.0)
-- EmptyState: icon prop now accepts ComponentType (e.g. Tabler icon references) in addition to ReactNode
-- NotificationCenter: Notification.actions?: NotificationAction[] — inline action buttons (Approve/Deny) per notification
-- NotificationCenter: Tier dot now doubles as read/unread marker; separate unread dot removed
-- AppSidebar: footer.promo?: SidebarPromo — dismissable promo banner with icon, text, action button
-- AppSidebar: Footer links + version render on same line with · dividers
-- Collapsible: Now uses height-based expand/collapse animation (animate-collapsible-down/up)
-- Tailwind preset: 4 new keyframes + utilities — accordion-down, accordion-up, collapsible-down, collapsible-up
-
-## CHANGES (v0.12.0)
-- Input: Softer resting border (border-subtle instead of border), subtler focus ring (ring-1 ring-focus/50 instead of ring-2 ring-focus)
-- Tailwind preset: 9 animation keyframes + utilities (fade-in, fade-out, slide-up, slide-right, scale-in, scale-out, glow-pulse, scale-bounce, lift)
-- Tailwind preset: Stagger plugins — .delay-stagger (30ms × --stagger-index), .delay-stagger-50 (50ms × --stagger-index)
-
-## BREAKING CHANGES (v0.11.0 — dark mode)
-- Dark mode interactive colors shifted: --color-interactive pink-400→pink-500, --color-interactive-hover pink-300→pink-600, --color-interactive-active pink-200→pink-700, --color-interactive-subtle pink-950→pink-1000
-- Dark mode text status colors shifted: --color-text-error red-200→red-300, --color-text-success green-200→green-300, --color-text-warning yellow-200→yellow-300, --color-text-link blue-200→blue-300, --color-text-brand pink-300→pink-400
-- New primitive token: --pink-1000 (#150208) near-black
-
-## BREAKING CHANGES (v0.8.0)
-- Combobox: Now uses discriminated union. Single: `multiple?: false, value: string, onValueChange: (v: string) => void`. Multiple: `multiple: true, value: string[], onValueChange: (v: string[]) => void`. No more `v as string[]` casts.
-- StatusBadge: Pass either `status` OR `color`, not both (discriminated union).
-- Input/Textarea: Now auto-inherit state, aria-describedby, aria-required from FormField context. Explicit props override.
-
 ## Install & Setup
 
 pnpm add @devalok/shilp-sutra
-
-### Next.js Setup (Required for Next.js + pnpm)
-
-Add to next.config.js:
-```js
-transpilePackages: ["@devalok/shilp-sutra", "@devalok/shilp-sutra-karm", "@devalok/shilp-sutra-brand"]
-```
 
 // Import components (barrel):
 import { Button, Card, Dialog } from '@devalok/shilp-sutra'
@@ -86,7 +61,7 @@ If you have shadcn/ui knowledge, these are the differences that WILL trip you up
 | Toast variant="destructive" | Toast color="error" | Toast uses color= not variant= |
 | Badge variant="destructive" | Badge variant="solid" color="error" | Two-axis: variant + color |
 | Alert + AlertTitle + AlertDescription | <Alert title="..." color="error"> | Single component, not compound |
-| Form + FormField + FormItem + FormLabel + FormControl + FormDescription + FormMessage | FormField + Label + Input + FormHelperText + useFormField() | Simpler API, hook-based a11y wiring |
+| Form + FormField + FormItem + FormLabel + FormControl + FormDescription + FormMessage | FormField + Label + Input + FormHelperText + getFormFieldA11y() | Simpler API, manual a11y wiring |
 | Pagination | PaginationRoot | Root component name differs |
 
 ### The Two-Axis Variant System
@@ -112,7 +87,6 @@ Components with two-axis system: Button, Badge, Alert, Chip, Toast, Banner, Prog
 - SearchInput: size(sm|md|lg) + loading, onClear
 - NumberInput: value + onValueChange, min, max, step (controlled only)
 - Textarea: size(sm|md|lg) state(default|error|warning|success)
-- ColorInput: value(hex string) onChange(value) presets(string[]) disabled
 - Checkbox: checked, onCheckedChange, error(boolean), indeterminate(boolean)
 - Switch: checked, onCheckedChange, error(boolean)
 - RadioGroup > RadioGroupItem(value)
@@ -135,7 +109,7 @@ NOTIFICATION SELECTION GUIDE:
   - Toast: transient notification triggered by user action (needs Toaster + useToast)
 
 ### Data Display
-- Badge: variant(subtle|solid|outline) color(default|info|success|error|warning|brand|accent + 7 category colors) size(xs|sm|md|lg) + onDismiss
+- Badge: variant(subtle|solid|outline) color(default|info|success|error|warning|brand|accent + 7 category colors) size(sm|md|lg) + onDismiss
 - Chip: variant(subtle|outline) color(default|primary|success|error|warning|info + 7 category) size(sm|md|lg) label(string, REQUIRED) + onDismiss, onClick
 - Avatar: size(xs|sm|md|lg|xl) shape(circle|square|rounded) status(online|offline|busy|away) > AvatarImage + AvatarFallback
 - Card: variant(default|elevated|outline|flat) interactive(boolean) > CardHeader > CardTitle, CardDescription; CardContent; CardFooter
@@ -172,43 +146,29 @@ NOTIFICATION SELECTION GUIDE:
 
 ### Form Pattern
 - FormField: state(helper|error|warning|success) > Label + Input + FormHelperText
-- useFormField() hook returns { state, helperTextId, required } from FormField context
-- Wire accessibility: const { state, helperTextId } = useFormField(); then aria-describedby={helperTextId}, aria-invalid={state === 'error'}
-- Input/Textarea auto-wire from FormField context (no manual hookup needed). Explicit props override.
+- Wire accessibility manually: <Input {...getFormFieldA11y(helperTextId, state)} />
+- getFormFieldA11y returns { aria-describedby, aria-invalid }
 
 ### Composed Components
-- ConfirmDialog: open, onOpenChange, title, description, onConfirm + confirmText, cancelText, color(default|error), loading
 - PageHeader: title, subtitle, breadcrumbs[], actions(ReactNode)
 - AvatarGroup: users[], max(number), size(sm|md|lg), showTooltip
-- StatusBadge: DISCRIMINATED UNION — pass status OR color, not both. status(active|pending|approved|rejected|completed|blocked|cancelled|draft) color(success|warning|error|info|neutral) size(sm|md)
+- StatusBadge: status(active|pending|approved|rejected|completed|blocked|cancelled|draft) color(success|warning|error|info|neutral) size(sm|md)
 - ContentCard: variant(default|outline|ghost) padding(default|compact|spacious|none)
-- EmptyState: icon(ReactNode or ComponentType), title(required), description, action(ReactNode), compact
+- EmptyState: icon, title(required), description, action(ReactNode), compact
 - PriorityIndicator: priority(LOW|MEDIUM|HIGH|URGENT) display(compact|full)
 - SimpleTooltip: wraps Tooltip compound into single component
 - DatePicker, DateRangePicker, DateTimePicker, TimePicker
-- RichTextEditor: Tiptap editor — bold/italic/underline/strike/highlight, headings, blockquote, lists (bullet/ordered/task), code, links, images (paste/drop/upload), file attachments, @mentions, emoji picker + :shortcode:, text alignment, HR. Props: onImageUpload?, onFileUpload?, mentions?, onMentionSearch?, onMentionSelect?
-- RichTextViewer: read-only renderer for RichTextEditor HTML content (renders all above content types)
+- RichTextEditor, RichTextViewer
 - CommandPalette, MemberPicker
 - ErrorDisplay, GlobalLoading
 - Loading skeletons: CardSkeleton, TableSkeleton, BoardSkeleton, ListSkeleton, DashboardSkeleton, etc.
 
 ### Shell Components (app-level layout)
-- TopBar: pageTitle, user, onNavigate, onLogout, notificationSlot, mobileLogo, userMenuItems?(UserMenuItem[] — custom items between Profile and theme toggle, supports icon, href, onClick, separator, badge, disabled, color)
+- TopBar: pageTitle, user, onNavigate, onLogout, notificationSlot, mobileLogo
 - AppSidebar: navigation tree with NavItem[], NavGroup[]
-
-### AppSidebar (v0.10.0 additions)
-- NavItem.children?: NavSubItem[] — collapsible sub-list with chevron toggle
-- NavItem.defaultOpen?: boolean — control initial collapsed state
-- NavItem.badge?: string | number — badge on nav item (99+ cap for numbers)
-- NavGroup.action?: ReactNode — action button next to group label
-- footer?: SidebarFooterConfig — structured footer with links, version, slot, promo (replaces footerLinks)
-- headerSlot?: ReactNode — content between user info and navigation
-- preFooterSlot?: ReactNode — content between navigation and footer
-- renderItem?: (item, defaultRender) => ReactNode | null — custom item rendering
-
-- BottomNavbar: mobile navigation, user is optional (not required to render)
-- NotificationCenter: notifications[], onMarkRead, onMarkAllRead, onNavigate, getNotificationRoute?(returns string|null, fallback null), footerSlot?, emptyState?, headerActions?, popoverClassName?, onDismiss?(id). Notification.actions?: NotificationAction[] for inline buttons (e.g. Approve/Deny)
-- AppCommandPalette: user, isAdmin, onNavigate, onSearch, searchResults, isSearching, onSearchResultSelect
+- BottomNavbar: mobile navigation
+- NotificationCenter: notifications[], onDismiss, onRead
+- AppCommandPalette: search results, user info
 
 ### Hooks
 - useToast(): returns { toast, toasts, dismiss } — toast({ title, description, color })
@@ -240,3 +200,156 @@ DO NOT use barrel imports in Server Components — they include "use client" com
 - DO NOT import from barrel in Next.js Server Components — use per-component imports
 - DO NOT use variant="secondary" on Button — use variant="outline" or variant="ghost"
 - DO NOT put variant on individual TabsTrigger — put it on TabsList (propagates via context)
+```
+
+**Step 2: Commit**
+
+```bash
+git add packages/core/llms.txt
+git commit -m "docs: add llms.txt AI-readable component cheatsheet"
+```
+
+---
+
+## Task 2: Create `llms-full.txt` — Exhaustive Component Reference
+
+**Files:**
+- Create: `packages/core/llms-full.txt`
+
+**Step 1: Create the file**
+
+This file contains the full per-component reference. It is long (~800-1000 lines) and organized alphabetically. Each component entry follows this format:
+
+```
+## ComponentName
+- Import: @devalok/shilp-sutra/ui/component-name
+- Server-safe: Yes/No
+- Props: [full prop list with types and valid values]
+- Defaults: [default values]
+- Compound: [sub-component tree if applicable]
+- Example: [correct usage code]
+- Gotchas: [common mistakes specific to this component]
+```
+
+The file must include ALL of the following components with their full verified details from the CVA/props research:
+
+**UI (alphabetical):** Accordion, Alert, AlertDialog, AspectRatio, Autocomplete, Avatar, Badge, Banner, Breadcrumb, Button, ButtonGroup, Card, Checkbox, Chip, Code, Collapsible, Combobox, Container, ContextMenu, DataTable, DataTableToolbar, Dialog, DropdownMenu, FileUpload, FormField, FormHelperText, HoverCard, IconButton, Input, InputOTP, Label, Link, Menubar, NavigationMenu, NumberInput, Pagination, Popover, Progress, RadioGroup, ScrollArea, SearchInput, SegmentedControl, Select, Separator, Sheet, Sidebar (full tree), Skeleton, Slider, Spinner, Stack, StatCard, Stepper, Switch, Table, Tabs, Text, Textarea, Toast/Toaster, Toggle, ToggleGroup, Tooltip, Transitions, TreeView, VisuallyHidden
+
+**Composed:** AvatarGroup, CommandPalette, ContentCard, DatePicker, DateRangePicker, DateTimePicker, EmptyState, ErrorDisplay, GlobalLoading, LoadingSkeleton (+ page skeletons), MemberPicker, PageHeader, PriorityIndicator, RichTextEditor, RichTextViewer, ScheduleView, SimpleTooltip, StatusBadge
+
+**Shell:** AppCommandPalette, AppSidebar, BottomNavbar, NotificationCenter, NotificationPreferences, TopBar
+
+**Hooks:** useToast, useColorMode, useMobile
+
+For each component, verify the actual prop types and variant values from the CVA definitions and Props interfaces gathered in the research phase. DO NOT guess — use the exact values from the codebase.
+
+The full content is too long to inline here. The implementing agent should:
+1. Read `packages/core/llms.txt` for the concise format and data
+2. Read each component's source file to verify props
+3. Write one entry per component following the format above
+4. Cross-reference against the CVA variant data from the design doc
+
+**Step 2: Commit**
+
+```bash
+git add packages/core/llms-full.txt
+git commit -m "docs: add llms-full.txt exhaustive AI component reference"
+```
+
+---
+
+## Task 3: Add files to package.json for npm publishing
+
+**Files:**
+- Modify: `packages/core/package.json`
+
+**Step 1: Read current package.json**
+
+Find the `"files"` array in `packages/core/package.json`.
+
+**Step 2: Add llms.txt and llms-full.txt**
+
+Add both files to the `"files"` array so they ship with `npm publish`:
+
+```json
+"files": [
+  "dist",
+  "llms.txt",
+  "llms-full.txt",
+  ... (existing entries)
+]
+```
+
+**Step 3: Verify build includes files**
+
+```bash
+cd packages/core
+pnpm build
+pnpm pack --dry-run
+```
+
+Expected: `llms.txt` and `llms-full.txt` appear in the pack output.
+
+**Step 4: Commit**
+
+```bash
+git add packages/core/package.json
+git commit -m "chore: include llms.txt and llms-full.txt in npm package files"
+```
+
+---
+
+## Task 4: Verify end-to-end
+
+**Step 1: Run full build**
+
+```bash
+pnpm build
+```
+
+Expected: Clean build, no errors.
+
+**Step 2: Verify pack contents**
+
+```bash
+cd packages/core
+pnpm pack --dry-run 2>&1 | grep llms
+```
+
+Expected: Both `llms.txt` and `llms-full.txt` listed.
+
+**Step 3: Spot-check llms.txt accuracy**
+
+Read `packages/core/llms.txt` and verify at least these claims against source:
+- Button defaults: variant=solid, color=default, size=md
+- Toast uses `color` not `variant`
+- Chip requires `label` prop
+- SelectTrigger has `size`, Select does not
+- Server-safe list matches inject-use-client.mjs exclusions
+
+**Step 4: Commit all together if any fixes were needed**
+
+```bash
+git add -A
+git commit -m "docs: finalize llms.txt accuracy after verification"
+```
+
+---
+
+## Verification Checklist
+
+After completing all tasks:
+
+```bash
+# 1. Build must succeed
+pnpm build
+
+# 2. Files must be in pack
+cd packages/core && pnpm pack --dry-run | grep llms
+
+# 3. Typecheck (no changes to TS, but sanity check)
+pnpm typecheck
+
+# 4. Tests still pass
+pnpm test --run
+```

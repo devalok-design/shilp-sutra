@@ -5,6 +5,30 @@ All notable changes to `@devalok/shilp-sutra` will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.16.0] - 2026-03-12
+
+### Added
+- **DataTable**: `onSort` callback for server-side sorting (pass `manualSorting` mode)
+- **DataTable**: `emptyState?: ReactNode` slot — custom empty state replaces plain text
+- **DataTable**: `loading?: boolean` — shimmer skeleton rows with varied column widths
+- **DataTable**: `selectedIds?: Set<string>` + `selectableFilter?: (row) => boolean` — controlled selection with per-row disable
+- **DataTable**: `pagination?: { page, pageSize, total, onPageChange }` — server-side pagination
+- **DataTable**: `singleExpand?: boolean` — collapses previous row on new expand
+- **DataTable**: `stickyHeader?: boolean` — sticky table header on scroll
+- **DataTable**: `onRowClick?: (row) => void` — row click handler (excludes interactive elements)
+- **DataTable**: `bulkActions?: BulkAction[]` — floating action bar on row selection
+- **ActivityFeed**: New composed component — vertical timeline with colored dots, actor avatars, expandable detail, compact mode, load more, maxInitialItems truncation
+- **EmptyState**: `iconSize?: 'sm' | 'md' | 'lg'` — control icon dimensions (sm=16px, md=32px, lg=48px)
+- **BottomNavbar**: `badge?: number` on `BottomNavItem` — notification count badge (red dot, 99+ cap)
+- **AppSidebar**: `preFooterClassName?: string` — custom className on preFooterSlot wrapper (enables scroll overflow)
+
+### shilp-sutra-karm [0.14.0]
+
+### Added
+- **ScratchpadWidget**: Dashboard todo widget — CRUD, progress ring, keyboard-first add flow, hover/focus-visible delete
+- **SidebarScratchpad**: Compact collapsible sidebar scratchpad — toggle-only, badge count, grid-based collapse animation
+- **DailyBrief**: `onRefresh` callback with spin animation, `unavailable` state, `defaultCollapsed`, custom `title`, relative timestamp footer, grid-based collapse animation
+
 ## [0.15.0] - 2026-03-11
 
 ### Added

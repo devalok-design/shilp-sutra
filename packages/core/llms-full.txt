@@ -5,7 +5,7 @@
 > All variant values and props verified from source CVA definitions.
 >
 > Package: @devalok/shilp-sutra
-> Version: 0.14.0
+> Version: 0.16.0
 
 ---
 
@@ -1373,6 +1373,62 @@ Note: getFormFieldA11y() was removed in favor of useFormField() hook.
     <p>Member list here</p>
   </ContentCard>
 
+## DataTable (v0.16.0)
+- Import: @devalok/shilp-sutra/ui/data-table (barrel-isolated — NOT in ui barrel)
+- Server-safe: No
+- Requires: @tanstack/react-table (peer dep), @tanstack/react-virtual (peer dep)
+- Props:
+    columns: ColumnDef<TData>[] (TanStack column definitions)
+    data: TData[]
+    sortable: boolean — enable column sorting
+    onSort: (key: string, dir: 'asc' | 'desc' | false) => void — server-side sort callback (enables manualSorting)
+    filterable: boolean — enable per-column filters
+    globalFilter: boolean — enable global search
+    paginated: boolean — enable client-side pagination
+    pagination: { page: number, pageSize: number, total: number, onPageChange: (page: number) => void } — server-side pagination (1-based page)
+    pageSize: number (default 10)
+    selectable: boolean — enable row selection with checkboxes
+    selectedIds: Set<string> — controlled selection state
+    selectableFilter: (row: TData) => boolean — disable selection on certain rows
+    getRowId: (row: TData) => string — custom row ID accessor
+    onSelectionChange: (selectedRows: TData[]) => void
+    expandable: boolean — enable row expansion
+    renderExpanded: (row: TData) => ReactNode — expanded row content
+    singleExpand: boolean — only one row expanded at a time
+    loading: boolean — show skeleton shimmer rows
+    emptyState: ReactNode — custom empty state (takes precedence over noResultsText)
+    noResultsText: string (default "No results.")
+    stickyHeader: boolean — sticky table header
+    onRowClick: (row: TData) => void — row click handler (excludes interactive element clicks)
+    bulkActions: BulkAction<TData>[] — floating action bar on selection — { label, onClick, color?: 'default'|'error', disabled? }
+    toolbar: boolean — show DataTableToolbar (column visibility, density, CSV export)
+    editable: boolean — enable double-click cell editing
+    virtualRows: boolean — virtualize rows for large datasets
+    columnPinning: { left?: string[], right?: string[] }
+    defaultDensity: 'compact' | 'standard' | 'comfortable'
+- Companion: DataTableToolbar from @devalok/shilp-sutra/ui/data-table-toolbar
+- Gotchas:
+    - Barrel-isolated since v0.5.0 — must use granular import path
+    - When onSort is provided, sorting is manual (server-side) — rows stay in data order
+    - When pagination prop is provided, pagination is manual — pass total count, component shows correct page count
+    - selectedIds syncs via useEffect — provide getRowId for custom row IDs
+    - onRowClick does NOT fire when clicking checkboxes, buttons, links, or inputs
+    - Use defaultDensity="compact" for Karm-style h-9 rows
+- Example:
+  import { DataTable } from '@devalok/shilp-sutra/ui/data-table'
+  <DataTable
+    columns={[
+      { accessorKey: 'name', header: 'Name' },
+      { accessorKey: 'email', header: 'Email' },
+    ]}
+    data={users}
+    sortable
+    onSort={(key, dir) => handleSort(key, dir)}
+    pagination={{ page, pageSize: 20, total: totalCount, onPageChange: setPage }}
+    loading={isLoading}
+    emptyState={<EmptyState title="No users" />}
+  />
+
 ## DatePicker
 - Import: @devalok/shilp-sutra/composed/date-picker
 - Server-safe: No
@@ -1434,13 +1490,38 @@ Note: getFormFieldA11y() was removed in favor of useFormField() hook.
     icon: ReactNode | ComponentType<{ className?: string }> (default: Devalok chakra icon)
     action: ReactNode (e.g. a Button)
     compact: boolean (smaller layout)
+    iconSize: 'sm' | 'md' | 'lg' (default 'md', compact defaults to 'sm') — sm=h-ico-sm, md=h-ico-lg, lg=h-ico-xl
 - Gotchas:
     - icon accepts both JSX elements (`<IconFolder />`) and component references (`IconFolder`). Component references are auto-instantiated with correct sizing classes.
+    - iconSize controls icon dimensions regardless of icon type. When compact=true and no iconSize, defaults to 'sm'.
 - Example:
   <EmptyState
     title="No tasks found"
     description="Create your first task to get started."
     action={<Button>Create Task</Button>}
+    iconSize="lg"
+  />
+
+## ActivityFeed (v0.16.0)
+- Import: @devalok/shilp-sutra/composed/activity-feed
+- Server-safe: No
+- Props:
+    items: ActivityItem[] (REQUIRED) — { id, actor?: { name, image? }, action: string|ReactNode, timestamp: Date|string, icon?, color?: 'default'|'success'|'warning'|'error'|'info', detail?: ReactNode }
+    onLoadMore: () => void — "Load more" button callback
+    loading: boolean — skeleton shimmer
+    hasMore: boolean — shows "Load more" button
+    emptyState: ReactNode — empty state content
+    compact: boolean — tighter spacing, no avatars, smaller text
+    maxInitialItems: number — truncate with "Show all (N)" toggle
+- Example:
+  <ActivityFeed
+    items={[
+      { id: '1', actor: { name: 'Alice' }, action: 'completed task', timestamp: new Date(), color: 'success' },
+      { id: '2', action: 'System backup completed', timestamp: new Date(), detail: <pre>Details...</pre> },
+    ]}
+    hasMore
+    onLoadMore={() => fetchMore()}
+    compact
   />
 
 ## ErrorDisplay
@@ -1689,6 +1770,7 @@ New props on AppSidebarProps:
     footer: SidebarFooterConfig — structured footer (takes precedence over footerLinks)
     headerSlot: ReactNode — content between user info and navigation
     preFooterSlot: ReactNode — content between navigation and footer
+    preFooterClassName: string — className on preFooterSlot wrapper div (e.g. "overflow-y-auto max-h-[200px]")
     renderItem: (item: NavItem, defaultRender: () => ReactNode) => ReactNode | null — custom item rendering
 
 New fields on NavItem:
@@ -1786,7 +1868,7 @@ Deprecated props:
 - Props:
     currentPath: string
     user: BottomNavbarUser | null (optional) — { name, role? }. Not required to render.
-    primaryItems: BottomNavItem[] (max 4 recommended) — { title, href, icon, exact? }
+    primaryItems: BottomNavItem[] (max 4 recommended) — { title, href, icon, exact?, badge?: number }
     moreItems: BottomNavItem[] (overflow items in "More" menu)
     className: string
 - Example:

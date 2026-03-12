@@ -1,0 +1,156 @@
+// ── sRGB ↔ Linear RGB ────────────────────────────────────────────────
+function srgbToLinear(c) {
+    return c <= 0.04045 ? c / 12.92 : ((c + 0.055) / 1.055) ** 2.4;
+}
+function linearToSrgb(c) {
+    return c <= 0.0031308 ? 12.92 * c : 1.055 * c ** (1 / 2.4) - 0.055;
+}
+// ── Linear RGB ↔ Oklab ──────────────────────────────────────────────
+function linearRgbToOklab(r, g, b) {
+    const l = Math.cbrt(0.4122214708 * r + 0.5363325363 * g + 0.0514459929 * b);
+    const m = Math.cbrt(0.2119034982 * r + 0.6806995451 * g + 0.1073969566 * b);
+    const s = Math.cbrt(0.0883024619 * r + 0.2817188376 * g + 0.6299787005 * b);
+    return [
+        0.2104542553 * l + 0.7936177850 * m - 0.0040720468 * s,
+        1.9779984951 * l - 2.4285922050 * m + 0.4505937099 * s,
+        0.0259040371 * l + 0.7827717662 * m - 0.8086757660 * s,
+    ];
+}
+function oklabToLinearRgb(L, a, b) {
+    const l = (L + 0.3963377774 * a + 0.2158037573 * b) ** 3;
+    const m = (L - 0.1055613458 * a - 0.0638541728 * b) ** 3;
+    const s = (L - 0.0894841775 * a - 1.2914855480 * b) ** 3;
+    return [
+        +4.0767416621 * l - 3.3077115913 * m + 0.2309699292 * s,
+        -1.2684380046 * l + 2.6097574011 * m - 0.3413193965 * s,
+        -0.0041960863 * l - 0.7034186147 * m + 1.7076147010 * s,
+    ];
+}
+// ── Oklab ↔ OKLCH ───────────────────────────────────────────────────
+function oklabToOklch(L, a, b) {
+    const C = Math.sqrt(a * a + b * b);
+    const h = (Math.atan2(b, a) * 180) / Math.PI;
+    return [L, C, h < 0 ? h + 360 : h];
+}
+function oklchToOklab(L, C, h) {
+    const rad = (h * Math.PI) / 180;
+    return [L, C * Math.cos(rad), C * Math.sin(rad)];
+}
+// ── Hex conversion ──────────────────────────────────────────────────
+function hexToOklch(hex) {
+    const r = srgbToLinear(parseInt(hex.slice(1, 3), 16) / 255);
+    const g = srgbToLinear(parseInt(hex.slice(3, 5), 16) / 255);
+    const b = srgbToLinear(parseInt(hex.slice(5, 7), 16) / 255);
+    const [L, a, bb] = linearRgbToOklab(r, g, b);
+    return oklabToOklch(L, a, bb);
+}
+function oklchToHex(L, C, h) {
+    const [labL, a, b] = oklchToOklab(L, C, h);
+    const [lr, lg, lb] = oklabToLinearRgb(labL, a, b);
+    const toHex = (v) => Math.round(255 * Math.max(0, Math.min(1, linearToSrgb(v))))
+        .toString(16)
+        .padStart(2, '0');
+    return `#${toHex(lr)}${toHex(lg)}${toHex(lb)}`;
+}
+// ── Gamut clipping via binary search on chroma ──────────────────────
+function inGamut(r, g, b) {
+    return r >= -0.001 && r <= 1.001 && g >= -0.001 && g <= 1.001 && b >= -0.001 && b <= 1.001;
+}
+function gamutClipOklch(L, C, h) {
+    const [labL, a, b] = oklchToOklab(L, C, h);
+    const [lr, lg, lb] = oklabToLinearRgb(labL, a, b);
+    if (inGamut(lr, lg, lb))
+        return [L, C, h];
+    let lo = 0;
+    let hi = C;
+    for (let i = 0; i < 20; i++) {
+        const mid = (lo + hi) / 2;
+        const [mL, ma, mb] = oklchToOklab(L, mid, h);
+        const [mr, mg, mbb] = oklabToLinearRgb(mL, ma, mb);
+        if (inGamut(mr, mg, mbb)) {
+            lo = mid;
+        }
+        else {
+            hi = mid;
+        }
+    }
+    return [L, lo, h];
+}
+// ── Scale generation ────────────────────────────────────────────────
+const SHADE_STOPS = [50, 100, 200, 300, 400, 500, 600, 700, 800, 900, 950];
+/**
+ * Normalized position of each shade on the lightness axis (0 = lightest, 1 = darkest).
+ * Derived from Evil Martians' Harmony lightness curve — the spacing between stops
+ * is perceptually even in OKLCH. 500 sits at ~0.449 (not 0.5) because palettes
+ * need more room in the light range than the dark range.
+ */
+const T = {
+    50: 0.003,
+    100: 0.060,
+    200: 0.134,
+    300: 0.207,
+    400: 0.321,
+    500: 0.449,
+    600: 0.550,
+    700: 0.691,
+    800: 0.791,
+    900: 0.892,
+    950: 1.000,
+};
+const T_500 = T[500];
+/** Lightness endpoints — near-white and near-black in OKLCH */
+const L_MAX = 0.98;
+const L_MIN = 0.24;
+/**
+ * Chroma scale factors relative to the base color's chroma.
+ * Lighter and darker shades have less chroma; mid-tones peak.
+ */
+const CHROMA_FACTOR = {
+    50: 0.07,
+    100: 0.22,
+    200: 0.41,
+    300: 0.62,
+    400: 0.95,
+    500: 1.00,
+    600: 0.88,
+    700: 0.73,
+    800: 0.61,
+    900: 0.49,
+    950: 0.37,
+};
+/**
+ * Generate a full color scale from a single base hex color using OKLCH.
+ *
+ * The base color is placed exactly at the 500 stop. Lightness for other
+ * stops is interpolated relative to the base: lighter shades toward L_MAX,
+ * darker shades toward L_MIN, using the Harmony curve's perceptually-even
+ * spacing. Chroma scales proportionally from the base. Out-of-gamut colors
+ * are clipped via binary search on chroma.
+ */
+export function generateColorScale(baseHex) {
+    const [baseL, baseC, baseH] = hexToOklch(baseHex);
+    const scale = {};
+    for (const shade of SHADE_STOPS) {
+        if (shade === 500) {
+            scale[500] = baseHex;
+            continue;
+        }
+        const t = T[shade];
+        let L;
+        if (t < T_500) {
+            // Lighter than base: interpolate from L_MAX down to baseL
+            const frac = t / T_500;
+            L = L_MAX + (baseL - L_MAX) * frac;
+        }
+        else {
+            // Darker than base: interpolate from baseL down to L_MIN
+            const frac = (t - T_500) / (1 - T_500);
+            L = baseL + (L_MIN - baseL) * frac;
+        }
+        const C = baseC * CHROMA_FACTOR[shade];
+        const [clL, clC, clH] = gamutClipOklch(L, C, baseH);
+        scale[shade] = oklchToHex(clL, clC, clH);
+    }
+    return scale;
+}
+export { SHADE_STOPS };

@@ -26,7 +26,7 @@ import {
   IconX,
 } from '@tabler/icons-react'
 import { useBoardContext } from './board-context'
-import { collectAllMembers, collectAllLabels } from './board-utils'
+import { collectAllLabels } from './board-utils'
 
 // ============================================================
 // Helpers
@@ -47,6 +47,7 @@ const DUE_DATE_OPTIONS = [
 export function BoardToolbar() {
   const {
     rawColumns,
+    members,
     filters,
     setFilters,
     clearFilters,
@@ -78,7 +79,7 @@ export function BoardToolbar() {
     setSearchValue(filters.search)
   }, [filters.search])
 
-  const allMembers = collectAllMembers(rawColumns)
+  const allMembers = members
   const allLabels = collectAllLabels(rawColumns)
 
   // ---- Filter toggle helpers ----

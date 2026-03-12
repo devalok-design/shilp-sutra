@@ -5,6 +5,11 @@ All notable changes to `@devalok/shilp-sutra` will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## shilp-sutra-karm [0.15.0] - 2026-03-12
+
+### Added
+- **KanbanBoard**: `members?: BoardMember[]` prop on `BoardProvider` — explicit member list for assignment dropdowns, lead selector, and bulk assign. Falls back to deriving members from task assignees when not provided. Fixes empty member lists on new/empty projects.
+
 ## [0.16.1] - 2026-03-12
 
 ### Fixed

@@ -21,7 +21,6 @@ import {
   IconTrash,
 } from '@tabler/icons-react'
 import { useBoardContext } from './board-context'
-import { collectAllMembers } from './board-utils'
 import { PRIORITY_COLORS } from './board-constants'
 
 // ============================================================
@@ -36,8 +35,8 @@ const PRIORITIES = ['LOW', 'MEDIUM', 'HIGH', 'URGENT'] as const
 
 export function BulkActionBar() {
   const {
-    rawColumns,
     columns,
+    members,
     selectedTaskIds,
     clearSelection,
     onBulkAction,
@@ -45,7 +44,7 @@ export function BulkActionBar() {
 
   const count = selectedTaskIds.size
   const taskIds = Array.from(selectedTaskIds)
-  const allMembers = collectAllMembers(rawColumns)
+  const allMembers = members
 
   const handleAction = (type: string, value?: string | null) => {
     onBulkAction({ type: type as any, taskIds, value })

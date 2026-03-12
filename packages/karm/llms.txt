@@ -22,7 +22,7 @@ import { KanbanBoard, TaskDetailPanel, ChatPanel } from '@devalok/shilp-sutra-ka
 ## Module Reference
 
 ### Board (`/board`)
-- KanbanBoard: initialData(BoardData), onTaskMove, onTaskAdd, onColumnRename, onColumnDelete, onColumnToggleVisibility, onClickTask, onAddColumn
+- KanbanBoard: initialData(BoardData), members?(BoardMember[]), onTaskMove, onTaskAdd, onColumnRename, onColumnDelete, onColumnToggleVisibility, onClickTask, onAddColumn
 - BoardColumn: column(BoardColumnData), index, onAddTask, onClickTask, onRenameColumn, onDeleteColumn
 - TaskCard: task(BoardTask), onClickTask
 - TaskCardOverlay: task(BoardTask) — drag overlay variant
@@ -31,6 +31,7 @@ BoardTask shape: { id, title, priority, labels[], dueDate, isBlocked, assignees[
 BoardData shape: { columns: [{ id, name, isClientVisible, tasks[] }] }
 
 Uses dnd-kit for drag-and-drop. KanbanBoard manages all DnD state internally.
+Pass `members` prop for explicit member list in assignment dropdowns — required for new/empty projects with no task assignees yet. Falls back to deriving members from task data when omitted.
 
 Column management callbacks: `onColumnRename`, `onColumnDelete`, `onColumnToggleVisibility`, and `onAddColumn`
 are fire-and-forget — the board renders an "Add column" button and column header menus only when the

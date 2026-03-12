@@ -14,17 +14,20 @@ import type {
   BoardColumn,
   BoardData,
   BoardFilters,
+  BoardMember,
   BoardTask,
   BoardViewMode,
   BulkAction,
   NewTaskOptions,
 } from './board-types'
 import { DEFAULT_FILTERS } from './board-constants'
+import { collectAllMembers } from './board-utils'
 import { useFilteredColumns } from './use-board-filters'
 
 interface BoardContextValue {
   columns: BoardColumn[]
   rawColumns: BoardColumn[]
+  members: BoardMember[]
   viewMode: BoardViewMode
   setViewMode: (mode: BoardViewMode) => void
   filters: BoardFilters
@@ -74,6 +77,8 @@ const noop = () => {}
 export interface BoardProviderProps {
   initialData: BoardData
   currentUserId?: string | null
+  /** Explicit member list for assignment dropdowns. Falls back to deriving from task assignees. */
+  members?: BoardMember[]
   children: ReactNode
   onTaskMove?: (taskId: string, toColumnId: string, newOrder: number) => void
   onTaskAdd?: (columnId: string, options: NewTaskOptions) => void
@@ -96,6 +101,7 @@ export interface BoardProviderProps {
 export function BoardProvider({
   initialData,
   currentUserId = null,
+  members: membersProp,
   children,
   ...callbacks
 }: BoardProviderProps) {
@@ -122,6 +128,11 @@ export function BoardProvider({
   )
 
   const filteredColumns = useFilteredColumns(columns, filters)
+
+  const resolvedMembers = useMemo(
+    () => membersProp ?? collectAllMembers(columns),
+    [membersProp, columns],
+  )
 
   const [selectedTaskIds, setSelectedTaskIds] = useState<Set<string>>(new Set())
   const toggleTaskSelection = useCallback((taskId: string) => {
@@ -162,6 +173,7 @@ export function BoardProvider({
     () => ({
       columns: filteredColumns,
       rawColumns: columns,
+      members: resolvedMembers,
       viewMode,
       setViewMode,
       filters,
@@ -200,6 +212,7 @@ export function BoardProvider({
     [
       filteredColumns,
       columns,
+      resolvedMembers,
       viewMode,
       filters,
       setFilters,

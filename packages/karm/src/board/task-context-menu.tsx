@@ -25,7 +25,7 @@ import {
   IconTrash,
 } from '@tabler/icons-react'
 import { useBoardContext } from './board-context'
-import { collectAllMembers, collectAllLabels } from './board-utils'
+import { collectAllLabels } from './board-utils'
 import { PRIORITY_COLORS } from './board-constants'
 
 // ============================================================
@@ -51,6 +51,7 @@ export interface TaskContextMenuProps {
 export function TaskContextMenu({ taskId, children }: TaskContextMenuProps) {
   const {
     rawColumns,
+    members,
     onQuickPriorityChange,
     onQuickAssign,
     onQuickLabelAdd,
@@ -59,7 +60,7 @@ export function TaskContextMenu({ taskId, children }: TaskContextMenuProps) {
     onQuickDelete,
   } = useBoardContext()
 
-  const allMembers = collectAllMembers(rawColumns)
+  const allMembers = members
   const allLabels = collectAllLabels(rawColumns)
 
   const dateInputRef = React.useRef<HTMLInputElement>(null)

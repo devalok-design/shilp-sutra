@@ -27,7 +27,6 @@ import {
   IconCheck,
 } from '@tabler/icons-react'
 import { useBoardContext } from './board-context'
-import { collectAllMembers } from './board-utils'
 import { COLUMN_ACCENT_COLORS } from './board-constants'
 import type { BoardColumn, BoardMember } from './board-types'
 
@@ -120,7 +119,7 @@ export interface ColumnHeaderProps {
 
 export function ColumnHeader({ column, index }: ColumnHeaderProps) {
   const {
-    rawColumns,
+    members,
     onColumnRename,
     onColumnDelete,
     onColumnToggleVisibility,
@@ -138,7 +137,7 @@ export function ColumnHeader({ column, index }: ColumnHeaderProps) {
   const [newDueDate, setNewDueDate] = useState('')
   const addInputRef = useRef<HTMLInputElement>(null)
 
-  const allMembers = collectAllMembers(rawColumns)
+  const allMembers = members
 
   const accentColor = COLUMN_ACCENT_COLORS[index % COLUMN_ACCENT_COLORS.length]
   const taskCount = column.tasks.length

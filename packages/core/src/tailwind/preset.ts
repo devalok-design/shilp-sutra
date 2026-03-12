@@ -437,7 +437,7 @@ const preset: Partial<Config> = {
       animation: {
         ripple: 'ripple var(--duration-slow-01) linear',
         'ripple-icon': 'ripple var(--duration-moderate-02) linear forwards',
-        shake: 'shake 1s var(--ease-productive-standard) infinite',
+        shake: 'shake 0.4s var(--ease-productive-standard) both',
         'progress-indeterminate':
           'progress-indeterminate var(--duration-slow-02) var(--ease-productive-standard) infinite',
         'skeleton-shimmer':

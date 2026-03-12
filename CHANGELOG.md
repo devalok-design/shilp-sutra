@@ -5,6 +5,39 @@ All notable changes to `@devalok/shilp-sutra` will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.17.0] - 2026-03-12
+
+### Fixed
+- **TableCell**: Added `px-ds-03` horizontal padding — was `px-0`, causing content to hug container edges with no left/right spacing. Now matches `TableHead` padding.
+- **animate-shake**: Changed from `1s infinite` to `0.4s both` — was looping endlessly on upload failure states. Now plays once with a natural feel.
+
+### Documentation — Previously Undocumented Components
+The following components were exported but missing from AI-readable docs (llms.txt / llms-full.txt). All now documented:
+
+**Core composed (7 added):**
+- UploadProgress — file upload tracker with status indicators, retry/remove, compact variant
+- TimePicker — standalone time selector (12h/24h, minute/second steps)
+- CalendarGrid — low-level calendar widget with single/range selection, event dots
+- YearPicker — decade year grid for year selection
+- MonthPicker — month grid for month selection
+- Presets — quick-select date range buttons
+- useCalendar — hook for calendar month navigation state
+
+**Karm dashboard (2 added):**
+- ScratchpadWidget — dashboard todo widget with progress ring
+- SidebarScratchpad — compact collapsible sidebar scratchpad
+
+**Karm board (1 added):**
+- BoardProvider `members` prop documentation in llms.txt
+
+## shilp-sutra-karm [0.16.0] - 2026-03-12
+
+### Fixed
+- **KanbanBoard**: All board sub-components (toolbar, column header, context menu, bulk action bar) now read members from context instead of re-deriving from `rawColumns` on every render
+
+### Documentation
+- Added ScratchpadWidget, SidebarScratchpad, DailyBrief enhanced props to llms.txt
+
 ## shilp-sutra-karm [0.15.0] - 2026-03-12
 
 ### Added

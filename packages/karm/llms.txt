@@ -75,7 +75,11 @@ Conversation shape: { id, title, updatedAt }
 
 ### Dashboard (`/dashboard`)
 - AttendanceCTA: userName, attendance, canMarkAttendance, onMarkAttendance?, isSubmitting?, formatTime?
-- DailyBrief: data({ brief: string[], generatedAt }|null), loading?
+- DailyBrief: data({ brief: string[], generatedAt }|null), loading?, onRefresh?, unavailable?, defaultCollapsed?, title?
+- ScratchpadWidget: items(ScratchpadItem[]), onToggle, onAdd?, onDelete?, loading?, title?
+- SidebarScratchpad: items(ScratchpadItem[]), onToggle, defaultOpen?, badgeCount?
+
+ScratchpadItem shape: { id, text, done }
 
 ### Client Portal (`/client`)
 - AccentProvider: accentCss?(string) — injects CSS custom properties on document root

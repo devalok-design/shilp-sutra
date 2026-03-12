@@ -1481,6 +1481,124 @@ Note: getFormFieldA11y() was removed in favor of useFormField() hook.
 - Example:
   <DateTimePicker value={dateTime} onChange={setDateTime} timeFormat="12h" minuteStep={15} />
 
+## TimePicker
+- Import: @devalok/shilp-sutra/composed/date-picker
+- Server-safe: No
+- Props:
+    value: Date | null (time stored as a Date object)
+    onChange: (date: Date) => void
+    format: "12h" | "24h" (default: "12h")
+    minuteStep: number (default: 1) — step interval for minutes column
+    secondStep: number (default: 1) — step interval for seconds column
+    showSeconds: boolean (default: false) — whether to show the seconds column
+    placeholder: string (default: "Pick a time")
+    disabled: boolean (default: false)
+    className: string
+- Defaults: format="12h", minuteStep=1, secondStep=1, showSeconds=false
+- Example:
+  <TimePicker value={time} onChange={setTime} format="24h" minuteStep={15} />
+  <TimePicker value={time} onChange={setTime} showSeconds />
+- Gotchas:
+    - Time is stored inside a Date object — only hours/minutes/seconds are meaningful
+    - Opens as a popover with scrollable columns for hours, minutes, (optional) seconds, and AM/PM
+    - When no value is set, selecting a time part creates a Date from the current date/time
+
+## CalendarGrid
+- Import: @devalok/shilp-sutra/composed/date-picker
+- Server-safe: No
+- Props:
+    currentMonth: Date (REQUIRED) — which month to display
+    selected: Date | null — single selected date
+    rangeStart: Date | null — range selection start
+    rangeEnd: Date | null — range selection end
+    hoverDate: Date | null — date currently hovered (for range preview)
+    onSelect: (date: Date) => void (REQUIRED) — called when user clicks a date
+    onHover: (date: Date | null) => void — called on mouse enter/leave
+    onMonthChange: (date: Date) => void (REQUIRED) — called for prev/next month navigation
+    onHeaderClick: () => void — called when month/year header is clicked (e.g. to switch to month/year picker view)
+    disabledDates: (date: Date) => boolean
+    minDate: Date
+    maxDate: Date
+    hidePrevNav: boolean — hide previous-month arrow
+    hideNextNav: boolean — hide next-month arrow
+    events: CalendarEvent[] — dot indicators on dates. CalendarEvent: { date: Date, color?: string, label?: string }
+- Example:
+  <CalendarGrid
+    currentMonth={currentMonth}
+    selected={selectedDate}
+    onSelect={setSelectedDate}
+    onMonthChange={setCurrentMonth}
+    events={[{ date: new Date('2026-03-15'), color: 'var(--color-success)' }]}
+  />
+- Gotchas:
+    - This is a low-level building block — prefer DatePicker/DateRangePicker for most use cases
+    - Full keyboard navigation: ArrowLeft/Right/Up/Down, Home/End, Enter/Space
+    - Up to 3 event dots render per day cell
+
+## YearPicker
+- Import: @devalok/shilp-sutra/composed/date-picker
+- Server-safe: No
+- Props:
+    currentYear: number (REQUIRED) — centers the decade grid
+    selectedYear: number — highlights the selected year
+    onYearSelect: (year: number) => void (REQUIRED)
+    minDate: Date — disables years before this date's year
+    maxDate: Date — disables years after this date's year
+- Example:
+  <YearPicker currentYear={2026} selectedYear={2026} onYearSelect={handleYear} />
+- Gotchas:
+    - Displays a 12-year grid (3 columns x 4 rows) based on the decade of currentYear
+    - This is a low-level building block used internally by DatePicker
+
+## MonthPicker
+- Import: @devalok/shilp-sutra/composed/date-picker
+- Server-safe: No
+- Props:
+    currentYear: number (REQUIRED) — which year's months to display
+    selectedMonth: number (0-11) — highlights the selected month
+    onMonthSelect: (month: number) => void (REQUIRED) — returns 0-11
+    minDate: Date — disables months before this date
+    maxDate: Date — disables months after this date
+- Example:
+  <MonthPicker currentYear={2026} selectedMonth={2} onMonthSelect={handleMonth} />
+- Gotchas:
+    - Month values are 0-indexed (Jan=0, Dec=11) — same as JavaScript Date.getMonth()
+    - Displays a 4-column grid of abbreviated month names (Jan, Feb, Mar, ...)
+    - This is a low-level building block used internally by DatePicker
+
+## Presets (Date Range Presets)
+- Import: @devalok/shilp-sutra/composed/date-picker
+- Server-safe: No
+- Types:
+    PresetKey: 'today' | 'yesterday' | 'last7days' | 'last30days' | 'thisMonth' | 'lastMonth' | 'thisYear'
+- Props:
+    presets: PresetKey[] (REQUIRED) — which preset buttons to show
+    onSelect: (start: Date, end: Date) => void (REQUIRED) — called with the computed date range
+    className: string
+- Example:
+  <Presets
+    presets={['today', 'last7days', 'last30days', 'thisMonth']}
+    onSelect={(start, end) => setRange({ start, end })}
+  />
+- Gotchas:
+    - Typically used alongside DateRangePicker (pass presets prop to DateRangePicker for built-in sidebar)
+    - Each preset computes start-of-day / end-of-day boundaries using date-fns
+
+## useCalendar
+- Import: @devalok/shilp-sutra/composed/date-picker
+- Hook: useCalendar(initialMonth?: Date)
+- Returns:
+    currentMonth: Date — the current displayed month
+    setCurrentMonth: (date: Date) => void
+    goToPreviousMonth: () => void
+    goToNextMonth: () => void
+    goToMonth: (month: number) => void — 0-indexed month
+    goToYear: (year: number) => void
+- Example:
+  const { currentMonth, goToNextMonth, goToPreviousMonth, goToMonth, goToYear } = useCalendar()
+  <CalendarGrid currentMonth={currentMonth} onMonthChange={setCurrentMonth} ... />
+- Gotchas: This is a convenience hook for managing calendar month state — used internally by DatePicker
+
 ## EmptyState
 - Import: @devalok/shilp-sutra/composed/empty-state
 - Server-safe: Yes
@@ -1709,6 +1827,42 @@ Note: getFormFieldA11y() was removed in favor of useFormField() hook.
   <StatusBadge status="active" />
   <StatusBadge color="warning" label="In Review" size="sm" />
 - Gotchas: When color is set, it takes priority over status for styling
+
+## UploadProgress
+- Import: @devalok/shilp-sutra/composed/upload-progress
+- Server-safe: No
+- Types:
+    UploadFile: { id: string, name: string, size: number (bytes), progress?: number (0-100, undefined = indeterminate), status: 'pending' | 'uploading' | 'processing' | 'complete' | 'error', error?: string, previewUrl?: string }
+- Props:
+    files: UploadFile[] (REQUIRED)
+    onRemove: (fileId: string) => void — called when user cancels/removes a file
+    onRetry: (fileId: string) => void — called when user retries a failed upload
+    onDismissAll: () => void — "Dismiss all" button appears when all files are terminal (complete or error)
+    variant: "default" | "compact" (default: "default") — default = two-line layout with progress bar; compact = single-line layout
+    showSize: boolean (default: true) — show file size (default variant only)
+    className: string
+- Also exported: formatFileSize(bytes: number) => string — utility to format bytes as human-readable (B, KB, MB, GB)
+- Defaults: variant="default", showSize=true
+- Example:
+  <UploadProgress
+    files={[
+      { id: '1', name: 'report.pdf', size: 1048576, status: 'uploading', progress: 45 },
+      { id: '2', name: 'photo.jpg', size: 204800, status: 'complete', previewUrl: '/thumb.jpg' },
+      { id: '3', name: 'data.csv', size: 51200, status: 'error', error: 'Network timeout' },
+    ]}
+    onRemove={(id) => removeFile(id)}
+    onRetry={(id) => retryUpload(id)}
+    onDismissAll={() => clearAll()}
+  />
+  <UploadProgress files={uploads} variant="compact" onRemove={removeFile} />
+- Gotchas:
+    - Returns null when files array is empty
+    - Summary header shows completion count and error count
+    - Border color changes based on state: green when all complete, red tint when all terminal with errors
+    - File icon auto-detects image files by extension or previewUrl presence
+    - Status 'processing' renders a spinner icon and indeterminate progress
+    - Screen reader announcements via aria-live region for completion/error events
+    - Staggered slide-up animation (30ms delay per file)
 
 ---
 

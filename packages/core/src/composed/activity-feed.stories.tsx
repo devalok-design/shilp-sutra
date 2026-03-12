@@ -188,7 +188,7 @@ export const WithLoadMore: Story = {
   args: {
     items: BASIC_ITEMS,
     hasMore: true,
-    onLoadMore: fn('loadMore'),
+    onLoadMore: fn(),
   },
 }
 

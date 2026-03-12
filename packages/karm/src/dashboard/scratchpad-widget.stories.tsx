@@ -51,18 +51,18 @@ const ALL_DONE_ITEMS: ScratchpadItem[] = [
 export const Default: Story = {
   args: {
     items: SAMPLE_ITEMS,
-    onToggle: fn('toggle'),
-    onAdd: fn('add'),
-    onDelete: fn('delete'),
+    onToggle: fn(),
+    onAdd: fn(),
+    onDelete: fn(),
   },
 }
 
 export const Empty: Story = {
   args: {
     items: [],
-    onToggle: fn('toggle'),
-    onAdd: fn('add'),
-    onDelete: fn('delete'),
+    onToggle: fn(),
+    onAdd: fn(),
+    onDelete: fn(),
     emptyIcon: IconClipboardList,
   },
 }
@@ -71,9 +71,9 @@ export const AllDone: Story = {
   name: 'All Done',
   args: {
     items: ALL_DONE_ITEMS,
-    onToggle: fn('toggle'),
-    onAdd: fn('add'),
-    onDelete: fn('delete'),
+    onToggle: fn(),
+    onAdd: fn(),
+    onDelete: fn(),
   },
 }
 
@@ -81,9 +81,9 @@ export const Loading: Story = {
   args: {
     items: [],
     loading: true,
-    onToggle: fn('toggle'),
-    onAdd: fn('add'),
-    onDelete: fn('delete'),
+    onToggle: fn(),
+    onAdd: fn(),
+    onDelete: fn(),
   },
 }
 
@@ -93,8 +93,8 @@ export const WithCustomTitle: Story = {
     items: SAMPLE_ITEMS,
     title: 'Today\'s Focus',
     resetLabel: 'Resets every morning at 6:00 AM',
-    onToggle: fn('toggle'),
-    onAdd: fn('add'),
-    onDelete: fn('delete'),
+    onToggle: fn(),
+    onAdd: fn(),
+    onDelete: fn(),
   },
 }

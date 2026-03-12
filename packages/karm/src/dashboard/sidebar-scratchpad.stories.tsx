@@ -44,7 +44,7 @@ const ITEMS: ScratchpadItem[] = [
 export const Default: Story = {
   args: {
     items: ITEMS,
-    onToggle: fn('toggle'),
+    onToggle: fn(),
     badgeCount: 3,
   },
 }
@@ -52,7 +52,7 @@ export const Default: Story = {
 export const Collapsed: Story = {
   args: {
     items: ITEMS,
-    onToggle: fn('toggle'),
+    onToggle: fn(),
     defaultOpen: false,
     badgeCount: 3,
   },
@@ -61,6 +61,6 @@ export const Collapsed: Story = {
 export const Empty: Story = {
   args: {
     items: [],
-    onToggle: fn('toggle'),
+    onToggle: fn(),
   },
 }

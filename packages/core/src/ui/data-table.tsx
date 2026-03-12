@@ -328,9 +328,13 @@ export function DataTable<TData, TValue>({
   // Ref for the virtual scroll container
   const scrollContainerRef = useRef<HTMLDivElement>(null)
 
+  // Guard to prevent onSelectionChange firing when syncing from selectedIds prop
+  const isSyncingFromPropRef = useRef(false)
+
   // Sync controlled selectedIds to internal rowSelection
   useEffect(() => {
     if (selectedIds) {
+      isSyncingFromPropRef.current = true
       const newSelection: RowSelectionState = {}
       selectedIds.forEach((id) => {
         newSelection[id] = true
@@ -547,8 +551,12 @@ export function DataTable<TData, TValue>({
     onSelectionChangeRef.current = onSelectionChange
   }, [onSelectionChange])
 
-  // Fire selection callback when row selection changes
+  // Fire selection callback when row selection changes (skip when syncing from prop)
   useEffect(() => {
+    if (isSyncingFromPropRef.current) {
+      isSyncingFromPropRef.current = false
+      return
+    }
     if (!onSelectionChangeRef.current) return
     const selectedRowIds = Object.keys(rowSelection).filter((k) => rowSelection[k])
     const selected = data.filter((_, i) => {

@@ -1,6 +1,6 @@
 import React from 'react'
 import type { Meta, StoryObj } from '@storybook/react'
-import { action } from '@storybook/addon-actions'
+import { fn } from '@storybook/test'
 import { IconClipboardList } from '@tabler/icons-react'
 import { ScratchpadWidget, type ScratchpadItem } from './scratchpad-widget'
 
@@ -51,18 +51,18 @@ const ALL_DONE_ITEMS: ScratchpadItem[] = [
 export const Default: Story = {
   args: {
     items: SAMPLE_ITEMS,
-    onToggle: action('toggle'),
-    onAdd: action('add'),
-    onDelete: action('delete'),
+    onToggle: fn('toggle'),
+    onAdd: fn('add'),
+    onDelete: fn('delete'),
   },
 }
 
 export const Empty: Story = {
   args: {
     items: [],
-    onToggle: action('toggle'),
-    onAdd: action('add'),
-    onDelete: action('delete'),
+    onToggle: fn('toggle'),
+    onAdd: fn('add'),
+    onDelete: fn('delete'),
     emptyIcon: IconClipboardList,
   },
 }
@@ -71,9 +71,9 @@ export const AllDone: Story = {
   name: 'All Done',
   args: {
     items: ALL_DONE_ITEMS,
-    onToggle: action('toggle'),
-    onAdd: action('add'),
-    onDelete: action('delete'),
+    onToggle: fn('toggle'),
+    onAdd: fn('add'),
+    onDelete: fn('delete'),
   },
 }
 
@@ -81,9 +81,9 @@ export const Loading: Story = {
   args: {
     items: [],
     loading: true,
-    onToggle: action('toggle'),
-    onAdd: action('add'),
-    onDelete: action('delete'),
+    onToggle: fn('toggle'),
+    onAdd: fn('add'),
+    onDelete: fn('delete'),
   },
 }
 
@@ -93,8 +93,8 @@ export const WithCustomTitle: Story = {
     items: SAMPLE_ITEMS,
     title: 'Today\'s Focus',
     resetLabel: 'Resets every morning at 6:00 AM',
-    onToggle: action('toggle'),
-    onAdd: action('add'),
-    onDelete: action('delete'),
+    onToggle: fn('toggle'),
+    onAdd: fn('add'),
+    onDelete: fn('delete'),
   },
 }

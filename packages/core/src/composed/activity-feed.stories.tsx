@@ -1,6 +1,6 @@
 import React from 'react'
 import type { Meta, StoryObj } from '@storybook/react'
-import { action } from '@storybook/addon-actions'
+import { fn } from '@storybook/test'
 import {
   IconGitCommit,
   IconMessageCircle,
@@ -188,7 +188,7 @@ export const WithLoadMore: Story = {
   args: {
     items: BASIC_ITEMS,
     hasMore: true,
-    onLoadMore: action('loadMore'),
+    onLoadMore: fn('loadMore'),
   },
 }
 

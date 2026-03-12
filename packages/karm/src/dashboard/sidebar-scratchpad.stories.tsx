@@ -1,6 +1,6 @@
 import React from 'react'
 import type { Meta, StoryObj } from '@storybook/react'
-import { action } from '@storybook/addon-actions'
+import { fn } from '@storybook/test'
 import { SidebarScratchpad } from './sidebar-scratchpad'
 import type { ScratchpadItem } from './scratchpad-widget'
 
@@ -44,7 +44,7 @@ const ITEMS: ScratchpadItem[] = [
 export const Default: Story = {
   args: {
     items: ITEMS,
-    onToggle: action('toggle'),
+    onToggle: fn('toggle'),
     badgeCount: 3,
   },
 }
@@ -52,7 +52,7 @@ export const Default: Story = {
 export const Collapsed: Story = {
   args: {
     items: ITEMS,
-    onToggle: action('toggle'),
+    onToggle: fn('toggle'),
     defaultOpen: false,
     badgeCount: 3,
   },
@@ -61,6 +61,6 @@ export const Collapsed: Story = {
 export const Empty: Story = {
   args: {
     items: [],
-    onToggle: action('toggle'),
+    onToggle: fn('toggle'),
   },
 }

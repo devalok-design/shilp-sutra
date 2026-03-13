@@ -43,3 +43,18 @@ export function withReducedMotion(transition: Transition): Transition {
 
 export type SpringPreset = keyof typeof springs
 export type TweenPreset = keyof typeof tweens
+
+// ── React ↔ Framer Motion event-handler compatibility ──
+// Framer Motion redefines several React event handlers (onDrag*, onAnimationStart,
+// etc.) with different signatures. When spreading React HTML props onto a motion.*
+// element, a type-level cast is needed to bridge the mismatch. At runtime the
+// handlers are identical DOM events — only the TS types conflict.
+
+/**
+ * Cast React HTML props so they can be safely spread onto a Framer Motion
+ * `motion.*` element without type conflicts on shared event-handler names.
+ */
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+export function motionProps<T>(props: T): any {
+  return props
+}

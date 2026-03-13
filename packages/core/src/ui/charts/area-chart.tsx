@@ -14,7 +14,7 @@ import {
 import { scaleLinear, scalePoint } from 'd3-scale'
 import type { ScaleLinear, ScalePoint } from 'd3-scale'
 import { cn } from '../lib/utils'
-import { tweens } from '../lib/motion'
+import { tweens, motionProps } from '../lib/motion'
 import { ChartContainer } from './chart-container'
 import { Axis, type AnyScale } from './_internal/axes'
 import { GridLines } from './_internal/grid-lines'
@@ -103,7 +103,7 @@ export const AreaChart = React.forwardRef<HTMLDivElement, AreaChartProps>(
       {...(shouldAnimate
         ? { initial: { opacity: 0, scale: 0.96 }, animate: { opacity: 1, scale: 1 }, transition: tweens.fade }
         : {})}
-      {...props}
+      {...motionProps(props)}
     >
       <ChartContainer height={height}>
         {({ width, height: innerHeight, margin }) => {

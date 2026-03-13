@@ -7,7 +7,7 @@ import { IconX } from '@tabler/icons-react'
 import { motion, AnimatePresence } from 'framer-motion'
 
 import { cn } from './lib/utils'
-import { springs, tweens } from './lib/motion'
+import { springs, tweens, motionProps } from './lib/motion'
 
 // ── Internal open-state context ──────────────────────────────────────
 
@@ -106,7 +106,7 @@ const SheetOverlay = React.forwardRef<
       animate={{ opacity: 1 }}
       exit={{ opacity: 0 }}
       transition={tweens.fade}
-      {...props}
+      {...motionProps(props)}
     />
   </SheetPrimitive.Overlay>
 ))
@@ -204,7 +204,7 @@ const SheetContent = React.forwardRef<
               animate={slideAnimate[side!]}
               exit={slideInitial[side!]}
               transition={springs.smooth}
-              {...props}
+              {...motionProps(props)}
             >
               <SheetPrimitive.Close className="absolute right-ds-05 top-ds-05 min-h-ds-xs min-w-ds-xs flex items-center justify-center rounded-ds-sm text-icon-secondary transition-colors hover:text-icon-primary hover:bg-field focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-focus disabled:pointer-events-none">
                 <IconX className="h-ico-sm w-ico-sm" />

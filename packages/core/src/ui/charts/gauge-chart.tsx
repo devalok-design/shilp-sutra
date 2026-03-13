@@ -4,7 +4,7 @@ import * as React from 'react'
 import { motion } from 'framer-motion'
 import { arc } from 'd3-shape'
 import { cn } from '../lib/utils'
-import { tweens } from '../lib/motion'
+import { tweens, motionProps } from '../lib/motion'
 import { resolveColor } from './_internal/colors'
 import { useReducedMotion, getTransitionDuration } from './_internal/animation'
 
@@ -105,7 +105,7 @@ export const GaugeChart = React.forwardRef<HTMLDivElement, GaugeChartProps>(
       {...(shouldAnimate
         ? { initial: { opacity: 0, scale: 0.96 }, animate: { opacity: 1, scale: 1 }, transition: tweens.fade }
         : {})}
-      {...props}
+      {...motionProps(props)}
       role="meter"
       aria-valuenow={clampedValue}
       aria-valuemin={min}

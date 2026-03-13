@@ -5,7 +5,7 @@ import * as TogglePrimitive from '@primitives/react-toggle'
 import { cva, type VariantProps } from 'class-variance-authority'
 import { motion } from 'framer-motion'
 
-import { springs } from './lib/motion'
+import { springs, motionProps } from './lib/motion'
 import { cn } from './lib/utils'
 
 const MotionToggleRoot = motion.create(TogglePrimitive.Root)
@@ -43,7 +43,7 @@ const Toggle = React.forwardRef<
     whileTap={{ scale: 0.95 }}
     transition={springs.snappy}
     className={cn(toggleVariants({ variant, size }), className)}
-    {...props}
+    {...motionProps(props)}
   />
 ))
 Toggle.displayName = TogglePrimitive.Root.displayName

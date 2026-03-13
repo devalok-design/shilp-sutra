@@ -6,7 +6,7 @@ import { motion } from 'framer-motion'
 import { pie as d3Pie, arc as d3Arc } from 'd3-shape'
 import type { PieArcDatum } from 'd3-shape'
 import { cn } from '../lib/utils'
-import { tweens } from '../lib/motion'
+import { tweens, motionProps } from '../lib/motion'
 import { Legend } from './_internal/legend'
 import { ChartTooltip, useChartTooltip } from './_internal/tooltip'
 import { resolveColor } from './_internal/colors'
@@ -122,7 +122,7 @@ export const PieChart = React.forwardRef<HTMLDivElement, PieChartProps>(
       {...(shouldAnimate
         ? { initial: { opacity: 0, scale: 0.96 }, animate: { opacity: 1, scale: 1 }, transition: tweens.fade }
         : {})}
-      {...props}
+      {...motionProps(props)}
     >
       {containerWidth > 0 && (
         <>

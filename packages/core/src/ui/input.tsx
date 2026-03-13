@@ -4,6 +4,7 @@ import * as React from 'react'
 import { motion } from 'framer-motion'
 import { cva, type VariantProps } from 'class-variance-authority'
 import { cn } from './lib/utils'
+import { motionProps } from './lib/motion'
 import { useFormField } from './form'
 
 export type InputState = 'default' | 'error' | 'warning' | 'success'
@@ -93,7 +94,7 @@ const Input = React.forwardRef<HTMLInputElement, InputProps>(
         aria-describedby={ariaDescribedBy}
         aria-required={ariaRequired || undefined}
         ref={ref}
-        {...props}
+        {...motionProps(props)}
       />
     )
 

@@ -4,7 +4,7 @@ import * as React from 'react'
 import { motion } from 'framer-motion'
 import { scaleBand, scaleLinear } from 'd3-scale'
 import { cn } from '../lib/utils'
-import { tweens } from '../lib/motion'
+import { tweens, motionProps } from '../lib/motion'
 import { ChartContainer } from './chart-container'
 import { Axis } from './_internal/axes'
 import { GridLines } from './_internal/grid-lines'
@@ -109,7 +109,7 @@ export const BarChart = React.forwardRef<HTMLDivElement, BarChartProps>(
       {...(shouldAnimate
         ? { initial: { opacity: 0, scale: 0.96 }, animate: { opacity: 1, scale: 1 }, transition: tweens.fade }
         : {})}
-      {...props}
+      {...motionProps(props)}
     >
       <ChartContainer height={height}>
         {({ width, height: innerHeight, margin }) => {

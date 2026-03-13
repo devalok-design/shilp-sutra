@@ -5,7 +5,7 @@ import { motion } from 'framer-motion'
 import { Slot, Slottable } from '@primitives/react-slot'
 import * as React from 'react'
 import { useButtonGroup } from './button-group'
-import { springs } from './lib/motion'
+import { springs, motionProps } from './lib/motion'
 import { cn } from './lib/utils'
 import { Spinner } from './spinner'
 
@@ -249,7 +249,7 @@ const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
         ref={ref}
         disabled={disabled || loading}
         aria-busy={loading || undefined}
-        {...props}
+        {...motionProps(props)}
       >
         {renderStartSlot()}
         {renderChildren()}

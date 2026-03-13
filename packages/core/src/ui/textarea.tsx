@@ -4,6 +4,7 @@ import * as React from 'react'
 import { motion } from 'framer-motion'
 import { cva, type VariantProps } from 'class-variance-authority'
 import { cn } from './lib/utils'
+import { motionProps } from './lib/motion'
 import type { InputState } from './input'
 import { useFormField } from './form'
 
@@ -86,7 +87,7 @@ const Textarea = React.forwardRef<HTMLTextAreaElement, TextareaProps>(
           className,
         )}
         ref={ref}
-        {...props}
+        {...motionProps(props)}
       />
     )
   },

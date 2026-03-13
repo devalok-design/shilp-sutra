@@ -4,7 +4,7 @@ import * as React from 'react'
 import { cva, type VariantProps } from 'class-variance-authority'
 import { motion } from 'framer-motion'
 
-import { springs } from './lib/motion'
+import { springs, motionProps } from './lib/motion'
 import { cn } from './lib/utils'
 
 const cardVariants = cva(
@@ -92,7 +92,7 @@ const Card = React.forwardRef<HTMLDivElement, CardProps>(
           whileTap={{ scale: 0.98 }}
           transition={springs.snappy}
           className={classes}
-          {...props}
+          {...motionProps(props)}
         />
       )
     }

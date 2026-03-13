@@ -12,9 +12,18 @@ vi.mock('@/ui/dialog', () => ({
   DialogTrigger: ({ children }: { children: React.ReactNode }) => <div>{children}</div>,
 }))
 
-vi.mock('@/hooks/use-toast', () => ({
-  useToast: () => ({ toast: vi.fn() }),
-}))
+vi.mock('@/ui/toast', () => {
+  const mockToast = Object.assign(vi.fn(), {
+    success: vi.fn(),
+    error: vi.fn(),
+    warning: vi.fn(),
+    info: vi.fn(),
+    loading: vi.fn(),
+    dismiss: vi.fn(),
+    message: vi.fn(),
+  })
+  return { toast: mockToast }
+})
 
 describe('DeleteBreak', () => {
   it('renders without crashing', () => {

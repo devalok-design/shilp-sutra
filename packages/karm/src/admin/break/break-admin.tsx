@@ -29,7 +29,7 @@ import {
   type MouseEvent,
 } from 'react'
 import { cn } from '@/ui/lib/utils'
-import { useToast } from '@/hooks/use-toast'
+import { toast } from '@/ui/toast'
 import { BreakBalance } from './break-balance'
 import { LeaveRequest } from './leave-request'
 import { Breaks } from './breaks'
@@ -273,8 +273,6 @@ const BreakAdminRoot = React.forwardRef<HTMLDivElement, BreakAdminProps>(
       string | null
     >(null)
 
-    const { toast } = useToast()
-
     // ============================================================
     // Default filters (used when no filtersProp provided)
     // ============================================================
@@ -333,37 +331,22 @@ const BreakAdminRoot = React.forwardRef<HTMLDivElement, BreakAdminProps>(
             onApproveRequest(requestId, comment, request.correction, request)
           }
 
-          toast({
-            description: (
-              <>
-                <span>
-                  {request.correction
-                    ? 'Attendance correction'
-                    : 'Break request'}{' '}
-                </span>
-                <span className="text-success-text">
-                  approved successfully
-                </span>
-              </>
-            ),
-            color: 'neutral',
-            style: { marginBottom: 'var(--spacing-04)', border: 'none' },
-          })
+          toast.success(
+            `${request.correction ? 'Attendance correction' : 'Break request'} approved successfully`,
+          )
         } catch (error) {
           console.error('Error approving request:', error)
-          toast({
-            title: 'Error',
+          toast.error('Error', {
             description:
               error instanceof Error
                 ? error.message
                 : 'Failed to approve request',
-            color: 'error',
           })
         } finally {
           setIsProcessing(false)
         }
       },
-      [isProcessing, pendingRequests, onApproveRequest, toast],
+      [isProcessing, pendingRequests, onApproveRequest],
     )
 
     const handleRejectRequest = useCallback(
@@ -393,37 +376,22 @@ const BreakAdminRoot = React.forwardRef<HTMLDivElement, BreakAdminProps>(
             onRejectRequest(requestId, comment, request.correction, request)
           }
 
-          toast({
-            description: (
-              <>
-                <span>
-                  {request.correction
-                    ? 'Attendance correction'
-                    : 'Break request'}{' '}
-                </span>
-                <span className="text-error-text">
-                  rejected
-                </span>
-              </>
-            ),
-            color: 'neutral',
-            style: { marginBottom: 'var(--spacing-04)', border: 'none' },
-          })
+          toast(
+            `${request.correction ? 'Attendance correction' : 'Break request'} rejected`,
+          )
         } catch (error) {
           console.error('Error rejecting request:', error)
-          toast({
-            title: 'Error',
+          toast.error('Error', {
             description:
               error instanceof Error
                 ? error.message
                 : 'Failed to reject request',
-            color: 'error',
           })
         } finally {
           setIsProcessing(false)
         }
       },
-      [isProcessing, pendingRequests, onRejectRequest, toast],
+      [isProcessing, pendingRequests, onRejectRequest],
     )
 
     // ============================================================

@@ -7,12 +7,25 @@ import { TooltipProvider } from '@/ui/tooltip'
 import type { BreakRequest, BreakBalanceData, AdminUser } from '../../types'
 
 // ============================================================
-// Mock use-toast to prevent side-effects
+// Mock toast to prevent side-effects
 // ============================================================
 
-vi.mock('../../../../hooks/use-toast', () => ({
-  useToast: () => ({ toast: vi.fn() }),
-}))
+vi.mock('@/ui/toast', () => {
+  const mockToast = Object.assign(vi.fn(), {
+    success: vi.fn(),
+    error: vi.fn(),
+    warning: vi.fn(),
+    info: vi.fn(),
+    loading: vi.fn(),
+    promise: vi.fn(),
+    undo: vi.fn(),
+    upload: vi.fn(),
+    custom: vi.fn(),
+    dismiss: vi.fn(),
+    message: vi.fn(),
+  })
+  return { toast: mockToast }
+})
 
 // ============================================================
 // Fixtures

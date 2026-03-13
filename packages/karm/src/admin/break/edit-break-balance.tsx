@@ -4,7 +4,7 @@ import * as React from 'react'
 import { useState, useEffect, useRef } from 'react'
 import { cn } from '@/ui/lib/utils'
 import { EditIcon } from '../icons'
-import { useToast } from '@/hooks/use-toast'
+import { toast } from '@/ui/toast'
 import {
   Dialog,
   DialogContent,
@@ -44,7 +44,6 @@ export const EditBreakBalance = React.forwardRef<HTMLDivElement, EditBreakBalanc
     selectedLeave?.carryForward || 0,
   )
   const formRef = useRef<HTMLFormElement>(null)
-  const { toast } = useToast()
 
   useEffect(() => {
     setCashOutValue(
@@ -67,17 +66,10 @@ export const EditBreakBalance = React.forwardRef<HTMLDivElement, EditBreakBalanc
         })
       }
 
-      toast({
-        description: 'Break balance updated successfully',
-        color: 'neutral',
-      })
+      toast.success('Break balance updated successfully')
     } catch (error) {
       console.error('Error updating break balance:', error)
-      toast({
-        title: 'Error',
-        description: 'Failed to update break balance',
-        color: 'error',
-      })
+      toast.error('Failed to update break balance')
     } finally {
       setIsSubmitting(false)
     }

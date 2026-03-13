@@ -4,7 +4,7 @@ import * as React from 'react'
 import { useState, useEffect, useRef } from 'react'
 import { IconChevronLeft, IconChevronRight } from '@tabler/icons-react'
 import { EditIcon, ArrowRightIcon, ArrowDownIcon } from '../icons'
-import { useToast } from '@/hooks/use-toast'
+import { toast } from '@/ui/toast'
 import {
   Dialog,
   DialogContent,
@@ -100,7 +100,6 @@ export const EditBreak = React.forwardRef<HTMLDivElement, EditBreakProps>(functi
   const picker = useBreakDatePicker()
 
   const formRef = useRef<HTMLFormElement>(null)
-  const { toast } = useToast()
 
   // ============================================================
   // Effects
@@ -190,11 +189,7 @@ export const EditBreak = React.forwardRef<HTMLDivElement, EditBreakProps>(functi
     e.preventDefault()
 
     if (formData.status === 'PENDING') {
-      toast({
-        title: 'Action Required',
-        description: 'Please update the status',
-        color: 'neutral',
-      })
+      toast.warning('Please update the status')
       return
     }
 
@@ -213,17 +208,10 @@ export const EditBreak = React.forwardRef<HTMLDivElement, EditBreakProps>(functi
         })
       }
 
-      toast({
-        description: 'Break request updated successfully',
-        color: 'neutral',
-      })
+      toast.success('Break request updated successfully')
     } catch (error) {
       console.error('Error updating break request:', error)
-      toast({
-        title: 'Error',
-        description: 'Failed to update break request',
-        color: 'error',
-      })
+      toast.error('Failed to update break request')
     } finally {
       setIsSubmitting(false)
     }
@@ -323,11 +311,7 @@ export const EditBreak = React.forwardRef<HTMLDivElement, EditBreakProps>(functi
 
   const handleDayClick = (day: CalendarDay) => {
     if (isBreakDay(day.fullDate, existingBreaks, selectedLeave.id)) {
-      toast({
-        title: 'Error',
-        description: 'This date is already part of another break request.',
-        color: 'error',
-      })
+      toast.error('This date is already part of another break request.')
       return
     }
 
@@ -337,12 +321,7 @@ export const EditBreak = React.forwardRef<HTMLDivElement, EditBreakProps>(functi
         const newEndDate = picker.selectedEndDate || newStartDate
 
         if (checkDateOverlap(newStartDate, newEndDate, existingBreaks, selectedLeave.id)) {
-          toast({
-            title: 'Error',
-            description:
-              'The selected date range overlaps with an existing break request.',
-            color: 'error',
-          })
+          toast.error('The selected date range overlaps with an existing break request.')
           return
         }
 
@@ -364,12 +343,7 @@ export const EditBreak = React.forwardRef<HTMLDivElement, EditBreakProps>(functi
         const newStartDate = picker.selectedStartDate || newEndDate
 
         if (checkDateOverlap(newStartDate, newEndDate, existingBreaks, selectedLeave.id)) {
-          toast({
-            title: 'Error',
-            description:
-              'The selected date range overlaps with an existing break request.',
-            color: 'error',
-          })
+          toast.error('The selected date range overlaps with an existing break request.')
           return
         }
 

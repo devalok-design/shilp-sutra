@@ -4,7 +4,7 @@ import * as React from 'react'
 import { useState, useRef } from 'react'
 import { cn } from '@/ui/lib/utils'
 import { BreakDeleteIcon } from '../icons'
-import { useToast } from '@/hooks/use-toast'
+import { toast } from '@/ui/toast'
 import { Dialog, DialogContent, DialogTrigger } from '@/ui/dialog'
 import { Button } from '@/ui/button'
 import { IconButton } from '@/ui/icon-button'
@@ -21,7 +21,6 @@ export interface DeleteBreakProps extends React.HTMLAttributes<HTMLDivElement> {
 
 export const DeleteBreak = React.forwardRef<HTMLDivElement, DeleteBreakProps>(function DeleteBreak({ id: _id, userId: _userId, onDelete, className, ...props }, _ref) {
   const [isSubmitting, setIsSubmitting] = useState(false)
-  const { toast } = useToast()
   const [open, setOpen] = useState(false)
   const formRef = useRef<HTMLFormElement>(null)
 
@@ -35,19 +34,12 @@ export const DeleteBreak = React.forwardRef<HTMLDivElement, DeleteBreakProps>(fu
         onDelete()
       }
 
-      toast({
-        description: 'Break request deleted successfully',
-        color: 'neutral',
-      })
+      toast.success('Break request deleted successfully')
 
       setOpen(false)
     } catch (error) {
       console.error('Error deleting break request:', error)
-      toast({
-        title: 'Error',
-        description: 'Failed to delete break request',
-        color: 'error',
-      })
+      toast.error('Failed to delete break request')
     } finally {
       setIsSubmitting(false)
     }

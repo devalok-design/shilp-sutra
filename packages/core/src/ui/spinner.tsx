@@ -31,14 +31,19 @@ const iconStrokeWidths = { sm: 1.8, md: 2, lg: 2.5 } as const
  * - `success`: Arc completes to filled green circle, white checkmark draws in
  * - `error`: Arc completes to filled red circle, white X draws in
  *
+ * **Variants:**
+ * - `filled` (default): Semantic colored fill + white icon — for standalone contexts
+ * - `bare`: No fill, icon uses `currentColor` — for embedding in buttons, toolbars, etc.
+ *
  * **Accessibility:** `role="status"` with sr-only text that updates per state.
  * Respects `prefers-reduced-motion` — shows static icons with opacity crossfades.
  *
  * @example
  * <Spinner />                                           // basic arc spinner
  * <Spinner size="sm" />                                 // small
- * <Spinner state="success" />                           // arc -> checkmark
- * <Spinner state="error" />                             // arc -> X mark
+ * <Spinner state="success" />                           // filled green circle + white check
+ * <Spinner state="success" variant="bare" />            // just the check, currentColor
+ * <Spinner state="error" />                             // filled red circle + white X
  * <Spinner delay={150} />                               // no render until 150ms
  * <Spinner state="success" onComplete={handleDone} />   // callback after animation
  */
@@ -47,6 +52,8 @@ export interface SpinnerProps {
   size?: 'sm' | 'md' | 'lg'
   /** Current state. Default: 'spinning' */
   state?: 'spinning' | 'success' | 'error'
+  /** Visual variant for success/error states. Default: 'filled' */
+  variant?: 'filled' | 'bare'
   /** Delay in ms before showing (avoids flicker). Default: 0 */
   delay?: number
   /** Fires when success/error transition animation completes */
@@ -73,7 +80,7 @@ const CHECKMARK_D = 'M7 12.5l3 3 7-7'
 const X_MARK_D = 'M8 8l8 8M16 8l-8 8'
 
 const Spinner = React.forwardRef<HTMLSpanElement, SpinnerProps>(
-  ({ size = 'md', state = 'spinning', delay = 0, onComplete, className }, ref) => {
+  ({ size = 'md', state = 'spinning', variant = 'filled', delay = 0, onComplete, className }, ref) => {
     const prefersReduced = useReducedMotion()
     const [visible, setVisible] = React.useState(delay === 0)
 
@@ -92,16 +99,19 @@ const Spinner = React.forwardRef<HTMLSpanElement, SpinnerProps>(
     const iconSw = iconStrokeWidths[size]
     const isSpinning = state === 'spinning'
     const isFinal = state === 'success' || state === 'error'
+    const isFilled = variant === 'filled'
     const color = stateColors[state]
 
+    // Icon stroke: white on filled backgrounds, currentColor on bare
+    const iconColor = isFilled ? 'white' : 'currentColor'
+
     // ── Sequence timing (seconds) ──────────────────────────────────
-    // Phase 1: Arc stops rotating + completes to full circle   0 → 0.4
-    // Phase 2: Circle fills in with color                      0.3 → 0.55
-    // Phase 3: White icon draws in                             0.5 → 0.85
+    // Filled: arc completes → fill fades in → white icon draws
+    // Bare:   arc completes + fades out → currentColor icon draws
     const ARC_COMPLETE = 0.4
     const FILL_DELAY = 0.3
     const FILL_DURATION = 0.25
-    const ICON_DELAY = 0.5
+    const ICON_DELAY = isFilled ? 0.5 : 0.35
     const ICON_DURATION = 0.35
 
     return (
@@ -140,6 +150,7 @@ const Spinner = React.forwardRef<HTMLSpanElement, SpinnerProps>(
               style={{
                 transformOrigin: 'center',
                 transform: isSpinning ? 'rotate(-90deg)' : undefined,
+                opacity: isFinal && !isFilled ? 0 : 1,
               }}
             />
           ) : (
@@ -165,6 +176,8 @@ const Spinner = React.forwardRef<HTMLSpanElement, SpinnerProps>(
                   : {
                       rotate: 0,
                       strokeDasharray: `${CIRCUMFERENCE} 0`,
+                      // In bare mode, fade out the arc after it completes
+                      ...(!isFilled && { opacity: 0 }),
                     }
               }
               transition={
@@ -176,14 +189,15 @@ const Spinner = React.forwardRef<HTMLSpanElement, SpinnerProps>(
                   : {
                       rotate: { duration: 0.3, ease: 'easeOut' },
                       strokeDasharray: { duration: ARC_COMPLETE, ease: 'easeInOut' },
+                      ...(!isFilled && { opacity: { duration: 0.2, delay: ARC_COMPLETE } }),
                     }
               }
             />
           )}
 
-          {/* Filled circle — fades in after arc completes, covers track */}
+          {/* Filled circle — fades in after arc completes, covers track (filled variant only) */}
           <AnimatePresence>
-            {isFinal &&
+            {isFinal && isFilled &&
               (prefersReduced ? (
                 <circle
                   key="fill-static"
@@ -209,14 +223,14 @@ const Spinner = React.forwardRef<HTMLSpanElement, SpinnerProps>(
               ))}
           </AnimatePresence>
 
-          {/* White checkmark — draws in after circle fills */}
+          {/* Checkmark — white on filled, currentColor on bare */}
           <AnimatePresence>
             {state === 'success' &&
               (prefersReduced ? (
                 <path
                   key="check-static"
                   d={CHECKMARK_D}
-                  stroke="white"
+                  stroke={iconColor}
                   strokeWidth={iconSw}
                   strokeLinecap="round"
                   strokeLinejoin="round"
@@ -226,7 +240,7 @@ const Spinner = React.forwardRef<HTMLSpanElement, SpinnerProps>(
                 <motion.path
                   key="check"
                   d={CHECKMARK_D}
-                  stroke="white"
+                  stroke={iconColor}
                   strokeWidth={iconSw}
                   strokeLinecap="round"
                   strokeLinejoin="round"
@@ -242,14 +256,14 @@ const Spinner = React.forwardRef<HTMLSpanElement, SpinnerProps>(
               ))}
           </AnimatePresence>
 
-          {/* White X mark — draws in after circle fills */}
+          {/* X mark — white on filled, currentColor on bare */}
           <AnimatePresence>
             {state === 'error' &&
               (prefersReduced ? (
                 <path
                   key="x-static"
                   d={X_MARK_D}
-                  stroke="white"
+                  stroke={iconColor}
                   strokeWidth={iconSw}
                   strokeLinecap="round"
                   fill="none"
@@ -258,7 +272,7 @@ const Spinner = React.forwardRef<HTMLSpanElement, SpinnerProps>(
                 <motion.path
                   key="x"
                   d={X_MARK_D}
-                  stroke="white"
+                  stroke={iconColor}
                   strokeWidth={iconSw}
                   strokeLinecap="round"
                   fill="none"

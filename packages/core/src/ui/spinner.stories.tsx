@@ -16,6 +16,10 @@ const meta: Meta<typeof Spinner> = {
       control: 'select',
       options: ['spinning', 'success', 'error'],
     },
+    variant: {
+      control: 'select',
+      options: ['filled', 'bare'],
+    },
     delay: {
       control: 'number',
     },
@@ -174,4 +178,54 @@ export const InButtonContext: Story = {
       </div>
     </div>
   ),
+}
+
+function VariantComparisonDemo() {
+  const [state, setState] = React.useState<SpinnerProps['state']>('spinning')
+
+  return (
+    <div className="flex flex-col items-start gap-ds-06">
+      <div className="flex items-center gap-ds-08">
+        <div className="flex flex-col items-center gap-ds-02">
+          <Spinner size="lg" state={state} variant="filled" />
+          <span className="text-ds-xs text-text-secondary">filled</span>
+        </div>
+        <div className="flex flex-col items-center gap-ds-02">
+          <Spinner size="lg" state={state} variant="bare" />
+          <span className="text-ds-xs text-text-secondary">bare</span>
+        </div>
+        <div className="flex flex-col items-center gap-ds-02">
+          <span className="text-interactive">
+            <Spinner size="lg" state={state} variant="bare" />
+          </span>
+          <span className="text-ds-xs text-text-secondary">bare (pink parent)</span>
+        </div>
+        <div className="flex flex-col items-center gap-ds-02">
+          <span className="text-text-on-color bg-interactive rounded-ds-md p-ds-02">
+            <Spinner size="lg" state={state} variant="bare" />
+          </span>
+          <span className="text-ds-xs text-text-secondary">bare (white on brand)</span>
+        </div>
+      </div>
+      <div className="flex gap-ds-03">
+        <Button size="sm" variant={state === 'spinning' ? 'solid' : 'outline'} onClick={() => setState('spinning')}>
+          Spinning
+        </Button>
+        <Button size="sm" variant={state === 'success' ? 'solid' : 'outline'} onClick={() => setState('success')}>
+          Success
+        </Button>
+        <Button size="sm" variant={state === 'error' ? 'solid' : 'outline'} color="error" onClick={() => setState('error')}>
+          Error
+        </Button>
+      </div>
+      <p className="text-ds-sm text-text-secondary">
+        <strong>filled</strong>: semantic color fill + white icon (standalone use).{' '}
+        <strong>bare</strong>: no fill, icon inherits <code>currentColor</code> from parent (buttons, toolbars).
+      </p>
+    </div>
+  )
+}
+
+export const VariantComparison: Story = {
+  render: () => <VariantComparisonDemo />,
 }

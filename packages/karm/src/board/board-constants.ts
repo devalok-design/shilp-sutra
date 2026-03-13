@@ -11,7 +11,7 @@ export const COLUMN_ACCENT_COLORS = [
   'bg-category-orange',
   'bg-category-emerald',
   'bg-category-slate',
-  'bg-accent',
+  'bg-accent-9',
 ] as const
 
 export const PRIORITY_ICONS = {

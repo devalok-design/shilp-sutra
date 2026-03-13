@@ -51,7 +51,7 @@ const DOT_COLORS = [
   'bg-category-teal',
   'bg-category-cyan',
   'bg-accent-9',
-  'bg-accent',
+  'bg-accent-9',
 ]
 
 const DailyBrief = React.forwardRef<HTMLDivElement, DailyBriefProps>(

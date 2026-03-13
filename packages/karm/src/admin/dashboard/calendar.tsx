@@ -166,7 +166,7 @@ export const Calendar = React.forwardRef<HTMLDivElement, CalendarProps>(
                 'flex h-ds-md w-ds-md items-center justify-center',
                 cal.activeTimeFrame === 'monthly' &&
                   isSameDay(day.fullDate, new Date(cal.selectedDate)) &&
-                  'rounded-ds-full bg-accent-2 ring-2 ring-inset ring-interactive',
+                  'rounded-ds-full bg-accent-2 ring-2 ring-inset ring-accent-9',
               )}
             >
               <span

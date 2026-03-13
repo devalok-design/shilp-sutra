@@ -68,7 +68,7 @@ const ColorInput = React.forwardRef<HTMLInputElement, ColorInputProps>(
             maxLength={7}
             className={cn(
               'h-ds-sm w-[90px] rounded-ds-md border border-surface-border-strong bg-surface-1 px-ds-03 font-mono text-ds-md text-surface-fg transition-colors',
-              'focus:border-accent-7 focus:outline-none focus:ring-1 focus:ring-interactive',
+              'focus:border-accent-7 focus:outline-none focus:ring-1 focus:ring-accent-9',
               disabled && 'cursor-not-allowed opacity-50',
             )}
           />
@@ -86,7 +86,7 @@ const ColorInput = React.forwardRef<HTMLInputElement, ColorInputProps>(
                 className={cn(
                   'h-ds-xs w-ds-xs rounded-ds-sm border transition-colors',
                   value === preset
-                    ? 'border-accent-7 ring-1 ring-interactive'
+                    ? 'border-accent-7 ring-1 ring-accent-9'
                     : 'border-surface-border-strong hover:border-surface-border-strong',
                   disabled && 'cursor-not-allowed opacity-50',
                 )}

@@ -180,11 +180,11 @@ export const RenderDate = React.forwardRef<HTMLDivElement, RenderDateProps>(
 
     // Today (not break, not disabled)
     !state.disabled && state.today && !state.isBreak &&
-      'bg-accent-9 text-accent-fg ring-2 ring-inset ring-interactive',
+      'bg-accent-9 text-accent-fg ring-2 ring-inset ring-accent-9',
 
     // Break (not disabled, not today-only)
     !state.disabled && state.isBreak && !isBreakMidNonWeekly &&
-      'bg-accent-3 text-surface-fg-muted ring-2 ring-inset ring-interactive',
+      'bg-accent-3 text-surface-fg-muted ring-2 ring-inset ring-accent-9',
 
     // Break mid in non-weekly view overrides break base
     !state.disabled && state.isBreak && isBreakMidNonWeekly &&
@@ -212,7 +212,7 @@ export const RenderDate = React.forwardRef<HTMLDivElement, RenderDateProps>(
 
     // Hover on today (not break)
     state.hover && !state.disabled && state.today && !state.isBreak &&
-      'bg-accent-9 text-accent-fg ring-2 ring-inset ring-interactive',
+      'bg-accent-9 text-accent-fg ring-2 ring-inset ring-accent-9',
 
     // Hover on present (not today, not break)
     state.hover && !state.disabled && !state.today && !state.isBreak && state.isPresent &&
@@ -224,7 +224,7 @@ export const RenderDate = React.forwardRef<HTMLDivElement, RenderDateProps>(
 
     // Hover on break (same visual as base break, but re-assert to match original)
     state.hover && !state.disabled && state.isBreak && !isBreakMidNonWeekly &&
-      'bg-accent-3 text-surface-fg-muted ring-2 ring-inset ring-interactive',
+      'bg-accent-3 text-surface-fg-muted ring-2 ring-inset ring-accent-9',
     state.hover && !state.disabled && state.isBreak && isBreakMidNonWeekly &&
       'rounded-ds-none bg-accent-2 text-surface-fg-muted shadow-none',
 

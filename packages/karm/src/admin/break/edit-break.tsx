@@ -534,7 +534,7 @@ export const EditBreak = React.forwardRef<HTMLDivElement, EditBreakProps>(functi
                                 (day.fullDate === picker.selectedStartDate ||
                                   day.fullDate === picker.selectedEndDate ||
                                   isBreakDay(day.fullDate, existingBreaks, selectedLeave.id)) &&
-                                  'bg-accent ring-2 ring-inset ring-accent',
+                                  'bg-accent-9 ring-2 ring-inset ring-accent',
                                 day.isToday
                                   ? 'bg-accent-10 p-ds-03 text-accent-fg'
                                   : 'text-surface-fg-muted',

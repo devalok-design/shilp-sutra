@@ -9,7 +9,7 @@ import {
   IconSettings,
   IconUser,
 } from '@tabler/icons-react'
-import { durations, easings } from './lib/motion'
+import { springs, tweens } from './lib/motion'
 import { Button } from './button'
 import { Switch } from './switch'
 import { Checkbox } from './checkbox'
@@ -84,27 +84,27 @@ function TokenBadge({ children }: { children: React.ReactNode }) {
  * Interactive visualization of all 7 duration tokens.
  * Click "Animate" to see each duration in action.
  */
-export const DurationScale: StoryObj = {
+export const SpringPresets: StoryObj = {
   render: () => {
-    const [active, setActive] = useState(false)
-    const tokens = Object.entries(durations) as [string, string][]
+    const [key, setKey] = useState(0)
+    const presets = Object.entries(springs) as [string, object][]
     return (
       <div className="space-y-ds-04">
-        <AnimateButton active={active} onClick={() => setActive((p) => !p)} />
+        <button
+          type="button"
+          onClick={() => setKey((k) => k + 1)}
+          className="rounded-ds-md bg-interactive px-ds-04 py-ds-02 text-ds-sm font-medium text-text-on-color"
+        >
+          Replay springs
+        </button>
         <div className="space-y-ds-03">
-          {tokens.map(([name, value]) => (
-            <div key={name} className="flex items-center gap-ds-04">
-              <code className="w-40 text-ds-xs text-text-secondary font-mono">
-                {name} ({value})
-              </code>
+          {presets.map(([name, config]) => (
+            <div key={`${name}-${key}`} className="flex items-center gap-ds-04">
+              <code className="w-32 text-ds-xs text-text-secondary font-mono">{name}</code>
               <div className="relative h-8 flex-1 rounded-ds-sm bg-layer-02 overflow-hidden">
-                <div
-                  className="absolute inset-y-0 left-0 rounded-ds-sm bg-interactive"
-                  style={{
-                    width: active ? '100%' : '0%',
-                    transition: `width ${value} var(--ease-productive-standard)`,
-                  }}
-                />
+                <MotionSlide show direction="right">
+                  <div className="h-8 w-8 rounded-ds-sm bg-interactive" />
+                </MotionSlide>
               </div>
             </div>
           ))}
@@ -182,55 +182,23 @@ export const EasingComparison: StoryObj = {
  * Demonstrates the personality of each easing curve using the same sliding-dot
  * animation. Productive = efficient & snappy, Expressive = dramatic & bouncy.
  */
-export const EasingPersonality: StoryObj = {
+export const TweenPresets: StoryObj = {
   render: () => {
-    const [active, setActive] = useState(false)
-    const allEasings = [
-      ...Object.entries(easings.productive).map(([cat, val]) => ({
-        label: `productive-${cat}`,
-        value: val,
-        mode: 'productive' as const,
-      })),
-      ...Object.entries(easings.expressive).map(([cat, val]) => ({
-        label: `expressive-${cat}`,
-        value: val,
-        mode: 'expressive' as const,
-      })),
-      { label: 'bounce', value: 'cubic-bezier(0.34, 1.56, 0.64, 1)', mode: 'utility' as const },
-      { label: 'linear', value: 'linear', mode: 'utility' as const },
-    ]
-
+    const [show, setShow] = useState(true)
+    const presets = Object.entries(tweens) as [string, object][]
     return (
       <div className="space-y-ds-04">
-        <AnimateButton active={active} onClick={() => setActive((p) => !p)} />
+        <AnimateButton active={show} onClick={() => setShow((p) => !p)} />
         <p className="text-ds-sm text-text-secondary">
-          All dots travel the same distance in 600ms. Watch how each easing changes the feel.
+          Tweens are used for non-spatial properties like opacity and color transitions.
         </p>
-        <div className="space-y-ds-04">
-          {allEasings.map(({ label, value, mode }) => (
-            <div key={label} className="flex items-center gap-ds-04">
-              <div className="w-48 flex items-center gap-ds-02">
-                <span
-                  className={cn(
-                    'inline-block h-2 w-2 rounded-ds-full',
-                    mode === 'productive'
-                      ? 'bg-interactive'
-                      : mode === 'expressive'
-                        ? 'bg-brand-primary'
-                        : 'bg-warning',
-                  )}
-                />
-                <code className="text-ds-xs text-text-secondary font-mono">{label}</code>
-              </div>
-              <div className="relative flex-1 h-8 rounded-ds-sm bg-layer-02">
-                <div
-                  className="absolute top-1 h-6 w-6 rounded-ds-full bg-interactive shadow-02"
-                  style={{
-                    left: active ? 'calc(100% - 1.5rem)' : '0',
-                    transition: `left 600ms ${value}`,
-                  }}
-                />
-              </div>
+        <div className="space-y-ds-03">
+          {presets.map(([name]) => (
+            <div key={name} className="flex items-center gap-ds-04">
+              <code className="w-32 text-ds-xs text-text-secondary font-mono">{name}</code>
+              <MotionFade show={show}>
+                <div className="h-8 w-32 rounded-ds-sm bg-interactive" />
+              </MotionFade>
             </div>
           ))}
         </div>

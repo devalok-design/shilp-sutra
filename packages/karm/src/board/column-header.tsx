@@ -448,7 +448,7 @@ export const ColumnHeader = React.forwardRef<HTMLDivElement, ColumnHeaderProps>(
                   'flex items-center justify-center h-6 w-6 rounded-ds-md transition-colors',
                   newTitle.trim()
                     ? 'text-success-11 hover:bg-success-3'
-                    : 'text-text-quaternary cursor-not-allowed',
+                    : 'text-surface-fg-subtle cursor-not-allowed',
                 )}
                 title="Confirm add task"
                 aria-label="Confirm add task"

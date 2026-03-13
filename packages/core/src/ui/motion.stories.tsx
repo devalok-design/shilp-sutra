@@ -158,7 +158,7 @@ export const EasingComparison: StoryObj = {
                 <code className="text-ds-xs text-surface-fg-muted">{cat}</code>
                 <div className="relative h-6 mt-ds-01 rounded-ds-sm bg-surface-2 overflow-hidden">
                   <div
-                    className="absolute inset-y-0 left-0 rounded-ds-sm bg-brand-primary"
+                    className="absolute inset-y-0 left-0 rounded-ds-sm bg-accent-9"
                     style={{
                       width: active ? '100%' : '0%',
                       transition: `width 400ms var(--ease-expressive-${cat})`,
@@ -216,7 +216,7 @@ export const EasingPersonality: StoryObj = {
                     mode === 'productive'
                       ? 'bg-accent-9'
                       : mode === 'expressive'
-                        ? 'bg-brand-primary'
+                        ? 'bg-accent-9'
                         : 'bg-warning-9',
                   )}
                 />

@@ -168,7 +168,7 @@ export const RenderDate = React.forwardRef<HTMLDivElement, RenderDateProps>(
     // Base layout & transitions
     'flex h-ds-md w-ds-md items-center justify-center rounded-ds-full text-ds-base relative overflow-hidden',
     'transition-[background-color,color,border] duration-200',
-    'outline-border-strong outline-solid outline-0',
+    'outline-surface-border-strong outline-solid outline-0',
 
     // Cursor
     state.disabled ? 'cursor-default' : 'cursor-pointer',

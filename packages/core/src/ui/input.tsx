@@ -83,9 +83,9 @@ const Input = React.forwardRef<HTMLInputElement, InputProps>(
           inputVariants({ size }),
           startIcon && 'pl-ds-07',
           endIcon && 'pr-ds-07',
-          state === 'error' && 'border-error-7 focus-visible:ring-error',
-          state === 'warning' && 'border-warning-7 focus-visible:ring-warning',
-          state === 'success' && 'border-success-7 focus-visible:ring-success',
+          state === 'error' && 'border-error-7 focus-visible:ring-error-7',
+          state === 'warning' && 'border-warning-7 focus-visible:ring-warning-7',
+          state === 'success' && 'border-success-7 focus-visible:ring-success-7',
           className,
         )}
         aria-invalid={state === 'error' || undefined}

@@ -550,20 +550,20 @@ const TabBar = React.forwardRef<
       {...props}
     >
       <button
-        className={cn('text-ds-sm font-semibold uppercase tracking-wider mb-[-1px] px-ds-03 py-ds-04', activeTab === 'breaks' ? 'text-surface-fg border-b-[1px] border-accent-7-hover' : 'text-surface-fg-subtle')}
+        className={cn('text-ds-sm font-semibold uppercase tracking-wider mb-[-1px] px-ds-03 py-ds-04', activeTab === 'breaks' ? 'text-surface-fg border-b-[1px] border-accent-7' : 'text-surface-fg-subtle')}
         onClick={() => setActiveTab('breaks')}
       >
         BREAKS
       </button>
       <button
-        className={cn('text-ds-sm font-semibold uppercase tracking-wider mb-[-1px] flex items-center gap-ds-02 px-ds-03 py-ds-04', activeTab === 'requests' ? 'border-b-[1px] border-accent-7-hover text-surface-fg' : 'text-surface-fg-subtle')}
+        className={cn('text-ds-sm font-semibold uppercase tracking-wider mb-[-1px] flex items-center gap-ds-02 px-ds-03 py-ds-04', activeTab === 'requests' ? 'border-b-[1px] border-accent-7 text-surface-fg' : 'text-surface-fg-subtle')}
         onClick={() => setActiveTab('requests')}
       >
         REQUESTS{' '}
         <span className="text-accent-12">{`(${pendingRequests.length})`}</span>
       </button>
       <button
-        className={cn('text-ds-sm font-semibold uppercase tracking-wider mb-[-1px] flex items-center gap-ds-02 px-ds-03 py-ds-04', activeTab === 'balance' ? 'border-b-[1px] border-accent-7-hover text-surface-fg' : 'text-surface-fg-subtle')}
+        className={cn('text-ds-sm font-semibold uppercase tracking-wider mb-[-1px] flex items-center gap-ds-02 px-ds-03 py-ds-04', activeTab === 'balance' ? 'border-b-[1px] border-accent-7 text-surface-fg' : 'text-surface-fg-subtle')}
         onClick={() => setActiveTab('balance')}
       >
         BALANCE{' '}

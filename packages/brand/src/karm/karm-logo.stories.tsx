@@ -78,7 +78,7 @@ export const ColorVariants: Story = {
         <KarmLogo type="icon" color="black" size="lg" />
         <span className="text-ds-sm text-surface-fg-muted">Black</span>
       </div>
-      <div className="flex items-center gap-ds-04 p-ds-04 rounded-ds-md bg-layer-inverse">
+      <div className="flex items-center gap-ds-04 p-ds-04 rounded-ds-md bg-surface-fg">
         <KarmLogo type="icon" color="white" size="lg" />
         <span className="text-ds-sm text-white/60">White</span>
       </div>

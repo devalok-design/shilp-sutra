@@ -322,7 +322,7 @@
   font-family: 'Ranade', sans-serif;
   font-size: 14px;
   line-height: 1.6;
-  color: var(--color-text-secondary);
+  color: var(--color-surface-fg-muted);
 }
 
 .prose-devsabha h1,
@@ -331,7 +331,7 @@
 .prose-devsabha h4 {
   font-family: 'Ranade', sans-serif;
   font-weight: 600;
-  color: var(--color-text-primary);
+  color: var(--color-surface-fg);
   margin-top: 1em;
   margin-bottom: 0.5em;
 }
@@ -363,7 +363,7 @@
 
 .prose-devsabha strong {
   font-weight: 600;
-  color: var(--color-text-primary);
+  color: var(--color-surface-fg);
 }
 
 .prose-devsabha em {
@@ -372,16 +372,16 @@
 
 .prose-devsabha code {
   font-size: 12px;
-  background: var(--color-layer-03);
+  background: var(--color-surface-3);
   border-radius: 4px;
   padding: 0.15em 0.4em;
 }
 
 .prose-devsabha blockquote {
-  border-left: 3px solid var(--color-border-strong);
+  border-left: 3px solid var(--color-surface-border-strong);
   padding-left: 1em;
   margin: 0.5em 0;
-  color: var(--color-text-tertiary);
+  color: var(--color-surface-fg-subtle);
 }
 
 .prose-devsabha *:first-child {

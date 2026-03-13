@@ -832,7 +832,7 @@ export function DataTable<TData, TValue>({
     <Table>
       <TableHeader
         className={cn(
-          stickyHeader && 'sticky top-0 z-10 bg-surface',
+          stickyHeader && 'sticky top-0 z-10 bg-surface-1',
         )}
       >
         {table.getHeaderGroups().map((headerGroup) => (
@@ -1057,7 +1057,7 @@ export function DataTable<TData, TValue>({
           className={cn(
             'fixed bottom-6 left-1/2 -translate-x-1/2 z-50',
             'flex items-center gap-ds-04 px-ds-05 py-ds-03',
-            'rounded-ds-lg border border-surface-border-strong bg-surface shadow-lg',
+            'rounded-ds-lg border border-surface-border-strong bg-surface-1 shadow-lg',
             'animate-in slide-in-from-bottom-2',
           )}
           role="toolbar"

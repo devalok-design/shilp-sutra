@@ -92,7 +92,7 @@ export const ColorVariants: Story = {
         <DevalokLogo type="monogram-wordmark" color="black" size="xl" />
         <span className="text-ds-sm text-surface-fg-muted">Black — print / single colour</span>
       </div>
-      <div className="flex items-center gap-ds-06 p-ds-08 rounded-ds-md bg-layer-inverse">
+      <div className="flex items-center gap-ds-06 p-ds-08 rounded-ds-md bg-surface-fg">
         <DevalokLogo type="monogram-wordmark" color="white" size="xl" />
         <span className="text-ds-sm text-white/60">White — dark backgrounds</span>
       </div>

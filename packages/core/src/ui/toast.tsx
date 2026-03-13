@@ -55,28 +55,28 @@ const TOAST_TYPE_CONFIG: Record<
     timerBarClass: 'bg-surface-border',
   },
   success: {
-    accentClass: 'bg-success-border',
+    accentClass: 'bg-success-7',
     iconClass: 'text-success-11',
     icon: IconCircleCheck,
-    timerBarClass: 'bg-success-border',
+    timerBarClass: 'bg-success-7',
   },
   error: {
-    accentClass: 'bg-error-border',
+    accentClass: 'bg-error-7',
     iconClass: 'text-error-11',
     icon: IconCircleX,
-    timerBarClass: 'bg-error-border',
+    timerBarClass: 'bg-error-7',
   },
   warning: {
-    accentClass: 'bg-warning-border',
+    accentClass: 'bg-warning-7',
     iconClass: 'text-warning-11',
     icon: IconAlertTriangle,
-    timerBarClass: 'bg-warning-border',
+    timerBarClass: 'bg-warning-7',
   },
   info: {
-    accentClass: 'bg-info-border',
+    accentClass: 'bg-info-7',
     iconClass: 'text-info-11',
     icon: IconInfoCircle,
-    timerBarClass: 'bg-info-border',
+    timerBarClass: 'bg-info-7',
   },
   loading: {
     accentClass: 'bg-accent-9',
@@ -417,8 +417,8 @@ function UploadToastContent({
 
   const accentClass = allTerminal
     ? errorCount > 0
-      ? 'bg-error-border'
-      : 'bg-success-border'
+      ? 'bg-error-7'
+      : 'bg-success-7'
     : 'bg-accent-9'
 
   const timerBarType: ToastType = allTerminal

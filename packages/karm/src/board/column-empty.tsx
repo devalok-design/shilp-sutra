@@ -7,7 +7,7 @@ import { IconPlus } from '@tabler/icons-react'
 
 // ============================================================
 // Illustrations — 4 variants cycling by column index
-// Each uses stroke only, currentColor resolves to text-text-quaternary
+// Each uses stroke only, currentColor resolves to text-surface-fg-subtle
 // ============================================================
 
 function IllustrationClipboard() {
@@ -130,7 +130,7 @@ export const ColumnEmpty = React.forwardRef<HTMLDivElement, ColumnEmptyProps>(({
       )}
       {...props}
     >
-      <span className="text-text-quaternary">
+      <span className="text-surface-fg-subtle">
         <Illustration />
       </span>
 

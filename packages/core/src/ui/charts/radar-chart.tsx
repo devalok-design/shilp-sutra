@@ -210,7 +210,7 @@ export const RadarChart = React.forwardRef<HTMLDivElement, RadarChartProps>(
                     y={y}
                     textAnchor="start"
                     dominantBaseline="auto"
-                    className="fill-text-tertiary text-ds-xs"
+                    className="fill-surface-fg-subtle text-ds-xs"
                   >
                     {levelValue}
                   </text>

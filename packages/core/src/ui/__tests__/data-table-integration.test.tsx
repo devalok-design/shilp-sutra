@@ -646,7 +646,7 @@ describe('DataTable — stickyHeader', () => {
     expect(thead).toHaveClass('sticky')
     expect(thead).toHaveClass('top-0')
     expect(thead).toHaveClass('z-10')
-    expect(thead).toHaveClass('bg-surface')
+    expect(thead).toHaveClass('bg-surface-1')
   })
 
   it('does not add sticky classes when stickyHeader is false', () => {

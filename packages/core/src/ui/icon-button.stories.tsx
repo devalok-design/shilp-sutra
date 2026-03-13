@@ -158,7 +158,7 @@ export const Disabled: Story = {
 
 export const Toolbar: Story = {
   render: () => (
-    <div className="flex items-center gap-ds-01 rounded-ds-lg border border-surface-border-strong bg-surface p-ds-01">
+    <div className="flex items-center gap-ds-01 rounded-ds-lg border border-surface-border-strong bg-surface-1 p-ds-01">
       <IconButton
         variant="ghost"
         size="md"

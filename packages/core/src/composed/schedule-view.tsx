@@ -283,7 +283,7 @@ const ScheduleView = React.forwardRef<HTMLDivElement, ScheduleViewProps>(
         {...props}
       >
         <TimeColumn startHour={startHour} endHour={endHour} />
-        <div className="flex flex-1 divide-x divide-border overflow-x-auto">
+        <div className="flex flex-1 divide-x divide-surface-border overflow-x-auto">
           {days.map((day) => (
             <DayColumn
               key={day.toISOString()}

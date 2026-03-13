@@ -202,7 +202,7 @@ export const PieChart = React.forwardRef<HTMLDivElement, PieChartProps>(
                       y={ly}
                       textAnchor="middle"
                       dominantBaseline="central"
-                      className="pointer-events-none fill-text-on-color text-ds-xs font-medium"
+                      className="pointer-events-none fill-accent-fg text-ds-xs font-medium"
                     >
                       {pct}%
                     </text>

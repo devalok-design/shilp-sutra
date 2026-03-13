@@ -295,7 +295,7 @@ export const WithHeaderSlot: Story = {
     navGroups: [mainNavGroup, secondaryNavGroup],
     headerSlot: (
       <div className="flex items-center gap-ds-03 rounded-ds-lg bg-surface-2 px-ds-04 py-ds-05">
-        <div className="h-3 w-3 rounded-full bg-green-500" />
+        <div className="h-3 w-3 rounded-full bg-success-9" />
         <span className="text-ds-sm text-surface-fg">Online — 9:42 AM</span>
       </div>
     ),
@@ -331,7 +331,7 @@ export const AllFeatures: Story = {
     navGroups: [navGroupWithChildren, secondaryNavGroup],
     headerSlot: (
       <div className="flex items-center gap-ds-03 rounded-ds-lg bg-surface-2 px-ds-04 py-ds-05">
-        <div className="h-3 w-3 rounded-full bg-green-500" />
+        <div className="h-3 w-3 rounded-full bg-success-9" />
         <span className="text-ds-sm text-surface-fg">Online — 9:42 AM</span>
       </div>
     ),

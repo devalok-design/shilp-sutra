@@ -76,8 +76,13 @@ const stateColors: Record<string, string> = {
   error: 'var(--color-error-text)',
 }
 
+// Filled variant — icons fit inside the filled circle
 const CHECKMARK_D = 'M7 12.5l3 3 7-7'
 const X_MARK_D = 'M8 8l8 8M16 8l-8 8'
+
+// Bare variant — larger icons since there's no circle constraining them
+const CHECKMARK_BARE_D = 'M5 12.5l4 4 10-10'
+const X_MARK_BARE_D = 'M6 6l12 12M18 6l-12 12'
 
 const Spinner = React.forwardRef<HTMLSpanElement, SpinnerProps>(
   ({ size = 'md', state = 'spinning', variant = 'filled', delay = 0, onComplete, className }, ref) => {
@@ -104,6 +109,8 @@ const Spinner = React.forwardRef<HTMLSpanElement, SpinnerProps>(
 
     // Icon stroke: white on filled backgrounds, currentColor on bare
     const iconColor = isFilled ? 'white' : 'currentColor'
+    const checkPath = isFilled ? CHECKMARK_D : CHECKMARK_BARE_D
+    const xPath = isFilled ? X_MARK_D : X_MARK_BARE_D
 
     // ── Sequence timing (seconds) ──────────────────────────────────
     // Filled: arc completes → fill fades in → white icon draws
@@ -122,15 +129,30 @@ const Spinner = React.forwardRef<HTMLSpanElement, SpinnerProps>(
           fill="none"
           xmlns="http://www.w3.org/2000/svg"
         >
-          {/* Background track circle — always visible as base layer */}
-          <circle
-            cx="12"
-            cy="12"
-            r={RADIUS}
-            stroke="var(--color-border-subtle)"
-            strokeWidth={arcSw}
-            fill="none"
-          />
+          {/* Background track circle — hidden in bare final state */}
+          {prefersReduced ? (
+            !(isFinal && !isFilled) && (
+              <circle
+                cx="12"
+                cy="12"
+                r={RADIUS}
+                stroke="var(--color-border-subtle)"
+                strokeWidth={arcSw}
+                fill="none"
+              />
+            )
+          ) : (
+            <motion.circle
+              cx="12"
+              cy="12"
+              r={RADIUS}
+              stroke="var(--color-border-subtle)"
+              strokeWidth={arcSw}
+              fill="none"
+              animate={{ opacity: isFinal && !isFilled ? 0 : 1 }}
+              transition={{ duration: 0.2, delay: isFinal && !isFilled ? ARC_COMPLETE : 0 }}
+            />
+          )}
 
           {/* Animated arc — spins when loading, completes to full circle on state change */}
           {prefersReduced ? (
@@ -229,7 +251,7 @@ const Spinner = React.forwardRef<HTMLSpanElement, SpinnerProps>(
               (prefersReduced ? (
                 <path
                   key="check-static"
-                  d={CHECKMARK_D}
+                  d={checkPath}
                   stroke={iconColor}
                   strokeWidth={iconSw}
                   strokeLinecap="round"
@@ -239,7 +261,7 @@ const Spinner = React.forwardRef<HTMLSpanElement, SpinnerProps>(
               ) : (
                 <motion.path
                   key="check"
-                  d={CHECKMARK_D}
+                  d={checkPath}
                   stroke={iconColor}
                   strokeWidth={iconSw}
                   strokeLinecap="round"
@@ -262,7 +284,7 @@ const Spinner = React.forwardRef<HTMLSpanElement, SpinnerProps>(
               (prefersReduced ? (
                 <path
                   key="x-static"
-                  d={X_MARK_D}
+                  d={xPath}
                   stroke={iconColor}
                   strokeWidth={iconSw}
                   strokeLinecap="round"
@@ -271,7 +293,7 @@ const Spinner = React.forwardRef<HTMLSpanElement, SpinnerProps>(
               ) : (
                 <motion.path
                   key="x"
-                  d={X_MARK_D}
+                  d={xPath}
                   stroke={iconColor}
                   strokeWidth={iconSw}
                   strokeLinecap="round"

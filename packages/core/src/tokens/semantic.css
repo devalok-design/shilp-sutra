@@ -223,6 +223,7 @@
   --color-text-error: var(--color-error-11);
   --color-text-success: var(--color-success-11);
   --color-text-warning: var(--color-warning-11);
+  --color-text-info: var(--color-info-11);
   --color-text-link: var(--blue-9);
   --color-text-link-hover: var(--blue-10);
   --color-text-interactive: var(--color-accent-11);

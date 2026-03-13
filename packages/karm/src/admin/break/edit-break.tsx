@@ -576,7 +576,7 @@ export const EditBreak = React.forwardRef<HTMLDivElement, EditBreakProps>(functi
                     {showStatusOptions && (
                       <div className="text-ds-base absolute left-[10px] top-[25px] z-raised flex flex-col overflow-hidden rounded-ds-md border border-surface-border-strong bg-surface-1 shadow-02" role="listbox">
                         <div
-                          className="cursor-pointer border-b border-b-border bg-surface-1 px-ds-04 py-ds-03 text-left"
+                          className="cursor-pointer border-b border-b-surface-border bg-surface-1 px-ds-04 py-ds-03 text-left"
                           role="option"
                           tabIndex={0}
                           aria-selected={formData.status === 'APPROVED'}

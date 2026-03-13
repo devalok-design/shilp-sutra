@@ -552,7 +552,7 @@ const requestTabVariants = cva(
   {
     variants: {
       active: {
-        true: 'border-b-[1px] border-b-interactive-hover text-surface-fg',
+        true: 'border-b-[1px] border-b-accent-9 text-surface-fg',
         false: 'text-surface-fg-subtle',
       },
     },
@@ -610,7 +610,7 @@ const AdminDashboardLeaveRequests = React.forwardRef<
   return (
     <div ref={ref} className={cn("w-full p-0 md:p-ds-06", className)} {...props}>
       <div className="max-md:pt-[16px] flex flex-col items-start overflow-hidden rounded-ds-lg border-0 border-surface-border bg-surface-1 shadow-01 pt-ds-03 md:border max-md:pb-0">
-        <div className="flex w-full items-start border-b-[1px] border-b-border px-ds-06 md:border-b max-md:border-0 max-md:px-0">
+        <div className="flex w-full items-start border-b-[1px] border-b-surface-border px-ds-06 md:border-b max-md:border-0 max-md:px-0">
           {requests.length > 0 && (
             <button
               type="button"

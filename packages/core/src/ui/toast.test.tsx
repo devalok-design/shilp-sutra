@@ -62,8 +62,8 @@ describe('Toast — rendering', () => {
       el.textContent?.includes('Failed to save'),
     )
     expect(status).toBeDefined()
-    // Accent bar is the first child div with bg-error-7
-    const accentBar = status!.querySelector('.bg-error-7')
+    // Accent bar is the first child div with bg-error-9
+    const accentBar = status!.querySelector('.bg-error-9')
     expect(accentBar).toBeInTheDocument()
   })
 
@@ -101,7 +101,7 @@ describe('Toast — rendering', () => {
     expect(status).toBeDefined()
     // Message type has no accent bar (accentClass is empty string)
     const accentBar = status!.querySelector(
-      '.bg-success-7, .bg-error-7, .bg-warning-7, .bg-info-7, .bg-accent-9',
+      '.bg-success-9, .bg-error-9, .bg-warning-9, .bg-info-9, .bg-accent-9',
     )
     expect(accentBar).toBeNull()
   })

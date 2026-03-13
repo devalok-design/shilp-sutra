@@ -81,7 +81,7 @@ export const DashboardHeader = React.forwardRef<HTMLDivElement, DashboardHeaderP
                 onSelect={() => {
                   onMonthSelection(year)
                 }}
-                className={cn('p-0', index !== yearsList.length - 1 ? 'border-b border-b-border' : '')}
+                className={cn('p-0', index !== yearsList.length - 1 ? 'border-b border-b-surface-border' : '')}
               >
                 <span
                   className={cn('w-full py-ds-04 pl-ds-05 pr-ds-06', selectedMonth === year ? 'text-ds-md font-semibold bg-accent-9 text-accent-fg' : 'text-ds-md text-surface-fg-muted hover:bg-surface-2', index === 0 ? 'rounded-t-[7px]' : index === yearsList.length - 1 ? 'rounded-b-[7px]' : '')}

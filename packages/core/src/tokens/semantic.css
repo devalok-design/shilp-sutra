@@ -352,6 +352,11 @@
   --color-warning-fg: var(--neutral-12);
   --color-info-fg: var(--neutral-12);
 
+  /* Dark mode borders need lower contrast — bright borders look harsh.
+     Drop 2 steps: subtle=4 (L=0.29), strong=5 (L=0.34) */
+  --color-surface-border: var(--neutral-4);
+  --color-surface-border-strong: var(--neutral-5);
+
   /* Overlay */
   --color-overlay: oklch(0 0 0 / 0.70);
 

@@ -98,7 +98,8 @@ interface TaskCardVisualProps {
   dragHandleProps?: {
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     attributes: Record<string, any>
-    listeners: Record<string, (...args: unknown[]) => void> | undefined
+    // eslint-disable-next-line @typescript-eslint/no-unsafe-function-type
+    listeners: Record<string, Function> | undefined
   }
 }
 

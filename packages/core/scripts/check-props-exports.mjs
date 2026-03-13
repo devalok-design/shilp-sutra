@@ -31,6 +31,13 @@ const UI_DIR = path.join(ROOT, 'src', 'ui')
 // Match: export interface FooProps, export type FooProps
 const PROPS_PATTERN = /export\s+(?:interface|type)\s+(\w+Props)\b/g
 
+// Files intentionally excluded from the ui barrel (barrel-isolated components).
+// These are imported directly via sub-path exports (e.g., @devalok/shilp-sutra/ui/data-table).
+const BARREL_ISOLATED_FILES = new Set([
+  'data-table.tsx',
+  'data-table-toolbar.tsx',
+])
+
 /** Cache of barrel file contents by directory path. */
 const barrelCache = new Map()
 
@@ -75,6 +82,9 @@ const allProps = []
 const missing = []
 
 for (const filePath of sourceFiles) {
+  const fileName = path.basename(filePath)
+  if (BARREL_ISOLATED_FILES.has(fileName)) continue
+
   const content = fs.readFileSync(filePath, 'utf8')
   const fileDir = path.dirname(filePath)
   const relFile = path.relative(ROOT, filePath).split(path.sep).join('/')

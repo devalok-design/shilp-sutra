@@ -261,7 +261,7 @@ function CellEditInput({
         'border border-border-interactive bg-field',
         'px-ds-02 text-ds-sm',
         'text-text-primary placeholder:text-text-placeholder',
-        'outline-none focus:border-[var(--color-border-focus)]',
+        'outline-none focus:border-border-interactive',
       )}
       aria-label="Edit cell value"
     />
@@ -916,7 +916,7 @@ export function DataTable<TData, TValue>({
                         'border border-border bg-field',
                         'px-ds-02 text-ds-sm',
                         'text-text-primary placeholder:text-text-placeholder',
-                        'outline-none focus:border-[var(--color-border-focus)]',
+                        'outline-none focus:border-border-interactive',
                       )}
                     />
                   )}

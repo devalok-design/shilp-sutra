@@ -1,160 +1,679 @@
 'use client'
 
 import * as React from 'react'
-import * as ToastPrimitives from '@primitives/react-toast'
-import { cva, type VariantProps } from 'class-variance-authority'
-import { IconX } from '@tabler/icons-react'
-
+import { toast as sonnerToast, type ExternalToast } from 'sonner'
+import {
+  IconCircleCheck,
+  IconAlertTriangle,
+  IconCircleX,
+  IconInfoCircle,
+  IconLoader2,
+  IconUpload,
+  IconFile,
+  IconPhoto,
+  IconCheck,
+  IconX,
+  IconRefresh,
+  IconAlertCircle,
+} from '@tabler/icons-react'
 import { cn } from './lib/utils'
+import { Progress } from './progress'
+import type {
+  ToastOptions,
+  ToastType,
+  ToastActionOptions,
+  ToastUndoOptions,
+  ToastUploadOptions,
+  UploadFile,
+} from './toast-types'
 
-const ToastProvider = ToastPrimitives.Provider
+/* ---------------------------------------------------------------------------
+ * Constants
+ * ------------------------------------------------------------------------ */
 
-const ToastViewport = React.forwardRef<
-  React.ElementRef<typeof ToastPrimitives.Viewport>,
-  React.ComponentPropsWithoutRef<typeof ToastPrimitives.Viewport>
->(({ className, ...props }, ref) => (
-  <ToastPrimitives.Viewport
-    ref={ref}
-    className={cn(
-      'fixed top-0 z-toast flex max-h-screen w-full flex-col-reverse p-ds-05 sm:bottom-0 sm:right-0 sm:top-auto sm:flex-col md:max-w-[420px]',
-      className,
-    )}
-    {...props}
-  />
-))
-ToastViewport.displayName = ToastPrimitives.Viewport.displayName
+const DEFAULT_DURATION = 5000
+const UNDO_DURATION = 8000
+const UPLOAD_COMPLETE_DELAY = 3000
 
-/**
- * Toast color styles. Valid `color` values: `'neutral'` | `'success'` | `'warning'` | `'error'` | `'info'`.
- *
- * Note: `'destructive'` and `'karam'` are NOT valid color values and do not exist in this CVA definition.
- * The CSS class `destructive` appears internally as a group selector — it is not a prop value.
- */
-const toastVariants = cva(
-  'group pointer-events-auto relative flex w-full items-center justify-between space-x-ds-03 overflow-hidden rounded-ds-md border p-ds-05 pr-ds-06 shadow-03 transition-all duration-moderate-02 data-[swipe=cancel]:translate-x-0 data-[swipe=end]:translate-x-[var(--radix-toast-swipe-end-x)] data-[swipe=move]:translate-x-[var(--radix-toast-swipe-move-x)] data-[swipe=move]:transition-none data-[state=open]:animate-in data-[state=closed]:animate-out data-[swipe=end]:animate-out data-[state=closed]:fade-out-80 data-[state=closed]:slide-out-to-right-full data-[state=open]:slide-in-from-top-full data-[state=open]:sm:slide-in-from-bottom-full',
+/* ---------------------------------------------------------------------------
+ * Accent bar & icon config per toast type
+ * ------------------------------------------------------------------------ */
+
+const TOAST_TYPE_CONFIG: Record<
+  ToastType,
   {
-    variants: {
-      color: {
-        neutral:
-          'border-border bg-layer-01 text-text-primary',
-        success:
-          'border-success-border bg-success-surface text-success-text',
-        warning:
-          'border-warning-border bg-warning-surface text-warning-text',
-        error:
-          'destructive group border-border-error bg-error-surface text-error-text',
-        info:
-          'border-info-border bg-info-surface text-info-text',
-      },
-    },
-    defaultVariants: {
-      color: 'neutral',
-    },
+    accentClass: string
+    iconClass: string
+    icon: React.ComponentType<{ className?: string }> | null
+    timerBarClass: string
+  }
+> = {
+  message: {
+    accentClass: '',
+    iconClass: '',
+    icon: null,
+    timerBarClass: 'bg-border',
   },
-)
+  success: {
+    accentClass: 'bg-success-border',
+    iconClass: 'text-success-text',
+    icon: IconCircleCheck,
+    timerBarClass: 'bg-success-border',
+  },
+  error: {
+    accentClass: 'bg-error-border',
+    iconClass: 'text-error-text',
+    icon: IconCircleX,
+    timerBarClass: 'bg-error-border',
+  },
+  warning: {
+    accentClass: 'bg-warning-border',
+    iconClass: 'text-warning-text',
+    icon: IconAlertTriangle,
+    timerBarClass: 'bg-warning-border',
+  },
+  info: {
+    accentClass: 'bg-info-border',
+    iconClass: 'text-info-text',
+    icon: IconInfoCircle,
+    timerBarClass: 'bg-info-border',
+  },
+  loading: {
+    accentClass: 'bg-interactive',
+    iconClass: 'text-interactive',
+    icon: IconLoader2,
+    timerBarClass: 'bg-interactive',
+  },
+}
 
-const Toast = React.forwardRef<
-  React.ElementRef<typeof ToastPrimitives.Root>,
-  React.ComponentPropsWithoutRef<typeof ToastPrimitives.Root> &
-    VariantProps<typeof toastVariants>
->(({ className, color, ...props }, ref) => {
+/* ---------------------------------------------------------------------------
+ * Timer bar — shows auto-dismiss countdown
+ * ------------------------------------------------------------------------ */
+
+function TimerBar({
+  duration,
+  type,
+  paused,
+}: {
+  duration: number
+  type: ToastType
+  paused: boolean
+}) {
+  const config = TOAST_TYPE_CONFIG[type]
   return (
-    <ToastPrimitives.Root
-      ref={ref}
+    <div className="absolute bottom-0 left-0 right-0 h-[2px] overflow-hidden">
+      <div
+        className={cn(
+          'h-full w-full origin-left opacity-30',
+          config.timerBarClass,
+          'motion-safe:animate-timer-bar',
+        )}
+        style={{
+          animationDuration: `${duration}ms`,
+          animationPlayState: paused ? 'paused' : 'running',
+        }}
+      />
+    </div>
+  )
+}
+
+/* ---------------------------------------------------------------------------
+ * Base toast UI — used by all typed toasts
+ * ------------------------------------------------------------------------ */
+
+function ToastContent({
+  type,
+  title,
+  description,
+  action,
+  cancel,
+  duration = DEFAULT_DURATION,
+  showTimerBar = true,
+}: {
+  type: ToastType
+  title?: React.ReactNode
+  description?: React.ReactNode
+  action?: ToastActionOptions
+  cancel?: ToastActionOptions
+  duration?: number
+  showTimerBar?: boolean
+}) {
+  const [hovered, setHovered] = React.useState(false)
+  const config = TOAST_TYPE_CONFIG[type]
+  const Icon = config.icon
+
+  return (
+    <div
       role="status"
       aria-live="polite"
-      className={cn(toastVariants({ color }), className)}
-      {...props}
-    />
+      className="group relative flex w-full overflow-hidden rounded-ds-md border border-border bg-layer-01 shadow-02"
+      onMouseEnter={() => setHovered(true)}
+      onMouseLeave={() => setHovered(false)}
+    >
+      {/* Left accent bar */}
+      {config.accentClass && (
+        <div
+          className={cn('w-1 shrink-0 rounded-l-ds-md', config.accentClass)}
+        />
+      )}
+
+      {/* Content */}
+      <div className="flex min-w-0 flex-1 items-start gap-ds-03 p-ds-04">
+        {/* Status icon */}
+        {Icon && (
+          <Icon
+            className={cn(
+              'mt-0.5 h-4 w-4 shrink-0',
+              config.iconClass,
+              type === 'loading' && 'animate-spin',
+            )}
+          />
+        )}
+
+        {/* Text */}
+        <div className="min-w-0 flex-1">
+          {title && (
+            <p className="text-ds-md font-semibold text-text-primary">
+              {title}
+            </p>
+          )}
+          {description && (
+            <p
+              className={cn(
+                'text-ds-sm text-text-secondary',
+                title && 'mt-0.5',
+              )}
+            >
+              {description}
+            </p>
+          )}
+
+          {/* Action / cancel buttons */}
+          {(action || cancel) && (
+            <div className="mt-ds-03 flex items-center gap-ds-03">
+              {action && (
+                <button
+                  type="button"
+                  onClick={action.onClick}
+                  className="text-ds-sm font-medium text-interactive underline-offset-2 hover:underline focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-focus focus-visible:rounded-ds-sm"
+                >
+                  {action.label}
+                </button>
+              )}
+              {cancel && (
+                <button
+                  type="button"
+                  onClick={cancel.onClick}
+                  className="text-ds-sm text-text-secondary hover:text-text-primary focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-focus focus-visible:rounded-ds-sm"
+                >
+                  {cancel.label}
+                </button>
+              )}
+            </div>
+          )}
+        </div>
+      </div>
+
+      {/* Timer bar */}
+      {showTimerBar && type !== 'loading' && (
+        <TimerBar duration={duration} type={type} paused={hovered} />
+      )}
+    </div>
   )
-})
-Toast.displayName = ToastPrimitives.Root.displayName
+}
 
-const ToastAction = React.forwardRef<
-  React.ElementRef<typeof ToastPrimitives.Action>,
-  React.ComponentPropsWithoutRef<typeof ToastPrimitives.Action>
->(({ className, ...props }, ref) => (
-  <ToastPrimitives.Action
-    ref={ref}
-    className={cn(
-      'inline-flex h-ds-sm shrink-0 items-center justify-center rounded-ds-md border border-border bg-transparent px-ds-04 text-ds-md font-medium transition-colors hover:bg-layer-02 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-focus focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-[0.38] group-[.destructive]:border-border-error group-[.destructive]:hover:bg-error-surface',
-      className,
-    )}
-    {...props}
-  />
-))
-ToastAction.displayName = ToastPrimitives.Action.displayName
+/* ---------------------------------------------------------------------------
+ * Upload toast UI
+ * ------------------------------------------------------------------------ */
 
-const ToastClose = React.forwardRef<
-  React.ElementRef<typeof ToastPrimitives.Close>,
-  React.ComponentPropsWithoutRef<typeof ToastPrimitives.Close>
->(({ className, ...props }, ref) => (
-  <ToastPrimitives.Close
-    ref={ref}
-    className={cn(
-      'absolute right-ds-02 top-ds-02 min-h-ds-xs min-w-ds-xs flex items-center justify-center rounded-ds-md p-ds-02 text-text-secondary opacity-70 transition-opacity hover:text-text-primary hover:opacity-100 focus-visible:opacity-100 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-focus',
-      className,
-    )}
-    toast-close=""
-    {...props}
-  >
-    <IconX className="h-ico-sm w-ico-sm" />
-  </ToastPrimitives.Close>
-))
-ToastClose.displayName = ToastPrimitives.Close.displayName
+const IMAGE_EXTENSIONS = new Set([
+  'jpg', 'jpeg', 'png', 'gif', 'webp', 'svg', 'bmp', 'ico', 'avif',
+])
 
-const ToastTitle = React.forwardRef<
-  React.ElementRef<typeof ToastPrimitives.Title>,
-  React.ComponentPropsWithoutRef<typeof ToastPrimitives.Title>
->(({ className, ...props }, ref) => (
-  <ToastPrimitives.Title
-    ref={ref}
-    className={cn('text-ds-md font-semibold [&+div]:text-ds-sm', className)}
-    {...props}
-  />
-))
-ToastTitle.displayName = ToastPrimitives.Title.displayName
+function isImageFile(file: UploadFile): boolean {
+  if (file.previewUrl) return true
+  const ext = file.name.split('.').pop()?.toLowerCase() ?? ''
+  return IMAGE_EXTENSIONS.has(ext)
+}
 
-const ToastDescription = React.forwardRef<
-  React.ElementRef<typeof ToastPrimitives.Description>,
-  React.ComponentPropsWithoutRef<typeof ToastPrimitives.Description>
->(({ className, ...props }, ref) => (
-  <ToastPrimitives.Description
-    ref={ref}
-    className={cn('text-ds-md opacity-[0.9]', className)}
-    {...props}
-  />
-))
-ToastDescription.displayName = ToastPrimitives.Description.displayName
+function getProgressColor(
+  status: UploadFile['status'],
+): 'default' | 'success' | 'error' {
+  switch (status) {
+    case 'complete':
+      return 'success'
+    case 'error':
+      return 'error'
+    default:
+      return 'default'
+  }
+}
+
+function getProgressValue(file: UploadFile): number | undefined {
+  switch (file.status) {
+    case 'pending':
+      return 0
+    case 'uploading':
+      return file.progress ?? 0
+    case 'processing':
+      return undefined
+    case 'complete':
+      return 100
+    case 'error':
+      return file.progress ?? 0
+  }
+}
+
+function formatFileSize(bytes: number): string {
+  if (!bytes || bytes < 0 || !Number.isFinite(bytes)) return '0 B'
+  if (bytes < 1024) return `${bytes} B`
+  if (bytes < 1024 * 1024) return `${(bytes / 1024).toFixed(1)} KB`
+  if (bytes < 1024 * 1024 * 1024)
+    return `${(bytes / (1024 * 1024)).toFixed(1)} MB`
+  return `${(bytes / (1024 * 1024 * 1024)).toFixed(2)} GB`
+}
+
+function UploadFileRow({
+  file,
+  onRetry,
+  onRemove,
+}: {
+  file: UploadFile
+  onRetry?: (fileId: string) => void
+  onRemove?: (fileId: string) => void
+}) {
+  const isTerminal = file.status === 'complete' || file.status === 'error'
+  const isUploading =
+    file.status === 'uploading' || file.status === 'processing'
+
+  return (
+    <div className="flex items-center gap-ds-02 py-1">
+      {/* File icon */}
+      <div className="flex h-5 w-5 shrink-0 items-center justify-center">
+        {file.status === 'complete' ? (
+          <IconCheck className="h-3.5 w-3.5 text-success-text" />
+        ) : file.status === 'error' ? (
+          <IconAlertCircle className="h-3.5 w-3.5 text-error-text" />
+        ) : file.status === 'processing' ? (
+          <IconLoader2 className="h-3.5 w-3.5 animate-spin text-interactive" />
+        ) : isImageFile(file) ? (
+          <IconPhoto className="h-3.5 w-3.5 text-text-secondary" />
+        ) : (
+          <IconFile className="h-3.5 w-3.5 text-text-secondary" />
+        )}
+      </div>
+
+      {/* Filename */}
+      <span className="min-w-0 flex-1 truncate text-ds-xs text-text-primary">
+        {file.name}
+      </span>
+
+      {/* Progress bar or status */}
+      {isUploading ? (
+        <div className="flex w-16 items-center gap-1">
+          <Progress
+            size="sm"
+            color={getProgressColor(file.status)}
+            value={getProgressValue(file)}
+            className="flex-1"
+          />
+          {file.progress !== undefined && (
+            <span className="shrink-0 text-[10px] tabular-nums text-text-secondary">
+              {file.progress}%
+            </span>
+          )}
+        </div>
+      ) : file.status === 'complete' ? (
+        <span className="text-[10px] text-success-text">Done</span>
+      ) : file.status === 'error' ? (
+        <span className="max-w-[60px] truncate text-[10px] text-error-text">
+          {file.error || 'Failed'}
+        </span>
+      ) : (
+        <span className="text-[10px] text-text-secondary">
+          {formatFileSize(file.size)}
+        </span>
+      )}
+
+      {/* Actions */}
+      {file.status === 'error' && onRetry && (
+        <button
+          type="button"
+          onClick={() => onRetry(file.id)}
+          className="flex h-4 w-4 items-center justify-center rounded-ds-sm text-text-secondary hover:text-text-primary"
+          aria-label={`Retry ${file.name}`}
+        >
+          <IconRefresh className="h-3 w-3" />
+        </button>
+      )}
+      {!isTerminal && onRemove && (
+        <button
+          type="button"
+          onClick={() => onRemove(file.id)}
+          className="flex h-4 w-4 items-center justify-center rounded-ds-sm text-text-secondary hover:text-text-primary"
+          aria-label={`Cancel ${file.name}`}
+        >
+          <IconX className="h-3 w-3" />
+        </button>
+      )}
+    </div>
+  )
+}
+
+function UploadToastContent({
+  files,
+  onRetry,
+  onRemove,
+}: {
+  files: UploadFile[]
+  onRetry?: (fileId: string) => void
+  onRemove?: (fileId: string) => void
+}) {
+  const completeCount = files.filter((f) => f.status === 'complete').length
+  const errorCount = files.filter((f) => f.status === 'error').length
+  const allTerminal = files.every(
+    (f) => f.status === 'complete' || f.status === 'error',
+  )
+
+  const accentClass = allTerminal
+    ? errorCount > 0
+      ? 'bg-error-border'
+      : 'bg-success-border'
+    : 'bg-interactive'
+
+  const timerBarType: ToastType = allTerminal
+    ? errorCount > 0
+      ? 'error'
+      : 'success'
+    : 'loading'
+
+  return (
+    <div
+      role="status"
+      aria-live="polite"
+      aria-label="File uploads"
+      className="group relative flex w-full overflow-hidden rounded-ds-md border border-border bg-layer-01 shadow-02"
+    >
+      {/* Left accent bar */}
+      <div className={cn('w-1 shrink-0 rounded-l-ds-md', accentClass)} />
+
+      {/* Content */}
+      <div className="min-w-0 flex-1 p-ds-04">
+        {/* Header */}
+        <div className="flex items-center gap-ds-02">
+          <IconUpload className="h-4 w-4 shrink-0 text-text-secondary" />
+          <p className="text-ds-md font-semibold text-text-primary">
+            {allTerminal
+              ? errorCount > 0
+                ? `${completeCount} of ${files.length} uploaded`
+                : `${files.length} file${files.length > 1 ? 's' : ''} uploaded`
+              : `Uploading ${files.length} file${files.length > 1 ? 's' : ''}`}
+          </p>
+        </div>
+        {!allTerminal && (
+          <p className="mt-0.5 text-ds-xs text-text-secondary">
+            {completeCount} of {files.length} complete
+            {errorCount > 0 && ` · ${errorCount} failed`}
+          </p>
+        )}
+
+        {/* File list */}
+        <div className="mt-ds-02 max-h-[140px] overflow-y-auto">
+          {files.map((file) => (
+            <UploadFileRow
+              key={file.id}
+              file={file}
+              onRetry={onRetry}
+              onRemove={onRemove}
+            />
+          ))}
+        </div>
+
+        {/* Screen reader announcement */}
+        <div className="sr-only" aria-live="polite">
+          {completeCount} of {files.length} files uploaded
+          {errorCount > 0 && `, ${errorCount} failed`}
+        </div>
+      </div>
+
+      {/* Timer bar — only after all terminal */}
+      {allTerminal && (
+        <TimerBar
+          duration={UPLOAD_COMPLETE_DELAY}
+          type={timerBarType}
+          paused={false}
+        />
+      )}
+    </div>
+  )
+}
+
+/* ---------------------------------------------------------------------------
+ * Toast API — wraps Sonner with our styled UI
+ * ------------------------------------------------------------------------ */
+
+function createSonnerOptions(
+  options?: ToastOptions,
+  duration?: number,
+): ExternalToast {
+  return {
+    id: options?.id,
+    duration: options?.duration ?? duration ?? DEFAULT_DURATION,
+    unstyled: true,
+    classNames: { toast: 'w-full' },
+  }
+}
+
+function createTypedToast(
+  type: ToastType,
+  message: string | React.ReactNode,
+  options?: ToastOptions,
+) {
+  const duration = options?.duration ?? DEFAULT_DURATION
+  return sonnerToast.custom(
+    () => (
+      <ToastContent
+        type={type}
+        title={message}
+        description={options?.description}
+        action={options?.action}
+        cancel={options?.cancel}
+        duration={duration}
+      />
+    ),
+    createSonnerOptions(options, duration),
+  )
+}
 
 /**
- * Props for the `Toast` component. For imperative notifications (most common), use
- * the `useToast()` hook or `toast()` function with `<Toaster />` at layout root.
+ * Toast API — imperative toast notifications with Sonner rendering engine.
+ *
+ * Mount `<Toaster />` once at your root layout. Then call `toast()` from anywhere.
  *
  * @example
- * // Imperative approach (recommended for user-triggered notifications):
- * const { toast } = useToast()
- * toast({ title: 'Saved!', color: 'success' })
- *
- * // Declarative (for tests/Storybook only):
- * <Toast open color="error">
- *   <ToastTitle>Error</ToastTitle>
- *   <ToastDescription>Something went wrong.</ToastDescription>
- *   <ToastClose />
- * </Toast>
+ * toast('Something happened')
+ * toast.success('Saved!')
+ * toast.error('Failed to save')
+ * toast.promise(saveFn(), { loading: 'Saving...', success: 'Done!', error: 'Failed' })
+ * toast.undo('Deleted', { onUndo: () => restore() })
+ * toast.upload({ files, onRetry, onRemove })
  */
-type ToastProps = React.ComponentPropsWithoutRef<typeof Toast>
+function toast(message: string | React.ReactNode, options?: ToastOptions) {
+  return createTypedToast('message', message, options)
+}
 
-type ToastActionElement = React.ReactElement<typeof ToastAction>
+toast.message = (
+  message: string | React.ReactNode,
+  options?: ToastOptions,
+) => {
+  return createTypedToast('message', message, options)
+}
+
+toast.success = (
+  message: string | React.ReactNode,
+  options?: ToastOptions,
+) => {
+  return createTypedToast('success', message, options)
+}
+
+toast.error = (
+  message: string | React.ReactNode,
+  options?: ToastOptions,
+) => {
+  return createTypedToast('error', message, options)
+}
+
+toast.warning = (
+  message: string | React.ReactNode,
+  options?: ToastOptions,
+) => {
+  return createTypedToast('warning', message, options)
+}
+
+toast.info = (
+  message: string | React.ReactNode,
+  options?: ToastOptions,
+) => {
+  return createTypedToast('info', message, options)
+}
+
+toast.loading = (
+  message: string | React.ReactNode,
+  options?: ToastOptions,
+) => {
+  return createTypedToast('loading', message, {
+    ...options,
+    duration: options?.duration ?? Infinity,
+  })
+}
+
+toast.promise = <T,>(
+  promise: Promise<T>,
+  options: {
+    loading: string | React.ReactNode
+    success: string | React.ReactNode | ((data: T) => string | React.ReactNode)
+    error:
+      | string
+      | React.ReactNode
+      | ((error: unknown) => string | React.ReactNode)
+  },
+) => {
+  const id = toast.loading(options.loading)
+
+  promise
+    .then((data) => {
+      const message =
+        typeof options.success === 'function'
+          ? options.success(data)
+          : options.success
+      sonnerToast.custom(
+        () => (
+          <ToastContent
+            type="success"
+            title={message}
+            duration={DEFAULT_DURATION}
+          />
+        ),
+        { id, duration: DEFAULT_DURATION, unstyled: true, classNames: { toast: 'w-full' } },
+      )
+    })
+    .catch((error) => {
+      const message =
+        typeof options.error === 'function'
+          ? options.error(error)
+          : options.error
+      sonnerToast.custom(
+        () => (
+          <ToastContent
+            type="error"
+            title={message}
+            duration={DEFAULT_DURATION}
+          />
+        ),
+        { id, duration: DEFAULT_DURATION, unstyled: true, classNames: { toast: 'w-full' } },
+      )
+    })
+
+  return id
+}
+
+toast.undo = (message: string | React.ReactNode, options: ToastUndoOptions) => {
+  const duration = options.duration ?? UNDO_DURATION
+  return sonnerToast.custom(
+    () => (
+      <ToastContent
+        type="message"
+        title={message}
+        description={options.description}
+        action={{ label: 'Undo', onClick: options.onUndo }}
+        duration={duration}
+      />
+    ),
+    { duration, unstyled: true, classNames: { toast: 'w-full' } },
+  )
+}
+
+toast.upload = (options: ToastUploadOptions) => {
+  const allTerminal = options.files.every(
+    (f) => f.status === 'complete' || f.status === 'error',
+  )
+  const duration = allTerminal ? UPLOAD_COMPLETE_DELAY : Infinity
+
+  return sonnerToast.custom(
+    () => (
+      <UploadToastContent
+        files={options.files}
+        onRetry={options.onRetry}
+        onRemove={options.onRemove}
+      />
+    ),
+    {
+      id: options.id,
+      duration,
+      unstyled: true,
+      classNames: { toast: 'w-full' },
+    },
+  ) as string
+}
+
+toast.custom = (
+  render: (id: string | number) => React.ReactElement,
+  options?: ExternalToast,
+) => {
+  return sonnerToast.custom(render, {
+    ...options,
+    unstyled: true,
+    classNames: { toast: 'w-full', ...(options?.classNames as Record<string, string>) },
+  })
+}
+
+toast.dismiss = (id?: string | number) => {
+  if (id !== undefined) {
+    sonnerToast.dismiss(id)
+  } else {
+    sonnerToast.dismiss()
+  }
+}
+
+/* ---------------------------------------------------------------------------
+ * Exports
+ * ------------------------------------------------------------------------ */
+
+export type ToastProps = ToastOptions
 
 export {
-  type ToastProps,
-  type ToastActionElement,
-  ToastProvider,
-  ToastViewport,
-  Toast,
-  ToastTitle,
-  ToastDescription,
-  ToastClose,
-  ToastAction,
+  toast,
+  formatFileSize,
+  ToastContent,
+  UploadToastContent,
+  UploadFileRow,
+  TimerBar,
 }
+export type {
+  ToastOptions,
+  ToastType,
+  ToastActionOptions,
+  ToastUndoOptions,
+  ToastUploadOptions,
+  UploadFile,
+} from './toast-types'

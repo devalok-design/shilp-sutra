@@ -103,7 +103,8 @@ export default defineConfig({
               id.includes('use-callback-ref') ||
               id.includes('use-sidecar') ||
               id.includes('react-clientside-effect') ||
-              id.includes('get-nonce')
+              id.includes('get-nonce') ||
+              id.includes('sonner')
             )
               return 'vendor-client'
             // Pure utilities (clsx, cva, tailwind-merge) — must NOT have "use client"

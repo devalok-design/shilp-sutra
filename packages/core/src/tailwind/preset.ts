@@ -433,6 +433,10 @@ const preset: Partial<Config> = {
           '60%': { opacity: '1', transform: 'scale(0.95)' },
           '100%': { opacity: '1', transform: 'scale(1)' },
         },
+        'timer-bar': {
+          '0%': { transform: 'scaleX(1)' },
+          '100%': { transform: 'scaleX(0)' },
+        },
       },
       animation: {
         ripple: 'ripple var(--duration-slow-01) linear',
@@ -475,6 +479,7 @@ const preset: Partial<Config> = {
         'subtle-bounce': 'subtle-bounce var(--duration-fast-02) var(--ease-bounce) both',
         'spin-in': 'spin-in var(--duration-moderate-02) var(--ease-expressive-entrance) both',
         stamp: 'stamp var(--duration-moderate-02) var(--ease-bounce) both',
+        'timer-bar': 'timer-bar linear forwards',
       },
       backgroundImage: {
         'gradient-brand': 'var(--gradient-brand-light)',

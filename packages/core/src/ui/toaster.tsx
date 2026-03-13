@@ -1,26 +1,15 @@
 'use client'
 
 import * as React from 'react'
+import { Toaster as SonnerToaster } from 'sonner'
 import { cn } from './lib/utils'
-import { useToast } from '../hooks/use-toast'
-import {
-  Toast,
-  ToastClose,
-  ToastDescription,
-  ToastProvider,
-  ToastTitle,
-  ToastViewport,
-} from './toast'
 
 /**
- * Toaster — shell component that renders active toast notifications. Mount **once** at your root layout.
- *
- * @see {@link useToast} for the hook-based API
- * @see {@link toast} for the direct imperative function
+ * Toaster — mount once at your root layout to enable toast notifications.
  *
  * @example
- * // 1. Mount Toaster once in your root layout (e.g. app/layout.tsx in Next.js):
  * import { Toaster } from '@devalok/shilp-sutra'
+ *
  * export default function RootLayout({ children }: { children: React.ReactNode }) {
  *   return (
  *     <html lang="en">
@@ -32,50 +21,60 @@ import {
  *   )
  * }
  *
- * // 2. Trigger a toast from any component:
- * import { useToast } from '@devalok/shilp-sutra'
- * function SaveButton() {
- *   const { toast } = useToast()
- *   return (
- *     <button onClick={() => toast({ title: 'Saved!', description: 'Changes saved.', color: 'success' })}>
- *       Save
- *     </button>
- *   )
- * }
- *
- * // Or use the imperative function directly (no hook needed):
+ * // Then from any component:
  * import { toast } from '@devalok/shilp-sutra'
- * toast({ title: 'Deleted', color: 'error' })
- *
- * // Valid colors: 'neutral' | 'success' | 'warning' | 'error' | 'info'
+ * toast.success('Saved!')
  */
-export interface ToasterProps extends React.HTMLAttributes<HTMLDivElement> {}
+export interface ToasterProps {
+  /** Toast position on screen. Default: 'bottom-right' */
+  position?:
+    | 'top-left'
+    | 'top-center'
+    | 'top-right'
+    | 'bottom-left'
+    | 'bottom-center'
+    | 'bottom-right'
+  /** Show close button on all toasts. Default: false */
+  closeButton?: boolean
+  /** Default auto-dismiss duration in ms. Default: 5000 */
+  duration?: number
+  /** Keyboard shortcut to focus toast region. Default: ['altKey', 'KeyT'] */
+  hotkey?: string[]
+  /** Max visible toasts before stacking. Default: 3 */
+  visibleToasts?: number
+  /** Additional CSS class */
+  className?: string
+}
 
 export const Toaster = React.forwardRef<HTMLDivElement, ToasterProps>(
-  ({ className, ...props }, ref) => {
-  const { toasts } = useToast()
-
-  return (
-    <ToastProvider>
-      <div ref={ref} className={cn(className)} {...props}>
-        {toasts.map(function ({ id, title, description, action, ...toastProps }) {
-          return (
-            <Toast key={id} {...toastProps}>
-              <div className="grid gap-ds-02">
-                {title && <ToastTitle>{title}</ToastTitle>}
-                {description && (
-                  <ToastDescription>{description}</ToastDescription>
-                )}
-              </div>
-              {action}
-              <ToastClose />
-            </Toast>
-          )
-        })}
-        <ToastViewport />
+  (
+    {
+      position = 'bottom-right',
+      closeButton = false,
+      duration = 5000,
+      hotkey = ['altKey', 'KeyT'],
+      visibleToasts = 3,
+      className,
+    },
+    ref,
+  ) => {
+    return (
+      <div ref={ref} className={cn('z-toast', className)}>
+        <SonnerToaster
+          position={position}
+          closeButton={closeButton}
+          duration={duration}
+          hotkey={hotkey}
+          visibleToasts={visibleToasts}
+          toastOptions={{
+            unstyled: true,
+            classNames: {
+              toast: 'w-full',
+            },
+          }}
+        />
       </div>
-    </ToastProvider>
-  )
+    )
   },
 )
 Toaster.displayName = 'Toaster'

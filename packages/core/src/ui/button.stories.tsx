@@ -310,7 +310,7 @@ export const AsyncAllVariants: Story = {
     return (
       <div className="flex flex-col gap-ds-06">
         <div>
-          <p className="mb-ds-03 text-ds-sm font-semibold text-text-secondary">
+          <p className="mb-ds-03 text-ds-sm font-semibold text-surface-fg-muted">
             Click each — 1.5s loading → success
           </p>
           <div className="flex flex-wrap items-center gap-ds-03">
@@ -326,7 +326,7 @@ export const AsyncAllVariants: Story = {
           </div>
         </div>
         <div>
-          <p className="mb-ds-03 text-ds-sm font-semibold text-text-secondary">
+          <p className="mb-ds-03 text-ds-sm font-semibold text-surface-fg-muted">
             Click each — 1.5s loading → error
           </p>
           <div className="flex flex-wrap items-center gap-ds-03">
@@ -342,7 +342,7 @@ export const AsyncAllVariants: Story = {
           </div>
         </div>
         <div>
-          <p className="mb-ds-03 text-ds-sm font-semibold text-text-secondary">
+          <p className="mb-ds-03 text-ds-sm font-semibold text-surface-fg-muted">
             Destructive — delete with error chance
           </p>
           <Button

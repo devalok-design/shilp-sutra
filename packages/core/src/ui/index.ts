@@ -56,7 +56,7 @@ export {
 export { Textarea, textareaVariants, type TextareaProps } from './textarea'
 export { NumberInput, type NumberInputProps } from './number-input'
 export { SearchInput, type SearchInputProps } from './search-input'
-export { InputOTP, InputOTPGroup, InputOTPSlot, InputOTPSeparator } from './input-otp'
+export { InputOTP, InputOTPGroup, InputOTPSlot, InputOTPSeparator, type InputOTPProps } from './input-otp'
 export { FormField, FormHelperText, useFormField, type FormFieldProps, type FormHelperState, type FormHelperTextProps } from './form'
 export { Slider, type SliderProps } from './slider'
 export { Toggle, toggleVariants, type ToggleProps } from './toggle'
@@ -88,6 +88,8 @@ export {
   DialogFooter,
   DialogTitle,
   DialogDescription,
+  type DialogContentProps,
+  type DialogTitleProps,
 } from './dialog'
 export {
   Sheet,
@@ -114,8 +116,8 @@ export {
   type UploadFile,
 } from './toast'
 export { Toaster, type ToasterProps } from './toaster'
-export { Tooltip, TooltipTrigger, TooltipContent, TooltipProvider } from './tooltip'
-export { Popover, PopoverTrigger, PopoverContent, PopoverAnchor } from './popover'
+export { Tooltip, TooltipTrigger, TooltipContent, TooltipProvider, type TooltipContentProps } from './tooltip'
+export { Popover, PopoverTrigger, PopoverContent, PopoverAnchor, type PopoverContentProps } from './popover'
 export { HoverCard, HoverCardTrigger, HoverCardContent, type HoverCardContentProps } from './hover-card'
 export { Collapsible, CollapsibleTrigger, CollapsibleContent, type CollapsibleProps } from './collapsible'
 // ---------------------------------------------------------------------------
@@ -133,7 +135,7 @@ export { Spinner, type SpinnerProps } from './spinner'
 export { Card, cardVariants, CardHeader, CardFooter, CardTitle, CardDescription, CardContent, type CardProps } from './card'
 export { Badge, badgeVariants, type BadgeProps } from './badge'
 export { Avatar, AvatarImage, AvatarFallback, avatarVariants, type AvatarProps, type AvatarStatus } from './avatar'
-export { Table, TableHeader, TableBody, TableFooter, TableHead, TableRow, TableCell, TableCaption } from './table'
+export { Table, TableHeader, TableBody, TableFooter, TableHead, TableRow, TableCell, TableCaption, type TableProps, type TableRowProps, type TableCellProps } from './table'
 export { Progress, progressTrackVariants, progressIndicatorVariants, type ProgressProps } from './progress'
 export {
   Skeleton,
@@ -186,6 +188,8 @@ export {
   DropdownMenuSubContent,
   DropdownMenuSubTrigger,
   DropdownMenuRadioGroup,
+  type DropdownMenuContentProps,
+  type DropdownMenuItemProps,
 } from './dropdown-menu'
 export {
   ContextMenu,
@@ -221,6 +225,8 @@ export {
   MenubarSubContent,
   MenubarSubTrigger,
   MenubarShortcut,
+  type MenubarContentProps,
+  type MenubarItemProps,
 } from './menubar'
 export {
   PaginationRoot,
@@ -244,6 +250,8 @@ export {
   NavigationMenuLink,
   NavigationMenuIndicator,
   NavigationMenuViewport,
+  type NavigationMenuProps,
+  type NavigationMenuContentProps,
 } from './navigation-menu'
 export {
   Sidebar,
@@ -270,6 +278,7 @@ export {
   SidebarSeparator,
   SidebarTrigger,
   useSidebar,
+  type SidebarProps,
 } from './sidebar'
 
 // Workflow
@@ -303,6 +312,9 @@ export {
 
 // Other
 export { Link, type LinkProps } from './link'
+
+// Link Context
+export { LinkProvider, useLink, type LinkProviderProps } from './lib/link-context'
 
 // Utilities
 export { cn } from './lib/utils'

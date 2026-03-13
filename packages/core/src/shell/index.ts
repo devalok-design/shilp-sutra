@@ -10,7 +10,7 @@
  */
 
 // Layout components -- application shell
-export { LinkProvider, useLink } from './link-context'
+export { LinkProvider, useLink, type LinkProviderProps } from './link-context'
 
 export {
   AppSidebar,

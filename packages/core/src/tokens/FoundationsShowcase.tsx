@@ -40,22 +40,29 @@ const labelStyle: React.CSSProperties = {
 
 /* ─── Color Palettes ────────────────────────────────────────────── */
 
+const STEPS_12 = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12] as const
+const STEP_LABELS: Record<number, string> = {
+  1: 'app bg', 2: 'subtle bg', 3: 'comp bg', 4: 'hover',
+  5: 'active', 6: 'border subtle', 7: 'border', 8: 'border strong',
+  9: 'solid', 10: 'solid hover', 11: 'lo text', 12: 'hi text',
+}
+
 const palettes = [
-  { name: 'Pink', prefix: '--pink', steps: [50, 100, 200, 300, 400, 500, 600, 700, 800, 900, 950, 1000] },
-  { name: 'Purple', prefix: '--purple', steps: [50, 100, 200, 300, 400, 500, 600, 700, 800, 900, 950] },
-  { name: 'Neutral', prefix: '--neutral', steps: [0, 50, 100, 200, 300, 400, 500, 600, 700, 800, 900, 950] },
-  { name: 'Green', prefix: '--green', steps: [50, 100, 200, 300, 400, 500, 600, 700, 800, 900, 950] },
-  { name: 'Red', prefix: '--red', steps: [50, 100, 200, 300, 400, 500, 600, 700, 800, 900, 950] },
-  { name: 'Yellow', prefix: '--yellow', steps: [50, 100, 200, 300, 400, 500, 600, 700, 800, 900, 950] },
-  { name: 'Blue', prefix: '--blue', steps: [50, 100, 200, 300, 400, 500, 600, 700, 800, 900, 950] },
-  { name: 'Teal (Mayur)', prefix: '--teal', steps: [50, 100, 200, 300, 400, 500, 600, 700, 800, 900, 950] },
-  { name: 'Amber (Kesar)', prefix: '--amber', steps: [50, 100, 200, 300, 400, 500, 600, 700, 800, 900, 950] },
-  { name: 'Slate (Megha)', prefix: '--slate', steps: [50, 100, 200, 300, 400, 500, 600, 700, 800, 900, 950] },
-  { name: 'Indigo (Neel)', prefix: '--indigo', steps: [50, 100, 200, 300, 400, 500, 600, 700, 800, 900, 950] },
-  { name: 'Cyan (Samudra)', prefix: '--cyan', steps: [50, 100, 200, 300, 400, 500, 600, 700, 800, 900, 950] },
-  { name: 'Orange (Agni)', prefix: '--orange', steps: [50, 100, 200, 300, 400, 500, 600, 700, 800, 900, 950] },
-  { name: 'Emerald (Panna)', prefix: '--emerald', steps: [50, 100, 200, 300, 400, 500, 600, 700, 800, 900, 950] },
-] as const
+  { name: 'Pink', prefix: '--pink', steps: STEPS_12 },
+  { name: 'Purple', prefix: '--purple', steps: STEPS_12 },
+  { name: 'Neutral', prefix: '--neutral', steps: [0, ...STEPS_12] as readonly number[] },
+  { name: 'Green', prefix: '--green', steps: STEPS_12 },
+  { name: 'Red', prefix: '--red', steps: STEPS_12 },
+  { name: 'Yellow', prefix: '--yellow', steps: STEPS_12 },
+  { name: 'Blue', prefix: '--blue', steps: STEPS_12 },
+  { name: 'Teal (Mayur)', prefix: '--teal', steps: STEPS_12 },
+  { name: 'Amber (Kesar)', prefix: '--amber', steps: STEPS_12 },
+  { name: 'Slate (Megha)', prefix: '--slate', steps: STEPS_12 },
+  { name: 'Indigo (Neel)', prefix: '--indigo', steps: STEPS_12 },
+  { name: 'Cyan (Samudra)', prefix: '--cyan', steps: STEPS_12 },
+  { name: 'Orange (Agni)', prefix: '--orange', steps: STEPS_12 },
+  { name: 'Emerald (Panna)', prefix: '--emerald', steps: STEPS_12 },
+]
 
 function ColorPalettes() {
   return (
@@ -68,17 +75,23 @@ function ColorPalettes() {
             {palette.steps.map((step) => {
               const token = `${palette.prefix}-${step}`
               return (
-                <div key={step} style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', width: '4rem' }}>
+                <div key={step} style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', width: '4.5rem' }}>
                   <div
                     style={{
-                      width: '3.5rem',
+                      width: '4rem',
                       height: '2.5rem',
                       borderRadius: 'var(--radius-md)',
                       backgroundColor: `var(${token})`,
                       border: '1px solid var(--color-border-subtle)',
                     }}
+                    title={`${token}: ${STEP_LABELS[step as number] ?? ''}`}
                   />
                   <span style={labelStyle}>{step}</span>
+                  {STEP_LABELS[step as number] && (
+                    <span style={{ ...labelStyle, fontSize: '0.5rem', color: 'var(--color-text-tertiary)', marginTop: 0 }}>
+                      {STEP_LABELS[step as number]}
+                    </span>
+                  )}
                 </div>
               )
             })}
@@ -93,19 +106,35 @@ function ColorPalettes() {
 
 const semanticGroups = [
   {
-    name: 'Interactive',
+    name: 'Accent (12-step, swappable)',
     tokens: [
-      '--color-interactive',
-      '--color-interactive-hover',
-      '--color-interactive-active',
-      '--color-interactive-selected',
-      '--color-interactive-disabled',
-      '--color-interactive-subtle',
+      '--color-accent-1', '--color-accent-2', '--color-accent-3', '--color-accent-4',
+      '--color-accent-5', '--color-accent-6', '--color-accent-7', '--color-accent-8',
+      '--color-accent-9', '--color-accent-10', '--color-accent-11', '--color-accent-12',
+      '--color-accent-fg',
     ],
   },
   {
-    name: 'Accent',
-    tokens: ['--color-accent', '--color-accent-hover', '--color-accent-subtle'],
+    name: 'Secondary (12-step)',
+    tokens: [
+      '--color-secondary-1', '--color-secondary-2', '--color-secondary-3', '--color-secondary-4',
+      '--color-secondary-5', '--color-secondary-6', '--color-secondary-7', '--color-secondary-8',
+      '--color-secondary-9', '--color-secondary-10', '--color-secondary-11', '--color-secondary-12',
+      '--color-secondary-fg',
+    ],
+  },
+  {
+    name: 'Surface',
+    tokens: [
+      '--color-surface-1',
+      '--color-surface-2',
+      '--color-surface-3',
+      '--color-surface-4',
+      '--color-surface-fg',
+      '--color-surface-fg-muted',
+      '--color-surface-fg-subtle',
+      '--color-surface-border',
+    ],
   },
   {
     name: 'Text',
@@ -116,12 +145,14 @@ const semanticGroups = [
       '--color-text-placeholder',
       '--color-text-error',
       '--color-text-success',
+      '--color-text-warning',
+      '--color-text-info',
       '--color-text-link',
       '--color-text-brand',
     ],
   },
   {
-    name: 'Backgrounds',
+    name: 'Backgrounds (legacy aliases)',
     tokens: [
       '--color-background',
       '--color-layer-01',
@@ -129,6 +160,17 @@ const semanticGroups = [
       '--color-layer-03',
       '--color-field',
       '--color-field-hover',
+    ],
+  },
+  {
+    name: 'Interactive (legacy aliases)',
+    tokens: [
+      '--color-interactive',
+      '--color-interactive-hover',
+      '--color-interactive-active',
+      '--color-interactive-selected',
+      '--color-interactive-disabled',
+      '--color-interactive-subtle',
     ],
   },
   {
@@ -143,16 +185,12 @@ const semanticGroups = [
     ],
   },
   {
-    name: 'Status',
+    name: 'Status (step subsets)',
     tokens: [
-      '--color-success',
-      '--color-success-surface',
-      '--color-error',
-      '--color-error-surface',
-      '--color-warning',
-      '--color-warning-surface',
-      '--color-info',
-      '--color-info-surface',
+      '--color-error-3', '--color-error-7', '--color-error-9', '--color-error-11',
+      '--color-success-3', '--color-success-7', '--color-success-9', '--color-success-11',
+      '--color-warning-3', '--color-warning-7', '--color-warning-9', '--color-warning-11',
+      '--color-info-3', '--color-info-7', '--color-info-9', '--color-info-11',
     ],
   },
   {

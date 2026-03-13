@@ -8,10 +8,12 @@ import { FoundationsShowcase } from './FoundationsShowcase'
 Shilp Sutra uses a **three-tier token architecture** that separates raw values from intent-based decisions, making theming and dark mode straightforward.
 
 ```
-Tier 1: Primitives    Raw palette values (never used directly in components)
+Tier 1: Primitives    OKLCH 12-step palettes (1=app bg → 12=hi-contrast text)
 Tier 2: Semantic       Intent-based tokens (what components consume)
 Tier 3: Tailwind       Utility classes mapped from semantic tokens
 ```
+
+All colors use **OKLCH** for perceptual uniformity. Each palette has **12 functional steps** — every step has a defined purpose (background, border, solid, text). Dark mode is algorithmically derived with separate lightness/chroma curves.
 
 Toggle dark mode with the toolbar switcher to see all tokens respond automatically.
 

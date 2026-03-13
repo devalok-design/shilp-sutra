@@ -114,13 +114,12 @@ describe('Toast — rendering', () => {
     await waitFor(() => {
       expect(screen.getByText('Saving...')).toBeVisible()
     })
-    // Loading icon should have animate-spin class
-    const status = screen.getAllByRole('status').find((el) =>
-      el.textContent?.includes('Saving...'),
+    // Loading toast should contain a Spinner (role="status" with "Loading..." sr text)
+    const spinners = screen.getAllByRole('status')
+    const spinner = spinners.find((el) =>
+      el.textContent?.includes('Loading...'),
     )
-    expect(status).toBeDefined()
-    const spinner = status!.querySelector('.animate-spin')
-    expect(spinner).toBeInTheDocument()
+    expect(spinner).toBeDefined()
   })
 
   it('renders toast with title and description', async () => {

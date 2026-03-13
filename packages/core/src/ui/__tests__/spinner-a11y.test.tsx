@@ -22,6 +22,18 @@ describe('Spinner accessibility', () => {
     expect(results).toHaveNoViolations()
   })
 
+  it('should have no violations in success state', async () => {
+    const { container } = render(<Spinner state="success" />)
+    const results = await axe(container)
+    expect(results).toHaveNoViolations()
+  })
+
+  it('should have no violations in error state', async () => {
+    const { container } = render(<Spinner state="error" />)
+    const results = await axe(container)
+    expect(results).toHaveNoViolations()
+  })
+
   it('should have role="status" for assistive technology', async () => {
     const { container } = render(<Spinner />)
     const statusEl = container.querySelector('[role="status"]')

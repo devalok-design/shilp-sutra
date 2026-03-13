@@ -20,6 +20,7 @@ import {
 } from '../ui/tooltip'
 import { IconBell, IconChecks, IconInbox, IconX } from '@tabler/icons-react'
 import { cn } from '../ui/lib/utils'
+import { Spinner } from '../ui/spinner'
 
 // -----------------------------------------------------------------------
 // Types
@@ -453,7 +454,7 @@ const NotificationCenter = React.forwardRef<HTMLButtonElement, NotificationCente
 
           {isLoading && (
             <div className="flex items-center justify-center py-ds-05">
-              <div className="h-ico-md w-ico-md animate-spin rounded-ds-full border-2 border-border border-t-interactive" />
+              <Spinner />
             </div>
           )}
         </div>

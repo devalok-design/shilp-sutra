@@ -1,8 +1,9 @@
 'use client'
 
 import * as React from 'react'
-import { IconUpload, IconPaperclip, IconLoader2 } from '@tabler/icons-react'
+import { IconUpload, IconPaperclip } from '@tabler/icons-react'
 import { cn } from './lib/utils'
+import { Spinner } from './spinner'
 
 /**
  * Props for FileUpload — a drag-and-drop file picker with client-side validation (type + size),
@@ -247,7 +248,7 @@ const FileUpload = React.forwardRef<HTMLDivElement, FileUploadProps>(
             )}
           >
             {uploading ? (
-              <IconLoader2 className="h-ico-sm w-ico-sm animate-spin motion-reduce:animate-none" />
+              <Spinner size="sm" />
             ) : (
               <IconPaperclip className="h-ico-sm w-ico-sm" />
             )}
@@ -316,7 +317,7 @@ const FileUpload = React.forwardRef<HTMLDivElement, FileUploadProps>(
           )}
         >
           {uploading ? (
-            <IconLoader2 className="h-ds-sm w-ds-sm animate-spin motion-reduce:animate-none text-icon-secondary" />
+            <Spinner size="md" />
           ) : (
             <IconUpload className="h-ds-sm w-ds-sm text-icon-secondary" />
           )}

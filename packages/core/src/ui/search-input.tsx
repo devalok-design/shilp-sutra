@@ -1,8 +1,9 @@
 'use client'
 
-import { IconSearch, IconX, IconLoader2 } from '@tabler/icons-react'
+import { IconSearch, IconX } from '@tabler/icons-react'
 import * as React from 'react'
 import { cn } from './lib/utils'
+import { Spinner } from './spinner'
 
 type SearchInputSize = 'sm' | 'md' | 'lg'
 
@@ -81,10 +82,9 @@ const SearchInput = React.forwardRef<HTMLInputElement, SearchInputProps>(
           {...props}
         />
         {loading ? (
-          <IconLoader2
-            className="absolute right-[0.75rem] h-ico-md w-ico-md text-text-secondary animate-spin motion-reduce:animate-none pointer-events-none"
-            aria-hidden="true"
-          />
+          <span className="absolute right-[0.75rem] pointer-events-none" aria-hidden="true">
+            <Spinner size="sm" />
+          </span>
         ) : hasValue && onClear ? (
           <button
             type="button"

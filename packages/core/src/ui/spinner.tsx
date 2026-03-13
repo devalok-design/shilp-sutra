@@ -1,4 +1,11 @@
+'use client'
+
 import * as React from 'react'
+import {
+  motion,
+  AnimatePresence,
+  useReducedMotion,
+} from 'framer-motion'
 import { cn } from './lib/utils'
 
 const sizeClasses = {
@@ -7,67 +14,266 @@ const sizeClasses = {
   lg: 'h-ico-lg w-ico-lg',
 } as const
 
+/** Arc stroke width per size */
+const arcStrokeWidths = { sm: 3, md: 3, lg: 4 } as const
+
+/** Thinner icon stroke for checkmark / X — feels lighter and more refined */
+const iconStrokeWidths = { sm: 1.8, md: 2, lg: 2.5 } as const
+
 /**
- * Props for Spinner — an animated loading indicator rendered as an SVG circle with a `role="status"`
- * wrapper and a visually-hidden "Loading..." text for screen readers.
+ * Props for Spinner — an animated arc spinner with optional success (checkmark) and error (X)
+ * state transitions, powered by Framer Motion.
  *
- * **Sizes:** `sm` (icon-sm) | `md` (icon-md, default) | `lg` (icon-lg)
+ * **Sizes:** `sm` (16px) | `md` (20px, default) | `lg` (24px)
  *
- * **Accessibility:** The spinner renders `<span role="status"><svg>...</svg><span className="sr-only">Loading...</span></span>`.
- * You don't need to add `aria-label` — the sr-only text is already present.
+ * **States:**
+ * - `spinning` (default): Rotating arc with Material Design-style pulse
+ * - `success`: Arc completes to filled green circle, white checkmark draws in
+ * - `error`: Arc completes to filled red circle, white X draws in
  *
- * **Note:** `<Button>` has built-in `loading` + `loadingPosition` — prefer that over composing manually.
- *
- * @example
- * // Inline loading indicator next to button text:
- * <div className="flex items-center gap-ds-03">
- *   <Spinner size="sm" />
- *   <span>Saving...</span>
- * </div>
+ * **Accessibility:** `role="status"` with sr-only text that updates per state.
+ * Respects `prefers-reduced-motion` — shows static icons with opacity crossfades.
  *
  * @example
- * // Full-page centered loading state:
- * <div className="flex h-screen items-center justify-center">
- *   <Spinner size="lg" />
- * </div>
- *
- * @example
- * // Spinner inside a card while data loads:
- * <Card className="flex items-center justify-center min-h-[120px]">
- *   <Spinner />
- * </Card>
- * // These are just a few ways — feel free to combine props creatively!
+ * <Spinner />                                           // basic arc spinner
+ * <Spinner size="sm" />                                 // small
+ * <Spinner state="success" />                           // arc -> checkmark
+ * <Spinner state="error" />                             // arc -> X mark
+ * <Spinner delay={150} />                               // no render until 150ms
+ * <Spinner state="success" onComplete={handleDone} />   // callback after animation
  */
-export interface SpinnerProps extends React.SVGAttributes<SVGSVGElement> {
+export interface SpinnerProps {
+  /** sm | md | lg — maps to icon size tokens. Default: 'md' */
   size?: 'sm' | 'md' | 'lg'
+  /** Current state. Default: 'spinning' */
+  state?: 'spinning' | 'success' | 'error'
+  /** Delay in ms before showing (avoids flicker). Default: 0 */
+  delay?: number
+  /** Fires when success/error transition animation completes */
+  onComplete?: () => void
+  className?: string
 }
 
-const Spinner = React.forwardRef<SVGSVGElement, SpinnerProps>(
-  ({ size = 'md', className, ...props }, ref) => {
+const RADIUS = 10
+const CIRCUMFERENCE = 2 * Math.PI * RADIUS
+
+const srText: Record<string, string> = {
+  spinning: 'Loading...',
+  success: 'Complete',
+  error: 'Error',
+}
+
+const stateColors: Record<string, string> = {
+  spinning: 'var(--color-interactive)',
+  success: 'var(--color-success-text)',
+  error: 'var(--color-error-text)',
+}
+
+const CHECKMARK_D = 'M7 12.5l3 3 7-7'
+const X_MARK_D = 'M8 8l8 8M16 8l-8 8'
+
+const Spinner = React.forwardRef<HTMLSpanElement, SpinnerProps>(
+  ({ size = 'md', state = 'spinning', delay = 0, onComplete, className }, ref) => {
+    const prefersReduced = useReducedMotion()
+    const [visible, setVisible] = React.useState(delay === 0)
+
+    React.useEffect(() => {
+      if (delay <= 0) {
+        setVisible(true)
+        return
+      }
+      const timer = setTimeout(() => setVisible(true), delay)
+      return () => clearTimeout(timer)
+    }, [delay])
+
+    if (!visible) return null
+
+    const arcSw = arcStrokeWidths[size]
+    const iconSw = iconStrokeWidths[size]
+    const isSpinning = state === 'spinning'
+    const isFinal = state === 'success' || state === 'error'
+    const color = stateColors[state]
+
+    // ── Sequence timing (seconds) ──────────────────────────────────
+    // Phase 1: Arc stops rotating + completes to full circle   0 → 0.4
+    // Phase 2: Circle fills in with color                      0.3 → 0.55
+    // Phase 3: White icon draws in                             0.5 → 0.85
+    const ARC_COMPLETE = 0.4
+    const FILL_DELAY = 0.3
+    const FILL_DURATION = 0.25
+    const ICON_DELAY = 0.5
+    const ICON_DURATION = 0.35
+
     return (
-      <span role="status">
+      <span ref={ref} role="status" className={cn('inline-flex', className)}>
         <svg
-          ref={ref}
-          className={cn('animate-spin motion-reduce:animate-none', sizeClasses[size], className)}
+          className={sizeClasses[size]}
           viewBox="0 0 24 24"
           fill="none"
           xmlns="http://www.w3.org/2000/svg"
-          {...props}
         >
+          {/* Background track circle — always visible as base layer */}
           <circle
             cx="12"
             cy="12"
-            r="10"
+            r={RADIUS}
             stroke="var(--color-border-subtle)"
-            strokeWidth="4"
+            strokeWidth={arcSw}
             fill="none"
           />
-          <path
-            d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4z"
-            fill="var(--color-interactive)"
-          />
+
+          {/* Animated arc — spins when loading, completes to full circle on state change */}
+          {prefersReduced ? (
+            <circle
+              cx="12"
+              cy="12"
+              r={RADIUS}
+              stroke={color}
+              strokeWidth={arcSw}
+              fill="none"
+              strokeLinecap="round"
+              strokeDasharray={
+                isSpinning
+                  ? `${CIRCUMFERENCE * 0.75} ${CIRCUMFERENCE * 0.25}`
+                  : `${CIRCUMFERENCE} 0`
+              }
+              style={{
+                transformOrigin: 'center',
+                transform: isSpinning ? 'rotate(-90deg)' : undefined,
+              }}
+            />
+          ) : (
+            <motion.circle
+              cx="12"
+              cy="12"
+              r={RADIUS}
+              stroke={color}
+              strokeWidth={arcSw}
+              fill="none"
+              strokeLinecap="round"
+              style={{ transformOrigin: 'center' }}
+              animate={
+                isSpinning
+                  ? {
+                      rotate: [0, 360],
+                      strokeDasharray: [
+                        `${CIRCUMFERENCE * 0.1} ${CIRCUMFERENCE * 0.9}`,
+                        `${CIRCUMFERENCE * 0.75} ${CIRCUMFERENCE * 0.25}`,
+                        `${CIRCUMFERENCE * 0.1} ${CIRCUMFERENCE * 0.9}`,
+                      ],
+                    }
+                  : {
+                      rotate: 0,
+                      strokeDasharray: `${CIRCUMFERENCE} 0`,
+                    }
+              }
+              transition={
+                isSpinning
+                  ? {
+                      rotate: { duration: 1, repeat: Infinity, ease: 'linear' },
+                      strokeDasharray: { duration: 1.5, repeat: Infinity, ease: 'easeInOut' },
+                    }
+                  : {
+                      rotate: { duration: 0.3, ease: 'easeOut' },
+                      strokeDasharray: { duration: ARC_COMPLETE, ease: 'easeInOut' },
+                    }
+              }
+            />
+          )}
+
+          {/* Filled circle — fades in after arc completes, covers track */}
+          <AnimatePresence>
+            {isFinal &&
+              (prefersReduced ? (
+                <circle
+                  key="fill-static"
+                  cx="12"
+                  cy="12"
+                  r={RADIUS + arcSw / 2}
+                  fill={color}
+                  stroke="none"
+                />
+              ) : (
+                <motion.circle
+                  key="fill"
+                  cx="12"
+                  cy="12"
+                  r={RADIUS + arcSw / 2}
+                  fill={color}
+                  stroke="none"
+                  initial={{ opacity: 0 }}
+                  animate={{ opacity: 1 }}
+                  transition={{ duration: FILL_DURATION, delay: FILL_DELAY, ease: 'easeOut' }}
+                  style={{ transformOrigin: 'center' }}
+                />
+              ))}
+          </AnimatePresence>
+
+          {/* White checkmark — draws in after circle fills */}
+          <AnimatePresence>
+            {state === 'success' &&
+              (prefersReduced ? (
+                <path
+                  key="check-static"
+                  d={CHECKMARK_D}
+                  stroke="white"
+                  strokeWidth={iconSw}
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  fill="none"
+                />
+              ) : (
+                <motion.path
+                  key="check"
+                  d={CHECKMARK_D}
+                  stroke="white"
+                  strokeWidth={iconSw}
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  fill="none"
+                  initial={{ pathLength: 0, opacity: 0 }}
+                  animate={{ pathLength: 1, opacity: 1 }}
+                  transition={{
+                    pathLength: { duration: ICON_DURATION, ease: 'easeOut', delay: ICON_DELAY },
+                    opacity: { duration: 0.1, delay: ICON_DELAY },
+                  }}
+                  onAnimationComplete={() => onComplete?.()}
+                />
+              ))}
+          </AnimatePresence>
+
+          {/* White X mark — draws in after circle fills */}
+          <AnimatePresence>
+            {state === 'error' &&
+              (prefersReduced ? (
+                <path
+                  key="x-static"
+                  d={X_MARK_D}
+                  stroke="white"
+                  strokeWidth={iconSw}
+                  strokeLinecap="round"
+                  fill="none"
+                />
+              ) : (
+                <motion.path
+                  key="x"
+                  d={X_MARK_D}
+                  stroke="white"
+                  strokeWidth={iconSw}
+                  strokeLinecap="round"
+                  fill="none"
+                  initial={{ pathLength: 0, opacity: 0 }}
+                  animate={{ pathLength: 1, opacity: 1 }}
+                  transition={{
+                    pathLength: { duration: ICON_DURATION, ease: 'easeOut', delay: ICON_DELAY },
+                    opacity: { duration: 0.1, delay: ICON_DELAY },
+                  }}
+                  onAnimationComplete={() => onComplete?.()}
+                />
+              ))}
+          </AnimatePresence>
         </svg>
-        <span className="sr-only">Loading...</span>
+        <span className="sr-only">{srText[state]}</span>
       </span>
     )
   },

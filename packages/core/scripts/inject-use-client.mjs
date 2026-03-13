@@ -17,7 +17,7 @@ const SERVER_SAFE = new Set([
   // ui – pure-markup components
   'ui/text',
   'ui/skeleton',
-  'ui/spinner',
+  // ui/spinner — removed from server-safe list (v2 uses framer-motion hooks)
   'ui/stack',
   'ui/container',
   'ui/table',

@@ -27,6 +27,7 @@ import { Switch } from '../ui/switch'
 import { Card, CardHeader, CardTitle, CardContent } from '../ui/card'
 import { IconPlus, IconTrash, IconBell, IconMessage } from '@tabler/icons-react'
 import { cn } from '../ui/lib/utils'
+import { Spinner } from '../ui/spinner'
 
 // -----------------------------------------------------------------------
 // Types
@@ -166,7 +167,7 @@ const NotificationPreferences = React.forwardRef<HTMLDivElement, NotificationPre
         <CardContent>
           {isLoading ? (
             <div className="flex items-center justify-center py-ds-07">
-              <div className="h-ico-md w-ico-md animate-spin rounded-ds-full border-2 border-border border-t-interactive" />
+              <Spinner />
             </div>
           ) : preferences.length === 0 ? (
             <div className="py-ds-07 text-center">

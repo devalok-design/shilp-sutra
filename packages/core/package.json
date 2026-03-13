@@ -659,6 +659,7 @@
   },
   "packageManager": "pnpm@10.0.0",
   "dependencies": {
+    "framer-motion": "^12.36.0",
     "sonner": "^2.0.7"
   }
 }

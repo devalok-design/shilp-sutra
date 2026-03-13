@@ -266,3 +266,23 @@ export const ManyPills: Story = {
     )
   },
 }
+
+// ---------------------------------------------------------------------------
+// 8. AccessibleLabel — custom aria-label for the trigger button
+// ---------------------------------------------------------------------------
+export const AccessibleLabel: Story = {
+  render: () => {
+    const [value, setValue] = React.useState('')
+    return (
+      <div className="w-[320px]">
+        <Combobox
+          options={teamMembers}
+          value={value}
+          onValueChange={(v) => setValue(v as string)}
+          placeholder="Pick a reviewer..."
+          accessibleLabel="Select a code reviewer for this pull request"
+        />
+      </div>
+    )
+  },
+}

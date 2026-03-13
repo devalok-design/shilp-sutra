@@ -72,3 +72,11 @@ export const LongResponse: Story = {
     text: "Here's your daily brief for today:\n\n**Attendance**: 14 of 16 team members have marked attendance. Priya and Rahul are still pending.\n\n**Tasks**: 8 tasks were updated yesterday:\n- 3 moved to **Done**\n- 2 moved to **In Progress**\n- 3 new tasks were created\n\n**Break Requests**: 1 pending approval from Amit Kumar (sick leave, 2 days).\n\n**Upcoming**: Sprint review meeting at 3:00 PM today. All task owners should prepare a brief status update.\n\nWould you like me to send attendance reminders or approve the break request?",
   },
 }
+
+export const Completed: Story = {
+  name: 'Completed (Static)',
+  args: {
+    text: "Task **DS-142** has been moved to Done. The sprint burndown is on track — 3 tasks remaining.",
+    isComplete: true,
+  },
+}

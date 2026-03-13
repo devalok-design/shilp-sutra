@@ -349,7 +349,7 @@ export const ColumnHeader = React.forwardRef<HTMLDivElement, ColumnHeaderProps>(
       {/* Quick-add task form — animated expand/collapse */}
       <div
         className={cn(
-          'grid transition-[grid-template-rows,opacity] duration-moderate-02 ease-expressive-entrance',
+          'grid transition-[grid-template-rows,opacity] duration-200 ease-out',
           isAdding ? 'grid-rows-[1fr] opacity-100' : 'grid-rows-[0fr] opacity-0',
         )}
       >

@@ -5,6 +5,7 @@ import { useDroppable } from '@dnd-kit/core'
 import { SortableContext, useSortable, verticalListSortingStrategy } from '@dnd-kit/sortable'
 import { CSS } from '@dnd-kit/utilities'
 import { cn } from '@/ui/lib/utils'
+import { MotionStagger, MotionStaggerItem } from '@/motion/primitives'
 import { useBoardContext } from './board-context'
 import { ColumnHeader } from './column-header'
 import { ColumnEmpty } from './column-empty'
@@ -82,31 +83,30 @@ export const BoardColumn = React.forwardRef<HTMLDivElement, BoardColumnProps>(
         <div
           ref={setDroppableRef}
           className={cn(
-            'no-scrollbar flex flex-1 flex-col gap-ds-02 overflow-y-auto px-ds-03 pt-2.5 pb-ds-03 transition-colors duration-fast-02 ease-productive-standard',
+            'no-scrollbar flex flex-1 flex-col gap-ds-02 overflow-y-auto px-ds-03 pt-2.5 pb-ds-03 transition-colors duration-100 ease-out',
             isOver && 'bg-interactive-subtle/30',
           )}
         >
           <SortableContext items={taskIds} strategy={verticalListSortingStrategy}>
-            {column.tasks.map((task, taskIdx) => (
-              <React.Fragment key={task.id}>
-                {/* Ghost silhouette at this position */}
-                {dragPreview && dragPreview.index === taskIdx && (
-                  <TaskGhost />
-                )}
-                <div
-                  className="animate-slide-up delay-stagger"
-                  style={{ '--stagger-index': taskIdx } as React.CSSProperties}
-                >
-                  <TaskContextMenu taskId={task.id}>
-                    {viewMode === 'compact' ? (
-                      <TaskCardCompact task={task} />
-                    ) : (
-                      <TaskCard task={task} />
-                    )}
-                  </TaskContextMenu>
-                </div>
-              </React.Fragment>
-            ))}
+            <MotionStagger className="contents">
+              {column.tasks.map((task, taskIdx) => (
+                <React.Fragment key={task.id}>
+                  {/* Ghost silhouette at this position */}
+                  {dragPreview && dragPreview.index === taskIdx && (
+                    <TaskGhost />
+                  )}
+                  <MotionStaggerItem>
+                    <TaskContextMenu taskId={task.id}>
+                      {viewMode === 'compact' ? (
+                        <TaskCardCompact task={task} />
+                      ) : (
+                        <TaskCard task={task} />
+                      )}
+                    </TaskContextMenu>
+                  </MotionStaggerItem>
+                </React.Fragment>
+              ))}
+            </MotionStagger>
             {/* Ghost at end of list */}
             {dragPreview && dragPreview.index >= column.tasks.length && (
               <TaskGhost />

@@ -55,7 +55,7 @@ const PRIORITY_ICON_MAP = {
 // ============================================================
 
 const taskCardVariants = cva(
-  'group/card relative rounded-ds-lg border border-transparent bg-layer-01 pl-3 pr-ds-03 py-ds-03 transition-all duration-fast-02 ease-productive-standard cursor-pointer',
+  'group/card relative rounded-ds-lg border border-transparent bg-layer-01 pl-3 pr-ds-03 py-ds-03 transition-all duration-100 ease-out cursor-pointer',
   {
     variants: {
       state: {
@@ -348,7 +348,7 @@ TaskCard.displayName = 'TaskCard'
 // ============================================================
 
 const taskCardCompactVariants = cva(
-  'group/card flex items-center gap-ds-02 py-2 pl-3 pr-ds-03 border border-transparent rounded-ds-lg bg-layer-01 transition-all duration-fast-02 ease-productive-standard cursor-pointer hover:bg-layer-active hover:shadow-02 hover:-translate-y-px',
+  'group/card flex items-center gap-ds-02 py-2 pl-3 pr-ds-03 border border-transparent rounded-ds-lg bg-layer-01 transition-all duration-100 ease-out cursor-pointer hover:bg-layer-active hover:shadow-02 hover:-translate-y-px',
   {
     variants: {
       selected: {

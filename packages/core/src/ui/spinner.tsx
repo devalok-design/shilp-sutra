@@ -72,8 +72,8 @@ const srText: Record<string, string> = {
 
 const stateColors: Record<string, string> = {
   spinning: 'var(--color-interactive)',
-  success: 'var(--color-success-text)',
-  error: 'var(--color-error-text)',
+  success: 'var(--color-success-9)',
+  error: 'var(--color-error-9)',
 }
 
 // Filled variant — icons fit inside the filled circle

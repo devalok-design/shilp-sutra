@@ -278,8 +278,6 @@ export { Stepper, Step, type StepperProps, type StepProps } from './stepper'
 // Interactive Tags
 export { Chip, chipVariants, type ChipProps } from './chip'
 
-// Transitions
-export { Fade, Collapse, Grow, Slide, type TransitionProps } from './transitions'
 
 // Typography
 export { Text, textVariants, type TextProps, type TextVariant } from './text'

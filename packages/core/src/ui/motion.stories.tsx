@@ -33,7 +33,7 @@ import { Progress } from './progress'
 import { Spinner } from './spinner'
 import { Badge } from './badge'
 import { Label } from './label'
-import { Fade, Collapse, Grow, Slide } from './transitions'
+import { MotionFade, MotionCollapse, MotionScale, MotionSlide } from '../motion/primitives'
 
 const meta: Meta = {
   title: 'Foundations/Motion',
@@ -638,11 +638,11 @@ export const SlowAndContinuous: StoryObj = {
 }
 
 /* ===========================================================================
- * 7. TRANSITION UTILITIES — Fade, Collapse, Grow, Slide
+ * 7. MOTION PRIMITIVES — MotionFade, MotionCollapse, MotionScale, MotionSlide
  * ========================================================================= */
 
 /**
- * The transition utility components from transitions.tsx, demonstrated with
+ * The Framer Motion-powered transition primitives, demonstrated with
  * interactive toggles. These are building blocks for custom animations.
  */
 export const TransitionUtilities: StoryObj = {
@@ -655,88 +655,88 @@ export const TransitionUtilities: StoryObj = {
     return (
       <div className="space-y-ds-08 max-w-2xl">
         <div>
-          <SectionLabel sub="Composable transition primitives">
-            Transition Utilities
+          <SectionLabel sub="Framer Motion transition primitives">
+            Motion Primitives
           </SectionLabel>
           <p className="text-ds-sm text-text-secondary mb-ds-06">
-            Low-level transition wrappers that respect reduced-motion preferences.
-            Use these for custom reveal animations in your layouts.
+            Physics-based transition wrappers powered by Framer Motion.
+            Automatically respect reduced-motion preferences via MotionProvider.
           </p>
         </div>
 
-        {/* Fade */}
+        {/* MotionFade */}
         <div className="space-y-ds-03">
           <div className="flex items-center gap-ds-03">
-            <h4 className="text-ds-md font-medium text-text-primary">Fade</h4>
+            <h4 className="text-ds-md font-medium text-text-primary">MotionFade</h4>
             <Button variant="ghost" size="sm" onClick={() => setFadeOpen((p) => !p)}>
               Toggle
             </Button>
-            <TokenBadge>ease-productive-entrance</TokenBadge>
+            <TokenBadge>tweens.fade</TokenBadge>
           </div>
-          <Fade open={fadeOpen}>
+          <MotionFade show={fadeOpen}>
             <div className="rounded-ds-md bg-layer-02 border border-border p-ds-05">
               <p className="text-ds-sm text-text-secondary">
-                This content fades in and out with <code className="font-mono">opacity</code> transition.
+                This content fades in and out with <code className="font-mono">opacity</code> via AnimatePresence.
               </p>
             </div>
-          </Fade>
+          </MotionFade>
         </div>
 
-        {/* Collapse */}
+        {/* MotionCollapse */}
         <div className="space-y-ds-03">
           <div className="flex items-center gap-ds-03">
-            <h4 className="text-ds-md font-medium text-text-primary">Collapse</h4>
+            <h4 className="text-ds-md font-medium text-text-primary">MotionCollapse</h4>
             <Button variant="ghost" size="sm" onClick={() => setCollapseOpen((p) => !p)}>
               Toggle
             </Button>
-            <TokenBadge>ease-productive-standard</TokenBadge>
+            <TokenBadge>springs.snappy</TokenBadge>
           </div>
-          <Collapse open={collapseOpen}>
+          <MotionCollapse show={collapseOpen}>
             <div className="rounded-ds-md bg-layer-02 border border-border p-ds-05">
               <p className="text-ds-sm text-text-secondary">
-                Height-based collapse/expand. Great for accordion-like reveals
+                Height-based collapse/expand with spring physics. Great for accordion-like reveals
                 where content pushes below it.
               </p>
             </div>
-          </Collapse>
+          </MotionCollapse>
         </div>
 
-        {/* Grow */}
+        {/* MotionScale */}
         <div className="space-y-ds-03">
           <div className="flex items-center gap-ds-03">
-            <h4 className="text-ds-md font-medium text-text-primary">Grow</h4>
+            <h4 className="text-ds-md font-medium text-text-primary">MotionScale</h4>
             <Button variant="ghost" size="sm" onClick={() => setGrowOpen((p) => !p)}>
               Toggle
             </Button>
-            <TokenBadge>ease-productive-entrance</TokenBadge>
+            <TokenBadge>springs.gentle</TokenBadge>
           </div>
-          <Grow open={growOpen}>
+          <MotionScale show={growOpen}>
             <div className="rounded-ds-md bg-layer-02 border border-border p-ds-05 inline-block">
               <p className="text-ds-sm text-text-secondary">
-                Scales from 0 to 1 with opacity. Good for popover-like reveals.
+                Scales from 0.96 to 1 with opacity. Good for popover-like reveals.
               </p>
             </div>
-          </Grow>
+          </MotionScale>
         </div>
 
-        {/* Slide */}
+        {/* MotionSlide */}
         <div className="space-y-ds-03">
           <div className="flex items-center gap-ds-03">
-            <h4 className="text-ds-md font-medium text-text-primary">Slide</h4>
+            <h4 className="text-ds-md font-medium text-text-primary">MotionSlide</h4>
             <Button variant="ghost" size="sm" onClick={() => setSlideOpen((p) => !p)}>
               Toggle
             </Button>
-            <TokenBadge>ease-productive-entrance</TokenBadge>
+            <TokenBadge>springs.gentle</TokenBadge>
           </div>
           <div className="overflow-hidden rounded-ds-md border border-border">
-            <Slide open={slideOpen} direction="up">
+            <MotionSlide show={slideOpen} direction="bottom">
               <div className="bg-layer-02 p-ds-05">
                 <p className="text-ds-sm text-text-secondary">
-                  Slides in from a direction (up/down/left/right). Used for bottom sheets,
+                  Slides in from a direction (top/bottom/left/right). Used for bottom sheets,
                   slide-in panels, and notification bars.
                 </p>
               </div>
-            </Slide>
+            </MotionSlide>
           </div>
         </div>
       </div>

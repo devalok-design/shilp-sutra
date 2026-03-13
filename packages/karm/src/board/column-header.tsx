@@ -255,7 +255,7 @@ export const ColumnHeader = React.forwardRef<HTMLDivElement, ColumnHeaderProps>(
             className={cn(
               'flex-shrink-0 text-ds-xs tabular-nums',
               isWipExceeded
-                ? 'font-semibold text-error'
+                ? 'font-semibold text-error-11'
                 : 'text-surface-fg-subtle',
             )}
             aria-label={`WIP limit: ${wipLimit}${isWipExceeded ? ', exceeded' : ''}`}
@@ -271,7 +271,7 @@ export const ColumnHeader = React.forwardRef<HTMLDivElement, ColumnHeaderProps>(
           className={cn(
             'h-ds-xs w-ds-xs flex-shrink-0 opacity-0 transition-opacity',
             'group-hover/header:opacity-100 focus:opacity-100',
-            'hover:bg-accent-2 hover:text-interactive',
+            'hover:bg-accent-2 hover:text-accent-11',
           )}
           aria-label="Add task"
           title="Add task"
@@ -324,7 +324,7 @@ export const ColumnHeader = React.forwardRef<HTMLDivElement, ColumnHeaderProps>(
             </DropdownMenuItem>
             <DropdownMenuSeparator />
             <DropdownMenuItem
-              className="text-error focus:text-error"
+              className="text-error-11 focus:text-error-11"
               onClick={() => onColumnDelete(column.id)}
             >
               <IconTrash className="mr-ds-03 h-ico-sm w-ico-sm" />
@@ -377,7 +377,7 @@ export const ColumnHeader = React.forwardRef<HTMLDivElement, ColumnHeaderProps>(
                     className={cn(
                       'flex items-center justify-center h-6 w-6 rounded-ds-md transition-colors',
                       newOwnerId
-                        ? 'text-interactive bg-accent-2'
+                        ? 'text-accent-11 bg-accent-2'
                         : 'text-surface-fg-subtle hover:text-surface-fg hover:bg-surface-4',
                     )}
                     title={newOwnerId
@@ -421,7 +421,7 @@ export const ColumnHeader = React.forwardRef<HTMLDivElement, ColumnHeaderProps>(
                 className={cn(
                   'relative flex items-center justify-center h-6 w-6 rounded-ds-md cursor-pointer transition-colors',
                   newDueDate
-                    ? 'text-interactive bg-accent-2'
+                    ? 'text-accent-11 bg-accent-2'
                     : 'text-surface-fg-subtle hover:text-surface-fg hover:bg-surface-4',
                 )}
                 title={newDueDate ? `Due: ${newDueDate}` : 'Set due date'}
@@ -447,7 +447,7 @@ export const ColumnHeader = React.forwardRef<HTMLDivElement, ColumnHeaderProps>(
                 className={cn(
                   'flex items-center justify-center h-6 w-6 rounded-ds-md transition-colors',
                   newTitle.trim()
-                    ? 'text-success hover:bg-success-3'
+                    ? 'text-success-11 hover:bg-success-3'
                     : 'text-text-quaternary cursor-not-allowed',
                 )}
                 title="Confirm add task"

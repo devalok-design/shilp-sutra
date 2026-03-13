@@ -33,7 +33,7 @@ export const AllTypes: Story = {
     <div className="flex flex-col gap-ds-06">
       {(['icon', 'wordmark', 'wordmark-icon'] as const).map((type) => (
         <div key={type} className="flex items-center gap-ds-04">
-          <span className="w-32 text-ds-sm font-mono text-text-secondary">
+          <span className="w-32 text-ds-sm font-mono text-surface-fg-muted">
             {type}
           </span>
           <KarmLogo type={type} color="brand" size="lg" />
@@ -59,7 +59,7 @@ export const Sizes: Story = {
       {(['xs', 'sm', 'md', 'lg', 'xl'] as const).map((size) => (
         <div key={size} className="flex flex-col items-center gap-ds-02">
           <KarmLogo type="wordmark-icon" color="brand" size={size} />
-          <span className="text-ds-xs text-text-secondary">{size}</span>
+          <span className="text-ds-xs text-surface-fg-muted">{size}</span>
         </div>
       ))}
     </div>
@@ -70,13 +70,13 @@ export const ColorVariants: Story = {
   name: 'Color Variants',
   render: () => (
     <div className="flex flex-col gap-ds-06">
-      <div className="flex items-center gap-ds-04 p-ds-04 rounded-ds-md bg-layer-01">
+      <div className="flex items-center gap-ds-04 p-ds-04 rounded-ds-md bg-surface-1">
         <KarmLogo type="icon" color="brand" size="lg" />
-        <span className="text-ds-sm text-text-secondary">Brand (#D33163)</span>
+        <span className="text-ds-sm text-surface-fg-muted">Brand (#D33163)</span>
       </div>
-      <div className="flex items-center gap-ds-04 p-ds-04 rounded-ds-md bg-layer-01">
+      <div className="flex items-center gap-ds-04 p-ds-04 rounded-ds-md bg-surface-1">
         <KarmLogo type="icon" color="black" size="lg" />
-        <span className="text-ds-sm text-text-secondary">Black</span>
+        <span className="text-ds-sm text-surface-fg-muted">Black</span>
       </div>
       <div className="flex items-center gap-ds-04 p-ds-04 rounded-ds-md bg-layer-inverse">
         <KarmLogo type="icon" color="white" size="lg" />

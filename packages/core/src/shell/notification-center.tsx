@@ -131,9 +131,9 @@ function getDateGroup(dateStr: string): string {
 }
 
 const TIER_COLORS: Record<string, string> = {
-  INFO: 'bg-info',
-  IMPORTANT: 'bg-warning',
-  CRITICAL: 'bg-error',
+  INFO: 'bg-info-9',
+  IMPORTANT: 'bg-warning-9',
+  CRITICAL: 'bg-error-9',
 }
 
 // -----------------------------------------------------------------------
@@ -180,7 +180,7 @@ function NotificationItem({
       className={cn(
         'group relative flex w-full cursor-pointer items-start gap-ds-04 px-ds-05 py-ds-04 text-left transition-colors duration-fast-02',
         'hover:bg-surface-2',
-        !notification.isRead && 'bg-accent-9/[0.03]',
+        !notification.isRead && 'bg-accent-1',
       )}
     >
       {/* Tier dot — doubles as read/unread marker */}
@@ -189,7 +189,7 @@ function NotificationItem({
           className={cn(
             'h-[8px] w-[8px] rounded-ds-full transition-opacity duration-fast-02',
             TIER_COLORS[notification.tier] || TIER_COLORS.INFO,
-            notification.isRead ? 'opacity-[0.2]' : 'opacity-100',
+            notification.isRead ? 'opacity-20' : 'opacity-100',
           )}
         />
       </div>
@@ -242,7 +242,7 @@ function NotificationItem({
                   action.variant === 'primary'
                     ? 'bg-accent-9 text-accent-fg hover:bg-accent-10'
                     : action.variant === 'danger'
-                      ? 'text-error hover:bg-error/10'
+                      ? 'text-error-11 hover:bg-error-3'
                       : 'text-surface-fg-muted hover:bg-surface-3',
                 )}
               >
@@ -386,7 +386,7 @@ const NotificationCenter = React.forwardRef<HTMLButtonElement, NotificationCente
               Notifications
             </h3>
             {unreadCount > 0 && (
-              <span className="flex h-5 min-w-5 items-center justify-center rounded-ds-full bg-accent-9/10 px-ds-02b text-ds-sm font-semibold text-interactive">
+              <span className="flex h-5 min-w-5 items-center justify-center rounded-ds-full bg-accent-2 px-ds-02b text-ds-sm font-semibold text-accent-11">
                 {unreadCount}
               </span>
             )}
@@ -396,7 +396,7 @@ const NotificationCenter = React.forwardRef<HTMLButtonElement, NotificationCente
               <button
                 type="button"
                 onClick={onMarkAllRead}
-                className="flex items-center gap-ds-02 text-ds-sm text-surface-fg-subtle transition-colors hover:text-interactive"
+                className="flex items-center gap-ds-02 text-ds-sm text-surface-fg-subtle transition-colors hover:text-accent-11"
               >
                 <IconChecks className="h-ico-sm w-ico-sm" />
                 Mark all read

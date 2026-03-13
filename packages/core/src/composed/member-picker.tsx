@@ -108,7 +108,7 @@ const MemberPicker = React.forwardRef<HTMLDivElement, MemberPickerProps>(
                     {member.name}
                   </span>
                   {isSelected && (
-                    <IconCheck className="h-ico-sm w-ico-sm shrink-0 text-interactive" />
+                    <IconCheck className="h-ico-sm w-ico-sm shrink-0 text-accent-11" />
                   )}
                 </button>
               )

@@ -201,7 +201,7 @@ export const BoardToolbar = React.forwardRef<HTMLDivElement, BoardToolbarProps>(
                 variant="ghost"
                 size="sm"
                 className={cn(
-                  filters.priorities.length > 0 && 'text-interactive',
+                  filters.priorities.length > 0 && 'text-accent-11',
                 )}
                 title="Filter by priority"
               >
@@ -235,7 +235,7 @@ export const BoardToolbar = React.forwardRef<HTMLDivElement, BoardToolbarProps>(
                   variant="ghost"
                   size="sm"
                   className={cn(
-                    filters.assignees.length > 0 && 'text-interactive',
+                    filters.assignees.length > 0 && 'text-accent-11',
                   )}
                   title="Filter by assignee"
                 >
@@ -270,7 +270,7 @@ export const BoardToolbar = React.forwardRef<HTMLDivElement, BoardToolbarProps>(
                   variant="ghost"
                   size="sm"
                   className={cn(
-                    filters.labels.length > 0 && 'text-interactive',
+                    filters.labels.length > 0 && 'text-accent-11',
                   )}
                   title="Filter by label"
                 >
@@ -303,7 +303,7 @@ export const BoardToolbar = React.forwardRef<HTMLDivElement, BoardToolbarProps>(
                 variant="ghost"
                 size="sm"
                 className={cn(
-                  filters.dueDateRange && filters.dueDateRange !== 'none' && 'text-interactive',
+                  filters.dueDateRange && filters.dueDateRange !== 'none' && 'text-accent-11',
                 )}
                 title="Filter by due date"
               >
@@ -338,7 +338,7 @@ export const BoardToolbar = React.forwardRef<HTMLDivElement, BoardToolbarProps>(
           title="Highlight my tasks"
           aria-label="Highlight my tasks"
           aria-pressed={highlightMyTasks}
-          className={cn(highlightMyTasks && 'text-interactive')}
+          className={cn(highlightMyTasks && 'text-accent-11')}
         >
           <IconUser className="h-ico-sm w-ico-sm" />
         </Button>
@@ -373,7 +373,7 @@ export const BoardToolbar = React.forwardRef<HTMLDivElement, BoardToolbarProps>(
           ))}
           <button
             onClick={clearFilters}
-            className="text-ds-xs text-surface-fg-subtle hover:text-interactive transition-colors"
+            className="text-ds-xs text-surface-fg-subtle hover:text-accent-11 transition-colors"
             aria-label="Clear all filters"
           >
             Clear all

@@ -57,7 +57,7 @@ describe('Alert', () => {
     it('applies filled variant for info', () => {
       const { container } = render(<Alert variant="filled" color="info">Filled</Alert>)
       const el = container.firstChild as HTMLElement
-      expect(el.className).toContain('bg-info')
+      expect(el.className).toContain('bg-info-9')
       expect(el.className).toContain('text-accent-fg')
       expect(el.className).toContain('border-transparent')
     })
@@ -65,21 +65,21 @@ describe('Alert', () => {
     it('applies filled variant for success', () => {
       const { container } = render(<Alert variant="filled" color="success">Filled</Alert>)
       const el = container.firstChild as HTMLElement
-      expect(el.className).toContain('bg-success')
+      expect(el.className).toContain('bg-success-9')
       expect(el.className).toContain('text-accent-fg')
     })
 
     it('applies filled variant for warning', () => {
       const { container } = render(<Alert variant="filled" color="warning">Filled</Alert>)
       const el = container.firstChild as HTMLElement
-      expect(el.className).toContain('bg-warning')
+      expect(el.className).toContain('bg-warning-9')
       expect(el.className).toContain('text-accent-fg')
     })
 
     it('applies filled variant for error', () => {
       const { container } = render(<Alert variant="filled" color="error">Filled</Alert>)
       const el = container.firstChild as HTMLElement
-      expect(el.className).toContain('bg-error')
+      expect(el.className).toContain('bg-error-9')
       expect(el.className).toContain('text-accent-fg')
     })
 
@@ -141,7 +141,7 @@ describe('Alert', () => {
 
     it('returns filled error classes', () => {
       const classes = alertVariants({ variant: 'filled', color: 'error' })
-      expect(classes).toContain('bg-error')
+      expect(classes).toContain('bg-error-9')
       expect(classes).toContain('text-accent-fg')
     })
 

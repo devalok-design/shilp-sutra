@@ -70,7 +70,7 @@ export const ChatInput = React.forwardRef<HTMLDivElement, ChatInputProps>(
           aria-label="Type a message"
           disabled={isStreaming}
           rows={1}
-          className="text-ds-md no-scrollbar max-h-[160px] min-h-ds-xs flex-1 resize-none bg-transparent text-surface-fg placeholder:text-surface-fg-subtle focus:outline-none disabled:opacity-[0.38]"
+          className="text-ds-md no-scrollbar max-h-[160px] min-h-ds-xs flex-1 resize-none bg-transparent text-surface-fg placeholder:text-surface-fg-subtle focus:outline-none disabled:opacity-action-disabled"
         />
         {isStreaming ? (
           <Button variant="solid" color="error" size="icon-sm" className="h-ds-sm w-ds-sm shrink-0 rounded-ds-lg" onClick={onCancel} aria-label="Stop generating">

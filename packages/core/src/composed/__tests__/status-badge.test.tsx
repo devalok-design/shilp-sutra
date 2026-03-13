@@ -97,7 +97,7 @@ describe('StatusBadge', () => {
   it('should render correct dot color for color prop', () => {
     const { container } = render(<StatusBadge color="info" />)
     const dot = container.querySelector('[aria-hidden="true"]')!
-    expect(dot.className).toContain('bg-info')
+    expect(dot.className).toContain('bg-info-9')
   })
 
   it('should render neutral color variant correctly', () => {

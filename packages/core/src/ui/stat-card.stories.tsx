@@ -272,7 +272,7 @@ export const WithFooter: Story = {
     value: '1,842',
     delta: { value: '+8%', direction: 'up' },
     footer: (
-      <a href="#" className="text-interactive hover:underline">
+      <a href="#" className="text-accent-11 hover:underline">
         View details &rarr;
       </a>
     ),

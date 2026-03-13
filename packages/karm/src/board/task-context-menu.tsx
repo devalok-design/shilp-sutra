@@ -187,7 +187,7 @@ export const TaskContextMenu = React.forwardRef<HTMLSpanElement, TaskContextMenu
 
         {/* Delete */}
         <ContextMenuItem
-          className="text-error focus:text-error"
+          className="text-error-11 focus:text-error-11"
           onSelect={() => onQuickDelete(taskId)}
         >
           <IconTrash className="mr-ds-03 h-ico-sm w-ico-sm" />

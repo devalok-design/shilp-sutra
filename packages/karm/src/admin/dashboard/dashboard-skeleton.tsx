@@ -35,7 +35,7 @@ export const DashboardSkeleton = React.forwardRef<HTMLDivElement, React.HTMLAttr
             <div className="hidden md:flex">
               <Skeleton className="h-ds-sm w-[180px] rounded-ds-md" />
             </div>
-            <div className="flex w-[200px] items-center justify-between overflow-clip rounded-ds-full border border-layer-03">
+            <div className="flex w-[200px] items-center justify-between overflow-clip rounded-ds-full border border-surface-border">
               <div className="flex h-ds-sm w-[100px] items-center justify-center rounded-r-none bg-surface-3">
                 <Skeleton className="h-[20px] w-[40px] rounded-r-none bg-surface-3" />
               </div>

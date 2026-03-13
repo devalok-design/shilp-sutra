@@ -13,7 +13,7 @@ const InputOTP = React.forwardRef<
   <OTPInput
     ref={ref}
     containerClassName={cn(
-      'flex items-center gap-ds-03 has-[:disabled]:opacity-[0.38]',
+      'flex items-center gap-ds-03 has-[:disabled]:opacity-action-disabled',
       containerClassName,
     )}
     className={cn('disabled:cursor-not-allowed', className)}
@@ -50,7 +50,7 @@ const InputOTPSlot = React.forwardRef<
       {char}
       {hasFakeCaret && (
         <div className="pointer-events-none absolute inset-0 flex items-center justify-center">
-          <div className="animate-caret-blink h-[16px] w-px bg-text-primary duration-slow-02" />
+          <div className="animate-caret-blink h-[16px] w-px bg-surface-fg duration-slow-02" />
         </div>
       )}
     </div>

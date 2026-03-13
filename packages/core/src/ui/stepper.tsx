@@ -78,7 +78,7 @@ const Stepper = React.forwardRef<HTMLDivElement, StepperProps>(
                       : 'h-ds-01 min-w-ds-05',
                     index < activeStep
                       ? 'bg-accent-9'
-                      : 'bg-border',
+                      : 'bg-surface-border',
                   )}
                   aria-hidden="true"
                 />

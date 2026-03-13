@@ -55,7 +55,7 @@ export const MessageList = React.forwardRef<HTMLDivElement, MessageListProps>(
     return (
       <div ref={forwardedRef} className={cn("flex flex-1 items-center justify-center", className)} {...props}>
         <div className="flex flex-col items-center gap-ds-03">
-          <div className="h-ds-xs w-ds-xs animate-spin rounded-ds-full border-2 border-text-secondary border-t-transparent" />
+          <div className="h-ds-xs w-ds-xs animate-spin rounded-ds-full border-2 border-surface-border border-t-transparent" />
           <p className="text-ds-sm text-surface-fg-subtle">
             Loading messages...
           </p>
@@ -159,9 +159,9 @@ export const MessageList = React.forwardRef<HTMLDivElement, MessageListProps>(
               </div>
               <div className="rounded-ds-2xl rounded-bl-ds-sm bg-surface-3 px-ds-04 py-ds-03">
                 <div className="flex items-center gap-ds-02b py-ds-02">
-                  <div className="h-2 w-2 animate-bounce rounded-ds-full bg-text-placeholder [animation-delay:0ms]" />
-                  <div className="h-2 w-2 animate-bounce rounded-ds-full bg-text-placeholder [animation-delay:150ms]" />
-                  <div className="h-2 w-2 animate-bounce rounded-ds-full bg-text-placeholder [animation-delay:300ms]" />
+                  <div className="h-2 w-2 animate-bounce rounded-ds-full bg-surface-fg-subtle [animation-delay:0ms]" />
+                  <div className="h-2 w-2 animate-bounce rounded-ds-full bg-surface-fg-subtle [animation-delay:150ms]" />
+                  <div className="h-2 w-2 animate-bounce rounded-ds-full bg-surface-fg-subtle [animation-delay:300ms]" />
                 </div>
               </div>
             </div>

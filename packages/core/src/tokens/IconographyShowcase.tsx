@@ -189,7 +189,7 @@ function ColorDemo() {
     { label: 'text-secondary', css: 'var(--color-surface-fg-muted)' },
     { label: 'text-placeholder', css: 'var(--color-surface-fg-subtle)' },
     { label: 'interactive', css: 'var(--color-accent-9)' },
-    { label: 'text-error', css: 'var(--color-error-11)' },
+    { label: 'text-error-11', css: 'var(--color-error-11)' },
     { label: 'success', css: 'var(--color-success-9)' },
     { label: 'warning', css: 'var(--color-warning-9)' },
   ]

@@ -61,7 +61,7 @@ function getErrorConfig(status?: number) {
         message:
           'The page you are looking for does not exist or has been moved.',
         bgClass: 'bg-accent-2',
-        iconClass: 'text-interactive',
+        iconClass: 'text-accent-11',
       }
     case 403:
       return {
@@ -70,7 +70,7 @@ function getErrorConfig(status?: number) {
         message:
           'You do not have permission to view this page. Contact your administrator if you believe this is a mistake.',
         bgClass: 'bg-warning-3',
-        iconClass: 'text-warning',
+        iconClass: 'text-warning-11',
       }
     case 500:
       return {
@@ -79,7 +79,7 @@ function getErrorConfig(status?: number) {
         message:
           'Something went wrong on our end. Please try again later or contact support if the issue persists.',
         bgClass: 'bg-error-3',
-        iconClass: 'text-error',
+        iconClass: 'text-error-11',
       }
     default:
       return {
@@ -88,7 +88,7 @@ function getErrorConfig(status?: number) {
         message:
           'An unexpected error occurred. Please try again or go back to the home page.',
         bgClass: 'bg-accent-2',
-        iconClass: 'text-interactive',
+        iconClass: 'text-accent-11',
       }
   }
 }

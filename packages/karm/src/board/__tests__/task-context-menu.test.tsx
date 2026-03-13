@@ -104,7 +104,7 @@ describe('TaskContextMenu', () => {
     await openMenu(user)
 
     const deleteItem = screen.getByText('Delete').closest('[role="menuitem"]')
-    expect(deleteItem).toHaveClass('text-error')
+    expect(deleteItem).toHaveClass('text-error-11')
   })
 
   it('renders priority submenu trigger', async () => {

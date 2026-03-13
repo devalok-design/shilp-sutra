@@ -47,9 +47,9 @@ function formatRelativeTime(dateStr: string): string {
 // ============================================================
 
 const DOT_COLORS = [
-  'bg-category-amber',
-  'bg-category-teal',
-  'bg-category-cyan',
+  'bg-category-amber-9',
+  'bg-category-teal-9',
+  'bg-category-cyan-9',
   'bg-accent-9',
   'bg-accent-9',
 ]
@@ -114,7 +114,7 @@ const DailyBrief = React.forwardRef<HTMLDivElement, DailyBriefProps>(
             onClick={() => setCollapsed(!collapsed)}
             className="flex flex-1 items-center gap-ds-03 transition-colors hover:opacity-80"
           >
-            <IconSparkles className="h-ico-sm w-ico-sm text-interactive" />
+            <IconSparkles className="h-ico-sm w-ico-sm text-accent-11" />
             <span className="text-ds-base font-semibold text-surface-fg">
               {displayTitle}
             </span>
@@ -127,7 +127,7 @@ const DailyBrief = React.forwardRef<HTMLDivElement, DailyBriefProps>(
           </button>
         ) : (
           <div className="flex items-center gap-ds-03">
-            <IconSparkles className="h-ico-sm w-ico-sm text-interactive" />
+            <IconSparkles className="h-ico-sm w-ico-sm text-accent-11" />
             <span className="text-ds-base font-semibold text-surface-fg">
               {displayTitle}
             </span>
@@ -155,7 +155,7 @@ const DailyBrief = React.forwardRef<HTMLDivElement, DailyBriefProps>(
                 <div
                   className={cn('mt-ds-02b h-2 w-2 shrink-0 rounded-ds-full', DOT_COLORS[index % DOT_COLORS.length])}
                 />
-                <div className="text-ds-md text-surface-fg-muted [&_p]:mb-0 [&_strong]:font-semibold [&_code]:rounded [&_code]:bg-surface-3 [&_code]:px-1 [&_code]:py-ds-01 [&_code]:text-ds-sm [&_a]:text-interactive [&_a]:underline">
+                <div className="text-ds-md text-surface-fg-muted [&_p]:mb-0 [&_strong]:font-semibold [&_code]:rounded [&_code]:bg-surface-3 [&_code]:px-1 [&_code]:py-ds-01 [&_code]:text-ds-sm [&_a]:text-accent-11 [&_a]:underline">
                   <ReactMarkdown>{item}</ReactMarkdown>
                 </div>
               </div>

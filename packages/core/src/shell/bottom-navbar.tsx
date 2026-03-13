@@ -57,7 +57,7 @@ function NavBadge({ count }: { count: number }) {
     <span
       aria-label={`${count} notifications`}
       className={cn(
-        'absolute -right-1 -top-0.5 flex h-4 min-w-4 items-center justify-center rounded-full bg-error text-[10px] font-semibold leading-none text-accent-fg animate-in zoom-in-75',
+        'absolute -right-1 -top-0.5 flex h-4 min-w-4 items-center justify-center rounded-full bg-error-9 text-[10px] font-semibold leading-none text-accent-fg animate-in zoom-in-75',
         isMultiDigit ? 'px-0.5' : '',
       )}
     >
@@ -89,7 +89,7 @@ function BottomNavLink({
       className={cn(
         'flex h-16 max-w-[70px] flex-1 cursor-pointer flex-col items-center gap-ds-02 p-ds-02 pt-0 text-ds-sm active:animate-subtle-bounce',
         isActive
-          ? 'font-semibold text-interactive'
+          ? 'font-semibold text-accent-11'
           : 'text-surface-fg-subtle',
       )}
     >
@@ -186,7 +186,7 @@ const BottomNavbar = React.forwardRef<HTMLElement, BottomNavbarProps>(
                   className={cn(
                     'flex flex-col items-center gap-ds-02b rounded-ds-xl p-ds-04 text-ds-sm transition-colors',
                     isActive(item.href, item.exact)
-                      ? 'bg-surface-2 text-interactive'
+                      ? 'bg-surface-2 text-accent-11'
                       : 'text-surface-fg-subtle hover:bg-surface-2',
                   )}
                 >
@@ -229,7 +229,7 @@ const BottomNavbar = React.forwardRef<HTMLElement, BottomNavbarProps>(
             className={cn(
               'flex h-16 max-w-[70px] flex-1 cursor-pointer flex-col items-center gap-ds-02 p-ds-02 pt-0 text-ds-sm active:animate-subtle-bounce',
               showMore || isMoreActive
-                ? 'font-semibold text-interactive'
+                ? 'font-semibold text-accent-11'
                 : 'text-surface-fg-subtle',
             )}
           >

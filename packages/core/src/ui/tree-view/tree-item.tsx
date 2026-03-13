@@ -131,7 +131,7 @@ const TreeItem = React.forwardRef<HTMLLIElement, TreeItemProps>(
             'focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent-9',
             isSelected &&
               'bg-accent-3 text-accent-11',
-            disabled && 'opacity-[0.38] cursor-not-allowed pointer-events-none',
+            disabled && 'opacity-action-disabled cursor-not-allowed pointer-events-none',
             className,
           )}
         >

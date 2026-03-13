@@ -116,7 +116,7 @@ export const CorrectionList = React.forwardRef<HTMLDivElement, CorrectionListPro
                   <TooltipTrigger asChild>
                     <button
                       aria-label="Reject correction"
-                      className={cn('rounded-ds-full p-ds-03 text-surface-fg-subtle hover:text-surface-fg-muted', correction?.user?.id === currentUserId ? 'cursor-not-allowed opacity-[0.38]' : '')}
+                      className={cn('rounded-ds-full p-ds-03 text-surface-fg-subtle hover:text-surface-fg-muted', correction?.user?.id === currentUserId ? 'cursor-not-allowed opacity-action-disabled' : '')}
                       onClick={() =>
                         correction?.user?.id !==
                           currentUserId &&
@@ -147,7 +147,7 @@ export const CorrectionList = React.forwardRef<HTMLDivElement, CorrectionListPro
                   <TooltipTrigger asChild>
                     <button
                       aria-label="Approve correction"
-                      className={cn('rounded-ds-full p-ds-03', correction?.user?.id === currentUserId ? 'cursor-not-allowed opacity-[0.38]' : '')}
+                      className={cn('rounded-ds-full p-ds-03', correction?.user?.id === currentUserId ? 'cursor-not-allowed opacity-action-disabled' : '')}
                       onClick={() =>
                         correction?.user?.id !==
                           currentUserId &&

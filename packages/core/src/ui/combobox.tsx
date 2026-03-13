@@ -347,12 +347,12 @@ const Combobox = React.forwardRef<HTMLButtonElement, ComboboxProps>(
               'flex h-ds-md w-full items-center justify-between whitespace-nowrap rounded-ds-md border border-surface-border-strong bg-surface-3 px-ds-04 py-ds-03 text-ds-md',
               'transition-colors duration-fast-01',
               'focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent-9 focus-visible:ring-offset-2 focus-visible:border-accent-7',
-              'disabled:cursor-not-allowed disabled:opacity-[0.38]',
+              'disabled:cursor-not-allowed disabled:opacity-action-disabled',
               triggerClassName,
             )}
           >
             {renderTriggerContent()}
-            <IconChevronDown className={cn("ml-ds-02 h-ico-sm w-ico-sm shrink-0 opacity-[0.5] transition-transform duration-fast-01", open && 'rotate-180')} aria-hidden="true" />
+            <IconChevronDown className={cn("ml-ds-02 h-ico-sm w-ico-sm shrink-0 opacity-50 transition-transform duration-fast-01", open && 'rotate-180')} aria-hidden="true" />
           </button>
         </PopoverPrimitive.Trigger>
 
@@ -422,9 +422,9 @@ const Combobox = React.forwardRef<HTMLButtonElement, ComboboxProps>(
                         'transition-colors',
                         highlightedIndex === index &&
                           'bg-accent-2',
-                        selected && 'text-interactive',
+                        selected && 'text-accent-11',
                         option.disabled &&
-                          'pointer-events-none opacity-[0.38]',
+                          'pointer-events-none opacity-action-disabled',
                       )}
                       onClick={() => {
                         if (!option.disabled) {

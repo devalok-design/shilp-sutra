@@ -30,10 +30,10 @@ const alertVariants = cva(
       { variant: 'subtle', color: 'error', className: 'bg-error-3 border-error-7 text-error-11' },
       { variant: 'subtle', color: 'neutral', className: 'bg-surface-2 border-surface-border-strong text-surface-fg [&>svg]:text-surface-fg-muted' },
       // filled (solid bg, white text)
-      { variant: 'filled', color: 'info', className: 'bg-info text-accent-fg border-transparent [&>svg]:text-accent-fg' },
-      { variant: 'filled', color: 'success', className: 'bg-success text-accent-fg border-transparent [&>svg]:text-accent-fg' },
-      { variant: 'filled', color: 'warning', className: 'bg-warning text-accent-fg border-transparent [&>svg]:text-accent-fg' },
-      { variant: 'filled', color: 'error', className: 'bg-error text-accent-fg border-transparent [&>svg]:text-accent-fg' },
+      { variant: 'filled', color: 'info', className: 'bg-info-9 text-accent-fg border-transparent [&>svg]:text-accent-fg' },
+      { variant: 'filled', color: 'success', className: 'bg-success-9 text-accent-fg border-transparent [&>svg]:text-accent-fg' },
+      { variant: 'filled', color: 'warning', className: 'bg-warning-9 text-accent-fg border-transparent [&>svg]:text-accent-fg' },
+      { variant: 'filled', color: 'error', className: 'bg-error-9 text-accent-fg border-transparent [&>svg]:text-accent-fg' },
       { variant: 'filled', color: 'neutral', className: 'bg-surface-3 text-surface-fg border-transparent [&>svg]:text-surface-fg-muted' },
       // outline (transparent bg, colored border)
       { variant: 'outline', color: 'info', className: 'bg-transparent border-info-7 text-info-11' },
@@ -113,7 +113,7 @@ const Alert = React.forwardRef<HTMLDivElement, AlertProps>(
         <Icon className="mt-ds-01 h-ico-md w-ico-md shrink-0" aria-hidden="true" />
         <div className="flex-1 min-w-0">
           {title && <p className="text-ds-md font-semibold mb-ds-01">{title}</p>}
-          <div className="text-ds-md opacity-[0.9]">{children}</div>
+          <div className="text-ds-md opacity-90">{children}</div>
         </div>
         {onDismiss && (
           <button

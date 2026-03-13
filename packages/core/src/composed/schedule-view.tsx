@@ -48,11 +48,11 @@ const eventColorMap: Record<
   NonNullable<ScheduleEvent['color']>,
   string
 > = {
-  primary: 'bg-accent-2 border-accent-7 text-interactive',
-  success: 'bg-success-3 border-success text-success-11',
-  warning: 'bg-warning-3 border-warning text-warning-11',
-  error: 'bg-error-3 border-error text-error-11',
-  info: 'bg-info-3 border-info text-info-11',
+  primary: 'bg-accent-2 border-accent-7 text-accent-11',
+  success: 'bg-success-3 border-success-7 text-success-11',
+  warning: 'bg-warning-3 border-warning-7 text-warning-11',
+  error: 'bg-error-3 border-error-7 text-error-11',
+  info: 'bg-info-3 border-info-7 text-info-11',
   neutral: 'bg-surface-2 border-surface-border-strong text-surface-fg-muted',
 }
 
@@ -175,7 +175,7 @@ function DayColumn({
           className={cn(
             'text-center text-ds-sm font-semibold py-ds-02 border-b border-surface-border-strong',
             todayInView
-              ? 'text-interactive bg-accent-2'
+              ? 'text-accent-11 bg-accent-2'
               : 'text-surface-fg bg-surface-1',
           )}
         >
@@ -189,8 +189,8 @@ function DayColumn({
             key={i}
             type="button"
             className={cn(
-              'block w-full border-b border-surface-border-strong/50 hover:bg-surface-2/50 transition-colors',
-              i % 2 === 0 ? 'border-surface-border-strong' : 'border-surface-border-strong/30',
+              'block w-full border-b border-surface-border hover:bg-surface-2 transition-colors',
+              i % 2 === 0 ? 'border-surface-border-strong' : 'border-surface-3',
             )}
             style={{ height: `${100 / slotCount}%` }}
             onClick={() => onSlotClick?.(slot.start, slot.end)}
@@ -228,11 +228,11 @@ function DayColumn({
         {/* Current time indicator */}
         {nowIndicatorTop != null && (
           <div
-            className="absolute left-0 right-0 h-[2px] bg-error z-10 pointer-events-none"
+            className="absolute left-0 right-0 h-[2px] bg-error-9 z-10 pointer-events-none"
             style={{ top: `${nowIndicatorTop}%` }}
             aria-hidden="true"
           >
-            <span className="absolute -left-[5px] -top-[4px] h-[10px] w-[10px] rounded-ds-full bg-error" />
+            <span className="absolute -left-[5px] -top-[4px] h-[10px] w-[10px] rounded-ds-full bg-error-9" />
           </div>
         )}
       </div>

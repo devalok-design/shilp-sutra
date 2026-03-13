@@ -86,13 +86,13 @@ const segmentedControlItemVariants = cva(
       // Filled + SVG icon fill
       {
         variant: 'filled',
-        className: '[&_svg_path]:fill-icon-on-color',
+        className: '[&_svg_path]:fill-accent-fg',
       },
       // Filled + disabled SVG icon fill
       {
         variant: 'filled',
         isDisabled: true,
-        className: '[&_svg_path]:fill-icon-disabled',
+        className: '[&_svg_path]:fill-disabled',
       },
       // Medium size last-child padding flip
       {

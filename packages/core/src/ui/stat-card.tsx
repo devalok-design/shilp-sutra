@@ -80,11 +80,11 @@ export interface StatCardProps extends React.HTMLAttributes<HTMLDivElement> {
 }
 
 const accentBorderMap: Record<NonNullable<StatCardProps['accent']>, string> = {
-  default: 'border-l-interactive',
-  success: 'border-l-success',
-  warning: 'border-l-warning',
-  error: 'border-l-error',
-  info: 'border-l-info',
+  default: 'border-l-accent-9',
+  success: 'border-l-success-9',
+  warning: 'border-l-warning-9',
+  error: 'border-l-error-9',
+  info: 'border-l-info-9',
 }
 
 function buildSparklinePath(raw: number[], width: number, height: number): string {
@@ -168,7 +168,7 @@ function Sparkline({
 function ProgressBar({ progress, label }: { progress: number; label: string }) {
   const clamped = Math.max(0, Math.min(100, progress))
   const barColor =
-    clamped >= 90 ? 'bg-success' : clamped >= 70 ? 'bg-warning' : 'bg-accent-9'
+    clamped >= 90 ? 'bg-success-9' : clamped >= 70 ? 'bg-warning-9' : 'bg-accent-9'
 
   return (
     <div className="h-1 w-full rounded-ds-full bg-surface-2 mt-ds-04" role="progressbar" aria-label={`${label} progress`} aria-valuenow={clamped} aria-valuemin={0} aria-valuemax={100}>
@@ -237,17 +237,17 @@ const StatCard = React.forwardRef<HTMLDivElement, StatCardProps>(
 
     const deltaColour =
       delta?.direction === 'up'
-        ? 'text-success'
+        ? 'text-success-11'
         : delta?.direction === 'down'
-          ? 'text-error'
+          ? 'text-error-11'
           : 'text-surface-fg-muted'
 
     const sparklineColor =
       delta?.direction === 'up'
-        ? 'text-success'
+        ? 'text-success-11'
         : delta?.direction === 'down'
-          ? 'text-error'
-          : 'text-interactive'
+          ? 'text-error-11'
+          : 'text-accent-11'
 
     const cardContent = (
       <>

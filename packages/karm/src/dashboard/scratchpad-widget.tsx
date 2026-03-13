@@ -53,7 +53,7 @@ function ProgressRing({ count, max, allDone }: { count: number; max: number; all
           r={RING_RADIUS}
           fill="none"
           strokeWidth={RING_STROKE}
-          className="stroke-layer-02"
+          className="stroke-surface-2"
         />
         <circle
           cx={RING_SIZE / 2}
@@ -66,7 +66,7 @@ function ProgressRing({ count, max, allDone }: { count: number; max: number; all
           strokeDashoffset={offset}
           className={cn(
             'transition-all duration-300',
-            allDone ? 'stroke-success' : 'stroke-interactive',
+            allDone ? 'stroke-success-9' : 'stroke-accent-9',
           )}
         />
       </svg>

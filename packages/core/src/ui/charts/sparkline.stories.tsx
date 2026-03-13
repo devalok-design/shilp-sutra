@@ -53,7 +53,7 @@ export const InlineWithText: Story = {
     <div className="flex items-center gap-ds-04 text-ds-sm text-surface-fg">
       <span>Revenue</span>
       <Sparkline data={sparkData} color="chart-2" width={80} height={24} />
-      <span className="font-semibold text-success">+12%</span>
+      <span className="font-semibold text-success-11">+12%</span>
     </div>
   ),
 }

@@ -287,7 +287,7 @@ const CommandPalette = React.forwardRef<HTMLDivElement, CommandPaletteProps>(
                         <span
                           className={cn(
                             '[&>svg]:h-ico-sm [&>svg]:w-ico-sm shrink-0 transition-colors duration-fast-02',
-                            isActive ? 'text-interactive' : 'text-surface-fg-subtle',
+                            isActive ? 'text-accent-11' : 'text-surface-fg-subtle',
                           )}
                           aria-hidden="true"
                         >
@@ -305,7 +305,7 @@ const CommandPalette = React.forwardRef<HTMLDivElement, CommandPaletteProps>(
                       {item.shortcut && (
                         <kbd className={cn(
                           'shrink-0 rounded border border-surface-border-strong px-ds-02b py-ds-01 text-ds-xs font-medium transition-colors duration-fast-02',
-                          isActive ? 'bg-accent-9/10 text-interactive border-accent-7/30' : 'bg-surface-2 text-surface-fg-subtle',
+                          isActive ? 'bg-accent-2 text-accent-11 border-accent-6' : 'bg-surface-2 text-surface-fg-subtle',
                         )}>
                           {item.shortcut}
                         </kbd>

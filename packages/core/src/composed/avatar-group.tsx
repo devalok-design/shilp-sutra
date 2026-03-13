@@ -17,7 +17,7 @@ import {
 import { getInitials } from './lib/string-utils'
 
 const avatarSizeVariants = cva(
-  'shrink-0 overflow-hidden rounded-ds-full border-2 border-layer-01',
+  'shrink-0 overflow-hidden rounded-ds-full border-2 border-surface-1',
   {
     variants: {
       size: {
@@ -109,7 +109,7 @@ const AvatarGroup = React.forwardRef<HTMLDivElement, AvatarGroupProps>(
                   className={cn(
                     avatarSizeVariants({ size }),
                     overlapClass,
-                    'flex cursor-default items-center justify-center bg-accent-2 font-body font-semibold text-interactive',
+                    'flex cursor-default items-center justify-center bg-accent-2 font-body font-semibold text-accent-11',
                   )}
                   style={{ zIndex: 0 }}
                 >

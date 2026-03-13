@@ -59,7 +59,7 @@ export const markdownComponents = {
         href={safeHref}
         target="_blank"
         rel="noopener noreferrer"
-        className="text-interactive underline hover:text-interactive-hover"
+        className="text-accent-11 underline hover:text-accent-12"
         {...props}
       >
         {children}

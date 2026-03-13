@@ -151,7 +151,7 @@ export const Calendar = React.forwardRef<HTMLDivElement, CalendarProps>(
                 : 'pb-0 pt-0',
               'flex cursor-pointer flex-col items-center text-center',
               cal.activeTimeFrame === 'weekly' && cal.activeIndex === index && 'bg-surface-2',
-              day.isPadding && 'opacity-[0.5]',
+              day.isPadding && 'opacity-50',
             )}
             onClick={() => handleDayClick(index, day.fullDate)}
           >
@@ -181,7 +181,7 @@ export const Calendar = React.forwardRef<HTMLDivElement, CalendarProps>(
                 {day.date}
               </span>
               {hasCorrection && hasCorrection(day.fullDate) && (
-                <div className="absolute z-raised mt-ds-06 h-ds-02b w-ds-02b translate-y-[5px] rounded-ds-full bg-text-error"></div>
+                <div className="absolute z-raised mt-ds-06 h-ds-02b w-ds-02b translate-y-[5px] rounded-ds-full bg-error-9"></div>
               )}
             </div>
           </button>

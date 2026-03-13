@@ -106,7 +106,7 @@ export const BreakAdminHeader = React.forwardRef<HTMLDivElement, BreakAdminHeade
               Break Balance
             </p>
             <div className="flex items-end">
-              <p className="text-ds-5xl font-semibold mr-ds-02 text-interactive">
+              <p className="text-ds-5xl font-semibold mr-ds-02 text-accent-11">
                 {breakBalance?.remainingDays || 0}
               </p>
 
@@ -130,7 +130,7 @@ export const BreakAdminHeader = React.forwardRef<HTMLDivElement, BreakAdminHeade
                 />
               ) : (
                 <div className="flex h-ico-md w-ico-md items-center justify-center rounded-ds-full bg-surface-2">
-                  <span className="text-interactive">
+                  <span className="text-accent-11">
                     {filters.selectedAssociate.name.charAt(0)}
                   </span>
                 </div>
@@ -188,7 +188,7 @@ export const BreakAdminHeader = React.forwardRef<HTMLDivElement, BreakAdminHeade
                         />
                       ) : (
                         <div className="flex h-ds-xs w-ds-xs items-center justify-center rounded-ds-full bg-surface-3">
-                          <span className="text-ds-md text-interactive">
+                          <span className="text-ds-md text-accent-11">
                             {user.name.charAt(0)}
                           </span>
                         </div>

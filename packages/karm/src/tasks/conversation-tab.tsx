@@ -269,7 +269,7 @@ const ConversationTab = React.forwardRef<HTMLDivElement, ConversationTabProps>(
             type="button"
             onClick={handlePost}
             disabled={!editorContent.replace(/<[^>]*>/g, '').trim()}
-            className="inline-flex items-center gap-ds-02b rounded-ds-lg bg-accent-9 px-ds-04 py-ds-02b text-ds-sm font-semibold text-accent-fg transition-colors hover:bg-accent-10 disabled:opacity-[0.38] disabled:cursor-not-allowed"
+            className="inline-flex items-center gap-ds-02b rounded-ds-lg bg-accent-9 px-ds-04 py-ds-02b text-ds-sm font-semibold text-accent-fg transition-colors hover:bg-accent-10 disabled:opacity-action-disabled disabled:cursor-not-allowed"
           >
             <IconSend className="h-ico-sm w-ico-sm" stroke={2} />
             Comment

@@ -56,13 +56,13 @@ const ACTION_MAP: Record<string, ActionConfig> = {
   'task.created': {
     icon: IconPlus,
     color: 'text-success-11',
-    dotColor: 'bg-success',
+    dotColor: 'bg-success-9',
     getDescription: () => 'created this task',
   },
   'task.updated': {
     icon: IconEdit,
     color: 'text-category-slate-11',
-    dotColor: 'bg-category-slate',
+    dotColor: 'bg-category-slate-9',
     getDescription: (entry) => {
       const meta = entry.metadata
       if (meta?.field === 'title') return 'updated the title'
@@ -77,7 +77,7 @@ const ACTION_MAP: Record<string, ActionConfig> = {
   'task.moved': {
     icon: IconArrowRight,
     color: 'text-warning-11',
-    dotColor: 'bg-warning',
+    dotColor: 'bg-warning-9',
     getDescription: (entry) => {
       const meta = entry.metadata
       const from = meta?.fromColumn || 'unknown'
@@ -88,7 +88,7 @@ const ACTION_MAP: Record<string, ActionConfig> = {
   'task.assigned': {
     icon: IconUserPlus,
     color: 'text-category-cyan-11',
-    dotColor: 'bg-category-cyan',
+    dotColor: 'bg-category-cyan-9',
     getDescription: (entry) => {
       const meta = entry.metadata
       return `assigned ${meta?.assigneeName || 'a user'}`
@@ -105,14 +105,14 @@ const ACTION_MAP: Record<string, ActionConfig> = {
   },
   'task.commented': {
     icon: IconMessage,
-    color: 'text-interactive',
+    color: 'text-accent-11',
     dotColor: 'bg-accent-9',
     getDescription: () => 'added a comment',
   },
   'task.file_uploaded': {
     icon: IconPaperclip,
     color: 'text-category-indigo-11',
-    dotColor: 'bg-category-indigo',
+    dotColor: 'bg-category-indigo-9',
     getDescription: (entry) => {
       const meta = entry.metadata
       return `uploaded ${meta?.fileName || 'a file'}`
@@ -121,7 +121,7 @@ const ACTION_MAP: Record<string, ActionConfig> = {
   'task.review_requested': {
     icon: IconGitPullRequest,
     color: 'text-warning-11',
-    dotColor: 'bg-warning',
+    dotColor: 'bg-warning-9',
     getDescription: (entry) => {
       const meta = entry.metadata
       return `requested review from ${meta?.reviewerName || 'a reviewer'}`
@@ -130,7 +130,7 @@ const ACTION_MAP: Record<string, ActionConfig> = {
   'task.review_completed': {
     icon: IconCircleCheck,
     color: 'text-success-11',
-    dotColor: 'bg-success',
+    dotColor: 'bg-success-9',
     getDescription: (entry) => {
       const meta = entry.metadata
       return `${meta?.status || 'reviewed'} the task`
@@ -148,7 +148,7 @@ const ACTION_MAP: Record<string, ActionConfig> = {
   'task.priority_changed': {
     icon: IconFlag,
     color: 'text-error-11',
-    dotColor: 'bg-error',
+    dotColor: 'bg-error-9',
     getDescription: (entry) => {
       const meta = entry.metadata
       return `changed priority to ${meta?.priority || 'unknown'}`
@@ -157,13 +157,13 @@ const ACTION_MAP: Record<string, ActionConfig> = {
   'task.labels_changed': {
     icon: IconTag,
     color: 'text-category-amber-11',
-    dotColor: 'bg-category-amber',
+    dotColor: 'bg-category-amber-9',
     getDescription: () => 'updated labels',
   },
   'task.due_date_changed': {
     icon: IconCalendarEvent,
     color: 'text-warning-11',
-    dotColor: 'bg-warning',
+    dotColor: 'bg-warning-9',
     getDescription: (entry) => {
       const meta = entry.metadata
       if (meta?.dueDate) return `set due date to ${meta.dueDate}`
@@ -235,7 +235,7 @@ const ActivityTab = React.forwardRef<HTMLDivElement, ActivityTabProps>(
   return (
     <div ref={ref} className={cn('relative', className)} {...props}>
       {/* Timeline line */}
-      <div className="absolute left-[11px] top-2 bottom-2 w-px bg-border" />
+      <div className="absolute left-[11px] top-2 bottom-2 w-px bg-surface-border" />
 
       {/* Entries */}
       <div className="space-y-ds-05">

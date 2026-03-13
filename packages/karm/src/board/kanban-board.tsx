@@ -286,7 +286,7 @@ function BoardCanvas({ className }: { className?: string }) {
           <Button
             variant="ghost"
             onClick={onAddColumn}
-            className="h-ds-md w-[320px] justify-start gap-ds-03 rounded-ds-xl border border-dashed border-surface-border-strong/60 bg-surface-2 text-surface-fg-subtle hover:border-accent-7 hover:bg-accent-2/50 hover:text-interactive"
+            className="h-ds-md w-[320px] justify-start gap-ds-03 rounded-ds-xl border border-dashed border-surface-border bg-surface-2 text-surface-fg-subtle hover:border-accent-7 hover:bg-accent-2 hover:text-accent-11"
           >
             <IconPlus className="h-ico-sm w-ico-sm" />
             Add column

@@ -22,6 +22,6 @@ export function ColorScaleEditor({ scaleName, currentValues, defaults, onChangeS
                     const isOverridden = prop in currentValues;
                     return (_jsxs("div", { className: "group relative flex-1", children: [_jsx("button", { className: "w-full h-8 border-0 cursor-pointer", style: { backgroundColor: value }, title: `${prop}: ${value}`, onClick: () => {
                                     navigator.clipboard.writeText(value);
-                                } }), _jsx("span", { className: "absolute bottom-[-18px] left-1/2 -translate-x-1/2 text-[9px] text-surface-fg-subtle whitespace-nowrap", children: shade }), isOverridden && (_jsx("button", { onClick: () => onResetShade(prop), className: "absolute -top-1 -right-1 hidden group-hover:flex h-3 w-3 items-center justify-center rounded-full bg-error text-[8px] text-accent-fg", title: "Reset to default", children: "\u00D7" }))] }, shade));
+                                } }), _jsx("span", { className: "absolute bottom-[-18px] left-1/2 -translate-x-1/2 text-[9px] text-surface-fg-subtle whitespace-nowrap", children: shade }), isOverridden && (_jsx("button", { onClick: () => onResetShade(prop), className: "absolute -top-1 -right-1 hidden group-hover:flex h-3 w-3 items-center justify-center rounded-full bg-error-9 text-[8px] text-accent-fg", title: "Reset to default", children: "\u00D7" }))] }, shade));
                 }) })] }));
 }

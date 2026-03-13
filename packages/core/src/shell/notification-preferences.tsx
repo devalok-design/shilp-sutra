@@ -237,7 +237,7 @@ const NotificationPreferences = React.forwardRef<HTMLDivElement, NotificationPre
                     <button
                       type="button"
                       onClick={() => onDelete?.(pref.id)}
-                      className="shrink-0 rounded p-ds-02b text-surface-fg-subtle transition-colors hover:bg-surface-2 hover:text-error"
+                      className="shrink-0 rounded p-ds-02b text-surface-fg-subtle transition-colors hover:bg-surface-2 hover:text-error-11"
                     >
                       <IconTrash className="h-ico-sm w-ico-sm" />
                     </button>

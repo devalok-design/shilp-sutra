@@ -198,7 +198,7 @@ export const RenderDate = React.forwardRef<HTMLDivElement, RenderDateProps>(
 
     // Absent (not disabled, not today, not break)
     !state.disabled && !state.today && !state.isBreak && state.isAbsent &&
-      'bg-transparent text-error',
+      'bg-transparent text-error-11',
 
     // Present (not disabled, not today, not break, not absent)
     !state.disabled && !state.today && !state.isBreak && !state.isAbsent && state.isPresent &&
@@ -230,7 +230,7 @@ export const RenderDate = React.forwardRef<HTMLDivElement, RenderDateProps>(
 
     // Hover on absent (not today, not break)
     state.hover && !state.disabled && !state.today && !state.isBreak && state.isAbsent &&
-      'bg-surface-3 text-error',
+      'bg-surface-3 text-error-11',
 
     // ── Focus ──
     state.focus && !state.pressed && 'outline-2',
@@ -246,7 +246,7 @@ export const RenderDate = React.forwardRef<HTMLDivElement, RenderDateProps>(
     // ── DisabledState (visual-only disabled, different from functional disabled) ──
     state.disabledState && 'text-disabled',
     state.disabledState && state.today &&
-      'bg-text-disabled text-accent-fg',
+      'bg-disabled text-accent-fg',
   )
 
   return (
@@ -263,7 +263,7 @@ export const RenderDate = React.forwardRef<HTMLDivElement, RenderDateProps>(
       >
         {day.date}
         {state.isAbsent && (
-          <span className="absolute bottom-0 left-1/2 h-ds-02b w-ds-02b -translate-x-1/2 rounded-ds-full bg-error" />
+          <span className="absolute bottom-0 left-1/2 h-ds-02b w-ds-02b -translate-x-1/2 rounded-ds-full bg-error-9" />
         )}
       </div>
     </div>

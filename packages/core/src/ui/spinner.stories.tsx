@@ -195,7 +195,7 @@ function VariantComparisonDemo() {
           <span className="text-ds-xs text-surface-fg-muted">bare</span>
         </div>
         <div className="flex flex-col items-center gap-ds-02">
-          <span className="text-interactive">
+          <span className="text-accent-11">
             <Spinner size="lg" state={state} variant="bare" />
           </span>
           <span className="text-ds-xs text-surface-fg-muted">bare (pink parent)</span>

@@ -30,10 +30,10 @@ export const avatarVariants = cva(
 export type AvatarStatus = 'online' | 'offline' | 'busy' | 'away'
 
 const statusColorMap: Record<AvatarStatus, string> = {
-  online: 'bg-success',
+  online: 'bg-success-9',
   offline: 'bg-surface-3',
-  busy: 'bg-error',
-  away: 'bg-warning',
+  busy: 'bg-error-9',
+  away: 'bg-warning-9',
 }
 
 const statusLabelMap: Record<AvatarStatus, string> = {
@@ -111,7 +111,7 @@ const Avatar = React.forwardRef<
     {status && (
       <span
         className={cn(
-          'absolute bottom-0 right-0 rounded-ds-full ring-2 ring-layer-01',
+          'absolute bottom-0 right-0 rounded-ds-full ring-2 ring-surface-1',
           statusColorMap[status],
           statusDotSizeMap[size ?? 'md'],
         )}
@@ -142,7 +142,7 @@ const AvatarFallback = React.forwardRef<
   <AvatarPrimitive.Fallback
     ref={ref}
     className={cn(
-      "flex h-full w-full items-center justify-center rounded-ds-full bg-accent-2 text-interactive",
+      "flex h-full w-full items-center justify-center rounded-ds-full bg-accent-2 text-accent-11",
       className
     )}
     {...props}

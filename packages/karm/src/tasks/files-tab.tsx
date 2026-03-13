@@ -147,7 +147,7 @@ const FilesTab = React.forwardRef<HTMLDivElement, FilesTabProps>(
           className={cn(
             'rounded-ds-lg border-2 border-dashed transition-colors',
             dragOver
-              ? 'border-accent-7 bg-accent-9/5'
+              ? 'border-accent-7 bg-accent-1'
               : 'border-surface-border-strong',
           )}
         >
@@ -163,7 +163,7 @@ const FilesTab = React.forwardRef<HTMLDivElement, FilesTabProps>(
                 type="button"
                 onClick={() => fileInputRef.current?.click()}
                 disabled={isUploading}
-                className="text-ds-md font-medium text-interactive transition-colors hover:underline disabled:opacity-[0.38]"
+                className="text-ds-md font-medium text-accent-11 transition-colors hover:underline disabled:opacity-action-disabled"
               >
                 {isUploading ? 'Uploading...' : 'Click to upload'}
               </button>

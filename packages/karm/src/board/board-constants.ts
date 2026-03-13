@@ -4,13 +4,13 @@ import type { BoardFilters } from './board-types'
 export const COLUMN_WIDTH = 320
 
 export const COLUMN_ACCENT_COLORS = [
-  'bg-category-cyan',
-  'bg-category-amber',
-  'bg-category-teal',
-  'bg-category-indigo',
-  'bg-category-orange',
-  'bg-category-emerald',
-  'bg-category-slate',
+  'bg-category-cyan-9',
+  'bg-category-amber-9',
+  'bg-category-teal-9',
+  'bg-category-indigo-9',
+  'bg-category-orange-9',
+  'bg-category-emerald-9',
+  'bg-category-slate-9',
   'bg-accent-9',
 ] as const
 
@@ -23,9 +23,9 @@ export const PRIORITY_ICONS = {
 
 export const PRIORITY_COLORS = {
   LOW: 'text-surface-fg-subtle',
-  MEDIUM: 'text-warning',
-  HIGH: 'text-error',
-  URGENT: 'text-error',
+  MEDIUM: 'text-warning-11',
+  HIGH: 'text-error-11',
+  URGENT: 'text-error-11',
 } as const
 
 export const DEFAULT_FILTERS: BoardFilters = {

@@ -189,7 +189,7 @@ export const RadarChart = React.forwardRef<HTMLDivElement, RadarChartProps>(
                     y={y}
                     textAnchor={textAnchor}
                     dominantBaseline="central"
-                    className="fill-text-secondary text-ds-xs"
+                    className="fill-surface-fg-muted text-ds-xs"
                   >
                     {label}
                   </text>

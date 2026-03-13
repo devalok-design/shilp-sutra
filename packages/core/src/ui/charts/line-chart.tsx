@@ -171,7 +171,7 @@ export const LineChart = React.forwardRef<HTMLDivElement, LineChartProps>(
                             cy={cy}
                             r={dotSize}
                             fill={colors[seriesIdx]}
-                            className="transition-opacity hover:opacity-[0.8]"
+                            className="transition-opacity hover:opacity-80"
                           />
                         )
                       })}

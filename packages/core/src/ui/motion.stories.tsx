@@ -217,7 +217,7 @@ export const EasingPersonality: StoryObj = {
                       ? 'bg-accent-9'
                       : mode === 'expressive'
                         ? 'bg-brand-primary'
-                        : 'bg-warning',
+                        : 'bg-warning-9',
                   )}
                 />
                 <code className="text-ds-xs text-surface-fg-muted font-mono">{label}</code>
@@ -814,7 +814,7 @@ export const ScenarioFormSubmission: StoryObj = {
               <IconCheck className="h-ico-md w-ico-md text-success-11" />
               <div>
                 <p className="text-ds-sm font-medium text-success-11">Message sent successfully</p>
-                <p className="text-ds-xs text-success-11 opacity-[0.8]">We'll get back to you soon.</p>
+                <p className="text-ds-xs text-success-11 opacity-80">We'll get back to you soon.</p>
               </div>
             </div>
           </Fade>
@@ -945,7 +945,7 @@ export const ScenarioDashboardLoading: StoryObj = {
                   <Fade key={task.name} open={!loading}>
                     <div className="flex items-center gap-ds-04">
                       <div className="h-8 w-8 rounded-ds-full bg-accent-2 flex items-center justify-center">
-                        <IconCheck className="h-ico-sm w-ico-sm text-interactive" />
+                        <IconCheck className="h-ico-sm w-ico-sm text-accent-11" />
                       </div>
                       <div className="flex-1">
                         <p className="text-ds-sm text-surface-fg">{task.name}</p>

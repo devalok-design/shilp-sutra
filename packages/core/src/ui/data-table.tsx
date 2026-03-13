@@ -1018,7 +1018,7 @@ export function DataTable<TData, TValue>({
                 'h-ds-sm w-ds-sm flex items-center justify-center',
                 'rounded-ds-md border border-surface-border-strong',
                 'enabled:hover:bg-surface-2',
-                'disabled:opacity-[0.38] disabled:cursor-not-allowed',
+                'disabled:opacity-action-disabled disabled:cursor-not-allowed',
                 'transition-colors',
               )}
             >
@@ -1041,7 +1041,7 @@ export function DataTable<TData, TValue>({
                 'h-ds-sm w-ds-sm flex items-center justify-center',
                 'rounded-ds-md border border-surface-border-strong',
                 'enabled:hover:bg-surface-2',
-                'disabled:opacity-[0.38] disabled:cursor-not-allowed',
+                'disabled:opacity-action-disabled disabled:cursor-not-allowed',
                 'transition-colors',
               )}
             >
@@ -1066,7 +1066,7 @@ export function DataTable<TData, TValue>({
           <span className="text-ds-sm font-medium text-surface-fg whitespace-nowrap">
             {selectedRows.length} selected
           </span>
-          <div className="h-5 w-px bg-border" aria-hidden="true" />
+          <div className="h-5 w-px bg-surface-border" aria-hidden="true" />
           {bulkActions.map((action) => (
             <Button
               key={action.label}

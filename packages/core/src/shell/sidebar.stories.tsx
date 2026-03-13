@@ -275,7 +275,7 @@ export const StructuredFooter: Story = {
     navGroups: [mainNavGroup],
     footer: {
       slot: (
-        <a href="/changelog" className="text-ds-sm text-surface-fg-subtle hover:text-interactive">
+        <a href="/changelog" className="text-ds-sm text-surface-fg-subtle hover:text-accent-11">
           What&apos;s new in v2.4?
         </a>
       ),

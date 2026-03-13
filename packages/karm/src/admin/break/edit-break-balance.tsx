@@ -93,7 +93,7 @@ export const EditBreakBalance = React.forwardRef<HTMLDivElement, EditBreakBalanc
             <div className="flex flex-col items-center justify-start gap-ds-05">
               <p className="text-ds-md w-full text-left text-surface-fg-subtle">
                 Edit break balance conversion of <br className="mb-ds-02" />
-                <span className="font-semibold text-interactive">
+                <span className="font-semibold text-accent-11">
                   {selectedLeave?.user?.name}
                 </span>
               </p>

@@ -29,10 +29,10 @@ export interface ActivityFeedProps extends React.HTMLAttributes<HTMLDivElement> 
 }
 
 const dotColorMap = {
-  default: 'bg-text-placeholder',
-  success: 'bg-success',
-  warning: 'bg-warning',
-  error: 'bg-error',
+  default: 'bg-surface-fg-subtle',
+  success: 'bg-success-9',
+  warning: 'bg-warning-9',
+  error: 'bg-error-9',
   info: 'bg-accent-9',
 } as const
 
@@ -88,7 +88,7 @@ function ActivityEntry({
       {/* Dot */}
       <div
         className={cn(
-          'relative z-10 mt-1.5 h-2 w-2 shrink-0 rounded-ds-full ring-2 ring-surface',
+          'relative z-10 mt-1.5 h-2 w-2 shrink-0 rounded-ds-full ring-2 ring-surface-1',
           dotColorMap[color],
         )}
       />
@@ -208,7 +208,7 @@ const ActivityFeed = React.forwardRef<HTMLDivElement, ActivityFeedProps>(
     return (
       <div ref={ref} className={cn('relative', className)} {...props}>
         {/* Timeline line */}
-        <div className="absolute bottom-0 left-[3px] top-0 w-px bg-border" />
+        <div className="absolute bottom-0 left-[3px] top-0 w-px bg-surface-border" />
 
         {/* Items */}
         <div className={cn('relative flex flex-col', compact ? 'gap-1' : 'gap-3')}>

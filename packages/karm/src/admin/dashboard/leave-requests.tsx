@@ -197,7 +197,7 @@ export const LeaveRequests = React.forwardRef<HTMLDivElement, LeaveRequestsProps
                       <p className="text-ds-base text-surface-fg-subtle">
                         {formatDate(new Date(request.startDate))} to{' '}
                         {formatDate(new Date(request.endDate))}
-                        <span className="text-interactive-hover">
+                        <span className="text-accent-12">
                           {', '}
                           {request.numberOfDays} days
                         </span>
@@ -238,7 +238,7 @@ export const LeaveRequests = React.forwardRef<HTMLDivElement, LeaveRequestsProps
                             interaction.activeAction === 'rejectBreak' &&
                             'bg-error-3',
                           request?.user?.id === currentUserId &&
-                            'cursor-not-allowed opacity-[0.38]',
+                            'cursor-not-allowed opacity-action-disabled',
                           'max-md:flex max-md:w-full max-md:justify-center',
                         )}
                       >
@@ -290,7 +290,7 @@ export const LeaveRequests = React.forwardRef<HTMLDivElement, LeaveRequestsProps
                             interaction.activeAction === 'approveBreak' &&
                             'bg-success-3',
                           request?.user?.id === currentUserId &&
-                            'cursor-not-allowed opacity-[0.38]',
+                            'cursor-not-allowed opacity-action-disabled',
                           'max-md:flex max-md:w-full max-md:justify-center',
                         )}
                       >

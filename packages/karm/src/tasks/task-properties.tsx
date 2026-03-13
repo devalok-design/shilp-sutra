@@ -249,7 +249,7 @@ const TaskProperties = React.forwardRef<HTMLDivElement, TaskPropertiesProps>(
                     'flex w-full items-center gap-ds-03 rounded-ds-md px-ds-03 py-ds-02b text-left text-ds-md transition-colors',
                     'hover:bg-surface-3',
                     col.id === task.columnId
-                      ? 'text-interactive'
+                      ? 'text-accent-11'
                       : 'text-surface-fg',
                   )}
                 >
@@ -340,7 +340,7 @@ const TaskProperties = React.forwardRef<HTMLDivElement, TaskPropertiesProps>(
             >
               <button
                 type="button"
-                className="inline-flex h-ico-md w-ico-md items-center justify-center rounded-ds-full border border-dashed border-surface-border transition-colors hover:bg-surface-3 hover:border-text-placeholder"
+                className="inline-flex h-ico-md w-ico-md items-center justify-center rounded-ds-full border border-dashed border-surface-border transition-colors hover:bg-surface-3 hover:border-surface-border"
                 aria-label="Add assignee"
               >
                 <IconPlus className="h-3 w-3 text-surface-fg-subtle" />
@@ -427,7 +427,7 @@ const TaskProperties = React.forwardRef<HTMLDivElement, TaskPropertiesProps>(
           {task.labels.map((label) => (
             <span
               key={label}
-              className="inline-flex items-center gap-ds-02 rounded-ds-full bg-accent-9/10 px-ds-03 py-ds-01 text-ds-sm font-medium text-interactive"
+              className="inline-flex items-center gap-ds-02 rounded-ds-full bg-accent-2 px-ds-03 py-ds-01 text-ds-sm font-medium text-accent-11"
             >
               {label}
               {!readOnly && (
@@ -469,7 +469,7 @@ const TaskProperties = React.forwardRef<HTMLDivElement, TaskPropertiesProps>(
               <button
                 type="button"
                 onClick={() => setShowLabelInput(true)}
-                className="inline-flex h-ico-md w-ico-md items-center justify-center rounded-ds-full border border-dashed border-surface-border transition-colors hover:bg-surface-3 hover:border-text-placeholder"
+                className="inline-flex h-ico-md w-ico-md items-center justify-center rounded-ds-full border border-dashed border-surface-border transition-colors hover:bg-surface-3 hover:border-surface-border"
                 aria-label="Add label"
               >
                 <IconPlus className="h-3 w-3 text-surface-fg-subtle" />
@@ -501,7 +501,7 @@ const TaskProperties = React.forwardRef<HTMLDivElement, TaskPropertiesProps>(
               className={cn(
                 'h-ds-02b w-ds-02b rounded-ds-full',
                 task.visibility === 'EVERYONE'
-                  ? 'bg-success'
+                  ? 'bg-success-9'
                   : 'bg-disabled',
               )}
             />

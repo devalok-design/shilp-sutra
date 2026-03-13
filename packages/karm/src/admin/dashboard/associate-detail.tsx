@@ -106,11 +106,11 @@ function AttendanceStatus({
         Attendance status
       </p>
       <div className="mb-ds-04 flex w-full items-center justify-center gap-ds-03 rounded-ds-3xl border border-surface-border px-ds-05 py-ds-04 text-center">
-        <span className="font-semibold text-interactive">
+        <span className="font-semibold text-accent-11">
           {formattedStatus}
         </span>
         {formattedStatus === 'Absent' && (
-          <div className="w-px h-5 opacity-[0.5] bg-border-strong" />
+          <div className="w-px h-5 opacity-50 bg-surface-border-strong" />
         )}
         {!timeIn && status !== 'HOLIDAY' && status !== 'WEEKEND' && (
           <span className="text-ds-md text-surface-fg-subtle">
@@ -149,16 +149,16 @@ function AttendanceEditDialog({
       <DialogHeader>
         <div className="text-ds-md text-surface-fg-subtle">
           Edit attendance of{' '}
-          <span className="text-ds-md font-semibold text-interactive">
+          <span className="text-ds-md font-semibold text-accent-11">
             {selectedAssociate.name}
           </span>
         </div>
       </DialogHeader>
       <div className="flex flex-col items-center justify-start">
-        <div className="text-ds-lg mb-ds-05 text-interactive">
+        <div className="text-ds-lg mb-ds-05 text-accent-11">
           {format(new Date(selectedDate), "dd MMMM ''yy")}
         </div>
-        <div className="mb-ds-04 flex w-full items-center justify-center gap-ds-03 rounded-ds-3xl border border-surface-border px-ds-05 py-ds-04 text-center font-semibold text-interactive">
+        <div className="mb-ds-04 flex w-full items-center justify-center gap-ds-03 rounded-ds-3xl border border-surface-border px-ds-05 py-ds-04 text-center font-semibold text-accent-11">
           {selectedUserAttendance?.status === 'PRESENT'
             ? 'PRESENT '
             : 'ABSENT'}
@@ -317,7 +317,7 @@ export const AssociateDetail = React.forwardRef<HTMLDivElement, AssociateDetailP
         </div>
       ) : (
         <div className="mb-auto flex w-full flex-col md:pr-ds-06">
-          <p className="text-ds-sm font-semibold uppercase tracking-wider mb-ds-06  text-interactive">
+          <p className="text-ds-sm font-semibold uppercase tracking-wider mb-ds-06  text-accent-11">
             Tasks for the day
           </p>
 
@@ -363,7 +363,7 @@ export const AssociateDetail = React.forwardRef<HTMLDivElement, AssociateDetailP
                       className="cursor-pointer"
                     >
                       {task.status === 'COMPLETED' ? (
-                        <CheckboxActiveIcon className="text-interactive-hover" />
+                        <CheckboxActiveIcon className="text-accent-12" />
                       ) : (
                         <CheckboxIcon />
                       )}
@@ -416,7 +416,7 @@ export const AssociateDetail = React.forwardRef<HTMLDivElement, AssociateDetailP
       )}
       {!isFutureDate && selectedUserAttendance?.status !== 'BREAK' && (
         <>
-          <div className="block h-full w-[2px] bg-border-subtle"></div>
+          <div className="block h-full w-[2px] bg-surface-border"></div>
           <AttendanceStatus selectedUserAttendance={selectedUserAttendance} />
         </>
       )}

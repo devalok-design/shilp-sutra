@@ -189,8 +189,8 @@ export const BreakRequestCard = React.forwardRef<HTMLDivElement, BreakRequestPro
         )}
         {!showMobileCancelForm && (
           <>
-            <div className="h-[1px] w-[329px] bg-border-subtle md:hidden max-md:w-[90%]"></div>
-            <div className="hidden h-[170px] w-[2px] bg-border-subtle md:block"></div>
+            <div className="h-[1px] w-[329px] bg-surface-border md:hidden max-md:w-[90%]"></div>
+            <div className="hidden h-[170px] w-[2px] bg-surface-border md:block"></div>
           </>
         )}
         <div
@@ -209,7 +209,7 @@ export const BreakRequestCard = React.forwardRef<HTMLDivElement, BreakRequestPro
             <>
               {isBreakCancellable() && onCancelBreak && (
                 <button
-                  className="text-ds-sm cursor-pointer border-none bg-transparent text-interactive-hover underline md:hidden"
+                  className="text-ds-sm cursor-pointer border-none bg-transparent text-accent-12 underline md:hidden"
                   onClick={() => setShowMobileCancelForm(!showMobileCancelForm)}
                 >
                   Want to cancel this break?
@@ -220,7 +220,7 @@ export const BreakRequestCard = React.forwardRef<HTMLDivElement, BreakRequestPro
               <Dialog>
                 {isBreakCancellable() && onCancelBreak && (
                   <DialogTrigger asChild>
-                    <button className="text-ds-sm hidden cursor-pointer border-none bg-transparent text-interactive-hover underline md:block">
+                    <button className="text-ds-sm hidden cursor-pointer border-none bg-transparent text-accent-12 underline md:block">
                       Want to cancel this break?
                     </button>
                   </DialogTrigger>
@@ -253,7 +253,7 @@ export const BreakRequestCard = React.forwardRef<HTMLDivElement, BreakRequestPro
             <Dialog>
               {isBreakCancellable() && onCancelBreak && (
                 <DialogTrigger asChild>
-                  <button className="text-ds-sm cursor-pointer border-none bg-transparent text-interactive-hover underline">
+                  <button className="text-ds-sm cursor-pointer border-none bg-transparent text-accent-12 underline">
                     Want to cancel this break?
                   </button>
                 </DialogTrigger>

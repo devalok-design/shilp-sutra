@@ -33,9 +33,9 @@ function formatDueDate(dateStr: string) {
   const diffMs = date.getTime() - now.getTime()
   const diffDays = Math.ceil(diffMs / (1000 * 60 * 60 * 24))
 
-  if (diffDays < 0) return { label: 'Overdue', className: 'text-error' }
-  if (diffDays === 0) return { label: 'Today', className: 'text-warning' }
-  if (diffDays === 1) return { label: 'Tomorrow', className: 'text-warning' }
+  if (diffDays < 0) return { label: 'Overdue', className: 'text-error-11' }
+  if (diffDays === 0) return { label: 'Today', className: 'text-warning-11' }
+  if (diffDays === 1) return { label: 'Tomorrow', className: 'text-warning-11' }
 
   return {
     label: date.toLocaleDateString('en-IN', { month: 'short', day: 'numeric' }),
@@ -60,15 +60,15 @@ const taskCardVariants = cva(
     variants: {
       state: {
         default: 'shadow-01 hover:shadow-02 hover:-translate-y-px hover:border-surface-border-strong',
-        dragging: 'opacity-[0.38]',
-        overlay: 'rotate-[2deg] shadow-03 backdrop-blur-sm ring-1 ring-accent-9/40',
+        dragging: 'opacity-action-disabled',
+        overlay: 'rotate-[2deg] shadow-03 backdrop-blur-sm ring-1 ring-accent-7',
       },
       blocked: {
-        true: 'border-l-2 border-l-error',
+        true: 'border-l-2 border-l-error-9',
         false: '',
       },
       selected: {
-        true: 'ring-1 ring-accent/50 shadow-[0_0_6px_rgba(var(--accent-rgb,99,102,241),0.15)] animate-glow-pulse',
+        true: 'ring-1 ring-accent-6 shadow-[0_0_6px_rgba(var(--accent-rgb,99,102,241),0.15)] animate-glow-pulse',
         false: '',
       },
       dimmed: {
@@ -201,9 +201,9 @@ function TaskCardVisual({
         <button
           className={cn(
             'flex-shrink-0 cursor-grab rounded p-ds-01 opacity-0 transition-opacity',
-            'group-hover/card:opacity-[0.38] hover:!opacity-100',
+            'group-hover/card:opacity-action-disabled hover:!opacity-100',
             'active:cursor-grabbing',
-            isDragOverlay && 'opacity-[0.38]',
+            isDragOverlay && 'opacity-action-disabled',
           )}
           {...(dragHandleProps?.attributes ?? {})}
           {...(dragHandleProps?.listeners ?? {})}
@@ -256,7 +256,7 @@ function TaskCardVisual({
 
         {/* Blocked badge */}
         {task.isBlocked && (
-          <span className="flex items-center text-error" aria-label="Blocked" title="Blocked">
+          <span className="flex items-center text-error-11" aria-label="Blocked" title="Blocked">
             <IconLock className="h-3 w-3" />
           </span>
         )}
@@ -272,7 +272,7 @@ function TaskCardVisual({
                 key={i}
                 size="xs"
                 className={cn(
-                  'text-ds-xs border-2 border-layer-01',
+                  'text-ds-xs border-2 border-surface-1',
                   i > 0 && '-ml-ds-02b',
                   user.isOwner && 'shadow-[0_0_0_1.5px_rgba(var(--accent-rgb,99,102,241),0.35),0_0_6px_rgba(var(--accent-rgb,99,102,241),0.2)]',
                 )}
@@ -352,7 +352,7 @@ const taskCardCompactVariants = cva(
   {
     variants: {
       selected: {
-        true: 'ring-1 ring-accent/50 shadow-[0_0_6px_rgba(var(--accent-rgb,99,102,241),0.15)] animate-glow-pulse',
+        true: 'ring-1 ring-accent-6 shadow-[0_0_6px_rgba(var(--accent-rgb,99,102,241),0.15)] animate-glow-pulse',
         false: '',
       },
       dimmed: {
@@ -466,7 +466,7 @@ function TaskCardCompactVisual({
       {leadUser && (
         <div
           className={cn(
-            'flex h-[14px] w-[14px] shrink-0 items-center justify-center rounded-full border border-layer-01 bg-accent-2 text-[6px] font-semibold leading-none text-interactive overflow-hidden',
+            'flex h-[14px] w-[14px] shrink-0 items-center justify-center rounded-full border border-surface-1 bg-accent-2 text-[6px] font-semibold leading-none text-accent-11 overflow-hidden',
             task.owner && 'shadow-[0_0_0_1px_rgba(var(--accent-rgb,99,102,241),0.35),0_0_4px_rgba(var(--accent-rgb,99,102,241),0.2)]',
           )}
           title={leadUser.name}

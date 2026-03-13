@@ -80,7 +80,7 @@ export function TokenEditor({
                       {isOverridden && (
                         <button
                           onClick={() => onResetToken(token.name)}
-                          className="text-xs text-surface-fg-subtle hover:text-error"
+                          className="text-xs text-surface-fg-subtle hover:text-error-11"
                         >
                           ↺
                         </button>
@@ -111,7 +111,7 @@ export function TokenEditor({
                     {isOverridden && (
                       <button
                         onClick={() => onResetToken(token.name)}
-                        className="text-xs text-surface-fg-subtle hover:text-error"
+                        className="text-xs text-surface-fg-subtle hover:text-error-11"
                       >
                         ↺
                       </button>

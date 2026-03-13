@@ -15,7 +15,7 @@ const textareaVariants = cva(
     'hover:bg-surface-4',
     'transition-colors duration-fast-01',
     'focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent-9 focus-visible:border-accent-7',
-    'disabled:cursor-not-allowed disabled:opacity-[0.38]',
+    'disabled:cursor-not-allowed disabled:opacity-action-disabled',
     'read-only:bg-surface-2 read-only:cursor-default',
   ],
   {

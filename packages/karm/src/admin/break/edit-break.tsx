@@ -406,7 +406,7 @@ export const EditBreak = React.forwardRef<HTMLDivElement, EditBreakProps>(functi
             <div className="flex w-full flex-col items-center gap-ds-05">
               <p className="text-ds-md w-full text-left text-surface-fg-subtle">
                 Edit break details of{' '}
-                <span className="font-semibold text-interactive">
+                <span className="font-semibold text-accent-11">
                   {selectedLeave?.user?.name}
                 </span>
               </p>
@@ -507,7 +507,7 @@ export const EditBreak = React.forwardRef<HTMLDivElement, EditBreakProps>(functi
                               !(day.fullDate === picker.selectedStartDate) &&
                               !(day.fullDate === picker.selectedEndDate) &&
                               'bg-accent-2',
-                            day.isPadding && 'opacity-[0.5]',
+                            day.isPadding && 'opacity-50',
                             day.fullDate === picker.selectedStartDate &&
                               isInSelectedRange(day.fullDate) &&
                               'start-date mini',
@@ -525,7 +525,7 @@ export const EditBreak = React.forwardRef<HTMLDivElement, EditBreakProps>(functi
                           <div
                             className={cn(
                               'mx-ds-02 my-ds-02',
-                              day.isPadding && 'opacity-[0.5]',
+                              day.isPadding && 'opacity-50',
                             )}
                           >
                             <span
@@ -534,7 +534,7 @@ export const EditBreak = React.forwardRef<HTMLDivElement, EditBreakProps>(functi
                                 (day.fullDate === picker.selectedStartDate ||
                                   day.fullDate === picker.selectedEndDate ||
                                   isBreakDay(day.fullDate, existingBreaks, selectedLeave.id)) &&
-                                  'bg-accent-9 ring-2 ring-inset ring-accent',
+                                  'bg-accent-9 ring-2 ring-inset ring-accent-7',
                                 day.isToday
                                   ? 'bg-accent-10 p-ds-03 text-accent-fg'
                                   : 'text-surface-fg-muted',

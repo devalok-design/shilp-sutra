@@ -85,8 +85,8 @@ export const LeaveRequest = React.forwardRef<HTMLDivElement, LeaveRequestProps>(
                 </p>
                 {request.correction && (
                   <>
-                    <div className="block h-3 w-[1px] bg-border-subtle"></div>{' '}
-                    <p className="text-ds-sm text-interactive">
+                    <div className="block h-3 w-[1px] bg-surface-border"></div>{' '}
+                    <p className="text-ds-sm text-accent-11">
                       Attendance Corrections
                     </p>{' '}
                   </>
@@ -121,7 +121,7 @@ export const LeaveRequest = React.forwardRef<HTMLDivElement, LeaveRequestProps>(
                   <p className="text-ds-base text-surface-fg-subtle">
                     {formatDateWithWeekday(startDate)} to{' '}
                     {formatDateWithWeekday(endDate)},
-                    <span className="text-interactive-hover">
+                    <span className="text-accent-12">
                       {' '}
                       {request.numberOfDays} days
                     </span>

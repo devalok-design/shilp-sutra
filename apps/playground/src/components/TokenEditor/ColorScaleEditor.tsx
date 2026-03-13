@@ -74,7 +74,7 @@ export function ColorScaleEditor({
               {isOverridden && (
                 <button
                   onClick={() => onResetShade(prop)}
-                  className="absolute -top-1 -right-1 hidden group-hover:flex h-3 w-3 items-center justify-center rounded-full bg-error text-[8px] text-accent-fg"
+                  className="absolute -top-1 -right-1 hidden group-hover:flex h-3 w-3 items-center justify-center rounded-full bg-error-9 text-[8px] text-accent-fg"
                   title="Reset to default"
                 >
                   ×

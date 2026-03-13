@@ -35,21 +35,21 @@ const statusBadgeVariants = cva(
 )
 
 const dotColorMap: Record<string, string> = {
-  active: 'bg-success',
-  pending: 'bg-warning',
-  approved: 'bg-success',
-  rejected: 'bg-error',
-  completed: 'bg-success',
-  blocked: 'bg-error',
+  active: 'bg-success-9',
+  pending: 'bg-warning-9',
+  approved: 'bg-success-9',
+  rejected: 'bg-error-9',
+  completed: 'bg-success-9',
+  blocked: 'bg-error-9',
   cancelled: 'bg-disabled',
   draft: 'bg-surface-fg-subtle',
 }
 
 const colorDotMap: Record<string, string> = {
-  success: 'bg-success',
-  warning: 'bg-warning',
-  error: 'bg-error',
-  info: 'bg-info',
+  success: 'bg-success-9',
+  warning: 'bg-warning-9',
+  error: 'bg-error-9',
+  info: 'bg-info-9',
   neutral: 'bg-surface-fg-subtle',
 }
 

@@ -244,7 +244,7 @@ export const WithFooter: Story = {
   args: {
     notifications: mockNotifications,
     footerSlot: (
-      <a href="/notifications" className="flex items-center justify-center text-ds-sm text-interactive hover:underline">
+      <a href="/notifications" className="flex items-center justify-center text-ds-sm text-accent-11 hover:underline">
         View all notifications
       </a>
     ),
@@ -257,7 +257,7 @@ export const CustomEmptyState: Story = {
     emptyState: (
       <div className="flex flex-col items-center justify-center px-ds-05 py-ds-09">
         <p className="text-ds-md text-surface-fg-subtle">No unread notifications</p>
-        <a href="/notifications" className="mt-ds-02 text-ds-sm text-interactive hover:underline">
+        <a href="/notifications" className="mt-ds-02 text-ds-sm text-accent-11 hover:underline">
           View history
         </a>
       </div>

@@ -85,7 +85,7 @@ export const ConversationList = React.forwardRef<HTMLDivElement, ConversationLis
       <div className="no-scrollbar flex-1 overflow-y-auto">
         {isLoading ? (
           <div className="flex items-center justify-center py-12">
-            <div className="h-ico-md w-ico-md animate-spin rounded-ds-full border-2 border-text-secondary border-t-transparent" />
+            <div className="h-ico-md w-ico-md animate-spin rounded-ds-full border-2 border-surface-border border-t-transparent" />
           </div>
         ) : conversations.length === 0 ? (
           <div className="flex flex-col items-center justify-center gap-ds-03 py-12">

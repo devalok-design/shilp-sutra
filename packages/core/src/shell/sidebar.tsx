@@ -175,7 +175,7 @@ function CloseIcon({ className }: { className?: string }) {
 
 const navItemBase = 'relative gap-ds-04 rounded-ds-lg px-ds-04 py-ds-03 transition-colors'
 const navItemActive =
-  "bg-accent-2 text-interactive after:absolute after:right-0 after:top-0 after:h-full after:w-ds-01 after:rounded-l-ds-full after:bg-accent-9 after:content-['']"
+  "bg-accent-2 text-accent-11 after:absolute after:right-0 after:top-0 after:h-full after:w-ds-01 after:rounded-l-ds-full after:bg-accent-9 after:content-['']"
 const navItemInactive = 'text-surface-fg-subtle hover:bg-surface-2 hover:text-surface-fg'
 
 // -----------------------------------------------------------------------
@@ -448,7 +448,7 @@ const AppSidebar = React.forwardRef<HTMLDivElement, AppSidebarProps>(
                 )}
                 <div className="flex flex-col gap-ds-03">
                   {footer.promo.icon && (
-                    <span className="text-interactive [&>svg]:h-ico-md [&>svg]:w-ico-md" aria-hidden="true">
+                    <span className="text-accent-11 [&>svg]:h-ico-md [&>svg]:w-ico-md" aria-hidden="true">
                       {footer.promo.icon}
                     </span>
                   )}
@@ -484,7 +484,7 @@ const AppSidebar = React.forwardRef<HTMLDivElement, AppSidebarProps>(
                   <React.Fragment key={link.href}>
                     {i > 0 && <span>·</span>}
                     <Link
-                      className="transition-colors hover:text-interactive"
+                      className="transition-colors hover:text-accent-11"
                       href={link.href}
                     >
                       {link.label}
@@ -495,7 +495,7 @@ const AppSidebar = React.forwardRef<HTMLDivElement, AppSidebarProps>(
                 {footer.version && (
                   typeof footer.version === 'string'
                     ? <span>{footer.version}</span>
-                    : <Link className="transition-colors hover:text-interactive" href={footer.version.href}>{footer.version.label}</Link>
+                    : <Link className="transition-colors hover:text-accent-11" href={footer.version.href}>{footer.version.label}</Link>
                 )}
               </div>
             )}
@@ -507,7 +507,7 @@ const AppSidebar = React.forwardRef<HTMLDivElement, AppSidebarProps>(
                 <React.Fragment key={link.href}>
                   {i > 0 && <span>·</span>}
                   <Link
-                    className="transition-colors hover:text-interactive"
+                    className="transition-colors hover:text-accent-11"
                     href={link.href}
                   >
                     {link.label}

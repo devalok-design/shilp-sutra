@@ -145,7 +145,7 @@ const SubtasksTab = React.forwardRef<HTMLDivElement, SubtasksTabProps>(
                   )}
                 >
                   {isComplete ? (
-                    <IconSquareCheck className="h-ico-sm w-ico-sm text-interactive" stroke={1.5} />
+                    <IconSquareCheck className="h-ico-sm w-ico-sm text-accent-11" stroke={1.5} />
                   ) : (
                     <IconSquare className="h-ico-sm w-ico-sm text-surface-fg-subtle" stroke={1.5} />
                   )}
@@ -217,7 +217,7 @@ const SubtasksTab = React.forwardRef<HTMLDivElement, SubtasksTabProps>(
               type="button"
               onClick={handleSubmit}
               disabled={!newTitle.trim()}
-              className="inline-flex h-6 items-center gap-ds-02 rounded-ds-md bg-accent-9 px-ds-03 text-ds-sm font-semibold text-accent-fg transition-colors hover:bg-accent-10 disabled:opacity-[0.38]"
+              className="inline-flex h-6 items-center gap-ds-02 rounded-ds-md bg-accent-9 px-ds-03 text-ds-sm font-semibold text-accent-fg transition-colors hover:bg-accent-10 disabled:opacity-action-disabled"
             >
               Add
             </button>

@@ -114,7 +114,7 @@ export const DashboardHeader = React.forwardRef<HTMLDivElement, DashboardHeaderP
                   />
                 ) : (
                   <div className="flex h-ico-md w-ico-md flex-shrink-0 items-center justify-center rounded-ds-full bg-surface-3">
-                    <span className="text-interactive">
+                    <span className="text-accent-11">
                       {selectedAssociate.name.charAt(0)}
                     </span>
                   </div>
@@ -169,7 +169,7 @@ export const DashboardHeader = React.forwardRef<HTMLDivElement, DashboardHeaderP
                         />
                       ) : (
                         <div className="flex h-ds-xs w-ds-xs items-center justify-center rounded-ds-full bg-surface-3">
-                          <span className="text-ds-md text-interactive">
+                          <span className="text-ds-md text-accent-11">
                             {user.name.charAt(0)}
                           </span>
                         </div>

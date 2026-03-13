@@ -83,7 +83,7 @@ export const BulkActionBar = React.forwardRef<HTMLDivElement, BulkActionBarProps
             </Button>
           </div>
 
-          <div className="h-4 w-px bg-border-subtle" />
+          <div className="h-4 w-px bg-surface-border" />
 
           {/* Move to column */}
           <div className="animate-fade-in delay-stagger" style={{ '--stagger-index': 0 } as React.CSSProperties}>
@@ -187,7 +187,7 @@ export const BulkActionBar = React.forwardRef<HTMLDivElement, BulkActionBarProps
             <Button
               variant="ghost"
               size="sm"
-              className="text-error hover:text-error"
+              className="text-error-11 hover:text-error-11"
               onClick={() => handleAction('delete')}
               title="Delete selected tasks"
               tabIndex={count > 0 ? 0 : -1}

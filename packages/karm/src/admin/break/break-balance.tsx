@@ -58,7 +58,7 @@ export const BreakBalance = React.forwardRef<HTMLDivElement, BreakBalanceProps>(
                 </span>
               </div>
             </div>
-            <div className="text-ds-md w-[16.4%] p-ds-04 px-ds-04 text-interactive">
+            <div className="text-ds-md w-[16.4%] p-ds-04 px-ds-04 text-accent-11">
               {breakItem.totalDays}
             </div>
           </div>

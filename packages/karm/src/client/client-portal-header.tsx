@@ -63,7 +63,7 @@ const ClientPortalHeader = React.forwardRef<
           <div className="flex items-center gap-ds-03">
             <Avatar className="h-ds-sm w-ds-sm">
               {userAvatar && <AvatarImage src={userAvatar} alt={userName} />}
-              <AvatarFallback className="bg-accent-2 text-ds-sm font-medium text-interactive">
+              <AvatarFallback className="bg-accent-2 text-ds-sm font-medium text-accent-11">
                 {userInitials}
               </AvatarFallback>
             </Avatar>

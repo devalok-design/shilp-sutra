@@ -90,7 +90,7 @@ const AttendanceCTA = React.forwardRef<HTMLDivElement, AttendanceCTAProps>(
           <div className="flex flex-col gap-ds-02">
             <h2 className="text-ds-2xl text-surface-fg">
               {greeting},{' '}
-              <span className="font-semibold italic text-interactive">
+              <span className="font-semibold italic text-accent-11">
                 {firstName}
               </span>
             </h2>
@@ -99,7 +99,7 @@ const AttendanceCTA = React.forwardRef<HTMLDivElement, AttendanceCTAProps>(
             </p>
           </div>
           <div className="flex items-center gap-ds-03 rounded-ds-xl bg-success-3 px-ds-05 py-ds-03">
-            <div className="flex h-ico-md w-ico-md items-center justify-center rounded-ds-full bg-text-success">
+            <div className="flex h-ico-md w-ico-md items-center justify-center rounded-ds-full bg-success-9">
               <IconCheck className="h-ico-sm w-ico-sm text-accent-fg" />
             </div>
             <span className="text-ds-md font-semibold text-success-11">
@@ -120,7 +120,7 @@ const AttendanceCTA = React.forwardRef<HTMLDivElement, AttendanceCTAProps>(
           <div className="flex flex-col gap-ds-02">
             <h2 className="text-ds-2xl text-surface-fg">
               {greeting},{' '}
-              <span className="font-semibold italic text-interactive">
+              <span className="font-semibold italic text-accent-11">
                 {firstName}
               </span>
             </h2>
@@ -148,7 +148,7 @@ const AttendanceCTA = React.forwardRef<HTMLDivElement, AttendanceCTAProps>(
           <div className="flex flex-col gap-ds-02b">
             <h2 className="text-ds-3xl text-surface-fg">
               {greeting},{' '}
-              <span className="font-semibold italic text-interactive">
+              <span className="font-semibold italic text-accent-11">
                 {firstName}
               </span>
             </h2>
@@ -169,12 +169,12 @@ const AttendanceCTA = React.forwardRef<HTMLDivElement, AttendanceCTAProps>(
 
   // Unmarked + can mark: large greeting with mark button
   return (
-    <div ref={ref} className={cn("relative overflow-hidden rounded-ds-2xl border border-surface-border-strong bg-gradient-to-br from-interactive-subtle via-background to-success-surface", className)} {...props}>
+    <div ref={ref} className={cn("relative overflow-hidden rounded-ds-2xl border border-surface-border-strong bg-gradient-to-br from-accent-2 via-surface-1 to-success-3", className)} {...props}>
       <div className="flex items-center justify-between px-ds-06 py-ds-07 sm:px-ds-07 sm:py-ds-08">
         <div className="flex flex-col gap-ds-02b">
           <h2 className="text-ds-3xl text-surface-fg">
             {greeting},{' '}
-            <span className="font-semibold italic text-interactive">
+            <span className="font-semibold italic text-accent-11">
               {firstName}
             </span>
           </h2>
@@ -189,7 +189,7 @@ const AttendanceCTA = React.forwardRef<HTMLDivElement, AttendanceCTAProps>(
           type="button"
           onClick={onMarkAttendance}
           disabled={isSubmitting}
-          className="flex items-center gap-ds-03 rounded-ds-xl bg-accent-9 px-ds-06 py-ds-04 font-semibold text-accent-fg shadow-02 transition-all duration-moderate-01 ease-expressive-standard hover:-translate-y-0.5 hover:shadow-03 active:translate-y-0 active:scale-[0.98] disabled:opacity-[0.38]"
+          className="flex items-center gap-ds-03 rounded-ds-xl bg-accent-9 px-ds-06 py-ds-04 font-semibold text-accent-fg shadow-02 transition-all duration-moderate-01 ease-expressive-standard hover:-translate-y-0.5 hover:shadow-03 active:translate-y-0 active:scale-[0.98] disabled:opacity-action-disabled"
         >
           {isSubmitting ? 'Marking...' : 'Mark Attendance'}
           {!isSubmitting && (

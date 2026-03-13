@@ -234,19 +234,19 @@ const TopBar = React.forwardRef<HTMLDivElement, TopBarProps>(
               {/* Custom user menu items */}
               {userMenuItems?.map((item, index) => {
                 const colorMap: Record<string, string> = {
-                  error: 'text-error',
-                  success: 'text-success',
-                  warning: 'text-warning',
-                  info: 'text-info',
+                  error: 'text-error-11',
+                  success: 'text-success-11',
+                  warning: 'text-warning-11',
+                  info: 'text-info-11',
                 }
                 const textColor = item.color ? (colorMap[item.color] ?? 'text-surface-fg-muted') : 'text-surface-fg-muted'
                 return (
                   <React.Fragment key={item.label + index}>
-                    {item.separator && <DropdownMenuSeparator className="bg-border" />}
+                    {item.separator && <DropdownMenuSeparator className="bg-surface-border" />}
                     <DropdownMenuItem
                       className={cn(
                         'flex w-full cursor-pointer items-center gap-ds-03 px-ds-05 py-ds-04 hover:bg-surface-2',
-                        item.disabled && 'pointer-events-none opacity-[0.38]',
+                        item.disabled && 'pointer-events-none opacity-action-disabled',
                       )}
                       disabled={item.disabled}
                       onClick={() => {
@@ -265,11 +265,11 @@ const TopBar = React.forwardRef<HTMLDivElement, TopBarProps>(
                       </span>
                       {item.badge != null && item.badge !== false && (
                         typeof item.badge === 'string' ? (
-                          <span className="ml-auto inline-flex h-[18px] min-w-[18px] items-center justify-center rounded-ds-full bg-error px-ds-02 text-[10px] font-semibold leading-none text-accent-fg">
+                          <span className="ml-auto inline-flex h-[18px] min-w-[18px] items-center justify-center rounded-ds-full bg-error-9 px-ds-02 text-[10px] font-semibold leading-none text-accent-fg">
                             {item.badge}
                           </span>
                         ) : (
-                          <span className="ml-auto h-[8px] w-[8px] rounded-ds-full bg-error" />
+                          <span className="ml-auto h-[8px] w-[8px] rounded-ds-full bg-error-9" />
                         )
                       )}
                     </DropdownMenuItem>
@@ -293,13 +293,13 @@ const TopBar = React.forwardRef<HTMLDivElement, TopBarProps>(
 
               {onLogout && (
                 <>
-                  <DropdownMenuSeparator className="bg-border" />
+                  <DropdownMenuSeparator className="bg-surface-border" />
                   <DropdownMenuItem
                     className="flex w-full cursor-pointer items-center gap-ds-03 px-ds-05 py-ds-04 hover:bg-surface-2"
                     onClick={onLogout}
                   >
-                    <IconLogout className="h-ico-sm w-ico-sm text-error" />
-                    <span className="text-ds-md text-error">
+                    <IconLogout className="h-ico-sm w-ico-sm text-error-11" />
+                    <span className="text-ds-md text-error-11">
                       Logout
                     </span>
                   </DropdownMenuItem>

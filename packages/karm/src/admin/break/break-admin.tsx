@@ -560,14 +560,14 @@ const TabBar = React.forwardRef<
         onClick={() => setActiveTab('requests')}
       >
         REQUESTS{' '}
-        <span className="text-interactive-hover">{`(${pendingRequests.length})`}</span>
+        <span className="text-accent-12">{`(${pendingRequests.length})`}</span>
       </button>
       <button
         className={cn('text-ds-sm font-semibold uppercase tracking-wider mb-[-1px] flex items-center gap-ds-02 px-ds-03 py-ds-04', activeTab === 'balance' ? 'border-b-[1px] border-accent-7-hover text-surface-fg' : 'text-surface-fg-subtle')}
         onClick={() => setActiveTab('balance')}
       >
         BALANCE{' '}
-        <span className="text-interactive-hover">{`(${breakBalanceData.length})`}</span>
+        <span className="text-accent-12">{`(${breakBalanceData.length})`}</span>
       </button>
     </div>
   )

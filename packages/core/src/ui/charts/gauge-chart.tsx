@@ -128,7 +128,7 @@ export const GaugeChart = React.forwardRef<HTMLDivElement, GaugeChartProps>(
             y={label ? -4 : 0}
             textAnchor="middle"
             dominantBaseline="central"
-            className="fill-text-primary text-ds-2xl font-semibold"
+            className="fill-surface-fg text-ds-2xl font-semibold"
           >
             {displayValue}
           </text>
@@ -140,7 +140,7 @@ export const GaugeChart = React.forwardRef<HTMLDivElement, GaugeChartProps>(
               y={20}
               textAnchor="middle"
               dominantBaseline="central"
-              className="fill-text-secondary text-ds-xs"
+              className="fill-surface-fg-muted text-ds-xs"
             >
               {label}
             </text>

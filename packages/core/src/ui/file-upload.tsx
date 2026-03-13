@@ -243,7 +243,7 @@ const FileUpload = React.forwardRef<HTMLDivElement, FileUploadProps>(
               'border border-surface-border-strong',
               'bg-surface-3 text-surface-fg-muted',
               'hover:bg-accent-2',
-              'disabled:opacity-[0.38] disabled:cursor-not-allowed',
+              'disabled:opacity-action-disabled disabled:cursor-not-allowed',
               'transition-colors',
             )}
           >
@@ -274,7 +274,7 @@ const FileUpload = React.forwardRef<HTMLDivElement, FileUploadProps>(
             <p
               role="alert"
               aria-live="polite"
-              className="mt-ds-02 text-ds-xs text-error"
+              className="mt-ds-02 text-ds-xs text-error-11"
             >
               {displayError}
             </p>
@@ -313,7 +313,7 @@ const FileUpload = React.forwardRef<HTMLDivElement, FileUploadProps>(
             'border-surface-border-strong bg-surface-3',
             isDragActive &&
               'border-accent-7 bg-accent-2',
-            disabled && 'opacity-[0.38] cursor-not-allowed',
+            disabled && 'opacity-action-disabled cursor-not-allowed',
           )}
         >
           {uploading ? (
@@ -364,7 +364,7 @@ const FileUpload = React.forwardRef<HTMLDivElement, FileUploadProps>(
         {displayError && (
           <p
             role="alert"
-            className="mt-ds-02 text-ds-xs text-error"
+            className="mt-ds-02 text-ds-xs text-error-11"
           >
             {displayError}
           </p>

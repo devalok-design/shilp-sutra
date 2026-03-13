@@ -93,7 +93,7 @@ export const ThreeQuarters: Story = {
 export const CustomIndicator: Story = {
   args: {
     value: 80,
-    indicatorClassName: 'bg-success',
+    indicatorClassName: 'bg-success-9',
   },
   decorators: [
     (Story) => (

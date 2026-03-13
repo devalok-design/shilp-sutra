@@ -68,7 +68,7 @@ export const AllTypes: Story = {
         ] as const
       ).map((type) => (
         <div key={type} className="flex items-center gap-ds-06">
-          <span className="w-56 text-ds-sm font-mono text-text-secondary shrink-0">
+          <span className="w-56 text-ds-sm font-mono text-surface-fg-muted shrink-0">
             {type}
           </span>
           <DevalokLogo type={type} color="brand" size="xl" />
@@ -82,15 +82,15 @@ export const ColorVariants: Story = {
   name: 'Color Variants',
   render: () => (
     <div className="flex flex-col gap-ds-06">
-      <div className="flex items-center gap-ds-06 p-ds-08 rounded-ds-md bg-layer-01">
+      <div className="flex items-center gap-ds-06 p-ds-08 rounded-ds-md bg-surface-1">
         <DevalokLogo type="monogram-wordmark" color="brand" size="xl" />
-        <span className="text-ds-sm text-text-secondary">
+        <span className="text-ds-sm text-surface-fg-muted">
           Brand — Padmavarna #D33163
         </span>
       </div>
-      <div className="flex items-center gap-ds-06 p-ds-08 rounded-ds-md bg-layer-01">
+      <div className="flex items-center gap-ds-06 p-ds-08 rounded-ds-md bg-surface-1">
         <DevalokLogo type="monogram-wordmark" color="black" size="xl" />
-        <span className="text-ds-sm text-text-secondary">Black — print / single colour</span>
+        <span className="text-ds-sm text-surface-fg-muted">Black — print / single colour</span>
       </div>
       <div className="flex items-center gap-ds-06 p-ds-08 rounded-ds-md bg-layer-inverse">
         <DevalokLogo type="monogram-wordmark" color="white" size="xl" />
@@ -107,7 +107,7 @@ export const Sizes: Story = {
       {(['xs', 'sm', 'md', 'lg', 'xl'] as const).map((size) => (
         <div key={size} className="flex flex-col items-center gap-ds-03">
           <DevalokLogo type="monogram" color="brand" size={size} />
-          <span className="text-ds-xs text-text-secondary font-mono">{size}</span>
+          <span className="text-ds-xs text-surface-fg-muted font-mono">{size}</span>
         </div>
       ))}
     </div>
@@ -121,57 +121,57 @@ export const UsageGuidelines: Story = {
 
       {/* Prime space — full monogram */}
       <div>
-        <p className="text-ds-sm font-semibold text-text-primary mb-ds-01">
+        <p className="text-ds-sm font-semibold text-surface-fg mb-ds-01">
           Prime spaces — use the full monogram
         </p>
-        <p className="text-ds-xs text-text-secondary mb-ds-04">
+        <p className="text-ds-xs text-surface-fg-muted mb-ds-04">
           Hero sections, splash screens, about pages, and anywhere the logo is
           the centrepiece with generous whitespace on all sides. Minimum clear
           space: 0.5× the logo height on every side.
         </p>
-        <div className="flex items-center justify-center p-ds-10 rounded-ds-md border border-border bg-layer-01">
+        <div className="flex items-center justify-center p-ds-10 rounded-ds-md border border-surface-border bg-surface-1">
           <DevalokLogo type="monogram-wordmark" color="brand" size="xl" />
         </div>
       </div>
 
       {/* Compact / repeated — chakra only */}
       <div>
-        <p className="text-ds-sm font-semibold text-text-primary mb-ds-01">
+        <p className="text-ds-sm font-semibold text-surface-fg mb-ds-01">
           All other contexts — use the Chakra
         </p>
-        <p className="text-ds-xs text-text-secondary mb-ds-04">
+        <p className="text-ds-xs text-surface-fg-muted mb-ds-04">
           Navigation bars, footers, favicons, app icons, side drawers, loading
           indicators, and anywhere the logo appears small or repeatedly. The
           Swadhisthana Chakra is the compact mark of Devalok.
         </p>
-        <div className="flex items-center gap-ds-06 p-ds-06 rounded-ds-md border border-border bg-layer-01">
+        <div className="flex items-center gap-ds-06 p-ds-06 rounded-ds-md border border-surface-border bg-surface-1">
           {/* Nav bar mockup */}
-          <div className="flex items-center gap-ds-02 px-ds-04 py-ds-02 rounded-ds-md bg-layer-02 border border-border">
+          <div className="flex items-center gap-ds-02 px-ds-04 py-ds-02 rounded-ds-md bg-surface-2 border border-surface-border">
             <DevalokLogo type="chakra" color="brand" size="sm" />
-            <span className="text-ds-sm text-text-primary font-medium">Devalok</span>
+            <span className="text-ds-sm text-surface-fg font-medium">Devalok</span>
           </div>
-          <div className="flex items-center gap-ds-02 px-ds-03 py-ds-02 rounded-ds-md bg-layer-02 border border-border">
+          <div className="flex items-center gap-ds-02 px-ds-03 py-ds-02 rounded-ds-md bg-surface-2 border border-surface-border">
             <DevalokLogo type="chakra" color="brand" size="xs" />
           </div>
           <div className="flex flex-col items-center gap-ds-01">
             <DevalokLogo type="chakra" color="brand" size="sm" />
-            <span className="text-ds-xs text-text-secondary font-mono">footer</span>
+            <span className="text-ds-xs text-surface-fg-muted font-mono">footer</span>
           </div>
         </div>
       </div>
 
       {/* Don't do this */}
       <div>
-        <p className="text-ds-sm font-semibold text-error mb-ds-01">
+        <p className="text-ds-sm font-semibold text-error-11 mb-ds-01">
           Don't — full monogram in compact contexts
         </p>
-        <p className="text-ds-xs text-text-secondary mb-ds-04">
+        <p className="text-ds-xs text-surface-fg-muted mb-ds-04">
           Never use the full monogram at small sizes or cramped into a nav bar.
           The sacred geometry detail is lost and the logo looks cluttered.
         </p>
-        <div className="flex items-center gap-ds-04 px-ds-04 py-ds-02 rounded-ds-md border border-error/40 bg-error/5 w-fit">
+        <div className="flex items-center gap-ds-04 px-ds-04 py-ds-02 rounded-ds-md border border-error-7 bg-error-3 w-fit">
           <DevalokLogo type="monogram" color="brand" size="xs" />
-          <span className="text-ds-sm text-text-primary">Navigation</span>
+          <span className="text-ds-sm text-surface-fg">Navigation</span>
         </div>
       </div>
 

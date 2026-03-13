@@ -56,7 +56,7 @@ const MentionList = React.forwardRef<MentionListRef, MentionListProps>(
             {item.avatar ? (
               <img src={item.avatar} alt="" className="h-ico-md w-ico-md rounded-ds-full object-cover" />
             ) : (
-              <span className="flex h-ico-md w-ico-md items-center justify-center rounded-ds-full bg-accent-9/10 text-[10px] font-semibold text-interactive">
+              <span className="flex h-ico-md w-ico-md items-center justify-center rounded-ds-full bg-accent-2 text-[10px] font-semibold text-accent-11">
                 {item.label.charAt(0).toUpperCase()}
               </span>
             )}

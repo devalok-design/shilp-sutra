@@ -52,7 +52,7 @@ const TOAST_TYPE_CONFIG: Record<
     accentClass: '',
     iconClass: '',
     icon: null,
-    timerBarClass: 'bg-border',
+    timerBarClass: 'bg-surface-border',
   },
   success: {
     accentClass: 'bg-success-border',
@@ -80,7 +80,7 @@ const TOAST_TYPE_CONFIG: Record<
   },
   loading: {
     accentClass: 'bg-accent-9',
-    iconClass: 'text-interactive',
+    iconClass: 'text-accent-11',
     icon: null,
     timerBarClass: 'bg-accent-9',
   },
@@ -214,7 +214,7 @@ function ToastContent({
                 <button
                   type="button"
                   onClick={action.onClick}
-                  className="text-ds-sm font-medium text-interactive underline-offset-2 hover:underline focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent-9 focus-visible:rounded-ds-sm"
+                  className="text-ds-sm font-medium text-accent-11 underline-offset-2 hover:underline focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent-9 focus-visible:rounded-ds-sm"
                 >
                   {action.label}
                 </button>

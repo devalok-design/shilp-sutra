@@ -353,7 +353,7 @@ const AdminDashboardCalendar = React.forwardRef<
                   ? 'bg-accent-2'
                   : 'bg-surface-2'
                 : '',
-              day.isPadding && 'opacity-[0.5]',
+              day.isPadding && 'opacity-50',
             )}
             onClick={() => handleDayClick(index, day.fullDate)}
           >
@@ -619,7 +619,7 @@ const AdminDashboardLeaveRequests = React.forwardRef<
               className={requestTabVariants({ active: activeTab === 'leaveRequest' })}
             >
               <span className="hidden sm:inline">break </span>Requests
-              <span className="text-interactive-hover">
+              <span className="text-accent-12">
                 ({requests.length})
               </span>
             </button>
@@ -634,7 +634,7 @@ const AdminDashboardLeaveRequests = React.forwardRef<
               className={requestTabVariants({ active: activeTab === 'attendanceRequest' })}
             >
               Attendance Correction{' '}
-              <span className="text-interactive-hover">
+              <span className="text-accent-12">
                 ({filteredAttendanceCorrections.length})
               </span>
             </button>

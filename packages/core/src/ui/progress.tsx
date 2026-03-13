@@ -30,9 +30,9 @@ const progressIndicatorVariants = cva(
     variants: {
       color: {
         default: 'bg-accent-9',
-        success: 'bg-success',
-        warning: 'bg-warning',
-        error: 'bg-error',
+        success: 'bg-success-9',
+        warning: 'bg-warning-9',
+        error: 'bg-error-9',
       },
     },
     defaultVariants: { color: 'default' },

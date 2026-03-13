@@ -316,7 +316,7 @@ const TaskDetailPanel = React.forwardRef<HTMLDivElement, TaskDetailPanelProps>(f
                   onClick={clientMode ? undefined : () => setEditingTitle(true)}
                   className={cn(
                     'text-ds-lg font-semibold text-surface-fg',
-                    !clientMode && 'cursor-text hover:text-interactive transition-colors',
+                    !clientMode && 'cursor-text hover:text-accent-11 transition-colors',
                   )}
                 >
                   {task.title}

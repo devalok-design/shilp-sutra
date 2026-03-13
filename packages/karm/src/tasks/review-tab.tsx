@@ -193,11 +193,11 @@ const ReviewTab = React.forwardRef<HTMLDivElement, ReviewTabProps>(
                                 className={cn(
                                   'inline-flex items-center gap-ds-02 rounded-ds-md px-ds-03 py-ds-02 text-ds-sm font-semibold transition-colors',
                                   opt.status === 'APPROVED' &&
-                                    'bg-success-3 text-success-11 hover:opacity-[0.9]',
+                                    'bg-success-3 text-success-11 hover:opacity-90',
                                   opt.status === 'CHANGES_REQUESTED' &&
-                                    'bg-warning-3 text-warning-11 hover:opacity-[0.9]',
+                                    'bg-warning-3 text-warning-11 hover:opacity-90',
                                   opt.status === 'REJECTED' &&
-                                    'bg-error-3 text-error-11 hover:opacity-[0.9]',
+                                    'bg-error-3 text-error-11 hover:opacity-90',
                                 )}
                               >
                                 <Icon className="h-3 w-3" stroke={2} />
@@ -218,7 +218,7 @@ const ReviewTab = React.forwardRef<HTMLDivElement, ReviewTabProps>(
                       <button
                         type="button"
                         onClick={() => setExpandedId(review.id)}
-                        className="text-ds-sm font-medium text-interactive transition-colors hover:underline"
+                        className="text-ds-sm font-medium text-accent-11 transition-colors hover:underline"
                       >
                         Respond
                       </button>

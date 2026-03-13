@@ -15,8 +15,8 @@ const inputVariants = cva(
     'placeholder:text-surface-fg-subtle',
     'hover:bg-surface-4',
     'transition-colors duration-fast-01',
-    'focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-accent-9/50 focus-visible:border-surface-border',
-    'disabled:cursor-not-allowed disabled:opacity-[0.38]',
+    'focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-accent-7 focus-visible:border-surface-border',
+    'disabled:cursor-not-allowed disabled:opacity-action-disabled',
     'read-only:bg-surface-2 read-only:cursor-default',
   ],
   {

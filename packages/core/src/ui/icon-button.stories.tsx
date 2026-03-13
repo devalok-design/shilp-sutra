@@ -171,7 +171,7 @@ export const Toolbar: Story = {
         icon={<IconChevronRight size={20} />}
         aria-label="Go forward"
       />
-      <div className="mx-1 h-6 w-px bg-border" aria-hidden="true" />
+      <div className="mx-1 h-6 w-px bg-surface-border" aria-hidden="true" />
       <IconButton
         variant="ghost"
         size="md"
@@ -184,7 +184,7 @@ export const Toolbar: Story = {
         icon={<IconTrash size={20} />}
         aria-label="Delete"
       />
-      <div className="mx-1 h-6 w-px bg-border" aria-hidden="true" />
+      <div className="mx-1 h-6 w-px bg-surface-border" aria-hidden="true" />
       <IconButton
         variant="ghost"
         size="md"

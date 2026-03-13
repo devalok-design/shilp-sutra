@@ -3,7 +3,10 @@
 import * as React from 'react'
 import * as PopoverPrimitive from '@primitives/react-popover'
 import { IconCheck, IconChevronDown, IconSearch, IconX } from '@tabler/icons-react'
+import { motion } from 'framer-motion'
+
 import { cn } from './lib/utils'
+import { springs, tweens } from './lib/motion'
 
 /**
  * Option shape for a Combobox dropdown item.
@@ -358,10 +361,7 @@ const Combobox = React.forwardRef<HTMLButtonElement, ComboboxProps>(
 
         <PopoverPrimitive.Portal>
           <PopoverPrimitive.Content
-            className={cn(
-              'z-popover w-[var(--radix-popover-trigger-width)] overflow-hidden rounded-ds-lg border border-border-subtle bg-layer-01 shadow-02',
-              'data-[state=open]:animate-in data-[state=closed]:animate-out data-[state=closed]:fade-out-0 data-[state=open]:fade-in-0 data-[state=closed]:zoom-out-95 data-[state=open]:zoom-in-95 data-[side=bottom]:slide-in-from-top-2 data-[side=top]:slide-in-from-bottom-2',
-            )}
+            asChild
             sideOffset={4}
             align="start"
             onOpenAutoFocus={(e) => {
@@ -369,107 +369,116 @@ const Combobox = React.forwardRef<HTMLButtonElement, ComboboxProps>(
               searchInputRef.current?.focus()
             }}
           >
-            {/* Search input */}
-            <div className="flex items-center gap-ds-02 border-b border-border-subtle px-ds-04">
-              <IconSearch className="h-ico-sm w-ico-sm shrink-0 text-text-tertiary" aria-hidden="true" />
-              <input
-                ref={searchInputRef}
-                type="text"
-                className="flex-1 bg-transparent py-ds-03 text-ds-md outline-none placeholder:text-text-placeholder"
-                placeholder={searchPlaceholder}
-                value={search}
-                onChange={(e) => {
-                  setSearch(e.target.value)
-                  setHighlightedIndex(-1)
-                }}
-                onKeyDown={handleKeyDown}
-                aria-autocomplete="list"
-                aria-controls={listboxId}
-                aria-activedescendant={
-                  highlightedIndex >= 0
-                    ? `${optionIdPrefix}-option-${highlightedIndex}`
-                    : undefined
-                }
-                aria-label="Search options"
-              />
-            </div>
+            <motion.div
+              initial={{ opacity: 0, scale: 0.95 }}
+              animate={{ opacity: 1, scale: 1 }}
+              transition={{ ...springs.snappy, opacity: tweens.fade }}
+              className={cn(
+                'z-popover w-[var(--radix-popover-trigger-width)] overflow-hidden rounded-ds-lg border border-border-subtle bg-layer-01 shadow-02',
+              )}
+            >
+                  {/* Search input */}
+                  <div className="flex items-center gap-ds-02 border-b border-border-subtle px-ds-04">
+                    <IconSearch className="h-ico-sm w-ico-sm shrink-0 text-text-tertiary" aria-hidden="true" />
+                    <input
+                      ref={searchInputRef}
+                      type="text"
+                      className="flex-1 bg-transparent py-ds-03 text-ds-md outline-none placeholder:text-text-placeholder"
+                      placeholder={searchPlaceholder}
+                      value={search}
+                      onChange={(e) => {
+                        setSearch(e.target.value)
+                        setHighlightedIndex(-1)
+                      }}
+                      onKeyDown={handleKeyDown}
+                      aria-autocomplete="list"
+                      aria-controls={listboxId}
+                      aria-activedescendant={
+                        highlightedIndex >= 0
+                          ? `${optionIdPrefix}-option-${highlightedIndex}`
+                          : undefined
+                      }
+                      aria-label="Search options"
+                    />
+                  </div>
 
-            {/* Options list */}
-            {filteredOptions.length === 0 ? (
-              <div className="px-ds-04 py-ds-05 text-center text-ds-md text-text-tertiary">
-                {emptyMessage}
-              </div>
-            ) : (
-              <ul
-                ref={listRef}
-                id={listboxId}
-                role="listbox"
-                aria-multiselectable={multiple || undefined}
-                className="overflow-auto p-ds-02"
-                style={{ maxHeight: `${maxVisible * ITEM_HEIGHT_PX}px` }}
-              >
-                {filteredOptions.map((option, index) => {
-                  const selected = isSelected(option.value)
-                  return (
-                    <li
-                      key={option.value}
-                      id={`${optionIdPrefix}-option-${index}`}
-                      role="option"
-                      aria-selected={selected}
-                      aria-disabled={option.disabled || undefined}
-                      className={cn(
-                        'relative flex cursor-pointer select-none items-center gap-ds-03 rounded-ds-md px-ds-04 py-ds-03 text-ds-md outline-none',
-                        'transition-colors',
-                        highlightedIndex === index &&
-                          'bg-interactive-subtle',
-                        selected && 'text-interactive',
-                        option.disabled &&
-                          'pointer-events-none opacity-[0.38]',
-                      )}
-                      onClick={() => {
-                        if (!option.disabled) {
-                          handleSelect(option.value)
-                        }
-                      }}
-                      onKeyDown={(e) => {
-                        if (!option.disabled && (e.key === 'Enter' || e.key === ' ')) {
-                          e.preventDefault()
-                          handleSelect(option.value)
-                        }
-                      }}
-                      onMouseEnter={() => {
-                        if (!option.disabled) {
-                          setHighlightedIndex(index)
-                        }
-                      }}
+                  {/* Options list */}
+                  {filteredOptions.length === 0 ? (
+                    <div className="px-ds-04 py-ds-05 text-center text-ds-md text-text-tertiary">
+                      {emptyMessage}
+                    </div>
+                  ) : (
+                    <ul
+                      ref={listRef}
+                      id={listboxId}
+                      role="listbox"
+                      aria-multiselectable={multiple || undefined}
+                      className="overflow-auto p-ds-02"
+                      style={{ maxHeight: `${maxVisible * ITEM_HEIGHT_PX}px` }}
                     >
-                      {option.icon && (
-                        <span className="flex h-ico-sm w-ico-sm items-center justify-center shrink-0">
-                          {option.icon}
-                        </span>
-                      )}
-                      <span className="flex flex-1 flex-col">
-                        {renderOption ? (
-                          renderOption(option, selected)
-                        ) : (
-                          <>
-                            <span>{option.label}</span>
-                            {option.description && (
-                              <span className="text-ds-sm text-text-secondary">
-                                {option.description}
+                      {filteredOptions.map((option, index) => {
+                        const selected = isSelected(option.value)
+                        return (
+                          <li
+                            key={option.value}
+                            id={`${optionIdPrefix}-option-${index}`}
+                            role="option"
+                            aria-selected={selected}
+                            aria-disabled={option.disabled || undefined}
+                            className={cn(
+                              'relative flex cursor-pointer select-none items-center gap-ds-03 rounded-ds-md px-ds-04 py-ds-03 text-ds-md outline-none',
+                              'transition-colors',
+                              highlightedIndex === index &&
+                                'bg-interactive-subtle',
+                              selected && 'text-interactive',
+                              option.disabled &&
+                                'pointer-events-none opacity-[0.38]',
+                            )}
+                            onClick={() => {
+                              if (!option.disabled) {
+                                handleSelect(option.value)
+                              }
+                            }}
+                            onKeyDown={(e) => {
+                              if (!option.disabled && (e.key === 'Enter' || e.key === ' ')) {
+                                e.preventDefault()
+                                handleSelect(option.value)
+                              }
+                            }}
+                            onMouseEnter={() => {
+                              if (!option.disabled) {
+                                setHighlightedIndex(index)
+                              }
+                            }}
+                          >
+                            {option.icon && (
+                              <span className="flex h-ico-sm w-ico-sm items-center justify-center shrink-0">
+                                {option.icon}
                               </span>
                             )}
-                          </>
-                        )}
-                      </span>
-                      {selected && (
-                        <IconCheck className="h-ico-sm w-ico-sm shrink-0" aria-hidden="true" />
-                      )}
-                    </li>
-                  )
-                })}
-              </ul>
-            )}
+                            <span className="flex flex-1 flex-col">
+                              {renderOption ? (
+                                renderOption(option, selected)
+                              ) : (
+                                <>
+                                  <span>{option.label}</span>
+                                  {option.description && (
+                                    <span className="text-ds-sm text-text-secondary">
+                                      {option.description}
+                                    </span>
+                                  )}
+                                </>
+                              )}
+                            </span>
+                            {selected && (
+                              <IconCheck className="h-ico-sm w-ico-sm shrink-0" aria-hidden="true" />
+                            )}
+                          </li>
+                        )
+                      })}
+                    </ul>
+                  )}
+                </motion.div>
           </PopoverPrimitive.Content>
         </PopoverPrimitive.Portal>
         </div>

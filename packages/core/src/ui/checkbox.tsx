@@ -2,7 +2,9 @@
 
 import * as CheckboxPrimitive from '@primitives/react-checkbox'
 import { IconCheck, IconMinus } from '@tabler/icons-react'
+import { AnimatePresence, motion } from 'framer-motion'
 import * as React from 'react'
+import { springs } from './lib/motion'
 import { cn } from './lib/utils'
 
 /**
@@ -42,6 +44,7 @@ const Checkbox = React.forwardRef<
   CheckboxProps
 >(({ className, error, indeterminate, checked, ...props }, ref) => {
   const resolvedChecked = indeterminate ? 'indeterminate' : checked
+  const isActive = resolvedChecked === true || resolvedChecked === 'indeterminate'
 
   return (
     <CheckboxPrimitive.Root
@@ -61,13 +64,25 @@ const Checkbox = React.forwardRef<
       )}
       {...props}
     >
-      <CheckboxPrimitive.Indicator className="flex items-center justify-center text-current animate-check-pop">
-        {resolvedChecked === 'indeterminate' ? (
-          <IconMinus className="h-ico-sm w-ico-sm" />
-        ) : (
-          <IconCheck className="h-3 w-3" />
+      <AnimatePresence>
+        {isActive && (
+          <CheckboxPrimitive.Indicator forceMount asChild>
+            <motion.span
+              className="flex items-center justify-center text-current"
+              initial={{ scale: 0, opacity: 0 }}
+              animate={{ scale: 1, opacity: 1 }}
+              exit={{ scale: 0, opacity: 0 }}
+              transition={springs.bouncy}
+            >
+              {resolvedChecked === 'indeterminate' ? (
+                <IconMinus className="h-ico-sm w-ico-sm" />
+              ) : (
+                <IconCheck className="h-3 w-3" />
+              )}
+            </motion.span>
+          </CheckboxPrimitive.Indicator>
         )}
-      </CheckboxPrimitive.Indicator>
+      </AnimatePresence>
     </CheckboxPrimitive.Root>
   )
 })

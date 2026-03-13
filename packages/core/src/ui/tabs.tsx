@@ -65,14 +65,14 @@ const tabsListVariants = cva('inline-flex items-center', {
 })
 
 const tabsTriggerVariants = cva(
-  'inline-flex items-center justify-center gap-ds-02 whitespace-nowrap font-sans text-ds-md font-medium transition-[color,background-color,border-color,box-shadow] duration-fast-01 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-focus focus-visible:ring-offset-1 disabled:pointer-events-none disabled:opacity-[0.38]',
+  'inline-flex items-center justify-center gap-ds-02 whitespace-nowrap font-sans text-ds-md font-medium transition-colors duration-100 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-focus focus-visible:ring-offset-1 disabled:pointer-events-none disabled:opacity-[0.38]',
   {
     variants: {
       variant: {
         line: [
           'px-ds-05 py-ds-03 -mb-px border-b-2 border-transparent',
           'text-text-secondary hover:text-text-primary',
-          'data-[state=active]:border-interactive data-[state=active]:text-interactive data-[state=active]:animate-tab-indicator',
+          'data-[state=active]:border-interactive data-[state=active]:text-interactive',
         ],
         contained: [
           'px-ds-05 py-ds-02b rounded-ds-md',

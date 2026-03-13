@@ -123,8 +123,8 @@ describe('generateScale', () => {
       expect(parseOklch(pinkScale.light[11].value).l).toBeCloseTo(0.32, 2)
     })
 
-    it('dark step 1 has L=0.14', () => {
-      expect(parseOklch(pinkScale.dark[0].value).l).toBeCloseTo(0.14, 2)
+    it('dark step 1 has L=0.11', () => {
+      expect(parseOklch(pinkScale.dark[0].value).l).toBeCloseTo(0.11, 2)
     })
 
     it('dark step 12 has L=0.88', () => {
@@ -220,12 +220,12 @@ describe('generateScale', () => {
 
   describe('reference preview values (pink dark)', () => {
     const expectedPinkDark = [
-      { step: 1, l: 0.14, c: 0.005 },
+      { step: 1, l: 0.11, c: 0.005 },
       { step: 2, l: 0.17, c: 0.015 },
-      { step: 3, l: 0.21, c: 0.04 },
-      { step: 4, l: 0.25, c: 0.06 },
-      { step: 5, l: 0.30, c: 0.08 },
-      { step: 6, l: 0.36, c: 0.10 },
+      { step: 3, l: 0.23, c: 0.04 },
+      { step: 4, l: 0.29, c: 0.06 },
+      { step: 5, l: 0.34, c: 0.08 },
+      { step: 6, l: 0.38, c: 0.10 },
       { step: 7, l: 0.44, c: 0.13 },
       { step: 8, l: 0.53, c: 0.18 },
       { step: 9, l: 0.63, c: 0.21 },

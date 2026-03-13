@@ -51,14 +51,16 @@ const LIGHT_L: readonly number[] = [
   0.32, // 12 — High-contrast text
 ]
 
-/** Dark-mode lightness: ascends from step 1 (darkest) to step 12 (brightest) */
+/** Dark-mode lightness: ascends from step 1 (darkest) to step 12 (brightest)
+ *  Steps 1-6 have wider gaps (0.05-0.06) for visible surface elevation in dark mode.
+ *  Without this, cards/panels/containers blend into their parent backgrounds. */
 const DARK_L: readonly number[] = [
-  0.14, // 1
-  0.17, // 2
-  0.21, // 3
-  0.25, // 4
-  0.30, // 5
-  0.36, // 6
+  0.11, // 1 — App bg (deepest dark)
+  0.17, // 2 — Subtle panel/sidebar (+0.06)
+  0.23, // 3 — Component/card bg (+0.06)
+  0.29, // 4 — Hover (+0.06)
+  0.34, // 5 — Active/pressed (+0.05)
+  0.38, // 6 — Border subtle (+0.04)
   0.44, // 7
   0.53, // 8
   0.63, // 9

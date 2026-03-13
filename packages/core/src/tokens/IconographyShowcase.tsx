@@ -190,8 +190,8 @@ function ColorDemo() {
     { label: 'text-placeholder', css: 'var(--color-text-placeholder)' },
     { label: 'interactive', css: 'var(--color-interactive)' },
     { label: 'text-error', css: 'var(--color-text-error)' },
-    { label: 'green-500', css: 'var(--green-500)' },
-    { label: 'yellow-500', css: 'var(--yellow-500)' },
+    { label: 'success', css: 'var(--color-success-9)' },
+    { label: 'warning', css: 'var(--color-warning-9)' },
   ]
 
   return (

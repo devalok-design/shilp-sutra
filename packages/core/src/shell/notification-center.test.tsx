@@ -1,5 +1,6 @@
 import { render, screen } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
+import { axe } from 'vitest-axe'
 import { describe, it, expect, vi } from 'vitest'
 
 vi.mock('../ui/popover', () => ({
@@ -33,6 +34,13 @@ const makeNotification = (overrides: Partial<Notification> = {}): Notification =
 })
 
 describe('NotificationCenter', () => {
+  it('has no accessibility violations', async () => {
+    const { container } = render(
+      <NotificationCenter notifications={[makeNotification()]} />,
+    )
+    expect(await axe(container)).toHaveNoViolations()
+  })
+
   it('does not call onNavigate when getNotificationRoute is not provided', async () => {
     const user = userEvent.setup()
     const onNavigate = vi.fn()

@@ -68,4 +68,6 @@ const InputOTPSeparator = React.forwardRef<
 ))
 InputOTPSeparator.displayName = 'InputOTPSeparator'
 
+export type InputOTPProps = React.ComponentPropsWithoutRef<typeof OTPInput>
+
 export { InputOTP, InputOTPGroup, InputOTPSlot, InputOTPSeparator }

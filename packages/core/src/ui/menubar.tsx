@@ -218,6 +218,9 @@ const MenubarShortcut = ({
 }
 MenubarShortcut.displayName = 'MenubarShortcut'
 
+export type MenubarContentProps = React.ComponentPropsWithoutRef<typeof MenubarPrimitive.Content>
+export type MenubarItemProps = React.ComponentPropsWithoutRef<typeof MenubarPrimitive.Item>
+
 export {
   Menubar,
   MenubarMenu,

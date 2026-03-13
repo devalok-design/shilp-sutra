@@ -242,6 +242,9 @@ const DropdownMenuShortcut = ({
 }
 DropdownMenuShortcut.displayName = 'DropdownMenuShortcut'
 
+export type DropdownMenuContentProps = React.ComponentPropsWithoutRef<typeof DropdownMenuPrimitive.Content>
+export type DropdownMenuItemProps = React.ComponentPropsWithoutRef<typeof DropdownMenuPrimitive.Item>
+
 export {
   DropdownMenu,
   DropdownMenuTrigger,

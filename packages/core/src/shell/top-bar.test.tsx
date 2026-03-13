@@ -1,5 +1,6 @@
 import { render, screen } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
+import { axe } from 'vitest-axe'
 import { describe, it, expect, vi, beforeEach } from 'vitest'
 
 // Mock the sidebar module to avoid SidebarContext dependency
@@ -61,6 +62,11 @@ describe('TopBar', () => {
   it('renders without crashing', () => {
     const { container } = render(<TopBar />)
     expect(container.firstElementChild).toBeInTheDocument()
+  })
+
+  it('has no accessibility violations', async () => {
+    const { container } = render(<TopBar />)
+    expect(await axe(container)).toHaveNoViolations()
   })
 
   it('displays the page title', () => {

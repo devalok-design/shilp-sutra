@@ -49,7 +49,9 @@ import {
  *
  * // Valid colors: 'neutral' | 'success' | 'warning' | 'error' | 'info'
  */
-export const Toaster = React.forwardRef<HTMLDivElement, React.HTMLAttributes<HTMLDivElement>>(
+export interface ToasterProps extends React.HTMLAttributes<HTMLDivElement> {}
+
+export const Toaster = React.forwardRef<HTMLDivElement, ToasterProps>(
   ({ className, ...props }, ref) => {
   const { toasts } = useToast()
 

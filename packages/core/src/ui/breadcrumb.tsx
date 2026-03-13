@@ -88,6 +88,9 @@ const BreadcrumbEllipsis = ({ className, ...props }: React.ComponentProps<'span'
 )
 BreadcrumbEllipsis.displayName = 'BreadcrumbEllipsis'
 
+export type BreadcrumbProps = React.ComponentPropsWithoutRef<'nav'>
+export type BreadcrumbLinkProps = React.ComponentPropsWithoutRef<'a'>
+
 export {
   Breadcrumb,
   BreadcrumbList,

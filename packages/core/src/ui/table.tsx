@@ -109,6 +109,10 @@ const TableCaption = React.forwardRef<
 ))
 TableCaption.displayName = "TableCaption"
 
+export type TableProps = React.HTMLAttributes<HTMLTableElement>
+export type TableRowProps = React.HTMLAttributes<HTMLTableRowElement>
+export type TableCellProps = React.TdHTMLAttributes<HTMLTableCellElement>
+
 export {
   Table,
   TableHeader,

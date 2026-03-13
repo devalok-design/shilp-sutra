@@ -730,6 +730,8 @@ const SidebarMenuSubButton = forwardRef<
 })
 SidebarMenuSubButton.displayName = 'SidebarMenuSubButton'
 
+export type SidebarProps = React.ComponentPropsWithoutRef<'div'> & { side?: 'left' | 'right'; variant?: 'sidebar' | 'floating' | 'inset'; collapsible?: 'offcanvas' | 'icon' | 'none' }
+
 export {
   Sidebar,
   SidebarContent,

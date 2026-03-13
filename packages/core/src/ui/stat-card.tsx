@@ -3,7 +3,7 @@
 import { IconMinus, IconTrendingDown, IconTrendingUp } from '@tabler/icons-react'
 import { motion } from 'framer-motion'
 import * as React from 'react'
-import { useLink } from '../shell/link-context'
+import { useLink } from './lib/link-context'
 import { springs, tweens } from './lib/motion'
 import { cn } from './lib/utils'
 

@@ -6,7 +6,7 @@ import { IconChevronDown } from '@tabler/icons-react'
 import { motion } from 'framer-motion'
 
 import { cn } from './lib/utils'
-import { springs, tweens } from './lib/motion'
+import { tweens } from './lib/motion'
 
 /**
  * Accordion compound component — vertically stacked, collapsible content sections.

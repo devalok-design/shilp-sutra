@@ -1,32 +1,6 @@
-'use client'
-
-import * as React from 'react'
-
-type LinkComponent = React.ForwardRefExoticComponent<
-  React.AnchorHTMLAttributes<HTMLAnchorElement> & { href: string } & React.RefAttributes<HTMLAnchorElement>
->
-
-const DefaultLink = React.forwardRef<
-  HTMLAnchorElement,
-  React.AnchorHTMLAttributes<HTMLAnchorElement> & { href: string }
->// eslint-disable-next-line jsx-a11y/anchor-has-content -- content passed via children spread
-(({ href, ...props }, ref) => <a ref={ref} href={href} {...props} />)
-DefaultLink.displayName = 'DefaultLink'
-
-const LinkContext = React.createContext<LinkComponent>(DefaultLink)
-
-export interface LinkProviderProps {
-  component: LinkComponent
-  children: React.ReactNode
-}
-
-export function LinkProvider({
-  component,
-  children,
-}: LinkProviderProps) {
-  return <LinkContext.Provider value={component}>{children}</LinkContext.Provider>
-}
-
-export function useLink() {
-  return React.useContext(LinkContext)
-}
+/**
+ * Re-export from canonical location in ui/lib so both ui/ and shell/ can use it
+ * without violating module boundary rules (ui/ must not import from shell/).
+ */
+export { LinkProvider, useLink } from '../ui/lib/link-context'
+export type { LinkProviderProps } from '../ui/lib/link-context'

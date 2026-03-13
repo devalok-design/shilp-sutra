@@ -98,7 +98,7 @@ interface TaskCardVisualProps {
   dragHandleProps?: {
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     attributes: Record<string, any>
-    listeners: Record<string, Function> | undefined
+    listeners: Record<string, (...args: unknown[]) => void> | undefined
   }
 }
 
@@ -150,6 +150,7 @@ function TaskCardVisual({
   }
 
   return (
+    // eslint-disable-next-line jsx-a11y/no-noninteractive-element-interactions -- role="group" groups task content for screen readers; click/key handlers are intentional
     <div
       role="group"
       tabIndex={0}
@@ -406,6 +407,7 @@ function TaskCardCompactVisual({
   const leadUser = task.owner ?? task.assignees[0] ?? null
 
   return (
+    // eslint-disable-next-line jsx-a11y/no-noninteractive-element-interactions -- role="group" groups task content for screen readers; click/key handlers are intentional
     <div
       role="group"
       tabIndex={0}

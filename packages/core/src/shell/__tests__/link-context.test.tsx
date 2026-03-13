@@ -13,7 +13,7 @@ describe('LinkProvider', () => {
   it('provides default anchor link', () => {
     render(
       <LinkProvider component={React.forwardRef<HTMLAnchorElement, React.AnchorHTMLAttributes<HTMLAnchorElement> & { href: string }>(
-        (props, ref) => <a ref={ref} {...props} />
+        (props, ref) => <a ref={ref} {...props} /> // eslint-disable-line jsx-a11y/anchor-has-content
       )}>
         <TestConsumer />
       </LinkProvider>,
@@ -25,7 +25,7 @@ describe('LinkProvider', () => {
   it('has no accessibility violations', async () => {
     const { container } = render(
       <LinkProvider component={React.forwardRef<HTMLAnchorElement, React.AnchorHTMLAttributes<HTMLAnchorElement> & { href: string }>(
-        (props, ref) => <a ref={ref} {...props} />
+        (props, ref) => <a ref={ref} {...props} /> // eslint-disable-line jsx-a11y/anchor-has-content
       )}>
         <TestConsumer />
       </LinkProvider>,

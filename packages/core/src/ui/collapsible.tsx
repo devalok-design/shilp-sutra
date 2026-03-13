@@ -5,7 +5,7 @@ import * as CollapsiblePrimitive from '@primitives/react-collapsible'
 import { motion } from 'framer-motion'
 
 import { cn } from './lib/utils'
-import { springs, tweens } from './lib/motion'
+import { tweens } from './lib/motion'
 
 const Collapsible = CollapsiblePrimitive.Root
 

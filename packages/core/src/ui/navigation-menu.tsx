@@ -3,7 +3,7 @@
 import * as React from 'react'
 import * as NavigationMenuPrimitive from '@primitives/react-navigation-menu'
 import { IconChevronDown } from '@tabler/icons-react'
-import { motion, AnimatePresence } from 'framer-motion'
+import { motion } from 'framer-motion'
 
 import { cn } from './lib/utils'
 import { springs, tweens } from './lib/motion'

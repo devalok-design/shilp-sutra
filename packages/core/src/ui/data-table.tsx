@@ -566,7 +566,7 @@ export function DataTable<TData, TValue>({
       return selectedRowIds.includes(id)
     })
     onSelectionChangeRef.current(selected)
-  }, [rowSelection, data, getRowIdProp]) // eslint-disable-line react-hooks/exhaustive-deps
+  }, [rowSelection, data, getRowIdProp])
 
   /** Compute sticky positioning styles for pinned columns */
   function getPinnedCellStyle(columnId: string) {

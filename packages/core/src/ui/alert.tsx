@@ -5,7 +5,7 @@ import * as React from 'react'
 import { cva, type VariantProps } from 'class-variance-authority'
 import { motion, AnimatePresence } from 'framer-motion'
 import { cn } from './lib/utils'
-import { springs, tweens, motionProps } from './lib/motion'
+import { springs, motionProps } from './lib/motion'
 
 const alertVariants = cva(
   'relative flex gap-ds-04 rounded-ds-lg border p-ds-05',

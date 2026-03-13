@@ -10,7 +10,6 @@ import { springs, tweens } from './lib/motion'
 
 // ── Internal contexts to thread open state ──
 
-const MenubarMenuOpenContext = React.createContext(false)
 const MenubarSubOpenContext = React.createContext(false)
 
 const MenubarMenu: React.FC<React.ComponentPropsWithoutRef<typeof MenubarPrimitive.Menu>> = (props) => {

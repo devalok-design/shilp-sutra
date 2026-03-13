@@ -3,7 +3,7 @@
 import * as React from 'react'
 import { IconX } from '@tabler/icons-react'
 import { cva, type VariantProps } from 'class-variance-authority'
-import { motion, AnimatePresence } from 'framer-motion'
+import { motion } from 'framer-motion'
 
 import { springs } from './lib/motion'
 import { motionProps } from './lib/motion'

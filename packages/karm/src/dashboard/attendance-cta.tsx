@@ -189,7 +189,7 @@ const AttendanceCTA = React.forwardRef<HTMLDivElement, AttendanceCTAProps>(
           type="button"
           onClick={onMarkAttendance}
           disabled={isSubmitting}
-          className="flex items-center gap-ds-03 rounded-ds-xl bg-interactive px-ds-06 py-ds-04 font-semibold text-text-on-color shadow-02 transition-all duration-moderate-01 ease-expressive-standard hover:-translate-y-0.5 hover:shadow-03 active:translate-y-0 active:scale-[0.98] disabled:opacity-[0.38]"
+          className="flex items-center gap-ds-03 rounded-ds-xl bg-interactive px-ds-06 py-ds-04 font-semibold text-text-on-color shadow-02 transition-all duration-150 ease-out hover:-translate-y-0.5 hover:shadow-03 active:translate-y-0 active:scale-[0.98] disabled:opacity-[0.38]"
         >
           {isSubmitting ? 'Marking...' : 'Mark Attendance'}
           {!isSubmitting && (

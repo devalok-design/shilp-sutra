@@ -1,45 +1,51 @@
 import { describe, it, expect } from 'vitest'
-import { motion, duration, easings, durations } from '../motion'
+import { springs, tweens, stagger, withReducedMotion } from '../motion'
 
-describe('motion()', () => {
-  it('returns productive-standard easing', () => {
-    expect(motion('standard', 'productive')).toBe('cubic-bezier(0.2, 0, 0.38, 0.9)')
+describe('springs', () => {
+  it('has snappy, smooth, bouncy, gentle keys', () => {
+    expect(Object.keys(springs)).toEqual(['snappy', 'smooth', 'bouncy', 'gentle'])
   })
 
-  it('returns expressive-entrance easing', () => {
-    expect(motion('entrance', 'expressive')).toBe('cubic-bezier(0, 0, 0.3, 1)')
+  it.each(['snappy', 'smooth', 'bouncy', 'gentle'] as const)(
+    '%s has type: "spring"',
+    (key) => {
+      expect(springs[key]).toHaveProperty('type', 'spring')
+    },
+  )
+})
+
+describe('tweens', () => {
+  it('has fade, colorShift keys', () => {
+    expect(Object.keys(tweens)).toEqual(['fade', 'colorShift'])
   })
 
-  it('returns expressive-exit easing', () => {
-    expect(motion('exit', 'expressive')).toBe('cubic-bezier(0.4, 0.14, 1, 1)')
+  it.each(['fade', 'colorShift'] as const)('%s has type: "tween"', (key) => {
+    expect(tweens[key]).toHaveProperty('type', 'tween')
   })
 })
 
-describe('duration()', () => {
-  it('returns fast-01 value', () => {
-    expect(duration('fast-01')).toBe('70ms')
+describe('stagger()', () => {
+  it('returns visible/hidden transitions with staggerChildren', () => {
+    const result = stagger()
+    expect(result.visible.transition).toHaveProperty('staggerChildren', 0.04)
+    expect(result.hidden.transition).toHaveProperty('staggerChildren', 0.04)
   })
 
-  it('returns slow-02 value', () => {
-    expect(duration('slow-02')).toBe('700ms')
-  })
-
-  it('returns instant value', () => {
-    expect(duration('instant')).toBe('0ms')
-  })
-})
-
-describe('easings', () => {
-  it('exposes all 6 mode curves', () => {
-    expect(Object.keys(easings.productive)).toEqual(['standard', 'entrance', 'exit'])
-    expect(Object.keys(easings.expressive)).toEqual(['standard', 'entrance', 'exit'])
+  it('accepts a custom delay', () => {
+    const result = stagger(0.1)
+    expect(result.visible.transition.staggerChildren).toBe(0.1)
+    expect(result.hidden.transition.staggerChildren).toBe(0.1)
   })
 })
 
-describe('durations', () => {
-  it('exposes all 7 duration values', () => {
-    expect(Object.keys(durations)).toEqual([
-      'instant', 'fast-01', 'fast-02', 'moderate-01', 'moderate-02', 'slow-01', 'slow-02',
-    ])
+describe('withReducedMotion()', () => {
+  it('returns a transition with duration: 0', () => {
+    const result = withReducedMotion(springs.smooth)
+    expect(result).toHaveProperty('duration', 0)
+  })
+
+  it('preserves original transition properties', () => {
+    const result = withReducedMotion(springs.smooth)
+    expect(result).toHaveProperty('type', 'spring')
   })
 })

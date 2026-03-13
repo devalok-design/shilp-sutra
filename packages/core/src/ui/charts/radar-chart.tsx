@@ -2,12 +2,14 @@
 
 import * as React from 'react'
 import { useState, useRef, useEffect } from 'react'
+import { motion } from 'framer-motion'
 import { lineRadial, curveLinearClosed } from 'd3-shape'
 import { cn } from '../lib/utils'
+import { tweens, motionProps } from '../lib/motion'
 import { Legend } from './_internal/legend'
 import { ChartTooltip, useChartTooltip } from './_internal/tooltip'
 import { resolveColor } from './_internal/colors'
-import { useReducedMotion, getTransitionDuration } from './_internal/animation'
+import { useReducedMotion } from './_internal/animation'
 
 export interface RadarChartProps extends Omit<React.HTMLAttributes<HTMLDivElement>, 'children'> {
   /** Data array (one entry per data point / axis) */
@@ -58,10 +60,7 @@ export const RadarChart = React.forwardRef<HTMLDivElement, RadarChartProps>(
   const [containerWidth, setContainerWidth] = useState(0)
   const { tooltip, show, hide } = useChartTooltip()
   const reducedMotion = useReducedMotion()
-
-  // Keep animate/reducedMotion accessible for future animation work
-  const _duration = getTransitionDuration(reducedMotion, animate ? 600 : 0)
-  void _duration
+  const shouldAnimate = animate && !reducedMotion
 
   useEffect(() => {
     if (!containerRef.current) return
@@ -112,14 +111,17 @@ export const RadarChart = React.forwardRef<HTMLDivElement, RadarChartProps>(
   }
 
   return (
-    <div
+    <motion.div
       ref={(node) => {
         (containerRef as React.MutableRefObject<HTMLDivElement | null>).current = node
         if (typeof ref === 'function') ref(node)
         else if (ref) (ref as React.MutableRefObject<HTMLDivElement | null>).current = node
       }}
       className={cn('relative w-full', className)}
-      {...props}
+      {...(shouldAnimate
+        ? { initial: { opacity: 0, scale: 0.96 }, animate: { opacity: 1, scale: 1 }, transition: tweens.fade }
+        : {})}
+      {...motionProps(props)}
     >
       {containerWidth > 0 && (
         <>
@@ -324,7 +326,7 @@ export const RadarChart = React.forwardRef<HTMLDivElement, RadarChartProps>(
           className="mt-ds-04"
         />
       )}
-    </div>
+    </motion.div>
   )
   },
 )

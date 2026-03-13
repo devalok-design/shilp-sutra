@@ -2,7 +2,9 @@
 
 import * as React from 'react'
 import { useRef, useEffect } from 'react'
+import { motion, AnimatePresence } from 'framer-motion'
 import { cn } from '@/ui/lib/utils'
+import { springs } from '@/ui/lib/motion'
 import { useComposedRef } from '../utils/use-composed-ref'
 import { StreamingText } from './streaming-text'
 import { IconRobot, IconUser, IconAlertCircle } from '@tabler/icons-react'
@@ -86,23 +88,36 @@ export const MessageList = React.forwardRef<HTMLDivElement, MessageListProps>(
   return (
     <div ref={mergedRef} className={cn("no-scrollbar flex-1 overflow-y-auto p-ds-05", className)} {...props}>
       <div className="flex flex-col gap-ds-05" role="log" aria-label="Chat messages">
+        <AnimatePresence initial={false}>
         {messages.map((msg) => {
           if (msg.role === 'SYSTEM') {
             return (
-              <div key={msg.id} className="flex justify-center">
+              <motion.div
+                key={msg.id}
+                initial={{ opacity: 0, y: 10 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={springs.snappy}
+                className="flex justify-center"
+              >
                 <div className="flex items-center gap-ds-03 rounded-ds-lg bg-error-surface px-ds-04 py-ds-03">
                   <IconAlertCircle className="h-ico-sm w-ico-sm shrink-0 text-text-error" />
                   <p className="text-ds-sm text-text-error">
                     {msg.content}
                   </p>
                 </div>
-              </div>
+              </motion.div>
             )
           }
 
           if (msg.role === 'USER') {
             return (
-              <div key={msg.id} className="flex justify-end">
+              <motion.div
+                key={msg.id}
+                initial={{ opacity: 0, y: 10 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={springs.snappy}
+                className="flex justify-end"
+              >
                 <div className="flex max-w-[85%] items-start gap-ds-03">
                   <div className="rounded-ds-2xl rounded-br-ds-sm bg-interactive px-ds-04 py-ds-03 text-text-on-color">
                     <p className="text-ds-md whitespace-pre-wrap">{msg.content}</p>
@@ -111,13 +126,19 @@ export const MessageList = React.forwardRef<HTMLDivElement, MessageListProps>(
                     <IconUser className="h-ico-sm w-ico-sm text-text-secondary" />
                   </div>
                 </div>
-              </div>
+              </motion.div>
             )
           }
 
           // ASSISTANT
           return (
-            <div key={msg.id} className="flex justify-start">
+            <motion.div
+              key={msg.id}
+              initial={{ opacity: 0, y: 10 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={springs.snappy}
+              className="flex justify-start"
+            >
               <div className="flex max-w-[85%] items-start gap-ds-03">
                 <div className="flex h-ds-xs-plus w-ds-xs-plus shrink-0 items-center justify-center rounded-ds-full bg-field">
                   <IconRobot className="h-ico-sm w-ico-sm text-text-secondary" />
@@ -130,13 +151,19 @@ export const MessageList = React.forwardRef<HTMLDivElement, MessageListProps>(
                   </div>
                 </div>
               </div>
-            </div>
+            </motion.div>
           )
         })}
 
         {/* Streaming assistant message */}
         {isStreaming && streamingText && (
-          <div className="flex justify-start">
+          <motion.div
+            key="streaming-text"
+            initial={{ opacity: 0, y: 10 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={springs.snappy}
+            className="flex justify-start"
+          >
             <div className="flex max-w-[85%] items-start gap-ds-03">
               <div className="flex h-ds-xs-plus w-ds-xs-plus shrink-0 items-center justify-center rounded-ds-full bg-field">
                 <IconRobot className="h-ico-sm w-ico-sm text-text-secondary" />
@@ -147,26 +174,38 @@ export const MessageList = React.forwardRef<HTMLDivElement, MessageListProps>(
                 </div>
               </div>
             </div>
-          </div>
+          </motion.div>
         )}
 
         {/* Streaming indicator when no text yet */}
         {isStreaming && !streamingText && (
-          <div className="flex justify-start">
+          <motion.div
+            key="streaming-dots"
+            initial={{ opacity: 0, y: 10 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={springs.snappy}
+            className="flex justify-start"
+          >
             <div className="flex max-w-[85%] items-start gap-ds-03">
               <div className="flex h-ds-xs-plus w-ds-xs-plus shrink-0 items-center justify-center rounded-ds-full bg-field">
                 <IconRobot className="h-ico-sm w-ico-sm text-text-secondary" />
               </div>
               <div className="rounded-ds-2xl rounded-bl-ds-sm bg-field px-ds-04 py-ds-03">
                 <div className="flex items-center gap-ds-02b py-ds-02">
-                  <div className="h-2 w-2 animate-bounce rounded-ds-full bg-text-placeholder [animation-delay:0ms]" />
-                  <div className="h-2 w-2 animate-bounce rounded-ds-full bg-text-placeholder [animation-delay:150ms]" />
-                  <div className="h-2 w-2 animate-bounce rounded-ds-full bg-text-placeholder [animation-delay:300ms]" />
+                  {[0, 1, 2].map((i) => (
+                    <motion.span
+                      key={i}
+                      className="h-2 w-2 rounded-ds-full bg-text-placeholder"
+                      animate={{ y: [0, -4, 0] }}
+                      transition={{ duration: 0.6, repeat: Infinity, delay: i * 0.15 }}
+                    />
+                  ))}
                 </div>
               </div>
             </div>
-          </div>
+          </motion.div>
         )}
+        </AnimatePresence>
       </div>
     </div>
   )

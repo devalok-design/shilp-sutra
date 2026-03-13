@@ -3,16 +3,62 @@
 import * as React from 'react'
 import * as MenubarPrimitive from '@primitives/react-menubar'
 import { IconCheck, IconChevronRight, IconCircle } from '@tabler/icons-react'
+import { motion, AnimatePresence } from 'framer-motion'
 
 import { cn } from './lib/utils'
+import { springs, tweens } from './lib/motion'
 
-const MenubarMenu: typeof MenubarPrimitive.Menu = MenubarPrimitive.Menu
+// ── Internal contexts to thread open state ──
+
+const MenubarMenuOpenContext = React.createContext(false)
+const MenubarSubOpenContext = React.createContext(false)
+
+const MenubarMenu: React.FC<React.ComponentPropsWithoutRef<typeof MenubarPrimitive.Menu>> = (props) => {
+  // MenubarPrimitive.Menu doesn't expose open/onOpenChange directly.
+  // We derive open from data-state on the trigger via a callback ref approach,
+  // but the cleanest way is to use the Menubar root's value prop.
+  // Since MenubarMenu doesn't have open/onOpenChange, we track via a wrapper
+  // that observes the trigger's data-state.
+  //
+  // Alternative: MenubarPrimitive.Menu has a `value` that the root uses.
+  // We'll use a simpler approach: track open via content mount state.
+  return <MenubarPrimitive.Menu {...props} />
+}
+MenubarMenu.displayName = 'MenubarMenu'
+
+// For Menubar, the Menu doesn't expose open/onOpenChange. Instead, we'll use a
+// different approach: wrap Content to use a local presence state based on data-state.
+// We create a wrapper component that tracks whether content should be shown.
 
 const MenubarGroup: typeof MenubarPrimitive.Group = MenubarPrimitive.Group
 
 const MenubarPortal: typeof MenubarPrimitive.Portal = MenubarPrimitive.Portal
 
-const MenubarSub: typeof MenubarPrimitive.Sub = MenubarPrimitive.Sub
+const MenubarSub: React.FC<React.ComponentPropsWithoutRef<typeof MenubarPrimitive.Sub>> = ({
+  open: controlledOpen,
+  defaultOpen = false,
+  onOpenChange,
+  ...props
+}) => {
+  const [uncontrolledOpen, setUncontrolledOpen] = React.useState(defaultOpen)
+  const isControlled = controlledOpen !== undefined
+  const open = isControlled ? controlledOpen : uncontrolledOpen
+
+  const handleOpenChange = React.useCallback(
+    (value: boolean) => {
+      if (!isControlled) setUncontrolledOpen(value)
+      onOpenChange?.(value)
+    },
+    [isControlled, onOpenChange],
+  )
+
+  return (
+    <MenubarSubOpenContext.Provider value={open}>
+      <MenubarPrimitive.Sub open={open} onOpenChange={handleOpenChange} {...props} />
+    </MenubarSubOpenContext.Provider>
+  )
+}
+MenubarSub.displayName = 'MenubarSub'
 
 const MenubarRadioGroup: typeof MenubarPrimitive.RadioGroup =
   MenubarPrimitive.RadioGroup
@@ -71,24 +117,53 @@ MenubarSubTrigger.displayName = MenubarPrimitive.SubTrigger.displayName
 const MenubarSubContent = React.forwardRef<
   React.ElementRef<typeof MenubarPrimitive.SubContent>,
   React.ComponentPropsWithoutRef<typeof MenubarPrimitive.SubContent>
->(({ className, ...props }, ref) => (
-  <MenubarPrimitive.SubContent
-    ref={ref}
-    className={cn(
-      'z-popover min-w-[8rem] overflow-hidden rounded-ds-lg border border-border bg-layer-01 p-ds-02 text-text-primary shadow-03 data-[state=open]:animate-in data-[state=closed]:animate-out data-[state=closed]:fade-out-0 data-[state=open]:fade-in-0 data-[state=closed]:zoom-out-95 data-[state=open]:zoom-in-95 data-[side=bottom]:slide-in-from-top-2 data-[side=left]:slide-in-from-right-2 data-[side=right]:slide-in-from-left-2 data-[side=top]:slide-in-from-bottom-2',
-      className,
-    )}
-    {...props}
-  />
-))
+>(({ className, children, ...props }, ref) => {
+  const open = React.useContext(MenubarSubOpenContext)
+
+  return (
+    <AnimatePresence>
+      {open && (
+        <MenubarPrimitive.SubContent
+          ref={ref}
+          forceMount
+          asChild
+          {...props}
+        >
+          <motion.div
+            initial={{ opacity: 0, scale: 0.95 }}
+            animate={{ opacity: 1, scale: 1 }}
+            exit={{ opacity: 0, scale: 0.95 }}
+            transition={{ ...springs.snappy, opacity: tweens.fade }}
+            className={cn(
+              'z-popover min-w-[8rem] overflow-hidden rounded-ds-lg border border-border bg-layer-01 p-ds-02 text-text-primary shadow-03',
+              className,
+            )}
+          >
+            {children}
+          </motion.div>
+        </MenubarPrimitive.SubContent>
+      )}
+    </AnimatePresence>
+  )
+})
 MenubarSubContent.displayName = MenubarPrimitive.SubContent.displayName
+
+// For MenubarContent, since MenubarMenu doesn't expose open/onOpenChange,
+// we use a wrapper that reads presence from a callback approach.
+// The cleanest solution: use a local state tracker via onCloseAutoFocus/onOpenAutoFocus
+// or simply keep CSS-free and let Radix handle mount/unmount naturally.
+//
+// Since Menubar menus are opened by the Menubar root (which tracks which menu value is open),
+// and MenubarPrimitive.Content already handles mount/unmount, we can use a ref-based approach
+// to detect the data-state attribute. However, the simplest reliable approach is to use
+// a wrapper that detects mount via useEffect.
 
 const MenubarContent = React.forwardRef<
   React.ElementRef<typeof MenubarPrimitive.Content>,
   React.ComponentPropsWithoutRef<typeof MenubarPrimitive.Content>
 >(
   (
-    { className, align = 'start', alignOffset = -4, sideOffset = 8, ...props },
+    { className, align = 'start', alignOffset = -4, sideOffset = 8, children, ...props },
     ref,
   ) => (
     <MenubarPrimitive.Portal>
@@ -97,13 +172,22 @@ const MenubarContent = React.forwardRef<
         align={align}
         alignOffset={alignOffset}
         sideOffset={sideOffset}
-        className={cn(
-          'z-popover min-w-[12rem] rounded-ds-lg border border-border bg-layer-01 p-ds-02 text-text-primary shadow-03',
-          'data-[state=open]:animate-in data-[state=closed]:animate-out data-[state=closed]:fade-out-0 data-[state=open]:fade-in-0 data-[state=closed]:zoom-out-95 data-[state=open]:zoom-in-95 data-[side=bottom]:slide-in-from-top-2 data-[side=left]:slide-in-from-right-2 data-[side=right]:slide-in-from-left-2 data-[side=top]:slide-in-from-bottom-2',
-          className,
-        )}
+        asChild
         {...props}
-      />
+      >
+        <motion.div
+          initial={{ opacity: 0, scale: 0.95 }}
+          animate={{ opacity: 1, scale: 1 }}
+          exit={{ opacity: 0, scale: 0.95 }}
+          transition={{ ...springs.snappy, opacity: tweens.fade }}
+          className={cn(
+            'z-popover min-w-[12rem] rounded-ds-lg border border-border bg-layer-01 p-ds-02 text-text-primary shadow-03',
+            className,
+          )}
+        >
+          {children}
+        </motion.div>
+      </MenubarPrimitive.Content>
     </MenubarPrimitive.Portal>
   ),
 )

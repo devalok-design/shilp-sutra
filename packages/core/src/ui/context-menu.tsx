@@ -3,10 +3,37 @@
 import * as React from "react"
 import * as ContextMenuPrimitive from "@primitives/react-context-menu"
 import { IconCheck, IconChevronRight, IconCircle } from '@tabler/icons-react'
+import { motion, AnimatePresence } from 'framer-motion'
 
 import { cn } from "./lib/utils"
+import { springs, tweens } from './lib/motion'
 
-const ContextMenu = ContextMenuPrimitive.Root
+// ── Internal contexts to thread open state ──
+
+const ContextMenuOpenContext = React.createContext(false)
+const ContextMenuSubOpenContext = React.createContext(false)
+
+const ContextMenu: React.FC<React.ComponentPropsWithoutRef<typeof ContextMenuPrimitive.Root>> = ({
+  onOpenChange,
+  ...props
+}) => {
+  const [open, setOpen] = React.useState(false)
+
+  const handleOpenChange = React.useCallback(
+    (value: boolean) => {
+      setOpen(value)
+      onOpenChange?.(value)
+    },
+    [onOpenChange],
+  )
+
+  return (
+    <ContextMenuOpenContext.Provider value={open}>
+      <ContextMenuPrimitive.Root onOpenChange={handleOpenChange} {...props} />
+    </ContextMenuOpenContext.Provider>
+  )
+}
+ContextMenu.displayName = 'ContextMenu'
 
 const ContextMenuTrigger = ContextMenuPrimitive.Trigger
 
@@ -14,7 +41,31 @@ const ContextMenuGroup = ContextMenuPrimitive.Group
 
 const ContextMenuPortal = ContextMenuPrimitive.Portal
 
-const ContextMenuSub = ContextMenuPrimitive.Sub
+const ContextMenuSub: React.FC<React.ComponentPropsWithoutRef<typeof ContextMenuPrimitive.Sub>> = ({
+  open: controlledOpen,
+  defaultOpen = false,
+  onOpenChange,
+  ...props
+}) => {
+  const [uncontrolledOpen, setUncontrolledOpen] = React.useState(defaultOpen)
+  const isControlled = controlledOpen !== undefined
+  const open = isControlled ? controlledOpen : uncontrolledOpen
+
+  const handleOpenChange = React.useCallback(
+    (value: boolean) => {
+      if (!isControlled) setUncontrolledOpen(value)
+      onOpenChange?.(value)
+    },
+    [isControlled, onOpenChange],
+  )
+
+  return (
+    <ContextMenuSubOpenContext.Provider value={open}>
+      <ContextMenuPrimitive.Sub open={open} onOpenChange={handleOpenChange} {...props} />
+    </ContextMenuSubOpenContext.Provider>
+  )
+}
+ContextMenuSub.displayName = 'ContextMenuSub'
 
 const ContextMenuRadioGroup = ContextMenuPrimitive.RadioGroup
 
@@ -42,33 +93,71 @@ ContextMenuSubTrigger.displayName = ContextMenuPrimitive.SubTrigger.displayName
 const ContextMenuSubContent = React.forwardRef<
   React.ElementRef<typeof ContextMenuPrimitive.SubContent>,
   React.ComponentPropsWithoutRef<typeof ContextMenuPrimitive.SubContent>
->(({ className, ...props }, ref) => (
-  <ContextMenuPrimitive.SubContent
-    ref={ref}
-    className={cn(
-      "z-popover min-w-[8rem] overflow-hidden rounded-ds-lg border border-border bg-layer-01 p-ds-02 text-text-primary shadow-03 data-[state=open]:animate-in data-[state=closed]:animate-out data-[state=closed]:fade-out-0 data-[state=open]:fade-in-0 data-[state=closed]:zoom-out-95 data-[state=open]:zoom-in-95 data-[side=bottom]:slide-in-from-top-2 data-[side=left]:slide-in-from-right-2 data-[side=right]:slide-in-from-left-2 data-[side=top]:slide-in-from-bottom-2",
-      className
-    )}
-    {...props}
-  />
-))
+>(({ className, children, ...props }, ref) => {
+  const open = React.useContext(ContextMenuSubOpenContext)
+
+  return (
+    <AnimatePresence>
+      {open && (
+        <ContextMenuPrimitive.SubContent
+          ref={ref}
+          forceMount
+          asChild
+          {...props}
+        >
+          <motion.div
+            initial={{ opacity: 0, scale: 0.95 }}
+            animate={{ opacity: 1, scale: 1 }}
+            exit={{ opacity: 0, scale: 0.95 }}
+            transition={{ ...springs.snappy, opacity: tweens.fade }}
+            className={cn(
+              "z-popover min-w-[8rem] overflow-hidden rounded-ds-lg border border-border bg-layer-01 p-ds-02 text-text-primary shadow-03",
+              className
+            )}
+          >
+            {children}
+          </motion.div>
+        </ContextMenuPrimitive.SubContent>
+      )}
+    </AnimatePresence>
+  )
+})
 ContextMenuSubContent.displayName = ContextMenuPrimitive.SubContent.displayName
 
 const ContextMenuContent = React.forwardRef<
   React.ElementRef<typeof ContextMenuPrimitive.Content>,
   React.ComponentPropsWithoutRef<typeof ContextMenuPrimitive.Content>
->(({ className, ...props }, ref) => (
-  <ContextMenuPrimitive.Portal>
-    <ContextMenuPrimitive.Content
-      ref={ref}
-      className={cn(
-        "z-popover rounded-ds-lg border border-border bg-layer-01 p-ds-02 text-text-primary shadow-03 data-[state=open]:animate-in data-[state=closed]:animate-out data-[state=closed]:fade-out-0 data-[state=open]:fade-in-0 data-[state=closed]:zoom-out-95 data-[state=open]:zoom-in-95 data-[side=bottom]:slide-in-from-top-2 data-[side=left]:slide-in-from-right-2 data-[side=right]:slide-in-from-left-2 data-[side=top]:slide-in-from-bottom-2",
-        className
+>(({ className, children, ...props }, ref) => {
+  const open = React.useContext(ContextMenuOpenContext)
+
+  return (
+    <AnimatePresence>
+      {open && (
+        <ContextMenuPrimitive.Portal forceMount>
+          <ContextMenuPrimitive.Content
+            ref={ref}
+            forceMount
+            asChild
+            {...props}
+          >
+            <motion.div
+              initial={{ opacity: 0, scale: 0.95 }}
+              animate={{ opacity: 1, scale: 1 }}
+              exit={{ opacity: 0, scale: 0.95 }}
+              transition={{ ...springs.snappy, opacity: tweens.fade }}
+              className={cn(
+                "z-popover rounded-ds-lg border border-border bg-layer-01 p-ds-02 text-text-primary shadow-03",
+                className
+              )}
+            >
+              {children}
+            </motion.div>
+          </ContextMenuPrimitive.Content>
+        </ContextMenuPrimitive.Portal>
       )}
-      {...props}
-    />
-  </ContextMenuPrimitive.Portal>
-))
+    </AnimatePresence>
+  )
+})
 ContextMenuContent.displayName = ContextMenuPrimitive.Content.displayName
 
 const ContextMenuItem = React.forwardRef<

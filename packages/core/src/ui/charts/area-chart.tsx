@@ -1,6 +1,7 @@
 'use client'
 
 import * as React from 'react'
+import { motion } from 'framer-motion'
 import {
   area,
   line,
@@ -13,13 +14,14 @@ import {
 import { scaleLinear, scalePoint } from 'd3-scale'
 import type { ScaleLinear, ScalePoint } from 'd3-scale'
 import { cn } from '../lib/utils'
+import { tweens, motionProps } from '../lib/motion'
 import { ChartContainer } from './chart-container'
 import { Axis, type AnyScale } from './_internal/axes'
 import { GridLines } from './_internal/grid-lines'
 import { Legend } from './_internal/legend'
 import { ChartTooltip, useChartTooltip } from './_internal/tooltip'
 import { resolveColor } from './_internal/colors'
-import { useReducedMotion, getTransitionDuration } from './_internal/animation'
+import { useReducedMotion } from './_internal/animation'
 import type { DataPoint, Series } from './_internal/types'
 
 export interface AreaChartProps extends Omit<React.HTMLAttributes<HTMLDivElement>, 'children'> {
@@ -86,10 +88,7 @@ export const AreaChart = React.forwardRef<HTMLDivElement, AreaChartProps>(
   ) => {
   const { tooltip, show, hide } = useChartTooltip()
   const reducedMotion = useReducedMotion()
-
-  // Keep animate/reducedMotion accessible for future animation work
-  const _duration = getTransitionDuration(reducedMotion, animate ? 600 : 0)
-  void _duration
+  const shouldAnimate = animate && !reducedMotion
 
   // Resolve colors for each series
   const colors = series.map((s, i) => resolveColor(s.color, i))
@@ -98,7 +97,14 @@ export const AreaChart = React.forwardRef<HTMLDivElement, AreaChartProps>(
   const chartId = React.useId()
 
   return (
-    <div ref={ref} className={cn('relative', className)} {...props}>
+    <motion.div
+      ref={ref}
+      className={cn('relative', className)}
+      {...(shouldAnimate
+        ? { initial: { opacity: 0, scale: 0.96 }, animate: { opacity: 1, scale: 1 }, transition: tweens.fade }
+        : {})}
+      {...motionProps(props)}
+    >
       <ChartContainer height={height}>
         {({ width, height: innerHeight, margin }) => {
           void margin
@@ -409,7 +415,7 @@ export const AreaChart = React.forwardRef<HTMLDivElement, AreaChartProps>(
           className="mt-ds-04"
         />
       )}
-    </div>
+    </motion.div>
   )
   },
 )

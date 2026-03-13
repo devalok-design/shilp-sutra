@@ -69,7 +69,7 @@ export const TaskContextMenu = React.forwardRef<HTMLSpanElement, TaskContextMenu
   return (
     <ContextMenu>
       <ContextMenuTrigger ref={ref}>{children}</ContextMenuTrigger>
-      <ContextMenuContent className={cn("w-52 animate-scale-in", className)}>
+      <ContextMenuContent className={cn("w-52", className)}>
         {/* Priority submenu */}
         <ContextMenuSub>
           <ContextMenuSubTrigger>

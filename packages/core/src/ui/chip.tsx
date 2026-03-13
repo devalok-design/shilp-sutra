@@ -3,6 +3,10 @@
 import * as React from 'react'
 import { IconX } from '@tabler/icons-react'
 import { cva, type VariantProps } from 'class-variance-authority'
+import { motion, AnimatePresence } from 'framer-motion'
+
+import { springs } from './lib/motion'
+import { motionProps } from './lib/motion'
 import { cn } from './lib/utils'
 
 // TODO(v1): rename color="primary" → color="brand" for consistency with Badge (breaking change)
@@ -118,7 +122,7 @@ type ChipProps = Omit<VariantProps<typeof chipVariants>, 'color'> & {
 const Chip = React.forwardRef<HTMLElement, ChipProps>(
   ({ label, variant, size, color, icon, onClick, onDismiss, disabled, className, ...props }, ref) => {
     const isClickable = !!onClick
-    const Component = isClickable ? 'button' : 'span'
+    const MotionComponent = isClickable ? motion.button : motion.span
     const interactiveClass = isClickable && !disabled
       ? 'cursor-pointer hover:bg-field-hover active:scale-95'
       : ''
@@ -127,13 +131,17 @@ const Chip = React.forwardRef<HTMLElement, ChipProps>(
       : ''
 
     return (
-      <Component
+      <MotionComponent
         ref={ref as React.Ref<HTMLButtonElement & HTMLSpanElement>}
+        layout
+        initial={{ opacity: 1, scale: 1 }}
+        exit={{ opacity: 0, scale: 0.8 }}
+        transition={springs.snappy}
         className={cn(chipVariants({ variant, size, color }), interactiveClass, disabledClass, className)}
         onClick={isClickable ? onClick : undefined}
         disabled={isClickable ? disabled : undefined}
         type={isClickable ? 'button' : undefined}
-        {...props}
+        {...motionProps(props)}
       >
         {icon && <span className="flex-shrink-0 [&>svg]:w-ico-sm [&>svg]:h-ico-sm">{icon}</span>}
         <span>{label}</span>
@@ -150,10 +158,11 @@ const Chip = React.forwardRef<HTMLElement, ChipProps>(
             <IconX className="h-ico-sm w-ico-sm" />
           </button>
         )}
-      </Component>
+      </MotionComponent>
     )
   },
 )
 Chip.displayName = 'Chip'
 
+export { AnimatePresence as ChipGroup } from 'framer-motion'
 export { Chip, chipVariants, type ChipProps }

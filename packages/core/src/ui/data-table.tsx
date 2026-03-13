@@ -22,6 +22,7 @@ import {
   useReactTable,
 } from '@tanstack/react-table'
 import { useVirtualizer } from '@tanstack/react-virtual'
+import { motion, AnimatePresence } from 'framer-motion'
 import {
   IconArrowDown,
   IconArrowUp,
@@ -44,6 +45,7 @@ import { Button } from './button'
 import { Checkbox } from './checkbox'
 import { Skeleton } from './skeleton'
 import { cn } from './lib/utils'
+import { springs } from './lib/motion'
 import { DataTableToolbar, type Density } from './data-table-toolbar'
 
 const densityPaddingMap: Record<Density, string> = {
@@ -864,22 +866,51 @@ export function DataTable<TData, TValue>({
                         header.column.columnDef.header,
                         header.getContext(),
                       )}
-                      {sorted === 'asc' ? (
-                        <IconArrowUp
-                          className="h-ico-sm w-ico-sm text-text-secondary"
-                          aria-hidden="true"
-                        />
-                      ) : sorted === 'desc' ? (
-                        <IconArrowDown
-                          className="h-ico-sm w-ico-sm text-text-secondary"
-                          aria-hidden="true"
-                        />
-                      ) : (
-                        <IconArrowsSort
-                          className="h-ico-sm w-ico-sm text-text-tertiary"
-                          aria-hidden="true"
-                        />
-                      )}
+                      <AnimatePresence mode="wait" initial={false}>
+                        {sorted === 'asc' ? (
+                          <motion.span
+                            key="asc"
+                            initial={{ opacity: 0, rotate: 90 }}
+                            animate={{ opacity: 1, rotate: 0 }}
+                            exit={{ opacity: 0, rotate: -90 }}
+                            transition={springs.snappy}
+                            className="inline-flex"
+                          >
+                            <IconArrowUp
+                              className="h-ico-sm w-ico-sm text-text-secondary"
+                              aria-hidden="true"
+                            />
+                          </motion.span>
+                        ) : sorted === 'desc' ? (
+                          <motion.span
+                            key="desc"
+                            initial={{ opacity: 0, rotate: -90 }}
+                            animate={{ opacity: 1, rotate: 0 }}
+                            exit={{ opacity: 0, rotate: 90 }}
+                            transition={springs.snappy}
+                            className="inline-flex"
+                          >
+                            <IconArrowDown
+                              className="h-ico-sm w-ico-sm text-text-secondary"
+                              aria-hidden="true"
+                            />
+                          </motion.span>
+                        ) : (
+                          <motion.span
+                            key="unsorted"
+                            initial={{ opacity: 0 }}
+                            animate={{ opacity: 1 }}
+                            exit={{ opacity: 0 }}
+                            transition={springs.snappy}
+                            className="inline-flex"
+                          >
+                            <IconArrowsSort
+                              className="h-ico-sm w-ico-sm text-text-tertiary"
+                              aria-hidden="true"
+                            />
+                          </motion.span>
+                        )}
+                      </AnimatePresence>
                     </button>
                   ) : (
                     flexRender(

@@ -3,8 +3,16 @@
 import * as React from 'react'
 import * as DialogPrimitive from '@primitives/react-dialog'
 import { IconX as CloseIcon } from '@tabler/icons-react'
+import { motion, AnimatePresence } from 'framer-motion'
 
 import { cn } from './lib/utils'
+import { springs, tweens } from './lib/motion'
+
+// ── Internal context to thread `open` state to animated children ──
+
+type DialogContextValue = { open: boolean }
+const DialogContext = React.createContext<DialogContextValue>({ open: false })
+const useDialogOpen = () => React.useContext(DialogContext)
 
 /**
  * Dialog compound component — accessible modal overlay with focus trap and Escape dismissal.
@@ -53,7 +61,32 @@ import { cn } from './lib/utils'
  *   </DialogContent>
  * </Dialog>
  */
-const Dialog = DialogPrimitive.Root
+const Dialog: React.FC<React.ComponentPropsWithoutRef<typeof DialogPrimitive.Root>> = ({
+  open: openProp,
+  defaultOpen,
+  onOpenChange,
+  ...props
+}) => {
+  // Track internal open state for uncontrolled usage
+  const [internalOpen, setInternalOpen] = React.useState(defaultOpen ?? false)
+  const isControlled = openProp !== undefined
+  const open = isControlled ? openProp : internalOpen
+
+  const handleOpenChange = React.useCallback(
+    (nextOpen: boolean) => {
+      if (!isControlled) setInternalOpen(nextOpen)
+      onOpenChange?.(nextOpen)
+    },
+    [isControlled, onOpenChange],
+  )
+
+  return (
+    <DialogContext.Provider value={{ open }}>
+      <DialogPrimitive.Root open={open} onOpenChange={handleOpenChange} {...props} />
+    </DialogContext.Provider>
+  )
+}
+Dialog.displayName = 'Dialog'
 
 const DialogTrigger = DialogPrimitive.Trigger
 
@@ -67,8 +100,9 @@ const DialogOverlay = React.forwardRef<
 >(({ className, ...props }, ref) => (
   <DialogPrimitive.Overlay
     ref={ref}
+    forceMount
     className={cn(
-      'fixed inset-0 z-overlay bg-overlay duration-moderate-02 data-[state=open]:animate-in data-[state=closed]:animate-out data-[state=closed]:fade-out-0 data-[state=open]:fade-in-0',
+      'fixed inset-0 z-overlay bg-overlay',
       className,
     )}
     {...props}
@@ -79,25 +113,49 @@ DialogOverlay.displayName = DialogPrimitive.Overlay.displayName
 const DialogContent = React.forwardRef<
   React.ElementRef<typeof DialogPrimitive.Content>,
   React.ComponentPropsWithoutRef<typeof DialogPrimitive.Content>
->(({ className, children, ...props }, ref) => (
-  <DialogPortal>
-    <DialogOverlay />
-    <DialogPrimitive.Content
-      ref={ref}
-      className={cn(
-        'fixed left-[50%] top-[50%] z-modal grid w-full max-w-lg translate-x-[-50%] translate-y-[-50%] gap-ds-05 border border-border bg-layer-01 p-ds-06 shadow-04 rounded-ds-xl duration-moderate-02 data-[state=open]:animate-in data-[state=closed]:animate-out data-[state=closed]:fade-out-0 data-[state=open]:fade-in-0 data-[state=closed]:zoom-out-95 data-[state=open]:zoom-in-95 data-[state=closed]:slide-out-to-left-1/2 data-[state=closed]:slide-out-to-top-[48%] data-[state=open]:slide-in-from-left-1/2 data-[state=open]:slide-in-from-top-[48%]',
-        className,
+>(({ className, children, ...props }, ref) => {
+  const { open } = useDialogOpen()
+
+  return (
+    <AnimatePresence>
+      {open && (
+        <DialogPortal forceMount>
+          <DialogOverlay asChild>
+            <motion.div
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              exit={{ opacity: 0 }}
+              transition={tweens.fade}
+            />
+          </DialogOverlay>
+          <DialogPrimitive.Content
+            ref={ref}
+            forceMount
+            asChild
+            {...props}
+          >
+            <motion.div
+              initial={{ opacity: 0, scale: 0.95 }}
+              animate={{ opacity: 1, scale: 1 }}
+              exit={{ opacity: 0, scale: 0.95 }}
+              transition={{ ...springs.smooth, opacity: tweens.fade }}
+              className={cn(
+                'fixed left-[50%] top-[50%] z-modal grid w-full max-w-lg translate-x-[-50%] translate-y-[-50%] gap-ds-05 border border-border bg-layer-01 p-ds-06 shadow-04 rounded-ds-xl',
+                className,
+              )}
+            >
+              {children}
+              <DialogPrimitive.Close className="absolute right-ds-05 top-ds-05 min-h-ds-xs min-w-ds-xs flex items-center justify-center rounded-ds-sm text-icon-secondary transition-colors hover:text-icon-primary hover:bg-field focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-focus disabled:pointer-events-none">
+                <CloseIcon className="h-ico-lg w-ico-lg" />
+                <span className="sr-only">Close</span>
+              </DialogPrimitive.Close>
+            </motion.div>
+          </DialogPrimitive.Content>
+        </DialogPortal>
       )}
-      {...props}
-    >
-      {children}
-      <DialogPrimitive.Close className="absolute right-ds-05 top-ds-05 min-h-ds-xs min-w-ds-xs flex items-center justify-center rounded-ds-sm text-icon-secondary transition-colors hover:text-icon-primary hover:bg-field focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-focus disabled:pointer-events-none">
-        <CloseIcon className="h-ico-lg w-ico-lg" />
-        <span className="sr-only">Close</span>
-      </DialogPrimitive.Close>
-    </DialogPrimitive.Content>
-  </DialogPortal>
-))
+    </AnimatePresence>
+  )
+})
 DialogContent.displayName = DialogPrimitive.Content.displayName
 
 /**

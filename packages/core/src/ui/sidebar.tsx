@@ -3,8 +3,10 @@
 import { Slot } from '@primitives/react-slot'
 import { VariantProps, cva } from 'class-variance-authority'
 import { IconLayoutSidebarLeftCollapse } from '@tabler/icons-react'
+import { motion } from 'framer-motion'
 
 import { useIsMobile } from '../hooks/use-mobile'
+import { springs } from './lib/motion'
 import { cn } from './lib/utils'
 import { Button } from './button'
 import { Input } from './input'
@@ -549,6 +551,7 @@ const SidebarMenuButton = forwardRef<
       size = 'md',
       tooltip,
       className,
+      children,
       ...props
     },
     ref,
@@ -562,9 +565,22 @@ const SidebarMenuButton = forwardRef<
         data-sidebar="menu-button"
         data-size={size}
         data-active={isActive}
-        className={cn(sidebarMenuButtonVariants({ variant, size }), className)}
+        className={cn(sidebarMenuButtonVariants({ variant, size }), !asChild && 'relative', className)}
         {...props}
-      />
+      >
+        {asChild ? children : (
+          <>
+            {isActive && (
+              <motion.span
+                layoutId="sidebar-active-indicator"
+                className="absolute inset-0 rounded-ds-md bg-interactive-subtle"
+                transition={springs.smooth}
+              />
+            )}
+            <span className="relative z-[1] flex w-full items-center gap-[inherit]">{children}</span>
+          </>
+        )}
+      </Comp>
     )
 
     if (!tooltip) {

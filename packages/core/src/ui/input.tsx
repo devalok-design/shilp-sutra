@@ -1,8 +1,10 @@
 'use client'
 
 import * as React from 'react'
+import { motion } from 'framer-motion'
 import { cva, type VariantProps } from 'class-variance-authority'
 import { cn } from './lib/utils'
+import { motionProps } from './lib/motion'
 import { useFormField } from './form'
 
 export type InputState = 'default' | 'error' | 'warning' | 'success'
@@ -14,7 +16,7 @@ const inputVariants = cva(
     'border border-border-subtle rounded-ds-md',
     'placeholder:text-text-placeholder',
     'hover:bg-field-hover',
-    'transition-colors duration-fast-01',
+    'transition-colors duration-100',
     'focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-focus/50 focus-visible:border-border-subtle',
     'disabled:cursor-not-allowed disabled:opacity-[0.38]',
     'read-only:bg-layer-02 read-only:cursor-default',
@@ -77,7 +79,7 @@ const Input = React.forwardRef<HTMLInputElement, InputProps>(
     const ariaDescribedBy = props['aria-describedby'] ?? fieldCtx.helperTextId
     const ariaRequired = props['aria-required'] ?? fieldCtx.required
     const inputEl = (
-      <input
+      <motion.input
         type={type}
         className={cn(
           inputVariants({ size }),
@@ -92,7 +94,7 @@ const Input = React.forwardRef<HTMLInputElement, InputProps>(
         aria-describedby={ariaDescribedBy}
         aria-required={ariaRequired || undefined}
         ref={ref}
-        {...props}
+        {...motionProps(props)}
       />
     )
 

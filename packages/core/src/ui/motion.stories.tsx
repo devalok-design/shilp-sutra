@@ -9,7 +9,7 @@ import {
   IconSettings,
   IconUser,
 } from '@tabler/icons-react'
-import { durations, easings } from './lib/motion'
+import { springs, tweens } from './lib/motion'
 import { Button } from './button'
 import { Switch } from './switch'
 import { Checkbox } from './checkbox'
@@ -33,7 +33,7 @@ import { Progress } from './progress'
 import { Spinner } from './spinner'
 import { Badge } from './badge'
 import { Label } from './label'
-import { Fade, Collapse, Grow, Slide } from './transitions'
+import { MotionFade, MotionCollapse, MotionScale, MotionSlide } from '../motion/primitives'
 
 const meta: Meta = {
   title: 'Foundations/Motion',
@@ -84,27 +84,27 @@ function TokenBadge({ children }: { children: React.ReactNode }) {
  * Interactive visualization of all 7 duration tokens.
  * Click "Animate" to see each duration in action.
  */
-export const DurationScale: StoryObj = {
+export const SpringPresets: StoryObj = {
   render: () => {
-    const [active, setActive] = useState(false)
-    const tokens = Object.entries(durations) as [string, string][]
+    const [key, setKey] = useState(0)
+    const presets = Object.entries(springs) as [string, object][]
     return (
       <div className="space-y-ds-04">
-        <AnimateButton active={active} onClick={() => setActive((p) => !p)} />
+        <button
+          type="button"
+          onClick={() => setKey((k) => k + 1)}
+          className="rounded-ds-md bg-interactive px-ds-04 py-ds-02 text-ds-sm font-medium text-text-on-color"
+        >
+          Replay springs
+        </button>
         <div className="space-y-ds-03">
-          {tokens.map(([name, value]) => (
-            <div key={name} className="flex items-center gap-ds-04">
-              <code className="w-40 text-ds-xs text-text-secondary font-mono">
-                {name} ({value})
-              </code>
+          {presets.map(([name, config]) => (
+            <div key={`${name}-${key}`} className="flex items-center gap-ds-04">
+              <code className="w-32 text-ds-xs text-text-secondary font-mono">{name}</code>
               <div className="relative h-8 flex-1 rounded-ds-sm bg-layer-02 overflow-hidden">
-                <div
-                  className="absolute inset-y-0 left-0 rounded-ds-sm bg-interactive"
-                  style={{
-                    width: active ? '100%' : '0%',
-                    transition: `width ${value} var(--ease-productive-standard)`,
-                  }}
-                />
+                <MotionSlide show direction="right">
+                  <div className="h-8 w-8 rounded-ds-sm bg-interactive" />
+                </MotionSlide>
               </div>
             </div>
           ))}
@@ -182,55 +182,23 @@ export const EasingComparison: StoryObj = {
  * Demonstrates the personality of each easing curve using the same sliding-dot
  * animation. Productive = efficient & snappy, Expressive = dramatic & bouncy.
  */
-export const EasingPersonality: StoryObj = {
+export const TweenPresets: StoryObj = {
   render: () => {
-    const [active, setActive] = useState(false)
-    const allEasings = [
-      ...Object.entries(easings.productive).map(([cat, val]) => ({
-        label: `productive-${cat}`,
-        value: val,
-        mode: 'productive' as const,
-      })),
-      ...Object.entries(easings.expressive).map(([cat, val]) => ({
-        label: `expressive-${cat}`,
-        value: val,
-        mode: 'expressive' as const,
-      })),
-      { label: 'bounce', value: 'cubic-bezier(0.34, 1.56, 0.64, 1)', mode: 'utility' as const },
-      { label: 'linear', value: 'linear', mode: 'utility' as const },
-    ]
-
+    const [show, setShow] = useState(true)
+    const presets = Object.entries(tweens) as [string, object][]
     return (
       <div className="space-y-ds-04">
-        <AnimateButton active={active} onClick={() => setActive((p) => !p)} />
+        <AnimateButton active={show} onClick={() => setShow((p) => !p)} />
         <p className="text-ds-sm text-text-secondary">
-          All dots travel the same distance in 600ms. Watch how each easing changes the feel.
+          Tweens are used for non-spatial properties like opacity and color transitions.
         </p>
-        <div className="space-y-ds-04">
-          {allEasings.map(({ label, value, mode }) => (
-            <div key={label} className="flex items-center gap-ds-04">
-              <div className="w-48 flex items-center gap-ds-02">
-                <span
-                  className={cn(
-                    'inline-block h-2 w-2 rounded-ds-full',
-                    mode === 'productive'
-                      ? 'bg-interactive'
-                      : mode === 'expressive'
-                        ? 'bg-brand-primary'
-                        : 'bg-warning',
-                  )}
-                />
-                <code className="text-ds-xs text-text-secondary font-mono">{label}</code>
-              </div>
-              <div className="relative flex-1 h-8 rounded-ds-sm bg-layer-02">
-                <div
-                  className="absolute top-1 h-6 w-6 rounded-ds-full bg-interactive shadow-02"
-                  style={{
-                    left: active ? 'calc(100% - 1.5rem)' : '0',
-                    transition: `left 600ms ${value}`,
-                  }}
-                />
-              </div>
+        <div className="space-y-ds-03">
+          {presets.map(([name]) => (
+            <div key={name} className="flex items-center gap-ds-04">
+              <code className="w-32 text-ds-xs text-text-secondary font-mono">{name}</code>
+              <MotionFade show={show}>
+                <div className="h-8 w-32 rounded-ds-sm bg-interactive" />
+              </MotionFade>
             </div>
           ))}
         </div>
@@ -638,11 +606,11 @@ export const SlowAndContinuous: StoryObj = {
 }
 
 /* ===========================================================================
- * 7. TRANSITION UTILITIES — Fade, Collapse, Grow, Slide
+ * 7. MOTION PRIMITIVES — MotionFade, MotionCollapse, MotionScale, MotionSlide
  * ========================================================================= */
 
 /**
- * The transition utility components from transitions.tsx, demonstrated with
+ * The Framer Motion-powered transition primitives, demonstrated with
  * interactive toggles. These are building blocks for custom animations.
  */
 export const TransitionUtilities: StoryObj = {
@@ -655,88 +623,88 @@ export const TransitionUtilities: StoryObj = {
     return (
       <div className="space-y-ds-08 max-w-2xl">
         <div>
-          <SectionLabel sub="Composable transition primitives">
-            Transition Utilities
+          <SectionLabel sub="Framer Motion transition primitives">
+            Motion Primitives
           </SectionLabel>
           <p className="text-ds-sm text-text-secondary mb-ds-06">
-            Low-level transition wrappers that respect reduced-motion preferences.
-            Use these for custom reveal animations in your layouts.
+            Physics-based transition wrappers powered by Framer Motion.
+            Automatically respect reduced-motion preferences via MotionProvider.
           </p>
         </div>
 
-        {/* Fade */}
+        {/* MotionFade */}
         <div className="space-y-ds-03">
           <div className="flex items-center gap-ds-03">
-            <h4 className="text-ds-md font-medium text-text-primary">Fade</h4>
+            <h4 className="text-ds-md font-medium text-text-primary">MotionFade</h4>
             <Button variant="ghost" size="sm" onClick={() => setFadeOpen((p) => !p)}>
               Toggle
             </Button>
-            <TokenBadge>ease-productive-entrance</TokenBadge>
+            <TokenBadge>tweens.fade</TokenBadge>
           </div>
-          <Fade open={fadeOpen}>
+          <MotionFade show={fadeOpen}>
             <div className="rounded-ds-md bg-layer-02 border border-border p-ds-05">
               <p className="text-ds-sm text-text-secondary">
-                This content fades in and out with <code className="font-mono">opacity</code> transition.
+                This content fades in and out with <code className="font-mono">opacity</code> via AnimatePresence.
               </p>
             </div>
-          </Fade>
+          </MotionFade>
         </div>
 
-        {/* Collapse */}
+        {/* MotionCollapse */}
         <div className="space-y-ds-03">
           <div className="flex items-center gap-ds-03">
-            <h4 className="text-ds-md font-medium text-text-primary">Collapse</h4>
+            <h4 className="text-ds-md font-medium text-text-primary">MotionCollapse</h4>
             <Button variant="ghost" size="sm" onClick={() => setCollapseOpen((p) => !p)}>
               Toggle
             </Button>
-            <TokenBadge>ease-productive-standard</TokenBadge>
+            <TokenBadge>springs.snappy</TokenBadge>
           </div>
-          <Collapse open={collapseOpen}>
+          <MotionCollapse show={collapseOpen}>
             <div className="rounded-ds-md bg-layer-02 border border-border p-ds-05">
               <p className="text-ds-sm text-text-secondary">
-                Height-based collapse/expand. Great for accordion-like reveals
+                Height-based collapse/expand with spring physics. Great for accordion-like reveals
                 where content pushes below it.
               </p>
             </div>
-          </Collapse>
+          </MotionCollapse>
         </div>
 
-        {/* Grow */}
+        {/* MotionScale */}
         <div className="space-y-ds-03">
           <div className="flex items-center gap-ds-03">
-            <h4 className="text-ds-md font-medium text-text-primary">Grow</h4>
+            <h4 className="text-ds-md font-medium text-text-primary">MotionScale</h4>
             <Button variant="ghost" size="sm" onClick={() => setGrowOpen((p) => !p)}>
               Toggle
             </Button>
-            <TokenBadge>ease-productive-entrance</TokenBadge>
+            <TokenBadge>springs.gentle</TokenBadge>
           </div>
-          <Grow open={growOpen}>
+          <MotionScale show={growOpen}>
             <div className="rounded-ds-md bg-layer-02 border border-border p-ds-05 inline-block">
               <p className="text-ds-sm text-text-secondary">
-                Scales from 0 to 1 with opacity. Good for popover-like reveals.
+                Scales from 0.96 to 1 with opacity. Good for popover-like reveals.
               </p>
             </div>
-          </Grow>
+          </MotionScale>
         </div>
 
-        {/* Slide */}
+        {/* MotionSlide */}
         <div className="space-y-ds-03">
           <div className="flex items-center gap-ds-03">
-            <h4 className="text-ds-md font-medium text-text-primary">Slide</h4>
+            <h4 className="text-ds-md font-medium text-text-primary">MotionSlide</h4>
             <Button variant="ghost" size="sm" onClick={() => setSlideOpen((p) => !p)}>
               Toggle
             </Button>
-            <TokenBadge>ease-productive-entrance</TokenBadge>
+            <TokenBadge>springs.gentle</TokenBadge>
           </div>
           <div className="overflow-hidden rounded-ds-md border border-border">
-            <Slide open={slideOpen} direction="up">
+            <MotionSlide show={slideOpen} direction="bottom">
               <div className="bg-layer-02 p-ds-05">
                 <p className="text-ds-sm text-text-secondary">
-                  Slides in from a direction (up/down/left/right). Used for bottom sheets,
+                  Slides in from a direction (top/bottom/left/right). Used for bottom sheets,
                   slide-in panels, and notification bars.
                 </p>
               </div>
-            </Slide>
+            </MotionSlide>
           </div>
         </div>
       </div>

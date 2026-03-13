@@ -1,8 +1,10 @@
 'use client'
 
 import * as React from 'react'
+import { motion } from 'framer-motion'
 import { arc } from 'd3-shape'
 import { cn } from '../lib/utils'
+import { tweens, motionProps } from '../lib/motion'
 import { resolveColor } from './_internal/colors'
 import { useReducedMotion, getTransitionDuration } from './_internal/animation'
 
@@ -58,6 +60,7 @@ export const GaugeChart = React.forwardRef<HTMLDivElement, GaugeChartProps>(
   ) => {
   const reducedMotion = useReducedMotion()
   const duration = getTransitionDuration(reducedMotion, animate ? 600 : 0)
+  const shouldAnimate = animate && !reducedMotion
 
   const resolvedColor = resolveColor(color, 0)
   const size = height
@@ -96,10 +99,13 @@ export const GaugeChart = React.forwardRef<HTMLDivElement, GaugeChartProps>(
   const valuePath = valueGenerator(null as unknown as Record<string, never>) ?? ''
 
   return (
-    <div
+    <motion.div
       ref={ref}
       className={cn('inline-flex flex-col items-center', className)}
-      {...props}
+      {...(shouldAnimate
+        ? { initial: { opacity: 0, scale: 0.96 }, animate: { opacity: 1, scale: 1 }, transition: tweens.fade }
+        : {})}
+      {...motionProps(props)}
       role="meter"
       aria-valuenow={clampedValue}
       aria-valuemin={min}
@@ -147,7 +153,7 @@ export const GaugeChart = React.forwardRef<HTMLDivElement, GaugeChartProps>(
           )}
         </g>
       </svg>
-    </div>
+    </motion.div>
   )
   },
 )

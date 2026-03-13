@@ -1,7 +1,19 @@
 'use client'
 
 import * as React from 'react'
+import { motion, AnimatePresence } from 'framer-motion'
 import { cn } from './lib/utils'
+import { springs, tweens } from './lib/motion'
+
+const listVariants = {
+  hidden: {},
+  visible: { transition: { staggerChildren: 0.03 } },
+}
+
+const itemVariants = {
+  hidden: { opacity: 0, y: 4 },
+  visible: { opacity: 1, y: 0, transition: springs.snappy },
+}
 
 type AutocompleteOption = {
   label: string
@@ -175,48 +187,60 @@ const Autocomplete = React.forwardRef<HTMLInputElement, AutocompleteProps>(
           }}
           onKeyDown={handleKeyDown}
         />
-        {isOpen && (
-          <ul
-            id={listboxId}
-            ref={listRef}
-            role="listbox"
-            className={cn(
-              'absolute z-popover mt-ds-02 w-full overflow-auto rounded-ds-md border border-border bg-layer-01 shadow-02',
-              'max-h-60',
-            )}
-          >
-            {filtered.length === 0 ? (
-              <li className="px-ds-04 py-ds-03 text-ds-md text-text-secondary">
-                {emptyText}
-              </li>
-            ) : (
-              filtered.map((option, index) => (
-                <li
-                  key={option.value}
-                  id={`${optionIdPrefix}-${index}`}
-                  role="option"
-                  aria-selected={highlightedIndex === index}
-                  className={cn(
-                    'cursor-pointer px-ds-04 py-ds-03 text-ds-md text-text-primary transition-colors duration-fast-01',
-                    highlightedIndex === index && 'bg-interactive-selected',
-                    value?.value === option.value && 'font-semibold',
-                  )}
-                  onMouseDown={(e) => e.preventDefault()}
-                  onClick={() => handleSelect(option)}
-                  onKeyDown={(e) => {
-                    if (e.key === 'Enter' || e.key === ' ') {
-                      e.preventDefault()
-                      handleSelect(option)
-                    }
-                  }}
-                  onMouseEnter={() => setHighlightedIndex(index)}
+        <AnimatePresence>
+          {isOpen && (
+            <motion.ul
+              id={listboxId}
+              ref={listRef}
+              role="listbox"
+              initial="hidden"
+              animate="visible"
+              exit="hidden"
+              variants={listVariants}
+              className={cn(
+                'absolute z-popover mt-ds-02 w-full overflow-auto rounded-ds-md border border-border bg-layer-01 shadow-02',
+                'max-h-60',
+              )}
+            >
+              {filtered.length === 0 ? (
+                <motion.li
+                  initial={{ opacity: 0 }}
+                  animate={{ opacity: 1 }}
+                  transition={tweens.fade}
+                  className="px-ds-04 py-ds-03 text-ds-md text-text-secondary"
                 >
-                  {option.label}
-                </li>
-              ))
-            )}
-          </ul>
-        )}
+                  {emptyText}
+                </motion.li>
+              ) : (
+                filtered.map((option, index) => (
+                  <motion.li
+                    key={option.value}
+                    id={`${optionIdPrefix}-${index}`}
+                    role="option"
+                    aria-selected={highlightedIndex === index}
+                    variants={itemVariants}
+                    className={cn(
+                      'cursor-pointer px-ds-04 py-ds-03 text-ds-md text-text-primary transition-colors duration-fast-01',
+                      highlightedIndex === index && 'bg-interactive-selected',
+                      value?.value === option.value && 'font-semibold',
+                    )}
+                    onMouseDown={(e) => e.preventDefault()}
+                    onClick={() => handleSelect(option)}
+                    onKeyDown={(e) => {
+                      if (e.key === 'Enter' || e.key === ' ') {
+                        e.preventDefault()
+                        handleSelect(option)
+                      }
+                    }}
+                    onMouseEnter={() => setHighlightedIndex(index)}
+                  >
+                    {option.label}
+                  </motion.li>
+                ))
+              )}
+            </motion.ul>
+          )}
+        </AnimatePresence>
       </div>
     )
   },

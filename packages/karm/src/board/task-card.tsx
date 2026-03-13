@@ -1,11 +1,13 @@
 'use client'
 
 import * as React from 'react'
+import { motion, AnimatePresence } from 'framer-motion'
 import { useComposedRef } from '../utils/use-composed-ref'
 import { useSortable } from '@dnd-kit/sortable'
 import { CSS } from '@dnd-kit/utilities'
 import { cva } from 'class-variance-authority'
 import { cn } from '@/ui/lib/utils'
+import { springs } from '@/ui/lib/motion'
 import { Checkbox } from '@/ui'
 import { Avatar, AvatarImage, AvatarFallback } from '@/ui/avatar'
 import {
@@ -55,7 +57,7 @@ const PRIORITY_ICON_MAP = {
 // ============================================================
 
 const taskCardVariants = cva(
-  'group/card relative rounded-ds-lg border border-transparent bg-layer-01 pl-3 pr-ds-03 py-ds-03 transition-all duration-fast-02 ease-productive-standard cursor-pointer',
+  'group/card relative rounded-ds-lg border border-transparent bg-layer-01 pl-3 pr-ds-03 py-ds-03 transition-all duration-100 ease-out cursor-pointer',
   {
     variants: {
       state: {
@@ -68,7 +70,7 @@ const taskCardVariants = cva(
         false: '',
       },
       selected: {
-        true: 'ring-1 ring-accent/50 shadow-[0_0_6px_rgba(var(--accent-rgb,99,102,241),0.15)] animate-glow-pulse',
+        true: 'ring-1 ring-accent/50 shadow-[0_0_6px_rgba(var(--accent-rgb,99,102,241),0.15)] ',
         false: '',
       },
       dimmed: {
@@ -173,13 +175,16 @@ function TaskCardVisual({
       }}
     >
       {/* Selection checkbox — absolute overlay, top-left corner */}
-      <div
+      <motion.div
         className={cn(
           'absolute -top-2 -left-2 z-10 transition-opacity',
           anySelected || isSelected
-            ? 'opacity-100 animate-scale-bounce'
+            ? 'opacity-100'
             : 'opacity-0 group-hover/card:opacity-100',
         )}
+        initial={anySelected || isSelected ? { scale: 0.85 } : false}
+        animate={{ scale: 1 }}
+        transition={springs.bouncy}
       >
         <Checkbox
           checked={isSelected}
@@ -188,7 +193,7 @@ function TaskCardVisual({
           aria-label={`Select task ${task.taskId}`}
           className="rounded-full bg-layer-01 shadow-01"
         />
-      </div>
+      </motion.div>
 
       {/* Row 1 — Header: TaskID + Priority + drag handle */}
       <div className="flex items-center gap-ds-02">
@@ -348,11 +353,11 @@ TaskCard.displayName = 'TaskCard'
 // ============================================================
 
 const taskCardCompactVariants = cva(
-  'group/card flex items-center gap-ds-02 py-2 pl-3 pr-ds-03 border border-transparent rounded-ds-lg bg-layer-01 transition-all duration-fast-02 ease-productive-standard cursor-pointer hover:bg-layer-active hover:shadow-02 hover:-translate-y-px',
+  'group/card flex items-center gap-ds-02 py-2 pl-3 pr-ds-03 border border-transparent rounded-ds-lg bg-layer-01 transition-all duration-100 ease-out cursor-pointer hover:bg-layer-active hover:shadow-02 hover:-translate-y-px',
   {
     variants: {
       selected: {
-        true: 'ring-1 ring-accent/50 shadow-[0_0_6px_rgba(var(--accent-rgb,99,102,241),0.15)] animate-glow-pulse',
+        true: 'ring-1 ring-accent/50 shadow-[0_0_6px_rgba(var(--accent-rgb,99,102,241),0.15)] ',
         false: '',
       },
       dimmed: {
@@ -425,13 +430,16 @@ function TaskCardCompactVisual({
       }}
     >
       {/* Selection checkbox — absolute overlay */}
-      <div
+      <motion.div
         className={cn(
           'absolute -top-1.5 -left-1.5 z-10 transition-opacity',
           anySelected || isSelected
-            ? 'opacity-100 animate-scale-bounce'
+            ? 'opacity-100'
             : 'opacity-0 group-hover/card:opacity-100',
         )}
+        initial={anySelected || isSelected ? { scale: 0.85 } : false}
+        animate={{ scale: 1 }}
+        transition={springs.bouncy}
       >
         <Checkbox
           checked={isSelected}
@@ -440,7 +448,7 @@ function TaskCardCompactVisual({
           aria-label={`Select task ${task.taskId}`}
           className="rounded-full bg-layer-01 shadow-01"
         />
-      </div>
+      </motion.div>
 
       {/* Priority icon */}
       <PriorityIcon className={cn('h-3.5 w-3.5 flex-shrink-0', priorityColor)} title={`Priority: ${task.priority}`} />

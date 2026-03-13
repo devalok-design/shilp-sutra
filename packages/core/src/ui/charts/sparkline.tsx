@@ -1,10 +1,12 @@
 'use client'
 
 import * as React from 'react'
+import { motion } from 'framer-motion'
 import { line, area, curveMonotoneX } from 'd3-shape'
 import { scaleLinear } from 'd3-scale'
 import { cn } from '../lib/utils'
 import { resolveColor } from './_internal/colors'
+import { useReducedMotion } from './_internal/animation'
 
 export interface SparklineProps extends Omit<React.SVGAttributes<SVGSVGElement>, 'children'> {
   /** Numeric data points */
@@ -21,8 +23,12 @@ export interface SparklineProps extends Omit<React.SVGAttributes<SVGSVGElement>,
   showLastDot?: boolean
   /** Line stroke width (line/area only, default: 1.5) */
   strokeWidth?: number
+  /** Animate on mount (default: true) */
+  animate?: boolean
   className?: string
 }
+
+const pathDrawTransition = { duration: 1, ease: 'easeOut' as const }
 
 export const Sparkline = React.forwardRef<SVGSVGElement, SparklineProps>(
   (
@@ -34,12 +40,15 @@ export const Sparkline = React.forwardRef<SVGSVGElement, SparklineProps>(
       color,
       showLastDot = false,
       strokeWidth = 1.5,
+      animate = true,
       className,
       ...props
     },
     ref,
   ) => {
   const resolvedColor = resolveColor(color, 0)
+  const reducedMotion = useReducedMotion()
+  const shouldAnimate = animate && !reducedMotion
 
   if (!data.length) return null
 
@@ -127,14 +136,28 @@ export const Sparkline = React.forwardRef<SVGSVGElement, SparklineProps>(
         {...props}
       >
         <path d={areaD} fill={resolvedColor} opacity={0.2} />
-        <path
-          d={lineD}
-          fill="none"
-          stroke={resolvedColor}
-          strokeWidth={strokeWidth}
-          strokeLinejoin="round"
-          strokeLinecap="round"
-        />
+        {shouldAnimate ? (
+          <motion.path
+            d={lineD}
+            fill="none"
+            stroke={resolvedColor}
+            strokeWidth={strokeWidth}
+            strokeLinejoin="round"
+            strokeLinecap="round"
+            initial={{ pathLength: 0 }}
+            animate={{ pathLength: 1 }}
+            transition={pathDrawTransition}
+          />
+        ) : (
+          <path
+            d={lineD}
+            fill="none"
+            stroke={resolvedColor}
+            strokeWidth={strokeWidth}
+            strokeLinejoin="round"
+            strokeLinecap="round"
+          />
+        )}
         {showLastDot && (
           <circle
             cx={lastX}
@@ -168,14 +191,28 @@ export const Sparkline = React.forwardRef<SVGSVGElement, SparklineProps>(
       className={cn('inline-block align-middle', className)}
       {...props}
     >
-      <path
-        d={pathD}
-        fill="none"
-        stroke={resolvedColor}
-        strokeWidth={strokeWidth}
-        strokeLinejoin="round"
-        strokeLinecap="round"
-      />
+      {shouldAnimate ? (
+        <motion.path
+          d={pathD}
+          fill="none"
+          stroke={resolvedColor}
+          strokeWidth={strokeWidth}
+          strokeLinejoin="round"
+          strokeLinecap="round"
+          initial={{ pathLength: 0 }}
+          animate={{ pathLength: 1 }}
+          transition={pathDrawTransition}
+        />
+      ) : (
+        <path
+          d={pathD}
+          fill="none"
+          stroke={resolvedColor}
+          strokeWidth={strokeWidth}
+          strokeLinejoin="round"
+          strokeLinecap="round"
+        />
+      )}
       {showLastDot && (
         <circle
           cx={lastX}

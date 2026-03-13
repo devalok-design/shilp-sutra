@@ -1,6 +1,7 @@
 'use client'
 
 import * as React from 'react'
+import { motion, AnimatePresence } from 'framer-motion'
 import { toast as sonnerToast, type ExternalToast } from 'sonner'
 import {
   IconCircleCheck,
@@ -16,6 +17,7 @@ import {
   IconAlertCircle,
 } from '@tabler/icons-react'
 import { cn } from './lib/utils'
+import { springs, tweens } from './lib/motion'
 import { Spinner } from './spinner'
 import { Progress } from './progress'
 import type {
@@ -166,12 +168,14 @@ function ToastContent({
   }, [selfDismissId, duration, hovered])
 
   return (
-    <div
+    <motion.div
+      layout="position"
       role="status"
       aria-live="polite"
       className="group relative flex w-full overflow-hidden rounded-ds-md border border-border bg-layer-01 shadow-02"
       onMouseEnter={() => setHovered(true)}
       onMouseLeave={() => setHovered(false)}
+      transition={springs.smooth}
     >
       {/* Left accent bar */}
       {config.accentClass && (
@@ -182,12 +186,32 @@ function ToastContent({
 
       {/* Content */}
       <div className="flex min-w-0 flex-1 items-start gap-ds-03 p-ds-04">
-        {/* Status icon */}
-        {type === 'loading' ? (
-          <Spinner size="sm" className="mt-0.5 h-4 w-4 shrink-0" />
-        ) : Icon ? (
-          <Icon className={cn('mt-0.5 h-4 w-4 shrink-0', config.iconClass)} />
-        ) : null}
+        {/* Status icon — animates between spinner ↔ typed icon */}
+        <AnimatePresence mode="wait">
+          {type === 'loading' ? (
+            <motion.div
+              key="loading"
+              initial={{ opacity: 0, scale: 0.5 }}
+              animate={{ opacity: 1, scale: 1 }}
+              exit={{ opacity: 0, scale: 0.5 }}
+              transition={tweens.fade}
+              className="mt-0.5 shrink-0"
+            >
+              <Spinner size="sm" className="h-4 w-4" />
+            </motion.div>
+          ) : Icon ? (
+            <motion.div
+              key={type}
+              initial={{ opacity: 0, scale: 0.5 }}
+              animate={{ opacity: 1, scale: 1 }}
+              exit={{ opacity: 0, scale: 0.5 }}
+              transition={springs.bouncy}
+              className="mt-0.5 shrink-0"
+            >
+              <Icon className={cn('h-4 w-4', config.iconClass)} />
+            </motion.div>
+          ) : null}
+        </AnimatePresence>
 
         {/* Text */}
         <div className="min-w-0 flex-1">
@@ -237,7 +261,7 @@ function ToastContent({
       {showTimerBar && type !== 'loading' && (
         <TimerBar duration={duration} type={type} paused={hovered} />
       )}
-    </div>
+    </motion.div>
   )
 }
 
@@ -306,20 +330,69 @@ function UploadFileRow({
     file.status === 'uploading' || file.status === 'processing'
 
   return (
-    <div className="flex items-center gap-ds-02 py-1">
-      {/* File icon */}
+    <motion.div
+      layout
+      className="flex items-center gap-ds-02 py-1"
+      initial={false}
+      animate={{ opacity: 1, y: 0 }}
+      exit={{ opacity: 0, x: -20, height: 0 }}
+      transition={springs.snappy}
+    >
+      {/* File icon — animates between states */}
       <div className="flex h-5 w-5 shrink-0 items-center justify-center">
-        {file.status === 'complete' ? (
-          <IconCheck className="h-3.5 w-3.5 text-success-text" />
-        ) : file.status === 'error' ? (
-          <IconAlertCircle className="h-3.5 w-3.5 text-error-text" />
-        ) : file.status === 'processing' ? (
-          <Spinner size="sm" className="h-3.5 w-3.5" />
-        ) : isImageFile(file) ? (
-          <IconPhoto className="h-3.5 w-3.5 text-text-secondary" />
-        ) : (
-          <IconFile className="h-3.5 w-3.5 text-text-secondary" />
-        )}
+        <AnimatePresence mode="wait">
+          {file.status === 'complete' ? (
+            <motion.div
+              key="complete"
+              initial={{ opacity: 0, scale: 0.5 }}
+              animate={{ opacity: 1, scale: 1 }}
+              exit={{ opacity: 0, scale: 0.5 }}
+              transition={springs.bouncy}
+            >
+              <IconCheck className="h-3.5 w-3.5 text-success-text" />
+            </motion.div>
+          ) : file.status === 'error' ? (
+            <motion.div
+              key="error"
+              initial={{ opacity: 0, scale: 0.5 }}
+              animate={{ opacity: 1, scale: 1 }}
+              exit={{ opacity: 0, scale: 0.5 }}
+              transition={tweens.fade}
+            >
+              <IconAlertCircle className="h-3.5 w-3.5 text-error-text" />
+            </motion.div>
+          ) : file.status === 'processing' ? (
+            <motion.div
+              key="processing"
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              exit={{ opacity: 0 }}
+              transition={tweens.fade}
+            >
+              <Spinner size="sm" className="h-3.5 w-3.5" />
+            </motion.div>
+          ) : isImageFile(file) ? (
+            <motion.div
+              key="image"
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              exit={{ opacity: 0 }}
+              transition={tweens.fade}
+            >
+              <IconPhoto className="h-3.5 w-3.5 text-text-secondary" />
+            </motion.div>
+          ) : (
+            <motion.div
+              key="file"
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              exit={{ opacity: 0 }}
+              transition={tweens.fade}
+            >
+              <IconFile className="h-3.5 w-3.5 text-text-secondary" />
+            </motion.div>
+          )}
+        </AnimatePresence>
       </div>
 
       {/* Filename */}
@@ -375,7 +448,7 @@ function UploadFileRow({
           <IconX className="h-3 w-3" />
         </button>
       )}
-    </div>
+    </motion.div>
   )
 }
 
@@ -428,22 +501,58 @@ function UploadToastContent({
     : 'loading'
 
   return (
-    <div
+    <motion.div
+      layout
       role="status"
       aria-live="polite"
       aria-label="File uploads"
       className="group relative flex w-full overflow-hidden rounded-ds-md border border-border bg-layer-01 shadow-02"
       onMouseEnter={() => setHovered(true)}
       onMouseLeave={() => setHovered(false)}
+      transition={springs.smooth}
     >
       {/* Left accent bar */}
       <div className={cn('w-1 shrink-0 rounded-l-ds-md', accentClass)} />
 
       {/* Content */}
       <div className="min-w-0 flex-1 p-ds-04">
-        {/* Header */}
+        {/* Header — icon morphs between upload ↔ result */}
         <div className="flex items-center gap-ds-02">
-          <IconUpload className="h-4 w-4 shrink-0 text-text-secondary" />
+          <AnimatePresence mode="wait">
+            {allTerminal ? (
+              errorCount > 0 ? (
+                <motion.div
+                  key="error-icon"
+                  initial={{ opacity: 0, scale: 0.5 }}
+                  animate={{ opacity: 1, scale: 1 }}
+                  exit={{ opacity: 0, scale: 0.5 }}
+                  transition={springs.bouncy}
+                >
+                  <IconAlertCircle className="h-4 w-4 shrink-0 text-error-text" />
+                </motion.div>
+              ) : (
+                <motion.div
+                  key="success-icon"
+                  initial={{ opacity: 0, scale: 0.5 }}
+                  animate={{ opacity: 1, scale: 1 }}
+                  exit={{ opacity: 0, scale: 0.5 }}
+                  transition={springs.bouncy}
+                >
+                  <IconCheck className="h-4 w-4 shrink-0 text-success-text" />
+                </motion.div>
+              )
+            ) : (
+              <motion.div
+                key="upload-icon"
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                exit={{ opacity: 0 }}
+                transition={tweens.fade}
+              >
+                <IconUpload className="h-4 w-4 shrink-0 text-text-secondary" />
+              </motion.div>
+            )}
+          </AnimatePresence>
           <p className="text-ds-md font-semibold text-text-primary">
             {allTerminal
               ? errorCount > 0
@@ -461,14 +570,16 @@ function UploadToastContent({
 
         {/* File list */}
         <div className="mt-ds-02 max-h-[140px] overflow-y-auto">
-          {files.map((file) => (
-            <UploadFileRow
-              key={file.id}
-              file={file}
-              onRetry={onRetry}
-              onRemove={onRemove}
-            />
-          ))}
+          <AnimatePresence>
+            {files.map((file) => (
+              <UploadFileRow
+                key={file.id}
+                file={file}
+                onRetry={onRetry}
+                onRemove={onRemove}
+              />
+            ))}
+          </AnimatePresence>
         </div>
 
         {/* Screen reader announcement */}
@@ -486,7 +597,7 @@ function UploadToastContent({
           paused={false}
         />
       )}
-    </div>
+    </motion.div>
   )
 }
 

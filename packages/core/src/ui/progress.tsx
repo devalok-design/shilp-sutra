@@ -2,9 +2,11 @@
 
 import * as React from 'react'
 import * as ProgressPrimitive from '@primitives/react-progress'
+import { motion } from 'framer-motion'
 import { cva, type VariantProps } from 'class-variance-authority'
 
 import { cn } from './lib/utils'
+import { springs } from './lib/motion'
 
 /* ---------------------------------------------------------------------------
  * CVA Variants
@@ -116,19 +118,27 @@ const Progress = React.forwardRef<
           className={cn(progressTrackVariants({ size }), className)}
           {...props}
         >
-          <ProgressPrimitive.Indicator
-            className={cn(
-              progressIndicatorVariants({ color }),
-              isIndeterminate &&
+          {isIndeterminate ? (
+            <ProgressPrimitive.Indicator
+              className={cn(
+                progressIndicatorVariants({ color }),
                 'w-2/5 animate-progress-indeterminate motion-reduce:animate-none',
-              indicatorClassName,
-            )}
-            style={
-              isIndeterminate
-                ? undefined
-                : { transform: `translateX(-${100 - (value || 0)}%)` }
-            }
-          />
+                indicatorClassName,
+              )}
+            />
+          ) : (
+            <ProgressPrimitive.Indicator
+              className={cn('h-full', indicatorClassName)}
+              asChild
+            >
+              <motion.div
+                className={cn(progressIndicatorVariants({ color }))}
+                initial={false}
+                animate={{ width: `${value || 0}%` }}
+                transition={springs.smooth}
+              />
+            </ProgressPrimitive.Indicator>
+          )}
         </ProgressPrimitive.Root>
 
         {showLabel && !isIndeterminate && (

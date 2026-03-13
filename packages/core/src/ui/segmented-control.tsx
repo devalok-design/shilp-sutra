@@ -1,9 +1,11 @@
 'use client'
 
 import React, { useState, useRef } from 'react'
+import { motion, AnimatePresence, LayoutGroup } from 'framer-motion'
 import { cva } from 'class-variance-authority'
 import { cn } from './lib/utils'
 import { useRipple } from './lib/use-ripple'
+import { springs } from './lib/motion'
 
 /* ── CVA for the item button ────────────────────────────────── */
 const segmentedControlItemVariants = cva(
@@ -41,20 +43,17 @@ const segmentedControlItemVariants = cva(
       },
     },
     compoundVariants: [
-      // Selected + filled
+      // Selected + filled — bg/shadow handled by motion indicator
       {
         selected: true,
         variant: 'filled',
-        className: [
-          'bg-interactive',
-          'shadow-[0px_1px_3px_0.05px_var(--color-interactive-hover),inset_0px_8px_16px_0px_var(--color-inset-glow-strong),inset_0px_2px_0px_0px_var(--color-inset-glow-subtle)]',
-        ].join(' '),
+        className: '',
       },
-      // Selected + tonal
+      // Selected + tonal — bg handled by motion indicator
       {
         selected: true,
         variant: 'tonal',
-        className: 'bg-field text-text-primary',
+        className: 'text-text-primary',
       },
       // Hover + filled
       {
@@ -264,21 +263,23 @@ const SegmentedControl = React.forwardRef<HTMLDivElement, SegmentedControlProps>
       aria-label="Segmented control options"
       {...props}
     >
-      {options.map((option) => (
-        <SegmentedControlItem
-          key={option.id}
-          size={resolved}
-          variant={variant}
-          text={option.text}
-          icon={option.icon}
-          isSelected={option.id === selectedId}
-          onClick={() => onSelect(option.id)}
-          disabled={disabled}
-          isFocused={option.id === focusedId}
-          onFocus={() => setFocusedId(option.id)}
-          onBlur={() => setFocusedId(null)}
-        />
-      ))}
+      <LayoutGroup>
+        {options.map((option) => (
+          <SegmentedControlItem
+            key={option.id}
+            size={resolved}
+            variant={variant}
+            text={option.text}
+            icon={option.icon}
+            isSelected={option.id === selectedId}
+            onClick={() => onSelect(option.id)}
+            disabled={disabled}
+            isFocused={option.id === focusedId}
+            onFocus={() => setFocusedId(option.id)}
+            onBlur={() => setFocusedId(null)}
+          />
+        ))}
+      </LayoutGroup>
     </div>
   )
 },
@@ -400,23 +401,41 @@ const SegmentedControlItem = React.forwardRef<HTMLButtonElement, SegmentedContro
       onFocus={onFocus}
       onBlur={onBlur}
     >
-      {ripples.map((ripple) => (
-        <span
-          key={ripple.id}
+      {/* Sliding active indicator — only mounted in the selected segment */}
+      {isSelected && (
+        <motion.span
+          layoutId="segment-indicator"
           className={cn(
-            'absolute rounded-ds-full -translate-x-1/2 -translate-y-1/2 scale-0 animate-ripple pointer-events-none',
-            rippleBgMap[variant],
+            'absolute inset-0 rounded-ds-full pointer-events-none',
+            variant === 'filled'
+              ? 'bg-interactive shadow-[0px_1px_3px_0.05px_var(--color-interactive-hover),inset_0px_8px_16px_0px_var(--color-inset-glow-strong),inset_0px_2px_0px_0px_var(--color-inset-glow-subtle)]'
+              : 'bg-field',
           )}
-          style={{
-            left: ripple.x,
-            top: ripple.y,
-            width: ripple.size,
-            height: ripple.size,
-          }}
+          transition={springs.smooth}
         />
-      ))}
-      {Icon && <Icon className="h-ico-sm w-ico-sm shrink-0" />}
-      <span className="font-accent leading-none">{text}</span>
+      )}
+      <AnimatePresence>
+        {ripples.map((ripple) => (
+          <motion.span
+            key={ripple.id}
+            className={cn(
+              'absolute rounded-ds-full -translate-x-1/2 -translate-y-1/2 pointer-events-none',
+              rippleBgMap[variant],
+            )}
+            style={{
+              left: ripple.x,
+              top: ripple.y,
+              width: ripple.size,
+              height: ripple.size,
+            }}
+            initial={{ scale: 0, opacity: 1 }}
+            animate={{ scale: 4, opacity: 0 }}
+            transition={{ duration: 0.6 }}
+          />
+        ))}
+      </AnimatePresence>
+      {Icon && <Icon className="relative z-[1] h-ico-sm w-ico-sm shrink-0" />}
+      <span className="relative z-[1] font-accent leading-none">{text}</span>
     </button>
   )
 },

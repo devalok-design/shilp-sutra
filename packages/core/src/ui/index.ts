@@ -278,8 +278,6 @@ export { Stepper, Step, type StepperProps, type StepProps } from './stepper'
 // Interactive Tags
 export { Chip, chipVariants, type ChipProps } from './chip'
 
-// Transitions
-export { Fade, Collapse, Grow, Slide, type TransitionProps } from './transitions'
 
 // Typography
 export { Text, textVariants, type TextProps, type TextVariant } from './text'
@@ -308,5 +306,5 @@ export { Link, type LinkProps } from './link'
 
 // Utilities
 export { cn } from './lib/utils'
-export { motion, duration, easings, durations } from './lib/motion'
-export type { MotionMode, MotionCategory, DurationToken } from './lib/motion'
+export { springs, tweens, stagger, withReducedMotion } from './lib/motion'
+export type { SpringPreset, TweenPreset } from './lib/motion'

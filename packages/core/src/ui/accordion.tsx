@@ -3,8 +3,10 @@
 import * as React from 'react'
 import * as AccordionPrimitive from '@primitives/react-accordion'
 import { IconChevronDown } from '@tabler/icons-react'
+import { motion } from 'framer-motion'
 
 import { cn } from './lib/utils'
+import { springs, tweens } from './lib/motion'
 
 /**
  * Accordion compound component — vertically stacked, collapsible content sections.
@@ -73,13 +75,13 @@ const AccordionTrigger = React.forwardRef<
     <AccordionPrimitive.Trigger
       ref={ref}
       className={cn(
-        'flex flex-1 items-center justify-between py-ds-05 text-left text-ds-md font-medium transition-colors hover:underline focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-focus [&[data-state=open]>svg]:rotate-180',
+        'group flex flex-1 items-center justify-between py-ds-05 text-left text-ds-md font-medium hover:underline focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-focus',
         className,
       )}
       {...props}
     >
       {children}
-      <IconChevronDown className="h-ico-sm w-ico-sm shrink-0 text-text-secondary transition-transform duration-moderate-02" />
+      <IconChevronDown className="h-ico-sm w-ico-sm shrink-0 text-text-secondary transition-transform duration-200 group-data-[state=open]:rotate-180" />
     </AccordionPrimitive.Trigger>
   </AccordionPrimitive.Header>
 ))
@@ -91,10 +93,16 @@ const AccordionContent = React.forwardRef<
 >(({ className, children, ...props }, ref) => (
   <AccordionPrimitive.Content
     ref={ref}
-    className="transition-all duration-moderate-02 ease-productive-standard data-[state=closed]:animate-accordion-up data-[state=open]:animate-accordion-down w-full overflow-hidden text-ds-md"
+    className="w-full overflow-hidden text-ds-md data-[state=open]:animate-accordion-down data-[state=closed]:animate-accordion-up"
     {...props}
   >
-    <div className={cn('pb-ds-05 pt-0', className)}>{children}</div>
+    <motion.div
+      initial={false}
+      animate={{ opacity: 1 }}
+      transition={tweens.fade}
+    >
+      <div className={cn('pb-ds-05 pt-0', className)}>{children}</div>
+    </motion.div>
   </AccordionPrimitive.Content>
 ))
 AccordionContent.displayName = AccordionPrimitive.Content.displayName

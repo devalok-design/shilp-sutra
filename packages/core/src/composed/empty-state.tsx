@@ -1,4 +1,5 @@
 import * as React from 'react'
+import { motion } from 'framer-motion'
 import { cn } from '../ui/lib/utils'
 
 export interface EmptyStateProps extends React.HTMLAttributes<HTMLDivElement> {
@@ -68,15 +69,17 @@ const EmptyState = React.forwardRef<HTMLDivElement, EmptyStateProps>(
         )}
         {...props}
       >
-        <div
+        <motion.div
           className={cn(
-            'flex items-center justify-center rounded-ds-xl bg-layer-02 animate-float',
+            'flex items-center justify-center rounded-ds-xl bg-layer-02',
             compact ? 'h-ds-md w-ds-md' : 'h-ds-lg w-ds-lg',
             !isComponentType && icon != null && iconSizeClass,
           )}
+          animate={{ y: [0, -4, 0] }}
+          transition={{ repeat: Infinity, duration: 3, ease: 'easeInOut' }}
         >
           {resolvedIcon}
-        </div>
+        </motion.div>
 
         <div className="flex max-w-[280px] flex-col gap-ds-02">
           <h3

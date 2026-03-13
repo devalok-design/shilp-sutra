@@ -1,8 +1,10 @@
 'use client'
 
 import * as React from 'react'
+import { motion } from 'framer-motion'
 import { cva, type VariantProps } from 'class-variance-authority'
 import { cn } from './lib/utils'
+import { motionProps } from './lib/motion'
 import type { InputState } from './input'
 import { useFormField } from './form'
 
@@ -13,7 +15,7 @@ const textareaVariants = cva(
     'border border-border rounded-ds-md',
     'placeholder:text-text-placeholder',
     'hover:bg-field-hover',
-    'transition-colors duration-fast-01',
+    'transition-colors duration-100',
     'focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-focus focus-visible:border-border-interactive',
     'disabled:cursor-not-allowed disabled:opacity-[0.38]',
     'read-only:bg-layer-02 read-only:cursor-default',
@@ -73,7 +75,7 @@ const Textarea = React.forwardRef<HTMLTextAreaElement, TextareaProps>(
     const ariaRequired = props['aria-required'] ?? fieldCtx.required
 
     return (
-      <textarea
+      <motion.textarea
         aria-invalid={state === 'error' || undefined}
         aria-describedby={ariaDescribedBy}
         aria-required={ariaRequired || undefined}
@@ -85,7 +87,7 @@ const Textarea = React.forwardRef<HTMLTextAreaElement, TextareaProps>(
           className,
         )}
         ref={ref}
-        {...props}
+        {...motionProps(props)}
       />
     )
   },

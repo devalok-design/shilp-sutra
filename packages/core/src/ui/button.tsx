@@ -1,14 +1,17 @@
 'use client'
 
 import { cva, type VariantProps } from 'class-variance-authority'
+import { IconCheck, IconX } from '@tabler/icons-react'
+import { motion, AnimatePresence } from 'framer-motion'
 import { Slot, Slottable } from '@primitives/react-slot'
 import * as React from 'react'
 import { useButtonGroup } from './button-group'
+import { springs } from './lib/motion'
 import { cn } from './lib/utils'
 import { Spinner } from './spinner'
 
 export const buttonVariants = cva(
-  'inline-flex items-center justify-center gap-ds-03 whitespace-nowrap font-sans font-semibold select-none border border-transparent transition-[color,background-color,border-color,box-shadow,transform] duration-fast-01 ease-productive-standard active:translate-y-px focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-focus focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-[0.38]',
+  'inline-flex items-center justify-center gap-ds-03 whitespace-nowrap font-sans font-semibold select-none border border-transparent focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-focus focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-[0.38]',
   {
     variants: {
       variant: {
@@ -139,6 +142,15 @@ export interface ButtonProps
   loadingPosition?: 'start' | 'end' | 'center'
   /** Stretch to full width of parent */
   fullWidth?: boolean
+  /**
+   * Async click handler — auto-manages loading → success/error states.
+   * When provided, the button shows a spinner while the promise is pending,
+   * then briefly flashes green (success) or red (error) before reverting.
+   * Overrides `onClick` and `loading` when active.
+   */
+  onClickAsync?: (e: React.MouseEvent<HTMLButtonElement>) => Promise<void>
+  /** How long (ms) to show the success/error state before reverting. Default: 1500 */
+  asyncFeedbackDuration?: number
 }
 
 const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
@@ -151,10 +163,13 @@ const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
       asChild = false,
       startIcon,
       endIcon,
-      loading = false,
+      loading: loadingProp = false,
       loadingPosition = 'start',
       fullWidth = false,
       disabled,
+      onClick,
+      onClickAsync,
+      asyncFeedbackDuration = 1500,
       children,
       ...props
     },
@@ -166,6 +181,28 @@ const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
     const resolvedSize = size ?? group.size ?? 'md'
     const iconClass = iconSizeClass[resolvedSize]
     const spinnerSize = spinnerSizeMap[resolvedSize]
+
+    // Async state machine: idle → loading → success | error → idle
+    type AsyncState = 'idle' | 'loading' | 'success' | 'error'
+    const [asyncState, setAsyncState] = React.useState<AsyncState>('idle')
+    const timeoutRef = React.useRef<ReturnType<typeof setTimeout>>()
+
+    React.useEffect(() => () => { clearTimeout(timeoutRef.current) }, [])
+
+    const handleAsyncClick = (e: React.MouseEvent<HTMLButtonElement>) => {
+      if (!onClickAsync || asyncState !== 'idle') return
+      setAsyncState('loading')
+      onClickAsync(e)
+        .then(() => setAsyncState('success'))
+        .catch(() => setAsyncState('error'))
+        .finally(() => {
+          timeoutRef.current = setTimeout(() => setAsyncState('idle'), asyncFeedbackDuration)
+        })
+    }
+
+    const isAsync = !!onClickAsync
+    const loading = isAsync ? asyncState === 'loading' : loadingProp
+    const isAsyncFeedback = asyncState === 'success' || asyncState === 'error'
 
     const spinnerNode = loading ? (
       <Spinner size={spinnerSize} />
@@ -235,21 +272,50 @@ const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
       return children
     }
 
+    // Async feedback: override color to show green/red
+    const feedbackColorClass = isAsyncFeedback
+      ? asyncState === 'success'
+        ? 'bg-success text-text-on-color border-transparent hover:bg-success'
+        : 'bg-error text-text-on-color border-transparent hover:bg-error'
+      : undefined
+
+    // Async feedback icon replaces start slot
+    const asyncFeedbackIcon = isAsyncFeedback ? (
+      <AnimatePresence mode="wait">
+        <motion.span
+          key={asyncState}
+          initial={{ opacity: 0, scale: 0.5 }}
+          animate={{ opacity: 1, scale: 1 }}
+          exit={{ opacity: 0, scale: 0.5 }}
+          transition={springs.bouncy}
+          className={cn('inline-flex shrink-0 items-center justify-center', iconClass)}
+        >
+          {asyncState === 'success'
+            ? <IconCheck className="h-full w-full" />
+            : <IconX className="h-full w-full" />}
+        </motion.span>
+      </AnimatePresence>
+    ) : null
+
     return (
       <button
+        {...props}
         className={cn(
           buttonVariants({ variant: resolvedVariant, color: resolvedColor, size: resolvedSize }),
           fullWidth && 'w-full',
+          !loading && !isAsyncFeedback && 'active:scale-[0.97] transition-transform duration-100',
+          feedbackColorClass,
+          isAsyncFeedback && 'transition-colors duration-200',
           className,
         )}
         ref={ref}
-        disabled={disabled || loading}
+        disabled={disabled || loading || isAsyncFeedback}
         aria-busy={loading || undefined}
-        {...props}
+        onClick={isAsync ? handleAsyncClick : onClick}
       >
-        {renderStartSlot()}
-        {renderChildren()}
-        {renderEndSlot()}
+        {isAsyncFeedback ? asyncFeedbackIcon : renderStartSlot()}
+        {isAsyncFeedback ? children : renderChildren()}
+        {isAsyncFeedback ? null : renderEndSlot()}
       </button>
     )
   },

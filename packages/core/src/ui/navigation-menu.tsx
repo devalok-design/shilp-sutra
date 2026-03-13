@@ -3,8 +3,10 @@
 import * as React from 'react'
 import * as NavigationMenuPrimitive from '@primitives/react-navigation-menu'
 import { IconChevronDown } from '@tabler/icons-react'
+import { motion, AnimatePresence } from 'framer-motion'
 
 import { cn } from './lib/utils'
+import { springs, tweens } from './lib/motion'
 
 const NavigationMenu = React.forwardRef<
   React.ElementRef<typeof NavigationMenuPrimitive.Root>,
@@ -62,56 +64,209 @@ const NavigationMenuTrigger = React.forwardRef<
 ))
 NavigationMenuTrigger.displayName = NavigationMenuPrimitive.Trigger.displayName
 
+// ── NavigationMenuContent — directional slide using data-motion ──
+
+const contentSlideVariants = {
+  'from-start': { x: '-13rem', opacity: 0 },
+  'from-end': { x: '13rem', opacity: 0 },
+  'to-start': { x: '-13rem', opacity: 0 },
+  'to-end': { x: '13rem', opacity: 0 },
+  center: { x: 0, opacity: 1 },
+} as const
+
 const NavigationMenuContent = React.forwardRef<
   React.ElementRef<typeof NavigationMenuPrimitive.Content>,
   React.ComponentPropsWithoutRef<typeof NavigationMenuPrimitive.Content>
->(({ className, ...props }, ref) => (
-  <NavigationMenuPrimitive.Content
-    ref={ref}
-    className={cn(
-      'left-0 top-0 w-full data-[motion^=from-]:animate-in data-[motion^=to-]:animate-out data-[motion^=from-]:fade-in data-[motion^=to-]:fade-out data-[motion=from-end]:slide-in-from-right-52 data-[motion=from-start]:slide-in-from-left-52 data-[motion=to-end]:slide-out-to-right-52 data-[motion=to-start]:slide-out-to-left-52 md:absolute md:w-auto',
-      className,
-    )}
-    {...props}
-  />
-))
+>(({ className, ...props }, ref) => {
+  const innerRef = React.useRef<HTMLDivElement>(null)
+  const composedRef = React.useCallback(
+    (node: HTMLDivElement | null) => {
+      (innerRef as React.MutableRefObject<HTMLDivElement | null>).current = node
+      if (typeof ref === 'function') ref(node)
+      else if (ref) (ref as React.MutableRefObject<HTMLDivElement | null>).current = node
+    },
+    [ref],
+  )
+
+  const [motionDir, setMotionDir] = React.useState<string | null>(null)
+
+  // Observe data-motion attribute changes from Radix
+  React.useEffect(() => {
+    const el = innerRef.current
+    if (!el) return
+
+    // Read initial value
+    const initial = el.getAttribute('data-motion')
+    if (initial) setMotionDir(initial)
+
+    const observer = new MutationObserver((mutations) => {
+      for (const m of mutations) {
+        if (m.attributeName === 'data-motion') {
+          const val = el.getAttribute('data-motion')
+          setMotionDir(val)
+        }
+      }
+    })
+    observer.observe(el, { attributes: true, attributeFilter: ['data-motion'] })
+    return () => observer.disconnect()
+  }, [])
+
+  const initial = motionDir && motionDir.startsWith('from-')
+    ? contentSlideVariants[motionDir as keyof typeof contentSlideVariants]
+    : motionDir && motionDir.startsWith('to-')
+      ? contentSlideVariants.center
+      : { x: 0, opacity: 0 }
+
+  const animate = motionDir && motionDir.startsWith('from-')
+    ? contentSlideVariants.center
+    : motionDir && motionDir.startsWith('to-')
+      ? contentSlideVariants[motionDir as keyof typeof contentSlideVariants]
+      : contentSlideVariants.center
+
+  return (
+    <NavigationMenuPrimitive.Content
+      ref={composedRef}
+      className={cn(
+        'left-0 top-0 w-full md:absolute md:w-auto',
+        className,
+      )}
+      {...props}
+    >
+      <motion.div
+        key={motionDir}
+        initial={initial}
+        animate={animate}
+        transition={{ ...springs.smooth, opacity: tweens.fade }}
+        style={{ width: '100%' }}
+      >
+        {props.children}
+      </motion.div>
+    </NavigationMenuPrimitive.Content>
+  )
+})
 NavigationMenuContent.displayName = NavigationMenuPrimitive.Content.displayName
 
 const NavigationMenuLink = NavigationMenuPrimitive.Link
 
+// ── NavigationMenuViewport — scale + fade with layout for size changes ──
+
 const NavigationMenuViewport = React.forwardRef<
   React.ElementRef<typeof NavigationMenuPrimitive.Viewport>,
   React.ComponentPropsWithoutRef<typeof NavigationMenuPrimitive.Viewport>
->(({ className, ...props }, ref) => (
-  <div className={cn('absolute left-0 top-full flex justify-center')}>
-    <NavigationMenuPrimitive.Viewport
-      className={cn(
-        'origin-top-center relative mt-ds-02b h-[var(--radix-navigation-menu-viewport-height)] w-full overflow-hidden rounded-ds-lg border border-border bg-layer-01 shadow-03 data-[state=open]:animate-in data-[state=closed]:animate-out data-[state=closed]:zoom-out-95 data-[state=open]:zoom-in-90 md:w-[var(--radix-navigation-menu-viewport-width)]',
-        className,
-      )}
-      ref={ref}
-      {...props}
-    />
-  </div>
-))
+>(({ className, ...props }, ref) => {
+  const innerRef = React.useRef<HTMLDivElement>(null)
+  const composedRef = React.useCallback(
+    (node: HTMLDivElement | null) => {
+      (innerRef as React.MutableRefObject<HTMLDivElement | null>).current = node
+      if (typeof ref === 'function') ref(node)
+      else if (ref) (ref as React.MutableRefObject<HTMLDivElement | null>).current = node
+    },
+    [ref],
+  )
+
+  const [isOpen, setIsOpen] = React.useState(false)
+
+  React.useEffect(() => {
+    const el = innerRef.current
+    if (!el) return
+
+    const initial = el.getAttribute('data-state')
+    setIsOpen(initial === 'open')
+
+    const observer = new MutationObserver((mutations) => {
+      for (const m of mutations) {
+        if (m.attributeName === 'data-state') {
+          setIsOpen(el.getAttribute('data-state') === 'open')
+        }
+      }
+    })
+    observer.observe(el, { attributes: true, attributeFilter: ['data-state'] })
+    return () => observer.disconnect()
+  }, [])
+
+  return (
+    <div className={cn('absolute left-0 top-full flex justify-center')}>
+      <NavigationMenuPrimitive.Viewport
+        className={cn(
+          'origin-top-center relative mt-ds-02b h-[var(--radix-navigation-menu-viewport-height)] w-full overflow-hidden rounded-ds-lg border border-border bg-layer-01 shadow-03 md:w-[var(--radix-navigation-menu-viewport-width)]',
+          className,
+        )}
+        ref={composedRef}
+        {...props}
+      />
+      {/* Overlay motion element for scale+fade animation */}
+      <motion.div
+        aria-hidden
+        style={{
+          position: 'absolute',
+          inset: 0,
+          pointerEvents: 'none',
+        }}
+        initial={false}
+        animate={isOpen ? { opacity: 1, scale: 1 } : { opacity: 0, scale: 0.95 }}
+        transition={{ ...springs.smooth, opacity: tweens.fade }}
+      />
+    </div>
+  )
+})
 NavigationMenuViewport.displayName =
   NavigationMenuPrimitive.Viewport.displayName
+
+// ── NavigationMenuIndicator — fade + layout position sliding ──
 
 const NavigationMenuIndicator = React.forwardRef<
   React.ElementRef<typeof NavigationMenuPrimitive.Indicator>,
   React.ComponentPropsWithoutRef<typeof NavigationMenuPrimitive.Indicator>
->(({ className, ...props }, ref) => (
-  <NavigationMenuPrimitive.Indicator
-    ref={ref}
-    className={cn(
-      'top-full z-base flex h-ds-02b items-end justify-center overflow-hidden data-[state=visible]:animate-in data-[state=hidden]:animate-out data-[state=hidden]:fade-out data-[state=visible]:fade-in',
-      className,
-    )}
-    {...props}
-  >
-    <div className="relative top-[60%] h-2 w-2 rotate-45 rounded-tl-sm bg-border shadow-02" />
-  </NavigationMenuPrimitive.Indicator>
-))
+>(({ className, ...props }, ref) => {
+  const innerRef = React.useRef<HTMLDivElement>(null)
+  const composedRef = React.useCallback(
+    (node: HTMLDivElement | null) => {
+      (innerRef as React.MutableRefObject<HTMLDivElement | null>).current = node
+      if (typeof ref === 'function') ref(node)
+      else if (ref) (ref as React.MutableRefObject<HTMLDivElement | null>).current = node
+    },
+    [ref],
+  )
+
+  const [isVisible, setIsVisible] = React.useState(false)
+
+  React.useEffect(() => {
+    const el = innerRef.current
+    if (!el) return
+
+    const initial = el.getAttribute('data-state')
+    setIsVisible(initial === 'visible')
+
+    const observer = new MutationObserver((mutations) => {
+      for (const m of mutations) {
+        if (m.attributeName === 'data-state') {
+          setIsVisible(el.getAttribute('data-state') === 'visible')
+        }
+      }
+    })
+    observer.observe(el, { attributes: true, attributeFilter: ['data-state'] })
+    return () => observer.disconnect()
+  }, [])
+
+  return (
+    <NavigationMenuPrimitive.Indicator
+      ref={composedRef}
+      className={cn(
+        'top-full z-base flex h-ds-02b items-end justify-center overflow-hidden',
+        className,
+      )}
+      {...props}
+    >
+      <motion.div
+        layout
+        initial={false}
+        animate={isVisible ? { opacity: 1 } : { opacity: 0 }}
+        transition={tweens.fade}
+        className="relative top-[60%] h-2 w-2 rotate-45 rounded-tl-sm bg-border shadow-02"
+      />
+    </NavigationMenuPrimitive.Indicator>
+  )
+})
 NavigationMenuIndicator.displayName =
   NavigationMenuPrimitive.Indicator.displayName
 

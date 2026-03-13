@@ -3,6 +3,7 @@
 import * as React from 'react'
 import { useCallback, useEffect, useRef, useState } from 'react'
 import { cn } from '@/ui/lib/utils'
+import { MotionStagger, MotionStaggerItem } from '@/motion/primitives'
 import { Input } from '@/ui/input'
 import { Button } from '@/ui/button'
 import { Badge } from '@/ui/badge'
@@ -355,13 +356,9 @@ export const BoardToolbar = React.forwardRef<HTMLDivElement, BoardToolbarProps>(
 
       {/* Active filter chips */}
       {chips.length > 0 && (
-        <div className="flex items-center gap-ds-02 flex-wrap">
-          {chips.map((chip, idx) => (
-            <div
-              key={chip.key}
-              className="animate-scale-in delay-stagger"
-              style={{ '--stagger-index': idx } as React.CSSProperties}
-            >
+        <MotionStagger className="flex items-center gap-ds-02 flex-wrap">
+          {chips.map((chip) => (
+            <MotionStaggerItem key={chip.key}>
               <Badge
                 variant="subtle"
                 size="sm"
@@ -369,7 +366,7 @@ export const BoardToolbar = React.forwardRef<HTMLDivElement, BoardToolbarProps>(
               >
                 {chip.label}
               </Badge>
-            </div>
+            </MotionStaggerItem>
           ))}
           <button
             onClick={clearFilters}
@@ -378,7 +375,7 @@ export const BoardToolbar = React.forwardRef<HTMLDivElement, BoardToolbarProps>(
           >
             Clear all
           </button>
-        </div>
+        </MotionStagger>
       )}
     </div>
   )

@@ -28,12 +28,12 @@ export const Default: Story = {
                 <NavigationMenuLink asChild>
                   <a
                     href="#"
-                    className="block select-none space-y-ds-01 rounded-ds-md p-ds-03 leading-none no-underline outline-none transition-colors hover:bg-field"
+                    className="block select-none space-y-ds-01 rounded-ds-md p-ds-03 leading-none no-underline outline-none transition-colors hover:bg-surface-3"
                   >
                     <div className="text-ds-sm font-medium leading-none">
                       Introduction
                     </div>
-                    <p className="line-clamp-2 text-ds-sm leading-snug text-text-secondary">
+                    <p className="line-clamp-2 text-ds-sm leading-snug text-surface-fg-muted">
                       Re-usable components built with Radix UI and Tailwind CSS.
                     </p>
                   </a>
@@ -43,12 +43,12 @@ export const Default: Story = {
                 <NavigationMenuLink asChild>
                   <a
                     href="#"
-                    className="block select-none space-y-ds-01 rounded-ds-md p-ds-03 leading-none no-underline outline-none transition-colors hover:bg-field"
+                    className="block select-none space-y-ds-01 rounded-ds-md p-ds-03 leading-none no-underline outline-none transition-colors hover:bg-surface-3"
                   >
                     <div className="text-ds-sm font-medium leading-none">
                       Installation
                     </div>
-                    <p className="line-clamp-2 text-ds-sm leading-snug text-text-secondary">
+                    <p className="line-clamp-2 text-ds-sm leading-snug text-surface-fg-muted">
                       How to install dependencies and structure your app.
                     </p>
                   </a>
@@ -65,12 +65,12 @@ export const Default: Story = {
                 <NavigationMenuLink asChild>
                   <a
                     href="#"
-                    className="block select-none space-y-ds-01 rounded-ds-md p-ds-03 leading-none no-underline outline-none transition-colors hover:bg-field"
+                    className="block select-none space-y-ds-01 rounded-ds-md p-ds-03 leading-none no-underline outline-none transition-colors hover:bg-surface-3"
                   >
                     <div className="text-ds-sm font-medium leading-none">
                       Alert Dialog
                     </div>
-                    <p className="line-clamp-2 text-ds-sm leading-snug text-text-secondary">
+                    <p className="line-clamp-2 text-ds-sm leading-snug text-surface-fg-muted">
                       A modal dialog that interrupts the user.
                     </p>
                   </a>
@@ -80,12 +80,12 @@ export const Default: Story = {
                 <NavigationMenuLink asChild>
                   <a
                     href="#"
-                    className="block select-none space-y-ds-01 rounded-ds-md p-ds-03 leading-none no-underline outline-none transition-colors hover:bg-field"
+                    className="block select-none space-y-ds-01 rounded-ds-md p-ds-03 leading-none no-underline outline-none transition-colors hover:bg-surface-3"
                   >
                     <div className="text-ds-sm font-medium leading-none">
                       Hover Card
                     </div>
-                    <p className="line-clamp-2 text-ds-sm leading-snug text-text-secondary">
+                    <p className="line-clamp-2 text-ds-sm leading-snug text-surface-fg-muted">
                       For sighted users to preview content behind a link.
                     </p>
                   </a>

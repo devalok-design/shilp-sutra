@@ -1,5 +1,5 @@
 export interface PlaygroundState {
-  primitives: Record<string, string>   // e.g. { '--pink-500': '#E04080' }
+  primitives: Record<string, string>   // e.g. { '--pink-9': 'oklch(0.55 0.19 360)' }
   semantic: Record<string, string>     // e.g. { '--spacing-04': '20px' }
   mode: 'tokens' | 'sandbox'
   darkMode: boolean

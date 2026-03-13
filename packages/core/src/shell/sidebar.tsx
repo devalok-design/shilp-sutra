@@ -175,8 +175,8 @@ function CloseIcon({ className }: { className?: string }) {
 
 const navItemBase = 'relative gap-ds-04 rounded-ds-lg px-ds-04 py-ds-03 transition-colors'
 const navItemActive =
-  "bg-interactive-subtle text-interactive after:absolute after:right-0 after:top-0 after:h-full after:w-ds-01 after:rounded-l-ds-full after:bg-interactive after:content-['']"
-const navItemInactive = 'text-text-helper hover:bg-layer-02 hover:text-text-primary'
+  "bg-accent-2 text-accent-11 after:absolute after:right-0 after:top-0 after:h-full after:w-ds-01 after:rounded-l-ds-full after:bg-accent-9 after:content-['']"
+const navItemInactive = 'text-surface-fg-subtle hover:bg-surface-2 hover:text-surface-fg'
 
 // -----------------------------------------------------------------------
 // NavLink (internal)
@@ -234,7 +234,7 @@ function NavLink({
             {badgeContent && <SidebarMenuBadge>{badgeContent}</SidebarMenuBadge>}
             <CollapsibleTrigger asChild>
               <button
-                className="absolute right-ds-02 top-1/2 flex h-5 w-5 -translate-y-1/2 items-center justify-center rounded-ds-md text-text-helper transition-colors hover:bg-layer-02 hover:text-text-primary group-data-[collapsible=icon]:hidden"
+                className="absolute right-ds-02 top-1/2 flex h-5 w-5 -translate-y-1/2 items-center justify-center rounded-ds-md text-surface-fg-subtle transition-colors hover:bg-surface-2 hover:text-surface-fg group-data-[collapsible=icon]:hidden"
                 aria-label={`Toggle ${item.title}`}
               >
                 <ChevronRight className="h-4 w-4 transition-transform duration-fast-02 ease-productive-standard group-data-[state=open]/collapsible:rotate-90" />
@@ -335,14 +335,14 @@ const AppSidebar = React.forwardRef<HTMLDivElement, AppSidebarProps>(
         ref={ref}
         aria-label="Main navigation"
         className={cn(
-          'z-raised hidden h-full flex-col border-r border-border bg-layer-01 md:flex',
+          'z-raised hidden h-full flex-col border-r border-surface-border-strong bg-surface-1 md:flex',
           className,
         )}
       >
         {/* Logo Header */}
         <SidebarHeader className="px-ds-06 py-ds-06">
           {logo ?? (
-            <span className="text-ds-lg font-semibold text-text-primary">
+            <span className="text-ds-lg font-semibold text-surface-fg">
               Logo
             </span>
           )}
@@ -355,15 +355,15 @@ const AppSidebar = React.forwardRef<HTMLDivElement, AppSidebarProps>(
               {user.image ? (
                 <AvatarImage src={user.image} alt={user.name} />
               ) : null}
-              <AvatarFallback className="bg-layer-03 text-text-primary">
+              <AvatarFallback className="bg-surface-3 text-surface-fg">
                 {user.name?.charAt(0).toUpperCase()}
               </AvatarFallback>
             </Avatar>
             <div className="flex min-w-0 flex-col">
-              <span className="truncate text-ds-md text-text-primary">
+              <span className="truncate text-ds-md text-surface-fg">
                 {user.name}
               </span>
-              <span className="truncate text-ds-sm text-text-placeholder">
+              <span className="truncate text-ds-sm text-surface-fg-subtle">
                 {user.designation || user.role}
               </span>
             </div>
@@ -386,7 +386,7 @@ const AppSidebar = React.forwardRef<HTMLDivElement, AppSidebarProps>(
             <div key={group.label}>
               {idx > 0 && <SidebarSeparator />}
               <SidebarGroup>
-                <SidebarGroupLabel className="px-ds-04 text-ds-sm text-text-placeholder">
+                <SidebarGroupLabel className="px-ds-04 text-ds-sm text-surface-fg-subtle">
                   {group.label}
                 </SidebarGroupLabel>
                 {group.action && (
@@ -436,37 +436,37 @@ const AppSidebar = React.forwardRef<HTMLDivElement, AppSidebarProps>(
 
             {/* Promo banner */}
             {footer.promo && (
-              <div className="relative rounded-ds-lg border border-border-subtle bg-layer-02 p-ds-04">
+              <div className="relative rounded-ds-lg border border-surface-border bg-surface-2 p-ds-04">
                 {footer.promo.onDismiss && (
                   <button
                     onClick={footer.promo.onDismiss}
                     aria-label="Dismiss"
-                    className="absolute right-ds-02 top-ds-02 flex h-5 w-5 items-center justify-center rounded-ds-md text-text-helper transition-colors hover:bg-layer-03 hover:text-text-primary"
+                    className="absolute right-ds-02 top-ds-02 flex h-5 w-5 items-center justify-center rounded-ds-md text-surface-fg-subtle transition-colors hover:bg-surface-3 hover:text-surface-fg"
                   >
                     <CloseIcon className="h-3.5 w-3.5" />
                   </button>
                 )}
                 <div className="flex flex-col gap-ds-03">
                   {footer.promo.icon && (
-                    <span className="text-interactive [&>svg]:h-ico-md [&>svg]:w-ico-md" aria-hidden="true">
+                    <span className="text-accent-11 [&>svg]:h-ico-md [&>svg]:w-ico-md" aria-hidden="true">
                       {footer.promo.icon}
                     </span>
                   )}
                   <div className="flex min-w-0 flex-col gap-ds-03">
-                    <p className="text-ds-sm text-text-primary">{footer.promo.text}</p>
+                    <p className="text-ds-sm text-surface-fg">{footer.promo.text}</p>
                     {footer.promo.action && (
                       footer.promo.action.href ? (
                         <Link
                           href={footer.promo.action.href}
                           onClick={footer.promo.action.onClick}
-                          className="inline-flex self-start rounded-ds-md bg-interactive px-ds-04 py-ds-02 text-ds-sm font-medium text-text-on-color transition-colors hover:bg-interactive-hover"
+                          className="inline-flex self-start rounded-ds-md bg-accent-9 px-ds-04 py-ds-02 text-ds-sm font-medium text-accent-fg transition-colors hover:bg-accent-10"
                         >
                           {footer.promo.action.label}
                         </Link>
                       ) : (
                         <button
                           onClick={footer.promo.action.onClick}
-                          className="inline-flex self-start rounded-ds-md bg-interactive px-ds-04 py-ds-02 text-ds-sm font-medium text-text-on-color transition-colors hover:bg-interactive-hover"
+                          className="inline-flex self-start rounded-ds-md bg-accent-9 px-ds-04 py-ds-02 text-ds-sm font-medium text-accent-fg transition-colors hover:bg-accent-10"
                         >
                           {footer.promo.action.label}
                         </button>
@@ -479,12 +479,12 @@ const AppSidebar = React.forwardRef<HTMLDivElement, AppSidebarProps>(
 
             {/* Links + version on same line */}
             {(footer.links?.length || footer.version) && (
-              <div className="flex items-center gap-ds-03 text-ds-sm text-text-placeholder">
+              <div className="flex items-center gap-ds-03 text-ds-sm text-surface-fg-subtle">
                 {footer.links?.map((link, i) => (
                   <React.Fragment key={link.href}>
                     {i > 0 && <span>·</span>}
                     <Link
-                      className="transition-colors hover:text-interactive"
+                      className="transition-colors hover:text-accent-11"
                       href={link.href}
                     >
                       {link.label}
@@ -495,19 +495,19 @@ const AppSidebar = React.forwardRef<HTMLDivElement, AppSidebarProps>(
                 {footer.version && (
                   typeof footer.version === 'string'
                     ? <span>{footer.version}</span>
-                    : <Link className="transition-colors hover:text-interactive" href={footer.version.href}>{footer.version.label}</Link>
+                    : <Link className="transition-colors hover:text-accent-11" href={footer.version.href}>{footer.version.label}</Link>
                 )}
               </div>
             )}
           </SidebarFooter>
         ) : footerLinks.length > 0 ? (
           <SidebarFooter className="px-ds-06 py-ds-05">
-            <div className="flex items-center gap-ds-03 text-ds-sm text-text-placeholder">
+            <div className="flex items-center gap-ds-03 text-ds-sm text-surface-fg-subtle">
               {footerLinks.map((link, i) => (
                 <React.Fragment key={link.href}>
                   {i > 0 && <span>·</span>}
                   <Link
-                    className="transition-colors hover:text-interactive"
+                    className="transition-colors hover:text-accent-11"
                     href={link.href}
                   >
                     {link.label}

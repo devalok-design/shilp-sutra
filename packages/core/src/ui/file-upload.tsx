@@ -242,10 +242,10 @@ const FileUpload = React.forwardRef<HTMLDivElement, FileUploadProps>(
             className={cn(
               'inline-flex items-center gap-ds-02 rounded-ds-md px-ds-03 py-ds-02',
               'text-ds-sm font-medium',
-              'border border-border',
-              'bg-field text-text-secondary',
-              'hover:bg-interactive-subtle',
-              'disabled:opacity-[0.38] disabled:cursor-not-allowed',
+              'border border-surface-border-strong',
+              'bg-surface-3 text-surface-fg-muted',
+              'hover:bg-accent-2',
+              'disabled:opacity-action-disabled disabled:cursor-not-allowed',
               'transition-colors',
             )}
           >
@@ -276,7 +276,7 @@ const FileUpload = React.forwardRef<HTMLDivElement, FileUploadProps>(
             <p
               role="alert"
               aria-live="polite"
-              className="mt-ds-02 text-ds-xs text-error"
+              className="mt-ds-02 text-ds-xs text-error-11"
             >
               {displayError}
             </p>
@@ -312,10 +312,10 @@ const FileUpload = React.forwardRef<HTMLDivElement, FileUploadProps>(
             'flex flex-col items-center justify-center gap-ds-03 rounded-ds-lg',
             'border-2 border-dashed p-ds-08',
             'cursor-pointer',
-            'border-border bg-field',
+            'border-surface-border-strong bg-surface-3',
             isDragActive &&
-              'border-interactive bg-interactive-subtle',
-            disabled && 'opacity-[0.38] cursor-not-allowed',
+              'border-accent-7 bg-accent-2',
+            disabled && 'opacity-action-disabled cursor-not-allowed',
           )}
           animate={{
             scale: isDragActive ? 1.02 : 1,
@@ -342,7 +342,7 @@ const FileUpload = React.forwardRef<HTMLDivElement, FileUploadProps>(
                 exit={{ opacity: 0, scale: 0.5 }}
                 transition={springs.bouncy}
               >
-                <IconCheck className="h-ds-sm w-ds-sm text-success-text" />
+                <IconCheck className="h-ds-sm w-ds-sm text-success-11" />
               </motion.div>
             ) : (
               <motion.div
@@ -352,11 +352,11 @@ const FileUpload = React.forwardRef<HTMLDivElement, FileUploadProps>(
                 exit={{ opacity: 0 }}
                 transition={tweens.fade}
               >
-                <IconUpload className="h-ds-sm w-ds-sm text-icon-secondary" />
+                <IconUpload className="h-ds-sm w-ds-sm text-surface-fg-subtle" />
               </motion.div>
             )}
           </AnimatePresence>
-          <span id={inputId + '-label'} className="text-ds-sm text-text-secondary">
+          <span id={inputId + '-label'} className="text-ds-sm text-surface-fg-muted">
             {defaultLabel}
           </span>
           {uploading ? (
@@ -366,17 +366,17 @@ const FileUpload = React.forwardRef<HTMLDivElement, FileUploadProps>(
                 aria-valuenow={progress}
                 aria-valuemin={0}
                 aria-valuemax={100}
-                className="h-2 w-full overflow-hidden rounded-ds-full bg-field"
+                className="h-2 w-full overflow-hidden rounded-ds-full bg-surface-3"
               >
                 <motion.div
-                  className="h-full rounded-ds-full bg-interactive"
+                  className="h-full rounded-ds-full bg-accent-9"
                   animate={{ width: `${progress}%` }}
                   transition={springs.smooth}
                 />
               </div>
             </div>
           ) : (
-            <span className="text-ds-xs text-text-tertiary">
+            <span className="text-ds-xs text-surface-fg-subtle">
               {defaultSublabel}
             </span>
           )}
@@ -402,7 +402,7 @@ const FileUpload = React.forwardRef<HTMLDivElement, FileUploadProps>(
           {displayError && (
             <motion.p
               role="alert"
-              className="mt-ds-02 text-ds-xs text-error"
+              className="mt-ds-02 text-ds-xs text-error-11"
               initial={{ opacity: 0, x: 0 }}
               animate={{ opacity: 1, x: [0, -4, 4, -4, 4, 0] }}
               exit={{ opacity: 0 }}

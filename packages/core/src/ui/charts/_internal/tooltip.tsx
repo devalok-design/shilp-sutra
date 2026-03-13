@@ -23,10 +23,10 @@ export function ChartTooltip({ state, className }: ChartTooltipProps) {
     <div
       className={cn(
         'pointer-events-none absolute z-tooltip',
-        'rounded-ds-md border border-border',
-        'bg-layer-01 px-ds-03 py-ds-02',
+        'rounded-ds-md border border-surface-border-strong',
+        'bg-surface-1 px-ds-03 py-ds-02',
         'shadow-02',
-        'text-ds-sm text-text-primary',
+        'text-ds-sm text-surface-fg',
         className,
       )}
       style={{ left: state.x + 12, top: state.y - 12 }}

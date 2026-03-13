@@ -91,8 +91,8 @@ export const Customized: Story = {
     data: skillData,
     axes: ['Frontend', 'Backend', 'DevOps', 'Design', 'Testing'],
     series: [
-      { key: 'alice', label: 'Alice', color: 'var(--color-interactive-primary)' },
-      { key: 'bob', label: 'Bob', color: 'var(--color-warning-emphasis)' },
+      { key: 'alice', label: 'Alice', color: 'var(--color-accent-9)' },
+      { key: 'bob', label: 'Bob', color: 'var(--color-warning-9)' },
     ],
     maxValue: 100,
     height: 350,

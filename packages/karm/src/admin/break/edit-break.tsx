@@ -226,19 +226,19 @@ export const EditBreak = React.forwardRef<HTMLDivElement, EditBreakProps>(functi
       APPROVED: {
         text: 'Approved',
         className:
-          'bg-success-surface text-text-success',
+          'bg-success-3 text-success-11',
       },
       PENDING: {
         text: 'Pending',
-        className: 'bg-warning-surface text-text-warning',
+        className: 'bg-warning-3 text-warning-11',
       },
       REJECTED: {
         text: 'Deny',
-        className: 'bg-error-surface text-text-error',
+        className: 'bg-error-3 text-error-11',
       },
       CANCELLED: {
         text: 'Redacted',
-        className: 'bg-error-surface text-text-error',
+        className: 'bg-error-3 text-error-11',
       },
     }
 
@@ -393,7 +393,7 @@ export const EditBreak = React.forwardRef<HTMLDivElement, EditBreakProps>(functi
       <DialogTrigger asChild>
         <Button
           variant="outline"
-          className="text-ds-base border-border bg-layer-01 px-ds-05 py-ds-04 pr-ds-06 text-text-secondary shadow-02"
+          className="text-ds-base border-surface-border-strong bg-surface-1 px-ds-05 py-ds-04 pr-ds-06 text-surface-fg-muted shadow-02"
         >
           <EditIcon />
           <span>Edit</span>
@@ -404,9 +404,9 @@ export const EditBreak = React.forwardRef<HTMLDivElement, EditBreakProps>(functi
         <DialogHeader>
           <DialogDescription>
             <div className="flex w-full flex-col items-center gap-ds-05">
-              <p className="text-ds-md w-full text-left text-text-tertiary">
+              <p className="text-ds-md w-full text-left text-surface-fg-subtle">
                 Edit break details of{' '}
-                <span className="font-semibold text-interactive">
+                <span className="font-semibold text-accent-11">
                   {selectedLeave?.user?.name}
                 </span>
               </p>
@@ -416,11 +416,11 @@ export const EditBreak = React.forwardRef<HTMLDivElement, EditBreakProps>(functi
                 id="updateleaveform"
                 className="flex w-full flex-col gap-ds-05"
               >
-                <div className="flex w-full flex-col gap-ds-02 rounded-ds-lg border border-border-subtle px-ds-05 pb-ds-03 pt-ds-04">
-                  <h2 className="text-ds-xs font-semibold uppercase tracking-wider  text-text-placeholder">
+                <div className="flex w-full flex-col gap-ds-02 rounded-ds-lg border border-surface-border px-ds-05 pb-ds-03 pt-ds-04">
+                  <h2 className="text-ds-xs font-semibold uppercase tracking-wider  text-surface-fg-subtle">
                     Reason
                   </h2>
-                  <p className="text-ds-md text-text-primary">
+                  <p className="text-ds-md text-surface-fg">
                     {removeAllEmojis(selectedLeave?.reason)}
                   </p>
                 </div>
@@ -430,21 +430,21 @@ export const EditBreak = React.forwardRef<HTMLDivElement, EditBreakProps>(functi
                     type="button"
                     onClick={() => handleOpenCalendar('start')}
                     className={cn(
-                      'text-ds-md flex w-full items-center justify-center gap-ds-03 rounded-ds-full border bg-layer-02 px-ds-03 py-ds-03 text-text-secondary max-md:text-ds-sm',
-                      picker.showCalendar && picker.activeDate === 'start' ? 'border-border-strong' : 'border-border',
+                      'text-ds-md flex w-full items-center justify-center gap-ds-03 rounded-ds-full border bg-surface-2 px-ds-03 py-ds-03 text-surface-fg-muted max-md:text-ds-sm',
+                      picker.showCalendar && picker.activeDate === 'start' ? 'border-surface-border-strong' : 'border-surface-border-strong',
                     )}
                   >
                     {formatDateToLongForm(formData.startDate)}
                   </button>
                   <div className="flex h-ico-sm w-ico-sm items-center">
-                    <ArrowRightIcon className="h-ico-sm w-ico-sm text-icon-secondary" />
+                    <ArrowRightIcon className="h-ico-sm w-ico-sm text-surface-fg-subtle" />
                   </div>
                   <button
                     type="button"
                     onClick={() => handleOpenCalendar('end')}
                     className={cn(
-                      'text-ds-md flex w-full items-center justify-center gap-ds-03 rounded-ds-full border bg-layer-02 px-ds-03 py-ds-03 text-text-secondary max-md:text-ds-sm',
-                      picker.showCalendar && picker.activeDate === 'end' ? 'border-border-strong' : 'border-border',
+                      'text-ds-md flex w-full items-center justify-center gap-ds-03 rounded-ds-full border bg-surface-2 px-ds-03 py-ds-03 text-surface-fg-muted max-md:text-ds-sm',
+                      picker.showCalendar && picker.activeDate === 'end' ? 'border-surface-border-strong' : 'border-surface-border-strong',
                     )}
                   >
                     {formatDateToLongForm(formData.endDate)}
@@ -458,7 +458,7 @@ export const EditBreak = React.forwardRef<HTMLDivElement, EditBreakProps>(functi
                     <div className="flex items-center justify-between">
                       <button
                         type="button"
-                        className="rounded-ds-full p-ds-03 hover:bg-field-hover"
+                        className="rounded-ds-full p-ds-03 hover:bg-surface-4"
                         onClick={() => picker.navigateMonth('prev')}
                       >
                         <IconChevronLeft className="h-ico-md w-ico-md" />
@@ -474,7 +474,7 @@ export const EditBreak = React.forwardRef<HTMLDivElement, EditBreakProps>(functi
                       </div>
                       <button
                         type="button"
-                        className="rounded-ds-full p-ds-03 hover:bg-field-hover"
+                        className="rounded-ds-full p-ds-03 hover:bg-surface-4"
                         onClick={() => picker.navigateMonth('next')}
                       >
                         <IconChevronRight className="h-ico-md w-ico-md" />
@@ -487,7 +487,7 @@ export const EditBreak = React.forwardRef<HTMLDivElement, EditBreakProps>(functi
                       {['SUN', 'MON', 'TUE', 'WED', 'THU', 'FRI', 'SAT'].map(
                         (weekDay) => (
                           <div key={weekDay} className="pb-ds-03 pt-ds-05 text-center">
-                            <span className="text-ds-sm font-semibold uppercase tracking-wider  text-text-tertiary">
+                            <span className="text-ds-sm font-semibold uppercase tracking-wider  text-surface-fg-subtle">
                               {weekDay}
                             </span>
                           </div>
@@ -506,8 +506,8 @@ export const EditBreak = React.forwardRef<HTMLDivElement, EditBreakProps>(functi
                             isInSelectedRange(day.fullDate) &&
                               !(day.fullDate === picker.selectedStartDate) &&
                               !(day.fullDate === picker.selectedEndDate) &&
-                              'bg-layer-accent-subtle',
-                            day.isPadding && 'opacity-[0.5]',
+                              'bg-accent-2',
+                            day.isPadding && 'opacity-50',
                             day.fullDate === picker.selectedStartDate &&
                               isInSelectedRange(day.fullDate) &&
                               'start-date mini',
@@ -525,7 +525,7 @@ export const EditBreak = React.forwardRef<HTMLDivElement, EditBreakProps>(functi
                           <div
                             className={cn(
                               'mx-ds-02 my-ds-02',
-                              day.isPadding && 'opacity-[0.5]',
+                              day.isPadding && 'opacity-50',
                             )}
                           >
                             <span
@@ -534,10 +534,10 @@ export const EditBreak = React.forwardRef<HTMLDivElement, EditBreakProps>(functi
                                 (day.fullDate === picker.selectedStartDate ||
                                   day.fullDate === picker.selectedEndDate ||
                                   isBreakDay(day.fullDate, existingBreaks, selectedLeave.id)) &&
-                                  'bg-accent ring-2 ring-inset ring-accent',
+                                  'bg-accent-9 ring-2 ring-inset ring-accent-7',
                                 day.isToday
-                                  ? 'bg-interactive-hover p-ds-03 text-text-on-color'
-                                  : 'text-text-secondary',
+                                  ? 'bg-accent-10 p-ds-03 text-accent-fg'
+                                  : 'text-surface-fg-muted',
                               )}
                             >
                               {day.date}
@@ -549,16 +549,16 @@ export const EditBreak = React.forwardRef<HTMLDivElement, EditBreakProps>(functi
                   </div>
                 )}
 
-                <div className="flex w-full items-center justify-between rounded-ds-lg border border-border px-ds-05 py-ds-04">
-                  <p className="text-ds-xs font-semibold uppercase tracking-wider  text-text-placeholder">
+                <div className="flex w-full items-center justify-between rounded-ds-lg border border-surface-border-strong px-ds-05 py-ds-04">
+                  <p className="text-ds-xs font-semibold uppercase tracking-wider  text-surface-fg-subtle">
                     No of Days
                   </p>
-                  <p className="text-ds-xl font-semibold text-text-primary">
+                  <p className="text-ds-xl font-semibold text-surface-fg">
                     {selectedLeave.numberOfDays}
                   </p>
                 </div>
-                <div className="flex w-full items-center justify-between rounded-ds-lg border border-border px-ds-05 py-ds-04">
-                  <p className="text-ds-xs font-semibold uppercase tracking-wider  text-text-placeholder">
+                <div className="flex w-full items-center justify-between rounded-ds-lg border border-surface-border-strong px-ds-05 py-ds-04">
+                  <p className="text-ds-xs font-semibold uppercase tracking-wider  text-surface-fg-subtle">
                     Status
                   </p>
                   <div className="relative flex items-center gap-ds-02">
@@ -574,9 +574,9 @@ export const EditBreak = React.forwardRef<HTMLDivElement, EditBreakProps>(functi
                       <ArrowDownIcon />
                     </button>
                     {showStatusOptions && (
-                      <div className="text-ds-base absolute left-[10px] top-[25px] z-raised flex flex-col overflow-hidden rounded-ds-md border border-border bg-layer-01 shadow-02" role="listbox">
+                      <div className="text-ds-base absolute left-[10px] top-[25px] z-raised flex flex-col overflow-hidden rounded-ds-md border border-surface-border-strong bg-surface-1 shadow-02" role="listbox">
                         <div
-                          className="cursor-pointer border-b border-b-border bg-layer-01 px-ds-04 py-ds-03 text-left"
+                          className="cursor-pointer border-b border-b-surface-border bg-surface-1 px-ds-04 py-ds-03 text-left"
                           role="option"
                           tabIndex={0}
                           aria-selected={formData.status === 'APPROVED'}
@@ -586,7 +586,7 @@ export const EditBreak = React.forwardRef<HTMLDivElement, EditBreakProps>(functi
                           {renderStatus('APPROVED')}
                         </div>
                         <div
-                          className="cursor-pointer bg-layer-01 px-ds-04 py-ds-03 text-left"
+                          className="cursor-pointer bg-surface-1 px-ds-04 py-ds-03 text-left"
                           role="option"
                           tabIndex={0}
                           aria-selected={formData.status === 'REJECTED'}
@@ -599,14 +599,14 @@ export const EditBreak = React.forwardRef<HTMLDivElement, EditBreakProps>(functi
                     )}
                   </div>
                 </div>
-                <div className="flex w-full flex-col gap-ds-02 rounded-ds-lg border border-border-subtle px-ds-05 pb-ds-03 pt-ds-04">
-                  <h2 className="text-ds-xs font-semibold uppercase tracking-wider  text-text-placeholder">
+                <div className="flex w-full flex-col gap-ds-02 rounded-ds-lg border border-surface-border px-ds-05 pb-ds-03 pt-ds-04">
+                  <h2 className="text-ds-xs font-semibold uppercase tracking-wider  text-surface-fg-subtle">
                     Comment
                   </h2>
                   <input
                     type="text"
                     name="comment"
-                    className="text-ds-md text-text-primary outline-none"
+                    className="text-ds-md text-surface-fg outline-none"
                     placeholder="Enjoy your break, TC"
                     value={formData.comment}
                     onChange={handleInputChange}

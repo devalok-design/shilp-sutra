@@ -16,7 +16,7 @@ export default meta
 type Story = StoryObj<typeof Container>
 
 const Placeholder = ({ label }: { label: string }) => (
-  <div className="rounded-ds-md border border-dashed border-border bg-layer-02 px-ds-05 py-ds-06 text-center text-ds-sm text-text-secondary">
+  <div className="rounded-ds-md border border-dashed border-surface-border-strong bg-surface-2 px-ds-05 py-ds-06 text-center text-ds-sm text-surface-fg-muted">
     {label}
   </div>
 )
@@ -55,12 +55,12 @@ export const AllVariants: Story = {
     <div className="flex flex-col gap-ds-06">
       {(['default', 'body', 'full'] as const).map((maxWidth) => (
         <div key={maxWidth}>
-          <p className="mb-ds-02 text-ds-sm font-semibold text-text-secondary">
+          <p className="mb-ds-02 text-ds-sm font-semibold text-surface-fg-muted">
             maxWidth: {maxWidth}
           </p>
-          <div className="rounded-ds-md border border-border bg-layer-01">
+          <div className="rounded-ds-md border border-surface-border-strong bg-surface-1">
             <Container maxWidth={maxWidth}>
-              <div className="rounded-ds-md border border-dashed border-border-interactive bg-layer-02 px-ds-05 py-ds-04 text-center text-ds-sm text-text-primary">
+              <div className="rounded-ds-md border border-dashed border-accent-7 bg-surface-2 px-ds-05 py-ds-04 text-center text-ds-sm text-surface-fg">
                 Container content ({maxWidth})
               </div>
             </Container>

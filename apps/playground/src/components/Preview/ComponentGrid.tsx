@@ -17,7 +17,7 @@ export function ComponentGrid() {
       <div className="space-y-8">
         {/* Buttons */}
         <section>
-          <h3 className="text-sm font-semibold text-text-secondary mb-3">Button</h3>
+          <h3 className="text-sm font-semibold text-surface-fg-muted mb-3">Button</h3>
           <div className="flex flex-wrap gap-3">
             <Button variant="solid" size="sm">Solid SM</Button>
             <Button variant="solid" size="md">Solid MD</Button>
@@ -33,7 +33,7 @@ export function ComponentGrid() {
 
         {/* Badges */}
         <section>
-          <h3 className="text-sm font-semibold text-text-secondary mb-3">Badge</h3>
+          <h3 className="text-sm font-semibold text-surface-fg-muted mb-3">Badge</h3>
           <div className="flex flex-wrap gap-2">
             <Badge variant="subtle">Default</Badge>
             <Badge variant="subtle" color="success">Success</Badge>
@@ -49,7 +49,7 @@ export function ComponentGrid() {
 
         {/* Input */}
         <section>
-          <h3 className="text-sm font-semibold text-text-secondary mb-3">Input</h3>
+          <h3 className="text-sm font-semibold text-surface-fg-muted mb-3">Input</h3>
           <div className="flex flex-col gap-3 max-w-sm">
             <Input placeholder="Default input" />
             <Input placeholder="Error state" state="error" />
@@ -61,7 +61,7 @@ export function ComponentGrid() {
 
         {/* Card */}
         <section>
-          <h3 className="text-sm font-semibold text-text-secondary mb-3">Card</h3>
+          <h3 className="text-sm font-semibold text-surface-fg-muted mb-3">Card</h3>
           <div className="grid grid-cols-2 gap-4">
             <Card>
               <CardHeader>
@@ -69,7 +69,7 @@ export function ComponentGrid() {
                 <CardDescription>With subtle border and shadow</CardDescription>
               </CardHeader>
               <CardContent>
-                <p className="text-sm text-text-secondary">Card content goes here.</p>
+                <p className="text-sm text-surface-fg-muted">Card content goes here.</p>
               </CardContent>
             </Card>
             <Card variant="elevated">
@@ -78,7 +78,7 @@ export function ComponentGrid() {
                 <CardDescription>Stronger shadow for emphasis</CardDescription>
               </CardHeader>
               <CardContent>
-                <p className="text-sm text-text-secondary">Card content goes here.</p>
+                <p className="text-sm text-surface-fg-muted">Card content goes here.</p>
               </CardContent>
             </Card>
           </div>
@@ -88,7 +88,7 @@ export function ComponentGrid() {
 
         {/* Form Controls */}
         <section>
-          <h3 className="text-sm font-semibold text-text-secondary mb-3">Form Controls</h3>
+          <h3 className="text-sm font-semibold text-surface-fg-muted mb-3">Form Controls</h3>
           <div className="flex items-center gap-6">
             <div className="flex items-center gap-2">
               <Checkbox id="check-demo" />
@@ -105,7 +105,7 @@ export function ComponentGrid() {
 
         {/* Alerts — uses color prop, not variant for the color axis */}
         <section>
-          <h3 className="text-sm font-semibold text-text-secondary mb-3">Alert</h3>
+          <h3 className="text-sm font-semibold text-surface-fg-muted mb-3">Alert</h3>
           <div className="space-y-3">
             <Alert color="info">This is an informational alert.</Alert>
             <Alert color="success">Operation completed successfully.</Alert>
@@ -118,7 +118,7 @@ export function ComponentGrid() {
 
         {/* Tabs */}
         <section>
-          <h3 className="text-sm font-semibold text-text-secondary mb-3">Tabs</h3>
+          <h3 className="text-sm font-semibold text-surface-fg-muted mb-3">Tabs</h3>
           <Tabs defaultValue="tab1">
             <TabsList>
               <TabsTrigger value="tab1">Overview</TabsTrigger>
@@ -126,13 +126,13 @@ export function ComponentGrid() {
               <TabsTrigger value="tab3">Settings</TabsTrigger>
             </TabsList>
             <TabsContent value="tab1">
-              <p className="text-sm text-text-secondary p-3">Overview content</p>
+              <p className="text-sm text-surface-fg-muted p-3">Overview content</p>
             </TabsContent>
             <TabsContent value="tab2">
-              <p className="text-sm text-text-secondary p-3">Details content</p>
+              <p className="text-sm text-surface-fg-muted p-3">Details content</p>
             </TabsContent>
             <TabsContent value="tab3">
-              <p className="text-sm text-text-secondary p-3">Settings content</p>
+              <p className="text-sm text-surface-fg-muted p-3">Settings content</p>
             </TabsContent>
           </Tabs>
         </section>
@@ -141,7 +141,7 @@ export function ComponentGrid() {
 
         {/* Avatar */}
         <section>
-          <h3 className="text-sm font-semibold text-text-secondary mb-3">Avatar</h3>
+          <h3 className="text-sm font-semibold text-surface-fg-muted mb-3">Avatar</h3>
           <div className="flex gap-3">
             <Avatar><AvatarFallback>AB</AvatarFallback></Avatar>
             <Avatar><AvatarFallback>CD</AvatarFallback></Avatar>
@@ -153,7 +153,7 @@ export function ComponentGrid() {
 
         {/* Tooltip */}
         <section>
-          <h3 className="text-sm font-semibold text-text-secondary mb-3">Tooltip</h3>
+          <h3 className="text-sm font-semibold text-surface-fg-muted mb-3">Tooltip</h3>
           <Tooltip>
             <TooltipTrigger asChild>
               <Button variant="outline">Hover me</Button>

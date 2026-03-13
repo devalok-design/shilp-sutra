@@ -30,11 +30,11 @@ export const BreakBalance = React.forwardRef<HTMLDivElement, BreakBalanceProps>(
 }, ref) {
   return (
     <div ref={ref} className={cn("m-0 flex h-[400px] flex-col items-start justify-start p-0 max-md:h-auto", className)} {...props}>
-      <div className="m-0 mx-[4%] mb-ds-05 mt-ds-04 flex w-[92%] items-start justify-start gap-ds-03 p-0 text-text-placeholder">
-        <div className="text-ds-sm font-semibold uppercase tracking-wider w-[16.4%] min-w-[120px] px-ds-04 py-ds-03 text-text-tertiary">
+      <div className="m-0 mx-[4%] mb-ds-05 mt-ds-04 flex w-[92%] items-start justify-start gap-ds-03 p-0 text-surface-fg-subtle">
+        <div className="text-ds-sm font-semibold uppercase tracking-wider w-[16.4%] min-w-[120px] px-ds-04 py-ds-03 text-surface-fg-subtle">
           NAME
         </div>
-        <div className="text-ds-sm font-semibold uppercase tracking-wider w-[16.4%] px-ds-04 py-ds-03 text-text-tertiary">
+        <div className="text-ds-sm font-semibold uppercase tracking-wider w-[16.4%] px-ds-04 py-ds-03 text-surface-fg-subtle">
           Total Balance
         </div>
       </div>
@@ -44,7 +44,7 @@ export const BreakBalance = React.forwardRef<HTMLDivElement, BreakBalanceProps>(
         {breakBalanceData.map((breakItem) => (
           <div
             key={breakItem.id}
-            className="flex w-full flex-row items-center justify-start gap-ds-03 !border-0 text-left hover:bg-field"
+            className="flex w-full flex-row items-center justify-start gap-ds-03 !border-0 text-left hover:bg-surface-3"
           >
             <div className="flex w-1/6 min-w-[120px] items-center gap-ds-03 p-ds-04">
               <Avatar className="h-ds-xs-plus w-ds-xs-plus">
@@ -52,13 +52,13 @@ export const BreakBalance = React.forwardRef<HTMLDivElement, BreakBalanceProps>(
                 <AvatarFallback>{breakItem.user?.name?.[0] || 'U'}</AvatarFallback>
               </Avatar>
               <div className="w-[calc(100%-36px)]">
-                <span className="text-ds-md block w-full cursor-default truncate text-text-primary">
+                <span className="text-ds-md block w-full cursor-default truncate text-surface-fg">
                   {breakItem.user?.firstName ??
                     breakItem.user?.name?.split(' ')[0]}
                 </span>
               </div>
             </div>
-            <div className="text-ds-md w-[16.4%] p-ds-04 px-ds-04 text-interactive">
+            <div className="text-ds-md w-[16.4%] p-ds-04 px-ds-04 text-accent-11">
               {breakItem.totalDays}
             </div>
           </div>

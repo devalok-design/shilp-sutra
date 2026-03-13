@@ -126,7 +126,7 @@ const ReviewTab = React.forwardRef<HTMLDivElement, ReviewTabProps>(
             return (
               <div
                 key={review.id}
-                className="rounded-ds-lg border border-border bg-layer-01 shadow-01 p-ds-04"
+                className="rounded-ds-lg border border-surface-border-strong bg-surface-1 shadow-01 p-ds-04"
               >
                 {/* Header */}
                 <div className="flex items-center gap-ds-03">
@@ -137,15 +137,15 @@ const ReviewTab = React.forwardRef<HTMLDivElement, ReviewTabProps>(
                         alt={review.reviewer.name}
                       />
                     )}
-                    <AvatarFallback className="bg-layer-03 text-ds-xs font-semibold text-text-on-color">
+                    <AvatarFallback className="bg-surface-3 text-ds-xs font-semibold text-accent-fg">
                       {getInitials(review.reviewer.name)}
                     </AvatarFallback>
                   </Avatar>
                   <div className="flex-1 min-w-0">
-                    <span className="text-ds-md font-medium text-text-primary">
+                    <span className="text-ds-md font-medium text-surface-fg">
                       {review.reviewer.name}
                     </span>
-                    <span className="ml-ds-03 text-ds-sm text-text-placeholder">
+                    <span className="ml-ds-03 text-ds-sm text-surface-fg-subtle">
                       requested by {review.requestedBy.name}
                     </span>
                   </div>
@@ -158,8 +158,8 @@ const ReviewTab = React.forwardRef<HTMLDivElement, ReviewTabProps>(
 
                 {/* Feedback */}
                 {review.feedback && (
-                  <div className="mt-ds-03 rounded-ds-md bg-layer-02 px-ds-04 py-ds-03">
-                    <p className="text-ds-sm text-text-secondary">
+                  <div className="mt-ds-03 rounded-ds-md bg-surface-2 px-ds-04 py-ds-03">
+                    <p className="text-ds-sm text-surface-fg-muted">
                       {review.feedback}
                     </p>
                   </div>
@@ -180,7 +180,7 @@ const ReviewTab = React.forwardRef<HTMLDivElement, ReviewTabProps>(
                           }
                           placeholder="Add feedback (optional)..."
                           rows={2}
-                          className="w-full resize-none rounded-ds-md border border-border bg-transparent px-ds-03 py-ds-03 text-ds-sm text-text-primary placeholder:text-text-placeholder outline-none focus:border-border-subtle"
+                          className="w-full resize-none rounded-ds-md border border-surface-border-strong bg-transparent px-ds-03 py-ds-03 text-ds-sm text-surface-fg placeholder:text-surface-fg-subtle outline-none focus:border-surface-border"
                         />
                         <div className="flex items-center gap-ds-02b">
                           {RESPONSE_OPTIONS.map((opt) => {
@@ -193,11 +193,11 @@ const ReviewTab = React.forwardRef<HTMLDivElement, ReviewTabProps>(
                                 className={cn(
                                   'inline-flex items-center gap-ds-02 rounded-ds-md px-ds-03 py-ds-02 text-ds-sm font-semibold transition-colors',
                                   opt.status === 'APPROVED' &&
-                                    'bg-success-surface text-text-success hover:opacity-[0.9]',
+                                    'bg-success-3 text-success-11 hover:opacity-90',
                                   opt.status === 'CHANGES_REQUESTED' &&
-                                    'bg-warning-surface text-text-warning hover:opacity-[0.9]',
+                                    'bg-warning-3 text-warning-11 hover:opacity-90',
                                   opt.status === 'REJECTED' &&
-                                    'bg-error-surface text-text-error hover:opacity-[0.9]',
+                                    'bg-error-3 text-error-11 hover:opacity-90',
                                 )}
                               >
                                 <Icon className="h-3 w-3" stroke={2} />
@@ -208,7 +208,7 @@ const ReviewTab = React.forwardRef<HTMLDivElement, ReviewTabProps>(
                           <button
                             type="button"
                             onClick={() => setExpandedId(null)}
-                            className="ml-auto text-ds-sm text-text-placeholder hover:text-text-secondary"
+                            className="ml-auto text-ds-sm text-surface-fg-subtle hover:text-surface-fg-muted"
                           >
                             Cancel
                           </button>
@@ -218,7 +218,7 @@ const ReviewTab = React.forwardRef<HTMLDivElement, ReviewTabProps>(
                       <button
                         type="button"
                         onClick={() => setExpandedId(review.id)}
-                        className="text-ds-sm font-medium text-interactive transition-colors hover:underline"
+                        className="text-ds-sm font-medium text-accent-11 transition-colors hover:underline"
                       >
                         Respond
                       </button>
@@ -227,7 +227,7 @@ const ReviewTab = React.forwardRef<HTMLDivElement, ReviewTabProps>(
                 )}
 
                 {/* Timestamp */}
-                <p className="mt-ds-03 text-ds-xs text-text-placeholder">
+                <p className="mt-ds-03 text-ds-xs text-surface-fg-subtle">
                   {formatDate(review.createdAt)}
                 </p>
               </div>
@@ -251,7 +251,7 @@ const ReviewTab = React.forwardRef<HTMLDivElement, ReviewTabProps>(
       >
         <button
           type="button"
-          className="mt-ds-04 inline-flex items-center gap-ds-02b rounded-ds-lg px-ds-03 py-ds-02b text-ds-md text-text-placeholder transition-colors hover:bg-field hover:text-text-secondary"
+          className="mt-ds-04 inline-flex items-center gap-ds-02b rounded-ds-lg px-ds-03 py-ds-02b text-ds-md text-surface-fg-subtle transition-colors hover:bg-surface-3 hover:text-surface-fg-muted"
         >
           <IconPlus className="h-ico-sm w-ico-sm" stroke={1.5} />
           Request Review

@@ -39,7 +39,7 @@ export const Interactive: Story = {
         <div>
           <GlobalLoading isLoading={loading} />
           <div style={{ padding: 32, display: 'flex', flexDirection: 'column', gap: 16 }}>
-            <p style={{ fontSize: 14, color: 'var(--color-text-secondary)' }}>
+            <p style={{ fontSize: 14, color: 'var(--color-surface-fg-muted)' }}>
               Click the button to simulate a page navigation. The loading bar appears at the top of the viewport and animates to completion over 2 seconds.
             </p>
             <div>
@@ -60,7 +60,7 @@ export const Interactive: Story = {
                 {loading ? 'Loading...' : 'Simulate Navigation'}
               </button>
             </div>
-            <p style={{ fontSize: 12, color: 'var(--color-text-placeholder)' }}>
+            <p style={{ fontSize: 12, color: 'var(--color-surface-fg-subtle)' }}>
               Status: {loading ? 'Loading' : 'Idle'}
             </p>
           </div>
@@ -76,7 +76,7 @@ export const AlwaysLoading: Story = {
     <div>
       <GlobalLoading isLoading={true} />
       <div style={{ padding: 32 }}>
-        <p style={{ fontSize: 14, color: 'var(--color-text-secondary)' }}>
+        <p style={{ fontSize: 14, color: 'var(--color-surface-fg-muted)' }}>
           The loading bar is pinned at 80% width while <code>isLoading</code> is true. It animates to 100% and fades out when set to false.
         </p>
       </div>

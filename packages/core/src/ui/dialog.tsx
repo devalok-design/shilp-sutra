@@ -140,12 +140,12 @@ const DialogContent = React.forwardRef<
               exit={{ opacity: 0, scale: 0.95 }}
               transition={{ ...springs.smooth, opacity: tweens.fade }}
               className={cn(
-                'fixed left-[50%] top-[50%] z-modal grid w-full max-w-lg translate-x-[-50%] translate-y-[-50%] gap-ds-05 border border-border bg-layer-01 p-ds-06 shadow-04 rounded-ds-xl',
+                'fixed left-[50%] top-[50%] z-modal grid w-full max-w-lg translate-x-[-50%] translate-y-[-50%] gap-ds-05 border border-surface-border-strong bg-surface-1 p-ds-06 shadow-04 rounded-ds-xl',
                 className,
               )}
             >
               {children}
-              <DialogPrimitive.Close className="absolute right-ds-05 top-ds-05 min-h-ds-xs min-w-ds-xs flex items-center justify-center rounded-ds-sm text-icon-secondary transition-colors hover:text-icon-primary hover:bg-field focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-focus disabled:pointer-events-none">
+              <DialogPrimitive.Close className="absolute right-ds-05 top-ds-05 min-h-ds-xs min-w-ds-xs flex items-center justify-center rounded-ds-sm text-surface-fg-subtle transition-colors hover:text-surface-fg-muted hover:bg-surface-3 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent-9 disabled:pointer-events-none">
                 <CloseIcon className="h-ico-lg w-ico-lg" />
                 <span className="sr-only">Close</span>
               </DialogPrimitive.Close>
@@ -225,7 +225,7 @@ const DialogDescription = React.forwardRef<
 >(({ className, ...props }, ref) => (
   <DialogPrimitive.Description
     ref={ref}
-    className={cn('text-ds-md text-text-secondary', className)}
+    className={cn('text-ds-md text-surface-fg-muted', className)}
     {...props}
   />
 ))

@@ -53,16 +53,16 @@ const sectionStyle: React.CSSProperties = {
 const headingStyle: React.CSSProperties = {
   fontSize: '1.25rem',
   fontWeight: 600,
-  color: 'var(--color-text-primary)',
+  color: 'var(--color-surface-fg)',
   marginBottom: '1rem',
-  borderBottom: '1px solid var(--color-border-subtle)',
+  borderBottom: '1px solid var(--color-surface-border)',
   paddingBottom: '0.5rem',
 }
 
 const subheadingStyle: React.CSSProperties = {
   fontSize: '0.875rem',
   fontWeight: 600,
-  color: 'var(--color-text-secondary)',
+  color: 'var(--color-surface-fg-muted)',
   marginBottom: '0.75rem',
   marginTop: '1.25rem',
 }
@@ -76,7 +76,7 @@ const gridStyle: React.CSSProperties = {
 const labelStyle: React.CSSProperties = {
   fontSize: '0.5625rem',
   fontFamily: 'var(--font-mono, monospace)',
-  color: 'var(--color-text-secondary)',
+  color: 'var(--color-surface-fg-muted)',
   marginTop: '0.25rem',
   textAlign: 'center',
   wordBreak: 'break-all',
@@ -102,13 +102,13 @@ function IconCell({ icon: Icon, name, size = 24, strokeWidth }: IconCellProps) {
         width: '5.5rem',
         padding: '0.625rem 0.25rem',
         borderRadius: 'var(--radius-lg, 8px)',
-        background: 'var(--color-layer-02, #f9f9f9)',
-        border: '1px solid var(--color-border-subtle, #eee)',
+        background: 'var(--color-surface-2, #f9f9f9)',
+        border: '1px solid var(--color-surface-border, #eee)',
         transition: 'background 0.15s',
       }}
       title={name}
     >
-      <Icon size={size} stroke={strokeWidth} style={{ color: 'var(--color-text-primary)' }} />
+      <Icon size={size} stroke={strokeWidth} style={{ color: 'var(--color-surface-fg)' }} />
       <span style={labelStyle}>{name.replace('Icon', '')}</span>
     </div>
   )
@@ -138,11 +138,11 @@ function SizeDemo() {
               width: '4rem',
               height: '4rem',
               borderRadius: 'var(--radius-lg, 8px)',
-              background: 'var(--color-layer-02, #f9f9f9)',
-              border: '1px solid var(--color-border-subtle, #eee)',
+              background: 'var(--color-surface-2, #f9f9f9)',
+              border: '1px solid var(--color-surface-border, #eee)',
             }}
           >
-            <IconSearch size={size} style={{ color: 'var(--color-text-primary)' }} />
+            <IconSearch size={size} style={{ color: 'var(--color-surface-fg)' }} />
           </div>
           <span style={{ ...labelStyle, fontSize: '0.625rem' }}>{label}</span>
         </div>
@@ -168,11 +168,11 @@ function StrokeDemo() {
               width: '4rem',
               height: '4rem',
               borderRadius: 'var(--radius-lg, 8px)',
-              background: 'var(--color-layer-02, #f9f9f9)',
-              border: '1px solid var(--color-border-subtle, #eee)',
+              background: 'var(--color-surface-2, #f9f9f9)',
+              border: '1px solid var(--color-surface-border, #eee)',
             }}
           >
-            <IconSettings size={28} stroke={s} style={{ color: 'var(--color-text-primary)' }} />
+            <IconSettings size={28} stroke={s} style={{ color: 'var(--color-surface-fg)' }} />
           </div>
           <span style={{ ...labelStyle, fontSize: '0.625rem' }}>stroke={s}</span>
         </div>
@@ -185,13 +185,13 @@ function StrokeDemo() {
 
 function ColorDemo() {
   const colors = [
-    { label: 'text-primary', css: 'var(--color-text-primary)' },
-    { label: 'text-secondary', css: 'var(--color-text-secondary)' },
-    { label: 'text-placeholder', css: 'var(--color-text-placeholder)' },
-    { label: 'interactive', css: 'var(--color-interactive)' },
-    { label: 'text-error', css: 'var(--color-text-error)' },
-    { label: 'green-500', css: 'var(--green-500)' },
-    { label: 'yellow-500', css: 'var(--yellow-500)' },
+    { label: 'surface-fg', css: 'var(--color-surface-fg)' },
+    { label: 'surface-fg-muted', css: 'var(--color-surface-fg-muted)' },
+    { label: 'surface-fg-subtle', css: 'var(--color-surface-fg-subtle)' },
+    { label: 'accent-9', css: 'var(--color-accent-9)' },
+    { label: 'error-11', css: 'var(--color-error-11)' },
+    { label: 'success-9', css: 'var(--color-success-9)' },
+    { label: 'warning-9', css: 'var(--color-warning-9)' },
   ]
 
   return (
@@ -206,8 +206,8 @@ function ColorDemo() {
               width: '4rem',
               height: '4rem',
               borderRadius: 'var(--radius-lg, 8px)',
-              background: 'var(--color-layer-02, #f9f9f9)',
-              border: '1px solid var(--color-border-subtle, #eee)',
+              background: 'var(--color-surface-2, #f9f9f9)',
+              border: '1px solid var(--color-surface-border, #eee)',
             }}
           >
             <IconHeart size={28} style={{ color: css }} />
@@ -247,7 +247,7 @@ export function IconographyShowcase() {
       {/* Size variations */}
       <div style={sectionStyle}>
         <h3 style={headingStyle}>Size Variations</h3>
-        <p style={{ fontSize: '0.8125rem', color: 'var(--color-text-secondary)', marginBottom: '1rem' }}>
+        <p style={{ fontSize: '0.8125rem', color: 'var(--color-surface-fg-muted)', marginBottom: '1rem' }}>
           Use Tailwind classes (<code>h-4 w-4</code>) or the <code>size</code> prop. Default is 24px.
         </p>
         <SizeDemo />
@@ -256,7 +256,7 @@ export function IconographyShowcase() {
       {/* Stroke variations */}
       <div style={sectionStyle}>
         <h3 style={headingStyle}>Stroke Weight</h3>
-        <p style={{ fontSize: '0.8125rem', color: 'var(--color-text-secondary)', marginBottom: '1rem' }}>
+        <p style={{ fontSize: '0.8125rem', color: 'var(--color-surface-fg-muted)', marginBottom: '1rem' }}>
           Control line thickness with the <code>stroke</code> prop. Default is 2.
         </p>
         <StrokeDemo />
@@ -265,8 +265,8 @@ export function IconographyShowcase() {
       {/* Color variations */}
       <div style={sectionStyle}>
         <h3 style={headingStyle}>Color with Semantic Tokens</h3>
-        <p style={{ fontSize: '0.8125rem', color: 'var(--color-text-secondary)', marginBottom: '1rem' }}>
-          Icons inherit text color. Use Tailwind classes like <code>text-[var(--color-interactive)]</code> or inline styles.
+        <p style={{ fontSize: '0.8125rem', color: 'var(--color-surface-fg-muted)', marginBottom: '1rem' }}>
+          Icons inherit text color. Use Tailwind classes like <code>text-[var(--color-accent-9)]</code> or inline styles.
         </p>
         <ColorDemo />
       </div>
@@ -274,9 +274,9 @@ export function IconographyShowcase() {
       {/* Icon catalog */}
       <div style={sectionStyle}>
         <h3 style={headingStyle}>Icon Catalog</h3>
-        <p style={{ fontSize: '0.8125rem', color: 'var(--color-text-secondary)', marginBottom: '1.5rem' }}>
+        <p style={{ fontSize: '0.8125rem', color: 'var(--color-surface-fg-muted)', marginBottom: '1.5rem' }}>
           All icons used across the design system, organized by category. Tabler offers 5,000+ more at{' '}
-          <a href="https://tabler.io/icons" target="_blank" rel="noopener noreferrer" style={{ color: 'var(--color-interactive)' }}>tabler.io/icons</a>.
+          <a href="https://tabler.io/icons" target="_blank" rel="noopener noreferrer" style={{ color: 'var(--color-accent-9)' }}>tabler.io/icons</a>.
         </p>
 
         <Category

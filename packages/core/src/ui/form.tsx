@@ -67,10 +67,10 @@ export interface FormHelperTextProps extends React.HTMLAttributes<HTMLParagraphE
 }
 
 const helperStateClasses: Record<FormHelperState, string> = {
-  helper:  'text-text-helper',
-  error:   'text-text-error',
-  warning: 'text-text-warning',
-  success: 'text-text-success',
+  helper:  'text-surface-fg-subtle',
+  error:   'text-error-11',
+  warning: 'text-warning-11',
+  success: 'text-success-11',
 }
 
 const FormHelperText = React.forwardRef<HTMLParagraphElement, FormHelperTextProps>(

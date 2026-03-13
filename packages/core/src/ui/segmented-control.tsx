@@ -14,7 +14,7 @@ const segmentedControlItemVariants = cva(
     'transition-[color,background-color,border-color,box-shadow] duration-moderate-02 ease-productive-standard',
     'relative overflow-hidden',
     'font-accent font-semibold leading-none text-center',
-    'bg-layer-01',
+    'bg-surface-1',
     'first:rounded-tr-none first:rounded-br-none',
     'last:rounded-tl-none last:rounded-bl-none',
   ],
@@ -26,8 +26,8 @@ const segmentedControlItemVariants = cva(
         lg: 'h-[56px] px-ds-06 py-ds-05 text-ds-md',
       },
       variant: {
-        filled: "text-text-on-color [text-shadow:0px_1px_1px_var(--color-text-shadow)]",
-        tonal: 'text-text-tertiary',
+        filled: "text-accent-fg [text-shadow:0px_1px_1px_var(--color-text-shadow)]",
+        tonal: 'text-surface-fg-subtle',
       },
       selected: {
         true: '',
@@ -53,45 +53,45 @@ const segmentedControlItemVariants = cva(
       {
         selected: true,
         variant: 'tonal',
-        className: 'text-text-primary',
+        className: 'text-surface-fg',
       },
       // Hover + filled
       {
         isHovered: true,
         variant: 'filled',
         className: [
-          'bg-interactive',
-          'shadow-[0px_4px_8px_0px_var(--color-interactive-hover),0px_1px_3px_0.05px_var(--color-layer-02),inset_0px_8px_16px_0px_var(--color-inset-glow-strong),inset_0px_2px_0px_0px_var(--color-inset-glow-subtle)]',
+          'bg-accent-9',
+          'shadow-[0px_4px_8px_0px_var(--color-accent-10),0px_1px_3px_0.05px_var(--color-surface-2),inset_0px_8px_16px_0px_var(--color-inset-glow-strong),inset_0px_2px_0px_0px_var(--color-inset-glow-subtle)]',
         ].join(' '),
       },
       // Hover + tonal
       {
         isHovered: true,
         variant: 'tonal',
-        className: 'text-text-primary',
+        className: 'text-surface-fg',
       },
       // Disabled + filled
       {
         isDisabled: true,
         variant: 'filled',
-        className: 'text-text-placeholder',
+        className: 'text-surface-fg-subtle',
       },
       // Disabled + tonal
       {
         isDisabled: true,
         variant: 'tonal',
-        className: 'text-text-placeholder',
+        className: 'text-surface-fg-subtle',
       },
       // Filled + SVG icon fill
       {
         variant: 'filled',
-        className: '[&_svg_path]:fill-icon-on-color',
+        className: '[&_svg_path]:fill-accent-fg',
       },
       // Filled + disabled SVG icon fill
       {
         variant: 'filled',
         isDisabled: true,
-        className: '[&_svg_path]:fill-icon-disabled',
+        className: '[&_svg_path]:fill-disabled',
       },
       // Medium size last-child padding flip
       {
@@ -253,8 +253,8 @@ const SegmentedControl = React.forwardRef<HTMLDivElement, SegmentedControlProps>
       ref={mergedRef}
       className={cn(
         'inline-flex gap-0 p-0 rounded-ds-full',
-        'bg-layer-02',
-        'border border-solid border-border',
+        'bg-surface-2',
+        'border border-solid border-surface-border-strong',
         className,
       )}
       role="tablist"
@@ -300,7 +300,7 @@ SegmentedControl.displayName = 'SegmentedControl'
  * const [view, setView] = useState<'list' | 'grid'>('list')
  * const [focused, setFocused] = useState<string | null>(null)
  *
- * <div role="tablist" className="inline-flex rounded-full border border-border bg-layer-02">
+ * <div role="tablist" className="inline-flex rounded-full border border-surface-border-strong bg-surface-2">
  *   <SegmentedControlItem
  *     size="md" variant="tonal" text="List"
  *     isSelected={view === 'list'} isFocused={focused === 'list'}

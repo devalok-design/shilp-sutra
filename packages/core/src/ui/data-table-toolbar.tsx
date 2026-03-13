@@ -44,12 +44,12 @@ export interface DataTableToolbarProps<TData> extends Omit<React.HTMLAttributes<
 
 const toolbarButtonClass = cn(
   'h-ds-sm px-ds-03 rounded-ds-md',
-  'border border-border',
-  'hover:bg-layer-02',
+  'border border-surface-border-strong',
+  'hover:bg-surface-2',
   'text-ds-sm flex items-center gap-ds-02 transition-colors',
 )
 
-const toolbarIconClass = 'text-icon-secondary'
+const toolbarIconClass = 'text-surface-fg-subtle'
 
 function exportToCsv<TData>(table: Table<TData>) {
   const headers = table
@@ -121,7 +121,7 @@ export function DataTableToolbar<TData>({
             aria-label="Search all columns"
             className={cn(
               'flex-1 bg-transparent text-ds-md',
-              'text-text-primary placeholder:text-text-placeholder',
+              'text-surface-fg placeholder:text-surface-fg-subtle',
               'outline-none',
               'h-ds-sm',
             )}

@@ -127,7 +127,7 @@ export const AllVariants: Story = {
       <div className="flex flex-col gap-ds-06">
         {variants.map((variant) => (
           <div key={variant}>
-            <p className="mb-ds-03 text-ds-sm font-semibold text-text-secondary capitalize">Variant: {variant}</p>
+            <p className="mb-ds-03 text-ds-sm font-semibold text-surface-fg-muted capitalize">Variant: {variant}</p>
             <div className="flex flex-wrap items-center gap-ds-03">
               {colors.map((color) => (
                 <Badge key={`${variant}-${color}`} variant={variant} color={color} size="md">{color}</Badge>
@@ -137,7 +137,7 @@ export const AllVariants: Story = {
         ))}
 
         <div>
-          <p className="mb-ds-03 text-ds-sm font-semibold text-text-secondary">Sizes (subtle)</p>
+          <p className="mb-ds-03 text-ds-sm font-semibold text-surface-fg-muted">Sizes (subtle)</p>
           <div className="flex flex-wrap items-center gap-ds-03">
             {sizes.map((size) => (
               <Badge key={size} size={size}>{size}</Badge>
@@ -146,7 +146,7 @@ export const AllVariants: Story = {
         </div>
 
         <div>
-          <p className="mb-ds-03 text-ds-sm font-semibold text-text-secondary">With Dot</p>
+          <p className="mb-ds-03 text-ds-sm font-semibold text-surface-fg-muted">With Dot</p>
           <div className="flex flex-wrap items-center gap-ds-03">
             {colors.map((color) => (
               <Badge key={`dot-${color}`} color={color} dot>{color}</Badge>
@@ -155,7 +155,7 @@ export const AllVariants: Story = {
         </div>
 
         <div>
-          <p className="mb-ds-03 text-ds-sm font-semibold text-text-secondary">Dismissible</p>
+          <p className="mb-ds-03 text-ds-sm font-semibold text-surface-fg-muted">Dismissible</p>
           <div className="flex flex-wrap items-center gap-ds-03">
             {colors.map((color) => (
               <Badge key={`dismiss-${color}`} color={color} onDismiss={() => {}}>{color}</Badge>

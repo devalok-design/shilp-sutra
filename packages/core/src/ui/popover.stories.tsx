@@ -22,7 +22,7 @@ export const Default: Story = {
         <div className="grid gap-ds-04">
           <div className="space-y-ds-02">
             <h4 className="font-medium leading-none">Dimensions</h4>
-            <p className="text-ds-sm text-text-secondary">
+            <p className="text-ds-sm text-surface-fg-muted">
               Set the dimensions for the layer.
             </p>
           </div>

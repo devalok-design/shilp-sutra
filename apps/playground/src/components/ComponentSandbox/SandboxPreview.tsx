@@ -20,14 +20,14 @@ export function SandboxPreview({ selectedComponent, componentProps }: SandboxPre
 
   if (!entry) {
     return (
-      <div className="flex h-64 items-center justify-center text-text-tertiary text-sm">
+      <div className="flex h-64 items-center justify-center text-surface-fg-subtle text-sm">
         Select a component from the sidebar
       </div>
     )
   }
 
   return (
-    <div className="flex min-h-[200px] items-center justify-center rounded-lg border border-border-subtle bg-layer-01 p-8">
+    <div className="flex min-h-[200px] items-center justify-center rounded-lg border border-surface-border bg-surface-1 p-8">
       {entry.render(currentProps)}
     </div>
   )

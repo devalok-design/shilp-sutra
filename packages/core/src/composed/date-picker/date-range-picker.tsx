@@ -201,22 +201,22 @@ const DateRangePicker = React.forwardRef<HTMLButtonElement, DateRangePickerProps
           type="button"
           {...props}
           className={cn(
-            'inline-flex h-ds-sm-plus items-center gap-ds-03 rounded-ds-lg border border-border bg-layer-01 px-ds-04 text-left transition-colors duration-fast-01 ease-productive-standard',
-            'hover:border-border-strong',
-            'focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-focus focus-visible:ring-offset-2',
+            'inline-flex h-ds-sm-plus items-center gap-ds-03 rounded-ds-lg border border-surface-border-strong bg-surface-1 px-ds-04 text-left transition-colors duration-fast-01 ease-productive-standard',
+            'hover:border-surface-border-strong',
+            'focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent-9 focus-visible:ring-offset-2',
             className,
           )}
         >
           <IconCalendarEvent
-            className="h-ico-sm w-ico-sm text-text-placeholder"
+            className="h-ico-sm w-ico-sm text-surface-fg-subtle"
             stroke={1.5}
           />
           <span
             className={cn(
               'text-ds-md',
               rangeStart && rangeEnd
-                ? 'text-text-primary'
-                : 'text-text-placeholder',
+                ? 'text-surface-fg'
+                : 'text-surface-fg-subtle',
             )}
           >
             {displayText()}
@@ -224,13 +224,13 @@ const DateRangePicker = React.forwardRef<HTMLButtonElement, DateRangePickerProps
         </button>
       </PopoverTrigger>
       <PopoverContent
-        className="w-auto border-border bg-layer-01 p-ds-04"
+        className="w-auto border-surface-border-strong bg-surface-1 p-ds-04"
         align="start"
         sideOffset={4}
       >
         {hasPresets ? (
           <div className="flex flex-row gap-ds-04">
-            <div className="min-w-[140px] border-r border-border pr-ds-04">
+            <div className="min-w-[140px] border-r border-surface-border-strong pr-ds-04">
               <Presets presets={presets} onSelect={handlePresetSelect} />
             </div>
             <div>{renderView()}</div>

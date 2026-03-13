@@ -54,37 +54,37 @@ const TOAST_TYPE_CONFIG: Record<
     accentClass: '',
     iconClass: '',
     icon: null,
-    timerBarClass: 'bg-border',
+    timerBarClass: 'bg-surface-border',
   },
   success: {
-    accentClass: 'bg-success-border',
-    iconClass: 'text-success-text',
+    accentClass: 'bg-success-9',
+    iconClass: 'text-success-11',
     icon: IconCircleCheck,
-    timerBarClass: 'bg-success-border',
+    timerBarClass: 'bg-success-9',
   },
   error: {
-    accentClass: 'bg-error-border',
-    iconClass: 'text-error-text',
+    accentClass: 'bg-error-9',
+    iconClass: 'text-error-11',
     icon: IconCircleX,
-    timerBarClass: 'bg-error-border',
+    timerBarClass: 'bg-error-9',
   },
   warning: {
-    accentClass: 'bg-warning-border',
-    iconClass: 'text-warning-text',
+    accentClass: 'bg-warning-9',
+    iconClass: 'text-warning-11',
     icon: IconAlertTriangle,
-    timerBarClass: 'bg-warning-border',
+    timerBarClass: 'bg-warning-9',
   },
   info: {
-    accentClass: 'bg-info-border',
-    iconClass: 'text-info-text',
+    accentClass: 'bg-info-9',
+    iconClass: 'text-info-11',
     icon: IconInfoCircle,
-    timerBarClass: 'bg-info-border',
+    timerBarClass: 'bg-info-9',
   },
   loading: {
-    accentClass: 'bg-interactive',
-    iconClass: 'text-interactive',
+    accentClass: 'bg-accent-9',
+    iconClass: 'text-accent-11',
     icon: null,
-    timerBarClass: 'bg-interactive',
+    timerBarClass: 'bg-accent-9',
   },
 }
 
@@ -172,7 +172,7 @@ function ToastContent({
       layout="position"
       role="status"
       aria-live="polite"
-      className="group relative flex w-full overflow-hidden rounded-ds-md border border-border bg-layer-01 shadow-02"
+      className="group relative flex w-full overflow-hidden rounded-ds-md border border-surface-border-strong bg-surface-1 shadow-02"
       onMouseEnter={() => setHovered(true)}
       onMouseLeave={() => setHovered(false)}
       transition={springs.smooth}
@@ -216,14 +216,14 @@ function ToastContent({
         {/* Text */}
         <div className="min-w-0 flex-1">
           {title && (
-            <p className="text-ds-md font-semibold text-text-primary">
+            <p className="text-ds-md font-semibold text-surface-fg">
               {title}
             </p>
           )}
           {description && (
             <p
               className={cn(
-                'text-ds-sm text-text-secondary',
+                'text-ds-sm text-surface-fg-muted',
                 title && 'mt-0.5',
               )}
             >
@@ -238,7 +238,7 @@ function ToastContent({
                 <button
                   type="button"
                   onClick={action.onClick}
-                  className="text-ds-sm font-medium text-interactive underline-offset-2 hover:underline focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-focus focus-visible:rounded-ds-sm"
+                  className="text-ds-sm font-medium text-accent-11 underline-offset-2 hover:underline focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent-9 focus-visible:rounded-ds-sm"
                 >
                   {action.label}
                 </button>
@@ -247,7 +247,7 @@ function ToastContent({
                 <button
                   type="button"
                   onClick={cancel.onClick}
-                  className="text-ds-sm text-text-secondary hover:text-text-primary focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-focus focus-visible:rounded-ds-sm"
+                  className="text-ds-sm text-surface-fg-muted hover:text-surface-fg focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent-9 focus-visible:rounded-ds-sm"
                 >
                   {cancel.label}
                 </button>
@@ -349,7 +349,7 @@ function UploadFileRow({
               exit={{ opacity: 0, scale: 0.5 }}
               transition={springs.bouncy}
             >
-              <IconCheck className="h-3.5 w-3.5 text-success-text" />
+              <IconCheck className="h-3.5 w-3.5 text-success-11" />
             </motion.div>
           ) : file.status === 'error' ? (
             <motion.div
@@ -359,7 +359,7 @@ function UploadFileRow({
               exit={{ opacity: 0, scale: 0.5 }}
               transition={tweens.fade}
             >
-              <IconAlertCircle className="h-3.5 w-3.5 text-error-text" />
+              <IconAlertCircle className="h-3.5 w-3.5 text-error-11" />
             </motion.div>
           ) : file.status === 'processing' ? (
             <motion.div
@@ -379,7 +379,7 @@ function UploadFileRow({
               exit={{ opacity: 0 }}
               transition={tweens.fade}
             >
-              <IconPhoto className="h-3.5 w-3.5 text-text-secondary" />
+              <IconPhoto className="h-3.5 w-3.5 text-surface-fg-muted" />
             </motion.div>
           ) : (
             <motion.div
@@ -389,14 +389,14 @@ function UploadFileRow({
               exit={{ opacity: 0 }}
               transition={tweens.fade}
             >
-              <IconFile className="h-3.5 w-3.5 text-text-secondary" />
+              <IconFile className="h-3.5 w-3.5 text-surface-fg-muted" />
             </motion.div>
           )}
         </AnimatePresence>
       </div>
 
       {/* Filename */}
-      <span className="min-w-0 flex-1 truncate text-ds-xs text-text-primary">
+      <span className="min-w-0 flex-1 truncate text-ds-xs text-surface-fg">
         {file.name}
       </span>
 
@@ -410,19 +410,19 @@ function UploadFileRow({
             className="flex-1"
           />
           {file.progress !== undefined && (
-            <span className="shrink-0 text-[10px] tabular-nums text-text-secondary">
+            <span className="shrink-0 text-[10px] tabular-nums text-surface-fg-muted">
               {file.progress}%
             </span>
           )}
         </div>
       ) : file.status === 'complete' ? (
-        <span className="text-[10px] text-success-text">Done</span>
+        <span className="text-[10px] text-success-11">Done</span>
       ) : file.status === 'error' ? (
-        <span className="max-w-[60px] truncate text-[10px] text-error-text">
+        <span className="max-w-[60px] truncate text-[10px] text-error-11">
           {file.error || 'Failed'}
         </span>
       ) : (
-        <span className="text-[10px] text-text-secondary">
+        <span className="text-[10px] text-surface-fg-muted">
           {formatFileSize(file.size)}
         </span>
       )}
@@ -432,7 +432,7 @@ function UploadFileRow({
         <button
           type="button"
           onClick={() => onRetry(file.id)}
-          className="flex h-4 w-4 items-center justify-center rounded-ds-sm text-text-secondary hover:text-text-primary"
+          className="flex h-4 w-4 items-center justify-center rounded-ds-sm text-surface-fg-muted hover:text-surface-fg"
           aria-label={`Retry ${file.name}`}
         >
           <IconRefresh className="h-3 w-3" />
@@ -442,7 +442,7 @@ function UploadFileRow({
         <button
           type="button"
           onClick={() => onRemove(file.id)}
-          className="flex h-4 w-4 items-center justify-center rounded-ds-sm text-text-secondary hover:text-text-primary"
+          className="flex h-4 w-4 items-center justify-center rounded-ds-sm text-surface-fg-muted hover:text-surface-fg"
           aria-label={`Cancel ${file.name}`}
         >
           <IconX className="h-3 w-3" />
@@ -490,9 +490,9 @@ function UploadToastContent({
 
   const accentClass = allTerminal
     ? errorCount > 0
-      ? 'bg-error-border'
-      : 'bg-success-border'
-    : 'bg-interactive'
+      ? 'bg-error-7'
+      : 'bg-success-7'
+    : 'bg-accent-9'
 
   const timerBarType: ToastType = allTerminal
     ? errorCount > 0
@@ -506,7 +506,7 @@ function UploadToastContent({
       role="status"
       aria-live="polite"
       aria-label="File uploads"
-      className="group relative flex w-full overflow-hidden rounded-ds-md border border-border bg-layer-01 shadow-02"
+      className="group relative flex w-full overflow-hidden rounded-ds-md border border-surface-border-strong bg-surface-1 shadow-02"
       onMouseEnter={() => setHovered(true)}
       onMouseLeave={() => setHovered(false)}
       transition={springs.smooth}
@@ -528,7 +528,7 @@ function UploadToastContent({
                   exit={{ opacity: 0, scale: 0.5 }}
                   transition={springs.bouncy}
                 >
-                  <IconAlertCircle className="h-4 w-4 shrink-0 text-error-text" />
+                  <IconAlertCircle className="h-4 w-4 shrink-0 text-error-11" />
                 </motion.div>
               ) : (
                 <motion.div
@@ -538,7 +538,7 @@ function UploadToastContent({
                   exit={{ opacity: 0, scale: 0.5 }}
                   transition={springs.bouncy}
                 >
-                  <IconCheck className="h-4 w-4 shrink-0 text-success-text" />
+                  <IconCheck className="h-4 w-4 shrink-0 text-success-11" />
                 </motion.div>
               )
             ) : (
@@ -549,11 +549,11 @@ function UploadToastContent({
                 exit={{ opacity: 0 }}
                 transition={tweens.fade}
               >
-                <IconUpload className="h-4 w-4 shrink-0 text-text-secondary" />
+                <IconUpload className="h-4 w-4 shrink-0 text-surface-fg-muted" />
               </motion.div>
             )}
           </AnimatePresence>
-          <p className="text-ds-md font-semibold text-text-primary">
+          <p className="text-ds-md font-semibold text-surface-fg">
             {allTerminal
               ? errorCount > 0
                 ? `${completeCount} of ${files.length} uploaded`
@@ -562,7 +562,7 @@ function UploadToastContent({
           </p>
         </div>
         {!allTerminal && (
-          <p className="mt-0.5 text-ds-xs text-text-secondary">
+          <p className="mt-0.5 text-ds-xs text-surface-fg-muted">
             {completeCount} of {files.length} complete
             {errorCount > 0 && ` · ${errorCount} failed`}
           </p>

@@ -13,7 +13,7 @@ export function SandboxPreview({ selectedComponent, componentProps }) {
         return { ...defaults, ...componentProps };
     }, [entry, componentProps]);
     if (!entry) {
-        return (_jsx("div", { className: "flex h-64 items-center justify-center text-text-tertiary text-sm", children: "Select a component from the sidebar" }));
+        return (_jsx("div", { className: "flex h-64 items-center justify-center text-surface-fg-subtle text-sm", children: "Select a component from the sidebar" }));
     }
-    return (_jsx("div", { className: "flex min-h-[200px] items-center justify-center rounded-lg border border-border-subtle bg-layer-01 p-8", children: entry.render(currentProps) }));
+    return (_jsx("div", { className: "flex min-h-[200px] items-center justify-center rounded-lg border border-surface-border bg-surface-1 p-8", children: entry.render(currentProps) }));
 }

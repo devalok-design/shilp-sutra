@@ -15,8 +15,8 @@ const chipVariants = cva(
   {
     variants: {
       variant: {
-        subtle: 'bg-layer-02 text-text-primary border border-transparent',
-        outline: 'bg-transparent text-text-primary border border-border',
+        subtle: 'bg-surface-2 text-surface-fg border border-transparent',
+        outline: 'bg-transparent text-surface-fg border border-surface-border-strong',
       },
       size: {
         sm: 'h-ds-xs px-ds-03 text-ds-xs',
@@ -40,30 +40,30 @@ const chipVariants = cva(
       },
     },
     compoundVariants: [
-      { variant: 'subtle', color: 'primary', className: 'bg-interactive text-text-on-color' },
-      { variant: 'subtle', color: 'success', className: 'bg-success-surface text-success-text border-success-border' },
-      { variant: 'subtle', color: 'error', className: 'bg-error-surface text-error-text border-error-border' },
-      { variant: 'subtle', color: 'warning', className: 'bg-warning-surface text-warning-text border-warning-border' },
-      { variant: 'subtle', color: 'info', className: 'bg-info-surface text-info-text border-info-border' },
-      { variant: 'subtle', color: 'teal', className: 'bg-category-teal-surface text-category-teal-text border-category-teal-border' },
-      { variant: 'subtle', color: 'amber', className: 'bg-category-amber-surface text-category-amber-text border-category-amber-border' },
-      { variant: 'subtle', color: 'slate', className: 'bg-category-slate-surface text-category-slate-text border-category-slate-border' },
-      { variant: 'subtle', color: 'indigo', className: 'bg-category-indigo-surface text-category-indigo-text border-category-indigo-border' },
-      { variant: 'subtle', color: 'cyan', className: 'bg-category-cyan-surface text-category-cyan-text border-category-cyan-border' },
-      { variant: 'subtle', color: 'orange', className: 'bg-category-orange-surface text-category-orange-text border-category-orange-border' },
-      { variant: 'subtle', color: 'emerald', className: 'bg-category-emerald-surface text-category-emerald-text border-category-emerald-border' },
-      { variant: 'outline', color: 'primary', className: 'border-border-interactive text-text-interactive' },
-      { variant: 'outline', color: 'success', className: 'border-border-success text-success-text' },
-      { variant: 'outline', color: 'error', className: 'border-border-error text-error-text' },
-      { variant: 'outline', color: 'warning', className: 'border-border-warning text-warning-text' },
-      { variant: 'outline', color: 'info', className: 'border-info-border text-info-text' },
-      { variant: 'outline', color: 'teal', className: 'border-category-teal-border text-category-teal-text' },
-      { variant: 'outline', color: 'amber', className: 'border-category-amber-border text-category-amber-text' },
-      { variant: 'outline', color: 'slate', className: 'border-category-slate-border text-category-slate-text' },
-      { variant: 'outline', color: 'indigo', className: 'border-category-indigo-border text-category-indigo-text' },
-      { variant: 'outline', color: 'cyan', className: 'border-category-cyan-border text-category-cyan-text' },
-      { variant: 'outline', color: 'orange', className: 'border-category-orange-border text-category-orange-text' },
-      { variant: 'outline', color: 'emerald', className: 'border-category-emerald-border text-category-emerald-text' },
+      { variant: 'subtle', color: 'primary', className: 'bg-accent-9 text-accent-fg' },
+      { variant: 'subtle', color: 'success', className: 'bg-success-3 text-success-11 border-success-7' },
+      { variant: 'subtle', color: 'error', className: 'bg-error-3 text-error-11 border-error-7' },
+      { variant: 'subtle', color: 'warning', className: 'bg-warning-3 text-warning-11 border-warning-7' },
+      { variant: 'subtle', color: 'info', className: 'bg-info-3 text-info-11 border-info-7' },
+      { variant: 'subtle', color: 'teal', className: 'bg-category-teal-3 text-category-teal-11 border-category-teal-7' },
+      { variant: 'subtle', color: 'amber', className: 'bg-category-amber-3 text-category-amber-11 border-category-amber-7' },
+      { variant: 'subtle', color: 'slate', className: 'bg-category-slate-3 text-category-slate-11 border-category-slate-7' },
+      { variant: 'subtle', color: 'indigo', className: 'bg-category-indigo-3 text-category-indigo-11 border-category-indigo-7' },
+      { variant: 'subtle', color: 'cyan', className: 'bg-category-cyan-3 text-category-cyan-11 border-category-cyan-7' },
+      { variant: 'subtle', color: 'orange', className: 'bg-category-orange-3 text-category-orange-11 border-category-orange-7' },
+      { variant: 'subtle', color: 'emerald', className: 'bg-category-emerald-3 text-category-emerald-11 border-category-emerald-7' },
+      { variant: 'outline', color: 'primary', className: 'border-accent-7 text-accent-11' },
+      { variant: 'outline', color: 'success', className: 'border-success-7 text-success-11' },
+      { variant: 'outline', color: 'error', className: 'border-error-7 text-error-11' },
+      { variant: 'outline', color: 'warning', className: 'border-warning-7 text-warning-11' },
+      { variant: 'outline', color: 'info', className: 'border-info-7 text-info-11' },
+      { variant: 'outline', color: 'teal', className: 'border-category-teal-7 text-category-teal-11' },
+      { variant: 'outline', color: 'amber', className: 'border-category-amber-7 text-category-amber-11' },
+      { variant: 'outline', color: 'slate', className: 'border-category-slate-7 text-category-slate-11' },
+      { variant: 'outline', color: 'indigo', className: 'border-category-indigo-7 text-category-indigo-11' },
+      { variant: 'outline', color: 'cyan', className: 'border-category-cyan-7 text-category-cyan-11' },
+      { variant: 'outline', color: 'orange', className: 'border-category-orange-7 text-category-orange-11' },
+      { variant: 'outline', color: 'emerald', className: 'border-category-emerald-7 text-category-emerald-11' },
     ],
     defaultVariants: {
       variant: 'subtle',
@@ -124,7 +124,7 @@ const Chip = React.forwardRef<HTMLElement, ChipProps>(
     const isClickable = !!onClick
     const MotionComponent = isClickable ? motion.button : motion.span
     const interactiveClass = isClickable && !disabled
-      ? 'cursor-pointer hover:bg-field-hover active:scale-95'
+      ? 'cursor-pointer hover:bg-surface-4 active:scale-95'
       : ''
     const disabledClass = disabled
       ? 'opacity-action-disabled cursor-not-allowed'
@@ -149,7 +149,7 @@ const Chip = React.forwardRef<HTMLElement, ChipProps>(
           <button
             type="button"
             aria-label={`Remove ${label}`}
-            className="flex-shrink-0 min-h-ds-xs min-w-ds-xs flex items-center justify-center rounded-ds-full p-ds-01 hover:bg-layer-03 hover:rotate-90 transition-[color,transform] duration-fast-02 [&>svg]:w-ico-sm [&>svg]:h-ico-sm"
+            className="flex-shrink-0 min-h-ds-xs min-w-ds-xs flex items-center justify-center rounded-ds-full p-ds-01 hover:bg-surface-3 hover:rotate-90 transition-[color,transform] duration-fast-02 [&>svg]:w-ico-sm [&>svg]:h-ico-sm"
             onClick={(e) => {
               e.stopPropagation()
               onDismiss()

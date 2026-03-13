@@ -54,7 +54,7 @@ function SingleSelectDemo() {
     >
       <button
         type="button"
-        className="rounded-ds-md border border-border bg-layer-01 px-ds-05 py-ds-03 text-ds-md font-body text-text-primary"
+        className="rounded-ds-md border border-surface-border-strong bg-surface-1 px-ds-05 py-ds-03 text-ds-md font-body text-surface-fg"
       >
         {selected ? selected.name : 'Assign member'}
       </button>
@@ -84,7 +84,7 @@ function MultiSelectDemo() {
     >
       <button
         type="button"
-        className="rounded-ds-md border border-border bg-layer-01 px-ds-05 py-ds-03 text-ds-md font-body text-text-primary"
+        className="rounded-ds-md border border-surface-border-strong bg-surface-1 px-ds-05 py-ds-03 text-ds-md font-body text-surface-fg"
       >
         {count > 0 ? `${count} member${count > 1 ? 's' : ''} selected` : 'Assign members'}
       </button>
@@ -104,7 +104,7 @@ function CustomPlaceholderDemo() {
     >
       <button
         type="button"
-        className="rounded-ds-md border border-border bg-layer-01 px-ds-05 py-ds-03 text-ds-md font-body text-text-primary"
+        className="rounded-ds-md border border-surface-border-strong bg-surface-1 px-ds-05 py-ds-03 text-ds-md font-body text-surface-fg"
       >
         Pick teammate
       </button>
@@ -123,7 +123,7 @@ function EmptyListDemo() {
     >
       <button
         type="button"
-        className="rounded-ds-md border border-border bg-layer-01 px-ds-05 py-ds-03 text-ds-md font-body text-text-primary"
+        className="rounded-ds-md border border-surface-border-strong bg-surface-1 px-ds-05 py-ds-03 text-ds-md font-body text-surface-fg"
       >
         Assign member
       </button>
@@ -142,7 +142,7 @@ export const Default: Story = {
     children: (
       <button
         type="button"
-        className="rounded-ds-md border border-border bg-layer-01 px-ds-05 py-ds-03 text-ds-md font-body text-text-primary"
+        className="rounded-ds-md border border-surface-border-strong bg-surface-1 px-ds-05 py-ds-03 text-ds-md font-body text-surface-fg"
       >
         Assign member
       </button>
@@ -170,7 +170,7 @@ export const PreselectedMember: Story = {
     children: (
       <button
         type="button"
-        className="rounded-ds-md border border-border bg-layer-01 px-ds-05 py-ds-03 text-ds-md font-body text-text-primary"
+        className="rounded-ds-md border border-surface-border-strong bg-surface-1 px-ds-05 py-ds-03 text-ds-md font-body text-surface-fg"
       >
         Priya Kapoor
       </button>
@@ -186,25 +186,25 @@ export const AllVariants: Story = {
   render: () => (
     <div style={{ display: 'flex', flexWrap: 'wrap', gap: 16, alignItems: 'flex-start' }}>
       <div>
-        <p className="mb-ds-03 text-ds-sm font-accent font-semibold text-text-secondary">
+        <p className="mb-ds-03 text-ds-sm font-accent font-semibold text-surface-fg-muted">
           Single select
         </p>
         <SingleSelectDemo />
       </div>
       <div>
-        <p className="mb-ds-03 text-ds-sm font-accent font-semibold text-text-secondary">
+        <p className="mb-ds-03 text-ds-sm font-accent font-semibold text-surface-fg-muted">
           Multi select
         </p>
         <MultiSelectDemo />
       </div>
       <div>
-        <p className="mb-ds-03 text-ds-sm font-accent font-semibold text-text-secondary">
+        <p className="mb-ds-03 text-ds-sm font-accent font-semibold text-surface-fg-muted">
           Custom placeholder
         </p>
         <CustomPlaceholderDemo />
       </div>
       <div>
-        <p className="mb-ds-03 text-ds-sm font-accent font-semibold text-text-secondary">
+        <p className="mb-ds-03 text-ds-sm font-accent font-semibold text-surface-fg-muted">
           Empty list
         </p>
         <EmptyListDemo />

@@ -147,14 +147,14 @@ const FilesTab = React.forwardRef<HTMLDivElement, FilesTabProps>(
           className={cn(
             'rounded-ds-lg border-2 border-dashed transition-colors',
             dragOver
-              ? 'border-interactive bg-interactive/5'
-              : 'border-border',
+              ? 'border-accent-7 bg-accent-1'
+              : 'border-surface-border-strong',
           )}
         >
           <div className="flex flex-col items-center gap-ds-03 py-ds-06">
-            <div className="flex h-ds-sm-plus w-ds-sm-plus items-center justify-center rounded-ds-lg bg-layer-02">
+            <div className="flex h-ds-sm-plus w-ds-sm-plus items-center justify-center rounded-ds-lg bg-surface-2">
               <IconUpload
-                className="h-ico-sm w-ico-sm text-text-placeholder"
+                className="h-ico-sm w-ico-sm text-surface-fg-subtle"
                 stroke={1.5}
               />
             </div>
@@ -163,11 +163,11 @@ const FilesTab = React.forwardRef<HTMLDivElement, FilesTabProps>(
                 type="button"
                 onClick={() => fileInputRef.current?.click()}
                 disabled={isUploading}
-                className="text-ds-md font-medium text-interactive transition-colors hover:underline disabled:opacity-[0.38]"
+                className="text-ds-md font-medium text-accent-11 transition-colors hover:underline disabled:opacity-action-disabled"
               >
                 {isUploading ? 'Uploading...' : 'Click to upload'}
               </button>
-              <span className="text-ds-md text-text-placeholder">
+              <span className="text-ds-md text-surface-fg-subtle">
                 {' '}or drag and drop
               </span>
             </div>
@@ -189,22 +189,22 @@ const FilesTab = React.forwardRef<HTMLDivElement, FilesTabProps>(
             return (
               <div
                 key={file.id}
-                className="group flex items-center gap-ds-04 rounded-ds-lg px-ds-03 py-ds-03 transition-colors hover:bg-field"
+                className="group flex items-center gap-ds-04 rounded-ds-lg px-ds-03 py-ds-03 transition-colors hover:bg-surface-3"
               >
                 {/* File icon */}
-                <div className="flex h-ds-sm w-ds-sm shrink-0 items-center justify-center rounded-ds-lg bg-layer-02">
+                <div className="flex h-ds-sm w-ds-sm shrink-0 items-center justify-center rounded-ds-lg bg-surface-2">
                   <Icon
-                    className="h-ico-sm w-ico-sm text-text-tertiary"
+                    className="h-ico-sm w-ico-sm text-surface-fg-subtle"
                     stroke={1.5}
                   />
                 </div>
 
                 {/* File info */}
                 <div className="flex-1 min-w-0">
-                  <p className="truncate text-ds-md font-medium text-text-primary">
+                  <p className="truncate text-ds-md font-medium text-surface-fg">
                     {file.title}
                   </p>
-                  <p className="text-ds-sm text-text-placeholder">
+                  <p className="text-ds-sm text-surface-fg-subtle">
                     {formatFileDate(file.createdAt)}
                     <span className="mx-ds-02b">by</span>
                     {file.uploadedBy.name}
@@ -218,10 +218,10 @@ const FilesTab = React.forwardRef<HTMLDivElement, FilesTabProps>(
                       href={file.externalUrl}
                       target="_blank"
                       rel="noopener noreferrer"
-                      className="inline-flex h-ds-xs-plus w-ds-xs-plus items-center justify-center rounded-ds-md transition-colors hover:bg-layer-02"
+                      className="inline-flex h-ds-xs-plus w-ds-xs-plus items-center justify-center rounded-ds-md transition-colors hover:bg-surface-2"
                       title={file.externalLabel ?? 'Open externally'}
                     >
-                      <IconExternalLink className="h-ico-sm w-ico-sm text-text-tertiary" />
+                      <IconExternalLink className="h-ico-sm w-ico-sm text-surface-fg-subtle" />
                     </a>
                   )}
                   {file.downloadUrl && (
@@ -229,10 +229,10 @@ const FilesTab = React.forwardRef<HTMLDivElement, FilesTabProps>(
                       href={/^https?:\/\//.test(file.downloadUrl) ? file.downloadUrl : '#'}
                       target="_blank"
                       rel="noopener noreferrer"
-                      className="inline-flex h-ds-xs-plus w-ds-xs-plus items-center justify-center rounded-ds-md transition-colors hover:bg-layer-02"
+                      className="inline-flex h-ds-xs-plus w-ds-xs-plus items-center justify-center rounded-ds-md transition-colors hover:bg-surface-2"
                       title="Download"
                     >
-                      <IconDownload className="h-ico-sm w-ico-sm text-text-tertiary" />
+                      <IconDownload className="h-ico-sm w-ico-sm text-surface-fg-subtle" />
                     </a>
                   )}
                   {!readOnly && (
@@ -240,10 +240,10 @@ const FilesTab = React.forwardRef<HTMLDivElement, FilesTabProps>(
                       <DialogTrigger asChild>
                         <button
                           type="button"
-                          className="inline-flex h-ds-xs-plus w-ds-xs-plus items-center justify-center rounded-ds-md transition-colors hover:bg-error-surface"
+                          className="inline-flex h-ds-xs-plus w-ds-xs-plus items-center justify-center rounded-ds-md transition-colors hover:bg-error-3"
                           title="Delete"
                         >
-                          <IconTrash className="h-ico-sm w-ico-sm text-text-error" />
+                          <IconTrash className="h-ico-sm w-ico-sm text-error-11" />
                         </button>
                       </DialogTrigger>
                       <DialogContent>

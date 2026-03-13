@@ -165,9 +165,9 @@ const TimePicker = React.forwardRef<HTMLButtonElement, TimePickerProps>(
   const itemBase =
     'flex h-ds-sm w-full items-center justify-center rounded-ds-md text-ds-md transition-colors duration-fast-01 ease-productive-standard cursor-pointer'
   const itemSelected =
-    'bg-interactive text-text-on-color'
+    'bg-accent-9 text-accent-fg'
   const itemDefault =
-    'text-text-primary hover:bg-field'
+    'text-surface-fg hover:bg-surface-3'
 
   return (
     <Popover open={open} onOpenChange={setOpen}>
@@ -178,24 +178,24 @@ const TimePicker = React.forwardRef<HTMLButtonElement, TimePickerProps>(
           disabled={disabled}
           {...props}
           className={cn(
-            'inline-flex h-ds-sm-plus items-center gap-ds-03 rounded-ds-lg border border-border bg-layer-01 px-ds-04 text-left transition-colors duration-fast-01 ease-productive-standard',
-            'hover:border-border-strong',
-            'focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-focus focus-visible:ring-offset-2',
-            disabled && 'opacity-[0.38] pointer-events-none',
+            'inline-flex h-ds-sm-plus items-center gap-ds-03 rounded-ds-lg border border-surface-border-strong bg-surface-1 px-ds-04 text-left transition-colors duration-fast-01 ease-productive-standard',
+            'hover:border-surface-border-strong',
+            'focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent-9 focus-visible:ring-offset-2',
+            disabled && 'opacity-action-disabled pointer-events-none',
             className,
           )}
           aria-label={displayText ? `Selected time: ${displayText}` : placeholder}
         >
           <IconClock
-            className="h-ico-sm w-ico-sm text-text-placeholder"
+            className="h-ico-sm w-ico-sm text-surface-fg-subtle"
             stroke={1.5}
           />
           <span
             className={cn(
               'text-ds-md',
               displayText
-                ? 'text-text-primary'
-                : 'text-text-placeholder',
+                ? 'text-surface-fg'
+                : 'text-surface-fg-subtle',
             )}
           >
             {displayText ?? placeholder}
@@ -203,14 +203,14 @@ const TimePicker = React.forwardRef<HTMLButtonElement, TimePickerProps>(
         </button>
       </PopoverTrigger>
       <PopoverContent
-        className="w-auto border-border bg-layer-01 p-ds-04"
+        className="w-auto border-surface-border-strong bg-surface-1 p-ds-04"
         align="start"
         sideOffset={4}
       >
         <div className="flex gap-ds-03" role="group" aria-label="Time picker">
           {/* Hours column */}
           <div className="flex flex-col items-center gap-ds-02">
-            <span className="text-ds-xs font-semibold uppercase tracking-wider text-text-placeholder">
+            <span className="text-ds-xs font-semibold uppercase tracking-wider text-surface-fg-subtle">
               Hr
             </span>
             <div className={cn(columnClass, 'min-w-[48px]')}>
@@ -234,7 +234,7 @@ const TimePicker = React.forwardRef<HTMLButtonElement, TimePickerProps>(
 
           {/* Minutes column */}
           <div className="flex flex-col items-center gap-ds-02">
-            <span className="text-ds-xs font-semibold uppercase tracking-wider text-text-placeholder">
+            <span className="text-ds-xs font-semibold uppercase tracking-wider text-surface-fg-subtle">
               Min
             </span>
             <div className={cn(columnClass, 'min-w-[48px]')}>
@@ -259,7 +259,7 @@ const TimePicker = React.forwardRef<HTMLButtonElement, TimePickerProps>(
           {/* Seconds column */}
           {showSeconds && (
             <div className="flex flex-col items-center gap-ds-02">
-              <span className="text-ds-xs font-semibold uppercase tracking-wider text-text-placeholder">
+              <span className="text-ds-xs font-semibold uppercase tracking-wider text-surface-fg-subtle">
                 Sec
               </span>
               <div className={cn(columnClass, 'min-w-[48px]')}>
@@ -285,7 +285,7 @@ const TimePicker = React.forwardRef<HTMLButtonElement, TimePickerProps>(
           {/* AM/PM toggle for 12h format */}
           {timeFormat === '12h' && (
             <div className="flex flex-col items-center gap-ds-02">
-              <span className="text-ds-xs font-semibold uppercase tracking-wider text-text-placeholder">
+              <span className="text-ds-xs font-semibold uppercase tracking-wider text-surface-fg-subtle">
                 &nbsp;
               </span>
               <div className="flex flex-col gap-ds-01 px-ds-01">

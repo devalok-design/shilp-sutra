@@ -59,7 +59,7 @@ const preview: Preview = {
         null,
         React.createElement(
           'div',
-          { className: 'story-surface', style: { background: 'var(--color-background)', padding: '2rem', borderRadius: '8px' } },
+          { className: 'story-surface', style: { background: 'var(--color-surface-1)', padding: '2rem', borderRadius: '8px' } },
           React.createElement(Story)
         )
       ),

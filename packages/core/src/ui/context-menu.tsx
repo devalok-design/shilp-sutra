@@ -78,7 +78,7 @@ const ContextMenuSubTrigger = React.forwardRef<
   <ContextMenuPrimitive.SubTrigger
     ref={ref}
     className={cn(
-      "flex cursor-default select-none items-center rounded-ds-md px-ds-03 py-ds-02b text-ds-md outline-none focus:bg-layer-02 focus:text-text-primary data-[state=open]:bg-layer-02 data-[state=open]:text-text-primary",
+      "flex cursor-default select-none items-center rounded-ds-md px-ds-03 py-ds-02b text-ds-md outline-none focus:bg-surface-2 focus:text-surface-fg data-[state=open]:bg-surface-2 data-[state=open]:text-surface-fg",
       inset && "pl-ds-07",
       className
     )}
@@ -111,7 +111,7 @@ const ContextMenuSubContent = React.forwardRef<
             exit={{ opacity: 0, scale: 0.95 }}
             transition={{ ...springs.snappy, opacity: tweens.fade }}
             className={cn(
-              "z-popover min-w-[8rem] overflow-hidden rounded-ds-lg border border-border bg-layer-01 p-ds-02 text-text-primary shadow-03",
+              "z-popover min-w-[8rem] overflow-hidden rounded-ds-lg border border-surface-border-strong bg-surface-1 p-ds-02 text-surface-fg shadow-03",
               className
             )}
           >
@@ -146,7 +146,7 @@ const ContextMenuContent = React.forwardRef<
               exit={{ opacity: 0, scale: 0.95 }}
               transition={{ ...springs.snappy, opacity: tweens.fade }}
               className={cn(
-                "z-popover rounded-ds-lg border border-border bg-layer-01 p-ds-02 text-text-primary shadow-03",
+                "z-popover rounded-ds-lg border border-surface-border-strong bg-surface-1 p-ds-02 text-surface-fg shadow-03",
                 className
               )}
             >
@@ -169,7 +169,7 @@ const ContextMenuItem = React.forwardRef<
   <ContextMenuPrimitive.Item
     ref={ref}
     className={cn(
-      "relative flex cursor-default select-none items-center rounded-ds-md px-ds-03 py-ds-02b text-ds-md outline-none focus:bg-layer-02 focus:text-text-primary data-[disabled]:pointer-events-none data-[disabled]:opacity-[0.38]",
+      "relative flex cursor-default select-none items-center rounded-ds-md px-ds-03 py-ds-02b text-ds-md outline-none focus:bg-surface-2 focus:text-surface-fg data-[disabled]:pointer-events-none data-[disabled]:opacity-action-disabled",
       inset && "pl-ds-07",
       className
     )}
@@ -185,7 +185,7 @@ const ContextMenuCheckboxItem = React.forwardRef<
   <ContextMenuPrimitive.CheckboxItem
     ref={ref}
     className={cn(
-      "relative flex cursor-default select-none items-center rounded-ds-md py-ds-02b pl-ds-07 pr-ds-03 text-ds-md outline-none focus:bg-layer-02 focus:text-text-primary data-[disabled]:pointer-events-none data-[disabled]:opacity-[0.38]",
+      "relative flex cursor-default select-none items-center rounded-ds-md py-ds-02b pl-ds-07 pr-ds-03 text-ds-md outline-none focus:bg-surface-2 focus:text-surface-fg data-[disabled]:pointer-events-none data-[disabled]:opacity-action-disabled",
       className
     )}
     checked={checked}
@@ -209,7 +209,7 @@ const ContextMenuRadioItem = React.forwardRef<
   <ContextMenuPrimitive.RadioItem
     ref={ref}
     className={cn(
-      "relative flex cursor-default select-none items-center rounded-ds-md py-ds-02b pl-ds-07 pr-ds-03 text-ds-md outline-none focus:bg-layer-02 focus:text-text-primary data-[disabled]:pointer-events-none data-[disabled]:opacity-[0.38]",
+      "relative flex cursor-default select-none items-center rounded-ds-md py-ds-02b pl-ds-07 pr-ds-03 text-ds-md outline-none focus:bg-surface-2 focus:text-surface-fg data-[disabled]:pointer-events-none data-[disabled]:opacity-action-disabled",
       className
     )}
     {...props}
@@ -233,7 +233,7 @@ const ContextMenuLabel = React.forwardRef<
   <ContextMenuPrimitive.Label
     ref={ref}
     className={cn(
-      "px-ds-03 py-ds-02b text-ds-md font-semibold text-text-primary",
+      "px-ds-03 py-ds-02b text-ds-md font-semibold text-surface-fg",
       inset && "pl-ds-07",
       className
     )}
@@ -248,7 +248,7 @@ const ContextMenuSeparator = React.forwardRef<
 >(({ className, ...props }, ref) => (
   <ContextMenuPrimitive.Separator
     ref={ref}
-    className={cn("-mx-ds-01 my-ds-02 h-px bg-border-subtle", className)}
+    className={cn("-mx-ds-01 my-ds-02 h-px bg-surface-border", className)}
     {...props}
   />
 ))
@@ -261,7 +261,7 @@ const ContextMenuShortcut = ({
   return (
     <span
       className={cn(
-        "ml-auto text-ds-sm text-text-placeholder",
+        "ml-auto text-ds-sm text-surface-fg-subtle",
         className
       )}
       {...props}

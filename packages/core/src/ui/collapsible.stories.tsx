@@ -21,14 +21,14 @@ export const Default: Story = {
           </Button>
         </CollapsibleTrigger>
       </div>
-      <div className="rounded-ds-md border border-border px-ds-04 py-ds-02 text-ds-sm">
+      <div className="rounded-ds-md border border-surface-border-strong px-ds-04 py-ds-02 text-ds-sm">
         @radix-ui/primitives
       </div>
       <CollapsibleContent className="space-y-ds-02">
-        <div className="rounded-ds-md border border-border px-ds-04 py-ds-02 text-ds-sm">
+        <div className="rounded-ds-md border border-surface-border-strong px-ds-04 py-ds-02 text-ds-sm">
           @radix-ui/colors
         </div>
-        <div className="rounded-ds-md border border-border px-ds-04 py-ds-02 text-ds-sm">
+        <div className="rounded-ds-md border border-surface-border-strong px-ds-04 py-ds-02 text-ds-sm">
           @stitches/react
         </div>
       </CollapsibleContent>
@@ -47,14 +47,14 @@ export const DefaultOpen: Story = {
           </Button>
         </CollapsibleTrigger>
       </div>
-      <div className="rounded-ds-md border border-border px-ds-04 py-ds-02 text-ds-sm">
+      <div className="rounded-ds-md border border-surface-border-strong px-ds-04 py-ds-02 text-ds-sm">
         @radix-ui/primitives
       </div>
       <CollapsibleContent className="space-y-ds-02">
-        <div className="rounded-ds-md border border-border px-ds-04 py-ds-02 text-ds-sm">
+        <div className="rounded-ds-md border border-surface-border-strong px-ds-04 py-ds-02 text-ds-sm">
           @radix-ui/colors
         </div>
-        <div className="rounded-ds-md border border-border px-ds-04 py-ds-02 text-ds-sm">
+        <div className="rounded-ds-md border border-surface-border-strong px-ds-04 py-ds-02 text-ds-sm">
           @stitches/react
         </div>
       </CollapsibleContent>

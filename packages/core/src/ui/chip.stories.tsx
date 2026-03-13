@@ -136,13 +136,13 @@ export const AllVariants: Story = {
     <div className="flex flex-col gap-ds-06">
       {variants.map((variant) => (
         <div key={variant}>
-          <p className="mb-ds-03 text-ds-sm font-semibold text-text-secondary capitalize">
+          <p className="mb-ds-03 text-ds-sm font-semibold text-surface-fg-muted capitalize">
             {variant}
           </p>
           <div className="flex flex-col gap-ds-04">
             {sizes.map((size) => (
               <div key={size} className="flex flex-wrap items-center gap-ds-03">
-                <span className="w-8 text-ds-xs text-text-secondary">{size}</span>
+                <span className="w-8 text-ds-xs text-surface-fg-muted">{size}</span>
                 {colors.map((color) => (
                   <Chip
                     key={`${variant}-${size}-${color}`}
@@ -159,7 +159,7 @@ export const AllVariants: Story = {
       ))}
 
       <div>
-        <p className="mb-ds-03 text-ds-sm font-semibold text-text-secondary">Dismissible</p>
+        <p className="mb-ds-03 text-ds-sm font-semibold text-surface-fg-muted">Dismissible</p>
         <div className="flex flex-wrap items-center gap-ds-03">
           {colors.map((color) => (
             <Chip
@@ -173,7 +173,7 @@ export const AllVariants: Story = {
       </div>
 
       <div>
-        <p className="mb-ds-03 text-ds-sm font-semibold text-text-secondary">Disabled</p>
+        <p className="mb-ds-03 text-ds-sm font-semibold text-surface-fg-muted">Disabled</p>
         <div className="flex flex-wrap items-center gap-ds-03">
           <Chip label="Subtle" variant="subtle" color="primary" disabled onClick={() => {}} />
           <Chip label="Outline" variant="outline" color="primary" disabled onClick={() => {}} />

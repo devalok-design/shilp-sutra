@@ -93,7 +93,7 @@ export const ThreeQuarters: Story = {
 export const CustomIndicator: Story = {
   args: {
     value: 80,
-    indicatorClassName: 'bg-success',
+    indicatorClassName: 'bg-success-9',
   },
   decorators: [
     (Story) => (
@@ -108,23 +108,23 @@ export const AllStages: Story = {
   render: () => (
     <div className="flex flex-col gap-ds-04 max-w-md">
       <div className="flex flex-col gap-ds-01">
-        <span className="text-ds-sm text-text-secondary">0%</span>
+        <span className="text-ds-sm text-surface-fg-muted">0%</span>
         <Progress value={0} />
       </div>
       <div className="flex flex-col gap-ds-01">
-        <span className="text-ds-sm text-text-secondary">25%</span>
+        <span className="text-ds-sm text-surface-fg-muted">25%</span>
         <Progress value={25} />
       </div>
       <div className="flex flex-col gap-ds-01">
-        <span className="text-ds-sm text-text-secondary">50%</span>
+        <span className="text-ds-sm text-surface-fg-muted">50%</span>
         <Progress value={50} />
       </div>
       <div className="flex flex-col gap-ds-01">
-        <span className="text-ds-sm text-text-secondary">75%</span>
+        <span className="text-ds-sm text-surface-fg-muted">75%</span>
         <Progress value={75} />
       </div>
       <div className="flex flex-col gap-ds-01">
-        <span className="text-ds-sm text-text-secondary">100%</span>
+        <span className="text-ds-sm text-surface-fg-muted">100%</span>
         <Progress value={100} />
       </div>
     </div>
@@ -140,11 +140,11 @@ export const AllVariants: Story = {
       <div className="flex flex-col gap-ds-06 max-w-md">
         {sizes.map((size) => (
           <div key={size}>
-            <p className="mb-ds-03 text-ds-sm font-semibold text-text-secondary capitalize">Size: {size}</p>
+            <p className="mb-ds-03 text-ds-sm font-semibold text-surface-fg-muted capitalize">Size: {size}</p>
             <div className="flex flex-col gap-ds-03">
               {colors.map((color) => (
                 <div key={`${size}-${color}`} className="flex flex-col gap-ds-02b">
-                  <span className="text-ds-xs text-text-secondary capitalize">{color}</span>
+                  <span className="text-ds-xs text-surface-fg-muted capitalize">{color}</span>
                   <Progress size={size} color={color} value={65} />
                 </div>
               ))}
@@ -153,11 +153,11 @@ export const AllVariants: Story = {
         ))}
 
         <div>
-          <p className="mb-ds-03 text-ds-sm font-semibold text-text-secondary">Indeterminate</p>
+          <p className="mb-ds-03 text-ds-sm font-semibold text-surface-fg-muted">Indeterminate</p>
           <div className="flex flex-col gap-ds-03">
             {colors.map((color) => (
               <div key={`indeterminate-${color}`} className="flex flex-col gap-ds-02b">
-                <span className="text-ds-xs text-text-secondary capitalize">{color}</span>
+                <span className="text-ds-xs text-surface-fg-muted capitalize">{color}</span>
                 <Progress color={color} />
               </div>
             ))}
@@ -165,7 +165,7 @@ export const AllVariants: Story = {
         </div>
 
         <div>
-          <p className="mb-ds-03 text-ds-sm font-semibold text-text-secondary">With Label</p>
+          <p className="mb-ds-03 text-ds-sm font-semibold text-surface-fg-muted">With Label</p>
           <div className="flex flex-col gap-ds-03">
             {colors.map((color) => (
               <Progress key={`label-${color}`} color={color} value={72} showLabel />

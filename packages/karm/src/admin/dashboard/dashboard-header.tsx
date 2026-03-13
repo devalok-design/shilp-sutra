@@ -70,21 +70,21 @@ export const DashboardHeader = React.forwardRef<HTMLDivElement, DashboardHeaderP
     <div ref={ref} className={cn("mb-ds-06 flex w-full flex-col items-start justify-between md:flex-row md:items-center", className)} {...props}>
       <div className="flex w-full items-center justify-between gap-ds-05 md:w-auto md:justify-start">
         <DropdownMenu>
-          <DropdownMenuTrigger className="text-ds-xl flex items-center gap-ds-03 text-text-secondary">
+          <DropdownMenuTrigger className="text-ds-xl flex items-center gap-ds-03 text-surface-fg-muted">
             {selectedMonth}
             <FilledArrowIcon />
           </DropdownMenuTrigger>
-          <DropdownMenuContent className="custom-scrollbar absolute ml-ds-08 max-h-[300px] overflow-y-auto rounded-ds-md border border-0 border-border p-0 shadow-brand">
+          <DropdownMenuContent className="custom-scrollbar absolute ml-ds-08 max-h-[300px] overflow-y-auto rounded-ds-md border border-0 border-surface-border-strong p-0 shadow-brand">
             {yearsList.map((year, index) => (
               <DropdownMenuItem
                 key={year}
                 onSelect={() => {
                   onMonthSelection(year)
                 }}
-                className={cn('p-0', index !== yearsList.length - 1 ? 'border-b border-b-border' : '')}
+                className={cn('p-0', index !== yearsList.length - 1 ? 'border-b border-b-surface-border' : '')}
               >
                 <span
-                  className={cn('w-full py-ds-04 pl-ds-05 pr-ds-06', selectedMonth === year ? 'text-ds-md font-semibold bg-interactive text-text-on-color' : 'text-ds-md text-text-secondary hover:bg-layer-02', index === 0 ? 'rounded-t-[7px]' : index === yearsList.length - 1 ? 'rounded-b-[7px]' : '')}
+                  className={cn('w-full py-ds-04 pl-ds-05 pr-ds-06', selectedMonth === year ? 'text-ds-md font-semibold bg-accent-9 text-accent-fg' : 'text-ds-md text-surface-fg-muted hover:bg-surface-2', index === 0 ? 'rounded-t-[7px]' : index === yearsList.length - 1 ? 'rounded-b-[7px]' : '')}
                 >
                   {year.split(' ')[1]}
                 </span>
@@ -104,7 +104,7 @@ export const DashboardHeader = React.forwardRef<HTMLDivElement, DashboardHeaderP
       <div className="flex w-full items-center justify-between gap-ds-05 md:mt-0 md:w-auto md:justify-start max-md:mt-[17px] max-lg:gap-[0.5rem]">
         <div className="hidden md:flex">
           {selectedAssociate ? (
-            <div className="text-ds-md flex items-center justify-start rounded-ds-md bg-interactive px-ds-03 py-ds-02b text-text-on-color">
+            <div className="text-ds-md flex items-center justify-start rounded-ds-md bg-accent-9 px-ds-03 py-ds-02b text-accent-fg">
               <div className="flex items-center justify-start gap-0">
                 {userImages[selectedAssociate.id] ? (
                   <img
@@ -113,14 +113,14 @@ export const DashboardHeader = React.forwardRef<HTMLDivElement, DashboardHeaderP
                     className="h-ico-md w-ico-md rounded-ds-full"
                   />
                 ) : (
-                  <div className="flex h-ico-md w-ico-md flex-shrink-0 items-center justify-center rounded-ds-full bg-layer-03">
-                    <span className="text-interactive">
+                  <div className="flex h-ico-md w-ico-md flex-shrink-0 items-center justify-center rounded-ds-full bg-surface-3">
+                    <span className="text-accent-11">
                       {selectedAssociate.name.charAt(0)}
                     </span>
                   </div>
                 )}
 
-                <span className="text-ds-md ml-ds-01 mr-ds-02 text-text-on-color">
+                <span className="text-ds-md ml-ds-01 mr-ds-02 text-accent-fg">
                   {selectedAssociate.name}
                 </span>
               </div>
@@ -129,15 +129,15 @@ export const DashboardHeader = React.forwardRef<HTMLDivElement, DashboardHeaderP
                 onClick={() => onSelectAssociate(null)}
                 className="border-0 bg-transparent p-0"
               >
-                <CrossIcon className="h-ico-sm w-ico-sm text-text-on-color" />
+                <CrossIcon className="h-ico-sm w-ico-sm text-accent-fg" />
               </button>
             </div>
           ) : (
             <DropdownMenu>
-              <DropdownMenuTrigger className="text-ds-md hidden items-center justify-between rounded-ds-md border border-border-subtle bg-layer-01 px-ds-03 py-ds-02b md:flex">
+              <DropdownMenuTrigger className="text-ds-md hidden items-center justify-between rounded-ds-md border border-surface-border bg-surface-1 px-ds-03 py-ds-02b md:flex">
                 <div className="flex items-center">
                   <PersonIcon className="h-ico-md w-ico-md" />
-                  <span className="text-ds-md ml-ds-01 mr-ds-02 text-text-secondary max-lg:mx-0 max-lg:text-ds-sm">
+                  <span className="text-ds-md ml-ds-01 mr-ds-02 text-surface-fg-muted max-lg:mx-0 max-lg:text-ds-sm">
                     Associate
                   </span>
                 </div>
@@ -168,13 +168,13 @@ export const DashboardHeader = React.forwardRef<HTMLDivElement, DashboardHeaderP
                           className="h-ds-xs w-ds-xs rounded-ds-full"
                         />
                       ) : (
-                        <div className="flex h-ds-xs w-ds-xs items-center justify-center rounded-ds-full bg-layer-03">
-                          <span className="text-ds-md text-interactive">
+                        <div className="flex h-ds-xs w-ds-xs items-center justify-center rounded-ds-full bg-surface-3">
+                          <span className="text-ds-md text-accent-11">
                             {user.name.charAt(0)}
                           </span>
                         </div>
                       )}
-                      <span className="text-ds-md text-text-secondary">
+                      <span className="text-ds-md text-surface-fg-muted">
                         {user.name}
                       </span>
                     </DropdownMenuItem>

@@ -150,7 +150,7 @@ export const AllVariants: Story = {
   render: () => (
     <div className="space-y-ds-07">
       <div>
-        <h3 className="text-ds-sm font-medium mb-3 text-text-secondary">
+        <h3 className="text-ds-sm font-medium mb-3 text-surface-fg-muted">
           Shapes
         </h3>
         <div className="flex items-center gap-ds-06">
@@ -160,7 +160,7 @@ export const AllVariants: Story = {
         </div>
       </div>
       <div>
-        <h3 className="text-ds-sm font-medium mb-3 text-text-secondary">
+        <h3 className="text-ds-sm font-medium mb-3 text-surface-fg-muted">
           Animations
         </h3>
         <div className="space-y-ds-03 w-[300px]">
@@ -183,19 +183,19 @@ export const AvatarSizes: Story = {
     <div className="flex items-center gap-ds-06">
       <div className="flex flex-col items-center gap-ds-02">
         <SkeletonAvatar size="sm" />
-        <span className="text-ds-xs text-text-secondary">sm</span>
+        <span className="text-ds-xs text-surface-fg-muted">sm</span>
       </div>
       <div className="flex flex-col items-center gap-ds-02">
         <SkeletonAvatar size="md" />
-        <span className="text-ds-xs text-text-secondary">md</span>
+        <span className="text-ds-xs text-surface-fg-muted">md</span>
       </div>
       <div className="flex flex-col items-center gap-ds-02">
         <SkeletonAvatar size="lg" />
-        <span className="text-ds-xs text-text-secondary">lg</span>
+        <span className="text-ds-xs text-surface-fg-muted">lg</span>
       </div>
       <div className="flex flex-col items-center gap-ds-02">
         <SkeletonAvatar size="xl" />
-        <span className="text-ds-xs text-text-secondary">xl</span>
+        <span className="text-ds-xs text-surface-fg-muted">xl</span>
       </div>
     </div>
   ),
@@ -227,11 +227,11 @@ export const TextCustomLines: Story = {
   render: () => (
     <div className="w-[350px] space-y-ds-06">
       <div>
-        <span className="text-ds-xs text-text-secondary mb-2 block">2 lines</span>
+        <span className="text-ds-xs text-surface-fg-muted mb-2 block">2 lines</span>
         <SkeletonText lines={2} />
       </div>
       <div>
-        <span className="text-ds-xs text-text-secondary mb-2 block">5 lines</span>
+        <span className="text-ds-xs text-surface-fg-muted mb-2 block">5 lines</span>
         <SkeletonText lines={5} />
       </div>
     </div>
@@ -262,15 +262,15 @@ export const ButtonSizes: Story = {
     <div className="flex items-center gap-ds-04">
       <div className="flex flex-col items-center gap-ds-02">
         <SkeletonButton size="sm" />
-        <span className="text-ds-xs text-text-secondary">sm</span>
+        <span className="text-ds-xs text-surface-fg-muted">sm</span>
       </div>
       <div className="flex flex-col items-center gap-ds-02">
         <SkeletonButton size="md" />
-        <span className="text-ds-xs text-text-secondary">md</span>
+        <span className="text-ds-xs text-surface-fg-muted">md</span>
       </div>
       <div className="flex flex-col items-center gap-ds-02">
         <SkeletonButton size="lg" />
-        <span className="text-ds-xs text-text-secondary">lg</span>
+        <span className="text-ds-xs text-surface-fg-muted">lg</span>
       </div>
     </div>
   ),
@@ -303,15 +303,15 @@ export const InputSizes: Story = {
   render: () => (
     <div className="w-[350px] space-y-ds-04">
       <div>
-        <span className="text-ds-xs text-text-secondary mb-1 block">sm</span>
+        <span className="text-ds-xs text-surface-fg-muted mb-1 block">sm</span>
         <SkeletonInput size="sm" />
       </div>
       <div>
-        <span className="text-ds-xs text-text-secondary mb-1 block">md</span>
+        <span className="text-ds-xs text-surface-fg-muted mb-1 block">md</span>
         <SkeletonInput size="md" />
       </div>
       <div>
-        <span className="text-ds-xs text-text-secondary mb-1 block">lg</span>
+        <span className="text-ds-xs text-surface-fg-muted mb-1 block">lg</span>
         <SkeletonInput size="lg" />
       </div>
     </div>
@@ -341,11 +341,11 @@ export const ChartCustomBars: Story = {
   render: () => (
     <div className="w-[400px] space-y-ds-06">
       <div>
-        <span className="text-ds-xs text-text-secondary mb-2 block">4 bars</span>
+        <span className="text-ds-xs text-surface-fg-muted mb-2 block">4 bars</span>
         <SkeletonChart bars={4} />
       </div>
       <div>
-        <span className="text-ds-xs text-text-secondary mb-2 block">12 bars</span>
+        <span className="text-ds-xs text-surface-fg-muted mb-2 block">12 bars</span>
         <SkeletonChart bars={12} />
       </div>
     </div>
@@ -410,15 +410,15 @@ export const ButtonIconOnly: Story = {
     <div className="flex items-center gap-ds-04">
       <div className="flex flex-col items-center gap-ds-02">
         <SkeletonButton size="sm" width="icon" />
-        <span className="text-ds-xs text-text-secondary">sm</span>
+        <span className="text-ds-xs text-surface-fg-muted">sm</span>
       </div>
       <div className="flex flex-col items-center gap-ds-02">
         <SkeletonButton size="md" width="icon" />
-        <span className="text-ds-xs text-text-secondary">md</span>
+        <span className="text-ds-xs text-surface-fg-muted">md</span>
       </div>
       <div className="flex flex-col items-center gap-ds-02">
         <SkeletonButton size="lg" width="icon" />
-        <span className="text-ds-xs text-text-secondary">lg</span>
+        <span className="text-ds-xs text-surface-fg-muted">lg</span>
       </div>
     </div>
   ),

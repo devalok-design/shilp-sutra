@@ -19,14 +19,14 @@ export const DashboardSkeleton = React.forwardRef<HTMLDivElement, React.HTMLAttr
   function DashboardSkeleton({ className, ...props }, ref) {
   return (
     <div ref={ref} className={cn("flex w-full max-w-layout flex-col items-center justify-center max-md:h-[100%] max-md:justify-start", className)} {...props}>
-      <div className="z-raised flex w-full flex-col items-start justify-start rounded-ds-lg border border-border bg-layer-02 p-ds-05 shadow-05 max-md:flex-1 max-md:min-h-0 max-md:overflow-y-auto max-md:border-0 max-md:px-ds-05 max-md:pb-0 max-md:pt-ds-06">
+      <div className="z-raised flex w-full flex-col items-start justify-start rounded-ds-lg border border-surface-border-strong bg-surface-2 p-ds-05 shadow-05 max-md:flex-1 max-md:min-h-0 max-md:overflow-y-auto max-md:border-0 max-md:px-ds-05 max-md:pb-0 max-md:pt-ds-06">
         {/* Header Section */}
         <div className="mb-ds-06 flex w-full flex-col items-start justify-between md:flex-row md:items-center">
           <DropdownMenu>
-            <DropdownMenuTrigger className="text-ds-xl flex items-center gap-ds-03 text-text-secondary" aria-label="Select period">
+            <DropdownMenuTrigger className="text-ds-xl flex items-center gap-ds-03 text-surface-fg-muted" aria-label="Select period">
               <div className="flex items-center gap-ds-03">
-                <Skeleton className="h-[25px] w-[50px] rounded-ds-md bg-field" />
-                <Skeleton className="h-[25px] w-[50px] rounded-ds-md bg-field" />
+                <Skeleton className="h-[25px] w-[50px] rounded-ds-md bg-surface-3" />
+                <Skeleton className="h-[25px] w-[50px] rounded-ds-md bg-surface-3" />
               </div>
               <FilledArrowIcon />
             </DropdownMenuTrigger>
@@ -35,12 +35,12 @@ export const DashboardSkeleton = React.forwardRef<HTMLDivElement, React.HTMLAttr
             <div className="hidden md:flex">
               <Skeleton className="h-ds-sm w-[180px] rounded-ds-md" />
             </div>
-            <div className="flex w-[200px] items-center justify-between overflow-clip rounded-ds-full border border-layer-03">
-              <div className="flex h-ds-sm w-[100px] items-center justify-center rounded-r-none bg-field">
-                <Skeleton className="h-[20px] w-[40px] rounded-r-none bg-layer-03" />
+            <div className="flex w-[200px] items-center justify-between overflow-clip rounded-ds-full border border-surface-border">
+              <div className="flex h-ds-sm w-[100px] items-center justify-center rounded-r-none bg-surface-3">
+                <Skeleton className="h-[20px] w-[40px] rounded-r-none bg-surface-3" />
               </div>
               <div className="flex h-ds-sm w-[100px] items-center justify-center">
-                <Skeleton className="h-[20px] w-[40px] bg-layer-03" />
+                <Skeleton className="h-[20px] w-[40px] bg-surface-3" />
               </div>
             </div>
             <div className="flex gap-0">
@@ -62,16 +62,16 @@ export const DashboardSkeleton = React.forwardRef<HTMLDivElement, React.HTMLAttr
               key={i}
               className="flex w-full flex-col items-center rounded-t-ds-lg pb-ds-04 pt-ds-05 max-md:rounded-ds-lg"
             >
-              <Skeleton className="mb-ds-03 h-[10px] w-[10px] rounded-ds-lg bg-field" />
+              <Skeleton className="mb-ds-03 h-[10px] w-[10px] rounded-ds-lg bg-surface-3" />
               <div className="mx-ds-02 my-ds-02 flex items-center justify-center">
-                <Skeleton className="h-ds-md w-ds-md rounded-ds-full bg-field" />
+                <Skeleton className="h-ds-md w-ds-md rounded-ds-full bg-surface-3" />
               </div>
             </div>
           ))}
         </div>
 
         {/* Main Content Section */}
-        <div className="flex w-full flex-col rounded-ds-lg bg-layer-02 md:p-ds-06 max-md:bg-transparent">
+        <div className="flex w-full flex-col rounded-ds-lg bg-surface-2 md:p-ds-06 max-md:bg-transparent">
           {/* User Groups Section */}
           <div className="no-scrollbar w-full cursor-grab overflow-x-auto active:cursor-grabbing max-md:pb-ds-05">
             <div
@@ -80,14 +80,14 @@ export const DashboardSkeleton = React.forwardRef<HTMLDivElement, React.HTMLAttr
               {Array.from({ length: 3 }).map((_, index) => (
                 <div
                   key={index}
-                  className={cn('flex w-full flex-col gap-ds-04 rounded-ds-md bg-layer-02 p-ds-06 md:rounded-ds-lg md:p-ds-05', index !== 2 ? 'border-r border-border' : '', 'max-md:border-0 max-md:p-ds-05', 'min-w-[200px]')}
+                  className={cn('flex w-full flex-col gap-ds-04 rounded-ds-md bg-surface-2 p-ds-06 md:rounded-ds-lg md:p-ds-05', index !== 2 ? 'border-r border-surface-border-strong' : '', 'max-md:border-0 max-md:p-ds-05', 'min-w-[200px]')}
                 >
-                  <Skeleton className="h-[20px] w-[120px] rounded-ds-md bg-field" />
+                  <Skeleton className="h-[20px] w-[120px] rounded-ds-md bg-surface-3" />
                   <div className="flex flex-wrap items-center gap-ds-03">
                     {Array.from({ length: 4 }).map((_, imgIndex) => (
                       <Skeleton
                         key={imgIndex}
-                        className={cn('h-ds-md w-ds-md rounded-ds-full bg-field', imgIndex > 0 ? 'ml-[-5px]' : '')}
+                        className={cn('h-ds-md w-ds-md rounded-ds-full bg-surface-3', imgIndex > 0 ? 'ml-[-5px]' : '')}
                       />
                     ))}
                   </div>
@@ -98,32 +98,32 @@ export const DashboardSkeleton = React.forwardRef<HTMLDivElement, React.HTMLAttr
 
           {/* Requests Section */}
           <div className="w-full p-0 md:p-ds-06">
-            <div className="max-md:pt-[16px] flex flex-col items-start overflow-hidden rounded-ds-lg border-0 border-border-subtle bg-layer-01 shadow-01 pt-ds-03 md:border max-md:pb-0">
+            <div className="max-md:pt-[16px] flex flex-col items-start overflow-hidden rounded-ds-lg border-0 border-surface-border bg-surface-1 shadow-01 pt-ds-03 md:border max-md:pb-0">
               {/* Tab headers skeleton */}
-              <div className="flex w-full items-start border-b-[1px] border-b-border px-ds-06 md:border-b max-md:border-0 max-md:px-0">
-                <div className="text-ds-sm font-semibold uppercase tracking-wider cursor-pointer border-b-[1.5px] border-b-interactive-hover px-ds-03 py-ds-04 font-semibold  text-text-primary">
+              <div className="flex w-full items-start border-b-[1px] border-b-surface-border px-ds-06 md:border-b max-md:border-0 max-md:px-0">
+                <div className="text-ds-sm font-semibold uppercase tracking-wider cursor-pointer border-b-[1.5px] border-b-accent-9 px-ds-03 py-ds-04 font-semibold  text-surface-fg">
                   REQUESTS(1)
                 </div>
-                <div className="text-ds-sm font-semibold uppercase tracking-wider cursor-pointer px-ds-03 py-ds-04  text-text-tertiary">
+                <div className="text-ds-sm font-semibold uppercase tracking-wider cursor-pointer px-ds-03 py-ds-04  text-surface-fg-subtle">
                   ATTENDANCE CORRECTION(1)
                 </div>
               </div>
-              <div className="flex max-h-[200px] w-full flex-col overflow-y-auto bg-layer-01 px-ds-06 max-md:flex-1 max-md:max-h-none max-md:min-h-[372px] max-md:p-0">
+              <div className="flex max-h-[200px] w-full flex-col overflow-y-auto bg-surface-1 px-ds-06 max-md:flex-1 max-md:max-h-none max-md:min-h-[372px] max-md:p-0">
                 {Array.from({ length: 2 }).map((_, index) => (
                   <div
                     key={index}
                     className="flex items-center justify-between px-ds-03 py-ds-04"
                   >
                     <div className="flex items-center gap-ds-04">
-                      <Skeleton className="h-ds-md w-ds-md rounded-ds-full bg-field" />
+                      <Skeleton className="h-ds-md w-ds-md rounded-ds-full bg-surface-3" />
                       <div className="flex flex-col gap-ds-02">
-                        <Skeleton className="h-[20px] w-[120px] rounded-ds-md bg-field" />
-                        <Skeleton className="h-[20px] w-[200px] rounded-ds-md bg-field" />
+                        <Skeleton className="h-[20px] w-[120px] rounded-ds-md bg-surface-3" />
+                        <Skeleton className="h-[20px] w-[200px] rounded-ds-md bg-surface-3" />
                       </div>
                     </div>
                     <div className="flex items-center gap-ds-04">
-                      <Skeleton className="h-ds-sm w-ds-sm rounded-ds-full bg-field" />
-                      <Skeleton className="h-ds-sm w-ds-sm rounded-ds-full bg-field" />
+                      <Skeleton className="h-ds-sm w-ds-sm rounded-ds-full bg-surface-3" />
+                      <Skeleton className="h-ds-sm w-ds-sm rounded-ds-full bg-surface-3" />
                     </div>
                   </div>
                 ))}

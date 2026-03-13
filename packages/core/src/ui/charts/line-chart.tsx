@@ -177,7 +177,7 @@ export const LineChart = React.forwardRef<HTMLDivElement, LineChartProps>(
                             cy={cy}
                             r={dotSize}
                             fill={colors[seriesIdx]}
-                            className="transition-opacity hover:opacity-[0.8]"
+                            className="transition-opacity hover:opacity-80"
                           />
                         )
                       })}
@@ -218,7 +218,7 @@ export const LineChart = React.forwardRef<HTMLDivElement, LineChartProps>(
                                   className="inline-block h-2 w-2 rounded-ds-full"
                                   style={{ backgroundColor: colors[sIdx] }}
                                 />
-                                <span className="text-text-secondary">
+                                <span className="text-surface-fg-muted">
                                   {s.label}:
                                 </span>{' '}
                                 {Number(d[s.key]).toLocaleString()}

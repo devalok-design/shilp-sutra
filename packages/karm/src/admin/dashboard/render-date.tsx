@@ -158,7 +158,7 @@ export const RenderDate = React.forwardRef<HTMLDivElement, RenderDateProps>(
     'flex w-full items-center justify-center p-ds-02',
     isBreakStartOnly && 'rounded-l-ds-2xl',
     isBreakEndOnly && 'rounded-r-ds-2xl',
-    isBreakMidNonWeekly && 'bg-interactive-subtle',
+    isBreakMidNonWeekly && 'bg-accent-2',
   )
 
   // ── Inner date circle classes (replaces getStyles) ──
@@ -168,7 +168,7 @@ export const RenderDate = React.forwardRef<HTMLDivElement, RenderDateProps>(
     // Base layout & transitions
     'flex h-ds-md w-ds-md items-center justify-center rounded-ds-full text-ds-base relative overflow-hidden',
     'transition-[background-color,color,border] duration-200',
-    'outline-border-strong outline-solid outline-0',
+    'outline-surface-border-strong outline-solid outline-0',
 
     // Cursor
     state.disabled ? 'cursor-default' : 'cursor-pointer',
@@ -176,19 +176,19 @@ export const RenderDate = React.forwardRef<HTMLDivElement, RenderDateProps>(
     // ── Base states (mutually exclusive in original if/else) ──
 
     // Disabled
-    state.disabled && 'bg-transparent text-text-disabled',
+    state.disabled && 'bg-transparent text-disabled',
 
     // Today (not break, not disabled)
     !state.disabled && state.today && !state.isBreak &&
-      'bg-interactive text-text-on-color ring-2 ring-inset ring-interactive',
+      'bg-accent-9 text-accent-fg ring-2 ring-inset ring-accent-9',
 
     // Break (not disabled, not today-only)
     !state.disabled && state.isBreak && !isBreakMidNonWeekly &&
-      'bg-interactive-selected text-text-secondary ring-2 ring-inset ring-interactive',
+      'bg-accent-3 text-surface-fg-muted ring-2 ring-inset ring-accent-9',
 
     // Break mid in non-weekly view overrides break base
     !state.disabled && state.isBreak && isBreakMidNonWeekly &&
-      'rounded-ds-none bg-interactive-subtle text-text-secondary shadow-none',
+      'rounded-ds-none bg-accent-2 text-surface-fg-muted shadow-none',
 
     // Break border-radius overrides for non-weekly
     !state.disabled && state.isBreak && isBreakStartOnly &&
@@ -198,55 +198,55 @@ export const RenderDate = React.forwardRef<HTMLDivElement, RenderDateProps>(
 
     // Absent (not disabled, not today, not break)
     !state.disabled && !state.today && !state.isBreak && state.isAbsent &&
-      'bg-transparent text-error',
+      'bg-transparent text-error-11',
 
     // Present (not disabled, not today, not break, not absent)
     !state.disabled && !state.today && !state.isBreak && !state.isAbsent && state.isPresent &&
-      'bg-transparent text-text-primary',
+      'bg-transparent text-surface-fg',
 
     // Default (not disabled, not today, not break, not absent, not present)
     !state.disabled && state.isDefault &&
-      'bg-transparent text-text-secondary',
+      'bg-transparent text-surface-fg-muted',
 
     // ── Hover overrides ──
 
     // Hover on today (not break)
     state.hover && !state.disabled && state.today && !state.isBreak &&
-      'bg-interactive text-text-on-color ring-2 ring-inset ring-interactive',
+      'bg-accent-9 text-accent-fg ring-2 ring-inset ring-accent-9',
 
     // Hover on present (not today, not break)
     state.hover && !state.disabled && !state.today && !state.isBreak && state.isPresent &&
-      'bg-field text-text-primary',
+      'bg-surface-3 text-surface-fg',
 
     // Hover on default (not today, not break, not present)
     state.hover && !state.disabled && !state.today && !state.isBreak && !state.isPresent && state.isDefault &&
-      'bg-field text-text-secondary',
+      'bg-surface-3 text-surface-fg-muted',
 
     // Hover on break (same visual as base break, but re-assert to match original)
     state.hover && !state.disabled && state.isBreak && !isBreakMidNonWeekly &&
-      'bg-interactive-selected text-text-secondary ring-2 ring-inset ring-interactive',
+      'bg-accent-3 text-surface-fg-muted ring-2 ring-inset ring-accent-9',
     state.hover && !state.disabled && state.isBreak && isBreakMidNonWeekly &&
-      'rounded-ds-none bg-interactive-subtle text-text-secondary shadow-none',
+      'rounded-ds-none bg-accent-2 text-surface-fg-muted shadow-none',
 
     // Hover on absent (not today, not break)
     state.hover && !state.disabled && !state.today && !state.isBreak && state.isAbsent &&
-      'bg-field text-error',
+      'bg-surface-3 text-error-11',
 
     // ── Focus ──
     state.focus && !state.pressed && 'outline-2',
 
     // ── Pressed ──
     state.pressed && (state.isPresent || state.isAbsent || state.isDefault || state.disabled) &&
-      'bg-error-surface',
+      'bg-error-3',
 
     // ── Selected ──
     state.selected && 'font-semibold',
-    state.selected && activeTimeFrame === 'monthly' && 'text-text-primary',
+    state.selected && activeTimeFrame === 'monthly' && 'text-surface-fg',
 
     // ── DisabledState (visual-only disabled, different from functional disabled) ──
-    state.disabledState && 'text-text-disabled',
+    state.disabledState && 'text-disabled',
     state.disabledState && state.today &&
-      'bg-text-disabled text-text-on-color',
+      'bg-disabled text-accent-fg',
   )
 
   return (
@@ -263,7 +263,7 @@ export const RenderDate = React.forwardRef<HTMLDivElement, RenderDateProps>(
       >
         {day.date}
         {state.isAbsent && (
-          <span className="absolute bottom-0 left-1/2 h-ds-02b w-ds-02b -translate-x-1/2 rounded-ds-full bg-error" />
+          <span className="absolute bottom-0 left-1/2 h-ds-02b w-ds-02b -translate-x-1/2 rounded-ds-full bg-error-9" />
         )}
       </div>
     </div>

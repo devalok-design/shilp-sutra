@@ -26,23 +26,23 @@ const alertVariants = cva(
     },
     compoundVariants: [
       // subtle (surface bg) — default, matches previous behavior
-      { variant: 'subtle', color: 'info', className: 'bg-info-surface border-info-border text-info-text' },
-      { variant: 'subtle', color: 'success', className: 'bg-success-surface border-success-border text-success-text' },
-      { variant: 'subtle', color: 'warning', className: 'bg-warning-surface border-warning-border text-warning-text' },
-      { variant: 'subtle', color: 'error', className: 'bg-error-surface border-error-border text-error-text' },
-      { variant: 'subtle', color: 'neutral', className: 'bg-layer-02 border-border text-text-primary [&>svg]:text-text-secondary' },
+      { variant: 'subtle', color: 'info', className: 'bg-info-3 border-info-7 text-info-11' },
+      { variant: 'subtle', color: 'success', className: 'bg-success-3 border-success-7 text-success-11' },
+      { variant: 'subtle', color: 'warning', className: 'bg-warning-3 border-warning-7 text-warning-11' },
+      { variant: 'subtle', color: 'error', className: 'bg-error-3 border-error-7 text-error-11' },
+      { variant: 'subtle', color: 'neutral', className: 'bg-surface-2 border-surface-border-strong text-surface-fg [&>svg]:text-surface-fg-muted' },
       // filled (solid bg, white text)
-      { variant: 'filled', color: 'info', className: 'bg-info text-text-on-color border-transparent [&>svg]:text-text-on-color' },
-      { variant: 'filled', color: 'success', className: 'bg-success text-text-on-color border-transparent [&>svg]:text-text-on-color' },
-      { variant: 'filled', color: 'warning', className: 'bg-warning text-text-on-color border-transparent [&>svg]:text-text-on-color' },
-      { variant: 'filled', color: 'error', className: 'bg-error text-text-on-color border-transparent [&>svg]:text-text-on-color' },
-      { variant: 'filled', color: 'neutral', className: 'bg-layer-03 text-text-primary border-transparent [&>svg]:text-text-secondary' },
+      { variant: 'filled', color: 'info', className: 'bg-info-9 text-accent-fg border-transparent [&>svg]:text-accent-fg' },
+      { variant: 'filled', color: 'success', className: 'bg-success-9 text-accent-fg border-transparent [&>svg]:text-accent-fg' },
+      { variant: 'filled', color: 'warning', className: 'bg-warning-9 text-accent-fg border-transparent [&>svg]:text-accent-fg' },
+      { variant: 'filled', color: 'error', className: 'bg-error-9 text-accent-fg border-transparent [&>svg]:text-accent-fg' },
+      { variant: 'filled', color: 'neutral', className: 'bg-surface-3 text-surface-fg border-transparent [&>svg]:text-surface-fg-muted' },
       // outline (transparent bg, colored border)
-      { variant: 'outline', color: 'info', className: 'bg-transparent border-info-border text-info-text' },
-      { variant: 'outline', color: 'success', className: 'bg-transparent border-success-border text-success-text' },
-      { variant: 'outline', color: 'warning', className: 'bg-transparent border-warning-border text-warning-text' },
-      { variant: 'outline', color: 'error', className: 'bg-transparent border-error-border text-error-text' },
-      { variant: 'outline', color: 'neutral', className: 'bg-transparent border-border text-text-primary [&>svg]:text-text-secondary' },
+      { variant: 'outline', color: 'info', className: 'bg-transparent border-info-7 text-info-11' },
+      { variant: 'outline', color: 'success', className: 'bg-transparent border-success-7 text-success-11' },
+      { variant: 'outline', color: 'warning', className: 'bg-transparent border-warning-7 text-warning-11' },
+      { variant: 'outline', color: 'error', className: 'bg-transparent border-error-7 text-error-11' },
+      { variant: 'outline', color: 'neutral', className: 'bg-transparent border-surface-border-strong text-surface-fg [&>svg]:text-surface-fg-muted' },
     ],
     defaultVariants: { variant: 'subtle', color: 'info' },
   },
@@ -131,7 +131,7 @@ const Alert = React.forwardRef<HTMLDivElement, AlertProps>(
               <button
                 type="button"
                 onClick={handleDismiss}
-                className="shrink-0 min-h-ds-xs min-w-ds-xs flex items-center justify-center rounded-ds-sm text-icon-secondary transition-colors hover:text-icon-primary hover:bg-field focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-focus"
+                className="shrink-0 min-h-ds-xs min-w-ds-xs flex items-center justify-center rounded-ds-sm text-surface-fg-subtle transition-colors hover:text-surface-fg-muted hover:bg-surface-3 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent-9"
                 aria-label="Dismiss"
               >
                 <IconX className="h-ico-sm w-ico-sm" />

@@ -32,8 +32,8 @@ const Switch = React.forwardRef<
   return (
     <SwitchPrimitives.Root
       className={cn(
-        "peer inline-flex h-6 w-11 shrink-0 cursor-pointer items-center rounded-ds-full border-2 border-transparent shadow-01 transition-colors duration-fast-01 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-focus focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-[0.38] data-[state=checked]:bg-interactive data-[state=unchecked]:bg-border-strong",
-        error && "border-border-error data-[state=checked]:bg-error",
+        "peer inline-flex h-6 w-11 shrink-0 cursor-pointer items-center rounded-ds-full border-2 border-surface-border-strong shadow-01 transition-colors duration-fast-01 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent-9 focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-action-disabled data-[state=checked]:border-transparent data-[state=checked]:bg-accent-9 data-[state=unchecked]:bg-surface-border-strong",
+        error && "border-error-7 data-[state=checked]:bg-error-9",
         className
       )}
       checked={checked}
@@ -44,7 +44,7 @@ const Switch = React.forwardRef<
     >
       <SwitchPrimitives.Thumb asChild>
         <motion.span
-          className="pointer-events-none block h-ico-md w-ico-md rounded-ds-full bg-text-on-color shadow-02 ring-0"
+          className="pointer-events-none block h-ico-md w-ico-md rounded-ds-full bg-accent-fg shadow-02 ring-0"
           animate={{ x: isChecked ? 20 : 0 }}
           transition={springs.snappy}
         />

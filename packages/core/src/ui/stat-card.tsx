@@ -82,11 +82,11 @@ export interface StatCardProps extends React.HTMLAttributes<HTMLDivElement> {
 }
 
 const accentBorderMap: Record<NonNullable<StatCardProps['accent']>, string> = {
-  default: 'border-l-interactive',
-  success: 'border-l-success',
-  warning: 'border-l-warning',
-  error: 'border-l-error',
-  info: 'border-l-info',
+  default: 'border-l-accent-9',
+  success: 'border-l-success-9',
+  warning: 'border-l-warning-9',
+  error: 'border-l-error-9',
+  info: 'border-l-info-9',
 }
 
 function buildSparklinePath(raw: number[], width: number, height: number): string {
@@ -170,10 +170,10 @@ function Sparkline({
 function ProgressBar({ progress, label }: { progress: number; label: string }) {
   const clamped = Math.max(0, Math.min(100, progress))
   const barColor =
-    clamped >= 90 ? 'bg-success' : clamped >= 70 ? 'bg-warning' : 'bg-interactive'
+    clamped >= 90 ? 'bg-success-9' : clamped >= 70 ? 'bg-warning-9' : 'bg-accent-9'
 
   return (
-    <div className="h-1 w-full rounded-ds-full bg-layer-02 mt-ds-04" role="progressbar" aria-label={`${label} progress`} aria-valuenow={clamped} aria-valuemin={0} aria-valuemax={100}>
+    <div className="h-1 w-full rounded-ds-full bg-surface-2 mt-ds-04" role="progressbar" aria-label={`${label} progress`} aria-valuenow={clamped} aria-valuemin={0} aria-valuemax={100}>
       <div
         className={cn('h-full rounded-ds-full transition-all duration-moderate-02', barColor)}
         style={{ width: `${clamped}%` }}
@@ -217,7 +217,7 @@ const StatCard = React.forwardRef<HTMLDivElement, StatCardProps>(
         <div
           ref={ref}
           className={cn(
-            'rounded-ds-lg border border-border-subtle bg-layer-01 shadow-01 p-ds-05b',
+            'rounded-ds-lg border border-surface-border bg-surface-1 shadow-01 p-ds-05b',
             accent && `border-l-[3px] ${accentBorderMap[accent]}`,
             className,
           )}
@@ -239,23 +239,23 @@ const StatCard = React.forwardRef<HTMLDivElement, StatCardProps>(
 
     const deltaColour =
       delta?.direction === 'up'
-        ? 'text-success'
+        ? 'text-success-11'
         : delta?.direction === 'down'
-          ? 'text-error'
-          : 'text-text-secondary'
+          ? 'text-error-11'
+          : 'text-surface-fg-muted'
 
     const sparklineColor =
       delta?.direction === 'up'
-        ? 'text-success'
+        ? 'text-success-11'
         : delta?.direction === 'down'
-          ? 'text-error'
-          : 'text-interactive'
+          ? 'text-error-11'
+          : 'text-accent-11'
 
     const cardContent = (
       <>
         <div className="flex items-center justify-between mb-ds-04">
           <motion.p
-            className="text-ds-md font-medium text-text-secondary"
+            className="text-ds-md font-medium text-surface-fg-muted"
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             transition={tweens.fade}
@@ -268,7 +268,7 @@ const StatCard = React.forwardRef<HTMLDivElement, StatCardProps>(
             )}
             {icon && (
               <motion.span
-                className="text-text-secondary"
+                className="text-surface-fg-muted"
                 initial={{ opacity: 0, scale: 0.96 }}
                 animate={{ opacity: 1, scale: 1 }}
                 transition={springs.snappy}
@@ -285,23 +285,23 @@ const StatCard = React.forwardRef<HTMLDivElement, StatCardProps>(
         </div>
         <div className="overflow-hidden">
           <motion.p
-            className="inline-block text-ds-3xl font-semibold text-text-primary"
+            className="inline-block text-ds-3xl font-semibold text-surface-fg"
             initial={{ opacity: 0, y: '100%' }}
             animate={{ opacity: 1, y: 0 }}
             transition={springs.smooth}
           >
             {prefix && (
-              <span className="text-text-secondary text-ds-lg">{prefix}</span>
+              <span className="text-surface-fg-muted text-ds-lg">{prefix}</span>
             )}
             <span className="tabular-nums">{value}</span>
             {suffix && (
-              <span className="text-text-secondary text-ds-lg">{suffix}</span>
+              <span className="text-surface-fg-muted text-ds-lg">{suffix}</span>
             )}
           </motion.p>
         </div>
         {secondaryLabel && (
           <motion.p
-            className="text-ds-sm text-text-placeholder mt-ds-01"
+            className="text-ds-sm text-surface-fg-subtle mt-ds-01"
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             transition={{ ...tweens.fade, delay: 0.1 }}
@@ -338,13 +338,13 @@ const StatCard = React.forwardRef<HTMLDivElement, StatCardProps>(
             </motion.span>
             <span>{delta.value}</span>
             {comparisonLabel && (
-              <span className="text-text-placeholder font-normal">{comparisonLabel}</span>
+              <span className="text-surface-fg-subtle font-normal">{comparisonLabel}</span>
             )}
           </motion.div>
         )}
         {footer && (
           <motion.div
-            className="mt-ds-04 pt-ds-04 border-t border-border-subtle text-ds-sm"
+            className="mt-ds-04 pt-ds-04 border-t border-surface-border text-ds-sm"
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             transition={{ ...tweens.fade, delay: 0.25 }}
@@ -356,10 +356,10 @@ const StatCard = React.forwardRef<HTMLDivElement, StatCardProps>(
     )
 
     const cardClasses = cn(
-      'rounded-ds-lg border border-border-subtle bg-layer-01 shadow-01 p-ds-05b',
+      'rounded-ds-lg border border-surface-border bg-surface-1 shadow-01 p-ds-05b',
       accent && `border-l-[3px] ${accentBorderMap[accent]}`,
       isClickable &&
-        'cursor-pointer hover:shadow-02 hover:border-border transition-all duration-fast-02 group',
+        'cursor-pointer hover:shadow-02 hover:border-surface-border-strong transition-all duration-fast-02 group',
       className,
     )
 

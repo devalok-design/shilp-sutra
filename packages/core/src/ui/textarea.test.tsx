@@ -50,19 +50,19 @@ describe('Textarea', () => {
   it('applies error state border class', () => {
     render(<Textarea state="error" placeholder="Error" />)
     const el = screen.getByPlaceholderText('Error')
-    expect(el.className).toContain('border-border-error')
+    expect(el.className).toContain('border-error-7')
   })
 
   it('applies warning state border class', () => {
     render(<Textarea state="warning" placeholder="Warn" />)
     const el = screen.getByPlaceholderText('Warn')
-    expect(el.className).toContain('border-border-warning')
+    expect(el.className).toContain('border-warning-7')
   })
 
   it('applies success state border class', () => {
     render(<Textarea state="success" placeholder="Success" />)
     const el = screen.getByPlaceholderText('Success')
-    expect(el.className).toContain('border-border-success')
+    expect(el.className).toContain('border-success-7')
   })
 
   it('renders read-only textarea', () => {

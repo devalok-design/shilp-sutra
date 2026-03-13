@@ -101,7 +101,7 @@ export const Empty: Story = {
       </TableHeader>
       <TableBody>
         <TableRow>
-          <TableCell colSpan={3} className="h-24 text-center text-text-secondary">
+          <TableCell colSpan={3} className="h-24 text-center text-surface-fg-muted">
             No results found.
           </TableCell>
         </TableRow>

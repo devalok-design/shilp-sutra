@@ -59,7 +59,7 @@ function ProgressRing({ count, max, allDone }: { count: number; max: number; all
           r={RING_RADIUS}
           fill="none"
           strokeWidth={RING_STROKE}
-          className="stroke-layer-02"
+          className="stroke-surface-2"
         />
         <circle
           cx={RING_SIZE / 2}
@@ -72,11 +72,11 @@ function ProgressRing({ count, max, allDone }: { count: number; max: number; all
           strokeDashoffset={offset}
           className={cn(
             'transition-all duration-300',
-            allDone ? 'stroke-success' : 'stroke-interactive',
+            allDone ? 'stroke-success-9' : 'stroke-accent-9',
           )}
         />
       </svg>
-      <span className="absolute text-[8px] font-medium text-text-secondary" data-testid="progress-count">
+      <span className="absolute text-[8px] font-medium text-surface-fg-muted" data-testid="progress-count">
         {count}/{max}
       </span>
     </motion.div>
@@ -142,20 +142,20 @@ const ScratchpadWidget = React.forwardRef<HTMLDivElement, ScratchpadWidgetProps>
         <div
           ref={ref}
           className={cn(
-            'flex flex-col gap-ds-04 rounded-ds-2xl border border-border bg-layer-01 shadow-01 p-ds-05b',
+            'flex flex-col gap-ds-04 rounded-ds-2xl border border-surface-border-strong bg-surface-1 shadow-01 p-ds-05b',
             className,
           )}
           {...props}
         >
           <div className="flex items-center justify-between">
-            <div className="h-4 w-28 animate-pulse rounded bg-layer-02" />
-            <div className="h-5 w-5 animate-pulse rounded-full bg-layer-02" />
+            <div className="h-4 w-28 animate-pulse rounded bg-surface-2" />
+            <div className="h-5 w-5 animate-pulse rounded-full bg-surface-2" />
           </div>
           {[1, 2, 3].map((i) => (
             <div key={i} className="flex items-center gap-ds-03">
-              <div className="h-ico-md w-ico-md shrink-0 animate-pulse rounded-ds-sm bg-layer-02" />
+              <div className="h-ico-md w-ico-md shrink-0 animate-pulse rounded-ds-sm bg-surface-2" />
               <div
-                className="h-4 animate-pulse rounded bg-layer-02"
+                className="h-4 animate-pulse rounded bg-surface-2"
                 style={{ width: `${50 + i * 12}%` }}
               />
             </div>
@@ -168,23 +168,23 @@ const ScratchpadWidget = React.forwardRef<HTMLDivElement, ScratchpadWidgetProps>
       <div
         ref={ref}
         className={cn(
-          'flex flex-col rounded-ds-2xl border border-border bg-layer-01 shadow-01',
+          'flex flex-col rounded-ds-2xl border border-surface-border-strong bg-surface-1 shadow-01',
           className,
         )}
         {...props}
       >
         {/* Header */}
         <div className="flex items-center justify-between px-ds-05b py-ds-05">
-          <span className="text-ds-base font-semibold text-text-primary">{title}</span>
+          <span className="text-ds-base font-semibold text-surface-fg">{title}</span>
           <ProgressRing count={items.length} max={maxItems} allDone={allDone} />
         </div>
 
         {/* Items */}
-        <div className="flex flex-col border-t border-border px-ds-05b pb-ds-04 pt-ds-04">
+        <div className="flex flex-col border-t border-surface-border-strong px-ds-05b pb-ds-04 pt-ds-04">
           {items.length === 0 && !isAdding ? (
             <div className="flex flex-col items-center justify-center gap-ds-03 py-ds-06 text-center">
-              {EmptyIcon && <EmptyIcon className="h-ico-lg w-ico-lg text-text-placeholder" />}
-              <span className="text-ds-md text-text-placeholder">{emptyText}</span>
+              {EmptyIcon && <EmptyIcon className="h-ico-lg w-ico-lg text-surface-fg-subtle" />}
+              <span className="text-ds-md text-surface-fg-subtle">{emptyText}</span>
             </div>
           ) : (
             <div className="flex flex-col gap-ds-02b">
@@ -196,7 +196,7 @@ const ScratchpadWidget = React.forwardRef<HTMLDivElement, ScratchpadWidgetProps>
                     animate={{ opacity: 1, x: 0 }}
                     exit={{ opacity: 0, x: 20, height: 0 }}
                     transition={springs.snappy}
-                    className="group flex items-center gap-ds-03 rounded-ds-md px-ds-02 py-ds-02 transition-colors hover:bg-layer-02"
+                    className="group flex items-center gap-ds-03 rounded-ds-md px-ds-02 py-ds-02 transition-colors hover:bg-surface-2"
                   >
                     <Checkbox
                       checked={item.done}
@@ -206,7 +206,7 @@ const ScratchpadWidget = React.forwardRef<HTMLDivElement, ScratchpadWidgetProps>
                     <span
                       className={cn(
                         'flex-1 text-ds-md transition-all duration-200 ease-in-out',
-                        item.done && 'text-text-placeholder line-through',
+                        item.done && 'text-surface-fg-subtle line-through',
                       )}
                     >
                       {item.text}
@@ -215,9 +215,9 @@ const ScratchpadWidget = React.forwardRef<HTMLDivElement, ScratchpadWidgetProps>
                       type="button"
                       onClick={() => onDelete(item.id)}
                       aria-label={`Delete ${item.text}`}
-                      className="flex h-ico-md w-ico-md items-center justify-center rounded-ds-sm opacity-0 transition-opacity group-hover:opacity-100 group-focus-within:opacity-100 hover:bg-layer-03"
+                      className="flex h-ico-md w-ico-md items-center justify-center rounded-ds-sm opacity-0 transition-opacity group-hover:opacity-100 group-focus-within:opacity-100 hover:bg-surface-3"
                     >
-                      <IconX className="h-3 w-3 text-text-placeholder" />
+                      <IconX className="h-3 w-3 text-surface-fg-subtle" />
                     </button>
                   </motion.div>
                 ))}
@@ -257,7 +257,7 @@ const ScratchpadWidget = React.forwardRef<HTMLDivElement, ScratchpadWidgetProps>
                 <button
                   type="button"
                   onClick={() => setIsAdding(true)}
-                  className="w-full rounded-ds-md px-ds-02 py-ds-02 text-left text-ds-md text-text-placeholder transition-colors hover:bg-layer-02"
+                  className="w-full rounded-ds-md px-ds-02 py-ds-02 text-left text-ds-md text-surface-fg-subtle transition-colors hover:bg-surface-2"
                 >
                   + Add a task...
                 </button>
@@ -267,7 +267,7 @@ const ScratchpadWidget = React.forwardRef<HTMLDivElement, ScratchpadWidgetProps>
 
           {/* Footer */}
           {resetLabel && (
-            <span className="mt-ds-03 text-ds-xs text-text-placeholder">{resetLabel}</span>
+            <span className="mt-ds-03 text-ds-xs text-surface-fg-subtle">{resetLabel}</span>
           )}
         </div>
       </div>

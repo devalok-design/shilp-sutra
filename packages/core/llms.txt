@@ -44,6 +44,18 @@
 - StatusBadge: Pass either `status` OR `color`, not both (discriminated union).
 - Input/Textarea: Now auto-inherit state, aria-describedby, aria-required from FormField context. Explicit props override.
 
+## BREAKING CHANGES (v0.18.0 — OKLCH token migration)
+- All color primitives migrated from hex (50-950 shades) to OKLCH (12 functional steps)
+- Old shade numbers: --pink-50..950. New step numbers: --pink-1..12 (OKLCH values)
+- Step purposes: 1=app-bg, 2=subtle-bg, 3=component-bg, 4=hover, 5=active, 6=border-subtle, 7=border, 8=border-strong, 9=solid/accent, 10=solid-hover, 11=lo-contrast-text, 12=hi-contrast-text
+- New semantic tokens: --color-accent-{1-12}, --color-secondary-{1-12}, --color-surface-{1-4}, --color-surface-fg/fg-muted/fg-subtle/border
+- Status tokens: --color-error-{3,7,9,11}, --color-success-{3,7,9,11}, --color-warning-{3,7,9,11}, --color-info-{3,7,9,11}
+- New Tailwind utilities: accent-1..12, secondary-1..12, surface-1..4, status/category step utilities
+- Backward compat: ALL old semantic token names preserved as aliases. --color-interactive still works → maps to --color-accent-9
+- Consumer rebranding: override --color-accent-1..12 CSS vars OR use generateScale() utility with a seed color
+- Dark mode: algorithmically derived (OKLCH curves), NOT hex overrides. Surfaces lighten with elevation.
+- If you reference --pink-500 etc directly, migrate: 50→1, 100→2, 200→3, 300→4, 400→5, 500→7, 600→8, 700→9, 800→10, 900→11, 950→12
+
 ## Install & Setup
 
 pnpm add @devalok/shilp-sutra

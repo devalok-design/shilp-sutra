@@ -171,10 +171,10 @@ const Autocomplete = React.forwardRef<HTMLInputElement, AutocompleteProps>(
           placeholder={placeholder}
           disabled={disabled}
           className={cn(
-            'flex h-ds-md w-full rounded-ds-md border border-border bg-field px-ds-04 py-ds-03 font-sans text-ds-md text-text-primary placeholder:text-text-placeholder',
-            'outline-none focus-visible:ring-2 focus-visible:ring-focus focus-visible:ring-offset-[var(--border-focus-offset)]',
+            'flex h-ds-md w-full rounded-ds-md border border-surface-border-strong bg-surface-3 px-ds-04 py-ds-03 font-sans text-ds-md text-surface-fg placeholder:text-surface-fg-subtle',
+            'outline-none focus-visible:ring-2 focus-visible:ring-accent-9 focus-visible:ring-offset-[var(--border-focus-offset)]',
             'transition-colors duration-fast-01',
-            disabled && 'opacity-[var(--action-disabled-opacity,0.38)] cursor-not-allowed',
+            disabled && 'opacity-action-disabled cursor-not-allowed',
           )}
           onChange={(e) => {
             setQuery(e.target.value)
@@ -198,7 +198,7 @@ const Autocomplete = React.forwardRef<HTMLInputElement, AutocompleteProps>(
               exit="hidden"
               variants={listVariants}
               className={cn(
-                'absolute z-popover mt-ds-02 w-full overflow-auto rounded-ds-md border border-border bg-layer-01 shadow-02',
+                'absolute z-popover mt-ds-02 w-full overflow-auto rounded-ds-md border border-surface-border-strong bg-surface-1 shadow-02',
                 'max-h-60',
               )}
             >
@@ -207,7 +207,7 @@ const Autocomplete = React.forwardRef<HTMLInputElement, AutocompleteProps>(
                   initial={{ opacity: 0 }}
                   animate={{ opacity: 1 }}
                   transition={tweens.fade}
-                  className="px-ds-04 py-ds-03 text-ds-md text-text-secondary"
+                  className="px-ds-04 py-ds-03 text-ds-md text-surface-fg-muted"
                 >
                   {emptyText}
                 </motion.li>
@@ -220,8 +220,8 @@ const Autocomplete = React.forwardRef<HTMLInputElement, AutocompleteProps>(
                     aria-selected={highlightedIndex === index}
                     variants={itemVariants}
                     className={cn(
-                      'cursor-pointer px-ds-04 py-ds-03 text-ds-md text-text-primary transition-colors duration-fast-01',
-                      highlightedIndex === index && 'bg-interactive-selected',
+                      'cursor-pointer px-ds-04 py-ds-03 text-ds-md text-surface-fg transition-colors duration-fast-01',
+                      highlightedIndex === index && 'bg-accent-3',
                       value?.value === option.value && 'font-semibold',
                     )}
                     onMouseDown={(e) => e.preventDefault()}

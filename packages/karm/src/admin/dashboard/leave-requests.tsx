@@ -159,19 +159,19 @@ export const LeaveRequests = React.forwardRef<HTMLDivElement, LeaveRequestsProps
         {requests?.map((request) => (
           <div
             key={request.id}
-            className="flex flex-col justify-start rounded-ds-lg border-b border-border md:gap-ds-05 md:border-b-0 max-md:border-none"
+            className="flex flex-col justify-start rounded-ds-lg border-b border-surface-border-strong md:gap-ds-05 md:border-b-0 max-md:border-none"
           >
-            <div className="flex flex-col justify-between rounded-t-ds-lg border border-border md:flex-row md:border-0 md:px-ds-03 md:py-ds-04 max-md:border-b-0">
-              <div className="flex items-center gap-ds-04 border-b border-border p-ds-05 md:border-none md:p-0 max-md:items-start">
+            <div className="flex flex-col justify-between rounded-t-ds-lg border border-surface-border-strong md:flex-row md:border-0 md:px-ds-03 md:py-ds-04 max-md:border-b-0">
+              <div className="flex items-center gap-ds-04 border-b border-surface-border-strong p-ds-05 md:border-none md:p-0 max-md:items-start">
                 <img
                   src={userImages[request.user?.id || '']}
-                  className="h-ds-md w-ds-md overflow-hidden rounded-ds-full bg-interactive-subtle"
+                  className="h-ds-md w-ds-md overflow-hidden rounded-ds-full bg-accent-2"
                   alt={request.user?.name?.[0] || 'U'}
                 />
                 <div className="flex max-w-[277px] flex-col items-start gap-ds-02 sm:max-w-none">
                   <div className="flex flex-row gap-ds-02b">
                     <div className="flex items-center gap-ds-03">
-                      <p className="text-ds-sm text-text-secondary">
+                      <p className="text-ds-sm text-surface-fg-muted">
                         {request.user?.name}
                       </p>
                     </div>
@@ -179,25 +179,25 @@ export const LeaveRequests = React.forwardRef<HTMLDivElement, LeaveRequestsProps
                   {/* for one day leave, display one line message & date */}
                   {isSingleDayRequest(request) ? (
                     <div className="flex w-full flex-col items-center gap-ds-03 md:flex-row md:flex-wrap max-md:items-start">
-                      <p className="text-ds-base font-semibold text-text-primary">
+                      <p className="text-ds-base font-semibold text-surface-fg">
                         {removeAllEmojis(request.reason)}
                       </p>
-                      <p className="text-ds-base hidden font-semibold text-text-tertiary md:block">
+                      <p className="text-ds-base hidden font-semibold text-surface-fg-subtle md:block">
                         &bull;
                       </p>
-                      <p className="text-ds-base text-text-tertiary">
+                      <p className="text-ds-base text-surface-fg-subtle">
                         {formatDate(new Date(request.startDate))}
                       </p>
                     </div>
                   ) : (
                     <div className="flex flex-col items-start justify-start gap-ds-03">
-                      <p className="text-ds-base font-semibold text-text-primary">
+                      <p className="text-ds-base font-semibold text-surface-fg">
                         {removeAllEmojis(request.reason)}
                       </p>
-                      <p className="text-ds-base text-text-tertiary">
+                      <p className="text-ds-base text-surface-fg-subtle">
                         {formatDate(new Date(request.startDate))} to{' '}
                         {formatDate(new Date(request.endDate))}
-                        <span className="text-interactive-hover">
+                        <span className="text-accent-12">
                           {', '}
                           {request.numberOfDays} days
                         </span>
@@ -207,7 +207,7 @@ export const LeaveRequests = React.forwardRef<HTMLDivElement, LeaveRequestsProps
                 </div>
               </div>
               <div className="flex h-full w-full items-center justify-between self-stretch sm:w-auto sm:justify-start">
-                <div className="flex w-1/2 justify-center border-r border-border p-ds-02 md:border-r-0">
+                <div className="flex w-1/2 justify-center border-r border-surface-border-strong p-ds-02 md:border-r-0">
                   <Tooltip delayDuration={0}>
                     <TooltipTrigger asChild>
                       <button
@@ -236,9 +236,9 @@ export const LeaveRequests = React.forwardRef<HTMLDivElement, LeaveRequestsProps
                           'rounded-ds-full p-ds-03',
                           interaction.activeRequest?.id === request.id &&
                             interaction.activeAction === 'rejectBreak' &&
-                            'bg-error-surface',
+                            'bg-error-3',
                           request?.user?.id === currentUserId &&
-                            'cursor-not-allowed opacity-[0.38]',
+                            'cursor-not-allowed opacity-action-disabled',
                           'max-md:flex max-md:w-full max-md:justify-center',
                         )}
                       >
@@ -247,7 +247,7 @@ export const LeaveRequests = React.forwardRef<HTMLDivElement, LeaveRequestsProps
                             'h-ico-lg w-ico-lg',
                             interaction.activeRequest?.id === request.id &&
                               interaction.activeAction === 'rejectBreak' &&
-                              'text-text-error',
+                              'text-error-11',
                           )}
                         />
                       </button>
@@ -259,7 +259,7 @@ export const LeaveRequests = React.forwardRef<HTMLDivElement, LeaveRequestsProps
                     )}
                   </Tooltip>
                 </div>
-                <div className="flex w-1/2 justify-center bg-success-surface p-ds-02 md:bg-transparent">
+                <div className="flex w-1/2 justify-center bg-success-3 p-ds-02 md:bg-transparent">
                   <Tooltip delayDuration={0}>
                     <TooltipTrigger asChild>
                       <button
@@ -288,9 +288,9 @@ export const LeaveRequests = React.forwardRef<HTMLDivElement, LeaveRequestsProps
                           'rounded-ds-full p-ds-03',
                           interaction.activeRequest?.id === request.id &&
                             interaction.activeAction === 'approveBreak' &&
-                            'bg-success-surface',
+                            'bg-success-3',
                           request?.user?.id === currentUserId &&
-                            'cursor-not-allowed opacity-[0.38]',
+                            'cursor-not-allowed opacity-action-disabled',
                           'max-md:flex max-md:w-full max-md:justify-center',
                         )}
                       >
@@ -310,9 +310,9 @@ export const LeaveRequests = React.forwardRef<HTMLDivElement, LeaveRequestsProps
               interaction.activeRequest &&
               interaction.activeRequest?.id === request.id) ||
               isMobile) && (
-              <div className="flex flex-row items-start justify-between rounded-ds-lg border-[1px] border-border py-ds-02 max-md:rounded-t-none">
+              <div className="flex flex-row items-start justify-between rounded-ds-lg border-[1px] border-surface-border-strong py-ds-02 max-md:rounded-t-none">
                 <div className="flex w-full flex-col items-start justify-start gap-ds-02 px-ds-05 pb-ds-02 pt-[10px]">
-                  <div className="text-ds-xs font-semibold uppercase tracking-wider text-text-placeholder">
+                  <div className="text-ds-xs font-semibold uppercase tracking-wider text-surface-fg-subtle">
                     comment
                   </div>
                   <input
@@ -320,7 +320,7 @@ export const LeaveRequests = React.forwardRef<HTMLDivElement, LeaveRequestsProps
                     value={interaction.message}
                     onChange={(e) => interaction.setMessage(e?.target?.value)}
                     placeholder="Enter a Comment"
-                    className="text-ds-md w-full text-text-primary outline-none"
+                    className="text-ds-md w-full text-surface-fg outline-none"
                   />
                 </div>
                 <button

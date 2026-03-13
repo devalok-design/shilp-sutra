@@ -158,7 +158,7 @@ export const COMPONENT_REGISTRY = [
     {
         name: 'Card',
         component: Card,
-        render: (props) => (_jsxs(Card, { variant: props.variant, interactive: props.interactive, children: [_jsxs(CardHeader, { children: [_jsx(CardTitle, { children: props.title }), _jsx(CardDescription, { children: props.description })] }), _jsx(CardContent, { children: _jsx("p", { className: "text-ds-md text-text-secondary", children: props.content }) })] })),
+        render: (props) => (_jsxs(Card, { variant: props.variant, interactive: props.interactive, children: [_jsxs(CardHeader, { children: [_jsx(CardTitle, { children: props.title }), _jsx(CardDescription, { children: props.description })] }), _jsx(CardContent, { children: _jsx("p", { className: "text-ds-md text-surface-fg-muted", children: props.content }) })] })),
         props: [
             {
                 name: 'variant',
@@ -229,7 +229,7 @@ export const COMPONENT_REGISTRY = [
     {
         name: 'Checkbox',
         component: Checkbox,
-        render: (props) => (_jsxs("div", { className: "flex items-center gap-2", children: [_jsx(Checkbox, { disabled: props.disabled, error: props.error, defaultChecked: props.checked }), _jsx("label", { className: "text-ds-md text-text-primary", children: props.label })] })),
+        render: (props) => (_jsxs("div", { className: "flex items-center gap-2", children: [_jsx(Checkbox, { disabled: props.disabled, error: props.error, defaultChecked: props.checked }), _jsx("label", { className: "text-ds-md text-surface-fg", children: props.label })] })),
         props: [
             {
                 name: 'label',
@@ -260,7 +260,7 @@ export const COMPONENT_REGISTRY = [
     {
         name: 'Switch',
         component: Switch,
-        render: (props) => (_jsxs("div", { className: "flex items-center gap-2", children: [_jsx(Switch, { disabled: props.disabled, error: props.error, defaultChecked: props.checked }), _jsx("label", { className: "text-ds-md text-text-primary", children: props.label })] })),
+        render: (props) => (_jsxs("div", { className: "flex items-center gap-2", children: [_jsx(Switch, { disabled: props.disabled, error: props.error, defaultChecked: props.checked }), _jsx("label", { className: "text-ds-md text-surface-fg", children: props.label })] })),
         props: [
             {
                 name: 'label',

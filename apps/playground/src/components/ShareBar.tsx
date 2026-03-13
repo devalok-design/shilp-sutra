@@ -28,26 +28,26 @@ export function ShareBar({ state, onResetAll }: ShareBarProps) {
       {hasOverrides && (
         <button
           onClick={onResetAll}
-          className="rounded-md px-3 py-1.5 text-sm text-text-secondary hover:bg-layer-02 hover:text-text-primary"
+          className="rounded-md px-3 py-1.5 text-sm text-surface-fg-muted hover:bg-surface-2 hover:text-surface-fg"
         >
           Reset All
         </button>
       )}
       <button
         onClick={copyUrl}
-        className="rounded-md border border-border-subtle px-3 py-1.5 text-sm font-medium text-text-secondary hover:border-border hover:text-text-primary"
+        className="rounded-md border border-surface-border px-3 py-1.5 text-sm font-medium text-surface-fg-muted hover:border-surface-border-strong hover:text-surface-fg"
       >
         Copy Link
       </button>
       <button
         onClick={copyCss}
-        className="rounded-md border border-border-subtle px-3 py-1.5 text-sm font-medium text-text-secondary hover:border-border hover:text-text-primary"
+        className="rounded-md border border-surface-border px-3 py-1.5 text-sm font-medium text-surface-fg-muted hover:border-surface-border-strong hover:text-surface-fg"
       >
         Export CSS
       </button>
       <button
         onClick={copyJson}
-        className="rounded-md border border-border-subtle px-3 py-1.5 text-sm font-medium text-text-secondary hover:border-border hover:text-text-primary"
+        className="rounded-md border border-surface-border px-3 py-1.5 text-sm font-medium text-surface-fg-muted hover:border-surface-border-strong hover:text-surface-fg"
       >
         Export JSON
       </button>

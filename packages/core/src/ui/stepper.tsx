@@ -81,7 +81,7 @@ const Stepper = React.forwardRef<HTMLDivElement, StepperProps>(
                     orientation === 'vertical'
                       ? 'ml-ds-04 w-ds-01 min-h-ds-05'
                       : 'h-ds-01 min-w-ds-05',
-                    'bg-border',
+                    'bg-surface-border',
                   )}
                   aria-hidden="true"
                 >
@@ -149,9 +149,9 @@ const Step = React.forwardRef<HTMLDivElement, StepInternalProps>(
         <div
           className={cn(
             'relative flex-shrink-0 flex items-center justify-center w-ds-sm h-ds-sm rounded-ds-full text-ds-sm font-semibold',
-            state === 'completed' && 'bg-interactive text-text-on-color',
-            state === 'active' && 'text-text-on-color',
-            state === 'pending' && 'bg-layer-02 text-text-tertiary border border-border',
+            state === 'completed' && 'bg-accent-9 text-accent-fg',
+            state === 'active' && 'text-accent-fg',
+            state === 'pending' && 'bg-surface-2 text-surface-fg-subtle border border-surface-border-strong',
           )}
         >
           {/* Active step highlight — slides between steps via layoutId */}
@@ -188,14 +188,14 @@ const Step = React.forwardRef<HTMLDivElement, StepInternalProps>(
             className={cn(
               'text-ds-md font-medium leading-ds-snug',
               state === 'pending'
-                ? 'text-text-tertiary'
-                : 'text-text-primary',
+                ? 'text-surface-fg-subtle'
+                : 'text-surface-fg',
             )}
           >
             {label}
           </span>
           {description && (
-            <span className="text-ds-sm text-text-secondary leading-ds-relaxed">
+            <span className="text-ds-sm text-surface-fg-muted leading-ds-relaxed">
               {description}
             </span>
           )}

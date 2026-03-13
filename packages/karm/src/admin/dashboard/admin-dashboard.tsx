@@ -196,7 +196,7 @@ const AdminDashboardRoot = React.forwardRef<
         className={cn("flex w-full max-w-layout flex-col items-center justify-center max-md:h-[100%] max-md:justify-start", className)}
         {...props}
       >
-        <div className="z-raised flex w-full flex-col items-start justify-start rounded-ds-lg border border-border bg-layer-02 p-ds-05 shadow-05 max-md:flex-1 max-md:min-h-0 max-md:overflow-y-auto max-md:border-0 max-md:px-ds-05 max-md:pb-0 max-md:pt-ds-06">
+        <div className="z-raised flex w-full flex-col items-start justify-start rounded-ds-lg border border-surface-border-strong bg-surface-2 p-ds-05 shadow-05 max-md:flex-1 max-md:min-h-0 max-md:overflow-y-auto max-md:border-0 max-md:px-ds-05 max-md:pb-0 max-md:pt-ds-06">
           {children}
         </div>
       </div>
@@ -331,7 +331,7 @@ const AdminDashboardCalendar = React.forwardRef<
         {cal.activeTimeFrame === 'monthly' &&
           ['SUN', 'MON', 'TUE', 'WED', 'THU', 'FRI', 'SAT'].map((weekDay) => (
             <div key={weekDay} className="pb-ds-03 pt-ds-05 text-center">
-              <span className="text-ds-sm font-semibold uppercase tracking-wider  text-text-tertiary">
+              <span className="text-ds-sm font-semibold uppercase tracking-wider  text-surface-fg-subtle">
                 {weekDay}
               </span>
             </div>
@@ -350,15 +350,15 @@ const AdminDashboardCalendar = React.forwardRef<
               'flex cursor-pointer flex-col items-center text-center',
               cal.activeTimeFrame === 'weekly' && cal.activeIndex === index
                 ? selectedUserAttendance?.status === 'BREAK'
-                  ? 'bg-layer-accent-subtle'
-                  : 'bg-layer-02'
+                  ? 'bg-accent-2'
+                  : 'bg-surface-2'
                 : '',
-              day.isPadding && 'opacity-[0.5]',
+              day.isPadding && 'opacity-50',
             )}
             onClick={() => handleDayClick(index, day.fullDate)}
           >
             {cal.activeTimeFrame === 'weekly' && (
-              <span className="text-ds-sm font-semibold uppercase tracking-wider mb-ds-03  text-text-tertiary">
+              <span className="text-ds-sm font-semibold uppercase tracking-wider mb-ds-03  text-surface-fg-subtle">
                 {day.day}
               </span>
             )}
@@ -552,8 +552,8 @@ const requestTabVariants = cva(
   {
     variants: {
       active: {
-        true: 'border-b-[1px] border-b-interactive-hover text-text-primary',
-        false: 'text-text-tertiary',
+        true: 'border-b-[1px] border-b-accent-9 text-surface-fg',
+        false: 'text-surface-fg-subtle',
       },
     },
     defaultVariants: {
@@ -609,8 +609,8 @@ const AdminDashboardLeaveRequests = React.forwardRef<
 
   return (
     <div ref={ref} className={cn("w-full p-0 md:p-ds-06", className)} {...props}>
-      <div className="max-md:pt-[16px] flex flex-col items-start overflow-hidden rounded-ds-lg border-0 border-border-subtle bg-layer-01 shadow-01 pt-ds-03 md:border max-md:pb-0">
-        <div className="flex w-full items-start border-b-[1px] border-b-border px-ds-06 md:border-b max-md:border-0 max-md:px-0">
+      <div className="max-md:pt-[16px] flex flex-col items-start overflow-hidden rounded-ds-lg border-0 border-surface-border bg-surface-1 shadow-01 pt-ds-03 md:border max-md:pb-0">
+        <div className="flex w-full items-start border-b-[1px] border-b-surface-border px-ds-06 md:border-b max-md:border-0 max-md:px-0">
           {requests.length > 0 && (
             <button
               type="button"
@@ -619,7 +619,7 @@ const AdminDashboardLeaveRequests = React.forwardRef<
               className={requestTabVariants({ active: activeTab === 'leaveRequest' })}
             >
               <span className="hidden sm:inline">break </span>Requests
-              <span className="text-interactive-hover">
+              <span className="text-accent-12">
                 ({requests.length})
               </span>
             </button>
@@ -634,7 +634,7 @@ const AdminDashboardLeaveRequests = React.forwardRef<
               className={requestTabVariants({ active: activeTab === 'attendanceRequest' })}
             >
               Attendance Correction{' '}
-              <span className="text-interactive-hover">
+              <span className="text-accent-12">
                 ({filteredAttendanceCorrections.length})
               </span>
             </button>
@@ -695,7 +695,7 @@ const AdminDashboardContent = React.forwardRef<
     <div
       ref={ref}
       className={cn(
-        'flex w-full flex-col rounded-ds-lg bg-layer-02 md:p-ds-06 max-md:bg-transparent',
+        'flex w-full flex-col rounded-ds-lg bg-surface-2 md:p-ds-06 max-md:bg-transparent',
         {
           'rounded-ds-lg': !_isFirstDate && !_isLastDate,
           'rounded-ds-lg rounded-tl-none': _isFirstDate && !_isLastDate,

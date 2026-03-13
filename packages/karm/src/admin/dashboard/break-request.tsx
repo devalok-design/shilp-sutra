@@ -121,7 +121,7 @@ export const BreakRequestCard = React.forwardRef<HTMLDivElement, BreakRequestPro
   }
 
   return (
-    <div ref={ref} className={cn("relative flex w-full flex-col gap-ds-06 rounded-ds-lg bg-layer-accent-subtle", className)} {...props}>
+    <div ref={ref} className={cn("relative flex w-full flex-col gap-ds-06 rounded-ds-lg bg-accent-2", className)} {...props}>
       {assetsBaseUrl && (
         <img
           src={`${assetsBaseUrl}/break-background.svg`}
@@ -133,14 +133,14 @@ export const BreakRequestCard = React.forwardRef<HTMLDivElement, BreakRequestPro
         {/* Left section - Break information or mobile cancel form */}
         {showMobileCancelForm && isSingleDayBreak ? (
           <div className="flex h-full w-full flex-col items-center justify-center px-ds-04 pt-[17px]">
-            <div className="w-full gap-ds-05 rounded-ds-md bg-layer-01 shadow-01 px-ds-06 py-ds-07 md:hidden">
+            <div className="w-full gap-ds-05 rounded-ds-md bg-surface-1 shadow-01 px-ds-06 py-ds-07 md:hidden">
               <div className="flex flex-col items-center gap-ds-04">
-                <div className="text-ds-lg font-semibold text-center text-text-primary">
+                <div className="text-ds-lg font-semibold text-center text-surface-fg">
                   Cancel this break?
                 </div>
-                <div className="text-ds-base max-w-[240px] text-center text-text-tertiary max-md:leading-[100%]">
+                <div className="text-ds-base max-w-[240px] text-center text-surface-fg-subtle max-md:leading-[100%]">
                   You&apos;re about to cancel the break scheduled for{' '}
-                  <span className="font-semibold text-text-secondary">
+                  <span className="font-semibold text-surface-fg-muted">
                     {formatBreakDate(breakRequest.startDate)}
                   </span>
                 </div>
@@ -152,7 +152,7 @@ export const BreakRequestCard = React.forwardRef<HTMLDivElement, BreakRequestPro
               </div>
               <button
                 aria-label="Close cancel form"
-                className="absolute right-ds-05 top-ds-05 rounded-ds-sm p-ds-04 text-icon-secondary transition-colors hover:text-icon-primary hover:bg-field focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-focus disabled:pointer-events-none"
+                className="absolute right-ds-05 top-ds-05 rounded-ds-sm p-ds-04 text-surface-fg-subtle transition-colors hover:text-surface-fg-muted hover:bg-surface-3 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent-9 disabled:pointer-events-none"
                 onClick={() => setShowMobileCancelForm(false)}
               >
                 <CloseIcon className="h-ico-lg w-ico-lg" />
@@ -162,23 +162,23 @@ export const BreakRequestCard = React.forwardRef<HTMLDivElement, BreakRequestPro
         ) : (
           <div className="flex h-full w-full flex-col items-center justify-center gap-ds-06 p-ds-06 px-ds-06 py-ds-07 md:w-1/2 md:p-ds-07">
             <div className="flex flex-col items-center justify-end gap-ds-05">
-              <div className="text-ds-sm font-semibold uppercase tracking-wider text-text-tertiary">
+              <div className="text-ds-sm font-semibold uppercase tracking-wider text-surface-fg-subtle">
                 Reason
               </div>
-              <div className="text-ds-lg font-semibold text-text-primary">
+              <div className="text-ds-lg font-semibold text-surface-fg">
                 {removeAllEmojis(breakRequest?.reason || ' ')}
               </div>
             </div>
             <div className="flex flex-col items-center justify-end gap-ds-05">
-              <div className="text-ds-sm font-semibold uppercase tracking-wider text-text-tertiary">
+              <div className="text-ds-sm font-semibold uppercase tracking-wider text-surface-fg-subtle">
                 Break Period
               </div>
-              <div className="text-ds-lg font-semibold text-text-primary">
+              <div className="text-ds-lg font-semibold text-surface-fg">
                 {formatDate(new Date(breakRequest.startDate))}{' '}
                 {breakRequest.numberOfDays > 1 && (
                   <>- {formatDate(new Date(breakRequest.endDate))} </>
                 )}
-                <span className="text-ds-lg text-text-placeholder">
+                <span className="text-ds-lg text-surface-fg-subtle">
                   {`(${breakRequest.numberOfDays} day${
                     breakRequest.numberOfDays > 1 ? 's' : ''
                   })`}
@@ -189,17 +189,17 @@ export const BreakRequestCard = React.forwardRef<HTMLDivElement, BreakRequestPro
         )}
         {!showMobileCancelForm && (
           <>
-            <div className="h-[1px] w-[329px] bg-border-subtle md:hidden max-md:w-[90%]"></div>
-            <div className="hidden h-[170px] w-[2px] bg-border-subtle md:block"></div>
+            <div className="h-[1px] w-[329px] bg-surface-border md:hidden max-md:w-[90%]"></div>
+            <div className="hidden h-[170px] w-[2px] bg-surface-border md:block"></div>
           </>
         )}
         <div
           className={cn('flex w-full flex-col items-center justify-center px-ds-05', showMobileCancelForm || breakRequest.status === 'APPROVED' || breakRequest.status === 'REJECTED' ? 'pb-ds-06 pt-[9px]' : 'py-ds-06', 'md:w-1/2 md:px-ds-06 md:py-ds-05 max-md:pt-[34px]')}
         >
-          <p className="text-ds-sm font-semibold uppercase tracking-wider mb-ds-06  text-text-tertiary max-md:mb-ds-05">
+          <p className="text-ds-sm font-semibold uppercase tracking-wider mb-ds-06  text-surface-fg-subtle max-md:mb-ds-05">
             Break Status
           </p>
-          <div className="mb-ds-04 flex w-full flex-col items-center justify-start gap-ds-04 rounded-ds-2xl border border-border-subtle bg-layer-01 shadow-01 px-ds-05 py-ds-04 text-center font-semibold text-text-primary">
+          <div className="mb-ds-04 flex w-full flex-col items-center justify-start gap-ds-04 rounded-ds-2xl border border-surface-border bg-surface-1 shadow-01 px-ds-05 py-ds-04 text-center font-semibold text-surface-fg">
             {renderStatus(breakRequest.status, false)}
             {breakRequest.status === 'APPROVED' && breakRequest.adminComment}
             {breakRequest.status === 'REJECTED' && breakRequest.adminComment}
@@ -209,7 +209,7 @@ export const BreakRequestCard = React.forwardRef<HTMLDivElement, BreakRequestPro
             <>
               {isBreakCancellable() && onCancelBreak && (
                 <button
-                  className="text-ds-sm cursor-pointer border-none bg-transparent text-interactive-hover underline md:hidden"
+                  className="text-ds-sm cursor-pointer border-none bg-transparent text-accent-12 underline md:hidden"
                   onClick={() => setShowMobileCancelForm(!showMobileCancelForm)}
                 >
                   Want to cancel this break?
@@ -220,21 +220,21 @@ export const BreakRequestCard = React.forwardRef<HTMLDivElement, BreakRequestPro
               <Dialog>
                 {isBreakCancellable() && onCancelBreak && (
                   <DialogTrigger asChild>
-                    <button className="text-ds-sm hidden cursor-pointer border-none bg-transparent text-interactive-hover underline md:block">
+                    <button className="text-ds-sm hidden cursor-pointer border-none bg-transparent text-accent-12 underline md:block">
                       Want to cancel this break?
                     </button>
                   </DialogTrigger>
                 )}
                 <DialogContent className="max-w-[329px] gap-ds-04 rounded-ds-xl">
                   <DialogHeader>
-                    <div className="text-ds-lg font-semibold text-center text-text-primary">
+                    <div className="text-ds-lg font-semibold text-center text-surface-fg">
                       Cancel this break?
                     </div>
                   </DialogHeader>
                   <div className="flex flex-col items-center justify-start">
-                    <div className="text-ds-base max-w-[241px] text-center text-text-tertiary">
+                    <div className="text-ds-base max-w-[241px] text-center text-surface-fg-subtle">
                       You&apos;re about to cancel the break scheduled for{' '}
-                      <span className="font-semibold text-text-secondary">
+                      <span className="font-semibold text-surface-fg-muted">
                         {formatBreakDate(breakRequest.startDate)}
                       </span>
                     </div>
@@ -253,14 +253,14 @@ export const BreakRequestCard = React.forwardRef<HTMLDivElement, BreakRequestPro
             <Dialog>
               {isBreakCancellable() && onCancelBreak && (
                 <DialogTrigger asChild>
-                  <button className="text-ds-sm cursor-pointer border-none bg-transparent text-interactive-hover underline">
+                  <button className="text-ds-sm cursor-pointer border-none bg-transparent text-accent-12 underline">
                     Want to cancel this break?
                   </button>
                 </DialogTrigger>
               )}
               <DialogContent className="max-w-[329px] gap-ds-04 rounded-ds-xl">
                 <DialogHeader>
-                  <div className="text-ds-lg font-semibold flex text-center text-text-primary">
+                  <div className="text-ds-lg font-semibold flex text-center text-surface-fg">
                     Cancel your break
                   </div>
                 </DialogHeader>
@@ -271,7 +271,7 @@ export const BreakRequestCard = React.forwardRef<HTMLDivElement, BreakRequestPro
                         checked={deleteSingleDay}
                         onCheckedChange={(checked) => setDeleteSingleDay(checked === true)}
                       />
-                      <span className="text-text-secondary">
+                      <span className="text-surface-fg-muted">
                         {getDaySuffix(new Date(selectedDate).getDate())} break
                         only
                       </span>
@@ -281,7 +281,7 @@ export const BreakRequestCard = React.forwardRef<HTMLDivElement, BreakRequestPro
                         checked={!deleteSingleDay}
                         onCheckedChange={(checked) => setDeleteSingleDay(checked !== true)}
                       />
-                      <span className="text-text-secondary">
+                      <span className="text-surface-fg-muted">
                         {getDaySuffix(
                           new Date(breakRequest.startDate).getDate(),
                         )}{' '}

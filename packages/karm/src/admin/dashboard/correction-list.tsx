@@ -73,12 +73,12 @@ export const CorrectionList = React.forwardRef<HTMLDivElement, CorrectionListPro
   return (
     <div
       ref={ref}
-      className={cn("flex max-h-[200px] w-full flex-col overflow-y-auto bg-layer-01 px-ds-06 max-md:flex-1 max-md:max-h-none max-md:min-h-[372px] max-md:p-0", className)}
+      className={cn("flex max-h-[200px] w-full flex-col overflow-y-auto bg-surface-1 px-ds-06 max-md:flex-1 max-md:max-h-none max-md:min-h-[372px] max-md:p-0", className)}
       {...props}
     >
       {corrections.map((correction) => (
         <Fragment key={correction.id}>
-          <div className="max-md:border flex items-center justify-between px-ds-03 py-ds-04 max-md:rounded-ds-lg max-md:border-border">
+          <div className="max-md:border flex items-center justify-between px-ds-03 py-ds-04 max-md:rounded-ds-lg max-md:border-surface-border-strong">
             <div className="flex items-center gap-ds-04">
               <Avatar className="h-ds-md w-ds-md border-2 max-md:mb-[auto]">
                 <AvatarImage
@@ -90,19 +90,19 @@ export const CorrectionList = React.forwardRef<HTMLDivElement, CorrectionListPro
                 <AvatarFallback>{correction?.user?.name?.[0] || 'U'}</AvatarFallback>
               </Avatar>
               <div className="flex flex-col gap-ds-02">
-                <p className="text-ds-sm text-text-secondary">
+                <p className="text-ds-sm text-surface-fg-muted">
                   {correction?.user?.name}
                 </p>
                 <div className="flex w-full flex-wrap items-center gap-ds-03">
-                  <p className="text-ds-base font-semibold text-text-primary">
+                  <p className="text-ds-base font-semibold text-surface-fg">
                     {correction?.reason}
                   </p>
                   {correction?.reason ? (
-                    <p className="text-ds-base font-semibold text-text-tertiary">
+                    <p className="text-ds-base font-semibold text-surface-fg-subtle">
                       &bull;
                     </p>
                   ) : null}
-                  <p className="text-ds-base text-text-tertiary">
+                  <p className="text-ds-base text-surface-fg-subtle">
                     {formatDateWithWeekday(
                       new Date(correction?.date),
                     )}
@@ -116,7 +116,7 @@ export const CorrectionList = React.forwardRef<HTMLDivElement, CorrectionListPro
                   <TooltipTrigger asChild>
                     <button
                       aria-label="Reject correction"
-                      className={cn('rounded-ds-full p-ds-03 text-text-tertiary hover:text-text-secondary', correction?.user?.id === currentUserId ? 'cursor-not-allowed opacity-[0.38]' : '')}
+                      className={cn('rounded-ds-full p-ds-03 text-surface-fg-subtle hover:text-surface-fg-muted', correction?.user?.id === currentUserId ? 'cursor-not-allowed opacity-action-disabled' : '')}
                       onClick={() =>
                         correction?.user?.id !==
                           currentUserId &&
@@ -147,7 +147,7 @@ export const CorrectionList = React.forwardRef<HTMLDivElement, CorrectionListPro
                   <TooltipTrigger asChild>
                     <button
                       aria-label="Approve correction"
-                      className={cn('rounded-ds-full p-ds-03', correction?.user?.id === currentUserId ? 'cursor-not-allowed opacity-[0.38]' : '')}
+                      className={cn('rounded-ds-full p-ds-03', correction?.user?.id === currentUserId ? 'cursor-not-allowed opacity-action-disabled' : '')}
                       onClick={() =>
                         correction?.user?.id !==
                           currentUserId &&
@@ -160,7 +160,7 @@ export const CorrectionList = React.forwardRef<HTMLDivElement, CorrectionListPro
                         correction?.user?.id === currentUserId
                       }
                     >
-                      <TickIcon className="h-ico-lg w-ico-lg text-text-success" />
+                      <TickIcon className="h-ico-lg w-ico-lg text-success-11" />
                     </button>
                   </TooltipTrigger>
                   {correction?.user?.id === currentUserId && (

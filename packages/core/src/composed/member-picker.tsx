@@ -65,18 +65,18 @@ const MemberPicker = React.forwardRef<HTMLDivElement, MemberPickerProps>(
         <PopoverContent
           ref={ref}
           {...props}
-          className={cn("w-[220px] border-border bg-layer-01 p-0", className)}
+          className={cn("w-[220px] border-surface-border-strong bg-surface-1 p-0", className)}
           align="start"
           sideOffset={4}
         >
-          <div className="flex items-center gap-ds-03 border-b border-border px-ds-04 py-ds-03">
-            <IconSearch className="h-ico-sm w-ico-sm shrink-0 text-text-placeholder" stroke={1.5} />
+          <div className="flex items-center gap-ds-03 border-b border-surface-border-strong px-ds-04 py-ds-03">
+            <IconSearch className="h-ico-sm w-ico-sm shrink-0 text-surface-fg-subtle" stroke={1.5} />
             <input
               type="text"
               placeholder={placeholder}
               value={search}
               onChange={(e) => setSearch(e.target.value)}
-              className="w-full bg-transparent text-ds-md font-body text-text-primary placeholder:text-text-placeholder outline-none"
+              className="w-full bg-transparent text-ds-md font-body text-surface-fg placeholder:text-surface-fg-subtle outline-none"
             />
           </div>
           <div className="max-h-[200px] overflow-y-auto py-ds-02">
@@ -92,29 +92,29 @@ const MemberPicker = React.forwardRef<HTMLDivElement, MemberPickerProps>(
                   }}
                   className={cn(
                     'flex w-full items-center gap-ds-03 px-ds-04 py-ds-02b text-left transition-colors',
-                    'hover:bg-field',
-                    isSelected && 'bg-field',
+                    'hover:bg-surface-3',
+                    isSelected && 'bg-surface-3',
                   )}
                 >
                   <Avatar className="h-ico-md w-ico-md">
                     {member.avatar && (
                       <AvatarImage src={member.avatar} alt={member.name} />
                     )}
-                    <AvatarFallback className="bg-layer-03 text-ds-xs font-semibold text-text-on-color">
+                    <AvatarFallback className="bg-surface-3 text-ds-xs font-semibold text-accent-fg">
                       {getInitials(member.name)}
                     </AvatarFallback>
                   </Avatar>
-                  <span className="flex-1 truncate text-ds-md font-body text-text-primary">
+                  <span className="flex-1 truncate text-ds-md font-body text-surface-fg">
                     {member.name}
                   </span>
                   {isSelected && (
-                    <IconCheck className="h-ico-sm w-ico-sm shrink-0 text-interactive" />
+                    <IconCheck className="h-ico-sm w-ico-sm shrink-0 text-accent-11" />
                   )}
                 </button>
               )
             })}
             {filtered.length === 0 && (
-              <p className="px-ds-04 py-ds-05 text-center text-ds-sm font-body text-text-placeholder">
+              <p className="px-ds-04 py-ds-05 text-center text-ds-sm font-body text-surface-fg-subtle">
                 No members found
               </p>
             )}

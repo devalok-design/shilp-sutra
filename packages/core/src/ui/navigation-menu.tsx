@@ -50,7 +50,7 @@ const NavigationMenuTrigger = React.forwardRef<
   <NavigationMenuPrimitive.Trigger
     ref={ref}
     className={cn(
-      'group inline-flex h-ds-sm-plus w-max items-center justify-center rounded-ds-md bg-transparent px-ds-05 py-ds-03 text-ds-md font-medium transition-colors hover:bg-field focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-focus disabled:pointer-events-none disabled:opacity-[0.38]',
+      'group inline-flex h-ds-sm-plus w-max items-center justify-center rounded-ds-md bg-transparent px-ds-05 py-ds-03 text-ds-md font-medium transition-colors hover:bg-surface-3 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent-9 disabled:pointer-events-none disabled:opacity-action-disabled',
       className,
     )}
     {...props}
@@ -188,7 +188,7 @@ const NavigationMenuViewport = React.forwardRef<
     <div className={cn('absolute left-0 top-full flex justify-center')}>
       <NavigationMenuPrimitive.Viewport
         className={cn(
-          'origin-top-center relative mt-ds-02b h-[var(--radix-navigation-menu-viewport-height)] w-full overflow-hidden rounded-ds-lg border border-border bg-layer-01 shadow-03 md:w-[var(--radix-navigation-menu-viewport-width)]',
+          'origin-top-center relative mt-ds-02b h-[var(--radix-navigation-menu-viewport-height)] w-full overflow-hidden rounded-ds-lg border border-surface-border-strong bg-surface-1 shadow-03 md:w-[var(--radix-navigation-menu-viewport-width)]',
           className,
         )}
         ref={composedRef}
@@ -262,7 +262,7 @@ const NavigationMenuIndicator = React.forwardRef<
         initial={false}
         animate={isVisible ? { opacity: 1 } : { opacity: 0 }}
         transition={tweens.fade}
-        className="relative top-[60%] h-2 w-2 rotate-45 rounded-tl-sm bg-border shadow-02"
+        className="relative top-[60%] h-2 w-2 rotate-45 rounded-tl-sm bg-surface-border shadow-02"
       />
     </NavigationMenuPrimitive.Indicator>
   )

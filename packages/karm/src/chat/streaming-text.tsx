@@ -16,7 +16,7 @@ export const StreamingText = React.forwardRef<HTMLDivElement, StreamingTextProps
       <ReactMarkdown components={markdownComponents}>
         {text}
       </ReactMarkdown>
-      <span className="inline-block h-4 w-2 animate-pulse bg-text-secondary ml-ds-01" />
+      <span className="inline-block h-4 w-2 animate-pulse bg-surface-fg-muted ml-ds-01" />
     </div>
   )
 },

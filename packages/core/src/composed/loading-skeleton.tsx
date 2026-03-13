@@ -13,22 +13,22 @@ const CardSkeleton = React.forwardRef<HTMLDivElement, CardSkeletonProps>(
       ref={ref}
       {...props}
       className={cn(
-        'rounded-ds-lg border border-border bg-layer-01 p-ds-05b',
+        'rounded-ds-lg border border-surface-border-strong bg-surface-1 p-ds-05b',
         className,
       )}
     >
       <div className="flex items-center justify-between pb-ds-05">
-        <Skeleton className="h-[16px] w-[128px] bg-field" />
-        <Skeleton className="h-ico-sm w-ico-sm rounded bg-field" />
+        <Skeleton className="h-[16px] w-[128px] bg-surface-3" />
+        <Skeleton className="h-ico-sm w-ico-sm rounded bg-surface-3" />
       </div>
       <div className="space-y-ds-04">
-        <Skeleton className="h-[12px] w-full bg-field" />
-        <Skeleton className="h-[12px] w-4/5 bg-field" />
-        <Skeleton className="h-[12px] w-3/5 bg-field" />
+        <Skeleton className="h-[12px] w-full bg-surface-3" />
+        <Skeleton className="h-[12px] w-4/5 bg-surface-3" />
+        <Skeleton className="h-[12px] w-3/5 bg-surface-3" />
       </div>
       <div className="flex items-center gap-ds-03 pt-ds-05">
-        <Skeleton className="h-ds-xs w-ds-xs rounded-ds-full bg-field" />
-        <Skeleton className="h-[12px] w-[80px] bg-field" />
+        <Skeleton className="h-ds-xs w-ds-xs rounded-ds-full bg-surface-3" />
+        <Skeleton className="h-[12px] w-[80px] bg-surface-3" />
       </div>
     </div>
   )
@@ -54,17 +54,17 @@ const TableSkeleton = React.forwardRef<HTMLDivElement, TableSkeletonProps>(
       ref={ref}
       {...props}
       className={cn(
-        'overflow-hidden rounded-ds-lg border border-border',
+        'overflow-hidden rounded-ds-lg border border-surface-border-strong',
         className,
       )}
     >
       {/* Header */}
-      <div className="flex items-center gap-ds-05 border-b border-border bg-layer-02 px-ds-05 py-ds-04">
+      <div className="flex items-center gap-ds-05 border-b border-surface-border-strong bg-surface-2 px-ds-05 py-ds-04">
         {Array.from({ length: columns }).map((_, i) => (
           <Skeleton
             key={`head-${i}`}
             className={cn(
-              'h-[12px] bg-field',
+              'h-[12px] bg-surface-3',
               i === 0 ? 'w-[160px]' : 'flex-1',
             )}
           />
@@ -77,14 +77,14 @@ const TableSkeleton = React.forwardRef<HTMLDivElement, TableSkeletonProps>(
           key={`row-${rowIndex}`}
           className={cn(
             'flex items-center gap-ds-05 px-ds-05 py-ds-04',
-            rowIndex < rows - 1 && 'border-b border-border',
+            rowIndex < rows - 1 && 'border-b border-surface-border-strong',
           )}
         >
           {Array.from({ length: columns }).map((_, colIndex) => (
             <Skeleton
               key={`cell-${rowIndex}-${colIndex}`}
               className={cn(
-                'h-[12px] bg-field',
+                'h-[12px] bg-surface-3',
                 colIndex === 0 ? 'w-[160px]' : 'flex-1',
               )}
             />
@@ -120,29 +120,29 @@ const BoardSkeleton = React.forwardRef<HTMLDivElement, BoardSkeletonProps>(
           {/* Column header */}
           <div className="flex items-center justify-between px-ds-02 py-ds-03">
             <div className="flex items-center gap-ds-03">
-              <Skeleton className="h-[12px] w-[12px] rounded bg-field" />
-              <Skeleton className="h-[12px] w-[80px] bg-field" />
-              <Skeleton className="h-[16px] w-[20px] rounded-ds-full bg-field" />
+              <Skeleton className="h-[12px] w-[12px] rounded bg-surface-3" />
+              <Skeleton className="h-[12px] w-[80px] bg-surface-3" />
+              <Skeleton className="h-[16px] w-[20px] rounded-ds-full bg-surface-3" />
             </div>
-            <Skeleton className="h-ico-sm w-ico-sm rounded bg-field" />
+            <Skeleton className="h-ico-sm w-ico-sm rounded bg-surface-3" />
           </div>
 
           {/* Column cards */}
           {Array.from({ length: cardsPerColumn }).map((_, cardIndex) => (
             <div
               key={`card-${colIndex}-${cardIndex}`}
-              className="rounded-ds-lg border border-border bg-layer-01 p-ds-04"
+              className="rounded-ds-lg border border-surface-border-strong bg-surface-1 p-ds-04"
             >
               <div className="space-y-ds-03">
-                <Skeleton className="h-[12px] w-4/5 bg-field" />
-                <Skeleton className="h-[12px] w-3/5 bg-field" />
+                <Skeleton className="h-[12px] w-4/5 bg-surface-3" />
+                <Skeleton className="h-[12px] w-3/5 bg-surface-3" />
               </div>
               <div className="flex items-center justify-between pt-ds-04">
                 <div className="flex items-center gap-ds-02b">
-                  <Skeleton className="h-ico-md w-ico-md rounded-ds-full bg-field" />
-                  <Skeleton className="h-ds-03 w-[64px] bg-field" />
+                  <Skeleton className="h-ico-md w-ico-md rounded-ds-full bg-surface-3" />
+                  <Skeleton className="h-ds-03 w-[64px] bg-surface-3" />
                 </div>
-                <Skeleton className="h-[16px] w-ds-lg rounded-ds-full bg-field" />
+                <Skeleton className="h-[16px] w-ds-lg rounded-ds-full bg-surface-3" />
               </div>
             </div>
           ))}
@@ -174,17 +174,17 @@ const ListSkeleton = React.forwardRef<HTMLDivElement, ListSkeletonProps>(
           key={`list-${i}`}
           className={cn(
             'flex items-center gap-ds-04 py-ds-04',
-            i < rows - 1 && 'border-b border-border',
+            i < rows - 1 && 'border-b border-surface-border-strong',
           )}
         >
           {showAvatar && (
-            <Skeleton className="h-ds-sm w-ds-sm shrink-0 rounded-ds-full bg-field" />
+            <Skeleton className="h-ds-sm w-ds-sm shrink-0 rounded-ds-full bg-surface-3" />
           )}
           <div className="flex flex-1 flex-col gap-ds-02b">
-            <Skeleton className="h-[12px] w-2/5 bg-field" />
-            <Skeleton className="h-ds-03 w-3/5 bg-field" />
+            <Skeleton className="h-[12px] w-2/5 bg-surface-3" />
+            <Skeleton className="h-ds-03 w-3/5 bg-surface-3" />
           </div>
-          <Skeleton className="h-[20px] w-[56px] rounded-ds-full bg-field" />
+          <Skeleton className="h-[20px] w-[56px] rounded-ds-full bg-surface-3" />
         </div>
       ))}
     </div>

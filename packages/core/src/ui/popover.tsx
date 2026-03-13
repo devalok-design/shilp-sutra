@@ -65,7 +65,7 @@ const PopoverContent = React.forwardRef<
               exit={{ opacity: 0, scale: 0.95 }}
               transition={{ ...springs.snappy, opacity: tweens.fade }}
               className={cn(
-                'z-popover w-72 rounded-ds-lg border border-border bg-layer-01 p-ds-05 text-text-primary shadow-03 outline-none',
+                'z-popover w-72 rounded-ds-lg border border-surface-border-strong bg-surface-1 p-ds-05 text-surface-fg shadow-03 outline-none',
                 className,
               )}
             >

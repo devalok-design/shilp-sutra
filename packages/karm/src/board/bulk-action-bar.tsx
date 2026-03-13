@@ -72,7 +72,7 @@ export const BulkActionBar = React.forwardRef<HTMLDivElement, BulkActionBarProps
           <div className="flex items-center gap-ds-03 py-ds-02">
             {/* Selection count + clear */}
             <div className="flex items-center gap-ds-02">
-              <span className="text-ds-sm font-medium text-text-primary">
+              <span className="text-ds-sm font-medium text-surface-fg">
                 {count} selected
               </span>
               <Button
@@ -87,7 +87,7 @@ export const BulkActionBar = React.forwardRef<HTMLDivElement, BulkActionBarProps
               </Button>
             </div>
 
-            <div className="h-4 w-px bg-border-subtle" />
+            <div className="h-4 w-px bg-surface-border" />
 
             <MotionStagger className="contents">
               {/* Move to column */}

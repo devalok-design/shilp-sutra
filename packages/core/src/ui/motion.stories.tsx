@@ -49,7 +49,7 @@ function AnimateButton({ active, onClick }: { active: boolean; onClick: () => vo
     <button
       type="button"
       onClick={onClick}
-      className="rounded-ds-md border border-border px-ds-04 py-ds-02 text-ds-sm text-text-primary hover:bg-layer-02 transition-colors duration-fast-01 ease-productive-standard"
+      className="rounded-ds-md border border-surface-border-strong px-ds-04 py-ds-02 text-ds-sm text-surface-fg hover:bg-surface-2 transition-colors duration-fast-01 ease-productive-standard"
     >
       {active ? 'Reset' : 'Animate'}
     </button>
@@ -62,15 +62,15 @@ function AnimateButton({ active, onClick }: { active: boolean; onClick: () => vo
 function SectionLabel({ children, sub }: { children: React.ReactNode; sub?: string }) {
   return (
     <div className="mb-ds-04">
-      <h3 className="text-ds-lg font-semibold text-text-primary">{children}</h3>
-      {sub && <p className="text-ds-sm text-text-secondary mt-ds-01">{sub}</p>}
+      <h3 className="text-ds-lg font-semibold text-surface-fg">{children}</h3>
+      {sub && <p className="text-ds-sm text-surface-fg-muted mt-ds-01">{sub}</p>}
     </div>
   )
 }
 
 function TokenBadge({ children }: { children: React.ReactNode }) {
   return (
-    <code className="inline-block rounded-ds-sm bg-layer-02 px-ds-02b py-ds-01 text-ds-xs text-text-secondary font-mono">
+    <code className="inline-block rounded-ds-sm bg-surface-2 px-ds-02b py-ds-01 text-ds-xs text-surface-fg-muted font-mono">
       {children}
     </code>
   )
@@ -93,17 +93,17 @@ export const SpringPresets: StoryObj = {
         <button
           type="button"
           onClick={() => setKey((k) => k + 1)}
-          className="rounded-ds-md bg-interactive px-ds-04 py-ds-02 text-ds-sm font-medium text-text-on-color"
+          className="rounded-ds-md bg-accent-9 px-ds-04 py-ds-02 text-ds-sm font-medium text-accent-fg"
         >
           Replay springs
         </button>
         <div className="space-y-ds-03">
           {presets.map(([name, config]) => (
             <div key={`${name}-${key}`} className="flex items-center gap-ds-04">
-              <code className="w-32 text-ds-xs text-text-secondary font-mono">{name}</code>
-              <div className="relative h-8 flex-1 rounded-ds-sm bg-layer-02 overflow-hidden">
+              <code className="w-32 text-ds-xs text-surface-fg-muted font-mono">{name}</code>
+              <div className="relative h-8 flex-1 rounded-ds-sm bg-surface-2 overflow-hidden">
                 <MotionSlide show direction="right">
-                  <div className="h-8 w-8 rounded-ds-sm bg-interactive" />
+                  <div className="h-8 w-8 rounded-ds-sm bg-accent-9" />
                 </MotionSlide>
               </div>
             </div>
@@ -131,15 +131,15 @@ export const EasingComparison: StoryObj = {
         <AnimateButton active={active} onClick={() => setActive((p) => !p)} />
         <div className="grid grid-cols-2 gap-ds-06">
           <div>
-            <h3 className="text-ds-sm font-semibold text-text-primary mb-ds-03">
+            <h3 className="text-ds-sm font-semibold text-surface-fg mb-ds-03">
               Productive
             </h3>
             {categories.map((cat) => (
               <div key={cat} className="mb-ds-03">
-                <code className="text-ds-xs text-text-secondary">{cat}</code>
-                <div className="relative h-6 mt-ds-01 rounded-ds-sm bg-layer-02 overflow-hidden">
+                <code className="text-ds-xs text-surface-fg-muted">{cat}</code>
+                <div className="relative h-6 mt-ds-01 rounded-ds-sm bg-surface-2 overflow-hidden">
                   <div
-                    className="absolute inset-y-0 left-0 rounded-ds-sm bg-interactive"
+                    className="absolute inset-y-0 left-0 rounded-ds-sm bg-accent-9"
                     style={{
                       width: active ? '100%' : '0%',
                       transition: `width 400ms var(--ease-productive-${cat})`,
@@ -150,15 +150,15 @@ export const EasingComparison: StoryObj = {
             ))}
           </div>
           <div>
-            <h3 className="text-ds-sm font-semibold text-text-primary mb-ds-03">
+            <h3 className="text-ds-sm font-semibold text-surface-fg mb-ds-03">
               Expressive
             </h3>
             {categories.map((cat) => (
               <div key={cat} className="mb-ds-03">
-                <code className="text-ds-xs text-text-secondary">{cat}</code>
-                <div className="relative h-6 mt-ds-01 rounded-ds-sm bg-layer-02 overflow-hidden">
+                <code className="text-ds-xs text-surface-fg-muted">{cat}</code>
+                <div className="relative h-6 mt-ds-01 rounded-ds-sm bg-surface-2 overflow-hidden">
                   <div
-                    className="absolute inset-y-0 left-0 rounded-ds-sm bg-brand-primary"
+                    className="absolute inset-y-0 left-0 rounded-ds-sm bg-accent-9"
                     style={{
                       width: active ? '100%' : '0%',
                       transition: `width 400ms var(--ease-expressive-${cat})`,
@@ -189,15 +189,15 @@ export const TweenPresets: StoryObj = {
     return (
       <div className="space-y-ds-04">
         <AnimateButton active={show} onClick={() => setShow((p) => !p)} />
-        <p className="text-ds-sm text-text-secondary">
+        <p className="text-ds-sm text-surface-fg-muted">
           Tweens are used for non-spatial properties like opacity and color transitions.
         </p>
         <div className="space-y-ds-03">
           {presets.map(([name]) => (
             <div key={name} className="flex items-center gap-ds-04">
-              <code className="w-32 text-ds-xs text-text-secondary font-mono">{name}</code>
+              <code className="w-32 text-ds-xs text-surface-fg-muted font-mono">{name}</code>
               <MotionFade show={show}>
-                <div className="h-8 w-32 rounded-ds-sm bg-interactive" />
+                <div className="h-8 w-32 rounded-ds-sm bg-accent-9" />
               </MotionFade>
             </div>
           ))}
@@ -227,7 +227,7 @@ export const FastMicroInteractions: StoryObj = {
           <SectionLabel sub="duration-fast-01 (70ms) + ease-productive-standard">
             Fast Micro-Interactions
           </SectionLabel>
-          <p className="text-ds-sm text-text-secondary mb-ds-06">
+          <p className="text-ds-sm text-surface-fg-muted mb-ds-06">
             Snappy, utilitarian transitions for task-focused interactions. Hover over and click
             these components to feel the 70ms productive motion.
           </p>
@@ -235,7 +235,7 @@ export const FastMicroInteractions: StoryObj = {
 
         {/* Buttons */}
         <div className="space-y-ds-03">
-          <h4 className="text-ds-md font-medium text-text-primary">Button hover & press</h4>
+          <h4 className="text-ds-md font-medium text-surface-fg">Button hover & press</h4>
           <div className="flex flex-wrap gap-ds-03">
             <Button variant="solid">Solid</Button>
             <Button variant="outline">Outline</Button>
@@ -248,7 +248,7 @@ export const FastMicroInteractions: StoryObj = {
 
         {/* Switch */}
         <div className="space-y-ds-03">
-          <h4 className="text-ds-md font-medium text-text-primary">Switch toggle</h4>
+          <h4 className="text-ds-md font-medium text-surface-fg">Switch toggle</h4>
           <div className="flex items-center gap-ds-03">
             <Switch checked={switchOn} onCheckedChange={setSwitchOn} />
             <Label>{switchOn ? 'Enabled' : 'Disabled'}</Label>
@@ -258,7 +258,7 @@ export const FastMicroInteractions: StoryObj = {
 
         {/* Checkbox */}
         <div className="space-y-ds-03">
-          <h4 className="text-ds-md font-medium text-text-primary">Checkbox check</h4>
+          <h4 className="text-ds-md font-medium text-surface-fg">Checkbox check</h4>
           <div className="flex items-center gap-ds-03">
             <Checkbox checked={checked} onCheckedChange={() => setChecked((p) => !p)} />
             <Label>{checked ? 'Checked' : 'Unchecked'}</Label>
@@ -268,14 +268,14 @@ export const FastMicroInteractions: StoryObj = {
 
         {/* Input focus */}
         <div className="space-y-ds-03">
-          <h4 className="text-ds-md font-medium text-text-primary">Input focus ring</h4>
+          <h4 className="text-ds-md font-medium text-surface-fg">Input focus ring</h4>
           <Input placeholder="Click to focus — watch the border transition" className="max-w-sm" />
           <TokenBadge>transition-colors duration-fast-01</TokenBadge>
         </div>
 
         {/* Tabs */}
         <div className="space-y-ds-03">
-          <h4 className="text-ds-md font-medium text-text-primary">Tab switching</h4>
+          <h4 className="text-ds-md font-medium text-surface-fg">Tab switching</h4>
           <Tabs defaultValue="overview">
             <TabsList>
               <TabsTrigger value="overview">Overview</TabsTrigger>
@@ -283,13 +283,13 @@ export const FastMicroInteractions: StoryObj = {
               <TabsTrigger value="settings">Settings</TabsTrigger>
             </TabsList>
             <TabsContent value="overview">
-              <p className="text-ds-sm text-text-secondary">Overview content — tab indicator slides at 70ms.</p>
+              <p className="text-ds-sm text-surface-fg-muted">Overview content — tab indicator slides at 70ms.</p>
             </TabsContent>
             <TabsContent value="analytics">
-              <p className="text-ds-sm text-text-secondary">Analytics content.</p>
+              <p className="text-ds-sm text-surface-fg-muted">Analytics content.</p>
             </TabsContent>
             <TabsContent value="settings">
-              <p className="text-ds-sm text-text-secondary">Settings content.</p>
+              <p className="text-ds-sm text-surface-fg-muted">Settings content.</p>
             </TabsContent>
           </Tabs>
           <TokenBadge>transition-[color,background-color,border-color,box-shadow] duration-fast-01</TokenBadge>
@@ -297,7 +297,7 @@ export const FastMicroInteractions: StoryObj = {
 
         {/* Chips */}
         <div className="space-y-ds-03">
-          <h4 className="text-ds-md font-medium text-text-primary">Chip interactions</h4>
+          <h4 className="text-ds-md font-medium text-surface-fg">Chip interactions</h4>
           <div className="flex flex-wrap gap-ds-02">
             {chips.map((label) => (
               <Chip
@@ -341,7 +341,7 @@ export const MediumReveals: StoryObj = {
             <SectionLabel sub="duration-moderate-01/02 (150-240ms)">
               Medium Reveals
             </SectionLabel>
-            <p className="text-ds-sm text-text-secondary mb-ds-06">
+            <p className="text-ds-sm text-surface-fg-muted mb-ds-06">
               Content reveals and attention-drawing moments. Productive easing for task UI,
               expressive easing for significant moments like dialogs.
             </p>
@@ -349,7 +349,7 @@ export const MediumReveals: StoryObj = {
 
           {/* Accordion */}
           <div className="space-y-ds-03">
-            <h4 className="text-ds-md font-medium text-text-primary">
+            <h4 className="text-ds-md font-medium text-surface-fg">
               Accordion expand/collapse
             </h4>
             <Accordion type="single" collapsible className="w-full">
@@ -382,7 +382,7 @@ export const MediumReveals: StoryObj = {
 
           {/* Tooltip */}
           <div className="space-y-ds-03">
-            <h4 className="text-ds-md font-medium text-text-primary">Tooltip entrance</h4>
+            <h4 className="text-ds-md font-medium text-surface-fg">Tooltip entrance</h4>
             <div className="flex gap-ds-04">
               <Tooltip>
                 <TooltipTrigger asChild>
@@ -420,7 +420,7 @@ export const MediumReveals: StoryObj = {
 
           {/* Dialog */}
           <div className="space-y-ds-03">
-            <h4 className="text-ds-md font-medium text-text-primary">Dialog entrance (expressive)</h4>
+            <h4 className="text-ds-md font-medium text-surface-fg">Dialog entrance (expressive)</h4>
             <Dialog>
               <DialogTrigger asChild>
                 <Button>Open Dialog</Button>
@@ -434,14 +434,14 @@ export const MediumReveals: StoryObj = {
                     zooms and slides — creating a dramatic, attention-drawing moment.
                   </DialogDescription>
                 </DialogHeader>
-                <div className="rounded-ds-md bg-layer-02 p-ds-04 space-y-ds-02">
+                <div className="rounded-ds-md bg-surface-2 p-ds-04 space-y-ds-02">
                   <div className="flex items-center gap-ds-02">
                     <TokenBadge>duration-moderate-02 (240ms)</TokenBadge>
-                    <span className="text-ds-xs text-text-secondary">overlay + content</span>
+                    <span className="text-ds-xs text-surface-fg-muted">overlay + content</span>
                   </div>
                   <div className="flex items-center gap-ds-02">
                     <TokenBadge>ease-expressive-entrance</TokenBadge>
-                    <span className="text-ds-xs text-text-secondary">zoom-in + fade-in</span>
+                    <span className="text-ds-xs text-surface-fg-muted">zoom-in + fade-in</span>
                   </div>
                 </div>
                 <DialogFooter>
@@ -455,7 +455,7 @@ export const MediumReveals: StoryObj = {
 
           {/* Sheet */}
           <div className="space-y-ds-03">
-            <h4 className="text-ds-md font-medium text-text-primary">Sheet slide-in</h4>
+            <h4 className="text-ds-md font-medium text-surface-fg">Sheet slide-in</h4>
             <div className="flex gap-ds-03">
               <Sheet>
                 <SheetTrigger asChild>
@@ -470,7 +470,7 @@ export const MediumReveals: StoryObj = {
                     </SheetDescription>
                   </SheetHeader>
                   <div className="mt-ds-06 space-y-ds-04">
-                    <div className="rounded-ds-md bg-layer-02 p-ds-04">
+                    <div className="rounded-ds-md bg-surface-2 p-ds-04">
                       <TokenBadge>ease-productive-standard duration-moderate-02</TokenBadge>
                     </div>
                   </div>
@@ -524,7 +524,7 @@ export const SlowAndContinuous: StoryObj = {
           <SectionLabel sub="duration-slow-01/02 (400-700ms) + linear/productive">
             Slow & Continuous
           </SectionLabel>
-          <p className="text-ds-sm text-text-secondary mb-ds-06">
+          <p className="text-ds-sm text-surface-fg-muted mb-ds-06">
             Long-running animations for loading states. These use slow durations
             with linear easing for smooth, non-distracting loops.
           </p>
@@ -532,7 +532,7 @@ export const SlowAndContinuous: StoryObj = {
 
         {/* Skeleton shimmer */}
         <div className="space-y-ds-03">
-          <h4 className="text-ds-md font-medium text-text-primary">Skeleton shimmer</h4>
+          <h4 className="text-ds-md font-medium text-surface-fg">Skeleton shimmer</h4>
           <div className="space-y-ds-03 max-w-sm">
             <div className="flex items-center gap-ds-04">
               <Skeleton variant="circle" className="h-12 w-12" animation="shimmer" />
@@ -553,17 +553,17 @@ export const SlowAndContinuous: StoryObj = {
 
         {/* Progress */}
         <div className="space-y-ds-03">
-          <h4 className="text-ds-md font-medium text-text-primary">Progress bar</h4>
+          <h4 className="text-ds-md font-medium text-surface-fg">Progress bar</h4>
           <div className="space-y-ds-04 max-w-sm">
             <div className="space-y-ds-02">
-              <span className="text-ds-sm text-text-secondary">Determinate</span>
+              <span className="text-ds-sm text-surface-fg-muted">Determinate</span>
               <Progress value={progress} showLabel />
               <Button variant="outline" size="sm" onClick={startProgress}>
                 {progress >= 100 ? 'Restart' : 'Start'}
               </Button>
             </div>
             <div className="space-y-ds-02">
-              <span className="text-ds-sm text-text-secondary">Indeterminate</span>
+              <span className="text-ds-sm text-surface-fg-muted">Indeterminate</span>
               <Progress />
             </div>
           </div>
@@ -572,19 +572,19 @@ export const SlowAndContinuous: StoryObj = {
 
         {/* Spinner */}
         <div className="space-y-ds-03">
-          <h4 className="text-ds-md font-medium text-text-primary">Spinner</h4>
+          <h4 className="text-ds-md font-medium text-surface-fg">Spinner</h4>
           <div className="flex items-center gap-ds-06">
             <div className="flex flex-col items-center gap-ds-02">
               <Spinner size="sm" />
-              <span className="text-ds-xs text-text-secondary">sm</span>
+              <span className="text-ds-xs text-surface-fg-muted">sm</span>
             </div>
             <div className="flex flex-col items-center gap-ds-02">
               <Spinner size="md" />
-              <span className="text-ds-xs text-text-secondary">md</span>
+              <span className="text-ds-xs text-surface-fg-muted">md</span>
             </div>
             <div className="flex flex-col items-center gap-ds-02">
               <Spinner size="lg" />
-              <span className="text-ds-xs text-text-secondary">lg</span>
+              <span className="text-ds-xs text-surface-fg-muted">lg</span>
             </div>
           </div>
           <TokenBadge>animate-spin — continuous ease-linear</TokenBadge>
@@ -592,7 +592,7 @@ export const SlowAndContinuous: StoryObj = {
 
         {/* Button loading states */}
         <div className="space-y-ds-03">
-          <h4 className="text-ds-md font-medium text-text-primary">Button loading states</h4>
+          <h4 className="text-ds-md font-medium text-surface-fg">Button loading states</h4>
           <div className="flex flex-wrap gap-ds-03">
             <Button loading loadingPosition="start">Saving...</Button>
             <Button loading loadingPosition="center">Processing</Button>
@@ -626,7 +626,7 @@ export const TransitionUtilities: StoryObj = {
           <SectionLabel sub="Framer Motion transition primitives">
             Motion Primitives
           </SectionLabel>
-          <p className="text-ds-sm text-text-secondary mb-ds-06">
+          <p className="text-ds-sm text-surface-fg-muted mb-ds-06">
             Physics-based transition wrappers powered by Framer Motion.
             Automatically respect reduced-motion preferences via MotionProvider.
           </p>
@@ -635,15 +635,15 @@ export const TransitionUtilities: StoryObj = {
         {/* MotionFade */}
         <div className="space-y-ds-03">
           <div className="flex items-center gap-ds-03">
-            <h4 className="text-ds-md font-medium text-text-primary">MotionFade</h4>
+            <h4 className="text-ds-md font-medium text-surface-fg">MotionFade</h4>
             <Button variant="ghost" size="sm" onClick={() => setFadeOpen((p) => !p)}>
               Toggle
             </Button>
             <TokenBadge>tweens.fade</TokenBadge>
           </div>
           <MotionFade show={fadeOpen}>
-            <div className="rounded-ds-md bg-layer-02 border border-border p-ds-05">
-              <p className="text-ds-sm text-text-secondary">
+            <div className="rounded-ds-md bg-surface-2 border border-surface-border-strong p-ds-05">
+              <p className="text-ds-sm text-surface-fg-muted">
                 This content fades in and out with <code className="font-mono">opacity</code> via AnimatePresence.
               </p>
             </div>
@@ -653,15 +653,15 @@ export const TransitionUtilities: StoryObj = {
         {/* MotionCollapse */}
         <div className="space-y-ds-03">
           <div className="flex items-center gap-ds-03">
-            <h4 className="text-ds-md font-medium text-text-primary">MotionCollapse</h4>
+            <h4 className="text-ds-md font-medium text-surface-fg">MotionCollapse</h4>
             <Button variant="ghost" size="sm" onClick={() => setCollapseOpen((p) => !p)}>
               Toggle
             </Button>
             <TokenBadge>springs.snappy</TokenBadge>
           </div>
           <MotionCollapse show={collapseOpen}>
-            <div className="rounded-ds-md bg-layer-02 border border-border p-ds-05">
-              <p className="text-ds-sm text-text-secondary">
+            <div className="rounded-ds-md bg-surface-2 border border-surface-border-strong p-ds-05">
+              <p className="text-ds-sm text-surface-fg-muted">
                 Height-based collapse/expand with spring physics. Great for accordion-like reveals
                 where content pushes below it.
               </p>
@@ -672,15 +672,15 @@ export const TransitionUtilities: StoryObj = {
         {/* MotionScale */}
         <div className="space-y-ds-03">
           <div className="flex items-center gap-ds-03">
-            <h4 className="text-ds-md font-medium text-text-primary">MotionScale</h4>
+            <h4 className="text-ds-md font-medium text-surface-fg">MotionScale</h4>
             <Button variant="ghost" size="sm" onClick={() => setGrowOpen((p) => !p)}>
               Toggle
             </Button>
             <TokenBadge>springs.gentle</TokenBadge>
           </div>
           <MotionScale show={growOpen}>
-            <div className="rounded-ds-md bg-layer-02 border border-border p-ds-05 inline-block">
-              <p className="text-ds-sm text-text-secondary">
+            <div className="rounded-ds-md bg-surface-2 border border-surface-border-strong p-ds-05 inline-block">
+              <p className="text-ds-sm text-surface-fg-muted">
                 Scales from 0.96 to 1 with opacity. Good for popover-like reveals.
               </p>
             </div>
@@ -690,16 +690,16 @@ export const TransitionUtilities: StoryObj = {
         {/* MotionSlide */}
         <div className="space-y-ds-03">
           <div className="flex items-center gap-ds-03">
-            <h4 className="text-ds-md font-medium text-text-primary">MotionSlide</h4>
+            <h4 className="text-ds-md font-medium text-surface-fg">MotionSlide</h4>
             <Button variant="ghost" size="sm" onClick={() => setSlideOpen((p) => !p)}>
               Toggle
             </Button>
             <TokenBadge>springs.gentle</TokenBadge>
           </div>
-          <div className="overflow-hidden rounded-ds-md border border-border">
+          <div className="overflow-hidden rounded-ds-md border border-surface-border-strong">
             <MotionSlide show={slideOpen} direction="bottom">
-              <div className="bg-layer-02 p-ds-05">
-                <p className="text-ds-sm text-text-secondary">
+              <div className="bg-surface-2 p-ds-05">
+                <p className="text-ds-sm text-surface-fg-muted">
                   Slides in from a direction (top/bottom/left/right). Used for bottom sheets,
                   slide-in panels, and notification bars.
                 </p>
@@ -737,14 +737,14 @@ export const ScenarioFormSubmission: StoryObj = {
           <SectionLabel sub="Multiple motion tiers in one flow">
             Scenario: Form Submission
           </SectionLabel>
-          <p className="text-ds-sm text-text-secondary mb-ds-04">
+          <p className="text-ds-sm text-surface-fg-muted mb-ds-04">
             Watch how different duration tiers create a cohesive experience:
             input focus is instant (70ms), the button spinner is continuous,
             and the success feedback fades in at 240ms.
           </p>
         </div>
 
-        <div className="rounded-ds-xl border border-border bg-layer-01 p-ds-06 space-y-ds-05">
+        <div className="rounded-ds-xl border border-surface-border-strong bg-surface-1 p-ds-06 space-y-ds-05">
           <div className="space-y-ds-02">
             <Label>Email address</Label>
             <Input
@@ -778,30 +778,30 @@ export const ScenarioFormSubmission: StoryObj = {
 
           {/* Success feedback */}
           <Fade open={step === 'success'}>
-            <div className="flex items-center gap-ds-03 rounded-ds-md bg-success-surface border border-success-border p-ds-04">
-              <IconCheck className="h-ico-md w-ico-md text-success-text" />
+            <div className="flex items-center gap-ds-03 rounded-ds-md bg-success-3 border border-success-7 p-ds-04">
+              <IconCheck className="h-ico-md w-ico-md text-success-11" />
               <div>
-                <p className="text-ds-sm font-medium text-success-text">Message sent successfully</p>
-                <p className="text-ds-xs text-success-text opacity-[0.8]">We'll get back to you soon.</p>
+                <p className="text-ds-sm font-medium text-success-11">Message sent successfully</p>
+                <p className="text-ds-xs text-success-11 opacity-80">We'll get back to you soon.</p>
               </div>
             </div>
           </Fade>
         </div>
 
         <div className="space-y-ds-02">
-          <p className="text-ds-xs font-semibold text-text-secondary uppercase tracking-wide">Motion breakdown</p>
+          <p className="text-ds-xs font-semibold text-surface-fg-muted uppercase tracking-wide">Motion breakdown</p>
           <div className="grid grid-cols-3 gap-ds-03">
-            <div className="rounded-ds-md bg-layer-02 p-ds-03 text-center">
-              <p className="text-ds-xs font-mono text-text-secondary">fast-01</p>
-              <p className="text-ds-xs text-text-primary">Input focus</p>
+            <div className="rounded-ds-md bg-surface-2 p-ds-03 text-center">
+              <p className="text-ds-xs font-mono text-surface-fg-muted">fast-01</p>
+              <p className="text-ds-xs text-surface-fg">Input focus</p>
             </div>
-            <div className="rounded-ds-md bg-layer-02 p-ds-03 text-center">
-              <p className="text-ds-xs font-mono text-text-secondary">continuous</p>
-              <p className="text-ds-xs text-text-primary">Button spinner</p>
+            <div className="rounded-ds-md bg-surface-2 p-ds-03 text-center">
+              <p className="text-ds-xs font-mono text-surface-fg-muted">continuous</p>
+              <p className="text-ds-xs text-surface-fg">Button spinner</p>
             </div>
-            <div className="rounded-ds-md bg-layer-02 p-ds-03 text-center">
-              <p className="text-ds-xs font-mono text-text-secondary">moderate-02</p>
-              <p className="text-ds-xs text-text-primary">Success fade</p>
+            <div className="rounded-ds-md bg-surface-2 p-ds-03 text-center">
+              <p className="text-ds-xs font-mono text-surface-fg-muted">moderate-02</p>
+              <p className="text-ds-xs text-surface-fg">Success fade</p>
             </div>
           </div>
         </div>
@@ -843,13 +843,13 @@ export const ScenarioDashboardLoading: StoryObj = {
             <Button variant="outline" size="sm" onClick={reload}>
               Reload
             </Button>
-            <span className="text-ds-xs text-text-secondary">
+            <span className="text-ds-xs text-surface-fg-muted">
               {loading ? 'Loading (2s)...' : 'Loaded!'}
             </span>
           </div>
         </div>
 
-        <div className="rounded-ds-xl border border-border bg-layer-01 p-ds-06 space-y-ds-06">
+        <div className="rounded-ds-xl border border-surface-border-strong bg-surface-1 p-ds-06 space-y-ds-06">
           {/* Header area */}
           <div className="flex items-center justify-between">
             {loading ? (
@@ -860,7 +860,7 @@ export const ScenarioDashboardLoading: StoryObj = {
             ) : (
               <Fade open={!loading}>
                 <div className="flex items-center justify-between w-full">
-                  <h3 className="text-ds-lg font-semibold text-text-primary">Dashboard</h3>
+                  <h3 className="text-ds-lg font-semibold text-surface-fg">Dashboard</h3>
                   <Button size="sm" variant="outline">Export</Button>
                 </div>
               </Fade>
@@ -871,7 +871,7 @@ export const ScenarioDashboardLoading: StoryObj = {
           <div className="grid grid-cols-3 gap-ds-04">
             {loading
               ? Array.from({ length: 3 }).map((_, i) => (
-                  <div key={i} className="rounded-ds-md bg-layer-02 p-ds-04 space-y-ds-02">
+                  <div key={i} className="rounded-ds-md bg-surface-2 p-ds-04 space-y-ds-02">
                     <Skeleton variant="text" className="w-16 h-3" animation="shimmer" />
                     <Skeleton variant="text" className="w-10 h-6" animation="shimmer" />
                   </div>
@@ -882,10 +882,10 @@ export const ScenarioDashboardLoading: StoryObj = {
                   { label: 'Overdue', value: '3', color: 'error' as const },
                 ].map((stat) => (
                   <Fade key={stat.label} open={!loading}>
-                    <div className="rounded-ds-md bg-layer-02 p-ds-04">
-                      <p className="text-ds-xs text-text-secondary">{stat.label}</p>
+                    <div className="rounded-ds-md bg-surface-2 p-ds-04">
+                      <p className="text-ds-xs text-surface-fg-muted">{stat.label}</p>
                       <div className="flex items-center gap-ds-02 mt-ds-01">
-                        <span className="text-ds-xl font-semibold text-text-primary">{stat.value}</span>
+                        <span className="text-ds-xl font-semibold text-surface-fg">{stat.value}</span>
                         <Badge color={stat.color} size="sm">{stat.label}</Badge>
                       </div>
                     </div>
@@ -912,12 +912,12 @@ export const ScenarioDashboardLoading: StoryObj = {
                 ].map((task) => (
                   <Fade key={task.name} open={!loading}>
                     <div className="flex items-center gap-ds-04">
-                      <div className="h-8 w-8 rounded-ds-full bg-interactive-subtle flex items-center justify-center">
-                        <IconCheck className="h-ico-sm w-ico-sm text-interactive" />
+                      <div className="h-8 w-8 rounded-ds-full bg-accent-2 flex items-center justify-center">
+                        <IconCheck className="h-ico-sm w-ico-sm text-accent-11" />
                       </div>
                       <div className="flex-1">
-                        <p className="text-ds-sm text-text-primary">{task.name}</p>
-                        <p className="text-ds-xs text-text-secondary">{task.badge}</p>
+                        <p className="text-ds-sm text-surface-fg">{task.name}</p>
+                        <p className="text-ds-xs text-surface-fg-muted">{task.badge}</p>
                       </div>
                     </div>
                   </Fade>
@@ -926,15 +926,15 @@ export const ScenarioDashboardLoading: StoryObj = {
         </div>
 
         <div className="space-y-ds-02">
-          <p className="text-ds-xs font-semibold text-text-secondary uppercase tracking-wide">Motion breakdown</p>
+          <p className="text-ds-xs font-semibold text-surface-fg-muted uppercase tracking-wide">Motion breakdown</p>
           <div className="grid grid-cols-2 gap-ds-03">
-            <div className="rounded-ds-md bg-layer-02 p-ds-03 text-center">
-              <p className="text-ds-xs font-mono text-text-secondary">slow-02 (700ms)</p>
-              <p className="text-ds-xs text-text-primary">Skeleton shimmer loop</p>
+            <div className="rounded-ds-md bg-surface-2 p-ds-03 text-center">
+              <p className="text-ds-xs font-mono text-surface-fg-muted">slow-02 (700ms)</p>
+              <p className="text-ds-xs text-surface-fg">Skeleton shimmer loop</p>
             </div>
-            <div className="rounded-ds-md bg-layer-02 p-ds-03 text-center">
-              <p className="text-ds-xs font-mono text-text-secondary">moderate-02 (240ms)</p>
-              <p className="text-ds-xs text-text-primary">Content fade-in</p>
+            <div className="rounded-ds-md bg-surface-2 p-ds-03 text-center">
+              <p className="text-ds-xs font-mono text-surface-fg-muted">moderate-02 (240ms)</p>
+              <p className="text-ds-xs text-surface-fg">Content fade-in</p>
             </div>
           </div>
         </div>
@@ -978,7 +978,7 @@ export const ScenarioNotificationCenter: StoryObj = {
           <SectionLabel sub="Badge + Sheet + dismiss transitions">
             Scenario: Notification Center
           </SectionLabel>
-          <p className="text-ds-sm text-text-secondary mb-ds-04">
+          <p className="text-ds-sm text-surface-fg-muted mb-ds-04">
             Click the bell to open the notification sheet. Dismiss notifications
             to see the collapse transition. Multiple motion tiers work together.
           </p>
@@ -1006,7 +1006,7 @@ export const ScenarioNotificationCenter: StoryObj = {
               <div className="mt-ds-06 space-y-ds-03">
                 {notifications.length === 0 ? (
                   <div className="text-center py-ds-08">
-                    <p className="text-ds-sm text-text-secondary">All caught up!</p>
+                    <p className="text-ds-sm text-surface-fg-muted">All caught up!</p>
                     <Button variant="ghost" size="sm" className="mt-ds-03" onClick={restore}>
                       Restore notifications
                     </Button>
@@ -1015,15 +1015,15 @@ export const ScenarioNotificationCenter: StoryObj = {
                   notifications.map((n) => (
                     <div
                       key={n.id}
-                      className="flex items-start gap-ds-03 rounded-ds-md border border-border p-ds-04 transition-colors duration-fast-01 hover:bg-layer-02"
+                      className="flex items-start gap-ds-03 rounded-ds-md border border-surface-border-strong p-ds-04 transition-colors duration-fast-01 hover:bg-surface-2"
                     >
                       <Badge color={n.color} size="sm" dot>
                         {n.color}
                       </Badge>
                       <div className="flex-1 min-w-0">
-                        <p className="text-ds-sm font-medium text-text-primary">{n.title}</p>
-                        <p className="text-ds-xs text-text-secondary">{n.desc}</p>
-                        <p className="text-ds-xs text-text-placeholder mt-ds-01">{n.time}</p>
+                        <p className="text-ds-sm font-medium text-surface-fg">{n.title}</p>
+                        <p className="text-ds-xs text-surface-fg-muted">{n.desc}</p>
+                        <p className="text-ds-xs text-surface-fg-subtle mt-ds-01">{n.time}</p>
                       </div>
                       <Button
                         variant="ghost"
@@ -1048,19 +1048,19 @@ export const ScenarioNotificationCenter: StoryObj = {
         </div>
 
         <div className="space-y-ds-02">
-          <p className="text-ds-xs font-semibold text-text-secondary uppercase tracking-wide">Motion breakdown</p>
+          <p className="text-ds-xs font-semibold text-surface-fg-muted uppercase tracking-wide">Motion breakdown</p>
           <div className="grid grid-cols-3 gap-ds-03">
-            <div className="rounded-ds-md bg-layer-02 p-ds-03 text-center">
-              <p className="text-ds-xs font-mono text-text-secondary">fast-01</p>
-              <p className="text-ds-xs text-text-primary">Button hover</p>
+            <div className="rounded-ds-md bg-surface-2 p-ds-03 text-center">
+              <p className="text-ds-xs font-mono text-surface-fg-muted">fast-01</p>
+              <p className="text-ds-xs text-surface-fg">Button hover</p>
             </div>
-            <div className="rounded-ds-md bg-layer-02 p-ds-03 text-center">
-              <p className="text-ds-xs font-mono text-text-secondary">moderate-02</p>
-              <p className="text-ds-xs text-text-primary">Sheet slide-in</p>
+            <div className="rounded-ds-md bg-surface-2 p-ds-03 text-center">
+              <p className="text-ds-xs font-mono text-surface-fg-muted">moderate-02</p>
+              <p className="text-ds-xs text-surface-fg">Sheet slide-in</p>
             </div>
-            <div className="rounded-ds-md bg-layer-02 p-ds-03 text-center">
-              <p className="text-ds-xs font-mono text-text-secondary">fast-01</p>
-              <p className="text-ds-xs text-text-primary">Card hover</p>
+            <div className="rounded-ds-md bg-surface-2 p-ds-03 text-center">
+              <p className="text-ds-xs font-mono text-surface-fg-muted">fast-01</p>
+              <p className="text-ds-xs text-surface-fg">Card hover</p>
             </div>
           </div>
         </div>
@@ -1100,18 +1100,18 @@ export const ReducedMotionDemo: StoryObj = {
           <SectionLabel sub="How the motion system handles prefers-reduced-motion">
             Reduced Motion (Accessibility)
           </SectionLabel>
-          <p className="text-ds-sm text-text-secondary mb-ds-04">
+          <p className="text-ds-sm text-surface-fg-muted mb-ds-04">
             When users have <code className="font-mono text-ds-xs">prefers-reduced-motion: reduce</code> enabled
             in their OS settings, all animation and transition durations collapse to 0.01ms.
             Content still appears and disappears — just instantly, without motion.
           </p>
         </div>
 
-        <div className="rounded-ds-md bg-layer-02 border border-border p-ds-05 space-y-ds-04">
+        <div className="rounded-ds-md bg-surface-2 border border-surface-border-strong p-ds-05 space-y-ds-04">
           <div className="flex items-center justify-between">
             <div>
-              <p className="text-ds-sm font-medium text-text-primary">Simulate reduced motion</p>
-              <p className="text-ds-xs text-text-secondary">
+              <p className="text-ds-sm font-medium text-surface-fg">Simulate reduced motion</p>
+              <p className="text-ds-xs text-surface-fg-muted">
                 Toggle to see the difference. In production, this is automatic via CSS media query.
               </p>
             </div>
@@ -1129,14 +1129,14 @@ export const ReducedMotionDemo: StoryObj = {
 
           {/* Animated box */}
           <div
-            className="rounded-ds-md bg-interactive-subtle border border-interactive p-ds-05 transition-all ease-productive-entrance"
+            className="rounded-ds-md bg-accent-2 border border-accent-7 p-ds-05 transition-all ease-productive-entrance"
             style={{
               opacity: showContent ? 1 : 0,
               transform: showContent ? 'translateY(0)' : 'translateY(-8px)',
               transitionDuration: reduced ? '0.01ms' : '240ms',
             }}
           >
-            <p className="text-ds-sm text-text-primary">
+            <p className="text-ds-sm text-surface-fg">
               {reduced
                 ? 'No motion — content appears/disappears instantly.'
                 : 'This box fades and slides with 240ms expressive entrance.'}
@@ -1146,11 +1146,11 @@ export const ReducedMotionDemo: StoryObj = {
           {/* Progress comparison */}
           <div className="grid grid-cols-2 gap-ds-04">
             <div className="space-y-ds-02">
-              <span className="text-ds-xs text-text-secondary">Progress bar</span>
+              <span className="text-ds-xs text-surface-fg-muted">Progress bar</span>
               <Progress value={65} showLabel />
             </div>
             <div className="space-y-ds-02">
-              <span className="text-ds-xs text-text-secondary">Skeleton</span>
+              <span className="text-ds-xs text-surface-fg-muted">Skeleton</span>
               <Skeleton
                 variant="rectangle"
                 className="h-8 w-full"
@@ -1160,8 +1160,8 @@ export const ReducedMotionDemo: StoryObj = {
           </div>
         </div>
 
-        <div className="rounded-ds-md bg-warning-surface border border-warning-border p-ds-04">
-          <p className="text-ds-sm text-warning-text">
+        <div className="rounded-ds-md bg-warning-3 border border-warning-7 p-ds-04">
+          <p className="text-ds-sm text-warning-11">
             <strong>How it works in production:</strong> The global CSS rule{' '}
             <code className="font-mono text-ds-xs">@media (prefers-reduced-motion: reduce)</code>{' '}
             sets all <code className="font-mono text-ds-xs">animation-duration</code> and{' '}

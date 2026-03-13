@@ -20,21 +20,21 @@ export function Layout({
   topBarActions,
 }: LayoutProps) {
   return (
-    <div className="flex h-screen flex-col bg-background text-text-primary">
+    <div className="flex h-screen flex-col bg-surface-1 text-surface-fg">
       {/* Top bar */}
-      <header className="flex h-14 shrink-0 items-center justify-between border-b border-border-subtle px-4">
+      <header className="flex h-14 shrink-0 items-center justify-between border-b border-surface-border px-4">
         <div className="flex items-center gap-4">
           <h1 className="font-display text-lg font-semibold tracking-tight">
-            शिल्प सूत्र <span className="text-text-secondary font-normal">Playground</span>
+            शिल्प सूत्र <span className="text-surface-fg-muted font-normal">Playground</span>
           </h1>
           {/* Mode switcher */}
-          <div className="flex rounded-md border border-border-subtle">
+          <div className="flex rounded-md border border-surface-border">
             <button
               onClick={() => onModeChange('tokens')}
               className={`px-3 py-1.5 text-sm font-medium transition-colors ${
                 mode === 'tokens'
-                  ? 'bg-interactive text-text-on-color'
-                  : 'text-text-secondary hover:text-text-primary'
+                  ? 'bg-accent-9 text-accent-fg'
+                  : 'text-surface-fg-muted hover:text-surface-fg'
               } rounded-l-md`}
             >
               Token Studio
@@ -43,8 +43,8 @@ export function Layout({
               onClick={() => onModeChange('sandbox')}
               className={`px-3 py-1.5 text-sm font-medium transition-colors ${
                 mode === 'sandbox'
-                  ? 'bg-interactive text-text-on-color'
-                  : 'text-text-secondary hover:text-text-primary'
+                  ? 'bg-accent-9 text-accent-fg'
+                  : 'text-surface-fg-muted hover:text-surface-fg'
               } rounded-r-md`}
             >
               Component Sandbox
@@ -55,7 +55,7 @@ export function Layout({
           {/* Dark mode toggle */}
           <button
             onClick={onToggleDarkMode}
-            className="rounded-md p-2 text-text-secondary hover:bg-layer-02 hover:text-text-primary"
+            className="rounded-md p-2 text-surface-fg-muted hover:bg-surface-2 hover:text-surface-fg"
             aria-label={darkMode ? 'Switch to light mode' : 'Switch to dark mode'}
           >
             {darkMode ? '\u2600\uFE0F' : '\uD83C\uDF19'}
@@ -67,7 +67,7 @@ export function Layout({
       {/* Main content */}
       <div className="flex flex-1 overflow-hidden">
         {/* Sidebar */}
-        <aside className="w-80 shrink-0 overflow-y-auto border-r border-border-subtle p-4">
+        <aside className="w-80 shrink-0 overflow-y-auto border-r border-surface-border p-4">
           {sidebar}
         </aside>
         {/* Preview */}

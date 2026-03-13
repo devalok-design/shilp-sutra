@@ -183,8 +183,8 @@ const ConversationTab = React.forwardRef<HTMLDivElement, ConversationTabProps>(
                     className={cn(
                       'text-ds-xs font-semibold',  /* avatar initials — below scale, leave as-is */
                       isClient
-                        ? 'bg-warning-surface text-text-warning'
-                        : 'bg-layer-03 text-text-on-color',
+                        ? 'bg-warning-3 text-warning-11'
+                        : 'bg-surface-3 text-accent-fg',
                     )}
                   >
                     {getInitials(author.name)}
@@ -194,24 +194,24 @@ const ConversationTab = React.forwardRef<HTMLDivElement, ConversationTabProps>(
                 {/* Comment body */}
                 <div className="flex-1 min-w-0">
                   <div className="flex items-baseline gap-ds-03">
-                    <span className="text-ds-md font-medium text-text-primary">
+                    <span className="text-ds-md font-medium text-surface-fg">
                       {author.name}
                     </span>
                     {/* Badge: staff sees "Client" on client comments; client sees "Team" on staff comments */}
                     {clientMode ? (
                       !isClient && (
-                        <span className="rounded bg-layer-03 px-ds-02 py-px text-ds-xs font-semibold uppercase tracking-wider text-text-on-color">
+                        <span className="rounded bg-surface-3 px-ds-02 py-px text-ds-xs font-semibold uppercase tracking-wider text-accent-fg">
                           Team
                         </span>
                       )
                     ) : (
                       isClient && (
-                        <span className="rounded bg-warning-surface px-ds-02 py-px text-ds-xs font-semibold uppercase tracking-wider text-text-warning">
+                        <span className="rounded bg-warning-3 px-ds-02 py-px text-ds-xs font-semibold uppercase tracking-wider text-warning-11">
                           Client
                         </span>
                       )
                     )}
-                    <span className="text-ds-sm text-text-placeholder">
+                    <span className="text-ds-sm text-surface-fg-subtle">
                       {formatTimestamp(comment.createdAt)}
                     </span>
                   </div>
@@ -223,7 +223,7 @@ const ConversationTab = React.forwardRef<HTMLDivElement, ConversationTabProps>(
                         className: '[&_.ProseMirror]:!min-h-0 [&_.ProseMirror]:!p-0',
                       })
                     ) : (
-                      <p className="text-ds-md text-text-secondary whitespace-pre-wrap">
+                      <p className="text-ds-md text-surface-fg-muted whitespace-pre-wrap">
                         {stripHtml(comment.content)}
                       </p>
                     )}
@@ -245,7 +245,7 @@ const ConversationTab = React.forwardRef<HTMLDivElement, ConversationTabProps>(
       {/* Comment input */}
       <div className="mt-ds-05 space-y-ds-03">
         {taskVisibility === 'EVERYONE' && !clientMode && (
-          <p className="text-ds-xs text-text-warning">
+          <p className="text-ds-xs text-warning-11">
             This task is visible to clients. Comments may be seen by external users.
           </p>
         )}
@@ -261,7 +261,7 @@ const ConversationTab = React.forwardRef<HTMLDivElement, ConversationTabProps>(
             onChange={(e) => setEditorContent(e.target.value)}
             placeholder="Write a comment..."
             rows={3}
-            className="w-full resize-none rounded-ds-md border border-border bg-transparent px-ds-04 py-ds-03 text-ds-md text-text-primary placeholder:text-text-placeholder outline-none focus:border-border-subtle"
+            className="w-full resize-none rounded-ds-md border border-surface-border-strong bg-transparent px-ds-04 py-ds-03 text-ds-md text-surface-fg placeholder:text-surface-fg-subtle outline-none focus:border-surface-border"
           />
         )}
         <div className="flex justify-end">
@@ -269,7 +269,7 @@ const ConversationTab = React.forwardRef<HTMLDivElement, ConversationTabProps>(
             type="button"
             onClick={handlePost}
             disabled={!editorContent.replace(/<[^>]*>/g, '').trim()}
-            className="inline-flex items-center gap-ds-02b rounded-ds-lg bg-interactive px-ds-04 py-ds-02b text-ds-sm font-semibold text-text-on-color transition-colors hover:bg-interactive-hover disabled:opacity-[0.38] disabled:cursor-not-allowed"
+            className="inline-flex items-center gap-ds-02b rounded-ds-lg bg-accent-9 px-ds-04 py-ds-02b text-ds-sm font-semibold text-accent-fg transition-colors hover:bg-accent-10 disabled:opacity-action-disabled disabled:cursor-not-allowed"
           >
             <IconSend className="h-ico-sm w-ico-sm" stroke={2} />
             Comment

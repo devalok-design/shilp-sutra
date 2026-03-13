@@ -75,19 +75,19 @@ export const WithChildren: Story = {
       <nav className="flex items-center gap-ds-04 text-ds-sm">
         <a
           href="#"
-          className="font-medium text-text-primary hover:underline"
+          className="font-medium text-surface-fg hover:underline"
         >
           Dashboard
         </a>
         <a
           href="#"
-          className="text-text-secondary hover:underline"
+          className="text-surface-fg-muted hover:underline"
         >
           Projects
         </a>
         <a
           href="#"
-          className="text-text-secondary hover:underline"
+          className="text-surface-fg-muted hover:underline"
         >
           Support
         </a>

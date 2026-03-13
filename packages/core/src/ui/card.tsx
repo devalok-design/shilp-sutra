@@ -8,14 +8,14 @@ import { springs, motionProps } from './lib/motion'
 import { cn } from './lib/utils'
 
 const cardVariants = cva(
-  'rounded-ds-lg text-text-primary',
+  'rounded-ds-lg text-surface-fg',
   {
     variants: {
       variant: {
-        default: 'bg-layer-01 border border-border-subtle shadow-01',
-        elevated: 'bg-layer-01 border border-border-subtle shadow-02',
-        outline: 'bg-transparent border-2 border-border shadow-none',
-        flat: 'bg-layer-02 border-none shadow-none',
+        default: 'bg-surface-1 border border-surface-border shadow-01',
+        elevated: 'bg-surface-1 border border-surface-border shadow-02',
+        outline: 'bg-transparent border-2 border-surface-border-strong shadow-none',
+        flat: 'bg-surface-2 border-none shadow-none',
       },
     },
     defaultVariants: { variant: 'default' },
@@ -66,7 +66,7 @@ const cardVariants = cva(
  * @example
  * // Flat card for a sidebar panel section (no shadow):
  * <Card variant="flat" className="p-ds-05">
- *   <p className="text-text-secondary text-ds-sm">No recent activity</p>
+ *   <p className="text-surface-fg-muted text-ds-sm">No recent activity</p>
  * </Card>
  * // These are just a few ways — feel free to combine props creatively!
  */
@@ -80,7 +80,7 @@ const Card = React.forwardRef<HTMLDivElement, CardProps>(
   ({ className, variant, interactive, ...props }, ref) => {
     const classes = cn(
       cardVariants({ variant }),
-      interactive && 'hover:shadow-02 hover:border-border-strong cursor-pointer',
+      interactive && 'hover:shadow-02 hover:border-surface-border-strong cursor-pointer',
       className,
     )
 
@@ -120,7 +120,7 @@ const CardTitle = React.forwardRef<
 >(({ className, ...props }, ref) => (
   <div
     ref={ref}
-    className={cn('font-sans font-semibold leading-ds-none tracking-ds-tight text-text-primary', className)}
+    className={cn('font-sans font-semibold leading-ds-none tracking-ds-tight text-surface-fg', className)}
     {...props}
   />
 ))
@@ -132,7 +132,7 @@ const CardDescription = React.forwardRef<
 >(({ className, ...props }, ref) => (
   <div
     ref={ref}
-    className={cn('text-ds-md text-text-secondary', className)}
+    className={cn('text-ds-md text-surface-fg-muted', className)}
     {...props}
   />
 ))

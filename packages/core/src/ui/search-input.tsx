@@ -60,7 +60,7 @@ const SearchInput = React.forwardRef<HTMLInputElement, SearchInputProps>(
     return (
       <div className="relative flex items-center">
         <IconSearch
-          className="absolute left-[0.75rem] h-ico-md w-ico-md text-text-secondary pointer-events-none"
+          className="absolute left-[0.75rem] h-ico-md w-ico-md text-surface-fg-muted pointer-events-none"
           aria-hidden="true"
         />
         <input
@@ -70,13 +70,13 @@ const SearchInput = React.forwardRef<HTMLInputElement, SearchInputProps>(
           className={cn(
             'flex w-full font-sans',
             sizeClasses[size],
-            'bg-field text-text-primary',
-            'border border-border rounded-ds-md',
-            'placeholder:text-text-placeholder',
-            'hover:bg-field-hover',
+            'bg-surface-3 text-surface-fg',
+            'border border-surface-border-strong rounded-ds-md',
+            'placeholder:text-surface-fg-subtle',
+            'hover:bg-surface-4',
             'transition-colors duration-fast-01',
-            'focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-focus focus-visible:border-border-interactive',
-            'disabled:cursor-not-allowed disabled:opacity-[0.38]',
+            'focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent-9 focus-visible:border-accent-7',
+            'disabled:cursor-not-allowed disabled:opacity-action-disabled',
             className,
           )}
           {...props}
@@ -89,7 +89,7 @@ const SearchInput = React.forwardRef<HTMLInputElement, SearchInputProps>(
           <button
             type="button"
             onClick={onClear}
-            className="absolute right-[0.75rem] rounded-ds-full h-ico-md w-ico-md flex items-center justify-center text-text-secondary hover:text-text-primary hover:bg-layer-02 transition-colors"
+            className="absolute right-[0.75rem] rounded-ds-full h-ico-md w-ico-md flex items-center justify-center text-surface-fg-muted hover:text-surface-fg hover:bg-surface-2 transition-colors"
             aria-label="Clear search"
           >
             <IconX className="h-ico-sm w-ico-sm" />

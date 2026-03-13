@@ -258,7 +258,7 @@ const meta: Meta<typeof KanbanBoard> = {
   },
   decorators: [
     (Story) => (
-      <div className="h-screen bg-background p-ds-06">
+      <div className="h-screen bg-surface-1 p-ds-06">
         <Story />
       </div>
     ),

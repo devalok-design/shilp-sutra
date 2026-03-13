@@ -143,10 +143,10 @@ export const AttendanceOverview = React.forwardRef<HTMLDivElement, AttendanceOve
                 return (
                   <div
                     key={status}
-                    className="flex w-full flex-col gap-ds-04 rounded-ds-md bg-layer-02 p-ds-06 md:rounded-ds-lg"
+                    className="flex w-full flex-col gap-ds-04 rounded-ds-md bg-surface-2 p-ds-06 md:rounded-ds-lg"
                   >
                     {usersList?.length > 0 && (
-                      <h2 className="text-ds-sm font-semibold uppercase tracking-wider capitalize text-text-tertiary">
+                      <h2 className="text-ds-sm font-semibold uppercase tracking-wider capitalize text-surface-fg-subtle">
                         {`On Break (${usersList?.length || 0})`}
                       </h2>
                     )}
@@ -171,9 +171,9 @@ export const AttendanceOverview = React.forwardRef<HTMLDivElement, AttendanceOve
             ([status, groupUsers]) => (
               <div
                 key={status}
-                className={cn('flex w-full flex-col gap-ds-04 rounded-ds-md bg-layer-02 p-ds-06 md:rounded-ds-lg md:p-ds-05', status !== 'yetToMark' ? 'border-r border-border' : '', 'max-md:border-0 max-md:p-ds-05', 'min-w-[200px]')}
+                className={cn('flex w-full flex-col gap-ds-04 rounded-ds-md bg-surface-2 p-ds-06 md:rounded-ds-lg md:p-ds-05', status !== 'yetToMark' ? 'border-r border-surface-border-strong' : '', 'max-md:border-0 max-md:p-ds-05', 'min-w-[200px]')}
               >
-                <h2 className="text-ds-sm font-semibold uppercase tracking-wider capitalize text-text-tertiary">
+                <h2 className="text-ds-sm font-semibold uppercase tracking-wider capitalize text-surface-fg-subtle">
                   {status === 'yetToMark'
                     ? 'Yet to Mark'
                     : status

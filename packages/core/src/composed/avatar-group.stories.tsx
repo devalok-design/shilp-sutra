@@ -98,19 +98,19 @@ export const AllSizes: Story = {
   render: () => (
     <div style={{ display: 'flex', flexDirection: 'column', gap: 16 }}>
       <div style={{ display: 'flex', alignItems: 'center', gap: 16 }}>
-        <span style={{ width: 60, fontSize: 12, color: 'var(--color-text-secondary)' }}>
+        <span style={{ width: 60, fontSize: 12, color: 'var(--color-surface-fg-muted)' }}>
           Small
         </span>
         <AvatarGroup users={mockUsers.slice(0, 5)} size="sm" max={4} />
       </div>
       <div style={{ display: 'flex', alignItems: 'center', gap: 16 }}>
-        <span style={{ width: 60, fontSize: 12, color: 'var(--color-text-secondary)' }}>
+        <span style={{ width: 60, fontSize: 12, color: 'var(--color-surface-fg-muted)' }}>
           Default
         </span>
         <AvatarGroup users={mockUsers.slice(0, 5)} size="md" max={4} />
       </div>
       <div style={{ display: 'flex', alignItems: 'center', gap: 16 }}>
-        <span style={{ width: 60, fontSize: 12, color: 'var(--color-text-secondary)' }}>
+        <span style={{ width: 60, fontSize: 12, color: 'var(--color-surface-fg-muted)' }}>
           Large
         </span>
         <AvatarGroup users={mockUsers.slice(0, 5)} size="lg" max={4} />

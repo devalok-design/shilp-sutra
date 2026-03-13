@@ -64,23 +64,23 @@ export function TokenEditor({
                 if (token.type === 'color') {
                   return (
                     <div key={token.name} className="flex items-center gap-2">
-                      <label className="w-24 text-xs text-text-secondary">{token.label}</label>
+                      <label className="w-24 text-xs text-surface-fg-muted">{token.label}</label>
                       <input
                         type="color"
                         value={currentValue.startsWith('#') ? currentValue : '#888888'}
                         onChange={(e) => onChangeSemantic(token.name, e.target.value)}
-                        className="h-6 w-6 cursor-pointer rounded border border-border-subtle"
+                        className="h-6 w-6 cursor-pointer rounded border border-surface-border"
                       />
                       <input
                         type="text"
                         value={currentValue}
                         onChange={(e) => onChangeSemantic(token.name, e.target.value)}
-                        className="flex-1 rounded border border-border-subtle bg-field px-2 py-1 text-xs font-mono"
+                        className="flex-1 rounded border border-surface-border bg-surface-3 px-2 py-1 text-xs font-mono"
                       />
                       {isOverridden && (
                         <button
                           onClick={() => onResetToken(token.name)}
-                          className="text-xs text-text-tertiary hover:text-error"
+                          className="text-xs text-surface-fg-subtle hover:text-error-11"
                         >
                           ↺
                         </button>
@@ -92,7 +92,7 @@ export function TokenEditor({
                 // Size / number controls (slider + input)
                 return (
                   <div key={token.name} className="flex items-center gap-2">
-                    <label className="w-24 text-xs text-text-secondary">{token.label}</label>
+                    <label className="w-24 text-xs text-surface-fg-muted">{token.label}</label>
                     <input
                       type="range"
                       min={token.min ?? 0}
@@ -105,13 +105,13 @@ export function TokenEditor({
                       }}
                       className="flex-1"
                     />
-                    <span className="w-16 text-right text-xs font-mono text-text-secondary">
+                    <span className="w-16 text-right text-xs font-mono text-surface-fg-muted">
                       {currentValue}
                     </span>
                     {isOverridden && (
                       <button
                         onClick={() => onResetToken(token.name)}
-                        className="text-xs text-text-tertiary hover:text-error"
+                        className="text-xs text-surface-fg-subtle hover:text-error-11"
                       >
                         ↺
                       </button>

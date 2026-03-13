@@ -123,14 +123,14 @@ describe('ColumnHeader', () => {
     renderHeader({ column })
     const badge = screen.getByLabelText('WIP limit: 1, exceeded')
     expect(badge).toHaveTextContent('/ 1')
-    expect(badge).toHaveClass('text-error')
+    expect(badge).toHaveClass('text-error-11')
   })
 
   it('renders WIP badge without exceeded styling when tasks equal limit', () => {
     const column: BoardColumn = { ...baseColumn, wipLimit: 2 }
     renderHeader({ column })
     const badge = screen.getByLabelText('WIP limit: 2')
-    expect(badge).not.toHaveClass('text-error')
+    expect(badge).not.toHaveClass('text-error-11')
   })
 
   // ---- Avatar stack ----

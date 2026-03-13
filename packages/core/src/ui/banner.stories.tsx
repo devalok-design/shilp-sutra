@@ -90,7 +90,7 @@ export const AllVariants: Story = {
     return (
       <div className="flex flex-col gap-ds-06">
         <div>
-          <p className="mb-ds-03 text-ds-sm font-semibold text-text-secondary">Default</p>
+          <p className="mb-ds-03 text-ds-sm font-semibold text-surface-fg-muted">Default</p>
           <div className="flex flex-col">
             {variants.map((variant) => (
               <Banner key={variant} color={variant}>
@@ -101,7 +101,7 @@ export const AllVariants: Story = {
         </div>
 
         <div>
-          <p className="mb-ds-03 text-ds-sm font-semibold text-text-secondary">Dismissible</p>
+          <p className="mb-ds-03 text-ds-sm font-semibold text-surface-fg-muted">Dismissible</p>
           <div className="flex flex-col">
             {variants.map((variant) => (
               <Banner key={`dismiss-${variant}`} color={variant} onDismiss={() => {}}>
@@ -112,7 +112,7 @@ export const AllVariants: Story = {
         </div>
 
         <div>
-          <p className="mb-ds-03 text-ds-sm font-semibold text-text-secondary">With Action</p>
+          <p className="mb-ds-03 text-ds-sm font-semibold text-surface-fg-muted">With Action</p>
           <div className="flex flex-col">
             {variants.map((variant) => (
               <Banner key={`action-${variant}`} color={variant} action={<Button variant="ghost" size="sm">Action</Button>}>

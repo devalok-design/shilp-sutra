@@ -119,13 +119,13 @@ const TopBar = React.forwardRef<HTMLDivElement, TopBarProps>(
         {...props}
         ref={ref}
         className={cn(
-          'z-sticky flex w-full items-center border-b border-border bg-layer-01 px-ds-05 py-ds-04 md:px-ds-06',
+          'z-sticky flex w-full items-center border-b border-surface-border-strong bg-surface-1 px-ds-05 py-ds-04 md:px-ds-06',
           className,
         )}
       >
       {/* Left: Sidebar trigger + page title */}
       <div className="flex items-center gap-ds-04">
-        <SidebarTrigger className="hidden text-text-secondary md:flex" />
+        <SidebarTrigger className="hidden text-surface-fg-muted md:flex" />
 
         {/* Mobile Logo */}
         {mobileLogo && (
@@ -134,7 +134,7 @@ const TopBar = React.forwardRef<HTMLDivElement, TopBarProps>(
 
         {/* Desktop page title */}
         {pageTitle && (
-          <h2 className="hidden text-ds-lg text-text-primary md:block">
+          <h2 className="hidden text-ds-lg text-surface-fg md:block">
             {pageTitle}
           </h2>
         )}
@@ -149,7 +149,7 @@ const TopBar = React.forwardRef<HTMLDivElement, TopBarProps>(
               type="button"
               onClick={handleSearchClick}
               aria-label="Search (Ctrl+K)"
-              className="flex h-ds-sm-plus w-ds-sm-plus items-center justify-center rounded-ds-full border border-border bg-layer-02 text-text-secondary transition-colors hover:bg-layer-03"
+              className="flex h-ds-sm-plus w-ds-sm-plus items-center justify-center rounded-ds-full border border-surface-border-strong bg-surface-2 text-surface-fg-muted transition-colors hover:bg-surface-3"
             >
               <IconSearch className="h-ico-sm w-ico-sm" aria-hidden="true" />
             </button>
@@ -170,7 +170,7 @@ const TopBar = React.forwardRef<HTMLDivElement, TopBarProps>(
                 type="button"
                 onClick={onAiChatClick}
                 aria-label="AI Chat"
-                className="flex h-ds-sm-plus w-ds-sm-plus items-center justify-center rounded-ds-full border border-border bg-layer-02 text-text-secondary transition-colors hover:bg-layer-03"
+                className="flex h-ds-sm-plus w-ds-sm-plus items-center justify-center rounded-ds-full border border-surface-border-strong bg-surface-2 text-surface-fg-muted transition-colors hover:bg-surface-3"
               >
                 <IconSparkles className="h-ico-sm w-ico-sm" aria-hidden="true" />
               </button>
@@ -192,7 +192,7 @@ const TopBar = React.forwardRef<HTMLDivElement, TopBarProps>(
                       {user.image ? (
                         <AvatarImage src={user.image} alt={user.name} />
                       ) : null}
-                      <AvatarFallback className="bg-layer-02 text-text-primary">
+                      <AvatarFallback className="bg-surface-2 text-surface-fg">
                         {user.name?.charAt(0).toUpperCase()}
                       </AvatarFallback>
                     </Avatar>
@@ -205,28 +205,28 @@ const TopBar = React.forwardRef<HTMLDivElement, TopBarProps>(
             </Tooltip>
 
             <DropdownMenuContent
-              className="w-[200px] rounded-ds-xl border border-border bg-layer-01 p-0 shadow-03"
+              className="w-[200px] rounded-ds-xl border border-surface-border-strong bg-surface-1 p-0 shadow-03"
               sideOffset={8}
               align="end"
             >
               {/* User Info */}
-              <div className="border-b border-border px-ds-05 py-ds-04">
-                <p className="text-ds-md text-text-primary">
+              <div className="border-b border-surface-border-strong px-ds-05 py-ds-04">
+                <p className="text-ds-md text-surface-fg">
                   {user.name}
                 </p>
                 {user.email && (
-                  <p className="text-ds-sm text-text-placeholder">
+                  <p className="text-ds-sm text-surface-fg-subtle">
                     {user.email}
                   </p>
                 )}
               </div>
 
               <DropdownMenuItem
-                className="flex w-full cursor-pointer items-center gap-ds-03 px-ds-05 py-ds-04 hover:bg-layer-02"
+                className="flex w-full cursor-pointer items-center gap-ds-03 px-ds-05 py-ds-04 hover:bg-surface-2"
                 onClick={() => onNavigate?.('/profile')}
               >
-                <IconUser className="h-ico-sm w-ico-sm text-text-secondary" />
-                <span className="text-ds-md text-text-secondary">
+                <IconUser className="h-ico-sm w-ico-sm text-surface-fg-muted" />
+                <span className="text-ds-md text-surface-fg-muted">
                   Profile
                 </span>
               </DropdownMenuItem>
@@ -234,19 +234,19 @@ const TopBar = React.forwardRef<HTMLDivElement, TopBarProps>(
               {/* Custom user menu items */}
               {userMenuItems?.map((item, index) => {
                 const colorMap: Record<string, string> = {
-                  error: 'text-error',
-                  success: 'text-success',
-                  warning: 'text-warning',
-                  info: 'text-info',
+                  error: 'text-error-11',
+                  success: 'text-success-11',
+                  warning: 'text-warning-11',
+                  info: 'text-info-11',
                 }
-                const textColor = item.color ? (colorMap[item.color] ?? 'text-text-secondary') : 'text-text-secondary'
+                const textColor = item.color ? (colorMap[item.color] ?? 'text-surface-fg-muted') : 'text-surface-fg-muted'
                 return (
                   <React.Fragment key={item.label + index}>
-                    {item.separator && <DropdownMenuSeparator className="bg-border" />}
+                    {item.separator && <DropdownMenuSeparator className="bg-surface-border" />}
                     <DropdownMenuItem
                       className={cn(
-                        'flex w-full cursor-pointer items-center gap-ds-03 px-ds-05 py-ds-04 hover:bg-layer-02',
-                        item.disabled && 'pointer-events-none opacity-[0.38]',
+                        'flex w-full cursor-pointer items-center gap-ds-03 px-ds-05 py-ds-04 hover:bg-surface-2',
+                        item.disabled && 'pointer-events-none opacity-action-disabled',
                       )}
                       disabled={item.disabled}
                       onClick={() => {
@@ -265,11 +265,11 @@ const TopBar = React.forwardRef<HTMLDivElement, TopBarProps>(
                       </span>
                       {item.badge != null && item.badge !== false && (
                         typeof item.badge === 'string' ? (
-                          <span className="ml-auto inline-flex h-[18px] min-w-[18px] items-center justify-center rounded-ds-full bg-error px-ds-02 text-[10px] font-semibold leading-none text-text-on-color">
+                          <span className="ml-auto inline-flex h-[18px] min-w-[18px] items-center justify-center rounded-ds-full bg-error-9 px-ds-02 text-[10px] font-semibold leading-none text-accent-fg">
                             {item.badge}
                           </span>
                         ) : (
-                          <span className="ml-auto h-[8px] w-[8px] rounded-ds-full bg-error" />
+                          <span className="ml-auto h-[8px] w-[8px] rounded-ds-full bg-error-9" />
                         )
                       )}
                     </DropdownMenuItem>
@@ -278,28 +278,28 @@ const TopBar = React.forwardRef<HTMLDivElement, TopBarProps>(
               })}
 
               <DropdownMenuItem
-                className="flex w-full cursor-pointer items-center gap-ds-03 px-ds-05 py-ds-04 hover:bg-layer-02"
+                className="flex w-full cursor-pointer items-center gap-ds-03 px-ds-05 py-ds-04 hover:bg-surface-2"
                 onClick={toggleColorMode}
               >
                 {colorMode === 'dark' ? (
-                  <IconSun className="h-ico-sm w-ico-sm text-text-secondary" />
+                  <IconSun className="h-ico-sm w-ico-sm text-surface-fg-muted" />
                 ) : (
-                  <IconMoon className="h-ico-sm w-ico-sm text-text-secondary" />
+                  <IconMoon className="h-ico-sm w-ico-sm text-surface-fg-muted" />
                 )}
-                <span className="text-ds-md text-text-secondary">
+                <span className="text-ds-md text-surface-fg-muted">
                   {colorMode === 'dark' ? 'Light Mode' : 'Dark Mode'}
                 </span>
               </DropdownMenuItem>
 
               {onLogout && (
                 <>
-                  <DropdownMenuSeparator className="bg-border" />
+                  <DropdownMenuSeparator className="bg-surface-border" />
                   <DropdownMenuItem
-                    className="flex w-full cursor-pointer items-center gap-ds-03 px-ds-05 py-ds-04 hover:bg-layer-02"
+                    className="flex w-full cursor-pointer items-center gap-ds-03 px-ds-05 py-ds-04 hover:bg-surface-2"
                     onClick={onLogout}
                   >
-                    <IconLogout className="h-ico-sm w-ico-sm text-error" />
-                    <span className="text-ds-md text-error">
+                    <IconLogout className="h-ico-sm w-ico-sm text-error-11" />
+                    <span className="text-ds-md text-error-11">
                       Logout
                     </span>
                   </DropdownMenuItem>

@@ -86,10 +86,10 @@ export const WithLegend: Story = {
 export const CustomColors: Story = {
   args: {
     data: [
-      { label: 'Approved', value: 45, color: 'var(--color-success-text)' },
-      { label: 'Pending', value: 12, color: 'var(--color-warning-text)' },
-      { label: 'Rejected', value: 5, color: 'var(--color-error-text)' },
-      { label: 'Draft', value: 8, color: 'var(--color-text-tertiary)' },
+      { label: 'Approved', value: 45, color: 'var(--color-success-11)' },
+      { label: 'Pending', value: 12, color: 'var(--color-warning-11)' },
+      { label: 'Rejected', value: 5, color: 'var(--color-error-11)' },
+      { label: 'Draft', value: 8, color: 'var(--color-surface-fg-subtle)' },
     ],
     height: 300,
   },

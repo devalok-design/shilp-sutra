@@ -29,7 +29,7 @@ const ColorInput = React.forwardRef<HTMLInputElement, ColorInputProps>(
           <label
             aria-label="Pick a color"
             className={cn(
-              'relative flex h-ds-sm w-ds-sm shrink-0 cursor-pointer items-center justify-center overflow-hidden rounded-ds-md border border-border transition-colors hover:border-border-strong',
+              'relative flex h-ds-sm w-ds-sm shrink-0 cursor-pointer items-center justify-center overflow-hidden rounded-ds-md border border-surface-border-strong transition-colors hover:border-surface-border-strong',
               disabled && 'cursor-not-allowed opacity-50',
             )}
           >
@@ -67,8 +67,8 @@ const ColorInput = React.forwardRef<HTMLInputElement, ColorInputProps>(
             }}
             maxLength={7}
             className={cn(
-              'h-ds-sm w-[90px] rounded-ds-md border border-border bg-layer-01 px-ds-03 font-mono text-ds-md text-text-primary transition-colors',
-              'focus:border-interactive focus:outline-none focus:ring-1 focus:ring-interactive',
+              'h-ds-sm w-[90px] rounded-ds-md border border-surface-border-strong bg-surface-1 px-ds-03 font-mono text-ds-md text-surface-fg transition-colors',
+              'focus:border-accent-7 focus:outline-none focus:ring-1 focus:ring-accent-9',
               disabled && 'cursor-not-allowed opacity-50',
             )}
           />
@@ -86,8 +86,8 @@ const ColorInput = React.forwardRef<HTMLInputElement, ColorInputProps>(
                 className={cn(
                   'h-ds-xs w-ds-xs rounded-ds-sm border transition-colors',
                   value === preset
-                    ? 'border-interactive ring-1 ring-interactive'
-                    : 'border-border hover:border-border-strong',
+                    ? 'border-accent-7 ring-1 ring-accent-9'
+                    : 'border-surface-border-strong hover:border-surface-border-strong',
                   disabled && 'cursor-not-allowed opacity-50',
                 )}
                 style={{ backgroundColor: preset }}

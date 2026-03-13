@@ -68,7 +68,7 @@ export const AllVariants: Story = {
       <div className="flex flex-col gap-ds-06">
         {variants.map((variant) => (
           <div key={variant}>
-            <p className="mb-ds-03 text-ds-sm font-semibold text-text-secondary capitalize">{variant}</p>
+            <p className="mb-ds-03 text-ds-sm font-semibold text-surface-fg-muted capitalize">{variant}</p>
             <div className="flex flex-wrap items-center gap-ds-03">
               {sizes.map((size) => (
                 <Toggle key={`${variant}-${size}`} variant={variant} size={size} aria-label={`Toggle ${variant} ${size}`}>
@@ -80,7 +80,7 @@ export const AllVariants: Story = {
         ))}
 
         <div>
-          <p className="mb-ds-03 text-ds-sm font-semibold text-text-secondary">Pressed (on)</p>
+          <p className="mb-ds-03 text-ds-sm font-semibold text-surface-fg-muted">Pressed (on)</p>
           <div className="flex flex-wrap items-center gap-ds-03">
             {variants.map((variant) =>
               sizes.map((size) => (
@@ -93,7 +93,7 @@ export const AllVariants: Story = {
         </div>
 
         <div>
-          <p className="mb-ds-03 text-ds-sm font-semibold text-text-secondary">Disabled</p>
+          <p className="mb-ds-03 text-ds-sm font-semibold text-surface-fg-muted">Disabled</p>
           <div className="flex flex-wrap items-center gap-ds-03">
             {variants.map((variant) =>
               sizes.map((size) => (

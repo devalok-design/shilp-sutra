@@ -10,21 +10,21 @@ const statusBadgeVariants = cva(
   {
     variants: {
       status: {
-        active: 'bg-success-surface text-text-success',
-        pending: 'bg-warning-surface text-text-warning',
-        approved: 'bg-success-surface text-text-success',
-        rejected: 'bg-error-surface text-text-error',
-        completed: 'bg-success-surface text-text-success',
-        blocked: 'bg-error-surface text-text-error',
-        cancelled: 'bg-layer-02 text-text-placeholder',
-        draft: 'bg-layer-02 text-text-tertiary',
+        active: 'bg-success-3 text-success-11',
+        pending: 'bg-warning-3 text-warning-11',
+        approved: 'bg-success-3 text-success-11',
+        rejected: 'bg-error-3 text-error-11',
+        completed: 'bg-success-3 text-success-11',
+        blocked: 'bg-error-3 text-error-11',
+        cancelled: 'bg-surface-2 text-surface-fg-subtle',
+        draft: 'bg-surface-2 text-surface-fg-subtle',
       },
       color: {
-        success: 'bg-success-surface text-text-success',
-        warning: 'bg-warning-surface text-text-warning',
-        error: 'bg-error-surface text-text-error',
-        info: 'bg-info-surface text-text-info',
-        neutral: 'bg-layer-02 text-text-tertiary',
+        success: 'bg-success-3 text-success-11',
+        warning: 'bg-warning-3 text-warning-11',
+        error: 'bg-error-3 text-error-11',
+        info: 'bg-info-3 text-info-11',
+        neutral: 'bg-surface-2 text-surface-fg-subtle',
       },
       size: {
         sm: 'px-ds-03 py-ds-01 text-ds-xs font-semibold',
@@ -38,22 +38,22 @@ const statusBadgeVariants = cva(
 )
 
 const dotColorMap: Record<string, string> = {
-  active: 'bg-success',
-  pending: 'bg-warning',
-  approved: 'bg-success',
-  rejected: 'bg-error',
-  completed: 'bg-success',
-  blocked: 'bg-error',
-  cancelled: 'bg-icon-disabled',
-  draft: 'bg-icon-secondary',
+  active: 'bg-success-9',
+  pending: 'bg-warning-9',
+  approved: 'bg-success-9',
+  rejected: 'bg-error-9',
+  completed: 'bg-success-9',
+  blocked: 'bg-error-9',
+  cancelled: 'bg-disabled',
+  draft: 'bg-surface-fg-subtle',
 }
 
 const colorDotMap: Record<string, string> = {
-  success: 'bg-success',
-  warning: 'bg-warning',
-  error: 'bg-error',
-  info: 'bg-info',
-  neutral: 'bg-icon-secondary',
+  success: 'bg-success-9',
+  warning: 'bg-warning-9',
+  error: 'bg-error-9',
+  info: 'bg-info-9',
+  neutral: 'bg-surface-fg-subtle',
 }
 
 interface StatusBadgeBaseProps extends Omit<React.HTMLAttributes<HTMLSpanElement>, 'children' | 'color'> {

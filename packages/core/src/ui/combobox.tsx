@@ -295,7 +295,7 @@ const Combobox = React.forwardRef<HTMLButtonElement, ComboboxProps>(
               return (
                 <span
                   key={val}
-                  className="inline-flex items-center gap-ds-01 rounded-ds-md bg-interactive-subtle px-ds-03 py-[1px] text-ds-sm"
+                  className="inline-flex items-center gap-ds-01 rounded-ds-md bg-accent-2 px-ds-03 py-[1px] text-ds-sm"
                 >
                   {option.label}
                   <button
@@ -311,7 +311,7 @@ const Combobox = React.forwardRef<HTMLButtonElement, ComboboxProps>(
               )
             })}
             {remaining > 0 && (
-              <span className="text-ds-sm text-text-secondary">
+              <span className="text-ds-sm text-surface-fg-muted">
                 +{remaining} more
               </span>
             )}
@@ -327,7 +327,7 @@ const Combobox = React.forwardRef<HTMLButtonElement, ComboboxProps>(
       }
 
       return (
-        <span className="flex-1 truncate text-left text-text-placeholder">
+        <span className="flex-1 truncate text-left text-surface-fg-subtle">
           {placeholder}
         </span>
       )
@@ -347,15 +347,15 @@ const Combobox = React.forwardRef<HTMLButtonElement, ComboboxProps>(
             aria-label={placeholder}
             disabled={disabled}
             className={cn(
-              'flex h-ds-md w-full items-center justify-between whitespace-nowrap rounded-ds-md border border-border bg-field px-ds-04 py-ds-03 text-ds-md',
+              'flex h-ds-md w-full items-center justify-between whitespace-nowrap rounded-ds-md border border-surface-border-strong bg-surface-3 px-ds-04 py-ds-03 text-ds-md',
               'transition-colors duration-fast-01',
-              'focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-focus focus-visible:ring-offset-2 focus-visible:border-border-interactive',
-              'disabled:cursor-not-allowed disabled:opacity-[0.38]',
+              'focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent-9 focus-visible:ring-offset-2 focus-visible:border-accent-7',
+              'disabled:cursor-not-allowed disabled:opacity-action-disabled',
               triggerClassName,
             )}
           >
             {renderTriggerContent()}
-            <IconChevronDown className={cn("ml-ds-02 h-ico-sm w-ico-sm shrink-0 opacity-[0.5] transition-transform duration-fast-01", open && 'rotate-180')} aria-hidden="true" />
+            <IconChevronDown className={cn("ml-ds-02 h-ico-sm w-ico-sm shrink-0 opacity-50 transition-transform duration-fast-01", open && 'rotate-180')} aria-hidden="true" />
           </button>
         </PopoverPrimitive.Trigger>
 
@@ -374,16 +374,16 @@ const Combobox = React.forwardRef<HTMLButtonElement, ComboboxProps>(
               animate={{ opacity: 1, scale: 1 }}
               transition={{ ...springs.snappy, opacity: tweens.fade }}
               className={cn(
-                'z-popover w-[var(--radix-popover-trigger-width)] overflow-hidden rounded-ds-lg border border-border-subtle bg-layer-01 shadow-02',
+                'z-popover w-[var(--radix-popover-trigger-width)] overflow-hidden rounded-ds-lg border border-surface-border bg-surface-1 shadow-02',
               )}
             >
                   {/* Search input */}
-                  <div className="flex items-center gap-ds-02 border-b border-border-subtle px-ds-04">
-                    <IconSearch className="h-ico-sm w-ico-sm shrink-0 text-text-tertiary" aria-hidden="true" />
+                  <div className="flex items-center gap-ds-02 border-b border-surface-border px-ds-04">
+                    <IconSearch className="h-ico-sm w-ico-sm shrink-0 text-surface-fg-subtle" aria-hidden="true" />
                     <input
                       ref={searchInputRef}
                       type="text"
-                      className="flex-1 bg-transparent py-ds-03 text-ds-md outline-none placeholder:text-text-placeholder"
+                      className="flex-1 bg-transparent py-ds-03 text-ds-md outline-none placeholder:text-surface-fg-subtle"
                       placeholder={searchPlaceholder}
                       value={search}
                       onChange={(e) => {
@@ -404,7 +404,7 @@ const Combobox = React.forwardRef<HTMLButtonElement, ComboboxProps>(
 
                   {/* Options list */}
                   {filteredOptions.length === 0 ? (
-                    <div className="px-ds-04 py-ds-05 text-center text-ds-md text-text-tertiary">
+                    <div className="px-ds-04 py-ds-05 text-center text-ds-md text-surface-fg-subtle">
                       {emptyMessage}
                     </div>
                   ) : (
@@ -429,10 +429,10 @@ const Combobox = React.forwardRef<HTMLButtonElement, ComboboxProps>(
                               'relative flex cursor-pointer select-none items-center gap-ds-03 rounded-ds-md px-ds-04 py-ds-03 text-ds-md outline-none',
                               'transition-colors',
                               highlightedIndex === index &&
-                                'bg-interactive-subtle',
-                              selected && 'text-interactive',
+                                'bg-accent-2',
+                              selected && 'text-accent-11',
                               option.disabled &&
-                                'pointer-events-none opacity-[0.38]',
+                                'pointer-events-none opacity-action-disabled',
                             )}
                             onClick={() => {
                               if (!option.disabled) {
@@ -463,7 +463,7 @@ const Combobox = React.forwardRef<HTMLButtonElement, ComboboxProps>(
                                 <>
                                   <span>{option.label}</span>
                                   {option.description && (
-                                    <span className="text-ds-sm text-text-secondary">
+                                    <span className="text-ds-sm text-surface-fg-muted">
                                       {option.description}
                                     </span>
                                   )}

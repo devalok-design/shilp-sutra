@@ -31,7 +31,7 @@ export function GridLines({
             x2={width}
             y1={yScale(tick as number)}
             y2={yScale(tick as number)}
-            stroke="var(--color-border-subtle)"
+            stroke="var(--color-surface-border)"
             strokeDasharray="3,3"
             opacity={0.6}
           />
@@ -45,7 +45,7 @@ export function GridLines({
             x2={xScale(tick as number)}
             y1={0}
             y2={height}
-            stroke="var(--color-border-subtle)"
+            stroke="var(--color-surface-border)"
             strokeDasharray="3,3"
             opacity={0.6}
           />

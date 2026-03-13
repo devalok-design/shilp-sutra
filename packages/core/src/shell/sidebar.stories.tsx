@@ -93,7 +93,7 @@ const meta: Meta<typeof AppSidebar> = {
               background: 'var(--color-background, #f5f5f5)',
             }}
           >
-            <p style={{ color: 'var(--color-text-secondary, #666)' }}>
+            <p style={{ color: 'var(--color-surface-fg-muted, #666)' }}>
               Main content area
             </p>
           </div>
@@ -275,7 +275,7 @@ export const StructuredFooter: Story = {
     navGroups: [mainNavGroup],
     footer: {
       slot: (
-        <a href="/changelog" className="text-ds-sm text-text-placeholder hover:text-interactive">
+        <a href="/changelog" className="text-ds-sm text-surface-fg-subtle hover:text-accent-11">
           What&apos;s new in v2.4?
         </a>
       ),
@@ -294,9 +294,9 @@ export const WithHeaderSlot: Story = {
     user: mockUser,
     navGroups: [mainNavGroup, secondaryNavGroup],
     headerSlot: (
-      <div className="flex items-center gap-ds-03 rounded-ds-lg bg-layer-02 px-ds-04 py-ds-05">
-        <div className="h-3 w-3 rounded-full bg-green-500" />
-        <span className="text-ds-sm text-text-primary">Online — 9:42 AM</span>
+      <div className="flex items-center gap-ds-03 rounded-ds-lg bg-surface-2 px-ds-04 py-ds-05">
+        <div className="h-3 w-3 rounded-full bg-success-9" />
+        <span className="text-ds-sm text-surface-fg">Online — 9:42 AM</span>
       </div>
     ),
     footerLinks: mockFooterLinks,
@@ -330,9 +330,9 @@ export const AllFeatures: Story = {
     user: mockUser,
     navGroups: [navGroupWithChildren, secondaryNavGroup],
     headerSlot: (
-      <div className="flex items-center gap-ds-03 rounded-ds-lg bg-layer-02 px-ds-04 py-ds-05">
-        <div className="h-3 w-3 rounded-full bg-green-500" />
-        <span className="text-ds-sm text-text-primary">Online — 9:42 AM</span>
+      <div className="flex items-center gap-ds-03 rounded-ds-lg bg-surface-2 px-ds-04 py-ds-05">
+        <div className="h-3 w-3 rounded-full bg-success-9" />
+        <span className="text-ds-sm text-surface-fg">Online — 9:42 AM</span>
       </div>
     ),
     footer: {

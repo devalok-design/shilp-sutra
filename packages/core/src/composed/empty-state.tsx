@@ -50,12 +50,12 @@ const EmptyState = React.forwardRef<HTMLDivElement, EmptyStateProps>(
     const resolvedIcon = icon
       ? isComponentType
         ? React.createElement(icon as React.ComponentType<{ className?: string }>, {
-            className: cn('text-text-placeholder', iconSizeClass),
+            className: cn('text-surface-fg-subtle', iconSizeClass),
           })
         : icon
       : (
         <DevalokChakraIcon
-          className={cn('text-text-placeholder', iconSizeClass)}
+          className={cn('text-surface-fg-subtle', iconSizeClass)}
         />
       )
 
@@ -71,7 +71,7 @@ const EmptyState = React.forwardRef<HTMLDivElement, EmptyStateProps>(
       >
         <motion.div
           className={cn(
-            'flex items-center justify-center rounded-ds-xl bg-layer-02',
+            'flex items-center justify-center rounded-ds-xl bg-surface-2',
             compact ? 'h-ds-md w-ds-md' : 'h-ds-lg w-ds-lg',
             !isComponentType && icon != null && iconSizeClass,
           )}
@@ -84,7 +84,7 @@ const EmptyState = React.forwardRef<HTMLDivElement, EmptyStateProps>(
         <div className="flex max-w-[280px] flex-col gap-ds-02">
           <h3
             className={cn(
-              'text-text-primary',
+              'text-surface-fg',
               compact ? 'text-ds-md font-semibold' : 'text-ds-base font-semibold',
             )}
           >
@@ -93,7 +93,7 @@ const EmptyState = React.forwardRef<HTMLDivElement, EmptyStateProps>(
           {description && (
             <p
               className={cn(
-                'text-text-placeholder',
+                'text-surface-fg-subtle',
                 compact ? 'text-ds-sm' : 'text-ds-md',
               )}
             >

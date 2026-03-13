@@ -41,11 +41,11 @@ function TaskGhost() {
       animate={{ opacity: 1, scale: 1 }}
       exit={{ opacity: 0, scale: 0.95 }}
       transition={springs.snappy}
-      className="rounded-ds-lg border-2 border-dashed border-interactive/40 bg-interactive/[0.06] px-ds-04 py-ds-05"
+      className="rounded-ds-lg border-2 border-dashed border-accent-6 bg-accent-1 px-ds-04 py-ds-05"
       aria-hidden
     >
-      <div className="h-ds-xs-plus w-3/4 rounded-ds-md bg-interactive/10" />
-      <div className="mt-ds-02 h-[12px] w-1/2 rounded-ds-md bg-interactive/[0.06]" />
+      <div className="h-ds-xs-plus w-3/4 rounded-ds-md bg-accent-2" />
+      <div className="mt-ds-02 h-[12px] w-1/2 rounded-ds-md bg-accent-1" />
     </motion.div>
   )
 }
@@ -74,9 +74,9 @@ export const BoardColumn = React.forwardRef<HTMLDivElement, BoardColumnProps>(
       <div
         ref={ref}
         className={cn(
-          'flex h-full flex-shrink-0 flex-col rounded-ds-xl bg-layer-01/40 backdrop-blur-[2px] border border-border-subtle/20 hover:border-border-subtle/40 transition-colors p-1',
+          'flex h-full flex-shrink-0 flex-col rounded-ds-xl bg-surface-2 border border-surface-3 hover:border-surface-border transition-colors p-1',
           isOverlay && 'shadow-04',
-          isWipExceeded && 'bg-error-surface/50',
+          isWipExceeded && 'bg-error-3',
           className,
         )}
         {...props}
@@ -89,7 +89,7 @@ export const BoardColumn = React.forwardRef<HTMLDivElement, BoardColumnProps>(
         <motion.div
           ref={setDroppableRef}
           animate={{
-            backgroundColor: isOver ? 'var(--color-interactive-subtle, rgba(59,130,246,0.3))' : 'transparent',
+            backgroundColor: isOver ? 'var(--color-accent-1, rgba(59,130,246,0.06))' : 'transparent',
           }}
           transition={springs.snappy}
           className="no-scrollbar flex flex-1 flex-col gap-ds-02 overflow-y-auto px-ds-03 pt-2.5 pb-ds-03"

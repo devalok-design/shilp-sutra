@@ -71,9 +71,9 @@ const srText: Record<string, string> = {
 }
 
 const stateColors: Record<string, string> = {
-  spinning: 'var(--color-interactive)',
-  success: 'var(--color-success-text)',
-  error: 'var(--color-error-text)',
+  spinning: 'var(--color-accent-9)',
+  success: 'var(--color-success-9)',
+  error: 'var(--color-error-9)',
 }
 
 // Filled variant — icons fit inside the filled circle
@@ -136,7 +136,7 @@ const Spinner = React.forwardRef<HTMLSpanElement, SpinnerProps>(
                 cx="12"
                 cy="12"
                 r={RADIUS}
-                stroke="var(--color-border-subtle)"
+                stroke="var(--color-surface-border)"
                 strokeWidth={arcSw}
                 fill="none"
               />
@@ -146,7 +146,7 @@ const Spinner = React.forwardRef<HTMLSpanElement, SpinnerProps>(
               cx="12"
               cy="12"
               r={RADIUS}
-              stroke="var(--color-border-subtle)"
+              stroke="var(--color-surface-border)"
               strokeWidth={arcSw}
               fill="none"
               animate={{ opacity: isFinal && !isFilled ? 0 : 1 }}

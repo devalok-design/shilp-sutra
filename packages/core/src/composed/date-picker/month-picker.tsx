@@ -28,7 +28,7 @@ export const MonthPicker = React.forwardRef<HTMLDivElement, MonthPickerProps>(
 }, ref) {
   return (
     <div ref={ref} {...props} className={cn("w-[252px]", className)}>
-      <div className="text-center pb-ds-04 text-ds-md font-semibold text-text-primary">
+      <div className="text-center pb-ds-04 text-ds-md font-semibold text-surface-fg">
         {currentYear}
       </div>
       <div className="grid grid-cols-4 gap-ds-02">
@@ -52,12 +52,12 @@ export const MonthPicker = React.forwardRef<HTMLDivElement, MonthPickerProps>(
               onClick={() => !isDisabled && onMonthSelect(index)}
               className={cn(
                 'h-ds-sm-plus rounded-ds-md text-ds-md transition-colors',
-                isDisabled && 'opacity-[0.38] pointer-events-none cursor-not-allowed',
+                isDisabled && 'opacity-action-disabled pointer-events-none cursor-not-allowed',
                 isSelected &&
-                  'bg-interactive text-text-on-color',
+                  'bg-accent-9 text-accent-fg',
                 !isSelected &&
                   !isDisabled &&
-                  'hover:bg-field text-text-primary',
+                  'hover:bg-surface-3 text-surface-fg',
               )}
             >
               {label}

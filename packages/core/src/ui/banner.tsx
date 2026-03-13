@@ -13,15 +13,15 @@ const bannerVariants = cva(
     variants: {
       color: {
         info:
-          'bg-info-surface border-info-border text-info-text',
+          'bg-info-3 border-info-7 text-info-11',
         success:
-          'bg-success-surface border-success-border text-success-text',
+          'bg-success-3 border-success-7 text-success-11',
         warning:
-          'bg-warning-surface border-warning-border text-warning-text',
+          'bg-warning-3 border-warning-7 text-warning-11',
         error:
-          'bg-error-surface border-error-border text-error-text',
+          'bg-error-3 border-error-7 text-error-11',
         neutral:
-          'bg-layer-02 border-border text-text-primary [&>svg]:text-text-secondary',
+          'bg-surface-2 border-surface-border-strong text-surface-fg [&>svg]:text-surface-fg-muted',
       },
     },
     defaultVariants: { color: 'info' },
@@ -102,7 +102,7 @@ const Banner = React.forwardRef<HTMLDivElement, BannerProps>(
               <button
                 type="button"
                 onClick={handleDismiss}
-                className="shrink-0 min-h-ds-xs min-w-ds-xs flex items-center justify-center rounded-ds-sm text-icon-secondary transition-colors hover:text-icon-primary hover:bg-field focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-focus"
+                className="shrink-0 min-h-ds-xs min-w-ds-xs flex items-center justify-center rounded-ds-sm text-surface-fg-subtle transition-colors hover:text-surface-fg-muted hover:bg-surface-3 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent-9"
                 aria-label="Dismiss"
               >
                 <IconX className="h-ico-sm w-ico-sm" />

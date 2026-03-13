@@ -204,7 +204,7 @@ export const PieChart = React.forwardRef<HTMLDivElement, PieChartProps>(
                       y={ly}
                       textAnchor="middle"
                       dominantBaseline="central"
-                      className="pointer-events-none fill-text-on-color text-ds-xs font-medium"
+                      className="pointer-events-none fill-accent-fg text-ds-xs font-medium"
                     >
                       {pct}%
                     </text>
@@ -219,7 +219,7 @@ export const PieChart = React.forwardRef<HTMLDivElement, PieChartProps>(
                   width={innerR * 1.4}
                   height={innerR * 1.4}
                 >
-                  <div className="flex h-full w-full items-center justify-center text-center text-text-primary">
+                  <div className="flex h-full w-full items-center justify-center text-center text-surface-fg">
                     {centerLabel}
                   </div>
                 </foreignObject>

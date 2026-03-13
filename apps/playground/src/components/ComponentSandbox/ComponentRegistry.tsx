@@ -204,7 +204,7 @@ export const COMPONENT_REGISTRY: ComponentEntry[] = [
           <CardDescription>{props.description}</CardDescription>
         </CardHeader>
         <CardContent>
-          <p className="text-ds-md text-text-secondary">{props.content}</p>
+          <p className="text-ds-md text-surface-fg-muted">{props.content}</p>
         </CardContent>
       </Card>
     ),
@@ -289,7 +289,7 @@ export const COMPONENT_REGISTRY: ComponentEntry[] = [
           error={props.error}
           defaultChecked={props.checked}
         />
-        <label className="text-ds-md text-text-primary">{props.label}</label>
+        <label className="text-ds-md text-surface-fg">{props.label}</label>
       </div>
     ),
     props: [
@@ -329,7 +329,7 @@ export const COMPONENT_REGISTRY: ComponentEntry[] = [
           error={props.error}
           defaultChecked={props.checked}
         />
-        <label className="text-ds-md text-text-primary">{props.label}</label>
+        <label className="text-ds-md text-surface-fg">{props.label}</label>
       </div>
     ),
     props: [

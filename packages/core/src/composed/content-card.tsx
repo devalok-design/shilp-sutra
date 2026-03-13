@@ -8,11 +8,11 @@ const contentCardVariants = cva(
     variants: {
       variant: {
         default:
-          'border border-border bg-layer-01 shadow-01 hover:shadow-02',
+          'border border-surface-border-strong bg-surface-1 shadow-01 hover:shadow-02',
         outline:
-          'border border-border-subtle bg-transparent hover:border-border-strong',
+          'border border-surface-border bg-transparent hover:border-surface-border-strong',
         ghost:
-          'border border-transparent bg-transparent hover:bg-layer-02',
+          'border border-transparent bg-transparent hover:bg-surface-2',
       },
       padding: {
         default: 'p-ds-05b',
@@ -82,14 +82,14 @@ const ContentCard = React.forwardRef<HTMLDivElement, ContentCardProps>(
         {hasHeader && (
           <div
             className={cn(
-              'flex items-center justify-between border-b border-border',
+              'flex items-center justify-between border-b border-surface-border-strong',
               getPadding(padding),
             )}
           >
             {header ?? (
               <>
                 {headerTitle && (
-                  <h3 className="text-ds-base font-semibold text-text-primary">
+                  <h3 className="text-ds-base font-semibold text-surface-fg">
                     {headerTitle}
                   </h3>
                 )}
@@ -112,7 +112,7 @@ const ContentCard = React.forwardRef<HTMLDivElement, ContentCardProps>(
         {footer && (
           <div
             className={cn(
-              'border-t border-border',
+              'border-t border-surface-border-strong',
               getPadding(padding),
             )}
           >

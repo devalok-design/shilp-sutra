@@ -17,26 +17,26 @@ const priorityConfig: Record<
 > = {
   LOW: {
     icon: IconArrowDown,
-    color: 'text-category-slate-text',
-    bgColor: 'bg-category-slate-surface',
+    color: 'text-category-slate-11',
+    bgColor: 'bg-category-slate-3',
     label: 'Low',
   },
   MEDIUM: {
     icon: IconMinus,
-    color: 'text-warning-text',
-    bgColor: 'bg-warning-surface',
+    color: 'text-warning-11',
+    bgColor: 'bg-warning-3',
     label: 'Medium',
   },
   HIGH: {
     icon: IconArrowUp,
-    color: 'text-error-text',
-    bgColor: 'bg-error-surface',
+    color: 'text-error-11',
+    bgColor: 'bg-error-3',
     label: 'High',
   },
   URGENT: {
     icon: IconAlertTriangle,
-    color: 'text-error-text',
-    bgColor: 'bg-error-surface',
+    color: 'text-error-11',
+    bgColor: 'bg-error-3',
     label: 'Urgent',
   },
 }
@@ -99,7 +99,7 @@ const PriorityIndicator = React.forwardRef<HTMLDivElement, PriorityIndicatorProp
         >
           <Icon className={cn('h-ico-sm w-ico-sm', config.color)} stroke={2} />
         </div>
-        <span className="text-ds-sm text-text-secondary">
+        <span className="text-ds-sm text-surface-fg-muted">
           {config.label}
         </span>
       </div>

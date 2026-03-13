@@ -235,7 +235,7 @@ function UploadSingleDemo() {
   return (
     <div className="flex items-center gap-ds-03">
       <Button onClick={startUpload}>Upload Single File</Button>
-      <span className="text-ds-sm text-text-secondary">
+      <span className="text-ds-sm text-surface-fg-muted">
         {file.status === 'pending'
           ? 'Click to start'
           : file.status === 'complete'
@@ -308,7 +308,7 @@ function UploadMultipleDemo() {
   return (
     <div className="flex items-center gap-ds-03">
       <Button onClick={startUpload}>Upload Multiple Files</Button>
-      <span className="text-ds-sm text-text-secondary">
+      <span className="text-ds-sm text-surface-fg-muted">
         {files.filter((f) => f.status === 'complete').length}/{files.length} complete
       </span>
     </div>
@@ -329,8 +329,8 @@ export const CustomJSX: Story = {
       <Button
         onClick={() =>
           toast.custom((id) => (
-            <div className="flex items-center gap-ds-03 rounded-ds-md border border-border bg-layer-01 p-ds-04 shadow-02">
-              <span className="text-ds-md text-text-primary">
+            <div className="flex items-center gap-ds-03 rounded-ds-md border border-surface-border-strong bg-surface-1 p-ds-04 shadow-02">
+              <span className="text-ds-md text-surface-fg">
                 Custom content (id: {String(id)})
               </span>
               <Button

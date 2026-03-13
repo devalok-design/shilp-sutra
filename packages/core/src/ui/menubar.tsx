@@ -70,7 +70,7 @@ const Menubar = React.forwardRef<
   <MenubarPrimitive.Root
     ref={ref}
     className={cn(
-      'flex h-ds-sm-plus items-center space-x-ds-02 rounded-ds-lg border border-border bg-layer-01 p-ds-02 shadow-01',
+      'flex h-ds-sm-plus items-center space-x-ds-02 rounded-ds-lg border border-surface-border-strong bg-surface-1 p-ds-02 shadow-01',
       className,
     )}
     {...props}
@@ -85,7 +85,7 @@ const MenubarTrigger = React.forwardRef<
   <MenubarPrimitive.Trigger
     ref={ref}
     className={cn(
-      'flex cursor-default select-none items-center rounded-ds-sm px-ds-04 py-ds-02 text-ds-md font-medium outline-none transition-colors hover:bg-field focus-visible:bg-field data-[state=open]:bg-field',
+      'flex cursor-default select-none items-center rounded-ds-sm px-ds-04 py-ds-02 text-ds-md font-medium outline-none transition-colors hover:bg-surface-3 focus-visible:bg-surface-3 data-[state=open]:bg-surface-3',
       className,
     )}
     {...props}
@@ -102,7 +102,7 @@ const MenubarSubTrigger = React.forwardRef<
   <MenubarPrimitive.SubTrigger
     ref={ref}
     className={cn(
-      'flex cursor-default select-none items-center gap-ds-03 rounded-ds-md px-ds-03 py-ds-02b text-ds-md outline-none focus:bg-layer-02 data-[state=open]:bg-layer-02 [&_svg]:pointer-events-none [&_svg]:h-ico-sm [&_svg]:w-ico-sm [&_svg]:shrink-0',
+      'flex cursor-default select-none items-center gap-ds-03 rounded-ds-md px-ds-03 py-ds-02b text-ds-md outline-none focus:bg-surface-2 data-[state=open]:bg-surface-2 [&_svg]:pointer-events-none [&_svg]:h-ico-sm [&_svg]:w-ico-sm [&_svg]:shrink-0',
       inset && 'pl-ds-07',
       className,
     )}
@@ -135,7 +135,7 @@ const MenubarSubContent = React.forwardRef<
             exit={{ opacity: 0, scale: 0.95 }}
             transition={{ ...springs.snappy, opacity: tweens.fade }}
             className={cn(
-              'z-popover min-w-[8rem] overflow-hidden rounded-ds-lg border border-border bg-layer-01 p-ds-02 text-text-primary shadow-03',
+              'z-popover min-w-[8rem] overflow-hidden rounded-ds-lg border border-surface-border-strong bg-surface-1 p-ds-02 text-surface-fg shadow-03',
               className,
             )}
           >
@@ -181,7 +181,7 @@ const MenubarContent = React.forwardRef<
           exit={{ opacity: 0, scale: 0.95 }}
           transition={{ ...springs.snappy, opacity: tweens.fade }}
           className={cn(
-            'z-popover min-w-[12rem] rounded-ds-lg border border-border bg-layer-01 p-ds-02 text-text-primary shadow-03',
+            'z-popover min-w-[12rem] rounded-ds-lg border border-surface-border-strong bg-surface-1 p-ds-02 text-surface-fg shadow-03',
             className,
           )}
         >
@@ -202,7 +202,7 @@ const MenubarItem = React.forwardRef<
   <MenubarPrimitive.Item
     ref={ref}
     className={cn(
-      'relative flex cursor-default select-none items-center gap-ds-03 rounded-ds-md px-ds-03 py-ds-02b text-ds-md outline-none transition-colors focus:bg-layer-02 focus:text-text-primary data-[disabled]:pointer-events-none data-[disabled]:opacity-[0.38] [&>svg]:h-ico-sm [&>svg]:w-ico-sm [&>svg]:shrink-0',
+      'relative flex cursor-default select-none items-center gap-ds-03 rounded-ds-md px-ds-03 py-ds-02b text-ds-md outline-none transition-colors focus:bg-surface-2 focus:text-surface-fg data-[disabled]:pointer-events-none data-[disabled]:opacity-action-disabled [&>svg]:h-ico-sm [&>svg]:w-ico-sm [&>svg]:shrink-0',
       inset && 'pl-ds-07',
       className,
     )}
@@ -218,7 +218,7 @@ const MenubarCheckboxItem = React.forwardRef<
   <MenubarPrimitive.CheckboxItem
     ref={ref}
     className={cn(
-      'relative flex cursor-default select-none items-center rounded-ds-md py-ds-02b pl-ds-07 pr-ds-03 text-ds-md outline-none transition-colors focus:bg-layer-02 focus:text-text-primary data-[disabled]:pointer-events-none data-[disabled]:opacity-[0.38]',
+      'relative flex cursor-default select-none items-center rounded-ds-md py-ds-02b pl-ds-07 pr-ds-03 text-ds-md outline-none transition-colors focus:bg-surface-2 focus:text-surface-fg data-[disabled]:pointer-events-none data-[disabled]:opacity-action-disabled',
       className,
     )}
     checked={checked}
@@ -241,7 +241,7 @@ const MenubarRadioItem = React.forwardRef<
   <MenubarPrimitive.RadioItem
     ref={ref}
     className={cn(
-      'relative flex cursor-default select-none items-center rounded-ds-md py-ds-02b pl-ds-07 pr-ds-03 text-ds-md outline-none transition-colors focus:bg-layer-02 focus:text-text-primary data-[disabled]:pointer-events-none data-[disabled]:opacity-[0.38]',
+      'relative flex cursor-default select-none items-center rounded-ds-md py-ds-02b pl-ds-07 pr-ds-03 text-ds-md outline-none transition-colors focus:bg-surface-2 focus:text-surface-fg data-[disabled]:pointer-events-none data-[disabled]:opacity-action-disabled',
       className,
     )}
     {...props}
@@ -280,7 +280,7 @@ const MenubarSeparator = React.forwardRef<
 >(({ className, ...props }, ref) => (
   <MenubarPrimitive.Separator
     ref={ref}
-    className={cn('-mx-ds-01 my-ds-02 h-px bg-border-subtle', className)}
+    className={cn('-mx-ds-01 my-ds-02 h-px bg-surface-border', className)}
     {...props}
   />
 ))
@@ -293,7 +293,7 @@ const MenubarShortcut = ({
   return (
     <span
       className={cn(
-        'ml-auto text-ds-sm text-text-placeholder',
+        'ml-auto text-ds-sm text-surface-fg-subtle',
         className,
       )}
       {...props}

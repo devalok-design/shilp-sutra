@@ -13,7 +13,7 @@ import { springs } from './lib/motion'
  * ------------------------------------------------------------------------ */
 
 const progressTrackVariants = cva(
-  'relative w-full overflow-hidden rounded-ds-full bg-layer-02',
+  'relative w-full overflow-hidden rounded-ds-full bg-surface-2',
   {
     variants: {
       size: {
@@ -31,10 +31,10 @@ const progressIndicatorVariants = cva(
   {
     variants: {
       color: {
-        default: 'bg-interactive',
-        success: 'bg-success',
-        warning: 'bg-warning',
-        error: 'bg-error',
+        default: 'bg-accent-9',
+        success: 'bg-success-9',
+        warning: 'bg-warning-9',
+        error: 'bg-error-9',
       },
     },
     defaultVariants: { color: 'default' },
@@ -142,7 +142,7 @@ const Progress = React.forwardRef<
         </ProgressPrimitive.Root>
 
         {showLabel && !isIndeterminate && (
-          <span className="shrink-0 text-ds-xs text-text-secondary">
+          <span className="shrink-0 text-ds-xs text-surface-fg-muted">
             {value}%
           </span>
         )}

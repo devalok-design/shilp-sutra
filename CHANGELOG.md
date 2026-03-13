@@ -5,6 +5,36 @@ All notable changes to `@devalok/shilp-sutra` will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [Unreleased]
+
+### BREAKING — Color Token Architecture
+
+**Migration: OKLCH 12-step functional scales**
+
+All color primitives migrated from hex (50-950 shade numbers) to OKLCH (1-12 functional steps). Dark mode is now algorithmically derived with perceptually uniform lightness/chroma curves.
+
+**What changed:**
+- Primitive tokens: `--pink-50` through `--pink-950` → `--pink-1` through `--pink-12` (OKLCH values)
+- New semantic tokens: `--color-accent-{1-12}`, `--color-secondary-{1-12}`, `--color-surface-{1-4}`, status step subsets
+- New Tailwind utilities: `accent-1..12`, `secondary-1..12`, `surface-1..4`, status/category utilities
+- Dark mode: separate lightness/chroma curves per step (not hex overrides)
+- Scale generator: `generateScale()` utility for creating 12-step palettes from a seed color
+
+**Backward compatibility:**
+- All old semantic token names preserved as aliases (e.g. `--color-interactive` → `--color-accent-9`)
+- Old Tailwind utilities still work
+- 939 tests pass with zero breakage
+
+**Action required for consumers using primitive tokens directly:**
+- `--pink-500` → `--pink-9` (accent/solid step)
+- `--neutral-100` → `--neutral-2` (subtle background)
+- See `docs/plans/2026-03-13-dark-light-mode-token-redesign-design.md` for full migration mapping
+
+### Added
+- OKLCH 12-step scale generator (`generateScale()` in `@devalok/shilp-sutra/tokens`)
+- 94 new Tailwind color utilities for the 12-step system
+- Interactive token preview at `docs/previews/token-preview.html`
+
 ## [0.17.2] - 2026-03-12
 
 ### Documentation

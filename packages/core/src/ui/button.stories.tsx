@@ -160,7 +160,7 @@ export const AllVariants: Story = {
       <div className="flex flex-col gap-ds-06">
         {combos.map(({ variant, color, label }) => (
           <div key={label}>
-            <p className="mb-ds-03 text-ds-sm font-semibold text-text-secondary capitalize">{label}</p>
+            <p className="mb-ds-03 text-ds-sm font-semibold text-surface-fg-muted capitalize">{label}</p>
             <div className="flex flex-wrap items-center gap-ds-03">
               {sizes.map((size) => (
                 <Button key={`${label}-${size}`} variant={variant} color={color} size={size}>
@@ -172,7 +172,7 @@ export const AllVariants: Story = {
         ))}
 
         <div>
-          <p className="mb-ds-03 text-ds-sm font-semibold text-text-secondary">Disabled</p>
+          <p className="mb-ds-03 text-ds-sm font-semibold text-surface-fg-muted">Disabled</p>
           <div className="flex flex-wrap items-center gap-ds-03">
             {combos.map(({ variant, color, label }) => (
               <Button key={label} variant={variant} color={color} disabled>
@@ -183,7 +183,7 @@ export const AllVariants: Story = {
         </div>
 
         <div>
-          <p className="mb-ds-03 text-ds-sm font-semibold text-text-secondary">Loading</p>
+          <p className="mb-ds-03 text-ds-sm font-semibold text-surface-fg-muted">Loading</p>
           <div className="flex flex-wrap items-center gap-ds-03">
             {combos.map(({ variant, color, label }) => (
               <Button key={label} variant={variant} color={color} loading>
@@ -368,7 +368,7 @@ export const AllFeatures: Story = {
     <div className="flex flex-col gap-ds-07">
       {/* Row 1: Buttons with startIcon across all variants */}
       <div>
-        <p className="mb-ds-02 text-ds-sm font-semibold text-text-secondary">
+        <p className="mb-ds-02 text-ds-sm font-semibold text-surface-fg-muted">
           Start Icon across variants
         </p>
         <div className="flex flex-wrap items-center gap-ds-04">
@@ -395,7 +395,7 @@ export const AllFeatures: Story = {
 
       {/* Row 2: Loading states (start, end, center) */}
       <div>
-        <p className="mb-ds-02 text-ds-sm font-semibold text-text-secondary">
+        <p className="mb-ds-02 text-ds-sm font-semibold text-surface-fg-muted">
           Loading positions
         </p>
         <div className="flex flex-wrap items-center gap-ds-04">
@@ -413,7 +413,7 @@ export const AllFeatures: Story = {
 
       {/* Row 3: Sizes with icons (sm, md, lg) */}
       <div>
-        <p className="mb-ds-02 text-ds-sm font-semibold text-text-secondary">
+        <p className="mb-ds-02 text-ds-sm font-semibold text-surface-fg-muted">
           Sizes with icons
         </p>
         <div className="flex flex-wrap items-center gap-ds-04">

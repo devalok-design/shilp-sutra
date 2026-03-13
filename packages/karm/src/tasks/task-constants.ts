@@ -8,10 +8,10 @@ export const PRIORITY_LABELS: Record<string, string> = {
 }
 
 export const PRIORITY_DOT_COLORS: Record<string, string> = {
-  LOW: 'bg-[var(--color-category-slate)]',
-  MEDIUM: 'bg-[var(--color-warning)]',
-  HIGH: 'bg-[var(--color-error)]',
-  URGENT: 'bg-[var(--color-error)]',
+  LOW: 'bg-category-slate-9',
+  MEDIUM: 'bg-warning-9',
+  HIGH: 'bg-error-9',
+  URGENT: 'bg-error-9',
 }
 
 export type BadgeColor = 'default' | 'info' | 'success' | 'error' | 'warning' | 'brand' | 'accent' | 'teal' | 'amber' | 'slate' | 'indigo' | 'cyan' | 'orange' | 'emerald'

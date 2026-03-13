@@ -12,14 +12,14 @@ export type InputState = 'default' | 'error' | 'warning' | 'success'
 const inputVariants = cva(
   [
     'flex w-full font-sans',
-    'bg-field text-text-primary',
-    'border border-border-subtle rounded-ds-md',
-    'placeholder:text-text-placeholder',
-    'hover:bg-field-hover',
-    'transition-colors duration-100',
-    'focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-focus/50 focus-visible:border-border-subtle',
-    'disabled:cursor-not-allowed disabled:opacity-[0.38]',
-    'read-only:bg-layer-02 read-only:cursor-default',
+    'bg-surface-3 text-surface-fg',
+    'border border-surface-border rounded-ds-md',
+    'placeholder:text-surface-fg-subtle',
+    'hover:bg-surface-4',
+    'transition-colors duration-fast-01',
+    'focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-accent-7 focus-visible:border-surface-border',
+    'disabled:cursor-not-allowed disabled:opacity-action-disabled',
+    'read-only:bg-surface-2 read-only:cursor-default',
   ],
   {
     variants: {
@@ -85,9 +85,9 @@ const Input = React.forwardRef<HTMLInputElement, InputProps>(
           inputVariants({ size }),
           startIcon && 'pl-ds-07',
           endIcon && 'pr-ds-07',
-          state === 'error' && 'border-border-error focus-visible:ring-error',
-          state === 'warning' && 'border-border-warning focus-visible:ring-warning',
-          state === 'success' && 'border-border-success focus-visible:ring-success',
+          state === 'error' && 'border-error-7 focus-visible:ring-error-7',
+          state === 'warning' && 'border-warning-7 focus-visible:ring-warning-7',
+          state === 'success' && 'border-success-7 focus-visible:ring-success-7',
           className,
         )}
         aria-invalid={state === 'error' || undefined}
@@ -103,13 +103,13 @@ const Input = React.forwardRef<HTMLInputElement, InputProps>(
     return (
       <div className="relative flex items-center w-full">
         {startIcon && (
-          <span className="absolute left-ds-03 flex items-center text-text-secondary pointer-events-none [&>svg]:h-ico-sm [&>svg]:w-ico-sm">
+          <span className="absolute left-ds-03 flex items-center text-surface-fg-muted pointer-events-none [&>svg]:h-ico-sm [&>svg]:w-ico-sm">
             {startIcon}
           </span>
         )}
         {inputEl}
         {endIcon && (
-          <span className="absolute right-ds-03 flex items-center text-text-secondary pointer-events-none [&>svg]:h-ico-sm [&>svg]:w-ico-sm">
+          <span className="absolute right-ds-03 flex items-center text-surface-fg-muted pointer-events-none [&>svg]:h-ico-sm [&>svg]:w-ico-sm">
             {endIcon}
           </span>
         )}

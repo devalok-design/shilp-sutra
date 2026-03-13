@@ -29,11 +29,11 @@ export interface ActivityFeedProps extends React.HTMLAttributes<HTMLDivElement> 
 }
 
 const dotColorMap = {
-  default: 'bg-text-placeholder',
-  success: 'bg-success',
-  warning: 'bg-warning',
-  error: 'bg-error',
-  info: 'bg-interactive',
+  default: 'bg-surface-fg-subtle',
+  success: 'bg-success-9',
+  warning: 'bg-warning-9',
+  error: 'bg-error-9',
+  info: 'bg-accent-9',
 } as const
 
 function formatRelativeTime(timestamp: Date | string): string {
@@ -88,7 +88,7 @@ function ActivityEntry({
       {/* Dot */}
       <div
         className={cn(
-          'relative z-10 mt-1.5 h-2 w-2 shrink-0 rounded-ds-full ring-2 ring-surface',
+          'relative z-10 mt-1.5 h-2 w-2 shrink-0 rounded-ds-full ring-2 ring-surface-1',
           dotColorMap[color],
         )}
       />
@@ -110,14 +110,14 @@ function ActivityEntry({
         <div className="flex items-center justify-between gap-ds-02">
           <div className={cn('min-w-0 flex-1 flex items-center gap-ds-01 flex-wrap', compact ? 'text-ds-xs' : 'text-ds-sm')}>
             {item.actor && (
-              <span className="font-medium text-text-primary">{item.actor.name} </span>
+              <span className="font-medium text-surface-fg">{item.actor.name} </span>
             )}
             {item.detail && (
-              <IconChevronRight className={cn('h-3 w-3 shrink-0 text-text-placeholder transition-transform', expandedDetail && 'rotate-90')} />
+              <IconChevronRight className={cn('h-3 w-3 shrink-0 text-surface-fg-subtle transition-transform', expandedDetail && 'rotate-90')} />
             )}
             <span
               className={cn(
-                'text-text-secondary',
+                'text-surface-fg-muted',
                 item.detail && 'cursor-pointer hover:underline',
               )}
               onClick={handleActionClick}
@@ -140,7 +140,7 @@ function ActivityEntry({
 
           <time
             className={cn(
-              'shrink-0 whitespace-nowrap text-text-placeholder',
+              'shrink-0 whitespace-nowrap text-surface-fg-subtle',
               compact ? 'text-ds-xs' : 'text-ds-sm',
             )}
             dateTime={
@@ -156,7 +156,7 @@ function ActivityEntry({
 
         {/* Expandable detail */}
         {expandedDetail && item.detail && (
-          <div className="mt-ds-02 animate-in fade-in slide-in-from-top-1 text-ds-sm text-text-secondary">
+          <div className="mt-ds-02 animate-in fade-in slide-in-from-top-1 text-ds-sm text-surface-fg-muted">
             {item.detail}
           </div>
         )}
@@ -208,7 +208,7 @@ const ActivityFeed = React.forwardRef<HTMLDivElement, ActivityFeedProps>(
     return (
       <div ref={ref} className={cn('relative', className)} {...props}>
         {/* Timeline line */}
-        <div className="absolute bottom-0 left-[3px] top-0 w-px bg-border" />
+        <div className="absolute bottom-0 left-[3px] top-0 w-px bg-surface-border" />
 
         {/* Items */}
         <div className={cn('relative flex flex-col', compact ? 'gap-1' : 'gap-3')}>

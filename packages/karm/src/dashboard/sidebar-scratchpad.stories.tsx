@@ -18,7 +18,7 @@ const meta: Meta<typeof SidebarScratchpad> = {
   },
   decorators: [
     (Story) => (
-      <div style={{ maxWidth: 260, border: '1px solid var(--color-border)', borderRadius: 8 }}>
+      <div style={{ maxWidth: 260, border: '1px solid var(--color-surface-border)', borderRadius: 8 }}>
         <Story />
       </div>
     ),

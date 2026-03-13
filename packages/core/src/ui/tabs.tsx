@@ -100,28 +100,28 @@ const TabsListContext = React.createContext<{ variant: TabsVariant; layoutId: st
 const tabsListVariants = cva('inline-flex items-center', {
   variants: {
     variant: {
-      line: 'border-b border-border w-full gap-0',
+      line: 'border-b border-surface-border-strong w-full gap-0',
       contained:
-        'bg-layer-02 p-ds-02 rounded-ds-lg gap-ds-02',
+        'bg-surface-2 p-ds-02 rounded-ds-lg gap-ds-02',
     },
   },
   defaultVariants: { variant: 'line' },
 })
 
 const tabsTriggerVariants = cva(
-  'relative inline-flex items-center justify-center gap-ds-02 whitespace-nowrap font-sans text-ds-md font-medium transition-colors duration-100 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-focus focus-visible:ring-offset-1 disabled:pointer-events-none disabled:opacity-[0.38]',
+  'relative inline-flex items-center justify-center gap-ds-02 whitespace-nowrap font-sans text-ds-md font-medium transition-colors duration-100 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent-9 focus-visible:ring-offset-1 disabled:pointer-events-none disabled:opacity-action-disabled',
   {
     variants: {
       variant: {
         line: [
           'px-ds-05 py-ds-03 -mb-px',
-          'text-text-secondary hover:text-text-primary',
-          'data-[state=active]:text-interactive',
+          'text-surface-fg-muted hover:text-surface-fg',
+          'data-[state=active]:text-accent-11',
         ],
         contained: [
           'px-ds-05 py-ds-02b rounded-ds-md',
-          'text-text-secondary hover:text-text-primary',
-          'data-[state=active]:text-text-primary',
+          'text-surface-fg-muted hover:text-surface-fg',
+          'data-[state=active]:text-surface-fg',
         ],
       },
     },
@@ -194,7 +194,7 @@ const TabsTrigger = React.forwardRef<
       {variant === 'contained' && isActive && (
         <motion.span
           layoutId={`${listContext.layoutId}-contained`}
-          className="absolute inset-0 rounded-ds-md bg-layer-01 shadow-01"
+          className="absolute inset-0 rounded-ds-md bg-surface-1 shadow-01"
           transition={springs.smooth}
         />
       )}
@@ -204,7 +204,7 @@ const TabsTrigger = React.forwardRef<
       {variant === 'line' && isActive && (
         <motion.span
           layoutId={`${listContext.layoutId}-line`}
-          className="absolute bottom-0 left-0 right-0 h-0.5 bg-interactive"
+          className="absolute bottom-0 left-0 right-0 h-0.5 bg-accent-9"
           transition={springs.smooth}
         />
       )}
@@ -220,7 +220,7 @@ const TabsContent = React.forwardRef<
   <TabsPrimitive.Content
     ref={ref}
     className={cn(
-      'mt-ds-05 ring-offset-background focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-focus focus-visible:ring-offset-2',
+      'mt-ds-05 ring-offset-background focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent-9 focus-visible:ring-offset-2',
       className,
     )}
     {...props}

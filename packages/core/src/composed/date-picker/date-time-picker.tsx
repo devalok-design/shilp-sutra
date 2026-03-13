@@ -204,7 +204,7 @@ const DateTimePicker = React.forwardRef<HTMLButtonElement, DateTimePickerProps>(
 
   // Compact time selector styles
   const selectBase =
-    'h-ds-sm rounded-ds-md border border-border bg-layer-01 px-ds-02 text-ds-md text-text-primary transition-colors duration-fast-01 ease-productive-standard hover:border-border-strong focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-focus cursor-pointer appearance-none'
+    'h-ds-sm rounded-ds-md border border-surface-border-strong bg-surface-1 px-ds-02 text-ds-md text-surface-fg transition-colors duration-fast-01 ease-productive-standard hover:border-surface-border-strong focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent-9 cursor-pointer appearance-none'
 
   return (
     <Popover open={open} onOpenChange={setOpen}>
@@ -214,23 +214,23 @@ const DateTimePicker = React.forwardRef<HTMLButtonElement, DateTimePickerProps>(
           type="button"
           {...props}
           className={cn(
-            'inline-flex h-ds-sm-plus items-center gap-ds-03 rounded-ds-lg border border-border bg-layer-01 px-ds-04 text-left transition-colors duration-fast-01 ease-productive-standard',
-            'hover:border-border-strong',
-            'focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-focus focus-visible:ring-offset-2',
+            'inline-flex h-ds-sm-plus items-center gap-ds-03 rounded-ds-lg border border-surface-border-strong bg-surface-1 px-ds-04 text-left transition-colors duration-fast-01 ease-productive-standard',
+            'hover:border-surface-border-strong',
+            'focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent-9 focus-visible:ring-offset-2',
             className,
           )}
           aria-label={displayText ? `Selected: ${displayText}` : placeholder}
         >
           <IconCalendarClock
-            className="h-ico-sm w-ico-sm text-text-placeholder"
+            className="h-ico-sm w-ico-sm text-surface-fg-subtle"
             stroke={1.5}
           />
           <span
             className={cn(
               'text-ds-md',
               displayText
-                ? 'text-text-primary'
-                : 'text-text-placeholder',
+                ? 'text-surface-fg'
+                : 'text-surface-fg-subtle',
             )}
           >
             {displayText ?? placeholder}
@@ -238,7 +238,7 @@ const DateTimePicker = React.forwardRef<HTMLButtonElement, DateTimePickerProps>(
         </button>
       </PopoverTrigger>
       <PopoverContent
-        className="w-auto border-border bg-layer-01 p-ds-04"
+        className="w-auto border-surface-border-strong bg-surface-1 p-ds-04"
         align="start"
         sideOffset={4}
       >
@@ -248,8 +248,8 @@ const DateTimePicker = React.forwardRef<HTMLButtonElement, DateTimePickerProps>(
 
           {/* Time selection row */}
           {view === 'days' && (
-            <div className="flex items-center gap-ds-02 border-t border-border pt-ds-04">
-              <span className="text-ds-xs font-semibold uppercase tracking-wider text-text-placeholder">
+            <div className="flex items-center gap-ds-02 border-t border-surface-border-strong pt-ds-04">
+              <span className="text-ds-xs font-semibold uppercase tracking-wider text-surface-fg-subtle">
                 Time
               </span>
 
@@ -268,7 +268,7 @@ const DateTimePicker = React.forwardRef<HTMLButtonElement, DateTimePickerProps>(
                 ))}
               </select>
 
-              <span className="text-ds-md font-semibold text-text-placeholder">
+              <span className="text-ds-md font-semibold text-surface-fg-subtle">
                 :
               </span>
 

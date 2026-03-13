@@ -82,7 +82,7 @@ export const AllVariants: Story = {
     return (
       <div className="flex flex-col gap-ds-06">
         <div>
-          <p className="mb-ds-03 text-ds-sm font-semibold text-text-secondary">Sizes (with fallback)</p>
+          <p className="mb-ds-03 text-ds-sm font-semibold text-surface-fg-muted">Sizes (with fallback)</p>
           <div className="flex flex-wrap items-center gap-ds-03">
             {sizes.map((size) => (
               <Avatar key={size} size={size}>
@@ -93,7 +93,7 @@ export const AllVariants: Story = {
         </div>
 
         <div>
-          <p className="mb-ds-03 text-ds-sm font-semibold text-text-secondary">Sizes (with image)</p>
+          <p className="mb-ds-03 text-ds-sm font-semibold text-surface-fg-muted">Sizes (with image)</p>
           <div className="flex flex-wrap items-center gap-ds-03">
             {sizes.map((size) => (
               <Avatar key={size} size={size}>
@@ -106,7 +106,7 @@ export const AllVariants: Story = {
 
         {statuses.map((status) => (
           <div key={status}>
-            <p className="mb-ds-03 text-ds-sm font-semibold text-text-secondary capitalize">Status: {status}</p>
+            <p className="mb-ds-03 text-ds-sm font-semibold text-surface-fg-muted capitalize">Status: {status}</p>
             <div className="flex flex-wrap items-center gap-ds-03">
               {sizes.map((size) => (
                 <Avatar key={`${status}-${size}`} size={size} status={status}>

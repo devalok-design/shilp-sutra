@@ -7,6 +7,7 @@ import { Avatar, AvatarFallback, AvatarImage } from '../ui/avatar'
 import { Button } from '../ui/button'
 import { Skeleton } from '../ui/skeleton'
 import { getInitials } from './lib/string-utils'
+import { formatRelativeTime } from '../ui/lib/date-utils'
 
 export interface ActivityItem {
   id: string
@@ -36,21 +37,6 @@ const dotColorMap = {
   info: 'bg-info-9',
 } as const
 
-function formatRelativeTime(timestamp: Date | string): string {
-  const date = typeof timestamp === 'string' ? new Date(timestamp) : timestamp
-  const now = new Date()
-  const diffMs = now.getTime() - date.getTime()
-  const diffSec = Math.floor(diffMs / 1000)
-  const diffMin = Math.floor(diffSec / 60)
-  const diffHour = Math.floor(diffMin / 60)
-  const diffDay = Math.floor(diffHour / 24)
-
-  if (diffSec < 60) return 'just now'
-  if (diffMin < 60) return `${diffMin}m ago`
-  if (diffHour < 24) return `${diffHour}h ago`
-  if (diffDay < 7) return `${diffDay}d ago`
-  return date.toLocaleDateString()
-}
 
 function LoadingSkeleton({ compact }: { compact: boolean }) {
   return (

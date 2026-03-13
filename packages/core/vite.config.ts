@@ -5,8 +5,21 @@ import { resolve } from 'path'
 import { readdirSync, statSync } from 'fs'
 
 /**
- * Collect all .ts/.tsx files from the given directories as Rollup entry points.
- * Excludes tests, stories, and .mdx files.
+ * Scan directories under `src/` for `.ts`/`.tsx` files and return them as
+ * Rollup entry points keyed by `"dir/basename"`.
+ *
+ * **One-level-deep only** — reads immediate children of each directory;
+ * files nested in subdirectories (e.g. `ui/charts/index.ts`) are NOT
+ * collected. Those must be added manually to {@link explicitEntries}.
+ *
+ * Excludes `*.test.*`, `*.spec.*`, `*.stories.*`, and `*.mdx` files.
+ *
+ * @example
+ * // Collected:  src/ui/button.tsx  → { "ui/button": "<abs>/src/ui/button.tsx" }
+ * // Skipped:    src/ui/charts/index.ts  (subdirectory — add to explicitEntries)
+ *
+ * @param dirs - Directory names relative to `src/` (e.g. `["ui", "hooks"]`).
+ * @returns A `{ [entryName]: absolutePath }` map suitable for `build.lib.entry`.
  */
 function collectEntries(dirs: string[]): Record<string, string> {
   const entries: Record<string, string> = {}

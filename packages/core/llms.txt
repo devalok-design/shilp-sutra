@@ -236,7 +236,7 @@ NOTIFICATION SELECTION GUIDE:
 - Presets: date range quick-select buttons — presets(PresetKey[]), onSelect(start, end). Keys: today, yesterday, last7days, last30days, thisMonth, lastMonth, thisYear
 - useCalendar: hook for calendar month state — returns currentMonth, goToPreviousMonth, goToNextMonth, goToMonth, goToYear
 - (UploadProgress REMOVED — upload tracking is now built into toast.upload())
-- RichTextEditor: Tiptap editor — bold/italic/underline/strike/highlight, headings, blockquote, lists (bullet/ordered/task), code, links, images (paste/drop/upload), file attachments, @mentions, emoji picker + :shortcode:, text alignment, HR. Props: onImageUpload?, onFileUpload?, mentions?, onMentionSearch?, onMentionSelect?
+- RichTextEditor: Tiptap editor — bold/italic/underline/strike/highlight, headings, blockquote, lists (bullet/ordered/task), code, links, images (paste/drop/upload), file attachments, @mentions, emoji picker + :shortcode:, text alignment, HR. Props: onImageUpload?, onFileUpload?, mentions?, onMentionSearch?, onMentionSelect?(item: MentionItem)
 - RichTextViewer: read-only renderer for RichTextEditor HTML content (renders all above content types)
 - ActivityFeed: items(ActivityItem[]), onLoadMore, loading, hasMore, emptyState, compact, maxInitialItems. Type: ActivityItem = { id, actor?, action, timestamp, icon?, color?, detail? }
 - CommandPalette, MemberPicker

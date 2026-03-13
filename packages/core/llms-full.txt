@@ -1915,7 +1915,7 @@ Note: getFormFieldA11y() was removed in favor of useFormField() hook.
     onFileUpload?: (file: File) => Promise<{ url: string; name: string; size: number }> — enables file attachments. If omitted, non-image files ignored
     mentions?: MentionItem[] — static list for @mention autocomplete
     onMentionSearch?: (query: string) => Promise<MentionItem[]> — async search, takes precedence over static mentions
-    onMentionSelect?: (item: MentionItem) => void — callback when mention selected
+    onMentionSelect?: (item: MentionItem) => void — called when a mention is selected from the dropdown
 - MentionItem: { id: string; label: string; avatar?: string }
 - Props (RichTextViewer):
     content: string (REQUIRED, HTML string)

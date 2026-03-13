@@ -316,7 +316,7 @@ export interface RichTextEditorProps extends Omit<React.ComponentPropsWithoutRef
   mentions?: MentionItem[]
   /** Async mention search. Takes precedence over static list. */
   onMentionSearch?: (query: string) => Promise<MentionItem[]>
-  /** Called when a mention is selected */
+  /** Called when a mention is selected from the suggestion dropdown */
   onMentionSelect?: (item: MentionItem) => void
 }
 
@@ -331,7 +331,7 @@ const RichTextEditor = React.forwardRef<HTMLDivElement, RichTextEditorProps>(
   onFileUpload,
   mentions,
   onMentionSearch,
-  onMentionSelect: _onMentionSelect,
+  onMentionSelect,
   ...props
 }, ref) {
   const editorRef = React.useRef<ReturnType<typeof useEditor>>(null)
@@ -408,7 +408,7 @@ const RichTextEditor = React.forwardRef<HTMLDivElement, RichTextEditorProps>(
               if (mentions) return mentions.filter(m => m.label.toLowerCase().includes(query.toLowerCase())).slice(0, 8)
               return []
             },
-            render: createSuggestionRenderer(),
+            render: createSuggestionRenderer(onMentionSelect),
           },
         }),
       ] : []),

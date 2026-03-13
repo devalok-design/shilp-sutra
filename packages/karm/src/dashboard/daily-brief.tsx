@@ -7,6 +7,7 @@ import ReactMarkdown from 'react-markdown'
 import { IconChevronDown, IconRefresh, IconSparkles } from '@tabler/icons-react'
 import { springs } from '@/ui/lib/motion'
 import { cn } from '@/ui/lib/utils'
+import { formatRelativeTime } from '@/ui/lib/date-utils'
 
 // ============================================================
 // Types
@@ -25,23 +26,6 @@ export interface DailyBriefProps extends React.HTMLAttributes<HTMLDivElement> {
   collapsible?: boolean
   defaultCollapsed?: boolean
   title?: string
-}
-
-// ============================================================
-// Helpers
-// ============================================================
-
-function formatRelativeTime(dateStr: string): string {
-  const d = new Date(dateStr)
-  const now = new Date()
-  const diffMs = now.getTime() - d.getTime()
-  const diffMin = Math.floor(diffMs / 60000)
-  if (diffMin < 1) return 'just now'
-  if (diffMin < 60) return `${diffMin}m ago`
-  const diffHr = Math.floor(diffMin / 60)
-  if (diffHr < 24) return `${diffHr}h ago`
-  const diffDay = Math.floor(diffHr / 24)
-  return `${diffDay}d ago`
 }
 
 // ============================================================

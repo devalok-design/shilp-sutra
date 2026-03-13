@@ -322,5 +322,6 @@ export { Link, type LinkProps } from './link'
 
 // Utilities
 export { cn } from './lib/utils'
+export { formatRelativeTime } from './lib/date-utils'
 export { springs, tweens, stagger, withReducedMotion } from './lib/motion'
 export type { SpringPreset, TweenPreset } from './lib/motion'

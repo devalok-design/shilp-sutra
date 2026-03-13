@@ -8,6 +8,7 @@
  */
 import * as React from 'react'
 import { useRef, useCallback } from 'react'
+import { formatRelativeTime } from '../ui/lib/date-utils'
 import {
   Popover,
   PopoverContent,
@@ -93,24 +94,6 @@ export interface NotificationCenterProps
 // Helpers
 // -----------------------------------------------------------------------
 
-function timeAgo(dateStr: string): string {
-  const now = Date.now()
-  const then = new Date(dateStr).getTime()
-  const diff = now - then
-  const seconds = Math.floor(diff / 1000)
-  const minutes = Math.floor(seconds / 60)
-  const hours = Math.floor(minutes / 60)
-  const days = Math.floor(hours / 24)
-
-  if (seconds < 60) return 'just now'
-  if (minutes < 60) return `${minutes}m ago`
-  if (hours < 24) return `${hours}h ago`
-  if (days < 7) return `${days}d ago`
-  return new Date(dateStr).toLocaleDateString(undefined, {
-    day: 'numeric',
-    month: 'short',
-  })
-}
 
 function isSameDay(a: Date, b: Date): boolean {
   return (
@@ -212,7 +195,7 @@ function NotificationItem({
         )}
         <div className="mt-ds-02 flex items-center gap-ds-03">
           <span className="text-ds-sm text-surface-fg-subtle">
-            {timeAgo(notification.createdAt)}
+            {formatRelativeTime(notification.createdAt)}
           </span>
           {notification.project && (
             <>

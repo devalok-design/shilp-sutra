@@ -34,6 +34,7 @@ import {
 } from '@tabler/icons-react'
 import { CommandPalette, type CommandGroup, type CommandItem } from '../composed/command-palette'
 import { cn } from '../ui/lib/utils'
+import { useCommandRegistry } from './command-registry'
 
 // -----------------------------------------------------------------------
 // Types
@@ -212,6 +213,8 @@ const AppCommandPalette = React.forwardRef<HTMLDivElement, AppCommandPaletteProp
   const isAdmin =
     isAdminProp ?? (user?.role === 'Admin' || user?.role === 'SuperAdmin')
 
+  const registry = useCommandRegistry()
+
   const nav = useCallback(
     (to: string) => {
       onNavigate?.(to)
@@ -224,17 +227,33 @@ const AppCommandPalette = React.forwardRef<HTMLDivElement, AppCommandPaletteProp
   const pagesGroup: CommandGroup = useMemo(
     () => ({
       label: 'Pages',
-      items: buildDefaultPageItems(nav),
+      items: registry
+        ? registry.pages.map((p) => ({
+            id: p.id,
+            label: p.label,
+            icon: p.icon,
+            keywords: p.keywords,
+            onSelect: () => nav(p.path),
+          }))
+        : buildDefaultPageItems(nav),
     }),
-    [nav],
+    [nav, registry],
   )
 
   const adminGroup: CommandGroup = useMemo(
     () => ({
       label: 'Admin',
-      items: buildDefaultAdminItems(nav),
+      items: registry
+        ? registry.adminPages.map((p) => ({
+            id: p.id,
+            label: p.label,
+            icon: p.icon,
+            keywords: p.keywords,
+            onSelect: () => nav(p.path),
+          }))
+        : buildDefaultAdminItems(nav),
     }),
-    [nav],
+    [nav, registry],
   )
 
   // -- Dynamic search results group ------------------------------------

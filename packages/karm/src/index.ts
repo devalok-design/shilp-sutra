@@ -200,3 +200,6 @@ export {
   type Adjustment,
   type DayInfo,
 } from './admin'
+
+// Shell configuration
+export { karmCommandRegistry } from './shell/karm-command-registry'

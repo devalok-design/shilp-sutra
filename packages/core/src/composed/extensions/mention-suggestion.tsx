@@ -69,7 +69,7 @@ const MentionList = React.forwardRef<MentionListRef, MentionListProps>(
 )
 MentionList.displayName = 'MentionList'
 
-export function createSuggestionRenderer() {
+export function createSuggestionRenderer(onMentionSelect?: (item: MentionItem) => void) {
   return () => {
     let root: Root | null = null
     let container: HTMLDivElement | null = null
@@ -93,7 +93,10 @@ export function createSuggestionRenderer() {
           <MentionList
             ref={(r) => { componentRef = r }}
             items={props.items as MentionItem[]}
-            command={(item) => props.command({ id: item.id, label: item.label })}
+            command={(item) => {
+              props.command({ id: item.id, label: item.label })
+              onMentionSelect?.(item)
+            }}
           />,
         )
       },
@@ -111,7 +114,10 @@ export function createSuggestionRenderer() {
           <MentionList
             ref={(r) => { componentRef = r }}
             items={props.items as MentionItem[]}
-            command={(item) => props.command({ id: item.id, label: item.label })}
+            command={(item) => {
+              props.command({ id: item.id, label: item.label })
+              onMentionSelect?.(item)
+            }}
           />,
         )
       },

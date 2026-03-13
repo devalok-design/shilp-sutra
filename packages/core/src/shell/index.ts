@@ -53,3 +53,11 @@ export {
   type AppCommandPaletteUser,
   type AppCommandPaletteProps,
 } from './app-command-palette'
+
+export {
+  CommandRegistryProvider,
+  useCommandRegistry,
+  type CommandRegistry,
+  type CommandPageItem,
+  type CommandRegistryProviderProps,
+} from './command-registry'

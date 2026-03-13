@@ -3,6 +3,7 @@
 import * as React from 'react'
 import { IconMessage, IconArchive, IconTrash, IconMessagePlus } from '@tabler/icons-react'
 import { cn } from '@/ui/lib/utils'
+import { formatRelativeTime } from '@/ui/lib/date-utils'
 
 // ============================================================
 // Types
@@ -22,31 +23,6 @@ export interface ConversationListProps extends Omit<React.HTMLAttributes<HTMLDiv
   onNewChat: () => void
   onArchive?: (id: string) => void
   onDelete?: (id: string) => void
-}
-
-// ============================================================
-// Helpers
-// ============================================================
-
-function formatRelativeTime(dateStr: string): string {
-  const date = new Date(dateStr)
-  const now = new Date()
-  const diffMs = now.getTime() - date.getTime()
-  const diffMins = Math.floor(diffMs / 60000)
-
-  if (diffMins < 1) return 'Just now'
-  if (diffMins < 60) return `${diffMins}m ago`
-
-  const diffHours = Math.floor(diffMins / 60)
-  if (diffHours < 24) return `${diffHours}h ago`
-
-  const diffDays = Math.floor(diffHours / 24)
-  if (diffDays < 7) return `${diffDays}d ago`
-
-  return date.toLocaleDateString('en-IN', {
-    day: 'numeric',
-    month: 'short',
-  })
 }
 
 // ============================================================

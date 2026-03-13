@@ -75,6 +75,9 @@ export {
   AlertDialogDescription,
   AlertDialogAction,
   AlertDialogCancel,
+  type AlertDialogContentProps,
+  type AlertDialogActionProps,
+  type AlertDialogCancelProps,
 } from './alert-dialog'
 export {
   Dialog,
@@ -171,6 +174,8 @@ export {
   BreadcrumbPage,
   BreadcrumbSeparator,
   BreadcrumbEllipsis,
+  type BreadcrumbProps,
+  type BreadcrumbLinkProps,
 } from './breadcrumb'
 export {
   DropdownMenu,
@@ -207,6 +212,8 @@ export {
   ContextMenuSubContent,
   ContextMenuSubTrigger,
   ContextMenuRadioGroup,
+  type ContextMenuContentProps,
+  type ContextMenuItemProps,
 } from './context-menu'
 export {
   Menubar,

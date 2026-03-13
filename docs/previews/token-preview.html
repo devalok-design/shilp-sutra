@@ -1,0 +1,964 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>shilp-sutra Token System Preview</title>
+<style>
+  *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+
+  :root {
+    --pink-1:  oklch(0.99 0.005 360);
+    --pink-2:  oklch(0.97 0.015 360);
+    --pink-3:  oklch(0.93 0.035 360);
+    --pink-4:  oklch(0.89 0.055 360);
+    --pink-5:  oklch(0.84 0.08  360);
+    --pink-6:  oklch(0.78 0.10  360);
+    --pink-7:  oklch(0.70 0.14  360);
+    --pink-8:  oklch(0.62 0.17  360);
+    --pink-9:  oklch(0.55 0.19  360);
+    --pink-10: oklch(0.50 0.19  360);
+    --pink-11: oklch(0.43 0.14  360);
+    --pink-12: oklch(0.32 0.08  360);
+
+    --purple-1:  oklch(0.99 0.005 300);
+    --purple-2:  oklch(0.97 0.012 300);
+    --purple-3:  oklch(0.93 0.03  300);
+    --purple-4:  oklch(0.89 0.05  300);
+    --purple-5:  oklch(0.84 0.07  300);
+    --purple-6:  oklch(0.78 0.09  300);
+    --purple-7:  oklch(0.70 0.11  300);
+    --purple-8:  oklch(0.60 0.12  300);
+    --purple-9:  oklch(0.50 0.12  300);
+    --purple-10: oklch(0.45 0.12  300);
+    --purple-11: oklch(0.40 0.10  300);
+    --purple-12: oklch(0.30 0.06  300);
+
+    --neutral-1:  oklch(0.99 0.003 350);
+    --neutral-2:  oklch(0.97 0.004 350);
+    --neutral-3:  oklch(0.93 0.005 350);
+    --neutral-4:  oklch(0.90 0.006 350);
+    --neutral-5:  oklch(0.85 0.006 350);
+    --neutral-6:  oklch(0.80 0.007 350);
+    --neutral-7:  oklch(0.70 0.008 350);
+    --neutral-8:  oklch(0.55 0.010 350);
+    --neutral-9:  oklch(0.45 0.010 350);
+    --neutral-10: oklch(0.38 0.010 350);
+    --neutral-11: oklch(0.30 0.008 350);
+    --neutral-12: oklch(0.20 0.006 350);
+
+    --color-accent-3: var(--pink-3);
+    --color-accent-7: var(--pink-7);
+    --color-accent-9: var(--pink-9);
+    --color-accent-10: var(--pink-10);
+    --color-accent-11: var(--pink-11);
+    --color-accent-fg: var(--neutral-1);
+    --color-secondary-3: var(--purple-3);
+    --color-secondary-9: var(--purple-9);
+    --color-secondary-11: var(--purple-11);
+    --color-secondary-fg: var(--neutral-1);
+    --color-surface-1: var(--neutral-1);
+    --color-surface-2: var(--neutral-2);
+    --color-surface-3: var(--neutral-3);
+    --color-surface-4: var(--neutral-4);
+    --color-surface-fg: var(--neutral-12);
+    --color-surface-fg-muted: var(--neutral-11);
+    --color-surface-fg-subtle: var(--neutral-8);
+    --color-surface-border: var(--neutral-6);
+  }
+
+  .dark,
+  [data-theme="dark"] {
+    --pink-1:  oklch(0.14 0.005 360);
+    --pink-2:  oklch(0.17 0.015 360);
+    --pink-3:  oklch(0.21 0.04  360);
+    --pink-4:  oklch(0.25 0.06  360);
+    --pink-5:  oklch(0.30 0.08  360);
+    --pink-6:  oklch(0.36 0.10  360);
+    --pink-7:  oklch(0.44 0.13  360);
+    --pink-8:  oklch(0.53 0.18  360);
+    --pink-9:  oklch(0.63 0.21  360);
+    --pink-10: oklch(0.58 0.21  360);
+    --pink-11: oklch(0.76 0.13  360);
+    --pink-12: oklch(0.88 0.05  360);
+
+    --purple-1:  oklch(0.14 0.005 300);
+    --purple-2:  oklch(0.17 0.012 300);
+    --purple-3:  oklch(0.21 0.03  300);
+    --purple-4:  oklch(0.25 0.05  300);
+    --purple-5:  oklch(0.30 0.07  300);
+    --purple-6:  oklch(0.36 0.08  300);
+    --purple-7:  oklch(0.44 0.10  300);
+    --purple-8:  oklch(0.53 0.13  300);
+    --purple-9:  oklch(0.62 0.16  300);
+    --purple-10: oklch(0.57 0.16  300);
+    --purple-11: oklch(0.76 0.10  300);
+    --purple-12: oklch(0.88 0.04  300);
+
+    --neutral-1:  oklch(0.14 0.003 350);
+    --neutral-2:  oklch(0.17 0.004 350);
+    --neutral-3:  oklch(0.21 0.005 350);
+    --neutral-4:  oklch(0.25 0.006 350);
+    --neutral-5:  oklch(0.30 0.006 350);
+    --neutral-6:  oklch(0.36 0.007 350);
+    --neutral-7:  oklch(0.44 0.008 350);
+    --neutral-8:  oklch(0.55 0.010 350);
+    --neutral-9:  oklch(0.65 0.010 350);
+    --neutral-10: oklch(0.72 0.008 350);
+    --neutral-11: oklch(0.80 0.006 350);
+    --neutral-12: oklch(0.93 0.004 350);
+
+    --color-accent-fg: var(--neutral-12);
+    --color-secondary-fg: var(--neutral-12);
+  }
+
+  body {
+    font-family: Inter, system-ui, sans-serif;
+    background: var(--color-surface-1);
+    color: var(--color-surface-fg);
+    padding: 2rem;
+    transition: background 0.3s, color 0.3s;
+  }
+
+  .header { text-align: center; margin-bottom: 1.5rem; }
+  .header h1 { font-size: 1.75rem; font-weight: 700; }
+  .header p { font-size: 0.85rem; opacity: 0.6; margin-top: 0.25rem; }
+
+  /* ── Theme Toggle ── */
+  .toggle-bar {
+    display: flex; justify-content: center; gap: 4px; margin-bottom: 2rem;
+    background: var(--color-surface-3); padding: 4px; border-radius: 10px; width: fit-content; margin-inline: auto;
+  }
+  .toggle-bar button {
+    padding: 0.4rem 1.2rem; border-radius: 8px; border: none;
+    background: transparent; color: var(--color-surface-fg-muted); cursor: pointer;
+    font-size: 0.8rem; font-weight: 500; font-family: inherit; transition: all 0.2s;
+  }
+  .toggle-bar button[aria-pressed="true"] {
+    background: var(--color-accent-9); color: var(--color-accent-fg);
+    box-shadow: 0 1px 3px oklch(0 0 0 / 0.2);
+  }
+
+  .container { max-width: 900px; margin: 0 auto; }
+
+  h2 {
+    font-size: 0.7rem; font-weight: 600; text-transform: uppercase;
+    letter-spacing: 0.06em; opacity: 0.5; margin: 1.5rem 0 0.5rem;
+  }
+
+  /* ── Scale strips ── */
+  .scale { display: flex; gap: 2px; border-radius: 8px; overflow: hidden; margin-bottom: 0.5rem; }
+  .swatch {
+    flex: 1; height: 48px; display: flex; flex-direction: column;
+    align-items: center; justify-content: center; gap: 1px;
+    font-size: 0.55rem; font-weight: 600; transition: background 0.3s;
+  }
+  .swatch-num { mix-blend-mode: difference; color: white; opacity: 0.85; }
+  .swatch-role { mix-blend-mode: difference; color: white; opacity: 0.5; font-weight: 400; font-size: 0.45rem; }
+
+  /* ── Depth demo ── */
+  .depth-demo { display: flex; gap: 0; border-radius: 10px; overflow: hidden; }
+  .depth-layer {
+    flex: 1; padding: 1.25rem 0.5rem; display: flex; flex-direction: column;
+    align-items: center; justify-content: center; gap: 0.15rem; transition: background 0.3s;
+  }
+  .depth-label { font-size: 0.65rem; font-weight: 600; }
+  .depth-sub { font-size: 0.5rem; opacity: 0.5; }
+
+  /* ── Component Previews ── */
+  .components { display: flex; flex-direction: column; gap: 0.75rem; margin-top: 0.5rem; }
+  .row { display: flex; gap: 0.5rem; align-items: center; flex-wrap: wrap; }
+
+  .btn {
+    display: inline-flex; align-items: center; justify-content: center;
+    padding: 0.5rem 1.25rem; border-radius: 8px; font-size: 0.85rem; font-weight: 600;
+    border: none; cursor: pointer; font-family: inherit; transition: all 0.15s;
+  }
+  .btn-accent { background: var(--color-accent-9); color: var(--color-accent-fg); }
+  .btn-accent:hover { background: var(--color-accent-10); }
+  .btn-secondary-solid { background: var(--color-secondary-9); color: var(--color-secondary-fg); }
+  .btn-outline {
+    background: transparent; color: var(--color-accent-11);
+    border: 1.5px solid var(--color-accent-7);
+  }
+  .btn-subtle { background: var(--color-accent-3); color: var(--color-accent-11); }
+  .btn-ghost { background: transparent; color: var(--color-accent-11); }
+  .btn-ghost:hover { background: var(--color-accent-3); }
+  .btn-danger { background: oklch(0.55 0.18 25); color: white; }
+
+  .badge {
+    display: inline-flex; padding: 0.2rem 0.65rem; border-radius: 99px;
+    font-size: 0.7rem; font-weight: 600;
+  }
+  .badge-accent { background: var(--color-accent-3); color: var(--color-accent-11); }
+  .badge-secondary { background: var(--color-secondary-3); color: var(--color-secondary-11); }
+
+  .card {
+    border-radius: 10px; padding: 1.25rem; display: flex; flex-direction: column; gap: 0.5rem;
+    background: var(--color-surface-2); border: 1px solid var(--color-surface-border);
+    transition: all 0.3s;
+  }
+  .card-title { font-weight: 600; font-size: 0.9rem; color: var(--color-surface-fg); }
+  .card-text { font-size: 0.8rem; line-height: 1.5; color: var(--color-surface-fg-muted); }
+  .card-meta { font-size: 0.7rem; color: var(--color-surface-fg-subtle); }
+
+  .input-field {
+    padding: 0.5rem 0.75rem; border-radius: 8px; font-size: 0.85rem;
+    outline: none; width: 100%; font-family: inherit;
+    background: var(--color-surface-3); border: 1px solid var(--color-surface-border);
+    color: var(--color-surface-fg); transition: all 0.3s;
+  }
+  .input-field:focus { border-color: var(--color-accent-9); box-shadow: 0 0 0 2px var(--color-accent-3); }
+  .input-field::placeholder { color: var(--color-surface-fg-subtle); }
+
+  .text-demo { display: flex; flex-direction: column; gap: 0.35rem; }
+  .text-demo span { font-size: 0.85rem; transition: color 0.3s; }
+
+  .status-row { display: flex; gap: 0.5rem; flex-wrap: wrap; }
+  .status-chip {
+    padding: 0.3rem 0.7rem; border-radius: 6px; font-size: 0.7rem; font-weight: 600;
+    border: 1px solid; transition: all 0.3s;
+  }
+
+  /* ── Usage Example Panel ── */
+  .usage-panel {
+    background: var(--neutral-12); color: var(--neutral-2); border-radius: 10px;
+    padding: 1.25rem; font-family: "SF Mono", "Fira Code", monospace; font-size: 0.72rem;
+    line-height: 1.6; overflow-x: auto; margin-top: 0.5rem; transition: all 0.3s;
+  }
+  .dark .usage-panel { background: oklch(0.10 0.003 350); color: oklch(0.80 0.006 350); }
+  .tok { color: oklch(0.70 0.15 360); }
+  .comment { color: oklch(0.50 0.01 350); }
+  .val { color: oklch(0.65 0.12 300); }
+  .dark .tok { color: oklch(0.75 0.11 360); }
+  .dark .val { color: oklch(0.75 0.08 300); }
+  .dark .comment { color: oklch(0.45 0.01 350); }
+
+  /* ── Sidebar + Content Demo ── */
+  .app-demo {
+    display: grid; grid-template-columns: 200px 1fr; border-radius: 10px;
+    overflow: hidden; border: 1px solid var(--color-surface-border);
+    min-height: 280px; transition: all 0.3s;
+  }
+  .app-sidebar {
+    background: var(--color-surface-2); padding: 1rem;
+    border-right: 1px solid var(--color-surface-border);
+    display: flex; flex-direction: column; gap: 0.25rem;
+  }
+  .app-sidebar-item {
+    padding: 0.4rem 0.6rem; border-radius: 6px; font-size: 0.8rem;
+    cursor: pointer; color: var(--color-surface-fg-muted); transition: all 0.15s;
+  }
+  .app-sidebar-item:hover { background: var(--color-surface-3); }
+  .app-sidebar-item.active {
+    background: var(--color-accent-3); color: var(--color-accent-11); font-weight: 600;
+  }
+  .app-content { background: var(--color-surface-1); padding: 1.25rem; }
+  .app-content h3 { font-size: 1rem; font-weight: 700; margin-bottom: 0.5rem; }
+  .app-content p { font-size: 0.8rem; color: var(--color-surface-fg-muted); line-height: 1.5; }
+
+  .avatar-row { display: flex; gap: -4px; margin-top: 0.5rem; }
+  .avatar {
+    width: 28px; height: 28px; border-radius: 99px; display: flex; align-items: center;
+    justify-content: center; font-size: 0.6rem; font-weight: 700; margin-left: -4px;
+    border: 2px solid var(--color-surface-1);
+  }
+
+  .progress-bar { height: 6px; border-radius: 99px; background: var(--color-surface-3); margin-top: 0.75rem; overflow: hidden; }
+  .progress-fill { height: 100%; border-radius: 99px; background: var(--color-accent-9); width: 65%; }
+
+  .separator { border: none; border-top: 1px solid var(--color-surface-border); margin: 0.75rem 0; }
+
+  /* ── Data Table ── */
+  .data-table { width: 100%; border-collapse: collapse; font-size: 0.8rem; border-radius: 10px; overflow: hidden; }
+  .data-table thead { background: var(--color-surface-3); }
+  .data-table th {
+    text-align: left; padding: 0.6rem 0.75rem; font-weight: 600; font-size: 0.7rem;
+    text-transform: uppercase; letter-spacing: 0.04em; color: var(--color-surface-fg-muted);
+    border-bottom: 1px solid var(--color-surface-border);
+  }
+  .data-table td {
+    padding: 0.6rem 0.75rem; border-bottom: 1px solid var(--color-surface-border);
+    color: var(--color-surface-fg);
+  }
+  .data-table tr:hover td { background: var(--color-surface-2); }
+  .data-table .row-selected td { background: var(--color-accent-3); }
+  .table-wrap {
+    border: 1px solid var(--color-surface-border); border-radius: 10px; overflow: hidden;
+    transition: all 0.3s;
+  }
+
+  /* ── Form ── */
+  .form-group { display: flex; flex-direction: column; gap: 0.25rem; }
+  .form-label { font-size: 0.75rem; font-weight: 600; color: var(--color-surface-fg-muted); }
+  .form-hint { font-size: 0.65rem; color: var(--color-surface-fg-subtle); }
+  .form-error-text { font-size: 0.65rem; color: var(--pink-9); font-weight: 500; }
+  .input-error { border-color: oklch(0.55 0.18 25) !important; }
+  .input-error:focus { box-shadow: 0 0 0 2px oklch(0.55 0.18 25 / 0.2) !important; }
+  .form-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 0.75rem; }
+
+  /* ── Toast / Notification ── */
+  .toast-stack { display: flex; flex-direction: column; gap: 0.5rem; }
+  .toast {
+    display: flex; align-items: flex-start; gap: 0.6rem; padding: 0.75rem 1rem;
+    border-radius: 8px; border: 1px solid; font-size: 0.8rem; transition: all 0.3s;
+  }
+  .toast-icon { font-size: 1rem; flex-shrink: 0; line-height: 1; }
+  .toast-body { display: flex; flex-direction: column; gap: 0.15rem; }
+  .toast-title { font-weight: 600; }
+  .toast-desc { font-size: 0.72rem; opacity: 0.8; }
+  .toast-actions { display: flex; gap: 0.5rem; margin-top: 0.25rem; }
+  .toast-action {
+    font-size: 0.7rem; font-weight: 600; background: none; border: none; cursor: pointer;
+    padding: 0; font-family: inherit; text-decoration: underline; text-underline-offset: 2px;
+  }
+
+  /* ── Dropdown / Menu ── */
+  .dropdown-menu {
+    background: var(--color-surface-2); border: 1px solid var(--color-surface-border);
+    border-radius: 8px; padding: 0.25rem; width: 220px;
+    box-shadow: 0 4px 16px oklch(0 0 0 / 0.15); transition: all 0.3s;
+  }
+  .dark .dropdown-menu { box-shadow: 0 4px 16px oklch(0 0 0 / 0.4); }
+  .menu-item {
+    padding: 0.45rem 0.6rem; border-radius: 5px; font-size: 0.8rem; cursor: pointer;
+    display: flex; align-items: center; justify-content: space-between;
+    color: var(--color-surface-fg); transition: background 0.1s;
+  }
+  .menu-item:hover { background: var(--color-surface-3); }
+  .menu-item.active { background: var(--color-accent-3); color: var(--color-accent-11); }
+  .menu-item.destructive { color: oklch(0.55 0.18 25); }
+  .dark .menu-item.destructive { color: oklch(0.70 0.16 25); }
+  .menu-shortcut { font-size: 0.65rem; color: var(--color-surface-fg-subtle); font-family: "SF Mono", monospace; }
+  .menu-separator { height: 1px; background: var(--color-surface-border); margin: 0.25rem 0.4rem; }
+  .menu-label { font-size: 0.65rem; font-weight: 600; color: var(--color-surface-fg-subtle); padding: 0.3rem 0.6rem; text-transform: uppercase; letter-spacing: 0.04em; }
+
+  /* ── Modal / Dialog ── */
+  .modal-backdrop {
+    background: oklch(0 0 0 / 0.45); border-radius: 10px; padding: 2rem;
+    display: flex; align-items: center; justify-content: center; transition: all 0.3s;
+  }
+  .dark .modal-backdrop { background: oklch(0 0 0 / 0.65); }
+  .modal-content {
+    background: var(--color-surface-1); border: 1px solid var(--color-surface-border);
+    border-radius: 10px; padding: 1.5rem; width: 100%; max-width: 420px;
+    box-shadow: 0 8px 32px oklch(0 0 0 / 0.2); transition: all 0.3s;
+  }
+  .dark .modal-content { box-shadow: 0 8px 32px oklch(0 0 0 / 0.5); }
+  .modal-title { font-weight: 700; font-size: 1rem; margin-bottom: 0.35rem; }
+  .modal-desc { font-size: 0.8rem; color: var(--color-surface-fg-muted); line-height: 1.5; margin-bottom: 1rem; }
+  .modal-footer { display: flex; gap: 0.5rem; justify-content: flex-end; }
+
+  /* ── Kanban / Board ── */
+  .kanban { display: grid; grid-template-columns: repeat(3, 1fr); gap: 0.75rem; }
+  .kanban-col {
+    background: var(--color-surface-2); border-radius: 8px; padding: 0.75rem;
+    display: flex; flex-direction: column; gap: 0.5rem; transition: all 0.3s;
+  }
+  .kanban-header {
+    display: flex; align-items: center; justify-content: space-between;
+    font-size: 0.75rem; font-weight: 700; color: var(--color-surface-fg-muted);
+    padding-bottom: 0.5rem; border-bottom: 1px solid var(--color-surface-border);
+  }
+  .kanban-count {
+    font-size: 0.65rem; font-weight: 600; background: var(--color-surface-3);
+    padding: 0.1rem 0.4rem; border-radius: 99px; color: var(--color-surface-fg-subtle);
+  }
+  .kanban-card {
+    background: var(--color-surface-1); border: 1px solid var(--color-surface-border);
+    border-radius: 6px; padding: 0.6rem; font-size: 0.75rem; cursor: pointer;
+    transition: all 0.15s; display: flex; flex-direction: column; gap: 0.3rem;
+  }
+  .kanban-card:hover { border-color: var(--color-accent-7); }
+  .kanban-card-title { font-weight: 600; color: var(--color-surface-fg); }
+  .kanban-card-meta { font-size: 0.65rem; color: var(--color-surface-fg-subtle); display: flex; align-items: center; gap: 0.4rem; }
+  .kanban-tag {
+    font-size: 0.55rem; font-weight: 600; padding: 0.1rem 0.35rem; border-radius: 4px;
+  }
+
+  /* ── Chat / Thread ── */
+  .chat-thread {
+    display: flex; flex-direction: column; gap: 0.5rem;
+    background: var(--color-surface-1); border: 1px solid var(--color-surface-border);
+    border-radius: 10px; padding: 1rem; transition: all 0.3s;
+  }
+  .chat-msg { display: flex; gap: 0.5rem; }
+  .chat-msg-self { flex-direction: row-reverse; }
+  .chat-avatar {
+    width: 28px; height: 28px; border-radius: 99px; flex-shrink: 0;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 0.6rem; font-weight: 700;
+  }
+  .chat-bubble {
+    padding: 0.5rem 0.75rem; border-radius: 10px; font-size: 0.8rem;
+    line-height: 1.4; max-width: 280px;
+  }
+  .chat-bubble-other {
+    background: var(--color-surface-3); color: var(--color-surface-fg);
+    border-bottom-left-radius: 3px;
+  }
+  .chat-bubble-self {
+    background: var(--color-accent-9); color: var(--color-accent-fg);
+    border-bottom-right-radius: 3px;
+  }
+  .chat-time { font-size: 0.6rem; color: var(--color-surface-fg-subtle); margin-top: 0.15rem; }
+  .chat-time-self { text-align: right; }
+  .chat-input-bar {
+    display: flex; gap: 0.5rem; margin-top: 0.25rem; padding-top: 0.5rem;
+    border-top: 1px solid var(--color-surface-border);
+  }
+  .chat-input-bar input {
+    flex: 1; padding: 0.4rem 0.65rem; border-radius: 8px; font-size: 0.8rem;
+    background: var(--color-surface-3); border: 1px solid var(--color-surface-border);
+    color: var(--color-surface-fg); font-family: inherit; outline: none;
+  }
+  .chat-send {
+    padding: 0.4rem 0.8rem; border-radius: 8px; border: none; cursor: pointer;
+    background: var(--color-accent-9); color: var(--color-accent-fg);
+    font-size: 0.75rem; font-weight: 600; font-family: inherit;
+  }
+
+  @media (max-width: 700px) {
+    .app-demo { grid-template-columns: 1fr; }
+    .app-sidebar { border-right: none; border-bottom: 1px solid var(--color-surface-border); }
+    .kanban { grid-template-columns: 1fr; }
+    .form-grid { grid-template-columns: 1fr; }
+    .complex-grid { grid-template-columns: 1fr !important; }
+  }
+</style>
+</head>
+<body>
+
+<div class="header">
+  <h1>shilp-sutra Token System v2</h1>
+  <p>OKLCH 12-step functional scales &middot; Radix-inspired &middot; Light &amp; Dark</p>
+</div>
+
+<div class="toggle-bar" role="radiogroup" aria-label="Color mode">
+  <button id="btn-light" aria-pressed="true" onclick="setTheme('light')">Light</button>
+  <button id="btn-dark" aria-pressed="false" onclick="setTheme('dark')">Dark</button>
+</div>
+
+<div class="container">
+
+  <h2>Pink (Blooming Lotus) &mdash; Accent Scale</h2>
+  <div class="scale" id="scale-pink"></div>
+
+  <h2>Purple &mdash; Secondary Scale</h2>
+  <div class="scale" id="scale-purple"></div>
+
+  <h2>Neutral (Warm) &mdash; Surface Scale</h2>
+  <div class="scale" id="scale-neutral"></div>
+
+  <h2>Surface Depth Model</h2>
+  <div class="depth-demo">
+    <div class="depth-layer" style="background: var(--neutral-1); color: var(--color-surface-fg);">
+      <span class="depth-label">Surface 1</span><span class="depth-sub">App bg</span>
+    </div>
+    <div class="depth-layer" style="background: var(--neutral-2); color: var(--color-surface-fg);">
+      <span class="depth-label">Surface 2</span><span class="depth-sub">Card / Sidebar</span>
+    </div>
+    <div class="depth-layer" style="background: var(--neutral-3); color: var(--color-surface-fg);">
+      <span class="depth-label">Surface 3</span><span class="depth-sub">Input / Raised</span>
+    </div>
+    <div class="depth-layer" style="background: var(--neutral-4); color: var(--color-surface-fg);">
+      <span class="depth-label">Surface 4</span><span class="depth-sub">Hover</span>
+    </div>
+  </div>
+
+  <h2>Buttons</h2>
+  <div class="components">
+    <div class="row">
+      <button class="btn btn-accent">Primary</button>
+      <button class="btn btn-secondary-solid">Secondary</button>
+      <button class="btn btn-outline">Outline</button>
+      <button class="btn btn-subtle">Subtle</button>
+      <button class="btn btn-ghost">Ghost</button>
+      <button class="btn btn-danger">Danger</button>
+    </div>
+  </div>
+
+  <h2>Badges</h2>
+  <div class="row">
+    <span class="badge badge-accent">New Feature</span>
+    <span class="badge badge-secondary">Beta</span>
+    <span class="badge" style="background: var(--neutral-5); color: var(--neutral-11);">Draft</span>
+  </div>
+
+  <h2>Card + Input</h2>
+  <div class="card">
+    <div class="card-title">Project Dashboard</div>
+    <div class="card-text">Surface-2 card with neutral border. Text hierarchy uses fg, fg-muted, and fg-subtle for clear information layering.</div>
+    <div class="card-meta">Updated 2 hours ago &middot; 3 contributors</div>
+    <hr class="separator" />
+    <input class="input-field" placeholder="Search tasks..." />
+    <div class="progress-bar"><div class="progress-fill"></div></div>
+  </div>
+
+  <h2>Text Hierarchy</h2>
+  <div class="text-demo">
+    <span style="color: var(--color-surface-fg); font-weight: 600;">Primary text &mdash; neutral-12</span>
+    <span style="color: var(--color-surface-fg-muted);">Secondary text &mdash; neutral-11</span>
+    <span style="color: var(--color-surface-fg-subtle);">Muted text &mdash; neutral-8</span>
+    <span style="color: var(--color-accent-11); font-weight: 500;">Accent text &mdash; pink-11</span>
+    <span style="color: var(--color-secondary-11); font-weight: 500;">Secondary accent &mdash; purple-11</span>
+  </div>
+
+  <h2>Status</h2>
+  <div class="status-row" id="status-chips"></div>
+
+  <h2>App Layout Demo</h2>
+  <div class="app-demo">
+    <nav class="app-sidebar">
+      <div class="app-sidebar-item active">Dashboard</div>
+      <div class="app-sidebar-item">Projects</div>
+      <div class="app-sidebar-item">Tasks</div>
+      <div class="app-sidebar-item">Team</div>
+      <div class="app-sidebar-item">Settings</div>
+    </nav>
+    <main class="app-content">
+      <h3>Welcome back</h3>
+      <p>This shows how surfaces, text hierarchy, and accent colors compose in a real layout. The sidebar sits on surface-2, content on surface-1. Active nav uses accent-3 bg with accent-11 text.</p>
+      <div class="avatar-row">
+        <div class="avatar" style="background: var(--color-accent-9); color: var(--color-accent-fg);">M</div>
+        <div class="avatar" style="background: var(--color-secondary-9); color: var(--color-secondary-fg);">A</div>
+        <div class="avatar" style="background: var(--neutral-7); color: var(--neutral-1);">K</div>
+      </div>
+      <div class="progress-bar" style="margin-top: 1rem;"><div class="progress-fill" style="width: 42%; background: var(--color-secondary-9);"></div></div>
+    </main>
+  </div>
+
+  <h2>Data Table (selection, hover, mixed content)</h2>
+  <div class="table-wrap">
+    <table class="data-table">
+      <thead>
+        <tr><th>Task</th><th>Assignee</th><th>Status</th><th>Priority</th></tr>
+      </thead>
+      <tbody>
+        <tr class="row-selected">
+          <td style="font-weight: 600;">Migrate token system to OKLCH</td>
+          <td>Mudit</td>
+          <td><span class="badge badge-accent" style="font-size: 0.65rem; padding: 0.15rem 0.5rem;">In Progress</span></td>
+          <td><span class="kanban-tag" style="background: oklch(0.55 0.18 25 / 0.15); color: oklch(0.55 0.18 25);">High</span></td>
+        </tr>
+        <tr>
+          <td>Update Storybook stories</td>
+          <td style="color: var(--color-surface-fg-subtle);">Unassigned</td>
+          <td><span class="badge" style="background: var(--neutral-5); color: var(--neutral-11); font-size: 0.65rem; padding: 0.15rem 0.5rem;">Draft</span></td>
+          <td><span class="kanban-tag" style="background: var(--neutral-5); color: var(--neutral-11);">Low</span></td>
+        </tr>
+        <tr>
+          <td>Fix dark mode contrast issues</td>
+          <td>Claude</td>
+          <td><span class="status-chip" style="font-size: 0.6rem; padding: 0.1rem 0.45rem; background: oklch(0.93 0.05 145); color: oklch(0.35 0.08 145); border-color: oklch(0.78 0.08 145);">Done</span></td>
+          <td><span class="kanban-tag" style="background: oklch(0.95 0.06 85 / 0.5); color: oklch(0.40 0.10 85);">Medium</span></td>
+        </tr>
+        <tr>
+          <td>Audit WCAG AA compliance</td>
+          <td>Mudit</td>
+          <td><span class="badge badge-secondary" style="font-size: 0.65rem; padding: 0.15rem 0.5rem;">Review</span></td>
+          <td><span class="kanban-tag" style="background: oklch(0.55 0.18 25 / 0.15); color: oklch(0.55 0.18 25);">High</span></td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <h2>Form with Validation States</h2>
+  <div class="card" style="gap: 0.75rem;">
+    <div style="font-weight: 700; font-size: 0.95rem; color: var(--color-surface-fg);">Create New Project</div>
+    <div class="form-grid">
+      <div class="form-group">
+        <label class="form-label">Project Name</label>
+        <input class="input-field" value="Shilp Sutra v2" />
+      </div>
+      <div class="form-group">
+        <label class="form-label">Workspace</label>
+        <input class="input-field" value="Devalok Design" style="color: var(--color-surface-fg-muted);" readonly />
+        <span class="form-hint">Cannot be changed after creation</span>
+      </div>
+      <div class="form-group">
+        <label class="form-label" style="color: oklch(0.55 0.18 25);">Email *</label>
+        <input class="input-field input-error" value="not-an-email" />
+        <span class="form-error-text">Please enter a valid email address</span>
+      </div>
+      <div class="form-group">
+        <label class="form-label">Role</label>
+        <div style="display: flex; gap: 0.35rem;">
+          <span class="badge badge-accent" style="cursor: pointer;">Admin</span>
+          <span class="badge" style="background: var(--color-surface-3); color: var(--color-surface-fg-muted); cursor: pointer;">Member</span>
+          <span class="badge" style="background: var(--color-surface-3); color: var(--color-surface-fg-muted); cursor: pointer;">Viewer</span>
+        </div>
+      </div>
+    </div>
+    <hr class="separator" />
+    <div style="display: flex; justify-content: space-between; align-items: center;">
+      <span style="font-size: 0.72rem; color: var(--color-surface-fg-subtle);">* Required fields</span>
+      <div style="display: flex; gap: 0.5rem;">
+        <button class="btn btn-ghost">Cancel</button>
+        <button class="btn btn-accent">Create Project</button>
+      </div>
+    </div>
+  </div>
+
+  <h2>Toasts / Notifications</h2>
+  <div class="toast-stack">
+    <div class="toast" style="background: oklch(0.93 0.05 145); color: oklch(0.35 0.08 145); border-color: oklch(0.78 0.08 145);" id="toast-success">
+      <span class="toast-icon">&#10003;</span>
+      <div class="toast-body">
+        <span class="toast-title">Changes saved</span>
+        <span class="toast-desc">Token system updated to v2 successfully.</span>
+      </div>
+    </div>
+    <div class="toast" style="background: oklch(0.93 0.05 25); color: oklch(0.40 0.12 25); border-color: oklch(0.78 0.10 25);" id="toast-error">
+      <span class="toast-icon">&#10007;</span>
+      <div class="toast-body">
+        <span class="toast-title">Build failed</span>
+        <span class="toast-desc">TypeScript error in semantic.css — 3 undefined tokens.</span>
+        <div class="toast-actions">
+          <button class="toast-action" style="color: oklch(0.40 0.12 25);">View errors</button>
+          <button class="toast-action" style="color: oklch(0.40 0.12 25);">Retry build</button>
+        </div>
+      </div>
+    </div>
+    <div class="toast" style="background: oklch(0.95 0.06 85); color: oklch(0.40 0.10 85); border-color: oklch(0.82 0.10 85);" id="toast-warning">
+      <span class="toast-icon">&#9888;</span>
+      <div class="toast-body">
+        <span class="toast-title">Breaking change detected</span>
+        <span class="toast-desc">Removing --color-interactive will affect 47 components.</span>
+      </div>
+    </div>
+  </div>
+
+  <h2 style="margin-top: 1.5rem;">Dropdown Menu + Modal Dialog</h2>
+  <div class="complex-grid" style="display: grid; grid-template-columns: 240px 1fr; gap: 1rem; align-items: start;">
+    <div class="dropdown-menu">
+      <div class="menu-label">Actions</div>
+      <div class="menu-item active">
+        <span>Edit project</span>
+        <span class="menu-shortcut">&#8984;E</span>
+      </div>
+      <div class="menu-item">
+        <span>Duplicate</span>
+        <span class="menu-shortcut">&#8984;D</span>
+      </div>
+      <div class="menu-item">
+        <span>Share</span>
+      </div>
+      <div class="menu-separator"></div>
+      <div class="menu-label">Danger zone</div>
+      <div class="menu-item destructive">
+        <span>Delete project</span>
+        <span class="menu-shortcut">&#8984;&#9003;</span>
+      </div>
+    </div>
+
+    <div class="modal-backdrop">
+      <div class="modal-content">
+        <div class="modal-title">Delete project?</div>
+        <div class="modal-desc">
+          This will permanently delete <strong>Shilp Sutra v2</strong> and all associated data. This action cannot be undone.
+        </div>
+        <input class="input-field" placeholder="Type project name to confirm..." style="margin-bottom: 0.75rem;" />
+        <div class="modal-footer">
+          <button class="btn btn-ghost">Cancel</button>
+          <button class="btn btn-danger">Delete permanently</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <h2>Kanban Board</h2>
+  <div class="kanban">
+    <div class="kanban-col">
+      <div class="kanban-header"><span>To Do</span><span class="kanban-count">3</span></div>
+      <div class="kanban-card">
+        <div class="kanban-card-title">Migrate primitives.css to OKLCH</div>
+        <div class="kanban-card-meta">
+          <span class="kanban-tag" style="background: oklch(0.55 0.18 25 / 0.15); color: oklch(0.55 0.18 25);">High</span>
+          <span>Core</span>
+        </div>
+      </div>
+      <div class="kanban-card">
+        <div class="kanban-card-title">Update playground generator</div>
+        <div class="kanban-card-meta">
+          <span class="kanban-tag" style="background: oklch(0.95 0.06 85 / 0.5); color: oklch(0.40 0.10 85);">Med</span>
+          <span>Tooling</span>
+        </div>
+      </div>
+      <div class="kanban-card">
+        <div class="kanban-card-title">Write migration guide</div>
+        <div class="kanban-card-meta">
+          <span class="kanban-tag" style="background: var(--neutral-5); color: var(--neutral-11);">Low</span>
+          <span>Docs</span>
+        </div>
+      </div>
+    </div>
+    <div class="kanban-col">
+      <div class="kanban-header"><span>In Progress</span><span class="kanban-count">2</span></div>
+      <div class="kanban-card" style="border-color: var(--color-accent-7);">
+        <div class="kanban-card-title">Design 12-step functional scale</div>
+        <div class="kanban-card-meta">
+          <span class="kanban-tag badge-accent" style="font-size: 0.55rem; padding: 0.1rem 0.35rem;">Active</span>
+          <span>Design</span>
+          <span style="margin-left: auto;">
+            <span class="avatar" style="width: 18px; height: 18px; font-size: 0.45rem; margin: 0; border-width: 1.5px; background: var(--color-accent-9); color: var(--color-accent-fg);">M</span>
+          </span>
+        </div>
+      </div>
+      <div class="kanban-card">
+        <div class="kanban-card-title">Dark mode accent tuning</div>
+        <div class="kanban-card-meta">
+          <span class="kanban-tag badge-secondary" style="font-size: 0.55rem; padding: 0.1rem 0.35rem;">Review</span>
+          <span>Tokens</span>
+        </div>
+      </div>
+    </div>
+    <div class="kanban-col">
+      <div class="kanban-header"><span>Done</span><span class="kanban-count">2</span></div>
+      <div class="kanban-card" style="opacity: 0.7;">
+        <div class="kanban-card-title">Research industry dark mode patterns</div>
+        <div class="kanban-card-meta">
+          <span class="kanban-tag" style="background: oklch(0.93 0.05 145 / 0.5); color: oklch(0.35 0.08 145);">Done</span>
+          <span>Research</span>
+        </div>
+      </div>
+      <div class="kanban-card" style="opacity: 0.7;">
+        <div class="kanban-card-title">Audit current token architecture</div>
+        <div class="kanban-card-meta">
+          <span class="kanban-tag" style="background: oklch(0.93 0.05 145 / 0.5); color: oklch(0.35 0.08 145);">Done</span>
+          <span>Research</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <h2>Chat Thread</h2>
+  <div class="chat-thread">
+    <div class="chat-msg">
+      <div class="chat-avatar" style="background: var(--color-secondary-9); color: var(--color-secondary-fg);">A</div>
+      <div>
+        <div class="chat-bubble chat-bubble-other">Hey, the new dark mode tokens look great. Can you share the OKLCH values for the accent scale?</div>
+        <div class="chat-time">10:42 AM</div>
+      </div>
+    </div>
+    <div class="chat-msg chat-msg-self">
+      <div class="chat-avatar" style="background: var(--color-accent-9); color: var(--color-accent-fg);">M</div>
+      <div>
+        <div class="chat-bubble chat-bubble-self">Sure! Step 9 is oklch(0.63 0.21 360) in dark mode. Full scale is in the preview doc.</div>
+        <div class="chat-time chat-time-self">10:44 AM</div>
+      </div>
+    </div>
+    <div class="chat-msg">
+      <div class="chat-avatar" style="background: var(--neutral-7); color: var(--neutral-1);">K</div>
+      <div>
+        <div class="chat-bubble chat-bubble-other">The chroma bump really helps. Buttons no longer look faded. Ship it!</div>
+        <div class="chat-time">10:45 AM</div>
+      </div>
+    </div>
+    <div class="chat-input-bar">
+      <input placeholder="Type a message..." />
+      <button class="chat-send">Send</button>
+    </div>
+  </div>
+
+  <h2>Token Usage (CSS)</h2>
+  <div class="usage-panel">
+    <span class="comment">/* Consumer rebrands by overriding accent scale */</span><br>
+    <span class="tok">:root</span> {<br>
+    &nbsp;&nbsp;<span class="tok">--color-accent-9</span>: <span class="val">oklch(0.55 0.19 360)</span>; <span class="comment">/* Blooming Lotus */</span><br>
+    &nbsp;&nbsp;<span class="tok">--color-accent-10</span>: <span class="val">oklch(0.50 0.19 360)</span>; <span class="comment">/* hover */</span><br>
+    &nbsp;&nbsp;<span class="tok">--color-accent-11</span>: <span class="val">oklch(0.43 0.14 360)</span>; <span class="comment">/* text on light bg */</span><br>
+    &nbsp;&nbsp;<span class="tok">--color-accent-3</span>: <span class="val">oklch(0.93 0.035 360)</span>; <span class="comment">/* subtle bg */</span><br>
+    }<br><br>
+    <span class="comment">/* Dark mode: same hue, shifted L, reduced C */</span><br>
+    <span class="tok">.dark</span> {<br>
+    &nbsp;&nbsp;<span class="tok">--color-accent-9</span>: <span class="val">oklch(0.64 0.16 360)</span>; <span class="comment">/* lighter, desaturated */</span><br>
+    &nbsp;&nbsp;<span class="tok">--color-accent-11</span>: <span class="val">oklch(0.75 0.11 360)</span>; <span class="comment">/* text on dark bg */</span><br>
+    }<br><br>
+    <span class="comment">/* Components use semantic tokens only */</span><br>
+    <span class="tok">.btn-primary</span> {<br>
+    &nbsp;&nbsp;background: <span class="val">var(--color-accent-9)</span>;<br>
+    &nbsp;&nbsp;color: <span class="val">var(--color-accent-fg)</span>;<br>
+    &nbsp;&nbsp;&amp;:hover { background: <span class="val">var(--color-accent-10)</span>; }<br>
+    }<br><br>
+    <span class="comment">/* Surfaces provide depth via lightness, not shadows */</span><br>
+    <span class="tok">.card</span> {<br>
+    &nbsp;&nbsp;background: <span class="val">var(--color-surface-2)</span>;<br>
+    &nbsp;&nbsp;border: 1px solid <span class="val">var(--color-surface-border)</span>;<br>
+    &nbsp;&nbsp;color: <span class="val">var(--color-surface-fg)</span>;<br>
+    }
+  </div>
+
+</div>
+
+<script>
+  // ── Build color scales with safe DOM methods ──
+  var scales = {
+    pink:    { hue: 360, light: [[.99,.005],[.97,.015],[.93,.035],[.89,.055],[.84,.08],[.78,.10],[.70,.14],[.62,.17],[.55,.19],[.50,.19],[.43,.14],[.32,.08]], dark: [[.14,.005],[.17,.015],[.21,.04],[.25,.06],[.30,.08],[.36,.10],[.44,.13],[.53,.18],[.63,.21],[.58,.21],[.76,.13],[.88,.05]] },
+    purple:  { hue: 300, light: [[.99,.005],[.97,.012],[.93,.03],[.89,.05],[.84,.07],[.78,.09],[.70,.11],[.60,.12],[.50,.12],[.45,.12],[.40,.10],[.30,.06]], dark: [[.14,.005],[.17,.012],[.21,.03],[.25,.05],[.30,.07],[.36,.08],[.44,.10],[.53,.13],[.62,.16],[.57,.16],[.76,.10],[.88,.04]] },
+    neutral: { hue: 350, light: [[.99,.003],[.97,.004],[.93,.005],[.90,.006],[.85,.006],[.80,.007],[.70,.008],[.55,.010],[.45,.010],[.38,.010],[.30,.008],[.20,.006]], dark: [[.14,.003],[.17,.004],[.21,.005],[.25,.006],[.30,.006],[.36,.007],[.44,.008],[.55,.010],[.65,.010],[.72,.008],[.80,.006],[.93,.004]] }
+  };
+
+  var roles = ['bg','sub','comp','hvr','act','brd-s','brd','brd+','solid','sol-h','txt','txt+'];
+
+  function buildScale(containerId, scaleKey) {
+    var container = document.getElementById(containerId);
+    var s = scales[scaleKey];
+    var isDark = document.documentElement.classList.contains('dark');
+    var vals = isDark ? s.dark : s.light;
+    container.textContent = '';
+    for (var i = 0; i < vals.length; i++) {
+      var swatch = document.createElement('div');
+      swatch.className = 'swatch';
+      swatch.style.background = 'oklch(' + vals[i][0] + ' ' + vals[i][1] + ' ' + s.hue + ')';
+      swatch.title = 'Step ' + (i + 1) + ': ' + roles[i] + '\noklch(' + vals[i][0] + ' ' + vals[i][1] + ' ' + s.hue + ')';
+      var num = document.createElement('span');
+      num.className = 'swatch-num';
+      num.textContent = String(i + 1);
+      var role = document.createElement('span');
+      role.className = 'swatch-role';
+      role.textContent = roles[i];
+      swatch.appendChild(num);
+      swatch.appendChild(role);
+      container.appendChild(swatch);
+    }
+  }
+
+  function buildStatusChips() {
+    var container = document.getElementById('status-chips');
+    container.textContent = '';
+    var statuses = [
+      { label: 'Success', hue: 145, lightBg: [0.93,0.05], lightText: [0.35,0.08], lightBorder: [0.78,0.08], darkBg: [0.21,0.04], darkText: [0.80,0.08], darkBorder: [0.40,0.06] },
+      { label: 'Error',   hue: 25,  lightBg: [0.93,0.05], lightText: [0.40,0.12], lightBorder: [0.78,0.10], darkBg: [0.21,0.04], darkText: [0.80,0.08], darkBorder: [0.40,0.08] },
+      { label: 'Warning', hue: 85,  lightBg: [0.95,0.06], lightText: [0.40,0.10], lightBorder: [0.82,0.10], darkBg: [0.22,0.04], darkText: [0.82,0.08], darkBorder: [0.42,0.07] },
+      { label: 'Info',    hue: 240, lightBg: [0.93,0.04], lightText: [0.38,0.08], lightBorder: [0.78,0.07], darkBg: [0.21,0.03], darkText: [0.80,0.06], darkBorder: [0.40,0.06] }
+    ];
+    var isDark = document.documentElement.classList.contains('dark');
+    statuses.forEach(function(s) {
+      var chip = document.createElement('span');
+      chip.className = 'status-chip';
+      var bg = isDark ? s.darkBg : s.lightBg;
+      var txt = isDark ? s.darkText : s.lightText;
+      var brd = isDark ? s.darkBorder : s.lightBorder;
+      chip.style.background = 'oklch(' + bg[0] + ' ' + bg[1] + ' ' + s.hue + ')';
+      chip.style.color = 'oklch(' + txt[0] + ' ' + txt[1] + ' ' + s.hue + ')';
+      chip.style.borderColor = 'oklch(' + brd[0] + ' ' + brd[1] + ' ' + s.hue + ')';
+      chip.textContent = s.label;
+      container.appendChild(chip);
+    });
+  }
+
+  function updateToasts() {
+    var isDark = document.documentElement.classList.contains('dark');
+    var toasts = [
+      { id: 'toast-success', hue: 145,
+        light: { bg: [0.93,0.05], fg: [0.35,0.08], brd: [0.78,0.08] },
+        dark:  { bg: [0.21,0.04], fg: [0.80,0.08], brd: [0.40,0.06] } },
+      { id: 'toast-error', hue: 25,
+        light: { bg: [0.93,0.05], fg: [0.40,0.12], brd: [0.78,0.10] },
+        dark:  { bg: [0.21,0.04], fg: [0.80,0.10], brd: [0.40,0.08] } },
+      { id: 'toast-warning', hue: 85,
+        light: { bg: [0.95,0.06], fg: [0.40,0.10], brd: [0.82,0.10] },
+        dark:  { bg: [0.22,0.04], fg: [0.82,0.08], brd: [0.42,0.07] } }
+    ];
+    toasts.forEach(function(t) {
+      var el = document.getElementById(t.id);
+      if (!el) return;
+      var vals = isDark ? t.dark : t.light;
+      el.style.background = 'oklch(' + vals.bg[0] + ' ' + vals.bg[1] + ' ' + t.hue + ')';
+      el.style.color = 'oklch(' + vals.fg[0] + ' ' + vals.fg[1] + ' ' + t.hue + ')';
+      el.style.borderColor = 'oklch(' + vals.brd[0] + ' ' + vals.brd[1] + ' ' + t.hue + ')';
+      // Update action links too
+      var actions = el.querySelectorAll('.toast-action');
+      for (var i = 0; i < actions.length; i++) {
+        actions[i].style.color = 'oklch(' + vals.fg[0] + ' ' + vals.fg[1] + ' ' + t.hue + ')';
+      }
+    });
+
+    // Update inline status colors in table
+    var doneChips = document.querySelectorAll('.status-chip');
+    // The "Done" chip in the table has hardcoded green — update it
+    doneChips.forEach(function(chip) {
+      if (chip.textContent === 'Done') {
+        if (isDark) {
+          chip.style.background = 'oklch(0.21 0.04 145)';
+          chip.style.color = 'oklch(0.80 0.08 145)';
+          chip.style.borderColor = 'oklch(0.40 0.06 145)';
+        } else {
+          chip.style.background = 'oklch(0.93 0.05 145)';
+          chip.style.color = 'oklch(0.35 0.08 145)';
+          chip.style.borderColor = 'oklch(0.78 0.08 145)';
+        }
+      }
+    });
+
+    // Update danger/high priority tags
+    var dangerEls = document.querySelectorAll('.menu-item.destructive, .form-error-text');
+    dangerEls.forEach(function(el) {
+      if (el.classList.contains('form-error-text')) {
+        el.style.color = isDark ? 'oklch(0.76 0.13 25)' : 'oklch(0.55 0.18 25)';
+      }
+    });
+
+    // Update error input label
+    var errorLabel = document.querySelector('label[style*="oklch(0.55"]');
+    if (errorLabel) {
+      errorLabel.style.color = isDark ? 'oklch(0.76 0.13 25)' : 'oklch(0.55 0.18 25)';
+    }
+
+    // Danger button
+    var dangerBtn = document.querySelector('.btn-danger');
+    if (dangerBtn) {
+      dangerBtn.style.background = isDark ? 'oklch(0.58 0.20 25)' : 'oklch(0.55 0.18 25)';
+    }
+    var dangerBtnAll = document.querySelectorAll('.btn-danger');
+    dangerBtnAll.forEach(function(b) {
+      b.style.background = isDark ? 'oklch(0.58 0.20 25)' : 'oklch(0.55 0.18 25)';
+    });
+
+    // Priority tags with hardcoded colors
+    var kanbanTags = document.querySelectorAll('.kanban-tag');
+    kanbanTags.forEach(function(tag) {
+      var text = tag.textContent.trim();
+      if (text === 'High') {
+        tag.style.background = isDark ? 'oklch(0.58 0.20 25 / 0.2)' : 'oklch(0.55 0.18 25 / 0.15)';
+        tag.style.color = isDark ? 'oklch(0.76 0.13 25)' : 'oklch(0.55 0.18 25)';
+      } else if (text === 'Med' || text === 'Medium') {
+        tag.style.background = isDark ? 'oklch(0.42 0.07 85 / 0.4)' : 'oklch(0.95 0.06 85 / 0.5)';
+        tag.style.color = isDark ? 'oklch(0.82 0.08 85)' : 'oklch(0.40 0.10 85)';
+      } else if (text === 'Done') {
+        tag.style.background = isDark ? 'oklch(0.21 0.04 145 / 0.5)' : 'oklch(0.93 0.05 145 / 0.5)';
+        tag.style.color = isDark ? 'oklch(0.80 0.08 145)' : 'oklch(0.35 0.08 145)';
+      }
+    });
+  }
+
+  function renderAll() {
+    buildScale('scale-pink', 'pink');
+    buildScale('scale-purple', 'purple');
+    buildScale('scale-neutral', 'neutral');
+    buildStatusChips();
+    updateToasts();
+  }
+
+  function setTheme(theme) {
+    // Apply .dark on both html and body so CSS variables cascade everywhere
+    var targets = [document.documentElement, document.body];
+    targets.forEach(function(el) {
+      if (theme === 'dark') {
+        el.classList.add('dark');
+      } else {
+        el.classList.remove('dark');
+      }
+    });
+    document.getElementById('btn-light').setAttribute('aria-pressed', theme === 'light' ? 'true' : 'false');
+    document.getElementById('btn-dark').setAttribute('aria-pressed', theme === 'dark' ? 'true' : 'false');
+    renderAll();
+  }
+
+  // Initial render
+  renderAll();
+</script>
+
+</body>
+</html>

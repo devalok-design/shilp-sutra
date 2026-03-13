@@ -33,6 +33,7 @@ import { COLUMN_WIDTH } from './board-constants'
 import type { BoardTask, BoardColumn as BoardColumnType, NewTaskOptions } from './board-types'
 import { IconPlus } from '@tabler/icons-react'
 import { Button } from '@/ui/button'
+import { MotionStagger, MotionStaggerItem } from '@/motion/primitives'
 
 // ============================================================
 // Accessibility announcements
@@ -265,20 +266,21 @@ function BoardCanvas({ className }: { className?: string }) {
           items={columnIds}
           strategy={horizontalListSortingStrategy}
         >
-          {columns.map((column, index) => (
-            <div
-              key={column.id}
-              className="flex-shrink-0 animate-slide-right delay-stagger-50"
-              style={{ '--stagger-index': index } as React.CSSProperties}
-            >
-              <BoardColumn
-                column={column}
-                index={index}
-                dragPreview={dragPreview?.columnId === column.id ? dragPreview : undefined}
-                draggedTask={activeTask}
-              />
-            </div>
-          ))}
+          <MotionStagger delay={0.05} className="contents">
+            {columns.map((column, index) => (
+              <MotionStaggerItem
+                key={column.id}
+                className="flex-shrink-0"
+              >
+                <BoardColumn
+                  column={column}
+                  index={index}
+                  dragPreview={dragPreview?.columnId === column.id ? dragPreview : undefined}
+                  draggedTask={activeTask}
+                />
+              </MotionStaggerItem>
+            ))}
+          </MotionStagger>
         </SortableContext>
 
         {/* Add column button */}

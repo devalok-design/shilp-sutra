@@ -62,7 +62,7 @@ const DARK_L: readonly number[] = [
   0.44, // 7
   0.53, // 8
   0.63, // 9
-  0.58, // 10
+  0.58, // 10 — Solid hover: darker than step 9 for visible hover effect
   0.76, // 11
   0.88, // 12
 ]
@@ -135,6 +135,15 @@ function formatOklch(l: number, c: number, h: number): string {
 export function generateScale(options: ScaleOptions): Scale {
   const { hue, peakChroma, isNeutral } = options
 
+  if (peakChroma < 0 || peakChroma > 0.4) {
+    throw new RangeError(
+      `peakChroma must be between 0 and 0.4, got ${peakChroma}`
+    )
+  }
+  if (hue < 0 || hue > 360) {
+    throw new RangeError(`hue must be between 0 and 360, got ${hue}`)
+  }
+
   const darkPeak = peakChroma * DARK_CHROMA_BOOST
 
   const light: ScaleStep[] = []
@@ -167,7 +176,7 @@ export function generateScale(options: ScaleOptions): Scale {
 // Brand palettes
 // ---------------------------------------------------------------------------
 
-export const BRAND_PALETTES: Record<string, ScaleOptions> = {
+export const BRAND_PALETTES = {
   pink: { hue: 360, peakChroma: 0.19 },
   purple: { hue: 300, peakChroma: 0.12 },
   neutral: { hue: 350, peakChroma: 0.01, isNeutral: true },
@@ -182,4 +191,4 @@ export const BRAND_PALETTES: Record<string, ScaleOptions> = {
   cyan: { hue: 210, peakChroma: 0.10 },
   orange: { hue: 50, peakChroma: 0.14 },
   emerald: { hue: 160, peakChroma: 0.12 },
-}
+} as const satisfies Record<string, ScaleOptions>

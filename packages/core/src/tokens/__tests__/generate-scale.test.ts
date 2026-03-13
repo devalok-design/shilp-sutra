@@ -21,6 +21,40 @@ describe('generateScale', () => {
     isNeutral: true,
   })
 
+  describe('input validation', () => {
+    it('throws RangeError when peakChroma > 0.4', () => {
+      expect(() => generateScale({ hue: 360, peakChroma: 0.5 })).toThrow(
+        RangeError
+      )
+    })
+
+    it('throws RangeError when peakChroma < 0', () => {
+      expect(() => generateScale({ hue: 360, peakChroma: -0.1 })).toThrow(
+        RangeError
+      )
+    })
+
+    it('throws RangeError when hue > 360', () => {
+      expect(() => generateScale({ hue: 400, peakChroma: 0.19 })).toThrow(
+        RangeError
+      )
+    })
+
+    it('throws RangeError when hue < 0', () => {
+      expect(() => generateScale({ hue: -10, peakChroma: 0.19 })).toThrow(
+        RangeError
+      )
+    })
+
+    it('accepts boundary values (hue=0, peakChroma=0)', () => {
+      expect(() => generateScale({ hue: 0, peakChroma: 0 })).not.toThrow()
+    })
+
+    it('accepts boundary values (hue=360, peakChroma=0.4)', () => {
+      expect(() => generateScale({ hue: 360, peakChroma: 0.4 })).not.toThrow()
+    })
+  })
+
   describe('structure', () => {
     it('produces 12 light steps', () => {
       expect(pinkScale.light).toHaveLength(12)

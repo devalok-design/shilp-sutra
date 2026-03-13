@@ -1,5 +1,6 @@
+import * as React from 'react'
 import type { Meta, StoryObj } from '@storybook/react'
-import { Toaster } from './toaster'
+import { Toaster, type ToasterProps } from './toaster'
 import { toast } from './toast'
 import { Button } from './button'
 
@@ -44,32 +45,41 @@ export const WithCloseButton: Story = {
   ),
 }
 
-export const AllPositions: Story = {
-  render: () => {
-    const positions = [
-      'top-left',
-      'top-center',
-      'top-right',
-      'bottom-left',
-      'bottom-center',
-      'bottom-right',
-    ] as const
+function AllPositionsDemo() {
+  const positions: ToasterProps['position'][] = [
+    'top-left',
+    'top-center',
+    'top-right',
+    'bottom-left',
+    'bottom-center',
+    'bottom-right',
+  ]
 
-    return (
-      <>
-        <div className="flex flex-wrap gap-ds-03">
-          {positions.map((pos) => (
-            <Button
-              key={pos}
-              variant="outline"
-              onClick={() => toast.info(`Position: ${pos}`)}
-            >
-              {pos}
-            </Button>
-          ))}
-        </div>
-        <Toaster position="bottom-right" />
-      </>
-    )
-  },
+  const [position, setPosition] =
+    React.useState<ToasterProps['position']>('bottom-right')
+
+  return (
+    <>
+      <div className="flex flex-wrap gap-ds-03">
+        {positions.map((pos) => (
+          <Button
+            key={pos}
+            variant={pos === position ? 'default' : 'outline'}
+            onClick={() => {
+              setPosition(pos)
+              toast.dismiss()
+              setTimeout(() => toast.info(`Position: ${pos}`), 100)
+            }}
+          >
+            {pos}
+          </Button>
+        ))}
+      </div>
+      <Toaster position={position} />
+    </>
+  )
+}
+
+export const AllPositions: Story = {
+  render: () => <AllPositionsDemo />,
 }

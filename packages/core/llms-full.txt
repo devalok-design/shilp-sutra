@@ -17,7 +17,7 @@ Many components use TWO props where shadcn/ui uses one:
 - `variant` controls SHAPE/SURFACE: solid, outline, ghost, subtle, filled, etc.
 - `color` controls INTENT/SEMANTICS: default, error, success, warning, info, etc.
 
-Components with two-axis system: Button, Badge, Alert, Chip, Toast, Banner, Progress, StatusBadge
+Components with two-axis system: Button, Badge, Alert, Chip, Banner, Progress, StatusBadge
 
 ### Server-Safe Components (no "use client")
 
@@ -34,8 +34,8 @@ DO NOT use barrel imports in Server Components — they include "use client" com
 ### Toast Setup Pattern
 
 1. Mount <Toaster /> once at your root layout.
-2. Call useToast() or the imperative toast() function from any component.
-3. Valid colors: 'neutral' | 'success' | 'warning' | 'error' | 'info'
+2. Import { toast } from '@devalok/shilp-sutra/ui/toast' and call toast.success(), toast.error(), etc.
+3. Types: 'success' | 'error' | 'warning' | 'info' | 'loading' | 'message'
 
 ### Form Accessibility Pattern
 
@@ -1146,34 +1146,51 @@ Note: getFormFieldA11y() was removed in favor of useFormField() hook.
 - Gotchas: state="error" sets aria-invalid automatically; all sizes are vertically resizable
     - Inside FormField: auto-inherits state, aria-describedby, aria-required from context (explicit props override)
 
-## Toast / Toaster
+## Toast / Toaster (v2 — Sonner-based)
 - Import: @devalok/shilp-sutra/ui/toast, @devalok/shilp-sutra/ui/toaster
 - Server-safe: No
-- Props (Toast):
-    color: "neutral" | "success" | "warning" | "error" | "info"
-- Defaults: color="neutral"
-- Compound (declarative — for tests/Storybook only):
-    ToastProvider
-      Toast (color)
-        ToastTitle
-        ToastDescription
-        ToastAction (altText required)
-        ToastClose
-      ToastViewport
-- Imperative usage (recommended):
+- Engine: Sonner (unstyled mode) with custom ToastContent rendering
+- Visual: neutral bg-layer-01 base, colored left accent bar per type, status icon, timer bar
+- Setup:
   // 1. Mount <Toaster /> once at root layout
+  import { Toaster } from '@devalok/shilp-sutra/ui/toaster'
   <Toaster />
   // 2. Call from anywhere:
-  const { toast } = useToast()
-  toast({ title: 'Saved!', description: 'Changes saved.', color: 'success' })
-  // Or use the direct function (no hook):
-  import { toast } from '@devalok/shilp-sutra/hooks/use-toast'
-  toast({ title: 'Deleted', color: 'error' })
+  import { toast } from '@devalok/shilp-sutra/ui/toast'
+- API:
+    toast('Plain message')                    // no icon, no accent bar
+    toast.message('Same as plain')            // alias for toast()
+    toast.success('Saved!')                   // green accent, check icon
+    toast.error('Failed', { description })    // red accent, X icon
+    toast.warning('Disk low')                 // yellow accent, triangle icon
+    toast.info('New version')                 // blue accent, info icon
+    toast.loading('Saving...')                // interactive accent, spinner, no timer bar, duration: Infinity
+    toast.promise(asyncFn, { loading, success, error })  // dynamic messages supported
+    toast.undo('Item deleted', { onUndo, duration? })    // 8s default, Undo action button
+    toast.upload({ files, id?, onRetry?, onRemove? })    // upload toast with per-file progress
+    toast.custom((id) => <MyComponent />, options)       // escape hatch
+    toast.dismiss(id?)                                   // specific or all
+- Options (all methods accept):
+    id?: string
+    description?: ReactNode
+    action?: { label: string, onClick: () => void }
+    cancel?: { label: string, onClick: () => void }
+    duration?: number (ms, default 5000)
+- Toaster props:
+    position: 'top-left' | 'top-center' | 'top-right' | 'bottom-left' | 'bottom-center' | 'bottom-right' (default: 'bottom-right')
+    closeButton: boolean (default: false)
+    duration: number (default: 5000)
+    hotkey: string[] (default: ['altKey', 'KeyT'])
+    visibleToasts: number (default: 3)
+- Upload toast types:
+    UploadFile: { id, name, size (bytes), progress? (0-100), status: 'pending' | 'uploading' | 'processing' | 'complete' | 'error', error?, previewUrl? }
+- Also exported: formatFileSize(bytes) => string (B, KB, MB, GB)
 - Gotchas:
-    - DO NOT use color="destructive" — use color="error"
-    - DO NOT use variant="destructive" — Toast has NO variant prop, only color
-    - Max 2 toasts visible simultaneously (TOAST_LIMIT=2)
-    - Auto-dismisses after 5 seconds (TOAST_REMOVE_DELAY=5000)
+    - DO NOT use useToast() hook — it is deprecated, use imperative toast.* methods
+    - DO NOT use toast({ title, color }) object syntax — use toast.success('message') etc.
+    - DO NOT call toast() without <Toaster /> mounted at layout root
+    - Timer bar animates auto-dismiss countdown (hidden on loading toasts)
+    - Upload toast replaces the old UploadProgress composed component
 
 ## Toggle
 - Import: @devalok/shilp-sutra/ui/toggle
@@ -1837,41 +1854,10 @@ Note: getFormFieldA11y() was removed in favor of useFormField() hook.
   <StatusBadge color="warning" label="In Review" size="sm" />
 - Gotchas: When color is set, it takes priority over status for styling
 
-## UploadProgress
-- Import: @devalok/shilp-sutra/composed/upload-progress
-- Server-safe: No
-- Types:
-    UploadFile: { id: string, name: string, size: number (bytes), progress?: number (0-100, undefined = indeterminate), status: 'pending' | 'uploading' | 'processing' | 'complete' | 'error', error?: string, previewUrl?: string }
-- Props:
-    files: UploadFile[] (REQUIRED)
-    onRemove: (fileId: string) => void — called when user cancels/removes a file
-    onRetry: (fileId: string) => void — called when user retries a failed upload
-    onDismissAll: () => void — "Dismiss all" button appears when all files are terminal (complete or error)
-    variant: "default" | "compact" (default: "default") — default = two-line layout with progress bar; compact = single-line layout
-    showSize: boolean (default: true) — show file size (default variant only)
-    className: string
-- Also exported: formatFileSize(bytes: number) => string — utility to format bytes as human-readable (B, KB, MB, GB)
-- Defaults: variant="default", showSize=true
-- Example:
-  <UploadProgress
-    files={[
-      { id: '1', name: 'report.pdf', size: 1048576, status: 'uploading', progress: 45 },
-      { id: '2', name: 'photo.jpg', size: 204800, status: 'complete', previewUrl: '/thumb.jpg' },
-      { id: '3', name: 'data.csv', size: 51200, status: 'error', error: 'Network timeout' },
-    ]}
-    onRemove={(id) => removeFile(id)}
-    onRetry={(id) => retryUpload(id)}
-    onDismissAll={() => clearAll()}
-  />
-  <UploadProgress files={uploads} variant="compact" onRemove={removeFile} />
-- Gotchas:
-    - Returns null when files array is empty
-    - Summary header shows completion count and error count
-    - Border color changes based on state: green when all complete, red tint when all terminal with errors
-    - File icon auto-detects image files by extension or previewUrl presence
-    - Status 'processing' renders a spinner icon and indeterminate progress
-    - Screen reader announcements via aria-live region for completion/error events
-    - Staggered slide-up animation (30ms delay per file)
+## UploadProgress (REMOVED)
+- REMOVED in v0.17.0. Upload tracking is now built into Toast v2.
+- Migration: Replace <UploadProgress files={files} onRetry={fn} /> with toast.upload({ files, onRetry: fn })
+- See Toast / Toaster section for full upload toast API
 
 ---
 
@@ -2167,18 +2153,11 @@ Deprecated props:
 
 ---
 
-## useToast
+## useToast (DEPRECATED)
 - Import: @devalok/shilp-sutra/hooks/use-toast
-- Returns: { toasts, toast, dismiss }
-- toast(options): options = { title?, description?, color?, action? }
-    color: "neutral" | "success" | "warning" | "error" | "info"
-    Returns: { id, dismiss, update }
-- dismiss(toastId?: string): dismiss specific or all toasts
-- Example:
-  const { toast } = useToast()
-  toast({ title: 'Saved!', color: 'success' })
-  toast({ title: 'Error', description: 'Something went wrong.', color: 'error' })
-- Also available: import { toast } from '@devalok/shilp-sutra/hooks/use-toast' (imperative, no hook)
+- DEPRECATED: Use import { toast } from '@devalok/shilp-sutra/ui/toast' instead
+- The hooks/use-toast path re-exports the toast object for backward compatibility
+- See Toast / Toaster section for the full imperative API
 
 ## useColorMode
 - Import: @devalok/shilp-sutra/hooks/use-color-mode

@@ -7,7 +7,6 @@ import {
   IconAlertTriangle,
   IconCircleX,
   IconInfoCircle,
-  IconLoader2,
   IconUpload,
   IconFile,
   IconPhoto,
@@ -17,6 +16,7 @@ import {
   IconAlertCircle,
 } from '@tabler/icons-react'
 import { cn } from './lib/utils'
+import { Spinner } from './spinner'
 import { Progress } from './progress'
 import type {
   ToastOptions,
@@ -81,7 +81,7 @@ const TOAST_TYPE_CONFIG: Record<
   loading: {
     accentClass: 'bg-interactive',
     iconClass: 'text-interactive',
-    icon: IconLoader2,
+    icon: null,
     timerBarClass: 'bg-interactive',
   },
 }
@@ -129,6 +129,7 @@ function ToastContent({
   cancel,
   duration = DEFAULT_DURATION,
   showTimerBar = true,
+  selfDismissId,
 }: {
   type: ToastType
   title?: React.ReactNode
@@ -137,10 +138,32 @@ function ToastContent({
   cancel?: ToastActionOptions
   duration?: number
   showTimerBar?: boolean
+  /** When set, this component manages its own dismiss timer (hover-aware). */
+  selfDismissId?: string | number
 }) {
   const [hovered, setHovered] = React.useState(false)
   const config = TOAST_TYPE_CONFIG[type]
   const Icon = config.icon
+
+  // Self-managed dismiss timer that pauses on hover
+  const remainingRef = React.useRef(duration)
+  const startTimeRef = React.useRef(0)
+
+  React.useEffect(() => {
+    if (selfDismissId == null || duration === Infinity) return
+    if (hovered) {
+      // Pause: save remaining time
+      const elapsed = Date.now() - startTimeRef.current
+      remainingRef.current = Math.max(0, remainingRef.current - elapsed)
+      return
+    }
+    // Start/resume timer
+    startTimeRef.current = Date.now()
+    const timer = setTimeout(() => {
+      sonnerToast.dismiss(selfDismissId)
+    }, remainingRef.current)
+    return () => clearTimeout(timer)
+  }, [selfDismissId, duration, hovered])
 
   return (
     <div
@@ -160,15 +183,11 @@ function ToastContent({
       {/* Content */}
       <div className="flex min-w-0 flex-1 items-start gap-ds-03 p-ds-04">
         {/* Status icon */}
-        {Icon && (
-          <Icon
-            className={cn(
-              'mt-0.5 h-4 w-4 shrink-0',
-              config.iconClass,
-              type === 'loading' && 'animate-spin',
-            )}
-          />
-        )}
+        {type === 'loading' ? (
+          <Spinner size="sm" className="mt-0.5 h-4 w-4 shrink-0" />
+        ) : Icon ? (
+          <Icon className={cn('mt-0.5 h-4 w-4 shrink-0', config.iconClass)} />
+        ) : null}
 
         {/* Text */}
         <div className="min-w-0 flex-1">
@@ -295,7 +314,7 @@ function UploadFileRow({
         ) : file.status === 'error' ? (
           <IconAlertCircle className="h-3.5 w-3.5 text-error-text" />
         ) : file.status === 'processing' ? (
-          <IconLoader2 className="h-3.5 w-3.5 animate-spin text-interactive" />
+          <Spinner size="sm" className="h-3.5 w-3.5" />
         ) : isImageFile(file) ? (
           <IconPhoto className="h-3.5 w-3.5 text-text-secondary" />
         ) : (
@@ -364,16 +383,37 @@ function UploadToastContent({
   files,
   onRetry,
   onRemove,
+  selfDismissId,
 }: {
   files: UploadFile[]
   onRetry?: (fileId: string) => void
   onRemove?: (fileId: string) => void
+  selfDismissId?: string | number
 }) {
+  const [hovered, setHovered] = React.useState(false)
   const completeCount = files.filter((f) => f.status === 'complete').length
   const errorCount = files.filter((f) => f.status === 'error').length
   const allTerminal = files.every(
     (f) => f.status === 'complete' || f.status === 'error',
   )
+
+  // Self-managed dismiss timer that pauses on hover
+  const remainingRef = React.useRef(UPLOAD_COMPLETE_DELAY)
+  const startTimeRef = React.useRef(0)
+
+  React.useEffect(() => {
+    if (selfDismissId == null || !allTerminal) return
+    if (hovered) {
+      const elapsed = Date.now() - startTimeRef.current
+      remainingRef.current = Math.max(0, remainingRef.current - elapsed)
+      return
+    }
+    startTimeRef.current = Date.now()
+    const timer = setTimeout(() => {
+      sonnerToast.dismiss(selfDismissId)
+    }, remainingRef.current)
+    return () => clearTimeout(timer)
+  }, [selfDismissId, allTerminal, hovered])
 
   const accentClass = allTerminal
     ? errorCount > 0
@@ -393,6 +433,8 @@ function UploadToastContent({
       aria-live="polite"
       aria-label="File uploads"
       className="group relative flex w-full overflow-hidden rounded-ds-md border border-border bg-layer-01 shadow-02"
+      onMouseEnter={() => setHovered(true)}
+      onMouseLeave={() => setHovered(false)}
     >
       {/* Left accent bar */}
       <div className={cn('w-1 shrink-0 rounded-l-ds-md', accentClass)} />
@@ -558,7 +600,29 @@ toast.promise = <T,>(
       | ((error: unknown) => string | React.ReactNode)
   },
 ) => {
-  const id = toast.loading(options.loading)
+  const id = sonnerToast.custom(
+    () => (
+      <ToastContent type="loading" title={options.loading} showTimerBar={false} />
+    ),
+    { duration: Infinity, unstyled: true, classNames: { toast: 'w-full' } },
+  )
+
+  const replaceWith = (type: ToastType, message: React.ReactNode) => {
+    // Sonner doesn't reset its auto-dismiss timer when updating a custom toast
+    // in-place from duration: Infinity, so ToastContent manages its own
+    // hover-aware dismiss timer via selfDismissId.
+    sonnerToast.custom(
+      () => (
+        <ToastContent
+          type={type}
+          title={message}
+          duration={DEFAULT_DURATION}
+          selfDismissId={id}
+        />
+      ),
+      { id, duration: Infinity, unstyled: true, classNames: { toast: 'w-full' } },
+    )
+  }
 
   promise
     .then((data) => {
@@ -566,32 +630,14 @@ toast.promise = <T,>(
         typeof options.success === 'function'
           ? options.success(data)
           : options.success
-      sonnerToast.custom(
-        () => (
-          <ToastContent
-            type="success"
-            title={message}
-            duration={DEFAULT_DURATION}
-          />
-        ),
-        { id, duration: DEFAULT_DURATION, unstyled: true, classNames: { toast: 'w-full' } },
-      )
+      replaceWith('success', message)
     })
     .catch((error) => {
       const message =
         typeof options.error === 'function'
           ? options.error(error)
           : options.error
-      sonnerToast.custom(
-        () => (
-          <ToastContent
-            type="error"
-            title={message}
-            duration={DEFAULT_DURATION}
-          />
-        ),
-        { id, duration: DEFAULT_DURATION, unstyled: true, classNames: { toast: 'w-full' } },
-      )
+      replaceWith('error', message)
     })
 
   return id
@@ -614,26 +660,27 @@ toast.undo = (message: string | React.ReactNode, options: ToastUndoOptions) => {
 }
 
 toast.upload = (options: ToastUploadOptions) => {
-  const allTerminal = options.files.every(
-    (f) => f.status === 'complete' || f.status === 'error',
-  )
-  const duration = allTerminal ? UPLOAD_COMPLETE_DELAY : Infinity
+  // Pre-determine the id so we can pass it to UploadToastContent for self-dismiss.
+  const toastId = options.id ?? String(Date.now())
 
-  return sonnerToast.custom(
+  sonnerToast.custom(
     () => (
       <UploadToastContent
         files={options.files}
         onRetry={options.onRetry}
         onRemove={options.onRemove}
+        selfDismissId={toastId}
       />
     ),
     {
-      id: options.id,
-      duration,
+      id: toastId,
+      duration: Infinity,
       unstyled: true,
       classNames: { toast: 'w-full' },
     },
-  ) as string
+  )
+
+  return toastId
 }
 
 toast.custom = (

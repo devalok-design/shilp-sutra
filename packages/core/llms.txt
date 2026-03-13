@@ -63,8 +63,10 @@ import { Button } from '@devalok/shilp-sutra/ui/button'
 import { PageHeader } from '@devalok/shilp-sutra/composed/page-header'
 import { TopBar } from '@devalok/shilp-sutra/shell/top-bar'
 
+// Toast (imperative, no hook needed):
+import { toast } from '@devalok/shilp-sutra/ui/toast'
+
 // Hooks:
-import { useToast } from '@devalok/shilp-sutra/hooks/use-toast'
 import { useColorMode } from '@devalok/shilp-sutra/hooks/use-color-mode'
 
 // CSS tokens (import once at app root):
@@ -83,7 +85,7 @@ If you have shadcn/ui knowledge, these are the differences that WILL trip you up
 | size="default" | size="md" | All sizes: sm, md, lg (never "default") |
 | <Select size="lg"> | <SelectTrigger size="lg"> | Size goes on trigger, NOT root |
 | <Chip>text</Chip> | <Chip label="text" /> | Chip uses label prop, NOT children |
-| Toast variant="destructive" | Toast color="error" | Toast uses color= not variant= |
+| useToast() + toast({ variant }) | toast.success('msg') | Imperative API, no hook needed |
 | Badge variant="destructive" | Badge variant="solid" color="error" | Two-axis: variant + color |
 | Alert + AlertTitle + AlertDescription | <Alert title="..." color="error"> | Single component, not compound |
 | Form + FormField + FormItem + FormLabel + FormControl + FormDescription + FormMessage | FormField + Label + Input + FormHelperText + useFormField() | Simpler API, hook-based a11y wiring |
@@ -101,7 +103,7 @@ Examples:
   <Badge variant="solid" color="success">Active</Badge>      // green solid badge
   <Alert variant="filled" color="warning">Warning!</Alert>   // yellow filled alert
 
-Components with two-axis system: Button, Badge, Alert, Chip, Toast, Banner, Progress, StatusBadge
+Components with two-axis system: Button, Badge, Alert, Chip, Banner, Progress, StatusBadge
 
 ## Component Quick Reference
 
@@ -125,14 +127,14 @@ Components with two-axis system: Button, Badge, Alert, Chip, Toast, Banner, Prog
 ### Feedback & Notifications
 - Alert: variant(subtle|filled|outline) color(info|success|warning|error|neutral) + title, onDismiss
 - Banner: color(info|success|warning|error|neutral) + title, onDismiss
-- Toast: color(neutral|success|warning|error|info) — REQUIRES <Toaster> at layout root + useToast()
+- Toast: imperative API via toast.success/error/warning/info/loading/message/undo/promise/upload/custom — REQUIRES <Toaster> at layout root
 - Spinner: size(sm|md|lg) — renders with role="status"
 - Progress: track size(sm|md|lg), indicator color(default|success|warning|error)
 
 NOTIFICATION SELECTION GUIDE:
   - Alert: inline contextual feedback within a form or page section
   - Banner: persistent page-level notification above content
-  - Toast: transient notification triggered by user action (needs Toaster + useToast)
+  - Toast: transient notification triggered by user action (needs <Toaster>, then call toast.success() etc.)
 
 ### Data Display
 - Badge: variant(subtle|solid|outline) color(default|info|success|error|warning|brand|accent + 7 category colors) size(xs|sm|md|lg) + onDismiss
@@ -192,7 +194,7 @@ NOTIFICATION SELECTION GUIDE:
 - MonthPicker: month grid — currentYear, selectedMonth(0-11), onMonthSelect, minDate, maxDate
 - Presets: date range quick-select buttons — presets(PresetKey[]), onSelect(start, end). Keys: today, yesterday, last7days, last30days, thisMonth, lastMonth, thisYear
 - useCalendar: hook for calendar month state — returns currentMonth, goToPreviousMonth, goToNextMonth, goToMonth, goToYear
-- UploadProgress: file upload tracker — files(UploadFile[]), onRemove, onRetry, onDismissAll, variant(default|compact), showSize. Status: pending|uploading|processing|complete|error. Also exports formatFileSize()
+- (UploadProgress REMOVED — upload tracking is now built into toast.upload())
 - RichTextEditor: Tiptap editor — bold/italic/underline/strike/highlight, headings, blockquote, lists (bullet/ordered/task), code, links, images (paste/drop/upload), file attachments, @mentions, emoji picker + :shortcode:, text alignment, HR. Props: onImageUpload?, onFileUpload?, mentions?, onMentionSearch?, onMentionSelect?
 - RichTextViewer: read-only renderer for RichTextEditor HTML content (renders all above content types)
 - ActivityFeed: items(ActivityItem[]), onLoadMore, loading, hasMore, emptyState, compact, maxInitialItems. Type: ActivityItem = { id, actor?, action, timestamp, icon?, color?, detail? }
@@ -225,7 +227,7 @@ NOTIFICATION SELECTION GUIDE:
 - motion(category, mode) => CSS cubic-bezier string. duration(token) => CSS duration string. easings: Record<MotionMode, Record<MotionCategory, string>>. durations: Record<DurationToken, string> = { instant: '0ms', fast-01: '70ms', fast-02: '110ms', moderate-01: '150ms', moderate-02: '240ms', slow-01: '400ms', slow-02: '700ms' }
 
 ### Hooks
-- useToast(): returns { toast, toasts, dismiss } — toast({ title, description, color }). Also: import { toast } from '@devalok/shilp-sutra/hooks/use-toast' for imperative usage without hook
+- toast: imperative API — import { toast } from '@devalok/shilp-sutra/ui/toast'. Methods: toast.success/error/warning/info/loading/message/undo/promise/upload/custom/dismiss. useToast() is deprecated.
 - useColorMode(): returns { colorMode, setColorMode, toggleColorMode }
 - useMobile(): returns boolean (true if viewport < 768px)
 - useLink(): returns router-agnostic Link component from LinkProvider context (shell/link-context)
@@ -248,8 +250,8 @@ DO NOT use barrel imports in Server Components — they include "use client" com
 - DO NOT use size="default" — use size="md" (or sm, lg)
 - DO NOT put size on <Select> — put it on <SelectTrigger size="md">
 - DO NOT use <Chip>text</Chip> — use <Chip label="text" />
-- DO NOT use <Toast variant="..."> — use <Toast color="error">
-- DO NOT use color="danger" — use color="error"
+- DO NOT use useToast() hook — use import { toast } from '@devalok/shilp-sutra/ui/toast' (imperative)
+- DO NOT use toast({ title, color }) object syntax — use toast.success('message'), toast.error('message'), etc.
 - DO NOT call toast() without <Toaster /> mounted at your layout root
 - DO NOT use <Alert><AlertTitle>...</AlertTitle></Alert> — use <Alert title="..." />
 - DO NOT import from barrel in Next.js Server Components — use per-component imports

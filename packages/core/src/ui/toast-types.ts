@@ -41,7 +41,6 @@ export interface ToastUploadOptions {
   files: UploadFile[]
   onRetry?: (fileId: string) => void
   onRemove?: (fileId: string) => void
-  onDismissAll?: () => void
 }
 
 export interface ToastOptions {
@@ -51,8 +50,6 @@ export interface ToastOptions {
   action?: ToastActionOptions
   cancel?: ToastActionOptions
   duration?: number
-  /** Accessible description for the action button (screen reader alternative path) */
-  actionAltText?: string
 }
 
 export type ToastType = 'success' | 'error' | 'warning' | 'info' | 'loading' | 'message'

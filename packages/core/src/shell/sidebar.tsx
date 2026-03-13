@@ -241,7 +241,7 @@ function NavLink({
               </button>
             </CollapsibleTrigger>
           </div>
-          <CollapsibleContent className="overflow-hidden data-[state=closed]:animate-collapsible-up data-[state=open]:animate-collapsible-down">
+          <CollapsibleContent>
             <SidebarMenuSub>
               {item.children.map((child) => {
                 const childActive = isPathActive(child.href, child.exact)

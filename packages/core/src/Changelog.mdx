@@ -8,301 +8,78 @@ All notable changes to the Shilp Sutra design system.
 
 Format based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/) &middot; [Semantic Versioning](https://semver.org/spec/v2.0.0.html)
 
+> **Current version:** `@devalok/shilp-sutra@0.18.0` (2026-03-14)
+>
+> For the complete changelog with all releases, see [`CHANGELOG.md`](https://github.com/devalok-design/shilp-sutra/blob/main/CHANGELOG.md) in the repository.
+
 ---
 
-## 0.4.2 &mdash; 2026-03-06
+## 0.18.0 &mdash; 2026-03-14
+
+The **OKLCH + Framer Motion** release. Three major system-wide migrations:
+
+- **OKLCH Color Tokens** &mdash; All color primitives migrated from hex shade numbers (50&ndash;950) to OKLCH functional steps (1&ndash;12). Dark mode is now algorithmically derived with perceptually uniform lightness/chroma curves.
+- **Framer Motion** &mdash; All interactive animations migrated from CSS keyframes to physics-based springs. 37 components migrated. New `MotionProvider`, spring/tween presets, and 6 motion primitives.
+- **Toast API rewrite** &mdash; Imperative `toast()` function replacing the old component-based API.
 
 ### Breaking Changes
 
-> **Migration effort: low.** All changes are renames &mdash; find-and-replace.
-
-#### Chip: variant + event renames
-
-```tsx
-{/* Before */}
-<Chip variant="filled" color="primary" onDelete={handleDelete} />
-<Chip variant="outlined" />
-
-{/* After */}
-<Chip variant="subtle" color="primary" onDismiss={handleDismiss} />
-<Chip variant="outline" />
-```
-
-| Old | New |
-|-----|-----|
-| `variant="filled"` | `variant="subtle"` |
-| `variant="outlined"` | `variant="outline"` |
-| `onDelete` | `onDismiss` |
-
-#### SegmentedControl: `color` &rarr; `variant`
-
-```tsx
-{/* Before */}
-<SegmentedControl color="filled" />
-
-{/* After */}
-<SegmentedControl variant="filled" />
-```
-
-#### Toast: `color="default"` &rarr; `color="neutral"`
-
-```tsx
-{/* Before */}
-toast({ color: 'default', title: 'Saved' })
-
-{/* After */}
-toast({ color: 'neutral', title: 'Saved' })
-```
-
-#### Card: `variant="outlined"` &rarr; `variant="outline"`
-
-```tsx
-{/* Before */}
-<Card variant="outlined" />
-
-{/* After */}
-<Card variant="outline" />
-```
-
-### Fixed
-
-| Issue | Fix |
-|-------|-----|
-| Button/Badge/ButtonGroup TypeScript error | `Omit<HTMLAttributes, 'color'>` resolves TS2320 conflict with CVA `color` prop |
-| Button `className` silently dropped | `className` passed as separate `cn()` argument instead of inside `buttonVariants()` |
-| Toggle `className` silently dropped | Same fix &mdash; `className` moved out of `toggleVariants()` |
-| ProjectCard Badge misuse | `variant={status}` &rarr; `color={status}` (was passing color values to variant prop) |
-| AlertDialogHeader/Footer missing ref | Wrapped in `React.forwardRef` (matches Dialog, Sheet pattern) |
-| TaskDetailPanel dropped ref | `_ref` parameter now forwarded to `SheetContent` |
-| Switch ref type | `React.ComponentRef` &rarr; `React.ElementRef` for consistency |
-| DateRangePicker format mismatch | Default `formatStr` changed from `'MMM d'` to `'MMM d, yyyy'` to match DatePicker |
+- **Color tokens**: `--pink-50` through `--pink-950` &rarr; `--pink-1` through `--pink-12` (OKLCH). Same for all 8 scales.
+- **Semantic tokens**: `--color-interactive` &rarr; `--color-accent-9`, `--color-text-secondary` &rarr; `--color-surface-fg-muted`, and many more. Old names preserved as aliases.
+- **Transitions removed**: `Fade`, `Collapse`, `Grow`, `Slide` from `./ui/transitions` &rarr; use `MotionFade`, `MotionCollapse`, `MotionSlide` from `./motion/primitives`
+- **18 CSS keyframes removed** from the Tailwind preset (replaced by Framer Motion)
+- **`useReducedMotion` hook removed** &mdash; use `MotionProvider` instead
 
 ### Added
 
-| What | Details |
-|------|---------|
-| **11 Props type exports** | `AccordionItemProps`, `AccordionTriggerProps`, `AccordionContentProps`, `RadioGroupProps`, `RadioGroupItemProps`, `ToggleProps`, `ToggleGroupProps`, `ToggleGroupItemProps`, `CollapsibleProps`, `SeparatorProps`, `HoverCardContentProps` |
-| **4 variant exports** | `inputVariants`, `cardVariants`, `textareaVariants`, `SpacingToken` |
-| **TreeItem `className`** | Now accepts and merges consumer `className` |
-| **Karm barrel exports** | Admin types (`UserRole`, `AttendanceStatus`, etc.) and 14 utility functions now re-exported from package root |
-
----
-
-## 0.3.1 &mdash; 2026-03-06
-
-### Fixed
-- Alert/Banner: resolved TypeScript conflict between HTML `color` attribute and CVA `color` variant prop
-- Badge dismiss button: added 24px minimum touch target (WCAG 2.5.8)
-
-### Added
-- This Changelog page in Storybook
-
----
-
-## 0.3.0 &mdash; 2026-03-06
-
-The **Mega Audit** release. A comprehensive expert audit identified 38 issues across architecture, component APIs, accessibility, and DX. This release fixes all of them.
-
-### Added
-
-| What | Details |
-|------|---------|
-| **Root export** | `import { Button } from '@devalok/shilp-sutra'` now works |
-| **Legacy bundler fields** | `main` and `module` for tools that don't support `exports` |
-| **New exports** | `./ui/charts`, `./ui/tree-view`, `./composed/date-picker` |
-| **`useFormField()` hook** | Automatic `aria-describedby` wiring for form controls |
-| **Type exports** | `SwitchProps`, `SliderProps` now publicly available |
-| **Switch `error` prop** | Matches Checkbox error state API |
-| **Karm `"use client"`** | All karm components include the directive |
-| **Inter font** | Replaces Google Sans (SIL OFL licensed, WOFF2) |
-| **WebP brand assets** | 76% size reduction alongside existing PNGs |
-
-### Breaking Changes
-
-> **Migration effort: low.** Most changes are simple renames.
-
-#### Dependencies &rarr; Optional Peer Dependencies
-
-Heavy dependencies are now optional &mdash; install only what you use:
-
-```bash
-# Before: all installed automatically
-# After: install what your app needs
-pnpm add d3 recharts                    # if using Charts
-pnpm add @tiptap/react @tiptap/starter-kit  # if using RichTextEditor
-pnpm add @tanstack/react-table          # if using DataTable
-pnpm add date-fns                       # if using DatePicker
-```
-
-#### Fonts: Google Sans &rarr; Inter
-
-Google Sans was proprietary. Inter is open-source (SIL OFL) and visually similar.
-
-```css
-/* Before */
-font-family: "Google Sans", system-ui, sans-serif;
-
-/* After — automatic if using our tokens */
-font-family: "Inter", system-ui, sans-serif;
-```
-
-#### Button: variant/color axis
-
-```tsx
-{/* Before */}
-<Button variant="primary">Save</Button>
-<Button variant="secondary">Cancel</Button>
-<Button variant="error">Delete</Button>
-
-{/* After */}
-<Button variant="solid">Save</Button>
-<Button variant="outline">Cancel</Button>
-<Button variant="solid" color="error">Delete</Button>
-```
-
-| Old `variant` | New `variant` | New `color` |
-|---------------|---------------|-------------|
-| `primary` | `solid` | — |
-| `secondary` | `outline` | — |
-| `ghost` | `ghost` | — |
-| `link` | `link` | — |
-| `error` | `solid` | `error` |
-| `error-ghost` | `outline` | `error` |
-
-#### Badge: variant/color split
-
-```tsx
-{/* Before — single axis */}
-<Badge variant="info">Status</Badge>
-
-{/* After — two axes */}
-<Badge variant="subtle" color="info">Status</Badge>
-<Badge variant="solid" color="success">Done</Badge>
-<Badge variant="outline" color="error">Failed</Badge>
-```
-
-#### Alert / Banner / Toast: `variant` &rarr; `color`
-
-```tsx
-{/* Before */}
-<Alert variant="warning">Watch out</Alert>
-<Banner variant="error">Outage</Banner>
-
-{/* After */}
-<Alert color="warning">Watch out</Alert>
-<Banner color="error">Outage</Banner>
-```
-
-#### Custom value controls: `onChange` &rarr; `onValueChange`
-
-Avoids collision with the native `onChange` from `HTMLAttributes`.
-
-```tsx
-{/* Before */}
-<NumberInput onChange={(v) => setValue(v)} />
-<Combobox onChange={(v) => setSelected(v)} />
-<Autocomplete onChange={(v) => setQuery(v)} />
-
-{/* After */}
-<NumberInput onValueChange={(v) => setValue(v)} />
-<Combobox onValueChange={(v) => setSelected(v)} />
-<Autocomplete onValueChange={(v) => setQuery(v)} />
-```
-
-#### FormField: context-based wiring
-
-```tsx
-{/* Before — manual */}
-<FormField>
-  <FormLabel htmlFor="email">Email</FormLabel>
-  <Input id="email" aria-describedby="email-help" />
-  <FormHelperText id="email-help">We won't share it</FormHelperText>
-</FormField>
-
-{/* After — automatic */}
-<FormField>
-  <FormLabel>Email</FormLabel>
-  <Input {...useFormField()} />
-  <FormHelperText>We won't share it</FormHelperText>
-</FormField>
-```
-
-`getFormFieldA11y()` has been removed in favor of the `useFormField()` hook.
+- **Framer Motion system**: `MotionProvider`, `springs` presets (snappy, smooth, bouncy, gentle), `tweens` presets (fade, colorShift), 6 motion primitives
+- **Spinner v2**: State machine (spinning/success/error), filled/bare variants, Framer Motion arc animation
+- **Button `onClickAsync`**: Promise-driven loading &rarr; success/error states
+- **OKLCH scale generator**: `generateScale()` utility for creating 12-step palettes
+- **61 new Props type exports** added to barrel files
+- **New export paths**: `./motion`, `./motion/primitives`
 
 ### Fixed
 
-| Issue | Fix |
-|-------|-----|
-| Karm hooks path rewrite | `hooks/` was mapped to `/ui` instead of `/hooks` |
-| Badge phantom token | `text-on-interactive` &rarr; `text-on-color` |
-| Tailwind `screens` override | Moved to `theme.extend` so deployer breakpoints are preserved |
-| Touch targets | All dismiss/close buttons now &ge; 24px (WCAG 2.5.8) |
-| Motion accessibility | Spinners respect `prefers-reduced-motion` |
-| Toast close button | Always visible (was hidden until hover) |
-| Ref forwarding | `DialogHeader/Footer`, `SheetHeader/Footer` now support refs |
+- Switch visible border on unchecked state
+- Badge accent color variants (step corrections)
+- Link color tokens
+- Toast accent bar colors
+- Button async feedback colors
+- SegmentedControl and Stepper token references
 
 ---
 
-## 0.2.1 &mdash; 2026-03-05
+## Previous Releases
 
-### Fixed
-- **Tailwind preset** `require` condition added to `./tailwind` export &mdash; CJS config loaders can now `require('@devalok/shilp-sutra/tailwind')` directly.
+| Version | Date | Highlights |
+|---------|------|------------|
+| 0.17.2 | 2026-03-13 | inject-use-client fix for vendor chunks |
+| 0.17.0 | 2026-03-13 | Stale .js file cleanup, CI pipeline |
+| 0.16.1 | 2026-03-13 | Code review fixes batch |
+| 0.16.0 | 2026-03-12 | Playground app, new components |
+| 0.15.0 | 2026-03-12 | Color input, number input enhancements |
+| 0.14.0 | 2026-03-12 | ScheduleView, MemberPicker, ConfirmDialog |
+| 0.13.0 | 2026-03-11 | ActivityFeed, SimpleTooltip, GlobalLoading |
+| 0.12.0 | 2026-03-11 | Notification center, command palette |
+| 0.11.0 | 2026-03-10 | Shell component enhancements |
+| 0.10.0 | 2026-03-10 | Karm admin dashboard components |
+| 0.9.2 | 2026-03-10 | vendor-client/vendor-utils chunk split |
+| 0.9.1 | 2026-03-10 | inject-use-client server component fix |
+| 0.9.0 | 2026-03-10 | Dep bundling, zero-external build |
+| 0.8.4 | 2026-03-09 | Karm chat, streaming text |
+| 0.8.3 | 2026-03-09 | Karm board enhancements |
+| 0.8.2 | 2026-03-09 | Karm task detail panel |
+| 0.8.0 | 2026-03-08 | Karm initial release |
+| 0.7.0 | 2026-03-07 | AI agent feedback protocol |
+| 0.6.0 | 2026-03-07 | Consumer feedback fixes |
+| 0.5.0 | 2026-03-06 | Barrel isolation, chart components |
+| 0.4.2 | 2026-03-06 | Chip/SegmentedControl/Toast/Card renames |
+| 0.3.1 | 2026-03-06 | Alert/Banner TS fix, Badge touch target |
+| 0.3.0 | 2026-03-06 | Mega Audit release |
+| 0.2.1 | 2026-03-05 | Tailwind CJS require fix |
+| 0.2.0 | 2026-03-05 | Next.js App Router compatibility |
+| 0.1.1 | 2026-03-05 | Runtime fixes, a11y, Shell decoupling |
+| 0.1.0 | 2026-02-28 | Initial release |
 
----
-
-## 0.2.0 &mdash; 2026-03-05
-
-### Next.js App Router Compatibility
-
-- **`"use client"` directives** injected into all client-only components via post-build script
-- **Per-component exports** for granular imports: `@devalok/shilp-sutra/ui/text`, `./ui/dialog`, etc.
-- **Server-safe components** excluded from `"use client"`: Text, Skeleton, Spinner, Stack, Container, Table, Code, VisuallyHidden, ContentCard, EmptyState, PageHeader, LoadingSkeleton, PageSkeletons, PriorityIndicator, StatusBadge
-
-### Type Resolution Fix
-- `@primitives/*` type references in `.d.ts` files rewritten to relative paths &mdash; no more ambient type stubs needed
-
-### API Improvements
-- **Stack** `direction` accepts `"row"` / `"column"` aliases
-- **Stack** `gap` accepts numeric values (e.g., `gap={4}`)
-- **StatCard** `icon` accepts `React.ComponentType`
-- **Text** `as` prop widened to any `React.ElementType`
-- **SearchInput** `inputSize` renamed to `size`
-
----
-
-## 0.1.1 &mdash; 2026-03-05
-
-### Critical Runtime Fixes
-- **BreakAdmin** `useMemo` after conditional return &mdash; Rules of Hooks violation
-- **InputOTP** `animate-caret-blink` keyframe added to preset
-- **RadarChart** invisible axis labels fixed
-- **CorrectionList** missing mobile borders
-- **AssociateDetail** collapsed vertical divider
-- **LeaveRequest** fragile synthetic `MouseEvent`
-
-### Architecture
-- **Shell components** decoupled from Next.js via `LinkProvider`/`useLink` context
-- **Brand logos** dark mode reactive via `MutationObserver`
-- Missing `'use client'` directives added
-
-### Accessibility (12 fixes)
-- `focus:ring` &rarr; `focus-visible:ring` on Autocomplete
-- Double-focus keyboard bug in SegmentedControl
-- 6 missing `aria-label` attributes
-- 5 missing `type="button"` attributes
-- `aria-invalid` added to Textarea
-
-### Token Compliance
-- 60+ raw Tailwind classes replaced with design system tokens
-- ~300 story file violations fixed
-
----
-
-## 0.1.0 &mdash; 2026-02-28
-
-### Initial Release
-- 114 components across `ui/`, `composed/`, `shell/`, `karm/` modules
-- 3-tier design token system (primitives &rarr; semantic &rarr; Tailwind)
-- Vendored Radix UI primitives (zero `@radix-ui` runtime deps)
-- Dark mode via `.dark` class toggle
-- Storybook 8.6 with 95 stories
+See the [full CHANGELOG.md](https://github.com/devalok-design/shilp-sutra/blob/main/CHANGELOG.md) for complete details on each release.

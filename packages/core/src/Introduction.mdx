@@ -21,7 +21,7 @@ The system is published as three packages so you can install only what you need:
 | Layer | Count | Description |
 |-------|-------|-------------|
 | **Design Tokens** | 3 tiers | Primitives, semantic tokens, and Tailwind integration |
-| **UI Primitives** | 56 | Low-level Radix UI-based components |
+| **UI Primitives** | 64+ | Low-level Radix UI-based components |
 | **Composed Components** | 18 | Higher-level reusable patterns |
 | **Shell Components** | 8 | App shell and navigation structures |
 | **Karm Modules** | 49 | Domain-specific project management components |
@@ -80,9 +80,9 @@ Primitives  -->  Semantic  -->  Tailwind
 (raw values)    (intent-based)  (utility classes)
 ```
 
-1. **Primitives** -- Raw color palettes (pink, purple, neutral, green, red, yellow, blue) with 50-950 scales. Never referenced directly in component code.
-2. **Semantic** -- Intent-based tokens like `--color-interactive`, `--color-text-primary`, `--spacing-05`. These are what components consume.
-3. **Tailwind** -- The semantic tokens are mapped to Tailwind CSS utilities via `tailwind.config`, so you can use classes like `bg-interactive` or `text-text-primary`.
+1. **Primitives** -- Raw OKLCH color palettes (pink, purple, neutral, green, red, yellow, blue, teal, amber, and more) with 12-step functional scales. Never referenced directly in component code.
+2. **Semantic** -- Intent-based tokens like `--color-accent-9`, `--color-surface-fg`, `--color-error-9`. These are what components consume. Includes typography tokens (`typography.css`, `typography-semantic.css`).
+3. **Tailwind** -- The semantic tokens are mapped to Tailwind CSS utilities via the preset, so you can use classes like `bg-accent-9` or `text-surface-fg`.
 
 ---
 
@@ -104,13 +104,13 @@ pnpm add @devalok/shilp-sutra-karm
 Import the token stylesheet in your app entry point:
 
 ```ts
-import '@devalok/shilp-sutra/tokens/index.css'
+import '@devalok/shilp-sutra/tokens'
 ```
 
 Add the Tailwind preset to your `tailwind.config.ts`:
 
 ```ts
-import shilpSutraPreset from '@devalok/shilp-sutra/tailwind-preset'
+import shilpSutraPreset from '@devalok/shilp-sutra/tailwind'
 
 export default {
   presets: [shilpSutraPreset],

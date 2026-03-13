@@ -40,7 +40,7 @@ This layered approach separates raw values from intent-based decisions, making t
 ### Module Hierarchy
 
 ```
-ui/ (primitives)  →  shared/ (composites)  →  layout/ (shells)  →  karm/ (domain)
+ui/ (primitives)  →  composed/ (composites)  →  shell/ (app shells)  →  karm/ (domain)
 ```
 
 Each layer can only import from layers to its left. This ensures the design system core remains independent of domain logic.

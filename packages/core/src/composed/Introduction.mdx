@@ -59,7 +59,7 @@ import { PageHeader, DatePicker, RichTextEditor } from '@devalok/shilp-sutra/com
 | Component | Description |
 |-----------|-------------|
 | **ConfirmDialog** | Pre-configured AlertDialog for destructive action confirmation |
-| **ErrorBoundary** | React error boundary with fallback display |
+| **ErrorDisplay** | Error display with status-specific messaging (404, 403, 500, generic) |
 | **GlobalLoading** | Top-of-page progress bar loading indicator |
 | **SimpleTooltip** | One-prop tooltip wrapper for common cases |
 
@@ -70,7 +70,9 @@ import { PageHeader, DatePicker, RichTextEditor } from '@devalok/shilp-sutra/com
 These can be imported individually for use in React Server Components:
 
 ```tsx
-import { EmptyState } from '@devalok/shilp-sutra/composed/empty-state'
+import { ContentCard } from '@devalok/shilp-sutra/composed/content-card'
 import { PageHeader } from '@devalok/shilp-sutra/composed/page-header'
-import { StatusBadge } from '@devalok/shilp-sutra/composed/status-badge'
+import { LoadingSkeleton } from '@devalok/shilp-sutra/composed/loading-skeleton'
+import { PageSkeletons } from '@devalok/shilp-sutra/composed/page-skeletons'
+import { PriorityIndicator } from '@devalok/shilp-sutra/composed/priority-indicator'
 ```

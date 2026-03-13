@@ -4,7 +4,7 @@ import { Meta } from '@storybook/blocks'
 
 # UI Primitives
 
-Shilp Sutra includes **56 low-level UI primitives** built on top of vendored [Radix UI](https://radix-ui.com). These are the foundational building blocks used by all higher-level components in the system.
+Shilp Sutra includes **64+ low-level UI primitives** built on top of vendored [Radix UI](https://radix-ui.com). These are the foundational building blocks used by all higher-level components in the system.
 
 Every primitive:
 
@@ -64,6 +64,7 @@ import { Button, Input, Dialog } from '@devalok/shilp-sutra/ui'
 | Switch | Binary toggle switch |
 | Textarea | Multi-line text input |
 | Toggle | Pressable toggle button |
+| ColorInput | Color picker input |
 | ToggleGroup | Group of mutually exclusive toggle buttons |
 
 ---
@@ -78,8 +79,8 @@ import { Button, Input, Dialog } from '@devalok/shilp-sutra/ui'
 | Card | Container with header, content, and footer slots |
 | Chip | Removable tag with optional close button |
 | Code | Inline and block code display |
-| DataTable | Full-featured data table with sorting, filtering, and pagination |
-| DataTableToolbar | Filter and view controls for DataTable |
+| DataTable | Full-featured data table with sorting, filtering, and pagination *(barrel-isolated -- see below)* |
+| DataTableToolbar | Filter and view controls for DataTable *(barrel-isolated -- see below)* |
 | Progress | Determinate/indeterminate progress bar |
 | Skeleton | Placeholder loading animation |
 | StatCard | Metric display card with value and trend |
@@ -118,8 +119,8 @@ import { Button, Input, Dialog } from '@devalok/shilp-sutra/ui'
 | Popover | Floating content panel anchored to a trigger |
 | Sheet | Slide-out panel from screen edge |
 | Spinner | Loading spinner indicator |
-| Toast | Temporary notification message |
-| Toaster | Toast container and manager |
+| Toast | Imperative toast notifications via `toast()` function (not a mountable component) |
+| Toaster | Toast container -- mount once in your layout |
 | Tooltip | Contextual hint on hover/focus |
 
 ---
@@ -127,6 +128,8 @@ import { Button, Input, Dialog } from '@devalok/shilp-sutra/ui'
 ## Charts
 
 Barrel-isolated to avoid pulling in heavy deps. Import from `@devalok/shilp-sutra/ui/charts`.
+
+> **Note:** DataTable and DataTableToolbar are also barrel-isolated. Import from `@devalok/shilp-sutra/ui/data-table` and `@devalok/shilp-sutra/ui/data-table-toolbar` respectively.
 
 | Component | Description |
 |-----------|-------------|

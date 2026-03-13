@@ -191,42 +191,18 @@ export const PRIMITIVE_DEFAULTS = {
 };
 export const SEMANTIC_GROUPS = [
     {
-        label: 'Background & Layers',
-        description: 'Page background, card surfaces, and field colors',
+        label: 'Surface',
+        description: 'Page backgrounds, card surfaces, and foreground colors',
         tokens: [
-            { name: '--color-background', label: 'Background', defaultValue: 'var(--neutral-0)', type: 'color' },
-            { name: '--color-layer-01', label: 'Layer 01', defaultValue: 'var(--neutral-0)', type: 'color' },
-            { name: '--color-layer-02', label: 'Layer 02', defaultValue: 'var(--neutral-1)', type: 'color' },
-            { name: '--color-layer-03', label: 'Layer 03', defaultValue: 'var(--neutral-2)', type: 'color' },
-            { name: '--color-field', label: 'Field', defaultValue: 'var(--neutral-1)', type: 'color' },
-            { name: '--color-field-hover', label: 'Field Hover', defaultValue: 'var(--neutral-2)', type: 'color' },
-        ],
-    },
-    {
-        label: 'Text Colors',
-        description: 'Primary, secondary, and status text colors',
-        tokens: [
-            { name: '--color-text-primary', label: 'Primary', defaultValue: 'var(--neutral-12)', type: 'color' },
-            { name: '--color-text-secondary', label: 'Secondary', defaultValue: 'var(--neutral-11)', type: 'color' },
-            { name: '--color-text-tertiary', label: 'Tertiary', defaultValue: 'var(--neutral-9)', type: 'color' },
-            { name: '--color-text-placeholder', label: 'Placeholder', defaultValue: 'var(--neutral-8)', type: 'color' },
-            { name: '--color-text-disabled', label: 'Disabled', defaultValue: 'var(--neutral-8)', type: 'color' },
-            { name: '--color-text-error-11', label: 'Error', defaultValue: 'var(--red-11)', type: 'color' },
-            { name: '--color-text-success-11', label: 'Success', defaultValue: 'var(--green-11)', type: 'color' },
-            { name: '--color-text-warning-11', label: 'Warning', defaultValue: 'var(--yellow-11)', type: 'color' },
-            { name: '--color-text-link', label: 'Link', defaultValue: 'var(--blue-11)', type: 'color' },
-        ],
-    },
-    {
-        label: 'Border Colors',
-        description: 'Borders for cards, inputs, and interactive elements',
-        tokens: [
-            { name: '--color-border-subtle', label: 'Subtle', defaultValue: 'var(--neutral-6)', type: 'color' },
-            { name: '--color-border', label: 'Default', defaultValue: 'var(--neutral-7)', type: 'color' },
-            { name: '--color-border-strong', label: 'Strong', defaultValue: 'var(--neutral-8)', type: 'color' },
-            { name: '--color-border-accent-7', label: 'Interactive', defaultValue: 'var(--pink-9)', type: 'color' },
-            { name: '--color-border-error-7', label: 'Error', defaultValue: 'var(--red-9)', type: 'color' },
-            { name: '--color-border-success-7', label: 'Success', defaultValue: 'var(--green-9)', type: 'color' },
+            { name: '--color-surface-1', label: 'Surface 1 (App bg)', defaultValue: 'var(--neutral-1)', type: 'color' },
+            { name: '--color-surface-2', label: 'Surface 2 (Subtle bg)', defaultValue: 'var(--neutral-2)', type: 'color' },
+            { name: '--color-surface-3', label: 'Surface 3 (Component bg)', defaultValue: 'var(--neutral-3)', type: 'color' },
+            { name: '--color-surface-4', label: 'Surface 4 (Hover)', defaultValue: 'var(--neutral-4)', type: 'color' },
+            { name: '--color-surface-fg', label: 'Foreground', defaultValue: 'var(--neutral-12)', type: 'color' },
+            { name: '--color-surface-fg-muted', label: 'Foreground Muted', defaultValue: 'var(--neutral-11)', type: 'color' },
+            { name: '--color-surface-fg-subtle', label: 'Foreground Subtle', defaultValue: 'var(--neutral-8)', type: 'color' },
+            { name: '--color-surface-border', label: 'Border', defaultValue: 'var(--neutral-6)', type: 'color' },
+            { name: '--color-surface-border-strong', label: 'Border Strong', defaultValue: 'var(--neutral-7)', type: 'color' },
         ],
     },
     {

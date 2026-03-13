@@ -144,12 +144,14 @@ const Badge = React.forwardRef<HTMLSpanElement, BadgeProps>(
     return (
       <span ref={ref} className={cn(badgeVariants({ variant, color, size }), className)} {...props}>
         {dot && (
-          <motion.span
-            className="h-ds-02b w-ds-02b rounded-ds-full bg-current shrink-0"
-            animate={{ scale: [1, 1.5, 1], opacity: [0.7, 0, 0.7] }}
-            transition={{ repeat: Infinity, duration: 1.5, ease: 'easeInOut' }}
-            aria-hidden="true"
-          />
+          <span className="relative inline-flex h-ds-02b w-ds-02b shrink-0" aria-hidden="true">
+            <motion.span
+              className="absolute inset-0 rounded-ds-full bg-current"
+              animate={{ scale: [1, 2.5], opacity: [0.4, 0] }}
+              transition={{ repeat: Infinity, duration: 1.5, ease: 'easeOut' }}
+            />
+            <span className="relative h-ds-02b w-ds-02b rounded-ds-full bg-current" />
+          </span>
         )}
         {children}
         {onDismiss && (

@@ -115,8 +115,9 @@ const Alert = React.forwardRef<HTMLDivElement, AlertProps>(
           <motion.div
             ref={ref}
             initial={{ opacity: 1, y: 0 }}
+            animate={{ opacity: 1, y: 0 }}
             exit={{ opacity: 0, y: -8 }}
-            transition={{ ...springs.snappy, opacity: tweens.fade }}
+            transition={springs.snappy}
             className={cn(alertVariants({ variant, color }), className)}
             role="alert"
             {...motionProps(props)}

@@ -223,8 +223,18 @@ NOTIFICATION SELECTION GUIDE:
 - AppCommandPalette: user, isAdmin, onNavigate, onSearch, searchResults, isSearching, onSearchResultSelect. Types: SearchResult = { id, title, snippet?, entityType, projectId?, metadata? }, AppCommandPaletteUser = { name, role? }
 - LinkProvider: wraps app with router-agnostic Link component — component(ForwardRefComponent), children. useLink() hook returns the Link component.
 
-### Motion Tokens
-- motion(category, mode) => CSS cubic-bezier string. duration(token) => CSS duration string. easings: Record<MotionMode, Record<MotionCategory, string>>. durations: Record<DurationToken, string> = { instant: '0ms', fast-01: '70ms', fast-02: '110ms', moderate-01: '150ms', moderate-02: '240ms', slow-01: '400ms', slow-02: '700ms' }
+### Motion System (Framer Motion)
+- Setup: Wrap app root with `<MotionProvider>` from `@devalok/shilp-sutra/motion`. Handles reduced-motion detection globally.
+- Import presets: `import { springs, tweens, stagger } from '@devalok/shilp-sutra/motion'`
+- Import primitives: `import { MotionFade, MotionScale, MotionPop, MotionSlide, MotionCollapse, MotionStagger, MotionStaggerItem } from '@devalok/shilp-sutra/motion/primitives'`
+- Spring presets (spatial: position, scale, size): snappy (buttons/hover), smooth (dialogs/panels), bouncy (toasts/pop-ins), gentle (collapse/expand)
+- Tween presets (non-spatial: opacity, color): fade (opacity enter/exit), colorShift (hover color/bg)
+- All primitives take `show: boolean` to control mount/unmount via AnimatePresence
+- MotionSlide: additional `direction` prop (up|down|left|right)
+- MotionStagger + MotionStaggerItem: orchestrated stagger with configurable `delay` (default 0.04s)
+- All primitives support `layout`, `layoutId`, `whileInView`, `viewportOnce`, `preset` props
+- useMotion() hook returns { springs, tweens, reducedMotion: boolean }
+- Old Fade/Collapse/Grow/Slide from @devalok/shilp-sutra/ui/transitions are REMOVED — use Motion* equivalents
 
 ### Hooks
 - toast: imperative API — import { toast } from '@devalok/shilp-sutra/ui/toast'. Methods: toast.success/error/warning/info/loading/message/undo/promise/upload/custom/dismiss. useToast() is deprecated.

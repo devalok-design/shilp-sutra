@@ -1243,22 +1243,122 @@ Note: getFormFieldA11y() was removed in favor of useFormField() hook.
   </TooltipProvider>
 - Gotchas: TooltipProvider is REQUIRED — without it, tooltips won't show
 
-## Transitions (Fade, Collapse, Grow, Slide)
-- Import: @devalok/shilp-sutra/ui/transitions
+## MotionProvider
+- Import: @devalok/shilp-sutra/motion
 - Server-safe: No
-- Props (shared TransitionProps):
-    open: boolean (REQUIRED)
-    duration: string (CSS duration, default: "var(--duration-moderate-02)")
-    unmountOnClose: boolean (Fade, Grow, Slide only)
-    children: ReactNode
-- Props (Slide only):
-    direction: "up" | "down" | "left" | "right" (default: "up")
+- Props:
+    children: ReactNode (REQUIRED)
+    reducedMotion: 'user' | boolean (default: 'user') — 'user' detects OS preference, true forces reduced, false forces full
+- Setup: Wrap app root. Provides MotionConfig + useMotion() context.
 - Example:
-  <Fade open={isVisible}><div>Fading content</div></Fade>
-  <Collapse open={isExpanded}><div>Collapsible content</div></Collapse>
-  <Grow open={isVisible}><div>Scaling content</div></Grow>
-  <Slide open={isVisible} direction="left"><div>Sliding panel</div></Slide>
-- Gotchas: All transitions respect prefers-reduced-motion (duration set to 0ms)
+  import { MotionProvider } from '@devalok/shilp-sutra/motion'
+  <MotionProvider><App /></MotionProvider>
+- Gotchas: Required for reduced-motion detection. Without it, useMotion() returns defaults.
+
+## useMotion
+- Import: @devalok/shilp-sutra/motion
+- Returns: { springs, tweens, reducedMotion: boolean }
+- Use for custom animation logic or accessing presets in non-primitive contexts.
+
+## Spring Presets (springs)
+- Import: import { springs } from '@devalok/shilp-sutra/motion'
+- Type: Record<SpringPreset, Transition> where SpringPreset = 'snappy' | 'smooth' | 'bouncy' | 'gentle'
+- snappy: { type: 'spring', stiffness: 500, damping: 30, mass: 0.5 } — buttons, hover, form inputs
+- smooth: { type: 'spring', stiffness: 300, damping: 30, mass: 0.8 } — dialogs, sheets, panels
+- bouncy: { type: 'spring', stiffness: 400, damping: 15, mass: 0.5 } — toasts, pop-ins, celebration
+- gentle: { type: 'spring', stiffness: 200, damping: 25, mass: 0.8 } — collapse/expand, accordion
+
+## Tween Presets (tweens)
+- Import: import { tweens } from '@devalok/shilp-sutra/motion'
+- Type: Record<TweenPreset, Transition> where TweenPreset = 'fade' | 'colorShift'
+- fade: { type: 'tween', duration: 0.15, ease: 'easeOut' } — opacity enter/exit
+- colorShift: { type: 'tween', duration: 0.1, ease: 'easeOut' } — hover color, bg, border
+
+## stagger (helper)
+- Import: import { stagger } from '@devalok/shilp-sutra/motion'
+- Usage: stagger(delay?) — returns Variants object with staggerChildren
+- Default delay: 0.04 (40ms)
+
+## MotionFade
+- Import: @devalok/shilp-sutra/motion/primitives
+- Server-safe: No
+- Props: MotionPrimitiveProps + HTMLMotionProps<'div'>
+    show: boolean (REQUIRED) — controls mount/unmount via AnimatePresence
+    className: string
+    layout: boolean | 'position' | 'size' | 'preserve-aspect'
+    layoutId: string
+    whileInView: boolean
+    viewportOnce: boolean (default: true)
+    viewportMargin: string (default: '-50px')
+- Transition: tweens.fade (pure opacity, no spring)
+- Example:
+  <MotionFade show={isVisible}><div>Fading content</div></MotionFade>
+- Migration: Replaces old <Fade open={x}>. Prop renamed: open → show. No unmountOnClose needed.
+
+## MotionScale
+- Import: @devalok/shilp-sutra/motion/primitives
+- Server-safe: No
+- Props: MotionPrimitiveProps + HTMLMotionProps<'div'>
+    preset: SpringPreset (default: 'snappy')
+    (plus all shared MotionPrimitiveProps)
+- Animation: scale 0.96→1 + opacity 0→1
+- Example:
+  <MotionScale show={isOpen} preset="smooth"><DialogContent>...</DialogContent></MotionScale>
+- Use for: dialogs, popovers, dropdowns
+
+## MotionPop
+- Import: @devalok/shilp-sutra/motion/primitives
+- Server-safe: No
+- Props: MotionPrimitiveProps + HTMLMotionProps<'div'>
+    preset: SpringPreset (default: 'bouncy')
+    (plus all shared MotionPrimitiveProps)
+- Animation: scale 0.5→1 + opacity 0→1 (larger scale range than MotionScale, with bounce overshoot)
+- Example:
+  <MotionPop show={showBadge}><Badge>New!</Badge></MotionPop>
+- Migration: Replaces old <Grow open={x}>.
+
+## MotionSlide
+- Import: @devalok/shilp-sutra/motion/primitives
+- Server-safe: No
+- Props: MotionPrimitiveProps + HTMLMotionProps<'div'>
+    preset: SpringPreset (default: 'smooth')
+    direction: 'up' | 'down' | 'left' | 'right' (default: 'up')
+    (plus all shared MotionPrimitiveProps)
+- Animation: translate 16px from direction + opacity 0→1
+- Example:
+  <MotionSlide show={isOpen} direction="left" preset="snappy"><Panel>...</Panel></MotionSlide>
+- Migration: Replaces old <Slide open={x} direction="left">.
+
+## MotionCollapse
+- Import: @devalok/shilp-sutra/motion/primitives
+- Server-safe: No
+- Props: MotionPrimitiveProps + HTMLMotionProps<'div'>
+    preset: SpringPreset (default: 'gentle')
+    (plus all shared MotionPrimitiveProps — no whileInView)
+- Animation: height 0→auto + opacity 0→1, overflow hidden
+- Example:
+  <MotionCollapse show={isExpanded}><AccordionContent>...</AccordionContent></MotionCollapse>
+- Migration: Replaces old <Collapse open={x}>.
+- Gotchas: Uses AnimatePresence initial={false} to skip mount animation
+
+## MotionStagger + MotionStaggerItem
+- Import: @devalok/shilp-sutra/motion/primitives
+- Server-safe: No
+- Props (MotionStagger): MotionStaggerProps + HTMLMotionProps<'div'>
+    delay: number (default: 0.04 = 40ms between children)
+    whileInView: boolean
+    viewportOnce: boolean (default: true)
+    viewportMargin: string (default: '-50px')
+    className: string
+- Props (MotionStaggerItem): { children, className } + HTMLMotionProps<'div'>
+- Animation: Each item slides up 8px + fades in using springs.smooth
+- Example:
+  <MotionStagger delay={0.05}>
+    {items.map(item => (
+      <MotionStaggerItem key={item.id}><Card>{item.title}</Card></MotionStaggerItem>
+    ))}
+  </MotionStagger>
+- Gotchas: MotionStaggerItem MUST be a direct child of MotionStagger for variant propagation
 
 ## TreeView / TreeItem
 - Import: @devalok/shilp-sutra/ui/tree-view
@@ -2197,13 +2297,9 @@ Deprecated props:
 - Usage: generatePagination(currentPage, totalPages, siblingCount)
 - Returns: (number | 'ellipsis')[]
 
-## motion / duration / easings / durations
-- Import: @devalok/shilp-sutra (barrel export)
-- Design system motion tokens for custom animations
-- Type: MotionMode = 'productive' | 'expressive'
-- Type: MotionCategory = 'standard' | 'entrance' | 'exit'
-- Type: DurationToken = 'instant' | 'fast-01' | 'fast-02' | 'moderate-01' | 'moderate-02' | 'slow-01' | 'slow-02'
-- Function: motion(category: MotionCategory, mode: MotionMode) => string — returns CSS cubic-bezier string
-- Function: duration(token: DurationToken) => string — returns CSS duration string (e.g. '150ms')
-- Object: easings — Record<MotionMode, Record<MotionCategory, string>> — all cubic-bezier values
-- Object: durations — Record<DurationToken, string> — { instant: '0ms', fast-01: '70ms', fast-02: '110ms', moderate-01: '150ms', moderate-02: '240ms', slow-01: '400ms', slow-02: '700ms' }
+## Motion System (Framer Motion)
+- Import presets: @devalok/shilp-sutra/motion — exports MotionProvider, useMotion, springs, tweens, stagger
+- Import primitives: @devalok/shilp-sutra/motion/primitives — exports MotionFade, MotionScale, MotionPop, MotionSlide, MotionCollapse, MotionStagger, MotionStaggerItem
+- See MotionProvider, useMotion, Spring Presets, Tween Presets, and individual primitive entries above for full API.
+- MIGRATION: Old motion(category, mode), duration(token), easings, durations CSS token utilities are REMOVED. Use Framer Motion springs/tweens presets instead.
+- MIGRATION: Old Fade/Collapse/Grow/Slide from @devalok/shilp-sutra/ui/transitions are REMOVED. Use MotionFade/MotionCollapse/MotionPop/MotionSlide from @devalok/shilp-sutra/motion/primitives. Prop `open` renamed to `show`, `unmountOnClose` removed, `duration` replaced by `preset`.

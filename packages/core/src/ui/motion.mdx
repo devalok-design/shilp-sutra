@@ -4,150 +4,290 @@ import { Meta } from '@storybook/blocks'
 
 # Motion System
 
-shilp-sutra uses a **productive/expressive** motion model inspired by Carbon Design System.
+shilp-sutra uses **Framer Motion** for all animations. The system follows two rules:
 
-## Two Modes
+- **Springs** for spatial motion (position, scale, size, rotation)
+- **Tweens** for non-spatial motion (opacity, color, background)
 
-### Productive Motion
-Utilitarian and unobtrusive. Used when users are focused on completing tasks.
-- Button hover states
-- Dropdown menus opening
-- Table sorting
-- Toggle switches
-- Form input focus
+## Setup
 
-### Expressive Motion
-Enthusiastic and vibrant. Reserved for significant moments.
-- Modal/dialog entrance
-- Toast notifications appearing
-- System alerts
-- Primary action confirmation
-- Page-level transitions
+Wrap your app root with `<MotionProvider>` to enable the motion system:
 
-## Duration Scale
+```tsx
+import { MotionProvider } from '@devalok/shilp-sutra/motion'
 
-| Token | Value | Tailwind Class | Use Case |
-|-------|-------|---------------|----------|
-| `--duration-instant` | 0ms | `duration-instant` | Disabled states, immediate |
-| `--duration-fast-01` | 70ms | `duration-fast-01` | Button press, toggle, icon swap |
-| `--duration-fast-02` | 110ms | `duration-fast-02` | Fade in/out, color shifts |
-| `--duration-moderate-01` | 150ms | `duration-moderate-01` | Tooltip, small dropdown |
-| `--duration-moderate-02` | 240ms | `duration-moderate-02` | Accordion, toast, dialog |
-| `--duration-slow-01` | 400ms | `duration-slow-01` | Modal entrance, large panel |
-| `--duration-slow-02` | 700ms | `duration-slow-02` | Overlay dimming, background |
+function App() {
+  return (
+    <MotionProvider>
+      {/* your app */}
+    </MotionProvider>
+  )
+}
+```
 
-**Rule of thumb:** The larger the element or distance traveled, the longer the duration.
+`MotionProvider` does two things:
+1. Wraps children in Framer Motion's `<MotionConfig>` for global reduced-motion handling
+2. Provides `useMotion()` context with spring/tween presets and reduced-motion state
 
-## Easing Curves
+### Props
 
-### Productive Easings
+| Prop | Type | Default | Description |
+|------|------|---------|-------------|
+| `reducedMotion` | `'user' \| boolean` | `'user'` | `'user'` = detect OS preference, `true` = force reduced, `false` = force full |
 
-| Token | Tailwind Class | When to Use |
-|-------|---------------|-------------|
-| `--ease-productive-standard` | `ease-productive-standard` | Element transforms in place (sort, resize, reposition) |
-| `--ease-productive-entrance` | `ease-productive-entrance` | Element appears (dropdown, tooltip, fade-in) |
-| `--ease-productive-exit` | `ease-productive-exit` | Element disappears (close, dismiss) |
+## Spring Presets
 
-### Expressive Easings
+Springs drive all spatial animations. Import from `@devalok/shilp-sutra/motion`.
 
-| Token | Tailwind Class | When to Use |
-|-------|---------------|-------------|
-| `--ease-expressive-standard` | `ease-expressive-standard` | Dramatic transform (hero animation, attention) |
-| `--ease-expressive-entrance` | `ease-expressive-entrance` | Dramatic appearance (modal, toast, alert) |
-| `--ease-expressive-exit` | `ease-expressive-exit` | Dramatic departure (dismissing important UI) |
+| Preset | Stiffness | Damping | Mass | Use Case |
+|--------|-----------|---------|------|----------|
+| `snappy` | 500 | 30 | 0.5 | Micro-interactions: buttons, hover, form inputs |
+| `smooth` | 300 | 30 | 0.8 | Dialogs, sheets, panels, navigation |
+| `bouncy` | 400 | 15 | 0.5 | Toasts, pop-ins, celebration feedback |
+| `gentle` | 200 | 25 | 0.8 | Collapse/expand, accordion, height changes |
 
-### Utility Easings
+```tsx
+import { springs } from '@devalok/shilp-sutra/motion'
 
-| Token | Tailwind Class | When to Use |
-|-------|---------------|-------------|
-| `--ease-bounce` | `ease-bounce` | Playful micro-interactions (typing indicator) |
-| `--ease-linear` | `ease-linear` | Continuous animations (spinner, progress bar, shimmer) |
+<motion.div
+  animate={{ x: 100 }}
+  transition={springs.snappy}
+/>
+```
+
+## Tween Presets
+
+Tweens drive non-spatial animations (opacity, color).
+
+| Preset | Duration | Ease | Use Case |
+|--------|----------|------|----------|
+| `fade` | 150ms | easeOut | Opacity enter/exit |
+| `colorShift` | 100ms | easeOut | Hover color, background, border transitions |
+
+```tsx
+import { tweens } from '@devalok/shilp-sutra/motion'
+
+<motion.div
+  animate={{ opacity: 1 }}
+  transition={tweens.fade}
+/>
+```
+
+## Motion Primitives
+
+Pre-built animated wrappers. Import from `@devalok/shilp-sutra/motion/primitives`.
+
+### Shared Props (MotionPrimitiveProps)
+
+| Prop | Type | Default | Description |
+|------|------|---------|-------------|
+| `show` | `boolean` | — | Controls mount/unmount with AnimatePresence |
+| `preset` | `SpringPreset` | varies | Spring config to use |
+| `className` | `string` | — | CSS class on the wrapper div |
+| `layout` | `boolean \| 'position' \| 'size' \| 'preserve-aspect'` | — | Enable layout animations |
+| `layoutId` | `string` | — | Shared layout ID for cross-component transitions |
+| `whileInView` | `boolean` | — | Animate when scrolled into viewport |
+| `viewportOnce` | `boolean` | `true` | Only animate on first scroll into view |
+| `viewportMargin` | `string` | `'-50px'` | Viewport intersection margin |
+
+All primitives also accept any `HTMLMotionProps<'div'>` and forward refs.
+
+### MotionFade
+
+Pure opacity fade. Uses `tweens.fade` (no spring).
+
+```tsx
+<MotionFade show={isVisible}>
+  <div>Fading content</div>
+</MotionFade>
+```
+
+### MotionScale
+
+Scale + fade. Default preset: `snappy`. Scales from 0.96.
+
+```tsx
+<MotionScale show={isOpen} preset="smooth">
+  <DialogContent>...</DialogContent>
+</MotionScale>
+```
+
+### MotionPop
+
+Bouncy scale + fade with overshoot. Default preset: `bouncy`. Scales from 0.5.
+
+```tsx
+<MotionPop show={showNotification}>
+  <Badge>New!</Badge>
+</MotionPop>
+```
+
+### MotionSlide
+
+Directional slide + fade. Default preset: `smooth`. Slides 16px.
+
+| Extra Prop | Type | Default |
+|------------|------|---------|
+| `direction` | `'up' \| 'down' \| 'left' \| 'right'` | `'up'` |
+
+```tsx
+<MotionSlide show={isOpen} direction="left" preset="snappy">
+  <SheetContent>...</SheetContent>
+</MotionSlide>
+```
+
+### MotionCollapse
+
+Height collapse/expand. Default preset: `gentle`. Animates to `height: "auto"`.
+
+```tsx
+<MotionCollapse show={isExpanded}>
+  <AccordionContent>...</AccordionContent>
+</MotionCollapse>
+```
+
+### MotionStagger + MotionStaggerItem
+
+Parent orchestrates staggered children.
+
+| Prop (MotionStagger) | Type | Default |
+|----------------------|------|---------|
+| `delay` | `number` | `0.04` (40ms between children) |
+| `whileInView` | `boolean` | — |
+
+```tsx
+<MotionStagger delay={0.05}>
+  {items.map(item => (
+    <MotionStaggerItem key={item.id}>
+      <Card>{item.title}</Card>
+    </MotionStaggerItem>
+  ))}
+</MotionStagger>
+```
+
+Each `MotionStaggerItem` slides up 8px and fades in using `springs.smooth`.
+
+## Layout Animations
+
+Use Framer Motion's `layout` prop for smooth position/size transitions:
+
+```tsx
+<motion.div layout transition={springs.smooth}>
+  {/* content that changes size */}
+</motion.div>
+```
+
+Use `layoutId` for shared element transitions across components:
+
+```tsx
+{items.map(item => (
+  <motion.div key={item.id} layoutId={`card-${item.id}`}>
+    {item.title}
+  </motion.div>
+))}
+```
+
+## Scroll Animations
+
+Use `whileInView` on primitives or directly on `motion` elements:
+
+```tsx
+// Via motion primitives
+<MotionSlide show whileInView viewportOnce>
+  <Card>Animates when scrolled into view</Card>
+</MotionSlide>
+
+// Direct Framer Motion
+<motion.div
+  initial={{ opacity: 0, y: 20 }}
+  whileInView={{ opacity: 1, y: 0 }}
+  viewport={{ once: true, margin: '-50px' }}
+  transition={springs.smooth}
+>
+  Content
+</motion.div>
+```
+
+## Gesture Animations
+
+Use Framer Motion's gesture props directly:
+
+```tsx
+<motion.button
+  whileHover={{ scale: 1.02 }}
+  whileTap={{ scale: 0.98 }}
+  transition={springs.snappy}
+>
+  Click me
+</motion.button>
+
+<motion.div
+  whileDrag={{ scale: 1.05 }}
+  drag="x"
+  dragConstraints={{ left: -100, right: 100 }}
+/>
+```
+
+## Reduced Motion
+
+`MotionProvider` automatically handles `prefers-reduced-motion`:
+
+- **`reducedMotion="user"` (default)**: Reads the OS preference. When enabled, Framer Motion suppresses all animations.
+- **`reducedMotion={true}`**: Force all animations off (useful for testing or user settings).
+- **`reducedMotion={false}`**: Force all animations on.
+
+The `useMotion()` hook exposes `reducedMotion: boolean` for custom logic:
+
+```tsx
+const { reducedMotion, springs, tweens } = useMotion()
+
+if (reducedMotion) {
+  // skip expensive particle effects, etc.
+}
+```
+
+No action needed from consumers for standard animations — `MotionProvider` handles it globally.
 
 ## Decision Tree
 
 ```
-Is this a task-focused micro-interaction?
-├── YES → Use PRODUCTIVE mode
-│   ├── Element stays visible? → ease-productive-standard
-│   ├── Element appearing? → ease-productive-entrance
-│   └── Element leaving? → ease-productive-exit
-└── NO → Is this an attention-grabbing moment?
-    ├── YES → Use EXPRESSIVE mode
-    │   ├── Element stays visible? → ease-expressive-standard
-    │   ├── Element appearing? → ease-expressive-entrance
-    │   └── Element leaving? → ease-expressive-exit
-    └── NO → Is it continuous/looping?
-        ├── YES → ease-linear
-        └── NO → ease-productive-standard (safe default)
+What type of property is animating?
+├── Spatial (position, scale, rotation, size)
+│   └── Choose a spring:
+│       ├── Small, fast UI feedback? → snappy
+│       ├── Panels, navigation, overlays? → smooth
+│       ├── Celebratory, attention-grabbing? → bouncy
+│       └── Height expand/collapse? → gentle
+└── Non-spatial (opacity, color, background)
+    └── Choose a tween:
+        ├── Fade in/out? → fade
+        └── Color/background shift? → colorShift
 ```
 
-## Usage in Components
+### Component Preset Guide
 
-### Tailwind Classes (preferred)
+| Component Type | Recommended Primitive | Preset |
+|----------------|----------------------|--------|
+| Button hover/press | Direct `motion` | `snappy` |
+| Dialog/Sheet entrance | `MotionScale` | `smooth` |
+| Toast notification | `MotionSlide` | `bouncy` |
+| Dropdown/Popover | `MotionScale` | `snappy` |
+| Accordion/Collapsible | `MotionCollapse` | `gentle` |
+| List items | `MotionStagger` + `MotionStaggerItem` | `smooth` |
+| Page sections on scroll | Any primitive with `whileInView` | `smooth` |
+| Card hover | Direct `motion` with `whileHover` | `snappy` |
 
-```tsx
-// Button hover — productive, fast
-<button className="transition-colors duration-fast-01 ease-productive-standard">
+## Migration from Old Transitions
 
-// Modal entrance — expressive, moderate
-<div className="transition-all duration-moderate-02 ease-expressive-entrance">
+| Old Component | New Equivalent |
+|---------------|----------------|
+| `<Fade open={x}>` | `<MotionFade show={x}>` |
+| `<Collapse open={x}>` | `<MotionCollapse show={x}>` |
+| `<Grow open={x}>` | `<MotionPop show={x}>` |
+| `<Slide open={x} direction="left">` | `<MotionSlide show={x} direction="left">` |
 
-// Spinner — continuous, linear
-<div className="animate-spin ease-linear">
-```
-
-### CSS Custom Properties
-
-```css
-.my-element {
-  transition: opacity var(--duration-fast-02) var(--ease-productive-entrance);
-}
-```
-
-### TypeScript Utility
-
-```tsx
-import { motion, duration } from '@devalok/shilp-sutra'
-
-// Get easing curve string
-motion('standard', 'productive')
-// → 'cubic-bezier(0.2, 0, 0.38, 0.9)'
-
-// Get duration string
-duration('moderate-02')
-// → '240ms'
-
-// Use in inline styles
-<div style={{
-  transition: `transform ${duration('moderate-02')} ${motion('entrance', 'expressive')}`
-}} />
-```
-
-## Accessibility
-
-shilp-sutra respects `prefers-reduced-motion: reduce` at the global level. When a user has reduced motion enabled:
-
-- All `animation-duration` values collapse to 0.01ms
-- All `transition-duration` values collapse to 0.01ms
-- `scroll-behavior` reverts to `auto`
-
-No action needed from consumers — this is handled automatically.
-
-## Component Motion Reference
-
-| Component | Duration | Easing | Mode |
-|-----------|----------|--------|------|
-| Button | fast-01 (70ms) | productive-standard | Productive |
-| Content Card | fast-02 (110ms) | productive-standard | Productive |
-| Task Card | fast-02 (110ms) | productive-standard | Productive |
-| Dropdown Menu | moderate-01 (150ms) | productive-entrance | Productive |
-| Tooltip | fast-02 (110ms) | productive-entrance | Productive |
-| Accordion | moderate-02 (240ms) | productive-standard | Productive |
-| Dialog | moderate-02 (240ms) | expressive-entrance | Expressive |
-| Sheet | moderate-02 (240ms) | expressive-entrance | Expressive |
-| Toast | moderate-02 (240ms) | expressive-entrance | Expressive |
-| Command Palette | moderate-02 (240ms) | expressive-entrance | Expressive |
-| Attendance CTA | moderate-01 (150ms) | expressive-standard | Expressive |
-| Global Loading | slow-01 (400ms) | productive-standard | Productive |
-| Skeleton shimmer | slow-02 (700ms) | linear | Productive |
-| Progress bar | slow-02 (700ms) | linear | Productive |
+Key differences:
+- `open` prop renamed to `show`
+- `unmountOnClose` is no longer needed — AnimatePresence handles unmounting
+- `duration` prop removed — use `preset` to control timing via spring physics
+- Import path changed: `@devalok/shilp-sutra/ui/transitions` → `@devalok/shilp-sutra/motion/primitives`

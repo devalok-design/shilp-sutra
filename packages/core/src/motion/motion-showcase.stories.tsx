@@ -3,7 +3,7 @@
 import * as React from 'react'
 import type { Meta, StoryObj } from '@storybook/react'
 import { motion, AnimatePresence } from 'framer-motion'
-import { springs, tweens } from '../ui/lib/motion'
+import { springs } from '../ui/lib/motion'
 
 // Components that use FM
 import { Button } from '../ui/button'
@@ -28,8 +28,7 @@ import {
 } from '../ui/dialog'
 import { Tabs, TabsList, TabsTrigger, TabsContent } from '../ui/tabs'
 import { Badge } from '../ui/badge'
-import { Alert, AlertTitle, AlertDescription } from '../ui/alert'
-import { Input } from '../ui/input'
+import { Alert } from '../ui/alert'
 import { Spinner } from '../ui/spinner'
 
 // Motion primitives
@@ -42,7 +41,7 @@ import {
   MotionStaggerItem,
 } from './primitives'
 
-import { IconBold, IconItalic, IconStrikethrough, IconCheck, IconAlertTriangle, IconInfoCircle } from '@tabler/icons-react'
+import { IconBold, IconItalic, IconStrikethrough, IconCheck } from '@tabler/icons-react'
 
 // ── Meta ──
 
@@ -243,12 +242,10 @@ function AlertDismissDemo() {
         <Alert
           variant="filled"
           color="info"
-          dismissible
+          title="FM-powered dismiss"
           onDismiss={() => setShow(false)}
         >
-          <IconInfoCircle className="h-ico-sm w-ico-sm" />
-          <AlertTitle>FM-powered dismiss</AlertTitle>
-          <AlertDescription>Click the X to see the exit animation.</AlertDescription>
+          Click the X to see the exit animation.
         </Alert>
       )}
     </Section>

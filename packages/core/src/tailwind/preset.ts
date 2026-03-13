@@ -266,20 +266,7 @@ const preset: Partial<Config> = {
         'chart-8': 'var(--chart-8)',
       },
       keyframes: {
-        ripple: {
-          '0%': { transform: 'translate(-50%, -50%) scale(0)', opacity: '1' },
-          '100%': { transform: 'translate(-50%, -50%) scale(4)', opacity: '0' },
-        },
-        shake: {
-          '0%': { transform: 'translateX(0)' },
-          '10%': { transform: 'translateX(-3px)' },
-          '20%': { transform: 'translateX(3px)' },
-          '30%': { transform: 'translateX(-8px)' },
-          '40%': { transform: 'translateX(8px)' },
-          '50%': { transform: 'translateX(-5px)' },
-          '60%': { transform: 'translateX(3px)' },
-          '70%, 100%': { transform: 'translateX(0)' },
-        },
+        // ── Kept: CSS-only animations not yet migrated to Framer Motion ──
         'progress-indeterminate': {
           '0%': { transform: 'translateX(-100%)' },
           '100%': { transform: 'translateX(250%)' },
@@ -292,29 +279,26 @@ const preset: Partial<Config> = {
           '0%,70%,100%': { opacity: '1' },
           '20%,50%': { opacity: '0' },
         },
+        'timer-bar': {
+          '0%': { transform: 'scaleX(1)' },
+          '100%': { transform: 'scaleX(0)' },
+        },
+        // ── Kept: still used by components not yet migrated to Framer Motion ──
+        ripple: {
+          '0%': { transform: 'translate(-50%, -50%) scale(0)', opacity: '1' },
+          '100%': { transform: 'translate(-50%, -50%) scale(4)', opacity: '0' },
+        },
         'fade-in': {
           '0%': { opacity: '0' },
           '100%': { opacity: '1' },
-        },
-        'fade-out': {
-          '0%': { opacity: '1' },
-          '100%': { opacity: '0' },
         },
         'slide-up': {
           '0%': { opacity: '0', transform: 'translateY(8px)' },
           '100%': { opacity: '1', transform: 'translateY(0)' },
         },
-        'slide-right': {
-          '0%': { opacity: '0', transform: 'translateX(20px)' },
-          '100%': { opacity: '1', transform: 'translateX(0)' },
-        },
         'scale-in': {
           '0%': { opacity: '0', transform: 'scale(0.96)' },
           '100%': { opacity: '1', transform: 'scale(1)' },
-        },
-        'scale-out': {
-          '0%': { opacity: '1', transform: 'scale(1)' },
-          '100%': { opacity: '0', transform: 'scale(0.96)' },
         },
         'glow-pulse': {
           '0%, 100%': { boxShadow: '0 0 0 0 rgba(99, 102, 241, 0)' },
@@ -325,25 +309,9 @@ const preset: Partial<Config> = {
           '60%': { transform: 'scale(1.04)' },
           '100%': { transform: 'scale(1)' },
         },
-        'lift': {
-          '0%': { transform: 'scale(1) translateY(0)' },
-          '100%': { transform: 'scale(1.03) translateY(-2px)' },
-        },
-        'slide-down': {
-          '0%': { opacity: '0', transform: 'translateY(-8px)' },
-          '100%': { opacity: '1', transform: 'translateY(0)' },
-        },
-        'slide-left': {
-          '0%': { opacity: '0', transform: 'translateX(20px)' },
-          '100%': { opacity: '1', transform: 'translateX(0)' },
-        },
         'slide-out-up': {
           '0%': { opacity: '1', transform: 'translateY(0)' },
           '100%': { opacity: '0', transform: 'translateY(-8px)' },
-        },
-        'slide-out-down': {
-          '0%': { opacity: '1', transform: 'translateY(0)' },
-          '100%': { opacity: '0', transform: 'translateY(8px)' },
         },
         'check-pop': {
           '0%': { transform: 'scale(0)' },
@@ -369,51 +337,9 @@ const preset: Partial<Config> = {
           '0%': { boxShadow: '0 0 0 0 currentColor', opacity: '0.4' },
           '100%': { boxShadow: '0 0 0 6px currentColor', opacity: '0' },
         },
-        'rubber-band': {
-          '0%': { transform: 'scaleX(1)' },
-          '20%': { transform: 'scaleX(1.15)' },
-          '40%': { transform: 'scaleX(0.9)' },
-          '60%': { transform: 'scaleX(1.05)' },
-          '80%': { transform: 'scaleX(0.98)' },
-          '100%': { transform: 'scaleX(1)' },
-        },
         'collapse-out': {
           '0%': { gridTemplateRows: '1fr', opacity: '1' },
           '100%': { gridTemplateRows: '0fr', opacity: '0' },
-        },
-        'expand-in': {
-          '0%': { gridTemplateRows: '0fr', opacity: '0' },
-          '100%': { gridTemplateRows: '1fr', opacity: '1' },
-        },
-        'accordion-down': {
-          '0%': { height: '0', opacity: '0' },
-          '100%': { height: 'var(--radix-accordion-content-height)', opacity: '1' },
-        },
-        'accordion-up': {
-          '0%': { height: 'var(--radix-accordion-content-height)', opacity: '1' },
-          '100%': { height: '0', opacity: '0' },
-        },
-        'collapsible-down': {
-          '0%': { height: '0', opacity: '0' },
-          '100%': { height: 'var(--radix-collapsible-content-height)', opacity: '1' },
-        },
-        'collapsible-up': {
-          '0%': { height: 'var(--radix-collapsible-content-height)', opacity: '1' },
-          '100%': { height: '0', opacity: '0' },
-        },
-        'shimmer-sweep': {
-          '0%': { backgroundPosition: '-200% 0' },
-          '100%': { backgroundPosition: '200% 0' },
-        },
-        'swing-in': {
-          '0%': { opacity: '0', transform: 'perspective(800px) rotateX(-60deg)' },
-          '70%': { opacity: '1', transform: 'perspective(800px) rotateX(5deg)' },
-          '100%': { opacity: '1', transform: 'perspective(800px) rotateX(0deg)' },
-        },
-        'pop-in': {
-          '0%': { opacity: '0', transform: 'scale(0.5)' },
-          '70%': { opacity: '1', transform: 'scale(1.05)' },
-          '100%': { opacity: '1', transform: 'scale(1)' },
         },
         float: {
           '0%, 100%': { transform: 'translateY(0)' },
@@ -424,62 +350,38 @@ const preset: Partial<Config> = {
           '40%': { transform: 'translateY(-2px)' },
           '100%': { transform: 'translateY(0)' },
         },
-        'spin-in': {
-          '0%': { opacity: '0', transform: 'rotate(0deg) scale(0)' },
-          '100%': { opacity: '1', transform: 'rotate(360deg) scale(1)' },
-        },
         stamp: {
           '0%': { opacity: '0.5', transform: 'scale(1.4)' },
           '60%': { opacity: '1', transform: 'scale(0.95)' },
           '100%': { opacity: '1', transform: 'scale(1)' },
         },
-        'timer-bar': {
-          '0%': { transform: 'scaleX(1)' },
-          '100%': { transform: 'scaleX(0)' },
-        },
       },
       animation: {
-        ripple: 'ripple var(--duration-slow-01) linear',
-        'ripple-icon': 'ripple var(--duration-moderate-02) linear forwards',
-        shake: 'shake 0.4s var(--ease-productive-standard) both',
+        // ── CSS-only animations ──
         'progress-indeterminate':
           'progress-indeterminate var(--duration-slow-02) var(--ease-productive-standard) infinite',
         'skeleton-shimmer':
           'skeleton-shimmer var(--duration-slow-02) var(--ease-linear) infinite',
         'caret-blink': 'caret-blink 1.25s ease-out infinite',
+        'timer-bar': 'timer-bar linear forwards',
+        // ── Still used by components not yet migrated to Framer Motion ──
+        ripple: 'ripple var(--duration-slow-01) linear',
+        'ripple-icon': 'ripple var(--duration-moderate-02) linear forwards',
         'fade-in': 'fade-in var(--duration-moderate-02) var(--ease-expressive-entrance) both',
-        'fade-out': 'fade-out var(--duration-moderate-01) var(--ease-expressive-exit) both',
         'slide-up': 'slide-up var(--duration-moderate-02) var(--ease-expressive-entrance) both',
-        'slide-right': 'slide-right var(--duration-moderate-02) var(--ease-expressive-entrance) both',
         'scale-in': 'scale-in var(--duration-moderate-02) var(--ease-expressive-entrance) both',
-        'scale-out': 'scale-out var(--duration-moderate-01) var(--ease-expressive-exit) both',
         'glow-pulse': 'glow-pulse var(--duration-slow-01) var(--ease-expressive-standard) 1',
         'scale-bounce': 'scale-bounce var(--duration-moderate-02) var(--ease-bounce) both',
-        'lift': 'lift var(--duration-moderate-02) var(--ease-expressive-entrance) both',
-        'slide-down': 'slide-down var(--duration-moderate-02) var(--ease-expressive-entrance) both',
-        'slide-left': 'slide-left var(--duration-moderate-02) var(--ease-expressive-entrance) both',
         'slide-out-up': 'slide-out-up var(--duration-moderate-01) var(--ease-expressive-exit) both',
-        'slide-out-down': 'slide-out-down var(--duration-moderate-01) var(--ease-expressive-exit) both',
         'check-pop': 'check-pop var(--duration-moderate-02) var(--ease-bounce) both',
         'tab-indicator': 'tab-indicator var(--duration-moderate-01) var(--ease-expressive-entrance) both',
         'count-up': 'count-up var(--duration-moderate-02) var(--ease-expressive-entrance) both',
         wiggle: 'wiggle var(--duration-moderate-02) var(--ease-productive-standard) both',
         'pulse-ring': 'pulse-ring var(--duration-slow-01) var(--ease-expressive-standard) infinite',
-        'rubber-band': 'rubber-band var(--duration-moderate-02) var(--ease-productive-standard) both',
         'collapse-out': 'collapse-out var(--duration-moderate-01) var(--ease-productive-exit) both',
-        'expand-in': 'expand-in var(--duration-moderate-02) var(--ease-expressive-entrance) both',
-        'accordion-down': 'accordion-down var(--duration-moderate-02) var(--ease-expressive-entrance) both',
-        'accordion-up': 'accordion-up var(--duration-moderate-01) var(--ease-productive-exit) both',
-        'collapsible-down': 'collapsible-down var(--duration-moderate-02) var(--ease-expressive-entrance) both',
-        'collapsible-up': 'collapsible-up var(--duration-moderate-01) var(--ease-productive-exit) both',
-        'shimmer-sweep': 'shimmer-sweep var(--duration-slow-02) var(--ease-linear) infinite',
-        'swing-in': 'swing-in var(--duration-moderate-02) var(--ease-expressive-entrance) both',
-        'pop-in': 'pop-in var(--duration-moderate-02) var(--ease-bounce) both',
         float: 'float 3s var(--ease-expressive-standard) infinite',
         'subtle-bounce': 'subtle-bounce var(--duration-fast-02) var(--ease-bounce) both',
-        'spin-in': 'spin-in var(--duration-moderate-02) var(--ease-expressive-entrance) both',
         stamp: 'stamp var(--duration-moderate-02) var(--ease-bounce) both',
-        'timer-bar': 'timer-bar linear forwards',
       },
       backgroundImage: {
         'gradient-brand': 'var(--gradient-brand-light)',
@@ -525,18 +427,7 @@ const preset: Partial<Config> = {
       },
     },
   },
-  plugins: [
-    function ({ addUtilities }: { addUtilities: Function }) {
-      addUtilities({
-        '.delay-stagger': {
-          animationDelay: 'calc(var(--stagger-index, 0) * 30ms)',
-        },
-        '.delay-stagger-50': {
-          animationDelay: 'calc(var(--stagger-index, 0) * 50ms)',
-        },
-      })
-    },
-  ],
+  plugins: [],
 }
 
 export default preset

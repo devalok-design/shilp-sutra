@@ -5,7 +5,7 @@
  * Most components require client-side React ("use client").
  *
  * **Server-safe components** (import individually for Server Components):
- * `Text`, `Skeleton`, `Spinner`, `Stack`, `Container`, `Table`, `Code`, `VisuallyHidden`
+ * `Text`, `Skeleton`, `Stack`, `Container`, `Table`, `Code`, `VisuallyHidden`
  *
  * @example
  * // Server Component — import individually:
@@ -319,9 +319,6 @@ export {
 
 // Other
 export { Link, type LinkProps } from './link'
-
-// Link Context
-export { LinkProvider, useLink, type LinkProviderProps } from './lib/link-context'
 
 // Utilities
 export { cn } from './lib/utils'

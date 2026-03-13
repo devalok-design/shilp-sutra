@@ -22,8 +22,9 @@ Components with two-axis system: Button, Badge, Alert, Chip, Banner, Progress, S
 ### Server-Safe Components (no "use client")
 
 These can be imported directly in Next.js Server Components:
-- UI: Text, Skeleton, Spinner, Stack, Container, Table (and sub-components), Code, VisuallyHidden
-- Composed: ContentCard, EmptyState, PageHeader, LoadingSkeleton, PageSkeletons, PriorityIndicator, StatusBadge
+- UI: Text, Skeleton, Stack, Container, Table (and sub-components), Code, VisuallyHidden
+- Composed: ContentCard, PageHeader, LoadingSkeleton, PageSkeletons, PriorityIndicator
+- NOTE (v0.18.0): Spinner, EmptyState, StatusBadge are NO LONGER server-safe (Framer Motion dependency)
 
 Use per-component imports for server components:
   import { Text } from '@devalok/shilp-sutra/ui/text'
@@ -431,6 +432,7 @@ Note: getFormFieldA11y() was removed in favor of useFormField() hook.
     emptyMessage: string (default: "No results found")
     disabled: boolean
     triggerClassName: string
+    accessibleLabel: string (custom aria-label for trigger, falls back to placeholder)
     maxVisible: number (default: 6, max dropdown items before scroll)
     renderOption: (option, selected) => ReactNode
 - Example:
@@ -1010,13 +1012,15 @@ Note: getFormFieldA11y() was removed in favor of useFormField() hook.
 - Import: @devalok/shilp-sutra/ui/slider
 - Server-safe: No
 - Props: Standard Radix Slider props (value, onValueChange, defaultValue, min, max, step, aria-label)
+- Multi-thumb: Pass array `defaultValue={[25, 75]}` for range sliders — renders one thumb per value
 - Example:
   <Slider defaultValue={[50]} max={100} step={1} aria-label="Volume" />
+  <Slider defaultValue={[25, 75]} max={100} step={1} /> // range slider
 - Gotchas: value is number[] (array), not a single number
 
 ## Spinner
 - Import: @devalok/shilp-sutra/ui/spinner
-- Server-safe: Yes
+- Server-safe: No (uses Framer Motion)
 - Props:
     size: "sm" | "md" | "lg" | "xl"
     state: "spinning" | "success" | "error" (default: "spinning")

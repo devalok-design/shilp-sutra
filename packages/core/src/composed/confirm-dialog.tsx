@@ -33,47 +33,52 @@ export interface ConfirmDialogProps extends Omit<React.ComponentPropsWithoutRef<
   onConfirm: () => void | Promise<void>
 }
 
-const ConfirmDialog = ({
-  open,
-  onOpenChange,
-  title,
-  description,
-  confirmText = 'Confirm',
-  cancelText = 'Cancel',
-  color = 'default',
-  loading = false,
-  onConfirm,
-  className,
-  ...props
-}: ConfirmDialogProps) => {
-  return (
-    <AlertDialog open={open} onOpenChange={onOpenChange}>
-      <AlertDialogContent className={className} {...props}>
-        <AlertDialogHeader>
-          <AlertDialogTitle>{title}</AlertDialogTitle>
-          <AlertDialogDescription>{description}</AlertDialogDescription>
-        </AlertDialogHeader>
-        <AlertDialogFooter>
-          <Button
-            variant="outline"
-            disabled={loading}
-            onClick={() => onOpenChange(false)}
-          >
-            {cancelText}
-          </Button>
-          <Button
-            variant="solid"
-            color={color}
-            disabled={loading}
-            onClick={() => onConfirm()}
-          >
-            {loading ? 'Processing...' : confirmText}
-          </Button>
-        </AlertDialogFooter>
-      </AlertDialogContent>
-    </AlertDialog>
-  )
-}
+const ConfirmDialog = React.forwardRef<HTMLDivElement, ConfirmDialogProps>(
+  (
+    {
+      open,
+      onOpenChange,
+      title,
+      description,
+      confirmText = 'Confirm',
+      cancelText = 'Cancel',
+      color = 'default',
+      loading = false,
+      onConfirm,
+      className,
+      ...props
+    },
+    ref,
+  ) => {
+    return (
+      <AlertDialog open={open} onOpenChange={onOpenChange}>
+        <AlertDialogContent ref={ref} className={className} {...props}>
+          <AlertDialogHeader>
+            <AlertDialogTitle>{title}</AlertDialogTitle>
+            <AlertDialogDescription>{description}</AlertDialogDescription>
+          </AlertDialogHeader>
+          <AlertDialogFooter>
+            <Button
+              variant="outline"
+              disabled={loading}
+              onClick={() => onOpenChange(false)}
+            >
+              {cancelText}
+            </Button>
+            <Button
+              variant="solid"
+              color={color}
+              disabled={loading}
+              onClick={() => onConfirm()}
+            >
+              {loading ? 'Processing...' : confirmText}
+            </Button>
+          </AlertDialogFooter>
+        </AlertDialogContent>
+      </AlertDialog>
+    )
+  },
+)
 ConfirmDialog.displayName = 'ConfirmDialog'
 
 export { ConfirmDialog }

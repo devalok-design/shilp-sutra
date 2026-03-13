@@ -99,6 +99,11 @@ const Autocomplete = React.forwardRef<HTMLInputElement, AutocompleteProps>(
       [ref],
     )
 
+    // Sync query when value changes externally
+    React.useEffect(() => {
+      setQuery(value?.label ?? '')
+    }, [value])
+
     // Cleanup blur timeout on unmount
     React.useEffect(() => {
       return () => {

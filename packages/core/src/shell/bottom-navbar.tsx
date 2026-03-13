@@ -151,18 +151,11 @@ const BottomNavbar = React.forwardRef<HTMLElement, BottomNavbarProps>(
       <>
         {/* More Menu Overlay */}
         {showMore && (
-        <div
-          role="button"
-          tabIndex={0}
-          className="fixed inset-0 z-overlay md:hidden"
-          onClick={() => setShowMore(false)}
-          onKeyDown={(e) => {
-            if (e.key === 'Enter' || e.key === ' ') {
-              e.preventDefault()
-              setShowMore(false)
-            }
-          }}
-        >
+          // eslint-disable-next-line jsx-a11y/no-static-element-interactions, jsx-a11y/click-events-have-key-events -- backdrop overlay, dismiss via mouse only; keyboard users close via Escape
+          <div
+            className="fixed inset-0 z-overlay md:hidden"
+            onClick={() => setShowMore(false)}
+          >
           <div className="absolute inset-0 bg-overlay" />
           {/* eslint-disable-next-line jsx-a11y/no-static-element-interactions -- stopPropagation prevents closing when clicking inside menu */}
           <div

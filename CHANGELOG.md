@@ -167,11 +167,77 @@ Promise-driven loading → success/error state machine.
 - 9 `animate-*` utility classes
 - `.delay-stagger` and `.delay-stagger-50` plugins
 
+### Code Review Fixes (9-agent comprehensive review)
+
+**Server safety:**
+- Removed `EmptyState` and `StatusBadge` from SERVER_SAFE in `inject-use-client.mjs` — they import Framer Motion and are no longer server-safe
+- Removed `Spinner` from server-safe list in `ui/index.ts` JSDoc
+- Removed unnecessary `'use client'` from `ui/lib/motion.ts` source
+
+**Build / exports:**
+- Added `./composed/activity-feed` to core `package.json` exports map
+- Moved `framer-motion` from `dependencies` to `devDependencies` (bundled at build time)
+- Moved `sonner` from `dependencies` to `devDependencies` (bundled at build time)
+- Deleted stale `packages/core/src/ui/spinner.js` (shadowed `.tsx` source)
+- Added `.d.ts` processing to karm `inject-use-client.mjs`
+
+**Performance:**
+- **BoardProvider**: Destructured callbacks individually, fixed useMemo dependency arrays
+- Wrapped 7 context provider values in `useMemo` (AlertDialog, Dialog, Tooltip, ToggleGroup, Stepper, FormField, TabsList)
+- **AdminDashboard**: Stabilized `useCalendarNavigation` return value
+- **GlobalLoading**: Track `setTimeout` with ref, add cleanup on unmount
+- **BoardToolbar**: Added debounce timeout cleanup on unmount
+- **TaskDetailPanel**: Wrapped inline callbacks in `useCallback`
+
+**State bug fixes:**
+- **Button `onClickAsync`**: Added `isMountedRef` guard to prevent set-state-after-unmount
+- **RichTextEditor**: Use ref to track internal changes, prevent update loop
+- **useRipple**: Track timeout with ref, add cleanup effect
+- **ConfirmDialog**: Converted to `forwardRef` pattern
+- **Autocomplete**: Added `useEffect` to sync query when external value changes
+
+**Accessibility (WCAG):**
+- **TaskDetailPanel** title: Added `role="button"`, `tabIndex`, `onKeyDown` for keyboard access
+- **MemberPicker** search: Added `aria-label`
+- **AssociateDetail** drag: Added keyboard reorder (`Alt+Arrow`)
+- **StreamingText**: Debounced `aria-live`, announce only on completion (added `isComplete` prop)
+- **Combobox**: Added `accessibleLabel` prop, falls back to placeholder
+- **BottomNavbar** overlay: Removed incorrect `role="button"` and `tabIndex`
+- **DatePicker/DateRangePicker**: Added `aria-label` to trigger buttons
+- **FilesTab** delete button: Changed `title` to `aria-label`
+
+**Correctness:**
+- **Alert** `onDismiss`: JSDoc documenting it fires after exit animation completes
+- **NumberInput**: Replaced `parseInt` with `Number()`, handle empty input
+- **Checkbox**: Icon sizing uses design tokens consistently
+- **Slider**: Multi-thumb support added
+- **motionProps**: Improved type safety (`Record<string, unknown>` instead of `any`)
+- **ActivityFeed**: Fixed `bg-accent-9` → `bg-info-9` (info color, not accent)
+- **Board filters**: Fixed this-week filter lower bound calculation
+- **formatDueDate**: Fixed `Math.ceil` edge cases (calendar date comparison)
+- **SimpleTooltip**: Fixed type definition
+
+**Code quality:**
+- Extracted duplicate `formatTimestamp` into shared `tasks/task-utils.ts`
+- Added `ScratchpadWidget`/`SidebarScratchpad` to karm root barrel export
+- Centralized jsdom mocks into `test-setup.ts`
+- Removed `link-context` from `ui` barrel (kept only in `shell`)
+- Created `.github/workflows/ci.yml` for PR validation
+
+**Deferred (not blocking publish):**
+- Wire up `RichTextEditor.onMentionSelect` or remove from props
+- Extract duplicate `formatRelativeTime`/`timeAgo` into shared util
+- Consolidate duplicate `empty-state.test.tsx`
+- Document `collectEntries` one-level-deep limitation
+- Extract Karm routes from core `AppCommandPalette` (architecture boundary)
+- Replace regex in `build-tailwind-cjs.mjs` with esbuild
+
 ### Test Coverage
 
-- 123 test files, 973 tests (up from 729)
+- 127 test files, 1019 tests (up from 636 at start of release cycle)
 - New: motion primitives (7 primitives, 12 tests), MotionProvider (7 tests), generateScale (67 tests)
 - New: motion token validation (12 tests)
+- New: FormField a11y tests, TreeView a11y tests, ErrorBoundary tests (13), use-mobile tests (5)
 
 ### shilp-sutra-karm [0.17.0]
 
@@ -179,6 +245,13 @@ Promise-driven loading → success/error state machine.
 - All karm components migrated to OKLCH token system (board, admin, dashboard, client)
 - Board animations migrated to Framer Motion (task stagger, bulk action bar, filter chips)
 - Fixed 20+ legacy token references across admin, dashboard, and board modules
+- **BoardProvider**: Performance fixes — destructured callbacks, fixed useMemo deps
+- **BoardToolbar**: Debounce timeout cleanup on unmount
+- **TaskDetailPanel**: `useCallback`-wrapped handlers, title keyboard accessibility
+- **StreamingText**: `isComplete` prop for debounced aria-live announcements
+- **AssociateDetail**: Keyboard reorder support (Alt+Arrow)
+- Extracted shared `task-utils.ts` for duplicate timestamp formatting
+- Added `ScratchpadWidget`/`SidebarScratchpad` to root barrel
 
 ### Playground
 

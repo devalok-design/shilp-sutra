@@ -32,8 +32,10 @@ const Tooltip: React.FC<React.ComponentPropsWithoutRef<typeof TooltipPrimitive.R
     [isControlled, onOpenChange],
   )
 
+  const contextValue = React.useMemo(() => ({ open }), [open])
+
   return (
-    <TooltipContext.Provider value={{ open }}>
+    <TooltipContext.Provider value={contextValue}>
       <TooltipPrimitive.Root open={open} onOpenChange={handleOpenChange} {...props} />
     </TooltipContext.Provider>
   )

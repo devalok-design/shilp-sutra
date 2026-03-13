@@ -5,8 +5,8 @@
  * rich text editors, skeleton loaders, and domain-specific patterns.
  *
  * **Server-safe components** (import individually for Server Components):
- * `ContentCard`, `EmptyState`, `PageHeader`, `LoadingSkeleton`, `PageSkeletons`,
- * `PriorityIndicator`, `StatusBadge`
+ * `ContentCard`, `PageHeader`, `LoadingSkeleton`, `PageSkeletons`,
+ * `PriorityIndicator`
  *
  * @example
  * import { PageHeader } from '@devalok/shilp-sutra/composed/page-header'

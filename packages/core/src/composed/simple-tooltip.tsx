@@ -8,7 +8,7 @@ import {
   TooltipTrigger,
 } from '../ui/tooltip'
 
-export interface SimpleTooltipProps extends Omit<React.ComponentPropsWithRef<'div'>, 'content'> {
+export interface SimpleTooltipProps extends Omit<React.ComponentPropsWithoutRef<'div'>, 'content'> {
   content: React.ReactNode
   side?: 'top' | 'right' | 'bottom' | 'left'
   align?: 'start' | 'center' | 'end'

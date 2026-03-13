@@ -31,8 +31,10 @@ const AlertDialog: React.FC<React.ComponentPropsWithoutRef<typeof AlertDialogPri
     [isControlled, onOpenChange],
   )
 
+  const contextValue = React.useMemo(() => ({ open }), [open])
+
   return (
-    <AlertDialogContext.Provider value={{ open }}>
+    <AlertDialogContext.Provider value={contextValue}>
       <AlertDialogPrimitive.Root open={open} onOpenChange={handleOpenChange} {...props} />
     </AlertDialogContext.Provider>
   )

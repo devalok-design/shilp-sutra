@@ -77,7 +77,7 @@ const Checkbox = React.forwardRef<
               {resolvedChecked === 'indeterminate' ? (
                 <IconMinus className="h-ico-sm w-ico-sm" />
               ) : (
-                <IconCheck className="h-3 w-3" />
+                <IconCheck className="h-ico-sm w-ico-sm" />
               )}
             </motion.span>
           </CheckboxPrimitive.Indicator>

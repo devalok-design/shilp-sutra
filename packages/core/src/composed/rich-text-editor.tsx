@@ -335,6 +335,7 @@ const RichTextEditor = React.forwardRef<HTMLDivElement, RichTextEditorProps>(
   ...props
 }, ref) {
   const editorRef = React.useRef<ReturnType<typeof useEditor>>(null)
+  const isInternalChangeRef = React.useRef(false)
   const [showEmojiPicker, setShowEmojiPicker] = React.useState(false)
   const emojiPickerRef = React.useRef<HTMLDivElement>(null)
   const imageInputRef = React.useRef<HTMLInputElement>(null)
@@ -452,7 +453,11 @@ const RichTextEditor = React.forwardRef<HTMLDivElement, RichTextEditorProps>(
       },
     },
     onUpdate: ({ editor: ed }) => {
+      isInternalChangeRef.current = true
       onChange?.(ed.getHTML())
+      queueMicrotask(() => {
+        isInternalChangeRef.current = false
+      })
     },
   })
 
@@ -473,6 +478,7 @@ const RichTextEditor = React.forwardRef<HTMLDivElement, RichTextEditorProps>(
   }, [showEmojiPicker])
 
   React.useEffect(() => {
+    if (isInternalChangeRef.current) return
     if (editor && content !== editor.getHTML()) {
       editor.commands.setContent(content, false)
     }

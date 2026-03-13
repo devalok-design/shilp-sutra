@@ -24,6 +24,15 @@
 
 **Button `onClickAsync`:** New prop `onClickAsync?: (e) => Promise<void>` — auto-manages loading → success/error → idle states. `asyncFeedbackDuration?: number` (default 1500ms).
 
+**Server safety changes:** EmptyState, StatusBadge, Spinner are NO LONGER server-safe (they now use Framer Motion). Remove from RSC imports.
+
+**Build:** `framer-motion` and `sonner` moved from `dependencies` to `devDependencies` (bundled at build time — no consumer install needed for core, but karm consumers must install `framer-motion` as peer dep).
+
+**New APIs in v0.18.0:**
+- Combobox: `accessibleLabel?: string` — custom aria-label for trigger (falls back to placeholder)
+- Slider: multi-thumb support — pass array `defaultValue={[25, 75]}` for range sliders
+- StreamingText (karm): `isComplete?: boolean` — debounces aria-live, announces only on completion
+
 ## CHANGES (v0.16.0)
 - **DataTable server-side features**: `onSort` callback (manual sorting), `pagination` prop (server-side pagination with page/total/onPageChange), `selectedIds` + `selectableFilter` (controlled selection), `loading` shimmer, `emptyState` ReactNode, `singleExpand`, `stickyHeader`, `onRowClick`, `bulkActions` floating bar
 - **ActivityFeed**: New composed component — `@devalok/shilp-sutra/composed/activity-feed` — vertical timeline with colored dots, actor avatars, expandable detail, compact mode, load more

@@ -57,8 +57,12 @@ const Stepper = React.forwardRef<HTMLDivElement, StepperProps>(
   ({ activeStep, orientation = 'horizontal', className, children, ...props }, ref) => {
     const steps = React.Children.toArray(children)
     const stepperId = React.useId()
+    const contextValue = React.useMemo(
+      () => ({ activeStep, orientation, stepperId }),
+      [activeStep, orientation, stepperId],
+    )
     return (
-      <StepperContext.Provider value={{ activeStep, orientation, stepperId }}>
+      <StepperContext.Provider value={contextValue}>
         <div
           ref={ref}
           className={cn(

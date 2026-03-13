@@ -186,17 +186,25 @@ const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
     type AsyncState = 'idle' | 'loading' | 'success' | 'error'
     const [asyncState, setAsyncState] = React.useState<AsyncState>('idle')
     const timeoutRef = React.useRef<ReturnType<typeof setTimeout>>()
+    const isMountedRef = React.useRef(true)
 
-    React.useEffect(() => () => { clearTimeout(timeoutRef.current) }, [])
+    React.useEffect(() => () => {
+      isMountedRef.current = false
+      clearTimeout(timeoutRef.current)
+    }, [])
 
     const handleAsyncClick = (e: React.MouseEvent<HTMLButtonElement>) => {
       if (!onClickAsync || asyncState !== 'idle') return
       setAsyncState('loading')
       onClickAsync(e)
-        .then(() => setAsyncState('success'))
-        .catch(() => setAsyncState('error'))
+        .then(() => { if (isMountedRef.current) setAsyncState('success') })
+        .catch(() => { if (isMountedRef.current) setAsyncState('error') })
         .finally(() => {
-          timeoutRef.current = setTimeout(() => setAsyncState('idle'), asyncFeedbackDuration)
+          if (isMountedRef.current) {
+            timeoutRef.current = setTimeout(() => {
+              if (isMountedRef.current) setAsyncState('idle')
+            }, asyncFeedbackDuration)
+          }
         })
     }
 

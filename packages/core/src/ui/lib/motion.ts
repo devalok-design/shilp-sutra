@@ -1,5 +1,3 @@
-'use client'
-
 import type { Transition } from 'framer-motion'
 
 // ── Spring configs (spatial: position, scale, size, rotation) ──
@@ -53,8 +51,14 @@ export type TweenPreset = keyof typeof tweens
 /**
  * Cast React HTML props so they can be safely spread onto a Framer Motion
  * `motion.*` element without type conflicts on shared event-handler names.
+ *
+ * Returns `Record<string, unknown>` rather than `any` to keep the spread safe
+ * while avoiding a full `any` leak. A truly generic passthrough (`T`) would
+ * re-surface the exact type conflicts this function exists to erase, because
+ * the React event-handler types on `T` still clash with Framer Motion's
+ * overloaded signatures. `Record<string, unknown>` is the narrowest type that
+ * satisfies both sides.
  */
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
-export function motionProps<T>(props: T): any {
+export function motionProps<T extends Record<string, unknown>>(props: T): Record<string, unknown> {
   return props
 }

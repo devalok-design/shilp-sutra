@@ -20,6 +20,7 @@ import {
   IconEdit,
 } from '@tabler/icons-react'
 import type { Icon as TablerIcon } from '@tabler/icons-react'
+import { formatTimestamp } from './task-utils'
 
 // ============================================================
 // Types
@@ -182,27 +183,6 @@ const DEFAULT_ACTION: ActionConfig = {
 // ============================================================
 // Helpers
 // ============================================================
-
-function formatTimestamp(dateStr: string) {
-  const date = new Date(dateStr)
-  const now = new Date()
-  const diffMs = now.getTime() - date.getTime()
-  const diffMins = Math.floor(diffMs / 60000)
-  const diffHours = Math.floor(diffMins / 60)
-  const diffDays = Math.floor(diffHours / 24)
-
-  if (diffMins < 1) return 'Just now'
-  if (diffMins < 60) return `${diffMins}m ago`
-  if (diffHours < 24) return `${diffHours}h ago`
-  if (diffDays < 7) return `${diffDays}d ago`
-
-  return date.toLocaleDateString('en-IN', {
-    month: 'short',
-    day: 'numeric',
-    hour: 'numeric',
-    minute: '2-digit',
-  })
-}
 
 function getActorName(entry: AuditLogEntry): string {
   const meta = entry.metadata

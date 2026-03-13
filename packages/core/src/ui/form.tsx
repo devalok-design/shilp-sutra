@@ -43,9 +43,13 @@ const FormField = React.forwardRef<HTMLDivElement, FormFieldProps>(
   ({ className, helperTextId, state = 'helper', required, children, ...props }, ref) => {
     const autoId = React.useId()
     const resolvedId = helperTextId || `${autoId}-helper`
+    const contextValue = React.useMemo(
+      () => ({ state, helperTextId: resolvedId, required }),
+      [state, resolvedId, required],
+    )
 
     return (
-      <FormFieldContext.Provider value={{ state, helperTextId: resolvedId, required }}>
+      <FormFieldContext.Provider value={contextValue}>
         <div
           ref={ref}
           className={cn('flex flex-col gap-ds-02', className)}

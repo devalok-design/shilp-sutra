@@ -77,6 +77,8 @@ interface ComboboxBaseProps extends Omit<React.HTMLAttributes<HTMLDivElement>, '
   /** Max visible items in the dropdown before scroll (default 6) */
   maxVisible?: number
   renderOption?: (option: ComboboxOption, selected: boolean) => React.ReactNode
+  /** Accessible label for the trigger button. Falls back to `placeholder` if not provided. */
+  accessibleLabel?: string
 }
 
 interface ComboboxSingleProps extends ComboboxBaseProps {
@@ -114,6 +116,7 @@ const Combobox = React.forwardRef<HTMLButtonElement, ComboboxProps>(
       triggerClassName,
       maxVisible = 6,
       renderOption,
+      accessibleLabel,
       ...rest
     },
     ref,
@@ -344,7 +347,7 @@ const Combobox = React.forwardRef<HTMLButtonElement, ComboboxProps>(
             aria-expanded={open}
             aria-controls={listboxId}
             aria-haspopup="listbox"
-            aria-label={placeholder}
+            aria-label={accessibleLabel ?? placeholder}
             disabled={disabled}
             className={cn(
               'flex h-ds-md w-full items-center justify-between whitespace-nowrap rounded-ds-md border border-surface-border-strong bg-surface-3 px-ds-04 py-ds-03 text-ds-md',

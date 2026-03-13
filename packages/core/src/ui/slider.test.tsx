@@ -1,15 +1,7 @@
 import { render, screen } from '@testing-library/react'
-import { describe, it, expect, beforeAll } from 'vitest'
+import { describe, it, expect } from 'vitest'
 import { axe } from 'vitest-axe'
 import { Slider } from './slider'
-
-beforeAll(() => {
-  globalThis.ResizeObserver = class {
-    observe() {}
-    unobserve() {}
-    disconnect() {}
-  }
-})
 
 describe('Slider', () => {
   it('renders with aria-label', () => {

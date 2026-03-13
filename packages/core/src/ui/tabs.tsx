@@ -157,8 +157,12 @@ const TabsList = React.forwardRef<
 >(({ className, variant, ...props }, ref) => {
   const resolved: TabsVariant = variant ?? 'line'
   const layoutId = React.useId()
+  const contextValue = React.useMemo(
+    () => ({ variant: resolved, layoutId: `tab-indicator-${layoutId}` }),
+    [resolved, layoutId],
+  )
   return (
-    <TabsListContext.Provider value={{ variant: resolved, layoutId: `tab-indicator-${layoutId}` }}>
+    <TabsListContext.Provider value={contextValue}>
       <LayoutGroup>
         <TabsPrimitive.List
           ref={ref}

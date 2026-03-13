@@ -80,8 +80,10 @@ const Dialog: React.FC<React.ComponentPropsWithoutRef<typeof DialogPrimitive.Roo
     [isControlled, onOpenChange],
   )
 
+  const contextValue = React.useMemo(() => ({ open }), [open])
+
   return (
-    <DialogContext.Provider value={{ open }}>
+    <DialogContext.Provider value={contextValue}>
       <DialogPrimitive.Root open={open} onOpenChange={handleOpenChange} {...props} />
     </DialogContext.Provider>
   )

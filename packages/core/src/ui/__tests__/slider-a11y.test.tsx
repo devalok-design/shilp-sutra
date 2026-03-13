@@ -1,18 +1,7 @@
 import { render } from '@testing-library/react'
 import { axe } from 'vitest-axe'
-import { describe, it, expect, beforeAll } from 'vitest'
+import { describe, it, expect } from 'vitest'
 import { Slider } from '../slider'
-
-// Slider's Radix primitive uses ResizeObserver which jsdom doesn't provide
-beforeAll(() => {
-  if (typeof globalThis.ResizeObserver === 'undefined') {
-    globalThis.ResizeObserver = class ResizeObserver {
-      observe() {}
-      unobserve() {}
-      disconnect() {}
-    } as unknown as typeof globalThis.ResizeObserver
-  }
-})
 
 describe('Slider accessibility', () => {
   it('should have no violations with aria-label', async () => {

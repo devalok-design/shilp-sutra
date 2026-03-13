@@ -26,12 +26,10 @@ const SERVER_SAFE = new Set([
 
   // composed – no client hooks
   'composed/content-card',
-  'composed/empty-state',
   'composed/page-header',
   'composed/loading-skeleton',
   'composed/page-skeletons',
   'composed/priority-indicator',
-  'composed/status-badge',
 
   // tailwind config (Node-only, no React)
   'tailwind/index',

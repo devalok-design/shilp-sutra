@@ -12,6 +12,11 @@ const GlobalLoading = React.forwardRef<HTMLDivElement, GlobalLoadingProps>(
   function GlobalLoading({ isLoading, className, ...props }, forwardedRef) {
   const ref = useRef<HTMLDivElement>(null)
   const [animationComplete, setAnimationComplete] = useState(true)
+  const timeoutRef = useRef<ReturnType<typeof setTimeout>>()
+
+  useEffect(() => {
+    return () => { clearTimeout(timeoutRef.current) }
+  }, [])
 
   useEffect(() => {
     if (!ref.current) return
@@ -42,7 +47,7 @@ const GlobalLoading = React.forwardRef<HTMLDivElement, GlobalLoadingProps>(
         onTransitionEnd={() => {
           if (!isLoading) {
             // After the "complete" animation finishes, hide the bar
-            setTimeout(() => {
+            timeoutRef.current = setTimeout(() => {
               setAnimationComplete(true)
             }, 200)
           }

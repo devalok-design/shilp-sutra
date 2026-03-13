@@ -32,8 +32,11 @@ import { PRIORITY_COLORS } from './board-constants'
 function formatDueDate(dateStr: string) {
   const date = new Date(dateStr)
   const now = new Date()
-  const diffMs = date.getTime() - now.getTime()
-  const diffDays = Math.ceil(diffMs / (1000 * 60 * 60 * 24))
+
+  // Normalize both dates to midnight for calendar-day comparison
+  const dueDay = new Date(date.getFullYear(), date.getMonth(), date.getDate())
+  const today = new Date(now.getFullYear(), now.getMonth(), now.getDate())
+  const diffDays = Math.round((dueDay.getTime() - today.getTime()) / (1000 * 60 * 60 * 24))
 
   if (diffDays < 0) return { label: 'Overdue', className: 'text-error-11' }
   if (diffDays === 0) return { label: 'Today', className: 'text-warning-11' }

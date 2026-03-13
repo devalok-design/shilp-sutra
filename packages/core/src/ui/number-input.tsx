@@ -61,10 +61,15 @@ const NumberInput = React.forwardRef<HTMLInputElement, NumberInputProps>(
     const ariaLabel = ariaLabelProp ?? (rest.id || fieldCtx.helperTextId ? undefined : 'Numeric value')
 
     const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-      const newValue = parseInt(e.target.value, 10) || 0
-      if (newValue >= min && newValue <= max) {
-        onValueChange?.(newValue)
+      const raw = e.target.value.trim()
+      if (raw === '' || raw === '-') {
+        onValueChange?.(min >= 0 ? min : 0)
+        return
       }
+      const parsed = Number(raw)
+      if (Number.isNaN(parsed)) return
+      const clamped = Math.min(Math.max(parsed, min), max)
+      onValueChange?.(clamped)
     }
 
     const handleIncrement = (e: React.MouseEvent<HTMLButtonElement>) => {

@@ -115,6 +115,7 @@ const DatePicker = React.forwardRef<HTMLButtonElement, DatePickerProps>(
         <button
           ref={ref}
           type="button"
+          aria-label={value ? `Change date, ${format(value, formatStr)}` : placeholder}
           {...props}
           className={cn(
             'inline-flex h-ds-sm-plus items-center gap-ds-03 rounded-ds-lg border border-surface-border-strong bg-surface-1 px-ds-04 text-left transition-colors duration-fast-01 ease-productive-standard',

@@ -77,6 +77,9 @@ export const BoardToolbar = React.forwardRef<HTMLDivElement, BoardToolbarProps>(
     [setFilters],
   )
 
+  // Clean up debounce timeout on unmount
+  useEffect(() => () => { if (debounceRef.current) clearTimeout(debounceRef.current) }, [])
+
   // Sync external filter changes back to local search
   useEffect(() => {
     setSearchValue(filters.search)

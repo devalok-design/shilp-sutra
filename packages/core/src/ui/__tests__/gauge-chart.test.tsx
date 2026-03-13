@@ -1,23 +1,7 @@
 import { render } from '@testing-library/react'
 import { axe } from 'vitest-axe'
-import { describe, it, expect, beforeAll } from 'vitest'
+import { describe, it, expect } from 'vitest'
 import { GaugeChart } from '../charts/gauge-chart'
-
-beforeAll(() => {
-  Object.defineProperty(window, 'matchMedia', {
-    writable: true,
-    value: (query: string) => ({
-      matches: false,
-      media: query,
-      onchange: null,
-      addListener: () => {},
-      removeListener: () => {},
-      addEventListener: () => {},
-      removeEventListener: () => {},
-      dispatchEvent: () => false,
-    }),
-  })
-})
 
 describe('GaugeChart', () => {
   it('renders without crashing', () => {

@@ -227,10 +227,57 @@ const TaskDetailPanel = React.forwardRef<HTMLDivElement, TaskDetailPanelProps>(f
     }
   }, [open, clientMode])
 
-  const handleTabChange = (tabId: string) => {
+  const handleTabChange = React.useCallback((tabId: string) => {
     setActiveTab(tabId)
     onTabChange?.(tabId)
-  }
+  }, [onTabChange])
+
+  // Memoized callback wrappers to avoid inline arrows in JSX
+  const handlePropertyUpdate = React.useCallback((field: string, value: unknown) => {
+    if (clientMode && !clientEditableFields.includes(field)) return
+    onPropertyUpdate?.(field, value)
+  }, [clientMode, clientEditableFields, onPropertyUpdate])
+
+  const handleAssign = React.useCallback((userId: string) => {
+    onAssign?.(userId)
+  }, [onAssign])
+
+  const handleUnassign = React.useCallback((userId: string) => {
+    onUnassign?.(userId)
+  }, [onUnassign])
+
+  const handleCreateSubtask = React.useCallback((title: string) => {
+    onCreateSubtask?.(title)
+  }, [onCreateSubtask])
+
+  const handleToggleSubtask = React.useCallback((taskId: string, isComplete: boolean) => {
+    onToggleSubtask?.(taskId, isComplete)
+  }, [onToggleSubtask])
+
+  const handleRequestReview = React.useCallback((reviewerId: string) => {
+    onRequestReview?.(reviewerId)
+  }, [onRequestReview])
+
+  const handleUpdateReviewStatus = React.useCallback((reviewId: string, status: string, feedback?: string) => {
+    onUpdateReviewStatus?.(reviewId, status, feedback)
+  }, [onUpdateReviewStatus])
+
+  const handlePostComment = React.useCallback((content: string, authorType: 'INTERNAL' | 'CLIENT') => {
+    onPostComment?.(content, authorType)
+  }, [onPostComment])
+
+  const handleUploadFile = React.useCallback((file: File, title?: string) => {
+    onUploadFile?.(file, title)
+  }, [onUploadFile])
+
+  const handleDeleteFile = React.useCallback((fileId: string) => {
+    onDeleteFile?.(fileId)
+  }, [onDeleteFile])
+
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  const noopVoid = React.useCallback((..._args: unknown[]) => {}, [])
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  const noopSubtaskToggle = React.useCallback((_id: string, _complete: boolean) => {}, [])
 
   // Title editing
   const handleTitleBlur = () => {
@@ -311,9 +358,18 @@ const TaskDetailPanel = React.forwardRef<HTMLDivElement, TaskDetailPanelProps>(f
                   className="w-full bg-transparent text-ds-lg font-semibold text-surface-fg outline-none"
                 />
               ) : (
-                // eslint-disable-next-line jsx-a11y/click-events-have-key-events
-                <h2
+                  <h2
                   onClick={clientMode ? undefined : () => setEditingTitle(true)}
+                  {...(!clientMode && {
+                    role: 'button' as const,
+                    tabIndex: 0,
+                    onKeyDown: (e: React.KeyboardEvent) => {
+                      if (e.key === 'Enter' || e.key === ' ') {
+                        e.preventDefault()
+                        setEditingTitle(true)
+                      }
+                    },
+                  })}
                   className={cn(
                     'text-ds-lg font-semibold text-surface-fg',
                     !clientMode && 'cursor-text hover:text-accent-11 transition-colors',
@@ -342,12 +398,9 @@ const TaskDetailPanel = React.forwardRef<HTMLDivElement, TaskDetailPanelProps>(f
                   task={task}
                   columns={columns}
                   members={members}
-                  onUpdate={(field, value) => {
-                    if (clientMode && !clientEditableFields.includes(field)) return
-                    onPropertyUpdate?.(field, value)
-                  }}
-                  onAssign={(userId) => onAssign?.(userId)}
-                  onUnassign={(userId) => onUnassign?.(userId)}
+                  onUpdate={handlePropertyUpdate}
+                  onAssign={handleAssign}
+                  onUnassign={handleUnassign}
                   readOnly={clientMode}
                   editableFields={clientMode ? clientEditableFields : undefined}
                   renderPriorityIndicator={renderPriorityIndicator}
@@ -390,8 +443,8 @@ const TaskDetailPanel = React.forwardRef<HTMLDivElement, TaskDetailPanelProps>(f
                     projectId={task.projectId}
                     parentTaskId={task.id}
                     defaultColumnId={defaultColumnId}
-                    onCreateSubtask={clientMode ? () => {} : (title) => onCreateSubtask?.(title)}
-                    onToggleSubtask={clientMode ? () => {} : (id, complete) => onToggleSubtask?.(id, complete)}
+                    onCreateSubtask={clientMode ? noopVoid : handleCreateSubtask}
+                    onToggleSubtask={clientMode ? noopSubtaskToggle : handleToggleSubtask}
                     readOnly={clientMode}
                   />
                 )}
@@ -400,8 +453,8 @@ const TaskDetailPanel = React.forwardRef<HTMLDivElement, TaskDetailPanelProps>(f
                   <ReviewTab
                     reviews={task.reviewRequests}
                     members={members}
-                    onRequestReview={(id) => onRequestReview?.(id)}
-                    onUpdateStatus={(id, status, feedback) => onUpdateReviewStatus?.(id, status, feedback)}
+                    onRequestReview={handleRequestReview}
+                    onUpdateStatus={handleUpdateReviewStatus}
                   />
                 )}
 
@@ -409,7 +462,7 @@ const TaskDetailPanel = React.forwardRef<HTMLDivElement, TaskDetailPanelProps>(f
                   <ConversationTab
                     comments={displayComments}
                     taskVisibility={task.visibility}
-                    onPostComment={(content, authorType) => onPostComment?.(content, authorType)}
+                    onPostComment={handlePostComment}
                     clientMode={clientMode}
                     renderEditor={renderEditor}
                     renderViewer={renderViewer}
@@ -419,8 +472,8 @@ const TaskDetailPanel = React.forwardRef<HTMLDivElement, TaskDetailPanelProps>(f
                 {activeTab === 'files' && (
                   <FilesTab
                     files={task.files ?? []}
-                    onUpload={clientMode ? () => {} : (file, title) => onUploadFile?.(file, title)}
-                    onDelete={clientMode ? () => {} : (id) => onDeleteFile?.(id)}
+                    onUpload={clientMode ? noopVoid : handleUploadFile}
+                    onDelete={clientMode ? noopVoid : handleDeleteFile}
                     isUploading={isUploading}
                     readOnly={clientMode}
                   />

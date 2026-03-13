@@ -105,6 +105,11 @@ export {
   DailyBrief,
   type DailyBriefProps,
   type BriefData,
+  ScratchpadWidget,
+  type ScratchpadWidgetProps,
+  type ScratchpadItem,
+  SidebarScratchpad,
+  type SidebarScratchpadProps,
 } from './dashboard'
 
 // Client portal components

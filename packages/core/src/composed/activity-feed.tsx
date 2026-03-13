@@ -33,7 +33,7 @@ const dotColorMap = {
   success: 'bg-success-9',
   warning: 'bg-warning-9',
   error: 'bg-error-9',
-  info: 'bg-accent-9',
+  info: 'bg-info-9',
 } as const
 
 function formatRelativeTime(timestamp: Date | string): string {

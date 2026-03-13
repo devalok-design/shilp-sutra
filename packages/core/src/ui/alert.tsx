@@ -97,6 +97,11 @@ export interface AlertProps
   extends Omit<React.HTMLAttributes<HTMLDivElement>, 'color'>,
     VariantProps<typeof alertVariants> {
   title?: string
+  /**
+   * Called after the exit animation completes, not immediately on click.
+   * The dismiss button sets internal visibility to false, triggering the exit
+   * animation; `onDismiss` fires via `AnimatePresence.onExitComplete`.
+   */
   onDismiss?: () => void
 }
 

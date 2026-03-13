@@ -1,6 +1,6 @@
 import { render, screen } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
-import { describe, it, expect, vi, beforeAll } from 'vitest'
+import { describe, it, expect, vi } from 'vitest'
 import { axe } from 'vitest-axe'
 import {
   Select,
@@ -12,27 +12,8 @@ import {
   SelectLabel,
 } from './select'
 
-// Radix Select internals use DOM APIs that jsdom does not provide
-beforeAll(() => {
-  globalThis.ResizeObserver = class {
-    observe() {}
-    unobserve() {}
-    disconnect() {}
-  }
-
-  if (!Element.prototype.hasPointerCapture) {
-    Element.prototype.hasPointerCapture = () => false
-  }
-  if (!Element.prototype.releasePointerCapture) {
-    Element.prototype.releasePointerCapture = () => {}
-  }
-  if (!Element.prototype.setPointerCapture) {
-    Element.prototype.setPointerCapture = () => {}
-  }
-  if (!Element.prototype.scrollIntoView) {
-    Element.prototype.scrollIntoView = () => {}
-  }
-})
+// jsdom mocks for Radix Select (ResizeObserver, hasPointerCapture, scrollIntoView, etc.)
+// are now centralized in test-setup.ts
 
 function renderSelect({
   placeholder = 'Pick a fruit',

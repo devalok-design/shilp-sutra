@@ -1,5 +1,5 @@
 /**
- * Post-build: inject "use client" directive into all JS files in dist/.
+ * Post-build: inject "use client" directive into all JS and .d.ts files in dist/.
  * All karm components are client-only (use React hooks).
  */
 import { readdir, readFile, writeFile } from 'node:fs/promises'
@@ -15,7 +15,10 @@ async function walk(dir) {
     const full = join(dir, entry.name)
     if (entry.isDirectory()) {
       files.push(...await walk(full))
-    } else if (['.js', '.mjs'].includes(extname(entry.name))) {
+    } else if (
+      ['.js', '.mjs'].includes(extname(entry.name)) ||
+      entry.name.endsWith('.d.ts')
+    ) {
       files.push(full)
     }
   }

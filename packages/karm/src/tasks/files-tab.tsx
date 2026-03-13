@@ -241,7 +241,7 @@ const FilesTab = React.forwardRef<HTMLDivElement, FilesTabProps>(
                         <button
                           type="button"
                           className="inline-flex h-ds-xs-plus w-ds-xs-plus items-center justify-center rounded-ds-md transition-colors hover:bg-error-3"
-                          title="Delete"
+                          aria-label="Delete file"
                         >
                           <IconTrash className="h-ico-sm w-ico-sm text-error-11" />
                         </button>

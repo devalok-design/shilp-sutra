@@ -1,4 +1,4 @@
-import { useState, useCallback, type MouseEvent } from 'react'
+import { useState, useCallback, useEffect, useRef, type MouseEvent } from 'react'
 
 interface Ripple {
   id: number
@@ -9,6 +9,11 @@ interface Ripple {
 
 export function useRipple(duration = 600) {
   const [ripples, setRipples] = useState<Ripple[]>([])
+  const timeoutRef = useRef<ReturnType<typeof setTimeout>>()
+
+  useEffect(() => {
+    return () => { clearTimeout(timeoutRef.current) }
+  }, [])
 
   const createRipple = useCallback((e: MouseEvent<HTMLElement>) => {
     const rect = e.currentTarget.getBoundingClientRect()
@@ -18,7 +23,7 @@ export function useRipple(duration = 600) {
     const id = Date.now()
 
     setRipples((prev) => [...prev, { id, x, y, size }])
-    setTimeout(() => {
+    timeoutRef.current = setTimeout(() => {
       setRipples((prev) => prev.filter((r) => r.id !== id))
     }, duration)
   }, [duration])

@@ -76,6 +76,7 @@ const MemberPicker = React.forwardRef<HTMLDivElement, MemberPickerProps>(
               placeholder={placeholder}
               value={search}
               onChange={(e) => setSearch(e.target.value)}
+              aria-label="Search members"
               className="w-full bg-transparent text-ds-md font-body text-surface-fg placeholder:text-surface-fg-subtle outline-none"
             />
           </div>

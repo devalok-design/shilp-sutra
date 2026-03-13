@@ -6,7 +6,7 @@
 // must update days array synchronously).
 // ============================================================
 
-import { useReducer, useCallback } from 'react'
+import { useReducer, useCallback, useMemo } from 'react'
 import { format } from 'date-fns'
 import {
   isSameDay,
@@ -303,7 +303,7 @@ export function useCalendarNavigation() {
     )
   }, [state.days, state.selectedDate])
 
-  return {
+  return useMemo(() => ({
     ...state,
     dispatch,
 
@@ -321,7 +321,21 @@ export function useCalendarNavigation() {
     getYearsList,
     isFirstDate,
     isLastDate,
-  }
+  }), [
+    state,
+    dispatch,
+    setActiveTimeFrame,
+    selectDate,
+    selectDayMonthly,
+    navigateDate,
+    selectMonth,
+    goToday,
+    updateDays,
+    isTodaySelected,
+    getYearsList,
+    isFirstDate,
+    isLastDate,
+  ])
 }
 
 export type { CalendarAction }

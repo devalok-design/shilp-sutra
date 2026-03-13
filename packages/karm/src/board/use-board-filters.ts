@@ -40,7 +40,7 @@ function matchesFilters(task: BoardTask, filters: BoardFilters): boolean {
         const endOfWeek = new Date(now)
         endOfWeek.setDate(now.getDate() + (7 - now.getDay()))
         endOfWeek.setHours(23, 59, 59, 999)
-        if (due > endOfWeek) return false
+        if (due < now || due > endOfWeek) return false
         break
       }
     }

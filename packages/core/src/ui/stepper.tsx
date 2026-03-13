@@ -88,7 +88,7 @@ const Stepper = React.forwardRef<HTMLDivElement, StepperProps>(
                   {/* Animated filled portion */}
                   <motion.div
                     className={cn(
-                      'absolute inset-0 bg-interactive',
+                      'absolute inset-0 bg-accent-9',
                       orientation === 'vertical' ? 'origin-top' : 'origin-left',
                     )}
                     initial={false}
@@ -158,7 +158,7 @@ const Step = React.forwardRef<HTMLDivElement, StepInternalProps>(
           {state === 'active' && (
             <motion.div
               layoutId={`${stepperId}-stepper-active`}
-              className="absolute inset-0 rounded-ds-full bg-interactive"
+              className="absolute inset-0 rounded-ds-full bg-accent-9"
               transition={springs.smooth}
             />
           )}

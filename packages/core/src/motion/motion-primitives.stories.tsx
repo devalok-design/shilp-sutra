@@ -14,8 +14,8 @@ import { springs } from '../ui/lib/motion'
 
 // ── Helpers ──
 
-const Box = ({ children, color = 'bg-interactive' }: { children?: React.ReactNode; color?: string }) => (
-  <div className={`${color} rounded-ds-md p-ds-06 text-text-on-color text-ds-sm font-medium`}>
+const Box = ({ children, color = 'bg-accent-9' }: { children?: React.ReactNode; color?: string }) => (
+  <div className={`${color} rounded-ds-md p-ds-06 text-accent-fg text-ds-sm font-medium`}>
     {children ?? 'Animated content'}
   </div>
 )
@@ -24,7 +24,7 @@ const ToggleButton = ({ on, onClick, label }: { on: boolean; onClick: () => void
   <button
     type="button"
     onClick={onClick}
-    className="rounded-ds-md bg-surface-secondary px-ds-04 py-ds-02 text-ds-sm font-medium text-text-primary hover:bg-surface-tertiary transition-colors"
+    className="rounded-ds-md bg-surface-2 px-ds-04 py-ds-02 text-ds-sm font-medium text-surface-fg hover:bg-surface-3 transition-colors"
   >
     {label ?? (on ? 'Hide' : 'Show')}
   </button>
@@ -88,7 +88,7 @@ function PopDemo() {
       <MotionPop show={show}>
         <Box color="bg-warning">Bouncy Pop!</Box>
       </MotionPop>
-      <p className="text-ds-xs text-text-secondary">
+      <p className="text-ds-xs text-surface-fg-muted">
         Uses the <code>bouncy</code> spring preset — watch for the overshoot.
       </p>
     </div>
@@ -120,8 +120,8 @@ function SlideDemo() {
               onClick={() => setDirection(dir)}
               className={`rounded-ds-sm px-ds-03 py-ds-01 text-ds-xs font-medium transition-colors ${
                 direction === dir
-                  ? 'bg-interactive text-text-on-color'
-                  : 'bg-surface-secondary text-text-primary hover:bg-surface-tertiary'
+                  ? 'bg-accent-9 text-accent-fg'
+                  : 'bg-surface-2 text-surface-fg hover:bg-surface-3'
               }`}
             >
               {dir}
@@ -149,8 +149,8 @@ function CollapseDemo() {
     <div className="flex flex-col items-start gap-ds-05" style={{ maxWidth: 400 }}>
       <ToggleButton on={show} onClick={() => setShow((s) => !s)} label={show ? 'Collapse' : 'Expand'} />
       <MotionCollapse show={show}>
-        <div className="rounded-ds-md border border-border-primary p-ds-05">
-          <p className="text-ds-sm text-text-primary">
+        <div className="rounded-ds-md border border-surface-border-strong p-ds-05">
+          <p className="text-ds-sm text-surface-fg">
             This content smoothly expands and collapses using Framer Motion&apos;s native{' '}
             <code>height: &quot;auto&quot;</code> animation. The <code>gentle</code> spring preset is used by
             default, giving the height change a natural, organic feel without any harsh jumps.
@@ -178,7 +178,7 @@ function StaggerDemo() {
       <MotionStagger key={key} className="flex flex-col gap-ds-03" style={{ maxWidth: 300 }}>
         {items.map((item, i) => (
           <MotionStaggerItem key={i}>
-            <div className="rounded-ds-md bg-surface-secondary p-ds-04 text-ds-sm text-text-primary">
+            <div className="rounded-ds-md bg-surface-2 p-ds-04 text-ds-sm text-surface-fg">
               {i + 1}. {item}
             </div>
           </MotionStaggerItem>
@@ -205,14 +205,14 @@ function SpringPresetsDemo() {
       <div className="grid grid-cols-4 gap-ds-05" style={{ width: '100%', maxWidth: 600 }}>
         {presets.map((preset) => (
           <div key={preset} className="flex flex-col items-center gap-ds-03">
-            <span className="text-ds-xs font-semibold text-text-secondary">{preset}</span>
+            <span className="text-ds-xs font-semibold text-surface-fg-muted">{preset}</span>
             <MotionScale key={`${preset}-${key}`} show preset={preset}>
-              <div className="h-16 w-16 rounded-ds-md bg-interactive" />
+              <div className="h-16 w-16 rounded-ds-md bg-accent-9" />
             </MotionScale>
           </div>
         ))}
       </div>
-      <p className="text-ds-xs text-text-secondary">
+      <p className="text-ds-xs text-surface-fg-muted">
         All four spring presets animating simultaneously. Click &quot;Replay all&quot; to re-trigger.
       </p>
     </div>
@@ -232,7 +232,7 @@ function ReducedMotionDemo() {
   return (
     <MotionProvider reducedMotion={true}>
       <div className="flex flex-col items-start gap-ds-05">
-        <div className="rounded-ds-md border border-warning bg-warning/10 px-ds-04 py-ds-02 text-ds-xs text-text-primary">
+        <div className="rounded-ds-md border border-warning-7 bg-warning-3 px-ds-04 py-ds-02 text-ds-xs text-surface-fg">
           <code>reducedMotion=true</code> — all animations are instant
         </div>
         <ToggleButton on={show} onClick={() => setShow((s) => !s)} />
@@ -247,7 +247,7 @@ function ReducedMotionDemo() {
             <Box color="bg-warning">Scale</Box>
           </MotionScale>
         </div>
-        <p className="text-ds-xs text-text-secondary" style={{ maxWidth: 400 }}>
+        <p className="text-ds-xs text-surface-fg-muted" style={{ maxWidth: 400 }}>
           Wrapped in <code>&lt;MotionProvider reducedMotion=&#123;true&#125;&gt;</code>.
           Framer Motion&apos;s <code>MotionConfig</code> disables all spring/tween transitions,
           making enter/exit appear instantly.

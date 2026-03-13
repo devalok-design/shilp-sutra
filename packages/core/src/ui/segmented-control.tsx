@@ -408,8 +408,8 @@ const SegmentedControlItem = React.forwardRef<HTMLButtonElement, SegmentedContro
           className={cn(
             'absolute inset-0 rounded-ds-full pointer-events-none',
             variant === 'filled'
-              ? 'bg-interactive shadow-[0px_1px_3px_0.05px_var(--color-interactive-hover),inset_0px_8px_16px_0px_var(--color-inset-glow-strong),inset_0px_2px_0px_0px_var(--color-inset-glow-subtle)]'
-              : 'bg-field',
+              ? 'bg-accent-9 shadow-[0px_1px_3px_0.05px_var(--color-accent-10),inset_0px_8px_16px_0px_var(--color-inset-glow-strong),inset_0px_2px_0px_0px_var(--color-inset-glow-subtle)]'
+              : 'bg-surface-3',
           )}
           transition={springs.smooth}
         />

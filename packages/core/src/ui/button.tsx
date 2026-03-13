@@ -275,8 +275,8 @@ const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
     // Async feedback: override color to show green/red
     const feedbackColorClass = isAsyncFeedback
       ? asyncState === 'success'
-        ? 'bg-success text-text-on-color border-transparent hover:bg-success'
-        : 'bg-error text-text-on-color border-transparent hover:bg-error'
+        ? 'bg-success-9 text-accent-fg border-transparent hover:bg-success-9'
+        : 'bg-error-9 text-accent-fg border-transparent hover:bg-error-9'
       : undefined
 
     // Async feedback icon replaces start slot

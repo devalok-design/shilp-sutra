@@ -573,7 +573,7 @@ const SidebarMenuButton = forwardRef<
             {isActive && (
               <motion.span
                 layoutId="sidebar-active-indicator"
-                className="absolute inset-0 rounded-ds-md bg-interactive-subtle"
+                className="absolute inset-0 rounded-ds-md bg-accent-2"
                 transition={springs.smooth}
               />
             )}

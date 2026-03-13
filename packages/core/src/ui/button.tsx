@@ -1,14 +1,16 @@
 'use client'
 
 import { cva, type VariantProps } from 'class-variance-authority'
+import { motion } from 'framer-motion'
 import { Slot, Slottable } from '@primitives/react-slot'
 import * as React from 'react'
 import { useButtonGroup } from './button-group'
+import { springs } from './lib/motion'
 import { cn } from './lib/utils'
 import { Spinner } from './spinner'
 
 export const buttonVariants = cva(
-  'inline-flex items-center justify-center gap-ds-03 whitespace-nowrap font-sans font-semibold select-none border border-transparent transition-[color,background-color,border-color,box-shadow,transform] duration-fast-01 ease-productive-standard active:translate-y-px focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-focus focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-[0.38]',
+  'inline-flex items-center justify-center gap-ds-03 whitespace-nowrap font-sans font-semibold select-none border border-transparent focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-focus focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-[0.38]',
   {
     variants: {
       variant: {
@@ -236,7 +238,9 @@ const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
     }
 
     return (
-      <button
+      <motion.button
+        whileTap={{ scale: 0.97 }}
+        transition={springs.snappy}
         className={cn(
           buttonVariants({ variant: resolvedVariant, color: resolvedColor, size: resolvedSize }),
           fullWidth && 'w-full',
@@ -250,7 +254,7 @@ const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
         {renderStartSlot()}
         {renderChildren()}
         {renderEndSlot()}
-      </button>
+      </motion.button>
     )
   },
 )

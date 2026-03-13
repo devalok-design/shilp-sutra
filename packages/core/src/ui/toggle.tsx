@@ -3,11 +3,15 @@
 import * as React from 'react'
 import * as TogglePrimitive from '@primitives/react-toggle'
 import { cva, type VariantProps } from 'class-variance-authority'
+import { motion } from 'framer-motion'
 
+import { springs } from './lib/motion'
 import { cn } from './lib/utils'
 
+const MotionToggleRoot = motion.create(TogglePrimitive.Root)
+
 const toggleVariants = cva(
-  'inline-flex items-center justify-center gap-ds-03 rounded-ds-md font-medium transition-[color,transform] duration-fast-02 active:scale-95 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-focus focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-[0.38] data-[state=on]:bg-interactive-subtle data-[state=on]:text-interactive',
+  'inline-flex items-center justify-center gap-ds-03 rounded-ds-md font-medium focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-focus focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-[0.38] data-[state=on]:bg-interactive-subtle data-[state=on]:text-interactive',
   {
     variants: {
       variant: {
@@ -34,8 +38,10 @@ const Toggle = React.forwardRef<
   React.ComponentPropsWithoutRef<typeof TogglePrimitive.Root> &
     VariantProps<typeof toggleVariants>
 >(({ className, variant, size, ...props }, ref) => (
-  <TogglePrimitive.Root
+  <MotionToggleRoot
     ref={ref}
+    whileTap={{ scale: 0.95 }}
+    transition={springs.snappy}
     className={cn(toggleVariants({ variant, size }), className)}
     {...props}
   />

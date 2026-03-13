@@ -2,7 +2,9 @@
 
 import * as React from 'react'
 import { cva, type VariantProps } from 'class-variance-authority'
+import { motion } from 'framer-motion'
 
+import { springs } from './lib/motion'
 import { cn } from './lib/utils'
 
 const cardVariants = cva(
@@ -75,18 +77,28 @@ export interface CardProps
 }
 
 const Card = React.forwardRef<HTMLDivElement, CardProps>(
-  ({ className, variant, interactive, ...props }, ref) => (
-    <div
-      ref={ref}
-      className={cn(
-        cardVariants({ variant }),
-        interactive &&
-          'hover:shadow-02 hover:border-border-strong hover:-translate-y-px active:scale-[0.98] cursor-pointer transition-all duration-fast-02 ease-productive-standard',
-        className,
-      )}
-      {...props}
-    />
-  ),
+  ({ className, variant, interactive, ...props }, ref) => {
+    const classes = cn(
+      cardVariants({ variant }),
+      interactive && 'hover:shadow-02 hover:border-border-strong cursor-pointer',
+      className,
+    )
+
+    if (interactive) {
+      return (
+        <motion.div
+          ref={ref}
+          whileHover={{ y: -2 }}
+          whileTap={{ scale: 0.98 }}
+          transition={springs.snappy}
+          className={classes}
+          {...props}
+        />
+      )
+    }
+
+    return <div ref={ref} className={classes} {...props} />
+  },
 )
 Card.displayName = 'Card'
 

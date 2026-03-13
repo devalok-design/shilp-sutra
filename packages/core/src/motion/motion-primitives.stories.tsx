@@ -33,7 +33,7 @@ const ToggleButton = ({ on, onClick, label }: { on: boolean; onClick: () => void
 // ── Meta ──
 
 const meta: Meta = {
-  title: 'Motion/Primitives',
+  title: 'Foundations/Motion Primitives',
   tags: ['autodocs'],
 }
 export default meta

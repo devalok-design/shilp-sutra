@@ -2,7 +2,7 @@ import type { Meta, StoryObj } from '@storybook/react'
 import { ErrorDisplay } from './error-boundary'
 
 const meta: Meta<typeof ErrorDisplay> = {
-  title: 'Composed/ErrorDisplay',
+  title: 'Composed/ErrorBoundary',
   component: ErrorDisplay,
   tags: ['autodocs'],
   decorators: [

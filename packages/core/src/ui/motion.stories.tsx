@@ -36,7 +36,7 @@ import { Label } from './label'
 import { MotionFade, MotionCollapse, MotionScale, MotionSlide } from '../motion/primitives'
 
 const meta: Meta = {
-  title: 'Foundations/Motion',
+  title: 'Foundations/Motion Overview',
   tags: [],
 }
 export default meta

@@ -1,0 +1,96 @@
+import { Meta } from '@storybook/blocks'
+
+<Meta title="Karm/Introduction" />
+
+# Karm Components
+
+The `@devalok/shilp-sutra-karm` package provides **domain-specific components** for [Karm](https://karm.devalok.com) -- Devalok's project management and workforce platform. These components build on top of the core design system to deliver ready-made UI for boards, tasks, chat, dashboards, and admin tools.
+
+```bash
+pnpm add @devalok/shilp-sutra-karm
+```
+
+> **Peer dependency:** Requires `@devalok/shilp-sutra >=0.7.0`
+
+---
+
+## Modules
+
+### Board
+Kanban-style project boards with drag-and-drop, filters, and bulk actions.
+
+```tsx
+import { KanbanBoard, TaskCard, BoardToolbar } from '@devalok/shilp-sutra-karm/board'
+```
+
+Key components: **KanbanBoard**, **BoardToolbar**, **TaskCard**, **TaskContextMenu**, **ColumnHeader**, **ColumnEmpty**, **BulkActionBar**
+
+### Tasks
+Task detail views with tabbed panels for activity, conversations, files, and subtasks.
+
+```tsx
+import { TaskDetailPanel, ActivityTab } from '@devalok/shilp-sutra-karm/tasks'
+```
+
+Key components: **TaskDetailPanel**, **ActivityTab**, **ConversationTab**, **FilesTab**, **ReviewTab**, **SubtasksTab**, **TaskProperties**
+
+### Chat
+Real-time messaging with streaming text support and conversation management.
+
+```tsx
+import { ChatPanel, MessageList } from '@devalok/shilp-sutra-karm/chat'
+```
+
+Key components: **ChatPanel**, **ChatInput**, **MessageList**, **ConversationList**, **StreamingText**
+
+### Dashboard
+Analytics widgets and daily briefings for the main app dashboard.
+
+```tsx
+import { DailyBrief, AttendanceCTA } from '@devalok/shilp-sutra-karm/dashboard'
+```
+
+Key components: **DailyBrief**, **AttendanceCTA**, **ScratchpadWidget**, **SidebarScratchpad**
+
+### Client
+Client-facing portal components with accent color theming.
+
+```tsx
+import { ClientPortalHeader, ProjectCard } from '@devalok/shilp-sutra-karm/client'
+```
+
+Key components: **ClientPortalHeader**, **ProjectCard**, **AccentProvider**
+
+### Admin
+HR and workforce admin tools -- attendance, breaks, leave requests, and associate management.
+
+```tsx
+import { AdminDashboard } from '@devalok/shilp-sutra-karm/admin'
+```
+
+Key areas: **AttendanceOverview**, **BreakAdmin**, **LeaveRequests**, **AssociateDetail**, **Calendar**
+
+---
+
+## Module Boundaries
+
+Karm components can import from `ui/`, `composed/`, `shell/`, and `hooks/` in the core package. They must **not** import from `primitives/_internal/` directly.
+
+```
+core/ui  -->  core/composed  -->  core/shell
+                                      ^
+                          karm/ ------+
+```
+
+---
+
+## Accent Theming
+
+The `AccentProvider` in the client module allows per-client accent color theming by overriding the `--color-accent-*` CSS custom properties:
+
+```tsx
+<AccentProvider color="#4F46E5">
+  {/* All child components use indigo as the accent */}
+  <ClientPortalHeader />
+</AccentProvider>
+```

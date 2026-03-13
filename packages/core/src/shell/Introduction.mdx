@@ -2,28 +2,51 @@ import { Meta } from '@storybook/blocks'
 
 <Meta title="Shell/Introduction" />
 
-# Layout Components
+# Shell Components
 
-Shilp Sutra provides **6 app shell components** for building complete application layouts. These handle the structural frame of your application -- sidebar navigation, top bars, mobile navigation, notifications, and command palette.
+Shilp Sutra provides **8 app shell components** for building complete application layouts. These handle the structural frame of your application -- sidebar navigation, top bars, mobile navigation, notifications, and command access.
+
+Shell components are **singletons** -- you typically render one of each in your root layout.
+
+```tsx
+import { AppSidebar, TopBar, BottomNavbar } from '@devalok/shilp-sutra/shell'
+```
 
 ---
 
 ## Component catalog
 
+### Navigation
+
 | Component | Description |
 |-----------|-------------|
-| **AppSidebar** | Collapsible navigation sidebar with header slot, menu groups, footer, and expand/collapse toggle |
-| **TopBar** | Application top bar with search input, notification bell, and user avatar |
+| **AppSidebar** | Collapsible navigation sidebar with header, menu groups, footer, and expand/collapse toggle |
+| **TopBar** | Application header with logo, search, notifications, and user avatar |
 | **BottomNavbar** | Mobile-optimized bottom navigation bar with icon and label tabs |
-| **NotificationCenter** | Notification list panel with read/unread states, timestamps, and mark-as-read actions |
+
+### Commands
+
+| Component | Description |
+|-----------|-------------|
+| **AppCommandPalette** | App-level command palette triggered by Cmd+K / Ctrl+K |
+| **CommandRegistry** | Programmatic command management (register, unregister, search) |
+
+### Notifications
+
+| Component | Description |
+|-----------|-------------|
+| **NotificationCenter** | Notification inbox with read/unread states and mark-as-read actions |
 | **NotificationPreferences** | Notification settings panel with per-channel toggle controls |
-| **AppCommandPalette** | Application-level command palette triggered by Cmd+K / Ctrl+K with search, recent items, and grouped commands |
+
+### Utilities
+
+| Component | Description |
+|-----------|-------------|
+| **LinkContext** | Navigation abstraction that decouples shell from Next.js `Link` |
 
 ---
 
 ## Typical layout structure
-
-These components are designed to compose into a standard app shell:
 
 ```
 +--------------------------------------------------+
@@ -42,10 +65,30 @@ The **AppCommandPalette** and **NotificationCenter** render as overlays on top o
 
 ---
 
-## Usage
+## Framework independence
 
-Layout components are imported from the `layout` barrel:
+Shell components use a `LinkProvider` context instead of importing Next.js directly:
 
 ```tsx
-import { AppSidebar, TopBar, BottomNavbar } from '@devalok/shilp-sutra/layout'
+import { LinkProvider } from '@devalok/shilp-sutra/shell'
+import NextLink from 'next/link'
+
+function RootLayout({ children }) {
+  return (
+    <LinkProvider component={NextLink}>
+      <AppSidebar />
+      <main>{children}</main>
+    </LinkProvider>
+  )
+}
+```
+
+---
+
+## Module boundaries
+
+Shell sits at the top of the import hierarchy. It can import from `ui/` and `composed/`, but nothing imports from `shell/`.
+
+```
+ui/  -->  composed/  -->  shell/
 ```

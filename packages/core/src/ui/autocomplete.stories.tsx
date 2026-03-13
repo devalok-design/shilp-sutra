@@ -15,7 +15,7 @@ const fruitOptions: AutocompleteOption[] = [
 ]
 
 const meta: Meta<typeof Autocomplete> = {
-  title: 'UI/Forms/Autocomplete',
+  title: 'UI/Form Controls/Autocomplete',
   component: Autocomplete,
   tags: ['autodocs'],
   argTypes: {

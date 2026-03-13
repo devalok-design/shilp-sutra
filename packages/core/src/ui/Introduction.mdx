@@ -4,7 +4,7 @@ import { Meta } from '@storybook/blocks'
 
 # UI Primitives
 
-Shilp Sutra includes **52 low-level UI primitives** built on top of Radix UI. These are the foundational building blocks used by all higher-level components in the system.
+Shilp Sutra includes **56 low-level UI primitives** built on top of vendored [Radix UI](https://radix-ui.com). These are the foundational building blocks used by all higher-level components in the system.
 
 Every primitive:
 
@@ -12,6 +12,11 @@ Every primitive:
 - Supports **dark mode** out of the box
 - Uses **forwardRef** for composability
 - Follows WAI-ARIA patterns via Radix UI
+- Uses **CVA** for type-safe variant/color props and **cn()** for className merging
+
+```tsx
+import { Button, Input, Dialog } from '@devalok/shilp-sutra/ui'
+```
 
 ---
 
@@ -19,11 +24,24 @@ Every primitive:
 
 | Component | Description |
 |-----------|-------------|
-| Button | Primary action trigger with multiple variants and sizes |
+| Button | Primary action trigger with variant/color/size axes |
+| ButtonGroup | Grouped button controls with shared styling |
+| IconButton | Icon-only button with accessible label |
 | Input | Text input field with optional icons and states |
 | Label | Accessible form label |
+| Link | Styled anchor with router-aware active state |
 | Separator | Visual divider (horizontal or vertical) |
+| Text | Typography component with heading/body/label/caption variants |
 | VisuallyHidden | Accessible hidden content for screen readers |
+
+---
+
+## Layout
+
+| Component | Description |
+|-----------|-------------|
+| Container | Responsive max-width wrapper |
+| Stack | Flexbox row/column/grid layout primitive |
 
 ---
 
@@ -31,36 +49,22 @@ Every primitive:
 
 | Component | Description |
 |-----------|-------------|
+| Autocomplete | Text input with filtered suggestion dropdown |
 | Checkbox | Toggle selection control |
-| Radio | Single-select radio group |
-| Switch | Binary toggle switch |
-| Select | Dropdown selection with search |
-| Textarea | Multi-line text input |
-| NumberInput | Numeric input with increment/decrement |
-| SearchInput | Text input with search icon and clear button |
+| Combobox | Searchable select dropdown |
+| FileUpload | File input with drag-and-drop support |
+| Form | Form context wrapper with field-level validation and a11y wiring |
 | InputOTP | One-time password input with segmented fields |
-| FormField | Form control wrapper with label, description, and error |
+| NumberInput | Numeric input with increment/decrement buttons |
+| Radio | Single-select radio group |
+| SearchInput | Text input with search icon and clear button |
+| SegmentedControl | Mutually exclusive button group (tab-like) |
+| Select | Dropdown selection |
 | Slider | Range slider input |
+| Switch | Binary toggle switch |
+| Textarea | Multi-line text input |
 | Toggle | Pressable toggle button |
 | ToggleGroup | Group of mutually exclusive toggle buttons |
-
----
-
-## Feedback and Overlays
-
-| Component | Description |
-|-----------|-------------|
-| AlertDialog | Confirmation dialog requiring user action |
-| Dialog | Modal overlay for focused content |
-| Sheet | Slide-out panel from screen edge |
-| Toast | Temporary notification message |
-| Tooltip | Contextual hint on hover/focus |
-| Popover | Floating content panel anchored to a trigger |
-| HoverCard | Rich preview on hover |
-| Collapsible | Expandable/collapsible content region |
-| Alert | Inline alert message with icon |
-| Banner | Full-width notification banner |
-| Spinner | Loading spinner indicator |
 
 ---
 
@@ -68,17 +72,19 @@ Every primitive:
 
 | Component | Description |
 |-----------|-------------|
-| Card | Container with header, content, and footer slots |
-| Badge | Small status label or count indicator |
+| AspectRatio | Maintain consistent width-to-height ratios |
 | Avatar | User avatar with image, initials, or fallback |
-| AvatarStack | Overlapping avatar group |
-| Table | Data table with header, body, and row primitives |
+| Badge | Small status label or count indicator |
+| Card | Container with header, content, and footer slots |
+| Chip | Removable tag with optional close button |
+| Code | Inline and block code display |
 | DataTable | Full-featured data table with sorting, filtering, and pagination |
+| DataTableToolbar | Filter and view controls for DataTable |
 | Progress | Determinate/indeterminate progress bar |
 | Skeleton | Placeholder loading animation |
 | StatCard | Metric display card with value and trend |
-| Code | Inline and block code display |
-| AspectRatio | Maintain consistent width-to-height ratios |
+| Table | Data table with header, body, and row primitives |
+| TreeView | Hierarchical tree with expand/collapse |
 
 ---
 
@@ -87,12 +93,69 @@ Every primitive:
 | Component | Description |
 |-----------|-------------|
 | Accordion | Expandable content sections |
-| Tabs | Tabbed content navigation |
 | Breadcrumb | Hierarchical page trail |
-| DropdownMenu | Context-triggered menu with keyboard navigation |
 | ContextMenu | Right-click menu |
+| DropdownMenu | Context-triggered menu with keyboard navigation |
 | Menubar | Horizontal menu bar with submenus |
-| Pagination | Page navigation controls |
 | NavigationMenu | Top-level navigation with dropdowns |
+| Pagination | Page navigation controls |
 | Sidebar | Collapsible sidebar navigation shell |
-| Link | Styled anchor with router-aware active state |
+| Stepper | Multi-step progress indicator |
+| Tabs | Tabbed content navigation |
+
+---
+
+## Feedback
+
+| Component | Description |
+|-----------|-------------|
+| Alert | Inline alert message with icon |
+| AlertDialog | Confirmation dialog requiring user action |
+| Banner | Full-width notification banner |
+| Collapsible | Expandable/collapsible content region |
+| Dialog | Modal overlay for focused content |
+| HoverCard | Rich preview on hover |
+| Popover | Floating content panel anchored to a trigger |
+| Sheet | Slide-out panel from screen edge |
+| Spinner | Loading spinner indicator |
+| Toast | Temporary notification message |
+| Toaster | Toast container and manager |
+| Tooltip | Contextual hint on hover/focus |
+
+---
+
+## Charts
+
+Barrel-isolated to avoid pulling in heavy deps. Import from `@devalok/shilp-sutra/ui/charts`.
+
+| Component | Description |
+|-----------|-------------|
+| AreaChart | Filled area chart |
+| BarChart | Vertical/horizontal bar chart |
+| GaugeChart | Circular gauge indicator |
+| LineChart | Line chart with multiple series |
+| PieChart | Pie/donut chart |
+| RadarChart | Spider/radar chart |
+| Sparkline | Compact inline trend line |
+
+---
+
+## Key Patterns
+
+### Two-Axis Variant System
+
+Most components accept **`variant`** (visual style) and **`color`** (semantic meaning) as separate props:
+
+```tsx
+<Button variant="solid" color="error">Delete</Button>
+<Badge variant="subtle" color="success">Active</Badge>
+```
+
+### Server Components
+
+Some components are server-safe (no `"use client"` directive). Import individually:
+
+```tsx
+import { Text } from '@devalok/shilp-sutra/ui/text'
+import { Skeleton } from '@devalok/shilp-sutra/ui/skeleton'
+```

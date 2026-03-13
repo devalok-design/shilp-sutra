@@ -1,0 +1,60 @@
+import { Meta } from '@storybook/blocks'
+
+<Meta title="Brand/Introduction" />
+
+# Brand Assets
+
+The `@devalok/shilp-sutra-brand` package carries the visual identity of **Devalok Design & Strategy Studios** and its products. Brand consistency matters -- these assets ensure that logos, colors, and identity elements are always rendered correctly across every surface.
+
+```bash
+pnpm add @devalok/shilp-sutra-brand
+```
+
+---
+
+## What's Included
+
+### Devalok
+The parent brand. Devalok Design & Strategy Studios is the creator of Shilp Sutra and all products built with it.
+
+- **DevalokLogo** -- Full logo with wordmark
+- SVG and PNG variants at multiple resolutions
+- Light and dark mode support (auto-switches via `.dark` class)
+
+```tsx
+import { DevalokLogo } from '@devalok/shilp-sutra-brand/devalok'
+
+<DevalokLogo className="h-8" />
+```
+
+### Karm
+The flagship product -- a project management and workforce platform.
+
+- **KarmLogo** -- Full logo with wordmark
+- SVG and PNG variants
+- Light and dark mode support
+
+```tsx
+import { KarmLogo } from '@devalok/shilp-sutra-brand/karm'
+
+<KarmLogo className="h-8" />
+```
+
+### Favicons & Web Manifest
+Pre-built favicon sets and `site.webmanifest` for both brands, ready to drop into your `public/` directory.
+
+---
+
+## Dark Mode
+
+Brand logos automatically respond to the `.dark` class on the document root, switching between light and dark variants using a `MutationObserver`. No manual toggling needed.
+
+---
+
+## Why a Separate Package?
+
+Brand assets are distributed separately so that:
+
+1. **Core stays lightweight** -- logos and PNGs don't bloat the component library
+2. **Independent versioning** -- brand refreshes don't require a core release
+3. **Optional install** -- apps that don't render logos skip the dependency entirely

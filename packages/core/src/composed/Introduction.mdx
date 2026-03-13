@@ -4,38 +4,73 @@ import { Meta } from '@storybook/blocks'
 
 # Composed Components
 
-Shilp Sutra provides **13 higher-level reusable components** built on top of the UI primitives. These handle common application patterns like page headers, status indicators, date selection, rich text editing, and loading states.
+Shilp Sutra provides **18 higher-level reusable components** built on top of the UI primitives. These handle common application patterns like page headers, status indicators, date selection, rich text editing, and loading states. They are domain-agnostic -- they don't know about any specific app.
+
+```tsx
+import { PageHeader, DatePicker, RichTextEditor } from '@devalok/shilp-sutra/composed'
+```
+
+---
+
+## When to use Composed vs UI
+
+| Use **UI** when... | Use **Composed** when... |
+|---------------------|--------------------------|
+| You need a single primitive (Button, Input) | You need a pre-wired combination of primitives |
+| You want full control over composition | You want a ready-made pattern with sensible defaults |
+| You're building a custom layout | You're using a common pattern (page header, date picker) |
 
 ---
 
 ## Component catalog
 
+### Content & Layout
+
 | Component | Description |
 |-----------|-------------|
+| **ContentCard** | Styled card with outline, elevated, and interactive variants |
+| **EmptyState** | Placeholder with icon, title, description, and action button |
 | **PageHeader** | Page title bar with breadcrumbs and action buttons |
-| **ContentCard** | Versatile card with outline, elevated, and interactive variants |
-| **StatusBadge** | Status indicator with semantic color mapping (success, warning, error, info, neutral) |
-| **AvatarGroup** | Stacked avatar display with configurable max count and overflow indicator |
-| **EmptyState** | Placeholder for empty lists and screens with icon, title, description, and action |
-| **PriorityIndicator** | Visual priority level indicator (P0 through P4) with color-coded severity |
+| **PageSkeletons** | Pre-built full-page skeleton layouts for common page types |
+| **LoadingSkeleton** | Configurable skeleton loading patterns for cards, lists, and tables |
+
+### Data & Display
+
+| Component | Description |
+|-----------|-------------|
+| **ActivityFeed** | Chronological timeline with avatars, icons, and timestamps |
+| **AvatarGroup** | Stacked avatar display with configurable max count and overflow |
+| **PriorityIndicator** | Visual priority level (urgent/high/medium/low) with icon |
+| **StatusBadge** | Animated status indicator with semantic color mapping |
+| **ScheduleView** | Week calendar grid with time slot events |
+
+### Input & Selection
+
+| Component | Description |
+|-----------|-------------|
 | **DatePicker** | Calendar-based date selection with popover trigger |
 | **DateRangePicker** | Two-calendar date range selection for start and end dates |
-| **RichTextEditor** | Tiptap-based rich text editor with toolbar (bold, italic, lists, links, code) |
-| **RichTextViewer** | Read-only rich text renderer for Tiptap/HTML content |
-| **CommandPalette** | Keyboard-driven command search dialog with grouped results |
-| **ErrorDisplay** | Error boundary display with status-specific messaging (404, 403, 500, generic) |
+| **MemberPicker** | Searchable user selection popover |
+| **RichTextEditor** | Tiptap-based WYSIWYG editor with formatting toolbar |
+| **CommandPalette** | Keyboard-driven command search dialog (Ctrl+K / Cmd+K) |
+
+### Feedback
+
+| Component | Description |
+|-----------|-------------|
+| **ConfirmDialog** | Pre-configured AlertDialog for destructive action confirmation |
+| **ErrorBoundary** | React error boundary with fallback display |
 | **GlobalLoading** | Top-of-page progress bar loading indicator |
-| **LoadingSkeleton** | Configurable skeleton loading patterns for cards, lists, and tables |
-| **PageSkeletons** | Pre-built full-page skeleton layouts for common page types |
+| **SimpleTooltip** | One-prop tooltip wrapper for common cases |
 
 ---
 
-## Usage pattern
+## Server-safe components
 
-Composed components are imported from the `shared` barrel:
+These can be imported individually for use in React Server Components:
 
 ```tsx
-import { PageHeader, StatusBadge, EmptyState } from '@devalok/shilp-sutra/shared'
+import { EmptyState } from '@devalok/shilp-sutra/composed/empty-state'
+import { PageHeader } from '@devalok/shilp-sutra/composed/page-header'
+import { StatusBadge } from '@devalok/shilp-sutra/composed/status-badge'
 ```
-
-Each component accepts semantic props and handles its own responsive behavior, dark mode theming, and accessibility.

@@ -46,7 +46,7 @@ import { IconBold, IconItalic, IconStrikethrough, IconCheck } from '@tabler/icon
 // ── Meta ──
 
 const meta: Meta = {
-  title: 'Motion/Showcase',
+  title: 'Foundations/Motion Showcase',
   tags: ['autodocs'],
   parameters: {
     layout: 'padded',

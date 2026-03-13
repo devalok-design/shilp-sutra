@@ -1,7 +1,7 @@
 'use client'
 
 import * as React from 'react'
-import { motion } from 'framer-motion'
+import { motion, AnimatePresence } from 'framer-motion'
 import { cn } from './lib/utils'
 import { springs } from './lib/motion'
 
@@ -10,11 +10,13 @@ type StepState = 'completed' | 'active' | 'pending'
 type StepperContextValue = {
   activeStep: number
   orientation: 'horizontal' | 'vertical'
+  stepperId: string
 }
 
 const StepperContext = React.createContext<StepperContextValue>({
   activeStep: 0,
   orientation: 'horizontal',
+  stepperId: '',
 })
 
 /**
@@ -54,8 +56,9 @@ interface StepperProps extends React.HTMLAttributes<HTMLDivElement> {
 const Stepper = React.forwardRef<HTMLDivElement, StepperProps>(
   ({ activeStep, orientation = 'horizontal', className, children, ...props }, ref) => {
     const steps = React.Children.toArray(children)
+    const stepperId = React.useId()
     return (
-      <StepperContext.Provider value={{ activeStep, orientation }}>
+      <StepperContext.Provider value={{ activeStep, orientation, stepperId }}>
         <div
           ref={ref}
           className={cn(
@@ -74,16 +77,28 @@ const Stepper = React.forwardRef<HTMLDivElement, StepperProps>(
               {index < steps.length - 1 && (
                 <div
                   className={cn(
-                    'flex-1 transition-colors duration-moderate-01 ease-productive-standard',
+                    'relative flex-1 overflow-hidden',
                     orientation === 'vertical'
                       ? 'ml-ds-04 w-ds-01 min-h-ds-05'
                       : 'h-ds-01 min-w-ds-05',
-                    index < activeStep
-                      ? 'bg-interactive'
-                      : 'bg-border',
+                    'bg-border',
                   )}
                   aria-hidden="true"
-                />
+                >
+                  {/* Animated filled portion */}
+                  <motion.div
+                    className={cn(
+                      'absolute inset-0 bg-interactive',
+                      orientation === 'vertical' ? 'origin-top' : 'origin-left',
+                    )}
+                    initial={false}
+                    animate={{
+                      [orientation === 'vertical' ? 'scaleY' : 'scaleX']:
+                        index < activeStep ? 1 : 0,
+                    }}
+                    transition={springs.smooth}
+                  />
+                </div>
               )}
             </React.Fragment>
           ))}
@@ -115,7 +130,7 @@ type StepInternalProps = StepProps & { _index?: number }
 
 const Step = React.forwardRef<HTMLDivElement, StepInternalProps>(
   ({ label, description, icon, className, _index = 0, ...props }, ref) => {
-    const { activeStep, orientation } = React.useContext(StepperContext)
+    const { activeStep, orientation, stepperId } = React.useContext(StepperContext)
     const state: StepState = _index < activeStep ? 'completed' : _index === activeStep ? 'active' : 'pending'
 
     return (
@@ -133,30 +148,40 @@ const Step = React.forwardRef<HTMLDivElement, StepInternalProps>(
       >
         <div
           className={cn(
-            'flex-shrink-0 flex items-center justify-center w-ds-sm h-ds-sm rounded-ds-full text-ds-sm font-semibold transition-colors duration-fast-01',
+            'relative flex-shrink-0 flex items-center justify-center w-ds-sm h-ds-sm rounded-ds-full text-ds-sm font-semibold',
             state === 'completed' && 'bg-interactive text-text-on-color',
-            state === 'active' && 'bg-interactive text-text-on-color',
+            state === 'active' && 'text-text-on-color',
             state === 'pending' && 'bg-layer-02 text-text-tertiary border border-border',
           )}
         >
-          {icon || (state === 'completed' ? (
-            <motion.svg
-              className="w-ico-sm h-ico-sm"
-              viewBox="0 0 24 24"
-              fill="none"
-              stroke="currentColor"
-              strokeWidth={2.5}
-              strokeLinecap="round"
-              strokeLinejoin="round"
-              initial={{ scale: 0 }}
-              animate={{ scale: 1 }}
-              transition={springs.bouncy}
-            >
-              <polyline points="20 6 9 17 4 12" />
-            </motion.svg>
-          ) : (
-            _index + 1
-          ))}
+          {/* Active step highlight — slides between steps via layoutId */}
+          {state === 'active' && (
+            <motion.div
+              layoutId={`${stepperId}-stepper-active`}
+              className="absolute inset-0 rounded-ds-full bg-interactive"
+              transition={springs.smooth}
+            />
+          )}
+          <span className="relative z-10">
+            {icon || (state === 'completed' ? (
+              <motion.svg
+                className="w-ico-sm h-ico-sm"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                strokeWidth={2.5}
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                initial={{ scale: 0 }}
+                animate={{ scale: 1 }}
+                transition={springs.bouncy}
+              >
+                <polyline points="20 6 9 17 4 12" />
+              </motion.svg>
+            ) : (
+              _index + 1
+            ))}
+          </span>
         </div>
         <div className="flex flex-col">
           <span
@@ -180,7 +205,70 @@ const Step = React.forwardRef<HTMLDivElement, StepInternalProps>(
   },
 )
 
+/**
+ * Props for StepperContent — wraps the content panel for the active step, animating
+ * slide transitions when `activeStep` changes. Detects forward vs backward navigation
+ * and slides content accordingly.
+ *
+ * @example
+ * <StepperContent activeStep={currentStep}>
+ *   {currentStep === 0 && <AccountForm />}
+ *   {currentStep === 1 && <ProfileForm />}
+ *   {currentStep === 2 && <ReviewPanel />}
+ * </StepperContent>
+ */
+interface StepperContentProps {
+  activeStep: number
+  children: React.ReactNode
+  className?: string
+}
+
+const SLIDE_OFFSET = 40
+
+const stepContentVariants = {
+  enter: (direction: number) => ({
+    opacity: 0,
+    x: direction * SLIDE_OFFSET,
+  }),
+  center: {
+    opacity: 1,
+    x: 0,
+  },
+  exit: (direction: number) => ({
+    opacity: 0,
+    x: direction * -SLIDE_OFFSET,
+  }),
+}
+
+function StepperContent({ activeStep, children, className }: StepperContentProps) {
+  const prevStepRef = React.useRef(activeStep)
+  const direction = activeStep >= prevStepRef.current ? 1 : -1
+
+  React.useEffect(() => {
+    prevStepRef.current = activeStep
+  }, [activeStep])
+
+  return (
+    <div className={cn('relative overflow-hidden', className)}>
+      <AnimatePresence mode="wait" custom={direction}>
+        <motion.div
+          key={activeStep}
+          custom={direction}
+          variants={stepContentVariants}
+          initial="enter"
+          animate="center"
+          exit="exit"
+          transition={springs.smooth}
+        >
+          {children}
+        </motion.div>
+      </AnimatePresence>
+    </div>
+  )
+}
+
 Stepper.displayName = 'Stepper'
 Step.displayName = 'Step'
+StepperContent.displayName = 'StepperContent'
 
-export { Stepper, Step, type StepperProps, type StepProps }
+export { Stepper, Step, StepperContent, type StepperProps, type StepProps, type StepperContentProps }

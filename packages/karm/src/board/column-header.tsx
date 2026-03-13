@@ -2,6 +2,8 @@
 
 import * as React from 'react'
 import { useState, useRef, useCallback } from 'react'
+import { motion, AnimatePresence } from 'framer-motion'
+import { springs } from '@/ui/lib/motion'
 import { cn } from '@/ui/lib/utils'
 import { Button } from '@/ui/button'
 import { Input } from '@/ui/input'
@@ -347,130 +349,128 @@ export const ColumnHeader = React.forwardRef<HTMLDivElement, ColumnHeaderProps>(
       )}
 
       {/* Quick-add task form — animated expand/collapse */}
-      <div
-        className={cn(
-          'grid transition-[grid-template-rows,opacity] duration-200 ease-out',
-          isAdding ? 'grid-rows-[1fr] opacity-100' : 'grid-rows-[0fr] opacity-0',
-        )}
-      >
-        <div className="overflow-hidden">
-          <div className="px-ds-04 pb-ds-03 flex flex-col gap-ds-02">
-            {/* eslint-disable-next-line jsx-a11y/no-autofocus -- intentional: input appears after user clicks "Add task" */}
-            <Input
-              ref={addInputRef}
-              value={newTitle}
-              onChange={(e) => setNewTitle(e.target.value)}
-              onKeyDown={handleAddKeyDown}
-              placeholder="Task title..."
-              aria-label="New task title"
-              size="sm"
-              tabIndex={isAdding ? 0 : -1}
-              autoFocus={isAdding}
-            />
+      <AnimatePresence initial={false}>
+        {isAdding && (
+          <motion.div
+            initial={{ height: 0, opacity: 0 }}
+            animate={{ height: 'auto', opacity: 1 }}
+            exit={{ height: 0, opacity: 0 }}
+            transition={springs.smooth}
+            className="overflow-hidden"
+          >
+            <div className="px-ds-04 pb-ds-03 flex flex-col gap-ds-02">
+              {/* eslint-disable-next-line jsx-a11y/no-autofocus -- intentional: input appears after user clicks "Add task" */}
+              <Input
+                ref={addInputRef}
+                value={newTitle}
+                onChange={(e) => setNewTitle(e.target.value)}
+                onKeyDown={handleAddKeyDown}
+                placeholder="Task title..."
+                aria-label="New task title"
+                size="sm"
+                autoFocus
+              />
 
-            {/* Options row: lead + date icons, then confirm/cancel */}
-            <div className="flex items-center gap-ds-01">
-              {/* Lead picker */}
-              <DropdownMenu>
-                <DropdownMenuTrigger asChild>
-                  <button
-                    className={cn(
-                      'flex items-center justify-center h-6 w-6 rounded-ds-md transition-colors',
-                      newOwnerId
-                        ? 'text-interactive bg-interactive-subtle'
-                        : 'text-text-tertiary hover:text-text-primary hover:bg-layer-active',
-                    )}
-                    title={newOwnerId
-                      ? `Lead: ${allMembers.find((m) => m.id === newOwnerId)?.name}`
-                      : 'Assign task lead'}
-                    aria-label="Assign task lead"
-                    tabIndex={isAdding ? 0 : -1}
-                  >
-                    <IconUser className="h-3.5 w-3.5" />
-                  </button>
-                </DropdownMenuTrigger>
-                <DropdownMenuContent align="start" className="w-44 max-h-48 overflow-y-auto">
-                  {allMembers.length === 0 && (
-                    <div className="px-ds-03 py-ds-02 text-ds-xs text-text-tertiary">
-                      No members found
-                    </div>
-                  )}
-                  {newOwnerId && (
-                    <>
-                      <DropdownMenuItem onClick={() => setNewOwnerId(null)}>
-                        <IconX className="mr-ds-02 h-3 w-3 text-text-tertiary" />
-                        Clear lead
-                      </DropdownMenuItem>
-                      <DropdownMenuSeparator />
-                    </>
-                  )}
-                  {allMembers.map((member) => (
-                    <DropdownMenuItem
-                      key={member.id}
-                      onClick={() => setNewOwnerId(member.id)}
-                      className={cn(newOwnerId === member.id && 'bg-interactive-subtle')}
+              {/* Options row: lead + date icons, then confirm/cancel */}
+              <div className="flex items-center gap-ds-01">
+                {/* Lead picker */}
+                <DropdownMenu>
+                  <DropdownMenuTrigger asChild>
+                    <button
+                      className={cn(
+                        'flex items-center justify-center h-6 w-6 rounded-ds-md transition-colors',
+                        newOwnerId
+                          ? 'text-interactive bg-interactive-subtle'
+                          : 'text-text-tertiary hover:text-text-primary hover:bg-layer-active',
+                      )}
+                      title={newOwnerId
+                        ? `Lead: ${allMembers.find((m) => m.id === newOwnerId)?.name}`
+                        : 'Assign task lead'}
+                      aria-label="Assign task lead"
                     >
-                      {member.name}
-                    </DropdownMenuItem>
-                  ))}
-                </DropdownMenuContent>
-              </DropdownMenu>
+                      <IconUser className="h-3.5 w-3.5" />
+                    </button>
+                  </DropdownMenuTrigger>
+                  <DropdownMenuContent align="start" className="w-44 max-h-48 overflow-y-auto">
+                    {allMembers.length === 0 && (
+                      <div className="px-ds-03 py-ds-02 text-ds-xs text-text-tertiary">
+                        No members found
+                      </div>
+                    )}
+                    {newOwnerId && (
+                      <>
+                        <DropdownMenuItem onClick={() => setNewOwnerId(null)}>
+                          <IconX className="mr-ds-02 h-3 w-3 text-text-tertiary" />
+                          Clear lead
+                        </DropdownMenuItem>
+                        <DropdownMenuSeparator />
+                      </>
+                    )}
+                    {allMembers.map((member) => (
+                      <DropdownMenuItem
+                        key={member.id}
+                        onClick={() => setNewOwnerId(member.id)}
+                        className={cn(newOwnerId === member.id && 'bg-interactive-subtle')}
+                      >
+                        {member.name}
+                      </DropdownMenuItem>
+                    ))}
+                  </DropdownMenuContent>
+                </DropdownMenu>
 
-              {/* Due date — calendar icon triggers hidden date input */}
-              <label
-                className={cn(
-                  'relative flex items-center justify-center h-6 w-6 rounded-ds-md cursor-pointer transition-colors',
-                  newDueDate
-                    ? 'text-interactive bg-interactive-subtle'
-                    : 'text-text-tertiary hover:text-text-primary hover:bg-layer-active',
-                )}
-                title={newDueDate ? `Due: ${newDueDate}` : 'Set due date'}
-                aria-label="Set due date"
-              >
-                <IconCalendar className="h-3.5 w-3.5" />
-                <input
-                  type="date"
-                  value={newDueDate}
-                  onChange={(e) => setNewDueDate(e.target.value)}
-                  className="absolute inset-0 opacity-0 cursor-pointer w-full h-full"
-                  aria-label="Due date"
-                  tabIndex={isAdding ? 0 : -1}
-                />
-              </label>
+                {/* Due date — calendar icon triggers hidden date input */}
+                <label
+                  className={cn(
+                    'relative flex items-center justify-center h-6 w-6 rounded-ds-md cursor-pointer transition-colors',
+                    newDueDate
+                      ? 'text-interactive bg-interactive-subtle'
+                      : 'text-text-tertiary hover:text-text-primary hover:bg-layer-active',
+                  )}
+                  title={newDueDate ? `Due: ${newDueDate}` : 'Set due date'}
+                  aria-label="Set due date"
+                >
+                  <IconCalendar className="h-3.5 w-3.5" />
+                  <input
+                    type="date"
+                    value={newDueDate}
+                    onChange={(e) => setNewDueDate(e.target.value)}
+                    className="absolute inset-0 opacity-0 cursor-pointer w-full h-full"
+                    aria-label="Due date"
+                  />
+                </label>
 
-              <div className="flex-1" />
+                <div className="flex-1" />
 
-              {/* Confirm */}
-              <button
-                onClick={handleAddTask}
-                disabled={!newTitle.trim()}
-                className={cn(
-                  'flex items-center justify-center h-6 w-6 rounded-ds-md transition-colors',
-                  newTitle.trim()
-                    ? 'text-success hover:bg-success-surface'
-                    : 'text-text-quaternary cursor-not-allowed',
-                )}
-                title="Confirm add task"
-                aria-label="Confirm add task"
-                tabIndex={isAdding ? 0 : -1}
-              >
-                <IconCheck className="h-3.5 w-3.5" />
-              </button>
+                {/* Confirm */}
+                <button
+                  onClick={handleAddTask}
+                  disabled={!newTitle.trim()}
+                  className={cn(
+                    'flex items-center justify-center h-6 w-6 rounded-ds-md transition-colors',
+                    newTitle.trim()
+                      ? 'text-success hover:bg-success-surface'
+                      : 'text-text-quaternary cursor-not-allowed',
+                  )}
+                  title="Confirm add task"
+                  aria-label="Confirm add task"
+                >
+                  <IconCheck className="h-3.5 w-3.5" />
+                </button>
 
-              {/* Cancel */}
-              <button
-                onClick={resetAddForm}
-                className="flex items-center justify-center h-6 w-6 rounded-ds-md text-text-tertiary hover:text-text-primary hover:bg-layer-active transition-colors"
-                title="Cancel"
-                aria-label="Cancel adding task"
-                tabIndex={isAdding ? 0 : -1}
-              >
-                <IconX className="h-3.5 w-3.5" />
-              </button>
+                {/* Cancel */}
+                <button
+                  onClick={resetAddForm}
+                  className="flex items-center justify-center h-6 w-6 rounded-ds-md text-text-tertiary hover:text-text-primary hover:bg-layer-active transition-colors"
+                  title="Cancel"
+                  aria-label="Cancel adding task"
+                >
+                  <IconX className="h-3.5 w-3.5" />
+                </button>
+              </div>
             </div>
-          </div>
-        </div>
-      </div>
+          </motion.div>
+        )}
+      </AnimatePresence>
     </div>
   )
 })

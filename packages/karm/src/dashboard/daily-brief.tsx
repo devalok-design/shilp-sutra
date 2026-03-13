@@ -2,8 +2,10 @@
 
 import * as React from 'react'
 import { useState } from 'react'
+import { motion, AnimatePresence } from 'framer-motion'
 import ReactMarkdown from 'react-markdown'
 import { IconChevronDown, IconRefresh, IconSparkles } from '@tabler/icons-react'
+import { springs } from '@/ui/lib/motion'
 import { cn } from '@/ui/lib/utils'
 
 // ============================================================
@@ -147,25 +149,33 @@ const DailyBrief = React.forwardRef<HTMLDivElement, DailyBriefProps>(
         </div>
       </div>
 
-      <div className={cn('grid transition-[grid-template-rows] duration-200', showContent ? 'grid-rows-[1fr]' : 'grid-rows-[0fr]')}>
-        <div className="overflow-hidden">
-          <div className="flex flex-col gap-ds-03 border-t border-border px-ds-05b pb-ds-05b pt-ds-05">
-            {data.brief.map((item, index) => (
-              <div key={index} className="flex items-start gap-ds-04">
-                <div
-                  className={cn('mt-ds-02b h-2 w-2 shrink-0 rounded-ds-full', DOT_COLORS[index % DOT_COLORS.length])}
-                />
-                <div className="text-ds-md text-text-secondary [&_p]:mb-0 [&_strong]:font-semibold [&_code]:rounded [&_code]:bg-field [&_code]:px-1 [&_code]:py-ds-01 [&_code]:text-ds-sm [&_a]:text-interactive [&_a]:underline">
-                  <ReactMarkdown>{item}</ReactMarkdown>
+      <AnimatePresence initial={false}>
+        {showContent && (
+          <motion.div
+            initial={{ height: 0, opacity: 0 }}
+            animate={{ height: 'auto', opacity: 1 }}
+            exit={{ height: 0, opacity: 0 }}
+            transition={springs.smooth}
+            className="overflow-hidden"
+          >
+            <div className="flex flex-col gap-ds-03 border-t border-border px-ds-05b pb-ds-05b pt-ds-05">
+              {data.brief.map((item, index) => (
+                <div key={index} className="flex items-start gap-ds-04">
+                  <div
+                    className={cn('mt-ds-02b h-2 w-2 shrink-0 rounded-ds-full', DOT_COLORS[index % DOT_COLORS.length])}
+                  />
+                  <div className="text-ds-md text-text-secondary [&_p]:mb-0 [&_strong]:font-semibold [&_code]:rounded [&_code]:bg-field [&_code]:px-1 [&_code]:py-ds-01 [&_code]:text-ds-sm [&_a]:text-interactive [&_a]:underline">
+                    <ReactMarkdown>{item}</ReactMarkdown>
+                  </div>
                 </div>
+              ))}
+              <div className="mt-ds-02 text-ds-xs text-text-placeholder">
+                Generated {formatRelativeTime(data.generatedAt)}
               </div>
-            ))}
-            <div className="mt-ds-02 text-ds-xs text-text-placeholder">
-              Generated {formatRelativeTime(data.generatedAt)}
             </div>
-          </div>
-        </div>
-      </div>
+          </motion.div>
+        )}
+      </AnimatePresence>
     </div>
   )
 },

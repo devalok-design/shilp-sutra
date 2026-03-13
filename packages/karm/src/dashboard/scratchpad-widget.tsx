@@ -2,8 +2,9 @@
 
 import * as React from 'react'
 import { useState, useRef, useEffect } from 'react'
-import { motion } from 'framer-motion'
+import { motion, AnimatePresence } from 'framer-motion'
 import { IconX } from '@tabler/icons-react'
+import { springs } from '@/ui/lib/motion'
 import { cn } from '@/ui/lib/utils'
 import { Checkbox } from '@/ui/checkbox'
 import { Input } from '@/ui/input'
@@ -187,34 +188,40 @@ const ScratchpadWidget = React.forwardRef<HTMLDivElement, ScratchpadWidgetProps>
             </div>
           ) : (
             <div className="flex flex-col gap-ds-02b">
-              {items.map((item) => (
-                <div
-                  key={item.id}
-                  className="group flex items-center gap-ds-03 rounded-ds-md px-ds-02 py-ds-02 transition-colors hover:bg-layer-02"
-                >
-                  <Checkbox
-                    checked={item.done}
-                    onCheckedChange={(checked) => onToggle(item.id, checked === true)}
-                    aria-label={`Toggle ${item.text}`}
-                  />
-                  <span
-                    className={cn(
-                      'flex-1 text-ds-md transition-all duration-200 ease-in-out',
-                      item.done && 'text-text-placeholder line-through',
-                    )}
+              <AnimatePresence initial={false}>
+                {items.map((item) => (
+                  <motion.div
+                    key={item.id}
+                    initial={{ opacity: 0, x: -10 }}
+                    animate={{ opacity: 1, x: 0 }}
+                    exit={{ opacity: 0, x: 20, height: 0 }}
+                    transition={springs.snappy}
+                    className="group flex items-center gap-ds-03 rounded-ds-md px-ds-02 py-ds-02 transition-colors hover:bg-layer-02"
                   >
-                    {item.text}
-                  </span>
-                  <button
-                    type="button"
-                    onClick={() => onDelete(item.id)}
-                    aria-label={`Delete ${item.text}`}
-                    className="flex h-ico-md w-ico-md items-center justify-center rounded-ds-sm opacity-0 transition-opacity group-hover:opacity-100 group-focus-within:opacity-100 hover:bg-layer-03"
-                  >
-                    <IconX className="h-3 w-3 text-text-placeholder" />
-                  </button>
-                </div>
-              ))}
+                    <Checkbox
+                      checked={item.done}
+                      onCheckedChange={(checked) => onToggle(item.id, checked === true)}
+                      aria-label={`Toggle ${item.text}`}
+                    />
+                    <span
+                      className={cn(
+                        'flex-1 text-ds-md transition-all duration-200 ease-in-out',
+                        item.done && 'text-text-placeholder line-through',
+                      )}
+                    >
+                      {item.text}
+                    </span>
+                    <button
+                      type="button"
+                      onClick={() => onDelete(item.id)}
+                      aria-label={`Delete ${item.text}`}
+                      className="flex h-ico-md w-ico-md items-center justify-center rounded-ds-sm opacity-0 transition-opacity group-hover:opacity-100 group-focus-within:opacity-100 hover:bg-layer-03"
+                    >
+                      <IconX className="h-3 w-3 text-text-placeholder" />
+                    </button>
+                  </motion.div>
+                ))}
+              </AnimatePresence>
             </div>
           )}
 

@@ -3,7 +3,9 @@
 import * as React from "react"
 import * as AvatarPrimitive from "@primitives/react-avatar"
 import { cva, type VariantProps } from "class-variance-authority"
+import { motion } from "framer-motion"
 
+import { tweens } from "./lib/motion"
 import { cn } from "./lib/utils"
 
 export const avatarVariants = cva(
@@ -127,11 +129,18 @@ const AvatarImage = React.forwardRef<
   React.ElementRef<typeof AvatarPrimitive.Image>,
   React.ComponentPropsWithoutRef<typeof AvatarPrimitive.Image>
 >(({ className, ...props }, ref) => (
-  <AvatarPrimitive.Image
-    ref={ref}
-    className={cn("aspect-square h-full w-full", className)}
-    {...props}
-  />
+  <motion.span
+    initial={{ opacity: 0 }}
+    animate={{ opacity: 1 }}
+    transition={tweens.fade}
+    className="h-full w-full"
+  >
+    <AvatarPrimitive.Image
+      ref={ref}
+      className={cn("aspect-square h-full w-full", className)}
+      {...props}
+    />
+  </motion.span>
 ))
 AvatarImage.displayName = AvatarPrimitive.Image.displayName
 

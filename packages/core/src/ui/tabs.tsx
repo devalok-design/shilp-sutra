@@ -3,7 +3,12 @@
 import * as TabsPrimitive from '@primitives/react-tabs'
 import * as React from 'react'
 import { cva, type VariantProps } from 'class-variance-authority'
+import { motion, LayoutGroup } from 'framer-motion'
 import { cn } from './lib/utils'
+import { springs } from './lib/motion'
+
+/* ── Active-value context (drives layoutId indicator) ────── */
+const TabsValueContext = React.createContext<string | undefined>(undefined)
 
 /**
  * Tabs compound component — accessible tabbed navigation with keyboard support and two visual
@@ -18,6 +23,9 @@ import { cn } from './lib/utils'
  * **Critical behavior:** `variant` set on `TabsList` propagates automatically via React context to
  * all `TabsTrigger` children. You do NOT need to repeat `variant` on each trigger — but you CAN
  * override it per-trigger if needed.
+ *
+ * The active tab indicator animates between tabs using Framer Motion `layoutId`. Line variant
+ * shows a sliding underline; contained variant shows a sliding pill background.
  *
  * @compound
  * @example
@@ -45,13 +53,49 @@ import { cn } from './lib/utils'
  *   <TabsContent value="roles">Roles list here.</TabsContent>
  * </Tabs>
  */
-const Tabs = TabsPrimitive.Root
+const Tabs = React.forwardRef<
+  React.ElementRef<typeof TabsPrimitive.Root>,
+  React.ComponentPropsWithoutRef<typeof TabsPrimitive.Root>
+>(({ value: valueProp, defaultValue, onValueChange, ...props }, ref) => {
+  // Track the active value so TabsTrigger can conditionally render the motion indicator.
+  // For controlled usage, mirror the prop; for uncontrolled, manage internal state.
+  const [activeValue, setActiveValue] = React.useState(valueProp ?? defaultValue ?? '')
+
+  // Sync controlled value
+  React.useEffect(() => {
+    if (valueProp !== undefined) setActiveValue(valueProp)
+  }, [valueProp])
+
+  const handleValueChange = React.useCallback(
+    (newValue: string) => {
+      setActiveValue(newValue)
+      onValueChange?.(newValue)
+    },
+    [onValueChange],
+  )
+
+  return (
+    <TabsValueContext.Provider value={activeValue}>
+      <TabsPrimitive.Root
+        ref={ref}
+        value={valueProp}
+        defaultValue={valueProp === undefined ? defaultValue : undefined}
+        onValueChange={handleValueChange}
+        {...props}
+      />
+    </TabsValueContext.Provider>
+  )
+})
+Tabs.displayName = 'Tabs'
 
 /** Props for the Tabs root (defaultValue, value, onValueChange, etc.). */
 export type TabsProps = React.ComponentPropsWithoutRef<typeof TabsPrimitive.Root>
 
 type TabsVariant = 'line' | 'contained'
-const TabsListContext = React.createContext<{ variant: TabsVariant }>({ variant: 'line' })
+const TabsListContext = React.createContext<{ variant: TabsVariant; layoutId: string }>({
+  variant: 'line',
+  layoutId: 'tab-indicator',
+})
 
 const tabsListVariants = cva('inline-flex items-center', {
   variants: {
@@ -65,19 +109,19 @@ const tabsListVariants = cva('inline-flex items-center', {
 })
 
 const tabsTriggerVariants = cva(
-  'inline-flex items-center justify-center gap-ds-02 whitespace-nowrap font-sans text-ds-md font-medium transition-colors duration-100 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-focus focus-visible:ring-offset-1 disabled:pointer-events-none disabled:opacity-[0.38]',
+  'relative inline-flex items-center justify-center gap-ds-02 whitespace-nowrap font-sans text-ds-md font-medium transition-colors duration-100 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-focus focus-visible:ring-offset-1 disabled:pointer-events-none disabled:opacity-[0.38]',
   {
     variants: {
       variant: {
         line: [
-          'px-ds-05 py-ds-03 -mb-px border-b-2 border-transparent',
+          'px-ds-05 py-ds-03 -mb-px',
           'text-text-secondary hover:text-text-primary',
-          'data-[state=active]:border-interactive data-[state=active]:text-interactive',
+          'data-[state=active]:text-interactive',
         ],
         contained: [
           'px-ds-05 py-ds-02b rounded-ds-md',
           'text-text-secondary hover:text-text-primary',
-          'data-[state=active]:bg-layer-01 data-[state=active]:shadow-01 data-[state=active]:text-text-primary',
+          'data-[state=active]:text-text-primary',
         ],
       },
     },
@@ -112,13 +156,16 @@ const TabsList = React.forwardRef<
   TabsListProps
 >(({ className, variant, ...props }, ref) => {
   const resolved: TabsVariant = variant ?? 'line'
+  const layoutId = React.useId()
   return (
-    <TabsListContext.Provider value={{ variant: resolved }}>
-      <TabsPrimitive.List
-        ref={ref}
-        className={cn(tabsListVariants({ variant: resolved }), className)}
-        {...props}
-      />
+    <TabsListContext.Provider value={{ variant: resolved, layoutId: `tab-indicator-${layoutId}` }}>
+      <LayoutGroup>
+        <TabsPrimitive.List
+          ref={ref}
+          className={cn(tabsListVariants({ variant: resolved }), className)}
+          {...props}
+        />
+      </LayoutGroup>
     </TabsListContext.Provider>
   )
 })
@@ -131,16 +178,37 @@ export interface TabsTriggerProps
 const TabsTrigger = React.forwardRef<
   React.ElementRef<typeof TabsPrimitive.Trigger>,
   TabsTriggerProps
->(({ className, variant: variantProp, ...props }, ref) => {
-  const context = React.useContext(TabsListContext)
-  const variant = variantProp ?? context.variant
+>(({ className, variant: variantProp, children, ...props }, ref) => {
+  const listContext = React.useContext(TabsListContext)
+  const activeValue = React.useContext(TabsValueContext)
+  const variant = variantProp ?? listContext.variant
+  const isActive = props.value === activeValue
 
   return (
     <TabsPrimitive.Trigger
       ref={ref}
       className={cn(tabsTriggerVariants({ variant }), className)}
       {...props}
-    />
+    >
+      {/* Contained variant: sliding pill background */}
+      {variant === 'contained' && isActive && (
+        <motion.span
+          layoutId={`${listContext.layoutId}-contained`}
+          className="absolute inset-0 rounded-ds-md bg-layer-01 shadow-01"
+          transition={springs.smooth}
+        />
+      )}
+      {/* Content sits above the indicator */}
+      <span className="relative z-[1] inline-flex items-center gap-ds-02">{children}</span>
+      {/* Line variant: sliding underline */}
+      {variant === 'line' && isActive && (
+        <motion.span
+          layoutId={`${listContext.layoutId}-line`}
+          className="absolute bottom-0 left-0 right-0 h-0.5 bg-interactive"
+          transition={springs.smooth}
+        />
+      )}
+    </TabsPrimitive.Trigger>
   )
 })
 TabsTrigger.displayName = TabsPrimitive.Trigger.displayName

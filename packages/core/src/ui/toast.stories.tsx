@@ -162,6 +162,28 @@ export const PromiseToast: Story = {
   },
 }
 
+export const PromiseToastError: Story = {
+  render: () => {
+    return (
+      <Button
+        variant="destructive"
+        onClick={() =>
+          toast.promise(
+            new Promise<void>((_resolve, reject) => setTimeout(() => reject(new Error('Network error')), 2000)),
+            {
+              loading: 'Saving...',
+              success: 'Saved!',
+              error: 'Failed to save',
+            },
+          )
+        }
+      >
+        Show Promise Toast (Error)
+      </Button>
+    )
+  },
+}
+
 /* ---------------------------------------------------------------------------
  * Upload — single file
  * ------------------------------------------------------------------------ */

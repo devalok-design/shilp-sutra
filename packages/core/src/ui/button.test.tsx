@@ -104,4 +104,62 @@ describe('Button', () => {
     render(<Button fullWidth>Wide</Button>)
     expect(screen.getByRole('button')).toHaveClass('w-full')
   })
+
+  it('onClickAsync — renders correctly with async prop', () => {
+    const asyncFn = vi.fn(() => Promise.resolve())
+    render(<Button onClickAsync={asyncFn}>Save</Button>)
+    const button = screen.getByRole('button')
+    expect(button).not.toBeDisabled()
+    expect(button).not.toHaveAttribute('aria-busy')
+  })
+
+  it('onClickAsync — click triggers loading then success', async () => {
+    const user = userEvent.setup()
+    let resolveFn!: () => void
+    const asyncFn = vi.fn(
+      () => new Promise<void>((resolve) => { resolveFn = resolve }),
+    )
+
+    render(<Button onClickAsync={asyncFn}>Save</Button>)
+    const button = screen.getByRole('button')
+
+    // 1. Click — should call asyncFn and enter loading state
+    await user.click(button)
+    expect(asyncFn).toHaveBeenCalledOnce()
+    expect(button).toBeDisabled()
+    expect(button).toHaveAttribute('aria-busy', 'true')
+
+    // 2. Resolve the promise — should enter success state
+    await vi.waitFor(() => {
+      resolveFn()
+    })
+    await vi.waitFor(() => {
+      expect(button).not.toHaveAttribute('aria-busy')
+    })
+  })
+
+  it('onClickAsync — click triggers loading then error on rejection', async () => {
+    const user = userEvent.setup()
+    let rejectFn!: (reason: Error) => void
+    const asyncFn = vi.fn(
+      () => new Promise<void>((_resolve, reject) => { rejectFn = reject }),
+    )
+
+    render(<Button onClickAsync={asyncFn}>Save</Button>)
+    const button = screen.getByRole('button')
+
+    // 1. Click — should call asyncFn and enter loading state
+    await user.click(button)
+    expect(asyncFn).toHaveBeenCalledOnce()
+    expect(button).toBeDisabled()
+    expect(button).toHaveAttribute('aria-busy', 'true')
+
+    // 2. Reject the promise — should enter error state (still disabled, no longer busy)
+    await vi.waitFor(() => {
+      rejectFn(new Error('fail'))
+    })
+    await vi.waitFor(() => {
+      expect(button).not.toHaveAttribute('aria-busy')
+    })
+  })
 })

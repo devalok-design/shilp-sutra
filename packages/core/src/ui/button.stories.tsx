@@ -274,6 +274,95 @@ export const FullWidth: Story = {
   ),
 }
 
+/* ---------------------------------------------------------------------------
+ * Async Button — promise-driven loading → success / error
+ * ------------------------------------------------------------------------ */
+
+export const AsyncSuccess: Story = {
+  name: 'Async → Success',
+  render: () => (
+    <Button
+      startIcon={<IconSend size={16} />}
+      onClickAsync={() => new Promise((resolve) => setTimeout(resolve, 1500))}
+    >
+      Save changes
+    </Button>
+  ),
+}
+
+export const AsyncError: Story = {
+  name: 'Async → Error',
+  render: () => (
+    <Button
+      variant="solid"
+      startIcon={<IconSend size={16} />}
+      onClickAsync={() => new Promise((_r, reject) => setTimeout(() => reject(new Error('fail')), 1500))}
+    >
+      Save changes
+    </Button>
+  ),
+}
+
+export const AsyncAllVariants: Story = {
+  name: 'Async — All Variants',
+  render: () => {
+    const variants = ['solid', 'outline', 'ghost'] as const
+    return (
+      <div className="flex flex-col gap-ds-06">
+        <div>
+          <p className="mb-ds-03 text-ds-sm font-semibold text-text-secondary">
+            Click each — 1.5s loading → success
+          </p>
+          <div className="flex flex-wrap items-center gap-ds-03">
+            {variants.map((v) => (
+              <Button
+                key={v}
+                variant={v}
+                onClickAsync={() => new Promise((resolve) => setTimeout(resolve, 1500))}
+              >
+                {v}
+              </Button>
+            ))}
+          </div>
+        </div>
+        <div>
+          <p className="mb-ds-03 text-ds-sm font-semibold text-text-secondary">
+            Click each — 1.5s loading → error
+          </p>
+          <div className="flex flex-wrap items-center gap-ds-03">
+            {variants.map((v) => (
+              <Button
+                key={v}
+                variant={v}
+                onClickAsync={() => new Promise((_r, reject) => setTimeout(() => reject(new Error('fail')), 1500))}
+              >
+                {v}
+              </Button>
+            ))}
+          </div>
+        </div>
+        <div>
+          <p className="mb-ds-03 text-ds-sm font-semibold text-text-secondary">
+            Destructive — delete with error chance
+          </p>
+          <Button
+            variant="solid"
+            color="error"
+            startIcon={<IconTrash size={16} />}
+            onClickAsync={() =>
+              new Promise((resolve, reject) =>
+                setTimeout(() => (Math.random() > 0.5 ? resolve() : reject(new Error('fail'))), 1500),
+              )
+            }
+          >
+            Delete project
+          </Button>
+        </div>
+      </div>
+    )
+  },
+}
+
 export const AllFeatures: Story = {
   render: () => (
     <div className="flex flex-col gap-ds-07">

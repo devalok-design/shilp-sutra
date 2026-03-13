@@ -1,10 +1,11 @@
 'use client'
 
 import React, { useState, useRef } from 'react'
-import { motion, AnimatePresence } from 'framer-motion'
+import { motion, AnimatePresence, LayoutGroup } from 'framer-motion'
 import { cva } from 'class-variance-authority'
 import { cn } from './lib/utils'
 import { useRipple } from './lib/use-ripple'
+import { springs } from './lib/motion'
 
 /* ── CVA for the item button ────────────────────────────────── */
 const segmentedControlItemVariants = cva(
@@ -42,20 +43,17 @@ const segmentedControlItemVariants = cva(
       },
     },
     compoundVariants: [
-      // Selected + filled
+      // Selected + filled — bg/shadow handled by motion indicator
       {
         selected: true,
         variant: 'filled',
-        className: [
-          'bg-interactive',
-          'shadow-[0px_1px_3px_0.05px_var(--color-interactive-hover),inset_0px_8px_16px_0px_var(--color-inset-glow-strong),inset_0px_2px_0px_0px_var(--color-inset-glow-subtle)]',
-        ].join(' '),
+        className: '',
       },
-      // Selected + tonal
+      // Selected + tonal — bg handled by motion indicator
       {
         selected: true,
         variant: 'tonal',
-        className: 'bg-field text-text-primary',
+        className: 'text-text-primary',
       },
       // Hover + filled
       {
@@ -265,21 +263,23 @@ const SegmentedControl = React.forwardRef<HTMLDivElement, SegmentedControlProps>
       aria-label="Segmented control options"
       {...props}
     >
-      {options.map((option) => (
-        <SegmentedControlItem
-          key={option.id}
-          size={resolved}
-          variant={variant}
-          text={option.text}
-          icon={option.icon}
-          isSelected={option.id === selectedId}
-          onClick={() => onSelect(option.id)}
-          disabled={disabled}
-          isFocused={option.id === focusedId}
-          onFocus={() => setFocusedId(option.id)}
-          onBlur={() => setFocusedId(null)}
-        />
-      ))}
+      <LayoutGroup>
+        {options.map((option) => (
+          <SegmentedControlItem
+            key={option.id}
+            size={resolved}
+            variant={variant}
+            text={option.text}
+            icon={option.icon}
+            isSelected={option.id === selectedId}
+            onClick={() => onSelect(option.id)}
+            disabled={disabled}
+            isFocused={option.id === focusedId}
+            onFocus={() => setFocusedId(option.id)}
+            onBlur={() => setFocusedId(null)}
+          />
+        ))}
+      </LayoutGroup>
     </div>
   )
 },
@@ -401,6 +401,19 @@ const SegmentedControlItem = React.forwardRef<HTMLButtonElement, SegmentedContro
       onFocus={onFocus}
       onBlur={onBlur}
     >
+      {/* Sliding active indicator — only mounted in the selected segment */}
+      {isSelected && (
+        <motion.span
+          layoutId="segment-indicator"
+          className={cn(
+            'absolute inset-0 rounded-ds-full pointer-events-none',
+            variant === 'filled'
+              ? 'bg-interactive shadow-[0px_1px_3px_0.05px_var(--color-interactive-hover),inset_0px_8px_16px_0px_var(--color-inset-glow-strong),inset_0px_2px_0px_0px_var(--color-inset-glow-subtle)]'
+              : 'bg-field',
+          )}
+          transition={springs.smooth}
+        />
+      )}
       <AnimatePresence>
         {ripples.map((ripple) => (
           <motion.span
@@ -421,8 +434,8 @@ const SegmentedControlItem = React.forwardRef<HTMLButtonElement, SegmentedContro
           />
         ))}
       </AnimatePresence>
-      {Icon && <Icon className="h-ico-sm w-ico-sm shrink-0" />}
-      <span className="font-accent leading-none">{text}</span>
+      {Icon && <Icon className="relative z-[1] h-ico-sm w-ico-sm shrink-0" />}
+      <span className="relative z-[1] font-accent leading-none">{text}</span>
     </button>
   )
 },

@@ -1,8 +1,10 @@
 'use client'
 
 import * as React from 'react'
-import { IconUpload, IconPaperclip } from '@tabler/icons-react'
+import { motion, AnimatePresence } from 'framer-motion'
+import { IconUpload, IconPaperclip, IconCheck } from '@tabler/icons-react'
 import { cn } from './lib/utils'
+import { springs, tweens } from './lib/motion'
 import { Spinner } from './spinner'
 
 /**
@@ -295,12 +297,12 @@ const FileUpload = React.forwardRef<HTMLDivElement, FileUploadProps>(
         onDragLeave={handleDragLeave}
         onDrop={handleDrop}
       >
-        <div
+        <motion.div
           role="button"
           tabIndex={0}
           aria-disabled={disabled || undefined}
           onClick={disabled ? undefined : openPicker}
-          onKeyDown={(e) => {
+          onKeyDown={(e: React.KeyboardEvent<HTMLDivElement>) => {
             if (!disabled && (e.key === 'Enter' || e.key === ' ')) {
               e.preventDefault()
               openPicker()
@@ -309,18 +311,51 @@ const FileUpload = React.forwardRef<HTMLDivElement, FileUploadProps>(
           className={cn(
             'flex flex-col items-center justify-center gap-ds-03 rounded-ds-lg',
             'border-2 border-dashed p-ds-08',
-            'transition-colors cursor-pointer',
+            'cursor-pointer',
             'border-border bg-field',
             isDragActive &&
               'border-interactive bg-interactive-subtle',
             disabled && 'opacity-[0.38] cursor-not-allowed',
           )}
+          animate={{
+            scale: isDragActive ? 1.02 : 1,
+          }}
+          transition={springs.snappy}
         >
-          {uploading ? (
-            <Spinner size="md" />
-          ) : (
-            <IconUpload className="h-ds-sm w-ds-sm text-icon-secondary" />
-          )}
+          {/* Icon — animates between upload ↔ spinner ↔ checkmark */}
+          <AnimatePresence mode="wait">
+            {uploading ? (
+              <motion.div
+                key="spinner"
+                initial={{ opacity: 0, scale: 0.5 }}
+                animate={{ opacity: 1, scale: 1 }}
+                exit={{ opacity: 0, scale: 0.5 }}
+                transition={tweens.fade}
+              >
+                <Spinner size="md" />
+              </motion.div>
+            ) : progress === 100 && !error ? (
+              <motion.div
+                key="complete"
+                initial={{ opacity: 0, scale: 0.5 }}
+                animate={{ opacity: 1, scale: 1 }}
+                exit={{ opacity: 0, scale: 0.5 }}
+                transition={springs.bouncy}
+              >
+                <IconCheck className="h-ds-sm w-ds-sm text-success-text" />
+              </motion.div>
+            ) : (
+              <motion.div
+                key="upload"
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                exit={{ opacity: 0 }}
+                transition={tweens.fade}
+              >
+                <IconUpload className="h-ds-sm w-ds-sm text-icon-secondary" />
+              </motion.div>
+            )}
+          </AnimatePresence>
           <span id={inputId + '-label'} className="text-ds-sm text-text-secondary">
             {defaultLabel}
           </span>
@@ -333,9 +368,10 @@ const FileUpload = React.forwardRef<HTMLDivElement, FileUploadProps>(
                 aria-valuemax={100}
                 className="h-2 w-full overflow-hidden rounded-ds-full bg-field"
               >
-                <div
-                  className="h-full rounded-ds-full bg-interactive transition-all"
-                  style={{ width: `${progress}%` }}
+                <motion.div
+                  className="h-full rounded-ds-full bg-interactive"
+                  animate={{ width: `${progress}%` }}
+                  transition={springs.smooth}
                 />
               </div>
             </div>
@@ -344,7 +380,7 @@ const FileUpload = React.forwardRef<HTMLDivElement, FileUploadProps>(
               {defaultSublabel}
             </span>
           )}
-        </div>
+        </motion.div>
         <input
           ref={inputRef}
           id={inputId}
@@ -361,14 +397,21 @@ const FileUpload = React.forwardRef<HTMLDivElement, FileUploadProps>(
           onFocus={handleInputFocus}
           tabIndex={-1}
         />
-        {displayError && (
-          <p
-            role="alert"
-            className="mt-ds-02 text-ds-xs text-error"
-          >
-            {displayError}
-          </p>
-        )}
+        {/* Error message with shake animation */}
+        <AnimatePresence>
+          {displayError && (
+            <motion.p
+              role="alert"
+              className="mt-ds-02 text-ds-xs text-error"
+              initial={{ opacity: 0, x: 0 }}
+              animate={{ opacity: 1, x: [0, -4, 4, -4, 4, 0] }}
+              exit={{ opacity: 0 }}
+              transition={{ opacity: tweens.fade, x: { type: 'tween', duration: 0.4, ease: 'easeOut' } }}
+            >
+              {displayError}
+            </motion.p>
+          )}
+        </AnimatePresence>
       </div>
     )
   },

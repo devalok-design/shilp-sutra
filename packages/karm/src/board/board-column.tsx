@@ -1,10 +1,12 @@
 'use client'
 
 import * as React from 'react'
+import { motion, AnimatePresence } from 'framer-motion'
 import { useDroppable } from '@dnd-kit/core'
 import { SortableContext, useSortable, verticalListSortingStrategy } from '@dnd-kit/sortable'
 import { CSS } from '@dnd-kit/utilities'
 import { cn } from '@/ui/lib/utils'
+import { springs } from '@/ui/lib/motion'
 import { MotionStagger, MotionStaggerItem } from '@/motion/primitives'
 import { useBoardContext } from './board-context'
 import { ColumnHeader } from './column-header'
@@ -34,13 +36,17 @@ export interface BoardColumnProps extends React.HTMLAttributes<HTMLDivElement> {
 
 function TaskGhost() {
   return (
-    <div
+    <motion.div
+      initial={{ opacity: 0, scale: 0.95 }}
+      animate={{ opacity: 1, scale: 1 }}
+      exit={{ opacity: 0, scale: 0.95 }}
+      transition={springs.snappy}
       className="rounded-ds-lg border-2 border-dashed border-interactive/40 bg-interactive/[0.06] px-ds-04 py-ds-05"
       aria-hidden
     >
       <div className="h-ds-xs-plus w-3/4 rounded-ds-md bg-interactive/10" />
       <div className="mt-ds-02 h-[12px] w-1/2 rounded-ds-md bg-interactive/[0.06]" />
-    </div>
+    </motion.div>
   )
 }
 
@@ -80,21 +86,24 @@ export const BoardColumn = React.forwardRef<HTMLDivElement, BoardColumnProps>(
         <ColumnHeader column={column} index={index} />
 
         {/* Task list — droppable area */}
-        <div
+        <motion.div
           ref={setDroppableRef}
-          className={cn(
-            'no-scrollbar flex flex-1 flex-col gap-ds-02 overflow-y-auto px-ds-03 pt-2.5 pb-ds-03 transition-colors duration-100 ease-out',
-            isOver && 'bg-interactive-subtle/30',
-          )}
+          animate={{
+            backgroundColor: isOver ? 'var(--color-interactive-subtle, rgba(59,130,246,0.3))' : 'transparent',
+          }}
+          transition={springs.snappy}
+          className="no-scrollbar flex flex-1 flex-col gap-ds-02 overflow-y-auto px-ds-03 pt-2.5 pb-ds-03"
         >
           <SortableContext items={taskIds} strategy={verticalListSortingStrategy}>
             <MotionStagger className="contents">
               {column.tasks.map((task, taskIdx) => (
                 <React.Fragment key={task.id}>
                   {/* Ghost silhouette at this position */}
-                  {dragPreview && dragPreview.index === taskIdx && (
-                    <TaskGhost />
-                  )}
+                  <AnimatePresence>
+                    {dragPreview && dragPreview.index === taskIdx && (
+                      <TaskGhost />
+                    )}
+                  </AnimatePresence>
                   <MotionStaggerItem>
                     <TaskContextMenu taskId={task.id}>
                       {viewMode === 'compact' ? (
@@ -108,9 +117,11 @@ export const BoardColumn = React.forwardRef<HTMLDivElement, BoardColumnProps>(
               ))}
             </MotionStagger>
             {/* Ghost at end of list */}
-            {dragPreview && dragPreview.index >= column.tasks.length && (
-              <TaskGhost />
-            )}
+            <AnimatePresence>
+              {dragPreview && dragPreview.index >= column.tasks.length && (
+                <TaskGhost />
+              )}
+            </AnimatePresence>
           </SortableContext>
 
           {/* Empty state */}
@@ -120,10 +131,12 @@ export const BoardColumn = React.forwardRef<HTMLDivElement, BoardColumnProps>(
               isDropTarget={isOver}
             />
           )}
-          {column.tasks.length === 0 && dragPreview && (
-            <TaskGhost />
-          )}
-        </div>
+          <AnimatePresence>
+            {column.tasks.length === 0 && dragPreview && (
+              <TaskGhost />
+            )}
+          </AnimatePresence>
+        </motion.div>
 
       </div>
     )

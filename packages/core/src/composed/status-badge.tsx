@@ -1,5 +1,8 @@
 import * as React from 'react'
 import { cva, type VariantProps } from 'class-variance-authority'
+import { motion, AnimatePresence } from 'framer-motion'
+
+import { motionProps } from '../ui/lib/motion'
 import { cn } from '../ui/lib/utils'
 
 const statusBadgeVariants = cva(
@@ -71,6 +74,8 @@ interface StatusBadgeWithColor extends StatusBadgeBaseProps {
 
 export type StatusBadgeProps = StatusBadgeWithStatus | StatusBadgeWithColor
 
+const statusMorphTransition = { duration: 0.3, ease: 'easeOut' as const }
+
 const StatusBadge = React.forwardRef<HTMLSpanElement, StatusBadgeProps>(
   ({ status, color, size, label, hideDot = false, className, ...props }, ref) => {
     if (color != null) {
@@ -79,13 +84,55 @@ const StatusBadge = React.forwardRef<HTMLSpanElement, StatusBadgeProps>(
       const dotColor = colorDotMap[color]
 
       return (
-        <span
+        <AnimatePresence mode="wait">
+          <motion.span
+            key={color}
+            ref={ref}
+            initial={{ opacity: 0.6 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0.6 }}
+            transition={statusMorphTransition}
+            className={cn(
+              statusBadgeVariants({ color, size }),
+              className,
+            )}
+            {...motionProps(props)}
+          >
+            {!hideDot && (
+              <span
+                className={cn(
+                  'shrink-0 rounded-ds-full',
+                  size === 'sm' ? 'h-ds-02b w-ds-02b' : 'h-[8px] w-[8px]',
+                  dotColor,
+                )}
+                aria-hidden="true"
+              />
+            )}
+            {displayLabel}
+          </motion.span>
+        </AnimatePresence>
+      )
+    }
+
+    // Status branch — derive styling from status (default: 'pending')
+    const statusKey = status ?? 'pending'
+    const displayLabel = label ?? (statusKey.charAt(0).toUpperCase() + statusKey.slice(1))
+    const dotColor = dotColorMap[statusKey]
+
+    return (
+      <AnimatePresence mode="wait">
+        <motion.span
+          key={statusKey}
           ref={ref}
+          initial={{ opacity: 0.6 }}
+          animate={{ opacity: 1 }}
+          exit={{ opacity: 0.6 }}
+          transition={statusMorphTransition}
           className={cn(
-            statusBadgeVariants({ color, size }),
+            statusBadgeVariants({ status: statusKey, size }),
             className,
           )}
-          {...props}
+          {...motionProps(props)}
         >
           {!hideDot && (
             <span
@@ -98,36 +145,8 @@ const StatusBadge = React.forwardRef<HTMLSpanElement, StatusBadgeProps>(
             />
           )}
           {displayLabel}
-        </span>
-      )
-    }
-
-    // Status branch — derive styling from status (default: 'pending')
-    const statusKey = status ?? 'pending'
-    const displayLabel = label ?? (statusKey.charAt(0).toUpperCase() + statusKey.slice(1))
-    const dotColor = dotColorMap[statusKey]
-
-    return (
-      <span
-        ref={ref}
-        className={cn(
-          statusBadgeVariants({ status: statusKey, size }),
-          className,
-        )}
-        {...props}
-      >
-        {!hideDot && (
-          <span
-            className={cn(
-              'shrink-0 rounded-ds-full',
-              size === 'sm' ? 'h-ds-02b w-ds-02b' : 'h-[8px] w-[8px]',
-              dotColor,
-            )}
-            aria-hidden="true"
-          />
-        )}
-        {displayLabel}
-      </span>
+        </motion.span>
+      </AnimatePresence>
     )
   },
 )

@@ -1,15 +1,17 @@
 'use client'
 
 import * as React from 'react'
+import { motion } from 'framer-motion'
 import { scaleBand, scaleLinear } from 'd3-scale'
 import { cn } from '../lib/utils'
+import { tweens } from '../lib/motion'
 import { ChartContainer } from './chart-container'
 import { Axis } from './_internal/axes'
 import { GridLines } from './_internal/grid-lines'
 import { Legend } from './_internal/legend'
 import { ChartTooltip, useChartTooltip } from './_internal/tooltip'
 import { resolveColor } from './_internal/colors'
-import { useReducedMotion, getTransitionDuration } from './_internal/animation'
+import { useReducedMotion } from './_internal/animation'
 import type { DataPoint, ChartColor } from './_internal/types'
 
 export interface BarChartProps extends Omit<React.HTMLAttributes<HTMLDivElement>, 'children' | 'color'> {
@@ -75,10 +77,7 @@ export const BarChart = React.forwardRef<HTMLDivElement, BarChartProps>(
   const { tooltip, show, hide } = useChartTooltip()
   const reducedMotion = useReducedMotion()
   const isVertical = orientation === 'vertical'
-
-  // Keep animate/reducedMotion/getTransitionDuration accessible for future animation work
-  const _duration = getTransitionDuration(reducedMotion, animate ? 300 : 0)
-  void _duration
+  const shouldAnimate = animate && !reducedMotion
 
   // Normalize yKey to array
   const yKeys = Array.isArray(yKey) ? yKey : [yKey]
@@ -104,7 +103,14 @@ export const BarChart = React.forwardRef<HTMLDivElement, BarChartProps>(
       ]
 
   return (
-    <div ref={ref} className={cn('relative', className)} {...props}>
+    <motion.div
+      ref={ref}
+      className={cn('relative', className)}
+      {...(shouldAnimate
+        ? { initial: { opacity: 0, scale: 0.96 }, animate: { opacity: 1, scale: 1 }, transition: tweens.fade }
+        : {})}
+      {...props}
+    >
       <ChartContainer height={height}>
         {({ width, height: innerHeight, margin }) => {
           // Suppress unused-var lint for margin (available for extensions)
@@ -273,7 +279,7 @@ export const BarChart = React.forwardRef<HTMLDivElement, BarChartProps>(
           className="mt-ds-04"
         />
       )}
-    </div>
+    </motion.div>
   )
   },
 )

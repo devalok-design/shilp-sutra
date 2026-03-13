@@ -1,20 +1,11 @@
 'use client'
 
-import { useState, useEffect } from 'react'
+import { useMotion } from '../../../motion/motion-provider'
 
-/** Hook to detect prefers-reduced-motion */
+/** Hook to detect reduced-motion preference via MotionProvider context */
 export function useReducedMotion(): boolean {
-  const [reduced, setReduced] = useState(false)
-
-  useEffect(() => {
-    const mq = window.matchMedia('(prefers-reduced-motion: reduce)')
-    setReduced(mq.matches)
-    const handler = (e: MediaQueryListEvent) => setReduced(e.matches)
-    mq.addEventListener('change', handler)
-    return () => mq.removeEventListener('change', handler)
-  }, [])
-
-  return reduced
+  const { reducedMotion } = useMotion()
+  return reducedMotion
 }
 
 /** Get transition duration respecting reduced motion preference */

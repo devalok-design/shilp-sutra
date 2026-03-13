@@ -217,7 +217,7 @@ export const PieChart = React.forwardRef<HTMLDivElement, PieChartProps>(
                   width={innerR * 1.4}
                   height={innerR * 1.4}
                 >
-                  <div className="flex h-full w-full items-center justify-center text-center text-text-primary">
+                  <div className="flex h-full w-full items-center justify-center text-center text-surface-fg">
                     {centerLabel}
                   </div>
                 </foreignObject>

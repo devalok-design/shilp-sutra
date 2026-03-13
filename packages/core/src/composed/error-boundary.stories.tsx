@@ -84,25 +84,25 @@ export const AllErrorTypes: Story = {
   render: () => (
     <div style={{ display: 'flex', flexDirection: 'column', gap: 32 }}>
       <div>
-        <p style={{ marginBottom: 8, fontSize: 13, fontWeight: 600, color: 'var(--color-text-secondary)' }}>
+        <p style={{ marginBottom: 8, fontSize: 13, fontWeight: 600, color: 'var(--color-surface-fg-muted)' }}>
           404 - Not Found
         </p>
         <ErrorDisplay error={{ status: 404 }} />
       </div>
       <div>
-        <p style={{ marginBottom: 8, fontSize: 13, fontWeight: 600, color: 'var(--color-text-secondary)' }}>
+        <p style={{ marginBottom: 8, fontSize: 13, fontWeight: 600, color: 'var(--color-surface-fg-muted)' }}>
           403 - Forbidden
         </p>
         <ErrorDisplay error={{ status: 403 }} />
       </div>
       <div>
-        <p style={{ marginBottom: 8, fontSize: 13, fontWeight: 600, color: 'var(--color-text-secondary)' }}>
+        <p style={{ marginBottom: 8, fontSize: 13, fontWeight: 600, color: 'var(--color-surface-fg-muted)' }}>
           500 - Server Error
         </p>
         <ErrorDisplay error={{ status: 500 }} />
       </div>
       <div>
-        <p style={{ marginBottom: 8, fontSize: 13, fontWeight: 600, color: 'var(--color-text-secondary)' }}>
+        <p style={{ marginBottom: 8, fontSize: 13, fontWeight: 600, color: 'var(--color-surface-fg-muted)' }}>
           Unknown Error
         </p>
         <ErrorDisplay error={new Error('Unexpected failure')} onReset={() => {}} />

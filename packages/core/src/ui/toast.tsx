@@ -56,33 +56,33 @@ const TOAST_TYPE_CONFIG: Record<
   },
   success: {
     accentClass: 'bg-success-border',
-    iconClass: 'text-success-text',
+    iconClass: 'text-success-11',
     icon: IconCircleCheck,
     timerBarClass: 'bg-success-border',
   },
   error: {
     accentClass: 'bg-error-border',
-    iconClass: 'text-error-text',
+    iconClass: 'text-error-11',
     icon: IconCircleX,
     timerBarClass: 'bg-error-border',
   },
   warning: {
     accentClass: 'bg-warning-border',
-    iconClass: 'text-warning-text',
+    iconClass: 'text-warning-11',
     icon: IconAlertTriangle,
     timerBarClass: 'bg-warning-border',
   },
   info: {
     accentClass: 'bg-info-border',
-    iconClass: 'text-info-text',
+    iconClass: 'text-info-11',
     icon: IconInfoCircle,
     timerBarClass: 'bg-info-border',
   },
   loading: {
-    accentClass: 'bg-interactive',
+    accentClass: 'bg-accent-9',
     iconClass: 'text-interactive',
     icon: null,
-    timerBarClass: 'bg-interactive',
+    timerBarClass: 'bg-accent-9',
   },
 }
 
@@ -169,7 +169,7 @@ function ToastContent({
     <div
       role="status"
       aria-live="polite"
-      className="group relative flex w-full overflow-hidden rounded-ds-md border border-border bg-layer-01 shadow-02"
+      className="group relative flex w-full overflow-hidden rounded-ds-md border border-surface-border-strong bg-surface-1 shadow-02"
       onMouseEnter={() => setHovered(true)}
       onMouseLeave={() => setHovered(false)}
     >
@@ -192,14 +192,14 @@ function ToastContent({
         {/* Text */}
         <div className="min-w-0 flex-1">
           {title && (
-            <p className="text-ds-md font-semibold text-text-primary">
+            <p className="text-ds-md font-semibold text-surface-fg">
               {title}
             </p>
           )}
           {description && (
             <p
               className={cn(
-                'text-ds-sm text-text-secondary',
+                'text-ds-sm text-surface-fg-muted',
                 title && 'mt-0.5',
               )}
             >
@@ -214,7 +214,7 @@ function ToastContent({
                 <button
                   type="button"
                   onClick={action.onClick}
-                  className="text-ds-sm font-medium text-interactive underline-offset-2 hover:underline focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-focus focus-visible:rounded-ds-sm"
+                  className="text-ds-sm font-medium text-interactive underline-offset-2 hover:underline focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent-9 focus-visible:rounded-ds-sm"
                 >
                   {action.label}
                 </button>
@@ -223,7 +223,7 @@ function ToastContent({
                 <button
                   type="button"
                   onClick={cancel.onClick}
-                  className="text-ds-sm text-text-secondary hover:text-text-primary focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-focus focus-visible:rounded-ds-sm"
+                  className="text-ds-sm text-surface-fg-muted hover:text-surface-fg focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent-9 focus-visible:rounded-ds-sm"
                 >
                   {cancel.label}
                 </button>
@@ -310,20 +310,20 @@ function UploadFileRow({
       {/* File icon */}
       <div className="flex h-5 w-5 shrink-0 items-center justify-center">
         {file.status === 'complete' ? (
-          <IconCheck className="h-3.5 w-3.5 text-success-text" />
+          <IconCheck className="h-3.5 w-3.5 text-success-11" />
         ) : file.status === 'error' ? (
-          <IconAlertCircle className="h-3.5 w-3.5 text-error-text" />
+          <IconAlertCircle className="h-3.5 w-3.5 text-error-11" />
         ) : file.status === 'processing' ? (
           <Spinner size="sm" className="h-3.5 w-3.5" />
         ) : isImageFile(file) ? (
-          <IconPhoto className="h-3.5 w-3.5 text-text-secondary" />
+          <IconPhoto className="h-3.5 w-3.5 text-surface-fg-muted" />
         ) : (
-          <IconFile className="h-3.5 w-3.5 text-text-secondary" />
+          <IconFile className="h-3.5 w-3.5 text-surface-fg-muted" />
         )}
       </div>
 
       {/* Filename */}
-      <span className="min-w-0 flex-1 truncate text-ds-xs text-text-primary">
+      <span className="min-w-0 flex-1 truncate text-ds-xs text-surface-fg">
         {file.name}
       </span>
 
@@ -337,19 +337,19 @@ function UploadFileRow({
             className="flex-1"
           />
           {file.progress !== undefined && (
-            <span className="shrink-0 text-[10px] tabular-nums text-text-secondary">
+            <span className="shrink-0 text-[10px] tabular-nums text-surface-fg-muted">
               {file.progress}%
             </span>
           )}
         </div>
       ) : file.status === 'complete' ? (
-        <span className="text-[10px] text-success-text">Done</span>
+        <span className="text-[10px] text-success-11">Done</span>
       ) : file.status === 'error' ? (
-        <span className="max-w-[60px] truncate text-[10px] text-error-text">
+        <span className="max-w-[60px] truncate text-[10px] text-error-11">
           {file.error || 'Failed'}
         </span>
       ) : (
-        <span className="text-[10px] text-text-secondary">
+        <span className="text-[10px] text-surface-fg-muted">
           {formatFileSize(file.size)}
         </span>
       )}
@@ -359,7 +359,7 @@ function UploadFileRow({
         <button
           type="button"
           onClick={() => onRetry(file.id)}
-          className="flex h-4 w-4 items-center justify-center rounded-ds-sm text-text-secondary hover:text-text-primary"
+          className="flex h-4 w-4 items-center justify-center rounded-ds-sm text-surface-fg-muted hover:text-surface-fg"
           aria-label={`Retry ${file.name}`}
         >
           <IconRefresh className="h-3 w-3" />
@@ -369,7 +369,7 @@ function UploadFileRow({
         <button
           type="button"
           onClick={() => onRemove(file.id)}
-          className="flex h-4 w-4 items-center justify-center rounded-ds-sm text-text-secondary hover:text-text-primary"
+          className="flex h-4 w-4 items-center justify-center rounded-ds-sm text-surface-fg-muted hover:text-surface-fg"
           aria-label={`Cancel ${file.name}`}
         >
           <IconX className="h-3 w-3" />
@@ -419,7 +419,7 @@ function UploadToastContent({
     ? errorCount > 0
       ? 'bg-error-border'
       : 'bg-success-border'
-    : 'bg-interactive'
+    : 'bg-accent-9'
 
   const timerBarType: ToastType = allTerminal
     ? errorCount > 0
@@ -432,7 +432,7 @@ function UploadToastContent({
       role="status"
       aria-live="polite"
       aria-label="File uploads"
-      className="group relative flex w-full overflow-hidden rounded-ds-md border border-border bg-layer-01 shadow-02"
+      className="group relative flex w-full overflow-hidden rounded-ds-md border border-surface-border-strong bg-surface-1 shadow-02"
       onMouseEnter={() => setHovered(true)}
       onMouseLeave={() => setHovered(false)}
     >
@@ -443,8 +443,8 @@ function UploadToastContent({
       <div className="min-w-0 flex-1 p-ds-04">
         {/* Header */}
         <div className="flex items-center gap-ds-02">
-          <IconUpload className="h-4 w-4 shrink-0 text-text-secondary" />
-          <p className="text-ds-md font-semibold text-text-primary">
+          <IconUpload className="h-4 w-4 shrink-0 text-surface-fg-muted" />
+          <p className="text-ds-md font-semibold text-surface-fg">
             {allTerminal
               ? errorCount > 0
                 ? `${completeCount} of ${files.length} uploaded`
@@ -453,7 +453,7 @@ function UploadToastContent({
           </p>
         </div>
         {!allTerminal && (
-          <p className="mt-0.5 text-ds-xs text-text-secondary">
+          <p className="mt-0.5 text-ds-xs text-surface-fg-muted">
             {completeCount} of {files.length} complete
             {errorCount > 0 && ` · ${errorCount} failed`}
           </p>

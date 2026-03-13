@@ -182,7 +182,7 @@ export const BoardToolbar = React.forwardRef<HTMLDivElement, BoardToolbarProps>(
                     setSearchValue('')
                     setFilters({ search: '' })
                   }}
-                  className="pointer-events-auto cursor-pointer text-text-tertiary hover:text-text-primary"
+                  className="pointer-events-auto cursor-pointer text-surface-fg-subtle hover:text-surface-fg"
                   aria-label="Clear search"
                 >
                   <IconX className="h-3 w-3" />
@@ -373,7 +373,7 @@ export const BoardToolbar = React.forwardRef<HTMLDivElement, BoardToolbarProps>(
           ))}
           <button
             onClick={clearFilters}
-            className="text-ds-xs text-text-tertiary hover:text-interactive transition-colors"
+            className="text-ds-xs text-surface-fg-subtle hover:text-interactive transition-colors"
             aria-label="Clear all filters"
           >
             Clear all

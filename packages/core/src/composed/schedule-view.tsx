@@ -48,12 +48,12 @@ const eventColorMap: Record<
   NonNullable<ScheduleEvent['color']>,
   string
 > = {
-  primary: 'bg-interactive-subtle border-interactive text-interactive',
-  success: 'bg-success-surface border-success text-success-text',
-  warning: 'bg-warning-surface border-warning text-warning-text',
-  error: 'bg-error-surface border-error text-error-text',
-  info: 'bg-info-surface border-info text-info-text',
-  neutral: 'bg-layer-02 border-border text-text-secondary',
+  primary: 'bg-accent-2 border-accent-7 text-interactive',
+  success: 'bg-success-3 border-success text-success-11',
+  warning: 'bg-warning-3 border-warning text-warning-11',
+  error: 'bg-error-3 border-error text-error-11',
+  info: 'bg-info-3 border-info text-info-11',
+  neutral: 'bg-surface-2 border-surface-border-strong text-surface-fg-muted',
 }
 
 /* ------------------------------------------------------------------ */
@@ -104,13 +104,13 @@ function TimeColumn({ startHour, endHour }: TimeColumnProps) {
 
   return (
     <div
-      className="relative shrink-0 w-[60px] border-r border-border"
+      className="relative shrink-0 w-[60px] border-r border-surface-border-strong"
       aria-hidden="true"
     >
       {hours.map((hour) => (
         <div
           key={hour}
-          className="text-ds-xs text-text-secondary pr-ds-02 text-right"
+          className="text-ds-xs text-surface-fg-muted pr-ds-02 text-right"
           style={{ height: `${slotHeight}%` }}
         >
           {formatHourLabel(hour)}
@@ -173,10 +173,10 @@ function DayColumn({
       {showHeader && (
         <div
           className={cn(
-            'text-center text-ds-sm font-semibold py-ds-02 border-b border-border',
+            'text-center text-ds-sm font-semibold py-ds-02 border-b border-surface-border-strong',
             todayInView
-              ? 'text-interactive bg-interactive-subtle'
-              : 'text-text-primary bg-layer-01',
+              ? 'text-interactive bg-accent-2'
+              : 'text-surface-fg bg-surface-1',
           )}
         >
           {format(date, 'EEE d')}
@@ -189,8 +189,8 @@ function DayColumn({
             key={i}
             type="button"
             className={cn(
-              'block w-full border-b border-border/50 hover:bg-layer-02/50 transition-colors',
-              i % 2 === 0 ? 'border-border' : 'border-border/30',
+              'block w-full border-b border-surface-border-strong/50 hover:bg-surface-2/50 transition-colors',
+              i % 2 === 0 ? 'border-surface-border-strong' : 'border-surface-border-strong/30',
             )}
             style={{ height: `${100 / slotCount}%` }}
             onClick={() => onSlotClick?.(slot.start, slot.end)}
@@ -276,7 +276,7 @@ const ScheduleView = React.forwardRef<HTMLDivElement, ScheduleViewProps>(
             : `Week schedule starting ${format(days[0], 'MMMM d, yyyy')}`
         }
         className={cn(
-          'flex rounded-ds-md border border-border bg-layer-01 overflow-hidden',
+          'flex rounded-ds-md border border-surface-border-strong bg-surface-1 overflow-hidden',
           'h-[480px]',
           className,
         )}

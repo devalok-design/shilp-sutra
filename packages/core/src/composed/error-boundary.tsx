@@ -60,7 +60,7 @@ function getErrorConfig(status?: number) {
         title: 'Page not found',
         message:
           'The page you are looking for does not exist or has been moved.',
-        bgClass: 'bg-interactive-subtle',
+        bgClass: 'bg-accent-2',
         iconClass: 'text-interactive',
       }
     case 403:
@@ -69,7 +69,7 @@ function getErrorConfig(status?: number) {
         title: 'Access denied',
         message:
           'You do not have permission to view this page. Contact your administrator if you believe this is a mistake.',
-        bgClass: 'bg-warning-surface',
+        bgClass: 'bg-warning-3',
         iconClass: 'text-warning',
       }
     case 500:
@@ -78,7 +78,7 @@ function getErrorConfig(status?: number) {
         title: 'Server error',
         message:
           'Something went wrong on our end. Please try again later or contact support if the issue persists.',
-        bgClass: 'bg-error-surface',
+        bgClass: 'bg-error-3',
         iconClass: 'text-error',
       }
     default:
@@ -87,7 +87,7 @@ function getErrorConfig(status?: number) {
         title: 'Something went wrong',
         message:
           'An unexpected error occurred. Please try again or go back to the home page.',
-        bgClass: 'bg-interactive-subtle',
+        bgClass: 'bg-accent-2',
         iconClass: 'text-interactive',
       }
   }
@@ -109,7 +109,7 @@ const ErrorDisplay = React.forwardRef<HTMLDivElement, ErrorDisplayProps>(
   return (
     <div ref={ref} {...props} className={cn("flex min-h-[60vh] items-center justify-center p-ds-05", className)}>
       <div
-        className="flex w-full max-w-lg flex-col items-center gap-ds-06 rounded-ds-xl border border-border bg-layer-01 p-ds-07 text-center shadow-01"
+        className="flex w-full max-w-lg flex-col items-center gap-ds-06 rounded-ds-xl border border-surface-border-strong bg-surface-1 p-ds-07 text-center shadow-01"
       >
         {/* Error Icon */}
         <div
@@ -126,14 +126,14 @@ const ErrorDisplay = React.forwardRef<HTMLDivElement, ErrorDisplayProps>(
         {/* Error IconInfoCircle */}
         <div className="flex flex-col gap-ds-03">
           {status && (
-            <span className="text-ds-sm text-text-placeholder">
+            <span className="text-ds-sm text-surface-fg-subtle">
               Error {status}
             </span>
           )}
-          <h2 className="text-ds-2xl font-semibold text-text-primary">
+          <h2 className="text-ds-2xl font-semibold text-surface-fg">
             {errorConfig.title}
           </h2>
-          <p className="text-ds-base text-text-tertiary">
+          <p className="text-ds-base text-surface-fg-subtle">
             {message || errorConfig.message}
           </p>
         </div>
@@ -153,11 +153,11 @@ const ErrorDisplay = React.forwardRef<HTMLDivElement, ErrorDisplayProps>(
 
         {/* Dev stack trace */}
         {isDev && stack && (
-          <div className="w-full overflow-auto rounded-ds-lg border border-border bg-layer-02 p-ds-05 text-left">
-            <p className="text-ds-sm mb-ds-03 font-semibold text-text-primary">
+          <div className="w-full overflow-auto rounded-ds-lg border border-surface-border-strong bg-surface-2 p-ds-05 text-left">
+            <p className="text-ds-sm mb-ds-03 font-semibold text-surface-fg">
               Stack Trace (development only)
             </p>
-            <pre className="whitespace-pre-wrap text-ds-sm text-text-tertiary">
+            <pre className="whitespace-pre-wrap text-ds-sm text-surface-fg-subtle">
               {stack}
             </pre>
           </div>

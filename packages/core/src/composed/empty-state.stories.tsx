@@ -83,9 +83,9 @@ export const NoTeamMembers: Story = {
         style={{
           padding: '8px 16px',
           borderRadius: 8,
-          border: '1px solid var(--color-border-default)',
+          border: '1px solid var(--color-surface-border-strong)',
           background: 'transparent',
-          color: 'var(--color-text-primary)',
+          color: 'var(--color-surface-fg)',
           fontSize: 13,
           cursor: 'pointer',
         }}
@@ -107,9 +107,9 @@ export const NoDocuments: Story = {
           style={{
             padding: '8px 16px',
             borderRadius: 8,
-            border: '1px solid var(--color-border-default)',
+            border: '1px solid var(--color-surface-border-strong)',
             background: 'transparent',
-            color: 'var(--color-text-primary)',
+            color: 'var(--color-surface-fg)',
             fontSize: 13,
             cursor: 'pointer',
           }}
@@ -171,9 +171,9 @@ export const CompactWithAction: Story = {
         style={{
           padding: '6px 12px',
           borderRadius: 6,
-          border: '1px solid var(--color-border-default)',
+          border: '1px solid var(--color-surface-border-strong)',
           background: 'transparent',
-          color: 'var(--color-text-primary)',
+          color: 'var(--color-surface-fg)',
           fontSize: 12,
           cursor: 'pointer',
         }}

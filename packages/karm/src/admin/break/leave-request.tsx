@@ -69,7 +69,7 @@ export const LeaveRequest = React.forwardRef<HTMLDivElement, LeaveRequestProps>(
       <div
         ref={ref}
         key={request.id}
-        className={cn("flex justify-between border-b border-border px-ds-03 py-ds-04 last:border-b-0", className)}
+        className={cn("flex justify-between border-b border-surface-border-strong px-ds-03 py-ds-04 last:border-b-0", className)}
         {...props}
       >
         <div className="flex w-full items-center gap-ds-04">
@@ -80,7 +80,7 @@ export const LeaveRequest = React.forwardRef<HTMLDivElement, LeaveRequestProps>(
           <div className="flex w-auto max-w-[75%] flex-col items-start gap-ds-02b">
             <div className="flex flex-row gap-ds-02b">
               <div className="flex items-center gap-ds-03">
-                <p className="text-ds-sm text-text-secondary">
+                <p className="text-ds-sm text-surface-fg-muted">
                   {request.user?.name}
                 </p>
                 {request.correction && (
@@ -98,13 +98,13 @@ export const LeaveRequest = React.forwardRef<HTMLDivElement, LeaveRequestProps>(
                 <div className="flex w-full flex-wrap items-center gap-ds-03">
                   <Tooltip>
                     <TooltipTrigger asChild>
-                      <p className="text-ds-base font-semibold line-clamp-2 cursor-default text-text-primary">
+                      <p className="text-ds-base font-semibold line-clamp-2 cursor-default text-surface-fg">
                         {request.reason}
                       </p>
                     </TooltipTrigger>
                     <TooltipContent>{request.reason}</TooltipContent>
                   </Tooltip>
-                  <p className="text-ds-base text-text-tertiary">
+                  <p className="text-ds-base text-surface-fg-subtle">
                     • {formatDateWithWeekday(startDate)}
                   </p>
                 </div>
@@ -112,13 +112,13 @@ export const LeaveRequest = React.forwardRef<HTMLDivElement, LeaveRequestProps>(
                 <>
                   <Tooltip>
                     <TooltipTrigger asChild>
-                      <p className="text-ds-base font-semibold line-clamp-2 cursor-default text-text-primary">
+                      <p className="text-ds-base font-semibold line-clamp-2 cursor-default text-surface-fg">
                         {request.reason}
                       </p>
                     </TooltipTrigger>
                     <TooltipContent>{request.reason}</TooltipContent>
                   </Tooltip>
-                  <p className="text-ds-base text-text-tertiary">
+                  <p className="text-ds-base text-surface-fg-subtle">
                     {formatDateWithWeekday(startDate)} to{' '}
                     {formatDateWithWeekday(endDate)},
                     <span className="text-interactive-hover">
@@ -192,8 +192,8 @@ export const LeaveRequest = React.forwardRef<HTMLDivElement, LeaveRequestProps>(
             </DialogDescription>
           </DialogHeader>
           <div className="flex flex-col">
-            <div className="text-ds-md flex flex-col items-start justify-center gap-ds-03 rounded-ds-lg border border-border-subtle bg-layer-01 shadow-01 px-ds-05 pb-ds-01 pt-ds-03 text-text-primary">
-              <label className="text-ds-xs font-semibold uppercase tracking-wider text-text-helper" htmlFor="comment">
+            <div className="text-ds-md flex flex-col items-start justify-center gap-ds-03 rounded-ds-lg border border-surface-border bg-surface-1 shadow-01 px-ds-05 pb-ds-01 pt-ds-03 text-surface-fg">
+              <label className="text-ds-xs font-semibold uppercase tracking-wider text-surface-fg-subtle" htmlFor="comment">
                 Comment
               </label>
               <Textarea

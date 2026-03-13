@@ -20,7 +20,7 @@ const srText = {
     error: 'Error',
 };
 const stateColors = {
-    spinning: 'var(--color-interactive)',
+    spinning: 'var(--color-accent-9)',
     success: 'var(--color-success-9)',
     error: 'var(--color-error-9)',
 };
@@ -61,7 +61,7 @@ const Spinner = React.forwardRef(({ size = 'md', state = 'spinning', variant = '
     const FILL_DURATION = 0.25;
     const ICON_DELAY = isFilled ? 0.5 : 0.35;
     const ICON_DURATION = 0.35;
-    return (_jsxs("span", { ref: ref, role: "status", className: cn('inline-flex', className), children: [_jsxs("svg", { className: sizeClasses[size], viewBox: "0 0 24 24", fill: "none", xmlns: "http://www.w3.org/2000/svg", children: [prefersReduced ? (!(isFinal && !isFilled) && (_jsx("circle", { cx: "12", cy: "12", r: RADIUS, stroke: "var(--color-border-subtle)", strokeWidth: arcSw, fill: "none" }))) : (_jsx(motion.circle, { cx: "12", cy: "12", r: RADIUS, stroke: "var(--color-border-subtle)", strokeWidth: arcSw, fill: "none", animate: { opacity: isFinal && !isFilled ? 0 : 1 }, transition: { duration: 0.2, delay: isFinal && !isFilled ? ARC_COMPLETE : 0 } })), prefersReduced ? (_jsx("circle", { cx: "12", cy: "12", r: RADIUS, stroke: color, strokeWidth: arcSw, fill: "none", strokeLinecap: "round", strokeDasharray: isSpinning
+    return (_jsxs("span", { ref: ref, role: "status", className: cn('inline-flex', className), children: [_jsxs("svg", { className: sizeClasses[size], viewBox: "0 0 24 24", fill: "none", xmlns: "http://www.w3.org/2000/svg", children: [prefersReduced ? (!(isFinal && !isFilled) && (_jsx("circle", { cx: "12", cy: "12", r: RADIUS, stroke: "var(--color-surface-border)", strokeWidth: arcSw, fill: "none" }))) : (_jsx(motion.circle, { cx: "12", cy: "12", r: RADIUS, stroke: "var(--color-surface-border)", strokeWidth: arcSw, fill: "none", animate: { opacity: isFinal && !isFilled ? 0 : 1 }, transition: { duration: 0.2, delay: isFinal && !isFilled ? ARC_COMPLETE : 0 } })), prefersReduced ? (_jsx("circle", { cx: "12", cy: "12", r: RADIUS, stroke: color, strokeWidth: arcSw, fill: "none", strokeLinecap: "round", strokeDasharray: isSpinning
                             ? `${CIRCUMFERENCE * 0.75} ${CIRCUMFERENCE * 0.25}`
                             : `${CIRCUMFERENCE} 0`, style: {
                             transformOrigin: 'center',

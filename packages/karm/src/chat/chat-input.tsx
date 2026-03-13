@@ -56,8 +56,8 @@ export const ChatInput = React.forwardRef<HTMLDivElement, ChatInputProps>(
   )
 
   return (
-    <div ref={ref} className={cn("border-t border-border bg-layer-01 p-ds-04", className)} {...props}>
-      <div className="flex items-end gap-ds-03 rounded-ds-xl border border-border bg-field px-ds-04 py-ds-03">
+    <div ref={ref} className={cn("border-t border-surface-border-strong bg-surface-1 p-ds-04", className)} {...props}>
+      <div className="flex items-end gap-ds-03 rounded-ds-xl border border-surface-border-strong bg-surface-3 px-ds-04 py-ds-03">
         <textarea
           ref={textareaRef}
           value={text}
@@ -70,7 +70,7 @@ export const ChatInput = React.forwardRef<HTMLDivElement, ChatInputProps>(
           aria-label="Type a message"
           disabled={isStreaming}
           rows={1}
-          className="text-ds-md no-scrollbar max-h-[160px] min-h-ds-xs flex-1 resize-none bg-transparent text-text-primary placeholder:text-text-placeholder focus:outline-none disabled:opacity-[0.38]"
+          className="text-ds-md no-scrollbar max-h-[160px] min-h-ds-xs flex-1 resize-none bg-transparent text-surface-fg placeholder:text-surface-fg-subtle focus:outline-none disabled:opacity-[0.38]"
         />
         {isStreaming ? (
           <Button variant="solid" color="error" size="icon-sm" className="h-ds-sm w-ds-sm shrink-0 rounded-ds-lg" onClick={onCancel} aria-label="Stop generating">
@@ -83,7 +83,7 @@ export const ChatInput = React.forwardRef<HTMLDivElement, ChatInputProps>(
         )}
       </div>
       {disclaimer && (
-        <p className="text-ds-sm mt-ds-02b text-center text-text-placeholder">
+        <p className="text-ds-sm mt-ds-02b text-center text-surface-fg-subtle">
           {disclaimer}
         </p>
       )}

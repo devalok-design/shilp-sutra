@@ -80,7 +80,7 @@ export const EditBreakBalance = React.forwardRef<HTMLDivElement, EditBreakBalanc
       <DialogTrigger asChild>
         <Button
           variant="outline"
-          className="text-ds-base border-border bg-layer-01 px-ds-05 py-ds-04 pr-ds-06 text-text-secondary shadow-02"
+          className="text-ds-base border-surface-border-strong bg-surface-1 px-ds-05 py-ds-04 pr-ds-06 text-surface-fg-muted shadow-02"
         >
           <EditIcon />
           <span>Edit</span>
@@ -91,7 +91,7 @@ export const EditBreakBalance = React.forwardRef<HTMLDivElement, EditBreakBalanc
         <DialogHeader>
           <DialogDescription>
             <div className="flex flex-col items-center justify-start gap-ds-05">
-              <p className="text-ds-md w-full text-left text-text-tertiary">
+              <p className="text-ds-md w-full text-left text-surface-fg-subtle">
                 Edit break balance conversion of <br className="mb-ds-02" />
                 <span className="font-semibold text-interactive">
                   {selectedLeave?.user?.name}
@@ -104,7 +104,7 @@ export const EditBreakBalance = React.forwardRef<HTMLDivElement, EditBreakBalanc
                 className="flex w-full flex-col gap-ds-05"
               >
                 <div className="flex w-full items-center justify-between">
-                  <div className="text-ds-sm font-semibold uppercase tracking-wider  text-text-placeholder">
+                  <div className="text-ds-sm font-semibold uppercase tracking-wider  text-surface-fg-subtle">
                     Cash out
                   </div>
                   <NumberInput
@@ -118,11 +118,11 @@ export const EditBreakBalance = React.forwardRef<HTMLDivElement, EditBreakBalanc
                 </div>
 
                 <div className="flex w-full items-center justify-between">
-                  <div className="text-ds-sm font-semibold uppercase tracking-wider  text-text-placeholder">
+                  <div className="text-ds-sm font-semibold uppercase tracking-wider  text-surface-fg-subtle">
                     Carry forward
                   </div>
                   <div className="flex w-[100px] items-center justify-center">
-                    <div className="text-ds-base font-semibold text-text-secondary">
+                    <div className="text-ds-base font-semibold text-surface-fg-muted">
                       {carryForward}
                     </div>
                   </div>

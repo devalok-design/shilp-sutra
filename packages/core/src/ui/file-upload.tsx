@@ -240,9 +240,9 @@ const FileUpload = React.forwardRef<HTMLDivElement, FileUploadProps>(
             className={cn(
               'inline-flex items-center gap-ds-02 rounded-ds-md px-ds-03 py-ds-02',
               'text-ds-sm font-medium',
-              'border border-border',
-              'bg-field text-text-secondary',
-              'hover:bg-interactive-subtle',
+              'border border-surface-border-strong',
+              'bg-surface-3 text-surface-fg-muted',
+              'hover:bg-accent-2',
               'disabled:opacity-[0.38] disabled:cursor-not-allowed',
               'transition-colors',
             )}
@@ -310,18 +310,18 @@ const FileUpload = React.forwardRef<HTMLDivElement, FileUploadProps>(
             'flex flex-col items-center justify-center gap-ds-03 rounded-ds-lg',
             'border-2 border-dashed p-ds-08',
             'transition-colors cursor-pointer',
-            'border-border bg-field',
+            'border-surface-border-strong bg-surface-3',
             isDragActive &&
-              'border-interactive bg-interactive-subtle',
+              'border-accent-7 bg-accent-2',
             disabled && 'opacity-[0.38] cursor-not-allowed',
           )}
         >
           {uploading ? (
             <Spinner size="md" />
           ) : (
-            <IconUpload className="h-ds-sm w-ds-sm text-icon-secondary" />
+            <IconUpload className="h-ds-sm w-ds-sm text-surface-fg-subtle" />
           )}
-          <span id={inputId + '-label'} className="text-ds-sm text-text-secondary">
+          <span id={inputId + '-label'} className="text-ds-sm text-surface-fg-muted">
             {defaultLabel}
           </span>
           {uploading ? (
@@ -331,16 +331,16 @@ const FileUpload = React.forwardRef<HTMLDivElement, FileUploadProps>(
                 aria-valuenow={progress}
                 aria-valuemin={0}
                 aria-valuemax={100}
-                className="h-2 w-full overflow-hidden rounded-ds-full bg-field"
+                className="h-2 w-full overflow-hidden rounded-ds-full bg-surface-3"
               >
                 <div
-                  className="h-full rounded-ds-full bg-interactive transition-all"
+                  className="h-full rounded-ds-full bg-accent-9 transition-all"
                   style={{ width: `${progress}%` }}
                 />
               </div>
             </div>
           ) : (
-            <span className="text-ds-xs text-text-tertiary">
+            <span className="text-ds-xs text-surface-fg-subtle">
               {defaultSublabel}
             </span>
           )}

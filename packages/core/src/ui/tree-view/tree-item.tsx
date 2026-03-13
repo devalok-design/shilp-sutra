@@ -127,10 +127,10 @@ const TreeItem = React.forwardRef<HTMLLIElement, TreeItemProps>(
           style={{ paddingLeft: depth * 20 + 8 }}
           className={cn(
             'flex items-center gap-ds-02 py-ds-02 px-ds-02 rounded-ds-md cursor-pointer transition-colors duration-fast-01',
-            'hover:bg-layer-02',
-            'focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-focus',
+            'hover:bg-surface-2',
+            'focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent-9',
             isSelected &&
-              'bg-interactive-selected text-text-interactive',
+              'bg-accent-3 text-accent-11',
             disabled && 'opacity-[0.38] cursor-not-allowed pointer-events-none',
             className,
           )}
@@ -173,7 +173,7 @@ const TreeItem = React.forwardRef<HTMLLIElement, TreeItemProps>(
 
           {/* Icon */}
           {icon && (
-            <span className="flex shrink-0 items-center text-icon-secondary">
+            <span className="flex shrink-0 items-center text-surface-fg-subtle">
               {icon}
             </span>
           )}
@@ -183,7 +183,7 @@ const TreeItem = React.forwardRef<HTMLLIElement, TreeItemProps>(
 
           {/* Secondary label */}
           {secondaryLabel && (
-            <span className="ml-auto truncate text-ds-xs text-text-secondary">
+            <span className="ml-auto truncate text-ds-xs text-surface-fg-muted">
               {secondaryLabel}
             </span>
           )}

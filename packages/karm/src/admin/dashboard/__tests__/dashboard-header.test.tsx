@@ -148,8 +148,8 @@ describe('DashboardHeader', () => {
     })
 
     // The clear button is inside a "hidden md:flex" wrapper — hidden in jsdom.
-    // Find the button that's a child of the bg-interactive associate chip.
-    const chip = container.querySelector('.bg-interactive')
+    // Find the button that's a child of the bg-accent-9 associate chip.
+    const chip = container.querySelector('.bg-accent-9')
     expect(chip).toBeTruthy()
     const clearButton = chip!.querySelector('button')
     expect(clearButton).toBeTruthy()

@@ -224,7 +224,7 @@ export const SEMANTIC_GROUPS = [
             { name: '--color-border-subtle', label: 'Subtle', defaultValue: 'var(--neutral-6)', type: 'color' },
             { name: '--color-border', label: 'Default', defaultValue: 'var(--neutral-7)', type: 'color' },
             { name: '--color-border-strong', label: 'Strong', defaultValue: 'var(--neutral-8)', type: 'color' },
-            { name: '--color-border-interactive', label: 'Interactive', defaultValue: 'var(--pink-9)', type: 'color' },
+            { name: '--color-border-accent-7', label: 'Interactive', defaultValue: 'var(--pink-9)', type: 'color' },
             { name: '--color-border-error', label: 'Error', defaultValue: 'var(--red-9)', type: 'color' },
             { name: '--color-border-success', label: 'Success', defaultValue: 'var(--green-9)', type: 'color' },
         ],

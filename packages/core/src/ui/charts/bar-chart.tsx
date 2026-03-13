@@ -214,7 +214,7 @@ export const BarChart = React.forwardRef<HTMLDivElement, BarChartProps>(
                             <div>
                               <div className="font-medium">{category}</div>
                               {isMultiSeries && (
-                                <div className="text-text-secondary">
+                                <div className="text-surface-fg-muted">
                                   {seriesLabels?.[seriesIdx] ?? key}
                                 </div>
                               )}

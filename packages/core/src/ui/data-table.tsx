@@ -258,10 +258,10 @@ function CellEditInput({
       }}
       className={cn(
         'h-ds-xs-plus w-full rounded-ds-md',
-        'border border-border-interactive bg-field',
+        'border border-accent-7 bg-surface-3',
         'px-ds-02 text-ds-sm',
-        'text-text-primary placeholder:text-text-placeholder',
-        'outline-none focus:border-border-interactive',
+        'text-surface-fg placeholder:text-surface-fg-subtle',
+        'outline-none focus:border-accent-7',
       )}
       aria-label="Edit cell value"
     />
@@ -454,7 +454,7 @@ export function DataTable<TData, TValue>({
         type="button"
         onClick={() => row.toggleExpanded()}
         aria-label={row.getIsExpanded() ? 'Collapse row' : 'Expand row'}
-        className="flex items-center justify-center p-ds-01 rounded-ds-sm hover:bg-layer-02 transition-colors"
+        className="flex items-center justify-center p-ds-01 rounded-ds-sm hover:bg-surface-2 transition-colors"
       >
         <IconChevronRight
           size={16}
@@ -574,13 +574,13 @@ export function DataTable<TData, TValue>({
 
     if (leftIndex !== -1) {
       return {
-        className: 'sticky bg-layer-01 z-raised',
+        className: 'sticky bg-surface-1 z-raised',
         style: { left: 0 } as React.CSSProperties,
       }
     }
     if (rightIndex !== -1) {
       return {
-        className: 'sticky bg-layer-01 z-raised',
+        className: 'sticky bg-surface-1 z-raised',
         style: { right: 0 } as React.CSSProperties,
       }
     }
@@ -707,7 +707,7 @@ export function DataTable<TData, TValue>({
         <TableCell
           colSpan={allColumns.length}
           className={cn(
-            'bg-layer-02 p-ds-05',
+            'bg-surface-2 p-ds-05',
             virtualRows && 'flex-1',
           )}
         >
@@ -761,7 +761,7 @@ export function DataTable<TData, TValue>({
               colSpan={allColumns.length}
               className={cn(
                 'h-24 text-center',
-                !emptyState && 'text-text-tertiary',
+                !emptyState && 'text-surface-fg-subtle',
               )}
             >
               {emptyState || noResultsText || 'No results.'}
@@ -855,7 +855,7 @@ export function DataTable<TData, TValue>({
                         'flex items-center gap-ds-01 font-medium',
                         'cursor-pointer select-none',
                         '-ml-ds-01 rounded-ds-sm px-ds-01 py-ds-01',
-                        'hover:bg-layer-02 transition-colors',
+                        'hover:bg-surface-2 transition-colors',
                       )}
                       onClick={header.column.getToggleSortingHandler()}
                       aria-label={`Sort by ${typeof header.column.columnDef.header === 'string' ? header.column.columnDef.header : header.column.id}`}
@@ -866,17 +866,17 @@ export function DataTable<TData, TValue>({
                       )}
                       {sorted === 'asc' ? (
                         <IconArrowUp
-                          className="h-ico-sm w-ico-sm text-text-secondary"
+                          className="h-ico-sm w-ico-sm text-surface-fg-muted"
                           aria-hidden="true"
                         />
                       ) : sorted === 'desc' ? (
                         <IconArrowDown
-                          className="h-ico-sm w-ico-sm text-text-secondary"
+                          className="h-ico-sm w-ico-sm text-surface-fg-muted"
                           aria-hidden="true"
                         />
                       ) : (
                         <IconArrowsSort
-                          className="h-ico-sm w-ico-sm text-text-tertiary"
+                          className="h-ico-sm w-ico-sm text-surface-fg-subtle"
                           aria-hidden="true"
                         />
                       )}
@@ -913,10 +913,10 @@ export function DataTable<TData, TValue>({
                       aria-label={`Filter ${typeof header.column.columnDef.header === 'string' ? header.column.columnDef.header : header.column.id}`}
                       className={cn(
                         'h-ds-xs-plus w-full rounded-ds-md',
-                        'border border-border bg-field',
+                        'border border-surface-border-strong bg-surface-3',
                         'px-ds-02 text-ds-sm',
-                        'text-text-primary placeholder:text-text-placeholder',
-                        'outline-none focus:border-border-interactive',
+                        'text-surface-fg placeholder:text-surface-fg-subtle',
+                        'outline-none focus:border-accent-7',
                       )}
                     />
                   )}
@@ -945,10 +945,10 @@ export function DataTable<TData, TValue>({
 
       {/* Global search input — only show standalone when toolbar is disabled */}
       {globalFilter && !toolbar && (
-        <div className="flex items-center gap-ds-03 pb-ds-04 border-b border-border-subtle mb-ds-04">
+        <div className="flex items-center gap-ds-03 pb-ds-04 border-b border-surface-border mb-ds-04">
           <IconSearch
             size={16}
-            className="text-icon-secondary"
+            className="text-surface-fg-subtle"
             aria-hidden="true"
           />
           <input
@@ -959,7 +959,7 @@ export function DataTable<TData, TValue>({
             aria-label="Search all columns"
             className={cn(
               'flex-1 bg-transparent text-ds-md',
-              'text-text-primary placeholder:text-text-placeholder',
+              'text-surface-fg placeholder:text-surface-fg-subtle',
               'outline-none',
             )}
           />
@@ -980,8 +980,8 @@ export function DataTable<TData, TValue>({
 
       {/* Pagination controls */}
       {showPagination && (
-        <div className="flex items-center justify-between px-ds-03 py-ds-04 border-t border-border-subtle">
-          <span className="text-ds-sm text-text-secondary">
+        <div className="flex items-center justify-between px-ds-03 py-ds-04 border-t border-surface-border">
+          <span className="text-ds-sm text-surface-fg-muted">
             {totalRowCount} total rows
           </span>
           <div className="flex items-center gap-ds-03">
@@ -995,9 +995,9 @@ export function DataTable<TData, TValue>({
                 aria-label="Rows per page"
                 className={cn(
                   'h-ds-sm rounded-ds-md',
-                  'border border-border bg-field',
+                  'border border-surface-border-strong bg-surface-3',
                   'px-ds-03 text-ds-sm',
-                  'text-text-primary',
+                  'text-surface-fg',
                 )}
               >
                 {(pageSizeOptions ?? [10, 20, 50, 100]).map((size) => (
@@ -1016,8 +1016,8 @@ export function DataTable<TData, TValue>({
               aria-label="Previous page"
               className={cn(
                 'h-ds-sm w-ds-sm flex items-center justify-center',
-                'rounded-ds-md border border-border',
-                'enabled:hover:bg-layer-02',
+                'rounded-ds-md border border-surface-border-strong',
+                'enabled:hover:bg-surface-2',
                 'disabled:opacity-[0.38] disabled:cursor-not-allowed',
                 'transition-colors',
               )}
@@ -1026,7 +1026,7 @@ export function DataTable<TData, TValue>({
             </button>
 
             {/* Page info */}
-            <span className="text-ds-sm text-text-secondary">
+            <span className="text-ds-sm text-surface-fg-muted">
               Page {table.getState().pagination.pageIndex + 1} of{' '}
               {table.getPageCount()}
             </span>
@@ -1039,8 +1039,8 @@ export function DataTable<TData, TValue>({
               aria-label="Next page"
               className={cn(
                 'h-ds-sm w-ds-sm flex items-center justify-center',
-                'rounded-ds-md border border-border',
-                'enabled:hover:bg-layer-02',
+                'rounded-ds-md border border-surface-border-strong',
+                'enabled:hover:bg-surface-2',
                 'disabled:opacity-[0.38] disabled:cursor-not-allowed',
                 'transition-colors',
               )}
@@ -1057,13 +1057,13 @@ export function DataTable<TData, TValue>({
           className={cn(
             'fixed bottom-6 left-1/2 -translate-x-1/2 z-50',
             'flex items-center gap-ds-04 px-ds-05 py-ds-03',
-            'rounded-ds-lg border border-border bg-surface shadow-lg',
+            'rounded-ds-lg border border-surface-border-strong bg-surface shadow-lg',
             'animate-in slide-in-from-bottom-2',
           )}
           role="toolbar"
           aria-label="Bulk actions"
         >
-          <span className="text-ds-sm font-medium text-text-primary whitespace-nowrap">
+          <span className="text-ds-sm font-medium text-surface-fg whitespace-nowrap">
             {selectedRows.length} selected
           </span>
           <div className="h-5 w-px bg-border" aria-hidden="true" />
@@ -1084,8 +1084,8 @@ export function DataTable<TData, TValue>({
             aria-label="Clear selection"
             className={cn(
               'flex items-center justify-center p-ds-01',
-              'rounded-ds-sm hover:bg-layer-02 transition-colors',
-              'text-text-secondary hover:text-text-primary',
+              'rounded-ds-sm hover:bg-surface-2 transition-colors',
+              'text-surface-fg-muted hover:text-surface-fg',
             )}
           >
             <IconX size={16} aria-hidden="true" />

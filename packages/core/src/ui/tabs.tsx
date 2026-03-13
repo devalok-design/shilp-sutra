@@ -56,28 +56,28 @@ const TabsListContext = React.createContext<{ variant: TabsVariant }>({ variant:
 const tabsListVariants = cva('inline-flex items-center', {
   variants: {
     variant: {
-      line: 'border-b border-border w-full gap-0',
+      line: 'border-b border-surface-border-strong w-full gap-0',
       contained:
-        'bg-layer-02 p-ds-02 rounded-ds-lg gap-ds-02',
+        'bg-surface-2 p-ds-02 rounded-ds-lg gap-ds-02',
     },
   },
   defaultVariants: { variant: 'line' },
 })
 
 const tabsTriggerVariants = cva(
-  'inline-flex items-center justify-center gap-ds-02 whitespace-nowrap font-sans text-ds-md font-medium transition-[color,background-color,border-color,box-shadow] duration-fast-01 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-focus focus-visible:ring-offset-1 disabled:pointer-events-none disabled:opacity-[0.38]',
+  'inline-flex items-center justify-center gap-ds-02 whitespace-nowrap font-sans text-ds-md font-medium transition-[color,background-color,border-color,box-shadow] duration-fast-01 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent-9 focus-visible:ring-offset-1 disabled:pointer-events-none disabled:opacity-[0.38]',
   {
     variants: {
       variant: {
         line: [
           'px-ds-05 py-ds-03 -mb-px border-b-2 border-transparent',
-          'text-text-secondary hover:text-text-primary',
-          'data-[state=active]:border-interactive data-[state=active]:text-interactive data-[state=active]:animate-tab-indicator',
+          'text-surface-fg-muted hover:text-surface-fg',
+          'data-[state=active]:border-accent-7 data-[state=active]:text-interactive data-[state=active]:animate-tab-indicator',
         ],
         contained: [
           'px-ds-05 py-ds-02b rounded-ds-md',
-          'text-text-secondary hover:text-text-primary',
-          'data-[state=active]:bg-layer-01 data-[state=active]:shadow-01 data-[state=active]:text-text-primary',
+          'text-surface-fg-muted hover:text-surface-fg',
+          'data-[state=active]:bg-surface-1 data-[state=active]:shadow-01 data-[state=active]:text-surface-fg',
         ],
       },
     },
@@ -152,7 +152,7 @@ const TabsContent = React.forwardRef<
   <TabsPrimitive.Content
     ref={ref}
     className={cn(
-      'mt-ds-05 ring-offset-background focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-focus focus-visible:ring-offset-2',
+      'mt-ds-05 ring-offset-background focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent-9 focus-visible:ring-offset-2',
       className,
     )}
     {...props}

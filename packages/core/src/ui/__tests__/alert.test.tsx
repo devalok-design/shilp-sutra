@@ -41,24 +41,24 @@ describe('Alert', () => {
       const { container } = render(<Alert color="info">Default variant</Alert>)
       const el = container.firstChild as HTMLElement
       // subtle info should have the surface background
-      expect(el.className).toContain('bg-info-surface')
-      expect(el.className).toContain('border-info-border')
-      expect(el.className).toContain('text-info-text')
+      expect(el.className).toContain('bg-info-3')
+      expect(el.className).toContain('border-info-7')
+      expect(el.className).toContain('text-info-11')
     })
 
     it('applies subtle variant explicitly', () => {
       const { container } = render(<Alert variant="subtle" color="success">Subtle</Alert>)
       const el = container.firstChild as HTMLElement
-      expect(el.className).toContain('bg-success-surface')
-      expect(el.className).toContain('border-success-border')
-      expect(el.className).toContain('text-success-text')
+      expect(el.className).toContain('bg-success-3')
+      expect(el.className).toContain('border-success-7')
+      expect(el.className).toContain('text-success-11')
     })
 
     it('applies filled variant for info', () => {
       const { container } = render(<Alert variant="filled" color="info">Filled</Alert>)
       const el = container.firstChild as HTMLElement
       expect(el.className).toContain('bg-info')
-      expect(el.className).toContain('text-text-on-color')
+      expect(el.className).toContain('text-accent-fg')
       expect(el.className).toContain('border-transparent')
     })
 
@@ -66,54 +66,54 @@ describe('Alert', () => {
       const { container } = render(<Alert variant="filled" color="success">Filled</Alert>)
       const el = container.firstChild as HTMLElement
       expect(el.className).toContain('bg-success')
-      expect(el.className).toContain('text-text-on-color')
+      expect(el.className).toContain('text-accent-fg')
     })
 
     it('applies filled variant for warning', () => {
       const { container } = render(<Alert variant="filled" color="warning">Filled</Alert>)
       const el = container.firstChild as HTMLElement
       expect(el.className).toContain('bg-warning')
-      expect(el.className).toContain('text-text-on-color')
+      expect(el.className).toContain('text-accent-fg')
     })
 
     it('applies filled variant for error', () => {
       const { container } = render(<Alert variant="filled" color="error">Filled</Alert>)
       const el = container.firstChild as HTMLElement
       expect(el.className).toContain('bg-error')
-      expect(el.className).toContain('text-text-on-color')
+      expect(el.className).toContain('text-accent-fg')
     })
 
     it('applies filled variant for neutral (special case)', () => {
       const { container } = render(<Alert variant="filled" color="neutral">Filled neutral</Alert>)
       const el = container.firstChild as HTMLElement
-      expect(el.className).toContain('bg-layer-03')
-      expect(el.className).toContain('text-text-primary')
+      expect(el.className).toContain('bg-surface-3')
+      expect(el.className).toContain('text-surface-fg')
       // neutral filled should NOT have text-on-color (it uses dark text)
-      expect(el.className).not.toContain('text-text-on-color')
+      expect(el.className).not.toContain('text-accent-fg')
     })
 
     it('applies outline variant for info', () => {
       const { container } = render(<Alert variant="outline" color="info">Outline</Alert>)
       const el = container.firstChild as HTMLElement
       expect(el.className).toContain('bg-transparent')
-      expect(el.className).toContain('border-info-border')
-      expect(el.className).toContain('text-info-text')
+      expect(el.className).toContain('border-info-7')
+      expect(el.className).toContain('text-info-11')
     })
 
     it('applies outline variant for error', () => {
       const { container } = render(<Alert variant="outline" color="error">Outline</Alert>)
       const el = container.firstChild as HTMLElement
       expect(el.className).toContain('bg-transparent')
-      expect(el.className).toContain('border-error-border')
-      expect(el.className).toContain('text-error-text')
+      expect(el.className).toContain('border-error-7')
+      expect(el.className).toContain('text-error-11')
     })
 
     it('applies outline variant for neutral', () => {
       const { container } = render(<Alert variant="outline" color="neutral">Outline neutral</Alert>)
       const el = container.firstChild as HTMLElement
       expect(el.className).toContain('bg-transparent')
-      expect(el.className).toContain('border-border')
-      expect(el.className).toContain('text-text-primary')
+      expect(el.className).toContain('border-surface-border-strong')
+      expect(el.className).toContain('text-surface-fg')
     })
   })
 
@@ -122,13 +122,13 @@ describe('Alert', () => {
     it('includes svg text-on-color class for filled non-neutral', () => {
       const { container } = render(<Alert variant="filled" color="info">Filled</Alert>)
       const el = container.firstChild as HTMLElement
-      expect(el.className).toContain('[&>svg]:text-text-on-color')
+      expect(el.className).toContain('[&>svg]:text-accent-fg')
     })
 
     it('does not include svg text-on-color for filled neutral', () => {
       const { container } = render(<Alert variant="filled" color="neutral">Filled</Alert>)
       const el = container.firstChild as HTMLElement
-      expect(el.className).not.toContain('[&>svg]:text-text-on-color')
+      expect(el.className).not.toContain('[&>svg]:text-accent-fg')
     })
   })
 
@@ -136,20 +136,20 @@ describe('Alert', () => {
   describe('alertVariants', () => {
     it('returns subtle info classes by default (no args)', () => {
       const classes = alertVariants()
-      expect(classes).toContain('bg-info-surface')
+      expect(classes).toContain('bg-info-3')
     })
 
     it('returns filled error classes', () => {
       const classes = alertVariants({ variant: 'filled', color: 'error' })
       expect(classes).toContain('bg-error')
-      expect(classes).toContain('text-text-on-color')
+      expect(classes).toContain('text-accent-fg')
     })
 
     it('returns outline success classes', () => {
       const classes = alertVariants({ variant: 'outline', color: 'success' })
       expect(classes).toContain('bg-transparent')
-      expect(classes).toContain('text-success-text')
-      expect(classes).toContain('border-success-border')
+      expect(classes).toContain('text-success-11')
+      expect(classes).toContain('border-success-7')
     })
   })
 

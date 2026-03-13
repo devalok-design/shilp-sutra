@@ -112,7 +112,7 @@ function PropertyRow({
         className,
       )}
     >
-      <div className="flex w-[120px] shrink-0 items-center gap-ds-03 text-text-placeholder">
+      <div className="flex w-[120px] shrink-0 items-center gap-ds-03 text-surface-fg-subtle">
         <Icon className="h-ico-sm w-ico-sm" stroke={1.5} />
         <span className="text-ds-sm">{label}</span>
       </div>
@@ -129,7 +129,7 @@ function DefaultPriorityIndicator({ priority }: { priority: string }) {
   return (
     <div className="flex items-center gap-ds-02b">
       <div className={cn('h-2 w-2 rounded-ds-full', PRIORITY_DOT_COLORS[priority])} />
-      <span className="text-ds-md text-text-primary">
+      <span className="text-ds-md text-surface-fg">
         {PRIORITY_LABELS[priority] || priority}
       </span>
     </div>
@@ -221,7 +221,7 @@ const TaskProperties = React.forwardRef<HTMLDivElement, TaskPropertiesProps>(
       {/* Column */}
       <PropertyRow icon={IconColumns3} label="Column">
         {readOnly && !editableFields?.includes('columnId') ? (
-          <span className="px-ds-03 py-ds-02 text-ds-md text-text-primary">
+          <span className="px-ds-03 py-ds-02 text-ds-md text-surface-fg">
             {task.column.name}
           </span>
         ) : (
@@ -229,14 +229,14 @@ const TaskProperties = React.forwardRef<HTMLDivElement, TaskPropertiesProps>(
             <PopoverTrigger asChild>
               <button
                 type="button"
-                className="inline-flex items-center gap-ds-02b rounded-ds-md px-ds-03 py-ds-02 text-ds-md text-text-primary transition-colors hover:bg-field"
+                className="inline-flex items-center gap-ds-02b rounded-ds-md px-ds-03 py-ds-02 text-ds-md text-surface-fg transition-colors hover:bg-surface-3"
               >
                 <span>{task.column.name}</span>
-                <IconChevronDown className="h-3 w-3 text-text-placeholder" />
+                <IconChevronDown className="h-3 w-3 text-surface-fg-subtle" />
               </button>
             </PopoverTrigger>
             <PopoverContent
-              className="w-[180px] border-border bg-layer-01 p-ds-02"
+              className="w-[180px] border-surface-border-strong bg-surface-1 p-ds-02"
               align="start"
               sideOffset={4}
             >
@@ -247,10 +247,10 @@ const TaskProperties = React.forwardRef<HTMLDivElement, TaskPropertiesProps>(
                   onClick={() => handleColumnChange(col.id)}
                   className={cn(
                     'flex w-full items-center gap-ds-03 rounded-ds-md px-ds-03 py-ds-02b text-left text-ds-md transition-colors',
-                    'hover:bg-field',
+                    'hover:bg-surface-3',
                     col.id === task.columnId
                       ? 'text-interactive'
-                      : 'text-text-primary',
+                      : 'text-surface-fg',
                   )}
                 >
                   {col.name}
@@ -274,7 +274,7 @@ const TaskProperties = React.forwardRef<HTMLDivElement, TaskPropertiesProps>(
           >
             <button
               type="button"
-              className="inline-flex items-center gap-ds-03 rounded-ds-md px-ds-03 py-ds-02 transition-colors hover:bg-field"
+              className="inline-flex items-center gap-ds-03 rounded-ds-md px-ds-03 py-ds-02 transition-colors hover:bg-surface-3"
             >
               {task.owner ? (
                 <>
@@ -282,16 +282,16 @@ const TaskProperties = React.forwardRef<HTMLDivElement, TaskPropertiesProps>(
                     {task.owner.image && (
                       <AvatarImage src={task.owner.image} alt={task.owner.name} />
                     )}
-                    <AvatarFallback className="bg-layer-03 text-ds-xs font-semibold text-text-on-color">
+                    <AvatarFallback className="bg-surface-3 text-ds-xs font-semibold text-accent-fg">
                       {getInitials(task.owner.name)}
                     </AvatarFallback>
                   </Avatar>
-                  <span className="text-ds-md text-text-primary">
+                  <span className="text-ds-md text-surface-fg">
                     {task.owner.name}
                   </span>
                 </>
               ) : (
-                <span className="text-ds-md text-text-placeholder">
+                <span className="text-ds-md text-surface-fg-subtle">
                   No owner
                 </span>
               )}
@@ -306,27 +306,27 @@ const TaskProperties = React.forwardRef<HTMLDivElement, TaskPropertiesProps>(
           {task.assignees.map((a) => (
             <div
               key={a.user.id}
-              className="inline-flex items-center gap-ds-02 rounded-ds-full bg-layer-02 py-ds-01 pl-ds-01 pr-ds-03"
+              className="inline-flex items-center gap-ds-02 rounded-ds-full bg-surface-2 py-ds-01 pl-ds-01 pr-ds-03"
             >
               <Avatar className="h-ico-sm w-ico-sm">
                 {a.user.image && (
                   <AvatarImage src={a.user.image} alt={a.user.name} />
                 )}
-                <AvatarFallback className="bg-layer-03 text-ds-xs font-semibold text-text-on-color">
+                <AvatarFallback className="bg-surface-3 text-ds-xs font-semibold text-accent-fg">
                   {getInitials(a.user.name)}
                 </AvatarFallback>
               </Avatar>
-              <span className="text-ds-sm text-text-secondary">
+              <span className="text-ds-sm text-surface-fg-muted">
                 {a.user.name.split(' ')[0]}
               </span>
               {!readOnly && (
                 <button
                   type="button"
                   onClick={() => onUnassign(a.user.id)}
-                  className="ml-ds-01 rounded-ds-full p-ds-01 transition-colors hover:bg-field"
+                  className="ml-ds-01 rounded-ds-full p-ds-01 transition-colors hover:bg-surface-3"
                   aria-label={`Remove ${a.user.name}`}
                 >
-                  <IconX className="h-ds-03 w-ds-03 text-text-placeholder" />
+                  <IconX className="h-ds-03 w-ds-03 text-surface-fg-subtle" />
                 </button>
               )}
             </div>
@@ -340,15 +340,15 @@ const TaskProperties = React.forwardRef<HTMLDivElement, TaskPropertiesProps>(
             >
               <button
                 type="button"
-                className="inline-flex h-ico-md w-ico-md items-center justify-center rounded-ds-full border border-dashed border-border-subtle transition-colors hover:bg-field hover:border-text-placeholder"
+                className="inline-flex h-ico-md w-ico-md items-center justify-center rounded-ds-full border border-dashed border-surface-border transition-colors hover:bg-surface-3 hover:border-text-placeholder"
                 aria-label="Add assignee"
               >
-                <IconPlus className="h-3 w-3 text-text-placeholder" />
+                <IconPlus className="h-3 w-3 text-surface-fg-subtle" />
               </button>
             </MemberPicker>
           )}
           {readOnly && task.assignees.length === 0 && (
-            <span className="text-ds-md text-text-placeholder">
+            <span className="text-ds-md text-surface-fg-subtle">
               None
             </span>
           )}
@@ -361,13 +361,13 @@ const TaskProperties = React.forwardRef<HTMLDivElement, TaskPropertiesProps>(
           <PopoverTrigger asChild>
             <button
               type="button"
-              className="rounded-ds-md px-ds-03 py-ds-02 transition-colors hover:bg-field"
+              className="rounded-ds-md px-ds-03 py-ds-02 transition-colors hover:bg-surface-3"
             >
               <PriorityIndicator priority={task.priority} />
             </button>
           </PopoverTrigger>
           <PopoverContent
-            className="w-[160px] border-border bg-layer-01 p-ds-02"
+            className="w-[160px] border-surface-border-strong bg-surface-1 p-ds-02"
             align="start"
             sideOffset={4}
           >
@@ -378,8 +378,8 @@ const TaskProperties = React.forwardRef<HTMLDivElement, TaskPropertiesProps>(
                 onClick={() => handlePriorityChange(p)}
                 className={cn(
                   'flex w-full items-center gap-ds-03 rounded-ds-md px-ds-03 py-ds-02b transition-colors',
-                  'hover:bg-field',
-                  p === task.priority && 'bg-field',
+                  'hover:bg-surface-3',
+                  p === task.priority && 'bg-surface-3',
                 )}
               >
                 <PriorityIndicator priority={p} />
@@ -397,7 +397,7 @@ const TaskProperties = React.forwardRef<HTMLDivElement, TaskPropertiesProps>(
               value: task.dueDate ? new Date(task.dueDate) : null,
               onChange: handleDueDateChange,
               placeholder: 'No due date',
-              className: 'h-ds-xs-plus border-none bg-transparent px-ds-03 text-ds-md hover:bg-field',
+              className: 'h-ds-xs-plus border-none bg-transparent px-ds-03 text-ds-md hover:bg-surface-3',
             })
           ) : (
             <input
@@ -405,17 +405,17 @@ const TaskProperties = React.forwardRef<HTMLDivElement, TaskPropertiesProps>(
               value={task.dueDate ? new Date(task.dueDate).toISOString().split('T')[0] : ''}
               onChange={(e) => handleDueDateChange(e.target.value ? new Date(e.target.value) : null)}
               aria-label="Due date"
-              className="h-ds-xs-plus border-none bg-transparent px-ds-03 text-ds-md text-text-primary outline-none hover:bg-field rounded-ds-md"
+              className="h-ds-xs-plus border-none bg-transparent px-ds-03 text-ds-md text-surface-fg outline-none hover:bg-surface-3 rounded-ds-md"
             />
           )}
           {task.dueDate && (
             <button
               type="button"
               onClick={() => handleDueDateChange(null)}
-              className="rounded-ds-md p-ds-02 transition-colors hover:bg-field"
+              className="rounded-ds-md p-ds-02 transition-colors hover:bg-surface-3"
               aria-label="Clear due date"
             >
-              <IconX className="h-3 w-3 text-text-placeholder" />
+              <IconX className="h-3 w-3 text-surface-fg-subtle" />
             </button>
           )}
         </div>
@@ -427,14 +427,14 @@ const TaskProperties = React.forwardRef<HTMLDivElement, TaskPropertiesProps>(
           {task.labels.map((label) => (
             <span
               key={label}
-              className="inline-flex items-center gap-ds-02 rounded-ds-full bg-interactive/10 px-ds-03 py-ds-01 text-ds-sm font-medium text-interactive"
+              className="inline-flex items-center gap-ds-02 rounded-ds-full bg-accent-9/10 px-ds-03 py-ds-01 text-ds-sm font-medium text-interactive"
             >
               {label}
               {!readOnly && (
                 <button
                   type="button"
                   onClick={() => handleRemoveLabel(label)}
-                  className="rounded-ds-full p-ds-01 transition-colors hover:bg-field"
+                  className="rounded-ds-full p-ds-01 transition-colors hover:bg-surface-3"
                   aria-label={`Remove label ${label}`}
                 >
                   <IconX className="h-ds-03 w-ds-03" />
@@ -460,7 +460,7 @@ const TaskProperties = React.forwardRef<HTMLDivElement, TaskPropertiesProps>(
                   }}
                   onBlur={handleAddLabel}
                   placeholder="Label name"
-                  className="h-5 w-20 rounded border border-border bg-transparent px-ds-02b text-ds-sm text-text-primary outline-none placeholder:text-text-placeholder focus:border-border-subtle"
+                  className="h-5 w-20 rounded border border-surface-border-strong bg-transparent px-ds-02b text-ds-sm text-surface-fg outline-none placeholder:text-surface-fg-subtle focus:border-surface-border"
                   autoFocus
                 />
                 {/* eslint-enable jsx-a11y/no-autofocus */}
@@ -469,15 +469,15 @@ const TaskProperties = React.forwardRef<HTMLDivElement, TaskPropertiesProps>(
               <button
                 type="button"
                 onClick={() => setShowLabelInput(true)}
-                className="inline-flex h-ico-md w-ico-md items-center justify-center rounded-ds-full border border-dashed border-border-subtle transition-colors hover:bg-field hover:border-text-placeholder"
+                className="inline-flex h-ico-md w-ico-md items-center justify-center rounded-ds-full border border-dashed border-surface-border transition-colors hover:bg-surface-3 hover:border-text-placeholder"
                 aria-label="Add label"
               >
-                <IconPlus className="h-3 w-3 text-text-placeholder" />
+                <IconPlus className="h-3 w-3 text-surface-fg-subtle" />
               </button>
             )
           )}
           {readOnly && task.labels.length === 0 && (
-            <span className="text-ds-md text-text-placeholder">
+            <span className="text-ds-md text-surface-fg-subtle">
               None
             </span>
           )}
@@ -493,8 +493,8 @@ const TaskProperties = React.forwardRef<HTMLDivElement, TaskPropertiesProps>(
             className={cn(
               'inline-flex items-center gap-ds-02b rounded-ds-full px-ds-03 py-ds-01 text-ds-sm font-semibold tracking-wide transition-colors',
               task.visibility === 'EVERYONE'
-                ? 'bg-success-surface text-text-success'
-                : 'bg-layer-02 text-text-tertiary',
+                ? 'bg-success-3 text-success-11'
+                : 'bg-surface-2 text-surface-fg-subtle',
             )}
           >
             <span
@@ -502,7 +502,7 @@ const TaskProperties = React.forwardRef<HTMLDivElement, TaskPropertiesProps>(
                 'h-ds-02b w-ds-02b rounded-ds-full',
                 task.visibility === 'EVERYONE'
                   ? 'bg-success'
-                  : 'bg-icon-disabled',
+                  : 'bg-disabled',
               )}
             />
             {task.visibility === 'EVERYONE' ? 'Everyone' : 'Internal'}

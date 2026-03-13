@@ -47,14 +47,14 @@ export const BetweenText: Story = {
     <div className="max-w-md space-y-ds-04">
       <div>
         <h4 className="text-ds-sm font-medium">Section One</h4>
-        <p className="text-ds-sm text-text-secondary">
+        <p className="text-ds-sm text-surface-fg-muted">
           Content for the first section.
         </p>
       </div>
       <Separator />
       <div>
         <h4 className="text-ds-sm font-medium">Section Two</h4>
-        <p className="text-ds-sm text-text-secondary">
+        <p className="text-ds-sm text-surface-fg-muted">
           Content for the second section.
         </p>
       </div>

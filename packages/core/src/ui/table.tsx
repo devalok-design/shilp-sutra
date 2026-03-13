@@ -43,7 +43,7 @@ const TableFooter = React.forwardRef<
   <tfoot
     ref={ref}
     className={cn(
-      "bg-[color-mix(in_srgb,var(--color-layer-02)_50%,transparent)] font-medium [&>tr]:last:border-b-0",
+      "bg-[color-mix(in_srgb,var(--color-surface-2)_50%,transparent)] font-medium [&>tr]:last:border-b-0",
       className
     )}
     {...props}
@@ -58,7 +58,7 @@ const TableRow = React.forwardRef<
   <tr
     ref={ref}
     className={cn(
-      "transition-colors hover:bg-layer-02 data-[state=selected]:bg-interactive-selected",
+      "transition-colors hover:bg-surface-2 data-[state=selected]:bg-accent-3",
       className
     )}
     {...props}
@@ -74,7 +74,7 @@ const TableHead = React.forwardRef<
     ref={ref}
     scope="col"
     className={cn(
-      "h-ds-md px-ds-03 text-left font-medium text-text-secondary [&:has([role=checkbox])]:pr-0 [&>[role=checkbox]]:translate-y-[2px]",
+      "h-ds-md px-ds-03 text-left font-medium text-surface-fg-muted [&:has([role=checkbox])]:pr-0 [&>[role=checkbox]]:translate-y-[2px]",
       className
     )}
     {...props}
@@ -103,7 +103,7 @@ const TableCaption = React.forwardRef<
 >(({ className, ...props }, ref) => (
   <caption
     ref={ref}
-    className={cn("mt-ds-05 text-ds-md text-text-secondary", className)}
+    className={cn("mt-ds-05 text-ds-md text-surface-fg-muted", className)}
     {...props}
   />
 ))

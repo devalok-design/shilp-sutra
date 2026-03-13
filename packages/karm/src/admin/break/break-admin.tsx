@@ -474,12 +474,12 @@ const BreakAdminRoot = React.forwardRef<HTMLDivElement, BreakAdminProps>(
           className={cn("z-base flex w-full max-w-layout flex-col items-center justify-center md:pt-0", className)}
           {...props}
         >
-          <div className="no-scrollbar w-full overflow-auto border border-border-subtle sm:rounded-ds-lg max-md:rounded-ds-none max-md:border-0">
+          <div className="no-scrollbar w-full overflow-auto border border-surface-border sm:rounded-ds-lg max-md:rounded-ds-none max-md:border-0">
             {children ?? (
               <>
                 <Header />
                 {/* intentional: min-w-[800px] ensures table columns don't collapse on medium screens */}
-                <div className="no-scrollbar flex h-fit min-w-[800px] flex-col border-t-[1px] border-border-subtle bg-layer-02 shadow-transparent max-lg:min-w-[100%] max-lg:overflow-x-auto">
+                <div className="no-scrollbar flex h-fit min-w-[800px] flex-col border-t-[1px] border-surface-border bg-surface-2 shadow-transparent max-lg:min-w-[100%] max-lg:overflow-x-auto">
                   <TabBar />
                   <div className="w-full border-0 max-lg:min-w-[800px]">
                     <BreaksPanel />
@@ -544,26 +544,26 @@ const TabBar = React.forwardRef<
     <div
       ref={ref}
       className={cn(
-        'flex w-full gap-ds-03 border-b-[1px] border-border px-ds-06 pt-ds-03 max-lg:min-w-[800px]',
+        'flex w-full gap-ds-03 border-b-[1px] border-surface-border-strong px-ds-06 pt-ds-03 max-lg:min-w-[800px]',
         className,
       )}
       {...props}
     >
       <button
-        className={cn('text-ds-sm font-semibold uppercase tracking-wider mb-[-1px] px-ds-03 py-ds-04', activeTab === 'breaks' ? 'text-text-primary border-b-[1px] border-interactive-hover' : 'text-text-tertiary')}
+        className={cn('text-ds-sm font-semibold uppercase tracking-wider mb-[-1px] px-ds-03 py-ds-04', activeTab === 'breaks' ? 'text-surface-fg border-b-[1px] border-accent-7-hover' : 'text-surface-fg-subtle')}
         onClick={() => setActiveTab('breaks')}
       >
         BREAKS
       </button>
       <button
-        className={cn('text-ds-sm font-semibold uppercase tracking-wider mb-[-1px] flex items-center gap-ds-02 px-ds-03 py-ds-04', activeTab === 'requests' ? 'border-b-[1px] border-interactive-hover text-text-primary' : 'text-text-tertiary')}
+        className={cn('text-ds-sm font-semibold uppercase tracking-wider mb-[-1px] flex items-center gap-ds-02 px-ds-03 py-ds-04', activeTab === 'requests' ? 'border-b-[1px] border-accent-7-hover text-surface-fg' : 'text-surface-fg-subtle')}
         onClick={() => setActiveTab('requests')}
       >
         REQUESTS{' '}
         <span className="text-interactive-hover">{`(${pendingRequests.length})`}</span>
       </button>
       <button
-        className={cn('text-ds-sm font-semibold uppercase tracking-wider mb-[-1px] flex items-center gap-ds-02 px-ds-03 py-ds-04', activeTab === 'balance' ? 'border-b-[1px] border-interactive-hover text-text-primary' : 'text-text-tertiary')}
+        className={cn('text-ds-sm font-semibold uppercase tracking-wider mb-[-1px] flex items-center gap-ds-02 px-ds-03 py-ds-04', activeTab === 'balance' ? 'border-b-[1px] border-accent-7-hover text-surface-fg' : 'text-surface-fg-subtle')}
         onClick={() => setActiveTab('balance')}
       >
         BALANCE{' '}

@@ -22,13 +22,13 @@ export const markdownComponents = {
       return <code className={className}>{children}</code>
     }
     return (
-      <code className="rounded bg-field px-ds-02 py-ds-01 text-ds-md">
+      <code className="rounded bg-surface-3 px-ds-02 py-ds-01 text-ds-md">
         {children}
       </code>
     )
   },
   pre: ({ children }: { children?: React.ReactNode }) => (
-    <pre className="mb-ds-03 overflow-x-auto rounded-ds-lg bg-field p-ds-04 text-ds-md">
+    <pre className="mb-ds-03 overflow-x-auto rounded-ds-lg bg-surface-3 p-ds-04 text-ds-md">
       {children}
     </pre>
   ),

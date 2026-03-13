@@ -52,7 +52,7 @@ export const Default: Story = {
   args: {
     taskId: 'task-1',
     children: (
-      <div className="w-[280px] rounded-ds-lg border border-border bg-layer-01 p-ds-05">
+      <div className="w-[280px] rounded-ds-lg border border-surface-border-strong bg-surface-1 p-ds-05">
         Right-click this card to see the context menu
       </div>
     ),

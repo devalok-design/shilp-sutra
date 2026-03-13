@@ -42,7 +42,7 @@ export const AllTypes: Story = {
     <div className="flex flex-col gap-ds-02">
       {(Object.keys(AdjustmentType) as (keyof typeof AdjustmentType)[]).map((type) => (
         <div key={type} className="flex items-center gap-ds-04 text-ds-sm">
-          <span className="text-text-secondary w-32 font-mono">{type}</span>
+          <span className="text-surface-fg-muted w-32 font-mono">{type}</span>
           <span>{renderAdjustmentType(type)}</span>
         </div>
       ))}

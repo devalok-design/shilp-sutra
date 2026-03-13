@@ -168,10 +168,10 @@ function Sparkline({
 function ProgressBar({ progress, label }: { progress: number; label: string }) {
   const clamped = Math.max(0, Math.min(100, progress))
   const barColor =
-    clamped >= 90 ? 'bg-success' : clamped >= 70 ? 'bg-warning' : 'bg-interactive'
+    clamped >= 90 ? 'bg-success' : clamped >= 70 ? 'bg-warning' : 'bg-accent-9'
 
   return (
-    <div className="h-1 w-full rounded-ds-full bg-layer-02 mt-ds-04" role="progressbar" aria-label={`${label} progress`} aria-valuenow={clamped} aria-valuemin={0} aria-valuemax={100}>
+    <div className="h-1 w-full rounded-ds-full bg-surface-2 mt-ds-04" role="progressbar" aria-label={`${label} progress`} aria-valuenow={clamped} aria-valuemin={0} aria-valuemax={100}>
       <div
         className={cn('h-full rounded-ds-full transition-all duration-moderate-02', barColor)}
         style={{ width: `${clamped}%` }}
@@ -215,7 +215,7 @@ const StatCard = React.forwardRef<HTMLDivElement, StatCardProps>(
         <div
           ref={ref}
           className={cn(
-            'rounded-ds-lg border border-border-subtle bg-layer-01 shadow-01 p-ds-05b',
+            'rounded-ds-lg border border-surface-border bg-surface-1 shadow-01 p-ds-05b',
             accent && `border-l-[3px] ${accentBorderMap[accent]}`,
             className,
           )}
@@ -240,7 +240,7 @@ const StatCard = React.forwardRef<HTMLDivElement, StatCardProps>(
         ? 'text-success'
         : delta?.direction === 'down'
           ? 'text-error'
-          : 'text-text-secondary'
+          : 'text-surface-fg-muted'
 
     const sparklineColor =
       delta?.direction === 'up'
@@ -252,13 +252,13 @@ const StatCard = React.forwardRef<HTMLDivElement, StatCardProps>(
     const cardContent = (
       <>
         <div className="flex items-center justify-between mb-ds-04">
-          <p className="text-ds-md font-medium text-text-secondary animate-fade-in">{resolvedLabel}</p>
+          <p className="text-ds-md font-medium text-surface-fg-muted animate-fade-in">{resolvedLabel}</p>
           <div className="flex items-center gap-ds-03">
             {sparkline && sparkline.length >= 2 && (
               <Sparkline data={sparkline} colorClass={sparklineColor} />
             )}
             {icon && (
-              <span className="text-text-secondary animate-scale-in" aria-hidden="true">
+              <span className="text-surface-fg-muted animate-scale-in" aria-hidden="true">
                 {typeof icon === 'function'
                   ? React.createElement(icon as React.ComponentType<{ className?: string }>, {
                       className: 'h-ico-lg w-ico-lg',
@@ -269,18 +269,18 @@ const StatCard = React.forwardRef<HTMLDivElement, StatCardProps>(
           </div>
         </div>
         <div className="overflow-hidden">
-          <p className="inline-block animate-count-up text-ds-3xl font-semibold text-text-primary">
+          <p className="inline-block animate-count-up text-ds-3xl font-semibold text-surface-fg">
             {prefix && (
-              <span className="text-text-secondary text-ds-lg">{prefix}</span>
+              <span className="text-surface-fg-muted text-ds-lg">{prefix}</span>
             )}
             <span className="tabular-nums">{value}</span>
             {suffix && (
-              <span className="text-text-secondary text-ds-lg">{suffix}</span>
+              <span className="text-surface-fg-muted text-ds-lg">{suffix}</span>
             )}
           </p>
         </div>
         {secondaryLabel && (
-          <p className="text-ds-sm text-text-placeholder mt-ds-01 animate-fade-in" style={{ animationDelay: '100ms' }}>{secondaryLabel}</p>
+          <p className="text-ds-sm text-surface-fg-subtle mt-ds-01 animate-fade-in" style={{ animationDelay: '100ms' }}>{secondaryLabel}</p>
         )}
         {progress != null && (
           <div className="animate-fade-in" style={{ animationDelay: '150ms' }}>
@@ -298,12 +298,12 @@ const StatCard = React.forwardRef<HTMLDivElement, StatCardProps>(
             <DeltaIcon className="h-ico-sm w-ico-sm animate-stamp" aria-hidden="true" />
             <span>{delta.value}</span>
             {comparisonLabel && (
-              <span className="text-text-placeholder font-normal">{comparisonLabel}</span>
+              <span className="text-surface-fg-subtle font-normal">{comparisonLabel}</span>
             )}
           </div>
         )}
         {footer && (
-          <div className="mt-ds-04 pt-ds-04 border-t border-border-subtle text-ds-sm animate-fade-in" style={{ animationDelay: '250ms' }}>
+          <div className="mt-ds-04 pt-ds-04 border-t border-surface-border text-ds-sm animate-fade-in" style={{ animationDelay: '250ms' }}>
             {footer}
           </div>
         )}
@@ -311,10 +311,10 @@ const StatCard = React.forwardRef<HTMLDivElement, StatCardProps>(
     )
 
     const cardClasses = cn(
-      'rounded-ds-lg border border-border-subtle bg-layer-01 shadow-01 p-ds-05b',
+      'rounded-ds-lg border border-surface-border bg-surface-1 shadow-01 p-ds-05b',
       accent && `border-l-[3px] ${accentBorderMap[accent]}`,
       isClickable &&
-        'cursor-pointer hover:shadow-02 hover:border-border transition-all duration-fast-02 group',
+        'cursor-pointer hover:shadow-02 hover:border-surface-border-strong transition-all duration-fast-02 group',
       className,
     )
 

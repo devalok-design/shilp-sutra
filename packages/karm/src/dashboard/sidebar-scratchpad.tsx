@@ -36,7 +36,7 @@ const SidebarScratchpad = React.forwardRef<HTMLDivElement, SidebarScratchpadProp
           type="button"
           onClick={() => setOpen((prev) => !prev)}
           aria-expanded={open}
-          className="flex w-full items-center gap-ds-02 px-ds-03 py-ds-02 text-left text-ds-xs font-semibold text-text-secondary transition-colors hover:bg-layer-02"
+          className="flex w-full items-center gap-ds-02 px-ds-03 py-ds-02 text-left text-ds-xs font-semibold text-surface-fg-muted transition-colors hover:bg-surface-2"
         >
           <IconChevronDown
             className={cn(
@@ -46,7 +46,7 @@ const SidebarScratchpad = React.forwardRef<HTMLDivElement, SidebarScratchpadProp
           />
           <span className="flex-1">Scratchpad</span>
           {badgeCount != null && badgeCount > 0 && (
-            <span className="rounded-full bg-layer-02 px-1.5 text-ds-xs text-text-secondary">
+            <span className="rounded-full bg-surface-2 px-1.5 text-ds-xs text-surface-fg-muted">
               {badgeCount}
             </span>
           )}
@@ -64,7 +64,7 @@ const SidebarScratchpad = React.forwardRef<HTMLDivElement, SidebarScratchpadProp
               {items.map((item) => (
                 <label
                   key={item.id}
-                  className="flex cursor-pointer items-center gap-ds-02 rounded-ds-sm px-ds-02 py-0.5 transition-colors hover:bg-layer-02"
+                  className="flex cursor-pointer items-center gap-ds-02 rounded-ds-sm px-ds-02 py-0.5 transition-colors hover:bg-surface-2"
                 >
                   <Checkbox
                     checked={item.done}
@@ -75,7 +75,7 @@ const SidebarScratchpad = React.forwardRef<HTMLDivElement, SidebarScratchpadProp
                   <span
                     className={cn(
                       'flex-1 text-xs transition-all duration-200',
-                      item.done ? 'text-text-placeholder line-through' : 'text-text-primary',
+                      item.done ? 'text-surface-fg-subtle line-through' : 'text-surface-fg',
                     )}
                   >
                     {item.text}

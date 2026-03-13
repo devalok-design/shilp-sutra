@@ -229,7 +229,7 @@ export const ColumnHeader = React.forwardRef<HTMLDivElement, ColumnHeaderProps>(
           />
         ) : (
           <h3
-            className="flex-1 truncate text-ds-sm font-semibold text-text-primary"
+            className="flex-1 truncate text-ds-sm font-semibold text-surface-fg"
             onDoubleClick={startRenaming}
             title={column.name}
             aria-label={
@@ -239,7 +239,7 @@ export const ColumnHeader = React.forwardRef<HTMLDivElement, ColumnHeaderProps>(
             }
           >
             {column.name}
-            <span className="ml-ds-02 text-ds-xs font-normal text-text-tertiary">({taskCount})</span>
+            <span className="ml-ds-02 text-ds-xs font-normal text-surface-fg-subtle">({taskCount})</span>
           </h3>
         )}
 
@@ -256,7 +256,7 @@ export const ColumnHeader = React.forwardRef<HTMLDivElement, ColumnHeaderProps>(
               'flex-shrink-0 text-ds-xs tabular-nums',
               isWipExceeded
                 ? 'font-semibold text-error'
-                : 'text-text-tertiary',
+                : 'text-surface-fg-subtle',
             )}
             aria-label={`WIP limit: ${wipLimit}${isWipExceeded ? ', exceeded' : ''}`}
           >
@@ -271,7 +271,7 @@ export const ColumnHeader = React.forwardRef<HTMLDivElement, ColumnHeaderProps>(
           className={cn(
             'h-ds-xs w-ds-xs flex-shrink-0 opacity-0 transition-opacity',
             'group-hover/header:opacity-100 focus:opacity-100',
-            'hover:bg-interactive-subtle hover:text-interactive',
+            'hover:bg-accent-2 hover:text-interactive',
           )}
           aria-label="Add task"
           title="Add task"
@@ -377,8 +377,8 @@ export const ColumnHeader = React.forwardRef<HTMLDivElement, ColumnHeaderProps>(
                     className={cn(
                       'flex items-center justify-center h-6 w-6 rounded-ds-md transition-colors',
                       newOwnerId
-                        ? 'text-interactive bg-interactive-subtle'
-                        : 'text-text-tertiary hover:text-text-primary hover:bg-layer-active',
+                        ? 'text-interactive bg-accent-2'
+                        : 'text-surface-fg-subtle hover:text-surface-fg hover:bg-surface-4',
                     )}
                     title={newOwnerId
                       ? `Lead: ${allMembers.find((m) => m.id === newOwnerId)?.name}`
@@ -391,14 +391,14 @@ export const ColumnHeader = React.forwardRef<HTMLDivElement, ColumnHeaderProps>(
                 </DropdownMenuTrigger>
                 <DropdownMenuContent align="start" className="w-44 max-h-48 overflow-y-auto">
                   {allMembers.length === 0 && (
-                    <div className="px-ds-03 py-ds-02 text-ds-xs text-text-tertiary">
+                    <div className="px-ds-03 py-ds-02 text-ds-xs text-surface-fg-subtle">
                       No members found
                     </div>
                   )}
                   {newOwnerId && (
                     <>
                       <DropdownMenuItem onClick={() => setNewOwnerId(null)}>
-                        <IconX className="mr-ds-02 h-3 w-3 text-text-tertiary" />
+                        <IconX className="mr-ds-02 h-3 w-3 text-surface-fg-subtle" />
                         Clear lead
                       </DropdownMenuItem>
                       <DropdownMenuSeparator />
@@ -408,7 +408,7 @@ export const ColumnHeader = React.forwardRef<HTMLDivElement, ColumnHeaderProps>(
                     <DropdownMenuItem
                       key={member.id}
                       onClick={() => setNewOwnerId(member.id)}
-                      className={cn(newOwnerId === member.id && 'bg-interactive-subtle')}
+                      className={cn(newOwnerId === member.id && 'bg-accent-2')}
                     >
                       {member.name}
                     </DropdownMenuItem>
@@ -421,8 +421,8 @@ export const ColumnHeader = React.forwardRef<HTMLDivElement, ColumnHeaderProps>(
                 className={cn(
                   'relative flex items-center justify-center h-6 w-6 rounded-ds-md cursor-pointer transition-colors',
                   newDueDate
-                    ? 'text-interactive bg-interactive-subtle'
-                    : 'text-text-tertiary hover:text-text-primary hover:bg-layer-active',
+                    ? 'text-interactive bg-accent-2'
+                    : 'text-surface-fg-subtle hover:text-surface-fg hover:bg-surface-4',
                 )}
                 title={newDueDate ? `Due: ${newDueDate}` : 'Set due date'}
                 aria-label="Set due date"
@@ -447,7 +447,7 @@ export const ColumnHeader = React.forwardRef<HTMLDivElement, ColumnHeaderProps>(
                 className={cn(
                   'flex items-center justify-center h-6 w-6 rounded-ds-md transition-colors',
                   newTitle.trim()
-                    ? 'text-success hover:bg-success-surface'
+                    ? 'text-success hover:bg-success-3'
                     : 'text-text-quaternary cursor-not-allowed',
                 )}
                 title="Confirm add task"
@@ -460,7 +460,7 @@ export const ColumnHeader = React.forwardRef<HTMLDivElement, ColumnHeaderProps>(
               {/* Cancel */}
               <button
                 onClick={resetAddForm}
-                className="flex items-center justify-center h-6 w-6 rounded-ds-md text-text-tertiary hover:text-text-primary hover:bg-layer-active transition-colors"
+                className="flex items-center justify-center h-6 w-6 rounded-ds-md text-surface-fg-subtle hover:text-surface-fg hover:bg-surface-4 transition-colors"
                 title="Cancel"
                 aria-label="Cancel adding task"
                 tabIndex={isAdding ? 0 : -1}

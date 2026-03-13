@@ -145,24 +145,24 @@ type TabId = typeof TABS[number]['id']
 function PanelSkeleton() {
   return (
     <div className="space-y-ds-06 p-ds-06">
-      <Skeleton className="h-ds-xs-plus w-3/4 bg-field" />
+      <Skeleton className="h-ds-xs-plus w-3/4 bg-surface-3" />
       <div className="space-y-ds-04">
         {Array.from({ length: 6 }).map((_, i) => (
           <div key={i} className="flex items-center gap-ds-04">
-            <Skeleton className="h-[16px] w-[120px] bg-field" />
-            <Skeleton className="h-[16px] flex-1 bg-field" />
+            <Skeleton className="h-[16px] w-[120px] bg-surface-3" />
+            <Skeleton className="h-[16px] flex-1 bg-surface-3" />
           </div>
         ))}
       </div>
-      <div className="flex gap-ds-05 border-b border-border pb-ds-03">
+      <div className="flex gap-ds-05 border-b border-surface-border-strong pb-ds-03">
         {Array.from({ length: 5 }).map((_, i) => (
-          <Skeleton key={i} className="h-[12px] w-[64px] bg-field" />
+          <Skeleton key={i} className="h-[12px] w-[64px] bg-surface-3" />
         ))}
       </div>
       <div className="space-y-ds-04">
-        <Skeleton className="h-ds-md w-full bg-field" />
-        <Skeleton className="h-ds-md w-full bg-field" />
-        <Skeleton className="h-ds-md w-4/5 bg-field" />
+        <Skeleton className="h-ds-md w-full bg-surface-3" />
+        <Skeleton className="h-ds-md w-full bg-surface-3" />
+        <Skeleton className="h-ds-md w-4/5 bg-surface-3" />
       </div>
     </div>
   )
@@ -283,7 +283,7 @@ const TaskDetailPanel = React.forwardRef<HTMLDivElement, TaskDetailPanelProps>(f
           /* intentional: task detail side panel takes 40% of screen, min 380px for form usability */
           'w-full sm:max-w-none sm:w-[40%] min-w-[380px] p-0',
           'flex flex-col overflow-hidden',
-          'border-l border-border bg-layer-01',
+          'border-l border-surface-border-strong bg-surface-1',
           className,
         )}
         {...props}
@@ -299,7 +299,7 @@ const TaskDetailPanel = React.forwardRef<HTMLDivElement, TaskDetailPanelProps>(f
         ) : (
           <>
             {/* Header -- Title */}
-            <div className="shrink-0 border-b border-border px-ds-06 pb-ds-05 pt-ds-06">
+            <div className="shrink-0 border-b border-surface-border-strong px-ds-06 pb-ds-05 pt-ds-06">
               {!clientMode && editingTitle ? (
                 <input
                   ref={titleInputRef}
@@ -308,14 +308,14 @@ const TaskDetailPanel = React.forwardRef<HTMLDivElement, TaskDetailPanelProps>(f
                   onChange={(e) => setTitleValue(e.target.value)}
                   onBlur={handleTitleBlur}
                   onKeyDown={handleTitleKeyDown}
-                  className="w-full bg-transparent text-ds-lg font-semibold text-text-primary outline-none"
+                  className="w-full bg-transparent text-ds-lg font-semibold text-surface-fg outline-none"
                 />
               ) : (
                 // eslint-disable-next-line jsx-a11y/click-events-have-key-events
                 <h2
                   onClick={clientMode ? undefined : () => setEditingTitle(true)}
                   className={cn(
-                    'text-ds-lg font-semibold text-text-primary',
+                    'text-ds-lg font-semibold text-surface-fg',
                     !clientMode && 'cursor-text hover:text-interactive transition-colors',
                   )}
                 >
@@ -323,7 +323,7 @@ const TaskDetailPanel = React.forwardRef<HTMLDivElement, TaskDetailPanelProps>(f
                 </h2>
               )}
               {task.parentTaskId && (
-                <p className="mt-ds-02 text-ds-sm text-text-placeholder">
+                <p className="mt-ds-02 text-ds-sm text-surface-fg-subtle">
                   Subtask
                 </p>
               )}
@@ -337,7 +337,7 @@ const TaskDetailPanel = React.forwardRef<HTMLDivElement, TaskDetailPanelProps>(f
             {/* Scrollable Body */}
             <div className="flex-1 overflow-y-auto">
               {/* Properties Section */}
-              <div className="border-b border-border px-ds-06 py-ds-05">
+              <div className="border-b border-surface-border-strong px-ds-06 py-ds-05">
                 <TaskProperties
                   task={task}
                   columns={columns}
@@ -356,7 +356,7 @@ const TaskDetailPanel = React.forwardRef<HTMLDivElement, TaskDetailPanelProps>(f
               </div>
 
               {/* Tab Bar */}
-              <div className="sticky top-0 z-raised bg-layer-01 px-ds-06">
+              <div className="sticky top-0 z-raised bg-surface-1 px-ds-06">
                 <Tabs value={activeTab} onValueChange={handleTabChange}>
                   <TabsList variant="line">
                     {beforeTabs.map((tab) => (

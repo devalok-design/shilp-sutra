@@ -16,13 +16,13 @@ function FileAttachmentView({ node }: NodeViewProps) {
         href={safeUrl}
         target="_blank"
         rel="noopener noreferrer"
-        className="inline-flex items-center gap-ds-03 rounded-ds-md border border-border bg-layer-02 px-ds-04 py-ds-03 text-ds-sm text-text-primary transition-colors hover:border-border-strong hover:bg-layer-03"
+        className="inline-flex items-center gap-ds-03 rounded-ds-md border border-surface-border-strong bg-surface-2 px-ds-04 py-ds-03 text-ds-sm text-surface-fg transition-colors hover:border-surface-border-strong hover:bg-surface-3"
         contentEditable={false}
       >
-        <IconFile className="h-ico-sm w-ico-sm shrink-0 text-text-placeholder" />
+        <IconFile className="h-ico-sm w-ico-sm shrink-0 text-surface-fg-subtle" />
         <span className="truncate">{node.attrs.name}</span>
-        <span className="shrink-0 text-text-placeholder">({formatFileSize(node.attrs.size)})</span>
-        <IconDownload className="h-ico-sm w-ico-sm shrink-0 text-text-placeholder" />
+        <span className="shrink-0 text-surface-fg-subtle">({formatFileSize(node.attrs.size)})</span>
+        <IconDownload className="h-ico-sm w-ico-sm shrink-0 text-surface-fg-subtle" />
       </a>
     </NodeViewWrapper>
   )

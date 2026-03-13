@@ -144,7 +144,7 @@ export const RadarChart = React.forwardRef<HTMLDivElement, RadarChartProps>(
                     key={`grid-${i}`}
                     points={points}
                     fill="none"
-                    stroke="var(--color-border-subtle)"
+                    stroke="var(--color-surface-border)"
                     strokeDasharray="3,3"
                     strokeWidth={1}
                   />
@@ -163,7 +163,7 @@ export const RadarChart = React.forwardRef<HTMLDivElement, RadarChartProps>(
                     y1={0}
                     x2={x}
                     y2={y}
-                    stroke="var(--color-border-subtle)"
+                    stroke="var(--color-surface-border)"
                     strokeWidth={1}
                   />
                 )
@@ -245,7 +245,7 @@ export const RadarChart = React.forwardRef<HTMLDivElement, RadarChartProps>(
                             cy={y}
                             r={4}
                             fill={colors[seriesIdx]}
-                            stroke="var(--color-layer-01)"
+                            stroke="var(--color-surface-1)"
                             strokeWidth={2}
                             className="transition-opacity"
                           />
@@ -292,7 +292,7 @@ export const RadarChart = React.forwardRef<HTMLDivElement, RadarChartProps>(
                                     className="inline-block h-2 w-2 rounded-ds-full"
                                     style={{ backgroundColor: colors[sIdx] }}
                                   />
-                                  <span className="text-text-secondary">
+                                  <span className="text-surface-fg-muted">
                                     {s.label}:
                                   </span>{' '}
                                   {val.toLocaleString()}

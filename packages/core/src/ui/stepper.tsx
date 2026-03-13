@@ -77,7 +77,7 @@ const Stepper = React.forwardRef<HTMLDivElement, StepperProps>(
                       ? 'ml-ds-04 w-ds-01 min-h-ds-05'
                       : 'h-ds-01 min-w-ds-05',
                     index < activeStep
-                      ? 'bg-interactive'
+                      ? 'bg-accent-9'
                       : 'bg-border',
                   )}
                   aria-hidden="true"
@@ -132,9 +132,9 @@ const Step = React.forwardRef<HTMLDivElement, StepInternalProps>(
         <div
           className={cn(
             'flex-shrink-0 flex items-center justify-center w-ds-sm h-ds-sm rounded-ds-full text-ds-sm font-semibold transition-colors duration-fast-01',
-            state === 'completed' && 'bg-interactive text-text-on-color',
-            state === 'active' && 'bg-interactive text-text-on-color',
-            state === 'pending' && 'bg-layer-02 text-text-tertiary border border-border',
+            state === 'completed' && 'bg-accent-9 text-accent-fg',
+            state === 'active' && 'bg-accent-9 text-accent-fg',
+            state === 'pending' && 'bg-surface-2 text-surface-fg-subtle border border-surface-border-strong',
           )}
         >
           {icon || (state === 'completed' ? (
@@ -150,14 +150,14 @@ const Step = React.forwardRef<HTMLDivElement, StepInternalProps>(
             className={cn(
               'text-ds-md font-medium leading-ds-snug',
               state === 'pending'
-                ? 'text-text-tertiary'
-                : 'text-text-primary',
+                ? 'text-surface-fg-subtle'
+                : 'text-surface-fg',
             )}
           >
             {label}
           </span>
           {description && (
-            <span className="text-ds-sm text-text-secondary leading-ds-relaxed">
+            <span className="text-ds-sm text-surface-fg-muted leading-ds-relaxed">
               {description}
             </span>
           )}

@@ -195,19 +195,19 @@ export const AllSizes: Story = {
   render: () => (
     <div style={{ display: 'flex', flexDirection: 'column', gap: 16 }}>
       <div>
-        <p className="mb-ds-03 text-ds-sm font-accent font-semibold text-text-secondary">
+        <p className="mb-ds-03 text-ds-sm font-accent font-semibold text-surface-fg-muted">
           Small
         </p>
         <ControlledDemo size="sm" options={iconOptions} />
       </div>
       <div>
-        <p className="mb-ds-03 text-ds-sm font-accent font-semibold text-text-secondary">
+        <p className="mb-ds-03 text-ds-sm font-accent font-semibold text-surface-fg-muted">
           Medium (default)
         </p>
         <ControlledDemo size="md" options={iconOptions} />
       </div>
       <div>
-        <p className="mb-ds-03 text-ds-sm font-accent font-semibold text-text-secondary">
+        <p className="mb-ds-03 text-ds-sm font-accent font-semibold text-surface-fg-muted">
           Large
         </p>
         <ControlledDemo size="lg" options={iconOptions} />
@@ -221,7 +221,7 @@ export const AllVariants: Story = {
     <div style={{ display: 'flex', flexDirection: 'column', gap: 24 }}>
       {/* Filled variant */}
       <div>
-        <p className="mb-ds-04 text-ds-md font-accent font-semibold text-text-primary">
+        <p className="mb-ds-04 text-ds-md font-accent font-semibold text-surface-fg">
           Filled
         </p>
         <div style={{ display: 'flex', flexDirection: 'column', gap: 12 }}>
@@ -233,7 +233,7 @@ export const AllVariants: Story = {
 
       {/* Tonal variant */}
       <div>
-        <p className="mb-ds-04 text-ds-md font-accent font-semibold text-text-primary">
+        <p className="mb-ds-04 text-ds-md font-accent font-semibold text-surface-fg">
           Tonal
         </p>
         <div style={{ display: 'flex', flexDirection: 'column', gap: 12 }}>
@@ -245,7 +245,7 @@ export const AllVariants: Story = {
 
       {/* Text only */}
       <div>
-        <p className="mb-ds-04 text-ds-md font-accent font-semibold text-text-primary">
+        <p className="mb-ds-04 text-ds-md font-accent font-semibold text-surface-fg">
           Text only
         </p>
         <div style={{ display: 'flex', flexDirection: 'column', gap: 12 }}>
@@ -256,7 +256,7 @@ export const AllVariants: Story = {
 
       {/* Disabled */}
       <div>
-        <p className="mb-ds-04 text-ds-md font-accent font-semibold text-text-primary">
+        <p className="mb-ds-04 text-ds-md font-accent font-semibold text-surface-fg">
           Disabled
         </p>
         <div style={{ display: 'flex', flexDirection: 'column', gap: 12 }}>

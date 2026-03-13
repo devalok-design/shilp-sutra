@@ -81,6 +81,6 @@ describe('BoardColumn', () => {
     const { container } = renderColumn(wipColumn)
     // The column root div should have the error surface tint
     const columnEl = container.firstChild as HTMLElement
-    expect(columnEl.className).toContain('bg-error-surface')
+    expect(columnEl.className).toContain('bg-error-3')
   })
 })

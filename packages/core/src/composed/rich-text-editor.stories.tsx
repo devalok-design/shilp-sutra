@@ -117,13 +117,13 @@ export const EditorAndViewer: EditorStory = {
   render: () => (
     <div style={{ display: 'flex', flexDirection: 'column', gap: 24 }}>
       <div>
-        <p style={{ marginBottom: 8, fontSize: 13, fontWeight: 600, color: 'var(--color-text-secondary)' }}>
+        <p style={{ marginBottom: 8, fontSize: 13, fontWeight: 600, color: 'var(--color-surface-fg-muted)' }}>
           Editor (editable)
         </p>
         <RichTextEditor content={sampleHtml} />
       </div>
       <div>
-        <p style={{ marginBottom: 8, fontSize: 13, fontWeight: 600, color: 'var(--color-text-secondary)' }}>
+        <p style={{ marginBottom: 8, fontSize: 13, fontWeight: 600, color: 'var(--color-surface-fg-muted)' }}>
           Viewer (read-only, no toolbar)
         </p>
         <RichTextViewer content={sampleHtml} />

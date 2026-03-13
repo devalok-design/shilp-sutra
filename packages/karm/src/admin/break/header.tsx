@@ -98,11 +98,11 @@ export const BreakAdminHeader = React.forwardRef<HTMLDivElement, BreakAdminHeade
   }
 
   return (
-    <div ref={ref} className={cn("flex min-w-[800px] items-center justify-between bg-field px-ds-06 py-ds-05b max-md:justify-start max-md:gap-ds-05b max-lg:min-w-[100%]", className)} {...props}>
+    <div ref={ref} className={cn("flex min-w-[800px] items-center justify-between bg-surface-3 px-ds-06 py-ds-05b max-md:justify-start max-md:gap-ds-05b max-lg:min-w-[100%]", className)} {...props}>
       <div className="flex flex-col gap-ds-05">
         {filters.selectedAssociate && (
           <>
-            <p className="text-ds-sm font-semibold uppercase tracking-wider text-text-tertiary">
+            <p className="text-ds-sm font-semibold uppercase tracking-wider text-surface-fg-subtle">
               Break Balance
             </p>
             <div className="flex items-end">
@@ -110,7 +110,7 @@ export const BreakAdminHeader = React.forwardRef<HTMLDivElement, BreakAdminHeade
                 {breakBalance?.remainingDays || 0}
               </p>
 
-              <p className="text-ds-2xl translate-y-[-5px] text-text-placeholder">
+              <p className="text-ds-2xl translate-y-[-5px] text-surface-fg-subtle">
                 / {breakBalance?.breakBalance || 0}
               </p>
             </div>
@@ -120,7 +120,7 @@ export const BreakAdminHeader = React.forwardRef<HTMLDivElement, BreakAdminHeade
 
       <header className="flex items-center gap-ds-04">
         {filters.selectedAssociate ? (
-          <div className="text-ds-md flex flex-row items-center justify-start gap-ds-02 rounded-ds-md bg-interactive p-ds-02b text-text-on-color">
+          <div className="text-ds-md flex flex-row items-center justify-start gap-ds-02 rounded-ds-md bg-accent-9 p-ds-02b text-accent-fg">
             <div className="flex items-center justify-start gap-ds-01">
               {userImages[filters.selectedAssociate.id] ? (
                 <img
@@ -129,14 +129,14 @@ export const BreakAdminHeader = React.forwardRef<HTMLDivElement, BreakAdminHeade
                   className="h-ico-md w-ico-md rounded-ds-full"
                 />
               ) : (
-                <div className="flex h-ico-md w-ico-md items-center justify-center rounded-ds-full bg-layer-02">
+                <div className="flex h-ico-md w-ico-md items-center justify-center rounded-ds-full bg-surface-2">
                   <span className="text-interactive">
                     {filters.selectedAssociate.name.charAt(0)}
                   </span>
                 </div>
               )}
 
-              <span className="text-ds-md mx-ds-01 text-text-on-color">
+              <span className="text-ds-md mx-ds-01 text-accent-fg">
                 {filters.selectedAssociate.name}
               </span>
             </div>
@@ -150,15 +150,15 @@ export const BreakAdminHeader = React.forwardRef<HTMLDivElement, BreakAdminHeade
               }
               className="border-0 p-0"
             >
-              <CrossIcon className="h-ico-sm w-ico-sm text-text-on-color" />
+              <CrossIcon className="h-ico-sm w-ico-sm text-accent-fg" />
             </button>
           </div>
         ) : (
           <DropdownMenu>
-            <DropdownMenuTrigger className="text-ds-md flex flex-row items-center justify-between rounded-ds-md border border-border-subtle bg-layer-01 px-ds-03 py-ds-02b">
+            <DropdownMenuTrigger className="text-ds-md flex flex-row items-center justify-between rounded-ds-md border border-surface-border bg-surface-1 px-ds-03 py-ds-02b">
               <div className="flex items-center">
                 <PersonIcon className="h-ico-sm w-ico-sm" />
-                <span className="text-ds-md mx-ds-03 text-text-secondary max-lg:mx-0 max-lg:text-ds-sm">
+                <span className="text-ds-md mx-ds-03 text-surface-fg-muted max-lg:mx-0 max-lg:text-ds-sm">
                   Associate
                 </span>
               </div>
@@ -187,13 +187,13 @@ export const BreakAdminHeader = React.forwardRef<HTMLDivElement, BreakAdminHeade
                           className="h-ds-xs w-ds-xs rounded-ds-full"
                         />
                       ) : (
-                        <div className="flex h-ds-xs w-ds-xs items-center justify-center rounded-ds-full bg-layer-03">
+                        <div className="flex h-ds-xs w-ds-xs items-center justify-center rounded-ds-full bg-surface-3">
                           <span className="text-ds-md text-interactive">
                             {user.name.charAt(0)}
                           </span>
                         </div>
                       )}
-                      <span className="text-ds-md text-text-secondary">
+                      <span className="text-ds-md text-surface-fg-muted">
                         {user.name}
                       </span>
                     </DropdownMenuItem>
@@ -206,7 +206,7 @@ export const BreakAdminHeader = React.forwardRef<HTMLDivElement, BreakAdminHeade
 
         {/* Date Filter */}
         {filters.dateFilterEnd && (
-          <div className="text-ds-md flex items-center justify-between rounded-ds-md bg-interactive px-ds-03 py-ds-02b text-text-on-color">
+          <div className="text-ds-md flex items-center justify-between rounded-ds-md bg-accent-9 px-ds-03 py-ds-02b text-accent-fg">
             <div className="flex items-center">
               <CalendarIcon />
               <span className="ml-ds-01 mr-ds-02">
@@ -239,10 +239,10 @@ export const BreakAdminHeader = React.forwardRef<HTMLDivElement, BreakAdminHeade
             setFilters((prev) => ({ ...prev, isOpen: open }))
           }}
         >
-          <DropdownMenuTrigger className="text-ds-md flex items-center justify-between rounded-ds-md border border-border-subtle bg-layer-01 p-ds-02b">
+          <DropdownMenuTrigger className="text-ds-md flex items-center justify-between rounded-ds-md border border-surface-border bg-surface-1 p-ds-02b">
             <div className="flex items-center">
               <CalendarDateIcon />
-              <span className="mx-ds-03 text-text-secondary">
+              <span className="mx-ds-03 text-surface-fg-muted">
                 Date
               </span>
             </div>
@@ -257,7 +257,7 @@ export const BreakAdminHeader = React.forwardRef<HTMLDivElement, BreakAdminHeade
                   aria-label="Previous month"
                   onClick={handlePrev}
                 />
-                <span className="text-ds-md text-text-secondary">
+                <span className="text-ds-md text-surface-fg-muted">
                   {monthMap[filters.currMonth].name}
                 </span>
                 <IconButton
@@ -279,7 +279,7 @@ export const BreakAdminHeader = React.forwardRef<HTMLDivElement, BreakAdminHeade
                     }))
                   }}
                 />
-                <span className="text-ds-md text-text-secondary">
+                <span className="text-ds-md text-surface-fg-muted">
                   {filters.currYear}
                 </span>
                 <IconButton

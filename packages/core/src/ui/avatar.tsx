@@ -31,7 +31,7 @@ export type AvatarStatus = 'online' | 'offline' | 'busy' | 'away'
 
 const statusColorMap: Record<AvatarStatus, string> = {
   online: 'bg-success',
-  offline: 'bg-layer-03',
+  offline: 'bg-surface-3',
   busy: 'bg-error',
   away: 'bg-warning',
 }
@@ -142,7 +142,7 @@ const AvatarFallback = React.forwardRef<
   <AvatarPrimitive.Fallback
     ref={ref}
     className={cn(
-      "flex h-full w-full items-center justify-center rounded-ds-full bg-interactive-subtle text-interactive",
+      "flex h-full w-full items-center justify-center rounded-ds-full bg-accent-2 text-interactive",
       className
     )}
     {...props}

@@ -55,13 +55,13 @@ interface ActionConfig {
 const ACTION_MAP: Record<string, ActionConfig> = {
   'task.created': {
     icon: IconPlus,
-    color: 'text-success-text',
+    color: 'text-success-11',
     dotColor: 'bg-success',
     getDescription: () => 'created this task',
   },
   'task.updated': {
     icon: IconEdit,
-    color: 'text-category-slate-text',
+    color: 'text-category-slate-11',
     dotColor: 'bg-category-slate',
     getDescription: (entry) => {
       const meta = entry.metadata
@@ -76,7 +76,7 @@ const ACTION_MAP: Record<string, ActionConfig> = {
   },
   'task.moved': {
     icon: IconArrowRight,
-    color: 'text-warning-text',
+    color: 'text-warning-11',
     dotColor: 'bg-warning',
     getDescription: (entry) => {
       const meta = entry.metadata
@@ -87,7 +87,7 @@ const ACTION_MAP: Record<string, ActionConfig> = {
   },
   'task.assigned': {
     icon: IconUserPlus,
-    color: 'text-category-cyan-text',
+    color: 'text-category-cyan-11',
     dotColor: 'bg-category-cyan',
     getDescription: (entry) => {
       const meta = entry.metadata
@@ -96,8 +96,8 @@ const ACTION_MAP: Record<string, ActionConfig> = {
   },
   'task.unassigned': {
     icon: IconUserMinus,
-    color: 'text-text-secondary',
-    dotColor: 'bg-icon-disabled',
+    color: 'text-surface-fg-muted',
+    dotColor: 'bg-disabled',
     getDescription: (entry) => {
       const meta = entry.metadata
       return `removed ${meta?.assigneeName || 'a user'}`
@@ -106,12 +106,12 @@ const ACTION_MAP: Record<string, ActionConfig> = {
   'task.commented': {
     icon: IconMessage,
     color: 'text-interactive',
-    dotColor: 'bg-interactive',
+    dotColor: 'bg-accent-9',
     getDescription: () => 'added a comment',
   },
   'task.file_uploaded': {
     icon: IconPaperclip,
-    color: 'text-category-indigo-text',
+    color: 'text-category-indigo-11',
     dotColor: 'bg-category-indigo',
     getDescription: (entry) => {
       const meta = entry.metadata
@@ -120,7 +120,7 @@ const ACTION_MAP: Record<string, ActionConfig> = {
   },
   'task.review_requested': {
     icon: IconGitPullRequest,
-    color: 'text-warning-text',
+    color: 'text-warning-11',
     dotColor: 'bg-warning',
     getDescription: (entry) => {
       const meta = entry.metadata
@@ -129,7 +129,7 @@ const ACTION_MAP: Record<string, ActionConfig> = {
   },
   'task.review_completed': {
     icon: IconCircleCheck,
-    color: 'text-success-text',
+    color: 'text-success-11',
     dotColor: 'bg-success',
     getDescription: (entry) => {
       const meta = entry.metadata
@@ -138,8 +138,8 @@ const ACTION_MAP: Record<string, ActionConfig> = {
   },
   'task.visibility_changed': {
     icon: IconEye,
-    color: 'text-text-tertiary',
-    dotColor: 'bg-icon-secondary',
+    color: 'text-surface-fg-subtle',
+    dotColor: 'bg-surface-fg-subtle',
     getDescription: (entry) => {
       const meta = entry.metadata
       return `changed visibility to ${meta?.visibility || 'unknown'}`
@@ -147,7 +147,7 @@ const ACTION_MAP: Record<string, ActionConfig> = {
   },
   'task.priority_changed': {
     icon: IconFlag,
-    color: 'text-error-text',
+    color: 'text-error-11',
     dotColor: 'bg-error',
     getDescription: (entry) => {
       const meta = entry.metadata
@@ -156,13 +156,13 @@ const ACTION_MAP: Record<string, ActionConfig> = {
   },
   'task.labels_changed': {
     icon: IconTag,
-    color: 'text-category-amber-text',
+    color: 'text-category-amber-11',
     dotColor: 'bg-category-amber',
     getDescription: () => 'updated labels',
   },
   'task.due_date_changed': {
     icon: IconCalendarEvent,
-    color: 'text-warning-text',
+    color: 'text-warning-11',
     dotColor: 'bg-warning',
     getDescription: (entry) => {
       const meta = entry.metadata
@@ -174,8 +174,8 @@ const ACTION_MAP: Record<string, ActionConfig> = {
 
 const DEFAULT_ACTION: ActionConfig = {
   icon: IconActivity,
-  color: 'text-text-placeholder',
-  dotColor: 'bg-icon-disabled',
+  color: 'text-surface-fg-subtle',
+  dotColor: 'bg-disabled',
   getDescription: (entry) => entry.action,
 }
 
@@ -248,10 +248,10 @@ const ActivityTab = React.forwardRef<HTMLDivElement, ActivityTabProps>(
           return (
             <div key={entry.id} className="relative flex gap-ds-04 pl-0">
               {/* Dot on timeline */}
-              <div className="relative z-raised flex h-[22px] w-[22px] shrink-0 items-center justify-center rounded-ds-full bg-layer-01">
+              <div className="relative z-raised flex h-[22px] w-[22px] shrink-0 items-center justify-center rounded-ds-full bg-surface-1">
                 <div
                   className={cn(
-                    'flex h-ico-md w-ico-md items-center justify-center rounded-ds-full bg-layer-02',
+                    'flex h-ico-md w-ico-md items-center justify-center rounded-ds-full bg-surface-2',
                   )}
                 >
                   <Icon
@@ -264,14 +264,14 @@ const ActivityTab = React.forwardRef<HTMLDivElement, ActivityTabProps>(
               {/* Content */}
               <div className="flex-1 min-w-0 pt-ds-01">
                 <p className="text-ds-sm">
-                  <span className="font-medium text-text-primary">
+                  <span className="font-medium text-surface-fg">
                     {actorName}
                   </span>
-                  <span className="text-text-tertiary">
+                  <span className="text-surface-fg-subtle">
                     {' '}{description}
                   </span>
                 </p>
-                <p className="mt-ds-01 text-ds-xs text-text-placeholder">
+                <p className="mt-ds-01 text-ds-xs text-surface-fg-subtle">
                   {formatTimestamp(entry.timestamp)}
                 </p>
               </div>

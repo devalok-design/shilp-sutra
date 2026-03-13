@@ -44,22 +44,22 @@ import {
 
 const PROSE_CLASSES = [
   'prose prose-sm max-w-none',
-  'font-body text-ds-md leading-relaxed text-text-primary',
-  '[&_h2]:text-ds-xl [&_h2]:mb-ds-03 [&_h2]:mt-ds-05 [&_h2]:text-text-primary',
-  '[&_h3]:text-ds-base [&_h3]:font-semibold [&_h3]:mb-ds-02b [&_h3]:mt-ds-04 [&_h3]:text-text-primary',
-  '[&_p]:mb-ds-02b [&_p]:text-text-secondary',
+  'font-body text-ds-md leading-relaxed text-surface-fg',
+  '[&_h2]:text-ds-xl [&_h2]:mb-ds-03 [&_h2]:mt-ds-05 [&_h2]:text-surface-fg',
+  '[&_h3]:text-ds-base [&_h3]:font-semibold [&_h3]:mb-ds-02b [&_h3]:mt-ds-04 [&_h3]:text-surface-fg',
+  '[&_p]:mb-ds-02b [&_p]:text-surface-fg-muted',
   '[&_ul]:ml-ds-05 [&_ul]:list-disc [&_ol]:ml-ds-05 [&_ol]:list-decimal',
-  '[&_li]:text-text-secondary',
-  '[&_code]:rounded [&_code]:bg-layer-02 [&_code]:px-ds-02b [&_code]:py-ds-01 [&_code]:text-ds-md [&_code]:text-interactive',
-  '[&_pre]:rounded-ds-lg [&_pre]:bg-layer-02 [&_pre]:p-ds-04',
-  '[&_strong]:font-semibold [&_strong]:text-text-primary',
-  '[&_blockquote]:border-l-[3px] [&_blockquote]:border-interactive/30 [&_blockquote]:pl-ds-04 [&_blockquote]:italic [&_blockquote]:text-text-placeholder',
+  '[&_li]:text-surface-fg-muted',
+  '[&_code]:rounded [&_code]:bg-surface-2 [&_code]:px-ds-02b [&_code]:py-ds-01 [&_code]:text-ds-md [&_code]:text-interactive',
+  '[&_pre]:rounded-ds-lg [&_pre]:bg-surface-2 [&_pre]:p-ds-04',
+  '[&_strong]:font-semibold [&_strong]:text-surface-fg',
+  '[&_blockquote]:border-l-[3px] [&_blockquote]:border-accent-7/30 [&_blockquote]:pl-ds-04 [&_blockquote]:italic [&_blockquote]:text-surface-fg-subtle',
   '[&_mark]:rounded-sm [&_mark]:bg-warning/20 [&_mark]:px-[2px]',
   '[&_ul[data-type="taskList"]]:ml-0 [&_ul[data-type="taskList"]]:list-none [&_li[data-type="taskItem"]]:flex [&_li[data-type="taskItem"]]:items-start [&_li[data-type="taskItem"]]:gap-ds-02',
-  '[&_hr]:my-ds-04 [&_hr]:border-border',
+  '[&_hr]:my-ds-04 [&_hr]:border-surface-border-strong',
   '[&_a]:text-interactive [&_a]:underline [&_a]:decoration-interactive/40 hover:[&_a]:decoration-interactive',
   '[&_img]:max-w-full [&_img]:rounded-ds-md [&_img]:my-ds-03',
-  '[&_.mention]:rounded-ds-sm [&_.mention]:bg-interactive/10 [&_.mention]:px-ds-02 [&_.mention]:py-[1px] [&_.mention]:font-medium [&_.mention]:text-interactive',
+  '[&_.mention]:rounded-ds-sm [&_.mention]:bg-accent-9/10 [&_.mention]:px-ds-02 [&_.mention]:py-[1px] [&_.mention]:font-medium [&_.mention]:text-interactive',
 ] as const
 
 interface ToolbarButtonProps {
@@ -86,11 +86,11 @@ function ToolbarButton({
       aria-pressed={isActive}
       className={cn(
         'inline-flex h-ds-xs-plus w-ds-xs-plus items-center justify-center rounded-ds-md transition-colors',
-        'hover:bg-field',
+        'hover:bg-surface-3',
         'disabled:pointer-events-none disabled:opacity-[0.38]',
         isActive
-          ? 'bg-field text-interactive'
-          : 'text-text-placeholder',
+          ? 'bg-surface-3 text-interactive'
+          : 'text-surface-fg-subtle',
       )}
     >
       {children}
@@ -140,7 +140,7 @@ function LinkButton({ editor }: { editor: Editor }) {
         <form
           onSubmit={handleSubmit}
           aria-label="Edit link URL"
-          className="absolute left-0 top-full z-popover mt-ds-01 flex items-center gap-ds-02 rounded-ds-md border border-border bg-layer-01 p-ds-02 shadow-02"
+          className="absolute left-0 top-full z-popover mt-ds-01 flex items-center gap-ds-02 rounded-ds-md border border-surface-border-strong bg-surface-1 p-ds-02 shadow-02"
         >
           <input
             ref={inputRef}
@@ -149,9 +149,9 @@ function LinkButton({ editor }: { editor: Editor }) {
             onChange={(e) => setUrl(e.target.value)}
             onKeyDown={handleKeyDown}
             placeholder="https://..."
-            className="h-ds-sm w-[240px] rounded-ds-sm border border-border bg-layer-01 px-ds-03 text-ds-sm text-text-primary focus:border-interactive focus:outline-none"
+            className="h-ds-sm w-[240px] rounded-ds-sm border border-surface-border-strong bg-surface-1 px-ds-03 text-ds-sm text-surface-fg focus:border-accent-7 focus:outline-none"
           />
-          <button type="submit" className="h-ds-sm rounded-ds-sm bg-interactive px-ds-03 text-ds-sm text-text-on-color hover:bg-interactive/90">
+          <button type="submit" className="h-ds-sm rounded-ds-sm bg-accent-9 px-ds-03 text-ds-sm text-accent-fg hover:bg-accent-9/90">
             Apply
           </button>
         </form>
@@ -171,7 +171,7 @@ function Toolbar({ editor, onImageClick, onFileClick, onEmojiClick }: {
   onEmojiClick?: () => void
 }) {
   return (
-    <div className="flex flex-wrap items-center gap-ds-01 border-b border-border px-ds-04 py-ds-02b">
+    <div className="flex flex-wrap items-center gap-ds-01 border-b border-surface-border-strong px-ds-04 py-ds-02b">
       {/* Inline formatting */}
       <ToolbarButton onClick={() => editor.chain().focus().toggleBold().run()} isActive={editor.isActive('bold')} title="Bold">
         <IconBold className="h-ico-sm w-ico-sm" stroke={2.5} />
@@ -279,7 +279,7 @@ function EmojiPickerLazy({ onSelect }: { onSelect: (native: string) => void }) {
     import('@emoji-mart/data').then((mod) => setData(mod.default))
   }, [])
 
-  const fallback = <div className="flex h-[350px] w-[352px] items-center justify-center rounded-ds-lg border border-border bg-layer-01 shadow-02"><span className="text-ds-sm text-text-placeholder">Loading...</span></div>
+  const fallback = <div className="flex h-[350px] w-[352px] items-center justify-center rounded-ds-lg border border-surface-border-strong bg-surface-1 shadow-02"><span className="text-ds-sm text-surface-fg-subtle">Loading...</span></div>
 
   if (!data) return fallback
 
@@ -375,7 +375,7 @@ const RichTextEditor = React.forwardRef<HTMLDivElement, RichTextEditorProps>(
       Placeholder.configure({
         placeholder,
         emptyEditorClass:
-          'before:content-[attr(data-placeholder)] before:text-text-placeholder before:float-left before:h-0 before:pointer-events-none',
+          'before:content-[attr(data-placeholder)] before:text-surface-fg-subtle before:float-left before:h-0 before:pointer-events-none',
       }),
       Underline,
       Highlight.configure({ multicolor: false }),
@@ -504,8 +504,8 @@ const RichTextEditor = React.forwardRef<HTMLDivElement, RichTextEditorProps>(
       )}
       <div
         className={cn(
-          'overflow-hidden rounded-ds-lg border border-border bg-layer-01',
-          'transition-colors focus-within:border-border-strong',
+          'overflow-hidden rounded-ds-lg border border-surface-border-strong bg-surface-1',
+          'transition-colors focus-within:border-surface-border-strong',
         )}
       >
         <input

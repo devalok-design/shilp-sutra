@@ -114,7 +114,7 @@ const meta: Meta<typeof AppCommandPalette> = {
       >
         <p
           style={{
-            color: 'var(--color-text-secondary, #666)',
+            color: 'var(--color-surface-fg-muted, #666)',
             fontSize: 14,
           }}
         >

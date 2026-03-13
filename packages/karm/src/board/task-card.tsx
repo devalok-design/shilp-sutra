@@ -39,7 +39,7 @@ function formatDueDate(dateStr: string) {
 
   return {
     label: date.toLocaleDateString('en-IN', { month: 'short', day: 'numeric' }),
-    className: 'text-text-tertiary',
+    className: 'text-surface-fg-subtle',
   }
 }
 
@@ -55,11 +55,11 @@ const PRIORITY_ICON_MAP = {
 // ============================================================
 
 const taskCardVariants = cva(
-  'group/card relative rounded-ds-lg border border-transparent bg-layer-01 pl-3 pr-ds-03 py-ds-03 transition-all duration-fast-02 ease-productive-standard cursor-pointer',
+  'group/card relative rounded-ds-lg border border-transparent bg-surface-1 pl-3 pr-ds-03 py-ds-03 transition-all duration-fast-02 ease-productive-standard cursor-pointer',
   {
     variants: {
       state: {
-        default: 'shadow-01 hover:shadow-02 hover:-translate-y-px hover:border-border',
+        default: 'shadow-01 hover:shadow-02 hover:-translate-y-px hover:border-surface-border-strong',
         dragging: 'opacity-[0.38]',
         overlay: 'rotate-[2deg] shadow-03 backdrop-blur-sm ring-1 ring-interactive/40',
       },
@@ -162,7 +162,7 @@ function TaskCardVisual({
         }),
         isDragOverlay && 'scale-[1.03] rotate-[1.5deg] shadow-03',
         isDragging && 'opacity-40',
-        isFocused && 'ring-1 ring-focus',
+        isFocused && 'ring-1 ring-accent-9',
       )}
       onClick={() => onClickTask(task.id)}
       onKeyDown={(e) => {
@@ -186,13 +186,13 @@ function TaskCardVisual({
           onCheckedChange={() => toggleTaskSelection(task.id)}
           onClick={(e: React.MouseEvent) => e.stopPropagation()}
           aria-label={`Select task ${task.taskId}`}
-          className="rounded-full bg-layer-01 shadow-01"
+          className="rounded-full bg-surface-1 shadow-01"
         />
       </div>
 
       {/* Row 1 — Header: TaskID + Priority + drag handle */}
       <div className="flex items-center gap-ds-02">
-        <span className="text-ds-xs font-mono leading-none text-text-tertiary">{task.taskId}</span>
+        <span className="text-ds-xs font-mono leading-none text-surface-fg-subtle">{task.taskId}</span>
         <PriorityIcon className={cn('h-3 w-3 flex-shrink-0', priorityColor)} title={`Priority: ${task.priority}`} />
 
         <div className="flex-1" />
@@ -211,12 +211,12 @@ function TaskCardVisual({
           aria-roledescription="sortable"
           onClick={(e) => e.stopPropagation()}
         >
-          <IconGripVertical className="h-ico-sm w-ico-sm text-icon-secondary" />
+          <IconGripVertical className="h-ico-sm w-ico-sm text-surface-fg-subtle" />
         </button>
       </div>
 
       {/* Row 2 — Title */}
-      <p className="mt-ds-02 text-ds-sm font-medium text-text-primary line-clamp-2">
+      <p className="mt-ds-02 text-ds-sm font-medium text-surface-fg line-clamp-2">
         {task.title}
       </p>
 
@@ -239,7 +239,7 @@ function TaskCardVisual({
         {/* Subtask count */}
         {task.subtaskCount > 0 && (
           <div
-            className="flex items-center gap-ds-01 text-ds-xs text-text-tertiary"
+            className="flex items-center gap-ds-01 text-ds-xs text-surface-fg-subtle"
             title={`Subtasks: ${task.subtasksDone} of ${task.subtaskCount} done`}
           >
             <IconSubtask className="h-3 w-3" />
@@ -249,7 +249,7 @@ function TaskCardVisual({
 
         {/* Visibility badge */}
         {task.visibility === 'EVERYONE' && (
-          <span className="flex items-center text-text-tertiary" aria-label="Client visible" title="Visible to client">
+          <span className="flex items-center text-surface-fg-subtle" aria-label="Client visible" title="Visible to client">
             <IconEye className="h-3 w-3" />
           </span>
         )}
@@ -286,7 +286,7 @@ function TaskCardVisual({
               </Avatar>
             ))}
             {avatarUsers.length > 3 && (
-              <span className="ml-ds-01 text-ds-xs text-text-tertiary">
+              <span className="ml-ds-01 text-ds-xs text-surface-fg-subtle">
                 +{avatarUsers.length - 3}
               </span>
             )}
@@ -348,7 +348,7 @@ TaskCard.displayName = 'TaskCard'
 // ============================================================
 
 const taskCardCompactVariants = cva(
-  'group/card flex items-center gap-ds-02 py-2 pl-3 pr-ds-03 border border-transparent rounded-ds-lg bg-layer-01 transition-all duration-fast-02 ease-productive-standard cursor-pointer hover:bg-layer-active hover:shadow-02 hover:-translate-y-px',
+  'group/card flex items-center gap-ds-02 py-2 pl-3 pr-ds-03 border border-transparent rounded-ds-lg bg-surface-1 transition-all duration-fast-02 ease-productive-standard cursor-pointer hover:bg-surface-4 hover:shadow-02 hover:-translate-y-px',
   {
     variants: {
       selected: {
@@ -414,7 +414,7 @@ function TaskCardCompactVisual({
         }),
         isDragging && 'opacity-40',
         isDragOverlay && 'scale-[1.03] rotate-[1.5deg] shadow-03',
-        isFocused && 'ring-1 ring-focus',
+        isFocused && 'ring-1 ring-accent-9',
       )}
       onClick={() => onClickTask(task.id)}
       onKeyDown={(e) => {
@@ -438,7 +438,7 @@ function TaskCardCompactVisual({
           onCheckedChange={() => toggleTaskSelection(task.id)}
           onClick={(e: React.MouseEvent) => e.stopPropagation()}
           aria-label={`Select task ${task.taskId}`}
-          className="rounded-full bg-layer-01 shadow-01"
+          className="rounded-full bg-surface-1 shadow-01"
         />
       </div>
 
@@ -446,18 +446,18 @@ function TaskCardCompactVisual({
       <PriorityIcon className={cn('h-3.5 w-3.5 flex-shrink-0', priorityColor)} title={`Priority: ${task.priority}`} />
 
       {/* Task ID */}
-      <span className="text-ds-xs font-mono text-text-tertiary flex-shrink-0">
+      <span className="text-ds-xs font-mono text-surface-fg-subtle flex-shrink-0">
         {task.taskId}
       </span>
 
       {/* Title */}
-      <span className="text-ds-sm text-text-primary line-clamp-1 flex-1 min-w-0">
+      <span className="text-ds-sm text-surface-fg line-clamp-1 flex-1 min-w-0">
         {task.title}
       </span>
 
       {/* Subtask count */}
       {task.subtaskCount > 0 && (
-        <span className="text-ds-xs text-text-tertiary flex-shrink-0">
+        <span className="text-ds-xs text-surface-fg-subtle flex-shrink-0">
           {task.subtasksDone}/{task.subtaskCount}
         </span>
       )}
@@ -466,7 +466,7 @@ function TaskCardCompactVisual({
       {leadUser && (
         <div
           className={cn(
-            'flex h-[14px] w-[14px] shrink-0 items-center justify-center rounded-full border border-layer-01 bg-interactive-subtle text-[6px] font-semibold leading-none text-interactive overflow-hidden',
+            'flex h-[14px] w-[14px] shrink-0 items-center justify-center rounded-full border border-layer-01 bg-accent-2 text-[6px] font-semibold leading-none text-interactive overflow-hidden',
             task.owner && 'shadow-[0_0_0_1px_rgba(var(--accent-rgb,99,102,241),0.35),0_0_4px_rgba(var(--accent-rgb,99,102,241),0.2)]',
           )}
           title={leadUser.name}

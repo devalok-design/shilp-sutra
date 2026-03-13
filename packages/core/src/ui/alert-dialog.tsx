@@ -35,7 +35,7 @@ const AlertDialogContent = React.forwardRef<
     <AlertDialogPrimitive.Content
       ref={ref}
       className={cn(
-        'fixed left-[50%] top-[50%] z-modal grid w-full max-w-lg translate-x-[-50%] translate-y-[-50%] gap-ds-05 border border-border bg-layer-01 p-ds-06 shadow-04 rounded-ds-xl duration-moderate-02 data-[state=open]:animate-in data-[state=closed]:animate-out data-[state=closed]:fade-out-0 data-[state=open]:fade-in-0 data-[state=closed]:zoom-out-95 data-[state=open]:zoom-in-95 data-[state=closed]:slide-out-to-left-1/2 data-[state=closed]:slide-out-to-top-[48%] data-[state=open]:slide-in-from-left-1/2 data-[state=open]:slide-in-from-top-[48%]',
+        'fixed left-[50%] top-[50%] z-modal grid w-full max-w-lg translate-x-[-50%] translate-y-[-50%] gap-ds-05 border border-surface-border-strong bg-surface-1 p-ds-06 shadow-04 rounded-ds-xl duration-moderate-02 data-[state=open]:animate-in data-[state=closed]:animate-out data-[state=closed]:fade-out-0 data-[state=open]:fade-in-0 data-[state=closed]:zoom-out-95 data-[state=open]:zoom-in-95 data-[state=closed]:slide-out-to-left-1/2 data-[state=closed]:slide-out-to-top-[48%] data-[state=open]:slide-in-from-left-1/2 data-[state=open]:slide-in-from-top-[48%]',
         className,
       )}
       {...props}
@@ -93,7 +93,7 @@ const AlertDialogDescription = React.forwardRef<
 >(({ className, ...props }, ref) => (
   <AlertDialogPrimitive.Description
     ref={ref}
-    className={cn('text-ds-md text-text-secondary', className)}
+    className={cn('text-ds-md text-surface-fg-muted', className)}
     {...props}
   />
 ))
@@ -107,7 +107,7 @@ const AlertDialogAction = React.forwardRef<
   <AlertDialogPrimitive.Action
     ref={ref}
     className={cn(
-      'inline-flex h-ds-md items-center justify-center rounded-ds-md px-ds-05 text-ds-md font-semibold transition-colors bg-interactive text-text-on-color hover:bg-interactive-hover active:bg-interactive-active shadow-01 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-focus focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-[0.38]',
+      'inline-flex h-ds-md items-center justify-center rounded-ds-md px-ds-05 text-ds-md font-semibold transition-colors bg-accent-9 text-accent-fg hover:bg-accent-10 active:bg-accent-10 shadow-01 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent-9 focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-[0.38]',
       className,
     )}
     {...props}
@@ -122,7 +122,7 @@ const AlertDialogCancel = React.forwardRef<
   <AlertDialogPrimitive.Cancel
     ref={ref}
     className={cn(
-      'inline-flex h-ds-md items-center justify-center rounded-ds-md px-ds-05 text-ds-md font-semibold transition-colors bg-transparent text-text-secondary border border-border hover:bg-layer-02 hover:text-text-primary focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-focus focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-[0.38]',
+      'inline-flex h-ds-md items-center justify-center rounded-ds-md px-ds-05 text-ds-md font-semibold transition-colors bg-transparent text-surface-fg-muted border border-surface-border-strong hover:bg-surface-2 hover:text-surface-fg focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent-9 focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-[0.38]',
       className,
     )}
     {...props}

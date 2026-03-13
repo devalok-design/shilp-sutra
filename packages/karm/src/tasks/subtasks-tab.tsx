@@ -101,7 +101,7 @@ const SubtasksTab = React.forwardRef<HTMLDivElement, SubtasksTabProps>(
       {totalCount > 0 && (
         <div className="mb-ds-05 flex items-center gap-ds-04">
           <Progress value={totalCount > 0 ? (completedCount / totalCount) * 100 : 0} className="h-ds-02b" />
-          <span className="shrink-0 text-ds-sm font-medium text-text-placeholder">
+          <span className="shrink-0 text-ds-sm font-medium text-surface-fg-subtle">
             {completedCount}/{totalCount}
           </span>
         </div>
@@ -122,7 +122,7 @@ const SubtasksTab = React.forwardRef<HTMLDivElement, SubtasksTabProps>(
                 tabIndex={0}
                 className={cn(
                   'group flex items-center gap-ds-03 rounded-ds-lg px-ds-03 py-ds-02b transition-colors',
-                  'hover:bg-field cursor-pointer',
+                  'hover:bg-surface-3 cursor-pointer',
                 )}
                 onClick={() => onClickSubtask?.(subtask.id)}
                 onKeyDown={(e) => {
@@ -141,13 +141,13 @@ const SubtasksTab = React.forwardRef<HTMLDivElement, SubtasksTabProps>(
                   }}
                   className={cn(
                     'shrink-0 rounded p-ds-01 transition-colors',
-                    readOnly ? 'cursor-default' : 'hover:bg-layer-02',
+                    readOnly ? 'cursor-default' : 'hover:bg-surface-2',
                   )}
                 >
                   {isComplete ? (
                     <IconSquareCheck className="h-ico-sm w-ico-sm text-interactive" stroke={1.5} />
                   ) : (
-                    <IconSquare className="h-ico-sm w-ico-sm text-text-placeholder" stroke={1.5} />
+                    <IconSquare className="h-ico-sm w-ico-sm text-surface-fg-subtle" stroke={1.5} />
                   )}
                 </button>
 
@@ -164,8 +164,8 @@ const SubtasksTab = React.forwardRef<HTMLDivElement, SubtasksTabProps>(
                   className={cn(
                     'flex-1 truncate text-ds-md',
                     isComplete
-                      ? 'text-text-placeholder line-through'
-                      : 'text-text-primary',
+                      ? 'text-surface-fg-subtle line-through'
+                      : 'text-surface-fg',
                   )}
                 >
                   {subtask.title}
@@ -177,7 +177,7 @@ const SubtasksTab = React.forwardRef<HTMLDivElement, SubtasksTabProps>(
                     {firstAssignee.image && (
                       <AvatarImage src={firstAssignee.image} alt={firstAssignee.name} />
                     )}
-                    <AvatarFallback className="bg-layer-03 text-ds-xs font-semibold text-text-on-color">
+                    <AvatarFallback className="bg-surface-3 text-ds-xs font-semibold text-accent-fg">
                       {getInitials(firstAssignee.name)}
                     </AvatarFallback>
                   </Avatar>
@@ -200,7 +200,7 @@ const SubtasksTab = React.forwardRef<HTMLDivElement, SubtasksTabProps>(
       {/* Add subtask -- hidden in readOnly mode */}
       {!readOnly && (
         isAdding ? (
-          <div className="mt-ds-03 flex items-center gap-ds-03 rounded-ds-lg border border-border bg-layer-01 shadow-01 px-ds-04 py-ds-03">
+          <div className="mt-ds-03 flex items-center gap-ds-03 rounded-ds-lg border border-surface-border-strong bg-surface-1 shadow-01 px-ds-04 py-ds-03">
             <input
               ref={inputRef}
               type="text"
@@ -211,13 +211,13 @@ const SubtasksTab = React.forwardRef<HTMLDivElement, SubtasksTabProps>(
                 if (!newTitle.trim()) setIsAdding(false)
               }}
               placeholder="Subtask title..."
-              className="flex-1 bg-transparent text-ds-md text-text-primary placeholder:text-text-placeholder outline-none"
+              className="flex-1 bg-transparent text-ds-md text-surface-fg placeholder:text-surface-fg-subtle outline-none"
             />
             <button
               type="button"
               onClick={handleSubmit}
               disabled={!newTitle.trim()}
-              className="inline-flex h-6 items-center gap-ds-02 rounded-ds-md bg-interactive px-ds-03 text-ds-sm font-semibold text-text-on-color transition-colors hover:bg-interactive-hover disabled:opacity-[0.38]"
+              className="inline-flex h-6 items-center gap-ds-02 rounded-ds-md bg-accent-9 px-ds-03 text-ds-sm font-semibold text-accent-fg transition-colors hover:bg-accent-10 disabled:opacity-[0.38]"
             >
               Add
             </button>
@@ -226,7 +226,7 @@ const SubtasksTab = React.forwardRef<HTMLDivElement, SubtasksTabProps>(
           <button
             type="button"
             onClick={() => setIsAdding(true)}
-            className="mt-ds-03 inline-flex items-center gap-ds-02b rounded-ds-lg px-ds-03 py-ds-02b text-ds-md text-text-placeholder transition-colors hover:bg-field hover:text-text-secondary"
+            className="mt-ds-03 inline-flex items-center gap-ds-02b rounded-ds-lg px-ds-03 py-ds-02b text-ds-md text-surface-fg-subtle transition-colors hover:bg-surface-3 hover:text-surface-fg-muted"
           >
             <IconPlus className="h-ico-sm w-ico-sm" stroke={1.5} />
             Add subtask

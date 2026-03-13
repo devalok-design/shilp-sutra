@@ -27,7 +27,7 @@ const PageHeader = React.forwardRef<HTMLDivElement, PageHeaderProps>(
       <div
         ref={ref}
         className={cn(
-          'flex flex-col gap-ds-05 border-b border-border pb-ds-06',
+          'flex flex-col gap-ds-05 border-b border-surface-border-strong pb-ds-06',
           className,
         )}
         {...props}
@@ -38,14 +38,14 @@ const PageHeader = React.forwardRef<HTMLDivElement, PageHeaderProps>(
               <React.Fragment key={index}>
                 {index > 0 && (
                   <IconChevronRight
-                    className="h-ico-sm w-ico-sm text-text-placeholder"
+                    className="h-ico-sm w-ico-sm text-surface-fg-subtle"
                     stroke={1.5}
                   />
                 )}
                 {crumb.href ? (
                   <a
                     href={crumb.href}
-                    className="text-ds-sm text-text-placeholder transition-colors hover:text-text-secondary"
+                    className="text-ds-sm text-surface-fg-subtle transition-colors hover:text-surface-fg-muted"
                   >
                     {crumb.label}
                   </a>
@@ -54,8 +54,8 @@ const PageHeader = React.forwardRef<HTMLDivElement, PageHeaderProps>(
                     className={cn(
                       'text-ds-sm',
                       index === breadcrumbs.length - 1
-                        ? 'text-text-primary'
-                        : 'text-text-placeholder',
+                        ? 'text-surface-fg'
+                        : 'text-surface-fg-subtle',
                     )}
                   >
                     {crumb.label}
@@ -72,7 +72,7 @@ const PageHeader = React.forwardRef<HTMLDivElement, PageHeaderProps>(
               {resolvedTitle && (
                 <h1
                   className={cn(
-                    'text-ds-2xl text-text-primary',
+                    'text-ds-2xl text-surface-fg',
                     titleClassName,
                   )}
                 >
@@ -80,7 +80,7 @@ const PageHeader = React.forwardRef<HTMLDivElement, PageHeaderProps>(
                 </h1>
               )}
               {subtitle && (
-                <p className="text-ds-md text-text-placeholder">
+                <p className="text-ds-md text-surface-fg-subtle">
                   {subtitle}
                 </p>
               )}

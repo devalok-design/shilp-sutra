@@ -101,7 +101,7 @@ describe('Toast — rendering', () => {
     expect(status).toBeDefined()
     // Message type has no accent bar (accentClass is empty string)
     const accentBar = status!.querySelector(
-      '.bg-success-border, .bg-error-border, .bg-warning-border, .bg-info-border, .bg-interactive',
+      '.bg-success-border, .bg-error-border, .bg-warning-border, .bg-info-border, .bg-accent-9',
     )
     expect(accentBar).toBeNull()
   })

@@ -48,15 +48,15 @@ export const AllSizes: Story = {
     <div className="flex items-center gap-ds-06">
       <div className="flex flex-col items-center gap-ds-02">
         <Spinner size="sm" />
-        <span className="text-ds-xs text-text-secondary">sm (16px)</span>
+        <span className="text-ds-xs text-surface-fg-muted">sm (16px)</span>
       </div>
       <div className="flex flex-col items-center gap-ds-02">
         <Spinner size="md" />
-        <span className="text-ds-xs text-text-secondary">md (20px)</span>
+        <span className="text-ds-xs text-surface-fg-muted">md (20px)</span>
       </div>
       <div className="flex flex-col items-center gap-ds-02">
         <Spinner size="lg" />
-        <span className="text-ds-xs text-text-secondary">lg (24px)</span>
+        <span className="text-ds-xs text-surface-fg-muted">lg (24px)</span>
       </div>
     </div>
   ),
@@ -104,7 +104,7 @@ function StateTransitionDemo() {
           Error
         </Button>
       </div>
-      <p className="text-ds-sm text-text-secondary">
+      <p className="text-ds-sm text-surface-fg-muted">
         Click a button to transition the spinner to that state.
       </p>
     </div>
@@ -132,7 +132,7 @@ function AutoTransitionDemo() {
     <div className="flex flex-col items-start gap-ds-05">
       <div className="flex items-center gap-ds-03">
         <Spinner size="md" state={state} />
-        <span className="text-ds-sm text-text-primary">{message}</span>
+        <span className="text-ds-sm text-surface-fg">{message}</span>
       </div>
       <Button size="sm" onClick={run}>
         Simulate save
@@ -150,15 +150,15 @@ export const WithDelay: Story = {
     <div className="flex flex-col gap-ds-04">
       <div className="flex items-center gap-ds-03">
         <Spinner delay={0} />
-        <span className="text-ds-sm text-text-secondary">delay=0 (immediate)</span>
+        <span className="text-ds-sm text-surface-fg-muted">delay=0 (immediate)</span>
       </div>
       <div className="flex items-center gap-ds-03">
         <Spinner delay={500} />
-        <span className="text-ds-sm text-text-secondary">delay=500ms</span>
+        <span className="text-ds-sm text-surface-fg-muted">delay=500ms</span>
       </div>
       <div className="flex items-center gap-ds-03">
         <Spinner delay={1500} />
-        <span className="text-ds-sm text-text-secondary">delay=1500ms</span>
+        <span className="text-ds-sm text-surface-fg-muted">delay=1500ms</span>
       </div>
     </div>
   ),
@@ -188,23 +188,23 @@ function VariantComparisonDemo() {
       <div className="flex items-center gap-ds-08">
         <div className="flex flex-col items-center gap-ds-02">
           <Spinner size="lg" state={state} variant="filled" />
-          <span className="text-ds-xs text-text-secondary">filled</span>
+          <span className="text-ds-xs text-surface-fg-muted">filled</span>
         </div>
         <div className="flex flex-col items-center gap-ds-02">
           <Spinner size="lg" state={state} variant="bare" />
-          <span className="text-ds-xs text-text-secondary">bare</span>
+          <span className="text-ds-xs text-surface-fg-muted">bare</span>
         </div>
         <div className="flex flex-col items-center gap-ds-02">
           <span className="text-interactive">
             <Spinner size="lg" state={state} variant="bare" />
           </span>
-          <span className="text-ds-xs text-text-secondary">bare (pink parent)</span>
+          <span className="text-ds-xs text-surface-fg-muted">bare (pink parent)</span>
         </div>
         <div className="flex flex-col items-center gap-ds-02">
-          <span className="text-text-on-color bg-interactive rounded-ds-md p-ds-02">
+          <span className="text-accent-fg bg-accent-9 rounded-ds-md p-ds-02">
             <Spinner size="lg" state={state} variant="bare" />
           </span>
-          <span className="text-ds-xs text-text-secondary">bare (white on brand)</span>
+          <span className="text-ds-xs text-surface-fg-muted">bare (white on brand)</span>
         </div>
       </div>
       <div className="flex gap-ds-03">
@@ -218,7 +218,7 @@ function VariantComparisonDemo() {
           Error
         </Button>
       </div>
-      <p className="text-ds-sm text-text-secondary">
+      <p className="text-ds-sm text-surface-fg-muted">
         <strong>filled</strong>: semantic color fill + white icon (standalone use).{' '}
         <strong>bare</strong>: no fill, icon inherits <code>currentColor</code> from parent (buttons, toolbars).
       </p>

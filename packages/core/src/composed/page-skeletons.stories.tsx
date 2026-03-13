@@ -48,35 +48,35 @@ export const AllPageSkeletons: Story = {
   render: () => (
     <div style={{ display: 'flex', flexDirection: 'column', gap: 48 }}>
       <div>
-        <p style={{ marginBottom: 16, fontSize: 14, fontWeight: 600, color: 'var(--color-text-primary)' }}>
+        <p style={{ marginBottom: 16, fontSize: 14, fontWeight: 600, color: 'var(--color-surface-fg)' }}>
           DashboardSkeleton
         </p>
         <DashboardSkeleton />
       </div>
 
       <div>
-        <p style={{ marginBottom: 16, fontSize: 14, fontWeight: 600, color: 'var(--color-text-primary)' }}>
+        <p style={{ marginBottom: 16, fontSize: 14, fontWeight: 600, color: 'var(--color-surface-fg)' }}>
           ProjectListSkeleton
         </p>
         <ProjectListSkeleton />
       </div>
 
       <div>
-        <p style={{ marginBottom: 16, fontSize: 14, fontWeight: 600, color: 'var(--color-text-primary)' }}>
+        <p style={{ marginBottom: 16, fontSize: 14, fontWeight: 600, color: 'var(--color-surface-fg)' }}>
           DevsabhaSkeleton
         </p>
         <DevsabhaSkeleton />
       </div>
 
       <div>
-        <p style={{ marginBottom: 16, fontSize: 14, fontWeight: 600, color: 'var(--color-text-primary)' }}>
+        <p style={{ marginBottom: 16, fontSize: 14, fontWeight: 600, color: 'var(--color-surface-fg)' }}>
           BandwidthSkeleton
         </p>
         <BandwidthSkeleton />
       </div>
 
       <div>
-        <p style={{ marginBottom: 16, fontSize: 14, fontWeight: 600, color: 'var(--color-text-primary)' }}>
+        <p style={{ marginBottom: 16, fontSize: 14, fontWeight: 600, color: 'var(--color-surface-fg)' }}>
           TaskDetailSkeleton
         </p>
         <div style={{ maxWidth: 480, height: 600 }}>

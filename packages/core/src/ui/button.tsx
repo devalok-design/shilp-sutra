@@ -8,7 +8,7 @@ import { cn } from './lib/utils'
 import { Spinner } from './spinner'
 
 export const buttonVariants = cva(
-  'inline-flex items-center justify-center gap-ds-03 whitespace-nowrap font-sans font-semibold select-none border border-transparent transition-[color,background-color,border-color,box-shadow,transform] duration-fast-01 ease-productive-standard active:translate-y-px focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-focus focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-[0.38]',
+  'inline-flex items-center justify-center gap-ds-03 whitespace-nowrap font-sans font-semibold select-none border border-transparent transition-[color,background-color,border-color,box-shadow,transform] duration-fast-01 ease-productive-standard active:translate-y-px focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent-9 focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-[0.38]',
   {
     variants: {
       variant: {
@@ -17,7 +17,7 @@ export const buttonVariants = cva(
         outline: '',
         ghost: '',
         destructive: '', // alias → solid + error
-        link: 'text-text-link underline-offset-4 hover:underline active:opacity-[0.8]',
+        link: 'text-info-9 underline-offset-4 hover:underline active:opacity-[0.8]',
       },
       color: {
         default: '',
@@ -35,23 +35,23 @@ export const buttonVariants = cva(
     },
     compoundVariants: [
       // solid + default (primary)
-      { variant: 'solid', color: 'default', className: 'bg-interactive text-text-on-color hover:bg-interactive-hover active:bg-interactive-active shadow-01 hover:shadow-brand' },
+      { variant: 'solid', color: 'default', className: 'bg-accent-9 text-accent-fg hover:bg-accent-10 active:bg-accent-10 shadow-01 hover:shadow-brand' },
       // "default" alias → same as solid + default
-      { variant: 'default', color: 'default', className: 'bg-interactive text-text-on-color hover:bg-interactive-hover active:bg-interactive-active shadow-01 hover:shadow-brand' },
-      { variant: 'default', color: 'error', className: 'bg-error text-text-on-color hover:bg-error-hover active:bg-error-hover shadow-01' },
+      { variant: 'default', color: 'default', className: 'bg-accent-9 text-accent-fg hover:bg-accent-10 active:bg-accent-10 shadow-01 hover:shadow-brand' },
+      { variant: 'default', color: 'error', className: 'bg-error text-accent-fg hover:bg-error-9 active:bg-error-9 shadow-01' },
       // "destructive" alias → solid + error
-      { variant: 'destructive', color: 'default', className: 'bg-error text-text-on-color hover:bg-error-hover active:bg-error-hover shadow-01' },
-      { variant: 'destructive', color: 'error', className: 'bg-error text-text-on-color hover:bg-error-hover active:bg-error-hover shadow-01' },
+      { variant: 'destructive', color: 'default', className: 'bg-error text-accent-fg hover:bg-error-9 active:bg-error-9 shadow-01' },
+      { variant: 'destructive', color: 'error', className: 'bg-error text-accent-fg hover:bg-error-9 active:bg-error-9 shadow-01' },
       // solid + error
-      { variant: 'solid', color: 'error', className: 'bg-error text-text-on-color hover:bg-error-hover active:bg-error-hover shadow-01' },
+      { variant: 'solid', color: 'error', className: 'bg-error text-accent-fg hover:bg-error-9 active:bg-error-9 shadow-01' },
       // outline + default (secondary)
-      { variant: 'outline', color: 'default', className: 'bg-transparent text-interactive border-border-interactive hover:bg-interactive-subtle active:bg-layer-active' },
+      { variant: 'outline', color: 'default', className: 'bg-transparent text-interactive border-accent-7 hover:bg-accent-2 active:bg-surface-4' },
       // outline + error (error-ghost)
-      { variant: 'outline', color: 'error', className: 'bg-transparent text-error border border-border-error hover:bg-error-surface active:bg-error-surface' },
+      { variant: 'outline', color: 'error', className: 'bg-transparent text-error border border-error-7 hover:bg-error-3 active:bg-error-3' },
       // ghost + default
-      { variant: 'ghost', color: 'default', className: 'bg-transparent text-text-secondary hover:bg-layer-02 hover:text-text-primary active:bg-layer-active' },
+      { variant: 'ghost', color: 'default', className: 'bg-transparent text-surface-fg-muted hover:bg-surface-2 hover:text-surface-fg active:bg-surface-4' },
       // ghost + error
-      { variant: 'ghost', color: 'error', className: 'bg-transparent text-error hover:bg-error-surface hover:text-error active:bg-error-surface' },
+      { variant: 'ghost', color: 'error', className: 'bg-transparent text-error hover:bg-error-3 hover:text-error active:bg-error-3' },
     ],
     defaultVariants: {
       variant: 'solid',

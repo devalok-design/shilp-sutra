@@ -70,7 +70,7 @@ const EmojiList = React.forwardRef<EmojiListRef, EmojiListProps>(
     if (!items.length) return null
 
     return (
-      <div role="listbox" aria-label="Emoji suggestions" className="z-popover max-h-[200px] overflow-x-hidden overflow-y-auto rounded-ds-md border border-border bg-layer-01 shadow-02">
+      <div role="listbox" aria-label="Emoji suggestions" className="z-popover max-h-[200px] overflow-x-hidden overflow-y-auto rounded-ds-md border border-surface-border-strong bg-surface-1 shadow-02">
         {items.map((item, index) => (
           <button
             key={item.id}
@@ -80,7 +80,7 @@ const EmojiList = React.forwardRef<EmojiListRef, EmojiListProps>(
             onClick={() => command(item)}
             className={cn(
               'flex w-full items-center gap-ds-03 px-ds-04 py-ds-02b text-left text-ds-sm',
-              index === selectedIndex ? 'bg-layer-02 text-text-primary' : 'text-text-secondary hover:bg-layer-02',
+              index === selectedIndex ? 'bg-surface-2 text-surface-fg' : 'text-surface-fg-muted hover:bg-surface-2',
             )}
           >
             <span className="text-ds-base">{item.native}</span>

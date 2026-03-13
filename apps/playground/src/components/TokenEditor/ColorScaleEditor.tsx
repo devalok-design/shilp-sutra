@@ -32,12 +32,12 @@ export function ColorScaleEditor({
     <div className="space-y-2">
       {/* Base color picker */}
       <div className="flex items-center gap-2">
-        <label className="text-xs font-medium text-text-secondary capitalize w-16">{scaleName}</label>
+        <label className="text-xs font-medium text-surface-fg-muted capitalize w-16">{scaleName}</label>
         <input
           type="color"
           value={colorInputValue}
           onChange={(e) => handleBaseChange(e.target.value)}
-          className="h-8 w-8 cursor-pointer rounded border border-border-subtle"
+          className="h-8 w-8 cursor-pointer rounded border border-surface-border"
         />
         <input
           type="text"
@@ -47,7 +47,7 @@ export function ColorScaleEditor({
               handleBaseChange(e.target.value)
             }
           }}
-          className="w-20 rounded border border-border-subtle bg-field px-2 py-1 text-xs font-mono"
+          className="w-20 rounded border border-surface-border bg-surface-3 px-2 py-1 text-xs font-mono"
           placeholder="#D33163"
         />
       </div>
@@ -68,13 +68,13 @@ export function ColorScaleEditor({
                   navigator.clipboard.writeText(value)
                 }}
               />
-              <span className="absolute bottom-[-18px] left-1/2 -translate-x-1/2 text-[9px] text-text-tertiary whitespace-nowrap">
+              <span className="absolute bottom-[-18px] left-1/2 -translate-x-1/2 text-[9px] text-surface-fg-subtle whitespace-nowrap">
                 {shade}
               </span>
               {isOverridden && (
                 <button
                   onClick={() => onResetShade(prop)}
-                  className="absolute -top-1 -right-1 hidden group-hover:flex h-3 w-3 items-center justify-center rounded-full bg-error text-[8px] text-text-on-color"
+                  className="absolute -top-1 -right-1 hidden group-hover:flex h-3 w-3 items-center justify-center rounded-full bg-error text-[8px] text-accent-fg"
                   title="Reset to default"
                 >
                   ×

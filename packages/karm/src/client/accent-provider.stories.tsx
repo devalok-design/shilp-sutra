@@ -21,8 +21,8 @@ type Story = StoryObj<typeof AccentProvider>
 const AccentVisualizerDecorator = (Story: React.ComponentType) => (
   <div>
     <Story />
-    <div className="flex flex-col gap-ds-04 p-ds-06 rounded-ds-xl border border-border-subtle">
-      <h3 className="text-ds-sm font-semibold text-text-primary">
+    <div className="flex flex-col gap-ds-04 p-ds-06 rounded-ds-xl border border-surface-border">
+      <h3 className="text-ds-sm font-semibold text-surface-fg">
         AccentProvider injects CSS custom properties onto the document root. The
         swatches below read from the injected variables:
       </h3>
@@ -32,7 +32,7 @@ const AccentVisualizerDecorator = (Story: React.ComponentType) => (
             className="h-12 w-12 rounded-ds-lg border"
             style={{ backgroundColor: 'var(--color-accent, #ccc)' }}
           />
-          <span className="text-ds-xs text-text-secondary">
+          <span className="text-ds-xs text-surface-fg-muted">
             --color-accent
           </span>
         </div>
@@ -41,7 +41,7 @@ const AccentVisualizerDecorator = (Story: React.ComponentType) => (
             className="h-12 w-12 rounded-ds-lg border"
             style={{ backgroundColor: 'var(--color-accent-light, #eee)' }}
           />
-          <span className="text-ds-xs text-text-secondary">
+          <span className="text-ds-xs text-surface-fg-muted">
             --color-accent-light
           </span>
         </div>
@@ -50,7 +50,7 @@ const AccentVisualizerDecorator = (Story: React.ComponentType) => (
             className="h-12 w-12 rounded-ds-lg border"
             style={{ backgroundColor: 'var(--color-accent-dark, #999)' }}
           />
-          <span className="text-ds-xs text-text-secondary">
+          <span className="text-ds-xs text-surface-fg-muted">
             --color-accent-dark
           </span>
         </div>

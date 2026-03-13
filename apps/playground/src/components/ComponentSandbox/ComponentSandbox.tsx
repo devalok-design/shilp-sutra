@@ -57,11 +57,11 @@ export function ComponentSandbox({
   return (
     <div className="space-y-4">
       <div>
-        <label className="block text-xs font-medium text-text-secondary mb-1">Component</label>
+        <label className="block text-xs font-medium text-surface-fg-muted mb-1">Component</label>
         <select
           value={selectedComponent || ''}
           onChange={(e) => onSelectComponent(e.target.value)}
-          className="w-full rounded border border-border-subtle bg-field px-3 py-2 text-sm"
+          className="w-full rounded border border-surface-border bg-surface-3 px-3 py-2 text-sm"
         >
           <option value="" disabled>Select a component...</option>
           {COMPONENT_REGISTRY.map((c) => (
@@ -72,7 +72,7 @@ export function ComponentSandbox({
 
       {entry && (
         <div className="space-y-2">
-          <h4 className="text-xs font-medium text-text-tertiary uppercase tracking-wider">Props</h4>
+          <h4 className="text-xs font-medium text-surface-fg-subtle uppercase tracking-wider">Props</h4>
           {entry.props.map((schema) => (
             <PropControl
               key={schema.name}
@@ -87,15 +87,15 @@ export function ComponentSandbox({
       {entry && (
         <div className="space-y-1">
           <div className="flex items-center justify-between">
-            <h4 className="text-xs font-medium text-text-tertiary uppercase tracking-wider">Code</h4>
+            <h4 className="text-xs font-medium text-surface-fg-subtle uppercase tracking-wider">Code</h4>
             <button
               onClick={() => navigator.clipboard.writeText(codeString)}
-              className="text-xs text-text-link hover:text-text-link-hover"
+              className="text-xs text-info-9 hover:text-info-11"
             >
               Copy
             </button>
           </div>
-          <pre className="rounded-md bg-layer-02 p-3 text-xs font-mono text-text-primary overflow-x-auto">
+          <pre className="rounded-md bg-surface-2 p-3 text-xs font-mono text-surface-fg overflow-x-auto">
             {codeString}
           </pre>
         </div>

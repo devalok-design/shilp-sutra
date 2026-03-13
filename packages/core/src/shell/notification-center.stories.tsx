@@ -256,7 +256,7 @@ export const CustomEmptyState: Story = {
     notifications: [],
     emptyState: (
       <div className="flex flex-col items-center justify-center px-ds-05 py-ds-09">
-        <p className="text-ds-md text-text-placeholder">No unread notifications</p>
+        <p className="text-ds-md text-surface-fg-subtle">No unread notifications</p>
         <a href="/notifications" className="mt-ds-02 text-ds-sm text-interactive hover:underline">
           View history
         </a>
@@ -271,7 +271,7 @@ export const WithHeaderActions: Story = {
     headerActions: (
       <button
         type="button"
-        className="flex items-center justify-center rounded-ds-sm p-ds-01 text-text-placeholder hover:bg-layer-02 hover:text-text-secondary"
+        className="flex items-center justify-center rounded-ds-sm p-ds-01 text-surface-fg-subtle hover:bg-surface-2 hover:text-surface-fg-muted"
         aria-label="Notification settings"
       >
         ⚙

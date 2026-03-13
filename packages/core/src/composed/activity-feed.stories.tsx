@@ -105,7 +105,7 @@ const DETAIL_ITEMS: ActivityItem[] = [
     timestamp: new Date(now - 10 * 60 * 1000),
     color: 'info',
     detail: (
-      <div className="rounded-ds-md bg-layer-02 p-ds-03 text-ds-sm">
+      <div className="rounded-ds-md bg-surface-2 p-ds-03 text-ds-sm">
         Changed acceptance criteria to include unit tests and integration tests for the auth flow.
       </div>
     ),
@@ -116,7 +116,7 @@ const DETAIL_ITEMS: ActivityItem[] = [
     action: 'added a comment',
     timestamp: new Date(now - 45 * 60 * 1000),
     detail: (
-      <div className="rounded-ds-md bg-layer-02 p-ds-03 text-ds-sm">
+      <div className="rounded-ds-md bg-surface-2 p-ds-03 text-ds-sm">
         We should also add rate-limiting to the login endpoint before release.
       </div>
     ),
@@ -217,7 +217,7 @@ export const Empty: Story = {
   args: {
     items: [],
     emptyState: (
-      <div className="py-ds-06 text-center text-ds-sm text-text-placeholder">
+      <div className="py-ds-06 text-center text-ds-sm text-surface-fg-subtle">
         No activity yet.
       </div>
     ),

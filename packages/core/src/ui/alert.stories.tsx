@@ -93,7 +93,7 @@ export const AllVariants: Story = {
     return (
       <div className="flex flex-col gap-ds-06 max-w-lg">
         <div>
-          <p className="mb-ds-03 text-ds-sm font-semibold text-text-secondary">With Title</p>
+          <p className="mb-ds-03 text-ds-sm font-semibold text-surface-fg-muted">With Title</p>
           <div className="flex flex-col gap-ds-03">
             {variants.map((variant) => (
               <Alert key={variant} color={variant} title={variant.charAt(0).toUpperCase() + variant.slice(1)}>
@@ -104,7 +104,7 @@ export const AllVariants: Story = {
         </div>
 
         <div>
-          <p className="mb-ds-03 text-ds-sm font-semibold text-text-secondary">Without Title</p>
+          <p className="mb-ds-03 text-ds-sm font-semibold text-surface-fg-muted">Without Title</p>
           <div className="flex flex-col gap-ds-03">
             {variants.map((variant) => (
               <Alert key={`no-title-${variant}`} color={variant}>
@@ -115,7 +115,7 @@ export const AllVariants: Story = {
         </div>
 
         <div>
-          <p className="mb-ds-03 text-ds-sm font-semibold text-text-secondary">Dismissible</p>
+          <p className="mb-ds-03 text-ds-sm font-semibold text-surface-fg-muted">Dismissible</p>
           <div className="flex flex-col gap-ds-03">
             {variants.map((variant) => (
               <Alert key={`dismiss-${variant}`} color={variant} title={variant.charAt(0).toUpperCase() + variant.slice(1)} onDismiss={() => {}}>

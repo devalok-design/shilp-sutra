@@ -31,7 +31,7 @@ type Story = StoryObj<typeof Stack>
 
 const Box = ({ children, wide }: { children: React.ReactNode; wide?: boolean }) => (
   <div
-    className={cn('rounded-ds-md border border-border bg-layer-02 px-ds-04 py-ds-03 text-ds-sm text-text-primary', wide && 'w-32')}
+    className={cn('rounded-ds-md border border-surface-border-strong bg-surface-2 px-ds-04 py-ds-03 text-ds-sm text-surface-fg', wide && 'w-32')}
   >
     {children}
   </div>
@@ -73,7 +73,7 @@ export const HorizontalCentered: Story = {
     children: (
       <>
         <Box>Short</Box>
-        <div className="rounded-ds-md border border-border bg-layer-02 px-ds-04 py-ds-06 text-ds-sm text-text-primary">
+        <div className="rounded-ds-md border border-surface-border-strong bg-surface-2 px-ds-04 py-ds-06 text-ds-sm text-surface-fg">
           Tall
         </div>
         <Box>Short</Box>
@@ -137,10 +137,10 @@ export const AllVariants: Story = {
     <div className="flex flex-col gap-ds-08">
       {/* Direction */}
       <div>
-        <p className="mb-ds-03 text-ds-sm font-semibold text-text-secondary">Direction</p>
+        <p className="mb-ds-03 text-ds-sm font-semibold text-surface-fg-muted">Direction</p>
         <div className="flex flex-col gap-ds-05">
           <div>
-            <p className="mb-ds-02 text-ds-xs text-text-secondary">vertical</p>
+            <p className="mb-ds-02 text-ds-xs text-surface-fg-muted">vertical</p>
             <Stack direction="vertical" gap="ds-03">
               <Box>A</Box>
               <Box>B</Box>
@@ -148,7 +148,7 @@ export const AllVariants: Story = {
             </Stack>
           </div>
           <div>
-            <p className="mb-ds-02 text-ds-xs text-text-secondary">horizontal</p>
+            <p className="mb-ds-02 text-ds-xs text-surface-fg-muted">horizontal</p>
             <Stack direction="horizontal" gap="ds-03">
               <Box>A</Box>
               <Box>B</Box>
@@ -160,11 +160,11 @@ export const AllVariants: Story = {
 
       {/* Gap scale */}
       <div>
-        <p className="mb-ds-03 text-ds-sm font-semibold text-text-secondary">Gap scale</p>
+        <p className="mb-ds-03 text-ds-sm font-semibold text-surface-fg-muted">Gap scale</p>
         <div className="flex flex-col gap-ds-04">
           {gaps.map((gap) => (
             <div key={gap}>
-              <p className="mb-ds-02 text-ds-xs text-text-secondary">{gap}</p>
+              <p className="mb-ds-02 text-ds-xs text-surface-fg-muted">{gap}</p>
               <Stack direction="horizontal" gap={gap}>
                 <Box>A</Box>
                 <Box>B</Box>
@@ -177,20 +177,20 @@ export const AllVariants: Story = {
 
       {/* Alignment */}
       <div>
-        <p className="mb-ds-03 text-ds-sm font-semibold text-text-secondary">Align (horizontal)</p>
+        <p className="mb-ds-03 text-ds-sm font-semibold text-surface-fg-muted">Align (horizontal)</p>
         <div className="flex flex-col gap-ds-04">
           {alignments.map((alignment) => (
             <div key={alignment}>
-              <p className="mb-ds-02 text-ds-xs text-text-secondary">{alignment}</p>
+              <p className="mb-ds-02 text-ds-xs text-surface-fg-muted">{alignment}</p>
               <Stack
                 direction="horizontal"
                 gap="ds-03"
                 align={alignment}
-                className="rounded-ds-md border border-dashed border-border p-ds-03"
+                className="rounded-ds-md border border-dashed border-surface-border-strong p-ds-03"
                 style={{ minHeight: 80 }}
               >
                 <Box>Short</Box>
-                <div className="rounded-ds-md border border-border bg-layer-02 px-ds-04 py-ds-06 text-ds-sm text-text-primary">
+                <div className="rounded-ds-md border border-surface-border-strong bg-surface-2 px-ds-04 py-ds-06 text-ds-sm text-surface-fg">
                   Tall
                 </div>
                 <Box>Short</Box>
@@ -202,16 +202,16 @@ export const AllVariants: Story = {
 
       {/* Justify */}
       <div>
-        <p className="mb-ds-03 text-ds-sm font-semibold text-text-secondary">Justify</p>
+        <p className="mb-ds-03 text-ds-sm font-semibold text-surface-fg-muted">Justify</p>
         <div className="flex flex-col gap-ds-04">
           {(['start', 'center', 'end', 'between', 'around', 'evenly'] as const).map((j) => (
             <div key={j}>
-              <p className="mb-ds-02 text-ds-xs text-text-secondary">{j}</p>
+              <p className="mb-ds-02 text-ds-xs text-surface-fg-muted">{j}</p>
               <Stack
                 direction="horizontal"
                 gap="ds-03"
                 justify={j}
-                className="rounded-ds-md border border-dashed border-border p-ds-03"
+                className="rounded-ds-md border border-dashed border-surface-border-strong p-ds-03"
               >
                 <Box>A</Box>
                 <Box>B</Box>

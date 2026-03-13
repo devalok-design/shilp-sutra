@@ -57,7 +57,7 @@ function NavBadge({ count }: { count: number }) {
     <span
       aria-label={`${count} notifications`}
       className={cn(
-        'absolute -right-1 -top-0.5 flex h-4 min-w-4 items-center justify-center rounded-full bg-error text-[10px] font-semibold leading-none text-text-on-color animate-in zoom-in-75',
+        'absolute -right-1 -top-0.5 flex h-4 min-w-4 items-center justify-center rounded-full bg-error text-[10px] font-semibold leading-none text-accent-fg animate-in zoom-in-75',
         isMultiDigit ? 'px-0.5' : '',
       )}
     >
@@ -90,13 +90,13 @@ function BottomNavLink({
         'flex h-16 max-w-[70px] flex-1 cursor-pointer flex-col items-center gap-ds-02 p-ds-02 pt-0 text-ds-sm active:animate-subtle-bounce',
         isActive
           ? 'font-semibold text-interactive'
-          : 'text-text-helper',
+          : 'text-surface-fg-subtle',
       )}
     >
       <div className="relative flex w-full flex-col items-center gap-ds-02">
         <div
           className={cn(
-            'absolute top-0 h-[3px] w-full rounded-b-ds-sm bg-interactive p-0 transition-[opacity,transform] duration-moderate-01',
+            'absolute top-0 h-[3px] w-full rounded-b-ds-sm bg-accent-9 p-0 transition-[opacity,transform] duration-moderate-01',
             isActive ? 'opacity-100 animate-tab-indicator' : 'opacity-0 scale-x-0',
           )}
           aria-hidden="true"
@@ -161,20 +161,20 @@ const BottomNavbar = React.forwardRef<HTMLElement, BottomNavbarProps>(
           <div className="absolute inset-0 bg-overlay" />
           {/* eslint-disable-next-line jsx-a11y/no-static-element-interactions -- stopPropagation prevents closing when clicking inside menu */}
           <div
-            className="absolute bottom-[72px] left-0 right-0 rounded-t-ds-2xl border-t border-border bg-layer-01 p-ds-05 pb-ds-03"
+            className="absolute bottom-[72px] left-0 right-0 rounded-t-ds-2xl border-t border-surface-border-strong bg-surface-1 p-ds-05 pb-ds-03"
             onClick={(e) => e.stopPropagation()}
             onKeyDown={(e) => e.stopPropagation()}
           >
             <div className="mb-ds-04 flex items-center justify-between">
-              <span className="text-ds-md font-semibold text-text-primary">
+              <span className="text-ds-md font-semibold text-surface-fg">
                 More
               </span>
               <button
                 onClick={() => setShowMore(false)}
                 aria-label="Close more menu"
-                className="flex h-ds-sm w-ds-sm items-center justify-center rounded-ds-full hover:bg-layer-02"
+                className="flex h-ds-sm w-ds-sm items-center justify-center rounded-ds-full hover:bg-surface-2"
               >
-                <IconX className="h-ico-sm w-ico-sm text-text-secondary" aria-hidden="true" />
+                <IconX className="h-ico-sm w-ico-sm text-surface-fg-muted" aria-hidden="true" />
               </button>
             </div>
             <div className="grid grid-cols-4 gap-ds-03">
@@ -186,8 +186,8 @@ const BottomNavbar = React.forwardRef<HTMLElement, BottomNavbarProps>(
                   className={cn(
                     'flex flex-col items-center gap-ds-02b rounded-ds-xl p-ds-04 text-ds-sm transition-colors',
                     isActive(item.href, item.exact)
-                      ? 'bg-layer-02 text-interactive'
-                      : 'text-text-helper hover:bg-layer-02',
+                      ? 'bg-surface-2 text-interactive'
+                      : 'text-surface-fg-subtle hover:bg-surface-2',
                   )}
                 >
                   <span className="[&>svg]:h-ico-md [&>svg]:w-ico-md">{item.icon}</span>
@@ -207,7 +207,7 @@ const BottomNavbar = React.forwardRef<HTMLElement, BottomNavbarProps>(
         ref={ref}
         aria-label="Mobile navigation"
         className={cn(
-          'fixed bottom-0 left-0 right-0 z-sticky flex w-full flex-row items-start justify-between border-t border-border bg-layer-01 px-ds-05 pb-ds-05b pt-0 md:hidden',
+          'fixed bottom-0 left-0 right-0 z-sticky flex w-full flex-row items-start justify-between border-t border-surface-border-strong bg-surface-1 px-ds-05 pb-ds-05b pt-0 md:hidden',
           className,
         )}
       >
@@ -230,13 +230,13 @@ const BottomNavbar = React.forwardRef<HTMLElement, BottomNavbarProps>(
               'flex h-16 max-w-[70px] flex-1 cursor-pointer flex-col items-center gap-ds-02 p-ds-02 pt-0 text-ds-sm active:animate-subtle-bounce',
               showMore || isMoreActive
                 ? 'font-semibold text-interactive'
-                : 'text-text-helper',
+                : 'text-surface-fg-subtle',
             )}
           >
             <div className="relative flex w-full flex-col items-center gap-ds-02">
               <div
                 className={cn(
-                  'absolute top-0 h-[3px] w-full rounded-b-ds-sm bg-interactive p-0 transition-[opacity,transform] duration-moderate-01',
+                  'absolute top-0 h-[3px] w-full rounded-b-ds-sm bg-accent-9 p-0 transition-[opacity,transform] duration-moderate-01',
                   showMore || isMoreActive ? 'opacity-100 animate-tab-indicator' : 'opacity-0 scale-x-0',
                 )}
                 aria-hidden="true"

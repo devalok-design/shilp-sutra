@@ -173,7 +173,7 @@ export const CustomRenderOption: Story = {
 
     const renderOption = (option: ComboboxOption, _selected: boolean) => (
       <span className="flex items-center gap-ds-03">
-        <span className="flex h-6 w-6 shrink-0 items-center justify-center rounded-ds-full bg-interactive-subtle text-ds-sm font-medium text-interactive">
+        <span className="flex h-6 w-6 shrink-0 items-center justify-center rounded-ds-full bg-accent-2 text-ds-sm font-medium text-interactive">
           {option.label
             .split(' ')
             .map((part) => part[0])
@@ -183,7 +183,7 @@ export const CustomRenderOption: Story = {
         <span className="flex flex-col">
           <span className="text-ds-md">{option.label}</span>
           {option.description && (
-            <span className="text-ds-sm text-text-secondary">
+            <span className="text-ds-sm text-surface-fg-muted">
               {option.description}
             </span>
           )}

@@ -102,10 +102,10 @@ function AttendanceStatus({
 
   return (
     <div className="flex w-full flex-col items-center justify-center px-ds-05 py-ds-07 sm:px-ds-05 sm:py-ds-06 md:px-ds-06 md:py-ds-05 md:pr-0">
-      <p className="text-ds-sm font-semibold uppercase tracking-wider mb-ds-06  text-text-tertiary">
+      <p className="text-ds-sm font-semibold uppercase tracking-wider mb-ds-06  text-surface-fg-subtle">
         Attendance status
       </p>
-      <div className="mb-ds-04 flex w-full items-center justify-center gap-ds-03 rounded-ds-3xl border border-border-subtle px-ds-05 py-ds-04 text-center">
+      <div className="mb-ds-04 flex w-full items-center justify-center gap-ds-03 rounded-ds-3xl border border-surface-border px-ds-05 py-ds-04 text-center">
         <span className="font-semibold text-interactive">
           {formattedStatus}
         </span>
@@ -113,19 +113,19 @@ function AttendanceStatus({
           <div className="w-px h-5 opacity-[0.5] bg-border-strong" />
         )}
         {!timeIn && status !== 'HOLIDAY' && status !== 'WEEKEND' && (
-          <span className="text-ds-md text-text-tertiary">
+          <span className="text-ds-md text-surface-fg-subtle">
             Not marked
           </span>
         )}
         {!!timeIn && status === 'ABSENT' && (
-          <span className="text-ds-md text-text-tertiary">
+          <span className="text-ds-md text-surface-fg-subtle">
             Removed
           </span>
         )}
       </div>
 
       {timeIn && (
-        <p className="text-ds-md m-0 text-center text-text-disabled">
+        <p className="text-ds-md m-0 text-center text-disabled">
           Marked at {timeIn}
         </p>
       )}
@@ -147,7 +147,7 @@ function AttendanceEditDialog({
   return (
     <DialogContent className="sm:max-w-md">
       <DialogHeader>
-        <div className="text-ds-md text-text-tertiary">
+        <div className="text-ds-md text-surface-fg-subtle">
           Edit attendance of{' '}
           <span className="text-ds-md font-semibold text-interactive">
             {selectedAssociate.name}
@@ -158,7 +158,7 @@ function AttendanceEditDialog({
         <div className="text-ds-lg mb-ds-05 text-interactive">
           {format(new Date(selectedDate), "dd MMMM ''yy")}
         </div>
-        <div className="mb-ds-04 flex w-full items-center justify-center gap-ds-03 rounded-ds-3xl border border-border-subtle px-ds-05 py-ds-04 text-center font-semibold text-interactive">
+        <div className="mb-ds-04 flex w-full items-center justify-center gap-ds-03 rounded-ds-3xl border border-surface-border px-ds-05 py-ds-04 text-center font-semibold text-interactive">
           {selectedUserAttendance?.status === 'PRESENT'
             ? 'PRESENT '
             : 'ABSENT'}
@@ -291,12 +291,12 @@ export const AssociateDetail = React.forwardRef<HTMLDivElement, AssociateDetailP
             fnsStartOfDay(new Date()),
           )) ? (
         <div className="flex w-full flex-col items-center justify-center p-ds-06">
-          <p className="text-ds-sm font-semibold uppercase tracking-wider mb-ds-05  text-text-tertiary">
+          <p className="text-ds-sm font-semibold uppercase tracking-wider mb-ds-05  text-surface-fg-subtle">
             COMMENT
           </p>
-          <div className="flex w-full items-center justify-between rounded-ds-lg border border-border bg-layer-01 px-ds-05 max-md:h-ds-lg">
+          <div className="flex w-full items-center justify-between rounded-ds-lg border border-surface-border-strong bg-surface-1 px-ds-05 max-md:h-ds-lg">
             <input
-              className="text-ds-md flex-1 border-none py-ds-03 text-text-primary outline-none"
+              className="text-ds-md flex-1 border-none py-ds-03 text-surface-fg outline-none"
               defaultValue="Don't miss next time :)"
             />
             <IconButton
@@ -369,7 +369,7 @@ export const AssociateDetail = React.forwardRef<HTMLDivElement, AssociateDetailP
                       )}
                     </button>
                     <p
-                      className={cn('text-ds-md flex-1 overflow-hidden hyphens-auto break-all pr-ds-05 break-words min-w-0', task.status === 'COMPLETED' ? 'text-text-disabled line-through' : 'text-text-secondary')}
+                      className={cn('text-ds-md flex-1 overflow-hidden hyphens-auto break-all pr-ds-05 break-words min-w-0', task.status === 'COMPLETED' ? 'text-disabled line-through' : 'text-surface-fg-muted')}
                     >
                       {task.title}
                     </p>
@@ -386,7 +386,7 @@ export const AssociateDetail = React.forwardRef<HTMLDivElement, AssociateDetailP
                     <AddIcon />
                   </button>
                   <textarea
-                    className="text-ds-md flex w-full resize-none items-center border-none bg-transparent !leading-6 text-text-secondary outline-none placeholder:leading-6"
+                    className="text-ds-md flex w-full resize-none items-center border-none bg-transparent !leading-6 text-surface-fg-muted outline-none placeholder:leading-6"
                     placeholder="Add a task"
                     value={newTaskName}
                     onChange={(e) => setNewTaskName(e.target.value)}

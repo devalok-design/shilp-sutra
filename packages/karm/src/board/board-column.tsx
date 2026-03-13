@@ -34,11 +34,11 @@ export interface BoardColumnProps extends React.HTMLAttributes<HTMLDivElement> {
 function TaskGhost() {
   return (
     <div
-      className="rounded-ds-lg border-2 border-dashed border-interactive/40 bg-interactive/[0.06] px-ds-04 py-ds-05"
+      className="rounded-ds-lg border-2 border-dashed border-accent-7/40 bg-accent-9/[0.06] px-ds-04 py-ds-05"
       aria-hidden
     >
-      <div className="h-ds-xs-plus w-3/4 rounded-ds-md bg-interactive/10" />
-      <div className="mt-ds-02 h-[12px] w-1/2 rounded-ds-md bg-interactive/[0.06]" />
+      <div className="h-ds-xs-plus w-3/4 rounded-ds-md bg-accent-9/10" />
+      <div className="mt-ds-02 h-[12px] w-1/2 rounded-ds-md bg-accent-9/[0.06]" />
     </div>
   )
 }
@@ -67,9 +67,9 @@ export const BoardColumn = React.forwardRef<HTMLDivElement, BoardColumnProps>(
       <div
         ref={ref}
         className={cn(
-          'flex h-full flex-shrink-0 flex-col rounded-ds-xl bg-layer-01/40 backdrop-blur-[2px] border border-border-subtle/20 hover:border-border-subtle/40 transition-colors p-1',
+          'flex h-full flex-shrink-0 flex-col rounded-ds-xl bg-surface-1/40 backdrop-blur-[2px] border border-surface-border/20 hover:border-surface-border/40 transition-colors p-1',
           isOverlay && 'shadow-04',
-          isWipExceeded && 'bg-error-surface/50',
+          isWipExceeded && 'bg-error-3/50',
           className,
         )}
         {...props}
@@ -83,7 +83,7 @@ export const BoardColumn = React.forwardRef<HTMLDivElement, BoardColumnProps>(
           ref={setDroppableRef}
           className={cn(
             'no-scrollbar flex flex-1 flex-col gap-ds-02 overflow-y-auto px-ds-03 pt-2.5 pb-ds-03 transition-colors duration-fast-02 ease-productive-standard',
-            isOver && 'bg-interactive-subtle/30',
+            isOver && 'bg-accent-2/30',
           )}
         >
           <SortableContext items={taskIds} strategy={verticalListSortingStrategy}>

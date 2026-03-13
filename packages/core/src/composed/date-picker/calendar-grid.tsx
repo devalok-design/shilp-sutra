@@ -191,7 +191,7 @@ export const CalendarGrid = React.forwardRef<HTMLDivElement, CalendarGridProps>(
           <button
             type="button"
             onClick={() => onMonthChange(subMonths(currentMonth, 1))}
-            className="inline-flex h-ds-xs-plus w-ds-xs-plus items-center justify-center rounded-ds-md text-text-placeholder transition-colors duration-fast-01 ease-productive-standard hover:bg-field hover:text-text-secondary"
+            className="inline-flex h-ds-xs-plus w-ds-xs-plus items-center justify-center rounded-ds-md text-surface-fg-subtle transition-colors duration-fast-01 ease-productive-standard hover:bg-surface-3 hover:text-surface-fg-muted"
             aria-label="Previous month"
           >
             <IconChevronLeft className="h-ico-sm w-ico-sm" stroke={1.5} />
@@ -201,9 +201,9 @@ export const CalendarGrid = React.forwardRef<HTMLDivElement, CalendarGridProps>(
           type="button"
           onClick={onHeaderClick}
           className={cn(
-            'text-ds-md font-semibold text-text-primary',
+            'text-ds-md font-semibold text-surface-fg',
             onHeaderClick &&
-              'cursor-pointer rounded-ds-md px-ds-02 transition-colors duration-fast-01 ease-productive-standard hover:bg-field',
+              'cursor-pointer rounded-ds-md px-ds-02 transition-colors duration-fast-01 ease-productive-standard hover:bg-surface-3',
           )}
           aria-label="Switch to month/year view"
         >
@@ -215,7 +215,7 @@ export const CalendarGrid = React.forwardRef<HTMLDivElement, CalendarGridProps>(
           <button
             type="button"
             onClick={() => onMonthChange(addMonths(currentMonth, 1))}
-            className="inline-flex h-ds-xs-plus w-ds-xs-plus items-center justify-center rounded-ds-md text-text-placeholder transition-colors duration-fast-01 ease-productive-standard hover:bg-field hover:text-text-secondary"
+            className="inline-flex h-ds-xs-plus w-ds-xs-plus items-center justify-center rounded-ds-md text-surface-fg-subtle transition-colors duration-fast-01 ease-productive-standard hover:bg-surface-3 hover:text-surface-fg-muted"
             aria-label="Next month"
           >
             <IconChevronRight className="h-ico-sm w-ico-sm" stroke={1.5} />
@@ -235,7 +235,7 @@ export const CalendarGrid = React.forwardRef<HTMLDivElement, CalendarGridProps>(
           <div
             key={wd}
             role="columnheader"
-            className="flex h-ds-sm items-center justify-center text-ds-xs font-semibold uppercase tracking-wider text-text-placeholder"
+            className="flex h-ds-sm items-center justify-center text-ds-xs font-semibold uppercase tracking-wider text-surface-fg-subtle"
           >
             {wd}
           </div>
@@ -272,11 +272,11 @@ export const CalendarGrid = React.forwardRef<HTMLDivElement, CalendarGridProps>(
                 !inMonth && 'pointer-events-none opacity-0',
                 inMonth && disabled && 'opacity-[0.38] pointer-events-none cursor-not-allowed',
                 inMonth && !disabled && !isSelected && !edge && !inRange &&
-                  'text-text-primary hover:bg-field',
+                  'text-surface-fg hover:bg-surface-3',
                 inRange && !edge &&
-                  'rounded-ds-none bg-field text-text-primary',
+                  'rounded-ds-none bg-surface-3 text-surface-fg',
                 (isSelected || edge) &&
-                  'bg-interactive text-text-on-color hover:bg-interactive-hover',
+                  'bg-accent-9 text-accent-fg hover:bg-accent-10',
                 isToday && !isSelected && !edge && !disabled &&
                   'font-semibold text-interactive',
               )}
@@ -289,7 +289,7 @@ export const CalendarGrid = React.forwardRef<HTMLDivElement, CalendarGridProps>(
                       key={idx}
                       data-event-dot
                       className="h-[4px] w-[4px] rounded-ds-full"
-                      style={{ backgroundColor: evt.color ?? 'var(--color-interactive)' }}
+                      style={{ backgroundColor: evt.color ?? 'var(--color-accent-9)' }}
                     />
                   ))}
                 </span>

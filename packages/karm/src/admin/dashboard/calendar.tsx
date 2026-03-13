@@ -76,7 +76,7 @@ export const Calendar = React.forwardRef<HTMLDivElement, CalendarProps>(
     <div ref={ref} className={cn("w-full", className)} {...props}>
       <div className="mb-ds-06 flex w-full items-center justify-start">
         <DropdownMenu>
-          <DropdownMenuTrigger className="text-ds-xl flex items-center gap-ds-03 text-text-secondary">
+          <DropdownMenuTrigger className="text-ds-xl flex items-center gap-ds-03 text-surface-fg-muted">
             {cal.selectedMonth}
             <FilledArrowIcon />
           </DropdownMenuTrigger>
@@ -108,16 +108,16 @@ export const Calendar = React.forwardRef<HTMLDivElement, CalendarProps>(
             <button
               aria-label="Previous"
               onClick={() => handleDateChange('prev')}
-              className="rounded-ds-full p-ds-02 hover:bg-layer-02"
+              className="rounded-ds-full p-ds-02 hover:bg-surface-2"
             >
-              <ArrowLeftIcon className="h-ico-md w-ico-md text-text-secondary" />
+              <ArrowLeftIcon className="h-ico-md w-ico-md text-surface-fg-muted" />
             </button>
             <button
               aria-label="Next"
               onClick={() => handleDateChange('next')}
-              className="rounded-ds-full p-ds-02 hover:bg-layer-02"
+              className="rounded-ds-full p-ds-02 hover:bg-surface-2"
             >
-              <ArrowForwardIcon className="h-ico-md w-ico-md text-text-secondary" />
+              <ArrowForwardIcon className="h-ico-md w-ico-md text-surface-fg-muted" />
             </button>
           </div>
         </div>
@@ -133,7 +133,7 @@ export const Calendar = React.forwardRef<HTMLDivElement, CalendarProps>(
         {cal.activeTimeFrame === 'monthly' &&
           ['SUN', 'MON', 'TUE', 'WED', 'THU', 'FRI', 'SAT'].map((weekDay) => (
             <div key={weekDay} className="pb-ds-03 pt-ds-05 text-center">
-              <span className="text-ds-sm font-semibold uppercase tracking-wider  text-text-tertiary">
+              <span className="text-ds-sm font-semibold uppercase tracking-wider  text-surface-fg-subtle">
                 {weekDay}
               </span>
             </div>
@@ -150,13 +150,13 @@ export const Calendar = React.forwardRef<HTMLDivElement, CalendarProps>(
                 ? 'w-full rounded-t-ds-lg pb-ds-04 pt-ds-05'
                 : 'pb-0 pt-0',
               'flex cursor-pointer flex-col items-center text-center',
-              cal.activeTimeFrame === 'weekly' && cal.activeIndex === index && 'bg-layer-02',
+              cal.activeTimeFrame === 'weekly' && cal.activeIndex === index && 'bg-surface-2',
               day.isPadding && 'opacity-[0.5]',
             )}
             onClick={() => handleDayClick(index, day.fullDate)}
           >
             {cal.activeTimeFrame === 'weekly' && (
-              <span className="text-ds-sm font-semibold uppercase tracking-wider mb-ds-03  text-text-tertiary">
+              <span className="text-ds-sm font-semibold uppercase tracking-wider mb-ds-03  text-surface-fg-subtle">
                 {day.day}
               </span>
             )}
@@ -166,16 +166,16 @@ export const Calendar = React.forwardRef<HTMLDivElement, CalendarProps>(
                 'flex h-ds-md w-ds-md items-center justify-center',
                 cal.activeTimeFrame === 'monthly' &&
                   isSameDay(day.fullDate, new Date(cal.selectedDate)) &&
-                  'rounded-ds-full bg-interactive-subtle ring-2 ring-inset ring-interactive',
+                  'rounded-ds-full bg-accent-2 ring-2 ring-inset ring-interactive',
               )}
             >
               <span
                 className={cn(
                   'text-ds-base flex h-ds-md w-ds-md items-center justify-center rounded-ds-full',
                   day.isToday
-                    ? 'bg-interactive-hover p-ds-03 text-text-on-color'
-                    : 'text-text-secondary',
-                  day.isActive && !day.isToday && 'bg-field',
+                    ? 'bg-accent-10 p-ds-03 text-accent-fg'
+                    : 'text-surface-fg-muted',
+                  day.isActive && !day.isToday && 'bg-surface-3',
                 )}
               >
                 {day.date}

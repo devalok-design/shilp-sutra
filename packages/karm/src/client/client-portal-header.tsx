@@ -37,7 +37,7 @@ const ClientPortalHeader = React.forwardRef<
       <header
         ref={ref}
         className={cn(
-          'flex h-ds-lg items-center justify-between border-b border-border-subtle bg-layer-01 px-ds-06',
+          'flex h-ds-lg items-center justify-between border-b border-surface-border bg-surface-1 px-ds-06',
           className,
         )}
         {...props}
@@ -50,11 +50,11 @@ const ClientPortalHeader = React.forwardRef<
               className="h-ds-sm w-ds-sm rounded-ds-md object-cover"
             />
           ) : (
-            <div className="flex h-ds-sm w-ds-sm items-center justify-center rounded-ds-md bg-interactive text-ds-sm font-semibold text-text-on-color">
+            <div className="flex h-ds-sm w-ds-sm items-center justify-center rounded-ds-md bg-accent-9 text-ds-sm font-semibold text-accent-fg">
               {initials}
             </div>
           )}
-          <span className="font-display text-ds-base font-semibold text-text-primary">
+          <span className="font-display text-ds-base font-semibold text-surface-fg">
             {orgName}
           </span>
         </div>
@@ -63,11 +63,11 @@ const ClientPortalHeader = React.forwardRef<
           <div className="flex items-center gap-ds-03">
             <Avatar className="h-ds-sm w-ds-sm">
               {userAvatar && <AvatarImage src={userAvatar} alt={userName} />}
-              <AvatarFallback className="bg-interactive-subtle text-ds-sm font-medium text-interactive">
+              <AvatarFallback className="bg-accent-2 text-ds-sm font-medium text-interactive">
                 {userInitials}
               </AvatarFallback>
             </Avatar>
-            <span className="hidden text-ds-md font-medium text-text-primary sm:inline">
+            <span className="hidden text-ds-md font-medium text-surface-fg sm:inline">
               {userName}
             </span>
           </div>

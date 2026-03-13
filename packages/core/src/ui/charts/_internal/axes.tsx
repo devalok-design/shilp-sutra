@@ -54,11 +54,11 @@ export function Axis({
     g.call(axis as any)
 
     // Style using design tokens
-    g.selectAll('.tick line').attr('stroke', 'var(--color-border-subtle)')
+    g.selectAll('.tick line').attr('stroke', 'var(--color-surface-border)')
     g.selectAll('.tick text')
-      .attr('fill', 'var(--color-text-secondary)')
+      .attr('fill', 'var(--color-surface-fg-muted)')
       .attr('font-size', 'var(--font-size-xs)')
-    g.selectAll('.domain').attr('stroke', 'var(--color-border-default)')
+    g.selectAll('.domain').attr('stroke', 'var(--color-surface-border-strong)')
   }, [scale, orientation, tickCount, tickFormat])
 
   const labelProps =
@@ -73,7 +73,7 @@ export function Axis({
       {label && (
         <text
           textAnchor="middle"
-          fill="var(--color-text-secondary)"
+          fill="var(--color-surface-fg-muted)"
           fontSize="var(--font-size-sm)"
           {...labelProps}
         >

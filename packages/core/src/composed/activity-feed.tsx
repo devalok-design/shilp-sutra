@@ -33,7 +33,7 @@ const dotColorMap = {
   success: 'bg-success',
   warning: 'bg-warning',
   error: 'bg-error',
-  info: 'bg-interactive',
+  info: 'bg-accent-9',
 } as const
 
 function formatRelativeTime(timestamp: Date | string): string {
@@ -110,14 +110,14 @@ function ActivityEntry({
         <div className="flex items-center justify-between gap-ds-02">
           <div className={cn('min-w-0 flex-1 flex items-center gap-ds-01 flex-wrap', compact ? 'text-ds-xs' : 'text-ds-sm')}>
             {item.actor && (
-              <span className="font-medium text-text-primary">{item.actor.name} </span>
+              <span className="font-medium text-surface-fg">{item.actor.name} </span>
             )}
             {item.detail && (
-              <IconChevronRight className={cn('h-3 w-3 shrink-0 text-text-placeholder transition-transform', expandedDetail && 'rotate-90')} />
+              <IconChevronRight className={cn('h-3 w-3 shrink-0 text-surface-fg-subtle transition-transform', expandedDetail && 'rotate-90')} />
             )}
             <span
               className={cn(
-                'text-text-secondary',
+                'text-surface-fg-muted',
                 item.detail && 'cursor-pointer hover:underline',
               )}
               onClick={handleActionClick}
@@ -140,7 +140,7 @@ function ActivityEntry({
 
           <time
             className={cn(
-              'shrink-0 whitespace-nowrap text-text-placeholder',
+              'shrink-0 whitespace-nowrap text-surface-fg-subtle',
               compact ? 'text-ds-xs' : 'text-ds-sm',
             )}
             dateTime={
@@ -156,7 +156,7 @@ function ActivityEntry({
 
         {/* Expandable detail */}
         {expandedDetail && item.detail && (
-          <div className="mt-ds-02 animate-in fade-in slide-in-from-top-1 text-ds-sm text-text-secondary">
+          <div className="mt-ds-02 animate-in fade-in slide-in-from-top-1 text-ds-sm text-surface-fg-muted">
             {item.detail}
           </div>
         )}

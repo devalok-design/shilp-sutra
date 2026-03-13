@@ -82,16 +82,16 @@ export const Default: Story = {
           </SidebarGroup>
         </SidebarContent>
         <SidebarFooter className="p-ds-04">
-          <p className="text-ds-xs text-text-secondary">Karm v2.0</p>
+          <p className="text-ds-xs text-surface-fg-muted">Karm v2.0</p>
         </SidebarFooter>
       </Sidebar>
       <SidebarInset>
-        <header className="flex items-center gap-ds-02 p-ds-04 border-b border-border-subtle">
+        <header className="flex items-center gap-ds-02 p-ds-04 border-b border-surface-border">
           <SidebarTrigger />
           <h1 className="text-ds-sm font-medium">Dashboard</h1>
         </header>
         <div className="p-ds-06">
-          <p className="text-ds-sm text-text-secondary">
+          <p className="text-ds-sm text-surface-fg-muted">
             Main content area. Toggle the sidebar with the button or Ctrl+B.
           </p>
         </div>
@@ -126,12 +126,12 @@ export const WithActiveItem: Story = {
         </SidebarContent>
       </Sidebar>
       <SidebarInset>
-        <header className="flex items-center gap-ds-02 p-ds-04 border-b border-border-subtle">
+        <header className="flex items-center gap-ds-02 p-ds-04 border-b border-surface-border">
           <SidebarTrigger />
           <h1 className="text-ds-sm font-medium">Projects</h1>
         </header>
         <div className="p-ds-06">
-          <p className="text-ds-sm text-text-secondary">
+          <p className="text-ds-sm text-surface-fg-muted">
             "Projects" is the active navigation item.
           </p>
         </div>
@@ -165,12 +165,12 @@ export const CollapsedByDefault: Story = {
         </SidebarContent>
       </Sidebar>
       <SidebarInset>
-        <header className="flex items-center gap-ds-02 p-ds-04 border-b border-border-subtle">
+        <header className="flex items-center gap-ds-02 p-ds-04 border-b border-surface-border">
           <SidebarTrigger />
           <h1 className="text-ds-sm font-medium">Dashboard</h1>
         </header>
         <div className="p-ds-06">
-          <p className="text-ds-sm text-text-secondary">
+          <p className="text-ds-sm text-surface-fg-muted">
             Sidebar starts collapsed. Hover over icons to see tooltips.
           </p>
         </div>

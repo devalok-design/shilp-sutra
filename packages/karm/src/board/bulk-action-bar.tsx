@@ -68,7 +68,7 @@ export const BulkActionBar = React.forwardRef<HTMLDivElement, BulkActionBarProps
         <div className="flex items-center gap-ds-03 py-ds-02">
           {/* Selection count + clear */}
           <div className="flex items-center gap-ds-02">
-            <span className="text-ds-sm font-medium text-text-primary">
+            <span className="text-ds-sm font-medium text-surface-fg">
               {count} selected
             </span>
             <Button

@@ -96,7 +96,7 @@ describe('BreakBalance', () => {
     expect(screen.getByText('NAME')).toBeInTheDocument()
     expect(screen.getByText('Total Balance')).toBeInTheDocument()
     // No user rows
-    expect(container.querySelectorAll('[class*="hover:bg-field"]').length).toBe(0)
+    expect(container.querySelectorAll('[class*="hover:bg-surface-3"]').length).toBe(0)
   })
 
   it('falls back to first part of name when firstName is absent', () => {

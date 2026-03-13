@@ -68,13 +68,13 @@ export const ConversationList = React.forwardRef<HTMLDivElement, ConversationLis
   return (
     <div ref={ref} className={cn("flex flex-1 flex-col overflow-hidden", className)} {...props}>
       {/* Header */}
-      <div className="flex items-center justify-between border-b border-border px-ds-05 py-ds-04">
-        <h3 className="text-ds-md font-semibold text-text-primary">
+      <div className="flex items-center justify-between border-b border-surface-border-strong px-ds-05 py-ds-04">
+        <h3 className="text-ds-md font-semibold text-surface-fg">
           Conversations
         </h3>
         <button
           onClick={onNewChat}
-          className="flex items-center gap-ds-02b rounded-ds-lg px-ds-03 py-ds-02b text-text-secondary transition-colors hover:bg-layer-02"
+          className="flex items-center gap-ds-02b rounded-ds-lg px-ds-03 py-ds-02b text-surface-fg-muted transition-colors hover:bg-surface-2"
         >
           <IconMessagePlus className="h-ico-sm w-ico-sm" />
           <span className="text-ds-sm">New Chat</span>
@@ -89,8 +89,8 @@ export const ConversationList = React.forwardRef<HTMLDivElement, ConversationLis
           </div>
         ) : conversations.length === 0 ? (
           <div className="flex flex-col items-center justify-center gap-ds-03 py-12">
-            <IconMessage className="h-ds-sm w-ds-sm text-text-placeholder" />
-            <p className="text-ds-md text-text-placeholder">
+            <IconMessage className="h-ds-sm w-ds-sm text-surface-fg-subtle" />
+            <p className="text-ds-md text-surface-fg-subtle">
               No conversations yet
             </p>
           </div>
@@ -100,18 +100,18 @@ export const ConversationList = React.forwardRef<HTMLDivElement, ConversationLis
               <div
                 key={convo.id}
                 className={cn(
-                  'group flex items-center gap-ds-04 border-b border-border-subtle px-ds-05 py-ds-04 transition-colors hover:bg-layer-02',
-                  activeConversationId === convo.id && 'bg-layer-02',
+                  'group flex items-center gap-ds-04 border-b border-surface-border px-ds-05 py-ds-04 transition-colors hover:bg-surface-2',
+                  activeConversationId === convo.id && 'bg-surface-2',
                 )}
               >
                 <button
                   onClick={() => onSelect(convo.id)}
                   className="flex min-w-0 flex-1 flex-col gap-ds-01 text-left"
                 >
-                  <p className="text-ds-md truncate text-text-primary">
+                  <p className="text-ds-md truncate text-surface-fg">
                     {convo.title || 'Untitled conversation'}
                   </p>
-                  <p className="text-ds-sm text-text-placeholder">
+                  <p className="text-ds-sm text-surface-fg-subtle">
                     {formatRelativeTime(convo.updatedAt)}
                   </p>
                 </button>
@@ -124,7 +124,7 @@ export const ConversationList = React.forwardRef<HTMLDivElement, ConversationLis
                         e.stopPropagation()
                         onArchive(convo.id)
                       }}
-                      className="flex h-ds-xs-plus w-ds-xs-plus items-center justify-center rounded-ds-md text-text-placeholder transition-colors hover:bg-field hover:text-text-secondary"
+                      className="flex h-ds-xs-plus w-ds-xs-plus items-center justify-center rounded-ds-md text-surface-fg-subtle transition-colors hover:bg-surface-3 hover:text-surface-fg-muted"
                       aria-label="Archive conversation"
                     >
                       <IconArchive className="h-ico-sm w-ico-sm" />
@@ -136,7 +136,7 @@ export const ConversationList = React.forwardRef<HTMLDivElement, ConversationLis
                         e.stopPropagation()
                         onDelete(convo.id)
                       }}
-                      className="flex h-ds-xs-plus w-ds-xs-plus items-center justify-center rounded-ds-md text-text-placeholder transition-colors hover:bg-error-surface hover:text-text-error"
+                      className="flex h-ds-xs-plus w-ds-xs-plus items-center justify-center rounded-ds-md text-surface-fg-subtle transition-colors hover:bg-error-3 hover:text-error-11"
                       aria-label="Delete conversation"
                     >
                       <IconTrash className="h-ico-sm w-ico-sm" />

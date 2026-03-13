@@ -135,10 +135,10 @@ export const ColumnEmpty = React.forwardRef<HTMLDivElement, ColumnEmptyProps>(({
       </span>
 
       {isDropTarget ? (
-        <p className="text-ds-sm text-text-tertiary">Drop tasks here</p>
+        <p className="text-ds-sm text-surface-fg-subtle">Drop tasks here</p>
       ) : (
         <>
-          <p className="text-ds-sm text-text-tertiary">No tasks yet</p>
+          <p className="text-ds-sm text-surface-fg-subtle">No tasks yet</p>
           <Button
             variant="ghost"
             size="sm"

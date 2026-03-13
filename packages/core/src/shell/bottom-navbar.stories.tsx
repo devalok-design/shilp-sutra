@@ -79,7 +79,7 @@ const meta: Meta<typeof BottomNavbar> = {
           <div style={{ padding: 16 }}>
             <p
               style={{
-                color: 'var(--color-text-secondary, #666)',
+                color: 'var(--color-surface-fg-muted, #666)',
                 fontSize: 14,
               }}
             >

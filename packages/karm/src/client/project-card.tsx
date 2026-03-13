@@ -39,13 +39,13 @@ const ProjectCard = React.forwardRef<HTMLDivElement, ProjectCardProps>(
       <div
         ref={ref}
         className={cn(
-          'group cursor-pointer rounded-ds-lg border border-border-subtle bg-layer-01 p-ds-05b shadow-01 transition-shadow duration-moderate-02 hover:shadow-02',
+          'group cursor-pointer rounded-ds-lg border border-surface-border bg-surface-1 p-ds-05b shadow-01 transition-shadow duration-moderate-02 hover:shadow-02',
           className,
         )}
         {...props}
       >
         <div className="mb-ds-04 flex items-start justify-between">
-          <h3 className="font-display text-ds-base font-semibold text-text-primary">
+          <h3 className="font-display text-ds-base font-semibold text-surface-fg">
             {name}
           </h3>
           <Badge color={statusColorMap[status]} size="sm">
@@ -53,12 +53,12 @@ const ProjectCard = React.forwardRef<HTMLDivElement, ProjectCardProps>(
           </Badge>
         </div>
         {description && (
-          <p className="mb-ds-05 line-clamp-2 text-ds-md text-text-secondary">
+          <p className="mb-ds-05 line-clamp-2 text-ds-md text-surface-fg-muted">
             {description}
           </p>
         )}
         <div className="space-y-ds-03">
-          <div className="flex items-center justify-between text-ds-sm text-text-helper">
+          <div className="flex items-center justify-between text-ds-sm text-surface-fg-subtle">
             <span>
               {completedTasks} / {taskCount} tasks
             </span>

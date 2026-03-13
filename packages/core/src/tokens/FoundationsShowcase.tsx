@@ -9,16 +9,16 @@ const sectionStyle: React.CSSProperties = {
 const headingStyle: React.CSSProperties = {
   fontSize: '1.25rem',
   fontWeight: 600,
-  color: 'var(--color-text-primary)',
+  color: 'var(--color-surface-fg)',
   marginBottom: '1rem',
-  borderBottom: '1px solid var(--color-border-subtle)',
+  borderBottom: '1px solid var(--color-surface-border)',
   paddingBottom: '0.5rem',
 }
 
 const subheadingStyle: React.CSSProperties = {
   fontSize: '0.875rem',
   fontWeight: 600,
-  color: 'var(--color-text-secondary)',
+  color: 'var(--color-surface-fg-muted)',
   marginBottom: '0.5rem',
   marginTop: '1.25rem',
 }
@@ -32,7 +32,7 @@ const gridStyle: React.CSSProperties = {
 const labelStyle: React.CSSProperties = {
   fontSize: '0.625rem',
   fontFamily: 'var(--font-mono)',
-  color: 'var(--color-text-secondary)',
+  color: 'var(--color-surface-fg-muted)',
   marginTop: '0.25rem',
   textAlign: 'center',
   wordBreak: 'break-all',
@@ -82,13 +82,13 @@ function ColorPalettes() {
                       height: '2.5rem',
                       borderRadius: 'var(--radius-md)',
                       backgroundColor: `var(${token})`,
-                      border: '1px solid var(--color-border-subtle)',
+                      border: '1px solid var(--color-surface-border)',
                     }}
                     title={`${token}: ${STEP_LABELS[step as number] ?? ''}`}
                   />
                   <span style={labelStyle}>{step}</span>
                   {STEP_LABELS[step as number] && (
-                    <span style={{ ...labelStyle, fontSize: '0.5rem', color: 'var(--color-text-tertiary)', marginTop: 0 }}>
+                    <span style={{ ...labelStyle, fontSize: '0.5rem', color: 'var(--color-surface-fg-subtle)', marginTop: 0 }}>
                       {STEP_LABELS[step as number]}
                     </span>
                   )}
@@ -137,51 +137,13 @@ const semanticGroups = [
     ],
   },
   {
-    name: 'Text',
-    tokens: [
-      '--color-text-primary',
-      '--color-text-secondary',
-      '--color-text-tertiary',
-      '--color-text-placeholder',
-      '--color-text-error',
-      '--color-text-success',
-      '--color-text-warning',
-      '--color-text-info',
-      '--color-text-link',
-      '--color-text-brand',
-    ],
-  },
-  {
-    name: 'Backgrounds (legacy aliases)',
-    tokens: [
-      '--color-background',
-      '--color-layer-01',
-      '--color-layer-02',
-      '--color-layer-03',
-      '--color-field',
-      '--color-field-hover',
-    ],
-  },
-  {
-    name: 'Interactive (legacy aliases)',
-    tokens: [
-      '--color-interactive',
-      '--color-interactive-hover',
-      '--color-interactive-active',
-      '--color-interactive-selected',
-      '--color-interactive-disabled',
-      '--color-interactive-subtle',
-    ],
-  },
-  {
     name: 'Borders',
     tokens: [
-      '--color-border-subtle',
-      '--color-border-default',
-      '--color-border-strong',
-      '--color-border-interactive',
-      '--color-border-error',
-      '--color-border-success',
+      '--color-surface-border',
+      '--color-surface-border-strong',
+      '--color-accent-7',
+      '--color-error-7',
+      '--color-success-7',
     ],
   },
   {
@@ -232,7 +194,7 @@ function SemanticColors() {
                       height: '2.5rem',
                       borderRadius: 'var(--radius-md)',
                       backgroundColor: `var(${token})`,
-                      border: '1px solid var(--color-border-subtle)',
+                      border: '1px solid var(--color-surface-border)',
                     }}
                   />
                   <span style={labelStyle}>{shortName}</span>
@@ -273,12 +235,12 @@ function TypographySamples() {
     alignItems: 'baseline',
     gap: '1rem',
     marginBottom: '0.5rem',
-    color: 'var(--color-text-primary)',
+    color: 'var(--color-surface-fg)',
   }
   const metaStyle: React.CSSProperties = {
     fontSize: '0.75rem',
     fontFamily: 'var(--font-mono)',
-    color: 'var(--color-text-tertiary)',
+    color: 'var(--color-surface-fg-subtle)',
     minWidth: '7rem',
     flexShrink: 0,
   }
@@ -288,9 +250,9 @@ function TypographySamples() {
       <h2 style={headingStyle}>Typography</h2>
 
       <h3 style={subheadingStyle}>Semantic Type Scale</h3>
-      <p style={{ fontSize: '0.75rem', color: 'var(--color-text-tertiary)', marginBottom: '0.75rem' }}>
-        Use <code style={{ fontSize: '0.6875rem', background: 'var(--color-layer-03)', padding: '0.15em 0.4em', borderRadius: '4px' }}>&lt;Text variant="..."&gt;</code> for
-        all typography. Sizes driven by <code style={{ fontSize: '0.6875rem', background: 'var(--color-layer-03)', padding: '0.15em 0.4em', borderRadius: '4px' }}>--typo-*</code> CSS tokens.
+      <p style={{ fontSize: '0.75rem', color: 'var(--color-surface-fg-subtle)', marginBottom: '0.75rem' }}>
+        Use <code style={{ fontSize: '0.6875rem', background: 'var(--color-surface-3)', padding: '0.15em 0.4em', borderRadius: '4px' }}>&lt;Text variant="..."&gt;</code> for
+        all typography. Sizes driven by <code style={{ fontSize: '0.6875rem', background: 'var(--color-surface-3)', padding: '0.15em 0.4em', borderRadius: '4px' }}>--typo-*</code> CSS tokens.
       </p>
       {semanticTypeScale.map((t) => (
         <div key={t.variant} style={rowStyle}>
@@ -338,14 +300,14 @@ function SpacingScale() {
       <div style={{ display: 'flex', flexDirection: 'column', gap: '0.375rem' }}>
         {spacingTokens.map((s) => (
           <div key={s.token} style={{ display: 'flex', alignItems: 'center', gap: '0.75rem' }}>
-            <span style={{ fontSize: '0.75rem', fontFamily: 'var(--font-mono)', color: 'var(--color-text-secondary)', minWidth: '7rem' }}>
+            <span style={{ fontSize: '0.75rem', fontFamily: 'var(--font-mono)', color: 'var(--color-surface-fg-muted)', minWidth: '7rem' }}>
               {s.token.replace('--', '')} ({s.value})
             </span>
             <div
               style={{
                 height: '1rem',
                 width: `var(${s.token})`,
-                backgroundColor: 'var(--color-interactive)',
+                backgroundColor: 'var(--color-accent-9)',
                 borderRadius: 'var(--radius-sm)',
               }}
             />
@@ -380,8 +342,8 @@ function BorderRadiusScale() {
                 width: '4rem',
                 height: '4rem',
                 borderRadius: `var(${r.token})`,
-                backgroundColor: 'var(--color-layer-02)',
-                border: '2px solid var(--color-interactive)',
+                backgroundColor: 'var(--color-surface-2)',
+                border: '2px solid var(--color-accent-9)',
               }}
             />
             <span style={labelStyle}>{r.token.replace('--', '')} ({r.value})</span>
@@ -415,7 +377,7 @@ function ShadowScale() {
                 width: '7rem',
                 height: '5rem',
                 borderRadius: 'var(--radius-lg)',
-                backgroundColor: 'var(--color-layer-01)',
+                backgroundColor: 'var(--color-surface-1)',
                 boxShadow: `var(${s.token})`,
                 display: 'flex',
                 alignItems: 'center',
@@ -478,8 +440,8 @@ function ZIndexTable() {
     padding: '0.5rem 1rem',
     fontSize: '0.8125rem',
     fontFamily: 'var(--font-mono)',
-    borderBottom: '1px solid var(--color-border-subtle)',
-    color: 'var(--color-text-primary)',
+    borderBottom: '1px solid var(--color-surface-border)',
+    color: 'var(--color-surface-fg)',
   }
 
   return (
@@ -488,8 +450,8 @@ function ZIndexTable() {
       <table style={{ borderCollapse: 'collapse', width: '100%', maxWidth: '24rem' }}>
         <thead>
           <tr>
-            <th style={{ ...cellStyle, textAlign: 'left', fontWeight: 600, color: 'var(--color-text-secondary)' }}>Token</th>
-            <th style={{ ...cellStyle, textAlign: 'right', fontWeight: 600, color: 'var(--color-text-secondary)' }}>Value</th>
+            <th style={{ ...cellStyle, textAlign: 'left', fontWeight: 600, color: 'var(--color-surface-fg-muted)' }}>Token</th>
+            <th style={{ ...cellStyle, textAlign: 'right', fontWeight: 600, color: 'var(--color-surface-fg-muted)' }}>Value</th>
           </tr>
         </thead>
         <tbody>
@@ -530,8 +492,8 @@ function MotionTable() {
     padding: '0.5rem 1rem',
     fontSize: '0.8125rem',
     fontFamily: 'var(--font-mono)',
-    borderBottom: '1px solid var(--color-border-subtle)',
-    color: 'var(--color-text-primary)',
+    borderBottom: '1px solid var(--color-surface-border)',
+    color: 'var(--color-surface-fg)',
   }
 
   return (
@@ -540,16 +502,16 @@ function MotionTable() {
       <table style={{ borderCollapse: 'collapse', width: '100%', maxWidth: '40rem' }}>
         <thead>
           <tr>
-            <th style={{ ...cellStyle, textAlign: 'left', fontWeight: 600, color: 'var(--color-text-secondary)' }}>Token</th>
-            <th style={{ ...cellStyle, textAlign: 'left', fontWeight: 600, color: 'var(--color-text-secondary)' }}>Category</th>
-            <th style={{ ...cellStyle, textAlign: 'left', fontWeight: 600, color: 'var(--color-text-secondary)' }}>Value</th>
+            <th style={{ ...cellStyle, textAlign: 'left', fontWeight: 600, color: 'var(--color-surface-fg-muted)' }}>Token</th>
+            <th style={{ ...cellStyle, textAlign: 'left', fontWeight: 600, color: 'var(--color-surface-fg-muted)' }}>Category</th>
+            <th style={{ ...cellStyle, textAlign: 'left', fontWeight: 600, color: 'var(--color-surface-fg-muted)' }}>Value</th>
           </tr>
         </thead>
         <tbody>
           {motionTokens.map((m) => (
             <tr key={m.token}>
               <td style={{ ...cellStyle, textAlign: 'left' }}>{m.token.replace('--', '')}</td>
-              <td style={{ ...cellStyle, textAlign: 'left', color: 'var(--color-text-secondary)' }}>{m.category}</td>
+              <td style={{ ...cellStyle, textAlign: 'left', color: 'var(--color-surface-fg-muted)' }}>{m.category}</td>
               <td style={{ ...cellStyle, textAlign: 'left' }}>{m.value}</td>
             </tr>
           ))}
@@ -563,7 +525,7 @@ function MotionTable() {
 
 export function FoundationsShowcase() {
   return (
-    <div style={{ maxWidth: '64rem', color: 'var(--color-text-primary)' }}>
+    <div style={{ maxWidth: '64rem', color: 'var(--color-surface-fg)' }}>
       <ColorPalettes />
       <SemanticColors />
       <TypographySamples />

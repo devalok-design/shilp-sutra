@@ -45,7 +45,7 @@ export const GaugeChart = React.forwardRef<HTMLDivElement, GaugeChartProps>(
       label,
       valueLabel,
       color,
-      trackColor = 'var(--color-border-subtle)',
+      trackColor = 'var(--color-surface-border)',
       height = 200,
       startAngle = -120,
       endAngle = 120,

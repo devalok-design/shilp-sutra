@@ -56,7 +56,7 @@ export const MessageList = React.forwardRef<HTMLDivElement, MessageListProps>(
       <div ref={forwardedRef} className={cn("flex flex-1 items-center justify-center", className)} {...props}>
         <div className="flex flex-col items-center gap-ds-03">
           <div className="h-ds-xs w-ds-xs animate-spin rounded-ds-full border-2 border-text-secondary border-t-transparent" />
-          <p className="text-ds-sm text-text-placeholder">
+          <p className="text-ds-sm text-surface-fg-subtle">
             Loading messages...
           </p>
         </div>
@@ -69,13 +69,13 @@ export const MessageList = React.forwardRef<HTMLDivElement, MessageListProps>(
     return (
       <div ref={forwardedRef} className={cn("flex flex-1 items-center justify-center p-ds-06", className)} {...props}>
         <div className="flex flex-col items-center gap-ds-04 text-center">
-          <div className="flex h-ds-lg w-ds-lg items-center justify-center rounded-ds-full bg-field">
-            <IconRobot className="h-ico-lg w-ico-lg text-text-secondary" />
+          <div className="flex h-ds-lg w-ds-lg items-center justify-center rounded-ds-full bg-surface-3">
+            <IconRobot className="h-ico-lg w-ico-lg text-surface-fg-muted" />
           </div>
-          <h3 className="text-ds-base text-text-primary">
+          <h3 className="text-ds-base text-surface-fg">
             {emptyTitle}
           </h3>
-          <p className="text-ds-sm max-w-[280px] text-text-placeholder">
+          <p className="text-ds-sm max-w-[280px] text-surface-fg-subtle">
             {emptyDescription}
           </p>
         </div>
@@ -90,9 +90,9 @@ export const MessageList = React.forwardRef<HTMLDivElement, MessageListProps>(
           if (msg.role === 'SYSTEM') {
             return (
               <div key={msg.id} className="flex justify-center">
-                <div className="flex items-center gap-ds-03 rounded-ds-lg bg-error-surface px-ds-04 py-ds-03">
-                  <IconAlertCircle className="h-ico-sm w-ico-sm shrink-0 text-text-error" />
-                  <p className="text-ds-sm text-text-error">
+                <div className="flex items-center gap-ds-03 rounded-ds-lg bg-error-3 px-ds-04 py-ds-03">
+                  <IconAlertCircle className="h-ico-sm w-ico-sm shrink-0 text-error-11" />
+                  <p className="text-ds-sm text-error-11">
                     {msg.content}
                   </p>
                 </div>
@@ -104,11 +104,11 @@ export const MessageList = React.forwardRef<HTMLDivElement, MessageListProps>(
             return (
               <div key={msg.id} className="flex justify-end">
                 <div className="flex max-w-[85%] items-start gap-ds-03">
-                  <div className="rounded-ds-2xl rounded-br-ds-sm bg-interactive px-ds-04 py-ds-03 text-text-on-color">
+                  <div className="rounded-ds-2xl rounded-br-ds-sm bg-accent-9 px-ds-04 py-ds-03 text-accent-fg">
                     <p className="text-ds-md whitespace-pre-wrap">{msg.content}</p>
                   </div>
-                  <div className="flex h-ds-xs-plus w-ds-xs-plus shrink-0 items-center justify-center rounded-ds-full bg-field">
-                    <IconUser className="h-ico-sm w-ico-sm text-text-secondary" />
+                  <div className="flex h-ds-xs-plus w-ds-xs-plus shrink-0 items-center justify-center rounded-ds-full bg-surface-3">
+                    <IconUser className="h-ico-sm w-ico-sm text-surface-fg-muted" />
                   </div>
                 </div>
               </div>
@@ -119,11 +119,11 @@ export const MessageList = React.forwardRef<HTMLDivElement, MessageListProps>(
           return (
             <div key={msg.id} className="flex justify-start">
               <div className="flex max-w-[85%] items-start gap-ds-03">
-                <div className="flex h-ds-xs-plus w-ds-xs-plus shrink-0 items-center justify-center rounded-ds-full bg-field">
-                  <IconRobot className="h-ico-sm w-ico-sm text-text-secondary" />
+                <div className="flex h-ds-xs-plus w-ds-xs-plus shrink-0 items-center justify-center rounded-ds-full bg-surface-3">
+                  <IconRobot className="h-ico-sm w-ico-sm text-surface-fg-muted" />
                 </div>
-                <div className="rounded-ds-2xl rounded-bl-ds-sm bg-field px-ds-04 py-ds-03">
-                  <div className="text-ds-md text-text-primary">
+                <div className="rounded-ds-2xl rounded-bl-ds-sm bg-surface-3 px-ds-04 py-ds-03">
+                  <div className="text-ds-md text-surface-fg">
                     <ReactMarkdown components={markdownComponents}>
                       {msg.content}
                     </ReactMarkdown>
@@ -138,11 +138,11 @@ export const MessageList = React.forwardRef<HTMLDivElement, MessageListProps>(
         {isStreaming && streamingText && (
           <div className="flex justify-start">
             <div className="flex max-w-[85%] items-start gap-ds-03">
-              <div className="flex h-ds-xs-plus w-ds-xs-plus shrink-0 items-center justify-center rounded-ds-full bg-field">
-                <IconRobot className="h-ico-sm w-ico-sm text-text-secondary" />
+              <div className="flex h-ds-xs-plus w-ds-xs-plus shrink-0 items-center justify-center rounded-ds-full bg-surface-3">
+                <IconRobot className="h-ico-sm w-ico-sm text-surface-fg-muted" />
               </div>
-              <div className="rounded-ds-2xl rounded-bl-ds-sm bg-field px-ds-04 py-ds-03">
-                <div className="text-ds-md text-text-primary">
+              <div className="rounded-ds-2xl rounded-bl-ds-sm bg-surface-3 px-ds-04 py-ds-03">
+                <div className="text-ds-md text-surface-fg">
                   <StreamingText text={streamingText} />
                 </div>
               </div>
@@ -154,10 +154,10 @@ export const MessageList = React.forwardRef<HTMLDivElement, MessageListProps>(
         {isStreaming && !streamingText && (
           <div className="flex justify-start">
             <div className="flex max-w-[85%] items-start gap-ds-03">
-              <div className="flex h-ds-xs-plus w-ds-xs-plus shrink-0 items-center justify-center rounded-ds-full bg-field">
-                <IconRobot className="h-ico-sm w-ico-sm text-text-secondary" />
+              <div className="flex h-ds-xs-plus w-ds-xs-plus shrink-0 items-center justify-center rounded-ds-full bg-surface-3">
+                <IconRobot className="h-ico-sm w-ico-sm text-surface-fg-muted" />
               </div>
-              <div className="rounded-ds-2xl rounded-bl-ds-sm bg-field px-ds-04 py-ds-03">
+              <div className="rounded-ds-2xl rounded-bl-ds-sm bg-surface-3 px-ds-04 py-ds-03">
                 <div className="flex items-center gap-ds-02b py-ds-02">
                   <div className="h-2 w-2 animate-bounce rounded-ds-full bg-text-placeholder [animation-delay:0ms]" />
                   <div className="h-2 w-2 animate-bounce rounded-ds-full bg-text-placeholder [animation-delay:150ms]" />

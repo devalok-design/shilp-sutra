@@ -19,17 +19,17 @@ export const Line: Story = {
         <TabsTrigger value="settings" variant="line">Settings</TabsTrigger>
       </TabsList>
       <TabsContent value="overview">
-        <p className="text-ds-sm text-text-secondary">
+        <p className="text-ds-sm text-surface-fg-muted">
           Project overview and summary information.
         </p>
       </TabsContent>
       <TabsContent value="tasks">
-        <p className="text-ds-sm text-text-secondary">
+        <p className="text-ds-sm text-surface-fg-muted">
           Task list and kanban board view.
         </p>
       </TabsContent>
       <TabsContent value="settings">
-        <p className="text-ds-sm text-text-secondary">
+        <p className="text-ds-sm text-surface-fg-muted">
           Project configuration and permissions.
         </p>
       </TabsContent>
@@ -56,17 +56,17 @@ export const Contained: Story = {
         <TabsTrigger value="archived" variant="contained">Archived</TabsTrigger>
       </TabsList>
       <TabsContent value="all">
-        <p className="text-ds-sm text-text-secondary">
+        <p className="text-ds-sm text-surface-fg-muted">
           Showing all items.
         </p>
       </TabsContent>
       <TabsContent value="active">
-        <p className="text-ds-sm text-text-secondary">
+        <p className="text-ds-sm text-surface-fg-muted">
           Showing active items only.
         </p>
       </TabsContent>
       <TabsContent value="archived">
-        <p className="text-ds-sm text-text-secondary">
+        <p className="text-ds-sm text-surface-fg-muted">
           Showing archived items only.
         </p>
       </TabsContent>
@@ -97,10 +97,10 @@ export const Disabled: Story = {
         <TabsTrigger value="tab3" variant="line">Also Enabled</TabsTrigger>
       </TabsList>
       <TabsContent value="tab1">
-        <p className="text-ds-sm text-text-secondary">First tab content.</p>
+        <p className="text-ds-sm text-surface-fg-muted">First tab content.</p>
       </TabsContent>
       <TabsContent value="tab3">
-        <p className="text-ds-sm text-text-secondary">Third tab content.</p>
+        <p className="text-ds-sm text-surface-fg-muted">Third tab content.</p>
       </TabsContent>
     </Tabs>
   ),
@@ -117,19 +117,19 @@ export const ManyTabs: Story = {
         <TabsTrigger value="files" variant="line">Files</TabsTrigger>
       </TabsList>
       <TabsContent value="board">
-        <p className="text-ds-sm text-text-secondary">Kanban board view.</p>
+        <p className="text-ds-sm text-surface-fg-muted">Kanban board view.</p>
       </TabsContent>
       <TabsContent value="list">
-        <p className="text-ds-sm text-text-secondary">List view.</p>
+        <p className="text-ds-sm text-surface-fg-muted">List view.</p>
       </TabsContent>
       <TabsContent value="timeline">
-        <p className="text-ds-sm text-text-secondary">Timeline/Gantt view.</p>
+        <p className="text-ds-sm text-surface-fg-muted">Timeline/Gantt view.</p>
       </TabsContent>
       <TabsContent value="calendar">
-        <p className="text-ds-sm text-text-secondary">Calendar view.</p>
+        <p className="text-ds-sm text-surface-fg-muted">Calendar view.</p>
       </TabsContent>
       <TabsContent value="files">
-        <p className="text-ds-sm text-text-secondary">Project files.</p>
+        <p className="text-ds-sm text-surface-fg-muted">Project files.</p>
       </TabsContent>
     </Tabs>
   ),

@@ -72,8 +72,8 @@ describe('StatusBadge', () => {
   it('should render color variant classes when color prop is set', () => {
     const { container } = render(<StatusBadge color="success" />)
     const badge = container.firstElementChild!
-    expect(badge.className).toContain('bg-success-surface')
-    expect(badge.className).toContain('text-text-success')
+    expect(badge.className).toContain('bg-success-3')
+    expect(badge.className).toContain('text-success-11')
   })
 
   it('should use color name as default label when color is set without label or status', () => {
@@ -90,8 +90,8 @@ describe('StatusBadge', () => {
     const { container } = render(<StatusBadge status="active" color="error" />)
     const badge = container.firstElementChild!
     // color should win over status
-    expect(badge.className).toContain('bg-error-surface')
-    expect(badge.className).toContain('text-text-error')
+    expect(badge.className).toContain('bg-error-3')
+    expect(badge.className).toContain('text-error-11')
   })
 
   it('should render correct dot color for color prop', () => {
@@ -103,15 +103,15 @@ describe('StatusBadge', () => {
   it('should render neutral color variant correctly', () => {
     const { container, getByText } = render(<StatusBadge color="neutral" />)
     const badge = container.firstElementChild!
-    expect(badge.className).toContain('bg-layer-02')
-    expect(badge.className).toContain('text-text-tertiary')
+    expect(badge.className).toContain('bg-surface-2')
+    expect(badge.className).toContain('text-surface-fg-subtle')
     expect(getByText('Neutral')).toBeTruthy()
   })
 
   it('should work with color prop and size sm', () => {
     const { container } = render(<StatusBadge color="success" size="sm" />)
     const badge = container.firstElementChild!
-    expect(badge.className).toContain('bg-success-surface')
+    expect(badge.className).toContain('bg-success-3')
     expect(badge.className).toContain('text-ds-xs')
   })
 

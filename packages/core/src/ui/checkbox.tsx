@@ -49,14 +49,14 @@ const Checkbox = React.forwardRef<
       checked={resolvedChecked}
       className={cn(
         'peer flex items-center justify-center h-ico-md w-ico-md shrink-0 rounded-ds-sm',
-        'border border-border-strong',
-        'bg-field',
+        'border border-surface-border-strong',
+        'bg-surface-3',
         'transition-colors duration-fast-01',
-        'focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-focus focus-visible:ring-offset-2',
+        'focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent-9 focus-visible:ring-offset-2',
         'disabled:cursor-not-allowed disabled:opacity-[0.38]',
-        'data-[state=checked]:bg-interactive data-[state=checked]:border-interactive data-[state=checked]:text-text-on-color',
-        'data-[state=indeterminate]:bg-interactive data-[state=indeterminate]:border-interactive data-[state=indeterminate]:text-text-on-color',
-        error && 'border-border-error',
+        'data-[state=checked]:bg-accent-9 data-[state=checked]:border-accent-7 data-[state=checked]:text-accent-fg',
+        'data-[state=indeterminate]:bg-accent-9 data-[state=indeterminate]:border-accent-7 data-[state=indeterminate]:text-accent-fg',
+        error && 'border-error-7',
         className,
       )}
       {...props}

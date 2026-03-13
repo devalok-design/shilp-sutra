@@ -22,7 +22,7 @@ export const PRIORITY_ICONS = {
 } as const
 
 export const PRIORITY_COLORS = {
-  LOW: 'text-text-tertiary',
+  LOW: 'text-surface-fg-subtle',
   MEDIUM: 'text-warning',
   HIGH: 'text-error',
   URGENT: 'text-error',

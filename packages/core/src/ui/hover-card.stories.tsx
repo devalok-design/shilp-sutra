@@ -29,11 +29,11 @@ export const Default: Story = {
           </Avatar>
           <div className="space-y-ds-01">
             <h4 className="text-ds-sm font-semibold">@nextjs</h4>
-            <p className="text-ds-sm text-text-secondary">
+            <p className="text-ds-sm text-surface-fg-muted">
               The React Framework -- created and maintained by @vercel.
             </p>
             <div className="flex items-center pt-ds-02">
-              <span className="text-ds-xs text-text-secondary">
+              <span className="text-ds-xs text-surface-fg-muted">
                 Joined December 2021
               </span>
             </div>

@@ -68,17 +68,17 @@ const defaultElementMap: Record<TextVariant, keyof React.JSX.IntrinsicElements> 
  *
  * @example
  * // Section label (uppercase, small):
- * <Text variant="label-sm" className="text-text-secondary">Recent activity</Text>
+ * <Text variant="label-sm" className="text-surface-fg-muted">Recent activity</Text>
  *
  * @example
  * // Body copy with custom element (renders as <span> for inline use):
- * <Text variant="body-sm" as="span" className="text-text-secondary">
+ * <Text variant="body-sm" as="span" className="text-surface-fg-muted">
  *   Last updated 3 hours ago
  * </Text>
  *
  * @example
  * // Caption under an image or figure:
- * <Text variant="caption" className="text-text-tertiary">Figure 1: System architecture</Text>
+ * <Text variant="caption" className="text-surface-fg-subtle">Figure 1: System architecture</Text>
  * // These are just a few ways — feel free to combine props creatively!
  */
 type TextProps<T extends React.ElementType = 'p'> = {

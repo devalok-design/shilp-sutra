@@ -84,7 +84,7 @@ export const Controlled: Story = {
           onValueChange={setSelected}
           placeholder="Pick a fruit..."
         />
-        <p className="text-ds-sm text-text-secondary">
+        <p className="text-ds-sm text-surface-fg-muted">
           Selected: {selected ? selected.label : 'none'}
         </p>
       </div>
@@ -116,11 +116,11 @@ export const AllVariants: Story = {
   render: () => (
     <div className="flex flex-col gap-ds-06" style={{ maxWidth: 320 }}>
       <div>
-        <p className="mb-ds-02 text-ds-sm font-semibold text-text-secondary">Default</p>
+        <p className="mb-ds-02 text-ds-sm font-semibold text-surface-fg-muted">Default</p>
         <Autocomplete options={fruitOptions} placeholder="Search fruits..." />
       </div>
       <div>
-        <p className="mb-ds-02 text-ds-sm font-semibold text-text-secondary">Pre-selected</p>
+        <p className="mb-ds-02 text-ds-sm font-semibold text-surface-fg-muted">Pre-selected</p>
         <Autocomplete
           options={fruitOptions}
           value={{ label: 'Cherry', value: 'cherry' }}
@@ -128,11 +128,11 @@ export const AllVariants: Story = {
         />
       </div>
       <div>
-        <p className="mb-ds-02 text-ds-sm font-semibold text-text-secondary">Disabled</p>
+        <p className="mb-ds-02 text-ds-sm font-semibold text-surface-fg-muted">Disabled</p>
         <Autocomplete options={fruitOptions} placeholder="Disabled" disabled />
       </div>
       <div>
-        <p className="mb-ds-02 text-ds-sm font-semibold text-text-secondary">Empty options</p>
+        <p className="mb-ds-02 text-ds-sm font-semibold text-surface-fg-muted">Empty options</p>
         <Autocomplete options={[]} placeholder="No options" emptyText="Nothing to show" />
       </div>
     </div>

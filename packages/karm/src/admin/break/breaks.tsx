@@ -50,24 +50,24 @@ export const Breaks = React.forwardRef<HTMLDivElement, BreaksProps>(
     <div ref={ref} className={cn("m-0 flex h-[400px] w-full flex-col items-start justify-start p-0 max-md:h-auto", className)} {...props}>
       <div className="mx-auto mb-ds-05 mt-ds-04 flex w-[92%] items-center">
         <div className="w-[16%] min-w-[120px] overflow-hidden px-ds-04 py-ds-03">
-          <div className="text-ds-sm font-semibold uppercase tracking-wider text-text-tertiary">NAME</div>
+          <div className="text-ds-sm font-semibold uppercase tracking-wider text-surface-fg-subtle">NAME</div>
         </div>
         <div className="w-[19%] overflow-hidden px-ds-04 py-ds-03">
-          <div className="text-ds-sm font-semibold uppercase tracking-wider text-text-tertiary">DATE</div>
+          <div className="text-ds-sm font-semibold uppercase tracking-wider text-surface-fg-subtle">DATE</div>
         </div>
         <div className="w-[8%] overflow-hidden px-ds-04 py-ds-03">
-          <div className="text-ds-sm font-semibold uppercase tracking-wider w-full text-center text-text-tertiary">
+          <div className="text-ds-sm font-semibold uppercase tracking-wider w-full text-center text-surface-fg-subtle">
             DAYS
           </div>
         </div>
         <div className="w-[22%] overflow-hidden px-ds-04 py-ds-03">
-          <div className="text-ds-sm font-semibold uppercase tracking-wider text-text-tertiary">REASON</div>
+          <div className="text-ds-sm font-semibold uppercase tracking-wider text-surface-fg-subtle">REASON</div>
         </div>
         <div className="flex w-[14%] items-center justify-start overflow-hidden px-ds-04 py-ds-03">
-          <div className="text-ds-sm font-semibold uppercase tracking-wider text-text-tertiary">STATUS</div>
+          <div className="text-ds-sm font-semibold uppercase tracking-wider text-surface-fg-subtle">STATUS</div>
         </div>
         <div className="w-[24%] overflow-hidden px-ds-04 py-ds-03">
-          <div className="text-ds-sm font-semibold uppercase tracking-wider text-text-tertiary">COMMENT</div>
+          <div className="text-ds-sm font-semibold uppercase tracking-wider text-surface-fg-subtle">COMMENT</div>
         </div>
         <div className="w-ds-lg overflow-hidden px-ds-04 py-ds-03"></div>
       </div>
@@ -82,7 +82,7 @@ export const Breaks = React.forwardRef<HTMLDivElement, BreaksProps>(
           return (
             <div
               key={breakItem.id}
-              className="flex w-full items-center hover:bg-field"
+              className="flex w-full items-center hover:bg-surface-3"
             >
               <div className="flex w-[16%] min-w-[120px] items-center gap-ds-03 overflow-hidden px-ds-04 py-ds-03">
                 {userImages[breakItem.userId] ? (
@@ -92,13 +92,13 @@ export const Breaks = React.forwardRef<HTMLDivElement, BreaksProps>(
                     className="h-ds-xs-plus w-full max-w-7 flex-shrink-0 rounded-ds-full object-cover"
                   />
                 ) : (
-                  <span className="flex h-ds-xs-plus w-full max-w-7 items-center justify-center rounded-ds-full bg-layer-02 text-ds-sm font-medium uppercase text-text-primary">
+                  <span className="flex h-ds-xs-plus w-full max-w-7 items-center justify-center rounded-ds-full bg-surface-2 text-ds-sm font-medium uppercase text-surface-fg">
                     {breakItem.user?.name?.[0] || 'U'}
                   </span>
                 )}
                 <Tooltip>
                   <TooltipTrigger asChild>
-                    <span className="text-ds-md truncate text-text-primary">
+                    <span className="text-ds-md truncate text-surface-fg">
                       {breakItem.user?.name ||
                         breakItem.user?.name?.split(' ')[0]}
                     </span>
@@ -108,7 +108,7 @@ export const Breaks = React.forwardRef<HTMLDivElement, BreaksProps>(
               </div>
 
               <div className="w-[19%] overflow-hidden px-ds-04 py-ds-03">
-                <span className="text-ds-md whitespace-nowrap text-text-secondary">
+                <span className="text-ds-md whitespace-nowrap text-surface-fg-muted">
                   {formatOptionalDate(startDate)}{' '}
                   {!isSingleDay_ && (
                     <>
@@ -119,25 +119,25 @@ export const Breaks = React.forwardRef<HTMLDivElement, BreaksProps>(
               </div>
 
               <div className="flex w-[8%] items-center justify-center overflow-hidden px-ds-04 py-ds-03">
-                <span className="text-ds-md text-center text-text-secondary">
+                <span className="text-ds-md text-center text-surface-fg-muted">
                   {breakItem.numberOfDays}
                 </span>
               </div>
 
               <div className="w-[22%] overflow-hidden px-ds-04 py-ds-03">
-                <span className="text-ds-md text-text-tertiary">
+                <span className="text-ds-md text-surface-fg-subtle">
                   {breakItem.reason}
                 </span>
               </div>
 
               <div className="flex w-[14%] items-center justify-start overflow-hidden px-ds-04 py-ds-03">
-                <span className="text-ds-md text-text-tertiary">
+                <span className="text-ds-md text-surface-fg-subtle">
                   {renderStatus(breakItem?.status, breakItem?.correction)}
                 </span>
               </div>
 
               <div className="w-[24%] overflow-hidden px-ds-04 py-ds-03">
-                <span className="text-ds-md text-text-tertiary">
+                <span className="text-ds-md text-surface-fg-subtle">
                   {breakItem.adminComment || ' '}
                 </span>
               </div>

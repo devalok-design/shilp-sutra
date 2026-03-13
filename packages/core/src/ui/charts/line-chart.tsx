@@ -212,7 +212,7 @@ export const LineChart = React.forwardRef<HTMLDivElement, LineChartProps>(
                                   className="inline-block h-2 w-2 rounded-ds-full"
                                   style={{ backgroundColor: colors[sIdx] }}
                                 />
-                                <span className="text-text-secondary">
+                                <span className="text-surface-fg-muted">
                                   {s.label}:
                                 </span>{' '}
                                 {Number(d[s.key]).toLocaleString()}

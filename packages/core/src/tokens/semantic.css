@@ -182,126 +182,10 @@
   --color-skeleton-shimmer: var(--neutral-2);
 
   /* ═══════════════════════════════════════════════════════════
-     COMPAT ALIASES (deprecated — will be removed in v1.0)
+     UTILITY TOKENS (not step-based, but semantically needed)
      ═══════════════════════════════════════════════════════════ */
-
-  /* Interactive */
-  --color-interactive: var(--color-accent-9);
-  --color-interactive-hover: var(--color-accent-10);
-  --color-interactive-active: var(--color-accent-10);
-  --color-interactive-selected: var(--color-accent-3);
-  --color-interactive-disabled: var(--neutral-5);
-  --color-interactive-subtle: var(--color-accent-2);
-
-  /* Accent (old — mapped to secondary) */
-  --color-accent: var(--color-secondary-9);
-  --color-accent-hover: var(--color-secondary-10);
-  --color-accent-subtle: var(--color-secondary-2);
-
-  /* Background & Layers */
-  --color-background: var(--color-surface-1);
-  --color-layer-01: var(--color-surface-1);
-  --color-layer-02: var(--color-surface-2);
-  --color-layer-03: var(--color-surface-3);
-  --color-layer-active: var(--color-surface-4);
-  --color-layer-accent-subtle: var(--color-accent-2);
   --color-overlay: oklch(0 0 0 / 0.50);
-
-  /* Fields */
-  --color-field: var(--color-surface-3);
-  --color-field-hover: var(--color-surface-4);
-  --color-field-02: var(--color-surface-2);
-  --color-field-02-hover: var(--color-surface-3);
-
-  /* Text */
-  --color-text-primary: var(--color-surface-fg);
-  --color-text-secondary: var(--color-surface-fg-muted);
-  --color-text-tertiary: var(--color-surface-fg-subtle);
-  --color-text-placeholder: var(--neutral-8);
-  --color-text-helper: var(--color-surface-fg-subtle);
-  --color-text-disabled: var(--neutral-5);
-  --color-text-error: var(--color-error-11);
-  --color-text-success: var(--color-success-11);
-  --color-text-warning: var(--color-warning-11);
-  --color-text-info: var(--color-info-11);
-  --color-text-link: var(--blue-9);
-  --color-text-link-hover: var(--blue-10);
-  --color-text-interactive: var(--color-accent-11);
-  --color-text-on-color: var(--color-accent-fg);
-  --color-text-on-color-dark: var(--color-surface-fg);
-  --color-text-inverse: var(--neutral-1);
-  --color-text-brand: var(--color-accent-11);
-
-  /* Icons */
-  --color-icon-primary: var(--neutral-11);
-  --color-icon-secondary: var(--color-surface-fg-subtle);
-  --color-icon-disabled: var(--neutral-5);
-  --color-icon-on-color: var(--color-accent-fg);
-  --color-icon-interactive: var(--color-accent-9);
-
-  /* Borders */
-  --color-border-subtle: var(--color-surface-border);
-  --color-border-default: var(--color-surface-border-strong);
-  --color-border-strong: var(--neutral-8);
-  --color-border-interactive: var(--color-accent-7);
-  --color-border-disabled: var(--neutral-5);
-  --color-border-error: var(--color-error-7);
-  --color-border-success: var(--color-success-7);
-  --color-border-warning: var(--color-warning-7);
-  --color-divider: var(--color-surface-border);
-
-  /* Focus */
-  --color-focus: var(--color-accent-9);
-  --color-focus-inset: var(--color-surface-1);
-
-  /* Status compat */
-  --color-success: var(--color-success-9);
-  --color-success-surface: var(--color-success-3);
-  --color-success-border: var(--color-success-7);
-  --color-success-text: var(--color-success-11);
-  --color-error: var(--color-error-9);
-  --color-error-hover: var(--color-error-9);
-  --color-error-surface: var(--color-error-3);
-  --color-error-border: var(--color-error-7);
-  --color-error-text: var(--color-error-11);
-  --color-warning: var(--color-warning-9);
-  --color-warning-surface: var(--color-warning-3);
-  --color-warning-border: var(--color-warning-7);
-  --color-warning-text: var(--color-warning-11);
-  --color-info: var(--color-info-9);
-  --color-info-surface: var(--color-info-3);
-  --color-info-border: var(--color-info-7);
-  --color-info-text: var(--color-info-11);
-
-  /* Category compat */
-  --color-category-teal: var(--color-category-teal-9);
-  --color-category-teal-surface: var(--color-category-teal-3);
-  --color-category-teal-border: var(--color-category-teal-7);
-  --color-category-teal-text: var(--color-category-teal-11);
-  --color-category-amber: var(--color-category-amber-9);
-  --color-category-amber-surface: var(--color-category-amber-3);
-  --color-category-amber-border: var(--color-category-amber-7);
-  --color-category-amber-text: var(--color-category-amber-11);
-  --color-category-slate: var(--color-category-slate-9);
-  --color-category-slate-surface: var(--color-category-slate-3);
-  --color-category-slate-border: var(--color-category-slate-7);
-  --color-category-slate-text: var(--color-category-slate-11);
-  --color-category-indigo: var(--color-category-indigo-9);
-  --color-category-indigo-surface: var(--color-category-indigo-3);
-  --color-category-indigo-border: var(--color-category-indigo-7);
-  --color-category-indigo-text: var(--color-category-indigo-11);
-  --color-category-cyan: var(--color-category-cyan-9);
-  --color-category-cyan-surface: var(--color-category-cyan-3);
-  --color-category-cyan-border: var(--color-category-cyan-7);
-  --color-category-cyan-text: var(--color-category-cyan-11);
-  --color-category-orange: var(--color-category-orange-9);
-  --color-category-orange-surface: var(--color-category-orange-3);
-  --color-category-orange-border: var(--color-category-orange-7);
-  --color-category-orange-text: var(--color-category-orange-11);
-  --color-category-emerald: var(--color-category-emerald-9);
-  --color-category-emerald-surface: var(--color-category-emerald-3);
-  --color-category-emerald-border: var(--color-category-emerald-7);
-  --color-category-emerald-text: var(--color-category-emerald-11);
+  --color-disabled: var(--neutral-5);
 
   /* ═══════════════════════════════════════════════════════════
      ACTION STATE OPACITIES
@@ -470,10 +354,6 @@
 
   /* Overlay */
   --color-overlay: oklch(0 0 0 / 0.70);
-
-  /* Compat aliases that swap in dark mode */
-  --color-text-on-color-dark: var(--neutral-1);
-  --color-text-inverse: var(--neutral-12);
 
   /* Action State Opacities (higher in dark mode) */
   --action-hover-opacity: 0.08;

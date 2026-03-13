@@ -171,7 +171,7 @@ const NotificationPreferences = React.forwardRef<HTMLDivElement, NotificationPre
             </div>
           ) : preferences.length === 0 ? (
             <div className="py-ds-07 text-center">
-              <p className="text-ds-md text-text-placeholder">
+              <p className="text-ds-md text-surface-fg-subtle">
                 No custom preferences set. All notifications are delivered by
                 default.
               </p>
@@ -187,20 +187,20 @@ const NotificationPreferences = React.forwardRef<HTMLDivElement, NotificationPre
                     className={cn(
                       'flex items-center gap-ds-05 py-ds-04',
                       i < preferences.length - 1 &&
-                        'border-b border-border',
+                        'border-b border-surface-border-strong',
                     )}
                   >
                     {/* Channel icon */}
-                    <div className="flex h-ds-sm w-ds-sm shrink-0 items-center justify-center rounded-ds-lg bg-layer-02">
-                      <span className="[&>svg]:h-ico-sm [&>svg]:w-ico-sm text-text-secondary" aria-hidden="true">{channelInfo.icon}</span>
+                    <div className="flex h-ds-sm w-ds-sm shrink-0 items-center justify-center rounded-ds-lg bg-surface-2">
+                      <span className="[&>svg]:h-ico-sm [&>svg]:w-ico-sm text-surface-fg-muted" aria-hidden="true">{channelInfo.icon}</span>
                     </div>
 
                     {/* Info */}
                     <div className="min-w-0 flex-1">
-                      <p className="text-ds-md font-medium text-text-primary">
+                      <p className="text-ds-md font-medium text-surface-fg">
                         {channelInfo.label}
                       </p>
-                      <p className="text-ds-sm text-text-placeholder">
+                      <p className="text-ds-sm text-surface-fg-subtle">
                         {getProjectName(pref.projectId)}
                       </p>
                     </div>
@@ -224,7 +224,7 @@ const NotificationPreferences = React.forwardRef<HTMLDivElement, NotificationPre
 
                     {/* Muted toggle */}
                     <div className="flex items-center gap-ds-02b">
-                      <span className="text-ds-sm text-text-placeholder">
+                      <span className="text-ds-sm text-surface-fg-subtle">
                         {pref.muted ? 'Muted' : 'Active'}
                       </span>
                       <Switch
@@ -237,7 +237,7 @@ const NotificationPreferences = React.forwardRef<HTMLDivElement, NotificationPre
                     <button
                       type="button"
                       onClick={() => onDelete?.(pref.id)}
-                      className="shrink-0 rounded p-ds-02b text-text-placeholder transition-colors hover:bg-layer-02 hover:text-error"
+                      className="shrink-0 rounded p-ds-02b text-surface-fg-subtle transition-colors hover:bg-surface-2 hover:text-error"
                     >
                       <IconTrash className="h-ico-sm w-ico-sm" />
                     </button>
@@ -261,7 +261,7 @@ const NotificationPreferences = React.forwardRef<HTMLDivElement, NotificationPre
           </DialogHeader>
           <div className="flex flex-col gap-ds-05 pt-ds-03">
             <div className="flex flex-col gap-ds-02b">
-              <label htmlFor="pref-scope" className="text-ds-sm font-medium text-text-secondary">
+              <label htmlFor="pref-scope" className="text-ds-sm font-medium text-surface-fg-muted">
                 Scope
               </label>
               <Select value={newProjectId} onValueChange={setNewProjectId}>
@@ -282,7 +282,7 @@ const NotificationPreferences = React.forwardRef<HTMLDivElement, NotificationPre
             </div>
 
             <div className="flex flex-col gap-ds-02b">
-              <label htmlFor="pref-channel" className="text-ds-sm font-medium text-text-secondary">
+              <label htmlFor="pref-channel" className="text-ds-sm font-medium text-surface-fg-muted">
                 Channel
               </label>
               <Select value={newChannel} onValueChange={setNewChannel}>
@@ -297,7 +297,7 @@ const NotificationPreferences = React.forwardRef<HTMLDivElement, NotificationPre
             </div>
 
             <div className="flex flex-col gap-ds-02b">
-              <label htmlFor="pref-min-tier" className="text-ds-sm font-medium text-text-secondary">
+              <label htmlFor="pref-min-tier" className="text-ds-sm font-medium text-surface-fg-muted">
                 Minimum Tier
               </label>
               <Select value={newMinTier} onValueChange={setNewMinTier}>
@@ -315,7 +315,7 @@ const NotificationPreferences = React.forwardRef<HTMLDivElement, NotificationPre
             </div>
 
             <div className="flex items-center justify-between">
-              <label htmlFor="pref-muted" className="text-ds-md text-text-primary">
+              <label htmlFor="pref-muted" className="text-ds-md text-surface-fg">
                 Mute this channel
               </label>
               <Switch id="pref-muted" checked={newMuted} onCheckedChange={setNewMuted} />

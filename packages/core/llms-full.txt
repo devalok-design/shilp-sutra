@@ -5,7 +5,7 @@
 > All variant values and props verified from source CVA definitions.
 >
 > Package: @devalok/shilp-sutra
-> Version: 0.16.0
+> Version: 0.18.0
 
 ---
 
@@ -300,6 +300,8 @@ Note: getFormFieldA11y() was removed in favor of useFormField() hook.
     - DO NOT use size="default" — use size="md"
     - DO NOT use color="danger" — use color="error"
     - Inherits variant/color/size from ButtonGroup context if present
+    - onClickAsync: (e: MouseEvent) => Promise<void> — auto loading→success/error→idle
+    - asyncFeedbackDuration: number (ms, default 1500) — how long to show success/error icon
 
 ## ButtonGroup
 - Import: @devalok/shilp-sutra/ui/button-group
@@ -1016,13 +1018,21 @@ Note: getFormFieldA11y() was removed in favor of useFormField() hook.
 - Import: @devalok/shilp-sutra/ui/spinner
 - Server-safe: Yes
 - Props:
-    size: "sm" | "md" | "lg"
-- Defaults: size="md"
+    size: "sm" | "md" | "lg" | "xl"
+    state: "spinning" | "success" | "error" (default: "spinning")
+    variant: "filled" | "bare" (default: "filled")
+    delay: number (ms — render delay to avoid flicker on fast operations)
+    onComplete: () => void (callback after success/error state transition)
+- Defaults: size="md", state="spinning", variant="filled"
 - Example:
   <Spinner size="lg" />
+  <Spinner state="success" /> // green checkmark
+  <Spinner variant="bare" /> // uses currentColor, for embedding in buttons
 - Gotchas:
     - Renders role="status" with sr-only "Loading..." text — no need for aria-label
     - Button has built-in loading prop — prefer that over manual Spinner composition
+    - `bare` variant inherits text color — useful inside buttons and toolbars
+    - `delay` prevents flicker: spinner only appears after delay ms (good for fast API calls)
 
 ## Stack
 - Import: @devalok/shilp-sutra/ui/stack

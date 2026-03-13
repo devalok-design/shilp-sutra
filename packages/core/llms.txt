@@ -4,6 +4,26 @@
 > Built on the same primitives as shadcn/ui but with key API differences.
 > Read this file BEFORE writing any UI code. Do NOT guess from shadcn/ui knowledge.
 
+## BREAKING CHANGES (v0.18.0 — Framer Motion + OKLCH)
+
+**New runtime dependency:** `framer-motion@^12.36.0` (bundled). Karm consumers must install `framer-motion@^12.0.0` as peer dep.
+
+**Transitions removed:** `Fade`, `Collapse`, `Grow`, `Slide` from `./ui/transitions` no longer exist. Use `MotionFade`, `MotionCollapse`, `MotionSlide` from `@devalok/shilp-sutra/motion/primitives`.
+
+**CSS keyframe animations removed:** 18 keyframes (`fade-in`, `fade-out`, `slide-up`, `scale-in`, etc.) and their `animate-*` utilities removed from Tailwind preset. Use motion primitives instead.
+
+**`useReducedMotion()` removed:** Use `<MotionProvider reducedMotion="user">` at app root.
+
+**New motion system:**
+- `import { MotionProvider, springs, tweens } from '@devalok/shilp-sutra/motion'`
+- `import { MotionFade, MotionCollapse, MotionSlide, MotionPop, MotionScale, MotionStagger } from '@devalok/shilp-sutra/motion/primitives'`
+- Springs: `springs.bouncy`, `springs.smooth`, `springs.snappy`, `springs.gentle`, `springs.rigid`
+- Tweens: `tweens.fade`, `tweens.standard`, `tweens.gentle`
+
+**Spinner v2:** New props `state?: 'spinning' | 'success' | 'error'`, `variant?: 'filled' | 'bare'`, `delay?: number`, `onComplete?: () => void`
+
+**Button `onClickAsync`:** New prop `onClickAsync?: (e) => Promise<void>` — auto-manages loading → success/error → idle states. `asyncFeedbackDuration?: number` (default 1500ms).
+
 ## CHANGES (v0.16.0)
 - **DataTable server-side features**: `onSort` callback (manual sorting), `pagination` prop (server-side pagination with page/total/onPageChange), `selectedIds` + `selectableFilter` (controlled selection), `loading` shimmer, `emptyState` ReactNode, `singleExpand`, `stickyHeader`, `onRowClick`, `bulkActions` floating bar
 - **ActivityFeed**: New composed component — `@devalok/shilp-sutra/composed/activity-feed` — vertical timeline with colored dots, actor avatars, expandable detail, compact mode, load more
@@ -44,12 +64,12 @@
 - StatusBadge: Pass either `status` OR `color`, not both (discriminated union).
 - Input/Textarea: Now auto-inherit state, aria-describedby, aria-required from FormField context. Explicit props override.
 
-## BREAKING CHANGES (v0.18.0 — OKLCH token migration)
+## BREAKING CHANGES (v0.18.0 — OKLCH token migration, continued)
 - All color primitives migrated from hex (50-950 shades) to OKLCH (12 functional steps)
 - Old shade numbers: --pink-50..950. New step numbers: --pink-1..12 (OKLCH values)
 - Step purposes: 1=app-bg, 2=subtle-bg, 3=component-bg, 4=hover, 5=active, 6=border-subtle, 7=border, 8=border-strong, 9=solid/accent, 10=solid-hover, 11=lo-contrast-text, 12=hi-contrast-text
 - New semantic tokens: --color-accent-{1-12}, --color-secondary-{1-12}, --color-surface-{1-4}, --color-surface-fg/fg-muted/fg-subtle/border
-- Status tokens: --color-error-{3,7,9,11}, --color-success-{3,7,9,11}, --color-warning-{3,7,9,11}, --color-info-{3,7,9,11}
+- Status tokens: --color-error-{3,7,9,11,fg}, --color-success-{3,7,9,11,fg}, --color-warning-{3,7,9,11,fg}, --color-info-{3,7,9,11,fg}
 - New Tailwind utilities: accent-1..12, secondary-1..12, surface-1..4, status/category step utilities
 - Backward compat: ALL old semantic token names preserved as aliases. --color-interactive still works → maps to --color-accent-9
 - Consumer rebranding: override --color-accent-1..12 CSS vars OR use generateScale() utility with a seed color

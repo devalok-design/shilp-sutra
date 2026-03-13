@@ -1,6 +1,6 @@
 {
   "name": "@devalok/shilp-sutra",
-  "version": "0.17.2",
+  "version": "0.18.0",
   "description": "Devalok Design System — tokens, components, and patterns for Next.js",
   "license": "MIT",
   "type": "module",
@@ -353,6 +353,11 @@
       "default": "./dist/composed/index.js",
       "types": "./dist/composed/index.d.ts"
     },
+    "./composed/activity-feed": {
+      "import": "./dist/composed/activity-feed.js",
+      "default": "./dist/composed/activity-feed.js",
+      "types": "./dist/composed/activity-feed.d.ts"
+    },
     "./composed/avatar-group": {
       "import": "./dist/composed/avatar-group.js",
       "default": "./dist/composed/avatar-group.js",
@@ -657,14 +662,13 @@
     "input-otp": "^1.4.2",
     "react-markdown": "^10.1.0",
     "react-remove-scroll": "^2.6.3",
-    "tailwind-merge": "^3.0.1"
+    "tailwind-merge": "^3.0.1",
+    "framer-motion": "^12.36.0",
+    "sonner": "^2.0.7"
   },
   "engines": {
     "node": ">=20.0.0"
   },
   "packageManager": "pnpm@10.0.0",
-  "dependencies": {
-    "framer-motion": "^12.36.0",
-    "sonner": "^2.0.7"
-  }
+  "dependencies": {}
 }

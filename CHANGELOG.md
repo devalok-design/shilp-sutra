@@ -5,35 +5,184 @@ All notable changes to `@devalok/shilp-sutra` will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
-## [Unreleased]
+## [0.18.0] - 2026-03-14
 
-### BREAKING — Color Token Architecture
+The **OKLCH + Framer Motion** release. Three major system-wide migrations in one release: color tokens rewritten to OKLCH perceptual color science, all animations migrated from CSS keyframes to Framer Motion physics-based springs, and toast notifications rewritten to an imperative API.
 
-**Migration: OKLCH 12-step functional scales**
+**New runtime dependency:** `framer-motion@^12.36.0` (bundled in core)
+**New peer dependency for karm:** `framer-motion@^12.0.0`
 
-All color primitives migrated from hex (50-950 shade numbers) to OKLCH (1-12 functional steps). Dark mode is now algorithmically derived with perceptually uniform lightness/chroma curves.
+### BREAKING — Color Token Architecture (OKLCH 12-step)
 
-**What changed:**
-- Primitive tokens: `--pink-50` through `--pink-950` → `--pink-1` through `--pink-12` (OKLCH values)
-- New semantic tokens: `--color-accent-{1-12}`, `--color-secondary-{1-12}`, `--color-surface-{1-4}`, status step subsets
-- New Tailwind utilities: `accent-1..12`, `secondary-1..12`, `surface-1..4`, status/category utilities
-- Dark mode: separate lightness/chroma curves per step (not hex overrides)
-- Scale generator: `generateScale()` utility for creating 12-step palettes from a seed color
+All color primitives migrated from hex shade numbers (50–950) to OKLCH functional steps (1–12). Dark mode is now algorithmically derived with perceptually uniform lightness/chroma curves.
 
-**Backward compatibility:**
-- All old semantic token names preserved as aliases (e.g. `--color-interactive` → `--color-accent-9`)
-- Old Tailwind utilities still work
-- 939 tests pass with zero breakage
+**Primitive tokens:**
+- `--pink-50` through `--pink-950` → `--pink-1` through `--pink-12` (OKLCH values)
+- Same migration for all 8 scales: pink, red, orange, amber, green, blue, purple, neutral
 
-**Action required for consumers using primitive tokens directly:**
-- `--pink-500` → `--pink-9` (accent/solid step)
-- `--neutral-100` → `--neutral-2` (subtle background)
-- See `docs/plans/2026-03-13-dark-light-mode-token-redesign-design.md` for full migration mapping
+**Semantic tokens:**
+- `--color-interactive` → `--color-accent-9` (and `accent-{1-12}` full scale)
+- `--color-interactive-hover` → `--color-accent-10`
+- `--color-interactive-subtle` → `--color-accent-2`
+- `--color-text-secondary` → `--color-surface-fg-muted`
+- New: `--color-secondary-{1-12}`, `--color-surface-{1-4}`, `--color-surface-fg`, `--color-surface-fg-muted`, `--color-surface-fg-subtle`, `--color-surface-border`, `--color-surface-border-strong`
+- Status tokens: `--color-error-{3,7,9,11,fg}`, `--color-success-{3,7,9,11,fg}`, `--color-warning-{3,7,9,11,fg}`, `--color-info-{3,7,9,11,fg}`
 
-### Added
-- OKLCH 12-step scale generator (`generateScale()` in `@devalok/shilp-sutra/tokens`)
-- 94 new Tailwind color utilities for the 12-step system
-- Interactive token preview at `docs/previews/token-preview.html`
+**Step purposes (the 12-step system):**
+1=app-bg, 2=subtle-bg, 3=component-bg, 4=hover, 5=active, 6=border-subtle, 7=border, 8=border-strong, 9=solid/accent, 10=solid-hover, 11=low-contrast-text, 12=high-contrast-text, fg=foreground-on-solid
+
+**Tailwind utilities:** 94 new color utilities — `accent-1..12`, `secondary-1..12`, `surface-1..4`, status/category step utilities
+
+**Backward compatibility:** All old semantic token names preserved as aliases. `--color-interactive` still works → maps to `--color-accent-9`. Old Tailwind utilities still work.
+
+**Consumer migration for direct primitive usage:**
+- `--pink-500` → `--pink-9`, `--neutral-100` → `--neutral-2`
+- See `docs/plans/2026-03-13-dark-light-mode-token-redesign-design.md` for full mapping
+
+### BREAKING — Transitions Component Removed
+
+`Fade`, `Collapse`, `Grow`, `Slide` removed from `@devalok/shilp-sutra/ui`. The `./ui/transitions` export path no longer exists.
+
+**Migration:** Use Framer Motion primitives from `@devalok/shilp-sutra/motion/primitives`:
+```diff
+- import { Fade, Collapse, Slide } from '@devalok/shilp-sutra/ui/transitions'
++ import { MotionFade, MotionCollapse, MotionSlide } from '@devalok/shilp-sutra/motion/primitives'
+```
+
+### BREAKING — CSS Keyframe Animations Removed
+
+18 CSS keyframes removed from the Tailwind preset (replaced by Framer Motion):
+- `fade-in`, `fade-out`, `slide-up`, `slide-right`, `scale-in`, `scale-out`, `glow-pulse`, `scale-bounce`, `lift`
+- Corresponding `animate-*` utilities removed
+- Stagger delay plugins (`.delay-stagger`, `.delay-stagger-50`) removed
+
+**Migration:** Use `MotionStagger` / `MotionFade` / `MotionSlide` from `@devalok/shilp-sutra/motion/primitives`, or use `springs` / `tweens` presets from `@devalok/shilp-sutra/motion`.
+
+### BREAKING — `useReducedMotion` Hook Removed
+
+The old `useReducedMotion()` hook is removed. Use `MotionProvider` with `reducedMotion="user"` at your app root — Framer Motion natively respects `prefers-reduced-motion`.
+
+### Added — Framer Motion Animation System
+
+Complete migration of all interactive animations from CSS keyframes to Framer Motion physics-based springs. 37 components migrated.
+
+**New exports from `@devalok/shilp-sutra/motion`:**
+- `MotionProvider` — global animation context with reduced-motion control
+- `springs` — physics presets: `bouncy`, `smooth`, `snappy`, `gentle`, `rigid`
+- `tweens` — timing presets: `fade`, `standard`, `gentle`
+- `stagger` — orchestration helper for cascading animations
+
+**New exports from `@devalok/shilp-sutra/motion/primitives`:**
+- `MotionFade` — opacity fade in/out
+- `MotionScale` — scale entrance/exit
+- `MotionPop` — scale with spring overshoot
+- `MotionSlide` — directional slide
+- `MotionCollapse` — height-based expand/collapse
+- `MotionStagger` + `MotionStaggerItem` — cascading entrance container
+
+**Components migrated to Framer Motion:**
+- Overlays: Dialog, AlertDialog, Sheet, Popover, Tooltip, HoverCard, NavigationMenu
+- Form: Checkbox (bouncy indicator), Switch (spring thumb), Toggle (press spring)
+- Interactive: Button (whileTap scale), Card interactive (hover lift), Accordion (height + fade)
+- Feedback: Alert (exit animation), Badge (pulse-ring), Spinner (arc rotation)
+- Charts: All 8 chart types (entrance animations)
+- Karm board: Task stagger, bulk action bar, filter chip cascade
+
+### Added — Spinner v2
+
+Complete rewrite with Framer Motion arc animation and state transitions.
+
+- **New props:** `state?: 'spinning' | 'success' | 'error'`, `variant?: 'filled' | 'bare'`, `delay?: number`, `onComplete?: () => void`
+- `bare` variant uses `currentColor` for embedding in buttons/toolbars
+- State transitions: spinning → success (green check) or error (red X) with spring crossfade
+- Respects `prefers-reduced-motion` (static icons with opacity crossfade)
+
+### Added — Button `onClickAsync`
+
+Promise-driven loading → success/error state machine.
+
+- **New prop:** `onClickAsync?: (e: MouseEvent) => Promise<void>`
+- Auto-managed states: idle → loading (spinner) → success (green check) / error (red X) → idle
+- **New prop:** `asyncFeedbackDuration?: number` (default 1500ms)
+- Overrides `onClick` and `loading` when active
+
+### Added — OKLCH Scale Generator
+
+- `generateScale()` utility in `@devalok/shilp-sutra/tokens` for creating 12-step OKLCH palettes from a seed color
+- Used by the playground for interactive color exploration
+
+### Added — Motion Token Library (`ui/lib/motion`)
+
+- `springs` and `tweens` presets exported from `@devalok/shilp-sutra/ui` (also from `@devalok/shilp-sutra/motion`)
+- `withReducedMotion()` utility for wrapping spring configs
+
+### Added — New Export Paths
+
+- `./motion` — MotionProvider, springs, tweens, stagger
+- `./motion/primitives` — MotionFade, MotionScale, MotionPop, MotionSlide, MotionCollapse, MotionStagger
+
+### Added — Type Exports
+
+61 new Props type exports added to barrel files:
+- `AlertDialogContentProps`, `AlertDialogActionProps`, `AlertDialogCancelProps`
+- `BreadcrumbProps`, `BreadcrumbLinkProps`
+- `ContextMenuContentProps`, `ContextMenuItemProps`
+- `DialogContentProps`, `DialogTitleProps`
+- `DropdownMenuContentProps`, `DropdownMenuItemProps`
+- `MenubarContentProps`, `MenubarItemProps`
+- `NavigationMenuProps`, `NavigationMenuContentProps`
+- `PopoverContentProps`, `TooltipContentProps`
+- `InputOTPProps`, `TableProps`, `TableRowProps`, `TableCellProps`
+- `SheetContentProps`, `SidebarProps`, `ToasterProps`
+- `LinkProviderProps` (from `./ui/lib`)
+- `MotionPrimitiveProps`, `MotionStaggerProps`, `MotionProviderProps`
+- `SpringPreset`, `TweenPreset`
+
+### Fixed
+
+- **Switch**: Added visible border on unchecked state (`border-surface-border-strong`) — was borderless, making unchecked state hard to see
+- **Badge**: Fixed accent color variants — `text-accent-9` → `text-accent-11`, `border-accent-9` → `border-accent-7` (step 9 is solid fill, step 11 is accessible text)
+- **Link**: Fixed color tokens — `text-info-9` → `text-accent-11` (links are interactive = accent scale)
+- **Toast**: Fixed accent bar colors from step 7 → step 9 (decorative fills use solid step)
+- **Button**: Fixed async feedback colors — `bg-success text-text-on-color` → `bg-success-9 text-accent-fg`
+- **SegmentedControl**: Fixed `bg-interactive` → `bg-accent-9`, `bg-field` → `bg-surface-3`
+- **Stepper**: Fixed `bg-interactive` → `bg-accent-9`
+- **Sidebar**: Fixed `bg-interactive-subtle` → `bg-accent-2`
+- **Spinner**: Fade out track circle in bare mode, use larger icons for bare variant
+- **`onDrag` type conflict**: Resolved between React and Framer Motion HTML attributes
+- 37+ token references fixed across stories and components (legacy names → OKLCH system)
+
+### Changed
+
+- **Dark mode**: Algorithmically derived OKLCH curves per step (not hex overrides). Surfaces lighten with elevation.
+- All interactive animations now use physics-based springs (not timing-based CSS transitions)
+- Focus ring colors: `ring-focus` → `ring-accent-9`
+- Disabled opacity: `opacity-[0.38]` → `opacity-action-disabled`
+
+### Removed
+
+- `./ui/transitions` export path and `transitions.tsx` module
+- `useReducedMotion()` hook (use `MotionProvider` instead)
+- 18 CSS keyframe definitions from Tailwind preset
+- 9 `animate-*` utility classes
+- `.delay-stagger` and `.delay-stagger-50` plugins
+
+### Test Coverage
+
+- 123 test files, 973 tests (up from 729)
+- New: motion primitives (7 primitives, 12 tests), MotionProvider (7 tests), generateScale (67 tests)
+- New: motion token validation (12 tests)
+
+### shilp-sutra-karm [0.17.0]
+
+- **New peer dependency:** `framer-motion@^12.0.0` — consumers must install framer-motion
+- All karm components migrated to OKLCH token system (board, admin, dashboard, client)
+- Board animations migrated to Framer Motion (task stagger, bulk action bar, filter chips)
+- Fixed 20+ legacy token references across admin, dashboard, and board modules
+
+### Playground
+
+- Migrated to 12-step OKLCH color scales with interactive editor
 
 ## [0.17.2] - 2026-03-12
 
@@ -528,70 +677,6 @@ The **Consistency Audit** release. Aligns variant naming, event handlers, and ex
 - `./hooks` public export path for `useToast`, `useColorMode`, `useIsMobile`
 - 19 missing semantic tokens exposed in Tailwind preset (letter-spacing, line-height, opacity, focus width)
 - Lint scripts added to brand and karm packages
-
----
-
-## [Unreleased]
-
-### Added
-- Carbon-inspired productive/expressive motion system with 7 duration tokens and 8 easing curves
-- `motion()` and `duration()` TypeScript utilities for programmatic motion access
-- Storybook "Foundations/Motion" guide with interactive duration/easing demos
-- Motion tokens added to Accordion, Tooltip, Dialog, Sheet, Dropdown Menu, Toast
-
-### Changed
-- All motion-using components migrated to new productive/expressive token system (Button, Content Card, Task Card, Board Column, Attendance CTA, Global Loading, Skeleton, Progress, Transitions, Date Picker, Command Palette)
-
-### Removed
-- Old duration tokens: `--duration-fast`, `--duration-moderate`, `--duration-slow`, `--duration-deliberate`, `--duration-medium`, `--duration-enter`, `--duration-exit`
-- Old easing tokens: `--ease-standard`, `--ease-entrance`, `--ease-exit`
-- Old Tailwind duration utilities: `duration-fast`, `duration-moderate`, `duration-slow`, `duration-deliberate`, `duration-medium`, `duration-enter`, `duration-exit`
-- Old Tailwind easing utilities: `ease-standard`, `ease-entrance`, `ease-exit`
-
-### Added
-- `--size-sm-plus` (36px) and `--size-xs-plus` (28px) sizing tokens
-- Chart color tokens (`chart-1` through `chart-8`) in Tailwind preset
-- `focus-inset` color token in Tailwind preset
-- `rounded-ds-none` border radius token
-- `minWidth` scale in Tailwind preset
-- `SpacingToken` type union exported from Stack for type-safe gap usage
-
-### Fixed
-- **FileUpload** malformed spacing token names causing silent CSS failures
-- **BreakAdmin** non-functional text class
-- **DashboardHeader/Calendar** invalid Tailwind utilities
-- **Badge** primitive color tokens breaking dark mode
-- **GaugeChart** hex fallback removed, raw `text-2xl` → `text-ds-2xl`
-- `opacity-40` → `opacity-[0.38]` WCAG standardization (7 files)
-- Legacy CSS var in `breaks.tsx`
-- Hardcoded font family in `leave-request.tsx`
-- `window.confirm()` anti-pattern replaced with callback prop in TaskProperties
-- `cn()` pattern fix in DailyBrief (template literal → cn utility)
-- **Tabs** `TabsListContext` type error — `VariantProps` null handling with explicit coalescing
-- **Toaster stories** updated stale `destructive`/`karam` variant references to `error`/`success`
-- `calender` → `calendar` CSS class typo in edit-break and admin-dashboard
-- Arbitrary `p-[10px_16px_4px_16px]` → `px-ds-05 pb-ds-01 pt-ds-03` in leave-request
-
-### Changed
-- Added `forwardRef` to 17 components per CONTRIBUTING.md checklist
-- Added `...props` spread to 4 layout components (Sidebar, TopBar, BottomNavbar, NotificationCenter)
-- Replaced raw z-index values with semantic tokens (13 instances, 10 files)
-- Replaced `rounded-full`/`rounded-none` with `rounded-ds-full`/`rounded-ds-none` (19 instances)
-- Replaced raw `h-8`/`w-8` → `h-ds-sm`/`w-ds-sm`, `h-9`/`w-9` → `h-ds-sm-plus`/`w-ds-sm-plus`, `h-7`/`w-7` → `h-ds-xs-plus`/`w-ds-xs-plus` (70+ instances)
-- Replaced ~100 raw half-step spacing values with `ds-*` tokens (0.5→ds-01, 1.5→ds-02b, 2.5→ds-03, 3.5→ds-04)
-- Replaced `p-[10px]` with `p-ds-03` in admin tables (15 instances)
-- Replaced raw `h-10`/`w-10` → `h-ds-md`/`w-ds-md`, `w-12` → `w-ds-lg` across components
-- Breadcrumb separator icons `h-3.5 w-3.5` → `h-ico-sm w-ico-sm` (icon token alignment)
-- Progress bar `h-1.5` → `h-ds-02b` (exact 6px match)
-- Stack `gap` prop type-restricted to `SpacingToken` union (15 ds-* values only)
-- Documented intentional arbitrary pixel values in karm/admin (10 comments)
-- Replaced all template literal `className` patterns with `cn()` utility (30+ instances, 16 files)
-- Replaced `100vh` with `100dvh` in 4 mobile viewport scroll containers for better browser chrome handling
-- Replaced ~100 raw CSS `var(--color-*)` / `var(--radius-*)` patterns in story files with Tailwind utilities
-
-### Removed
-- Legacy `typography.css` from import chain (all components use `typography-semantic.css`)
-- Redundant dark mode layout token declarations (`--max-width`, `--max-width-body`)
 
 ---
 

@@ -15,8 +15,10 @@ export function ColorScaleEditor({
   onChangeShade,
   onResetShade,
 }: ColorScaleEditorProps) {
-  const base500Key = `--${scaleName}-500`
-  const currentBase = currentValues[base500Key] || defaults[base500Key] || '#888888'
+  const base9Key = `--${scaleName}-9`
+  const currentBase = currentValues[base9Key] || defaults[base9Key] || '#888888'
+  // <input type="color"> only accepts hex — fall back to gray for OKLCH defaults
+  const colorInputValue = /^#[0-9a-fA-F]{6}$/.test(currentBase) ? currentBase : '#888888'
 
   const handleBaseChange = (newBase: string) => {
     const scale = generateColorScale(newBase)
@@ -33,7 +35,7 @@ export function ColorScaleEditor({
         <label className="text-xs font-medium text-text-secondary capitalize w-16">{scaleName}</label>
         <input
           type="color"
-          value={currentBase}
+          value={colorInputValue}
           onChange={(e) => handleBaseChange(e.target.value)}
           className="h-8 w-8 cursor-pointer rounded border border-border-subtle"
         />

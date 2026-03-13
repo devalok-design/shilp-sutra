@@ -1,8 +1,10 @@
 import { jsx as _jsx, jsxs as _jsxs } from "react/jsx-runtime";
 import { generateColorScale, SHADE_STOPS } from '../../lib/color-scale';
 export function ColorScaleEditor({ scaleName, currentValues, defaults, onChangeShade, onResetShade, }) {
-    const base500Key = `--${scaleName}-500`;
-    const currentBase = currentValues[base500Key] || defaults[base500Key] || '#888888';
+    const base9Key = `--${scaleName}-9`;
+    const currentBase = currentValues[base9Key] || defaults[base9Key] || '#888888';
+    // <input type="color"> only accepts hex — fall back to gray for OKLCH defaults
+    const colorInputValue = /^#[0-9a-fA-F]{6}$/.test(currentBase) ? currentBase : '#888888';
     const handleBaseChange = (newBase) => {
         const scale = generateColorScale(newBase);
         for (const shade of SHADE_STOPS) {
@@ -10,7 +12,7 @@ export function ColorScaleEditor({ scaleName, currentValues, defaults, onChangeS
             onChangeShade(prop, scale[shade]);
         }
     };
-    return (_jsxs("div", { className: "space-y-2", children: [_jsxs("div", { className: "flex items-center gap-2", children: [_jsx("label", { className: "text-xs font-medium text-text-secondary capitalize w-16", children: scaleName }), _jsx("input", { type: "color", value: currentBase, onChange: (e) => handleBaseChange(e.target.value), className: "h-8 w-8 cursor-pointer rounded border border-border-subtle" }), _jsx("input", { type: "text", value: currentBase, onChange: (e) => {
+    return (_jsxs("div", { className: "space-y-2", children: [_jsxs("div", { className: "flex items-center gap-2", children: [_jsx("label", { className: "text-xs font-medium text-text-secondary capitalize w-16", children: scaleName }), _jsx("input", { type: "color", value: colorInputValue, onChange: (e) => handleBaseChange(e.target.value), className: "h-8 w-8 cursor-pointer rounded border border-border-subtle" }), _jsx("input", { type: "text", value: currentBase, onChange: (e) => {
                             if (/^#[0-9a-fA-F]{6}$/.test(e.target.value)) {
                                 handleBaseChange(e.target.value);
                             }

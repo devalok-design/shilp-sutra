@@ -76,80 +76,76 @@ function gamutClipOklch(L, C, h) {
     }
     return [L, lo, h];
 }
-// ── Scale generation ────────────────────────────────────────────────
-const SHADE_STOPS = [50, 100, 200, 300, 400, 500, 600, 700, 800, 900, 950];
+// ── Scale generation (12-step OKLCH functional scales) ──────────────
+const SHADE_STOPS = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12];
 /**
- * Normalized position of each shade on the lightness axis (0 = lightest, 1 = darkest).
- * Derived from Evil Martians' Harmony lightness curve — the spacing between stops
- * is perceptually even in OKLCH. 500 sits at ~0.449 (not 0.5) because palettes
- * need more room in the light range than the dark range.
+ * Lightness values for each step in the 12-step scale.
+ * Matches the OKLCH token system in primitives.css.
+ *
+ * Steps:
+ *  1  — App background
+ *  2  — Subtle background
+ *  3  — Component bg
+ *  4  — Component bg hover
+ *  5  — Component bg active
+ *  6  — Border subtle
+ *  7  — Border default
+ *  8  — Border strong
+ *  9  — Solid / accent
+ * 10  — Solid hover
+ * 11  — Low-contrast text
+ * 12  — High-contrast text
  */
-const T = {
-    50: 0.003,
-    100: 0.060,
-    200: 0.134,
-    300: 0.207,
-    400: 0.321,
-    500: 0.449,
-    600: 0.550,
-    700: 0.691,
-    800: 0.791,
-    900: 0.892,
-    950: 1.000,
+const L_VALUES = {
+    1: 0.99,
+    2: 0.97,
+    3: 0.93,
+    4: 0.89,
+    5: 0.84,
+    6: 0.78,
+    7: 0.70,
+    8: 0.62,
+    9: 0.55,
+    10: 0.50,
+    11: 0.43,
+    12: 0.32,
 };
-const T_500 = T[500];
-/** Lightness endpoints — near-white and near-black in OKLCH */
-const L_MAX = 0.98;
-const L_MIN = 0.24;
 /**
- * Chroma scale factors relative to the base color's chroma.
+ * Chroma scale factors relative to the base color's chroma (step 9).
  * Lighter and darker shades have less chroma; mid-tones peak.
  */
 const CHROMA_FACTOR = {
-    50: 0.07,
-    100: 0.22,
-    200: 0.41,
-    300: 0.62,
-    400: 0.95,
-    500: 1.00,
-    600: 0.88,
-    700: 0.73,
-    800: 0.61,
-    900: 0.49,
-    950: 0.37,
+    1: 0.03,
+    2: 0.08,
+    3: 0.18,
+    4: 0.29,
+    5: 0.42,
+    6: 0.53,
+    7: 0.74,
+    8: 0.89,
+    9: 1.00,
+    10: 1.00,
+    11: 0.74,
+    12: 0.42,
 };
 /**
- * Generate a full color scale from a single base hex color using OKLCH.
+ * Generate a full 12-step color scale from a single base hex color using OKLCH.
  *
- * The base color is placed exactly at the 500 stop. Lightness for other
- * stops is interpolated relative to the base: lighter shades toward L_MAX,
- * darker shades toward L_MIN, using the Harmony curve's perceptually-even
- * spacing. Chroma scales proportionally from the base. Out-of-gamut colors
- * are clipped via binary search on chroma.
+ * The base color determines the hue. Step 9 uses the base's chroma at L=0.55.
+ * Each step has a fixed lightness value from L_VALUES.
+ * Chroma scales proportionally from the base using CHROMA_FACTOR.
+ * Out-of-gamut colors are clipped via binary search on chroma.
+ *
+ * Returns an object with keys 1-12, each value a hex string.
  */
 export function generateColorScale(baseHex) {
-    const [baseL, baseC, baseH] = hexToOklch(baseHex);
+    const [, baseC, baseH] = hexToOklch(baseHex);
     const scale = {};
-    for (const shade of SHADE_STOPS) {
-        if (shade === 500) {
-            scale[500] = baseHex;
-            continue;
-        }
-        const t = T[shade];
-        let L;
-        if (t < T_500) {
-            // Lighter than base: interpolate from L_MAX down to baseL
-            const frac = t / T_500;
-            L = L_MAX + (baseL - L_MAX) * frac;
-        }
-        else {
-            // Darker than base: interpolate from baseL down to L_MIN
-            const frac = (t - T_500) / (1 - T_500);
-            L = baseL + (L_MIN - baseL) * frac;
-        }
-        const C = baseC * CHROMA_FACTOR[shade];
+    for (const step of SHADE_STOPS) {
+        const L = L_VALUES[step];
+        const C = baseC * CHROMA_FACTOR[step];
         const [clL, clC, clH] = gamutClipOklch(L, C, baseH);
-        scale[shade] = oklchToHex(clL, clC, clH);
+        scale[step] = oklchToHex(clL, clC, clH);
     }
     return scale;
 }

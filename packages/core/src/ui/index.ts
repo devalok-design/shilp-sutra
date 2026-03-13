@@ -308,5 +308,5 @@ export { Link, type LinkProps } from './link'
 
 // Utilities
 export { cn } from './lib/utils'
-export { motion, duration, easings, durations } from './lib/motion'
-export type { MotionMode, MotionCategory, DurationToken } from './lib/motion'
+export { springs, tweens, stagger, withReducedMotion } from './lib/motion'
+export type { SpringPreset, TweenPreset } from './lib/motion'

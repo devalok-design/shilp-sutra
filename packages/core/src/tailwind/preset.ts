@@ -266,6 +266,23 @@ const preset: Partial<Config> = {
         'chart-8': 'var(--chart-8)',
       },
       keyframes: {
+        // ── Radix-coupled: height animation using Radix CSS variables ──
+        'accordion-down': {
+          from: { height: '0' },
+          to: { height: 'var(--radix-accordion-content-height)' },
+        },
+        'accordion-up': {
+          from: { height: 'var(--radix-accordion-content-height)' },
+          to: { height: '0' },
+        },
+        'collapsible-down': {
+          from: { height: '0' },
+          to: { height: 'var(--radix-collapsible-content-height)' },
+        },
+        'collapsible-up': {
+          from: { height: 'var(--radix-collapsible-content-height)' },
+          to: { height: '0' },
+        },
         // ── Kept: CSS-only animations not yet migrated to Framer Motion ──
         'progress-indeterminate': {
           '0%': { transform: 'translateX(-100%)' },
@@ -283,80 +300,13 @@ const preset: Partial<Config> = {
           '0%': { transform: 'scaleX(1)' },
           '100%': { transform: 'scaleX(0)' },
         },
-        // ── Kept: still used by components not yet migrated to Framer Motion ──
-        ripple: {
-          '0%': { transform: 'translate(-50%, -50%) scale(0)', opacity: '1' },
-          '100%': { transform: 'translate(-50%, -50%) scale(4)', opacity: '0' },
-        },
-        'fade-in': {
-          '0%': { opacity: '0' },
-          '100%': { opacity: '1' },
-        },
-        'slide-up': {
-          '0%': { opacity: '0', transform: 'translateY(8px)' },
-          '100%': { opacity: '1', transform: 'translateY(0)' },
-        },
-        'scale-in': {
-          '0%': { opacity: '0', transform: 'scale(0.96)' },
-          '100%': { opacity: '1', transform: 'scale(1)' },
-        },
-        'glow-pulse': {
-          '0%, 100%': { boxShadow: '0 0 0 0 rgba(99, 102, 241, 0)' },
-          '50%': { boxShadow: '0 0 8px 2px rgba(99, 102, 241, 0.15)' },
-        },
-        'scale-bounce': {
-          '0%': { transform: 'scale(0.85)' },
-          '60%': { transform: 'scale(1.04)' },
-          '100%': { transform: 'scale(1)' },
-        },
-        'slide-out-up': {
-          '0%': { opacity: '1', transform: 'translateY(0)' },
-          '100%': { opacity: '0', transform: 'translateY(-8px)' },
-        },
-        'check-pop': {
-          '0%': { transform: 'scale(0)' },
-          '60%': { transform: 'scale(1.2)' },
-          '100%': { transform: 'scale(1)' },
-        },
-        'tab-indicator': {
-          '0%': { transform: 'scaleX(0)', transformOrigin: 'left' },
-          '100%': { transform: 'scaleX(1)', transformOrigin: 'left' },
-        },
-        'count-up': {
-          '0%': { opacity: '0', transform: 'translateY(100%)' },
-          '100%': { opacity: '1', transform: 'translateY(0)' },
-        },
-        wiggle: {
-          '0%, 100%': { transform: 'rotate(0deg)' },
-          '20%': { transform: 'rotate(-3deg)' },
-          '40%': { transform: 'rotate(3deg)' },
-          '60%': { transform: 'rotate(-1deg)' },
-          '80%': { transform: 'rotate(1deg)' },
-        },
-        'pulse-ring': {
-          '0%': { boxShadow: '0 0 0 0 currentColor', opacity: '0.4' },
-          '100%': { boxShadow: '0 0 0 6px currentColor', opacity: '0' },
-        },
-        'collapse-out': {
-          '0%': { gridTemplateRows: '1fr', opacity: '1' },
-          '100%': { gridTemplateRows: '0fr', opacity: '0' },
-        },
-        float: {
-          '0%, 100%': { transform: 'translateY(0)' },
-          '50%': { transform: 'translateY(-4px)' },
-        },
-        'subtle-bounce': {
-          '0%': { transform: 'translateY(0)' },
-          '40%': { transform: 'translateY(-2px)' },
-          '100%': { transform: 'translateY(0)' },
-        },
-        stamp: {
-          '0%': { opacity: '0.5', transform: 'scale(1.4)' },
-          '60%': { opacity: '1', transform: 'scale(0.95)' },
-          '100%': { opacity: '1', transform: 'scale(1)' },
-        },
       },
       animation: {
+        // ── Radix-coupled height animations ──
+        'accordion-down': 'accordion-down 200ms ease-out',
+        'accordion-up': 'accordion-up 200ms ease-out',
+        'collapsible-down': 'collapsible-down 200ms ease-out',
+        'collapsible-up': 'collapsible-up 200ms ease-out',
         // ── CSS-only animations ──
         'progress-indeterminate':
           'progress-indeterminate var(--duration-slow-02) var(--ease-productive-standard) infinite',
@@ -364,24 +314,6 @@ const preset: Partial<Config> = {
           'skeleton-shimmer var(--duration-slow-02) var(--ease-linear) infinite',
         'caret-blink': 'caret-blink 1.25s ease-out infinite',
         'timer-bar': 'timer-bar linear forwards',
-        // ── Still used by components not yet migrated to Framer Motion ──
-        ripple: 'ripple var(--duration-slow-01) linear',
-        'ripple-icon': 'ripple var(--duration-moderate-02) linear forwards',
-        'fade-in': 'fade-in var(--duration-moderate-02) var(--ease-expressive-entrance) both',
-        'slide-up': 'slide-up var(--duration-moderate-02) var(--ease-expressive-entrance) both',
-        'scale-in': 'scale-in var(--duration-moderate-02) var(--ease-expressive-entrance) both',
-        'glow-pulse': 'glow-pulse var(--duration-slow-01) var(--ease-expressive-standard) 1',
-        'scale-bounce': 'scale-bounce var(--duration-moderate-02) var(--ease-bounce) both',
-        'slide-out-up': 'slide-out-up var(--duration-moderate-01) var(--ease-expressive-exit) both',
-        'check-pop': 'check-pop var(--duration-moderate-02) var(--ease-bounce) both',
-        'tab-indicator': 'tab-indicator var(--duration-moderate-01) var(--ease-expressive-entrance) both',
-        'count-up': 'count-up var(--duration-moderate-02) var(--ease-expressive-entrance) both',
-        wiggle: 'wiggle var(--duration-moderate-02) var(--ease-productive-standard) both',
-        'pulse-ring': 'pulse-ring var(--duration-slow-01) var(--ease-expressive-standard) infinite',
-        'collapse-out': 'collapse-out var(--duration-moderate-01) var(--ease-productive-exit) both',
-        float: 'float 3s var(--ease-expressive-standard) infinite',
-        'subtle-bounce': 'subtle-bounce var(--duration-fast-02) var(--ease-bounce) both',
-        stamp: 'stamp var(--duration-moderate-02) var(--ease-bounce) both',
       },
       backgroundImage: {
         'gradient-brand': 'var(--gradient-brand-light)',

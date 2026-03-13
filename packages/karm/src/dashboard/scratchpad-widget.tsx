@@ -2,6 +2,7 @@
 
 import * as React from 'react'
 import { useState, useRef, useEffect } from 'react'
+import { motion } from 'framer-motion'
 import { IconX } from '@tabler/icons-react'
 import { cn } from '@/ui/lib/utils'
 import { Checkbox } from '@/ui/checkbox'
@@ -45,7 +46,11 @@ function ProgressRing({ count, max, allDone }: { count: number; max: number; all
   const offset = RING_CIRCUMFERENCE * (1 - progress)
 
   return (
-    <div className={cn('relative flex items-center justify-center', allDone && 'animate-[scale-pulse_300ms_ease-out]')}>
+    <motion.div
+      className="relative flex items-center justify-center"
+      animate={allDone ? { scale: [1, 1.1, 1] } : {}}
+      transition={{ duration: 0.3 }}
+    >
       <svg width={RING_SIZE} height={RING_SIZE} viewBox={`0 0 ${RING_SIZE} ${RING_SIZE}`} className="-rotate-90">
         <circle
           cx={RING_SIZE / 2}
@@ -73,7 +78,7 @@ function ProgressRing({ count, max, allDone }: { count: number; max: number; all
       <span className="absolute text-[8px] font-medium text-text-secondary" data-testid="progress-count">
         {count}/{max}
       </span>
-    </div>
+    </motion.div>
   )
 }
 

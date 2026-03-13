@@ -72,6 +72,7 @@
     "class-variance-authority": "^0.7.1",
     "clsx": "^2.1.1",
     "date-fns": "^4.1.0",
+    "framer-motion": "^12.36.0",
     "react-markdown": "^10.1.0",
     "tailwind-merge": "^3.0.1"
   }

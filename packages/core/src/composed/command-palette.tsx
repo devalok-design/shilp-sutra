@@ -7,6 +7,7 @@
  * All V1 color tokens replaced with semantic design-system tokens.
  */
 import * as React from 'react'
+import { motion, AnimatePresence } from 'framer-motion'
 import {
   Dialog,
   DialogPortal,
@@ -17,6 +18,7 @@ import {
 } from '../ui/dialog'
 import { IconSearch, IconCornerDownLeft, IconArrowUp, IconArrowDown } from '@tabler/icons-react'
 import { cn } from '../ui/lib/utils'
+import { tweens, springs } from '../ui/lib/motion'
 import { VisuallyHidden } from '../ui/visually-hidden'
 
 // -----------------------------------------------------------------------
@@ -202,10 +204,17 @@ const CommandPalette = React.forwardRef<HTMLDivElement, CommandPaletteProps>(
 
           {/* Search input */}
           <div className="flex items-center gap-ds-04 border-b border-border px-ds-05 py-ds-04">
-            <IconSearch
-              className="h-ico-sm w-ico-sm shrink-0 animate-scale-in text-text-placeholder"
-              stroke={1.5}
-            />
+            <motion.span
+              initial={{ opacity: 0, scale: 0.96 }}
+              animate={{ opacity: 1, scale: 1 }}
+              transition={springs.snappy}
+              className="inline-flex shrink-0"
+            >
+              <IconSearch
+                className="h-ico-sm w-ico-sm text-text-placeholder"
+                stroke={1.5}
+              />
+            </motion.span>
             <input
               ref={inputRef}
               value={query}
@@ -238,15 +247,26 @@ const CommandPalette = React.forwardRef<HTMLDivElement, CommandPaletteProps>(
             className="max-h-[320px] overflow-y-auto px-ds-03 py-ds-03"
           >
             {filteredGroups.length === 0 && (
-              <div className="flex animate-fade-in items-center justify-center py-ds-07">
+              <motion.div
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                transition={tweens.fade}
+                className="flex items-center justify-center py-ds-07"
+              >
                 <p className="text-ds-md text-text-placeholder">
                   {emptyMessage}
                 </p>
-              </div>
+              </motion.div>
             )}
 
             {filteredGroups.map((group, groupIdx) => (
-              <div key={group.label} className="mb-ds-02 animate-fade-in" style={{ animationDelay: `${groupIdx * 60}ms` }}>
+              <motion.div
+                key={group.label}
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                transition={{ ...tweens.fade, delay: groupIdx * 0.06 }}
+                className="mb-ds-02"
+              >
                 <div className="px-ds-03 pb-ds-02 pt-ds-03">
                   <span className="text-ds-xs font-semibold uppercase tracking-wider text-text-placeholder">
                     {group.label}
@@ -257,13 +277,16 @@ const CommandPalette = React.forwardRef<HTMLDivElement, CommandPaletteProps>(
                   const itemIndex = itemIndexMap.get(item.id) ?? 0
                   const isActive = itemIndex === activeIndex
                   return (
-                    <button
+                    <motion.button
                       key={item.id}
                       id={`command-item-${instanceId}-${item.id}`}
                       type="button"
                       role="option"
                       aria-selected={isActive}
                       data-command-index={itemIndex}
+                      initial={{ opacity: 0, y: 4 }}
+                      animate={{ opacity: 1, y: 0 }}
+                      transition={{ ...springs.snappy, delay: itemIndex * 0.03 }}
                       onClick={() => {
                         item.onSelect()
                         setOpen(false)
@@ -275,13 +298,6 @@ const CommandPalette = React.forwardRef<HTMLDivElement, CommandPaletteProps>(
                           ? 'bg-layer-03 text-text-primary'
                           : 'text-text-secondary hover:bg-layer-02',
                       )}
-                      style={{
-                        animationName: 'slide-up',
-                        animationDuration: 'var(--duration-moderate-02)',
-                        animationTimingFunction: 'var(--ease-expressive-entrance)',
-                        animationFillMode: 'both',
-                        animationDelay: `${itemIndex * 30}ms`,
-                      }}
                     >
                       {item.icon && (
                         <span
@@ -310,21 +326,36 @@ const CommandPalette = React.forwardRef<HTMLDivElement, CommandPaletteProps>(
                           {item.shortcut}
                         </kbd>
                       )}
-                      {isActive && (
-                        <IconCornerDownLeft
-                          className="h-ico-sm w-ico-sm shrink-0 animate-fade-in text-text-placeholder"
-                          stroke={1.5}
-                        />
-                      )}
-                    </button>
+                      <AnimatePresence>
+                        {isActive && (
+                          <motion.span
+                            initial={{ opacity: 0 }}
+                            animate={{ opacity: 1 }}
+                            exit={{ opacity: 0 }}
+                            transition={tweens.fade}
+                            className="inline-flex shrink-0"
+                          >
+                            <IconCornerDownLeft
+                              className="h-ico-sm w-ico-sm text-text-placeholder"
+                              stroke={1.5}
+                            />
+                          </motion.span>
+                        )}
+                      </AnimatePresence>
+                    </motion.button>
                   )
                 })}
-              </div>
+              </motion.div>
             ))}
           </div>
 
           {/* Footer with keyboard hints */}
-          <div className="flex animate-fade-in items-center gap-ds-05 border-t border-border px-ds-05 py-ds-03">
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            transition={tweens.fade}
+            className="flex items-center gap-ds-05 border-t border-border px-ds-05 py-ds-03"
+          >
             <div className="flex items-center gap-ds-02b">
               <div className="flex items-center gap-ds-01">
                 <kbd className="inline-flex h-ico-md w-ico-md items-center justify-center rounded border border-border bg-layer-02">
@@ -354,7 +385,7 @@ const CommandPalette = React.forwardRef<HTMLDivElement, CommandPaletteProps>(
                 Close
               </span>
             </div>
-          </div>
+          </motion.div>
         </DialogContentRaw>
       </DialogPortal>
     </Dialog>

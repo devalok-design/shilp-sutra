@@ -1,6 +1,7 @@
 'use client'
 
 import React, { useState, useRef } from 'react'
+import { motion, AnimatePresence } from 'framer-motion'
 import { cva } from 'class-variance-authority'
 import { cn } from './lib/utils'
 import { useRipple } from './lib/use-ripple'
@@ -400,21 +401,26 @@ const SegmentedControlItem = React.forwardRef<HTMLButtonElement, SegmentedContro
       onFocus={onFocus}
       onBlur={onBlur}
     >
-      {ripples.map((ripple) => (
-        <span
-          key={ripple.id}
-          className={cn(
-            'absolute rounded-ds-full -translate-x-1/2 -translate-y-1/2 scale-0 animate-ripple pointer-events-none',
-            rippleBgMap[variant],
-          )}
-          style={{
-            left: ripple.x,
-            top: ripple.y,
-            width: ripple.size,
-            height: ripple.size,
-          }}
-        />
-      ))}
+      <AnimatePresence>
+        {ripples.map((ripple) => (
+          <motion.span
+            key={ripple.id}
+            className={cn(
+              'absolute rounded-ds-full -translate-x-1/2 -translate-y-1/2 pointer-events-none',
+              rippleBgMap[variant],
+            )}
+            style={{
+              left: ripple.x,
+              top: ripple.y,
+              width: ripple.size,
+              height: ripple.size,
+            }}
+            initial={{ scale: 0, opacity: 1 }}
+            animate={{ scale: 4, opacity: 0 }}
+            transition={{ duration: 0.6 }}
+          />
+        ))}
+      </AnimatePresence>
       {Icon && <Icon className="h-ico-sm w-ico-sm shrink-0" />}
       <span className="font-accent leading-none">{text}</span>
     </button>

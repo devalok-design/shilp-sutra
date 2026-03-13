@@ -1,8 +1,10 @@
 'use client'
 
 import { IconMinus, IconTrendingDown, IconTrendingUp } from '@tabler/icons-react'
+import { motion } from 'framer-motion'
 import * as React from 'react'
 import { useLink } from '../shell/link-context'
+import { springs, tweens } from './lib/motion'
 import { cn } from './lib/utils'
 
 /**
@@ -252,24 +254,42 @@ const StatCard = React.forwardRef<HTMLDivElement, StatCardProps>(
     const cardContent = (
       <>
         <div className="flex items-center justify-between mb-ds-04">
-          <p className="text-ds-md font-medium text-text-secondary animate-fade-in">{resolvedLabel}</p>
+          <motion.p
+            className="text-ds-md font-medium text-text-secondary"
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            transition={tweens.fade}
+          >
+            {resolvedLabel}
+          </motion.p>
           <div className="flex items-center gap-ds-03">
             {sparkline && sparkline.length >= 2 && (
               <Sparkline data={sparkline} colorClass={sparklineColor} />
             )}
             {icon && (
-              <span className="text-text-secondary animate-scale-in" aria-hidden="true">
+              <motion.span
+                className="text-text-secondary"
+                initial={{ opacity: 0, scale: 0.96 }}
+                animate={{ opacity: 1, scale: 1 }}
+                transition={springs.snappy}
+                aria-hidden="true"
+              >
                 {typeof icon === 'function'
                   ? React.createElement(icon as React.ComponentType<{ className?: string }>, {
                       className: 'h-ico-lg w-ico-lg',
                     })
                   : icon}
-              </span>
+              </motion.span>
             )}
           </div>
         </div>
         <div className="overflow-hidden">
-          <p className="inline-block animate-count-up text-ds-3xl font-semibold text-text-primary">
+          <motion.p
+            className="inline-block text-ds-3xl font-semibold text-text-primary"
+            initial={{ opacity: 0, y: '100%' }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={springs.smooth}
+          >
             {prefix && (
               <span className="text-text-secondary text-ds-lg">{prefix}</span>
             )}
@@ -277,35 +297,60 @@ const StatCard = React.forwardRef<HTMLDivElement, StatCardProps>(
             {suffix && (
               <span className="text-text-secondary text-ds-lg">{suffix}</span>
             )}
-          </p>
+          </motion.p>
         </div>
         {secondaryLabel && (
-          <p className="text-ds-sm text-text-placeholder mt-ds-01 animate-fade-in" style={{ animationDelay: '100ms' }}>{secondaryLabel}</p>
+          <motion.p
+            className="text-ds-sm text-text-placeholder mt-ds-01"
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            transition={{ ...tweens.fade, delay: 0.1 }}
+          >
+            {secondaryLabel}
+          </motion.p>
         )}
         {progress != null && (
-          <div className="animate-fade-in" style={{ animationDelay: '150ms' }}>
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            transition={{ ...tweens.fade, delay: 0.15 }}
+          >
             <ProgressBar progress={progress} label={resolvedLabel} />
-          </div>
+          </motion.div>
         )}
         {delta && (
-          <div
+          <motion.div
             className={cn(
-              'mt-ds-03 flex items-center gap-ds-02 text-ds-sm font-medium animate-slide-up',
+              'mt-ds-03 flex items-center gap-ds-02 text-ds-sm font-medium',
               deltaColour,
             )}
-            style={{ animationDelay: '200ms' }}
+            initial={{ opacity: 0, y: 8 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ ...springs.smooth, delay: 0.2 }}
           >
-            <DeltaIcon className="h-ico-sm w-ico-sm animate-stamp" aria-hidden="true" />
+            <motion.span
+              className="inline-flex"
+              initial={{ opacity: 0.5, scale: 1.4 }}
+              animate={{ opacity: 1, scale: 1 }}
+              transition={springs.bouncy}
+            >
+              <DeltaIcon className="h-ico-sm w-ico-sm" aria-hidden="true" />
+            </motion.span>
             <span>{delta.value}</span>
             {comparisonLabel && (
               <span className="text-text-placeholder font-normal">{comparisonLabel}</span>
             )}
-          </div>
+          </motion.div>
         )}
         {footer && (
-          <div className="mt-ds-04 pt-ds-04 border-t border-border-subtle text-ds-sm animate-fade-in" style={{ animationDelay: '250ms' }}>
+          <motion.div
+            className="mt-ds-04 pt-ds-04 border-t border-border-subtle text-ds-sm"
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            transition={{ ...tweens.fade, delay: 0.25 }}
+          >
             {footer}
-          </div>
+          </motion.div>
         )}
       </>
     )

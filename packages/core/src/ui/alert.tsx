@@ -3,7 +3,9 @@
 import { IconAlertCircle, IconCircleCheck, IconInfoCircle, IconX, IconAlertTriangle } from '@tabler/icons-react'
 import * as React from 'react'
 import { cva, type VariantProps } from 'class-variance-authority'
+import { motion, AnimatePresence } from 'framer-motion'
 import { cn } from './lib/utils'
+import { springs, tweens, motionProps } from './lib/motion'
 
 const alertVariants = cva(
   'relative flex gap-ds-04 rounded-ds-lg border p-ds-05',
@@ -101,31 +103,42 @@ export interface AlertProps
 const Alert = React.forwardRef<HTMLDivElement, AlertProps>(
   ({ className, variant = 'subtle', color = 'info', title, onDismiss, children, ...props }, ref) => {
     const Icon = ALERT_ICONS[color ?? 'info']
-    const [isDismissing, setIsDismissing] = React.useState(false)
+    const [isVisible, setIsVisible] = React.useState(true)
 
     const handleDismiss = React.useCallback(() => {
-      setIsDismissing(true)
-      setTimeout(() => onDismiss?.(), 150) // matches duration-moderate-01
-    }, [onDismiss])
+      setIsVisible(false)
+    }, [])
 
     return (
-      <div ref={ref} className={cn(alertVariants({ variant, color }), isDismissing && 'animate-slide-out-up', className)} role="alert" {...props}>
-        <Icon className="mt-ds-01 h-ico-md w-ico-md shrink-0" aria-hidden="true" />
-        <div className="flex-1 min-w-0">
-          {title && <p className="text-ds-md font-semibold mb-ds-01">{title}</p>}
-          <div className="text-ds-md opacity-[0.9]">{children}</div>
-        </div>
-        {onDismiss && (
-          <button
-            type="button"
-            onClick={handleDismiss}
-            className="shrink-0 min-h-ds-xs min-w-ds-xs flex items-center justify-center rounded-ds-sm text-icon-secondary transition-colors hover:text-icon-primary hover:bg-field focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-focus"
-            aria-label="Dismiss"
+      <AnimatePresence onExitComplete={onDismiss}>
+        {isVisible && (
+          <motion.div
+            ref={ref}
+            initial={{ opacity: 1, y: 0 }}
+            exit={{ opacity: 0, y: -8 }}
+            transition={{ ...springs.snappy, opacity: tweens.fade }}
+            className={cn(alertVariants({ variant, color }), className)}
+            role="alert"
+            {...motionProps(props)}
           >
-            <IconX className="h-ico-sm w-ico-sm" />
-          </button>
+            <Icon className="mt-ds-01 h-ico-md w-ico-md shrink-0" aria-hidden="true" />
+            <div className="flex-1 min-w-0">
+              {title && <p className="text-ds-md font-semibold mb-ds-01">{title}</p>}
+              <div className="text-ds-md opacity-[0.9]">{children}</div>
+            </div>
+            {onDismiss && (
+              <button
+                type="button"
+                onClick={handleDismiss}
+                className="shrink-0 min-h-ds-xs min-w-ds-xs flex items-center justify-center rounded-ds-sm text-icon-secondary transition-colors hover:text-icon-primary hover:bg-field focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-focus"
+                aria-label="Dismiss"
+              >
+                <IconX className="h-ico-sm w-ico-sm" />
+              </button>
+            )}
+          </motion.div>
         )}
-      </div>
+      </AnimatePresence>
     )
   },
 )

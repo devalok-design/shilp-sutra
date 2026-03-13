@@ -11,6 +11,8 @@ import { useLink } from './link-context'
 import { useState } from 'react'
 import { IconDots, IconX } from '@tabler/icons-react'
 import { cn } from '../ui/lib/utils'
+import { motion } from 'framer-motion'
+import { springs } from '../ui/lib/motion'
 
 // -----------------------------------------------------------------------
 // Types
@@ -81,33 +83,36 @@ function BottomNavLink({
 }) {
   const Link = useLink()
   return (
-    <Link
-      href={item.href}
-      onClick={onClick}
-      aria-label={item.title}
-      aria-current={isActive ? 'page' : undefined}
-      className={cn(
-        'flex h-16 max-w-[70px] flex-1 cursor-pointer flex-col items-center gap-ds-02 p-ds-02 pt-0 text-ds-sm active:animate-subtle-bounce',
-        isActive
-          ? 'font-semibold text-interactive'
-          : 'text-text-helper',
-      )}
-    >
-      <div className="relative flex w-full flex-col items-center gap-ds-02">
-        <div
-          className={cn(
-            'absolute top-0 h-[3px] w-full rounded-b-ds-sm bg-interactive p-0 transition-[opacity,transform] duration-moderate-01',
-            isActive ? 'opacity-100 animate-tab-indicator' : 'opacity-0 scale-x-0',
+    <motion.div whileTap={{ y: -2 }} transition={springs.snappy} className="flex max-w-[70px] flex-1">
+      <Link
+        href={item.href}
+        onClick={onClick}
+        aria-label={item.title}
+        aria-current={isActive ? 'page' : undefined}
+        className={cn(
+          'flex h-16 w-full cursor-pointer flex-col items-center gap-ds-02 p-ds-02 pt-0 text-ds-sm',
+          isActive
+            ? 'font-semibold text-interactive'
+            : 'text-text-helper',
+        )}
+      >
+        <div className="relative flex w-full flex-col items-center gap-ds-02">
+          {isActive && (
+            <motion.div
+              layoutId="bottom-nav-indicator"
+              className="absolute top-0 h-[3px] w-full rounded-b-ds-sm bg-interactive p-0"
+              aria-hidden="true"
+              transition={springs.snappy}
+            />
           )}
-          aria-hidden="true"
-        />
-        <div className="relative p-ds-03">
-          <span className="[&>svg]:h-ico-md [&>svg]:w-ico-md" aria-hidden="true">{item.icon}</span>
-          {item.badge != null && <NavBadge count={item.badge} />}
+          <div className="relative p-ds-03">
+            <span className="[&>svg]:h-ico-md [&>svg]:w-ico-md" aria-hidden="true">{item.icon}</span>
+            {item.badge != null && <NavBadge count={item.badge} />}
+          </div>
+          <span className="text-center">{item.title}</span>
         </div>
-        <span className="text-center">{item.title}</span>
-      </div>
-    </Link>
+      </Link>
+    </motion.div>
   )
 }
 
@@ -221,32 +226,35 @@ const BottomNavbar = React.forwardRef<HTMLElement, BottomNavbarProps>(
 
         {/* More Button */}
         {moreItems.length > 0 && (
-          <button
+          <motion.button
             type="button"
             onClick={() => setShowMore(!showMore)}
             aria-label="More navigation options"
             aria-expanded={showMore}
+            whileTap={{ y: -2 }}
+            transition={springs.snappy}
             className={cn(
-              'flex h-16 max-w-[70px] flex-1 cursor-pointer flex-col items-center gap-ds-02 p-ds-02 pt-0 text-ds-sm active:animate-subtle-bounce',
+              'flex h-16 max-w-[70px] flex-1 cursor-pointer flex-col items-center gap-ds-02 p-ds-02 pt-0 text-ds-sm',
               showMore || isMoreActive
                 ? 'font-semibold text-interactive'
                 : 'text-text-helper',
             )}
           >
             <div className="relative flex w-full flex-col items-center gap-ds-02">
-              <div
-                className={cn(
-                  'absolute top-0 h-[3px] w-full rounded-b-ds-sm bg-interactive p-0 transition-[opacity,transform] duration-moderate-01',
-                  showMore || isMoreActive ? 'opacity-100 animate-tab-indicator' : 'opacity-0 scale-x-0',
-                )}
-                aria-hidden="true"
-              />
+              {(showMore || isMoreActive) && (
+                <motion.div
+                  layoutId="bottom-nav-indicator"
+                  className="absolute top-0 h-[3px] w-full rounded-b-ds-sm bg-interactive p-0"
+                  aria-hidden="true"
+                  transition={springs.snappy}
+                />
+              )}
               <div className="p-ds-03">
                 <IconDots className="h-ico-md w-ico-md" aria-hidden="true" />
               </div>
               <span className="text-center">More</span>
             </div>
-          </button>
+          </motion.button>
         )}
       </nav>
     </>

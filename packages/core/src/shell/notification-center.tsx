@@ -21,6 +21,7 @@ import {
 import { IconBell, IconChecks, IconInbox, IconX } from '@tabler/icons-react'
 import { cn } from '../ui/lib/utils'
 import { Spinner } from '../ui/spinner'
+import { motion } from 'framer-motion'
 
 // -----------------------------------------------------------------------
 // Types
@@ -359,9 +360,14 @@ const NotificationCenter = React.forwardRef<HTMLButtonElement, NotificationCente
             >
               <IconBell className="h-ico-sm w-ico-sm" aria-hidden="true" />
               {unreadCount > 0 && (
-                <span className="absolute -right-ds-01 -top-ds-01 flex h-4 min-w-4 items-center justify-center rounded-ds-full bg-interactive px-ds-02 text-ds-xs font-semibold text-text-on-color animate-wiggle">
+                <motion.span
+                  initial={{ rotate: 0 }}
+                  animate={{ rotate: [0, -3, 3, -1, 1, 0] }}
+                  transition={{ duration: 0.4, ease: 'easeInOut' }}
+                  className="absolute -right-ds-01 -top-ds-01 flex h-4 min-w-4 items-center justify-center rounded-ds-full bg-interactive px-ds-02 text-ds-xs font-semibold text-text-on-color"
+                >
                   {unreadCount > 99 ? '99+' : unreadCount}
-                </span>
+                </motion.span>
               )}
             </button>
           </PopoverTrigger>

@@ -3,6 +3,7 @@
 import { IconX } from '@tabler/icons-react'
 import * as React from 'react'
 import { cva, type VariantProps } from 'class-variance-authority'
+import { motion } from 'framer-motion'
 import { cn } from './lib/utils'
 
 const badgeVariants = cva(
@@ -143,8 +144,10 @@ const Badge = React.forwardRef<HTMLSpanElement, BadgeProps>(
     return (
       <span ref={ref} className={cn(badgeVariants({ variant, color, size }), className)} {...props}>
         {dot && (
-          <span
-            className="h-ds-02b w-ds-02b rounded-ds-full bg-current opacity-[0.7] shrink-0 animate-pulse-ring"
+          <motion.span
+            className="h-ds-02b w-ds-02b rounded-ds-full bg-current shrink-0"
+            animate={{ scale: [1, 1.5, 1], opacity: [0.7, 0, 0.7] }}
+            transition={{ repeat: Infinity, duration: 1.5, ease: 'easeInOut' }}
             aria-hidden="true"
           />
         )}

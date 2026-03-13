@@ -333,11 +333,6 @@
       "default": "./dist/ui/tooltip.js",
       "types": "./dist/ui/tooltip.d.ts"
     },
-    "./ui/transitions": {
-      "import": "./dist/ui/transitions.js",
-      "default": "./dist/ui/transitions.js",
-      "types": "./dist/ui/transitions.d.ts"
-    },
     "./ui/visually-hidden": {
       "import": "./dist/ui/visually-hidden.js",
       "default": "./dist/ui/visually-hidden.js",

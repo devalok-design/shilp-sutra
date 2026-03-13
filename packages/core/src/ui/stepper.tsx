@@ -1,7 +1,9 @@
 'use client'
 
 import * as React from 'react'
+import { motion } from 'framer-motion'
 import { cn } from './lib/utils'
+import { springs } from './lib/motion'
 
 type StepState = 'completed' | 'active' | 'pending'
 
@@ -138,9 +140,20 @@ const Step = React.forwardRef<HTMLDivElement, StepInternalProps>(
           )}
         >
           {icon || (state === 'completed' ? (
-            <svg className="w-ico-sm h-ico-sm animate-check-pop" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2.5} strokeLinecap="round" strokeLinejoin="round">
+            <motion.svg
+              className="w-ico-sm h-ico-sm"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              strokeWidth={2.5}
+              strokeLinecap="round"
+              strokeLinejoin="round"
+              initial={{ scale: 0 }}
+              animate={{ scale: 1 }}
+              transition={springs.bouncy}
+            >
               <polyline points="20 6 9 17 4 12" />
-            </svg>
+            </motion.svg>
           ) : (
             _index + 1
           ))}

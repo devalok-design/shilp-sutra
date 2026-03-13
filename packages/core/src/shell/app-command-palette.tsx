@@ -54,7 +54,7 @@ export interface AppCommandPaletteUser {
 }
 
 export interface AppCommandPaletteProps
-  extends Omit<React.ComponentPropsWithoutRef<'div'>, 'onSearch'> {
+  extends Omit<React.ComponentPropsWithRef<'div'>, 'onSearch'> {
   /** Current user (used to determine admin access) */
   user?: AppCommandPaletteUser | null
   /** When true, shows admin command groups regardless of user.role. Takes precedence over role-based detection. */
@@ -193,18 +193,22 @@ function buildDefaultAdminItems(
 // AppCommandPalette
 // -----------------------------------------------------------------------
 
-export function AppCommandPalette({
-  user,
-  isAdmin: isAdminProp,
-  extraGroups = [],
-  onNavigate,
-  onSearch,
-  searchResults = [],
-  isSearching = false,
-  onSearchResultSelect,
-  className,
-  ...props
-}: AppCommandPaletteProps) {
+const AppCommandPalette = React.forwardRef<HTMLDivElement, AppCommandPaletteProps>(
+  function AppCommandPalette(
+    {
+      user,
+      isAdmin: isAdminProp,
+      extraGroups = [],
+      onNavigate,
+      onSearch,
+      searchResults = [],
+      isSearching = false,
+      onSearchResultSelect,
+      className,
+      ...props
+    },
+    ref,
+  ) {
   const isAdmin =
     isAdminProp ?? (user?.role === 'Admin' || user?.role === 'SuperAdmin')
 
@@ -315,6 +319,7 @@ export function AppCommandPalette({
 
   return (
     <CommandPalette
+      ref={ref}
       groups={groups}
       placeholder="Search or jump to..."
       onSearch={handleSearch}
@@ -323,6 +328,9 @@ export function AppCommandPalette({
       {...props}
     />
   )
-}
+  },
+)
 
 AppCommandPalette.displayName = 'AppCommandPalette'
+
+export { AppCommandPalette }

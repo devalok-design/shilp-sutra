@@ -49,7 +49,7 @@ export interface TaskContextMenuProps {
   className?: string
 }
 
-export function TaskContextMenu({ taskId, children, className }: TaskContextMenuProps) {
+export const TaskContextMenu = React.forwardRef<HTMLSpanElement, TaskContextMenuProps>(({ taskId, children, className }, ref) => {
   const {
     rawColumns,
     members,
@@ -68,7 +68,7 @@ export function TaskContextMenu({ taskId, children, className }: TaskContextMenu
 
   return (
     <ContextMenu>
-      <ContextMenuTrigger>{children}</ContextMenuTrigger>
+      <ContextMenuTrigger ref={ref}>{children}</ContextMenuTrigger>
       <ContextMenuContent className={cn("w-52 animate-scale-in", className)}>
         {/* Priority submenu */}
         <ContextMenuSub>
@@ -196,6 +196,6 @@ export function TaskContextMenu({ taskId, children, className }: TaskContextMenu
       </ContextMenuContent>
     </ContextMenu>
   )
-}
+})
 
 TaskContextMenu.displayName = 'TaskContextMenu'

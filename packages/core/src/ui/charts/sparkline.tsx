@@ -24,17 +24,21 @@ export interface SparklineProps extends Omit<React.SVGAttributes<SVGSVGElement>,
   className?: string
 }
 
-export function Sparkline({
-  data,
-  variant = 'line',
-  width = 120,
-  height = 32,
-  color,
-  showLastDot = false,
-  strokeWidth = 1.5,
-  className,
-  ...props
-}: SparklineProps) {
+export const Sparkline = React.forwardRef<SVGSVGElement, SparklineProps>(
+  (
+    {
+      data,
+      variant = 'line',
+      width = 120,
+      height = 32,
+      color,
+      showLastDot = false,
+      strokeWidth = 1.5,
+      className,
+      ...props
+    },
+    ref,
+  ) => {
   const resolvedColor = resolveColor(color, 0)
 
   if (!data.length) return null
@@ -66,6 +70,7 @@ export function Sparkline({
 
     return (
       <svg
+        ref={ref}
         width={width}
         height={height}
         role="img"
@@ -113,6 +118,7 @@ export function Sparkline({
 
     return (
       <svg
+        ref={ref}
         width={width}
         height={height}
         role="img"
@@ -154,6 +160,7 @@ export function Sparkline({
 
   return (
     <svg
+      ref={ref}
       width={width}
       height={height}
       role="img"
@@ -179,5 +186,6 @@ export function Sparkline({
       )}
     </svg>
   )
-}
+  },
+)
 Sparkline.displayName = 'Sparkline'

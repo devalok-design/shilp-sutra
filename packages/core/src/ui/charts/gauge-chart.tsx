@@ -36,22 +36,26 @@ export interface GaugeChartProps extends Omit<React.HTMLAttributes<HTMLDivElemen
 
 const toRad = (deg: number) => (deg * Math.PI) / 180
 
-export function GaugeChart({
-  value,
-  max = 100,
-  min = 0,
-  label,
-  valueLabel,
-  color,
-  trackColor = 'var(--color-border-subtle)',
-  height = 200,
-  startAngle = -120,
-  endAngle = 120,
-  thickness = 16,
-  animate = true,
-  className,
-  ...props
-}: GaugeChartProps) {
+export const GaugeChart = React.forwardRef<HTMLDivElement, GaugeChartProps>(
+  (
+    {
+      value,
+      max = 100,
+      min = 0,
+      label,
+      valueLabel,
+      color,
+      trackColor = 'var(--color-border-subtle)',
+      height = 200,
+      startAngle = -120,
+      endAngle = 120,
+      thickness = 16,
+      animate = true,
+      className,
+      ...props
+    },
+    ref,
+  ) => {
   const reducedMotion = useReducedMotion()
   const duration = getTransitionDuration(reducedMotion, animate ? 600 : 0)
 
@@ -93,6 +97,7 @@ export function GaugeChart({
 
   return (
     <div
+      ref={ref}
       className={cn('inline-flex flex-col items-center', className)}
       {...props}
       role="meter"
@@ -144,5 +149,6 @@ export function GaugeChart({
       </svg>
     </div>
   )
-}
+  },
+)
 GaugeChart.displayName = 'GaugeChart'

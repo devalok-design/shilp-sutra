@@ -35,21 +35,25 @@ export interface RadarChartProps extends Omit<React.HTMLAttributes<HTMLDivElemen
   className?: string
 }
 
-export function RadarChart({
-  data,
-  axes,
-  series,
-  maxValue: maxValueProp,
-  levels = 5,
-  fillOpacity = 0.25,
-  showDots = false,
-  height = 300,
-  showTooltip = true,
-  showLegend = false,
-  animate = true,
-  className,
-  ...props
-}: RadarChartProps) {
+export const RadarChart = React.forwardRef<HTMLDivElement, RadarChartProps>(
+  (
+    {
+      data,
+      axes,
+      series,
+      maxValue: maxValueProp,
+      levels = 5,
+      fillOpacity = 0.25,
+      showDots = false,
+      height = 300,
+      showTooltip = true,
+      showLegend = false,
+      animate = true,
+      className,
+      ...props
+    },
+    ref,
+  ) => {
   const containerRef = useRef<HTMLDivElement>(null)
   const [containerWidth, setContainerWidth] = useState(0)
   const { tooltip, show, hide } = useChartTooltip()
@@ -108,7 +112,15 @@ export function RadarChart({
   }
 
   return (
-    <div ref={containerRef} className={cn('relative w-full', className)} {...props}>
+    <div
+      ref={(node) => {
+        (containerRef as React.MutableRefObject<HTMLDivElement | null>).current = node
+        if (typeof ref === 'function') ref(node)
+        else if (ref) (ref as React.MutableRefObject<HTMLDivElement | null>).current = node
+      }}
+      className={cn('relative w-full', className)}
+      {...props}
+    >
       {containerWidth > 0 && (
         <>
           <svg
@@ -314,5 +326,6 @@ export function RadarChart({
       )}
     </div>
   )
-}
+  },
+)
 RadarChart.displayName = 'RadarChart'

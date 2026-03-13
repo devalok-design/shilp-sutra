@@ -35,7 +35,7 @@ const PRIORITIES = ['LOW', 'MEDIUM', 'HIGH', 'URGENT'] as const
 
 export interface BulkActionBarProps extends React.HTMLAttributes<HTMLDivElement> {}
 
-export function BulkActionBar({ className, ...props }: BulkActionBarProps) {
+export const BulkActionBar = React.forwardRef<HTMLDivElement, BulkActionBarProps>(({ className, ...props }, ref) => {
   const {
     columns,
     members,
@@ -55,6 +55,7 @@ export function BulkActionBar({ className, ...props }: BulkActionBarProps) {
 
   return (
     <div
+      ref={ref}
       className={cn(
         'grid transition-[grid-template-rows,opacity] duration-moderate-02 ease-expressive-entrance',
         count > 0 ? 'grid-rows-[1fr] opacity-100' : 'grid-rows-[0fr] opacity-0',
@@ -199,6 +200,6 @@ export function BulkActionBar({ className, ...props }: BulkActionBarProps) {
       </div>
     </div>
   )
-}
+})
 
 BulkActionBar.displayName = 'BulkActionBar'

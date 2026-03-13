@@ -48,26 +48,30 @@ export interface BarChartProps extends Omit<React.HTMLAttributes<HTMLDivElement>
   className?: string
 }
 
-export function BarChart({
-  data,
-  xKey,
-  yKey,
-  orientation = 'vertical',
-  stacked = false,
-  grouped = false,
-  color,
-  height = 300,
-  showGrid = true,
-  showTooltip = true,
-  showLegend = false,
-  animate = true,
-  barRadius = 4,
-  xLabel,
-  yLabel,
-  seriesLabels,
-  className,
-  ...props
-}: BarChartProps) {
+export const BarChart = React.forwardRef<HTMLDivElement, BarChartProps>(
+  (
+    {
+      data,
+      xKey,
+      yKey,
+      orientation = 'vertical',
+      stacked = false,
+      grouped = false,
+      color,
+      height = 300,
+      showGrid = true,
+      showTooltip = true,
+      showLegend = false,
+      animate = true,
+      barRadius = 4,
+      xLabel,
+      yLabel,
+      seriesLabels,
+      className,
+      ...props
+    },
+    ref,
+  ) => {
   const { tooltip, show, hide } = useChartTooltip()
   const reducedMotion = useReducedMotion()
   const isVertical = orientation === 'vertical'
@@ -100,7 +104,7 @@ export function BarChart({
       ]
 
   return (
-    <div className={cn('relative', className)} {...props}>
+    <div ref={ref} className={cn('relative', className)} {...props}>
       <ChartContainer height={height}>
         {({ width, height: innerHeight, margin }) => {
           // Suppress unused-var lint for margin (available for extensions)
@@ -271,5 +275,6 @@ export function BarChart({
       )}
     </div>
   )
-}
+  },
+)
 BarChart.displayName = 'BarChart'

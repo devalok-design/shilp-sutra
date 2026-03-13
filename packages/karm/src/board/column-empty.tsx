@@ -118,11 +118,12 @@ export interface ColumnEmptyProps extends React.HTMLAttributes<HTMLDivElement> {
   isDropTarget?: boolean
 }
 
-export function ColumnEmpty({ index, onAddTask, isDropTarget = false, className, ...props }: ColumnEmptyProps) {
+export const ColumnEmpty = React.forwardRef<HTMLDivElement, ColumnEmptyProps>(({ index, onAddTask, isDropTarget = false, className, ...props }, ref) => {
   const Illustration = ILLUSTRATIONS[index % ILLUSTRATIONS.length]
 
   return (
     <div
+      ref={ref}
       className={cn(
         'flex flex-col items-center justify-center gap-ds-03 py-ds-07 text-center',
         className,
@@ -150,6 +151,6 @@ export function ColumnEmpty({ index, onAddTask, isDropTarget = false, className,
       )}
     </div>
   )
-}
+})
 
 ColumnEmpty.displayName = 'ColumnEmpty'

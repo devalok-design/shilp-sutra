@@ -47,7 +47,7 @@ export interface NotificationProject {
 }
 
 export interface NotificationPreferencesProps
-  extends Omit<React.ComponentPropsWithoutRef<'div'>, 'onSave'> {
+  extends Omit<React.ComponentPropsWithRef<'div'>, 'onSave'> {
   /** Current preference rules */
   preferences?: NotificationPreference[]
   /** Available projects for scoping rules */
@@ -93,17 +93,21 @@ const TIER_LABELS: Record<string, string> = {
 // NotificationPreferences
 // -----------------------------------------------------------------------
 
-export function NotificationPreferences({
-  preferences = [],
-  projects = [],
-  isLoading = false,
-  onSave,
-  onToggleMute,
-  onUpdateTier,
-  onDelete,
-  className,
-  ...props
-}: NotificationPreferencesProps) {
+const NotificationPreferences = React.forwardRef<HTMLDivElement, NotificationPreferencesProps>(
+  function NotificationPreferences(
+    {
+      preferences = [],
+      projects = [],
+      isLoading = false,
+      onSave,
+      onToggleMute,
+      onUpdateTier,
+      onDelete,
+      className,
+      ...props
+    },
+    ref,
+  ) {
   const [showAddDialog, setShowAddDialog] = useState(false)
   const [newProjectId, setNewProjectId] = useState<string>('global')
   const [newChannel, setNewChannel] = useState<string>('IN_APP')
@@ -145,7 +149,7 @@ export function NotificationPreferences({
 
   return (
     <>
-      <Card className={className} {...props}>
+      <Card ref={ref} className={className} {...props}>
         <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-ds-04">
           <CardTitle className="text-ds-md font-semibold">
             Notification Preferences
@@ -338,6 +342,9 @@ export function NotificationPreferences({
       </Dialog>
     </>
   )
-}
+  },
+)
 
 NotificationPreferences.displayName = 'NotificationPreferences'
+
+export { NotificationPreferences }

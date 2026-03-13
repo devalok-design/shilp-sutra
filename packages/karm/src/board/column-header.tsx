@@ -117,7 +117,7 @@ export interface ColumnHeaderProps extends React.HTMLAttributes<HTMLDivElement> 
 // Component
 // ============================================================
 
-export function ColumnHeader({ column, index, className, ...props }: ColumnHeaderProps) {
+export const ColumnHeader = React.forwardRef<HTMLDivElement, ColumnHeaderProps>(({ column, index, className, ...props }, ref) => {
   const {
     members,
     onColumnRename,
@@ -204,7 +204,7 @@ export function ColumnHeader({ column, index, className, ...props }: ColumnHeade
   }
 
   return (
-    <div className={cn("group/header flex flex-col gap-ds-02", className)} {...props}>
+    <div ref={ref} className={cn("group/header flex flex-col gap-ds-02", className)} {...props}>
       {/* Primary header row */}
       <div className="flex items-center gap-ds-02 px-ds-04 pt-ds-03 pb-ds-02">
         {/* Accent dot */}
@@ -473,6 +473,6 @@ export function ColumnHeader({ column, index, className, ...props }: ColumnHeade
       </div>
     </div>
   )
-}
+})
 
 ColumnHeader.displayName = 'ColumnHeader'

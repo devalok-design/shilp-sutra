@@ -49,12 +49,13 @@ import {
  *
  * // Valid colors: 'neutral' | 'success' | 'warning' | 'error' | 'info'
  */
-export function Toaster({ className, ...props }: React.HTMLAttributes<HTMLDivElement>) {
+export const Toaster = React.forwardRef<HTMLDivElement, React.HTMLAttributes<HTMLDivElement>>(
+  ({ className, ...props }, ref) => {
   const { toasts } = useToast()
 
   return (
     <ToastProvider>
-      <div className={cn(className)} {...props}>
+      <div ref={ref} className={cn(className)} {...props}>
         {toasts.map(function ({ id, title, description, action, ...toastProps }) {
           return (
             <Toast key={id} {...toastProps}>
@@ -73,5 +74,6 @@ export function Toaster({ className, ...props }: React.HTMLAttributes<HTMLDivEle
       </div>
     </ToastProvider>
   )
-}
+  },
+)
 Toaster.displayName = 'Toaster'

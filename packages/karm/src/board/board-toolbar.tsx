@@ -46,7 +46,7 @@ const DUE_DATE_OPTIONS = [
 
 export interface BoardToolbarProps extends React.HTMLAttributes<HTMLDivElement> {}
 
-export function BoardToolbar({ className, ...props }: BoardToolbarProps) {
+export const BoardToolbar = React.forwardRef<HTMLDivElement, BoardToolbarProps>(({ className, ...props }, ref) => {
   const {
     rawColumns,
     members,
@@ -163,7 +163,7 @@ export function BoardToolbar({ className, ...props }: BoardToolbarProps) {
   }
 
   return (
-    <div className={cn("flex flex-col gap-ds-02", className)} {...props}>
+    <div ref={ref} className={cn("flex flex-col gap-ds-02", className)} {...props}>
       {/* Main toolbar row */}
       <div className="flex items-center gap-ds-03">
         {/* Search */}
@@ -382,6 +382,6 @@ export function BoardToolbar({ className, ...props }: BoardToolbarProps) {
       )}
     </div>
   )
-}
+})
 
 BoardToolbar.displayName = 'BoardToolbar'

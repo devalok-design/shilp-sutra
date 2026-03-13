@@ -42,21 +42,25 @@ export interface PieChartProps extends Omit<React.HTMLAttributes<HTMLDivElement>
   centerLabel?: React.ReactNode
 }
 
-export function PieChart({
-  data,
-  variant = 'pie',
-  innerRadius: innerRadiusRatio = 0.6,
-  padAngle = 0,
-  cornerRadius = 0,
-  height = 300,
-  showTooltip = true,
-  showLegend = false,
-  showLabels = false,
-  animate = true,
-  className,
-  centerLabel,
-  ...props
-}: PieChartProps) {
+export const PieChart = React.forwardRef<HTMLDivElement, PieChartProps>(
+  (
+    {
+      data,
+      variant = 'pie',
+      innerRadius: innerRadiusRatio = 0.6,
+      padAngle = 0,
+      cornerRadius = 0,
+      height = 300,
+      showTooltip = true,
+      showLegend = false,
+      showLabels = false,
+      animate = true,
+      className,
+      centerLabel,
+      ...props
+    },
+    ref,
+  ) => {
   const containerRef = useRef<HTMLDivElement>(null)
   const [containerWidth, setContainerWidth] = useState(0)
   const [hoveredIndex, setHoveredIndex] = useState<number | null>(null)
@@ -109,7 +113,15 @@ export function PieChart({
     .outerRadius(labelRadius)
 
   return (
-    <div ref={containerRef} className={cn('relative w-full', className)} {...props}>
+    <div
+      ref={(node) => {
+        (containerRef as React.MutableRefObject<HTMLDivElement | null>).current = node
+        if (typeof ref === 'function') ref(node)
+        else if (ref) (ref as React.MutableRefObject<HTMLDivElement | null>).current = node
+      }}
+      className={cn('relative w-full', className)}
+      {...props}
+    >
       {containerWidth > 0 && (
         <>
           <svg
@@ -230,5 +242,6 @@ export function PieChart({
       )}
     </div>
   )
-}
+  },
+)
 PieChart.displayName = 'PieChart'

@@ -20,13 +20,17 @@ export interface ChartContainerProps extends Omit<React.HTMLAttributes<HTMLDivEl
   }) => React.ReactNode
 }
 
-export function ChartContainer({
-  height = 300,
-  margin: marginOverride,
-  className,
-  children,
-  ...props
-}: ChartContainerProps) {
+export const ChartContainer = React.forwardRef<HTMLDivElement, ChartContainerProps>(
+  (
+    {
+      height = 300,
+      margin: marginOverride,
+      className,
+      children,
+      ...props
+    },
+    ref,
+  ) => {
   const containerRef = useRef<HTMLDivElement>(null)
   const [width, setWidth] = useState(0)
 
@@ -46,7 +50,15 @@ export function ChartContainer({
   const innerHeight = Math.max(0, height - margin.top - margin.bottom)
 
   return (
-    <div ref={containerRef} className={cn('relative w-full', className)} {...props}>
+    <div
+      ref={(node) => {
+        (containerRef as React.MutableRefObject<HTMLDivElement | null>).current = node
+        if (typeof ref === 'function') ref(node)
+        else if (ref) (ref as React.MutableRefObject<HTMLDivElement | null>).current = node
+      }}
+      className={cn('relative w-full', className)}
+      {...props}
+    >
       {width > 0 && (
         <svg width={width} height={height} role="img" aria-label="Chart">
           <g transform={`translate(${margin.left},${margin.top})`}>
@@ -56,5 +68,6 @@ export function ChartContainer({
       )}
     </div>
   )
-}
+  },
+)
 ChartContainer.displayName = 'ChartContainer'

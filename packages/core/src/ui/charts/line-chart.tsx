@@ -46,24 +46,28 @@ export interface LineChartProps extends Omit<React.HTMLAttributes<HTMLDivElement
   className?: string
 }
 
-export function LineChart({
-  data,
-  xKey,
-  series,
-  curved = false,
-  showDots = false,
-  dotSize = 4,
-  strokeWidth = 2,
-  height = 300,
-  showGrid = true,
-  showTooltip = true,
-  showLegend = false,
-  animate = true,
-  xLabel,
-  yLabel,
-  className,
-  ...props
-}: LineChartProps) {
+export const LineChart = React.forwardRef<HTMLDivElement, LineChartProps>(
+  (
+    {
+      data,
+      xKey,
+      series,
+      curved = false,
+      showDots = false,
+      dotSize = 4,
+      strokeWidth = 2,
+      height = 300,
+      showGrid = true,
+      showTooltip = true,
+      showLegend = false,
+      animate = true,
+      xLabel,
+      yLabel,
+      className,
+      ...props
+    },
+    ref,
+  ) => {
   const { tooltip, show, hide } = useChartTooltip()
   const reducedMotion = useReducedMotion()
 
@@ -75,7 +79,7 @@ export function LineChart({
   const colors = series.map((s, i) => resolveColor(s.color, i))
 
   return (
-    <div className={cn('relative', className)} {...props}>
+    <div ref={ref} className={cn('relative', className)} {...props}>
       <ChartContainer height={height}>
         {({ width, height: innerHeight, margin }) => {
           void margin
@@ -250,5 +254,6 @@ export function LineChart({
       )}
     </div>
   )
-}
+  },
+)
 LineChart.displayName = 'LineChart'

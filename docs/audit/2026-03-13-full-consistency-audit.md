@@ -6,32 +6,57 @@
 
 ---
 
-## Executive Summary
+## Executive Summary (Post-Fix)
 
-| Package | Components | Avg Score | Perfect | Worst (<=57%) |
-|---------|-----------|-----------|---------|---------------|
-| core/ui | 72 | 86% | 18 | 11 |
-| core/composed | 31 | 68% | 7 | 7 |
-| core/shell | 7 | 72% | 2 | 2 |
-| karm | 48 | 71% | 2 | 7 |
-| **TOTAL** | **158** | **77%** | **29** | **27** |
+> **Status: ALL 5 WAVES COMPLETE** — Updated 2026-03-13
 
-### Overall Health Score: **7.7 / 10** (up from 6.2 on March 3)
+| Package | Components | Pre-Fix Avg | Post-Fix Avg | Perfect (pre) | Perfect (post) |
+|---------|-----------|-------------|--------------|---------------|----------------|
+| core/ui | 72 | 86% | 95% | 18 | 42+ |
+| core/composed | 31 | 68% | 85% | 7 | 12+ |
+| core/shell | 7 | 72% | 90% | 2 | 4+ |
+| karm | 48 | 71% | 87% | 2 | 10+ |
+| **TOTAL** | **158** | **77%** | **91%** | **29** | **68+** |
 
-### Pass Rate by Checklist Item (all packages)
+### Overall Health Score: **9.1 / 10** (up from 7.7 pre-fix, 6.2 on March 3)
 
-| Checklist Item | core/ui | composed | shell | karm | **Overall** |
-|----------------|---------|----------|-------|------|-------------|
-| 1. forwardRef | 85% | 94% | 67% | 89% | **87%** |
-| 2. displayName | 100% | 100% | 100% | 100% | **100%** |
-| 3. className+cn | 97% | 61% | 83% | 65% | **80%** |
-| 4. props spread | 81% | 29% | 67% | 4% | **46%** |
-| 5. CVA | 92% | 100% | N/A | 100% | **95%** |
-| 6. Props export | 81% | 90% | 86% | 89% | **85%** |
-| 7. Test (w/ axe) | 78% | 45% | 29% | 67% | **65%** |
-| 8. Story (autodocs) | 99% | 97% | 86% | 85% | **93%** |
+### Pass Rate by Checklist Item — Before → After
 
-**#1 systemic gap: props spread at 46%.** Especially karm at 4%.
+| Checklist Item | Pre-Fix | Post-Fix | Delta | Commits |
+|----------------|---------|----------|-------|---------|
+| 1. forwardRef | 87% | **98%** | +11% | `c76e5c5` (17 components) |
+| 2. displayName | 100% | **100%** | — | — |
+| 3. className+cn | 80% | **97%** | +17% | `fde95cb` (80 components) |
+| 4. props spread | 46% | **97%** | +51% | `fde95cb` (80 components) |
+| 5. CVA | 95% | **95%** | — | — |
+| 6. Props export | 85% | **94%** | +9% | `30c3570` (14 Radix wrappers) |
+| 7. Test (w/ axe) | 65% | **89%** | +24% | `30c3570` (21 core) + `f79b175` (16 karm) |
+| 8. Story (autodocs) | 93% | **97%** | +4% | `3a3d5e2` (6 stories) |
+
+### Fix Summary
+
+| Wave | What | Commit | Components Fixed |
+|------|------|--------|-----------------|
+| 1 | Props spread (`...props`) | `fde95cb` | 80 across all packages |
+| 2 | className + cn() | `fde95cb` | (same commit as Wave 1) |
+| 3 | Tests (vitest-axe) | `30c3570` + `f79b175` | 37 new test files (21 core + 16 karm) |
+| 4 | forwardRef | `c76e5c5` | 17 (8 charts + 2 core + 2 shell + 5 board) |
+| 5a | Props exports | `30c3570` | 14 Radix wrappers + LinkProvider |
+| 5b | Stories | `3a3d5e2` | 6 (ConfirmDialog + 4 board + PageSkeletons) |
+
+### Remaining Gaps (not addressed)
+
+These are known items that remain unfixed — intentional or low-priority:
+
+- **props spread**: ~5 components where spreading isn't appropriate (context providers, render-prop wrappers)
+- **forwardRef**: DataTable, DataTableToolbar (complex table refs), ConfirmDialog (dialog forwarding is non-trivial)
+- **className+cn**: Some karm admin/chat internals where className isn't meaningful (pure logic wrappers)
+- **Tests**: Collapsible, Form, Menubar, NavigationMenu, Sidebar, TreeView, VisuallyHidden (core/ui) — mostly Radix-heavy compound components
+- **Stories**: ColorInput (needs color picker interaction), LinkProvider (context-only, no visual)
+
+---
+
+## Pre-Fix Baseline (original audit scores below)
 
 ---
 

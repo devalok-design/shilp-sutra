@@ -124,7 +124,7 @@ const Chip = React.forwardRef<HTMLElement, ChipProps>(
     const isClickable = !!onClick
     const MotionComponent = isClickable ? motion.button : motion.span
     const interactiveClass = isClickable && !disabled
-      ? 'cursor-pointer hover:bg-surface-4 active:scale-95'
+      ? 'cursor-pointer hover:bg-surface-4'
       : ''
     const disabledClass = disabled
       ? 'opacity-action-disabled cursor-not-allowed'
@@ -136,6 +136,7 @@ const Chip = React.forwardRef<HTMLElement, ChipProps>(
         layout
         initial={{ opacity: 1, scale: 1 }}
         exit={{ opacity: 0, scale: 0.8 }}
+        whileTap={isClickable && !disabled ? { scale: 0.95 } : undefined}
         transition={springs.snappy}
         className={cn(chipVariants({ variant, size, color }), interactiveClass, disabledClass, className)}
         onClick={isClickable ? onClick : undefined}

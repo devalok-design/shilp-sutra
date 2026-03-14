@@ -39,6 +39,9 @@
 - DialogTitle is required for accessibility — screen readers announce it when the dialog opens
 
 ## Changes
+### v0.19.1
+- **Fixed** Dialog not centered after Framer Motion animation completes — `transform: none` inline style overrode Tailwind `translate-x/y` classes. Centering now handled via Framer Motion `x`/`y` properties.
+
 ### v0.18.0
 - **Changed** Overlay animations migrated to Framer Motion (physics-based springs)
 - **Added** `DialogContentProps`, `DialogTitleProps` type exports

@@ -33,6 +33,9 @@
 - `color="primary"` will be renamed to `color="brand"` in v1.0 — use `color="primary"` for now
 
 ## Changes
+### v0.19.1
+- **Fixed** `active:scale-95` tap feedback broken by Framer Motion transform override — replaced with `whileTap={{ scale: 0.95 }}`
+
 ### v0.4.2
 - **Changed** (BREAKING) `variant="filled"` renamed to `"subtle"`, `variant="outlined"` renamed to `"outline"`, `onDelete` renamed to `onDismiss`
 

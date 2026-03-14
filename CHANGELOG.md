@@ -5,6 +5,14 @@ All notable changes to `@devalok/shilp-sutra` will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.19.1] - 2026-03-14
+
+### Fixed (core)
+- **Dialog / AlertDialog not centered**: Framer Motion sets `transform: none` inline after animation completes, overriding Tailwind `translate-x-[-50%] translate-y-[-50%]` centering. Centering now uses Framer Motion's `x`/`y` properties so it's preserved. Affects Dialog, AlertDialog, ConfirmDialog since v0.18.0.
+- **Chip tap feedback broken**: `active:scale-95` CSS class was overridden by Framer Motion's layout transform management. Replaced with `whileTap={{ scale: 0.95 }}`.
+
+---
+
 ## [0.19.0] - 2026-03-14
 
 ### BREAKING (core)

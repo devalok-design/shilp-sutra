@@ -137,12 +137,12 @@ const DialogContent = React.forwardRef<
             {...props}
           >
             <motion.div
-              initial={{ opacity: 0, scale: 0.95 }}
-              animate={{ opacity: 1, scale: 1 }}
-              exit={{ opacity: 0, scale: 0.95 }}
+              initial={{ opacity: 0, scale: 0.95, x: '-50%', y: '-50%' }}
+              animate={{ opacity: 1, scale: 1, x: '-50%', y: '-50%' }}
+              exit={{ opacity: 0, scale: 0.95, x: '-50%', y: '-50%' }}
               transition={{ ...springs.smooth, opacity: tweens.fade }}
               className={cn(
-                'fixed left-[50%] top-[50%] z-modal grid w-full max-w-lg translate-x-[-50%] translate-y-[-50%] gap-ds-05 border border-surface-border-strong bg-surface-1 p-ds-06 shadow-04 rounded-ds-xl',
+                'fixed left-[50%] top-[50%] z-modal grid w-full max-w-lg gap-ds-05 border border-surface-border-strong bg-surface-1 p-ds-06 shadow-04 rounded-ds-xl',
                 className,
               )}
             >

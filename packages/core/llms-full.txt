@@ -5,7 +5,7 @@
 > All variant values and props verified from source CVA definitions.
 >
 > Package: @devalok/shilp-sutra
-> Version: 0.19.0
+> Version: 0.19.1
 
 ---
 
@@ -231,6 +231,9 @@ Note: getFormFieldA11y() was removed in favor of useFormField() hook.
 - AlertDialogAction does NOT have color="error" styling — add it yourself via className or wrap a Button
 
 ## Changes
+### v0.19.1
+- **Fixed** AlertDialog not centered after Framer Motion animation completes — same `transform: none` fix as Dialog.
+
 ### v0.18.0
 - **Changed** Overlay animations migrated to Framer Motion (physics-based springs)
 - **Added** `AlertDialogContentProps`, `AlertDialogActionProps`, `AlertDialogCancelProps` type exports
@@ -713,6 +716,9 @@ import { BarChart } from '@devalok/shilp-sutra/ui/charts'
 - `color="primary"` will be renamed to `color="brand"` in v1.0 — use `color="primary"` for now
 
 ## Changes
+### v0.19.1
+- **Fixed** `active:scale-95` tap feedback broken by Framer Motion transform override — replaced with `whileTap={{ scale: 0.95 }}`
+
 ### v0.4.2
 - **Changed** (BREAKING) `variant="filled"` renamed to `"subtle"`, `variant="outlined"` renamed to `"outline"`, `onDelete` renamed to `onDismiss`
 
@@ -1126,6 +1132,9 @@ import { DataTableToolbar } from '@devalok/shilp-sutra/ui/data-table-toolbar'
 - DialogTitle is required for accessibility — screen readers announce it when the dialog opens
 
 ## Changes
+### v0.19.1
+- **Fixed** Dialog not centered after Framer Motion animation completes — `transform: none` inline style overrode Tailwind `translate-x/y` classes. Centering now handled via Framer Motion `x`/`y` properties.
+
 ### v0.18.0
 - **Changed** Overlay animations migrated to Framer Motion (physics-based springs)
 - **Added** `DialogContentProps`, `DialogTitleProps` type exports

@@ -5,6 +5,35 @@ All notable changes to `@devalok/shilp-sutra` will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.18.1] - 2026-03-14
+
+Comprehensive audit fix release. Security fixes, build pipeline hardening, component API improvements, and documentation corrections.
+
+### Fixed (core)
+- **Security**: Validate `externalUrl` protocol before rendering as `href` in FilesTab (XSS prevention)
+- **Security**: Sanitize markdown hrefs in DailyBrief using shared `markdownComponents`
+- **Build**: Fix root cause of stale `.js` files — playground `tsc` was emitting compiled output into core `src/` via path aliases (added `noEmit: true`)
+- **Build**: Add missing package exports: `./ui/lib/motion`, `./ui/lib/date-utils`, `./shell/command-registry`, `./tailwind/preset`
+- **Build**: Fix `"use client"` incorrectly injected into server-safe shared chunks (`_chunks/utils`, `_chunks/motion`, `composed/lib/string-utils`)
+- **Build**: Rename `manualChunks` chunk `'motion'` → `'framer'` to avoid collision with `motion/` entry directory
+- **Build**: Move `motion/` from `collectEntries` to `explicitEntries` to prevent orphaned dist files
+- **Build**: Add null-check guard in `build-tailwind-cjs.mjs`; anchor `copy-tokens.mjs` paths to `import.meta.url`
+- **A11y**: Badge dismiss `aria-label` is now contextual (`"Remove {text}"`)
+- **A11y**: Combobox multi-select pill dismiss icon uses DS icon token (`h-ico-sm`)
+- **Components**: `SegmentedControl` `layoutId` scoped via `useId()` for multi-instance safety
+- **Components**: `useRipple` tracks all active timeouts — fixes memory leak under rapid clicks
+- **Components**: `Step` no longer leaks internal `_index` prop in public `forwardRef` type
+- **Exports**: `withReducedMotion` and `motionProps` re-exported from `@devalok/shilp-sutra/motion`
+- **Docs**: Fix `llms.txt` — removed non-existent presets (`springs.rigid`, `tweens.standard`, `tweens.gentle`)
+- **Docs**: Fix `llms.txt` — removed Spinner, EmptyState, StatusBadge from server-safe list
+
+### Changed (karm@0.18.0)
+- **Breaking**: `framer-motion` externalized — consumers must install `framer-motion@^12.0.0`. Vendor chunk reduced from 492KB to 309KB.
+- **Breaking**: Peer dep on `@devalok/shilp-sutra` bumped from `>=0.7.0` to `>=0.18.0`
+- Added `'motion'` to path rewrite categories for explicit mapping
+
+---
+
 ## [0.18.0] - 2026-03-14
 
 The **OKLCH + Framer Motion** release. Three major system-wide migrations in one release: color tokens rewritten to OKLCH perceptual color science, all animations migrated from CSS keyframes to Framer Motion physics-based springs, and toast notifications rewritten to an imperative API.

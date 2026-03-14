@@ -17,15 +17,16 @@ When releasing a new version:
 1. **Typecheck**: `pnpm typecheck` passes
 2. **Tests**: `pnpm test` — all pass
 3. **Stories**: Every new/changed component has Storybook stories covering key variants and interactive states
-4. **Build**: `pnpm build` — all packages build
-5. **CHANGELOG.md**: Updated with all changes, breaking changes clearly marked
-6. **llms.txt**: Breaking changes section updated. Any new/changed component APIs documented.
-7. **llms-full.txt**: Per-component entries updated for changed APIs
-8. **Version bump**: Correct semver (breaking = minor while 0.x, patch for fixes)
-9. **Git commit + push**: All docs and version bumps committed
-10. **FINAL REVIEW**: Re-read the diff of all changes since last release. Confirm docs match code.
-11. **npm publish**: Only now — `npm publish --access public` per changed package
-12. **Send DS Notice**: If breaking changes, file issue on consumer repos via /send-karm-notice
+4. **Component docs**: Every new/changed component has an up-to-date `packages/core/docs/components/{category}/{name}.md` with a Changes entry for this version
+5. **Build**: `pnpm build` — all packages build (this regenerates `llms-full.txt` automatically)
+6. **CHANGELOG.md**: Updated with all changes, breaking changes clearly marked
+7. **llms.txt**: Breaking changes section updated. Any new/changed component APIs documented.
+8. **llms-full.txt**: GENERATED — do not hand-edit. Updated automatically by `pnpm build:docs` (runs as part of `pnpm build`). If you need to update architecture notes, edit `packages/core/docs/components/_header.md`.
+9. **Version bump**: Correct semver (breaking = minor while 0.x, patch for fixes)
+10. **Git commit + push**: All docs and version bumps committed
+11. **FINAL REVIEW**: Re-read the diff of all changes since last release. Confirm docs match code.
+12. **npm publish**: Only now — `npm publish --access public` per changed package
+13. **Send DS Notice**: If breaking changes, file issue on consumer repos via /send-karm-notice
 
 If you realize docs were incomplete after publishing, immediately publish a patch version.
 

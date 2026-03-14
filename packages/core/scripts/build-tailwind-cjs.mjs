@@ -13,15 +13,19 @@ const presetSrc = await readFile(resolve(dist, 'preset.js'), 'utf8')
 
 // Convert: strip the ESM export, add module.exports
 // The file looks like: const r = { ... };\nexport {\n  r as default\n};
+const varMatch = presetSrc.match(/^const\s+(\w+)\s*=/m)
+if (!varMatch) {
+  console.error('ERROR: Could not find variable name in preset.js output. The Rollup output format may have changed.')
+  process.exit(1)
+}
+const varName = varMatch[1]
+
 const cjs = presetSrc
   .replace(/^export\s*\{\s*\w+\s+as\s+default\s*\}\s*;?\s*$/m, '')
   .trimEnd()
-  // Find the variable name (e.g., "const r = {")
   .replace(/^const\s+(\w+)\s*=/m, (_, name) => {
-    // Append module.exports at the end
     return `const ${name} =`
-  }) + '\nmodule.exports = ' +
-  presetSrc.match(/^const\s+(\w+)\s*=/m)[1] + ';\nmodule.exports.default = module.exports;\n'
+  }) + `\nmodule.exports = ${varName};\nmodule.exports.default = module.exports;\n`
 
 // Validate that the ESM→CJS conversion removed all export statements
 if (/\bexport\s/.test(cjs)) {

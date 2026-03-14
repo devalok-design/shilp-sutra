@@ -44,6 +44,7 @@ export default defineConfig({
         if (/^@devalok\/shilp-sutra($|\/)/.test(id)) return true
         if (/^@tabler\/icons-react($|\/)/.test(id)) return true
         if (/^next($|\/)/.test(id)) return true
+        if (/^framer-motion($|\/)/.test(id)) return true
         // Everything else gets bundled (@dnd-kit, react-markdown, date-fns, clsx, cva, tailwind-merge)
         return false
       },
@@ -59,7 +60,7 @@ export default defineConfig({
           if (coreMatch) {
             const subpath = coreMatch[1]
             // Map core subpaths to the correct package export, preserving per-component paths
-            const categories = ['ui', 'composed', 'shell', 'hooks', 'tailwind']
+            const categories = ['ui', 'composed', 'shell', 'hooks', 'tailwind', 'motion']
             for (const cat of categories) {
               if (subpath.startsWith(`${cat}/`)) {
                 // Check if this is a barrel index import (e.g. "ui/index")

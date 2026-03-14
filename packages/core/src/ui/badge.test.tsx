@@ -25,7 +25,7 @@ describe('Badge', () => {
     const user = userEvent.setup()
     const onDismiss = vi.fn()
     render(<Badge onDismiss={onDismiss}>Removable</Badge>)
-    const removeBtn = screen.getByRole('button', { name: 'Remove' })
+    const removeBtn = screen.getByRole('button', { name: 'Remove Removable' })
     expect(removeBtn).toBeInTheDocument()
     await user.click(removeBtn)
     expect(onDismiss).toHaveBeenCalledOnce()

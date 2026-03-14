@@ -308,7 +308,7 @@ const Combobox = React.forwardRef<HTMLButtonElement, ComboboxProps>(
                     aria-label={`Remove ${option.label}`}
                     tabIndex={-1}
                   >
-                    <IconX className="h-3 w-3" aria-hidden="true" />
+                    <IconX className="h-ico-sm w-ico-sm" aria-hidden="true" />
                   </button>
                 </span>
               )

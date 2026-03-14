@@ -40,6 +40,7 @@ vi.mock('../ui/dropdown-menu', () => ({
 }))
 
 import { TopBar } from './top-bar'
+import { SidebarTrigger } from '../ui/sidebar'
 
 describe('TopBar', () => {
   beforeEach(() => {
@@ -60,60 +61,91 @@ describe('TopBar', () => {
   })
 
   it('renders without crashing', () => {
-    const { container } = render(<TopBar />)
+    const { container } = render(
+      <TopBar>
+        <TopBar.Left>
+          <TopBar.Title>Test</TopBar.Title>
+        </TopBar.Left>
+      </TopBar>,
+    )
     expect(container.firstElementChild).toBeInTheDocument()
   })
 
   it('has no accessibility violations', async () => {
-    const { container } = render(<TopBar />)
+    const { container } = render(
+      <TopBar>
+        <TopBar.Left>
+          <TopBar.Title>Dashboard</TopBar.Title>
+        </TopBar.Left>
+        <TopBar.Right>
+          <TopBar.IconButton icon={<svg />} tooltip="Search" aria-label="Search" />
+        </TopBar.Right>
+      </TopBar>,
+    )
     expect(await axe(container)).toHaveNoViolations()
   })
 
-  it('displays the page title', () => {
-    render(<TopBar pageTitle="Dashboard" />)
+  it('displays the page title via TopBar.Title', () => {
+    render(
+      <TopBar>
+        <TopBar.Left>
+          <TopBar.Title>Dashboard</TopBar.Title>
+        </TopBar.Left>
+      </TopBar>,
+    )
     expect(screen.getByRole('heading', { name: 'Dashboard' })).toBeInTheDocument()
   })
 
-  it('renders user name when user is provided', () => {
+  it('renders user name when TopBar.UserMenu is provided', () => {
     render(
-      <TopBar
-        user={{ name: 'Jane Doe', email: 'jane@example.com' }}
-      />,
+      <TopBar>
+        <TopBar.Right>
+          <TopBar.UserMenu
+            user={{ name: 'Jane Doe', email: 'jane@example.com' }}
+          />
+        </TopBar.Right>
+      </TopBar>,
     )
     expect(screen.getByText('Jane Doe')).toBeInTheDocument()
     expect(screen.getByText('jane@example.com')).toBeInTheDocument()
   })
 
-  it('calls onSearchClick when search button is clicked', async () => {
+  it('calls onClick on TopBar.IconButton', async () => {
     const user = userEvent.setup()
-    const onSearchClick = vi.fn()
-    render(<TopBar onSearchClick={onSearchClick} />)
-
-    // The search button renders a Search icon inside a <button>
-    const searchButtons = screen.getAllByRole('button')
-    // The first visible button after sidebar trigger is the search button
-    const searchBtn = searchButtons.find(
-      (btn) => !btn.getAttribute('data-testid'),
+    const onClick = vi.fn()
+    render(
+      <TopBar>
+        <TopBar.Right>
+          <TopBar.IconButton icon={<svg />} tooltip="Search" aria-label="Search" onClick={onClick} />
+        </TopBar.Right>
+      </TopBar>,
     )
-    expect(searchBtn).toBeDefined()
-    await user.click(searchBtn!)
-    expect(onSearchClick).toHaveBeenCalledOnce()
+    await user.click(screen.getByLabelText('Search'))
+    expect(onClick).toHaveBeenCalledOnce()
   })
 
-  it('merges custom className', () => {
-    const { container } = render(<TopBar className="custom-topbar" />)
+  it('merges custom className on root', () => {
+    const { container } = render(
+      <TopBar className="custom-topbar">
+        <TopBar.Left><TopBar.Title>Test</TopBar.Title></TopBar.Left>
+      </TopBar>,
+    )
     expect(container.firstElementChild).toHaveClass('custom-topbar')
   })
 
   it('renders custom userMenuItems', () => {
     render(
-      <TopBar
-        user={{ name: 'Test User' }}
-        userMenuItems={[
-          { label: 'Changelog', href: '/changelog' },
-          { label: 'Shortcuts', onClick: vi.fn() },
-        ]}
-      />,
+      <TopBar>
+        <TopBar.Right>
+          <TopBar.UserMenu
+            user={{ name: 'Test User' }}
+            userMenuItems={[
+              { label: 'Changelog', href: '/changelog' },
+              { label: 'Shortcuts', onClick: vi.fn() },
+            ]}
+          />
+        </TopBar.Right>
+      </TopBar>,
     )
     expect(screen.getByText('Changelog')).toBeInTheDocument()
     expect(screen.getByText('Shortcuts')).toBeInTheDocument()
@@ -123,13 +155,17 @@ describe('TopBar', () => {
     const user = userEvent.setup()
     const onNavigate = vi.fn()
     render(
-      <TopBar
-        user={{ name: 'Test User' }}
-        onNavigate={onNavigate}
-        userMenuItems={[
-          { label: 'Settings', href: '/settings' },
-        ]}
-      />,
+      <TopBar>
+        <TopBar.Right>
+          <TopBar.UserMenu
+            user={{ name: 'Test User' }}
+            onNavigate={onNavigate}
+            userMenuItems={[
+              { label: 'Settings', href: '/settings' },
+            ]}
+          />
+        </TopBar.Right>
+      </TopBar>,
     )
     await user.click(screen.getByText('Settings'))
     expect(onNavigate).toHaveBeenCalledWith('/settings')
@@ -139,12 +175,16 @@ describe('TopBar', () => {
     const user = userEvent.setup()
     const onClick = vi.fn()
     render(
-      <TopBar
-        user={{ name: 'Test User' }}
-        userMenuItems={[
-          { label: 'Open Modal', onClick },
-        ]}
-      />,
+      <TopBar>
+        <TopBar.Right>
+          <TopBar.UserMenu
+            user={{ name: 'Test User' }}
+            userMenuItems={[
+              { label: 'Open Modal', onClick },
+            ]}
+          />
+        </TopBar.Right>
+      </TopBar>,
     )
     await user.click(screen.getByText('Open Modal'))
     expect(onClick).toHaveBeenCalledOnce()
@@ -152,17 +192,72 @@ describe('TopBar', () => {
 
   it('renders badge on userMenuItems', () => {
     render(
-      <TopBar
-        user={{ name: 'Test User' }}
-        userMenuItems={[
-          { label: 'Updates', href: '/updates', badge: '3' },
-          { label: 'New', href: '/new', badge: true },
-        ]}
-      />,
+      <TopBar>
+        <TopBar.Right>
+          <TopBar.UserMenu
+            user={{ name: 'Test User' }}
+            userMenuItems={[
+              { label: 'Updates', href: '/updates', badge: '3' },
+              { label: 'New', href: '/new', badge: true },
+            ]}
+          />
+        </TopBar.Right>
+      </TopBar>,
     )
     expect(screen.getByText('3')).toBeInTheDocument()
-    // Dot badge renders as an empty span
     expect(screen.getByText('Updates')).toBeInTheDocument()
     expect(screen.getByText('New')).toBeInTheDocument()
+  })
+
+  it('uses grid layout when Center zone is present', () => {
+    const { container } = render(
+      <TopBar>
+        <TopBar.Left><TopBar.Title>Left</TopBar.Title></TopBar.Left>
+        <TopBar.Center><span>Center</span></TopBar.Center>
+        <TopBar.Right><span>Right</span></TopBar.Right>
+      </TopBar>,
+    )
+    expect(container.firstElementChild).toHaveClass('grid')
+  })
+
+  it('uses flex layout without Center zone', () => {
+    const { container } = render(
+      <TopBar>
+        <TopBar.Left><TopBar.Title>Left</TopBar.Title></TopBar.Left>
+        <TopBar.Right><span>Right</span></TopBar.Right>
+      </TopBar>,
+    )
+    expect(container.firstElementChild).toHaveClass('flex')
+    expect(container.firstElementChild).not.toHaveClass('grid')
+  })
+
+  it('renders multiple icon buttons in a section', () => {
+    render(
+      <TopBar>
+        <TopBar.Right>
+          <TopBar.Section gap="tight">
+            <TopBar.IconButton icon={<svg />} tooltip="Search" aria-label="Search" />
+            <TopBar.IconButton icon={<svg />} tooltip="Filter" aria-label="Filter" />
+            <TopBar.IconButton icon={<svg />} tooltip="Export" aria-label="Export" />
+          </TopBar.Section>
+        </TopBar.Right>
+      </TopBar>,
+    )
+    expect(screen.getByLabelText('Search')).toBeInTheDocument()
+    expect(screen.getByLabelText('Filter')).toBeInTheDocument()
+    expect(screen.getByLabelText('Export')).toBeInTheDocument()
+  })
+
+  it('applies correct gap class to TopBar.Section', () => {
+    const { container } = render(
+      <TopBar>
+        <TopBar.Right>
+          <TopBar.Section gap="tight" data-testid="section">
+            <span>A</span>
+          </TopBar.Section>
+        </TopBar.Right>
+      </TopBar>,
+    )
+    expect(screen.getByTestId('section')).toHaveClass('gap-ds-02')
   })
 })

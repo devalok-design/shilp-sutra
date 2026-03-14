@@ -104,8 +104,8 @@
   --color-surface-fg: var(--neutral-12);
   --color-surface-fg-muted: var(--neutral-11);
   --color-surface-fg-subtle: var(--neutral-8);
-  --color-surface-border: var(--neutral-6);
-  --color-surface-border-strong: var(--neutral-7);
+  --color-surface-border: var(--neutral-5);
+  --color-surface-border-strong: var(--neutral-6);
 
   /* ═══════════════════════════════════════════════════════════
      STATUS — Error
@@ -353,9 +353,9 @@
   --color-info-fg: var(--neutral-12);
 
   /* Dark mode borders need lower contrast — bright borders look harsh.
-     Drop 2 steps: subtle=4 (L=0.29), strong=5 (L=0.34) */
-  --color-surface-border: var(--neutral-4);
-  --color-surface-border-strong: var(--neutral-5);
+     Drop to step 3/4 for subtle resting borders that don't overpower surfaces */
+  --color-surface-border: var(--neutral-3);
+  --color-surface-border-strong: var(--neutral-4);
 
   /* Overlay */
   --color-overlay: oklch(0 0 0 / 0.70);

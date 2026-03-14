@@ -159,7 +159,7 @@ const BottomNavbar = React.forwardRef<HTMLElement, BottomNavbarProps>(
           <div className="absolute inset-0 bg-overlay" />
           {/* eslint-disable-next-line jsx-a11y/no-static-element-interactions -- stopPropagation prevents closing when clicking inside menu */}
           <div
-            className="absolute bottom-[72px] left-0 right-0 rounded-t-ds-2xl border-t border-surface-border-strong bg-surface-1 p-ds-05 pb-ds-03"
+            className="absolute bottom-[72px] left-0 right-0 rounded-t-ds-2xl border-t border-surface-border-strong bg-surface-2 p-ds-05 pb-ds-03"
             onClick={(e) => e.stopPropagation()}
             onKeyDown={(e) => e.stopPropagation()}
           >
@@ -170,7 +170,7 @@ const BottomNavbar = React.forwardRef<HTMLElement, BottomNavbarProps>(
               <button
                 onClick={() => setShowMore(false)}
                 aria-label="Close more menu"
-                className="flex h-ds-sm w-ds-sm items-center justify-center rounded-ds-full hover:bg-surface-2"
+                className="flex h-ds-sm w-ds-sm items-center justify-center rounded-ds-full hover:bg-surface-3"
               >
                 <IconX className="h-ico-sm w-ico-sm text-surface-fg-muted" aria-hidden="true" />
               </button>
@@ -184,8 +184,8 @@ const BottomNavbar = React.forwardRef<HTMLElement, BottomNavbarProps>(
                   className={cn(
                     'flex flex-col items-center gap-ds-02b rounded-ds-xl p-ds-04 text-ds-sm transition-colors',
                     isActive(item.href, item.exact)
-                      ? 'bg-surface-2 text-accent-11'
-                      : 'text-surface-fg-subtle hover:bg-surface-2',
+                      ? 'bg-surface-3 text-accent-11'
+                      : 'text-surface-fg-subtle hover:bg-surface-3',
                   )}
                 >
                   <span className="[&>svg]:h-ico-md [&>svg]:w-ico-md">{item.icon}</span>
@@ -205,7 +205,7 @@ const BottomNavbar = React.forwardRef<HTMLElement, BottomNavbarProps>(
         ref={ref}
         aria-label="Mobile navigation"
         className={cn(
-          'fixed bottom-0 left-0 right-0 z-sticky flex w-full flex-row items-start justify-between border-t border-surface-border-strong bg-surface-1 px-ds-05 pb-ds-05b pt-0 md:hidden',
+          'fixed bottom-0 left-0 right-0 z-sticky flex w-full flex-row items-start justify-between border-t border-surface-border-strong bg-surface-2 px-ds-05 pb-ds-05b pt-0 md:hidden',
           className,
         )}
       >

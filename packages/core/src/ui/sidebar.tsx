@@ -191,7 +191,7 @@ const Sidebar = forwardRef<
       return (
         <div
           className={cn(
-            'flex h-full w-[--sidebar-width] flex-col bg-surface-1 text-surface-fg',
+            'flex h-full w-[--sidebar-width] flex-col bg-surface-2 text-surface-fg',
             className,
           )}
           ref={ref}
@@ -208,7 +208,7 @@ const Sidebar = forwardRef<
           <SheetContent
             data-sidebar="sidebar"
             data-mobile="true"
-            className="w-[--sidebar-width] bg-surface-1 p-0 text-surface-fg [&>button]:hidden"
+            className="w-[--sidebar-width] bg-surface-2 p-0 text-surface-fg [&>button]:hidden"
             style={
               {
                 '--sidebar-width': SIDEBAR_WIDTH_MOBILE,
@@ -256,7 +256,7 @@ const Sidebar = forwardRef<
         >
           <div
             data-sidebar="sidebar"
-            className="flex h-full w-full flex-col bg-surface-1 group-data-[variant=floating]:rounded-ds-lg group-data-[variant=floating]:border group-data-[variant=floating]:border-surface-border group-data-[variant=floating]:shadow"
+            className="flex h-full w-full flex-col bg-surface-2 group-data-[variant=floating]:rounded-ds-lg group-data-[variant=floating]:border group-data-[variant=floating]:border-surface-border group-data-[variant=floating]:shadow"
           >
             {children}
           </div>
@@ -309,7 +309,7 @@ const SidebarRail = forwardRef<HTMLButtonElement, ComponentProps<'button'>>(
           'hover:after:bg-surface-border-strong absolute inset-y-0 z-raised hidden w-4 -translate-x-1/2 transition-colors ease-linear after:absolute after:inset-y-0 after:left-1/2 after:w-[2px] group-data-[side=left]:-right-4 group-data-[side=right]:left-0 sm:flex',
           '[[data-side=left]_&]:cursor-w-resize [[data-side=right]_&]:cursor-e-resize',
           '[[data-side=left][data-state=collapsed]_&]:cursor-e-resize [[data-side=right][data-state=collapsed]_&]:cursor-w-resize',
-          'group-data-[collapsible=offcanvas]:translate-x-0 group-data-[collapsible=offcanvas]:after:left-full group-data-[collapsible=offcanvas]:hover:bg-surface-2',
+          'group-data-[collapsible=offcanvas]:translate-x-0 group-data-[collapsible=offcanvas]:after:left-full group-data-[collapsible=offcanvas]:hover:bg-surface-3',
           '[[data-side=left][data-collapsible=offcanvas]_&]:-right-2',
           '[[data-side=right][data-collapsible=offcanvas]_&]:-left-2',
           className,
@@ -347,7 +347,7 @@ const SidebarInput = forwardRef<
       ref={ref}
       data-sidebar="input"
       className={cn(
-        'h-ds-sm w-full bg-surface-1 shadow-none focus-visible:ring-2 focus-visible:ring-accent-9',
+        'h-ds-sm w-full bg-surface-2 shadow-none focus-visible:ring-2 focus-visible:ring-accent-9',
         className,
       )}
       {...props}
@@ -465,7 +465,7 @@ const SidebarGroupAction = forwardRef<
       ref={ref}
       data-sidebar="group-action"
       className={cn(
-        'hover:bg-surface-2 absolute right-ds-04 top-ds-04 flex aspect-square w-5 items-center justify-center rounded-ds-md p-0 text-surface-fg outline-none ring-accent-9 transition-transform hover:text-surface-fg focus-visible:ring-2 [&>svg]:h-ico-sm [&>svg]:w-ico-sm [&>svg]:shrink-0',
+        'hover:bg-surface-3 absolute right-ds-04 top-ds-04 flex aspect-square w-5 items-center justify-center rounded-ds-md p-0 text-surface-fg outline-none ring-accent-9 transition-transform hover:text-surface-fg focus-visible:ring-2 [&>svg]:h-ico-sm [&>svg]:w-ico-sm [&>svg]:shrink-0',
         'after:absolute after:-inset-2 after:md:hidden',
         'group-data-[collapsible=icon]:hidden',
         className,
@@ -513,14 +513,14 @@ const SidebarMenuItem = forwardRef<HTMLLIElement, ComponentProps<'li'>>(
 SidebarMenuItem.displayName = 'SidebarMenuItem'
 
 const sidebarMenuButtonVariants = cva(
-  'peer/menu-button hover:bg-surface-2 active:bg-accent-2 data-[active=true]:bg-accent-2 data-[state=open]:hover:bg-surface-2 flex w-full items-center gap-ds-03 overflow-hidden rounded-ds-md p-ds-03 text-left outline-none ring-accent-9 transition-[width,height,padding] hover:text-surface-fg focus-visible:ring-2 active:text-surface-fg disabled:pointer-events-none disabled:opacity-action-disabled group-has-[[data-sidebar=menu-action]]/menu-item:pr-ds-07 aria-disabled:pointer-events-none aria-disabled:opacity-action-disabled data-[active=true]:font-medium data-[active=true]:text-surface-fg data-[state=open]:hover:text-surface-fg group-data-[collapsible=icon]:!size-8 group-data-[collapsible=icon]:!p-ds-03 [&>span:last-child]:truncate [&>svg]:h-ico-sm [&>svg]:w-ico-sm [&>svg]:shrink-0',
+  'peer/menu-button hover:bg-surface-3 active:bg-accent-2 data-[active=true]:bg-accent-2 data-[state=open]:hover:bg-surface-3 flex w-full items-center gap-ds-03 overflow-hidden rounded-ds-md p-ds-03 text-left outline-none ring-accent-9 transition-[width,height,padding] hover:text-surface-fg focus-visible:ring-2 active:text-surface-fg disabled:pointer-events-none disabled:opacity-action-disabled group-has-[[data-sidebar=menu-action]]/menu-item:pr-ds-07 aria-disabled:pointer-events-none aria-disabled:opacity-action-disabled data-[active=true]:font-medium data-[active=true]:text-surface-fg data-[state=open]:hover:text-surface-fg group-data-[collapsible=icon]:!size-8 group-data-[collapsible=icon]:!p-ds-03 [&>span:last-child]:truncate [&>svg]:h-ico-sm [&>svg]:w-ico-sm [&>svg]:shrink-0',
   {
     variants: {
       variant: {
         default:
-          'hover:bg-surface-2 hover:text-surface-fg',
+          'hover:bg-surface-3 hover:text-surface-fg',
         outline:
-          'hover:bg-surface-2 bg-surface-1 shadow-[0_0_0_1px_var(--color-surface-border)] hover:text-surface-fg hover:shadow-[0_0_0_1px_var(--color-surface-border-strong)]',
+          'hover:bg-surface-3 bg-surface-2 shadow-[0_0_0_1px_var(--color-surface-border)] hover:text-surface-fg hover:shadow-[0_0_0_1px_var(--color-surface-border-strong)]',
       },
       size: {
         md: 'h-ds-sm text-ds-md',
@@ -622,7 +622,7 @@ const SidebarMenuAction = forwardRef<
       ref={ref}
       data-sidebar="menu-action"
       className={cn(
-        'hover:bg-surface-2 absolute right-ds-02 top-ds-02b flex aspect-square w-5 items-center justify-center rounded-ds-md p-0 text-surface-fg outline-none ring-accent-9 transition-transform hover:text-surface-fg focus-visible:ring-2 peer-hover/menu-button:text-surface-fg [&>svg]:h-ico-sm [&>svg]:w-ico-sm [&>svg]:shrink-0',
+        'hover:bg-surface-3 absolute right-ds-02 top-ds-02b flex aspect-square w-5 items-center justify-center rounded-ds-md p-0 text-surface-fg outline-none ring-accent-9 transition-transform hover:text-surface-fg focus-visible:ring-2 peer-hover/menu-button:text-surface-fg [&>svg]:h-ico-sm [&>svg]:w-ico-sm [&>svg]:shrink-0',
         'after:absolute after:-inset-2 after:md:hidden',
         'peer-data-[size=sm]/menu-button:top-1',
         'peer-data-[size=md]/menu-button:top-ds-02b',
@@ -733,7 +733,7 @@ const SidebarMenuSubButton = forwardRef<
       data-size={size}
       data-active={isActive}
       className={cn(
-        'hover:bg-surface-2 active:bg-accent-2 flex h-ds-xs-plus min-w-0 -translate-x-px items-center gap-ds-03 overflow-hidden rounded-ds-md px-ds-03 text-surface-fg outline-none ring-accent-9 hover:text-surface-fg focus-visible:ring-2 active:text-surface-fg disabled:pointer-events-none disabled:opacity-action-disabled aria-disabled:pointer-events-none aria-disabled:opacity-action-disabled [&>span:last-child]:truncate [&>svg]:h-ico-sm [&>svg]:w-ico-sm [&>svg]:shrink-0 [&>svg]:text-surface-fg',
+        'hover:bg-surface-3 active:bg-accent-2 flex h-ds-xs-plus min-w-0 -translate-x-px items-center gap-ds-03 overflow-hidden rounded-ds-md px-ds-03 text-surface-fg outline-none ring-accent-9 hover:text-surface-fg focus-visible:ring-2 active:text-surface-fg disabled:pointer-events-none disabled:opacity-action-disabled aria-disabled:pointer-events-none aria-disabled:opacity-action-disabled [&>span:last-child]:truncate [&>svg]:h-ico-sm [&>svg]:w-ico-sm [&>svg]:shrink-0 [&>svg]:text-surface-fg',
         'data-[active=true]:bg-accent-2 data-[active=true]:text-surface-fg',
         size === 'sm' && 'text-ds-sm',
         size === 'md' && 'text-ds-md',

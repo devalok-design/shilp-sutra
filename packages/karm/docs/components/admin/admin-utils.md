@@ -6,7 +6,7 @@
 
 Utility functions for date formatting, status rendering, and emoji handling.
 
-Exports: AdjustmentType, renderAdjustmentType, renderStatus, formatDate, formatDateIST, formatTimeIST, formatDateWithWeekday, formatOptionalDate, getDaySuffix, isSameDay, getWeekDays, getMonthDays, getStartOfDay, getEndOfDay, removeAllEmojis, removeEmojiAtStart, ApprovedAdjustments
+Exports: AdjustmentType, renderAdjustmentType, renderStatus, formatDate, formatDateIST, formatTimeIST, formatDateWithWeekday, formatOptionalDate, getDaySuffix, isSameDay, getWeekDays, getMonthDays, getStartOfDay, getEndOfDay, removeAllEmojis, removeEmojiAtStart
 
 ## Functions
 
@@ -82,7 +82,7 @@ Checks if two dates are the same calendar day. Returns `false` if either argumen
 ```ts
 function getWeekDays(currentDate: string | Date, selectedDate: string | Date): WeekDay[]
 ```
-Returns 7-day array (Sun-Sat) for the week containing `currentDate`. Each entry has `{ day, date, fullDate, isToday, isActive }`.
+Returns 7-day array (Sun-Sat) for the week containing `currentDate`. Each entry has `{ day, date, fullDate, isToday, isActive, hasBreak?, isAbsent? }`.
 
 ### getMonthDays
 ```ts

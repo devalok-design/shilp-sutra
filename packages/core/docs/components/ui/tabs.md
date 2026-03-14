@@ -43,7 +43,7 @@
 
 ## Gotchas
 - variant goes on TabsList, NOT on individual TabsTrigger (propagates via context)
-- DO NOT put variant on TabsTrigger — it inherits from TabsList
+- Normally omit `variant` on TabsTrigger — it inherits from TabsList via context. You CAN set it per-trigger to override.
 
 ## Changes
 ### v0.18.0

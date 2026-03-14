@@ -48,6 +48,7 @@
 - Clicking a subtask row triggers onClickSubtask (if provided).
 - In readOnly mode, checkboxes are non-interactive and the "Add subtask" button is hidden.
 - "Add subtask" inline form with Enter to submit, Escape to cancel.
+- projectId, parentTaskId, and defaultColumnId are defined in the interface and required by the type but are not currently used in the component's rendering logic. They are reserved for future navigation/creation features.
 - Empty state: "No subtasks".
 - Forwards ref to outer div.
 

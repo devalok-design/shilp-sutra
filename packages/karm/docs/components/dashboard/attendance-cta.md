@@ -33,9 +33,9 @@
 ## Gotchas
 - Renders four different states based on attendance data:
   1. **Unmarked + canMark**: Large greeting card with gradient background and "Mark Attendance" button
-  2. **Marked (PRESENT)**: Compact strip showing check-in time in a success badge
-  3. **On Break (BREAK)**: Compact strip with warning badge showing break reason
-  4. **Unmarked + cannot mark**: Compact strip with "Attendance window closed" message
+  2. **Marked (PRESENT)**: Greeting card with success badge showing check-in time
+  3. **On Break (BREAK)**: Greeting card with warning badge showing break reason
+  4. **Unmarked + cannot mark**: Greeting card with "Attendance window closed" info badge (no Mark button)
 - Greeting is time-based: "Good morning" (before 12), "Good afternoon" (12-17), "Good evening" (after 17)
 - Only the first name (split on space) is displayed in the greeting
 - Date is formatted in en-IN locale with IST timezone

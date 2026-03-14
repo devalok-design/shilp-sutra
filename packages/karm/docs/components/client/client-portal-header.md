@@ -6,9 +6,9 @@
 
 ## Props
     orgName: string (REQUIRED)
-    orgLogo: string | null
+    orgLogo?: string | null
     userName: string (REQUIRED)
-    userAvatar: string | null
+    userAvatar?: string | null
     children: ReactNode
     className: string
 

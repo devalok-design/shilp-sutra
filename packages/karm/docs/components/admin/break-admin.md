@@ -24,20 +24,20 @@ Exports: BreakAdmin (compound), BreakAdminHeader, Breaks, LeaveRequest, BreakBal
     isLoadingBreaks: boolean (default: false)
     isLoadingRequests: boolean (default: false)
     isLoadingBalance: boolean (default: false)
-    existingBreaks: BreakRequest[]
-    filters: BreakAdminFilters
-    onFilterChange: (filters: BreakAdminFilters) => void
-    onApproveRequest: (requestId: string, comment?: string, isCorrection?: boolean, request?: BreakRequest) => void
-    onRejectRequest: (requestId: string, comment?: string, isCorrection?: boolean, request?: BreakRequest) => void
-    onApproveCashout: (requestId: string) => void
-    onRejectCashout: (requestId: string) => void
-    onRefresh: () => void
-    onSaveBreak: (data: { requestId: string; userId: string; status: string; adminComment: string; startDate: string; endDate: string; isEditing: boolean }) => void
-    onDeleteBreak: () => void
-    onSaveBalance: (data: { userId: string; cashOutDays: number; carryForward: number; year: number }) => void
-    onFetchMonthBreaks: (month: number, year: number) => Promise<BreakRequest[]>
-    realtimeCallbacks: RealtimeCallbacks
-    children: ReactNode
+    existingBreaks?: BreakRequest[]
+    filters?: BreakAdminFilters
+    onFilterChange?: (filters: BreakAdminFilters) => void
+    onApproveRequest?: (requestId: string, comment?: string, isCorrection?: boolean, request?: BreakRequest) => void
+    onRejectRequest?: (requestId: string, comment?: string, isCorrection?: boolean, request?: BreakRequest) => void
+    onApproveCashout?: (requestId: string) => void
+    onRejectCashout?: (requestId: string) => void
+    onRefresh?: () => void
+    onSaveBreak?: (data: { requestId: string; userId: string; status: string; adminComment: string; startDate: string; endDate: string; isEditing: boolean }) => void
+    onDeleteBreak?: () => void
+    onSaveBalance?: (data: { userId: string; cashOutDays: number; carryForward: number; year: number }) => void
+    onFetchMonthBreaks?: (month: number, year: number) => Promise<BreakRequest[]>
+    realtimeCallbacks?: RealtimeCallbacks
+    children?: ReactNode
     ...HTMLDivElement attributes
 
 ### BreakAdmin.Header

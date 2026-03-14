@@ -7,7 +7,7 @@
 ## Props
     options: AutocompleteOption[] (REQUIRED) — { value: string, label: string }
     value: AutocompleteOption | null
-    onValueChange: (option: AutocompleteOption) => void
+    onValueChange?: (option: AutocompleteOption) => void
     placeholder: string
     emptyText: string (default: "No options")
     disabled: boolean

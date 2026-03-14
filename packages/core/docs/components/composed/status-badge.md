@@ -15,6 +15,7 @@ Note: StatusBadge was server-safe prior to v0.18.0 but is NO LONGER server-safe 
 
 ## Defaults
     size="md", hideDot=false
+    When neither status nor color is passed, defaults to status='pending' styling
 
 ## Example
 ```jsx

@@ -5,7 +5,7 @@
 - Category: composed
 
 ## Props
-    groups: CommandGroup[] — { label: string, items: CommandItem[] }
+    groups?: CommandGroup[] (default: []) — { label: string, items: CommandItem[] }
     placeholder: string (default: "Search or jump to...")
     onSearch: (query: string) => void
     emptyMessage: string (default: "No results found.")
@@ -13,7 +13,7 @@
 CommandItem shape: { id, label, description?, icon?, shortcut?, onSelect: () => void }
 
 ## Defaults
-    placeholder="Search or jump to...", emptyMessage="No results found."
+    placeholder="Search or jump to...", emptyMessage="No results found.", groups=[]
 
 ## Example
 ```jsx

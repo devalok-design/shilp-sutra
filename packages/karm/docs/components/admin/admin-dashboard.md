@@ -7,14 +7,14 @@
 Compound component for the admin attendance dashboard. Uses React Context internally.
 All sub-components must be rendered inside `<AdminDashboard.Root>`.
 
-Exports: AdminDashboard (compound), AdminDashboardSkeleton, Calendar, BreakRequestCard, LeaveRequests, DashboardHeader, AttendanceOverview, AssociateDetail, CorrectionList, RenderDate
+Exports: AdminDashboard (compound), AdminDashboard.Content, AdminDashboardSkeleton, Calendar, BreakRequestCard, LeaveRequests, DashboardHeader, AttendanceOverview, AssociateDetail, CorrectionList, RenderDate
 
 ## Props
 
 ### AdminDashboard.Root (AdminDashboardRootProps)
     currentUserId: string (REQUIRED)
     currentUserRole: UserRole (REQUIRED)
-    currentUser: AdminUser
+    currentUser?: AdminUser
     assetsBaseUrl: string (default: "")
     userImages: Record<string, string> (default: {})
     isLoading: boolean (default: false)
@@ -31,8 +31,8 @@ Exports: AdminDashboard (compound), AdminDashboardSkeleton, Calendar, BreakReque
     ...HTMLDivElement attributes
 
 ### AdminDashboard.AttendanceOverview (AdminDashboardAttendanceOverviewProps)
-    groupedAttendance: GroupedAttendance | null (default: null)
-    users: AdminUser[] (default: [])
+    groupedAttendance?: GroupedAttendance | null (default: null)
+    users?: AdminUser[] (default: [])
     ...HTMLDivElement attributes
 
 ### AdminDashboard.AssociateDetail (AdminDashboardAssociateDetailProps)
@@ -49,8 +49,8 @@ Exports: AdminDashboard (compound), AdminDashboardSkeleton, Calendar, BreakReque
     ...HTMLDivElement attributes
 
 ### AdminDashboard.LeaveRequests (AdminDashboardLeaveRequestsProps)
-    requests: BreakRequest[] (default: [])
-    corrections: AttendanceCorrection[] (default: [])
+    requests?: BreakRequest[] (default: [])
+    corrections?: AttendanceCorrection[] (default: [])
     onApproveBreak: (params: { requestId: string; adminComment: string; userId: string }) => void | Promise<void>
     onRejectBreak: (params: { requestId: string; adminComment: string; userId: string }) => void | Promise<void>
     onApproveCorrection: (correctionId: string) => void | Promise<void>

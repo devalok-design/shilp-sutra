@@ -35,6 +35,7 @@
     renderPriorityIndicator: (props: { priority: string }) => ReactNode
     renderDatePicker: (props: { value: Date | null; onChange: (date: Date | null) => void; placeholder: string; className?: string }) => ReactNode
     isUploading: boolean (default: false)
+    ...Omit<HTMLAttributes<HTMLDivElement>, 'children'>
 
 ## FullTask Shape
     id: string
@@ -91,7 +92,7 @@
 
 ## Gotchas
 - Renders as a Sheet (side panel) on the right, 40% width (min 380px).
-- In clientMode, only the Conversation tab is shown. Staff-only tabs (subtasks, review, files, activity) are hidden.
+- In clientMode, only the Conversation tab trigger is shown in the tab bar. The review tab content is fully suppressed. Subtasks, files, and activity tab content still renders read-only if the active tab matches, but their tab triggers are hidden.
 - In clientMode, title editing is disabled and properties respect clientEditableFields.
 - Title is editable by clicking on it (staff mode only).
 - enrichedComments takes priority over task.comments when both are provided.

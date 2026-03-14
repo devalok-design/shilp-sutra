@@ -6,15 +6,15 @@
 
 ## Props
     items: ActivityItem[] (REQUIRED) — { id, actor?: { name, image? }, action: string|ReactNode, timestamp: Date|string, icon?, color?: 'default'|'success'|'warning'|'error'|'info', detail?: ReactNode }
-    onLoadMore: () => void — "Load more" button callback
+    onLoadMore?: () => void — "Load more" button callback
     loading: boolean — skeleton shimmer
-    hasMore: boolean — shows "Load more" button
-    emptyState: ReactNode — empty state content
+    hasMore?: boolean — shows "Load more" button
+    emptyState?: ReactNode — empty state content
     compact: boolean — tighter spacing, no avatars, smaller text
     maxInitialItems: number — truncate with "Show all (N)" toggle
 
 ## Defaults
-    loading=false, compact=false
+    loading=false, compact=false, hasMore=false
 
 ## Example
 ```jsx

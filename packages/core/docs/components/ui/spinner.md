@@ -10,6 +10,7 @@
     variant: "filled" | "bare"
     delay: number (ms — render delay to avoid flicker on fast operations)
     onComplete: () => void (callback after success/error state transition)
+    className: string
 
 ## Defaults
     size: "md"

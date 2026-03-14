@@ -24,7 +24,7 @@
 ## Member Shape
     id: string
     name: string
-    image: string | null (optional)
+    image?: string | null
 
 ## Example
 ```jsx

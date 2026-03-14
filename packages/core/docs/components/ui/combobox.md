@@ -7,8 +7,8 @@
 ## Props
     options: ComboboxOption[] (REQUIRED) — { value: string, label: string, description?: string, icon?: ReactNode, disabled?: boolean }
     DISCRIMINATED UNION — type depends on `multiple` flag:
-    Single (default): multiple?: false, value: string, onValueChange: (value: string) => void
-    Multiple: multiple: true, value: string[], onValueChange: (value: string[]) => void
+    Single (default): multiple?: false, value?: string, onValueChange: (value: string) => void
+    Multiple: multiple: true, value?: string[], onValueChange: (value: string[]) => void
     placeholder: string (default: "Select...")
     searchPlaceholder: string (default: "Search...")
     emptyMessage: string (default: "No results found")

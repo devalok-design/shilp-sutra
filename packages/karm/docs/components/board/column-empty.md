@@ -24,7 +24,7 @@ Cycles through 4 SVG illustrations by column index:
 ```
 
 ## Gotchas
-- When isDropTarget=true, shows "Drop tasks here" text instead of the default empty state with "Add a task" button.
+- When isDropTarget=true, shows "Drop tasks here" text instead of the default empty state ("No tasks yet" + "Add a task" button).
 - Illustrations use currentColor (inherits text-surface-fg-subtle).
 - Forwards ref to outer div.
 

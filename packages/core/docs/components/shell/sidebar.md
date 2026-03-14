@@ -21,7 +21,7 @@ NavItem: { title: string, href: string, icon: ReactNode, exact?: boolean, badge?
 NavSubItem: { title: string, href: string, icon?: ReactNode, exact?: boolean }
 NavGroup: { label: string, items: NavItem[], action?: ReactNode }
 SidebarUser: { name: string, email?: string, image?: string | null, designation?: string, role?: string }
-SidebarFooterConfig: { links: Array<{ label: string, href: string }>, version: string | { label: string, href: string }, slot: ReactNode, promo: SidebarPromo }
+SidebarFooterConfig: { links?: Array<{ label: string, href: string }>, version?: string | { label: string, href: string }, slot?: ReactNode, promo?: SidebarPromo }
 SidebarPromo: { text: string, icon?: ReactNode, action?: { label: string, href?: string, onClick?: () => void }, onDismiss?: () => void }
 
 ## Defaults

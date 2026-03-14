@@ -5,7 +5,7 @@
 > All variant values and props verified from source CVA definitions.
 >
 > Package: @devalok/shilp-sutra
-> Version: 0.18.2
+> Version: 0.18.3
 
 ---
 
@@ -273,7 +273,7 @@ Note: getFormFieldA11y() was removed in favor of useFormField() hook.
 ## Props
     options: AutocompleteOption[] (REQUIRED) — { value: string, label: string }
     value: AutocompleteOption | null
-    onValueChange: (option: AutocompleteOption) => void
+    onValueChange?: (option: AutocompleteOption) => void
     placeholder: string
     emptyText: string (default: "No options")
     disabled: boolean
@@ -419,6 +419,7 @@ Note: getFormFieldA11y() was removed in favor of useFormField() hook.
 ## Gotchas
 - Banner is full-width (spans container). Alert is inline.
 - Renders role="alert" automatically
+- `onDismiss` fires after the exit animation completes, not immediately on dismiss button click
 
 ## Changes
 ### v0.3.1
@@ -707,6 +708,7 @@ import { BarChart } from '@devalok/shilp-sutra/ui/charts'
 - MUST use label prop — children are NOT rendered
 - `<Chip>text</Chip>` is WRONG — use `<Chip label="text" />`
 - Wrap dynamic chip lists in `<ChipGroup>` for exit animations
+- `color="primary"` will be renamed to `color="brand"` in v1.0 — use `color="primary"` for now
 
 ## Changes
 ### v0.4.2
@@ -832,8 +834,8 @@ import { BarChart } from '@devalok/shilp-sutra/ui/charts'
 ## Props
     options: ComboboxOption[] (REQUIRED) — { value: string, label: string, description?: string, icon?: ReactNode, disabled?: boolean }
     DISCRIMINATED UNION — type depends on `multiple` flag:
-    Single (default): multiple?: false, value: string, onValueChange: (value: string) => void
-    Multiple: multiple: true, value: string[], onValueChange: (value: string[]) => void
+    Single (default): multiple?: false, value?: string, onValueChange: (value: string) => void
+    Multiple: multiple: true, value?: string[], onValueChange: (value: string[]) => void
     placeholder: string (default: "Select...")
     searchPlaceholder: string (default: "Search...")
     emptyMessage: string (default: "No results found")
@@ -1362,7 +1364,7 @@ import { DataTableToolbar } from '@devalok/shilp-sutra/ui/data-table-toolbar'
 - HTML native "size" attribute is excluded — use CSS width instead
 - state="error" sets aria-invalid automatically
 - Inside FormField: auto-inherits state, aria-describedby, aria-required from context (explicit props override)
-- Resting border is border-subtle (soft); focus ring is ring-1 at 50% opacity (v0.12.0)
+- Resting border is border-subtle (soft); focus ring is `ring-1 ring-accent-7` (v0.12.0)
 - All sizes (sm, md, lg) use text-ds-md (14px) font — size only affects height and padding (v0.15.0)
 
 ## Changes
@@ -2163,6 +2165,7 @@ import { DataTableToolbar } from '@devalok/shilp-sutra/ui/data-table-toolbar'
     variant: "filled" | "bare"
     delay: number (ms — render delay to avoid flicker on fast operations)
     onComplete: () => void (callback after success/error state transition)
+    className: string
 
 ## Defaults
     size: "md"
@@ -2476,7 +2479,7 @@ import { DataTableToolbar } from '@devalok/shilp-sutra/ui/data-table-toolbar'
 
 ## Gotchas
 - variant goes on TabsList, NOT on individual TabsTrigger (propagates via context)
-- DO NOT put variant on TabsTrigger — it inherits from TabsList
+- Normally omit `variant` on TabsTrigger — it inherits from TabsList via context. You CAN set it per-trigger to override.
 
 ## Changes
 ### v0.18.0
@@ -2891,15 +2894,15 @@ export default function RootLayout({ children }) {
 
 ## Props
     items: ActivityItem[] (REQUIRED) — { id, actor?: { name, image? }, action: string|ReactNode, timestamp: Date|string, icon?, color?: 'default'|'success'|'warning'|'error'|'info', detail?: ReactNode }
-    onLoadMore: () => void — "Load more" button callback
+    onLoadMore?: () => void — "Load more" button callback
     loading: boolean — skeleton shimmer
-    hasMore: boolean — shows "Load more" button
-    emptyState: ReactNode — empty state content
+    hasMore?: boolean — shows "Load more" button
+    emptyState?: ReactNode — empty state content
     compact: boolean — tighter spacing, no avatars, smaller text
     maxInitialItems: number — truncate with "Show all (N)" toggle
 
 ## Defaults
-    loading=false, compact=false
+    loading=false, compact=false, hasMore=false
 
 ## Example
 ```jsx
@@ -2965,7 +2968,7 @@ export default function RootLayout({ children }) {
 - Category: composed
 
 ## Props
-    groups: CommandGroup[] — { label: string, items: CommandItem[] }
+    groups?: CommandGroup[] (default: []) — { label: string, items: CommandItem[] }
     placeholder: string (default: "Search or jump to...")
     onSearch: (query: string) => void
     emptyMessage: string (default: "No results found.")
@@ -2973,7 +2976,7 @@ export default function RootLayout({ children }) {
 CommandItem shape: { id, label, description?, icon?, shortcut?, onSelect: () => void }
 
 ## Defaults
-    placeholder="Search or jump to...", emptyMessage="No results found."
+    placeholder="Search or jump to...", emptyMessage="No results found.", groups=[]
 
 ## Example
 ```jsx
@@ -3012,7 +3015,7 @@ CommandItem shape: { id, label, description?, icon?, shortcut?, onSelect: () => 
     confirmText: string (default: "Confirm")
     cancelText: string (default: "Cancel")
     color: "default" | "error" (controls confirm button color)
-    loading: boolean (default: false, disables buttons and shows spinner)
+    loading: boolean (default: false, disables buttons and replaces confirm button text with 'Processing...')
     onConfirm: () => void | Promise<void> (REQUIRED)
 
 ## Defaults
@@ -3089,8 +3092,8 @@ const [open, setOpen] = useState(false)
 ## Props
 
 ### DatePicker
-    value: Date | null
-    onChange: (date: Date | null) => void
+    value?: Date | null
+    onChange?: (date: Date | null) => void
     placeholder: string (default: "Pick a date")
     formatStr: string (default: "MMM d, yyyy")
     minDate: Date
@@ -3099,9 +3102,9 @@ const [open, setOpen] = useState(false)
     className: string
 
 ### DateRangePicker
-    startDate: Date | null
-    endDate: Date | null
-    onChange: (range: { start: Date | null, end: Date | null }) => void
+    startDate?: Date | null
+    endDate?: Date | null
+    onChange?: (range: { start: Date | null, end: Date | null }) => void
     placeholder: string (default: "Pick a date range")
     formatStr: string (default: "MMM d, yyyy")
     minDate: Date
@@ -3122,8 +3125,8 @@ const [open, setOpen] = useState(false)
     className: string
 
 ### TimePicker
-    value: Date | null (time stored as a Date object)
-    onChange: (date: Date) => void
+    value?: Date | null (time stored as a Date object)
+    onChange?: (date: Date) => void
     format: "12h" | "24h" (default: "12h")
     minuteStep: number (default: 1)
     secondStep: number (default: 1)
@@ -3134,14 +3137,14 @@ const [open, setOpen] = useState(false)
 
 ### CalendarGrid
     currentMonth: Date (REQUIRED)
-    selected: Date | null
-    rangeStart: Date | null
-    rangeEnd: Date | null
-    hoverDate: Date | null
+    selected?: Date | null
+    rangeStart?: Date | null
+    rangeEnd?: Date | null
+    hoverDate?: Date | null
     onSelect: (date: Date) => void (REQUIRED)
-    onHover: (date: Date | null) => void
+    onHover?: (date: Date | null) => void
     onMonthChange: (date: Date) => void (REQUIRED)
-    onHeaderClick: () => void
+    onHeaderClick?: () => void
     disabledDates: (date: Date) => boolean
     minDate: Date
     maxDate: Date
@@ -3591,8 +3594,8 @@ MentionItem: { id: string; label: string; avatar?: string }
     view: "day" | "week" (REQUIRED)
     date: Date (REQUIRED — current day or any date in target week)
     events: ScheduleEvent[] (REQUIRED) — { id, title, start: Date, end: Date, color? }
-    onEventClick: (event: ScheduleEvent) => void
-    onSlotClick: (start: Date, end: Date) => void
+    onEventClick?: (event: ScheduleEvent) => void
+    onSlotClick?: (start: Date, end: Date) => void
     startHour: number (default: 8)
     endHour: number (default: 18, exclusive)
     slotDuration: number (minutes, default: 30)
@@ -3670,6 +3673,7 @@ Note: StatusBadge was server-safe prior to v0.18.0 but is NO LONGER server-safe 
 
 ## Defaults
     size="md", hideDot=false
+    When neither status nor color is passed, defaults to status='pending' styling
 
 ## Example
 ```jsx
@@ -3892,21 +3896,21 @@ import Link from 'next/link'
 
 ## Props
     notifications?: Notification[]
-    unreadCount: number (derived from notifications if not provided)
-    open: boolean (controlled mode)
-    onOpenChange: (open: boolean) => void
-    isLoading: boolean
-    hasMore: boolean
-    onFetchMore: () => void
-    onMarkRead: (id: string) => void
-    onMarkAllRead: () => void
-    onNavigate: (path: string) => void — called when a notification with a route is clicked
-    getNotificationRoute: (notification: Notification) => string | null — returns route for a notification; defaults to () => null
-    footerSlot: ReactNode — content rendered in a sticky footer below the scroll area
-    emptyState: ReactNode — replaces default empty state UI
-    headerActions: ReactNode — extra action buttons after "Mark all read"
-    popoverClassName: string — override default popover dimensions
-    onDismiss: (id: string) => void — when provided, each notification shows a dismiss button
+    unreadCount?: number (derived from notifications if not provided)
+    open?: boolean (controlled mode)
+    onOpenChange?: (open: boolean) => void
+    isLoading?: boolean
+    hasMore?: boolean
+    onFetchMore?: () => void
+    onMarkRead?: (id: string) => void
+    onMarkAllRead?: () => void
+    onNavigate?: (path: string) => void — called when a notification with a route is clicked
+    getNotificationRoute?: (notification: Notification) => string | null — returns route for a notification; defaults to () => null
+    footerSlot?: ReactNode — content rendered in a sticky footer below the scroll area
+    emptyState?: ReactNode — replaces default empty state UI
+    headerActions?: ReactNode — extra action buttons after "Mark all read"
+    popoverClassName?: string — override default popover dimensions
+    onDismiss?: (id: string) => void — when provided, each notification shows a dismiss button
 
 Notification: { id: string, title: string, body?: string | null, tier: 'INFO' | 'IMPORTANT' | 'CRITICAL', isRead: boolean, createdAt: string, entityType?: string | null, entityId?: string | null, projectId?: string | null, project?: { title: string } | null, actions?: NotificationAction[] }
 NotificationAction: { label: string, variant?: 'primary' | 'default' | 'danger', onClick: (id: string) => void }
@@ -4012,7 +4016,7 @@ NavItem: { title: string, href: string, icon: ReactNode, exact?: boolean, badge?
 NavSubItem: { title: string, href: string, icon?: ReactNode, exact?: boolean }
 NavGroup: { label: string, items: NavItem[], action?: ReactNode }
 SidebarUser: { name: string, email?: string, image?: string | null, designation?: string, role?: string }
-SidebarFooterConfig: { links: Array<{ label: string, href: string }>, version: string | { label: string, href: string }, slot: ReactNode, promo: SidebarPromo }
+SidebarFooterConfig: { links?: Array<{ label: string, href: string }>, version?: string | { label: string, href: string }, slot?: ReactNode, promo?: SidebarPromo }
 SidebarPromo: { text: string, icon?: ReactNode, action?: { label: string, href?: string, onClick?: () => void }, onDismiss?: () => void }
 
 ## Defaults

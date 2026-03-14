@@ -51,6 +51,22 @@
     setHighlightMyTasks: (on: boolean) => void
     activeTask: BoardTask | null
     setActiveTask: (task: BoardTask | null) => void
+    onTaskMove: (taskId: string, toColumnId: string, newOrder: number) => void
+    onTaskAdd: (columnId: string, options: NewTaskOptions) => void
+    onBulkAction: (action: BulkAction) => void
+    onColumnReorder: (columnId: string, newIndex: number) => void
+    onColumnRename: (columnId: string, name: string) => void
+    onColumnDelete: (columnId: string) => void
+    onColumnToggleVisibility: (columnId: string, visible: boolean) => void
+    onColumnWipLimitChange: (columnId: string, limit: number | null) => void
+    onClickTask: (taskId: string) => void
+    onAddColumn: () => void
+    onQuickPriorityChange: (taskId: string, priority: string) => void
+    onQuickAssign: (taskId: string, userId: string) => void
+    onQuickDueDateChange: (taskId: string, date: string | null) => void
+    onQuickLabelAdd: (taskId: string, label: string) => void
+    onQuickVisibilityChange: (taskId: string, visibility: string) => void
+    onQuickDelete: (taskId: string) => void
 
 ## Example
 ```jsx

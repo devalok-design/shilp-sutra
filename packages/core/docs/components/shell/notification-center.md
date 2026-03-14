@@ -6,21 +6,21 @@
 
 ## Props
     notifications?: Notification[]
-    unreadCount: number (derived from notifications if not provided)
-    open: boolean (controlled mode)
-    onOpenChange: (open: boolean) => void
-    isLoading: boolean
-    hasMore: boolean
-    onFetchMore: () => void
-    onMarkRead: (id: string) => void
-    onMarkAllRead: () => void
-    onNavigate: (path: string) => void — called when a notification with a route is clicked
-    getNotificationRoute: (notification: Notification) => string | null — returns route for a notification; defaults to () => null
-    footerSlot: ReactNode — content rendered in a sticky footer below the scroll area
-    emptyState: ReactNode — replaces default empty state UI
-    headerActions: ReactNode — extra action buttons after "Mark all read"
-    popoverClassName: string — override default popover dimensions
-    onDismiss: (id: string) => void — when provided, each notification shows a dismiss button
+    unreadCount?: number (derived from notifications if not provided)
+    open?: boolean (controlled mode)
+    onOpenChange?: (open: boolean) => void
+    isLoading?: boolean
+    hasMore?: boolean
+    onFetchMore?: () => void
+    onMarkRead?: (id: string) => void
+    onMarkAllRead?: () => void
+    onNavigate?: (path: string) => void — called when a notification with a route is clicked
+    getNotificationRoute?: (notification: Notification) => string | null — returns route for a notification; defaults to () => null
+    footerSlot?: ReactNode — content rendered in a sticky footer below the scroll area
+    emptyState?: ReactNode — replaces default empty state UI
+    headerActions?: ReactNode — extra action buttons after "Mark all read"
+    popoverClassName?: string — override default popover dimensions
+    onDismiss?: (id: string) => void — when provided, each notification shows a dismiss button
 
 Notification: { id: string, title: string, body?: string | null, tier: 'INFO' | 'IMPORTANT' | 'CRITICAL', isRead: boolean, createdAt: string, entityType?: string | null, entityId?: string | null, projectId?: string | null, project?: { title: string } | null, actions?: NotificationAction[] }
 NotificationAction: { label: string, variant?: 'primary' | 'default' | 'danger', onClick: (id: string) => void }

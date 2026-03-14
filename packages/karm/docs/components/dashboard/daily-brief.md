@@ -11,7 +11,7 @@
     unavailable: boolean (default: false)
     collapsible: boolean (default: true)
     defaultCollapsed: boolean (default: false)
-    title: string (default: "Morning Brief")
+    title?: string (default: "Morning Brief")
     className: string
 
 ## Related Types

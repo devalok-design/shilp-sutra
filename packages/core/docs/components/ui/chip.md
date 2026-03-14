@@ -30,6 +30,7 @@
 - MUST use label prop — children are NOT rendered
 - `<Chip>text</Chip>` is WRONG — use `<Chip label="text" />`
 - Wrap dynamic chip lists in `<ChipGroup>` for exit animations
+- `color="primary"` will be renamed to `color="brand"` in v1.0 — use `color="primary"` for now
 
 ## Changes
 ### v0.4.2

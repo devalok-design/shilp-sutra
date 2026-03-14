@@ -26,7 +26,7 @@
 - HTML native "size" attribute is excluded — use CSS width instead
 - state="error" sets aria-invalid automatically
 - Inside FormField: auto-inherits state, aria-describedby, aria-required from context (explicit props override)
-- Resting border is border-subtle (soft); focus ring is ring-1 at 50% opacity (v0.12.0)
+- Resting border is border-subtle (soft); focus ring is `ring-1 ring-accent-7` (v0.12.0)
 - All sizes (sm, md, lg) use text-ds-md (14px) font — size only affects height and padding (v0.15.0)
 
 ## Changes

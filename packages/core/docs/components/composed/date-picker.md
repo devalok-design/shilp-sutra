@@ -7,8 +7,8 @@
 ## Props
 
 ### DatePicker
-    value: Date | null
-    onChange: (date: Date | null) => void
+    value?: Date | null
+    onChange?: (date: Date | null) => void
     placeholder: string (default: "Pick a date")
     formatStr: string (default: "MMM d, yyyy")
     minDate: Date
@@ -17,9 +17,9 @@
     className: string
 
 ### DateRangePicker
-    startDate: Date | null
-    endDate: Date | null
-    onChange: (range: { start: Date | null, end: Date | null }) => void
+    startDate?: Date | null
+    endDate?: Date | null
+    onChange?: (range: { start: Date | null, end: Date | null }) => void
     placeholder: string (default: "Pick a date range")
     formatStr: string (default: "MMM d, yyyy")
     minDate: Date
@@ -40,8 +40,8 @@
     className: string
 
 ### TimePicker
-    value: Date | null (time stored as a Date object)
-    onChange: (date: Date) => void
+    value?: Date | null (time stored as a Date object)
+    onChange?: (date: Date) => void
     format: "12h" | "24h" (default: "12h")
     minuteStep: number (default: 1)
     secondStep: number (default: 1)
@@ -52,14 +52,14 @@
 
 ### CalendarGrid
     currentMonth: Date (REQUIRED)
-    selected: Date | null
-    rangeStart: Date | null
-    rangeEnd: Date | null
-    hoverDate: Date | null
+    selected?: Date | null
+    rangeStart?: Date | null
+    rangeEnd?: Date | null
+    hoverDate?: Date | null
     onSelect: (date: Date) => void (REQUIRED)
-    onHover: (date: Date | null) => void
+    onHover?: (date: Date | null) => void
     onMonthChange: (date: Date) => void (REQUIRED)
-    onHeaderClick: () => void
+    onHeaderClick?: () => void
     disabledDates: (date: Date) => boolean
     minDate: Date
     maxDate: Date

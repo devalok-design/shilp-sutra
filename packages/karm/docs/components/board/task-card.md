@@ -26,9 +26,13 @@
     selected: boolean (default: false) — adds accent ring
     dimmed: boolean (default: false) — reduces opacity
 
+> **Note:** These are INTERNAL visual states derived from board context (selectedTaskIds, focusedTaskId, highlightMyTasks, drag state, task.isBlocked). Consumers only pass `task: BoardTask` and standard HTML attributes — the component resolves variant values internally.
+
 ## Compact Card Variants (CVA)
     selected: boolean (default: false)
     dimmed: boolean (default: false)
+
+> **Note:** Same as above — these are INTERNAL visual states. Consumers only pass `task: BoardTask` and standard HTML attributes.
 
 ## Example
 ```jsx

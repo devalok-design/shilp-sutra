@@ -23,6 +23,7 @@
 ## Gotchas
 - Banner is full-width (spans container). Alert is inline.
 - Renders role="alert" automatically
+- `onDismiss` fires after the exit animation completes, not immediately on dismiss button click
 
 ## Changes
 ### v0.3.1

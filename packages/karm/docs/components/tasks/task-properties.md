@@ -72,6 +72,7 @@
 - onUpdate field values: 'columnId', 'ownerId', 'priority', 'dueDate', 'labels', 'visibility'.
 - Uses MemberPicker from core composed library for owner/assignee selection.
 - onConfirmVisibilityChange is a guard hook: when provided and user switches to EVERYONE, it is called instead of onUpdate, allowing a confirmation dialog.
+- Priority and Due Date rows are always rendered as interactive popovers regardless of readOnly. Enforcement of readOnly for these fields is done at the callback level. If using TaskProperties standalone in readOnly mode, supply a no-op onUpdate to prevent unintended changes.
 - Forwards ref to outer div.
 
 ## Changes

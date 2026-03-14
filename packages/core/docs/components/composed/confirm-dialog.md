@@ -12,7 +12,7 @@
     confirmText: string (default: "Confirm")
     cancelText: string (default: "Cancel")
     color: "default" | "error" (controls confirm button color)
-    loading: boolean (default: false, disables buttons and shows spinner)
+    loading: boolean (default: false, disables buttons and replaces confirm button text with 'Processing...')
     onConfirm: () => void | Promise<void> (REQUIRED)
 
 ## Defaults

@@ -483,6 +483,11 @@
       "default": "./dist/shell/top-bar.js",
       "types": "./dist/shell/top-bar.d.ts"
     },
+    "./shell/command-registry": {
+      "import": "./dist/shell/command-registry.js",
+      "default": "./dist/shell/command-registry.js",
+      "types": "./dist/shell/command-registry.d.ts"
+    },
     "./hooks": {
       "import": "./dist/hooks/index.js",
       "default": "./dist/hooks/index.js",
@@ -509,6 +514,12 @@
       "default": "./dist/tailwind/index.js",
       "types": "./dist/tailwind/index.d.ts"
     },
+    "./tailwind/preset": {
+      "require": "./dist/tailwind/index.cjs",
+      "import": "./dist/tailwind/preset.js",
+      "default": "./dist/tailwind/preset.js",
+      "types": "./dist/tailwind/preset.d.ts"
+    },
     "./utils": {
       "import": "./dist/ui/lib/utils.js",
       "default": "./dist/ui/lib/utils.js",
@@ -519,6 +530,16 @@
       "import": "./dist/ui/lib/utils.js",
       "default": "./dist/ui/lib/utils.js",
       "types": "./dist/ui/lib/utils.d.ts"
+    },
+    "./ui/lib/motion": {
+      "import": "./dist/ui/lib/motion.js",
+      "default": "./dist/ui/lib/motion.js",
+      "types": "./dist/ui/lib/motion.d.ts"
+    },
+    "./ui/lib/date-utils": {
+      "import": "./dist/ui/lib/date-utils.js",
+      "default": "./dist/ui/lib/date-utils.js",
+      "types": "./dist/ui/lib/date-utils.d.ts"
     },
     "./composed/lib/string-utils": {
       "import": "./dist/composed/lib/string-utils.js",
@@ -544,8 +565,10 @@
     "llms-full.txt"
   ],
   "scripts": {
-    "build": "vite build && pnpm build:tokens && node scripts/fix-dts-primitives.mjs && node scripts/inject-use-client.mjs && node scripts/build-tailwind-cjs.mjs",
+    "build": "vite build && pnpm build:tokens && node scripts/fix-dts-primitives.mjs && node scripts/inject-use-client.mjs && node scripts/build-tailwind-cjs.mjs && pnpm build:docs",
     "build:tokens": "node scripts/copy-tokens.mjs",
+    "build:docs": "node scripts/build-component-docs.mjs",
+    "build:docs:check": "node scripts/build-component-docs.mjs --check",
     "typecheck": "tsc --noEmit",
     "lint": "eslint src/",
     "test": "vitest run",

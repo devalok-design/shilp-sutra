@@ -1,0 +1,48 @@
+# BottomNavbar
+
+- Import: @devalok/shilp-sutra/shell/bottom-navbar
+- Server-safe: No
+- Category: shell
+
+## Props
+    currentPath: string
+    user: BottomNavbarUser | null (optional, not required to render)
+    primaryItems: BottomNavItem[] (max 4 recommended)
+    moreItems: BottomNavItem[] (overflow items in "More" menu)
+    className: string
+
+BottomNavItem: { title: string, href: string, icon: ReactNode, exact?: boolean, badge?: number }
+BottomNavbarUser: { name: string, role?: string }
+
+## Defaults
+    None
+
+## Example
+```jsx
+<BottomNavbar
+  currentPath="/dashboard"
+  primaryItems={[
+    { title: 'Home', href: '/', icon: <IconHome /> },
+    { title: 'Tasks', href: '/tasks', icon: <IconChecklist /> },
+  ]}
+/>
+```
+
+## Gotchas
+- Designed for mobile viewports — fixed to bottom of screen
+- Max 4 `primaryItems` recommended; overflow goes in `moreItems` shown in a "More" sheet
+- Use with `useIsMobile()` hook to conditionally render instead of AppSidebar
+- Requires LinkProvider for framework-specific link components (e.g., Next.js Link)
+
+## Changes
+### v0.18.0
+- **Fixed** Removed incorrect `role="button"` and `tabIndex` from overlay
+
+### v0.16.0
+- **Added** `badge?: number` on `BottomNavItem` — notification count badge (red dot, 99+ cap)
+
+### v0.1.1
+- **Changed** Decoupled from Next.js via LinkProvider
+
+### v0.1.0
+- **Added** Initial release

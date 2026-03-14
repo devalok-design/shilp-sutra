@@ -15,28 +15,12 @@ import {
   VisibilityWarning,
 } from './tabs'
 
+import type { Comment } from './task-types'
+export type { Comment }
+
 // ============================================================
 // Types
 // ============================================================
-
-interface CommentAuthor {
-  id: string
-  name: string
-  email?: string
-  image?: string | null
-}
-
-export interface Comment {
-  id: string
-  taskId: string
-  authorType: 'INTERNAL' | 'CLIENT'
-  authorId: string
-  content: string
-  createdAt: string
-  updatedAt: string
-  internalAuthor?: CommentAuthor | null
-  clientAuthor?: { id: string; name: string; email: string } | null
-}
 
 interface ConversationTabProps extends React.HTMLAttributes<HTMLDivElement> {
   comments: Comment[]

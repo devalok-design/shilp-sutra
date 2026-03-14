@@ -10,28 +10,12 @@ import {
   FileItem,
 } from './tabs'
 
+import type { TaskFile } from './task-types'
+export type { TaskFile }
+
 // ============================================================
 // Types
 // ============================================================
-
-export interface TaskFile {
-  id: string
-  taskId: string
-  title: string
-  fileUrl: string
-  downloadUrl?: string
-  fileType: string | null
-  uploadedBy: {
-    id: string
-    name: string
-    image: string | null
-  }
-  createdAt: string
-  /** External link (e.g. Google Drive) displayed alongside the download button */
-  externalUrl?: string
-  /** Label for the external link tooltip (default: "Open externally") */
-  externalLabel?: string
-}
 
 interface FilesTabProps extends React.HTMLAttributes<HTMLDivElement> {
   files: TaskFile[]

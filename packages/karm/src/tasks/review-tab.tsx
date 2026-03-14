@@ -9,32 +9,12 @@ import {
   ReviewRequestButton,
 } from './tabs'
 
+import type { ReviewRequest, Member } from './task-types'
+export type { ReviewRequest }
+
 // ============================================================
 // Types
 // ============================================================
-
-interface ReviewUser {
-  id: string
-  name: string
-  image: string | null
-}
-
-export interface ReviewRequest {
-  id: string
-  taskId: string
-  status: 'PENDING' | 'APPROVED' | 'CHANGES_REQUESTED' | 'REJECTED'
-  feedback: string | null
-  requestedBy: ReviewUser
-  reviewer: ReviewUser
-  createdAt: string
-  updatedAt: string
-}
-
-interface Member {
-  id: string
-  name: string
-  image?: string | null
-}
 
 interface ReviewTabProps extends React.HTMLAttributes<HTMLDivElement> {
   reviews: ReviewRequest[]
@@ -45,6 +25,8 @@ interface ReviewTabProps extends React.HTMLAttributes<HTMLDivElement> {
     status: ReviewRequest['status'],
     feedback?: string,
   ) => void
+  /** When true, hide ReviewRequestButton and disable status updates */
+  readOnly?: boolean
 }
 
 // ============================================================
@@ -58,6 +40,7 @@ const ReviewTab = React.forwardRef<HTMLDivElement, ReviewTabProps>(
   onRequestReview,
   onUpdateStatus,
   className,
+  readOnly = false,
   ...props
 }, ref) {
   return (
@@ -68,7 +51,7 @@ const ReviewTab = React.forwardRef<HTMLDivElement, ReviewTabProps>(
             <ReviewCard
               key={review.id}
               review={review}
-              onUpdateStatus={onUpdateStatus as (reviewId: string, status: string, feedback?: string) => void}
+              onUpdateStatus={readOnly ? undefined : onUpdateStatus}
             />
           ))}
         </div>
@@ -81,11 +64,13 @@ const ReviewTab = React.forwardRef<HTMLDivElement, ReviewTabProps>(
         />
       )}
 
-      {/* Request Review */}
-      <ReviewRequestButton
-        members={members}
-        onRequest={onRequestReview}
-      />
+      {/* Request Review -- hidden in readOnly mode */}
+      {!readOnly && (
+        <ReviewRequestButton
+          members={members}
+          onRequest={onRequestReview}
+        />
+      )}
     </div>
   )
 },

@@ -35,6 +35,7 @@ const TaskLabelEditor = React.forwardRef<HTMLDivElement, TaskLabelEditorProps>(
     const [showInput, setShowInput] = React.useState(false)
     const [suggestionOpen, setSuggestionOpen] = React.useState(false)
     const inputRef = React.useRef<HTMLInputElement>(null)
+    const skipBlurRef = React.useRef(false)
 
     // Build a color map from availableLabels for quick lookup
     const colorMap = React.useMemo(() => {
@@ -88,7 +89,6 @@ const TaskLabelEditor = React.forwardRef<HTMLDivElement, TaskLabelEditorProps>(
 
     const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
       setInputValue(e.target.value)
-      setSuggestionOpen(e.target.value.trim().length > 0 && suggestions.length > 0)
     }
 
     // Re-evaluate suggestion popover when suggestions change
@@ -141,15 +141,16 @@ const TaskLabelEditor = React.forwardRef<HTMLDivElement, TaskLabelEditorProps>(
                     onChange={handleInputChange}
                     onKeyDown={handleKeyDown}
                     onBlur={() => {
-                      // Small delay to allow click on suggestion
-                      setTimeout(() => {
-                        if (inputValue.trim()) {
-                          addLabel(inputValue)
-                        } else {
-                          setShowInput(false)
-                          setSuggestionOpen(false)
-                        }
-                      }, 150)
+                      if (skipBlurRef.current) {
+                        skipBlurRef.current = false
+                        return
+                      }
+                      if (inputValue.trim()) {
+                        addLabel(inputValue)
+                      } else {
+                        setShowInput(false)
+                        setSuggestionOpen(false)
+                      }
                     }}
                     placeholder="Label name"
                     aria-label="New label name"
@@ -172,6 +173,7 @@ const TaskLabelEditor = React.forwardRef<HTMLDivElement, TaskLabelEditorProps>(
                       type="button"
                       onMouseDown={(e) => {
                         e.preventDefault()
+                        skipBlurRef.current = true
                         addLabel(opt.name)
                       }}
                       className="flex w-full items-center gap-ds-03 rounded-ds-md px-ds-03 py-ds-02b text-left text-ds-sm transition-colors hover:bg-surface-3"

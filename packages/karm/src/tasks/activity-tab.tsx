@@ -9,21 +9,12 @@ import {
   ActivityEntry,
 } from './tabs'
 
+import type { AuditLogEntry } from './task-types'
+export type { AuditLogEntry }
+
 // ============================================================
 // Types
 // ============================================================
-
-export interface AuditLogEntry {
-  id: string
-  timestamp: string
-  actorType: 'USER' | 'CLIENT' | 'SYSTEM' | 'AGENT'
-  actorId: string | null
-  action: string
-  entityType: string
-  entityId: string
-  projectId: string | null
-  metadata: Record<string, unknown> | null
-}
 
 interface ActivityTabProps extends React.HTMLAttributes<HTMLDivElement> {
   activities: AuditLogEntry[]

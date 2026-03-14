@@ -32,7 +32,7 @@ function formatDate(dateStr: string) {
 
 export interface ReviewCardProps extends React.HTMLAttributes<HTMLDivElement> {
   review: ReviewRequest
-  onUpdateStatus?: (reviewId: string, status: string, feedback?: string) => void
+  onUpdateStatus?: (reviewId: string, status: ReviewRequest['status'], feedback?: string) => void
 }
 
 // ============================================================

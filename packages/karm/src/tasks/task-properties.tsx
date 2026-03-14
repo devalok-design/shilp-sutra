@@ -29,23 +29,12 @@ import { getInitials } from '@/composed/lib/string-utils'
 import { MemberPicker } from '@/composed/member-picker'
 import { PRIORITY_LABELS, PRIORITY_DOT_COLORS } from './task-constants'
 
+import type { Member, Column } from './task-types'
+export type { Member, Column }
+
 // ============================================================
 // Types
 // ============================================================
-
-export interface Member {
-  id: string
-  name: string
-  email?: string
-  image?: string | null
-}
-
-export interface Column {
-  id: string
-  name: string
-  isDefault?: boolean
-  isTerminal?: boolean
-}
 
 interface TaskData {
   id: string

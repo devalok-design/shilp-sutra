@@ -7,13 +7,16 @@ import {
   IconX,
   IconMessage,
 } from '@tabler/icons-react'
+import type { ReviewRequest } from '../task-types'
+
+type ReviewStatus = ReviewRequest['status']
 
 // ============================================================
 // Constants
 // ============================================================
 
 const RESPONSE_OPTIONS: {
-  status: string
+  status: ReviewStatus
   label: string
   icon: React.ElementType
 }[] = [
@@ -28,7 +31,7 @@ const RESPONSE_OPTIONS: {
 
 export interface ReviewResponseFormProps extends Omit<React.HTMLAttributes<HTMLDivElement>, 'onSubmit'> {
   reviewId: string
-  onSubmit: (id: string, status: string, feedback?: string) => void
+  onSubmit: (id: string, status: ReviewStatus, feedback?: string) => void
 }
 
 // ============================================================
@@ -40,7 +43,7 @@ const ReviewResponseForm = React.forwardRef<HTMLDivElement, ReviewResponseFormPr
     const [feedback, setFeedback] = React.useState('')
     const [isExpanded, setIsExpanded] = React.useState(false)
 
-    const handleRespond = (status: string) => {
+    const handleRespond = (status: ReviewStatus) => {
       onSubmit(reviewId, status, feedback || undefined)
       setFeedback('')
       setIsExpanded(false)

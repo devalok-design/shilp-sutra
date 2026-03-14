@@ -11,20 +11,12 @@ import {
   SubtaskAddForm,
 } from './tabs'
 
+import type { Subtask } from './task-types'
+export type { Subtask }
+
 // ============================================================
 // Types
 // ============================================================
-
-export interface Subtask {
-  id: string
-  title: string
-  priority: 'LOW' | 'MEDIUM' | 'HIGH' | 'URGENT'
-  columnId: string
-  column?: { id: string; name: string; isTerminal?: boolean }
-  assignees: {
-    user: { id: string; name: string; image?: string | null }
-  }[]
-}
 
 interface SubtasksTabProps extends React.HTMLAttributes<HTMLDivElement> {
   subtasks: Subtask[]

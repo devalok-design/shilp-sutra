@@ -5,7 +5,7 @@
 - Category: ui
 
 ## Props
-    size: "sm" | "md" | "lg" | "xl"
+    size: "sm" | "md" | "lg"
     state: "spinning" | "success" | "error"
     variant: "filled" | "bare"
     delay: number (ms — render delay to avoid flicker on fast operations)

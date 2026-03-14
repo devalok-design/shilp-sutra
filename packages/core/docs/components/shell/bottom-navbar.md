@@ -5,11 +5,11 @@
 - Category: shell
 
 ## Props
-    currentPath: string
-    user: BottomNavbarUser | null (optional, not required to render)
-    primaryItems: BottomNavItem[] (max 4 recommended)
-    moreItems: BottomNavItem[] (overflow items in "More" menu)
-    className: string
+    currentPath?: string (optional)
+    user?: BottomNavbarUser | null (optional)
+    primaryItems?: BottomNavItem[] (max 4 recommended, optional)
+    moreItems?: BottomNavItem[] (overflow items in "More" menu, optional)
+    className?: string
 
 BottomNavItem: { title: string, href: string, icon: ReactNode, exact?: boolean, badge?: number }
 BottomNavbarUser: { name: string, role?: string }

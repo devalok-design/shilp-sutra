@@ -5,14 +5,14 @@
 - Category: shell
 
 ## Props
-    user: AppCommandPaletteUser | null — { name, role? }
-    isAdmin: boolean (shows admin command groups regardless of user.role; takes precedence over role-based detection)
-    extraGroups: CommandGroup[]
-    onNavigate: (path: string) => void
-    onSearch: (query: string) => void
-    searchResults: SearchResult[]
-    isSearching: boolean (shows loading state while search is in progress)
-    onSearchResultSelect: (result: SearchResult) => void
+    user?: AppCommandPaletteUser | null — { name, role? } (optional)
+    isAdmin?: boolean (shows admin command groups regardless of user.role; takes precedence over role-based detection)
+    extraGroups?: CommandGroup[]
+    onNavigate?: (path: string) => void
+    onSearch?: (query: string) => void
+    searchResults?: SearchResult[]
+    isSearching?: boolean (shows loading state while search is in progress)
+    onSearchResultSelect?: (result: SearchResult) => void
 
 SearchResult: { id: string, title: string, snippet?: string, entityType: string, projectId?: string | null, metadata?: Record<string, unknown> }
 AppCommandPaletteUser: { name: string, role?: string }

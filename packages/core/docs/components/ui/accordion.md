@@ -36,7 +36,7 @@
 
 ## Changes
 ### v0.18.0
-- **Changed** Accordion height + fade animations migrated to Framer Motion
+- **Changed** Accordion content fade animation migrated to Framer Motion (height animation still uses CSS keyframes)
 
 ### v0.13.0
 - **Added** `accordion-down` and `accordion-up` keyframes added to Tailwind preset using Radix CSS custom properties

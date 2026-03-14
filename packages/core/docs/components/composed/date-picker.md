@@ -123,7 +123,7 @@ PresetKey: 'today' | 'yesterday' | 'last7days' | 'last30days' | 'thisMonth' | 'l
 ### v0.18.0
 - **Fixed** Added `aria-label` to DatePicker/DateRangePicker trigger buttons
 
-### v0.5.0
+### v0.4.2
 - **Changed** DateRangePicker default `formatStr` from `'MMM d'` to `'MMM d, yyyy'`
 
 ### v0.1.0

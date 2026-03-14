@@ -18,9 +18,15 @@
 ## Defaults
     orientation: "horizontal"
 
+### StepperContent
+    activeStep: number (REQUIRED, 0-indexed — matches Stepper's activeStep)
+    children: ReactNode (one child per step, only the active one is visible)
+    className: string
+
 ## Compound Components
     Stepper (root)
       Step (label, description, icon)
+    StepperContent (content panel, animates active step)
 
 ## Example
 ```jsx

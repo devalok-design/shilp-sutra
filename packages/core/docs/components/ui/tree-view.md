@@ -17,8 +17,10 @@
 
 ### TreeItem
     itemId: string (REQUIRED)
-    label: string
+    label: ReactNode
+    secondaryLabel: ReactNode
     icon: ReactNode
+    actions: ReactNode
     disabled: boolean
     depth: number
     children: ReactNode (nested TreeItems)

@@ -15,6 +15,8 @@
 ## Defaults
     value: 0
     step: 1
+    min: Number.MIN_SAFE_INTEGER
+    max: Number.MAX_SAFE_INTEGER
 
 ## Example
 ```jsx

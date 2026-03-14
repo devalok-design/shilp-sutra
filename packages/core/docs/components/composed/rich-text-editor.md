@@ -67,5 +67,5 @@ MentionItem: { id: string; label: string; avatar?: string }
 ### v0.7.0
 - **Added** Initial release — full-featured tiptap-based rich text editing with toolbar, mentions, emoji, image, alignment
 
-### v0.3.0
+### v0.1.1
 - **Fixed** Added content sync effect so editor updates when `content` prop changes externally

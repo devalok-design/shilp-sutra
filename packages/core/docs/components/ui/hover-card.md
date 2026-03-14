@@ -28,8 +28,5 @@
 ### v0.14.0
 - **Changed** z-index promoted from `z-dropdown` (1000) to `z-popover` (1400) — fixes content rendering behind Sheet/Dialog overlays
 
-### v0.4.2
-- **Added** `HoverCardContentProps` type export
-
 ### v0.1.0
 - **Added** Initial release

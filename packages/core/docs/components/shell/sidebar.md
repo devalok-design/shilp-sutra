@@ -57,6 +57,9 @@ SidebarPromo: { text: string, icon: ReactNode, action: { label: string, href?: s
 - Badge numbers > 99 display as "99+"
 
 ## Changes
+### v0.18.0
+- **Fixed** `bg-interactive-subtle` changed to `bg-accent-2` (OKLCH migration)
+
 ### v0.16.0
 - **Added** `preFooterClassName?: string` — custom className on preFooterSlot wrapper
 

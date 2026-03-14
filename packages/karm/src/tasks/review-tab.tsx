@@ -2,23 +2,12 @@
 
 import * as React from 'react'
 import { cn } from '@/ui/lib/utils'
-import {
-  Avatar,
-  AvatarImage,
-  AvatarFallback,
-} from '@/ui/avatar'
-import { Badge } from '@/ui/badge'
 import { EmptyState } from '@/composed/empty-state'
-import { MemberPicker } from '@/composed/member-picker'
+import { IconGitPullRequest } from '@tabler/icons-react'
 import {
-  IconGitPullRequest,
-  IconPlus,
-  IconCheck,
-  IconX,
-  IconMessage,
-} from '@tabler/icons-react'
-import { getInitials } from '@/composed/lib/string-utils'
-import { REVIEW_STATUS_MAP } from './task-constants'
+  ReviewCard,
+  ReviewRequestButton,
+} from './tabs'
 
 // ============================================================
 // Types
@@ -59,29 +48,6 @@ interface ReviewTabProps extends React.HTMLAttributes<HTMLDivElement> {
 }
 
 // ============================================================
-// Helpers
-// ============================================================
-
-function formatDate(dateStr: string) {
-  return new Date(dateStr).toLocaleDateString('en-IN', {
-    month: 'short',
-    day: 'numeric',
-    hour: 'numeric',
-    minute: '2-digit',
-  })
-}
-
-const RESPONSE_OPTIONS: {
-  status: ReviewRequest['status']
-  label: string
-  icon: React.ElementType
-}[] = [
-  { status: 'APPROVED', label: 'Approve', icon: IconCheck },
-  { status: 'CHANGES_REQUESTED', label: 'Request Changes', icon: IconMessage },
-  { status: 'REJECTED', label: 'Reject', icon: IconX },
-]
-
-// ============================================================
 // Review Tab
 // ============================================================
 
@@ -94,145 +60,17 @@ const ReviewTab = React.forwardRef<HTMLDivElement, ReviewTabProps>(
   className,
   ...props
 }, ref) {
-  const [feedbackMap, setFeedbackMap] = React.useState<Record<string, string>>({})
-  const [expandedId, setExpandedId] = React.useState<string | null>(null)
-
-  const pickerMembers = React.useMemo(
-    () => members.map((m) => ({ id: m.id, name: m.name, avatar: m.image ?? undefined })),
-    [members],
-  )
-
-  const handleRespond = (
-    reviewId: string,
-    status: ReviewRequest['status'],
-  ) => {
-    onUpdateStatus(reviewId, status, feedbackMap[reviewId])
-    setFeedbackMap((prev) => {
-      const next = { ...prev }
-      delete next[reviewId]
-      return next
-    })
-    setExpandedId(null)
-  }
-
   return (
     <div ref={ref} className={cn('flex flex-col', className)} {...props}>
       {reviews.length > 0 ? (
         <div className="space-y-ds-04">
-          {reviews.map((review) => {
-            const statusInfo = REVIEW_STATUS_MAP[review.status]
-            const isExpanded = expandedId === review.id
-
-            return (
-              <div
-                key={review.id}
-                className="rounded-ds-lg border border-surface-border-strong bg-surface-1 shadow-01 p-ds-04"
-              >
-                {/* Header */}
-                <div className="flex items-center gap-ds-03">
-                  <Avatar className="h-ds-xs w-ds-xs shrink-0">
-                    {review.reviewer.image && (
-                      <AvatarImage
-                        src={review.reviewer.image}
-                        alt={review.reviewer.name}
-                      />
-                    )}
-                    <AvatarFallback className="bg-surface-3 text-ds-xs font-semibold text-accent-fg">
-                      {getInitials(review.reviewer.name)}
-                    </AvatarFallback>
-                  </Avatar>
-                  <div className="flex-1 min-w-0">
-                    <span className="text-ds-md font-medium text-surface-fg">
-                      {review.reviewer.name}
-                    </span>
-                    <span className="ml-ds-03 text-ds-sm text-surface-fg-subtle">
-                      requested by {review.requestedBy.name}
-                    </span>
-                  </div>
-                  <Badge
-                    color={statusInfo.color}
-                  >
-                    {statusInfo.label}
-                  </Badge>
-                </div>
-
-                {/* Feedback */}
-                {review.feedback && (
-                  <div className="mt-ds-03 rounded-ds-md bg-surface-2 px-ds-04 py-ds-03">
-                    <p className="text-ds-sm text-surface-fg-muted">
-                      {review.feedback}
-                    </p>
-                  </div>
-                )}
-
-                {/* Actions for pending reviews */}
-                {review.status === 'PENDING' && (
-                  <div className="mt-ds-03">
-                    {isExpanded ? (
-                      <div className="space-y-ds-03">
-                        <textarea
-                          value={feedbackMap[review.id] || ''}
-                          onChange={(e) =>
-                            setFeedbackMap((prev) => ({
-                              ...prev,
-                              [review.id]: e.target.value,
-                            }))
-                          }
-                          placeholder="Add feedback (optional)..."
-                          rows={2}
-                          className="w-full resize-none rounded-ds-md border border-surface-border-strong bg-transparent px-ds-03 py-ds-03 text-ds-sm text-surface-fg placeholder:text-surface-fg-subtle outline-none focus:border-surface-border"
-                        />
-                        <div className="flex items-center gap-ds-02b">
-                          {RESPONSE_OPTIONS.map((opt) => {
-                            const Icon = opt.icon
-                            return (
-                              <button
-                                key={opt.status}
-                                type="button"
-                                onClick={() => handleRespond(review.id, opt.status)}
-                                className={cn(
-                                  'inline-flex items-center gap-ds-02 rounded-ds-md px-ds-03 py-ds-02 text-ds-sm font-semibold transition-colors',
-                                  opt.status === 'APPROVED' &&
-                                    'bg-success-3 text-success-11 hover:opacity-90',
-                                  opt.status === 'CHANGES_REQUESTED' &&
-                                    'bg-warning-3 text-warning-11 hover:opacity-90',
-                                  opt.status === 'REJECTED' &&
-                                    'bg-error-3 text-error-11 hover:opacity-90',
-                                )}
-                              >
-                                <Icon className="h-3 w-3" stroke={2} />
-                                {opt.label}
-                              </button>
-                            )
-                          })}
-                          <button
-                            type="button"
-                            onClick={() => setExpandedId(null)}
-                            className="ml-auto text-ds-sm text-surface-fg-subtle hover:text-surface-fg-muted"
-                          >
-                            Cancel
-                          </button>
-                        </div>
-                      </div>
-                    ) : (
-                      <button
-                        type="button"
-                        onClick={() => setExpandedId(review.id)}
-                        className="text-ds-sm font-medium text-accent-11 transition-colors hover:underline"
-                      >
-                        Respond
-                      </button>
-                    )}
-                  </div>
-                )}
-
-                {/* Timestamp */}
-                <p className="mt-ds-03 text-ds-xs text-surface-fg-subtle">
-                  {formatDate(review.createdAt)}
-                </p>
-              </div>
-            )
-          })}
+          {reviews.map((review) => (
+            <ReviewCard
+              key={review.id}
+              review={review}
+              onUpdateStatus={onUpdateStatus as (reviewId: string, status: string, feedback?: string) => void}
+            />
+          ))}
         </div>
       ) : (
         <EmptyState
@@ -244,19 +82,10 @@ const ReviewTab = React.forwardRef<HTMLDivElement, ReviewTabProps>(
       )}
 
       {/* Request Review */}
-      <MemberPicker
-        members={pickerMembers}
-        selectedIds={[]}
-        onSelect={(memberId) => onRequestReview(memberId)}
-      >
-        <button
-          type="button"
-          className="mt-ds-04 inline-flex items-center gap-ds-02b rounded-ds-lg px-ds-03 py-ds-02b text-ds-md text-surface-fg-subtle transition-colors hover:bg-surface-3 hover:text-surface-fg-muted"
-        >
-          <IconPlus className="h-ico-sm w-ico-sm" stroke={1.5} />
-          Request Review
-        </button>
-      </MemberPicker>
+      <ReviewRequestButton
+        members={members}
+        onRequest={onRequestReview}
+      />
     </div>
   )
 },

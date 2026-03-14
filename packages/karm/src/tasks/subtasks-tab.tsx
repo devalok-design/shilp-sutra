@@ -2,21 +2,14 @@
 
 import * as React from 'react'
 import { cn } from '@/ui/lib/utils'
-import {
-  Avatar,
-  AvatarImage,
-  AvatarFallback,
-} from '@/ui/avatar'
-import { Progress } from '@/ui'
 import { EmptyState } from '@/composed/empty-state'
+import { IconListCheck } from '@tabler/icons-react'
 import {
-  IconSquareCheck,
-  IconSquare,
-  IconPlus,
-  IconListCheck,
-} from '@tabler/icons-react'
-import { getInitials } from '@/composed/lib/string-utils'
-import { PRIORITY_DOT_COLORS } from './task-constants'
+  SubtaskProgress,
+  SubtaskList,
+  SubtaskItem,
+  SubtaskAddForm,
+} from './tabs'
 
 // ============================================================
 // Types
@@ -61,133 +54,38 @@ const SubtasksTab = React.forwardRef<HTMLDivElement, SubtasksTabProps>(
   readOnly = false,
   ...props
 }, ref) {
-  const [newTitle, setNewTitle] = React.useState('')
-  const [isAdding, setIsAdding] = React.useState(false)
-  const inputRef = React.useRef<HTMLInputElement>(null)
-
   const completedCount = subtasks.filter(
     (s) => s.column?.isTerminal || s.columnId === terminalColumnId,
   ).length
   const totalCount = subtasks.length
 
-  const handleSubmit = () => {
-    const trimmed = newTitle.trim()
-    if (trimmed) {
-      onCreateSubtask(trimmed)
-      setNewTitle('')
-    }
-  }
-
-  const handleKeyDown = (e: React.KeyboardEvent) => {
-    if (e.key === 'Enter') {
-      e.preventDefault()
-      handleSubmit()
-    }
-    if (e.key === 'Escape') {
-      setIsAdding(false)
-      setNewTitle('')
-    }
-  }
-
-  React.useEffect(() => {
-    if (isAdding && inputRef.current) {
-      inputRef.current.focus()
-    }
-  }, [isAdding])
-
   return (
     <div ref={ref} className={cn('flex flex-col', className)} {...props}>
       {/* Progress bar */}
       {totalCount > 0 && (
-        <div className="mb-ds-05 flex items-center gap-ds-04">
-          <Progress value={totalCount > 0 ? (completedCount / totalCount) * 100 : 0} className="h-ds-02b" />
-          <span className="shrink-0 text-ds-sm font-medium text-surface-fg-subtle">
-            {completedCount}/{totalCount}
-          </span>
-        </div>
+        <SubtaskProgress completed={completedCount} total={totalCount} />
       )}
 
       {/* Subtask list */}
       {subtasks.length > 0 ? (
-        <div className="space-y-ds-01">
+        <SubtaskList>
           {subtasks.map((subtask) => {
             const isComplete =
               subtask.column?.isTerminal || subtask.columnId === terminalColumnId
-            const firstAssignee = subtask.assignees[0]?.user
 
             return (
-              <div
+              <SubtaskItem
                 key={subtask.id}
-                role="button"
-                tabIndex={0}
-                className={cn(
-                  'group flex items-center gap-ds-03 rounded-ds-lg px-ds-03 py-ds-02b transition-colors',
-                  'hover:bg-surface-3 cursor-pointer',
-                )}
-                onClick={() => onClickSubtask?.(subtask.id)}
-                onKeyDown={(e) => {
-                  if (e.key === 'Enter' || e.key === ' ') {
-                    e.preventDefault()
-                    onClickSubtask?.(subtask.id)
-                  }
-                }}
-              >
-                {/* Checkbox */}
-                <button
-                  type="button"
-                  onClick={(e) => {
-                    e.stopPropagation()
-                    if (!readOnly) onToggleSubtask(subtask.id, !isComplete)
-                  }}
-                  className={cn(
-                    'shrink-0 rounded p-ds-01 transition-colors',
-                    readOnly ? 'cursor-default' : 'hover:bg-surface-2',
-                  )}
-                >
-                  {isComplete ? (
-                    <IconSquareCheck className="h-ico-sm w-ico-sm text-accent-11" stroke={1.5} />
-                  ) : (
-                    <IconSquare className="h-ico-sm w-ico-sm text-surface-fg-subtle" stroke={1.5} />
-                  )}
-                </button>
-
-                {/* Priority dot */}
-                <div
-                  className={cn(
-                    'h-2 w-2 shrink-0 rounded-ds-full',
-                    PRIORITY_DOT_COLORS[subtask.priority],
-                  )}
-                />
-
-                {/* Title */}
-                <span
-                  className={cn(
-                    'flex-1 truncate text-ds-md',
-                    isComplete
-                      ? 'text-surface-fg-subtle line-through'
-                      : 'text-surface-fg',
-                  )}
-                >
-                  {subtask.title}
-                </span>
-
-                {/* Assignee */}
-                {firstAssignee && (
-                  <Avatar className="h-ico-md w-ico-md shrink-0">
-                    {firstAssignee.image && (
-                      <AvatarImage src={firstAssignee.image} alt={firstAssignee.name} />
-                    )}
-                    <AvatarFallback className="bg-surface-3 text-ds-xs font-semibold text-accent-fg">
-                      {getInitials(firstAssignee.name)}
-                    </AvatarFallback>
-                  </Avatar>
-                )}
-              </div>
+                subtask={subtask}
+                isComplete={!!isComplete}
+                onToggle={readOnly ? undefined : onToggleSubtask}
+                onClick={onClickSubtask}
+              />
             )
           })}
-        </div>
+        </SubtaskList>
       ) : (
-        !isAdding && (
+        !readOnly && (
           <EmptyState
             icon={<IconListCheck />}
             title="No subtasks"
@@ -199,39 +97,7 @@ const SubtasksTab = React.forwardRef<HTMLDivElement, SubtasksTabProps>(
 
       {/* Add subtask -- hidden in readOnly mode */}
       {!readOnly && (
-        isAdding ? (
-          <div className="mt-ds-03 flex items-center gap-ds-03 rounded-ds-lg border border-surface-border-strong bg-surface-1 shadow-01 px-ds-04 py-ds-03">
-            <input
-              ref={inputRef}
-              type="text"
-              value={newTitle}
-              onChange={(e) => setNewTitle(e.target.value)}
-              onKeyDown={handleKeyDown}
-              onBlur={() => {
-                if (!newTitle.trim()) setIsAdding(false)
-              }}
-              placeholder="Subtask title..."
-              className="flex-1 bg-transparent text-ds-md text-surface-fg placeholder:text-surface-fg-subtle outline-none"
-            />
-            <button
-              type="button"
-              onClick={handleSubmit}
-              disabled={!newTitle.trim()}
-              className="inline-flex h-6 items-center gap-ds-02 rounded-ds-md bg-accent-9 px-ds-03 text-ds-sm font-semibold text-accent-fg transition-colors hover:bg-accent-10 disabled:opacity-action-disabled"
-            >
-              Add
-            </button>
-          </div>
-        ) : (
-          <button
-            type="button"
-            onClick={() => setIsAdding(true)}
-            className="mt-ds-03 inline-flex items-center gap-ds-02b rounded-ds-lg px-ds-03 py-ds-02b text-ds-md text-surface-fg-subtle transition-colors hover:bg-surface-3 hover:text-surface-fg-muted"
-          >
-            <IconPlus className="h-ico-sm w-ico-sm" stroke={1.5} />
-            Add subtask
-          </button>
-        )
+        <SubtaskAddForm onCreate={onCreateSubtask} />
       )}
     </div>
   )

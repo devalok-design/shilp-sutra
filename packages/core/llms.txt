@@ -245,7 +245,7 @@ NOTIFICATION SELECTION GUIDE:
 - Page skeletons: DashboardSkeleton, ProjectListSkeleton, TaskDetailSkeleton (no props, server-safe)
 
 ### Shell Components (app-level layout)
-- TopBar: pageTitle, user, onNavigate, onLogout, notificationSlot, mobileLogo, userMenuItems?(UserMenuItem[]). Types: TopBarUser = { name, email?, image? }, UserMenuItem = { label, icon?, href?, onClick?, separator?, color?, badge?, disabled? }
+- TopBar: Composition-based. Subcomponents: TopBar.Left, TopBar.Center (optional, triggers grid), TopBar.Right, TopBar.Section(gap: tight|default|loose), TopBar.IconButton(icon, tooltip), TopBar.Title, TopBar.UserMenu(user, onNavigate?, onLogout?, userMenuItems?). Types: TopBarUser = { name, email?, image? }, UserMenuItem = { label, icon?, href?, onClick?, separator?, color?, badge?, disabled? }
 - AppSidebar: navigation tree with NavItem[], NavGroup[]. Types: NavItem = { title, href, icon, exact?, badge?, children?, defaultOpen? }, NavSubItem = { title, href, icon?, exact? }, NavGroup = { label, items, action? }, SidebarUser = { name, email?, image?, designation?, role? }
 
 ### AppSidebar (v0.10.0 additions)

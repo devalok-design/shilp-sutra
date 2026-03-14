@@ -35,6 +35,10 @@ BottomNavbarUser: { name: string, role?: string }
 - Requires LinkProvider for framework-specific link components (e.g., Next.js Link)
 
 ## Changes
+### v0.19.0
+- **Changed** Background elevated from `bg-surface-1` to `bg-surface-2` for visual hierarchy above app background
+- **Changed** "More" menu and interactive items bumped accordingly
+
 ### v0.18.0
 - **Fixed** Removed incorrect `role="button"` and `tabIndex` from overlay
 

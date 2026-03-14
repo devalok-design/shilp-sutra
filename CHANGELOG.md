@@ -5,6 +5,25 @@ All notable changes to `@devalok/shilp-sutra` will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [Unreleased]
+
+### BREAKING (core)
+- **TopBar rewritten as composition API**. Old props-based API removed (`pageTitle`, `onSearchClick`, `onAiChatClick`, `notificationSlot`, `mobileLogo`). Use `TopBar.Left`, `TopBar.Right`, `TopBar.Section`, `TopBar.IconButton`, `TopBar.Title`, `TopBar.UserMenu` subcomponents instead.
+
+### Changed (core)
+- **Border tokens softened**: `surface-border` shifted from neutral-6→5 (light) / neutral-4→3 (dark). `surface-border-strong` shifted from neutral-7→6 (light) / neutral-5→4 (dark). Borders are now subtler and closer to the BoardColumn reference pattern.
+- **Shell chrome elevated**: Sidebar, TopBar, and BottomNavbar backgrounds changed from `bg-surface-1` to `bg-surface-2`. Interactive states within shell components bumped one level (`surface-2` → `surface-3` hover, `surface-3` → `surface-4` active).
+
+### Added (core)
+- **TopBar.Left / TopBar.Center / TopBar.Right** — zone components for flexible layout
+- **TopBar.Section** — groups items with `gap` prop (`tight` | `default` | `loose`)
+- **TopBar.IconButton** — reusable circular icon button with tooltip
+- **TopBar.Title** — responsive page title (hidden on mobile)
+- **TopBar.UserMenu** — extracted user dropdown as standalone subcomponent
+- Auto grid/flex layout: 3-column CSS grid when `TopBar.Center` is present, flex otherwise
+
+---
+
 ## karm@0.18.1 - 2026-03-14
 
 ### Added (karm)

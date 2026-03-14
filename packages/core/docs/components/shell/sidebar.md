@@ -57,6 +57,10 @@ SidebarPromo: { text: string, icon?: ReactNode, action?: { label: string, href?:
 - Badge numbers > 99 display as "99+"
 
 ## Changes
+### v0.19.0
+- **Changed** Background elevated from `bg-surface-1` to `bg-surface-2` for visual hierarchy above app background
+- **Changed** Interactive hover states bumped from `surface-2` to `surface-3`
+
 ### v0.18.0
 - **Fixed** `bg-interactive-subtle` changed to `bg-accent-2` (OKLCH migration)
 

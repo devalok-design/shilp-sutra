@@ -42,10 +42,10 @@ Color tokens use OKLCH (perceptually uniform) with 12 functional steps per palet
 | 2 | Subtle background | Sidebar, card alt |
 | 3 | Component bg | Input bg, badge bg |
 | 4 | Component bg hover | Button hover state |
-| 5 | Component bg active | Active/pressed state |
-| 6 | Border subtle | Dividers, soft borders |
-| 7 | Border default | Input borders, card borders |
-| 8 | Border strong | Focus rings, emphasis borders |
+| 5 | Border subtle | Semantic `surface-border` in light mode |
+| 6 | Border default | Semantic `surface-border-strong` in light mode |
+| 7 | Border strong | Focus rings, emphasis borders |
+| 8 | Border emphasis | High-contrast outlines |
 | 9 | Solid / accent | Button bg, primary CTA |
 | 10 | Solid hover | Button hover bg |
 | 11 | Low-contrast text | Secondary accent text |
@@ -54,7 +54,9 @@ Color tokens use OKLCH (perceptually uniform) with 12 functional steps per palet
 Semantic layer:
 - Accent (swappable): --color-accent-{1-12} + --color-accent-fg
 - Secondary: --color-secondary-{1-12} + --color-secondary-fg
-- Surface: --color-surface-{1-4} + --color-surface-fg / fg-muted / fg-subtle / border
+- Surface: --color-surface-{1-4} + --color-surface-fg / fg-muted / fg-subtle / border / border-strong
+  - Border mapping: light mode border=step5, border-strong=step6; dark mode border=step3, border-strong=step4
+  - Shell chrome (sidebar, topbar, bottom nav) uses surface-2 for elevation above surface-1 app background
 - Status: --color-{error,success,warning,info}-{3,7,9,11}
 - Category: --color-category-{teal,amber,slate,indigo,cyan,orange,emerald}
 
@@ -3788,6 +3790,10 @@ BottomNavbarUser: { name: string, role?: string }
 - Requires LinkProvider for framework-specific link components (e.g., Next.js Link)
 
 ## Changes
+### v0.19.0
+- **Changed** Background elevated from `bg-surface-1` to `bg-surface-2` for visual hierarchy above app background
+- **Changed** "More" menu and interactive items bumped accordingly
+
 ### v0.18.0
 - **Fixed** Removed incorrect `role="button"` and `tabIndex` from overlay
 
@@ -4052,6 +4058,10 @@ SidebarPromo: { text: string, icon?: ReactNode, action?: { label: string, href?:
 - Badge numbers > 99 display as "99+"
 
 ## Changes
+### v0.19.0
+- **Changed** Background elevated from `bg-surface-1` to `bg-surface-2` for visual hierarchy above app background
+- **Changed** Interactive hover states bumped from `surface-2` to `surface-3`
+
 ### v0.18.0
 - **Fixed** `bg-interactive-subtle` changed to `bg-accent-2` (OKLCH migration)
 
@@ -4087,16 +4097,54 @@ SidebarPromo: { text: string, icon?: ReactNode, action?: { label: string, href?:
 - Server-safe: No
 - Category: shell
 
+## Overview
+
+Composition-based application top bar. Uses dot-notation subcomponents for flexible layout.
+
+## Subcomponents
+
+| Component | Purpose |
+|-----------|---------|
+| `TopBar` | Root — bg-surface-2, border-b, sticky. Auto-switches to grid when Center is present. |
+| `TopBar.Left` | Left zone — sidebar trigger, title, breadcrumbs |
+| `TopBar.Center` | Optional center zone — search bar, tabs. Triggers 3-column grid layout. |
+| `TopBar.Right` | Right zone — action buttons, user menu. Gets ml-auto in flex mode. |
+| `TopBar.Section` | Groups items with configurable gap |
+| `TopBar.IconButton` | Circular icon button with tooltip (bg-surface-3, hover:bg-surface-4) |
+| `TopBar.Title` | Page title heading, hidden on mobile |
+| `TopBar.UserMenu` | Avatar dropdown with color mode toggle, profile, logout |
+
 ## Props
-    pageTitle?: string (default: "")
-    user?: TopBarUser | null — { name, email?, image? }
+
+### TopBar (root)
+    children: ReactNode
+    className?: string
+
+### TopBar.Left / TopBar.Center / TopBar.Right
+    children: ReactNode
+    className?: string
+
+### TopBar.Section
+    gap?: "tight" | "default" | "loose" (default: "default")
+    children: ReactNode
+    className?: string
+
+Gap values: tight = gap-ds-02, default = gap-ds-04, loose = gap-ds-06
+
+### TopBar.IconButton
+    icon: ReactNode
+    tooltip: string
+    ...ButtonHTMLAttributes
+
+### TopBar.Title
+    children: ReactNode
+    className?: string
+
+### TopBar.UserMenu
+    user: TopBarUser — { name, email?, image? }
     onNavigate?: (path: string) => void
     onLogout?: () => void
-    onSearchClick?: () => void
-    onAiChatClick?: () => void
-    mobileLogo?: ReactNode
-    notificationSlot?: ReactNode (render NotificationCenter here)
-    userMenuItems?: UserMenuItem[] — custom items between Profile and Dark/Light Mode toggle
+    userMenuItems?: UserMenuItem[]
     className?: string
 
 TopBarUser: { name: string, email?: string, image?: string | null }
@@ -4110,30 +4158,69 @@ UserMenuItem fields:
 - badge — string for count badge, true for dot indicator
 - disabled — greys out the item
 
-## Defaults
-    None
-
 ## Example
+
+### Two-zone (standard)
 ```jsx
-<TopBar
-  pageTitle="Dashboard"
-  user={{ name: 'John', email: 'john@example.com' }}
-  onNavigate={(p) => router.push(p)}
-  onLogout={handleLogout}
-  notificationSlot={<NotificationCenter notifications={notifications} />}
-  userMenuItems={[
-    { label: 'Changelog', icon: <IconNews />, href: '/changelog', badge: '3' },
-    { label: 'Shortcuts', icon: <IconKeyboard />, onClick: () => openModal() },
-  ]}
-/>
+<TopBar>
+  <TopBar.Left>
+    <SidebarTrigger />
+    <TopBar.Title>Dashboard</TopBar.Title>
+  </TopBar.Left>
+  <TopBar.Right>
+    <TopBar.Section gap="tight">
+      <TopBar.IconButton icon={<IconSearch />} tooltip="Search (Ctrl+K)" onClick={openSearch} />
+      <NotificationCenter notifications={notifications} />
+      <TopBar.IconButton icon={<IconSparkles />} tooltip="AI Chat" onClick={openAI} />
+    </TopBar.Section>
+    <TopBar.UserMenu
+      user={{ name: 'John', email: 'john@example.com' }}
+      onNavigate={(p) => router.push(p)}
+      onLogout={handleLogout}
+      userMenuItems={[
+        { label: 'Changelog', icon: <IconNews />, href: '/changelog', badge: '3' },
+      ]}
+    />
+  </TopBar.Right>
+</TopBar>
+```
+
+### Three-zone (centered search bar)
+```jsx
+<TopBar>
+  <TopBar.Left>
+    <SidebarTrigger />
+    <TopBar.Title>Dashboard</TopBar.Title>
+  </TopBar.Left>
+  <TopBar.Center>
+    <SearchBarTrigger />
+  </TopBar.Center>
+  <TopBar.Right>
+    <TopBar.Section gap="tight">
+      <TopBar.IconButton icon={<IconBell />} tooltip="Notifications" onClick={fn} />
+    </TopBar.Section>
+    <TopBar.UserMenu user={user} onLogout={logout} />
+  </TopBar.Right>
+</TopBar>
 ```
 
 ## Gotchas
-- `notificationSlot` is where NotificationCenter should be rendered
-- `userMenuItems` are inserted between the Profile link and the Dark/Light Mode toggle in the user dropdown
-- Requires LinkProvider for framework-specific navigation
+- Without `TopBar.Center`, layout is flex (two-zone). With it, layout switches to CSS grid `1fr auto 1fr` for true centering.
+- `TopBar.IconButton` renders any number of action buttons — no artificial limit. Use responsive hiding (`className="hidden md:flex"`) for mobile.
+- `TopBar.UserMenu` includes Profile link, color mode toggle, and logout automatically. `userMenuItems` are inserted between Profile and the toggle.
+- Requires SidebarProvider wrapper for SidebarTrigger to work.
 
 ## Changes
+### v0.19.0
+- **BREAKING** Rewritten as composition API. Old props-based API removed (`pageTitle`, `onSearchClick`, `onAiChatClick`, `notificationSlot`, `mobileLogo` props).
+- **Added** `TopBar.Left`, `TopBar.Center`, `TopBar.Right` zone components
+- **Added** `TopBar.Section` with `gap` prop (`tight` | `default` | `loose`)
+- **Added** `TopBar.IconButton` — reusable circular icon button with tooltip
+- **Added** `TopBar.Title` — responsive page title (hidden on mobile)
+- **Added** `TopBar.UserMenu` — extracted user dropdown as standalone subcomponent
+- **Added** Auto grid/flex layout detection based on Center zone presence
+- **Changed** Background elevated from `bg-surface-1` to `bg-surface-2`
+
 ### v0.7.0
 - **Added** `userMenuItems` prop for custom dropdown items
 

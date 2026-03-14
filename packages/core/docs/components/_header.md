@@ -42,10 +42,10 @@ Color tokens use OKLCH (perceptually uniform) with 12 functional steps per palet
 | 2 | Subtle background | Sidebar, card alt |
 | 3 | Component bg | Input bg, badge bg |
 | 4 | Component bg hover | Button hover state |
-| 5 | Component bg active | Active/pressed state |
-| 6 | Border subtle | Dividers, soft borders |
-| 7 | Border default | Input borders, card borders |
-| 8 | Border strong | Focus rings, emphasis borders |
+| 5 | Border subtle | Semantic `surface-border` in light mode |
+| 6 | Border default | Semantic `surface-border-strong` in light mode |
+| 7 | Border strong | Focus rings, emphasis borders |
+| 8 | Border emphasis | High-contrast outlines |
 | 9 | Solid / accent | Button bg, primary CTA |
 | 10 | Solid hover | Button hover bg |
 | 11 | Low-contrast text | Secondary accent text |
@@ -54,7 +54,9 @@ Color tokens use OKLCH (perceptually uniform) with 12 functional steps per palet
 Semantic layer:
 - Accent (swappable): --color-accent-{1-12} + --color-accent-fg
 - Secondary: --color-secondary-{1-12} + --color-secondary-fg
-- Surface: --color-surface-{1-4} + --color-surface-fg / fg-muted / fg-subtle / border
+- Surface: --color-surface-{1-4} + --color-surface-fg / fg-muted / fg-subtle / border / border-strong
+  - Border mapping: light mode border=step5, border-strong=step6; dark mode border=step3, border-strong=step4
+  - Shell chrome (sidebar, topbar, bottom nav) uses surface-2 for elevation above surface-1 app background
 - Status: --color-{error,success,warning,info}-{3,7,9,11}
 - Category: --color-category-{teal,amber,slate,indigo,cyan,orange,emerald}
 

@@ -39,40 +39,39 @@ function isExcluded(filename) {
 
 /**
  * Collect kebab-names of components in a category directory.
- * Scans .tsx files at the top level and recurses into subdirectories
- * (skipping SKIP_DIRS). Returns sorted unique names.
+ * Scans .tsx files at the top level. Subdirectories (e.g. charts/, tree-view/)
+ * are treated as a single component each (the directory name), not recursed into.
+ * Skips SKIP_DIRS entirely.
  */
 function scanComponents(categoryDir) {
   const names = []
 
-  function scan(dir) {
-    let entries
-    try {
-      entries = readdirSync(dir)
-    } catch {
-      return
-    }
-
-    for (const entry of entries) {
-      const fullPath = join(dir, entry)
-      const stat = statSync(fullPath)
-
-      if (stat.isDirectory()) {
-        if (SKIP_DIRS.has(entry)) continue
-        scan(fullPath)
-        continue
-      }
-
-      // Only .tsx component files
-      if (!entry.endsWith('.tsx')) continue
-      if (isExcluded(entry)) continue
-
-      const name = basename(entry, extname(entry))
-      names.push(name)
-    }
+  let entries
+  try {
+    entries = readdirSync(categoryDir)
+  } catch {
+    return []
   }
 
-  scan(categoryDir)
+  for (const entry of entries) {
+    const fullPath = join(categoryDir, entry)
+    const stat = statSync(fullPath)
+
+    if (stat.isDirectory()) {
+      if (SKIP_DIRS.has(entry)) continue
+      // Subdirectory = one component (e.g. charts/, tree-view/, date-picker/)
+      names.push(entry)
+      continue
+    }
+
+    // Only .tsx component files
+    if (!entry.endsWith('.tsx')) continue
+    if (isExcluded(entry)) continue
+
+    const name = basename(entry, extname(entry))
+    names.push(name)
+  }
+
   return [...new Set(names)].sort()
 }
 

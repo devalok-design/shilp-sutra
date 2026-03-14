@@ -23,7 +23,7 @@
     footer: ReactNode (below card body, e.g. "View details →")
 
 ## Defaults
-    accent: "default"
+    none (all props are optional except value)
 
 ## Example
 ```jsx

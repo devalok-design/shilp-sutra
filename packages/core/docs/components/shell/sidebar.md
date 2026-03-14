@@ -5,24 +5,24 @@
 - Category: shell
 
 ## Props
-    currentPath: string (highlights active nav item)
-    user: SidebarUser | null — { name, email?, image?, designation?, role? }
-    navGroups: NavGroup[] — { label: string, items: NavItem[], action?: ReactNode }
-    logo: ReactNode
-    footerLinks: Array<{ label: string, href: string }> (DEPRECATED — use footer.links)
-    footer: SidebarFooterConfig — structured footer (takes precedence over footerLinks)
-    headerSlot: ReactNode — content between user info and navigation
-    preFooterSlot: ReactNode — content between navigation and footer
-    preFooterClassName: string — className on preFooterSlot wrapper div
-    renderItem: (item: NavItem, defaultRender: () => ReactNode) => ReactNode | null — custom item rendering
-    className: string
+    currentPath?: string (highlights active nav item)
+    user?: SidebarUser | null — { name, email?, image?, designation?, role? }
+    navGroups?: NavGroup[] — { label: string, items: NavItem[], action?: ReactNode }
+    logo?: ReactNode
+    footerLinks?: Array<{ label: string, href: string }> (DEPRECATED — use footer.links)
+    footer?: SidebarFooterConfig — structured footer (takes precedence over footerLinks)
+    headerSlot?: ReactNode — content between user info and navigation
+    preFooterSlot?: ReactNode — content between navigation and footer
+    preFooterClassName?: string — className on preFooterSlot wrapper div
+    renderItem?: (item: NavItem, defaultRender: () => ReactNode) => ReactNode | null — custom item rendering
+    className?: string
 
 NavItem: { title: string, href: string, icon: ReactNode, exact?: boolean, badge?: string | number, children?: NavSubItem[], defaultOpen?: boolean }
 NavSubItem: { title: string, href: string, icon?: ReactNode, exact?: boolean }
 NavGroup: { label: string, items: NavItem[], action?: ReactNode }
 SidebarUser: { name: string, email?: string, image?: string | null, designation?: string, role?: string }
 SidebarFooterConfig: { links: Array<{ label: string, href: string }>, version: string | { label: string, href: string }, slot: ReactNode, promo: SidebarPromo }
-SidebarPromo: { text: string, icon: ReactNode, action: { label: string, href?: string, onClick?: () => void }, onDismiss: () => void }
+SidebarPromo: { text: string, icon?: ReactNode, action?: { label: string, href?: string, onClick?: () => void }, onDismiss?: () => void }
 
 ## Defaults
     None

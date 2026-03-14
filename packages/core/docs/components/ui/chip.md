@@ -23,9 +23,13 @@
 <Chip label="React" color="info" onDismiss={() => removeFilter('react')} />
 ```
 
+## Additional Exports
+    ChipGroup — re-exported AnimatePresence from framer-motion; wrap a list of Chips for coordinated exit animations
+
 ## Gotchas
 - MUST use label prop — children are NOT rendered
 - `<Chip>text</Chip>` is WRONG — use `<Chip label="text" />`
+- Wrap dynamic chip lists in `<ChipGroup>` for exit animations
 
 ## Changes
 ### v0.4.2

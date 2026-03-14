@@ -5,7 +5,7 @@
 - Category: shell
 
 ## Props
-    notifications: Notification[]
+    notifications?: Notification[]
     unreadCount: number (derived from notifications if not provided)
     open: boolean (controlled mode)
     onOpenChange: (open: boolean) => void

@@ -7,7 +7,7 @@
 Exports: DashboardSkeleton, ProjectListSkeleton, TaskDetailSkeleton
 
 ## Props
-    None (no configurable props on any of the page skeleton components)
+    className?: string (plus all standard HTML div attributes via React.ComponentPropsWithoutRef<'div'>)
 
 ## Defaults
     None
@@ -22,7 +22,7 @@ Exports: DashboardSkeleton, ProjectListSkeleton, TaskDetailSkeleton
 ## Gotchas
 - Server-safe: can be imported directly in Next.js Server Components
 - These are full-page skeleton layouts — for smaller skeleton sections, use LoadingSkeleton components
-- No props are accepted — these render fixed layouts representing common page structures
+- Accept `className` and standard div attributes but render fixed layout structures
 
 ## Changes
 ### v0.2.0

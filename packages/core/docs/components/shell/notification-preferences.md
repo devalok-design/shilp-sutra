@@ -5,14 +5,14 @@
 - Category: shell
 
 ## Props
-    preferences: NotificationPreference[]
-    projects: NotificationProject[]
-    isLoading: boolean
-    onSave: (preference: { projectId, channel, minTier, muted }) => void | Promise<void>
-    onToggleMute: (preference: NotificationPreference) => void | Promise<void>
-    onUpdateTier: (preference: NotificationPreference, newTier: string) => void | Promise<void>
-    onDelete: (preferenceId: string) => void | Promise<void>
-    className: string
+    preferences?: NotificationPreference[]
+    projects?: NotificationProject[]
+    isLoading?: boolean
+    onSave?: (preference: { projectId, channel, minTier, muted }) => void | Promise<void>
+    onToggleMute?: (preference: NotificationPreference) => void | Promise<void>
+    onUpdateTier?: (preference: NotificationPreference, newTier: string) => void | Promise<void>
+    onDelete?: (preferenceId: string) => void | Promise<void>
+    className?: string
 
 NotificationPreference: { id: string, userId?: string, projectId: string | null, channel: string, minTier: string, muted: boolean }
 NotificationProject: { id: string, title: string }

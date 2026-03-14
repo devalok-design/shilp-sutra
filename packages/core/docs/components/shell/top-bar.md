@@ -5,16 +5,16 @@
 - Category: shell
 
 ## Props
-    pageTitle: string
-    user: TopBarUser | null — { name, email?, image? }
-    onNavigate: (path: string) => void
-    onLogout: () => void
-    onSearchClick: () => void
-    onAiChatClick: () => void
-    mobileLogo: ReactNode
-    notificationSlot: ReactNode (render NotificationCenter here)
+    pageTitle?: string (default: "")
+    user?: TopBarUser | null — { name, email?, image? }
+    onNavigate?: (path: string) => void
+    onLogout?: () => void
+    onSearchClick?: () => void
+    onAiChatClick?: () => void
+    mobileLogo?: ReactNode
+    notificationSlot?: ReactNode (render NotificationCenter here)
     userMenuItems?: UserMenuItem[] — custom items between Profile and Dark/Light Mode toggle
-    className: string
+    className?: string
 
 TopBarUser: { name: string, email?: string, image?: string | null }
 UserMenuItem: { label: string, icon?: ReactNode, href?: string, onClick?: () => void, separator?: boolean, color?: string, badge?: string | boolean, disabled?: boolean }

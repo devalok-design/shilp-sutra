@@ -1,6 +1,6 @@
 {
   "name": "@devalok/shilp-sutra-karm",
-  "version": "0.18.0",
+  "version": "0.18.1",
   "description": "Domain components for Karm — board, tasks, chat, dashboard, client, and admin",
   "license": "MIT",
   "type": "module",
@@ -45,10 +45,12 @@
       "import": "./dist/admin/index.js",
       "default": "./dist/admin/index.js",
       "types": "./dist/admin/index.d.ts"
-    }
+    },
+    "./docs/*": "./docs/components/*"
   },
   "files": [
     "dist",
+    "docs/components",
     "README.md",
     "llms.txt"
   ],

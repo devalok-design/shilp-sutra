@@ -5,6 +5,14 @@ All notable changes to `@devalok/shilp-sutra` will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## karm@0.18.1 - 2026-03-14
+
+### Added (karm)
+- **Ship per-component docs**: 35 individual `.md` files now included in npm package under `docs/components/` (board, tasks, chat, dashboard, client, admin, other). AI agents can read per-component API references directly from `node_modules/@devalok/shilp-sutra-karm/docs/components/{category}/{name}.md`.
+- **New export**: `./docs/*` glob export for programmatic access to component docs.
+
+---
+
 ## [0.18.2] - 2026-03-14
 
 ### Changed (core)

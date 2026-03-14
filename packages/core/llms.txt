@@ -17,8 +17,8 @@
 **New motion system:**
 - `import { MotionProvider, springs, tweens } from '@devalok/shilp-sutra/motion'`
 - `import { MotionFade, MotionCollapse, MotionSlide, MotionPop, MotionScale, MotionStagger } from '@devalok/shilp-sutra/motion/primitives'`
-- Springs: `springs.bouncy`, `springs.smooth`, `springs.snappy`, `springs.gentle`, `springs.rigid`
-- Tweens: `tweens.fade`, `tweens.standard`, `tweens.gentle`
+- Springs: `springs.snappy`, `springs.smooth`, `springs.bouncy`, `springs.gentle`
+- Tweens: `tweens.fade`, `tweens.colorShift`
 
 **Spinner v2:** New props `state?: 'spinning' | 'success' | 'error'`, `variant?: 'filled' | 'bare'`, `delay?: number`, `onComplete?: () => void`
 
@@ -286,8 +286,8 @@ NOTIFICATION SELECTION GUIDE:
 ## Server-Safe Components (no "use client")
 
 These can be imported directly in Next.js Server Components:
-- UI: Text, Skeleton, Spinner, Stack, Container, Table (and sub-components), Code, VisuallyHidden
-- Composed: ContentCard, EmptyState, PageHeader, LoadingSkeleton, PageSkeletons, PriorityIndicator, StatusBadge
+- UI: Text, Skeleton, Stack, Container, Table (and sub-components), Code, VisuallyHidden
+- Composed: ContentCard, PageHeader, LoadingSkeleton, PageSkeletons, PriorityIndicator
 
 Use per-component imports for server components:
   import { Text } from '@devalok/shilp-sutra/ui/text'

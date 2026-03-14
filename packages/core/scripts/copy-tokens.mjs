@@ -1,9 +1,12 @@
 import { cpSync, mkdirSync, readdirSync } from 'fs'
-import { join } from 'path'
+import { join, dirname } from 'path'
+import { fileURLToPath } from 'url'
+
+const __dirname = dirname(fileURLToPath(import.meta.url))
 
 // Copy only .css files from tokens (exclude .mdx, .tsx, .d.ts, etc.)
-const srcTokens = 'src/tokens'
-const distTokens = 'dist/tokens'
+const srcTokens = join(__dirname, '..', 'src', 'tokens')
+const distTokens = join(__dirname, '..', 'dist', 'tokens')
 
 mkdirSync(distTokens, { recursive: true })
 

@@ -132,8 +132,9 @@ interface StepProps extends React.HTMLAttributes<HTMLDivElement> {
 
 type StepInternalProps = StepProps & { _index?: number }
 
-const Step = React.forwardRef<HTMLDivElement, StepInternalProps>(
-  ({ label, description, icon, className, _index = 0, ...props }, ref) => {
+const Step = React.forwardRef<HTMLDivElement, StepProps>(
+  ({ label, description, icon, className, ...props }, ref) => {
+    const { _index = 0, ...restProps } = props as StepInternalProps
     const { activeStep, orientation, stepperId } = React.useContext(StepperContext)
     const state: StepState = _index < activeStep ? 'completed' : _index === activeStep ? 'active' : 'pending'
 
@@ -148,7 +149,7 @@ const Step = React.forwardRef<HTMLDivElement, StepInternalProps>(
           orientation === 'vertical' && 'py-ds-02',
           className,
         )}
-        {...props}
+        {...restProps}
       >
         <div
           className={cn(

@@ -1,6 +1,6 @@
 'use client'
 
-import React, { useState, useRef } from 'react'
+import React, { useState, useRef, useId } from 'react'
 import { motion, AnimatePresence, LayoutGroup } from 'framer-motion'
 import { cva } from 'class-variance-authority'
 import { cn } from './lib/utils'
@@ -207,6 +207,7 @@ const SegmentedControl = React.forwardRef<HTMLDivElement, SegmentedControlProps>
   ...props
 }, forwardedRef) {
   const resolved = resolveSize(size)
+  const instanceId = useId()
   const [focusedId, setFocusedId] = useState<string | null>(null)
   const tablistRef = useRef<HTMLDivElement | null>(null)
   const mergedRef = React.useCallback((node: HTMLDivElement | null) => {
@@ -277,6 +278,7 @@ const SegmentedControl = React.forwardRef<HTMLDivElement, SegmentedControlProps>
             isFocused={option.id === focusedId}
             onFocus={() => setFocusedId(option.id)}
             onBlur={() => setFocusedId(null)}
+            layoutId={`${instanceId}-segment-indicator`}
           />
         ))}
       </LayoutGroup>
@@ -329,6 +331,8 @@ export interface SegmentedControlItemProps {
   isFocused: boolean
   onFocus: () => void
   onBlur: () => void
+  /** @internal Unique layout animation ID — provided by the parent SegmentedControl. */
+  layoutId?: string
 }
 
 const SegmentedControlItem = React.forwardRef<HTMLButtonElement, SegmentedControlItemProps>(
@@ -343,6 +347,7 @@ const SegmentedControlItem = React.forwardRef<HTMLButtonElement, SegmentedContro
   isFocused,
   onFocus,
   onBlur,
+  layoutId = 'segment-indicator',
 }, ref) {
   const [state, setState] = useState<'default' | 'hover' | 'pressed'>('default')
   const { ripples, createRipple } = useRipple()
@@ -404,7 +409,7 @@ const SegmentedControlItem = React.forwardRef<HTMLButtonElement, SegmentedContro
       {/* Sliding active indicator — only mounted in the selected segment */}
       {isSelected && (
         <motion.span
-          layoutId="segment-indicator"
+          layoutId={layoutId}
           className={cn(
             'absolute inset-0 rounded-ds-full pointer-events-none',
             variant === 'filled'

@@ -9,10 +9,10 @@ interface Ripple {
 
 export function useRipple(duration = 600) {
   const [ripples, setRipples] = useState<Ripple[]>([])
-  const timeoutRef = useRef<ReturnType<typeof setTimeout>>()
+  const timeoutsRef = useRef<Set<ReturnType<typeof setTimeout>>>(new Set())
 
   useEffect(() => {
-    return () => { clearTimeout(timeoutRef.current) }
+    return () => { timeoutsRef.current.forEach(clearTimeout) }
   }, [])
 
   const createRipple = useCallback((e: MouseEvent<HTMLElement>) => {
@@ -23,9 +23,11 @@ export function useRipple(duration = 600) {
     const id = Date.now()
 
     setRipples((prev) => [...prev, { id, x, y, size }])
-    timeoutRef.current = setTimeout(() => {
+    const t = setTimeout(() => {
       setRipples((prev) => prev.filter((r) => r.id !== id))
+      timeoutsRef.current.delete(t)
     }, duration)
+    timeoutsRef.current.add(t)
   }, [duration])
 
   return { ripples, createRipple }

@@ -69,7 +69,7 @@ const AvatarGroup = React.forwardRef<HTMLDivElement, AvatarGroupProps>(
 
             const avatar = (
               <Avatar
-                key={index}
+                key={user.name}
                 className={cn(
                   avatarSizeVariants({ size }),
                   index > 0 && overlapClass,
@@ -90,7 +90,7 @@ const AvatarGroup = React.forwardRef<HTMLDivElement, AvatarGroupProps>(
             if (!showTooltip) return avatar
 
             return (
-              <Tooltip key={index}>
+              <Tooltip key={user.name}>
                 <TooltipTrigger asChild>{avatar}</TooltipTrigger>
                 <TooltipContent
                   className="border-surface-border-strong bg-surface-1 text-surface-fg"

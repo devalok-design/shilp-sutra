@@ -52,7 +52,6 @@ const autoEntries = collectEntries([
   'shell',
   'hooks',
   'tailwind',
-  'motion',
 ])
 
 // Subdirectory entries that aren't picked up by the top-level scan
@@ -60,8 +59,12 @@ const explicitEntries: Record<string, string> = {
   'ui/charts/index': resolve(__dirname, 'src/ui/charts/index.ts'),
   'ui/tree-view/index': resolve(__dirname, 'src/ui/tree-view/index.ts'),
   'ui/lib/utils': resolve(__dirname, 'src/ui/lib/utils.ts'),
+  'ui/lib/motion': resolve(__dirname, 'src/ui/lib/motion.ts'),
+  'ui/lib/date-utils': resolve(__dirname, 'src/ui/lib/date-utils.ts'),
   'composed/date-picker/index': resolve(__dirname, 'src/composed/date-picker/index.ts'),
   'composed/lib/string-utils': resolve(__dirname, 'src/composed/lib/string-utils.ts'),
+  'motion/index': resolve(__dirname, 'src/motion/index.ts'),
+  'motion/primitives-index': resolve(__dirname, 'src/motion/primitives-index.ts'),
 }
 
 export default defineConfig({
@@ -110,7 +113,7 @@ export default defineConfig({
               return 'tiptap'
             // Framer Motion — only loaded by Spinner and future animation components
             if (id.includes('framer-motion'))
-              return 'motion'
+              return 'framer'
             // Client-only deps that use React hooks/DOM — includes transitive deps
             if (
               id.includes('@floating-ui/') ||

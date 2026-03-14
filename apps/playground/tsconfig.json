@@ -11,6 +11,7 @@
     "forceConsistentCasingInFileNames": true,
     "resolveJsonModule": true,
     "isolatedModules": true,
+    "noEmit": true,
     "paths": {
       "@/*": ["../../packages/core/src/*"],
       "@primitives/*": ["../../packages/core/src/primitives/*"]

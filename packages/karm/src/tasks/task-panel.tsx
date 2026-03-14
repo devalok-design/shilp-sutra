@@ -158,24 +158,16 @@ function TaskPanelTitle({
           onKeyDown={handleKeyDown}
           className="w-full bg-transparent text-ds-lg font-semibold text-surface-fg outline-none"
         />
-      ) : (
-        <h2
-          onClick={editable ? activateEdit : undefined}
-          {...(editable && {
-            role: 'button' as const,
-            tabIndex: 0,
-            onKeyDown: (e: React.KeyboardEvent) => {
-              if (e.key === 'Enter' || e.key === ' ') {
-                e.preventDefault()
-                activateEdit()
-              }
-            },
-          })}
-          className={cn(
-            'text-ds-lg font-semibold text-surface-fg',
-            editable && 'cursor-text hover:text-accent-11 transition-colors',
-          )}
+      ) : editable ? (
+        <button
+          type="button"
+          onClick={activateEdit}
+          className="w-full cursor-text text-left text-ds-lg font-semibold text-surface-fg transition-colors hover:text-accent-11"
         >
+          {value}
+        </button>
+      ) : (
+        <h2 className="text-ds-lg font-semibold text-surface-fg">
           {value}
         </h2>
       )}

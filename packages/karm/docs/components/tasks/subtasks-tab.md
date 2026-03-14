@@ -53,5 +53,9 @@
 - Forwards ref to outer div.
 
 ## Changes
+### v0.19.0
+- **Added** Decomposed into composable pieces: `SubtaskProgress`, `SubtaskList`, `SubtaskItem`, `SubtaskAddForm` — importable from `@devalok/shilp-sutra-karm/tasks`
+- SubtasksTab remains as a pre-assembled default; use the pieces for custom layouts
+
 ### v0.18.0
 - **Added** Initial release

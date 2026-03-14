@@ -5,14 +5,14 @@ All notable changes to `@devalok/shilp-sutra` will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
-## [Unreleased]
+## [0.19.0] - 2026-03-14
 
 ### BREAKING (core)
 - **TopBar rewritten as composition API**. Old props-based API removed (`pageTitle`, `onSearchClick`, `onAiChatClick`, `notificationSlot`, `mobileLogo`). Use `TopBar.Left`, `TopBar.Right`, `TopBar.Section`, `TopBar.IconButton`, `TopBar.Title`, `TopBar.UserMenu` subcomponents instead.
+- **Border tokens softened**: `surface-border` shifted from neutral-6→5 (light) / neutral-4→3 (dark). `surface-border-strong` shifted from neutral-7→6 (light) / neutral-5→4 (dark).
 
 ### Changed (core)
-- **Border tokens softened**: `surface-border` shifted from neutral-6→5 (light) / neutral-4→3 (dark). `surface-border-strong` shifted from neutral-7→6 (light) / neutral-5→4 (dark). Borders are now subtler and closer to the BoardColumn reference pattern.
-- **Shell chrome elevated**: Sidebar, TopBar, and BottomNavbar backgrounds changed from `bg-surface-1` to `bg-surface-2`. Interactive states within shell components bumped one level (`surface-2` → `surface-3` hover, `surface-3` → `surface-4` active).
+- **Shell chrome elevated**: Sidebar, TopBar, and BottomNavbar backgrounds changed from `bg-surface-1` to `bg-surface-2`. Interactive states bumped one level.
 
 ### Added (core)
 - **TopBar.Left / TopBar.Center / TopBar.Right** — zone components for flexible layout
@@ -21,6 +21,27 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - **TopBar.Title** — responsive page title (hidden on mobile)
 - **TopBar.UserMenu** — extracted user dropdown as standalone subcomponent
 - Auto grid/flex layout: 3-column CSS grid when `TopBar.Center` is present, flex otherwise
+
+---
+
+## karm@0.19.0 - 2026-03-14
+
+### BREAKING (karm)
+- **TaskDetailPanel rewritten as composition API (`TaskPanel`)**. Old monolith with ~20 props removed. Use `TaskPanel.Header`, `TaskPanel.Title`, `TaskPanel.Properties`, `TaskPanel.Property`, `TaskPanel.Tabs`, `TaskPanel.Tab`, `TaskPanel.Loading` subcomponents.
+- **Container-agnostic**: TaskPanel no longer wraps itself in a Sheet. Consumer wraps in Sheet, Dialog, page div, etc.
+- **Priority picker**: Colored dots replaced with per-level icons (IconAlertTriangle, IconArrowUp, IconMinus, IconArrowDown)
+- **Date picker**: Native `<input type="date">` replaced with Popover + presets (Today, Tomorrow, Next Monday, +7d, +14d, Clear)
+- **Visibility control**: Toggle button replaced with dropdown picker (IconLock Internal / IconWorld Everyone)
+- **Label editor**: Now supports `availableLabels` for autocomplete + optional color per label
+- All monolith callback props removed — data flows to individual picker/tab subcomponents
+
+### Added (karm)
+- **7 standalone property pickers**: `TaskColumnPicker`, `TaskPriorityPicker`, `TaskMemberPicker`, `TaskAssigneePicker`, `TaskDatePicker`, `TaskLabelEditor`, `TaskVisibilityPicker`
+- **16 composable tab pieces**: `SubtaskProgress`, `SubtaskList`, `SubtaskItem`, `SubtaskAddForm`, `MessageList`, `MessageBubble`, `MessageInput`, `VisibilityWarning`, `FileDropZone`, `FileList`, `FileItem`, `ReviewCard`, `ReviewResponseForm`, `ReviewRequestButton`, `ActivityTimeline`, `ActivityEntry`
+- **Centralized types**: `task-types.ts` with `Member`, `Column`, `Priority`, `Visibility`, `Subtask`, `ReviewRequest`, `Comment`, `TaskFile`, `AuditLogEntry`, `LabelOption`
+- Pre-assembled tab defaults (SubtasksTab, ConversationTab, etc.) still work as one-liners
+- `ReviewTab` gains `readOnly` prop
+- 8 integration stories demonstrating composition patterns
 
 ---
 

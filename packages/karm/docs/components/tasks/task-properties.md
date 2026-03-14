@@ -76,5 +76,9 @@
 - Forwards ref to outer div.
 
 ## Changes
+### v0.19.0
+- **Added** Property logic extracted into 7 standalone pickers: `TaskColumnPicker`, `TaskPriorityPicker`, `TaskMemberPicker`, `TaskAssigneePicker`, `TaskDatePicker`, `TaskLabelEditor`, `TaskVisibilityPicker`
+- TaskProperties remains as a pre-assembled default; use individual pickers with `TaskPanel.Property` for custom layouts
+
 ### v0.18.0
 - **Added** Initial release

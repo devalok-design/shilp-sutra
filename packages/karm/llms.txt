@@ -10,14 +10,14 @@ pnpm add @devalok/shilp-sutra-karm
 
 // Per-module imports (recommended):
 import { KanbanBoard } from '@devalok/shilp-sutra-karm/board'
-import { TaskDetailPanel } from '@devalok/shilp-sutra-karm/tasks'
+import { TaskPanel, TaskColumnPicker, SubtasksTab } from '@devalok/shilp-sutra-karm/tasks'
 import { ChatPanel } from '@devalok/shilp-sutra-karm/chat'
 import { AttendanceCTA, DailyBrief } from '@devalok/shilp-sutra-karm/dashboard'
 import { AccentProvider, ClientPortalHeader, ProjectCard } from '@devalok/shilp-sutra-karm/client'
 import { AdminDashboard, BreakAdmin } from '@devalok/shilp-sutra-karm/admin'
 
 // Or from root barrel:
-import { KanbanBoard, TaskDetailPanel, ChatPanel } from '@devalok/shilp-sutra-karm'
+import { KanbanBoard, TaskPanel, ChatPanel } from '@devalok/shilp-sutra-karm'
 
 ## Module Reference
 
@@ -50,17 +50,42 @@ and state updates. Example wiring a custom column header action:
   />
 
 ### Tasks (`/tasks`)
+
+**TaskPanel (v2 composition API — recommended)**
+Headless compound component. Shell subcomponents:
+- TaskPanel (root): children, className — flex column container
+- TaskPanel.Header: children, className — top section with border
+- TaskPanel.Title: value, editable?, onUpdate?, subtask?, className — inline-editable heading
+- TaskPanel.Properties: children, className — property rows container
+- TaskPanel.Property: icon, label, children, className — single property row (120px label + flex value)
+- TaskPanel.Tabs: defaultTab, onTabChange?, children — tab system (children must be TaskPanel.Tab)
+- TaskPanel.Tab: id, label, icon?, children — declarative tab definition
+- TaskPanel.Loading: className — skeleton placeholder
+
+**Pickers (7)** — all support readOnly?, className?, forwardRef
+- TaskColumnPicker: columns[], value(string), onChange(id)
+- TaskPriorityPicker: value(Priority), onChange(priority)
+- TaskMemberPicker: members[], value(string|null), onChange(id|null), placeholder?
+- TaskAssigneePicker: members[], value(Member[]), onAssign(id), onUnassign(id)
+- TaskDatePicker: value(Date|string|null), onChange(date|null), presets?(default:true)
+- TaskLabelEditor: value(string[]), onChange(labels), availableLabels?(LabelOption[])
+- TaskVisibilityPicker: value(Visibility), onChange(v), confirmOnPublic?
+
+**Tab Pieces (16)** — for custom tab layouts
+Subtasks: SubtaskProgress(completed,total), SubtaskList(children), SubtaskItem(subtask,isComplete,onToggle?,onClick?), SubtaskAddForm(onCreate)
+Conversation: MessageList(children,autoScroll?), MessageBubble(comment,clientMode?,renderViewer?), MessageInput(onSubmit,renderEditor?,clientMode?), VisibilityWarning
+Files: FileDropZone(onUpload,isUploading?,accept?), FileList(children), FileItem(file,onDelete?,readOnly?)
+Review: ReviewCard(review,onUpdateStatus?), ReviewResponseForm(reviewId,onSubmit), ReviewRequestButton(members,onRequest)
+Activity: ActivityTimeline(children), ActivityEntry(entry)
+
+**Pre-assembled tabs** (unchanged from v0.18.0, usable inside TaskPanel.Tab):
+- SubtasksTab, ConversationTab, FilesTab, ReviewTab, ActivityTab
+
+**TaskDetailPanel (deprecated)** — monolithic v0.18.0 component, still exported. Migrate to TaskPanel.
 - TaskDetailPanel: task(FullTask|null), open, onOpenChange, columns[], members[], activities[], clientMode?, onTitleUpdate, onPropertyUpdate, onAssign, onUnassign, onCreateSubtask, onToggleSubtask, onRequestReview, onUpdateReviewStatus + more callbacks
 - TaskProperties: task, columns[], members[], onUpdate, onAssign, onUnassign, readOnly?, editableFields?, renderPriorityIndicator?, renderDatePicker?
-- ActivityTab: activities(AuditLogEntry[])
-- ConversationTab: comments[], taskVisibility, onPostComment, clientMode?, renderEditor?, renderViewer?
-- FilesTab: files[], onUpload, onDelete, isUploading?, readOnly?
-- ReviewTab: reviews[], members[], onRequestReview, onUpdateStatus
-- SubtasksTab: subtasks[], onCreateSubtask, onToggleSubtask, onClickSubtask?, readOnly?
 
-Type: ExtraTab = { id: string, label: string, icon?: ReactNode, content: ReactNode, position?: 'before' | 'after' }
-TaskDetailPanel opens as a Sheet with tabs: Properties, Subtasks, Review, Conversation, Files, Activity. Supports extraTabs?: ExtraTab[] for custom tabs.
-Supports clientMode for read-only client portal views.
+Shared types: Priority, Visibility, CommentAuthorType, LabelOption, Member, Column, Subtask, ReviewRequest, Comment, TaskFile, AuditLogEntry
 Priority values: 'LOW' | 'MEDIUM' | 'HIGH' | 'URGENT'
 Visibility: 'INTERNAL' | 'EVERYONE'
 
@@ -128,7 +153,7 @@ BreakRequestStatus: 'PENDING' | 'APPROVED' | 'REJECTED' | 'CANCELLED'
 
 - All components are callback-driven (emit updates via on* props, no internal state management)
 - Admin components use compound pattern with React Context (AdminDashboard.Root provides context to children)
-- Client mode: TaskDetailPanel, TaskProperties, FilesTab support readOnly + editableFields for client portal
+- Client mode: All pickers support readOnly. TaskDetailPanel (deprecated), TaskProperties, FilesTab support readOnly + editableFields for client portal. With TaskPanel v2, control client mode by choosing which pickers/tabs to render.
 - Chat supports streaming: pass isStreaming + streamingText for live AI responses
 - Board uses dnd-kit: KanbanBoard handles all drag state, emits onTaskMove with final position
 - All dates default to IST (Asia/Kolkata) timezone in admin utilities
@@ -136,7 +161,9 @@ BreakRequestStatus: 'PENDING' | 'APPROVED' | 'REJECTED' | 'CANCELLED'
 ## Common Mistakes -- DO NOT
 
 - DO NOT manage DnD state outside KanbanBoard — it handles sensors, collision detection, and sorting internally
-- DO NOT forget to pass both open AND onOpenChange to TaskDetailPanel (it's a controlled Sheet)
+- DO NOT use TaskDetailPanel for new code — use TaskPanel composition API instead
+- DO NOT forget to pass both open AND onOpenChange to TaskDetailPanel if still using the deprecated API (it's a controlled Sheet)
+- DO NOT use TaskPanel.Tab outside TaskPanel.Tabs — Tabs extracts props from Tab children
 - DO NOT use AdminDashboard sub-components outside AdminDashboard.Root — they depend on context
 - DO NOT use BreakAdmin sub-components outside BreakAdmin.Root — same compound pattern
 - DO NOT pass raw Date objects for task dates — use ISO strings (the components parse them internally)

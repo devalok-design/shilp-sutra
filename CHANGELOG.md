@@ -5,6 +5,15 @@ All notable changes to `@devalok/shilp-sutra` will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.18.2] - 2026-03-14
+
+### Changed (core)
+- **Ship per-component docs**: 91 individual `.md` files now included in npm package under `docs/components/`. AI agents can read per-component API references directly from `node_modules/@devalok/shilp-sutra/docs/components/{category}/{name}.md`.
+- **New export**: `./docs/*` glob export maps to `docs/components/*` for programmatic access.
+- **Publishing checklist**: Added lint gate, stale `.js` check, `build:docs:check` coverage verification, and multi-package version bump guidance.
+
+---
+
 ## [0.18.1] - 2026-03-14
 
 Comprehensive audit fix release. Security fixes, build pipeline hardening, component API improvements, and documentation corrections.

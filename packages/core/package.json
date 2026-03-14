@@ -1,6 +1,6 @@
 {
   "name": "@devalok/shilp-sutra",
-  "version": "0.18.1",
+  "version": "0.18.2",
   "description": "Devalok Design System — tokens, components, and patterns for Next.js",
   "license": "MIT",
   "type": "module",
@@ -555,10 +555,12 @@
       "import": "./dist/motion/primitives-index.js",
       "default": "./dist/motion/primitives-index.js",
       "types": "./dist/motion/primitives-index.d.ts"
-    }
+    },
+    "./docs/*": "./docs/components/*"
   },
   "files": [
     "dist",
+    "docs/components",
     "fonts",
     "README.md",
     "llms.txt",

@@ -85,7 +85,7 @@ const AttendanceCTA = React.forwardRef<HTMLDivElement, AttendanceCTAProps>(
   // Marked state: compact strip
   if (isMarked && !isOnBreak) {
     return (
-      <div ref={ref} className={cn("relative overflow-hidden rounded-ds-2xl border border-surface-border-strong bg-surface-1 shadow-01", className)} {...props}>
+      <div ref={ref} className={cn("relative overflow-hidden rounded-ds-2xl border border-surface-border-strong bg-surface-2 shadow-01", className)} {...props}>
         <div className="flex items-center justify-between px-ds-06 py-ds-05b sm:px-ds-07">
           <div className="flex flex-col gap-ds-02">
             <h2 className="text-ds-2xl text-surface-fg">
@@ -115,7 +115,7 @@ const AttendanceCTA = React.forwardRef<HTMLDivElement, AttendanceCTAProps>(
   // On Break state
   if (isOnBreak) {
     return (
-      <div ref={ref} className={cn("relative overflow-hidden rounded-ds-2xl border border-surface-border-strong bg-surface-1 shadow-01", className)} {...props}>
+      <div ref={ref} className={cn("relative overflow-hidden rounded-ds-2xl border border-surface-border-strong bg-surface-2 shadow-01", className)} {...props}>
         <div className="flex items-center justify-between px-ds-06 py-ds-05b sm:px-ds-07">
           <div className="flex flex-col gap-ds-02">
             <h2 className="text-ds-2xl text-surface-fg">
@@ -143,7 +143,7 @@ const AttendanceCTA = React.forwardRef<HTMLDivElement, AttendanceCTAProps>(
   // Unmarked + cannot mark: attendance window closed
   if (!canMarkAttendance) {
     return (
-      <div ref={ref} className={cn("relative overflow-hidden rounded-ds-2xl border border-surface-border-strong bg-surface-1 shadow-01", className)} {...props}>
+      <div ref={ref} className={cn("relative overflow-hidden rounded-ds-2xl border border-surface-border-strong bg-surface-2 shadow-01", className)} {...props}>
         <div className="flex items-center justify-between px-ds-06 py-ds-06 sm:px-ds-07 sm:py-ds-07">
           <div className="flex flex-col gap-ds-02b">
             <h2 className="text-ds-3xl text-surface-fg">

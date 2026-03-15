@@ -217,7 +217,7 @@ const StatCard = React.forwardRef<HTMLDivElement, StatCardProps>(
         <div
           ref={ref}
           className={cn(
-            'rounded-ds-lg border border-surface-border bg-surface-1 shadow-01 p-ds-05b',
+            'rounded-ds-lg border border-surface-border bg-surface-2 shadow-01 p-ds-05b',
             accent && `border-l-[3px] ${accentBorderMap[accent]}`,
             className,
           )}
@@ -356,7 +356,7 @@ const StatCard = React.forwardRef<HTMLDivElement, StatCardProps>(
     )
 
     const cardClasses = cn(
-      'rounded-ds-lg border border-surface-border bg-surface-1 shadow-01 p-ds-05b',
+      'rounded-ds-lg border border-surface-border bg-surface-2 shadow-01 p-ds-05b',
       accent && `border-l-[3px] ${accentBorderMap[accent]}`,
       isClickable &&
         'cursor-pointer hover:shadow-02 hover:border-surface-border-strong transition-all duration-fast-02 group',

@@ -13,7 +13,7 @@ const CardSkeleton = React.forwardRef<HTMLDivElement, CardSkeletonProps>(
       ref={ref}
       {...props}
       className={cn(
-        'rounded-ds-lg border border-surface-border-strong bg-surface-1 p-ds-05b',
+        'rounded-ds-lg border border-surface-border-strong bg-surface-2 p-ds-05b',
         className,
       )}
     >
@@ -131,7 +131,7 @@ const BoardSkeleton = React.forwardRef<HTMLDivElement, BoardSkeletonProps>(
           {Array.from({ length: cardsPerColumn }).map((_, cardIndex) => (
             <div
               key={`card-${colIndex}-${cardIndex}`}
-              className="rounded-ds-lg border border-surface-border-strong bg-surface-1 p-ds-04"
+              className="rounded-ds-lg border border-surface-border-strong bg-surface-2 p-ds-04"
             >
               <div className="space-y-ds-03">
                 <Skeleton className="h-[12px] w-4/5 bg-surface-3" />

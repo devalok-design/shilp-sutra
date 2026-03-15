@@ -133,7 +133,7 @@ export const BreakRequestCard = React.forwardRef<HTMLDivElement, BreakRequestPro
         {/* Left section - Break information or mobile cancel form */}
         {showMobileCancelForm && isSingleDayBreak ? (
           <div className="flex h-full w-full flex-col items-center justify-center px-ds-04 pt-[17px]">
-            <div className="w-full gap-ds-05 rounded-ds-md bg-surface-1 shadow-01 px-ds-06 py-ds-07 md:hidden">
+            <div className="w-full gap-ds-05 rounded-ds-md bg-surface-2 shadow-01 px-ds-06 py-ds-07 md:hidden">
               <div className="flex flex-col items-center gap-ds-04">
                 <div className="text-ds-lg font-semibold text-center text-surface-fg">
                   Cancel this break?
@@ -199,7 +199,7 @@ export const BreakRequestCard = React.forwardRef<HTMLDivElement, BreakRequestPro
           <p className="text-ds-sm font-semibold uppercase tracking-wider mb-ds-06  text-surface-fg-subtle max-md:mb-ds-05">
             Break Status
           </p>
-          <div className="mb-ds-04 flex w-full flex-col items-center justify-start gap-ds-04 rounded-ds-2xl border border-surface-border bg-surface-1 shadow-01 px-ds-05 py-ds-04 text-center font-semibold text-surface-fg">
+          <div className="mb-ds-04 flex w-full flex-col items-center justify-start gap-ds-04 rounded-ds-2xl border border-surface-border bg-surface-2 shadow-01 px-ds-05 py-ds-04 text-center font-semibold text-surface-fg">
             {renderStatus(breakRequest.status, false)}
             {breakRequest.status === 'APPROVED' && breakRequest.adminComment}
             {breakRequest.status === 'REJECTED' && breakRequest.adminComment}

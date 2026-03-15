@@ -51,7 +51,7 @@ const SubtaskAddForm = React.forwardRef<HTMLDivElement, SubtaskAddFormProps>(
     return (
       <div ref={ref} className={cn(className)} {...props}>
         {isAdding ? (
-          <div className="mt-ds-03 flex items-center gap-ds-03 rounded-ds-lg border border-surface-border-strong bg-surface-1 shadow-01 px-ds-04 py-ds-03">
+          <div className="mt-ds-03 flex items-center gap-ds-03 rounded-ds-lg border border-surface-border-strong bg-surface-2 shadow-01 px-ds-04 py-ds-03">
             <input
               ref={inputRef}
               type="text"

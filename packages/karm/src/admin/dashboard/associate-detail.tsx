@@ -294,7 +294,7 @@ export const AssociateDetail = React.forwardRef<HTMLDivElement, AssociateDetailP
           <p className="text-ds-sm font-semibold uppercase tracking-wider mb-ds-05  text-surface-fg-subtle">
             COMMENT
           </p>
-          <div className="flex w-full items-center justify-between rounded-ds-lg border border-surface-border-strong bg-surface-1 px-ds-05 max-md:h-ds-lg">
+          <div className="flex w-full items-center justify-between rounded-ds-lg border border-surface-border-strong bg-surface-2 px-ds-05 max-md:h-ds-lg">
             <input
               className="text-ds-md flex-1 border-none py-ds-03 text-surface-fg outline-none"
               defaultValue="Don't miss next time :)"

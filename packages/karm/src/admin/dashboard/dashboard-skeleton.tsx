@@ -98,7 +98,7 @@ export const DashboardSkeleton = React.forwardRef<HTMLDivElement, React.HTMLAttr
 
           {/* Requests Section */}
           <div className="w-full p-0 md:p-ds-06">
-            <div className="max-md:pt-[16px] flex flex-col items-start overflow-hidden rounded-ds-lg border-0 border-surface-border bg-surface-1 shadow-01 pt-ds-03 md:border max-md:pb-0">
+            <div className="max-md:pt-[16px] flex flex-col items-start overflow-hidden rounded-ds-lg border-0 border-surface-border bg-surface-2 shadow-01 pt-ds-03 md:border max-md:pb-0">
               {/* Tab headers skeleton */}
               <div className="flex w-full items-start border-b-[1px] border-b-surface-border px-ds-06 md:border-b max-md:border-0 max-md:px-0">
                 <div className="text-ds-sm font-semibold uppercase tracking-wider cursor-pointer border-b-[1.5px] border-b-accent-9 px-ds-03 py-ds-04 font-semibold  text-surface-fg">
@@ -108,7 +108,7 @@ export const DashboardSkeleton = React.forwardRef<HTMLDivElement, React.HTMLAttr
                   ATTENDANCE CORRECTION(1)
                 </div>
               </div>
-              <div className="flex max-h-[200px] w-full flex-col overflow-y-auto bg-surface-1 px-ds-06 max-md:flex-1 max-md:max-h-none max-md:min-h-[372px] max-md:p-0">
+              <div className="flex max-h-[200px] w-full flex-col overflow-y-auto bg-surface-2 px-ds-06 max-md:flex-1 max-md:max-h-none max-md:min-h-[372px] max-md:p-0">
                 {Array.from({ length: 2 }).map((_, index) => (
                   <div
                     key={index}

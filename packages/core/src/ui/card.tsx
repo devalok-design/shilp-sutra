@@ -12,8 +12,8 @@ const cardVariants = cva(
   {
     variants: {
       variant: {
-        default: 'bg-surface-1 border border-surface-border shadow-01',
-        elevated: 'bg-surface-1 border border-surface-border shadow-02',
+        default: 'bg-surface-2 border border-surface-border shadow-01',
+        elevated: 'bg-surface-2 border border-surface-border shadow-02',
         outline: 'bg-transparent border-2 border-surface-border-strong shadow-none',
         flat: 'bg-surface-2 border-none shadow-none',
       },

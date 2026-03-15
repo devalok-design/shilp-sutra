@@ -330,7 +330,7 @@ const TaskDetailPanel = React.forwardRef<HTMLDivElement, TaskDetailPanelProps>(f
           /* intentional: task detail side panel takes 40% of screen, min 380px for form usability */
           'w-full sm:max-w-none sm:w-[40%] min-w-[380px] p-0',
           'flex flex-col overflow-hidden',
-          'border-l border-surface-border-strong bg-surface-1',
+          'border-l border-surface-border-strong bg-surface-2',
           className,
         )}
         {...props}

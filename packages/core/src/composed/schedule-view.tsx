@@ -189,7 +189,7 @@ function DayColumn({
             key={i}
             type="button"
             className={cn(
-              'block w-full border-b border-surface-border hover:bg-surface-2 transition-colors',
+              'block w-full border-b border-surface-border hover:bg-surface-3 transition-colors',
               i % 2 === 0 ? 'border-surface-border-strong' : 'border-surface-3',
             )}
             style={{ height: `${100 / slotCount}%` }}
@@ -276,7 +276,7 @@ const ScheduleView = React.forwardRef<HTMLDivElement, ScheduleViewProps>(
             : `Week schedule starting ${format(days[0], 'MMMM d, yyyy')}`
         }
         className={cn(
-          'flex rounded-ds-md border border-surface-border-strong bg-surface-1 overflow-hidden',
+          'flex rounded-ds-md border border-surface-border-strong bg-surface-2 overflow-hidden',
           'h-[480px]',
           className,
         )}

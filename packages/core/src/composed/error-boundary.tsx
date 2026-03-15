@@ -109,7 +109,7 @@ const ErrorDisplay = React.forwardRef<HTMLDivElement, ErrorDisplayProps>(
   return (
     <div ref={ref} {...props} className={cn("flex min-h-[60vh] items-center justify-center p-ds-05", className)}>
       <div
-        className="flex w-full max-w-lg flex-col items-center gap-ds-06 rounded-ds-xl border border-surface-border-strong bg-surface-1 p-ds-07 text-center shadow-01"
+        className="flex w-full max-w-lg flex-col items-center gap-ds-06 rounded-ds-xl border border-surface-border-strong bg-surface-2 p-ds-07 text-center shadow-01"
       >
         {/* Error Icon */}
         <div

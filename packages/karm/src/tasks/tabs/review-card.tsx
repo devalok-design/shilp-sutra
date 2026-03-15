@@ -47,7 +47,7 @@ const ReviewCard = React.forwardRef<HTMLDivElement, ReviewCardProps>(
       <div
         ref={ref}
         className={cn(
-          'rounded-ds-lg border border-surface-border-strong bg-surface-1 shadow-01 p-ds-04',
+          'rounded-ds-lg border border-surface-border-strong bg-surface-2 shadow-01 p-ds-04',
           className,
         )}
         {...props}

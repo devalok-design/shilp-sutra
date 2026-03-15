@@ -92,7 +92,7 @@ const sideOffset: Record<string, { x?: number; y?: number }> = {
 const TooltipContent = React.forwardRef<
   React.ElementRef<typeof TooltipPrimitive.Content>,
   React.ComponentPropsWithoutRef<typeof TooltipPrimitive.Content>
->(({ className, sideOffset: sideOffsetProp = 4, side = 'top', ...props }, ref) => {
+>(({ className, sideOffset: sideOffsetProp = 4, side = 'top', children, ...props }, ref) => {
   const { open } = React.useContext(TooltipContext)
   const slideInit = sideOffset[side] ?? {}
 
@@ -117,7 +117,9 @@ const TooltipContent = React.forwardRef<
                 'z-tooltip overflow-hidden rounded-ds-md bg-surface-fg px-ds-04 py-ds-02b text-ds-sm text-accent-fg shadow-02',
                 className,
               )}
-            />
+            >
+              {children}
+            </motion.div>
           </TooltipPrimitive.Content>
         </TooltipPrimitive.Portal>
       )}

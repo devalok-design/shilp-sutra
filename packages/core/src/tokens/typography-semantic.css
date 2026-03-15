@@ -18,12 +18,12 @@
   --typo-heading-2xl-size:     var(--font-size-6xl);
   --typo-heading-2xl-weight:   var(--font-weight-regular);
   --typo-heading-2xl-leading:  var(--line-height-tight);
-  --typo-heading-2xl-tracking: -0.02em;
+  --typo-heading-2xl-tracking: -0.025em;
 
   --typo-heading-xl-size:      var(--font-size-5xl);
   --typo-heading-xl-weight:    var(--font-weight-regular);
   --typo-heading-xl-leading:   var(--line-height-tight);
-  --typo-heading-xl-tracking:  -0.02em;
+  --typo-heading-xl-tracking:  -0.025em;
 
   --typo-heading-lg-size:      var(--font-size-4xl);
   --typo-heading-lg-weight:    var(--font-weight-regular);
@@ -38,7 +38,7 @@
   --typo-heading-sm-size:      var(--font-size-2xl);
   --typo-heading-sm-weight:    var(--font-weight-regular);
   --typo-heading-sm-leading:   var(--line-height-snug);
-  --typo-heading-sm-tracking:  -0.02em;
+  --typo-heading-sm-tracking:  -0.015em;
 
   --typo-heading-xs-size:      var(--font-size-xl);
   --typo-heading-xs-weight:    var(--font-weight-regular);

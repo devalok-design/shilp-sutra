@@ -17,9 +17,9 @@ export const springs = {
 
 export const tweens = {
   /** Opacity enter/exit */
-  fade: { type: 'tween', duration: 0.15, ease: 'easeOut' } as Transition,
+  fade: { type: 'tween', duration: 0.11, ease: 'easeOut' } as Transition,
   /** Hover color, bg, border transitions */
-  colorShift: { type: 'tween', duration: 0.1, ease: 'easeOut' } as Transition,
+  colorShift: { type: 'tween', duration: 0.07, ease: 'easeOut' } as Transition,
 } as const
 
 // ── Stagger helper ──

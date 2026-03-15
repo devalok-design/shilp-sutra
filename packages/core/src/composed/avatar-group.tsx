@@ -92,12 +92,12 @@ const AvatarGroup = React.forwardRef<HTMLDivElement, AvatarGroupProps>(
     const borderClass =
       borderColor === 'surface-1' ? 'border-surface-1' : 'border-surface-2'
 
-    // Hover expand + spotlight classes for avatars after the first
-    // Only transition margin + transform + opacity — avoid transition-all which causes stutter
+    // Hover expand: margin change is instant (no transition — margin transitions cause layout thrashing).
+    // Only transform + opacity are GPU-composited and safe to animate.
     const hoverExpandClasses =
-      'transition-[margin,transform,opacity] duration-200 ease-out group-hover:ml-0 group-focus-within:ml-0'
+      'group-hover:ml-0 group-focus-within:ml-0'
     const spotlightClasses =
-      'hover:z-50 hover:scale-105 group-hover:[&:not(:hover)]:opacity-85'
+      'transition-[transform,opacity] duration-200 ease-out hover:z-50 hover:scale-105 group-hover:[&:not(:hover)]:opacity-85'
 
     return (
       <TooltipProvider>

@@ -7,10 +7,10 @@ import { motion, AnimatePresence } from 'framer-motion'
 import { cn } from './lib/utils'
 import { springs, tweens } from './lib/motion'
 
-/**
- * Explicit TooltipProvider — wrap your app root for shared delay/skip behavior.
- * If you don't add one, each Tooltip auto-creates its own provider.
- */
+// ── Auto-provider: wraps with TooltipPrimitive.Provider if none exists ──
+
+const TooltipProviderContext = React.createContext(false)
+
 const TooltipProvider: React.FC<React.ComponentPropsWithoutRef<typeof TooltipPrimitive.Provider>> = ({
   children,
   ...props
@@ -22,23 +22,14 @@ const TooltipProvider: React.FC<React.ComponentPropsWithoutRef<typeof TooltipPri
   </TooltipProviderContext.Provider>
 )
 
-// ── Internal context to detect whether a provider exists ──
-
-const TooltipProviderContext = React.createContext(false)
-
-/**
- * Auto-providing TooltipProvider wrapper. If a TooltipProvider ancestor exists,
- * this is a no-op. If not, it injects one automatically so consumers never need
- * to wrap their app in <TooltipProvider> manually.
- */
 function AutoProvider({ children }: { children: React.ReactNode }) {
   const hasProvider = React.useContext(TooltipProviderContext)
   if (hasProvider) return <>{children}</>
   return (
     <TooltipProviderContext.Provider value={true}>
-      <TooltipProvider delayDuration={300}>
+      <TooltipPrimitive.Provider delayDuration={300}>
         {children}
-      </TooltipProvider>
+      </TooltipPrimitive.Provider>
     </TooltipProviderContext.Provider>
   )
 }
@@ -103,10 +94,10 @@ const TooltipContent = React.forwardRef<
           <TooltipPrimitive.Content
             ref={ref}
             forceMount
-            asChild
             sideOffset={sideOffsetProp}
             side={side}
             {...props}
+            asChild
           >
             <motion.div
               initial={{ opacity: 0, scale: 0.95, ...slideInit }}
@@ -114,7 +105,7 @@ const TooltipContent = React.forwardRef<
               exit={{ opacity: 0, scale: 0.95, ...slideInit }}
               transition={{ ...springs.snappy, opacity: tweens.fade }}
               className={cn(
-                'z-tooltip overflow-hidden rounded-ds-md bg-surface-fg px-ds-04 py-ds-02b text-ds-sm text-accent-fg shadow-02',
+                'z-tooltip overflow-hidden rounded-ds-md bg-surface-fg px-ds-04 py-ds-02b text-ds-sm text-surface-1 shadow-02',
                 className,
               )}
             >

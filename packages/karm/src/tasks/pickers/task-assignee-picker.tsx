@@ -63,7 +63,7 @@ const TaskAssigneePicker = React.forwardRef<HTMLDivElement, TaskAssigneePickerPr
               {member.image && (
                 <AvatarImage src={member.image} alt={member.name} />
               )}
-              <AvatarFallback className="bg-surface-3 text-ds-xs font-semibold text-accent-fg">
+              <AvatarFallback className="bg-surface-3 text-ds-xs font-semibold text-surface-fg">
                 {getInitials(member.name)}
               </AvatarFallback>
             </Avatar>

@@ -236,7 +236,7 @@ const DropdownMenuItem = React.forwardRef<
   <DropdownMenuPrimitive.Item
     ref={ref}
     className={cn(
-      'relative flex cursor-default select-none items-center gap-ds-03 rounded-ds-md px-ds-03 py-ds-02b text-ds-md outline-none transition-colors focus:bg-surface-2 focus:text-surface-fg data-[disabled]:pointer-events-none data-[disabled]:opacity-action-disabled [&>svg]:h-ico-sm [&>svg]:w-ico-sm [&>svg]:shrink-0',
+      'relative flex cursor-default select-none items-center gap-ds-03 rounded-ds-md px-ds-03 py-ds-02b text-ds-md outline-none transition-colors duration-fast-01 ease-productive-standard hover:bg-surface-2 focus:bg-surface-2 focus:text-surface-fg active:bg-surface-3 data-[disabled]:pointer-events-none data-[disabled]:opacity-action-disabled [&>svg]:h-ico-sm [&>svg]:w-ico-sm [&>svg]:shrink-0',
       inset && 'pl-ds-07',
       className,
     )}
@@ -252,7 +252,7 @@ const DropdownMenuCheckboxItem = React.forwardRef<
   <DropdownMenuPrimitive.CheckboxItem
     ref={ref}
     className={cn(
-      'relative flex cursor-default select-none items-center rounded-ds-md py-ds-02b pl-ds-07 pr-ds-03 text-ds-md outline-none transition-colors focus:bg-surface-2 focus:text-surface-fg data-[disabled]:pointer-events-none data-[disabled]:opacity-action-disabled',
+      'relative flex cursor-default select-none items-center rounded-ds-md py-ds-02b pl-ds-07 pr-ds-03 text-ds-md outline-none transition-colors duration-fast-01 ease-productive-standard hover:bg-surface-2 focus:bg-surface-2 focus:text-surface-fg active:bg-surface-3 data-[disabled]:pointer-events-none data-[disabled]:opacity-action-disabled',
       className,
     )}
     checked={checked}
@@ -276,7 +276,7 @@ const DropdownMenuRadioItem = React.forwardRef<
   <DropdownMenuPrimitive.RadioItem
     ref={ref}
     className={cn(
-      'relative flex cursor-default select-none items-center rounded-ds-md py-ds-02b pl-ds-07 pr-ds-03 text-ds-md outline-none transition-colors focus:bg-surface-2 focus:text-surface-fg data-[disabled]:pointer-events-none data-[disabled]:opacity-action-disabled',
+      'relative flex cursor-default select-none items-center rounded-ds-md py-ds-02b pl-ds-07 pr-ds-03 text-ds-md outline-none transition-colors duration-fast-01 ease-productive-standard hover:bg-surface-2 focus:bg-surface-2 focus:text-surface-fg active:bg-surface-3 data-[disabled]:pointer-events-none data-[disabled]:opacity-action-disabled',
       className,
     )}
     {...props}

@@ -1,6 +1,7 @@
 'use client'
 
 import * as React from 'react'
+import { motion, AnimatePresence } from 'framer-motion'
 import { cn } from '@/ui/lib/utils'
 import {
   Sheet,
@@ -431,61 +432,70 @@ const TaskDetailPanel = React.forwardRef<HTMLDivElement, TaskDetailPanelProps>(f
               </div>
 
               {/* Tab Content */}
-              <div className="px-ds-06 py-ds-05">
-                {activeTab === 'subtasks' && (
-                  <SubtasksTab
-                    subtasks={task.subtasks ?? []}
-                    terminalColumnId={terminalColumnId}
-                    projectId={task.projectId}
-                    parentTaskId={task.id}
-                    defaultColumnId={defaultColumnId}
-                    onCreateSubtask={clientMode ? noopVoid : handleCreateSubtask}
-                    onToggleSubtask={clientMode ? noopSubtaskToggle : handleToggleSubtask}
-                    readOnly={clientMode}
-                  />
-                )}
+              <AnimatePresence mode="wait">
+                <motion.div
+                  key={activeTab}
+                  initial={{ opacity: 0 }}
+                  animate={{ opacity: 1 }}
+                  exit={{ opacity: 0 }}
+                  transition={{ duration: 0.15 }}
+                  className="px-ds-06 py-ds-05"
+                >
+                  {activeTab === 'subtasks' && (
+                    <SubtasksTab
+                      subtasks={task.subtasks ?? []}
+                      terminalColumnId={terminalColumnId}
+                      projectId={task.projectId}
+                      parentTaskId={task.id}
+                      defaultColumnId={defaultColumnId}
+                      onCreateSubtask={clientMode ? noopVoid : handleCreateSubtask}
+                      onToggleSubtask={clientMode ? noopSubtaskToggle : handleToggleSubtask}
+                      readOnly={clientMode}
+                    />
+                  )}
 
-                {activeTab === 'review' && !clientMode && (
-                  <ReviewTab
-                    reviews={task.reviewRequests}
-                    members={members}
-                    onRequestReview={handleRequestReview}
-                    onUpdateStatus={handleUpdateReviewStatus}
-                  />
-                )}
+                  {activeTab === 'review' && !clientMode && (
+                    <ReviewTab
+                      reviews={task.reviewRequests}
+                      members={members}
+                      onRequestReview={handleRequestReview}
+                      onUpdateStatus={handleUpdateReviewStatus}
+                    />
+                  )}
 
-                {activeTab === 'conversation' && (
-                  <ConversationTab
-                    comments={displayComments}
-                    taskVisibility={task.visibility}
-                    onPostComment={handlePostComment}
-                    clientMode={clientMode}
-                    renderEditor={renderEditor}
-                    renderViewer={renderViewer}
-                  />
-                )}
+                  {activeTab === 'conversation' && (
+                    <ConversationTab
+                      comments={displayComments}
+                      taskVisibility={task.visibility}
+                      onPostComment={handlePostComment}
+                      clientMode={clientMode}
+                      renderEditor={renderEditor}
+                      renderViewer={renderViewer}
+                    />
+                  )}
 
-                {activeTab === 'files' && (
-                  <FilesTab
-                    files={task.files ?? []}
-                    onUpload={clientMode ? noopVoid : handleUploadFile}
-                    onDelete={clientMode ? noopVoid : handleDeleteFile}
-                    isUploading={isUploading}
-                    readOnly={clientMode}
-                  />
-                )}
+                  {activeTab === 'files' && (
+                    <FilesTab
+                      files={task.files ?? []}
+                      onUpload={clientMode ? noopVoid : handleUploadFile}
+                      onDelete={clientMode ? noopVoid : handleDeleteFile}
+                      isUploading={isUploading}
+                      readOnly={clientMode}
+                    />
+                  )}
 
-                {activeTab === 'activity' && (
-                  <ActivityTab activities={activities} />
-                )}
+                  {activeTab === 'activity' && (
+                    <ActivityTab activities={activities} />
+                  )}
 
-                {/* Extra tab content */}
-                {extraTabs.map((tab) =>
-                  activeTab === tab.id ? (
-                    <React.Fragment key={tab.id}>{tab.content}</React.Fragment>
-                  ) : null,
-                )}
-              </div>
+                  {/* Extra tab content */}
+                  {extraTabs.map((tab) =>
+                    activeTab === tab.id ? (
+                      <React.Fragment key={tab.id}>{tab.content}</React.Fragment>
+                    ) : null,
+                  )}
+                </motion.div>
+              </AnimatePresence>
             </div>
           </>
         )}

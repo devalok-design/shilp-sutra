@@ -8,13 +8,13 @@ import { springs, motionProps } from './lib/motion'
 import { cn } from './lib/utils'
 
 const cardVariants = cva(
-  'rounded-ds-lg text-surface-fg',
+  'rounded-ds-lg text-surface-fg transition-shadow duration-fast-02 ease-productive-standard',
   {
     variants: {
       variant: {
         default: 'bg-surface-2 border border-surface-border shadow-01',
         elevated: 'bg-surface-2 border border-surface-border shadow-02',
-        outline: 'bg-transparent border-2 border-surface-border-strong shadow-none',
+        outline: 'bg-transparent border border-surface-border-strong shadow-none',
         flat: 'bg-surface-2 border-none shadow-none',
       },
     },
@@ -88,7 +88,7 @@ const Card = React.forwardRef<HTMLDivElement, CardProps>(
       return (
         <motion.div
           ref={ref}
-          whileHover={{ y: -2 }}
+          whileHover={{ y: -3 }}
           whileTap={{ scale: 0.98 }}
           transition={springs.snappy}
           className={classes}
@@ -120,7 +120,7 @@ const CardTitle = React.forwardRef<
 >(({ className, ...props }, ref) => (
   <div
     ref={ref}
-    className={cn('font-sans font-semibold leading-ds-none tracking-ds-tight text-surface-fg', className)}
+    className={cn('font-sans font-semibold leading-ds-none tracking-normal text-surface-fg', className)}
     {...props}
   />
 ))

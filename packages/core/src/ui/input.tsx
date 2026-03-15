@@ -16,7 +16,7 @@ const inputVariants = cva(
     'border border-surface-border rounded-ds-md',
     'placeholder:text-surface-fg-subtle',
     'hover:bg-surface-4',
-    'transition-colors duration-fast-01',
+    'transition-colors duration-fast-01 ease-productive-standard',
     'focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-accent-7 focus-visible:border-surface-border',
     'disabled:cursor-not-allowed disabled:opacity-action-disabled',
     'read-only:bg-surface-2 read-only:cursor-default',
@@ -72,7 +72,7 @@ export interface InputProps
 }
 
 const Input = React.forwardRef<HTMLInputElement, InputProps>(
-  ({ className, type, state: stateProp, size, startIcon, endIcon, ...props }, ref) => {
+  ({ className, type, state: stateProp, size = 'md', startIcon, endIcon, ...props }, ref) => {
     const fieldCtx = useFormField()
     // Merge FormField context — explicit props always win
     const state = stateProp ?? (fieldCtx.state === 'helper' ? undefined : fieldCtx.state as InputState | undefined)
@@ -103,13 +103,13 @@ const Input = React.forwardRef<HTMLInputElement, InputProps>(
     return (
       <div className="relative flex items-center w-full">
         {startIcon && (
-          <span className="absolute left-ds-03 flex items-center text-surface-fg-muted pointer-events-none [&>svg]:h-ico-sm [&>svg]:w-ico-sm">
+          <span className={cn("absolute left-ds-03 flex items-center text-surface-fg-muted pointer-events-none", size === 'lg' ? '[&>svg]:h-ico-md [&>svg]:w-ico-md' : '[&>svg]:h-ico-sm [&>svg]:w-ico-sm')}>
             {startIcon}
           </span>
         )}
         {inputEl}
         {endIcon && (
-          <span className="absolute right-ds-03 flex items-center text-surface-fg-muted pointer-events-none [&>svg]:h-ico-sm [&>svg]:w-ico-sm">
+          <span className={cn("absolute right-ds-03 flex items-center text-surface-fg-muted pointer-events-none", size === 'lg' ? '[&>svg]:h-ico-md [&>svg]:w-ico-md' : '[&>svg]:h-ico-sm [&>svg]:w-ico-sm')}>
             {endIcon}
           </span>
         )}

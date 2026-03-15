@@ -11,7 +11,7 @@ import { useLink } from './link-context'
 import { useState } from 'react'
 import { IconDots, IconX } from '@tabler/icons-react'
 import { cn } from '../ui/lib/utils'
-import { motion } from 'framer-motion'
+import { motion, AnimatePresence } from 'framer-motion'
 import { springs } from '../ui/lib/motion'
 
 // -----------------------------------------------------------------------
@@ -90,7 +90,7 @@ function BottomNavLink({
         aria-label={item.title}
         aria-current={isActive ? 'page' : undefined}
         className={cn(
-          'flex h-16 w-full cursor-pointer flex-col items-center gap-ds-02 p-ds-02 pt-0 text-ds-sm',
+          'flex h-16 w-full cursor-pointer flex-col items-center gap-ds-02 p-ds-02 pt-0 text-ds-sm transition-colors duration-fast-02 ease-productive-standard',
           isActive
             ? 'font-semibold text-accent-11'
             : 'text-surface-fg-subtle',
@@ -150,6 +150,7 @@ const BottomNavbar = React.forwardRef<HTMLElement, BottomNavbarProps>(
     return (
       <>
         {/* More Menu Overlay */}
+        <AnimatePresence>
         {showMore && (
           // eslint-disable-next-line jsx-a11y/no-static-element-interactions, jsx-a11y/click-events-have-key-events -- backdrop overlay, dismiss via mouse only; keyboard users close via Escape
           <div
@@ -158,7 +159,11 @@ const BottomNavbar = React.forwardRef<HTMLElement, BottomNavbarProps>(
           >
           <div className="absolute inset-0 bg-overlay" />
           {/* eslint-disable-next-line jsx-a11y/no-static-element-interactions -- stopPropagation prevents closing when clicking inside menu */}
-          <div
+          <motion.div
+            initial={{ y: '100%' }}
+            animate={{ y: 0 }}
+            exit={{ y: '100%' }}
+            transition={springs.smooth}
             className="absolute bottom-[72px] left-0 right-0 rounded-t-ds-2xl border-t border-surface-border-strong bg-surface-2 p-ds-05 pb-ds-03"
             onClick={(e) => e.stopPropagation()}
             onKeyDown={(e) => e.stopPropagation()}
@@ -182,7 +187,7 @@ const BottomNavbar = React.forwardRef<HTMLElement, BottomNavbarProps>(
                   href={item.href}
                   onClick={() => setShowMore(false)}
                   className={cn(
-                    'flex flex-col items-center gap-ds-02b rounded-ds-xl p-ds-04 text-ds-sm transition-colors',
+                    'flex flex-col items-center gap-ds-02b rounded-ds-xl p-ds-04 text-ds-sm transition-colors ease-productive-standard',
                     isActive(item.href, item.exact)
                       ? 'bg-surface-3 text-accent-11'
                       : 'text-surface-fg-subtle hover:bg-surface-3',
@@ -195,9 +200,10 @@ const BottomNavbar = React.forwardRef<HTMLElement, BottomNavbarProps>(
                 </Link>
               ))}
             </div>
-          </div>
+          </motion.div>
         </div>
       )}
+        </AnimatePresence>
 
       {/* Bottom Navigation Bar */}
       <nav

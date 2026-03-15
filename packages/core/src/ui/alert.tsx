@@ -130,13 +130,13 @@ const Alert = React.forwardRef<HTMLDivElement, AlertProps>(
             <Icon className="mt-ds-01 h-ico-md w-ico-md shrink-0" aria-hidden="true" />
             <div className="flex-1 min-w-0">
               {title && <p className="text-ds-md font-semibold mb-ds-01">{title}</p>}
-              <div className="text-ds-md opacity-[0.9]">{children}</div>
+              <div className="text-ds-md text-surface-fg-muted">{children}</div>
             </div>
             {onDismiss && (
               <button
                 type="button"
                 onClick={handleDismiss}
-                className="shrink-0 min-h-ds-xs min-w-ds-xs flex items-center justify-center rounded-ds-sm text-surface-fg-subtle transition-colors hover:text-surface-fg-muted hover:bg-surface-3 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent-9"
+                className="shrink-0 min-h-ds-xs min-w-ds-xs flex items-center justify-center rounded-ds-sm text-surface-fg-subtle transition-colors duration-fast-01 ease-productive-standard hover:text-surface-fg-muted hover:bg-surface-3 active:scale-95 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent-9"
                 aria-label="Dismiss"
               >
                 <IconX className="h-ico-sm w-ico-sm" />

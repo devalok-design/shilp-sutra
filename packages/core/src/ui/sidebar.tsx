@@ -233,7 +233,7 @@ const Sidebar = forwardRef<
       >
         <div
           className={cn(
-            'relative h-svh w-[--sidebar-width] bg-transparent transition-[width] duration-moderate-02 ease-linear',
+            'relative h-svh w-[--sidebar-width] bg-transparent transition-[width] duration-moderate-02 ease-productive-exit',
             'group-data-[collapsible=offcanvas]:w-0',
             'group-data-[side=right]:rotate-180',
             variant === 'floating' || variant === 'inset'
@@ -243,7 +243,7 @@ const Sidebar = forwardRef<
         />
         <div
           className={cn(
-            'fixed inset-y-0 z-raised hidden h-svh w-[--sidebar-width] transition-[left,right,width] duration-moderate-02 ease-linear md:flex',
+            'fixed inset-y-0 z-raised hidden h-svh w-[--sidebar-width] transition-[left,right,width] duration-moderate-02 ease-productive-exit md:flex',
             side === 'left'
               ? 'left-0 group-data-[collapsible=offcanvas]:left-[calc(var(--sidebar-width)*-1)]'
               : 'right-0 group-data-[collapsible=offcanvas]:right-[calc(var(--sidebar-width)*-1)]',
@@ -306,7 +306,7 @@ const SidebarRail = forwardRef<HTMLButtonElement, ComponentProps<'button'>>(
         onClick={toggleSidebar}
         title="Toggle Sidebar"
         className={cn(
-          'hover:after:bg-surface-border-strong absolute inset-y-0 z-raised hidden w-4 -translate-x-1/2 transition-colors ease-linear after:absolute after:inset-y-0 after:left-1/2 after:w-[2px] group-data-[side=left]:-right-4 group-data-[side=right]:left-0 sm:flex',
+          'hover:after:bg-surface-border-strong absolute inset-y-0 z-raised hidden w-4 -translate-x-1/2 transition-colors ease-productive-standard after:absolute after:inset-y-0 after:left-1/2 after:w-[2px] group-data-[side=left]:-right-4 group-data-[side=right]:left-0 sm:flex',
           '[[data-side=left]_&]:cursor-w-resize [[data-side=right]_&]:cursor-e-resize',
           '[[data-side=left][data-state=collapsed]_&]:cursor-e-resize [[data-side=right][data-state=collapsed]_&]:cursor-w-resize',
           'group-data-[collapsible=offcanvas]:translate-x-0 group-data-[collapsible=offcanvas]:after:left-full group-data-[collapsible=offcanvas]:hover:bg-surface-3',
@@ -444,7 +444,7 @@ const SidebarGroupLabel = forwardRef<
       ref={ref}
       data-sidebar="group-label"
       className={cn(
-        'flex h-ds-sm shrink-0 items-center rounded-ds-md px-ds-03 text-ds-sm font-medium text-surface-fg-muted outline-none ring-accent-9 transition-[margin,opa] duration-moderate-02 ease-linear focus-visible:ring-2 [&>svg]:h-ico-sm [&>svg]:w-ico-sm [&>svg]:shrink-0',
+        'flex h-ds-sm shrink-0 items-center rounded-ds-md px-ds-03 text-ds-sm font-medium text-surface-fg-muted outline-none ring-accent-9 transition-[margin,opacity] duration-moderate-02 ease-productive-exit focus-visible:ring-2 [&>svg]:h-ico-sm [&>svg]:w-ico-sm [&>svg]:shrink-0',
         'group-data-[collapsible=icon]:-mt-8 group-data-[collapsible=icon]:opacity-0',
         className,
       )}

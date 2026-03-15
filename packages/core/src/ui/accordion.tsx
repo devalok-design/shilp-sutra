@@ -75,13 +75,13 @@ const AccordionTrigger = React.forwardRef<
     <AccordionPrimitive.Trigger
       ref={ref}
       className={cn(
-        'group flex flex-1 items-center justify-between py-ds-05 text-left text-ds-md font-medium hover:underline focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent-9',
+        'group flex flex-1 items-center justify-between py-ds-05 text-left text-ds-md font-medium hover:bg-surface-2 rounded-ds-md data-[state=open]:bg-surface-2 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent-9',
         className,
       )}
       {...props}
     >
       {children}
-      <IconChevronDown className="h-ico-sm w-ico-sm shrink-0 text-surface-fg-muted transition-transform duration-200 group-data-[state=open]:rotate-180" />
+      <IconChevronDown className="h-ico-sm w-ico-sm shrink-0 text-surface-fg-muted transition-transform duration-moderate-02 ease-productive-standard group-data-[state=open]:rotate-180" />
     </AccordionPrimitive.Trigger>
   </AccordionPrimitive.Header>
 ))
@@ -101,7 +101,7 @@ const AccordionContent = React.forwardRef<
       animate={{ opacity: 1 }}
       transition={tweens.fade}
     >
-      <div className={cn('pb-ds-05 pt-0', className)}>{children}</div>
+      <div className={cn('pb-ds-05 pt-ds-02', className)}>{children}</div>
     </motion.div>
   </AccordionPrimitive.Content>
 ))

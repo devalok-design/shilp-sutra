@@ -60,7 +60,7 @@ const PRIORITY_ICON_MAP = {
 // ============================================================
 
 const taskCardVariants = cva(
-  'group/card relative rounded-ds-lg border border-transparent bg-surface-3 pl-3 pr-ds-03 py-ds-03 transition-all duration-100 ease-out cursor-pointer',
+  'group/card relative rounded-ds-lg border border-transparent bg-surface-3 pl-3 pr-ds-03 py-ds-03 transition-[box-shadow,border-color,transform] duration-fast-02 ease-productive-standard cursor-pointer',
   {
     variants: {
       state: {
@@ -182,7 +182,7 @@ function TaskCardVisual({
       {/* Selection checkbox — absolute overlay, top-left corner */}
       <motion.div
         className={cn(
-          'absolute -top-2 -left-2 z-10 transition-opacity',
+          'absolute -top-2 -left-2 z-10 transition-opacity duration-fast-02',
           anySelected || isSelected
             ? 'opacity-100'
             : 'opacity-0 group-hover/card:opacity-100',
@@ -210,7 +210,7 @@ function TaskCardVisual({
         {/* Drag handle */}
         <button
           className={cn(
-            'flex-shrink-0 cursor-grab rounded p-ds-01 opacity-0 transition-opacity',
+            'flex-shrink-0 cursor-grab rounded p-ds-01 opacity-0 transition-opacity duration-fast-02',
             'group-hover/card:opacity-action-disabled hover:!opacity-100',
             'active:cursor-grabbing',
             isDragOverlay && 'opacity-action-disabled',
@@ -358,7 +358,7 @@ TaskCard.displayName = 'TaskCard'
 // ============================================================
 
 const taskCardCompactVariants = cva(
-  'group/card flex items-center gap-ds-02 py-2 pl-3 pr-ds-03 border border-transparent rounded-ds-lg bg-surface-3 transition-all duration-100 ease-out cursor-pointer hover:bg-surface-4 hover:shadow-02 hover:-translate-y-px',
+  'group/card flex items-center gap-ds-02 py-2 pl-3 pr-ds-03 border border-transparent rounded-ds-lg bg-surface-3 transition-[box-shadow,border-color,transform,background-color] duration-fast-02 ease-productive-standard cursor-pointer hover:bg-surface-4 hover:shadow-02 hover:-translate-y-px',
   {
     variants: {
       selected: {
@@ -438,7 +438,7 @@ function TaskCardCompactVisual({
       {/* Selection checkbox — absolute overlay */}
       <motion.div
         className={cn(
-          'absolute -top-1.5 -left-1.5 z-10 transition-opacity',
+          'absolute -top-1.5 -left-1.5 z-10 transition-opacity duration-fast-02',
           anySelected || isSelected
             ? 'opacity-100'
             : 'opacity-0 group-hover/card:opacity-100',

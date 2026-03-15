@@ -82,6 +82,55 @@ export const Left: Story = {
   ),
 }
 
+export const CustomContent: Story = {
+  name: 'Custom Content',
+  render: () => (
+    <div className="flex gap-ds-07 p-ds-10">
+      <Tooltip>
+        <TooltipTrigger asChild>
+          <Button variant="outline">User Info</Button>
+        </TooltipTrigger>
+        <TooltipContent className="max-w-[240px] p-0">
+          <div className="flex items-center gap-ds-03 px-ds-04 py-ds-03">
+            <div className="h-ds-sm w-ds-sm rounded-ds-full bg-accent-9 flex items-center justify-center text-ds-xs font-semibold text-accent-fg">
+              MG
+            </div>
+            <div>
+              <p className="text-ds-sm font-semibold">Mudit Gupta</p>
+              <p className="text-ds-xs opacity-70">Lead Designer</p>
+            </div>
+          </div>
+        </TooltipContent>
+      </Tooltip>
+
+      <Tooltip>
+        <TooltipTrigger asChild>
+          <Button variant="outline">Keyboard Shortcut</Button>
+        </TooltipTrigger>
+        <TooltipContent>
+          <div className="flex items-center gap-ds-03">
+            <span>Save changes</span>
+            <kbd className="rounded-ds-sm border border-current/20 bg-current/10 px-ds-02 py-[1px] font-mono text-ds-xs">
+              Ctrl+S
+            </kbd>
+          </div>
+        </TooltipContent>
+      </Tooltip>
+
+      <Tooltip>
+        <TooltipTrigger asChild>
+          <Button variant="outline">Multi-line</Button>
+        </TooltipTrigger>
+        <TooltipContent className="max-w-[200px]">
+          <p className="text-ds-sm">
+            This tooltip has a longer description that wraps to multiple lines for extra context.
+          </p>
+        </TooltipContent>
+      </Tooltip>
+    </div>
+  ),
+}
+
 export const AllSides: Story = {
   render: () => (
     <div className="flex items-center gap-ds-07 p-ds-10">

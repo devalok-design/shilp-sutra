@@ -271,7 +271,7 @@ export const ColumnHeader = React.forwardRef<HTMLDivElement, ColumnHeaderProps>(
           variant="ghost"
           size="icon-md"
           className={cn(
-            'h-ds-xs w-ds-xs flex-shrink-0 opacity-0 transition-opacity',
+            'h-ds-xs w-ds-xs flex-shrink-0 opacity-0 transition-opacity duration-fast-02',
             'group-hover/header:opacity-100 focus:opacity-100',
             'hover:bg-accent-2 hover:text-accent-11',
           )}
@@ -289,7 +289,7 @@ export const ColumnHeader = React.forwardRef<HTMLDivElement, ColumnHeaderProps>(
               variant="ghost"
               size="icon-md"
               className={cn(
-                'h-ds-xs w-ds-xs flex-shrink-0 opacity-0 transition-opacity',
+                'h-ds-xs w-ds-xs flex-shrink-0 opacity-0 transition-opacity duration-fast-02',
                 'group-hover/header:opacity-100 focus:opacity-100',
               )}
               aria-label="Column options"

@@ -1,7 +1,9 @@
 'use client'
 
 import { IconSearch, IconX } from '@tabler/icons-react'
+import { AnimatePresence, motion } from 'framer-motion'
 import * as React from 'react'
+import { springs } from './lib/motion'
 import { cn } from './lib/utils'
 import { Spinner } from './spinner'
 
@@ -74,7 +76,7 @@ const SearchInput = React.forwardRef<HTMLInputElement, SearchInputProps>(
             'border border-surface-border-strong rounded-ds-md',
             'placeholder:text-surface-fg-subtle',
             'hover:bg-surface-4',
-            'transition-colors duration-fast-01',
+            'transition-colors duration-fast-01 ease-productive-standard',
             'focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent-9 focus-visible:border-accent-7',
             'disabled:cursor-not-allowed disabled:opacity-action-disabled',
             className,
@@ -85,16 +87,24 @@ const SearchInput = React.forwardRef<HTMLInputElement, SearchInputProps>(
           <span className="absolute right-[0.75rem] pointer-events-none" aria-hidden="true">
             <Spinner size="sm" />
           </span>
-        ) : hasValue && onClear ? (
-          <button
-            type="button"
-            onClick={onClear}
-            className="absolute right-[0.75rem] rounded-ds-full h-ico-md w-ico-md flex items-center justify-center text-surface-fg-muted hover:text-surface-fg hover:bg-surface-2 transition-colors"
-            aria-label="Clear search"
-          >
-            <IconX className="h-ico-sm w-ico-sm" />
-          </button>
-        ) : null}
+        ) : (
+          <AnimatePresence>
+            {hasValue && onClear && (
+              <motion.button
+                type="button"
+                onClick={onClear}
+                className="absolute right-[0.75rem] rounded-ds-full h-ico-md w-ico-md flex items-center justify-center text-surface-fg-muted hover:text-surface-fg hover:bg-surface-2 transition-colors ease-productive-standard"
+                aria-label="Clear search"
+                initial={{ opacity: 0, scale: 0.8 }}
+                animate={{ opacity: 1, scale: 1 }}
+                exit={{ opacity: 0, scale: 0.8 }}
+                transition={springs.snappy}
+              >
+                <IconX className="h-ico-sm w-ico-sm" />
+              </motion.button>
+            )}
+          </AnimatePresence>
+        )}
       </div>
     )
   },

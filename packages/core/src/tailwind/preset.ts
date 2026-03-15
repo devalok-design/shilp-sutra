@@ -1,4 +1,5 @@
 import type { Config } from 'tailwindcss'
+import plugin from 'tailwindcss/plugin'
 
 const preset: Partial<Config> = {
   /**
@@ -355,9 +356,36 @@ const preset: Partial<Config> = {
         toast: 'var(--z-toast)',
         tooltip: 'var(--z-tooltip)',
       },
+      fontVariantNumeric: {
+        tabular: 'tabular-nums',
+      },
     },
   },
-  plugins: [],
+  plugins: [
+    plugin(({ addUtilities }) => {
+      addUtilities({
+        '.focus-ring': {
+          '&:focus-visible': {
+            outline: 'none',
+            'box-shadow':
+              '0 0 0 2px var(--color-surface-1), 0 0 0 4px var(--color-accent-9)',
+          },
+        },
+        '.focus-ring-inset': {
+          '&:focus-visible': {
+            outline: 'none',
+            'box-shadow': 'inset 0 0 0 2px var(--color-accent-9)',
+          },
+        },
+        '.focus-ring-sm': {
+          '&:focus-visible': {
+            outline: 'none',
+            'box-shadow': '0 0 0 1px var(--color-accent-7)',
+          },
+        },
+      })
+    }),
+  ],
 }
 
 export default preset

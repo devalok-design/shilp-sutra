@@ -11,6 +11,7 @@ import {
   differenceInMinutes,
   isToday,
 } from 'date-fns'
+import { motion } from 'framer-motion'
 import { cn } from '../ui/lib/utils'
 
 /* ------------------------------------------------------------------ */
@@ -189,7 +190,7 @@ function DayColumn({
             key={i}
             type="button"
             className={cn(
-              'block w-full border-b border-surface-border hover:bg-surface-3 transition-colors',
+              'block w-full border-b border-surface-border hover:bg-surface-3 transition-colors ease-productive-standard',
               i % 2 === 0 ? 'border-surface-border-strong' : 'border-surface-3',
             )}
             style={{ height: `${100 / slotCount}%` }}
@@ -210,7 +211,7 @@ function DayColumn({
               className={cn(
                 'absolute left-ds-01 right-ds-01 rounded-ds-sm border-l-[3px] px-ds-02 py-ds-01',
                 'text-left text-ds-xs font-medium overflow-hidden cursor-pointer',
-                'hover:opacity-90 transition-opacity',
+                'hover:shadow-01 hover:scale-[1.02] transition-[box-shadow,transform] duration-fast-02 ease-productive-standard',
                 colorClass,
               )}
               style={style}
@@ -232,7 +233,11 @@ function DayColumn({
             style={{ top: `${nowIndicatorTop}%` }}
             aria-hidden="true"
           >
-            <span className="absolute -left-[5px] -top-[4px] h-[10px] w-[10px] rounded-ds-full bg-error-9" />
+            <motion.span
+              className="absolute -left-[5px] -top-[4px] h-[10px] w-[10px] rounded-ds-full bg-error-9"
+              animate={{ scale: [1, 1.3, 1] }}
+              transition={{ repeat: Infinity, duration: 2 }}
+            />
           </div>
         )}
       </div>

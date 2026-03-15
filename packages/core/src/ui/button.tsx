@@ -11,7 +11,7 @@ import { cn } from './lib/utils'
 import { Spinner } from './spinner'
 
 export const buttonVariants = cva(
-  'inline-flex items-center justify-center gap-ds-03 whitespace-nowrap font-sans font-semibold select-none border border-transparent focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent-9 focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-action-disabled',
+  'inline-flex items-center justify-center gap-ds-03 whitespace-nowrap font-sans font-semibold select-none border border-transparent focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent-9 focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-action-disabled disabled:cursor-not-allowed',
   {
     variants: {
       variant: {
@@ -311,9 +311,9 @@ const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
         className={cn(
           buttonVariants({ variant: resolvedVariant, color: resolvedColor, size: resolvedSize }),
           fullWidth && 'w-full',
-          !loading && !isAsyncFeedback && 'active:scale-[0.97] transition-transform duration-100',
+          !loading && !isAsyncFeedback && 'active:scale-[0.95] transition-[color,background-color,border-color,box-shadow,transform] duration-fast-01 ease-productive-standard',
           feedbackColorClass,
-          isAsyncFeedback && 'transition-colors duration-200',
+          isAsyncFeedback && 'transition-colors duration-moderate-01 ease-productive-standard',
           className,
         )}
         ref={ref}

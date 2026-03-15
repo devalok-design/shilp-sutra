@@ -45,7 +45,7 @@ const PageHeader = React.forwardRef<HTMLDivElement, PageHeaderProps>(
                 {crumb.href ? (
                   <a
                     href={crumb.href}
-                    className="text-ds-sm text-surface-fg-subtle transition-colors hover:text-surface-fg-muted"
+                    className="text-ds-sm text-surface-fg-subtle transition-colors hover:text-surface-fg-muted focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent-9 rounded-ds-sm"
                   >
                     {crumb.label}
                   </a>
@@ -72,7 +72,7 @@ const PageHeader = React.forwardRef<HTMLDivElement, PageHeaderProps>(
               {resolvedTitle && (
                 <h1
                   className={cn(
-                    'text-ds-2xl text-surface-fg',
+                    'text-ds-2xl font-semibold text-surface-fg',
                     titleClassName,
                   )}
                 >

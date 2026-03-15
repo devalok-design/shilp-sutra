@@ -173,7 +173,7 @@ function CloseIcon({ className }: { className?: string }) {
 // Shared styles
 // -----------------------------------------------------------------------
 
-const navItemBase = 'relative gap-ds-04 rounded-ds-lg px-ds-04 py-ds-03 transition-colors'
+const navItemBase = 'relative gap-ds-04 rounded-ds-lg px-ds-04 py-ds-03 transition-colors duration-fast-02'
 const navItemActive =
   "bg-accent-2 text-accent-11 after:absolute after:right-0 after:top-0 after:h-full after:w-ds-01 after:rounded-l-ds-full after:bg-accent-9 after:content-['']"
 const navItemInactive = 'text-surface-fg-subtle hover:bg-surface-3 hover:text-surface-fg'
@@ -436,7 +436,7 @@ const AppSidebar = React.forwardRef<HTMLDivElement, AppSidebarProps>(
 
             {/* Promo banner */}
             {footer.promo && (
-              <div className="relative rounded-ds-lg border border-surface-border bg-surface-2 p-ds-04">
+              <div className="relative rounded-ds-lg border border-surface-border bg-surface-2 p-ds-04 shadow-01">
                 {footer.promo.onDismiss && (
                   <button
                     onClick={footer.promo.onDismiss}

@@ -191,7 +191,7 @@ export const CalendarGrid = React.forwardRef<HTMLDivElement, CalendarGridProps>(
           <button
             type="button"
             onClick={() => onMonthChange(subMonths(currentMonth, 1))}
-            className="inline-flex h-ds-xs-plus w-ds-xs-plus items-center justify-center rounded-ds-md text-surface-fg-subtle transition-colors duration-fast-01 ease-productive-standard hover:bg-surface-3 hover:text-surface-fg-muted"
+            className="inline-flex h-ds-xs-plus w-ds-xs-plus items-center justify-center rounded-ds-md text-surface-fg-subtle transition-colors duration-fast-01 ease-productive-standard hover:bg-surface-3 hover:text-surface-fg-muted focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent-9"
             aria-label="Previous month"
           >
             <IconChevronLeft className="h-ico-sm w-ico-sm" stroke={1.5} />
@@ -215,7 +215,7 @@ export const CalendarGrid = React.forwardRef<HTMLDivElement, CalendarGridProps>(
           <button
             type="button"
             onClick={() => onMonthChange(addMonths(currentMonth, 1))}
-            className="inline-flex h-ds-xs-plus w-ds-xs-plus items-center justify-center rounded-ds-md text-surface-fg-subtle transition-colors duration-fast-01 ease-productive-standard hover:bg-surface-3 hover:text-surface-fg-muted"
+            className="inline-flex h-ds-xs-plus w-ds-xs-plus items-center justify-center rounded-ds-md text-surface-fg-subtle transition-colors duration-fast-01 ease-productive-standard hover:bg-surface-3 hover:text-surface-fg-muted focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent-9"
             aria-label="Next month"
           >
             <IconChevronRight className="h-ico-sm w-ico-sm" stroke={1.5} />

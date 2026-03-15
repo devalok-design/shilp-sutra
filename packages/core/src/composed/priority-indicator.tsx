@@ -1,5 +1,6 @@
 import * as React from 'react'
 import { cva, type VariantProps } from 'class-variance-authority'
+import { motion } from 'framer-motion'
 import { cn } from '../ui/lib/utils'
 import {
   IconArrowDown,
@@ -68,8 +69,10 @@ const PriorityIndicator = React.forwardRef<HTMLDivElement, PriorityIndicatorProp
     const config = priorityConfig[normalizedPriority]
     const Icon = config.icon
 
+    const isUrgent = normalizedPriority === 'URGENT'
+
     if (display === 'compact') {
-      return (
+      const iconWrapper = (
         <div
           ref={ref}
           className={cn(
@@ -83,6 +86,20 @@ const PriorityIndicator = React.forwardRef<HTMLDivElement, PriorityIndicatorProp
           <Icon className={cn('h-ico-sm w-ico-sm', config.color)} stroke={2} />
         </div>
       )
+
+      if (isUrgent) {
+        return (
+          <motion.div
+            animate={{ scale: [1, 1.1, 1] }}
+            transition={{ repeat: Infinity, duration: 2, ease: 'easeInOut' }}
+            className="inline-flex"
+          >
+            {iconWrapper}
+          </motion.div>
+        )
+      }
+
+      return iconWrapper
     }
 
     return (
@@ -91,14 +108,27 @@ const PriorityIndicator = React.forwardRef<HTMLDivElement, PriorityIndicatorProp
         className={cn(priorityVariants({ display }), className)}
         {...props}
       >
-        <div
-          className={cn(
-            'inline-flex items-center justify-center rounded-ds-md p-ds-01',
-            config.bgColor,
-          )}
-        >
-          <Icon className={cn('h-ico-sm w-ico-sm', config.color)} stroke={2} />
-        </div>
+        {isUrgent ? (
+          <motion.div
+            animate={{ scale: [1, 1.1, 1] }}
+            transition={{ repeat: Infinity, duration: 2, ease: 'easeInOut' }}
+            className={cn(
+              'inline-flex items-center justify-center rounded-ds-md p-ds-01',
+              config.bgColor,
+            )}
+          >
+            <Icon className={cn('h-ico-sm w-ico-sm', config.color)} stroke={2} />
+          </motion.div>
+        ) : (
+          <div
+            className={cn(
+              'inline-flex items-center justify-center rounded-ds-md p-ds-01',
+              config.bgColor,
+            )}
+          >
+            <Icon className={cn('h-ico-sm w-ico-sm', config.color)} stroke={2} />
+          </div>
+        )}
         <span className="text-ds-sm text-surface-fg-muted">
           {config.label}
         </span>

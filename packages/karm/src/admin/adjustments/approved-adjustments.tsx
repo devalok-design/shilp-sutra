@@ -50,7 +50,7 @@ const ApprovedAdjustments = React.forwardRef<HTMLDivElement, ApprovedAdjustments
                 adjustments.map((adjustment) => (
                   <div
                     key={adjustment.id}
-                    className="grid grid-cols-[200px_160px_80px_1fr_1fr_1fr] gap-ds-05 bg-surface-2 py-ds-03 sm:px-ds-06"
+                    className="grid grid-cols-[200px_160px_80px_1fr_1fr_1fr] gap-ds-05 bg-surface-2 py-ds-03 sm:px-ds-06 transition-colors duration-fast-01 hover:bg-surface-3"
                   >
                     <div className="p-ds-03 pl-ds-04 text-surface-fg-muted">
                       {adjustment.user?.name || 'Unknown User'}

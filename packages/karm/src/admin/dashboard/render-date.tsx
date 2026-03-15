@@ -246,7 +246,7 @@ export const RenderDate = React.forwardRef<HTMLDivElement, RenderDateProps>(
     // ── DisabledState (visual-only disabled, different from functional disabled) ──
     state.disabledState && 'text-disabled',
     state.disabledState && state.today &&
-      'bg-disabled text-accent-fg',
+      'bg-disabled text-surface-fg-muted',
   )
 
   return (

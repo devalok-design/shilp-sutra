@@ -11,7 +11,7 @@ import { cn } from './lib/utils'
 
 // TODO(v1): rename color="primary" → color="brand" for consistency with Badge (breaking change)
 const chipVariants = cva(
-  'inline-flex items-center gap-ds-02 font-sans leading-ds-relaxed rounded-ds-full transition-colors duration-fast-01',
+  'inline-flex items-center gap-ds-02 font-sans leading-ds-relaxed rounded-ds-full transition-colors duration-fast-01 ease-productive-standard',
   {
     variants: {
       variant: {
@@ -124,7 +124,7 @@ const Chip = React.forwardRef<HTMLElement, ChipProps>(
     const isClickable = !!onClick
     const MotionComponent = isClickable ? motion.button : motion.span
     const interactiveClass = isClickable && !disabled
-      ? 'cursor-pointer hover:bg-surface-4'
+      ? 'cursor-pointer hover:bg-surface-4 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent-9'
       : ''
     const disabledClass = disabled
       ? 'opacity-action-disabled cursor-not-allowed'
@@ -136,7 +136,7 @@ const Chip = React.forwardRef<HTMLElement, ChipProps>(
         layout
         initial={{ opacity: 1, scale: 1 }}
         exit={{ opacity: 0, scale: 0.8 }}
-        whileTap={isClickable && !disabled ? { scale: 0.95 } : undefined}
+        whileTap={isClickable && !disabled ? { scale: 0.97 } : undefined}
         transition={springs.snappy}
         className={cn(chipVariants({ variant, size, color }), interactiveClass, disabledClass, className)}
         onClick={isClickable ? onClick : undefined}
@@ -150,7 +150,7 @@ const Chip = React.forwardRef<HTMLElement, ChipProps>(
           <button
             type="button"
             aria-label={`Remove ${label}`}
-            className="flex-shrink-0 min-h-ds-xs min-w-ds-xs flex items-center justify-center rounded-ds-full p-ds-01 hover:bg-surface-3 hover:rotate-90 transition-[color,transform] duration-fast-02 [&>svg]:w-ico-sm [&>svg]:h-ico-sm"
+            className="flex-shrink-0 min-h-ds-xs min-w-ds-xs flex items-center justify-center rounded-ds-full p-ds-01 text-current/60 hover:text-current hover:bg-current/10 active:scale-95 transition-[color,background-color,transform] duration-fast-02 [&>svg]:w-ico-sm [&>svg]:h-ico-sm"
             onClick={(e) => {
               e.stopPropagation()
               onDismiss()

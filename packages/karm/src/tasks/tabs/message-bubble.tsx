@@ -68,7 +68,7 @@ const MessageBubble = React.forwardRef<HTMLDivElement, MessageBubbleProps>(
               'text-ds-xs font-semibold',
               isClient
                 ? 'bg-warning-3 text-warning-11'
-                : 'bg-surface-3 text-accent-fg',
+                : 'bg-surface-3 text-surface-fg',
             )}
           >
             {getInitials(author.name)}
@@ -84,7 +84,7 @@ const MessageBubble = React.forwardRef<HTMLDivElement, MessageBubbleProps>(
             {/* Badge: staff sees "Client" on client comments; client sees "Team" on staff comments */}
             {clientMode ? (
               !isClient && (
-                <span className="rounded bg-surface-3 px-ds-02 py-px text-ds-xs font-semibold uppercase tracking-wider text-accent-fg">
+                <span className="rounded bg-surface-3 px-ds-02 py-px text-ds-xs font-semibold uppercase tracking-wider text-surface-fg">
                   Team
                 </span>
               )

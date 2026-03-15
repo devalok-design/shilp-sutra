@@ -170,12 +170,12 @@ function ActivityEntry({
               <span className="font-medium text-surface-fg">{item.actor.name} </span>
             )}
             {item.detail && (
-              <IconChevronRight className={cn('h-3 w-3 shrink-0 text-surface-fg-subtle transition-transform', expandedDetail && 'rotate-90')} />
+              <IconChevronRight className={cn('h-3 w-3 shrink-0 text-surface-fg-subtle transition-transform duration-fast-02 ease-productive-standard', expandedDetail && 'rotate-90')} />
             )}
             <span
               className={cn(
                 'text-surface-fg-muted',
-                item.detail && 'cursor-pointer hover:underline',
+                item.detail && 'cursor-pointer hover:underline hover:bg-surface-2 rounded-ds-md',
               )}
               onClick={handleActionClick}
               role={item.detail ? 'button' : undefined}
@@ -305,8 +305,10 @@ const ActivityFeed = React.forwardRef<HTMLDivElement, ActivityFeedProps>(
                 {/* Timeline line scoped to this group */}
                 <div className={cn('relative flex flex-col', compact ? 'gap-1' : 'gap-3')}>
                   <div className="absolute bottom-0 left-[3px] top-0 w-px bg-surface-border" />
-                  {group.items.map((item) => (
-                    <ActivityEntry key={item.id} item={item} compact={compact} />
+                  {group.items.map((item, index) => (
+                    <motion.div key={item.id} initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ ...tweens.fade, delay: index * 0.03 }}>
+                      <ActivityEntry item={item} compact={compact} />
+                    </motion.div>
                   ))}
                 </div>
               </div>
@@ -316,8 +318,10 @@ const ActivityFeed = React.forwardRef<HTMLDivElement, ActivityFeedProps>(
           <div className={cn('relative flex flex-col', compact ? 'gap-1' : 'gap-3')}>
             {/* Timeline line */}
             <div className="absolute bottom-0 left-[3px] top-0 w-px bg-surface-border" />
-            {visibleItems.map((item) => (
-              <ActivityEntry key={item.id} item={item} compact={compact} />
+            {visibleItems.map((item, index) => (
+              <motion.div key={item.id} initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ ...tweens.fade, delay: index * 0.03 }}>
+                <ActivityEntry item={item} compact={compact} />
+              </motion.div>
             ))}
           </div>
         )}

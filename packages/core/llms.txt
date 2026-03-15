@@ -85,6 +85,26 @@
 - Dark mode: algorithmically derived (OKLCH curves), NOT hex overrides. Surfaces lighten with elevation.
 - If you reference --pink-500 etc directly, migrate: 50→1, 100→2, 200→3, 300→4, 400→5, 500→7, 600→8, 700→9, 800→10, 900→11, 950→12
 
+## v0.22.0 — UI Polish & Micro-Refinement
+
+**Shadows**: All shadow tokens now use 3-layer stacks. Visual change only — same token names.
+
+**Transitions**: All CSS transitions use `ease-productive-standard` easing. Tween presets aligned: `tweens.fade` = 0.11s, `tweens.colorShift` = 0.07s.
+
+**New Tailwind utilities**:
+- `.focus-ring` / `.focus-ring-inset` / `.focus-ring-sm` — consistent keyboard focus styling
+- `.tabular-nums` — aligned numbers via `font-variant-numeric: tabular-nums`
+
+**Separator**: New `variant` prop — `"gradient" | "gradient-left" | "gradient-right"`. Default unchanged.
+
+**Checkbox**: Path-draw animation (stroke draws progressively). Uncontrolled usage now works.
+
+**Tooltip**: Auto-wraps with `<TooltipProvider>` — no manual provider needed. Text color fixed for dark mode.
+
+**Avatar fallback**: Now respects `shape` prop (was always circle).
+
+**New hover states**: Checkbox, Radio, Switch track, Select items, DropdownMenu items, Combobox trigger.
+
 ## Install & Setup
 
 pnpm add @devalok/shilp-sutra

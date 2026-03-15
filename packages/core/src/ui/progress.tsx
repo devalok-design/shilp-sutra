@@ -27,7 +27,7 @@ const progressTrackVariants = cva(
 )
 
 const progressIndicatorVariants = cva(
-  'h-full w-full flex-1 transition-all duration-moderate-02 ease-expressive-standard',
+  'h-full w-full flex-1 transition-[width] duration-moderate-02 ease-expressive-standard',
   {
     variants: {
       color: {
@@ -142,7 +142,7 @@ const Progress = React.forwardRef<
         </ProgressPrimitive.Root>
 
         {showLabel && !isIndeterminate && (
-          <span className="shrink-0 text-ds-xs text-surface-fg-muted">
+          <span className="shrink-0 text-ds-xs text-surface-fg-muted tabular-nums">
             {value}%
           </span>
         )}

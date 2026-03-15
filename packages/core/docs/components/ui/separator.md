@@ -22,6 +22,9 @@
 - When decorative is true, the separator is hidden from screen readers
 
 ## Changes
+### v0.22.0
+- **Added** `variant` prop: `"gradient"` (fades both edges), `"gradient-left"` (fades left), `"gradient-right"` (fades right). Default behavior unchanged.
+
 ### v0.4.2
 - **Added** `SeparatorProps` type export
 

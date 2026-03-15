@@ -9,26 +9,16 @@
 - **Lint**: `pnpm lint`
 - **Typecheck**: `pnpm typecheck`
 
-## Publishing Checklist (MANDATORY)
+## Publishing
 
-**Do NOT run `npm publish` until EVERY item is confirmed. No exceptions.**
+**Use `/publish-release` to publish.** This skill enforces the full checklist with automated gates.
 
-When releasing a new version:
-1. **Typecheck**: `pnpm typecheck` passes
-2. **Lint**: `pnpm lint` passes
-3. **Tests**: `pnpm test` — all pass
-4. **Stories**: Every new/changed component has Storybook stories covering key variants and interactive states
-5. **Component docs**: Every new/changed component has an up-to-date `packages/core/docs/components/{category}/{name}.md` with a Changes entry for this version. These ship in the npm package under `docs/components/` and are the primary AI agent reference — keep them accurate. Run `pnpm build:docs:check` to verify coverage.
-6. **Build**: `pnpm build` — all packages build (this regenerates `llms-full.txt` from the component docs automatically)
-7. **No stale .js files**: Verify `packages/core/src/ui/` contains zero `.js` files after build. If any appear, the playground `tsc` may be emitting — ensure `apps/playground/tsconfig.json` has `"noEmit": true`.
-8. **CHANGELOG.md**: Updated with all changes, breaking changes clearly marked
-9. **llms.txt**: Breaking changes section updated. Any new/changed component APIs documented. Verify preset names and server-safe list match source.
-10. **llms-full.txt**: GENERATED — do not hand-edit. Updated automatically by `pnpm build:docs` (runs as part of `pnpm build`). To update architecture notes, edit `packages/core/docs/components/_header.md`.
-11. **Version bump**: Correct semver per changed package (breaking = minor while 0.x, patch for fixes). Bump ALL changed packages — if karm changed, bump karm too. Ensure karm's peer dep floor matches the core version it requires.
-12. **Git commit + push**: All docs and version bumps committed
-13. **FINAL REVIEW**: Re-read the diff of all changes since last release. Confirm docs match code.
-14. **npm publish**: Only now — `npm publish --access public` per changed package
-15. **Send DS Notice**: If breaking changes, file issue on consumer repos via /send-karm-notice
+**Automated tooling:**
+- `pnpm build` runs `post-build-audit.mjs` automatically (stale .js, use-client blast radius, surface token count)
+- `node scripts/pre-publish-audit.mjs` runs all hard gates (git clean, version match, docs coverage, typecheck, lint, tests, build, token audit)
+- The `/publish-release` skill orchestrates docs → version bump → gates → optional Storybook review → publish
+
+**Do NOT run `npm publish` directly.** Always go through `/publish-release`.
 
 If you realize docs were incomplete after publishing, immediately publish a patch version.
 

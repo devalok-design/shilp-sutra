@@ -101,7 +101,9 @@
 
 **Tooltip**: Auto-wraps with `<TooltipProvider>` — no manual provider needed. Text color fixed for dark mode.
 
-**Avatar fallback**: Now respects `shape` prop (was always circle).
+**Avatar fallback**: Now respects `shape` prop (was always circle). Font size auto-scales with avatar size (v0.22.3).
+
+**AvatarGroup renderAvatar**: Wrapper is positioning-only — pass `size` directly to your Avatar, do NOT use `className="h-full w-full"` (v0.22.3).
 
 **New hover states**: Checkbox, Radio, Switch track, Select items, DropdownMenu items, Combobox trigger.
 

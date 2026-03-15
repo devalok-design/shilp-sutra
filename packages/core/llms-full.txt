@@ -5,7 +5,7 @@
 > All variant values and props verified from source CVA definitions.
 >
 > Package: @devalok/shilp-sutra
-> Version: 0.22.0
+> Version: 0.22.3
 
 ---
 
@@ -353,11 +353,15 @@ Note: getFormFieldA11y() was removed in favor of useFormField() hook.
 ## Gotchas
 - Status dot renders with role="img" and aria-label (accessible, not decorative)
 - Dot size scales automatically with avatar size
+- AvatarFallback font size scales automatically with avatar size (via AvatarSizeContext)
 - Ring offset color matches the surface context — ensure it sits on the expected background
 - Badge is hidden when value is `0` (falsy); use `"dot"` for presence without a count
 - Online status dot pulses with a CSS animation
 
 ## Changes
+### v0.22.3
+- **Fixed** AvatarFallback text now auto-scales with avatar size — xs gets `text-[9px]`, sm `text-ds-xs`, md `text-ds-sm`, lg `text-ds-md`, xl `text-ds-lg`
+
 ### v0.22.0
 - **Fixed** Fallback always rendered `rounded-ds-full` regardless of `shape` prop. Now uses `AvatarShapeContext` to inherit the correct border-radius from `shape="square"` or `shape="rounded"`.
 
@@ -3042,8 +3046,13 @@ export default function RootLayout({ children }) {
 - Missing `image` falls back to initials derived from `name`
 - Hover expand animation uses CSS `group-hover` — parent must not clip overflow
 - `borderColor` should match the surface context the group sits on (e.g., `surface-1` on cards)
+- `renderAvatar` wrapper is positioning-only — pass `size` directly to your Avatar (do NOT use `className="h-full w-full"`)
 
 ## Changes
+### v0.22.3
+- **Fixed** `renderAvatar` wrapper no longer clips consumer Avatar content (removed overflow-hidden, border, and size classes from wrapper)
+- **Fixed** Removed redundant text-size classes from wrapper — Avatar handles font scaling internally
+
 ### v0.21.0
 - **Added** `xs` and `xl` size variants
 - **Added** `borderColor` prop for overlap border matching surface context

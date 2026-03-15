@@ -5,6 +5,13 @@ All notable changes to `@devalok/shilp-sutra` will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.22.3] - 2026-03-16 (core)
+
+### Fixed (core)
+- **AvatarFallback text scales with avatar size**: Fallback initials now auto-scale via `AvatarSizeContext` — `xs` gets `text-[9px]`, `sm` gets `text-ds-xs`, up to `xl` at `text-ds-lg`. Previously, all sizes used the inherited (too-large) font size.
+- **AvatarGroup `renderAvatar` wrapper no longer clips content**: The wrapper div was applying `overflow-hidden`, border, and explicit size classes that clipped the consumer's Avatar (badge, status dot, ring would get cut off). Wrapper is now positioning-only (overlap, z-index, spotlight). Consumers should pass `size` directly to their Avatar instead of using `className="h-full w-full"`.
+- **AvatarGroup removed redundant text-size classes**: Text sizing in `avatarSizeVariants` removed — Avatar handles font scaling internally via size context.
+
 ## [0.22.0] - 2026-03-15 (core) / [0.20.3] - 2026-03-15 (karm)
 
 ### Added (core)

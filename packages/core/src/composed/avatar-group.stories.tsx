@@ -367,3 +367,41 @@ export const ExpandAmounts: Story = {
     },
   },
 }
+
+export const SizeComparison: Story = {
+  name: 'Size Comparison (Group vs Standalone)',
+  render: () => {
+    const sizes = ['xs', 'sm', 'md', 'lg', 'xl'] as const
+    const users = mockUsers.slice(0, 3)
+    return (
+      <div className="space-y-ds-07">
+        <p className="text-ds-md text-surface-fg-muted">
+          Each row shows a standalone Avatar next to an AvatarGroup at the same size.
+          They should be identical in dimensions.
+        </p>
+        {sizes.map((s) => (
+          <div key={s} className="flex items-center gap-ds-06">
+            <span className="w-8 text-ds-sm font-mono text-surface-fg-subtle">{s}</span>
+            <div className="flex items-center gap-ds-03">
+              <span className="text-ds-xs text-surface-fg-subtle">Standalone:</span>
+              <Avatar size={s}>
+                <AvatarFallback>AS</AvatarFallback>
+              </Avatar>
+            </div>
+            <div className="flex items-center gap-ds-03">
+              <span className="text-ds-xs text-surface-fg-subtle">Group:</span>
+              <AvatarGroup users={users} size={s} max={3} showTooltip={false} />
+            </div>
+          </div>
+        ))}
+      </div>
+    )
+  },
+  parameters: {
+    docs: {
+      description: {
+        story: 'Visual regression check: standalone Avatar and AvatarGroup avatars must be the same size at every size prop value.',
+      },
+    },
+  },
+}

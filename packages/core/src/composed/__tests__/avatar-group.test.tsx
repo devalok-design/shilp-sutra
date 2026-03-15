@@ -150,9 +150,9 @@ describe('AvatarGroup', () => {
           showTooltip={false}
         />,
       )
-      const xlAvatar = container.querySelector('.h-ds-lg')
+      const xlAvatar = container.querySelector('.h-ds-xl')
       expect(xlAvatar).toBeInTheDocument()
-      const xlAvatarW = container.querySelector('.w-ds-lg')
+      const xlAvatarW = container.querySelector('.w-ds-xl')
       expect(xlAvatarW).toBeInTheDocument()
     })
   })

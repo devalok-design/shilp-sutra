@@ -93,10 +93,11 @@ const AvatarGroup = React.forwardRef<HTMLDivElement, AvatarGroupProps>(
       borderColor === 'surface-1' ? 'border-surface-1' : 'border-surface-2'
 
     // Hover expand + spotlight classes for avatars after the first
+    // Only transition margin + transform + opacity — avoid transition-all which causes stutter
     const hoverExpandClasses =
-      'transition-all duration-200 group-hover:ml-0 group-focus-within:ml-0'
+      'transition-[margin,transform,opacity] duration-200 ease-out group-hover:ml-0 group-focus-within:ml-0'
     const spotlightClasses =
-      'hover:z-50 hover:scale-110 hover:shadow-md group-hover:[&:not(:hover)]:opacity-80'
+      'hover:z-50 hover:scale-105 group-hover:[&:not(:hover)]:opacity-85'
 
     return (
       <TooltipProvider>
@@ -121,8 +122,7 @@ const AvatarGroup = React.forwardRef<HTMLDivElement, AvatarGroupProps>(
                     index > 0 && overlapClass,
                     index > 0 && hoverExpandClasses,
                     spotlightClasses,
-                    'transition-all duration-200',
-                    user.ring && user.ring !== 'none' && groupRingMap[user.ring],
+                                        user.ring && user.ring !== 'none' && groupRingMap[user.ring],
                   )}
                   style={{ zIndex: displayed.length - index }}
                 >
@@ -154,8 +154,7 @@ const AvatarGroup = React.forwardRef<HTMLDivElement, AvatarGroupProps>(
                   index > 0 && overlapClass,
                   index > 0 && hoverExpandClasses,
                   spotlightClasses,
-                  'transition-all duration-200',
-                  user.ring && user.ring !== 'none' && groupRingMap[user.ring],
+                                    user.ring && user.ring !== 'none' && groupRingMap[user.ring],
                 )}
                 style={{ zIndex: displayed.length - index }}
               >
@@ -199,7 +198,7 @@ const AvatarGroup = React.forwardRef<HTMLDivElement, AvatarGroupProps>(
                       overlapClass,
                       hoverExpandClasses,
                       'flex cursor-pointer items-center justify-center bg-accent-2 font-body font-semibold text-accent-11',
-                      'hover:scale-105 hover:bg-accent-3 transition-all duration-150',
+                      'hover:scale-105 hover:bg-accent-3 transition-[transform,background-color] duration-150',
                     )}
                     style={{ zIndex: 0 }}
                   >

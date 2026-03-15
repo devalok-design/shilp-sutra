@@ -197,8 +197,8 @@ const Avatar = React.forwardRef<
               statusColorMap[status],
               statusDotSizeMap[size ?? 'md'],
             )}
-            animate={{ opacity: [1, 0.4, 1] }}
-            transition={{ duration: 3, repeat: Infinity, ease: 'easeInOut' }}
+            animate={{ opacity: [1, 0.75, 1] }}
+            transition={{ duration: 2.5, repeat: Infinity, ease: 'easeInOut' }}
             role="img"
             aria-label={statusLabelMap[status]}
           />

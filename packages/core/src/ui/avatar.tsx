@@ -252,7 +252,7 @@ const AvatarImage = React.forwardRef<
     initial={{ opacity: 0, scale: 0.96 }}
     animate={{ opacity: 1, scale: 1 }}
     transition={springs.smooth}
-    className="h-full w-full"
+    className="absolute inset-0 h-full w-full"
   >
     <AvatarPrimitive.Image
       ref={ref}

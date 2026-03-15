@@ -5,7 +5,7 @@
 > All variant values and props verified from source CVA definitions.
 >
 > Package: @devalok/shilp-sutra
-> Version: 0.20.1
+> Version: 0.21.0
 
 ---
 
@@ -327,28 +327,43 @@ Note: getFormFieldA11y() was removed in favor of useFormField() hook.
     size: "xs" | "sm" | "md" | "lg" | "xl"
     shape: "circle" | "square" | "rounded"
     status: "online" | "offline" | "busy" | "away"
+    ring: "none" | "lead" | "admin" | "client" (default: "none") — Role ring with semantic colors
+    badge: number | "dot" | ReactNode — Badge overlay at top-right
+    loading: boolean (default: false) — Skeleton shimmer state
 
 ## Compound Components
-    Avatar (root with size/shape/status)
+    Avatar (root with size/shape/status/ring/badge/loading)
       AvatarImage (src, alt)
-      AvatarFallback (children = initials text)
+      AvatarFallback (children = initials text, colorSeed?: string)
+
+## AvatarFallback Props
+    colorSeed: string — Deterministic color seed for consistent background color across renders
 
 ## Defaults
-    size="md", shape="circle"
+    size="md", shape="circle", ring="none", loading=false
 
 ## Example
 ```jsx
-<Avatar size="lg" status="online">
+<Avatar size="lg" status="online" ring="lead" badge={3}>
   <AvatarImage src={user.photoUrl} alt={user.name} />
-  <AvatarFallback>JD</AvatarFallback>
+  <AvatarFallback colorSeed={user.id}>JD</AvatarFallback>
 </Avatar>
 ```
 
 ## Gotchas
 - Status dot renders with role="img" and aria-label (accessible, not decorative)
 - Dot size scales automatically with avatar size
+- Ring offset color matches the surface context — ensure it sits on the expected background
+- Badge is hidden when value is `0` (falsy); use `"dot"` for presence without a count
+- Online status dot pulses with a CSS animation
 
 ## Changes
+### v0.21.0
+- **Added** `ring` prop with semantic role colors (`lead`, `admin`, `client`)
+- **Added** `badge` prop for numeric, dot, or custom ReactNode overlay at top-right
+- **Added** `loading` prop for skeleton shimmer placeholder state
+- **Added** `AvatarFallback.colorSeed` for deterministic fallback background colors
+
 ### v0.1.0
 - **Added** Initial release with CVA size variants (xs-xl) and status indicator badge
 # Badge
@@ -2965,20 +2980,34 @@ export default function RootLayout({ children }) {
 - Category: composed
 
 ## Props
-    users: AvatarUser[] (REQUIRED) — { name: string, image?: string | null }
+    users: AvatarUser[] (REQUIRED) — { name: string, image?: string | null, ring?: AvatarRing }
     max: number (default: 4, overflow shows "+N" badge)
-    size: "sm" | "md" | "lg"
+    size: "xs" | "sm" | "md" | "lg" | "xl"
     showTooltip: boolean (default: true)
+    borderColor: "surface-1" | "surface-2" (default: "surface-2") — overlap border color
+    onOverflowClick: () => void — makes the "+N" badge interactive (button)
+    overflowContent: ReactNode — popover content shown on overflow click
+    renderAvatar: (user: AvatarUser, index: number) => ReactNode — custom avatar render
+
+## AvatarUser Type
+    name: string (REQUIRED)
+    image?: string | null
+    ring?: "none" | "lead" | "admin" | "client" — role ring per user in group
 
 ## Defaults
-    size="md", max=4, showTooltip=true
+    size="md", max=4, showTooltip=true, borderColor="surface-2"
 
 ## Example
 ```jsx
 <AvatarGroup
-  users={[{ name: 'Alice', image: '/alice.jpg' }, { name: 'Bob' }]}
+  users={[
+    { name: 'Alice', image: '/alice.jpg', ring: 'lead' },
+    { name: 'Bob', ring: 'admin' },
+  ]}
   max={3}
   size="md"
+  borderColor="surface-1"
+  onOverflowClick={() => setShowAll(true)}
 />
 ```
 
@@ -2986,8 +3015,18 @@ export default function RootLayout({ children }) {
 - Wraps TooltipProvider internally — no need to add one yourself
 - Users beyond `max` are collapsed into a "+N" overflow badge
 - Missing `image` falls back to initials derived from `name`
+- Hover expand animation uses CSS `group-hover` — parent must not clip overflow
+- `borderColor` should match the surface context the group sits on (e.g., `surface-1` on cards)
 
 ## Changes
+### v0.21.0
+- **Added** `xs` and `xl` size variants
+- **Added** `borderColor` prop for overlap border matching surface context
+- **Added** `onOverflowClick` prop making the overflow badge an interactive button
+- **Added** `overflowContent` prop for popover content on overflow click
+- **Added** `renderAvatar` prop for custom per-avatar rendering
+- **Added** `AvatarUser.ring` field for per-user role rings in groups
+
 ### v0.1.0
 - **Added** Initial release
 # CommandPalette

@@ -14,10 +14,10 @@ describe('AvatarFallback deterministic colors', () => {
     )
     const fallback = container.querySelector('[data-slot="avatar-fallback"]')
     expect(fallback).not.toBeNull()
-    // Should have a bg-*-2 and text-*-11 class
+    // Should have a bg-*-3 and text-*-11 class
     const classes = fallback!.className
-    expect(classes).toMatch(/bg-\w+-2/)
-    expect(classes).toMatch(/text-\w+-11/)
+    expect(classes).toMatch(/bg-[\w-]+-3/)
+    expect(classes).toMatch(/text-[\w-]+-11/)
   })
 
   it('same name always produces same color', () => {
@@ -47,7 +47,7 @@ describe('AvatarFallback deterministic colors', () => {
         </Avatar>,
       )
       const fallback = container.querySelector('[data-slot="avatar-fallback"]')!
-      const match = fallback.className.match(/bg-[\w-]+-2/)
+      const match = fallback.className.match(/bg-[\w-]+-3/)
       if (match) bgClasses.add(match[0])
     }
 

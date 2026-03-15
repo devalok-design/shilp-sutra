@@ -61,7 +61,7 @@ const ReviewCard = React.forwardRef<HTMLDivElement, ReviewCardProps>(
                 alt={review.reviewer.name}
               />
             )}
-            <AvatarFallback className="bg-surface-3 text-ds-xs font-semibold text-accent-fg">
+            <AvatarFallback className="bg-surface-3 text-ds-xs font-semibold text-surface-fg">
               {getInitials(review.reviewer.name)}
             </AvatarFallback>
           </Avatar>

@@ -98,7 +98,7 @@ const SubtaskItem = React.forwardRef<HTMLDivElement, SubtaskItemProps>(
             {firstAssignee.image && (
               <AvatarImage src={firstAssignee.image} alt={firstAssignee.name} />
             )}
-            <AvatarFallback className="bg-surface-3 text-ds-xs font-semibold text-accent-fg">
+            <AvatarFallback className="bg-surface-3 text-ds-xs font-semibold text-surface-fg">
               {getInitials(firstAssignee.name)}
             </AvatarFallback>
           </Avatar>

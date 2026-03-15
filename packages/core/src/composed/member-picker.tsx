@@ -103,7 +103,7 @@ const MemberPicker = React.forwardRef<HTMLDivElement, MemberPickerProps>(
                     {member.avatar && (
                       <AvatarImage src={member.avatar} alt={member.name} />
                     )}
-                    <AvatarFallback className="bg-surface-3 text-ds-xs font-semibold text-accent-fg">
+                    <AvatarFallback className="bg-surface-3 text-ds-xs font-semibold text-surface-fg">
                       {getInitials(member.name)}
                     </AvatarFallback>
                   </Avatar>

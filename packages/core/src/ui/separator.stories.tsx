@@ -13,7 +13,7 @@ const meta: Meta<typeof Separator> = {
     decorative: { control: 'boolean' },
     variant: {
       control: 'radio',
-      options: ['default', 'gradient'],
+      options: ['default', 'gradient', 'gradient-left', 'gradient-right'],
     },
   },
 }
@@ -68,19 +68,30 @@ export const BetweenText: Story = {
 
 export const Gradient: Story = {
   render: () => (
-    <div className="max-w-md space-y-ds-04">
-      <div>
-        <h4 className="text-ds-sm font-medium">Section One</h4>
-        <p className="text-ds-sm text-surface-fg-muted">
-          Gradient separators fade at the edges for a softer look.
+    <div className="max-w-md space-y-ds-06">
+      <div className="space-y-ds-04">
+        <p className="text-ds-sm font-medium text-surface-fg-muted">
+          gradient — fades at both edges
         </p>
+        <Separator variant="gradient" />
       </div>
-      <Separator variant="gradient" />
-      <div>
-        <h4 className="text-ds-sm font-medium">Section Two</h4>
-        <p className="text-ds-sm text-surface-fg-muted">
-          Compare this to the default solid separator above.
+      <div className="space-y-ds-04">
+        <p className="text-ds-sm font-medium text-surface-fg-muted">
+          gradient-left — fades on the left
         </p>
+        <Separator variant="gradient-left" />
+      </div>
+      <div className="space-y-ds-04">
+        <p className="text-ds-sm font-medium text-surface-fg-muted">
+          gradient-right — fades on the right
+        </p>
+        <Separator variant="gradient-right" />
+      </div>
+      <div className="space-y-ds-04">
+        <p className="text-ds-sm font-medium text-surface-fg-muted">
+          default — solid line (for comparison)
+        </p>
+        <Separator />
       </div>
     </div>
   ),

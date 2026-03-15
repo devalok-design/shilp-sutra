@@ -172,18 +172,19 @@ export const SeparatorVariants: Story = {
         Separator Variants
       </h2>
       <div className="space-y-ds-05">
-        <div>
-          <p className="text-ds-sm font-medium text-surface-fg-muted mb-ds-03">
-            Default (solid)
-          </p>
-          <Separator />
-        </div>
-        <div>
-          <p className="text-ds-sm font-medium text-surface-fg-muted mb-ds-03">
-            Gradient (fading edges)
-          </p>
-          <Separator variant="gradient" />
-        </div>
+        {([
+          { variant: 'default' as const, label: 'Default (solid)' },
+          { variant: 'gradient' as const, label: 'Gradient (fades both edges)' },
+          { variant: 'gradient-left' as const, label: 'Gradient Left (fades on left)' },
+          { variant: 'gradient-right' as const, label: 'Gradient Right (fades on right)' },
+        ]).map(({ variant, label }) => (
+          <div key={variant}>
+            <p className="text-ds-sm font-medium text-surface-fg-muted mb-ds-03">
+              {label}
+            </p>
+            <Separator variant={variant} />
+          </div>
+        ))}
       </div>
     </div>
   ),

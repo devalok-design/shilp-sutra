@@ -7,8 +7,13 @@ import { cn } from './lib/utils'
 
 export interface SeparatorProps
   extends React.ComponentPropsWithoutRef<typeof SeparatorPrimitive.Root> {
-  /** Visual variant: `default` (solid line) | `gradient` (fades at edges) */
-  variant?: 'default' | 'gradient'
+  /** Visual variant:
+   * - `default` — solid line
+   * - `gradient` — fades at both edges
+   * - `gradient-left` — fades on the left, solid on the right
+   * - `gradient-right` — fades on the right, solid on the left
+   */
+  variant?: 'default' | 'gradient' | 'gradient-left' | 'gradient-right'
 }
 
 const Separator = React.forwardRef<
@@ -27,7 +32,11 @@ const Separator = React.forwardRef<
         'shrink-0',
         variant === 'gradient'
           ? 'bg-transparent bg-[image:linear-gradient(90deg,transparent,var(--color-surface-border)_15%,var(--color-surface-border)_85%,transparent)]'
-          : 'bg-surface-border',
+          : variant === 'gradient-left'
+            ? 'bg-transparent bg-[image:linear-gradient(90deg,transparent,var(--color-surface-border)_30%)]'
+            : variant === 'gradient-right'
+              ? 'bg-transparent bg-[image:linear-gradient(90deg,var(--color-surface-border)_70%,transparent)]'
+              : 'bg-surface-border',
         orientation === 'horizontal' ? 'h-[1px] w-full' : 'h-full w-[1px]',
         className,
       )}

@@ -80,14 +80,14 @@ const ringShapeMap: Record<string, string> = {
 // ── Deterministic fallback colors ───────────────────────────────────────────
 
 const FALLBACK_COLORS = [
-  { bg: 'bg-accent-3', text: 'text-accent-11' },
-  { bg: 'bg-secondary-3', text: 'text-secondary-11' },
-  { bg: 'bg-success-3', text: 'text-success-11' },
-  { bg: 'bg-warning-3', text: 'text-warning-11' },
-  { bg: 'bg-error-3', text: 'text-error-11' },
-  { bg: 'bg-info-3', text: 'text-info-11' },
-  { bg: 'bg-category-teal-3', text: 'text-category-teal-11' },
-  { bg: 'bg-category-indigo-3', text: 'text-category-indigo-11' },
+  { bg: 'bg-accent-2', text: 'text-accent-11' },
+  { bg: 'bg-success-2', text: 'text-success-11' },
+  { bg: 'bg-warning-2', text: 'text-warning-11' },
+  { bg: 'bg-error-2', text: 'text-error-11' },
+  { bg: 'bg-info-2', text: 'text-info-11' },
+  { bg: 'bg-cat-purple-2', text: 'text-cat-purple-11' },
+  { bg: 'bg-cat-pink-2', text: 'text-cat-pink-11' },
+  { bg: 'bg-cat-teal-2', text: 'text-cat-teal-11' },
 ] as const
 
 /**
@@ -197,26 +197,14 @@ const Avatar = React.forwardRef<
       {status && (
         status === 'online' ? (
           <motion.span
-            className={cn(
-              'absolute bottom-0 right-0 rounded-ds-full ring-2 ring-surface-2',
-              statusColorMap[status],
-              statusDotSizeMap[size ?? 'md'],
-            )}
+            className={cn('absolute bottom-0 right-0 rounded-ds-full ring-2 ring-surface-2', statusColorMap[status], statusDotSizeMap[size ?? 'md'])}
             animate={{ opacity: [1, 0.75, 1] }}
             transition={{ duration: 2.5, repeat: Infinity, ease: 'easeInOut' }}
             role="img"
             aria-label={statusLabelMap[status]}
           />
         ) : (
-          <span
-            className={cn(
-              'absolute bottom-0 right-0 rounded-ds-full ring-2 ring-surface-2',
-              statusColorMap[status],
-              statusDotSizeMap[size ?? 'md'],
-            )}
-            role="img"
-            aria-label={statusLabelMap[status]}
-          />
+          <span className={cn('absolute bottom-0 right-0 rounded-ds-full ring-2 ring-surface-2', statusColorMap[status], statusDotSizeMap[size ?? 'md'])} role="img" aria-label={statusLabelMap[status]} />
         )
       )}
       {showBadge && (
@@ -299,7 +287,7 @@ const AvatarFallback = React.forwardRef<
       ref={ref}
       data-slot="avatar-fallback"
       className={cn(
-        'flex h-full w-full items-center justify-center font-semibold',
+        'flex h-full w-full items-center justify-center',
         shapeClass,
         color.bg,
         color.text,

@@ -180,7 +180,7 @@ NOTIFICATION SELECTION GUIDE:
 ### Data Display
 - Badge: variant(subtle|solid|outline) color(default|info|success|error|warning|brand|accent + 7 category colors) size(xs|sm|md|lg) + onDismiss
 - Chip: variant(subtle|outline) color(default|primary|success|error|warning|info + 7 category) size(sm|md|lg) label(string, REQUIRED) + onDismiss, onClick
-- Avatar: size(xs|sm|md|lg|xl) shape(circle|square|rounded) status(AvatarStatus) > AvatarImage + AvatarFallback. Type: AvatarStatus = 'online' | 'offline' | 'busy' | 'away'
+- Avatar: size(xs|sm|md|lg|xl) shape(circle|square|rounded) status?(AvatarStatus) ring?('lead'|'admin'|'client') badge?(number|'dot'|ReactNode) loading?(boolean) > AvatarImage + AvatarFallback(colorSeed?). Types: AvatarStatus = 'online'|'offline'|'busy'|'away', AvatarRing = 'none'|'lead'|'admin'|'client'. Fallback colors are deterministic from name hash (8 categorical). Online dot pulses. Badge pops in with MotionPop.
 - Card: variant(default|elevated|outline|flat) interactive(boolean) > CardHeader > CardTitle, CardDescription; CardContent; CardFooter
 - Table > TableHeader > TableRow > TableHead; TableBody > TableRow > TableCell; TableFooter; TableCaption
 - Text: variant(TextVariant) as(element). Type: TextVariant = 'heading-2xl' | 'heading-xl' | 'heading-lg' | 'heading-md' | 'heading-sm' | 'heading-xs' | 'body-lg' | 'body-md' | 'body-sm' | 'body-xs' | 'label-lg' | 'label-md' | 'label-sm' | 'label-xs' | 'caption' | 'overline'
@@ -222,7 +222,7 @@ NOTIFICATION SELECTION GUIDE:
 ### Composed Components
 - ConfirmDialog: open, onOpenChange, title, description, onConfirm + confirmText, cancelText, color(default|error), loading
 - PageHeader: title, subtitle, breadcrumbs[], actions(ReactNode)
-- AvatarGroup: users[], max(number), size(sm|md|lg), showTooltip
+- AvatarGroup: users(AvatarUser[]), max?(number), size?(xs|sm|md|lg|xl), showTooltip?, borderColor?('surface-1'|'surface-2'), onOverflowClick?(), renderAvatar?((user,index)=>ReactNode). Type: AvatarUser = { name, image?, ring? }. Hover expands group. +N badge is button when onOverflowClick set. Deterministic fallback colors per user.
 - StatusBadge: DISCRIMINATED UNION — pass status OR color, not both. status(active|pending|approved|rejected|completed|blocked|cancelled|draft) color(success|warning|error|info|neutral) size(sm|md)
 - ContentCard: variant(default|outline|ghost) padding(default|compact|spacious|none)
 - EmptyState: icon(ReactNode or ComponentType), title(required), description, action(ReactNode), compact

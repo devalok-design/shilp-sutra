@@ -5,6 +5,35 @@ All notable changes to `@devalok/shilp-sutra` will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.21.0] - 2026-03-15 (core) / [0.20.2] - 2026-03-15 (karm)
+
+### Changed (core — soft breaking)
+- **AvatarFallback colors now deterministic**: Fallback backgrounds are computed from a name hash into 8 categorical colors (accent, success, warning, error, info, purple, pink, teal) instead of always `bg-accent-2`. Consumers relying on the exact `bg-accent-2 text-accent-11` classes on fallbacks will see different colors. Use `className` to override if needed.
+- **AvatarGroup border default**: `border-surface-1` → `border-surface-2`. Use `borderColor="surface-1"` to restore old behavior.
+- **Avatar/AvatarGroup status dot ring**: `ring-surface-1` → `ring-surface-2` (surface layering consistency).
+
+### Added (core)
+- **Avatar `ring` prop** — Role ring: `lead` (accent), `admin` (warning), `client` (info). Ring adapts to avatar shape. Uses `ring-offset-2 ring-offset-surface-2`.
+- **Avatar `badge` prop** — Badge overlay: `number` (count, truncates to 99+), `"dot"` (red indicator), or custom `ReactNode`. Animated entrance with `MotionPop`. Has `role="status"` + `aria-label` for accessibility.
+- **Avatar `loading` prop** — Skeleton shimmer (`animate-pulse bg-surface-3`) at correct size/shape. Forwards ref.
+- **AvatarFallback `colorSeed` prop** — Override the hash seed for stable colors across name changes (e.g., pass user ID).
+- **Avatar animated online presence** — `status="online"` dot now pulses with `animate-pulse`.
+- **Avatar image crossfade** — `scale: 0.96→1` + `springs.smooth` for polished image load.
+- **AvatarFallback letter-spacing** — Single-char gets `tracking-wide`, two-char gets `tracking-normal`.
+- **AvatarGroup hover expand** — Group hover spreads avatars apart (`group-hover:ml-0`). Hovered avatar lifts (`scale-110 shadow-md`), others dim (`opacity-80`). Also works on `:focus-within`.
+- **AvatarGroup `xs` and `xl` sizes** — Full parity with Avatar's 5 sizes.
+- **AvatarGroup `onOverflowClick`** — Makes "+N" badge a clickable button.
+- **AvatarGroup `renderAvatar` prop** — Custom render function per avatar for full control (badges, status, rings).
+- **AvatarGroup `borderColor` prop** — Explicit `"surface-1" | "surface-2"` control.
+- **AvatarUser `ring` field** — Role rings visible in group stacks.
+- **AvatarGroup deterministic fallback colors** — Default fallbacks now use `colorSeed={user.name}`.
+
+### Fixed (karm)
+- **Surface cascade fixes**: `hover:bg-surface-2` → `hover:bg-surface-3` on conversation-list, subtask-item, file-item, calendar (all sit inside surface-2 containers).
+- **WeekHeatmap root**: Added `bg-surface-2` card shell.
+
+---
+
 ## [0.20.1] - 2026-03-15
 
 ### Fixed (core + karm)

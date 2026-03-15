@@ -137,7 +137,7 @@ export { Spinner, type SpinnerProps } from './spinner'
 // Data Display
 export { Card, cardVariants, CardHeader, CardFooter, CardTitle, CardDescription, CardContent, type CardProps } from './card'
 export { Badge, badgeVariants, type BadgeProps } from './badge'
-export { Avatar, AvatarImage, AvatarFallback, avatarVariants, type AvatarProps, type AvatarStatus } from './avatar'
+export { Avatar, AvatarImage, AvatarFallback, avatarVariants, type AvatarProps, type AvatarFallbackProps, type AvatarStatus, type AvatarRing } from './avatar'
 export { Table, TableHeader, TableBody, TableFooter, TableHead, TableRow, TableCell, TableCaption, type TableProps, type TableRowProps, type TableCellProps } from './table'
 export { Progress, progressTrackVariants, progressIndicatorVariants, type ProgressProps } from './progress'
 export {

@@ -343,3 +343,27 @@ export const ExpandLeft: Story = {
     },
   },
 }
+
+export const ExpandAmounts: Story = {
+  render: () => (
+    <div className="flex flex-col gap-ds-06">
+      {(['compact', 'default', 'wide'] as const).map((amount) => (
+        <div key={amount} className="flex items-center gap-ds-04">
+          <span className="w-16 text-ds-sm font-medium text-surface-fg-muted">{amount}</span>
+          <AvatarGroup
+            users={mockUsers.slice(0, 6)}
+            max={4}
+            expandAmount={amount}
+          />
+        </div>
+      ))}
+    </div>
+  ),
+  parameters: {
+    docs: {
+      description: {
+        story: '`expandAmount` controls how far avatars spread: `compact` (subtle peek), `default` (full spread), `wide` (extra breathing room).',
+      },
+    },
+  },
+}

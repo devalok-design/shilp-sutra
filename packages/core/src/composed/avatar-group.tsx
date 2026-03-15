@@ -62,6 +62,8 @@ export interface AvatarGroupProps
   renderAvatar?: (user: AvatarUser, index: number) => React.ReactNode
   /** Direction the group expands on hover. 'right' (default) for left-aligned groups, 'left' for right-aligned groups. */
   expandDirection?: 'left' | 'right'
+  /** How much the group spreads on hover. 'compact' = subtle peek, 'default' = full spread, 'wide' = extra room. */
+  expandAmount?: 'compact' | 'default' | 'wide'
 }
 
 const AvatarGroup = React.forwardRef<HTMLDivElement, AvatarGroupProps>(
@@ -75,6 +77,7 @@ const AvatarGroup = React.forwardRef<HTMLDivElement, AvatarGroupProps>(
       onOverflowClick,
       renderAvatar,
       expandDirection = 'right',
+      expandAmount = 'default',
       className,
       ...props
     },
@@ -106,18 +109,20 @@ const AvatarGroup = React.forwardRef<HTMLDivElement, AvatarGroupProps>(
     const borderClass =
       borderColor === 'surface-1' ? 'border-surface-1' : 'border-surface-2'
 
+    // Expand amount: multiplier on the overlap distance
+    const expandMultiplier = { compact: 0.5, default: 1, wide: 1.5 }[expandAmount]
+
     // Hover expand: margins stay static (negative overlap). On group hover,
     // each avatar translates via inline style (GPU-composited, zero layout thrashing).
-    // 'right': avatars spread rightward (for left-aligned groups)
-    // 'left': avatars spread leftward (for right-aligned groups)
     const totalVisible = displayed.length + (overflow > 0 ? 1 : 0)
 
     function getExpandTransform(index: number): string {
       if (!isHovered) return 'translateX(0)'
+      const shift = overlapPx * expandMultiplier
       if (expandDirection === 'left') {
-        return `translateX(-${(totalVisible - 1 - index) * overlapPx}px)`
+        return `translateX(-${(totalVisible - 1 - index) * shift}px)`
       }
-      return `translateX(${index * overlapPx}px)`
+      return `translateX(${index * shift}px)`
     }
 
     const spotlightClasses =

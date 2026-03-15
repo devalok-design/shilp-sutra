@@ -4,8 +4,8 @@ import * as React from 'react'
 import { useState } from 'react'
 import { IconChevronDown } from '@tabler/icons-react'
 import { cn } from '@/ui/lib/utils'
-import { Checkbox } from '@/ui/checkbox'
-import type { ScratchpadItem } from './scratchpad-widget'
+import { Scratchpad } from './scratchpad'
+import type { ScratchpadItem } from './scratchpad/scratchpad-context'
 
 // ============================================================
 // Types
@@ -14,7 +14,14 @@ import type { ScratchpadItem } from './scratchpad-widget'
 export interface SidebarScratchpadProps extends React.HTMLAttributes<HTMLDivElement> {
   items: ScratchpadItem[]
   onToggle: (id: string, done: boolean) => void
+  onAdd?: (text: string) => void
+  onDelete?: (id: string) => void
+  onEdit?: (id: string, text: string) => void
+  onReorder?: (items: ScratchpadItem[]) => void
+  onPromote?: (id: string) => void
+  maxItems?: number
   defaultOpen?: boolean
+  /** @deprecated Use ProgressRing instead — badge is no longer rendered */
   badgeCount?: number
 }
 
@@ -24,68 +31,82 @@ export interface SidebarScratchpadProps extends React.HTMLAttributes<HTMLDivElem
 
 const SidebarScratchpad = React.forwardRef<HTMLDivElement, SidebarScratchpadProps>(
   function SidebarScratchpad(
-    { items, onToggle, defaultOpen = true, badgeCount, className, ...props },
+    {
+      items,
+      onToggle,
+      onAdd,
+      onDelete,
+      onEdit,
+      onReorder,
+      onPromote,
+      maxItems = 20,
+      defaultOpen = true,
+      // badgeCount kept in signature for back-compat but no longer rendered
+      badgeCount: _badgeCount,
+      className,
+      ...props
+    },
     ref,
   ) {
     const [open, setOpen] = useState(defaultOpen)
 
     return (
-      <div ref={ref} className={cn('flex flex-col', className)} {...props}>
-        {/* Collapsible header */}
-        <button
-          type="button"
-          onClick={() => setOpen((prev) => !prev)}
-          aria-expanded={open}
-          className="flex w-full items-center gap-ds-02 px-ds-03 py-ds-02 text-left text-ds-xs font-semibold text-surface-fg-muted transition-colors hover:bg-surface-2"
-        >
-          <IconChevronDown
-            className={cn(
-              'h-3.5 w-3.5 shrink-0 transition-transform duration-200',
-              !open && '-rotate-180',
-            )}
-          />
-          <span className="flex-1">Scratchpad</span>
-          {badgeCount != null && badgeCount > 0 && (
-            <span className="rounded-full bg-surface-2 px-1.5 text-ds-xs text-surface-fg-muted">
-              {badgeCount}
-            </span>
-          )}
-        </button>
+      <Scratchpad.Root
+        ref={ref}
+        items={items}
+        maxItems={maxItems}
+        onToggle={onToggle}
+        onAdd={onAdd}
+        onDelete={onDelete}
+        onEdit={onEdit}
+        onReorder={onReorder}
+        onPromote={onPromote}
+        className={cn('flex flex-col', className)}
+        {...props}
+      >
+        <div className="flex flex-col">
+          {/* Collapsible header with ProgressRing + FilterToggle */}
+          <div className="flex w-full items-center gap-ds-02 px-ds-03 py-ds-02 text-ds-sm font-semibold text-surface-fg-muted">
+            <button
+              type="button"
+              onClick={() => setOpen((prev) => !prev)}
+              aria-expanded={open}
+              aria-label="Scratchpad"
+              className="flex flex-1 items-center gap-ds-02 text-left transition-colors duration-150 hover:text-surface-fg"
+            >
+              <IconChevronDown
+                className={cn(
+                  'h-3.5 w-3.5 shrink-0 transition-transform duration-200',
+                  !open && '-rotate-90',
+                )}
+              />
+              <span className="flex-1">Scratchpad</span>
+            </button>
+            <Scratchpad.FilterToggle />
+            <Scratchpad.ProgressRing size="sm" showCount={false} />
+          </div>
 
-        {/* Collapsible body */}
-        <div
-          className={cn(
-            'grid transition-[grid-template-rows] duration-200',
-            open ? 'grid-rows-[1fr]' : 'grid-rows-[0fr]',
-          )}
-        >
-          <div className="overflow-hidden">
-            <div className="flex flex-col gap-0.5 px-ds-03 pb-ds-02">
-              {items.map((item) => (
-                <label
-                  key={item.id}
-                  className="flex cursor-pointer items-center gap-ds-02 rounded-ds-sm px-ds-02 py-0.5 transition-colors hover:bg-surface-2"
-                >
-                  <Checkbox
-                    checked={item.done}
-                    onCheckedChange={(checked) => onToggle(item.id, checked === true)}
-                    aria-label={`Toggle ${item.text}`}
-                    className="h-3.5 w-3.5"
-                  />
-                  <span
-                    className={cn(
-                      'flex-1 text-xs transition-all duration-200',
-                      item.done ? 'text-surface-fg-subtle line-through' : 'text-surface-fg',
-                    )}
-                  >
-                    {item.text}
-                  </span>
-                </label>
-              ))}
+          {/* Collapsible body — CSS grid transition */}
+          <div
+            className={cn(
+              'grid transition-[grid-template-rows] duration-200',
+              open ? 'grid-rows-[1fr]' : 'grid-rows-[0fr]',
+            )}
+          >
+            <div className="overflow-hidden">
+              <div className="flex flex-col gap-0.5 px-ds-03 pb-ds-02">
+                <Scratchpad.EmptyState />
+                <Scratchpad.List compact />
+                <Scratchpad.AddInput
+                  placeholder="Quick add..."
+                  triggerLabel="+ Add..."
+                  className="mt-0"
+                />
+              </div>
             </div>
           </div>
         </div>
-      </div>
+      </Scratchpad.Root>
     )
   },
 )

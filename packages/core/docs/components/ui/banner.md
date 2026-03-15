@@ -6,7 +6,8 @@
 
 ## Props
     color: "info" | "success" | "warning" | "error" | "neutral"
-    action: ReactNode (optional action slot, typically a ghost Button)
+    actions: ReactNode (optional action slot for one or more buttons; wraps on narrow viewports)
+    action: ReactNode (DEPRECATED — use `actions` instead)
     onDismiss: () => void (optional, shows X button)
     children: ReactNode (message text)
 
@@ -26,6 +27,11 @@
 - `onDismiss` fires after the exit animation completes, not immediately on dismiss button click
 
 ## Changes
+### v0.20.0
+- **Added** `actions` prop (plural) for multiple action buttons with mobile-friendly flex-wrap
+- **Deprecated** `action` prop — use `actions` instead (both still work; `actions` takes priority)
+- **Changed** Root layout uses `flex-wrap` and children wrapper uses `min-w-0` for better text truncation
+
 ### v0.3.1
 - **Fixed** BannerProps uses `Omit<HTMLAttributes, 'color'>` to resolve TypeScript conflict with CVA `color` variant
 

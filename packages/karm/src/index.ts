@@ -79,6 +79,15 @@ export {
   SubtasksTab,
   type SubtasksTabProps,
   type Subtask,
+  TaskActionRow,
+  type TaskActionRowProps,
+  type TaskActionRowTask,
+  type TaskActionRowRootProps,
+  type TaskActionRowCheckboxProps,
+  type TaskActionRowTitleProps,
+  type TaskActionRowLabelsProps,
+  type TaskActionRowProjectBadgeProps,
+  type TaskActionRowNavigateProps,
 } from './tasks'
 
 // Chat components

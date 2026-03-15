@@ -359,23 +359,19 @@ const TaskDetailPanel = React.forwardRef<HTMLDivElement, TaskDetailPanelProps>(f
                 />
               ) : (
                   <h2
-                  onClick={clientMode ? undefined : () => setEditingTitle(true)}
-                  {...(!clientMode && {
-                    role: 'button' as const,
-                    tabIndex: 0,
-                    onKeyDown: (e: React.KeyboardEvent) => {
-                      if (e.key === 'Enter' || e.key === ' ') {
-                        e.preventDefault()
-                        setEditingTitle(true)
-                      }
-                    },
-                  })}
-                  className={cn(
-                    'text-ds-lg font-semibold text-surface-fg',
-                    !clientMode && 'cursor-text hover:text-accent-11 transition-colors',
-                  )}
+                  className="text-ds-lg font-semibold text-surface-fg"
                 >
-                  {task.title}
+                  {clientMode ? (
+                    task.title
+                  ) : (
+                    <button
+                      type="button"
+                      onClick={() => setEditingTitle(true)}
+                      className="cursor-text text-left hover:text-accent-11 transition-colors"
+                    >
+                      {task.title}
+                    </button>
+                  )}
                 </h2>
               )}
               {task.parentTaskId && (

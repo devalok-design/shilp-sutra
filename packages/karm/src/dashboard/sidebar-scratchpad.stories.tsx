@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useState, useCallback } from 'react'
 import type { Meta, StoryObj } from '@storybook/react'
 import { fn } from '@storybook/test'
 import { SidebarScratchpad } from './sidebar-scratchpad'
@@ -45,7 +45,6 @@ export const Default: Story = {
   args: {
     items: ITEMS,
     onToggle: fn(),
-    badgeCount: 3,
   },
 }
 
@@ -54,7 +53,6 @@ export const Collapsed: Story = {
     items: ITEMS,
     onToggle: fn(),
     defaultOpen: false,
-    badgeCount: 3,
   },
 }
 
@@ -62,5 +60,40 @@ export const Empty: Story = {
   args: {
     items: [],
     onToggle: fn(),
+  },
+}
+
+export const WithFullFeatures: Story = {
+  name: 'With Full Features',
+  render: () => {
+    const [items, setItems] = useState<ScratchpadItem[]>(ITEMS)
+
+    const onToggle = useCallback((id: string, done: boolean) => {
+      setItems((prev) => prev.map((item) => (item.id === id ? { ...item, done } : item)))
+    }, [])
+
+    const onAdd = useCallback((text: string) => {
+      setItems((prev) => [...prev, { id: `new-${Date.now()}`, text, done: false }])
+    }, [])
+
+    const onDelete = useCallback((id: string) => {
+      setItems((prev) => prev.filter((item) => item.id !== id))
+    }, [])
+
+    const onEdit = useCallback((id: string, text: string) => {
+      setItems((prev) => prev.map((item) => (item.id === id ? { ...item, text } : item)))
+    }, [])
+
+    return (
+      <SidebarScratchpad
+        items={items}
+        onToggle={onToggle}
+        onAdd={onAdd}
+        onDelete={onDelete}
+        onEdit={onEdit}
+        onPromote={fn()}
+        maxItems={10}
+      />
+    )
   },
 }

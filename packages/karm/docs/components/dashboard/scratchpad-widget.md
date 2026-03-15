@@ -10,6 +10,9 @@
     onToggle: (id: string, done: boolean) => void (REQUIRED)
     onAdd: (text: string) => void (REQUIRED)
     onDelete: (id: string) => void (REQUIRED)
+    onEdit: (id: string, text: string) => void — enables inline editing (double-click)
+    onReorder: (items: ScratchpadItem[]) => void — enables drag-to-reorder via @dnd-kit
+    onPromote: (id: string) => void — enables promote-to-task button on items
     title: string (default: "My Scratchpad")
     resetLabel: string
     emptyText: string (default: "Nothing here yet. Add a task!")
@@ -30,6 +33,9 @@
   onToggle={(id, done) => toggleItem(id, done)}
   onAdd={(text) => addItem(text)}
   onDelete={(id) => deleteItem(id)}
+  onEdit={(id, text) => editItem(id, text)}
+  onReorder={(items) => reorderItems(items)}
+  onPromote={(id) => promoteToTask(id)}
   maxItems={5}
 />
 ```
@@ -46,7 +52,18 @@
 - resetLabel renders as footer text below the item list (e.g., "Resets daily at midnight")
 - When loading=true, shows a shimmer skeleton placeholder
 - Uses framer-motion AnimatePresence for item enter/exit animations
+- Internally uses the composable Scratchpad compound component — see scratchpad.md for details
+- onEdit, onReorder, onPromote are optional; features auto-enable when callbacks are provided
+- onEdit: double-click item text to enter inline edit mode; Enter confirms, Escape cancels
+- onReorder: items become draggable with @dnd-kit; drag handle appears on hover
+- onPromote: arrow-up button appears on each item on hover
 
 ## Changes
+### v0.20.0
+- **Added** `onEdit` prop — inline editing via double-click
+- **Added** `onReorder` prop — drag-to-reorder via @dnd-kit
+- **Added** `onPromote` prop — promote-to-task button on items
+- **Changed** Internally rebuilt on composable Scratchpad compound component
+
 ### v0.18.0
 - **Added** Initial release

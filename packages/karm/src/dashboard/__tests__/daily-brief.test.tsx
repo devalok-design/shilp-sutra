@@ -67,7 +67,7 @@ describe('DailyBrief', () => {
     render(
       <DailyBrief data={{ ...briefData, generatedAt: justNow }} />,
     )
-    expect(screen.getByText('Generated just now')).toBeInTheDocument()
+    expect(screen.getByText('Generated Just now')).toBeInTheDocument()
   })
 
   it('renders hours-ago timestamp', () => {
@@ -113,9 +113,10 @@ describe('DailyBrief', () => {
   it('supports defaultCollapsed — content hidden initially', () => {
     render(<DailyBrief data={briefData} defaultCollapsed />)
     expect(screen.getByText('Morning Brief')).toBeInTheDocument()
-    // With grid collapse animation, content is in DOM but visually hidden via overflow-hidden + grid-rows-[0fr]
-    const contentText = screen.getByText(/3 tasks/)
-    expect(contentText.closest('.overflow-hidden')?.parentElement).toHaveClass('grid-rows-[0fr]')
+    // AnimatePresence removes content from DOM when collapsed
+    expect(screen.queryByText(/3 tasks/)).not.toBeInTheDocument()
+    // Toggle button shows collapsed state
+    expect(screen.getByLabelText('Toggle brief')).toHaveAttribute('aria-expanded', 'false')
   })
 
   it('supports custom title', () => {

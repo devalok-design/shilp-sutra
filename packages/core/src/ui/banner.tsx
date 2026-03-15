@@ -8,7 +8,7 @@ import { cn } from './lib/utils'
 import { springs, motionProps } from './lib/motion'
 
 const bannerVariants = cva(
-  'flex items-center gap-ds-04 px-ds-06 py-ds-04 text-ds-md font-medium border-b',
+  'flex flex-wrap items-center gap-ds-04 px-ds-06 py-ds-04 text-ds-md font-medium border-b',
   {
     variants: {
       color: {
@@ -45,7 +45,8 @@ const BANNER_ICONS: Record<string, React.ComponentType<{ className?: string }>> 
  * **Banner vs Alert:** Banner spans the full width of its container (e.g., top of a page or section).
  * Alert is an inline block inside page content. Use Banner for system-level announcements.
  *
- * **`action` slot:** Accepts any React node — typically a `<Button variant="ghost" size="sm">` or a link.
+ * **`actions` slot:** Accepts any React node(s) — typically one or more `<Button variant="ghost" size="sm">`.
+ * Multiple actions wrap gracefully on narrow viewports. The singular `action` prop is deprecated.
  * **Dismissible:** Provide `onDismiss` to show an × button.
  *
  * @example
@@ -70,12 +71,16 @@ const BANNER_ICONS: Record<string, React.ComponentType<{ className?: string }>> 
 export interface BannerProps
   extends Omit<React.HTMLAttributes<HTMLDivElement>, 'color'>,
     VariantProps<typeof bannerVariants> {
+  /** @deprecated Use `actions` instead */
   action?: React.ReactNode
+  /** Action slot — accepts any React node(s), typically ghost Buttons. Preferred over `action`. */
+  actions?: React.ReactNode
   onDismiss?: () => void
 }
 
 const Banner = React.forwardRef<HTMLDivElement, BannerProps>(
-  ({ className, color = 'info', action, onDismiss, children, ...props }, ref) => {
+  ({ className, color = 'info', action, actions, onDismiss, children, ...props }, ref) => {
+    const resolvedActions = actions ?? action
     const Icon = BANNER_ICONS[color ?? 'info']
     const [isVisible, setIsVisible] = React.useState(true)
 
@@ -96,13 +101,15 @@ const Banner = React.forwardRef<HTMLDivElement, BannerProps>(
             {...motionProps(props)}
           >
             <Icon className="h-ico-md w-ico-md shrink-0" aria-hidden="true" />
-            <span className="flex-1">{children}</span>
-            {action && <span className="shrink-0">{action}</span>}
+            <div className="min-w-0 flex-1">{children}</div>
+            {resolvedActions && (
+              <div className="flex shrink-0 items-center gap-ds-02 [&_button]:transition-colors [&_button]:duration-150 [&_button:hover]:bg-black/10 [&_button:hover]:dark:bg-white/10">{resolvedActions}</div>
+            )}
             {onDismiss && (
               <button
                 type="button"
                 onClick={handleDismiss}
-                className="shrink-0 min-h-ds-xs min-w-ds-xs flex items-center justify-center rounded-ds-sm text-surface-fg-subtle transition-colors hover:text-surface-fg-muted hover:bg-surface-3 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent-9"
+                className="shrink-0 min-h-ds-xs min-w-ds-xs flex items-center justify-center rounded-ds-sm transition-colors duration-150 hover:bg-black/10 dark:hover:bg-white/10 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent-9"
                 aria-label="Dismiss"
               >
                 <IconX className="h-ico-sm w-ico-sm" />

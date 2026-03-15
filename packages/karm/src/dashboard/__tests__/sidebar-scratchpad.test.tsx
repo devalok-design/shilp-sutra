@@ -42,14 +42,17 @@ describe('SidebarScratchpad', () => {
     expect(toggle).toHaveAttribute('aria-expanded', 'false')
   })
 
-  it('shows badge count when provided', () => {
-    renderScratchpad({ badgeCount: 2 })
-    expect(screen.getByText('2')).toBeInTheDocument()
+  it('shows progress ring without count label', () => {
+    const { container } = renderScratchpad()
+    // Ring SVG should be present
+    expect(container.querySelector('svg')).toBeInTheDocument()
+    // But count label should not be rendered (showCount=false)
+    expect(screen.queryByTestId('progress-count')).not.toBeInTheDocument()
   })
 
-  it('does not show badge when badgeCount is 0', () => {
-    renderScratchpad({ badgeCount: 0 })
-    expect(screen.queryByText('0')).not.toBeInTheDocument()
+  it('shows filter toggle button', () => {
+    renderScratchpad()
+    expect(screen.getByRole('button', { name: /completed/i })).toBeInTheDocument()
   })
 
   it('calls onToggle when checkbox clicked', async () => {

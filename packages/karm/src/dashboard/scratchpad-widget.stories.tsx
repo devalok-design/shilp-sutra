@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useState, useCallback } from 'react'
 import type { Meta, StoryObj } from '@storybook/react'
 import { fn } from '@storybook/test'
 import { IconClipboardList } from '@tabler/icons-react'
@@ -96,5 +96,47 @@ export const WithCustomTitle: Story = {
     onToggle: fn(),
     onAdd: fn(),
     onDelete: fn(),
+  },
+}
+
+export const WithAllFeatures: Story = {
+  name: 'With All Features',
+  render: () => {
+    const [items, setItems] = useState<ScratchpadItem[]>(SAMPLE_ITEMS)
+
+    const onToggle = useCallback((id: string, done: boolean) => {
+      setItems((prev) => prev.map((item) => (item.id === id ? { ...item, done } : item)))
+    }, [])
+
+    const onAdd = useCallback((text: string) => {
+      setItems((prev) => [...prev, { id: `new-${Date.now()}`, text, done: false }])
+    }, [])
+
+    const onDelete = useCallback((id: string) => {
+      setItems((prev) => prev.filter((item) => item.id !== id))
+    }, [])
+
+    const onEdit = useCallback((id: string, text: string) => {
+      setItems((prev) => prev.map((item) => (item.id === id ? { ...item, text } : item)))
+    }, [])
+
+    const onReorder = useCallback((newItems: ScratchpadItem[]) => {
+      setItems(newItems)
+    }, [])
+
+    return (
+      <ScratchpadWidget
+        items={items}
+        maxItems={8}
+        onToggle={onToggle}
+        onAdd={onAdd}
+        onDelete={onDelete}
+        onEdit={onEdit}
+        onReorder={onReorder}
+        onPromote={fn()}
+        title="Full-Featured"
+        emptyIcon={IconClipboardList}
+      />
+    )
   },
 }

@@ -8,9 +8,11 @@ import { motion } from "framer-motion"
 import { springs } from "./lib/motion"
 import { cn } from "./lib/utils"
 
-// ── Shape context so AvatarFallback can inherit the shape from Avatar ──
+// ── Contexts so AvatarFallback can inherit shape & size from Avatar ──
 type AvatarShape = 'circle' | 'square' | 'rounded'
+type AvatarSize = 'xs' | 'sm' | 'md' | 'lg' | 'xl'
 const AvatarShapeContext = React.createContext<AvatarShape>('circle')
+const AvatarSizeContext = React.createContext<AvatarSize>('md')
 
 export const avatarVariants = cva(
   'relative flex shrink-0 overflow-hidden',
@@ -75,6 +77,15 @@ const ringShapeMap: Record<string, string> = {
   circle: 'rounded-ds-full',
   square: 'rounded-ds-none',
   rounded: 'rounded-ds-md',
+}
+
+// ── Fallback font sizes that scale with avatar size ─────────────────────────
+const fallbackTextSizeMap: Record<AvatarSize, string> = {
+  xs: 'text-[9px]',
+  sm: 'text-ds-xs',
+  md: 'text-ds-sm',
+  lg: 'text-ds-md',
+  xl: 'text-ds-lg',
 }
 
 // ── Deterministic fallback colors ───────────────────────────────────────────
@@ -186,6 +197,7 @@ const Avatar = React.forwardRef<
 
   return (
     <AvatarShapeContext.Provider value={resolvedShape}>
+    <AvatarSizeContext.Provider value={size ?? 'md'}>
     <span className={cn('relative inline-flex shrink-0', ringClasses)}>
       <AvatarPrimitive.Root
         ref={ref}
@@ -233,6 +245,7 @@ const Avatar = React.forwardRef<
         )
       )}
     </span>
+    </AvatarSizeContext.Provider>
     </AvatarShapeContext.Provider>
   )
 })
@@ -275,8 +288,9 @@ const AvatarFallback = React.forwardRef<
   const seed = colorSeed ?? childrenText
   const color = getFallbackColor(seed)
 
-  // Inherit shape from parent Avatar via context
+  // Inherit shape and size from parent Avatar via context
   const shape = React.useContext(AvatarShapeContext)
+  const size = React.useContext(AvatarSizeContext)
   const shapeClass = shape === 'square' ? 'rounded-ds-none' : shape === 'rounded' ? 'rounded-ds-md' : 'rounded-ds-full'
 
   // Letter-spacing based on character count
@@ -289,6 +303,7 @@ const AvatarFallback = React.forwardRef<
       className={cn(
         'flex h-full w-full items-center justify-center font-semibold',
         shapeClass,
+        fallbackTextSizeMap[size],
         color.bg,
         color.text,
         tracking,

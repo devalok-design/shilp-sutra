@@ -39,21 +39,11 @@ export const SingleLetter: Story = {
 export const Sizes: Story = {
   render: () => (
     <div className="flex items-center gap-ds-04">
-      <Avatar className="h-6 w-6">
-        <AvatarFallback className="text-ds-xs">XS</AvatarFallback>
-      </Avatar>
-      <Avatar className="h-8 w-8">
-        <AvatarFallback className="text-ds-xs">SM</AvatarFallback>
-      </Avatar>
-      <Avatar>
-        <AvatarFallback>MD</AvatarFallback>
-      </Avatar>
-      <Avatar className="h-14 w-14">
-        <AvatarFallback className="text-ds-lg">LG</AvatarFallback>
-      </Avatar>
-      <Avatar className="h-20 w-20">
-        <AvatarFallback className="text-ds-xl">XL</AvatarFallback>
-      </Avatar>
+      {(['xs', 'sm', 'md', 'lg', 'xl'] as const).map((size) => (
+        <Avatar key={size} size={size}>
+          <AvatarFallback>{size.toUpperCase()}</AvatarFallback>
+        </Avatar>
+      ))}
     </div>
   ),
 }
@@ -107,10 +97,19 @@ export const AllVariants: Story = {
 
         {statuses.map((status) => (
           <div key={status}>
-            <p className="mb-ds-03 text-ds-sm font-semibold text-surface-fg-muted capitalize">Status: {status}</p>
+            <p className="mb-ds-03 text-ds-sm font-semibold text-surface-fg-muted capitalize">Status: {status} (fallback)</p>
             <div className="flex flex-wrap items-center gap-ds-03">
               {sizes.map((size) => (
                 <Avatar key={`${status}-${size}`} size={size} status={status}>
+                  <AvatarFallback>{size.toUpperCase()}</AvatarFallback>
+                </Avatar>
+              ))}
+            </div>
+            <p className="mb-ds-03 mt-ds-04 text-ds-sm font-semibold text-surface-fg-muted capitalize">Status: {status} (image)</p>
+            <div className="flex flex-wrap items-center gap-ds-03">
+              {sizes.map((size) => (
+                <Avatar key={`${status}-${size}-img`} size={size} status={status}>
+                  <AvatarImage src="https://github.com/shadcn.png" alt={`${status} ${size}`} />
                   <AvatarFallback>{size.toUpperCase()}</AvatarFallback>
                 </Avatar>
               ))}

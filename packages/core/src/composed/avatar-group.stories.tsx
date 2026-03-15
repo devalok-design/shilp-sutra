@@ -13,6 +13,16 @@ const mockUsers: AvatarUser[] = [
   { name: 'Karan Mehta', image: null },
 ]
 
+const mockUsersWithImages: AvatarUser[] = [
+  { name: 'Aarav Sharma', image: 'https://i.pravatar.cc/150?u=aarav' },
+  { name: 'Priya Patel', image: 'https://i.pravatar.cc/150?u=priya' },
+  { name: 'Rohan Gupta', image: 'https://i.pravatar.cc/150?u=rohan' },
+  { name: 'Ananya Verma', image: 'https://i.pravatar.cc/150?u=ananya' },
+  { name: 'Vikram Singh', image: 'https://i.pravatar.cc/150?u=vikram' },
+  { name: 'Neha Reddy', image: 'https://i.pravatar.cc/150?u=neha' },
+  { name: 'Karan Mehta', image: 'https://i.pravatar.cc/150?u=karan' },
+]
+
 const meta: Meta<typeof AvatarGroup> = {
   title: 'Composed/AvatarGroup',
   component: AvatarGroup,
@@ -249,27 +259,35 @@ export const CustomRender: Story = {
     ]
 
     return (
-      <AvatarGroup
-        users={users}
-        max={3}
-        showTooltip={false}
-        renderAvatar={(user, index) => (
-          <Avatar
-            badge={index === 0 ? 3 : undefined}
-            className="h-full w-full"
-          >
-            <AvatarFallback className="font-body font-semibold" colorSeed={user.name}>
-              {user.name.split(' ').map((n) => n[0]).join('')}
-            </AvatarFallback>
-          </Avatar>
-        )}
-      />
+      <div className="flex flex-col gap-ds-06">
+        {(['xs', 'sm', 'md', 'lg', 'xl'] as const).map((s) => (
+          <div key={s} className="flex items-center gap-ds-04">
+            <span className="w-8 font-mono text-ds-xs text-surface-fg-muted">{s}</span>
+            <AvatarGroup
+              users={users}
+              size={s}
+              max={3}
+              showTooltip={false}
+              renderAvatar={(user, index) => (
+                <Avatar
+                  size={s}
+                  badge={index === 0 ? 3 : undefined}
+                >
+                  <AvatarFallback className="font-body font-semibold" colorSeed={user.name}>
+                    {user.name.split(' ').map((n) => n[0]).join('')}
+                  </AvatarFallback>
+                </Avatar>
+              )}
+            />
+          </div>
+        ))}
+      </div>
     )
   },
   parameters: {
     docs: {
       description: {
-        story: 'Use `renderAvatar` for full control. Here the first avatar has a badge overlay.',
+        story: 'Use `renderAvatar` for full control. The consumer\'s Avatar handles its own sizing — pass the same `size` prop. First avatar has a badge overlay.',
       },
     },
   },
@@ -277,21 +295,35 @@ export const CustomRender: Story = {
 
 export const AllSizesUpdated: Story = {
   render: () => (
-    <div style={{ display: 'flex', flexDirection: 'column', gap: 20 }}>
-      {(['xs', 'sm', 'md', 'lg', 'xl'] as const).map((s) => (
-        <div key={s} style={{ display: 'flex', alignItems: 'center', gap: 16 }}>
-          <span style={{ width: 50, fontSize: 12, color: 'var(--color-surface-fg-muted)', fontFamily: 'monospace' }}>
-            {s}
-          </span>
-          <AvatarGroup users={mockUsers.slice(0, 5)} size={s} max={4} />
+    <div className="flex flex-col gap-ds-08">
+      <div>
+        <p className="mb-ds-03 text-ds-sm font-semibold text-surface-fg-muted">Fallback</p>
+        <div className="flex flex-col gap-ds-04">
+          {(['xs', 'sm', 'md', 'lg', 'xl'] as const).map((s) => (
+            <div key={s} className="flex items-center gap-ds-04">
+              <span className="w-8 font-mono text-ds-xs text-surface-fg-muted">{s}</span>
+              <AvatarGroup users={mockUsers.slice(0, 5)} size={s} max={4} />
+            </div>
+          ))}
         </div>
-      ))}
+      </div>
+      <div>
+        <p className="mb-ds-03 text-ds-sm font-semibold text-surface-fg-muted">With Images</p>
+        <div className="flex flex-col gap-ds-04">
+          {(['xs', 'sm', 'md', 'lg', 'xl'] as const).map((s) => (
+            <div key={s} className="flex items-center gap-ds-04">
+              <span className="w-8 font-mono text-ds-xs text-surface-fg-muted">{s}</span>
+              <AvatarGroup users={mockUsersWithImages.slice(0, 5)} size={s} max={4} />
+            </div>
+          ))}
+        </div>
+      </div>
     </div>
   ),
   parameters: {
     docs: {
       description: {
-        story: 'All five sizes from xs to xl with corresponding overlap spacing.',
+        story: 'All five sizes from xs to xl — fallback initials and images side by side.',
       },
     },
   },

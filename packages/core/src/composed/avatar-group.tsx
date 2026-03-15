@@ -29,11 +29,11 @@ const avatarSizeVariants = cva(
   {
     variants: {
       size: {
-        xs: 'h-ds-xs w-ds-xs text-[10px]',
-        sm: 'h-ds-sm w-ds-sm text-ds-xs',
-        md: 'h-ds-md w-ds-md text-ds-sm',
-        lg: 'h-ds-lg w-ds-lg text-ds-md',
-        xl: 'h-ds-xl w-ds-xl text-ds-md',
+        xs: 'h-ds-xs w-ds-xs',
+        sm: 'h-ds-sm w-ds-sm',
+        md: 'h-ds-md w-ds-md',
+        lg: 'h-ds-lg w-ds-lg',
+        xl: 'h-ds-xl w-ds-xl',
       },
     },
     defaultVariants: {
@@ -138,14 +138,14 @@ const AvatarGroup = React.forwardRef<HTMLDivElement, AvatarGroupProps>(
             const initials = getInitials(user.name)
 
             if (renderAvatar) {
-              // When renderAvatar is provided, the consumer owns the tooltip entirely.
-              // No internal tooltip wrapping — avoids nested tooltip conflicts.
+              // When renderAvatar is provided, the consumer owns the Avatar entirely.
+              // Wrapper is positioning-only (overlap, z-index, spotlight) — no size/border/clip
+              // so the consumer's Avatar renders at its natural size without being clipped.
               return (
                 <div
                   key={user.name}
                   className={cn(
-                    avatarSizeVariants({ size }),
-                    borderClass,
+                    'shrink-0',
                     index > 0 && overlapClass,
                     spotlightClasses,
                     user.ring && user.ring !== 'none' && groupRingMap[user.ring],

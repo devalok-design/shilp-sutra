@@ -258,11 +258,11 @@
   /* ═══════════════════════════════════════════════════════════
      SHADOWS
      ═══════════════════════════════════════════════════════════ */
-  --shadow-01: 0 1px 2px oklch(0 0 0 / 0.10);
-  --shadow-02: 0 2px 6px oklch(0 0 0 / 0.12);
-  --shadow-03: 0 4px 16px oklch(0 0 0 / 0.14);
-  --shadow-04: 0 8px 32px oklch(0 0 0 / 0.18);
-  --shadow-05: 0 16px 48px oklch(0 0 0 / 0.22);
+  --shadow-01: 0 1px 1px oklch(0 0 0 / 0.06), 0 1px 3px oklch(0 0 0 / 0.10), 0 2px 6px oklch(0 0 0 / 0.08);
+  --shadow-02: 0 1px 2px oklch(0 0 0 / 0.08), 0 4px 8px oklch(0 0 0 / 0.12), 0 8px 24px oklch(0 0 0 / 0.10);
+  --shadow-03: 0 2px 4px oklch(0 0 0 / 0.08), 0 8px 16px oklch(0 0 0 / 0.12), 0 16px 40px oklch(0 0 0 / 0.10);
+  --shadow-04: 0 2px 4px oklch(0 0 0 / 0.10), 0 12px 24px oklch(0 0 0 / 0.14), 0 24px 56px oklch(0 0 0 / 0.12);
+  --shadow-05: 0 4px 8px oklch(0 0 0 / 0.10), 0 16px 32px oklch(0 0 0 / 0.16), 0 32px 64px oklch(0 0 0 / 0.14);
   --shadow-brand: 0 4px 16px oklch(0.55 0.19 360 / 0.25);
 
   /* ═══════════════════════════════════════════════════════════
@@ -372,11 +372,11 @@
   --color-skeleton-shimmer: var(--neutral-3);
 
   /* Shadows (heavier in dark mode) */
-  --shadow-01: 0 1px 2px oklch(0 0 0 / 0.30);
-  --shadow-02: 0 2px 6px oklch(0 0 0 / 0.40);
-  --shadow-03: 0 4px 16px oklch(0 0 0 / 0.50);
-  --shadow-04: 0 8px 32px oklch(0 0 0 / 0.60);
-  --shadow-05: 0 16px 48px oklch(0 0 0 / 0.70);
+  --shadow-01: 0 1px 1px oklch(0 0 0 / 0.15), 0 1px 3px oklch(0 0 0 / 0.25), 0 2px 6px oklch(0 0 0 / 0.20);
+  --shadow-02: 0 1px 2px oklch(0 0 0 / 0.20), 0 4px 8px oklch(0 0 0 / 0.30), 0 8px 24px oklch(0 0 0 / 0.25);
+  --shadow-03: 0 2px 4px oklch(0 0 0 / 0.20), 0 8px 16px oklch(0 0 0 / 0.30), 0 16px 40px oklch(0 0 0 / 0.25);
+  --shadow-04: 0 2px 4px oklch(0 0 0 / 0.25), 0 12px 24px oklch(0 0 0 / 0.35), 0 24px 56px oklch(0 0 0 / 0.30);
+  --shadow-05: 0 4px 8px oklch(0 0 0 / 0.25), 0 16px 32px oklch(0 0 0 / 0.40), 0 32px 64px oklch(0 0 0 / 0.35);
   --shadow-brand: 0 4px 16px oklch(0.55 0.19 360 / 0.35);
 
   /* Gradients */

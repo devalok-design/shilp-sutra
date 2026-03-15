@@ -176,7 +176,7 @@ function DayColumn({
             'text-center text-ds-sm font-semibold py-ds-02 border-b border-surface-border-strong',
             todayInView
               ? 'text-accent-11 bg-accent-2'
-              : 'text-surface-fg bg-surface-1',
+              : 'text-surface-fg bg-surface-2',
           )}
         >
           {format(date, 'EEE d')}

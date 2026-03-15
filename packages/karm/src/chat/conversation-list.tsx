@@ -50,7 +50,7 @@ export const ConversationList = React.forwardRef<HTMLDivElement, ConversationLis
         </h3>
         <button
           onClick={onNewChat}
-          className="flex items-center gap-ds-02b rounded-ds-lg px-ds-03 py-ds-02b text-surface-fg-muted transition-colors hover:bg-surface-2"
+          className="flex items-center gap-ds-02b rounded-ds-lg px-ds-03 py-ds-02b text-surface-fg-muted transition-colors hover:bg-surface-3"
         >
           <IconMessagePlus className="h-ico-sm w-ico-sm" />
           <span className="text-ds-sm">New Chat</span>
@@ -76,8 +76,8 @@ export const ConversationList = React.forwardRef<HTMLDivElement, ConversationLis
               <div
                 key={convo.id}
                 className={cn(
-                  'group flex items-center gap-ds-04 border-b border-surface-border px-ds-05 py-ds-04 transition-colors hover:bg-surface-2',
-                  activeConversationId === convo.id && 'bg-surface-2',
+                  'group flex items-center gap-ds-04 border-b border-surface-border px-ds-05 py-ds-04 transition-colors hover:bg-surface-3',
+                  activeConversationId === convo.id && 'bg-surface-3',
                 )}
               >
                 <button

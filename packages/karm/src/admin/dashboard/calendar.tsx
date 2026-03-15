@@ -108,14 +108,14 @@ export const Calendar = React.forwardRef<HTMLDivElement, CalendarProps>(
             <button
               aria-label="Previous"
               onClick={() => handleDateChange('prev')}
-              className="rounded-ds-full p-ds-02 hover:bg-surface-2"
+              className="rounded-ds-full p-ds-02 hover:bg-surface-3"
             >
               <ArrowLeftIcon className="h-ico-md w-ico-md text-surface-fg-muted" />
             </button>
             <button
               aria-label="Next"
               onClick={() => handleDateChange('next')}
-              className="rounded-ds-full p-ds-02 hover:bg-surface-2"
+              className="rounded-ds-full p-ds-02 hover:bg-surface-3"
             >
               <ArrowForwardIcon className="h-ico-md w-ico-md text-surface-fg-muted" />
             </button>

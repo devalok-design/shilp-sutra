@@ -108,7 +108,7 @@ const FileItem = React.forwardRef<HTMLDivElement, FileItemProps>(
               href={/^https?:\/\//.test(file.externalUrl) ? file.externalUrl : '#'}
               target="_blank"
               rel="noopener noreferrer"
-              className="inline-flex h-ds-xs-plus w-ds-xs-plus items-center justify-center rounded-ds-md transition-colors hover:bg-surface-2"
+              className="inline-flex h-ds-xs-plus w-ds-xs-plus items-center justify-center rounded-ds-md transition-colors hover:bg-surface-3"
               title={file.externalLabel ?? 'Open externally'}
             >
               <IconExternalLink className="h-ico-sm w-ico-sm text-surface-fg-subtle" />
@@ -119,7 +119,7 @@ const FileItem = React.forwardRef<HTMLDivElement, FileItemProps>(
               href={/^https?:\/\//.test(file.downloadUrl) ? file.downloadUrl : '#'}
               target="_blank"
               rel="noopener noreferrer"
-              className="inline-flex h-ds-xs-plus w-ds-xs-plus items-center justify-center rounded-ds-md transition-colors hover:bg-surface-2"
+              className="inline-flex h-ds-xs-plus w-ds-xs-plus items-center justify-center rounded-ds-md transition-colors hover:bg-surface-3"
               title="Download"
             >
               <IconDownload className="h-ico-sm w-ico-sm text-surface-fg-subtle" />

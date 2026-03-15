@@ -62,7 +62,7 @@ const SubtaskItem = React.forwardRef<HTMLDivElement, SubtaskItemProps>(
           }}
           className={cn(
             'shrink-0 rounded p-ds-01 transition-colors',
-            onToggle ? 'hover:bg-surface-2' : 'cursor-default',
+            onToggle ? 'hover:bg-surface-3' : 'cursor-default',
           )}
         >
           {isComplete ? (

@@ -13,6 +13,8 @@ import { useScratchpad } from './scratchpad-context'
 export interface ScratchpadProgressRingProps extends React.HTMLAttributes<HTMLDivElement> {
   /** Ring diameter — sm: 16px, md: 20px */
   size?: 'sm' | 'md'
+  /** Whether to show the count label (e.g., "3/5") inside the ring. Default: true */
+  showCount?: boolean
 }
 
 // ============================================================
@@ -29,7 +31,7 @@ const SIZES = {
 // ============================================================
 
 const ScratchpadProgressRing = React.forwardRef<HTMLDivElement, ScratchpadProgressRingProps>(
-  function ScratchpadProgressRing({ size = 'md', className, ...props }, ref) {
+  function ScratchpadProgressRing({ size = 'md', showCount = true, className, ...props }, ref) {
     const { items, maxItems } = useScratchpad()
 
     const count = items.length
@@ -78,13 +80,15 @@ const ScratchpadProgressRing = React.forwardRef<HTMLDivElement, ScratchpadProgre
             )}
           />
         </svg>
-        <span
-          className="absolute font-medium text-surface-fg-muted"
-          style={{ fontSize }}
-          data-testid="progress-count"
-        >
-          {count}/{maxItems}
-        </span>
+        {showCount && (
+          <span
+            className="absolute font-medium text-surface-fg-muted"
+            style={{ fontSize }}
+            data-testid="progress-count"
+          >
+            {count}/{maxItems}
+          </span>
+        )}
       </motion.div>
     )
   },

@@ -83,7 +83,7 @@ const SidebarScratchpad = React.forwardRef<HTMLDivElement, SidebarScratchpadProp
               <span className="flex-1">Scratchpad</span>
             </button>
             <Scratchpad.FilterToggle />
-            <Scratchpad.ProgressRing size="sm" />
+            <Scratchpad.ProgressRing size="sm" showCount={false} />
           </div>
 
           {/* Collapsible body — CSS grid transition */}

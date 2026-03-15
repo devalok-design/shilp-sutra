@@ -42,10 +42,12 @@ describe('SidebarScratchpad', () => {
     expect(toggle).toHaveAttribute('aria-expanded', 'false')
   })
 
-  it('shows progress ring with item count', () => {
-    renderScratchpad()
-    const ring = screen.getByTestId('progress-count')
-    expect(ring).toHaveTextContent('3/20')
+  it('shows progress ring without count label', () => {
+    const { container } = renderScratchpad()
+    // Ring SVG should be present
+    expect(container.querySelector('svg')).toBeInTheDocument()
+    // But count label should not be rendered (showCount=false)
+    expect(screen.queryByTestId('progress-count')).not.toBeInTheDocument()
   })
 
   it('shows filter toggle button', () => {

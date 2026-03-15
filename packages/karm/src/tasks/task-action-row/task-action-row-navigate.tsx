@@ -31,7 +31,7 @@ const TaskActionRowNavigate = React.forwardRef<HTMLButtonElement, TaskActionRowN
         variant="ghost"
         aria-label="Open task in project board"
         onClick={handleClick}
-        className="text-surface-fg-subtle hover:text-surface-fg opacity-0 group-hover:opacity-100 group-focus-within:opacity-100 transition-all duration-150"
+        className="text-surface-fg-subtle hover:text-accent-11 hover:bg-accent-3 opacity-0 group-hover:opacity-100 group-focus-within:opacity-100 transition-all duration-150"
       />
     )
   },

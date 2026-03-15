@@ -158,9 +158,9 @@ const ScratchpadItem = React.forwardRef<HTMLDivElement, ScratchpadItemProps>(
               type="button"
               onClick={() => onPromote(item.id)}
               aria-label={`Promote ${item.text}`}
-              className="flex h-ico-md w-ico-md items-center justify-center rounded-ds-sm transition-colors duration-150 hover:bg-surface-3"
+              className="flex h-ico-md w-ico-md items-center justify-center rounded-ds-sm text-accent-11 transition-colors duration-150 hover:bg-accent-3 hover:text-accent-12"
             >
-              <IconArrowUp className="h-3 w-3 text-surface-fg-subtle" />
+              <IconArrowUp className="h-3 w-3" />
             </button>
           )}
 
@@ -170,9 +170,9 @@ const ScratchpadItem = React.forwardRef<HTMLDivElement, ScratchpadItemProps>(
               type="button"
               onClick={() => onDelete(item.id)}
               aria-label={`Delete ${item.text}`}
-              className="flex h-ico-md w-ico-md items-center justify-center rounded-ds-sm transition-colors duration-150 hover:bg-surface-3"
+              className="flex h-ico-md w-ico-md items-center justify-center rounded-ds-sm text-surface-fg-subtle transition-colors duration-150 hover:bg-error-3 hover:text-error-11"
             >
-              <IconX className="h-3 w-3 text-surface-fg-subtle" />
+              <IconX className="h-3 w-3" />
             </button>
           )}
 

@@ -103,13 +103,13 @@ const Banner = React.forwardRef<HTMLDivElement, BannerProps>(
             <Icon className="h-ico-md w-ico-md shrink-0" aria-hidden="true" />
             <div className="min-w-0 flex-1">{children}</div>
             {resolvedActions && (
-              <div className="flex shrink-0 items-center gap-ds-02 transition-colors duration-150">{resolvedActions}</div>
+              <div className="flex shrink-0 items-center gap-ds-02 [&_button]:transition-colors [&_button]:duration-150 [&_button:hover]:bg-black/10 [&_button:hover]:dark:bg-white/10">{resolvedActions}</div>
             )}
             {onDismiss && (
               <button
                 type="button"
                 onClick={handleDismiss}
-                className="shrink-0 min-h-ds-xs min-w-ds-xs flex items-center justify-center rounded-ds-sm text-surface-fg-subtle transition-colors hover:text-surface-fg-muted hover:bg-surface-3 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent-9"
+                className="shrink-0 min-h-ds-xs min-w-ds-xs flex items-center justify-center rounded-ds-sm transition-colors duration-150 hover:bg-black/10 dark:hover:bg-white/10 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent-9"
                 aria-label="Dismiss"
               >
                 <IconX className="h-ico-sm w-ico-sm" />

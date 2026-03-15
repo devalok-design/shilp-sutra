@@ -68,7 +68,7 @@ const Checkbox = React.forwardRef<
         'peer flex items-center justify-center h-ico-md w-ico-md shrink-0 rounded-ds-sm',
         'border border-surface-border-strong',
         'bg-surface-3',
-        'transition-colors duration-fast-01',
+        'transition-colors duration-fast-01 ease-productive-standard',
         'focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent-9 focus-visible:ring-offset-2',
         'disabled:cursor-not-allowed disabled:opacity-action-disabled',
         'data-[state=unchecked]:hover:border-accent-7 data-[state=unchecked]:hover:bg-surface-4',
@@ -87,7 +87,7 @@ const Checkbox = React.forwardRef<
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
               exit={{ opacity: 0 }}
-              transition={{ duration: 0.1 }}
+              transition={{ duration: 0.07 }}
             >
               <svg
                 width="16"
@@ -108,7 +108,7 @@ const Checkbox = React.forwardRef<
                     initial={{ pathLength: 0 }}
                     animate={{ pathLength: 1 }}
                     exit={{ pathLength: 0 }}
-                    transition={{ duration: 0.2, ease: 'easeOut' }}
+                    transition={{ duration: 0.24, ease: 'easeOut' }}
                   />
                 ) : (
                   <motion.path
@@ -121,7 +121,7 @@ const Checkbox = React.forwardRef<
                     initial={{ pathLength: 0 }}
                     animate={{ pathLength: 1 }}
                     exit={{ pathLength: 0 }}
-                    transition={{ duration: 0.25, ease: 'easeOut' }}
+                    transition={{ duration: 0.24, ease: 'easeOut' }}
                   />
                 )}
               </svg>

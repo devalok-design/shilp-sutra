@@ -311,9 +311,9 @@ const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
         className={cn(
           buttonVariants({ variant: resolvedVariant, color: resolvedColor, size: resolvedSize }),
           fullWidth && 'w-full',
-          !loading && !isAsyncFeedback && 'active:scale-[0.95] transition-[color,background-color,border-color,box-shadow,transform] duration-fast-01',
+          !loading && !isAsyncFeedback && 'active:scale-[0.95] transition-[color,background-color,border-color,box-shadow,transform] duration-fast-01 ease-productive-standard',
           feedbackColorClass,
-          isAsyncFeedback && 'transition-colors duration-200',
+          isAsyncFeedback && 'transition-colors duration-moderate-01 ease-productive-standard',
           className,
         )}
         ref={ref}

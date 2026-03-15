@@ -7,7 +7,7 @@ import { motion } from 'framer-motion'
 import { cn } from './lib/utils'
 
 const badgeVariants = cva(
-  'inline-flex items-center gap-ds-02b font-sans font-medium rounded-ds-full border transition-colors duration-fast-01',
+  'inline-flex items-center gap-ds-02b font-sans font-medium rounded-ds-full border transition-colors duration-fast-01 ease-productive-standard',
   {
     variants: {
       variant: {

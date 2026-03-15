@@ -147,7 +147,7 @@ const DialogContent = React.forwardRef<
               )}
             >
               {children}
-              <DialogPrimitive.Close className="absolute right-ds-05 top-ds-05 min-h-ds-xs min-w-ds-xs flex items-center justify-center rounded-ds-sm text-surface-fg-subtle transition-colors duration-fast-01 hover:text-surface-fg-muted hover:bg-surface-3 active:scale-90 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent-9 disabled:pointer-events-none">
+              <DialogPrimitive.Close className="absolute right-ds-05 top-ds-05 min-h-ds-xs min-w-ds-xs flex items-center justify-center rounded-ds-sm text-surface-fg-subtle transition-colors duration-fast-01 ease-productive-standard hover:text-surface-fg-muted hover:bg-surface-3 active:scale-90 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent-9 disabled:pointer-events-none">
                 <CloseIcon className="h-ico-lg w-ico-lg" />
                 <span className="sr-only">Close</span>
               </DialogPrimitive.Close>

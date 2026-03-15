@@ -190,7 +190,7 @@ function DayColumn({
             key={i}
             type="button"
             className={cn(
-              'block w-full border-b border-surface-border hover:bg-surface-3 transition-colors',
+              'block w-full border-b border-surface-border hover:bg-surface-3 transition-colors ease-productive-standard',
               i % 2 === 0 ? 'border-surface-border-strong' : 'border-surface-3',
             )}
             style={{ height: `${100 / slotCount}%` }}
@@ -211,7 +211,7 @@ function DayColumn({
               className={cn(
                 'absolute left-ds-01 right-ds-01 rounded-ds-sm border-l-[3px] px-ds-02 py-ds-01',
                 'text-left text-ds-xs font-medium overflow-hidden cursor-pointer',
-                'hover:shadow-01 hover:scale-[1.02] transition-[box-shadow,transform] duration-fast-02',
+                'hover:shadow-01 hover:scale-[1.02] transition-[box-shadow,transform] duration-fast-02 ease-productive-standard',
                 colorClass,
               )}
               style={style}

@@ -100,7 +100,7 @@ const NumberInput = React.forwardRef<HTMLInputElement, NumberInputProps>(
           onClick={handleDecrement}
           disabled={disabled || value <= min}
           aria-label="Decrease value"
-          className="flex h-ds-sm w-ds-sm items-center justify-center border-0 text-surface-fg-subtle hover:bg-surface-3 hover:text-surface-fg-muted active:scale-90 transition-[color,transform] duration-fast-01"
+          className="flex h-ds-sm w-ds-sm items-center justify-center border-0 text-surface-fg-subtle hover:bg-surface-3 hover:text-surface-fg-muted active:scale-90 transition-[color,transform] duration-fast-01 ease-productive-standard"
         >
           <IconMinus className="h-ico-sm w-ico-sm" />
         </button>
@@ -125,7 +125,7 @@ const NumberInput = React.forwardRef<HTMLInputElement, NumberInputProps>(
           onClick={handleIncrement}
           disabled={disabled || value >= max}
           aria-label="Increase value"
-          className="flex h-ds-sm w-ds-sm items-center justify-center border-0 text-surface-fg-subtle hover:bg-surface-3 hover:text-surface-fg-muted active:scale-90 transition-[color,transform] duration-fast-01"
+          className="flex h-ds-sm w-ds-sm items-center justify-center border-0 text-surface-fg-subtle hover:bg-surface-3 hover:text-surface-fg-muted active:scale-90 transition-[color,transform] duration-fast-01 ease-productive-standard"
         >
           <IconPlus className="h-ico-sm w-ico-sm" />
         </button>

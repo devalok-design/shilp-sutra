@@ -76,7 +76,7 @@ const SearchInput = React.forwardRef<HTMLInputElement, SearchInputProps>(
             'border border-surface-border-strong rounded-ds-md',
             'placeholder:text-surface-fg-subtle',
             'hover:bg-surface-4',
-            'transition-colors duration-fast-01',
+            'transition-colors duration-fast-01 ease-productive-standard',
             'focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent-9 focus-visible:border-accent-7',
             'disabled:cursor-not-allowed disabled:opacity-action-disabled',
             className,
@@ -93,7 +93,7 @@ const SearchInput = React.forwardRef<HTMLInputElement, SearchInputProps>(
               <motion.button
                 type="button"
                 onClick={onClear}
-                className="absolute right-[0.75rem] rounded-ds-full h-ico-md w-ico-md flex items-center justify-center text-surface-fg-muted hover:text-surface-fg hover:bg-surface-2 transition-colors"
+                className="absolute right-[0.75rem] rounded-ds-full h-ico-md w-ico-md flex items-center justify-center text-surface-fg-muted hover:text-surface-fg hover:bg-surface-2 transition-colors ease-productive-standard"
                 aria-label="Clear search"
                 initial={{ opacity: 0, scale: 0.8 }}
                 animate={{ opacity: 1, scale: 1 }}

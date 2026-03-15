@@ -85,7 +85,7 @@ function ToolbarButton({
       title={title}
       aria-pressed={isActive}
       className={cn(
-        'inline-flex h-ds-xs-plus w-ds-xs-plus items-center justify-center rounded-ds-md transition-colors duration-fast-01',
+        'inline-flex h-ds-xs-plus w-ds-xs-plus items-center justify-center rounded-ds-md transition-colors duration-fast-01 ease-productive-standard',
         'hover:bg-surface-3',
         'disabled:pointer-events-none disabled:opacity-action-disabled',
         isActive
@@ -511,7 +511,7 @@ const RichTextEditor = React.forwardRef<HTMLDivElement, RichTextEditorProps>(
       <div
         className={cn(
           'overflow-hidden rounded-ds-lg border border-surface-border-strong bg-surface-2',
-          'transition-colors focus-within:border-surface-border-strong',
+          'transition-colors ease-productive-standard focus-within:border-surface-border-strong',
         )}
       >
         <input

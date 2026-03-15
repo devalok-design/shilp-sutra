@@ -94,7 +94,7 @@ const MemberPicker = React.forwardRef<HTMLDivElement, MemberPickerProps>(
                     if (!multiple) setOpen(false)
                   }}
                   className={cn(
-                    'flex w-full items-center gap-ds-03 px-ds-04 py-ds-02b text-left transition-colors duration-fast-01',
+                    'flex w-full items-center gap-ds-03 px-ds-04 py-ds-02b text-left transition-colors duration-fast-01 ease-productive-standard',
                     'hover:bg-surface-3',
                     isSelected && 'bg-accent-2 text-accent-11',
                   )}

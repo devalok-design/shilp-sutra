@@ -162,7 +162,7 @@ function NotificationItem({
       onClick={handleClick}
       onKeyDown={handleKeyDown}
       className={cn(
-        'group relative flex w-full cursor-pointer items-start gap-ds-04 px-ds-05 py-ds-04 text-left transition-colors duration-fast-02',
+        'group relative flex w-full cursor-pointer items-start gap-ds-04 px-ds-05 py-ds-04 text-left transition-colors duration-fast-02 ease-productive-standard',
         'hover:bg-surface-2',
         !notification.isRead && 'bg-accent-1',
       )}
@@ -171,7 +171,7 @@ function NotificationItem({
       <div className="mt-ds-02b flex shrink-0">
         <span
           className={cn(
-            'h-[8px] w-[8px] rounded-ds-full transition-opacity duration-fast-02',
+            'h-[8px] w-[8px] rounded-ds-full transition-opacity duration-fast-02 ease-productive-standard',
             TIER_COLORS[notification.tier] || TIER_COLORS.INFO,
             notification.isRead ? 'opacity-20' : 'opacity-100',
           )}
@@ -222,7 +222,7 @@ function NotificationItem({
                 }}
                 onKeyDown={(e) => e.stopPropagation()}
                 className={cn(
-                  'rounded-ds-md px-ds-03 py-ds-01 text-ds-sm font-medium transition-colors duration-fast-02',
+                  'rounded-ds-md px-ds-03 py-ds-01 text-ds-sm font-medium transition-colors duration-fast-02 ease-productive-standard',
                   action.variant === 'primary'
                     ? 'bg-accent-9 text-accent-fg hover:bg-accent-10'
                     : action.variant === 'danger'
@@ -247,7 +247,7 @@ function NotificationItem({
             onDismiss(notification.id)
           }}
           onKeyDown={(e) => e.stopPropagation()}
-          className="absolute right-ds-03 top-ds-03 hidden rounded-ds-sm p-ds-01 text-surface-fg-subtle transition-[colors,opacity] duration-fast-01 hover:bg-surface-3 hover:text-surface-fg-muted group-hover:flex group-focus-within:flex"
+          className="absolute right-ds-03 top-ds-03 hidden rounded-ds-sm p-ds-01 text-surface-fg-subtle transition-[color,background-color,opacity] duration-fast-01 ease-productive-standard hover:bg-surface-3 hover:text-surface-fg-muted group-hover:flex group-focus-within:flex"
         >
           <IconX className="h-ico-sm w-ico-sm" />
         </button>
@@ -337,7 +337,7 @@ const NotificationCenter = React.forwardRef<HTMLButtonElement, NotificationCente
               ref={ref}
               aria-label={unreadCount > 0 ? `Notifications, ${unreadCount} unread` : 'Notifications'}
               className={cn(
-                'relative flex h-ds-sm-plus w-ds-sm-plus items-center justify-center rounded-ds-full border border-surface-border-strong bg-surface-2 text-surface-fg-muted transition-colors hover:bg-surface-3',
+                'relative flex h-ds-sm-plus w-ds-sm-plus items-center justify-center rounded-ds-full border border-surface-border-strong bg-surface-2 text-surface-fg-muted transition-colors ease-productive-standard hover:bg-surface-3',
                 className,
               )}
             >

@@ -110,7 +110,7 @@ const WeekHeatmapDay = React.forwardRef<HTMLDivElement, WeekHeatmapDayProps>(
               <span className="text-ds-xs text-surface-fg-muted">{label}</span>
               <div
                 className={cn(
-                  'flex h-8 w-10 items-center justify-center rounded-ds-md transition-all duration-fast-01 hover:ring-1 hover:ring-accent-7',
+                  'flex h-8 w-10 items-center justify-center rounded-ds-md transition-[background-color,box-shadow] duration-fast-01 ease-productive-standard hover:ring-1 hover:ring-accent-7',
                   statusStyles[status],
                 )}
               />

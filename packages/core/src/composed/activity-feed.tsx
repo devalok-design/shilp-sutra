@@ -170,7 +170,7 @@ function ActivityEntry({
               <span className="font-medium text-surface-fg">{item.actor.name} </span>
             )}
             {item.detail && (
-              <IconChevronRight className={cn('h-3 w-3 shrink-0 text-surface-fg-subtle transition-transform duration-fast-02', expandedDetail && 'rotate-90')} />
+              <IconChevronRight className={cn('h-3 w-3 shrink-0 text-surface-fg-subtle transition-transform duration-fast-02 ease-productive-standard', expandedDetail && 'rotate-90')} />
             )}
             <span
               className={cn(

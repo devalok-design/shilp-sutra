@@ -90,7 +90,7 @@ function BottomNavLink({
         aria-label={item.title}
         aria-current={isActive ? 'page' : undefined}
         className={cn(
-          'flex h-16 w-full cursor-pointer flex-col items-center gap-ds-02 p-ds-02 pt-0 text-ds-sm transition-colors duration-fast-02',
+          'flex h-16 w-full cursor-pointer flex-col items-center gap-ds-02 p-ds-02 pt-0 text-ds-sm transition-colors duration-fast-02 ease-productive-standard',
           isActive
             ? 'font-semibold text-accent-11'
             : 'text-surface-fg-subtle',
@@ -187,7 +187,7 @@ const BottomNavbar = React.forwardRef<HTMLElement, BottomNavbarProps>(
                   href={item.href}
                   onClick={() => setShowMore(false)}
                   className={cn(
-                    'flex flex-col items-center gap-ds-02b rounded-ds-xl p-ds-04 text-ds-sm transition-colors',
+                    'flex flex-col items-center gap-ds-02b rounded-ds-xl p-ds-04 text-ds-sm transition-colors ease-productive-standard',
                     isActive(item.href, item.exact)
                       ? 'bg-surface-3 text-accent-11'
                       : 'text-surface-fg-subtle hover:bg-surface-3',

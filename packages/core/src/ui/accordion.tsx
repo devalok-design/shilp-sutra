@@ -81,7 +81,7 @@ const AccordionTrigger = React.forwardRef<
       {...props}
     >
       {children}
-      <IconChevronDown className="h-ico-sm w-ico-sm shrink-0 text-surface-fg-muted transition-transform duration-200 group-data-[state=open]:rotate-180" />
+      <IconChevronDown className="h-ico-sm w-ico-sm shrink-0 text-surface-fg-muted transition-transform duration-moderate-02 ease-productive-standard group-data-[state=open]:rotate-180" />
     </AccordionPrimitive.Trigger>
   </AccordionPrimitive.Header>
 ))

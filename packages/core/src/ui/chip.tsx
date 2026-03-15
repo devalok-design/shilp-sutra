@@ -11,7 +11,7 @@ import { cn } from './lib/utils'
 
 // TODO(v1): rename color="primary" → color="brand" for consistency with Badge (breaking change)
 const chipVariants = cva(
-  'inline-flex items-center gap-ds-02 font-sans leading-ds-relaxed rounded-ds-full transition-colors duration-fast-01',
+  'inline-flex items-center gap-ds-02 font-sans leading-ds-relaxed rounded-ds-full transition-colors duration-fast-01 ease-productive-standard',
   {
     variants: {
       variant: {

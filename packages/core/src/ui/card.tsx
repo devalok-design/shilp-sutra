@@ -8,7 +8,7 @@ import { springs, motionProps } from './lib/motion'
 import { cn } from './lib/utils'
 
 const cardVariants = cva(
-  'rounded-ds-lg text-surface-fg transition-shadow duration-fast-02',
+  'rounded-ds-lg text-surface-fg transition-shadow duration-fast-02 ease-productive-standard',
   {
     variants: {
       variant: {

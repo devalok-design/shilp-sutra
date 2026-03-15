@@ -45,7 +45,6 @@ export const Default: Story = {
   args: {
     items: ITEMS,
     onToggle: fn(),
-    badgeCount: 3,
   },
 }
 
@@ -54,7 +53,6 @@ export const Collapsed: Story = {
     items: ITEMS,
     onToggle: fn(),
     defaultOpen: false,
-    badgeCount: 3,
   },
 }
 
@@ -95,7 +93,6 @@ export const WithFullFeatures: Story = {
         onEdit={onEdit}
         onPromote={fn()}
         maxItems={10}
-        badgeCount={items.filter((i) => !i.done).length}
       />
     )
   },

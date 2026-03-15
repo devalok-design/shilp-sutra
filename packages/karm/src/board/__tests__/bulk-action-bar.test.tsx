@@ -127,9 +127,8 @@ describe('BulkActionBar', () => {
 
   it('is collapsed when no tasks selected', () => {
     renderBarEmpty()
-    // The bar should be in collapsed state (opacity-0)
-    const container = screen.getByText('0 selected').closest('[aria-live]')
-    expect(container).toHaveClass('opacity-0')
+    // The bar uses AnimatePresence — nothing renders when count is 0
+    expect(screen.queryByText(/selected/)).not.toBeInTheDocument()
   })
 
   it('shows selected count', () => {

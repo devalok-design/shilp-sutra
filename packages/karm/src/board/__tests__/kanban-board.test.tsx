@@ -74,8 +74,8 @@ describe('KanbanBoard', () => {
 
   it('renders the bulk action bar (collapsed)', () => {
     render(<KanbanBoard initialData={minimalBoard} />)
-    // Bar is present but collapsed
-    expect(screen.getByText('0 selected')).toBeInTheDocument()
+    // Bar uses AnimatePresence — nothing renders when no tasks selected
+    expect(screen.queryByText(/selected/)).not.toBeInTheDocument()
   })
 
   it('passes callbacks through to context', () => {

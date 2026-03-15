@@ -148,7 +148,9 @@ const AvatarGroup = React.forwardRef<HTMLDivElement, AvatarGroupProps>(
             const initials = getInitials(user.name)
 
             if (renderAvatar) {
-              const element = (
+              // When renderAvatar is provided, the consumer owns the tooltip entirely.
+              // No internal tooltip wrapping — avoids nested tooltip conflicts.
+              return (
                 <div
                   key={user.name}
                   className={cn(
@@ -165,20 +167,6 @@ const AvatarGroup = React.forwardRef<HTMLDivElement, AvatarGroupProps>(
                 >
                   {renderAvatar(user, index)}
                 </div>
-              )
-
-              if (!showTooltip) return element
-
-              return (
-                <Tooltip key={user.name}>
-                  <TooltipTrigger asChild>{element}</TooltipTrigger>
-                  <TooltipContent
-                    className="border-surface-border-strong bg-surface-1 text-surface-fg"
-                    sideOffset={6}
-                  >
-                    <p className="text-ds-sm">{user.name}</p>
-                  </TooltipContent>
-                </Tooltip>
               )
             }
 

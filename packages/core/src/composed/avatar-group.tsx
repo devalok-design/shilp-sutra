@@ -60,6 +60,8 @@ export interface AvatarGroupProps
   onOverflowClick?: () => void
   /** Custom render function for each avatar */
   renderAvatar?: (user: AvatarUser, index: number) => React.ReactNode
+  /** Direction the group expands on hover. 'right' (default) for left-aligned groups, 'left' for right-aligned groups. */
+  expandDirection?: 'left' | 'right'
 }
 
 const AvatarGroup = React.forwardRef<HTMLDivElement, AvatarGroupProps>(
@@ -72,6 +74,7 @@ const AvatarGroup = React.forwardRef<HTMLDivElement, AvatarGroupProps>(
       borderColor = 'surface-2',
       onOverflowClick,
       renderAvatar,
+      expandDirection = 'right',
       className,
       ...props
     },
@@ -104,8 +107,19 @@ const AvatarGroup = React.forwardRef<HTMLDivElement, AvatarGroupProps>(
       borderColor === 'surface-1' ? 'border-surface-1' : 'border-surface-2'
 
     // Hover expand: margins stay static (negative overlap). On group hover,
-    // each avatar translates right by (index * overlapPx) via inline style.
-    // Only transform + opacity are GPU-composited — zero layout thrashing.
+    // each avatar translates via inline style (GPU-composited, zero layout thrashing).
+    // 'right': avatars spread rightward (for left-aligned groups)
+    // 'left': avatars spread leftward (for right-aligned groups)
+    const totalVisible = displayed.length + (overflow > 0 ? 1 : 0)
+
+    function getExpandTransform(index: number): string {
+      if (!isHovered) return 'translateX(0)'
+      if (expandDirection === 'left') {
+        return `translateX(-${(totalVisible - 1 - index) * overlapPx}px)`
+      }
+      return `translateX(${index * overlapPx}px)`
+    }
+
     const spotlightClasses =
       'transition-[transform,opacity] duration-300 ease-out hover:z-50 hover:scale-105 group-hover:[&:not(:hover)]:opacity-85'
 
@@ -141,7 +155,7 @@ const AvatarGroup = React.forwardRef<HTMLDivElement, AvatarGroupProps>(
                   )}
                   style={{
                     zIndex: displayed.length - index,
-                    transform: isHovered ? `translateX(${index * overlapPx}px)` : 'translateX(0)',
+                    transform: getExpandTransform(index),
                   }}
                 >
                   {renderAvatar(user, index)}
@@ -175,7 +189,7 @@ const AvatarGroup = React.forwardRef<HTMLDivElement, AvatarGroupProps>(
                 )}
                 style={{
                   zIndex: displayed.length - index,
-                  transform: isHovered ? `translateX(${index * overlapPx}px)` : 'translateX(0)',
+                  transform: getExpandTransform(index),
                 }}
               >
                 {user.image && (
@@ -222,7 +236,7 @@ const AvatarGroup = React.forwardRef<HTMLDivElement, AvatarGroupProps>(
                     )}
                     style={{
                       zIndex: 0,
-                      transform: isHovered ? `translateX(${displayed.length * overlapPx}px)` : 'translateX(0)',
+                      transform: getExpandTransform(displayed.length),
                     }}
                   >
                     +{overflow}
@@ -238,7 +252,7 @@ const AvatarGroup = React.forwardRef<HTMLDivElement, AvatarGroupProps>(
                     )}
                     style={{
                       zIndex: 0,
-                      transform: isHovered ? `translateX(${displayed.length * overlapPx}px)` : 'translateX(0)',
+                      transform: getExpandTransform(displayed.length),
                     }}
                   >
                     +{overflow}

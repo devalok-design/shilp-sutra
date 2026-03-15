@@ -321,3 +321,25 @@ export const OnCardSurface: Story = {
     },
   },
 }
+
+export const ExpandLeft: Story = {
+  render: () => (
+    <div className="flex flex-col items-end gap-ds-04" style={{ maxWidth: 400 }}>
+      <p className="text-ds-sm text-surface-fg-muted">
+        Right-aligned group — expands leftward on hover
+      </p>
+      <AvatarGroup
+        users={mockUsers.slice(0, 6)}
+        max={4}
+        expandDirection="left"
+      />
+    </div>
+  ),
+  parameters: {
+    docs: {
+      description: {
+        story: 'Use `expandDirection="left"` when the group is right-aligned (e.g., task cards). Avatars expand leftward so they don\'t overflow the container.',
+      },
+    },
+  },
+}

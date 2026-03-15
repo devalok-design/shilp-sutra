@@ -231,3 +231,61 @@ export const TruncatedWithShowAll: Story = {
     maxInitialItems: 4,
   },
 }
+
+// ── Time-grouped stories ────────────────────────────────────
+
+const GROUPED_ITEMS: ActivityItem[] = [
+  { id: 'g1', actor: { name: 'Arjun Mehta' }, action: 'created the task', timestamp: new Date(now - 10 * 60 * 1000), color: 'info' },
+  { id: 'g2', actor: { name: 'Priya Sharma' }, action: 'changed priority to HIGH', timestamp: new Date(now - 2 * 60 * 60 * 1000), color: 'warning' },
+  { id: 'g3', actor: { name: 'Kavita Reddy' }, action: 'approved the PR', timestamp: new Date(now - 26 * 60 * 60 * 1000), color: 'success' },
+  { id: 'g4', actor: { name: 'Rahul Verma' }, action: 'left a comment', timestamp: new Date(now - 30 * 60 * 60 * 1000) },
+  { id: 'g5', actor: { name: 'Sneha Joshi' }, action: 'completed the review', timestamp: new Date(now - 3 * 24 * 60 * 60 * 1000), color: 'success' },
+  { id: 'g6', actor: { name: 'Arjun Mehta' }, action: 'updated the description', timestamp: new Date(now - 4 * 24 * 60 * 60 * 1000) },
+  { id: 'g7', actor: { name: 'Priya Sharma' }, action: 'reported a blocker', timestamp: new Date(now - 10 * 24 * 60 * 60 * 1000), color: 'error' },
+  { id: 'g8', actor: { name: 'Kavita Reddy' }, action: 'created the project', timestamp: new Date(now - 30 * 24 * 60 * 60 * 1000), color: 'info' },
+]
+
+export const GroupedByTime: Story = {
+  name: 'Grouped by Time',
+  args: {
+    items: GROUPED_ITEMS,
+    groupBy: 'time',
+  },
+  parameters: {
+    docs: {
+      description: {
+        story: 'Items grouped into Today, Yesterday, This Week, and Older buckets with section headers.',
+      },
+    },
+  },
+}
+
+export const GroupedByTimeCompact: Story = {
+  name: 'Grouped by Time (Compact)',
+  args: {
+    items: GROUPED_ITEMS,
+    groupBy: 'time',
+    compact: true,
+  },
+}
+
+export const GroupedWithCustomLabels: Story = {
+  name: 'Grouped with Custom Labels',
+  args: {
+    items: GROUPED_ITEMS,
+    groupBy: 'time',
+    groupLabels: {
+      today: 'Aaj',
+      yesterday: 'Kal',
+      thisWeek: 'Is Hafte',
+      older: 'Purana',
+    },
+  },
+  parameters: {
+    docs: {
+      description: {
+        story: 'Custom Hindi labels via `groupLabels` prop.',
+      },
+    },
+  },
+}

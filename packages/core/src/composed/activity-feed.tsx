@@ -19,6 +19,13 @@ export interface ActivityItem {
   detail?: React.ReactNode
 }
 
+export interface GroupLabels {
+  today?: string
+  yesterday?: string
+  thisWeek?: string
+  older?: string
+}
+
 export interface ActivityFeedProps extends React.HTMLAttributes<HTMLDivElement> {
   items: ActivityItem[]
   onLoadMore?: () => void
@@ -27,6 +34,8 @@ export interface ActivityFeedProps extends React.HTMLAttributes<HTMLDivElement> 
   emptyState?: React.ReactNode
   compact?: boolean
   maxInitialItems?: number
+  groupBy?: 'time' | 'none'
+  groupLabels?: GroupLabels
 }
 
 const dotColorMap = {
@@ -37,6 +46,66 @@ const dotColorMap = {
   info: 'bg-info-9',
 } as const
 
+const DEFAULT_GROUP_LABELS: Required<GroupLabels> = {
+  today: 'Today',
+  yesterday: 'Yesterday',
+  thisWeek: 'This Week',
+  older: 'Older',
+}
+
+/**
+ * Buckets items into time-based groups: today, yesterday, earlier this week (since Monday), older.
+ * Skips empty groups.
+ */
+export function groupItemsByTime(
+  items: ActivityItem[],
+  labels?: GroupLabels,
+): { label: string; items: ActivityItem[] }[] {
+  const l = { ...DEFAULT_GROUP_LABELS, ...labels }
+  const now = new Date()
+
+  // Start of today (midnight local)
+  const startOfToday = new Date(now.getFullYear(), now.getMonth(), now.getDate())
+  // Start of yesterday
+  const startOfYesterday = new Date(startOfToday.getTime() - 24 * 60 * 60 * 1000)
+  // Start of this week (Monday)
+  const dayOfWeek = now.getDay() // 0=Sun, 1=Mon, ...
+  const daysSinceMonday = dayOfWeek === 0 ? 6 : dayOfWeek - 1
+  const startOfWeek = new Date(
+    startOfToday.getTime() - daysSinceMonday * 24 * 60 * 60 * 1000,
+  )
+
+  const today: ActivityItem[] = []
+  const yesterday: ActivityItem[] = []
+  const thisWeek: ActivityItem[] = []
+  const older: ActivityItem[] = []
+
+  for (const item of items) {
+    const ts =
+      typeof item.timestamp === 'string'
+        ? new Date(item.timestamp)
+        : item.timestamp
+    const t = ts.getTime()
+
+    if (t >= startOfToday.getTime()) {
+      today.push(item)
+    } else if (t >= startOfYesterday.getTime()) {
+      yesterday.push(item)
+    } else if (t >= startOfWeek.getTime()) {
+      thisWeek.push(item)
+    } else {
+      older.push(item)
+    }
+  }
+
+  const groups: { label: string; items: ActivityItem[] }[] = []
+  if (today.length > 0) groups.push({ label: l.today, items: today })
+  if (yesterday.length > 0) groups.push({ label: l.yesterday, items: yesterday })
+  if (thisWeek.length > 0) groups.push({ label: l.thisWeek, items: thisWeek })
+  if (older.length > 0) groups.push({ label: l.older, items: older })
+
+  return groups
+}
 
 function LoadingSkeleton({ compact }: { compact: boolean }) {
   return (
@@ -151,6 +220,25 @@ function ActivityEntry({
   )
 }
 
+function GroupHeader({
+  label,
+  isFirst,
+}: {
+  label: string
+  isFirst: boolean
+}) {
+  return (
+    <div
+      className={cn(
+        'uppercase tracking-ds-wide text-ds-xs text-surface-fg-subtle border-b border-surface-border mb-ds-02 pb-ds-02',
+        !isFirst && 'mt-ds-04',
+      )}
+    >
+      {label}
+    </div>
+  )
+}
+
 const ActivityFeed = React.forwardRef<HTMLDivElement, ActivityFeedProps>(
   (
     {
@@ -161,6 +249,8 @@ const ActivityFeed = React.forwardRef<HTMLDivElement, ActivityFeedProps>(
       emptyState,
       compact = false,
       maxInitialItems,
+      groupBy = 'none',
+      groupLabels,
       className,
       ...props
     },
@@ -187,9 +277,12 @@ const ActivityFeed = React.forwardRef<HTMLDivElement, ActivityFeedProps>(
       return null
     }
 
+    // maxInitialItems applies to the flat list BEFORE grouping
     const truncated =
       maxInitialItems != null && !showAll && items.length > maxInitialItems
     const visibleItems = truncated ? items.slice(0, maxInitialItems) : items
+
+    const useGrouping = groupBy === 'time'
 
     return (
       <div ref={ref} className={cn('relative', className)} {...props}>
@@ -197,11 +290,26 @@ const ActivityFeed = React.forwardRef<HTMLDivElement, ActivityFeedProps>(
         <div className="absolute bottom-0 left-[3px] top-0 w-px bg-surface-border" />
 
         {/* Items */}
-        <div className={cn('relative flex flex-col', compact ? 'gap-1' : 'gap-3')}>
-          {visibleItems.map((item) => (
-            <ActivityEntry key={item.id} item={item} compact={compact} />
-          ))}
-        </div>
+        {useGrouping ? (
+          <div className="relative">
+            {groupItemsByTime(visibleItems, groupLabels).map((group, gi) => (
+              <div key={group.label}>
+                <GroupHeader label={group.label} isFirst={gi === 0} />
+                <div className={cn('flex flex-col', compact ? 'gap-1' : 'gap-3')}>
+                  {group.items.map((item) => (
+                    <ActivityEntry key={item.id} item={item} compact={compact} />
+                  ))}
+                </div>
+              </div>
+            ))}
+          </div>
+        ) : (
+          <div className={cn('relative flex flex-col', compact ? 'gap-1' : 'gap-3')}>
+            {visibleItems.map((item) => (
+              <ActivityEntry key={item.id} item={item} compact={compact} />
+            ))}
+          </div>
+        )}
 
         {/* Show all button */}
         {truncated && (

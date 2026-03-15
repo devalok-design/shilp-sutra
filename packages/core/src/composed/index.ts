@@ -67,7 +67,7 @@ export type { ScheduleViewProps, ScheduleEvent } from './schedule-view'
 export { ConfirmDialog } from './confirm-dialog'
 export type { ConfirmDialogProps } from './confirm-dialog'
 
-export { ActivityFeed } from './activity-feed'
-export type { ActivityItem, ActivityFeedProps } from './activity-feed'
+export { ActivityFeed, groupItemsByTime } from './activity-feed'
+export type { ActivityItem, ActivityFeedProps, GroupLabels } from './activity-feed'
 
 export { getInitials } from './lib/string-utils'

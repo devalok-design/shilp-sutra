@@ -12,9 +12,11 @@
     emptyState?: ReactNode — empty state content
     compact: boolean — tighter spacing, no avatars, smaller text
     maxInitialItems: number — truncate with "Show all (N)" toggle
+    groupBy?: 'time' | 'none' — group items by time buckets (today, yesterday, this week, older)
+    groupLabels?: GroupLabels — custom labels for time groups: { today?, yesterday?, thisWeek?, older? }
 
 ## Defaults
-    loading=false, compact=false, hasMore=false
+    loading=false, compact=false, hasMore=false, groupBy='none'
 
 ## Example
 ```jsx
@@ -29,13 +31,23 @@
 />
 ```
 
+## Exported Utilities
+    groupItemsByTime(items: ActivityItem[], labels?: GroupLabels) — pure function that buckets items into time groups; returns { label: string, items: ActivityItem[] }[]
+
 ## Gotchas
 - `items` is required — passing an empty array renders the `emptyState` content
 - `color` on each item controls the timeline dot color
 - `actor.image` is optional — falls back to initials from `actor.name`
 - `maxInitialItems` truncates with a "Show all (N)" toggle button
+- `maxInitialItems` applies to the flat list BEFORE grouping — items are sliced first, then grouped
+- Empty time groups are automatically skipped
 
 ## Changes
+### v0.20.0
+- **Added** `groupBy="time"` prop — groups items into Today, Yesterday, This Week, Older with section headers
+- **Added** `groupLabels` prop for custom group label text
+- **Added** `groupItemsByTime()` exported pure utility function
+
 ### v0.18.0
 - **Fixed** `bg-accent-9` changed to `bg-info-9` (info color, not accent)
 

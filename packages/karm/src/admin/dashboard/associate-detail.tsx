@@ -325,6 +325,7 @@ export const AssociateDetail = React.forwardRef<HTMLDivElement, AssociateDetailP
             <>
               <div role="list" aria-label="Tasks for the day" className="no-scrollbar mb-ds-03 flex max-h-[250px] flex-col gap-ds-03 overflow-y-auto">
                 {userTasks.map((task, idx) => (
+                  // eslint-disable-next-line jsx-a11y/no-noninteractive-element-interactions -- listitem is interactive (draggable reorder)
                   <div
                     key={task.id}
                     role="listitem"

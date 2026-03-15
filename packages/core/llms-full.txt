@@ -407,7 +407,8 @@ Note: getFormFieldA11y() was removed in favor of useFormField() hook.
 
 ## Props
     color: "info" | "success" | "warning" | "error" | "neutral"
-    action: ReactNode (optional action slot, typically a ghost Button)
+    actions: ReactNode (optional action slot for one or more buttons; wraps on narrow viewports)
+    action: ReactNode (DEPRECATED — use `actions` instead)
     onDismiss: () => void (optional, shows X button)
     children: ReactNode (message text)
 
@@ -427,6 +428,11 @@ Note: getFormFieldA11y() was removed in favor of useFormField() hook.
 - `onDismiss` fires after the exit animation completes, not immediately on dismiss button click
 
 ## Changes
+### v0.20.0
+- **Added** `actions` prop (plural) for multiple action buttons with mobile-friendly flex-wrap
+- **Deprecated** `action` prop — use `actions` instead (both still work; `actions` takes priority)
+- **Changed** Root layout uses `flex-wrap` and children wrapper uses `min-w-0` for better text truncation
+
 ### v0.3.1
 - **Fixed** BannerProps uses `Omit<HTMLAttributes, 'color'>` to resolve TypeScript conflict with CVA `color` variant
 
@@ -2911,9 +2917,11 @@ export default function RootLayout({ children }) {
     emptyState?: ReactNode — empty state content
     compact: boolean — tighter spacing, no avatars, smaller text
     maxInitialItems: number — truncate with "Show all (N)" toggle
+    groupBy?: 'time' | 'none' — group items by time buckets (today, yesterday, this week, older)
+    groupLabels?: GroupLabels — custom labels for time groups: { today?, yesterday?, thisWeek?, older? }
 
 ## Defaults
-    loading=false, compact=false, hasMore=false
+    loading=false, compact=false, hasMore=false, groupBy='none'
 
 ## Example
 ```jsx
@@ -2928,13 +2936,23 @@ export default function RootLayout({ children }) {
 />
 ```
 
+## Exported Utilities
+    groupItemsByTime(items: ActivityItem[], labels?: GroupLabels) — pure function that buckets items into time groups; returns { label: string, items: ActivityItem[] }[]
+
 ## Gotchas
 - `items` is required — passing an empty array renders the `emptyState` content
 - `color` on each item controls the timeline dot color
 - `actor.image` is optional — falls back to initials from `actor.name`
 - `maxInitialItems` truncates with a "Show all (N)" toggle button
+- `maxInitialItems` applies to the flat list BEFORE grouping — items are sliced first, then grouped
+- Empty time groups are automatically skipped
 
 ## Changes
+### v0.20.0
+- **Added** `groupBy="time"` prop — groups items into Today, Yesterday, This Week, Older with section headers
+- **Added** `groupLabels` prop for custom group label text
+- **Added** `groupItemsByTime()` exported pure utility function
+
 ### v0.18.0
 - **Fixed** `bg-accent-9` changed to `bg-info-9` (info color, not accent)
 

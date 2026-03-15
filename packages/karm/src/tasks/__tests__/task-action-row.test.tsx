@@ -21,7 +21,7 @@ const baseTask: TaskActionRowTask = {
   labels: ['frontend', 'urgent', 'design'],
 }
 
-const overdueTask: TaskActionRowTask = {
+const _overdueTask: TaskActionRowTask = {
   ...baseTask,
   id: 'task-2',
   title: 'Fix critical bug',

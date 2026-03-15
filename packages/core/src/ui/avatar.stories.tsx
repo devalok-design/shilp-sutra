@@ -1,5 +1,6 @@
 import type { Meta, StoryObj } from '@storybook/react'
 import { Avatar, AvatarFallback, AvatarImage } from './avatar'
+import type { AvatarRing } from './avatar'
 
 const meta: Meta<typeof Avatar> = {
   title: 'UI/Data Display/Avatar',
@@ -119,4 +120,128 @@ export const AllVariants: Story = {
       </div>
     )
   },
+}
+
+// ── New stories for avatar improvements ─────────────────────────────────────
+
+export const FallbackColors: Story = {
+  render: () => {
+    const names = ['Alice', 'Bob', 'Charlie', 'Diana', 'Eve', 'Frank', 'Grace', 'Hank']
+    return (
+      <div className="flex flex-col gap-ds-04">
+        <p className="text-ds-sm font-semibold text-surface-fg-muted">
+          Deterministic fallback colors — same name always gets the same color
+        </p>
+        <div className="flex flex-wrap items-center gap-ds-03">
+          {names.map((name) => (
+            <div key={name} className="flex flex-col items-center gap-ds-02">
+              <Avatar size="lg">
+                <AvatarFallback>{name.slice(0, 2).toUpperCase()}</AvatarFallback>
+              </Avatar>
+              <span className="text-ds-xs text-surface-fg-muted">{name}</span>
+            </div>
+          ))}
+        </div>
+      </div>
+    )
+  },
+}
+
+export const AllRings: Story = {
+  render: () => {
+    const rings: Array<{ ring: AvatarRing; label: string }> = [
+      { ring: 'none', label: 'None' },
+      { ring: 'lead', label: 'Lead' },
+      { ring: 'admin', label: 'Admin' },
+      { ring: 'client', label: 'Client' },
+    ]
+    return (
+      <div className="flex flex-col gap-ds-04">
+        <p className="text-ds-sm font-semibold text-surface-fg-muted">
+          Role rings with status dots
+        </p>
+        <div className="flex flex-wrap items-center gap-ds-06">
+          {rings.map(({ ring, label }) => (
+            <div key={ring} className="flex flex-col items-center gap-ds-02">
+              <Avatar size="lg" ring={ring} status="online">
+                <AvatarFallback>{label.slice(0, 2).toUpperCase()}</AvatarFallback>
+              </Avatar>
+              <span className="text-ds-xs text-surface-fg-muted">{label}</span>
+            </div>
+          ))}
+        </div>
+      </div>
+    )
+  },
+}
+
+export const WithNumberBadge: Story = {
+  render: () => (
+    <div className="flex items-center gap-ds-06">
+      <Avatar size="lg" badge={5}>
+        <AvatarFallback>JD</AvatarFallback>
+      </Avatar>
+      <Avatar size="lg" badge={99}>
+        <AvatarFallback>AB</AvatarFallback>
+      </Avatar>
+      <Avatar size="lg" badge={150}>
+        <AvatarFallback>XY</AvatarFallback>
+      </Avatar>
+    </div>
+  ),
+}
+
+export const WithDotBadge: Story = {
+  render: () => (
+    <div className="flex items-center gap-ds-06">
+      <Avatar size="md" badge="dot">
+        <AvatarFallback>JD</AvatarFallback>
+      </Avatar>
+      <Avatar size="lg" badge="dot" status="online">
+        <AvatarFallback>AB</AvatarFallback>
+      </Avatar>
+    </div>
+  ),
+}
+
+export const Loading: Story = {
+  render: () => {
+    const sizes = ['xs', 'sm', 'md', 'lg', 'xl'] as const
+    return (
+      <div className="flex flex-col gap-ds-04">
+        <p className="text-ds-sm font-semibold text-surface-fg-muted">
+          Loading skeletons at all sizes
+        </p>
+        <div className="flex flex-wrap items-center gap-ds-03">
+          {sizes.map((size) => (
+            <Avatar key={size} size={size} loading>
+              <AvatarFallback>JD</AvatarFallback>
+            </Avatar>
+          ))}
+        </div>
+      </div>
+    )
+  },
+}
+
+export const KitchenSink: Story = {
+  render: () => (
+    <div className="flex flex-col gap-ds-04">
+      <p className="text-ds-sm font-semibold text-surface-fg-muted">
+        Kitchen sink: ring + status + badge combined
+      </p>
+      <div className="flex items-center gap-ds-06">
+        <Avatar size="lg" ring="lead" status="online" badge={3}>
+          <AvatarImage src="https://github.com/shadcn.png" alt="Lead user" />
+          <AvatarFallback>LD</AvatarFallback>
+        </Avatar>
+        <Avatar size="lg" ring="admin" status="busy" badge="dot">
+          <AvatarFallback>AD</AvatarFallback>
+        </Avatar>
+        <Avatar size="lg" ring="client" status="away" badge={99}>
+          <AvatarFallback>CL</AvatarFallback>
+        </Avatar>
+      </div>
+    </div>
+  ),
 }

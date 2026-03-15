@@ -1,7 +1,7 @@
 'use client'
 
 import * as React from 'react'
-import { IconEye, IconEyeOff } from '@tabler/icons-react'
+import { IconFilter, IconFilterX } from '@tabler/icons-react'
 import { cn } from '@/ui/lib/utils'
 import { useScratchpad } from './scratchpad-context'
 
@@ -20,7 +20,7 @@ const ScratchpadFilterToggle = React.forwardRef<HTMLButtonElement, ScratchpadFil
   function ScratchpadFilterToggle({ className, ...props }, ref) {
     const { showCompleted, setShowCompleted } = useScratchpad()
 
-    const Icon = showCompleted ? IconEye : IconEyeOff
+    const Icon = showCompleted ? IconFilter : IconFilterX
 
     return (
       <button

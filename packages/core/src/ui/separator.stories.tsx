@@ -11,6 +11,10 @@ const meta: Meta<typeof Separator> = {
       options: ['horizontal', 'vertical'],
     },
     decorative: { control: 'boolean' },
+    variant: {
+      control: 'radio',
+      options: ['default', 'gradient'],
+    },
   },
 }
 export default meta
@@ -56,6 +60,26 @@ export const BetweenText: Story = {
         <h4 className="text-ds-sm font-medium">Section Two</h4>
         <p className="text-ds-sm text-surface-fg-muted">
           Content for the second section.
+        </p>
+      </div>
+    </div>
+  ),
+}
+
+export const Gradient: Story = {
+  render: () => (
+    <div className="max-w-md space-y-ds-04">
+      <div>
+        <h4 className="text-ds-sm font-medium">Section One</h4>
+        <p className="text-ds-sm text-surface-fg-muted">
+          Gradient separators fade at the edges for a softer look.
+        </p>
+      </div>
+      <Separator variant="gradient" />
+      <div>
+        <h4 className="text-ds-sm font-medium">Section Two</h4>
+        <p className="text-ds-sm text-surface-fg-muted">
+          Compare this to the default solid separator above.
         </p>
       </div>
     </div>

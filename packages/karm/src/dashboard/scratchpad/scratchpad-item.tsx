@@ -110,31 +110,19 @@ const ScratchpadItem = React.forwardRef<HTMLDivElement, ScratchpadItemProps>(
         transition={springs.snappy}
         style={sortableStyle}
         className={cn(
-          'group flex items-center rounded-ds-md transition-colors hover:bg-surface-2',
+          'group flex items-center rounded-ds-md transition-colors duration-150 hover:bg-surface-2',
           compact ? 'gap-ds-02 px-ds-02 py-0.5' : 'gap-ds-03 px-ds-02 py-ds-02',
           className,
         )}
         {...(props as Record<string, unknown>)}
         {...(sortable ? attributes : undefined)}
       >
-        {/* Drag handle */}
-        {sortable && (
-          <button
-            type="button"
-            className="flex h-ico-md w-ico-md shrink-0 cursor-grab items-center justify-center text-surface-fg-muted opacity-0 transition-opacity group-hover:opacity-100 group-focus-within:opacity-100"
-            aria-label={`Drag ${item.text}`}
-            {...listeners}
-          >
-            <IconGripVertical className="h-3.5 w-3.5" />
-          </button>
-        )}
-
         {/* Checkbox */}
         <Checkbox
           checked={item.done}
           onCheckedChange={(checked) => onToggle(item.id, checked === true)}
           aria-label={`Toggle ${item.text}`}
-          className={compact ? 'h-3.5 w-3.5' : undefined}
+          className={compact ? 'h-3.5 w-3.5' : 'h-4 w-4'}
         />
 
         {/* Text / inline edit */}
@@ -163,14 +151,14 @@ const ScratchpadItem = React.forwardRef<HTMLDivElement, ScratchpadItemProps>(
         )}
 
         {/* Action buttons — hover-reveal */}
-        <div className="flex shrink-0 items-center gap-0.5 opacity-0 transition-opacity group-hover:opacity-100 group-focus-within:opacity-100">
+        <div className="flex shrink-0 items-center gap-0.5 opacity-0 transition-opacity duration-150 group-hover:opacity-100 group-focus-within:opacity-100">
           {/* Promote */}
           {canPromote && onPromote && (
             <button
               type="button"
               onClick={() => onPromote(item.id)}
               aria-label={`Promote ${item.text}`}
-              className="flex h-ico-md w-ico-md items-center justify-center rounded-ds-sm hover:bg-surface-3"
+              className="flex h-ico-md w-ico-md items-center justify-center rounded-ds-sm transition-colors duration-150 hover:bg-surface-3"
             >
               <IconArrowUp className="h-3 w-3 text-surface-fg-subtle" />
             </button>
@@ -182,9 +170,21 @@ const ScratchpadItem = React.forwardRef<HTMLDivElement, ScratchpadItemProps>(
               type="button"
               onClick={() => onDelete(item.id)}
               aria-label={`Delete ${item.text}`}
-              className="flex h-ico-md w-ico-md items-center justify-center rounded-ds-sm hover:bg-surface-3"
+              className="flex h-ico-md w-ico-md items-center justify-center rounded-ds-sm transition-colors duration-150 hover:bg-surface-3"
             >
               <IconX className="h-3 w-3 text-surface-fg-subtle" />
+            </button>
+          )}
+
+          {/* Drag handle — rightmost */}
+          {sortable && (
+            <button
+              type="button"
+              className="flex h-ico-md w-ico-md shrink-0 cursor-grab items-center justify-center text-surface-fg-muted"
+              aria-label={`Drag ${item.text}`}
+              {...listeners}
+            >
+              <IconGripVertical className="h-3.5 w-3.5" />
             </button>
           )}
         </div>

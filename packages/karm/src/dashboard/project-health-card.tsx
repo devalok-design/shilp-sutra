@@ -213,20 +213,20 @@ function StatusBadge({
 }) {
   if (urgent && urgent > 0) {
     return (
-      <Badge variant="solid" color="error">
+      <Badge variant="solid" color="error" size="xs" className="whitespace-nowrap">
         {urgent} urgent
       </Badge>
     )
   }
   if (overdue && overdue > 0) {
     return (
-      <Badge variant="subtle" color="warning">
+      <Badge variant="subtle" color="warning" size="xs" className="whitespace-nowrap">
         {overdue} overdue
       </Badge>
     )
   }
   return (
-    <Badge variant="subtle" color="success">
+    <Badge variant="subtle" color="success" size="xs" className="whitespace-nowrap">
       on track
     </Badge>
   )
@@ -314,8 +314,8 @@ const ProjectHealthCard = React.forwardRef<
     >
       <div className="flex flex-col gap-ds-03">
         {/* Row 1: Name + Badge */}
-        <div className="flex items-center justify-between gap-ds-03">
-          <span className="text-ds-md font-semibold text-surface-fg truncate">
+        <div className="flex items-center justify-between gap-ds-02">
+          <span className="min-w-0 truncate text-ds-md font-semibold text-surface-fg">
             {name}
           </span>
           <StatusBadge urgent={urgent} overdue={overdue} />

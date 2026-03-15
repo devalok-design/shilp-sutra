@@ -103,7 +103,7 @@ const Banner = React.forwardRef<HTMLDivElement, BannerProps>(
             <Icon className="h-ico-md w-ico-md shrink-0" aria-hidden="true" />
             <div className="min-w-0 flex-1">{children}</div>
             {resolvedActions && (
-              <div className="flex shrink-0 items-center gap-ds-02">{resolvedActions}</div>
+              <div className="flex shrink-0 items-center gap-ds-02 transition-colors duration-150">{resolvedActions}</div>
             )}
             {onDismiss && (
               <button

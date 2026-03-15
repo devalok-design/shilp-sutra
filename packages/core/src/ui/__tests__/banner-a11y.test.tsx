@@ -1,4 +1,4 @@
-import { render } from '@testing-library/react'
+import { render, screen } from '@testing-library/react'
 import { axe } from 'vitest-axe'
 import { describe, it, expect } from 'vitest'
 import { Banner } from '../banner'
@@ -46,5 +46,39 @@ describe('Banner accessibility', () => {
     )
     const results = await axe(container)
     expect(results).toHaveNoViolations()
+  })
+
+  it('should render with actions prop (plural) and have no violations', async () => {
+    const { container } = render(
+      <Banner
+        color="info"
+        actions={
+          <>
+            <button type="button">Learn more</button>
+            <button type="button">Dismiss</button>
+          </>
+        }
+      >
+        Multiple actions banner.
+      </Banner>,
+    )
+    expect(screen.getByText('Learn more')).toBeInTheDocument()
+    expect(screen.getByText('Dismiss')).toBeInTheDocument()
+    const results = await axe(container)
+    expect(results).toHaveNoViolations()
+  })
+
+  it('should prefer actions over action when both provided', () => {
+    render(
+      <Banner
+        color="info"
+        action={<button type="button">Old action</button>}
+        actions={<button type="button">New action</button>}
+      >
+        Conflict test.
+      </Banner>,
+    )
+    expect(screen.getByText('New action')).toBeInTheDocument()
+    expect(screen.queryByText('Old action')).not.toBeInTheDocument()
   })
 })

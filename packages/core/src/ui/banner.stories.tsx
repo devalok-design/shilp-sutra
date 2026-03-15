@@ -77,6 +77,23 @@ export const WithActionAndDismissible: Story = {
   },
 }
 
+export const MultipleActions: Story = {
+  args: {
+    color: 'info',
+    children: 'A newer version is available. Review the changelog before updating.',
+    actions: (
+      <>
+        <Button variant="ghost" size="sm">
+          Changelog
+        </Button>
+        <Button variant="ghost" size="sm">
+          Update Now
+        </Button>
+      </>
+    ),
+  },
+}
+
 export const AllVariants: Story = {
   render: () => {
     const variants = ['info', 'success', 'warning', 'error'] as const

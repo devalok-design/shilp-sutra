@@ -22,7 +22,7 @@ const avatarSizeVariants = cva(
   {
     variants: {
       size: {
-        xs: 'h-[20px] w-[20px] text-[10px]',
+        xs: 'h-ds-xs w-ds-xs text-[10px]',
         sm: 'h-ds-xs w-ds-xs text-ds-xs',
         md: 'h-ds-sm w-ds-sm text-ds-sm',
         lg: 'h-ds-md w-ds-md text-ds-md',
@@ -51,8 +51,6 @@ export interface AvatarGroupProps
   borderColor?: 'surface-1' | 'surface-2'
   /** Callback when the "+N" overflow badge is clicked */
   onOverflowClick?: () => void
-  /** Custom content for the overflow popover/panel */
-  overflowContent?: React.ReactNode
   /** Custom render function for each avatar */
   renderAvatar?: (user: AvatarUser, index: number) => React.ReactNode
 }
@@ -66,7 +64,6 @@ const AvatarGroup = React.forwardRef<HTMLDivElement, AvatarGroupProps>(
       showTooltip = true,
       borderColor = 'surface-2',
       onOverflowClick,
-      overflowContent: _overflowContent,
       renderAvatar,
       className,
       ...props

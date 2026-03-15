@@ -1,8 +1,7 @@
 import { render, screen } from '@testing-library/react'
 import { axe } from 'vitest-axe'
 import { describe, it, expect } from 'vitest'
-import { Avatar, AvatarFallback, AvatarImage } from '../avatar'
-import type { AvatarRing } from '../avatar'
+import { Avatar, AvatarFallback } from '../avatar'
 
 // ── Fallback colors ─────────────────────────────────────────────────────────
 

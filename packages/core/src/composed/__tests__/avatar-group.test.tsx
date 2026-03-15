@@ -136,9 +136,9 @@ describe('AvatarGroup', () => {
         />,
       )
       // The CVA size classes land on the AvatarPrimitive.Root inside the Avatar wrapper span
-      const xsAvatar = container.querySelector('.h-\\[20px\\]')
+      const xsAvatar = container.querySelector('.h-ds-xs')
       expect(xsAvatar).toBeInTheDocument()
-      const xsAvatarW = container.querySelector('.w-\\[20px\\]')
+      const xsAvatarW = container.querySelector('.w-ds-xs')
       expect(xsAvatarW).toBeInTheDocument()
     })
 

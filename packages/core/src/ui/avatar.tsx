@@ -68,9 +68,9 @@ const ringColorMap: Record<Exclude<AvatarRing, 'none'>, string> = {
 }
 
 const ringShapeMap: Record<string, string> = {
-  circle: 'rounded-full',
-  square: 'rounded-none',
-  rounded: 'rounded-md',
+  circle: 'rounded-ds-full',
+  square: 'rounded-ds-none',
+  rounded: 'rounded-ds-md',
 }
 
 // ── Deterministic fallback colors ───────────────────────────────────────────
@@ -168,8 +168,11 @@ const Avatar = React.forwardRef<
   // Loading skeleton — early return
   if (loading) {
     return (
-      <span className={cn('relative inline-flex shrink-0', ringClasses)}>
-        <span className={cn(avatarVariants({ size, shape }), 'animate-pulse bg-surface-3')} />
+      <span ref={ref} className={cn('relative inline-flex shrink-0', ringClasses)}>
+        <span
+          className={cn(avatarVariants({ size, shape }), 'animate-pulse bg-surface-3')}
+          data-slot="avatar-skeleton"
+        />
       </span>
     )
   }
@@ -192,6 +195,7 @@ const Avatar = React.forwardRef<
             'absolute bottom-0 right-0 rounded-ds-full ring-2 ring-surface-2',
             statusColorMap[status],
             statusDotSizeMap[size ?? 'md'],
+            status === 'online' && 'animate-pulse',
           )}
           role="img"
           aria-label={statusLabelMap[status]}
@@ -200,16 +204,19 @@ const Avatar = React.forwardRef<
       {showBadge && (
         badge === 'dot' ? (
           <span
-            className="absolute -right-0.5 -top-0.5 h-[8px] w-[8px] rounded-full bg-error-9 ring-2 ring-surface-2"
+            className="absolute -right-0.5 -top-0.5 h-[8px] w-[8px] rounded-ds-full bg-error-9 ring-2 ring-surface-2"
             data-slot="avatar-badge-dot"
+            aria-hidden="true"
           />
         ) : typeof badge === 'number' ? (
           <motion.span
             initial={{ scale: 0 }}
             animate={{ scale: 1 }}
             transition={springs.bouncy}
-            className="absolute -right-1 -top-1 flex min-w-[16px] items-center justify-center rounded-full bg-error-9 px-1 text-[10px] font-bold leading-[16px] text-white ring-2 ring-surface-2"
+            className="absolute -right-1 -top-1 flex min-w-[16px] items-center justify-center rounded-ds-full bg-error-9 px-1 text-[10px] font-bold leading-[16px] text-error-fg ring-2 ring-surface-2"
             data-slot="avatar-badge"
+            role="status"
+            aria-label={`${badge > 99 ? '99+' : badge} notifications`}
           >
             {badge > 99 ? '99+' : badge}
           </motion.span>

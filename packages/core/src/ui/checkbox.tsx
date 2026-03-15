@@ -74,7 +74,7 @@ const Checkbox = React.forwardRef<
         'data-[state=unchecked]:hover:border-accent-7 data-[state=unchecked]:hover:bg-surface-4',
         'data-[state=checked]:bg-accent-9 data-[state=checked]:border-accent-7 data-[state=checked]:text-accent-fg',
         'data-[state=indeterminate]:bg-accent-9 data-[state=indeterminate]:border-accent-7 data-[state=indeterminate]:text-accent-fg',
-        error && 'border-error-7 bg-error-2',
+        error && 'border-error-7 bg-error-3',
         className,
       )}
       {...props}

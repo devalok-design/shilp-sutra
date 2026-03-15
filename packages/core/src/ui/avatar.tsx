@@ -80,14 +80,14 @@ const ringShapeMap: Record<string, string> = {
 // ── Deterministic fallback colors ───────────────────────────────────────────
 
 const FALLBACK_COLORS = [
-  { bg: 'bg-accent-2', text: 'text-accent-11' },
-  { bg: 'bg-success-2', text: 'text-success-11' },
-  { bg: 'bg-warning-2', text: 'text-warning-11' },
-  { bg: 'bg-error-2', text: 'text-error-11' },
-  { bg: 'bg-info-2', text: 'text-info-11' },
-  { bg: 'bg-cat-purple-2', text: 'text-cat-purple-11' },
-  { bg: 'bg-cat-pink-2', text: 'text-cat-pink-11' },
-  { bg: 'bg-cat-teal-2', text: 'text-cat-teal-11' },
+  { bg: 'bg-accent-3', text: 'text-accent-11' },
+  { bg: 'bg-success-3', text: 'text-success-11' },
+  { bg: 'bg-warning-3', text: 'text-warning-11' },
+  { bg: 'bg-error-3', text: 'text-error-11' },
+  { bg: 'bg-info-3', text: 'text-info-11' },
+  { bg: 'bg-category-teal-3', text: 'text-category-teal-11' },
+  { bg: 'bg-category-indigo-3', text: 'text-category-indigo-11' },
+  { bg: 'bg-category-cyan-3', text: 'text-category-cyan-11' },
 ] as const
 
 /**

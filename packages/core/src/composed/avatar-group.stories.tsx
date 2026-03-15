@@ -1,7 +1,9 @@
 import type { Meta, StoryObj } from '@storybook/react'
 import { AvatarGroup } from './avatar-group'
+import type { AvatarUser } from './avatar-group'
+import { Avatar, AvatarImage, AvatarFallback } from '../ui/avatar'
 
-const mockUsers = [
+const mockUsers: AvatarUser[] = [
   { name: 'Aarav Sharma', image: null },
   { name: 'Priya Patel', image: null },
   { name: 'Rohan Gupta', image: null },
@@ -18,13 +20,17 @@ const meta: Meta<typeof AvatarGroup> = {
   argTypes: {
     size: {
       control: 'select',
-      options: ['sm', 'md', 'lg'],
+      options: ['xs', 'sm', 'md', 'lg', 'xl'],
     },
     max: {
       control: { type: 'number', min: 1, max: 10 },
     },
     showTooltip: {
       control: 'boolean',
+    },
+    borderColor: {
+      control: 'select',
+      options: ['surface-1', 'surface-2'],
     },
   },
 }
@@ -168,5 +174,150 @@ export const LargeTeam: Story = {
     ],
     max: 5,
     size: 'md',
+  },
+}
+
+// ── New stories for Tasks 6 & 7 ──────────────────────────────────────────
+
+export const HoverExpand: Story = {
+  args: {
+    users: mockUsers.slice(0, 5),
+    max: 5,
+  },
+  parameters: {
+    docs: {
+      description: {
+        story: 'Hover over the group to see avatars spread apart. Hover individual avatars for a spotlight effect.',
+      },
+    },
+  },
+}
+
+export const InteractiveOverflow: Story = {
+  args: {
+    users: [
+      { name: 'Aarav Sharma', image: null },
+      { name: 'Priya Patel', image: null },
+      { name: 'Rohan Gupta', image: null },
+      { name: 'Ananya Verma', image: null },
+      { name: 'Vikram Singh', image: null },
+      { name: 'Neha Reddy', image: null },
+      { name: 'Karan Mehta', image: null },
+      { name: 'Diya Joshi', image: null },
+    ],
+    max: 4,
+    onOverflowClick: () => {
+      // eslint-disable-next-line no-console
+      console.log('Overflow clicked — open member list')
+    },
+  },
+  parameters: {
+    docs: {
+      description: {
+        story: 'The "+N" badge becomes a clickable button when `onOverflowClick` is provided.',
+      },
+    },
+  },
+}
+
+export const WithRings: Story = {
+  args: {
+    users: [
+      { name: 'Aarav Sharma', image: null, ring: 'lead' },
+      { name: 'Priya Patel', image: null, ring: 'admin' },
+      { name: 'Rohan Gupta', image: null, ring: 'client' },
+      { name: 'Ananya Verma', image: null },
+      { name: 'Vikram Singh', image: null, ring: 'lead' },
+    ],
+    max: 5,
+  },
+  parameters: {
+    docs: {
+      description: {
+        story: 'Users with `ring` get a colored ring: lead (accent), admin (warning), client (info).',
+      },
+    },
+  },
+}
+
+export const CustomRender: Story = {
+  render: () => {
+    const users: AvatarUser[] = [
+      { name: 'Aarav Sharma', image: null },
+      { name: 'Priya Patel', image: null },
+      { name: 'Rohan Gupta', image: null },
+    ]
+
+    return (
+      <AvatarGroup
+        users={users}
+        max={3}
+        showTooltip={false}
+        renderAvatar={(user, index) => (
+          <Avatar
+            badge={index === 0 ? 3 : undefined}
+            className="h-full w-full"
+          >
+            <AvatarFallback className="font-body font-semibold" colorSeed={user.name}>
+              {user.name.split(' ').map((n) => n[0]).join('')}
+            </AvatarFallback>
+          </Avatar>
+        )}
+      />
+    )
+  },
+  parameters: {
+    docs: {
+      description: {
+        story: 'Use `renderAvatar` for full control. Here the first avatar has a badge overlay.',
+      },
+    },
+  },
+}
+
+export const AllSizesUpdated: Story = {
+  render: () => (
+    <div style={{ display: 'flex', flexDirection: 'column', gap: 20 }}>
+      {(['xs', 'sm', 'md', 'lg', 'xl'] as const).map((s) => (
+        <div key={s} style={{ display: 'flex', alignItems: 'center', gap: 16 }}>
+          <span style={{ width: 50, fontSize: 12, color: 'var(--color-surface-fg-muted)', fontFamily: 'monospace' }}>
+            {s}
+          </span>
+          <AvatarGroup users={mockUsers.slice(0, 5)} size={s} max={4} />
+        </div>
+      ))}
+    </div>
+  ),
+  parameters: {
+    docs: {
+      description: {
+        story: 'All five sizes from xs to xl with corresponding overlap spacing.',
+      },
+    },
+  },
+}
+
+export const OnCardSurface: Story = {
+  render: () => (
+    <div
+      className="rounded-ds-md border border-surface-border bg-surface-2 p-ds-05"
+      style={{ maxWidth: 320 }}
+    >
+      <p className="mb-ds-03 text-ds-sm font-semibold text-surface-fg">
+        Team Members
+      </p>
+      <AvatarGroup
+        users={mockUsers.slice(0, 5)}
+        max={4}
+        borderColor="surface-2"
+      />
+    </div>
+  ),
+  parameters: {
+    docs: {
+      description: {
+        story: 'When placed on a `bg-surface-2` card, use `borderColor="surface-2"` so the avatar border blends with the card background.',
+      },
+    },
   },
 }

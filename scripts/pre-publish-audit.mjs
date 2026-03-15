@@ -118,8 +118,10 @@ const SURFACE1_ALLOWLIST = [
   // Admin pickers/dropdowns
   'edit-break.tsx', 'edit-break-balance.tsx', 'header.tsx',
   'leave-request.tsx', 'correction-list.tsx', 'dashboard-header.tsx',
-  // Board card avatar badge
+  // Board card avatar badge (floating checkbox on card)
   'task-card.tsx',
+  // Chart tooltip (floating overlay)
+  'tooltip.tsx',
 ]
 
 // ─── Gates ─────────────────────────────────────────────────
@@ -243,9 +245,11 @@ gate('No bg-surface-1 on component cards/widgets', () => {
   ]
 
   for (const file of sourceFiles) {
-    const basename = file.substring(file.lastIndexOf('/') + 1)
-    // Skip allowlisted files and stories
-    if (SURFACE1_ALLOWLIST.some(a => basename === a) || file.includes('.stories.')) continue
+    // Normalize to forward slashes for cross-platform basename extraction
+    const normalized = file.replace(/\\/g, '/')
+    const basename = normalized.substring(normalized.lastIndexOf('/') + 1)
+    // Skip allowlisted files, stories, and test files
+    if (SURFACE1_ALLOWLIST.some(a => basename === a) || normalized.includes('.stories.') || normalized.includes('__tests__')) continue
 
     const content = readFileSync(join(ROOT, file), 'utf-8')
     if (content.includes('bg-surface-1')) {

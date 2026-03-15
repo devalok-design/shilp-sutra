@@ -160,8 +160,8 @@ const AvatarGroup = React.forwardRef<HTMLDivElement, AvatarGroupProps>(
             const avatar = (
               <Avatar
                 key={user.name}
+                size={size}
                 className={cn(
-                  avatarSizeVariants({ size }),
                   borderClass,
                   index > 0 && overlapClass,
                   spotlightClasses,

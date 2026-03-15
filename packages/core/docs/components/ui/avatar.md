@@ -39,6 +39,9 @@
 - Online status dot pulses with a CSS animation
 
 ## Changes
+### v0.22.0
+- **Fixed** Fallback always rendered `rounded-ds-full` regardless of `shape` prop. Now uses `AvatarShapeContext` to inherit the correct border-radius from `shape="square"` or `shape="rounded"`.
+
 ### v0.21.0
 - **Added** `ring` prop with semantic role colors (`lead`, `admin`, `client`)
 - **Added** `badge` prop for numeric, dot, or custom ReactNode overlay at top-right

@@ -5,6 +5,62 @@ All notable changes to `@devalok/shilp-sutra` will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.22.0] - 2026-03-15 (core) / [0.20.3] - 2026-03-15 (karm)
+
+### Added (core)
+- **Multi-layered shadows**: All 5 shadow tokens (`shadow-01` through `shadow-05`) now use 3-layer stacks (contact + main + ambient) for realistic depth. Dark mode uses heavier opacities. Drop-in replacement — same token names, richer output.
+- **Heading letter-spacing tightened**: `heading-2xl` and `heading-xl` tracking changed from `-0.02em` to `-0.025em`, `heading-sm` from `-0.02em` to `-0.015em` for editorial quality at large sizes.
+- **Focus-ring Tailwind utilities**: `.focus-ring`, `.focus-ring-inset`, `.focus-ring-sm` — consistent keyboard focus styling via Tailwind plugin. Replaces 30+ hardcoded ring class patterns.
+- **Tabular-nums utility**: `tabular-nums` font-variant-numeric class for aligned numbers in tables, pagination, metrics.
+- **Separator `variant` prop**: New variants `"gradient"` (fades both edges), `"gradient-left"` (fades left), `"gradient-right"` (fades right). Default unchanged.
+- **Checkbox path-draw animation**: Checkmark now draws its stroke progressively (like Spinner success) instead of scale-bounce. Indeterminate dash also draws in.
+- **Tooltip auto-provider**: `<Tooltip>` now auto-wraps with `<TooltipProvider>` when no ancestor provider exists. No more "tooltip doesn't appear" issues.
+- **Foundations Storybook page**: New `Foundations/Tokens` stories showcasing shadow scale, typography scale, focus ring utilities, and separator variants.
+
+### Changed (core — visual, non-breaking)
+- **Motion tween alignment**: `tweens.fade` duration `0.15s` → `0.11s` (matches `duration-fast-02`), `tweens.colorShift` `0.1s` → `0.07s` (matches `duration-fast-01`).
+- **All CSS transitions now use `ease-productive-standard`**: Standardized easing across ~50 components. No more Tailwind default easing.
+- **No more `transition-all`**: Replaced with specific property lists everywhere for GPU performance.
+- **Button active scale**: `0.97` → `0.95` (snappier press feedback).
+- **Card interactive hover**: `y: -2` → `y: -3` (more noticeable lift).
+- **Card outline variant**: `border-2` → `border` (lighter visual weight).
+- **CardTitle tracking**: `tracking-ds-tight` → `tracking-normal`.
+- **Accordion trigger hover**: `hover:underline` → `hover:bg-surface-2` (surface highlight instead of underline), plus `data-[state=open]:bg-surface-2`.
+- **Alert body text**: `opacity-[0.9]` → `text-surface-fg-muted` (semantic token instead of arbitrary opacity).
+- **Link underline**: Static underline → `decoration-transparent hover:decoration-current` (animates in on hover).
+- **Badge/Chip dismiss buttons**: Removed aggressive `rotate-90`/`scale-110`. Now uses `text-current/60 hover:text-current hover:bg-current/10` (color-aware, respects parent background).
+- **Banner hover**: `bg-black/10`/`dark:bg-white/10` → `bg-current/10` (respects banner color in both modes).
+- **Sidebar spatial transitions**: `ease-linear` → `ease-productive-exit` (natural motion for width/position changes).
+
+### Added (core — component polish)
+- **Hover states added**: Checkbox (unchecked), Radio, Switch (unchecked track), Select items, Dropdown Menu items (was completely missing), Combobox trigger open state.
+- **Active/pressed feedback**: Dialog close, Sheet close, Alert dismiss, Pagination links, NumberInput steppers, Toast action button.
+- **Transitions added**: Toggle state, Badge base, Label opacity, Breadcrumb links, all form inputs, all composed/shell components.
+- **Animations**: SearchInput clear button (AnimatePresence fade+scale), FormHelperText (motion.p fade+slide), Tabs content (fade on switch), Radio indicator (springs.bouncy scale-in), Switch thumb (whileTap compress), ActivityFeed items (stagger), NotificationCenter items (stagger), EmptyState text (delayed entrance), StatusBadge morph (scale), PriorityIndicator URGENT (pulse), ScheduleView now-indicator (pulse), BottomNavbar more menu (slide-up), AvatarGroup hover (scale+shadow), CommandPalette kbd (embossed inset shadow), LoadingSkeleton rows (staggered delay).
+- **Slider**: `hover:shadow-02` on thumb, `active:scale-[1.15]` (was 1.25).
+- **Skeleton shimmer sync**: `background-attachment: fixed` so all skeletons shimmer together.
+- **Code**: Block border strengthened, inline gets subtle border.
+- **Chip**: Focus-visible ring on clickable chips. Softer tap scale (0.97).
+- **Breadcrumb**: Current page `font-medium`, gap widened to `gap-ds-03`.
+- **Pagination/Progress**: `tabular-nums` on numeric displays.
+
+### Fixed (core)
+- **Avatar fallback ignores `shape` prop**: Fallback always rendered `rounded-ds-full` regardless of `shape="square"` or `shape="rounded"`. Now uses `AvatarShapeContext` to inherit the correct shape.
+- **Checkbox uncontrolled state broken**: Clicking an uncontrolled checkbox never showed the checkmark. `checked` from props was `undefined`, so `isActive` was always `false`. Now tracks internal state.
+- **Tooltip content empty**: `motion.div` was self-closing (`/>`), so children never rendered. Fixed by destructuring and passing `{children}` explicitly.
+- **Tooltip invisible in dark mode**: `text-accent-fg` resolves to same light value as `bg-surface-fg` in dark mode. Changed to `text-surface-1` (always opposite of surface-fg).
+- **Button ghost/outline hover not fading**: `transition-transform` in base overrode `transition-colors` from variant. Combined into single `transition-[color,background-color,border-color,box-shadow,transform]`.
+- **`disabled:cursor-not-allowed`** added to Button base (was missing).
+
+### Changed (karm — visual, non-breaking)
+- **Board**: TaskCard drag handle/checkbox opacity transitions smoothed. WIP-exceeded columns get `ring-1 ring-error-7`. ColumnHeader button transitions standardized.
+- **Admin tables**: All rows get `transition-colors duration-fast-01 hover:bg-surface-3` consistently.
+- **Chat**: ConversationList action button opacity transitions smoothed.
+- **Dashboard**: WeekHeatmap day cells get `hover:ring-1 hover:ring-accent-7`. DailyBrief chevron eased.
+- **Client**: ProjectCard gets `hover:scale-[1.01]` alongside shadow lift.
+- **Tasks**: TaskDetailPanel tab content gets fade animation via AnimatePresence.
+- **All karm transitions**: Standardized to `ease-productive-standard`, no `transition-all`.
+
 ## [0.21.0] - 2026-03-15 (core) / [0.20.2] - 2026-03-15 (karm)
 
 ### Changed (core — soft breaking)

@@ -35,6 +35,9 @@
 - Use `asChild` on DropdownMenuTrigger to render your own button element
 
 ## Changes
+### v0.22.0
+- **Added** Hover state on `DropdownMenuItem` — was completely missing. Items now show `bg-surface-3` on hover with `ease-productive-standard` transition.
+
 ### v0.18.0
 - **Added** `DropdownMenuContentProps`, `DropdownMenuItemProps` type exports
 

@@ -36,6 +36,11 @@
 - onClickAsync overrides onClick and loading when active
 
 ## Changes
+### v0.22.0
+- **Changed** Active/pressed scale from `0.97` to `0.95` for snappier press feedback.
+- **Fixed** Ghost/outline hover not fading — `transition-transform` in base overrode `transition-colors` from variant. Combined into single `transition-[color,background-color,border-color,box-shadow,transform]`.
+- **Added** `disabled:cursor-not-allowed` to button base (was missing).
+
 ### v0.18.0
 - **Added** `onClickAsync` prop — promise-driven loading -> success/error state machine
 - **Added** `asyncFeedbackDuration` prop (default 1500ms)

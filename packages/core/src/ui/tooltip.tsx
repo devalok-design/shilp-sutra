@@ -103,10 +103,10 @@ const TooltipContent = React.forwardRef<
           <TooltipPrimitive.Content
             ref={ref}
             forceMount
-            asChild
             sideOffset={sideOffsetProp}
             side={side}
             {...props}
+            asChild
           >
             <motion.div
               initial={{ opacity: 0, scale: 0.95, ...slideInit }}

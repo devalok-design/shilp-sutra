@@ -8,6 +8,10 @@ import { motion } from "framer-motion"
 import { springs } from "./lib/motion"
 import { cn } from "./lib/utils"
 
+// ── Shape context so AvatarFallback can inherit the shape from Avatar ──
+type AvatarShape = 'circle' | 'square' | 'rounded'
+const AvatarShapeContext = React.createContext<AvatarShape>('circle')
+
 export const avatarVariants = cva(
   'relative flex shrink-0 overflow-hidden',
   {
@@ -181,6 +185,7 @@ const Avatar = React.forwardRef<
   const showBadge = badge !== undefined && badge !== 0
 
   return (
+    <AvatarShapeContext.Provider value={resolvedShape}>
     <span className={cn('relative inline-flex shrink-0', ringClasses)}>
       <AvatarPrimitive.Root
         ref={ref}
@@ -240,6 +245,7 @@ const Avatar = React.forwardRef<
         )
       )}
     </span>
+    </AvatarShapeContext.Provider>
   )
 })
 Avatar.displayName = AvatarPrimitive.Root.displayName
@@ -281,6 +287,10 @@ const AvatarFallback = React.forwardRef<
   const seed = colorSeed ?? childrenText
   const color = getFallbackColor(seed)
 
+  // Inherit shape from parent Avatar via context
+  const shape = React.useContext(AvatarShapeContext)
+  const shapeClass = shape === 'square' ? 'rounded-ds-none' : shape === 'rounded' ? 'rounded-ds-md' : 'rounded-ds-full'
+
   // Letter-spacing based on character count
   const tracking = childrenText.length === 1 ? 'tracking-wide' : 'tracking-normal'
 
@@ -290,6 +300,7 @@ const AvatarFallback = React.forwardRef<
       data-slot="avatar-fallback"
       className={cn(
         'flex h-full w-full items-center justify-center font-semibold',
+        shapeClass,
         color.bg,
         color.text,
         tracking,

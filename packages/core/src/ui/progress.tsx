@@ -142,7 +142,7 @@ const Progress = React.forwardRef<
         </ProgressPrimitive.Root>
 
         {showLabel && !isIndeterminate && (
-          <span className="shrink-0 text-ds-xs text-surface-fg-muted">
+          <span className="shrink-0 text-ds-xs text-surface-fg-muted tabular-nums">
             {value}%
           </span>
         )}

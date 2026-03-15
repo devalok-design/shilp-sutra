@@ -11,7 +11,7 @@ import { cn } from './lib/utils'
 import { Spinner } from './spinner'
 
 export const buttonVariants = cva(
-  'inline-flex items-center justify-center gap-ds-03 whitespace-nowrap font-sans font-semibold select-none border border-transparent focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent-9 focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-action-disabled',
+  'inline-flex items-center justify-center gap-ds-03 whitespace-nowrap font-sans font-semibold select-none border border-transparent focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent-9 focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-action-disabled disabled:cursor-not-allowed',
   {
     variants: {
       variant: {
@@ -48,13 +48,13 @@ export const buttonVariants = cva(
       // solid + error
       { variant: 'solid', color: 'error', className: 'bg-error-9 text-accent-fg hover:bg-error-9 active:bg-error-9 shadow-01' },
       // outline + default (secondary)
-      { variant: 'outline', color: 'default', className: 'bg-transparent text-accent-11 border-accent-7 hover:bg-accent-2 active:bg-surface-4' },
+      { variant: 'outline', color: 'default', className: 'bg-transparent text-accent-11 border-accent-7 hover:bg-accent-2 active:bg-surface-4 transition-colors duration-fast-01' },
       // outline + error (error-ghost)
-      { variant: 'outline', color: 'error', className: 'bg-transparent text-error-11 border border-error-7 hover:bg-error-3 active:bg-error-3' },
+      { variant: 'outline', color: 'error', className: 'bg-transparent text-error-11 border border-error-7 hover:bg-error-3 active:bg-error-3 transition-colors duration-fast-01' },
       // ghost + default
-      { variant: 'ghost', color: 'default', className: 'bg-transparent text-surface-fg-muted hover:bg-surface-2 hover:text-surface-fg active:bg-surface-4' },
+      { variant: 'ghost', color: 'default', className: 'bg-transparent text-surface-fg-muted hover:bg-surface-2 hover:text-surface-fg active:bg-surface-4 transition-colors duration-fast-01' },
       // ghost + error
-      { variant: 'ghost', color: 'error', className: 'bg-transparent text-error-11 hover:bg-error-3 hover:text-error-11 active:bg-error-3' },
+      { variant: 'ghost', color: 'error', className: 'bg-transparent text-error-11 hover:bg-error-3 hover:text-error-11 active:bg-error-3 transition-colors duration-fast-01' },
     ],
     defaultVariants: {
       variant: 'solid',
@@ -311,7 +311,7 @@ const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
         className={cn(
           buttonVariants({ variant: resolvedVariant, color: resolvedColor, size: resolvedSize }),
           fullWidth && 'w-full',
-          !loading && !isAsyncFeedback && 'active:scale-[0.97] transition-transform duration-100',
+          !loading && !isAsyncFeedback && 'active:scale-[0.95] transition-transform duration-100',
           feedbackColorClass,
           isAsyncFeedback && 'transition-colors duration-200',
           className,

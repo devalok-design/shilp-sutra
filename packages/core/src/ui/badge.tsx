@@ -7,7 +7,7 @@ import { motion } from 'framer-motion'
 import { cn } from './lib/utils'
 
 const badgeVariants = cva(
-  'inline-flex items-center gap-ds-02b font-sans font-medium rounded-ds-full border',
+  'inline-flex items-center gap-ds-02b font-sans font-medium rounded-ds-full border transition-colors duration-fast-01',
   {
     variants: {
       variant: {
@@ -158,7 +158,7 @@ const Badge = React.forwardRef<HTMLSpanElement, BadgeProps>(
           <button
             type="button"
             onClick={onDismiss}
-            className="ml-ds-01 min-h-ds-xs min-w-ds-xs flex items-center justify-center rounded-ds-full text-surface-fg-subtle hover:rotate-90 transition-[color,transform] duration-fast-02 hover:text-surface-fg-muted hover:bg-surface-3 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent-9"
+            className="ml-ds-01 min-h-ds-xs min-w-ds-xs flex items-center justify-center rounded-ds-full text-surface-fg-subtle hover:rotate-90 hover:scale-110 transition-[color,transform] duration-fast-02 hover:text-surface-fg-muted hover:bg-surface-3 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent-9"
             aria-label={`Remove ${typeof children === 'string' ? children : ''}`.trim() || 'Remove'}
           >
             <IconX className="h-ico-sm w-ico-sm" />

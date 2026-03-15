@@ -5,7 +5,7 @@ import * as React from 'react'
 import { cva, type VariantProps } from 'class-variance-authority'
 import { motion, LayoutGroup } from 'framer-motion'
 import { cn } from './lib/utils'
-import { springs } from './lib/motion'
+import { springs, tweens } from './lib/motion'
 
 /* ── Active-value context (drives layoutId indicator) ────── */
 const TabsValueContext = React.createContext<string | undefined>(undefined)
@@ -220,7 +220,7 @@ TabsTrigger.displayName = TabsPrimitive.Trigger.displayName
 const TabsContent = React.forwardRef<
   React.ElementRef<typeof TabsPrimitive.Content>,
   React.ComponentPropsWithoutRef<typeof TabsPrimitive.Content>
->(({ className, ...props }, ref) => (
+>(({ className, children, ...props }, ref) => (
   <TabsPrimitive.Content
     ref={ref}
     className={cn(
@@ -228,7 +228,15 @@ const TabsContent = React.forwardRef<
       className,
     )}
     {...props}
-  />
+  >
+    <motion.div
+      initial={{ opacity: 0 }}
+      animate={{ opacity: 1 }}
+      transition={tweens.fade}
+    >
+      {children}
+    </motion.div>
+  </TabsPrimitive.Content>
 ))
 TabsContent.displayName = TabsPrimitive.Content.displayName
 

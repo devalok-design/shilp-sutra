@@ -27,7 +27,7 @@ BreadcrumbList.displayName = 'BreadcrumbList'
 
 const BreadcrumbItem = React.forwardRef<HTMLLIElement, React.ComponentPropsWithoutRef<'li'>>(
   ({ className, ...props }, ref) => (
-    <li ref={ref} className={cn('inline-flex items-center gap-ds-02b', className)} {...props} />
+    <li ref={ref} className={cn('inline-flex items-center gap-ds-03', className)} {...props} />
   ),
 )
 BreadcrumbItem.displayName = 'BreadcrumbItem'
@@ -42,7 +42,7 @@ const BreadcrumbLink = React.forwardRef<
     <Comp
       ref={ref}
       className={cn(
-        'transition-colors hover:text-surface-fg focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent-9 rounded-ds-sm',
+        'transition-colors duration-fast-01 hover:text-surface-fg focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent-9 rounded-ds-sm',
         className,
       )}
       {...props}
@@ -56,7 +56,7 @@ const BreadcrumbPage = React.forwardRef<HTMLSpanElement, React.ComponentPropsWit
     <span
       ref={ref}
       aria-current="page"
-      className={cn('font-normal text-surface-fg', className)}
+      className={cn('font-medium text-surface-fg', className)}
       {...props}
     />
   ),

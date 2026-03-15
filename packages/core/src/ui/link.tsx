@@ -17,8 +17,8 @@ const Link = React.forwardRef<HTMLAnchorElement, LinkProps>(
       <Comp
         ref={ref}
         className={cn(
-          'text-accent-11 underline underline-offset-2',
-          'hover:text-accent-12 transition-colors duration-fast-01',
+          'text-accent-11 underline decoration-transparent hover:decoration-current underline-offset-2',
+          'hover:text-accent-12 active:opacity-80 transition-all duration-fast-01',
           'focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent-9 rounded-ds-sm',
           inline ? 'inline' : 'block',
           className,

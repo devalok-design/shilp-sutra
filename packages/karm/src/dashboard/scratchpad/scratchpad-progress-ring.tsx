@@ -63,7 +63,7 @@ const ScratchpadProgressRing = React.forwardRef<HTMLDivElement, ScratchpadProgre
             r={radius}
             fill="none"
             strokeWidth={stroke}
-            className="stroke-surface-2"
+            className="stroke-surface-3"
           />
           <circle
             cx={diameter / 2}

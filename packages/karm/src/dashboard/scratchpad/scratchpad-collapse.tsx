@@ -47,7 +47,7 @@ const ScratchpadCollapse = React.forwardRef<HTMLDivElement, ScratchpadCollapsePr
           onClick={() => setOpen((prev) => !prev)}
           aria-expanded={open}
           className={cn(
-            'flex w-full items-center gap-ds-02 px-ds-03 py-ds-02 text-left text-ds-sm font-semibold text-surface-fg-muted transition-colors duration-150 hover:bg-surface-2',
+            'flex w-full items-center gap-ds-02 px-ds-03 py-ds-02 text-left text-ds-sm font-semibold text-surface-fg-muted transition-colors duration-150 hover:bg-surface-3',
             headerClassName,
           )}
         >
@@ -59,7 +59,7 @@ const ScratchpadCollapse = React.forwardRef<HTMLDivElement, ScratchpadCollapsePr
           />
           <span className="flex-1">{label}</span>
           {badgeCount != null && badgeCount > 0 && (
-            <span className="rounded-full bg-surface-2 px-1.5 text-ds-xs text-surface-fg-muted">
+            <span className="rounded-full bg-surface-3 px-1.5 text-ds-xs text-surface-fg-muted">
               {badgeCount}
             </span>
           )}

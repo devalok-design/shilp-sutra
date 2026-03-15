@@ -95,7 +95,7 @@ const ScratchpadAddInput = React.forwardRef<HTMLDivElement, ScratchpadAddInputPr
           <button
             type="button"
             onClick={() => setIsAdding(true)}
-            className="w-full rounded-ds-md px-ds-02 py-ds-02 text-left text-ds-md text-surface-fg-subtle transition-colors hover:bg-surface-2"
+            className="w-full rounded-ds-md px-ds-02 py-ds-02 text-left text-ds-md text-surface-fg-subtle transition-colors hover:bg-surface-3"
           >
             {triggerLabel}
           </button>

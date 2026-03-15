@@ -47,8 +47,8 @@ const statusStyles: Record<DayStatus, string> = {
   partial: 'bg-warning-9 text-warning-11',
   none: 'bg-error-9 text-error-11',
   today: 'bg-info-9 ring-1 ring-info-7 text-info-11 font-medium',
-  future: 'bg-surface-3 text-surface-fg-muted',
-  empty: 'bg-surface-2 border border-dashed border-surface-border text-surface-fg-subtle',
+  future: 'bg-surface-4 text-surface-fg-muted',
+  empty: 'bg-surface-3 border border-dashed border-surface-border text-surface-fg-subtle',
 }
 
 // ============================================================

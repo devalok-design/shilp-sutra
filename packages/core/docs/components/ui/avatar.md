@@ -34,11 +34,15 @@
 ## Gotchas
 - Status dot renders with role="img" and aria-label (accessible, not decorative)
 - Dot size scales automatically with avatar size
+- AvatarFallback font size scales automatically with avatar size (via AvatarSizeContext)
 - Ring offset color matches the surface context — ensure it sits on the expected background
 - Badge is hidden when value is `0` (falsy); use `"dot"` for presence without a count
 - Online status dot pulses with a CSS animation
 
 ## Changes
+### v0.22.3
+- **Fixed** AvatarFallback text now auto-scales with avatar size — xs gets `text-[9px]`, sm `text-ds-xs`, md `text-ds-sm`, lg `text-ds-md`, xl `text-ds-lg`
+
 ### v0.22.0
 - **Fixed** Fallback always rendered `rounded-ds-full` regardless of `shape` prop. Now uses `AvatarShapeContext` to inherit the correct border-radius from `shape="square"` or `shape="rounded"`.
 

@@ -43,8 +43,13 @@
 - Missing `image` falls back to initials derived from `name`
 - Hover expand animation uses CSS `group-hover` — parent must not clip overflow
 - `borderColor` should match the surface context the group sits on (e.g., `surface-1` on cards)
+- `renderAvatar` wrapper is positioning-only — pass `size` directly to your Avatar (do NOT use `className="h-full w-full"`)
 
 ## Changes
+### v0.22.3
+- **Fixed** `renderAvatar` wrapper no longer clips consumer Avatar content (removed overflow-hidden, border, and size classes from wrapper)
+- **Fixed** Removed redundant text-size classes from wrapper — Avatar handles font scaling internally
+
 ### v0.21.0
 - **Added** `xs` and `xl` size variants
 - **Added** `borderColor` prop for overlap border matching surface context

@@ -27,7 +27,7 @@
 - `onDismiss` fires after the exit animation completes, not immediately on dismiss button click
 
 ## Changes
-### v0.19.1
+### v0.20.0
 - **Added** `actions` prop (plural) for multiple action buttons with mobile-friendly flex-wrap
 - **Deprecated** `action` prop — use `actions` instead (both still work; `actions` takes priority)
 - **Changed** Root layout uses `flex-wrap` and children wrapper uses `min-w-0` for better text truncation

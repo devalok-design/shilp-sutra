@@ -5,6 +5,24 @@ All notable changes to `@devalok/shilp-sutra` will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.20.0] - 2026-03-15
+
+### Added (core)
+- **ActivityFeed `groupBy="time"`** — Auto-buckets items into Today, Yesterday, Earlier This Week, Older with customizable labels via `groupLabels` prop. Centered divider headers with scoped timeline lines per group. Exported `groupItemsByTime` utility.
+- **Banner `actions` prop** — New plural slot for multiple action elements with mobile-friendly `flex-wrap`. Contextual hover colors (`bg-black/10`) replace generic grey. `action` (singular) deprecated but still works.
+
+### Added (karm)
+- **Scratchpad composable system** — 9 reusable primitives (`Scratchpad.Root`, `.Header`, `.List`, `.Item`, `.AddInput`, `.EmptyState`, `.ProgressRing`, `.FilterToggle`, `.Collapse`) via React context. New features: inline editing (double-click), promote-to-task, filter completed toggle, drag-to-reorder (@dnd-kit). `ScratchpadWidget` and `SidebarScratchpad` refactored as backward-compatible prebuilt arrangements.
+- **SidebarScratchpad upgraded** — Now feature-rich with add, delete, edit, promote, reorder, ProgressRing (no count label), and FilterToggle. Text bumped to `text-ds-sm` for readability.
+- **WeekHeatmap** — 7-day completion strip with composable API (Root, DayStrip, Summary, ProgressBar, Streak). Day status colors (success/warning/error/info/surface), WAI-ARIA grid keyboard navigation (arrow keys, Home/End), tooltips, streak indicator.
+- **TaskActionRow** — Composable task row (Root, Checkbox, Priority, Title, Labels, ProjectBadge, DueDate, StatusBadge, Navigate) + props shorthand. Hover-reveal actions with accent/error color tints, keyboard activation, separator control.
+- **ProjectHealthCard** — Props-driven card with monotone cubic sparkline (catmull-rom, gradient fill, end dot), status badge severity (urgent > overdue > on track), loading skeleton.
+
+### Fixed (karm)
+- **7 pre-existing test failures** resolved: AnimatePresence assertions, DailyBrief timestamp casing, TaskDetailPanel a11y (replaced `<h2 role="button">` with nested `<button>`), AssociateDetail a11y (fixed role nesting).
+
+---
+
 ## [0.19.1] - 2026-03-14
 
 ### Fixed (core)

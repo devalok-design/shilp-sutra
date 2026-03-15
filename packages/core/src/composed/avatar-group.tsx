@@ -17,6 +17,13 @@ import {
 } from '../ui/tooltip'
 import { getInitials } from './lib/string-utils'
 
+// Ring classes applied at group level (not via Avatar's ring prop, which adds ring-offset-2 that gets clipped by overflow-hidden)
+const groupRingMap: Record<string, string> = {
+  lead: 'ring-2 ring-accent-7 ring-offset-1 ring-offset-surface-2',
+  admin: 'ring-2 ring-warning-7 ring-offset-1 ring-offset-surface-2',
+  client: 'ring-2 ring-info-7 ring-offset-1 ring-offset-surface-2',
+}
+
 const avatarSizeVariants = cva(
   'shrink-0 overflow-hidden rounded-ds-full border-2',
   {
@@ -26,7 +33,7 @@ const avatarSizeVariants = cva(
         sm: 'h-ds-xs w-ds-xs text-ds-xs',
         md: 'h-ds-sm w-ds-sm text-ds-sm',
         lg: 'h-ds-md w-ds-md text-ds-md',
-        xl: 'h-ds-lg w-ds-lg text-ds-lg',
+        xl: 'h-ds-lg w-ds-lg text-ds-md',
       },
     },
     defaultVariants: {
@@ -141,6 +148,7 @@ const AvatarGroup = React.forwardRef<HTMLDivElement, AvatarGroupProps>(
                     borderClass,
                     index > 0 && overlapClass,
                     spotlightClasses,
+                    user.ring && user.ring !== 'none' && groupRingMap[user.ring],
                   )}
                   style={{ zIndex: displayed.length - index, transform: getExpandTransform(index) }}
                 >
@@ -152,12 +160,12 @@ const AvatarGroup = React.forwardRef<HTMLDivElement, AvatarGroupProps>(
             const avatar = (
               <Avatar
                 key={user.name}
-                ring={user.ring}
                 className={cn(
                   avatarSizeVariants({ size }),
                   borderClass,
                   index > 0 && overlapClass,
                   spotlightClasses,
+                  user.ring && user.ring !== 'none' && groupRingMap[user.ring],
                 )}
                 style={{ zIndex: displayed.length - index, transform: getExpandTransform(index) }}
               >

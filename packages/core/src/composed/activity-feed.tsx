@@ -8,6 +8,8 @@ import { Button } from '../ui/button'
 import { Skeleton } from '../ui/skeleton'
 import { getInitials } from './lib/string-utils'
 import { formatRelativeTime } from '../ui/lib/date-utils'
+import { motion } from 'framer-motion'
+import { tweens } from '../ui/lib/motion'
 
 export interface ActivityItem {
   id: string
@@ -228,14 +230,22 @@ function GroupHeader({
   isFirst: boolean
 }) {
   return (
-    <div
+    <motion.div
+      initial={{ opacity: 0 }}
+      animate={{ opacity: 1 }}
+      transition={tweens.fade}
       className={cn(
-        'uppercase tracking-ds-wide text-ds-xs text-surface-fg-subtle border-b border-surface-border mb-ds-02 pb-ds-02',
-        !isFirst && 'mt-ds-04',
+        'flex items-center gap-ds-03',
+        !isFirst ? 'mt-ds-06' : '',
+        'mb-ds-03',
       )}
     >
-      {label}
-    </div>
+      <hr className="flex-1 border-surface-border" />
+      <span className="bg-surface-1 px-ds-03 text-ds-xs font-medium uppercase tracking-wider text-surface-fg-subtle">
+        {label}
+      </span>
+      <hr className="flex-1 border-surface-border" />
+    </motion.div>
   )
 }
 
@@ -286,16 +296,15 @@ const ActivityFeed = React.forwardRef<HTMLDivElement, ActivityFeedProps>(
 
     return (
       <div ref={ref} className={cn('relative', className)} {...props}>
-        {/* Timeline line */}
-        <div className="absolute bottom-0 left-[3px] top-0 w-px bg-surface-border" />
-
         {/* Items */}
         {useGrouping ? (
-          <div className="relative">
+          <div>
             {groupItemsByTime(visibleItems, groupLabels).map((group, gi) => (
               <div key={group.label}>
                 <GroupHeader label={group.label} isFirst={gi === 0} />
-                <div className={cn('flex flex-col', compact ? 'gap-1' : 'gap-3')}>
+                {/* Timeline line scoped to this group */}
+                <div className={cn('relative flex flex-col', compact ? 'gap-1' : 'gap-3')}>
+                  <div className="absolute bottom-0 left-[3px] top-0 w-px bg-surface-border" />
                   {group.items.map((item) => (
                     <ActivityEntry key={item.id} item={item} compact={compact} />
                   ))}
@@ -305,6 +314,8 @@ const ActivityFeed = React.forwardRef<HTMLDivElement, ActivityFeedProps>(
           </div>
         ) : (
           <div className={cn('relative flex flex-col', compact ? 'gap-1' : 'gap-3')}>
+            {/* Timeline line */}
+            <div className="absolute bottom-0 left-[3px] top-0 w-px bg-surface-border" />
             {visibleItems.map((item) => (
               <ActivityEntry key={item.id} item={item} compact={compact} />
             ))}

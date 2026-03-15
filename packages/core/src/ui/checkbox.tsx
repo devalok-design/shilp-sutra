@@ -1,10 +1,8 @@
 'use client'
 
 import * as CheckboxPrimitive from '@primitives/react-checkbox'
-import { IconCheck, IconMinus } from '@tabler/icons-react'
 import { AnimatePresence, motion } from 'framer-motion'
 import * as React from 'react'
-import { springs } from './lib/motion'
 import { cn } from './lib/utils'
 
 /**
@@ -86,16 +84,47 @@ const Checkbox = React.forwardRef<
           <CheckboxPrimitive.Indicator forceMount asChild>
             <motion.span
               className="flex items-center justify-center text-current"
-              initial={{ scale: 0, opacity: 0 }}
-              animate={{ scale: 1, opacity: 1 }}
-              exit={{ scale: 0, opacity: 0 }}
-              transition={springs.bouncy}
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              exit={{ opacity: 0 }}
+              transition={{ duration: 0.1 }}
             >
-              {actualChecked === 'indeterminate' ? (
-                <IconMinus className="h-ico-sm w-ico-sm" />
-              ) : (
-                <IconCheck className="h-ico-sm w-ico-sm" />
-              )}
+              <svg
+                width="16"
+                height="16"
+                viewBox="0 0 16 16"
+                fill="none"
+                className="h-ico-sm w-ico-sm"
+              >
+                {actualChecked === 'indeterminate' ? (
+                  <motion.line
+                    x1="4"
+                    y1="8"
+                    x2="12"
+                    y2="8"
+                    stroke="currentColor"
+                    strokeWidth="2"
+                    strokeLinecap="round"
+                    initial={{ pathLength: 0 }}
+                    animate={{ pathLength: 1 }}
+                    exit={{ pathLength: 0 }}
+                    transition={{ duration: 0.2, ease: 'easeOut' }}
+                  />
+                ) : (
+                  <motion.path
+                    d="M3.5 8.5l3 3 6-6"
+                    stroke="currentColor"
+                    strokeWidth="2"
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    fill="none"
+                    initial={{ pathLength: 0 }}
+                    animate={{ pathLength: 1 }}
+                    exit={{ pathLength: 0 }}
+                    transition={{ duration: 0.25, ease: 'easeOut' }}
+                  />
+                )}
+              </svg>
             </motion.span>
           </CheckboxPrimitive.Indicator>
         )}

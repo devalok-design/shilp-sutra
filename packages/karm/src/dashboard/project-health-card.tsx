@@ -3,6 +3,7 @@
 import * as React from 'react'
 import { motion } from 'framer-motion'
 import { cn } from '@/ui/lib/utils'
+import { motionProps } from '@/ui/lib/motion'
 import { Badge } from '@/ui/badge'
 import { Progress } from '@/ui/progress'
 
@@ -284,8 +285,7 @@ const ProjectHealthCard = React.forwardRef<
     )
   }
 
-  const Wrapper = onClick ? motion.div : 'div'
-  const wrapperProps = onClick
+  const clickableProps = onClick
     ? {
         whileTap: { scale: 0.98 },
         onClick,
@@ -301,16 +301,16 @@ const ProjectHealthCard = React.forwardRef<
     : {}
 
   return (
-    <Wrapper
-      ref={ref as React.Ref<HTMLDivElement>}
+    <motion.div
+      ref={ref}
       data-testid="project-health-card"
       className={cn(
         'rounded-ds-md border border-surface-border bg-surface-1 p-ds-04',
         onClick && 'cursor-pointer hover:bg-surface-2 transition-colors duration-150',
         className,
       )}
-      {...wrapperProps}
-      {...props}
+      {...clickableProps}
+      {...motionProps(props)}
     >
       <div className="flex flex-col gap-ds-03">
         {/* Row 1: Name + Badge */}
@@ -341,11 +341,10 @@ const ProjectHealthCard = React.forwardRef<
           </div>
         )}
       </div>
-    </Wrapper>
+    </motion.div>
   )
 })
 
 ProjectHealthCard.displayName = 'ProjectHealthCard'
 
 export { ProjectHealthCard }
-export type { ProjectHealthCardProps, ProjectHealthData }

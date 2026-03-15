@@ -3,6 +3,7 @@
 import * as React from 'react'
 import { motion } from 'framer-motion'
 import { cn } from '@/ui/lib/utils'
+import { motionProps } from '@/ui/lib/motion'
 import { useScratchpad } from './scratchpad-context'
 
 // ============================================================
@@ -46,7 +47,7 @@ const ScratchpadProgressRing = React.forwardRef<HTMLDivElement, ScratchpadProgre
         className={cn('relative flex items-center justify-center', className)}
         animate={allDone ? { scale: [1, 1.1, 1] } : {}}
         transition={{ duration: 0.3 }}
-        {...props}
+        {...motionProps(props)}
       >
         <svg
           width={diameter}

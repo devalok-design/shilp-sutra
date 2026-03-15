@@ -42,14 +42,30 @@ export interface CheckboxProps extends React.ComponentPropsWithoutRef<typeof Che
 const Checkbox = React.forwardRef<
   React.ElementRef<typeof CheckboxPrimitive.Root>,
   CheckboxProps
->(({ className, error, indeterminate, checked, ...props }, ref) => {
-  const resolvedChecked = indeterminate ? 'indeterminate' : checked
-  const isActive = resolvedChecked === true || resolvedChecked === 'indeterminate'
+>(({ className, error, indeterminate, checked, onCheckedChange, defaultChecked, ...props }, ref) => {
+  // Track internal state so AnimatePresence works for both controlled & uncontrolled usage
+  const isControlled = checked !== undefined
+  const [internalChecked, setInternalChecked] = React.useState<boolean | 'indeterminate'>(
+    indeterminate ? 'indeterminate' : (defaultChecked ? true : false),
+  )
+
+  const actualChecked = indeterminate ? 'indeterminate' : (isControlled ? checked : internalChecked)
+  const isActive = actualChecked === true || actualChecked === 'indeterminate'
+
+  const handleCheckedChange = React.useCallback(
+    (value: boolean | 'indeterminate') => {
+      if (!isControlled) setInternalChecked(value)
+      onCheckedChange?.(value)
+    },
+    [isControlled, onCheckedChange],
+  )
 
   return (
     <CheckboxPrimitive.Root
       ref={ref}
-      checked={resolvedChecked}
+      checked={isControlled || indeterminate ? actualChecked : undefined}
+      defaultChecked={!isControlled && !indeterminate ? defaultChecked : undefined}
+      onCheckedChange={handleCheckedChange}
       className={cn(
         'peer flex items-center justify-center h-ico-md w-ico-md shrink-0 rounded-ds-sm',
         'border border-surface-border-strong',
@@ -75,7 +91,7 @@ const Checkbox = React.forwardRef<
               exit={{ scale: 0, opacity: 0 }}
               transition={springs.bouncy}
             >
-              {resolvedChecked === 'indeterminate' ? (
+              {actualChecked === 'indeterminate' ? (
                 <IconMinus className="h-ico-sm w-ico-sm" />
               ) : (
                 <IconCheck className="h-ico-sm w-ico-sm" />

@@ -85,7 +85,7 @@ function ToolbarButton({
       title={title}
       aria-pressed={isActive}
       className={cn(
-        'inline-flex h-ds-xs-plus w-ds-xs-plus items-center justify-center rounded-ds-md transition-colors',
+        'inline-flex h-ds-xs-plus w-ds-xs-plus items-center justify-center rounded-ds-md transition-colors duration-fast-01',
         'hover:bg-surface-3',
         'disabled:pointer-events-none disabled:opacity-action-disabled',
         isActive

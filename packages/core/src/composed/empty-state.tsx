@@ -1,5 +1,6 @@
 import * as React from 'react'
 import { motion } from 'framer-motion'
+import { tweens } from '../ui/lib/motion'
 import { cn } from '../ui/lib/utils'
 
 export interface EmptyStateProps extends React.HTMLAttributes<HTMLDivElement> {
@@ -81,7 +82,12 @@ const EmptyState = React.forwardRef<HTMLDivElement, EmptyStateProps>(
           {resolvedIcon}
         </motion.div>
 
-        <div className="flex max-w-[280px] flex-col gap-ds-02">
+        <motion.div
+          className="flex max-w-[280px] flex-col gap-ds-02"
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          transition={{ delay: 0.2, ...tweens.fade }}
+        >
           <h3
             className={cn(
               'text-surface-fg',
@@ -100,7 +106,7 @@ const EmptyState = React.forwardRef<HTMLDivElement, EmptyStateProps>(
               {description}
             </p>
           )}
-        </div>
+        </motion.div>
 
         {action && <div className="mt-ds-02">{action}</div>}
       </div>

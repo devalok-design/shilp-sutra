@@ -88,9 +88,9 @@ const StatusBadge = React.forwardRef<HTMLSpanElement, StatusBadgeProps>(
           <motion.span
             key={color}
             ref={ref}
-            initial={{ opacity: 0.6 }}
-            animate={{ opacity: 1 }}
-            exit={{ opacity: 0.6 }}
+            initial={{ opacity: 0.6, scale: 0.95 }}
+            animate={{ opacity: 1, scale: 1 }}
+            exit={{ opacity: 0.6, scale: 0.95 }}
             transition={statusMorphTransition}
             className={cn(
               statusBadgeVariants({ color, size }),

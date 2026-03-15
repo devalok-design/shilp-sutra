@@ -199,7 +199,7 @@ const TopBarIconButton = React.forwardRef<
         ref={ref}
         type="button"
         className={cn(
-          'flex h-ds-sm-plus w-ds-sm-plus items-center justify-center rounded-ds-full border border-surface-border-strong bg-surface-3 text-surface-fg-muted transition-colors hover:bg-surface-4',
+          'flex h-ds-sm-plus w-ds-sm-plus items-center justify-center rounded-ds-full border border-surface-border-strong bg-surface-3 text-surface-fg-muted transition-[colors,transform] hover:bg-surface-4 active:scale-90 duration-fast-01',
           className,
         )}
         {...props}

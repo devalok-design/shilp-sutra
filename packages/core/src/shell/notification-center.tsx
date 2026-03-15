@@ -247,7 +247,7 @@ function NotificationItem({
             onDismiss(notification.id)
           }}
           onKeyDown={(e) => e.stopPropagation()}
-          className="absolute right-ds-03 top-ds-03 hidden rounded-ds-sm p-ds-01 text-surface-fg-subtle transition-colors duration-fast-02 hover:bg-surface-3 hover:text-surface-fg-muted group-hover:flex group-focus-within:flex"
+          className="absolute right-ds-03 top-ds-03 hidden rounded-ds-sm p-ds-01 text-surface-fg-subtle transition-[colors,opacity] duration-fast-01 hover:bg-surface-3 hover:text-surface-fg-muted group-hover:flex group-focus-within:flex"
         >
           <IconX className="h-ico-sm w-ico-sm" />
         </button>
@@ -426,15 +426,21 @@ const NotificationCenter = React.forwardRef<HTMLButtonElement, NotificationCente
                       {group}
                     </span>
                   </div>
-                  {items.map((notification) => (
-                    <NotificationItem
+                  {items.map((notification, index) => (
+                    <motion.div
                       key={notification.id}
-                      notification={notification}
-                      onRead={handleMarkRead}
-                      onNavigate={handleNavigate}
-                      getRoute={getRoute}
-                      onDismiss={onDismiss}
-                    />
+                      initial={{ opacity: 0 }}
+                      animate={{ opacity: 1 }}
+                      transition={{ delay: index * 0.03 }}
+                    >
+                      <NotificationItem
+                        notification={notification}
+                        onRead={handleMarkRead}
+                        onNavigate={handleNavigate}
+                        getRoute={getRoute}
+                        onDismiss={onDismiss}
+                      />
+                    </motion.div>
                   ))}
                 </div>
               )

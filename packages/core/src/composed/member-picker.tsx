@@ -13,6 +13,8 @@ import {
   AvatarFallback,
 } from '../ui/avatar'
 import { IconCheck, IconSearch } from '@tabler/icons-react'
+import { motion } from 'framer-motion'
+import { springs } from '../ui/lib/motion'
 import { getInitials } from './lib/string-utils'
 
 // ============================================================
@@ -77,7 +79,7 @@ const MemberPicker = React.forwardRef<HTMLDivElement, MemberPickerProps>(
               value={search}
               onChange={(e) => setSearch(e.target.value)}
               aria-label="Search members"
-              className="w-full bg-transparent text-ds-md font-body text-surface-fg placeholder:text-surface-fg-subtle outline-none"
+              className="w-full bg-transparent text-ds-md font-body text-surface-fg placeholder:text-surface-fg-subtle outline-none focus-visible:ring-1 focus-visible:ring-accent-7"
             />
           </div>
           <div className="max-h-[200px] overflow-y-auto py-ds-02">
@@ -92,9 +94,9 @@ const MemberPicker = React.forwardRef<HTMLDivElement, MemberPickerProps>(
                     if (!multiple) setOpen(false)
                   }}
                   className={cn(
-                    'flex w-full items-center gap-ds-03 px-ds-04 py-ds-02b text-left transition-colors',
+                    'flex w-full items-center gap-ds-03 px-ds-04 py-ds-02b text-left transition-colors duration-fast-01',
                     'hover:bg-surface-3',
-                    isSelected && 'bg-surface-3',
+                    isSelected && 'bg-accent-2 text-accent-11',
                   )}
                 >
                   <Avatar className="h-ico-md w-ico-md">
@@ -109,7 +111,14 @@ const MemberPicker = React.forwardRef<HTMLDivElement, MemberPickerProps>(
                     {member.name}
                   </span>
                   {isSelected && (
-                    <IconCheck className="h-ico-sm w-ico-sm shrink-0 text-accent-11" />
+                    <motion.span
+                      initial={{ scale: 0 }}
+                      animate={{ scale: 1 }}
+                      transition={springs.bouncy}
+                      className="inline-flex shrink-0"
+                    >
+                      <IconCheck className="h-ico-sm w-ico-sm text-accent-11" />
+                    </motion.span>
                   )}
                 </button>
               )

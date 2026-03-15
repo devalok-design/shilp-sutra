@@ -11,6 +11,7 @@ import {
   differenceInMinutes,
   isToday,
 } from 'date-fns'
+import { motion } from 'framer-motion'
 import { cn } from '../ui/lib/utils'
 
 /* ------------------------------------------------------------------ */
@@ -210,7 +211,7 @@ function DayColumn({
               className={cn(
                 'absolute left-ds-01 right-ds-01 rounded-ds-sm border-l-[3px] px-ds-02 py-ds-01',
                 'text-left text-ds-xs font-medium overflow-hidden cursor-pointer',
-                'hover:opacity-90 transition-opacity',
+                'hover:shadow-01 hover:scale-[1.02] transition-[box-shadow,transform] duration-fast-02',
                 colorClass,
               )}
               style={style}
@@ -232,7 +233,11 @@ function DayColumn({
             style={{ top: `${nowIndicatorTop}%` }}
             aria-hidden="true"
           >
-            <span className="absolute -left-[5px] -top-[4px] h-[10px] w-[10px] rounded-ds-full bg-error-9" />
+            <motion.span
+              className="absolute -left-[5px] -top-[4px] h-[10px] w-[10px] rounded-ds-full bg-error-9"
+              animate={{ scale: [1, 1.3, 1] }}
+              transition={{ repeat: Infinity, duration: 2 }}
+            />
           </div>
         )}
       </div>

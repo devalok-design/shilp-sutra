@@ -44,6 +44,11 @@ const GlobalLoading = React.forwardRef<HTMLDivElement, GlobalLoadingProps>(
           !isLoading && animationComplete && 'w-0 opacity-0',
           !isLoading && !animationComplete && 'w-full opacity-100',
         )}
+        style={
+          !isLoading && !animationComplete
+            ? { boxShadow: '0 0 8px var(--color-accent-9)' }
+            : undefined
+        }
         onTransitionEnd={() => {
           if (!isLoading) {
             // After the "complete" animation finishes, hide the bar

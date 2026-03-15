@@ -79,6 +79,7 @@ const TableSkeleton = React.forwardRef<HTMLDivElement, TableSkeletonProps>(
             'flex items-center gap-ds-05 px-ds-05 py-ds-04',
             rowIndex < rows - 1 && 'border-b border-surface-border-strong',
           )}
+          style={{ animationDelay: `${rowIndex * 50}ms` }}
         >
           {Array.from({ length: columns }).map((_, colIndex) => (
             <Skeleton
@@ -132,6 +133,7 @@ const BoardSkeleton = React.forwardRef<HTMLDivElement, BoardSkeletonProps>(
             <div
               key={`card-${colIndex}-${cardIndex}`}
               className="rounded-ds-lg border border-surface-border-strong bg-surface-2 p-ds-04"
+              style={{ animationDelay: `${(colIndex * cardsPerColumn + cardIndex) * 50}ms` }}
             >
               <div className="space-y-ds-03">
                 <Skeleton className="h-[12px] w-4/5 bg-surface-3" />
@@ -176,6 +178,7 @@ const ListSkeleton = React.forwardRef<HTMLDivElement, ListSkeletonProps>(
             'flex items-center gap-ds-04 py-ds-04',
             i < rows - 1 && 'border-b border-surface-border-strong',
           )}
+          style={{ animationDelay: `${i * 50}ms` }}
         >
           {showAvatar && (
             <Skeleton className="h-ds-sm w-ds-sm shrink-0 rounded-ds-full bg-surface-3" />

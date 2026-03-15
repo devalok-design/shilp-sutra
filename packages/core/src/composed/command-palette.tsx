@@ -233,7 +233,7 @@ const CommandPalette = React.forwardRef<HTMLDivElement, CommandPaletteProps>(
               autoCorrect="off"
               spellCheck={false}
             />
-            <kbd className="hidden shrink-0 select-none rounded-ds-md border border-surface-border-strong bg-surface-2 px-ds-02b py-ds-01 text-ds-sm font-medium text-surface-fg-subtle sm:inline-flex">
+            <kbd className="hidden shrink-0 select-none rounded-ds-md border border-surface-border-strong bg-surface-2 px-ds-02b py-ds-01 text-ds-sm font-medium text-surface-fg-subtle shadow-[inset_0_-1px_0_rgba(0,0,0,0.1)] sm:inline-flex">
               Esc
             </kbd>
           </div>
@@ -320,7 +320,7 @@ const CommandPalette = React.forwardRef<HTMLDivElement, CommandPaletteProps>(
                       </div>
                       {item.shortcut && (
                         <kbd className={cn(
-                          'shrink-0 rounded border border-surface-border-strong px-ds-02b py-ds-01 text-ds-xs font-medium transition-colors duration-fast-02',
+                          'shrink-0 rounded border border-surface-border-strong px-ds-02b py-ds-01 text-ds-xs font-medium shadow-[inset_0_-1px_0_rgba(0,0,0,0.1)] transition-colors duration-fast-02',
                           isActive ? 'bg-accent-2 text-accent-11 border-accent-6' : 'bg-surface-2 text-surface-fg-subtle',
                         )}>
                           {item.shortcut}
@@ -358,10 +358,10 @@ const CommandPalette = React.forwardRef<HTMLDivElement, CommandPaletteProps>(
           >
             <div className="flex items-center gap-ds-02b">
               <div className="flex items-center gap-ds-01">
-                <kbd className="inline-flex h-ico-md w-ico-md items-center justify-center rounded border border-surface-border-strong bg-surface-2">
+                <kbd className="inline-flex h-ico-md w-ico-md items-center justify-center rounded border border-surface-border-strong bg-surface-2 shadow-[inset_0_-1px_0_rgba(0,0,0,0.1)]">
                   <IconArrowUp className="h-ds-03 w-ds-03 text-surface-fg-subtle" stroke={2} />
                 </kbd>
-                <kbd className="inline-flex h-ico-md w-ico-md items-center justify-center rounded border border-surface-border-strong bg-surface-2">
+                <kbd className="inline-flex h-ico-md w-ico-md items-center justify-center rounded border border-surface-border-strong bg-surface-2 shadow-[inset_0_-1px_0_rgba(0,0,0,0.1)]">
                   <IconArrowDown className="h-ds-03 w-ds-03 text-surface-fg-subtle" stroke={2} />
                 </kbd>
               </div>
@@ -370,7 +370,7 @@ const CommandPalette = React.forwardRef<HTMLDivElement, CommandPaletteProps>(
               </span>
             </div>
             <div className="flex items-center gap-ds-02b">
-              <kbd className="inline-flex h-[20px] items-center justify-center rounded-ds-md border border-surface-border-strong bg-surface-2 px-ds-02b">
+              <kbd className="inline-flex h-[20px] items-center justify-center rounded-ds-md border border-surface-border-strong bg-surface-2 px-ds-02b shadow-[inset_0_-1px_0_rgba(0,0,0,0.1)]">
                 <IconCornerDownLeft className="h-ds-03 w-ds-03 text-surface-fg-subtle" stroke={2} />
               </kbd>
               <span className="text-ds-xs text-surface-fg-subtle">
@@ -378,7 +378,7 @@ const CommandPalette = React.forwardRef<HTMLDivElement, CommandPaletteProps>(
               </span>
             </div>
             <div className="flex items-center gap-ds-02b">
-              <kbd className="inline-flex h-[20px] items-center justify-center rounded-ds-md border border-surface-border-strong bg-surface-2 px-ds-02b text-ds-xs font-medium text-surface-fg-subtle">
+              <kbd className="inline-flex h-[20px] items-center justify-center rounded-ds-md border border-surface-border-strong bg-surface-2 px-ds-02b text-ds-xs font-medium text-surface-fg-subtle shadow-[inset_0_-1px_0_rgba(0,0,0,0.1)]">
                 Esc
               </kbd>
               <span className="text-ds-xs text-surface-fg-subtle">

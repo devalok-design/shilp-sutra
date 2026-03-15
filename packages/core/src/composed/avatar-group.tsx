@@ -25,7 +25,7 @@ const groupRingMap: Record<string, string> = {
 }
 
 const avatarSizeVariants = cva(
-  'shrink-0 overflow-hidden rounded-ds-full border-2',
+  'shrink-0 rounded-ds-full border-2',
   {
     variants: {
       size: {

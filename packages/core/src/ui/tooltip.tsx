@@ -7,7 +7,41 @@ import { motion, AnimatePresence } from 'framer-motion'
 import { cn } from './lib/utils'
 import { springs, tweens } from './lib/motion'
 
-const TooltipProvider = TooltipPrimitive.Provider
+/**
+ * Explicit TooltipProvider — wrap your app root for shared delay/skip behavior.
+ * If you don't add one, each Tooltip auto-creates its own provider.
+ */
+const TooltipProvider: React.FC<React.ComponentPropsWithoutRef<typeof TooltipPrimitive.Provider>> = ({
+  children,
+  ...props
+}) => (
+  <TooltipProviderContext.Provider value={true}>
+    <TooltipPrimitive.Provider {...props}>
+      {children}
+    </TooltipPrimitive.Provider>
+  </TooltipProviderContext.Provider>
+)
+
+// ── Internal context to detect whether a provider exists ──
+
+const TooltipProviderContext = React.createContext(false)
+
+/**
+ * Auto-providing TooltipProvider wrapper. If a TooltipProvider ancestor exists,
+ * this is a no-op. If not, it injects one automatically so consumers never need
+ * to wrap their app in <TooltipProvider> manually.
+ */
+function AutoProvider({ children }: { children: React.ReactNode }) {
+  const hasProvider = React.useContext(TooltipProviderContext)
+  if (hasProvider) return <>{children}</>
+  return (
+    <TooltipProviderContext.Provider value={true}>
+      <TooltipProvider delayDuration={300}>
+        {children}
+      </TooltipProvider>
+    </TooltipProviderContext.Provider>
+  )
+}
 
 // ── Internal context to thread `open` state to animated children ──
 
@@ -35,9 +69,11 @@ const Tooltip: React.FC<React.ComponentPropsWithoutRef<typeof TooltipPrimitive.R
   const contextValue = React.useMemo(() => ({ open }), [open])
 
   return (
-    <TooltipContext.Provider value={contextValue}>
-      <TooltipPrimitive.Root open={open} onOpenChange={handleOpenChange} {...props} />
-    </TooltipContext.Provider>
+    <AutoProvider>
+      <TooltipContext.Provider value={contextValue}>
+        <TooltipPrimitive.Root open={open} onOpenChange={handleOpenChange} {...props} />
+      </TooltipContext.Provider>
+    </AutoProvider>
   )
 }
 Tooltip.displayName = 'Tooltip'

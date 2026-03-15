@@ -11,8 +11,9 @@
     showTooltip: boolean (default: true)
     borderColor: "surface-1" | "surface-2" (default: "surface-2") — overlap border color
     onOverflowClick: () => void — makes the "+N" badge interactive (button)
-    overflowContent: ReactNode — popover content shown on overflow click
     renderAvatar: (user: AvatarUser, index: number) => ReactNode — custom avatar render
+    expandDirection: "left" | "right" (default: "right") — direction group expands on hover
+    expandAmount: "compact" | "default" | "wide" (default: "default") — how far group spreads
 
 ## AvatarUser Type
     name: string (REQUIRED)
@@ -20,7 +21,7 @@
     ring?: "none" | "lead" | "admin" | "client" — role ring per user in group
 
 ## Defaults
-    size="md", max=4, showTooltip=true, borderColor="surface-2"
+    size="md", max=4, showTooltip=true, borderColor="surface-2", expandDirection="right", expandAmount="default"
 
 ## Example
 ```jsx

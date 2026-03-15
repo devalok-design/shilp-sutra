@@ -11,14 +11,14 @@ import { cn } from './lib/utils'
 const MotionToggleRoot = motion.create(TogglePrimitive.Root)
 
 const toggleVariants = cva(
-  'inline-flex items-center justify-center gap-ds-03 rounded-ds-md font-medium focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent-9 focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-action-disabled data-[state=on]:bg-accent-2 data-[state=on]:text-accent-11',
+  'inline-flex items-center justify-center gap-ds-03 rounded-ds-md font-medium transition-colors duration-fast-01 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent-9 focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-action-disabled data-[state=on]:bg-accent-2 data-[state=on]:text-accent-11',
   {
     variants: {
       variant: {
         default:
           'bg-transparent hover:bg-surface-3 text-surface-fg-muted',
         outline:
-          'border border-surface-border-strong bg-transparent hover:bg-surface-3',
+          'border border-surface-border-strong bg-transparent hover:bg-surface-3 hover:border-surface-border-strong',
       },
       size: {
         sm: 'h-ds-sm px-ds-03 text-ds-sm',

@@ -10,7 +10,7 @@ import { useFormField } from './form'
 
 const textareaVariants = cva(
   [
-    'flex w-full font-sans resize-y',
+    'flex w-full font-sans resize-y cursor-ns-resize',
     'bg-surface-3 text-surface-fg',
     'border border-surface-border-strong rounded-ds-md',
     'placeholder:text-surface-fg-subtle',

@@ -100,7 +100,7 @@ const NumberInput = React.forwardRef<HTMLInputElement, NumberInputProps>(
           onClick={handleDecrement}
           disabled={disabled || value <= min}
           aria-label="Decrease value"
-          className="flex h-ds-sm w-ds-sm items-center justify-center border-0 text-surface-fg-subtle transition-colors hover:text-surface-fg-muted"
+          className="flex h-ds-sm w-ds-sm items-center justify-center border-0 text-surface-fg-subtle hover:bg-surface-3 hover:text-surface-fg-muted active:scale-90 transition-[color,transform] duration-fast-01"
         >
           <IconMinus className="h-ico-sm w-ico-sm" />
         </button>
@@ -116,7 +116,7 @@ const NumberInput = React.forwardRef<HTMLInputElement, NumberInputProps>(
           disabled={disabled}
           aria-label={ariaLabel}
           aria-describedby={rest['aria-describedby'] ?? fieldCtx.helperTextId}
-          className="bg-transparent text-ds-md font-semibold w-ds-sm-plus border-0 text-center text-surface-fg-muted [appearance:textfield] [&::-webkit-inner-spin-button]:appearance-none [&::-webkit-outer-spin-button]:appearance-none"
+          className="bg-transparent text-ds-md font-semibold w-ds-sm-plus border-0 text-center text-surface-fg-muted focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-accent-7 [appearance:textfield] [&::-webkit-inner-spin-button]:appearance-none [&::-webkit-outer-spin-button]:appearance-none"
           {...rest}
         />
 
@@ -125,7 +125,7 @@ const NumberInput = React.forwardRef<HTMLInputElement, NumberInputProps>(
           onClick={handleIncrement}
           disabled={disabled || value >= max}
           aria-label="Increase value"
-          className="flex h-ds-sm w-ds-sm items-center justify-center border-0 text-surface-fg-subtle transition-colors hover:text-surface-fg-muted"
+          className="flex h-ds-sm w-ds-sm items-center justify-center border-0 text-surface-fg-subtle hover:bg-surface-3 hover:text-surface-fg-muted active:scale-90 transition-[color,transform] duration-fast-01"
         >
           <IconPlus className="h-ico-sm w-ico-sm" />
         </button>

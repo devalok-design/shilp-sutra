@@ -2,7 +2,9 @@
 
 import * as RadioGroupPrimitive from '@primitives/react-radio-group'
 import { IconCircle } from '@tabler/icons-react'
+import { AnimatePresence, motion } from 'framer-motion'
 import * as React from 'react'
+import { springs } from './lib/motion'
 import { cn } from './lib/utils'
 
 const RadioGroup = React.forwardRef<
@@ -26,13 +28,21 @@ const RadioGroupItem = React.forwardRef<
         'transition-colors duration-fast-01',
         'focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent-9 focus-visible:ring-offset-2',
         'disabled:cursor-not-allowed disabled:opacity-action-disabled',
+        'hover:border-accent-7 hover:bg-surface-4',
         'data-[state=checked]:border-accent-7',
         className,
       )}
       {...props}
     >
-      <RadioGroupPrimitive.Indicator className="flex items-center justify-center">
-        <IconCircle className="h-ds-03 w-ds-03 fill-accent-9 text-accent-11" />
+      <RadioGroupPrimitive.Indicator asChild className="flex items-center justify-center">
+        <motion.span
+          className="flex items-center justify-center"
+          initial={{ scale: 0 }}
+          animate={{ scale: 1 }}
+          transition={springs.bouncy}
+        >
+          <IconCircle className="h-ds-03 w-ds-03 fill-accent-9 text-accent-11" />
+        </motion.span>
       </RadioGroupPrimitive.Indicator>
     </RadioGroupPrimitive.Item>
   )

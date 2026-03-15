@@ -1,6 +1,8 @@
 'use client'
 
+import { motion } from 'framer-motion'
 import * as React from 'react'
+import { motionProps, tweens } from './lib/motion'
 import { cn } from './lib/utils'
 
 export type FormHelperState = 'helper' | 'error' | 'warning' | 'success'
@@ -84,12 +86,16 @@ const FormHelperText = React.forwardRef<HTMLParagraphElement, FormHelperTextProp
     const id = idProp ?? context.helperTextId
 
     return (
-      <p
+      <motion.p
         ref={ref}
         id={id}
         role={state === 'error' ? 'alert' : undefined}
         className={cn('text-ds-sm', helperStateClasses[state], className)}
-        {...props}
+        initial={{ opacity: 0, y: -4 }}
+        animate={{ opacity: 1, y: 0 }}
+        exit={{ opacity: 0, y: -4 }}
+        transition={tweens.fade}
+        {...motionProps(props)}
       />
     )
   },

@@ -57,9 +57,10 @@ const Checkbox = React.forwardRef<
         'transition-colors duration-fast-01',
         'focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent-9 focus-visible:ring-offset-2',
         'disabled:cursor-not-allowed disabled:opacity-action-disabled',
+        'data-[state=unchecked]:hover:border-accent-7 data-[state=unchecked]:hover:bg-surface-4',
         'data-[state=checked]:bg-accent-9 data-[state=checked]:border-accent-7 data-[state=checked]:text-accent-fg',
         'data-[state=indeterminate]:bg-accent-9 data-[state=indeterminate]:border-accent-7 data-[state=indeterminate]:text-accent-fg',
-        error && 'border-error-7',
+        error && 'border-error-7 bg-error-2',
         className,
       )}
       {...props}

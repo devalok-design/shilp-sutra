@@ -77,27 +77,37 @@ const AvatarGroup = React.forwardRef<HTMLDivElement, AvatarGroupProps>(
     },
     ref,
   ) => {
+    const [isHovered, setIsHovered] = React.useState(false)
     const displayed = users.slice(0, max)
     const overflow = users.length - max
 
-    const overlapMap = {
+    const overlapMap: Record<string, string> = {
       xs: '-ml-ds-02',
       sm: '-ml-ds-02b',
       md: '-ml-ds-03',
       lg: '-ml-ds-04',
       xl: '-ml-ds-05',
     }
-    const overlapClass = overlapMap[size ?? 'md']
+    // Pixel values matching the overlap tokens — used for translateX compensation on hover
+    const overlapPxMap: Record<string, number> = {
+      xs: 8,
+      sm: 10,
+      md: 12,
+      lg: 16,
+      xl: 20,
+    }
+    const resolvedSize = size ?? 'md'
+    const overlapClass = overlapMap[resolvedSize]
+    const overlapPx = overlapPxMap[resolvedSize]
 
     const borderClass =
       borderColor === 'surface-1' ? 'border-surface-1' : 'border-surface-2'
 
-    // Hover expand: margin change is instant (no transition — margin transitions cause layout thrashing).
-    // Only transform + opacity are GPU-composited and safe to animate.
-    const hoverExpandClasses =
-      'group-hover:ml-0 group-focus-within:ml-0'
+    // Hover expand: margins stay static (negative overlap). On group hover,
+    // each avatar translates right by (index * overlapPx) via inline style.
+    // Only transform + opacity are GPU-composited — zero layout thrashing.
     const spotlightClasses =
-      'transition-[transform,opacity] duration-200 ease-out hover:z-50 hover:scale-105 group-hover:[&:not(:hover)]:opacity-85'
+      'transition-[transform,opacity] duration-300 ease-out hover:z-50 hover:scale-105 group-hover:[&:not(:hover)]:opacity-85'
 
     return (
       <TooltipProvider>
@@ -107,6 +117,12 @@ const AvatarGroup = React.forwardRef<HTMLDivElement, AvatarGroupProps>(
           aria-label={`${users.length} team members`}
           tabIndex={0}
           className={cn('group flex items-center', className)}
+          onMouseEnter={() => setIsHovered(true)}
+          onMouseLeave={() => setIsHovered(false)}
+          onFocus={() => setIsHovered(true)}
+          onBlur={(e) => {
+            if (!e.currentTarget.contains(e.relatedTarget)) setIsHovered(false)
+          }}
           {...props}
         >
           {displayed.map((user, index) => {
@@ -120,11 +136,13 @@ const AvatarGroup = React.forwardRef<HTMLDivElement, AvatarGroupProps>(
                     avatarSizeVariants({ size }),
                     borderClass,
                     index > 0 && overlapClass,
-                    index > 0 && hoverExpandClasses,
                     spotlightClasses,
-                                        user.ring && user.ring !== 'none' && groupRingMap[user.ring],
+                    user.ring && user.ring !== 'none' && groupRingMap[user.ring],
                   )}
-                  style={{ zIndex: displayed.length - index }}
+                  style={{
+                    zIndex: displayed.length - index,
+                    transform: isHovered ? `translateX(${index * overlapPx}px)` : 'translateX(0)',
+                  }}
                 >
                   {renderAvatar(user, index)}
                 </div>
@@ -152,11 +170,13 @@ const AvatarGroup = React.forwardRef<HTMLDivElement, AvatarGroupProps>(
                   avatarSizeVariants({ size }),
                   borderClass,
                   index > 0 && overlapClass,
-                  index > 0 && hoverExpandClasses,
                   spotlightClasses,
-                                    user.ring && user.ring !== 'none' && groupRingMap[user.ring],
+                  user.ring && user.ring !== 'none' && groupRingMap[user.ring],
                 )}
-                style={{ zIndex: displayed.length - index }}
+                style={{
+                  zIndex: displayed.length - index,
+                  transform: isHovered ? `translateX(${index * overlapPx}px)` : 'translateX(0)',
+                }}
               >
                 {user.image && (
                   <AvatarImage src={user.image} alt={user.name} />
@@ -196,11 +216,14 @@ const AvatarGroup = React.forwardRef<HTMLDivElement, AvatarGroupProps>(
                       avatarSizeVariants({ size }),
                       borderClass,
                       overlapClass,
-                      hoverExpandClasses,
                       'flex cursor-pointer items-center justify-center bg-accent-2 font-body font-semibold text-accent-11',
-                      'hover:scale-105 hover:bg-accent-3 transition-[transform,background-color] duration-150',
+                      'transition-[transform,background-color] duration-300 ease-out',
+                      'hover:scale-105 hover:bg-accent-3',
                     )}
-                    style={{ zIndex: 0 }}
+                    style={{
+                      zIndex: 0,
+                      transform: isHovered ? `translateX(${displayed.length * overlapPx}px)` : 'translateX(0)',
+                    }}
                   >
                     +{overflow}
                   </button>
@@ -210,10 +233,13 @@ const AvatarGroup = React.forwardRef<HTMLDivElement, AvatarGroupProps>(
                       avatarSizeVariants({ size }),
                       borderClass,
                       overlapClass,
-                      hoverExpandClasses,
                       'flex cursor-default items-center justify-center bg-accent-2 font-body font-semibold text-accent-11',
+                      'transition-[transform] duration-300 ease-out',
                     )}
-                    style={{ zIndex: 0 }}
+                    style={{
+                      zIndex: 0,
+                      transform: isHovered ? `translateX(${displayed.length * overlapPx}px)` : 'translateX(0)',
+                    }}
                   >
                     +{overflow}
                   </div>

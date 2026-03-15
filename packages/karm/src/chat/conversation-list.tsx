@@ -93,7 +93,7 @@ export const ConversationList = React.forwardRef<HTMLDivElement, ConversationLis
                 </button>
 
                 {/* Context actions -- visible on hover */}
-                <div className="flex shrink-0 items-center gap-ds-02 opacity-0 transition-opacity group-hover:opacity-100">
+                <div className="flex shrink-0 items-center gap-ds-02 opacity-0 transition-opacity duration-fast-01 group-hover:opacity-100">
                   {onArchive && (
                     <button
                       onClick={(e) => {

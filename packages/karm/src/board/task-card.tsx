@@ -182,7 +182,7 @@ function TaskCardVisual({
       {/* Selection checkbox — absolute overlay, top-left corner */}
       <motion.div
         className={cn(
-          'absolute -top-2 -left-2 z-10 transition-opacity',
+          'absolute -top-2 -left-2 z-10 transition-opacity duration-fast-02',
           anySelected || isSelected
             ? 'opacity-100'
             : 'opacity-0 group-hover/card:opacity-100',
@@ -210,7 +210,7 @@ function TaskCardVisual({
         {/* Drag handle */}
         <button
           className={cn(
-            'flex-shrink-0 cursor-grab rounded p-ds-01 opacity-0 transition-opacity',
+            'flex-shrink-0 cursor-grab rounded p-ds-01 opacity-0 transition-opacity duration-fast-02',
             'group-hover/card:opacity-action-disabled hover:!opacity-100',
             'active:cursor-grabbing',
             isDragOverlay && 'opacity-action-disabled',
@@ -438,7 +438,7 @@ function TaskCardCompactVisual({
       {/* Selection checkbox — absolute overlay */}
       <motion.div
         className={cn(
-          'absolute -top-1.5 -left-1.5 z-10 transition-opacity',
+          'absolute -top-1.5 -left-1.5 z-10 transition-opacity duration-fast-02',
           anySelected || isSelected
             ? 'opacity-100'
             : 'opacity-0 group-hover/card:opacity-100',

@@ -82,7 +82,7 @@ export const Breaks = React.forwardRef<HTMLDivElement, BreaksProps>(
           return (
             <div
               key={breakItem.id}
-              className="flex w-full items-center hover:bg-surface-3"
+              className="flex w-full items-center transition-colors duration-fast-01 hover:bg-surface-3"
             >
               <div className="flex w-[16%] min-w-[120px] items-center gap-ds-03 overflow-hidden px-ds-04 py-ds-03">
                 {userImages[breakItem.userId] ? (

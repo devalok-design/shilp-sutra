@@ -150,7 +150,7 @@ const Chip = React.forwardRef<HTMLElement, ChipProps>(
           <button
             type="button"
             aria-label={`Remove ${label}`}
-            className="flex-shrink-0 min-h-ds-xs min-w-ds-xs flex items-center justify-center rounded-ds-full p-ds-01 hover:bg-surface-3 hover:rotate-90 active:scale-90 transition-[color,transform] duration-fast-02 [&>svg]:w-ico-sm [&>svg]:h-ico-sm"
+            className="flex-shrink-0 min-h-ds-xs min-w-ds-xs flex items-center justify-center rounded-ds-full p-ds-01 text-current/60 hover:text-current hover:bg-current/10 active:scale-95 transition-[color,background-color,transform] duration-fast-02 [&>svg]:w-ico-sm [&>svg]:h-ico-sm"
             onClick={(e) => {
               e.stopPropagation()
               onDismiss()

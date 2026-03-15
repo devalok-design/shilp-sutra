@@ -54,7 +54,7 @@ const ScratchpadCollapse = React.forwardRef<HTMLDivElement, ScratchpadCollapsePr
           <IconChevronDown
             className={cn(
               'h-3.5 w-3.5 shrink-0 transition-transform duration-200',
-              !open && '-rotate-180',
+              !open && '-rotate-90',
             )}
           />
           <span className="flex-1">{label}</span>

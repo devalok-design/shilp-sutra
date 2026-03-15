@@ -6,6 +6,7 @@ import { cn } from '@/ui/lib/utils'
 import { motionProps } from '@/ui/lib/motion'
 import { MotionStagger, MotionStaggerItem } from '@/motion/primitives'
 import { MotionPop } from '@/motion/primitives'
+import { TooltipProvider } from '@/ui/tooltip'
 import { useWeekHeatmap } from './week-heatmap-context'
 import { WeekHeatmapDay } from './week-heatmap-day'
 
@@ -57,6 +58,7 @@ const WeekHeatmapDayStrip = React.forwardRef<HTMLDivElement, WeekHeatmapDayStrip
     )
 
     return (
+      <TooltipProvider>
       <MotionStagger
         ref={ref}
         role="grid"
@@ -97,6 +99,7 @@ const WeekHeatmapDayStrip = React.forwardRef<HTMLDivElement, WeekHeatmapDayStrip
           })}
         </div>
       </MotionStagger>
+      </TooltipProvider>
     )
   },
 )

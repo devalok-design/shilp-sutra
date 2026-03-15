@@ -15,7 +15,6 @@ export {
   useScratchpad,
   type ScratchpadContextValue,
   type ScratchpadProviderProps,
-  type ScratchpadItem as ScratchpadItemData,
 } from './scratchpad/scratchpad-context'
 export { type ScratchpadRootProps } from './scratchpad/scratchpad-root'
 export { type ScratchpadHeaderProps } from './scratchpad/scratchpad-header'

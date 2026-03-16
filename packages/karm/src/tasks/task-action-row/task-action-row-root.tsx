@@ -36,7 +36,7 @@ const TaskActionRowRoot = React.forwardRef<HTMLDivElement, TaskActionRowRootProp
           onContextMenu={onContextMenu}
           className={cn(
             'group flex items-center gap-ds-03 px-ds-04 py-ds-03 rounded-ds-md',
-            onClick && 'hover:bg-surface-3 active:bg-surface-4 transition-colors duration-150',
+            onClick && 'hover:bg-surface-raised-hover active:bg-surface-raised-active transition-colors duration-150',
             showSeparator && 'border-b border-surface-border',
             className,
           )}

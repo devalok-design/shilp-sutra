@@ -263,7 +263,7 @@ function SheetWrapper({ children }: { children: React.ReactNode }) {
     <Sheet open onOpenChange={noop}>
       <SheetContent
         side="right"
-        className="w-full sm:max-w-none sm:w-[40%] min-w-[380px] p-0 flex flex-col overflow-hidden border-l border-surface-border-strong bg-surface-1"
+        className="w-full sm:max-w-none sm:w-[40%] min-w-[380px] p-0 flex flex-col overflow-hidden border-l border-surface-border-strong bg-surface-overlay"
       >
         <VisuallyHidden>
           <SheetTitle>Task Details</SheetTitle>
@@ -612,7 +612,7 @@ export const LoadingState: Story = {
 /** ContainerAgnostic: TaskPanel in a plain div (no Sheet) to prove it works anywhere */
 export const ContainerAgnostic: Story = {
   render: () => (
-    <div className="mx-auto mt-ds-08 w-[480px] h-[600px] border border-surface-border-strong rounded-lg bg-surface-1 overflow-hidden">
+    <div className="mx-auto mt-ds-08 w-[480px] h-[600px] border border-surface-border-strong rounded-lg bg-surface-overlay overflow-hidden">
       <TaskPanel>
         <TaskPanel.Header>
           <TaskPanel.Title

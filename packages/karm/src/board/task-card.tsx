@@ -60,13 +60,13 @@ const PRIORITY_ICON_MAP = {
 // ============================================================
 
 const taskCardVariants = cva(
-  'group/card relative rounded-ds-lg border border-transparent bg-surface-3 pl-3 pr-ds-03 py-ds-03 transition-[box-shadow,border-color,transform] duration-fast-02 ease-productive-standard cursor-pointer',
+  'group/card relative rounded-ds-lg border border-transparent bg-surface-raised-hover pl-3 pr-ds-03 py-ds-03 transition-[box-shadow,border-color,transform] duration-fast-02 ease-productive-standard cursor-pointer',
   {
     variants: {
       state: {
-        default: 'shadow-01 hover:shadow-02 hover:-translate-y-px hover:border-surface-border-strong',
+        default: 'shadow-raised hover:shadow-raised-hover hover:-translate-y-px hover:border-surface-border-strong',
         dragging: 'opacity-action-disabled',
-        overlay: 'rotate-[2deg] shadow-03 backdrop-blur-sm ring-1 ring-accent-7',
+        overlay: 'rotate-[2deg] shadow-floating backdrop-blur-sm ring-1 ring-accent-7',
       },
       blocked: {
         true: 'border-l-2 border-l-error-9',
@@ -167,7 +167,7 @@ function TaskCardVisual({
           selected: isSelected,
           dimmed: isDimmed,
         }),
-        isDragOverlay && 'scale-[1.03] rotate-[1.5deg] shadow-03',
+        isDragOverlay && 'scale-[1.03] rotate-[1.5deg] shadow-floating',
         isDragging && 'opacity-40',
         isFocused && 'ring-1 ring-accent-9',
       )}
@@ -196,7 +196,7 @@ function TaskCardVisual({
           onCheckedChange={() => toggleTaskSelection(task.id)}
           onClick={(e: React.MouseEvent) => e.stopPropagation()}
           aria-label={`Select task ${task.taskId}`}
-          className="rounded-full bg-surface-1 shadow-01"
+          className="rounded-full bg-surface-base shadow-raised"
         />
       </motion.div>
 
@@ -358,7 +358,7 @@ TaskCard.displayName = 'TaskCard'
 // ============================================================
 
 const taskCardCompactVariants = cva(
-  'group/card flex items-center gap-ds-02 py-2 pl-3 pr-ds-03 border border-transparent rounded-ds-lg bg-surface-3 transition-[box-shadow,border-color,transform,background-color] duration-fast-02 ease-productive-standard cursor-pointer hover:bg-surface-4 hover:shadow-02 hover:-translate-y-px',
+  'group/card flex items-center gap-ds-02 py-2 pl-3 pr-ds-03 border border-transparent rounded-ds-lg bg-surface-raised-hover transition-[box-shadow,border-color,transform,background-color] duration-fast-02 ease-productive-standard cursor-pointer hover:bg-surface-raised-active hover:shadow-raised-hover hover:-translate-y-px',
   {
     variants: {
       selected: {
@@ -424,7 +424,7 @@ function TaskCardCompactVisual({
           dimmed: isDimmed,
         }),
         isDragging && 'opacity-40',
-        isDragOverlay && 'scale-[1.03] rotate-[1.5deg] shadow-03',
+        isDragOverlay && 'scale-[1.03] rotate-[1.5deg] shadow-floating',
         isFocused && 'ring-1 ring-accent-9',
       )}
       onClick={() => onClickTask(task.id)}
@@ -452,7 +452,7 @@ function TaskCardCompactVisual({
           onCheckedChange={() => toggleTaskSelection(task.id)}
           onClick={(e: React.MouseEvent) => e.stopPropagation()}
           aria-label={`Select task ${task.taskId}`}
-          className="rounded-full bg-surface-1 shadow-01"
+          className="rounded-full bg-surface-base shadow-raised"
         />
       </motion.div>
 

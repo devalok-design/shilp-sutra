@@ -4,7 +4,7 @@ import * as React from 'react'
 import { Skeleton } from '@/ui/skeleton'
 import { cn } from '@/ui/lib/utils'
 
-const shimmer = 'bg-surface-3'
+const shimmer = 'bg-surface-raised-hover'
 
 // --- Devsabha Skeleton ---
 
@@ -22,7 +22,7 @@ const DevsabhaSkeleton = React.forwardRef<HTMLDivElement, React.HTMLAttributes<H
       <div className="grid grid-cols-1 gap-ds-05 lg:grid-cols-3">
         {/* Section 1: Main large card */}
         <div className="lg:col-span-2">
-          <div className="flex flex-col gap-ds-05 rounded-ds-xl border border-surface-border-strong bg-surface-2 p-ds-06">
+          <div className="flex flex-col gap-ds-05 rounded-ds-xl border border-surface-border-strong bg-surface-raised p-ds-06">
             <Skeleton className={cn('h-5 w-40', shimmer)} />
             <div className="flex flex-col gap-ds-04">
               {Array.from({ length: 4 }).map((_, i) => (
@@ -37,7 +37,7 @@ const DevsabhaSkeleton = React.forwardRef<HTMLDivElement, React.HTMLAttributes<H
         </div>
 
         {/* Section 2: Side card */}
-        <div className="flex flex-col gap-ds-05 rounded-ds-xl border border-surface-border-strong bg-surface-2 p-ds-06">
+        <div className="flex flex-col gap-ds-05 rounded-ds-xl border border-surface-border-strong bg-surface-raised p-ds-06">
           <Skeleton className={cn('h-5 w-28', shimmer)} />
           <div className="flex flex-col gap-ds-04">
             {Array.from({ length: 3 }).map((_, i) => (
@@ -54,7 +54,7 @@ const DevsabhaSkeleton = React.forwardRef<HTMLDivElement, React.HTMLAttributes<H
 
         {/* Section 3: Full-width card */}
         <div className="lg:col-span-3">
-          <div className="flex flex-col gap-ds-05 rounded-ds-xl border border-surface-border-strong bg-surface-2 p-ds-06">
+          <div className="flex flex-col gap-ds-05 rounded-ds-xl border border-surface-border-strong bg-surface-raised p-ds-06">
             <div className="flex items-center justify-between">
               <Skeleton className={cn('h-5 w-36', shimmer)} />
               <Skeleton className={cn('h-ds-sm w-24 rounded-ds-lg', shimmer)} />
@@ -76,7 +76,7 @@ const DevsabhaSkeleton = React.forwardRef<HTMLDivElement, React.HTMLAttributes<H
 
         {/* Section 4: Stats row */}
         <div className="lg:col-span-2">
-          <div className="flex flex-col gap-ds-05 rounded-ds-xl border border-surface-border-strong bg-surface-2 p-ds-06">
+          <div className="flex flex-col gap-ds-05 rounded-ds-xl border border-surface-border-strong bg-surface-raised p-ds-06">
             <Skeleton className={cn('h-5 w-24', shimmer)} />
             <div className="grid grid-cols-2 gap-ds-05 sm:grid-cols-4">
               {Array.from({ length: 4 }).map((_, i) => (
@@ -90,7 +90,7 @@ const DevsabhaSkeleton = React.forwardRef<HTMLDivElement, React.HTMLAttributes<H
         </div>
 
         {/* Section 5: Timeline */}
-        <div className="flex flex-col gap-ds-05 rounded-ds-xl border border-surface-border-strong bg-surface-2 p-ds-06">
+        <div className="flex flex-col gap-ds-05 rounded-ds-xl border border-surface-border-strong bg-surface-raised p-ds-06">
           <Skeleton className={cn('h-5 w-20', shimmer)} />
           <div className="flex flex-col gap-ds-05">
             {Array.from({ length: 3 }).map((_, i) => (
@@ -123,7 +123,7 @@ const BandwidthSkeleton = React.forwardRef<HTMLDivElement, React.HTMLAttributes<
         {Array.from({ length: 3 }).map((_, i) => (
           <div
             key={`bw-card-${i}`}
-            className="flex flex-col gap-ds-04 rounded-ds-xl border border-surface-border-strong bg-surface-2 p-ds-05b"
+            className="flex flex-col gap-ds-04 rounded-ds-xl border border-surface-border-strong bg-surface-raised p-ds-05b"
           >
             <Skeleton className={cn('h-3 w-24', shimmer)} />
             <Skeleton className={cn('h-ds-xs-plus w-16', shimmer)} />
@@ -135,7 +135,7 @@ const BandwidthSkeleton = React.forwardRef<HTMLDivElement, React.HTMLAttributes<
       {/* Table */}
       <div className="overflow-hidden rounded-ds-xl border border-surface-border-strong">
         {/* Table header */}
-        <div className="flex items-center gap-ds-05 border-b border-surface-border-strong bg-surface-2 px-ds-05b py-ds-04">
+        <div className="flex items-center gap-ds-05 border-b border-surface-border-strong bg-surface-raised px-ds-05b py-ds-04">
           {Array.from({ length: 5 }).map((_, i) => (
             <Skeleton
               key={`bw-th-${i}`}

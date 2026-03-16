@@ -274,7 +274,7 @@ function TaskPanelTabs({
       className={cn('flex flex-col flex-1 min-h-0', className)}
     >
       {/* Sticky tab bar */}
-      <div className="sticky top-0 bg-surface-2 z-raised px-ds-06">
+      <div className="sticky top-0 bg-surface-raised z-raised px-ds-06">
         <TabsList variant="line">
           {tabs.map((tab) => (
             <TabsTrigger key={tab.id} value={tab.id}>
@@ -314,24 +314,24 @@ interface TaskPanelLoadingProps {
 function TaskPanelLoading({ className }: TaskPanelLoadingProps) {
   return (
     <div className={cn('space-y-ds-06 p-ds-06', className)}>
-      <Skeleton className="h-ds-xs-plus w-3/4 bg-surface-3" />
+      <Skeleton className="h-ds-xs-plus w-3/4 bg-surface-raised-hover" />
       <div className="space-y-ds-04">
         {Array.from({ length: 6 }).map((_, i) => (
           <div key={i} className="flex items-center gap-ds-04">
-            <Skeleton className="h-[16px] w-[120px] bg-surface-3" />
-            <Skeleton className="h-[16px] flex-1 bg-surface-3" />
+            <Skeleton className="h-[16px] w-[120px] bg-surface-raised-hover" />
+            <Skeleton className="h-[16px] flex-1 bg-surface-raised-hover" />
           </div>
         ))}
       </div>
       <div className="flex gap-ds-05 border-b border-surface-border-strong pb-ds-03">
         {Array.from({ length: 5 }).map((_, i) => (
-          <Skeleton key={i} className="h-[12px] w-[64px] bg-surface-3" />
+          <Skeleton key={i} className="h-[12px] w-[64px] bg-surface-raised-hover" />
         ))}
       </div>
       <div className="space-y-ds-04">
-        <Skeleton className="h-ds-md w-full bg-surface-3" />
-        <Skeleton className="h-ds-md w-full bg-surface-3" />
-        <Skeleton className="h-ds-md w-4/5 bg-surface-3" />
+        <Skeleton className="h-ds-md w-full bg-surface-raised-hover" />
+        <Skeleton className="h-ds-md w-full bg-surface-raised-hover" />
+        <Skeleton className="h-ds-md w-4/5 bg-surface-raised-hover" />
       </div>
     </div>
   )

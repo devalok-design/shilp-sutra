@@ -98,7 +98,7 @@ export const BreakAdminHeader = React.forwardRef<HTMLDivElement, BreakAdminHeade
   }
 
   return (
-    <div ref={ref} className={cn("flex min-w-[800px] items-center justify-between bg-surface-3 px-ds-06 py-ds-05b max-md:justify-start max-md:gap-ds-05b max-lg:min-w-[100%]", className)} {...props}>
+    <div ref={ref} className={cn("flex min-w-[800px] items-center justify-between bg-surface-raised-hover px-ds-06 py-ds-05b max-md:justify-start max-md:gap-ds-05b max-lg:min-w-[100%]", className)} {...props}>
       <div className="flex flex-col gap-ds-05">
         {filters.selectedAssociate && (
           <>
@@ -129,7 +129,7 @@ export const BreakAdminHeader = React.forwardRef<HTMLDivElement, BreakAdminHeade
                   className="h-ico-md w-ico-md rounded-ds-full"
                 />
               ) : (
-                <div className="flex h-ico-md w-ico-md items-center justify-center rounded-ds-full bg-surface-2">
+                <div className="flex h-ico-md w-ico-md items-center justify-center rounded-ds-full bg-surface-raised">
                   <span className="text-accent-11">
                     {filters.selectedAssociate.name.charAt(0)}
                   </span>
@@ -155,7 +155,7 @@ export const BreakAdminHeader = React.forwardRef<HTMLDivElement, BreakAdminHeade
           </div>
         ) : (
           <DropdownMenu>
-            <DropdownMenuTrigger className="text-ds-md flex flex-row items-center justify-between rounded-ds-md border border-surface-border bg-surface-1 px-ds-03 py-ds-02b">
+            <DropdownMenuTrigger className="text-ds-md flex flex-row items-center justify-between rounded-ds-md border border-surface-border bg-surface-base px-ds-03 py-ds-02b">
               <div className="flex items-center">
                 <PersonIcon className="h-ico-sm w-ico-sm" />
                 <span className="text-ds-md mx-ds-03 text-surface-fg-muted max-lg:mx-0 max-lg:text-ds-sm">
@@ -187,7 +187,7 @@ export const BreakAdminHeader = React.forwardRef<HTMLDivElement, BreakAdminHeade
                           className="h-ds-xs w-ds-xs rounded-ds-full"
                         />
                       ) : (
-                        <div className="flex h-ds-xs w-ds-xs items-center justify-center rounded-ds-full bg-surface-3">
+                        <div className="flex h-ds-xs w-ds-xs items-center justify-center rounded-ds-full bg-surface-raised-hover">
                           <span className="text-ds-md text-accent-11">
                             {user.name.charAt(0)}
                           </span>
@@ -239,7 +239,7 @@ export const BreakAdminHeader = React.forwardRef<HTMLDivElement, BreakAdminHeade
             setFilters((prev) => ({ ...prev, isOpen: open }))
           }}
         >
-          <DropdownMenuTrigger className="text-ds-md flex items-center justify-between rounded-ds-md border border-surface-border bg-surface-1 p-ds-02b">
+          <DropdownMenuTrigger className="text-ds-md flex items-center justify-between rounded-ds-md border border-surface-border bg-surface-base p-ds-02b">
             <div className="flex items-center">
               <CalendarDateIcon />
               <span className="mx-ds-03 text-surface-fg-muted">

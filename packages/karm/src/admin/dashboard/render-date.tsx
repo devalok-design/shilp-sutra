@@ -216,11 +216,11 @@ export const RenderDate = React.forwardRef<HTMLDivElement, RenderDateProps>(
 
     // Hover on present (not today, not break)
     state.hover && !state.disabled && !state.today && !state.isBreak && state.isPresent &&
-      'bg-surface-3 text-surface-fg',
+      'bg-surface-raised-hover text-surface-fg',
 
     // Hover on default (not today, not break, not present)
     state.hover && !state.disabled && !state.today && !state.isBreak && !state.isPresent && state.isDefault &&
-      'bg-surface-3 text-surface-fg-muted',
+      'bg-surface-raised-hover text-surface-fg-muted',
 
     // Hover on break (same visual as base break, but re-assert to match original)
     state.hover && !state.disabled && state.isBreak && !isBreakMidNonWeekly &&
@@ -230,7 +230,7 @@ export const RenderDate = React.forwardRef<HTMLDivElement, RenderDateProps>(
 
     // Hover on absent (not today, not break)
     state.hover && !state.disabled && !state.today && !state.isBreak && state.isAbsent &&
-      'bg-surface-3 text-error-11',
+      'bg-surface-raised-hover text-error-11',
 
     // ── Focus ──
     state.focus && !state.pressed && 'outline-2',

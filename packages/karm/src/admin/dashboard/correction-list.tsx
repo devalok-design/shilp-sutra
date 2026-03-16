@@ -73,7 +73,7 @@ export const CorrectionList = React.forwardRef<HTMLDivElement, CorrectionListPro
   return (
     <div
       ref={ref}
-      className={cn("flex max-h-[200px] w-full flex-col overflow-y-auto bg-surface-1 px-ds-06 max-md:flex-1 max-md:max-h-none max-md:min-h-[372px] max-md:p-0", className)}
+      className={cn("flex max-h-[200px] w-full flex-col overflow-y-auto bg-surface-base px-ds-06 max-md:flex-1 max-md:max-h-none max-md:min-h-[372px] max-md:p-0", className)}
       {...props}
     >
       {corrections.map((correction) => (

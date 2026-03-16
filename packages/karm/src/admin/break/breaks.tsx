@@ -82,7 +82,7 @@ export const Breaks = React.forwardRef<HTMLDivElement, BreaksProps>(
           return (
             <div
               key={breakItem.id}
-              className="flex w-full items-center transition-colors duration-fast-01 hover:bg-surface-3"
+              className="flex w-full items-center transition-colors duration-fast-01 hover:bg-surface-raised-hover"
             >
               <div className="flex w-[16%] min-w-[120px] items-center gap-ds-03 overflow-hidden px-ds-04 py-ds-03">
                 {userImages[breakItem.userId] ? (
@@ -92,7 +92,7 @@ export const Breaks = React.forwardRef<HTMLDivElement, BreaksProps>(
                     className="h-ds-xs-plus w-full max-w-7 flex-shrink-0 rounded-ds-full object-cover"
                   />
                 ) : (
-                  <span className="flex h-ds-xs-plus w-full max-w-7 items-center justify-center rounded-ds-full bg-surface-2 text-ds-sm font-medium uppercase text-surface-fg">
+                  <span className="flex h-ds-xs-plus w-full max-w-7 items-center justify-center rounded-ds-full bg-surface-raised text-ds-sm font-medium uppercase text-surface-fg">
                     {breakItem.user?.name?.[0] || 'U'}
                   </span>
                 )}

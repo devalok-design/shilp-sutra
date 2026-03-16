@@ -76,13 +76,13 @@ const FileItem = React.forwardRef<HTMLDivElement, FileItemProps>(
       <div
         ref={ref}
         className={cn(
-          'group flex items-center gap-ds-04 rounded-ds-lg px-ds-03 py-ds-03 transition-colors hover:bg-surface-3',
+          'group flex items-center gap-ds-04 rounded-ds-lg px-ds-03 py-ds-03 transition-colors hover:bg-surface-raised-hover',
           className,
         )}
         {...props}
       >
         {/* File icon */}
-        <div className="flex h-ds-sm w-ds-sm shrink-0 items-center justify-center rounded-ds-lg bg-surface-2">
+        <div className="flex h-ds-sm w-ds-sm shrink-0 items-center justify-center rounded-ds-lg bg-surface-raised">
           <Icon
             className="h-ico-sm w-ico-sm text-surface-fg-subtle"
             stroke={1.5}
@@ -108,7 +108,7 @@ const FileItem = React.forwardRef<HTMLDivElement, FileItemProps>(
               href={/^https?:\/\//.test(file.externalUrl) ? file.externalUrl : '#'}
               target="_blank"
               rel="noopener noreferrer"
-              className="inline-flex h-ds-xs-plus w-ds-xs-plus items-center justify-center rounded-ds-md transition-colors hover:bg-surface-3"
+              className="inline-flex h-ds-xs-plus w-ds-xs-plus items-center justify-center rounded-ds-md transition-colors hover:bg-surface-raised-hover"
               title={file.externalLabel ?? 'Open externally'}
             >
               <IconExternalLink className="h-ico-sm w-ico-sm text-surface-fg-subtle" />
@@ -119,7 +119,7 @@ const FileItem = React.forwardRef<HTMLDivElement, FileItemProps>(
               href={/^https?:\/\//.test(file.downloadUrl) ? file.downloadUrl : '#'}
               target="_blank"
               rel="noopener noreferrer"
-              className="inline-flex h-ds-xs-plus w-ds-xs-plus items-center justify-center rounded-ds-md transition-colors hover:bg-surface-3"
+              className="inline-flex h-ds-xs-plus w-ds-xs-plus items-center justify-center rounded-ds-md transition-colors hover:bg-surface-raised-hover"
               title="Download"
             >
               <IconDownload className="h-ico-sm w-ico-sm text-surface-fg-subtle" />

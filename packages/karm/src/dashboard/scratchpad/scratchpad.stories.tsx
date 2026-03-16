@@ -71,7 +71,7 @@ export const FullCard: StoryObj = {
           onAdd={onAdd}
           onDelete={onDelete}
           onEdit={onEdit}
-          className="rounded-ds-2xl border border-surface-border-strong bg-surface-2 shadow-01"
+          className="rounded-ds-2xl border border-surface-border-strong bg-surface-raised shadow-raised"
         >
           <Scratchpad.Header title="My Scratchpad">
             <Scratchpad.FilterToggle />
@@ -125,7 +125,7 @@ export const WithDragReorder: StoryObj = {
           onAdd={onAdd}
           onDelete={onDelete}
           onReorder={onReorder}
-          className="rounded-ds-2xl border border-surface-border-strong bg-surface-2 shadow-01"
+          className="rounded-ds-2xl border border-surface-border-strong bg-surface-raised shadow-raised"
         >
           <Scratchpad.Header title="Reorderable">
             <Scratchpad.ProgressRing />
@@ -165,7 +165,7 @@ export const WithPromote: StoryObj = {
           onAdd={onAdd}
           onDelete={onDelete}
           onPromote={fn()}
-          className="rounded-ds-2xl border border-surface-border-strong bg-surface-2 shadow-01"
+          className="rounded-ds-2xl border border-surface-border-strong bg-surface-raised shadow-raised"
         >
           <Scratchpad.Header title="With Promote">
             <Scratchpad.ProgressRing />

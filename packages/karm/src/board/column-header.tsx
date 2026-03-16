@@ -381,7 +381,7 @@ export const ColumnHeader = React.forwardRef<HTMLDivElement, ColumnHeaderProps>(
                         'flex items-center justify-center h-6 w-6 rounded-ds-md transition-colors',
                         newOwnerId
                           ? 'text-accent-11 bg-accent-2'
-                          : 'text-surface-fg-subtle hover:text-surface-fg hover:bg-surface-4',
+                          : 'text-surface-fg-subtle hover:text-surface-fg hover:bg-surface-raised-active',
                       )}
                       title={newOwnerId
                         ? `Lead: ${allMembers.find((m) => m.id === newOwnerId)?.name}`
@@ -424,7 +424,7 @@ export const ColumnHeader = React.forwardRef<HTMLDivElement, ColumnHeaderProps>(
                     'relative flex items-center justify-center h-6 w-6 rounded-ds-md cursor-pointer transition-colors',
                     newDueDate
                       ? 'text-accent-11 bg-accent-2'
-                      : 'text-surface-fg-subtle hover:text-surface-fg hover:bg-surface-4',
+                      : 'text-surface-fg-subtle hover:text-surface-fg hover:bg-surface-raised-active',
                   )}
                   title={newDueDate ? `Due: ${newDueDate}` : 'Set due date'}
                   aria-label="Set due date"
@@ -460,7 +460,7 @@ export const ColumnHeader = React.forwardRef<HTMLDivElement, ColumnHeaderProps>(
                 {/* Cancel */}
                 <button
                   onClick={resetAddForm}
-                  className="flex items-center justify-center h-6 w-6 rounded-ds-md text-surface-fg-subtle hover:text-surface-fg hover:bg-surface-4 transition-colors"
+                  className="flex items-center justify-center h-6 w-6 rounded-ds-md text-surface-fg-subtle hover:text-surface-fg hover:bg-surface-raised-active transition-colors"
                   title="Cancel"
                   aria-label="Cancel adding task"
                 >

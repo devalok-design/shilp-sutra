@@ -56,8 +56,8 @@ export const ChatInput = React.forwardRef<HTMLDivElement, ChatInputProps>(
   )
 
   return (
-    <div ref={ref} className={cn("border-t border-surface-border-strong bg-surface-2 p-ds-04", className)} {...props}>
-      <div className="flex items-end gap-ds-03 rounded-ds-xl border border-surface-border-strong bg-surface-3 px-ds-04 py-ds-03">
+    <div ref={ref} className={cn("border-t border-surface-border-strong bg-surface-raised p-ds-04", className)} {...props}>
+      <div className="flex items-end gap-ds-03 rounded-ds-xl border border-surface-border-strong bg-surface-raised-hover px-ds-04 py-ds-03">
         <textarea
           ref={textareaRef}
           value={text}

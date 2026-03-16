@@ -58,20 +58,20 @@ const ScratchpadWidget = React.forwardRef<HTMLDivElement, ScratchpadWidgetProps>
         <div
           ref={ref}
           className={cn(
-            'flex flex-col gap-ds-04 rounded-ds-2xl border border-surface-border-strong bg-surface-2 shadow-01 p-ds-05b',
+            'flex flex-col gap-ds-04 rounded-ds-2xl border border-surface-border-strong bg-surface-raised shadow-raised p-ds-05b',
             className,
           )}
           {...props}
         >
           <div className="flex items-center justify-between">
-            <div className="h-4 w-28 animate-pulse rounded bg-surface-3" />
-            <div className="h-5 w-5 animate-pulse rounded-full bg-surface-3" />
+            <div className="h-4 w-28 animate-pulse rounded bg-surface-raised-hover" />
+            <div className="h-5 w-5 animate-pulse rounded-full bg-surface-raised-hover" />
           </div>
           {[1, 2, 3].map((i) => (
             <div key={i} className="flex items-center gap-ds-03">
-              <div className="h-ico-md w-ico-md shrink-0 animate-pulse rounded-ds-sm bg-surface-3" />
+              <div className="h-ico-md w-ico-md shrink-0 animate-pulse rounded-ds-sm bg-surface-raised-hover" />
               <div
-                className="h-4 animate-pulse rounded bg-surface-3"
+                className="h-4 animate-pulse rounded bg-surface-raised-hover"
                 style={{ width: `${50 + i * 12}%` }}
               />
             </div>
@@ -92,7 +92,7 @@ const ScratchpadWidget = React.forwardRef<HTMLDivElement, ScratchpadWidgetProps>
         onReorder={onReorder}
         onPromote={onPromote}
         className={cn(
-          'rounded-ds-2xl border border-surface-border-strong bg-surface-2 shadow-01',
+          'rounded-ds-2xl border border-surface-border-strong bg-surface-raised shadow-raised',
           className,
         )}
         {...props}

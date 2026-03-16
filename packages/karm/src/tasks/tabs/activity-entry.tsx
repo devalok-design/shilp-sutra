@@ -194,10 +194,10 @@ const ActivityEntry = React.forwardRef<HTMLDivElement, ActivityEntryProps>(
     return (
       <div ref={ref} className={cn('relative flex gap-ds-04 pl-0', className)} {...props}>
         {/* Dot on timeline */}
-        <div className="relative z-raised flex h-[22px] w-[22px] shrink-0 items-center justify-center rounded-ds-full bg-surface-1">
+        <div className="relative z-raised flex h-[22px] w-[22px] shrink-0 items-center justify-center rounded-ds-full bg-surface-base">
           <div
             className={cn(
-              'flex h-ico-md w-ico-md items-center justify-center rounded-ds-full bg-surface-2',
+              'flex h-ico-md w-ico-md items-center justify-center rounded-ds-full bg-surface-raised',
             )}
           >
             <Icon

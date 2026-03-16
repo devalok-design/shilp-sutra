@@ -57,13 +57,13 @@ const TaskAssigneePicker = React.forwardRef<HTMLDivElement, TaskAssigneePickerPr
         {value.map((member) => (
           <div
             key={member.id}
-            className="inline-flex items-center gap-ds-02 rounded-ds-full bg-surface-2 py-ds-01 pl-ds-01 pr-ds-03"
+            className="inline-flex items-center gap-ds-02 rounded-ds-full bg-surface-raised py-ds-01 pl-ds-01 pr-ds-03"
           >
             <Avatar className="h-ico-sm w-ico-sm">
               {member.image && (
                 <AvatarImage src={member.image} alt={member.name} />
               )}
-              <AvatarFallback className="bg-surface-3 text-ds-xs font-semibold text-surface-fg">
+              <AvatarFallback className="bg-surface-raised-hover text-ds-xs font-semibold text-surface-fg">
                 {getInitials(member.name)}
               </AvatarFallback>
             </Avatar>
@@ -74,7 +74,7 @@ const TaskAssigneePicker = React.forwardRef<HTMLDivElement, TaskAssigneePickerPr
               <button
                 type="button"
                 onClick={() => onUnassign(member.id)}
-                className="ml-ds-01 rounded-ds-full p-ds-01 transition-colors hover:bg-surface-3"
+                className="ml-ds-01 rounded-ds-full p-ds-01 transition-colors hover:bg-surface-raised-hover"
                 aria-label={`Remove ${member.name}`}
               >
                 <IconX className="h-ds-03 w-ds-03 text-surface-fg-subtle" />
@@ -91,7 +91,7 @@ const TaskAssigneePicker = React.forwardRef<HTMLDivElement, TaskAssigneePickerPr
           >
             <button
               type="button"
-              className="inline-flex h-ico-md w-ico-md items-center justify-center rounded-ds-full border border-dashed border-surface-border transition-colors hover:bg-surface-3 hover:border-surface-border"
+              className="inline-flex h-ico-md w-ico-md items-center justify-center rounded-ds-full border border-dashed border-surface-border transition-colors hover:bg-surface-raised-hover hover:border-surface-border"
               aria-label="Add assignee"
             >
               <IconPlus className="h-3 w-3 text-surface-fg-subtle" />

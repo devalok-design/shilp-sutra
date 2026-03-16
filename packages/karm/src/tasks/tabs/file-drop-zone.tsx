@@ -70,7 +70,7 @@ const FileDropZone = React.forwardRef<HTMLDivElement, FileDropZoneProps>(
         {...props}
       >
         <div className="flex flex-col items-center gap-ds-03 py-ds-06">
-          <div className="flex h-ds-sm-plus w-ds-sm-plus items-center justify-center rounded-ds-lg bg-surface-2">
+          <div className="flex h-ds-sm-plus w-ds-sm-plus items-center justify-center rounded-ds-lg bg-surface-raised">
             <IconUpload
               className="h-ico-sm w-ico-sm text-surface-fg-subtle"
               stroke={1.5}

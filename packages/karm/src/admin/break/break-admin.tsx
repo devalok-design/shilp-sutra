@@ -479,7 +479,7 @@ const BreakAdminRoot = React.forwardRef<HTMLDivElement, BreakAdminProps>(
               <>
                 <Header />
                 {/* intentional: min-w-[800px] ensures table columns don't collapse on medium screens */}
-                <div className="no-scrollbar flex h-fit min-w-[800px] flex-col border-t-[1px] border-surface-border bg-surface-2 shadow-transparent max-lg:min-w-[100%] max-lg:overflow-x-auto">
+                <div className="no-scrollbar flex h-fit min-w-[800px] flex-col border-t-[1px] border-surface-border bg-surface-raised shadow-transparent max-lg:min-w-[100%] max-lg:overflow-x-auto">
                   <TabBar />
                   <div className="w-full border-0 max-lg:min-w-[800px]">
                     <BreaksPanel />

@@ -39,7 +39,7 @@ const ProjectCard = React.forwardRef<HTMLDivElement, ProjectCardProps>(
       <div
         ref={ref}
         className={cn(
-          'group cursor-pointer rounded-ds-lg border border-surface-border bg-surface-2 p-ds-05b shadow-01 transition-all duration-200 hover:shadow-02 hover:scale-[1.01]',
+          'group cursor-pointer rounded-ds-lg border border-surface-border bg-surface-raised p-ds-05b shadow-raised transition-all duration-200 hover:shadow-raised-hover hover:scale-[1.01]',
           className,
         )}
         {...props}

@@ -41,7 +41,7 @@ const SubtaskItem = React.forwardRef<HTMLDivElement, SubtaskItemProps>(
         tabIndex={0}
         className={cn(
           'group flex items-center gap-ds-03 rounded-ds-lg px-ds-03 py-ds-02b transition-colors',
-          'hover:bg-surface-3 cursor-pointer',
+          'hover:bg-surface-raised-hover cursor-pointer',
           className,
         )}
         onClick={() => onClick?.(subtask.id)}
@@ -62,7 +62,7 @@ const SubtaskItem = React.forwardRef<HTMLDivElement, SubtaskItemProps>(
           }}
           className={cn(
             'shrink-0 rounded p-ds-01 transition-colors',
-            onToggle ? 'hover:bg-surface-3' : 'cursor-default',
+            onToggle ? 'hover:bg-surface-raised-hover' : 'cursor-default',
           )}
         >
           {isComplete ? (
@@ -98,7 +98,7 @@ const SubtaskItem = React.forwardRef<HTMLDivElement, SubtaskItemProps>(
             {firstAssignee.image && (
               <AvatarImage src={firstAssignee.image} alt={firstAssignee.name} />
             )}
-            <AvatarFallback className="bg-surface-3 text-ds-xs font-semibold text-surface-fg">
+            <AvatarFallback className="bg-surface-raised-hover text-ds-xs font-semibold text-surface-fg">
               {getInitials(firstAssignee.name)}
             </AvatarFallback>
           </Avatar>

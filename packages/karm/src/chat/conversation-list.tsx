@@ -50,7 +50,7 @@ export const ConversationList = React.forwardRef<HTMLDivElement, ConversationLis
         </h3>
         <button
           onClick={onNewChat}
-          className="flex items-center gap-ds-02b rounded-ds-lg px-ds-03 py-ds-02b text-surface-fg-muted transition-colors hover:bg-surface-3"
+          className="flex items-center gap-ds-02b rounded-ds-lg px-ds-03 py-ds-02b text-surface-fg-muted transition-colors hover:bg-surface-raised-hover"
         >
           <IconMessagePlus className="h-ico-sm w-ico-sm" />
           <span className="text-ds-sm">New Chat</span>
@@ -76,8 +76,8 @@ export const ConversationList = React.forwardRef<HTMLDivElement, ConversationLis
               <div
                 key={convo.id}
                 className={cn(
-                  'group flex items-center gap-ds-04 border-b border-surface-border px-ds-05 py-ds-04 transition-colors hover:bg-surface-3',
-                  activeConversationId === convo.id && 'bg-surface-3',
+                  'group flex items-center gap-ds-04 border-b border-surface-border px-ds-05 py-ds-04 transition-colors hover:bg-surface-raised-hover',
+                  activeConversationId === convo.id && 'bg-surface-raised-hover',
                 )}
               >
                 <button
@@ -100,7 +100,7 @@ export const ConversationList = React.forwardRef<HTMLDivElement, ConversationLis
                         e.stopPropagation()
                         onArchive(convo.id)
                       }}
-                      className="flex h-ds-xs-plus w-ds-xs-plus items-center justify-center rounded-ds-md text-surface-fg-subtle transition-colors hover:bg-surface-3 hover:text-surface-fg-muted"
+                      className="flex h-ds-xs-plus w-ds-xs-plus items-center justify-center rounded-ds-md text-surface-fg-subtle transition-colors hover:bg-surface-raised-hover hover:text-surface-fg-muted"
                       aria-label="Archive conversation"
                     >
                       <IconArchive className="h-ico-sm w-ico-sm" />

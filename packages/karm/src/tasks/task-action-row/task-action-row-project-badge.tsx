@@ -32,7 +32,7 @@ const TaskActionRowProjectBadge = React.forwardRef<HTMLSpanElement, TaskActionRo
         color="default"
         size="xs"
         onClick={handleClick}
-        className={cn(onClick && 'cursor-pointer hover:bg-surface-4 transition-colors duration-150')}
+        className={cn(onClick && 'cursor-pointer hover:bg-surface-raised-active transition-colors duration-150')}
       >
         {task.projectName}
       </Badge>

@@ -85,7 +85,7 @@ const AttendanceCTA = React.forwardRef<HTMLDivElement, AttendanceCTAProps>(
   // Marked state: compact strip
   if (isMarked && !isOnBreak) {
     return (
-      <div ref={ref} className={cn("relative overflow-hidden rounded-ds-2xl border border-surface-border-strong bg-surface-2 shadow-01", className)} {...props}>
+      <div ref={ref} className={cn("relative overflow-hidden rounded-ds-2xl border border-surface-border-strong bg-surface-raised shadow-raised", className)} {...props}>
         <div className="flex items-center justify-between px-ds-06 py-ds-05b sm:px-ds-07">
           <div className="flex flex-col gap-ds-02">
             <h2 className="text-ds-2xl text-surface-fg">
@@ -115,7 +115,7 @@ const AttendanceCTA = React.forwardRef<HTMLDivElement, AttendanceCTAProps>(
   // On Break state
   if (isOnBreak) {
     return (
-      <div ref={ref} className={cn("relative overflow-hidden rounded-ds-2xl border border-surface-border-strong bg-surface-2 shadow-01", className)} {...props}>
+      <div ref={ref} className={cn("relative overflow-hidden rounded-ds-2xl border border-surface-border-strong bg-surface-raised shadow-raised", className)} {...props}>
         <div className="flex items-center justify-between px-ds-06 py-ds-05b sm:px-ds-07">
           <div className="flex flex-col gap-ds-02">
             <h2 className="text-ds-2xl text-surface-fg">
@@ -143,7 +143,7 @@ const AttendanceCTA = React.forwardRef<HTMLDivElement, AttendanceCTAProps>(
   // Unmarked + cannot mark: attendance window closed
   if (!canMarkAttendance) {
     return (
-      <div ref={ref} className={cn("relative overflow-hidden rounded-ds-2xl border border-surface-border-strong bg-surface-2 shadow-01", className)} {...props}>
+      <div ref={ref} className={cn("relative overflow-hidden rounded-ds-2xl border border-surface-border-strong bg-surface-raised shadow-raised", className)} {...props}>
         <div className="flex items-center justify-between px-ds-06 py-ds-06 sm:px-ds-07 sm:py-ds-07">
           <div className="flex flex-col gap-ds-02b">
             <h2 className="text-ds-3xl text-surface-fg">
@@ -156,7 +156,7 @@ const AttendanceCTA = React.forwardRef<HTMLDivElement, AttendanceCTAProps>(
               {currentDate}
             </p>
           </div>
-          <div className="flex items-center gap-ds-03 rounded-ds-xl bg-surface-2 px-ds-05 py-ds-03">
+          <div className="flex items-center gap-ds-03 rounded-ds-xl bg-surface-raised px-ds-05 py-ds-03">
             <IconClock className="h-ico-sm w-ico-sm text-surface-fg-subtle" />
             <span className="text-ds-md text-surface-fg-subtle">
               Attendance window closed
@@ -189,7 +189,7 @@ const AttendanceCTA = React.forwardRef<HTMLDivElement, AttendanceCTAProps>(
           type="button"
           onClick={onMarkAttendance}
           disabled={isSubmitting}
-          className="flex items-center gap-ds-03 rounded-ds-xl bg-accent-9 px-ds-06 py-ds-04 font-semibold text-accent-fg shadow-02 transition-all duration-150 ease-out hover:-translate-y-0.5 hover:shadow-03 active:translate-y-0 active:scale-[0.98] disabled:opacity-action-disabled"
+          className="flex items-center gap-ds-03 rounded-ds-xl bg-accent-9 px-ds-06 py-ds-04 font-semibold text-accent-fg shadow-raised-hover transition-all duration-150 ease-out hover:-translate-y-0.5 hover:shadow-floating active:translate-y-0 active:scale-[0.98] disabled:opacity-action-disabled"
         >
           {isSubmitting ? 'Marking...' : 'Mark Attendance'}
           {!isSubmitting && (

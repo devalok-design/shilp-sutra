@@ -109,7 +109,7 @@ const meta: Meta<typeof TaskProperties> = {
   },
   decorators: [
     (Story) => (
-      <div className="w-[400px] rounded-ds-lg border border-surface-border-strong bg-surface-1 p-ds-04">
+      <div className="w-[400px] rounded-ds-lg border border-surface-border-strong bg-surface-overlay p-ds-04">
         <Story />
       </div>
     ),
@@ -180,7 +180,7 @@ export const AllPriorities: Story = {
   render: (args) => (
     <div className="space-y-ds-06">
       {(['LOW', 'MEDIUM', 'HIGH', 'URGENT'] as const).map((priority) => (
-        <div key={priority} className="rounded-ds-lg border border-surface-border-strong bg-surface-1 p-ds-04">
+        <div key={priority} className="rounded-ds-lg border border-surface-border-strong bg-surface-overlay p-ds-04">
           <p className="mb-ds-02 text-[11px] font-semibold uppercase tracking-wider text-surface-fg-subtle">
             {priority}
           </p>

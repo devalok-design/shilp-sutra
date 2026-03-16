@@ -80,7 +80,7 @@ export const EditBreakBalance = React.forwardRef<HTMLDivElement, EditBreakBalanc
       <DialogTrigger asChild>
         <Button
           variant="outline"
-          className="text-ds-base border-surface-border-strong bg-surface-1 px-ds-05 py-ds-04 pr-ds-06 text-surface-fg-muted shadow-02"
+          className="text-ds-base border-surface-border-strong bg-surface-overlay px-ds-05 py-ds-04 pr-ds-06 text-surface-fg-muted shadow-raised-hover"
         >
           <EditIcon />
           <span>Edit</span>

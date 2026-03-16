@@ -29,7 +29,7 @@ const WeekHeatmapRoot = React.forwardRef<HTMLDivElement, WeekHeatmapRootProps>(
         overdue={overdue}
         today={today}
       >
-        <div ref={ref} className={cn('flex flex-col gap-ds-04 rounded-ds-md border border-surface-border bg-surface-2 p-ds-04', className)} {...props}>
+        <div ref={ref} className={cn('flex flex-col gap-ds-04 rounded-ds-md border border-surface-border bg-surface-raised p-ds-04', className)} {...props}>
           {children}
         </div>
       </WeekHeatmapProvider>

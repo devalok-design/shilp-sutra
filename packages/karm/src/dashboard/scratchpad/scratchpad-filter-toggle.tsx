@@ -29,7 +29,7 @@ const ScratchpadFilterToggle = React.forwardRef<HTMLButtonElement, ScratchpadFil
         onClick={() => setShowCompleted(!showCompleted)}
         aria-label={showCompleted ? 'Hide completed' : 'Show completed'}
         className={cn(
-          'flex h-ico-md w-ico-md items-center justify-center rounded-ds-sm text-surface-fg-muted transition-colors hover:bg-surface-2 hover:text-surface-fg',
+          'flex h-ico-md w-ico-md items-center justify-center rounded-ds-sm text-surface-fg-muted transition-colors hover:bg-surface-raised hover:text-surface-fg',
           className,
         )}
         {...props}

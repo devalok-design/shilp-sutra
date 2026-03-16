@@ -44,7 +44,7 @@ export const BreakBalance = React.forwardRef<HTMLDivElement, BreakBalanceProps>(
         {breakBalanceData.map((breakItem) => (
           <div
             key={breakItem.id}
-            className="flex w-full flex-row items-center justify-start gap-ds-03 !border-0 text-left transition-colors duration-fast-01 hover:bg-surface-3"
+            className="flex w-full flex-row items-center justify-start gap-ds-03 !border-0 text-left transition-colors duration-fast-01 hover:bg-surface-raised-hover"
           >
             <div className="flex w-1/6 min-w-[120px] items-center gap-ds-03 p-ds-04">
               <Avatar className="h-ds-xs-plus w-ds-xs-plus">

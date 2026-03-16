@@ -97,7 +97,7 @@ const ChatPanel = React.forwardRef<HTMLDivElement, ChatPanelProps>(
         ref={ref}
         side="right"
         /* intentional: chat panel capped at 480px to prevent oversized side panel */
-        className={cn("flex w-full flex-col gap-0 border-l border-surface-border-strong bg-surface-2 p-0 sm:max-w-[480px] [&>button]:hidden", className)}
+        className={cn("flex w-full flex-col gap-0 border-l border-surface-border-strong bg-surface-raised p-0 sm:max-w-[480px] [&>button]:hidden", className)}
         {...props}
       >
         <SheetTitle className="sr-only">AI Chat</SheetTitle>
@@ -109,7 +109,7 @@ const ChatPanel = React.forwardRef<HTMLDivElement, ChatPanelProps>(
             <DropdownMenu>
               <DropdownMenuTrigger asChild>
                 <button
-                  className="flex items-center gap-ds-02b rounded-ds-lg px-ds-03 py-ds-02b transition-colors hover:bg-surface-3"
+                  className="flex items-center gap-ds-02b rounded-ds-lg px-ds-03 py-ds-02b transition-colors hover:bg-surface-raised-hover"
                 >
                   <span className="text-ds-base text-surface-fg">
                     {selectedAgent?.name}
@@ -127,7 +127,7 @@ const ChatPanel = React.forwardRef<HTMLDivElement, ChatPanelProps>(
                     onClick={() => onSelectAgent?.(agent.id)}
                     className={
                       selectedAgentId === agent.id
-                        ? 'bg-surface-3'
+                        ? 'bg-surface-raised-hover'
                         : ''
                     }
                   >
@@ -151,7 +151,7 @@ const ChatPanel = React.forwardRef<HTMLDivElement, ChatPanelProps>(
               onStartNewChat?.()
               setShowHistory(false)
             }}
-            className="flex h-ds-sm w-ds-sm items-center justify-center rounded-ds-lg text-surface-fg-muted transition-colors hover:bg-surface-3"
+            className="flex h-ds-sm w-ds-sm items-center justify-center rounded-ds-lg text-surface-fg-muted transition-colors hover:bg-surface-raised-hover"
             aria-label="New chat"
           >
             <IconMessagePlus className="h-ico-sm w-ico-sm" />
@@ -161,9 +161,9 @@ const ChatPanel = React.forwardRef<HTMLDivElement, ChatPanelProps>(
           <button
             onClick={() => setShowHistory(!showHistory)}
             className={cn(
-              'flex h-ds-sm w-ds-sm items-center justify-center rounded-ds-lg transition-colors hover:bg-surface-3',
+              'flex h-ds-sm w-ds-sm items-center justify-center rounded-ds-lg transition-colors hover:bg-surface-raised-hover',
               showHistory
-                ? 'bg-surface-3 text-surface-fg'
+                ? 'bg-surface-raised-hover text-surface-fg'
                 : 'text-surface-fg-muted',
             )}
             aria-label="Conversation history"
@@ -174,7 +174,7 @@ const ChatPanel = React.forwardRef<HTMLDivElement, ChatPanelProps>(
           {/* Close */}
           <button
             onClick={() => onOpenChange(false)}
-            className="flex h-ds-sm w-ds-sm items-center justify-center rounded-ds-lg text-surface-fg-muted transition-colors hover:bg-surface-3"
+            className="flex h-ds-sm w-ds-sm items-center justify-center rounded-ds-lg text-surface-fg-muted transition-colors hover:bg-surface-raised-hover"
             aria-label="Close chat"
           >
             <IconX className="h-ico-sm w-ico-sm" />

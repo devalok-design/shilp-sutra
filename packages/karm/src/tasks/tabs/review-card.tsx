@@ -47,7 +47,7 @@ const ReviewCard = React.forwardRef<HTMLDivElement, ReviewCardProps>(
       <div
         ref={ref}
         className={cn(
-          'rounded-ds-lg border border-surface-border-strong bg-surface-2 shadow-01 p-ds-04',
+          'rounded-ds-lg border border-surface-border-strong bg-surface-raised shadow-raised p-ds-04',
           className,
         )}
         {...props}
@@ -61,7 +61,7 @@ const ReviewCard = React.forwardRef<HTMLDivElement, ReviewCardProps>(
                 alt={review.reviewer.name}
               />
             )}
-            <AvatarFallback className="bg-surface-3 text-ds-xs font-semibold text-surface-fg">
+            <AvatarFallback className="bg-surface-raised-hover text-ds-xs font-semibold text-surface-fg">
               {getInitials(review.reviewer.name)}
             </AvatarFallback>
           </Avatar>
@@ -82,7 +82,7 @@ const ReviewCard = React.forwardRef<HTMLDivElement, ReviewCardProps>(
 
         {/* Feedback */}
         {review.feedback && (
-          <div className="mt-ds-03 rounded-ds-md bg-surface-2 px-ds-04 py-ds-03">
+          <div className="mt-ds-03 rounded-ds-md bg-surface-raised px-ds-04 py-ds-03">
             <p className="text-ds-sm text-surface-fg-muted">
               {review.feedback}
             </p>

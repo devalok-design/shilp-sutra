@@ -84,7 +84,7 @@ export const DashboardHeader = React.forwardRef<HTMLDivElement, DashboardHeaderP
                 className={cn('p-0', index !== yearsList.length - 1 ? 'border-b border-b-surface-border' : '')}
               >
                 <span
-                  className={cn('w-full py-ds-04 pl-ds-05 pr-ds-06', selectedMonth === year ? 'text-ds-md font-semibold bg-accent-9 text-accent-fg' : 'text-ds-md text-surface-fg-muted hover:bg-surface-2', index === 0 ? 'rounded-t-[7px]' : index === yearsList.length - 1 ? 'rounded-b-[7px]' : '')}
+                  className={cn('w-full py-ds-04 pl-ds-05 pr-ds-06', selectedMonth === year ? 'text-ds-md font-semibold bg-accent-9 text-accent-fg' : 'text-ds-md text-surface-fg-muted hover:bg-surface-raised', index === 0 ? 'rounded-t-[7px]' : index === yearsList.length - 1 ? 'rounded-b-[7px]' : '')}
                 >
                   {year.split(' ')[1]}
                 </span>
@@ -113,7 +113,7 @@ export const DashboardHeader = React.forwardRef<HTMLDivElement, DashboardHeaderP
                     className="h-ico-md w-ico-md rounded-ds-full"
                   />
                 ) : (
-                  <div className="flex h-ico-md w-ico-md flex-shrink-0 items-center justify-center rounded-ds-full bg-surface-3">
+                  <div className="flex h-ico-md w-ico-md flex-shrink-0 items-center justify-center rounded-ds-full bg-surface-raised-hover">
                     <span className="text-accent-11">
                       {selectedAssociate.name.charAt(0)}
                     </span>
@@ -134,7 +134,7 @@ export const DashboardHeader = React.forwardRef<HTMLDivElement, DashboardHeaderP
             </div>
           ) : (
             <DropdownMenu>
-              <DropdownMenuTrigger className="text-ds-md hidden items-center justify-between rounded-ds-md border border-surface-border bg-surface-1 px-ds-03 py-ds-02b md:flex">
+              <DropdownMenuTrigger className="text-ds-md hidden items-center justify-between rounded-ds-md border border-surface-border bg-surface-base px-ds-03 py-ds-02b md:flex">
                 <div className="flex items-center">
                   <PersonIcon className="h-ico-md w-ico-md" />
                   <span className="text-ds-md ml-ds-01 mr-ds-02 text-surface-fg-muted max-lg:mx-0 max-lg:text-ds-sm">
@@ -168,7 +168,7 @@ export const DashboardHeader = React.forwardRef<HTMLDivElement, DashboardHeaderP
                           className="h-ds-xs w-ds-xs rounded-ds-full"
                         />
                       ) : (
-                        <div className="flex h-ds-xs w-ds-xs items-center justify-center rounded-ds-full bg-surface-3">
+                        <div className="flex h-ds-xs w-ds-xs items-center justify-center rounded-ds-full bg-surface-raised-hover">
                           <span className="text-ds-md text-accent-11">
                             {user.name.charAt(0)}
                           </span>

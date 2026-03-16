@@ -71,7 +71,7 @@ export const MessageList = React.forwardRef<HTMLDivElement, MessageListProps>(
     return (
       <div ref={forwardedRef} className={cn("flex flex-1 items-center justify-center p-ds-06", className)} {...props}>
         <div className="flex flex-col items-center gap-ds-04 text-center">
-          <div className="flex h-ds-lg w-ds-lg items-center justify-center rounded-ds-full bg-surface-3">
+          <div className="flex h-ds-lg w-ds-lg items-center justify-center rounded-ds-full bg-surface-raised-hover">
             <IconRobot className="h-ico-lg w-ico-lg text-surface-fg-muted" />
           </div>
           <h3 className="text-ds-base text-surface-fg">
@@ -122,7 +122,7 @@ export const MessageList = React.forwardRef<HTMLDivElement, MessageListProps>(
                   <div className="rounded-ds-2xl rounded-br-ds-sm bg-accent-9 px-ds-04 py-ds-03 text-accent-fg">
                     <p className="text-ds-md whitespace-pre-wrap">{msg.content}</p>
                   </div>
-                  <div className="flex h-ds-xs-plus w-ds-xs-plus shrink-0 items-center justify-center rounded-ds-full bg-surface-3">
+                  <div className="flex h-ds-xs-plus w-ds-xs-plus shrink-0 items-center justify-center rounded-ds-full bg-surface-raised-hover">
                     <IconUser className="h-ico-sm w-ico-sm text-surface-fg-muted" />
                   </div>
                 </div>
@@ -140,10 +140,10 @@ export const MessageList = React.forwardRef<HTMLDivElement, MessageListProps>(
               className="flex justify-start"
             >
               <div className="flex max-w-[85%] items-start gap-ds-03">
-                <div className="flex h-ds-xs-plus w-ds-xs-plus shrink-0 items-center justify-center rounded-ds-full bg-surface-3">
+                <div className="flex h-ds-xs-plus w-ds-xs-plus shrink-0 items-center justify-center rounded-ds-full bg-surface-raised-hover">
                   <IconRobot className="h-ico-sm w-ico-sm text-surface-fg-muted" />
                 </div>
-                <div className="rounded-ds-2xl rounded-bl-ds-sm bg-surface-3 px-ds-04 py-ds-03">
+                <div className="rounded-ds-2xl rounded-bl-ds-sm bg-surface-raised-hover px-ds-04 py-ds-03">
                   <div className="text-ds-md text-surface-fg">
                     <ReactMarkdown components={markdownComponents}>
                       {msg.content}
@@ -165,10 +165,10 @@ export const MessageList = React.forwardRef<HTMLDivElement, MessageListProps>(
             className="flex justify-start"
           >
             <div className="flex max-w-[85%] items-start gap-ds-03">
-              <div className="flex h-ds-xs-plus w-ds-xs-plus shrink-0 items-center justify-center rounded-ds-full bg-surface-3">
+              <div className="flex h-ds-xs-plus w-ds-xs-plus shrink-0 items-center justify-center rounded-ds-full bg-surface-raised-hover">
                 <IconRobot className="h-ico-sm w-ico-sm text-surface-fg-muted" />
               </div>
-              <div className="rounded-ds-2xl rounded-bl-ds-sm bg-surface-3 px-ds-04 py-ds-03">
+              <div className="rounded-ds-2xl rounded-bl-ds-sm bg-surface-raised-hover px-ds-04 py-ds-03">
                 <div className="text-ds-md text-surface-fg">
                   <StreamingText text={streamingText} />
                 </div>
@@ -187,10 +187,10 @@ export const MessageList = React.forwardRef<HTMLDivElement, MessageListProps>(
             className="flex justify-start"
           >
             <div className="flex max-w-[85%] items-start gap-ds-03">
-              <div className="flex h-ds-xs-plus w-ds-xs-plus shrink-0 items-center justify-center rounded-ds-full bg-surface-3">
+              <div className="flex h-ds-xs-plus w-ds-xs-plus shrink-0 items-center justify-center rounded-ds-full bg-surface-raised-hover">
                 <IconRobot className="h-ico-sm w-ico-sm text-surface-fg-muted" />
               </div>
-              <div className="rounded-ds-2xl rounded-bl-ds-sm bg-surface-3 px-ds-04 py-ds-03">
+              <div className="rounded-ds-2xl rounded-bl-ds-sm bg-surface-raised-hover px-ds-04 py-ds-03">
                 <div className="flex items-center gap-ds-02b py-ds-02">
                   {[0, 1, 2].map((i) => (
                     <motion.span

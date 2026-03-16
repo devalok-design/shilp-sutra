@@ -35,7 +35,7 @@ const ReviewRequestButton = React.forwardRef<HTMLDivElement, ReviewRequestButton
         >
           <button
             type="button"
-            className="mt-ds-04 inline-flex items-center gap-ds-02b rounded-ds-lg px-ds-03 py-ds-02b text-ds-md text-surface-fg-subtle transition-colors hover:bg-surface-3 hover:text-surface-fg-muted"
+            className="mt-ds-04 inline-flex items-center gap-ds-02b rounded-ds-lg px-ds-03 py-ds-02b text-ds-md text-surface-fg-subtle transition-colors hover:bg-surface-raised-hover hover:text-surface-fg-muted"
           >
             <IconPlus className="h-ico-sm w-ico-sm" stroke={1.5} />
             Request Review

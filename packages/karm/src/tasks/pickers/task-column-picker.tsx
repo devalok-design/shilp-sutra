@@ -48,7 +48,7 @@ const TaskColumnPicker = React.forwardRef<HTMLButtonElement, TaskColumnPickerPro
             ref={ref}
             type="button"
             className={cn(
-              'inline-flex items-center gap-ds-02b rounded-ds-md px-ds-03 py-ds-02 text-ds-md text-surface-fg transition-colors hover:bg-surface-3',
+              'inline-flex items-center gap-ds-02b rounded-ds-md px-ds-03 py-ds-02 text-ds-md text-surface-fg transition-colors hover:bg-surface-raised-hover',
               className,
             )}
           >
@@ -57,7 +57,7 @@ const TaskColumnPicker = React.forwardRef<HTMLButtonElement, TaskColumnPickerPro
           </button>
         </PopoverTrigger>
         <PopoverContent
-          className="w-[180px] border-surface-border-strong bg-surface-1 p-ds-02"
+          className="w-[180px] border-surface-border-strong bg-surface-overlay p-ds-02"
           align="start"
           sideOffset={4}
         >
@@ -71,7 +71,7 @@ const TaskColumnPicker = React.forwardRef<HTMLButtonElement, TaskColumnPickerPro
               }}
               className={cn(
                 'flex w-full items-center gap-ds-03 rounded-ds-md px-ds-03 py-ds-02b text-left text-ds-md transition-colors',
-                'hover:bg-surface-3',
+                'hover:bg-surface-raised-hover',
                 col.id === value ? 'text-accent-11' : 'text-surface-fg',
               )}
             >

@@ -59,16 +59,16 @@ const DailyBrief = React.forwardRef<HTMLDivElement, DailyBriefProps>(
   // Shimmer skeleton while loading
   if (loading && !data) {
     return (
-      <div ref={ref} className={cn('flex flex-col gap-ds-04 rounded-ds-2xl border border-surface-border-strong bg-surface-2 shadow-01 p-ds-05b', className)} {...props}>
+      <div ref={ref} className={cn('flex flex-col gap-ds-04 rounded-ds-2xl border border-surface-border-strong bg-surface-raised shadow-raised p-ds-05b', className)} {...props}>
         <div className="flex items-center gap-ds-03">
-          <div className="h-ico-sm w-ico-sm animate-pulse rounded bg-surface-3" />
-          <div className="h-4 w-24 animate-pulse rounded bg-surface-3" />
+          <div className="h-ico-sm w-ico-sm animate-pulse rounded bg-surface-raised-hover" />
+          <div className="h-4 w-24 animate-pulse rounded bg-surface-raised-hover" />
         </div>
         {[1, 2, 3].map((i) => (
           <div key={i} className="flex items-start gap-ds-04">
-            <div className="mt-ds-02b h-2 w-2 shrink-0 animate-pulse rounded-ds-full bg-surface-3" />
+            <div className="mt-ds-02b h-2 w-2 shrink-0 animate-pulse rounded-ds-full bg-surface-raised-hover" />
             <div
-              className="h-4 animate-pulse rounded bg-surface-3"
+              className="h-4 animate-pulse rounded bg-surface-raised-hover"
               style={{ width: `${60 + i * 10}%` }}
             />
           </div>
@@ -79,7 +79,7 @@ const DailyBrief = React.forwardRef<HTMLDivElement, DailyBriefProps>(
 
   if (unavailable) {
     return (
-      <div ref={ref} className={cn('flex items-center gap-ds-03 rounded-ds-2xl border border-surface-border-strong bg-surface-2 shadow-01 px-ds-05b py-ds-05', className)} {...props}>
+      <div ref={ref} className={cn('flex items-center gap-ds-03 rounded-ds-2xl border border-surface-border-strong bg-surface-raised shadow-raised px-ds-05b py-ds-05', className)} {...props}>
         <IconSparkles className="h-ico-sm w-ico-sm text-surface-fg-subtle" />
         <span className="text-ds-sm text-surface-fg-subtle">AI brief unavailable</span>
       </div>
@@ -91,7 +91,7 @@ const DailyBrief = React.forwardRef<HTMLDivElement, DailyBriefProps>(
   const showContent = !collapsible || !collapsed
 
   return (
-    <div ref={ref} className={cn('flex flex-col rounded-ds-2xl border border-surface-border-strong bg-surface-2 shadow-01', className)} {...props}>
+    <div ref={ref} className={cn('flex flex-col rounded-ds-2xl border border-surface-border-strong bg-surface-raised shadow-raised', className)} {...props}>
       <div className="flex items-center justify-between px-ds-05b py-ds-05">
         {collapsible ? (
           <button
@@ -126,7 +126,7 @@ const DailyBrief = React.forwardRef<HTMLDivElement, DailyBriefProps>(
               type="button"
               onClick={onRefresh}
               aria-label="Refresh brief"
-              className="p-1.5 rounded hover:bg-surface-3 transition-colors"
+              className="p-1.5 rounded hover:bg-surface-raised-hover transition-colors"
             >
               <IconRefresh className={cn('h-ico-sm w-ico-sm text-surface-fg-subtle', loading && 'animate-spin')} />
             </button>
@@ -149,7 +149,7 @@ const DailyBrief = React.forwardRef<HTMLDivElement, DailyBriefProps>(
                   <div
                     className={cn('mt-ds-02b h-2 w-2 shrink-0 rounded-ds-full', DOT_COLORS[index % DOT_COLORS.length])}
                   />
-                  <div className="text-ds-md text-surface-fg-muted [&_p]:mb-0 [&_strong]:font-semibold [&_code]:rounded [&_code]:bg-surface-3 [&_code]:px-1 [&_code]:py-ds-01 [&_code]:text-ds-sm [&_a]:text-accent-11 [&_a]:underline">
+                  <div className="text-ds-md text-surface-fg-muted [&_p]:mb-0 [&_strong]:font-semibold [&_code]:rounded [&_code]:bg-surface-raised-hover [&_code]:px-1 [&_code]:py-ds-01 [&_code]:text-ds-sm [&_a]:text-accent-11 [&_a]:underline">
                     <ReactMarkdown components={markdownComponents}>{item}</ReactMarkdown>
                   </div>
                 </div>

@@ -393,7 +393,7 @@ export const EditBreak = React.forwardRef<HTMLDivElement, EditBreakProps>(functi
       <DialogTrigger asChild>
         <Button
           variant="outline"
-          className="text-ds-base border-surface-border-strong bg-surface-1 px-ds-05 py-ds-04 pr-ds-06 text-surface-fg-muted shadow-02"
+          className="text-ds-base border-surface-border-strong bg-surface-overlay px-ds-05 py-ds-04 pr-ds-06 text-surface-fg-muted shadow-raised-hover"
         >
           <EditIcon />
           <span>Edit</span>
@@ -430,7 +430,7 @@ export const EditBreak = React.forwardRef<HTMLDivElement, EditBreakProps>(functi
                     type="button"
                     onClick={() => handleOpenCalendar('start')}
                     className={cn(
-                      'text-ds-md flex w-full items-center justify-center gap-ds-03 rounded-ds-full border bg-surface-2 px-ds-03 py-ds-03 text-surface-fg-muted max-md:text-ds-sm',
+                      'text-ds-md flex w-full items-center justify-center gap-ds-03 rounded-ds-full border bg-surface-raised px-ds-03 py-ds-03 text-surface-fg-muted max-md:text-ds-sm',
                       picker.showCalendar && picker.activeDate === 'start' ? 'border-surface-border-strong' : 'border-surface-border-strong',
                     )}
                   >
@@ -443,7 +443,7 @@ export const EditBreak = React.forwardRef<HTMLDivElement, EditBreakProps>(functi
                     type="button"
                     onClick={() => handleOpenCalendar('end')}
                     className={cn(
-                      'text-ds-md flex w-full items-center justify-center gap-ds-03 rounded-ds-full border bg-surface-2 px-ds-03 py-ds-03 text-surface-fg-muted max-md:text-ds-sm',
+                      'text-ds-md flex w-full items-center justify-center gap-ds-03 rounded-ds-full border bg-surface-raised px-ds-03 py-ds-03 text-surface-fg-muted max-md:text-ds-sm',
                       picker.showCalendar && picker.activeDate === 'end' ? 'border-surface-border-strong' : 'border-surface-border-strong',
                     )}
                   >
@@ -458,7 +458,7 @@ export const EditBreak = React.forwardRef<HTMLDivElement, EditBreakProps>(functi
                     <div className="flex items-center justify-between">
                       <button
                         type="button"
-                        className="rounded-ds-full p-ds-03 hover:bg-surface-4"
+                        className="rounded-ds-full p-ds-03 hover:bg-surface-raised-active"
                         onClick={() => picker.navigateMonth('prev')}
                       >
                         <IconChevronLeft className="h-ico-md w-ico-md" />
@@ -474,7 +474,7 @@ export const EditBreak = React.forwardRef<HTMLDivElement, EditBreakProps>(functi
                       </div>
                       <button
                         type="button"
-                        className="rounded-ds-full p-ds-03 hover:bg-surface-4"
+                        className="rounded-ds-full p-ds-03 hover:bg-surface-raised-active"
                         onClick={() => picker.navigateMonth('next')}
                       >
                         <IconChevronRight className="h-ico-md w-ico-md" />
@@ -574,9 +574,9 @@ export const EditBreak = React.forwardRef<HTMLDivElement, EditBreakProps>(functi
                       <ArrowDownIcon />
                     </button>
                     {showStatusOptions && (
-                      <div className="text-ds-base absolute left-[10px] top-[25px] z-raised flex flex-col overflow-hidden rounded-ds-md border border-surface-border-strong bg-surface-1 shadow-02" role="listbox">
+                      <div className="text-ds-base absolute left-[10px] top-[25px] z-raised flex flex-col overflow-hidden rounded-ds-md border border-surface-border-strong bg-surface-overlay shadow-raised-hover" role="listbox">
                         <div
-                          className="cursor-pointer border-b border-b-surface-border bg-surface-1 px-ds-04 py-ds-03 text-left"
+                          className="cursor-pointer border-b border-b-surface-border bg-surface-overlay px-ds-04 py-ds-03 text-left"
                           role="option"
                           tabIndex={0}
                           aria-selected={formData.status === 'APPROVED'}
@@ -586,7 +586,7 @@ export const EditBreak = React.forwardRef<HTMLDivElement, EditBreakProps>(functi
                           {renderStatus('APPROVED')}
                         </div>
                         <div
-                          className="cursor-pointer bg-surface-1 px-ds-04 py-ds-03 text-left"
+                          className="cursor-pointer bg-surface-overlay px-ds-04 py-ds-03 text-left"
                           role="option"
                           tabIndex={0}
                           aria-selected={formData.status === 'REJECTED'}

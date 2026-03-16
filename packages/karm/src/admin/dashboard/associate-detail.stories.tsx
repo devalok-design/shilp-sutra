@@ -125,7 +125,7 @@ const meta = {
   },
   decorators: [
     (Story) => (
-      <div className="w-[720px] rounded-ds-lg border border-surface-border-strong bg-surface-1">
+      <div className="w-[720px] rounded-ds-lg border border-surface-border-strong bg-surface-overlay">
         <Story />
       </div>
     ),

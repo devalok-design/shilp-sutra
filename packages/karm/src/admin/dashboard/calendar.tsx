@@ -108,14 +108,14 @@ export const Calendar = React.forwardRef<HTMLDivElement, CalendarProps>(
             <button
               aria-label="Previous"
               onClick={() => handleDateChange('prev')}
-              className="rounded-ds-full p-ds-02 hover:bg-surface-3"
+              className="rounded-ds-full p-ds-02 hover:bg-surface-raised-hover"
             >
               <ArrowLeftIcon className="h-ico-md w-ico-md text-surface-fg-muted" />
             </button>
             <button
               aria-label="Next"
               onClick={() => handleDateChange('next')}
-              className="rounded-ds-full p-ds-02 hover:bg-surface-3"
+              className="rounded-ds-full p-ds-02 hover:bg-surface-raised-hover"
             >
               <ArrowForwardIcon className="h-ico-md w-ico-md text-surface-fg-muted" />
             </button>
@@ -150,7 +150,7 @@ export const Calendar = React.forwardRef<HTMLDivElement, CalendarProps>(
                 ? 'w-full rounded-t-ds-lg pb-ds-04 pt-ds-05'
                 : 'pb-0 pt-0',
               'flex cursor-pointer flex-col items-center text-center',
-              cal.activeTimeFrame === 'weekly' && cal.activeIndex === index && 'bg-surface-2',
+              cal.activeTimeFrame === 'weekly' && cal.activeIndex === index && 'bg-surface-raised',
               day.isPadding && 'opacity-50',
             )}
             onClick={() => handleDayClick(index, day.fullDate)}
@@ -175,7 +175,7 @@ export const Calendar = React.forwardRef<HTMLDivElement, CalendarProps>(
                   day.isToday
                     ? 'bg-accent-10 p-ds-03 text-accent-fg'
                     : 'text-surface-fg-muted',
-                  day.isActive && !day.isToday && 'bg-surface-3',
+                  day.isActive && !day.isToday && 'bg-surface-raised-hover',
                 )}
               >
                 {day.date}

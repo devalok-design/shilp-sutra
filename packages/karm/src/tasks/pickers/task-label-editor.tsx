@@ -117,7 +117,7 @@ const TaskLabelEditor = React.forwardRef<HTMLDivElement, TaskLabelEditorProps>(
                 <button
                   type="button"
                   onClick={() => removeLabel(label)}
-                  className="rounded-ds-full p-ds-01 transition-colors hover:bg-surface-3"
+                  className="rounded-ds-full p-ds-01 transition-colors hover:bg-surface-raised-hover"
                   aria-label={`Remove label ${label}`}
                 >
                   <IconX className="h-ds-03 w-ds-03" />
@@ -162,7 +162,7 @@ const TaskLabelEditor = React.forwardRef<HTMLDivElement, TaskLabelEditorProps>(
               </PopoverTrigger>
               {suggestions.length > 0 && (
                 <PopoverContent
-                  className="w-[180px] border-surface-border-strong bg-surface-1 p-ds-02"
+                  className="w-[180px] border-surface-border-strong bg-surface-overlay p-ds-02"
                   align="start"
                   sideOffset={4}
                   onOpenAutoFocus={(e) => e.preventDefault()}
@@ -176,7 +176,7 @@ const TaskLabelEditor = React.forwardRef<HTMLDivElement, TaskLabelEditorProps>(
                         skipBlurRef.current = true
                         addLabel(opt.name)
                       }}
-                      className="flex w-full items-center gap-ds-03 rounded-ds-md px-ds-03 py-ds-02b text-left text-ds-sm transition-colors hover:bg-surface-3"
+                      className="flex w-full items-center gap-ds-03 rounded-ds-md px-ds-03 py-ds-02b text-left text-ds-sm transition-colors hover:bg-surface-raised-hover"
                     >
                       {opt.color && (
                         <span
@@ -194,7 +194,7 @@ const TaskLabelEditor = React.forwardRef<HTMLDivElement, TaskLabelEditorProps>(
             <button
               type="button"
               onClick={() => setShowInput(true)}
-              className="inline-flex h-ico-md w-ico-md items-center justify-center rounded-ds-full border border-dashed border-surface-border transition-colors hover:bg-surface-3 hover:border-surface-border"
+              className="inline-flex h-ico-md w-ico-md items-center justify-center rounded-ds-full border border-dashed border-surface-border transition-colors hover:bg-surface-raised-hover hover:border-surface-border"
               aria-label="Add label"
             >
               <IconPlus className="h-3 w-3 text-surface-fg-subtle" />

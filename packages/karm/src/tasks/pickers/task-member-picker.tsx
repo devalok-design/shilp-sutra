@@ -56,7 +56,7 @@ const TaskMemberPicker = React.forwardRef<HTMLButtonElement, TaskMemberPickerPro
                 {selectedMember.image && (
                   <AvatarImage src={selectedMember.image} alt={selectedMember.name} />
                 )}
-                <AvatarFallback className="bg-surface-3 text-ds-xs font-semibold text-surface-fg">
+                <AvatarFallback className="bg-surface-raised-hover text-ds-xs font-semibold text-surface-fg">
                   {getInitials(selectedMember.name)}
                 </AvatarFallback>
               </Avatar>
@@ -79,7 +79,7 @@ const TaskMemberPicker = React.forwardRef<HTMLButtonElement, TaskMemberPickerPro
           ref={ref}
           type="button"
           className={cn(
-            'inline-flex items-center gap-ds-03 rounded-ds-md px-ds-03 py-ds-02 transition-colors hover:bg-surface-3',
+            'inline-flex items-center gap-ds-03 rounded-ds-md px-ds-03 py-ds-02 transition-colors hover:bg-surface-raised-hover',
             className,
           )}
         >
@@ -89,7 +89,7 @@ const TaskMemberPicker = React.forwardRef<HTMLButtonElement, TaskMemberPickerPro
                 {selectedMember.image && (
                   <AvatarImage src={selectedMember.image} alt={selectedMember.name} />
                 )}
-                <AvatarFallback className="bg-surface-3 text-ds-xs font-semibold text-surface-fg">
+                <AvatarFallback className="bg-surface-raised-hover text-ds-xs font-semibold text-surface-fg">
                   {getInitials(selectedMember.name)}
                 </AvatarFallback>
               </Avatar>

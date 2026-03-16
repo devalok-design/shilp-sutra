@@ -196,7 +196,7 @@ const AdminDashboardRoot = React.forwardRef<
         className={cn("flex w-full max-w-layout flex-col items-center justify-center max-md:h-[100%] max-md:justify-start", className)}
         {...props}
       >
-        <div className="z-raised flex w-full flex-col items-start justify-start rounded-ds-lg border border-surface-border-strong bg-surface-2 p-ds-05 shadow-05 max-md:flex-1 max-md:min-h-0 max-md:overflow-y-auto max-md:border-0 max-md:px-ds-05 max-md:pb-0 max-md:pt-ds-06">
+        <div className="z-raised flex w-full flex-col items-start justify-start rounded-ds-lg border border-surface-border-strong bg-surface-raised p-ds-05 shadow-overlay max-md:flex-1 max-md:min-h-0 max-md:overflow-y-auto max-md:border-0 max-md:px-ds-05 max-md:pb-0 max-md:pt-ds-06">
           {children}
         </div>
       </div>
@@ -351,7 +351,7 @@ const AdminDashboardCalendar = React.forwardRef<
               cal.activeTimeFrame === 'weekly' && cal.activeIndex === index
                 ? selectedUserAttendance?.status === 'BREAK'
                   ? 'bg-accent-2'
-                  : 'bg-surface-2'
+                  : 'bg-surface-raised'
                 : '',
               day.isPadding && 'opacity-50',
             )}
@@ -609,7 +609,7 @@ const AdminDashboardLeaveRequests = React.forwardRef<
 
   return (
     <div ref={ref} className={cn("w-full p-0 md:p-ds-06", className)} {...props}>
-      <div className="max-md:pt-[16px] flex flex-col items-start overflow-hidden rounded-ds-lg border-0 border-surface-border bg-surface-2 shadow-01 pt-ds-03 md:border max-md:pb-0">
+      <div className="max-md:pt-[16px] flex flex-col items-start overflow-hidden rounded-ds-lg border-0 border-surface-border bg-surface-raised shadow-raised pt-ds-03 md:border max-md:pb-0">
         <div className="flex w-full items-start border-b-[1px] border-b-surface-border px-ds-06 md:border-b max-md:border-0 max-md:px-0">
           {requests.length > 0 && (
             <button
@@ -695,7 +695,7 @@ const AdminDashboardContent = React.forwardRef<
     <div
       ref={ref}
       className={cn(
-        'flex w-full flex-col rounded-ds-lg bg-surface-2 md:p-ds-06 max-md:bg-transparent',
+        'flex w-full flex-col rounded-ds-lg bg-surface-raised md:p-ds-06 max-md:bg-transparent',
         {
           'rounded-ds-lg': !_isFirstDate && !_isLastDate,
           'rounded-ds-lg rounded-tl-none': _isFirstDate && !_isLastDate,

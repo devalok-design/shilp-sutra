@@ -192,7 +192,7 @@ export const LeaveRequest = React.forwardRef<HTMLDivElement, LeaveRequestProps>(
             </DialogDescription>
           </DialogHeader>
           <div className="flex flex-col">
-            <div className="text-ds-md flex flex-col items-start justify-center gap-ds-03 rounded-ds-lg border border-surface-border bg-surface-1 shadow-01 px-ds-05 pb-ds-01 pt-ds-03 text-surface-fg">
+            <div className="text-ds-md flex flex-col items-start justify-center gap-ds-03 rounded-ds-lg border border-surface-border bg-surface-raised shadow-raised px-ds-05 pb-ds-01 pt-ds-03 text-surface-fg">
               <label className="text-ds-xs font-semibold uppercase tracking-wider text-surface-fg-subtle" htmlFor="comment">
                 Comment
               </label>

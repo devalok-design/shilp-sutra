@@ -28,7 +28,7 @@ const ApprovedAdjustments = React.forwardRef<HTMLDivElement, ApprovedAdjustments
 }, ref) {
   return (
     <div ref={ref} className={cn("no-scrollbar w-full overflow-auto border border-surface-border sm:rounded-ds-lg max-md:rounded-ds-none max-md:border-0", className)} {...props}>
-      <div className="bg-surface-2 pb-ds-06 pl-ds-05 pt-ds-03 md:p-ds-05">
+      <div className="bg-surface-raised pb-ds-06 pl-ds-05 pt-ds-03 md:p-ds-05">
         <div className="no-scrollbar w-full overflow-x-auto overflow-y-auto">
           {/* intentional: min-w-[800px] ensures table columns don't collapse */}
           <div className="min-w-[800px] max-md:w-[max-content]">
@@ -50,7 +50,7 @@ const ApprovedAdjustments = React.forwardRef<HTMLDivElement, ApprovedAdjustments
                 adjustments.map((adjustment) => (
                   <div
                     key={adjustment.id}
-                    className="grid grid-cols-[200px_160px_80px_1fr_1fr_1fr] gap-ds-05 bg-surface-2 py-ds-03 sm:px-ds-06 transition-colors duration-fast-01 hover:bg-surface-3"
+                    className="grid grid-cols-[200px_160px_80px_1fr_1fr_1fr] gap-ds-05 bg-surface-raised py-ds-03 sm:px-ds-06 transition-colors duration-fast-01 hover:bg-surface-raised-hover"
                   >
                     <div className="p-ds-03 pl-ds-04 text-surface-fg-muted">
                       {adjustment.user?.name || 'Unknown User'}

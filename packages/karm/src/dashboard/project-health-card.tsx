@@ -183,18 +183,18 @@ function ProjectHealthCardSkeleton({
   return (
     <div
       className={cn(
-        'rounded-ds-md border border-surface-border bg-surface-2 p-ds-04',
+        'rounded-ds-md border border-surface-border bg-surface-raised p-ds-04',
         className,
       )}
       {...props}
     >
       <div className="flex flex-col gap-ds-03">
         <div className="flex justify-between">
-          <div className="h-5 w-32 animate-pulse rounded bg-surface-3" />
-          <div className="h-5 w-16 animate-pulse rounded bg-surface-3" />
+          <div className="h-5 w-32 animate-pulse rounded bg-surface-raised-hover" />
+          <div className="h-5 w-16 animate-pulse rounded bg-surface-raised-hover" />
         </div>
-        <div className="h-2 w-full animate-pulse rounded bg-surface-3" />
-        <div className="h-4 w-48 animate-pulse rounded bg-surface-3" />
+        <div className="h-2 w-full animate-pulse rounded bg-surface-raised-hover" />
+        <div className="h-4 w-48 animate-pulse rounded bg-surface-raised-hover" />
       </div>
     </div>
   )
@@ -305,8 +305,8 @@ const ProjectHealthCard = React.forwardRef<
       ref={ref}
       data-testid="project-health-card"
       className={cn(
-        'rounded-ds-md border border-surface-border bg-surface-2 p-ds-04',
-        onClick && 'cursor-pointer hover:bg-surface-3 transition-colors duration-150',
+        'rounded-ds-md border border-surface-border bg-surface-raised p-ds-04',
+        onClick && 'cursor-pointer hover:bg-surface-raised-hover transition-colors duration-150',
         className,
       )}
       {...clickableProps}

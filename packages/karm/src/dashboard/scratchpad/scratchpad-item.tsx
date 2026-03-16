@@ -110,7 +110,7 @@ const ScratchpadItem = React.forwardRef<HTMLDivElement, ScratchpadItemProps>(
         transition={springs.snappy}
         style={sortableStyle}
         className={cn(
-          'group flex items-center rounded-ds-md transition-colors duration-150 hover:bg-surface-3',
+          'group flex items-center rounded-ds-md transition-colors duration-150 hover:bg-surface-raised-hover',
           compact ? 'gap-ds-02 px-ds-02 py-0.5' : 'gap-ds-03 px-ds-02 py-ds-02',
           className,
         )}

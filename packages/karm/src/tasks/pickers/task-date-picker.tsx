@@ -103,7 +103,7 @@ const TaskDatePicker = React.forwardRef<HTMLButtonElement, TaskDatePickerProps>(
             <button
               ref={ref}
               type="button"
-              className="inline-flex items-center gap-ds-02b rounded-ds-md px-ds-03 py-ds-02 text-ds-md transition-colors hover:bg-surface-3"
+              className="inline-flex items-center gap-ds-02b rounded-ds-md px-ds-03 py-ds-02 text-ds-md transition-colors hover:bg-surface-raised-hover"
             >
               <IconCalendarEvent className="h-ico-sm w-ico-sm text-surface-fg-subtle" stroke={1.5} />
               <span className={dateValue ? 'text-surface-fg' : 'text-surface-fg-subtle'}>
@@ -112,7 +112,7 @@ const TaskDatePicker = React.forwardRef<HTMLButtonElement, TaskDatePickerProps>(
             </button>
           </PopoverTrigger>
           <PopoverContent
-            className="w-[220px] border-surface-border-strong bg-surface-1 p-ds-03"
+            className="w-[220px] border-surface-border-strong bg-surface-overlay p-ds-03"
             align="start"
             sideOffset={4}
           >
@@ -136,42 +136,42 @@ const TaskDatePicker = React.forwardRef<HTMLButtonElement, TaskDatePickerProps>(
                     <button
                       type="button"
                       onClick={() => handlePreset(new Date())}
-                      className="rounded-ds-md px-ds-03 py-ds-02 text-left text-ds-sm text-surface-fg transition-colors hover:bg-surface-3"
+                      className="rounded-ds-md px-ds-03 py-ds-02 text-left text-ds-sm text-surface-fg transition-colors hover:bg-surface-raised-hover"
                     >
                       Today
                     </button>
                     <button
                       type="button"
                       onClick={() => handlePreset(addDays(1))}
-                      className="rounded-ds-md px-ds-03 py-ds-02 text-left text-ds-sm text-surface-fg transition-colors hover:bg-surface-3"
+                      className="rounded-ds-md px-ds-03 py-ds-02 text-left text-ds-sm text-surface-fg transition-colors hover:bg-surface-raised-hover"
                     >
                       Tomorrow
                     </button>
                     <button
                       type="button"
                       onClick={() => handlePreset(getNextMonday())}
-                      className="rounded-ds-md px-ds-03 py-ds-02 text-left text-ds-sm text-surface-fg transition-colors hover:bg-surface-3"
+                      className="rounded-ds-md px-ds-03 py-ds-02 text-left text-ds-sm text-surface-fg transition-colors hover:bg-surface-raised-hover"
                     >
                       Next Monday
                     </button>
                     <button
                       type="button"
                       onClick={() => handlePreset(addDays(7))}
-                      className="rounded-ds-md px-ds-03 py-ds-02 text-left text-ds-sm text-surface-fg transition-colors hover:bg-surface-3"
+                      className="rounded-ds-md px-ds-03 py-ds-02 text-left text-ds-sm text-surface-fg transition-colors hover:bg-surface-raised-hover"
                     >
                       +7 days
                     </button>
                     <button
                       type="button"
                       onClick={() => handlePreset(addDays(14))}
-                      className="rounded-ds-md px-ds-03 py-ds-02 text-left text-ds-sm text-surface-fg transition-colors hover:bg-surface-3"
+                      className="rounded-ds-md px-ds-03 py-ds-02 text-left text-ds-sm text-surface-fg transition-colors hover:bg-surface-raised-hover"
                     >
                       +14 days
                     </button>
                     <button
                       type="button"
                       onClick={() => handlePreset(null)}
-                      className="rounded-ds-md px-ds-03 py-ds-02 text-left text-ds-sm text-surface-fg-subtle transition-colors hover:bg-surface-3"
+                      className="rounded-ds-md px-ds-03 py-ds-02 text-left text-ds-sm text-surface-fg-subtle transition-colors hover:bg-surface-raised-hover"
                     >
                       Clear
                     </button>
@@ -187,7 +187,7 @@ const TaskDatePicker = React.forwardRef<HTMLButtonElement, TaskDatePickerProps>(
           <button
             type="button"
             onClick={handleClear}
-            className="rounded-ds-md p-ds-02 transition-colors hover:bg-surface-3"
+            className="rounded-ds-md p-ds-02 transition-colors hover:bg-surface-raised-hover"
             aria-label="Clear due date"
           >
             <IconX className="h-3 w-3 text-surface-fg-subtle" />

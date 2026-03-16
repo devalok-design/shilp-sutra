@@ -51,7 +51,7 @@ const SubtaskAddForm = React.forwardRef<HTMLDivElement, SubtaskAddFormProps>(
     return (
       <div ref={ref} className={cn(className)} {...props}>
         {isAdding ? (
-          <div className="mt-ds-03 flex items-center gap-ds-03 rounded-ds-lg border border-surface-border-strong bg-surface-2 shadow-01 px-ds-04 py-ds-03">
+          <div className="mt-ds-03 flex items-center gap-ds-03 rounded-ds-lg border border-surface-border-strong bg-surface-raised shadow-raised px-ds-04 py-ds-03">
             <input
               ref={inputRef}
               type="text"
@@ -77,7 +77,7 @@ const SubtaskAddForm = React.forwardRef<HTMLDivElement, SubtaskAddFormProps>(
           <button
             type="button"
             onClick={() => setIsAdding(true)}
-            className="mt-ds-03 inline-flex items-center gap-ds-02b rounded-ds-lg px-ds-03 py-ds-02b text-ds-md text-surface-fg-subtle transition-colors hover:bg-surface-3 hover:text-surface-fg-muted"
+            className="mt-ds-03 inline-flex items-center gap-ds-02b rounded-ds-lg px-ds-03 py-ds-02b text-ds-md text-surface-fg-subtle transition-colors hover:bg-surface-raised-hover hover:text-surface-fg-muted"
           >
             <IconPlus className="h-ico-sm w-ico-sm" stroke={1.5} />
             Add subtask

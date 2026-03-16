@@ -54,15 +54,28 @@ Color tokens use OKLCH (perceptually uniform) with 12 functional steps per palet
 Semantic layer:
 - Accent (swappable): --color-accent-{1-12} + --color-accent-fg
 - Secondary: --color-secondary-{1-12} + --color-secondary-fg
-- Surface: --color-surface-{1-4} + --color-surface-fg / fg-muted / fg-subtle / border / border-strong
+- Surface (v0.23.0 semantic names):
+  - --color-surface-base (page bg), --color-surface-sunken (shell chrome, board columns)
+  - --color-surface-raised (cards/panels), --color-surface-raised-hover, --color-surface-raised-active
+  - --color-surface-overlay (dialogs, popovers, inputs -- diverges from base in dark mode)
+  - --color-surface-inverted / --color-surface-inverted-fg (tooltips, inverted badges)
+  - --color-surface-disabled / --color-surface-fg-disabled (disabled elements)
+  - --color-surface-fg / fg-muted / fg-subtle / border / border-strong / border-subtle
   - Border mapping: light mode border=step5, border-strong=step6; dark mode border=step3, border-strong=step4
-  - Shell chrome (sidebar, topbar, bottom nav) uses surface-2 for elevation above surface-1 app background
+  - Legacy aliases: --color-surface-1..4 still resolve (1=base, 2=raised, 3=raised-hover, 4=raised-active)
+- Shadows (v0.23.0 semantic names):
+  - --shadow-raised (cards), --shadow-raised-hover (card hover), --shadow-floating (popovers), --shadow-overlay (dialogs)
+  - --shadow-glow (selection/focus), --shadow-inset (toggle track), --shadow-ring (focus ring), --shadow-ring-sm (separator)
+  - --shadow-color, --shadow-strength, --shadow-transition (theme-adaptive shadow system)
+  - --color-backdrop (dialog/sheet backdrop)
+  - Legacy aliases: --shadow-01..04 still resolve (01=raised, 02=raised-hover, 03=floating, 04=overlay). shadow-05 removed.
+  - Hard rule: never combine explicit border + shadow. Shadows include a 1px ring layer.
 - Status: --color-{error,success,warning,info}-{3,7,9,11}
 - Category: --color-category-{teal,amber,slate,indigo,cyan,orange,emerald}
 
 Consumer rebranding: Override accent scale CSS vars or use generateScale(options) utility.
 
-Tailwind utilities: accent-1..12, secondary-1..12, surface-1..4, plus fg/border variants.
+Tailwind utilities: accent-1..12, secondary-1..12, surface-base/raised/sunken/overlay/inverted/disabled (+ legacy surface-1..4 aliases), shadow-raised/raised-hover/floating/overlay/glow/inset/ring/ring-sm (+ legacy shadow-01..04 aliases), plus fg/border variants.
 
 ### Toast Setup Pattern
 
@@ -1221,7 +1234,7 @@ import { DataTableToolbar } from '@devalok/shilp-sutra/ui/data-table-toolbar'
 
 ## Changes
 ### v0.22.0
-- **Added** Hover state on `DropdownMenuItem` — was completely missing. Items now show `bg-surface-3` on hover with `ease-productive-standard` transition.
+- **Added** Hover state on `DropdownMenuItem` — was completely missing. Items now show `bg-surface-raised-hover` on hover with `ease-productive-standard` transition.
 
 ### v0.18.0
 - **Added** `DropdownMenuContentProps`, `DropdownMenuItemProps` type exports
@@ -1891,7 +1904,7 @@ import { DataTableToolbar } from '@devalok/shilp-sutra/ui/data-table-toolbar'
 
 ## Changes
 ### v0.18.0
-- **Fixed** `bg-interactive` changed to `bg-accent-9`, `bg-field` changed to `bg-surface-3` (OKLCH migration)
+- **Fixed** `bg-interactive` changed to `bg-accent-9`, `bg-field` changed to `bg-surface-raised-hover` (OKLCH migration)
 
 ### v0.4.2
 - **Changed** (BREAKING) `color` prop renamed to `variant` (values `filled`/`tonal` unchanged)
@@ -2842,7 +2855,7 @@ export default function RootLayout({ children }) {
 ### v0.22.0
 - **Added** Auto-provider: `<Tooltip>` now auto-wraps with `<TooltipProvider>` when no ancestor provider exists. No more "tooltip doesn't appear" issues.
 - **Fixed** Content children not rendering — `motion.div` was self-closing (`/>`), so children were never passed through.
-- **Fixed** Text invisible in dark mode — `text-accent-fg` resolves to same value as `bg-surface-fg` in dark mode. Changed to `text-surface-1`.
+- **Fixed** Text invisible in dark mode — `text-accent-fg` resolves to same value as `bg-surface-fg` in dark mode. Changed to `text-surface-inverted-fg`.
 
 ### v0.18.0
 - **Changed** Migrated to Framer Motion for enter/exit animations
@@ -3012,7 +3025,7 @@ export default function RootLayout({ children }) {
     max: number (default: 4, overflow shows "+N" badge)
     size: "xs" | "sm" | "md" | "lg" | "xl"
     showTooltip: boolean (default: true)
-    borderColor: "surface-1" | "surface-2" (default: "surface-2") — overlap border color
+    borderColor: "surface-base" | "surface-raised" (default: "surface-raised") (legacy "surface-1"/"surface-2" still accepted) — overlap border color
     onOverflowClick: () => void — makes the "+N" badge interactive (button)
     renderAvatar: (user: AvatarUser, index: number) => ReactNode — custom avatar render
     expandDirection: "left" | "right" (default: "right") — direction group expands on hover
@@ -3024,7 +3037,7 @@ export default function RootLayout({ children }) {
     ring?: "none" | "lead" | "admin" | "client" — role ring per user in group
 
 ## Defaults
-    size="md", max=4, showTooltip=true, borderColor="surface-2", expandDirection="right", expandAmount="default"
+    size="md", max=4, showTooltip=true, borderColor="surface-raised", expandDirection="right", expandAmount="default"
 
 ## Example
 ```jsx
@@ -3035,7 +3048,7 @@ export default function RootLayout({ children }) {
   ]}
   max={3}
   size="md"
-  borderColor="surface-1"
+  borderColor="surface-base"
   onOverflowClick={() => setShowAll(true)}
 />
 ```
@@ -3045,7 +3058,7 @@ export default function RootLayout({ children }) {
 - Users beyond `max` are collapsed into a "+N" overflow badge
 - Missing `image` falls back to initials derived from `name`
 - Hover expand animation uses CSS `group-hover` — parent must not clip overflow
-- `borderColor` should match the surface context the group sits on (e.g., `surface-1` on cards)
+- `borderColor` should match the surface context the group sits on (e.g., `surface-base` on cards)
 - `renderAvatar` wrapper is positioning-only — pass `size` directly to your Avatar (do NOT use `className="h-full w-full"`)
 
 ## Changes
@@ -3890,8 +3903,11 @@ BottomNavbarUser: { name: string, role?: string }
 - Requires LinkProvider for framework-specific link components (e.g., Next.js Link)
 
 ## Changes
+### v0.23.0
+- **Changed** Surface tokens updated to semantic names: `bg-surface-sunken` (was `bg-surface-2`)
+
 ### v0.19.0
-- **Changed** Background elevated from `bg-surface-1` to `bg-surface-2` for visual hierarchy above app background
+- **Changed** Background elevated from `bg-surface-1` to `bg-surface-2` for visual hierarchy above app background (now `bg-surface-sunken` as of v0.23.0)
 - **Changed** "More" menu and interactive items bumped accordingly
 
 ### v0.18.0
@@ -4158,9 +4174,12 @@ SidebarPromo: { text: string, icon?: ReactNode, action?: { label: string, href?:
 - Badge numbers > 99 display as "99+"
 
 ## Changes
+### v0.23.0
+- **Changed** Surface tokens updated to semantic names: `bg-surface-sunken` (was `bg-surface-2`), hover `bg-surface-raised-hover` (was `bg-surface-3`)
+
 ### v0.19.0
-- **Changed** Background elevated from `bg-surface-1` to `bg-surface-2` for visual hierarchy above app background
-- **Changed** Interactive hover states bumped from `surface-2` to `surface-3`
+- **Changed** Background elevated from `bg-surface-1` to `bg-surface-2` for visual hierarchy above app background (now `bg-surface-sunken` as of v0.23.0)
+- **Changed** Interactive hover states bumped from `surface-2` to `surface-3` (now `bg-surface-raised-hover` as of v0.23.0)
 
 ### v0.18.0
 - **Fixed** `bg-interactive-subtle` changed to `bg-accent-2` (OKLCH migration)
@@ -4205,12 +4224,12 @@ Composition-based application top bar. Uses dot-notation subcomponents for flexi
 
 | Component | Purpose |
 |-----------|---------|
-| `TopBar` | Root — bg-surface-2, border-b, sticky. Auto-switches to grid when Center is present. |
+| `TopBar` | Root — bg-surface-sunken, border-b, sticky. Auto-switches to grid when Center is present. |
 | `TopBar.Left` | Left zone — sidebar trigger, title, breadcrumbs |
 | `TopBar.Center` | Optional center zone — search bar, tabs. Triggers 3-column grid layout. |
 | `TopBar.Right` | Right zone — action buttons, user menu. Gets ml-auto in flex mode. |
 | `TopBar.Section` | Groups items with configurable gap |
-| `TopBar.IconButton` | Circular icon button with tooltip (bg-surface-3, hover:bg-surface-4) |
+| `TopBar.IconButton` | Circular icon button with tooltip (bg-surface-raised-hover, hover:bg-surface-raised-active) |
 | `TopBar.Title` | Page title heading, hidden on mobile |
 | `TopBar.UserMenu` | Avatar dropdown with color mode toggle, profile, logout |
 
@@ -4319,7 +4338,7 @@ UserMenuItem fields:
 - **Added** `TopBar.Title` — responsive page title (hidden on mobile)
 - **Added** `TopBar.UserMenu` — extracted user dropdown as standalone subcomponent
 - **Added** Auto grid/flex layout detection based on Center zone presence
-- **Changed** Background elevated from `bg-surface-1` to `bg-surface-2`
+- **Changed** Background elevated from `bg-surface-1` to `bg-surface-2` (now `bg-surface-sunken` as of v0.23.0)
 
 ### v0.7.0
 - **Added** `userMenuItems` prop for custom dropdown items

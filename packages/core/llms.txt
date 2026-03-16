@@ -4,6 +4,65 @@
 > Built on the same primitives as shadcn/ui but with key API differences.
 > Read this file BEFORE writing any UI code. Do NOT guess from shadcn/ui knowledge.
 
+## BREAKING CHANGES (v0.23.0 — Semantic Surface & Shadow Tokens)
+
+**Surface tokens renamed:** Numeric `surface-1..4` replaced with semantic names.
+| Old | New | Usage |
+|-----|-----|-------|
+| `bg-surface-1` | `bg-surface-base` | Page background |
+| `bg-surface-1` | `bg-surface-sunken` | Shell chrome (sidebar, topbar), board columns |
+| `bg-surface-1` | `bg-surface-overlay` | Dialogs, popovers, dropdowns, inputs |
+| `bg-surface-2` | `bg-surface-raised` | Cards, widgets, panels |
+| `bg-surface-3` | `bg-surface-raised-hover` | Hover states on raised elements |
+| `bg-surface-4` | `bg-surface-raised-active` | Active/pressed states |
+
+Same pattern for `border-surface-*`, `text-surface-*`, `ring-surface-*`.
+
+**Shadow tokens renamed:** Numeric `shadow-01..05` replaced with semantic names.
+| Old | New |
+|-----|-----|
+| `shadow-01` | `shadow-raised` |
+| `shadow-02` | `shadow-raised-hover` |
+| `shadow-03` | `shadow-floating` |
+| `shadow-04` | `shadow-overlay` |
+| `shadow-05` | (removed — was unused) |
+
+**New surface tokens:**
+- `bg-surface-sunken` — recessed areas (sidebar, board columns, segmented track)
+- `bg-surface-overlay` — floating elements (dialogs, popovers, inputs). Diverges from base in dark mode.
+- `bg-surface-inverted` / `text-surface-inverted-fg` — tooltips, inverted badges
+- `bg-surface-disabled` / `text-surface-fg-disabled` — disabled elements
+- `border-surface-border-subtle` — hairline dividers
+- `bg-backdrop` — dialog/sheet backdrop overlay
+
+**New shadow tokens:**
+- `shadow-glow` — selection/focus accent glow
+- `shadow-inset` — toggle/segmented track deboss
+- `shadow-ring` / `shadow-ring-sm` — focus ring / subtle separator
+
+**Hard rule: never combine explicit border + shadow.** Shadows include a 1px ring layer. Adding a CSS border creates a 2px edge. Use shadow OR border, never both.
+
+**Backward compat:** Old CSS variable names (`--color-surface-1`, `--shadow-01`) preserved as aliases. Old Tailwind classes still resolve. Will be removed in a future major version.
+
+**Component Decision Matrix:**
+| Building... | Surface | Shadow |
+|-------------|---------|--------|
+| Page/layout | `surface-base` | none |
+| Shell (sidebar/topbar) | `surface-sunken` | `shadow-raised` |
+| Card/widget/panel | `surface-raised` | `shadow-raised` |
+| Card hover | `surface-raised` | `shadow-raised-hover` |
+| Board column/well | `surface-sunken` | none |
+| Popover/menu/dropdown | `surface-overlay` | `shadow-floating` |
+| Dialog/modal/sheet | `surface-overlay` | `shadow-overlay` |
+| Tooltip | `surface-inverted` | `shadow-floating` |
+| Toast | `surface-overlay` | `shadow-floating` |
+| Input (rest) | `surface-overlay` | none |
+| Input (focus) | `surface-overlay` | `shadow-ring` |
+| Button (solid) | accent colors | `shadow-raised` |
+| Button (disabled) | `surface-disabled` | none |
+| Segmented track | `surface-sunken` | `shadow-inset` |
+| Selected item | current surface | `shadow-glow` |
+
 ## BREAKING CHANGES (v0.18.0 — Framer Motion + OKLCH)
 
 **New runtime dependency:** `framer-motion@^12.36.0` (bundled). Karm consumers must install `framer-motion@^12.0.0` as peer dep.
@@ -77,9 +136,9 @@
 - All color primitives migrated from hex (50-950 shades) to OKLCH (12 functional steps)
 - Old shade numbers: --pink-50..950. New step numbers: --pink-1..12 (OKLCH values)
 - Step purposes: 1=app-bg, 2=subtle-bg, 3=component-bg, 4=hover, 5=active, 6=border-subtle, 7=border, 8=border-strong, 9=solid/accent, 10=solid-hover, 11=lo-contrast-text, 12=hi-contrast-text
-- New semantic tokens: --color-accent-{1-12}, --color-secondary-{1-12}, --color-surface-{1-4}, --color-surface-fg/fg-muted/fg-subtle/border
+- New semantic tokens: --color-accent-{1-12}, --color-secondary-{1-12}, --color-surface-{base,raised,raised-hover,raised-active,sunken,overlay,inverted,disabled}, --color-surface-fg/fg-muted/fg-subtle/border/border-subtle
 - Status tokens: --color-error-{3,7,9,11,fg}, --color-success-{3,7,9,11,fg}, --color-warning-{3,7,9,11,fg}, --color-info-{3,7,9,11,fg}
-- New Tailwind utilities: accent-1..12, secondary-1..12, surface-1..4, status/category step utilities
+- New Tailwind utilities: accent-1..12, secondary-1..12, surface-base/raised/sunken/overlay/inverted/disabled (+ legacy surface-1..4 aliases), status/category step utilities
 - Backward compat: ALL old semantic token names preserved as aliases. --color-interactive still works → maps to --color-accent-9
 - Consumer rebranding: override --color-accent-1..12 CSS vars OR use generateScale() utility with a seed color
 - Dark mode: algorithmically derived (OKLCH curves), NOT hex overrides. Surfaces lighten with elevation.
@@ -87,7 +146,7 @@
 
 ## v0.22.0 — UI Polish & Micro-Refinement
 
-**Shadows**: All shadow tokens now use 3-layer stacks. Visual change only — same token names.
+**Shadows**: All shadow tokens now use 3-layer stacks. Visual change only — same token names. Shadow tokens renamed in v0.23.0 (see breaking changes above).
 
 **Transitions**: All CSS transitions use `ease-productive-standard` easing. Tween presets aligned: `tweens.fade` = 0.11s, `tweens.colorShift` = 0.07s.
 
@@ -244,7 +303,7 @@ NOTIFICATION SELECTION GUIDE:
 ### Composed Components
 - ConfirmDialog: open, onOpenChange, title, description, onConfirm + confirmText, cancelText, color(default|error), loading
 - PageHeader: title, subtitle, breadcrumbs[], actions(ReactNode)
-- AvatarGroup: users(AvatarUser[]), max?(number), size?(xs|sm|md|lg|xl), showTooltip?, borderColor?('surface-1'|'surface-2'), onOverflowClick?(), renderAvatar?((user,index)=>ReactNode), expandDirection?('left'|'right'), expandAmount?('compact'|'default'|'wide'). Type: AvatarUser = { name, image?, ring? }. GPU-composited hover expand via translateX. Use expandDirection="left" for right-aligned groups.
+- AvatarGroup: users(AvatarUser[]), max?(number), size?(xs|sm|md|lg|xl), showTooltip?, borderColor?('surface-base'|'surface-raised'), onOverflowClick?(), renderAvatar?((user,index)=>ReactNode), expandDirection?('left'|'right'), expandAmount?('compact'|'default'|'wide'). Type: AvatarUser = { name, image?, ring? }. GPU-composited hover expand via translateX. Use expandDirection="left" for right-aligned groups.
 - StatusBadge: DISCRIMINATED UNION — pass status OR color, not both. status(active|pending|approved|rejected|completed|blocked|cancelled|draft) color(success|warning|error|info|neutral) size(sm|md)
 - ContentCard: variant(default|outline|ghost) padding(default|compact|spacious|none)
 - EmptyState: icon(ReactNode or ComponentType), title(required), description, action(ReactNode), compact

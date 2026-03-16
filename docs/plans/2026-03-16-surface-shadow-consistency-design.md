@@ -290,26 +290,31 @@ Components apply this via `transition: var(--shadow-transition)`. This wires int
 
 ## Migration Strategy
 
-**Big-bang per package with one deprecation-alias minor version.** This protects non-coding designers and AI agents from silent Tailwind class drops.
+**Single breaking release (core + karm together) with a comprehensive transition guide.** All changes ship at once — no deprecation bridge. The transition guide provides a clear find-replace mapping so consumers can migrate in minutes.
 
 ### Sequence
 
-1. **v0.23.0 — Deprecation bridge (non-breaking)**
-   - Add new primitives (`surface-0`, `shadow-color`) to `primitives.css`
-   - Add ALL semantic aliases to `semantic.css` (new names)
-   - Update `preset.ts` to expose BOTH old and new Tailwind utilities
-   - Old utilities (`bg-surface-1`, `shadow-01`) map to new values via aliases
-   - Add dev-mode console.warn when old class names are used (via a PostCSS plugin or Tailwind plugin)
-   - Update `llms.txt` and `llms-full.txt` to document new names (mark old as deprecated)
-   - Publish — consumers get new tokens without breaking
+1. Add new primitives (`surface-0`, `shadow-color`) to `primitives.css`
+2. Add semantic aliases + new tokens to `semantic.css`
+3. Add `--shadow-transition` to `semantic.css`
+4. Update `preset.ts` — new Tailwind utilities, remove old numeric ones
+5. Migrate ALL core components (find-replace + manual review)
+6. Migrate ALL karm components (find-replace + manual review)
+7. Update `pre-publish-audit.mjs` (new rules for semantic tokens)
+8. Write transition guide (`docs/migration/surface-shadow-v0.XX.md`)
+9. Update `llms.txt` and `llms-full.txt`
+10. Update CHANGELOG.md (breaking changes FIRST)
+11. Version bump core + karm together
+12. Publish
 
-2. **v0.24.0 — Full migration (breaking)**
-   - Migrate all core components to semantic names (find-replace + manual review)
-   - Migrate all karm components to semantic names
-   - Remove old Tailwind utilities from `preset.ts`
-   - Update `pre-publish-audit.mjs` (new rules for semantic tokens)
-   - Update CHANGELOG.md with breaking changes
-   - Publish
+### Transition guide (ships with the release)
+
+The transition guide must include:
+- **Complete find-replace table** — every old class → new class mapping
+- **Before/after code examples** for common patterns (card, dialog, popover, input)
+- **Decision matrix** (copied from this doc) so consumers know which token to use
+- **Tailwind config changes** if consumer apps extend the preset
+- **Edge cases** — what to do with custom components, hardcoded shadow values
 
 ### Pre-publish audit changes
 
@@ -330,8 +335,8 @@ Reviewed by a Token Systems Council (DS Architect, Visual Design Engineer, Devil
 - Border three-tier hierarchy correct (maps to existing neutral-4/5/6)
 - Sunken chroma 0.008 is well-calibrated ("felt but not seen")
 - Shadow-surface axes remain independent (shadow-floating + surface-overlay is intentional)
-- Deprecation aliases for one minor version are non-negotiable (protects AI agents + non-coding designers)
-- Karm package must be explicitly included in migration
+- Core + Karm ship together in a single breaking release with a comprehensive transition guide
+- Transition guide with complete find-replace table protects AI agents + non-coding designers
 
 ### Resolved decisions
 - **Shadow hue: cool blue 260** — elevation shadows recede (cool), effect shadows attract (warm accent). At 0.015 chroma / 3-5% opacity, the tint is subliminal. `--shadow-color` variable makes it trivially adjustable.

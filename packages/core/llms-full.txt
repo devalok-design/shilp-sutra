@@ -1970,10 +1970,12 @@ import { DataTableToolbar } from '@devalok/shilp-sutra/ui/data-table-toolbar'
 
 ## Props
     orientation: "horizontal" | "vertical"
+    variant: "default" | "gradient" | "gradient-left" | "gradient-right"
     decorative: boolean
 
 ## Defaults
     orientation: "horizontal"
+    variant: "default"
     decorative: true
 
 ## Example
@@ -2831,7 +2833,7 @@ export default function RootLayout({ children }) {
 - Category: ui
 
 ## Compound Components
-    TooltipProvider (REQUIRED at layout root or wrapping tooltip usage, controls delay)
+    TooltipProvider (Optional — auto-wrapped if no ancestor provider exists)
       Tooltip (root)
         TooltipTrigger
         TooltipContent
@@ -2847,7 +2849,7 @@ export default function RootLayout({ children }) {
 ```
 
 ## Gotchas
-- TooltipProvider is REQUIRED — without it, tooltips won't show
+- TooltipProvider is optional — `<Tooltip>` auto-wraps with a provider when no ancestor exists (v0.22.0+)
 
 ## Changes
 ### v0.22.0

@@ -267,14 +267,14 @@ NOTIFICATION SELECTION GUIDE:
 - Text: variant(TextVariant) as(element). Type: TextVariant = 'heading-2xl' | 'heading-xl' | 'heading-lg' | 'heading-md' | 'heading-sm' | 'heading-xs' | 'body-lg' | 'body-md' | 'body-sm' | 'body-xs' | 'label-lg' | 'label-md' | 'label-sm' | 'label-xs' | 'caption' | 'overline'
 - Code: variant(inline|block)
 - Skeleton: variant(rectangle|circle|text) animation(pulse|shimmer|none)
-- StatCard: title, value, description, trend, icon
+- StatCard: title/label, value, delta, icon, prefix, suffix, comparisonLabel, secondaryLabel, progress, sparkline
 
 ### Overlays
 - Dialog > DialogTrigger; DialogContent > DialogHeader > DialogTitle, DialogDescription; [content]; DialogFooter
 - AlertDialog > AlertDialogTrigger; AlertDialogContent > AlertDialogHeader > AlertDialogTitle; AlertDialogFooter > AlertDialogCancel, AlertDialogAction
 - Sheet: side(top|bottom|left|right) > SheetTrigger; SheetContent > SheetHeader > SheetTitle; [content]; SheetFooter
 - Popover > PopoverTrigger; PopoverContent
-- Tooltip: requires <TooltipProvider> at layout root > Tooltip > TooltipTrigger; TooltipContent
+- Tooltip: auto-wraps with <TooltipProvider> (no manual provider needed) > Tooltip > TooltipTrigger; TooltipContent
 - HoverCard > HoverCardTrigger; HoverCardContent
 - Collapsible > CollapsibleTrigger; CollapsibleContent
 

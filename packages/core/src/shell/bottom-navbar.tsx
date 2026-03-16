@@ -211,7 +211,7 @@ const BottomNavbar = React.forwardRef<HTMLElement, BottomNavbarProps>(
         ref={ref}
         aria-label="Mobile navigation"
         className={cn(
-          'fixed bottom-0 left-0 right-0 z-sticky flex w-full flex-row items-start justify-between border-t border-surface-border-strong bg-surface-sunken px-ds-05 pb-ds-05b pt-0 md:hidden',
+          'fixed bottom-0 left-0 right-0 z-sticky flex w-full flex-row items-start justify-between border-t border-surface-border-strong bg-surface-raised px-ds-05 pb-ds-05b pt-0 md:hidden',
           className,
         )}
       >

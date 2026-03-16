@@ -335,7 +335,7 @@ const AppSidebar = React.forwardRef<HTMLDivElement, AppSidebarProps>(
         ref={ref}
         aria-label="Main navigation"
         className={cn(
-          'z-raised hidden h-full flex-col border-r border-surface-border-strong bg-surface-sunken md:flex',
+          'z-raised hidden h-full flex-col border-r border-surface-border-strong bg-surface-raised md:flex',
           className,
         )}
       >

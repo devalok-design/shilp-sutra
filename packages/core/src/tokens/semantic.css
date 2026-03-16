@@ -98,10 +98,10 @@
      SURFACE
      ═══════════════════════════════════════════════════════════ */
   /* Semantic surface tokens */
-  --color-surface-base: var(--neutral-1);
+  --color-surface-base: var(--neutral-2);    /* 0.97L — slightly grey page (Stripe/Linear pattern) */
   --color-surface-sunken: var(--color-surface-0);
-  --color-surface-raised: var(--neutral-2);
-  --color-surface-overlay: var(--neutral-1);
+  --color-surface-raised: var(--neutral-1);  /* 0.99L — white cards float above the page */
+  --color-surface-overlay: var(--neutral-1); /* same as raised — floating elements are white */
   --color-surface-raised-hover: var(--neutral-3);
   --color-surface-raised-active: var(--neutral-4);
   --color-surface-inverted: var(--neutral-12);

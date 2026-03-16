@@ -38,21 +38,21 @@ export const buttonVariants = cva(
     },
     compoundVariants: [
       // solid + default (primary)
-      { variant: 'solid', color: 'default', className: 'bg-accent-9 text-accent-fg hover:bg-accent-10 active:bg-accent-10 shadow-01 hover:shadow-brand' },
+      { variant: 'solid', color: 'default', className: 'bg-accent-9 text-accent-fg hover:bg-accent-10 active:bg-accent-10 shadow-raised hover:shadow-brand' },
       // "default" alias → same as solid + default
-      { variant: 'default', color: 'default', className: 'bg-accent-9 text-accent-fg hover:bg-accent-10 active:bg-accent-10 shadow-01 hover:shadow-brand' },
-      { variant: 'default', color: 'error', className: 'bg-error-9 text-accent-fg hover:bg-error-9 active:bg-error-9 shadow-01' },
+      { variant: 'default', color: 'default', className: 'bg-accent-9 text-accent-fg hover:bg-accent-10 active:bg-accent-10 shadow-raised hover:shadow-brand' },
+      { variant: 'default', color: 'error', className: 'bg-error-9 text-accent-fg hover:bg-error-9 active:bg-error-9 shadow-raised' },
       // "destructive" alias → solid + error
-      { variant: 'destructive', color: 'default', className: 'bg-error-9 text-accent-fg hover:bg-error-9 active:bg-error-9 shadow-01' },
-      { variant: 'destructive', color: 'error', className: 'bg-error-9 text-accent-fg hover:bg-error-9 active:bg-error-9 shadow-01' },
+      { variant: 'destructive', color: 'default', className: 'bg-error-9 text-accent-fg hover:bg-error-9 active:bg-error-9 shadow-raised' },
+      { variant: 'destructive', color: 'error', className: 'bg-error-9 text-accent-fg hover:bg-error-9 active:bg-error-9 shadow-raised' },
       // solid + error
-      { variant: 'solid', color: 'error', className: 'bg-error-9 text-accent-fg hover:bg-error-9 active:bg-error-9 shadow-01' },
+      { variant: 'solid', color: 'error', className: 'bg-error-9 text-accent-fg hover:bg-error-9 active:bg-error-9 shadow-raised' },
       // outline + default (secondary)
-      { variant: 'outline', color: 'default', className: 'bg-transparent text-accent-11 border-accent-7 hover:bg-accent-2 active:bg-surface-4' },
+      { variant: 'outline', color: 'default', className: 'bg-transparent text-accent-11 border-accent-7 hover:bg-accent-2 active:bg-surface-raised-active' },
       // outline + error (error-ghost)
       { variant: 'outline', color: 'error', className: 'bg-transparent text-error-11 border border-error-7 hover:bg-error-3 active:bg-error-3' },
       // ghost + default
-      { variant: 'ghost', color: 'default', className: 'bg-transparent text-surface-fg-muted hover:bg-surface-2 hover:text-surface-fg active:bg-surface-4' },
+      { variant: 'ghost', color: 'default', className: 'bg-transparent text-surface-fg-muted hover:bg-surface-raised hover:text-surface-fg active:bg-surface-raised-active' },
       // ghost + error
       { variant: 'ghost', color: 'error', className: 'bg-transparent text-error-11 hover:bg-error-3 hover:text-error-11 active:bg-error-3' },
     ],

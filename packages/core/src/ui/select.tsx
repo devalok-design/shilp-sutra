@@ -37,7 +37,7 @@ const SelectGroup = SelectPrimitive.Group
 const SelectValue = SelectPrimitive.Value
 
 export const selectTriggerVariants = cva(
-  'flex w-full items-center justify-between whitespace-nowrap rounded-ds-md border border-surface-border-strong bg-surface-3 placeholder:text-surface-fg-subtle focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent-9 focus-visible:ring-offset-2 focus-visible:border-accent-7 disabled:cursor-not-allowed disabled:opacity-action-disabled [&>span]:line-clamp-1',
+  'flex w-full items-center justify-between whitespace-nowrap rounded-ds-md border border-surface-border-strong bg-surface-raised-hover placeholder:text-surface-fg-subtle focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent-9 focus-visible:ring-offset-2 focus-visible:border-accent-7 disabled:cursor-not-allowed disabled:opacity-action-disabled [&>span]:line-clamp-1',
   {
     variants: {
       size: {
@@ -130,7 +130,7 @@ const SelectContent = React.forwardRef<
         animate={{ opacity: 1, scale: 1 }}
         transition={{ ...springs.snappy, opacity: tweens.fade }}
         className={cn(
-          'relative z-popover max-h-96 min-w-[8rem] overflow-hidden rounded-ds-lg border border-surface-border-strong bg-surface-1 text-surface-fg shadow-03',
+          'relative z-popover max-h-96 min-w-[8rem] overflow-hidden rounded-ds-lg border border-surface-border-strong bg-surface-overlay text-surface-fg shadow-floating',
           position === 'popper' &&
             'data-[side=bottom]:translate-y-1 data-[side=left]:-translate-x-1 data-[side=right]:translate-x-1 data-[side=top]:-translate-y-1',
           className,
@@ -172,7 +172,7 @@ const SelectItem = React.forwardRef<
   <SelectPrimitive.Item
     ref={ref}
     className={cn(
-      'relative flex w-full cursor-default select-none items-center rounded-ds-md py-ds-02b pl-ds-03 pr-ds-07 text-ds-md outline-none transition-colors duration-fast-01 ease-productive-standard hover:bg-surface-2 focus:bg-surface-2 focus:text-surface-fg data-[disabled]:pointer-events-none data-[disabled]:opacity-action-disabled',
+      'relative flex w-full cursor-default select-none items-center rounded-ds-md py-ds-02b pl-ds-03 pr-ds-07 text-ds-md outline-none transition-colors duration-fast-01 ease-productive-standard hover:bg-surface-raised focus:bg-surface-raised focus:text-surface-fg data-[disabled]:pointer-events-none data-[disabled]:opacity-action-disabled',
       className,
     )}
     {...props}

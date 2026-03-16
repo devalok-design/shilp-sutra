@@ -11,14 +11,14 @@ import { useFormField } from './form'
 const textareaVariants = cva(
   [
     'flex w-full font-sans resize-y cursor-ns-resize',
-    'bg-surface-3 text-surface-fg',
+    'bg-surface-raised-hover text-surface-fg',
     'border border-surface-border-strong rounded-ds-md',
     'placeholder:text-surface-fg-subtle',
-    'hover:bg-surface-4',
+    'hover:bg-surface-raised-active',
     'transition-colors duration-fast-01 ease-productive-standard',
     'focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent-9 focus-visible:border-accent-7',
     'disabled:cursor-not-allowed disabled:opacity-action-disabled',
-    'read-only:bg-surface-2 read-only:cursor-default',
+    'read-only:bg-surface-raised read-only:cursor-default',
   ],
   {
     variants: {

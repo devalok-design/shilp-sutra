@@ -156,7 +156,7 @@ const Step = React.forwardRef<HTMLDivElement, StepProps>(
             'relative flex-shrink-0 flex items-center justify-center w-ds-sm h-ds-sm rounded-ds-full text-ds-sm font-semibold',
             state === 'completed' && 'bg-accent-9 text-accent-fg',
             state === 'active' && 'text-accent-fg',
-            state === 'pending' && 'bg-surface-2 text-surface-fg-subtle border border-surface-border-strong',
+            state === 'pending' && 'bg-surface-raised text-surface-fg-subtle border border-surface-border-strong',
           )}
         >
           {/* Active step highlight — slides between steps via layoutId */}

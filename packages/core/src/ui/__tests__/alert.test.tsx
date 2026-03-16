@@ -86,7 +86,7 @@ describe('Alert', () => {
     it('applies filled variant for neutral (special case)', () => {
       const { container } = render(<Alert variant="filled" color="neutral">Filled neutral</Alert>)
       const el = container.firstChild as HTMLElement
-      expect(el.className).toContain('bg-surface-3')
+      expect(el.className).toContain('bg-surface-raised-hover')
       expect(el.className).toContain('text-surface-fg')
       // neutral filled should NOT have text-on-color (it uses dark text)
       expect(el.className).not.toContain('text-accent-fg')

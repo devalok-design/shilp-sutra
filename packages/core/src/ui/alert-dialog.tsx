@@ -91,7 +91,7 @@ const AlertDialogContent = React.forwardRef<
               exit={{ opacity: 0, scale: 0.95, x: '-50%', y: '-50%' }}
               transition={{ ...springs.smooth, opacity: tweens.fade }}
               className={cn(
-                'fixed left-[50%] top-[50%] z-modal grid w-full max-w-lg gap-ds-05 border border-surface-border-strong bg-surface-1 p-ds-06 shadow-04 rounded-ds-xl',
+                'fixed left-[50%] top-[50%] z-modal grid w-full max-w-lg gap-ds-05 border border-surface-border-strong bg-surface-overlay p-ds-06 shadow-overlay rounded-ds-xl',
                 className,
               )}
             >
@@ -168,7 +168,7 @@ const AlertDialogAction = React.forwardRef<
   <AlertDialogPrimitive.Action
     ref={ref}
     className={cn(
-      'inline-flex h-ds-md items-center justify-center rounded-ds-md px-ds-05 text-ds-md font-semibold transition-colors bg-accent-9 text-accent-fg hover:bg-accent-10 active:bg-accent-10 shadow-01 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent-9 focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-action-disabled',
+      'inline-flex h-ds-md items-center justify-center rounded-ds-md px-ds-05 text-ds-md font-semibold transition-colors bg-accent-9 text-accent-fg hover:bg-accent-10 active:bg-accent-10 shadow-raised focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent-9 focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-action-disabled',
       className,
     )}
     {...props}
@@ -183,7 +183,7 @@ const AlertDialogCancel = React.forwardRef<
   <AlertDialogPrimitive.Cancel
     ref={ref}
     className={cn(
-      'inline-flex h-ds-md items-center justify-center rounded-ds-md px-ds-05 text-ds-md font-semibold transition-colors bg-transparent text-surface-fg-muted border border-surface-border-strong hover:bg-surface-2 hover:text-surface-fg focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent-9 focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-action-disabled',
+      'inline-flex h-ds-md items-center justify-center rounded-ds-md px-ds-05 text-ds-md font-semibold transition-colors bg-transparent text-surface-fg-muted border border-surface-border-strong hover:bg-surface-raised hover:text-surface-fg focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent-9 focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-action-disabled',
       className,
     )}
     {...props}

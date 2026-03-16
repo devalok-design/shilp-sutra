@@ -12,14 +12,14 @@ export type InputState = 'default' | 'error' | 'warning' | 'success'
 const inputVariants = cva(
   [
     'flex w-full font-sans',
-    'bg-surface-3 text-surface-fg',
+    'bg-surface-raised-hover text-surface-fg',
     'border border-surface-border rounded-ds-md',
     'placeholder:text-surface-fg-subtle',
-    'hover:bg-surface-4',
+    'hover:bg-surface-raised-active',
     'transition-colors duration-fast-01 ease-productive-standard',
     'focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-accent-7 focus-visible:border-surface-border',
     'disabled:cursor-not-allowed disabled:opacity-action-disabled',
-    'read-only:bg-surface-2 read-only:cursor-default',
+    'read-only:bg-surface-raised read-only:cursor-default',
   ],
   {
     variants: {

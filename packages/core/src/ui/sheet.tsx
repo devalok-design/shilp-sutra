@@ -129,7 +129,7 @@ const slideAnimate = {
 } as const
 
 const sheetVariants = cva(
-  'fixed z-modal gap-ds-05 bg-surface-1 p-ds-06 shadow-05',
+  'fixed z-modal gap-ds-05 bg-surface-overlay p-ds-06 shadow-overlay',
   {
     variants: {
       side: {
@@ -206,7 +206,7 @@ const SheetContent = React.forwardRef<
               transition={springs.smooth}
               {...motionProps(props)}
             >
-              <SheetPrimitive.Close className="absolute right-ds-05 top-ds-05 min-h-ds-xs min-w-ds-xs flex items-center justify-center rounded-ds-sm text-surface-fg-subtle transition-colors ease-productive-standard hover:text-surface-fg-muted hover:bg-surface-3 active:scale-90 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent-9 disabled:pointer-events-none">
+              <SheetPrimitive.Close className="absolute right-ds-05 top-ds-05 min-h-ds-xs min-w-ds-xs flex items-center justify-center rounded-ds-sm text-surface-fg-subtle transition-colors ease-productive-standard hover:text-surface-fg-muted hover:bg-surface-raised-hover active:scale-90 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent-9 disabled:pointer-events-none">
                 <IconX className="h-ico-sm w-ico-sm" />
                 <span className="sr-only">Close</span>
               </SheetPrimitive.Close>

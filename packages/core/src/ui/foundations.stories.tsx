@@ -24,16 +24,15 @@ export const Shadows: Story = {
       </p>
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-ds-06">
         {[
-          { token: 'shadow-01', label: 'Subtle', usage: 'Buttons, switch thumb, small elevations' },
-          { token: 'shadow-02', label: 'Default', usage: 'Cards, inputs on focus, tooltips' },
-          { token: 'shadow-03', label: 'Prominent', usage: 'Popovers, dropdowns, command palette' },
-          { token: 'shadow-04', label: 'Modal', usage: 'Dialogs, alert dialogs' },
-          { token: 'shadow-05', label: 'Maximum', usage: 'Full-screen modals, sheets, toasts' },
+          { token: 'shadow-raised', label: 'Raised', usage: 'Buttons, switch thumb, small elevations' },
+          { token: 'shadow-raised-hover', label: 'Raised Hover', usage: 'Cards, inputs on focus, tooltips' },
+          { token: 'shadow-floating', label: 'Floating', usage: 'Popovers, dropdowns, command palette' },
+          { token: 'shadow-overlay', label: 'Overlay', usage: 'Dialogs, sheets, toasts' },
           { token: 'shadow-brand', label: 'Brand', usage: 'Accent CTA hover, branded moments' },
         ].map(({ token, label, usage }) => (
           <div
             key={token}
-            className={`rounded-ds-lg bg-surface-2 p-ds-06 ${token}`}
+            className={`rounded-ds-lg bg-surface-raised p-ds-06 ${token}`}
             style={{ boxShadow: `var(--${token})` }}
           >
             <p className="text-ds-md font-semibold text-surface-fg">
@@ -56,14 +55,14 @@ export const Shadows: Story = {
         Side-by-side comparison of progressive elevation levels.
       </p>
       <div className="flex flex-wrap items-end gap-ds-06 pt-ds-05">
-        {['shadow-01', 'shadow-02', 'shadow-03', 'shadow-04', 'shadow-05'].map(
+        {['shadow-raised', 'shadow-raised-hover', 'shadow-floating', 'shadow-overlay'].map(
           (token, i) => (
             <div
               key={token}
               className="flex flex-col items-center gap-ds-03"
             >
               <div
-                className="rounded-ds-lg bg-surface-2"
+                className="rounded-ds-lg bg-surface-raised"
                 style={{
                   boxShadow: `var(--${token})`,
                   width: 80 + i * 16,
@@ -147,15 +146,15 @@ export const FocusRings: Story = {
         <button className="focus-ring rounded-ds-md bg-accent-9 px-ds-05 py-ds-03 text-ds-md font-semibold text-accent-fg">
           .focus-ring
         </button>
-        <button className="focus-ring-inset rounded-ds-md border border-surface-border-strong bg-surface-2 px-ds-05 py-ds-03 text-ds-md font-medium text-surface-fg">
+        <button className="focus-ring-inset rounded-ds-md border border-surface-border-strong bg-surface-raised px-ds-05 py-ds-03 text-ds-md font-medium text-surface-fg">
           .focus-ring-inset
         </button>
-        <button className="focus-ring-sm rounded-ds-md border border-surface-border-strong bg-surface-3 px-ds-05 py-ds-03 text-ds-md font-medium text-surface-fg">
+        <button className="focus-ring-sm rounded-ds-md border border-surface-border-strong bg-surface-raised-hover px-ds-05 py-ds-03 text-ds-md font-medium text-surface-fg">
           .focus-ring-sm
         </button>
       </div>
       <p className="text-ds-sm text-surface-fg-subtle">
-        Press <kbd className="rounded-ds-sm border border-surface-border-strong bg-surface-2 px-ds-02b py-ds-01 font-mono text-ds-xs">Tab</kbd> to
+        Press <kbd className="rounded-ds-sm border border-surface-border-strong bg-surface-raised px-ds-02b py-ds-01 font-mono text-ds-xs">Tab</kbd> to
         focus each button and see the ring style.
       </p>
     </div>

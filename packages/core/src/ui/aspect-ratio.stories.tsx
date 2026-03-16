@@ -13,7 +13,7 @@ export const Default: Story = {
   render: () => (
     <div className="w-[450px]">
       <AspectRatio ratio={16 / 9}>
-        <div className="flex h-full w-full items-center justify-center rounded-ds-lg bg-surface-3 text-ds-sm text-surface-fg-muted">
+        <div className="flex h-full w-full items-center justify-center rounded-ds-lg bg-surface-raised-hover text-ds-sm text-surface-fg-muted">
           16:9
         </div>
       </AspectRatio>
@@ -25,7 +25,7 @@ export const Square: Story = {
   render: () => (
     <div className="w-[300px]">
       <AspectRatio ratio={1}>
-        <div className="flex h-full w-full items-center justify-center rounded-ds-lg bg-surface-3 text-ds-sm text-surface-fg-muted">
+        <div className="flex h-full w-full items-center justify-center rounded-ds-lg bg-surface-raised-hover text-ds-sm text-surface-fg-muted">
           1:1
         </div>
       </AspectRatio>

@@ -173,7 +173,7 @@ function ProgressBar({ progress, label }: { progress: number; label: string }) {
     clamped >= 90 ? 'bg-success-9' : clamped >= 70 ? 'bg-warning-9' : 'bg-accent-9'
 
   return (
-    <div className="h-1 w-full rounded-ds-full bg-surface-2 mt-ds-04" role="progressbar" aria-label={`${label} progress`} aria-valuenow={clamped} aria-valuemin={0} aria-valuemax={100}>
+    <div className="h-1 w-full rounded-ds-full bg-surface-raised mt-ds-04" role="progressbar" aria-label={`${label} progress`} aria-valuenow={clamped} aria-valuemin={0} aria-valuemax={100}>
       <div
         className={cn('h-full rounded-ds-full transition-[width] duration-moderate-02 ease-productive-standard', barColor)}
         style={{ width: `${clamped}%` }}
@@ -217,7 +217,7 @@ const StatCard = React.forwardRef<HTMLDivElement, StatCardProps>(
         <div
           ref={ref}
           className={cn(
-            'rounded-ds-lg border border-surface-border bg-surface-2 shadow-01 p-ds-05b',
+            'rounded-ds-lg border border-surface-border bg-surface-raised shadow-raised p-ds-05b',
             accent && `border-l-[3px] ${accentBorderMap[accent]}`,
             className,
           )}
@@ -356,10 +356,10 @@ const StatCard = React.forwardRef<HTMLDivElement, StatCardProps>(
     )
 
     const cardClasses = cn(
-      'rounded-ds-lg border border-surface-border bg-surface-2 shadow-01 p-ds-05b',
+      'rounded-ds-lg border border-surface-border bg-surface-raised shadow-raised p-ds-05b',
       accent && `border-l-[3px] ${accentBorderMap[accent]}`,
       isClickable &&
-        'cursor-pointer hover:shadow-02 hover:border-surface-border-strong transition-[box-shadow,border-color] duration-fast-02 ease-productive-standard group',
+        'cursor-pointer hover:shadow-raised-hover hover:border-surface-border-strong transition-[box-shadow,border-color] duration-fast-02 ease-productive-standard group',
       className,
     )
 

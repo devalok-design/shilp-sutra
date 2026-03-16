@@ -13,7 +13,7 @@ import { springs } from './lib/motion'
  * ------------------------------------------------------------------------ */
 
 const progressTrackVariants = cva(
-  'relative w-full overflow-hidden rounded-ds-full bg-surface-2',
+  'relative w-full overflow-hidden rounded-ds-full bg-surface-raised',
   {
     variants: {
       size: {

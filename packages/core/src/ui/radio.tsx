@@ -24,11 +24,11 @@ const RadioGroupItem = React.forwardRef<
       ref={ref}
       className={cn(
         'aspect-square h-ico-md w-ico-md rounded-ds-full',
-        'border border-surface-border-strong bg-surface-3',
+        'border border-surface-border-strong bg-surface-raised-hover',
         'transition-colors duration-fast-01',
         'focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent-9 focus-visible:ring-offset-2',
         'disabled:cursor-not-allowed disabled:opacity-action-disabled',
-        'hover:border-accent-7 hover:bg-surface-4',
+        'hover:border-accent-7 hover:bg-surface-raised-active',
         'data-[state=checked]:border-accent-7',
         className,
       )}

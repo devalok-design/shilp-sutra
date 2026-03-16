@@ -41,7 +41,7 @@ export type AvatarRing = 'none' | 'lead' | 'admin' | 'client'
 
 const statusColorMap: Record<AvatarStatus, string> = {
   online: 'bg-success-9',
-  offline: 'bg-surface-3',
+  offline: 'bg-surface-raised-hover',
   busy: 'bg-error-9',
   away: 'bg-warning-9',
 }
@@ -185,7 +185,7 @@ const Avatar = React.forwardRef<
     return (
       <span ref={ref} className={cn('relative inline-flex shrink-0', ringClasses)}>
         <span
-          className={cn(avatarVariants({ size, shape }), 'animate-pulse bg-surface-3')}
+          className={cn(avatarVariants({ size, shape }), 'animate-pulse bg-surface-raised-hover')}
           data-slot="avatar-skeleton"
         />
       </span>

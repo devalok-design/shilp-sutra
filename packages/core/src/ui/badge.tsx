@@ -42,9 +42,9 @@ const badgeVariants = cva(
     },
     compoundVariants: [
       // subtle (surface bg)
-      { variant: 'subtle', color: 'default', className: 'bg-surface-3 text-surface-fg-muted border-surface-border-strong' },
+      { variant: 'subtle', color: 'default', className: 'bg-surface-raised-hover text-surface-fg-muted border-surface-border-strong' },
       // "secondary" alias → same as subtle + default
-      { variant: 'secondary', color: 'default', className: 'bg-surface-3 text-surface-fg-muted border-surface-border-strong' },
+      { variant: 'secondary', color: 'default', className: 'bg-surface-raised-hover text-surface-fg-muted border-surface-border-strong' },
       // "destructive" alias → solid + error
       { variant: 'destructive', color: 'default', className: 'bg-error-9 text-accent-fg border-transparent' },
       { variant: 'destructive', color: 'error', className: 'bg-error-9 text-accent-fg border-transparent' },

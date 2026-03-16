@@ -24,8 +24,8 @@ export function ChartTooltip({ state, className }: ChartTooltipProps) {
       className={cn(
         'pointer-events-none absolute z-tooltip',
         'rounded-ds-md border border-surface-border-strong',
-        'bg-surface-1 px-ds-03 py-ds-02',
-        'shadow-02',
+        'bg-surface-overlay px-ds-03 py-ds-02',
+        'shadow-raised-hover',
         'text-ds-sm text-surface-fg',
         className,
       )}

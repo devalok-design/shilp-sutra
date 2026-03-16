@@ -21,7 +21,7 @@ const bannerVariants = cva(
         error:
           'bg-error-3 border-error-7 text-error-11',
         neutral:
-          'bg-surface-2 border-surface-border-strong text-surface-fg [&>svg]:text-surface-fg-muted',
+          'bg-surface-raised border-surface-border-strong text-surface-fg [&>svg]:text-surface-fg-muted',
       },
     },
     defaultVariants: { color: 'info' },

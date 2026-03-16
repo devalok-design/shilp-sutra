@@ -172,7 +172,7 @@ function ToastContent({
       layout="position"
       role="status"
       aria-live="polite"
-      className="group relative flex w-full overflow-hidden rounded-ds-md border border-surface-border-strong bg-surface-1 shadow-02"
+      className="group relative flex w-full overflow-hidden rounded-ds-md border border-surface-border-strong bg-surface-overlay shadow-raised-hover"
       onMouseEnter={() => setHovered(true)}
       onMouseLeave={() => setHovered(false)}
       transition={springs.smooth}
@@ -238,7 +238,7 @@ function ToastContent({
                 <button
                   type="button"
                   onClick={action.onClick}
-                  className="text-ds-sm font-medium text-accent-11 underline-offset-2 hover:underline hover:bg-surface-3 rounded-ds-sm px-ds-02 py-ds-01 transition-[color,background-color] duration-fast-01 ease-productive-standard focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent-9 focus-visible:rounded-ds-sm"
+                  className="text-ds-sm font-medium text-accent-11 underline-offset-2 hover:underline hover:bg-surface-raised-hover rounded-ds-sm px-ds-02 py-ds-01 transition-[color,background-color] duration-fast-01 ease-productive-standard focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent-9 focus-visible:rounded-ds-sm"
                 >
                   {action.label}
                 </button>
@@ -506,7 +506,7 @@ function UploadToastContent({
       role="status"
       aria-live="polite"
       aria-label="File uploads"
-      className="group relative flex w-full overflow-hidden rounded-ds-md border border-surface-border-strong bg-surface-1 shadow-02"
+      className="group relative flex w-full overflow-hidden rounded-ds-md border border-surface-border-strong bg-surface-overlay shadow-raised-hover"
       onMouseEnter={() => setHovered(true)}
       onMouseLeave={() => setHovered(false)}
       transition={springs.smooth}

@@ -303,7 +303,7 @@ const Combobox = React.forwardRef<HTMLButtonElement, ComboboxProps>(
                   {option.label}
                   <button
                     type="button"
-                    className="inline-flex items-center justify-center rounded-ds-full outline-none hover:scale-110 hover:bg-surface-3 transition-transform duration-fast-01 ease-productive-standard"
+                    className="inline-flex items-center justify-center rounded-ds-full outline-none hover:scale-110 hover:bg-surface-raised-hover transition-transform duration-fast-01 ease-productive-standard"
                     onClick={(e) => handleRemovePill(e, val)}
                     aria-label={`Remove ${option.label}`}
                     tabIndex={-1}
@@ -350,7 +350,7 @@ const Combobox = React.forwardRef<HTMLButtonElement, ComboboxProps>(
             aria-label={accessibleLabel ?? placeholder}
             disabled={disabled}
             className={cn(
-              'flex h-ds-md w-full items-center justify-between whitespace-nowrap rounded-ds-md border border-surface-border-strong bg-surface-3 px-ds-04 py-ds-03 text-ds-md',
+              'flex h-ds-md w-full items-center justify-between whitespace-nowrap rounded-ds-md border border-surface-border-strong bg-surface-raised-hover px-ds-04 py-ds-03 text-ds-md',
               'transition-colors duration-fast-01 ease-productive-standard',
               'focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent-9 focus-visible:ring-offset-2 focus-visible:border-accent-7',
               'disabled:cursor-not-allowed disabled:opacity-action-disabled',
@@ -378,7 +378,7 @@ const Combobox = React.forwardRef<HTMLButtonElement, ComboboxProps>(
               animate={{ opacity: 1, scale: 1 }}
               transition={{ ...springs.snappy, opacity: tweens.fade }}
               className={cn(
-                'z-popover w-[var(--radix-popover-trigger-width)] overflow-hidden rounded-ds-lg border border-surface-border bg-surface-1 shadow-02',
+                'z-popover w-[var(--radix-popover-trigger-width)] overflow-hidden rounded-ds-lg border border-surface-border bg-surface-overlay shadow-raised-hover',
               )}
             >
                   {/* Search input */}

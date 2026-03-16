@@ -243,7 +243,7 @@ const FileUpload = React.forwardRef<HTMLDivElement, FileUploadProps>(
               'inline-flex items-center gap-ds-02 rounded-ds-md px-ds-03 py-ds-02',
               'text-ds-sm font-medium',
               'border border-surface-border-strong',
-              'bg-surface-3 text-surface-fg-muted',
+              'bg-surface-raised-hover text-surface-fg-muted',
               'hover:bg-accent-2',
               'disabled:opacity-action-disabled disabled:cursor-not-allowed',
               'transition-colors',
@@ -312,7 +312,7 @@ const FileUpload = React.forwardRef<HTMLDivElement, FileUploadProps>(
             'flex flex-col items-center justify-center gap-ds-03 rounded-ds-lg',
             'border-2 border-dashed p-ds-08',
             'cursor-pointer',
-            'border-surface-border-strong bg-surface-3',
+            'border-surface-border-strong bg-surface-raised-hover',
             isDragActive &&
               'border-accent-7 bg-accent-2',
             disabled && 'opacity-action-disabled cursor-not-allowed',
@@ -366,7 +366,7 @@ const FileUpload = React.forwardRef<HTMLDivElement, FileUploadProps>(
                 aria-valuenow={progress}
                 aria-valuemin={0}
                 aria-valuemax={100}
-                className="h-2 w-full overflow-hidden rounded-ds-full bg-surface-3"
+                className="h-2 w-full overflow-hidden rounded-ds-full bg-surface-raised-hover"
               >
                 <motion.div
                   className="h-full rounded-ds-full bg-accent-9"

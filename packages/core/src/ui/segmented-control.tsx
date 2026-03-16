@@ -14,7 +14,7 @@ const segmentedControlItemVariants = cva(
     'transition-[color,background-color,border-color,box-shadow] duration-moderate-02 ease-productive-standard',
     'relative overflow-hidden',
     'font-accent font-semibold leading-none text-center',
-    'bg-surface-1',
+    'bg-surface-overlay',
     'first:rounded-tr-none first:rounded-br-none',
     'last:rounded-tl-none last:rounded-bl-none',
   ],
@@ -254,7 +254,7 @@ const SegmentedControl = React.forwardRef<HTMLDivElement, SegmentedControlProps>
       ref={mergedRef}
       className={cn(
         'inline-flex gap-0 p-0 rounded-ds-full',
-        'bg-surface-2',
+        'bg-surface-raised',
         'border border-solid border-surface-border-strong',
         className,
       )}
@@ -302,7 +302,7 @@ SegmentedControl.displayName = 'SegmentedControl'
  * const [view, setView] = useState<'list' | 'grid'>('list')
  * const [focused, setFocused] = useState<string | null>(null)
  *
- * <div role="tablist" className="inline-flex rounded-full border border-surface-border-strong bg-surface-2">
+ * <div role="tablist" className="inline-flex rounded-full border border-surface-border-strong bg-surface-raised">
  *   <SegmentedControlItem
  *     size="md" variant="tonal" text="List"
  *     isSelected={view === 'list'} isFocused={focused === 'list'}
@@ -414,7 +414,7 @@ const SegmentedControlItem = React.forwardRef<HTMLButtonElement, SegmentedContro
             'absolute inset-0 rounded-ds-full pointer-events-none',
             variant === 'filled'
               ? 'bg-accent-9 shadow-[0px_1px_3px_0.05px_var(--color-accent-10),inset_0px_8px_16px_0px_var(--color-inset-glow-strong),inset_0px_2px_0px_0px_var(--color-inset-glow-subtle)]'
-              : 'bg-surface-3',
+              : 'bg-surface-raised-hover',
           )}
           transition={springs.smooth}
         />

@@ -15,7 +15,7 @@ const chipVariants = cva(
   {
     variants: {
       variant: {
-        subtle: 'bg-surface-2 text-surface-fg border border-transparent',
+        subtle: 'bg-surface-raised text-surface-fg border border-transparent',
         outline: 'bg-transparent text-surface-fg border border-surface-border-strong',
       },
       size: {
@@ -124,7 +124,7 @@ const Chip = React.forwardRef<HTMLElement, ChipProps>(
     const isClickable = !!onClick
     const MotionComponent = isClickable ? motion.button : motion.span
     const interactiveClass = isClickable && !disabled
-      ? 'cursor-pointer hover:bg-surface-4 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent-9'
+      ? 'cursor-pointer hover:bg-surface-raised-active focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent-9'
       : ''
     const disabledClass = disabled
       ? 'opacity-action-disabled cursor-not-allowed'

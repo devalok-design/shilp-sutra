@@ -176,7 +176,7 @@ const Autocomplete = React.forwardRef<HTMLInputElement, AutocompleteProps>(
           placeholder={placeholder}
           disabled={disabled}
           className={cn(
-            'flex h-ds-md w-full rounded-ds-md border border-surface-border-strong bg-surface-3 px-ds-04 py-ds-03 font-sans text-ds-md text-surface-fg placeholder:text-surface-fg-subtle',
+            'flex h-ds-md w-full rounded-ds-md border border-surface-border-strong bg-surface-raised-hover px-ds-04 py-ds-03 font-sans text-ds-md text-surface-fg placeholder:text-surface-fg-subtle',
             'outline-none focus-visible:ring-2 focus-visible:ring-accent-9 focus-visible:ring-offset-[var(--border-focus-offset)]',
             'transition-colors duration-fast-01',
             disabled && 'opacity-action-disabled cursor-not-allowed',
@@ -203,7 +203,7 @@ const Autocomplete = React.forwardRef<HTMLInputElement, AutocompleteProps>(
               exit="hidden"
               variants={listVariants}
               className={cn(
-                'absolute z-popover mt-ds-02 w-full overflow-auto rounded-ds-md border border-surface-border-strong bg-surface-1 shadow-02',
+                'absolute z-popover mt-ds-02 w-full overflow-auto rounded-ds-md border border-surface-border-strong bg-surface-overlay shadow-raised-hover',
                 'max-h-60',
               )}
             >

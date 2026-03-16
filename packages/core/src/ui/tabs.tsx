@@ -102,7 +102,7 @@ const tabsListVariants = cva('inline-flex items-center', {
     variant: {
       line: 'border-b border-surface-border-strong w-full gap-0',
       contained:
-        'bg-surface-2 p-ds-02 rounded-ds-lg gap-ds-02',
+        'bg-surface-raised p-ds-02 rounded-ds-lg gap-ds-02',
     },
   },
   defaultVariants: { variant: 'line' },
@@ -198,7 +198,7 @@ const TabsTrigger = React.forwardRef<
       {variant === 'contained' && isActive && (
         <motion.span
           layoutId={`${listContext.layoutId}-contained`}
-          className="absolute inset-0 rounded-ds-md bg-surface-1 shadow-01"
+          className="absolute inset-0 rounded-ds-md bg-surface-overlay shadow-raised"
           transition={springs.smooth}
         />
       )}

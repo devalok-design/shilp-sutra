@@ -45,7 +45,7 @@ export interface DataTableToolbarProps<TData> extends Omit<React.HTMLAttributes<
 const toolbarButtonClass = cn(
   'h-ds-sm px-ds-03 rounded-ds-md',
   'border border-surface-border-strong',
-  'hover:bg-surface-2',
+  'hover:bg-surface-raised',
   'text-ds-sm flex items-center gap-ds-02 transition-colors',
 )
 

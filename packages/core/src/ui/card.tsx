@@ -12,10 +12,10 @@ const cardVariants = cva(
   {
     variants: {
       variant: {
-        default: 'bg-surface-2 border border-surface-border shadow-01',
-        elevated: 'bg-surface-2 border border-surface-border shadow-02',
+        default: 'bg-surface-raised border border-surface-border shadow-raised',
+        elevated: 'bg-surface-raised border border-surface-border shadow-raised-hover',
         outline: 'bg-transparent border border-surface-border-strong shadow-none',
-        flat: 'bg-surface-2 border-none shadow-none',
+        flat: 'bg-surface-raised border-none shadow-none',
       },
     },
     defaultVariants: { variant: 'default' },
@@ -26,7 +26,7 @@ const cardVariants = cva(
  * Props for Card — a general-purpose content container with 4 elevation/style variants and
  * an optional interactive hover state.
  *
- * **Variants:** `default` (subtle border + shadow-01) | `elevated` (stronger shadow-02) |
+ * **Variants:** `default` (subtle border + shadow-raised) | `elevated` (stronger shadow-raised-hover) |
  * `outline` (2px solid border, no shadow) | `flat` (filled background, no shadow)
  *
  * **Composition:** Use sub-components `<CardHeader>`, `<CardTitle>`, `<CardDescription>`,
@@ -80,7 +80,7 @@ const Card = React.forwardRef<HTMLDivElement, CardProps>(
   ({ className, variant, interactive, ...props }, ref) => {
     const classes = cn(
       cardVariants({ variant }),
-      interactive && 'hover:shadow-02 hover:border-surface-border-strong cursor-pointer',
+      interactive && 'hover:shadow-raised-hover hover:border-surface-border-strong cursor-pointer transition-shadow duration-fast-02 ease-productive-standard',
       className,
     )
 

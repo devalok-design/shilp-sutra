@@ -1,7 +1,7 @@
 # Surface & Shadow Token Consistency — Design Document
 
 **Date:** 2026-03-16
-**Status:** Approved
+**Status:** Approved (reviewed by Token Systems Council)
 **Scope:** `packages/core/src/tokens/semantic.css`, `packages/core/src/tailwind/preset.ts`, all component files
 
 ## Motivation
@@ -102,7 +102,7 @@ Current shadows use pure black (`oklch(0 0 0)`). Research from Stripe, Josh Come
 --shadow-color: 0.15 0.015 260; /* dark desaturated blue (H:260, cool) */
 ```
 
-This is a deliberate contrast to the warm hue (350/360) of the surface system. Blue shadows are atmospheric and recessive — they don't desaturate underlying colors like pure black does.
+**Design rationale — cool elevation, warm effects:** The shadow color is cool blue (260) while the surface system is warm (350/360). This is intentional: elevation shadows should recede behind content (cool blue is atmospheric and recessive), while effect shadows (brand, glow, ring) use the warm accent color to attract attention. This mirrors how Stripe handles shadow coloring. At tint strength 0.015 and layer opacities of 3-5%, the blue tint is subliminal — felt as natural depth, not seen as a color. The `--shadow-color` variable makes the hue trivially changeable if real-world testing reveals issues.
 
 ### Shadow technique
 
@@ -111,7 +111,7 @@ Each semantic shadow uses 4-6 layers following the **doubling progression** (Com
 - **Layers 2-N**: Offset and blur roughly double per layer, opacity decreases
 - **Negative spread** on outer layers keeps shadows contained and directional
 
-Dark mode uses a **strength multiplier** (~2.6x) rather than redefining every shadow individually. This matches the Open Props approach.
+Dark mode uses a **strength multiplier** (2.5x) rather than redefining every shadow individually. This matches the existing system's ratio (current shadow-01 light peak alpha 0.10 → dark 0.25 = 2.5x) and the Open Props approach.
 
 ### Primitive layer (internal)
 
@@ -278,21 +278,38 @@ Every shadow level starts with a `0 0 0 1px` ring layer. Adding a CSS `border` o
 
 All foreground tokens (`surface-fg`, `surface-fg-muted`, `surface-fg-subtle`), existing border tokens (`surface-border`, `surface-border-strong`), z-index scale, motion tokens, motion primitives, and framer-motion presets remain unchanged.
 
+### Shadow transition token
+
+A shared CSS custom property ensures all shadow transitions feel consistent:
+
+```css
+--shadow-transition: box-shadow var(--duration-fast-02) var(--ease-productive-standard);
+```
+
+Components apply this via `transition: var(--shadow-transition)`. This wires into the existing motion system without creating parallel tokens.
+
 ## Migration Strategy
 
-**Big-bang per package.** Migrate all of core at once, then karm. No gradual migration (avoids audit complexity of two naming systems coexisting).
+**Big-bang per package with one deprecation-alias minor version.** This protects non-coding designers and AI agents from silent Tailwind class drops.
 
 ### Sequence
 
-1. Add new primitives (`surface-0`, `shadow-color`) to `primitives.css`
-2. Add semantic aliases to `semantic.css`
-3. Update `preset.ts` Tailwind mappings (remove old, add new)
-4. Migrate all core components (find-replace + manual review)
-5. Update `pre-publish-audit.mjs` (new rules for semantic tokens)
-6. Migrate all karm components
-7. Update `llms.txt` and `llms-full.txt`
-8. Update CHANGELOG.md
-9. Publish
+1. **v0.23.0 — Deprecation bridge (non-breaking)**
+   - Add new primitives (`surface-0`, `shadow-color`) to `primitives.css`
+   - Add ALL semantic aliases to `semantic.css` (new names)
+   - Update `preset.ts` to expose BOTH old and new Tailwind utilities
+   - Old utilities (`bg-surface-1`, `shadow-01`) map to new values via aliases
+   - Add dev-mode console.warn when old class names are used (via a PostCSS plugin or Tailwind plugin)
+   - Update `llms.txt` and `llms-full.txt` to document new names (mark old as deprecated)
+   - Publish — consumers get new tokens without breaking
+
+2. **v0.24.0 — Full migration (breaking)**
+   - Migrate all core components to semantic names (find-replace + manual review)
+   - Migrate all karm components to semantic names
+   - Remove old Tailwind utilities from `preset.ts`
+   - Update `pre-publish-audit.mjs` (new rules for semantic tokens)
+   - Update CHANGELOG.md with breaking changes
+   - Publish
 
 ### Pre-publish audit changes
 
@@ -301,3 +318,24 @@ The audit currently checks for `bg-surface-1` on non-allowlisted files. After mi
 - New check: "does this card/widget use `bg-surface-raised`?" → add
 - Shell chrome rule: "sidebar/topbar must use `bg-surface-sunken`"
 - Border/shadow rule: "no file uses both explicit border and shadow on the same element class"
+
+## Council Review (2026-03-16)
+
+Reviewed by a Token Systems Council (DS Architect, Visual Design Engineer, Devil's Advocate) over two rounds of debate.
+
+### Consensus decisions
+- Two-layer architecture is sound for current system size
+- Semantic surface renames approved unanimously
+- Multi-layer tinted shadow technique approved (ships with rename, not deferred)
+- Border three-tier hierarchy correct (maps to existing neutral-4/5/6)
+- Sunken chroma 0.008 is well-calibrated ("felt but not seen")
+- Shadow-surface axes remain independent (shadow-floating + surface-overlay is intentional)
+- Deprecation aliases for one minor version are non-negotiable (protects AI agents + non-coding designers)
+- Karm package must be explicitly included in migration
+
+### Resolved decisions
+- **Shadow hue: cool blue 260** — elevation shadows recede (cool), effect shadows attract (warm accent). At 0.015 chroma / 3-5% opacity, the tint is subliminal. `--shadow-color` variable makes it trivially adjustable.
+- **Dark mode multiplier: 2.5x** — matches existing system ratio. Visual testing in Storybook recommended before publish.
+- **`shadow-ring-sm`: keep** as escape hatch, not in standard decision matrix
+- **Effect tokens ship together** (brand, glow, inset are visually load-bearing in segmented-control, task-card, button)
+- **Shadow transition token added** — `--shadow-transition` wires into existing motion system

@@ -142,9 +142,14 @@
     <div class="cr"><label>Brand tint <span class="v" id="vc">0.008</span></label><input type=range id="rc" min=0 max=0.025 step=0.001 value=0.008 oninput="onC(this)"></div>
     <div class="cr"><label>Depth <span class="v" id="vd">0.040</span></label><input type=range id="rd" min=0.01 max=0.08 step=0.002 value=0.04 oninput="onD(this)"></div>
   </div>
-  <div class="cg"><h2>Shadow Color</h2>
-    <div class="cr"><label>Hue <span class="v" id="vh">260</span></label><input type=range id="rh" min=0 max=360 step=5 value=260 oninput="onH(this)"></div>
+  <div class="cg"><h2>A/B: Shadow Hue</h2>
+    <div class="tog"><button id="hue-blue" class="on" onclick="setHue(260)">Cool Blue 260</button><button id="hue-warm" onclick="setHue(340)">Warm Mauve 340</button></div>
+    <div class="cr"><label>Fine-tune hue <span class="v" id="vh">260</span></label><input type=range id="rh" min=0 max=360 step=5 value=260 oninput="onH(this)"></div>
     <div class="cr"><label>Tint strength <span class="v" id="vt">0.015</span></label><input type=range id="rt" min=0 max=0.04 step=0.001 value=0.015 oninput="onT(this)"></div>
+  </div>
+  <div class="cg"><h2>A/B: Dark Mode Multiplier</h2>
+    <div class="tog"><button id="dm-20" class="on" onclick="setDM(2.0)">2.0x (Linear)</button><button id="dm-25" onclick="setDM(2.5)">2.5x (Current)</button></div>
+    <div class="cr"><label>Fine-tune <span class="v" id="vm">2.0x</span></label><input type=range id="rm" min=1.5 max=3.0 step=0.1 value=2.0 oninput="onM(this)"></div>
   </div>
   <div class="cg"><h2>Shadow Intensity</h2>
     <div class="cr"><label>Scale <span class="v" id="vi">1.0x</span></label><input type=range id="ri" min=0.3 max=2.0 step=0.05 value=1.0 oninput="onI(this)"></div>
@@ -352,12 +357,12 @@
 
 <script>
 var P={
-  proposed:{c:.008,d:.04,i:1,v:.02,h:260,t:.015},
-  stripe:  {c:.006,d:.035,i:.85,v:.015,h:240,t:.025},
-  minimal: {c:.004,d:.025,i:.55,v:.01,h:220,t:.008},
-  bold:    {c:.016,d:.06,i:1.4,v:.04,h:260,t:.02},
+  proposed:{c:.008,d:.04,i:1,v:.02,h:260,t:.015,m:2.0},
+  stripe:  {c:.006,d:.035,i:.85,v:.015,h:240,t:.025,m:2.0},
+  minimal: {c:.004,d:.025,i:.55,v:.01,h:220,t:.008,m:1.8},
+  bold:    {c:.016,d:.06,i:1.4,v:.04,h:260,t:.02,m:2.5},
 };
-var S={theme:'light',c:.008,d:.04,i:1,v:.02,h:260,t:.015,p:'proposed'};
+var S={theme:'light',c:.008,d:.04,i:1,v:.02,h:260,t:.015,p:'proposed',m:2.0};
 
 function lv(){var b=.985;return{
   base:'oklch('+b+' 0 0)',sunken:'oklch('+(b-S.d).toFixed(4)+' '+S.c.toFixed(4)+' 360)',
@@ -387,7 +392,7 @@ function dv(){var b=.16;return{
 
 /* Multi-layer tinted shadows — inspired by Comeau + Stripe + Radix */
 function shadows(v){
-  var s=S.i,dk=S.theme==='dark',dm=dk?2.6:1;
+  var s=S.i,dk=S.theme==='dark',dm=dk?S.m:1;
   var sc='oklch(0.15 '+S.t.toFixed(3)+' '+S.h;
   function a(x){return(x*s*dm).toFixed(3);}
 
@@ -643,17 +648,41 @@ function updatePrompt(){
 function setTheme(t){S.theme=t;document.getElementById('bl').classList.toggle('on',t==='light');document.getElementById('bd').classList.toggle('on',t==='dark');render();}
 function onC(e){S.c=+e.value;document.getElementById('vc').textContent=S.c.toFixed(3);clr();render();}
 function onD(e){S.d=+e.value;document.getElementById('vd').textContent=S.d.toFixed(3);clr();render();}
-function onH(e){S.h=+e.value;document.getElementById('vh').textContent=S.h;clr();render();}
+function setHue(h){
+  S.h=h;document.getElementById('rh').value=h;document.getElementById('vh').textContent=h;
+  document.getElementById('hue-blue').classList.toggle('on',h===260);
+  document.getElementById('hue-warm').classList.toggle('on',h===340);
+  clr();render();
+}
+function setDM(m){
+  S.m=m;document.getElementById('rm').value=m;document.getElementById('vm').textContent=m.toFixed(1)+'x';
+  document.getElementById('dm-20').classList.toggle('on',m===2.0);
+  document.getElementById('dm-25').classList.toggle('on',m===2.5);
+  clr();render();
+}
+function onM(e){S.m=+e.value;document.getElementById('vm').textContent=S.m.toFixed(1)+'x';
+  document.getElementById('dm-20').classList.toggle('on',S.m===2.0);
+  document.getElementById('dm-25').classList.toggle('on',S.m===2.5);
+  clr();render();}
+function onH(e){S.h=+e.value;document.getElementById('vh').textContent=S.h;
+  document.getElementById('hue-blue').classList.toggle('on',S.h===260);
+  document.getElementById('hue-warm').classList.toggle('on',S.h===340);
+  clr();render();}
 function onT(e){S.t=+e.value;document.getElementById('vt').textContent=S.t.toFixed(3);clr();render();}
 function onI(e){S.i=+e.value;document.getElementById('vi').textContent=S.i.toFixed(1)+'x';clr();render();}
 function onV(e){S.v=+e.value;document.getElementById('vv').textContent='+'+S.v.toFixed(3);clr();render();}
 function clr(){S.p=null;var b=document.querySelectorAll('.pr button');for(var i=0;i<b.length;i++)b[i].classList.remove('on');}
 function pre(n){
-  var p=P[n];S.c=p.c;S.d=p.d;S.i=p.i;S.v=p.v;S.h=p.h;S.t=p.t;S.p=n;
+  var p=P[n];S.c=p.c;S.d=p.d;S.i=p.i;S.v=p.v;S.h=p.h;S.t=p.t;S.m=p.m;S.p=n;
   document.getElementById('rc').value=p.c;document.getElementById('vc').textContent=p.c.toFixed(3);
   document.getElementById('rd').value=p.d;document.getElementById('vd').textContent=p.d.toFixed(3);
   document.getElementById('rh').value=p.h;document.getElementById('vh').textContent=p.h;
+  document.getElementById('hue-blue').classList.toggle('on',p.h===260);
+  document.getElementById('hue-warm').classList.toggle('on',p.h===340);
   document.getElementById('rt').value=p.t;document.getElementById('vt').textContent=p.t.toFixed(3);
+  document.getElementById('rm').value=p.m;document.getElementById('vm').textContent=p.m.toFixed(1)+'x';
+  document.getElementById('dm-20').classList.toggle('on',p.m===2.0);
+  document.getElementById('dm-25').classList.toggle('on',p.m===2.5);
   document.getElementById('ri').value=p.i;document.getElementById('vi').textContent=p.i.toFixed(1)+'x';
   document.getElementById('rv').value=p.v;document.getElementById('vv').textContent='+'+p.v.toFixed(3);
   var b=document.querySelectorAll('.pr button');for(var i=0;i<b.length;i++)b[i].classList.remove('on');

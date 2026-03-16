@@ -253,7 +253,7 @@ export const FullFeatured: Story = {
           style={{
             height: 4,
             borderRadius: 2,
-            background: 'var(--color-surface-3)',
+            background: 'var(--color-surface-raised-hover)',
             overflow: 'hidden',
           }}
         >

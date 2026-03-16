@@ -19,9 +19,9 @@ import { getInitials } from './lib/string-utils'
 
 // Ring classes applied at group level (not via Avatar's ring prop, which adds ring-offset-2 that gets clipped by overflow-hidden)
 const groupRingMap: Record<string, string> = {
-  lead: 'ring-2 ring-accent-7 ring-offset-1 ring-offset-surface-2',
-  admin: 'ring-2 ring-warning-7 ring-offset-1 ring-offset-surface-2',
-  client: 'ring-2 ring-info-7 ring-offset-1 ring-offset-surface-2',
+  lead: 'ring-2 ring-accent-7 ring-offset-1 ring-offset-surface-raised',
+  admin: 'ring-2 ring-warning-7 ring-offset-1 ring-offset-surface-raised',
+  client: 'ring-2 ring-info-7 ring-offset-1 ring-offset-surface-raised',
 }
 
 const avatarSizeVariants = cva(
@@ -96,7 +96,7 @@ const AvatarGroup = React.forwardRef<HTMLDivElement, AvatarGroupProps>(
     const overlapClass = overlapMap[size ?? 'md']
 
     const borderClass =
-      borderColor === 'surface-1' ? 'border-surface-1' : 'border-surface-2'
+      borderColor === 'surface-1' ? 'border-surface-base' : 'border-surface-raised'
 
     const [isHovered, setIsHovered] = React.useState(false)
 

@@ -161,7 +161,7 @@ export const CalendarGridDefault: DatePickerStory = {
       const [month, setMonth] = useState(new Date(2026, 2, 1))
       const [selected, setSelected] = useState<Date | null>(null)
       return (
-        <div style={{ padding: 16, border: '1px solid var(--color-surface-border-strong)', borderRadius: 12, display: 'inline-block', background: 'var(--color-surface-1)' }}>
+        <div style={{ padding: 16, border: '1px solid var(--color-surface-border-strong)', borderRadius: 12, display: 'inline-block', background: 'var(--color-surface-base)' }}>
           <CalendarGrid
             currentMonth={month}
             selected={selected}
@@ -180,7 +180,7 @@ export const CalendarGridWithSelection: DatePickerStory = {
     const CalendarGridWithSel = () => {
       const [month, setMonth] = useState(new Date(2026, 2, 1))
       return (
-        <div style={{ padding: 16, border: '1px solid var(--color-surface-border-strong)', borderRadius: 12, display: 'inline-block', background: 'var(--color-surface-1)' }}>
+        <div style={{ padding: 16, border: '1px solid var(--color-surface-border-strong)', borderRadius: 12, display: 'inline-block', background: 'var(--color-surface-base)' }}>
           <CalendarGrid
             currentMonth={month}
             selected={new Date(2026, 2, 15)}
@@ -199,7 +199,7 @@ export const CalendarGridWithRange: DatePickerStory = {
     const CalendarGridRange = () => {
       const [month, setMonth] = useState(new Date(2026, 2, 1))
       return (
-        <div style={{ padding: 16, border: '1px solid var(--color-surface-border-strong)', borderRadius: 12, display: 'inline-block', background: 'var(--color-surface-1)' }}>
+        <div style={{ padding: 16, border: '1px solid var(--color-surface-border-strong)', borderRadius: 12, display: 'inline-block', background: 'var(--color-surface-base)' }}>
           <CalendarGrid
             currentMonth={month}
             rangeStart={new Date(2026, 2, 8)}
@@ -220,7 +220,7 @@ export const CalendarGridDisabledDates: DatePickerStory = {
       const [month, setMonth] = useState(new Date(2026, 2, 1))
       const [selected, setSelected] = useState<Date | null>(null)
       return (
-        <div style={{ padding: 16, border: '1px solid var(--color-surface-border-strong)', borderRadius: 12, display: 'inline-block', background: 'var(--color-surface-1)' }}>
+        <div style={{ padding: 16, border: '1px solid var(--color-surface-border-strong)', borderRadius: 12, display: 'inline-block', background: 'var(--color-surface-base)' }}>
           <CalendarGrid
             currentMonth={month}
             selected={selected}

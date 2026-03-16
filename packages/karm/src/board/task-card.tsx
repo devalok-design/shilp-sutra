@@ -282,7 +282,7 @@ function TaskCardVisual({
                 key={i}
                 size="xs"
                 className={cn(
-                  'text-ds-xs border-2 border-surface-1',
+                  'text-ds-xs border-2 border-surface-base',
                   i > 0 && '-ml-ds-02b',
                   user.isOwner && 'shadow-[0_0_0_1.5px_rgba(var(--accent-rgb,99,102,241),0.35),0_0_6px_rgba(var(--accent-rgb,99,102,241),0.2)]',
                 )}
@@ -480,7 +480,7 @@ function TaskCardCompactVisual({
       {leadUser && (
         <div
           className={cn(
-            'flex h-[14px] w-[14px] shrink-0 items-center justify-center rounded-full border border-surface-1 bg-accent-2 text-[6px] font-semibold leading-none text-accent-11 overflow-hidden',
+            'flex h-[14px] w-[14px] shrink-0 items-center justify-center rounded-full border border-surface-base bg-accent-2 text-[6px] font-semibold leading-none text-accent-11 overflow-hidden',
             task.owner && 'shadow-[0_0_0_1px_rgba(var(--accent-rgb,99,102,241),0.35),0_0_4px_rgba(var(--accent-rgb,99,102,241),0.2)]',
           )}
           title={leadUser.name}

@@ -126,10 +126,10 @@ const semanticGroups = [
   {
     name: 'Surface',
     tokens: [
-      '--color-surface-1',
-      '--color-surface-2',
-      '--color-surface-3',
-      '--color-surface-4',
+      '--color-surface-base',
+      '--color-surface-raised',
+      '--color-surface-raised-hover',
+      '--color-surface-raised-active',
       '--color-surface-fg',
       '--color-surface-fg-muted',
       '--color-surface-fg-subtle',
@@ -251,8 +251,8 @@ function TypographySamples() {
 
       <h3 style={subheadingStyle}>Semantic Type Scale</h3>
       <p style={{ fontSize: '0.75rem', color: 'var(--color-surface-fg-subtle)', marginBottom: '0.75rem' }}>
-        Use <code style={{ fontSize: '0.6875rem', background: 'var(--color-surface-3)', padding: '0.15em 0.4em', borderRadius: '4px' }}>&lt;Text variant="..."&gt;</code> for
-        all typography. Sizes driven by <code style={{ fontSize: '0.6875rem', background: 'var(--color-surface-3)', padding: '0.15em 0.4em', borderRadius: '4px' }}>--typo-*</code> CSS tokens.
+        Use <code style={{ fontSize: '0.6875rem', background: 'var(--color-surface-raised-hover)', padding: '0.15em 0.4em', borderRadius: '4px' }}>&lt;Text variant="..."&gt;</code> for
+        all typography. Sizes driven by <code style={{ fontSize: '0.6875rem', background: 'var(--color-surface-raised-hover)', padding: '0.15em 0.4em', borderRadius: '4px' }}>--typo-*</code> CSS tokens.
       </p>
       {semanticTypeScale.map((t) => (
         <div key={t.variant} style={rowStyle}>
@@ -342,7 +342,7 @@ function BorderRadiusScale() {
                 width: '4rem',
                 height: '4rem',
                 borderRadius: `var(${r.token})`,
-                backgroundColor: 'var(--color-surface-2)',
+                backgroundColor: 'var(--color-surface-raised)',
                 border: '2px solid var(--color-accent-9)',
               }}
             />
@@ -376,7 +376,7 @@ function ShadowScale() {
                 width: '7rem',
                 height: '5rem',
                 borderRadius: 'var(--radius-lg)',
-                backgroundColor: 'var(--color-surface-1)',
+                backgroundColor: 'var(--color-surface-base)',
                 boxShadow: `var(${s.token})`,
                 display: 'flex',
                 alignItems: 'center',

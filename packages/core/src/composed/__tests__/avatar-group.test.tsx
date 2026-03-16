@@ -97,19 +97,19 @@ describe('AvatarGroup', () => {
   // ── Border ──────────────────────────────────────────────────────────────
 
   describe('border', () => {
-    it('renders border-surface-2 by default', () => {
+    it('renders border-surface-raised by default', () => {
       const { container } = render(
         <AvatarGroup users={mockUsers.slice(0, 2)} showTooltip={false} />,
       )
-      // Check that the avatar elements have border-surface-2
+      // Check that the avatar elements have border-surface-raised
       const avatars = container.querySelectorAll('[data-slot="avatar-fallback"]')
       expect(avatars.length).toBeGreaterThan(0)
       // The border class is on the Avatar wrapper, which is a parent
       const avatarWrapper = avatars[0].closest('span')!.parentElement!
-      expect(avatarWrapper.className).toContain('border-surface-2')
+      expect(avatarWrapper.className).toContain('border-surface-raised')
     })
 
-    it('renders border-surface-1 when borderColor="surface-1"', () => {
+    it('renders border-surface-base when borderColor="surface-1"', () => {
       const { container } = render(
         <AvatarGroup
           users={mockUsers.slice(0, 2)}
@@ -120,7 +120,7 @@ describe('AvatarGroup', () => {
       const avatars = container.querySelectorAll('[data-slot="avatar-fallback"]')
       expect(avatars.length).toBeGreaterThan(0)
       const avatarWrapper = avatars[0].closest('span')!.parentElement!
-      expect(avatarWrapper.className).toContain('border-surface-1')
+      expect(avatarWrapper.className).toContain('border-surface-base')
     })
   })
 

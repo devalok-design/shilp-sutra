@@ -372,7 +372,7 @@
 
 .prose-devsabha code {
   font-size: 12px;
-  background: var(--color-surface-3);
+  background: var(--color-surface-raised-hover);
   border-radius: 4px;
   padding: 0.15em 0.4em;
 }

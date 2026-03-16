@@ -145,7 +145,7 @@ function ActivityEntry({
       {/* Dot */}
       <div
         className={cn(
-          'relative z-10 mt-1.5 h-2 w-2 shrink-0 rounded-ds-full ring-2 ring-surface-1',
+          'relative z-10 mt-1.5 h-2 w-2 shrink-0 rounded-ds-full ring-2 ring-surface-base',
           dotColorMap[color],
         )}
       />

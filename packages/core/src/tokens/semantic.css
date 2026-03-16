@@ -417,6 +417,10 @@
 
   /* Dark mode borders need lower contrast — bright borders look harsh.
      Drop to step 3/4 for subtle resting borders that don't overpower surfaces */
+  /* Dark mode: restore base/raised to original direction (raised = lighter than base) */
+  --color-surface-base: var(--neutral-1);     /* 0.11L — dark page */
+  --color-surface-raised: var(--neutral-2);   /* 0.17L — lighter cards */
+
   --color-surface-border: var(--neutral-3);
   --color-surface-border-strong: var(--neutral-4);
   --color-surface-overlay: oklch(0.13 0.0002 350);

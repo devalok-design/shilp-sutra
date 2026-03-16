@@ -5,6 +5,47 @@ All notable changes to `@devalok/shilp-sutra` will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.23.0] - 2026-03-16 (core) / [0.21.0] - 2026-03-16 (karm)
+
+### Breaking (core + karm) — Surface & Shadow Token Overhaul
+
+**Migration guide:** `docs/migration/surface-shadow-migration.md`
+
+- **All surface tokens renamed to semantic names:**
+  - `bg-surface-1` → `bg-surface-base` (page bg) or `bg-surface-overlay` (floating) or `bg-surface-sunken` (shell chrome)
+  - `bg-surface-2` → `bg-surface-raised` (cards, widgets, panels)
+  - `bg-surface-3` → `bg-surface-raised-hover` (hover states)
+  - `bg-surface-4` → `bg-surface-raised-active` (pressed states)
+  - Deprecated Tailwind aliases (`bg-surface-1` through `bg-surface-4`) still work but will be removed in a future major
+- **All shadow tokens renamed to semantic names:**
+  - `shadow-01` → `shadow-raised`, `shadow-02` → `shadow-raised-hover`, `shadow-03` → `shadow-floating`, `shadow-04` → `shadow-overlay`
+  - `shadow-05` removed (unused)
+  - Deprecated aliases (`shadow-01` through `shadow-04`) still work
+- **Shadow values changed:** Multi-layer tinted shadows (4-6 layers with border-ring, cool blue tint at oklch 0.15 0.015 260). Shadows look softer and more natural. Dark mode uses 2.5x strength multiplier.
+- **Light-mode surface swap (Stripe/Linear pattern):** Page background is now slightly grey (`neutral-2`, 0.97L), cards/panels are white (`neutral-1`, 0.99L). Dark mode unchanged.
+- **Shell chrome uses `surface-sunken`:** Sidebar and topbar backgrounds are now brand-tinted recessed surfaces with `shadow-raised` for elevation.
+
+### Added (core)
+
+- **New surface tokens:** `surface-base`, `surface-sunken`, `surface-raised`, `surface-overlay`, `surface-raised-hover`, `surface-raised-active`, `surface-inverted`, `surface-inverted-fg`, `surface-disabled`, `surface-fg-disabled`
+- **New shadow tokens:** `shadow-raised`, `shadow-raised-hover`, `shadow-floating`, `shadow-overlay`, `shadow-glow` (selection), `shadow-inset` (deboss), `shadow-ring` (focus), `shadow-ring-sm` (separator)
+- **New border token:** `border-surface-border-subtle` (hairline dividers, neutral-4)
+- **New backdrop token:** `--color-backdrop` with light/dark variants
+- **New shadow infrastructure:** `--shadow-color` (tinted blue), `--shadow-strength` (dark mode multiplier), `--shadow-transition` (consistent animation)
+- **New surface primitive:** `--color-surface-0` in primitives.css (brand-tinted sunken, oklch 0.945 0.008 360)
+- **Shadow transition utility:** Components with hover shadows now use `transition-shadow duration-fast-02 ease-productive-standard`
+
+### Fixed (karm)
+
+- **SSR vendor bundle crash:** Split karm's single `vendor.js` into `vendor-markdown`, `vendor-dnd`, and `vendor-utils`. `decode-named-character-reference` (via react-markdown) was calling `document.createElement` at module scope, crashing Next.js SSR error boundaries. 192 occurrences, 14 affected users.
+- **Task card surfaces:** Cards on kanban boards now use `surface-raised` (white) on `surface-sunken` columns (grey) for clear visual hierarchy in both light and dark modes.
+- **Board column WIP border clipping:** Replaced `ring-1 ring-error-7` with `border-error-7` to prevent content clipping at rounded corners when WIP limit is exceeded.
+
+### Changed (core)
+
+- **Pre-publish audit rewritten:** Now checks for deprecated surface/shadow class names instead of the old SURFACE1_ALLOWLIST approach. Catches regressions where old numeric tokens are used.
+- **FoundationsShowcase updated:** Shadow and surface token demos show new semantic names.
+
 ## [0.22.3] - 2026-03-16 (core)
 
 ### Fixed (core)

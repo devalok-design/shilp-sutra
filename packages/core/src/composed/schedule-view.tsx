@@ -191,7 +191,7 @@ function DayColumn({
             type="button"
             className={cn(
               'block w-full border-b border-surface-border hover:bg-surface-raised-hover transition-colors ease-productive-standard',
-              i % 2 === 0 ? 'border-surface-border-strong' : 'border-surface-3',
+              i % 2 === 0 ? 'border-surface-border-strong' : 'border-surface-border-subtle',
             )}
             style={{ height: `${100 / slotCount}%` }}
             onClick={() => onSlotClick?.(slot.start, slot.end)}

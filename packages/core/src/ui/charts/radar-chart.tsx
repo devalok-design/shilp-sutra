@@ -247,7 +247,7 @@ export const RadarChart = React.forwardRef<HTMLDivElement, RadarChartProps>(
                             cy={y}
                             r={4}
                             fill={colors[seriesIdx]}
-                            stroke="var(--color-surface-1)"
+                            stroke="var(--color-surface-base)"
                             strokeWidth={2}
                             className="transition-opacity"
                           />

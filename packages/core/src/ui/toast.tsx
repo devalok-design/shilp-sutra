@@ -172,7 +172,7 @@ function ToastContent({
       layout="position"
       role="status"
       aria-live="polite"
-      className="group relative flex w-full overflow-hidden rounded-ds-md border border-surface-border-strong bg-surface-overlay shadow-raised-hover"
+      className="group relative flex w-full overflow-hidden rounded-ds-md border border-surface-border-strong bg-surface-overlay shadow-floating"
       onMouseEnter={() => setHovered(true)}
       onMouseLeave={() => setHovered(false)}
       transition={springs.smooth}
@@ -506,7 +506,7 @@ function UploadToastContent({
       role="status"
       aria-live="polite"
       aria-label="File uploads"
-      className="group relative flex w-full overflow-hidden rounded-ds-md border border-surface-border-strong bg-surface-overlay shadow-raised-hover"
+      className="group relative flex w-full overflow-hidden rounded-ds-md border border-surface-border-strong bg-surface-overlay shadow-floating"
       onMouseEnter={() => setHovered(true)}
       onMouseLeave={() => setHovered(false)}
       transition={springs.smooth}

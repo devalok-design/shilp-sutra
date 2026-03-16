@@ -74,7 +74,7 @@ export const BoardColumn = React.forwardRef<HTMLDivElement, BoardColumnProps>(
       <div
         ref={ref}
         className={cn(
-          'flex h-full flex-shrink-0 flex-col rounded-ds-xl bg-surface-sunken border border-surface-3 hover:border-surface-border transition-colors p-1',
+          'flex h-full flex-shrink-0 flex-col rounded-ds-xl bg-surface-sunken border border-surface-border-subtle hover:border-surface-border transition-colors p-1',
           isOverlay && 'shadow-overlay',
           isWipExceeded && 'bg-error-3 ring-1 ring-error-7',
           className,

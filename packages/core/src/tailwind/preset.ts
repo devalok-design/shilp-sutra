@@ -390,7 +390,7 @@ const preset: Partial<Config> = {
           '&:focus-visible': {
             outline: 'none',
             'box-shadow':
-              '0 0 0 2px var(--color-surface-1), 0 0 0 4px var(--color-accent-9)',
+              '0 0 0 2px var(--color-surface-base), 0 0 0 4px var(--color-accent-9)',
           },
         },
         '.focus-ring-inset': {

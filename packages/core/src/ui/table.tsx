@@ -43,7 +43,7 @@ const TableFooter = React.forwardRef<
   <tfoot
     ref={ref}
     className={cn(
-      "bg-[color-mix(in_srgb,var(--color-surface-2)_50%,transparent)] font-medium [&>tr]:last:border-b-0",
+      "bg-[color-mix(in_srgb,var(--color-surface-raised)_50%,transparent)] font-medium [&>tr]:last:border-b-0",
       className
     )}
     {...props}

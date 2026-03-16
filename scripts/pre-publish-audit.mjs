@@ -90,38 +90,25 @@ function getChangelogLatestVersion() {
   return match ? match[1] : null
 }
 
-// Files that legitimately use bg-surface-1
-const SURFACE1_ALLOWLIST = [
-  // Overlays & floating elements
-  'dialog.tsx', 'alert-dialog.tsx', 'sheet.tsx', 'popover.tsx',
-  'dropdown-menu.tsx', 'context-menu.tsx', 'select.tsx', 'combobox.tsx',
-  'hover-card.tsx', 'navigation-menu.tsx', 'toast.tsx', 'menubar.tsx',
-  'autocomplete.tsx',
-  // Shell chrome
-  'sidebar.tsx', 'top-bar.tsx', 'notification-center.tsx', 'client-portal-header.tsx',
-  // Sticky headers (need page bg match)
-  'data-table.tsx',
-  // Input controls & pickers
-  'color-input.tsx', 'date-picker.tsx', 'date-time-picker.tsx',
-  'date-range-picker.tsx', 'time-picker.tsx', 'slider.tsx',
-  'segmented-control.tsx', 'tabs.tsx',
-  // Rich text floating UI
-  'mention-suggestion.tsx', 'emoji-suggestion.tsx', 'rich-text-editor.tsx',
-  // Components where surface-1 is intentional (pills, badges over timeline)
-  'activity-feed.tsx', 'activity-entry.tsx', 'avatar-group.tsx',
-  'member-picker.tsx', 'command-palette.tsx',
-  // Karm pickers (floating popovers)
-  'task-properties.tsx', 'task-priority-picker.tsx', 'task-column-picker.tsx',
-  'task-label-editor.tsx', 'task-date-picker.tsx', 'task-visibility-picker.tsx',
-  // Karm panel sticky header
-  'task-detail-panel.tsx',
-  // Admin pickers/dropdowns
-  'edit-break.tsx', 'edit-break-balance.tsx', 'header.tsx',
-  'leave-request.tsx', 'correction-list.tsx', 'dashboard-header.tsx',
-  // Board card avatar badge (floating checkbox on card)
-  'task-card.tsx',
-  // Chart tooltip (floating overlay)
-  'tooltip.tsx',
+// Deprecated surface tokens: old numeric Tailwind classes (bg-surface-1..4)
+// These are replaced by semantic names: bg-surface-base, bg-surface-raised, etc.
+const DEPRECATED_SURFACE_TOKENS = [
+  'bg-surface-1', 'bg-surface-2', 'bg-surface-3', 'bg-surface-4',
+  'text-surface-1', 'text-surface-2', 'text-surface-3', 'text-surface-4',
+  'border-surface-1', 'border-surface-2', 'border-surface-3', 'border-surface-4',
+  'ring-surface-1', 'ring-surface-2', 'ring-surface-3', 'ring-surface-4',
+]
+
+// Deprecated shadow tokens: old numeric Tailwind classes (shadow-01..05)
+// These are replaced by semantic names: shadow-raised, shadow-floating, etc.
+const DEPRECATED_SHADOW_TOKENS = [
+  'shadow-01', 'shadow-02', 'shadow-03', 'shadow-04', 'shadow-05',
+]
+
+// Files that intentionally define deprecated aliases (not component usage)
+const TOKEN_DEFINITION_EXCLUDES = [
+  'semantic.css',
+  'preset.ts',
 ]
 
 // ─── Gates ─────────────────────────────────────────────────
@@ -237,7 +224,7 @@ gate('No stale .js files in core/src/ui/', () => {
   return true
 })
 
-gate('No bg-surface-1 on component cards/widgets', () => {
+gate('No deprecated surface tokens in components', () => {
   const violations = []
   const sourceFiles = [
     ...globSync('packages/core/src/**/*.tsx', { cwd: ROOT }),
@@ -245,25 +232,57 @@ gate('No bg-surface-1 on component cards/widgets', () => {
   ]
 
   for (const file of sourceFiles) {
-    // Normalize to forward slashes for cross-platform basename extraction
     const normalized = file.replace(/\\/g, '/')
     const basename = normalized.substring(normalized.lastIndexOf('/') + 1)
-    // Skip allowlisted files, stories, and test files
-    if (SURFACE1_ALLOWLIST.some(a => basename === a) || normalized.includes('.stories.') || normalized.includes('__tests__')) continue
+    // Skip token definition files, stories, and test files
+    if (TOKEN_DEFINITION_EXCLUDES.some(e => basename === e) || normalized.includes('.stories.') || normalized.includes('__tests__') || normalized.includes('.test.')) continue
 
     const content = readFileSync(join(ROOT, file), 'utf-8')
-    if (content.includes('bg-surface-1')) {
-      const lines = content.split('\n')
-      for (let i = 0; i < lines.length; i++) {
-        if (lines[i].includes('bg-surface-1')) {
-          violations.push(`${file}:${i + 1}`)
+    const lines = content.split('\n')
+    for (let i = 0; i < lines.length; i++) {
+      for (const token of DEPRECATED_SURFACE_TOKENS) {
+        // Match the token as a distinct class (word boundary via non-alphanumeric before/after)
+        const regex = new RegExp(`(?<![\\w-])${token.replace(/([.*+?^${}()|[\\]\\\\])/g, '\\$1')}(?![\\w-])`)
+        if (regex.test(lines[i])) {
+          violations.push(`${file}:${i + 1} — ${token}`)
         }
       }
     }
   }
 
   if (violations.length > 0) {
-    return `bg-surface-1 found on non-allowlisted files:\n${violations.map(v => `      ${v}`).join('\n')}\n      If legitimate, add filename to SURFACE1_ALLOWLIST in scripts/pre-publish-audit.mjs`
+    return `Deprecated surface tokens found:\n${violations.map(v => `      ${v}`).join('\n')}\n      Use semantic names: bg-surface-base, bg-surface-raised, bg-surface-overlay, etc.`
+  }
+  return true
+})
+
+gate('No deprecated shadow tokens in components', () => {
+  const violations = []
+  const sourceFiles = [
+    ...globSync('packages/core/src/**/*.tsx', { cwd: ROOT }),
+    ...globSync('packages/karm/src/**/*.tsx', { cwd: ROOT }),
+  ]
+
+  for (const file of sourceFiles) {
+    const normalized = file.replace(/\\/g, '/')
+    const basename = normalized.substring(normalized.lastIndexOf('/') + 1)
+    // Skip token definition files, stories, and test files
+    if (TOKEN_DEFINITION_EXCLUDES.some(e => basename === e) || normalized.includes('.stories.') || normalized.includes('__tests__') || normalized.includes('.test.')) continue
+
+    const content = readFileSync(join(ROOT, file), 'utf-8')
+    const lines = content.split('\n')
+    for (let i = 0; i < lines.length; i++) {
+      for (const token of DEPRECATED_SHADOW_TOKENS) {
+        const regex = new RegExp(`(?<![\\w-])${token.replace(/([.*+?^${}()|[\\]\\\\])/g, '\\$1')}(?![\\w-])`)
+        if (regex.test(lines[i])) {
+          violations.push(`${file}:${i + 1} — ${token}`)
+        }
+      }
+    }
+  }
+
+  if (violations.length > 0) {
+    return `Deprecated shadow tokens found:\n${violations.map(v => `      ${v}`).join('\n')}\n      Use semantic names: shadow-raised, shadow-floating, shadow-overlay, etc.`
   }
   return true
 })

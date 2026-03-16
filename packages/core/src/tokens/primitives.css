@@ -49,6 +49,7 @@
 
   /* ── Neutral — Warm grays — H:350 ── */
   --neutral-0: #ffffff;
+  --color-surface-0: oklch(0.945 0.008 360);
   --neutral-1:  oklch(0.99 0.0003 350);
   --neutral-2:  oklch(0.97 0.0008 350);
   --neutral-3:  oklch(0.93 0.0018 350);
@@ -248,6 +249,7 @@
   --purple-12: oklch(0.88 0.0316 300);
 
   /* ── Neutral — Warm grays — H:350 ── */
+  --color-surface-0: oklch(0.07 0.008 360);
   --neutral-1:  oklch(0.11 0.0002 350);
   --neutral-2:  oklch(0.17 0.0007 350);
   --neutral-3:  oklch(0.23 0.0019 350);

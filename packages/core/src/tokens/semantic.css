@@ -97,15 +97,31 @@
   /* ═══════════════════════════════════════════════════════════
      SURFACE
      ═══════════════════════════════════════════════════════════ */
-  --color-surface-1: var(--neutral-1);
-  --color-surface-2: var(--neutral-2);
-  --color-surface-3: var(--neutral-3);
-  --color-surface-4: var(--neutral-4);
+  /* Semantic surface tokens */
+  --color-surface-base: var(--neutral-1);
+  --color-surface-sunken: var(--color-surface-0);
+  --color-surface-raised: var(--neutral-2);
+  --color-surface-overlay: var(--neutral-1);
+  --color-surface-raised-hover: var(--neutral-3);
+  --color-surface-raised-active: var(--neutral-4);
+  --color-surface-inverted: var(--neutral-12);
+  --color-surface-inverted-fg: var(--neutral-1);
+  --color-surface-disabled: var(--neutral-2);
+  --color-surface-fg-disabled: var(--neutral-8);
+
+  /* Deprecated — remove in next major */
+  --color-surface-1: var(--color-surface-base);
+  --color-surface-2: var(--color-surface-raised);
+  --color-surface-3: var(--color-surface-raised-hover);
+  --color-surface-4: var(--color-surface-raised-active);
+
   --color-surface-fg: var(--neutral-12);
   --color-surface-fg-muted: var(--neutral-11);
   --color-surface-fg-subtle: var(--neutral-8);
   --color-surface-border: var(--neutral-5);
   --color-surface-border-strong: var(--neutral-6);
+  --color-surface-border-subtle: var(--neutral-4);
+  --color-backdrop: oklch(0 0 0 / 0.4);
 
   /* ═══════════════════════════════════════════════════════════
      STATUS — Error
@@ -258,12 +274,59 @@
   /* ═══════════════════════════════════════════════════════════
      SHADOWS
      ═══════════════════════════════════════════════════════════ */
-  --shadow-01: 0 1px 1px oklch(0 0 0 / 0.06), 0 1px 3px oklch(0 0 0 / 0.10), 0 2px 6px oklch(0 0 0 / 0.08);
-  --shadow-02: 0 1px 2px oklch(0 0 0 / 0.08), 0 4px 8px oklch(0 0 0 / 0.12), 0 8px 24px oklch(0 0 0 / 0.10);
-  --shadow-03: 0 2px 4px oklch(0 0 0 / 0.08), 0 8px 16px oklch(0 0 0 / 0.12), 0 16px 40px oklch(0 0 0 / 0.10);
-  --shadow-04: 0 2px 4px oklch(0 0 0 / 0.10), 0 12px 24px oklch(0 0 0 / 0.14), 0 24px 56px oklch(0 0 0 / 0.12);
+
+  /* Shadow color: cool blue tint for natural depth */
+  --shadow-color: 0.15 0.015 260;
+  --shadow-strength: 1;
+
+  /* Shadow transition */
+  --shadow-transition: box-shadow var(--duration-fast-02) var(--ease-productive-standard);
+
+  /* Shadow primitives (internal) */
+  --shadow-xs:
+    0 0 0 1px oklch(var(--shadow-color) / calc(0.035 * var(--shadow-strength))),
+    0 0.5px 1px -0.5px oklch(var(--shadow-color) / calc(0.045 * var(--shadow-strength))),
+    0 1.5px 3px -1px oklch(var(--shadow-color) / calc(0.04 * var(--shadow-strength))),
+    0 3px 7px -2px oklch(var(--shadow-color) / calc(0.03 * var(--shadow-strength)));
+  --shadow-sm:
+    0 0 0 1px oklch(var(--shadow-color) / calc(0.035 * var(--shadow-strength))),
+    0 0.5px 1px -0.5px oklch(var(--shadow-color) / calc(0.04 * var(--shadow-strength))),
+    0 2px 4px -1.5px oklch(var(--shadow-color) / calc(0.045 * var(--shadow-strength))),
+    0 6px 12px -3px oklch(var(--shadow-color) / calc(0.035 * var(--shadow-strength))),
+    0 14px 28px -8px oklch(var(--shadow-color) / calc(0.025 * var(--shadow-strength)));
+  --shadow-md:
+    0 0 0 1px oklch(var(--shadow-color) / calc(0.04 * var(--shadow-strength))),
+    0 1px 2px -1px oklch(var(--shadow-color) / calc(0.05 * var(--shadow-strength))),
+    0 4px 8px -2px oklch(var(--shadow-color) / calc(0.04 * var(--shadow-strength))),
+    0 10px 20px -5px oklch(var(--shadow-color) / calc(0.035 * var(--shadow-strength))),
+    0 24px 44px -12px oklch(var(--shadow-color) / calc(0.025 * var(--shadow-strength)));
+  --shadow-lg:
+    0 0 0 1px oklch(var(--shadow-color) / calc(0.04 * var(--shadow-strength))),
+    0 1px 2px -1px oklch(var(--shadow-color) / calc(0.05 * var(--shadow-strength))),
+    0 3px 6px -2px oklch(var(--shadow-color) / calc(0.045 * var(--shadow-strength))),
+    0 8px 16px -4px oklch(var(--shadow-color) / calc(0.04 * var(--shadow-strength))),
+    0 18px 34px -8px oklch(var(--shadow-color) / calc(0.03 * var(--shadow-strength))),
+    0 40px 64px -16px oklch(var(--shadow-color) / calc(0.025 * var(--shadow-strength)));
   --shadow-05: 0 4px 8px oklch(0 0 0 / 0.10), 0 16px 32px oklch(0 0 0 / 0.16), 0 32px 64px oklch(0 0 0 / 0.14);
-  --shadow-brand: 0 4px 16px oklch(0.55 0.19 360 / 0.25);
+
+  /* Semantic elevation shadows (public API) */
+  --shadow-raised: var(--shadow-xs);
+  --shadow-raised-hover: var(--shadow-sm);
+  --shadow-floating: var(--shadow-md);
+  --shadow-overlay: var(--shadow-lg);
+
+  /* Effect shadows */
+  --shadow-brand: 0 2px 8px oklch(0.55 0.19 360 / 0.20), 0 6px 20px oklch(0.55 0.19 360 / 0.15);
+  --shadow-glow: 0 0 0 1.5px oklch(0.55 0.19 360 / 0.20), 0 0 7px oklch(0.55 0.19 360 / 0.12);
+  --shadow-inset: inset 0 1px 2px oklch(var(--shadow-color) / calc(0.08 * var(--shadow-strength))), inset 0 2px 5px oklch(var(--shadow-color) / calc(0.06 * var(--shadow-strength)));
+  --shadow-ring-sm: 0 0 0 1px var(--color-surface-border);
+  --shadow-ring: 0 0 0 2px oklch(0.55 0.19 360 / 0.30);
+
+  /* Deprecated shadow aliases */
+  --shadow-01: var(--shadow-raised);
+  --shadow-02: var(--shadow-raised-hover);
+  --shadow-03: var(--shadow-floating);
+  --shadow-04: var(--shadow-overlay);
 
   /* ═══════════════════════════════════════════════════════════
      SIZES
@@ -356,6 +419,9 @@
      Drop to step 3/4 for subtle resting borders that don't overpower surfaces */
   --color-surface-border: var(--neutral-3);
   --color-surface-border-strong: var(--neutral-4);
+  --color-surface-overlay: oklch(0.13 0.0002 350);
+  --color-surface-border-subtle: var(--neutral-2);
+  --color-backdrop: oklch(0 0 0 / 0.6);
 
   /* Overlay */
   --color-overlay: oklch(0 0 0 / 0.70);
@@ -372,12 +438,11 @@
   --color-skeleton-shimmer: var(--neutral-3);
 
   /* Shadows (heavier in dark mode) */
-  --shadow-01: 0 1px 1px oklch(0 0 0 / 0.15), 0 1px 3px oklch(0 0 0 / 0.25), 0 2px 6px oklch(0 0 0 / 0.20);
-  --shadow-02: 0 1px 2px oklch(0 0 0 / 0.20), 0 4px 8px oklch(0 0 0 / 0.30), 0 8px 24px oklch(0 0 0 / 0.25);
-  --shadow-03: 0 2px 4px oklch(0 0 0 / 0.20), 0 8px 16px oklch(0 0 0 / 0.30), 0 16px 40px oklch(0 0 0 / 0.25);
-  --shadow-04: 0 2px 4px oklch(0 0 0 / 0.25), 0 12px 24px oklch(0 0 0 / 0.35), 0 24px 56px oklch(0 0 0 / 0.30);
+  --shadow-strength: 2.5;
   --shadow-05: 0 4px 8px oklch(0 0 0 / 0.25), 0 16px 32px oklch(0 0 0 / 0.40), 0 32px 64px oklch(0 0 0 / 0.35);
-  --shadow-brand: 0 4px 16px oklch(0.55 0.19 360 / 0.35);
+  --shadow-brand: 0 2px 8px oklch(0.55 0.19 360 / 0.30), 0 6px 20px oklch(0.55 0.19 360 / 0.20);
+  --shadow-glow: 0 0 0 1.5px oklch(0.55 0.19 360 / 0.35), 0 0 10px oklch(0.55 0.19 360 / 0.20);
+  --shadow-ring: 0 0 0 2px oklch(0.55 0.19 360 / 0.45);
 
   /* Gradients */
   --gradient-brand-light: linear-gradient(135deg, var(--pink-9), var(--purple-9));

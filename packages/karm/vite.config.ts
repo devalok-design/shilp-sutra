@@ -52,7 +52,29 @@ export default defineConfig({
         entryFileNames: '[name].js',
         chunkFileNames: '_chunks/[name].js',
         manualChunks(id) {
-          if (id.includes('node_modules')) return 'vendor'
+          if (id.includes('node_modules')) {
+            // react-markdown ecosystem — client-only (decode-named-character-reference uses document)
+            if (
+              id.includes('react-markdown') ||
+              id.includes('remark-') ||
+              id.includes('rehype-') ||
+              id.includes('hast-util-') ||
+              id.includes('mdast-util-') ||
+              id.includes('micromark') ||
+              id.includes('unified') ||
+              id.includes('decode-named-character-reference') ||
+              id.includes('character-entities') ||
+              id.includes('vfile')
+            )
+              return 'vendor-markdown'
+
+            // @dnd-kit — client-only (conditionally accesses window/document)
+            if (id.includes('@dnd-kit/'))
+              return 'vendor-dnd'
+
+            // Pure utilities — server-safe (clsx, cva, tailwind-merge, date-fns)
+            return 'vendor-utils'
+          }
         },
         paths: (id) => {
           // Rewrite resolved absolute core paths to @devalok/shilp-sutra imports

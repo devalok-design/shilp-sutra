@@ -40,7 +40,7 @@ const meta: Meta<typeof AvatarGroup> = {
     },
     borderColor: {
       control: 'select',
-      options: ['surface-1', 'surface-2'],
+      options: ['surface-base', 'surface-raised', 'surface-1', 'surface-2'],
     },
   },
 }
@@ -341,14 +341,14 @@ export const OnCardSurface: Story = {
       <AvatarGroup
         users={mockUsers.slice(0, 5)}
         max={4}
-        borderColor="surface-2"
+        borderColor="surface-raised"
       />
     </div>
   ),
   parameters: {
     docs: {
       description: {
-        story: 'When placed on a `bg-surface-raised` card, use `borderColor="surface-2"` so the avatar border blends with the card background.',
+        story: 'When placed on a `bg-surface-raised` card, use `borderColor="surface-raised"` so the avatar border blends with the card background.',
       },
     },
   },

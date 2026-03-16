@@ -109,7 +109,21 @@ describe('AvatarGroup', () => {
       expect(avatarWrapper.className).toContain('border-surface-raised')
     })
 
-    it('renders border-surface-base when borderColor="surface-1"', () => {
+    it('renders border-surface-base when borderColor="surface-base"', () => {
+      const { container } = render(
+        <AvatarGroup
+          users={mockUsers.slice(0, 2)}
+          borderColor="surface-base"
+          showTooltip={false}
+        />,
+      )
+      const avatars = container.querySelectorAll('[data-slot="avatar-fallback"]')
+      expect(avatars.length).toBeGreaterThan(0)
+      const avatarWrapper = avatars[0].closest('span')!.parentElement!
+      expect(avatarWrapper.className).toContain('border-surface-base')
+    })
+
+    it('renders border-surface-base when borderColor="surface-1" (deprecated)', () => {
       const { container } = render(
         <AvatarGroup
           users={mockUsers.slice(0, 2)}

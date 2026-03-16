@@ -70,11 +70,11 @@ export const ColorVariants: Story = {
   name: 'Color Variants',
   render: () => (
     <div className="flex flex-col gap-ds-06">
-      <div className="flex items-center gap-ds-04 p-ds-04 rounded-ds-md bg-surface-1">
+      <div className="flex items-center gap-ds-04 p-ds-04 rounded-ds-md bg-surface-base">
         <KarmLogo type="icon" color="brand" size="lg" />
         <span className="text-ds-sm text-surface-fg-muted">Brand (#D33163)</span>
       </div>
-      <div className="flex items-center gap-ds-04 p-ds-04 rounded-ds-md bg-surface-1">
+      <div className="flex items-center gap-ds-04 p-ds-04 rounded-ds-md bg-surface-base">
         <KarmLogo type="icon" color="black" size="lg" />
         <span className="text-ds-sm text-surface-fg-muted">Black</span>
       </div>

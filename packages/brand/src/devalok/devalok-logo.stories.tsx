@@ -82,13 +82,13 @@ export const ColorVariants: Story = {
   name: 'Color Variants',
   render: () => (
     <div className="flex flex-col gap-ds-06">
-      <div className="flex items-center gap-ds-06 p-ds-08 rounded-ds-md bg-surface-1">
+      <div className="flex items-center gap-ds-06 p-ds-08 rounded-ds-md bg-surface-base">
         <DevalokLogo type="monogram-wordmark" color="brand" size="xl" />
         <span className="text-ds-sm text-surface-fg-muted">
           Brand — Padmavarna #D33163
         </span>
       </div>
-      <div className="flex items-center gap-ds-06 p-ds-08 rounded-ds-md bg-surface-1">
+      <div className="flex items-center gap-ds-06 p-ds-08 rounded-ds-md bg-surface-base">
         <DevalokLogo type="monogram-wordmark" color="black" size="xl" />
         <span className="text-ds-sm text-surface-fg-muted">Black — print / single colour</span>
       </div>
@@ -129,7 +129,7 @@ export const UsageGuidelines: Story = {
           the centrepiece with generous whitespace on all sides. Minimum clear
           space: 0.5× the logo height on every side.
         </p>
-        <div className="flex items-center justify-center p-ds-10 rounded-ds-md border border-surface-border bg-surface-1">
+        <div className="flex items-center justify-center p-ds-10 rounded-ds-md border border-surface-border bg-surface-base">
           <DevalokLogo type="monogram-wordmark" color="brand" size="xl" />
         </div>
       </div>
@@ -144,13 +144,13 @@ export const UsageGuidelines: Story = {
           indicators, and anywhere the logo appears small or repeatedly. The
           Swadhisthana Chakra is the compact mark of Devalok.
         </p>
-        <div className="flex items-center gap-ds-06 p-ds-06 rounded-ds-md border border-surface-border bg-surface-1">
+        <div className="flex items-center gap-ds-06 p-ds-06 rounded-ds-md border border-surface-border bg-surface-base">
           {/* Nav bar mockup */}
-          <div className="flex items-center gap-ds-02 px-ds-04 py-ds-02 rounded-ds-md bg-surface-2 border border-surface-border">
+          <div className="flex items-center gap-ds-02 px-ds-04 py-ds-02 rounded-ds-md bg-surface-raised border border-surface-border">
             <DevalokLogo type="chakra" color="brand" size="sm" />
             <span className="text-ds-sm text-surface-fg font-medium">Devalok</span>
           </div>
-          <div className="flex items-center gap-ds-02 px-ds-03 py-ds-02 rounded-ds-md bg-surface-2 border border-surface-border">
+          <div className="flex items-center gap-ds-02 px-ds-03 py-ds-02 rounded-ds-md bg-surface-raised border border-surface-border">
             <DevalokLogo type="chakra" color="brand" size="xs" />
           </div>
           <div className="flex flex-col items-center gap-ds-01">

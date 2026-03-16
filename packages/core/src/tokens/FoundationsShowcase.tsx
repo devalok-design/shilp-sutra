@@ -357,11 +357,10 @@ function BorderRadiusScale() {
 /* ─── Shadows ───────────────────────────────────────────────────── */
 
 const shadowTokens = [
-  { token: '--shadow-01', label: 'shadow-01 (subtle)' },
-  { token: '--shadow-02', label: 'shadow-02 (low)' },
-  { token: '--shadow-03', label: 'shadow-03 (medium)' },
-  { token: '--shadow-04', label: 'shadow-04 (high)' },
-  { token: '--shadow-05', label: 'shadow-05 (highest)' },
+  { token: '--shadow-raised', label: 'shadow-raised (subtle)' },
+  { token: '--shadow-raised-hover', label: 'shadow-raised-hover (low)' },
+  { token: '--shadow-floating', label: 'shadow-floating (medium)' },
+  { token: '--shadow-overlay', label: 'shadow-overlay (high)' },
   { token: '--shadow-brand', label: 'shadow-brand' },
 ]
 

@@ -40,7 +40,7 @@ const MentionList = React.forwardRef<MentionListRef, MentionListProps>(
     if (!items.length) return null
 
     return (
-      <div role="listbox" aria-label="Mention suggestions" className="z-popover overflow-hidden rounded-ds-md border border-surface-border-strong bg-surface-1 shadow-02">
+      <div role="listbox" aria-label="Mention suggestions" className="z-popover overflow-hidden rounded-ds-md border border-surface-border-strong bg-surface-overlay shadow-raised-hover">
         {items.map((item, index) => (
           <button
             key={item.id}
@@ -50,7 +50,7 @@ const MentionList = React.forwardRef<MentionListRef, MentionListProps>(
             onClick={() => command(item)}
             className={cn(
               'flex w-full items-center gap-ds-03 px-ds-04 py-ds-02b text-left text-ds-sm',
-              index === selectedIndex ? 'bg-surface-2 text-surface-fg' : 'text-surface-fg-muted hover:bg-surface-2',
+              index === selectedIndex ? 'bg-surface-raised text-surface-fg' : 'text-surface-fg-muted hover:bg-surface-raised',
             )}
           >
             {item.avatar ? (

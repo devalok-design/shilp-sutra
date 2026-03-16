@@ -54,7 +54,7 @@ const eventColorMap: Record<
   warning: 'bg-warning-3 border-warning-7 text-warning-11',
   error: 'bg-error-3 border-error-7 text-error-11',
   info: 'bg-info-3 border-info-7 text-info-11',
-  neutral: 'bg-surface-2 border-surface-border-strong text-surface-fg-muted',
+  neutral: 'bg-surface-raised border-surface-border-strong text-surface-fg-muted',
 }
 
 /* ------------------------------------------------------------------ */
@@ -177,7 +177,7 @@ function DayColumn({
             'text-center text-ds-sm font-semibold py-ds-02 border-b border-surface-border-strong',
             todayInView
               ? 'text-accent-11 bg-accent-2'
-              : 'text-surface-fg bg-surface-2',
+              : 'text-surface-fg bg-surface-raised',
           )}
         >
           {format(date, 'EEE d')}
@@ -190,7 +190,7 @@ function DayColumn({
             key={i}
             type="button"
             className={cn(
-              'block w-full border-b border-surface-border hover:bg-surface-3 transition-colors ease-productive-standard',
+              'block w-full border-b border-surface-border hover:bg-surface-raised-hover transition-colors ease-productive-standard',
               i % 2 === 0 ? 'border-surface-border-strong' : 'border-surface-3',
             )}
             style={{ height: `${100 / slotCount}%` }}
@@ -211,7 +211,7 @@ function DayColumn({
               className={cn(
                 'absolute left-ds-01 right-ds-01 rounded-ds-sm border-l-[3px] px-ds-02 py-ds-01',
                 'text-left text-ds-xs font-medium overflow-hidden cursor-pointer',
-                'hover:shadow-01 hover:scale-[1.02] transition-[box-shadow,transform] duration-fast-02 ease-productive-standard',
+                'hover:shadow-raised hover:scale-[1.02] transition-[box-shadow,transform] duration-fast-02 ease-productive-standard',
                 colorClass,
               )}
               style={style}
@@ -281,7 +281,7 @@ const ScheduleView = React.forwardRef<HTMLDivElement, ScheduleViewProps>(
             : `Week schedule starting ${format(days[0], 'MMMM d, yyyy')}`
         }
         className={cn(
-          'flex rounded-ds-md border border-surface-border-strong bg-surface-2 overflow-hidden',
+          'flex rounded-ds-md border border-surface-border-strong bg-surface-raised overflow-hidden',
           'h-[480px]',
           className,
         )}

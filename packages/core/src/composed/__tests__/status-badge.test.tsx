@@ -103,7 +103,7 @@ describe('StatusBadge', () => {
   it('should render neutral color variant correctly', () => {
     const { container, getByText } = render(<StatusBadge color="neutral" />)
     const badge = container.firstElementChild!
-    expect(badge.className).toContain('bg-surface-2')
+    expect(badge.className).toContain('bg-surface-raised')
     expect(badge.className).toContain('text-surface-fg-subtle')
     expect(getByText('Neutral')).toBeTruthy()
   })

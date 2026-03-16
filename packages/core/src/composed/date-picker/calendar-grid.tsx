@@ -191,7 +191,7 @@ export const CalendarGrid = React.forwardRef<HTMLDivElement, CalendarGridProps>(
           <button
             type="button"
             onClick={() => onMonthChange(subMonths(currentMonth, 1))}
-            className="inline-flex h-ds-xs-plus w-ds-xs-plus items-center justify-center rounded-ds-md text-surface-fg-subtle transition-colors duration-fast-01 ease-productive-standard hover:bg-surface-3 hover:text-surface-fg-muted focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent-9"
+            className="inline-flex h-ds-xs-plus w-ds-xs-plus items-center justify-center rounded-ds-md text-surface-fg-subtle transition-colors duration-fast-01 ease-productive-standard hover:bg-surface-raised-hover hover:text-surface-fg-muted focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent-9"
             aria-label="Previous month"
           >
             <IconChevronLeft className="h-ico-sm w-ico-sm" stroke={1.5} />
@@ -203,7 +203,7 @@ export const CalendarGrid = React.forwardRef<HTMLDivElement, CalendarGridProps>(
           className={cn(
             'text-ds-md font-semibold text-surface-fg',
             onHeaderClick &&
-              'cursor-pointer rounded-ds-md px-ds-02 transition-colors duration-fast-01 ease-productive-standard hover:bg-surface-3',
+              'cursor-pointer rounded-ds-md px-ds-02 transition-colors duration-fast-01 ease-productive-standard hover:bg-surface-raised-hover',
           )}
           aria-label="Switch to month/year view"
         >
@@ -215,7 +215,7 @@ export const CalendarGrid = React.forwardRef<HTMLDivElement, CalendarGridProps>(
           <button
             type="button"
             onClick={() => onMonthChange(addMonths(currentMonth, 1))}
-            className="inline-flex h-ds-xs-plus w-ds-xs-plus items-center justify-center rounded-ds-md text-surface-fg-subtle transition-colors duration-fast-01 ease-productive-standard hover:bg-surface-3 hover:text-surface-fg-muted focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent-9"
+            className="inline-flex h-ds-xs-plus w-ds-xs-plus items-center justify-center rounded-ds-md text-surface-fg-subtle transition-colors duration-fast-01 ease-productive-standard hover:bg-surface-raised-hover hover:text-surface-fg-muted focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent-9"
             aria-label="Next month"
           >
             <IconChevronRight className="h-ico-sm w-ico-sm" stroke={1.5} />
@@ -272,9 +272,9 @@ export const CalendarGrid = React.forwardRef<HTMLDivElement, CalendarGridProps>(
                 !inMonth && 'pointer-events-none opacity-0',
                 inMonth && disabled && 'opacity-action-disabled pointer-events-none cursor-not-allowed',
                 inMonth && !disabled && !isSelected && !edge && !inRange &&
-                  'text-surface-fg hover:bg-surface-3',
+                  'text-surface-fg hover:bg-surface-raised-hover',
                 inRange && !edge &&
-                  'rounded-ds-none bg-surface-3 text-surface-fg',
+                  'rounded-ds-none bg-surface-raised-hover text-surface-fg',
                 (isSelected || edge) &&
                   'bg-accent-9 text-accent-fg hover:bg-accent-10',
                 isToday && !isSelected && !edge && !disabled &&

@@ -187,7 +187,7 @@ const AvatarGroup = React.forwardRef<HTMLDivElement, AvatarGroupProps>(
               <Tooltip key={user.name}>
                 <TooltipTrigger asChild>{avatar}</TooltipTrigger>
                 <TooltipContent
-                  className="border-surface-border-strong bg-surface-1 text-surface-fg"
+                  className="border-surface-border-strong bg-surface-base text-surface-fg"
                   sideOffset={6}
                 >
                   <p className="text-ds-sm">{user.name}</p>
@@ -230,7 +230,7 @@ const AvatarGroup = React.forwardRef<HTMLDivElement, AvatarGroupProps>(
                 )}
               </TooltipTrigger>
               <TooltipContent
-                className="border-surface-border-strong bg-surface-1 text-surface-fg"
+                className="border-surface-border-strong bg-surface-base text-surface-fg"
                 sideOffset={6}
               >
                 <div className="flex flex-col gap-ds-01">

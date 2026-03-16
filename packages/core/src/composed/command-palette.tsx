@@ -185,7 +185,7 @@ const CommandPalette = React.forwardRef<HTMLDivElement, CommandPaletteProps>(
           {...props}
           className={cn(
             'fixed left-1/2 top-[20%] z-modal w-full max-w-[560px] -translate-x-1/2',
-            'overflow-hidden rounded-ds-xl border border-surface-border-strong bg-surface-1 shadow-05',
+            'overflow-hidden rounded-ds-xl border border-surface-border-strong bg-surface-overlay shadow-overlay',
             'duration-moderate-02 data-[state=open]:animate-in data-[state=closed]:animate-out',
             'data-[state=closed]:fade-out-0 data-[state=open]:fade-in-0',
             'data-[state=closed]:zoom-out-95 data-[state=open]:zoom-in-95',
@@ -233,7 +233,7 @@ const CommandPalette = React.forwardRef<HTMLDivElement, CommandPaletteProps>(
               autoCorrect="off"
               spellCheck={false}
             />
-            <kbd className="hidden shrink-0 select-none rounded-ds-md border border-surface-border-strong bg-surface-2 px-ds-02b py-ds-01 text-ds-sm font-medium text-surface-fg-subtle shadow-[inset_0_-1px_0_rgba(0,0,0,0.1)] sm:inline-flex">
+            <kbd className="hidden shrink-0 select-none rounded-ds-md border border-surface-border-strong bg-surface-raised px-ds-02b py-ds-01 text-ds-sm font-medium text-surface-fg-subtle shadow-[inset_0_-1px_0_rgba(0,0,0,0.1)] sm:inline-flex">
               Esc
             </kbd>
           </div>
@@ -295,8 +295,8 @@ const CommandPalette = React.forwardRef<HTMLDivElement, CommandPaletteProps>(
                       className={cn(
                         'flex w-full items-center gap-ds-04 rounded-ds-lg px-ds-03 py-ds-03 text-left transition-[color,background-color] duration-fast-02 ease-productive-standard',
                         isActive
-                          ? 'bg-surface-3 text-surface-fg'
-                          : 'text-surface-fg-muted hover:bg-surface-2',
+                          ? 'bg-surface-raised-hover text-surface-fg'
+                          : 'text-surface-fg-muted hover:bg-surface-raised',
                       )}
                     >
                       {item.icon && (
@@ -321,7 +321,7 @@ const CommandPalette = React.forwardRef<HTMLDivElement, CommandPaletteProps>(
                       {item.shortcut && (
                         <kbd className={cn(
                           'shrink-0 rounded border border-surface-border-strong px-ds-02b py-ds-01 text-ds-xs font-medium shadow-[inset_0_-1px_0_rgba(0,0,0,0.1)] transition-colors duration-fast-02 ease-productive-standard',
-                          isActive ? 'bg-accent-2 text-accent-11 border-accent-6' : 'bg-surface-2 text-surface-fg-subtle',
+                          isActive ? 'bg-accent-2 text-accent-11 border-accent-6' : 'bg-surface-raised text-surface-fg-subtle',
                         )}>
                           {item.shortcut}
                         </kbd>
@@ -358,10 +358,10 @@ const CommandPalette = React.forwardRef<HTMLDivElement, CommandPaletteProps>(
           >
             <div className="flex items-center gap-ds-02b">
               <div className="flex items-center gap-ds-01">
-                <kbd className="inline-flex h-ico-md w-ico-md items-center justify-center rounded border border-surface-border-strong bg-surface-2 shadow-[inset_0_-1px_0_rgba(0,0,0,0.1)]">
+                <kbd className="inline-flex h-ico-md w-ico-md items-center justify-center rounded border border-surface-border-strong bg-surface-raised shadow-[inset_0_-1px_0_rgba(0,0,0,0.1)]">
                   <IconArrowUp className="h-ds-03 w-ds-03 text-surface-fg-subtle" stroke={2} />
                 </kbd>
-                <kbd className="inline-flex h-ico-md w-ico-md items-center justify-center rounded border border-surface-border-strong bg-surface-2 shadow-[inset_0_-1px_0_rgba(0,0,0,0.1)]">
+                <kbd className="inline-flex h-ico-md w-ico-md items-center justify-center rounded border border-surface-border-strong bg-surface-raised shadow-[inset_0_-1px_0_rgba(0,0,0,0.1)]">
                   <IconArrowDown className="h-ds-03 w-ds-03 text-surface-fg-subtle" stroke={2} />
                 </kbd>
               </div>
@@ -370,7 +370,7 @@ const CommandPalette = React.forwardRef<HTMLDivElement, CommandPaletteProps>(
               </span>
             </div>
             <div className="flex items-center gap-ds-02b">
-              <kbd className="inline-flex h-[20px] items-center justify-center rounded-ds-md border border-surface-border-strong bg-surface-2 px-ds-02b shadow-[inset_0_-1px_0_rgba(0,0,0,0.1)]">
+              <kbd className="inline-flex h-[20px] items-center justify-center rounded-ds-md border border-surface-border-strong bg-surface-raised px-ds-02b shadow-[inset_0_-1px_0_rgba(0,0,0,0.1)]">
                 <IconCornerDownLeft className="h-ds-03 w-ds-03 text-surface-fg-subtle" stroke={2} />
               </kbd>
               <span className="text-ds-xs text-surface-fg-subtle">
@@ -378,7 +378,7 @@ const CommandPalette = React.forwardRef<HTMLDivElement, CommandPaletteProps>(
               </span>
             </div>
             <div className="flex items-center gap-ds-02b">
-              <kbd className="inline-flex h-[20px] items-center justify-center rounded-ds-md border border-surface-border-strong bg-surface-2 px-ds-02b text-ds-xs font-medium text-surface-fg-subtle shadow-[inset_0_-1px_0_rgba(0,0,0,0.1)]">
+              <kbd className="inline-flex h-[20px] items-center justify-center rounded-ds-md border border-surface-border-strong bg-surface-raised px-ds-02b text-ds-xs font-medium text-surface-fg-subtle shadow-[inset_0_-1px_0_rgba(0,0,0,0.1)]">
                 Esc
               </kbd>
               <span className="text-ds-xs text-surface-fg-subtle">

@@ -50,8 +50,8 @@ const PROSE_CLASSES = [
   '[&_p]:mb-ds-02b [&_p]:text-surface-fg-muted',
   '[&_ul]:ml-ds-05 [&_ul]:list-disc [&_ol]:ml-ds-05 [&_ol]:list-decimal',
   '[&_li]:text-surface-fg-muted',
-  '[&_code]:rounded [&_code]:bg-surface-2 [&_code]:px-ds-02b [&_code]:py-ds-01 [&_code]:text-ds-md [&_code]:text-accent-11',
-  '[&_pre]:rounded-ds-lg [&_pre]:bg-surface-2 [&_pre]:p-ds-04',
+  '[&_code]:rounded [&_code]:bg-surface-raised [&_code]:px-ds-02b [&_code]:py-ds-01 [&_code]:text-ds-md [&_code]:text-accent-11',
+  '[&_pre]:rounded-ds-lg [&_pre]:bg-surface-raised [&_pre]:p-ds-04',
   '[&_strong]:font-semibold [&_strong]:text-surface-fg',
   '[&_blockquote]:border-l-[3px] [&_blockquote]:border-accent-6 [&_blockquote]:pl-ds-04 [&_blockquote]:italic [&_blockquote]:text-surface-fg-subtle',
   '[&_mark]:rounded-sm [&_mark]:bg-warning-3 [&_mark]:px-[2px]',
@@ -86,10 +86,10 @@ function ToolbarButton({
       aria-pressed={isActive}
       className={cn(
         'inline-flex h-ds-xs-plus w-ds-xs-plus items-center justify-center rounded-ds-md transition-colors duration-fast-01 ease-productive-standard',
-        'hover:bg-surface-3',
+        'hover:bg-surface-raised-hover',
         'disabled:pointer-events-none disabled:opacity-action-disabled',
         isActive
-          ? 'bg-surface-3 text-accent-11'
+          ? 'bg-surface-raised-hover text-accent-11'
           : 'text-surface-fg-subtle',
       )}
     >
@@ -140,7 +140,7 @@ function LinkButton({ editor }: { editor: Editor }) {
         <form
           onSubmit={handleSubmit}
           aria-label="Edit link URL"
-          className="absolute left-0 top-full z-popover mt-ds-01 flex items-center gap-ds-02 rounded-ds-md border border-surface-border-strong bg-surface-1 p-ds-02 shadow-02"
+          className="absolute left-0 top-full z-popover mt-ds-01 flex items-center gap-ds-02 rounded-ds-md border border-surface-border-strong bg-surface-overlay p-ds-02 shadow-raised-hover"
         >
           <input
             ref={inputRef}
@@ -149,7 +149,7 @@ function LinkButton({ editor }: { editor: Editor }) {
             onChange={(e) => setUrl(e.target.value)}
             onKeyDown={handleKeyDown}
             placeholder="https://..."
-            className="h-ds-sm w-[240px] rounded-ds-sm border border-surface-border-strong bg-surface-1 px-ds-03 text-ds-sm text-surface-fg focus:border-accent-7 focus:outline-none"
+            className="h-ds-sm w-[240px] rounded-ds-sm border border-surface-border-strong bg-surface-overlay px-ds-03 text-ds-sm text-surface-fg focus:border-accent-7 focus:outline-none"
           />
           <button type="submit" className="h-ds-sm rounded-ds-sm bg-accent-9 px-ds-03 text-ds-sm text-accent-fg hover:bg-accent-10">
             Apply
@@ -279,7 +279,7 @@ function EmojiPickerLazy({ onSelect }: { onSelect: (native: string) => void }) {
     import('@emoji-mart/data').then((mod) => setData(mod.default))
   }, [])
 
-  const fallback = <div className="flex h-[350px] w-[352px] items-center justify-center rounded-ds-lg border border-surface-border-strong bg-surface-1 shadow-02"><span className="text-ds-sm text-surface-fg-subtle">Loading...</span></div>
+  const fallback = <div className="flex h-[350px] w-[352px] items-center justify-center rounded-ds-lg border border-surface-border-strong bg-surface-overlay shadow-raised-hover"><span className="text-ds-sm text-surface-fg-subtle">Loading...</span></div>
 
   if (!data) return fallback
 
@@ -510,7 +510,7 @@ const RichTextEditor = React.forwardRef<HTMLDivElement, RichTextEditorProps>(
       )}
       <div
         className={cn(
-          'overflow-hidden rounded-ds-lg border border-surface-border-strong bg-surface-2',
+          'overflow-hidden rounded-ds-lg border border-surface-border-strong bg-surface-raised',
           'transition-colors ease-productive-standard focus-within:border-surface-border-strong',
         )}
       >

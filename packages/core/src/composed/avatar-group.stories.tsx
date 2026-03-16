@@ -332,7 +332,7 @@ export const AllSizesUpdated: Story = {
 export const OnCardSurface: Story = {
   render: () => (
     <div
-      className="rounded-ds-md border border-surface-border bg-surface-2 p-ds-05"
+      className="rounded-ds-md border border-surface-border bg-surface-raised p-ds-05"
       style={{ maxWidth: 320 }}
     >
       <p className="mb-ds-03 text-ds-sm font-semibold text-surface-fg">
@@ -348,7 +348,7 @@ export const OnCardSurface: Story = {
   parameters: {
     docs: {
       description: {
-        story: 'When placed on a `bg-surface-2` card, use `borderColor="surface-2"` so the avatar border blends with the card background.',
+        story: 'When placed on a `bg-surface-raised` card, use `borderColor="surface-2"` so the avatar border blends with the card background.',
       },
     },
   },

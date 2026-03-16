@@ -74,7 +74,7 @@ const TopBarRoot = React.forwardRef<HTMLDivElement, TopBarRootProps>(
         {...props}
         ref={ref}
         className={cn(
-          'z-sticky w-full border-b border-surface-border-strong bg-surface-2 px-ds-05 py-ds-04 md:px-ds-06',
+          'z-sticky w-full border-b border-surface-border-strong bg-surface-sunken px-ds-05 py-ds-04 md:px-ds-06',
           hasCenter
             ? 'grid grid-cols-[1fr_auto_1fr] items-center'
             : 'flex items-center',
@@ -199,7 +199,7 @@ const TopBarIconButton = React.forwardRef<
         ref={ref}
         type="button"
         className={cn(
-          'flex h-ds-sm-plus w-ds-sm-plus items-center justify-center rounded-ds-full border border-surface-border-strong bg-surface-3 text-surface-fg-muted transition-[color,background-color,border-color,transform] hover:bg-surface-4 active:scale-90 duration-fast-01 ease-productive-standard',
+          'flex h-ds-sm-plus w-ds-sm-plus items-center justify-center rounded-ds-full border border-surface-border-strong bg-surface-raised-hover text-surface-fg-muted transition-[color,background-color,border-color,transform] hover:bg-surface-raised-active active:scale-90 duration-fast-01 ease-productive-standard',
           className,
         )}
         {...props}
@@ -270,7 +270,7 @@ const TopBarUserMenu = React.forwardRef<HTMLButtonElement, TopBarUserMenuProps>(
                   {user.image ? (
                     <AvatarImage src={user.image} alt={user.name} />
                   ) : null}
-                  <AvatarFallback className="bg-surface-3 text-surface-fg">
+                  <AvatarFallback className="bg-surface-raised-hover text-surface-fg">
                     {user.name?.charAt(0).toUpperCase()}
                   </AvatarFallback>
                 </Avatar>
@@ -283,7 +283,7 @@ const TopBarUserMenu = React.forwardRef<HTMLButtonElement, TopBarUserMenuProps>(
         </Tooltip>
 
         <DropdownMenuContent
-          className="w-[200px] rounded-ds-xl border border-surface-border-strong bg-surface-1 p-0 shadow-03"
+          className="w-[200px] rounded-ds-xl border border-surface-border-strong bg-surface-overlay p-0 shadow-floating"
           sideOffset={8}
           align="end"
         >
@@ -296,7 +296,7 @@ const TopBarUserMenu = React.forwardRef<HTMLButtonElement, TopBarUserMenuProps>(
           </div>
 
           <DropdownMenuItem
-            className="flex w-full cursor-pointer items-center gap-ds-03 px-ds-05 py-ds-04 hover:bg-surface-2"
+            className="flex w-full cursor-pointer items-center gap-ds-03 px-ds-05 py-ds-04 hover:bg-surface-raised"
             onClick={() => onNavigate?.('/profile')}
           >
             <IconUser className="h-ico-sm w-ico-sm text-surface-fg-muted" />
@@ -321,7 +321,7 @@ const TopBarUserMenu = React.forwardRef<HTMLButtonElement, TopBarUserMenuProps>(
                 )}
                 <DropdownMenuItem
                   className={cn(
-                    'flex w-full cursor-pointer items-center gap-ds-03 px-ds-05 py-ds-04 hover:bg-surface-2',
+                    'flex w-full cursor-pointer items-center gap-ds-03 px-ds-05 py-ds-04 hover:bg-surface-raised',
                     item.disabled && 'pointer-events-none opacity-action-disabled',
                   )}
                   disabled={item.disabled}
@@ -359,7 +359,7 @@ const TopBarUserMenu = React.forwardRef<HTMLButtonElement, TopBarUserMenuProps>(
           })}
 
           <DropdownMenuItem
-            className="flex w-full cursor-pointer items-center gap-ds-03 px-ds-05 py-ds-04 hover:bg-surface-2"
+            className="flex w-full cursor-pointer items-center gap-ds-03 px-ds-05 py-ds-04 hover:bg-surface-raised"
             onClick={toggleColorMode}
           >
             {colorMode === 'dark' ? (
@@ -376,7 +376,7 @@ const TopBarUserMenu = React.forwardRef<HTMLButtonElement, TopBarUserMenuProps>(
             <>
               <DropdownMenuSeparator className="bg-surface-border" />
               <DropdownMenuItem
-                className="flex w-full cursor-pointer items-center gap-ds-03 px-ds-05 py-ds-04 hover:bg-surface-2"
+                className="flex w-full cursor-pointer items-center gap-ds-03 px-ds-05 py-ds-04 hover:bg-surface-raised"
                 onClick={onLogout}
               >
                 <IconLogout className="h-ico-sm w-ico-sm text-error-11" />

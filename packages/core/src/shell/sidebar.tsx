@@ -176,7 +176,7 @@ function CloseIcon({ className }: { className?: string }) {
 const navItemBase = 'relative gap-ds-04 rounded-ds-lg px-ds-04 py-ds-03 transition-colors duration-fast-02'
 const navItemActive =
   "bg-accent-2 text-accent-11 after:absolute after:right-0 after:top-0 after:h-full after:w-ds-01 after:rounded-l-ds-full after:bg-accent-9 after:content-['']"
-const navItemInactive = 'text-surface-fg-subtle hover:bg-surface-3 hover:text-surface-fg'
+const navItemInactive = 'text-surface-fg-subtle hover:bg-surface-raised-hover hover:text-surface-fg'
 
 // -----------------------------------------------------------------------
 // NavLink (internal)
@@ -234,7 +234,7 @@ function NavLink({
             {badgeContent && <SidebarMenuBadge>{badgeContent}</SidebarMenuBadge>}
             <CollapsibleTrigger asChild>
               <button
-                className="absolute right-ds-02 top-1/2 flex h-5 w-5 -translate-y-1/2 items-center justify-center rounded-ds-md text-surface-fg-subtle transition-colors hover:bg-surface-3 hover:text-surface-fg group-data-[collapsible=icon]:hidden"
+                className="absolute right-ds-02 top-1/2 flex h-5 w-5 -translate-y-1/2 items-center justify-center rounded-ds-md text-surface-fg-subtle transition-colors hover:bg-surface-raised-hover hover:text-surface-fg group-data-[collapsible=icon]:hidden"
                 aria-label={`Toggle ${item.title}`}
               >
                 <ChevronRight className="h-4 w-4 transition-transform duration-fast-02 ease-productive-standard group-data-[state=open]/collapsible:rotate-90" />
@@ -335,7 +335,7 @@ const AppSidebar = React.forwardRef<HTMLDivElement, AppSidebarProps>(
         ref={ref}
         aria-label="Main navigation"
         className={cn(
-          'z-raised hidden h-full flex-col border-r border-surface-border-strong bg-surface-1 md:flex',
+          'z-raised hidden h-full flex-col border-r border-surface-border-strong bg-surface-sunken md:flex',
           className,
         )}
       >
@@ -355,7 +355,7 @@ const AppSidebar = React.forwardRef<HTMLDivElement, AppSidebarProps>(
               {user.image ? (
                 <AvatarImage src={user.image} alt={user.name} />
               ) : null}
-              <AvatarFallback className="bg-surface-3 text-surface-fg">
+              <AvatarFallback className="bg-surface-raised-hover text-surface-fg">
                 {user.name?.charAt(0).toUpperCase()}
               </AvatarFallback>
             </Avatar>
@@ -436,12 +436,12 @@ const AppSidebar = React.forwardRef<HTMLDivElement, AppSidebarProps>(
 
             {/* Promo banner */}
             {footer.promo && (
-              <div className="relative rounded-ds-lg border border-surface-border bg-surface-2 p-ds-04 shadow-01">
+              <div className="relative rounded-ds-lg border border-surface-border bg-surface-raised p-ds-04 shadow-raised">
                 {footer.promo.onDismiss && (
                   <button
                     onClick={footer.promo.onDismiss}
                     aria-label="Dismiss"
-                    className="absolute right-ds-02 top-ds-02 flex h-5 w-5 items-center justify-center rounded-ds-md text-surface-fg-subtle transition-colors hover:bg-surface-3 hover:text-surface-fg"
+                    className="absolute right-ds-02 top-ds-02 flex h-5 w-5 items-center justify-center rounded-ds-md text-surface-fg-subtle transition-colors hover:bg-surface-raised-hover hover:text-surface-fg"
                   >
                     <CloseIcon className="h-3.5 w-3.5" />
                   </button>

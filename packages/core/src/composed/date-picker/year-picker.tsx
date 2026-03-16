@@ -49,7 +49,7 @@ export const YearPicker = React.forwardRef<HTMLDivElement, YearPickerProps>(
                   'bg-accent-9 text-accent-fg',
                 !isSelected &&
                   !isDisabled &&
-                  'hover:bg-surface-3 text-surface-fg',
+                  'hover:bg-surface-raised-hover text-surface-fg',
               )}
             >
               {year}

@@ -167,7 +167,7 @@ const TimePicker = React.forwardRef<HTMLButtonElement, TimePickerProps>(
   const itemSelected =
     'bg-accent-9 text-accent-fg'
   const itemDefault =
-    'text-surface-fg hover:bg-surface-3'
+    'text-surface-fg hover:bg-surface-raised-hover'
 
   return (
     <Popover open={open} onOpenChange={setOpen}>
@@ -178,7 +178,7 @@ const TimePicker = React.forwardRef<HTMLButtonElement, TimePickerProps>(
           disabled={disabled}
           {...props}
           className={cn(
-            'inline-flex h-ds-sm-plus items-center gap-ds-03 rounded-ds-lg border border-surface-border-strong bg-surface-1 px-ds-04 text-left transition-colors duration-fast-01 ease-productive-standard',
+            'inline-flex h-ds-sm-plus items-center gap-ds-03 rounded-ds-lg border border-surface-border-strong bg-surface-overlay px-ds-04 text-left transition-colors duration-fast-01 ease-productive-standard',
             'hover:border-surface-border-strong',
             'focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent-9 focus-visible:ring-offset-2',
             disabled && 'opacity-action-disabled pointer-events-none',
@@ -203,7 +203,7 @@ const TimePicker = React.forwardRef<HTMLButtonElement, TimePickerProps>(
         </button>
       </PopoverTrigger>
       <PopoverContent
-        className="w-auto border-surface-border-strong bg-surface-1 p-ds-04"
+        className="w-auto border-surface-border-strong bg-surface-overlay p-ds-04"
         align="start"
         sideOffset={4}
       >

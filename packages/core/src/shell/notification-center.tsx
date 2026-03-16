@@ -163,7 +163,7 @@ function NotificationItem({
       onKeyDown={handleKeyDown}
       className={cn(
         'group relative flex w-full cursor-pointer items-start gap-ds-04 px-ds-05 py-ds-04 text-left transition-colors duration-fast-02 ease-productive-standard',
-        'hover:bg-surface-2',
+        'hover:bg-surface-raised',
         !notification.isRead && 'bg-accent-1',
       )}
     >
@@ -227,7 +227,7 @@ function NotificationItem({
                     ? 'bg-accent-9 text-accent-fg hover:bg-accent-10'
                     : action.variant === 'danger'
                       ? 'text-error-11 hover:bg-error-3'
-                      : 'text-surface-fg-muted hover:bg-surface-3',
+                      : 'text-surface-fg-muted hover:bg-surface-raised-hover',
                 )}
               >
                 {action.label}
@@ -247,7 +247,7 @@ function NotificationItem({
             onDismiss(notification.id)
           }}
           onKeyDown={(e) => e.stopPropagation()}
-          className="absolute right-ds-03 top-ds-03 hidden rounded-ds-sm p-ds-01 text-surface-fg-subtle transition-[color,background-color,opacity] duration-fast-01 ease-productive-standard hover:bg-surface-3 hover:text-surface-fg-muted group-hover:flex group-focus-within:flex"
+          className="absolute right-ds-03 top-ds-03 hidden rounded-ds-sm p-ds-01 text-surface-fg-subtle transition-[color,background-color,opacity] duration-fast-01 ease-productive-standard hover:bg-surface-raised-hover hover:text-surface-fg-muted group-hover:flex group-focus-within:flex"
         >
           <IconX className="h-ico-sm w-ico-sm" />
         </button>
@@ -337,7 +337,7 @@ const NotificationCenter = React.forwardRef<HTMLButtonElement, NotificationCente
               ref={ref}
               aria-label={unreadCount > 0 ? `Notifications, ${unreadCount} unread` : 'Notifications'}
               className={cn(
-                'relative flex h-ds-sm-plus w-ds-sm-plus items-center justify-center rounded-ds-full border border-surface-border-strong bg-surface-2 text-surface-fg-muted transition-colors ease-productive-standard hover:bg-surface-3',
+                'relative flex h-ds-sm-plus w-ds-sm-plus items-center justify-center rounded-ds-full border border-surface-border-strong bg-surface-raised text-surface-fg-muted transition-colors ease-productive-standard hover:bg-surface-raised-hover',
                 className,
               )}
             >
@@ -362,7 +362,7 @@ const NotificationCenter = React.forwardRef<HTMLButtonElement, NotificationCente
 
       <PopoverContent
         className={cn(
-          'w-[380px] rounded-ds-xl border border-surface-border-strong bg-surface-1 p-0 shadow-03',
+          'w-[380px] rounded-ds-xl border border-surface-border-strong bg-surface-overlay p-0 shadow-floating',
           popoverClassName,
         )}
         sideOffset={8}
@@ -404,7 +404,7 @@ const NotificationCenter = React.forwardRef<HTMLButtonElement, NotificationCente
           {notifications.length === 0 ? (
             emptyState || (
               <div className="flex flex-col items-center justify-center px-ds-05 py-ds-09">
-                <div className="flex h-ds-lg w-ds-lg items-center justify-center rounded-ds-full bg-surface-2">
+                <div className="flex h-ds-lg w-ds-lg items-center justify-center rounded-ds-full bg-surface-raised">
                   <IconInbox className="h-ico-lg w-ico-lg text-surface-fg-subtle" />
                 </div>
                 <p className="mt-ds-04 text-ds-md text-surface-fg-subtle">
@@ -421,7 +421,7 @@ const NotificationCenter = React.forwardRef<HTMLButtonElement, NotificationCente
               if (!items || items.length === 0) return null
               return (
                 <div key={group}>
-                  <div className="sticky top-0 z-raised bg-surface-1 px-ds-05 py-ds-02b">
+                  <div className="sticky top-0 z-raised bg-surface-overlay px-ds-05 py-ds-02b">
                     <span className="text-ds-sm font-medium text-surface-fg-subtle">
                       {group}
                     </span>

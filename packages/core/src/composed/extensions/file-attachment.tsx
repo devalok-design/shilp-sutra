@@ -16,7 +16,7 @@ function FileAttachmentView({ node }: NodeViewProps) {
         href={safeUrl}
         target="_blank"
         rel="noopener noreferrer"
-        className="inline-flex items-center gap-ds-03 rounded-ds-md border border-surface-border-strong bg-surface-2 px-ds-04 py-ds-03 text-ds-sm text-surface-fg transition-colors hover:border-surface-border-strong hover:bg-surface-3"
+        className="inline-flex items-center gap-ds-03 rounded-ds-md border border-surface-border-strong bg-surface-raised px-ds-04 py-ds-03 text-ds-sm text-surface-fg transition-colors hover:border-surface-border-strong hover:bg-surface-raised-hover"
         contentEditable={false}
       >
         <IconFile className="h-ico-sm w-ico-sm shrink-0 text-surface-fg-subtle" />

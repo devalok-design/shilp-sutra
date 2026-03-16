@@ -67,7 +67,7 @@ const MemberPicker = React.forwardRef<HTMLDivElement, MemberPickerProps>(
         <PopoverContent
           ref={ref}
           {...props}
-          className={cn("w-[220px] border-surface-border-strong bg-surface-1 p-0", className)}
+          className={cn("w-[220px] border-surface-border-strong bg-surface-overlay p-0", className)}
           align="start"
           sideOffset={4}
         >
@@ -95,7 +95,7 @@ const MemberPicker = React.forwardRef<HTMLDivElement, MemberPickerProps>(
                   }}
                   className={cn(
                     'flex w-full items-center gap-ds-03 px-ds-04 py-ds-02b text-left transition-colors duration-fast-01 ease-productive-standard',
-                    'hover:bg-surface-3',
+                    'hover:bg-surface-raised-hover',
                     isSelected && 'bg-accent-2 text-accent-11',
                   )}
                 >
@@ -103,7 +103,7 @@ const MemberPicker = React.forwardRef<HTMLDivElement, MemberPickerProps>(
                     {member.avatar && (
                       <AvatarImage src={member.avatar} alt={member.name} />
                     )}
-                    <AvatarFallback className="bg-surface-3 text-ds-xs font-semibold text-surface-fg">
+                    <AvatarFallback className="bg-surface-raised-hover text-ds-xs font-semibold text-surface-fg">
                       {getInitials(member.name)}
                     </AvatarFallback>
                   </Avatar>

@@ -175,7 +175,7 @@ function ActivityEntry({
             <span
               className={cn(
                 'text-surface-fg-muted',
-                item.detail && 'cursor-pointer hover:underline hover:bg-surface-2 rounded-ds-md',
+                item.detail && 'cursor-pointer hover:underline hover:bg-surface-raised rounded-ds-md',
               )}
               onClick={handleActionClick}
               role={item.detail ? 'button' : undefined}
@@ -241,7 +241,7 @@ function GroupHeader({
       )}
     >
       <hr className="flex-1 border-surface-border" />
-      <span className="bg-surface-1 px-ds-03 text-ds-xs font-medium uppercase tracking-wider text-surface-fg-subtle">
+      <span className="bg-surface-base px-ds-03 text-ds-xs font-medium uppercase tracking-wider text-surface-fg-subtle">
         {label}
       </span>
       <hr className="flex-1 border-surface-border" />

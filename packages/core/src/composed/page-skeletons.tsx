@@ -2,7 +2,7 @@ import * as React from 'react'
 import { Skeleton } from '../ui/skeleton'
 import { cn } from '../ui/lib/utils'
 
-const shimmer = 'bg-surface-3'
+const shimmer = 'bg-surface-raised-hover'
 
 // --- Dashboard Skeleton ---
 
@@ -17,7 +17,7 @@ const DashboardSkeleton = React.forwardRef<HTMLDivElement, DashboardSkeletonProp
         {Array.from({ length: 4 }).map((_, i) => (
           <div
             key={`stat-${i}`}
-            className="flex flex-col gap-ds-04 rounded-ds-xl border border-surface-border-strong bg-surface-2 p-ds-05b"
+            className="flex flex-col gap-ds-04 rounded-ds-xl border border-surface-border-strong bg-surface-raised p-ds-05b"
           >
             <div className="flex items-center justify-between">
               <Skeleton className={cn('h-[12px] w-[80px]', shimmer)} />
@@ -30,7 +30,7 @@ const DashboardSkeleton = React.forwardRef<HTMLDivElement, DashboardSkeletonProp
       </div>
 
       {/* Attendance calendar placeholder */}
-      <div className="rounded-ds-xl border border-surface-border-strong bg-surface-2 p-ds-06">
+      <div className="rounded-ds-xl border border-surface-border-strong bg-surface-raised p-ds-06">
         <div className="mb-ds-06 flex items-center justify-between">
           <Skeleton className={cn('h-[20px] w-[128px]', shimmer)} />
           <div className="flex items-center gap-ds-03">
@@ -94,7 +94,7 @@ const ProjectListSkeleton = React.forwardRef<HTMLDivElement, ProjectListSkeleton
         {Array.from({ length: 6 }).map((_, i) => (
           <div
             key={`proj-${i}`}
-            className="flex flex-col gap-ds-05 rounded-ds-xl border border-surface-border-strong bg-surface-2 p-ds-05b"
+            className="flex flex-col gap-ds-05 rounded-ds-xl border border-surface-border-strong bg-surface-raised p-ds-05b"
           >
             {/* Top row: status + org */}
             <div className="flex items-center justify-between">
@@ -136,7 +136,7 @@ export interface TaskDetailSkeletonProps extends React.ComponentPropsWithoutRef<
 const TaskDetailSkeleton = React.forwardRef<HTMLDivElement, TaskDetailSkeletonProps>(
   function TaskDetailSkeleton({ className, ...props }, ref) {
   return (
-    <div ref={ref} {...props} className={cn("flex h-full flex-col gap-0 rounded-ds-xl border border-surface-border-strong bg-surface-2", className)}>
+    <div ref={ref} {...props} className={cn("flex h-full flex-col gap-0 rounded-ds-xl border border-surface-border-strong bg-surface-raised", className)}>
       {/* Header */}
       <div className="flex items-center justify-between border-b border-surface-border-strong px-ds-05b py-ds-05">
         <Skeleton className={cn('h-[20px] w-[192px]', shimmer)} />

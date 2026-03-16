@@ -16,15 +16,15 @@ const statusBadgeVariants = cva(
         rejected: 'bg-error-3 text-error-11',
         completed: 'bg-success-3 text-success-11',
         blocked: 'bg-error-3 text-error-11',
-        cancelled: 'bg-surface-2 text-surface-fg-subtle',
-        draft: 'bg-surface-2 text-surface-fg-subtle',
+        cancelled: 'bg-surface-raised text-surface-fg-subtle',
+        draft: 'bg-surface-raised text-surface-fg-subtle',
       },
       color: {
         success: 'bg-success-3 text-success-11',
         warning: 'bg-warning-3 text-warning-11',
         error: 'bg-error-3 text-error-11',
         info: 'bg-info-3 text-info-11',
-        neutral: 'bg-surface-2 text-surface-fg-subtle',
+        neutral: 'bg-surface-raised text-surface-fg-subtle',
       },
       size: {
         sm: 'px-ds-03 py-ds-01 text-ds-xs font-semibold',

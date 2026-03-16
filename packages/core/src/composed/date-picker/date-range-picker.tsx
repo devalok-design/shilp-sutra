@@ -202,7 +202,7 @@ const DateRangePicker = React.forwardRef<HTMLButtonElement, DateRangePickerProps
           aria-label={rangeStart && rangeEnd ? `Change date range, ${displayText()}` : placeholder}
           {...props}
           className={cn(
-            'inline-flex h-ds-sm-plus items-center gap-ds-03 rounded-ds-lg border border-surface-border-strong bg-surface-1 px-ds-04 text-left transition-colors duration-fast-01 ease-productive-standard',
+            'inline-flex h-ds-sm-plus items-center gap-ds-03 rounded-ds-lg border border-surface-border-strong bg-surface-overlay px-ds-04 text-left transition-colors duration-fast-01 ease-productive-standard',
             'hover:border-surface-border-strong',
             'focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent-9 focus-visible:ring-offset-2',
             className,
@@ -225,7 +225,7 @@ const DateRangePicker = React.forwardRef<HTMLButtonElement, DateRangePickerProps
         </button>
       </PopoverTrigger>
       <PopoverContent
-        className="w-auto border-surface-border-strong bg-surface-1 p-ds-04"
+        className="w-auto border-surface-border-strong bg-surface-overlay p-ds-04"
         align="start"
         sideOffset={4}
       >

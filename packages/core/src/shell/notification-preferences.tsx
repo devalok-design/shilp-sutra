@@ -191,7 +191,7 @@ const NotificationPreferences = React.forwardRef<HTMLDivElement, NotificationPre
                     )}
                   >
                     {/* Channel icon */}
-                    <div className="flex h-ds-sm w-ds-sm shrink-0 items-center justify-center rounded-ds-lg bg-surface-2">
+                    <div className="flex h-ds-sm w-ds-sm shrink-0 items-center justify-center rounded-ds-lg bg-surface-raised">
                       <span className="[&>svg]:h-ico-sm [&>svg]:w-ico-sm text-surface-fg-muted" aria-hidden="true">{channelInfo.icon}</span>
                     </div>
 
@@ -237,7 +237,7 @@ const NotificationPreferences = React.forwardRef<HTMLDivElement, NotificationPre
                     <button
                       type="button"
                       onClick={() => onDelete?.(pref.id)}
-                      className="shrink-0 rounded p-ds-02b text-surface-fg-subtle transition-colors hover:bg-surface-2 hover:text-error-11"
+                      className="shrink-0 rounded p-ds-02b text-surface-fg-subtle transition-colors hover:bg-surface-raised hover:text-error-11"
                     >
                       <IconTrash className="h-ico-sm w-ico-sm" />
                     </button>

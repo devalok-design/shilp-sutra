@@ -191,7 +191,7 @@ const Sidebar = forwardRef<
       return (
         <div
           className={cn(
-            'flex h-full w-[--sidebar-width] flex-col bg-surface-raised text-surface-fg',
+            'flex h-full w-[--sidebar-width] flex-col bg-surface-sunken text-surface-fg',
             className,
           )}
           ref={ref}
@@ -256,7 +256,7 @@ const Sidebar = forwardRef<
         >
           <div
             data-sidebar="sidebar"
-            className="flex h-full w-full flex-col bg-surface-raised group-data-[variant=floating]:rounded-ds-lg group-data-[variant=floating]:border group-data-[variant=floating]:border-surface-border group-data-[variant=floating]:shadow"
+            className="flex h-full w-full flex-col bg-surface-sunken group-data-[variant=floating]:rounded-ds-lg group-data-[variant=floating]:border group-data-[variant=floating]:border-surface-border group-data-[variant=floating]:shadow"
           >
             {children}
           </div>
@@ -347,7 +347,7 @@ const SidebarInput = forwardRef<
       ref={ref}
       data-sidebar="input"
       className={cn(
-        'h-ds-sm w-full bg-surface-raised shadow-none focus-visible:ring-2 focus-visible:ring-accent-9',
+        'h-ds-sm w-full bg-surface-sunken shadow-none focus-visible:ring-2 focus-visible:ring-accent-9',
         className,
       )}
       {...props}

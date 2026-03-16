@@ -30,12 +30,12 @@ Components use **only** semantic tokens. Primitives are internal, for theme tuni
 
 ### Semantic layer (public API — what components use)
 
-| Token | Primitive | Light value | Dark value | Role |
-|-------|-----------|-------------|------------|------|
-| `surface-base` | `neutral-1` | `oklch(0.99 0.0003 350)` | `oklch(0.11 0.0002 350)` | Page background |
-| `surface-sunken` | `surface-0` (new) | `oklch(0.945 0.008 360)` | `oklch(0.07 0.008 360)` | Shell chrome, board columns |
-| `surface-raised` | `neutral-2` | `oklch(0.97 0.0008 350)` | `oklch(0.17 0.0007 350)` | Cards, widgets, panels |
-| `surface-overlay` | `neutral-1` | `oklch(0.99 0.0003 350)` | `oklch(0.13 0.0002 350)` | Dialogs, popovers, sheets |
+| Token | Light primitive | Light value | Dark primitive | Dark value | Role |
+|-------|----------------|-------------|---------------|------------|------|
+| `surface-base` | `neutral-2` | `oklch(0.97 0.0008 350)` | `neutral-1` | `oklch(0.11 0.0002 350)` | Page background (grey page, Stripe pattern) |
+| `surface-sunken` | `surface-0` (new) | `oklch(0.945 0.008 360)` | `surface-0` | `oklch(0.07 0.008 360)` | Shell chrome, board columns |
+| `surface-raised` | `neutral-1` | `oklch(0.99 0.0003 350)` | `neutral-2` | `oklch(0.17 0.0007 350)` | Cards, widgets, panels (white cards) |
+| `surface-overlay` | `neutral-1` | `oklch(0.99 0.0003 350)` | — | `oklch(0.13 0.0002 350)` | Dialogs, popovers, sheets |
 | `surface-raised-hover` | `neutral-3` | `oklch(0.93 0.0018 350)` | `oklch(0.23 0.0019 350)` | Hover on raised elements |
 | `surface-raised-active` | `neutral-4` | `oklch(0.89 0.0029 350)` | `oklch(0.29 0.0029 350)` | Pressed/active states |
 | `surface-inverted` | `neutral-12` | `oklch(0.32 0.0042 350)` | `oklch(0.88 0.0024 350)` | Tooltips, inverted badges |

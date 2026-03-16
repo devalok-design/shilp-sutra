@@ -254,7 +254,7 @@ const SegmentedControl = React.forwardRef<HTMLDivElement, SegmentedControlProps>
       ref={mergedRef}
       className={cn(
         'inline-flex gap-0 p-0 rounded-ds-full',
-        'bg-surface-raised',
+        'bg-surface-raised shadow-inset',
         'border border-solid border-surface-border-strong',
         className,
       )}

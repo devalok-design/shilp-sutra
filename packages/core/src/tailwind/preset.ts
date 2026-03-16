@@ -192,11 +192,6 @@ const preset: Partial<Config> = {
         'surface-inverted-fg': 'var(--color-surface-inverted-fg)',
         'surface-disabled': 'var(--color-surface-disabled)',
         'surface-fg-disabled': 'var(--color-surface-fg-disabled)',
-        // Deprecated — remove in next major
-        'surface-1': 'var(--color-surface-base)',
-        'surface-2': 'var(--color-surface-raised)',
-        'surface-3': 'var(--color-surface-raised-hover)',
-        'surface-4': 'var(--color-surface-raised-active)',
         'surface-fg': 'var(--color-surface-fg)',
         'surface-fg-muted': 'var(--color-surface-fg-muted)',
         'surface-fg-subtle': 'var(--color-surface-fg-subtle)',
@@ -341,12 +336,6 @@ const preset: Partial<Config> = {
         inset: 'var(--shadow-inset)',
         'ring-sm': 'var(--shadow-ring-sm)',
         ring: 'var(--shadow-ring)',
-        // Deprecated — remove in next major
-        '01': 'var(--shadow-raised)',
-        '02': 'var(--shadow-raised-hover)',
-        '03': 'var(--shadow-floating)',
-        '04': 'var(--shadow-overlay)',
-        '05': 'var(--shadow-overlay)',
       },
       transitionDuration: {
         instant: 'var(--duration-instant)',

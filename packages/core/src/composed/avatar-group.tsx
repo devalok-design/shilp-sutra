@@ -55,7 +55,7 @@ export interface AvatarGroupProps
   max?: number
   showTooltip?: boolean
   /** Border color for the group avatars. @default 'surface-raised' */
-  borderColor?: 'surface-base' | 'surface-raised' | 'surface-1' | 'surface-2'
+  borderColor?: 'surface-base' | 'surface-raised'
   /** Callback when the "+N" overflow badge is clicked */
   onOverflowClick?: () => void
   /** Custom render function for each avatar */
@@ -96,7 +96,7 @@ const AvatarGroup = React.forwardRef<HTMLDivElement, AvatarGroupProps>(
     const overlapClass = overlapMap[size ?? 'md']
 
     const borderClass =
-      borderColor === 'surface-1' || borderColor === 'surface-base'
+      borderColor === 'surface-base'
         ? 'border-surface-base'
         : 'border-surface-raised'
 

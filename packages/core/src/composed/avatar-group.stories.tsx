@@ -40,7 +40,7 @@ const meta: Meta<typeof AvatarGroup> = {
     },
     borderColor: {
       control: 'select',
-      options: ['surface-base', 'surface-raised', 'surface-1', 'surface-2'],
+      options: ['surface-base', 'surface-raised'],
     },
   },
 }

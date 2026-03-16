@@ -5,7 +5,7 @@
 > All variant values and props verified from source CVA definitions.
 >
 > Package: @devalok/shilp-sutra
-> Version: 0.22.3
+> Version: 0.23.1
 
 ---
 
@@ -54,7 +54,7 @@ Color tokens use OKLCH (perceptually uniform) with 12 functional steps per palet
 Semantic layer:
 - Accent (swappable): --color-accent-{1-12} + --color-accent-fg
 - Secondary: --color-secondary-{1-12} + --color-secondary-fg
-- Surface (v0.23.0 semantic names):
+- Surface (semantic names):
   - --color-surface-base (page bg), --color-surface-sunken (shell chrome, board columns)
   - --color-surface-raised (cards/panels), --color-surface-raised-hover, --color-surface-raised-active
   - --color-surface-overlay (dialogs, popovers, inputs -- diverges from base in dark mode)
@@ -62,20 +62,18 @@ Semantic layer:
   - --color-surface-disabled / --color-surface-fg-disabled (disabled elements)
   - --color-surface-fg / fg-muted / fg-subtle / border / border-strong / border-subtle
   - Border mapping: light mode border=step5, border-strong=step6; dark mode border=step3, border-strong=step4
-  - Legacy aliases: --color-surface-1..4 still resolve (1=base, 2=raised, 3=raised-hover, 4=raised-active)
-- Shadows (v0.23.0 semantic names):
+- Shadows (semantic names):
   - --shadow-raised (cards), --shadow-raised-hover (card hover), --shadow-floating (popovers), --shadow-overlay (dialogs)
   - --shadow-glow (selection/focus), --shadow-inset (toggle track), --shadow-ring (focus ring), --shadow-ring-sm (separator)
   - --shadow-color, --shadow-strength, --shadow-transition (theme-adaptive shadow system)
   - --color-backdrop (dialog/sheet backdrop)
-  - Legacy aliases: --shadow-01..04 still resolve (01=raised, 02=raised-hover, 03=floating, 04=overlay). shadow-05 removed.
   - Hard rule: never combine explicit border + shadow. Shadows include a 1px ring layer.
 - Status: --color-{error,success,warning,info}-{3,7,9,11}
 - Category: --color-category-{teal,amber,slate,indigo,cyan,orange,emerald}
 
 Consumer rebranding: Override accent scale CSS vars or use generateScale(options) utility.
 
-Tailwind utilities: accent-1..12, secondary-1..12, surface-base/raised/sunken/overlay/inverted/disabled (+ legacy surface-1..4 aliases), shadow-raised/raised-hover/floating/overlay/glow/inset/ring/ring-sm (+ legacy shadow-01..04 aliases), plus fg/border variants.
+Tailwind utilities: accent-1..12, secondary-1..12, surface-base/raised/sunken/overlay/inverted/disabled, shadow-raised/raised-hover/floating/overlay/glow/inset/ring/ring-sm, plus fg/border variants.
 
 ### Toast Setup Pattern
 
@@ -3025,7 +3023,7 @@ export default function RootLayout({ children }) {
     max: number (default: 4, overflow shows "+N" badge)
     size: "xs" | "sm" | "md" | "lg" | "xl"
     showTooltip: boolean (default: true)
-    borderColor: "surface-base" | "surface-raised" (default: "surface-raised") (legacy "surface-1"/"surface-2" still accepted) — overlap border color
+    borderColor: "surface-base" | "surface-raised" (default: "surface-raised") — overlap border color
     onOverflowClick: () => void — makes the "+N" badge interactive (button)
     renderAvatar: (user: AvatarUser, index: number) => ReactNode — custom avatar render
     expandDirection: "left" | "right" (default: "right") — direction group expands on hover
@@ -3058,7 +3056,7 @@ export default function RootLayout({ children }) {
 - Users beyond `max` are collapsed into a "+N" overflow badge
 - Missing `image` falls back to initials derived from `name`
 - Hover expand animation uses CSS `group-hover` — parent must not clip overflow
-- `borderColor` should match the surface context the group sits on (e.g., `surface-base` on cards)
+- `borderColor` should match the surface context the group sits on (e.g., `surface-base` when sitting on the page background)
 - `renderAvatar` wrapper is positioning-only — pass `size` directly to your Avatar (do NOT use `className="h-full w-full"`)
 
 ## Changes

@@ -27,7 +27,7 @@ export function SandboxPreview({ selectedComponent, componentProps }: SandboxPre
   }
 
   return (
-    <div className="flex min-h-[200px] items-center justify-center rounded-lg border border-surface-border bg-surface-1 p-8">
+    <div className="flex min-h-[200px] items-center justify-center rounded-lg border border-surface-border bg-surface-base p-8">
       {entry.render(currentProps)}
     </div>
   )

@@ -20,7 +20,7 @@ export function Layout({
   topBarActions,
 }: LayoutProps) {
   return (
-    <div className="flex h-screen flex-col bg-surface-1 text-surface-fg">
+    <div className="flex h-screen flex-col bg-surface-base text-surface-fg">
       {/* Top bar */}
       <header className="flex h-14 shrink-0 items-center justify-between border-b border-surface-border px-4">
         <div className="flex items-center gap-4">
@@ -55,7 +55,7 @@ export function Layout({
           {/* Dark mode toggle */}
           <button
             onClick={onToggleDarkMode}
-            className="rounded-md p-2 text-surface-fg-muted hover:bg-surface-2 hover:text-surface-fg"
+            className="rounded-md p-2 text-surface-fg-muted hover:bg-surface-raised hover:text-surface-fg"
             aria-label={darkMode ? 'Switch to light mode' : 'Switch to dark mode'}
           >
             {darkMode ? '\u2600\uFE0F' : '\uD83C\uDF19'}

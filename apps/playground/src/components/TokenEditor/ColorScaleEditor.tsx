@@ -47,7 +47,7 @@ export function ColorScaleEditor({
               handleBaseChange(e.target.value)
             }
           }}
-          className="w-20 rounded border border-surface-border bg-surface-3 px-2 py-1 text-xs font-mono"
+          className="w-20 rounded border border-surface-border bg-surface-raised-hover px-2 py-1 text-xs font-mono"
           placeholder="#D33163"
         />
       </div>

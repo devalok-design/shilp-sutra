@@ -75,7 +75,7 @@ export function TokenEditor({
                         type="text"
                         value={currentValue}
                         onChange={(e) => onChangeSemantic(token.name, e.target.value)}
-                        className="flex-1 rounded border border-surface-border bg-surface-3 px-2 py-1 text-xs font-mono"
+                        className="flex-1 rounded border border-surface-border bg-surface-raised-hover px-2 py-1 text-xs font-mono"
                       />
                       {isOverridden && (
                         <button

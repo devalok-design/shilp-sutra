@@ -28,7 +28,7 @@ export function ShareBar({ state, onResetAll }: ShareBarProps) {
       {hasOverrides && (
         <button
           onClick={onResetAll}
-          className="rounded-md px-3 py-1.5 text-sm text-surface-fg-muted hover:bg-surface-2 hover:text-surface-fg"
+          className="rounded-md px-3 py-1.5 text-sm text-surface-fg-muted hover:bg-surface-raised hover:text-surface-fg"
         >
           Reset All
         </button>

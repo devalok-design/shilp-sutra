@@ -109,12 +109,6 @@
   --color-surface-disabled: var(--neutral-2);
   --color-surface-fg-disabled: var(--neutral-8);
 
-  /* Deprecated — remove in next major */
-  --color-surface-1: var(--color-surface-base);
-  --color-surface-2: var(--color-surface-raised);
-  --color-surface-3: var(--color-surface-raised-hover);
-  --color-surface-4: var(--color-surface-raised-active);
-
   --color-surface-fg: var(--neutral-12);
   --color-surface-fg-muted: var(--neutral-11);
   --color-surface-fg-subtle: var(--neutral-8);
@@ -307,7 +301,6 @@
     0 8px 16px -4px oklch(var(--shadow-color) / calc(0.04 * var(--shadow-strength))),
     0 18px 34px -8px oklch(var(--shadow-color) / calc(0.03 * var(--shadow-strength))),
     0 40px 64px -16px oklch(var(--shadow-color) / calc(0.025 * var(--shadow-strength)));
-  --shadow-05: 0 4px 8px oklch(0 0 0 / 0.10), 0 16px 32px oklch(0 0 0 / 0.16), 0 32px 64px oklch(0 0 0 / 0.14);
 
   /* Semantic elevation shadows (public API) */
   --shadow-raised: var(--shadow-xs);
@@ -321,12 +314,6 @@
   --shadow-inset: inset 0 1px 2px oklch(var(--shadow-color) / calc(0.08 * var(--shadow-strength))), inset 0 2px 5px oklch(var(--shadow-color) / calc(0.06 * var(--shadow-strength)));
   --shadow-ring-sm: 0 0 0 1px var(--color-surface-border);
   --shadow-ring: 0 0 0 2px oklch(0.55 0.19 360 / 0.30);
-
-  /* Deprecated shadow aliases */
-  --shadow-01: var(--shadow-raised);
-  --shadow-02: var(--shadow-raised-hover);
-  --shadow-03: var(--shadow-floating);
-  --shadow-04: var(--shadow-overlay);
 
   /* ═══════════════════════════════════════════════════════════
      SIZES
@@ -443,7 +430,6 @@
 
   /* Shadows (heavier in dark mode) */
   --shadow-strength: 2.5;
-  --shadow-05: 0 4px 8px oklch(0 0 0 / 0.25), 0 16px 32px oklch(0 0 0 / 0.40), 0 32px 64px oklch(0 0 0 / 0.35);
   --shadow-brand: 0 2px 8px oklch(0.55 0.19 360 / 0.30), 0 6px 20px oklch(0.55 0.19 360 / 0.20);
   --shadow-glow: 0 0 0 1.5px oklch(0.55 0.19 360 / 0.35), 0 0 10px oklch(0.55 0.19 360 / 0.20);
   --shadow-ring: 0 0 0 2px oklch(0.55 0.19 360 / 0.45);

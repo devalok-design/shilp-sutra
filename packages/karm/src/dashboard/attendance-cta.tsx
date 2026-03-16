@@ -169,7 +169,7 @@ const AttendanceCTA = React.forwardRef<HTMLDivElement, AttendanceCTAProps>(
 
   // Unmarked + can mark: large greeting with mark button
   return (
-    <div ref={ref} className={cn("relative overflow-hidden rounded-ds-2xl border border-surface-border-strong bg-gradient-to-br from-accent-2 via-surface-1 to-success-3", className)} {...props}>
+    <div ref={ref} className={cn("relative overflow-hidden rounded-ds-2xl border border-surface-border-strong bg-gradient-to-br from-accent-2 via-surface-base to-success-3", className)} {...props}>
       <div className="flex items-center justify-between px-ds-06 py-ds-07 sm:px-ds-07 sm:py-ds-08">
         <div className="flex flex-col gap-ds-02b">
           <h2 className="text-ds-3xl text-surface-fg">

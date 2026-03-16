@@ -283,8 +283,8 @@ function BoardCanvas({ className }: { className?: string }) {
           </MotionStagger>
         </SortableContext>
 
-        {/* Add column button */}
-        <div className="flex-shrink-0">
+        {/* Add column button — only shown when callback is provided */}
+        {onAddColumn && <div className="flex-shrink-0">
           <Button
             variant="ghost"
             onClick={onAddColumn}
@@ -293,7 +293,7 @@ function BoardCanvas({ className }: { className?: string }) {
             <IconPlus className="h-ico-sm w-ico-sm" />
             Add column
           </Button>
-        </div>
+        </div>}
       </div>
 
       {/* Drag overlay — rendered in portal */}

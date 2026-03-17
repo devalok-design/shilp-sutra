@@ -11,6 +11,8 @@ export const springs = {
   bouncy: { type: 'spring', stiffness: 400, damping: 15, mass: 0.5 } as Transition,
   /** Collapse/expand, accordion, height changes */
   gentle: { type: 'spring', stiffness: 200, damping: 25, mass: 0.8 } as Transition,
+  /** AI response blocks — snappier than smooth, feels "intelligent" */
+  responsive: { type: 'spring', stiffness: 350, damping: 28, mass: 0.6 } as Transition,
 } as const
 
 // ── Tween configs (non-spatial: opacity, color, background) ──
@@ -20,6 +22,8 @@ export const tweens = {
   fade: { type: 'tween', duration: 0.11, ease: 'easeOut' } as Transition,
   /** Hover color, bg, border transitions */
   colorShift: { type: 'tween', duration: 0.07, ease: 'easeOut' } as Transition,
+  /** Greeting fade, hint crossfade — unhurried, confident */
+  elegant: { type: 'tween', duration: 0.4, ease: [0.25, 0.1, 0.25, 1] } as Transition,
 } as const
 
 // ── Stagger helper ──

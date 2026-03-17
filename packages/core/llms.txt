@@ -94,6 +94,7 @@ Same pattern for `border-surface-*`, `text-surface-*`, `ring-surface-*`.
 
 ## CHANGES (v0.16.0)
 - **DataTable server-side features**: `onSort` callback (manual sorting), `pagination` prop (server-side pagination with page/total/onPageChange), `selectedIds` + `selectableFilter` (controlled selection), `loading` shimmer, `emptyState` ReactNode, `singleExpand`, `stickyHeader`, `onRowClick`, `bulkActions` floating bar
+- **DataTable display**: `density?: 'compact' | 'standard' | 'comfortable'` (compact=4px padding, standard=16px, comfortable=32px). `toolbar?: boolean` (column visibility + density + export controls). Column `meta: { align: 'right' }` for numeric columns (auto-applies text-right tabular-nums). Column `meta: { hideBelow: 'md' }` for responsive column hiding (hidden below breakpoint). `selectableFilter?: (row) => boolean` to disable selection on certain rows (e.g. only PENDING rows selectable).
 - **ActivityFeed**: New composed component — `@devalok/shilp-sutra/composed/activity-feed` — vertical timeline with colored dots, actor avatars, expandable detail, compact mode, load more
 - EmptyState: `iconSize?: 'sm' | 'md' | 'lg'` prop for icon dimension control
 - BottomNavbar: `badge?: number` on BottomNavItem for notification counts (99+ cap)
@@ -151,8 +152,21 @@ Same pattern for `border-surface-*`, `text-surface-*`, `ring-surface-*`.
 **Transitions**: All CSS transitions use `ease-productive-standard` easing. Tween presets aligned: `tweens.fade` = 0.11s, `tweens.colorShift` = 0.07s.
 
 **New Tailwind utilities**:
-- `.focus-ring` / `.focus-ring-inset` / `.focus-ring-sm` — consistent keyboard focus styling
+- `.focus-ring` — double-ring (2px surface + 2px accent), use on custom interactive elements (buttons, cards)
+- `.focus-ring-inset` — inset ring, use on buttons over solid backgrounds
+- `.focus-ring-sm` — 1px subtle ring, use on inputs and small controls
 - `.tabular-nums` — aligned numbers via `font-variant-numeric: tabular-nums`
+
+**Category color utilities** (standalone, not tied to Badge/Chip):
+- 7 colors: teal, amber, slate, indigo, cyan, orange, emerald
+- 4 steps each: bg-category-{color}-{3|7|9|11}, text-category-{color}-{3|7|9|11}, border-category-{color}-{3|7|9|11}
+- Use for: board column accents, status indicators, tag colors, category chips
+
+**Dense size variant (xs)** added to Input, Select, SearchInput, Button, Textarea:
+- xs = 28px height (h-ds-xs-plus), 12px text (text-ds-sm), compact padding
+- Designed for filter bars, toolbar controls, and dense UI contexts
+- Button also gets icon-xs (28×28) for compact icon buttons
+- Size matrix: xs=28px | sm=32px | md=40px (default) | lg=48px
 
 **Separator**: New `variant` prop — `"gradient" | "gradient-left" | "gradient-right"`. Default unchanged.
 
@@ -272,17 +286,17 @@ Components with two-axis system: Button, Badge, Alert, Chip, Banner, Progress, S
 ## Component Quick Reference
 
 ### Inputs & Controls
-- Button: variant(solid|default|outline|ghost|link) color(default|error) size(sm|md|lg|icon) + loading, startIcon, endIcon, asChild
+- Button: variant(solid|default|outline|ghost|link) color(default|error) size(xs|sm|md|lg|icon-xs|icon-sm|icon-md|icon-lg) + loading, startIcon, endIcon, asChild
 - IconButton: icon(ReactNode, required) shape(square|circle) size(sm|md|lg) + aria-label required
-- Input: size(sm|md|lg) state(InputState) + startIcon, endIcon. Type: InputState = 'default' | 'error' | 'warning' | 'success'
-- SearchInput: size(sm|md|lg) + loading, onClear
+- Input: size(xs|sm|md|lg) state(InputState) + startIcon, endIcon. Type: InputState = 'default' | 'error' | 'warning' | 'success'
+- SearchInput: size(xs|sm|md|lg) + loading, onClear
 - NumberInput: value + onValueChange, min, max, step (controlled only)
-- Textarea: size(sm|md|lg) state(default|error|warning|success)
+- Textarea: size(xs|sm|md|lg) state(default|error|warning|success)
 - ColorInput: value(hex string) onChange(value) presets(string[]) disabled
 - Checkbox: checked, onCheckedChange, error(boolean), indeterminate(boolean)
 - Switch: checked, onCheckedChange, error(boolean)
 - RadioGroup > RadioGroupItem(value)
-- Select > SelectTrigger(size) > SelectValue; SelectContent > SelectItem(value)
+- Select > SelectTrigger(size: xs|sm|md|lg) > SelectValue; SelectContent > SelectItem(value)
 - Toggle: variant(default|outline) size(sm|md|lg)
 - ToggleGroup > ToggleGroupItem (variant/size propagate from root)
 - SegmentedControl > SegmentedControlItem: variant(filled|tonal) size(sm|md|lg). Types: SegmentedControlOption = { id, text, icon? }, SegmentedControlSize = 'sm' | 'md' | 'lg', SegmentedControlVariant = 'filled' | 'tonal'
@@ -304,12 +318,15 @@ NOTIFICATION SELECTION GUIDE:
 - Badge: variant(subtle|solid|outline) color(default|info|success|error|warning|brand|accent + 7 category colors) size(xs|sm|md|lg) + onDismiss
 - Chip: variant(subtle|outline) color(default|primary|success|error|warning|info + 7 category) size(sm|md|lg) label(string, REQUIRED) + onDismiss, onClick
 - Avatar: size(xs|sm|md|lg|xl) shape(circle|square|rounded) status?(AvatarStatus) ring?('lead'|'admin'|'client') badge?(number|'dot'|ReactNode) loading?(boolean) > AvatarImage + AvatarFallback(colorSeed?). Types: AvatarStatus = 'online'|'offline'|'busy'|'away', AvatarRing = 'none'|'lead'|'admin'|'client'. Fallback colors are deterministic from name hash (8 categorical). Online dot pulses. Badge pops in with MotionPop.
-- Card: variant(default|elevated|outline|flat) interactive(boolean) > CardHeader > CardTitle, CardDescription; CardContent; CardFooter
+- Card: variant(default|elevated|outline|flat) interactive(boolean) accent?(left|top|right|bottom) accentColor?(default|secondary|error|success|warning|info) > CardHeader > CardTitle, CardDescription; CardContent; CardFooter
 - Table > TableHeader > TableRow > TableHead; TableBody > TableRow > TableCell; TableFooter; TableCaption
 - Text: variant(TextVariant) as(element). Type: TextVariant = 'heading-2xl' | 'heading-xl' | 'heading-lg' | 'heading-md' | 'heading-sm' | 'heading-xs' | 'body-lg' | 'body-md' | 'body-sm' | 'body-xs' | 'label-lg' | 'label-md' | 'label-sm' | 'label-xs' | 'caption' | 'overline'
 - Code: variant(inline|block)
 - Skeleton: variant(rectangle|circle|text) animation(pulse|shimmer|none)
-- StatCard: title/label, value, delta, icon, prefix, suffix, comparisonLabel, secondaryLabel, progress, sparkline
+- StatCard: title/label, value, delta, icon, prefix, suffix, comparisonLabel, secondaryLabel, progress, sparkline, onClick, href, accent(default|success|warning|error|info), footer
+- ColorSwatch: color(CSS string) size(sm|md|lg) shape(circle|square|rounded) ring(boolean) — for dynamic runtime colors
+- StatusDot: status(healthy|warning|critical|neutral|inactive) size(sm|md|lg) pulse?(boolean, default true for healthy) label?(string)
+- ProgressRing: value(number) max?(100) size(sm|md|lg) color(default|success|warning|error|info) showValue?(boolean) label?(string). Also: MultiProgressRing for concentric Activity Ring style
 
 ### Overlays
 - Dialog > DialogTrigger; DialogContent > DialogHeader > DialogTitle, DialogDescription; [content]; DialogFooter
@@ -363,7 +380,18 @@ NOTIFICATION SELECTION GUIDE:
 - RichTextViewer: read-only renderer for RichTextEditor HTML content (renders all above content types)
 - ActivityFeed: items(ActivityItem[]), onLoadMore, loading, hasMore, emptyState, compact, maxInitialItems, groupBy?('time'|'none'), groupLabels?({ today, yesterday, thisWeek, older }). Type: ActivityItem = { id, actor?, action, timestamp, icon?, color?, detail? }. Utility: groupItemsByTime(items, labels) exported.
 - CommandPalette: open, defaultOpen, onOpenChange (controlled/uncontrolled), keybinding(string|string[]|false), maxHeight, emptyState(ReactNode), footerHints(FooterHint[]|false). CommandItem: label(string|ReactNode), description(string|ReactNode), renderLabel(query=>ReactNode), filterValue(string), shortcut(rendered as keycap badges). Keyboard shortcuts rendered per-key with platform-aware Cmd/Ctrl. Reduced-motion support via MotionProvider.
-- MemberPicker
+- MemberPicker: thin wrapper around MultiSelectPopover with Avatar rendering
+- MultiSelectPopover: items/groups, value, onValueChange, searchPlaceholder, onSearch?(async), renderItem?, emptyMessage, maxSelections. Generic multi-select popover with search + checkmarks.
+- FilterBar: searchValue, onSearchChange, onClearAll, size(xs|sm|md). Children: FilterSelect(label, value, onValueChange, options), FilterMultiSelect(label, value, onValueChange, options). Size propagates via context.
+- InlineEdit: value, onSave(string=>void|Promise), placeholder, textClassName, inputSize(xs|sm|md), multiline, readOnly, maxLength, saving. Click-to-edit text → input transition.
+- FormSection: title, description?, collapsible?, defaultOpen?. Titled form section with separator, optional collapse.
+- BulkActionBar: show, count, onClearSelection, actions[{label,icon?,onClick,color?,disabled?}]. Fixed bottom floating bar for multi-select contexts.
+- DeadlineIndicator: deadline(Date|string), warningThreshold?(1440min), criticalThreshold?(240min), format(relative|absolute), showIcon. Color transitions: green→yellow→red→overdue.
+- MasterDetail: selected, onBack, masterWidth, breakpoint(sm|md|lg). Compound: MasterDetail.List, MasterDetail.Detail, MasterDetail.ListItem(active). Desktop=grid, mobile=stacked with back button.
+- ResponsiveOverlay: open, onOpenChange, title, description, breakpoint(sm|md). Dialog on desktop, bottom Sheet on mobile.
+- MarkdownViewer: content(string), compact?, allowHtml?(false), linkTarget?('_blank'). Renders markdown with design system tokens.
+- EmojiPicker: onSelect(emoji), theme(auto|light|dark). Also EmojiPickerPopover wraps in Popover. Lazy-loads emoji-mart.
+- FilePreview: url, type?(image|pdf|video|audio|embed), mimeType?, alt?. Auto-detects type. Image zoom, PDF iframe, native video/audio, embed for Figma/YouTube/Loom.
 - ErrorDisplay, GlobalLoading
 - Loading skeletons: CardSkeleton, TableSkeleton, BoardSkeleton, ListSkeleton
 - Page skeletons: DashboardSkeleton, ProjectListSkeleton, TaskDetailSkeleton (no props, server-safe)

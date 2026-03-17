@@ -160,9 +160,6 @@ const meta: Meta<typeof CommandBar> = {
   tags: ['autodocs'],
   parameters: {
     layout: 'fullscreen',
-    docs: {
-      story: { inline: false, iframeHeight: 500 },
-    },
   },
 }
 export default meta
@@ -198,6 +195,7 @@ export const HeroIdle: Story = {
 // ---------------------------------------------------------------------------
 
 export const HeroProcessing: Story = {
+  tags: ['!autodocs'],
   name: 'Hero / Processing',
   args: {
     variant: 'hero',
@@ -245,6 +243,7 @@ export const HeroResponded: Story = {
 // ---------------------------------------------------------------------------
 
 export const HeroInteractive: Story = {
+  tags: ['!autodocs'],
   name: 'Hero / Interactive',
   render: () => {
     const [state, setState] = React.useState<
@@ -422,6 +421,7 @@ export const InlineInCard: Story = {
 // ---------------------------------------------------------------------------
 
 export const FloatingDefault: Story = {
+  tags: ['!autodocs'],
   name: 'Floating / Default',
   render: () => {
     const [open, setOpen] = React.useState(false)
@@ -465,6 +465,7 @@ export const FloatingDefault: Story = {
 // ---------------------------------------------------------------------------
 
 export const FloatingWithCommands: Story = {
+  tags: ['!autodocs'],
   name: 'Floating / With Commands',
   render: () => {
     const [open, setOpen] = React.useState(false)
@@ -618,6 +619,7 @@ const dashboardResponse: Block[] = [
 ]
 
 export const FullDashboard: Story = {
+  tags: ['!autodocs'],
   name: 'Full Dashboard (Interactive)',
   render: () => {
     const [barState, setBarState] = React.useState<

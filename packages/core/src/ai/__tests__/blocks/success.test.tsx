@@ -102,8 +102,8 @@ describe('SuccessBlock', () => {
           title: 'Deleted',
           message: 'Removed',
           undoable: true,
-          actionId: 'action-42',
-        } as any}
+        }}
+        blockId="action-42"
         onAction={onAction}
       />,
     )

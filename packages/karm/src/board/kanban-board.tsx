@@ -33,7 +33,9 @@ import { COLUMN_WIDTH } from './board-constants'
 import type { BoardTask, BoardColumn as BoardColumnType, NewTaskOptions } from './board-types'
 import { IconPlus } from '@tabler/icons-react'
 import { Button } from '@/ui/button'
+import { Badge } from '@/ui/badge'
 import { MotionStagger, MotionStaggerItem } from '@/motion/primitives'
+import { COLUMN_ACCENT_COLORS } from './board-constants'
 
 // ============================================================
 // Accessibility announcements
@@ -77,6 +79,84 @@ function createAnnouncements() {
 export interface KanbanBoardProps extends Omit<BoardProviderProps, 'children'> {
   /** Additional className for the outer wrapper */
   className?: string
+}
+
+// ============================================================
+// Mobile list view — flat grouped list (K11)
+// ============================================================
+
+function BoardListView() {
+  const {
+    columns,
+    viewMode,
+    completedColumnId,
+    showCompleted,
+    onClickTask,
+  } = useBoardContext()
+
+  return (
+    <div className="flex flex-col gap-ds-03 pb-ds-05">
+      {columns.map((column, colIdx) => {
+        const isCompletedColumn = completedColumnId != null && column.id === completedColumnId
+        const hideCompletedTasks = isCompletedColumn && !showCompleted
+        const accentColor = COLUMN_ACCENT_COLORS[colIdx % COLUMN_ACCENT_COLORS.length]
+
+        return (
+          <div key={column.id} className="flex flex-col">
+            {/* Sticky group header */}
+            <div className="sticky top-0 z-10 flex items-center gap-ds-02 bg-surface-1 px-ds-04 py-ds-03 border-b border-surface-border-subtle">
+              <span
+                className={`h-2.5 w-2.5 flex-shrink-0 rounded-full ${accentColor}`}
+                aria-hidden="true"
+              />
+              <span className="text-ds-sm font-semibold text-surface-fg">
+                {column.name}
+              </span>
+              <Badge variant="subtle" className="ml-auto text-ds-xs">
+                {column.tasks.length}
+              </Badge>
+            </div>
+
+            {/* Tasks */}
+            {hideCompletedTasks ? (
+              <div className="px-ds-04 py-ds-03 text-ds-xs text-surface-fg-subtle">
+                {column.tasks.length} completed {column.tasks.length === 1 ? 'task' : 'tasks'}
+              </div>
+            ) : column.tasks.length === 0 ? (
+              <div className="px-ds-04 py-ds-03 text-ds-xs text-surface-fg-subtle">
+                No tasks
+              </div>
+            ) : (
+              <div className="flex flex-col">
+                {column.tasks.map((task) => (
+                  <button
+                    key={task.id}
+                    type="button"
+                    onClick={() => onClickTask(task.id)}
+                    className="flex items-center gap-ds-03 border-b border-surface-border-subtle px-ds-04 py-ds-03 text-left transition-colors hover:bg-surface-raised-hover"
+                  >
+                    <span className="flex-1 truncate text-ds-sm text-surface-fg">
+                      {task.title}
+                    </span>
+                    {task.priority && (
+                      <span className="flex-shrink-0 text-ds-xs text-surface-fg-subtle">
+                        {task.priority}
+                      </span>
+                    )}
+                    {task.owner && (
+                      <span className="flex-shrink-0 text-ds-xs text-surface-fg-subtle">
+                        {task.owner.name}
+                      </span>
+                    )}
+                  </button>
+                ))}
+              </div>
+            )}
+          </div>
+        )
+      })}
+    </div>
+  )
 }
 
 // ============================================================
@@ -318,16 +398,24 @@ function BoardCanvas({ className }: { className?: string }) {
 // KanbanBoard — public orchestrator
 // ============================================================
 
+function BoardContent() {
+  const { isMobileListView } = useBoardContext()
+
+  return (
+    <div className="flex flex-col gap-ds-03">
+      <BoardToolbar />
+      <BulkActionBar />
+      {isMobileListView ? <BoardListView /> : <BoardCanvas />}
+    </div>
+  )
+}
+
 export const KanbanBoard = React.forwardRef<HTMLDivElement, KanbanBoardProps>(
   function KanbanBoard({ className, ...providerProps }, ref) {
     return (
       <div ref={ref} className={className}>
         <BoardProvider {...providerProps}>
-          <div className="flex flex-col gap-ds-03">
-            <BoardToolbar />
-            <BulkActionBar />
-            <BoardCanvas />
-          </div>
+          <BoardContent />
         </BoardProvider>
       </div>
     )

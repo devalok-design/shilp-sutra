@@ -56,7 +56,9 @@ function TaskGhost() {
 
 export const BoardColumn = React.forwardRef<HTMLDivElement, BoardColumnProps>(
   function BoardColumn({ column, index, isOverlay, dragPreview, draggedTask, className, ...props }, ref) {
-    const { viewMode } = useBoardContext()
+    const { viewMode, completedColumnId, showCompleted, onToggleCompleted } = useBoardContext()
+    const isCompletedColumn = completedColumnId != null && column.id === completedColumnId
+    const hideCompletedTasks = isCompletedColumn && !showCompleted
 
     const { setNodeRef: setDroppableRef, isOver } = useDroppable({
       id: `column-${column.id}`,
@@ -94,48 +96,57 @@ export const BoardColumn = React.forwardRef<HTMLDivElement, BoardColumnProps>(
           transition={springs.snappy}
           className="no-scrollbar flex flex-1 flex-col gap-ds-02 overflow-y-auto px-ds-03 pt-2.5 pb-ds-03"
         >
-          <SortableContext items={taskIds} strategy={verticalListSortingStrategy}>
-            <MotionStagger className="contents">
-              {column.tasks.map((task, taskIdx) => (
-                <React.Fragment key={task.id}>
-                  {/* Ghost silhouette at this position */}
-                  <AnimatePresence>
-                    {dragPreview && dragPreview.index === taskIdx && (
-                      <TaskGhost />
-                    )}
-                  </AnimatePresence>
-                  <MotionStaggerItem>
-                    <TaskContextMenu taskId={task.id}>
-                      {viewMode === 'compact' ? (
-                        <TaskCardCompact task={task} />
-                      ) : (
-                        <TaskCard task={task} />
-                      )}
-                    </TaskContextMenu>
-                  </MotionStaggerItem>
-                </React.Fragment>
-              ))}
-            </MotionStagger>
-            {/* Ghost at end of list */}
-            <AnimatePresence>
-              {dragPreview && dragPreview.index >= column.tasks.length && (
-                <TaskGhost />
-              )}
-            </AnimatePresence>
-          </SortableContext>
+          {hideCompletedTasks ? (
+            /* Completed column collapsed: show only a muted summary */
+            <div className="py-ds-04 text-center text-ds-xs text-surface-fg-subtle">
+              {column.tasks.length} completed {column.tasks.length === 1 ? 'task' : 'tasks'}
+            </div>
+          ) : (
+            <>
+              <SortableContext items={taskIds} strategy={verticalListSortingStrategy}>
+                <MotionStagger className="contents">
+                  {column.tasks.map((task, taskIdx) => (
+                    <React.Fragment key={task.id}>
+                      {/* Ghost silhouette at this position */}
+                      <AnimatePresence>
+                        {dragPreview && dragPreview.index === taskIdx && (
+                          <TaskGhost />
+                        )}
+                      </AnimatePresence>
+                      <MotionStaggerItem>
+                        <TaskContextMenu taskId={task.id}>
+                          {viewMode === 'compact' ? (
+                            <TaskCardCompact task={task} />
+                          ) : (
+                            <TaskCard task={task} />
+                          )}
+                        </TaskContextMenu>
+                      </MotionStaggerItem>
+                    </React.Fragment>
+                  ))}
+                </MotionStagger>
+                {/* Ghost at end of list */}
+                <AnimatePresence>
+                  {dragPreview && dragPreview.index >= column.tasks.length && (
+                    <TaskGhost />
+                  )}
+                </AnimatePresence>
+              </SortableContext>
 
-          {/* Empty state */}
-          {column.tasks.length === 0 && !dragPreview && (
-            <ColumnEmpty
-              index={index}
-              isDropTarget={isOver}
-            />
+              {/* Empty state */}
+              {column.tasks.length === 0 && !dragPreview && (
+                <ColumnEmpty
+                  index={index}
+                  isDropTarget={isOver}
+                />
+              )}
+              <AnimatePresence>
+                {column.tasks.length === 0 && dragPreview && (
+                  <TaskGhost />
+                )}
+              </AnimatePresence>
+            </>
           )}
-          <AnimatePresence>
-            {column.tasks.length === 0 && dragPreview && (
-              <TaskGhost />
-            )}
-          </AnimatePresence>
         </motion.div>
 
       </div>

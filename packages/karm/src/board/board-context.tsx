@@ -8,6 +8,7 @@ import {
   useEffect,
   useMemo,
   useState,
+  useSyncExternalStore,
   type ReactNode,
 } from 'react'
 import type {
@@ -46,6 +47,14 @@ interface BoardContextValue {
   setHighlightMyTasks: (on: boolean) => void
   activeTask: BoardTask | null
   setActiveTask: (task: BoardTask | null) => void
+  // Completed column toggle (K12)
+  completedColumnId: string | undefined
+  showCompleted: boolean
+  onToggleCompleted: (show: boolean) => void
+  // Mobile view (K11)
+  mobileView: 'scroll' | 'list'
+  mobileBreakpoint: 'sm' | 'md'
+  isMobileListView: boolean
   onTaskMove: (taskId: string, toColumnId: string, newOrder: number) => void
   onTaskAdd: (columnId: string, options: NewTaskOptions) => void
   onBulkAction: (action: BulkAction) => void
@@ -74,12 +83,45 @@ export function useBoardContext(): BoardContextValue {
 
 const noop = () => {}
 
+const BREAKPOINTS = { sm: 640, md: 768 } as const
+
+/** Returns true when viewport is below the given breakpoint. SSR-safe (returns false). */
+function useBelowBreakpoint(bp: 'sm' | 'md'): boolean {
+  const query = `(max-width: ${BREAKPOINTS[bp] - 1}px)`
+  const subscribe = useCallback(
+    (cb: () => void) => {
+      const mql = window.matchMedia(query)
+      mql.addEventListener('change', cb)
+      return () => mql.removeEventListener('change', cb)
+    },
+    [query],
+  )
+  const getSnapshot = useCallback(() => window.matchMedia(query).matches, [query])
+  const getServerSnapshot = useCallback(() => false, [])
+  return useSyncExternalStore(subscribe, getSnapshot, getServerSnapshot)
+}
+
 export interface BoardProviderProps {
   initialData: BoardData
   currentUserId?: string | null
   /** Explicit member list for assignment dropdowns. Falls back to deriving from task assignees. */
   members?: BoardMember[]
   children: ReactNode
+
+  // ---- Completed column toggle (K12) ----
+  /** Column ID to treat as the "completed" column */
+  completedColumnId?: string
+  /** Whether the completed column's tasks are visible */
+  showCompleted?: boolean
+  /** Called when the user toggles completed column visibility */
+  onToggleCompleted?: (show: boolean) => void
+
+  // ---- Mobile view (K11) ----
+  /** Mobile layout mode: 'scroll' keeps horizontal scroll, 'list' renders grouped flat list */
+  mobileView?: 'scroll' | 'list'
+  /** Breakpoint below which mobile view activates */
+  mobileBreakpoint?: 'sm' | 'md'
+
   onTaskMove?: (taskId: string, toColumnId: string, newOrder: number) => void
   onTaskAdd?: (columnId: string, options: NewTaskOptions) => void
   onBulkAction?: (action: BulkAction) => void
@@ -103,6 +145,11 @@ export function BoardProvider({
   currentUserId = null,
   members: membersProp,
   children,
+  completedColumnId,
+  showCompleted = true,
+  onToggleCompleted,
+  mobileView = 'scroll',
+  mobileBreakpoint = 'md',
   onTaskMove,
   onTaskAdd,
   onBulkAction,
@@ -184,6 +231,10 @@ export function BoardProvider({
   const [highlightMyTasks, setHighlightMyTasks] = useState(false)
   const [activeTask, setActiveTask] = useState<BoardTask | null>(null)
 
+  // Mobile list view detection (K11)
+  const isBelowBreakpoint = useBelowBreakpoint(mobileBreakpoint)
+  const isMobileListView = mobileView === 'list' && isBelowBreakpoint
+
   const value = useMemo<BoardContextValue>(
     () => ({
       columns: filteredColumns,
@@ -207,6 +258,12 @@ export function BoardProvider({
       setHighlightMyTasks,
       activeTask,
       setActiveTask,
+      completedColumnId,
+      showCompleted,
+      onToggleCompleted: onToggleCompleted ?? noop,
+      mobileView,
+      mobileBreakpoint,
+      isMobileListView,
       onTaskMove: onTaskMove ?? noop,
       onTaskAdd: onTaskAdd ?? noop,
       onBulkAction: onBulkAction ?? noop,
@@ -242,6 +299,12 @@ export function BoardProvider({
       currentUserId,
       highlightMyTasks,
       activeTask,
+      completedColumnId,
+      showCompleted,
+      onToggleCompleted,
+      mobileView,
+      mobileBreakpoint,
+      isMobileListView,
       onTaskMove,
       onTaskAdd,
       onBulkAction,

@@ -126,7 +126,12 @@ export const ColumnHeader = React.forwardRef<HTMLDivElement, ColumnHeaderProps>(
     onColumnDelete,
     onColumnToggleVisibility,
     onTaskAdd,
+    completedColumnId,
+    showCompleted,
+    onToggleCompleted,
   } = useBoardContext()
+
+  const isCompletedColumn = completedColumnId != null && column.id === completedColumnId
 
   const [isRenaming, setIsRenaming] = useState(false)
   const [editName, setEditName] = useState(column.name)
@@ -265,6 +270,24 @@ export const ColumnHeader = React.forwardRef<HTMLDivElement, ColumnHeaderProps>(
             / {wipLimit}
           </span>
         ) : null}
+
+        {/* Completed column toggle — only for the designated completed column */}
+        {isCompletedColumn && (
+          <Button
+            variant="ghost"
+            size="icon-md"
+            className="h-ds-xs w-ds-xs flex-shrink-0 hover:bg-accent-2 hover:text-accent-11"
+            aria-label={showCompleted ? 'Hide completed tasks' : 'Show completed tasks'}
+            title={showCompleted ? 'Hide completed tasks' : 'Show completed tasks'}
+            onClick={() => onToggleCompleted(!showCompleted)}
+          >
+            {showCompleted ? (
+              <IconEye className="h-ico-sm w-ico-sm" />
+            ) : (
+              <IconEyeOff className="h-ico-sm w-ico-sm" />
+            )}
+          </Button>
+        )}
 
         {/* Add task button — hover-visible */}
         <Button

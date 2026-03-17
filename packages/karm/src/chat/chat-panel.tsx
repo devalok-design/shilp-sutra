@@ -23,6 +23,12 @@ export interface Agent {
   id: string
   name: string
   desc: string
+  /** Custom icon element — falls back to first-letter avatar */
+  icon?: React.ReactNode
+  /** List of capabilities shown as chips in the selector */
+  capabilities?: string[]
+  /** Agent availability status */
+  status?: 'online' | 'offline' | 'busy'
 }
 
 export interface ChatPanelProps extends Omit<React.HTMLAttributes<HTMLDivElement>, 'children'> {
@@ -111,6 +117,28 @@ const ChatPanel = React.forwardRef<HTMLDivElement, ChatPanelProps>(
                 <button
                   className="flex items-center gap-ds-02b rounded-ds-lg px-ds-03 py-ds-02b transition-colors hover:bg-surface-raised-hover"
                 >
+                  {/* Icon or first-letter avatar */}
+                  {selectedAgent?.icon ? (
+                    <span className="flex h-5 w-5 flex-shrink-0 items-center justify-center">
+                      {selectedAgent.icon}
+                    </span>
+                  ) : (
+                    <span className="flex h-5 w-5 flex-shrink-0 items-center justify-center rounded-full bg-accent-3 text-ds-xs font-semibold text-accent-11">
+                      {selectedAgent?.name.charAt(0)}
+                    </span>
+                  )}
+                  {/* Status dot */}
+                  {selectedAgent?.status && (
+                    <span
+                      className={cn(
+                        'h-2 w-2 flex-shrink-0 rounded-full',
+                        selectedAgent.status === 'online' && 'bg-success-9',
+                        selectedAgent.status === 'busy' && 'bg-warning-9',
+                        selectedAgent.status === 'offline' && 'bg-surface-fg-subtle',
+                      )}
+                      aria-label={selectedAgent.status}
+                    />
+                  )}
                   <span className="text-ds-base text-surface-fg">
                     {selectedAgent?.name}
                   </span>
@@ -120,24 +148,62 @@ const ChatPanel = React.forwardRef<HTMLDivElement, ChatPanelProps>(
                   <IconChevronDown className="h-ico-sm w-ico-sm text-surface-fg-subtle" />
                 </button>
               </DropdownMenuTrigger>
-              <DropdownMenuContent align="start" className="w-64">
+              <DropdownMenuContent align="start" className="w-72">
                 {agents.map((agent) => (
                   <DropdownMenuItem
                     key={agent.id}
                     onClick={() => onSelectAgent?.(agent.id)}
-                    className={
-                      selectedAgentId === agent.id
-                        ? 'bg-surface-raised-hover'
-                        : ''
-                    }
+                    className={cn(
+                      'items-start',
+                      selectedAgentId === agent.id && 'bg-surface-raised-hover',
+                    )}
                   >
-                    <div className="flex flex-col">
-                      <span className="text-ds-md text-surface-fg">
-                        {agent.name}
-                      </span>
-                      <span className="text-ds-sm text-surface-fg-subtle">
-                        {agent.desc}
-                      </span>
+                    <div className="flex gap-ds-02b">
+                      {/* Icon or first-letter avatar */}
+                      {agent.icon ? (
+                        <span className="mt-0.5 flex h-6 w-6 flex-shrink-0 items-center justify-center">
+                          {agent.icon}
+                        </span>
+                      ) : (
+                        <span className="mt-0.5 flex h-6 w-6 flex-shrink-0 items-center justify-center rounded-full bg-accent-3 text-ds-xs font-semibold text-accent-11">
+                          {agent.name.charAt(0)}
+                        </span>
+                      )}
+                      <div className="flex flex-col gap-ds-01">
+                        <div className="flex items-center gap-ds-02">
+                          <span className="text-ds-md text-surface-fg">
+                            {agent.name}
+                          </span>
+                          {/* Status dot */}
+                          {agent.status && (
+                            <span
+                              className={cn(
+                                'h-2 w-2 flex-shrink-0 rounded-full',
+                                agent.status === 'online' && 'bg-success-9',
+                                agent.status === 'busy' && 'bg-warning-9',
+                                agent.status === 'offline' && 'bg-surface-fg-subtle',
+                              )}
+                              aria-label={agent.status}
+                            />
+                          )}
+                        </div>
+                        <span className="text-ds-sm text-surface-fg-subtle">
+                          {agent.desc}
+                        </span>
+                        {/* Capabilities chips */}
+                        {agent.capabilities && agent.capabilities.length > 0 && (
+                          <div className="mt-ds-01 flex flex-wrap gap-ds-01">
+                            {agent.capabilities.map((cap) => (
+                              <span
+                                key={cap}
+                                className="inline-block rounded-ds-md bg-surface-raised-hover px-ds-02 py-px text-ds-xs text-surface-fg-subtle"
+                              >
+                                {cap}
+                              </span>
+                            ))}
+                          </div>
+                        )}
+                      </div>
                     </div>
                   </DropdownMenuItem>
                 ))}

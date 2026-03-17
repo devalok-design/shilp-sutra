@@ -88,6 +88,11 @@
       "default": "./dist/ui/checkbox.js",
       "types": "./dist/ui/checkbox.d.ts"
     },
+    "./ui/color-swatch": {
+      "import": "./dist/ui/color-swatch.js",
+      "default": "./dist/ui/color-swatch.js",
+      "types": "./dist/ui/color-swatch.d.ts"
+    },
     "./ui/chip": {
       "import": "./dist/ui/chip.js",
       "default": "./dist/ui/chip.js",
@@ -213,6 +218,11 @@
       "default": "./dist/ui/progress.js",
       "types": "./dist/ui/progress.d.ts"
     },
+    "./ui/progress-ring": {
+      "import": "./dist/ui/progress-ring.js",
+      "default": "./dist/ui/progress-ring.js",
+      "types": "./dist/ui/progress-ring.d.ts"
+    },
     "./ui/radio": {
       "import": "./dist/ui/radio.js",
       "default": "./dist/ui/radio.js",
@@ -272,6 +282,11 @@
       "import": "./dist/ui/stat-card.js",
       "default": "./dist/ui/stat-card.js",
       "types": "./dist/ui/stat-card.d.ts"
+    },
+    "./ui/status-dot": {
+      "import": "./dist/ui/status-dot.js",
+      "default": "./dist/ui/status-dot.js",
+      "types": "./dist/ui/status-dot.d.ts"
     },
     "./ui/stepper": {
       "import": "./dist/ui/stepper.js",

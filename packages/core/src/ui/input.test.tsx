@@ -28,4 +28,9 @@ describe('Input', () => {
     render(<Input ref={ref as React.Ref<HTMLInputElement>} placeholder="Ref test" />)
     expect(ref.current).toBeInstanceOf(HTMLInputElement)
   })
+
+  it('renders xs size with correct height class', () => {
+    render(<Input size="xs" placeholder="Dense" />)
+    expect(screen.getByPlaceholderText('Dense')).toHaveClass('h-ds-xs-plus')
+  })
 })

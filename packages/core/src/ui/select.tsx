@@ -41,6 +41,7 @@ export const selectTriggerVariants = cva(
   {
     variants: {
       size: {
+        xs: 'h-ds-xs-plus text-ds-sm px-ds-02',
         sm: 'h-ds-sm text-ds-sm px-ds-03',
         md: 'h-ds-md text-ds-md px-ds-04',
         lg: 'h-ds-lg text-ds-md px-ds-05',

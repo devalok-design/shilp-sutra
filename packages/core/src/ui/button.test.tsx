@@ -138,6 +138,18 @@ describe('Button', () => {
     })
   })
 
+  it('renders xs size', () => {
+    render(<Button size="xs">Compact</Button>)
+    expect(screen.getByRole('button')).toHaveClass('h-ds-xs-plus')
+  })
+
+  it('renders icon-xs size', () => {
+    render(<Button size="icon-xs">X</Button>)
+    const btn = screen.getByRole('button')
+    expect(btn).toHaveClass('h-ds-xs-plus')
+    expect(btn).toHaveClass('w-ds-xs-plus')
+  })
+
   it('onClickAsync — click triggers loading then error on rejection', async () => {
     const user = userEvent.setup()
     let rejectFn!: (reason: Error) => void

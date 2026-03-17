@@ -27,10 +27,12 @@ export const buttonVariants = cva(
         error: '',
       },
       size: {
+        xs: 'h-ds-xs-plus rounded-ds-sm px-ds-03 text-ds-sm',
         sm: 'h-ds-sm rounded-ds-md px-ds-04 text-ds-sm',
         md: 'h-ds-md rounded-ds-md px-ds-05 text-ds-md',
         lg: 'h-ds-lg rounded-ds-lg px-ds-06 text-ds-base',
         icon: 'h-ds-md w-ds-md rounded-ds-md', // alias → icon-md
+        'icon-xs': 'h-ds-xs-plus w-ds-xs-plus rounded-ds-sm',
         'icon-sm': 'h-ds-sm w-ds-sm rounded-ds-md',
         'icon-md': 'h-ds-md w-ds-md rounded-ds-md',
         'icon-lg': 'h-ds-lg w-ds-lg rounded-ds-lg',
@@ -66,10 +68,12 @@ export const buttonVariants = cva(
 
 /** Map button size to icon wrapper size class */
 const iconSizeClass: Record<string, string> = {
+  xs: 'h-3.5 w-3.5 [&>svg]:h-3.5 [&>svg]:w-3.5',
   sm: 'h-ico-sm w-ico-sm [&>svg]:h-ico-sm [&>svg]:w-ico-sm',
   md: 'h-ico-sm w-ico-sm [&>svg]:h-ico-sm [&>svg]:w-ico-sm',
   lg: 'h-ico-md w-ico-md [&>svg]:h-ico-md [&>svg]:w-ico-md',
   icon: 'h-ico-sm w-ico-sm [&>svg]:h-ico-sm [&>svg]:w-ico-sm',
+  'icon-xs': 'h-3.5 w-3.5 [&>svg]:h-3.5 [&>svg]:w-3.5',
   'icon-sm': 'h-ico-sm w-ico-sm [&>svg]:h-ico-sm [&>svg]:w-ico-sm',
   'icon-md': 'h-ico-sm w-ico-sm [&>svg]:h-ico-sm [&>svg]:w-ico-sm',
   'icon-lg': 'h-ico-md w-ico-md [&>svg]:h-ico-md [&>svg]:w-ico-md',
@@ -77,10 +81,12 @@ const iconSizeClass: Record<string, string> = {
 
 /** Map button size to spinner size */
 const spinnerSizeMap: Record<string, 'sm' | 'md'> = {
+  xs: 'sm',
   sm: 'sm',
   md: 'sm',
   lg: 'md',
   icon: 'sm',
+  'icon-xs': 'sm',
   'icon-sm': 'sm',
   'icon-md': 'sm',
   'icon-lg': 'md',

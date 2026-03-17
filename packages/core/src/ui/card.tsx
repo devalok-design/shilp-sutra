@@ -70,19 +70,48 @@ const cardVariants = cva(
  * </Card>
  * // These are just a few ways — feel free to combine props creatively!
  */
+const accentColorMap: Record<string, string> = {
+  default: 'var(--color-accent-9)',
+  secondary: 'var(--color-secondary-9)',
+  error: 'var(--color-error-9)',
+  success: 'var(--color-success-9)',
+  warning: 'var(--color-warning-9)',
+  info: 'var(--color-info-9)',
+}
+
 export interface CardProps
   extends React.HTMLAttributes<HTMLDivElement>,
     VariantProps<typeof cardVariants> {
   interactive?: boolean
+  /** Position of the accent border strip */
+  accent?: 'left' | 'top' | 'right' | 'bottom'
+  /** Semantic color for the accent strip. Requires `accent` to be set. @default 'default' */
+  accentColor?: 'default' | 'secondary' | 'error' | 'success' | 'warning' | 'info'
+}
+
+const accentPositionClasses: Record<string, string> = {
+  left: 'left-0 top-0 bottom-0 w-[3px] rounded-l-ds-lg',
+  top: 'top-0 left-0 right-0 h-[3px] rounded-t-ds-lg',
+  right: 'right-0 top-0 bottom-0 w-[3px] rounded-r-ds-lg',
+  bottom: 'bottom-0 left-0 right-0 h-[3px] rounded-b-ds-lg',
 }
 
 const Card = React.forwardRef<HTMLDivElement, CardProps>(
-  ({ className, variant, interactive, ...props }, ref) => {
+  ({ className, variant, interactive, accent, accentColor = 'default', children, ...props }, ref) => {
     const classes = cn(
       cardVariants({ variant }),
+      accent && 'relative overflow-hidden',
       interactive && 'hover:shadow-raised-hover hover:border-surface-border-strong cursor-pointer transition-shadow duration-fast-02 ease-productive-standard',
       className,
     )
+
+    const accentEl = accent ? (
+      <span
+        aria-hidden="true"
+        className={cn('absolute pointer-events-none', accentPositionClasses[accent])}
+        style={{ backgroundColor: accentColorMap[accentColor] }}
+      />
+    ) : null
 
     if (interactive) {
       return (
@@ -93,11 +122,19 @@ const Card = React.forwardRef<HTMLDivElement, CardProps>(
           transition={springs.snappy}
           className={classes}
           {...motionProps(props)}
-        />
+        >
+          {accentEl}
+          {children}
+        </motion.div>
       )
     }
 
-    return <div ref={ref} className={classes} {...props} />
+    return (
+      <div ref={ref} className={classes} {...props}>
+        {accentEl}
+        {children}
+      </div>
+    )
   },
 )
 Card.displayName = 'Card'

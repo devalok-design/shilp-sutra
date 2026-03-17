@@ -160,6 +160,9 @@ export {
   type SkeletonGroupProps,
 } from './skeleton'
 export { StatCard, type StatCardProps } from './stat-card'
+export { ColorSwatch, type ColorSwatchProps } from './color-swatch'
+export { StatusDot, type StatusDotProps, type StatusDotStatus } from './status-dot'
+export { ProgressRing, MultiProgressRing, type ProgressRingProps, type MultiProgressRingProps } from './progress-ring'
 export { Code, type CodeProps } from './code'
 export { AspectRatio } from './aspect-ratio'
 

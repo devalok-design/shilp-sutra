@@ -80,3 +80,52 @@ export const WithFooter: Story = {
     </Card>
   ),
 }
+
+export const AccentLeft: Story = {
+  render: () => (
+    <Card accent="left" className="w-[350px]">
+      <CardHeader>
+        <CardTitle>Sprint Velocity</CardTitle>
+        <CardDescription>Current sprint is on track.</CardDescription>
+      </CardHeader>
+      <CardContent>
+        <p className="text-ds-sm">32 story points completed out of 40 planned.</p>
+      </CardContent>
+    </Card>
+  ),
+}
+
+export const AccentTop: Story = {
+  render: () => (
+    <Card accent="top" accentColor="warning" className="w-[350px]">
+      <CardHeader>
+        <CardTitle>Approaching Deadline</CardTitle>
+        <CardDescription>This task is due within 24 hours.</CardDescription>
+      </CardHeader>
+      <CardContent>
+        <p className="text-ds-sm">Review and finalize the API documentation before end of day.</p>
+      </CardContent>
+    </Card>
+  ),
+}
+
+export const AccentColors: Story = {
+  render: () => {
+    const colors = ['default', 'secondary', 'error', 'success', 'warning', 'info'] as const
+    return (
+      <div className="grid grid-cols-2 gap-ds-04">
+        {colors.map((color) => (
+          <Card key={color} accent="left" accentColor={color} className="w-[280px]">
+            <CardHeader>
+              <CardTitle className="capitalize">{color}</CardTitle>
+              <CardDescription>Left accent with {color} color.</CardDescription>
+            </CardHeader>
+            <CardContent>
+              <p className="text-ds-sm">Card content demonstrating the {color} accent strip.</p>
+            </CardContent>
+          </Card>
+        ))}
+      </div>
+    )
+  },
+}

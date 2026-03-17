@@ -17,6 +17,8 @@ const meta: Meta<typeof AIConversation> = {
         component:
           '**Package:** `@devalok/shilp-sutra` · **Import:** `import { AIConversation } from "@devalok/shilp-sutra/ai"`\n\nA full conversation view rendering user and assistant messages with support for structured blocks, processing indicators, confirm/undo actions, and auto-scroll.',
       },
+      // Render stories in iframes to prevent infinite animations from crashing the Docs tab
+      story: { inline: false, iframeHeight: 500 },
     },
   },
   decorators: [

@@ -158,7 +158,12 @@ const meta: Meta<typeof CommandBar> = {
   title: 'AI/CommandBar',
   component: CommandBar,
   tags: ['autodocs'],
-  parameters: { layout: 'fullscreen' },
+  parameters: {
+    layout: 'fullscreen',
+    docs: {
+      story: { inline: false, iframeHeight: 500 },
+    },
+  },
 }
 export default meta
 type Story = StoryObj<typeof CommandBar>

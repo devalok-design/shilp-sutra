@@ -5,6 +5,60 @@ All notable changes to `@devalok/shilp-sutra` will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.26.0] - 2026-03-17 (core) / [0.23.0] - 2026-03-17 (karm)
+
+### Added (core) — 15 New Components
+
+**3 UI primitives:**
+- **ColorSwatch** — Dynamic runtime color display. Props: `color` (any CSS string), `size`, `shape`, `ring`, `copyable` (click-to-copy with tooltip), `checkerboard` (transparency pattern). Import: `ui/color-swatch`.
+- **StatusDot** — Semantic health/presence indicator. Props: `status` (healthy|warning|critical|neutral|inactive), `size`, `pulse`, `label`, `variant` (filled|ring). Auto `aria-label`, `role="status"`. Import: `ui/status-dot`.
+- **ProgressRing** / **MultiProgressRing** — Circular SVG progress with animated number counter (synced spring). Props: `value`, `max`, `size`, `color`, `showValue`. Multi-ring for Activity Ring style. Import: `ui/progress-ring`.
+
+**11 composed components:**
+- **MultiSelectPopover** — Generic multi-select with search, checkmarks, groups, async search, keyboard navigation (↑↓ + Enter), `aria-activedescendant`. Generalizes MemberPicker (backward-compat wrapper retained). Import: `composed/multi-select-popover`.
+- **FilterBar** — Compound component: `FilterBar` + `FilterSelect` + `FilterMultiSelect`. Size context propagation (xs|sm|md), active filter count badges with bounce animation. Import: `composed/filter-bar`.
+- **InlineEdit** — contentEditable click-to-edit (Notion-style, no input swap). Auto-select on focus, Enter saves, Escape reverts, plain-text paste, pencil icon hover affordance, async save with spinner. Import: `composed/inline-edit`.
+- **FormSection** — Titled form sections with optional collapsible (spring-animated chevron). Import: `composed/form-section`.
+- **BulkActionBar** — Portal-rendered floating bottom bar for multi-select. Inline confirmation for destructive actions, "Select all N" link, AnimatePresence enter/exit. Import: `composed/bulk-action-bar`.
+- **DeadlineIndicator** — SLA countdown with color transitions (green→yellow→red→overdue pulse). Tooltip with absolute datetime on hover. Auto-refresh interval (default 60s). Import: `composed/deadline-indicator`.
+- **MasterDetail** — Responsive list+detail layout. Desktop: CSS grid with configurable width. Mobile: stacked with animated swap + back button. ARIA listbox/option, arrow key navigation, `emptyState` prop. Import: `composed/master-detail`.
+- **ResponsiveOverlay** — Dialog on desktop, bottom Sheet on mobile. Shared title/description/children. Import: `composed/responsive-overlay`.
+- **MarkdownViewer** — react-markdown + remark-gfm with DS tokens. Lazy-loaded syntax highlighting (one-dark), copy button on code blocks, anchor links on headings. Import: `composed/markdown-viewer`.
+- **EmojiPicker** / **EmojiPickerPopover** — Lazy-loaded emoji-mart with auto dark mode detection, AnimatePresence crossfade. Import: `composed/emoji-picker`.
+- **FilePreview** — Professional multi-format previewer:
+  - Image: react-zoom-pan-pinch (0.1x–8x), double-click toggle, live zoom %, fullscreen (F key), floating glass toolbar
+  - PDF: react-pdf with page nav (buttons + direct input + ← → keyboard), page crossfade
+  - Video: custom branded player — center play overlay, auto-hiding controls, progress bar with scrub handle, playback speed (0.5x–2x), keyboard (Space/K/J/L/M/F/</>)
+  - Audio: Spotify-style mini-player — full-width progress bar with hover time tooltip, scrub handle, custom volume slider (pointer-capture, expand-on-hover)
+  - Embed: 16:9, YouTube/Vimeo/Figma/Loom auto-conversion, 15s timeout
+  - All types: error fallback with download link, file info bar (name + size badge), `onError` callback
+  - Custom `VolumeControl` component: pointer-capture drag, dark/light variants, expand-on-hover
+  - Import: `composed/file-preview`
+
+### Added (core) — Component Enhancements
+
+- **Input, SelectTrigger, SearchInput, Button, Textarea**: New `size="xs"` dense variant — 28px height (h-ds-xs-plus), 12px text (text-ds-sm). For compact filter bars and dense UI. Button also gets `icon-xs` (28×28).
+- **Card**: New `accent` prop (left|top|right|bottom) with `accentColor` (6 semantic colors + any CSS color string) and `accentWidth` (2|3|4|6px). Implemented as absolute-positioned span, no border/shadow conflict.
+- **DataTable**: Column `meta: { align: 'right' }` auto-applies `text-right tabular-nums`. Column `meta: { hideBelow: 'md' }` for responsive column hiding. TypeScript module augmentation for ColumnMeta.
+- **Button**: Error/destructive variants now properly darken on hover/active (error-9 → error-10). Previously no visual hover feedback.
+
+### Added (karm) — Board & Chat Enhancements
+
+- **KanbanBoard**: `completedColumnId` + `showCompleted` + `onToggleCompleted` for completed column toggle with eye/eye-off icon. `mobileView` ('scroll'|'list') + `mobileBreakpoint` for mobile-optimized grouped list rendering.
+- **ChatPanel**: Agent interface extended with optional `icon`, `capabilities[]`, `status` fields. Agent selector shows richer cards with avatar, capability chips, status dot. Fully backward-compatible.
+
+### Fixed (core)
+
+- **SSR crash** (issue #21): `vendor-client.js` had unguarded `if (!document)` from bundled react-remove-scroll, crashing every Next.js page that imports Toaster. Post-build script now patches to `typeof document === "undefined"`. Karm workaround (`next/dynamic` with `ssr: false`) no longer needed.
+- **Button error hover**: Solid error/destructive buttons had identical rest and hover states (both bg-error-9). Now properly transition to bg-error-10 on hover/active.
+- **Tailwind JIT**: Card accent width classes used dynamic template literals that Tailwind couldn't detect. Replaced with static lookup maps.
+
+### Added (core) — New Dependencies (bundled)
+
+- `react-pdf` — PDF rendering in FilePreview
+- `react-zoom-pan-pinch` — Image pan/zoom in FilePreview
+- `react-syntax-highlighter` — Code block highlighting in MarkdownViewer
+
 ## [0.25.1] - 2026-03-17 (core)
 
 ### Fixed (core)

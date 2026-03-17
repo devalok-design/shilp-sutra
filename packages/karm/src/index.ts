@@ -210,5 +210,18 @@ export {
   type DayInfo,
 } from './admin'
 
+// AI blocks (domain-specific block renderers)
+export {
+  MemberDiffBlock,
+  type MemberDiffData,
+  MemberListBlock,
+  type MemberListData,
+  ProjectListBlock,
+  type ProjectListData,
+  AnnouncementPreviewBlock,
+  type AnnouncementPreviewData,
+  karmBlockRegistry,
+} from './ai-blocks'
+
 // Shell configuration
 export { karmCommandRegistry } from './shell/karm-command-registry'

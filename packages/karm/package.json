@@ -46,6 +46,10 @@
       "default": "./dist/admin/index.js",
       "types": "./dist/admin/index.d.ts"
     },
+    "./ai-blocks": {
+      "import": "./dist/ai-blocks/index.js",
+      "types": "./dist/ai-blocks/index.d.ts"
+    },
     "./docs/*": "./docs/components/*"
   },
   "files": [

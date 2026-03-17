@@ -5,7 +5,7 @@
 > All variant values and props verified from source CVA definitions.
 >
 > Package: @devalok/shilp-sutra
-> Version: 0.25.1
+> Version: 0.26.0
 
 ---
 
@@ -871,6 +871,31 @@ import { BarChart } from '@devalok/shilp-sutra/ui/charts'
 
 ### v0.1.0
 - **Added** Initial release
+# ColorSwatch
+
+- Import: @devalok/shilp-sutra/ui/color-swatch
+- Server-safe: Yes
+- Category: ui
+
+## Props
+    color: string (any valid CSS color — hex, rgb, oklch, etc.)
+    size: "sm" | "md" | "lg"
+    shape: "circle" | "square" | "rounded"
+    ring: boolean (shows subtle ring border — useful for light colors that blend into the background)
+
+## Defaults
+    size="md", shape="circle", ring={false}
+
+## Example
+```jsx
+<ColorSwatch color="#FF5733" />
+<ColorSwatch color={org.brandColor} size="lg" ring />
+<ColorSwatch color="oklch(0.7 0.15 200)" shape="rounded" />
+```
+
+## Gotchas
+- Color is applied via inline `backgroundColor` style, not a token class — accepts any runtime CSS color string
+- Renders `role="presentation"` — purely decorative, not interactive
 # Combobox
 
 - Import: @devalok/shilp-sutra/ui/combobox
@@ -1775,6 +1800,47 @@ import { DataTableToolbar } from '@devalok/shilp-sutra/ui/data-table-toolbar'
 ## Changes
 ### v0.1.0
 - **Added** Initial release with `size`, `color`, `indeterminate` variants and optional label slot
+# ProgressRing
+
+- Import: @devalok/shilp-sutra/ui/progress-ring
+- Server-safe: No
+- Category: ui
+
+## Props
+
+### ProgressRing
+    value: number (current progress value)
+    max: number (maximum value)
+    size: "sm" | "md" | "lg"
+    color: "default" | "success" | "warning" | "error" | "info"
+    showValue: boolean (show percentage text in center)
+    label: string (accessible label — falls back to "{n}% progress")
+
+### MultiProgressRing
+    rings: Array<{ value: number; max?: number; color?: "default" | "success" | "warning" | "error" | "info"; label?: string }>
+    size: "sm" | "md" | "lg"
+
+## Defaults
+    max={100}, size="md", color="default", showValue={false}
+
+## Example
+```jsx
+<ProgressRing value={75} />
+<ProgressRing value={3} max={12} size="lg" color="warning" showValue />
+
+<MultiProgressRing
+  rings={[
+    { value: 80, color: 'error', label: 'Move' },
+    { value: 60, color: 'success', label: 'Exercise' },
+  ]}
+  size="lg"
+/>
+```
+
+## Gotchas
+- Uses Framer Motion for the animated fill — not server-safe
+- Value is clamped to `[0, max]` internally
+- MultiProgressRing skips rings whose computed radius would be <= 0 (too many rings for the size)
 # RadioGroup
 
 - Import: @devalok/shilp-sutra/ui/radio
@@ -2359,6 +2425,32 @@ import { DataTableToolbar } from '@devalok/shilp-sutra/ui/data-table-toolbar'
 
 ### v0.1.0
 - **Added** Initial release
+# StatusDot
+
+- Import: @devalok/shilp-sutra/ui/status-dot
+- Server-safe: Yes
+- Category: ui
+
+## Props
+    status: "healthy" | "warning" | "critical" | "neutral" | "inactive"
+    size: "sm" | "md" | "lg"
+    pulse: boolean (ping animation; defaults to true for "healthy", false for others)
+    label: string (inline text rendered after the dot)
+    labelClassName: string (extra classes on the label span)
+
+## Defaults
+    size="md", pulse={status === "healthy"}
+
+## Example
+```jsx
+<StatusDot status="healthy" />
+<StatusDot status="critical" label="Service down" pulse />
+<StatusDot status="warning" size="lg" label="Elevated load" />
+```
+
+## Gotchas
+- The `pulse` prop auto-enables for "healthy" status — pass `pulse={false}` to suppress
+- Status type is exported as `StatusDotStatus` if you need it in consumer code
 # Stepper / Step
 
 - Import: @devalok/shilp-sutra/ui/stepper
@@ -3063,6 +3155,46 @@ export default function RootLayout({ children }) {
 
 ### v0.1.0
 - **Added** Initial release
+# BulkActionBar
+
+- Import: @devalok/shilp-sutra/composed/bulk-action-bar
+- Server-safe: No
+- Category: composed
+
+## Props
+    show: boolean (controls visibility)
+    count: number (number of selected items — displayed in badge)
+    onClearSelection: () => void
+    actions: BulkActionBarAction[]
+    className: string
+
+### BulkActionBarAction
+    label: string
+    icon: ComponentType<{ className?: string }> (optional icon component)
+    onClick: () => void
+    color: "default" | "error"
+    disabled: boolean
+
+## Defaults
+    (no optional props with defaults)
+
+## Example
+```jsx
+<BulkActionBar
+  show={selected.length > 0}
+  count={selected.length}
+  onClearSelection={() => setSelected([])}
+  actions={[
+    { label: 'Archive', icon: IconArchive, onClick: archiveSelected },
+    { label: 'Delete', icon: IconTrash, onClick: deleteSelected, color: 'error' },
+  ]}
+/>
+```
+
+## Gotchas
+- Renders via `createPortal` into `document.body` — will not appear during SSR (mounts only client-side)
+- Positioned fixed at bottom-center with `z-50`; ensure no other fixed elements conflict
+- Uses Framer Motion AnimatePresence for slide-in/out animation
 # CommandPalette
 
 - Import: @devalok/shilp-sutra/composed/command-palette
@@ -3315,6 +3447,76 @@ PresetKey: 'today' | 'yesterday' | 'last7days' | 'last30days' | 'thisMonth' | 'l
 
 ### v0.1.0
 - **Added** Initial release
+# DeadlineIndicator
+
+- Import: @devalok/shilp-sutra/composed/deadline-indicator
+- Server-safe: Yes
+- Category: composed
+
+## Props
+    deadline: Date | string (deadline timestamp)
+    warningThreshold: number (minutes before deadline to show warning color)
+    criticalThreshold: number (minutes before deadline to show critical/error color)
+    format: "relative" | "absolute"
+    showIcon: boolean (show clock icon prefix)
+
+## Defaults
+    warningThreshold={1440} (24h), criticalThreshold={240} (4h), format="relative", showIcon={false}
+
+## Example
+```jsx
+<DeadlineIndicator deadline={task.dueDate} />
+<DeadlineIndicator deadline="2026-03-20T17:00:00Z" showIcon format="absolute" />
+<DeadlineIndicator deadline={task.dueDate} warningThreshold={2880} criticalThreshold={480} />
+```
+
+## Gotchas
+- Color is semantic: green (on-track) -> yellow (warning threshold) -> red (critical/overdue)
+- Overdue deadlines show bold red text with "Overdue by Xd/h/m"
+- Relative format uses `Date.now()` at render time — does not live-update (re-render to refresh)
+# EmojiPicker
+
+- Import: @devalok/shilp-sutra/composed/emoji-picker
+- Server-safe: No
+- Category: composed
+
+## Exports
+EmojiPicker, EmojiPickerPopover
+
+## Props
+
+### EmojiPicker
+    onSelect: (emoji: EmojiData) => void
+    theme: "auto" | "light" | "dark"
+    previewPosition: "top" | "bottom" | "none"
+    skinTonePosition: "search" | "preview" | "none"
+    className: string
+
+### EmojiPickerPopover (extends EmojiPicker props)
+    children: ReactNode (trigger element)
+    align: "start" | "center" | "end"
+
+### EmojiData
+    id: string
+    native: string (the emoji character)
+    shortcodes: string
+
+## Defaults
+    theme="auto", previewPosition="none", skinTonePosition="search", align="start"
+
+## Example
+```jsx
+<EmojiPickerPopover onSelect={(emoji) => insertEmoji(emoji.native)}>
+  <Button variant="ghost" size="icon-sm">😀</Button>
+</EmojiPickerPopover>
+
+<EmojiPicker onSelect={handleEmoji} theme="dark" />
+```
+
+## Gotchas
+- Wraps `@emoji-mart/react` which is lazy-loaded — shows a Skeleton placeholder while loading
+- `theme="auto"` reads the `.dark` class on `<html>` to pick light/dark
+- EmojiPickerPopover auto-closes after selection
 # EmptyState
 
 - Import: @devalok/shilp-sutra/composed/empty-state
@@ -3397,6 +3599,134 @@ Note: EmptyState was server-safe prior to v0.18.0 but is NO LONGER server-safe d
 
 ### v0.1.0
 - **Added** Initial release
+# FilePreview
+
+- Import: @devalok/shilp-sutra/composed/file-preview
+- Server-safe: No
+- Category: composed
+
+## Props
+    url: string (file URL — required)
+    type: "image" | "pdf" | "video" | "audio" | "embed" (auto-detected from URL/mimeType)
+    mimeType: string (helps auto-detection)
+    alt: string (image alt text)
+    initialPage: number (PDF starting page, default 1)
+    fileName: string (displayed in file info bar)
+    fileSize: string (displayed as badge, e.g. "2.4 MB")
+    onError: (error: string) => void (called on load failures)
+
+## Defaults
+    initialPage={1}, type auto-detected
+
+## Features by Type
+
+**Image:** Pinch/scroll zoom (0.1x–8x), double-click toggle, floating toolbar (zoom %/reset/fullscreen), keyboard (+/-/0/F/Esc)
+**PDF:** react-pdf page nav (prev/next + direct input), keyboard (←→), crossfade between pages
+**Video:** Custom branded player, play overlay, auto-hiding controls, progress bar + scrub handle, mute, fullscreen
+**Audio:** Branded mini-player, full-width progress bar with hover tooltip + scrub handle, volume, file name display
+**Embed:** 16:9 aspect ratio, auto-converts YouTube/Vimeo/Figma/Loom URLs, 15s timeout
+
+## Example
+```jsx
+<FilePreview url="/uploads/mockup.png" fileName="mockup.png" fileSize="2.4 MB" />
+<FilePreview url="/docs/contract.pdf" initialPage={3} />
+<FilePreview url="https://youtube.com/watch?v=..." />
+```
+
+## Gotchas
+- Image/PDF lazy-loaded (Skeleton on first render)
+- PDF worker from unpkg CDN — configure workerSrc for offline apps
+- All types have error fallback with download link
+- Embed URLs auto-converted to embed format
+- Audio player doesn't show separate Download button (integrated in card)
+# FilterBar
+
+- Import: @devalok/shilp-sutra/composed/filter-bar
+- Server-safe: No
+- Category: composed
+
+## Exports
+FilterBar, FilterSelect, FilterMultiSelect
+
+## Props
+
+### FilterBar
+    searchValue: string
+    onSearchChange: (value: string) => void (renders SearchInput when provided)
+    searchPlaceholder: string
+    onClearAll: () => void (renders "Clear all" button when provided)
+    size: "xs" | "sm" | "md" (propagated to all child controls via context)
+    children: ReactNode (FilterSelect / FilterMultiSelect controls)
+
+### FilterSelect
+    label: string
+    value: string
+    onValueChange: (value: string) => void
+    options: { value: string; label: string }[]
+    allLabel: string (label for the "all" option)
+
+### FilterMultiSelect
+    label: string
+    value: string[]
+    onValueChange: (values: string[]) => void
+    options: { value: string; label: string }[]
+
+## Defaults
+    size="sm", searchPlaceholder="Search...", allLabel="All"
+
+## Example
+```jsx
+<FilterBar searchValue={search} onSearchChange={setSearch} onClearAll={clearFilters}>
+  <FilterSelect
+    label="Status"
+    value={status}
+    onValueChange={setStatus}
+    options={[{ value: 'active', label: 'Active' }, { value: 'done', label: 'Done' }]}
+  />
+  <FilterMultiSelect
+    label="Assignees"
+    value={assignees}
+    onValueChange={setAssignees}
+    options={memberOptions}
+  />
+</FilterBar>
+```
+
+## Gotchas
+- FilterSelect and FilterMultiSelect must be direct children of FilterBar to inherit the size context
+- FilterSelect uses `"all"` as the sentinel value for "no filter" — do not use `"all"` as a real option value
+- Active filters get an accent border highlight automatically
+# FormSection
+
+- Import: @devalok/shilp-sutra/composed/form-section
+- Server-safe: No
+- Category: composed
+
+## Props
+    title: string
+    description: string (subtitle text below the title)
+    collapsible: boolean (wraps content in a Collapsible)
+    defaultOpen: boolean (initial open state when collapsible)
+    children: ReactNode (form fields)
+
+## Defaults
+    collapsible={false}, defaultOpen={true}
+
+## Example
+```jsx
+<FormSection title="General" description="Basic project settings">
+  <FormField .../>
+  <FormField .../>
+</FormSection>
+
+<FormSection title="Advanced" collapsible defaultOpen={false}>
+  <FormField .../>
+</FormSection>
+```
+
+## Gotchas
+- `defaultOpen` only applies when `collapsible={true}` — otherwise the section is always open
+- Renders a horizontal rule between the header and content automatically
 # GlobalLoading
 
 - Import: @devalok/shilp-sutra/composed/global-loading
@@ -3424,6 +3754,41 @@ Note: EmptyState was server-safe prior to v0.18.0 but is NO LONGER server-safe d
 
 ### v0.1.0
 - **Added** Initial release
+# InlineEdit
+
+- Import: @devalok/shilp-sutra/composed/inline-edit
+- Server-safe: No
+- Category: composed
+
+## Props
+    value: string (current text value)
+    onSave: (newValue: string) => void | Promise<void> (called on commit; async shows spinner)
+    placeholder: string (shown when value is empty)
+    textClassName: string (CSS class for the editable text, e.g. "text-ds-lg font-semibold")
+    readOnly: boolean
+    maxLength: number
+    saving: boolean (external saving state — shows spinner, disables editing)
+
+## Defaults
+    placeholder="Click to edit", readOnly={false}, saving={false}
+
+## Example
+```jsx
+<InlineEdit
+  value={title}
+  onSave={(v) => updateTitle(v)}
+  textClassName="text-ds-lg font-semibold"
+/>
+```
+
+## Gotchas
+- Uses contentEditable — the text IS the editor. No input field appears.
+- Click to focus → cursor appears in text. Type to edit. Enter saves. Escape reverts.
+- Text is auto-selected on focus (like renaming a file in Finder)
+- Paste is restricted to plain text (no rich content)
+- The value is trimmed before calling `onSave`; if unchanged, `onSave` is not called
+- If `onSave` returns a Promise, a spinner is shown and editing is disabled until it resolves
+- On Promise rejection, the text reverts to the original value
 # LoadingSkeleton
 
 - Import: @devalok/shilp-sutra/composed/loading-skeleton
@@ -3475,6 +3840,81 @@ Exports: CardSkeleton, TableSkeleton, BoardSkeleton, ListSkeleton
 
 ### v0.1.0
 - **Added** Initial release
+# MarkdownViewer
+
+- Import: @devalok/shilp-sutra/composed/markdown-viewer
+- Server-safe: No
+- Category: composed
+
+## Props
+    content: string (markdown source)
+    compact: boolean (tighter spacing for inline use)
+    allowHtml: boolean (allow raw HTML in markdown)
+    linkTarget: string (target attribute for links)
+
+## Defaults
+    compact={false}, allowHtml={false}, linkTarget="_blank"
+
+## Example
+```jsx
+<MarkdownViewer content={message.body} />
+<MarkdownViewer content={comment} compact />
+<MarkdownViewer content={trustedHtml} allowHtml />
+```
+
+## Gotchas
+- Code blocks with a language fence are syntax-highlighted via `react-syntax-highlighter` (lazy-loaded) — the first render shows a plain `<pre>` fallback
+- GFM (tables, strikethrough, task lists) is supported via `remark-gfm`
+- Raw HTML is stripped by default — only enable `allowHtml` for trusted content
+- Links open in a new tab by default (`target="_blank"` with `rel="noopener noreferrer"`)
+# MasterDetail
+
+- Import: @devalok/shilp-sutra/composed/master-detail
+- Server-safe: No
+- Category: composed
+
+## Compound Components
+MasterDetail (root), MasterDetail.List, MasterDetail.Detail, MasterDetail.ListItem
+
+## Props
+
+### MasterDetail (root)
+    selected: string | null (ID of currently selected item; null = show list on mobile)
+    onBack: () => void (called when mobile back button is pressed)
+    masterWidth: string (master panel width on desktop)
+    breakpoint: "sm" | "md" | "lg" (below this, stacked mobile mode activates)
+
+### MasterDetail.ListItem
+    active: boolean (highlights the item)
+    (extends ButtonHTMLAttributes)
+
+## Defaults
+    selected={null}, masterWidth="280px", breakpoint="md"
+
+## Example
+```jsx
+<MasterDetail selected={selectedId} onBack={() => setSelectedId(null)}>
+  <MasterDetail.List>
+    {items.map((item) => (
+      <MasterDetail.ListItem
+        key={item.id}
+        active={item.id === selectedId}
+        onClick={() => setSelectedId(item.id)}
+      >
+        {item.name}
+      </MasterDetail.ListItem>
+    ))}
+  </MasterDetail.List>
+  <MasterDetail.Detail>
+    {selectedId ? <ItemDetail id={selectedId} /> : <EmptyState />}
+  </MasterDetail.Detail>
+</MasterDetail>
+```
+
+## Gotchas
+- On mobile (below breakpoint), List and Detail are mutually exclusive — selecting an item hides the list
+- The `onBack` callback is required for the mobile back button to appear in the Detail pane
+- Uses `window.matchMedia` — SSR renders desktop layout initially, then hydrates to correct mode
 # MemberPicker
 
 - Import: @devalok/shilp-sutra/composed/member-picker
@@ -3510,6 +3950,59 @@ Exports: CardSkeleton, TableSkeleton, BoardSkeleton, ListSkeleton
 
 ### v0.1.0
 - **Added** Initial release
+# MultiSelectPopover
+
+- Import: @devalok/shilp-sutra/composed/multi-select-popover
+- Server-safe: No
+- Category: composed
+
+## Props
+    items: MultiSelectItem[] (flat list — use `groups` for grouped rendering)
+    groups: MultiSelectGroup[] (grouped items with section headers)
+    value: string[] (currently selected item IDs)
+    onValueChange: (ids: string[]) => void
+    searchPlaceholder: string
+    onSearch: (query: string) => Promise<MultiSelectItem[]> (async search — replaces local filter)
+    searchDebounce: number (debounce for async search in ms)
+    renderItem: (item: MultiSelectItem, selected: boolean) => ReactNode (custom item renderer)
+    emptyMessage: string (message when no items match)
+    maxSelections: number (cap on selections)
+    align: "start" | "center" | "end"
+    width: string | number (popover width)
+    children: ReactNode (trigger element)
+
+### MultiSelectItem
+    id: string
+    label: string
+    image?: string
+    description?: string
+    disabled?: boolean
+
+### MultiSelectGroup
+    label: string
+    items: MultiSelectItem[]
+
+## Defaults
+    searchPlaceholder="Search...", searchDebounce={300}, emptyMessage="No results found", align="start", width={240}
+
+## Example
+```jsx
+<MultiSelectPopover
+  items={[
+    { id: '1', label: 'Alice', image: '/alice.jpg' },
+    { id: '2', label: 'Bob' },
+  ]}
+  value={selected}
+  onValueChange={setSelected}
+>
+  <Button>Assign members</Button>
+</MultiSelectPopover>
+```
+
+## Gotchas
+- Supply either `items` (flat) or `groups` (sectioned), not both
+- When `onSearch` is provided, local filtering is disabled — the callback must return results
+- Search state resets when the popover closes
 # PageHeader
 
 - Import: @devalok/shilp-sutra/composed/page-header
@@ -3615,6 +4108,40 @@ Priority = 'LOW' | 'MEDIUM' | 'HIGH' | 'URGENT' | 'low' | 'medium' | 'high' | 'u
 
 ### v0.1.0
 - **Added** Initial release
+# ResponsiveOverlay
+
+- Import: @devalok/shilp-sutra/composed/responsive-overlay
+- Server-safe: No
+- Category: composed
+
+## Props
+    open: boolean
+    onOpenChange: (open: boolean) => void
+    title: string
+    description: string
+    breakpoint: "sm" | "md" (below this renders as bottom Sheet; above as Dialog)
+    children: ReactNode
+    className: string
+
+## Defaults
+    breakpoint="md"
+
+## Example
+```jsx
+<ResponsiveOverlay
+  open={open}
+  onOpenChange={setOpen}
+  title="Edit task"
+  description="Update the task details"
+>
+  <TaskForm />
+</ResponsiveOverlay>
+```
+
+## Gotchas
+- Renders a centered Dialog on desktop and a bottom Sheet on mobile — same content, different container
+- Uses `window.matchMedia` internally — SSR defaults to desktop (Dialog) until hydration
+- Title and description are optional; if omitted, no header is rendered in either mode
 # RichTextEditor
 
 - Import: @devalok/shilp-sutra/composed/rich-text-editor

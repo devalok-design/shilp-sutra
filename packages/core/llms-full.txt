@@ -5,7 +5,7 @@
 > All variant values and props verified from source CVA definitions.
 >
 > Package: @devalok/shilp-sutra
-> Version: 0.23.1
+> Version: 0.23.3
 
 ---
 
@@ -54,26 +54,15 @@ Color tokens use OKLCH (perceptually uniform) with 12 functional steps per palet
 Semantic layer:
 - Accent (swappable): --color-accent-{1-12} + --color-accent-fg
 - Secondary: --color-secondary-{1-12} + --color-secondary-fg
-- Surface (semantic names):
-  - --color-surface-base (page bg), --color-surface-sunken (shell chrome, board columns)
-  - --color-surface-raised (cards/panels), --color-surface-raised-hover, --color-surface-raised-active
-  - --color-surface-overlay (dialogs, popovers, inputs -- diverges from base in dark mode)
-  - --color-surface-inverted / --color-surface-inverted-fg (tooltips, inverted badges)
-  - --color-surface-disabled / --color-surface-fg-disabled (disabled elements)
-  - --color-surface-fg / fg-muted / fg-subtle / border / border-strong / border-subtle
+- Surface: --color-surface-{1-4} + --color-surface-fg / fg-muted / fg-subtle / border / border-strong
   - Border mapping: light mode border=step5, border-strong=step6; dark mode border=step3, border-strong=step4
-- Shadows (semantic names):
-  - --shadow-raised (cards), --shadow-raised-hover (card hover), --shadow-floating (popovers), --shadow-overlay (dialogs)
-  - --shadow-glow (selection/focus), --shadow-inset (toggle track), --shadow-ring (focus ring), --shadow-ring-sm (separator)
-  - --shadow-color, --shadow-strength, --shadow-transition (theme-adaptive shadow system)
-  - --color-backdrop (dialog/sheet backdrop)
-  - Hard rule: never combine explicit border + shadow. Shadows include a 1px ring layer.
+  - Shell chrome (sidebar, topbar, bottom nav) uses surface-2 for elevation above surface-1 app background
 - Status: --color-{error,success,warning,info}-{3,7,9,11}
 - Category: --color-category-{teal,amber,slate,indigo,cyan,orange,emerald}
 
 Consumer rebranding: Override accent scale CSS vars or use generateScale(options) utility.
 
-Tailwind utilities: accent-1..12, secondary-1..12, surface-base/raised/sunken/overlay/inverted/disabled, shadow-raised/raised-hover/floating/overlay/glow/inset/ring/ring-sm, plus fg/border variants.
+Tailwind utilities: accent-1..12, secondary-1..12, surface-1..4, plus fg/border variants.
 
 ### Toast Setup Pattern
 
@@ -1232,7 +1221,7 @@ import { DataTableToolbar } from '@devalok/shilp-sutra/ui/data-table-toolbar'
 
 ## Changes
 ### v0.22.0
-- **Added** Hover state on `DropdownMenuItem` — was completely missing. Items now show `bg-surface-raised-hover` on hover with `ease-productive-standard` transition.
+- **Added** Hover state on `DropdownMenuItem` — was completely missing. Items now show `bg-surface-3` on hover with `ease-productive-standard` transition.
 
 ### v0.18.0
 - **Added** `DropdownMenuContentProps`, `DropdownMenuItemProps` type exports
@@ -1902,7 +1891,7 @@ import { DataTableToolbar } from '@devalok/shilp-sutra/ui/data-table-toolbar'
 
 ## Changes
 ### v0.18.0
-- **Fixed** `bg-interactive` changed to `bg-accent-9`, `bg-field` changed to `bg-surface-raised-hover` (OKLCH migration)
+- **Fixed** `bg-interactive` changed to `bg-accent-9`, `bg-field` changed to `bg-surface-3` (OKLCH migration)
 
 ### v0.4.2
 - **Changed** (BREAKING) `color` prop renamed to `variant` (values `filled`/`tonal` unchanged)
@@ -1970,12 +1959,10 @@ import { DataTableToolbar } from '@devalok/shilp-sutra/ui/data-table-toolbar'
 
 ## Props
     orientation: "horizontal" | "vertical"
-    variant: "default" | "gradient" | "gradient-left" | "gradient-right"
     decorative: boolean
 
 ## Defaults
     orientation: "horizontal"
-    variant: "default"
     decorative: true
 
 ## Example
@@ -2833,7 +2820,7 @@ export default function RootLayout({ children }) {
 - Category: ui
 
 ## Compound Components
-    TooltipProvider (Optional — auto-wrapped if no ancestor provider exists)
+    TooltipProvider (REQUIRED at layout root or wrapping tooltip usage, controls delay)
       Tooltip (root)
         TooltipTrigger
         TooltipContent
@@ -2849,13 +2836,13 @@ export default function RootLayout({ children }) {
 ```
 
 ## Gotchas
-- TooltipProvider is optional — `<Tooltip>` auto-wraps with a provider when no ancestor exists (v0.22.0+)
+- TooltipProvider is REQUIRED — without it, tooltips won't show
 
 ## Changes
 ### v0.22.0
 - **Added** Auto-provider: `<Tooltip>` now auto-wraps with `<TooltipProvider>` when no ancestor provider exists. No more "tooltip doesn't appear" issues.
 - **Fixed** Content children not rendering — `motion.div` was self-closing (`/>`), so children were never passed through.
-- **Fixed** Text invisible in dark mode — `text-accent-fg` resolves to same value as `bg-surface-fg` in dark mode. Changed to `text-surface-inverted-fg`.
+- **Fixed** Text invisible in dark mode — `text-accent-fg` resolves to same value as `bg-surface-fg` in dark mode. Changed to `text-surface-1`.
 
 ### v0.18.0
 - **Changed** Migrated to Framer Motion for enter/exit animations
@@ -3025,7 +3012,7 @@ export default function RootLayout({ children }) {
     max: number (default: 4, overflow shows "+N" badge)
     size: "xs" | "sm" | "md" | "lg" | "xl"
     showTooltip: boolean (default: true)
-    borderColor: "surface-base" | "surface-raised" (default: "surface-raised") — overlap border color
+    borderColor: "surface-1" | "surface-2" (default: "surface-2") — overlap border color
     onOverflowClick: () => void — makes the "+N" badge interactive (button)
     renderAvatar: (user: AvatarUser, index: number) => ReactNode — custom avatar render
     expandDirection: "left" | "right" (default: "right") — direction group expands on hover
@@ -3037,7 +3024,7 @@ export default function RootLayout({ children }) {
     ring?: "none" | "lead" | "admin" | "client" — role ring per user in group
 
 ## Defaults
-    size="md", max=4, showTooltip=true, borderColor="surface-raised", expandDirection="right", expandAmount="default"
+    size="md", max=4, showTooltip=true, borderColor="surface-2", expandDirection="right", expandAmount="default"
 
 ## Example
 ```jsx
@@ -3048,7 +3035,7 @@ export default function RootLayout({ children }) {
   ]}
   max={3}
   size="md"
-  borderColor="surface-base"
+  borderColor="surface-1"
   onOverflowClick={() => setShowAll(true)}
 />
 ```
@@ -3058,7 +3045,7 @@ export default function RootLayout({ children }) {
 - Users beyond `max` are collapsed into a "+N" overflow badge
 - Missing `image` falls back to initials derived from `name`
 - Hover expand animation uses CSS `group-hover` — parent must not clip overflow
-- `borderColor` should match the surface context the group sits on (e.g., `surface-base` when sitting on the page background)
+- `borderColor` should match the surface context the group sits on (e.g., `surface-1` on cards)
 - `renderAvatar` wrapper is positioning-only — pass `size` directly to your Avatar (do NOT use `className="h-full w-full"`)
 
 ## Changes
@@ -3084,30 +3071,77 @@ export default function RootLayout({ children }) {
 
 ## Props
     groups?: CommandGroup[] (default: []) — { label: string, items: CommandItem[] }
-    placeholder: string (default: "Search or jump to...")
-    onSearch: (query: string) => void
-    emptyMessage: string (default: "No results found.")
+    placeholder?: string (default: "Search or jump to...")
+    onSearch?: (query: string) => void
+    emptyMessage?: string (default: "No results found.")
+    emptyState?: ReactNode — full custom empty state (overrides emptyMessage)
+    open?: boolean — controlled open state
+    defaultOpen?: boolean — default open state for uncontrolled usage
+    onOpenChange?: (open: boolean) => void — called when open state changes
+    keybinding?: string | string[] | false (default: 'mod+k') — toggle keybinding(s). 'mod' = Meta on macOS, Ctrl otherwise. Pass false to disable.
+    maxHeight?: string | number (default: '320px') — max height of results container
+    footerHints?: FooterHint[] | false — custom keyboard hints in footer, or false to hide footer
 
-CommandItem shape: { id, label, description?, icon?, shortcut?, onSelect: () => void }
+CommandItem shape: { id, label: string|ReactNode, description?: string|ReactNode, icon?: ReactNode, shortcut?: string, renderLabel?: (query: string) => ReactNode, filterValue?: string, onSelect: () => void }
+
+FooterHint shape: { keys: string, label: string }
+
+## Types exported
+    CommandPaletteProps, CommandGroup, CommandItem, FooterHint
 
 ## Defaults
-    placeholder="Search or jump to...", emptyMessage="No results found.", groups=[]
+    placeholder="Search or jump to...", emptyMessage="No results found.", groups=[], keybinding='mod+k', maxHeight='320px'
 
 ## Example
 ```jsx
+// Basic (uncontrolled, opens with Ctrl+K / Cmd+K)
 <CommandPalette
   groups={[{
     label: 'Navigation',
     items: [{ id: 'dash', label: 'Dashboard', onSelect: () => navigate('/') }],
   }]}
 />
+
+// Controlled with custom keybinding
+const [open, setOpen] = useState(false)
+<CommandPalette groups={groups} open={open} onOpenChange={setOpen} keybinding={['mod+k', 'ctrl+p']} />
+
+// Rich labels with match highlighting
+<CommandPalette groups={[{
+  label: 'Results',
+  items: [{
+    id: 'task-1',
+    label: <span>Fix <strong>login</strong> bug</span>,
+    filterValue: 'Fix login bug',
+    renderLabel: (query) => <HighlightMatch text="Fix login bug" query={query} />,
+    onSelect: () => {},
+  }],
+}]} />
 ```
 
 ## Gotchas
-- Opens with Ctrl+K / Cmd+K by default
+- Opens with Ctrl+K / Cmd+K by default — override with `keybinding` prop, or disable with `keybinding={false}`
+- Supports controlled/uncontrolled pattern: pass `open`+`onOpenChange` for controlled, or `defaultOpen` for uncontrolled
+- When `label` is a ReactNode, provide `filterValue` for search filtering
+- `renderLabel` receives the current search query — use for match highlighting
+- `shortcut` strings are split into keycap badges: "G D" → [G] [D], "Ctrl+N" → [⌘] [N] on Mac
+- Respects MotionProvider's reduced-motion setting
 - Items animate in with staggered slide-up (30ms delay cascade); groups fade in; active item icon/shortcut highlight in interactive color (v0.15.0)
 
 ## Changes
+### v0.24.0
+- **Added** `open`, `defaultOpen`, `onOpenChange` for controlled/uncontrolled state
+- **Added** `keybinding` prop — customizable toggle keybinding(s), or `false` to disable
+- **Added** `maxHeight` prop — configurable results container height
+- **Added** `emptyState` prop — full ReactNode override for empty state
+- **Added** `footerHints` prop — custom footer keyboard hints, or `false` to hide
+- **Added** `CommandItem.label` and `description` now accept `string | ReactNode`
+- **Added** `CommandItem.renderLabel` — render override receiving search query for match highlighting
+- **Added** `CommandItem.filterValue` — plain-text search value when label is ReactNode
+- **Added** `FooterHint` type export
+- **Added** Shortcut keys rendered as individual keycap badges with platform-aware modifier display
+- **Added** Reduced-motion support via MotionProvider context
+
 ### v0.15.0
 - **Added** Staggered slide-up entrance animations for items, fade-in for groups/empty state/footer, scale-in for search icon, active item icon/shortcut color transitions
 
@@ -3834,33 +3868,73 @@ Note: StatusBadge was server-safe prior to v0.18.0 but is NO LONGER server-safe 
     extraGroups?: CommandGroup[]
     onNavigate?: (path: string) => void
     onSearch?: (query: string) => void
-    searchResults?: SearchResult[]
+    searchResults?: SearchResult[] — flat results in single group. For grouped, use searchResultGroups.
+    searchResultGroups?: SearchResultGroup[] — grouped results with per-group labels. Takes precedence over searchResults.
     isSearching?: boolean (shows loading state while search is in progress)
-    onSearchResultSelect?: (result: SearchResult) => void
+    onSearchResultSelect?: (result: SearchResult) => void — when provided, consumer owns routing (no internal URL computation)
+    searchResultsLabel?: string | ((count: number) => string) — custom label for results group
+    open?: boolean — controlled open state (pass-through to CommandPalette)
+    defaultOpen?: boolean — default open state
+    onOpenChange?: (open: boolean) => void — called when open state changes
+    keybinding?: string | string[] | false — toggle keybinding (default: 'mod+k')
+    maxHeight?: string | number — max height of results (default: '320px')
+    emptyState?: ReactNode — custom empty state
+    footerHints?: FooterHint[] | false — custom footer hints
 
-SearchResult: { id: string, title: string, snippet?: string, entityType: string, projectId?: string | null, metadata?: Record<string, unknown> }
+SearchResult: { id, title, snippet?, entityType, projectId?, metadata?, icon?(ReactNode), rank?(number), shortcut?(string) }
+SearchResultGroup: { label: string, results: SearchResult[] }
 AppCommandPaletteUser: { name: string, role?: string }
 
+## Types exported
+    AppCommandPaletteProps, SearchResult, SearchResultGroup, AppCommandPaletteUser
+
 ## Defaults
-    None
+    keybinding='mod+k', maxHeight='320px'
 
 ## Example
 ```jsx
+// Consumer-owned routing (recommended)
 <AppCommandPalette
-  user={{ name: 'John', role: 'admin' }}
-  isAdmin={true}
-  onNavigate={(path) => router.push(path)}
+  user={currentUser}
+  onSearch={handleSearch}
   searchResults={results}
-  onSearchResultSelect={(r) => router.push(`/${r.entityType}/${r.id}`)}
+  onSearchResultSelect={(result) => router.push(computeRoute(result))}
 />
+
+// Grouped search results
+<AppCommandPalette
+  user={currentUser}
+  searchResultGroups={[
+    { label: 'Tasks', results: taskResults },
+    { label: 'Projects', results: projectResults },
+  ]}
+  onSearchResultSelect={(r) => router.push(computeRoute(r))}
+  searchResultsLabel={(count) => `${count} results`}
+/>
+
+// Controlled with custom keybinding
+const [open, setOpen] = useState(false)
+<AppCommandPalette user={currentUser} open={open} onOpenChange={setOpen} keybinding={['mod+k', '/']} />
 ```
 
 ## Gotchas
 - Uses CommandRegistry context for page navigation items (see CommandRegistryProvider)
 - `isAdmin` takes precedence over `user.role` for showing admin command groups
 - Should be placed at the app root level, typically alongside TopBar
+- **Routing:** When `onSearchResultSelect` is provided, no internal `onNavigate` call — consumer owns routing. When absent, falls back to internal URL computation.
+- `searchResultGroups` takes precedence over `searchResults`
+- Results with `rank` are sorted by descending rank (higher = more relevant)
+- Result `icon` overrides the default entity-type icon
 
 ## Changes
+### v0.24.0
+- **Added** `searchResultGroups` prop for grouped search results
+- **Added** `onSearchResultSelect` now gives consumer full routing control
+- **Added** `SearchResult.icon`, `SearchResult.rank`, `SearchResult.shortcut` fields
+- **Added** `SearchResultGroup` type export
+- **Added** `searchResultsLabel` prop
+- **Added** `open`, `defaultOpen`, `onOpenChange`, `keybinding`, `maxHeight`, `emptyState`, `footerHints` pass-through
+
 ### v0.3.0
 - **Fixed** Added missing `'use client'` directive
 
@@ -3903,11 +3977,8 @@ BottomNavbarUser: { name: string, role?: string }
 - Requires LinkProvider for framework-specific link components (e.g., Next.js Link)
 
 ## Changes
-### v0.23.0
-- **Changed** Surface tokens updated to semantic names: `bg-surface-sunken` (was `bg-surface-2`)
-
 ### v0.19.0
-- **Changed** Background elevated from `bg-surface-1` to `bg-surface-2` for visual hierarchy above app background (now `bg-surface-sunken` as of v0.23.0)
+- **Changed** Background elevated from `bg-surface-1` to `bg-surface-2` for visual hierarchy above app background
 - **Changed** "More" menu and interactive items bumped accordingly
 
 ### v0.18.0
@@ -4174,12 +4245,9 @@ SidebarPromo: { text: string, icon?: ReactNode, action?: { label: string, href?:
 - Badge numbers > 99 display as "99+"
 
 ## Changes
-### v0.23.0
-- **Changed** Surface tokens updated to semantic names: `bg-surface-sunken` (was `bg-surface-2`), hover `bg-surface-raised-hover` (was `bg-surface-3`)
-
 ### v0.19.0
-- **Changed** Background elevated from `bg-surface-1` to `bg-surface-2` for visual hierarchy above app background (now `bg-surface-sunken` as of v0.23.0)
-- **Changed** Interactive hover states bumped from `surface-2` to `surface-3` (now `bg-surface-raised-hover` as of v0.23.0)
+- **Changed** Background elevated from `bg-surface-1` to `bg-surface-2` for visual hierarchy above app background
+- **Changed** Interactive hover states bumped from `surface-2` to `surface-3`
 
 ### v0.18.0
 - **Fixed** `bg-interactive-subtle` changed to `bg-accent-2` (OKLCH migration)
@@ -4224,12 +4292,12 @@ Composition-based application top bar. Uses dot-notation subcomponents for flexi
 
 | Component | Purpose |
 |-----------|---------|
-| `TopBar` | Root — bg-surface-sunken, border-b, sticky. Auto-switches to grid when Center is present. |
+| `TopBar` | Root — bg-surface-2, border-b, sticky. Auto-switches to grid when Center is present. |
 | `TopBar.Left` | Left zone — sidebar trigger, title, breadcrumbs |
 | `TopBar.Center` | Optional center zone — search bar, tabs. Triggers 3-column grid layout. |
 | `TopBar.Right` | Right zone — action buttons, user menu. Gets ml-auto in flex mode. |
 | `TopBar.Section` | Groups items with configurable gap |
-| `TopBar.IconButton` | Circular icon button with tooltip (bg-surface-raised-hover, hover:bg-surface-raised-active) |
+| `TopBar.IconButton` | Circular icon button with tooltip (bg-surface-3, hover:bg-surface-4) |
 | `TopBar.Title` | Page title heading, hidden on mobile |
 | `TopBar.UserMenu` | Avatar dropdown with color mode toggle, profile, logout |
 
@@ -4338,7 +4406,7 @@ UserMenuItem fields:
 - **Added** `TopBar.Title` — responsive page title (hidden on mobile)
 - **Added** `TopBar.UserMenu` — extracted user dropdown as standalone subcomponent
 - **Added** Auto grid/flex layout detection based on Center zone presence
-- **Changed** Background elevated from `bg-surface-1` to `bg-surface-2` (now `bg-surface-sunken` as of v0.23.0)
+- **Changed** Background elevated from `bg-surface-1` to `bg-surface-2`
 
 ### v0.7.0
 - **Added** `userMenuItems` prop for custom dropdown items

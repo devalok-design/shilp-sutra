@@ -320,7 +320,8 @@ NOTIFICATION SELECTION GUIDE:
 - RichTextEditor: Tiptap editor — bold/italic/underline/strike/highlight, headings, blockquote, lists (bullet/ordered/task), code, links, images (paste/drop/upload), file attachments, @mentions, emoji picker + :shortcode:, text alignment, HR. Props: onImageUpload?, onFileUpload?, mentions?, onMentionSearch?, onMentionSelect?(item: MentionItem)
 - RichTextViewer: read-only renderer for RichTextEditor HTML content (renders all above content types)
 - ActivityFeed: items(ActivityItem[]), onLoadMore, loading, hasMore, emptyState, compact, maxInitialItems, groupBy?('time'|'none'), groupLabels?({ today, yesterday, thisWeek, older }). Type: ActivityItem = { id, actor?, action, timestamp, icon?, color?, detail? }. Utility: groupItemsByTime(items, labels) exported.
-- CommandPalette, MemberPicker
+- CommandPalette: open, defaultOpen, onOpenChange (controlled/uncontrolled), keybinding(string|string[]|false), maxHeight, emptyState(ReactNode), footerHints(FooterHint[]|false). CommandItem: label(string|ReactNode), description(string|ReactNode), renderLabel(query=>ReactNode), filterValue(string), shortcut(rendered as keycap badges). Keyboard shortcuts rendered per-key with platform-aware Cmd/Ctrl. Reduced-motion support via MotionProvider.
+- MemberPicker
 - ErrorDisplay, GlobalLoading
 - Loading skeletons: CardSkeleton, TableSkeleton, BoardSkeleton, ListSkeleton
 - Page skeletons: DashboardSkeleton, ProjectListSkeleton, TaskDetailSkeleton (no props, server-safe)
@@ -342,7 +343,7 @@ NOTIFICATION SELECTION GUIDE:
 - BottomNavbar: mobile navigation, user is optional. Types: BottomNavItem = { title, href, icon, exact?, badge? }, BottomNavbarUser = { name, role? }
 - NotificationCenter: notifications[], onMarkRead, onMarkAllRead, onNavigate, getNotificationRoute?, footerSlot?, emptyState?, headerActions?, popoverClassName?, onDismiss?(id). Types: Notification = { id, title, body?, tier, isRead, createdAt, entityType?, entityId?, projectId?, project?, actions? }, NotificationAction = { label, variant?, onClick }
 - NotificationPreferences: preferences[], projects[], onSave, onToggleMute, onUpdateTier, onDelete. Types: NotificationPreference = { id, userId?, projectId, channel, minTier, muted }, NotificationProject = { id, title }
-- AppCommandPalette: user, isAdmin, onNavigate, onSearch, searchResults, isSearching, onSearchResultSelect. Types: SearchResult = { id, title, snippet?, entityType, projectId?, metadata? }, AppCommandPaletteUser = { name, role? }
+- AppCommandPalette: user, isAdmin, onNavigate, onSearch, searchResults, searchResultGroups(SearchResultGroup[]), isSearching, onSearchResultSelect (when provided, consumer owns routing — no internal URL computation), searchResultsLabel(string|((count)=>string)), open, defaultOpen, onOpenChange, keybinding, maxHeight, emptyState, footerHints. Types: SearchResult = { id, title, snippet?, entityType, projectId?, metadata?, icon?(ReactNode), rank?(number), shortcut?(string) }, SearchResultGroup = { label, results: SearchResult[] }, AppCommandPaletteUser = { name, role? }
 - LinkProvider: wraps app with router-agnostic Link component — component(ForwardRefComponent), children. useLink() hook returns the Link component.
 
 ### Motion System (Framer Motion)

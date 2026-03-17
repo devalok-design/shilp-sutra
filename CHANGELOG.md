@@ -5,6 +5,26 @@ All notable changes to `@devalok/shilp-sutra` will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.24.0] - 2026-03-17 (core)
+
+### Added (core)
+
+- **CommandPalette — controlled/uncontrolled open state**: New `open`, `defaultOpen`, `onOpenChange` props following the standard Radix pattern used by Dialog, Sheet, and Popover.
+- **CommandPalette — customizable keybinding**: New `keybinding` prop accepts `string | string[] | false`. `'mod'` maps to Meta on macOS, Ctrl elsewhere. Pass `false` to disable the global shortcut entirely.
+- **CommandPalette — ReactNode labels and descriptions**: `CommandItem.label` and `CommandItem.description` now accept `string | ReactNode`. When using ReactNode labels, provide `filterValue` for search filtering. New `renderLabel?: (query: string) => ReactNode` enables match highlighting.
+- **CommandPalette — configurable max-height**: New `maxHeight` prop (CSS value or number, default `'320px'`).
+- **CommandPalette — custom empty state**: New `emptyState?: ReactNode` overrides `emptyMessage` with a full custom empty view.
+- **CommandPalette — custom footer hints**: New `footerHints?: FooterHint[] | false` replaces the hardcoded footer. Pass `false` to hide entirely.
+- **CommandPalette — reduced-motion support**: Animations now respect `MotionProvider`'s reduced-motion setting (duration: 0 when active).
+- **CommandPalette — platform-aware modifier keys**: Shortcut badges display "⌘" on macOS and "Ctrl" on Windows/Linux. Shortcut strings are parsed into individual keycap badges.
+- **CommandPalette — `FooterHint` type export**: `{ keys: string, label: string }`.
+- **AppCommandPalette — consumer-owned routing**: When `onSearchResultSelect` is provided, the component no longer calls `onNavigate` with a hardcoded internal route. The consumer owns routing entirely. Legacy fallback behavior preserved when `onSearchResultSelect` is absent.
+- **AppCommandPalette — grouped search results**: New `searchResultGroups?: SearchResultGroup[]` prop renders results in multiple labeled sections (e.g., Tasks, Projects, People). Takes precedence over flat `searchResults`.
+- **AppCommandPalette — extended SearchResult type**: New optional fields `icon?: ReactNode` (overrides entity-type icon), `rank?: number` (results sorted by descending rank), `shortcut?: string` (keyboard hint badge).
+- **AppCommandPalette — configurable search label**: New `searchResultsLabel?: string | ((count: number) => string)` overrides "Search Results" / "Searching..." group label.
+- **AppCommandPalette — pass-through props**: `open`, `defaultOpen`, `onOpenChange`, `keybinding`, `maxHeight`, `emptyState`, `footerHints` all pass through to the underlying CommandPalette.
+- **New type exports**: `SearchResultGroup` from shell barrel, `FooterHint` from composed barrel.
+
 ## [0.23.0] - 2026-03-16 (core) / [0.21.0] - 2026-03-16 (karm)
 
 ### Breaking (core + karm) — Surface & Shadow Token Overhaul

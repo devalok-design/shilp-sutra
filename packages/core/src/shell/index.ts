@@ -50,6 +50,7 @@ export {
 export {
   AppCommandPalette,
   type SearchResult,
+  type SearchResultGroup,
   type AppCommandPaletteUser,
   type AppCommandPaletteProps,
 } from './app-command-palette'

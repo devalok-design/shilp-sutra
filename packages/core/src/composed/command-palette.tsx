@@ -20,6 +20,7 @@ import { IconSearch, IconCornerDownLeft, IconArrowUp, IconArrowDown } from '@tab
 import { cn } from '../ui/lib/utils'
 import { tweens, springs } from '../ui/lib/motion'
 import { VisuallyHidden } from '../ui/visually-hidden'
+import { useMotion } from '../motion/motion-provider'
 
 // -----------------------------------------------------------------------
 // Types
@@ -27,10 +28,17 @@ import { VisuallyHidden } from '../ui/visually-hidden'
 
 export interface CommandItem {
   id: string
-  label: string
-  description?: string
+  /** Display label — string or ReactNode. When ReactNode, provide `filterValue` for search filtering. */
+  label: string | React.ReactNode
+  /** Optional description — string or ReactNode. */
+  description?: string | React.ReactNode
   icon?: React.ReactNode
+  /** Keyboard shortcut hint displayed as keycap badges (e.g., "G D", "Ctrl+N"). */
   shortcut?: string
+  /** Custom render override for the label. Receives the current search query for match highlighting. */
+  renderLabel?: (query: string) => React.ReactNode
+  /** Plain-text value used for search filtering when `label` is a ReactNode. Falls back to `label` if string. */
+  filterValue?: string
   onSelect: () => void
 }
 
@@ -39,11 +47,106 @@ export interface CommandGroup {
   items: CommandItem[]
 }
 
+/** A single keyboard hint shown in the footer. */
+export interface FooterHint {
+  /** Key(s) to display — rendered as text inside `<kbd>` or as an icon. */
+  keys: string
+  /** Human-readable label for the hint (e.g., "Navigate", "Select"). */
+  label: string
+}
+
 export interface CommandPaletteProps extends React.ComponentPropsWithoutRef<'div'> {
   groups?: CommandGroup[]
   placeholder?: string
   onSearch?: (query: string) => void
   emptyMessage?: string
+  /** Full custom empty state ReactNode — overrides `emptyMessage` when provided. */
+  emptyState?: React.ReactNode
+  // -- Controlled/uncontrolled open state (P1 #4) --
+  /** Controlled open state. */
+  open?: boolean
+  /** Default open state for uncontrolled usage. */
+  defaultOpen?: boolean
+  /** Called when the open state changes. */
+  onOpenChange?: (open: boolean) => void
+  // -- Keyboard shortcut customization (P1 #6) --
+  /** Keybinding(s) to toggle the palette. Pass `false` to disable.
+   *  String format: modifier+key, e.g., 'mod+k', 'ctrl+shift+p'.
+   *  'mod' maps to Meta on macOS, Ctrl otherwise. */
+  keybinding?: string | string[] | false
+  // -- Configurable max-height (P2 #8) --
+  /** Max height of the results container. CSS value. Default '320px'. */
+  maxHeight?: string | number
+  // -- Custom footer hints (P2 #11) --
+  /** Custom footer keyboard hints. Pass `false` to hide the footer entirely. */
+  footerHints?: FooterHint[] | false
+}
+
+// -----------------------------------------------------------------------
+// Helpers
+// -----------------------------------------------------------------------
+
+/** Detect macOS / iOS for modifier key display. */
+function getIsMac(): boolean {
+  if (typeof navigator === 'undefined') return false
+  // Use userAgentData if available (Chromium), fallback to userAgent
+  const ua = (navigator as { userAgentData?: { platform?: string } }).userAgentData?.platform ?? navigator.userAgent
+  return /mac|iphone|ipad|ipod/i.test(ua)
+}
+
+/** Get the text-searchable value from a CommandItem. */
+function getFilterValue(item: CommandItem): string {
+  if (item.filterValue) return item.filterValue
+  if (typeof item.label === 'string') return item.label
+  return ''
+}
+
+/** Get the text-searchable description from a CommandItem. */
+function getFilterDescription(item: CommandItem): string {
+  if (typeof item.description === 'string') return item.description
+  return ''
+}
+
+/** Parse a keybinding string into a predicate. */
+function matchesKeybinding(e: KeyboardEvent, binding: string): boolean {
+  const parts = binding.toLowerCase().split('+')
+  const key = parts[parts.length - 1]
+  const modifiers = new Set(parts.slice(0, -1))
+
+  const isMac = getIsMac()
+  const needsMod = modifiers.has('mod')
+  const needsCtrl = modifiers.has('ctrl') || (!isMac && needsMod)
+  const needsMeta = modifiers.has('meta') || (isMac && needsMod)
+  const needsShift = modifiers.has('shift')
+  const needsAlt = modifiers.has('alt')
+
+  if (needsCtrl && !e.ctrlKey) return false
+  if (needsMeta && !e.metaKey) return false
+  if (needsShift && !e.shiftKey) return false
+  if (needsAlt && !e.altKey) return false
+
+  // Ensure no extra modifiers are pressed
+  if (!needsCtrl && !needsMeta && e.ctrlKey) return false
+  if (!needsMeta && !needsCtrl && e.metaKey) return false
+  if (!needsShift && e.shiftKey) return false
+  if (!needsAlt && e.altKey) return false
+
+  return e.key.toLowerCase() === key
+}
+
+/** Parse a shortcut string like "G D" or "Ctrl+N" into individual keycap segments. */
+function parseShortcutKeys(shortcut: string): string[] {
+  // If it has "+" separator (Ctrl+Shift+N style), split on +
+  if (shortcut.includes('+')) {
+    return shortcut.split('+').map(s => s.trim()).filter(Boolean)
+  }
+  // Otherwise split on spaces (G D style)
+  return shortcut.split(/\s+/).filter(Boolean)
+}
+
+/** Display-friendly modifier name. */
+function getModifierDisplay(isMac: boolean): string {
+  return isMac ? '⌘' : 'Ctrl'
 }
 
 // -----------------------------------------------------------------------
@@ -57,18 +160,51 @@ const CommandPalette = React.forwardRef<HTMLDivElement, CommandPaletteProps>(
       placeholder = 'Search or jump to...',
       onSearch,
       emptyMessage = 'No results found.',
+      emptyState,
+      open: openProp,
+      defaultOpen,
+      onOpenChange,
+      keybinding = 'mod+k',
+      maxHeight = '320px',
+      footerHints,
       className,
       ...props
     },
     ref,
   ) {
-  const [open, setOpen] = React.useState(false)
+  // -- Controlled/uncontrolled open state --
+  const isControlled = openProp !== undefined
+  const [internalOpen, setInternalOpen] = React.useState(defaultOpen ?? false)
+  const open = isControlled ? openProp : internalOpen
+
+  // Use a ref for the current open value to avoid stale closures in setOpen
+  const openRef = React.useRef(open)
+  openRef.current = open
+
+  const setOpen = React.useCallback(
+    (nextOpen: boolean | ((prev: boolean) => boolean)) => {
+      const resolved = typeof nextOpen === 'function' ? nextOpen(openRef.current) : nextOpen
+      if (!isControlled) {
+        setInternalOpen(resolved)
+      }
+      onOpenChange?.(resolved)
+    },
+    [isControlled, onOpenChange],
+  )
+
   const [query, setQuery] = React.useState('')
   const [activeIndex, setActiveIndex] = React.useState(0)
   const inputRef = React.useRef<HTMLInputElement>(null)
   const listRef = React.useRef<HTMLDivElement>(null)
   const instanceId = React.useId()
   const listboxId = `command-palette-listbox-${instanceId}`
+
+  // -- Reduced motion (P2 #12) --
+  const { reducedMotion: isReduced } = useMotion()
+  const noMotionTransition = { duration: 0 }
+
+  // -- Platform detection (P2 #13) --
+  const isMac = React.useMemo(() => getIsMac(), [])
 
   // Filter groups based on query
   const filteredGroups = React.useMemo(() => {
@@ -79,8 +215,8 @@ const CommandPalette = React.forwardRef<HTMLDivElement, CommandPaletteProps>(
         ...group,
         items: group.items.filter(
           (item) =>
-            item.label.toLowerCase().includes(q) ||
-            item.description?.toLowerCase().includes(q),
+            getFilterValue(item).toLowerCase().includes(q) ||
+            getFilterDescription(item).toLowerCase().includes(q),
         ),
       }))
       .filter((group) => group.items.length > 0)
@@ -93,15 +229,22 @@ const CommandPalette = React.forwardRef<HTMLDivElement, CommandPaletteProps>(
 
   // Global keyboard shortcut
   React.useEffect(() => {
+    if (keybinding === false) return
+
+    const bindings = Array.isArray(keybinding) ? keybinding : [keybinding]
+
     function handleKeyDown(e: KeyboardEvent) {
-      if ((e.metaKey || e.ctrlKey) && e.key === 'k') {
-        e.preventDefault()
-        setOpen((prev) => !prev)
+      for (const binding of bindings) {
+        if (matchesKeybinding(e, binding)) {
+          e.preventDefault()
+          setOpen((prev) => !prev)
+          return
+        }
       }
     }
     document.addEventListener('keydown', handleKeyDown)
     return () => document.removeEventListener('keydown', handleKeyDown)
-  }, [])
+  }, [keybinding, setOpen])
 
   // Reset state when opening
   React.useEffect(() => {
@@ -174,8 +317,34 @@ const CommandPalette = React.forwardRef<HTMLDivElement, CommandPaletteProps>(
     return map
   }, [filteredGroups])
 
+  // -- Resolve motion transitions --
+  const springSnappy = isReduced ? noMotionTransition : springs.snappy
+  const tweenFade = isReduced ? noMotionTransition : tweens.fade
+  const noInit = isReduced ? { opacity: 1, scale: 1, y: 0 } : undefined
+
+  // -- Resolve max height CSS value --
+  const maxHeightValue = typeof maxHeight === 'number' ? `${maxHeight}px` : maxHeight
+
+  // -- Resolve footer hints --
+  const resolvedFooterHints: FooterHint[] | false =
+    footerHints === false
+      ? false
+      : footerHints ?? [
+          { keys: '↑↓', label: 'Navigate' },
+          { keys: '↵', label: 'Select' },
+          { keys: 'Esc', label: 'Close' },
+        ]
+
+  // Handle dialog open change (from Dialog's own close mechanisms)
+  const handleDialogOpenChange = React.useCallback(
+    (nextOpen: boolean) => {
+      setOpen(nextOpen)
+    },
+    [setOpen],
+  )
+
   return (
-    <Dialog open={open} onOpenChange={setOpen}>
+    <Dialog open={open} onOpenChange={handleDialogOpenChange}>
       <DialogPortal>
         <DialogOverlay
           className="fixed inset-0 z-overlay bg-overlay data-[state=open]:animate-in data-[state=closed]:animate-out data-[state=closed]:fade-out-0 data-[state=open]:fade-in-0"
@@ -205,9 +374,9 @@ const CommandPalette = React.forwardRef<HTMLDivElement, CommandPaletteProps>(
           {/* Search input */}
           <div className="flex items-center gap-ds-04 border-b border-surface-border-strong px-ds-05 py-ds-04">
             <motion.span
-              initial={{ opacity: 0, scale: 0.96 }}
+              initial={noInit ?? { opacity: 0, scale: 0.96 }}
               animate={{ opacity: 1, scale: 1 }}
-              transition={springs.snappy}
+              transition={springSnappy}
               className="inline-flex shrink-0"
             >
               <IconSearch
@@ -244,27 +413,30 @@ const CommandPalette = React.forwardRef<HTMLDivElement, CommandPaletteProps>(
             id={listboxId}
             role="listbox"
             aria-label="Command results"
-            className="max-h-[320px] overflow-y-auto px-ds-03 py-ds-03"
+            className="overflow-y-auto px-ds-03 py-ds-03"
+            style={{ maxHeight: maxHeightValue }}
           >
             {filteredGroups.length === 0 && (
               <motion.div
-                initial={{ opacity: 0 }}
+                initial={noInit ?? { opacity: 0 }}
                 animate={{ opacity: 1 }}
-                transition={tweens.fade}
+                transition={tweenFade}
                 className="flex items-center justify-center py-ds-07"
               >
-                <p className="text-ds-md text-surface-fg-subtle">
-                  {emptyMessage}
-                </p>
+                {emptyState ?? (
+                  <p className="text-ds-md text-surface-fg-subtle">
+                    {emptyMessage}
+                  </p>
+                )}
               </motion.div>
             )}
 
             {filteredGroups.map((group, groupIdx) => (
               <motion.div
                 key={group.label}
-                initial={{ opacity: 0 }}
+                initial={noInit ?? { opacity: 0 }}
                 animate={{ opacity: 1 }}
-                transition={{ ...tweens.fade, delay: groupIdx * 0.06 }}
+                transition={isReduced ? noMotionTransition : { ...tweens.fade, delay: groupIdx * 0.06 }}
                 className="mb-ds-02"
               >
                 <div className="px-ds-03 pb-ds-02 pt-ds-03">
@@ -284,9 +456,9 @@ const CommandPalette = React.forwardRef<HTMLDivElement, CommandPaletteProps>(
                       role="option"
                       aria-selected={isActive}
                       data-command-index={itemIndex}
-                      initial={{ opacity: 0, y: 4 }}
+                      initial={noInit ?? { opacity: 0, y: 4 }}
                       animate={{ opacity: 1, y: 0 }}
-                      transition={{ ...springs.snappy, delay: itemIndex * 0.03 }}
+                      transition={isReduced ? noMotionTransition : { ...springs.snappy, delay: itemIndex * 0.03 }}
                       onClick={() => {
                         item.onSelect()
                         setOpen(false)
@@ -311,7 +483,9 @@ const CommandPalette = React.forwardRef<HTMLDivElement, CommandPaletteProps>(
                         </span>
                       )}
                       <div className="flex flex-1 flex-col">
-                        <span className="text-ds-md">{item.label}</span>
+                        <span className="text-ds-md">
+                          {item.renderLabel ? item.renderLabel(query) : item.label}
+                        </span>
                         {item.description && (
                           <span className="text-ds-sm text-surface-fg-subtle">
                             {item.description}
@@ -319,20 +493,29 @@ const CommandPalette = React.forwardRef<HTMLDivElement, CommandPaletteProps>(
                         )}
                       </div>
                       {item.shortcut && (
-                        <kbd className={cn(
-                          'shrink-0 rounded border border-surface-border-strong px-ds-02b py-ds-01 text-ds-xs font-medium shadow-[inset_0_-1px_0_rgba(0,0,0,0.1)] transition-colors duration-fast-02 ease-productive-standard',
-                          isActive ? 'bg-accent-2 text-accent-11 border-accent-6' : 'bg-surface-raised text-surface-fg-subtle',
-                        )}>
-                          {item.shortcut}
-                        </kbd>
+                        <span className="flex shrink-0 items-center gap-ds-01">
+                          {parseShortcutKeys(item.shortcut).map((key, i) => (
+                            <kbd
+                              key={i}
+                              className={cn(
+                                'inline-flex min-w-[20px] items-center justify-center rounded border px-ds-02b py-ds-01 text-ds-xs font-medium shadow-[inset_0_-1px_0_rgba(0,0,0,0.1)] transition-colors duration-fast-02 ease-productive-standard',
+                                isActive
+                                  ? 'bg-accent-2 text-accent-11 border-accent-6'
+                                  : 'bg-surface-raised text-surface-fg-subtle border-surface-border-strong',
+                              )}
+                            >
+                              {key === 'Ctrl' || key === 'ctrl' ? getModifierDisplay(isMac) : key}
+                            </kbd>
+                          ))}
+                        </span>
                       )}
                       <AnimatePresence>
                         {isActive && (
                           <motion.span
-                            initial={{ opacity: 0 }}
+                            initial={isReduced ? undefined : { opacity: 0 }}
                             animate={{ opacity: 1 }}
-                            exit={{ opacity: 0 }}
-                            transition={tweens.fade}
+                            exit={isReduced ? undefined : { opacity: 0 }}
+                            transition={tweenFade}
                             className="inline-flex shrink-0"
                           >
                             <IconCornerDownLeft
@@ -350,42 +533,40 @@ const CommandPalette = React.forwardRef<HTMLDivElement, CommandPaletteProps>(
           </div>
 
           {/* Footer with keyboard hints */}
-          <motion.div
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            transition={tweens.fade}
-            className="flex items-center gap-ds-05 border-t border-surface-border-strong px-ds-05 py-ds-03"
-          >
-            <div className="flex items-center gap-ds-02b">
-              <div className="flex items-center gap-ds-01">
-                <kbd className="inline-flex h-ico-md w-ico-md items-center justify-center rounded border border-surface-border-strong bg-surface-raised shadow-[inset_0_-1px_0_rgba(0,0,0,0.1)]">
-                  <IconArrowUp className="h-ds-03 w-ds-03 text-surface-fg-subtle" stroke={2} />
-                </kbd>
-                <kbd className="inline-flex h-ico-md w-ico-md items-center justify-center rounded border border-surface-border-strong bg-surface-raised shadow-[inset_0_-1px_0_rgba(0,0,0,0.1)]">
-                  <IconArrowDown className="h-ds-03 w-ds-03 text-surface-fg-subtle" stroke={2} />
-                </kbd>
-              </div>
-              <span className="text-ds-xs text-surface-fg-subtle">
-                Navigate
-              </span>
-            </div>
-            <div className="flex items-center gap-ds-02b">
-              <kbd className="inline-flex h-[20px] items-center justify-center rounded-ds-md border border-surface-border-strong bg-surface-raised px-ds-02b shadow-[inset_0_-1px_0_rgba(0,0,0,0.1)]">
-                <IconCornerDownLeft className="h-ds-03 w-ds-03 text-surface-fg-subtle" stroke={2} />
-              </kbd>
-              <span className="text-ds-xs text-surface-fg-subtle">
-                Select
-              </span>
-            </div>
-            <div className="flex items-center gap-ds-02b">
-              <kbd className="inline-flex h-[20px] items-center justify-center rounded-ds-md border border-surface-border-strong bg-surface-raised px-ds-02b text-ds-xs font-medium text-surface-fg-subtle shadow-[inset_0_-1px_0_rgba(0,0,0,0.1)]">
-                Esc
-              </kbd>
-              <span className="text-ds-xs text-surface-fg-subtle">
-                Close
-              </span>
-            </div>
-          </motion.div>
+          {resolvedFooterHints !== false && (
+            <motion.div
+              initial={noInit ?? { opacity: 0 }}
+              animate={{ opacity: 1 }}
+              transition={tweenFade}
+              className="flex items-center gap-ds-05 border-t border-surface-border-strong px-ds-05 py-ds-03"
+            >
+              {resolvedFooterHints.map((hint, i) => (
+                <div key={i} className="flex items-center gap-ds-02b">
+                  {hint.keys === '↑↓' ? (
+                    <div className="flex items-center gap-ds-01">
+                      <kbd className="inline-flex h-ico-md w-ico-md items-center justify-center rounded border border-surface-border-strong bg-surface-raised shadow-[inset_0_-1px_0_rgba(0,0,0,0.1)]">
+                        <IconArrowUp className="h-ds-03 w-ds-03 text-surface-fg-subtle" stroke={2} />
+                      </kbd>
+                      <kbd className="inline-flex h-ico-md w-ico-md items-center justify-center rounded border border-surface-border-strong bg-surface-raised shadow-[inset_0_-1px_0_rgba(0,0,0,0.1)]">
+                        <IconArrowDown className="h-ds-03 w-ds-03 text-surface-fg-subtle" stroke={2} />
+                      </kbd>
+                    </div>
+                  ) : hint.keys === '↵' ? (
+                    <kbd className="inline-flex h-[20px] items-center justify-center rounded-ds-md border border-surface-border-strong bg-surface-raised px-ds-02b shadow-[inset_0_-1px_0_rgba(0,0,0,0.1)]">
+                      <IconCornerDownLeft className="h-ds-03 w-ds-03 text-surface-fg-subtle" stroke={2} />
+                    </kbd>
+                  ) : (
+                    <kbd className="inline-flex h-[20px] items-center justify-center rounded-ds-md border border-surface-border-strong bg-surface-raised px-ds-02b text-ds-xs font-medium text-surface-fg-subtle shadow-[inset_0_-1px_0_rgba(0,0,0,0.1)]">
+                      {hint.keys}
+                    </kbd>
+                  )}
+                  <span className="text-ds-xs text-surface-fg-subtle">
+                    {hint.label}
+                  </span>
+                </div>
+              ))}
+            </motion.div>
+          )}
         </DialogContentRaw>
       </DialogPortal>
     </Dialog>

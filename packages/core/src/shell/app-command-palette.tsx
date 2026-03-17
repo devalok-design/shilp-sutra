@@ -7,8 +7,6 @@
  * info instead of reading from Zustand stores or Remix hooks.
  *
  * Depends on the CommandPalette shared component being available.
- * If you haven't created `src/shared/command-palette.tsx`, this
- * component re-exports a minimal inline implementation.
  */
 import * as React from 'react'
 import { useCallback, useMemo } from 'react'
@@ -32,7 +30,7 @@ import {
   IconLink,
   IconPackage,
 } from '@tabler/icons-react'
-import { CommandPalette, type CommandGroup, type CommandItem } from '../composed/command-palette'
+import { CommandPalette, type CommandGroup, type CommandItem, type CommandPaletteProps, type FooterHint } from '../composed/command-palette'
 import { cn } from '../ui/lib/utils'
 import { useCommandRegistry } from './command-registry'
 
@@ -47,6 +45,18 @@ export interface SearchResult {
   entityType: string
   projectId?: string | null
   metadata?: Record<string, unknown>
+  /** Custom icon for this result. Overrides the default entity-type icon. */
+  icon?: React.ReactNode
+  /** Relevance score for sorting (higher = more relevant). */
+  rank?: number
+  /** Keyboard shortcut hint to display on this result. */
+  shortcut?: string
+}
+
+/** A group of search results with a label. */
+export interface SearchResultGroup {
+  label: string
+  results: SearchResult[]
 }
 
 export interface AppCommandPaletteUser {
@@ -66,12 +76,35 @@ export interface AppCommandPaletteProps
   onNavigate?: (path: string) => void
   /** Called when the search input changes (for server-side search) */
   onSearch?: (query: string) => void
-  /** IconSearch results from external search provider */
+  /** Flat search results (displayed in a single "Search Results" group).
+   *  For grouped results, use `searchResultGroups` instead. */
   searchResults?: SearchResult[]
+  /** Grouped search results — displayed as multiple labeled sections.
+   *  Takes precedence over `searchResults` when provided. */
+  searchResultGroups?: SearchResultGroup[]
   /** Whether a search is currently in progress */
   isSearching?: boolean
-  /** Called when the user selects a search result */
+  /** Called when the user selects a search result. When provided, the component
+   *  does NOT perform internal navigation — the consumer owns routing entirely. */
   onSearchResultSelect?: (result: SearchResult) => void
+  /** Custom label for the search results group. Overrides "Search Results" / "Searching...".
+   *  Can be a string or a function receiving the result count. */
+  searchResultsLabel?: string | ((count: number) => string)
+  // -- Pass-through CommandPalette props --
+  /** Controlled open state. */
+  open?: boolean
+  /** Default open state. */
+  defaultOpen?: boolean
+  /** Called when the open state changes. */
+  onOpenChange?: (open: boolean) => void
+  /** Keybinding(s) to toggle. Pass `false` to disable. Default: 'mod+k'. */
+  keybinding?: CommandPaletteProps['keybinding']
+  /** Max height of results. Default '320px'. */
+  maxHeight?: CommandPaletteProps['maxHeight']
+  /** Custom empty state. */
+  emptyState?: React.ReactNode
+  /** Custom footer hints. Pass `false` to hide. */
+  footerHints?: FooterHint[] | false
 }
 
 // -----------------------------------------------------------------------
@@ -191,6 +224,59 @@ function buildDefaultAdminItems(
 }
 
 // -----------------------------------------------------------------------
+// Helpers
+// -----------------------------------------------------------------------
+
+/** Compute an internal fallback route for a search result (legacy behavior). */
+function computeFallbackRoute(r: SearchResult): string {
+  switch (r.entityType) {
+    case 'TASK':
+      return r.projectId ? `/projects/${r.projectId}?taskId=${r.id}` : '/'
+    case 'PROJECT':
+      return `/projects/${r.id}`
+    case 'USER':
+      return `/teammates`
+    case 'COMMENT':
+      return r.projectId && r.metadata?.taskId
+        ? `/projects/${r.projectId}?taskId=${r.metadata.taskId}`
+        : '/'
+    case 'MEETING':
+      return r.projectId ? `/projects/${r.projectId}?tab=meetings` : '/'
+    case 'LINK':
+      return r.projectId ? `/projects/${r.projectId}?tab=karyakram` : '/'
+    case 'DELIVERABLE':
+      return r.projectId ? `/projects/${r.projectId}?tab=deliverables` : '/'
+    default:
+      return '/'
+  }
+}
+
+/** Convert a SearchResult into a CommandItem. */
+function searchResultToCommandItem(
+  r: SearchResult,
+  onSearchResultSelect: ((result: SearchResult) => void) | undefined,
+  nav: (to: string) => void,
+): CommandItem {
+  return {
+    id: `search-${r.entityType}-${r.id}`,
+    label: r.title,
+    filterValue: r.title,
+    description: r.snippet,
+    icon: r.icon ?? ENTITY_TYPE_ICONS[r.entityType] ?? <IconFileText />,
+    shortcut: r.shortcut,
+    onSelect: () => {
+      if (onSearchResultSelect) {
+        // Consumer owns routing — only call their handler (#1 Option B)
+        onSearchResultSelect(r)
+      } else {
+        // Legacy fallback: compute route internally
+        nav(computeFallbackRoute(r))
+      }
+    },
+  }
+}
+
+// -----------------------------------------------------------------------
 // AppCommandPalette
 // -----------------------------------------------------------------------
 
@@ -203,8 +289,17 @@ const AppCommandPalette = React.forwardRef<HTMLDivElement, AppCommandPaletteProp
       onNavigate,
       onSearch,
       searchResults = [],
+      searchResultGroups,
       isSearching = false,
       onSearchResultSelect,
+      searchResultsLabel,
+      open,
+      defaultOpen,
+      onOpenChange,
+      keybinding,
+      maxHeight,
+      emptyState,
+      footerHints,
       className,
       ...props
     },
@@ -256,76 +351,57 @@ const AppCommandPalette = React.forwardRef<HTMLDivElement, AppCommandPaletteProp
     [nav, registry],
   )
 
-  // -- Dynamic search results group ------------------------------------
+  // -- Dynamic search results groups ------------------------------------
 
-  const searchGroup: CommandGroup | null = useMemo(() => {
-    if (searchResults.length === 0) return null
+  const searchGroups: CommandGroup[] = useMemo(() => {
+    // Grouped results take precedence (#2)
+    if (searchResultGroups && searchResultGroups.length > 0) {
+      return searchResultGroups.map((group) => {
+        // Sort by rank if provided
+        const sorted = group.results.some(r => r.rank != null)
+          ? [...group.results].sort((a, b) => (b.rank ?? 0) - (a.rank ?? 0))
+          : group.results
 
-    const items: CommandItem[] = searchResults.map((r) => {
-      let route = '/'
-      switch (r.entityType) {
-        case 'TASK':
-          route = r.projectId
-            ? `/projects/${r.projectId}?taskId=${r.id}`
-            : '/'
-          break
-        case 'PROJECT':
-          route = `/projects/${r.id}`
-          break
-        case 'USER':
-          route = `/teammates`
-          break
-        case 'COMMENT':
-          route =
-            r.projectId && r.metadata?.taskId
-              ? `/projects/${r.projectId}?taskId=${r.metadata.taskId}`
-              : '/'
-          break
-        case 'MEETING':
-          route = r.projectId
-            ? `/projects/${r.projectId}?tab=meetings`
-            : '/'
-          break
-        case 'LINK':
-          route = r.projectId
-            ? `/projects/${r.projectId}?tab=karyakram`
-            : '/'
-          break
-        case 'DELIVERABLE':
-          route = r.projectId
-            ? `/projects/${r.projectId}?tab=deliverables`
-            : '/'
-          break
-      }
-
-      return {
-        id: `search-${r.entityType}-${r.id}`,
-        label: r.title,
-        description: r.snippet,
-        icon: ENTITY_TYPE_ICONS[r.entityType] ?? <IconFileText />,
-        onSelect: () => {
-          onSearchResultSelect?.(r)
-          nav(route)
-        },
-      }
-    })
-
-    return {
-      label: isSearching ? 'Searching...' : 'Search Results',
-      items,
+        return {
+          label: group.label,
+          items: sorted.map(r => searchResultToCommandItem(r, onSearchResultSelect, nav)),
+        }
+      })
     }
-  }, [searchResults, isSearching, nav, onSearchResultSelect])
+
+    // Flat results (legacy behavior)
+    if (searchResults.length === 0) return []
+
+    // Sort by rank if any result has one
+    const sorted = searchResults.some(r => r.rank != null)
+      ? [...searchResults].sort((a, b) => (b.rank ?? 0) - (a.rank ?? 0))
+      : searchResults
+
+    const items = sorted.map(r => searchResultToCommandItem(r, onSearchResultSelect, nav))
+
+    // Resolve the label (#10)
+    let label: string
+    if (searchResultsLabel) {
+      label = typeof searchResultsLabel === 'function'
+        ? searchResultsLabel(items.length)
+        : searchResultsLabel
+    } else {
+      label = isSearching ? 'Searching...' : 'Search Results'
+    }
+
+    return [{ label, items }]
+  }, [searchResults, searchResultGroups, isSearching, nav, onSearchResultSelect, searchResultsLabel])
 
   // -- Assemble groups -------------------------------------------------
 
   const groups: CommandGroup[] = useMemo(() => {
     const g: CommandGroup[] = []
-    if (searchGroup) g.push(searchGroup)
+    g.push(...searchGroups)
     g.push(pagesGroup)
     if (isAdmin) g.push(adminGroup)
     g.push(...extraGroups)
     return g
-  }, [searchGroup, pagesGroup, isAdmin, adminGroup, extraGroups])
+  }, [searchGroups, pagesGroup, isAdmin, adminGroup, extraGroups])
 
   // -- Handle search ---------------------------------------------------
 
@@ -343,6 +419,13 @@ const AppCommandPalette = React.forwardRef<HTMLDivElement, AppCommandPaletteProp
       placeholder="Search or jump to..."
       onSearch={handleSearch}
       emptyMessage="No results found. Try a different search term."
+      open={open}
+      defaultOpen={defaultOpen}
+      onOpenChange={onOpenChange}
+      keybinding={keybinding}
+      maxHeight={maxHeight}
+      emptyState={emptyState}
+      footerHints={footerHints}
       className={cn(className)}
       {...props}
     />

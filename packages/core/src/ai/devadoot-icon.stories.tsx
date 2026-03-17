@@ -187,8 +187,12 @@ export const InCommandBar: Story = {
     >('idle')
     const [messages, setMessages] = React.useState<ConversationMessage[]>([])
 
+    // Track the icon state separately so it can transition: processing → responded → idle
+    const [iconState, setIconState] = React.useState<DevadootState>('idle')
+
     const handleSubmit = (query: string) => {
       setState('processing')
+      setIconState('processing')
       setMessages((prev) => [
         ...prev,
         { id: `u-${Date.now()}`, role: 'user', content: query, createdAt: new Date() },
@@ -221,16 +225,11 @@ export const InCommandBar: Story = {
           },
         ])
         setState('responded')
+        // Brief "responded" pop, then settle to idle
+        setIconState('responded')
+        setTimeout(() => setIconState('idle'), 600)
       }, 2500)
     }
-
-    // Map CommandBar state to DevadootIcon state
-    const iconState: DevadootState =
-      state === 'processing'
-        ? 'processing'
-        : state === 'responded'
-          ? 'responded'
-          : 'idle'
 
     return (
       <div style={{ maxWidth: 640, margin: '0 auto', padding: 32 }}>

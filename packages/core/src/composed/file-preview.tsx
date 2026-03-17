@@ -359,8 +359,11 @@ const LazyPdfPreview = React.lazy(() =>
 // Video Preview — Custom player with DS styling
 // ============================================================
 
+const PLAYBACK_RATES = [0.5, 0.75, 1, 1.25, 1.5, 2] as const
+
 function VideoPreview({ url, onError }: { url: string; onError?: (msg: string) => void }) {
   const videoRef = React.useRef<HTMLVideoElement>(null)
+  const containerRef = React.useRef<HTMLDivElement>(null)
   const [playing, setPlaying] = React.useState(false)
   const [progress, setProgress] = React.useState(0)
   const [duration, setDuration] = React.useState(0)
@@ -368,7 +371,70 @@ function VideoPreview({ url, onError }: { url: string; onError?: (msg: string) =
   const [muted, setMuted] = React.useState(false)
   const [error, setError] = React.useState(false)
   const [showControls, setShowControls] = React.useState(true)
+  const [playbackRate, setPlaybackRate] = React.useState(1)
   const hideTimer = React.useRef<ReturnType<typeof setTimeout>>()
+
+  // Keyboard shortcuts — YouTube style
+  React.useEffect(() => {
+    function handleKeyDown(e: KeyboardEvent) {
+      const el = containerRef.current
+      if (!el || !el.contains(document.activeElement) && document.activeElement !== el) return
+      const v = videoRef.current
+      if (!v) return
+
+      switch (e.key) {
+        case ' ':
+        case 'k':
+          e.preventDefault()
+          if (playing) v.pause(); else v.play()
+          setPlaying(!playing)
+          break
+        case 'ArrowRight':
+          e.preventDefault()
+          v.currentTime = Math.min(v.duration, v.currentTime + 5)
+          break
+        case 'ArrowLeft':
+          e.preventDefault()
+          v.currentTime = Math.max(0, v.currentTime - 5)
+          break
+        case 'j':
+          e.preventDefault()
+          v.currentTime = Math.max(0, v.currentTime - 10)
+          break
+        case 'l':
+          e.preventDefault()
+          v.currentTime = Math.min(v.duration, v.currentTime + 10)
+          break
+        case 'm':
+          e.preventDefault()
+          setMuted(!muted)
+          v.muted = !muted
+          break
+        case 'f':
+          e.preventDefault()
+          v.requestFullscreen?.()
+          break
+        case '>':
+          e.preventDefault()
+          cyclePlaybackRate(1)
+          break
+        case '<':
+          e.preventDefault()
+          cyclePlaybackRate(-1)
+          break
+      }
+    }
+    document.addEventListener('keydown', handleKeyDown)
+    return () => document.removeEventListener('keydown', handleKeyDown)
+  }, [playing, muted])
+
+  function cyclePlaybackRate(direction: 1 | -1) {
+    const idx = PLAYBACK_RATES.indexOf(playbackRate as typeof PLAYBACK_RATES[number])
+    const nextIdx = Math.max(0, Math.min(PLAYBACK_RATES.length - 1, idx + direction))
+    const next = PLAYBACK_RATES[nextIdx]
+    setPlaybackRate(next)
+    if (videoRef.current) videoRef.current.playbackRate = next
+  }
 
   function togglePlay() {
     if (!videoRef.current) return
@@ -396,9 +462,11 @@ function VideoPreview({ url, onError }: { url: string; onError?: (msg: string) =
 
   return (
     <div
+      ref={containerRef}
       className="group relative rounded-ds-md bg-black overflow-hidden"
       onMouseMove={handleMouseMove}
       onMouseLeave={() => playing && setShowControls(false)}
+      tabIndex={-1}
     >
       {/* eslint-disable-next-line jsx-a11y/media-has-caption */}
       <video
@@ -429,7 +497,7 @@ function VideoPreview({ url, onError }: { url: string; onError?: (msg: string) =
           aria-label="Play video"
         >
           <div className="flex h-14 w-14 items-center justify-center rounded-full bg-white/90 shadow-floating">
-            <IconPlayerPlay className="h-6 w-6 text-neutral-12 ml-1" />
+            <IconPlayerPlay className="h-6 w-6 text-surface-fg ml-0.5" />
           </div>
         </motion.button>
       )}
@@ -479,9 +547,16 @@ function VideoPreview({ url, onError }: { url: string; onError?: (msg: string) =
               </span>
               <div className="flex-1" />
               <button
+                onClick={() => cyclePlaybackRate(1)}
+                className="text-[11px] font-mono text-white/70 hover:text-white px-1 rounded-ds-sm hover:bg-white/10 transition-colors"
+                aria-label={`Playback speed: ${playbackRate}x`}
+              >
+                {playbackRate}x
+              </button>
+              <button
                 onClick={() => videoRef.current?.requestFullscreen?.()}
                 className="text-white hover:text-white/80"
-                aria-label="Fullscreen"
+                aria-label="Fullscreen (F)"
               >
                 <IconMaximize className="h-4 w-4" />
               </button>
@@ -499,6 +574,7 @@ function VideoPreview({ url, onError }: { url: string; onError?: (msg: string) =
 
 function AudioPreview({ url, fileName, onError }: { url: string; fileName?: string; onError?: (msg: string) => void }) {
   const audioRef = React.useRef<HTMLAudioElement>(null)
+  const containerRef = React.useRef<HTMLDivElement>(null)
   const [playing, setPlaying] = React.useState(false)
   const [progress, setProgress] = React.useState(0)
   const [duration, setDuration] = React.useState(0)
@@ -507,6 +583,39 @@ function AudioPreview({ url, fileName, onError }: { url: string; fileName?: stri
   const [muted, setMuted] = React.useState(false)
   const [error, setError] = React.useState(false)
   const [hoverTime, setHoverTime] = React.useState<number | null>(null)
+
+  // Keyboard shortcuts
+  React.useEffect(() => {
+    function handleKeyDown(e: KeyboardEvent) {
+      const el = containerRef.current
+      if (!el || !el.contains(document.activeElement) && document.activeElement !== el) return
+      const a = audioRef.current
+      if (!a) return
+
+      switch (e.key) {
+        case ' ':
+          e.preventDefault()
+          if (playing) a.pause(); else a.play()
+          setPlaying(!playing)
+          break
+        case 'ArrowRight':
+          e.preventDefault()
+          a.currentTime = Math.min(a.duration || 0, a.currentTime + 5)
+          break
+        case 'ArrowLeft':
+          e.preventDefault()
+          a.currentTime = Math.max(0, a.currentTime - 5)
+          break
+        case 'm':
+          e.preventDefault()
+          setMuted(!muted)
+          a.muted = !muted
+          break
+      }
+    }
+    document.addEventListener('keydown', handleKeyDown)
+    return () => document.removeEventListener('keydown', handleKeyDown)
+  }, [playing, muted])
 
   function togglePlay() {
     if (!audioRef.current) return
@@ -539,7 +648,7 @@ function AudioPreview({ url, fileName, onError }: { url: string; fileName?: stri
   if (error) return <ErrorFallback message="Could not load audio" url={url} />
 
   return (
-    <div className="rounded-ds-lg border border-surface-border bg-surface-raised shadow-raised overflow-hidden">
+    <div ref={containerRef} className="rounded-ds-lg border border-surface-border bg-surface-raised shadow-raised overflow-hidden" tabIndex={-1}>
       {/* eslint-disable-next-line jsx-a11y/media-has-caption */}
       <audio
         ref={audioRef}

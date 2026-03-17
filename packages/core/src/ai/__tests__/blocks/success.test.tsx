@@ -13,15 +13,14 @@ describe('SuccessBlock', () => {
     expect(screen.getByText('All items saved')).toBeInTheDocument()
   })
 
-  it('renders SVG checkmark', () => {
-    render(
+  it('renders success alert with icon', () => {
+    const { container } = render(
       <SuccessBlock
         data={{ title: 'Done', message: 'Success' }}
       />,
     )
-    const svg = screen.getByTestId('success-checkmark')
-    expect(svg).toBeInTheDocument()
-    expect(svg.tagName.toLowerCase()).toBe('svg')
+    // Alert color="success" renders its own checkmark icon
+    expect(container.querySelector('svg')).toBeInTheDocument()
   })
 
   it('shows undo button when undoable is true', () => {

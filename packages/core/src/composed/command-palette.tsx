@@ -86,13 +86,7 @@ export interface CommandPaletteProps extends React.ComponentPropsWithoutRef<'div
 // Helpers
 // -----------------------------------------------------------------------
 
-/** Detect macOS / iOS for modifier key display. */
-function getIsMac(): boolean {
-  if (typeof navigator === 'undefined') return false
-  // Use userAgentData if available (Chromium), fallback to userAgent
-  const ua = (navigator as { userAgentData?: { platform?: string } }).userAgentData?.platform ?? navigator.userAgent
-  return /mac|iphone|ipad|ipod/i.test(ua)
-}
+import { getIsMac, matchesKeybinding, getModifierDisplay } from '../ui/lib/keybinding'
 
 /** Get the text-searchable value from a CommandItem. */
 function getFilterValue(item: CommandItem): string {
@@ -107,33 +101,6 @@ function getFilterDescription(item: CommandItem): string {
   return ''
 }
 
-/** Parse a keybinding string into a predicate. */
-function matchesKeybinding(e: KeyboardEvent, binding: string): boolean {
-  const parts = binding.toLowerCase().split('+')
-  const key = parts[parts.length - 1]
-  const modifiers = new Set(parts.slice(0, -1))
-
-  const isMac = getIsMac()
-  const needsMod = modifiers.has('mod')
-  const needsCtrl = modifiers.has('ctrl') || (!isMac && needsMod)
-  const needsMeta = modifiers.has('meta') || (isMac && needsMod)
-  const needsShift = modifiers.has('shift')
-  const needsAlt = modifiers.has('alt')
-
-  if (needsCtrl && !e.ctrlKey) return false
-  if (needsMeta && !e.metaKey) return false
-  if (needsShift && !e.shiftKey) return false
-  if (needsAlt && !e.altKey) return false
-
-  // Ensure no extra modifiers are pressed
-  if (!needsCtrl && !needsMeta && e.ctrlKey) return false
-  if (!needsMeta && !needsCtrl && e.metaKey) return false
-  if (!needsShift && e.shiftKey) return false
-  if (!needsAlt && e.altKey) return false
-
-  return e.key.toLowerCase() === key
-}
-
 /** Parse a shortcut string like "G D" or "Ctrl+N" into individual keycap segments. */
 function parseShortcutKeys(shortcut: string): string[] {
   // If it has "+" separator (Ctrl+Shift+N style), split on +
@@ -142,11 +109,6 @@ function parseShortcutKeys(shortcut: string): string[] {
   }
   // Otherwise split on spaces (G D style)
   return shortcut.split(/\s+/).filter(Boolean)
-}
-
-/** Display-friendly modifier name. */
-function getModifierDisplay(isMac: boolean): string {
-  return isMac ? '⌘' : 'Ctrl'
 }
 
 // -----------------------------------------------------------------------

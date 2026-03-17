@@ -119,29 +119,6 @@ const SuccessBlock = React.memo(function SuccessBlock({
         </div>
       )}
 
-      {/* Animated checkmark icon */}
-      <svg
-        viewBox="0 0 24 24"
-        className="hidden"
-        fill="none"
-        stroke="currentColor"
-        strokeWidth={2}
-        strokeLinecap="round"
-        strokeLinejoin="round"
-        data-testid="success-checkmark"
-        aria-hidden="true"
-      >
-        <motion.path
-          d="M5 13l4 4L19 7"
-          initial={isReduced ? undefined : { pathLength: 0, opacity: 0 }}
-          animate={{ pathLength: 1, opacity: 1 }}
-          transition={
-            isReduced
-              ? { duration: 0 }
-              : { duration: 0.4, ease: 'easeOut', delay: 0.1 }
-          }
-        />
-      </svg>
     </div>
   )
 })

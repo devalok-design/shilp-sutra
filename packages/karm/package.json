@@ -48,6 +48,7 @@
     },
     "./ai-blocks": {
       "import": "./dist/ai-blocks/index.js",
+      "default": "./dist/ai-blocks/index.js",
       "types": "./dist/ai-blocks/index.d.ts"
     },
     "./docs/*": "./docs/components/*"

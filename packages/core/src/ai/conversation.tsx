@@ -338,6 +338,7 @@ function AIConversation({
       <div
         ref={scrollRef}
         className="flex flex-col gap-ds-05 overflow-y-auto"
+        aria-live="polite"
         style={
           maxHeight
             ? {

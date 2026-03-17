@@ -32,9 +32,9 @@ const BUILT_IN_BLOCKS: Record<string, React.ComponentType<BlockComponentProps<an
   stat_row: StatRowBlock,
 }
 
-function FallbackBlock({ data, blockId }: BlockComponentProps & { type: string }) {
+function FallbackBlock({ data, type }: { data: Record<string, unknown>; type: string }) {
   return (
-    <Alert color="info" variant="subtle" title={`Unknown block type: ${blockId}`}>
+    <Alert color="info" variant="subtle" title={`Unknown block type: ${type}`}>
       <pre className="mt-2 text-ds-xs whitespace-pre-wrap">
         {JSON.stringify(data, null, 2)}
       </pre>
@@ -87,7 +87,7 @@ export function BlockRenderer({
         const content = Component ? (
           <Component {...blockProps} />
         ) : (
-          <FallbackBlock {...blockProps} type={block.type} blockId={block.type} />
+          <FallbackBlock data={block.data} type={block.type} />
         )
 
         const key = block.id ?? `${block.type}-${index}`

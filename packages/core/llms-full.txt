@@ -5,7 +5,7 @@
 > All variant values and props verified from source CVA definitions.
 >
 > Package: @devalok/shilp-sutra
-> Version: 0.24.0
+> Version: 0.25.0
 
 ---
 
@@ -4331,15 +4331,3 @@ UserMenuItem fields:
 
 ### v0.1.0
 - **Added** Initial release
-
----
-
-# AI Command System (`@devalok/shilp-sutra/ai`) — v0.25.0
-
-Composable AI command interface. Import from `@devalok/shilp-sutra/ai`.
-
-**Components:** CommandBar (hero/inline/floating), BlockRenderer, AIConversation, AICommandProvider, DevadootIcon.
-**Block types:** text, table, confirm, success, error, info, loading, divider, stat_row.
-**Custom blocks:** Pass `customBlocks` to BlockRenderer or AICommandProvider.
-
-See `llms.txt` for usage examples.

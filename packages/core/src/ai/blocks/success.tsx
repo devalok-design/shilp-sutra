@@ -41,9 +41,8 @@ const SuccessBlock = React.memo(function SuccessBlock({
   }, [data.undoable, undoTimeout])
 
   const handleUndo = React.useCallback(() => {
-    const actionId = blockId || data.actionId || 'unknown'
-    onAction?.(actionId, 'undo')
-  }, [blockId, data, onAction])
+    onAction?.(blockId || 'unknown', 'undo')
+  }, [blockId, onAction])
 
   const remainingSeconds = Math.ceil(remaining / 1000)
 

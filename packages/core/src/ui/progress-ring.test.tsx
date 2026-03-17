@@ -19,14 +19,14 @@ describe('ProgressRing', () => {
     expect(ring).toHaveAttribute('aria-valuemax', '12')
   })
 
-  it('shows percentage text when showValue is true', () => {
-    render(<ProgressRing value={75} showValue />)
-    expect(screen.getByText('75%')).toBeInTheDocument()
+  it('renders a text element when showValue is true', () => {
+    const { container } = render(<ProgressRing value={75} showValue />)
+    expect(container.querySelector('text')).toBeInTheDocument()
   })
 
-  it('does not show percentage text by default', () => {
-    render(<ProgressRing value={75} />)
-    expect(screen.queryByText('75%')).not.toBeInTheDocument()
+  it('does not render a text element by default', () => {
+    const { container } = render(<ProgressRing value={75} />)
+    expect(container.querySelector('text')).not.toBeInTheDocument()
   })
 
   it('uses custom label for aria-label', () => {
@@ -34,9 +34,9 @@ describe('ProgressRing', () => {
     expect(screen.getByRole('progressbar')).toHaveAttribute('aria-label', 'Upload progress')
   })
 
-  it('clamps value between 0 and max', () => {
+  it('clamps aria-label percentage between 0 and max', () => {
     render(<ProgressRing value={150} showValue />)
-    expect(screen.getByText('100%')).toBeInTheDocument()
+    expect(screen.getByRole('progressbar')).toHaveAttribute('aria-label', '100% progress')
   })
 })
 

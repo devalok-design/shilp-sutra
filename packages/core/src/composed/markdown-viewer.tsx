@@ -10,6 +10,26 @@ import { Button } from '../ui/button'
 // react-syntax-highlighter is lazy-loaded in CodeBlock component below
 
 // ============================================================
+// Heading helpers
+// ============================================================
+
+function slugify(text: string): string {
+  return text.toLowerCase().replace(/[^\w]+/g, '-').replace(/(^-|-$)/g, '')
+}
+
+/** Recursively extract text content from React children */
+function extractText(node: React.ReactNode): string {
+  if (typeof node === 'string') return node
+  if (typeof node === 'number') return String(node)
+  if (!node) return ''
+  if (Array.isArray(node)) return node.map(extractText).join('')
+  if (typeof node === 'object' && 'props' in node) {
+    return extractText((node as React.ReactElement).props.children)
+  }
+  return ''
+}
+
+// ============================================================
 // Types
 // ============================================================
 
@@ -117,21 +137,39 @@ function MarkdownViewer({
         remarkPlugins={[remarkGfm]}
         skipHtml={!allowHtml}
         components={{
-          h1: ({ children }) => (
-            <h1 className={cn(compact ? 'text-ds-md' : 'text-ds-lg', 'font-semibold text-surface-fg', mt, mb)}>
-              {children}
-            </h1>
-          ),
-          h2: ({ children }) => (
-            <h2 className={cn('text-ds-md font-semibold text-surface-fg', compact ? 'mt-ds-03' : 'mt-ds-04', mb)}>
-              {children}
-            </h2>
-          ),
-          h3: ({ children }) => (
-            <h3 className={cn('text-ds-md font-semibold text-surface-fg', 'mt-ds-03', mb)}>
-              {children}
-            </h3>
-          ),
+          h1: ({ children }) => {
+            const slug = slugify(extractText(children))
+            return (
+              <h1 id={slug} className={cn('group', compact ? 'text-ds-md' : 'text-ds-lg', 'font-semibold text-surface-fg', mt, mb)}>
+                <a href={`#${slug}`} className="opacity-0 group-hover:opacity-100 text-surface-fg-subtle mr-ds-02 no-underline" aria-hidden="true">
+                  #
+                </a>
+                {children}
+              </h1>
+            )
+          },
+          h2: ({ children }) => {
+            const slug = slugify(extractText(children))
+            return (
+              <h2 id={slug} className={cn('group', 'text-ds-md font-semibold text-surface-fg', compact ? 'mt-ds-03' : 'mt-ds-04', mb)}>
+                <a href={`#${slug}`} className="opacity-0 group-hover:opacity-100 text-surface-fg-subtle mr-ds-02 no-underline" aria-hidden="true">
+                  #
+                </a>
+                {children}
+              </h2>
+            )
+          },
+          h3: ({ children }) => {
+            const slug = slugify(extractText(children))
+            return (
+              <h3 id={slug} className={cn('group', 'text-ds-md font-semibold text-surface-fg', 'mt-ds-03', mb)}>
+                <a href={`#${slug}`} className="opacity-0 group-hover:opacity-100 text-surface-fg-subtle mr-ds-02 no-underline" aria-hidden="true">
+                  #
+                </a>
+                {children}
+              </h3>
+            )
+          },
           p: ({ children }) => (
             <p className={cn('text-ds-md text-surface-fg leading-ds-relaxed', mb)}>
               {children}

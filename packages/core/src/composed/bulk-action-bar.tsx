@@ -19,6 +19,10 @@ export interface BulkActionBarAction {
   onClick: () => void
   color?: 'default' | 'error'
   disabled?: boolean
+  /** Show inline confirmation before executing the action */
+  requiresConfirmation?: boolean
+  /** Custom confirmation message @default 'Are you sure?' */
+  confirmMessage?: string
 }
 
 export interface BulkActionBarProps {
@@ -31,6 +35,68 @@ export interface BulkActionBarProps {
   /** Called when user clicks "Select all" */
   onSelectAll?: () => void
   className?: string
+}
+
+// ============================================================
+// ActionButton — handles inline confirmation
+// ============================================================
+
+function ActionButton({ action }: { action: BulkActionBarAction }) {
+  const [confirming, setConfirming] = React.useState(false)
+
+  if (confirming) {
+    return (
+      <motion.div
+        initial={{ opacity: 0, scale: 0.95 }}
+        animate={{ opacity: 1, scale: 1 }}
+        exit={{ opacity: 0, scale: 0.95 }}
+        transition={{ type: 'spring', stiffness: 500, damping: 30 }}
+        className="flex items-center gap-ds-02"
+      >
+        <span className="text-ds-sm text-surface-fg-muted whitespace-nowrap">
+          {action.confirmMessage ?? 'Are you sure?'}
+        </span>
+        <Button
+          variant="solid"
+          size="sm"
+          color="error"
+          onClick={() => {
+            setConfirming(false)
+            action.onClick()
+          }}
+        >
+          Confirm
+        </Button>
+        <Button
+          variant="ghost"
+          size="sm"
+          onClick={() => setConfirming(false)}
+        >
+          Cancel
+        </Button>
+      </motion.div>
+    )
+  }
+
+  return (
+    <motion.div
+      initial={{ opacity: 0, scale: 0.95 }}
+      animate={{ opacity: 1, scale: 1 }}
+      exit={{ opacity: 0, scale: 0.95 }}
+      transition={{ type: 'spring', stiffness: 500, damping: 30 }}
+    >
+      <Button
+        variant="ghost"
+        size="sm"
+        color={action.color === 'error' ? 'error' : 'default'}
+        disabled={action.disabled}
+        onClick={action.requiresConfirmation ? () => setConfirming(true) : action.onClick}
+        startIcon={action.icon ? <action.icon className="h-ico-sm w-ico-sm" /> : undefined}
+      >
+        {action.label}
+      </Button>
+    </motion.div>
+  )
 }
 
 // ============================================================
@@ -85,19 +151,11 @@ function BulkActionBar({
           )}
 
           <div className="flex items-center gap-ds-02">
-            {actions.map((action) => (
-              <Button
-                key={action.label}
-                variant="ghost"
-                size="sm"
-                color={action.color === 'error' ? 'error' : 'default'}
-                disabled={action.disabled}
-                onClick={action.onClick}
-                startIcon={action.icon ? <action.icon className="h-ico-sm w-ico-sm" /> : undefined}
-              >
-                {action.label}
-              </Button>
-            ))}
+            <AnimatePresence mode="popLayout">
+              {actions.map((action) => (
+                <ActionButton key={action.label} action={action} />
+              ))}
+            </AnimatePresence>
           </div>
 
           <Button

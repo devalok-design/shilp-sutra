@@ -85,19 +85,30 @@ export interface CardProps
   interactive?: boolean
   /** Position of the accent border strip */
   accent?: 'left' | 'top' | 'right' | 'bottom'
-  /** Semantic color for the accent strip. Requires `accent` to be set. @default 'default' */
-  accentColor?: 'default' | 'secondary' | 'error' | 'success' | 'warning' | 'info'
+  /** Semantic color key or any CSS color string for the accent strip. Requires `accent` to be set. @default 'default' */
+  accentColor?: 'default' | 'secondary' | 'error' | 'success' | 'warning' | 'info' | (string & {})
+  /** Width of the accent strip in pixels @default 3 */
+  accentWidth?: 2 | 3 | 4 | 6
 }
 
-const accentPositionClasses: Record<string, string> = {
-  left: 'left-0 top-0 bottom-0 w-[3px] rounded-l-ds-lg',
-  top: 'top-0 left-0 right-0 h-[3px] rounded-t-ds-lg',
-  right: 'right-0 top-0 bottom-0 w-[3px] rounded-r-ds-lg',
-  bottom: 'bottom-0 left-0 right-0 h-[3px] rounded-b-ds-lg',
+function getAccentPositionClasses(position: string, width: number): string {
+  const isHorizontal = position === 'left' || position === 'right'
+  const sizeClass = isHorizontal ? `w-[${width}px]` : `h-[${width}px]`
+  const positionMap: Record<string, string> = {
+    left: `left-0 top-0 bottom-0 ${sizeClass} rounded-l-ds-lg`,
+    top: `top-0 left-0 right-0 ${sizeClass} rounded-t-ds-lg`,
+    right: `right-0 top-0 bottom-0 ${sizeClass} rounded-r-ds-lg`,
+    bottom: `bottom-0 left-0 right-0 ${sizeClass} rounded-b-ds-lg`,
+  }
+  return positionMap[position] ?? ''
+}
+
+function resolveAccentColor(color: string): string {
+  return accentColorMap[color] ?? color
 }
 
 const Card = React.forwardRef<HTMLDivElement, CardProps>(
-  ({ className, variant, interactive, accent, accentColor = 'default', children, ...props }, ref) => {
+  ({ className, variant, interactive, accent, accentColor = 'default', accentWidth = 3, children, ...props }, ref) => {
     const classes = cn(
       cardVariants({ variant }),
       accent && 'relative overflow-hidden',
@@ -111,8 +122,8 @@ const Card = React.forwardRef<HTMLDivElement, CardProps>(
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
         transition={tweens.fade}
-        className={cn('absolute pointer-events-none', accentPositionClasses[accent])}
-        style={{ backgroundColor: accentColorMap[accentColor] }}
+        className={cn('absolute pointer-events-none', getAccentPositionClasses(accent, accentWidth))}
+        style={{ backgroundColor: resolveAccentColor(accentColor) }}
       />
     ) : null
 

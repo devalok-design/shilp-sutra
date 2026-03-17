@@ -73,45 +73,84 @@ const LazyImagePreview = React.lazy(() =>
     default: function ImagePreview({ url, alt }: { url: string; alt?: string }) {
       const { TransformWrapper, TransformComponent } = mod
       const [loaded, setLoaded] = React.useState(false)
+      const containerRef = React.useRef<HTMLDivElement>(null)
+      const [hovered, setHovered] = React.useState(false)
+      // Store zoom controls in a ref so the keyboard listener can access them
+      const controlsRef = React.useRef<{ zoomIn: () => void; zoomOut: () => void; resetTransform: () => void } | null>(null)
+
+      React.useEffect(() => {
+        function handleKeyDown(e: KeyboardEvent) {
+          const el = containerRef.current
+          if (!el) return
+          // Only active when container has focus or is hovered
+          const hasFocus = el.contains(document.activeElement)
+          if (!hasFocus && !hovered) return
+          const ctrl = controlsRef.current
+          if (!ctrl) return
+
+          if (e.key === '+' || e.key === '=') {
+            e.preventDefault()
+            ctrl.zoomIn()
+          } else if (e.key === '-') {
+            e.preventDefault()
+            ctrl.zoomOut()
+          } else if (e.key === '0') {
+            e.preventDefault()
+            ctrl.resetTransform()
+          }
+        }
+
+        document.addEventListener('keydown', handleKeyDown)
+        return () => document.removeEventListener('keydown', handleKeyDown)
+      }, [hovered])
 
       return (
-        <div className="flex flex-col items-center gap-ds-03">
+        <div
+          ref={containerRef}
+          className="flex flex-col items-center gap-ds-03"
+          onMouseEnter={() => setHovered(true)}
+          onMouseLeave={() => setHovered(false)}
+          tabIndex={-1}
+        >
           <TransformWrapper
             initialScale={1}
             minScale={0.25}
             maxScale={4}
             centerOnInit
           >
-            {({ zoomIn, zoomOut, resetTransform }) => (
-              <>
-                <div className="overflow-hidden max-h-[70vh] max-w-full rounded-ds-md bg-surface-sunken">
-                  {!loaded && <Skeleton className="h-64 w-full rounded-ds-md" />}
-                  <TransformComponent>
-                    <motion.img
-                      src={url}
-                      alt={alt ?? ''}
-                      onLoad={() => setLoaded(true)}
-                      initial={{ opacity: 0 }}
-                      animate={{ opacity: loaded ? 1 : 0 }}
+            {({ zoomIn, zoomOut, resetTransform }) => {
+              controlsRef.current = { zoomIn, zoomOut, resetTransform }
+              return (
+                <>
+                  <div className="overflow-hidden max-h-[70vh] max-w-full rounded-ds-md bg-surface-sunken">
+                    {!loaded && <Skeleton className="h-64 w-full rounded-ds-md" />}
+                    <TransformComponent>
+                      <motion.img
+                        src={url}
+                        alt={alt ?? ''}
+                        onLoad={() => setLoaded(true)}
+                        initial={{ opacity: 0 }}
+                        animate={{ opacity: loaded ? 1 : 0 }}
+                        transition={tweens.fade}
+                        className={cn('max-w-full', !loaded && 'hidden')}
+                      />
+                    </TransformComponent>
+                  </div>
+                  {loaded && (
+                    <motion.div
+                      initial={{ opacity: 0, y: 10 }}
+                      animate={{ opacity: 1, y: 0 }}
                       transition={tweens.fade}
-                      className={cn('max-w-full', !loaded && 'hidden')}
-                    />
-                  </TransformComponent>
-                </div>
-                {loaded && (
-                  <motion.div
-                    initial={{ opacity: 0, y: 10 }}
-                    animate={{ opacity: 1, y: 0 }}
-                    transition={tweens.fade}
-                    className="flex items-center gap-ds-02"
-                  >
-                    <Button variant="ghost" size="icon-xs" onClick={() => zoomOut()} aria-label="Zoom out">−</Button>
-                    <Button variant="ghost" size="icon-xs" onClick={() => resetTransform()} aria-label="Reset zoom">⟲</Button>
-                    <Button variant="ghost" size="icon-xs" onClick={() => zoomIn()} aria-label="Zoom in">+</Button>
-                  </motion.div>
-                )}
-              </>
-            )}
+                      className="flex items-center gap-ds-02"
+                    >
+                      <Button variant="ghost" size="icon-xs" onClick={() => zoomOut()} aria-label="Zoom out">−</Button>
+                      <Button variant="ghost" size="icon-xs" onClick={() => resetTransform()} aria-label="Reset zoom">⟲</Button>
+                      <Button variant="ghost" size="icon-xs" onClick={() => zoomIn()} aria-label="Zoom in">+</Button>
+                    </motion.div>
+                  )}
+                </>
+              )
+            }}
           </TransformWrapper>
         </div>
       )

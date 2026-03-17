@@ -1,7 +1,7 @@
 'use client'
 
 import * as React from 'react'
-import { motion } from 'framer-motion'
+import { motion, useMotionValue, useTransform, animate } from 'framer-motion'
 import { springs } from './lib/motion'
 import { cn } from './lib/utils'
 
@@ -51,6 +51,19 @@ const ProgressRing = React.forwardRef<SVGSVGElement, ProgressRingProps>(
     const center = config.size / 2
     const percentage = Math.round(progress * 100)
 
+    // Animated counter — drives from 0 → target percentage in sync with the ring fill
+    const motionVal = useMotionValue(0)
+    const displayValue = useTransform(motionVal, (v) => `${Math.round(v)}%`)
+
+    React.useEffect(() => {
+      const controls = animate(motionVal, progress * 100, {
+        stiffness: 100,
+        damping: 30,
+        type: 'spring',
+      })
+      return () => controls.stop()
+    }, [progress, motionVal])
+
     return (
       <svg
         ref={ref}
@@ -90,15 +103,15 @@ const ProgressRing = React.forwardRef<SVGSVGElement, ProgressRingProps>(
           transform={`rotate(-90 ${center} ${center})`}
         />
         {showValue && (
-          <text
+          <motion.text
             x={center}
             y={center}
             textAnchor="middle"
             dominantBaseline="central"
             className={cn(config.fontSize, 'fill-surface-fg font-sans font-semibold')}
           >
-            {percentage}%
-          </text>
+            {displayValue}
+          </motion.text>
         )}
       </svg>
     )

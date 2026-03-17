@@ -20,6 +20,10 @@ export interface MasterDetailProps extends React.HTMLAttributes<HTMLDivElement> 
   masterWidth?: string
   /** Breakpoint below which stacked mode activates @default 'md' */
   breakpoint?: 'sm' | 'md' | 'lg'
+  /** Content to show in the detail pane when nothing is selected */
+  emptyState?: React.ReactNode
+  /** Called when user presses ArrowUp/ArrowDown while the list has focus */
+  onNavigate?: (direction: 'up' | 'down') => void
 }
 
 interface MasterDetailListProps extends React.HTMLAttributes<HTMLDivElement> {}
@@ -63,6 +67,8 @@ interface MasterDetailContextValue {
   selected: string | null
   isMobile: boolean
   onBack?: () => void
+  emptyState?: React.ReactNode
+  onNavigate?: (direction: 'up' | 'down') => void
 }
 
 const MasterDetailContext = React.createContext<MasterDetailContextValue>({
@@ -75,18 +81,30 @@ const MasterDetailContext = React.createContext<MasterDetailContextValue>({
 // ============================================================
 
 function MasterDetailList({ children, className, ...props }: MasterDetailListProps) {
-  const { selected, isMobile } = React.useContext(MasterDetailContext)
+  const { selected, isMobile, onNavigate } = React.useContext(MasterDetailContext)
 
   // On mobile, hide list when something is selected
   if (isMobile && selected) return null
 
+  function handleKeyDown(e: React.KeyboardEvent) {
+    if (e.key === 'ArrowDown') {
+      e.preventDefault()
+      onNavigate?.('down')
+    } else if (e.key === 'ArrowUp') {
+      e.preventDefault()
+      onNavigate?.('up')
+    }
+  }
+
   return (
     <div
+      role="listbox"
       className={cn(
         'overflow-y-auto',
         !isMobile && 'border-r border-surface-border',
         className,
       )}
+      onKeyDown={handleKeyDown}
       {...props}
     >
       {children}
@@ -95,7 +113,7 @@ function MasterDetailList({ children, className, ...props }: MasterDetailListPro
 }
 
 function MasterDetailDetail({ children, className, ...props }: MasterDetailDetailProps) {
-  const { selected, isMobile, onBack } = React.useContext(MasterDetailContext)
+  const { selected, isMobile, onBack, emptyState } = React.useContext(MasterDetailContext)
 
   // On mobile, hide detail when nothing selected
   if (isMobile && !selected) return null
@@ -117,7 +135,7 @@ function MasterDetailDetail({ children, className, ...props }: MasterDetailDetai
           exit={isMobile ? { x: -20, opacity: 0 } : undefined}
           transition={springs.snappy}
         >
-          {children}
+          {selected ? children : (emptyState ?? children)}
         </motion.div>
       </AnimatePresence>
     </div>
@@ -128,6 +146,8 @@ function MasterDetailListItem({ active = false, children, className, ...props }:
   return (
     <button
       type="button"
+      role="option"
+      aria-selected={active}
       data-active={active || undefined}
       className={cn(
         'flex w-full items-center px-ds-04 py-ds-03 text-left text-ds-md font-sans text-surface-fg',
@@ -152,6 +172,8 @@ function MasterDetailRoot({
   onBack,
   masterWidth = '280px',
   breakpoint = 'md',
+  emptyState,
+  onNavigate,
   children,
   className,
   style,
@@ -160,7 +182,7 @@ function MasterDetailRoot({
   const isMobile = useMediaQuery(`(max-width: ${breakpoints[breakpoint]})`)
 
   return (
-    <MasterDetailContext.Provider value={{ selected, isMobile, onBack }}>
+    <MasterDetailContext.Provider value={{ selected, isMobile, onBack, emptyState, onNavigate }}>
       <div
         className={cn(
           'flex h-full',

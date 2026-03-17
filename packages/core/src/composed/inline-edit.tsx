@@ -1,6 +1,7 @@
 'use client'
 
 import * as React from 'react'
+import { IconPencil } from '@tabler/icons-react'
 import { cn } from '../ui/lib/utils'
 import { Spinner } from '../ui/spinner'
 
@@ -137,7 +138,7 @@ function InlineEdit({
   }
 
   return (
-    <div className={cn('inline-flex items-center gap-ds-02', className)} {...props}>
+    <div className={cn('group inline-flex items-center gap-ds-02', className)} {...props}>
       <span
         ref={editRef}
         role={readOnly ? undefined : 'textbox'}
@@ -166,6 +167,9 @@ function InlineEdit({
       >
         {value || (focused ? '' : placeholder)}
       </span>
+      {!readOnly && !focused && !isSaving && (
+        <IconPencil className="h-3 w-3 text-surface-fg-subtle opacity-0 group-hover:opacity-100 transition-opacity duration-fast-01 shrink-0" aria-hidden="true" />
+      )}
       {isSaving && <Spinner size="sm" />}
     </div>
   )

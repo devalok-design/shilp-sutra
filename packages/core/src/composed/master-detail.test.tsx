@@ -33,7 +33,7 @@ describe('MasterDetail', () => {
     expect(screen.getByText('Detail pane content')).toBeInTheDocument()
   })
 
-  it('renders ListItem as buttons', () => {
+  it('renders ListItem with option role', () => {
     render(
       <MasterDetail>
         <MasterDetail.List>
@@ -42,10 +42,10 @@ describe('MasterDetail', () => {
         <MasterDetail.Detail>Detail</MasterDetail.Detail>
       </MasterDetail>,
     )
-    expect(screen.getByRole('button', { name: 'Clickable' })).toBeInTheDocument()
+    expect(screen.getByRole('option', { name: 'Clickable' })).toBeInTheDocument()
   })
 
-  it('marks active ListItem with data-active attribute', () => {
+  it('marks active ListItem with data-active and aria-selected', () => {
     render(
       <MasterDetail selected="1">
         <MasterDetail.List>
@@ -54,7 +54,9 @@ describe('MasterDetail', () => {
         <MasterDetail.Detail>Detail</MasterDetail.Detail>
       </MasterDetail>,
     )
-    expect(screen.getByRole('button', { name: 'Active item' })).toHaveAttribute('data-active')
+    const item = screen.getByRole('option', { name: 'Active item' })
+    expect(item).toHaveAttribute('data-active')
+    expect(item).toHaveAttribute('aria-selected', 'true')
   })
 
   it('renders both list and detail in desktop mode (matchMedia returns false)', () => {

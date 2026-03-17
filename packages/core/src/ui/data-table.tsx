@@ -8,6 +8,7 @@ import {
   type ExpandedState,
   type PaginationState,
   type Row,
+  type RowData,
   type RowSelectionState,
   type SortingState,
   type TableState,
@@ -47,6 +48,25 @@ import { Skeleton } from './skeleton'
 import { cn } from './lib/utils'
 import { springs } from './lib/motion'
 import { DataTableToolbar, type Density } from './data-table-toolbar'
+
+declare module '@tanstack/react-table' {
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  interface ColumnMeta<TData extends RowData, TValue> {
+    align?: 'left' | 'center' | 'right'
+    hideBelow?: 'sm' | 'md' | 'lg'
+  }
+}
+
+function getColumnMetaClasses(meta?: Record<string, unknown>): string {
+  if (!meta) return ''
+  const classes: string[] = []
+  if (meta.align === 'right') classes.push('text-right tabular-nums')
+  if (meta.align === 'center') classes.push('text-center')
+  if (meta.hideBelow === 'sm') classes.push('hidden sm:table-cell')
+  if (meta.hideBelow === 'md') classes.push('hidden md:table-cell')
+  if (meta.hideBelow === 'lg') classes.push('hidden lg:table-cell')
+  return classes.join(' ')
+}
 
 const densityPaddingMap: Record<Density, string> = {
   compact: 'py-ds-02',
@@ -667,6 +687,7 @@ export function DataTable<TData, TValue>({
                 cellPadding,
                 pinned.className,
                 virtualRows && 'flex-1',
+                getColumnMetaClasses(cell.column.columnDef.meta as Record<string, unknown>),
               )}
               style={pinned.style}
               onDoubleClick={() => {
@@ -847,7 +868,7 @@ export function DataTable<TData, TValue>({
               return (
                 <TableHead
                   key={header.id}
-                  className={pinned.className}
+                  className={cn(pinned.className, getColumnMetaClasses(header.column.columnDef.meta as Record<string, unknown>))}
                   style={pinned.style}
                 >
                   {header.isPlaceholder ? null : canSort ? (

@@ -85,6 +85,96 @@ function getEmbedUrl(url: string): string {
   return url
 }
 
+// ============================================================
+// Shared: Volume Slider (Spotify/YouTube style)
+// Custom-built — no native input range. Consistent across browsers.
+// ============================================================
+
+function VolumeControl({
+  volume,
+  muted,
+  onVolumeChange,
+  onMuteToggle,
+  variant = 'light',
+}: {
+  volume: number
+  muted: boolean
+  onVolumeChange: (v: number) => void
+  onMuteToggle: () => void
+  variant?: 'light' | 'dark' // dark = white on black (video), light = DS tokens (audio)
+}) {
+  const trackRef = React.useRef<HTMLDivElement>(null)
+  const [dragging, setDragging] = React.useState(false)
+  const displayVolume = muted ? 0 : volume
+
+  function getVolumeFromEvent(e: MouseEvent | React.MouseEvent) {
+    if (!trackRef.current) return volume
+    const rect = trackRef.current.getBoundingClientRect()
+    return Math.max(0, Math.min(1, (e.clientX - rect.left) / rect.width))
+  }
+
+  function handlePointerDown(e: React.PointerEvent) {
+    e.preventDefault()
+    setDragging(true)
+    const v = getVolumeFromEvent(e)
+    onVolumeChange(v)
+    ;(e.target as HTMLElement).setPointerCapture(e.pointerId)
+  }
+
+  function handlePointerMove(e: React.PointerEvent) {
+    if (!dragging) return
+    onVolumeChange(getVolumeFromEvent(e))
+  }
+
+  function handlePointerUp() {
+    setDragging(false)
+  }
+
+  const isDark = variant === 'dark'
+  const trackBg = isDark ? 'bg-white/30' : 'bg-surface-sunken'
+  const fillBg = isDark ? 'bg-white' : 'bg-accent-9'
+  const thumbBg = isDark ? 'bg-white' : 'bg-accent-9'
+  const iconClass = isDark ? 'text-white hover:text-white/80' : 'text-surface-fg-muted hover:text-surface-fg'
+
+  return (
+    <div className="group/vol flex items-center gap-ds-02 shrink-0">
+      <button onClick={onMuteToggle} className={cn('transition-colors', iconClass)} aria-label={muted ? 'Unmute (M)' : 'Mute (M)'}>
+        {muted || volume === 0 ? <IconVolumeOff className="h-ico-sm w-ico-sm" /> : <IconVolume className="h-ico-sm w-ico-sm" />}
+      </button>
+      <div className="w-0 overflow-hidden group-hover/vol:w-20 transition-[width] duration-200 ease-productive-standard flex items-center">
+        <div
+          ref={trackRef}
+          className={cn('relative w-full h-1 rounded-full cursor-pointer', trackBg)}
+          onPointerDown={handlePointerDown}
+          onPointerMove={handlePointerMove}
+          onPointerUp={handlePointerUp}
+          role="slider"
+          aria-label="Volume"
+          aria-valuenow={Math.round(displayVolume * 100)}
+          aria-valuemin={0}
+          aria-valuemax={100}
+          tabIndex={0}
+        >
+          {/* Fill */}
+          <div
+            className={cn('absolute left-0 top-0 h-full rounded-full transition-[width] duration-75', fillBg)}
+            style={{ width: `${displayVolume * 100}%` }}
+          />
+          {/* Thumb */}
+          <div
+            className={cn(
+              'absolute top-1/2 -translate-y-1/2 h-2.5 w-2.5 rounded-full shadow-raised transition-opacity',
+              thumbBg,
+              dragging ? 'opacity-100 scale-110' : 'opacity-0 group-hover/vol:opacity-100',
+            )}
+            style={{ left: `${displayVolume * 100}%`, marginLeft: '-5px' }}
+          />
+        </div>
+      </div>
+    </div>
+  )
+}
+
 function formatTime(s: number): string {
   if (!isFinite(s) || s < 0) return '0:00'
   const h = Math.floor(s / 3600)
@@ -539,9 +629,16 @@ function VideoPreview({ url, onError }: { url: string; onError?: (msg: string) =
               <button onClick={togglePlay} className="text-white hover:text-white/80" aria-label={playing ? 'Pause' : 'Play'}>
                 {playing ? <IconPlayerPause className="h-5 w-5" /> : <IconPlayerPlay className="h-5 w-5" />}
               </button>
-              <button onClick={() => setMuted(!muted)} className="text-white hover:text-white/80" aria-label={muted ? 'Unmute' : 'Mute'}>
-                {muted ? <IconVolumeOff className="h-4 w-4" /> : <IconVolume className="h-4 w-4" />}
-              </button>
+              <VolumeControl
+                volume={muted ? 0 : 1}
+                muted={muted}
+                onVolumeChange={(v) => {
+                  if (videoRef.current) videoRef.current.volume = v
+                  if (v > 0 && muted) { setMuted(false); if (videoRef.current) videoRef.current.muted = false }
+                }}
+                onMuteToggle={() => { setMuted(!muted); if (videoRef.current) videoRef.current.muted = !muted }}
+                variant="dark"
+              />
               <span className="text-[11px] font-mono text-white/70 tabular-nums">
                 {formatTime(currentTime)} / {formatTime(duration)}
               </span>
@@ -723,9 +820,20 @@ function AudioPreview({ url, fileName, onError }: { url: string; fileName?: stri
         </div>
 
         {/* Volume */}
-        <button onClick={toggleMute} className="text-surface-fg-muted hover:text-surface-fg transition-colors shrink-0" aria-label={muted ? 'Unmute' : 'Mute'}>
-          {muted || volume === 0 ? <IconVolumeOff className="h-ico-sm w-ico-sm" /> : <IconVolume className="h-ico-sm w-ico-sm" />}
-        </button>
+        <VolumeControl
+          volume={volume}
+          muted={muted}
+          onVolumeChange={(v) => {
+            setVolume(v)
+            if (audioRef.current) audioRef.current.volume = v
+            if (v > 0 && muted) {
+              setMuted(false)
+              if (audioRef.current) audioRef.current.muted = false
+            }
+          }}
+          onMuteToggle={toggleMute}
+          variant="light"
+        />
       </div>
     </div>
   )

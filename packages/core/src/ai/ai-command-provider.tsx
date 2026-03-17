@@ -22,10 +22,14 @@ export interface AICommandProviderProps {
   agent?: { name: string; icon?: React.ReactNode }
 }
 
-export function AICommandProvider({ children, customBlocks = {}, onAction, agent }: AICommandProviderProps) {
+const EMPTY_BLOCKS: Record<string, React.ComponentType<BlockComponentProps<any>>> = {}
+
+export function AICommandProvider({ children, customBlocks, onAction, agent }: AICommandProviderProps) {
+  const blocks = customBlocks ?? EMPTY_BLOCKS
   const value = React.useMemo<AICommandContext>(
-    () => ({ customBlocks, onAction, agent }),
-    [customBlocks, onAction, agent],
+    () => ({ customBlocks: blocks, onAction, agent }),
+    // eslint-disable-next-line react-hooks/exhaustive-deps -- stable ref for blocks via ?? EMPTY_BLOCKS
+    [blocks, onAction, agent],
   )
   return <AICommandCtx.Provider value={value}>{children}</AICommandCtx.Provider>
 }

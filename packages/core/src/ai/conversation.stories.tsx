@@ -674,11 +674,13 @@ const contextMessages: ConversationMessage[] = [
   },
 ]
 
+const contextOnAction = fn()
+
 export const WithContextProvider: Story = {
-  render: (args) => (
+  render: () => (
     <AICommandProvider
       agent={{ name: 'Devadoot', icon: <IconRobot size={16} /> }}
-      onAction={fn()}
+      onAction={contextOnAction}
     >
       <AIConversation messages={contextMessages} />
     </AICommandProvider>

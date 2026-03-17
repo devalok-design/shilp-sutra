@@ -2,11 +2,11 @@ import { describe, it, expect } from 'vitest'
 import { springs, tweens, stagger, withReducedMotion } from '../motion'
 
 describe('springs', () => {
-  it('has snappy, smooth, bouncy, gentle keys', () => {
-    expect(Object.keys(springs)).toEqual(['snappy', 'smooth', 'bouncy', 'gentle'])
+  it('has snappy, smooth, bouncy, gentle, responsive keys', () => {
+    expect(Object.keys(springs)).toEqual(['snappy', 'smooth', 'bouncy', 'gentle', 'responsive'])
   })
 
-  it.each(['snappy', 'smooth', 'bouncy', 'gentle'] as const)(
+  it.each(['snappy', 'smooth', 'bouncy', 'gentle', 'responsive'] as const)(
     '%s has type: "spring"',
     (key) => {
       expect(springs[key]).toHaveProperty('type', 'spring')
@@ -15,11 +15,11 @@ describe('springs', () => {
 })
 
 describe('tweens', () => {
-  it('has fade, colorShift keys', () => {
-    expect(Object.keys(tweens)).toEqual(['fade', 'colorShift'])
+  it('has fade, colorShift, elegant keys', () => {
+    expect(Object.keys(tweens)).toEqual(['fade', 'colorShift', 'elegant'])
   })
 
-  it.each(['fade', 'colorShift'] as const)('%s has type: "tween"', (key) => {
+  it.each(['fade', 'colorShift', 'elegant'] as const)('%s has type: "tween"', (key) => {
     expect(tweens[key]).toHaveProperty('type', 'tween')
   })
 })

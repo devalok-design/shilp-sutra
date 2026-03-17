@@ -29,6 +29,7 @@ export default defineConfig({
         'dashboard/index': resolve(__dirname, 'src/dashboard/index.ts'),
         'client/index': resolve(__dirname, 'src/client/index.ts'),
         'admin/index': resolve(__dirname, 'src/admin/index.ts'),
+        'ai-blocks/index': resolve(__dirname, 'src/ai-blocks/index.ts'),
       },
       formats: ['es'],
     },

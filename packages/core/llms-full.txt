@@ -5,7 +5,7 @@
 > All variant values and props verified from source CVA definitions.
 >
 > Package: @devalok/shilp-sutra
-> Version: 0.23.3
+> Version: 0.25.0
 
 ---
 
@@ -3071,77 +3071,30 @@ export default function RootLayout({ children }) {
 
 ## Props
     groups?: CommandGroup[] (default: []) — { label: string, items: CommandItem[] }
-    placeholder?: string (default: "Search or jump to...")
-    onSearch?: (query: string) => void
-    emptyMessage?: string (default: "No results found.")
-    emptyState?: ReactNode — full custom empty state (overrides emptyMessage)
-    open?: boolean — controlled open state
-    defaultOpen?: boolean — default open state for uncontrolled usage
-    onOpenChange?: (open: boolean) => void — called when open state changes
-    keybinding?: string | string[] | false (default: 'mod+k') — toggle keybinding(s). 'mod' = Meta on macOS, Ctrl otherwise. Pass false to disable.
-    maxHeight?: string | number (default: '320px') — max height of results container
-    footerHints?: FooterHint[] | false — custom keyboard hints in footer, or false to hide footer
+    placeholder: string (default: "Search or jump to...")
+    onSearch: (query: string) => void
+    emptyMessage: string (default: "No results found.")
 
-CommandItem shape: { id, label: string|ReactNode, description?: string|ReactNode, icon?: ReactNode, shortcut?: string, renderLabel?: (query: string) => ReactNode, filterValue?: string, onSelect: () => void }
-
-FooterHint shape: { keys: string, label: string }
-
-## Types exported
-    CommandPaletteProps, CommandGroup, CommandItem, FooterHint
+CommandItem shape: { id, label, description?, icon?, shortcut?, onSelect: () => void }
 
 ## Defaults
-    placeholder="Search or jump to...", emptyMessage="No results found.", groups=[], keybinding='mod+k', maxHeight='320px'
+    placeholder="Search or jump to...", emptyMessage="No results found.", groups=[]
 
 ## Example
 ```jsx
-// Basic (uncontrolled, opens with Ctrl+K / Cmd+K)
 <CommandPalette
   groups={[{
     label: 'Navigation',
     items: [{ id: 'dash', label: 'Dashboard', onSelect: () => navigate('/') }],
   }]}
 />
-
-// Controlled with custom keybinding
-const [open, setOpen] = useState(false)
-<CommandPalette groups={groups} open={open} onOpenChange={setOpen} keybinding={['mod+k', 'ctrl+p']} />
-
-// Rich labels with match highlighting
-<CommandPalette groups={[{
-  label: 'Results',
-  items: [{
-    id: 'task-1',
-    label: <span>Fix <strong>login</strong> bug</span>,
-    filterValue: 'Fix login bug',
-    renderLabel: (query) => <HighlightMatch text="Fix login bug" query={query} />,
-    onSelect: () => {},
-  }],
-}]} />
 ```
 
 ## Gotchas
-- Opens with Ctrl+K / Cmd+K by default — override with `keybinding` prop, or disable with `keybinding={false}`
-- Supports controlled/uncontrolled pattern: pass `open`+`onOpenChange` for controlled, or `defaultOpen` for uncontrolled
-- When `label` is a ReactNode, provide `filterValue` for search filtering
-- `renderLabel` receives the current search query — use for match highlighting
-- `shortcut` strings are split into keycap badges: "G D" → [G] [D], "Ctrl+N" → [⌘] [N] on Mac
-- Respects MotionProvider's reduced-motion setting
+- Opens with Ctrl+K / Cmd+K by default
 - Items animate in with staggered slide-up (30ms delay cascade); groups fade in; active item icon/shortcut highlight in interactive color (v0.15.0)
 
 ## Changes
-### v0.24.0
-- **Added** `open`, `defaultOpen`, `onOpenChange` for controlled/uncontrolled state
-- **Added** `keybinding` prop — customizable toggle keybinding(s), or `false` to disable
-- **Added** `maxHeight` prop — configurable results container height
-- **Added** `emptyState` prop — full ReactNode override for empty state
-- **Added** `footerHints` prop — custom footer keyboard hints, or `false` to hide
-- **Added** `CommandItem.label` and `description` now accept `string | ReactNode`
-- **Added** `CommandItem.renderLabel` — render override receiving search query for match highlighting
-- **Added** `CommandItem.filterValue` — plain-text search value when label is ReactNode
-- **Added** `FooterHint` type export
-- **Added** Shortcut keys rendered as individual keycap badges with platform-aware modifier display
-- **Added** Reduced-motion support via MotionProvider context
-
 ### v0.15.0
 - **Added** Staggered slide-up entrance animations for items, fade-in for groups/empty state/footer, scale-in for search icon, active item icon/shortcut color transitions
 
@@ -3868,73 +3821,33 @@ Note: StatusBadge was server-safe prior to v0.18.0 but is NO LONGER server-safe 
     extraGroups?: CommandGroup[]
     onNavigate?: (path: string) => void
     onSearch?: (query: string) => void
-    searchResults?: SearchResult[] — flat results in single group. For grouped, use searchResultGroups.
-    searchResultGroups?: SearchResultGroup[] — grouped results with per-group labels. Takes precedence over searchResults.
+    searchResults?: SearchResult[]
     isSearching?: boolean (shows loading state while search is in progress)
-    onSearchResultSelect?: (result: SearchResult) => void — when provided, consumer owns routing (no internal URL computation)
-    searchResultsLabel?: string | ((count: number) => string) — custom label for results group
-    open?: boolean — controlled open state (pass-through to CommandPalette)
-    defaultOpen?: boolean — default open state
-    onOpenChange?: (open: boolean) => void — called when open state changes
-    keybinding?: string | string[] | false — toggle keybinding (default: 'mod+k')
-    maxHeight?: string | number — max height of results (default: '320px')
-    emptyState?: ReactNode — custom empty state
-    footerHints?: FooterHint[] | false — custom footer hints
+    onSearchResultSelect?: (result: SearchResult) => void
 
-SearchResult: { id, title, snippet?, entityType, projectId?, metadata?, icon?(ReactNode), rank?(number), shortcut?(string) }
-SearchResultGroup: { label: string, results: SearchResult[] }
+SearchResult: { id: string, title: string, snippet?: string, entityType: string, projectId?: string | null, metadata?: Record<string, unknown> }
 AppCommandPaletteUser: { name: string, role?: string }
 
-## Types exported
-    AppCommandPaletteProps, SearchResult, SearchResultGroup, AppCommandPaletteUser
-
 ## Defaults
-    keybinding='mod+k', maxHeight='320px'
+    None
 
 ## Example
 ```jsx
-// Consumer-owned routing (recommended)
 <AppCommandPalette
-  user={currentUser}
-  onSearch={handleSearch}
+  user={{ name: 'John', role: 'admin' }}
+  isAdmin={true}
+  onNavigate={(path) => router.push(path)}
   searchResults={results}
-  onSearchResultSelect={(result) => router.push(computeRoute(result))}
+  onSearchResultSelect={(r) => router.push(`/${r.entityType}/${r.id}`)}
 />
-
-// Grouped search results
-<AppCommandPalette
-  user={currentUser}
-  searchResultGroups={[
-    { label: 'Tasks', results: taskResults },
-    { label: 'Projects', results: projectResults },
-  ]}
-  onSearchResultSelect={(r) => router.push(computeRoute(r))}
-  searchResultsLabel={(count) => `${count} results`}
-/>
-
-// Controlled with custom keybinding
-const [open, setOpen] = useState(false)
-<AppCommandPalette user={currentUser} open={open} onOpenChange={setOpen} keybinding={['mod+k', '/']} />
 ```
 
 ## Gotchas
 - Uses CommandRegistry context for page navigation items (see CommandRegistryProvider)
 - `isAdmin` takes precedence over `user.role` for showing admin command groups
 - Should be placed at the app root level, typically alongside TopBar
-- **Routing:** When `onSearchResultSelect` is provided, no internal `onNavigate` call — consumer owns routing. When absent, falls back to internal URL computation.
-- `searchResultGroups` takes precedence over `searchResults`
-- Results with `rank` are sorted by descending rank (higher = more relevant)
-- Result `icon` overrides the default entity-type icon
 
 ## Changes
-### v0.24.0
-- **Added** `searchResultGroups` prop for grouped search results
-- **Added** `onSearchResultSelect` now gives consumer full routing control
-- **Added** `SearchResult.icon`, `SearchResult.rank`, `SearchResult.shortcut` fields
-- **Added** `SearchResultGroup` type export
-- **Added** `searchResultsLabel` prop
-- **Added** `open`, `defaultOpen`, `onOpenChange`, `keybinding`, `maxHeight`, `emptyState`, `footerHints` pass-through
-
 ### v0.3.0
 - **Fixed** Added missing `'use client'` directive
 

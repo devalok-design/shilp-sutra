@@ -65,6 +65,13 @@ const explicitEntries: Record<string, string> = {
   'composed/lib/string-utils': resolve(__dirname, 'src/composed/lib/string-utils.ts'),
   'motion/index': resolve(__dirname, 'src/motion/index.ts'),
   'motion/primitives-index': resolve(__dirname, 'src/motion/primitives-index.ts'),
+  // AI command system
+  'ai/index': resolve(__dirname, 'src/ai/index.ts'),
+  'ai/command-bar': resolve(__dirname, 'src/ai/command-bar.tsx'),
+  'ai/conversation': resolve(__dirname, 'src/ai/conversation.tsx'),
+  'ai/block-renderer': resolve(__dirname, 'src/ai/block-renderer.tsx'),
+  'ai/ai-command-provider': resolve(__dirname, 'src/ai/ai-command-provider.tsx'),
+  'ai/blocks/index': resolve(__dirname, 'src/ai/blocks/index.ts'),
 }
 
 export default defineConfig({
@@ -101,6 +108,7 @@ export default defineConfig({
         /^@tabler\/icons-react($|\/)/,
         /^date-fns($|\/)/,
         /^react-markdown($|\/)/,
+        /^remark-gfm($|\/)/,
         /^input-otp($|\/)/,
         /^server-only$/,
       ],

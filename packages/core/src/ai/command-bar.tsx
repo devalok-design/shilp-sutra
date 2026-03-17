@@ -37,6 +37,82 @@ import { matchesKeybinding, getIsMac, getModifierDisplay } from '../ui/lib/keybi
 import type { CommandGroup, CommandItem } from '../composed/command-palette'
 
 // -----------------------------------------------------------------------
+// GradientBorderWrap — animated gradient border during processing
+// -----------------------------------------------------------------------
+
+/**
+ * Wraps the input row with an animated gradient border during processing.
+ * Uses the Devalok brand palette (pink → purple → magenta) flowing around
+ * the border. When inactive, renders children directly with no wrapper overhead.
+ *
+ * Technique: outer div with gradient background + padding-[1.5px] creates
+ * a visible gradient border. The inner content covers the center, leaving
+ * only the edge visible as a "border".
+ */
+function GradientBorderWrap({
+  active,
+  rounded,
+  reducedMotion,
+  children,
+}: {
+  active: boolean
+  rounded: string
+  reducedMotion: boolean
+  children: React.ReactNode
+}) {
+  if (!active) return <>{children}</>
+
+  if (reducedMotion) {
+    return (
+      <div className={cn('p-[1.5px] bg-accent-9', rounded)}>
+        {children}
+      </div>
+    )
+  }
+
+  return (
+    <motion.div
+      className={cn('relative p-[1.5px]', rounded)}
+      style={{
+        background: 'linear-gradient(var(--gradient-angle, 0deg), #D33163, #9B5DE5, #C850C0, #D33163)',
+        backgroundSize: '300% 300%',
+      }}
+      animate={{
+        // Rotate the gradient angle — creates the flowing border effect
+        // Using CSS custom property animation via backgroundPosition as proxy
+        backgroundPosition: ['0% 0%', '100% 100%', '0% 0%'],
+      }}
+      transition={{
+        backgroundPosition: {
+          duration: 4,
+          repeat: Infinity,
+          ease: 'linear',
+        },
+      }}
+    >
+      {/* Subtle outer glow */}
+      <motion.div
+        className={cn('absolute inset-0 -z-10', rounded)}
+        style={{
+          background: 'linear-gradient(var(--gradient-angle, 0deg), #D33163, #9B5DE5, #C850C0, #D33163)',
+          backgroundSize: '300% 300%',
+          filter: 'blur(8px)',
+        }}
+        animate={{
+          opacity: [0.3, 0.5, 0.3],
+          backgroundPosition: ['0% 0%', '100% 100%', '0% 0%'],
+        }}
+        transition={{
+          opacity: { duration: 3, repeat: Infinity, ease: 'easeInOut' },
+          backgroundPosition: { duration: 4, repeat: Infinity, ease: 'linear' },
+        }}
+      />
+      {children}
+    </motion.div>
+  )
+}
+
+// -----------------------------------------------------------------------
 // Types
 // -----------------------------------------------------------------------
 
@@ -395,17 +471,24 @@ const CommandBar = React.forwardRef<HTMLDivElement, CommandBarProps>(
     const isResponded = state === 'responded'
 
     const renderInputRow = () => (
-      <div
-        className={cn(
-          'flex items-center gap-ds-04 border border-surface-border-strong bg-surface-overlay transition-colors transition-shadow duration-fast-02 ease-productive-standard',
-          isCompact
-            ? 'rounded-ds-md px-ds-04'
-            : 'rounded-ds-lg px-ds-05',
-          isFocused && 'border-accent-7 shadow-ring',
-          isProcessing && 'opacity-70',
-          shake && 'animate-shake',
-        )}
+      <GradientBorderWrap
+        active={isProcessing}
+        rounded={isCompact ? 'rounded-ds-md' : 'rounded-ds-lg'}
+        reducedMotion={isReduced}
       >
+        <div
+          className={cn(
+            'flex items-center gap-ds-04 border bg-surface-overlay transition-colors transition-shadow duration-fast-02 ease-productive-standard',
+            isCompact
+              ? 'rounded-ds-md px-ds-04'
+              : 'rounded-ds-lg px-ds-05',
+            isProcessing
+              ? 'border-transparent'
+              : 'border-surface-border-strong',
+            isFocused && !isProcessing && 'border-accent-7 shadow-ring',
+            shake && 'animate-shake',
+          )}
+        >
         {/* Search icon */}
         <IconSearch
           className={cn(
@@ -499,7 +582,8 @@ const CommandBar = React.forwardRef<HTMLDivElement, CommandBarProps>(
             )}
           </AnimatePresence>
         ) : null}
-      </div>
+        </div>
+      </GradientBorderWrap>
     )
 
     // =====================================================================

@@ -29,11 +29,11 @@ export interface DevadootIconProps {
 const CHAKRA_PATH =
   'M25.97,21.39c-0.9-1.85,0.08-3.95-1.72-5.39c1.76-1.44,0.8-3.55,1.69-5.39c0.05-0.12,0.04-0.25-0.02-0.35c-0.06-0.1-0.16-0.18-0.29-0.19c-2.05-0.15-3.35-2.04-5.5-1.21c-0.39-2.21-2.7-2.44-3.84-4.13c-0.08-0.1-0.19-0.16-0.31-0.16c-0.12,0-0.23,0.05-0.31,0.16c-1.14,1.69-3.43,1.92-3.82,4.13c-2.14-0.83-3.47,1.07-5.52,1.21c-0.13,0.01-0.23,0.09-0.29,0.19c-0.06,0.1-0.07,0.23-0.02,0.35c0.9,1.85-0.08,3.95,1.72,5.39c-1.76,1.44-0.8,3.55-1.69,5.39C6,21.51,6.02,21.64,6.07,21.74c0.06,0.1,0.16,0.18,0.29,0.19c2.05,0.15,3.38,2.06,5.52,1.23c0.39,2.21,2.67,2.43,3.82,4.12c0.08,0.1,0.19,0.16,0.31,0.16c0.12,0,0.23-0.05,0.31-0.16c1.14-1.69,3.42-1.92,3.81-4.13c2.14,0.83,3.48-1.07,5.53-1.22c0.13-0.01,0.23-0.09,0.29-0.19C26.01,21.64,26.02,21.51,25.97,21.39z'
 
-// Brand colors
+// Brand colors — pink ↔ purple palette, no blue
 const BRAND_PINK = '#D33163'
 const BRAND_ROSE = '#E8457A'
 const BRAND_PURPLE = '#9B5DE5'
-const BRAND_BLUE = '#00BBF9'
+const BRAND_MAGENTA = '#C850C0'
 const BRAND_BRIGHT = '#FF6B9D'
 const ERROR_RED = '#E5383B'
 
@@ -46,7 +46,7 @@ function useGradientRotation(state: DevadootState) {
 
   React.useEffect(() => {
     const controls = animate(angle, 360, {
-      duration: state === 'processing' ? 2 : 8,
+      duration: state === 'processing' ? 4 : 12,
       repeat: Infinity,
       ease: 'linear',
     })
@@ -89,7 +89,7 @@ const DevadootIcon = React.memo(function DevadootIcon({
     state === 'error'
       ? { s1: ERROR_RED, s2: '#FF6B6B', s3: ERROR_RED }
       : state === 'processing'
-        ? { s1: BRAND_PINK, s2: BRAND_PURPLE, s3: BRAND_BLUE }
+        ? { s1: BRAND_PINK, s2: BRAND_PURPLE, s3: BRAND_MAGENTA }
         : state === 'responded'
           ? { s1: BRAND_BRIGHT, s2: BRAND_PINK, s3: BRAND_BRIGHT }
           : { s1: BRAND_PINK, s2: BRAND_ROSE, s3: BRAND_PINK }
@@ -137,17 +137,17 @@ const DevadootIcon = React.memo(function DevadootIcon({
             <motion.stop
               offset="0%"
               animate={{ stopColor: stops.s1 }}
-              transition={{ duration: state === 'processing' ? 1.5 : 3, repeat: Infinity, repeatType: 'reverse', ease: 'easeInOut' }}
+              transition={{ duration: state === 'processing' ? 3 : 5, repeat: Infinity, repeatType: 'reverse', ease: 'easeInOut' }}
             />
             <motion.stop
               offset="50%"
               animate={{ stopColor: stops.s2 }}
-              transition={{ duration: state === 'processing' ? 1.5 : 3, repeat: Infinity, repeatType: 'reverse', ease: 'easeInOut', delay: 0.3 }}
+              transition={{ duration: state === 'processing' ? 3 : 5, repeat: Infinity, repeatType: 'reverse', ease: 'easeInOut', delay: 0.5 }}
             />
             <motion.stop
               offset="100%"
               animate={{ stopColor: stops.s3 }}
-              transition={{ duration: state === 'processing' ? 1.5 : 3, repeat: Infinity, repeatType: 'reverse', ease: 'easeInOut', delay: 0.6 }}
+              transition={{ duration: state === 'processing' ? 3 : 5, repeat: Infinity, repeatType: 'reverse', ease: 'easeInOut', delay: 1 }}
             />
           </motion.linearGradient>
 
@@ -169,10 +169,10 @@ const DevadootIcon = React.memo(function DevadootIcon({
               fill={`url(#${gradientId})`}
               filter={`url(#${filterId})`}
               initial={{ opacity: 0 }}
-              animate={{ opacity: [0.3, 0.6, 0.3] }}
+              animate={{ opacity: [0.2, 0.45, 0.2] }}
               exit={{ opacity: 0 }}
               transition={{
-                opacity: { duration: 1.5, repeat: Infinity, ease: 'easeInOut' },
+                opacity: { duration: 3, repeat: Infinity, ease: 'easeInOut' },
               }}
             />
           )}
@@ -185,10 +185,10 @@ const DevadootIcon = React.memo(function DevadootIcon({
               d={CHAKRA_PATH}
               fill="white"
               initial={{ opacity: 0 }}
-              animate={{ opacity: [0, 0.15, 0] }}
+              animate={{ opacity: [0, 0.12, 0] }}
               exit={{ opacity: 0 }}
               transition={{
-                opacity: { duration: 1.2, repeat: Infinity, ease: 'easeInOut' },
+                opacity: { duration: 2.5, repeat: Infinity, ease: 'easeInOut' },
               }}
             />
           )}

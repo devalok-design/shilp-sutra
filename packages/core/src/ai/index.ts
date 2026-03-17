@@ -13,6 +13,9 @@ export type { BlockRendererProps } from './block-renderer'
 export { AICommandProvider, useAICommand } from './ai-command-provider'
 export type { AICommandProviderProps, AICommandContext } from './ai-command-provider'
 
+export { DevadootIcon } from './devadoot-icon'
+export type { DevadootIconProps, DevadootState } from './devadoot-icon'
+
 // Block components (for customization/extension)
 export { TextBlock } from './blocks/text'
 export { BlockTable } from './blocks/block-table'

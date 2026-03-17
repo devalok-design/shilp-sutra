@@ -413,10 +413,60 @@
       "default": "./dist/composed/loading-skeleton.js",
       "types": "./dist/composed/loading-skeleton.d.ts"
     },
+    "./composed/bulk-action-bar": {
+      "import": "./dist/composed/bulk-action-bar.js",
+      "default": "./dist/composed/bulk-action-bar.js",
+      "types": "./dist/composed/bulk-action-bar.d.ts"
+    },
+    "./composed/deadline-indicator": {
+      "import": "./dist/composed/deadline-indicator.js",
+      "default": "./dist/composed/deadline-indicator.js",
+      "types": "./dist/composed/deadline-indicator.d.ts"
+    },
+    "./composed/emoji-picker": {
+      "import": "./dist/composed/emoji-picker.js",
+      "default": "./dist/composed/emoji-picker.js",
+      "types": "./dist/composed/emoji-picker.d.ts"
+    },
+    "./composed/file-preview": {
+      "import": "./dist/composed/file-preview.js",
+      "default": "./dist/composed/file-preview.js",
+      "types": "./dist/composed/file-preview.d.ts"
+    },
+    "./composed/filter-bar": {
+      "import": "./dist/composed/filter-bar.js",
+      "default": "./dist/composed/filter-bar.js",
+      "types": "./dist/composed/filter-bar.d.ts"
+    },
+    "./composed/form-section": {
+      "import": "./dist/composed/form-section.js",
+      "default": "./dist/composed/form-section.js",
+      "types": "./dist/composed/form-section.d.ts"
+    },
+    "./composed/inline-edit": {
+      "import": "./dist/composed/inline-edit.js",
+      "default": "./dist/composed/inline-edit.js",
+      "types": "./dist/composed/inline-edit.d.ts"
+    },
+    "./composed/markdown-viewer": {
+      "import": "./dist/composed/markdown-viewer.js",
+      "default": "./dist/composed/markdown-viewer.js",
+      "types": "./dist/composed/markdown-viewer.d.ts"
+    },
+    "./composed/master-detail": {
+      "import": "./dist/composed/master-detail.js",
+      "default": "./dist/composed/master-detail.js",
+      "types": "./dist/composed/master-detail.d.ts"
+    },
     "./composed/member-picker": {
       "import": "./dist/composed/member-picker.js",
       "default": "./dist/composed/member-picker.js",
       "types": "./dist/composed/member-picker.d.ts"
+    },
+    "./composed/multi-select-popover": {
+      "import": "./dist/composed/multi-select-popover.js",
+      "default": "./dist/composed/multi-select-popover.js",
+      "types": "./dist/composed/multi-select-popover.d.ts"
     },
     "./composed/page-header": {
       "import": "./dist/composed/page-header.js",
@@ -447,6 +497,11 @@
       "import": "./dist/composed/status-badge.js",
       "default": "./dist/composed/status-badge.js",
       "types": "./dist/composed/status-badge.d.ts"
+    },
+    "./composed/responsive-overlay": {
+      "import": "./dist/composed/responsive-overlay.js",
+      "default": "./dist/composed/responsive-overlay.js",
+      "types": "./dist/composed/responsive-overlay.d.ts"
     },
     "./composed/schedule-view": {
       "import": "./dist/composed/schedule-view.js",

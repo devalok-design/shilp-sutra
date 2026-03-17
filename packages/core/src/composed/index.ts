@@ -70,4 +70,37 @@ export type { ConfirmDialogProps } from './confirm-dialog'
 export { ActivityFeed, groupItemsByTime } from './activity-feed'
 export type { ActivityItem, ActivityFeedProps, GroupLabels } from './activity-feed'
 
+export { MultiSelectPopover } from './multi-select-popover'
+export type { MultiSelectPopoverProps, MultiSelectItem, MultiSelectGroup } from './multi-select-popover'
+
+export { FilterBar, FilterSelect, FilterMultiSelect } from './filter-bar'
+export type { FilterBarProps, FilterSelectProps, FilterMultiSelectProps } from './filter-bar'
+
+export { InlineEdit } from './inline-edit'
+export type { InlineEditProps } from './inline-edit'
+
+export { FormSection } from './form-section'
+export type { FormSectionProps } from './form-section'
+
+export { BulkActionBar } from './bulk-action-bar'
+export type { BulkActionBarProps, BulkActionBarAction } from './bulk-action-bar'
+
+export { DeadlineIndicator } from './deadline-indicator'
+export type { DeadlineIndicatorProps } from './deadline-indicator'
+
+export { MasterDetail } from './master-detail'
+export type { MasterDetailProps } from './master-detail'
+
+export { ResponsiveOverlay } from './responsive-overlay'
+export type { ResponsiveOverlayProps } from './responsive-overlay'
+
+export { MarkdownViewer } from './markdown-viewer'
+export type { MarkdownViewerProps } from './markdown-viewer'
+
+export { EmojiPicker, EmojiPickerPopover } from './emoji-picker'
+export type { EmojiPickerProps, EmojiPickerPopoverProps, EmojiData } from './emoji-picker'
+
+export { FilePreview } from './file-preview'
+export type { FilePreviewProps } from './file-preview'
+
 export { getInitials } from './lib/string-utils'

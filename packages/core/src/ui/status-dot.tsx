@@ -53,13 +53,16 @@ export interface StatusDotProps extends React.HTMLAttributes<HTMLSpanElement> {
 }
 
 const StatusDot = React.forwardRef<HTMLSpanElement, StatusDotProps>(
-  ({ status, size = 'md', pulse, label, labelClassName, className, ...props }, ref) => {
+  ({ status, size = 'md', pulse, label, labelClassName, className, 'aria-label': ariaLabelProp, ...props }, ref) => {
     const shouldPulse = pulse ?? status === 'healthy'
     const s = sizeMap[size]
+    const autoAriaLabel = label ? `${label} \u2014 ${status}` : `Status: ${status}`
 
     return (
       <span
         ref={ref}
+        role="status"
+        aria-label={ariaLabelProp ?? autoAriaLabel}
         className={cn('inline-flex items-center gap-ds-02', className)}
         {...props}
       >

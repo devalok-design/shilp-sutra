@@ -3,6 +3,7 @@ import { motion } from 'framer-motion'
 import { cn } from '../ui/lib/utils'
 import { motionProps } from '../ui/lib/motion'
 import { IconClock } from '@tabler/icons-react'
+import { SimpleTooltip } from './simple-tooltip'
 
 // ============================================================
 // Types
@@ -82,8 +83,11 @@ function DeadlineIndicator({
   const isCritical = minutesRemaining <= criticalThreshold && minutesRemaining > 0
   const shouldPulse = isOverdue || isCritical
 
+  const showTooltip = format === 'relative'
+  const tooltipContent = deadlineDate.toLocaleString()
+
   if (shouldPulse) {
-    return (
+    const inner = (
       <motion.span
         className={cn('inline-flex items-center gap-ds-01 font-sans text-ds-sm', colorClass, className)}
         animate={{ opacity: [1, 0.7, 1] }}
@@ -94,9 +98,11 @@ function DeadlineIndicator({
         {text}
       </motion.span>
     )
+
+    return showTooltip ? <SimpleTooltip content={tooltipContent}>{inner}</SimpleTooltip> : inner
   }
 
-  return (
+  const inner = (
     <span
       className={cn('inline-flex items-center gap-ds-01 font-sans text-ds-sm', colorClass, className)}
       {...props}
@@ -105,6 +111,8 @@ function DeadlineIndicator({
       {text}
     </span>
   )
+
+  return showTooltip ? <SimpleTooltip content={tooltipContent}>{inner}</SimpleTooltip> : inner
 }
 
 export { DeadlineIndicator }

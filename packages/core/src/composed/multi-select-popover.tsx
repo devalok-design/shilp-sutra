@@ -87,13 +87,16 @@ const MultiSelectPopover = React.forwardRef<HTMLDivElement, MultiSelectPopoverPr
     const [search, setSearch] = React.useState('')
     const [asyncItems, setAsyncItems] = React.useState<MultiSelectItem[] | null>(null)
     const [loading, setLoading] = React.useState(false)
+    const [focusedIndex, setFocusedIndex] = React.useState(-1)
     const debounceRef = React.useRef<ReturnType<typeof setTimeout>>()
+    const listRef = React.useRef<HTMLDivElement>(null)
 
-    // Reset search when popover closes
+    // Reset search and focus when popover closes
     React.useEffect(() => {
       if (!open) {
         setSearch('')
         setAsyncItems(null)
+        setFocusedIndex(-1)
       }
     }, [open])
 
@@ -151,16 +154,49 @@ const MultiSelectPopover = React.forwardRef<HTMLDivElement, MultiSelectPopoverPr
       }
     }
 
+    // Reset focused index when search text changes
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    React.useEffect(() => { setFocusedIndex(-1) }, [search])
+
+    // Scroll focused item into view
+    React.useEffect(() => {
+      if (focusedIndex < 0) return
+      const list = listRef.current
+      if (!list) return
+      const items = list.querySelectorAll('[data-multiselect-item]')
+      items[focusedIndex]?.scrollIntoView({ block: 'nearest' })
+    }, [focusedIndex])
+
+    function handleSearchKeyDown(e: React.KeyboardEvent) {
+      const count = filteredItems.length
+      if (count === 0) return
+
+      if (e.key === 'ArrowDown') {
+        e.preventDefault()
+        setFocusedIndex((prev) => (prev < count - 1 ? prev + 1 : 0))
+      } else if (e.key === 'ArrowUp') {
+        e.preventDefault()
+        setFocusedIndex((prev) => (prev <= 0 ? count - 1 : prev - 1))
+      } else if (e.key === 'Enter' && focusedIndex >= 0) {
+        e.preventDefault()
+        const item = filteredItems[focusedIndex]
+        if (item && !item.disabled) toggle(item.id)
+      }
+    }
+
     let itemCounter = 0
 
     function renderItemRow(item: MultiSelectItem) {
       const isSelected = value.includes(item.id)
       const index = itemCounter++
+      const isFocused = index === focusedIndex
       return (
         <motion.button
           key={item.id}
           type="button"
           disabled={item.disabled}
+          data-multiselect-item=""
+          data-focused={isFocused ? '' : undefined}
           initial={{ opacity: 0, x: -8 }}
           animate={{ opacity: 1, x: 0 }}
           transition={{ ...springs.snappy, delay: index * 0.02 }}
@@ -170,6 +206,7 @@ const MultiSelectPopover = React.forwardRef<HTMLDivElement, MultiSelectPopoverPr
             'hover:bg-surface-raised-hover',
             'disabled:opacity-action-disabled disabled:cursor-not-allowed',
             isSelected && 'bg-accent-2 text-accent-11',
+            isFocused && 'bg-surface-raised-hover',
           )}
         >
           {renderItem ? (
@@ -227,14 +264,16 @@ const MultiSelectPopover = React.forwardRef<HTMLDivElement, MultiSelectPopoverPr
               placeholder={searchPlaceholder}
               value={search}
               onChange={(e) => setSearch(e.target.value)}
+              onKeyDown={handleSearchKeyDown}
               aria-label="Search"
+              aria-activedescendant={focusedIndex >= 0 ? `multiselect-item-${focusedIndex}` : undefined}
               className="w-full bg-transparent text-ds-md font-body text-surface-fg placeholder:text-surface-fg-subtle outline-none"
             />
             {loading && <Spinner size="sm" />}
           </div>
 
           {/* Items */}
-          <div className="max-h-[240px] overflow-y-auto py-ds-02">
+          <div ref={listRef} className="max-h-[240px] overflow-y-auto py-ds-02">
             {filteredGroups
               ? filteredGroups.map((group) => (
                   <div key={group.label}>

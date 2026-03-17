@@ -3,7 +3,9 @@
 import * as React from 'react'
 import Markdown from 'react-markdown'
 import remarkGfm from 'remark-gfm'
+import { IconCopy, IconCheck } from '@tabler/icons-react'
 import { cn } from '../ui/lib/utils'
+import { Button } from '../ui/button'
 
 // react-syntax-highlighter is lazy-loaded in CodeBlock component below
 
@@ -25,6 +27,30 @@ export interface MarkdownViewerProps extends React.HTMLAttributes<HTMLDivElement
 // MarkdownViewer
 // ============================================================
 
+// Small copy-to-clipboard button for code blocks
+function CopyButton({ code }: { code: string }) {
+  const [copied, setCopied] = React.useState(false)
+
+  function handleCopy() {
+    navigator.clipboard.writeText(code).then(() => {
+      setCopied(true)
+      setTimeout(() => setCopied(false), 2000)
+    })
+  }
+
+  return (
+    <Button
+      variant="ghost"
+      size="icon-xs"
+      className="absolute top-ds-02 right-ds-02 opacity-0 group-hover:opacity-100 transition-opacity"
+      onClick={handleCopy}
+      aria-label={copied ? 'Copied' : 'Copy code'}
+    >
+      {copied ? <IconCheck className="h-3.5 w-3.5" /> : <IconCopy className="h-3.5 w-3.5" />}
+    </Button>
+  )
+}
+
 // Syntax-highlighted code block with lazy-loaded highlighter
 function CodeBlock({ language, code, mb }: { language: string; code: string; mb: string }) {
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -45,15 +71,18 @@ function CodeBlock({ language, code, mb }: { language: string; code: string; mb:
 
   if (!modules) {
     return (
-      <pre className={cn('bg-surface-sunken rounded-ds-md p-ds-04 overflow-x-auto text-ds-sm font-mono', mb)}>
-        <code>{code}</code>
-      </pre>
+      <div className={cn('group relative', mb)}>
+        <pre className="bg-surface-sunken rounded-ds-md p-ds-04 overflow-x-auto text-ds-sm font-mono">
+          <code>{code}</code>
+        </pre>
+        <CopyButton code={code} />
+      </div>
     )
   }
 
   const { Highlighter, style } = modules
   return (
-    <div className={mb}>
+    <div className={cn('group relative', mb)}>
       <Highlighter
         language={language}
         style={style}
@@ -66,6 +95,7 @@ function CodeBlock({ language, code, mb }: { language: string; code: string; mb:
       >
         {code}
       </Highlighter>
+      <CopyButton code={code} />
     </div>
   )
 }

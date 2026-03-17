@@ -26,6 +26,10 @@ export interface BulkActionBarProps {
   count: number
   onClearSelection: () => void
   actions: BulkActionBarAction[]
+  /** Total number of items available for selection */
+  totalCount?: number
+  /** Called when user clicks "Select all" */
+  onSelectAll?: () => void
   className?: string
 }
 
@@ -38,6 +42,8 @@ function BulkActionBar({
   count,
   onClearSelection,
   actions,
+  totalCount,
+  onSelectAll,
   className,
 }: BulkActionBarProps) {
   const [mounted, setMounted] = React.useState(false)
@@ -67,6 +73,16 @@ function BulkActionBar({
           <Badge variant="solid" size="sm">
             {count} selected
           </Badge>
+
+          {totalCount != null && totalCount > count && onSelectAll && (
+            <button
+              type="button"
+              onClick={onSelectAll}
+              className="text-ds-sm text-accent-11 hover:underline cursor-pointer"
+            >
+              Select all {totalCount}
+            </button>
+          )}
 
           <div className="flex items-center gap-ds-02">
             {actions.map((action) => (

@@ -99,8 +99,9 @@ function MasterDetailList({ children, className, ...props }: MasterDetailListPro
   return (
     <div
       role="listbox"
+      tabIndex={0}
       className={cn(
-        'overflow-y-auto',
+        'overflow-y-auto focus-visible:outline-none',
         !isMobile && 'border-r border-surface-border',
         className,
       )}

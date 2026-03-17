@@ -154,11 +154,17 @@ const LazyPdfPreview = React.lazy(() =>
 // Non-lazy sub-renderers (native elements, no heavy deps)
 
 function VideoPreview({ url }: { url: string }) {
-  return <video src={url} controls className="max-h-[70vh] w-full rounded-ds-md bg-black" />
+  return (
+    // eslint-disable-next-line jsx-a11y/media-has-caption -- captions are the consumer's responsibility
+    <video src={url} controls className="max-h-[70vh] w-full rounded-ds-md bg-black" />
+  )
 }
 
 function AudioPreview({ url }: { url: string }) {
-  return <audio src={url} controls className="w-full" />
+  return (
+    // eslint-disable-next-line jsx-a11y/media-has-caption -- captions are the consumer's responsibility
+    <audio src={url} controls className="w-full" />
+  )
 }
 
 function EmbedPreview({ url }: { url: string }) {

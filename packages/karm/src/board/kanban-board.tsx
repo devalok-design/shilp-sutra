@@ -104,7 +104,7 @@ function BoardListView() {
         return (
           <div key={column.id} className="flex flex-col">
             {/* Sticky group header */}
-            <div className="sticky top-0 z-10 flex items-center gap-ds-02 bg-surface-1 px-ds-04 py-ds-03 border-b border-surface-border-subtle">
+            <div className="sticky top-0 z-10 flex items-center gap-ds-02 bg-surface-base px-ds-04 py-ds-03 border-b border-surface-border-subtle">
               <span
                 className={`h-2.5 w-2.5 flex-shrink-0 rounded-full ${accentColor}`}
                 aria-hidden="true"

@@ -146,7 +146,7 @@ function InlineEdit({
   return (
     <div className={cn('inline-flex items-center gap-ds-02', className)} {...props}>
       <span
-        role="button"
+        role={readOnly ? undefined : 'button'}
         tabIndex={readOnly ? undefined : 0}
         onClick={startEditing}
         onKeyDown={(e) => {

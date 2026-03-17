@@ -2,6 +2,7 @@
 
 import * as React from 'react'
 import { motion } from 'framer-motion'
+import { IconChevronDown } from '@tabler/icons-react'
 import { cn } from '../ui/lib/utils'
 import { springs } from '../ui/lib/motion'
 import { SearchInput } from '../ui/search-input'
@@ -189,7 +190,7 @@ function FilterMultiSelect({
             </motion.span>
           )}
         </span>
-        <svg className="h-3.5 w-3.5 opacity-50 shrink-0" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="m6 9 6 6 6-6"/></svg>
+        <IconChevronDown className="h-3.5 w-3.5 opacity-50 shrink-0" />
       </button>
     </MultiSelectPopover>
   )

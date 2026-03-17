@@ -141,13 +141,9 @@ function BulkActionBar({
           </Badge>
 
           {totalCount != null && totalCount > count && onSelectAll && (
-            <button
-              type="button"
-              onClick={onSelectAll}
-              className="text-ds-sm text-accent-11 hover:underline cursor-pointer"
-            >
+            <Button variant="link" size="xs" onClick={onSelectAll}>
               Select all {totalCount}
-            </button>
+            </Button>
           )}
 
           <div className="flex items-center gap-ds-02">

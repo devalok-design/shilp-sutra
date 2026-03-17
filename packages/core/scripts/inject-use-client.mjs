@@ -128,6 +128,43 @@ for (const filePath of allFiles) {
   injected++
 }
 
+// ── SSR safety: patch unguarded `document` references in vendor chunks ──────
+//
+// Some bundled deps (react-remove-scroll, react-style-singleton) use
+// `if (!document)` which throws ReferenceError in Node.js SSR because
+// `document` doesn't exist at all (it's not falsy — it's undeclared).
+// Next.js server-renders "use client" components, so this crashes every page.
+//
+// Fix: replace `if (!document)` with `if (typeof document === "undefined")`
+// See: https://github.com/devalok-design/shilp-sutra/issues/21
+
+let ssrPatched = 0
+const vendorClientPath = join(distRoot, '_chunks', 'vendor-client.js')
+try {
+  let vendorContent = readFileSync(vendorClientPath, 'utf8')
+  const original = vendorContent
+
+  // Pattern 1: if (!document) — bare document reference guard
+  vendorContent = vendorContent.replace(
+    /if\s*\(\s*!document\s*\)/g,
+    'if (typeof document === "undefined")',
+  )
+
+  // Pattern 2: bare `document.` access outside of functions that already have guards
+  // Only patch top-level references in known problematic patterns:
+  // - `var e = document.head || document.getElementsByTagName("head")[0]`
+  //   These are inside functions that should be guarded by the fixed Pattern 1.
+  //   No additional patching needed — the guard at function entry handles them.
+
+  if (vendorContent !== original) {
+    writeFileSync(vendorClientPath, vendorContent)
+    ssrPatched++
+    console.log(`inject-use-client: patched ${ssrPatched} SSR-unsafe document references in vendor-client.js`)
+  }
+} catch {
+  // vendor-client.js may not exist in all build configurations
+}
+
 console.log(
   `inject-use-client: ${injected} files updated, ${skipped} skipped`
 )

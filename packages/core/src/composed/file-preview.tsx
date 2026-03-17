@@ -364,13 +364,20 @@ const LazyPdfPreview = React.lazy(() =>
       const [page, setPage] = React.useState(initialPage)
       const [pageInput, setPageInput] = React.useState(String(initialPage))
       const [error, setError] = React.useState(false)
+      const containerRef = React.useRef<HTMLDivElement>(null)
+      const [hovered, setHovered] = React.useState(false)
 
       // Sync page input when page changes via buttons
       React.useEffect(() => { setPageInput(String(page)) }, [page])
 
-      // Keyboard nav
+      // Keyboard nav — scoped to container focus/hover
       React.useEffect(() => {
         function handleKey(e: KeyboardEvent) {
+          const el = containerRef.current
+          if (!el) return
+          const hasFocus = el.contains(document.activeElement)
+          if (!hasFocus && !hovered) return
+
           if (e.key === 'ArrowRight' || e.key === 'ArrowDown') {
             e.preventDefault()
             setPage((p) => Math.min(numPages, p + 1))
@@ -381,7 +388,7 @@ const LazyPdfPreview = React.lazy(() =>
         }
         document.addEventListener('keydown', handleKey)
         return () => document.removeEventListener('keydown', handleKey)
-      }, [numPages])
+      }, [numPages, hovered])
 
       function handlePageInputSubmit(e: React.KeyboardEvent) {
         if (e.key === 'Enter') {
@@ -394,7 +401,13 @@ const LazyPdfPreview = React.lazy(() =>
       if (error) return <ErrorFallback message="Could not load PDF" url={url} />
 
       return (
-        <div className="flex flex-col items-center gap-ds-03">
+        <div
+          ref={containerRef}
+          className="flex flex-col items-center gap-ds-03"
+          onMouseEnter={() => setHovered(true)}
+          onMouseLeave={() => setHovered(false)}
+          tabIndex={-1}
+        >
           <div className="overflow-auto max-h-[70vh] rounded-ds-md bg-surface-sunken border border-surface-border">
             <Document
               file={url}
@@ -464,6 +477,10 @@ function VideoPreview({ url, onError }: { url: string; onError?: (msg: string) =
   const [playbackRate, setPlaybackRate] = React.useState(1)
   const hideTimer = React.useRef<ReturnType<typeof setTimeout>>()
 
+  React.useEffect(() => {
+    return () => clearTimeout(hideTimer.current)
+  }, [])
+
   // Keyboard shortcuts — YouTube style
   React.useEffect(() => {
     function handleKeyDown(e: KeyboardEvent) {
@@ -476,8 +493,10 @@ function VideoPreview({ url, onError }: { url: string; onError?: (msg: string) =
         case ' ':
         case 'k':
           e.preventDefault()
-          if (playing) v.pause(); else v.play()
-          setPlaying(!playing)
+          setPlaying(prev => {
+            if (prev) v.pause(); else v.play()
+            return !prev
+          })
           break
         case 'ArrowRight':
           e.preventDefault()
@@ -497,8 +516,10 @@ function VideoPreview({ url, onError }: { url: string; onError?: (msg: string) =
           break
         case 'm':
           e.preventDefault()
-          setMuted(!muted)
-          v.muted = !muted
+          setMuted(prev => {
+            v.muted = !prev
+            return !prev
+          })
           break
         case 'f':
           e.preventDefault()
@@ -516,7 +537,8 @@ function VideoPreview({ url, onError }: { url: string; onError?: (msg: string) =
     }
     document.addEventListener('keydown', handleKeyDown)
     return () => document.removeEventListener('keydown', handleKeyDown)
-  }, [playing, muted])
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [])
 
   function cyclePlaybackRate(direction: 1 | -1) {
     const idx = PLAYBACK_RATES.indexOf(playbackRate as typeof PLAYBACK_RATES[number])
@@ -692,8 +714,10 @@ function AudioPreview({ url, fileName, onError }: { url: string; fileName?: stri
       switch (e.key) {
         case ' ':
           e.preventDefault()
-          if (playing) a.pause(); else a.play()
-          setPlaying(!playing)
+          setPlaying(prev => {
+            if (prev) a.pause(); else a.play()
+            return !prev
+          })
           break
         case 'ArrowRight':
           e.preventDefault()
@@ -705,14 +729,17 @@ function AudioPreview({ url, fileName, onError }: { url: string; fileName?: stri
           break
         case 'm':
           e.preventDefault()
-          setMuted(!muted)
-          a.muted = !muted
+          setMuted(prev => {
+            a.muted = !prev
+            return !prev
+          })
           break
       }
     }
     document.addEventListener('keydown', handleKeyDown)
     return () => document.removeEventListener('keydown', handleKeyDown)
-  }, [playing, muted])
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [])
 
   function togglePlay() {
     if (!audioRef.current) return

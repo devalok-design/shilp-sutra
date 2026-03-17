@@ -50,11 +50,13 @@ export interface MarkdownViewerProps extends React.HTMLAttributes<HTMLDivElement
 // Small copy-to-clipboard button for code blocks
 function CopyButton({ code }: { code: string }) {
   const [copied, setCopied] = React.useState(false)
+  const timerRef = React.useRef<ReturnType<typeof setTimeout>>()
+  React.useEffect(() => () => clearTimeout(timerRef.current), [])
 
   function handleCopy() {
     navigator.clipboard.writeText(code).then(() => {
       setCopied(true)
-      setTimeout(() => setCopied(false), 2000)
+      timerRef.current = setTimeout(() => setCopied(false), 2000)
     })
   }
 

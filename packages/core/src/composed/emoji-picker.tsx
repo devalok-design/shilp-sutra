@@ -48,17 +48,6 @@ const LazyPicker = React.lazy(() =>
   })),
 )
 
-const LazyData = React.lazy(() =>
-  import('@emoji-mart/data').then((mod) => ({
-    default: () => {
-      dataRef.current = mod.default
-      return null
-    },
-  })),
-)
-
-const dataRef: React.MutableRefObject<unknown> = { current: null }
-
 function resolveTheme(theme: 'auto' | 'light' | 'dark'): 'light' | 'dark' {
   if (theme !== 'auto') return theme
   if (typeof document === 'undefined') return 'light'

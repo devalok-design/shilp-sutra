@@ -1,3 +1,5 @@
+'use client'
+
 import * as React from 'react'
 import { motion } from 'framer-motion'
 import { cn } from '../ui/lib/utils'
@@ -19,6 +21,8 @@ export interface DeadlineIndicatorProps extends React.HTMLAttributes<HTMLSpanEle
   format?: 'relative' | 'absolute'
   /** Show clock icon prefix */
   showIcon?: boolean
+  /** Auto-refresh interval in ms to keep relative time up to date @default 60000 */
+  refreshInterval?: number
 }
 
 // ============================================================
@@ -55,9 +59,17 @@ function DeadlineIndicator({
   criticalThreshold = 240,
   format = 'relative',
   showIcon = false,
+  refreshInterval = 60000,
   className,
   ...props
 }: DeadlineIndicatorProps) {
+  const [, forceUpdate] = React.useReducer((x: number) => x + 1, 0)
+  React.useEffect(() => {
+    if (!refreshInterval) return
+    const id = setInterval(forceUpdate, refreshInterval)
+    return () => clearInterval(id)
+  }, [refreshInterval])
+
   const deadlineDate = React.useMemo(
     () => (deadline instanceof Date ? deadline : new Date(deadline)),
     [deadline],

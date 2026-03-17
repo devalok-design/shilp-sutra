@@ -193,6 +193,7 @@ const MultiSelectPopover = React.forwardRef<HTMLDivElement, MultiSelectPopoverPr
       return (
         <motion.button
           key={item.id}
+          id={`msp-item-${index}`}
           type="button"
           disabled={item.disabled}
           data-multiselect-item=""
@@ -266,7 +267,7 @@ const MultiSelectPopover = React.forwardRef<HTMLDivElement, MultiSelectPopoverPr
               onChange={(e) => setSearch(e.target.value)}
               onKeyDown={handleSearchKeyDown}
               aria-label="Search"
-              aria-activedescendant={focusedIndex >= 0 ? `multiselect-item-${focusedIndex}` : undefined}
+              aria-activedescendant={focusedIndex >= 0 ? `msp-item-${focusedIndex}` : undefined}
               className="w-full bg-transparent text-ds-md font-body text-surface-fg placeholder:text-surface-fg-subtle outline-none"
             />
             {loading && <Spinner size="sm" />}

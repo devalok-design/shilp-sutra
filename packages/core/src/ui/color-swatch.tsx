@@ -41,6 +41,8 @@ export interface ColorSwatchProps extends React.HTMLAttributes<HTMLSpanElement> 
 const ColorSwatch = React.forwardRef<HTMLSpanElement, ColorSwatchProps>(
   ({ color, size = 'md', shape = 'circle', ring = false, copyable = false, checkerboard = false, className, style, ...props }, ref) => {
     const [copied, setCopied] = React.useState(false)
+    const timerRef = React.useRef<ReturnType<typeof setTimeout>>()
+    React.useEffect(() => () => clearTimeout(timerRef.current), [])
 
     const sharedClasses = cn(
       'inline-block shrink-0 relative',
@@ -53,7 +55,7 @@ const ColorSwatch = React.forwardRef<HTMLSpanElement, ColorSwatchProps>(
 
     const checkerboardStyle: React.CSSProperties = checkerboard
       ? {
-          backgroundImage: `repeating-conic-gradient(#ccc 0% 25%, transparent 0% 50%)`,
+          backgroundImage: `repeating-conic-gradient(var(--color-neutral-5) 0% 25%, transparent 0% 50%)`,
           backgroundSize: '8px 8px',
         }
       : {}
@@ -66,7 +68,7 @@ const ColorSwatch = React.forwardRef<HTMLSpanElement, ColorSwatchProps>(
     function handleCopy() {
       navigator.clipboard.writeText(color).then(() => {
         setCopied(true)
-        setTimeout(() => setCopied(false), 1500)
+        timerRef.current = setTimeout(() => setCopied(false), 1500)
       })
     }
 

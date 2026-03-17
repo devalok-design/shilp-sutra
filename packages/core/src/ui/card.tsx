@@ -91,16 +91,22 @@ export interface CardProps
   accentWidth?: 2 | 3 | 4 | 6
 }
 
+const accentSizeClasses: Record<string, Record<number, string>> = {
+  left:   { 2: 'w-[2px]', 3: 'w-[3px]', 4: 'w-[4px]', 6: 'w-[6px]' },
+  top:    { 2: 'h-[2px]', 3: 'h-[3px]', 4: 'h-[4px]', 6: 'h-[6px]' },
+  right:  { 2: 'w-[2px]', 3: 'w-[3px]', 4: 'w-[4px]', 6: 'w-[6px]' },
+  bottom: { 2: 'h-[2px]', 3: 'h-[3px]', 4: 'h-[4px]', 6: 'h-[6px]' },
+}
+
+const accentPositionClasses: Record<string, string> = {
+  left: 'left-0 top-0 bottom-0 rounded-l-ds-lg',
+  top: 'top-0 left-0 right-0 rounded-t-ds-lg',
+  right: 'right-0 top-0 bottom-0 rounded-r-ds-lg',
+  bottom: 'bottom-0 left-0 right-0 rounded-b-ds-lg',
+}
+
 function getAccentPositionClasses(position: string, width: number): string {
-  const isHorizontal = position === 'left' || position === 'right'
-  const sizeClass = isHorizontal ? `w-[${width}px]` : `h-[${width}px]`
-  const positionMap: Record<string, string> = {
-    left: `left-0 top-0 bottom-0 ${sizeClass} rounded-l-ds-lg`,
-    top: `top-0 left-0 right-0 ${sizeClass} rounded-t-ds-lg`,
-    right: `right-0 top-0 bottom-0 ${sizeClass} rounded-r-ds-lg`,
-    bottom: `bottom-0 left-0 right-0 ${sizeClass} rounded-b-ds-lg`,
-  }
-  return positionMap[position] ?? ''
+  return `${accentPositionClasses[position] ?? ''} ${accentSizeClasses[position]?.[width] ?? ''}`
 }
 
 function resolveAccentColor(color: string): string {

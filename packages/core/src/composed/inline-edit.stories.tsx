@@ -13,13 +13,23 @@ const meta: Meta<typeof InlineEdit> = {
 export default meta
 type Story = StoryObj<typeof InlineEdit>
 
-function DefaultDemo() {
+function HeadingDemo() {
   const [value, setValue] = useState('Sprint Planning Q2')
   return <InlineEdit value={value} onSave={setValue} textClassName="text-ds-lg font-semibold" />
 }
 
 export const Default: Story = {
-  render: () => <DefaultDemo />,
+  render: () => <HeadingDemo />,
+  name: 'Heading (click to edit)',
+}
+
+function BodyTextDemo() {
+  const [value, setValue] = useState('A short description that you can edit inline.')
+  return <InlineEdit value={value} onSave={setValue} textClassName="text-ds-md" />
+}
+
+export const BodyText: Story = {
+  render: () => <BodyTextDemo />,
 }
 
 function WithPlaceholderDemo() {
@@ -29,6 +39,7 @@ function WithPlaceholderDemo() {
       value={value}
       onSave={setValue}
       placeholder="Add a title..."
+      textClassName="text-ds-lg font-semibold"
     />
   )
 }
@@ -37,22 +48,23 @@ export const WithPlaceholder: Story = {
   render: () => <WithPlaceholderDemo />,
 }
 
-function MultilineDemo() {
-  const [value, setValue] = useState(
-    'This project aims to migrate all legacy components to the new design system. Key milestones include token adoption, component parity, and Storybook documentation.',
-  )
+function AsyncSaveDemo() {
+  const [value, setValue] = useState('Click me, edit, then press Enter')
   return (
     <InlineEdit
       value={value}
-      onSave={setValue}
-      multiline
-      className="max-w-md"
+      onSave={async (newVal) => {
+        await new Promise((r) => setTimeout(r, 1000))
+        setValue(newVal)
+      }}
+      textClassName="text-ds-md"
     />
   )
 }
 
-export const Multiline: Story = {
-  render: () => <MultilineDemo />,
+export const AsyncSave: Story = {
+  render: () => <AsyncSaveDemo />,
+  name: 'Async Save (1s delay)',
 }
 
 export const ReadOnly: Story = {
@@ -64,4 +76,21 @@ export const ReadOnly: Story = {
       textClassName="text-ds-md"
     />
   ),
+}
+
+function MaxLengthDemo() {
+  const [value, setValue] = useState('Limited to 20 chars')
+  return (
+    <InlineEdit
+      value={value}
+      onSave={setValue}
+      maxLength={20}
+      textClassName="text-ds-md"
+    />
+  )
+}
+
+export const MaxLength: Story = {
+  render: () => <MaxLengthDemo />,
+  name: 'Max Length (20 chars)',
 }

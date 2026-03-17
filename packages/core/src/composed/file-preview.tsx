@@ -173,9 +173,83 @@ function VideoPreview({ url }: { url: string }) {
 }
 
 function AudioPreview({ url }: { url: string }) {
+  const audioRef = React.useRef<HTMLAudioElement>(null)
+  const [playing, setPlaying] = React.useState(false)
+  const [progress, setProgress] = React.useState(0)
+  const [duration, setDuration] = React.useState(0)
+  const [currentTime, setCurrentTime] = React.useState(0)
+
+  function togglePlay() {
+    if (!audioRef.current) return
+    if (playing) {
+      audioRef.current.pause()
+    } else {
+      audioRef.current.play()
+    }
+    setPlaying(!playing)
+  }
+
+  function handleTimeUpdate() {
+    if (!audioRef.current) return
+    const { currentTime: ct, duration: d } = audioRef.current
+    setCurrentTime(ct)
+    if (d) setProgress((ct / d) * 100)
+  }
+
+  function handleSeek(e: React.MouseEvent<HTMLDivElement>) {
+    if (!audioRef.current || !duration) return
+    const rect = e.currentTarget.getBoundingClientRect()
+    const pct = (e.clientX - rect.left) / rect.width
+    audioRef.current.currentTime = pct * duration
+  }
+
+  function formatTime(s: number) {
+    const m = Math.floor(s / 60)
+    const sec = Math.floor(s % 60)
+    return `${m}:${sec.toString().padStart(2, '0')}`
+  }
+
   return (
-    // eslint-disable-next-line jsx-a11y/media-has-caption -- captions are the consumer's responsibility
-    <audio src={url} controls className="w-full" />
+    <div className="flex items-center gap-ds-04 rounded-ds-lg border border-surface-border bg-surface-raised px-ds-05 py-ds-04 shadow-raised">
+      {/* eslint-disable-next-line jsx-a11y/media-has-caption */}
+      <audio
+        ref={audioRef}
+        src={url}
+        onTimeUpdate={handleTimeUpdate}
+        onLoadedMetadata={() => setDuration(audioRef.current?.duration ?? 0)}
+        onEnded={() => setPlaying(false)}
+      />
+      <Button
+        variant="solid"
+        size="icon-sm"
+        onClick={togglePlay}
+        aria-label={playing ? 'Pause' : 'Play'}
+        className="shrink-0"
+      >
+        {playing ? (
+          <svg className="h-ico-sm w-ico-sm" viewBox="0 0 24 24" fill="currentColor"><rect x="6" y="5" width="4" height="14" rx="1" /><rect x="14" y="5" width="4" height="14" rx="1" /></svg>
+        ) : (
+          <svg className="h-ico-sm w-ico-sm" viewBox="0 0 24 24" fill="currentColor"><path d="M8 5.14v13.72a1 1 0 0 0 1.5.86l11-6.86a1 1 0 0 0 0-1.72l-11-6.86A1 1 0 0 0 8 5.14z" /></svg>
+        )}
+      </Button>
+      <span className="text-ds-xs font-mono text-surface-fg-muted w-10 shrink-0">{formatTime(currentTime)}</span>
+      <div
+        className="relative flex-1 h-1.5 rounded-full bg-surface-sunken cursor-pointer"
+        onClick={handleSeek}
+        role="slider"
+        aria-label="Audio progress"
+        aria-valuenow={Math.round(progress)}
+        aria-valuemin={0}
+        aria-valuemax={100}
+        tabIndex={0}
+      >
+        <div
+          className="absolute left-0 top-0 h-full rounded-full bg-accent-9 transition-[width] duration-100"
+          style={{ width: `${progress}%` }}
+        />
+      </div>
+      <span className="text-ds-xs font-mono text-surface-fg-muted w-10 shrink-0 text-right">{formatTime(duration)}</span>
+    </div>
   )
 }
 
@@ -184,13 +258,13 @@ function EmbedPreview({ url }: { url: string }) {
   const embedUrl = getEmbedUrl(url)
 
   return (
-    <div className="relative">
-      {!loaded && <Skeleton className="h-[70vh] w-full rounded-ds-md" />}
+    <div className="relative w-full" style={{ aspectRatio: '16 / 9' }}>
+      {!loaded && <Skeleton className="absolute inset-0 rounded-ds-md" />}
       <iframe
         src={embedUrl}
         title="Embedded content"
         onLoad={() => setLoaded(true)}
-        className={cn('h-[70vh] w-full rounded-ds-md border border-surface-border', !loaded && 'hidden')}
+        className={cn('absolute inset-0 h-full w-full rounded-ds-md border border-surface-border', !loaded && 'hidden')}
         allowFullScreen
       />
     </div>

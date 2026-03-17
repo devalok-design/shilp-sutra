@@ -8,15 +8,13 @@
     value: string (current text value)
     onSave: (newValue: string) => void | Promise<void> (called on commit; async shows spinner)
     placeholder: string (shown when value is empty)
-    textClassName: string (CSS class for read-mode text, e.g. "text-ds-lg font-semibold")
-    inputSize: "xs" | "sm" | "md" (input height in edit mode)
-    multiline: boolean (renders textarea instead of input)
+    textClassName: string (CSS class for the editable text, e.g. "text-ds-lg font-semibold")
     readOnly: boolean
     maxLength: number
-    saving: boolean (external saving state — shows spinner)
+    saving: boolean (external saving state — shows spinner, disables editing)
 
 ## Defaults
-    placeholder="Click to edit", inputSize="sm", multiline={false}, readOnly={false}, saving={false}
+    placeholder="Click to edit", readOnly={false}, saving={false}
 
 ## Example
 ```jsx
@@ -25,11 +23,13 @@
   onSave={(v) => updateTitle(v)}
   textClassName="text-ds-lg font-semibold"
 />
-<InlineEdit value={notes} onSave={saveNotes} multiline />
 ```
 
 ## Gotchas
-- Enter commits the edit (for multiline, use Ctrl/Cmd+Enter to commit; plain Enter adds a newline)
-- Escape cancels the edit and reverts to the original value
-- The value is trimmed before calling `onSave`; if the trimmed value equals the original, `onSave` is not called
-- If `onSave` returns a Promise, a spinner is shown automatically until it resolves
+- Uses contentEditable — the text IS the editor. No input field appears.
+- Click to focus → cursor appears in text. Type to edit. Enter saves. Escape reverts.
+- Text is auto-selected on focus (like renaming a file in Finder)
+- Paste is restricted to plain text (no rich content)
+- The value is trimmed before calling `onSave`; if unchanged, `onSave` is not called
+- If `onSave` returns a Promise, a spinner is shown and editing is disabled until it resolves
+- On Promise rejection, the text reverts to the original value

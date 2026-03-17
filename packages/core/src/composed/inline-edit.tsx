@@ -1,9 +1,7 @@
 'use client'
 
 import * as React from 'react'
-import { motion } from 'framer-motion'
 import { cn } from '../ui/lib/utils'
-import { tweens, motionProps } from '../ui/lib/motion'
 import { Spinner } from '../ui/spinner'
 
 // ============================================================
@@ -14,11 +12,8 @@ export interface InlineEditProps extends Omit<React.HTMLAttributes<HTMLDivElemen
   value: string
   onSave: (newValue: string) => void | Promise<void>
   placeholder?: string
-  /** CSS class for text in read mode (e.g. 'text-ds-lg font-semibold') */
+  /** CSS class applied to the editable text (e.g. 'text-ds-lg font-semibold') */
   textClassName?: string
-  /** Input size for edit mode @default 'sm' */
-  inputSize?: 'xs' | 'sm' | 'md'
-  multiline?: boolean
   readOnly?: boolean
   maxLength?: number
   /** External saving state — shows spinner */
@@ -26,63 +21,76 @@ export interface InlineEditProps extends Omit<React.HTMLAttributes<HTMLDivElemen
 }
 
 // ============================================================
-// InlineEdit
+// InlineEdit — contentEditable approach
+//
+// No mode switch. No input field. The text IS the editor.
+// Click → cursor appears in the text. Type. Enter saves. Escape reverts.
+// Like Notion, Linear, Figma layer names.
 // ============================================================
-
-const inputSizeClasses: Record<string, string> = {
-  xs: 'h-ds-xs-plus text-ds-sm px-ds-02',
-  sm: 'h-ds-sm text-ds-sm px-ds-03',
-  md: 'h-ds-md text-ds-md px-ds-04',
-}
 
 function InlineEdit({
   value,
   onSave,
   placeholder = 'Click to edit',
   textClassName,
-  inputSize = 'sm',
-  multiline = false,
   readOnly = false,
   maxLength,
   saving: savingProp = false,
   className,
   ...props
 }: InlineEditProps) {
-  const [editing, setEditing] = React.useState(false)
-  const [draft, setDraft] = React.useState(value)
   const [saving, setSaving] = React.useState(false)
-  const inputRef = React.useRef<HTMLInputElement | HTMLTextAreaElement>(null)
+  const [focused, setFocused] = React.useState(false)
+  const editRef = React.useRef<HTMLSpanElement>(null)
+  const snapshotRef = React.useRef(value)
 
   const isSaving = savingProp || saving
+  const isEmpty = !value
 
-  // Sync draft when value changes externally
+  // Sync DOM text when value changes externally (and not focused)
   React.useEffect(() => {
-    if (!editing) setDraft(value)
-  }, [value, editing])
-
-  // Auto-focus and select on edit
-  React.useEffect(() => {
-    if (editing && inputRef.current) {
-      inputRef.current.focus()
-      inputRef.current.select()
+    if (!focused && editRef.current) {
+      editRef.current.textContent = value
     }
-  }, [editing])
+  }, [value, focused])
 
-  function startEditing() {
+  function handleFocus() {
     if (readOnly || isSaving) return
-    setDraft(value)
-    setEditing(true)
+    setFocused(true)
+    snapshotRef.current = value
+
+    // Select all text on focus (like clicking a file name in Finder)
+    requestAnimationFrame(() => {
+      if (!editRef.current) return
+      const range = document.createRange()
+      range.selectNodeContents(editRef.current)
+      const sel = window.getSelection()
+      sel?.removeAllRanges()
+      sel?.addRange(range)
+    })
   }
 
   async function commit() {
-    const trimmed = draft.trim()
-    setEditing(false)
-    if (trimmed === value) return
-    const result = onSave(trimmed)
+    if (!editRef.current) return
+    setFocused(false)
+    const raw = editRef.current.textContent ?? ''
+    const trimmed = raw.trim()
+
+    // Enforce maxLength
+    const final = maxLength ? trimmed.slice(0, maxLength) : trimmed
+
+    // Reset DOM to clean value
+    editRef.current.textContent = final || value
+
+    if (final === value) return
+    const result = onSave(final)
     if (result instanceof Promise) {
       setSaving(true)
       try {
         await result
+      } catch {
+        // Revert on error
+        if (editRef.current) editRef.current.textContent = value
       } finally {
         setSaving(false)
       }
@@ -90,8 +98,10 @@ function InlineEdit({
   }
 
   function cancel() {
-    setDraft(value)
-    setEditing(false)
+    if (!editRef.current) return
+    editRef.current.textContent = snapshotRef.current
+    setFocused(false)
+    editRef.current.blur()
   }
 
   function handleKeyDown(e: React.KeyboardEvent) {
@@ -99,77 +109,65 @@ function InlineEdit({
       e.preventDefault()
       cancel()
     } else if (e.key === 'Enter') {
-      if (multiline && !e.metaKey && !e.ctrlKey) return // allow newlines
       e.preventDefault()
       commit()
     }
   }
 
-  const modeAnimation = { initial: { opacity: 0, y: -4 }, animate: { opacity: 1, y: 0 }, transition: tweens.fade }
-
-  if (editing) {
-    const sharedClasses = cn(
-      'w-full font-sans bg-surface-raised-hover text-surface-fg border border-surface-border rounded-ds-md',
-      'focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-accent-7',
-      inputSizeClasses[inputSize],
-    )
-
-    if (multiline) {
-      return (
-        <motion.div {...modeAnimation} className={cn('relative', className)} {...motionProps(props)}>
-          <textarea
-            ref={inputRef as React.RefObject<HTMLTextAreaElement>}
-            value={draft}
-            onChange={(e) => setDraft(e.target.value)}
-            onKeyDown={handleKeyDown}
-            onBlur={commit}
-            maxLength={maxLength}
-            className={cn(sharedClasses, 'min-h-[60px] resize-y py-ds-02')}
-          />
-        </motion.div>
-      )
+  function handleInput() {
+    if (!editRef.current || !maxLength) return
+    const text = editRef.current.textContent ?? ''
+    if (text.length > maxLength) {
+      editRef.current.textContent = text.slice(0, maxLength)
+      // Move cursor to end
+      const range = document.createRange()
+      range.selectNodeContents(editRef.current)
+      range.collapse(false)
+      const sel = window.getSelection()
+      sel?.removeAllRanges()
+      sel?.addRange(range)
     }
-
-    return (
-      <motion.div {...modeAnimation} className={cn('relative', className)} {...motionProps(props)}>
-        <input
-          ref={inputRef as React.RefObject<HTMLInputElement>}
-          type="text"
-          value={draft}
-          onChange={(e) => setDraft(e.target.value)}
-          onKeyDown={handleKeyDown}
-          onBlur={commit}
-          maxLength={maxLength}
-          className={sharedClasses}
-        />
-      </motion.div>
-    )
   }
 
-  // Read mode
+  // Prevent paste from inserting rich content
+  function handlePaste(e: React.ClipboardEvent) {
+    e.preventDefault()
+    const text = e.clipboardData.getData('text/plain')
+    document.execCommand('insertText', false, text)
+  }
+
   return (
-    <motion.div {...modeAnimation} className={cn('inline-flex items-center gap-ds-02', className)} {...motionProps(props)}>
+    <div className={cn('inline-flex items-center gap-ds-02', className)} {...props}>
       <span
-        role={readOnly ? undefined : 'button'}
+        ref={editRef}
+        role={readOnly ? undefined : 'textbox'}
+        contentEditable={!readOnly && !isSaving}
+        suppressContentEditableWarning
         tabIndex={readOnly ? undefined : 0}
-        onClick={startEditing}
-        onKeyDown={(e) => {
-          if (e.key === 'Enter' || e.key === ' ') {
-            e.preventDefault()
-            startEditing()
-          }
-        }}
+        onFocus={handleFocus}
+        onBlur={commit}
+        onKeyDown={handleKeyDown}
+        onInput={handleInput}
+        onPaste={handlePaste}
+        spellCheck={focused}
         className={cn(
-          'font-sans text-surface-fg',
+          'font-sans text-surface-fg outline-none',
           textClassName,
-          !readOnly && 'cursor-pointer hover:underline hover:decoration-dashed hover:decoration-surface-fg-subtle',
-          !value && 'text-surface-fg-subtle italic',
+          // Idle: subtle hover hint
+          !readOnly && !focused && 'cursor-text rounded-ds-sm -mx-ds-01 px-ds-01 hover:bg-surface-raised-hover transition-colors duration-fast-01',
+          // Focused: subtle underline to indicate editing
+          focused && 'rounded-ds-sm -mx-ds-01 px-ds-01 bg-surface-raised-hover ring-1 ring-accent-7',
+          // Empty: show placeholder styling
+          isEmpty && !focused && 'text-surface-fg-subtle italic',
+          // Read-only
+          readOnly && 'cursor-default',
         )}
+        data-placeholder={placeholder}
       >
-        {value || placeholder}
+        {value || (focused ? '' : placeholder)}
       </span>
       {isSaving && <Spinner size="sm" />}
-    </motion.div>
+    </div>
   )
 }
 

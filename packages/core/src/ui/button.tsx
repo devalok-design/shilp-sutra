@@ -43,12 +43,12 @@ export const buttonVariants = cva(
       { variant: 'solid', color: 'default', className: 'bg-accent-9 text-accent-fg hover:bg-accent-10 active:bg-accent-10 shadow-raised hover:shadow-brand' },
       // "default" alias → same as solid + default
       { variant: 'default', color: 'default', className: 'bg-accent-9 text-accent-fg hover:bg-accent-10 active:bg-accent-10 shadow-raised hover:shadow-brand' },
-      { variant: 'default', color: 'error', className: 'bg-error-9 text-accent-fg hover:bg-error-9 active:bg-error-9 shadow-raised' },
+      { variant: 'default', color: 'error', className: 'bg-error-9 text-accent-fg hover:bg-error-10 active:bg-error-10 shadow-raised' },
       // "destructive" alias → solid + error
-      { variant: 'destructive', color: 'default', className: 'bg-error-9 text-accent-fg hover:bg-error-9 active:bg-error-9 shadow-raised' },
-      { variant: 'destructive', color: 'error', className: 'bg-error-9 text-accent-fg hover:bg-error-9 active:bg-error-9 shadow-raised' },
+      { variant: 'destructive', color: 'default', className: 'bg-error-9 text-accent-fg hover:bg-error-10 active:bg-error-10 shadow-raised' },
+      { variant: 'destructive', color: 'error', className: 'bg-error-9 text-accent-fg hover:bg-error-10 active:bg-error-10 shadow-raised' },
       // solid + error
-      { variant: 'solid', color: 'error', className: 'bg-error-9 text-accent-fg hover:bg-error-9 active:bg-error-9 shadow-raised' },
+      { variant: 'solid', color: 'error', className: 'bg-error-9 text-accent-fg hover:bg-error-10 active:bg-error-10 shadow-raised' },
       // outline + default (secondary)
       { variant: 'outline', color: 'default', className: 'bg-transparent text-accent-11 border-accent-7 hover:bg-accent-2 active:bg-surface-raised-active' },
       // outline + error (error-ghost)

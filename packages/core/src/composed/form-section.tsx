@@ -1,7 +1,9 @@
 'use client'
 
 import * as React from 'react'
+import { motion } from 'framer-motion'
 import { cn } from '../ui/lib/utils'
+import { springs } from '../ui/lib/motion'
 import { IconChevronDown } from '@tabler/icons-react'
 import { Collapsible, CollapsibleContent, CollapsibleTrigger } from '../ui/collapsible'
 
@@ -43,12 +45,20 @@ function FormSection({
     </div>
   )
 
+  const [isOpen, setIsOpen] = React.useState(defaultOpen)
+
   if (collapsible) {
     return (
-      <Collapsible defaultOpen={defaultOpen} className={cn('space-y-ds-04', className)} {...props}>
+      <Collapsible defaultOpen={defaultOpen} onOpenChange={setIsOpen} className={cn('space-y-ds-04', className)} {...props}>
         <CollapsibleTrigger className="flex w-full items-center justify-between py-ds-02 group">
           {header}
-          <IconChevronDown className="h-ico-sm w-ico-sm text-surface-fg-muted transition-transform duration-fast-02 group-data-[state=open]:rotate-180" />
+          <motion.span
+            animate={{ rotate: isOpen ? 180 : 0 }}
+            transition={springs.snappy}
+            className="inline-flex"
+          >
+            <IconChevronDown className="h-ico-sm w-ico-sm text-surface-fg-muted" />
+          </motion.span>
         </CollapsibleTrigger>
         <div className="border-b border-surface-border-subtle" />
         <CollapsibleContent>

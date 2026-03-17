@@ -151,13 +151,19 @@ const MultiSelectPopover = React.forwardRef<HTMLDivElement, MultiSelectPopoverPr
       }
     }
 
+    let itemCounter = 0
+
     function renderItemRow(item: MultiSelectItem) {
       const isSelected = value.includes(item.id)
+      const index = itemCounter++
       return (
-        <button
+        <motion.button
           key={item.id}
           type="button"
           disabled={item.disabled}
+          initial={{ opacity: 0, x: -8 }}
+          animate={{ opacity: 1, x: 0 }}
+          transition={{ ...springs.snappy, delay: index * 0.02 }}
           onClick={() => toggle(item.id)}
           className={cn(
             'flex w-full items-center gap-ds-03 px-ds-04 py-ds-02b text-left transition-colors duration-fast-01 ease-productive-standard',
@@ -195,7 +201,7 @@ const MultiSelectPopover = React.forwardRef<HTMLDivElement, MultiSelectPopoverPr
               <IconCheck className="h-ico-sm w-ico-sm text-accent-11" />
             </motion.span>
           )}
-        </button>
+        </motion.button>
       )
     }
 

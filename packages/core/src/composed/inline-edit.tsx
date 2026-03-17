@@ -1,7 +1,9 @@
 'use client'
 
 import * as React from 'react'
+import { motion } from 'framer-motion'
 import { cn } from '../ui/lib/utils'
+import { tweens, motionProps } from '../ui/lib/motion'
 import { Spinner } from '../ui/spinner'
 
 // ============================================================
@@ -103,6 +105,8 @@ function InlineEdit({
     }
   }
 
+  const modeAnimation = { initial: { opacity: 0, y: -4 }, animate: { opacity: 1, y: 0 }, transition: tweens.fade }
+
   if (editing) {
     const sharedClasses = cn(
       'w-full font-sans bg-surface-raised-hover text-surface-fg border border-surface-border rounded-ds-md',
@@ -112,7 +116,7 @@ function InlineEdit({
 
     if (multiline) {
       return (
-        <div className={cn('relative', className)} {...props}>
+        <motion.div {...modeAnimation} className={cn('relative', className)} {...motionProps(props)}>
           <textarea
             ref={inputRef as React.RefObject<HTMLTextAreaElement>}
             value={draft}
@@ -122,12 +126,12 @@ function InlineEdit({
             maxLength={maxLength}
             className={cn(sharedClasses, 'min-h-[60px] resize-y py-ds-02')}
           />
-        </div>
+        </motion.div>
       )
     }
 
     return (
-      <div className={cn('relative', className)} {...props}>
+      <motion.div {...modeAnimation} className={cn('relative', className)} {...motionProps(props)}>
         <input
           ref={inputRef as React.RefObject<HTMLInputElement>}
           type="text"
@@ -138,13 +142,13 @@ function InlineEdit({
           maxLength={maxLength}
           className={sharedClasses}
         />
-      </div>
+      </motion.div>
     )
   }
 
   // Read mode
   return (
-    <div className={cn('inline-flex items-center gap-ds-02', className)} {...props}>
+    <motion.div {...modeAnimation} className={cn('inline-flex items-center gap-ds-02', className)} {...motionProps(props)}>
       <span
         role={readOnly ? undefined : 'button'}
         tabIndex={readOnly ? undefined : 0}
@@ -165,7 +169,7 @@ function InlineEdit({
         {value || placeholder}
       </span>
       {isSaving && <Spinner size="sm" />}
-    </div>
+    </motion.div>
   )
 }
 

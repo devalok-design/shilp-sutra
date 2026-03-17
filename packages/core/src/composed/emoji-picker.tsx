@@ -1,7 +1,9 @@
 'use client'
 
 import * as React from 'react'
+import { motion, AnimatePresence } from 'framer-motion'
 import { cn } from '../ui/lib/utils'
+import { springs } from '../ui/lib/motion'
 import { Skeleton } from '../ui/skeleton'
 import {
   Popover,
@@ -84,32 +86,47 @@ function EmojiPicker({
     })
   }, [])
 
-  if (!mounted || !data) {
-    return (
-      <div className={cn('rounded-ds-lg', className)}>
-        <Skeleton className="h-[435px] w-[352px] rounded-ds-lg" />
-      </div>
-    )
-  }
+  const isReady = mounted && !!data
 
   return (
-    <React.Suspense
-      fallback={
-        <div className={cn('rounded-ds-lg', className)}>
+    <AnimatePresence mode="wait">
+      {!isReady ? (
+        <motion.div
+          key="skeleton"
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          exit={{ opacity: 0 }}
+          transition={springs.snappy}
+          className={cn('rounded-ds-lg', className)}
+        >
           <Skeleton className="h-[435px] w-[352px] rounded-ds-lg" />
-        </div>
-      }
-    >
-      <div className={className}>
-        <LazyPicker
-          data={data}
-          onEmojiSelect={onSelect}
-          theme={resolveTheme(theme)}
-          previewPosition={previewPosition}
-          skinTonePosition={skinTonePosition}
-        />
-      </div>
-    </React.Suspense>
+        </motion.div>
+      ) : (
+        <motion.div
+          key="picker"
+          initial={{ opacity: 0, scale: 0.95 }}
+          animate={{ opacity: 1, scale: 1 }}
+          transition={springs.snappy}
+          className={className}
+        >
+          <React.Suspense
+            fallback={
+              <div className={cn('rounded-ds-lg', className)}>
+                <Skeleton className="h-[435px] w-[352px] rounded-ds-lg" />
+              </div>
+            }
+          >
+            <LazyPicker
+              data={data}
+              onEmojiSelect={onSelect}
+              theme={resolveTheme(theme)}
+              previewPosition={previewPosition}
+              skinTonePosition={skinTonePosition}
+            />
+          </React.Suspense>
+        </motion.div>
+      )}
+    </AnimatePresence>
   )
 }
 

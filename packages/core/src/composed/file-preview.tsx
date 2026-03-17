@@ -1,7 +1,9 @@
 'use client'
 
 import * as React from 'react'
+import { motion } from 'framer-motion'
 import { cn } from '../ui/lib/utils'
+import { tweens } from '../ui/lib/motion'
 import { Skeleton } from '../ui/skeleton'
 import { Button } from '../ui/button'
 import { IconDownload } from '@tabler/icons-react'
@@ -85,19 +87,29 @@ const LazyImagePreview = React.lazy(() =>
                 <div className="overflow-hidden max-h-[70vh] max-w-full rounded-ds-md bg-surface-sunken">
                   {!loaded && <Skeleton className="h-64 w-full rounded-ds-md" />}
                   <TransformComponent>
-                    <img
+                    <motion.img
                       src={url}
                       alt={alt ?? ''}
                       onLoad={() => setLoaded(true)}
+                      initial={{ opacity: 0 }}
+                      animate={{ opacity: loaded ? 1 : 0 }}
+                      transition={tweens.fade}
                       className={cn('max-w-full', !loaded && 'hidden')}
                     />
                   </TransformComponent>
                 </div>
-                <div className="flex items-center gap-ds-02">
-                  <Button variant="ghost" size="icon-xs" onClick={() => zoomOut()} aria-label="Zoom out">−</Button>
-                  <Button variant="ghost" size="icon-xs" onClick={() => resetTransform()} aria-label="Reset zoom">⟲</Button>
-                  <Button variant="ghost" size="icon-xs" onClick={() => zoomIn()} aria-label="Zoom in">+</Button>
-                </div>
+                {loaded && (
+                  <motion.div
+                    initial={{ opacity: 0, y: 10 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    transition={tweens.fade}
+                    className="flex items-center gap-ds-02"
+                  >
+                    <Button variant="ghost" size="icon-xs" onClick={() => zoomOut()} aria-label="Zoom out">−</Button>
+                    <Button variant="ghost" size="icon-xs" onClick={() => resetTransform()} aria-label="Reset zoom">⟲</Button>
+                    <Button variant="ghost" size="icon-xs" onClick={() => zoomIn()} aria-label="Zoom in">+</Button>
+                  </motion.div>
+                )}
               </>
             )}
           </TransformWrapper>

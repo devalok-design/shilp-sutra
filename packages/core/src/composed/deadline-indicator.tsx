@@ -1,5 +1,7 @@
 import * as React from 'react'
+import { motion } from 'framer-motion'
 import { cn } from '../ui/lib/utils'
+import { motionProps } from '../ui/lib/motion'
 import { IconClock } from '@tabler/icons-react'
 
 // ============================================================
@@ -75,6 +77,24 @@ function DeadlineIndicator({
   const text = format === 'relative'
     ? formatRelative(minutesRemaining)
     : formatAbsolute(deadlineDate)
+
+  const isOverdue = minutesRemaining <= 0
+  const isCritical = minutesRemaining <= criticalThreshold && minutesRemaining > 0
+  const shouldPulse = isOverdue || isCritical
+
+  if (shouldPulse) {
+    return (
+      <motion.span
+        className={cn('inline-flex items-center gap-ds-01 font-sans text-ds-sm', colorClass, className)}
+        animate={{ opacity: [1, 0.7, 1] }}
+        transition={{ duration: 2, repeat: Infinity }}
+        {...motionProps(props)}
+      >
+        {showIcon && <IconClock className="h-3.5 w-3.5" />}
+        {text}
+      </motion.span>
+    )
+  }
 
   return (
     <span

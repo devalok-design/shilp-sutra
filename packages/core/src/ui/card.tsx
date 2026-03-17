@@ -4,7 +4,7 @@ import * as React from 'react'
 import { cva, type VariantProps } from 'class-variance-authority'
 import { motion } from 'framer-motion'
 
-import { springs, motionProps } from './lib/motion'
+import { springs, tweens, motionProps } from './lib/motion'
 import { cn } from './lib/utils'
 
 const cardVariants = cva(
@@ -106,8 +106,11 @@ const Card = React.forwardRef<HTMLDivElement, CardProps>(
     )
 
     const accentEl = accent ? (
-      <span
+      <motion.span
         aria-hidden="true"
+        initial={{ opacity: 0 }}
+        animate={{ opacity: 1 }}
+        transition={tweens.fade}
         className={cn('absolute pointer-events-none', accentPositionClasses[accent])}
         style={{ backgroundColor: accentColorMap[accentColor] }}
       />

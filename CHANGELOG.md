@@ -5,6 +5,37 @@ All notable changes to `@devalok/shilp-sutra` will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.25.0] - 2026-03-17 (core) / [0.22.0] - 2026-03-17 (karm)
+
+### Added (core) — AI Command System
+
+New `@devalok/shilp-sutra/ai` entry point with a composable AI command system:
+
+- **CommandBar** — Unified command interface with three variants:
+  - `hero`: Full-featured inline bar with greeting, rotating placeholders, clickable hint chips, animated gradient border during processing
+  - `inline`: Compact bar for embedding in panels/cards
+  - `floating`: Modal overlay (Dialog-based) with global keybinding support
+  - Supports both command-palette filtering (`groups` prop) AND AI natural-language submission (`onSubmit`) — enter selects command match, falls back to AI; Cmd+Enter always submits to AI
+- **BlockRenderer** — JSON-to-component mapper for structured AI responses. 9 built-in block types, custom block registry (via props or `AICommandProvider` context), stagger entry animations, graceful fallback for unknown types.
+- **AIConversation** — Multi-turn conversation thread with user commands and assistant block responses. Breathing dots + Perplexity-style step visualization for processing states. Intelligent auto-scroll via IntersectionObserver with "New response" pill.
+- **AICommandProvider** — Optional React context for shared block registry, onAction handler, and agent info. Components work standalone via props or auto-wire via context.
+- **DevadootIcon** — Animated Devalok chakra icon with gradient-driven state animations: idle (pink↔rose color breathing), processing (pink→purple→magenta gradient sweep + glow), responded (bright flash + pop), error (red + shake).
+- **Built-in block types:** `text` (react-markdown + remark-gfm), `table` (lightweight sortable BlockTable with badge/number column variants), `confirm` (button pair + expandable rationale), `success` (Alert + undo countdown ring), `error` (Alert + suggestion), `info` (Alert), `loading` (skeleton bars or step visualization), `divider` (animated Separator), `stat_row` (horizontal StatCards with stagger).
+- **Confidence indicators** — Blocks with `confidence: 'low'` render with a warning left border.
+- **New motion presets:** `springs.responsive` (AI blocks), `tweens.elegant` (greeting/hints).
+- **Shared keybinding utility** — `ui/lib/keybinding.ts` with `matchesKeybinding()`, `getIsMac()`, `getModifierDisplay()`. CommandPalette refactored to use shared utility (no public API change).
+- **New dependency:** `remark-gfm` (optional peer dep, for GFM markdown in text blocks).
+
+### Added (karm) — AI Domain Blocks
+
+New `@devalok/shilp-sutra-karm/ai-blocks` entry point:
+
+- **MemberDiffBlock** — Shows members being added/removed from projects with action badges
+- **MemberListBlock** — Compact member list with avatars, roles, and status
+- **ProjectListBlock** — Project list with status badges and member counts
+- **AnnouncementPreviewBlock** — Styled announcement card preview
+- **karmBlockRegistry** — Pre-configured registry mapping for use with `BlockRenderer`
+
 ## [0.24.0] - 2026-03-17 (core)
 
 ### Added (core)

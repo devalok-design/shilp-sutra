@@ -166,6 +166,45 @@ Same pattern for `border-surface-*`, `text-surface-*`, `ring-surface-*`.
 
 **New hover states**: Checkbox, Radio, Switch track, Select items, DropdownMenu items, Combobox trigger.
 
+## AI Command System (v0.25.0+)
+
+New `@devalok/shilp-sutra/ai` module — composable AI command interface.
+
+**CommandBar** — Unified input (hero/inline/floating variants):
+```tsx
+<CommandBar
+  variant="hero"
+  onSubmit={(query) => sendToAI(query)}  // AI submission
+  groups={commandGroups}                 // optional command palette filtering
+  state="idle"                           // idle | typing | processing | responded
+  greeting="Good morning, Mudit."
+  hints={['Add member...', 'Check status...']}
+  agentName="Devadoot"
+  agentIcon={<DevadootIcon state={iconState} />}
+>
+  <AIConversation messages={messages} isProcessing={loading} />
+</CommandBar>
+```
+
+**BlockRenderer** — Renders AI response JSON as DS components:
+```tsx
+<BlockRenderer blocks={response.blocks} onAction={handleAction} customBlocks={myBlocks} />
+```
+
+Block types: `text`, `table`, `confirm`, `success`, `error`, `info`, `loading`, `divider`, `stat_row`.
+
+**AICommandProvider** — Optional context wrapper:
+```tsx
+<AICommandProvider customBlocks={karmBlocks} onAction={handle} agent={{ name: 'Devadoot' }}>
+  {/* CommandBar + AIConversation auto-wire from context */}
+</AICommandProvider>
+```
+
+**DevadootIcon** — Animated Devalok chakra with gradient state animations:
+```tsx
+<DevadootIcon state="processing" size={20} />  // idle | processing | responded | error
+```
+
 ## Install & Setup
 
 pnpm add @devalok/shilp-sutra
@@ -184,6 +223,9 @@ import { Button, Card, Dialog } from '@devalok/shilp-sutra'
 import { Button } from '@devalok/shilp-sutra/ui/button'
 import { PageHeader } from '@devalok/shilp-sutra/composed/page-header'
 import { TopBar } from '@devalok/shilp-sutra/shell/top-bar'
+
+// AI command system (v0.25.0+):
+import { CommandBar, AIConversation, BlockRenderer, AICommandProvider, DevadootIcon } from '@devalok/shilp-sutra/ai'
 
 // Toast (imperative, no hook needed):
 import { toast } from '@devalok/shilp-sutra/ui/toast'

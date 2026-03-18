@@ -195,7 +195,7 @@ export const AssetAudit: Story = {
       <div>
         <h2 className="text-lg font-bold mb-2">Devalok Logos — Rendered at 300px height</h2>
         <p className="text-sm text-surface-fg-muted mb-6">
-          These are the PNG-backed logo types at 512/1024/2048 grid.
+          These are the PNG-backed logo types at 512/1024 grid.
           Reviewing at 300px to check detail and quality.
         </p>
         <div className="flex flex-col gap-10">

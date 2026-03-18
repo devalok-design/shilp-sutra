@@ -15,6 +15,11 @@
  *   - Devalok: SVG favicon (rasterized via sharp)
  *   - Karm: 500x500 PNG favicon (upscaled to 512, downscaled for smaller)
  *
+ * NOTE: This is a one-shot script. The Karm source (icon-512.png) is the
+ * output of a previous run — the original favicon-brand-512.png was deleted.
+ * Re-running regenerates from the current favicon files (idempotent for
+ * Devalok since SVG source is preserved, but Karm re-processes its own output).
+ *
  * Usage:  node packages/brand/scripts/generate-favicons.mjs
  * Requires: sharp (workspace devDependency)
  */

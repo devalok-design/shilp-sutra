@@ -3,7 +3,7 @@
 import * as React from 'react'
 import { cn } from '../lib/utils'
 import { getDevalokSvgComponents } from './svg-components'
-// 512px variants are the standard web-resolution assets (1024/2048 reserved for print)
+// 512px variants — sufficient for all CSS display sizes. 1024px available as raw assets.
 import monogramBrand from '../assets/devalok/logos/monogram-brand-512.png'
 import monogramBlack from '../assets/devalok/logos/monogram-black-512.png'
 import monogramWhite from '../assets/devalok/logos/monogram-white-512.png'

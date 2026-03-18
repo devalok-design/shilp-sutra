@@ -68,11 +68,11 @@ Returns a single favicon file path string.
 
 Assets available via wildcard import: @devalok/shilp-sutra-brand/assets/*
 
-Devalok logos (PNG/WebP at 512/1024/2048 grid, 3 colors each):
+Devalok logos (PNG/WebP at 512/1024 grid, 3 colors each):
   assets/devalok/logos/{type}-{color}-{size}.{png,webp}
   Types: monogram, monogram-wordmark, monogram-shell, monogram-shell-wordmark, monogram-coin-wordmark, shloka
   Colors: brand, black, white
-  Sizes: 512, 1024, 2048 (longest edge, aspect ratio preserved)
+  Sizes: 512, 1024 (longest edge, aspect ratio preserved)
 
 Devalok favicons (5 files):
   assets/devalok/favicons/favicon.ico
@@ -90,6 +90,6 @@ Karm favicons (4 files, no SVG):
 ## Key Notes
 
 - color="auto" uses MutationObserver on .dark class for dark mode switching
-- Raster-complex logos (monogram, monogram-shell, monogram-shell-wordmark, monogram-coin-wordmark, shloka) render as <img> from PNG/WebP at 512/1024/2048 grid; no SVG exports for these types
+- Raster-complex logos (monogram, monogram-wordmark, monogram-shell, monogram-shell-wordmark, monogram-coin-wordmark, shloka) render as <img> from PNG/WebP at 512/1024 grid; no SVG exports for these types
 - Karm logos are all inline SVG (no PNG assets)
 - Brand colors: brand=#D33163, brandDark=#B8284F

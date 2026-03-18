@@ -2,11 +2,16 @@
  * resize-logos.mjs
  *
  * Reads the oversized master PNGs from src/assets/devalok/logos/, resizes each
- * to 512/1024/2048 (longest edge, aspect ratio preserved), and generates both
+ * to 512/1024 (longest edge, aspect ratio preserved), and generates both
  * PNG and WebP at each size. Output goes to src/assets/devalok/logos-resized/.
  *
  * For WebP, tries both lossy (quality 90) and lossless, keeps whichever is
  * smaller — same strategy as convert-to-webp.mjs.
+ *
+ * NOTE: This is a one-shot script. The original 10K+ master PNGs have been
+ * deleted after resizing. Running again will re-process the already-resized
+ * files (harmless but produces double-compressed artifacts at smaller sizes).
+ * To regenerate from true masters, restore them from git history first.
  *
  * Usage:  node packages/brand/scripts/resize-logos.mjs
  * Requires: sharp (installed as workspace devDependency)
@@ -32,7 +37,7 @@ const LOGO_TYPES = [
 
 const COLORS = ['brand', 'black', 'white']
 
-const SIZES = [512, 1024, 2048]
+const SIZES = [512, 1024]
 
 function formatSize(bytes) {
   if (bytes < 1024) return `${bytes} B`

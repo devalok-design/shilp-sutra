@@ -25,10 +25,10 @@ generateDevalokFavicon()
 
 ### Changed (brand)
 
-- **Logo assets resized** from 10K+ originals to 512/1024/2048 grid (longest edge, aspect ratio preserved). PNG + WebP for all raster-complex types.
+- **Logo assets resized** from 10K+ originals to 512/1024 grid (longest edge, aspect ratio preserved). PNG + WebP for all raster-complex types.
 - **SVGs removed** for raster-complex Devalok logo types (monogram, monogram-shell, monogram-shell-wordmark, monogram-coin-wordmark, shloka) — these were 3-20 MB vector files with embedded bitmaps.
 - **Modern minimal favicon set** adopted: 5 files per brand (Devalok: favicon.ico, favicon.svg, apple-touch-icon.png, icon-192.png, icon-512.png; Karm: 4 files, no SVG).
-- **Package size reduced** from ~39 MB to ~23 MB.
+- **Package size reduced** from ~39 MB to ~7 MB.
 
 ### Added (brand)
 

@@ -30,14 +30,14 @@ const BRANDS = [
   {
     name: 'devalok',
     // SVG source — rasterize at each size
-    svgSource: join(ASSETS, 'devalok', 'favicons', 'favicon-brand.svg'),
+    svgSource: join(ASSETS, 'devalok', 'favicons', 'favicon.svg'),
     pngSource: null,
   },
   {
     name: 'karm',
     // No SVG available — use the 500x500 PNG as raster source
     svgSource: null,
-    pngSource: join(ASSETS, 'karm', 'favicons', 'favicon-brand-512.png'),
+    pngSource: join(ASSETS, 'karm', 'favicons', 'icon-512.png'),
   },
 ]
 

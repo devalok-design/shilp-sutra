@@ -1,43 +1,27 @@
-type FaviconColor = 'brand' | 'black' | 'white'
-type FaviconSize = 16 | 32 | 96 | 180 | 512
+type FaviconFormat = 'ico' | 'svg' | 'png'
 
 export function getDevalokFaviconPath(options?: {
-  color?: FaviconColor
-  size?: FaviconSize
-  format?: 'png' | 'svg'
+  format?: FaviconFormat
+  /** Only used for PNG: 'apple-touch-icon' | 'icon-192' | 'icon-512' */
+  name?: 'apple-touch-icon' | 'icon-192' | 'icon-512'
 }): string {
-  const { color = 'brand', size = 32, format = 'png' } = options ?? {}
-  if (format === 'svg') {
-    return `@devalok/shilp-sutra-brand/assets/devalok/favicons/favicon-${color}.svg`
-  }
-  return `@devalok/shilp-sutra-brand/assets/devalok/favicons/favicon-${color}-${size}.png`
+  const { format = 'svg', name } = options ?? {}
+  const base = '@devalok/shilp-sutra-brand/assets/devalok/favicons'
+  if (format === 'ico') return `${base}/favicon.ico`
+  if (format === 'svg') return `${base}/favicon.svg`
+  return `${base}/${name ?? 'icon-512'}.png`
 }
 
 /** Returns a metadata object compatible with Next.js generateMetadata icons field */
-export function generateDevalokFavicon(options?: { color?: FaviconColor }) {
-  const color = options?.color ?? 'brand'
+export function generateDevalokFavicon() {
+  const base = '@devalok/shilp-sutra-brand/assets/devalok/favicons'
   return {
     icon: [
-      {
-        url: getDevalokFaviconPath({ color, size: 32, format: 'png' }),
-        sizes: '32x32',
-        type: 'image/png',
-      },
-      {
-        url: getDevalokFaviconPath({ color, size: 96, format: 'png' }),
-        sizes: '96x96',
-        type: 'image/png',
-      },
-      {
-        url: getDevalokFaviconPath({ color, format: 'svg' }),
-        type: 'image/svg+xml',
-      },
+      { url: `${base}/favicon.ico`, sizes: '32x32', type: 'image/x-icon' },
+      { url: `${base}/favicon.svg`, type: 'image/svg+xml' },
     ],
     apple: [
-      {
-        url: getDevalokFaviconPath({ color, size: 180, format: 'png' }),
-        sizes: '180x180',
-      },
+      { url: `${base}/apple-touch-icon.png`, sizes: '180x180' },
     ],
   }
 }

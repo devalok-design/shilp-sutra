@@ -111,6 +111,11 @@ export default defineConfig({
         /^remark-gfm($|\/)/,
         /^input-otp($|\/)/,
         /^server-only$/,
+        // SSR-safety: consumer-provided deps that must not be bundled
+        /^tailwindcss($|\/)/,       // already a peer dep — preset uses consumer's copy
+        /^react-pdf($|\/)/,         // lazy-loaded by FilePreview, 3MB with DOMMatrix
+        /^react-zoom-pan-pinch($|\/)/, // browser-only transforms, used by FilePreview
+        /^react-syntax-highlighter($|\/)/, // used by MarkdownViewer code blocks
       ],
       output: {
         entryFileNames: '[name].js',
@@ -131,12 +136,21 @@ export default defineConfig({
               id.includes('use-callback-ref') ||
               id.includes('use-sidecar') ||
               id.includes('react-clientside-effect') ||
-              id.includes('get-nonce') ||
-              id.includes('sonner')
+              id.includes('get-nonce')
             )
               return 'vendor-client'
-            // Pure utilities (clsx, cva, tailwind-merge) — must NOT have "use client"
-            return 'vendor-utils'
+            // Sonner — only loaded by Toaster/Toast, not needed by Popover/Dialog consumers
+            if (id.includes('sonner'))
+              return 'sonner'
+            // Pure utilities — ALLOWLIST, not catch-all.
+            // Unknown deps get their own isolated chunk (safe by default).
+            // The SSR smoke test catches module-scope browser API usage.
+            if (
+              id.includes('/clsx/') ||
+              id.includes('/class-variance-authority/') ||
+              id.includes('/tailwind-merge/')
+            )
+              return 'vendor-utils'
           }
           if (id.includes('primitives/')) return 'primitives'
         },

@@ -1,6 +1,6 @@
 {
   "name": "@devalok/shilp-sutra",
-  "version": "0.26.0",
+  "version": "0.27.0",
   "description": "Devalok Design System — tokens, components, and patterns for Next.js",
   "license": "MIT",
   "type": "module",
@@ -696,6 +696,9 @@
     "react": "^18 || ^19",
     "react-dom": "^18 || ^19",
     "react-markdown": "^10.0.0",
+    "react-pdf": "^10.0.0",
+    "react-syntax-highlighter": "^15.0.0 || ^16.0.0",
+    "react-zoom-pan-pinch": "^3.0.0",
     "remark-gfm": "^4.0.0",
     "tailwindcss": "^3.4.0"
   },
@@ -748,6 +751,15 @@
     "react-markdown": {
       "optional": true
     },
+    "react-pdf": {
+      "optional": true
+    },
+    "react-syntax-highlighter": {
+      "optional": true
+    },
+    "react-zoom-pan-pinch": {
+      "optional": true
+    },
     "remark-gfm": {
       "optional": true
     },
@@ -759,7 +771,6 @@
     "@emoji-mart/data": "^1.2.1",
     "@emoji-mart/react": "^1.1.1",
     "@floating-ui/react-dom": "^2.1.7",
-    "@react-pdf/renderer": "^4.3.2",
     "@tabler/icons-react": "^3.37.1",
     "@tanstack/react-table": "^8.21.2",
     "@tanstack/react-virtual": "^3.13.19",
@@ -790,6 +801,7 @@
     "d3-time-format": "^4.1.0",
     "d3-transition": "^3.0.1",
     "date-fns": "^4.1.0",
+    "esbuild": "^0.27.4",
     "framer-motion": "^12.36.0",
     "input-otp": "^1.4.2",
     "react-markdown": "^10.1.0",

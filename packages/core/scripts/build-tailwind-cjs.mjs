@@ -1,38 +1,30 @@
 // Builds a CJS version of the Tailwind preset for consumers using require()
 // (Tailwind's config loader uses CommonJS require() even in ESM projects)
+//
+// Uses esbuild for robust ESM→CJS conversion instead of hand-rolled regexes.
+// esbuild handles all import/export patterns including edge cases that regex misses.
 
-import { readFile, writeFile } from 'node:fs/promises'
+import { readFileSync, writeFileSync } from 'node:fs'
 import { resolve, dirname } from 'node:path'
 import { fileURLToPath } from 'node:url'
+import { buildSync } from 'esbuild'
 
 const __dirname = dirname(fileURLToPath(import.meta.url))
 const dist = resolve(__dirname, '..', 'dist', 'tailwind')
+const outfile = resolve(dist, 'index.cjs')
 
-// Read the ESM preset — it's a single const assignment + export default
-const presetSrc = await readFile(resolve(dist, 'preset.js'), 'utf8')
+buildSync({
+  entryPoints: [resolve(dist, 'preset.js')],
+  outfile,
+  format: 'cjs',
+  platform: 'node',
+  bundle: false,       // Don't resolve imports — keep externals as-is
+  logLevel: 'warning',
+})
 
-// Convert: strip the ESM export, add module.exports
-// The file looks like: const r = { ... };\nexport {\n  r as default\n};
-const varMatch = presetSrc.match(/^const\s+(\w+)\s*=/m)
-if (!varMatch) {
-  console.error('ERROR: Could not find variable name in preset.js output. The Rollup output format may have changed.')
-  process.exit(1)
-}
-const varName = varMatch[1]
+// esbuild wraps default exports as { default: X }. Tailwind's config loader
+// expects `module.exports = preset` directly. Append a flat re-export.
+const cjs = readFileSync(outfile, 'utf8')
+writeFileSync(outfile, cjs + '\nmodule.exports = module.exports.default;\nmodule.exports.default = module.exports;\n')
 
-const cjs = presetSrc
-  .replace(/^export\s*\{\s*\w+\s+as\s+default\s*\}\s*;?\s*$/m, '')
-  .trimEnd()
-  .replace(/^const\s+(\w+)\s*=/m, (_, name) => {
-    return `const ${name} =`
-  }) + `\nmodule.exports = ${varName};\nmodule.exports.default = module.exports;\n`
-
-// Validate that the ESM→CJS conversion removed all export statements
-if (/\bexport\s/.test(cjs)) {
-  console.error('ERROR: CJS conversion failed — output still contains ESM export statements.')
-  console.error('The Rollup output format may have changed. Update the regex in build-tailwind-cjs.mjs.')
-  process.exit(1)
-}
-
-await writeFile(resolve(dist, 'index.cjs'), cjs)
-console.log('✓ Built dist/tailwind/index.cjs (CommonJS)')
+console.log('\u2713 Built dist/tailwind/index.cjs (CommonJS via esbuild)')

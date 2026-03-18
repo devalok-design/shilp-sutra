@@ -215,6 +215,21 @@ gate('Build succeeds', () => {
   }
 })
 
+gate('SSR smoke test passes (no browser API crashes in Node.js)', () => {
+  try {
+    // Hardcoded command — no user input, safe to use execSync
+    execSync('node scripts/ssr-smoke-test.mjs', {
+      cwd: join(ROOT, 'packages/core'),
+      encoding: 'utf-8',
+      stdio: 'pipe',
+      timeout: 120000,
+    })
+    return true
+  } catch (e) {
+    return e.stdout?.trim() || 'SSR smoke test failed — run: node packages/core/scripts/ssr-smoke-test.mjs'
+  }
+})
+
 // --- Source Hygiene ---
 console.log('\n\x1b[36mSource Hygiene\x1b[0m')
 

@@ -42,10 +42,6 @@ const SERVER_SAFE = new Set([
   // vendor-utils chunk — pure functions (clsx, cva, tailwind-merge), no React
   '_chunks/vendor-utils',
 
-  // shared chunks — pure functions split out by Rollup, no React
-  '_chunks/utils',
-  '_chunks/motion',
-
   // utility modules — pure functions, no React
   'ui/lib/date-utils',
   'composed/lib/string-utils',
@@ -87,6 +83,18 @@ function toKey(filePath, distRoot) {
 
 const distRoot = join(process.cwd(), 'dist')
 const allFiles = walk(distRoot)
+
+// Validate that SERVER_SAFE chunk entries actually exist in dist.
+// If a chunk was renamed or removed by a Rollup/Vite upgrade, the entry
+// becomes a no-op and server-safe code silently gets "use client".
+for (const key of SERVER_SAFE) {
+  if (!key.startsWith('_chunks/')) continue
+  const jsPath = join(distRoot, `${key}.js`)
+  const exists = allFiles.some(f => f.replace(/\\/g, '/').endsWith(`${key}.js`))
+  if (!exists) {
+    console.warn(`inject-use-client: WARNING — SERVER_SAFE entry '${key}' not found in dist/. Chunk may have been renamed.`)
+  }
+}
 
 let injected = 0
 let skipped = 0

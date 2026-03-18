@@ -5,6 +5,36 @@ All notable changes to `@devalok/shilp-sutra` will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.6.0] - 2026-03-18 (brand)
+
+### Breaking Changes (brand) — Favicon API Simplified
+
+- **`getDevalokFaviconPath`** and **`getKarmFaviconPath`** no longer accept `color` or `size` params. New signature: `{ format?, name? }`.
+- **`generateDevalokFavicon`** and **`generateKarmFavicon`** no longer accept options. They return a fixed modern minimal favicon set.
+
+**Migration:**
+```ts
+// Before
+getDevalokFaviconPath({ color: 'brand', size: 32, format: 'png' })
+generateDevalokFavicon({ color: 'brand' })
+
+// After
+getDevalokFaviconPath({ format: 'png', name: 'icon-512' })
+generateDevalokFavicon()
+```
+
+### Changed (brand)
+
+- **Logo assets resized** from 10K+ originals to 512/1024/2048 grid (longest edge, aspect ratio preserved). PNG + WebP for all raster-complex types.
+- **SVGs removed** for raster-complex Devalok logo types (monogram, monogram-shell, monogram-shell-wordmark, monogram-coin-wordmark, shloka) — these were 3-20 MB vector files with embedded bitmaps.
+- **Modern minimal favicon set** adopted: 5 files per brand (Devalok: favicon.ico, favicon.svg, apple-touch-icon.png, icon-192.png, icon-512.png; Karm: 4 files, no SVG).
+- **Package size reduced** from ~39 MB to ~23 MB.
+
+### Added (brand)
+
+- **Asset validation pre-publish gate** (`validate-assets.mjs`) — verifies all expected logo and favicon files exist with correct naming and reasonable file sizes before publish.
+- **Asset audit Storybook stories** — visual grid of all logo variants and favicon files for manual review.
+
 ## [0.27.1] - 2026-03-18 (core)
 
 ### Fixed (core)

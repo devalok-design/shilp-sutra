@@ -15,7 +15,7 @@ import { DevalokLogo, generateDevalokFavicon } from '@devalok/shilp-sutra-brand/
 import { KarmLogo, generateKarmFavicon } from '@devalok/shilp-sutra-brand/karm'
 
 // Raw asset files:
-import monogram from '@devalok/shilp-sutra-brand/assets/devalok/logos/monogram-brand.png'
+import monogram from '@devalok/shilp-sutra-brand/assets/devalok/logos/monogram-brand-512.png'
 
 ## Components
 
@@ -41,47 +41,55 @@ import monogram from '@devalok/shilp-sutra-brand/assets/devalok/logos/monogram-b
 
 ## Favicon Helpers
 
-### generateDevalokFavicon(options?)
-Returns Next.js metadata-compatible icon config.
-  options.color: 'brand' | 'black' | 'white' (default: 'brand')
+### generateDevalokFavicon()
+Returns Next.js metadata-compatible icon config (no arguments).
+Returns: { icon: [ico, svg], apple: [apple-touch-icon.png] }
 
 Usage in Next.js layout.tsx:
   import { generateDevalokFavicon } from '@devalok/shilp-sutra-brand/devalok'
-  export const metadata = { ...generateDevalokFavicon({ color: 'brand' }) }
+  export const metadata = { icons: generateDevalokFavicon() }
 
-### generateKarmFavicon(options?)
-Same pattern, returns icon + apple + manifest paths.
+### generateKarmFavicon()
+Same pattern (no arguments). Returns: { icon: [ico], apple: [apple-touch-icon.png], manifest }
   import { generateKarmFavicon } from '@devalok/shilp-sutra-brand/karm'
-  export const metadata = { ...generateKarmFavicon({ color: 'brand' }) }
+  export const metadata = { icons: generateKarmFavicon() }
 
-### getDevalokFaviconPath(options?) / getKarmFaviconPath(options?)
+### getDevalokFaviconPath(options?)
 Returns a single favicon file path string.
-  options: { color, size, format }
+  options: { format?: 'ico' | 'svg' | 'png', name?: 'apple-touch-icon' | 'icon-192' | 'icon-512' }
+  Default format: 'svg'. name is only used when format is 'png'.
+
+### getKarmFaviconPath(options?)
+Returns a single favicon file path string.
+  options: { format?: 'ico' | 'png', name?: 'apple-touch-icon' | 'icon-192' | 'icon-512' }
+  Default format: 'ico'. No SVG available for Karm.
 
 ## Raw Asset Paths
 
 Assets available via wildcard import: @devalok/shilp-sutra-brand/assets/*
 
-Devalok logos (PNG/SVG/WebP, 3 colors each):
-  assets/devalok/logos/monogram-{brand,black,white}.png
-  assets/devalok/logos/monogram-wordmark-{brand,black,white}.png
-  assets/devalok/logos/monogram-shell-{brand,black,white}.png
-  assets/devalok/logos/monogram-shell-wordmark-{brand,black,white}.png
-  assets/devalok/logos/monogram-coin-wordmark-{brand,black,white}.png
-  assets/devalok/logos/shloka-{brand,black,white}.png
+Devalok logos (PNG/WebP at 512/1024/2048 grid, 3 colors each):
+  assets/devalok/logos/{type}-{color}-{size}.{png,webp}
+  Types: monogram, monogram-wordmark, monogram-shell, monogram-shell-wordmark, monogram-coin-wordmark, shloka
+  Colors: brand, black, white
+  Sizes: 512, 1024, 2048 (longest edge, aspect ratio preserved)
 
-Devalok favicons:
-  assets/devalok/favicons/favicon-{brand,black,white}.svg
-  assets/devalok/favicons/favicon-{brand,black,white}-{16,32,96,180,512}.png
+Devalok favicons (5 files):
+  assets/devalok/favicons/favicon.ico
+  assets/devalok/favicons/favicon.svg
+  assets/devalok/favicons/apple-touch-icon.png
+  assets/devalok/favicons/icon-192.png
+  assets/devalok/favicons/icon-512.png
 
-Karm favicons:
-  assets/karm/favicons/favicon-brand.ico
-  assets/karm/favicons/favicon-{brand,black,white}.svg
-  assets/karm/favicons/favicon-brand-{96,180,192,512}.png
+Karm favicons (4 files, no SVG):
+  assets/karm/favicons/favicon.ico
+  assets/karm/favicons/apple-touch-icon.png
+  assets/karm/favicons/icon-192.png
+  assets/karm/favicons/icon-512.png
 
 ## Key Notes
 
 - color="auto" uses MutationObserver on .dark class for dark mode switching
-- Large PNG logos (monogram, shloka) render as <img>; smaller SVGs inline as React components
+- Raster-complex logos (monogram, monogram-shell, monogram-shell-wordmark, monogram-coin-wordmark, shloka) render as <img> from PNG/WebP at 512/1024/2048 grid; no SVG exports for these types
 - Karm logos are all inline SVG (no PNG assets)
 - Brand colors: brand=#D33163, brandDark=#B8284F

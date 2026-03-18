@@ -41,18 +41,34 @@ The `color="auto"` option reacts to dark mode (`.dark` class) automatically.
 ### Favicons
 
 ```tsx
-import { getDevalokFaviconPath } from '@devalok/shilp-sutra-brand/devalok'
-import { getKarmFaviconPath } from '@devalok/shilp-sutra-brand/karm'
+import { getDevalokFaviconPath, generateDevalokFavicon } from '@devalok/shilp-sutra-brand/devalok'
+import { getKarmFaviconPath, generateKarmFavicon } from '@devalok/shilp-sutra-brand/karm'
 
-// Returns path to favicon asset
-const favicon = getDevalokFaviconPath()
+// Single file path
+getDevalokFaviconPath({ format: 'svg' })                        // default
+getDevalokFaviconPath({ format: 'ico' })
+getDevalokFaviconPath({ format: 'png', name: 'apple-touch-icon' })
+
+getKarmFaviconPath({ format: 'ico' })                            // default (no SVG)
+getKarmFaviconPath({ format: 'png', name: 'icon-192' })
+
+// Next.js metadata-compatible icon set (no args)
+generateDevalokFavicon()   // { icon: [...], apple: [...] }
+generateKarmFavicon()      // { icon: [...], apple: [...], manifest: '...' }
 ```
+
+Each brand ships a modern minimal favicon set:
+
+| Brand | Files |
+|-------|-------|
+| Devalok | `favicon.ico`, `favicon.svg`, `apple-touch-icon.png`, `icon-192.png`, `icon-512.png` |
+| Karm | `favicon.ico`, `apple-touch-icon.png`, `icon-192.png`, `icon-512.png` |
 
 ### Raw Assets
 
 ```tsx
-// Direct asset imports (SVG, PNG, WebP, ICO, webmanifest)
-import devalokSvg from '@devalok/shilp-sutra-brand/assets/devalok-full.svg'
+// Direct asset imports (PNG, WebP, ICO, SVG, webmanifest)
+import monogram from '@devalok/shilp-sutra-brand/assets/devalok/logos/monogram-brand-512.png'
 ```
 
 ## Exports

@@ -187,3 +187,94 @@ export const NavLink: Story = {
     </DevalokLogo.Link>
   ),
 }
+
+export const AssetAudit: Story = {
+  name: '🔍 Asset Audit (Full Size)',
+  render: () => (
+    <div className="flex flex-col gap-12">
+      <div>
+        <h2 className="text-lg font-bold mb-2">Devalok Logos — Rendered at 300px height</h2>
+        <p className="text-sm text-surface-fg-muted mb-6">
+          These are the PNG-backed logo types at 512/1024 grid.
+          Reviewing at 300px to check detail and quality.
+        </p>
+        <div className="flex flex-col gap-10">
+          {(
+            [
+              'monogram',
+              'monogram-wordmark',
+              'monogram-shell',
+              'monogram-shell-wordmark',
+              'monogram-coin-wordmark',
+              'shloka',
+            ] as const
+          ).map((type) => (
+            <div key={type} className="flex flex-col gap-3">
+              <span className="text-sm font-mono text-surface-fg-muted font-semibold">
+                {type}
+              </span>
+              <div className="flex items-start gap-8">
+                {(['brand', 'black', 'white'] as const).map((color) => (
+                  <div
+                    key={color}
+                    className={`p-6 rounded-lg border ${
+                      color === 'white'
+                        ? 'bg-gray-900 border-gray-700'
+                        : 'bg-white border-gray-200'
+                    }`}
+                  >
+                    <DevalokLogo
+                      type={type}
+                      color={color}
+                      size="xl"
+                      className="!h-[300px] !w-auto"
+                    />
+                    <p className="text-xs text-center mt-2 opacity-60">{color}</p>
+                  </div>
+                ))}
+              </div>
+            </div>
+          ))}
+        </div>
+      </div>
+
+      <hr className="border-surface-border" />
+
+      <div>
+        <h2 className="text-lg font-bold mb-2">SVG Logos — Rendered at 200px height</h2>
+        <p className="text-sm text-surface-fg-muted mb-6">
+          These are inline SVG types. Should scale perfectly at any size.
+        </p>
+        <div className="flex flex-col gap-10">
+          {(['wordmark', 'dass', 'chakra'] as const).map((type) => (
+            <div key={type} className="flex flex-col gap-3">
+              <span className="text-sm font-mono text-surface-fg-muted font-semibold">
+                {type}
+              </span>
+              <div className="flex items-start gap-8">
+                {(['brand', 'black', 'white'] as const).map((color) => (
+                  <div
+                    key={color}
+                    className={`p-6 rounded-lg border ${
+                      color === 'white'
+                        ? 'bg-gray-900 border-gray-700'
+                        : 'bg-white border-gray-200'
+                    }`}
+                  >
+                    <DevalokLogo
+                      type={type}
+                      color={color}
+                      size="xl"
+                      className="!h-[200px] !w-auto"
+                    />
+                    <p className="text-xs text-center mt-2 opacity-60">{color}</p>
+                  </div>
+                ))}
+              </div>
+            </div>
+          ))}
+        </div>
+      </div>
+    </div>
+  ),
+}

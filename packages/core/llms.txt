@@ -4,6 +4,22 @@
 > Built on the same primitives as shadcn/ui but with key API differences.
 > Read this file BEFORE writing any UI code. Do NOT guess from shadcn/ui knowledge.
 
+## BREAKING CHANGES (v0.27.0 — Externalized Dependencies)
+
+FilePreview and MarkdownViewer dependencies are now **external** (not bundled).
+Install them if you use these components:
+
+```bash
+pnpm add react-pdf react-zoom-pan-pinch react-syntax-highlighter
+```
+
+These are optional peerDependencies — consumers who don't use FilePreview or MarkdownViewer are unaffected.
+
+**Next.js optimization:** Add to your `next.config.js`:
+```js
+optimizePackageImports: ['@devalok/shilp-sutra']
+```
+
 ## BREAKING CHANGES (v0.23.0 — Semantic Surface & Shadow Tokens)
 
 **Surface tokens renamed:** Numeric `surface-1..4` replaced with semantic names.

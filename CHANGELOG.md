@@ -5,6 +5,37 @@ All notable changes to `@devalok/shilp-sutra` will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.27.0] - 2026-03-18 (core)
+
+### Breaking Changes (core) — Externalized Dependencies
+
+The following dependencies are no longer bundled. Consumers using FilePreview or MarkdownViewer must install them:
+
+- `react-pdf` — Required for FilePreview PDF rendering. Add as direct dependency.
+- `react-zoom-pan-pinch` — Required for FilePreview image zoom. Add as direct dependency.
+- `react-syntax-highlighter` — Required for MarkdownViewer code blocks. Add as direct dependency.
+
+These are declared as optional `peerDependencies`. Consumers who don't use FilePreview or MarkdownViewer are unaffected.
+
+**Migration:** `pnpm add react-pdf react-zoom-pan-pinch react-syntax-highlighter`
+
+### Fixed (core) — SSR Safety
+
+- **DOMMatrix crash** (issue #21): Tailwind preset imported from `vendor-utils.js`, a 3.1MB catch-all chunk containing react-pdf/pdfjs-dist code with module-scope `new DOMMatrix()`. This crashed every Next.js production build. Fixed by externalizing browser-only deps and replacing the manualChunks catch-all with an explicit allowlist. vendor-utils.js: 3.1MB → 80KB.
+- **Tailwind preset isolation**: Preset now imports `tailwindcss/plugin` directly (external) instead of from vendor-utils. No more transitive DOMMatrix dependency.
+- **Sonner chunk isolation**: Sonner (toast library, 42KB) split into its own chunk. Consumers using Dialog/Popover no longer pay for toast infrastructure they don't use.
+- **SSR smoke test**: New hard publish gate — imports all 128 entry points in Node.js and verifies no module-scope browser API crashes. Integrated into pre-publish-audit.mjs.
+
+### Changed (core) — Build Pipeline
+
+- **manualChunks allowlist**: Replaced catch-all `return 'vendor-utils'` with explicit allowlist for clsx/cva/tailwind-merge. Unknown deps get isolated auto-named chunks instead of joining a toxic mega-chunk.
+- **esbuild CJS conversion**: Replaced hand-rolled regex ESM→CJS transpiler with esbuild for the Tailwind preset. Handles all import/export patterns robustly.
+- **SERVER_SAFE validation**: inject-use-client.mjs now warns if a SERVER_SAFE chunk entry doesn't exist in dist (catches stale entries after Rollup changes).
+
+### Removed (core)
+
+- `@react-pdf/renderer` removed from devDependencies (was never imported by any source file).
+
 ## [0.26.0] - 2026-03-17 (core) / [0.23.0] - 2026-03-17 (karm)
 
 ### Added (core) — 15 New Components

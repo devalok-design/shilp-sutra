@@ -5,6 +5,12 @@ All notable changes to `@devalok/shilp-sutra` will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.27.1] - 2026-03-18 (core)
+
+### Fixed (core)
+
+- **Sonner SSR crash** (issue #21): `useState(document.hidden)` in Sonner's `useIsDocumentHidden` hook crashes during Next.js SSR. Post-build script now patches to `useState(typeof document !== "undefined" ? document.hidden : false)`. Karm can remove the `ssr: false` workaround on Toaster import.
+
 ## [0.27.0] - 2026-03-18 (core)
 
 ### Breaking Changes (core) — Externalized Dependencies

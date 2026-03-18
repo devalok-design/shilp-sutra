@@ -173,6 +173,35 @@ try {
   // vendor-client.js may not exist in all build configurations
 }
 
+// ── SSR safety: patch Sonner's unguarded `document.hidden` in useState ──────
+//
+// Sonner's useIsDocumentHidden hook uses `useState(document.hidden)` which
+// crashes during Next.js SSR because even "use client" components are
+// server-rendered. The useState initializer runs during SSR.
+//
+// Fix: guard with typeof check, default to false on server.
+// See: https://github.com/devalok-design/shilp-sutra/issues/21
+
+const sonnerPath = join(distRoot, '_chunks', 'sonner.js')
+try {
+  let sonnerContent = readFileSync(sonnerPath, 'utf8')
+  const sonnerOriginal = sonnerContent
+
+  // Pattern: useState(document.hidden) → useState(typeof document !== "undefined" ? document.hidden : false)
+  sonnerContent = sonnerContent.replace(
+    /useState\(document\.hidden\)/g,
+    'useState(typeof document !== "undefined" ? document.hidden : false)',
+  )
+
+  if (sonnerContent !== sonnerOriginal) {
+    writeFileSync(sonnerPath, sonnerContent)
+    const patchCount = (sonnerOriginal.match(/useState\(document\.hidden\)/g) || []).length
+    console.log(`inject-use-client: patched ${patchCount} SSR-unsafe document.hidden references in sonner.js`)
+  }
+} catch {
+  // sonner.js may not exist in all build configurations
+}
+
 console.log(
   `inject-use-client: ${injected} files updated, ${skipped} skipped`
 )

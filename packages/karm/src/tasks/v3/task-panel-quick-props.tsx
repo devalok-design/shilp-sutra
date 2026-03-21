@@ -152,9 +152,9 @@ function AssigneePill({ interactive }: { interactive: boolean }) {
 
   const content = task.assignee ? (
     <>
-      <Avatar className="h-4 w-4">
+      <Avatar size="xs" className="h-5 w-5">
         {task.assignee.image && <AvatarImage src={task.assignee.image} />}
-        <AvatarFallback className="text-[10px]">
+        <AvatarFallback className="text-[9px]">
           {getInitials(task.assignee.name)}
         </AvatarFallback>
       </Avatar>
@@ -227,7 +227,7 @@ function AssigneePill({ interactive }: { interactive: boolean }) {
               task.assignee?.id === member.id && 'bg-surface-raised-hover',
             )}
           >
-            <Avatar className="h-5 w-5">
+            <Avatar size="xs">
               {member.image && <AvatarImage src={member.image} />}
               <AvatarFallback className="text-[10px]">
                 {getInitials(member.name)}
@@ -500,7 +500,7 @@ function PeekTriageRow() {
           >
             {task.assignee ? (
               <>
-                <Avatar className="h-3.5 w-3.5">
+                <Avatar size="xs" className="h-4 w-4">
                   {task.assignee.image && (
                     <AvatarImage src={task.assignee.image} />
                   )}
@@ -550,7 +550,7 @@ function PeekTriageRow() {
                 task.assignee?.id === member.id && 'bg-surface-raised-hover',
               )}
             >
-              <Avatar className="h-4 w-4">
+              <Avatar size="xs" className="h-5 w-5">
                 {member.image && <AvatarImage src={member.image} />}
                 <AvatarFallback className="text-[8px]">
                   {getInitials(member.name)}

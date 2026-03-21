@@ -240,19 +240,25 @@ const ColorInput = React.forwardRef<HTMLDivElement, ColorInputProps>(
                 type="button"
                 disabled={disabled}
                 className={cn(
-                  'group flex items-stretch overflow-hidden rounded-ds-md border border-surface-border-strong bg-surface-overlay transition-colors',
+                  'group relative flex items-center overflow-hidden rounded-ds-md border border-surface-border-strong transition-colors',
                   'hover:border-accent-7 focus:border-accent-7 focus:outline-none focus:ring-1 focus:ring-accent-9',
                   disabled && 'cursor-not-allowed opacity-50',
                 )}
                 aria-label={`Color picker: ${value}`}
               >
-                {/* Color swatch — flush left, full height */}
+                {/* Gradient background: color → surface */}
                 <span
-                  className="w-8 shrink-0"
-                  style={{ backgroundColor: value }}
+                  className="absolute inset-0"
+                  style={{
+                    background: `linear-gradient(to right, ${value} 0%, ${value} 20%, transparent 85%)`,
+                  }}
                 />
+                <span className="absolute inset-0 bg-surface-overlay/60" style={{
+                  maskImage: 'linear-gradient(to right, transparent 0%, black 50%)',
+                  WebkitMaskImage: 'linear-gradient(to right, transparent 0%, black 50%)',
+                }} />
                 {/* Hex value */}
-                <span className="flex items-center px-ds-03 py-ds-02 font-mono text-ds-sm text-surface-fg">
+                <span className="relative z-10 py-ds-02 pl-10 pr-ds-03 font-mono text-ds-sm text-surface-fg">
                   {value.toUpperCase()}
                 </span>
               </button>

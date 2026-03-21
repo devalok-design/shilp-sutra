@@ -149,8 +149,12 @@ const MultiSelectPopover = React.forwardRef<HTMLDivElement, MultiSelectPopoverPr
       if (isSelected) {
         onValueChange(value.filter((v) => v !== id))
       } else {
-        if (maxSelections && value.length >= maxSelections) return
-        onValueChange([...value, id])
+        if (maxSelections && value.length >= maxSelections) {
+          // Replace: drop the first selected item to make room for the new one
+          onValueChange([...value.slice(1), id])
+        } else {
+          onValueChange([...value, id])
+        }
       }
     }
 

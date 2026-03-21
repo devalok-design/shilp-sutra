@@ -1,6 +1,6 @@
 export { KanbanBoard, type KanbanBoardProps } from './kanban-board'
-export { BoardColumn, type BoardColumnProps } from './board-column'
-export { TaskCard, TaskCardOverlay, TaskCardCompact, TaskCardCompactOverlay } from './task-card'
+export { BoardColumn, ReadOnlyBoardColumn, type BoardColumnProps, type ReadOnlyBoardColumnProps } from './board-column'
+export { TaskCard, TaskCardOverlay, TaskCardCompact, TaskCardCompactOverlay, TaskCardStatic, TaskCardCompactStatic } from './task-card'
 export type { TaskCardProps, TaskCardOverlayProps, TaskCardCompactProps, TaskCardCompactOverlayProps } from './task-card'
 export { BoardProvider, useBoardContext, type BoardProviderProps } from './board-context'
 export { BoardToolbar } from './board-toolbar'

@@ -121,6 +121,7 @@ function TaskCardVisual({
   dragHandleProps,
 }: TaskCardVisualProps) {
   const {
+    readOnly,
     selectedTaskIds,
     toggleTaskSelection,
     focusedTaskId,
@@ -180,25 +181,27 @@ function TaskCardVisual({
       }}
     >
       {/* Selection checkbox — absolute overlay, top-left corner */}
-      <motion.div
-        className={cn(
-          'absolute -top-2 -left-2 z-10 transition-opacity duration-fast-02',
-          anySelected || isSelected
-            ? 'opacity-100'
-            : 'opacity-0 group-hover/card:opacity-100',
-        )}
-        initial={anySelected || isSelected ? { scale: 0.85 } : false}
-        animate={{ scale: 1 }}
-        transition={springs.bouncy}
-      >
-        <Checkbox
-          checked={isSelected}
-          onCheckedChange={() => toggleTaskSelection(task.id)}
-          onClick={(e: React.MouseEvent) => e.stopPropagation()}
-          aria-label={`Select task ${task.taskId}`}
-          className="rounded-full bg-surface-base shadow-raised"
-        />
-      </motion.div>
+      {!readOnly && (
+        <motion.div
+          className={cn(
+            'absolute -top-2 -left-2 z-10 transition-opacity duration-fast-02',
+            anySelected || isSelected
+              ? 'opacity-100'
+              : 'opacity-0 group-hover/card:opacity-100',
+          )}
+          initial={anySelected || isSelected ? { scale: 0.85 } : false}
+          animate={{ scale: 1 }}
+          transition={springs.bouncy}
+        >
+          <Checkbox
+            checked={isSelected}
+            onCheckedChange={() => toggleTaskSelection(task.id)}
+            onClick={(e: React.MouseEvent) => e.stopPropagation()}
+            aria-label={`Select task ${task.taskId}`}
+            className="rounded-full bg-surface-base shadow-raised"
+          />
+        </motion.div>
+      )}
 
       {/* Row 1 — Header: TaskID + Priority + drag handle */}
       <div className="flex items-center gap-ds-02">
@@ -207,22 +210,24 @@ function TaskCardVisual({
 
         <div className="flex-1" />
 
-        {/* Drag handle */}
-        <button
-          className={cn(
-            'flex-shrink-0 cursor-grab rounded p-ds-01 opacity-0 transition-opacity duration-fast-02',
-            'group-hover/card:opacity-action-disabled hover:!opacity-100',
-            'active:cursor-grabbing',
-            isDragOverlay && 'opacity-action-disabled',
-          )}
-          {...(dragHandleProps?.attributes ?? {})}
-          {...(dragHandleProps?.listeners ?? {})}
-          aria-label={`Drag handle for task: ${task.title}`}
-          aria-roledescription="sortable"
-          onClick={(e) => e.stopPropagation()}
-        >
-          <IconGripVertical className="h-ico-sm w-ico-sm text-surface-fg-subtle" />
-        </button>
+        {/* Drag handle — hidden in readOnly */}
+        {!readOnly && (
+          <button
+            className={cn(
+              'flex-shrink-0 cursor-grab rounded p-ds-01 opacity-0 transition-opacity duration-fast-02',
+              'group-hover/card:opacity-action-disabled hover:!opacity-100',
+              'active:cursor-grabbing',
+              isDragOverlay && 'opacity-action-disabled',
+            )}
+            {...(dragHandleProps?.attributes ?? {})}
+            {...(dragHandleProps?.listeners ?? {})}
+            aria-label={`Drag handle for task: ${task.title}`}
+            aria-roledescription="sortable"
+            onClick={(e) => e.stopPropagation()}
+          >
+            <IconGripVertical className="h-ico-sm w-ico-sm text-surface-fg-subtle" />
+          </button>
+        )}
       </div>
 
       {/* Row 2 — Title */}
@@ -387,6 +392,7 @@ function TaskCardCompactVisual({
   isDragOverlay,
 }: TaskCardVisualProps) {
   const {
+    readOnly,
     selectedTaskIds,
     toggleTaskSelection,
     focusedTaskId,
@@ -436,25 +442,27 @@ function TaskCardCompactVisual({
       }}
     >
       {/* Selection checkbox — absolute overlay */}
-      <motion.div
-        className={cn(
-          'absolute -top-1.5 -left-1.5 z-10 transition-opacity duration-fast-02',
-          anySelected || isSelected
-            ? 'opacity-100'
-            : 'opacity-0 group-hover/card:opacity-100',
-        )}
-        initial={anySelected || isSelected ? { scale: 0.85 } : false}
-        animate={{ scale: 1 }}
-        transition={springs.bouncy}
-      >
-        <Checkbox
-          checked={isSelected}
-          onCheckedChange={() => toggleTaskSelection(task.id)}
-          onClick={(e: React.MouseEvent) => e.stopPropagation()}
-          aria-label={`Select task ${task.taskId}`}
-          className="rounded-full bg-surface-base shadow-raised"
-        />
-      </motion.div>
+      {!readOnly && (
+        <motion.div
+          className={cn(
+            'absolute -top-1.5 -left-1.5 z-10 transition-opacity duration-fast-02',
+            anySelected || isSelected
+              ? 'opacity-100'
+              : 'opacity-0 group-hover/card:opacity-100',
+          )}
+          initial={anySelected || isSelected ? { scale: 0.85 } : false}
+          animate={{ scale: 1 }}
+          transition={springs.bouncy}
+        >
+          <Checkbox
+            checked={isSelected}
+            onCheckedChange={() => toggleTaskSelection(task.id)}
+            onClick={(e: React.MouseEvent) => e.stopPropagation()}
+            aria-label={`Select task ${task.taskId}`}
+            className="rounded-full bg-surface-base shadow-raised"
+          />
+        </motion.div>
+      )}
 
       {/* Priority icon */}
       <PriorityIcon className={cn('h-3.5 w-3.5 flex-shrink-0', priorityColor)} title={`Priority: ${task.priority}`} />
@@ -583,4 +591,37 @@ const TaskCardOverlay = React.forwardRef<HTMLDivElement, TaskCardOverlayProps>(
 
 TaskCardOverlay.displayName = 'TaskCardOverlay'
 
-export { TaskCard, TaskCardOverlay, TaskCardCompact, TaskCardCompactOverlay }
+// ============================================================
+// Static cards (no DnD hooks — for readOnly mode)
+// ============================================================
+
+const TaskCardStatic = React.forwardRef<HTMLDivElement, TaskCardProps>(
+  function TaskCardStatic({ task, className, ...props }, ref) {
+    return (
+      <div ref={ref} className={className} {...props}>
+        <TaskCardVisual task={task} />
+      </div>
+    )
+  },
+)
+TaskCardStatic.displayName = 'TaskCardStatic'
+
+const TaskCardCompactStatic = React.forwardRef<HTMLDivElement, TaskCardCompactProps>(
+  function TaskCardCompactStatic({ task, className, ...props }, ref) {
+    return (
+      <div ref={ref} className={className} {...props}>
+        <TaskCardCompactVisual task={task} />
+      </div>
+    )
+  },
+)
+TaskCardCompactStatic.displayName = 'TaskCardCompactStatic'
+
+export {
+  TaskCard,
+  TaskCardOverlay,
+  TaskCardCompact,
+  TaskCardCompactOverlay,
+  TaskCardStatic,
+  TaskCardCompactStatic,
+}

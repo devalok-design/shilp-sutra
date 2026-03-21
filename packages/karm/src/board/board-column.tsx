@@ -11,7 +11,7 @@ import { MotionStagger, MotionStaggerItem } from '@/motion/primitives'
 import { useBoardContext } from './board-context'
 import { ColumnHeader } from './column-header'
 import { ColumnEmpty } from './column-empty'
-import { TaskCard, TaskCardCompact } from './task-card'
+import { TaskCard, TaskCardCompact, TaskCardStatic, TaskCardCompactStatic } from './task-card'
 import { TaskContextMenu } from './task-context-menu'
 import { COLUMN_WIDTH } from './board-constants'
 import type { BoardColumn as BoardColumnType, BoardTask } from './board-types'
@@ -56,7 +56,7 @@ function TaskGhost() {
 
 export const BoardColumn = React.forwardRef<HTMLDivElement, BoardColumnProps>(
   function BoardColumn({ column, index, isOverlay, dragPreview, draggedTask, className, ...props }, ref) {
-    const { viewMode, completedColumnId, showCompleted, onToggleCompleted } = useBoardContext()
+    const { viewMode, completedColumnId, showCompleted, onToggleCompleted, onAddTask } = useBoardContext()
     const isCompletedColumn = completedColumnId != null && column.id === completedColumnId
     const hideCompletedTasks = isCompletedColumn && !showCompleted
 
@@ -138,6 +138,7 @@ export const BoardColumn = React.forwardRef<HTMLDivElement, BoardColumnProps>(
                 <ColumnEmpty
                   index={index}
                   isDropTarget={isOver}
+                  onAddTask={() => onAddTask(column.id)}
                 />
               )}
               <AnimatePresence>
@@ -155,3 +156,58 @@ export const BoardColumn = React.forwardRef<HTMLDivElement, BoardColumnProps>(
 )
 
 BoardColumn.displayName = 'BoardColumn'
+
+// ============================================================
+// ReadOnly variant (no DnD hooks)
+// ============================================================
+
+export interface ReadOnlyBoardColumnProps extends React.HTMLAttributes<HTMLDivElement> {
+  column: BoardColumnType
+  index: number
+}
+
+export const ReadOnlyBoardColumn = React.forwardRef<HTMLDivElement, ReadOnlyBoardColumnProps>(
+  function ReadOnlyBoardColumn({ column, index, className, ...props }, ref) {
+    const { viewMode, completedColumnId, showCompleted } = useBoardContext()
+    const isCompletedColumn = completedColumnId != null && column.id === completedColumnId
+    const hideCompletedTasks = isCompletedColumn && !showCompleted
+
+    return (
+      <div
+        ref={ref}
+        className={cn(
+          'flex h-full flex-shrink-0 flex-col rounded-ds-xl bg-surface-sunken border border-surface-border-subtle p-1',
+          className,
+        )}
+        {...props}
+        style={{ ...props.style, width: COLUMN_WIDTH }}
+      >
+        <ColumnHeader column={column} index={index} />
+
+        <div className="no-scrollbar flex flex-1 flex-col gap-ds-02 overflow-y-auto px-ds-03 pt-2.5 pb-ds-03">
+          {hideCompletedTasks ? (
+            <div className="py-ds-04 text-center text-ds-xs text-surface-fg-subtle">
+              {column.tasks.length} completed {column.tasks.length === 1 ? 'task' : 'tasks'}
+            </div>
+          ) : column.tasks.length === 0 ? (
+            <ColumnEmpty index={index} />
+          ) : (
+            <MotionStagger className="contents">
+              {column.tasks.map((task) => (
+                <MotionStaggerItem key={task.id}>
+                  {viewMode === 'compact' ? (
+                    <TaskCardCompactStatic task={task} />
+                  ) : (
+                    <TaskCardStatic task={task} />
+                  )}
+                </MotionStaggerItem>
+              ))}
+            </MotionStagger>
+          )}
+        </div>
+      </div>
+    )
+  },
+)
+
+ReadOnlyBoardColumn.displayName = 'ReadOnlyBoardColumn'

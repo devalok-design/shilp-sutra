@@ -2,6 +2,7 @@
 
 > Logo components and brand assets for Devalok and Karm.
 > Provides React components, favicon helpers, and raw asset imports.
+> Version: 0.6.0
 
 ## Install & Import
 

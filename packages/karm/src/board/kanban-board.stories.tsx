@@ -332,3 +332,48 @@ export const NoColumns: Story = {
     initialData: { columns: [] },
   },
 }
+
+/** Read-only mode — no DnD, no column management, no selection. Ideal for status overviews and dashboards. */
+export const ReadOnly: Story = {
+  args: {
+    initialData: {
+      columns: [
+        {
+          id: 'not-started',
+          name: 'Not Started',
+          tasks: [
+            createTask({ id: 'ro-1', title: 'Research SSO providers', priority: 'LOW', labels: ['research'] }),
+            createTask({ id: 'ro-2', title: 'Create design tokens documentation', priority: 'MEDIUM', labels: ['docs'] }),
+          ],
+        },
+        {
+          id: 'in-progress',
+          name: 'In Progress',
+          tasks: [
+            createTask({ id: 'ro-3', title: 'Implement WebSocket auth', priority: 'HIGH', owner: teamMembers.arjun, assignees: [teamMembers.priya] }),
+            createTask({ id: 'ro-4', title: 'Build notification center', priority: 'URGENT', owner: teamMembers.priya, dueDate: new Date(Date.now() + 86400000).toISOString() }),
+            createTask({ id: 'ro-5', title: 'Fix CSS grid layout on Safari', priority: 'HIGH', labels: ['bug'], assignees: [teamMembers.kavita] }),
+          ],
+        },
+        {
+          id: 'done',
+          name: 'Done',
+          tasks: [
+            createTask({ id: 'ro-6', title: 'Add rate limiter middleware', assignees: [teamMembers.deepa] }),
+            createTask({ id: 'ro-7', title: 'Set up CI/CD pipeline', assignees: [teamMembers.rahul] }),
+          ],
+        },
+      ],
+    },
+    readOnly: true,
+  },
+}
+
+/** Read-only mode with compact cards */
+export const ReadOnlyCompact: Story = {
+  args: {
+    ...ReadOnly.args,
+    initialData: ReadOnly.args!.initialData,
+    readOnly: true,
+  },
+}

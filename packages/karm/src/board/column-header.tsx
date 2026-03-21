@@ -121,6 +121,7 @@ export interface ColumnHeaderProps extends React.HTMLAttributes<HTMLDivElement> 
 
 export const ColumnHeader = React.forwardRef<HTMLDivElement, ColumnHeaderProps>(({ column, index, className, ...props }, ref) => {
   const {
+    readOnly,
     members,
     onColumnRename,
     onColumnDelete,
@@ -222,7 +223,7 @@ export const ColumnHeader = React.forwardRef<HTMLDivElement, ColumnHeaderProps>(
         />
 
         {/* Column name — normal or inline edit */}
-        {isRenaming ? (
+        {!readOnly && isRenaming ? (
           // eslint-disable-next-line jsx-a11y/no-autofocus -- intentional: input appears after user double-clicks to rename
           <Input
             value={editName}
@@ -237,7 +238,7 @@ export const ColumnHeader = React.forwardRef<HTMLDivElement, ColumnHeaderProps>(
         ) : (
           <h3
             className="flex-1 truncate text-ds-sm font-semibold text-surface-fg"
-            onDoubleClick={startRenaming}
+            onDoubleClick={readOnly ? undefined : startRenaming}
             title={column.name}
             aria-label={
               wipLimit != null
@@ -251,7 +252,7 @@ export const ColumnHeader = React.forwardRef<HTMLDivElement, ColumnHeaderProps>(
         )}
 
         {/* WIP badge — only shown when limit is set */}
-        {isEditingWip ? (
+        {!readOnly && isEditingWip ? (
           <WipEditor
             columnId={column.id}
             currentLimit={wipLimit}
@@ -272,7 +273,7 @@ export const ColumnHeader = React.forwardRef<HTMLDivElement, ColumnHeaderProps>(
         ) : null}
 
         {/* Completed column toggle — only for the designated completed column */}
-        {isCompletedColumn && (
+        {!readOnly && isCompletedColumn && (
           <Button
             variant="ghost"
             size="icon-md"
@@ -289,24 +290,26 @@ export const ColumnHeader = React.forwardRef<HTMLDivElement, ColumnHeaderProps>(
           </Button>
         )}
 
-        {/* Add task button — hover-visible */}
-        <Button
-          variant="ghost"
-          size="icon-md"
-          className={cn(
-            'h-ds-xs w-ds-xs flex-shrink-0 opacity-0 transition-opacity duration-fast-02',
-            'group-hover/header:opacity-100 focus:opacity-100',
-            'hover:bg-accent-2 hover:text-accent-11',
-          )}
-          aria-label="Add task"
-          title="Add task"
-          onClick={toggleAddTask}
-        >
-          <IconPlus className="h-ico-sm w-ico-sm" />
-        </Button>
+        {/* Add task button — hover-visible, hidden in readOnly */}
+        {!readOnly && (
+          <Button
+            variant="ghost"
+            size="icon-md"
+            className={cn(
+              'h-ds-xs w-ds-xs flex-shrink-0 opacity-0 transition-opacity duration-fast-02',
+              'group-hover/header:opacity-100 focus:opacity-100',
+              'hover:bg-accent-2 hover:text-accent-11',
+            )}
+            aria-label="Add task"
+            title="Add task"
+            onClick={toggleAddTask}
+          >
+            <IconPlus className="h-ico-sm w-ico-sm" />
+          </Button>
+        )}
 
-        {/* Column menu */}
-        <DropdownMenu>
+        {/* Column menu — hidden in readOnly */}
+        {!readOnly && <DropdownMenu>
           <DropdownMenuTrigger asChild>
             <Button
               variant="ghost"
@@ -356,7 +359,7 @@ export const ColumnHeader = React.forwardRef<HTMLDivElement, ColumnHeaderProps>(
               Delete column
             </DropdownMenuItem>
           </DropdownMenuContent>
-        </DropdownMenu>
+        </DropdownMenu>}
       </div>
 
       {/* Avatar stack row — only when column has members */}
@@ -371,9 +374,9 @@ export const ColumnHeader = React.forwardRef<HTMLDivElement, ColumnHeaderProps>(
         </div>
       )}
 
-      {/* Quick-add task form — animated expand/collapse */}
+      {/* Quick-add task form — animated expand/collapse, hidden in readOnly */}
       <AnimatePresence initial={false}>
-        {isAdding && (
+        {!readOnly && isAdding && (
           <motion.div
             initial={{ height: 0, opacity: 0 }}
             animate={{ height: 'auto', opacity: 1 }}

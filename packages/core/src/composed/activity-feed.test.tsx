@@ -1,0 +1,98 @@
+import { render, screen } from '@testing-library/react'
+import userEvent from '@testing-library/user-event'
+import { describe, it, expect, vi } from 'vitest'
+import { ActivityFeed, groupItemsByTime, type ActivityItem } from './activity-feed'
+
+const now = new Date()
+
+function makeItem(overrides: Partial<ActivityItem> = {}): ActivityItem {
+  return {
+    id: '1',
+    actor: { name: 'Alice' },
+    action: 'created a task',
+    timestamp: now,
+    ...overrides,
+  }
+}
+
+describe('ActivityFeed', () => {
+  it('renders activity items', () => {
+    const items = [
+      makeItem({ id: '1', actor: { name: 'Alice' }, action: 'created a task' }),
+      makeItem({ id: '2', actor: { name: 'Bob' }, action: 'commented' }),
+    ]
+    render(<ActivityFeed items={items} />)
+    expect(screen.getByText('Alice')).toBeInTheDocument()
+    expect(screen.getByText('Bob')).toBeInTheDocument()
+    expect(screen.getByText('created a task')).toBeInTheDocument()
+    expect(screen.getByText('commented')).toBeInTheDocument()
+  })
+
+  it('shows emptyState when items is empty', () => {
+    render(<ActivityFeed items={[]} emptyState={<p>No activity</p>} />)
+    expect(screen.getByText('No activity')).toBeInTheDocument()
+  })
+
+  it('returns null when items is empty and no emptyState', () => {
+    const { container } = render(<ActivityFeed items={[]} />)
+    expect(container.innerHTML).toBe('')
+  })
+
+  it('shows loading skeleton when loading', () => {
+    const { container } = render(<ActivityFeed items={[]} loading />)
+    // Loading skeleton renders divs, not the items
+    expect(screen.queryByText('Alice')).not.toBeInTheDocument()
+    expect(container.firstElementChild).toBeInTheDocument()
+  })
+
+  it('truncates items and shows "Show all" button with maxInitialItems', async () => {
+    const user = userEvent.setup()
+    const items = Array.from({ length: 5 }, (_, i) =>
+      makeItem({ id: String(i), action: `action ${i}` }),
+    )
+    render(<ActivityFeed items={items} maxInitialItems={2} />)
+    expect(screen.getByText('action 0')).toBeInTheDocument()
+    expect(screen.getByText('action 1')).toBeInTheDocument()
+    expect(screen.queryByText('action 4')).not.toBeInTheDocument()
+    expect(screen.getByText('Show all (5)')).toBeInTheDocument()
+
+    await user.click(screen.getByText('Show all (5)'))
+    expect(screen.getByText('action 4')).toBeInTheDocument()
+  })
+
+  it('shows "Load more" button when hasMore and onLoadMore', async () => {
+    const user = userEvent.setup()
+    const onLoadMore = vi.fn()
+    render(
+      <ActivityFeed
+        items={[makeItem()]}
+        hasMore
+        onLoadMore={onLoadMore}
+      />,
+    )
+    const btn = screen.getByText('Load more')
+    expect(btn).toBeInTheDocument()
+    await user.click(btn)
+    expect(onLoadMore).toHaveBeenCalledTimes(1)
+  })
+})
+
+describe('groupItemsByTime', () => {
+  it('groups items into time buckets', () => {
+    const todayItem = makeItem({ id: 'today', timestamp: new Date() })
+    const oldItem = makeItem({
+      id: 'old',
+      timestamp: new Date('2020-01-01'),
+    })
+    const groups = groupItemsByTime([todayItem, oldItem])
+    expect(groups.length).toBeGreaterThanOrEqual(2)
+    expect(groups[0].label).toBe('Today')
+    expect(groups[groups.length - 1].label).toBe('Older')
+  })
+
+  it('respects custom group labels', () => {
+    const todayItem = makeItem({ id: 'today', timestamp: new Date() })
+    const groups = groupItemsByTime([todayItem], { today: 'Hoy' })
+    expect(groups[0].label).toBe('Hoy')
+  })
+})

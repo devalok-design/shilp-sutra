@@ -83,6 +83,15 @@ describe('MultiSelectPopover', () => {
     expect(onValueChange).toHaveBeenCalledWith(['2'])
   })
 
+  it('replaces selection when maxSelections is reached', async () => {
+    const user = userEvent.setup()
+    const onValueChange = vi.fn()
+    renderPopover({ value: ['1'], maxSelections: 1, onValueChange })
+    await user.click(screen.getByRole('button', { name: 'Select people' }))
+    await user.click(screen.getByText('Bob'))
+    expect(onValueChange).toHaveBeenCalledWith(['2'])
+  })
+
   it('renders grouped items with section headers', async () => {
     const user = userEvent.setup()
     renderPopover({

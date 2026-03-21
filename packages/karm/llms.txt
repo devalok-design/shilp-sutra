@@ -2,7 +2,8 @@
 
 > Domain-specific UI components for the Karm team-management platform.
 > Built on top of @devalok/shilp-sutra (core design system).
-> Peer dependency: @devalok/shilp-sutra >=0.3.0
+> Version: 0.23.0
+> Peer dependency: @devalok/shilp-sutra >=0.18.0
 
 ## Install & Import
 

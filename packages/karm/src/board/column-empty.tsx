@@ -139,14 +139,16 @@ export const ColumnEmpty = React.forwardRef<HTMLDivElement, ColumnEmptyProps>(({
       ) : (
         <>
           <p className="text-ds-sm text-surface-fg-subtle">No tasks yet</p>
-          <Button
-            variant="ghost"
-            size="sm"
-            onClick={onAddTask}
-          >
-            <IconPlus className="h-ico-sm w-ico-sm" />
-            Add a task
-          </Button>
+          {onAddTask && (
+            <Button
+              variant="ghost"
+              size="sm"
+              onClick={onAddTask}
+            >
+              <IconPlus className="h-ico-sm w-ico-sm" />
+              Add a task
+            </Button>
+          )}
         </>
       )}
     </div>

@@ -23,10 +23,11 @@ import {
   horizontalListSortingStrategy,
   sortableKeyboardCoordinates,
 } from '@dnd-kit/sortable'
+import { cn } from '@/ui/lib/utils'
 import { BoardProvider, useBoardContext, type BoardProviderProps } from './board-context'
 import { BoardToolbar } from './board-toolbar'
 import { BulkActionBar } from './bulk-action-bar'
-import { BoardColumn } from './board-column'
+import { BoardColumn, ReadOnlyBoardColumn } from './board-column'
 import { TaskCardOverlay, TaskCardCompactOverlay } from './task-card'
 import { useBoardKeyboard } from './use-board-keyboard'
 import { COLUMN_WIDTH } from './board-constants'
@@ -395,11 +396,35 @@ function BoardCanvas({ className }: { className?: string }) {
 }
 
 // ============================================================
+// Read-only canvas (no DnD, no toolbar, no selection)
+// ============================================================
+
+function ReadOnlyCanvas({ className }: { className?: string }) {
+  const { columns } = useBoardContext()
+
+  return (
+    <div className={cn('no-scrollbar flex h-full gap-ds-05 overflow-x-auto pb-ds-05', className)}>
+      <MotionStagger delay={0.05} className="contents">
+        {columns.map((column, index) => (
+          <MotionStaggerItem key={column.id} className="flex-shrink-0">
+            <ReadOnlyBoardColumn column={column} index={index} />
+          </MotionStaggerItem>
+        ))}
+      </MotionStagger>
+    </div>
+  )
+}
+
+// ============================================================
 // KanbanBoard — public orchestrator
 // ============================================================
 
 function BoardContent() {
-  const { isMobileListView } = useBoardContext()
+  const { readOnly, isMobileListView } = useBoardContext()
+
+  if (readOnly) {
+    return isMobileListView ? <BoardListView /> : <ReadOnlyCanvas />
+  }
 
   return (
     <div className="flex flex-col gap-ds-03">

@@ -29,6 +29,7 @@ interface BoardContextValue {
   columns: BoardColumn[]
   rawColumns: BoardColumn[]
   members: BoardMember[]
+  readOnly: boolean
   viewMode: BoardViewMode
   setViewMode: (mode: BoardViewMode) => void
   filters: BoardFilters
@@ -65,6 +66,7 @@ interface BoardContextValue {
   onColumnWipLimitChange: (columnId: string, limit: number | null) => void
   onClickTask: (taskId: string) => void
   onAddColumn: () => void
+  onAddTask: (columnId: string) => void
   onQuickPriorityChange: (taskId: string, priority: string) => void
   onQuickAssign: (taskId: string, userId: string) => void
   onQuickDueDateChange: (taskId: string, date: string | null) => void
@@ -108,6 +110,9 @@ export interface BoardProviderProps {
   members?: BoardMember[]
   children: ReactNode
 
+  /** When true, disables DnD, column management, task selection, and add buttons. */
+  readOnly?: boolean
+
   // ---- Completed column toggle (K12) ----
   /** Column ID to treat as the "completed" column */
   completedColumnId?: string
@@ -132,6 +137,8 @@ export interface BoardProviderProps {
   onColumnWipLimitChange?: (columnId: string, limit: number | null) => void
   onClickTask?: (taskId: string) => void
   onAddColumn?: () => void
+  /** Called when user clicks "Add a task" in an empty column. Receives the column ID. */
+  onAddTask?: (columnId: string) => void
   onQuickPriorityChange?: (taskId: string, priority: string) => void
   onQuickAssign?: (taskId: string, userId: string) => void
   onQuickDueDateChange?: (taskId: string, date: string | null) => void
@@ -145,6 +152,7 @@ export function BoardProvider({
   currentUserId = null,
   members: membersProp,
   children,
+  readOnly = false,
   completedColumnId,
   showCompleted = true,
   onToggleCompleted,
@@ -160,6 +168,7 @@ export function BoardProvider({
   onColumnWipLimitChange,
   onClickTask,
   onAddColumn,
+  onAddTask,
   onQuickPriorityChange,
   onQuickAssign,
   onQuickDueDateChange,
@@ -240,6 +249,7 @@ export function BoardProvider({
       columns: filteredColumns,
       rawColumns: columns,
       members: resolvedMembers,
+      readOnly,
       viewMode,
       setViewMode,
       filters,
@@ -274,6 +284,7 @@ export function BoardProvider({
       onColumnWipLimitChange: onColumnWipLimitChange ?? noop,
       onClickTask: onClickTask ?? noop,
       onAddColumn: onAddColumn ?? noop,
+      onAddTask: onAddTask ?? noop,
       onQuickPriorityChange: onQuickPriorityChange ?? noop,
       onQuickAssign: onQuickAssign ?? noop,
       onQuickDueDateChange: onQuickDueDateChange ?? noop,
@@ -285,6 +296,7 @@ export function BoardProvider({
       filteredColumns,
       columns,
       resolvedMembers,
+      readOnly,
       viewMode,
       filters,
       setFilters,
@@ -315,6 +327,7 @@ export function BoardProvider({
       onColumnWipLimitChange,
       onClickTask,
       onAddColumn,
+      onAddTask,
       onQuickPriorityChange,
       onQuickAssign,
       onQuickDueDateChange,

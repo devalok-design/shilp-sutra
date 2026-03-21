@@ -5,6 +5,31 @@ All notable changes to `@devalok/shilp-sutra` will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.27.2] - 2026-03-21 (core)
+
+### Fixed (core)
+
+- **MultiSelectPopover** — `maxSelections: 1` now replaces the selection instead of blocking it. Previously, clicking a new item when at max did nothing; now it swaps the oldest selection for the new one. Fixes "can't reassign task lead" in Karm.
+- **TopBar.UserMenu** — Long email addresses now truncate instead of overflowing the 200px dropdown.
+
+### Added (core)
+
+- **Test coverage** — 27 new test files, 174 new tests (152 → 179 files, 1300 → 1474 tests). Covers alert-dialog, aspect-ratio, collapsible, context-menu, data-table-toolbar, menubar, navigation-menu, sidebar, toaster, visually-hidden, activity-feed, avatar-group, bulk-action-bar, command-palette, confirm-dialog, content-card, emoji-picker, empty-state, file-preview, loading-skeleton, member-picker, page-header, page-skeletons, priority-indicator, rich-text-editor, schedule-view, use-toast.
+- **ColorInput story** — Storybook coverage for color picker component.
+
+## [0.24.0] - 2026-03-21 (karm)
+
+### Added (karm)
+
+- **KanbanBoard `readOnly` mode** — New `readOnly` prop disables DnD, column management, task selection, add buttons, and toolbar. Ideal for status overviews and dashboard views. Task card click (`onClickTask`) still works.
+- **ReadOnlyBoardColumn** — Lightweight column component without DnD hooks. Exported for custom layouts.
+- **TaskCardStatic / TaskCardCompactStatic** — Card components without sortable hooks for use outside DnD contexts.
+- **`onAddTask` context prop** — New `onAddTask?: (columnId: string) => void` callback on BoardProvider. The "Add a task" button in empty columns now works when this is provided.
+
+### Fixed (karm)
+
+- **ColumnEmpty "Add a task" button** — Was inert because `onAddTask` was never passed from BoardColumn. Now wired through context. Button is conditionally hidden when no handler is provided.
+
 ## [0.6.0] - 2026-03-18 (brand)
 
 ### Breaking Changes (brand) — Favicon API Simplified

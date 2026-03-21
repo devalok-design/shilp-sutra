@@ -128,6 +128,9 @@ UserMenuItem fields:
 - **Added** Auto grid/flex layout detection based on Center zone presence
 - **Changed** Background elevated from `bg-surface-1` to `bg-surface-2`
 
+### v0.27.2
+- **Fixed** UserMenu email truncation — long emails now truncate instead of overflowing the dropdown
+
 ### v0.7.0
 - **Added** `userMenuItems` prop for custom dropdown items
 

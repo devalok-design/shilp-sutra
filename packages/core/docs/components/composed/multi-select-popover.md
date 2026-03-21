@@ -51,3 +51,12 @@
 - Supply either `items` (flat) or `groups` (sectioned), not both
 - When `onSearch` is provided, local filtering is disabled — the callback must return results
 - Search state resets when the popover closes
+- `maxSelections: 1` acts as single-select — clicking a new item replaces the current one
+
+## Changes
+
+### v0.27.2
+- **Fixed** `maxSelections` at limit now replaces oldest selection instead of blocking. Single-select (`maxSelections: 1`) swaps in the new value.
+
+### v0.26.0
+- **Added** Initial release

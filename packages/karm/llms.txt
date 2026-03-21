@@ -2,7 +2,7 @@
 
 > Domain-specific UI components for the Karm team-management platform.
 > Built on top of @devalok/shilp-sutra (core design system).
-> Version: 0.23.0
+> Version: 0.24.0
 > Peer dependency: @devalok/shilp-sutra >=0.18.0
 
 ## Install & Import
@@ -23,9 +23,12 @@ import { KanbanBoard, TaskPanel, ChatPanel } from '@devalok/shilp-sutra-karm'
 ## Module Reference
 
 ### Board (`/board`)
-- KanbanBoard: initialData(BoardData), members?(BoardMember[]), onTaskMove, onTaskAdd, onColumnRename, onColumnDelete, onColumnToggleVisibility, onClickTask, onAddColumn
-- BoardColumn: column(BoardColumnData), index, onAddTask, onClickTask, onRenameColumn, onDeleteColumn
-- TaskCard: task(BoardTask), onClickTask
+- KanbanBoard: initialData(BoardData), members?(BoardMember[]), readOnly?(boolean), onTaskMove, onTaskAdd, onColumnRename, onColumnDelete, onColumnToggleVisibility, onClickTask, onAddColumn, onAddTask?(columnId)
+- BoardColumn: column(BoardColumnData), index, dragPreview?, draggedTask?
+- ReadOnlyBoardColumn: column(BoardColumnData), index — lightweight column without DnD hooks
+- TaskCard: task(BoardTask) — sortable variant (requires SortableContext ancestor)
+- TaskCardStatic: task(BoardTask) — static variant (no DnD hooks, for readOnly mode)
+- TaskCardCompactStatic: task(BoardTask) — compact static variant
 - TaskCardOverlay: task(BoardTask) — drag overlay variant
 
 BoardTask shape: { id, title, priority, labels[], dueDate, isBlocked, assignees[] }
@@ -34,6 +37,10 @@ Constants: COLUMN_WIDTH(320), COLUMN_ACCENT_COLORS(8 category bg colors), PRIORI
 
 Uses dnd-kit for drag-and-drop. KanbanBoard manages all DnD state internally.
 Pass `members` prop for explicit member list in assignment dropdowns — required for new/empty projects with no task assignees yet. Falls back to deriving members from task data when omitted.
+
+**readOnly mode (v0.24.0):** `<KanbanBoard readOnly initialData={data} onClickTask={handleClick} />` — disables DnD, column management (rename/delete/WIP), task selection checkboxes, add buttons, toolbar, and bulk action bar. Task click still works. Ideal for dashboard status overviews. Uses ReadOnlyBoardColumn + TaskCardStatic internally (no DnD hooks loaded). For custom layouts, compose with BoardProvider + ReadOnlyBoardColumn directly.
+
+**onAddTask (v0.24.0):** `onAddTask?: (columnId: string) => void` — called when user clicks "Add a task" in an empty column. Button is hidden when not provided.
 
 Column management callbacks: `onColumnRename`, `onColumnDelete`, `onColumnToggleVisibility`, and `onAddColumn`
 are fire-and-forget — the board renders an "Add column" button and column header menus only when the

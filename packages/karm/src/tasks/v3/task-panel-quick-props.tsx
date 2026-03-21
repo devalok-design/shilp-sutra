@@ -40,7 +40,7 @@ const PRIORITY_CONFIG: Record<
 // ---------------------------------------------------------------------------
 
 const pillBase =
-  'inline-flex items-center gap-ds-02 rounded-full text-ds-sm px-ds-03 py-ds-01'
+  'inline-flex items-center gap-ds-02 rounded-full text-ds-sm px-ds-04 py-ds-02'
 
 const pillInteractive =
   'bg-surface-raised-hover transition-colors hover:bg-surface-3 cursor-pointer'
@@ -152,9 +152,9 @@ function AssigneePill({ interactive }: { interactive: boolean }) {
 
   const content = task.assignee ? (
     <>
-      <Avatar size="xs" className="h-5 w-5">
+      <Avatar size="xs" className="h-4 w-4">
         {task.assignee.image && <AvatarImage src={task.assignee.image} />}
-        <AvatarFallback className="text-[9px]">
+        <AvatarFallback className="text-[8px]">
           {getInitials(task.assignee.name)}
         </AvatarFallback>
       </Avatar>
@@ -580,9 +580,9 @@ export function TaskPanelQuickProps({
   const interactive = !clientMode
 
   return (
-    <div className={cn('px-ds-05 pb-ds-03', className)} {...props}>
+    <div className={cn('px-ds-05 py-ds-04', className)} {...props}>
       {/* Property pills */}
-      <div className="flex flex-wrap items-center gap-ds-02">
+      <div className="flex flex-wrap items-center gap-ds-03">
         <StatusPill interactive={interactive} />
         <AssigneePill interactive={interactive} />
         <PriorityPill interactive={interactive} />

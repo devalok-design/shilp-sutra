@@ -84,7 +84,7 @@ export function TaskPanelDescription({
 
   if (isEmpty && !clientMode) {
     return (
-      <div className={cn('px-ds-05 py-ds-03', className)} {...props}>
+      <div className={cn('px-ds-05 py-ds-04', className)} {...props}>
         <button
           type="button"
           className="text-ds-sm text-surface-fg-subtle italic hover:text-surface-fg transition-colors"
@@ -109,7 +109,7 @@ export function TaskPanelDescription({
   }
 
   return (
-    <div className={cn('px-ds-05 py-ds-03', className)} {...props}>
+    <div className={cn('px-ds-05 py-ds-04', className)} {...props}>
       {isEditing && !clientMode ? (
         <textarea
           ref={textareaRef}

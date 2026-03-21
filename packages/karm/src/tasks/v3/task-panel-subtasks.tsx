@@ -65,7 +65,7 @@ export function TaskPanelSubtasks({
   }, [isAdding])
 
   return (
-    <div className={cn('px-ds-05 py-ds-03', className)} {...props}>
+    <div className={cn('px-ds-05 py-ds-04', className)} {...props}>
       {/* Header */}
       <div className="flex items-center gap-ds-02 mb-ds-03">
         <span className="text-ds-sm font-semibold text-surface-fg">

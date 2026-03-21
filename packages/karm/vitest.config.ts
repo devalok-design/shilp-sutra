@@ -7,7 +7,7 @@ export default defineConfig({
   resolve: {
     alias: {
       '@primitives': resolve(__dirname, '../core/src/primitives'),
-      '@': resolve(__dirname, '../core/src'),
+      '@/': resolve(__dirname, '../core/src') + '/',
     },
   },
   test: {
@@ -16,5 +16,6 @@ export default defineConfig({
     setupFiles: ['../core/src/test-setup.ts'],
     include: ['src/**/*.test.{ts,tsx}'],
     css: true,
+    fileParallelism: false,
   },
 })

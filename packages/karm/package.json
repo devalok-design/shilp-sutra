@@ -63,6 +63,7 @@
     "build": "vite build && node scripts/inject-use-client.mjs",
     "typecheck": "tsc --noEmit",
     "lint": "eslint src/",
+    "test": "vitest run",
     "prepublishOnly": "pnpm build"
   },
   "peerDependencies": {

@@ -1,8 +1,10 @@
 'use client'
 
 import * as React from 'react'
+import { motion, AnimatePresence } from 'framer-motion'
 import { HexColorPicker } from 'react-colorful'
 import { cn } from './lib/utils'
+import { springs } from './lib/motion'
 import {
   Popover,
   PopoverContent,
@@ -219,39 +221,46 @@ const ColorInput = React.forwardRef<HTMLDivElement, ColorInputProps>(
         <Popover open={open} onOpenChange={disabled ? undefined : setOpen}>
           <PopoverTrigger asChild>
             {variant === 'inline' ? (
-              <button
+              <motion.button
                 type="button"
                 disabled={disabled}
                 className={cn(
-                  'group flex items-center justify-center rounded-ds-md px-ds-04 py-ds-02 font-mono text-ds-sm font-medium transition-all',
-                  'hover:shadow-raised-hover hover:-translate-y-px focus:outline-none focus:ring-2 focus:ring-accent-9 focus:ring-offset-2 focus:ring-offset-surface-base',
+                  'group flex items-center justify-center rounded-ds-md px-ds-04 py-ds-02 font-mono text-ds-sm font-medium',
+                  'focus:outline-none focus:ring-2 focus:ring-accent-9 focus:ring-offset-2 focus:ring-offset-surface-base',
                   disabled && 'cursor-not-allowed opacity-50',
                 )}
-                style={{
+                animate={{
                   backgroundColor: value,
                   color: isLightColor(value) ? 'rgba(0,0,0,0.8)' : 'rgba(255,255,255,0.95)',
                 }}
+                whileHover={{ y: -1, boxShadow: '0 4px 12px rgba(0,0,0,0.12)' }}
+                whileTap={{ scale: 0.97 }}
+                transition={springs.smooth}
                 aria-label={`Color picker: ${value}`}
               >
                 {value.toUpperCase()}
-              </button>
+              </motion.button>
             ) : (
-              <button
+              <motion.button
                 type="button"
                 disabled={disabled}
                 className={cn(
-                  'group relative flex items-center overflow-hidden rounded-ds-md border border-surface-border-strong transition-colors',
+                  'group relative flex items-center overflow-hidden rounded-ds-md border border-surface-border-strong',
                   'hover:border-accent-7 focus:border-accent-7 focus:outline-none focus:ring-1 focus:ring-accent-9',
                   disabled && 'cursor-not-allowed opacity-50',
                 )}
+                whileHover={{ scale: 1.02 }}
+                whileTap={{ scale: 0.98 }}
+                transition={springs.snappy}
                 aria-label={`Color picker: ${value}`}
               >
                 {/* Gradient background: color → surface */}
-                <span
+                <motion.span
                   className="absolute inset-0"
-                  style={{
+                  animate={{
                     background: `linear-gradient(to right, ${value} 0%, ${value} 35%, transparent 70%)`,
                   }}
+                  transition={{ duration: 0.3 }}
                 />
                 <span className="absolute inset-0 bg-surface-overlay/60" style={{
                   maskImage: 'linear-gradient(to right, transparent 0%, black 40%)',
@@ -261,7 +270,7 @@ const ColorInput = React.forwardRef<HTMLDivElement, ColorInputProps>(
                 <span className="relative z-10 py-ds-02 pl-6 pr-ds-03 font-mono text-ds-sm text-surface-fg">
                   {value.toUpperCase()}
                 </span>
-              </button>
+              </motion.button>
             )}
           </PopoverTrigger>
 
@@ -293,76 +302,112 @@ const ColorInput = React.forwardRef<HTMLDivElement, ColorInputProps>(
                       type="button"
                       onClick={() => setFormat(f)}
                       className={cn(
-                        'rounded-ds-sm px-ds-02 py-px text-[10px] font-semibold uppercase tracking-wider transition-colors',
+                        'relative rounded-ds-sm px-ds-02 py-px text-[10px] font-semibold uppercase tracking-wider transition-colors',
                         format === f
-                          ? 'bg-accent-3 text-accent-11'
+                          ? 'text-accent-11'
                           : 'text-surface-fg-muted hover:text-surface-fg',
                       )}
                     >
-                      {f}
+                      {format === f && (
+                        <motion.span
+                          layoutId="color-input-format-pill"
+                          className="absolute inset-0 rounded-ds-sm bg-accent-3"
+                          transition={springs.snappy}
+                        />
+                      )}
+                      <span className="relative z-10">{f}</span>
                     </button>
                   ))}
                 </div>
 
-                {/* Format fields */}
-                {format === 'hex' && (
-                  <div className="flex gap-ds-02">
-                    <FormatInput
-                      label="Hex"
-                      value={value.replace('#', '').toUpperCase()}
-                      onChange={(v) => {
-                        const clean = v.replace(/[^0-9a-fA-F]/g, '').slice(0, 6)
-                        if (clean.length === 6) handleChange(`#${clean}`)
-                      }}
-                      disabled={disabled}
-                      maxLength={6}
-                      prefix="#"
-                      className="flex-1"
-                    />
-                  </div>
-                )}
+                {/* Format fields — animated swap */}
+                <AnimatePresence mode="wait">
+                  {format === 'hex' && (
+                    <motion.div
+                      key="hex"
+                      initial={{ opacity: 0, y: 4 }}
+                      animate={{ opacity: 1, y: 0 }}
+                      exit={{ opacity: 0, y: -4 }}
+                      transition={{ duration: 0.15 }}
+                      className="flex gap-ds-02"
+                    >
+                      <FormatInput
+                        label="Hex"
+                        value={value.replace('#', '').toUpperCase()}
+                        onChange={(v) => {
+                          const clean = v.replace(/[^0-9a-fA-F]/g, '').slice(0, 6)
+                          if (clean.length === 6) handleChange(`#${clean}`)
+                        }}
+                        disabled={disabled}
+                        maxLength={6}
+                        prefix="#"
+                        className="flex-1"
+                      />
+                    </motion.div>
+                  )}
 
-                {format === 'rgb' && rgb && (
-                  <div className="flex gap-ds-02">
-                    <FormatInput label="R" value={String(rgb.r)} onChange={(v) => handleRgbChange('r', v)} disabled={disabled} className="flex-1" />
-                    <FormatInput label="G" value={String(rgb.g)} onChange={(v) => handleRgbChange('g', v)} disabled={disabled} className="flex-1" />
-                    <FormatInput label="B" value={String(rgb.b)} onChange={(v) => handleRgbChange('b', v)} disabled={disabled} className="flex-1" />
-                  </div>
-                )}
+                  {format === 'rgb' && rgb && (
+                    <motion.div
+                      key="rgb"
+                      initial={{ opacity: 0, y: 4 }}
+                      animate={{ opacity: 1, y: 0 }}
+                      exit={{ opacity: 0, y: -4 }}
+                      transition={{ duration: 0.15 }}
+                      className="flex gap-ds-02"
+                    >
+                      <FormatInput label="R" value={String(rgb.r)} onChange={(v) => handleRgbChange('r', v)} disabled={disabled} className="flex-1" />
+                      <FormatInput label="G" value={String(rgb.g)} onChange={(v) => handleRgbChange('g', v)} disabled={disabled} className="flex-1" />
+                      <FormatInput label="B" value={String(rgb.b)} onChange={(v) => handleRgbChange('b', v)} disabled={disabled} className="flex-1" />
+                    </motion.div>
+                  )}
 
-                {format === 'hsl' && hsl && (
-                  <div className="flex gap-ds-02">
-                    <FormatInput label="H" value={String(hsl.h)} onChange={(v) => handleHslChange('h', v)} disabled={disabled} className="flex-1" />
-                    <FormatInput label="S" value={String(hsl.s)} onChange={(v) => handleHslChange('s', v)} disabled={disabled} className="flex-1" />
-                    <FormatInput label="L" value={String(hsl.l)} onChange={(v) => handleHslChange('l', v)} disabled={disabled} className="flex-1" />
-                  </div>
-                )}
+                  {format === 'hsl' && hsl && (
+                    <motion.div
+                      key="hsl"
+                      initial={{ opacity: 0, y: 4 }}
+                      animate={{ opacity: 1, y: 0 }}
+                      exit={{ opacity: 0, y: -4 }}
+                      transition={{ duration: 0.15 }}
+                      className="flex gap-ds-02"
+                    >
+                      <FormatInput label="H" value={String(hsl.h)} onChange={(v) => handleHslChange('h', v)} disabled={disabled} className="flex-1" />
+                      <FormatInput label="S" value={String(hsl.s)} onChange={(v) => handleHslChange('s', v)} disabled={disabled} className="flex-1" />
+                      <FormatInput label="L" value={String(hsl.l)} onChange={(v) => handleHslChange('l', v)} disabled={disabled} className="flex-1" />
+                    </motion.div>
+                  )}
+                </AnimatePresence>
               </div>
 
               {/* Preset swatches */}
               {resolvedPresets.length > 0 && (
                 <div className="border-t border-surface-border px-ds-04 py-ds-03">
                   <div className="flex flex-wrap gap-ds-02">
-                    {resolvedPresets.map((preset) => (
-                      <button
-                        key={preset.hex}
-                        type="button"
-                        disabled={disabled}
-                        onClick={() => {
-                          handleChange(preset.hex)
-                        }}
-                        className={cn(
-                          'h-6 w-6 rounded-ds-sm border transition-all',
-                          value.toLowerCase() === preset.hex.toLowerCase()
-                            ? 'border-accent-7 ring-2 ring-accent-9/30 scale-110'
-                            : 'border-surface-border hover:border-surface-border-strong hover:scale-105',
-                          disabled && 'cursor-not-allowed opacity-50',
-                        )}
-                        style={{ backgroundColor: preset.hex }}
-                        title={preset.label}
-                        aria-label={`${preset.label}: ${preset.hex}`}
-                      />
-                    ))}
+                    {resolvedPresets.map((preset, i) => {
+                      const isSelected = value.toLowerCase() === preset.hex.toLowerCase()
+                      return (
+                        <motion.button
+                          key={preset.hex}
+                          type="button"
+                          disabled={disabled}
+                          onClick={() => handleChange(preset.hex)}
+                          initial={{ opacity: 0, scale: 0.8 }}
+                          animate={{ opacity: 1, scale: isSelected ? 1.15 : 1 }}
+                          whileHover={{ scale: isSelected ? 1.15 : 1.1 }}
+                          whileTap={{ scale: 0.9 }}
+                          transition={{ ...springs.bouncy, delay: i * 0.02 }}
+                          className={cn(
+                            'h-6 w-6 rounded-ds-sm border',
+                            isSelected
+                              ? 'border-accent-7 ring-2 ring-accent-9/30'
+                              : 'border-surface-border hover:border-surface-border-strong',
+                            disabled && 'cursor-not-allowed opacity-50',
+                          )}
+                          style={{ backgroundColor: preset.hex }}
+                          title={preset.label}
+                          aria-label={`${preset.label}: ${preset.hex}`}
+                        />
+                      )
+                    })}
                   </div>
                 </div>
               )}

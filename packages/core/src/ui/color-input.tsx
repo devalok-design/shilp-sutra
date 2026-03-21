@@ -240,7 +240,7 @@ const ColorInput = React.forwardRef<HTMLDivElement, ColorInputProps>(
                 type="button"
                 disabled={disabled}
                 className={cn(
-                  'group flex items-center overflow-hidden rounded-ds-md border border-surface-border-strong bg-surface-overlay transition-colors',
+                  'group flex items-stretch overflow-hidden rounded-ds-md border border-surface-border-strong bg-surface-overlay transition-colors',
                   'hover:border-accent-7 focus:border-accent-7 focus:outline-none focus:ring-1 focus:ring-accent-9',
                   disabled && 'cursor-not-allowed opacity-50',
                 )}
@@ -248,11 +248,11 @@ const ColorInput = React.forwardRef<HTMLDivElement, ColorInputProps>(
               >
                 {/* Color swatch — flush left, full height */}
                 <span
-                  className="h-full w-8 shrink-0 self-stretch"
+                  className="w-8 shrink-0"
                   style={{ backgroundColor: value }}
                 />
                 {/* Hex value */}
-                <span className="px-ds-03 py-ds-02 font-mono text-ds-sm text-surface-fg">
+                <span className="flex items-center px-ds-03 py-ds-02 font-mono text-ds-sm text-surface-fg">
                   {value.toUpperCase()}
                 </span>
               </button>

@@ -62,6 +62,28 @@ function getEntryId(entry: TimelineEntry): string {
 // Smart collapsing — group consecutive system events by same actor within 10min
 // ---------------------------------------------------------------------------
 
+// ---------------------------------------------------------------------------
+// Comment grouping — consecutive comments from same author within 5 minutes
+// ---------------------------------------------------------------------------
+
+function computeCommentGrouping(entries: TimelineEntry[]): boolean[] {
+  return entries.map((entry, i) => {
+    if (entry.type !== 'comment') return false
+    const prev = entries[i - 1]
+    if (!prev || prev.type !== 'comment') return false
+    if (prev.comment.authorId !== entry.comment.authorId) return false
+    const timeDiff = Math.abs(
+      new Date(entry.comment.createdAt).getTime() -
+        new Date(prev.comment.createdAt).getTime(),
+    )
+    return timeDiff < 5 * 60 * 1000
+  })
+}
+
+// ---------------------------------------------------------------------------
+// Smart collapsing — group consecutive system events by same actor within 10min
+// ---------------------------------------------------------------------------
+
 interface CollapsedGroup {
   kind: 'collapsed'
   actorName: string
@@ -72,11 +94,14 @@ interface CollapsedGroup {
 interface SingleEntry {
   kind: 'single'
   entry: TimelineEntry
+  /** True when this comment continues a group from the same author. */
+  isGrouped: boolean
 }
 
 type DisplayItem = CollapsedGroup | SingleEntry
 
 function buildDisplayItems(entries: TimelineEntry[]): DisplayItem[] {
+  const groupFlags = computeCommentGrouping(entries)
   const items: DisplayItem[] = []
   let i = 0
 
@@ -113,13 +138,14 @@ function buildDisplayItems(entries: TimelineEntry[]): DisplayItem[] {
         i = j
       } else {
         // Not enough to collapse — push individually
-        for (const entry of group) {
-          items.push({ kind: 'single', entry })
+        for (let k = 0; k < group.length; k++) {
+          const idx = i + k
+          items.push({ kind: 'single', entry: group[k], isGrouped: groupFlags[idx] })
         }
         i = j
       }
     } else {
-      items.push({ kind: 'single', entry: current })
+      items.push({ kind: 'single', entry: current, isGrouped: groupFlags[i] })
       i++
     }
   }
@@ -437,14 +463,20 @@ export function TaskPanelTimeline({
             // For peek, entries already sliced; no unread logic needed
             const entryId = getEntryId(item.entry)
 
+            // Grouped comments get tighter spacing
+            const isGrouped = item.isGrouped
+
             return (
               <React.Fragment key={entryId}>
                 {showUnread && !isPeek && <UnreadDivider />}
-                <TimelineEntryRenderer
-                  entry={item.entry}
-                  currentUserId={currentUserId}
-                  onReact={onReact}
-                />
+                <div className={isGrouped ? '-mt-ds-04' : undefined}>
+                  <TimelineEntryRenderer
+                    entry={item.entry}
+                    currentUserId={currentUserId}
+                    onReact={onReact}
+                    isGrouped={isGrouped}
+                  />
+                </div>
               </React.Fragment>
             )
           })}

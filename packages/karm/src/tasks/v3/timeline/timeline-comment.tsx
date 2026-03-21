@@ -1,7 +1,7 @@
 'use client'
 
 import * as React from 'react'
-import { IconMoodSmile } from '@tabler/icons-react'
+import { IconMoodSmile, IconArrowBackUp } from '@tabler/icons-react'
 import { cn } from '@/ui/lib/utils'
 import { Avatar, AvatarImage, AvatarFallback } from '@/ui/avatar'
 import { Badge } from '@/ui/badge'
@@ -60,6 +60,9 @@ export interface TimelineCommentProps {
   >
   currentUserId: string | null
   onReact: (entryId: string, emoji: string) => void
+  /** When true, this comment is a continuation of the previous message from
+   *  the same author — avatar and name are hidden, spacing is tighter. */
+  isGrouped?: boolean
 }
 
 // ---------------------------------------------------------------------------
@@ -70,6 +73,7 @@ export function TimelineComment({
   entry,
   currentUserId,
   onReact,
+  isGrouped = false,
 }: TimelineCommentProps) {
   const { comment, reactions } = entry
   const author = getAuthorInfo(comment)
@@ -88,36 +92,46 @@ export function TimelineComment({
       )}
       data-testid="timeline-comment"
     >
-      {/* Avatar */}
-      <Avatar size="sm" className="shrink-0">
-        {author.image && <AvatarImage src={author.image} alt={author.name} />}
-        <AvatarFallback>{getInitials(author.name)}</AvatarFallback>
-      </Avatar>
+      {/* Avatar — hidden for grouped (continuation) messages */}
+      {isGrouped ? (
+        <div className="w-8 shrink-0" aria-hidden />
+      ) : (
+        <Avatar size="sm" className="h-8 w-8 shrink-0">
+          {author.image && <AvatarImage src={author.image} alt={author.name} />}
+          <AvatarFallback>{getInitials(author.name)}</AvatarFallback>
+        </Avatar>
+      )}
 
       {/* Body */}
       <div className="min-w-0 flex-1">
-        {/* Header row */}
-        <div className="flex items-center gap-ds-02 text-ds-sm">
-          <span className="font-semibold text-surface-fg" data-testid="comment-author">
-            {author.name}
-          </span>
-          <Badge
-            variant="subtle"
-            color={author.type === 'CLIENT' ? 'success' : 'brand'}
-            size="xs"
-            data-testid="comment-badge"
-          >
-            {author.type === 'CLIENT' ? 'Client' : 'Team'}
-          </Badge>
-          <span className="text-ds-xs text-surface-fg-subtle/70">
-            {formatTimestamp(comment.createdAt)}
-          </span>
-        </div>
+        {/* Header row — hidden for grouped messages */}
+        {!isGrouped && (
+          <div className="flex items-center gap-ds-02 text-ds-sm">
+            <span className="font-semibold text-surface-fg" data-testid="comment-author">
+              {author.name}
+            </span>
+            <span className="text-ds-xs text-surface-fg-subtle/60">
+              {formatTimestamp(comment.createdAt)}
+            </span>
+            <Badge
+              variant="subtle"
+              color={author.type === 'CLIENT' ? 'success' : 'brand'}
+              size="xs"
+              className="text-[10px]"
+              data-testid="comment-badge"
+            >
+              {author.type === 'CLIENT' ? 'Client' : 'Team'}
+            </Badge>
+          </div>
+        )}
 
         {/* Content — supports HTML; consumer MUST sanitize content before passing */}
         {/* eslint-disable-next-line react/no-danger -- consumer responsibility to sanitize */}
         <div
-          className="mt-ds-01 max-w-[65ch] text-ds-sm text-surface-fg whitespace-pre-wrap"
+          className={cn(
+            'max-w-[65ch] text-ds-sm text-surface-fg-muted whitespace-pre-wrap',
+            !isGrouped && 'mt-ds-01',
+          )}
           data-testid="comment-content"
           dangerouslySetInnerHTML={{ __html: comment.content }}
         />
@@ -131,9 +145,9 @@ export function TimelineComment({
                 type="button"
                 onClick={() => onReact(comment.id, reaction.emoji)}
                 className={cn(
-                  'inline-flex items-center gap-ds-01 rounded-full px-ds-02 py-ds-01 text-ds-xs transition-colors',
-                  'bg-surface-raised-hover hover:bg-surface-3',
-                  reaction.reacted && 'border border-accent-7',
+                  'inline-flex items-center gap-ds-01 rounded-full px-ds-02 py-px text-ds-xs transition-colors',
+                  'bg-surface-raised hover:bg-surface-raised-hover',
+                  reaction.reacted && 'bg-accent-3 border border-accent-6',
                 )}
                 data-testid="reaction-button"
               >
@@ -146,15 +160,24 @@ export function TimelineComment({
       </div>
 
       {/* Hover action bar */}
-      <div className="absolute right-0 top-0 hidden group-hover:flex items-center gap-ds-01">
+      <div
+        className="absolute -top-2 right-0 flex items-center gap-ds-01 rounded-ds-md border border-surface-border bg-surface-raised px-ds-01 py-ds-01 shadow-sm opacity-0 group-hover:opacity-100 transition-opacity"
+      >
         <button
           type="button"
-          className="rounded-ds-md p-ds-01 text-surface-fg-subtle hover:bg-surface-3 hover:text-surface-fg transition-colors"
+          className="rounded-ds-md p-ds-01 text-surface-fg-subtle hover:bg-surface-raised-hover hover:text-surface-fg transition-colors"
           aria-label="Add reaction"
           onClick={() => onReact(comment.id, '')}
           data-testid="react-trigger"
         >
           <IconMoodSmile className="h-ico-sm w-ico-sm" />
+        </button>
+        <button
+          type="button"
+          className="rounded-ds-md p-ds-01 text-surface-fg-subtle hover:bg-surface-raised-hover hover:text-surface-fg transition-colors"
+          aria-label="Reply"
+        >
+          <IconArrowBackUp className="h-ico-sm w-ico-sm" />
         </button>
       </div>
     </div>

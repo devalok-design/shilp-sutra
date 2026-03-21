@@ -15,6 +15,8 @@ export interface TimelineEntryRendererProps {
   entry: TimelineEntry
   currentUserId: string | null
   onReact: (entryId: string, emoji: string) => void
+  /** Whether this comment is a grouped continuation (same author, <5min). */
+  isGrouped?: boolean
 }
 
 // ---------------------------------------------------------------------------
@@ -25,6 +27,7 @@ export function TimelineEntryRenderer({
   entry,
   currentUserId,
   onReact,
+  isGrouped,
 }: TimelineEntryRendererProps) {
   switch (entry.type) {
     case 'comment':
@@ -33,6 +36,7 @@ export function TimelineEntryRenderer({
           entry={entry}
           currentUserId={currentUserId}
           onReact={onReact}
+          isGrouped={isGrouped}
         />
       )
     case 'system-event':

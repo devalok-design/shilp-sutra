@@ -31,6 +31,7 @@ export interface TaskPanelContextValue {
   onAddSubtask: (title: string) => void
   onApproveReview: () => void
   onRequestChanges: (comment: string) => void
+  onEditComment: (commentId: string, newContent: string) => void
   onReact: (entryId: string, emoji: string) => void
   onClose: () => void
   onExpand: () => void
@@ -87,6 +88,7 @@ export interface TaskPanelProviderProps {
   onAddSubtask?: (title: string) => void
   onApproveReview?: () => void
   onRequestChanges?: (comment: string) => void
+  onEditComment?: (commentId: string, newContent: string) => void
   onReact?: (entryId: string, emoji: string) => void
   onClose?: () => void
   onExpand?: () => void
@@ -122,6 +124,7 @@ export function TaskPanelProvider({
       onAddSubtask: value.onAddSubtask ?? noop,
       onApproveReview: value.onApproveReview ?? noop,
       onRequestChanges: value.onRequestChanges ?? noop,
+      onEditComment: value.onEditComment ?? noop,
       onReact: value.onReact ?? noop,
       onClose: value.onClose ?? noop,
       onExpand: value.onExpand ?? noop,
@@ -149,6 +152,7 @@ export function TaskPanelProvider({
       value.onAddSubtask,
       value.onApproveReview,
       value.onRequestChanges,
+      value.onEditComment,
       value.onReact,
       value.onClose,
       value.onExpand,

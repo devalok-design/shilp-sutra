@@ -1,51 +1,14 @@
 'use client'
 
 import * as React from 'react'
-import { IconPaperclip, IconMoodSmile, IconSend, IconAlertTriangle } from '@tabler/icons-react'
+import { IconPaperclip, IconMoodSmile, IconSend, IconLock, IconEye } from '@tabler/icons-react'
 import { cn } from '@/ui/lib/utils'
 import { Button } from '@/ui/button'
+import { Tooltip, TooltipTrigger, TooltipContent } from '@/ui/tooltip'
 import { useTaskPanel } from './task-panel-context'
 
-// ---------------------------------------------------------------------------
-// AuthorTypeToggle
-// ---------------------------------------------------------------------------
-
-function VisibilityToggle({
-  value,
-  onChange,
-}: {
-  value: 'INTERNAL' | 'CLIENT'
-  onChange: (v: 'INTERNAL' | 'CLIENT') => void
-}) {
-  return (
-    <div className="inline-flex items-center rounded-ds-md bg-surface-sunken p-ds-01">
-      <button
-        type="button"
-        onClick={() => onChange('INTERNAL')}
-        className={cn(
-          'rounded-ds-sm px-ds-03 py-ds-01 text-ds-xs font-medium transition-colors',
-          value === 'INTERNAL'
-            ? 'bg-surface-raised text-surface-fg shadow-sm'
-            : 'text-surface-fg-subtle hover:text-surface-fg',
-        )}
-      >
-        Team only
-      </button>
-      <button
-        type="button"
-        onClick={() => onChange('CLIENT')}
-        className={cn(
-          'rounded-ds-sm px-ds-03 py-ds-01 text-ds-xs font-medium transition-colors',
-          value === 'CLIENT'
-            ? 'bg-warning-3 text-warning-11 shadow-sm'
-            : 'text-surface-fg-subtle hover:text-surface-fg',
-        )}
-      >
-        Visible to client
-      </button>
-    </div>
-  )
-}
+// TODO: Replace textarea with RichTextEditor once integration is ready.
+// RichTextEditor is heavy and needs careful lazy-loading + toolbar config.
 
 // ---------------------------------------------------------------------------
 // TaskPanelMessageInput
@@ -68,10 +31,7 @@ export function TaskPanelMessageInput({
   // Hidden in peek mode
   if (mode === 'peek') return null
 
-  const showAuthorToggle =
-    !clientMode && task.visibility === 'EVERYONE'
-
-  const showVisibilityWarning =
+  const showVisibilityToggle =
     !clientMode && task.visibility === 'EVERYONE'
 
   const adjustHeight = React.useCallback(() => {
@@ -94,17 +54,20 @@ export function TaskPanelMessageInput({
 
   const handleKeyDown = React.useCallback(
     (e: React.KeyboardEvent<HTMLTextAreaElement>) => {
-      // Cmd+Enter or Ctrl+Enter to send
-      if (e.key === 'Enter' && (e.metaKey || e.ctrlKey)) {
+      // Enter to send (no modifier)
+      if (e.key === 'Enter' && !e.shiftKey && !e.metaKey && !e.ctrlKey) {
         e.preventDefault()
         handleSend()
         return
       }
       // Shift+Enter is a newline (default behavior, no preventDefault)
-      // Plain Enter is also a newline (we use Cmd+Enter to send)
     },
     [handleSend],
   )
+
+  const toggleVisibility = React.useCallback(() => {
+    setAuthorType((prev) => (prev === 'INTERNAL' ? 'CLIENT' : 'INTERNAL'))
+  }, [])
 
   return (
     <div
@@ -114,22 +77,41 @@ export function TaskPanelMessageInput({
       )}
       {...props}
     >
-      {/* Visibility warning */}
-      {showVisibilityWarning && (
-        <div className="mb-ds-02 flex items-center gap-ds-02 text-ds-xs text-warning-11">
-          <IconAlertTriangle className="h-3 w-3 shrink-0" />
-          <span>This task is visible to clients.</span>
-        </div>
-      )}
-
-      {/* Comment visibility toggle */}
-      {showAuthorToggle && (
-        <div className="mb-ds-02">
-          <VisibilityToggle value={authorType} onChange={setAuthorType} />
-        </div>
-      )}
-
       <div className="flex items-end gap-ds-02 rounded-ds-xl border border-surface-border bg-surface-base p-ds-03">
+        {/* Visibility toggle icon — inside the input bar */}
+        {showVisibilityToggle && (
+          <Tooltip>
+            <TooltipTrigger asChild>
+              <button
+                type="button"
+                onClick={toggleVisibility}
+                className={cn(
+                  'shrink-0 rounded-ds-md p-ds-01 transition-colors',
+                  authorType === 'CLIENT'
+                    ? 'text-warning-11 hover:bg-warning-3'
+                    : 'text-surface-fg-subtle hover:bg-surface-raised-hover',
+                )}
+                aria-label={
+                  authorType === 'INTERNAL'
+                    ? 'Team only — click to make visible to client'
+                    : 'Visible to client — click to make team only'
+                }
+              >
+                {authorType === 'INTERNAL' ? (
+                  <IconLock className="h-ico-sm w-ico-sm" />
+                ) : (
+                  <IconEye className="h-ico-sm w-ico-sm" />
+                )}
+              </button>
+            </TooltipTrigger>
+            <TooltipContent>
+              {authorType === 'INTERNAL'
+                ? 'Team only \u2014 click to make visible to client'
+                : 'Visible to client \u2014 click to make team only'}
+            </TooltipContent>
+          </Tooltip>
+        )}
+
         <textarea
           ref={textareaRef}
           value={text}
@@ -184,15 +166,6 @@ export function TaskPanelMessageInput({
           </Button>
         </div>
       </div>
-      {!clientMode && (
-        <p className="mt-ds-01 text-ds-xs text-surface-fg-subtle">
-          {typeof navigator !== 'undefined' &&
-          navigator.platform?.includes('Mac')
-            ? 'Cmd'
-            : 'Ctrl'}
-          +Enter to send
-        </p>
-      )}
     </div>
   )
 }

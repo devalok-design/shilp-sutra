@@ -3,17 +3,12 @@
 import * as React from 'react'
 import {
   IconEye,
-  IconEyeOff,
   IconCheck,
   IconUser,
   IconAlertTriangleFilled,
   IconArrowUp,
   IconArrowDown,
   IconMinus,
-  IconCalendar,
-  IconFolder,
-  IconTag,
-  IconClock,
 } from '@tabler/icons-react'
 import { AnimatePresence, motion } from 'framer-motion'
 import { cn } from '@/ui/lib/utils'
@@ -182,25 +177,22 @@ function ReviewWingCard() {
 }
 
 // ---------------------------------------------------------------------------
-// Tier 2 property row — icon + label on left, value on right
+// Property row — label on left, value on right
 // ---------------------------------------------------------------------------
 
-function DetailRow({
-  icon: Icon,
+function PropertyRow({
   label,
   children,
 }: {
-  icon: React.ElementType
   label: string
   children: React.ReactNode
 }) {
   return (
-    <div className="flex items-center justify-between">
-      <span className="flex items-center gap-ds-02 text-ds-xs text-surface-fg-subtle">
-        <Icon className="h-4 w-4 text-surface-fg-subtle" />
+    <div className="flex items-center justify-between gap-ds-03">
+      <span className="shrink-0 text-ds-xs font-medium text-surface-fg-subtle">
         {label}
       </span>
-      {children}
+      <div className="min-w-0">{children}</div>
     </div>
   )
 }
@@ -245,176 +237,64 @@ function PropertiesWingCard() {
       className="w-[280px] rounded-ds-xl border border-surface-border-strong bg-surface-raised shadow-floating"
       data-testid="properties-wing"
     >
-      <div className="p-ds-05">
-        {/* ============================================================ */}
-        {/* Tier 1: At a Glance — Status + Assignee */}
-        {/* ============================================================ */}
-        <div className="flex flex-col gap-ds-05">
+      <div className="p-ds-06">
+        {/* Header */}
+        <span className="text-ds-xs font-semibold uppercase tracking-wider text-surface-fg-muted">
+          Properties
+        </span>
+
+        {/* All properties — consistent label-value rows */}
+        <div className="mt-ds-04 flex flex-col gap-ds-04">
           {/* Status */}
-          {interactive ? (
-            <Popover open={statusOpen} onOpenChange={setStatusOpen}>
-              <PopoverTrigger asChild>
-                <button
-                  type="button"
-                  className={cn('flex items-center gap-ds-03', interactiveValueBase)}
-                >
-                  <span className={cn('h-2.5 w-2.5 shrink-0 rounded-full', statusDotColor)} />
-                  <span className="text-ds-md font-medium text-surface-fg">{statusName}</span>
-                </button>
-              </PopoverTrigger>
-              <PopoverContent
-                className="w-[180px] border-surface-border-strong bg-surface-overlay p-ds-02"
-                align="end"
-                sideOffset={4}
-              >
-                {task.statusOptions.map((opt) => (
+          <PropertyRow label="Status">
+            {interactive ? (
+              <Popover open={statusOpen} onOpenChange={setStatusOpen}>
+                <PopoverTrigger asChild>
                   <button
-                    key={opt.id}
                     type="button"
-                    onClick={() => {
-                      onUpdateStatus(opt.id)
-                      setStatusOpen(false)
-                    }}
-                    className={cn(
-                      popoverOptionBase,
-                      opt.id === task.status && 'bg-surface-raised-hover',
-                    )}
+                    className={cn('flex items-center gap-ds-02', interactiveValueBase)}
                   >
-                    <span className={cn('h-2 w-2 shrink-0 rounded-full', getStatusDotColor(opt.name))} aria-hidden />
-                    <span className="text-ds-sm text-surface-fg">{opt.name}</span>
-                    {opt.id === task.status && (
-                      <IconCheck className="ml-auto h-ico-sm w-ico-sm text-accent-11" />
-                    )}
+                    <span className={cn('h-2 w-2 shrink-0 rounded-full', statusDotColor)} />
+                    <span className="text-ds-sm text-surface-fg">{statusName}</span>
                   </button>
-                ))}
-              </PopoverContent>
-            </Popover>
-          ) : (
-            <div className="flex items-center gap-ds-03">
-              <span className={cn('h-2.5 w-2.5 shrink-0 rounded-full', statusDotColor)} />
-              <span className="text-ds-md font-medium text-surface-fg">{statusName}</span>
-            </div>
-          )}
-
-          {/* Assignee */}
-          {interactive ? (
-            <Popover open={assigneeOpen} onOpenChange={setAssigneeOpen}>
-              <PopoverTrigger asChild>
-                <button
-                  type="button"
-                  className={cn('flex items-center gap-ds-03', interactiveValueBase)}
+                </PopoverTrigger>
+                <PopoverContent
+                  className="w-[180px] border-surface-border-strong bg-surface-overlay p-ds-02"
+                  align="end"
+                  sideOffset={4}
                 >
-                  {task.assignee ? (
-                    <>
-                      <Avatar size="xs" className="h-6 w-6">
-                        {task.assignee.image && (
-                          <AvatarImage src={task.assignee.image} />
-                        )}
-                        <AvatarFallback className="text-[9px]">
-                          {getInitials(task.assignee.name)}
-                        </AvatarFallback>
-                      </Avatar>
-                      <span className="text-ds-md text-surface-fg">
-                        {task.assignee.name}
-                      </span>
-                    </>
-                  ) : (
-                    <>
-                      <span className="flex h-6 w-6 items-center justify-center rounded-full border border-dashed border-surface-fg-subtle">
-                        <IconUser className="h-3.5 w-3.5 text-surface-fg-subtle" />
-                      </span>
-                      <span className="text-ds-md text-surface-fg-subtle">
-                        Unassigned
-                      </span>
-                    </>
-                  )}
-                </button>
-              </PopoverTrigger>
-              <PopoverContent
-                className="w-[200px] border-surface-border-strong bg-surface-overlay p-ds-02"
-                align="end"
-                sideOffset={4}
-              >
-                {/* Unassign option */}
-                <button
-                  type="button"
-                  onClick={() => {
-                    onUpdateAssignee(null)
-                    setAssigneeOpen(false)
-                  }}
-                  className={cn(
-                    popoverOptionBase,
-                    !task.assignee && 'bg-surface-raised-hover',
-                  )}
-                >
-                  <IconUser className="h-ico-sm w-ico-sm text-surface-fg-subtle" />
-                  <span className="text-ds-sm text-surface-fg-subtle">Unassigned</span>
-                </button>
-
-                {task.members.map((member) => (
-                  <button
-                    key={member.id}
-                    type="button"
-                    onClick={() => {
-                      onUpdateAssignee(member.id)
-                      setAssigneeOpen(false)
-                    }}
-                    className={cn(
-                      popoverOptionBase,
-                      task.assignee?.id === member.id && 'bg-surface-raised-hover',
-                    )}
-                  >
-                    <Avatar size="xs" className="h-5 w-5">
-                      {member.image && <AvatarImage src={member.image} />}
-                      <AvatarFallback className="text-[10px]">
-                        {getInitials(member.name)}
-                      </AvatarFallback>
-                    </Avatar>
-                    <span className="text-ds-sm text-surface-fg">{member.name}</span>
-                    {task.assignee?.id === member.id && (
-                      <IconCheck className="ml-auto h-ico-sm w-ico-sm text-accent-11" />
-                    )}
-                  </button>
-                ))}
-              </PopoverContent>
-            </Popover>
-          ) : (
-            task.assignee ? (
-              <div className="flex items-center gap-ds-03">
-                <Avatar size="xs" className="h-6 w-6">
-                  {task.assignee.image && (
-                    <AvatarImage src={task.assignee.image} />
-                  )}
-                  <AvatarFallback className="text-[9px]">
-                    {getInitials(task.assignee.name)}
-                  </AvatarFallback>
-                </Avatar>
-                <span className="text-ds-md text-surface-fg">
-                  {task.assignee.name}
-                </span>
-              </div>
+                  {task.statusOptions.map((opt) => (
+                    <button
+                      key={opt.id}
+                      type="button"
+                      onClick={() => {
+                        onUpdateStatus(opt.id)
+                        setStatusOpen(false)
+                      }}
+                      className={cn(
+                        popoverOptionBase,
+                        opt.id === task.status && 'bg-surface-raised-hover',
+                      )}
+                    >
+                      <span className={cn('h-2 w-2 shrink-0 rounded-full', getStatusDotColor(opt.name))} aria-hidden />
+                      <span className="text-ds-sm text-surface-fg">{opt.name}</span>
+                      {opt.id === task.status && (
+                        <IconCheck className="ml-auto h-ico-sm w-ico-sm text-accent-11" />
+                      )}
+                    </button>
+                  ))}
+                </PopoverContent>
+              </Popover>
             ) : (
-              <div className="flex items-center gap-ds-03">
-                <span className="flex h-6 w-6 items-center justify-center rounded-full border border-dashed border-surface-fg-subtle">
-                  <IconUser className="h-3.5 w-3.5 text-surface-fg-subtle" />
-                </span>
-                <span className="text-ds-md text-surface-fg-subtle">
-                  Unassigned
-                </span>
+              <div className="flex items-center gap-ds-02">
+                <span className={cn('h-2 w-2 shrink-0 rounded-full', statusDotColor)} />
+                <span className="text-ds-sm text-surface-fg">{statusName}</span>
               </div>
-            )
-          )}
-        </div>
+            )}
+          </PropertyRow>
 
-        {/* Separator between Tier 1 and Tier 2 */}
-        <div className="border-t border-surface-border mt-ds-04 pt-ds-04" />
-
-        {/* ============================================================ */}
-        {/* Tier 2: Details — Priority, Due Date, Lead, Project, Labels */}
-        {/* ============================================================ */}
-        <div className="flex flex-col gap-ds-03">
           {/* Priority */}
-          <DetailRow icon={PriorityIcon} label="Priority">
+          <PropertyRow label="Priority">
             {interactive ? (
               <Popover open={priorityOpen} onOpenChange={setPriorityOpen}>
                 <PopoverTrigger asChild>
@@ -467,10 +347,140 @@ function PropertiesWingCard() {
                 </span>
               </div>
             )}
-          </DetailRow>
+          </PropertyRow>
+
+          {/* Assignee */}
+          <PropertyRow label="Assignee">
+            {interactive ? (
+              <Popover open={assigneeOpen} onOpenChange={setAssigneeOpen}>
+                <PopoverTrigger asChild>
+                  <button
+                    type="button"
+                    className={cn('flex items-center gap-ds-02', interactiveValueBase)}
+                  >
+                    {task.assignee ? (
+                      <>
+                        <Avatar size="xs" className="h-5 w-5">
+                          {task.assignee.image && (
+                            <AvatarImage src={task.assignee.image} />
+                          )}
+                          <AvatarFallback className="text-[8px]">
+                            {getInitials(task.assignee.name)}
+                          </AvatarFallback>
+                        </Avatar>
+                        <span className="text-ds-sm text-surface-fg">
+                          {task.assignee.name}
+                        </span>
+                      </>
+                    ) : (
+                      <>
+                        <span className="flex h-5 w-5 items-center justify-center rounded-full border border-dashed border-surface-fg-subtle">
+                          <IconUser className="h-3 w-3 text-surface-fg-subtle" />
+                        </span>
+                        <span className="text-ds-sm text-surface-fg-subtle">
+                          Unassigned
+                        </span>
+                      </>
+                    )}
+                  </button>
+                </PopoverTrigger>
+                <PopoverContent
+                  className="w-[200px] border-surface-border-strong bg-surface-overlay p-ds-02"
+                  align="end"
+                  sideOffset={4}
+                >
+                  {/* Unassign option */}
+                  <button
+                    type="button"
+                    onClick={() => {
+                      onUpdateAssignee(null)
+                      setAssigneeOpen(false)
+                    }}
+                    className={cn(
+                      popoverOptionBase,
+                      !task.assignee && 'bg-surface-raised-hover',
+                    )}
+                  >
+                    <IconUser className="h-ico-sm w-ico-sm text-surface-fg-subtle" />
+                    <span className="text-ds-sm text-surface-fg-subtle">Unassigned</span>
+                  </button>
+
+                  {task.members.map((member) => (
+                    <button
+                      key={member.id}
+                      type="button"
+                      onClick={() => {
+                        onUpdateAssignee(member.id)
+                        setAssigneeOpen(false)
+                      }}
+                      className={cn(
+                        popoverOptionBase,
+                        task.assignee?.id === member.id && 'bg-surface-raised-hover',
+                      )}
+                    >
+                      <Avatar size="xs" className="h-5 w-5">
+                        {member.image && <AvatarImage src={member.image} />}
+                        <AvatarFallback className="text-[10px]">
+                          {getInitials(member.name)}
+                        </AvatarFallback>
+                      </Avatar>
+                      <span className="text-ds-sm text-surface-fg">{member.name}</span>
+                      {task.assignee?.id === member.id && (
+                        <IconCheck className="ml-auto h-ico-sm w-ico-sm text-accent-11" />
+                      )}
+                    </button>
+                  ))}
+                </PopoverContent>
+              </Popover>
+            ) : (
+              task.assignee ? (
+                <div className="flex items-center gap-ds-02">
+                  <Avatar size="xs" className="h-5 w-5">
+                    {task.assignee.image && (
+                      <AvatarImage src={task.assignee.image} />
+                    )}
+                    <AvatarFallback className="text-[8px]">
+                      {getInitials(task.assignee.name)}
+                    </AvatarFallback>
+                  </Avatar>
+                  <span className="text-ds-sm text-surface-fg">
+                    {task.assignee.name}
+                  </span>
+                </div>
+              ) : (
+                <div className="flex items-center gap-ds-02">
+                  <span className="flex h-5 w-5 items-center justify-center rounded-full border border-dashed border-surface-fg-subtle">
+                    <IconUser className="h-3 w-3 text-surface-fg-subtle" />
+                  </span>
+                  <span className="text-ds-sm text-surface-fg-subtle">
+                    Unassigned
+                  </span>
+                </div>
+              )
+            )}
+          </PropertyRow>
+
+          {/* Lead */}
+          <PropertyRow label="Lead">
+            {task.lead ? (
+              <div className="flex items-center gap-ds-02">
+                <Avatar size="xs" className="h-5 w-5">
+                  {task.lead.image && <AvatarImage src={task.lead.image} />}
+                  <AvatarFallback className="text-[8px]">
+                    {getInitials(task.lead.name)}
+                  </AvatarFallback>
+                </Avatar>
+                <span className="text-ds-sm text-surface-fg">
+                  {task.lead.name}
+                </span>
+              </div>
+            ) : (
+              <span className="text-ds-sm text-surface-fg-subtle">None</span>
+            )}
+          </PropertyRow>
 
           {/* Due Date */}
-          <DetailRow icon={IconCalendar} label="Due date">
+          <PropertyRow label="Due date">
             {interactive ? (
               <Popover open={dueDateOpen} onOpenChange={setDueDateOpen}>
                 <PopoverTrigger asChild>
@@ -532,36 +542,10 @@ function PropertiesWingCard() {
                 {task.dueDate ? formatDate(task.dueDate) : 'No due date'}
               </span>
             )}
-          </DetailRow>
-
-          {/* Lead */}
-          <DetailRow icon={IconUser} label="Lead">
-            {task.lead ? (
-              <div className="flex items-center gap-ds-02">
-                <Avatar size="xs" className="h-5 w-5">
-                  {task.lead.image && <AvatarImage src={task.lead.image} />}
-                  <AvatarFallback className="text-[8px]">
-                    {getInitials(task.lead.name)}
-                  </AvatarFallback>
-                </Avatar>
-                <span className="text-ds-sm text-surface-fg">
-                  {task.lead.name}
-                </span>
-              </div>
-            ) : (
-              <span className="text-ds-sm text-surface-fg-subtle">None</span>
-            )}
-          </DetailRow>
-
-          {/* Project */}
-          <DetailRow icon={IconFolder} label="Project">
-            <span className={cn('text-ds-sm', task.project ? 'text-surface-fg' : 'text-surface-fg-subtle')}>
-              {task.project ?? 'None'}
-            </span>
-          </DetailRow>
+          </PropertyRow>
 
           {/* Labels */}
-          <DetailRow icon={IconTag} label="Labels">
+          <PropertyRow label="Labels">
             {task.labels.length > 0 ? (
               <div className="flex flex-wrap gap-ds-01 justify-end">
                 {task.labels.map((label) => (
@@ -573,55 +557,42 @@ function PropertiesWingCard() {
             ) : (
               <span className="text-ds-sm text-surface-fg-subtle">None</span>
             )}
-          </DetailRow>
+          </PropertyRow>
+
+          {/* Project */}
+          <PropertyRow label="Project">
+            <span className={cn('text-ds-sm', task.project ? 'text-surface-fg' : 'text-surface-fg-subtle')}>
+              {task.project ?? 'None'}
+            </span>
+          </PropertyRow>
+
+          {/* Visibility */}
+          <PropertyRow label="Visibility">
+            <Badge
+              variant="subtle"
+              size="xs"
+              color={task.visibility === 'EVERYONE' ? 'success' : 'slate'}
+            >
+              {task.visibility === 'EVERYONE' ? 'Client visible' : 'Internal only'}
+            </Badge>
+          </PropertyRow>
         </div>
 
-        {/* ============================================================ */}
-        {/* Tier 3: Meta — Visibility, Created, Updated */}
-        {/* ============================================================ */}
-        <div className="border-t border-surface-border pt-ds-03 mt-ds-03">
-          <div className="flex flex-col gap-ds-02">
-            {/* Visibility */}
-            <div className="flex items-center justify-between">
-              <span className="flex items-center gap-ds-02 text-ds-xs text-surface-fg-subtle">
-                {task.visibility === 'EVERYONE' ? (
-                  <IconEye className="h-3.5 w-3.5" />
-                ) : (
-                  <IconEyeOff className="h-3.5 w-3.5" />
-                )}
-                Visibility
-              </span>
-              <Badge
-                variant="subtle"
-                size="xs"
-                color={task.visibility === 'EVERYONE' ? 'success' : 'slate'}
-              >
-                {task.visibility === 'EVERYONE' ? 'Client visible' : 'Internal only'}
-              </Badge>
-            </div>
+        {/* Separator before meta */}
+        <div className="border-t border-surface-border mt-ds-04 pt-ds-04" />
 
-            {/* Created */}
-            <div className="flex items-center justify-between">
-              <span className="flex items-center gap-ds-02 text-ds-xs text-surface-fg-subtle">
-                <IconClock className="h-3.5 w-3.5" />
-                Created
-              </span>
-              <span className="text-ds-xs text-surface-fg-subtle">
-                {formatMetaDate(task.createdAt)}
-              </span>
-            </div>
-
-            {/* Updated */}
-            <div className="flex items-center justify-between">
-              <span className="flex items-center gap-ds-02 text-ds-xs text-surface-fg-subtle">
-                <IconClock className="h-3.5 w-3.5" />
-                Updated
-              </span>
-              <span className="text-ds-xs text-surface-fg-subtle">
-                {formatMetaDate(task.updatedAt)}
-              </span>
-            </div>
-          </div>
+        {/* Meta — Created / Updated */}
+        <div className="flex flex-col gap-ds-03">
+          <PropertyRow label="Created">
+            <span className="text-ds-xs text-surface-fg-subtle">
+              {formatMetaDate(task.createdAt)}
+            </span>
+          </PropertyRow>
+          <PropertyRow label="Updated">
+            <span className="text-ds-xs text-surface-fg-subtle">
+              {timeAgo(task.updatedAt)}
+            </span>
+          </PropertyRow>
         </div>
       </div>
     </motion.div>

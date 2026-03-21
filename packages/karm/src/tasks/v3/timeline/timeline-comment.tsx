@@ -1,7 +1,7 @@
 'use client'
 
 import * as React from 'react'
-import { IconMoodSmile, IconArrowBackUp } from '@tabler/icons-react'
+import { IconMoodSmile, IconArrowBackUp, IconPencil } from '@tabler/icons-react'
 import { cn } from '@/ui/lib/utils'
 import { Avatar, AvatarImage, AvatarFallback } from '@/ui/avatar'
 import { Badge } from '@/ui/badge'
@@ -60,6 +60,7 @@ export interface TimelineCommentProps {
   >
   currentUserId: string | null
   onReact: (entryId: string, emoji: string) => void
+  onEditComment?: (commentId: string, newContent: string) => void
   /** When true, this comment is a continuation of the previous message from
    *  the same author — avatar and name are hidden, spacing is tighter. */
   isGrouped?: boolean
@@ -73,10 +74,49 @@ export function TimelineComment({
   entry,
   currentUserId,
   onReact,
+  onEditComment,
   isGrouped = false,
 }: TimelineCommentProps) {
   const { comment, reactions } = entry
   const author = getAuthorInfo(comment)
+
+  const [isEditing, setIsEditing] = React.useState(false)
+  const [editDraft, setEditDraft] = React.useState(comment.content)
+  const editRef = React.useRef<HTMLTextAreaElement>(null)
+
+  const isOwnComment = currentUserId !== null && comment.authorId === currentUserId
+  const canEdit = isOwnComment && onEditComment
+
+  React.useEffect(() => {
+    if (isEditing && editRef.current) {
+      editRef.current.focus()
+      editRef.current.selectionStart = editRef.current.value.length
+    }
+  }, [isEditing])
+
+  const handleEditSave = React.useCallback(() => {
+    const trimmed = editDraft.trim()
+    setIsEditing(false)
+    if (trimmed && trimmed !== comment.content && onEditComment) {
+      onEditComment(comment.id, trimmed)
+    } else {
+      setEditDraft(comment.content)
+    }
+  }, [editDraft, comment.content, comment.id, onEditComment])
+
+  const handleEditKeyDown = React.useCallback(
+    (e: React.KeyboardEvent) => {
+      if (e.key === 'Escape') {
+        e.preventDefault()
+        setIsEditing(false)
+        setEditDraft(comment.content)
+      } else if (e.key === 'Enter' && !e.shiftKey) {
+        e.preventDefault()
+        handleEditSave()
+      }
+    },
+    [handleEditSave, comment.content],
+  )
 
   // Check if the current user is @mentioned in the content
   const isMentioned =
@@ -110,7 +150,7 @@ export function TimelineComment({
             <span className="font-semibold text-surface-fg" data-testid="comment-author">
               {author.name}
             </span>
-            <span className="text-ds-xs text-surface-fg-subtle/60">
+            <span className="text-ds-xs text-surface-fg-subtle/40">
               {formatTimestamp(comment.createdAt)}
             </span>
             <Badge
@@ -125,16 +165,32 @@ export function TimelineComment({
           </div>
         )}
 
-        {/* Content — supports HTML; consumer MUST sanitize content before passing */}
-        {/* eslint-disable-next-line react/no-danger -- consumer responsibility to sanitize */}
-        <div
-          className={cn(
-            'max-w-[65ch] text-ds-sm text-surface-fg-muted whitespace-pre-wrap',
-            !isGrouped && 'mt-ds-01',
-          )}
-          data-testid="comment-content"
-          dangerouslySetInnerHTML={{ __html: comment.content }}
-        />
+        {/* Content — editable inline or rendered HTML */}
+        {isEditing ? (
+          <textarea
+            ref={editRef}
+            value={editDraft}
+            onChange={(e) => setEditDraft(e.target.value)}
+            onBlur={handleEditSave}
+            onKeyDown={handleEditKeyDown}
+            className={cn(
+              'w-full resize-none rounded-ds-md border border-surface-border bg-surface-raised p-ds-03 text-ds-sm leading-relaxed text-surface-fg outline-none focus:border-accent-8 focus:ring-1 focus:ring-accent-8',
+              !isGrouped && 'mt-ds-01',
+            )}
+            rows={3}
+            data-testid="comment-edit-textarea"
+          />
+        ) : (
+          /* eslint-disable-next-line react/no-danger -- consumer responsibility to sanitize */
+          <div
+            className={cn(
+              'max-w-[65ch] text-ds-sm leading-relaxed text-surface-fg whitespace-pre-wrap',
+              !isGrouped && 'mt-ds-01',
+            )}
+            data-testid="comment-content"
+            dangerouslySetInnerHTML={{ __html: comment.content }}
+          />
+        )}
 
         {/* Reactions row */}
         {reactions && reactions.length > 0 && (
@@ -179,6 +235,20 @@ export function TimelineComment({
         >
           <IconArrowBackUp className="h-ico-sm w-ico-sm" />
         </button>
+        {canEdit && (
+          <button
+            type="button"
+            className="rounded-ds-md p-ds-01 text-surface-fg-subtle hover:bg-surface-raised-hover hover:text-surface-fg transition-colors"
+            aria-label="Edit comment"
+            onClick={() => {
+              setEditDraft(comment.content)
+              setIsEditing(true)
+            }}
+            data-testid="edit-trigger"
+          >
+            <IconPencil className="h-ico-sm w-ico-sm" />
+          </button>
+        )}
       </div>
     </div>
   )

@@ -112,13 +112,13 @@ describe('TaskPanelDescription', () => {
 
   it('clicking description text in staff mode enters edit mode', async () => {
     renderWithProvider()
-    // First expand the description
-    const toggleBtn = screen.getByText('Description').closest('button')!
-    await userEvent.click(toggleBtn)
-    // Now click the description text (which has role="button" tabIndex=0)
-    const descText = screen.getByText(
-      'This is the task description with details about the bug.',
-    )
+    // First expand the description by clicking the collapsed preview button
+    const expandBtn = screen.getByRole('button')
+    await userEvent.click(expandBtn)
+    // Now click the description text (which has role="button" tabIndex=0 in expanded mode)
+    const descText = screen.getByRole('button', {
+      name: 'This is the task description with details about the bug.',
+    })
     await userEvent.click(descText)
     expect(screen.getByRole('textbox')).toBeInTheDocument()
   })

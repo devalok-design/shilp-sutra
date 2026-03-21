@@ -298,6 +298,7 @@ export function TaskPanelTimeline({
     mode,
     currentUserId,
     onReact,
+    onEditComment,
     typingUsers,
   } = useTaskPanel()
 
@@ -474,6 +475,7 @@ export function TaskPanelTimeline({
                     entry={item.entry}
                     currentUserId={currentUserId}
                     onReact={onReact}
+                    onEditComment={onEditComment}
                     isGrouped={isGrouped}
                   />
                 </div>

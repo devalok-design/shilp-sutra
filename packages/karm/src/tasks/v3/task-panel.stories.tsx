@@ -264,6 +264,7 @@ const sharedCallbacks = {
   onAddSubtask: fn(),
   onApproveReview: fn(),
   onRequestChanges: fn(),
+  onEditComment: fn(),
   onReact: fn(),
   onClose: fn(),
   onExpand: fn(),

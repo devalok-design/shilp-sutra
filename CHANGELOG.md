@@ -5,6 +5,31 @@ All notable changes to `@devalok/shilp-sutra` will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.28.0] - 2026-03-21 (core) / [0.24.1] - 2026-03-21 (karm)
+
+### Added (core) — ColorInput v2
+
+- **ColorInput redesigned** with `react-colorful` interactive picker (2.8KB bundled). Popover trigger pattern replaces inline native picker.
+- **Two trigger variants:** `default` (gradient swatch → hex text) and `inline` (entire trigger IS the color, contrast-aware text).
+- **Multi-format inputs:** HEX / RGB / HSL format switcher with animated sliding pill indicator.
+- **Preset swatches:** 10 named colors by default (color-blind accessible labels). Customizable via `presets` prop — accepts `{ hex, label }[]`, `string[]`, or `false`.
+- **Reset / Undo:** Footer appears when color changes. Undo steps back through discrete changes; Reset reverts to color when popover opened.
+- **Animations:** Smooth color transitions on triggers, staggered preset entrance, animated format swap, bouncy swatch interactions.
+- **Accessibility:** `id`/`htmlFor` on all format inputs, ARIA labels on triggers and swatches, RGB clamped 0-255, HSL clamped 0-360/0-100.
+- New props: `variant`, `showPicker`, `defaultFormat`, `align`.
+
+### Fixed (core)
+
+- **MultiSelectPopover** — Middle-click scrolling now works inside the dropdown list. Set `modal={false}` on the Popover root — Radix's `RemoveScroll` was blocking scroll events in modal mode.
+
+### Changed (core) — Build
+
+- **react-colorful** added to `vendor-client` manualChunks bucket (SSR-safe, predictable chunk name).
+
+### Fixed (karm)
+
+- **KanbanBoard DnD animation** — Removed `MotionStagger` from interactive column task lists. Cards no longer re-animate their entrance on every drag-and-drop state update. ReadOnly columns keep stagger (appropriate for static lists).
+
 ## [0.27.2] - 2026-03-21 (core)
 
 ### Fixed (core)

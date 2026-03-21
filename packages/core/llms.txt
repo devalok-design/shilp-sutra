@@ -308,7 +308,7 @@ Components with two-axis system: Button, Badge, Alert, Chip, Banner, Progress, S
 - SearchInput: size(xs|sm|md|lg) + loading, onClear
 - NumberInput: value + onValueChange, min, max, step (controlled only)
 - Textarea: size(xs|sm|md|lg) state(default|error|warning|success)
-- ColorInput: value(hex string) onChange(value) presets(string[]) disabled
+- ColorInput: value(hex string) onChange(value) presets({hex,label}[]|string[]|false, default: 10 named colors) variant('default'|'inline') showPicker(boolean, default:true) defaultFormat('hex'|'rgb'|'hsl') align('start'|'center'|'end') disabled. Popover trigger opens interactive picker (react-colorful) + format switcher + preset swatches + undo/reset. Inline variant renders entire trigger as the color with contrast-aware text.
 - Checkbox: checked, onCheckedChange, error(boolean), indeterminate(boolean)
 - Switch: checked, onCheckedChange, error(boolean)
 - RadioGroup > RadioGroupItem(value)

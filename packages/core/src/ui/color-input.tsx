@@ -258,7 +258,7 @@ const ColorInput = React.forwardRef<HTMLDivElement, ColorInputProps>(
                   WebkitMaskImage: 'linear-gradient(to right, transparent 0%, black 50%)',
                 }} />
                 {/* Hex value */}
-                <span className="relative z-10 py-ds-02 pl-10 pr-ds-03 font-mono text-ds-sm text-surface-fg">
+                <span className="relative z-10 py-ds-02 pl-6 pr-ds-03 font-mono text-ds-sm text-surface-fg">
                   {value.toUpperCase()}
                 </span>
               </button>

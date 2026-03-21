@@ -10,7 +10,7 @@ import { useTaskPanel } from './task-panel-context'
 // AuthorTypeToggle
 // ---------------------------------------------------------------------------
 
-function AuthorTypeToggle({
+function VisibilityToggle({
   value,
   onChange,
 }: {
@@ -29,7 +29,7 @@ function AuthorTypeToggle({
             : 'text-surface-fg-subtle hover:text-surface-fg',
         )}
       >
-        Team
+        Team only
       </button>
       <button
         type="button"
@@ -37,11 +37,11 @@ function AuthorTypeToggle({
         className={cn(
           'rounded-ds-sm px-ds-03 py-ds-01 text-ds-xs font-medium transition-colors',
           value === 'CLIENT'
-            ? 'bg-surface-raised text-surface-fg shadow-sm'
+            ? 'bg-warning-3 text-warning-11 shadow-sm'
             : 'text-surface-fg-subtle hover:text-surface-fg',
         )}
       >
-        Client
+        Visible to client
       </button>
     </div>
   )
@@ -122,10 +122,10 @@ export function TaskPanelMessageInput({
         </div>
       )}
 
-      {/* Author type toggle */}
+      {/* Comment visibility toggle */}
       {showAuthorToggle && (
         <div className="mb-ds-02">
-          <AuthorTypeToggle value={authorType} onChange={setAuthorType} />
+          <VisibilityToggle value={authorType} onChange={setAuthorType} />
         </div>
       )}
 
@@ -142,7 +142,7 @@ export function TaskPanelMessageInput({
             clientMode
               ? 'Post a comment...'
               : authorType === 'CLIENT'
-                ? 'Write as client...'
+                ? 'Write a comment (visible to client)...'
                 : 'Write a message...'
           }
           aria-label="Message input"

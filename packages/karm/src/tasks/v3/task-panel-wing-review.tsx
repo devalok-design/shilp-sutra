@@ -38,7 +38,7 @@ const wingVariants = {
 // ---------------------------------------------------------------------------
 
 export function TaskPanelReviewCard() {
-  const { task, onApproveReview, onRequestChanges } = useTaskPanel()
+  const { task, clientMode, onApproveReview, onRequestChanges } = useTaskPanel()
 
   return (
     <motion.div
@@ -51,39 +51,62 @@ export function TaskPanelReviewCard() {
       data-testid="review-wing"
     >
       <div className="p-ds-05">
-        <div className="flex items-center gap-ds-02 mb-ds-03">
-          <IconEye className="h-ico-sm w-ico-sm text-accent-11" />
-          <span className="text-ds-sm font-semibold text-accent-11">
-            Review Requested
-          </span>
-        </div>
+        {clientMode ? (
+          /* Client view — informational, no action buttons */
+          <>
+            <div className="flex items-center gap-ds-02 mb-ds-03">
+              <IconEye className="h-ico-sm w-ico-sm text-accent-11" />
+              <span className="text-ds-sm font-semibold text-accent-11">
+                Under Review
+              </span>
+            </div>
+            <p className="text-ds-xs text-surface-fg-muted">
+              Your submission is being reviewed by the team.
+            </p>
+            {task.reviewSubmittedBy && (
+              <p className="text-ds-xs text-surface-fg-subtle mt-ds-02">
+                Submitted {timeAgo(task.reviewSubmittedBy.timestamp)}
+              </p>
+            )}
+          </>
+        ) : (
+          /* Staff view — review actions */
+          <>
+            <div className="flex items-center gap-ds-02 mb-ds-03">
+              <IconEye className="h-ico-sm w-ico-sm text-accent-11" />
+              <span className="text-ds-sm font-semibold text-accent-11">
+                Review Requested
+              </span>
+            </div>
 
-        {task.reviewSubmittedBy && (
-          <p className="text-ds-xs text-surface-fg-muted mb-ds-03">
-            {task.reviewSubmittedBy.name} &middot;{' '}
-            {timeAgo(task.reviewSubmittedBy.timestamp)}
-          </p>
+            {task.reviewSubmittedBy && (
+              <p className="text-ds-xs text-surface-fg-muted mb-ds-03">
+                {task.reviewSubmittedBy.name} &middot;{' '}
+                {timeAgo(task.reviewSubmittedBy.timestamp)}
+              </p>
+            )}
+
+            <div className="flex items-center gap-ds-02">
+              <Button
+                variant="solid"
+                size="sm"
+                className="bg-success-9 hover:bg-success-10 text-white"
+                onClick={onApproveReview}
+              >
+                <IconCheck className="mr-ds-01 h-ico-sm w-ico-sm" />
+                Approve
+              </Button>
+              <Button
+                variant="ghost"
+                size="sm"
+                className="text-surface-fg-muted hover:text-error-11"
+                onClick={() => onRequestChanges('')}
+              >
+                Request Changes
+              </Button>
+            </div>
+          </>
         )}
-
-        <div className="flex items-center gap-ds-02">
-          <Button
-            variant="solid"
-            size="sm"
-            className="bg-success-9 hover:bg-success-10 text-white"
-            onClick={onApproveReview}
-          >
-            <IconCheck className="mr-ds-01 h-ico-sm w-ico-sm" />
-            Approve
-          </Button>
-          <Button
-            variant="ghost"
-            size="sm"
-            className="text-surface-fg-muted hover:text-error-11"
-            onClick={() => onRequestChanges('')}
-          >
-            Request Changes
-          </Button>
-        </div>
       </div>
     </motion.div>
   )

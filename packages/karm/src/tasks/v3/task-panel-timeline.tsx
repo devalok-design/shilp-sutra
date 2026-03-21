@@ -468,10 +468,8 @@ export function TaskPanelTimeline({
     <div className={cn('flex flex-1 flex-col overflow-hidden', className)} {...props}>
       {/* Filter bar — staff only, not in peek */}
       {!clientMode && !isPeek && (
-        <div className="relative pt-ds-04 pb-ds-02">
+        <div className="pt-ds-04 pb-ds-02">
           <FilterBar value={filter} onChange={setFilter} />
-          {/* Soft fade gradient below filters */}
-          <div className="pointer-events-none absolute bottom-0 left-0 right-0 h-6 bg-gradient-to-b from-surface-raised to-transparent" />
         </div>
       )}
 
@@ -482,6 +480,10 @@ export function TaskPanelTimeline({
         className="flex-1 overflow-y-auto px-ds-06 py-ds-04"
         style={{ scrollbarWidth: 'thin', scrollbarColor: 'var(--color-surface-border) transparent' }}
       >
+        {/* Fade-in gradient at top of scroll area */}
+        {!clientMode && !isPeek && (
+          <div className="pointer-events-none sticky top-0 left-0 right-0 z-10 h-4 -mb-4 bg-gradient-to-b from-surface-raised to-transparent" />
+        )}
         <div className="flex flex-col gap-ds-05 py-ds-03">
           {displayItems.map((item, idx) => {
             // Determine timestamp and date key for this item

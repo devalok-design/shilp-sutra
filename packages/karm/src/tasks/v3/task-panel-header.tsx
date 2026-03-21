@@ -32,10 +32,17 @@ export function TaskPanelHeader({ className, menuSlot, ...props }: TaskPanelHead
       )}
       {...props}
     >
-      {/* Task ID */}
-      <span className="text-ds-xs font-mono text-surface-fg-subtle">
-        {task.taskId}
-      </span>
+      {/* Task ID + Project */}
+      <div className="flex items-center gap-0">
+        <span className="text-ds-xs font-mono text-surface-fg-subtle">
+          {task.taskId}
+        </span>
+        {task.project && (
+          <span className="text-ds-xs text-surface-fg-subtle/60">
+            {' · '}{task.project}
+          </span>
+        )}
+      </div>
 
       {/* Title + actions row */}
       <div className="flex items-start justify-between gap-ds-03">

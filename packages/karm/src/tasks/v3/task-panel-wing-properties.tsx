@@ -211,9 +211,9 @@ export function TaskPanelPropertiesCard() {
       className="w-[280px] rounded-ds-xl border border-surface-border-strong bg-surface-raised shadow-floating"
       data-testid="properties-wing"
     >
-      <div className="p-ds-06">
+      <div className="p-ds-05">
         {/* Header with visibility toggle */}
-        <div className="flex items-center justify-between mb-ds-04">
+        <div className="flex items-center justify-between border-b border-surface-border-subtle pb-ds-03 mb-ds-03">
           <span className="text-ds-xs font-semibold uppercase tracking-wider text-surface-fg-muted">
             Properties
           </span>
@@ -253,8 +253,8 @@ export function TaskPanelPropertiesCard() {
           )}
         </div>
 
-        {/* 3-column top section: Status, Priority, Due Date */}
-        <div className="grid grid-cols-3 gap-ds-03 mb-ds-04">
+        {/* 2-column top section: Status, Due Date */}
+        <div className="grid grid-cols-2 gap-ds-03 mb-ds-04">
           {/* Status */}
           <div className="flex flex-col gap-ds-01">
             <span className="text-[10px] text-surface-fg-subtle/50 uppercase tracking-wider">
@@ -302,65 +302,6 @@ export function TaskPanelPropertiesCard() {
               <div className="flex items-center gap-ds-02 px-ds-02 py-ds-01">
                 <span className={cn('h-2 w-2 shrink-0 rounded-full', statusDotColor)} />
                 <span className="text-ds-sm text-surface-fg truncate">{statusName}</span>
-              </div>
-            )}
-          </div>
-
-          {/* Priority */}
-          <div className="flex flex-col gap-ds-01">
-            <span className="text-[10px] text-surface-fg-subtle/50 uppercase tracking-wider">
-              Priority
-            </span>
-            {interactive ? (
-              <Popover open={priorityOpen} onOpenChange={setPriorityOpen}>
-                <PopoverTrigger asChild>
-                  <button
-                    type="button"
-                    className="flex items-center gap-ds-02 rounded-ds-md px-ds-02 py-ds-01 hover:bg-surface-raised-hover transition-colors"
-                  >
-                    <PriorityIcon className={cn('h-3.5 w-3.5', priorityCfg.className)} />
-                    <span className={cn('text-ds-sm truncate', priorityCfg.className)}>
-                      {priorityCfg.label}
-                    </span>
-                  </button>
-                </PopoverTrigger>
-                <PopoverContent
-                  className="w-[180px] border-surface-border-strong bg-surface-overlay p-ds-02"
-                  align="start"
-                  sideOffset={4}
-                >
-                  {PRIORITIES.map((p) => {
-                    const c = PRIORITY_CONFIG[p]
-                    const PIcon = c.icon
-                    return (
-                      <button
-                        key={p}
-                        type="button"
-                        onClick={() => {
-                          onUpdatePriority(p)
-                          setPriorityOpen(false)
-                        }}
-                        className={cn(
-                          popoverOptionBase,
-                          p === task.priority && 'bg-surface-raised-hover',
-                        )}
-                      >
-                        <PIcon className={cn('h-ico-sm w-ico-sm', c.className)} />
-                        <span className="text-ds-sm text-surface-fg">{c.label}</span>
-                        {p === task.priority && (
-                          <IconCheck className="ml-auto h-ico-sm w-ico-sm text-accent-11" />
-                        )}
-                      </button>
-                    )
-                  })}
-                </PopoverContent>
-              </Popover>
-            ) : (
-              <div className="flex items-center gap-ds-02 px-ds-02 py-ds-01">
-                <PriorityIcon className={cn('h-3.5 w-3.5', priorityCfg.className)} />
-                <span className={cn('text-ds-sm truncate', priorityCfg.className)}>
-                  {priorityCfg.label}
-                </span>
               </div>
             )}
           </div>
@@ -438,6 +379,62 @@ export function TaskPanelPropertiesCard() {
 
         {/* Remaining properties as standard rows */}
         <div className="flex flex-col gap-ds-04">
+          {/* Priority */}
+          <PropertyRow label="Priority">
+            {interactive ? (
+              <Popover open={priorityOpen} onOpenChange={setPriorityOpen}>
+                <PopoverTrigger asChild>
+                  <button
+                    type="button"
+                    className={cn('flex items-center gap-ds-02', interactiveValueBase)}
+                  >
+                    <PriorityIcon className={cn('h-3.5 w-3.5', priorityCfg.className)} />
+                    <span className={cn('text-ds-sm truncate', priorityCfg.className)}>
+                      {priorityCfg.label}
+                    </span>
+                  </button>
+                </PopoverTrigger>
+                <PopoverContent
+                  className="w-[180px] border-surface-border-strong bg-surface-overlay p-ds-02"
+                  align="end"
+                  sideOffset={4}
+                >
+                  {PRIORITIES.map((p) => {
+                    const c = PRIORITY_CONFIG[p]
+                    const PIcon = c.icon
+                    return (
+                      <button
+                        key={p}
+                        type="button"
+                        onClick={() => {
+                          onUpdatePriority(p)
+                          setPriorityOpen(false)
+                        }}
+                        className={cn(
+                          popoverOptionBase,
+                          p === task.priority && 'bg-surface-raised-hover',
+                        )}
+                      >
+                        <PIcon className={cn('h-ico-sm w-ico-sm', c.className)} />
+                        <span className="text-ds-sm text-surface-fg">{c.label}</span>
+                        {p === task.priority && (
+                          <IconCheck className="ml-auto h-ico-sm w-ico-sm text-accent-11" />
+                        )}
+                      </button>
+                    )
+                  })}
+                </PopoverContent>
+              </Popover>
+            ) : (
+              <div className="flex items-center gap-ds-02">
+                <PriorityIcon className={cn('h-3.5 w-3.5', priorityCfg.className)} />
+                <span className={cn('text-ds-sm truncate', priorityCfg.className)}>
+                  {priorityCfg.label}
+                </span>
+              </div>
+            )}
+          </PropertyRow>
+
           {/* Leads */}
           <PropertyRow label="Leads">
             {interactive ? (
@@ -665,9 +662,10 @@ export function TaskPanelPropertiesCard() {
             )}
           </PropertyRow>
 
-          {/* Labels */}
-          <PropertyRow label="Labels">
-            <div className="flex flex-wrap gap-ds-01 justify-end items-center">
+          {/* Labels — vertical layout */}
+          <div className="flex flex-col gap-ds-02">
+            <span className="text-ds-xs text-surface-fg-subtle font-medium">Labels</span>
+            <div className="flex flex-wrap gap-ds-02">
               {task.labels.length > 0 ? (
                 task.labels.map((label) => (
                   <Badge
@@ -682,41 +680,41 @@ export function TaskPanelPropertiesCard() {
               ) : (
                 <span className="text-ds-sm text-surface-fg-subtle">None</span>
               )}
-              {interactive && (
-                <Popover open={labelOpen} onOpenChange={setLabelOpen}>
-                  <PopoverTrigger asChild>
-                    <button
-                      type="button"
-                      className="flex h-[16px] w-[16px] items-center justify-center rounded-full border border-dashed border-surface-fg-subtle text-surface-fg-subtle hover:border-accent-9 hover:text-accent-11 transition-colors"
-                      aria-label="Add label"
-                    >
-                      <IconPlus className="h-2.5 w-2.5" />
-                    </button>
-                  </PopoverTrigger>
-                  <PopoverContent
-                    className="w-[200px] border-surface-border-strong bg-surface-overlay p-ds-03"
-                    align="end"
-                    sideOffset={4}
-                  >
-                    <label className="flex flex-col gap-ds-02">
-                      <span className="text-ds-xs font-medium text-surface-fg-muted">
-                        New label
-                      </span>
-                      <input
-                        type="text"
-                        value={newLabel}
-                        onChange={(e) => setNewLabel(e.target.value)}
-                        onKeyDown={handleLabelKeyDown}
-                        className="rounded-ds-md border border-surface-border bg-surface-1 px-ds-03 py-ds-02 text-ds-sm text-surface-fg outline-none focus:border-accent-9"
-                        placeholder="Label name..."
-                        autoFocus
-                      />
-                    </label>
-                  </PopoverContent>
-                </Popover>
-              )}
             </div>
-          </PropertyRow>
+            {interactive && (
+              <Popover open={labelOpen} onOpenChange={setLabelOpen}>
+                <PopoverTrigger asChild>
+                  <button
+                    type="button"
+                    className="flex h-[16px] w-[16px] items-center justify-center rounded-full border border-dashed border-surface-fg-subtle text-surface-fg-subtle hover:border-accent-9 hover:text-accent-11 transition-colors"
+                    aria-label="Add label"
+                  >
+                    <IconPlus className="h-2.5 w-2.5" />
+                  </button>
+                </PopoverTrigger>
+                <PopoverContent
+                  className="w-[200px] border-surface-border-strong bg-surface-overlay p-ds-03"
+                  align="start"
+                  sideOffset={4}
+                >
+                  <label className="flex flex-col gap-ds-02">
+                    <span className="text-ds-xs font-medium text-surface-fg-muted">
+                      New label
+                    </span>
+                    <input
+                      type="text"
+                      value={newLabel}
+                      onChange={(e) => setNewLabel(e.target.value)}
+                      onKeyDown={handleLabelKeyDown}
+                      className="rounded-ds-md border border-surface-border bg-surface-1 px-ds-03 py-ds-02 text-ds-sm text-surface-fg outline-none focus:border-accent-9"
+                      placeholder="Label name..."
+                      autoFocus
+                    />
+                  </label>
+                </PopoverContent>
+              </Popover>
+            )}
+          </div>
 
           {/* Project */}
           <PropertyRow label="Project">

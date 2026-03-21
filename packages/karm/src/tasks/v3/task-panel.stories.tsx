@@ -1,6 +1,14 @@
 import { useState } from 'react'
 import type { Meta, StoryObj } from '@storybook/react'
 import { fn } from '@storybook/test'
+import {
+  IconAlertTriangleFilled,
+  IconArrowUp,
+  IconArrowDown,
+  IconMinus,
+} from '@tabler/icons-react'
+import { cn } from '@/ui/lib/utils'
+import { Avatar, AvatarFallback } from '@/ui/avatar'
 import { TaskPanel } from './task-panel'
 import type { TaskPanelRootProps } from './task-panel-root'
 import type { TaskPanelTask, TaskPanelMode, TimelineEntry } from './task-panel-types'
@@ -221,6 +229,20 @@ const mockTimeline: TimelineEntry[] = [
       internalAuthor: priya,
     },
   },
+  // Fix 11: AI agent response in timeline
+  {
+    type: 'agent-response',
+    response: {
+      id: 'agent-1',
+      agentId: 'sutradhar',
+      agentName: 'Sutradhar',
+      content: 'I analyzed the token refresh flow and found 3 potential issues:\n\n1. The refresh token is not being rotated after use\n2. Concurrent requests race on the refresh endpoint\n3. The retry queue doesn\'t handle 403 responses\n\nI can create subtasks for each of these if you\'d like.',
+      summary: 'Found 3 issues in the token refresh flow',
+      isStreaming: false,
+      timestamp: hoursAgo(5),
+    },
+    reactions: [{ emoji: '\u{1F3AF}', count: 2, reacted: false }],
+  },
   {
     type: 'system-event',
     event: {
@@ -311,6 +333,111 @@ type Story = StoryObj<TaskPanelRootProps>
 // Reusable story wrapper with trigger button
 // ============================================================
 
+// ---------------------------------------------------------------------------
+// Priority icon helper for trigger card
+// ---------------------------------------------------------------------------
+
+const PRIORITY_ICONS = {
+  URGENT: IconAlertTriangleFilled,
+  HIGH: IconArrowUp,
+  MEDIUM: IconMinus,
+  LOW: IconArrowDown,
+} as const
+
+const PRIORITY_COLORS: Record<string, string> = {
+  URGENT: 'text-error-9',
+  HIGH: 'text-warning-9',
+  MEDIUM: 'text-surface-fg-muted',
+  LOW: 'text-surface-fg-subtle',
+}
+
+function getInitials(name: string): string {
+  return name
+    .split(' ')
+    .map((w) => w[0])
+    .join('')
+    .toUpperCase()
+    .slice(0, 2)
+}
+
+// ---------------------------------------------------------------------------
+// Trigger card — replicates TaskCard visual structure without DnD
+// ---------------------------------------------------------------------------
+
+function TriggerCard({
+  task,
+  onClick,
+}: {
+  task: TaskPanelTask
+  onClick: () => void
+}) {
+  const PriorityIcon = PRIORITY_ICONS[task.priority]
+  const priorityColor = PRIORITY_COLORS[task.priority]
+
+  return (
+    <button
+      type="button"
+      onClick={onClick}
+      className="w-[320px] rounded-ds-lg border border-transparent bg-surface-raised pl-3 pr-ds-03 py-ds-03 text-left shadow-raised transition-all hover:shadow-raised-hover hover:-translate-y-px hover:border-surface-border-strong"
+    >
+      {/* Row 1 — Task ID + Priority */}
+      <div className="flex items-center gap-ds-02">
+        <span className="text-ds-xs font-mono leading-none text-surface-fg-subtle">
+          {task.taskId}
+        </span>
+        <PriorityIcon
+          className={cn('h-3 w-3 flex-shrink-0', priorityColor)}
+        />
+      </div>
+
+      {/* Row 2 — Title */}
+      <p className="mt-ds-02 text-ds-sm font-medium text-surface-fg line-clamp-2">
+        {task.title}
+      </p>
+
+      {/* Row 3 — Bottom metadata: assignees */}
+      <div className="mt-ds-03 flex items-center gap-ds-02">
+        {task.assignees.length > 0 ? (
+          <div className="flex items-center flex-shrink-0">
+            {task.assignees.slice(0, 3).map((user, i) => (
+              <Avatar
+                key={user.id}
+                size="xs"
+                className={cn(
+                  'text-ds-xs border-2 border-surface-base',
+                  i > 0 && '-ml-ds-02b',
+                )}
+                title={user.name}
+              >
+                <AvatarFallback className="font-body font-semibold">
+                  {getInitials(user.name)}
+                </AvatarFallback>
+              </Avatar>
+            ))}
+            {task.assignees.length > 3 && (
+              <span className="ml-ds-01 text-ds-xs text-surface-fg-subtle">
+                +{task.assignees.length - 3}
+              </span>
+            )}
+          </div>
+        ) : (
+          <span className="text-ds-xs text-surface-fg-subtle">Unassigned</span>
+        )}
+        <div className="flex-1" />
+        {task.labels.length > 0 && (
+          <span className="text-ds-xs text-surface-fg-subtle">
+            {task.labels.length} label{task.labels.length > 1 ? 's' : ''}
+          </span>
+        )}
+      </div>
+    </button>
+  )
+}
+
+// ---------------------------------------------------------------------------
+// Story wrapper
+// ---------------------------------------------------------------------------
+
 function TaskPanelDemo({
   mode,
   clientMode = false,
@@ -339,10 +466,10 @@ function TaskPanelDemo({
   const panelContent = (
     <>
       {/* Wings — composable, positioned to the left of the sheet */}
-      {mode === 'side' && !clientMode && (
+      {mode === 'side' && (
         <TaskPanel.Wings>
           {task.isInReview && <TaskPanel.ReviewCard />}
-          <TaskPanel.PropertiesCard />
+          {!clientMode && <TaskPanel.PropertiesCard />}
         </TaskPanel.Wings>
       )}
 
@@ -370,28 +497,8 @@ function TaskPanelDemo({
           {label}
         </p>
 
-        {/* Trigger card */}
-        <button
-          type="button"
-          onClick={() => setOpen(true)}
-          className="w-[320px] rounded-ds-lg border border-surface-border bg-surface-raised p-ds-04 text-left shadow-raised transition-all hover:shadow-raised-hover hover:-translate-y-px hover:border-surface-border-strong"
-        >
-          <div className="flex items-center gap-ds-02 mb-ds-02">
-            <span className="font-mono text-ds-xs text-surface-fg-subtle">{task.taskId}</span>
-            <span className="text-ds-xs text-error-11">{'\u25B2'} {task.priority}</span>
-          </div>
-          <p className="text-ds-sm font-medium text-surface-fg line-clamp-2">
-            {task.title}
-          </p>
-          <div className="mt-ds-03 flex items-center gap-ds-02">
-            <span className="inline-flex h-5 w-5 items-center justify-center rounded-full bg-accent-9 text-[9px] font-bold text-white">
-              {(task.assignees[0]?.name ?? '?').slice(0, 2).toUpperCase()}
-            </span>
-            <span className="text-ds-xs text-surface-fg-subtle">
-              {task.assignees[0]?.name ?? 'Unassigned'}
-            </span>
-          </div>
-        </button>
+        {/* Trigger card — replicates TaskCard structure */}
+        <TriggerCard task={task} onClick={() => setOpen(true)} />
       </div>
 
       {/* Panel — wings render as composable children */}
@@ -407,8 +514,9 @@ function TaskPanelDemo({
         {...callbacks}
       >
         {mode === 'full' ? (
-          <div className="mx-auto flex h-full max-w-3xl flex-col">
-            <div className="flex h-full flex-col">
+          /* Fix 9: Full page mode with properties sidebar */
+          <div className="flex h-full">
+            <div className="flex flex-1 flex-col">
               <TaskPanel.Header />
               <div className="flex flex-1 flex-col overflow-hidden">
                 <TaskPanel.Description />
@@ -416,6 +524,9 @@ function TaskPanelDemo({
                 <TaskPanel.Timeline />
               </div>
               <TaskPanel.MessageInput />
+            </div>
+            <div className="w-[280px] shrink-0 border-l border-surface-border overflow-y-auto p-ds-05">
+              <TaskPanel.PropertiesCard />
             </div>
           </div>
         ) : (
@@ -442,13 +553,13 @@ export const SidePanelStaff: Story = {
   ),
 }
 
-/** Client perspective — no system events, no internal comments, read-only properties. No review wing. */
+/** Client perspective — no system events, no internal comments, read-only properties. Review wing shows "Under Review" status. */
 export const SidePanelClient: Story = {
   render: () => (
     <TaskPanelDemo
       mode="side"
       clientMode
-      label="Click the task card below to open the side panel (client view)"
+      label="Click the task card below to open the side panel (client view). Review wing shows 'Under Review' status."
     />
   ),
 }
@@ -474,7 +585,7 @@ export const FullPage: Story = {
   ),
 }
 
-/** Empty task — new task with no comments, subtasks, or timeline entries. */
+/** Empty task — new task with no comments, subtasks, or timeline entries. Wings include PropertiesCard (no ReviewCard since not in review). */
 export const EmptyTask: Story = {
   render: () => {
     const emptyTask: TaskPanelTask = {
@@ -502,7 +613,7 @@ export const EmptyTask: Story = {
         mode="side"
         task={emptyTask}
         timeline={[]}
-        label="Click the task card below to see empty states"
+        label="Click the task card below to see empty states. Properties wing appears to the left."
       />
     )
   },

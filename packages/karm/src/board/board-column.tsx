@@ -104,7 +104,6 @@ export const BoardColumn = React.forwardRef<HTMLDivElement, BoardColumnProps>(
           ) : (
             <>
               <SortableContext items={taskIds} strategy={verticalListSortingStrategy}>
-                <MotionStagger className="contents">
                   {column.tasks.map((task, taskIdx) => (
                     <React.Fragment key={task.id}>
                       {/* Ghost silhouette at this position */}
@@ -113,7 +112,7 @@ export const BoardColumn = React.forwardRef<HTMLDivElement, BoardColumnProps>(
                           <TaskGhost />
                         )}
                       </AnimatePresence>
-                      <MotionStaggerItem>
+                      <motion.div layout transition={springs.snappy}>
                         <TaskContextMenu taskId={task.id}>
                           {viewMode === 'compact' ? (
                             <TaskCardCompact task={task} />
@@ -121,10 +120,9 @@ export const BoardColumn = React.forwardRef<HTMLDivElement, BoardColumnProps>(
                             <TaskCard task={task} />
                           )}
                         </TaskContextMenu>
-                      </MotionStaggerItem>
+                      </motion.div>
                     </React.Fragment>
                   ))}
-                </MotionStagger>
                 {/* Ghost at end of list */}
                 <AnimatePresence>
                   {dragPreview && dragPreview.index >= column.tasks.length && (

@@ -1,7 +1,8 @@
 'use client'
 
 import * as React from 'react'
-import { IconPaperclip, IconMoodSmile, IconSend } from '@tabler/icons-react'
+import { IconPaperclip, IconMoodSmile, IconSend, IconLock, IconEye } from '@tabler/icons-react'
+import { Tooltip, TooltipTrigger, TooltipContent } from '@/ui/tooltip'
 import { cn } from '@/ui/lib/utils'
 import { Button } from '@/ui/button'
 import { useTaskPanel } from './task-panel-context'
@@ -20,9 +21,12 @@ export function TaskPanelMessageInput({
   className,
   ...props
 }: TaskPanelMessageInputProps) {
-  const { onPostComment, clientMode, mode } = useTaskPanel()
+  const { onPostComment, clientMode, mode, task } = useTaskPanel()
   const [text, setText] = React.useState('')
+  const [visibility, setVisibility] = React.useState<'INTERNAL' | 'CLIENT'>('INTERNAL')
   const textareaRef = React.useRef<HTMLTextAreaElement>(null)
+
+  const showVisibilityToggle = !clientMode && task.visibility === 'EVERYONE'
 
   // Hidden in peek mode
   if (mode === 'peek') return null
@@ -37,8 +41,9 @@ export function TaskPanelMessageInput({
   const handleSend = React.useCallback(() => {
     const trimmed = text.trim()
     if (!trimmed) return
-    onPostComment(trimmed)
+    onPostComment(trimmed, clientMode ? 'CLIENT' : visibility)
     setText('')
+    setVisibility('INTERNAL')
     if (textareaRef.current) {
       textareaRef.current.style.height = 'auto'
     }
@@ -65,7 +70,49 @@ export function TaskPanelMessageInput({
       )}
       {...props}
     >
+      {/* Visibility warning */}
+      {showVisibilityToggle && visibility === 'CLIENT' && (
+        <div className="mb-ds-02 flex items-center gap-ds-02 text-ds-xs text-warning-11">
+          <IconEye className="h-3 w-3 shrink-0" />
+          <span>This message will be visible to clients</span>
+        </div>
+      )}
+
       <div className="flex items-end gap-ds-02 rounded-ds-xl border border-surface-border bg-surface-base p-ds-03">
+        {/* Per-message visibility toggle */}
+        {showVisibilityToggle && (
+          <Tooltip>
+            <TooltipTrigger asChild>
+              <button
+                type="button"
+                onClick={() => setVisibility(v => v === 'INTERNAL' ? 'CLIENT' : 'INTERNAL')}
+                className={cn(
+                  'mb-px shrink-0 rounded-ds-md p-ds-01 transition-colors',
+                  visibility === 'CLIENT'
+                    ? 'text-warning-11 hover:bg-warning-3'
+                    : 'text-surface-fg-subtle hover:bg-surface-raised-hover',
+                )}
+                aria-label={
+                  visibility === 'INTERNAL'
+                    ? 'Team only — click to make visible to client'
+                    : 'Visible to client — click to make team only'
+                }
+              >
+                {visibility === 'INTERNAL' ? (
+                  <IconLock className="h-ico-sm w-ico-sm" />
+                ) : (
+                  <IconEye className="h-ico-sm w-ico-sm" />
+                )}
+              </button>
+            </TooltipTrigger>
+            <TooltipContent>
+              {visibility === 'INTERNAL'
+                ? 'Team only — click to make visible to client'
+                : 'Visible to client — click to make team only'}
+            </TooltipContent>
+          </Tooltip>
+        )}
+
         <textarea
           ref={textareaRef}
           value={text}
@@ -77,7 +124,9 @@ export function TaskPanelMessageInput({
           placeholder={
             clientMode
               ? 'Post a comment...'
-              : 'Write a message...'
+              : visibility === 'CLIENT'
+                ? 'Write a message (visible to client)...'
+                : 'Write a message...'
           }
           aria-label="Message input"
           rows={1}

@@ -29,7 +29,7 @@ export interface TaskPanelContextValue {
   onAddLead: (memberId: string) => void
   onRemoveLead: (memberId: string) => void
   onUpdateDueDate: (date: Date | null) => void
-  onPostComment: (content: string) => void
+  onPostComment: (content: string, visibility?: 'INTERNAL' | 'CLIENT') => void
   onToggleVisibility: () => void
   onToggleSubtask: (subtaskId: string) => void
   onAddSubtask: (title: string) => void
@@ -93,7 +93,7 @@ export interface TaskPanelProviderProps {
   onAddLead?: (memberId: string) => void
   onRemoveLead?: (memberId: string) => void
   onUpdateDueDate?: (date: Date | null) => void
-  onPostComment?: (content: string) => void
+  onPostComment?: (content: string, visibility?: 'INTERNAL' | 'CLIENT') => void
   onToggleVisibility?: () => void
   onToggleSubtask?: (subtaskId: string) => void
   onAddSubtask?: (title: string) => void

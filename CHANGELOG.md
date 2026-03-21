@@ -29,6 +29,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Fixed (karm)
 
 - **ColumnEmpty "Add a task" button** — Was inert because `onAddTask` was never passed from BoardColumn. Now wired through context. Button is conditionally hidden when no handler is provided.
+- **KanbanBoard DnD snap-back** — Dragged cards now stay in the dropped column immediately (optimistic local state update) instead of snapping back and waiting for consumer to update `initialData`.
 
 ## [0.6.0] - 2026-03-18 (brand)
 

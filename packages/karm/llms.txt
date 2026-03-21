@@ -23,7 +23,7 @@ import { KanbanBoard, TaskPanel, ChatPanel } from '@devalok/shilp-sutra-karm'
 ## Module Reference
 
 ### Board (`/board`)
-- KanbanBoard: initialData(BoardData), members?(BoardMember[]), readOnly?(boolean), onTaskMove, onTaskAdd, onColumnRename, onColumnDelete, onColumnToggleVisibility, onClickTask, onAddColumn, onAddTask?(columnId)
+- KanbanBoard: initialData(BoardData), members?(BoardMember[]), readOnly?(boolean), defaultViewMode?('default'|'compact'), onTaskMove, onTaskAdd, onColumnRename, onColumnDelete, onColumnToggleVisibility, onClickTask, onAddColumn, onAddTask?(columnId)
 - BoardColumn: column(BoardColumnData), index, dragPreview?, draggedTask?
 - ReadOnlyBoardColumn: column(BoardColumnData), index — lightweight column without DnD hooks
 - TaskCard: task(BoardTask) — sortable variant (requires SortableContext ancestor)
@@ -40,7 +40,11 @@ Pass `members` prop for explicit member list in assignment dropdowns — require
 
 **readOnly mode (v0.24.0):** `<KanbanBoard readOnly initialData={data} onClickTask={handleClick} />` — disables DnD, column management (rename/delete/WIP), task selection checkboxes, add buttons, toolbar, and bulk action bar. Task click still works. Ideal for dashboard status overviews. Uses ReadOnlyBoardColumn + TaskCardStatic internally (no DnD hooks loaded). For custom layouts, compose with BoardProvider + ReadOnlyBoardColumn directly.
 
+**defaultViewMode (v0.24.0):** `defaultViewMode?: 'default' | 'compact'` — sets initial card display mode. Default: `'default'`.
+
 **onAddTask (v0.24.0):** `onAddTask?: (columnId: string) => void` — called when user clicks "Add a task" in an empty column. Button is hidden when not provided.
+
+**Optimistic DnD (v0.24.0):** Dragged tasks now update local state immediately on drop. The `onTaskMove` callback fires after the local move, so UI feels instant. If the consumer pushes new `initialData`, it overwrites local state.
 
 Column management callbacks: `onColumnRename`, `onColumnDelete`, `onColumnToggleVisibility`, and `onAddColumn`
 are fire-and-forget — the board renders an "Add column" button and column header menus only when the

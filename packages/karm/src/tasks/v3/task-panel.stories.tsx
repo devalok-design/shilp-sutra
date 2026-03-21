@@ -100,6 +100,10 @@ const mockTask: TaskPanelTask = {
   ],
   isInReview: true,
   reviewSubmittedBy: { name: 'Arjun Rao', timestamp: hoursAgo(2) },
+  reviewFiles: [
+    { name: 'token-refresh-fix.patch', size: '4.2 KB' },
+    { name: 'auth-flow-diagram.png', size: '156 KB' },
+  ],
 }
 
 // ============================================================
@@ -446,6 +450,8 @@ function TaskPanelDemo({
   typingUsers,
   lastViewedAt,
   label,
+  isAgentStreaming,
+  agentStreamingText,
 }: {
   mode: TaskPanelMode
   clientMode?: boolean
@@ -454,6 +460,8 @@ function TaskPanelDemo({
   typingUsers?: { name: string; image?: string | null }[]
   lastViewedAt?: string
   label: string
+  isAgentStreaming?: boolean
+  agentStreamingText?: string
 }) {
   const [open, setOpen] = useState(false)
 
@@ -511,6 +519,8 @@ function TaskPanelDemo({
         timeline={timelineProp}
         lastViewedAt={lastViewedAt}
         typingUsers={typingUsers}
+        isAgentStreaming={isAgentStreaming}
+        agentStreamingText={agentStreamingText}
         {...callbacks}
       >
         {mode === 'full' ? (
@@ -637,4 +647,17 @@ export const SidePanelNoReview: Story = {
       />
     )
   },
+}
+
+/** AI agent actively streaming a response in the timeline. */
+export const AIStreaming: Story = {
+  render: () => (
+    <TaskPanelDemo
+      mode="side"
+      label="Click the task card to see the AI agent streaming a response at the bottom of the timeline."
+      lastViewedAt={hoursAgo(4)}
+      isAgentStreaming
+      agentStreamingText="Analyzing the token refresh flow. I can see the interceptor is using a simple flag to prevent concurrent refreshes, but there's a race condition when multiple tabs are open simultaneously..."
+    />
+  ),
 }

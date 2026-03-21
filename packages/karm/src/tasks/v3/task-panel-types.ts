@@ -97,4 +97,5 @@ export interface TaskPanelTask {
   subtasks: Subtask[]
   isInReview: boolean
   reviewSubmittedBy?: { name: string; timestamp: string }
+  reviewFiles?: { name: string; size: string }[]
 }

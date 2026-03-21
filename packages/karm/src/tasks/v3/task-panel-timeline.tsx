@@ -1,10 +1,12 @@
 'use client'
 
 import * as React from 'react'
-import { IconChevronDown, IconMessageCircle } from '@tabler/icons-react'
+import { IconChevronDown, IconMessageCircle, IconRobot } from '@tabler/icons-react'
 import { cn } from '@/ui/lib/utils'
+import { Badge } from '@/ui/badge'
 import { EmptyState } from '@/composed/empty-state'
 import { MotionCollapse } from '@/motion/primitives'
+import { StreamingText } from '../../chat/streaming-text'
 import { useTaskPanel } from './task-panel-context'
 import type { TimelineEntry, SystemEvent } from './task-panel-types'
 import { TimelineEntryRenderer } from './timeline/timeline-entry'
@@ -299,7 +301,7 @@ function FilterBar({
   onChange: (filter: TimelineFilter) => void
 }) {
   return (
-    <div className="flex items-center gap-ds-01 px-ds-02 pb-ds-03">
+    <div className="flex items-center gap-ds-01 px-ds-02 pb-ds-02">
       {FILTERS.map((f) => (
         <button
           key={f.key}
@@ -340,6 +342,8 @@ export function TaskPanelTimeline({
     onEditComment,
     onDeleteComment,
     typingUsers,
+    isAgentStreaming,
+    agentStreamingText,
   } = useTaskPanel()
 
   const [filter, setFilter] = React.useState<TimelineFilter>('all')
@@ -468,7 +472,7 @@ export function TaskPanelTimeline({
     <div className={cn('flex flex-1 flex-col overflow-hidden', className)} {...props}>
       {/* Filter bar — staff only, not in peek */}
       {!clientMode && !isPeek && (
-        <div className="pt-ds-04 pb-ds-02">
+        <div className="pt-ds-04 pb-0">
           <FilterBar value={filter} onChange={setFilter} />
         </div>
       )}
@@ -482,7 +486,7 @@ export function TaskPanelTimeline({
       >
         {/* Fade-in gradient at top of scroll area */}
         {!clientMode && !isPeek && (
-          <div className="pointer-events-none sticky top-0 left-0 right-0 z-10 h-4 -mb-4 bg-gradient-to-b from-surface-raised to-transparent" />
+          <div className="pointer-events-none sticky top-0 left-0 right-0 z-10 h-3 -mb-3 bg-gradient-to-b from-surface-raised to-transparent" />
         )}
         <div className="flex flex-col gap-ds-05 py-ds-03">
           {displayItems.map((item, idx) => {
@@ -543,6 +547,27 @@ export function TaskPanelTimeline({
             )
           })}
         </div>
+
+        {/* Agent streaming entry */}
+        {isAgentStreaming && agentStreamingText && (
+          <div className="flex gap-ds-03 px-ds-02 py-ds-02">
+            <div className="shrink-0">
+              <IconRobot className="h-ico-md w-ico-md text-accent-11" />
+            </div>
+            <div className="min-w-0 flex-1">
+              <div className="flex items-center gap-ds-02 text-ds-sm">
+                <span className="font-semibold text-surface-fg">Sutradhar</span>
+                <Badge variant="solid" color="accent" size="xs">AI</Badge>
+              </div>
+              <div className="mt-ds-01">
+                <StreamingText
+                  text={agentStreamingText}
+                  className="text-ds-sm text-surface-fg"
+                />
+              </div>
+            </div>
+          </div>
+        )}
 
         {/* Typing indicator */}
         {typingUsers && typingUsers.length > 0 && (

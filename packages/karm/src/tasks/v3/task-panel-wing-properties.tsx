@@ -104,7 +104,7 @@ const PRIORITY_CONFIG: Record<
 // ---------------------------------------------------------------------------
 
 const interactiveValueBase =
-  'rounded-ds-md px-ds-02 py-ds-01 -mx-ds-02 hover:bg-surface-raised-hover transition-colors cursor-pointer'
+  'rounded-ds-md px-ds-01 py-ds-01 -mx-ds-01 hover:bg-surface-raised-hover transition-colors cursor-pointer'
 
 const popoverOptionBase =
   'flex w-full items-center gap-ds-03 rounded-ds-md px-ds-03 py-ds-02b transition-colors hover:bg-surface-raised-hover'
@@ -114,9 +114,9 @@ const popoverOptionBase =
 // ---------------------------------------------------------------------------
 
 const wingVariants = {
-  hidden: { opacity: 0, x: 12, scale: 0.97 },
+  hidden: { opacity: 0, x: 40, scale: 0.97 },
   visible: { opacity: 1, x: 0, scale: 1 },
-  exit: { opacity: 0, x: 12, scale: 0.97 },
+  exit: { opacity: 0, x: 40, scale: 0.97 },
 }
 
 // ---------------------------------------------------------------------------
@@ -207,13 +207,13 @@ export function TaskPanelPropertiesCard() {
       initial="hidden"
       animate="visible"
       exit="exit"
-      transition={{ ...tweens.fade, delay: 0.05 }}
+      transition={{ ...tweens.fade, delay: 0.25 }}
       className="w-[280px] rounded-ds-xl border border-surface-border-strong bg-surface-raised shadow-floating"
       data-testid="properties-wing"
     >
       <div className="p-ds-05">
         {/* Header with visibility toggle */}
-        <div className="flex items-center justify-between border-b border-surface-border-subtle pb-ds-03 mb-ds-03">
+        <div className="flex items-center justify-between border-b border-surface-border-subtle pb-ds-04 mb-ds-04">
           <span className="text-ds-xs font-semibold uppercase tracking-wider text-surface-fg-muted">
             Properties
           </span>
@@ -265,7 +265,7 @@ export function TaskPanelPropertiesCard() {
                 <PopoverTrigger asChild>
                   <button
                     type="button"
-                    className="flex items-center gap-ds-02 rounded-ds-md px-ds-02 py-ds-01 hover:bg-surface-raised-hover transition-colors"
+                    className="flex items-center gap-ds-02 rounded-ds-md -mx-ds-01 px-ds-01 py-ds-01 hover:bg-surface-raised-hover transition-colors"
                   >
                     <span className={cn('h-2 w-2 shrink-0 rounded-full', statusDotColor)} />
                     <span className="text-ds-sm text-surface-fg truncate">{statusName}</span>
@@ -316,7 +316,7 @@ export function TaskPanelPropertiesCard() {
                 <PopoverTrigger asChild>
                   <button
                     type="button"
-                    className="flex items-center gap-ds-02 rounded-ds-md px-ds-02 py-ds-01 hover:bg-surface-raised-hover transition-colors"
+                    className="flex items-center gap-ds-02 rounded-ds-md -mx-ds-01 px-ds-01 py-ds-01 hover:bg-surface-raised-hover transition-colors"
                   >
                     <span
                       className={cn(
@@ -663,7 +663,7 @@ export function TaskPanelPropertiesCard() {
           </PropertyRow>
 
           {/* Labels — vertical layout */}
-          <div className="flex flex-col gap-ds-02">
+          <div className="group/labels flex flex-col gap-ds-02">
             <span className="text-ds-xs text-surface-fg-subtle font-medium">Labels</span>
             <div className="flex flex-wrap gap-ds-02">
               {task.labels.length > 0 ? (
@@ -680,48 +680,42 @@ export function TaskPanelPropertiesCard() {
               ) : (
                 <span className="text-ds-sm text-surface-fg-subtle">None</span>
               )}
-            </div>
-            {interactive && (
-              <Popover open={labelOpen} onOpenChange={setLabelOpen}>
-                <PopoverTrigger asChild>
-                  <button
-                    type="button"
-                    className="flex h-[16px] w-[16px] items-center justify-center rounded-full border border-dashed border-surface-fg-subtle text-surface-fg-subtle hover:border-accent-9 hover:text-accent-11 transition-colors"
-                    aria-label="Add label"
+              {interactive && (
+                <Popover open={labelOpen} onOpenChange={setLabelOpen}>
+                  <PopoverTrigger asChild>
+                    <button
+                      type="button"
+                      className="flex h-[16px] w-[16px] items-center justify-center rounded-full border border-dashed border-surface-fg-subtle text-surface-fg-subtle hover:border-accent-9 hover:text-accent-11 transition-colors opacity-0 group-hover/labels:opacity-100"
+                      aria-label="Add label"
+                    >
+                      <IconPlus className="h-2.5 w-2.5" />
+                    </button>
+                  </PopoverTrigger>
+                  <PopoverContent
+                    className="w-[200px] border-surface-border-strong bg-surface-overlay p-ds-03"
+                    align="start"
+                    sideOffset={4}
                   >
-                    <IconPlus className="h-2.5 w-2.5" />
-                  </button>
-                </PopoverTrigger>
-                <PopoverContent
-                  className="w-[200px] border-surface-border-strong bg-surface-overlay p-ds-03"
-                  align="start"
-                  sideOffset={4}
-                >
-                  <label className="flex flex-col gap-ds-02">
-                    <span className="text-ds-xs font-medium text-surface-fg-muted">
-                      New label
-                    </span>
-                    <input
-                      type="text"
-                      value={newLabel}
-                      onChange={(e) => setNewLabel(e.target.value)}
-                      onKeyDown={handleLabelKeyDown}
-                      className="rounded-ds-md border border-surface-border bg-surface-1 px-ds-03 py-ds-02 text-ds-sm text-surface-fg outline-none focus:border-accent-9"
-                      placeholder="Label name..."
-                      autoFocus
-                    />
-                  </label>
-                </PopoverContent>
-              </Popover>
-            )}
+                    <label className="flex flex-col gap-ds-02">
+                      <span className="text-ds-xs font-medium text-surface-fg-muted">
+                        New label
+                      </span>
+                      <input
+                        type="text"
+                        value={newLabel}
+                        onChange={(e) => setNewLabel(e.target.value)}
+                        onKeyDown={handleLabelKeyDown}
+                        className="rounded-ds-md border border-surface-border bg-surface-1 px-ds-03 py-ds-02 text-ds-sm text-surface-fg outline-none focus:border-accent-9"
+                        placeholder="Label name..."
+                        autoFocus
+                      />
+                    </label>
+                  </PopoverContent>
+                </Popover>
+              )}
+            </div>
           </div>
 
-          {/* Project */}
-          <PropertyRow label="Project">
-            <span className={cn('text-ds-sm', task.project ? 'text-surface-fg' : 'text-surface-fg-subtle')}>
-              {task.project ?? 'None'}
-            </span>
-          </PropertyRow>
         </div>
 
         {/* Separator before meta */}

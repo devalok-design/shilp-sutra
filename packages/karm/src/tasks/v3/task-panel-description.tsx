@@ -78,7 +78,7 @@ export function TaskPanelDescription({
   // Empty + staff: compact add prompt
   if (isEmpty && !clientMode) {
     return (
-      <div className={cn('px-ds-06', className)} {...props}>
+      <div className={cn('border-b border-surface-border-subtle px-ds-06 pb-ds-04', className)} {...props}>
         {isEditing ? (
           <textarea
             ref={textareaRef}
@@ -107,7 +107,7 @@ export function TaskPanelDescription({
 
   // Has content — show inline, 2-line clamp by default
   return (
-    <div className={cn('px-ds-06', className)} {...props}>
+    <div className={cn('border-b border-surface-border-subtle px-ds-06 pb-ds-04', className)} {...props}>
       {isEditing && !clientMode ? (
         /* Editing mode */
         <div>

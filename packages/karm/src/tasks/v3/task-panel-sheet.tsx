@@ -208,12 +208,14 @@ function PropertiesWingCard() {
     onUpdateStatus,
     onUpdatePriority,
     onUpdateAssignee,
+    onUpdateLead,
     onUpdateDueDate,
   } = useTaskPanel()
 
   const [statusOpen, setStatusOpen] = React.useState(false)
   const [priorityOpen, setPriorityOpen] = React.useState(false)
   const [assigneeOpen, setAssigneeOpen] = React.useState(false)
+  const [leadOpen, setLeadOpen] = React.useState(false)
   const [dueDateOpen, setDueDateOpen] = React.useState(false)
 
   const statusName =
@@ -349,6 +351,106 @@ function PropertiesWingCard() {
             )}
           </PropertyRow>
 
+          {/* Lead */}
+          <PropertyRow label="Lead">
+            {interactive ? (
+              <Popover open={leadOpen} onOpenChange={setLeadOpen}>
+                <PopoverTrigger asChild>
+                  <button
+                    type="button"
+                    className={cn('flex items-center gap-ds-02', interactiveValueBase)}
+                  >
+                    {task.lead ? (
+                      <>
+                        <Avatar size="xs" className="h-5 w-5">
+                          {task.lead.image && <AvatarImage src={task.lead.image} />}
+                          <AvatarFallback className="text-[8px]">
+                            {getInitials(task.lead.name)}
+                          </AvatarFallback>
+                        </Avatar>
+                        <span className="text-ds-sm text-surface-fg">
+                          {task.lead.name}
+                        </span>
+                      </>
+                    ) : (
+                      <>
+                        <span className="flex h-5 w-5 items-center justify-center rounded-full border border-dashed border-surface-fg-subtle">
+                          <IconUser className="h-3 w-3 text-surface-fg-subtle" />
+                        </span>
+                        <span className="text-ds-sm text-surface-fg-subtle">
+                          None
+                        </span>
+                      </>
+                    )}
+                  </button>
+                </PopoverTrigger>
+                <PopoverContent
+                  className="w-[200px] border-surface-border-strong bg-surface-overlay p-ds-02"
+                  align="end"
+                  sideOffset={4}
+                >
+                  {/* Unset lead option */}
+                  <button
+                    type="button"
+                    onClick={() => {
+                      onUpdateLead(null)
+                      setLeadOpen(false)
+                    }}
+                    className={cn(
+                      popoverOptionBase,
+                      !task.lead && 'bg-surface-raised-hover',
+                    )}
+                  >
+                    <IconUser className="h-ico-sm w-ico-sm text-surface-fg-subtle" />
+                    <span className="text-ds-sm text-surface-fg-subtle">None</span>
+                  </button>
+
+                  {task.members.map((member) => (
+                    <button
+                      key={member.id}
+                      type="button"
+                      onClick={() => {
+                        onUpdateLead(member.id)
+                        setLeadOpen(false)
+                      }}
+                      className={cn(
+                        popoverOptionBase,
+                        task.lead?.id === member.id && 'bg-surface-raised-hover',
+                      )}
+                    >
+                      <Avatar size="xs" className="h-5 w-5">
+                        {member.image && <AvatarImage src={member.image} />}
+                        <AvatarFallback className="text-[10px]">
+                          {getInitials(member.name)}
+                        </AvatarFallback>
+                      </Avatar>
+                      <span className="text-ds-sm text-surface-fg">{member.name}</span>
+                      {task.lead?.id === member.id && (
+                        <IconCheck className="ml-auto h-ico-sm w-ico-sm text-accent-11" />
+                      )}
+                    </button>
+                  ))}
+                </PopoverContent>
+              </Popover>
+            ) : (
+              task.lead ? (
+                <div className="flex items-center gap-ds-02">
+                  <Avatar size="xs" className="h-5 w-5">
+                    {task.lead.image && <AvatarImage src={task.lead.image} />}
+                    <AvatarFallback className="text-[8px]">
+                      {getInitials(task.lead.name)}
+                    </AvatarFallback>
+                  </Avatar>
+                  <span className="text-ds-sm text-surface-fg">
+                    {task.lead.name}
+                  </span>
+                </div>
+              ) : (
+                <span className="text-ds-sm text-surface-fg-subtle">None</span>
+              )
+            )}
+          </PropertyRow>
+
           {/* Assignee */}
           <PropertyRow label="Assignee">
             {interactive ? (
@@ -460,25 +562,6 @@ function PropertiesWingCard() {
             )}
           </PropertyRow>
 
-          {/* Lead */}
-          <PropertyRow label="Lead">
-            {task.lead ? (
-              <div className="flex items-center gap-ds-02">
-                <Avatar size="xs" className="h-5 w-5">
-                  {task.lead.image && <AvatarImage src={task.lead.image} />}
-                  <AvatarFallback className="text-[8px]">
-                    {getInitials(task.lead.name)}
-                  </AvatarFallback>
-                </Avatar>
-                <span className="text-ds-sm text-surface-fg">
-                  {task.lead.name}
-                </span>
-              </div>
-            ) : (
-              <span className="text-ds-sm text-surface-fg-subtle">None</span>
-            )}
-          </PropertyRow>
-
           {/* Due Date */}
           <PropertyRow label="Due date">
             {interactive ? (
@@ -581,18 +664,16 @@ function PropertiesWingCard() {
         {/* Separator before meta */}
         <div className="border-t border-surface-border mt-ds-04 pt-ds-04" />
 
-        {/* Meta — Created / Updated */}
-        <div className="flex flex-col gap-ds-03">
-          <PropertyRow label="Created">
-            <span className="text-ds-xs text-surface-fg-subtle">
-              {formatMetaDate(task.createdAt)}
-            </span>
-          </PropertyRow>
-          <PropertyRow label="Updated">
-            <span className="text-ds-xs text-surface-fg-subtle">
-              {timeAgo(task.updatedAt)}
-            </span>
-          </PropertyRow>
+        {/* Meta — Created / Updated (two-column) */}
+        <div className="flex items-center justify-between">
+          <div className="flex flex-col gap-ds-01">
+            <span className="text-ds-xs text-surface-fg-subtle">Created</span>
+            <span className="text-ds-xs text-surface-fg-subtle">{formatMetaDate(task.createdAt)}</span>
+          </div>
+          <div className="flex flex-col gap-ds-01 text-right">
+            <span className="text-ds-xs text-surface-fg-subtle">Updated</span>
+            <span className="text-ds-xs text-surface-fg-subtle">{timeAgo(task.updatedAt)}</span>
+          </div>
         </div>
       </div>
     </motion.div>

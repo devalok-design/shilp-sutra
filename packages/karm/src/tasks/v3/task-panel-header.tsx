@@ -1,9 +1,10 @@
 'use client'
 
 import * as React from 'react'
-import { IconX, IconDots, IconArrowsMaximize } from '@tabler/icons-react'
+import { IconX, IconDots, IconArrowsMaximize, IconEye, IconLock } from '@tabler/icons-react'
 import { cn } from '@/ui/lib/utils'
 import { Button } from '@/ui/button'
+import { Tooltip, TooltipTrigger, TooltipContent } from '@/ui/tooltip'
 import { InlineEdit } from '@/composed/inline-edit'
 import { useTaskPanel } from './task-panel-context'
 
@@ -18,13 +19,16 @@ export interface TaskPanelHeaderProps extends React.HTMLAttributes<HTMLDivElemen
 // ---------------------------------------------------------------------------
 
 export function TaskPanelHeader({ className, ...props }: TaskPanelHeaderProps) {
-  const { task, mode, clientMode, onUpdateTitle, onClose, onExpand } =
+  const { task, mode, clientMode, onUpdateTitle, onClose, onExpand, onToggleVisibility } =
     useTaskPanel()
+
+  const showVisibilityToggle =
+    !clientMode && task.visibility === 'EVERYONE'
 
   return (
     <div
       className={cn(
-        'flex flex-col gap-ds-02 border-b border-surface-border-subtle px-ds-06 py-ds-05',
+        'flex flex-col gap-ds-02 px-ds-06 py-ds-05',
         className,
       )}
       {...props}
@@ -46,6 +50,41 @@ export function TaskPanelHeader({ className, ...props }: TaskPanelHeaderProps) {
 
         {/* Action buttons */}
         <div className="flex shrink-0 items-center gap-ds-01">
+          {showVisibilityToggle && (
+            <Tooltip>
+              <TooltipTrigger asChild>
+                <Button
+                  variant="ghost"
+                  size="icon-sm"
+                  onClick={onToggleVisibility}
+                  aria-label="Visible to client — click to make internal only"
+                  className="text-warning-11"
+                >
+                  <IconEye className="h-ico-sm w-ico-sm" />
+                </Button>
+              </TooltipTrigger>
+              <TooltipContent>
+                Visible to client — click to make internal only
+              </TooltipContent>
+            </Tooltip>
+          )}
+          {!clientMode && task.visibility === 'INTERNAL' && (
+            <Tooltip>
+              <TooltipTrigger asChild>
+                <Button
+                  variant="ghost"
+                  size="icon-sm"
+                  onClick={onToggleVisibility}
+                  aria-label="Internal only — click to make visible to client"
+                >
+                  <IconLock className="h-ico-sm w-ico-sm" />
+                </Button>
+              </TooltipTrigger>
+              <TooltipContent>
+                Internal only — click to make visible to client
+              </TooltipContent>
+            </Tooltip>
+          )}
           {mode !== 'full' && (
             <Button
               variant="ghost"

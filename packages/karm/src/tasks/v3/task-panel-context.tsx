@@ -25,8 +25,10 @@ export interface TaskPanelContextValue {
   onUpdateStatus: (statusId: string) => void
   onUpdatePriority: (priority: string) => void
   onUpdateAssignee: (memberId: string | null) => void
+  onUpdateLead: (memberId: string | null) => void
   onUpdateDueDate: (date: Date | null) => void
-  onPostComment: (content: string, authorType?: 'INTERNAL' | 'CLIENT') => void
+  onPostComment: (content: string) => void
+  onToggleVisibility: () => void
   onToggleSubtask: (subtaskId: string) => void
   onAddSubtask: (title: string) => void
   onApproveReview: () => void
@@ -82,8 +84,10 @@ export interface TaskPanelProviderProps {
   onUpdateStatus?: (statusId: string) => void
   onUpdatePriority?: (priority: string) => void
   onUpdateAssignee?: (memberId: string | null) => void
+  onUpdateLead?: (memberId: string | null) => void
   onUpdateDueDate?: (date: Date | null) => void
-  onPostComment?: (content: string, authorType?: 'INTERNAL' | 'CLIENT') => void
+  onPostComment?: (content: string) => void
+  onToggleVisibility?: () => void
   onToggleSubtask?: (subtaskId: string) => void
   onAddSubtask?: (title: string) => void
   onApproveReview?: () => void
@@ -118,8 +122,10 @@ export function TaskPanelProvider({
       onUpdateStatus: value.onUpdateStatus ?? noop,
       onUpdatePriority: value.onUpdatePriority ?? noop,
       onUpdateAssignee: value.onUpdateAssignee ?? noop,
+      onUpdateLead: value.onUpdateLead ?? noop,
       onUpdateDueDate: value.onUpdateDueDate ?? noop,
       onPostComment: value.onPostComment ?? noop,
+      onToggleVisibility: value.onToggleVisibility ?? noop,
       onToggleSubtask: value.onToggleSubtask ?? noop,
       onAddSubtask: value.onAddSubtask ?? noop,
       onApproveReview: value.onApproveReview ?? noop,
@@ -146,8 +152,10 @@ export function TaskPanelProvider({
       value.onUpdateStatus,
       value.onUpdatePriority,
       value.onUpdateAssignee,
+      value.onUpdateLead,
       value.onUpdateDueDate,
       value.onPostComment,
+      value.onToggleVisibility,
       value.onToggleSubtask,
       value.onAddSubtask,
       value.onApproveReview,

@@ -3,6 +3,7 @@
 import * as React from 'react'
 import {
   IconEye,
+  IconLock,
   IconCheck,
   IconUser,
   IconAlertTriangleFilled,
@@ -17,6 +18,7 @@ import { VisuallyHidden } from '@/ui/visually-hidden'
 import { Button } from '@/ui/button'
 import { Avatar, AvatarImage, AvatarFallback } from '@/ui/avatar'
 import { Badge } from '@/ui/badge'
+import { Tooltip, TooltipTrigger, TooltipContent } from '@/ui/tooltip'
 import { Popover, PopoverTrigger, PopoverContent } from '@/ui/popover'
 import { tweens } from '@/ui/lib/motion'
 import { useTaskPanel } from './task-panel-context'
@@ -210,6 +212,7 @@ function PropertiesWingCard() {
     onUpdateAssignee,
     onUpdateLead,
     onUpdateDueDate,
+    onToggleVisibility,
   } = useTaskPanel()
 
   const [statusOpen, setStatusOpen] = React.useState(false)
@@ -240,13 +243,49 @@ function PropertiesWingCard() {
       data-testid="properties-wing"
     >
       <div className="p-ds-06">
-        {/* Header */}
-        <span className="text-ds-xs font-semibold uppercase tracking-wider text-surface-fg-muted">
-          Properties
-        </span>
+        {/* Header with visibility toggle */}
+        <div className="flex items-center justify-between mb-ds-04">
+          <span className="text-ds-xs font-semibold uppercase tracking-wider text-surface-fg-muted">
+            Properties
+          </span>
+          {/* Client visibility toggle — staff only */}
+          {interactive && (
+            <Tooltip>
+              <TooltipTrigger asChild>
+                <button
+                  type="button"
+                  onClick={onToggleVisibility}
+                  className={cn(
+                    'flex items-center gap-ds-02 rounded-full px-ds-03 py-ds-01 text-ds-xs font-medium transition-colors',
+                    task.visibility === 'EVERYONE'
+                      ? 'bg-success-3 text-success-11 hover:bg-success-4'
+                      : 'bg-surface-raised-hover text-surface-fg-subtle hover:bg-surface-3',
+                  )}
+                >
+                  {task.visibility === 'EVERYONE' ? (
+                    <>
+                      <IconEye className="h-3 w-3" />
+                      Client
+                    </>
+                  ) : (
+                    <>
+                      <IconLock className="h-3 w-3" />
+                      Internal
+                    </>
+                  )}
+                </button>
+              </TooltipTrigger>
+              <TooltipContent>
+                {task.visibility === 'EVERYONE'
+                  ? 'Visible to clients'
+                  : 'Team only'}
+              </TooltipContent>
+            </Tooltip>
+          )}
+        </div>
 
         {/* All properties — consistent label-value rows */}
-        <div className="mt-ds-04 flex flex-col gap-ds-04">
+        <div className="flex flex-col gap-ds-04">
           {/* Status */}
           <PropertyRow label="Status">
             {interactive ? (
@@ -649,30 +688,20 @@ function PropertiesWingCard() {
             </span>
           </PropertyRow>
 
-          {/* Visibility */}
-          <PropertyRow label="Visibility">
-            <Badge
-              variant="subtle"
-              size="xs"
-              color={task.visibility === 'EVERYONE' ? 'success' : 'slate'}
-            >
-              {task.visibility === 'EVERYONE' ? 'Client visible' : 'Internal only'}
-            </Badge>
-          </PropertyRow>
         </div>
 
         {/* Separator before meta */}
         <div className="border-t border-surface-border mt-ds-04 pt-ds-04" />
 
-        {/* Meta — Created / Updated (two-column) */}
-        <div className="flex items-center justify-between">
-          <div className="flex flex-col gap-ds-01">
-            <span className="text-ds-xs text-surface-fg-subtle">Created</span>
-            <span className="text-ds-xs text-surface-fg-subtle">{formatMetaDate(task.createdAt)}</span>
-          </div>
-          <div className="flex flex-col gap-ds-01 text-right">
-            <span className="text-ds-xs text-surface-fg-subtle">Updated</span>
+        {/* Meta — Updated / Created (two-column) */}
+        <div className="flex items-start justify-between">
+          <div className="flex flex-col">
+            <span className="text-[10px] uppercase tracking-wider text-surface-fg-subtle/60">Updated</span>
             <span className="text-ds-xs text-surface-fg-subtle">{timeAgo(task.updatedAt)}</span>
+          </div>
+          <div className="flex flex-col items-end">
+            <span className="text-[10px] uppercase tracking-wider text-surface-fg-subtle/60">Created</span>
+            <span className="text-ds-xs text-surface-fg-subtle">{formatMetaDate(task.createdAt)}</span>
           </div>
         </div>
       </div>
@@ -708,7 +737,7 @@ export function TaskPanelSheet({
       <SheetContent
         side="right"
         className={cn(
-          'sm:max-w-[640px] w-full bg-surface-raised overflow-visible',
+          'sm:max-w-[640px] w-full bg-surface-raised overflow-visible [&>button[class*="absolute"]]:hidden',
           className,
         )}
       >

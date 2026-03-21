@@ -50,7 +50,7 @@ export function TaskPanelFull({ className, children }: TaskPanelFullProps) {
         </div>
 
         {/* Content area */}
-        <div className="flex-1 overflow-auto">
+        <div className="flex-1 overflow-auto [&::-webkit-scrollbar]:w-1.5 [&::-webkit-scrollbar-track]:bg-transparent [&::-webkit-scrollbar-thumb]:rounded-full [&::-webkit-scrollbar-thumb]:bg-surface-border/50 hover:[&::-webkit-scrollbar-thumb]:bg-surface-border">
           {children}
         </div>
       </motion.div>

@@ -434,7 +434,7 @@ export function TaskPanelTimeline({
       <div
         ref={scrollRef}
         onScroll={handleScroll}
-        className="flex-1 overflow-y-auto px-ds-06 py-ds-04"
+        className="flex-1 overflow-y-auto px-ds-06 py-ds-04 [&::-webkit-scrollbar]:w-1.5 [&::-webkit-scrollbar-track]:bg-transparent [&::-webkit-scrollbar-thumb]:rounded-full [&::-webkit-scrollbar-thumb]:bg-surface-border/50 hover:[&::-webkit-scrollbar-thumb]:bg-surface-border"
       >
         <div className="flex flex-col gap-ds-05 py-ds-03">
           {displayItems.map((item, idx) => {

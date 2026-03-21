@@ -427,8 +427,13 @@ export function TaskPanelTimeline({
     <div className={cn('flex flex-1 flex-col overflow-hidden', className)} {...props}>
       {/* Filter bar — staff only, not in peek */}
       {!clientMode && !isPeek && (
-        <div className="pt-ds-04">
+        <div className="relative pt-ds-04 pb-ds-02">
           <FilterBar value={filter} onChange={setFilter} />
+          {/* Soft fade gradient below filters */}
+          <div
+            className="pointer-events-none absolute bottom-0 left-0 right-0 h-ds-04"
+            style={{ background: 'linear-gradient(to bottom, var(--color-surface-raised), transparent)' }}
+          />
         </div>
       )}
 

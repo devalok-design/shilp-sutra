@@ -375,5 +375,6 @@ export const ReadOnlyCompact: Story = {
     ...ReadOnly.args,
     initialData: ReadOnly.args!.initialData,
     readOnly: true,
+    defaultViewMode: 'compact',
   },
 }

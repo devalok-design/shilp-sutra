@@ -113,6 +113,9 @@ export interface BoardProviderProps {
   /** When true, disables DnD, column management, task selection, and add buttons. */
   readOnly?: boolean
 
+  /** Initial view mode for task cards. Default: 'default'. */
+  defaultViewMode?: BoardViewMode
+
   // ---- Completed column toggle (K12) ----
   /** Column ID to treat as the "completed" column */
   completedColumnId?: string
@@ -153,6 +156,7 @@ export function BoardProvider({
   members: membersProp,
   children,
   readOnly = false,
+  defaultViewMode = 'default',
   completedColumnId,
   showCompleted = true,
   onToggleCompleted,
@@ -181,7 +185,7 @@ export function BoardProvider({
     setColumns(initialData.columns)
   }, [initialData])
 
-  const [viewMode, setViewMode] = useState<BoardViewMode>('default')
+  const [viewMode, setViewMode] = useState<BoardViewMode>(defaultViewMode)
 
   const [filters, setFiltersState] = useState<BoardFilters>(DEFAULT_FILTERS)
   const setFilters = useCallback((updates: Partial<BoardFilters>) => {
@@ -274,7 +278,28 @@ export function BoardProvider({
       mobileView,
       mobileBreakpoint,
       isMobileListView,
-      onTaskMove: onTaskMove ?? noop,
+      onTaskMove: onTaskMove
+        ? (taskId: string, toColumnId: string, newOrder: number) => {
+            // Optimistic local update — move task in state before notifying consumer
+            setColumns((prev) => {
+              let task: BoardTask | undefined
+              const without = prev.map((col) => {
+                const idx = col.tasks.findIndex((t) => t.id === taskId)
+                if (idx === -1) return col
+                task = col.tasks[idx]
+                return { ...col, tasks: [...col.tasks.slice(0, idx), ...col.tasks.slice(idx + 1)] }
+              })
+              if (!task) return prev
+              return without.map((col) => {
+                if (col.id !== toColumnId) return col
+                const tasks = [...col.tasks]
+                tasks.splice(Math.min(newOrder, tasks.length), 0, task!)
+                return { ...col, tasks }
+              })
+            })
+            onTaskMove(taskId, toColumnId, newOrder)
+          }
+        : noop,
       onTaskAdd: onTaskAdd ?? noop,
       onBulkAction: onBulkAction ?? noop,
       onColumnReorder: onColumnReorder ?? noop,

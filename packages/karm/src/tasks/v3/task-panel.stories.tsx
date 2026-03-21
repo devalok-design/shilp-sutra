@@ -1,8 +1,9 @@
+import { useState } from 'react'
 import type { Meta, StoryObj } from '@storybook/react'
 import { fn } from '@storybook/test'
 import { TaskPanel } from './task-panel'
 import type { TaskPanelRootProps } from './task-panel-root'
-import type { TaskPanelTask, TimelineEntry } from './task-panel-types'
+import type { TaskPanelTask, TaskPanelMode, TimelineEntry } from './task-panel-types'
 
 // ============================================================
 // Mock team members
@@ -285,139 +286,156 @@ export default meta
 type Story = StoryObj<TaskPanelRootProps>
 
 // ============================================================
+// Reusable story wrapper with trigger button
+// ============================================================
+
+function TaskPanelDemo({
+  mode,
+  clientMode = false,
+  task = mockTask,
+  timeline: timelineProp = mockTimeline,
+  typingUsers,
+  lastViewedAt,
+  label,
+}: {
+  mode: TaskPanelMode
+  clientMode?: boolean
+  task?: TaskPanelTask
+  timeline?: TimelineEntry[]
+  typingUsers?: { name: string; image?: string | null }[]
+  lastViewedAt?: string
+  label: string
+}) {
+  const [open, setOpen] = useState(false)
+
+  const callbacks = {
+    ...sharedCallbacks,
+    onClose: () => setOpen(false),
+    onExpand: fn(),
+  }
+
+  const panelContent = (
+    <div className="flex h-full flex-col">
+      <TaskPanel.Header />
+      <TaskPanel.QuickProps />
+      {!clientMode && <TaskPanel.ReviewBanner />}
+      <div className="flex flex-1 flex-col overflow-hidden">
+        <TaskPanel.Description />
+        {mode !== 'peek' && <TaskPanel.Subtasks />}
+        <TaskPanel.Timeline />
+      </div>
+      {mode !== 'peek' && <TaskPanel.MessageInput />}
+    </div>
+  )
+
+  return (
+    <div style={{ height: '100vh' }} className="bg-surface-base p-ds-08">
+      {/* Simulated board background */}
+      <div className="mb-ds-06">
+        <h2 className="text-ds-lg font-semibold text-surface-fg mb-ds-02">
+          Karm Board
+        </h2>
+        <p className="text-ds-sm text-surface-fg-muted mb-ds-05">
+          {label}
+        </p>
+
+        {/* Trigger card */}
+        <button
+          type="button"
+          onClick={() => setOpen(true)}
+          className="w-[320px] rounded-ds-lg border border-surface-border bg-surface-raised p-ds-04 text-left shadow-raised transition-all hover:shadow-raised-hover hover:-translate-y-px hover:border-surface-border-strong"
+        >
+          <div className="flex items-center gap-ds-02 mb-ds-02">
+            <span className="font-mono text-ds-xs text-surface-fg-subtle">{task.taskId}</span>
+            <span className="text-ds-xs text-error-11">{'\u25B2'} {task.priority}</span>
+          </div>
+          <p className="text-ds-sm font-medium text-surface-fg line-clamp-2">
+            {task.title}
+          </p>
+          <div className="mt-ds-03 flex items-center gap-ds-02">
+            <span className="inline-flex h-5 w-5 items-center justify-center rounded-full bg-accent-9 text-[9px] font-bold text-white">
+              {(task.assignee?.name ?? '?').slice(0, 2).toUpperCase()}
+            </span>
+            <span className="text-ds-xs text-surface-fg-subtle">
+              {task.assignee?.name ?? 'Unassigned'}
+            </span>
+          </div>
+        </button>
+      </div>
+
+      {/* Panel */}
+      <TaskPanel
+        mode={mode}
+        open={open}
+        task={task}
+        clientMode={clientMode}
+        currentUserId={clientMode ? 'client-1' : 'u1'}
+        timeline={timelineProp}
+        lastViewedAt={lastViewedAt}
+        typingUsers={typingUsers}
+        {...callbacks}
+      >
+        {mode === 'full' ? (
+          <div className="mx-auto flex h-full max-w-3xl flex-col">
+            {panelContent}
+          </div>
+        ) : (
+          panelContent
+        )}
+      </TaskPanel>
+    </div>
+  )
+}
+
+// ============================================================
 // Stories
 // ============================================================
 
-/**
- * Full-featured side panel from the staff perspective. Shows comments,
- * system events, file attachments, reactions, typing indicator, and
- * review banner.
- */
+/** Click the task card to open the side panel. Full staff experience with review banner, timeline, reactions, and typing indicator. */
 export const SidePanelStaff: Story = {
   render: () => (
-    <div style={{ height: '100vh' }}>
-      <TaskPanel
-        mode="side"
-        open={true}
-        task={mockTask}
-        clientMode={false}
-        currentUserId="u1"
-        timeline={mockTimeline}
-        lastViewedAt={hoursAgo(4)}
-        typingUsers={[{ name: 'Priya Mehta', image: null }]}
-        {...sharedCallbacks}
-      >
-        <div className="flex h-full flex-col">
-          <TaskPanel.Header />
-          <TaskPanel.QuickProps />
-          <TaskPanel.ReviewBanner />
-          <div className="flex flex-1 flex-col overflow-hidden">
-            <TaskPanel.Description />
-            <TaskPanel.Subtasks />
-            <TaskPanel.Timeline />
-          </div>
-          <TaskPanel.MessageInput />
-        </div>
-      </TaskPanel>
-    </div>
+    <TaskPanelDemo
+      mode="side"
+      label="Click the task card below to open the side panel (staff view)"
+      lastViewedAt={hoursAgo(4)}
+      typingUsers={[{ name: 'Priya Mehta', image: null }]}
+    />
   ),
 }
 
-/**
- * Client perspective: no system events, no internal comments, read-only
- * properties.
- */
+/** Client perspective — no system events, no internal comments, read-only properties. */
 export const SidePanelClient: Story = {
   render: () => (
-    <div style={{ height: '100vh' }}>
-      <TaskPanel
-        mode="side"
-        open={true}
-        task={mockTask}
-        clientMode={true}
-        currentUserId="client-1"
-        timeline={mockTimeline}
-        {...sharedCallbacks}
-      >
-        <div className="flex h-full flex-col">
-          <TaskPanel.Header />
-          <TaskPanel.QuickProps />
-          <div className="flex flex-1 flex-col overflow-hidden">
-            <TaskPanel.Description />
-            <TaskPanel.Subtasks />
-            <TaskPanel.Timeline />
-          </div>
-          <TaskPanel.MessageInput />
-        </div>
-      </TaskPanel>
-    </div>
+    <TaskPanelDemo
+      mode="side"
+      clientMode
+      label="Click the task card below to open the side panel (client view)"
+    />
   ),
 }
 
-/**
- * Peek mode: compact overlay with description and latest 2 timeline entries.
- */
+/** Peek mode — compact overlay with description and latest 2 timeline entries. */
 export const Peek: Story = {
   render: () => (
-    <div style={{ height: '100vh', position: 'relative' }}>
-      <div className="p-ds-06 text-surface-fg">
-        <p className="text-ds-lg font-semibold">Board View</p>
-        <p className="text-ds-sm text-surface-fg-muted">
-          Click a task card to see the peek panel on the right.
-        </p>
-      </div>
-      <TaskPanel
-        mode="peek"
-        open={true}
-        task={mockTask}
-        clientMode={false}
-        currentUserId="u1"
-        timeline={mockTimeline}
-        {...sharedCallbacks}
-      >
-        <TaskPanel.Header />
-        <TaskPanel.QuickProps />
-        <TaskPanel.Description />
-        <TaskPanel.Timeline />
-      </TaskPanel>
-    </div>
+    <TaskPanelDemo
+      mode="peek"
+      label="Click the task card below to open the peek preview"
+    />
   ),
 }
 
-/**
- * Full page mode with full timeline and message input.
- */
+/** Full page mode — takes over the viewport with full timeline and message input. */
 export const FullPage: Story = {
   render: () => (
-    <div style={{ height: '100vh' }}>
-      <TaskPanel
-        mode="full"
-        task={mockTask}
-        clientMode={false}
-        currentUserId="u1"
-        timeline={mockTimeline}
-        lastViewedAt={hoursAgo(4)}
-        {...sharedCallbacks}
-      >
-        <div className="mx-auto flex h-full max-w-3xl flex-col">
-          <TaskPanel.Header />
-          <TaskPanel.QuickProps />
-          <TaskPanel.ReviewBanner />
-          <div className="flex flex-1 flex-col overflow-hidden">
-            <TaskPanel.Description />
-            <TaskPanel.Subtasks />
-            <TaskPanel.Timeline />
-          </div>
-          <TaskPanel.MessageInput />
-        </div>
-      </TaskPanel>
-    </div>
+    <TaskPanelDemo
+      mode="full"
+      label="Click the task card below to open full page view"
+      lastViewedAt={hoursAgo(4)}
+    />
   ),
 }
 
-/**
- * Empty task: new task with no comments, subtasks, or timeline entries.
- */
+/** Empty task — new task with no comments, subtasks, or timeline entries. */
 export const EmptyTask: Story = {
   render: () => {
     const emptyTask: TaskPanelTask = {
@@ -441,28 +459,12 @@ export const EmptyTask: Story = {
     }
 
     return (
-      <div style={{ height: '100vh' }}>
-        <TaskPanel
-          mode="side"
-          open={true}
-          task={emptyTask}
-          clientMode={false}
-          currentUserId="u1"
-          timeline={[]}
-          {...sharedCallbacks}
-        >
-          <div className="flex h-full flex-col">
-            <TaskPanel.Header />
-            <TaskPanel.QuickProps />
-            <div className="flex flex-1 flex-col overflow-hidden">
-              <TaskPanel.Description />
-              <TaskPanel.Subtasks />
-              <TaskPanel.Timeline />
-            </div>
-            <TaskPanel.MessageInput />
-          </div>
-        </TaskPanel>
-      </div>
+      <TaskPanelDemo
+        mode="side"
+        task={emptyTask}
+        timeline={[]}
+        label="Click the task card below to see empty states"
+      />
     )
   },
 }

@@ -250,12 +250,12 @@ const ColorInput = React.forwardRef<HTMLDivElement, ColorInputProps>(
                 <span
                   className="absolute inset-0"
                   style={{
-                    background: `linear-gradient(to right, ${value} 0%, ${value} 20%, transparent 85%)`,
+                    background: `linear-gradient(to right, ${value} 0%, ${value} 35%, transparent 70%)`,
                   }}
                 />
                 <span className="absolute inset-0 bg-surface-overlay/60" style={{
-                  maskImage: 'linear-gradient(to right, transparent 0%, black 50%)',
-                  WebkitMaskImage: 'linear-gradient(to right, transparent 0%, black 50%)',
+                  maskImage: 'linear-gradient(to right, transparent 0%, black 40%)',
+                  WebkitMaskImage: 'linear-gradient(to right, transparent 0%, black 40%)',
                 }} />
                 {/* Hex value */}
                 <span className="relative z-10 py-ds-02 pl-6 pr-ds-03 font-mono text-ds-sm text-surface-fg">

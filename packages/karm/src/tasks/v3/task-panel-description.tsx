@@ -1,8 +1,8 @@
 'use client'
 
 import * as React from 'react'
+import { IconChevronDown, IconChevronUp } from '@tabler/icons-react'
 import { cn } from '@/ui/lib/utils'
-import { Button } from '@/ui/button'
 import { MotionCollapse } from '@/motion/primitives'
 import { useTaskPanel } from './task-panel-context'
 
@@ -23,8 +23,6 @@ function timeAgo(timestamp: string): string {
   return `${days}d ago`
 }
 
-const COLLAPSE_THRESHOLD = 100
-
 // ---------------------------------------------------------------------------
 // Types
 // ---------------------------------------------------------------------------
@@ -33,7 +31,7 @@ export interface TaskPanelDescriptionProps
   extends React.HTMLAttributes<HTMLDivElement> {}
 
 // ---------------------------------------------------------------------------
-// TaskPanelDescription
+// TaskPanelDescription — collapsed by default, expand on click
 // ---------------------------------------------------------------------------
 
 export function TaskPanelDescription({
@@ -41,17 +39,15 @@ export function TaskPanelDescription({
   ...props
 }: TaskPanelDescriptionProps) {
   const { task, clientMode, onUpdateDescription } = useTaskPanel()
+  const [expanded, setExpanded] = React.useState(false)
   const [isEditing, setIsEditing] = React.useState(false)
   const [draft, setDraft] = React.useState(task.description)
-  const [expanded, setExpanded] = React.useState(false)
   const textareaRef = React.useRef<HTMLTextAreaElement>(null)
 
-  // Sync draft when task.description changes externally
   React.useEffect(() => {
     if (!isEditing) setDraft(task.description)
   }, [task.description, isEditing])
 
-  // Auto-focus textarea when entering edit mode
   React.useEffect(() => {
     if (isEditing && textareaRef.current) {
       textareaRef.current.focus()
@@ -59,7 +55,6 @@ export function TaskPanelDescription({
     }
   }, [isEditing])
 
-  const isLong = task.description.length > COLLAPSE_THRESHOLD
   const isEmpty = !task.description.trim()
 
   const handleSave = React.useCallback(() => {
@@ -79,18 +74,22 @@ export function TaskPanelDescription({
     [handleSave],
   )
 
-  // Empty state
+  // Empty + client: nothing
   if (isEmpty && clientMode) return null
 
+  // Empty + staff: compact add prompt
   if (isEmpty && !clientMode) {
     return (
-      <div className={cn('px-ds-05 py-ds-04', className)} {...props}>
+      <div className={cn('px-ds-05', className)} {...props}>
         <button
           type="button"
-          className="text-ds-sm text-surface-fg-subtle italic hover:text-surface-fg transition-colors"
-          onClick={() => setIsEditing(true)}
+          className="w-full rounded-ds-md border border-dashed border-surface-border px-ds-04 py-ds-03 text-left text-ds-sm text-surface-fg-subtle italic transition-colors hover:border-surface-border-strong hover:text-surface-fg"
+          onClick={() => {
+            setExpanded(true)
+            setIsEditing(true)
+          }}
         >
-          Add a description...
+          + Add a description...
         </button>
         <MotionCollapse show={isEditing}>
           <textarea
@@ -99,7 +98,7 @@ export function TaskPanelDescription({
             onChange={(e) => setDraft(e.target.value)}
             onBlur={handleSave}
             onKeyDown={handleKeyDown}
-            className="mt-ds-02 w-full resize-none rounded-ds-md border border-surface-border bg-surface-2 p-ds-03 text-ds-sm text-surface-fg outline-none focus:border-accent-8 focus:ring-1 focus:ring-accent-8"
+            className="mt-ds-02 w-full resize-none rounded-ds-md border border-surface-border bg-surface-raised p-ds-04 text-ds-sm text-surface-fg outline-none focus:border-accent-8 focus:ring-1 focus:ring-accent-8"
             rows={3}
             placeholder="Write a description..."
           />
@@ -108,62 +107,76 @@ export function TaskPanelDescription({
     )
   }
 
+  // Has content — collapsed by default (2-line preview), expandable
   return (
-    <div className={cn('px-ds-05 py-ds-04', className)} {...props}>
-      {isEditing && !clientMode ? (
-        <textarea
-          ref={textareaRef}
-          value={draft}
-          onChange={(e) => setDraft(e.target.value)}
-          onBlur={handleSave}
-          onKeyDown={handleKeyDown}
-          className="w-full resize-none rounded-ds-md border border-surface-border bg-surface-2 p-ds-03 text-ds-sm text-surface-fg outline-none focus:border-accent-8 focus:ring-1 focus:ring-accent-8"
-          rows={4}
-        />
-      ) : (
-        <>
-          <div
-            role={clientMode ? undefined : 'button'}
-            tabIndex={clientMode ? undefined : 0}
-            className={cn(
-              'text-ds-sm text-surface-fg whitespace-pre-wrap',
-              !clientMode && 'cursor-pointer rounded-ds-md hover:bg-surface-3 p-ds-02 -m-ds-02 transition-colors',
-              isLong && !expanded && 'line-clamp-4',
-            )}
-            onClick={clientMode ? undefined : () => setIsEditing(true)}
-            onKeyDown={
-              clientMode
-                ? undefined
-                : (e) => {
-                    if (e.key === 'Enter' || e.key === ' ') {
-                      e.preventDefault()
-                      setIsEditing(true)
-                    }
-                  }
-            }
-          >
-            {task.description}
-          </div>
-
-          {isLong && (
-            <Button
-              variant="link"
-              size="sm"
-              className="mt-ds-01 px-0 text-ds-xs"
-              onClick={() => setExpanded(!expanded)}
-            >
-              {expanded ? 'Show less' : 'Show more'}
-            </Button>
+    <div className={cn('px-ds-05', className)} {...props}>
+      <button
+        type="button"
+        onClick={() => setExpanded(!expanded)}
+        className="flex w-full items-start gap-ds-03 rounded-ds-md px-ds-04 py-ds-03 text-left transition-colors hover:bg-surface-raised-hover -mx-ds-04"
+      >
+        <IconChevronDown
+          className={cn(
+            'mt-0.5 h-3.5 w-3.5 shrink-0 text-surface-fg-subtle transition-transform',
+            expanded && 'rotate-180',
           )}
-        </>
-      )}
+        />
+        <div className="min-w-0 flex-1">
+          <span className="text-ds-xs font-medium text-surface-fg-muted uppercase tracking-wider">
+            Description
+          </span>
+          {!expanded && (
+            <p className="mt-ds-01 text-ds-sm text-surface-fg-muted line-clamp-2">
+              {task.description}
+            </p>
+          )}
+        </div>
+      </button>
 
-      {!clientMode && task.descriptionUpdatedBy && (
-        <p className="mt-ds-02 text-ds-xs text-surface-fg-subtle">
-          Last edited by {task.descriptionUpdatedBy.name} &middot;{' '}
-          {timeAgo(task.descriptionUpdatedBy.timestamp)}
-        </p>
-      )}
+      <MotionCollapse show={expanded}>
+        <div className="px-ds-04 pb-ds-03">
+          {isEditing && !clientMode ? (
+            <textarea
+              ref={textareaRef}
+              value={draft}
+              onChange={(e) => setDraft(e.target.value)}
+              onBlur={handleSave}
+              onKeyDown={handleKeyDown}
+              className="w-full resize-none rounded-ds-md border border-surface-border bg-surface-raised p-ds-04 text-ds-sm text-surface-fg outline-none focus:border-accent-8 focus:ring-1 focus:ring-accent-8"
+              rows={4}
+            />
+          ) : (
+            <div
+              role={clientMode ? undefined : 'button'}
+              tabIndex={clientMode ? undefined : 0}
+              className={cn(
+                'text-ds-sm text-surface-fg whitespace-pre-wrap',
+                !clientMode && 'cursor-pointer rounded-ds-md hover:bg-surface-raised-hover p-ds-03 -m-ds-03 transition-colors',
+              )}
+              onClick={clientMode ? undefined : () => setIsEditing(true)}
+              onKeyDown={
+                clientMode
+                  ? undefined
+                  : (e) => {
+                      if (e.key === 'Enter' || e.key === ' ') {
+                        e.preventDefault()
+                        setIsEditing(true)
+                      }
+                    }
+              }
+            >
+              {task.description}
+            </div>
+          )}
+
+          {!clientMode && task.descriptionUpdatedBy && (
+            <p className="mt-ds-03 text-ds-xs text-surface-fg-subtle">
+              Last edited by {task.descriptionUpdatedBy.name} &middot;{' '}
+              {timeAgo(task.descriptionUpdatedBy.timestamp)}
+            </p>
+          )}
+        </div>
+      </MotionCollapse>
     </div>
   )
 }

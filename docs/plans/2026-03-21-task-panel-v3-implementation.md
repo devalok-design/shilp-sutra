@@ -58,17 +58,17 @@ import { markdownComponents } from '../../chat/markdown-components'
 **Types file** — extend existing `task-types.ts` with v3-specific types:
 ```typescript
 // Re-export existing types
-export type { Comment, CommentAuthorType, CommentAuthor, TaskSubtask } from '../task-types'
+export type { Comment, CommentAuthorType, CommentAuthor, Subtask } from '../task-types'
 
 // View modes
 export type TaskPanelMode = 'peek' | 'side' | 'full'
 
 // Timeline entry discriminated union
 export type TimelineEntry =
-  | { type: 'comment'; comment: Comment }
+  | { type: 'comment'; comment: Comment; reactions?: Reaction[] }
   | { type: 'system-event'; event: SystemEvent }
   | { type: 'review-event'; event: ReviewEvent }
-  | { type: 'agent-response'; response: AgentResponse }
+  | { type: 'agent-response'; response: AgentResponse; reactions?: Reaction[] }
 
 export interface SystemEvent {
   id: string
@@ -99,6 +99,18 @@ export interface AgentResponse {
   timestamp: string
 }
 
+// NOTE: Agent messages use the `agent-response` timeline entry type exclusively.
+// They are NOT regular Comments with authorType='AGENT'. This avoids extending
+// the existing CommentAuthorType union and keeps the agent data model separate
+// (agents have icon, summary, streaming — fields that don't belong on Comment).
+
+// Reactions on any timeline entry that supports them
+export interface Reaction {
+  emoji: string
+  count: number
+  reacted: boolean  // whether current user has reacted with this emoji
+}
+
 export interface TaskPanelTask {
   id: string
   taskId: string
@@ -117,7 +129,7 @@ export interface TaskPanelTask {
   project?: string
   createdAt: string
   updatedAt: string
-  subtasks: TaskSubtask[]
+  subtasks: Subtask[]
   isInReview: boolean
   reviewSubmittedBy?: { name: string; timestamp: string }
 }
@@ -228,6 +240,8 @@ Renders horizontal pills: Status (dot + name), Assignee (avatar + name), Priorit
 
 **Client mode:** Pills are plain display, no click interaction, no tooltips.
 
+**Peek mode (staff):** Renders a compact triage action row with Status + Priority + Assignee pickers. Enables: glance at task → change status → dismiss. `bg-surface-sunken rounded-ds-lg p-ds-03`.
+
 Reuses: `TaskColumnPicker`, `TaskPriorityPicker`, `TaskMemberPicker`, `TaskDatePicker`, `Avatar`, `Popover`, `Tooltip`.
 
 **Step 1:** Write test — renders 4 pills with correct content, client mode is read-only.
@@ -262,13 +276,15 @@ Reuses: `Button`, `MotionCollapse`, `Badge`.
 - Create: `packages/karm/src/tasks/v3/task-panel-description.tsx`
 - Create: `packages/karm/src/tasks/v3/__tests__/task-panel-description.test.tsx`
 
-**Staff mode:** Click description → switches from `RichTextViewer` to `RichTextEditor`. Blur/Escape saves. Byline below: "Last edited by X · time ago" with optional "View changes" link.
+**Staff mode:** Click description → switches from `RichTextViewer` to `RichTextEditor`. Blur/Escape saves. Byline below: "Last edited by X · time ago". Title uses `text-ds-lg font-semibold`.
 
 **Client mode:** `RichTextViewer` only, no byline.
 
 **Empty state:** Placeholder text "Add a description..." (staff click to edit, client sees nothing).
 
 Collapse long descriptions (> 4 lines) with "Show more" using `MotionCollapse`.
+
+**Descoped:** Visual diff ("View changes") deferred to v3.1. Byline only in this release.
 
 Reuses: `RichTextEditor`, `RichTextViewer`, `MotionCollapse`.
 
@@ -351,7 +367,7 @@ The main timeline component. Responsibilities:
 
 Reuses: `MotionFade`, `MotionStagger` (initial entrance only), `EmptyState`, `Badge`.
 
-**Step 1:** Write test — renders entries, filters work, client mode hides system events.
+**Step 1:** Write tests — renders entries, filters work, client mode hides system events, typing indicator shows when `typingUsers` is non-empty, unread marker renders at correct position, jump-to-latest pill appears when scrolled up.
 **Step 2:** Implement timeline orchestrator.
 **Step 3:** Run tests.
 **Step 4:** Commit: `feat(karm): add TaskPanel v3 timeline with filtering and smart collapse`
@@ -428,8 +444,9 @@ Exposes imperative refs for each picker/section to `.focus()`.
 **Files:**
 - Create: `packages/karm/src/tasks/v3/task-panel.tsx` (compound component assembly)
 - Create: `packages/karm/src/tasks/v3/index.ts` (barrel export)
-- Modify: `packages/karm/src/tasks/index.ts` (add v3 exports)
-- Modify: `packages/karm/src/index.ts` (add v3 exports)
+- Modify: `packages/karm/vite.config.ts` (add `tasks/v3/index` entry point)
+- Modify: `packages/karm/package.json` (add `./tasks/v3` export path)
+- Modify: `packages/karm/src/index.ts` (add v3 TaskPanel export, deprecate TaskDetailPanel)
 
 Assemble via `Object.assign()`:
 ```tsx
@@ -444,6 +461,7 @@ export const TaskPanel = Object.assign(TaskPanelRoot, {
   Body: TaskPanelBody,           // flex row container for content + sidebar
   Content: TaskPanelContent,     // flex-1 scrollable column
   PropertiesSidebar: TaskPanelPropertiesSidebar,
+  Loading: TaskPanelLoading,     // skeleton placeholder (backward compat with v2)
 })
 ```
 
@@ -532,10 +550,19 @@ Follow `/publish-release` skill for full publishing checklist.
 ```
 Phase 1: Task 1 → Task 2
 Phase 2: Task 2 → Tasks 3-7 (can parallelize)
-Phase 3: Tasks 3-7 → Task 8 → Task 9 → Task 10
+Phase 2+3: Task 2 → Task 8 (can run parallel with Tasks 3-7)
+Phase 3: Task 8 → Task 9 → Task 10
 Phase 4: Task 9 → Task 11, Task 12 (can parallelize)
 Phase 5: Tasks 11-12 → Task 13 → Task 14 → Task 15 → Task 16
 Phase 6: Task 16 → Task 17
 ```
 
-Total: **17 tasks across 6 phases.** Phases 2 and 4 have parallelizable tasks.
+Total: **17 tasks across 6 phases.** Phases 2, 2+3, and 4 have parallelizable tasks.
+
+---
+
+## Surface Token Notes
+
+- Message input uses `bg-surface-base` (page-level background) intentionally for a "sunken input" effect inside the `bg-surface-raised` panel. Add to `SURFACE1_ALLOWLIST` in pre-publish audit if flagged.
+- Properties sidebar uses `bg-surface-sunken` — matches shell chrome pattern.
+- All panel containers use `bg-surface-raised` or `bg-surface-overlay` per the surface layering rules.

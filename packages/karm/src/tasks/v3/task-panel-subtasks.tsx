@@ -70,7 +70,7 @@ export function TaskPanelSubtasks({
   if (totalCount === 0) {
     if (clientMode) return null
     return (
-      <div className={cn('px-ds-06', className)} {...props}>
+      <div className={cn('px-ds-06 py-ds-03 border-b border-surface-border-subtle', className)} {...props}>
         <button
           type="button"
           className="w-full rounded-ds-md border border-dashed border-surface-border px-ds-04 py-ds-03 text-left text-ds-sm text-surface-fg-subtle transition-colors hover:border-surface-border-strong hover:text-accent-11"
@@ -101,7 +101,7 @@ export function TaskPanelSubtasks({
 
   // Has subtasks — compact progress strip, expandable
   return (
-    <div className={cn('px-ds-06', className)} {...props}>
+    <div className={cn('px-ds-06 py-ds-03 border-b border-surface-border-subtle', className)} {...props}>
       {/* Compact strip — always visible */}
       <button
         type="button"

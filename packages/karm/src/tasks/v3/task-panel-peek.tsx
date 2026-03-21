@@ -74,9 +74,10 @@ export function TaskPanelPeek({
           role="dialog"
           aria-modal="false"
           className={cn(
-            'fixed right-ds-06 top-ds-06 z-modal max-h-[500px] w-full max-w-[400px] overflow-y-auto rounded-ds-xl border border-surface-border-strong bg-surface-overlay p-ds-05 shadow-floating [&::-webkit-scrollbar]:w-1.5 [&::-webkit-scrollbar-track]:bg-transparent [&::-webkit-scrollbar-thumb]:rounded-full [&::-webkit-scrollbar-thumb]:bg-surface-border/50 hover:[&::-webkit-scrollbar-thumb]:bg-surface-border',
+            'fixed right-ds-06 top-ds-06 z-modal max-h-[500px] w-full max-w-[400px] overflow-y-auto rounded-ds-xl border border-surface-border-strong bg-surface-overlay p-ds-05 shadow-floating',
             className,
           )}
+          style={{ scrollbarWidth: 'thin', scrollbarColor: 'var(--color-surface-border) transparent' }}
           initial={{ opacity: 0, scale: 0.95 }}
           animate={{ opacity: 1, scale: 1 }}
           exit={{ opacity: 0, scale: 0.95 }}

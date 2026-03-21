@@ -1,7 +1,7 @@
 'use client'
 
 import * as React from 'react'
-import { IconX, IconArrowsMaximize } from '@tabler/icons-react'
+import { IconX, IconArrowsMaximize, IconDots } from '@tabler/icons-react'
 import { cn } from '@/ui/lib/utils'
 import { Button } from '@/ui/button'
 import { InlineEdit } from '@/composed/inline-edit'
@@ -11,13 +11,16 @@ import { useTaskPanel } from './task-panel-context'
 // Types
 // ---------------------------------------------------------------------------
 
-export interface TaskPanelHeaderProps extends React.HTMLAttributes<HTMLDivElement> {}
+export interface TaskPanelHeaderProps extends React.HTMLAttributes<HTMLDivElement> {
+  /** Slot for a custom dropdown menu triggered by the three-dot button. Receives the trigger as children. */
+  menuSlot?: React.ReactNode
+}
 
 // ---------------------------------------------------------------------------
 // TaskPanelHeader
 // ---------------------------------------------------------------------------
 
-export function TaskPanelHeader({ className, ...props }: TaskPanelHeaderProps) {
+export function TaskPanelHeader({ className, menuSlot, ...props }: TaskPanelHeaderProps) {
   const { task, mode, clientMode, onUpdateTitle, onClose, onExpand } =
     useTaskPanel()
 
@@ -54,6 +57,16 @@ export function TaskPanelHeader({ className, ...props }: TaskPanelHeaderProps) {
               aria-label="Expand"
             >
               <IconArrowsMaximize className="h-ico-sm w-ico-sm" />
+            </Button>
+          )}
+          {/* Composable menu slot — consumer provides their own DropdownMenu here */}
+          {menuSlot ?? (
+            <Button
+              variant="ghost"
+              size="icon-sm"
+              aria-label="More actions"
+            >
+              <IconDots className="h-ico-sm w-ico-sm" />
             </Button>
           )}
           <Button

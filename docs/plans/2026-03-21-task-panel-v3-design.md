@@ -15,6 +15,89 @@
 
 ---
 
+## Polish & Intelligence Layer
+
+These features elevate TaskPanel v3 from "functional" to "best-in-class":
+
+### 1. Smart Timeline Collapsing
+Consecutive system events by the same person collapse into a single line:
+- "**Priya** made 5 changes · 2h ago" with expand chevron
+- On expand: shows individual events with sub-timestamps
+- Threshold: 3+ consecutive system events within 10 minutes
+- Human comments always break a collapse group (never hidden)
+- Implementation: group events in the timeline renderer, wrap in `MotionCollapse`
+
+### 2. Unread Marker
+A horizontal divider line in the timeline marking "New since you last viewed":
+- `border-accent-7` dashed line with "NEW" pill label centered
+- Position: between the last-read entry and the first-new entry
+- Tracked via `lastViewedAt` timestamp prop (consumer provides, we render)
+- On scroll past the marker, it fades out (one-shot, not persistent)
+- Animation: `MotionFade` on mount, fade out on intersection
+
+### 3. Jump to Latest
+Floating pill when user has scrolled up and new entries arrive:
+- "↓ 3 new comments" pill, fixed at bottom of timeline scroll area
+- `bg-accent-9 text-white rounded-full shadow-floating` with bounce entrance
+- Click scrolls to bottom smoothly
+- Auto-dismisses when user scrolls to bottom manually
+- Counter updates live as new entries arrive
+
+### 4. Peek Quick Actions
+Peek mode gets a triage action row below the quick props:
+- Status dropdown + Priority dropdown + Assignee picker — compact, inline
+- Enables: glance at task → change status → dismiss. The 80% workflow.
+- Only in staff mode. Client peek is pure read-only.
+- Action row tokens: `bg-surface-sunken rounded-ds-lg p-ds-03`
+
+### 5. Keyboard Shortcuts (Inside Panel)
+When the panel is focused, single-key shortcuts for power users:
+- `S` → focus status picker
+- `A` → focus assignee picker
+- `P` → focus priority picker
+- `D` → focus due date picker
+- `E` → toggle description edit mode
+- `C` → focus message input (jump to comment)
+- `Escape` → close panel (or exit edit mode if editing)
+- Display shortcut hints on hover over quick prop pills: "Status (S)"
+- Keyboard shortcuts disabled in client mode and when an input is focused
+- Implementation: `useTaskPanelKeyboard` hook, registered on panel focus
+
+### 6. Description Byline & Diff
+Below the description content, show a subtle byline:
+- "Last edited by **Priya** · 2 days ago" in `text-ds-xs text-surface-fg-subtle`
+- Optional "View changes" link that shows a visual diff (added text in green, removed in red)
+- Diff rendered using a simple inline diff algorithm (not a full Monaco editor)
+- Only shown when description has been edited at least once (not on initial creation)
+- Tokens: byline in `text-surface-fg-subtle`, diff additions `bg-success-3 text-success-11`, removals `bg-error-3 text-error-11`
+
+### 7. AI Response Guardrails
+Agent responses longer than 10 lines collapse with a summary:
+- Summary line: "**Sutradhar** analyzed the auth flow and suggested 3 changes" (agent-generated or first sentence)
+- "Show full response" expand button below summary
+- Collapsed state: summary + first 3 lines visible, rest hidden behind `MotionCollapse`
+- Code blocks within agent responses get their own collapse at 15+ lines
+- Max uncollapsed height: 300px, then scrollable within the entry
+
+### 8. @Mention Highlighting
+Comments that mention the current user get a visual accent:
+- Left border: `border-l-2 border-l-accent-9`
+- Subtle background tint: `bg-accent-2` (very light)
+- The @mention text itself: `text-accent-11 font-semibold`
+- Detection: scan comment content for `@{currentUser.name}` or `@{currentUser.id}`
+- Works for both human and agent mentions
+
+### 9. Empty States
+Warm, contextual empty states for each section:
+- **Timeline empty (staff):** Illustration + "Start the conversation" + "Your team will see updates here" + focus on message input
+- **Timeline empty (client):** "No updates yet" + "We'll post progress updates as work begins"
+- **Subtasks empty:** "No subtasks" + "+ Break this into steps" link
+- **Description empty:** "Add a description..." placeholder text (click to edit)
+- Use existing `EmptyState` composed component with contextual messaging
+- Illustrations: reuse the 4 board column illustrations cycled by task ID hash
+
+---
+
 ## Three View Modes
 
 ### Peek (Space bar on focused card)
@@ -267,6 +350,13 @@ The v2 tab API (`TaskPanel.Tabs`, `TaskPanel.Tab`) will be removed. This is a br
 | Typing indicator | Bouncing dots | CSS `@keyframes` |
 | Reactions add/remove | Scale pop | `springs.bouncy` |
 | Subtask check | Checkbox scale + color | `springs.snappy` |
+| Unread marker | Fade in on mount, fade out on scroll past | `MotionFade` |
+| Jump to latest pill | Bounce entrance from bottom | `springs.bouncy` |
+| System event collapse | Height expand/collapse | `MotionCollapse` |
+| AI response collapse | Height expand with content reveal | `MotionCollapse` |
+| @Mention highlight | Background tint fade in | `transition-colors duration-300` |
+| Empty state | Fade in with slight y-shift | `MotionFade` + `y: 8→0` |
+| Keyboard shortcut hint | Tooltip fade on hover | `springs.snappy` opacity |
 
 ---
 

@@ -60,12 +60,12 @@ export function TimelineSystemEvent({ entry }: TimelineSystemEventProps) {
 
   return (
     <div
-      className="flex items-center gap-ds-02 text-ds-xs text-surface-fg-subtle"
+      className="flex items-center gap-ds-02 text-[11px] text-surface-fg-subtle/70"
       data-testid="timeline-system-event"
     >
-      <Icon className="h-ico-sm w-ico-sm shrink-0" data-testid={`icon-${event.action}`} />
+      <Icon className="h-3 w-3 shrink-0" data-testid={`icon-${event.action}`} />
       <span>
-        <span className="font-semibold text-surface-fg">{event.actorName}</span>
+        <span className="font-medium text-surface-fg-subtle">{event.actorName}</span>
         {' '}
         {event.description}
       </span>

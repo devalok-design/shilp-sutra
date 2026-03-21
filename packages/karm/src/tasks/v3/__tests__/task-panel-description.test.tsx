@@ -59,8 +59,9 @@ function renderWithProvider(
 // ---------------------------------------------------------------------------
 
 describe('TaskPanelDescription', () => {
-  it('renders description content', () => {
+  it('renders description preview when collapsed', () => {
     renderWithProvider()
+    // The 2-line preview is shown in the collapsed state
     expect(
       screen.getByText(
         'This is the task description with details about the bug.',
@@ -68,30 +69,36 @@ describe('TaskPanelDescription', () => {
     ).toBeInTheDocument()
   })
 
-  it('shows byline when descriptionUpdatedBy exists', () => {
+  it('shows byline when expanded and descriptionUpdatedBy exists', async () => {
     renderWithProvider()
+    // Expand the description
+    const toggleBtn = screen.getByRole('button')
+    await userEvent.click(toggleBtn)
     expect(screen.getByText(/Last edited by Bob/)).toBeInTheDocument()
   })
 
-  it('client mode: no edit interaction, no byline', () => {
+  it('client mode: shows description text, no byline, expand toggle still works', async () => {
     renderWithProvider({ clientMode: true })
-    // Description text is visible
+    // Description preview text is visible
     expect(
       screen.getByText(
         'This is the task description with details about the bug.',
       ),
     ).toBeInTheDocument()
-    // No byline
+    // Expand to check no byline
+    const toggleBtn = screen.getByRole('button')
+    await userEvent.click(toggleBtn)
+    // No byline in client mode
     expect(screen.queryByText(/Last edited by/)).not.toBeInTheDocument()
-    // No button role on the description (read-only)
-    expect(screen.queryByRole('button')).not.toBeInTheDocument()
   })
 
   it('empty state renders placeholder for staff', () => {
     renderWithProvider({
       task: { ...mockTask, description: '', descriptionUpdatedBy: undefined },
     })
-    expect(screen.getByText('Add a description...')).toBeInTheDocument()
+    expect(
+      screen.getByText('+ Add a description...'),
+    ).toBeInTheDocument()
   })
 
   it('empty state renders nothing for client', () => {
@@ -103,10 +110,16 @@ describe('TaskPanelDescription', () => {
     expect(container.innerHTML).toBe('')
   })
 
-  it('clicking description in staff mode enters edit mode', async () => {
+  it('clicking description text in staff mode enters edit mode', async () => {
     renderWithProvider()
-    const descButton = screen.getByRole('button')
-    await userEvent.click(descButton)
+    // First expand the description
+    const toggleBtn = screen.getByText('Description').closest('button')!
+    await userEvent.click(toggleBtn)
+    // Now click the description text (which has role="button" tabIndex=0)
+    const descText = screen.getByText(
+      'This is the task description with details about the bug.',
+    )
+    await userEvent.click(descText)
     expect(screen.getByRole('textbox')).toBeInTheDocument()
   })
 })

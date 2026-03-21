@@ -1,10 +1,51 @@
 'use client'
 
 import * as React from 'react'
-import { IconPaperclip, IconMoodSmile, IconSend } from '@tabler/icons-react'
+import { IconPaperclip, IconMoodSmile, IconSend, IconAlertTriangle } from '@tabler/icons-react'
 import { cn } from '@/ui/lib/utils'
 import { Button } from '@/ui/button'
 import { useTaskPanel } from './task-panel-context'
+
+// ---------------------------------------------------------------------------
+// AuthorTypeToggle
+// ---------------------------------------------------------------------------
+
+function AuthorTypeToggle({
+  value,
+  onChange,
+}: {
+  value: 'INTERNAL' | 'CLIENT'
+  onChange: (v: 'INTERNAL' | 'CLIENT') => void
+}) {
+  return (
+    <div className="inline-flex items-center rounded-ds-md bg-surface-sunken p-ds-01">
+      <button
+        type="button"
+        onClick={() => onChange('INTERNAL')}
+        className={cn(
+          'rounded-ds-sm px-ds-03 py-ds-01 text-ds-xs font-medium transition-colors',
+          value === 'INTERNAL'
+            ? 'bg-surface-raised text-surface-fg shadow-sm'
+            : 'text-surface-fg-subtle hover:text-surface-fg',
+        )}
+      >
+        Team
+      </button>
+      <button
+        type="button"
+        onClick={() => onChange('CLIENT')}
+        className={cn(
+          'rounded-ds-sm px-ds-03 py-ds-01 text-ds-xs font-medium transition-colors',
+          value === 'CLIENT'
+            ? 'bg-surface-raised text-surface-fg shadow-sm'
+            : 'text-surface-fg-subtle hover:text-surface-fg',
+        )}
+      >
+        Client
+      </button>
+    </div>
+  )
+}
 
 // ---------------------------------------------------------------------------
 // TaskPanelMessageInput
@@ -17,12 +58,21 @@ export function TaskPanelMessageInput({
   className,
   ...props
 }: TaskPanelMessageInputProps) {
-  const { onPostComment, clientMode, mode } = useTaskPanel()
+  const { onPostComment, clientMode, mode, task } = useTaskPanel()
   const [text, setText] = React.useState('')
+  const [authorType, setAuthorType] = React.useState<'INTERNAL' | 'CLIENT'>(
+    clientMode ? 'CLIENT' : 'INTERNAL',
+  )
   const textareaRef = React.useRef<HTMLTextAreaElement>(null)
 
   // Hidden in peek mode
   if (mode === 'peek') return null
+
+  const showAuthorToggle =
+    !clientMode && task.visibility === 'EVERYONE'
+
+  const showVisibilityWarning =
+    !clientMode && task.visibility === 'EVERYONE'
 
   const adjustHeight = React.useCallback(() => {
     const el = textareaRef.current
@@ -34,12 +84,13 @@ export function TaskPanelMessageInput({
   const handleSend = React.useCallback(() => {
     const trimmed = text.trim()
     if (!trimmed) return
-    onPostComment(trimmed)
+    onPostComment(trimmed, clientMode ? 'CLIENT' : authorType)
     setText('')
+    setAuthorType(clientMode ? 'CLIENT' : 'INTERNAL')
     if (textareaRef.current) {
       textareaRef.current.style.height = 'auto'
     }
-  }, [text, onPostComment])
+  }, [text, onPostComment, authorType, clientMode])
 
   const handleKeyDown = React.useCallback(
     (e: React.KeyboardEvent<HTMLTextAreaElement>) => {
@@ -63,6 +114,21 @@ export function TaskPanelMessageInput({
       )}
       {...props}
     >
+      {/* Visibility warning */}
+      {showVisibilityWarning && (
+        <div className="mb-ds-02 flex items-center gap-ds-02 text-ds-xs text-warning-11">
+          <IconAlertTriangle className="h-3 w-3 shrink-0" />
+          <span>This task is visible to clients.</span>
+        </div>
+      )}
+
+      {/* Author type toggle */}
+      {showAuthorToggle && (
+        <div className="mb-ds-02">
+          <AuthorTypeToggle value={authorType} onChange={setAuthorType} />
+        </div>
+      )}
+
       <div className="flex items-end gap-ds-02 rounded-ds-xl border border-surface-border bg-surface-base p-ds-03">
         <textarea
           ref={textareaRef}
@@ -73,7 +139,11 @@ export function TaskPanelMessageInput({
           }}
           onKeyDown={handleKeyDown}
           placeholder={
-            clientMode ? 'Post a comment...' : 'Write a message...'
+            clientMode
+              ? 'Post a comment...'
+              : authorType === 'CLIENT'
+                ? 'Write as client...'
+                : 'Write a message...'
           }
           aria-label="Message input"
           rows={1}

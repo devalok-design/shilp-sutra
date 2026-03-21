@@ -109,18 +109,18 @@ export function TimelineComment({
           >
             {author.type === 'CLIENT' ? 'Client' : 'Team'}
           </Badge>
-          <span className="text-ds-xs text-surface-fg-subtle">
+          <span className="text-ds-xs text-surface-fg-subtle/70">
             {formatTimestamp(comment.createdAt)}
           </span>
         </div>
 
-        {/* Content — rendered as text; consumer should sanitize if passing HTML */}
+        {/* Content — supports HTML; consumer MUST sanitize content before passing */}
+        {/* eslint-disable-next-line react/no-danger -- consumer responsibility to sanitize */}
         <div
-          className="mt-ds-01 text-ds-sm text-surface-fg"
+          className="mt-ds-01 max-w-[65ch] text-ds-sm text-surface-fg whitespace-pre-wrap"
           data-testid="comment-content"
-        >
-          {comment.content}
-        </div>
+          dangerouslySetInnerHTML={{ __html: comment.content }}
+        />
 
         {/* Reactions row */}
         {reactions && reactions.length > 0 && (

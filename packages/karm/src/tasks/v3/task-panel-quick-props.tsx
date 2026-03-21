@@ -580,7 +580,7 @@ export function TaskPanelQuickProps({
   const interactive = !clientMode
 
   return (
-    <div className={cn('px-ds-05 py-ds-04', className)} {...props}>
+    <div className={cn('px-ds-05 pt-ds-03 pb-ds-02', className)} {...props}>
       {/* Property pills */}
       <div className="flex flex-wrap items-center gap-ds-03">
         <StatusPill interactive={interactive} />

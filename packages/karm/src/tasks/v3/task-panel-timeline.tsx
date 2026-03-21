@@ -409,7 +409,7 @@ export function TaskPanelTimeline({
         onScroll={handleScroll}
         className="flex-1 overflow-y-auto px-ds-05 py-ds-04"
       >
-        <div className="flex flex-col gap-ds-05 py-ds-02">
+        <div className="flex flex-col gap-ds-05 py-ds-03">
           {displayItems.map((item, idx) => {
             if (item.kind === 'collapsed') {
               // Check if unread divider should appear before this group

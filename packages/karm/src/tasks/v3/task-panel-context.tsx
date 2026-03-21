@@ -26,7 +26,7 @@ export interface TaskPanelContextValue {
   onUpdatePriority: (priority: string) => void
   onUpdateAssignee: (memberId: string | null) => void
   onUpdateDueDate: (date: Date | null) => void
-  onPostComment: (content: string) => void
+  onPostComment: (content: string, authorType?: 'INTERNAL' | 'CLIENT') => void
   onToggleSubtask: (subtaskId: string) => void
   onAddSubtask: (title: string) => void
   onApproveReview: () => void
@@ -82,7 +82,7 @@ export interface TaskPanelProviderProps {
   onUpdatePriority?: (priority: string) => void
   onUpdateAssignee?: (memberId: string | null) => void
   onUpdateDueDate?: (date: Date | null) => void
-  onPostComment?: (content: string) => void
+  onPostComment?: (content: string, authorType?: 'INTERNAL' | 'CLIENT') => void
   onToggleSubtask?: (subtaskId: string) => void
   onAddSubtask?: (title: string) => void
   onApproveReview?: () => void

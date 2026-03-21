@@ -318,7 +318,6 @@ function TaskPanelDemo({
     <div className="flex h-full flex-col">
       <TaskPanel.Header />
       <TaskPanel.QuickProps />
-      {!clientMode && <TaskPanel.ReviewBanner />}
       <div className="flex flex-1 flex-col overflow-hidden">
         <TaskPanel.Description />
         {mode !== 'peek' && <TaskPanel.Subtasks />}
@@ -363,7 +362,7 @@ function TaskPanelDemo({
         </button>
       </div>
 
-      {/* Panel */}
+      {/* Panel — wings render automatically alongside the sheet */}
       <TaskPanel
         mode={mode}
         open={open}
@@ -391,19 +390,19 @@ function TaskPanelDemo({
 // Stories
 // ============================================================
 
-/** Click the task card to open the side panel. Full staff experience with review banner, timeline, reactions, and typing indicator. */
+/** Click the task card to open the side panel. Staff experience with wing panels (review + properties) appearing to the left. */
 export const SidePanelStaff: Story = {
   render: () => (
     <TaskPanelDemo
       mode="side"
-      label="Click the task card below to open the side panel (staff view)"
+      label="Click the task card below to open the side panel (staff view). Review and properties wings appear to the left."
       lastViewedAt={hoursAgo(4)}
       typingUsers={[{ name: 'Priya Mehta', image: null }]}
     />
   ),
 }
 
-/** Client perspective — no system events, no internal comments, read-only properties. */
+/** Client perspective — no system events, no internal comments, read-only properties. No review wing. */
 export const SidePanelClient: Story = {
   render: () => (
     <TaskPanelDemo
@@ -464,6 +463,26 @@ export const EmptyTask: Story = {
         task={emptyTask}
         timeline={[]}
         label="Click the task card below to see empty states"
+      />
+    )
+  },
+}
+
+/** Staff side panel with no review — only properties wing visible. */
+export const SidePanelNoReview: Story = {
+  render: () => {
+    const noReviewTask: TaskPanelTask = {
+      ...mockTask,
+      isInReview: false,
+      reviewSubmittedBy: undefined,
+    }
+
+    return (
+      <TaskPanelDemo
+        mode="side"
+        task={noReviewTask}
+        label="Click the task card — only properties wing appears (no review in progress)"
+        lastViewedAt={hoursAgo(4)}
       />
     )
   },

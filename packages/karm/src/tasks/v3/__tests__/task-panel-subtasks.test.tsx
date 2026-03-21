@@ -75,10 +75,16 @@ function renderWithProvider(
 // ---------------------------------------------------------------------------
 
 describe('TaskPanelSubtasks', () => {
-  it('renders subtask list with correct count', () => {
+  it('renders collapsed strip with correct count', () => {
     renderWithProvider()
     expect(screen.getByText('Subtasks')).toBeInTheDocument()
     expect(screen.getByText('1/2')).toBeInTheDocument()
+  })
+
+  it('expands to show subtask items on click', async () => {
+    renderWithProvider()
+    // Click the strip to expand
+    await userEvent.click(screen.getByText('Subtasks'))
     expect(screen.getByText('Write tests')).toBeInTheDocument()
     expect(screen.getByText('Fix bug')).toBeInTheDocument()
   })
@@ -86,6 +92,9 @@ describe('TaskPanelSubtasks', () => {
   it('toggle calls onToggleSubtask', async () => {
     const onToggleSubtask = vi.fn()
     renderWithProvider({ onToggleSubtask })
+
+    // Expand first
+    await userEvent.click(screen.getByText('Subtasks'))
 
     const checkboxes = screen.getAllByRole('checkbox')
     await userEvent.click(checkboxes[0])
@@ -97,29 +106,33 @@ describe('TaskPanelSubtasks', () => {
     expect(container.innerHTML).toBe('')
   })
 
-  it('client mode: checkboxes disabled', () => {
+  it('client mode: expands and shows disabled checkboxes', async () => {
     renderWithProvider({ clientMode: true })
+
+    // Expand
+    await userEvent.click(screen.getByText('Subtasks'))
+
     const checkboxes = screen.getAllByRole('checkbox')
     checkboxes.forEach((cb) => {
       expect(cb).toBeDisabled()
     })
   })
 
-  it('empty state shows "Break this into steps" for staff', () => {
+  it('empty state shows add prompt for staff', () => {
     renderWithProvider({
       task: { ...mockTask, subtasks: [] },
     })
-    expect(screen.getByText('+ Break this into steps')).toBeInTheDocument()
+    expect(
+      screen.getByText('+ Break this into subtasks'),
+    ).toBeInTheDocument()
   })
 
-  it('empty state shows "No subtasks" for client', () => {
-    renderWithProvider({
+  it('empty state renders nothing for client', () => {
+    const { container } = renderWithProvider({
       task: { ...mockTask, subtasks: [] },
       clientMode: true,
     })
-    expect(screen.getByText('No subtasks')).toBeInTheDocument()
-    expect(
-      screen.queryByText('+ Break this into steps'),
-    ).not.toBeInTheDocument()
+    // Component returns null for empty + client
+    expect(container.innerHTML).toBe('')
   })
 })

@@ -64,6 +64,19 @@ const NAMED_PRESETS: { hex: string; label: string }[] = [
   { hex: '#6366F1', label: 'Indigo' },
 ]
 
+// ── Contrast helper ──
+
+function isLightColor(hex: string): boolean {
+  const rgb = hexToRgb(hex)
+  if (!rgb) return false
+  // Relative luminance (sRGB)
+  const [r, g, b] = [rgb.r, rgb.g, rgb.b].map((c) => {
+    const s = c / 255
+    return s <= 0.03928 ? s / 12.92 : Math.pow((s + 0.055) / 1.055, 2.4)
+  })
+  return 0.2126 * r + 0.7152 * g + 0.0722 * b > 0.4
+}
+
 // ── Format mode type ──
 
 type ColorFormat = 'hex' | 'rgb' | 'hsl'
@@ -85,6 +98,12 @@ export interface ColorInputProps extends Omit<React.HTMLAttributes<HTMLDivElemen
   defaultFormat?: ColorFormat
   /** Popover alignment. Default: 'start'. */
   align?: 'start' | 'center' | 'end'
+  /**
+   * Trigger style variant.
+   * - `default`: Swatch bleeds to left edge + hex text
+   * - `inline`: Entire trigger is the selected color with hex text overlaid
+   */
+  variant?: 'default' | 'inline'
 }
 
 // ── Small format input ──
@@ -143,6 +162,7 @@ const ColorInput = React.forwardRef<HTMLDivElement, ColorInputProps>(
     showPicker = true,
     defaultFormat = 'hex',
     align = 'start',
+    variant = 'default',
     className,
     ...props
   }, ref) => {
@@ -198,26 +218,45 @@ const ColorInput = React.forwardRef<HTMLDivElement, ColorInputProps>(
       <div ref={ref} className={cn('inline-flex flex-col', className)} {...props}>
         <Popover open={open} onOpenChange={disabled ? undefined : setOpen}>
           <PopoverTrigger asChild>
-            <button
-              type="button"
-              disabled={disabled}
-              className={cn(
-                'group flex items-center gap-ds-03 rounded-ds-md border border-surface-border-strong bg-surface-overlay px-ds-03 py-ds-02 transition-colors',
-                'hover:border-accent-7 focus:border-accent-7 focus:outline-none focus:ring-1 focus:ring-accent-9',
-                disabled && 'cursor-not-allowed opacity-50',
-              )}
-              aria-label={`Color picker: ${value}`}
-            >
-              {/* Color swatch */}
-              <span
-                className="h-6 w-6 shrink-0 rounded-ds-sm border border-surface-border shadow-sm"
-                style={{ backgroundColor: value }}
-              />
-              {/* Hex value */}
-              <span className="font-mono text-ds-sm text-surface-fg">
+            {variant === 'inline' ? (
+              <button
+                type="button"
+                disabled={disabled}
+                className={cn(
+                  'group flex items-center justify-center rounded-ds-md px-ds-04 py-ds-02 font-mono text-ds-sm font-medium transition-all',
+                  'hover:shadow-raised-hover hover:-translate-y-px focus:outline-none focus:ring-2 focus:ring-accent-9 focus:ring-offset-2 focus:ring-offset-surface-base',
+                  disabled && 'cursor-not-allowed opacity-50',
+                )}
+                style={{
+                  backgroundColor: value,
+                  color: isLightColor(value) ? 'rgba(0,0,0,0.8)' : 'rgba(255,255,255,0.95)',
+                }}
+                aria-label={`Color picker: ${value}`}
+              >
                 {value.toUpperCase()}
-              </span>
-            </button>
+              </button>
+            ) : (
+              <button
+                type="button"
+                disabled={disabled}
+                className={cn(
+                  'group flex items-center overflow-hidden rounded-ds-md border border-surface-border-strong bg-surface-overlay transition-colors',
+                  'hover:border-accent-7 focus:border-accent-7 focus:outline-none focus:ring-1 focus:ring-accent-9',
+                  disabled && 'cursor-not-allowed opacity-50',
+                )}
+                aria-label={`Color picker: ${value}`}
+              >
+                {/* Color swatch — flush left, full height */}
+                <span
+                  className="h-full w-8 shrink-0 self-stretch"
+                  style={{ backgroundColor: value }}
+                />
+                {/* Hex value */}
+                <span className="px-ds-03 py-ds-02 font-mono text-ds-sm text-surface-fg">
+                  {value.toUpperCase()}
+                </span>
+              </button>
+            )}
           </PopoverTrigger>
 
           <PopoverContent

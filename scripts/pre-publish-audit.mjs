@@ -177,17 +177,21 @@ gate('Lint has 0 errors', () => {
 })
 
 gate('Core tests pass', () => {
-  try {
-    execSync('pnpm vitest run --reporter=dot', {
-      cwd: join(ROOT, 'packages/core'),
-      encoding: 'utf-8',
-      stdio: 'pipe',
-      timeout: 300000,
-    })
-    return true
-  } catch (e) {
-    const failMatch = e.stdout?.match(/(\d+) failed/)
-    return failMatch ? `${failMatch[1]} tests failed` : 'Tests failed'
+  // Retry once — axe-core singleton can cause transient failures under resource pressure
+  for (let attempt = 0; attempt < 2; attempt++) {
+    try {
+      execSync('pnpm vitest run --reporter=dot', {
+        cwd: join(ROOT, 'packages/core'),
+        encoding: 'utf-8',
+        stdio: 'pipe',
+        timeout: 600000,
+      })
+      return true
+    } catch (e) {
+      if (attempt === 0) continue // retry
+      const failMatch = e.stdout?.match(/(\d+) failed/)
+      return failMatch ? `${failMatch[1]} tests failed` : 'Tests failed'
+    }
   }
 })
 

@@ -471,10 +471,7 @@ export function TaskPanelTimeline({
         <div className="relative pt-ds-04 pb-ds-02">
           <FilterBar value={filter} onChange={setFilter} />
           {/* Soft fade gradient below filters */}
-          <div
-            className="pointer-events-none absolute bottom-0 left-0 right-0 h-ds-04"
-            style={{ background: 'linear-gradient(to bottom, var(--color-surface-raised), transparent)' }}
-          />
+          <div className="pointer-events-none absolute bottom-0 left-0 right-0 h-6 bg-gradient-to-b from-surface-raised to-transparent" />
         </div>
       )}
 

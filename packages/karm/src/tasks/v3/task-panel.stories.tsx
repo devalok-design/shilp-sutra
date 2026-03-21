@@ -280,6 +280,8 @@ const sharedCallbacks = {
   onToggleVisibility: fn(),
   onToggleSubtask: fn(),
   onAddSubtask: fn(),
+  onAddLabel: fn(),
+  onRemoveLabel: fn(),
   onApproveReview: fn(),
   onRequestChanges: fn(),
   onEditComment: fn(),
@@ -335,16 +337,26 @@ function TaskPanelDemo({
   }
 
   const panelContent = (
-    <div className="flex h-full flex-col">
-      <TaskPanel.Header />
-      {mode === 'peek' && <TaskPanel.QuickProps />}
-      <div className="flex flex-1 flex-col overflow-hidden">
-        <TaskPanel.Description />
-        {mode !== 'peek' && <TaskPanel.Subtasks />}
-        <TaskPanel.Timeline />
+    <>
+      {/* Wings — composable, positioned to the left of the sheet */}
+      {mode === 'side' && !clientMode && (
+        <TaskPanel.Wings>
+          {task.isInReview && <TaskPanel.ReviewCard />}
+          <TaskPanel.PropertiesCard />
+        </TaskPanel.Wings>
+      )}
+
+      <div className="flex h-full flex-col">
+        <TaskPanel.Header />
+        {mode === 'peek' && <TaskPanel.QuickProps />}
+        <div className="flex flex-1 flex-col overflow-hidden">
+          <TaskPanel.Description />
+          {mode !== 'peek' && <TaskPanel.Subtasks />}
+          <TaskPanel.Timeline />
+        </div>
+        {mode !== 'peek' && <TaskPanel.MessageInput />}
       </div>
-      {mode !== 'peek' && <TaskPanel.MessageInput />}
-    </div>
+    </>
   )
 
   return (
@@ -382,7 +394,7 @@ function TaskPanelDemo({
         </button>
       </div>
 
-      {/* Panel — wings render automatically alongside the sheet */}
+      {/* Panel — wings render as composable children */}
       <TaskPanel
         mode={mode}
         open={open}
@@ -396,7 +408,15 @@ function TaskPanelDemo({
       >
         {mode === 'full' ? (
           <div className="mx-auto flex h-full max-w-3xl flex-col">
-            {panelContent}
+            <div className="flex h-full flex-col">
+              <TaskPanel.Header />
+              <div className="flex flex-1 flex-col overflow-hidden">
+                <TaskPanel.Description />
+                <TaskPanel.Subtasks />
+                <TaskPanel.Timeline />
+              </div>
+              <TaskPanel.MessageInput />
+            </div>
           </div>
         ) : (
           panelContent

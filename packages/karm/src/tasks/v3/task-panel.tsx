@@ -10,6 +10,9 @@ import { TaskPanelDescription } from './task-panel-description'
 import { TaskPanelSubtasks } from './task-panel-subtasks'
 import { TaskPanelTimeline } from './task-panel-timeline'
 import { TaskPanelMessageInput } from './task-panel-message-input'
+import { TaskPanelWings } from './task-panel-wings'
+import { TaskPanelReviewCard } from './task-panel-wing-review'
+import { TaskPanelPropertiesCard } from './task-panel-wing-properties'
 
 // ---------------------------------------------------------------------------
 // Layout wrappers
@@ -53,4 +56,7 @@ export const TaskPanel = Object.assign(TaskPanelRoot, {
   MessageInput: TaskPanelMessageInput,
   Body: TaskPanelBody,
   Content: TaskPanelContent,
+  Wings: TaskPanelWings,
+  ReviewCard: TaskPanelReviewCard,
+  PropertiesCard: TaskPanelPropertiesCard,
 })

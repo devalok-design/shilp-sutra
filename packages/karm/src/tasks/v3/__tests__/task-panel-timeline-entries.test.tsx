@@ -126,7 +126,8 @@ describe('TimelineComment', () => {
       />,
     )
     expect(screen.getByTestId('comment-author')).toHaveTextContent('Mudit Gupta')
-    expect(screen.getByTestId('comment-badge')).toHaveTextContent('Team')
+    // Internal comments don't show a badge — only CLIENT comments get a "Client" badge
+    expect(screen.queryByTestId('comment-badge')).not.toBeInTheDocument()
     expect(screen.getByTestId('comment-content')).toHaveTextContent('This looks great!')
     // Avatar fallback should show initials
     expect(screen.getByText('MG')).toBeInTheDocument()

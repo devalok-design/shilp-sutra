@@ -33,6 +33,8 @@ export interface TaskPanelContextValue {
   onToggleVisibility: () => void
   onToggleSubtask: (subtaskId: string) => void
   onAddSubtask: (title: string) => void
+  onAddLabel: (label: string) => void
+  onRemoveLabel: (label: string) => void
   onApproveReview: () => void
   onRequestChanges: (comment: string) => void
   onEditComment: (commentId: string, newContent: string) => void
@@ -95,6 +97,8 @@ export interface TaskPanelProviderProps {
   onToggleVisibility?: () => void
   onToggleSubtask?: (subtaskId: string) => void
   onAddSubtask?: (title: string) => void
+  onAddLabel?: (label: string) => void
+  onRemoveLabel?: (label: string) => void
   onApproveReview?: () => void
   onRequestChanges?: (comment: string) => void
   onEditComment?: (commentId: string, newContent: string) => void
@@ -136,6 +140,8 @@ export function TaskPanelProvider({
       onToggleVisibility: value.onToggleVisibility ?? noop,
       onToggleSubtask: value.onToggleSubtask ?? noop,
       onAddSubtask: value.onAddSubtask ?? noop,
+      onAddLabel: value.onAddLabel ?? noop,
+      onRemoveLabel: value.onRemoveLabel ?? noop,
       onApproveReview: value.onApproveReview ?? noop,
       onRequestChanges: value.onRequestChanges ?? noop,
       onEditComment: value.onEditComment ?? noop,
@@ -169,6 +175,8 @@ export function TaskPanelProvider({
       value.onToggleVisibility,
       value.onToggleSubtask,
       value.onAddSubtask,
+      value.onAddLabel,
+      value.onRemoveLabel,
       value.onApproveReview,
       value.onRequestChanges,
       value.onEditComment,

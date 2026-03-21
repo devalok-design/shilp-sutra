@@ -18,6 +18,9 @@ export {
   TaskPanelMessageInput,
   type TaskPanelMessageInputProps,
 } from './task-panel-message-input'
+export { TaskPanelWings, type TaskPanelWingsProps } from './task-panel-wings'
+export { TaskPanelReviewCard } from './task-panel-wing-review'
+export { TaskPanelPropertiesCard } from './task-panel-wing-properties'
 
 // Context
 export {

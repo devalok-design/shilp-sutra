@@ -171,10 +171,48 @@ const ColorInput = React.forwardRef<HTMLDivElement, ColorInputProps>(
     const [format, setFormat] = React.useState<ColorFormat>(defaultFormat)
     const [open, setOpen] = React.useState(false)
 
+    // Internal color state — syncs with prop, allows uncontrolled use
+    const [internalColor, setInternalColor] = React.useState(value)
+    React.useEffect(() => { setInternalColor(value) }, [value])
+
+    // Track color when popover opened (for reset) + undo history
+    const [openColor, setOpenColor] = React.useState(value)
+    const [undoStack, setUndoStack] = React.useState<string[]>([])
+
+    const handleOpenChange = (isOpen: boolean) => {
+      if (disabled) return
+      if (isOpen) {
+        setOpenColor(internalColor)
+        setUndoStack([])
+      }
+      setOpen(isOpen)
+    }
+
     const handleChange = (newValue: string) => {
       if (disabled) return
       const normalized = newValue.startsWith('#') ? newValue : `#${newValue}`
-      onChange?.(normalized.toLowerCase())
+      const hex = normalized.toLowerCase()
+      // Push current color to undo stack (debounce: skip if same as last)
+      setUndoStack((prev) => {
+        if (prev[prev.length - 1] === internalColor) return prev
+        return [...prev.slice(-19), internalColor]
+      })
+      setInternalColor(hex)
+      onChange?.(hex)
+    }
+
+    const handleUndo = () => {
+      if (undoStack.length === 0) return
+      const prev = undoStack[undoStack.length - 1]
+      setUndoStack((s) => s.slice(0, -1))
+      setInternalColor(prev)
+      onChange?.(prev)
+    }
+
+    const handleReset = () => {
+      setInternalColor(openColor)
+      onChange?.(openColor)
+      setUndoStack([])
     }
 
     // Resolve presets
@@ -186,9 +224,9 @@ const ColorInput = React.forwardRef<HTMLDivElement, ColorInputProps>(
           )
         : NAMED_PRESETS
 
-    // Parsed color values
-    const rgb = hexToRgb(value)
-    const hsl = hexToHsl(value)
+    // Parsed color values — use internal state
+    const rgb = hexToRgb(internalColor)
+    const hsl = hexToHsl(internalColor)
 
     // RGB field handlers
     const handleRgbChange = (channel: 'r' | 'g' | 'b', v: string) => {
@@ -218,7 +256,7 @@ const ColorInput = React.forwardRef<HTMLDivElement, ColorInputProps>(
 
     return (
       <div ref={ref} className={cn('inline-flex flex-col', className)} {...props}>
-        <Popover open={open} onOpenChange={disabled ? undefined : setOpen}>
+        <Popover open={open} onOpenChange={handleOpenChange}>
           <PopoverTrigger asChild>
             {variant === 'inline' ? (
               <motion.button
@@ -230,15 +268,15 @@ const ColorInput = React.forwardRef<HTMLDivElement, ColorInputProps>(
                   disabled && 'cursor-not-allowed opacity-50',
                 )}
                 animate={{
-                  backgroundColor: value,
-                  color: isLightColor(value) ? 'rgba(0,0,0,0.8)' : 'rgba(255,255,255,0.95)',
+                  backgroundColor: internalColor,
+                  color: isLightColor(internalColor) ? 'rgba(0,0,0,0.8)' : 'rgba(255,255,255,0.95)',
                 }}
                 whileHover={{ y: -1, boxShadow: '0 4px 12px rgba(0,0,0,0.12)' }}
                 whileTap={{ scale: 0.97 }}
                 transition={springs.smooth}
-                aria-label={`Color picker: ${value}`}
+                aria-label={`Color picker: ${internalColor}`}
               >
-                {value.toUpperCase()}
+                {internalColor.toUpperCase()}
               </motion.button>
             ) : (
               <motion.button
@@ -252,13 +290,13 @@ const ColorInput = React.forwardRef<HTMLDivElement, ColorInputProps>(
                 whileHover={{ scale: 1.02 }}
                 whileTap={{ scale: 0.98 }}
                 transition={springs.snappy}
-                aria-label={`Color picker: ${value}`}
+                aria-label={`Color picker: ${internalColor}`}
               >
                 {/* Gradient background: color → surface */}
                 <motion.span
                   className="absolute inset-0"
                   animate={{
-                    background: `linear-gradient(to right, ${value} 0%, ${value} 35%, transparent 70%)`,
+                    background: `linear-gradient(to right, ${internalColor} 0%, ${internalColor} 35%, transparent 70%)`,
                   }}
                   transition={{ duration: 0.3 }}
                 />
@@ -268,7 +306,7 @@ const ColorInput = React.forwardRef<HTMLDivElement, ColorInputProps>(
                 }} />
                 {/* Hex value */}
                 <span className="relative z-10 py-ds-02 pl-6 pr-ds-03 font-mono text-ds-sm text-surface-fg">
-                  {value.toUpperCase()}
+                  {internalColor.toUpperCase()}
                 </span>
               </motion.button>
             )}
@@ -284,7 +322,7 @@ const ColorInput = React.forwardRef<HTMLDivElement, ColorInputProps>(
               {showPicker && (
                 <div className="p-ds-04 pb-ds-03">
                   <HexColorPicker
-                    color={value}
+                    color={internalColor}
                     onChange={handleChange}
                     className="!w-full"
                     style={{ height: 160 }}
@@ -333,7 +371,7 @@ const ColorInput = React.forwardRef<HTMLDivElement, ColorInputProps>(
                     >
                       <FormatInput
                         label="Hex"
-                        value={value.replace('#', '').toUpperCase()}
+                        value={internalColor.replace('#', '').toUpperCase()}
                         onChange={(v) => {
                           const clean = v.replace(/[^0-9a-fA-F]/g, '').slice(0, 6)
                           if (clean.length === 6) handleChange(`#${clean}`)
@@ -383,7 +421,7 @@ const ColorInput = React.forwardRef<HTMLDivElement, ColorInputProps>(
                 <div className="border-t border-surface-border px-ds-04 py-ds-03">
                   <div className="flex flex-wrap gap-ds-02">
                     {resolvedPresets.map((preset, i) => {
-                      const isSelected = value.toLowerCase() === preset.hex.toLowerCase()
+                      const isSelected = internalColor.toLowerCase() === preset.hex.toLowerCase()
                       return (
                         <motion.button
                           key={preset.hex}
@@ -410,6 +448,45 @@ const ColorInput = React.forwardRef<HTMLDivElement, ColorInputProps>(
                     })}
                   </div>
                 </div>
+              )}
+
+              {/* Reset / Undo footer */}
+              {(undoStack.length > 0 || internalColor !== openColor) && (
+                <motion.div
+                  initial={{ opacity: 0, height: 0 }}
+                  animate={{ opacity: 1, height: 'auto' }}
+                  exit={{ opacity: 0, height: 0 }}
+                  className="flex items-center gap-ds-02 border-t border-surface-border px-ds-04 py-ds-02"
+                >
+                  {/* Original color preview */}
+                  <span
+                    className="h-4 w-4 shrink-0 rounded-full border border-surface-border"
+                    style={{ backgroundColor: openColor }}
+                    title={`Original: ${openColor}`}
+                  />
+                  <span className="text-[10px] text-surface-fg-muted">
+                    {openColor.toUpperCase()}
+                  </span>
+                  <span className="flex-1" />
+                  {undoStack.length > 0 && (
+                    <button
+                      type="button"
+                      onClick={handleUndo}
+                      className="rounded-ds-sm px-ds-02 py-px text-[10px] font-medium text-surface-fg-muted transition-colors hover:text-surface-fg"
+                    >
+                      Undo
+                    </button>
+                  )}
+                  {internalColor !== openColor && (
+                    <button
+                      type="button"
+                      onClick={handleReset}
+                      className="rounded-ds-sm px-ds-02 py-px text-[10px] font-medium text-surface-fg-muted transition-colors hover:text-error-11"
+                    >
+                      Reset
+                    </button>
+                  )}
+                </motion.div>
               )}
             </div>
           </PopoverContent>

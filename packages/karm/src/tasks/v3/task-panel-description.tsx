@@ -80,7 +80,7 @@ export function TaskPanelDescription({
   // Empty + staff: compact add prompt
   if (isEmpty && !clientMode) {
     return (
-      <div className={cn('px-ds-05', className)} {...props}>
+      <div className={cn('px-ds-06', className)} {...props}>
         <button
           type="button"
           className="w-full rounded-ds-md border border-dashed border-surface-border px-ds-04 py-ds-03 text-left text-ds-sm text-surface-fg-subtle italic transition-colors hover:border-surface-border-strong hover:text-surface-fg"
@@ -109,7 +109,7 @@ export function TaskPanelDescription({
 
   // Has content — collapsed by default (2-line preview), expandable
   return (
-    <div className={cn('px-ds-05', className)} {...props}>
+    <div className={cn('px-ds-06', className)} {...props}>
       <button
         type="button"
         onClick={() => setExpanded(!expanded)}

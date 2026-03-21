@@ -407,7 +407,7 @@ export function TaskPanelTimeline({
       <div
         ref={scrollRef}
         onScroll={handleScroll}
-        className="flex-1 overflow-y-auto px-ds-05 py-ds-04"
+        className="flex-1 overflow-y-auto px-ds-06 py-ds-04"
       >
         <div className="flex flex-col gap-ds-05 py-ds-03">
           {displayItems.map((item, idx) => {

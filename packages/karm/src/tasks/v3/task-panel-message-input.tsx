@@ -109,7 +109,7 @@ export function TaskPanelMessageInput({
   return (
     <div
       className={cn(
-        'border-t border-surface-border-subtle px-ds-04 py-ds-03',
+        'border-t border-surface-border-subtle px-ds-06 py-ds-04',
         className,
       )}
       {...props}

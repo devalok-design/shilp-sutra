@@ -317,7 +317,7 @@ function TaskPanelDemo({
   const panelContent = (
     <div className="flex h-full flex-col">
       <TaskPanel.Header />
-      <TaskPanel.QuickProps />
+      {mode === 'peek' && <TaskPanel.QuickProps />}
       <div className="flex flex-1 flex-col overflow-hidden">
         <TaskPanel.Description />
         {mode !== 'peek' && <TaskPanel.Subtasks />}

@@ -1,7 +1,15 @@
 'use client'
 
 import * as React from 'react'
-import { IconEye, IconCheck } from '@tabler/icons-react'
+import {
+  IconEye,
+  IconCheck,
+  IconUser,
+  IconAlertTriangleFilled,
+  IconArrowUp,
+  IconArrowDown,
+  IconMinus,
+} from '@tabler/icons-react'
 import { AnimatePresence, motion } from 'framer-motion'
 import { cn } from '@/ui/lib/utils'
 import { Sheet, SheetContent, SheetTitle } from '@/ui/sheet'
@@ -9,6 +17,7 @@ import { VisuallyHidden } from '@/ui/visually-hidden'
 import { Button } from '@/ui/button'
 import { Avatar, AvatarImage, AvatarFallback } from '@/ui/avatar'
 import { Badge } from '@/ui/badge'
+import { Popover, PopoverTrigger, PopoverContent } from '@/ui/popover'
 import { tweens } from '@/ui/lib/motion'
 import { useTaskPanel } from './task-panel-context'
 import type { TaskPanelTask } from './task-panel-types'
@@ -48,19 +57,29 @@ function getInitials(name: string): string {
 // Priority display config
 // ---------------------------------------------------------------------------
 
-const PRIORITY_LABELS: Record<TaskPanelTask['priority'], string> = {
-  URGENT: 'Urgent',
-  HIGH: 'High',
-  MEDIUM: 'Medium',
-  LOW: 'Low',
+type Priority = TaskPanelTask['priority']
+
+const PRIORITIES: Priority[] = ['URGENT', 'HIGH', 'MEDIUM', 'LOW']
+
+const PRIORITY_CONFIG: Record<
+  Priority,
+  { icon: React.ElementType; className: string; label: string }
+> = {
+  URGENT: { icon: IconAlertTriangleFilled, className: 'text-error-9', label: 'Urgent' },
+  HIGH: { icon: IconArrowUp, className: 'text-warning-9', label: 'High' },
+  MEDIUM: { icon: IconMinus, className: 'text-surface-fg-muted', label: 'Medium' },
+  LOW: { icon: IconArrowDown, className: 'text-surface-fg-subtle', label: 'Low' },
 }
 
-const PRIORITY_COLORS: Record<TaskPanelTask['priority'], string> = {
-  URGENT: 'text-error-9',
-  HIGH: 'text-warning-9',
-  MEDIUM: 'text-surface-fg-muted',
-  LOW: 'text-surface-fg-subtle',
-}
+// ---------------------------------------------------------------------------
+// Shared styles for interactive property values
+// ---------------------------------------------------------------------------
+
+const interactiveValueBase =
+  'rounded-ds-md px-ds-02 py-ds-01 -mx-ds-02 hover:bg-surface-raised-hover transition-colors cursor-pointer'
+
+const popoverOptionBase =
+  'flex w-full items-center gap-ds-03 rounded-ds-md px-ds-03 py-ds-02b transition-colors hover:bg-surface-raised-hover'
 
 // ---------------------------------------------------------------------------
 // Wing animation config
@@ -89,7 +108,7 @@ function ReviewWingCard() {
       className="w-[280px] rounded-ds-xl border border-surface-border-strong bg-surface-raised shadow-floating"
       data-testid="review-wing"
     >
-      <div className="p-ds-04">
+      <div className="p-ds-05">
         <div className="flex items-center gap-ds-02 mb-ds-03">
           <IconEye className="h-ico-sm w-ico-sm text-accent-11" />
           <span className="text-ds-sm font-semibold text-accent-11">
@@ -129,14 +148,50 @@ function ReviewWingCard() {
 }
 
 // ---------------------------------------------------------------------------
-// PropertiesWingCard
+// Property row wrapper
+// ---------------------------------------------------------------------------
+
+function PropertyRow({
+  label,
+  children,
+}: {
+  label: string
+  children: React.ReactNode
+}) {
+  return (
+    <div className="flex items-center justify-between">
+      <span className="text-ds-xs text-surface-fg-subtle">{label}</span>
+      {children}
+    </div>
+  )
+}
+
+// ---------------------------------------------------------------------------
+// PropertiesWingCard — interactive edition
 // ---------------------------------------------------------------------------
 
 function PropertiesWingCard() {
-  const { task } = useTaskPanel()
+  const {
+    task,
+    clientMode,
+    onUpdateStatus,
+    onUpdatePriority,
+    onUpdateAssignee,
+    onUpdateDueDate,
+  } = useTaskPanel()
+
+  const [statusOpen, setStatusOpen] = React.useState(false)
+  const [priorityOpen, setPriorityOpen] = React.useState(false)
+  const [assigneeOpen, setAssigneeOpen] = React.useState(false)
+  const [dueDateOpen, setDueDateOpen] = React.useState(false)
 
   const statusName =
     task.statusOptions.find((o) => o.id === task.status)?.name ?? task.status
+
+  const priorityCfg = PRIORITY_CONFIG[task.priority]
+  const PriorityIcon = priorityCfg.icon
+
+  const interactive = !clientMode
 
   return (
     <motion.div
@@ -148,72 +203,279 @@ function PropertiesWingCard() {
       className="w-[280px] rounded-ds-xl border border-surface-border-strong bg-surface-raised shadow-floating"
       data-testid="properties-wing"
     >
-      <div className="p-ds-04">
-        <h3 className="text-ds-xs font-medium text-surface-fg-muted uppercase tracking-wider mb-ds-03">
+      <div className="p-ds-05">
+        <h3 className="text-ds-xs font-medium text-surface-fg-muted uppercase tracking-wider mb-ds-04">
           Properties
         </h3>
 
-        <div className="flex flex-col gap-ds-03">
+        <div className="flex flex-col gap-ds-04">
           {/* Status */}
-          <div className="flex items-center justify-between">
-            <span className="text-ds-xs text-surface-fg-subtle">Status</span>
-            <div className="flex items-center gap-ds-02">
-              <span className="h-2 w-2 rounded-full bg-accent-9" />
-              <span className="text-ds-sm text-surface-fg">{statusName}</span>
-            </div>
-          </div>
+          <PropertyRow label="Status">
+            {interactive ? (
+              <Popover open={statusOpen} onOpenChange={setStatusOpen}>
+                <PopoverTrigger asChild>
+                  <button
+                    type="button"
+                    className={cn('flex items-center gap-ds-02', interactiveValueBase)}
+                  >
+                    <span className="h-2 w-2 rounded-full bg-accent-9" />
+                    <span className="text-ds-sm text-surface-fg">{statusName}</span>
+                  </button>
+                </PopoverTrigger>
+                <PopoverContent
+                  className="w-[180px] border-surface-border-strong bg-surface-overlay p-ds-02"
+                  align="end"
+                  sideOffset={4}
+                >
+                  {task.statusOptions.map((opt) => (
+                    <button
+                      key={opt.id}
+                      type="button"
+                      onClick={() => {
+                        onUpdateStatus(opt.id)
+                        setStatusOpen(false)
+                      }}
+                      className={cn(
+                        popoverOptionBase,
+                        opt.id === task.status && 'bg-surface-raised-hover',
+                      )}
+                    >
+                      <span className="h-2 w-2 shrink-0 rounded-full bg-accent-9" aria-hidden />
+                      <span className="text-ds-sm text-surface-fg">{opt.name}</span>
+                      {opt.id === task.status && (
+                        <IconCheck className="ml-auto h-ico-sm w-ico-sm text-accent-11" />
+                      )}
+                    </button>
+                  ))}
+                </PopoverContent>
+              </Popover>
+            ) : (
+              <div className="flex items-center gap-ds-02">
+                <span className="h-2 w-2 rounded-full bg-accent-9" />
+                <span className="text-ds-sm text-surface-fg">{statusName}</span>
+              </div>
+            )}
+          </PropertyRow>
 
           {/* Priority */}
-          <div className="flex items-center justify-between">
-            <span className="text-ds-xs text-surface-fg-subtle">Priority</span>
-            <span className={cn('text-ds-sm', PRIORITY_COLORS[task.priority])}>
-              {PRIORITY_LABELS[task.priority]}
-            </span>
-          </div>
-
-          {/* Assignee */}
-          <div className="flex items-center justify-between">
-            <span className="text-ds-xs text-surface-fg-subtle">Assignee</span>
-            {task.assignee ? (
-              <div className="flex items-center gap-ds-02">
-                <Avatar size="xs" className="h-4 w-4">
-                  {task.assignee.image && (
-                    <AvatarImage src={task.assignee.image} />
-                  )}
-                  <AvatarFallback className="text-[8px]">
-                    {getInitials(task.assignee.name)}
-                  </AvatarFallback>
-                </Avatar>
-                <span className="text-ds-sm text-surface-fg">
-                  {task.assignee.name}
-                </span>
-              </div>
+          <PropertyRow label="Priority">
+            {interactive ? (
+              <Popover open={priorityOpen} onOpenChange={setPriorityOpen}>
+                <PopoverTrigger asChild>
+                  <button
+                    type="button"
+                    className={cn('flex items-center gap-ds-02', interactiveValueBase)}
+                  >
+                    <PriorityIcon className={cn('h-3.5 w-3.5', priorityCfg.className)} />
+                    <span className={cn('text-ds-sm', priorityCfg.className)}>
+                      {priorityCfg.label}
+                    </span>
+                  </button>
+                </PopoverTrigger>
+                <PopoverContent
+                  className="w-[180px] border-surface-border-strong bg-surface-overlay p-ds-02"
+                  align="end"
+                  sideOffset={4}
+                >
+                  {PRIORITIES.map((p) => {
+                    const c = PRIORITY_CONFIG[p]
+                    const PIcon = c.icon
+                    return (
+                      <button
+                        key={p}
+                        type="button"
+                        onClick={() => {
+                          onUpdatePriority(p)
+                          setPriorityOpen(false)
+                        }}
+                        className={cn(
+                          popoverOptionBase,
+                          p === task.priority && 'bg-surface-raised-hover',
+                        )}
+                      >
+                        <PIcon className={cn('h-ico-sm w-ico-sm', c.className)} />
+                        <span className="text-ds-sm text-surface-fg">{c.label}</span>
+                        {p === task.priority && (
+                          <IconCheck className="ml-auto h-ico-sm w-ico-sm text-accent-11" />
+                        )}
+                      </button>
+                    )
+                  })}
+                </PopoverContent>
+              </Popover>
             ) : (
-              <span className="text-ds-sm text-surface-fg-subtle">
-                Unassigned
+              <span className={cn('text-ds-sm', priorityCfg.className)}>
+                {priorityCfg.label}
               </span>
             )}
-          </div>
+          </PropertyRow>
+
+          {/* Assignee */}
+          <PropertyRow label="Assignee">
+            {interactive ? (
+              <Popover open={assigneeOpen} onOpenChange={setAssigneeOpen}>
+                <PopoverTrigger asChild>
+                  <button
+                    type="button"
+                    className={cn('flex items-center gap-ds-02', interactiveValueBase)}
+                  >
+                    {task.assignee ? (
+                      <>
+                        <Avatar size="xs" className="h-5 w-5">
+                          {task.assignee.image && (
+                            <AvatarImage src={task.assignee.image} />
+                          )}
+                          <AvatarFallback className="text-[8px]">
+                            {getInitials(task.assignee.name)}
+                          </AvatarFallback>
+                        </Avatar>
+                        <span className="text-ds-sm text-surface-fg">
+                          {task.assignee.name}
+                        </span>
+                      </>
+                    ) : (
+                      <>
+                        <IconUser className="h-3.5 w-3.5 text-surface-fg-subtle" />
+                        <span className="text-ds-sm text-surface-fg-subtle">
+                          Unassigned
+                        </span>
+                      </>
+                    )}
+                  </button>
+                </PopoverTrigger>
+                <PopoverContent
+                  className="w-[200px] border-surface-border-strong bg-surface-overlay p-ds-02"
+                  align="end"
+                  sideOffset={4}
+                >
+                  {/* Unassign option */}
+                  <button
+                    type="button"
+                    onClick={() => {
+                      onUpdateAssignee(null)
+                      setAssigneeOpen(false)
+                    }}
+                    className={cn(
+                      popoverOptionBase,
+                      !task.assignee && 'bg-surface-raised-hover',
+                    )}
+                  >
+                    <IconUser className="h-ico-sm w-ico-sm text-surface-fg-subtle" />
+                    <span className="text-ds-sm text-surface-fg-subtle">Unassigned</span>
+                  </button>
+
+                  {task.members.map((member) => (
+                    <button
+                      key={member.id}
+                      type="button"
+                      onClick={() => {
+                        onUpdateAssignee(member.id)
+                        setAssigneeOpen(false)
+                      }}
+                      className={cn(
+                        popoverOptionBase,
+                        task.assignee?.id === member.id && 'bg-surface-raised-hover',
+                      )}
+                    >
+                      <Avatar size="xs" className="h-5 w-5">
+                        {member.image && <AvatarImage src={member.image} />}
+                        <AvatarFallback className="text-[10px]">
+                          {getInitials(member.name)}
+                        </AvatarFallback>
+                      </Avatar>
+                      <span className="text-ds-sm text-surface-fg">{member.name}</span>
+                      {task.assignee?.id === member.id && (
+                        <IconCheck className="ml-auto h-ico-sm w-ico-sm text-accent-11" />
+                      )}
+                    </button>
+                  ))}
+                </PopoverContent>
+              </Popover>
+            ) : (
+              task.assignee ? (
+                <div className="flex items-center gap-ds-02">
+                  <Avatar size="xs" className="h-5 w-5">
+                    {task.assignee.image && (
+                      <AvatarImage src={task.assignee.image} />
+                    )}
+                    <AvatarFallback className="text-[8px]">
+                      {getInitials(task.assignee.name)}
+                    </AvatarFallback>
+                  </Avatar>
+                  <span className="text-ds-sm text-surface-fg">
+                    {task.assignee.name}
+                  </span>
+                </div>
+              ) : (
+                <span className="text-ds-sm text-surface-fg-subtle">
+                  Unassigned
+                </span>
+              )
+            )}
+          </PropertyRow>
 
           {/* Due Date */}
-          <div className="flex items-center justify-between">
-            <span className="text-ds-xs text-surface-fg-subtle">Due date</span>
-            <span
-              className={cn(
-                'text-ds-sm',
-                task.dueDate ? 'text-surface-fg' : 'text-surface-fg-subtle',
-              )}
-            >
-              {task.dueDate ? formatDate(task.dueDate) : 'None'}
-            </span>
-          </div>
+          <PropertyRow label="Due date">
+            {interactive ? (
+              <Popover open={dueDateOpen} onOpenChange={setDueDateOpen}>
+                <PopoverTrigger asChild>
+                  <button
+                    type="button"
+                    className={cn('flex items-center gap-ds-02', interactiveValueBase)}
+                  >
+                    <span
+                      className={cn(
+                        'text-ds-sm',
+                        task.dueDate ? 'text-surface-fg' : 'text-surface-fg-subtle',
+                      )}
+                    >
+                      {task.dueDate ? formatDate(task.dueDate) : 'None'}
+                    </span>
+                  </button>
+                </PopoverTrigger>
+                <PopoverContent
+                  className="w-[220px] border-surface-border-strong bg-surface-overlay p-ds-03"
+                  align="end"
+                  sideOffset={4}
+                >
+                  <label className="flex flex-col gap-ds-02">
+                    <span className="text-ds-xs font-medium text-surface-fg-muted">
+                      Due date
+                    </span>
+                    <input
+                      type="date"
+                      defaultValue={task.dueDate ? task.dueDate.slice(0, 10) : ''}
+                      onChange={(e) => {
+                        const val = e.target.value
+                        if (val) {
+                          onUpdateDueDate(new Date(val + 'T00:00:00'))
+                        } else {
+                          onUpdateDueDate(null)
+                        }
+                        setDueDateOpen(false)
+                      }}
+                      className="rounded-ds-md border border-surface-border bg-surface-1 px-ds-03 py-ds-02 text-ds-sm text-surface-fg outline-none focus:border-accent-9"
+                    />
+                  </label>
+                </PopoverContent>
+              </Popover>
+            ) : (
+              <span
+                className={cn(
+                  'text-ds-sm',
+                  task.dueDate ? 'text-surface-fg' : 'text-surface-fg-subtle',
+                )}
+              >
+                {task.dueDate ? formatDate(task.dueDate) : 'None'}
+              </span>
+            )}
+          </PropertyRow>
 
-          {/* Lead */}
+          {/* Lead — display-only (no onUpdateLead callback exists) */}
           {task.lead && (
-            <div className="flex items-center justify-between">
-              <span className="text-ds-xs text-surface-fg-subtle">Lead</span>
+            <PropertyRow label="Lead">
               <div className="flex items-center gap-ds-02">
-                <Avatar size="xs" className="h-4 w-4">
+                <Avatar size="xs" className="h-5 w-5">
                   {task.lead.image && <AvatarImage src={task.lead.image} />}
                   <AvatarFallback className="text-[8px]">
                     {getInitials(task.lead.name)}
@@ -223,10 +485,10 @@ function PropertiesWingCard() {
                   {task.lead.name}
                 </span>
               </div>
-            </div>
+            </PropertyRow>
           )}
 
-          {/* Labels */}
+          {/* Labels — display-only */}
           {task.labels.length > 0 && (
             <div className="flex items-start justify-between">
               <span className="text-ds-xs text-surface-fg-subtle pt-ds-01">
@@ -242,11 +504,8 @@ function PropertiesWingCard() {
             </div>
           )}
 
-          {/* Visibility */}
-          <div className="flex items-center justify-between">
-            <span className="text-ds-xs text-surface-fg-subtle">
-              Visibility
-            </span>
+          {/* Visibility — display-only */}
+          <PropertyRow label="Visibility">
             <Badge
               variant="subtle"
               size="xs"
@@ -254,18 +513,15 @@ function PropertiesWingCard() {
             >
               {task.visibility === 'EVERYONE' ? 'Client visible' : 'Internal'}
             </Badge>
-          </div>
+          </PropertyRow>
 
-          {/* Project */}
+          {/* Project — display-only */}
           {task.project && (
-            <div className="flex items-center justify-between">
-              <span className="text-ds-xs text-surface-fg-subtle">
-                Project
-              </span>
+            <PropertyRow label="Project">
               <span className="text-ds-sm text-surface-fg">
                 {task.project}
               </span>
-            </div>
+            </PropertyRow>
           )}
         </div>
       </div>

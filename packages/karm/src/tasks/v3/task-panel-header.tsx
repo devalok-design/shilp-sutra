@@ -24,7 +24,7 @@ export function TaskPanelHeader({ className, ...props }: TaskPanelHeaderProps) {
   return (
     <div
       className={cn(
-        'flex flex-col gap-ds-02 border-b border-surface-border-subtle px-ds-05 py-ds-04',
+        'flex flex-col gap-ds-02 border-b border-surface-border-subtle px-ds-06 py-ds-05',
         className,
       )}
       {...props}

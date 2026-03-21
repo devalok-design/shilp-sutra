@@ -67,6 +67,18 @@ export function TaskPanelReviewBanner({
 
         <div className="mt-ds-03 flex items-center gap-ds-02">
           <Button
+            variant="outline"
+            size="sm"
+            onClick={() => {
+              // Scroll to the review submission in timeline
+              const reviewEntry = document.querySelector('[data-review-submitted]')
+              reviewEntry?.scrollIntoView({ behavior: 'smooth', block: 'center' })
+            }}
+          >
+            <IconEye className="mr-ds-02 h-ico-sm w-ico-sm" />
+            View Changes
+          </Button>
+          <Button
             variant="solid"
             size="sm"
             className="bg-success-9 hover:bg-success-10 text-white"

@@ -208,6 +208,20 @@ const mockTimeline: TimelineEntry[] = [
     },
   },
   {
+    type: 'comment',
+    deleted: true,
+    comment: {
+      id: 'c-deleted',
+      taskId: 'task-1',
+      authorType: 'INTERNAL',
+      authorId: 'u2',
+      content: '',
+      createdAt: hoursAgo(18),
+      updatedAt: hoursAgo(18),
+      internalAuthor: priya,
+    },
+  },
+  {
     type: 'system-event',
     event: {
       id: 'ev-5',
@@ -269,6 +283,7 @@ const sharedCallbacks = {
   onApproveReview: fn(),
   onRequestChanges: fn(),
   onEditComment: fn(),
+  onDeleteComment: fn(),
   onReact: fn(),
   onClose: fn(),
   onExpand: fn(),

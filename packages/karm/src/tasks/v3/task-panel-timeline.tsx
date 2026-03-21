@@ -45,6 +45,29 @@ function getEntryTimestamp(entry: TimelineEntry): string {
   }
 }
 
+function getDateKey(timestamp: string): string {
+  const d = new Date(timestamp)
+  return `${d.getFullYear()}-${d.getMonth()}-${d.getDate()}`
+}
+
+function formatDateDivider(timestamp: string): string {
+  const d = new Date(timestamp)
+  const now = new Date()
+
+  const today = new Date(now.getFullYear(), now.getMonth(), now.getDate())
+  const target = new Date(d.getFullYear(), d.getMonth(), d.getDate())
+  const diffDays = Math.round((today.getTime() - target.getTime()) / 86_400_000)
+
+  if (diffDays === 0) return 'Today'
+  if (diffDays === 1) return 'Yesterday'
+
+  const month = d.toLocaleString('en-US', { month: 'short' })
+  const day = d.getDate()
+
+  if (d.getFullYear() === now.getFullYear()) return `${month} ${day}`
+  return `${month} ${day}, ${d.getFullYear()}`
+}
+
 function getEntryId(entry: TimelineEntry): string {
   switch (entry.type) {
     case 'comment':
@@ -200,6 +223,22 @@ function CollapsedSystemGroup({ group }: { group: CollapsedGroup }) {
 }
 
 // ---------------------------------------------------------------------------
+// Date divider
+// ---------------------------------------------------------------------------
+
+function DateDivider({ timestamp }: { timestamp: string }) {
+  return (
+    <div className="flex items-center gap-ds-03 py-ds-03">
+      <div className="flex-1 border-t border-surface-border-subtle" />
+      <span className="text-[10px] font-medium text-surface-fg-subtle/50 uppercase tracking-wider">
+        {formatDateDivider(timestamp)}
+      </span>
+      <div className="flex-1 border-t border-surface-border-subtle" />
+    </div>
+  )
+}
+
+// ---------------------------------------------------------------------------
 // Unread divider
 // ---------------------------------------------------------------------------
 
@@ -299,6 +338,7 @@ export function TaskPanelTimeline({
     currentUserId,
     onReact,
     onEditComment,
+    onDeleteComment,
     typingUsers,
   } = useTaskPanel()
 
@@ -422,6 +462,7 @@ export function TaskPanelTimeline({
   // original filtered list. We'll walk displayItems and track the
   // index into `filtered`.
   let filteredIdx = 0
+  let prevDateKey = ''
 
   return (
     <div className={cn('flex flex-1 flex-col overflow-hidden', className)} {...props}>
@@ -446,6 +487,15 @@ export function TaskPanelTimeline({
       >
         <div className="flex flex-col gap-ds-05 py-ds-03">
           {displayItems.map((item, idx) => {
+            // Determine timestamp and date key for this item
+            const itemTimestamp =
+              item.kind === 'collapsed'
+                ? item.entries[0].event.timestamp
+                : getEntryTimestamp(item.entry)
+            const dateKey = getDateKey(itemTimestamp)
+            const showDateDivider = !isPeek && dateKey !== prevDateKey
+            prevDateKey = dateKey
+
             if (item.kind === 'collapsed') {
               // Check if unread divider should appear before this group
               const groupStartIdx = filteredIdx
@@ -457,6 +507,7 @@ export function TaskPanelTimeline({
 
               return (
                 <React.Fragment key={`group-${item.entries[0].event.id}`}>
+                  {showDateDivider && <DateDivider timestamp={itemTimestamp} />}
                   {showUnread && <UnreadDivider />}
                   <CollapsedSystemGroup group={item} />
                 </React.Fragment>
@@ -477,6 +528,7 @@ export function TaskPanelTimeline({
 
             return (
               <React.Fragment key={entryId}>
+                {showDateDivider && <DateDivider timestamp={itemTimestamp} />}
                 {showUnread && !isPeek && <UnreadDivider />}
                 <div className={isGrouped ? '-mt-ds-04' : undefined}>
                   <TimelineEntryRenderer
@@ -484,6 +536,7 @@ export function TaskPanelTimeline({
                     currentUserId={currentUserId}
                     onReact={onReact}
                     onEditComment={onEditComment}
+                    onDeleteComment={onDeleteComment}
                     isGrouped={isGrouped}
                   />
                 </div>

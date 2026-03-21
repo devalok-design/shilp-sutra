@@ -1,7 +1,7 @@
 'use client'
 
 import * as React from 'react'
-import { IconMoodSmile, IconArrowBackUp, IconPencil } from '@tabler/icons-react'
+import { IconMoodSmile, IconArrowBackUp, IconPencil, IconTrash } from '@tabler/icons-react'
 import { cn } from '@/ui/lib/utils'
 import { Avatar, AvatarImage, AvatarFallback } from '@/ui/avatar'
 import { Badge } from '@/ui/badge'
@@ -20,14 +20,8 @@ function getInitials(name: string): string {
     .slice(0, 2)
 }
 
-function formatTimestamp(iso: string): string {
-  const d = new Date(iso)
-  return d.toLocaleString('en-US', {
-    month: 'short',
-    day: 'numeric',
-    hour: 'numeric',
-    minute: '2-digit',
-  })
+function formatTime(iso: string): string {
+  return new Date(iso).toLocaleTimeString('en-US', { hour: 'numeric', minute: '2-digit' })
 }
 
 function getAuthorInfo(comment: Comment): {
@@ -61,6 +55,7 @@ export interface TimelineCommentProps {
   currentUserId: string | null
   onReact: (entryId: string, emoji: string) => void
   onEditComment?: (commentId: string, newContent: string) => void
+  onDeleteComment?: (commentId: string) => void
   /** When true, this comment is a continuation of the previous message from
    *  the same author — avatar and name are hidden, spacing is tighter. */
   isGrouped?: boolean
@@ -75,6 +70,7 @@ export function TimelineComment({
   currentUserId,
   onReact,
   onEditComment,
+  onDeleteComment,
   isGrouped = false,
 }: TimelineCommentProps) {
   const { comment, reactions } = entry
@@ -86,6 +82,7 @@ export function TimelineComment({
 
   const isOwnComment = currentUserId !== null && comment.authorId === currentUserId
   const canEdit = isOwnComment && onEditComment
+  const canDelete = isOwnComment && onDeleteComment
 
   React.useEffect(() => {
     if (isEditing && editRef.current) {
@@ -117,6 +114,19 @@ export function TimelineComment({
     },
     [handleEditSave, comment.content],
   )
+
+  // ---- Deleted placeholder ----
+  if (entry.deleted) {
+    return (
+      <div
+        className="flex items-center gap-ds-02 py-ds-02 text-ds-xs text-surface-fg-subtle/50 italic"
+        data-testid="timeline-comment-deleted"
+      >
+        <IconTrash className="h-3 w-3" />
+        This message was deleted
+      </div>
+    )
+  }
 
   // Check if the current user is @mentioned in the content
   const isMentioned =
@@ -150,18 +160,20 @@ export function TimelineComment({
             <span className="font-semibold text-surface-fg" data-testid="comment-author">
               {author.name}
             </span>
-            <span className="text-ds-xs text-surface-fg-subtle/40">
-              {formatTimestamp(comment.createdAt)}
+            <span className="text-ds-xs text-surface-fg-subtle/30">
+              {formatTime(comment.createdAt)}
             </span>
-            <Badge
-              variant="subtle"
-              color={author.type === 'CLIENT' ? 'success' : 'brand'}
-              size="xs"
-              className="text-[10px]"
-              data-testid="comment-badge"
-            >
-              {author.type === 'CLIENT' ? 'Client' : 'Team'}
-            </Badge>
+            {author.type === 'CLIENT' && (
+              <Badge
+                variant="subtle"
+                color="success"
+                size="xs"
+                className="text-[10px]"
+                data-testid="comment-badge"
+              >
+                Client
+              </Badge>
+            )}
           </div>
         )}
 
@@ -247,6 +259,17 @@ export function TimelineComment({
             data-testid="edit-trigger"
           >
             <IconPencil className="h-ico-sm w-ico-sm" />
+          </button>
+        )}
+        {canDelete && (
+          <button
+            type="button"
+            className="rounded-ds-md p-ds-01 text-surface-fg-subtle hover:bg-surface-raised-hover hover:text-surface-fg transition-colors"
+            aria-label="Delete comment"
+            onClick={() => onDeleteComment!(comment.id)}
+            data-testid="delete-trigger"
+          >
+            <IconTrash className="h-ico-sm w-ico-sm" />
           </button>
         )}
       </div>

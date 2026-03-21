@@ -36,6 +36,7 @@ export interface TaskPanelContextValue {
   onApproveReview: () => void
   onRequestChanges: (comment: string) => void
   onEditComment: (commentId: string, newContent: string) => void
+  onDeleteComment: (commentId: string) => void
   onReact: (entryId: string, emoji: string) => void
   onClose: () => void
   onExpand: () => void
@@ -97,6 +98,7 @@ export interface TaskPanelProviderProps {
   onApproveReview?: () => void
   onRequestChanges?: (comment: string) => void
   onEditComment?: (commentId: string, newContent: string) => void
+  onDeleteComment?: (commentId: string) => void
   onReact?: (entryId: string, emoji: string) => void
   onClose?: () => void
   onExpand?: () => void
@@ -137,6 +139,7 @@ export function TaskPanelProvider({
       onApproveReview: value.onApproveReview ?? noop,
       onRequestChanges: value.onRequestChanges ?? noop,
       onEditComment: value.onEditComment ?? noop,
+      onDeleteComment: value.onDeleteComment ?? noop,
       onReact: value.onReact ?? noop,
       onClose: value.onClose ?? noop,
       onExpand: value.onExpand ?? noop,
@@ -169,6 +172,7 @@ export function TaskPanelProvider({
       value.onApproveReview,
       value.onRequestChanges,
       value.onEditComment,
+      value.onDeleteComment,
       value.onReact,
       value.onClose,
       value.onExpand,

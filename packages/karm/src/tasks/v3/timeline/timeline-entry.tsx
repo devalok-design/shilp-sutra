@@ -16,6 +16,7 @@ export interface TimelineEntryRendererProps {
   currentUserId: string | null
   onReact: (entryId: string, emoji: string) => void
   onEditComment?: (commentId: string, newContent: string) => void
+  onDeleteComment?: (commentId: string) => void
   /** Whether this comment is a grouped continuation (same author, <5min). */
   isGrouped?: boolean
 }
@@ -29,6 +30,7 @@ export function TimelineEntryRenderer({
   currentUserId,
   onReact,
   onEditComment,
+  onDeleteComment,
   isGrouped,
 }: TimelineEntryRendererProps) {
   switch (entry.type) {
@@ -39,6 +41,7 @@ export function TimelineEntryRenderer({
           currentUserId={currentUserId}
           onReact={onReact}
           onEditComment={onEditComment}
+          onDeleteComment={onDeleteComment}
           isGrouped={isGrouped}
         />
       )

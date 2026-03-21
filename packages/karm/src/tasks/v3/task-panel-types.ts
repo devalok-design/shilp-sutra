@@ -26,7 +26,7 @@ export interface Reaction {
 // ---------------------------------------------------------------------------
 
 export type TimelineEntry =
-  | { type: 'comment'; comment: Comment; reactions?: Reaction[] }
+  | { type: 'comment'; comment: Comment; reactions?: Reaction[]; deleted?: boolean }
   | { type: 'system-event'; event: SystemEvent }
   | { type: 'review-event'; event: ReviewEvent }
   | { type: 'agent-response'; response: AgentResponse; reactions?: Reaction[] }

@@ -131,6 +131,7 @@ export default defineConfig({
             if (
               id.includes('@floating-ui/') ||
               id.includes('aria-hidden') ||
+              id.includes('react-colorful') ||
               id.includes('react-remove-scroll') ||
               id.includes('react-style-singleton') ||
               id.includes('use-callback-ref') ||

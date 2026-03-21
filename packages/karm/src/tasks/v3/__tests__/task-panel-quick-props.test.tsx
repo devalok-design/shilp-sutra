@@ -24,8 +24,8 @@ const mockTask: TaskPanelTask = {
     { id: 'done', name: 'Done' },
   ],
   priority: 'HIGH',
-  assignee: { id: 'u1', name: 'Jane Doe', image: null },
-  lead: null,
+  assignees: [{ id: 'u1', name: 'Jane Doe', image: null }],
+  leads: [],
   members: [
     { id: 'u1', name: 'Jane Doe', image: null },
     { id: 'u2', name: 'John Smith', image: null },
@@ -122,9 +122,9 @@ describe('TaskPanelQuickProps', () => {
     expect(onUpdateStatus).toHaveBeenCalledWith('done')
   })
 
-  it('shows "Unassigned" when assignee is null', () => {
+  it('shows "Unassigned" when assignees is empty', () => {
     renderWithProvider({
-      task: { ...mockTask, assignee: null },
+      task: { ...mockTask, assignees: [] },
     })
 
     expect(screen.getByText('Unassigned')).toBeInTheDocument()

@@ -147,18 +147,24 @@ function StatusPill({ interactive }: { interactive: boolean }) {
 // ---------------------------------------------------------------------------
 
 function AssigneePill({ interactive }: { interactive: boolean }) {
-  const { task, onUpdateAssignee } = useTaskPanel()
+  const { task, onAddAssignee, onRemoveAssignee } = useTaskPanel()
   const [open, setOpen] = React.useState(false)
 
-  const content = task.assignee ? (
+  const first = task.assignees[0]
+  const content = first ? (
     <>
       <Avatar size="xs" className="h-4 w-4">
-        {task.assignee.image && <AvatarImage src={task.assignee.image} />}
+        {first.image && <AvatarImage src={first.image} />}
         <AvatarFallback className="text-[8px]">
-          {getInitials(task.assignee.name)}
+          {getInitials(first.name)}
         </AvatarFallback>
       </Avatar>
-      <span className="text-surface-fg">{task.assignee.name}</span>
+      <span className="text-surface-fg">
+        {first.name}
+        {task.assignees.length > 1 && (
+          <span className="text-surface-fg-muted">{` & ${task.assignees.length - 1} more`}</span>
+        )}
+      </span>
     </>
   ) : (
     <>
@@ -189,56 +195,45 @@ function AssigneePill({ interactive }: { interactive: boolean }) {
             </button>
           </PopoverTrigger>
         </TooltipTrigger>
-        <TooltipContent>Assignee (A)</TooltipContent>
+        <TooltipContent>Assignees (A)</TooltipContent>
       </Tooltip>
       <PopoverContent
         className="w-[200px] border-surface-border-strong bg-surface-overlay p-ds-02"
         align="start"
         sideOffset={4}
       >
-        {/* Unassign option */}
-        <button
-          type="button"
-          onClick={() => {
-            onUpdateAssignee(null)
-            setOpen(false)
-          }}
-          className={cn(
-            'flex w-full items-center gap-ds-03 rounded-ds-md px-ds-03 py-ds-02b transition-colors',
-            'hover:bg-surface-raised-hover',
-            !task.assignee && 'bg-surface-raised-hover',
-          )}
-        >
-          <IconUser className="h-ico-sm w-ico-sm text-surface-fg-subtle" />
-          <span className="text-ds-sm text-surface-fg-subtle">Unassigned</span>
-        </button>
-
-        {task.members.map((member) => (
-          <button
-            key={member.id}
-            type="button"
-            onClick={() => {
-              onUpdateAssignee(member.id)
-              setOpen(false)
-            }}
-            className={cn(
-              'flex w-full items-center gap-ds-03 rounded-ds-md px-ds-03 py-ds-02b transition-colors',
-              'hover:bg-surface-raised-hover',
-              task.assignee?.id === member.id && 'bg-surface-raised-hover',
-            )}
-          >
-            <Avatar size="xs">
-              {member.image && <AvatarImage src={member.image} />}
-              <AvatarFallback className="text-[10px]">
-                {getInitials(member.name)}
-              </AvatarFallback>
-            </Avatar>
-            <span className="text-ds-sm text-surface-fg">{member.name}</span>
-            {task.assignee?.id === member.id && (
-              <IconCheck className="ml-auto h-ico-sm w-ico-sm text-accent-11" />
-            )}
-          </button>
-        ))}
+        {task.members.map((member) => {
+          const isSelected = task.assignees.some((a) => a.id === member.id)
+          return (
+            <button
+              key={member.id}
+              type="button"
+              onClick={() => {
+                if (isSelected) {
+                  onRemoveAssignee(member.id)
+                } else {
+                  onAddAssignee(member.id)
+                }
+              }}
+              className={cn(
+                'flex w-full items-center gap-ds-03 rounded-ds-md px-ds-03 py-ds-02b transition-colors',
+                'hover:bg-surface-raised-hover',
+                isSelected && 'bg-surface-raised-hover',
+              )}
+            >
+              <Avatar size="xs">
+                {member.image && <AvatarImage src={member.image} />}
+                <AvatarFallback className="text-[10px]">
+                  {getInitials(member.name)}
+                </AvatarFallback>
+              </Avatar>
+              <span className="text-ds-sm text-surface-fg">{member.name}</span>
+              {isSelected && (
+                <IconCheck className="ml-auto h-ico-sm w-ico-sm text-accent-11" />
+              )}
+            </button>
+          )
+        })}
       </PopoverContent>
     </Popover>
   )
@@ -398,7 +393,7 @@ function DueDatePill({ interactive }: { interactive: boolean }) {
 // ---------------------------------------------------------------------------
 
 function PeekTriageRow() {
-  const { task, onUpdateStatus, onUpdatePriority, onUpdateAssignee } =
+  const { task, onUpdateStatus, onUpdatePriority, onAddAssignee, onRemoveAssignee } =
     useTaskPanel()
   const [statusOpen, setStatusOpen] = React.useState(false)
   const [priorityOpen, setPriorityOpen] = React.useState(false)
@@ -491,24 +486,27 @@ function PeekTriageRow() {
         </PopoverContent>
       </Popover>
 
-      {/* Assignee */}
+      {/* Assignees */}
       <Popover open={assigneeOpen} onOpenChange={setAssigneeOpen}>
         <PopoverTrigger asChild>
           <button
             type="button"
             className={cn(pillBase, pillInteractive, 'text-ds-xs')}
           >
-            {task.assignee ? (
+            {task.assignees.length > 0 ? (
               <>
                 <Avatar size="xs" className="h-4 w-4">
-                  {task.assignee.image && (
-                    <AvatarImage src={task.assignee.image} />
+                  {task.assignees[0].image && (
+                    <AvatarImage src={task.assignees[0].image} />
                   )}
                   <AvatarFallback className="text-[8px]">
-                    {getInitials(task.assignee.name)}
+                    {getInitials(task.assignees[0].name)}
                   </AvatarFallback>
                 </Avatar>
-                {task.assignee.name}
+                {task.assignees[0].name}
+                {task.assignees.length > 1 && (
+                  <span className="text-surface-fg-muted">{` & ${task.assignees.length - 1} more`}</span>
+                )}
               </>
             ) : (
               <>
@@ -523,42 +521,38 @@ function PeekTriageRow() {
           align="start"
           sideOffset={4}
         >
-          <button
-            type="button"
-            onClick={() => {
-              onUpdateAssignee(null)
-              setAssigneeOpen(false)
-            }}
-            className={cn(
-              'flex w-full items-center gap-ds-03 rounded-ds-md px-ds-03 py-ds-02b transition-colors',
-              'hover:bg-surface-raised-hover',
-            )}
-          >
-            <span className="text-ds-sm text-surface-fg-subtle">Unassigned</span>
-          </button>
-          {task.members.map((member) => (
-            <button
-              key={member.id}
-              type="button"
-              onClick={() => {
-                onUpdateAssignee(member.id)
-                setAssigneeOpen(false)
-              }}
-              className={cn(
-                'flex w-full items-center gap-ds-03 rounded-ds-md px-ds-03 py-ds-02b transition-colors',
-                'hover:bg-surface-raised-hover',
-                task.assignee?.id === member.id && 'bg-surface-raised-hover',
-              )}
-            >
-              <Avatar size="xs" className="h-5 w-5">
-                {member.image && <AvatarImage src={member.image} />}
-                <AvatarFallback className="text-[8px]">
-                  {getInitials(member.name)}
-                </AvatarFallback>
-              </Avatar>
-              <span className="text-ds-sm">{member.name}</span>
-            </button>
-          ))}
+          {task.members.map((member) => {
+            const isSelected = task.assignees.some((a) => a.id === member.id)
+            return (
+              <button
+                key={member.id}
+                type="button"
+                onClick={() => {
+                  if (isSelected) {
+                    onRemoveAssignee(member.id)
+                  } else {
+                    onAddAssignee(member.id)
+                  }
+                }}
+                className={cn(
+                  'flex w-full items-center gap-ds-03 rounded-ds-md px-ds-03 py-ds-02b transition-colors',
+                  'hover:bg-surface-raised-hover',
+                  isSelected && 'bg-surface-raised-hover',
+                )}
+              >
+                <Avatar size="xs" className="h-5 w-5">
+                  {member.image && <AvatarImage src={member.image} />}
+                  <AvatarFallback className="text-[8px]">
+                    {getInitials(member.name)}
+                  </AvatarFallback>
+                </Avatar>
+                <span className="text-ds-sm">{member.name}</span>
+                {isSelected && (
+                  <IconCheck className="ml-auto h-ico-sm w-ico-sm text-accent-11" />
+                )}
+              </button>
+            )
+          })}
         </PopoverContent>
       </Popover>
     </div>

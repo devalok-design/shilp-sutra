@@ -85,8 +85,8 @@ export interface TaskPanelTask {
   status: string
   statusOptions: { id: string; name: string }[]
   priority: 'LOW' | 'MEDIUM' | 'HIGH' | 'URGENT'
-  assignee: { id: string; name: string; image?: string | null } | null
-  lead: { id: string; name: string; image?: string | null } | null
+  assignees: { id: string; name: string; image?: string | null }[]
+  leads: { id: string; name: string; image?: string | null }[]
   members: { id: string; name: string; image?: string | null }[]
   dueDate: string | null
   labels: string[]

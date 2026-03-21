@@ -209,8 +209,10 @@ function PropertiesWingCard() {
     clientMode,
     onUpdateStatus,
     onUpdatePriority,
-    onUpdateAssignee,
-    onUpdateLead,
+    onAddAssignee,
+    onRemoveAssignee,
+    onAddLead,
+    onRemoveLead,
     onUpdateDueDate,
     onToggleVisibility,
   } = useTaskPanel()
@@ -390,8 +392,8 @@ function PropertiesWingCard() {
             )}
           </PropertyRow>
 
-          {/* Lead */}
-          <PropertyRow label="Lead">
+          {/* Leads */}
+          <PropertyRow label="Leads">
             {interactive ? (
               <Popover open={leadOpen} onOpenChange={setLeadOpen}>
                 <PopoverTrigger asChild>
@@ -399,16 +401,25 @@ function PropertiesWingCard() {
                     type="button"
                     className={cn('flex items-center gap-ds-02', interactiveValueBase)}
                   >
-                    {task.lead ? (
+                    {task.leads.length > 0 ? (
                       <>
-                        <Avatar size="xs" className="h-5 w-5">
-                          {task.lead.image && <AvatarImage src={task.lead.image} />}
-                          <AvatarFallback className="text-[8px]">
-                            {getInitials(task.lead.name)}
-                          </AvatarFallback>
-                        </Avatar>
+                        <div className="flex items-center -space-x-1">
+                          {task.leads.slice(0, 3).map((lead) => (
+                            <Avatar key={lead.id} size="xs" className="h-5 w-5 ring-1 ring-surface-raised">
+                              {lead.image && <AvatarImage src={lead.image} />}
+                              <AvatarFallback className="text-[8px]">
+                                {getInitials(lead.name)}
+                              </AvatarFallback>
+                            </Avatar>
+                          ))}
+                          {task.leads.length > 3 && (
+                            <span className="flex h-5 w-5 items-center justify-center rounded-full bg-surface-raised-hover ring-1 ring-surface-raised text-[8px] font-medium text-surface-fg-muted">
+                              +{task.leads.length - 3}
+                            </span>
+                          )}
+                        </div>
                         <span className="text-ds-sm text-surface-fg">
-                          {task.lead.name}
+                          {task.leads.length === 1 ? task.leads[0].name : `${task.leads.length} people`}
                         </span>
                       </>
                     ) : (
@@ -428,60 +439,59 @@ function PropertiesWingCard() {
                   align="end"
                   sideOffset={4}
                 >
-                  {/* Unset lead option */}
-                  <button
-                    type="button"
-                    onClick={() => {
-                      onUpdateLead(null)
-                      setLeadOpen(false)
-                    }}
-                    className={cn(
-                      popoverOptionBase,
-                      !task.lead && 'bg-surface-raised-hover',
-                    )}
-                  >
-                    <IconUser className="h-ico-sm w-ico-sm text-surface-fg-subtle" />
-                    <span className="text-ds-sm text-surface-fg-subtle">None</span>
-                  </button>
-
-                  {task.members.map((member) => (
-                    <button
-                      key={member.id}
-                      type="button"
-                      onClick={() => {
-                        onUpdateLead(member.id)
-                        setLeadOpen(false)
-                      }}
-                      className={cn(
-                        popoverOptionBase,
-                        task.lead?.id === member.id && 'bg-surface-raised-hover',
-                      )}
-                    >
-                      <Avatar size="xs" className="h-5 w-5">
-                        {member.image && <AvatarImage src={member.image} />}
-                        <AvatarFallback className="text-[10px]">
-                          {getInitials(member.name)}
-                        </AvatarFallback>
-                      </Avatar>
-                      <span className="text-ds-sm text-surface-fg">{member.name}</span>
-                      {task.lead?.id === member.id && (
-                        <IconCheck className="ml-auto h-ico-sm w-ico-sm text-accent-11" />
-                      )}
-                    </button>
-                  ))}
+                  {task.members.map((member) => {
+                    const isSelected = task.leads.some((l) => l.id === member.id)
+                    return (
+                      <button
+                        key={member.id}
+                        type="button"
+                        onClick={() => {
+                          if (isSelected) {
+                            onRemoveLead(member.id)
+                          } else {
+                            onAddLead(member.id)
+                          }
+                        }}
+                        className={cn(
+                          popoverOptionBase,
+                          isSelected && 'bg-surface-raised-hover',
+                        )}
+                      >
+                        <Avatar size="xs" className="h-5 w-5">
+                          {member.image && <AvatarImage src={member.image} />}
+                          <AvatarFallback className="text-[10px]">
+                            {getInitials(member.name)}
+                          </AvatarFallback>
+                        </Avatar>
+                        <span className="text-ds-sm text-surface-fg">{member.name}</span>
+                        {isSelected && (
+                          <IconCheck className="ml-auto h-ico-sm w-ico-sm text-accent-11" />
+                        )}
+                      </button>
+                    )
+                  })}
                 </PopoverContent>
               </Popover>
             ) : (
-              task.lead ? (
+              task.leads.length > 0 ? (
                 <div className="flex items-center gap-ds-02">
-                  <Avatar size="xs" className="h-5 w-5">
-                    {task.lead.image && <AvatarImage src={task.lead.image} />}
-                    <AvatarFallback className="text-[8px]">
-                      {getInitials(task.lead.name)}
-                    </AvatarFallback>
-                  </Avatar>
+                  <div className="flex items-center -space-x-1">
+                    {task.leads.slice(0, 3).map((lead) => (
+                      <Avatar key={lead.id} size="xs" className="h-5 w-5 ring-1 ring-surface-raised">
+                        {lead.image && <AvatarImage src={lead.image} />}
+                        <AvatarFallback className="text-[8px]">
+                          {getInitials(lead.name)}
+                        </AvatarFallback>
+                      </Avatar>
+                    ))}
+                    {task.leads.length > 3 && (
+                      <span className="flex h-5 w-5 items-center justify-center rounded-full bg-surface-raised-hover ring-1 ring-surface-raised text-[8px] font-medium text-surface-fg-muted">
+                        +{task.leads.length - 3}
+                      </span>
+                    )}
+                  </div>
                   <span className="text-ds-sm text-surface-fg">
-                    {task.lead.name}
+                    {task.leads.length === 1 ? task.leads[0].name : `${task.leads.length} people`}
                   </span>
                 </div>
               ) : (
@@ -490,8 +500,8 @@ function PropertiesWingCard() {
             )}
           </PropertyRow>
 
-          {/* Assignee */}
-          <PropertyRow label="Assignee">
+          {/* Assignees */}
+          <PropertyRow label="Assignees">
             {interactive ? (
               <Popover open={assigneeOpen} onOpenChange={setAssigneeOpen}>
                 <PopoverTrigger asChild>
@@ -499,18 +509,27 @@ function PropertiesWingCard() {
                     type="button"
                     className={cn('flex items-center gap-ds-02', interactiveValueBase)}
                   >
-                    {task.assignee ? (
+                    {task.assignees.length > 0 ? (
                       <>
-                        <Avatar size="xs" className="h-5 w-5">
-                          {task.assignee.image && (
-                            <AvatarImage src={task.assignee.image} />
+                        <div className="flex items-center -space-x-1">
+                          {task.assignees.slice(0, 3).map((assignee) => (
+                            <Avatar key={assignee.id} size="xs" className="h-5 w-5 ring-1 ring-surface-raised">
+                              {assignee.image && (
+                                <AvatarImage src={assignee.image} />
+                              )}
+                              <AvatarFallback className="text-[8px]">
+                                {getInitials(assignee.name)}
+                              </AvatarFallback>
+                            </Avatar>
+                          ))}
+                          {task.assignees.length > 3 && (
+                            <span className="flex h-5 w-5 items-center justify-center rounded-full bg-surface-raised-hover ring-1 ring-surface-raised text-[8px] font-medium text-surface-fg-muted">
+                              +{task.assignees.length - 3}
+                            </span>
                           )}
-                          <AvatarFallback className="text-[8px]">
-                            {getInitials(task.assignee.name)}
-                          </AvatarFallback>
-                        </Avatar>
+                        </div>
                         <span className="text-ds-sm text-surface-fg">
-                          {task.assignee.name}
+                          {task.assignees.length === 1 ? task.assignees[0].name : `${task.assignees.length} people`}
                         </span>
                       </>
                     ) : (
@@ -519,7 +538,7 @@ function PropertiesWingCard() {
                           <IconUser className="h-3 w-3 text-surface-fg-subtle" />
                         </span>
                         <span className="text-ds-sm text-surface-fg-subtle">
-                          Unassigned
+                          None
                         </span>
                       </>
                     )}
@@ -530,62 +549,61 @@ function PropertiesWingCard() {
                   align="end"
                   sideOffset={4}
                 >
-                  {/* Unassign option */}
-                  <button
-                    type="button"
-                    onClick={() => {
-                      onUpdateAssignee(null)
-                      setAssigneeOpen(false)
-                    }}
-                    className={cn(
-                      popoverOptionBase,
-                      !task.assignee && 'bg-surface-raised-hover',
-                    )}
-                  >
-                    <IconUser className="h-ico-sm w-ico-sm text-surface-fg-subtle" />
-                    <span className="text-ds-sm text-surface-fg-subtle">Unassigned</span>
-                  </button>
-
-                  {task.members.map((member) => (
-                    <button
-                      key={member.id}
-                      type="button"
-                      onClick={() => {
-                        onUpdateAssignee(member.id)
-                        setAssigneeOpen(false)
-                      }}
-                      className={cn(
-                        popoverOptionBase,
-                        task.assignee?.id === member.id && 'bg-surface-raised-hover',
-                      )}
-                    >
-                      <Avatar size="xs" className="h-5 w-5">
-                        {member.image && <AvatarImage src={member.image} />}
-                        <AvatarFallback className="text-[10px]">
-                          {getInitials(member.name)}
-                        </AvatarFallback>
-                      </Avatar>
-                      <span className="text-ds-sm text-surface-fg">{member.name}</span>
-                      {task.assignee?.id === member.id && (
-                        <IconCheck className="ml-auto h-ico-sm w-ico-sm text-accent-11" />
-                      )}
-                    </button>
-                  ))}
+                  {task.members.map((member) => {
+                    const isSelected = task.assignees.some((a) => a.id === member.id)
+                    return (
+                      <button
+                        key={member.id}
+                        type="button"
+                        onClick={() => {
+                          if (isSelected) {
+                            onRemoveAssignee(member.id)
+                          } else {
+                            onAddAssignee(member.id)
+                          }
+                        }}
+                        className={cn(
+                          popoverOptionBase,
+                          isSelected && 'bg-surface-raised-hover',
+                        )}
+                      >
+                        <Avatar size="xs" className="h-5 w-5">
+                          {member.image && <AvatarImage src={member.image} />}
+                          <AvatarFallback className="text-[10px]">
+                            {getInitials(member.name)}
+                          </AvatarFallback>
+                        </Avatar>
+                        <span className="text-ds-sm text-surface-fg">{member.name}</span>
+                        {isSelected && (
+                          <IconCheck className="ml-auto h-ico-sm w-ico-sm text-accent-11" />
+                        )}
+                      </button>
+                    )
+                  })}
                 </PopoverContent>
               </Popover>
             ) : (
-              task.assignee ? (
+              task.assignees.length > 0 ? (
                 <div className="flex items-center gap-ds-02">
-                  <Avatar size="xs" className="h-5 w-5">
-                    {task.assignee.image && (
-                      <AvatarImage src={task.assignee.image} />
+                  <div className="flex items-center -space-x-1">
+                    {task.assignees.slice(0, 3).map((assignee) => (
+                      <Avatar key={assignee.id} size="xs" className="h-5 w-5 ring-1 ring-surface-raised">
+                        {assignee.image && (
+                          <AvatarImage src={assignee.image} />
+                        )}
+                        <AvatarFallback className="text-[8px]">
+                          {getInitials(assignee.name)}
+                        </AvatarFallback>
+                      </Avatar>
+                    ))}
+                    {task.assignees.length > 3 && (
+                      <span className="flex h-5 w-5 items-center justify-center rounded-full bg-surface-raised-hover ring-1 ring-surface-raised text-[8px] font-medium text-surface-fg-muted">
+                        +{task.assignees.length - 3}
+                      </span>
                     )}
-                    <AvatarFallback className="text-[8px]">
-                      {getInitials(task.assignee.name)}
-                    </AvatarFallback>
-                  </Avatar>
+                  </div>
                   <span className="text-ds-sm text-surface-fg">
-                    {task.assignee.name}
+                    {task.assignees.length === 1 ? task.assignees[0].name : `${task.assignees.length} people`}
                   </span>
                 </div>
               ) : (
@@ -594,7 +612,7 @@ function PropertiesWingCard() {
                     <IconUser className="h-3 w-3 text-surface-fg-subtle" />
                   </span>
                   <span className="text-ds-sm text-surface-fg-subtle">
-                    Unassigned
+                    None
                   </span>
                 </div>
               )

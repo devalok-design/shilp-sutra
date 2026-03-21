@@ -24,8 +24,10 @@ export interface TaskPanelContextValue {
   onUpdateDescription: (content: string) => void
   onUpdateStatus: (statusId: string) => void
   onUpdatePriority: (priority: string) => void
-  onUpdateAssignee: (memberId: string | null) => void
-  onUpdateLead: (memberId: string | null) => void
+  onAddAssignee: (memberId: string) => void
+  onRemoveAssignee: (memberId: string) => void
+  onAddLead: (memberId: string) => void
+  onRemoveLead: (memberId: string) => void
   onUpdateDueDate: (date: Date | null) => void
   onPostComment: (content: string) => void
   onToggleVisibility: () => void
@@ -83,8 +85,10 @@ export interface TaskPanelProviderProps {
   onUpdateDescription?: (content: string) => void
   onUpdateStatus?: (statusId: string) => void
   onUpdatePriority?: (priority: string) => void
-  onUpdateAssignee?: (memberId: string | null) => void
-  onUpdateLead?: (memberId: string | null) => void
+  onAddAssignee?: (memberId: string) => void
+  onRemoveAssignee?: (memberId: string) => void
+  onAddLead?: (memberId: string) => void
+  onRemoveLead?: (memberId: string) => void
   onUpdateDueDate?: (date: Date | null) => void
   onPostComment?: (content: string) => void
   onToggleVisibility?: () => void
@@ -121,8 +125,10 @@ export function TaskPanelProvider({
       onUpdateDescription: value.onUpdateDescription ?? noop,
       onUpdateStatus: value.onUpdateStatus ?? noop,
       onUpdatePriority: value.onUpdatePriority ?? noop,
-      onUpdateAssignee: value.onUpdateAssignee ?? noop,
-      onUpdateLead: value.onUpdateLead ?? noop,
+      onAddAssignee: value.onAddAssignee ?? noop,
+      onRemoveAssignee: value.onRemoveAssignee ?? noop,
+      onAddLead: value.onAddLead ?? noop,
+      onRemoveLead: value.onRemoveLead ?? noop,
       onUpdateDueDate: value.onUpdateDueDate ?? noop,
       onPostComment: value.onPostComment ?? noop,
       onToggleVisibility: value.onToggleVisibility ?? noop,
@@ -151,8 +157,10 @@ export function TaskPanelProvider({
       value.onUpdateDescription,
       value.onUpdateStatus,
       value.onUpdatePriority,
-      value.onUpdateAssignee,
-      value.onUpdateLead,
+      value.onAddAssignee,
+      value.onRemoveAssignee,
+      value.onAddLead,
+      value.onRemoveLead,
       value.onUpdateDueDate,
       value.onPostComment,
       value.onToggleVisibility,

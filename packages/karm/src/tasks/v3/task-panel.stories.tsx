@@ -47,8 +47,8 @@ const mockTask: TaskPanelTask = {
   status: 'in-progress',
   statusOptions,
   priority: 'HIGH',
-  assignee: arjun,
-  lead: nick,
+  assignees: [arjun, priya],
+  leads: [nick],
   members: [arjun, priya, nick],
   dueDate: new Date(now.getTime() + 3 * 86_400_000).toISOString(),
   labels: ['bug', 'auth', 'critical-path'],
@@ -257,8 +257,10 @@ const sharedCallbacks = {
   onUpdateDescription: fn(),
   onUpdateStatus: fn(),
   onUpdatePriority: fn(),
-  onUpdateAssignee: fn(),
-  onUpdateLead: fn(),
+  onAddAssignee: fn(),
+  onRemoveAssignee: fn(),
+  onAddLead: fn(),
+  onRemoveLead: fn(),
   onUpdateDueDate: fn(),
   onPostComment: fn(),
   onToggleVisibility: fn(),
@@ -356,10 +358,10 @@ function TaskPanelDemo({
           </p>
           <div className="mt-ds-03 flex items-center gap-ds-02">
             <span className="inline-flex h-5 w-5 items-center justify-center rounded-full bg-accent-9 text-[9px] font-bold text-white">
-              {(task.assignee?.name ?? '?').slice(0, 2).toUpperCase()}
+              {(task.assignees[0]?.name ?? '?').slice(0, 2).toUpperCase()}
             </span>
             <span className="text-ds-xs text-surface-fg-subtle">
-              {task.assignee?.name ?? 'Unassigned'}
+              {task.assignees[0]?.name ?? 'Unassigned'}
             </span>
           </div>
         </button>
@@ -448,8 +450,8 @@ export const EmptyTask: Story = {
       status: 'backlog',
       statusOptions,
       priority: 'MEDIUM',
-      assignee: null,
-      lead: null,
+      assignees: [],
+      leads: [],
       members: [arjun, priya, nick],
       dueDate: null,
       labels: [],

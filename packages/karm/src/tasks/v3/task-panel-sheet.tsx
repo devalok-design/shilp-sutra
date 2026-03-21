@@ -695,13 +695,13 @@ function PropertiesWingCard() {
 
         {/* Meta — Updated / Created (two-column) */}
         <div className="flex items-start justify-between">
-          <div className="flex flex-col">
-            <span className="text-[10px] uppercase tracking-wider text-surface-fg-subtle/60">Updated</span>
-            <span className="text-ds-xs text-surface-fg-subtle">{timeAgo(task.updatedAt)}</span>
+          <div className="flex flex-col gap-ds-01">
+            <span className="text-[9px] uppercase tracking-widest text-surface-fg-subtle/40">Updated</span>
+            <span className="text-ds-xs text-surface-fg-muted">{timeAgo(task.updatedAt)}</span>
           </div>
-          <div className="flex flex-col items-end">
-            <span className="text-[10px] uppercase tracking-wider text-surface-fg-subtle/60">Created</span>
-            <span className="text-ds-xs text-surface-fg-subtle">{formatMetaDate(task.createdAt)}</span>
+          <div className="flex flex-col gap-ds-01 items-end">
+            <span className="text-[9px] uppercase tracking-widest text-surface-fg-subtle/40">Created</span>
+            <span className="text-ds-xs text-surface-fg-muted">{formatMetaDate(task.createdAt)}</span>
           </div>
         </div>
       </div>

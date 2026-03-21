@@ -112,15 +112,13 @@ export const BoardColumn = React.forwardRef<HTMLDivElement, BoardColumnProps>(
                           <TaskGhost />
                         )}
                       </AnimatePresence>
-                      <motion.div layout transition={springs.snappy}>
-                        <TaskContextMenu taskId={task.id}>
-                          {viewMode === 'compact' ? (
-                            <TaskCardCompact task={task} />
-                          ) : (
-                            <TaskCard task={task} />
-                          )}
-                        </TaskContextMenu>
-                      </motion.div>
+                      <TaskContextMenu taskId={task.id}>
+                        {viewMode === 'compact' ? (
+                          <TaskCardCompact task={task} />
+                        ) : (
+                          <TaskCard task={task} />
+                        )}
+                      </TaskContextMenu>
                     </React.Fragment>
                   ))}
                 {/* Ghost at end of list */}

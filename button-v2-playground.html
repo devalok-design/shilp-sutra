@@ -42,7 +42,8 @@
   --success-2:var(--green-2);--success-3:var(--green-3);--success-4:var(--green-4);--success-5:var(--green-5);
   --success-7:var(--green-7);--success-9:var(--green-9);--success-10:var(--green-10);--success-11:var(--green-11);--success-fg:var(--neutral-1);
   --warning-2:var(--yellow-2);--warning-3:var(--yellow-3);--warning-4:var(--yellow-4);--warning-5:var(--yellow-5);
-  --warning-7:var(--yellow-7);--warning-9:var(--yellow-9);--warning-10:var(--yellow-10);--warning-11:var(--yellow-11);--warning-fg:var(--neutral-12);
+  --warning-7:var(--yellow-7);--warning-9:var(--yellow-9);--warning-10:var(--yellow-10);--warning-11:var(--yellow-11);
+  --warning-fg:oklch(.25 .01 55);  /* always dark — amber bright bg is light in both themes */
   --surface-base:var(--neutral-2);--surface-raised:var(--neutral-1);
   --surface-raised-hover:var(--neutral-3);--surface-raised-active:var(--neutral-4);
   --surface-fg:var(--neutral-12);--surface-fg-muted:var(--neutral-11);--surface-fg-subtle:var(--neutral-8);
@@ -89,7 +90,8 @@ html.dark{
   --amber-7:oklch(.52 .15 65);--amber-9:oklch(.65 .17 55);--amber-10:oklch(.7 .17 55);--amber-11:oklch(.82 .10 55);
   --ambright-2:oklch(.22 .04 70);--ambright-3:oklch(.27 .08 70);--ambright-4:oklch(.32 .11 70);--ambright-5:oklch(.37 .13 70);
   --ambright-7:oklch(.55 .15 65);--ambright-9:oklch(.78 .16 65);--ambright-10:oklch(.82 .16 65);--ambright-11:oklch(.88 .09 55);
-  --accent-fg:var(--neutral-12);--error-fg:var(--neutral-12);--success-fg:var(--neutral-12);--warning-fg:var(--neutral-12);
+  --accent-fg:var(--neutral-12);--error-fg:var(--neutral-12);--success-fg:var(--neutral-12);
+  --warning-fg:oklch(.25 .01 55);  /* always dark — amber bright bg is light in both themes */
   --surface-base:var(--neutral-1);--surface-raised:var(--neutral-2);
   --surface-raised-hover:var(--neutral-3);--surface-raised-active:var(--neutral-4);
   --surface-fg:var(--neutral-12);--surface-fg-muted:var(--neutral-11);--surface-fg-subtle:var(--neutral-8);
@@ -186,6 +188,9 @@ select{background:var(--surface-raised-hover);border:1px solid var(--surface-bor
 .btn:disabled{pointer-events:none;cursor:not-allowed}
 .btn.weight-normal{font-weight:400}
 
+/* ── Text + icon above texture layers ── */
+.btn>span,.btn>.ico{position:relative;z-index:2}
+
 /* ── Icon treatment ── */
 .btn svg{flex-shrink:0;pointer-events:none;stroke:currentColor;fill:none;stroke-width:1.8}
 .btn:not(.v-ghost):not(.v-link) svg{opacity:0.9}  /* Radix pattern: dim icons on solid/soft/outline */
@@ -212,6 +217,51 @@ select{background:var(--surface-raised-hover);border:1px solid var(--surface-bor
   transform var(--duration-fast-01) var(--ease-productive-entrance),
   filter var(--duration-fast-01) var(--ease-productive-entrance)}
 
+/* ── Polish: Devalok noise texture — signature grain + gradient fade ── */
+.btn.polish-noise{overflow:hidden;isolation:isolate}
+.btn.polish-noise.v-link{overflow:visible}
+
+/* Layer 1: Grain texture (::after) */
+.btn.polish-noise::after{
+  content:'';position:absolute;inset:0;border-radius:inherit;pointer-events:none;
+  mix-blend-mode:hard-light;
+  filter:contrast(250%) brightness(130%);
+  background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='200' height='200'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.45' numOctaves='3' seed='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='200' height='200' filter='url(%23n)'/%3E%3C/svg%3E");
+  background-size:100px 100px;
+}
+
+/* Layer 2: Directional gradient fade (::before)
+   Light mode: white wash (lighter corner) — warm print feel
+   Dark mode: dark wash (deeper corner) — rich, moody depth */
+.btn.polish-noise::before{
+  content:'';position:absolute;inset:0;border-radius:inherit;pointer-events:none;z-index:1;
+}
+
+/* Light mode gradients — deepen the color on one end, lighten the other */
+.btn.polish-noise.grain-subtle::before{background:linear-gradient(135deg, oklch(0 0 0 / 0.12) 0%, oklch(1 0 0 / 0.15) 100%)}
+.btn.polish-noise.grain-medium::before{background:linear-gradient(135deg, oklch(0 0 0 / 0.18) 0%, oklch(1 0 0 / 0.20) 100%)}
+.btn.polish-noise.grain-heavy::before{background:linear-gradient(135deg, oklch(0 0 0 / 0.25) 0%, oklch(1 0 0 / 0.28) 100%)}
+
+/* Dark mode gradients — lighter dark wash */
+html.dark .btn.polish-noise.grain-subtle::before{background:linear-gradient(135deg, transparent 0%, oklch(0 0 0 / 0.15) 100%)}
+html.dark .btn.polish-noise.grain-medium::before{background:linear-gradient(135deg, transparent 0%, oklch(0 0 0 / 0.22) 100%)}
+html.dark .btn.polish-noise.grain-heavy::before{background:linear-gradient(135deg, transparent 0%, oklch(0 0 0 / 0.30) 100%)}
+
+/* Grain intensity — 3 levels */
+.btn.polish-noise.grain-subtle.v-solid::after{opacity:0.20}
+.btn.polish-noise.grain-subtle.v-soft::after{opacity:0.14}
+
+.btn.polish-noise.grain-medium.v-solid::after{opacity:0.35}
+.btn.polish-noise.grain-medium.v-soft::after{opacity:0.22}
+
+.btn.polish-noise.grain-heavy.v-solid::after{opacity:0.55}
+.btn.polish-noise.grain-heavy.v-soft::after{opacity:0.35}
+
+/* No grain on outline, ghost, link */
+.btn.polish-noise.v-outline::after,.btn.polish-noise.v-outline::before{opacity:0!important}
+.btn.polish-noise.v-ghost::after,.btn.polish-noise.v-ghost::before{opacity:0!important}
+.btn.polish-noise.v-link::after,.btn.polish-noise.v-link::before{opacity:0!important}
+
 /* ── Polish: press feedback (existing scale + new shadow collapse) ── */
 .btn.polish-press:active{transform:scale(.95)}
 .btn.polish-press.polish-shadow:active{box-shadow:var(--shadow-pressed)!important}
@@ -221,18 +271,17 @@ select{background:var(--surface-raised-hover);border:1px solid var(--surface-bor
 .btn:disabled.polish-disabled{opacity:.45;filter:saturate(.3)}
 .btn:disabled:not(.polish-disabled){opacity:.45}
 
-/* Sizes */
 /* Sizes — gap scales with size, padding tightens on icon side */
-.btn.sz-xs{height:28px;border-radius:var(--r-sm);padding:0 10px;font-size:13px;gap:4px}
-.btn.sz-sm{height:32px;border-radius:var(--r-md);padding:0 14px;font-size:13px;gap:6px}
-.btn.sz-md{height:40px;border-radius:var(--r-md);padding:0 18px;font-size:14px;gap:8px}
-.btn.sz-lg{height:48px;border-radius:var(--r-lg);padding:0 24px;font-size:15px;gap:10px}
-.btn.sz-compact-xs{border-radius:var(--r-sm);padding:4px 8px;font-size:13px;gap:4px}
-.btn.sz-compact-sm{border-radius:var(--r-md);padding:5px 10px;font-size:13px;gap:6px}
-.btn.sz-compact-md{border-radius:var(--r-md);padding:7px 14px;font-size:14px;gap:8px}
-.btn.sz-icon-xs{height:28px;width:28px;border-radius:var(--r-sm);padding:0}
-.btn.sz-icon-sm{height:32px;width:32px;border-radius:var(--r-md);padding:0}
-.btn.sz-icon-md{height:40px;width:40px;border-radius:var(--r-md);padding:0}
+.btn.sz-xs{height:28px;border-radius:8px;padding:0 10px;font-size:13px;gap:4px}
+.btn.sz-sm{height:32px;border-radius:8px;padding:0 14px;font-size:13px;gap:6px}
+.btn.sz-md{height:40px;border-radius:10px;padding:0 18px;font-size:14px;gap:8px}
+.btn.sz-lg{height:48px;border-radius:12px;padding:0 24px;font-size:15px;gap:10px}
+.btn.sz-compact-xs{border-radius:6px;padding:4px 8px;font-size:13px;gap:4px}
+.btn.sz-compact-sm{border-radius:8px;padding:5px 10px;font-size:13px;gap:6px}
+.btn.sz-compact-md{border-radius:10px;padding:7px 14px;font-size:14px;gap:8px}
+.btn.sz-icon-xs{height:28px;width:28px;border-radius:8px;padding:0}
+.btn.sz-icon-sm{height:32px;width:32px;border-radius:8px;padding:0}
+.btn.sz-icon-md{height:40px;width:40px;border-radius:10px;padding:0}
 .btn.shape-pill{border-radius:var(--r-full)!important}
 
 /* Icon sizing per size tier */
@@ -257,7 +306,7 @@ select{background:var(--surface-raised-hover);border:1px solid var(--surface-bor
    VARIANT x COLOR — with polish layers
    ═══════════════════════════════════════════════════════════════ */
 
-/* ── SOLID ── */
+/* ── SOLID ── rest → hover → active (3-state consistent) */
 .btn.v-solid.c-accent{background:var(--accent-9);color:var(--accent-fg)}
 .btn.v-solid.c-accent:hover{background:var(--accent-10)}
 .btn.v-solid.c-error{background:var(--error-9);color:var(--error-fg)}
@@ -266,8 +315,8 @@ select{background:var(--surface-raised-hover);border:1px solid var(--surface-bor
 .btn.v-solid.c-success:hover{background:var(--success-10)}
 .btn.v-solid.c-warning{background:var(--warning-9);color:var(--warning-fg)}
 .btn.v-solid.c-warning:hover{background:var(--warning-10)}
-.btn.v-solid.c-neutral{background:var(--neutral-4);color:var(--surface-fg)}
-.btn.v-solid.c-neutral:hover{background:var(--neutral-5)}
+.btn.v-solid.c-neutral{background:var(--neutral-5);color:var(--surface-fg)}
+.btn.v-solid.c-neutral:hover{background:var(--neutral-7)}
 
 /* Polish: shadow on solid */
 .btn.v-solid.polish-shadow{box-shadow:var(--shadow-raised)}
@@ -310,30 +359,41 @@ select{background:var(--surface-raised-hover);border:1px solid var(--surface-bor
 .btn.v-soft.c-warning:active{background:var(--warning-5)}
 .btn.v-soft.c-neutral{background:var(--surface-raised-hover);color:var(--surface-fg-muted)}
 .btn.v-soft.c-neutral:hover{background:var(--surface-raised-active)}
+.btn.v-soft.c-neutral:active{background:var(--neutral-5)}
 
-/* ── OUTLINE ── */
+/* ── OUTLINE ── rest → hover → active (3-state consistent) */
 .btn.v-outline.c-accent{background:transparent;color:var(--accent-11);border-color:var(--accent-7)}
 .btn.v-outline.c-accent:hover{background:var(--accent-3)}
+.btn.v-outline.c-accent:active{background:var(--accent-4)}
 .btn.v-outline.c-error{background:transparent;color:var(--error-11);border-color:var(--error-7)}
 .btn.v-outline.c-error:hover{background:var(--error-3)}
+.btn.v-outline.c-error:active{background:var(--error-4)}
 .btn.v-outline.c-success{background:transparent;color:var(--success-11);border-color:var(--success-7)}
 .btn.v-outline.c-success:hover{background:var(--success-3)}
+.btn.v-outline.c-success:active{background:var(--success-4)}
 .btn.v-outline.c-warning{background:transparent;color:var(--warning-11);border-color:var(--warning-7)}
 .btn.v-outline.c-warning:hover{background:var(--warning-3)}
+.btn.v-outline.c-warning:active{background:var(--warning-4)}
 .btn.v-outline.c-neutral{background:transparent;color:var(--surface-fg);border-color:var(--surface-border-strong)}
 .btn.v-outline.c-neutral:hover{background:var(--surface-raised-hover)}
+.btn.v-outline.c-neutral:active{background:var(--surface-raised-active)}
 
-/* ── GHOST ── */
+/* ── GHOST ── rest → hover → active (3-state consistent) */
 .btn.v-ghost.c-accent{background:transparent;color:var(--surface-fg-muted)}
 .btn.v-ghost.c-accent:hover{background:var(--surface-raised-hover);color:var(--surface-fg)}
+.btn.v-ghost.c-accent:active{background:var(--surface-raised-active)}
 .btn.v-ghost.c-error{background:transparent;color:var(--error-11)}
 .btn.v-ghost.c-error:hover{background:var(--error-3)}
+.btn.v-ghost.c-error:active{background:var(--error-4)}
 .btn.v-ghost.c-success{background:transparent;color:var(--success-11)}
 .btn.v-ghost.c-success:hover{background:var(--success-3)}
+.btn.v-ghost.c-success:active{background:var(--success-4)}
 .btn.v-ghost.c-warning{background:transparent;color:var(--warning-11)}
 .btn.v-ghost.c-warning:hover{background:var(--warning-3)}
+.btn.v-ghost.c-warning:active{background:var(--warning-4)}
 .btn.v-ghost.c-neutral{background:transparent;color:var(--surface-fg-muted)}
 .btn.v-ghost.c-neutral:hover{background:var(--surface-raised-hover);color:var(--surface-fg)}
+.btn.v-ghost.c-neutral:active{background:var(--surface-raised-active)}
 
 /* ── LINK ── */
 .btn.v-link{background:transparent;border:none;text-decoration-line:none;text-underline-offset:4px;padding-left:0;padding-right:0;height:auto}
@@ -385,6 +445,14 @@ select{background:var(--surface-raised-hover);border:1px solid var(--surface-bor
       <div class="cr"><label>press: scale(.95) <span class="tag tag-existing">existing</span></label><div class="tg on" id="tg-press"></div></div>
       <div class="cr"><label>press: filter darken <span class="tag tag-proposed">new</span></label><div class="tg" id="tg-active-filter"></div></div>
       <div class="cr"><label>asymmetric timing <span class="tag tag-proposed">new</span></label><div class="tg" id="tg-timing"></div></div>
+      <div class="cr"><label>Devalok grain <span class="tag tag-new">signature</span></label>
+        <select id="sel-grain" onchange="S.noise=this.value;updateAll()">
+          <option value="0">Off</option>
+          <option value="subtle">Subtle</option>
+          <option value="medium" selected>Medium</option>
+          <option value="heavy">Heavy</option>
+        </select>
+      </div>
       <div class="cr"><label>disabled: desaturate <span class="tag tag-proposed">new</span></label><div class="tg" id="tg-disabled-polish"></div></div>
     </div>
 
@@ -421,15 +489,16 @@ const V=['solid','soft','outline','ghost','link'],C=['accent','error','success',
 const SZ=['xs','sm','md','lg','compact-xs','compact-sm','compact-md','icon-xs','icon-sm','icon-md'];
 const IC={plus:'<svg viewBox="0 0 24 24"><path d="M12 5v14M5 12h14"/></svg>',check:'<svg viewBox="0 0 24 24"><path d="M20 6L9 17l-5-5"/></svg>',trash:'<svg viewBox="0 0 24 24"><path d="M3 6h18M19 6v14a2 2 0 01-2 2H7a2 2 0 01-2-2V6m3 0V4a2 2 0 012-2h4a2 2 0 012 2v2"/></svg>',edit:'<svg viewBox="0 0 24 24"><path d="M11 4H4a2 2 0 00-2 2v14a2 2 0 002 2h14a2 2 0 002-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 013 3L12 15l-4 1 1-4 9.5-9.5z"/></svg>',eye:'<svg viewBox="0 0 24 24"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>',lock:'<svg viewBox="0 0 24 24"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0110 0v4"/></svg>',user:'<svg viewBox="0 0 24 24"><path d="M20 21v-2a4 4 0 00-4-4H8a4 4 0 00-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>',up:'<svg viewBox="0 0 24 24"><path d="M12 19V5M5 12l7-7 7 7"/></svg>',cal:'<svg viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="18" rx="2"/><path d="M16 2v4M8 2v4M3 10h18"/></svg>'};
 const PR=[
-  {n:'Primary CTA',v:'solid',c:'accent',s:'md',pill:0,w:0,i:0,shadow:1,cshadow:1,inner:1,grad:1,bdr:1,press:1,af:1,timing:1,dpol:1},
-  {n:'Soft Success',v:'soft',c:'success',s:'sm',pill:0,w:0,i:1,shadow:0,cshadow:0,inner:0,grad:0,bdr:0,press:1,af:0,timing:1,dpol:0},
-  {n:'Status Pill',v:'soft',c:'accent',s:'xs',pill:1,w:0,i:1,shadow:0,cshadow:0,inner:0,grad:0,bdr:0,press:0,af:0,timing:1,dpol:0},
-  {n:'Flat (current)',v:'solid',c:'accent',s:'md',pill:0,w:0,i:0,shadow:1,cshadow:0,inner:0,grad:0,bdr:0,press:1,af:0,timing:0,dpol:0},
-  {n:'Full Polish',v:'solid',c:'accent',s:'md',pill:0,w:0,i:0,shadow:1,cshadow:1,inner:1,grad:1,bdr:1,press:1,af:1,timing:1,dpol:1},
-  {n:'Menu Item',v:'ghost',c:'neutral',s:'compact-sm',pill:0,w:1,i:0,shadow:0,cshadow:0,inner:0,grad:0,bdr:0,press:0,af:0,timing:1,dpol:0},
+  {n:'Primary CTA',v:'solid',c:'accent',s:'md',pill:0,w:0,i:0,shadow:1,cshadow:1,inner:1,grad:1,bdr:1,noise:'medium',press:1,af:1,timing:1,dpol:1},
+  {n:'Soft Success',v:'soft',c:'success',s:'sm',pill:0,w:0,i:1,shadow:0,cshadow:0,inner:0,grad:0,bdr:0,noise:'subtle',press:1,af:0,timing:1,dpol:0},
+  {n:'Status Pill',v:'soft',c:'accent',s:'xs',pill:1,w:0,i:1,shadow:0,cshadow:0,inner:0,grad:0,bdr:0,noise:'subtle',press:0,af:0,timing:1,dpol:0},
+  {n:'Flat (current)',v:'solid',c:'accent',s:'md',pill:0,w:0,i:0,shadow:1,cshadow:0,inner:0,grad:0,bdr:0,noise:'0',press:1,af:0,timing:0,dpol:0},
+  {n:'Full Polish',v:'solid',c:'accent',s:'md',pill:0,w:0,i:0,shadow:1,cshadow:1,inner:1,grad:1,bdr:1,noise:'0',press:1,af:1,timing:1,dpol:1},
+  {n:'Devalok',v:'solid',c:'accent',s:'md',pill:0,w:0,i:0,shadow:1,cshadow:1,inner:1,grad:1,bdr:1,noise:'heavy',press:1,af:1,timing:1,dpol:1},
+  {n:'Menu Item',v:'ghost',c:'neutral',s:'compact-sm',pill:0,w:1,i:0,shadow:0,cshadow:0,inner:0,grad:0,bdr:0,noise:'0',press:0,af:0,timing:1,dpol:0},
 ];
 const S={variant:'solid',color:'accent',size:'md',pill:0,weight:0,icon:0,disabled:0,dark:0,amber:'2',
-  shadow:1,cshadow:0,inner:0,gradient:0,borderDef:0,press:1,activeFilter:0,timing:0,disabledPolish:0,
+  shadow:1,cshadow:0,inner:0,gradient:0,borderDef:0,noise:'medium',press:1,activeFilter:0,timing:0,disabledPolish:0,
   view:'explorer',preset:0};
 const tgs=['pill','weight','icon','disabled','shadow','color-shadow','inner','gradient','border-def','press','active-filter','timing','disabled-polish','dark'];
 const tgMap={pill:'pill',weight:'weight',icon:'icon',disabled:'disabled',shadow:'shadow','color-shadow':'cshadow',inner:'inner',gradient:'gradient','border-def':'borderDef',press:'press','active-filter':'activeFilter',timing:'timing','disabled-polish':'disabledPolish',dark:'dark'};
@@ -468,6 +537,7 @@ function sync(){
   document.getElementById('sel-variant').value=S.variant;document.getElementById('sel-color').value=S.color;document.getElementById('sel-size').value=S.size;
   Object.entries(tgMap).forEach(([id,k])=>document.getElementById('tg-'+id).classList.toggle('on',!!S[k]));
   document.querySelectorAll('#presets .pb').forEach((b,i)=>b.classList.toggle('on',i===S.preset));
+  if(document.getElementById('sel-grain'))document.getElementById('sel-grain').value=S.noise||'0';
 }
 
 function btn(o){
@@ -475,7 +545,7 @@ function btn(o){
   const ic=o.ic!=null?o.ic:S.icon,dis=o.dis!=null?o.dis:S.disabled,label=o.l||'Button',svg=o.svg||IC.plus;
   const shadow=o.shadow!=null?o.shadow:S.shadow,cshadow=o.cshadow!=null?o.cshadow:S.cshadow;
   const inner=o.inner!=null?o.inner:S.inner,grad=o.grad!=null?o.grad:S.gradient;
-  const bdr=o.bdr!=null?o.bdr:S.borderDef,press=o.press!=null?o.press:S.press;
+  const bdr=o.bdr!=null?o.bdr:S.borderDef,noise=o.noise!=null?o.noise:S.noise,press=o.press!=null?o.press:S.press;
   const af=o.af!=null?o.af:S.activeFilter,timing=o.timing!=null?o.timing:S.timing;
   const dpol=o.dpol!=null?o.dpol:S.disabledPolish;
   const isIc=s.startsWith('icon-');
@@ -487,6 +557,7 @@ function btn(o){
   if(inner&&v==='solid')cls+=' polish-inner';
   if(grad&&v==='solid')cls+=' polish-gradient';
   if(bdr&&v==='solid')cls+=' polish-border';
+  if(noise&&noise!=='0')cls+=' polish-noise grain-'+noise;
   if(press)cls+=' polish-press';
   if(af)cls+=' polish-active-filter';
   if(timing)cls+=' polish-timing';

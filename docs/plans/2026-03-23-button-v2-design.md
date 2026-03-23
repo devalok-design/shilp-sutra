@@ -18,7 +18,7 @@
 
 **File:** `packages/core/src/ui/button.tsx` (modify in place — single file component).
 
-**Tests:** `packages/core/src/ui/button.test.tsx` (extend existing 27 tests).
+**Tests:** `packages/core/src/ui/button.test.tsx` (extend existing ~20 tests).
 
 **Stories:** `packages/core/src/ui/button.stories.tsx` (overhaul existing 46 stories).
 
@@ -94,7 +94,7 @@ solid + accent:  bg-accent-9  text-accent-fg  hover:bg-accent-10  active:bg-acce
 solid + error:   bg-error-9   text-error-fg   hover:bg-error-10   active:bg-error-10   shadow-raised
 solid + success: bg-success-9 text-success-fg hover:bg-success-10 active:bg-success-10 shadow-raised
 solid + warning: bg-warning-9 text-warning-fg hover:bg-warning-10 active:bg-warning-10 shadow-raised
-solid + neutral: bg-surface-3 text-surface-fg hover:bg-surface-4  active:bg-surface-4
+solid + neutral: bg-neutral-5 text-surface-fg hover:bg-neutral-7 shadow-raised  (active via filter:brightness(.92))
 ```
 
 ### soft × colors
@@ -110,21 +110,21 @@ soft + neutral: bg-surface-raised text-surface-fg-muted hover:bg-surface-raised-
 ### outline × colors
 
 ```
-outline + accent:  bg-transparent text-accent-11  border-accent-7  hover:bg-accent-2  active:bg-accent-3
-outline + error:   bg-transparent text-error-11   border-error-7   hover:bg-error-2   active:bg-error-3
-outline + success: bg-transparent text-success-11 border-success-7 hover:bg-success-2 active:bg-success-3
-outline + warning: bg-transparent text-warning-11 border-warning-7 hover:bg-warning-2 active:bg-warning-3
-outline + neutral: bg-transparent text-surface-fg  border-surface-border-strong hover:bg-surface-raised active:bg-surface-raised-active
+outline + accent:  bg-transparent text-accent-11  border-accent-7  hover:bg-accent-3  active:bg-accent-4
+outline + error:   bg-transparent text-error-11   border-error-7   hover:bg-error-3   active:bg-error-4
+outline + success: bg-transparent text-success-11 border-success-7 hover:bg-success-3 active:bg-success-4
+outline + warning: bg-transparent text-warning-11 border-warning-7 hover:bg-warning-3 active:bg-warning-4
+outline + neutral: bg-transparent text-surface-fg  border-surface-border-strong hover:bg-surface-raised-hover active:bg-surface-raised-active
 ```
 
 ### ghost × colors
 
 ```
-ghost + accent:  bg-transparent text-accent-11       hover:bg-accent-3  hover:text-accent-11  active:bg-accent-4
-ghost + error:   bg-transparent text-error-11        hover:bg-error-3   hover:text-error-11   active:bg-error-4
-ghost + success: bg-transparent text-success-11      hover:bg-success-3 hover:text-success-11 active:bg-success-4
-ghost + warning: bg-transparent text-warning-11      hover:bg-warning-3 hover:text-warning-11 active:bg-warning-4
-ghost + neutral: bg-transparent text-surface-fg-muted hover:bg-surface-raised hover:text-surface-fg active:bg-surface-raised-active
+ghost + accent:  bg-transparent text-surface-fg-muted hover:bg-surface-raised-hover hover:text-surface-fg active:bg-surface-raised-active  (neutral look — backward compat)
+ghost + error:   bg-transparent text-error-11        hover:bg-error-3   active:bg-error-4
+ghost + success: bg-transparent text-success-11      hover:bg-success-3 active:bg-success-4
+ghost + warning: bg-transparent text-warning-11      hover:bg-warning-3 active:bg-warning-4
+ghost + neutral: bg-transparent text-surface-fg-muted hover:bg-surface-raised-hover hover:text-surface-fg active:bg-surface-raised-active
 ```
 
 ### link × colors
@@ -175,36 +175,47 @@ The semantic token system currently has steps 3, 7, 9, 11 for status colors. The
 
 **Fix:** Introduce an amber primitive scale (hue 65-70) with a **lightness break** at step 9 (L=0.78 instead of 0.55). This is the same approach Radix, Tailwind, and Mantine use. Warning gets dark foreground text (`--color-warning-fg: var(--neutral-12)`) in light mode — it's the one status color where this is necessary.
 
-**Add amber primitive to `packages/core/src/tokens/primitives.css`:**
+**Add amber-bright primitive to `packages/core/src/tokens/primitives.css`:**
+
+NOTE: The existing `--amber-*` scale is used by sapta-varna category colors. Do NOT overwrite it.
+The new scale is named `--amber-bright-*` to avoid collision.
 
 ```css
-/* Amber — warm orange-gold, lightness-corrected for warning use */
---amber-2:  oklch(0.96 0.04 70);
---amber-3:  oklch(0.92 0.08 70);
---amber-4:  oklch(0.88 0.11 70);
---amber-5:  oklch(0.84 0.14 70);
---amber-7:  oklch(0.75 0.17 65);
---amber-9:  oklch(0.78 0.16 65);   /* L=0.78, NOT 0.55 — intentional lightness break */
---amber-10: oklch(0.74 0.16 65);
---amber-11: oklch(0.42 0.12 55);
+/* Amber Bright — warm orange-gold, lightness-corrected for warning use */
+/* Intentional lightness break: step 9 at L=0.78, not the uniform L=0.55 */
+/* Yellow/amber hues collapse at mid-lightness — every major DS (Radix, Tailwind, Mantine) solves this the same way */
+--amber-bright-2:  oklch(0.96 0.04 70);
+--amber-bright-3:  oklch(0.92 0.08 70);
+--amber-bright-4:  oklch(0.88 0.11 70);
+--amber-bright-5:  oklch(0.84 0.14 70);
+--amber-bright-7:  oklch(0.75 0.17 65);
+--amber-bright-9:  oklch(0.78 0.16 65);   /* L=0.78 — the key lightness break */
+--amber-bright-10: oklch(0.74 0.16 65);
+--amber-bright-11: oklch(0.42 0.12 55);
 ```
+
+Dark mode values do NOT need separate overrides — amber-bright step 9 stays bright (L=0.78)
+in both themes. The whole point is that the warning bg is always light enough for dark text.
 
 **Remap warning semantic tokens in `packages/core/src/tokens/semantic.css`:**
 
 ```css
-/* Light mode */
---color-warning-2:  var(--amber-2);
---color-warning-3:  var(--amber-3);
---color-warning-4:  var(--amber-4);
---color-warning-5:  var(--amber-5);
---color-warning-7:  var(--amber-7);
---color-warning-9:  var(--amber-9);
---color-warning-10: var(--amber-10);
---color-warning-11: var(--amber-11);
---color-warning-fg: var(--neutral-12);  /* dark text on bright amber — the one exception */
+/* Light mode — remap from yellow to amber-bright */
+--color-warning-2:  var(--amber-bright-2);
+--color-warning-3:  var(--amber-bright-3);
+--color-warning-4:  var(--amber-bright-4);
+--color-warning-5:  var(--amber-bright-5);
+--color-warning-7:  var(--amber-bright-7);
+--color-warning-9:  var(--amber-bright-9);
+--color-warning-10: var(--amber-bright-10);
+--color-warning-11: var(--amber-bright-11);
+--color-warning-fg: oklch(0.25 0.01 55);  /* hardcoded dark — does NOT flip with theme */
+
+/* Dark mode — ALSO pin warning-fg to dark (amber-bright bg stays light in both themes) */
+--color-warning-fg: oklch(0.25 0.01 55);  /* same value, explicitly pinned */
 ```
 
-**Note:** The existing yellow primitive stays untouched — it's still used by the sapta-varna category colors for data visualization. Only the `warning-*` semantic tokens change their source mapping.
+**Note:** The existing `--yellow-*` AND `--amber-*` primitives stay untouched. Only `warning-*` semantic tokens change their source mapping from `--yellow-*` to `--amber-bright-*`.
 
 **Add to Tailwind preset** (`packages/core/src/tailwind/preset.ts`):
 
@@ -403,7 +414,7 @@ export const buttonVariants = cva(
       { variant: 'solid', color: 'error',   className: 'bg-error-9 text-error-fg hover:bg-error-10 active:bg-error-10 shadow-raised' },
       { variant: 'solid', color: 'success', className: 'bg-success-9 text-success-fg hover:bg-success-10 active:bg-success-10 shadow-raised' },
       { variant: 'solid', color: 'warning', className: 'bg-warning-9 text-warning-fg hover:bg-warning-10 active:bg-warning-10 shadow-raised' },
-      { variant: 'solid', color: 'neutral', className: 'bg-surface-3 text-surface-fg hover:bg-surface-4 active:bg-surface-4' },
+      { variant: 'solid', color: 'neutral', className: 'bg-neutral-5 text-surface-fg hover:bg-neutral-7 shadow-raised' },
 
       // ============ SOFT ============
       { variant: 'soft', color: 'accent',  className: 'bg-accent-3 text-accent-11 hover:bg-accent-4 active:bg-accent-5' },
@@ -412,12 +423,12 @@ export const buttonVariants = cva(
       { variant: 'soft', color: 'warning', className: 'bg-warning-3 text-warning-11 hover:bg-warning-4 active:bg-warning-5' },
       { variant: 'soft', color: 'neutral', className: 'bg-surface-raised text-surface-fg-muted hover:bg-surface-raised-hover active:bg-surface-raised-active' },
 
-      // ============ OUTLINE ============
-      { variant: 'outline', color: 'accent',  className: 'bg-transparent text-accent-11 border-accent-7 hover:bg-accent-2 active:bg-accent-3' },
-      { variant: 'outline', color: 'error',   className: 'bg-transparent text-error-11 border-error-7 hover:bg-error-2 active:bg-error-3' },
-      { variant: 'outline', color: 'success', className: 'bg-transparent text-success-11 border-success-7 hover:bg-success-2 active:bg-success-3' },
-      { variant: 'outline', color: 'warning', className: 'bg-transparent text-warning-11 border-warning-7 hover:bg-warning-2 active:bg-warning-3' },
-      { variant: 'outline', color: 'neutral', className: 'bg-transparent text-surface-fg border-surface-border-strong hover:bg-surface-raised active:bg-surface-raised-active' },
+      // ============ OUTLINE ============ (hover step 3, active step 4 — per playground)
+      { variant: 'outline', color: 'accent',  className: 'bg-transparent text-accent-11 border-accent-7 hover:bg-accent-3 active:bg-accent-4' },
+      { variant: 'outline', color: 'error',   className: 'bg-transparent text-error-11 border-error-7 hover:bg-error-3 active:bg-error-4' },
+      { variant: 'outline', color: 'success', className: 'bg-transparent text-success-11 border-success-7 hover:bg-success-3 active:bg-success-4' },
+      { variant: 'outline', color: 'warning', className: 'bg-transparent text-warning-11 border-warning-7 hover:bg-warning-3 active:bg-warning-4' },
+      { variant: 'outline', color: 'neutral', className: 'bg-transparent text-surface-fg border-surface-border-strong hover:bg-surface-raised-hover active:bg-surface-raised-active' },
 
       // ============ GHOST ============
       // ghost + accent intentionally uses neutral tokens for backward compat

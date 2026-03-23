@@ -143,39 +143,87 @@ link + neutral: text-surface-fg-muted
 
 ## Token Expansion Required
 
+### 1. Status color step expansion
+
 The semantic token system currently has steps 3, 7, 9, 11 for status colors. The soft variant needs steps 4 and 5 (hover/active), and solid variant needs step 10 (hover). Outline needs step 2.
 
 **Add to `packages/core/src/tokens/semantic.css`:**
 
 ```css
 /* Error scale expansion */
---color-error-2:  oklch(from var(--color-red-2) l c h);
---color-error-4:  oklch(from var(--color-red-4) l c h);
---color-error-5:  oklch(from var(--color-red-5) l c h);
---color-error-10: oklch(from var(--color-red-10) l c h);
+--color-error-2:  var(--red-2);
+--color-error-4:  var(--red-4);
+--color-error-5:  var(--red-5);
+--color-error-10: var(--red-10);
 
 /* Success scale expansion */
---color-success-2:  oklch(from var(--color-green-2) l c h);
---color-success-4:  oklch(from var(--color-green-4) l c h);
---color-success-5:  oklch(from var(--color-green-5) l c h);
---color-success-10: oklch(from var(--color-green-10) l c h);
-
-/* Warning scale expansion */
---color-warning-2:  oklch(from var(--color-yellow-2) l c h);
---color-warning-4:  oklch(from var(--color-yellow-4) l c h);
---color-warning-5:  oklch(from var(--color-yellow-5) l c h);
---color-warning-10: oklch(from var(--color-yellow-10) l c h);
+--color-success-2:  var(--green-2);
+--color-success-4:  var(--green-4);
+--color-success-5:  var(--green-5);
+--color-success-10: var(--green-10);
 
 /* Info scale expansion */
---color-info-2:  oklch(from var(--color-blue-2) l c h);
---color-info-4:  oklch(from var(--color-blue-4) l c h);
---color-info-5:  oklch(from var(--color-blue-5) l c h);
---color-info-10: oklch(from var(--color-blue-10) l c h);
+--color-info-2:  var(--blue-2);
+--color-info-4:  var(--blue-4);
+--color-info-5:  var(--blue-5);
+--color-info-10: var(--blue-10);
 ```
+
+### 2. Warning: remap from yellow to bright amber (BREAKING — token-level fix)
+
+**Decision (approved via playground):** Yellow (hue 85) at uniform L=0.55 produces a muddy olive that has insufficient contrast for both white and dark text. This is a fundamental flaw in using uniform lightness across all hues — yellow is inherently high-luminance and collapses at mid-lightness.
+
+**Fix:** Introduce an amber primitive scale (hue 65-70) with a **lightness break** at step 9 (L=0.78 instead of 0.55). This is the same approach Radix, Tailwind, and Mantine use. Warning gets dark foreground text (`--color-warning-fg: var(--neutral-12)`) in light mode — it's the one status color where this is necessary.
+
+**Add amber primitive to `packages/core/src/tokens/primitives.css`:**
+
+```css
+/* Amber — warm orange-gold, lightness-corrected for warning use */
+--amber-2:  oklch(0.96 0.04 70);
+--amber-3:  oklch(0.92 0.08 70);
+--amber-4:  oklch(0.88 0.11 70);
+--amber-5:  oklch(0.84 0.14 70);
+--amber-7:  oklch(0.75 0.17 65);
+--amber-9:  oklch(0.78 0.16 65);   /* L=0.78, NOT 0.55 — intentional lightness break */
+--amber-10: oklch(0.74 0.16 65);
+--amber-11: oklch(0.42 0.12 55);
+```
+
+**Remap warning semantic tokens in `packages/core/src/tokens/semantic.css`:**
+
+```css
+/* Light mode */
+--color-warning-2:  var(--amber-2);
+--color-warning-3:  var(--amber-3);
+--color-warning-4:  var(--amber-4);
+--color-warning-5:  var(--amber-5);
+--color-warning-7:  var(--amber-7);
+--color-warning-9:  var(--amber-9);
+--color-warning-10: var(--amber-10);
+--color-warning-11: var(--amber-11);
+--color-warning-fg: var(--neutral-12);  /* dark text on bright amber — the one exception */
+```
+
+**Note:** The existing yellow primitive stays untouched — it's still used by the sapta-varna category colors for data visualization. Only the `warning-*` semantic tokens change their source mapping.
 
 **Add to Tailwind preset** (`packages/core/src/tailwind/preset.ts`):
 
-Map new token steps to utilities: `bg-error-2`, `bg-error-4`, `bg-error-5`, `bg-error-10`, etc.
+Map new token steps to utilities: `bg-error-2`, `bg-error-4`, `bg-error-5`, `bg-error-10`, `bg-warning-2`, `bg-warning-4`, etc.
+
+### 3. New shadow tokens
+
+```css
+/* Inner emboss — top-lit highlight for solid buttons */
+--shadow-raised-inner: inset 0 1px 0 oklch(1 0 0 / 0.10), inset 0 -1px 0 oklch(0 0 0 / 0.06);
+
+/* Pressed — collapsed shadow for active state */
+--shadow-pressed: 0 0 0 1px oklch(var(--shadow-color) / calc(0.04 * var(--shadow-strength)));
+
+/* Colored hover shadows — one per status color, matching shadow-brand pattern */
+--shadow-success: 0 2px 8px oklch(0.55 0.14 145 / 0.20), 0 6px 20px oklch(0.55 0.14 145 / 0.15);
+--shadow-error:   0 2px 8px oklch(0.55 0.18 25 / 0.20),  0 6px 20px oklch(0.55 0.18 25 / 0.15);
+--shadow-warning: 0 2px 8px oklch(0.78 0.16 65 / 0.22),  0 6px 20px oklch(0.78 0.16 65 / 0.15);
+```
 
 ---
 

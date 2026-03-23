@@ -120,30 +120,46 @@
   /* ═══════════════════════════════════════════════════════════
      STATUS — Error
      ═══════════════════════════════════════════════════════════ */
+  --color-error-2: var(--red-2);
   --color-error-3: var(--red-3);
+  --color-error-4: var(--red-4);
+  --color-error-5: var(--red-5);
   --color-error-7: var(--red-7);
   --color-error-9: var(--red-9);
+  --color-error-10: var(--red-10);
   --color-error-11: var(--red-11);
   --color-error-fg: var(--neutral-1);
 
   /* ═══ Status — Success ═══ */
+  --color-success-2: var(--green-2);
   --color-success-3: var(--green-3);
+  --color-success-4: var(--green-4);
+  --color-success-5: var(--green-5);
   --color-success-7: var(--green-7);
   --color-success-9: var(--green-9);
+  --color-success-10: var(--green-10);
   --color-success-11: var(--green-11);
   --color-success-fg: var(--neutral-1);
 
-  /* ═══ Status — Warning ═══ */
-  --color-warning-3: var(--yellow-3);
-  --color-warning-7: var(--yellow-7);
-  --color-warning-9: var(--yellow-9);
-  --color-warning-11: var(--yellow-11);
-  --color-warning-fg: var(--neutral-1);
+  /* ═══ Status — Warning (amber-bright — lightness-corrected) ═══ */
+  --color-warning-2:  var(--amber-bright-2);
+  --color-warning-3:  var(--amber-bright-3);
+  --color-warning-4:  var(--amber-bright-4);
+  --color-warning-5:  var(--amber-bright-5);
+  --color-warning-7:  var(--amber-bright-7);
+  --color-warning-9:  var(--amber-bright-9);
+  --color-warning-10: var(--amber-bright-10);
+  --color-warning-11: var(--amber-bright-11);
+  --color-warning-fg: oklch(0.25 0.01 55);
 
   /* ═══ Status — Info ═══ */
+  --color-info-2: var(--blue-2);
   --color-info-3: var(--blue-3);
+  --color-info-4: var(--blue-4);
+  --color-info-5: var(--blue-5);
   --color-info-7: var(--blue-7);
   --color-info-9: var(--blue-9);
+  --color-info-10: var(--blue-10);
   --color-info-11: var(--blue-11);
   --color-info-fg: var(--neutral-1);
 
@@ -315,6 +331,13 @@
   --shadow-ring-sm: 0 0 0 1px var(--color-surface-border);
   --shadow-ring: 0 0 0 2px oklch(0.55 0.19 360 / 0.30);
 
+  /* Status & state effect shadows */
+  --shadow-raised-inner: inset 0 1px 0 oklch(1 0 0 / 0.10), inset 0 -1px 0 oklch(0 0 0 / 0.06);
+  --shadow-pressed: 0 0 0 1px oklch(var(--shadow-color) / calc(0.04 * var(--shadow-strength)));
+  --shadow-success: 0 2px 8px oklch(0.55 0.14 145 / 0.20), 0 6px 20px oklch(0.55 0.14 145 / 0.15);
+  --shadow-error:   0 2px 8px oklch(0.55 0.18 25 / 0.20),  0 6px 20px oklch(0.55 0.18 25 / 0.15);
+  --shadow-warning: 0 2px 8px oklch(0.78 0.16 65 / 0.22),  0 6px 20px oklch(0.78 0.16 65 / 0.15);
+
   /* ═══════════════════════════════════════════════════════════
      SIZES
      ═══════════════════════════════════════════════════════════ */
@@ -399,8 +422,14 @@
   --color-secondary-fg: var(--neutral-12);
   --color-error-fg: var(--neutral-12);
   --color-success-fg: var(--neutral-12);
-  --color-warning-fg: var(--neutral-12);
   --color-info-fg: var(--neutral-12);
+
+  /* Warning: amber-bright bg stays light in dark mode, so fg stays dark */
+  --color-warning-2:  var(--amber-bright-2);
+  --color-warning-3:  var(--amber-bright-3);
+  --color-warning-4:  var(--amber-bright-4);
+  --color-warning-5:  var(--amber-bright-5);
+  --color-warning-fg: oklch(0.25 0.01 55);
 
   /* Dark mode borders need lower contrast — bright borders look harsh.
      Drop to step 3/4 for subtle resting borders that don't overpower surfaces */
@@ -433,6 +462,10 @@
   --shadow-brand: 0 2px 8px oklch(0.55 0.19 360 / 0.30), 0 6px 20px oklch(0.55 0.19 360 / 0.20);
   --shadow-glow: 0 0 0 1.5px oklch(0.55 0.19 360 / 0.35), 0 0 10px oklch(0.55 0.19 360 / 0.20);
   --shadow-ring: 0 0 0 2px oklch(0.55 0.19 360 / 0.45);
+  --shadow-raised-inner: inset 0 1px 0 oklch(1 0 0 / 0.06), inset 0 -1px 0 oklch(0 0 0 / 0.12);
+  --shadow-success: 0 2px 8px oklch(0.6 0.14 145 / 0.30), 0 6px 20px oklch(0.6 0.14 145 / 0.20);
+  --shadow-error:   0 2px 8px oklch(0.6 0.18 25 / 0.30),  0 6px 20px oklch(0.6 0.18 25 / 0.20);
+  --shadow-warning: 0 2px 8px oklch(0.78 0.16 65 / 0.30), 0 6px 20px oklch(0.78 0.16 65 / 0.20);
 
   /* Gradients */
   --gradient-brand-light: linear-gradient(135deg, var(--pink-9), var(--purple-9));

@@ -37,6 +37,7 @@ export function TaskPanelDescription({
   ...props
 }: TaskPanelDescriptionProps) {
   const { task, clientMode, onUpdateDescription } = useTaskPanel()
+  const canEdit = !clientMode || clientMode === 'COLLABORATOR'
   const [expanded, setExpanded] = React.useState(false)
   const [isEditing, setIsEditing] = React.useState(false)
   const [draft, setDraft] = React.useState(task.description)
@@ -72,11 +73,11 @@ export function TaskPanelDescription({
     [handleSave],
   )
 
-  // Empty + client: nothing
-  if (isEmpty && clientMode) return null
+  // Empty + read-only client: nothing
+  if (isEmpty && !canEdit) return null
 
-  // Empty + staff: compact add prompt
-  if (isEmpty && !clientMode) {
+  // Empty + editable (staff or collaborator): compact add prompt
+  if (isEmpty && canEdit) {
     return (
       <div className={cn('border-b border-surface-border-subtle px-ds-06 pb-ds-04', className)} {...props}>
         {isEditing ? (
@@ -108,7 +109,7 @@ export function TaskPanelDescription({
   // Has content — show inline, 2-line clamp by default
   return (
     <div className={cn('border-b border-surface-border-subtle px-ds-06 pb-ds-04', className)} {...props}>
-      {isEditing && !clientMode ? (
+      {isEditing && canEdit ? (
         /* Editing mode */
         <div>
           <textarea
@@ -125,22 +126,22 @@ export function TaskPanelDescription({
         /* Expanded mode */
         <div>
           <div
-            role={clientMode ? undefined : 'button'}
-            tabIndex={clientMode ? undefined : 0}
+            role={canEdit ? 'button' : undefined}
+            tabIndex={canEdit ? 0 : undefined}
             className={cn(
               'text-ds-sm text-surface-fg-muted whitespace-pre-wrap',
-              !clientMode && 'cursor-pointer rounded-ds-md hover:bg-surface-raised-hover p-ds-03 -m-ds-03 transition-colors',
+              canEdit && 'cursor-pointer rounded-ds-md hover:bg-surface-raised-hover p-ds-03 -m-ds-03 transition-colors',
             )}
-            onClick={clientMode ? undefined : () => setIsEditing(true)}
+            onClick={canEdit ? () => setIsEditing(true) : undefined}
             onKeyDown={
-              clientMode
-                ? undefined
-                : (e) => {
+              canEdit
+                ? (e) => {
                     if (e.key === 'Enter' || e.key === ' ') {
                       e.preventDefault()
                       setIsEditing(true)
                     }
                   }
+                : undefined
             }
           >
             {task.description}

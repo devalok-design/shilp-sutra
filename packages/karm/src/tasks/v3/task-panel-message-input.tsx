@@ -23,14 +23,15 @@ export function TaskPanelMessageInput({
   ...props
 }: TaskPanelMessageInputProps) {
   const { onPostComment, clientMode, mode, task } = useTaskPanel()
+  const canPost = !clientMode || clientMode === 'COLLABORATOR'
   const [text, setText] = React.useState('')
   const [visibility, setVisibility] = React.useState<'INTERNAL' | 'CLIENT'>('INTERNAL')
   const textareaRef = React.useRef<HTMLTextAreaElement>(null)
 
   const showVisibilityToggle = !clientMode && task.visibility === 'EVERYONE'
 
-  // Hidden in peek mode
-  if (mode === 'peek') return null
+  // Hidden in peek mode or for VIEW_ONLY clients
+  if (mode === 'peek' || !canPost) return null
 
   const adjustHeight = React.useCallback(() => {
     const el = textareaRef.current

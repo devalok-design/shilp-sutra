@@ -592,16 +592,17 @@ export function TaskPanelQuickProps({
   ...props
 }: TaskPanelQuickPropsProps) {
   const { mode, clientMode } = useTaskPanel()
-  const interactive = !clientMode
+  const isStaff = !clientMode
+  const canEditBasic = isStaff || clientMode === 'COLLABORATOR'
 
   return (
     <div className={cn('px-ds-05 pt-ds-03 pb-ds-02', className)} {...props}>
       {/* Property pills */}
       <div className="flex flex-wrap items-center gap-ds-03">
-        <StatusPill interactive={interactive} />
-        <AssigneePill interactive={interactive} />
-        <PriorityPill interactive={interactive} />
-        <DueDatePill interactive={interactive} />
+        <StatusPill interactive={isStaff} />
+        <AssigneePill interactive={isStaff} />
+        <PriorityPill interactive={canEditBasic} />
+        <DueDatePill interactive={canEditBasic} />
       </div>
 
       {/* Peek triage row — staff mode only */}

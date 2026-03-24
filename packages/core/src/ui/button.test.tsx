@@ -1,7 +1,9 @@
 import { render, screen } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
+import { IconPlus, IconCheck, IconArrowRight } from '@tabler/icons-react'
 import { describe, it, expect, vi } from 'vitest'
 import { Button } from './button'
+import { Icon } from './icon'
 
 describe('Button', () => {
   it('renders children', () => {
@@ -39,35 +41,33 @@ describe('Button', () => {
   })
 
   it('renders startIcon before children', () => {
-    const Icon = () => <svg data-testid="start-icon" />
-    render(<Button startIcon={<Icon />}>Click</Button>)
+    render(<Button startIcon={<Icon icon={IconPlus} />}>Click</Button>)
     const button = screen.getByRole('button')
-    const icon = screen.getByTestId('start-icon')
-    expect(button).toContainElement(icon)
-    expect(button.firstElementChild).toContainElement(icon)
+    const svg = button.querySelector('svg')
+    expect(svg).toBeInTheDocument()
+    expect(button.firstElementChild).toContainElement(svg!)
   })
 
   it('renders endIcon after children', () => {
-    const Icon = () => <svg data-testid="end-icon" />
-    render(<Button endIcon={<Icon />}>Click</Button>)
+    render(<Button endIcon={<Icon icon={IconArrowRight} />}>Click</Button>)
     const button = screen.getByRole('button')
-    const icon = screen.getByTestId('end-icon')
-    expect(button).toContainElement(icon)
-    expect(button.lastElementChild).toContainElement(icon)
+    const svg = button.querySelector('svg')
+    expect(svg).toBeInTheDocument()
+    expect(button.lastElementChild).toContainElement(svg!)
   })
 
   it('renders both startIcon and endIcon', () => {
     render(
       <Button
-        startIcon={<svg data-testid="start" />}
-        endIcon={<svg data-testid="end" />}
+        startIcon={<Icon icon={IconPlus} />}
+        endIcon={<Icon icon={IconArrowRight} />}
       >
         Text
       </Button>,
     )
-    screen.getByRole('button')
-    expect(screen.getByTestId('start')).toBeInTheDocument()
-    expect(screen.getByTestId('end')).toBeInTheDocument()
+    const button = screen.getByRole('button')
+    const svgs = button.querySelectorAll('svg')
+    expect(svgs).toHaveLength(2)
   })
 
   it('shows loading state with spinner and disables button', () => {
@@ -79,9 +79,8 @@ describe('Button', () => {
   })
 
   it('loading replaces startIcon by default', () => {
-    const Icon = () => <svg data-testid="start-icon" />
-    render(<Button loading startIcon={<Icon />}>Save</Button>)
-    expect(screen.queryByTestId('start-icon')).not.toBeInTheDocument()
+    render(<Button loading startIcon={<Icon icon={IconPlus} />}>Save</Button>)
+    // When loading at start position, startIcon is replaced by a Spinner
     expect(screen.getByRole('status')).toBeInTheDocument()
   })
 

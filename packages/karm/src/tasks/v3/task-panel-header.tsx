@@ -8,6 +8,7 @@ import {
   IconLink,
   IconCopy,
   IconTrash,
+  IconChevronRight,
 } from '@tabler/icons-react'
 import { Icon } from '@/ui/icon'
 import { cn } from '@/ui/lib/utils'
@@ -56,16 +57,15 @@ export function TaskPanelHeader({ className, menuSlot, ...props }: TaskPanelHead
       )}
       {...props}
     >
-      {/* Task ID + Project */}
-      <div className="flex items-center gap-0">
-        <span className="text-ds-xs font-mono text-surface-fg-subtle">
-          {task.taskId}
-        </span>
-        {task.project && (
-          <span className="text-ds-xs text-surface-fg-subtle/60">
-            {' · '}{task.project}
-          </span>
+      {/* Project breadcrumb + Task ID */}
+      <div className="flex items-center gap-ds-01 text-ds-xs text-surface-fg-subtle">
+        {task.projectName && (
+          <>
+            <span className="text-surface-fg-muted">{task.projectName}</span>
+            <Icon icon={IconChevronRight} size="xs" />
+          </>
         )}
+        <span className="font-mono">{task.taskId}</span>
       </div>
 
       {/* Title + actions row */}

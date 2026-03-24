@@ -11,13 +11,13 @@ import { cn } from './lib/utils'
 import { Spinner } from './spinner'
 
 export const buttonVariants = cva(
-  'relative inline-flex items-center justify-center whitespace-nowrap font-sans select-none overflow-hidden isolate border border-transparent focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent-9 focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-action-disabled disabled:cursor-not-allowed disabled:saturate-[0.3]',
+  'relative inline-flex items-center justify-center whitespace-nowrap font-sans select-none overflow-hidden isolate focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent-9 focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-action-disabled disabled:cursor-not-allowed disabled:saturate-[0.3] [&>span]:relative [&>span]:z-[2]',
   {
     variants: {
       variant: {
         solid: '',
         soft: '',
-        outline: '',
+        outline: 'border',
         ghost: '',
         link: 'underline-offset-4 hover:underline active:opacity-80',
         // Deprecated aliases

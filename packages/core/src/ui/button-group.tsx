@@ -7,6 +7,8 @@ import type { ButtonProps } from './button'
 interface ButtonGroupContextValue {
   variant?: ButtonProps['variant']
   color?: ButtonProps['color']
+  weight?: ButtonProps['weight']
+  shape?: ButtonProps['shape']
   size?: ButtonProps['size']
 }
 
@@ -18,10 +20,10 @@ export function useButtonGroup() {
 
 /**
  * Props for ButtonGroup — a container that visually merges adjacent `<Button>` components into
- * a single connected unit, and propagates a shared `variant` and `size` via context.
+ * a single connected unit, and propagates shared props (`variant`, `color`, `weight`, `shape`, `size`) via context.
  *
- * **Context propagation:** Child `<Button>` components automatically inherit `variant` and `size`
- * from ButtonGroup. Individual children can still override by passing their own `variant` or `size`.
+ * **Context propagation:** Child `<Button>` components automatically inherit `variant`, `color`,
+ * `weight`, `shape`, and `size` from ButtonGroup. Individual children can still override any prop.
  *
  * **Visual joining:** Adjacent button borders are merged with negative margins and border-radius overrides.
  *
@@ -54,6 +56,10 @@ export interface ButtonGroupProps extends Omit<React.HTMLAttributes<HTMLDivEleme
   variant?: ButtonProps['variant']
   /** Shared color applied to all child Buttons (children can override) */
   color?: ButtonProps['color']
+  /** Shared weight applied to all child Buttons (children can override) */
+  weight?: ButtonProps['weight']
+  /** Shared shape applied to all child Buttons (children can override) */
+  shape?: ButtonProps['shape']
   /** Shared size applied to all child Buttons (children can override) */
   size?: ButtonProps['size']
   /** Layout direction. Default: 'horizontal' */
@@ -61,8 +67,8 @@ export interface ButtonGroupProps extends Omit<React.HTMLAttributes<HTMLDivEleme
 }
 
 const ButtonGroup = React.forwardRef<HTMLDivElement, ButtonGroupProps>(
-  ({ className, variant, color, size, orientation = 'horizontal', children, ...props }, ref) => {
-    const contextValue = React.useMemo(() => ({ variant, color, size }), [variant, color, size])
+  ({ className, variant, color, weight, shape, size, orientation = 'horizontal', children, ...props }, ref) => {
+    const contextValue = React.useMemo(() => ({ variant, color, weight, shape, size }), [variant, color, weight, shape, size])
 
     return (
       <ButtonGroupContext.Provider value={contextValue}>

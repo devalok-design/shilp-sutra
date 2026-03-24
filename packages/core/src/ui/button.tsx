@@ -234,7 +234,7 @@ const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
       weight,
       size,
       asChild = false,
-      shape = 'default',
+      shape,
       startIcon,
       endIcon,
       loading: loadingProp = false,
@@ -252,7 +252,8 @@ const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
     const group = useButtonGroup()
     const resolvedVariant = variant ?? group.variant
     const resolvedColor = color ?? group.color
-    const resolvedWeight = weight ?? 'semibold'
+    const resolvedWeight = weight ?? group.weight ?? 'semibold'
+    const resolvedShape = shape ?? group.shape ?? 'default'
     const resolvedSize = size ?? group.size ?? 'md'
     const iconClass = iconSizeClass[resolvedSize]
     const spinnerSize = spinnerSizeMap[resolvedSize]
@@ -298,7 +299,7 @@ const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
       const slotProps = {
         className: cn(
           buttonVariants({ variant: resolvedVariant, color: resolvedColor, weight: resolvedWeight, size: resolvedSize }),
-          shape === 'pill' && 'rounded-full',
+          resolvedShape === 'pill' && 'rounded-full',
           fullWidth && 'w-full',
           className,
         ),
@@ -386,7 +387,7 @@ const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
         {...props}
         className={cn(
           buttonVariants({ variant: resolvedVariant, color: resolvedColor, weight: resolvedWeight, size: resolvedSize }),
-          shape === 'pill' && 'rounded-full',
+          resolvedShape === 'pill' && 'rounded-full',
           fullWidth && 'w-full',
           !loading && !isAsyncFeedback && 'active:scale-[0.95] transition-[color,background-color,border-color,box-shadow,transform,filter] duration-fast-01 ease-productive-standard',
           !loading && !isAsyncFeedback && 'active:brightness-[0.92] active:saturate-[1.1]',

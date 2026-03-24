@@ -708,6 +708,20 @@ export function TaskPanelPropertiesCard() {
         {/* Separator before meta */}
         <div className="border-t border-surface-border mt-ds-04 pt-ds-04" />
 
+        {/* Creator attribution */}
+        {task.createdByName && (
+          <div className="flex items-center gap-ds-02 mb-ds-03">
+            <span className="text-ds-xs text-surface-fg-subtle">Created by</span>
+            <span className="text-ds-xs text-surface-fg-muted font-medium">{task.createdByName}</span>
+            {task.createdByType === 'SYSTEM' && (
+              <Badge variant="subtle" color="accent" size="xs">AI</Badge>
+            )}
+            {task.createdByType === 'CLIENT' && (
+              <Badge variant="subtle" color="success" size="xs">Client</Badge>
+            )}
+          </div>
+        )}
+
         {/* Meta — Updated / Created (two-column) */}
         <div className="flex items-start justify-between">
           <div className="flex flex-col gap-ds-01">

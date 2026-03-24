@@ -2,6 +2,7 @@
 
 import * as React from 'react'
 import { cn } from '@/ui/lib/utils'
+import { Skeleton } from '@/ui/skeleton'
 import { TaskPanelRoot } from './task-panel-root'
 import { TaskPanelHeader } from './task-panel-header'
 import { TaskPanelQuickProps } from './task-panel-quick-props'
@@ -44,6 +45,42 @@ function TaskPanelContent({ children, className, ...props }: TaskPanelContentPro
 TaskPanelContent.displayName = 'TaskPanelContent'
 
 // ---------------------------------------------------------------------------
+// Loading skeleton
+// ---------------------------------------------------------------------------
+
+export interface TaskPanelLoadingProps {
+  className?: string
+}
+
+function TaskPanelLoading({ className }: TaskPanelLoadingProps) {
+  return (
+    <div className={cn('space-y-ds-06 p-ds-06', className)}>
+      <Skeleton className="h-ds-xs-plus w-3/4 bg-surface-raised-hover" />
+      <div className="space-y-ds-04">
+        {Array.from({ length: 6 }).map((_, i) => (
+          <div key={i} className="flex items-center gap-ds-04">
+            <Skeleton className="h-[16px] w-[120px] bg-surface-raised-hover" />
+            <Skeleton className="h-[16px] flex-1 bg-surface-raised-hover" />
+          </div>
+        ))}
+      </div>
+      <div className="flex gap-ds-05 border-b border-surface-border-strong pb-ds-03">
+        {Array.from({ length: 5 }).map((_, i) => (
+          <Skeleton key={i} className="h-[12px] w-[64px] bg-surface-raised-hover" />
+        ))}
+      </div>
+      <div className="space-y-ds-04">
+        <Skeleton className="h-ds-md w-full bg-surface-raised-hover" />
+        <Skeleton className="h-ds-md w-full bg-surface-raised-hover" />
+        <Skeleton className="h-ds-md w-4/5 bg-surface-raised-hover" />
+      </div>
+    </div>
+  )
+}
+
+TaskPanelLoading.displayName = 'TaskPanelLoading'
+
+// ---------------------------------------------------------------------------
 // Compound component
 // ---------------------------------------------------------------------------
 
@@ -61,4 +98,5 @@ export const TaskPanel = Object.assign(TaskPanelRoot, {
   ReviewCard: TaskPanelReviewCard,
   PropertiesCard: TaskPanelPropertiesCard,
   Files: TaskPanelFiles,
+  Loading: TaskPanelLoading,
 })

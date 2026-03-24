@@ -254,6 +254,8 @@ export function TaskPanelPropertiesCard() {
     onAddLead,
     onRemoveLead,
     onUpdateDueDate,
+    onUpdateStartDate,
+    onUpdatePhase,
     onToggleVisibility,
     onAddLabel,
     onRemoveLabel,
@@ -264,6 +266,8 @@ export function TaskPanelPropertiesCard() {
   const [assigneeOpen, setAssigneeOpen] = React.useState(false)
   const [leadOpen, setLeadOpen] = React.useState(false)
   const [dueDateOpen, setDueDateOpen] = React.useState(false)
+  const [startDateOpen, setStartDateOpen] = React.useState(false)
+  const [phaseOpen, setPhaseOpen] = React.useState(false)
   const [labelOpen, setLabelOpen] = React.useState(false)
   const [newLabel, setNewLabel] = React.useState('')
 
@@ -518,6 +522,93 @@ export function TaskPanelPropertiesCard() {
                   {formatDate(task.dueDate!)}
                 </span>
               )}
+            </div>
+          )}
+        </div>
+
+        {/* Row 2: Start Date + Phase */}
+        <div className="grid grid-cols-2 gap-ds-03 mb-ds-04">
+          {/* Start Date */}
+          {interactive ? (
+            <Popover open={startDateOpen} onOpenChange={setStartDateOpen}>
+              <PopoverTrigger asChild>
+                <button type="button" className={cellTriggerBase}>
+                  <span className="text-[10px] text-surface-fg-subtle/50 uppercase tracking-wider">Start</span>
+                  <span className={cn('text-ds-sm truncate', task.startDate ? 'text-surface-fg' : 'text-surface-fg-subtle')}>
+                    {task.startDate ? formatDate(task.startDate) : 'None'}
+                  </span>
+                </button>
+              </PopoverTrigger>
+              <PopoverContent className="w-[220px] border-surface-border-strong bg-surface-overlay p-ds-03" align="start" sideOffset={4}>
+                <label className="flex flex-col gap-ds-02">
+                  <span className="text-ds-xs font-medium text-surface-fg-muted">Start date</span>
+                  <Input
+                    type="date"
+                    size="sm"
+                    defaultValue={task.startDate ? task.startDate.slice(0, 10) : ''}
+                    onChange={(e) => {
+                      const val = e.target.value
+                      onUpdateStartDate(val ? new Date(val + 'T00:00:00') : null)
+                      setStartDateOpen(false)
+                    }}
+                  />
+                </label>
+              </PopoverContent>
+            </Popover>
+          ) : (
+            <div className={readonlyCellBase}>
+              <span className="text-[10px] text-surface-fg-subtle/50 uppercase tracking-wider">Start</span>
+              <span className={cn('text-ds-sm truncate', task.startDate ? 'text-surface-fg' : 'text-surface-fg-subtle')}>
+                {task.startDate ? formatDate(task.startDate) : 'None'}
+              </span>
+            </div>
+          )}
+
+          {/* Phase */}
+          {interactive && task.phaseOptions && task.phaseOptions.length > 0 ? (
+            <Popover open={phaseOpen} onOpenChange={setPhaseOpen}>
+              <PopoverTrigger asChild>
+                <button type="button" className={cellTriggerBase}>
+                  <span className="text-[10px] text-surface-fg-subtle/50 uppercase tracking-wider">Phase</span>
+                  <span className={cn('text-ds-sm truncate', task.phase ? 'text-surface-fg' : 'text-surface-fg-subtle')}>
+                    {task.phase?.name ?? 'None'}
+                  </span>
+                </button>
+              </PopoverTrigger>
+              <PopoverContent className="w-[180px] border-surface-border-strong bg-surface-overlay p-ds-02" align="start" sideOffset={4}>
+                {task.phaseOptions.map((opt) => (
+                  <Button
+                    key={opt.id}
+                    variant="ghost"
+                    size="compact-sm"
+                    weight="normal"
+                    onClick={() => { onUpdatePhase(opt.id); setPhaseOpen(false) }}
+                    className={cn('w-full justify-start', opt.id === task.phase?.id && 'bg-surface-raised-hover')}
+                  >
+                    {opt.name}
+                    {opt.id === task.phase?.id && <Icon icon={IconCheck} size="sm" className="ml-auto text-accent-11" />}
+                  </Button>
+                ))}
+                {task.phase && (
+                  <Button
+                    variant="ghost"
+                    size="compact-sm"
+                    weight="normal"
+                    color="error"
+                    onClick={() => { onUpdatePhase(null); setPhaseOpen(false) }}
+                    className="w-full justify-start mt-ds-01"
+                  >
+                    Remove phase
+                  </Button>
+                )}
+              </PopoverContent>
+            </Popover>
+          ) : (
+            <div className={readonlyCellBase}>
+              <span className="text-[10px] text-surface-fg-subtle/50 uppercase tracking-wider">Phase</span>
+              <span className={cn('text-ds-sm truncate', task.phase ? 'text-surface-fg' : 'text-surface-fg-subtle')}>
+                {task.phase?.name ?? 'None'}
+              </span>
             </div>
           )}
         </div>

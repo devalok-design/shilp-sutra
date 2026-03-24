@@ -3,6 +3,7 @@
 import * as React from 'react'
 import { format, setHours, setMinutes, setSeconds } from 'date-fns'
 import { IconClock } from '@tabler/icons-react'
+import { Icon } from '../../ui/icon'
 import { cn } from '../../ui/lib/utils'
 import {
   Popover,
@@ -186,10 +187,7 @@ const TimePicker = React.forwardRef<HTMLButtonElement, TimePickerProps>(
           )}
           aria-label={displayText ? `Selected time: ${displayText}` : placeholder}
         >
-          <IconClock
-            className="h-ico-sm w-ico-sm text-surface-fg-subtle"
-            stroke={1.5}
-          />
+          <Icon icon={IconClock} size="sm" stroke="light" className="text-surface-fg-subtle" />
           <span
             className={cn(
               'text-ds-md',

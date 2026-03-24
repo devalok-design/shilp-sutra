@@ -161,7 +161,7 @@ function BulkActionBar({
             onClick={onClearSelection}
             aria-label="Clear selection"
           >
-            <IconX className="h-ico-sm w-ico-sm" />
+            <Icon icon={IconX} size="sm" />
           </Button>
         </motion.div>
       )}

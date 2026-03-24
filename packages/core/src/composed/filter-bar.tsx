@@ -3,6 +3,7 @@
 import * as React from 'react'
 import { motion } from 'framer-motion'
 import { IconChevronDown } from '@tabler/icons-react'
+import { Icon } from '../ui/icon'
 import { cn } from '../ui/lib/utils'
 import { springs } from '../ui/lib/motion'
 import { SearchInput } from '../ui/search-input'
@@ -190,7 +191,7 @@ function FilterMultiSelect({
             </motion.span>
           )}
         </span>
-        <IconChevronDown className="h-3.5 w-3.5 opacity-50 shrink-0" />
+        <Icon icon={IconChevronDown} size="xs" className="opacity-50 shrink-0" />
       </button>
     </MultiSelectPopover>
   )

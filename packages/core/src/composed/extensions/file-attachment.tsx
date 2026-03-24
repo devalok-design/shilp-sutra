@@ -1,6 +1,7 @@
 import { Node, mergeAttributes } from '@tiptap/core'
 import { ReactNodeViewRenderer, NodeViewWrapper, type NodeViewProps } from '@tiptap/react'
 import { IconFile, IconDownload } from '@tabler/icons-react'
+import { Icon } from '../../ui/icon'
 
 function formatFileSize(bytes: number): string {
   if (bytes < 1024) return `${bytes} B`
@@ -19,10 +20,10 @@ function FileAttachmentView({ node }: NodeViewProps) {
         className="inline-flex items-center gap-ds-03 rounded-ds-md border border-surface-border-strong bg-surface-raised px-ds-04 py-ds-03 text-ds-sm text-surface-fg transition-colors hover:border-surface-border-strong hover:bg-surface-raised-hover"
         contentEditable={false}
       >
-        <IconFile className="h-ico-sm w-ico-sm shrink-0 text-surface-fg-subtle" />
+        <Icon icon={IconFile} size="sm" className="shrink-0 text-surface-fg-subtle" />
         <span className="truncate">{node.attrs.name}</span>
         <span className="shrink-0 text-surface-fg-subtle">({formatFileSize(node.attrs.size)})</span>
-        <IconDownload className="h-ico-sm w-ico-sm shrink-0 text-surface-fg-subtle" />
+        <Icon icon={IconDownload} size="sm" className="shrink-0 text-surface-fg-subtle" />
       </a>
     </NodeViewWrapper>
   )

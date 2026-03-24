@@ -4,6 +4,7 @@ import * as React from 'react'
 import Markdown from 'react-markdown'
 import remarkGfm from 'remark-gfm'
 import { IconCopy, IconCheck } from '@tabler/icons-react'
+import { Icon } from '../ui/icon'
 import { cn } from '../ui/lib/utils'
 import { Button } from '../ui/button'
 
@@ -68,7 +69,7 @@ function CopyButton({ code }: { code: string }) {
       onClick={handleCopy}
       aria-label={copied ? 'Copied' : 'Copy code'}
     >
-      {copied ? <IconCheck className="h-3.5 w-3.5" /> : <IconCopy className="h-3.5 w-3.5" />}
+      {copied ? <Icon icon={IconCheck} size="xs" /> : <Icon icon={IconCopy} size="xs" />}
     </Button>
   )
 }

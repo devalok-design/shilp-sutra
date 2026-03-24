@@ -29,6 +29,7 @@ import {
   IconArrowDown,
   IconLoader2,
 } from '@tabler/icons-react'
+import { Icon } from '../ui/icon'
 import { cn } from '../ui/lib/utils'
 import { tweens, springs } from '../ui/lib/motion'
 import { VisuallyHidden } from '../ui/visually-hidden'
@@ -490,13 +491,14 @@ const CommandBar = React.forwardRef<HTMLDivElement, CommandBarProps>(
           )}
         >
         {/* Search icon */}
-        <IconSearch
+        <Icon
+          icon={IconSearch}
+          size={isCompact ? 'xs' : 'sm'}
+          stroke="light"
           className={cn(
             'shrink-0 transition-colors duration-fast-02 ease-productive-standard',
-            isCompact ? 'h-ico-xs w-ico-xs' : 'h-ico-sm w-ico-sm',
             isFocused ? 'text-accent-9' : 'text-surface-fg-subtle',
           )}
-          stroke={1.5}
         />
 
         {/* Input wrapper */}
@@ -545,14 +547,15 @@ const CommandBar = React.forwardRef<HTMLDivElement, CommandBarProps>(
 
         {/* Right side: spinner / clear / shortcut badge */}
         {isProcessing ? (
-          <IconLoader2
-            className={cn(
-              'shrink-0 animate-spin text-accent-9',
-              isCompact ? 'h-ico-xs w-ico-xs' : 'h-ico-sm w-ico-sm',
-            )}
-            stroke={1.5}
-            data-testid="command-bar-spinner"
-          />
+          <span data-testid="command-bar-spinner" className="shrink-0">
+            <Icon
+              icon={IconLoader2}
+              size={isCompact ? 'xs' : 'sm'}
+              stroke="light"
+              animate="spin"
+              className="text-accent-9"
+            />
+          </span>
         ) : isResponded ? (
           <button
             type="button"
@@ -560,11 +563,10 @@ const CommandBar = React.forwardRef<HTMLDivElement, CommandBarProps>(
             className="shrink-0 rounded-ds-sm p-ds-01 text-surface-fg-subtle transition-colors duration-fast-01 hover:bg-surface-raised-hover hover:text-surface-fg-muted focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent-9"
             aria-label="Clear"
           >
-            <IconX
-              className={cn(
-                isCompact ? 'h-ico-xs w-ico-xs' : 'h-ico-sm w-ico-sm',
-              )}
-              stroke={1.5}
+            <Icon
+              icon={IconX}
+              size={isCompact ? 'xs' : 'sm'}
+              stroke="light"
             />
           </button>
         ) : variant === 'hero' ? (
@@ -703,9 +705,11 @@ const CommandBar = React.forwardRef<HTMLDivElement, CommandBarProps>(
                           transition={tweenFade}
                           className="inline-flex shrink-0"
                         >
-                          <IconCornerDownLeft
-                            className="h-ico-sm w-ico-sm text-surface-fg-subtle"
-                            stroke={1.5}
+                          <Icon
+                            icon={IconCornerDownLeft}
+                            size="sm"
+                            stroke="light"
+                            className="text-surface-fg-subtle"
                           />
                         </motion.span>
                       )}
@@ -839,16 +843,10 @@ const CommandBar = React.forwardRef<HTMLDivElement, CommandBarProps>(
                 <div className="flex items-center gap-ds-02b">
                   <div className="flex items-center gap-ds-01">
                     <kbd className="inline-flex h-ico-md w-ico-md items-center justify-center rounded border border-surface-border-strong bg-surface-raised shadow-[inset_0_-1px_0_rgba(0,0,0,0.1)]">
-                      <IconArrowUp
-                        className="h-ds-03 w-ds-03 text-surface-fg-subtle"
-                        stroke={2}
-                      />
+                      <Icon icon={IconArrowUp} size="xs" className="text-surface-fg-subtle" />
                     </kbd>
                     <kbd className="inline-flex h-ico-md w-ico-md items-center justify-center rounded border border-surface-border-strong bg-surface-raised shadow-[inset_0_-1px_0_rgba(0,0,0,0.1)]">
-                      <IconArrowDown
-                        className="h-ds-03 w-ds-03 text-surface-fg-subtle"
-                        stroke={2}
-                      />
+                      <Icon icon={IconArrowDown} size="xs" className="text-surface-fg-subtle" />
                     </kbd>
                   </div>
                   <span className="text-ds-xs text-surface-fg-subtle">
@@ -858,10 +856,7 @@ const CommandBar = React.forwardRef<HTMLDivElement, CommandBarProps>(
               )}
               <div className="flex items-center gap-ds-02b">
                 <kbd className="inline-flex h-[20px] items-center justify-center rounded-ds-md border border-surface-border-strong bg-surface-raised px-ds-02b shadow-[inset_0_-1px_0_rgba(0,0,0,0.1)]">
-                  <IconCornerDownLeft
-                    className="h-ds-03 w-ds-03 text-surface-fg-subtle"
-                    stroke={2}
-                  />
+                  <Icon icon={IconCornerDownLeft} size="xs" className="text-surface-fg-subtle" />
                 </kbd>
                 <span className="text-ds-xs text-surface-fg-subtle">
                   Submit

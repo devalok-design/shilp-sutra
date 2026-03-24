@@ -41,6 +41,7 @@ import {
   IconAlignRight,
   IconMoodSmile,
 } from '@tabler/icons-react'
+import { Icon } from '../ui/icon'
 
 const PROSE_CLASSES = [
   'prose prose-sm max-w-none',
@@ -134,7 +135,7 @@ function LinkButton({ editor }: { editor: Editor }) {
   return (
     <div className="relative">
       <ToolbarButton onClick={handleToggle} isActive={editor.isActive('link')} title="Link">
-        <IconLink className="h-ico-sm w-ico-sm" stroke={2} />
+        <Icon icon={IconLink} size="sm" />
       </ToolbarButton>
       {showInput && (
         <form
@@ -174,48 +175,48 @@ function Toolbar({ editor, onImageClick, onFileClick, onEmojiClick }: {
     <div className="flex flex-wrap items-center gap-ds-01 border-b border-surface-border-strong px-ds-04 py-ds-02b">
       {/* Inline formatting */}
       <ToolbarButton onClick={() => editor.chain().focus().toggleBold().run()} isActive={editor.isActive('bold')} title="Bold">
-        <IconBold className="h-ico-sm w-ico-sm" stroke={2.5} />
+        <Icon icon={IconBold} size="sm" stroke="bold" />
       </ToolbarButton>
       <ToolbarButton onClick={() => editor.chain().focus().toggleItalic().run()} isActive={editor.isActive('italic')} title="Italic">
-        <IconItalic className="h-ico-sm w-ico-sm" stroke={2.5} />
+        <Icon icon={IconItalic} size="sm" stroke="bold" />
       </ToolbarButton>
       <ToolbarButton onClick={() => editor.chain().focus().toggleUnderline().run()} isActive={editor.isActive('underline')} title="Underline">
-        <IconUnderline className="h-ico-sm w-ico-sm" stroke={2.5} />
+        <Icon icon={IconUnderline} size="sm" stroke="bold" />
       </ToolbarButton>
       <ToolbarButton onClick={() => editor.chain().focus().toggleStrike().run()} isActive={editor.isActive('strike')} title="Strikethrough">
-        <IconStrikethrough className="h-ico-sm w-ico-sm" stroke={2.5} />
+        <Icon icon={IconStrikethrough} size="sm" stroke="bold" />
       </ToolbarButton>
       <ToolbarButton onClick={() => editor.chain().focus().toggleHighlight().run()} isActive={editor.isActive('highlight')} title="Highlight">
-        <IconHighlight className="h-ico-sm w-ico-sm" stroke={2.5} />
+        <Icon icon={IconHighlight} size="sm" stroke="bold" />
       </ToolbarButton>
 
       <ToolbarDivider />
 
       {/* Block formatting */}
       <ToolbarButton onClick={() => editor.chain().focus().toggleHeading({ level: 2 }).run()} isActive={editor.isActive('heading', { level: 2 })} title="Heading 2">
-        <IconH2 className="h-ico-sm w-ico-sm" stroke={2.5} />
+        <Icon icon={IconH2} size="sm" stroke="bold" />
       </ToolbarButton>
       <ToolbarButton onClick={() => editor.chain().focus().toggleHeading({ level: 3 }).run()} isActive={editor.isActive('heading', { level: 3 })} title="Heading 3">
-        <IconH3 className="h-ico-sm w-ico-sm" stroke={2.5} />
+        <Icon icon={IconH3} size="sm" stroke="bold" />
       </ToolbarButton>
       <ToolbarButton onClick={() => editor.chain().focus().toggleBlockquote().run()} isActive={editor.isActive('blockquote')} title="Blockquote">
-        <IconBlockquote className="h-ico-sm w-ico-sm" stroke={2.5} />
+        <Icon icon={IconBlockquote} size="sm" stroke="bold" />
       </ToolbarButton>
 
       <ToolbarDivider />
 
       {/* Lists */}
       <ToolbarButton onClick={() => editor.chain().focus().toggleBulletList().run()} isActive={editor.isActive('bulletList')} title="Bullet list">
-        <IconList className="h-ico-sm w-ico-sm" stroke={2.5} />
+        <Icon icon={IconList} size="sm" stroke="bold" />
       </ToolbarButton>
       <ToolbarButton onClick={() => editor.chain().focus().toggleOrderedList().run()} isActive={editor.isActive('orderedList')} title="Ordered list">
-        <IconListNumbers className="h-ico-sm w-ico-sm" stroke={2.5} />
+        <Icon icon={IconListNumbers} size="sm" stroke="bold" />
       </ToolbarButton>
       <ToolbarButton onClick={() => editor.chain().focus().toggleTaskList().run()} isActive={editor.isActive('taskList')} title="Task list">
-        <IconListCheck className="h-ico-sm w-ico-sm" stroke={2.5} />
+        <Icon icon={IconListCheck} size="sm" stroke="bold" />
       </ToolbarButton>
       <ToolbarButton onClick={() => editor.chain().focus().toggleCodeBlock().run()} isActive={editor.isActive('codeBlock')} title="Code block">
-        <IconCode className="h-ico-sm w-ico-sm" stroke={2.5} />
+        <Icon icon={IconCode} size="sm" stroke="bold" />
       </ToolbarButton>
 
       <ToolbarDivider />
@@ -224,29 +225,29 @@ function Toolbar({ editor, onImageClick, onFileClick, onEmojiClick }: {
       <LinkButton editor={editor} />
       {onImageClick && (
         <ToolbarButton onClick={onImageClick} title="Insert image">
-          <IconPhoto className="h-ico-sm w-ico-sm" stroke={2} />
+          <Icon icon={IconPhoto} size="sm" />
         </ToolbarButton>
       )}
       {onFileClick && (
         <ToolbarButton onClick={onFileClick} title="Attach file">
-          <IconPaperclip className="h-ico-sm w-ico-sm" stroke={2} />
+          <Icon icon={IconPaperclip} size="sm" />
         </ToolbarButton>
       )}
       <ToolbarButton onClick={() => editor.chain().focus().setHorizontalRule().run()} title="Horizontal rule">
-        <IconLineDashed className="h-ico-sm w-ico-sm" stroke={2} />
+        <Icon icon={IconLineDashed} size="sm" />
       </ToolbarButton>
 
       <ToolbarDivider />
 
       {/* Alignment */}
       <ToolbarButton onClick={() => editor.chain().focus().setTextAlign('left').run()} isActive={editor.isActive({ textAlign: 'left' })} title="Align left">
-        <IconAlignLeft className="h-ico-sm w-ico-sm" stroke={2} />
+        <Icon icon={IconAlignLeft} size="sm" />
       </ToolbarButton>
       <ToolbarButton onClick={() => editor.chain().focus().setTextAlign('center').run()} isActive={editor.isActive({ textAlign: 'center' })} title="Align center">
-        <IconAlignCenter className="h-ico-sm w-ico-sm" stroke={2} />
+        <Icon icon={IconAlignCenter} size="sm" />
       </ToolbarButton>
       <ToolbarButton onClick={() => editor.chain().focus().setTextAlign('right').run()} isActive={editor.isActive({ textAlign: 'right' })} title="Align right">
-        <IconAlignRight className="h-ico-sm w-ico-sm" stroke={2} />
+        <Icon icon={IconAlignRight} size="sm" />
       </ToolbarButton>
 
       <ToolbarDivider />
@@ -254,16 +255,16 @@ function Toolbar({ editor, onImageClick, onFileClick, onEmojiClick }: {
       {/* Emoji */}
       {onEmojiClick && (
         <ToolbarButton onClick={onEmojiClick} title="Emoji">
-          <IconMoodSmile className="h-ico-sm w-ico-sm" stroke={2} />
+          <Icon icon={IconMoodSmile} size="sm" />
         </ToolbarButton>
       )}
 
       {/* History */}
       <ToolbarButton onClick={() => editor.chain().focus().undo().run()} disabled={!editor.can().undo()} title="Undo">
-        <IconArrowBackUp className="h-ico-sm w-ico-sm" stroke={2} />
+        <Icon icon={IconArrowBackUp} size="sm" />
       </ToolbarButton>
       <ToolbarButton onClick={() => editor.chain().focus().redo().run()} disabled={!editor.can().redo()} title="Redo">
-        <IconArrowForwardUp className="h-ico-sm w-ico-sm" stroke={2} />
+        <Icon icon={IconArrowForwardUp} size="sm" />
       </ToolbarButton>
     </div>
   )

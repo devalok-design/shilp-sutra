@@ -140,7 +140,7 @@ function VolumeControl({
   return (
     <div className="group/vol flex items-center gap-ds-02 shrink-0">
       <button onClick={onMuteToggle} className={cn('transition-colors', iconClass)} aria-label={muted ? 'Unmute (M)' : 'Mute (M)'}>
-        {muted || volume === 0 ? <IconVolumeOff className="h-ico-sm w-ico-sm" /> : <IconVolume className="h-ico-sm w-ico-sm" />}
+        {muted || volume === 0 ? <Icon icon={IconVolumeOff} size="sm" /> : <Icon icon={IconVolume} size="sm" />}
       </button>
       <div className="w-0 overflow-hidden group-hover/vol:w-20 transition-[width] duration-200 ease-productive-standard flex items-center">
         <div
@@ -192,7 +192,7 @@ function formatTime(s: number): string {
 function ErrorFallback({ message, url }: { message: string; url: string }) {
   return (
     <div className="flex flex-col items-center justify-center gap-ds-04 rounded-ds-md border border-surface-border bg-surface-sunken p-ds-08 text-center">
-      <IconAlertTriangle className="h-8 w-8 text-warning-9" />
+      <Icon icon={IconAlertTriangle} size="2xl" className="text-warning-9" />
       <div>
         <p className="text-ds-md font-semibold text-surface-fg">Preview unavailable</p>
         <p className="text-ds-sm text-surface-fg-muted mt-ds-01">{message}</p>
@@ -320,21 +320,21 @@ const LazyImagePreview = React.lazy(() =>
                   {loaded && (
                     <Toolbar className={fullscreen ? 'absolute bottom-ds-06' : undefined}>
                       <Button variant="ghost" size="icon-xs" onClick={() => zoomOut()} aria-label="Zoom out (-)">
-                        <IconZoomOut className="h-ico-sm w-ico-sm" />
+                        <Icon icon={IconZoomOut} size="sm" />
                       </Button>
                       <span className="text-ds-xs font-mono text-surface-fg-muted w-12 text-center tabular-nums select-none">
                         {zoom}%
                       </span>
                       <Button variant="ghost" size="icon-xs" onClick={() => zoomIn()} aria-label="Zoom in (+)">
-                        <IconZoomIn className="h-ico-sm w-ico-sm" />
+                        <Icon icon={IconZoomIn} size="sm" />
                       </Button>
                       <ToolbarDivider />
                       <Button variant="ghost" size="icon-xs" onClick={() => resetTransform()} aria-label="Reset zoom (0)">
-                        <IconZoomReset className="h-ico-sm w-ico-sm" />
+                        <Icon icon={IconZoomReset} size="sm" />
                       </Button>
                       <ToolbarDivider />
                       <Button variant="ghost" size="icon-xs" onClick={() => setFullscreen((f) => !f)} aria-label={fullscreen ? 'Exit fullscreen (Esc)' : 'Fullscreen (F)'}>
-                        {fullscreen ? <IconMinimize className="h-ico-sm w-ico-sm" /> : <IconMaximize className="h-ico-sm w-ico-sm" />}
+                        {fullscreen ? <Icon icon={IconMinimize} size="sm" /> : <Icon icon={IconMaximize} size="sm" />}
                       </Button>
                     </Toolbar>
                   )}
@@ -434,7 +434,7 @@ const LazyPdfPreview = React.lazy(() =>
           {numPages > 0 && (
             <Toolbar>
               <Button variant="ghost" size="icon-xs" onClick={() => setPage((p) => Math.max(1, p - 1))} disabled={page <= 1} aria-label="Previous page (←)">
-                <IconChevronLeft className="h-ico-sm w-ico-sm" />
+                <Icon icon={IconChevronLeft} size="sm" />
               </Button>
               <div className="flex items-center gap-ds-01 text-ds-xs text-surface-fg-muted">
                 <input
@@ -449,7 +449,7 @@ const LazyPdfPreview = React.lazy(() =>
                 <span>/ {numPages}</span>
               </div>
               <Button variant="ghost" size="icon-xs" onClick={() => setPage((p) => Math.min(numPages, p + 1))} disabled={page >= numPages} aria-label="Next page (→)">
-                <IconChevronRight className="h-ico-sm w-ico-sm" />
+                <Icon icon={IconChevronRight} size="sm" />
               </Button>
             </Toolbar>
           )}
@@ -610,7 +610,7 @@ function VideoPreview({ url, onError }: { url: string; onError?: (msg: string) =
           aria-label="Play video"
         >
           <div className="flex h-14 w-14 items-center justify-center rounded-full bg-white/90 shadow-floating">
-            <IconPlayerPlay className="h-6 w-6 text-surface-fg ml-0.5" />
+            <Icon icon={IconPlayerPlay} size="xl" className="text-surface-fg ml-0.5" />
           </div>
         </motion.button>
       )}
@@ -650,7 +650,7 @@ function VideoPreview({ url, onError }: { url: string; onError?: (msg: string) =
             {/* Controls row */}
             <div className="flex items-center gap-ds-03">
               <button onClick={togglePlay} className="text-white hover:text-white/80" aria-label={playing ? 'Pause' : 'Play'}>
-                {playing ? <IconPlayerPause className="h-5 w-5" /> : <IconPlayerPlay className="h-5 w-5" />}
+                {playing ? <Icon icon={IconPlayerPause} size="lg" /> : <Icon icon={IconPlayerPlay} size="lg" />}
               </button>
               <VolumeControl
                 volume={muted ? 0 : 1}
@@ -678,7 +678,7 @@ function VideoPreview({ url, onError }: { url: string; onError?: (msg: string) =
                 className="text-white hover:text-white/80"
                 aria-label="Fullscreen (F)"
               >
-                <IconMaximize className="h-4 w-4" />
+                <Icon icon={IconMaximize} size="sm" />
               </button>
             </div>
           </motion.div>
@@ -831,9 +831,9 @@ function AudioPreview({ url, fileName, onError }: { url: string; fileName?: stri
           className="shrink-0"
         >
           {playing ? (
-            <IconPlayerPause className="h-ico-sm w-ico-sm" />
+            <Icon icon={IconPlayerPause} size="sm" />
           ) : (
-            <IconPlayerPlay className="h-ico-sm w-ico-sm ml-0.5" />
+            <Icon icon={IconPlayerPlay} size="sm" className="ml-0.5" />
           )}
         </Button>
 

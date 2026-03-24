@@ -8,6 +8,7 @@ import {
   IconCircleX,
   IconLoader2,
 } from '@tabler/icons-react'
+import { Icon } from '../ui/icon'
 import { cn } from '../ui/lib/utils'
 import { springs } from '../ui/lib/motion'
 import { useMotion } from '../motion/motion-provider'
@@ -39,36 +40,27 @@ function StepStatusIcon({ status }: { status: ProcessingStep['status'] }) {
   switch (status) {
     case 'done':
       return (
-        <IconCircleCheck
-          className="h-4 w-4 text-success-11"
-          aria-hidden="true"
-        />
+        <Icon icon={IconCircleCheck} size="sm" className="text-success-11" />
       )
     case 'active':
       return (
         <motion.span
-          className="inline-flex h-4 w-4 items-center justify-center text-accent-9"
+          className="inline-flex items-center justify-center text-accent-9"
           animate={{ rotate: 360 }}
           transition={{ repeat: Infinity, duration: 1, ease: 'linear' }}
           aria-hidden="true"
         >
-          <IconLoader2 className="h-4 w-4" />
+          <Icon icon={IconLoader2} size="sm" />
         </motion.span>
       )
     case 'error':
       return (
-        <IconCircleX
-          className="h-4 w-4 text-error-11"
-          aria-hidden="true"
-        />
+        <Icon icon={IconCircleX} size="sm" className="text-error-11" />
       )
     case 'pending':
     default:
       return (
-        <IconCircle
-          className="h-4 w-4 text-surface-fg-subtle opacity-50"
-          aria-hidden="true"
-        />
+        <Icon icon={IconCircle} size="sm" className="text-surface-fg-subtle opacity-50" />
       )
   }
 }

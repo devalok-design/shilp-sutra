@@ -2,6 +2,7 @@
 
 import * as React from 'react'
 import { IconPencil } from '@tabler/icons-react'
+import { Icon } from '../ui/icon'
 import { cn } from '../ui/lib/utils'
 import { Spinner } from '../ui/spinner'
 
@@ -168,7 +169,7 @@ function InlineEdit({
         {value || (focused ? '' : placeholder)}
       </span>
       {!readOnly && !focused && !isSaving && (
-        <IconPencil className="h-3 w-3 text-surface-fg-subtle opacity-0 group-hover:opacity-100 transition-opacity duration-fast-01 shrink-0" aria-hidden="true" />
+        <Icon icon={IconPencil} size="xs" className="text-surface-fg-subtle opacity-0 group-hover:opacity-100 transition-opacity duration-fast-01 shrink-0" />
       )}
       {isSaving && <Spinner size="sm" />}
     </div>

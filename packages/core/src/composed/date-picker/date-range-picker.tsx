@@ -3,6 +3,7 @@
 import * as React from 'react'
 import { format, isBefore, isAfter, setMonth, setYear, addMonths } from 'date-fns'
 import { IconCalendarEvent } from '@tabler/icons-react'
+import { Icon } from '../../ui/icon'
 import { cn } from '../../ui/lib/utils'
 import {
   Popover,
@@ -208,10 +209,7 @@ const DateRangePicker = React.forwardRef<HTMLButtonElement, DateRangePickerProps
             className,
           )}
         >
-          <IconCalendarEvent
-            className="h-ico-sm w-ico-sm text-surface-fg-subtle"
-            stroke={1.5}
-          />
+          <Icon icon={IconCalendarEvent} size="sm" stroke="light" className="text-surface-fg-subtle" />
           <span
             className={cn(
               'text-ds-md',

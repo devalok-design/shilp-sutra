@@ -17,6 +17,7 @@ import {
   DialogDescription,
 } from '../ui/dialog'
 import { IconSearch, IconCornerDownLeft, IconArrowUp, IconArrowDown } from '@tabler/icons-react'
+import { Icon } from '../ui/icon'
 import { cn } from '../ui/lib/utils'
 import { tweens, springs } from '../ui/lib/motion'
 import { VisuallyHidden } from '../ui/visually-hidden'
@@ -341,10 +342,7 @@ const CommandPalette = React.forwardRef<HTMLDivElement, CommandPaletteProps>(
               transition={springSnappy}
               className="inline-flex shrink-0"
             >
-              <IconSearch
-                className="h-ico-sm w-ico-sm text-surface-fg-subtle"
-                stroke={1.5}
-              />
+              <Icon icon={IconSearch} size="sm" stroke="light" className="text-surface-fg-subtle" />
             </motion.span>
             <input
               ref={inputRef}
@@ -480,10 +478,7 @@ const CommandPalette = React.forwardRef<HTMLDivElement, CommandPaletteProps>(
                             transition={tweenFade}
                             className="inline-flex shrink-0"
                           >
-                            <IconCornerDownLeft
-                              className="h-ico-sm w-ico-sm text-surface-fg-subtle"
-                              stroke={1.5}
-                            />
+                            <Icon icon={IconCornerDownLeft} size="sm" stroke="light" className="text-surface-fg-subtle" />
                           </motion.span>
                         )}
                       </AnimatePresence>
@@ -507,15 +502,15 @@ const CommandPalette = React.forwardRef<HTMLDivElement, CommandPaletteProps>(
                   {hint.keys === '↑↓' ? (
                     <div className="flex items-center gap-ds-01">
                       <kbd className="inline-flex h-ico-md w-ico-md items-center justify-center rounded border border-surface-border-strong bg-surface-raised shadow-[inset_0_-1px_0_rgba(0,0,0,0.1)]">
-                        <IconArrowUp className="h-ds-03 w-ds-03 text-surface-fg-subtle" stroke={2} />
+                        <Icon icon={IconArrowUp} size="xs" className="text-surface-fg-subtle" />
                       </kbd>
                       <kbd className="inline-flex h-ico-md w-ico-md items-center justify-center rounded border border-surface-border-strong bg-surface-raised shadow-[inset_0_-1px_0_rgba(0,0,0,0.1)]">
-                        <IconArrowDown className="h-ds-03 w-ds-03 text-surface-fg-subtle" stroke={2} />
+                        <Icon icon={IconArrowDown} size="xs" className="text-surface-fg-subtle" />
                       </kbd>
                     </div>
                   ) : hint.keys === '↵' ? (
                     <kbd className="inline-flex h-[20px] items-center justify-center rounded-ds-md border border-surface-border-strong bg-surface-raised px-ds-02b shadow-[inset_0_-1px_0_rgba(0,0,0,0.1)]">
-                      <IconCornerDownLeft className="h-ds-03 w-ds-03 text-surface-fg-subtle" stroke={2} />
+                      <Icon icon={IconCornerDownLeft} size="xs" className="text-surface-fg-subtle" />
                     </kbd>
                   ) : (
                     <kbd className="inline-flex h-[20px] items-center justify-center rounded-ds-md border border-surface-border-strong bg-surface-raised px-ds-02b text-ds-xs font-medium text-surface-fg-subtle shadow-[inset_0_-1px_0_rgba(0,0,0,0.1)]">

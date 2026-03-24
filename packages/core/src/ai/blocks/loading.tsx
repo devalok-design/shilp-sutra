@@ -7,6 +7,7 @@ import {
   IconCircle,
   IconCircleX,
 } from '@tabler/icons-react'
+import { Icon } from '../../ui/icon'
 import { cn } from '../../ui/lib/utils'
 import { Skeleton } from '../../ui/skeleton'
 import { useMotion } from '../../motion/motion-provider'
@@ -30,30 +31,24 @@ function StepIcon({ status }: { status: ProcessingStep['status'] }) {
   switch (status) {
     case 'done':
       return (
-        <IconCircleCheck
-          className="h-4 w-4 text-success-11"
-          aria-hidden="true"
-          data-testid="step-icon-done"
-        />
+        <span data-testid="step-icon-done">
+          <Icon icon={IconCircleCheck} size="sm" className="text-success-11" />
+        </span>
       )
     case 'active':
       return <StepSpinner />
     case 'error':
       return (
-        <IconCircleX
-          className="h-4 w-4 text-error-11"
-          aria-hidden="true"
-          data-testid="step-icon-error"
-        />
+        <span data-testid="step-icon-error">
+          <Icon icon={IconCircleX} size="sm" className="text-error-11" />
+        </span>
       )
     case 'pending':
     default:
       return (
-        <IconCircle
-          className="h-4 w-4 text-surface-fg-subtle opacity-50"
-          aria-hidden="true"
-          data-testid="step-icon-pending"
-        />
+        <span data-testid="step-icon-pending">
+          <Icon icon={IconCircle} size="sm" className="text-surface-fg-subtle opacity-50" />
+        </span>
       )
   }
 }

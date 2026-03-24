@@ -8,6 +8,7 @@ import {
   PopoverTrigger,
 } from '../ui/popover'
 import { IconCheck, IconSearch } from '@tabler/icons-react'
+import { Icon } from '../ui/icon'
 import { motion } from 'framer-motion'
 import { springs } from '../ui/lib/motion'
 import { Spinner } from '../ui/spinner'
@@ -240,7 +241,7 @@ const MultiSelectPopover = React.forwardRef<HTMLDivElement, MultiSelectPopoverPr
               transition={springs.bouncy}
               className="inline-flex shrink-0"
             >
-              <IconCheck className="h-ico-sm w-ico-sm text-accent-11" />
+              <Icon icon={IconCheck} size="sm" className="text-accent-11" />
             </motion.span>
           )}
         </motion.button>
@@ -263,7 +264,7 @@ const MultiSelectPopover = React.forwardRef<HTMLDivElement, MultiSelectPopoverPr
         >
           {/* Search */}
           <div className="flex items-center gap-ds-03 border-b border-surface-border-strong px-ds-04 py-ds-03">
-            <IconSearch className="h-ico-sm w-ico-sm shrink-0 text-surface-fg-subtle" stroke={1.5} />
+            <Icon icon={IconSearch} size="sm" stroke="light" className="shrink-0 text-surface-fg-subtle" />
             <input
               type="text"
               placeholder={searchPlaceholder}

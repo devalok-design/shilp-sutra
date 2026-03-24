@@ -5,6 +5,7 @@ import { motion } from 'framer-motion'
 import { cn } from '../ui/lib/utils'
 import { motionProps } from '../ui/lib/motion'
 import { IconClock } from '@tabler/icons-react'
+import { Icon } from '../ui/icon'
 import { SimpleTooltip } from './simple-tooltip'
 
 // ============================================================
@@ -106,7 +107,7 @@ function DeadlineIndicator({
         transition={{ duration: 2, repeat: Infinity }}
         {...motionProps(props)}
       >
-        {showIcon && <IconClock className="h-3.5 w-3.5" />}
+        {showIcon && <Icon icon={IconClock} size="xs" />}
         {text}
       </motion.span>
     )
@@ -119,7 +120,7 @@ function DeadlineIndicator({
       className={cn('inline-flex items-center gap-ds-01 font-sans text-ds-sm', colorClass, className)}
       {...props}
     >
-      {showIcon && <IconClock className="h-3.5 w-3.5" />}
+      {showIcon && <Icon icon={IconClock} size="xs" />}
       {text}
     </span>
   )

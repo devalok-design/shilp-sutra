@@ -11,6 +11,7 @@ import {
   IconAlertTriangle,
 } from '@tabler/icons-react'
 import type { Icon as TablerIcon } from '@tabler/icons-react'
+import { Icon, type IconProps } from '../ui/icon'
 
 export type Priority = 'LOW' | 'MEDIUM' | 'HIGH' | 'URGENT' | 'low' | 'medium' | 'high' | 'urgent'
 
@@ -69,7 +70,7 @@ const PriorityIndicator = React.forwardRef<HTMLDivElement, PriorityIndicatorProp
   ({ priority, display, className, ...props }, ref) => {
     const normalizedPriority = priority.toUpperCase() as 'LOW' | 'MEDIUM' | 'HIGH' | 'URGENT'
     const config = priorityConfig[normalizedPriority]
-    const Icon = config.icon
+    const PriorityIcon = config.icon as IconProps['icon']
 
     const isUrgent = normalizedPriority === 'URGENT'
 
@@ -85,7 +86,7 @@ const PriorityIndicator = React.forwardRef<HTMLDivElement, PriorityIndicatorProp
           title={config.label}
           {...props}
         >
-          <Icon className={cn('h-ico-sm w-ico-sm', config.color)} stroke={2} />
+          <Icon icon={PriorityIcon} size="sm" className={config.color} />
         </div>
       )
 
@@ -119,7 +120,7 @@ const PriorityIndicator = React.forwardRef<HTMLDivElement, PriorityIndicatorProp
               config.bgColor,
             )}
           >
-            <Icon className={cn('h-ico-sm w-ico-sm', config.color)} stroke={2} />
+            <Icon icon={PriorityIcon} size="sm" className={config.color} />
           </motion.div>
         ) : (
           <div
@@ -128,7 +129,7 @@ const PriorityIndicator = React.forwardRef<HTMLDivElement, PriorityIndicatorProp
               config.bgColor,
             )}
           >
-            <Icon className={cn('h-ico-sm w-ico-sm', config.color)} stroke={2} />
+            <Icon icon={PriorityIcon} size="sm" className={config.color} />
           </div>
         )}
         <span className="text-ds-sm text-surface-fg-muted">

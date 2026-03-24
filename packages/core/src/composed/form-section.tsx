@@ -5,6 +5,7 @@ import { motion } from 'framer-motion'
 import { cn } from '../ui/lib/utils'
 import { springs } from '../ui/lib/motion'
 import { IconChevronDown } from '@tabler/icons-react'
+import { Icon } from '../ui/icon'
 import { Collapsible, CollapsibleContent, CollapsibleTrigger } from '../ui/collapsible'
 
 // ============================================================
@@ -57,7 +58,7 @@ function FormSection({
             transition={springs.snappy}
             className="inline-flex"
           >
-            <IconChevronDown className="h-ico-sm w-ico-sm text-surface-fg-muted" />
+            <Icon icon={IconChevronDown} size="sm" className="text-surface-fg-muted" />
           </motion.span>
         </CollapsibleTrigger>
         <div className="border-b border-surface-border-subtle" />

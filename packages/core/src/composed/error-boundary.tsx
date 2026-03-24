@@ -2,6 +2,7 @@
 
 import * as React from 'react'
 import { IconAlertTriangle, IconBan, IconFileUnknown, IconServerOff } from '@tabler/icons-react'
+import { Icon } from '../ui/icon'
 import { Button } from '../ui/button'
 import { cn } from '../ui/lib/utils'
 
@@ -104,7 +105,7 @@ const ErrorDisplay = React.forwardRef<HTMLDivElement, ErrorDisplayProps>(
     process.env.NODE_ENV === 'development'
 
   const errorConfig = getErrorConfig(status)
-  const Icon = errorConfig.icon
+  const ErrorIcon = errorConfig.icon
 
   return (
     <div ref={ref} {...props} className={cn("flex min-h-[60vh] items-center justify-center p-ds-05", className)}>
@@ -119,7 +120,9 @@ const ErrorDisplay = React.forwardRef<HTMLDivElement, ErrorDisplayProps>(
           )}
         >
           <Icon
-            className={cn('h-ds-sm w-ds-sm', errorConfig.iconClass)}
+            icon={ErrorIcon}
+            size="2xl"
+            className={errorConfig.iconClass}
           />
         </div>
 

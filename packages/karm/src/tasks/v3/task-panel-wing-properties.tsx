@@ -181,6 +181,19 @@ function PeopleValue({
       <span className="text-ds-sm text-surface-fg">
         {people.length === 1 ? people[0].name : `${people.length} people`}
       </span>
+      {people.map((person) => (
+        <React.Fragment key={`${person.id}-indicators`}>
+          {person.bandwidth === 'OVERLOADED' && (
+            <span className="h-1.5 w-1.5 rounded-full bg-error-9 shrink-0" title="Overloaded" />
+          )}
+          {person.bandwidth === 'ELEVATED' && (
+            <span className="h-1.5 w-1.5 rounded-full bg-warning-9 shrink-0" title="Elevated workload" />
+          )}
+          {person.isOnLeave && (
+            <span className="text-[10px] text-warning-11 shrink-0">On leave</span>
+          )}
+        </React.Fragment>
+      ))}
     </>
   )
 }

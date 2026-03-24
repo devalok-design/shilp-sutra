@@ -113,8 +113,8 @@ export interface TaskPanelTask {
   status: string
   statusOptions: { id: string; name: string }[]
   priority: 'LOW' | 'MEDIUM' | 'HIGH' | 'URGENT'
-  assignees: { id: string; name: string; image?: string | null }[]
-  leads: { id: string; name: string; image?: string | null }[]
+  assignees: { id: string; name: string; image?: string | null; bandwidth?: 'HEALTHY' | 'ELEVATED' | 'OVERLOADED'; isOnLeave?: boolean }[]
+  leads: { id: string; name: string; image?: string | null; bandwidth?: 'HEALTHY' | 'ELEVATED' | 'OVERLOADED'; isOnLeave?: boolean }[]
   members: { id: string; name: string; image?: string | null }[]
   dueDate: string | null
   labels: string[]

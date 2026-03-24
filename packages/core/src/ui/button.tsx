@@ -354,7 +354,11 @@ const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
 
     const renderStartSlot = () => {
       if (loading && loadingPosition === 'start') {
-        return spinnerNode
+        return (
+          <span className={cn('inline-flex shrink-0 items-center justify-center', startIcon && inset.start)}>
+            {spinnerNode}
+          </span>
+        )
       }
       if (startIcon) {
         return (
@@ -368,7 +372,11 @@ const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
 
     const renderEndSlot = () => {
       if (loading && loadingPosition === 'end') {
-        return spinnerNode
+        return (
+          <span className={cn('inline-flex shrink-0 items-center justify-center', endIcon && inset.end)}>
+            {spinnerNode}
+          </span>
+        )
       }
       if (endIcon) {
         return (
@@ -401,7 +409,7 @@ const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
         : 'bg-error-9 text-accent-fg border-transparent hover:bg-error-9'
       : undefined
 
-    // Async feedback icon replaces start slot
+    // Async feedback icon replaces start slot (same inset as normal icon for layout stability)
     const asyncFeedbackIcon = isAsyncFeedback ? (
       <AnimatePresence mode="wait">
         <motion.span
@@ -410,7 +418,7 @@ const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
           animate={{ opacity: 1, scale: 1 }}
           exit={{ opacity: 0, scale: 0.5 }}
           transition={springs.bouncy}
-          className={cn('inline-flex shrink-0 items-center justify-center', iconClass)}
+          className={cn('inline-flex shrink-0 items-center justify-center', iconClass, startIcon && inset.start)}
         >
           {asyncState === 'success'
             ? <IconCheck className="h-full w-full" />

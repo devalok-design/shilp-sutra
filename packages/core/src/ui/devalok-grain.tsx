@@ -74,30 +74,28 @@ export function DevalokGrain({
   const g = GRADIENT[intensity]
 
   return (
-    <>
+    <span
+      data-grain=""
+      aria-hidden="true"
+      className="pointer-events-none absolute inset-0 z-[1] rounded-[inherit] isolate overflow-hidden"
+    >
       {/* Gradient — light mode */}
       <span
-        data-grain=""
-        aria-hidden="true"
-        className="pointer-events-none absolute inset-0 z-[1] rounded-[inherit] dark:hidden"
+        className="absolute inset-0 dark:hidden"
         style={{
           background: `linear-gradient(135deg, oklch(0 0 0 / ${g.ld}), oklch(1 0 0 / ${g.ll}))`,
         }}
       />
       {/* Gradient — dark mode */}
       <span
-        data-grain=""
-        aria-hidden="true"
-        className="pointer-events-none absolute inset-0 z-[1] rounded-[inherit] hidden dark:block"
+        className="absolute inset-0 hidden dark:block"
         style={{
           background: `linear-gradient(135deg, transparent, oklch(0 0 0 / ${g.dk}))`,
         }}
       />
-      {/* Noise texture */}
+      {/* Noise texture — blend mode is contained within this isolate wrapper */}
       <span
-        data-grain=""
-        aria-hidden="true"
-        className="pointer-events-none absolute inset-0 z-[1] rounded-[inherit]"
+        className="absolute inset-0"
         style={{
           backgroundImage: NOISE_SVG,
           backgroundSize: '100px 100px',
@@ -106,15 +104,11 @@ export function DevalokGrain({
           opacity: noise,
         }}
       />
-      {/* Sheen — inner highlight for 3D emboss (top-lit: light top edge, dark bottom edge) */}
+      {/* Sheen — inner highlight */}
       {sheen && (
-        <span
-          data-grain=""
-          aria-hidden="true"
-          className="pointer-events-none absolute inset-0 z-[1] rounded-[inherit] shadow-raised-inner"
-        />
+        <span className="absolute inset-0 shadow-raised-inner" />
       )}
-    </>
+    </span>
   )
 }
 

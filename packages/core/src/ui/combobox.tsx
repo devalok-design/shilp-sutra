@@ -7,6 +7,7 @@ import { motion } from 'framer-motion'
 
 import { cn } from './lib/utils'
 import { springs, tweens } from './lib/motion'
+import { Icon } from './icon'
 
 /**
  * Option shape for a Combobox dropdown item.
@@ -308,7 +309,7 @@ const Combobox = React.forwardRef<HTMLButtonElement, ComboboxProps>(
                     aria-label={`Remove ${option.label}`}
                     tabIndex={-1}
                   >
-                    <IconX className="h-ico-sm w-ico-sm" aria-hidden="true" />
+                    <Icon icon={IconX} size="sm" />
                   </button>
                 </span>
               )
@@ -359,7 +360,7 @@ const Combobox = React.forwardRef<HTMLButtonElement, ComboboxProps>(
             )}
           >
             {renderTriggerContent()}
-            <IconChevronDown className={cn("ml-ds-02 h-ico-sm w-ico-sm shrink-0 opacity-50 transition-transform duration-fast-01 ease-productive-standard", open && 'rotate-180')} aria-hidden="true" />
+            <Icon icon={IconChevronDown} size="sm" className={cn("ml-ds-02 shrink-0 opacity-50 transition-transform duration-fast-01 ease-productive-standard", open && 'rotate-180')} />
           </button>
         </PopoverPrimitive.Trigger>
 
@@ -383,7 +384,7 @@ const Combobox = React.forwardRef<HTMLButtonElement, ComboboxProps>(
             >
                   {/* Search input */}
                   <div className="flex items-center gap-ds-02 border-b border-surface-border px-ds-04">
-                    <IconSearch className="h-ico-sm w-ico-sm shrink-0 text-surface-fg-subtle" aria-hidden="true" />
+                    <Icon icon={IconSearch} size="sm" className="shrink-0 text-surface-fg-subtle" />
                     <input
                       ref={searchInputRef}
                       type="text"
@@ -475,7 +476,7 @@ const Combobox = React.forwardRef<HTMLButtonElement, ComboboxProps>(
                               )}
                             </span>
                             {selected && (
-                              <IconCheck className="h-ico-sm w-ico-sm shrink-0" aria-hidden="true" />
+                              <Icon icon={IconCheck} size="sm" className="shrink-0" />
                             )}
                           </li>
                         )

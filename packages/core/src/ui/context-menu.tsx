@@ -7,6 +7,7 @@ import { motion, AnimatePresence } from 'framer-motion'
 
 import { cn } from "./lib/utils"
 import { springs, tweens } from './lib/motion'
+import { Icon } from './icon'
 
 // ── Internal contexts to thread open state ──
 
@@ -85,7 +86,7 @@ const ContextMenuSubTrigger = React.forwardRef<
     {...props}
   >
     {children}
-    <IconChevronRight className="ml-auto h-ico-sm w-ico-sm" />
+    <Icon icon={IconChevronRight} size="sm" className="ml-auto" />
   </ContextMenuPrimitive.SubTrigger>
 ))
 ContextMenuSubTrigger.displayName = ContextMenuPrimitive.SubTrigger.displayName
@@ -193,7 +194,7 @@ const ContextMenuCheckboxItem = React.forwardRef<
   >
     <span className="absolute left-ds-03 flex h-ico-sm w-ico-sm items-center justify-center">
       <ContextMenuPrimitive.ItemIndicator>
-        <IconCheck className="h-ico-sm w-ico-sm" />
+        <Icon icon={IconCheck} size="sm" />
       </ContextMenuPrimitive.ItemIndicator>
     </span>
     {children}
@@ -216,7 +217,7 @@ const ContextMenuRadioItem = React.forwardRef<
   >
     <span className="absolute left-ds-03 flex h-ico-sm w-ico-sm items-center justify-center">
       <ContextMenuPrimitive.ItemIndicator>
-        <IconCircle className="h-ico-sm w-ico-sm fill-current" />
+        <Icon icon={IconCircle} size="sm" className="fill-current" />
       </ContextMenuPrimitive.ItemIndicator>
     </span>
     {children}

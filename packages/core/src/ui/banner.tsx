@@ -6,6 +6,7 @@ import { cva, type VariantProps } from 'class-variance-authority'
 import { motion, AnimatePresence } from 'framer-motion'
 import { cn } from './lib/utils'
 import { springs, motionProps } from './lib/motion'
+import { Icon } from './icon'
 
 const bannerVariants = cva(
   'flex flex-wrap items-center gap-ds-04 px-ds-06 py-ds-04 text-ds-md font-medium border-b',
@@ -28,7 +29,7 @@ const bannerVariants = cva(
   },
 )
 
-const BANNER_ICONS: Record<string, React.ComponentType<{ className?: string }>> = {
+const BANNER_ICONS: Record<string, React.ForwardRefExoticComponent<any>> = {
   info:    IconInfoCircle,
   success: IconCircleCheck,
   warning: IconAlertTriangle,
@@ -81,7 +82,7 @@ export interface BannerProps
 const Banner = React.forwardRef<HTMLDivElement, BannerProps>(
   ({ className, color = 'info', action, actions, onDismiss, children, ...props }, ref) => {
     const resolvedActions = actions ?? action
-    const Icon = BANNER_ICONS[color ?? 'info']
+    const BannerIcon = BANNER_ICONS[color ?? 'info']
     const [isVisible, setIsVisible] = React.useState(true)
 
     const handleDismiss = React.useCallback(() => {
@@ -100,7 +101,7 @@ const Banner = React.forwardRef<HTMLDivElement, BannerProps>(
             role="alert"
             {...motionProps(props)}
           >
-            <Icon className="h-ico-md w-ico-md shrink-0" aria-hidden="true" />
+            <Icon icon={BannerIcon} size="md" className="shrink-0" />
             <div className="min-w-0 flex-1">{children}</div>
             {resolvedActions && (
               <div className="flex shrink-0 items-center gap-ds-02 [&_button]:transition-colors [&_button]:duration-moderate-01 [&_button]:ease-productive-standard [&_button:hover]:bg-current/10">{resolvedActions}</div>
@@ -112,7 +113,7 @@ const Banner = React.forwardRef<HTMLDivElement, BannerProps>(
                 className="shrink-0 min-h-ds-xs min-w-ds-xs flex items-center justify-center rounded-ds-sm transition-colors duration-moderate-01 ease-productive-standard hover:bg-current/10 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent-9"
                 aria-label="Dismiss"
               >
-                <IconX className="h-ico-sm w-ico-sm" />
+                <Icon icon={IconX} size="sm" />
               </button>
             )}
           </motion.div>

@@ -6,6 +6,7 @@ import * as React from 'react'
 import { useLink } from './lib/link-context'
 import { springs, tweens } from './lib/motion'
 import { cn } from './lib/utils'
+import { Icon } from './icon'
 
 /**
  * Props for StatCard — a dashboard metric tile displaying a label, a large numeric value,
@@ -275,9 +276,7 @@ const StatCard = React.forwardRef<HTMLDivElement, StatCardProps>(
                 aria-hidden="true"
               >
                 {typeof icon === 'function'
-                  ? React.createElement(icon as React.ComponentType<{ className?: string }>, {
-                      className: 'h-ico-lg w-ico-lg',
-                    })
+                  ? <Icon icon={icon as React.ForwardRefExoticComponent<any>} size="lg" />
                   : icon}
               </motion.span>
             )}
@@ -334,7 +333,7 @@ const StatCard = React.forwardRef<HTMLDivElement, StatCardProps>(
               animate={{ opacity: 1, scale: 1 }}
               transition={springs.bouncy}
             >
-              <DeltaIcon className="h-ico-sm w-ico-sm" aria-hidden="true" />
+              <Icon icon={DeltaIcon} size="sm" />
             </motion.span>
             <span>{delta.value}</span>
             {comparisonLabel && (

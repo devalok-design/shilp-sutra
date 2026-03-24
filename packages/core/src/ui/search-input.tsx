@@ -6,6 +6,7 @@ import * as React from 'react'
 import { springs } from './lib/motion'
 import { cn } from './lib/utils'
 import { Spinner } from './spinner'
+import { Icon } from './icon'
 
 type SearchInputSize = 'xs' | 'sm' | 'md' | 'lg'
 
@@ -62,10 +63,7 @@ const SearchInput = React.forwardRef<HTMLInputElement, SearchInputProps>(
 
     return (
       <div className="relative flex items-center">
-        <IconSearch
-          className="absolute left-[0.75rem] h-ico-md w-ico-md text-surface-fg-muted pointer-events-none"
-          aria-hidden="true"
-        />
+        <Icon icon={IconSearch} size="md" className="absolute left-[0.75rem] text-surface-fg-muted pointer-events-none" />
         <input
           ref={ref}
           value={value}
@@ -101,7 +99,7 @@ const SearchInput = React.forwardRef<HTMLInputElement, SearchInputProps>(
                 exit={{ opacity: 0, scale: 0.8 }}
                 transition={springs.snappy}
               >
-                <IconX className="h-ico-sm w-ico-sm" />
+                <Icon icon={IconX} size="sm" />
               </motion.button>
             )}
           </AnimatePresence>

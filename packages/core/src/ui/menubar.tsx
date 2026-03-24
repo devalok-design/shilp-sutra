@@ -7,6 +7,7 @@ import { motion, AnimatePresence } from 'framer-motion'
 
 import { cn } from './lib/utils'
 import { springs, tweens } from './lib/motion'
+import { Icon } from './icon'
 
 // ── Internal contexts to thread open state ──
 
@@ -108,7 +109,7 @@ const MenubarSubTrigger = React.forwardRef<
     {...props}
   >
     {children}
-    <IconChevronRight className="ml-auto" />
+    <Icon icon={IconChevronRight} size="sm" className="ml-auto" />
   </MenubarPrimitive.SubTrigger>
 ))
 MenubarSubTrigger.displayName = MenubarPrimitive.SubTrigger.displayName
@@ -225,7 +226,7 @@ const MenubarCheckboxItem = React.forwardRef<
   >
     <span className="absolute left-ds-03 flex h-ico-sm w-ico-sm items-center justify-center">
       <MenubarPrimitive.ItemIndicator>
-        <IconCheck className="h-ico-sm w-ico-sm" />
+        <Icon icon={IconCheck} size="sm" />
       </MenubarPrimitive.ItemIndicator>
     </span>
     {children}

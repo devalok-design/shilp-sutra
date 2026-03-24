@@ -7,6 +7,7 @@ import { motion, AnimatePresence } from 'framer-motion'
 
 import { cn } from './lib/utils'
 import { springs, tweens } from './lib/motion'
+import { Icon } from './icon'
 
 // ── Internal contexts to thread open state ──
 
@@ -149,7 +150,7 @@ const DropdownMenuSubTrigger = React.forwardRef<
     {...props}
   >
     {children}
-    <IconChevronRight className="ml-auto" />
+    <Icon icon={IconChevronRight} size="sm" className="ml-auto" />
   </DropdownMenuPrimitive.SubTrigger>
 ))
 DropdownMenuSubTrigger.displayName =
@@ -260,7 +261,7 @@ const DropdownMenuCheckboxItem = React.forwardRef<
   >
     <span className="absolute left-ds-03 flex h-ico-sm w-ico-sm items-center justify-center">
       <DropdownMenuPrimitive.ItemIndicator>
-        <IconCheck className="h-ico-sm w-ico-sm" />
+        <Icon icon={IconCheck} size="sm" />
       </DropdownMenuPrimitive.ItemIndicator>
     </span>
     {children}

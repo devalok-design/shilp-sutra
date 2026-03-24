@@ -7,6 +7,7 @@ import { motion } from 'framer-motion'
 
 import { cn } from './lib/utils'
 import { springs, tweens } from './lib/motion'
+import { Icon } from './icon'
 
 const NavigationMenu = React.forwardRef<
   React.ElementRef<typeof NavigationMenuPrimitive.Root>,
@@ -56,10 +57,7 @@ const NavigationMenuTrigger = React.forwardRef<
     {...props}
   >
     {children}{' '}
-    <IconChevronDown
-      className="relative top-[1px] ml-ds-02 h-ico-sm w-ico-sm transition-transform duration-moderate-02 group-data-[state=open]:rotate-180"
-      aria-hidden="true"
-    />
+    <Icon icon={IconChevronDown} size="sm" className="relative top-[1px] ml-ds-02 transition-transform duration-moderate-02 group-data-[state=open]:rotate-180" />
   </NavigationMenuPrimitive.Trigger>
 ))
 NavigationMenuTrigger.displayName = NavigationMenuPrimitive.Trigger.displayName

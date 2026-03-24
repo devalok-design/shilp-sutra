@@ -6,6 +6,7 @@ import { IconUpload, IconPaperclip, IconCheck } from '@tabler/icons-react'
 import { cn } from './lib/utils'
 import { springs, tweens } from './lib/motion'
 import { Spinner } from './spinner'
+import { Icon } from './icon'
 
 /**
  * Props for FileUpload — a drag-and-drop file picker with client-side validation (type + size),
@@ -252,7 +253,7 @@ const FileUpload = React.forwardRef<HTMLDivElement, FileUploadProps>(
             {uploading ? (
               <Spinner size="sm" />
             ) : (
-              <IconPaperclip className="h-ico-sm w-ico-sm" />
+              <Icon icon={IconPaperclip} size="sm" />
             )}
             {label ?? 'Attach files'}
           </button>
@@ -342,7 +343,7 @@ const FileUpload = React.forwardRef<HTMLDivElement, FileUploadProps>(
                 exit={{ opacity: 0, scale: 0.5 }}
                 transition={springs.bouncy}
               >
-                <IconCheck className="h-ds-sm w-ds-sm text-success-11" />
+                <Icon icon={IconCheck} size="2xl" className="text-success-11" />
               </motion.div>
             ) : (
               <motion.div
@@ -352,7 +353,7 @@ const FileUpload = React.forwardRef<HTMLDivElement, FileUploadProps>(
                 exit={{ opacity: 0 }}
                 transition={tweens.fade}
               >
-                <IconUpload className="h-ds-sm w-ds-sm text-surface-fg-subtle" />
+                <Icon icon={IconUpload} size="2xl" className="text-surface-fg-subtle" />
               </motion.div>
             )}
           </AnimatePresence>

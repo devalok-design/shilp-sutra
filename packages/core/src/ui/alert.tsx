@@ -6,6 +6,7 @@ import { cva, type VariantProps } from 'class-variance-authority'
 import { motion, AnimatePresence } from 'framer-motion'
 import { cn } from './lib/utils'
 import { springs, motionProps } from './lib/motion'
+import { Icon } from './icon'
 
 const alertVariants = cva(
   'relative flex gap-ds-04 rounded-ds-lg border p-ds-05',
@@ -48,7 +49,7 @@ const alertVariants = cva(
   },
 )
 
-const ALERT_ICONS: Record<string, React.ComponentType<{ className?: string }>> = {
+const ALERT_ICONS: Record<string, React.ForwardRefExoticComponent<any>> = {
   info:    IconInfoCircle,
   success: IconCircleCheck,
   warning: IconAlertTriangle,
@@ -107,7 +108,7 @@ export interface AlertProps
 
 const Alert = React.forwardRef<HTMLDivElement, AlertProps>(
   ({ className, variant = 'subtle', color = 'info', title, onDismiss, children, ...props }, ref) => {
-    const Icon = ALERT_ICONS[color ?? 'info']
+    const AlertIcon = ALERT_ICONS[color ?? 'info']
     const [isVisible, setIsVisible] = React.useState(true)
 
     const handleDismiss = React.useCallback(() => {
@@ -127,7 +128,7 @@ const Alert = React.forwardRef<HTMLDivElement, AlertProps>(
             role="alert"
             {...motionProps(props)}
           >
-            <Icon className="mt-ds-01 h-ico-md w-ico-md shrink-0" aria-hidden="true" />
+            <Icon icon={AlertIcon} size="md" className="mt-ds-01 shrink-0" />
             <div className="flex-1 min-w-0">
               {title && <p className="text-ds-md font-semibold mb-ds-01">{title}</p>}
               <div className="text-ds-md text-surface-fg-muted">{children}</div>
@@ -139,7 +140,7 @@ const Alert = React.forwardRef<HTMLDivElement, AlertProps>(
                 className="shrink-0 min-h-ds-xs min-w-ds-xs flex items-center justify-center rounded-ds-sm text-surface-fg-subtle transition-colors duration-fast-01 ease-productive-standard hover:text-surface-fg-muted hover:bg-surface-raised-hover active:scale-95 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent-9"
                 aria-label="Dismiss"
               >
-                <IconX className="h-ico-sm w-ico-sm" />
+                <Icon icon={IconX} size="sm" />
               </button>
             )}
           </motion.div>

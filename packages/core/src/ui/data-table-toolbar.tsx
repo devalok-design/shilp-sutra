@@ -17,6 +17,7 @@ import {
   DropdownMenuSeparator,
 } from './dropdown-menu'
 import { cn } from './lib/utils'
+import { Icon } from './icon'
 
 export type Density = 'compact' | 'standard' | 'comfortable'
 
@@ -108,11 +109,7 @@ export function DataTableToolbar<TData>({
       {/* Global search */}
       {globalFilter && (
         <div className="flex flex-1 items-center gap-ds-02">
-          <IconSearch
-            size={16}
-            className={toolbarIconClass}
-            aria-hidden="true"
-          />
+          <Icon icon={IconSearch} size="sm" className={toolbarIconClass} />
           <input
             type="text"
             value={globalFilterValue}
@@ -139,7 +136,7 @@ export function DataTableToolbar<TData>({
                 className={toolbarButtonClass}
                 aria-label="Toggle column visibility"
               >
-                <IconColumns3 size={16} className={toolbarIconClass} />
+                <Icon icon={IconColumns3} size="sm" className={toolbarIconClass} />
                 Columns
               </button>
             </DropdownMenuTrigger>
@@ -174,7 +171,7 @@ export function DataTableToolbar<TData>({
           aria-label={`Table density: ${densityLabels[density]}. Click to change.`}
           title={`Density: ${densityLabels[density]}`}
         >
-          <IconTextResize size={16} className={toolbarIconClass} />
+          <Icon icon={IconTextResize} size="sm" className={toolbarIconClass} />
           {densityLabels[density]}
         </button>
 
@@ -186,7 +183,7 @@ export function DataTableToolbar<TData>({
             onClick={() => exportToCsv(table)}
             aria-label="Export table as CSV"
           >
-            <IconDownload size={16} className={toolbarIconClass} />
+            <Icon icon={IconDownload} size="sm" className={toolbarIconClass} />
             Export
           </button>
         )}

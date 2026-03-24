@@ -8,6 +8,7 @@ import { motion } from 'framer-motion'
 import { springs } from './lib/motion'
 import { motionProps } from './lib/motion'
 import { cn } from './lib/utils'
+import { Icon } from './icon'
 
 // TODO(v1): rename color="primary" → color="brand" for consistency with Badge (breaking change)
 const chipVariants = cva(
@@ -156,7 +157,7 @@ const Chip = React.forwardRef<HTMLElement, ChipProps>(
               onDismiss()
             }}
           >
-            <IconX className="h-ico-sm w-ico-sm" />
+            <Icon icon={IconX} size="sm" />
           </button>
         )}
       </MotionComponent>

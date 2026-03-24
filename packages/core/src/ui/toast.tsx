@@ -20,6 +20,7 @@ import { cn } from './lib/utils'
 import { springs, tweens } from './lib/motion'
 import { Spinner } from './spinner'
 import { Progress } from './progress'
+import { Icon } from './icon'
 import type {
   ToastOptions,
   ToastType,
@@ -46,7 +47,7 @@ const TOAST_TYPE_CONFIG: Record<
   {
     accentClass: string
     iconClass: string
-    icon: React.ComponentType<{ className?: string }> | null
+    icon: React.ForwardRefExoticComponent<any> | null
     timerBarClass: string
   }
 > = {
@@ -145,7 +146,7 @@ function ToastContent({
 }) {
   const [hovered, setHovered] = React.useState(false)
   const config = TOAST_TYPE_CONFIG[type]
-  const Icon = config.icon
+  const StatusIcon = config.icon
 
   // Self-managed dismiss timer that pauses on hover
   const remainingRef = React.useRef(duration)
@@ -199,7 +200,7 @@ function ToastContent({
             >
               <Spinner size="sm" className="h-4 w-4" />
             </motion.div>
-          ) : Icon ? (
+          ) : StatusIcon ? (
             <motion.div
               key={type}
               initial={{ opacity: 0, scale: 0.5 }}
@@ -208,7 +209,7 @@ function ToastContent({
               transition={springs.bouncy}
               className="mt-0.5 shrink-0"
             >
-              <Icon className={cn('h-4 w-4', config.iconClass)} />
+              <Icon icon={StatusIcon} size="sm" className={config.iconClass} />
             </motion.div>
           ) : null}
         </AnimatePresence>
@@ -349,7 +350,7 @@ function UploadFileRow({
               exit={{ opacity: 0, scale: 0.5 }}
               transition={springs.bouncy}
             >
-              <IconCheck className="h-3.5 w-3.5 text-success-11" />
+              <Icon icon={IconCheck} size="xs" className="text-success-11" />
             </motion.div>
           ) : file.status === 'error' ? (
             <motion.div
@@ -359,7 +360,7 @@ function UploadFileRow({
               exit={{ opacity: 0, scale: 0.5 }}
               transition={tweens.fade}
             >
-              <IconAlertCircle className="h-3.5 w-3.5 text-error-11" />
+              <Icon icon={IconAlertCircle} size="xs" className="text-error-11" />
             </motion.div>
           ) : file.status === 'processing' ? (
             <motion.div
@@ -379,7 +380,7 @@ function UploadFileRow({
               exit={{ opacity: 0 }}
               transition={tweens.fade}
             >
-              <IconPhoto className="h-3.5 w-3.5 text-surface-fg-muted" />
+              <Icon icon={IconPhoto} size="xs" className="text-surface-fg-muted" />
             </motion.div>
           ) : (
             <motion.div
@@ -389,7 +390,7 @@ function UploadFileRow({
               exit={{ opacity: 0 }}
               transition={tweens.fade}
             >
-              <IconFile className="h-3.5 w-3.5 text-surface-fg-muted" />
+              <Icon icon={IconFile} size="xs" className="text-surface-fg-muted" />
             </motion.div>
           )}
         </AnimatePresence>
@@ -528,7 +529,7 @@ function UploadToastContent({
                   exit={{ opacity: 0, scale: 0.5 }}
                   transition={springs.bouncy}
                 >
-                  <IconAlertCircle className="h-4 w-4 shrink-0 text-error-11" />
+                  <Icon icon={IconAlertCircle} size="sm" className="shrink-0 text-error-11" />
                 </motion.div>
               ) : (
                 <motion.div
@@ -538,7 +539,7 @@ function UploadToastContent({
                   exit={{ opacity: 0, scale: 0.5 }}
                   transition={springs.bouncy}
                 >
-                  <IconCheck className="h-4 w-4 shrink-0 text-success-11" />
+                  <Icon icon={IconCheck} size="sm" className="shrink-0 text-success-11" />
                 </motion.div>
               )
             ) : (
@@ -549,7 +550,7 @@ function UploadToastContent({
                 exit={{ opacity: 0 }}
                 transition={tweens.fade}
               >
-                <IconUpload className="h-4 w-4 shrink-0 text-surface-fg-muted" />
+                <Icon icon={IconUpload} size="sm" className="shrink-0 text-surface-fg-muted" />
               </motion.div>
             )}
           </AnimatePresence>

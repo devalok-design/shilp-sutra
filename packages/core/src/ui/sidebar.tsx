@@ -8,6 +8,7 @@ import { motion } from 'framer-motion'
 import { useIsMobile } from '../hooks/use-mobile'
 import { springs } from './lib/motion'
 import { cn } from './lib/utils'
+import { Icon } from './icon'
 import { Button } from './button'
 import { Input } from './input'
 import { Separator } from './separator'
@@ -288,7 +289,7 @@ const SidebarTrigger = forwardRef<
       }}
       {...props}
     >
-      <IconLayoutSidebarLeftCollapse />
+      <Icon icon={IconLayoutSidebarLeftCollapse} size="sm" />
       <span className="sr-only">Toggle Sidebar</span>
     </Button>
   )

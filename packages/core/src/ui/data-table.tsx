@@ -34,6 +34,7 @@ import {
   IconX,
 } from '@tabler/icons-react'
 
+import { Icon } from './icon'
 import {
   Table,
   TableBody,
@@ -478,13 +479,13 @@ export function DataTable<TData, TValue>({
         aria-label={row.getIsExpanded() ? 'Collapse row' : 'Expand row'}
         className="flex items-center justify-center p-ds-01 rounded-ds-sm hover:bg-surface-raised transition-colors"
       >
-        <IconChevronRight
-          size={16}
+        <Icon
+          icon={IconChevronRight}
+          size="sm"
           className={cn(
             'transition-transform duration-moderate-02',
             row.getIsExpanded() && 'rotate-90',
           )}
-          aria-hidden="true"
         />
       </button>
     ),
@@ -897,10 +898,7 @@ export function DataTable<TData, TValue>({
                             transition={springs.snappy}
                             className="inline-flex"
                           >
-                            <IconArrowUp
-                              className="h-ico-sm w-ico-sm text-surface-fg-muted"
-                              aria-hidden="true"
-                            />
+                            <Icon icon={IconArrowUp} size="sm" className="text-surface-fg-muted" />
                           </motion.span>
                         ) : sorted === 'desc' ? (
                           <motion.span
@@ -911,10 +909,7 @@ export function DataTable<TData, TValue>({
                             transition={springs.snappy}
                             className="inline-flex"
                           >
-                            <IconArrowDown
-                              className="h-ico-sm w-ico-sm text-surface-fg-muted"
-                              aria-hidden="true"
-                            />
+                            <Icon icon={IconArrowDown} size="sm" className="text-surface-fg-muted" />
                           </motion.span>
                         ) : (
                           <motion.span
@@ -925,10 +920,7 @@ export function DataTable<TData, TValue>({
                             transition={springs.snappy}
                             className="inline-flex"
                           >
-                            <IconArrowsSort
-                              className="h-ico-sm w-ico-sm text-surface-fg-subtle"
-                              aria-hidden="true"
-                            />
+                            <Icon icon={IconArrowsSort} size="sm" className="text-surface-fg-subtle" />
                           </motion.span>
                         )}
                       </AnimatePresence>
@@ -998,11 +990,7 @@ export function DataTable<TData, TValue>({
       {/* Global search input — only show standalone when toolbar is disabled */}
       {globalFilter && !toolbar && (
         <div className="flex items-center gap-ds-03 pb-ds-04 border-b border-surface-border mb-ds-04">
-          <IconSearch
-            size={16}
-            className="text-surface-fg-subtle"
-            aria-hidden="true"
-          />
+          <Icon icon={IconSearch} size="sm" className="text-surface-fg-subtle" />
           <input
             type="text"
             value={globalFilterValue}
@@ -1074,7 +1062,7 @@ export function DataTable<TData, TValue>({
                 'transition-colors',
               )}
             >
-              <IconChevronLeft size={16} aria-hidden="true" />
+              <Icon icon={IconChevronLeft} size="sm" />
             </button>
 
             {/* Page info */}
@@ -1097,7 +1085,7 @@ export function DataTable<TData, TValue>({
                 'transition-colors',
               )}
             >
-              <IconChevronRight size={16} aria-hidden="true" />
+              <Icon icon={IconChevronRight} size="sm" />
             </button>
           </div>
         </div>
@@ -1140,7 +1128,7 @@ export function DataTable<TData, TValue>({
               'text-surface-fg-muted hover:text-surface-fg',
             )}
           >
-            <IconX size={16} aria-hidden="true" />
+            <Icon icon={IconX} size="sm" />
           </button>
         </div>
       )}

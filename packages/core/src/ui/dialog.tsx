@@ -7,6 +7,7 @@ import { motion, AnimatePresence } from 'framer-motion'
 
 import { cn } from './lib/utils'
 import { springs, tweens } from './lib/motion'
+import { Icon } from './icon'
 
 // ── Internal context to thread `open` state to animated children ──
 
@@ -148,7 +149,7 @@ const DialogContent = React.forwardRef<
             >
               {children}
               <DialogPrimitive.Close className="absolute right-ds-05 top-ds-05 min-h-ds-xs min-w-ds-xs flex items-center justify-center rounded-ds-sm text-surface-fg-subtle transition-colors duration-fast-01 ease-productive-standard hover:text-surface-fg-muted hover:bg-surface-raised-hover active:scale-90 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent-9 disabled:pointer-events-none">
-                <CloseIcon className="h-ico-lg w-ico-lg" />
+                <Icon icon={CloseIcon} size="lg" />
                 <span className="sr-only">Close</span>
               </DialogPrimitive.Close>
             </motion.div>

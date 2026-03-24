@@ -4,6 +4,7 @@ import * as React from 'react'
 import { Slot } from '@primitives/react-slot'
 import { IconChevronLeft, IconChevronRight, IconDots } from '@tabler/icons-react'
 import { cn } from './lib/utils'
+import { Icon } from './icon'
 
 const PaginationRoot = React.forwardRef<
   HTMLElement,
@@ -90,7 +91,7 @@ const PaginationPrevious = React.forwardRef<
     className={cn('w-auto gap-ds-02 pl-ds-03 pr-ds-04', className)}
     {...props}
   >
-    <IconChevronLeft className="h-ico-sm w-ico-sm" />
+    <Icon icon={IconChevronLeft} size="sm" />
     <span>Previous</span>
   </PaginationLink>
 ))
@@ -107,7 +108,7 @@ const PaginationNext = React.forwardRef<
     {...props}
   >
     <span>Next</span>
-    <IconChevronRight className="h-ico-sm w-ico-sm" />
+    <Icon icon={IconChevronRight} size="sm" />
   </PaginationLink>
 ))
 PaginationNext.displayName = 'PaginationNext'
@@ -125,7 +126,7 @@ const PaginationEllipsis = React.forwardRef<
     )}
     {...props}
   >
-    <IconDots className="h-ico-sm w-ico-sm" />
+    <Icon icon={IconDots} size="sm" />
     <span className="sr-only">More pages</span>
   </span>
 ))

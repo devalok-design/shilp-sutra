@@ -8,6 +8,7 @@ import { motion, AnimatePresence } from 'framer-motion'
 
 import { cn } from './lib/utils'
 import { springs, tweens, motionProps } from './lib/motion'
+import { Icon } from './icon'
 
 // ── Internal open-state context ──────────────────────────────────────
 
@@ -207,7 +208,7 @@ const SheetContent = React.forwardRef<
               {...motionProps(props)}
             >
               <SheetPrimitive.Close className="absolute right-ds-05 top-ds-05 min-h-ds-xs min-w-ds-xs flex items-center justify-center rounded-ds-sm text-surface-fg-subtle transition-colors ease-productive-standard hover:text-surface-fg-muted hover:bg-surface-raised-hover active:scale-90 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent-9 disabled:pointer-events-none">
-                <IconX className="h-ico-sm w-ico-sm" />
+                <Icon icon={IconX} size="sm" />
                 <span className="sr-only">Close</span>
               </SheetPrimitive.Close>
               {children}

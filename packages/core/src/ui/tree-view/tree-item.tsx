@@ -4,6 +4,7 @@ import { IconChevronRight } from '@tabler/icons-react'
 import * as React from 'react'
 
 import { cn } from '../lib/utils'
+import { Icon } from '../icon'
 import { Checkbox } from '../checkbox'
 import { useTreeContext } from './tree-view'
 
@@ -144,8 +145,9 @@ const TreeItem = React.forwardRef<HTMLLIElement, TreeItemProps>(
               onClick={handleChevronClick}
               className="flex shrink-0 items-center justify-center p-0 border-0 bg-transparent cursor-pointer"
             >
-              <IconChevronRight
-                size={16}
+              <Icon
+                icon={IconChevronRight}
+                size="sm"
                 className={cn(
                   'transition-transform duration-moderate-02',
                   isExpanded && 'rotate-90',

@@ -3,6 +3,7 @@
 import * as React from 'react'
 import * as AccordionPrimitive from '@primitives/react-accordion'
 import { IconChevronDown } from '@tabler/icons-react'
+import { Icon } from './icon'
 import { motion } from 'framer-motion'
 
 import { cn } from './lib/utils'
@@ -81,7 +82,7 @@ const AccordionTrigger = React.forwardRef<
       {...props}
     >
       {children}
-      <IconChevronDown className="h-ico-sm w-ico-sm shrink-0 text-surface-fg-muted transition-transform duration-moderate-02 ease-productive-standard group-data-[state=open]:rotate-180" />
+      <Icon icon={IconChevronDown} size="sm" className="shrink-0 text-surface-fg-muted transition-transform duration-moderate-02 ease-productive-standard group-data-[state=open]:rotate-180" />
     </AccordionPrimitive.Trigger>
   </AccordionPrimitive.Header>
 ))

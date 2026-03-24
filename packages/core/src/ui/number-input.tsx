@@ -4,6 +4,7 @@ import * as React from 'react'
 import { IconMinus, IconPlus } from '@tabler/icons-react'
 import { cn } from './lib/utils'
 import { useFormField } from './form'
+import { Icon } from './icon'
 
 /**
  * Props for NumberInput — a stepper control with "−" and "+" buttons flanking a numeric input,
@@ -102,7 +103,7 @@ const NumberInput = React.forwardRef<HTMLInputElement, NumberInputProps>(
           aria-label="Decrease value"
           className="flex h-ds-sm w-ds-sm items-center justify-center border-0 text-surface-fg-subtle hover:bg-surface-raised-hover hover:text-surface-fg-muted active:scale-90 transition-[color,transform] duration-fast-01 ease-productive-standard"
         >
-          <IconMinus className="h-ico-sm w-ico-sm" />
+          <Icon icon={IconMinus} size="sm" />
         </button>
 
         <input
@@ -127,7 +128,7 @@ const NumberInput = React.forwardRef<HTMLInputElement, NumberInputProps>(
           aria-label="Increase value"
           className="flex h-ds-sm w-ds-sm items-center justify-center border-0 text-surface-fg-subtle hover:bg-surface-raised-hover hover:text-surface-fg-muted active:scale-90 transition-[color,transform] duration-fast-01 ease-productive-standard"
         >
-          <IconPlus className="h-ico-sm w-ico-sm" />
+          <Icon icon={IconPlus} size="sm" />
         </button>
       </div>
     )

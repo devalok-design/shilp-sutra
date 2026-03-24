@@ -5,6 +5,7 @@ import * as React from 'react'
 import { cva, type VariantProps } from 'class-variance-authority'
 import { motion } from 'framer-motion'
 import { cn } from './lib/utils'
+import { Icon } from './icon'
 
 const badgeVariants = cva(
   'inline-flex items-center gap-ds-02b font-sans font-medium rounded-ds-full border transition-colors duration-fast-01 ease-productive-standard',
@@ -161,7 +162,7 @@ const Badge = React.forwardRef<HTMLSpanElement, BadgeProps>(
             className="ml-ds-01 min-h-ds-xs min-w-ds-xs flex items-center justify-center rounded-ds-full text-current/60 hover:text-current hover:bg-current/10 transition-[color,background-color,transform] duration-fast-02 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent-9"
             aria-label={`Remove ${typeof children === 'string' ? children : ''}`.trim() || 'Remove'}
           >
-            <IconX className="h-ico-sm w-ico-sm" />
+            <Icon icon={IconX} size="sm" />
           </button>
         )}
       </span>

@@ -8,6 +8,7 @@ import { motion } from 'framer-motion'
 
 import { cn } from './lib/utils'
 import { springs, tweens } from './lib/motion'
+import { Icon } from './icon'
 
 /**
  * Select root — manages open/close state and selected value.
@@ -74,7 +75,7 @@ const SelectTrigger = React.forwardRef<
   >
     {children}
     <SelectPrimitive.Icon asChild>
-      <IconChevronDown className="h-ico-sm w-ico-sm opacity-50" />
+      <Icon icon={IconChevronDown} size="sm" className="opacity-50" />
     </SelectPrimitive.Icon>
   </SelectPrimitive.Trigger>
 ))
@@ -92,7 +93,7 @@ const SelectScrollUpButton = React.forwardRef<
     )}
     {...props}
   >
-    <IconChevronUp className="h-ico-sm w-ico-sm" />
+    <Icon icon={IconChevronUp} size="sm" />
   </SelectPrimitive.ScrollUpButton>
 ))
 SelectScrollUpButton.displayName = SelectPrimitive.ScrollUpButton.displayName
@@ -109,7 +110,7 @@ const SelectScrollDownButton = React.forwardRef<
     )}
     {...props}
   >
-    <IconChevronDown className="h-ico-sm w-ico-sm" />
+    <Icon icon={IconChevronDown} size="sm" />
   </SelectPrimitive.ScrollDownButton>
 ))
 SelectScrollDownButton.displayName =
@@ -180,7 +181,7 @@ const SelectItem = React.forwardRef<
   >
     <span className="absolute right-ds-03 flex h-ico-sm w-ico-sm items-center justify-center">
       <SelectPrimitive.ItemIndicator>
-        <IconCheck className="h-ico-sm w-ico-sm" />
+        <Icon icon={IconCheck} size="sm" />
       </SelectPrimitive.ItemIndicator>
     </span>
     <SelectPrimitive.ItemText>{children}</SelectPrimitive.ItemText>

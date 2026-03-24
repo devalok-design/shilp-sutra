@@ -44,7 +44,7 @@ type IconButtonSize = 'sm' | 'md' | 'lg'
  * // These are just a few ways — feel free to combine props creatively!
  */
 export interface IconButtonProps
-  extends Omit<ButtonProps, 'startIcon' | 'endIcon' | 'fullWidth' | 'loadingPosition' | 'children' | 'size'> {
+  extends Omit<ButtonProps, 'startIcon' | 'endIcon' | 'fullWidth' | 'loadingPosition' | 'children' | 'size' | 'shape'> {
   /** The icon element to render */
   icon: React.ReactNode
   /** Accessible label — required for icon-only buttons (WCAG AA) */

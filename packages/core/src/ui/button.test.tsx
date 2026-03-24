@@ -174,4 +174,127 @@ describe('Button', () => {
       expect(button).not.toHaveAttribute('aria-busy')
     })
   })
+
+  // ============ Soft variant ============
+
+  it('renders soft variant with accent color', () => {
+    const { container } = render(<Button variant="soft" color="accent">Soft</Button>)
+    const btn = container.firstChild as HTMLElement
+    expect(btn.className).toContain('bg-accent-3')
+    expect(btn.className).toContain('text-accent-11')
+  })
+
+  it('renders soft variant with error color', () => {
+    const { container } = render(<Button variant="soft" color="error">Soft Error</Button>)
+    const btn = container.firstChild as HTMLElement
+    expect(btn.className).toContain('bg-error-3')
+    expect(btn.className).toContain('text-error-11')
+  })
+
+  it('renders soft variant with success color', () => {
+    const { container } = render(<Button variant="soft" color="success">Approve</Button>)
+    const btn = container.firstChild as HTMLElement
+    expect(btn.className).toContain('bg-success-3')
+    expect(btn.className).toContain('text-success-11')
+  })
+
+  it('renders soft variant with warning color', () => {
+    const { container } = render(<Button variant="soft" color="warning">Draft</Button>)
+    const btn = container.firstChild as HTMLElement
+    expect(btn.className).toContain('bg-warning-3')
+    expect(btn.className).toContain('text-warning-11')
+  })
+
+  it('renders soft variant with neutral color', () => {
+    const { container } = render(<Button variant="soft" color="neutral">Cancel</Button>)
+    const btn = container.firstChild as HTMLElement
+    expect(btn.className).toContain('bg-surface-raised-hover')
+    expect(btn.className).toContain('text-surface-fg-muted')
+  })
+
+  // ============ Shape prop ============
+
+  it('renders with pill shape', () => {
+    const { container } = render(<Button shape="pill">Pill</Button>)
+    const btn = container.firstChild as HTMLElement
+    expect(btn.className).toContain('rounded-full')
+  })
+
+  it('does not apply rounded-full by default', () => {
+    const { container } = render(<Button>Default</Button>)
+    const btn = container.firstChild as HTMLElement
+    expect(btn.className).not.toContain('rounded-full')
+  })
+
+  // ============ Compact sizes ============
+
+  it('renders compact-xs without fixed height', () => {
+    const { container } = render(<Button size="compact-xs">Compact</Button>)
+    const btn = container.firstChild as HTMLElement
+    expect(btn.className).toContain('py-ds-01')
+    expect(btn.className).not.toMatch(/\bh-ds-/)
+  })
+
+  it('renders compact-sm without fixed height', () => {
+    const { container } = render(<Button size="compact-sm">Compact</Button>)
+    const btn = container.firstChild as HTMLElement
+    expect(btn.className).toContain('py-[5px]')
+    expect(btn.className).not.toMatch(/\bh-ds-/)
+  })
+
+  // ============ New colors on solid variant ============
+
+  it('renders solid success', () => {
+    const { container } = render(<Button variant="solid" color="success">Approve</Button>)
+    const btn = container.firstChild as HTMLElement
+    expect(btn.className).toContain('bg-success-9')
+  })
+
+  it('renders solid warning', () => {
+    const { container } = render(<Button variant="solid" color="warning">Caution</Button>)
+    const btn = container.firstChild as HTMLElement
+    expect(btn.className).toContain('bg-warning-9')
+  })
+
+  it('renders solid neutral', () => {
+    const { container } = render(<Button variant="solid" color="neutral">Cancel</Button>)
+    const btn = container.firstChild as HTMLElement
+    expect(btn.className).toContain('bg-neutral-5')
+  })
+
+  // ============ Deprecated aliases ============
+
+  it('deprecated variant="default" renders as solid accent', () => {
+    const { container } = render(<Button variant="default">Legacy</Button>)
+    const btn = container.firstChild as HTMLElement
+    expect(btn.className).toContain('bg-accent-9')
+  })
+
+  it('deprecated variant="destructive" renders as solid error', () => {
+    const { container } = render(<Button variant="destructive">Delete</Button>)
+    const btn = container.firstChild as HTMLElement
+    expect(btn.className).toContain('bg-error-9')
+  })
+
+  it('deprecated color="default" renders as accent', () => {
+    const { container } = render(<Button color="default">Legacy</Button>)
+    const btn = container.firstChild as HTMLElement
+    expect(btn.className).toContain('bg-accent-9')
+  })
+
+  // ============ Weight ============
+
+  it('renders weight normal', () => {
+    const { container } = render(<Button weight="normal">Normal</Button>)
+    const btn = container.firstChild as HTMLElement
+    expect(btn.className).toContain('font-normal')
+  })
+
+  // ============ Disabled desaturate ============
+
+  it('disabled button has saturate class', () => {
+    const { container } = render(<Button disabled>Disabled</Button>)
+    const btn = container.firstChild as HTMLElement
+    expect(btn.className).toContain('disabled:saturate-')
+  })
 })

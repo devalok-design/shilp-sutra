@@ -70,6 +70,7 @@ export function DevalokGrain({
     <>
       {/* Gradient — light mode */}
       <span
+        data-grain=""
         aria-hidden="true"
         className="pointer-events-none absolute inset-0 z-[1] rounded-[inherit] dark:hidden"
         style={{
@@ -78,6 +79,7 @@ export function DevalokGrain({
       />
       {/* Gradient — dark mode */}
       <span
+        data-grain=""
         aria-hidden="true"
         className="pointer-events-none absolute inset-0 z-[1] rounded-[inherit] hidden dark:block"
         style={{
@@ -86,6 +88,7 @@ export function DevalokGrain({
       />
       {/* Noise texture */}
       <span
+        data-grain=""
         aria-hidden="true"
         className="pointer-events-none absolute inset-0 z-[1] rounded-[inherit]"
         style={{

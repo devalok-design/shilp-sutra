@@ -130,6 +130,17 @@ const iconSizeClass: Record<string, string> = {
   'icon-lg': 'h-ico-md w-ico-md [&>svg]:h-ico-md [&>svg]:w-ico-md',
 }
 
+/** Extra horizontal padding for pill shape — rounded ends eat into visual space */
+const pillPaddingClass: Record<string, string> = {
+  xs:           'px-ds-04',
+  sm:           'px-ds-05',
+  md:           'px-ds-06',
+  lg:           'px-ds-07',
+  'compact-xs': 'px-ds-03',
+  'compact-sm': 'px-ds-04',
+  'compact-md': 'px-ds-05',
+}
+
 /** Negative margin to tighten icon side padding — pulls icon closer to button edge */
 const iconInsetClass: Record<string, { start: string; end: string }> = {
   xs:           { start: '-ml-0.5', end: '-mr-0.5' },
@@ -316,6 +327,7 @@ const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
         className: cn(
           buttonVariants({ variant: resolvedVariant, color: resolvedColor, weight: resolvedWeight, size: resolvedSize }),
           resolvedShape === 'pill' && 'rounded-full',
+          resolvedShape === 'pill' && pillPaddingClass[resolvedSize],
           fullWidth && 'w-full',
           className,
         ),
@@ -408,6 +420,7 @@ const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
         className={cn(
           buttonVariants({ variant: resolvedVariant, color: resolvedColor, weight: resolvedWeight, size: resolvedSize }),
           resolvedShape === 'pill' && 'rounded-full',
+          resolvedShape === 'pill' && pillPaddingClass[resolvedSize],
           fullWidth && 'w-full',
           // Asymmetric timing: hover-out is slow+relaxed, hover-in is fast+snappy (applied via hover: override)
           !loading && !isAsyncFeedback && 'transition-[color,background-color,border-color,box-shadow,transform,filter] duration-moderate-01 ease-productive-exit',

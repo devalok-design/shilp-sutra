@@ -37,6 +37,26 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - **Button `variant="destructive"`** — Use `variant="solid" color="error"` instead.
 - **Button `color="default"`** — Use `color="accent"` instead.
 
+### Breaking Changes (karm)
+
+- **TaskPanel v3 is now the default export** — The v2 tab-based TaskPanel is available as `TaskPanelV2`. V3 uses a unified scrollable layout with composable wings.
+- **`clientMode` type changed** — From `boolean` to `false | 'VIEW_ONLY' | 'COLLABORATOR'`. Passing `true` auto-normalizes to `'VIEW_ONLY'`.
+
+### Added (karm — TaskPanel v3)
+
+- **Files section** — Upload, download, delete files with GDrive link support. Collapsible section with drag-and-drop.
+- **Start date + Phase picker** — Two new property cells in the properties wing.
+- **Overdue styling** — Due dates show relative text ("3d overdue", "Due tomorrow") with red treatment.
+- **Creator attribution** — Shows "Created by X" with AI/Client badges.
+- **Task actions menu** — Copy link, copy reference, duplicate, delete via "..." dropdown.
+- **Project breadcrumb** — Shows "ProjectName > KRM-847" in header.
+- **Prev/next navigation** — Up/down buttons + J/K keyboard shortcuts.
+- **Keyboard shortcuts** — S/A/P/D/E/C/Escape for property pickers and actions.
+- **Bandwidth indicators** — Red/amber dots on overloaded/elevated assignees.
+- **Leave indicators** — "On leave" label on leads/assignees.
+- **TaskPanelSheetWrapper** — Convenience wrapper owning Sheet + loading state.
+- **Client COLLABORATOR mode** — Clients with COLLABORATOR access can edit priority, due date, description, and post messages.
+
 ## [0.28.0] - 2026-03-21 (core) / [0.24.1] - 2026-03-21 (karm)
 
 ### Added (core) — ColorInput v2

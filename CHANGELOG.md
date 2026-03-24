@@ -5,6 +5,32 @@ All notable changes to `@devalok/shilp-sutra` will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [Unreleased]
+
+### Breaking Changes
+
+- **Warning color remapped from yellow to amber-bright** — `warning-*` tokens now use a warm amber (OKLCH hue 65-70, L=0.78 at step 9) instead of yellow (hue 85, L=0.55). The old yellow produced a muddy olive at mid-lightness with insufficient contrast for both light and dark text. `warning-fg` is now hardcoded dark in both themes. Existing `--amber-*` category colors are untouched — only the `warning-*` semantic tokens changed.
+
+### Added
+
+- **Button `variant="soft"`** — Tinted/muted background variant. The workhorse for secondary actions, status pills, and subtle controls. Available in all 5 colors.
+- **Button `color` axis expanded** — `accent` (renamed from `default`), `error` (existing), `success` (new), `warning` (new), `neutral` (new). 25 variant×color combinations.
+- **Button `shape="pill"`** — Applies `rounded-full` for chip/tag/pill-shaped buttons.
+- **Button `size="compact-*"`** — `compact-xs`, `compact-sm`, `compact-md` — padding-only height for dense UI (menus, property editors).
+- **Button `weight="normal"`** — Opt out of default `font-semibold` for menu items and subtle controls.
+- **Status color steps 2, 4, 5, 10** — Added to error, success, warning, info scales for soft variant hover/active states.
+- **Amber-bright primitive scale** — `--amber-bright-*` tokens in primitives.css for warning semantic use.
+- **Shadow tokens** — `shadow-raised-inner`, `shadow-pressed`, `shadow-success`, `shadow-error`, `shadow-warning`.
+- **Button active state polish** — `brightness(0.92) saturate(1.1)` on press, `disabled:saturate(0.3)`.
+- **Button icon treatment** — `pointer-events-none` on icon wrappers, per-size gap scaling.
+- **ButtonGroup** propagates `weight` and `shape` via context.
+
+### Deprecated
+
+- **Button `variant="default"`** — Use `variant="solid"` instead.
+- **Button `variant="destructive"`** — Use `variant="solid" color="error"` instead.
+- **Button `color="default"`** — Use `color="accent"` instead.
+
 ## [0.28.0] - 2026-03-21 (core) / [0.24.1] - 2026-03-21 (karm)
 
 ### Added (core) — ColorInput v2

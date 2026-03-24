@@ -292,17 +292,18 @@ Many components use TWO props where shadcn uses one:
 - `color` controls INTENT/SEMANTICS: default, error, success, warning, info, etc.
 
 Examples:
-  <Button variant="solid" color="error">Delete</Button>     // red solid button
-  <Button variant="outline" color="error">Cancel</Button>    // red outline button
-  <Badge variant="solid" color="success">Active</Badge>      // green solid badge
-  <Alert variant="filled" color="warning">Warning!</Alert>   // yellow filled alert
+  <Button variant="solid" color="error">Delete</Button>       // red solid button
+  <Button variant="soft" color="warning">Pending</Button>     // amber tinted button
+  <Button variant="outline" color="success">Approve</Button>  // green outline button
+  <Badge variant="solid" color="success">Active</Badge>       // green solid badge
+  <Alert variant="filled" color="warning">Warning!</Alert>    // amber filled alert
 
 Components with two-axis system: Button, Badge, Alert, Chip, Banner, Progress, StatusBadge
 
 ## Component Quick Reference
 
 ### Inputs & Controls
-- Button: variant(solid|default|outline|ghost|link) color(default|error) size(xs|sm|md|lg|icon-xs|icon-sm|icon-md|icon-lg) + loading, startIcon, endIcon, asChild
+- Button: variant(solid|soft|outline|ghost|link) color(accent|error|success|warning|neutral) size(xs|sm|md|lg|compact-xs|compact-sm|compact-md|icon-xs|icon-sm|icon-md|icon-lg) shape(default|pill) weight(semibold|normal) + loading, startIcon, endIcon, asChild. Deprecated aliases still work: variant="default"→solid, variant="destructive"→solid+error, color="default"→accent
 - IconButton: icon(ReactNode, required) shape(square|circle) size(sm|md|lg) + aria-label required
 - Input: size(xs|sm|md|lg) state(InputState) + startIcon, endIcon. Type: InputState = 'default' | 'error' | 'warning' | 'success'
 - SearchInput: size(xs|sm|md|lg) + loading, onClear
@@ -475,4 +476,7 @@ DO NOT use barrel imports in Server Components — they include "use client" com
 - DO NOT use <Alert><AlertTitle>...</AlertTitle></Alert> — use <Alert title="..." />
 - DO NOT import from barrel in Next.js Server Components — use per-component imports
 - DO NOT use variant="secondary" on Button — use variant="outline" or variant="ghost"
+- DO NOT use variant="default" on Button — use variant="solid" (deprecated alias, still works)
+- DO NOT use variant="destructive" on Button — use variant="solid" color="error" (deprecated alias, still works)
+- DO NOT use color="default" on Button — use color="accent" (deprecated alias, still works)
 - DO NOT put variant on individual TabsTrigger — put it on TabsList (propagates via context)

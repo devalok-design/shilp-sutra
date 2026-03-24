@@ -507,9 +507,11 @@ Note: getFormFieldA11y() was removed in favor of useFormField() hook.
 - Category: ui
 
 ## Props
-    variant: "solid" | "default" (alias->solid) | "outline" | "ghost" | "link" | "destructive" (alias->solid+error)
-    color: "default" | "error"
-    size: "sm" | "md" | "lg" | "icon" | "icon-sm" | "icon-md" | "icon-lg"
+    variant: "solid" | "soft" | "outline" | "ghost" | "link"
+    color: "accent" | "error" | "success" | "warning" | "neutral"
+    size: "xs" | "sm" | "md" | "lg" | "compact-xs" | "compact-sm" | "compact-md" | "icon" | "icon-xs" | "icon-sm" | "icon-md" | "icon-lg"
+    shape: "default" | "pill" (pill applies rounded-full)
+    weight: "semibold" | "normal"
     startIcon: ReactNode
     endIcon: ReactNode
     loading: boolean (disables button, shows spinner)
@@ -519,25 +521,83 @@ Note: getFormFieldA11y() was removed in favor of useFormField() hook.
     onClickAsync: (e: MouseEvent) => Promise<void> (auto loading->success/error->idle)
     asyncFeedbackDuration: number (ms, default 1500)
 
+    Deprecated aliases (still work, will be removed in v1.0):
+      variant="default" → solid
+      variant="destructive" → solid + color="error"
+      color="default" → accent
+
 ## Defaults
-    variant="solid", color="default", size="md"
+    variant="solid", color="accent", size="md", shape="default", weight="semibold"
+
+## Variant × Color Matrix (25 combinations)
+    solid:   accent(brand CTA), error(red), success(green), warning(amber), neutral(grey)
+    soft:    accent(tinted bg), error(red tint), success(green tint), warning(amber tint), neutral(surface hover)
+    outline: accent(brand border), error(red border), success(green border), warning(amber border), neutral(grey border)
+    ghost:   accent(neutral hover — backward compat), error(red hover), success(green hover), warning(amber hover), neutral(neutral hover)
+    link:    accent(underline), error(red), success(green), warning(amber), neutral(muted)
+
+## Compact Sizes
+    compact-xs, compact-sm, compact-md — padding-only height (no fixed h-*), ideal for dense UI:
+    menus, property editors, inline tags. Combine with shape="pill" for chip/tag buttons.
 
 ## Example
 ```jsx
 <Button variant="solid" color="error" startIcon={<IconTrash />} loading={isDeleting}>
   Delete project
 </Button>
+
+// Soft warning pill for status:
+<Button variant="soft" color="warning" size="compact-sm" shape="pill">
+  Pending review
+</Button>
+
+// Normal weight for menu items:
+<Button variant="ghost" weight="normal" size="compact-md">
+  Settings
+</Button>
 ```
 
 ## Gotchas
-- DO NOT use variant="destructive" — use variant="solid" color="error"
+- DO NOT use variant="destructive" — use variant="solid" color="error" (deprecated alias, still works)
+- DO NOT use variant="default" — use variant="solid" (deprecated alias, still works)
+- DO NOT use color="default" — use color="accent" (deprecated alias, still works)
 - DO NOT use variant="secondary" — use variant="outline" or variant="ghost"
 - DO NOT use size="default" — use size="md"
 - DO NOT use color="danger" — use color="error"
-- Inherits variant/color/size from ButtonGroup context if present
+- Inherits variant/color/weight/shape/size from ButtonGroup context if present
 - onClickAsync overrides onClick and loading when active
+- ghost+accent renders as neutral (no brand tint) for backward compatibility — this is intentional
+- Icon wrappers have pointer-events-none — click handlers on icons inside Button won't fire
+
+## Migration from pre-v2
+    // Before (v1):
+    <Button variant="default">Save</Button>
+    <Button variant="destructive">Delete</Button>
+
+    // After (v2):
+    <Button variant="solid" color="accent">Save</Button>
+    <Button variant="solid" color="error">Delete</Button>
+
+    // New capabilities:
+    <Button variant="soft" color="success">Approve</Button>
+    <Button variant="outline" color="warning" shape="pill">Needs review</Button>
+    <Button variant="ghost" weight="normal" size="compact-md">Menu item</Button>
 
 ## Changes
+### v0.29.0 (Button v2)
+- **Added** `variant="soft"` — tinted background variant for all 5 colors
+- **Added** `color` axis expanded: `accent`, `error`, `success`, `warning`, `neutral` (25 variant×color combos)
+- **Added** `shape` prop: `"default"` | `"pill"` (rounded-full)
+- **Added** `weight` prop: `"semibold"` (default) | `"normal"`
+- **Added** compact sizes: `compact-xs`, `compact-sm`, `compact-md`
+- **Added** `size="xs"` (28px height)
+- **Changed** Default color renamed from `"default"` to `"accent"` (alias preserved)
+- **Changed** Active state uses `brightness(0.92) saturate(1.1)` filter, `disabled:saturate(0.3)`
+- **Changed** Icon wrappers use `pointer-events-none`, per-size gap scaling
+- **Deprecated** `variant="default"` → use `variant="solid"`
+- **Deprecated** `variant="destructive"` → use `variant="solid" color="error"`
+- **Deprecated** `color="default"` → use `color="accent"`
+
 ### v0.22.0
 - **Changed** Active/pressed scale from `0.97` to `0.95` for snappier press feedback.
 - **Fixed** Ghost/outline hover not fading — `transition-transform` in base overrode `transition-colors` from variant. Combined into single `transition-[color,background-color,border-color,box-shadow,transform]`.
@@ -570,6 +630,8 @@ Note: getFormFieldA11y() was removed in favor of useFormField() hook.
     variant: ButtonProps['variant'] (propagated to children)
     color: ButtonProps['color'] (propagated to children)
     size: ButtonProps['size'] (propagated to children)
+    weight: ButtonProps['weight'] (propagated to children)
+    shape: ButtonProps['shape'] (propagated to children)
     orientation: "horizontal" | "vertical" (default: "horizontal")
 
 ## Defaults
@@ -581,12 +643,21 @@ Note: getFormFieldA11y() was removed in favor of useFormField() hook.
   <Button>Bold</Button>
   <Button>Italic</Button>
 </ButtonGroup>
+
+// Pill-shaped tag group:
+<ButtonGroup variant="soft" shape="pill" size="compact-sm">
+  <Button color="success">Active</Button>
+  <Button color="warning">Pending</Button>
+</ButtonGroup>
 ```
 
 ## Gotchas
-- Children can override variant/size individually
+- Children can override variant/color/weight/shape/size individually
 
 ## Changes
+### v0.29.0
+- **Added** `weight` and `shape` propagated to children via context
+
 ### v0.4.2
 - **Fixed** `Omit<HTMLAttributes, 'color'>` resolves TS2320 conflict with CVA color prop
 
@@ -1445,8 +1516,8 @@ import { DataTableToolbar } from '@devalok/shilp-sutra/ui/data-table-toolbar'
     aria-label: string (REQUIRED — WCAG AA mandatory)
     shape: "square" | "circle"
     size: "sm" | "md" | "lg"
-    variant: same as Button (solid, outline, ghost, link)
-    color: same as Button (default, error)
+    variant: same as Button (solid, soft, outline, ghost, link)
+    color: same as Button (accent, error, success, warning, neutral)
     loading: boolean
     disabled: boolean
 

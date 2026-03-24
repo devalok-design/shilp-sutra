@@ -410,25 +410,71 @@ export function TaskPanelPropertiesCard() {
                 align="start"
                 sideOffset={4}
               >
-                <label className="flex flex-col gap-ds-02">
-                  <span className="text-ds-xs font-medium text-surface-fg-muted">
-                    Due date
-                  </span>
-                  <Input
-                    type="date"
-                    size="sm"
-                    defaultValue={task.dueDate ? task.dueDate.slice(0, 10) : ''}
-                    onChange={(e) => {
-                      const val = e.target.value
-                      if (val) {
-                        onUpdateDueDate(new Date(val + 'T00:00:00'))
-                      } else {
+                {/* Quick shortcuts */}
+                <div className="flex flex-col gap-ds-01 mb-ds-03">
+                  {[
+                    { label: 'Today', days: 0 },
+                    { label: 'Tomorrow', days: 1 },
+                    { label: 'Next week', days: 7 },
+                    { label: 'In 2 weeks', days: 14 },
+                    { label: 'Next month', days: 30 },
+                  ].map(({ label, days }) => (
+                    <Button
+                      key={label}
+                      variant="ghost"
+                      size="compact-sm"
+                      weight="normal"
+                      className="w-full justify-start"
+                      onClick={() => {
+                        const d = new Date()
+                        d.setDate(d.getDate() + days)
+                        d.setHours(0, 0, 0, 0)
+                        onUpdateDueDate(d)
+                        setDueDateOpen(false)
+                      }}
+                    >
+                      {label}
+                    </Button>
+                  ))}
+                  {task.dueDate && (
+                    <Button
+                      variant="ghost"
+                      size="compact-sm"
+                      weight="normal"
+                      color="error"
+                      className="w-full justify-start"
+                      onClick={() => {
                         onUpdateDueDate(null)
-                      }
-                      setDueDateOpen(false)
-                    }}
-                  />
-                </label>
+                        setDueDateOpen(false)
+                      }}
+                    >
+                      Remove due date
+                    </Button>
+                  )}
+                </div>
+
+                {/* Custom date picker */}
+                <div className="border-t border-surface-border-subtle pt-ds-03">
+                  <label className="flex flex-col gap-ds-02">
+                    <span className="text-ds-xs font-medium text-surface-fg-muted">
+                      Custom date
+                    </span>
+                    <Input
+                      type="date"
+                      size="sm"
+                      defaultValue={task.dueDate ? task.dueDate.slice(0, 10) : ''}
+                      onChange={(e) => {
+                        const val = e.target.value
+                        if (val) {
+                          onUpdateDueDate(new Date(val + 'T00:00:00'))
+                        } else {
+                          onUpdateDueDate(null)
+                        }
+                        setDueDateOpen(false)
+                      }}
+                    />
+                  </label>
+                </div>
               </PopoverContent>
             </Popover>
           ) : (

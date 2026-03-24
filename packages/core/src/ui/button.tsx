@@ -38,13 +38,13 @@ export const buttonVariants = cva(
         normal: 'font-normal',
       },
       size: {
-        xs: 'h-ds-xs-plus rounded-ds-sm px-ds-03 text-ds-sm gap-1',
+        xs: 'h-ds-xs-plus rounded-ds-md px-ds-03 text-ds-sm gap-1',
         sm: 'h-ds-sm rounded-ds-md px-ds-04 text-ds-sm gap-1.5',
-        md: 'h-ds-md rounded-ds-md px-ds-05 text-ds-md gap-2',
-        lg: 'h-ds-lg rounded-ds-lg px-ds-06 text-ds-base gap-2.5',
-        'compact-xs': 'rounded-ds-sm px-ds-02 py-ds-01 text-ds-sm gap-1',
+        md: 'h-ds-md rounded-ds-lg px-ds-05 text-ds-md gap-2',
+        lg: 'h-ds-lg rounded-ds-xl px-ds-06 text-ds-base gap-2.5',
+        'compact-xs': 'rounded-ds-md px-ds-02 py-ds-01 text-ds-sm gap-1',
         'compact-sm': 'rounded-ds-md px-ds-03 py-[5px] text-ds-sm gap-1.5',
-        'compact-md': 'rounded-ds-md px-ds-04 py-ds-02 text-ds-md gap-2',
+        'compact-md': 'rounded-ds-lg px-ds-04 py-ds-02 text-ds-md gap-2',
         icon: 'h-ds-md w-ds-md rounded-ds-md',
         'icon-xs': 'h-ds-xs-plus w-ds-xs-plus rounded-ds-sm',
         'icon-sm': 'h-ds-sm w-ds-sm rounded-ds-md',
@@ -114,20 +114,25 @@ export const buttonVariants = cva(
   },
 )
 
-/** Map button size to icon wrapper size class */
+/** Map button size to icon wrapper size class
+ *  xs/compact-xs: 14px — small, tight
+ *  sm/compact-sm: 16px — standard
+ *  md/compact-md: 18px — slightly larger, proportional to 40px height
+ *  lg:            20px — large, matches 48px button height
+ */
 const iconSizeClass: Record<string, string> = {
-  xs: 'h-3.5 w-3.5 [&>svg]:h-3.5 [&>svg]:w-3.5',
-  sm: 'h-ico-sm w-ico-sm [&>svg]:h-ico-sm [&>svg]:w-ico-sm',
-  md: 'h-ico-sm w-ico-sm [&>svg]:h-ico-sm [&>svg]:w-ico-sm',
-  lg: 'h-ico-md w-ico-md [&>svg]:h-ico-md [&>svg]:w-ico-md',
-  'compact-xs': 'h-3.5 w-3.5 [&>svg]:h-3.5 [&>svg]:w-3.5',
-  'compact-sm': 'h-ico-sm w-ico-sm [&>svg]:h-ico-sm [&>svg]:w-ico-sm',
-  'compact-md': 'h-ico-sm w-ico-sm [&>svg]:h-ico-sm [&>svg]:w-ico-sm',
-  icon: 'h-ico-sm w-ico-sm [&>svg]:h-ico-sm [&>svg]:w-ico-sm',
-  'icon-xs': 'h-3.5 w-3.5 [&>svg]:h-3.5 [&>svg]:w-3.5',
-  'icon-sm': 'h-ico-sm w-ico-sm [&>svg]:h-ico-sm [&>svg]:w-ico-sm',
-  'icon-md': 'h-ico-sm w-ico-sm [&>svg]:h-ico-sm [&>svg]:w-ico-sm',
-  'icon-lg': 'h-ico-md w-ico-md [&>svg]:h-ico-md [&>svg]:w-ico-md',
+  xs:           'h-3.5 w-3.5 [&>svg]:h-3.5 [&>svg]:w-3.5',         // 14px
+  sm:           'h-4 w-4 [&>svg]:h-4 [&>svg]:w-4',                   // 16px
+  md:           'h-[18px] w-[18px] [&>svg]:h-[18px] [&>svg]:w-[18px]', // 18px
+  lg:           'h-5 w-5 [&>svg]:h-5 [&>svg]:w-5',                   // 20px
+  'compact-xs': 'h-3.5 w-3.5 [&>svg]:h-3.5 [&>svg]:w-3.5',         // 14px
+  'compact-sm': 'h-4 w-4 [&>svg]:h-4 [&>svg]:w-4',                   // 16px
+  'compact-md': 'h-[18px] w-[18px] [&>svg]:h-[18px] [&>svg]:w-[18px]', // 18px
+  icon:         'h-[18px] w-[18px] [&>svg]:h-[18px] [&>svg]:w-[18px]', // 18px (md default)
+  'icon-xs':    'h-3.5 w-3.5 [&>svg]:h-3.5 [&>svg]:w-3.5',         // 14px
+  'icon-sm':    'h-4 w-4 [&>svg]:h-4 [&>svg]:w-4',                   // 16px
+  'icon-md':    'h-[18px] w-[18px] [&>svg]:h-[18px] [&>svg]:w-[18px]', // 18px
+  'icon-lg':    'h-5 w-5 [&>svg]:h-5 [&>svg]:w-5',                   // 20px
 }
 
 /** Extra horizontal padding for pill shape — rounded ends eat into visual space */

@@ -130,6 +130,22 @@ const iconSizeClass: Record<string, string> = {
   'icon-lg': 'h-ico-md w-ico-md [&>svg]:h-ico-md [&>svg]:w-ico-md',
 }
 
+/** Negative margin to tighten icon side padding — pulls icon closer to button edge */
+const iconInsetClass: Record<string, { start: string; end: string }> = {
+  xs:           { start: '-ml-0.5', end: '-mr-0.5' },
+  sm:           { start: '-ml-1',   end: '-mr-1' },
+  md:           { start: '-ml-1.5', end: '-mr-1.5' },
+  lg:           { start: '-ml-2',   end: '-mr-2' },
+  'compact-xs': { start: '-ml-0.5', end: '-mr-0.5' },
+  'compact-sm': { start: '-ml-0.5', end: '-mr-0.5' },
+  'compact-md': { start: '-ml-1',   end: '-mr-1' },
+  icon:         { start: '', end: '' },
+  'icon-xs':    { start: '', end: '' },
+  'icon-sm':    { start: '', end: '' },
+  'icon-md':    { start: '', end: '' },
+  'icon-lg':    { start: '', end: '' },
+}
+
 /** Map button size to spinner size */
 const spinnerSizeMap: Record<string, 'sm' | 'md'> = {
   xs: 'sm',
@@ -315,13 +331,15 @@ const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
       )
     }
 
+    const inset = iconInsetClass[resolvedSize] ?? { start: '', end: '' }
+
     const renderStartSlot = () => {
       if (loading && loadingPosition === 'start') {
         return spinnerNode
       }
       if (startIcon) {
         return (
-          <span className={cn('inline-flex shrink-0 items-center justify-center pointer-events-none', iconClass)}>
+          <span className={cn('inline-flex shrink-0 items-center justify-center pointer-events-none', iconClass, inset.start)}>
             {startIcon}
           </span>
         )
@@ -335,7 +353,7 @@ const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
       }
       if (endIcon) {
         return (
-          <span className={cn('inline-flex shrink-0 items-center justify-center pointer-events-none', iconClass)}>
+          <span className={cn('inline-flex shrink-0 items-center justify-center pointer-events-none', iconClass, inset.end)}>
             {endIcon}
           </span>
         )

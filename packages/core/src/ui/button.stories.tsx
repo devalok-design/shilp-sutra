@@ -149,13 +149,21 @@ export const Disabled: Story = {
 export const AllVariants: Story = {
   render: () => {
     const combos = [
-      { variant: 'solid', color: 'default', label: 'solid' },
-      { variant: 'outline', color: 'default', label: 'outline' },
-      { variant: 'ghost', color: 'default', label: 'ghost' },
+      { variant: 'solid', color: 'accent', label: 'solid' },
+      { variant: 'soft', color: 'accent', label: 'soft' },
+      { variant: 'outline', color: 'accent', label: 'outline' },
+      { variant: 'ghost', color: 'accent', label: 'ghost' },
       { variant: 'solid', color: 'error', label: 'solid+error' },
+      { variant: 'soft', color: 'error', label: 'soft+error' },
       { variant: 'outline', color: 'error', label: 'outline+error' },
       { variant: 'ghost', color: 'error', label: 'ghost+error' },
-      { variant: 'link', color: 'default', label: 'link' },
+      { variant: 'solid', color: 'success', label: 'solid+success' },
+      { variant: 'soft', color: 'success', label: 'soft+success' },
+      { variant: 'solid', color: 'warning', label: 'solid+warning' },
+      { variant: 'soft', color: 'warning', label: 'soft+warning' },
+      { variant: 'solid', color: 'neutral', label: 'solid+neutral' },
+      { variant: 'soft', color: 'neutral', label: 'soft+neutral' },
+      { variant: 'link', color: 'accent', label: 'link' },
     ] as const
     const sizes = ['sm', 'md', 'lg'] as const
     return (
@@ -200,18 +208,34 @@ export const AllVariants: Story = {
 }
 
 export const AllSizes: Story = {
-  render: () => {
-    const sizes = ['sm', 'md', 'lg', 'icon-sm', 'icon-md', 'icon-lg'] as const
-    return (
-      <div className="flex flex-wrap items-center gap-ds-03">
-        {sizes.map((size) => (
-          <Button key={size} size={size}>
-            {size.startsWith('icon') ? '+' : size}
-          </Button>
-        ))}
+  render: () => (
+    <div className="flex flex-col gap-ds-06">
+      <div>
+        <p className="mb-ds-03 text-ds-sm font-semibold text-surface-fg-muted">Standard</p>
+        <div className="flex flex-wrap items-end gap-ds-03">
+          {(['xs', 'sm', 'md', 'lg'] as const).map((size) => (
+            <Button key={size} size={size}>{size}</Button>
+          ))}
+        </div>
       </div>
-    )
-  },
+      <div>
+        <p className="mb-ds-03 text-ds-sm font-semibold text-surface-fg-muted">Compact (padding-only height)</p>
+        <div className="flex flex-wrap items-end gap-ds-03">
+          {(['compact-xs', 'compact-sm', 'compact-md'] as const).map((size) => (
+            <Button key={size} size={size}>{size.replace('compact-', 'c-')}</Button>
+          ))}
+        </div>
+      </div>
+      <div>
+        <p className="mb-ds-03 text-ds-sm font-semibold text-surface-fg-muted">Icon</p>
+        <div className="flex flex-wrap items-end gap-ds-03">
+          {(['icon-sm', 'icon-md', 'icon-lg'] as const).map((size) => (
+            <Button key={size} size={size}>+</Button>
+          ))}
+        </div>
+      </div>
+    </div>
+  ),
 }
 
 // --- New feature stories ---
@@ -308,7 +332,7 @@ export const AsyncError: Story = {
 export const AsyncAllVariants: Story = {
   name: 'Async — All Variants',
   render: () => {
-    const variants = ['solid', 'outline', 'ghost'] as const
+    const variants = ['solid', 'soft', 'outline', 'ghost'] as const
     return (
       <div className="flex flex-col gap-ds-06">
         <div>
@@ -368,75 +392,90 @@ export const AsyncAllVariants: Story = {
 export const AllFeatures: Story = {
   render: () => (
     <div className="flex flex-col gap-ds-07">
-      {/* Row 1: Buttons with startIcon across all variants */}
+      {/* Row 1: Icons across all variants */}
       <div>
         <p className="mb-ds-02 text-ds-sm font-semibold text-surface-fg-muted">
           Start Icon across variants
         </p>
         <div className="flex flex-wrap items-center gap-ds-04">
-          <Button variant="solid" startIcon={<IconPlus size={16} />}>
-            Solid
-          </Button>
-          <Button variant="outline" startIcon={<IconDownload size={16} />}>
-            Outline
-          </Button>
-          <Button variant="ghost" startIcon={<IconPlus size={16} />}>
-            Ghost
-          </Button>
-          <Button variant="solid" color="error" startIcon={<IconTrash size={16} />}>
-            Solid Error
-          </Button>
-          <Button variant="outline" color="error" startIcon={<IconTrash size={16} />}>
-            Outline Error
-          </Button>
-          <Button variant="link" startIcon={<IconArrowRight size={16} />}>
-            Link
-          </Button>
+          <Button variant="solid" startIcon={<IconPlus size={16} />}>Solid</Button>
+          <Button variant="soft" startIcon={<IconPlus size={16} />}>Soft</Button>
+          <Button variant="outline" startIcon={<IconDownload size={16} />}>Outline</Button>
+          <Button variant="ghost" startIcon={<IconPlus size={16} />}>Ghost</Button>
+          <Button variant="solid" color="error" startIcon={<IconTrash size={16} />}>Error</Button>
+          <Button variant="soft" color="success" startIcon={<IconPlus size={16} />}>Success</Button>
+          <Button variant="link" startIcon={<IconArrowRight size={16} />}>Link</Button>
         </div>
       </div>
 
-      {/* Row 2: Loading states (start, end, center) */}
+      {/* Row 2: Pill + soft across colors */}
+      <div>
+        <p className="mb-ds-02 text-ds-sm font-semibold text-surface-fg-muted">
+          Pill shape + soft variant
+        </p>
+        <div className="flex flex-wrap items-center gap-ds-03">
+          <Button variant="soft" color="accent" size="xs" shape="pill" startIcon={<IconPlus size={14} />}>Accent</Button>
+          <Button variant="soft" color="error" size="xs" shape="pill" startIcon={<IconTrash size={14} />}>Error</Button>
+          <Button variant="soft" color="success" size="xs" shape="pill" startIcon={<IconPlus size={14} />}>Success</Button>
+          <Button variant="soft" color="warning" size="xs" shape="pill" startIcon={<IconPlus size={14} />}>Warning</Button>
+          <Button variant="soft" color="neutral" size="xs" shape="pill">Neutral</Button>
+        </div>
+      </div>
+
+      {/* Row 3: Loading states */}
       <div>
         <p className="mb-ds-02 text-ds-sm font-semibold text-surface-fg-muted">
           Loading positions
         </p>
         <div className="flex flex-wrap items-center gap-ds-04">
-          <Button loading loadingPosition="start">
-            Loading Start
-          </Button>
-          <Button variant="outline" loading loadingPosition="end" endIcon={<IconSend size={16} />}>
-            Loading End
-          </Button>
-          <Button loading loadingPosition="center">
-            Loading Center
-          </Button>
+          <Button loading loadingPosition="start">Start</Button>
+          <Button variant="outline" loading loadingPosition="end" endIcon={<IconSend size={16} />}>End</Button>
+          <Button loading loadingPosition="center">Center</Button>
+          <Button variant="soft" color="success" loading>Soft loading</Button>
         </div>
       </div>
 
-      {/* Row 3: Sizes with icons (sm, md, lg) */}
+      {/* Row 4: Sizes with icons */}
       <div>
         <p className="mb-ds-02 text-ds-sm font-semibold text-surface-fg-muted">
           Sizes with icons
         </p>
+        <div className="flex flex-wrap items-end gap-ds-04">
+          <Button size="xs" startIcon={<IconPlus size={14} />}>xs</Button>
+          <Button size="sm" startIcon={<IconPlus size={14} />}>sm</Button>
+          <Button size="md" startIcon={<IconPlus size={16} />}>md</Button>
+          <Button size="lg" startIcon={<IconPlus size={18} />}>lg</Button>
+        </div>
+        <div className="flex flex-wrap items-end gap-ds-04 mt-ds-03">
+          <Button size="compact-xs" startIcon={<IconPlus size={14} />}>c-xs</Button>
+          <Button size="compact-sm" startIcon={<IconPlus size={14} />}>c-sm</Button>
+          <Button size="compact-md" startIcon={<IconPlus size={16} />}>c-md</Button>
+        </div>
+      </div>
+
+      {/* Row 5: Weight comparison */}
+      <div>
+        <p className="mb-ds-02 text-ds-sm font-semibold text-surface-fg-muted">
+          Weight: semibold vs normal
+        </p>
         <div className="flex flex-wrap items-center gap-ds-04">
-          <Button size="sm" startIcon={<IconPlus size={14} />}>
-            Small
-          </Button>
-          <Button size="md" startIcon={<IconPlus size={16} />}>
-            Medium
-          </Button>
-          <Button size="lg" startIcon={<IconPlus size={18} />}>
-            Large
-          </Button>
-          <Button size="sm" endIcon={<IconArrowRight size={14} />}>
-            Small
-          </Button>
-          <Button size="md" endIcon={<IconArrowRight size={16} />}>
-            Medium
-          </Button>
-          <Button size="lg" endIcon={<IconArrowRight size={18} />}>
-            Large
-          </Button>
+          <Button variant="ghost" color="neutral">Semibold (default)</Button>
+          <Button variant="ghost" color="neutral" weight="normal">Normal weight</Button>
+          <Button variant="soft" color="accent">Semibold</Button>
+          <Button variant="soft" color="accent" weight="normal">Normal</Button>
+        </div>
+      </div>
+
+      {/* Row 6: Disabled */}
+      <div>
+        <p className="mb-ds-02 text-ds-sm font-semibold text-surface-fg-muted">
+          Disabled (opacity + desaturate)
+        </p>
+        <div className="flex flex-wrap items-center gap-ds-04">
+          <Button disabled>Solid</Button>
+          <Button variant="soft" color="success" disabled>Soft</Button>
+          <Button variant="outline" color="error" disabled>Outline</Button>
+          <Button variant="ghost" disabled>Ghost</Button>
         </div>
       </div>
     </div>

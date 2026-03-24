@@ -7,9 +7,9 @@ const NOISE_SVG = `url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/
 export type GrainIntensity = 'subtle' | 'medium' | 'heavy'
 
 const NOISE_OPACITY = {
-  subtle: { solid: 0.20, soft: 0.14 },
-  medium: { solid: 0.35, soft: 0.22 },
-  heavy:  { solid: 0.55, soft: 0.35 },
+  subtle: { solid: 0.28, soft: 0.18 },
+  medium: { solid: 0.45, soft: 0.30 },
+  heavy:  { solid: 0.65, soft: 0.45 },
 } as const
 
 const GRADIENT = {
@@ -93,14 +93,13 @@ export function DevalokGrain({
           background: `linear-gradient(135deg, transparent, oklch(0 0 0 / ${g.dk}))`,
         }}
       />
-      {/* Noise texture — blend mode is contained within this isolate wrapper */}
+      {/* Noise texture — opacity-only, no blend mode (avoids compositing issues with text) */}
       <span
         className="absolute inset-0"
         style={{
           backgroundImage: NOISE_SVG,
           backgroundSize: '100px 100px',
-          mixBlendMode: 'hard-light' as const,
-          filter: 'contrast(250%) brightness(130%)',
+          filter: 'contrast(300%) brightness(100%)',
           opacity: noise,
         }}
       />

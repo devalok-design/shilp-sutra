@@ -205,9 +205,11 @@ function CollapsedSystemGroup({ group }: { group: CollapsedGroup }) {
         </span>
         <span>&middot;</span>
         <span>{timeAgo(group.latestTimestamp)}</span>
-        <IconChevronDown
+        <Icon
+          icon={IconChevronDown}
+          size="xs"
           className={cn(
-            'h-3 w-3 transition-transform',
+            'transition-transform',
             expanded && 'rotate-180',
           )}
         />

@@ -4,6 +4,7 @@ import * as React from 'react'
 import { cn } from '@/ui/lib/utils'
 import { EmptyState } from '@/composed/empty-state'
 import { IconGitPullRequest } from '@tabler/icons-react'
+import { Icon } from '@/ui/icon'
 import {
   ReviewCard,
   ReviewRequestButton,
@@ -57,7 +58,7 @@ const ReviewTab = React.forwardRef<HTMLDivElement, ReviewTabProps>(
         </div>
       ) : (
         <EmptyState
-          icon={<IconGitPullRequest />}
+          icon={<Icon icon={IconGitPullRequest} />}
           title="No reviews yet"
           description="Request a review from a team member"
           compact

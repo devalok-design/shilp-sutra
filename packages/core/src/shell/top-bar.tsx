@@ -22,6 +22,7 @@ import {
   TooltipTrigger,
 } from '../ui/tooltip'
 import { IconLogout, IconUser, IconMoon, IconSun } from '@tabler/icons-react'
+import { Icon } from '../ui/icon'
 import { cn } from '../ui/lib/utils'
 
 // -----------------------------------------------------------------------
@@ -299,7 +300,7 @@ const TopBarUserMenu = React.forwardRef<HTMLButtonElement, TopBarUserMenuProps>(
             className="flex w-full cursor-pointer items-center gap-ds-03 px-ds-05 py-ds-04 hover:bg-surface-raised"
             onClick={() => onNavigate?.('/profile')}
           >
-            <IconUser className="h-ico-sm w-ico-sm text-surface-fg-muted" />
+            <Icon icon={IconUser} size="sm" className="text-surface-fg-muted" />
             <span className="text-ds-md text-surface-fg-muted">Profile</span>
           </DropdownMenuItem>
 
@@ -363,9 +364,9 @@ const TopBarUserMenu = React.forwardRef<HTMLButtonElement, TopBarUserMenuProps>(
             onClick={toggleColorMode}
           >
             {colorMode === 'dark' ? (
-              <IconSun className="h-ico-sm w-ico-sm text-surface-fg-muted" />
+              <Icon icon={IconSun} size="sm" className="text-surface-fg-muted" />
             ) : (
-              <IconMoon className="h-ico-sm w-ico-sm text-surface-fg-muted" />
+              <Icon icon={IconMoon} size="sm" className="text-surface-fg-muted" />
             )}
             <span className="text-ds-md text-surface-fg-muted">
               {colorMode === 'dark' ? 'Light Mode' : 'Dark Mode'}
@@ -379,7 +380,7 @@ const TopBarUserMenu = React.forwardRef<HTMLButtonElement, TopBarUserMenuProps>(
                 className="flex w-full cursor-pointer items-center gap-ds-03 px-ds-05 py-ds-04 hover:bg-surface-raised"
                 onClick={onLogout}
               >
-                <IconLogout className="h-ico-sm w-ico-sm text-error-11" />
+                <Icon icon={IconLogout} size="sm" className="text-error-11" />
                 <span className="text-ds-md text-error-11">Logout</span>
               </DropdownMenuItem>
             </>

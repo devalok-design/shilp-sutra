@@ -31,6 +31,7 @@ import {
   IconPackage,
 } from '@tabler/icons-react'
 import { CommandPalette, type CommandGroup, type CommandItem, type CommandPaletteProps, type FooterHint } from '../composed/command-palette'
+import { Icon } from '../ui/icon'
 import { cn } from '../ui/lib/utils'
 import { useCommandRegistry } from './command-registry'
 
@@ -112,13 +113,13 @@ export interface AppCommandPaletteProps
 // -----------------------------------------------------------------------
 
 const ENTITY_TYPE_ICONS: Record<string, React.ReactNode> = {
-  TASK: <IconListCheck />,
-  PROJECT: <IconLayoutKanban />,
-  USER: <IconUsers />,
-  COMMENT: <IconMessage />,
-  MEETING: <IconVideo />,
-  LINK: <IconLink />,
-  DELIVERABLE: <IconPackage />,
+  TASK: <Icon icon={IconListCheck} />,
+  PROJECT: <Icon icon={IconLayoutKanban} />,
+  USER: <Icon icon={IconUsers} />,
+  COMMENT: <Icon icon={IconMessage} />,
+  MEETING: <Icon icon={IconVideo} />,
+  LINK: <Icon icon={IconLink} />,
+  DELIVERABLE: <Icon icon={IconPackage} />,
 }
 
 // -----------------------------------------------------------------------
@@ -132,49 +133,49 @@ function buildDefaultPageItems(
     {
       id: 'nav-dashboard',
       label: 'Dashboard',
-      icon: <IconLayoutDashboard />,
+      icon: <Icon icon={IconLayoutDashboard} />,
       onSelect: () => nav('/'),
     },
     {
       id: 'nav-attendance',
       label: 'Attendance',
-      icon: <IconCalendarCheck />,
+      icon: <Icon icon={IconCalendarCheck} />,
       onSelect: () => nav('/attendance'),
     },
     {
       id: 'nav-breaks',
       label: 'Breaks',
-      icon: <IconUmbrella />,
+      icon: <Icon icon={IconUmbrella} />,
       onSelect: () => nav('/breaks'),
     },
     {
       id: 'nav-projects',
       label: 'Projects',
-      icon: <IconLayoutKanban />,
+      icon: <Icon icon={IconLayoutKanban} />,
       onSelect: () => nav('/projects'),
     },
     {
       id: 'nav-my-tasks',
       label: 'My Tasks',
-      icon: <IconListCheck />,
+      icon: <Icon icon={IconListCheck} />,
       onSelect: () => nav('/my-tasks'),
     },
     {
       id: 'nav-devsabha',
       label: 'Devsabha',
-      icon: <IconBook />,
+      icon: <Icon icon={IconBook} />,
       onSelect: () => nav('/devsabha'),
     },
     {
       id: 'nav-adjustments',
       label: 'Adjustments',
-      icon: <IconAdjustmentsHorizontal />,
+      icon: <Icon icon={IconAdjustmentsHorizontal} />,
       onSelect: () => nav('/adjustments'),
     },
     {
       id: 'nav-profile',
       label: 'Profile',
-      icon: <IconUserCircle />,
+      icon: <Icon icon={IconUserCircle} />,
       onSelect: () => nav('/profile'),
     },
   ]
@@ -187,37 +188,37 @@ function buildDefaultAdminItems(
     {
       id: 'nav-admin-dashboard',
       label: 'Admin Dashboard',
-      icon: <IconShieldCheck />,
+      icon: <Icon icon={IconShieldCheck} />,
       onSelect: () => nav('/admin'),
     },
     {
       id: 'nav-admin-breaks',
       label: 'Manage Breaks',
-      icon: <IconUmbrella />,
+      icon: <Icon icon={IconUmbrella} />,
       onSelect: () => nav('/admin/breaks'),
     },
     {
       id: 'nav-admin-attendance',
       label: 'Manage Attendance',
-      icon: <IconCalendarCheck />,
+      icon: <Icon icon={IconCalendarCheck} />,
       onSelect: () => nav('/admin/attendance'),
     },
     {
       id: 'nav-admin-lokwasi',
       label: 'Lokwasi',
-      icon: <IconClipboardList />,
+      icon: <Icon icon={IconClipboardList} />,
       onSelect: () => nav('/admin/lokwasi'),
     },
     {
       id: 'nav-admin-onboarding',
       label: 'Onboarding',
-      icon: <IconUserPlus />,
+      icon: <Icon icon={IconUserPlus} />,
       onSelect: () => nav('/admin/onboarding'),
     },
     {
       id: 'nav-admin-config',
       label: 'System Config',
-      icon: <IconSettings />,
+      icon: <Icon icon={IconSettings} />,
       onSelect: () => nav('/admin/system-config'),
     },
   ]
@@ -262,7 +263,7 @@ function searchResultToCommandItem(
     label: r.title,
     filterValue: r.title,
     description: r.snippet,
-    icon: r.icon ?? ENTITY_TYPE_ICONS[r.entityType] ?? <IconFileText />,
+    icon: r.icon ?? ENTITY_TYPE_ICONS[r.entityType] ?? <Icon icon={IconFileText} />,
     shortcut: r.shortcut,
     onSelect: () => {
       if (onSearchResultSelect) {

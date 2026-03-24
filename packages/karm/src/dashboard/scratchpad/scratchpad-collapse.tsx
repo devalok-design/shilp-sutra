@@ -3,6 +3,7 @@
 import * as React from 'react'
 import { useState } from 'react'
 import { IconChevronDown } from '@tabler/icons-react'
+import { Icon } from '@/ui/icon'
 import { cn } from '@/ui/lib/utils'
 
 // ============================================================
@@ -51,9 +52,11 @@ const ScratchpadCollapse = React.forwardRef<HTMLDivElement, ScratchpadCollapsePr
             headerClassName,
           )}
         >
-          <IconChevronDown
+          <Icon
+            icon={IconChevronDown}
+            size="xs"
             className={cn(
-              'h-3.5 w-3.5 shrink-0 transition-transform duration-200',
+              'shrink-0 transition-transform duration-200',
               !open && '-rotate-90',
             )}
           />

@@ -26,6 +26,7 @@ import {
 import { Switch } from '../ui/switch'
 import { Card, CardHeader, CardTitle, CardContent } from '../ui/card'
 import { IconPlus, IconTrash, IconBell, IconMessage } from '@tabler/icons-react'
+import { Icon } from '../ui/icon'
 import { cn } from '../ui/lib/utils'
 import { Spinner } from '../ui/spinner'
 
@@ -80,8 +81,8 @@ export interface NotificationPreferencesProps
 // -----------------------------------------------------------------------
 
 const CHANNEL_LABELS: Record<string, { label: string; icon: React.ReactNode }> = {
-  IN_APP: { label: 'In-App', icon: <IconBell /> },
-  GOOGLE_CHAT: { label: 'Google Chat', icon: <IconMessage /> },
+  IN_APP: { label: 'In-App', icon: <Icon icon={IconBell} size="sm" /> },
+  GOOGLE_CHAT: { label: 'Google Chat', icon: <Icon icon={IconMessage} size="sm" /> },
 }
 
 const TIER_LABELS: Record<string, string> = {
@@ -160,7 +161,7 @@ const NotificationPreferences = React.forwardRef<HTMLDivElement, NotificationPre
             variant="outline"
             onClick={() => setShowAddDialog(true)}
           >
-            <IconPlus className="mr-ds-02b h-ico-sm w-ico-sm" />
+            <Icon icon={IconPlus} size="sm" className="mr-ds-02b" />
             Add Rule
           </Button>
         </CardHeader>
@@ -239,7 +240,7 @@ const NotificationPreferences = React.forwardRef<HTMLDivElement, NotificationPre
                       onClick={() => onDelete?.(pref.id)}
                       className="shrink-0 rounded p-ds-02b text-surface-fg-subtle transition-colors hover:bg-surface-raised hover:text-error-11"
                     >
-                      <IconTrash className="h-ico-sm w-ico-sm" />
+                      <Icon icon={IconTrash} size="sm" />
                     </button>
                   </div>
                 )

@@ -4,6 +4,7 @@ import * as React from 'react'
 import { cn } from '@/ui/lib/utils'
 import { EmptyState } from '@/composed/empty-state'
 import { IconActivity } from '@tabler/icons-react'
+import { Icon } from '@/ui/icon'
 import {
   ActivityTimeline,
   ActivityEntry,
@@ -30,7 +31,7 @@ const ActivityTab = React.forwardRef<HTMLDivElement, ActivityTabProps>(
     return (
       <EmptyState
         ref={ref}
-        icon={<IconActivity />}
+        icon={<Icon icon={IconActivity} />}
         title="No activity yet"
         description="Actions on this task will appear here"
         compact

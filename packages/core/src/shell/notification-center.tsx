@@ -20,6 +20,7 @@ import {
   TooltipTrigger,
 } from '../ui/tooltip'
 import { IconBell, IconChecks, IconInbox, IconX } from '@tabler/icons-react'
+import { Icon } from '../ui/icon'
 import { cn } from '../ui/lib/utils'
 import { Spinner } from '../ui/spinner'
 import { motion } from 'framer-motion'
@@ -249,7 +250,7 @@ function NotificationItem({
           onKeyDown={(e) => e.stopPropagation()}
           className="absolute right-ds-03 top-ds-03 hidden rounded-ds-sm p-ds-01 text-surface-fg-subtle transition-[color,background-color,opacity] duration-fast-01 ease-productive-standard hover:bg-surface-raised-hover hover:text-surface-fg-muted group-hover:flex group-focus-within:flex"
         >
-          <IconX className="h-ico-sm w-ico-sm" />
+          <Icon icon={IconX} size="sm" />
         </button>
       )}
     </div>
@@ -341,7 +342,7 @@ const NotificationCenter = React.forwardRef<HTMLButtonElement, NotificationCente
                 className,
               )}
             >
-              <IconBell className="h-ico-sm w-ico-sm" aria-hidden="true" />
+              <Icon icon={IconBell} size="sm" />
               {unreadCount > 0 && (
                 <motion.span
                   initial={{ rotate: 0 }}
@@ -387,7 +388,7 @@ const NotificationCenter = React.forwardRef<HTMLButtonElement, NotificationCente
                 onClick={onMarkAllRead}
                 className="flex items-center gap-ds-02 text-ds-sm text-surface-fg-subtle transition-colors hover:text-accent-11"
               >
-                <IconChecks className="h-ico-sm w-ico-sm" />
+                <Icon icon={IconChecks} size="sm" />
                 Mark all read
               </button>
             )}
@@ -405,7 +406,7 @@ const NotificationCenter = React.forwardRef<HTMLButtonElement, NotificationCente
             emptyState || (
               <div className="flex flex-col items-center justify-center px-ds-05 py-ds-09">
                 <div className="flex h-ds-lg w-ds-lg items-center justify-center rounded-ds-full bg-surface-raised">
-                  <IconInbox className="h-ico-lg w-ico-lg text-surface-fg-subtle" />
+                  <Icon icon={IconInbox} size="lg" className="text-surface-fg-subtle" />
                 </div>
                 <p className="mt-ds-04 text-ds-md text-surface-fg-subtle">
                   No notifications yet

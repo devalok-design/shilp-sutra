@@ -2,6 +2,7 @@
 
 import * as React from 'react'
 import { IconChevronDown } from '@tabler/icons-react'
+import { Icon } from '@/ui/icon'
 import { cn } from '@/ui/lib/utils'
 import { Checkbox } from '@/ui/checkbox'
 import { Badge } from '@/ui/badge'
@@ -108,9 +109,11 @@ export function TaskPanelSubtasks({
         onClick={() => setExpanded(!expanded)}
         className="flex w-full items-center gap-ds-03 rounded-ds-md px-ds-04 py-ds-03 text-left transition-colors hover:bg-surface-raised-hover -mx-ds-04"
       >
-        <IconChevronDown
+        <Icon
+          icon={IconChevronDown}
+          size="xs"
           className={cn(
-            'h-3.5 w-3.5 shrink-0 text-surface-fg-subtle transition-transform',
+            'shrink-0 text-surface-fg-subtle transition-transform',
             expanded && 'rotate-180',
           )}
         />

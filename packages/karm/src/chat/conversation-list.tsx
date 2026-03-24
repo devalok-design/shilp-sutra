@@ -66,7 +66,7 @@ export const ConversationList = React.forwardRef<HTMLDivElement, ConversationLis
           </div>
         ) : conversations.length === 0 ? (
           <div className="flex flex-col items-center justify-center gap-ds-03 py-12">
-            <IconMessage className="h-ds-sm w-ds-sm text-surface-fg-subtle" />
+            <Icon icon={IconMessage} size="2xl" className="text-surface-fg-subtle" />
             <p className="text-ds-md text-surface-fg-subtle">
               No conversations yet
             </p>

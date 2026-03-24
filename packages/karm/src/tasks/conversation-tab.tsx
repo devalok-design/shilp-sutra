@@ -8,6 +8,7 @@ import {
   RichTextViewer,
 } from '@/composed/rich-text-editor'
 import { IconMessageCircle } from '@tabler/icons-react'
+import { Icon } from '@/ui/icon'
 import {
   MessageList,
   MessageBubble,
@@ -91,7 +92,7 @@ const ConversationTab = React.forwardRef<HTMLDivElement, ConversationTabProps>(
         </MessageList>
       ) : (
         <EmptyState
-          icon={<IconMessageCircle />}
+          icon={<Icon icon={IconMessageCircle} />}
           title="No comments yet"
           description="Start a conversation about this task"
           compact

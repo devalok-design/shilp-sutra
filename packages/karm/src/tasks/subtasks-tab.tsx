@@ -4,6 +4,7 @@ import * as React from 'react'
 import { cn } from '@/ui/lib/utils'
 import { EmptyState } from '@/composed/empty-state'
 import { IconListCheck } from '@tabler/icons-react'
+import { Icon } from '@/ui/icon'
 import {
   SubtaskProgress,
   SubtaskList,
@@ -79,7 +80,7 @@ const SubtasksTab = React.forwardRef<HTMLDivElement, SubtasksTabProps>(
       ) : (
         !readOnly && (
           <EmptyState
-            icon={<IconListCheck />}
+            icon={<Icon icon={IconListCheck} />}
             title="No subtasks"
             description="Break this task into smaller pieces"
             compact

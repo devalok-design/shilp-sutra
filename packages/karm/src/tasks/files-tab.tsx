@@ -4,6 +4,7 @@ import * as React from 'react'
 import { cn } from '@/ui/lib/utils'
 import { EmptyState } from '@/composed/empty-state'
 import { IconPaperclip } from '@tabler/icons-react'
+import { Icon } from '@/ui/icon'
 import {
   FileDropZone,
   FileList,
@@ -62,7 +63,7 @@ const FilesTab = React.forwardRef<HTMLDivElement, FilesTabProps>(
       ) : (
         <div className="mt-ds-03">
           <EmptyState
-            icon={<IconPaperclip />}
+            icon={<Icon icon={IconPaperclip} />}
             title="No files attached"
             description="Upload files to share with your team"
             compact

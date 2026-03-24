@@ -10,6 +10,7 @@ import * as React from 'react'
 import { useLink } from './link-context'
 import { useState } from 'react'
 import { IconDots, IconX } from '@tabler/icons-react'
+import { Icon } from '../ui/icon'
 import { cn } from '../ui/lib/utils'
 import { motion, AnimatePresence } from 'framer-motion'
 import { springs } from '../ui/lib/motion'
@@ -177,7 +178,7 @@ const BottomNavbar = React.forwardRef<HTMLElement, BottomNavbarProps>(
                 aria-label="Close more menu"
                 className="flex h-ds-sm w-ds-sm items-center justify-center rounded-ds-full hover:bg-surface-raised-hover"
               >
-                <IconX className="h-ico-sm w-ico-sm text-surface-fg-muted" aria-hidden="true" />
+                <Icon icon={IconX} size="sm" className="text-surface-fg-muted" />
               </button>
             </div>
             <div className="grid grid-cols-4 gap-ds-03">
@@ -249,7 +250,7 @@ const BottomNavbar = React.forwardRef<HTMLElement, BottomNavbarProps>(
                 />
               )}
               <div className="p-ds-03">
-                <IconDots className="h-ico-md w-ico-md" aria-hidden="true" />
+                <Icon icon={IconDots} />
               </div>
               <span className="text-center">More</span>
             </div>

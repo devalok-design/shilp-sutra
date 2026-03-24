@@ -106,9 +106,11 @@ const DailyBrief = React.forwardRef<HTMLDivElement, DailyBriefProps>(
             <span className="text-ds-base font-semibold text-surface-fg">
               {displayTitle}
             </span>
-            <IconChevronDown
+            <Icon
+              icon={IconChevronDown}
+              size="sm"
               className={cn(
-                'h-ico-sm w-ico-sm text-surface-fg-subtle transition-transform duration-200',
+                'text-surface-fg-subtle transition-transform duration-200',
                 showContent && 'rotate-180',
               )}
             />
@@ -129,7 +131,7 @@ const DailyBrief = React.forwardRef<HTMLDivElement, DailyBriefProps>(
               aria-label="Refresh brief"
               className="p-1.5 rounded hover:bg-surface-raised-hover transition-colors"
             >
-              <IconRefresh className={cn('h-ico-sm w-ico-sm text-surface-fg-subtle', loading && 'animate-spin')} />
+              <Icon icon={IconRefresh} size="sm" className={cn('text-surface-fg-subtle', loading && 'animate-spin')} />
             </button>
           )}
         </div>

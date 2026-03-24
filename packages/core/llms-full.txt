@@ -663,6 +663,85 @@ Note: getFormFieldA11y() was removed in favor of useFormField() hook.
 
 ### v0.1.0
 - **Added** Initial release
+# Icon
+
+- Import: @devalok/shilp-sutra/ui/icon
+- Server-safe: No
+- Category: ui
+
+## Props
+    icon: TablerIconComponent (required) — The Tabler icon component
+    size: "xs" | "sm" | "md" | "lg" | "xl" | "2xl" (default: "md", or from context)
+    stroke: "light" | "regular" | "bold" (default: "regular", or from context)
+    label: string | undefined — Accessible label. Without: aria-hidden. With: aria-label + role="img"
+    animate: "spin" | "pulse" | "bounce" | "none" | { rotate, scale } — Animation preset
+    state: "idle" | "loading" | "success" | "error" — State machine (delegates to Spinner)
+
+## Size Tiers
+    xs=14px, sm=16px, md=18px, lg=20px, xl=24px, 2xl=32px
+
+## Stroke scales with size
+    light:   xs=1.25, sm=1.5, md=1.5, lg=1.75, xl=2, 2xl=2
+    regular: xs=1.5,  sm=2,   md=2,   lg=2,    xl=2, 2xl=2.25
+    bold:    xs=2,    sm=2.5, md=2.5, lg=2.5,  xl=2.5, 2xl=2.5
+
+## Context
+    Button provides IconContext automatically. Icon inside a Button inherits the correct size.
+    IconGroup provides IconContext with explicit size/stroke props.
+    Explicit props on Icon always override context.
+
+## Example
+```jsx
+// Standalone icon
+<Icon icon={IconPlus} size="lg" label="Add item" />
+
+// Inside Button (inherits size from Button context)
+<Button startIcon={<Icon icon={IconPlus} />}>Add</Button>
+
+// Toolbar with IconGroup
+<IconGroup size="sm" gap="tight">
+  <Icon icon={IconBold} />
+  <Icon icon={IconItalic} />
+</IconGroup>
+
+// State machine
+<Icon icon={IconCheck} state="loading" />
+```
+
+## Gotchas
+- Button startIcon/endIcon now accept <Icon> elements, not raw Tabler icons
+- Before: startIcon={<IconPlus />}
+- After:  startIcon={<Icon icon={IconPlus} />}
+
+## Changes
+### v0.29.0
+- **Added** Initial release — context-aware Icon wrapper with size tiers, stroke weights, accessibility, animations, state machine
+
+# IconGroup
+
+- Import: @devalok/shilp-sutra/ui/icon
+- Server-safe: No
+- Category: ui
+
+## Props
+    size: "xs" | "sm" | "md" | "lg" | "xl" | "2xl" — propagated to children via IconContext
+    stroke: "light" | "regular" | "bold" — propagated to children via IconContext
+    gap: "tight" | "default" | "loose" — flex gap between icons
+    role: string — optional, use "toolbar" for toolbar patterns
+
+## Example
+```jsx
+<IconGroup size="sm" gap="tight" role="toolbar">
+  <Icon icon={IconBold} label="Bold" />
+  <Icon icon={IconItalic} label="Italic" />
+  <Icon icon={IconUnderline} label="Underline" />
+</IconGroup>
+```
+
+## Changes
+### v0.29.0
+- **Added** Initial release
+
 # Card
 
 - Import: @devalok/shilp-sutra/ui/card

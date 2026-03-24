@@ -10,6 +10,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Breaking Changes
 
 - **Warning color remapped from yellow to amber-bright** — `warning-*` tokens now use a warm amber (OKLCH hue 65-70, L=0.78 at step 9) instead of yellow (hue 85, L=0.55). The old yellow produced a muddy olive at mid-lightness with insufficient contrast for both light and dark text. `warning-fg` is now hardcoded dark in both themes. Existing `--amber-*` category colors are untouched — only the `warning-*` semantic tokens changed.
+- **Button `startIcon`/`endIcon` now require `<Icon>` wrapper** — Pass `<Icon icon={IconPlus} />` instead of raw `<IconPlus />`. Mechanical find-and-replace migration.
 
 ### Added
 
@@ -24,6 +25,11 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - **Button active state polish** — `brightness(0.92) saturate(1.1)` on press, `disabled:saturate(0.3)`.
 - **Button icon treatment** — `pointer-events-none` on icon wrappers, per-size gap scaling.
 - **ButtonGroup** propagates `weight` and `shape` via context.
+- **`<Icon>` component** — Context-aware wrapper for Tabler icons with standardized sizing (xs/sm/md/lg/xl/2xl), stroke weights (light/regular/bold), accessibility (aria-hidden by default, opt-in label), and animation presets (spin/pulse/bounce). Reads size from Button/IconGroup context automatically.
+- **`<IconProvider>` / `<IconContext>`** — Provides size and stroke defaults to a subtree of Icon components. Button and IconGroup auto-provide this context.
+- **`<IconGroup>`** — Flex row container for icon groups (toolbars, action rows) with gap presets (tight/default/loose) and optional `role="toolbar"`.
+- **Icon animation: state machine** — `<Icon state="loading" />` shows Spinner, transitions to success/error with choreographed animation. Delegates to existing Spinner component.
+- **Spinner bare-mode fix** — Spinner arc now uses `currentColor` in bare variant (was hardcoded accent-9). Loading spinners inside colored buttons now match the button's text color.
 
 ### Deprecated
 

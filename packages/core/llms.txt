@@ -305,6 +305,7 @@ Components with two-axis system: Button, Badge, Alert, Chip, Banner, Progress, S
 ### Inputs & Controls
 - Button: variant(solid|soft|outline|ghost|link) color(accent|error|success|warning|neutral) size(xs|sm|md|lg|compact-xs|compact-sm|compact-md|icon-xs|icon-sm|icon-md|icon-lg) shape(default|pill) weight(semibold|normal) + loading, startIcon, endIcon, asChild. Deprecated aliases still work: variant="default"→solid, variant="destructive"→solid+error, color="default"→accent
 - IconButton: icon(ReactNode, required) shape(square|circle) size(sm|md|lg) + aria-label required
+- Icon: `<Icon icon={IconPlus} />` — context-aware wrapper for Tabler icons. Size tiers: xs(14px) sm(16px) md(18px) lg(20px) xl(24px) 2xl(32px). Default: md. Stroke: light(1.5) regular(2) bold(2.5). Default: regular. Scales per size tier. Reads size from parent Button/IconGroup via IconContext. Explicit props override. Accessibility: aria-hidden by default. Pass label="Add item" for accessible icons. Animation: animate="spin|pulse|bounce". State machine: state="idle|loading|success|error". Button integration: startIcon={<Icon icon={IconPlus} />} (NOT raw <IconPlus />). IconGroup: <IconGroup size="sm" gap="tight"> for toolbar patterns.
 - Input: size(xs|sm|md|lg) state(InputState) + startIcon, endIcon. Type: InputState = 'default' | 'error' | 'warning' | 'success'
 - SearchInput: size(xs|sm|md|lg) + loading, onClear
 - NumberInput: value + onValueChange, min, max, step (controlled only)

@@ -197,13 +197,13 @@ const BUTTON_TO_ICON_SIZE: Record<string, IconSize> = {
  *
  * @example
  * // Soft success feedback:
- * <Button variant="soft" color="success" startIcon={<IconCheck />}>
+ * <Button variant="soft" color="success" startIcon={<Icon icon={IconCheck} />}>
  *   Approved
  * </Button>
  *
  * @example
  * // Destructive delete with loading state:
- * <Button variant="solid" color="error" startIcon={<IconTrash />} loading={isDeleting}>
+ * <Button variant="solid" color="error" startIcon={<Icon icon={IconTrash} />} loading={isDeleting}>
  *   Delete project
  * </Button>
  *
@@ -215,7 +215,7 @@ const BUTTON_TO_ICON_SIZE: Record<string, IconSize> = {
  *
  * @example
  * // Ghost toolbar action:
- * <Button variant="ghost" size="sm" startIcon={<IconEdit />}>
+ * <Button variant="ghost" size="sm" startIcon={<Icon icon={IconEdit} />}>
  *   Edit
  * </Button>
  */

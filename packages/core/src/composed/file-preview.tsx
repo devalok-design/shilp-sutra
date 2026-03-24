@@ -6,6 +6,7 @@ import { cn } from '../ui/lib/utils'
 import { tweens, springs } from '../ui/lib/motion'
 import { Skeleton } from '../ui/skeleton'
 import { Button } from '../ui/button'
+import { Icon } from '../ui/icon'
 import { Badge } from '../ui/badge'
 import {
   IconDownload,
@@ -196,7 +197,7 @@ function ErrorFallback({ message, url }: { message: string; url: string }) {
         <p className="text-ds-md font-semibold text-surface-fg">Preview unavailable</p>
         <p className="text-ds-sm text-surface-fg-muted mt-ds-01">{message}</p>
       </div>
-      <Button variant="outline" size="xs" startIcon={<IconDownload className="h-3.5 w-3.5" />} asChild>
+      <Button variant="outline" size="xs" startIcon={<Icon icon={IconDownload} />} asChild>
         <a href={url} download target="_blank" rel="noopener noreferrer">Download file</a>
       </Button>
     </div>
@@ -950,7 +951,7 @@ function FilePreview({
       {/* Download — not shown for audio (it has its own layout) */}
       {type !== 'audio' && (
         <div className="flex justify-end">
-          <Button variant="ghost" size="xs" startIcon={<IconDownload className="h-3.5 w-3.5" />} asChild>
+          <Button variant="ghost" size="xs" startIcon={<Icon icon={IconDownload} />} asChild>
             <a href={url} download target="_blank" rel="noopener noreferrer">Download</a>
           </Button>
         </div>

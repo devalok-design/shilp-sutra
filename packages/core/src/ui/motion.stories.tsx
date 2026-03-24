@@ -11,6 +11,7 @@ import {
 } from '@tabler/icons-react'
 import { springs, tweens } from './lib/motion'
 import { Button } from './button'
+import { Icon } from './icon'
 import { Switch } from './switch'
 import { Checkbox } from './checkbox'
 import { Input } from './input'
@@ -386,7 +387,7 @@ export const MediumReveals: StoryObj = {
             <div className="flex gap-ds-04">
               <Tooltip>
                 <TooltipTrigger asChild>
-                  <Button variant="outline" startIcon={<IconUser />}>
+                  <Button variant="outline" startIcon={<Icon icon={IconUser} />}>
                     Hover me
                   </Button>
                 </TooltipTrigger>
@@ -766,7 +767,7 @@ export const ScenarioFormSubmission: StoryObj = {
             fullWidth
             loading={step === 'submitting'}
             loadingPosition="start"
-            startIcon={step === 'success' ? <IconCheck /> : <IconSend />}
+            startIcon={step === 'success' ? <Icon icon={IconCheck} /> : <Icon icon={IconSend} />}
             variant={step === 'success' ? 'secondary' : 'primary'}
             onClick={handleSubmit}
             disabled={step !== 'idle'}
@@ -987,7 +988,7 @@ export const ScenarioNotificationCenter: StoryObj = {
         <div className="flex items-center gap-ds-04">
           <Sheet>
             <SheetTrigger asChild>
-              <Button variant="outline" startIcon={<IconBell />}>
+              <Button variant="outline" startIcon={<Icon icon={IconBell} />}>
                 Notifications
                 {notifications.length > 0 && (
                   <Badge color="error" size="sm" className="ml-ds-02">

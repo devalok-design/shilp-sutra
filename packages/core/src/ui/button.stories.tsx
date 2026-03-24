@@ -1,5 +1,6 @@
 import type { Meta, StoryObj } from '@storybook/react'
 import { Button } from './button'
+import { Icon } from './icon'
 import { DevalokGrain } from './devalok-grain'
 import type { GrainIntensity } from './devalok-grain'
 import {
@@ -248,7 +249,7 @@ export const AllSizes: Story = {
 export const WithStartIcon: Story = {
   args: {
     variant: 'solid',
-    startIcon: <IconPlus />,
+    startIcon: <Icon icon={IconPlus} />,
     children: 'Add Item',
   },
 }
@@ -256,7 +257,7 @@ export const WithStartIcon: Story = {
 export const WithEndIcon: Story = {
   args: {
     variant: 'solid',
-    endIcon: <IconArrowRight />,
+    endIcon: <Icon icon={IconArrowRight} />,
     children: 'Continue',
   },
 }
@@ -264,8 +265,8 @@ export const WithEndIcon: Story = {
 export const WithBothIcons: Story = {
   args: {
     variant: 'outline',
-    startIcon: <IconDownload />,
-    endIcon: <IconArrowRight />,
+    startIcon: <Icon icon={IconDownload} />,
+    endIcon: <Icon icon={IconArrowRight} />,
     children: 'Download',
   },
 }
@@ -283,7 +284,7 @@ export const LoadingEnd: Story = {
     variant: 'outline',
     loading: true,
     loadingPosition: 'end',
-    endIcon: <IconSend />,
+    endIcon: <Icon icon={IconSend} />,
     children: 'Sending',
   },
 }
@@ -313,7 +314,7 @@ export const AsyncSuccess: Story = {
   name: 'Async → Success',
   render: () => (
     <Button
-      startIcon={<IconSend />}
+      startIcon={<Icon icon={IconSend} />}
       onClickAsync={() => new Promise((resolve) => setTimeout(resolve, 1500))}
     >
       Save changes
@@ -326,7 +327,7 @@ export const AsyncError: Story = {
   render: () => (
     <Button
       variant="solid"
-      startIcon={<IconSend />}
+      startIcon={<Icon icon={IconSend} />}
       onClickAsync={() => new Promise((_r, reject) => setTimeout(() => reject(new Error('fail')), 1500))}
     >
       Save changes
@@ -379,7 +380,7 @@ export const AsyncAllVariants: Story = {
           <Button
             variant="solid"
             color="error"
-            startIcon={<IconTrash />}
+            startIcon={<Icon icon={IconTrash} />}
             onClickAsync={() =>
               new Promise((resolve, reject) =>
                 setTimeout(() => (Math.random() > 0.5 ? resolve() : reject(new Error('fail'))), 1500),
@@ -403,13 +404,13 @@ export const AllFeatures: Story = {
           Start Icon across variants
         </p>
         <div className="flex flex-wrap items-center gap-ds-04">
-          <Button variant="solid" startIcon={<IconPlus />}>Solid</Button>
-          <Button variant="soft" startIcon={<IconPlus />}>Soft</Button>
-          <Button variant="outline" startIcon={<IconDownload />}>Outline</Button>
-          <Button variant="ghost" startIcon={<IconPlus />}>Ghost</Button>
-          <Button variant="solid" color="error" startIcon={<IconTrash />}>Error</Button>
-          <Button variant="soft" color="success" startIcon={<IconPlus />}>Success</Button>
-          <Button variant="link" startIcon={<IconArrowRight />}>Link</Button>
+          <Button variant="solid" startIcon={<Icon icon={IconPlus} />}>Solid</Button>
+          <Button variant="soft" startIcon={<Icon icon={IconPlus} />}>Soft</Button>
+          <Button variant="outline" startIcon={<Icon icon={IconDownload} />}>Outline</Button>
+          <Button variant="ghost" startIcon={<Icon icon={IconPlus} />}>Ghost</Button>
+          <Button variant="solid" color="error" startIcon={<Icon icon={IconTrash} />}>Error</Button>
+          <Button variant="soft" color="success" startIcon={<Icon icon={IconPlus} />}>Success</Button>
+          <Button variant="link" startIcon={<Icon icon={IconArrowRight} />}>Link</Button>
         </div>
       </div>
 
@@ -419,10 +420,10 @@ export const AllFeatures: Story = {
           Pill shape + soft variant
         </p>
         <div className="flex flex-wrap items-center gap-ds-03">
-          <Button variant="soft" color="accent" size="xs" shape="pill" startIcon={<IconPlus />}>Accent</Button>
-          <Button variant="soft" color="error" size="xs" shape="pill" startIcon={<IconTrash />}>Error</Button>
-          <Button variant="soft" color="success" size="xs" shape="pill" startIcon={<IconPlus />}>Success</Button>
-          <Button variant="soft" color="warning" size="xs" shape="pill" startIcon={<IconPlus />}>Warning</Button>
+          <Button variant="soft" color="accent" size="xs" shape="pill" startIcon={<Icon icon={IconPlus} />}>Accent</Button>
+          <Button variant="soft" color="error" size="xs" shape="pill" startIcon={<Icon icon={IconTrash} />}>Error</Button>
+          <Button variant="soft" color="success" size="xs" shape="pill" startIcon={<Icon icon={IconPlus} />}>Success</Button>
+          <Button variant="soft" color="warning" size="xs" shape="pill" startIcon={<Icon icon={IconPlus} />}>Warning</Button>
           <Button variant="soft" color="neutral" size="xs" shape="pill">Neutral</Button>
         </div>
       </div>
@@ -434,7 +435,7 @@ export const AllFeatures: Story = {
         </p>
         <div className="flex flex-wrap items-center gap-ds-04">
           <Button loading loadingPosition="start">Start</Button>
-          <Button variant="outline" loading loadingPosition="end" endIcon={<IconSend />}>End</Button>
+          <Button variant="outline" loading loadingPosition="end" endIcon={<Icon icon={IconSend} />}>End</Button>
           <Button loading loadingPosition="center">Center</Button>
           <Button variant="soft" color="success" loading>Soft loading</Button>
         </div>
@@ -446,15 +447,15 @@ export const AllFeatures: Story = {
           Sizes with icons
         </p>
         <div className="flex flex-wrap items-end gap-ds-04">
-          <Button size="xs" startIcon={<IconPlus />}>xs</Button>
-          <Button size="sm" startIcon={<IconPlus />}>sm</Button>
-          <Button size="md" startIcon={<IconPlus />}>md</Button>
-          <Button size="lg" startIcon={<IconPlus />}>lg</Button>
+          <Button size="xs" startIcon={<Icon icon={IconPlus} />}>xs</Button>
+          <Button size="sm" startIcon={<Icon icon={IconPlus} />}>sm</Button>
+          <Button size="md" startIcon={<Icon icon={IconPlus} />}>md</Button>
+          <Button size="lg" startIcon={<Icon icon={IconPlus} />}>lg</Button>
         </div>
         <div className="flex flex-wrap items-end gap-ds-04 mt-ds-03">
-          <Button size="compact-xs" startIcon={<IconPlus />}>c-xs</Button>
-          <Button size="compact-sm" startIcon={<IconPlus />}>c-sm</Button>
-          <Button size="compact-md" startIcon={<IconPlus />}>c-md</Button>
+          <Button size="compact-xs" startIcon={<Icon icon={IconPlus} />}>c-xs</Button>
+          <Button size="compact-sm" startIcon={<Icon icon={IconPlus} />}>c-sm</Button>
+          <Button size="compact-md" startIcon={<Icon icon={IconPlus} />}>c-md</Button>
         </div>
       </div>
 
@@ -528,7 +529,7 @@ export const SoftShowcase: Story = {
       </div>
       <div className="flex flex-wrap gap-ds-03">
         {(['accent', 'error', 'success', 'warning', 'neutral'] as const).map(c => (
-          <Button key={c} variant="soft" color={c} size="sm" startIcon={<IconPlus />}>{c}</Button>
+          <Button key={c} variant="soft" color={c} size="sm" startIcon={<Icon icon={IconPlus} />}>{c}</Button>
         ))}
       </div>
     </div>
@@ -545,9 +546,9 @@ export const PillButtons: Story = {
         ))}
       </div>
       <div className="flex flex-wrap gap-ds-03">
-        <Button variant="soft" color="accent" size="xs" shape="pill" startIcon={<IconPlus />}>In Progress</Button>
-        <Button variant="soft" color="success" size="xs" shape="pill" startIcon={<IconPlus />}>Approved</Button>
-        <Button variant="soft" color="warning" size="xs" shape="pill" startIcon={<IconPlus />}>Draft</Button>
+        <Button variant="soft" color="accent" size="xs" shape="pill" startIcon={<Icon icon={IconPlus} />}>In Progress</Button>
+        <Button variant="soft" color="success" size="xs" shape="pill" startIcon={<Icon icon={IconPlus} />}>Approved</Button>
+        <Button variant="soft" color="warning" size="xs" shape="pill" startIcon={<Icon icon={IconPlus} />}>Draft</Button>
       </div>
     </div>
   ),
@@ -588,51 +589,51 @@ export const IconStrokeWeight: Story = {
     <div className="space-y-ds-06">
       <div>
         <p className="text-ds-xs font-semibold text-surface-fg-subtle uppercase tracking-wider mb-ds-03">
-          Default stroke (2) — all sizes
+          Regular stroke (default) — all sizes
         </p>
         <div className="flex flex-wrap items-end gap-ds-04">
-          <Button size="xs" startIcon={<IconPlus />}>xs</Button>
-          <Button size="sm" startIcon={<IconPlus />}>sm</Button>
-          <Button size="md" startIcon={<IconPlus />}>md</Button>
-          <Button size="lg" startIcon={<IconPlus />}>lg</Button>
+          <Button size="xs" startIcon={<Icon icon={IconPlus} />}>xs</Button>
+          <Button size="sm" startIcon={<Icon icon={IconPlus} />}>sm</Button>
+          <Button size="md" startIcon={<Icon icon={IconPlus} />}>md</Button>
+          <Button size="lg" startIcon={<Icon icon={IconPlus} />}>lg</Button>
         </div>
       </div>
       <div>
         <p className="text-ds-xs font-semibold text-surface-fg-subtle uppercase tracking-wider mb-ds-03">
-          Recommended: lighter stroke on smaller buttons
+          Light stroke — all sizes
         </p>
         <div className="flex flex-wrap items-end gap-ds-04">
-          <Button size="xs" startIcon={<IconPlus stroke={1.5} />}>xs (1.5)</Button>
-          <Button size="sm" startIcon={<IconPlus stroke={1.5} />}>sm (1.5)</Button>
-          <Button size="md" startIcon={<IconPlus stroke={1.75} />}>md (1.75)</Button>
-          <Button size="lg" startIcon={<IconPlus stroke={2} />}>lg (2)</Button>
+          <Button size="xs" startIcon={<Icon icon={IconPlus} stroke="light" />}>xs (light)</Button>
+          <Button size="sm" startIcon={<Icon icon={IconPlus} stroke="light" />}>sm (light)</Button>
+          <Button size="md" startIcon={<Icon icon={IconPlus} stroke="light" />}>md (light)</Button>
+          <Button size="lg" startIcon={<Icon icon={IconPlus} stroke="light" />}>lg (light)</Button>
         </div>
       </div>
       <div>
         <p className="text-ds-xs font-semibold text-surface-fg-subtle uppercase tracking-wider mb-ds-03">
-          Comparison across variants (stroke 1.5 vs 2)
+          Comparison across variants (light vs regular)
         </p>
         <div className="flex flex-wrap items-center gap-ds-04">
-          <Button variant="solid" startIcon={<IconPlus stroke={2} />}>stroke: 2</Button>
-          <Button variant="solid" startIcon={<IconPlus stroke={1.5} />}>stroke: 1.5</Button>
-          <Button variant="soft" color="success" startIcon={<IconCheck stroke={2} />}>stroke: 2</Button>
-          <Button variant="soft" color="success" startIcon={<IconCheck stroke={1.5} />}>stroke: 1.5</Button>
+          <Button variant="solid" startIcon={<Icon icon={IconPlus} />}>regular</Button>
+          <Button variant="solid" startIcon={<Icon icon={IconPlus} stroke="light" />}>light</Button>
+          <Button variant="soft" color="success" startIcon={<Icon icon={IconCheck} />}>regular</Button>
+          <Button variant="soft" color="success" startIcon={<Icon icon={IconCheck} stroke="light" />}>light</Button>
         </div>
       </div>
       <div>
         <p className="text-ds-xs font-semibold text-surface-fg-subtle uppercase tracking-wider mb-ds-03">
-          With grain (stroke 1.5)
+          With grain (light stroke)
         </p>
         <div className="flex flex-wrap items-center gap-ds-04">
-          <Button variant="solid" startIcon={<IconPlus stroke={1.5} />}>
+          <Button variant="solid" startIcon={<Icon icon={IconPlus} stroke="light" />}>
             <DevalokGrain />
             Save
           </Button>
-          <Button variant="solid" color="success" startIcon={<IconCheck stroke={1.5} />}>
+          <Button variant="solid" color="success" startIcon={<Icon icon={IconCheck} stroke="light" />}>
             <DevalokGrain />
             Approve
           </Button>
-          <Button variant="soft" color="warning" size="xs" shape="pill" startIcon={<IconEye stroke={1.5} />}>
+          <Button variant="soft" color="warning" size="xs" shape="pill" startIcon={<Icon icon={IconEye} stroke="light" />}>
             <DevalokGrain surface="soft" />
             Draft
           </Button>
@@ -649,15 +650,15 @@ export const RealWorldPatterns: Story = {
       <div>
         <p className="text-ds-xs font-semibold text-surface-fg-subtle uppercase tracking-wider mb-ds-03">Status Pills</p>
         <div className="flex flex-wrap gap-ds-02">
-          <Button variant="soft" color="accent" size="xs" shape="pill" startIcon={<IconPlus />}>In Progress</Button>
-          <Button variant="soft" color="neutral" size="xs" shape="pill" startIcon={<IconPlus />}>Unassigned</Button>
-          <Button variant="soft" color="warning" size="xs" shape="pill" startIcon={<IconPlus />}>High</Button>
+          <Button variant="soft" color="accent" size="xs" shape="pill" startIcon={<Icon icon={IconPlus} />}>In Progress</Button>
+          <Button variant="soft" color="neutral" size="xs" shape="pill" startIcon={<Icon icon={IconPlus} />}>Unassigned</Button>
+          <Button variant="soft" color="warning" size="xs" shape="pill" startIcon={<Icon icon={IconPlus} />}>High</Button>
         </div>
       </div>
       <div>
         <p className="text-ds-xs font-semibold text-surface-fg-subtle uppercase tracking-wider mb-ds-03">Review Actions</p>
         <div className="flex gap-ds-03">
-          <Button variant="solid" color="success" size="sm" startIcon={<IconCheck />}>Approve</Button>
+          <Button variant="solid" color="success" size="sm" startIcon={<Icon icon={IconCheck} />}>Approve</Button>
           <Button variant="outline" color="error" size="sm">Request Changes</Button>
         </div>
       </div>
@@ -666,7 +667,7 @@ export const RealWorldPatterns: Story = {
         <div className="flex gap-ds-03">
           <Button>Save Changes</Button>
           <Button variant="outline" color="neutral">Cancel</Button>
-          <Button variant="solid" color="error" startIcon={<IconTrash />}>Delete</Button>
+          <Button variant="solid" color="error" startIcon={<Icon icon={IconTrash} />}>Delete</Button>
         </div>
       </div>
       <div>
@@ -772,15 +773,15 @@ export const DevalokGrainShowcase: Story = {
             Pill + grain
           </p>
           <div className="flex flex-wrap items-center gap-ds-03">
-            <Button variant="soft" color="accent" size="xs" shape="pill" startIcon={<IconPlus />}>
+            <Button variant="soft" color="accent" size="xs" shape="pill" startIcon={<Icon icon={IconPlus} />}>
               <DevalokGrain surface="soft" />
               In Progress
             </Button>
-            <Button variant="soft" color="success" size="xs" shape="pill" startIcon={<IconCheck />}>
+            <Button variant="soft" color="success" size="xs" shape="pill" startIcon={<Icon icon={IconCheck} />}>
               <DevalokGrain surface="soft" />
               Approved
             </Button>
-            <Button variant="soft" color="warning" size="xs" shape="pill" startIcon={<IconEye />}>
+            <Button variant="soft" color="warning" size="xs" shape="pill" startIcon={<Icon icon={IconEye} />}>
               <DevalokGrain surface="soft" />
               Draft
             </Button>
@@ -800,7 +801,7 @@ export const DevalokGrainRealWorld: Story = {
           Review Actions (with grain)
         </p>
         <div className="flex gap-ds-03">
-          <Button variant="solid" color="success" size="sm" startIcon={<IconCheck />}>
+          <Button variant="solid" color="success" size="sm" startIcon={<Icon icon={IconCheck} />}>
             <DevalokGrain />
             Approve
           </Button>
@@ -822,7 +823,7 @@ export const DevalokGrainRealWorld: Story = {
             Save Changes
           </Button>
           <Button variant="outline" color="neutral">Cancel</Button>
-          <Button variant="solid" color="error" startIcon={<IconTrash />}>
+          <Button variant="solid" color="error" startIcon={<Icon icon={IconTrash} />}>
             <DevalokGrain />
             Delete
           </Button>
@@ -854,11 +855,11 @@ export const DevalokGrainRealWorld: Story = {
           Visibility Toggle (with grain)
         </p>
         <div className="flex gap-ds-03">
-          <Button variant="soft" color="success" size="xs" shape="pill" startIcon={<IconEye />}>
+          <Button variant="soft" color="success" size="xs" shape="pill" startIcon={<Icon icon={IconEye} />}>
             <DevalokGrain surface="soft" />
             Client
           </Button>
-          <Button variant="soft" color="neutral" size="xs" shape="pill" startIcon={<IconLock />}>
+          <Button variant="soft" color="neutral" size="xs" shape="pill" startIcon={<Icon icon={IconLock} />}>
             <DevalokGrain surface="soft" />
             Internal
           </Button>

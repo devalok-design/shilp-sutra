@@ -1,6 +1,7 @@
 import type { Meta, StoryObj } from '@storybook/react'
 import { IconBold, IconItalic, IconUnderline, IconAlignLeft, IconAlignCenter, IconAlignRight } from '@tabler/icons-react'
 import { Button } from './button'
+import { Icon } from './icon'
 import { ButtonGroup } from './button-group'
 
 const meta: Meta<typeof ButtonGroup> = {
@@ -88,15 +89,15 @@ export const WithIcons: Story = {
   render: () => (
     <div className="flex flex-col gap-ds-06">
       <ButtonGroup variant="outline">
-        <Button startIcon={<IconBold />}>Bold</Button>
-        <Button startIcon={<IconItalic />}>Italic</Button>
-        <Button startIcon={<IconUnderline />}>Underline</Button>
+        <Button startIcon={<Icon icon={IconBold} />}>Bold</Button>
+        <Button startIcon={<Icon icon={IconItalic} />}>Italic</Button>
+        <Button startIcon={<Icon icon={IconUnderline} />}>Underline</Button>
       </ButtonGroup>
 
       <ButtonGroup variant="ghost">
-        <Button startIcon={<IconAlignLeft />}>Left</Button>
-        <Button startIcon={<IconAlignCenter />}>Center</Button>
-        <Button startIcon={<IconAlignRight />}>Right</Button>
+        <Button startIcon={<Icon icon={IconAlignLeft} />}>Left</Button>
+        <Button startIcon={<Icon icon={IconAlignCenter} />}>Center</Button>
+        <Button startIcon={<Icon icon={IconAlignRight} />}>Right</Button>
       </ButtonGroup>
     </div>
   ),

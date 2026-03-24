@@ -30,9 +30,9 @@ export function useButtonGroup() {
  * @example
  * // Horizontal toolbar action group (outline variant shared):
  * <ButtonGroup variant="outline" size="sm">
- *   <Button startIcon={<IconBold />}>Bold</Button>
- *   <Button startIcon={<IconItalic />}>Italic</Button>
- *   <Button startIcon={<IconUnderline />}>Underline</Button>
+ *   <Button startIcon={<Icon icon={IconBold} />}>Bold</Button>
+ *   <Button startIcon={<Icon icon={IconItalic} />}>Italic</Button>
+ *   <Button startIcon={<Icon icon={IconUnderline} />}>Underline</Button>
  * </ButtonGroup>
  *
  * @example

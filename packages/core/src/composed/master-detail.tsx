@@ -5,6 +5,7 @@ import { AnimatePresence, motion } from 'framer-motion'
 import { IconArrowLeft } from '@tabler/icons-react'
 import { cn } from '../ui/lib/utils'
 import { Button } from '../ui/button'
+import { Icon } from '../ui/icon'
 import { springs } from '../ui/lib/motion'
 
 // ============================================================
@@ -123,7 +124,7 @@ function MasterDetailDetail({ children, className, ...props }: MasterDetailDetai
     <div className={cn('flex-1 overflow-y-auto', className)} {...props}>
       {isMobile && onBack && (
         <div className="border-b border-surface-border px-ds-04 py-ds-03">
-          <Button variant="ghost" size="xs" onClick={onBack} startIcon={<IconArrowLeft className="h-ico-sm w-ico-sm" />}>
+          <Button variant="ghost" size="xs" onClick={onBack} startIcon={<Icon icon={IconArrowLeft} />}>
             Back
           </Button>
         </div>

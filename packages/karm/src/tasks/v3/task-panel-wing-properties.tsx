@@ -60,6 +60,20 @@ function isOverdue(iso: string): boolean {
   return new Date(iso).getTime() < Date.now()
 }
 
+function formatRelativeDate(iso: string): { text: string; isOverdue: boolean } {
+  const now = new Date()
+  const due = new Date(iso)
+  const diffMs = due.getTime() - now.getTime()
+  const diffDays = Math.ceil(diffMs / 86_400_000)
+
+  if (diffDays < -1) return { text: `${Math.abs(diffDays)}d overdue`, isOverdue: true }
+  if (diffDays === -1) return { text: 'Overdue by 1d', isOverdue: true }
+  if (diffDays === 0) return { text: 'Due today', isOverdue: false }
+  if (diffDays === 1) return { text: 'Due tomorrow', isOverdue: false }
+  if (diffDays <= 7) return { text: `Due in ${diffDays}d`, isOverdue: false }
+  return { text: formatDate(iso), isOverdue: false }
+}
+
 function getInitials(name: string): string {
   return name
     .split(' ')
@@ -262,7 +276,7 @@ export function TaskPanelPropertiesCard() {
 
   const interactive = !clientMode
 
-  const dueDateOverdue = task.dueDate ? isOverdue(task.dueDate) : false
+  const relDue = task.dueDate ? formatRelativeDate(task.dueDate) : null
 
   const handleAddLabel = React.useCallback(() => {
     const trimmed = newLabel.trim()
@@ -394,15 +408,20 @@ export function TaskPanelPropertiesCard() {
                   <span
                     className={cn(
                       'text-ds-sm truncate',
-                      task.dueDate
-                        ? dueDateOverdue
-                          ? 'text-error-11'
-                          : 'text-surface-fg'
-                        : 'text-surface-fg-subtle',
+                      relDue?.isOverdue
+                        ? 'text-error-11 font-medium'
+                        : task.dueDate
+                          ? 'text-surface-fg'
+                          : 'text-surface-fg-subtle',
                     )}
                   >
-                    {task.dueDate ? formatDate(task.dueDate) : 'None'}
+                    {relDue ? relDue.text : 'None'}
                   </span>
+                  {relDue && relDue.text !== formatDate(task.dueDate!) && (
+                    <span className="text-[10px] text-surface-fg-subtle/50 truncate">
+                      {formatDate(task.dueDate!)}
+                    </span>
+                  )}
                 </button>
               </PopoverTrigger>
               <PopoverContent
@@ -485,15 +504,20 @@ export function TaskPanelPropertiesCard() {
               <span
                 className={cn(
                   'text-ds-sm truncate',
-                  task.dueDate
-                    ? dueDateOverdue
-                      ? 'text-error-11'
-                      : 'text-surface-fg'
-                    : 'text-surface-fg-subtle',
+                  relDue?.isOverdue
+                    ? 'text-error-11 font-medium'
+                    : task.dueDate
+                      ? 'text-surface-fg'
+                      : 'text-surface-fg-subtle',
                 )}
               >
-                {task.dueDate ? formatDate(task.dueDate) : 'None'}
+                {relDue ? relDue.text : 'None'}
               </span>
+              {relDue && relDue.text !== formatDate(task.dueDate!) && (
+                <span className="text-[10px] text-surface-fg-subtle/50 truncate">
+                  {formatDate(task.dueDate!)}
+                </span>
+              )}
             </div>
           )}
         </div>

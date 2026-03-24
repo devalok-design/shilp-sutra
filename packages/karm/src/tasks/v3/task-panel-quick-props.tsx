@@ -57,6 +57,20 @@ function formatDate(iso: string): string {
   return d.toLocaleDateString('en-US', { month: 'short', day: 'numeric' })
 }
 
+function formatRelativeDate(iso: string): { text: string; isOverdue: boolean } {
+  const now = new Date()
+  const due = new Date(iso)
+  const diffMs = due.getTime() - now.getTime()
+  const diffDays = Math.ceil(diffMs / 86_400_000)
+
+  if (diffDays < -1) return { text: `${Math.abs(diffDays)}d overdue`, isOverdue: true }
+  if (diffDays === -1) return { text: 'Overdue by 1d', isOverdue: true }
+  if (diffDays === 0) return { text: 'Due today', isOverdue: false }
+  if (diffDays === 1) return { text: 'Due tomorrow', isOverdue: false }
+  if (diffDays <= 7) return { text: `Due in ${diffDays}d`, isOverdue: false }
+  return { text: formatDate(iso), isOverdue: false }
+}
+
 function getInitials(name: string): string {
   return name
     .split(' ')
@@ -326,18 +340,24 @@ function DueDatePill({ interactive }: { interactive: boolean }) {
   const [open, setOpen] = React.useState(false)
   const inputRef = React.useRef<HTMLInputElement>(null)
 
+  const relDue = task.dueDate ? formatRelativeDate(task.dueDate) : null
+  const overdue = relDue?.isOverdue ?? false
+
+  const overduePillStyle = 'bg-error-3 transition-colors hover:bg-error-4 cursor-pointer'
+  const overdueStaticStyle = 'bg-error-3'
+
   const content = (
     <>
-      <Icon icon={IconCalendar} size="xs" className="text-surface-fg-subtle" />
-      <span className={task.dueDate ? 'text-surface-fg' : 'text-surface-fg-subtle'}>
-        {task.dueDate ? formatDate(task.dueDate) : 'No due date'}
+      <Icon icon={IconCalendar} size="xs" className={overdue ? 'text-error-11' : 'text-surface-fg-subtle'} />
+      <span className={overdue ? 'text-error-11 font-medium' : task.dueDate ? 'text-surface-fg' : 'text-surface-fg-subtle'}>
+        {relDue ? relDue.text : 'No due date'}
       </span>
     </>
   )
 
   if (!interactive) {
     return (
-      <span className={cn(pillBase, pillStatic)} data-testid="due-date-pill">
+      <span className={cn(pillBase, overdue ? overdueStaticStyle : pillStatic)} data-testid="due-date-pill">
         {content}
       </span>
     )
@@ -350,7 +370,7 @@ function DueDatePill({ interactive }: { interactive: boolean }) {
           <PopoverTrigger asChild>
             <button
               type="button"
-              className={cn(pillBase, pillInteractive)}
+              className={cn(pillBase, overdue ? overduePillStyle : pillInteractive)}
               data-testid="due-date-pill"
             >
               {content}

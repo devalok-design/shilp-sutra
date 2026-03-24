@@ -394,8 +394,12 @@ const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
           </span>
         )
       }
-      // Text content wrapped in z-elevated span; grain elements rendered separately as direct children
-      return <span>{contentElements}</span>
+      // Only wrap in z-elevated span when grain is present (to sit above grain layers).
+      // Without grain, render children directly to preserve flex layout.
+      if (grainElements.length > 0) {
+        return <span>{contentElements}</span>
+      }
+      return <>{contentElements}</>
     }
 
     // Async feedback: override color to show green/red

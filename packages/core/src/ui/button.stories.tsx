@@ -248,7 +248,7 @@ export const AllSizes: Story = {
 export const WithStartIcon: Story = {
   args: {
     variant: 'solid',
-    startIcon: <IconPlus size={16} />,
+    startIcon: <IconPlus />,
     children: 'Add Item',
   },
 }
@@ -256,7 +256,7 @@ export const WithStartIcon: Story = {
 export const WithEndIcon: Story = {
   args: {
     variant: 'solid',
-    endIcon: <IconArrowRight size={16} />,
+    endIcon: <IconArrowRight />,
     children: 'Continue',
   },
 }
@@ -264,8 +264,8 @@ export const WithEndIcon: Story = {
 export const WithBothIcons: Story = {
   args: {
     variant: 'outline',
-    startIcon: <IconDownload size={16} />,
-    endIcon: <IconArrowRight size={16} />,
+    startIcon: <IconDownload />,
+    endIcon: <IconArrowRight />,
     children: 'Download',
   },
 }
@@ -283,7 +283,7 @@ export const LoadingEnd: Story = {
     variant: 'outline',
     loading: true,
     loadingPosition: 'end',
-    endIcon: <IconSend size={16} />,
+    endIcon: <IconSend />,
     children: 'Sending',
   },
 }
@@ -313,7 +313,7 @@ export const AsyncSuccess: Story = {
   name: 'Async → Success',
   render: () => (
     <Button
-      startIcon={<IconSend size={16} />}
+      startIcon={<IconSend />}
       onClickAsync={() => new Promise((resolve) => setTimeout(resolve, 1500))}
     >
       Save changes
@@ -326,7 +326,7 @@ export const AsyncError: Story = {
   render: () => (
     <Button
       variant="solid"
-      startIcon={<IconSend size={16} />}
+      startIcon={<IconSend />}
       onClickAsync={() => new Promise((_r, reject) => setTimeout(() => reject(new Error('fail')), 1500))}
     >
       Save changes
@@ -379,7 +379,7 @@ export const AsyncAllVariants: Story = {
           <Button
             variant="solid"
             color="error"
-            startIcon={<IconTrash size={16} />}
+            startIcon={<IconTrash />}
             onClickAsync={() =>
               new Promise((resolve, reject) =>
                 setTimeout(() => (Math.random() > 0.5 ? resolve() : reject(new Error('fail'))), 1500),
@@ -403,13 +403,13 @@ export const AllFeatures: Story = {
           Start Icon across variants
         </p>
         <div className="flex flex-wrap items-center gap-ds-04">
-          <Button variant="solid" startIcon={<IconPlus size={16} />}>Solid</Button>
-          <Button variant="soft" startIcon={<IconPlus size={16} />}>Soft</Button>
-          <Button variant="outline" startIcon={<IconDownload size={16} />}>Outline</Button>
-          <Button variant="ghost" startIcon={<IconPlus size={16} />}>Ghost</Button>
-          <Button variant="solid" color="error" startIcon={<IconTrash size={16} />}>Error</Button>
-          <Button variant="soft" color="success" startIcon={<IconPlus size={16} />}>Success</Button>
-          <Button variant="link" startIcon={<IconArrowRight size={16} />}>Link</Button>
+          <Button variant="solid" startIcon={<IconPlus />}>Solid</Button>
+          <Button variant="soft" startIcon={<IconPlus />}>Soft</Button>
+          <Button variant="outline" startIcon={<IconDownload />}>Outline</Button>
+          <Button variant="ghost" startIcon={<IconPlus />}>Ghost</Button>
+          <Button variant="solid" color="error" startIcon={<IconTrash />}>Error</Button>
+          <Button variant="soft" color="success" startIcon={<IconPlus />}>Success</Button>
+          <Button variant="link" startIcon={<IconArrowRight />}>Link</Button>
         </div>
       </div>
 
@@ -419,10 +419,10 @@ export const AllFeatures: Story = {
           Pill shape + soft variant
         </p>
         <div className="flex flex-wrap items-center gap-ds-03">
-          <Button variant="soft" color="accent" size="xs" shape="pill" startIcon={<IconPlus size={14} />}>Accent</Button>
-          <Button variant="soft" color="error" size="xs" shape="pill" startIcon={<IconTrash size={14} />}>Error</Button>
-          <Button variant="soft" color="success" size="xs" shape="pill" startIcon={<IconPlus size={14} />}>Success</Button>
-          <Button variant="soft" color="warning" size="xs" shape="pill" startIcon={<IconPlus size={14} />}>Warning</Button>
+          <Button variant="soft" color="accent" size="xs" shape="pill" startIcon={<IconPlus />}>Accent</Button>
+          <Button variant="soft" color="error" size="xs" shape="pill" startIcon={<IconTrash />}>Error</Button>
+          <Button variant="soft" color="success" size="xs" shape="pill" startIcon={<IconPlus />}>Success</Button>
+          <Button variant="soft" color="warning" size="xs" shape="pill" startIcon={<IconPlus />}>Warning</Button>
           <Button variant="soft" color="neutral" size="xs" shape="pill">Neutral</Button>
         </div>
       </div>
@@ -434,7 +434,7 @@ export const AllFeatures: Story = {
         </p>
         <div className="flex flex-wrap items-center gap-ds-04">
           <Button loading loadingPosition="start">Start</Button>
-          <Button variant="outline" loading loadingPosition="end" endIcon={<IconSend size={16} />}>End</Button>
+          <Button variant="outline" loading loadingPosition="end" endIcon={<IconSend />}>End</Button>
           <Button loading loadingPosition="center">Center</Button>
           <Button variant="soft" color="success" loading>Soft loading</Button>
         </div>
@@ -446,15 +446,15 @@ export const AllFeatures: Story = {
           Sizes with icons
         </p>
         <div className="flex flex-wrap items-end gap-ds-04">
-          <Button size="xs" startIcon={<IconPlus size={14} />}>xs</Button>
-          <Button size="sm" startIcon={<IconPlus size={14} />}>sm</Button>
-          <Button size="md" startIcon={<IconPlus size={16} />}>md</Button>
-          <Button size="lg" startIcon={<IconPlus size={18} />}>lg</Button>
+          <Button size="xs" startIcon={<IconPlus />}>xs</Button>
+          <Button size="sm" startIcon={<IconPlus />}>sm</Button>
+          <Button size="md" startIcon={<IconPlus />}>md</Button>
+          <Button size="lg" startIcon={<IconPlus />}>lg</Button>
         </div>
         <div className="flex flex-wrap items-end gap-ds-04 mt-ds-03">
-          <Button size="compact-xs" startIcon={<IconPlus size={14} />}>c-xs</Button>
-          <Button size="compact-sm" startIcon={<IconPlus size={14} />}>c-sm</Button>
-          <Button size="compact-md" startIcon={<IconPlus size={16} />}>c-md</Button>
+          <Button size="compact-xs" startIcon={<IconPlus />}>c-xs</Button>
+          <Button size="compact-sm" startIcon={<IconPlus />}>c-sm</Button>
+          <Button size="compact-md" startIcon={<IconPlus />}>c-md</Button>
         </div>
       </div>
 

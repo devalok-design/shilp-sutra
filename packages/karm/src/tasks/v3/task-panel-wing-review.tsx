@@ -95,7 +95,7 @@ export function TaskPanelReviewCard() {
       animate="visible"
       exit="exit"
       transition={{ ...tweens.fade, delay: 0.2 }}
-      className="w-[280px] rounded-ds-xl border border-surface-border-strong bg-surface-raised shadow-floating"
+      className="w-[280px] overflow-hidden rounded-ds-xl border border-surface-border-strong bg-surface-raised shadow-floating"
       data-testid="review-wing"
     >
       <div className="p-ds-05">

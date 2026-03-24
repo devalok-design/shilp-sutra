@@ -22,7 +22,7 @@ export function TaskPanelWings({ children, className }: TaskPanelWingsProps) {
       exit={{ opacity: 0, x: 40 }}
       transition={{ ...tweens.fade, delay: 0.15 }}
       className={cn(
-        'absolute right-full top-ds-05 mr-ds-04 hidden flex-col gap-ds-03 lg:flex',
+        'absolute right-full top-ds-05 mr-ds-04 hidden lg:flex lg:flex-col gap-ds-03',
         className,
       )}
     >

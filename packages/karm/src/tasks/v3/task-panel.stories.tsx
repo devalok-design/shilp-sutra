@@ -7,6 +7,7 @@ import {
   IconArrowDown,
   IconMinus,
 } from '@tabler/icons-react'
+import { Icon } from '@/ui/icon'
 import { cn } from '@/ui/lib/utils'
 import { Avatar, AvatarFallback } from '@/ui/avatar'
 import { TaskPanel } from './task-panel'
@@ -389,8 +390,10 @@ function TriggerCard({
         <span className="text-ds-xs font-mono leading-none text-surface-fg-subtle">
           {task.taskId}
         </span>
-        <PriorityIcon
-          className={cn('h-3 w-3 flex-shrink-0', priorityColor)}
+        <Icon
+          icon={PriorityIcon}
+          size="xs"
+          className={cn('flex-shrink-0', priorityColor)}
         />
       </div>
 

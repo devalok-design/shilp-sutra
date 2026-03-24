@@ -312,18 +312,9 @@ export function TaskPanelPropertiesCard() {
                   size="compact-sm"
                   shape="pill"
                   onClick={onToggleVisibility}
+                  startIcon={<Icon icon={task.visibility === 'EVERYONE' ? IconEye : IconLock} />}
                 >
-                  {task.visibility === 'EVERYONE' ? (
-                    <>
-                      <Icon icon={IconEye} size="xs" />
-                      Client
-                    </>
-                  ) : (
-                    <>
-                      <Icon icon={IconLock} size="xs" />
-                      Internal
-                    </>
-                  )}
+                  {task.visibility === 'EVERYONE' ? 'Client' : 'Internal'}
                 </Button>
               </TooltipTrigger>
               <TooltipContent>
@@ -591,7 +582,7 @@ export function TaskPanelPropertiesCard() {
           {/* Labels — vertical layout (not a row trigger since it has inline dismiss) */}
           <div className="group/labels flex flex-col gap-ds-02 rounded-ds-lg px-ds-03 py-ds-02b -mx-ds-01">
             <span className="text-ds-xs text-surface-fg-subtle font-medium">Labels</span>
-            <div className="flex flex-wrap gap-ds-02">
+            <div className="flex flex-wrap items-start gap-ds-02">
               {task.labels.length > 0 ? (
                 task.labels.map((label) => (
                   <Badge

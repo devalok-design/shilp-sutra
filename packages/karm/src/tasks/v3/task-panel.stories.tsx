@@ -56,10 +56,26 @@ const mockTask: TaskPanelTask = {
   status: 'in-progress',
   statusOptions,
   priority: 'HIGH',
-  assignees: [arjun, priya],
-  leads: [nick],
+  assignees: [
+    { ...arjun, bandwidth: 'ELEVATED' as const },
+    { ...priya, bandwidth: 'HEALTHY' as const },
+  ],
+  leads: [
+    { ...nick, isOnLeave: true },
+  ],
   members: [arjun, priya, nick],
   dueDate: new Date(now.getTime() + 3 * 86_400_000).toISOString(),
+  startDate: new Date(now.getTime() - 2 * 86_400_000).toISOString(),
+  phase: { id: 'phase-2', name: 'Development' },
+  phaseOptions: [
+    { id: 'phase-1', name: 'Discovery' },
+    { id: 'phase-2', name: 'Development' },
+    { id: 'phase-3', name: 'Testing' },
+    { id: 'phase-4', name: 'Launch' },
+  ],
+  createdByType: 'LOKWASI' as const,
+  createdByName: 'Nick Padgett',
+  projectName: 'Karm',
   labels: ['bug', 'auth', 'critical-path'],
   visibility: 'EVERYONE',
   project: 'Karm',
@@ -104,6 +120,29 @@ const mockTask: TaskPanelTask = {
   reviewFiles: [
     { name: 'token-refresh-fix.patch', size: '4.2 KB' },
     { name: 'auth-flow-diagram.png', size: '156 KB' },
+  ],
+  files: [
+    {
+      id: 'file-1',
+      name: 'token-refresh-fix.patch',
+      fileUrl: '#',
+      downloadUrl: '#',
+      fileType: 'patch',
+      size: 4300,
+      uploadedBy: { id: 'u1', name: 'Arjun Rao', image: null },
+      createdAt: hoursAgo(5),
+    },
+    {
+      id: 'file-2',
+      name: 'auth-flow-diagram.png',
+      fileUrl: '#',
+      downloadUrl: '#',
+      fileType: 'png',
+      size: 159744,
+      uploadedBy: { id: 'u2', name: 'Priya Mehta', image: null },
+      createdAt: hoursAgo(3),
+      gDriveUrl: 'https://drive.google.com/example',
+    },
   ],
 }
 
@@ -303,6 +342,8 @@ const sharedCallbacks = {
   onAddLead: fn(),
   onRemoveLead: fn(),
   onUpdateDueDate: fn(),
+  onUpdateStartDate: fn(),
+  onUpdatePhase: fn(),
   onPostComment: fn(),
   onToggleVisibility: fn(),
   onToggleSubtask: fn(),
@@ -314,6 +355,12 @@ const sharedCallbacks = {
   onEditComment: fn(),
   onDeleteComment: fn(),
   onReact: fn(),
+  onDeleteTask: fn(),
+  onMoveToProject: fn(),
+  onDuplicateTask: fn(),
+  onCopyLink: fn(),
+  onUploadFile: fn(),
+  onDeleteFile: fn(),
   onClose: fn(),
   onExpand: fn(),
 }
@@ -457,7 +504,7 @@ function TaskPanelDemo({
   agentStreamingText,
 }: {
   mode: TaskPanelMode
-  clientMode?: boolean
+  clientMode?: boolean | 'VIEW_ONLY' | 'COLLABORATOR'
   task?: TaskPanelTask
   timeline?: TimelineEntry[]
   typingUsers?: { name: string; image?: string | null }[]
@@ -479,6 +526,11 @@ function TaskPanelDemo({
     })),
     onUpdateStatus: (statusId: string) => setTaskState((t) => ({ ...t, status: statusId })),
     onUpdatePriority: (priority: string) => setTaskState((t) => ({ ...t, priority: priority as TaskPanelTask['priority'] })),
+    onUpdateStartDate: (date: Date | null) => setTaskState((t) => ({ ...t, startDate: date?.toISOString() ?? null })),
+    onUpdatePhase: (phaseId: string | null) => setTaskState((t) => ({
+      ...t,
+      phase: phaseId ? t.phaseOptions?.find((p) => p.id === phaseId) ?? null : null,
+    })),
   }
 
   const panelContent = (
@@ -497,6 +549,7 @@ function TaskPanelDemo({
         <div className="flex flex-1 flex-col overflow-hidden">
           <TaskPanel.Description />
           {mode !== 'peek' && <TaskPanel.Subtasks />}
+          {mode !== 'peek' && <TaskPanel.Files />}
           <TaskPanel.Timeline />
         </div>
         {mode !== 'peek' && <TaskPanel.MessageInput />}
@@ -541,6 +594,7 @@ function TaskPanelDemo({
               <div className="flex flex-1 flex-col overflow-hidden">
                 <TaskPanel.Description />
                 <TaskPanel.Subtasks />
+                <TaskPanel.Files />
                 <TaskPanel.Timeline />
               </div>
               <TaskPanel.MessageInput />
@@ -620,6 +674,7 @@ export const EmptyTask: Story = {
       leads: [],
       members: [arjun, priya, nick],
       dueDate: null,
+      startDate: null,
       labels: [],
       visibility: 'INTERNAL',
       createdAt: new Date().toISOString(),
@@ -668,6 +723,40 @@ export const AIStreaming: Story = {
       lastViewedAt={hoursAgo(4)}
       isAgentStreaming
       agentStreamingText="Analyzing the token refresh flow. I can see the interceptor is using a simple flag to prevent concurrent refreshes, but there's a race condition when multiple tabs are open simultaneously..."
+    />
+  ),
+}
+
+/** Task with overdue due date — should show red styling. */
+export const OverdueTask: Story = {
+  render: () => (
+    <TaskPanelDemo
+      mode="side"
+      task={{ ...mockTask, dueDate: daysAgo(3), isInReview: false }}
+      label="Task with overdue due date — should show red styling"
+    />
+  ),
+}
+
+/** Task created by AI agent — should show AI badge. */
+export const AICreatedTask: Story = {
+  render: () => (
+    <TaskPanelDemo
+      mode="side"
+      task={{ ...mockTask, createdByType: 'SYSTEM', createdByName: 'Devadoot', isInReview: false }}
+      label="Task created by AI agent — should show AI badge"
+    />
+  ),
+}
+
+/** Client collaborator — can edit priority, due date, description, post messages. */
+export const ClientCollaborator: Story = {
+  render: () => (
+    <TaskPanelDemo
+      mode="side"
+      clientMode="COLLABORATOR"
+      task={{ ...mockTask, isInReview: false }}
+      label="Client collaborator — can edit priority, due date, description, post messages"
     />
   ),
 }

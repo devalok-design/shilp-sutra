@@ -10,6 +10,7 @@ import type { TaskPanelMode } from './task-panel-types'
 import { TaskPanelPeek } from './task-panel-peek'
 import { TaskPanelSheet } from './task-panel-sheet'
 import { TaskPanelFull } from './task-panel-full'
+import { useTaskPanelKeyboard } from './use-task-panel-keyboard'
 
 // ---------------------------------------------------------------------------
 // Types
@@ -21,6 +22,15 @@ export interface TaskPanelRootProps extends Omit<TaskPanelProviderProps, 'childr
   open?: boolean
   className?: string
   children: React.ReactNode
+}
+
+// ---------------------------------------------------------------------------
+// Inner component — must be inside provider to use context
+// ---------------------------------------------------------------------------
+
+function TaskPanelKeyboardHandler() {
+  useTaskPanelKeyboard()
+  return null
 }
 
 // ---------------------------------------------------------------------------
@@ -38,6 +48,7 @@ export function TaskPanelRoot({
 
   return (
     <TaskPanelProvider mode={mode} onClose={providerProps.onClose} {...providerProps}>
+      <TaskPanelKeyboardHandler />
       {mode === 'peek' && (
         <TaskPanelPeek open={open} onClose={onClose} className={className}>
           {children}

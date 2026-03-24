@@ -399,7 +399,8 @@ const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
           </span>
         )
       }
-      return children
+      // Wrap in span so [&>span:not([data-grain])]:z-[2] elevates text above grain layers
+      return <span>{children}</span>
     }
 
     // Async feedback: override color to show green/red
@@ -411,20 +412,22 @@ const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
 
     // Async feedback icon replaces start slot (same inset as normal icon for layout stability)
     const asyncFeedbackIcon = isAsyncFeedback ? (
-      <AnimatePresence mode="wait">
-        <motion.span
-          key={asyncState}
-          initial={{ opacity: 0, scale: 0.5 }}
-          animate={{ opacity: 1, scale: 1 }}
-          exit={{ opacity: 0, scale: 0.5 }}
-          transition={springs.bouncy}
-          className={cn('inline-flex shrink-0 items-center justify-center', iconClass, startIcon && inset.start)}
-        >
-          {asyncState === 'success'
-            ? <IconCheck className="h-full w-full" />
-            : <IconX className="h-full w-full" />}
-        </motion.span>
-      </AnimatePresence>
+      <span className={cn('inline-flex shrink-0 items-center justify-center pointer-events-none', iconClass, startIcon && inset.start)}>
+        <AnimatePresence mode="wait">
+          <motion.span
+            key={asyncState}
+            initial={{ opacity: 0, scale: 0.5 }}
+            animate={{ opacity: 1, scale: 1 }}
+            exit={{ opacity: 0, scale: 0.5 }}
+            transition={springs.bouncy}
+            className="inline-flex items-center justify-center h-full w-full"
+          >
+            {asyncState === 'success'
+              ? <IconCheck className="h-full w-full" />
+              : <IconX className="h-full w-full" />}
+          </motion.span>
+        </AnimatePresence>
+      </span>
     ) : null
 
     return (

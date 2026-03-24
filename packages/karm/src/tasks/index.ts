@@ -1,5 +1,10 @@
-// Compound component (v2 composition API)
-export { TaskPanel } from './task-panel'
+// v3 is the primary export
+export { TaskPanel } from './v3'
+export { TaskPanelSheetWrapper } from './v3'
+export type { TaskPanelTask, TaskPanelMode, TimelineEntry, ClientMode } from './v3'
+
+// v2 kept as named export for migration period
+export { TaskPanel as TaskPanelV2 } from './task-panel'
 export type {
   TaskPanelRootProps,
   TaskPanelHeaderProps,

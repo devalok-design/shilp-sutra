@@ -28,25 +28,25 @@ type IconButtonSize = 'sm' | 'md' | 'lg'
  *
  * @example
  * // Ghost toolbar icon button:
- * <IconButton icon={<IconEdit />} variant="ghost" aria-label="Edit item" />
+ * <IconButton icon={<Icon icon={IconEdit} />} variant="ghost" aria-label="Edit item" />
  *
  * @example
  * // Circular close button (e.g. in a modal header):
- * <IconButton icon={<IconX />} shape="circle" variant="ghost" size="sm" aria-label="Close dialog" />
+ * <IconButton icon={<Icon icon={IconX} />} shape="circle" variant="ghost" size="sm" aria-label="Close dialog" />
  *
  * @example
  * // Solid floating action button:
- * <IconButton icon={<IconPlus />} variant="solid" size="lg" aria-label="Create new project" />
+ * <IconButton icon={<Icon icon={IconPlus} />} variant="solid" size="lg" aria-label="Create new project" />
  *
  * @example
  * // Error icon button with loading state (e.g. confirm delete):
- * <IconButton icon={<IconTrash />} variant="solid" color="error" loading={isDeleting} aria-label="Delete" />
+ * <IconButton icon={<Icon icon={IconTrash} />} variant="solid" color="error" loading={isDeleting} aria-label="Delete" />
  * // These are just a few ways — feel free to combine props creatively!
  */
 export interface IconButtonProps
   extends Omit<ButtonProps, 'startIcon' | 'endIcon' | 'fullWidth' | 'loadingPosition' | 'children' | 'size' | 'shape'> {
-  /** The icon element to render */
-  icon: React.ReactNode
+  /** The icon element to render — must be `<Icon icon={...} />` */
+  icon: React.ReactElement
   /** Accessible label — required for icon-only buttons (WCAG AA) */
   'aria-label': string
   /** Button shape. Default: 'square' */

@@ -17,6 +17,8 @@
  */
 
 // Core
+export { Icon, type IconProps } from './icon'
+export { IconContext, IconProvider, useIconContext, type IconContextValue, type IconSize, type IconStroke } from './icon-context'
 export { Button, buttonVariants, type ButtonProps } from './button'
 export { IconButton, type IconButtonProps } from './icon-button'
 export { ButtonGroup, useButtonGroup, type ButtonGroupProps } from './button-group'

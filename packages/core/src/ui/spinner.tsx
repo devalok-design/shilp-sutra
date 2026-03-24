@@ -105,7 +105,7 @@ const Spinner = React.forwardRef<HTMLSpanElement, SpinnerProps>(
     const isSpinning = state === 'spinning'
     const isFinal = state === 'success' || state === 'error'
     const isFilled = variant === 'filled'
-    const color = stateColors[state]
+    const color = variant === 'bare' && state === 'spinning' ? 'currentColor' : stateColors[state]
 
     // Icon stroke: white on filled backgrounds, currentColor on bare
     const iconColor = isFilled ? 'white' : 'currentColor'

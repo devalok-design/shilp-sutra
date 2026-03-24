@@ -4,6 +4,7 @@ import * as React from 'react'
 import { createPortal } from 'react-dom'
 import { AnimatePresence, motion } from 'framer-motion'
 import { IconX } from '@tabler/icons-react'
+import { Icon } from '../ui/icon'
 import { cn } from '../ui/lib/utils'
 import { Button } from '../ui/button'
 import { Badge } from '../ui/badge'
@@ -91,7 +92,7 @@ function ActionButton({ action }: { action: BulkActionBarAction }) {
         color={action.color === 'error' ? 'error' : 'default'}
         disabled={action.disabled}
         onClick={action.requiresConfirmation ? () => setConfirming(true) : action.onClick}
-        startIcon={action.icon ? <action.icon className="h-ico-sm w-ico-sm" /> : undefined}
+        startIcon={action.icon ? <Icon icon={action.icon as any} /> : undefined}
       >
         {action.label}
       </Button>

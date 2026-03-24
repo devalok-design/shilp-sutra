@@ -49,8 +49,8 @@ describe('ConfirmDialog', () => {
   it('shows loading text and disables buttons when loading', () => {
     render(<ConfirmDialog {...defaultProps} loading confirmText="Delete" />)
     expect(screen.getByText('Processing...')).toBeInTheDocument()
-    expect(screen.getByText('Cancel')).toBeDisabled()
-    expect(screen.getByText('Processing...')).toBeDisabled()
+    expect(screen.getByRole('button', { name: 'Cancel' })).toBeDisabled()
+    expect(screen.getByRole('button', { name: 'Processing...' })).toBeDisabled()
   })
 
   it('does not render when open is false', () => {

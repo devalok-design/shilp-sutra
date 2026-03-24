@@ -1,11 +1,16 @@
 import type { Meta, StoryObj } from '@storybook/react'
 import { Button } from './button'
+import { DevalokGrain } from './devalok-grain'
+import type { GrainIntensity } from './devalok-grain'
 import {
   IconPlus,
   IconArrowRight,
   IconSend,
   IconDownload,
   IconTrash,
+  IconCheck,
+  IconEye,
+  IconLock,
 } from '@tabler/icons-react'
 
 const meta: Meta<typeof Button> = {
@@ -592,7 +597,7 @@ export const RealWorldPatterns: Story = {
       <div>
         <p className="text-ds-xs font-semibold text-surface-fg-subtle uppercase tracking-wider mb-ds-03">Review Actions</p>
         <div className="flex gap-ds-03">
-          <Button variant="solid" color="success" size="sm" startIcon={<IconPlus />}>Approve</Button>
+          <Button variant="solid" color="success" size="sm" startIcon={<IconCheck />}>Approve</Button>
           <Button variant="outline" color="error" size="sm">Request Changes</Button>
         </div>
       </div>
@@ -601,7 +606,7 @@ export const RealWorldPatterns: Story = {
         <div className="flex gap-ds-03">
           <Button>Save Changes</Button>
           <Button variant="outline" color="neutral">Cancel</Button>
-          <Button variant="solid" color="error" startIcon={<IconPlus />}>Delete</Button>
+          <Button variant="solid" color="error" startIcon={<IconTrash />}>Delete</Button>
         </div>
       </div>
       <div>
@@ -610,6 +615,172 @@ export const RealWorldPatterns: Story = {
           <Button variant="ghost" color="neutral" size="compact-sm" weight="normal" className="w-full justify-start">Backlog</Button>
           <Button variant="ghost" color="neutral" size="compact-sm" weight="normal" className="w-full justify-start">In Progress</Button>
           <Button variant="ghost" color="neutral" size="compact-sm" weight="normal" className="w-full justify-start">Done</Button>
+        </div>
+      </div>
+    </div>
+  ),
+}
+
+// --- Devalok Grain stories ---
+
+export const DevalokGrainShowcase: Story = {
+  name: 'Devalok Grain',
+  render: () => {
+    const intensities: GrainIntensity[] = ['subtle', 'medium', 'heavy']
+    const colors = ['accent', 'error', 'success', 'warning', 'neutral'] as const
+    return (
+      <div className="space-y-ds-08">
+        <div>
+          <p className="text-ds-xs font-semibold text-surface-fg-subtle uppercase tracking-wider mb-ds-03">
+            Intensity comparison — solid
+          </p>
+          <div className="space-y-ds-04">
+            {intensities.map(i => (
+              <div key={i} className="flex flex-wrap items-center gap-ds-04">
+                <span className="text-ds-xs font-semibold text-surface-fg-muted w-16">{i}</span>
+                {colors.map(c => (
+                  <Button key={c} variant="solid" color={c} size="sm">
+                    <DevalokGrain intensity={i} />
+                    {c}
+                  </Button>
+                ))}
+              </div>
+            ))}
+          </div>
+        </div>
+
+        <div>
+          <p className="text-ds-xs font-semibold text-surface-fg-subtle uppercase tracking-wider mb-ds-03">
+            Intensity comparison — soft
+          </p>
+          <div className="space-y-ds-04">
+            {intensities.map(i => (
+              <div key={i} className="flex flex-wrap items-center gap-ds-04">
+                <span className="text-ds-xs font-semibold text-surface-fg-muted w-16">{i}</span>
+                {colors.map(c => (
+                  <Button key={c} variant="soft" color={c} size="sm">
+                    <DevalokGrain intensity={i} surface="soft" />
+                    {c}
+                  </Button>
+                ))}
+              </div>
+            ))}
+          </div>
+        </div>
+
+        <div>
+          <p className="text-ds-xs font-semibold text-surface-fg-subtle uppercase tracking-wider mb-ds-03">
+            With vs without — side by side
+          </p>
+          <div className="flex flex-wrap items-center gap-ds-04">
+            <Button variant="solid">No grain</Button>
+            <Button variant="solid">
+              <DevalokGrain />
+              With grain
+            </Button>
+            <Button variant="soft" color="success">No grain</Button>
+            <Button variant="soft" color="success">
+              <DevalokGrain surface="soft" />
+              With grain
+            </Button>
+          </div>
+        </div>
+
+        <div>
+          <p className="text-ds-xs font-semibold text-surface-fg-subtle uppercase tracking-wider mb-ds-03">
+            Pill + grain
+          </p>
+          <div className="flex flex-wrap items-center gap-ds-03">
+            <Button variant="soft" color="accent" size="xs" shape="pill" startIcon={<IconPlus />}>
+              <DevalokGrain surface="soft" />
+              In Progress
+            </Button>
+            <Button variant="soft" color="success" size="xs" shape="pill" startIcon={<IconCheck />}>
+              <DevalokGrain surface="soft" />
+              Approved
+            </Button>
+            <Button variant="soft" color="warning" size="xs" shape="pill" startIcon={<IconEye />}>
+              <DevalokGrain surface="soft" />
+              Draft
+            </Button>
+          </div>
+        </div>
+      </div>
+    )
+  },
+}
+
+export const DevalokGrainRealWorld: Story = {
+  name: 'Devalok Grain — Real World',
+  render: () => (
+    <div className="space-y-ds-08 max-w-xl">
+      <div>
+        <p className="text-ds-xs font-semibold text-surface-fg-subtle uppercase tracking-wider mb-ds-03">
+          Review Actions (with grain)
+        </p>
+        <div className="flex gap-ds-03">
+          <Button variant="solid" color="success" size="sm" startIcon={<IconCheck />}>
+            <DevalokGrain />
+            Approve
+          </Button>
+          <Button variant="solid" color="error" size="sm">
+            <DevalokGrain />
+            Reject
+          </Button>
+          <Button variant="outline" color="neutral" size="sm">Cancel</Button>
+        </div>
+      </div>
+
+      <div>
+        <p className="text-ds-xs font-semibold text-surface-fg-subtle uppercase tracking-wider mb-ds-03">
+          Form Actions (with grain on primary only)
+        </p>
+        <div className="flex gap-ds-03">
+          <Button>
+            <DevalokGrain />
+            Save Changes
+          </Button>
+          <Button variant="outline" color="neutral">Cancel</Button>
+          <Button variant="solid" color="error" startIcon={<IconTrash />}>
+            <DevalokGrain />
+            Delete
+          </Button>
+        </div>
+      </div>
+
+      <div>
+        <p className="text-ds-xs font-semibold text-surface-fg-subtle uppercase tracking-wider mb-ds-03">
+          Status Pills (with grain)
+        </p>
+        <div className="flex flex-wrap gap-ds-02">
+          <Button variant="soft" color="accent" size="xs" shape="pill">
+            <DevalokGrain surface="soft" />
+            In Progress
+          </Button>
+          <Button variant="soft" color="neutral" size="xs" shape="pill">
+            <DevalokGrain surface="soft" />
+            Unassigned
+          </Button>
+          <Button variant="soft" color="warning" size="xs" shape="pill">
+            <DevalokGrain surface="soft" />
+            High Priority
+          </Button>
+        </div>
+      </div>
+
+      <div>
+        <p className="text-ds-xs font-semibold text-surface-fg-subtle uppercase tracking-wider mb-ds-03">
+          Visibility Toggle (with grain)
+        </p>
+        <div className="flex gap-ds-03">
+          <Button variant="soft" color="success" size="xs" shape="pill" startIcon={<IconEye />}>
+            <DevalokGrain surface="soft" />
+            Client
+          </Button>
+          <Button variant="soft" color="neutral" size="xs" shape="pill" startIcon={<IconLock />}>
+            <DevalokGrain surface="soft" />
+            Internal
+          </Button>
         </div>
       </div>
     </div>

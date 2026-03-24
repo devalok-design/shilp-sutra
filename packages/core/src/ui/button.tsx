@@ -6,6 +6,9 @@ import { motion, AnimatePresence } from 'framer-motion'
 import { Slot, Slottable } from '@primitives/react-slot'
 import * as React from 'react'
 import { useButtonGroup } from './button-group'
+import { Icon } from './icon'
+import { IconProvider } from './icon-context'
+import type { IconSize } from './icon-context'
 import { springs } from './lib/motion'
 import { cn } from './lib/utils'
 import { Spinner } from './spinner'
@@ -114,27 +117,6 @@ export const buttonVariants = cva(
   },
 )
 
-/** Map button size to icon wrapper size class
- *  xs/compact-xs: 14px — small, tight
- *  sm/compact-sm: 16px — standard
- *  md/compact-md: 18px — slightly larger, proportional to 40px height
- *  lg:            20px — large, matches 48px button height
- */
-const iconSizeClass: Record<string, string> = {
-  xs:           'h-3.5 w-3.5 [&>svg]:h-3.5 [&>svg]:w-3.5',         // 14px
-  sm:           'h-4 w-4 [&>svg]:h-4 [&>svg]:w-4',                   // 16px
-  md:           'h-[18px] w-[18px] [&>svg]:h-[18px] [&>svg]:w-[18px]', // 18px
-  lg:           'h-5 w-5 [&>svg]:h-5 [&>svg]:w-5',                   // 20px
-  'compact-xs': 'h-3.5 w-3.5 [&>svg]:h-3.5 [&>svg]:w-3.5',         // 14px
-  'compact-sm': 'h-4 w-4 [&>svg]:h-4 [&>svg]:w-4',                   // 16px
-  'compact-md': 'h-[18px] w-[18px] [&>svg]:h-[18px] [&>svg]:w-[18px]', // 18px
-  icon:         'h-[18px] w-[18px] [&>svg]:h-[18px] [&>svg]:w-[18px]', // 18px (md default)
-  'icon-xs':    'h-3.5 w-3.5 [&>svg]:h-3.5 [&>svg]:w-3.5',         // 14px
-  'icon-sm':    'h-4 w-4 [&>svg]:h-4 [&>svg]:w-4',                   // 16px
-  'icon-md':    'h-[18px] w-[18px] [&>svg]:h-[18px] [&>svg]:w-[18px]', // 18px
-  'icon-lg':    'h-5 w-5 [&>svg]:h-5 [&>svg]:w-5',                   // 20px
-}
-
 /** Extra horizontal padding for pill shape — rounded ends eat into visual space */
 const pillPaddingClass: Record<string, string> = {
   xs:           'px-ds-04',
@@ -163,7 +145,7 @@ const iconInsetClass: Record<string, { start: string; end: string }> = {
 }
 
 /** Map button size to spinner size */
-const spinnerSizeMap: Record<string, 'sm' | 'md'> = {
+const BUTTON_TO_SPINNER_SIZE: Record<string, 'sm' | 'md'> = {
   xs: 'sm',
   sm: 'sm',
   md: 'sm',
@@ -176,6 +158,13 @@ const spinnerSizeMap: Record<string, 'sm' | 'md'> = {
   'icon-sm': 'sm',
   'icon-md': 'sm',
   'icon-lg': 'md',
+}
+
+/** Map button size to Icon context size */
+const BUTTON_TO_ICON_SIZE: Record<string, IconSize> = {
+  xs: 'xs', sm: 'sm', md: 'md', lg: 'lg',
+  'compact-xs': 'xs', 'compact-sm': 'sm', 'compact-md': 'md',
+  icon: 'md', 'icon-xs': 'xs', 'icon-sm': 'sm', 'icon-md': 'md', 'icon-lg': 'lg',
 }
 
 /**
@@ -236,10 +225,10 @@ export interface ButtonProps
   asChild?: boolean
   /** Button shape — 'pill' applies rounded-full for chip/tag-like buttons */
   shape?: 'default' | 'pill'
-  /** Icon element rendered before children */
-  startIcon?: React.ReactNode
-  /** Icon element rendered after children */
-  endIcon?: React.ReactNode
+  /** Icon element rendered before children — use <Icon icon={...} /> */
+  startIcon?: React.ReactElement | null
+  /** Icon element rendered after children — use <Icon icon={...} /> */
+  endIcon?: React.ReactElement | null
   /** Show loading spinner and disable button */
   loading?: boolean
   /** Where to render the spinner: replaces startIcon, endIcon, or centers over children */
@@ -287,9 +276,6 @@ const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
     const resolvedWeight = weight ?? group.weight ?? 'semibold'
     const resolvedShape = shape ?? group.shape ?? 'default'
     const resolvedSize = size ?? group.size ?? 'md'
-    const iconClass = iconSizeClass[resolvedSize]
-    const spinnerSize = spinnerSizeMap[resolvedSize]
-
     // Async state machine: idle → loading → success | error → idle
     type AsyncState = 'idle' | 'loading' | 'success' | 'error'
     const [asyncState, setAsyncState] = React.useState<AsyncState>('idle')
@@ -319,10 +305,6 @@ const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
     const isAsync = !!onClickAsync
     const loading = isAsync ? asyncState === 'loading' : loadingProp
     const isAsyncFeedback = asyncState === 'success' || asyncState === 'error'
-
-    const spinnerNode = loading ? (
-      <Spinner size={spinnerSize} />
-    ) : null
 
     if (asChild) {
       // Slot merges all props into the child element via cloneElement at runtime.
@@ -356,13 +338,13 @@ const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
       if (loading && loadingPosition === 'start') {
         return (
           <span className={cn('inline-flex shrink-0 items-center justify-center', startIcon && inset.start)}>
-            {spinnerNode}
+            <Spinner size={BUTTON_TO_SPINNER_SIZE[resolvedSize]} variant="bare" />
           </span>
         )
       }
       if (startIcon) {
         return (
-          <span className={cn('inline-flex shrink-0 items-center justify-center pointer-events-none', iconClass, inset.start, dimIcon && 'opacity-90')}>
+          <span className={cn('inline-flex shrink-0 items-center justify-center pointer-events-none', inset.start, dimIcon && 'opacity-90')}>
             {startIcon}
           </span>
         )
@@ -374,13 +356,13 @@ const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
       if (loading && loadingPosition === 'end') {
         return (
           <span className={cn('inline-flex shrink-0 items-center justify-center', endIcon && inset.end)}>
-            {spinnerNode}
+            <Spinner size={BUTTON_TO_SPINNER_SIZE[resolvedSize]} variant="bare" />
           </span>
         )
       }
       if (endIcon) {
         return (
-          <span className={cn('inline-flex shrink-0 items-center justify-center pointer-events-none', iconClass, inset.end, dimIcon && 'opacity-90')}>
+          <span className={cn('inline-flex shrink-0 items-center justify-center pointer-events-none', inset.end, dimIcon && 'opacity-90')}>
             {endIcon}
           </span>
         )
@@ -407,7 +389,7 @@ const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
           <span className="relative inline-flex items-center justify-center">
             <span className="invisible">{contentElements}</span>
             <span className="absolute inset-0 flex items-center justify-center">
-              {spinnerNode}
+              <Spinner size={BUTTON_TO_SPINNER_SIZE[resolvedSize]} variant="bare" />
             </span>
           </span>
         )
@@ -425,7 +407,7 @@ const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
 
     // Async feedback icon replaces start slot (same inset as normal icon for layout stability)
     const asyncFeedbackIcon = isAsyncFeedback ? (
-      <span className={cn('inline-flex shrink-0 items-center justify-center pointer-events-none', iconClass, startIcon && inset.start)}>
+      <span className={cn('inline-flex shrink-0 items-center justify-center pointer-events-none', startIcon && inset.start)}>
         <AnimatePresence mode="wait">
           <motion.span
             key={asyncState}
@@ -433,44 +415,46 @@ const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
             animate={{ opacity: 1, scale: 1 }}
             exit={{ opacity: 0, scale: 0.5 }}
             transition={springs.bouncy}
-            className="inline-flex items-center justify-center h-full w-full"
+            className="inline-flex items-center justify-center"
           >
-            {asyncState === 'success'
-              ? <IconCheck className="h-full w-full" />
-              : <IconX className="h-full w-full" />}
+            <Icon icon={asyncState === 'success' ? IconCheck : IconX} />
           </motion.span>
         </AnimatePresence>
       </span>
     ) : null
 
+    const iconSize = BUTTON_TO_ICON_SIZE[resolvedSize] ?? 'md'
+
     return (
-      <button
-        {...props}
-        className={cn(
-          buttonVariants({ variant: resolvedVariant, color: resolvedColor, weight: resolvedWeight, size: resolvedSize }),
-          resolvedShape === 'pill' && 'rounded-full',
-          resolvedShape === 'pill' && pillPaddingClass[resolvedSize],
-          fullWidth && 'w-full',
-          // Asymmetric timing: hover-out is slow+relaxed, hover-in is fast+snappy (applied via hover: override)
-          !loading && !isAsyncFeedback && 'transition-[color,background-color,border-color,box-shadow,transform,filter] duration-moderate-01 ease-productive-exit',
-          !loading && !isAsyncFeedback && 'hover:duration-fast-02 hover:ease-productive-entrance',
-          !loading && !isAsyncFeedback && 'active:scale-[0.95] active:brightness-[0.92] active:saturate-[1.1] active:duration-[0ms]',
-          feedbackColorClass,
-          isAsyncFeedback && 'transition-colors duration-moderate-01 ease-productive-standard',
-          className,
-        )}
-        ref={ref}
-        disabled={disabled || loading || isAsyncFeedback}
-        aria-busy={loading || undefined}
-        onClick={isAsync ? handleAsyncClick : onClick}
-      >
-        {/* Grain layers render as direct children (need absolute positioning) */}
-        {grainElements}
-        {/* Content renders above grain via z-[2] span wrapper */}
-        {isAsyncFeedback ? asyncFeedbackIcon : renderStartSlot()}
-        {isAsyncFeedback ? contentElements : renderChildren()}
-        {isAsyncFeedback ? null : renderEndSlot()}
-      </button>
+      <IconProvider size={iconSize}>
+        <button
+          {...props}
+          className={cn(
+            buttonVariants({ variant: resolvedVariant, color: resolvedColor, weight: resolvedWeight, size: resolvedSize }),
+            resolvedShape === 'pill' && 'rounded-full',
+            resolvedShape === 'pill' && pillPaddingClass[resolvedSize],
+            fullWidth && 'w-full',
+            // Asymmetric timing: hover-out is slow+relaxed, hover-in is fast+snappy (applied via hover: override)
+            !loading && !isAsyncFeedback && 'transition-[color,background-color,border-color,box-shadow,transform,filter] duration-moderate-01 ease-productive-exit',
+            !loading && !isAsyncFeedback && 'hover:duration-fast-02 hover:ease-productive-entrance',
+            !loading && !isAsyncFeedback && 'active:scale-[0.95] active:brightness-[0.92] active:saturate-[1.1] active:duration-[0ms]',
+            feedbackColorClass,
+            isAsyncFeedback && 'transition-colors duration-moderate-01 ease-productive-standard',
+            className,
+          )}
+          ref={ref}
+          disabled={disabled || loading || isAsyncFeedback}
+          aria-busy={loading || undefined}
+          onClick={isAsync ? handleAsyncClick : onClick}
+        >
+          {/* Grain layers render as direct children (need absolute positioning) */}
+          {grainElements}
+          {/* Content renders above grain via z-[2] span wrapper */}
+          {isAsyncFeedback ? asyncFeedbackIcon : renderStartSlot()}
+          {isAsyncFeedback ? contentElements : renderChildren()}
+          {isAsyncFeedback ? null : renderEndSlot()}
+        </button>
+      </IconProvider>
     )
   },
 )

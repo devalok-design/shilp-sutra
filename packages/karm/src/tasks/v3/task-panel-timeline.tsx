@@ -4,6 +4,9 @@ import * as React from 'react'
 import { IconChevronDown, IconMessageCircle, IconRobot } from '@tabler/icons-react'
 import { cn } from '@/ui/lib/utils'
 import { Badge } from '@/ui/badge'
+import { Button } from '@/ui/button'
+import { Separator } from '@/ui/separator'
+import { ToggleGroup, ToggleGroupItem } from '@/ui/toggle-group'
 import { EmptyState } from '@/composed/empty-state'
 import { MotionCollapse } from '@/motion/primitives'
 import { StreamingText } from '../../chat/streaming-text'
@@ -187,10 +190,11 @@ function CollapsedSystemGroup({ group }: { group: CollapsedGroup }) {
 
   return (
     <div className="flex flex-col gap-ds-01">
-      <button
-        type="button"
+      <Button
+        variant="ghost"
+        size="xs"
         onClick={() => setExpanded(!expanded)}
-        className="flex items-center gap-ds-02 text-ds-xs text-surface-fg-subtle hover:text-surface-fg transition-colors"
+        className="gap-ds-02 text-ds-xs text-surface-fg-subtle hover:text-surface-fg h-auto px-0"
       >
         <span className="font-semibold text-surface-fg">
           {group.actorName}
@@ -206,7 +210,7 @@ function CollapsedSystemGroup({ group }: { group: CollapsedGroup }) {
             expanded && 'rotate-180',
           )}
         />
-      </button>
+      </Button>
 
       <MotionCollapse show={expanded}>
         <div className="flex flex-col gap-ds-02 pl-ds-02">
@@ -231,11 +235,11 @@ function CollapsedSystemGroup({ group }: { group: CollapsedGroup }) {
 function DateDivider({ timestamp }: { timestamp: string }) {
   return (
     <div className="flex items-center gap-ds-03 py-ds-03">
-      <div className="flex-1 border-t border-surface-border-subtle" />
+      <Separator className="flex-1" variant="gradient-right" />
       <span className="text-[10px] font-medium text-surface-fg-subtle/50 uppercase tracking-wider">
         {formatDateDivider(timestamp)}
       </span>
-      <div className="flex-1 border-t border-surface-border-subtle" />
+      <Separator className="flex-1" variant="gradient-left" />
     </div>
   )
 }
@@ -247,11 +251,11 @@ function DateDivider({ timestamp }: { timestamp: string }) {
 function UnreadDivider() {
   return (
     <div className="relative flex items-center py-ds-02">
-      <div className="flex-1 border-t-2 border-dashed border-accent-7" />
+      <Separator className="flex-1 h-[2px] bg-accent-7" />
       <span className="px-ds-03 text-ds-xs font-semibold text-accent-11">
         NEW
       </span>
-      <div className="flex-1 border-t-2 border-dashed border-accent-7" />
+      <Separator className="flex-1 h-[2px] bg-accent-7" />
     </div>
   )
 }
@@ -301,22 +305,24 @@ function FilterBar({
   onChange: (filter: TimelineFilter) => void
 }) {
   return (
-    <div className="flex items-center gap-ds-01 px-ds-02 pb-ds-02">
-      {FILTERS.map((f) => (
-        <button
-          key={f.key}
-          type="button"
-          onClick={() => onChange(f.key)}
-          className={cn(
-            'rounded-full px-ds-03 py-ds-01 text-ds-xs transition-colors',
-            value === f.key
-              ? 'bg-accent-3 text-accent-11'
-              : 'bg-surface-raised-hover text-surface-fg-subtle hover:text-surface-fg',
-          )}
-        >
-          {f.label}
-        </button>
-      ))}
+    <div className="px-ds-02 pb-ds-02">
+      <ToggleGroup
+        type="single"
+        value={value}
+        onValueChange={(v) => { if (v) onChange(v as TimelineFilter) }}
+        size="sm"
+        variant="outline"
+      >
+        {FILTERS.map((f) => (
+          <ToggleGroupItem
+            key={f.key}
+            value={f.key}
+            className="rounded-full px-ds-03 py-ds-01 text-ds-xs"
+          >
+            {f.label}
+          </ToggleGroupItem>
+        ))}
+      </ToggleGroup>
     </div>
   )
 }
@@ -577,17 +583,19 @@ export function TaskPanelTimeline({
 
       {/* "N new" floating pill */}
       {userScrolledUp && newCount > 0 && (
-        <button
-          type="button"
+        <Button
+          variant="solid"
+          size="xs"
+          shape="pill"
           onClick={() => {
             scrollToBottom()
             setUserScrolledUp(false)
             setNewCount(0)
           }}
-          className="absolute bottom-ds-04 left-1/2 -translate-x-1/2 rounded-full bg-accent-9 px-ds-03 py-ds-01 text-ds-xs font-medium text-white shadow-md transition-colors hover:bg-accent-10"
+          className="absolute bottom-ds-04 left-1/2 -translate-x-1/2 shadow-md"
         >
           &darr; {newCount} new
-        </button>
+        </Button>
       )}
     </div>
   )

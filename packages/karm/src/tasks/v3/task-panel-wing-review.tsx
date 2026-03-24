@@ -126,8 +126,8 @@ export function TaskPanelReviewCard() {
             <div className="flex items-center gap-ds-02 mt-ds-04">
               <Button
                 variant="solid"
+                color="success"
                 size="sm"
-                className="bg-success-9 hover:bg-success-10 text-white"
                 onClick={onApproveReview}
               >
                 <IconCheck className="mr-ds-01 h-ico-sm w-ico-sm" />
@@ -135,8 +135,8 @@ export function TaskPanelReviewCard() {
               </Button>
               <Button
                 variant="ghost"
+                color="error"
                 size="sm"
-                className="text-surface-fg-muted hover:text-error-11"
                 onClick={() => onRequestChanges('')}
               >
                 Request Changes

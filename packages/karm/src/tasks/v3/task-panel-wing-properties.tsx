@@ -13,6 +13,8 @@ import {
   IconPlus,
 } from '@tabler/icons-react'
 import { motion } from 'framer-motion'
+import { Button } from '@/ui/button'
+import { Input } from '@/ui/input'
 import { cn } from '@/ui/lib/utils'
 import { Avatar, AvatarImage, AvatarFallback } from '@/ui/avatar'
 import { Badge } from '@/ui/badge'
@@ -105,9 +107,6 @@ const PRIORITY_CONFIG: Record<
 
 const interactiveValueBase =
   'rounded-ds-md px-ds-01 py-ds-01 -mx-ds-01 hover:bg-surface-raised-hover transition-colors cursor-pointer'
-
-const popoverOptionBase =
-  'flex w-full items-center gap-ds-03 rounded-ds-md px-ds-03 py-ds-02b transition-colors hover:bg-surface-raised-hover'
 
 // ---------------------------------------------------------------------------
 // Wing animation config
@@ -221,15 +220,12 @@ export function TaskPanelPropertiesCard() {
           {interactive && (
             <Tooltip>
               <TooltipTrigger asChild>
-                <button
-                  type="button"
+                <Button
+                  variant={task.visibility === 'EVERYONE' ? 'soft' : 'ghost'}
+                  color={task.visibility === 'EVERYONE' ? 'success' : 'neutral'}
+                  size="compact-sm"
+                  shape="pill"
                   onClick={onToggleVisibility}
-                  className={cn(
-                    'flex items-center gap-ds-02 rounded-full px-ds-03 py-ds-01 text-ds-xs font-medium transition-colors',
-                    task.visibility === 'EVERYONE'
-                      ? 'bg-success-3 text-success-11 hover:bg-success-4'
-                      : 'bg-surface-raised-hover text-surface-fg-subtle hover:bg-surface-3',
-                  )}
                 >
                   {task.visibility === 'EVERYONE' ? (
                     <>
@@ -242,7 +238,7 @@ export function TaskPanelPropertiesCard() {
                       Internal
                     </>
                   )}
-                </button>
+                </Button>
               </TooltipTrigger>
               <TooltipContent>
                 {task.visibility === 'EVERYONE'
@@ -263,13 +259,14 @@ export function TaskPanelPropertiesCard() {
             {interactive ? (
               <Popover open={statusOpen} onOpenChange={setStatusOpen}>
                 <PopoverTrigger asChild>
-                  <button
-                    type="button"
-                    className="flex items-center gap-ds-02 rounded-ds-md -mx-ds-01 px-ds-01 py-ds-01 hover:bg-surface-raised-hover transition-colors"
+                  <Button
+                    variant="ghost"
+                    size="compact-xs"
+                    className="flex items-center gap-ds-02 -mx-ds-01"
                   >
                     <span className={cn('h-2 w-2 shrink-0 rounded-full', statusDotColor)} />
                     <span className="text-ds-sm text-surface-fg truncate">{statusName}</span>
-                  </button>
+                  </Button>
                 </PopoverTrigger>
                 <PopoverContent
                   className="w-[180px] border-surface-border-strong bg-surface-overlay p-ds-02"
@@ -277,15 +274,17 @@ export function TaskPanelPropertiesCard() {
                   sideOffset={4}
                 >
                   {task.statusOptions.map((opt) => (
-                    <button
+                    <Button
                       key={opt.id}
-                      type="button"
+                      variant="ghost"
+                      size="xs"
+                      weight="normal"
                       onClick={() => {
                         onUpdateStatus(opt.id)
                         setStatusOpen(false)
                       }}
                       className={cn(
-                        popoverOptionBase,
+                        'w-full justify-start gap-ds-03',
                         opt.id === task.status && 'bg-surface-raised-hover',
                       )}
                     >
@@ -294,7 +293,7 @@ export function TaskPanelPropertiesCard() {
                       {opt.id === task.status && (
                         <IconCheck className="ml-auto h-ico-sm w-ico-sm text-accent-11" />
                       )}
-                    </button>
+                    </Button>
                   ))}
                 </PopoverContent>
               </Popover>
@@ -314,9 +313,10 @@ export function TaskPanelPropertiesCard() {
             {interactive ? (
               <Popover open={dueDateOpen} onOpenChange={setDueDateOpen}>
                 <PopoverTrigger asChild>
-                  <button
-                    type="button"
-                    className="flex items-center gap-ds-02 rounded-ds-md -mx-ds-01 px-ds-01 py-ds-01 hover:bg-surface-raised-hover transition-colors"
+                  <Button
+                    variant="ghost"
+                    size="compact-xs"
+                    className="flex items-center gap-ds-02 -mx-ds-01"
                   >
                     <span
                       className={cn(
@@ -330,7 +330,7 @@ export function TaskPanelPropertiesCard() {
                     >
                       {task.dueDate ? formatDate(task.dueDate) : 'None'}
                     </span>
-                  </button>
+                  </Button>
                 </PopoverTrigger>
                 <PopoverContent
                   className="w-[220px] border-surface-border-strong bg-surface-overlay p-ds-03"
@@ -341,8 +341,9 @@ export function TaskPanelPropertiesCard() {
                     <span className="text-ds-xs font-medium text-surface-fg-muted">
                       Due date
                     </span>
-                    <input
+                    <Input
                       type="date"
+                      size="sm"
                       defaultValue={task.dueDate ? task.dueDate.slice(0, 10) : ''}
                       onChange={(e) => {
                         const val = e.target.value
@@ -353,7 +354,6 @@ export function TaskPanelPropertiesCard() {
                         }
                         setDueDateOpen(false)
                       }}
-                      className="rounded-ds-md border border-surface-border bg-surface-1 px-ds-03 py-ds-02 text-ds-sm text-surface-fg outline-none focus:border-accent-9"
                     />
                   </label>
                 </PopoverContent>
@@ -384,15 +384,16 @@ export function TaskPanelPropertiesCard() {
             {interactive ? (
               <Popover open={priorityOpen} onOpenChange={setPriorityOpen}>
                 <PopoverTrigger asChild>
-                  <button
-                    type="button"
+                  <Button
+                    variant="ghost"
+                    size="xs"
                     className={cn('flex items-center gap-ds-02', interactiveValueBase)}
                   >
                     <PriorityIcon className={cn('h-3.5 w-3.5', priorityCfg.className)} />
                     <span className={cn('text-ds-sm truncate', priorityCfg.className)}>
                       {priorityCfg.label}
                     </span>
-                  </button>
+                  </Button>
                 </PopoverTrigger>
                 <PopoverContent
                   className="w-[180px] border-surface-border-strong bg-surface-overlay p-ds-02"
@@ -403,15 +404,17 @@ export function TaskPanelPropertiesCard() {
                     const c = PRIORITY_CONFIG[p]
                     const PIcon = c.icon
                     return (
-                      <button
+                      <Button
                         key={p}
-                        type="button"
+                        variant="ghost"
+                        size="xs"
+                        weight="normal"
                         onClick={() => {
                           onUpdatePriority(p)
                           setPriorityOpen(false)
                         }}
                         className={cn(
-                          popoverOptionBase,
+                          'w-full justify-start gap-ds-03',
                           p === task.priority && 'bg-surface-raised-hover',
                         )}
                       >
@@ -420,7 +423,7 @@ export function TaskPanelPropertiesCard() {
                         {p === task.priority && (
                           <IconCheck className="ml-auto h-ico-sm w-ico-sm text-accent-11" />
                         )}
-                      </button>
+                      </Button>
                     )
                   })}
                 </PopoverContent>
@@ -440,8 +443,9 @@ export function TaskPanelPropertiesCard() {
             {interactive ? (
               <Popover open={leadOpen} onOpenChange={setLeadOpen}>
                 <PopoverTrigger asChild>
-                  <button
-                    type="button"
+                  <Button
+                    variant="ghost"
+                    size="xs"
                     className={cn('flex items-center gap-ds-02', interactiveValueBase)}
                   >
                     {task.leads.length > 0 ? (
@@ -475,7 +479,7 @@ export function TaskPanelPropertiesCard() {
                         </span>
                       </>
                     )}
-                  </button>
+                  </Button>
                 </PopoverTrigger>
                 <PopoverContent
                   className="w-[200px] border-surface-border-strong bg-surface-overlay p-ds-02"
@@ -485,9 +489,11 @@ export function TaskPanelPropertiesCard() {
                   {task.members.map((member) => {
                     const isSelected = task.leads.some((l) => l.id === member.id)
                     return (
-                      <button
+                      <Button
                         key={member.id}
-                        type="button"
+                        variant="ghost"
+                        size="xs"
+                        weight="normal"
                         onClick={() => {
                           if (isSelected) {
                             onRemoveLead(member.id)
@@ -496,7 +502,7 @@ export function TaskPanelPropertiesCard() {
                           }
                         }}
                         className={cn(
-                          popoverOptionBase,
+                          'w-full justify-start gap-ds-03',
                           isSelected && 'bg-surface-raised-hover',
                         )}
                       >
@@ -510,7 +516,7 @@ export function TaskPanelPropertiesCard() {
                         {isSelected && (
                           <IconCheck className="ml-auto h-ico-sm w-ico-sm text-accent-11" />
                         )}
-                      </button>
+                      </Button>
                     )
                   })}
                 </PopoverContent>
@@ -548,8 +554,9 @@ export function TaskPanelPropertiesCard() {
             {interactive ? (
               <Popover open={assigneeOpen} onOpenChange={setAssigneeOpen}>
                 <PopoverTrigger asChild>
-                  <button
-                    type="button"
+                  <Button
+                    variant="ghost"
+                    size="xs"
                     className={cn('flex items-center gap-ds-02', interactiveValueBase)}
                   >
                     {task.assignees.length > 0 ? (
@@ -585,7 +592,7 @@ export function TaskPanelPropertiesCard() {
                         </span>
                       </>
                     )}
-                  </button>
+                  </Button>
                 </PopoverTrigger>
                 <PopoverContent
                   className="w-[200px] border-surface-border-strong bg-surface-overlay p-ds-02"
@@ -595,9 +602,11 @@ export function TaskPanelPropertiesCard() {
                   {task.members.map((member) => {
                     const isSelected = task.assignees.some((a) => a.id === member.id)
                     return (
-                      <button
+                      <Button
                         key={member.id}
-                        type="button"
+                        variant="ghost"
+                        size="xs"
+                        weight="normal"
                         onClick={() => {
                           if (isSelected) {
                             onRemoveAssignee(member.id)
@@ -606,7 +615,7 @@ export function TaskPanelPropertiesCard() {
                           }
                         }}
                         className={cn(
-                          popoverOptionBase,
+                          'w-full justify-start gap-ds-03',
                           isSelected && 'bg-surface-raised-hover',
                         )}
                       >
@@ -620,7 +629,7 @@ export function TaskPanelPropertiesCard() {
                         {isSelected && (
                           <IconCheck className="ml-auto h-ico-sm w-ico-sm text-accent-11" />
                         )}
-                      </button>
+                      </Button>
                     )
                   })}
                 </PopoverContent>
@@ -683,13 +692,14 @@ export function TaskPanelPropertiesCard() {
               {interactive && (
                 <Popover open={labelOpen} onOpenChange={setLabelOpen}>
                   <PopoverTrigger asChild>
-                    <button
-                      type="button"
-                      className="flex h-[16px] w-[16px] items-center justify-center rounded-full border border-dashed border-surface-fg-subtle text-surface-fg-subtle hover:border-accent-9 hover:text-accent-11 transition-colors opacity-0 group-hover/labels:opacity-100"
+                    <Button
+                      variant="ghost"
+                      size="icon-xs"
+                      className="rounded-full border border-dashed border-surface-fg-subtle text-surface-fg-subtle hover:border-accent-9 hover:text-accent-11 opacity-0 group-hover/labels:opacity-100 h-[16px] w-[16px]"
                       aria-label="Add label"
                     >
                       <IconPlus className="h-2.5 w-2.5" />
-                    </button>
+                    </Button>
                   </PopoverTrigger>
                   <PopoverContent
                     className="w-[200px] border-surface-border-strong bg-surface-overlay p-ds-03"
@@ -700,12 +710,12 @@ export function TaskPanelPropertiesCard() {
                       <span className="text-ds-xs font-medium text-surface-fg-muted">
                         New label
                       </span>
-                      <input
+                      <Input
                         type="text"
+                        size="sm"
                         value={newLabel}
                         onChange={(e) => setNewLabel(e.target.value)}
                         onKeyDown={handleLabelKeyDown}
-                        className="rounded-ds-md border border-surface-border bg-surface-1 px-ds-03 py-ds-02 text-ds-sm text-surface-fg outline-none focus:border-accent-9"
                         placeholder="Label name..."
                         autoFocus
                       />

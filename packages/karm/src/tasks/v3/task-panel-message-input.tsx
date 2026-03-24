@@ -83,15 +83,12 @@ export function TaskPanelMessageInput({
         {showVisibilityToggle && (
           <Tooltip>
             <TooltipTrigger asChild>
-              <button
-                type="button"
+              <Button
+                variant="ghost"
+                color={visibility === 'CLIENT' ? 'warning' : 'accent'}
+                size="icon-xs"
                 onClick={() => setVisibility(v => v === 'INTERNAL' ? 'CLIENT' : 'INTERNAL')}
-                className={cn(
-                  'mb-px shrink-0 rounded-ds-md p-ds-01 transition-colors',
-                  visibility === 'CLIENT'
-                    ? 'text-warning-11 hover:bg-warning-3'
-                    : 'text-surface-fg-subtle hover:bg-surface-raised-hover',
-                )}
+                className="mb-px shrink-0"
                 aria-label={
                   visibility === 'INTERNAL'
                     ? 'Team only — click to make visible to client'
@@ -99,11 +96,11 @@ export function TaskPanelMessageInput({
                 }
               >
                 {visibility === 'INTERNAL' ? (
-                  <IconLock className="h-ico-sm w-ico-sm" />
+                  <IconLock className="h-3.5 w-3.5" />
                 ) : (
-                  <IconEye className="h-ico-sm w-ico-sm" />
+                  <IconEye className="h-3.5 w-3.5" />
                 )}
-              </button>
+              </Button>
             </TooltipTrigger>
             <TooltipContent>
               {visibility === 'INTERNAL'

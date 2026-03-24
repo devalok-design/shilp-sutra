@@ -5,6 +5,8 @@ import { IconMoodSmile, IconArrowBackUp, IconPencil, IconTrash } from '@tabler/i
 import { cn } from '@/ui/lib/utils'
 import { Avatar, AvatarImage, AvatarFallback } from '@/ui/avatar'
 import { Badge } from '@/ui/badge'
+import { Button } from '@/ui/button'
+import { Textarea } from '@/ui/textarea'
 import type { Comment, Reaction } from '../task-panel-types'
 
 // ---------------------------------------------------------------------------
@@ -179,14 +181,15 @@ export function TimelineComment({
 
         {/* Content — editable inline or rendered HTML */}
         {isEditing ? (
-          <textarea
+          <Textarea
             ref={editRef}
             value={editDraft}
             onChange={(e) => setEditDraft(e.target.value)}
             onBlur={handleEditSave}
             onKeyDown={handleEditKeyDown}
+            size="sm"
             className={cn(
-              'w-full resize-none rounded-ds-md border border-surface-border bg-surface-raised p-ds-03 text-ds-sm leading-relaxed text-surface-fg outline-none focus:border-accent-8 focus:ring-1 focus:ring-accent-8',
+              'resize-none',
               !isGrouped && 'mt-ds-01',
             )}
             rows={3}
@@ -208,20 +211,21 @@ export function TimelineComment({
         {reactions && reactions.length > 0 && (
           <div className="mt-ds-02 flex flex-wrap gap-ds-01" data-testid="reactions-row">
             {reactions.map((reaction) => (
-              <button
+              <Button
                 key={reaction.emoji}
-                type="button"
+                variant="ghost"
+                size="xs"
+                shape="pill"
                 onClick={() => onReact(comment.id, reaction.emoji)}
                 className={cn(
-                  'inline-flex items-center gap-ds-01 rounded-full px-ds-02 py-px text-ds-xs transition-colors',
-                  'bg-surface-raised hover:bg-surface-raised-hover',
+                  'px-ds-02 h-auto py-px',
                   reaction.reacted && 'bg-accent-3 border border-accent-6',
                 )}
                 data-testid="reaction-button"
               >
                 <span>{reaction.emoji}</span>
-                <span>{reaction.count}</span>
-              </button>
+                <span className="text-ds-xs">{reaction.count}</span>
+              </Button>
             ))}
           </div>
         )}
@@ -231,26 +235,26 @@ export function TimelineComment({
       <div
         className="absolute -top-2 right-0 flex items-center gap-ds-01 rounded-ds-md border border-surface-border bg-surface-raised px-ds-01 py-ds-01 shadow-sm opacity-0 group-hover:opacity-100 transition-opacity"
       >
-        <button
-          type="button"
-          className="rounded-ds-md p-ds-01 text-surface-fg-subtle hover:bg-surface-raised-hover hover:text-surface-fg transition-colors"
+        <Button
+          variant="ghost"
+          size="icon-xs"
           aria-label="Add reaction"
           onClick={() => onReact(comment.id, '')}
           data-testid="react-trigger"
         >
-          <IconMoodSmile className="h-ico-sm w-ico-sm" />
-        </button>
-        <button
-          type="button"
-          className="rounded-ds-md p-ds-01 text-surface-fg-subtle hover:bg-surface-raised-hover hover:text-surface-fg transition-colors"
+          <IconMoodSmile className="h-3.5 w-3.5" />
+        </Button>
+        <Button
+          variant="ghost"
+          size="icon-xs"
           aria-label="Reply"
         >
-          <IconArrowBackUp className="h-ico-sm w-ico-sm" />
-        </button>
+          <IconArrowBackUp className="h-3.5 w-3.5" />
+        </Button>
         {canEdit && (
-          <button
-            type="button"
-            className="rounded-ds-md p-ds-01 text-surface-fg-subtle hover:bg-surface-raised-hover hover:text-surface-fg transition-colors"
+          <Button
+            variant="ghost"
+            size="icon-xs"
             aria-label="Edit comment"
             onClick={() => {
               setEditDraft(comment.content)
@@ -258,19 +262,19 @@ export function TimelineComment({
             }}
             data-testid="edit-trigger"
           >
-            <IconPencil className="h-ico-sm w-ico-sm" />
-          </button>
+            <IconPencil className="h-3.5 w-3.5" />
+          </Button>
         )}
         {canDelete && (
-          <button
-            type="button"
-            className="rounded-ds-md p-ds-01 text-surface-fg-subtle hover:bg-surface-raised-hover hover:text-surface-fg transition-colors"
+          <Button
+            variant="ghost"
+            size="icon-xs"
             aria-label="Delete comment"
             onClick={() => onDeleteComment!(comment.id)}
             data-testid="delete-trigger"
           >
-            <IconTrash className="h-ico-sm w-ico-sm" />
-          </button>
+            <IconTrash className="h-3.5 w-3.5" />
+          </Button>
         )}
       </div>
     </div>

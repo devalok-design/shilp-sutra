@@ -7,6 +7,7 @@ import {
   IconX,
   IconMessage,
 } from '@tabler/icons-react'
+import { Icon } from '@/ui/icon'
 import type { ReviewRequest } from '../task-types'
 
 type ReviewStatus = ReviewRequest['status']
@@ -62,7 +63,7 @@ const ReviewResponseForm = React.forwardRef<HTMLDivElement, ReviewResponseFormPr
             />
             <div className="flex items-center gap-ds-02b">
               {RESPONSE_OPTIONS.map((opt) => {
-                const Icon = opt.icon
+                const OptIcon = opt.icon
                 return (
                   <button
                     key={opt.status}
@@ -78,7 +79,7 @@ const ReviewResponseForm = React.forwardRef<HTMLDivElement, ReviewResponseFormPr
                         'bg-error-3 text-error-11 hover:opacity-90',
                     )}
                   >
-                    <Icon className="h-3 w-3" stroke={2} />
+                    <Icon icon={OptIcon as any} size="xs" />
                     {opt.label}
                   </button>
                 )

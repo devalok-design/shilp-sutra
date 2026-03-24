@@ -10,6 +10,7 @@ import {
   IconCheck,
   IconUser,
 } from '@tabler/icons-react'
+import { Icon } from '@/ui/icon'
 import { cn } from '@/ui/lib/utils'
 import { Avatar, AvatarImage, AvatarFallback } from '@/ui/avatar'
 import { Popover, PopoverTrigger, PopoverContent } from '@/ui/popover'
@@ -133,7 +134,7 @@ function StatusPill({ interactive }: { interactive: boolean }) {
             <span className="h-2 w-2 shrink-0 rounded-full bg-accent-9" aria-hidden />
             <span className="text-ds-sm text-surface-fg">{opt.name}</span>
             {opt.id === task.status && (
-              <IconCheck className="ml-auto h-ico-sm w-ico-sm text-accent-11" />
+              <Icon icon={IconCheck} size="sm" className="ml-auto text-accent-11" />
             )}
           </button>
         ))}
@@ -168,7 +169,7 @@ function AssigneePill({ interactive }: { interactive: boolean }) {
     </>
   ) : (
     <>
-      <IconUser className="h-3.5 w-3.5 text-surface-fg-subtle" />
+      <Icon icon={IconUser} size="xs" className="text-surface-fg-subtle" />
       <span className="text-surface-fg-subtle">Unassigned</span>
     </>
   )
@@ -229,7 +230,7 @@ function AssigneePill({ interactive }: { interactive: boolean }) {
               </Avatar>
               <span className="text-ds-sm text-surface-fg">{member.name}</span>
               {isSelected && (
-                <IconCheck className="ml-auto h-ico-sm w-ico-sm text-accent-11" />
+                <Icon icon={IconCheck} size="sm" className="ml-auto text-accent-11" />
               )}
             </button>
           )
@@ -248,11 +249,11 @@ function PriorityPill({ interactive }: { interactive: boolean }) {
   const [open, setOpen] = React.useState(false)
 
   const config = PRIORITY_CONFIG[task.priority]
-  const Icon = config.icon
+  const PrioIcon = config.icon
 
   const content = (
     <>
-      <Icon className={cn('h-3.5 w-3.5', config.className)} />
+      <Icon icon={PrioIcon as any} size="xs" className={config.className} />
       <span className="text-surface-fg">{config.label}</span>
     </>
   )
@@ -303,10 +304,10 @@ function PriorityPill({ interactive }: { interactive: boolean }) {
                 p === task.priority && 'bg-surface-raised-hover',
               )}
             >
-              <PIcon className={cn('h-ico-sm w-ico-sm', c.className)} />
+              <Icon icon={PIcon as any} size="sm" className={c.className} />
               <span className="text-ds-sm text-surface-fg">{c.label}</span>
               {p === task.priority && (
-                <IconCheck className="ml-auto h-ico-sm w-ico-sm text-accent-11" />
+                <Icon icon={IconCheck} size="sm" className="ml-auto text-accent-11" />
               )}
             </button>
           )
@@ -327,7 +328,7 @@ function DueDatePill({ interactive }: { interactive: boolean }) {
 
   const content = (
     <>
-      <IconCalendar className="h-3.5 w-3.5 text-surface-fg-subtle" />
+      <Icon icon={IconCalendar} size="xs" className="text-surface-fg-subtle" />
       <span className={task.dueDate ? 'text-surface-fg' : 'text-surface-fg-subtle'}>
         {task.dueDate ? formatDate(task.dueDate) : 'No due date'}
       </span>
@@ -452,7 +453,7 @@ function PeekTriageRow() {
             type="button"
             className={cn(pillBase, pillInteractive, 'text-ds-xs')}
           >
-            <PriorityIcon className={cn('h-3 w-3', priorityCfg.className)} />
+            <Icon icon={PriorityIcon as any} size="xs" className={priorityCfg.className} />
             {priorityCfg.label}
           </button>
         </PopoverTrigger>
@@ -478,7 +479,7 @@ function PeekTriageRow() {
                   p === task.priority && 'bg-surface-raised-hover',
                 )}
               >
-                <PIcon className={cn('h-ico-sm w-ico-sm', c.className)} />
+                <Icon icon={PIcon as any} size="sm" className={c.className} />
                 <span className="text-ds-sm">{c.label}</span>
               </button>
             )
@@ -510,7 +511,7 @@ function PeekTriageRow() {
               </>
             ) : (
               <>
-                <IconUser className="h-3 w-3 text-surface-fg-subtle" />
+                <Icon icon={IconUser} size="xs" className="text-surface-fg-subtle" />
                 Unassigned
               </>
             )}
@@ -548,7 +549,7 @@ function PeekTriageRow() {
                 </Avatar>
                 <span className="text-ds-sm">{member.name}</span>
                 {isSelected && (
-                  <IconCheck className="ml-auto h-ico-sm w-ico-sm text-accent-11" />
+                  <Icon icon={IconCheck} size="sm" className="ml-auto text-accent-11" />
                 )}
               </button>
             )

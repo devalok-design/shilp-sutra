@@ -3,6 +3,7 @@
 import * as React from 'react'
 import { useState, useEffect, useRef } from 'react'
 import { IconChevronLeft, IconChevronRight } from '@tabler/icons-react'
+import { Icon } from '@/ui/icon'
 import { EditIcon, ArrowRightIcon, ArrowDownIcon } from '../icons'
 import { toast } from '@/ui/toast'
 import {
@@ -461,7 +462,7 @@ export const EditBreak = React.forwardRef<HTMLDivElement, EditBreakProps>(functi
                         className="rounded-ds-full p-ds-03 hover:bg-surface-raised-active"
                         onClick={() => picker.navigateMonth('prev')}
                       >
-                        <IconChevronLeft className="h-ico-md w-ico-md" />
+                        <Icon icon={IconChevronLeft} size="md" />
                       </button>
                       <div className="text-ds-md font-semibold uppercase">
                         {new Date(picker.currentYear, picker.currentMonth).toLocaleString(
@@ -477,7 +478,7 @@ export const EditBreak = React.forwardRef<HTMLDivElement, EditBreakProps>(functi
                         className="rounded-ds-full p-ds-03 hover:bg-surface-raised-active"
                         onClick={() => picker.navigateMonth('next')}
                       >
-                        <IconChevronRight className="h-ico-md w-ico-md" />
+                        <Icon icon={IconChevronRight} size="md" />
                       </button>
                     </div>
 

@@ -4,6 +4,7 @@ import * as React from 'react'
 import { cn } from '@/ui/lib/utils'
 import { MemberPicker } from '@/composed/member-picker'
 import { IconPlus } from '@tabler/icons-react'
+import { Icon } from '@/ui/icon'
 import type { Member } from '../task-types'
 
 // ============================================================
@@ -37,7 +38,7 @@ const ReviewRequestButton = React.forwardRef<HTMLDivElement, ReviewRequestButton
             type="button"
             className="mt-ds-04 inline-flex items-center gap-ds-02b rounded-ds-lg px-ds-03 py-ds-02b text-ds-md text-surface-fg-subtle transition-colors hover:bg-surface-raised-hover hover:text-surface-fg-muted"
           >
-            <IconPlus className="h-ico-sm w-ico-sm" stroke={1.5} />
+            <Icon icon={IconPlus} size="sm" stroke="light" />
             Request Review
           </button>
         </MemberPicker>

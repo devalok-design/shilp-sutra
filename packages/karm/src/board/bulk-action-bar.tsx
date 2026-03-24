@@ -23,6 +23,7 @@ import {
   IconEye,
   IconTrash,
 } from '@tabler/icons-react'
+import { Icon } from '@/ui/icon'
 import { useBoardContext } from './board-context'
 import { PRIORITY_COLORS } from './board-constants'
 
@@ -83,7 +84,7 @@ export const BulkActionBar = React.forwardRef<HTMLDivElement, BulkActionBarProps
                 title="Clear selection"
                 className="h-6 w-6"
               >
-                <IconX className="h-3.5 w-3.5" />
+                <Icon icon={IconX} size="xs" />
               </Button>
             </div>
 
@@ -95,7 +96,7 @@ export const BulkActionBar = React.forwardRef<HTMLDivElement, BulkActionBarProps
                 <DropdownMenu>
                   <DropdownMenuTrigger asChild>
                     <Button variant="ghost" size="sm" title="Move to column">
-                      <IconArrowRight className="h-ico-sm w-ico-sm mr-ds-01" />
+                      <Icon icon={IconArrowRight} size="sm" className="mr-ds-01" />
                       Move
                     </Button>
                   </DropdownMenuTrigger>
@@ -119,7 +120,7 @@ export const BulkActionBar = React.forwardRef<HTMLDivElement, BulkActionBarProps
                 <DropdownMenu>
                   <DropdownMenuTrigger asChild>
                     <Button variant="ghost" size="sm" title="Set priority">
-                      <IconAlertTriangle className="h-ico-sm w-ico-sm mr-ds-01" />
+                      <Icon icon={IconAlertTriangle} size="sm" className="mr-ds-01" />
                       Priority
                     </Button>
                   </DropdownMenuTrigger>
@@ -145,7 +146,7 @@ export const BulkActionBar = React.forwardRef<HTMLDivElement, BulkActionBarProps
                   <DropdownMenu>
                     <DropdownMenuTrigger asChild>
                       <Button variant="ghost" size="sm" title="Assign">
-                        <IconUser className="h-ico-sm w-ico-sm mr-ds-01" />
+                        <Icon icon={IconUser} size="sm" className="mr-ds-01" />
                         Assign
                       </Button>
                     </DropdownMenuTrigger>
@@ -170,7 +171,7 @@ export const BulkActionBar = React.forwardRef<HTMLDivElement, BulkActionBarProps
                 <DropdownMenu>
                   <DropdownMenuTrigger asChild>
                     <Button variant="ghost" size="sm" title="Set visibility">
-                      <IconEye className="h-ico-sm w-ico-sm mr-ds-01" />
+                      <Icon icon={IconEye} size="sm" className="mr-ds-01" />
                       Visibility
                     </Button>
                   </DropdownMenuTrigger>
@@ -198,7 +199,7 @@ export const BulkActionBar = React.forwardRef<HTMLDivElement, BulkActionBarProps
                   onClick={() => handleAction('delete')}
                   title="Delete selected tasks"
                 >
-                  <IconTrash className="h-ico-sm w-ico-sm mr-ds-01" />
+                  <Icon icon={IconTrash} size="sm" className="mr-ds-01" />
                   Delete
                 </Button>
               </MotionStaggerItem>

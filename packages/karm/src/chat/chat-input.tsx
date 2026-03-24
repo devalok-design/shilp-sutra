@@ -3,6 +3,7 @@
 import * as React from 'react'
 import { useState, useRef, useCallback, type KeyboardEvent } from 'react'
 import { IconSend, IconSquare } from '@tabler/icons-react'
+import { Icon } from '@/ui/icon'
 import { Button } from '@/ui/button'
 import { cn } from '@/ui/lib/utils'
 
@@ -74,11 +75,11 @@ export const ChatInput = React.forwardRef<HTMLDivElement, ChatInputProps>(
         />
         {isStreaming ? (
           <Button variant="solid" color="error" size="icon-sm" className="h-ds-sm w-ds-sm shrink-0 rounded-ds-lg" onClick={onCancel} aria-label="Stop generating">
-            <IconSquare className="h-ico-sm w-ico-sm" />
+            <Icon icon={IconSquare} size="sm" />
           </Button>
         ) : (
           <Button size="icon-sm" className="h-ds-sm w-ds-sm shrink-0 rounded-ds-lg" onClick={handleSend} disabled={!text.trim()} aria-label="Send message">
-            <IconSend className="h-ico-sm w-ico-sm" />
+            <Icon icon={IconSend} size="sm" />
           </Button>
         )}
       </div>

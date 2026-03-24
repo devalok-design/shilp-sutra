@@ -1,6 +1,7 @@
 'use client'
 
 import { IconEye, IconCheck, IconFile, IconPhoto } from '@tabler/icons-react'
+import { Icon } from '@/ui/icon'
 import { motion } from 'framer-motion'
 import { tweens } from '@/ui/lib/motion'
 import { Button } from '@/ui/button'
@@ -66,7 +67,7 @@ function ReviewFilesList({
             key={file.name}
             className="flex items-center gap-ds-02 rounded-ds-md px-ds-02 py-ds-01 text-ds-xs text-surface-fg-muted"
           >
-            <FileIcon className="h-3 w-3 shrink-0 text-surface-fg-subtle" />
+            <Icon icon={FileIcon} size="xs" className="shrink-0 text-surface-fg-subtle" />
             <span className="min-w-0 truncate">{file.name}</span>
             <span className="ml-auto shrink-0 text-surface-fg-subtle">
               {file.size}
@@ -102,7 +103,7 @@ export function TaskPanelReviewCard() {
           /* Client view — action buttons to approve/reject */
           <>
             <div className="flex items-center gap-ds-02 mb-ds-03">
-              <IconEye className="h-ico-sm w-ico-sm text-accent-11" />
+              <Icon icon={IconEye} size="sm" className="text-accent-11" />
               <span className="text-ds-sm font-semibold text-accent-11">
                 Review Requested
               </span>
@@ -130,7 +131,7 @@ export function TaskPanelReviewCard() {
                 size="sm"
                 onClick={onApproveReview}
               >
-                <IconCheck className="mr-ds-01 h-ico-sm w-ico-sm" />
+                <Icon icon={IconCheck} size="sm" className="mr-ds-01" />
                 Approve
               </Button>
               <Button
@@ -147,7 +148,7 @@ export function TaskPanelReviewCard() {
           /* Staff view — read-only status */
           <>
             <div className="flex items-center gap-ds-02 mb-ds-03">
-              <IconEye className="h-ico-sm w-ico-sm text-accent-11" />
+              <Icon icon={IconEye} size="sm" className="text-accent-11" />
               <span className="text-ds-sm font-semibold text-accent-11">
                 Awaiting Review
               </span>

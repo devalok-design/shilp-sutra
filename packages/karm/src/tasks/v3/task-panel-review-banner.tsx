@@ -2,6 +2,7 @@
 
 import * as React from 'react'
 import { IconEye } from '@tabler/icons-react'
+import { Icon } from '@/ui/icon'
 import { cn } from '@/ui/lib/utils'
 import { Button } from '@/ui/button'
 import { MotionCollapse } from '@/motion/primitives'
@@ -51,7 +52,7 @@ export function TaskPanelReviewBanner({
         {...props}
       >
         <div className="flex items-start gap-ds-03">
-          <IconEye className="h-ico-md w-ico-md shrink-0 text-accent-11" />
+          <Icon icon={IconEye} size="md" className="shrink-0 text-accent-11" />
           <div className="min-w-0 flex-1">
             <p className="text-ds-sm font-semibold text-accent-11">
               REVIEW REQUESTED
@@ -75,7 +76,7 @@ export function TaskPanelReviewBanner({
               reviewEntry?.scrollIntoView({ behavior: 'smooth', block: 'center' })
             }}
           >
-            <IconEye className="mr-ds-02 h-ico-sm w-ico-sm" />
+            <Icon icon={IconEye} size="sm" className="mr-ds-02" />
             View Changes
           </Button>
           <Button

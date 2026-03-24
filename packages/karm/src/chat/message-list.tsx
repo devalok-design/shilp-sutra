@@ -8,6 +8,7 @@ import { springs } from '@/ui/lib/motion'
 import { useComposedRef } from '../utils/use-composed-ref'
 import { StreamingText } from './streaming-text'
 import { IconRobot, IconUser, IconAlertCircle } from '@tabler/icons-react'
+import { Icon } from '@/ui/icon'
 import ReactMarkdown from 'react-markdown'
 import { markdownComponents } from './markdown-components'
 
@@ -72,7 +73,7 @@ export const MessageList = React.forwardRef<HTMLDivElement, MessageListProps>(
       <div ref={forwardedRef} className={cn("flex flex-1 items-center justify-center p-ds-06", className)} {...props}>
         <div className="flex flex-col items-center gap-ds-04 text-center">
           <div className="flex h-ds-lg w-ds-lg items-center justify-center rounded-ds-full bg-surface-raised-hover">
-            <IconRobot className="h-ico-lg w-ico-lg text-surface-fg-muted" />
+            <Icon icon={IconRobot} size="lg" className="text-surface-fg-muted" />
           </div>
           <h3 className="text-ds-base text-surface-fg">
             {emptyTitle}
@@ -100,7 +101,7 @@ export const MessageList = React.forwardRef<HTMLDivElement, MessageListProps>(
                 className="flex justify-center"
               >
                 <div className="flex items-center gap-ds-03 rounded-ds-lg bg-error-3 px-ds-04 py-ds-03">
-                  <IconAlertCircle className="h-ico-sm w-ico-sm shrink-0 text-error-11" />
+                  <Icon icon={IconAlertCircle} size="sm" className="shrink-0 text-error-11" />
                   <p className="text-ds-sm text-error-11">
                     {msg.content}
                   </p>
@@ -123,7 +124,7 @@ export const MessageList = React.forwardRef<HTMLDivElement, MessageListProps>(
                     <p className="text-ds-md whitespace-pre-wrap">{msg.content}</p>
                   </div>
                   <div className="flex h-ds-xs-plus w-ds-xs-plus shrink-0 items-center justify-center rounded-ds-full bg-surface-raised-hover">
-                    <IconUser className="h-ico-sm w-ico-sm text-surface-fg-muted" />
+                    <Icon icon={IconUser} size="sm" className="text-surface-fg-muted" />
                   </div>
                 </div>
               </motion.div>
@@ -141,7 +142,7 @@ export const MessageList = React.forwardRef<HTMLDivElement, MessageListProps>(
             >
               <div className="flex max-w-[85%] items-start gap-ds-03">
                 <div className="flex h-ds-xs-plus w-ds-xs-plus shrink-0 items-center justify-center rounded-ds-full bg-surface-raised-hover">
-                  <IconRobot className="h-ico-sm w-ico-sm text-surface-fg-muted" />
+                  <Icon icon={IconRobot} size="sm" className="text-surface-fg-muted" />
                 </div>
                 <div className="rounded-ds-2xl rounded-bl-ds-sm bg-surface-raised-hover px-ds-04 py-ds-03">
                   <div className="text-ds-md text-surface-fg">
@@ -166,7 +167,7 @@ export const MessageList = React.forwardRef<HTMLDivElement, MessageListProps>(
           >
             <div className="flex max-w-[85%] items-start gap-ds-03">
               <div className="flex h-ds-xs-plus w-ds-xs-plus shrink-0 items-center justify-center rounded-ds-full bg-surface-raised-hover">
-                <IconRobot className="h-ico-sm w-ico-sm text-surface-fg-muted" />
+                <Icon icon={IconRobot} size="sm" className="text-surface-fg-muted" />
               </div>
               <div className="rounded-ds-2xl rounded-bl-ds-sm bg-surface-raised-hover px-ds-04 py-ds-03">
                 <div className="text-ds-md text-surface-fg">
@@ -188,7 +189,7 @@ export const MessageList = React.forwardRef<HTMLDivElement, MessageListProps>(
           >
             <div className="flex max-w-[85%] items-start gap-ds-03">
               <div className="flex h-ds-xs-plus w-ds-xs-plus shrink-0 items-center justify-center rounded-ds-full bg-surface-raised-hover">
-                <IconRobot className="h-ico-sm w-ico-sm text-surface-fg-muted" />
+                <Icon icon={IconRobot} size="sm" className="text-surface-fg-muted" />
               </div>
               <div className="rounded-ds-2xl rounded-bl-ds-sm bg-surface-raised-hover px-ds-04 py-ds-03">
                 <div className="flex items-center gap-ds-02b py-ds-02">

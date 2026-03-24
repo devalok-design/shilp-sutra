@@ -6,6 +6,7 @@ import { motion, AnimatePresence } from 'framer-motion'
 import ReactMarkdown from 'react-markdown'
 import { markdownComponents } from '../chat/markdown-components'
 import { IconChevronDown, IconRefresh, IconSparkles } from '@tabler/icons-react'
+import { Icon } from '@/ui/icon'
 import { springs } from '@/ui/lib/motion'
 import { cn } from '@/ui/lib/utils'
 import { formatRelativeTime } from '@/ui/lib/date-utils'
@@ -80,7 +81,7 @@ const DailyBrief = React.forwardRef<HTMLDivElement, DailyBriefProps>(
   if (unavailable) {
     return (
       <div ref={ref} className={cn('flex items-center gap-ds-03 rounded-ds-2xl border border-surface-border-strong bg-surface-raised shadow-raised px-ds-05b py-ds-05', className)} {...props}>
-        <IconSparkles className="h-ico-sm w-ico-sm text-surface-fg-subtle" />
+        <Icon icon={IconSparkles} size="sm" className="text-surface-fg-subtle" />
         <span className="text-ds-sm text-surface-fg-subtle">AI brief unavailable</span>
       </div>
     )
@@ -101,7 +102,7 @@ const DailyBrief = React.forwardRef<HTMLDivElement, DailyBriefProps>(
             onClick={() => setCollapsed(!collapsed)}
             className="flex flex-1 items-center gap-ds-03 transition-colors hover:opacity-80"
           >
-            <IconSparkles className="h-ico-sm w-ico-sm text-accent-11" />
+            <Icon icon={IconSparkles} size="sm" className="text-accent-11" />
             <span className="text-ds-base font-semibold text-surface-fg">
               {displayTitle}
             </span>
@@ -114,7 +115,7 @@ const DailyBrief = React.forwardRef<HTMLDivElement, DailyBriefProps>(
           </button>
         ) : (
           <div className="flex items-center gap-ds-03">
-            <IconSparkles className="h-ico-sm w-ico-sm text-accent-11" />
+            <Icon icon={IconSparkles} size="sm" className="text-accent-11" />
             <span className="text-ds-base font-semibold text-surface-fg">
               {displayTitle}
             </span>

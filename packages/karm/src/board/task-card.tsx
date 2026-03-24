@@ -21,6 +21,7 @@ import {
   IconLock,
   IconSubtask,
 } from '@tabler/icons-react'
+import { Icon } from '@/ui/icon'
 import { useBoardContext } from './board-context'
 import type { BoardTask } from './board-types'
 import { PRIORITY_COLORS } from './board-constants'
@@ -206,7 +207,7 @@ function TaskCardVisual({
       {/* Row 1 — Header: TaskID + Priority + drag handle */}
       <div className="flex items-center gap-ds-02">
         <span className="text-ds-xs font-mono leading-none text-surface-fg-subtle">{task.taskId}</span>
-        <PriorityIcon className={cn('h-3 w-3 flex-shrink-0', priorityColor)} title={`Priority: ${task.priority}`} />
+        <Icon icon={PriorityIcon} size="xs" className={cn('flex-shrink-0', priorityColor)} label={`Priority: ${task.priority}`} />
 
         <div className="flex-1" />
 
@@ -225,7 +226,7 @@ function TaskCardVisual({
             aria-roledescription="sortable"
             onClick={(e) => e.stopPropagation()}
           >
-            <IconGripVertical className="h-ico-sm w-ico-sm text-surface-fg-subtle" />
+            <Icon icon={IconGripVertical} size="sm" className="text-surface-fg-subtle" />
           </button>
         )}
       </div>
@@ -246,7 +247,7 @@ function TaskCardVisual({
             )}
             title={`Due: ${dueInfo.label}`}
           >
-            <IconCalendar className="h-3 w-3" />
+            <Icon icon={IconCalendar} size="xs" />
             <span>{dueInfo.label}</span>
           </div>
         )}
@@ -257,7 +258,7 @@ function TaskCardVisual({
             className="flex items-center gap-ds-01 text-ds-xs text-surface-fg-subtle"
             title={`Subtasks: ${task.subtasksDone} of ${task.subtaskCount} done`}
           >
-            <IconSubtask className="h-3 w-3" />
+            <Icon icon={IconSubtask} size="xs" />
             <span>{task.subtasksDone}/{task.subtaskCount}</span>
           </div>
         )}
@@ -265,14 +266,14 @@ function TaskCardVisual({
         {/* Visibility badge */}
         {task.visibility === 'EVERYONE' && (
           <span className="flex items-center text-surface-fg-subtle" aria-label="Client visible" title="Visible to client">
-            <IconEye className="h-3 w-3" />
+            <Icon icon={IconEye} size="xs" />
           </span>
         )}
 
         {/* Blocked badge */}
         {task.isBlocked && (
           <span className="flex items-center text-error-11" aria-label="Blocked" title="Blocked">
-            <IconLock className="h-3 w-3" />
+            <Icon icon={IconLock} size="xs" />
           </span>
         )}
 
@@ -465,7 +466,7 @@ function TaskCardCompactVisual({
       )}
 
       {/* Priority icon */}
-      <PriorityIcon className={cn('h-3.5 w-3.5 flex-shrink-0', priorityColor)} title={`Priority: ${task.priority}`} />
+      <Icon icon={PriorityIcon} size="xs" className={cn('flex-shrink-0', priorityColor)} label={`Priority: ${task.priority}`} />
 
       {/* Task ID */}
       <span className="text-ds-xs font-mono text-surface-fg-subtle flex-shrink-0">

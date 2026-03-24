@@ -2,6 +2,7 @@
 
 import * as React from 'react'
 import { IconFilter, IconFilterX } from '@tabler/icons-react'
+import { Icon } from '@/ui/icon'
 import { cn } from '@/ui/lib/utils'
 import { useScratchpad } from './scratchpad-context'
 
@@ -20,7 +21,7 @@ const ScratchpadFilterToggle = React.forwardRef<HTMLButtonElement, ScratchpadFil
   function ScratchpadFilterToggle({ className, ...props }, ref) {
     const { showCompleted, setShowCompleted } = useScratchpad()
 
-    const Icon = showCompleted ? IconFilter : IconFilterX
+    const FilterIcon = showCompleted ? IconFilter : IconFilterX
 
     return (
       <button
@@ -34,7 +35,7 @@ const ScratchpadFilterToggle = React.forwardRef<HTMLButtonElement, ScratchpadFil
         )}
         {...props}
       >
-        <Icon className="h-3.5 w-3.5" />
+        <Icon icon={FilterIcon} size="xs" />
       </button>
     )
   },

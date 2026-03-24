@@ -33,6 +33,7 @@ import { useBoardKeyboard } from './use-board-keyboard'
 import { COLUMN_WIDTH } from './board-constants'
 import type { BoardTask, BoardColumn as BoardColumnType, NewTaskOptions } from './board-types'
 import { IconPlus } from '@tabler/icons-react'
+import { Icon } from '@/ui/icon'
 import { Button } from '@/ui/button'
 import { Badge } from '@/ui/badge'
 import { MotionStagger, MotionStaggerItem } from '@/motion/primitives'
@@ -371,7 +372,7 @@ function BoardCanvas({ className }: { className?: string }) {
             onClick={onAddColumn}
             className="h-ds-md w-[320px] justify-start gap-ds-03 rounded-ds-xl border border-dashed border-surface-border bg-surface-raised text-surface-fg-subtle hover:border-accent-7 hover:bg-accent-2 hover:text-accent-11"
           >
-            <IconPlus className="h-ico-sm w-ico-sm" />
+            <Icon icon={IconPlus} size="sm" />
             Add column
           </Button>
         </div>}

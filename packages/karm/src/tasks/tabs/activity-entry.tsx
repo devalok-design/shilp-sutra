@@ -18,6 +18,7 @@ import {
   IconCircleCheck,
   IconEdit,
 } from '@tabler/icons-react'
+import { Icon } from '@/ui/icon'
 import type { Icon as TablerIcon } from '@tabler/icons-react'
 import { formatTimestamp } from '../task-utils'
 import type { AuditLogEntry } from '../task-types'
@@ -187,7 +188,7 @@ export interface ActivityEntryProps extends React.HTMLAttributes<HTMLDivElement>
 const ActivityEntry = React.forwardRef<HTMLDivElement, ActivityEntryProps>(
   function ActivityEntry({ entry, className, ...props }, ref) {
     const config = ACTION_MAP[entry.action] || DEFAULT_ACTION
-    const Icon = config.icon
+    const EntryIcon = config.icon
     const actorName = getActorName(entry)
     const description = config.getDescription(entry)
 
@@ -201,8 +202,9 @@ const ActivityEntry = React.forwardRef<HTMLDivElement, ActivityEntryProps>(
             )}
           >
             <Icon
-              className={cn('h-3 w-3', config.color)}
-              stroke={2}
+              icon={EntryIcon as any}
+              size="xs"
+              className={config.color}
             />
           </div>
         </div>

@@ -8,6 +8,7 @@ import {
   PopoverTrigger,
 } from '@/ui/popover'
 import { IconPlus, IconX } from '@tabler/icons-react'
+import { Icon } from '@/ui/icon'
 import type { LabelOption } from '../task-types'
 
 // ============================================================
@@ -120,7 +121,7 @@ const TaskLabelEditor = React.forwardRef<HTMLDivElement, TaskLabelEditorProps>(
                   className="rounded-ds-full p-ds-01 transition-colors hover:bg-surface-raised-hover"
                   aria-label={`Remove label ${label}`}
                 >
-                  <IconX className="h-ds-03 w-ds-03" />
+                  <Icon icon={IconX} size="xs" />
                 </button>
               )}
             </span>
@@ -197,7 +198,7 @@ const TaskLabelEditor = React.forwardRef<HTMLDivElement, TaskLabelEditorProps>(
               className="inline-flex h-ico-md w-ico-md items-center justify-center rounded-ds-full border border-dashed border-surface-border transition-colors hover:bg-surface-raised-hover hover:border-surface-border"
               aria-label="Add label"
             >
-              <IconPlus className="h-3 w-3 text-surface-fg-subtle" />
+              <Icon icon={IconPlus} size="xs" className="text-surface-fg-subtle" />
             </button>
           )
         )}

@@ -15,6 +15,7 @@ import {
   IconCheck,
   IconChevronDown,
 } from '@tabler/icons-react'
+import { Icon } from '@/ui/icon'
 import { PRIORITY_LABELS } from '../task-constants'
 import type { Priority } from '../task-types'
 
@@ -48,10 +49,10 @@ export interface TaskPriorityPickerProps {
 
 function PriorityIndicator({ priority }: { priority: Priority }) {
   const config = PRIORITY_ICONS[priority]
-  const Icon = config.icon
+  const PrioIcon = config.icon
   return (
     <div className="flex items-center gap-ds-02b">
-      <Icon className={cn('h-ico-sm w-ico-sm', config.className)} />
+      <Icon icon={PrioIcon as any} size="sm" className={config.className} />
       <span className="text-ds-md text-surface-fg">
         {PRIORITY_LABELS[priority] ?? priority}
       </span>
@@ -87,7 +88,7 @@ const TaskPriorityPicker = React.forwardRef<HTMLButtonElement, TaskPriorityPicke
             )}
           >
             <PriorityIndicator priority={value} />
-            <IconChevronDown className="h-3 w-3 text-surface-fg-subtle" />
+            <Icon icon={IconChevronDown} size="xs" className="text-surface-fg-subtle" />
           </button>
         </PopoverTrigger>
         <PopoverContent
@@ -111,7 +112,7 @@ const TaskPriorityPicker = React.forwardRef<HTMLButtonElement, TaskPriorityPicke
             >
               <PriorityIndicator priority={p} />
               {p === value && (
-                <IconCheck className="ml-auto h-ico-sm w-ico-sm text-accent-11" />
+                <Icon icon={IconCheck} size="sm" className="ml-auto text-accent-11" />
               )}
             </button>
           ))}

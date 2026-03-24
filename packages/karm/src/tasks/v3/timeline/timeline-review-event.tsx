@@ -2,6 +2,7 @@
 
 import * as React from 'react'
 import { IconCheck, IconArrowBackUp, IconClock } from '@tabler/icons-react'
+import { Icon } from '@/ui/icon'
 import { cn } from '@/ui/lib/utils'
 import type { ReviewEvent } from '../task-panel-types'
 
@@ -62,14 +63,15 @@ export interface TimelineReviewEventProps {
 export function TimelineReviewEvent({ entry }: TimelineReviewEventProps) {
   const { event } = entry
   const config = ACTION_CONFIG[event.action]
-  const Icon = config.icon
+  const ReviewIcon = config.icon
 
   return (
     <div className="flex flex-col gap-ds-01" data-testid="timeline-review-event">
       <div className="flex items-center gap-ds-02 text-ds-sm">
         <Icon
-          className={cn('h-ico-sm w-ico-sm shrink-0', config.className)}
-          data-testid={`review-icon-${event.action}`}
+          icon={ReviewIcon as any}
+          size="sm"
+          className={cn('shrink-0', config.className)}
         />
         <span className="text-surface-fg-muted">
           <span className="font-semibold text-surface-fg">

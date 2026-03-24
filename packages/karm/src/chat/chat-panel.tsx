@@ -8,6 +8,7 @@ import { ConversationList, type Conversation } from './conversation-list'
 import { useState } from 'react'
 import { cn } from '@/ui/lib/utils'
 import { IconMessagePlus, IconHistory, IconX, IconChevronDown } from '@tabler/icons-react'
+import { Icon } from '@/ui/icon'
 import {
   DropdownMenu,
   DropdownMenuTrigger,
@@ -145,7 +146,7 @@ const ChatPanel = React.forwardRef<HTMLDivElement, ChatPanelProps>(
                   <span className="text-ds-sm text-surface-fg-subtle">
                     {selectedAgent?.desc}
                   </span>
-                  <IconChevronDown className="h-ico-sm w-ico-sm text-surface-fg-subtle" />
+                  <Icon icon={IconChevronDown} size="sm" className="text-surface-fg-subtle" />
                 </button>
               </DropdownMenuTrigger>
               <DropdownMenuContent align="start" className="w-72">
@@ -220,7 +221,7 @@ const ChatPanel = React.forwardRef<HTMLDivElement, ChatPanelProps>(
             className="flex h-ds-sm w-ds-sm items-center justify-center rounded-ds-lg text-surface-fg-muted transition-colors hover:bg-surface-raised-hover"
             aria-label="New chat"
           >
-            <IconMessagePlus className="h-ico-sm w-ico-sm" />
+            <Icon icon={IconMessagePlus} size="sm" />
           </button>
 
           {/* IconHistory Toggle */}
@@ -234,7 +235,7 @@ const ChatPanel = React.forwardRef<HTMLDivElement, ChatPanelProps>(
             )}
             aria-label="Conversation history"
           >
-            <IconHistory className="h-ico-sm w-ico-sm" />
+            <Icon icon={IconHistory} size="sm" />
           </button>
 
           {/* Close */}
@@ -243,7 +244,7 @@ const ChatPanel = React.forwardRef<HTMLDivElement, ChatPanelProps>(
             className="flex h-ds-sm w-ds-sm items-center justify-center rounded-ds-lg text-surface-fg-muted transition-colors hover:bg-surface-raised-hover"
             aria-label="Close chat"
           >
-            <IconX className="h-ico-sm w-ico-sm" />
+            <Icon icon={IconX} size="sm" />
           </button>
         </div>
 

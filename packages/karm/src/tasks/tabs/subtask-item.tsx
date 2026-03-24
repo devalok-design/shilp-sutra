@@ -11,6 +11,7 @@ import {
   IconSquareCheck,
   IconSquare,
 } from '@tabler/icons-react'
+import { Icon } from '@/ui/icon'
 import { getInitials } from '@/composed/lib/string-utils'
 import { PRIORITY_DOT_COLORS } from '../task-constants'
 import type { Subtask } from '../task-types'
@@ -66,9 +67,9 @@ const SubtaskItem = React.forwardRef<HTMLDivElement, SubtaskItemProps>(
           )}
         >
           {isComplete ? (
-            <IconSquareCheck className="h-ico-sm w-ico-sm text-accent-11" stroke={1.5} />
+            <Icon icon={IconSquareCheck} size="sm" stroke="light" className="text-accent-11" />
           ) : (
-            <IconSquare className="h-ico-sm w-ico-sm text-surface-fg-subtle" stroke={1.5} />
+            <Icon icon={IconSquare} size="sm" stroke="light" className="text-surface-fg-subtle" />
           )}
         </button>
 

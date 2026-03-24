@@ -4,6 +4,7 @@ import * as React from 'react'
 import { useState, useRef, useEffect } from 'react'
 import { motion } from 'framer-motion'
 import { IconGripVertical, IconArrowUp, IconX } from '@tabler/icons-react'
+import { Icon } from '@/ui/icon'
 import { useSortable } from '@dnd-kit/sortable'
 import { CSS } from '@dnd-kit/utilities'
 import { springs } from '@/ui/lib/motion'
@@ -160,7 +161,7 @@ const ScratchpadItem = React.forwardRef<HTMLDivElement, ScratchpadItemProps>(
               aria-label={`Promote ${item.text}`}
               className="flex h-ico-md w-ico-md items-center justify-center rounded-ds-sm text-accent-11 transition-colors duration-150 hover:bg-accent-3 hover:text-accent-12"
             >
-              <IconArrowUp className="h-3 w-3" />
+              <Icon icon={IconArrowUp} size="xs" />
             </button>
           )}
 
@@ -172,7 +173,7 @@ const ScratchpadItem = React.forwardRef<HTMLDivElement, ScratchpadItemProps>(
               aria-label={`Delete ${item.text}`}
               className="flex h-ico-md w-ico-md items-center justify-center rounded-ds-sm text-surface-fg-subtle transition-colors duration-150 hover:bg-error-3 hover:text-error-11"
             >
-              <IconX className="h-3 w-3" />
+              <Icon icon={IconX} size="xs" />
             </button>
           )}
 
@@ -184,7 +185,7 @@ const ScratchpadItem = React.forwardRef<HTMLDivElement, ScratchpadItemProps>(
               aria-label={`Drag ${item.text}`}
               {...listeners}
             >
-              <IconGripVertical className="h-3.5 w-3.5" />
+              <Icon icon={IconGripVertical} size="xs" />
             </button>
           )}
         </div>

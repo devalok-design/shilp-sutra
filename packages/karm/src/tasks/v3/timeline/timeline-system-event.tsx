@@ -9,6 +9,7 @@ import {
   IconCalendar,
   IconEye,
 } from '@tabler/icons-react'
+import { Icon } from '@/ui/icon'
 import type { SystemEvent } from '../task-panel-types'
 
 // ---------------------------------------------------------------------------
@@ -56,14 +57,14 @@ export interface TimelineSystemEventProps {
 
 export function TimelineSystemEvent({ entry }: TimelineSystemEventProps) {
   const { event } = entry
-  const Icon = ACTION_ICONS[event.action]
+  const EventIcon = ACTION_ICONS[event.action]
 
   return (
     <div
       className="flex items-center gap-ds-02 py-ds-01 text-[11px] text-surface-fg-subtle/60"
       data-testid="timeline-system-event"
     >
-      <Icon className="h-3.5 w-3.5 shrink-0" data-testid={`icon-${event.action}`} />
+      <Icon icon={EventIcon as any} size="xs" className="shrink-0" />
       <span>
         <span className="font-medium">{event.actorName}</span>
         {' '}

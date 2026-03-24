@@ -24,6 +24,7 @@ import {
   IconPaperclip,
   IconActivity,
 } from '@tabler/icons-react'
+import { Icon } from '@/ui/icon'
 
 // ============================================================
 // Types
@@ -417,7 +418,7 @@ const TaskDetailPanel = React.forwardRef<HTMLDivElement, TaskDetailPanelProps>(f
                     ))}
                     {visibleTabs.map((tab) => (
                       <TabsTrigger key={tab.id} value={tab.id}>
-                        <tab.icon className="h-ico-sm w-ico-sm" stroke={1.5} />
+                        <Icon icon={tab.icon} size="sm" stroke="light" />
                         {tab.label}
                       </TabsTrigger>
                     ))}

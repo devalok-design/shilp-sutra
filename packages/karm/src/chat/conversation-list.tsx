@@ -2,6 +2,7 @@
 
 import * as React from 'react'
 import { IconMessage, IconArchive, IconTrash, IconMessagePlus } from '@tabler/icons-react'
+import { Icon } from '@/ui/icon'
 import { cn } from '@/ui/lib/utils'
 import { formatRelativeTime } from '@/ui/lib/date-utils'
 
@@ -52,7 +53,7 @@ export const ConversationList = React.forwardRef<HTMLDivElement, ConversationLis
           onClick={onNewChat}
           className="flex items-center gap-ds-02b rounded-ds-lg px-ds-03 py-ds-02b text-surface-fg-muted transition-colors hover:bg-surface-raised-hover"
         >
-          <IconMessagePlus className="h-ico-sm w-ico-sm" />
+          <Icon icon={IconMessagePlus} size="sm" />
           <span className="text-ds-sm">New Chat</span>
         </button>
       </div>
@@ -103,7 +104,7 @@ export const ConversationList = React.forwardRef<HTMLDivElement, ConversationLis
                       className="flex h-ds-xs-plus w-ds-xs-plus items-center justify-center rounded-ds-md text-surface-fg-subtle transition-colors hover:bg-surface-raised-hover hover:text-surface-fg-muted"
                       aria-label="Archive conversation"
                     >
-                      <IconArchive className="h-ico-sm w-ico-sm" />
+                      <Icon icon={IconArchive} size="sm" />
                     </button>
                   )}
                   {onDelete && (
@@ -115,7 +116,7 @@ export const ConversationList = React.forwardRef<HTMLDivElement, ConversationLis
                       className="flex h-ds-xs-plus w-ds-xs-plus items-center justify-center rounded-ds-md text-surface-fg-subtle transition-colors hover:bg-error-3 hover:text-error-11"
                       aria-label="Delete conversation"
                     >
-                      <IconTrash className="h-ico-sm w-ico-sm" />
+                      <Icon icon={IconTrash} size="sm" />
                     </button>
                   )}
                 </div>

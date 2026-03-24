@@ -8,6 +8,7 @@ import {
   PopoverTrigger,
 } from '@/ui/popover'
 import { IconCalendarEvent, IconX } from '@tabler/icons-react'
+import { Icon } from '@/ui/icon'
 
 // ============================================================
 // Helpers
@@ -105,7 +106,7 @@ const TaskDatePicker = React.forwardRef<HTMLButtonElement, TaskDatePickerProps>(
               type="button"
               className="inline-flex items-center gap-ds-02b rounded-ds-md px-ds-03 py-ds-02 text-ds-md transition-colors hover:bg-surface-raised-hover"
             >
-              <IconCalendarEvent className="h-ico-sm w-ico-sm text-surface-fg-subtle" stroke={1.5} />
+              <Icon icon={IconCalendarEvent} size="sm" stroke="light" className="text-surface-fg-subtle" />
               <span className={dateValue ? 'text-surface-fg' : 'text-surface-fg-subtle'}>
                 {displayText}
               </span>
@@ -190,7 +191,7 @@ const TaskDatePicker = React.forwardRef<HTMLButtonElement, TaskDatePickerProps>(
             className="rounded-ds-md p-ds-02 transition-colors hover:bg-surface-raised-hover"
             aria-label="Clear due date"
           >
-            <IconX className="h-3 w-3 text-surface-fg-subtle" />
+            <Icon icon={IconX} size="xs" className="text-surface-fg-subtle" />
           </button>
         )}
       </div>

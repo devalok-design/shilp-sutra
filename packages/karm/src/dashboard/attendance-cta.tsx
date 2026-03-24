@@ -3,6 +3,7 @@
 import * as React from 'react'
 import { cn } from '@/ui/lib/utils'
 import { IconArrowRight, IconCheck, IconClock, IconCoffee } from '@tabler/icons-react'
+import { Icon } from '@/ui/icon'
 
 // ============================================================
 // Types
@@ -100,7 +101,7 @@ const AttendanceCTA = React.forwardRef<HTMLDivElement, AttendanceCTAProps>(
           </div>
           <div className="flex items-center gap-ds-03 rounded-ds-xl bg-success-3 px-ds-05 py-ds-03">
             <div className="flex h-ico-md w-ico-md items-center justify-center rounded-ds-full bg-success-9">
-              <IconCheck className="h-ico-sm w-ico-sm text-accent-fg" />
+              <Icon icon={IconCheck} size="sm" className="text-accent-fg" />
             </div>
             <span className="text-ds-md font-semibold text-success-11">
               Marked at{' '}
@@ -129,7 +130,7 @@ const AttendanceCTA = React.forwardRef<HTMLDivElement, AttendanceCTAProps>(
             </p>
           </div>
           <div className="flex items-center gap-ds-03 rounded-ds-xl bg-warning-3 px-ds-05 py-ds-03">
-            <IconCoffee className="h-ico-sm w-ico-sm text-warning-11" />
+            <Icon icon={IconCoffee} size="sm" className="text-warning-11" />
             <span className="text-ds-md font-semibold text-warning-11">
               On break
               {attendance?.breakReason ? ` \u2014 ${attendance.breakReason}` : ''}
@@ -157,7 +158,7 @@ const AttendanceCTA = React.forwardRef<HTMLDivElement, AttendanceCTAProps>(
             </p>
           </div>
           <div className="flex items-center gap-ds-03 rounded-ds-xl bg-surface-raised px-ds-05 py-ds-03">
-            <IconClock className="h-ico-sm w-ico-sm text-surface-fg-subtle" />
+            <Icon icon={IconClock} size="sm" className="text-surface-fg-subtle" />
             <span className="text-ds-md text-surface-fg-subtle">
               Attendance window closed
             </span>
@@ -193,7 +194,7 @@ const AttendanceCTA = React.forwardRef<HTMLDivElement, AttendanceCTAProps>(
         >
           {isSubmitting ? 'Marking...' : 'Mark Attendance'}
           {!isSubmitting && (
-            <IconArrowRight className="h-ico-sm w-ico-sm" />
+            <Icon icon={IconArrowRight} size="sm" />
           )}
         </button>
       </div>

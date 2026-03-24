@@ -2,6 +2,7 @@
 
 import * as React from 'react'
 import { IconX, IconArrowsMaximize, IconDots } from '@tabler/icons-react'
+import { Icon } from '@/ui/icon'
 import { cn } from '@/ui/lib/utils'
 import { Button } from '@/ui/button'
 import { InlineEdit } from '@/composed/inline-edit'
@@ -63,7 +64,7 @@ export function TaskPanelHeader({ className, menuSlot, ...props }: TaskPanelHead
               onClick={onExpand}
               aria-label="Expand"
             >
-              <IconArrowsMaximize className="h-ico-sm w-ico-sm" />
+              <Icon icon={IconArrowsMaximize} size="sm" />
             </Button>
           )}
           {/* Composable menu slot — consumer provides their own DropdownMenu here */}
@@ -73,7 +74,7 @@ export function TaskPanelHeader({ className, menuSlot, ...props }: TaskPanelHead
               size="icon-sm"
               aria-label="More actions"
             >
-              <IconDots className="h-ico-sm w-ico-sm" />
+              <Icon icon={IconDots} size="sm" />
             </Button>
           )}
           <Button
@@ -82,7 +83,7 @@ export function TaskPanelHeader({ className, menuSlot, ...props }: TaskPanelHead
             onClick={onClose}
             aria-label="Close"
           >
-            <IconX className="h-ico-sm w-ico-sm" />
+            <Icon icon={IconX} size="sm" />
           </Button>
         </div>
       </div>

@@ -3,6 +3,7 @@
 import * as React from 'react'
 import { cn } from '@/ui/lib/utils'
 import { IconUpload } from '@tabler/icons-react'
+import { Icon } from '@/ui/icon'
 
 // ============================================================
 // Types
@@ -71,10 +72,7 @@ const FileDropZone = React.forwardRef<HTMLDivElement, FileDropZoneProps>(
       >
         <div className="flex flex-col items-center gap-ds-03 py-ds-06">
           <div className="flex h-ds-sm-plus w-ds-sm-plus items-center justify-center rounded-ds-lg bg-surface-raised">
-            <IconUpload
-              className="h-ico-sm w-ico-sm text-surface-fg-subtle"
-              stroke={1.5}
-            />
+            <Icon icon={IconUpload} size="sm" stroke="light" className="text-surface-fg-subtle" />
           </div>
           <div className="text-center">
             <button

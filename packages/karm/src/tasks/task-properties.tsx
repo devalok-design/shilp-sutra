@@ -25,6 +25,7 @@ import {
   IconX,
   IconChevronDown,
 } from '@tabler/icons-react'
+import { Icon } from '@/ui/icon'
 import { getInitials } from '@/composed/lib/string-utils'
 import { MemberPicker } from '@/composed/member-picker'
 import { PRIORITY_LABELS, PRIORITY_DOT_COLORS } from './task-constants'
@@ -84,7 +85,7 @@ const PRIORITIES = ['LOW', 'MEDIUM', 'HIGH', 'URGENT'] as const
 // ============================================================
 
 function PropertyRow({
-  icon: Icon,
+  icon: RowIcon,
   label,
   children,
   className,
@@ -102,7 +103,7 @@ function PropertyRow({
       )}
     >
       <div className="flex w-[120px] shrink-0 items-center gap-ds-03 text-surface-fg-subtle">
-        <Icon className="h-ico-sm w-ico-sm" stroke={1.5} />
+        <Icon icon={RowIcon as any} size="sm" stroke="light" />
         <span className="text-ds-sm">{label}</span>
       </div>
       <div className="flex-1 min-w-0">{children}</div>
@@ -221,7 +222,7 @@ const TaskProperties = React.forwardRef<HTMLDivElement, TaskPropertiesProps>(
                 className="inline-flex items-center gap-ds-02b rounded-ds-md px-ds-03 py-ds-02 text-ds-md text-surface-fg transition-colors hover:bg-surface-raised-hover"
               >
                 <span>{task.column.name}</span>
-                <IconChevronDown className="h-3 w-3 text-surface-fg-subtle" />
+                <Icon icon={IconChevronDown} size="xs" className="text-surface-fg-subtle" />
               </button>
             </PopoverTrigger>
             <PopoverContent
@@ -244,7 +245,7 @@ const TaskProperties = React.forwardRef<HTMLDivElement, TaskPropertiesProps>(
                 >
                   {col.name}
                   {col.id === task.columnId && (
-                    <IconCheck className="ml-auto h-ico-sm w-ico-sm" />
+                    <Icon icon={IconCheck} size="sm" className="ml-auto" />
                   )}
                 </button>
               ))}
@@ -315,7 +316,7 @@ const TaskProperties = React.forwardRef<HTMLDivElement, TaskPropertiesProps>(
                   className="ml-ds-01 rounded-ds-full p-ds-01 transition-colors hover:bg-surface-raised-hover"
                   aria-label={`Remove ${a.user.name}`}
                 >
-                  <IconX className="h-ds-03 w-ds-03 text-surface-fg-subtle" />
+                  <Icon icon={IconX} size="xs" className="text-surface-fg-subtle" />
                 </button>
               )}
             </div>
@@ -332,7 +333,7 @@ const TaskProperties = React.forwardRef<HTMLDivElement, TaskPropertiesProps>(
                 className="inline-flex h-ico-md w-ico-md items-center justify-center rounded-ds-full border border-dashed border-surface-border transition-colors hover:bg-surface-raised-hover hover:border-surface-border"
                 aria-label="Add assignee"
               >
-                <IconPlus className="h-3 w-3 text-surface-fg-subtle" />
+                <Icon icon={IconPlus} size="xs" className="text-surface-fg-subtle" />
               </button>
             </MemberPicker>
           )}
@@ -404,7 +405,7 @@ const TaskProperties = React.forwardRef<HTMLDivElement, TaskPropertiesProps>(
               className="rounded-ds-md p-ds-02 transition-colors hover:bg-surface-raised-hover"
               aria-label="Clear due date"
             >
-              <IconX className="h-3 w-3 text-surface-fg-subtle" />
+              <Icon icon={IconX} size="xs" className="text-surface-fg-subtle" />
             </button>
           )}
         </div>
@@ -426,7 +427,7 @@ const TaskProperties = React.forwardRef<HTMLDivElement, TaskPropertiesProps>(
                   className="rounded-ds-full p-ds-01 transition-colors hover:bg-surface-raised-hover"
                   aria-label={`Remove label ${label}`}
                 >
-                  <IconX className="h-ds-03 w-ds-03" />
+                  <Icon icon={IconX} size="xs" />
                 </button>
               )}
             </span>
@@ -461,7 +462,7 @@ const TaskProperties = React.forwardRef<HTMLDivElement, TaskPropertiesProps>(
                 className="inline-flex h-ico-md w-ico-md items-center justify-center rounded-ds-full border border-dashed border-surface-border transition-colors hover:bg-surface-raised-hover hover:border-surface-border"
                 aria-label="Add label"
               >
-                <IconPlus className="h-3 w-3 text-surface-fg-subtle" />
+                <Icon icon={IconPlus} size="xs" className="text-surface-fg-subtle" />
               </button>
             )
           )}

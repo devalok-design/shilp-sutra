@@ -3,6 +3,7 @@
 import * as React from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
 import { IconArrowLeft } from '@tabler/icons-react'
+import { Icon } from '@/ui/icon'
 import { cn } from '@/ui/lib/utils'
 import { tweens } from '@/ui/lib/motion'
 import { Button } from '@/ui/button'
@@ -44,7 +45,7 @@ export function TaskPanelFull({ className, children }: TaskPanelFullProps) {
             onClick={onClose}
             className="gap-ds-02"
           >
-            <IconArrowLeft className="h-ico-sm w-ico-sm" />
+            <Icon icon={IconArrowLeft} size="sm" />
             Back
           </Button>
         </div>

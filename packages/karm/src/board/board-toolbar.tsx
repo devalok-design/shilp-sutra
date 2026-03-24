@@ -26,6 +26,7 @@ import {
   IconLayoutList,
   IconX,
 } from '@tabler/icons-react'
+import { Icon } from '@/ui/icon'
 import { useBoardContext } from './board-context'
 import { collectAllLabels } from './board-utils'
 
@@ -178,7 +179,7 @@ export const BoardToolbar = React.forwardRef<HTMLDivElement, BoardToolbarProps>(
             placeholder="Search tasks..."
             aria-label="Search tasks"
             size="sm"
-            startIcon={<IconSearch className="h-ico-sm w-ico-sm" />}
+            startIcon={<Icon icon={IconSearch} size="sm" />}
             endIcon={
               searchValue ? (
                 <button
@@ -189,7 +190,7 @@ export const BoardToolbar = React.forwardRef<HTMLDivElement, BoardToolbarProps>(
                   className="pointer-events-auto cursor-pointer text-surface-fg-subtle hover:text-surface-fg"
                   aria-label="Clear search"
                 >
-                  <IconX className="h-3 w-3" />
+                  <Icon icon={IconX} size="xs" />
                 </button>
               ) : undefined
             }
@@ -209,7 +210,7 @@ export const BoardToolbar = React.forwardRef<HTMLDivElement, BoardToolbarProps>(
                 )}
                 title="Filter by priority"
               >
-                <IconFilter className="h-ico-sm w-ico-sm mr-ds-01" />
+                <Icon icon={IconFilter} size="sm" className="mr-ds-01" />
                 Priority
                 {filters.priorities.length > 0 && (
                   <span className="ml-ds-01 text-ds-xs">({filters.priorities.length})</span>
@@ -243,7 +244,7 @@ export const BoardToolbar = React.forwardRef<HTMLDivElement, BoardToolbarProps>(
                   )}
                   title="Filter by assignee"
                 >
-                  <IconUser className="h-ico-sm w-ico-sm mr-ds-01" />
+                  <Icon icon={IconUser} size="sm" className="mr-ds-01" />
                   Assignee
                   {filters.assignees.length > 0 && (
                     <span className="ml-ds-01 text-ds-xs">({filters.assignees.length})</span>
@@ -344,7 +345,7 @@ export const BoardToolbar = React.forwardRef<HTMLDivElement, BoardToolbarProps>(
           aria-pressed={highlightMyTasks}
           className={cn(highlightMyTasks && 'text-accent-11')}
         >
-          <IconUser className="h-ico-sm w-ico-sm" />
+          <Icon icon={IconUser} size="sm" />
         </Button>
 
         {/* View mode toggle */}

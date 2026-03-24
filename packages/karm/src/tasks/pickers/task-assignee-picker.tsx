@@ -10,6 +10,7 @@ import {
 import { MemberPicker } from '@/composed/member-picker'
 import { getInitials } from '@/composed/lib/string-utils'
 import { IconPlus, IconX } from '@tabler/icons-react'
+import { Icon } from '@/ui/icon'
 import type { Member } from '../task-types'
 
 // ============================================================
@@ -77,7 +78,7 @@ const TaskAssigneePicker = React.forwardRef<HTMLDivElement, TaskAssigneePickerPr
                 className="ml-ds-01 rounded-ds-full p-ds-01 transition-colors hover:bg-surface-raised-hover"
                 aria-label={`Remove ${member.name}`}
               >
-                <IconX className="h-ds-03 w-ds-03 text-surface-fg-subtle" />
+                <Icon icon={IconX} size="xs" className="text-surface-fg-subtle" />
               </button>
             )}
           </div>
@@ -94,7 +95,7 @@ const TaskAssigneePicker = React.forwardRef<HTMLDivElement, TaskAssigneePickerPr
               className="inline-flex h-ico-md w-ico-md items-center justify-center rounded-ds-full border border-dashed border-surface-border transition-colors hover:bg-surface-raised-hover hover:border-surface-border"
               aria-label="Add assignee"
             >
-              <IconPlus className="h-3 w-3 text-surface-fg-subtle" />
+              <Icon icon={IconPlus} size="xs" className="text-surface-fg-subtle" />
             </button>
           </MemberPicker>
         )}

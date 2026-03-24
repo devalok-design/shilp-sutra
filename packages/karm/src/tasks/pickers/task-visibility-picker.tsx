@@ -18,6 +18,7 @@ import {
 } from '@/ui/dialog'
 import { Button } from '@/ui/button'
 import { IconLock, IconWorld, IconCheck, IconChevronDown } from '@tabler/icons-react'
+import { Icon } from '@/ui/icon'
 import type { Visibility } from '../task-types'
 
 // ============================================================
@@ -95,7 +96,7 @@ const TaskVisibilityPicker = React.forwardRef<HTMLButtonElement, TaskVisibilityP
     if (readOnly) {
       return (
         <div className={cn('inline-flex items-center gap-ds-02b px-ds-03 py-ds-02 text-ds-md text-surface-fg', className)}>
-          <CurrentIcon className="h-ico-sm w-ico-sm" stroke={1.5} />
+          <Icon icon={CurrentIcon as any} size="sm" stroke="light" />
           <span>{current.label}</span>
         </div>
       )
@@ -113,9 +114,9 @@ const TaskVisibilityPicker = React.forwardRef<HTMLButtonElement, TaskVisibilityP
                 className,
               )}
             >
-              <CurrentIcon className="h-ico-sm w-ico-sm" stroke={1.5} />
+              <Icon icon={CurrentIcon as any} size="sm" stroke="light" />
               <span>{current.label}</span>
-              <IconChevronDown className="h-3 w-3 text-surface-fg-subtle" />
+              <Icon icon={IconChevronDown} size="xs" className="text-surface-fg-subtle" />
             </button>
           </PopoverTrigger>
           <PopoverContent
@@ -124,7 +125,7 @@ const TaskVisibilityPicker = React.forwardRef<HTMLButtonElement, TaskVisibilityP
             sideOffset={4}
           >
             {VISIBILITY_OPTIONS.map((opt) => {
-              const Icon = opt.icon
+              const OptIcon = opt.icon
               return (
                 <button
                   key={opt.value}
@@ -136,13 +137,13 @@ const TaskVisibilityPicker = React.forwardRef<HTMLButtonElement, TaskVisibilityP
                     opt.value === value && 'bg-surface-raised-hover',
                   )}
                 >
-                  <Icon className="h-ico-sm w-ico-sm shrink-0 text-surface-fg-muted" stroke={1.5} />
+                  <Icon icon={OptIcon as any} size="sm" stroke="light" className="shrink-0 text-surface-fg-muted" />
                   <div className="flex-1 min-w-0">
                     <div className="text-ds-md text-surface-fg">{opt.label}</div>
                     <div className="text-ds-xs text-surface-fg-subtle">{opt.description}</div>
                   </div>
                   {opt.value === value && (
-                    <IconCheck className="h-ico-sm w-ico-sm shrink-0 text-accent-11" />
+                    <Icon icon={IconCheck} size="sm" className="shrink-0 text-accent-11" />
                   )}
                 </button>
               )

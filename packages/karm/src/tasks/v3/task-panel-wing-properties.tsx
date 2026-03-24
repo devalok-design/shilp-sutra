@@ -12,6 +12,7 @@ import {
   IconMinus,
   IconPlus,
 } from '@tabler/icons-react'
+import { Icon } from '@/ui/icon'
 import { motion } from 'framer-motion'
 import { Button } from '@/ui/button'
 import { Input } from '@/ui/input'
@@ -229,12 +230,12 @@ export function TaskPanelPropertiesCard() {
                 >
                   {task.visibility === 'EVERYONE' ? (
                     <>
-                      <IconEye className="h-3 w-3" />
+                      <Icon icon={IconEye} size="xs" />
                       Client
                     </>
                   ) : (
                     <>
-                      <IconLock className="h-3 w-3" />
+                      <Icon icon={IconLock} size="xs" />
                       Internal
                     </>
                   )}
@@ -291,7 +292,7 @@ export function TaskPanelPropertiesCard() {
                       <span className={cn('h-2 w-2 shrink-0 rounded-full', getStatusDotColor(opt.name))} aria-hidden />
                       <span className="text-ds-sm text-surface-fg">{opt.name}</span>
                       {opt.id === task.status && (
-                        <IconCheck className="ml-auto h-ico-sm w-ico-sm text-accent-11" />
+                        <Icon icon={IconCheck} size="sm" className="ml-auto text-accent-11" />
                       )}
                     </Button>
                   ))}
@@ -389,7 +390,7 @@ export function TaskPanelPropertiesCard() {
                     size="xs"
                     className={cn('flex items-center gap-ds-02', interactiveValueBase)}
                   >
-                    <PriorityIcon className={cn('h-3.5 w-3.5', priorityCfg.className)} />
+                    <Icon icon={PriorityIcon as any} size="xs" className={priorityCfg.className} />
                     <span className={cn('text-ds-sm truncate', priorityCfg.className)}>
                       {priorityCfg.label}
                     </span>
@@ -418,10 +419,10 @@ export function TaskPanelPropertiesCard() {
                           p === task.priority && 'bg-surface-raised-hover',
                         )}
                       >
-                        <PIcon className={cn('h-ico-sm w-ico-sm', c.className)} />
+                        <Icon icon={PIcon as any} size="sm" className={c.className} />
                         <span className="text-ds-sm text-surface-fg">{c.label}</span>
                         {p === task.priority && (
-                          <IconCheck className="ml-auto h-ico-sm w-ico-sm text-accent-11" />
+                          <Icon icon={IconCheck} size="sm" className="ml-auto text-accent-11" />
                         )}
                       </Button>
                     )
@@ -430,7 +431,7 @@ export function TaskPanelPropertiesCard() {
               </Popover>
             ) : (
               <div className="flex items-center gap-ds-02">
-                <PriorityIcon className={cn('h-3.5 w-3.5', priorityCfg.className)} />
+                <Icon icon={PriorityIcon as any} size="xs" className={priorityCfg.className} />
                 <span className={cn('text-ds-sm truncate', priorityCfg.className)}>
                   {priorityCfg.label}
                 </span>
@@ -472,7 +473,7 @@ export function TaskPanelPropertiesCard() {
                     ) : (
                       <>
                         <span className="flex h-5 w-5 items-center justify-center rounded-full border border-dashed border-surface-fg-subtle">
-                          <IconUser className="h-3 w-3 text-surface-fg-subtle" />
+                          <Icon icon={IconUser} size="xs" className="text-surface-fg-subtle" />
                         </span>
                         <span className="text-ds-sm text-surface-fg-subtle">
                           None
@@ -514,7 +515,7 @@ export function TaskPanelPropertiesCard() {
                         </Avatar>
                         <span className="text-ds-sm text-surface-fg">{member.name}</span>
                         {isSelected && (
-                          <IconCheck className="ml-auto h-ico-sm w-ico-sm text-accent-11" />
+                          <Icon icon={IconCheck} size="sm" className="ml-auto text-accent-11" />
                         )}
                       </Button>
                     )
@@ -585,7 +586,7 @@ export function TaskPanelPropertiesCard() {
                     ) : (
                       <>
                         <span className="flex h-5 w-5 items-center justify-center rounded-full border border-dashed border-surface-fg-subtle">
-                          <IconUser className="h-3 w-3 text-surface-fg-subtle" />
+                          <Icon icon={IconUser} size="xs" className="text-surface-fg-subtle" />
                         </span>
                         <span className="text-ds-sm text-surface-fg-subtle">
                           None
@@ -627,7 +628,7 @@ export function TaskPanelPropertiesCard() {
                         </Avatar>
                         <span className="text-ds-sm text-surface-fg">{member.name}</span>
                         {isSelected && (
-                          <IconCheck className="ml-auto h-ico-sm w-ico-sm text-accent-11" />
+                          <Icon icon={IconCheck} size="sm" className="ml-auto text-accent-11" />
                         )}
                       </Button>
                     )
@@ -661,7 +662,7 @@ export function TaskPanelPropertiesCard() {
               ) : (
                 <div className="flex items-center gap-ds-02">
                   <span className="flex h-5 w-5 items-center justify-center rounded-full border border-dashed border-surface-fg-subtle">
-                    <IconUser className="h-3 w-3 text-surface-fg-subtle" />
+                    <Icon icon={IconUser} size="xs" className="text-surface-fg-subtle" />
                   </span>
                   <span className="text-ds-sm text-surface-fg-subtle">
                     None
@@ -698,7 +699,7 @@ export function TaskPanelPropertiesCard() {
                       className="rounded-full border border-dashed border-surface-fg-subtle text-surface-fg-subtle hover:border-accent-9 hover:text-accent-11 opacity-0 group-hover/labels:opacity-100 h-[16px] w-[16px]"
                       aria-label="Add label"
                     >
-                      <IconPlus className="h-2.5 w-2.5" />
+                      <Icon icon={IconPlus} size="xs" />
                     </Button>
                   </PopoverTrigger>
                   <PopoverContent

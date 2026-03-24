@@ -4,6 +4,7 @@ import * as React from 'react'
 import { cn } from '@/ui/lib/utils'
 import { Button } from '@/ui/button'
 import { IconPlus } from '@tabler/icons-react'
+import { Icon } from '@/ui/icon'
 
 // ============================================================
 // Illustrations — 4 variants cycling by column index
@@ -145,7 +146,7 @@ export const ColumnEmpty = React.forwardRef<HTMLDivElement, ColumnEmptyProps>(({
               size="sm"
               onClick={onAddTask}
             >
-              <IconPlus className="h-ico-sm w-ico-sm" />
+              <Icon icon={IconPlus} size="sm" />
               Add a task
             </Button>
           )}

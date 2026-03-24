@@ -24,6 +24,7 @@ import {
   IconEyeOff,
   IconTrash,
 } from '@tabler/icons-react'
+import { Icon } from '@/ui/icon'
 import { useBoardContext } from './board-context'
 import { collectAllLabels } from './board-utils'
 import { PRIORITY_COLORS } from './board-constants'
@@ -73,20 +74,22 @@ export const TaskContextMenu = React.forwardRef<HTMLSpanElement, TaskContextMenu
         {/* Priority submenu */}
         <ContextMenuSub>
           <ContextMenuSubTrigger>
-            <IconAlertTriangle className="mr-ds-03 h-ico-sm w-ico-sm" />
+            <Icon icon={IconAlertTriangle} size="sm" className="mr-ds-03" />
             Set Priority
           </ContextMenuSubTrigger>
           <ContextMenuSubContent className="w-40">
             {PRIORITY_OPTIONS.map((opt) => {
-              const Icon = opt.icon
+              const OptIcon = opt.icon
               return (
                 <ContextMenuItem
                   key={opt.value}
                   onSelect={() => onQuickPriorityChange(taskId, opt.value)}
                 >
                   <Icon
+                    icon={OptIcon}
+                    size="sm"
                     className={cn(
-                      'mr-ds-03 h-ico-sm w-ico-sm',
+                      'mr-ds-03',
                       PRIORITY_COLORS[opt.value as keyof typeof PRIORITY_COLORS],
                     )}
                   />
@@ -101,7 +104,7 @@ export const TaskContextMenu = React.forwardRef<HTMLSpanElement, TaskContextMenu
         {allMembers.length > 0 && (
           <ContextMenuSub>
             <ContextMenuSubTrigger>
-              <IconUser className="mr-ds-03 h-ico-sm w-ico-sm" />
+              <Icon icon={IconUser} size="sm" className="mr-ds-03" />
               Assign
             </ContextMenuSubTrigger>
             <ContextMenuSubContent className="w-44 max-h-48 overflow-y-auto">
@@ -120,7 +123,7 @@ export const TaskContextMenu = React.forwardRef<HTMLSpanElement, TaskContextMenu
         {/* Label submenu */}
         <ContextMenuSub>
           <ContextMenuSubTrigger>
-            <IconTag className="mr-ds-03 h-ico-sm w-ico-sm" />
+            <Icon icon={IconTag} size="sm" className="mr-ds-03" />
             Add Label
           </ContextMenuSubTrigger>
           <ContextMenuSubContent className="w-40 max-h-48 overflow-y-auto">
@@ -148,7 +151,7 @@ export const TaskContextMenu = React.forwardRef<HTMLSpanElement, TaskContextMenu
             dateInputRef.current?.showPicker()
           }}
         >
-          <IconCalendar className="mr-ds-03 h-ico-sm w-ico-sm" />
+          <Icon icon={IconCalendar} size="sm" className="mr-ds-03" />
           Set Due Date
           <input
             ref={dateInputRef}
@@ -164,20 +167,20 @@ export const TaskContextMenu = React.forwardRef<HTMLSpanElement, TaskContextMenu
         {/* Visibility submenu */}
         <ContextMenuSub>
           <ContextMenuSubTrigger>
-            <IconEye className="mr-ds-03 h-ico-sm w-ico-sm" />
+            <Icon icon={IconEye} size="sm" className="mr-ds-03" />
             Visibility
           </ContextMenuSubTrigger>
           <ContextMenuSubContent className="w-44">
             <ContextMenuItem
               onSelect={() => onQuickVisibilityChange(taskId, 'INTERNAL')}
             >
-              <IconEyeOff className="mr-ds-03 h-ico-sm w-ico-sm" />
+              <Icon icon={IconEyeOff} size="sm" className="mr-ds-03" />
               Internal only
             </ContextMenuItem>
             <ContextMenuItem
               onSelect={() => onQuickVisibilityChange(taskId, 'EVERYONE')}
             >
-              <IconEye className="mr-ds-03 h-ico-sm w-ico-sm" />
+              <Icon icon={IconEye} size="sm" className="mr-ds-03" />
               Visible to all
             </ContextMenuItem>
           </ContextMenuSubContent>
@@ -190,7 +193,7 @@ export const TaskContextMenu = React.forwardRef<HTMLSpanElement, TaskContextMenu
           className="text-error-11 focus:text-error-11"
           onSelect={() => onQuickDelete(taskId)}
         >
-          <IconTrash className="mr-ds-03 h-ico-sm w-ico-sm" />
+          <Icon icon={IconTrash} size="sm" className="mr-ds-03" />
           Delete
         </ContextMenuItem>
       </ContextMenuContent>

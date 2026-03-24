@@ -24,6 +24,7 @@ import {
   IconExternalLink,
   IconTrash,
 } from '@tabler/icons-react'
+import { Icon } from '@/ui/icon'
 import type { TaskFile } from '../task-types'
 
 // ============================================================
@@ -70,7 +71,7 @@ export interface FileItemProps extends React.HTMLAttributes<HTMLDivElement> {
 
 const FileItem = React.forwardRef<HTMLDivElement, FileItemProps>(
   function FileItem({ file, onDelete, readOnly = false, className, ...props }, ref) {
-    const Icon = getFileIcon(file.fileType)
+    const FileIcon = getFileIcon(file.fileType)
 
     return (
       <div
@@ -83,10 +84,7 @@ const FileItem = React.forwardRef<HTMLDivElement, FileItemProps>(
       >
         {/* File icon */}
         <div className="flex h-ds-sm w-ds-sm shrink-0 items-center justify-center rounded-ds-lg bg-surface-raised">
-          <Icon
-            className="h-ico-sm w-ico-sm text-surface-fg-subtle"
-            stroke={1.5}
-          />
+          <Icon icon={FileIcon} size="sm" stroke="light" className="text-surface-fg-subtle" />
         </div>
 
         {/* File info */}
@@ -111,7 +109,7 @@ const FileItem = React.forwardRef<HTMLDivElement, FileItemProps>(
               className="inline-flex h-ds-xs-plus w-ds-xs-plus items-center justify-center rounded-ds-md transition-colors hover:bg-surface-raised-hover"
               title={file.externalLabel ?? 'Open externally'}
             >
-              <IconExternalLink className="h-ico-sm w-ico-sm text-surface-fg-subtle" />
+              <Icon icon={IconExternalLink} size="sm" className="text-surface-fg-subtle" />
             </a>
           )}
           {file.downloadUrl && (
@@ -122,7 +120,7 @@ const FileItem = React.forwardRef<HTMLDivElement, FileItemProps>(
               className="inline-flex h-ds-xs-plus w-ds-xs-plus items-center justify-center rounded-ds-md transition-colors hover:bg-surface-raised-hover"
               title="Download"
             >
-              <IconDownload className="h-ico-sm w-ico-sm text-surface-fg-subtle" />
+              <Icon icon={IconDownload} size="sm" className="text-surface-fg-subtle" />
             </a>
           )}
           {!readOnly && onDelete && (
@@ -133,7 +131,7 @@ const FileItem = React.forwardRef<HTMLDivElement, FileItemProps>(
                   className="inline-flex h-ds-xs-plus w-ds-xs-plus items-center justify-center rounded-ds-md transition-colors hover:bg-error-3"
                   aria-label="Delete file"
                 >
-                  <IconTrash className="h-ico-sm w-ico-sm text-error-11" />
+                  <Icon icon={IconTrash} size="sm" className="text-error-11" />
                 </button>
               </DialogTrigger>
               <DialogContent>

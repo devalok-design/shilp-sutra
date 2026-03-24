@@ -28,6 +28,7 @@ import {
   IconX,
   IconCheck,
 } from '@tabler/icons-react'
+import { Icon } from '@/ui/icon'
 import { useBoardContext } from './board-context'
 import { COLUMN_ACCENT_COLORS } from './board-constants'
 import type { BoardColumn, BoardMember } from './board-types'
@@ -283,9 +284,9 @@ export const ColumnHeader = React.forwardRef<HTMLDivElement, ColumnHeaderProps>(
             onClick={() => onToggleCompleted(!showCompleted)}
           >
             {showCompleted ? (
-              <IconEye className="h-ico-sm w-ico-sm" />
+              <Icon icon={IconEye} size="sm" />
             ) : (
-              <IconEyeOff className="h-ico-sm w-ico-sm" />
+              <Icon icon={IconEyeOff} size="sm" />
             )}
           </Button>
         )}
@@ -304,7 +305,7 @@ export const ColumnHeader = React.forwardRef<HTMLDivElement, ColumnHeaderProps>(
             title="Add task"
             onClick={toggleAddTask}
           >
-            <IconPlus className="h-ico-sm w-ico-sm" />
+            <Icon icon={IconPlus} size="sm" />
           </Button>
         )}
 
@@ -321,16 +322,16 @@ export const ColumnHeader = React.forwardRef<HTMLDivElement, ColumnHeaderProps>(
               aria-label="Column options"
               title="Column options"
             >
-              <IconDots className="h-ico-sm w-ico-sm" />
+              <Icon icon={IconDots} size="sm" />
             </Button>
           </DropdownMenuTrigger>
           <DropdownMenuContent align="end" className="w-48">
             <DropdownMenuItem onClick={startRenaming}>
-              <IconPencil className="mr-ds-03 h-ico-sm w-ico-sm" />
+              <Icon icon={IconPencil} size="sm" className="mr-ds-03" />
               Rename
             </DropdownMenuItem>
             <DropdownMenuItem onClick={() => setIsEditingWip(true)}>
-              <IconGauge className="mr-ds-03 h-ico-sm w-ico-sm" />
+              <Icon icon={IconGauge} size="sm" className="mr-ds-03" />
               Set WIP Limit
             </DropdownMenuItem>
             <DropdownMenuItem
@@ -340,12 +341,12 @@ export const ColumnHeader = React.forwardRef<HTMLDivElement, ColumnHeaderProps>(
             >
               {column.isClientVisible ? (
                 <>
-                  <IconEyeOff className="mr-ds-03 h-ico-sm w-ico-sm" />
+                  <Icon icon={IconEyeOff} size="sm" className="mr-ds-03" />
                   Hide from client
                 </>
               ) : (
                 <>
-                  <IconEye className="mr-ds-03 h-ico-sm w-ico-sm" />
+                  <Icon icon={IconEye} size="sm" className="mr-ds-03" />
                   Show to client
                 </>
               )}
@@ -355,7 +356,7 @@ export const ColumnHeader = React.forwardRef<HTMLDivElement, ColumnHeaderProps>(
               className="text-error-11 focus:text-error-11"
               onClick={() => onColumnDelete(column.id)}
             >
-              <IconTrash className="mr-ds-03 h-ico-sm w-ico-sm" />
+              <Icon icon={IconTrash} size="sm" className="mr-ds-03" />
               Delete column
             </DropdownMenuItem>
           </DropdownMenuContent>
@@ -414,7 +415,7 @@ export const ColumnHeader = React.forwardRef<HTMLDivElement, ColumnHeaderProps>(
                         : 'Assign task lead'}
                       aria-label="Assign task lead"
                     >
-                      <IconUser className="h-3.5 w-3.5" />
+                      <Icon icon={IconUser} size="xs" />
                     </button>
                   </DropdownMenuTrigger>
                   <DropdownMenuContent align="start" className="w-44 max-h-48 overflow-y-auto">
@@ -426,7 +427,7 @@ export const ColumnHeader = React.forwardRef<HTMLDivElement, ColumnHeaderProps>(
                     {newOwnerId && (
                       <>
                         <DropdownMenuItem onClick={() => setNewOwnerId(null)}>
-                          <IconX className="mr-ds-02 h-3 w-3 text-surface-fg-subtle" />
+                          <Icon icon={IconX} size="xs" className="mr-ds-02 text-surface-fg-subtle" />
                           Clear lead
                         </DropdownMenuItem>
                         <DropdownMenuSeparator />
@@ -455,7 +456,7 @@ export const ColumnHeader = React.forwardRef<HTMLDivElement, ColumnHeaderProps>(
                   title={newDueDate ? `Due: ${newDueDate}` : 'Set due date'}
                   aria-label="Set due date"
                 >
-                  <IconCalendar className="h-3.5 w-3.5" />
+                  <Icon icon={IconCalendar} size="xs" />
                   <input
                     type="date"
                     value={newDueDate}
@@ -480,7 +481,7 @@ export const ColumnHeader = React.forwardRef<HTMLDivElement, ColumnHeaderProps>(
                   title="Confirm add task"
                   aria-label="Confirm add task"
                 >
-                  <IconCheck className="h-3.5 w-3.5" />
+                  <Icon icon={IconCheck} size="xs" />
                 </button>
 
                 {/* Cancel */}
@@ -490,7 +491,7 @@ export const ColumnHeader = React.forwardRef<HTMLDivElement, ColumnHeaderProps>(
                   title="Cancel"
                   aria-label="Cancel adding task"
                 >
-                  <IconX className="h-3.5 w-3.5" />
+                  <Icon icon={IconX} size="xs" />
                 </button>
               </div>
             </div>

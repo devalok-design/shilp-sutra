@@ -2,6 +2,7 @@
 
 import * as React from 'react'
 import { IconChevronDown, IconMessageCircle, IconRobot } from '@tabler/icons-react'
+import { Icon } from '@/ui/icon'
 import { cn } from '@/ui/lib/utils'
 import { Badge } from '@/ui/badge'
 import { Button } from '@/ui/button'
@@ -558,7 +559,7 @@ export function TaskPanelTimeline({
         {isAgentStreaming && agentStreamingText && (
           <div className="flex gap-ds-03 px-ds-02 py-ds-02">
             <div className="shrink-0">
-              <IconRobot className="h-ico-md w-ico-md text-accent-11" />
+              <Icon icon={IconRobot} size="md" className="text-accent-11" />
             </div>
             <div className="min-w-0 flex-1">
               <div className="flex items-center gap-ds-02 text-ds-sm">

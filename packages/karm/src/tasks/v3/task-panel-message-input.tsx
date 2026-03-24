@@ -2,6 +2,7 @@
 
 import * as React from 'react'
 import { IconPaperclip, IconMoodSmile, IconSend, IconLock, IconEye } from '@tabler/icons-react'
+import { Icon } from '@/ui/icon'
 import { Tooltip, TooltipTrigger, TooltipContent } from '@/ui/tooltip'
 import { cn } from '@/ui/lib/utils'
 import { Button } from '@/ui/button'
@@ -73,7 +74,7 @@ export function TaskPanelMessageInput({
       {/* Visibility warning */}
       {showVisibilityToggle && visibility === 'CLIENT' && (
         <div className="mb-ds-02 flex items-center gap-ds-02 text-ds-xs text-warning-11">
-          <IconEye className="h-3 w-3 shrink-0" />
+          <Icon icon={IconEye} size="xs" className="shrink-0" />
           <span>This message will be visible to clients</span>
         </div>
       )}
@@ -96,9 +97,9 @@ export function TaskPanelMessageInput({
                 }
               >
                 {visibility === 'INTERNAL' ? (
-                  <IconLock className="h-3.5 w-3.5" />
+                  <Icon icon={IconLock} size="xs" />
                 ) : (
-                  <IconEye className="h-3.5 w-3.5" />
+                  <Icon icon={IconEye} size="xs" />
                 )}
               </Button>
             </TooltipTrigger>
@@ -140,7 +141,7 @@ export function TaskPanelMessageInput({
                 aria-label="Attach file"
                 type="button"
               >
-                <IconPaperclip className="h-ico-sm w-ico-sm" />
+                <Icon icon={IconPaperclip} size="sm" />
               </Button>
               <Button
                 variant="ghost"
@@ -148,7 +149,7 @@ export function TaskPanelMessageInput({
                 aria-label="Add emoji"
                 type="button"
               >
-                <IconMoodSmile className="h-ico-sm w-ico-sm" />
+                <Icon icon={IconMoodSmile} size="sm" />
               </Button>
             </>
           )}
@@ -160,7 +161,7 @@ export function TaskPanelMessageInput({
             aria-label="Send message"
             type="button"
           >
-            <IconSend className="h-ico-sm w-ico-sm" />
+            <Icon icon={IconSend} size="sm" />
           </Button>
         </div>
       </div>

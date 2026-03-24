@@ -3,6 +3,7 @@
 import * as React from 'react'
 import { cn } from '@/ui/lib/utils'
 import { IconPlus } from '@tabler/icons-react'
+import { Icon } from '@/ui/icon'
 
 // ============================================================
 // Types
@@ -79,7 +80,7 @@ const SubtaskAddForm = React.forwardRef<HTMLDivElement, SubtaskAddFormProps>(
             onClick={() => setIsAdding(true)}
             className="mt-ds-03 inline-flex items-center gap-ds-02b rounded-ds-lg px-ds-03 py-ds-02b text-ds-md text-surface-fg-subtle transition-colors hover:bg-surface-raised-hover hover:text-surface-fg-muted"
           >
-            <IconPlus className="h-ico-sm w-ico-sm" stroke={1.5} />
+            <Icon icon={IconPlus} size="sm" stroke="light" />
             Add subtask
           </button>
         )}

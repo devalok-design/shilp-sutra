@@ -2,6 +2,7 @@
 
 import * as React from 'react'
 import { IconChevronRight } from '@tabler/icons-react'
+import { Icon } from '@/ui/icon'
 import { IconButton } from '@/ui/icon-button'
 
 export interface TaskActionRowNavigateProps {
@@ -26,7 +27,7 @@ const TaskActionRowNavigate = React.forwardRef<HTMLButtonElement, TaskActionRowN
     return (
       <IconButton
         ref={ref}
-        icon={<IconChevronRight className="h-ico-sm w-ico-sm" />}
+        icon={<Icon icon={IconChevronRight} size="sm" />}
         size="sm"
         variant="ghost"
         aria-label="Open task in project board"

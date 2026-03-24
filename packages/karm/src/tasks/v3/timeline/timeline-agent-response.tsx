@@ -2,6 +2,7 @@
 
 import * as React from 'react'
 import { IconRobot } from '@tabler/icons-react'
+import { Icon } from '@/ui/icon'
 import { cn } from '@/ui/lib/utils'
 import { Badge } from '@/ui/badge'
 import { MotionCollapse } from '@/motion/primitives'
@@ -55,7 +56,7 @@ export function TimelineAgentResponse({ entry }: TimelineAgentResponseProps) {
       {/* Agent icon */}
       <div className="shrink-0">
         {response.agentIcon ?? (
-          <IconRobot className="h-ico-md w-ico-md text-accent-11" />
+          <Icon icon={IconRobot} size="md" className="text-accent-11" />
         )}
       </div>
 

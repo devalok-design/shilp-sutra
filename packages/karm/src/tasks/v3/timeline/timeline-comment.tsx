@@ -2,6 +2,7 @@
 
 import * as React from 'react'
 import { IconMoodSmile, IconArrowBackUp, IconPencil, IconTrash } from '@tabler/icons-react'
+import { Icon } from '@/ui/icon'
 import { cn } from '@/ui/lib/utils'
 import { Avatar, AvatarImage, AvatarFallback } from '@/ui/avatar'
 import { Badge } from '@/ui/badge'
@@ -124,7 +125,7 @@ export function TimelineComment({
         className="flex items-center gap-ds-02 py-ds-02 text-ds-xs text-surface-fg-subtle/50 italic"
         data-testid="timeline-comment-deleted"
       >
-        <IconTrash className="h-3 w-3" />
+        <Icon icon={IconTrash} size="xs" />
         This message was deleted
       </div>
     )
@@ -242,14 +243,14 @@ export function TimelineComment({
           onClick={() => onReact(comment.id, '')}
           data-testid="react-trigger"
         >
-          <IconMoodSmile className="h-3.5 w-3.5" />
+          <Icon icon={IconMoodSmile} size="xs" />
         </Button>
         <Button
           variant="ghost"
           size="icon-xs"
           aria-label="Reply"
         >
-          <IconArrowBackUp className="h-3.5 w-3.5" />
+          <Icon icon={IconArrowBackUp} size="xs" />
         </Button>
         {canEdit && (
           <Button
@@ -262,7 +263,7 @@ export function TimelineComment({
             }}
             data-testid="edit-trigger"
           >
-            <IconPencil className="h-3.5 w-3.5" />
+            <Icon icon={IconPencil} size="xs" />
           </Button>
         )}
         {canDelete && (
@@ -273,7 +274,7 @@ export function TimelineComment({
             onClick={() => onDeleteComment!(comment.id)}
             data-testid="delete-trigger"
           >
-            <IconTrash className="h-3.5 w-3.5" />
+            <Icon icon={IconTrash} size="xs" />
           </Button>
         )}
       </div>

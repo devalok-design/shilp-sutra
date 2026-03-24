@@ -3,6 +3,7 @@
 import * as React from 'react'
 import { cn } from '@/ui/lib/utils'
 import { IconSend } from '@tabler/icons-react'
+import { Icon } from '@/ui/icon'
 import type { CommentAuthorType } from '../task-types'
 
 // ============================================================
@@ -69,7 +70,7 @@ const MessageInput = React.forwardRef<HTMLDivElement, MessageInputProps>(
             disabled={!editorContent.replace(/<[^>]*>/g, '').trim()}
             className="inline-flex items-center gap-ds-02b rounded-ds-lg bg-accent-9 px-ds-04 py-ds-02b text-ds-sm font-semibold text-accent-fg transition-colors hover:bg-accent-10 disabled:opacity-action-disabled disabled:cursor-not-allowed"
           >
-            <IconSend className="h-ico-sm w-ico-sm" stroke={2} />
+            <Icon icon={IconSend} size="sm" />
             Comment
           </button>
         </div>

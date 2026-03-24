@@ -8,6 +8,7 @@ import {
   PopoverTrigger,
 } from '@/ui/popover'
 import { IconCheck, IconChevronDown } from '@tabler/icons-react'
+import { Icon } from '@/ui/icon'
 import type { Column } from '../task-types'
 
 // ============================================================
@@ -53,7 +54,7 @@ const TaskColumnPicker = React.forwardRef<HTMLButtonElement, TaskColumnPickerPro
             )}
           >
             <span>{displayName}</span>
-            <IconChevronDown className="h-3 w-3 text-surface-fg-subtle" />
+            <Icon icon={IconChevronDown} size="xs" className="text-surface-fg-subtle" />
           </button>
         </PopoverTrigger>
         <PopoverContent
@@ -77,7 +78,7 @@ const TaskColumnPicker = React.forwardRef<HTMLButtonElement, TaskColumnPickerPro
             >
               {col.name}
               {col.id === value && (
-                <IconCheck className="ml-auto h-ico-sm w-ico-sm" />
+                <Icon icon={IconCheck} size="sm" className="ml-auto" />
               )}
             </button>
           ))}

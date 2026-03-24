@@ -72,6 +72,34 @@ export interface AgentResponse {
 }
 
 // ---------------------------------------------------------------------------
+// Files attached to a task
+// ---------------------------------------------------------------------------
+
+export interface TaskFile {
+  id: string
+  name: string
+  fileUrl: string
+  downloadUrl: string
+  fileType: string
+  size: number
+  uploadedBy: { id: string; name: string; image?: string | null }
+  createdAt: string
+  gDriveUrl?: string
+  isClientVisible?: boolean
+}
+
+// ---------------------------------------------------------------------------
+// Client permission mode
+// ---------------------------------------------------------------------------
+
+/**
+ * `false` = staff (not a client).
+ * `'VIEW_ONLY'` = client can view but not edit.
+ * `'COLLABORATOR'` = client can edit certain fields.
+ */
+export type ClientMode = false | 'VIEW_ONLY' | 'COLLABORATOR'
+
+// ---------------------------------------------------------------------------
 // Task shape for the panel
 // ---------------------------------------------------------------------------
 
@@ -98,4 +126,13 @@ export interface TaskPanelTask {
   isInReview: boolean
   reviewSubmittedBy?: { name: string; timestamp: string }
   reviewFiles?: { name: string; size: string }[]
+  startDate: string | null
+  phase?: { id: string; name: string } | null
+  phaseOptions?: { id: string; name: string }[]
+  createdByType?: 'LOKWASI' | 'CLIENT' | 'SYSTEM'
+  createdByName?: string
+  humanId?: string
+  projectName?: string
+  parentTaskId?: string | null
+  files?: TaskFile[]
 }

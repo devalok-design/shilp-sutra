@@ -2,6 +2,7 @@
 
 import { createContext, useContext, useMemo, type ReactNode } from 'react'
 import type {
+  ClientMode,
   TaskPanelMode,
   TaskPanelTask,
   TimelineEntry,
@@ -14,7 +15,7 @@ import type {
 export interface TaskPanelContextValue {
   task: TaskPanelTask
   mode: TaskPanelMode
-  clientMode: boolean
+  clientMode: ClientMode
   currentUserId: string | null
   timeline: TimelineEntry[]
   lastViewedAt?: string
@@ -29,6 +30,8 @@ export interface TaskPanelContextValue {
   onAddLead: (memberId: string) => void
   onRemoveLead: (memberId: string) => void
   onUpdateDueDate: (date: Date | null) => void
+  onUpdateStartDate: (date: Date | null) => void
+  onUpdatePhase: (phaseId: string | null) => void
   onPostComment: (content: string, visibility?: 'INTERNAL' | 'CLIENT') => void
   onToggleVisibility: () => void
   onToggleSubtask: (subtaskId: string) => void
@@ -40,8 +43,16 @@ export interface TaskPanelContextValue {
   onEditComment: (commentId: string, newContent: string) => void
   onDeleteComment: (commentId: string) => void
   onReact: (entryId: string, emoji: string) => void
+  onDeleteTask: () => void
+  onMoveToProject: (projectId: string) => void
+  onDuplicateTask: () => void
+  onCopyLink: () => void
+  onUploadFile: (file: File) => void
+  onDeleteFile: (fileId: string) => void
   onClose: () => void
   onExpand: () => void
+  onNavigatePrev?: () => void
+  onNavigateNext?: () => void
 
   // Agent
   isAgentStreaming?: boolean
@@ -77,7 +88,8 @@ const noop = () => {}
 export interface TaskPanelProviderProps {
   task: TaskPanelTask
   mode: TaskPanelMode
-  clientMode: boolean
+  /** Accepts `boolean` for backward compat — `true` normalizes to `'VIEW_ONLY'`. */
+  clientMode: boolean | 'VIEW_ONLY' | 'COLLABORATOR'
   currentUserId: string | null
   timeline: TimelineEntry[]
   lastViewedAt?: string
@@ -93,6 +105,8 @@ export interface TaskPanelProviderProps {
   onAddLead?: (memberId: string) => void
   onRemoveLead?: (memberId: string) => void
   onUpdateDueDate?: (date: Date | null) => void
+  onUpdateStartDate?: (date: Date | null) => void
+  onUpdatePhase?: (phaseId: string | null) => void
   onPostComment?: (content: string, visibility?: 'INTERNAL' | 'CLIENT') => void
   onToggleVisibility?: () => void
   onToggleSubtask?: (subtaskId: string) => void
@@ -104,8 +118,16 @@ export interface TaskPanelProviderProps {
   onEditComment?: (commentId: string, newContent: string) => void
   onDeleteComment?: (commentId: string) => void
   onReact?: (entryId: string, emoji: string) => void
+  onDeleteTask?: () => void
+  onMoveToProject?: (projectId: string) => void
+  onDuplicateTask?: () => void
+  onCopyLink?: () => void
+  onUploadFile?: (file: File) => void
+  onDeleteFile?: (fileId: string) => void
   onClose?: () => void
   onExpand?: () => void
+  onNavigatePrev?: () => void
+  onNavigateNext?: () => void
 
   // Agent
   isAgentStreaming?: boolean
@@ -118,11 +140,19 @@ export function TaskPanelProvider({
   children,
   ...value
 }: TaskPanelProviderProps) {
+  // Normalize boolean clientMode for backward compat: true → 'VIEW_ONLY'
+  const normalizedClientMode: ClientMode =
+    value.clientMode === true
+      ? 'VIEW_ONLY'
+      : value.clientMode === false
+        ? false
+        : value.clientMode
+
   const stable = useMemo<TaskPanelContextValue>(
     () => ({
       task: value.task,
       mode: value.mode,
-      clientMode: value.clientMode,
+      clientMode: normalizedClientMode,
       currentUserId: value.currentUserId,
       timeline: value.timeline,
       lastViewedAt: value.lastViewedAt,
@@ -136,6 +166,8 @@ export function TaskPanelProvider({
       onAddLead: value.onAddLead ?? noop,
       onRemoveLead: value.onRemoveLead ?? noop,
       onUpdateDueDate: value.onUpdateDueDate ?? noop,
+      onUpdateStartDate: value.onUpdateStartDate ?? noop,
+      onUpdatePhase: value.onUpdatePhase ?? noop,
       onPostComment: value.onPostComment ?? noop,
       onToggleVisibility: value.onToggleVisibility ?? noop,
       onToggleSubtask: value.onToggleSubtask ?? noop,
@@ -147,8 +179,16 @@ export function TaskPanelProvider({
       onEditComment: value.onEditComment ?? noop,
       onDeleteComment: value.onDeleteComment ?? noop,
       onReact: value.onReact ?? noop,
+      onDeleteTask: value.onDeleteTask ?? noop,
+      onMoveToProject: value.onMoveToProject ?? noop,
+      onDuplicateTask: value.onDuplicateTask ?? noop,
+      onCopyLink: value.onCopyLink ?? noop,
+      onUploadFile: value.onUploadFile ?? noop,
+      onDeleteFile: value.onDeleteFile ?? noop,
       onClose: value.onClose ?? noop,
       onExpand: value.onExpand ?? noop,
+      onNavigatePrev: value.onNavigatePrev,
+      onNavigateNext: value.onNavigateNext,
 
       isAgentStreaming: value.isAgentStreaming,
       agentStreamingText: value.agentStreamingText,
@@ -158,7 +198,7 @@ export function TaskPanelProvider({
     [
       value.task,
       value.mode,
-      value.clientMode,
+      normalizedClientMode,
       value.currentUserId,
       value.timeline,
       value.lastViewedAt,
@@ -171,6 +211,8 @@ export function TaskPanelProvider({
       value.onAddLead,
       value.onRemoveLead,
       value.onUpdateDueDate,
+      value.onUpdateStartDate,
+      value.onUpdatePhase,
       value.onPostComment,
       value.onToggleVisibility,
       value.onToggleSubtask,
@@ -182,8 +224,16 @@ export function TaskPanelProvider({
       value.onEditComment,
       value.onDeleteComment,
       value.onReact,
+      value.onDeleteTask,
+      value.onMoveToProject,
+      value.onDuplicateTask,
+      value.onCopyLink,
+      value.onUploadFile,
+      value.onDeleteFile,
       value.onClose,
       value.onExpand,
+      value.onNavigatePrev,
+      value.onNavigateNext,
       value.isAgentStreaming,
       value.agentStreamingText,
       value.onCancelAgentStream,

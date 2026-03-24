@@ -149,7 +149,7 @@ export function TaskPanelSubtasks({
                 >
                   <Checkbox
                     checked={isComplete}
-                    disabled={clientMode}
+                    disabled={!!clientMode}
                     onCheckedChange={() => onToggleSubtask(subtask.id)}
                     aria-label={`Toggle ${subtask.title}`}
                   />

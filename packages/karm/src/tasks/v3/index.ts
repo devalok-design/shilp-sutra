@@ -32,6 +32,8 @@ export {
 
 // Types
 export type {
+  ClientMode,
+  TaskFile,
   TaskPanelMode,
   TaskPanelTask,
   TimelineEntry,

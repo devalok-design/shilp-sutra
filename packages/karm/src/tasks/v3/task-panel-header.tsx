@@ -50,7 +50,7 @@ export function TaskPanelHeader({ className, menuSlot, ...props }: TaskPanelHead
         <InlineEdit
           value={task.title}
           onSave={onUpdateTitle}
-          readOnly={clientMode}
+          readOnly={!!clientMode}
           textClassName="text-ds-lg font-semibold"
           className="min-w-0 flex-1"
         />

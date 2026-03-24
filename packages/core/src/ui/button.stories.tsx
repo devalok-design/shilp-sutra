@@ -582,6 +582,66 @@ export const WeightNormal: Story = {
   ),
 }
 
+export const IconStrokeWeight: Story = {
+  name: 'Icon Stroke Weight',
+  render: () => (
+    <div className="space-y-ds-06">
+      <div>
+        <p className="text-ds-xs font-semibold text-surface-fg-subtle uppercase tracking-wider mb-ds-03">
+          Default stroke (2) — all sizes
+        </p>
+        <div className="flex flex-wrap items-end gap-ds-04">
+          <Button size="xs" startIcon={<IconPlus />}>xs</Button>
+          <Button size="sm" startIcon={<IconPlus />}>sm</Button>
+          <Button size="md" startIcon={<IconPlus />}>md</Button>
+          <Button size="lg" startIcon={<IconPlus />}>lg</Button>
+        </div>
+      </div>
+      <div>
+        <p className="text-ds-xs font-semibold text-surface-fg-subtle uppercase tracking-wider mb-ds-03">
+          Recommended: lighter stroke on smaller buttons
+        </p>
+        <div className="flex flex-wrap items-end gap-ds-04">
+          <Button size="xs" startIcon={<IconPlus stroke={1.5} />}>xs (1.5)</Button>
+          <Button size="sm" startIcon={<IconPlus stroke={1.5} />}>sm (1.5)</Button>
+          <Button size="md" startIcon={<IconPlus stroke={1.75} />}>md (1.75)</Button>
+          <Button size="lg" startIcon={<IconPlus stroke={2} />}>lg (2)</Button>
+        </div>
+      </div>
+      <div>
+        <p className="text-ds-xs font-semibold text-surface-fg-subtle uppercase tracking-wider mb-ds-03">
+          Comparison across variants (stroke 1.5 vs 2)
+        </p>
+        <div className="flex flex-wrap items-center gap-ds-04">
+          <Button variant="solid" startIcon={<IconPlus stroke={2} />}>stroke: 2</Button>
+          <Button variant="solid" startIcon={<IconPlus stroke={1.5} />}>stroke: 1.5</Button>
+          <Button variant="soft" color="success" startIcon={<IconCheck stroke={2} />}>stroke: 2</Button>
+          <Button variant="soft" color="success" startIcon={<IconCheck stroke={1.5} />}>stroke: 1.5</Button>
+        </div>
+      </div>
+      <div>
+        <p className="text-ds-xs font-semibold text-surface-fg-subtle uppercase tracking-wider mb-ds-03">
+          With grain (stroke 1.5)
+        </p>
+        <div className="flex flex-wrap items-center gap-ds-04">
+          <Button variant="solid" startIcon={<IconPlus stroke={1.5} />}>
+            <DevalokGrain />
+            Save
+          </Button>
+          <Button variant="solid" color="success" startIcon={<IconCheck stroke={1.5} />}>
+            <DevalokGrain />
+            Approve
+          </Button>
+          <Button variant="soft" color="warning" size="xs" shape="pill" startIcon={<IconEye stroke={1.5} />}>
+            <DevalokGrain surface="soft" />
+            Draft
+          </Button>
+        </div>
+      </div>
+    </div>
+  ),
+}
+
 export const RealWorldPatterns: Story = {
   name: 'Real-World Patterns',
   render: () => (

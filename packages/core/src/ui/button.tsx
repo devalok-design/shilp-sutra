@@ -388,19 +388,32 @@ const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
       return null
     }
 
+    // Separate DevalokGrain elements (need to be direct button children for absolute positioning)
+    // from text/other content (needs z-elevation above grain)
+    const childArray = React.Children.toArray(children)
+    const grainElements: React.ReactNode[] = []
+    const contentElements: React.ReactNode[] = []
+    childArray.forEach((child) => {
+      if (React.isValidElement(child) && (child.type as { displayName?: string })?.displayName === 'DevalokGrain') {
+        grainElements.push(child)
+      } else {
+        contentElements.push(child)
+      }
+    })
+
     const renderChildren = () => {
       if (loading && loadingPosition === 'center') {
         return (
           <span className="relative inline-flex items-center justify-center">
-            <span className="invisible">{children}</span>
+            <span className="invisible">{contentElements}</span>
             <span className="absolute inset-0 flex items-center justify-center">
               {spinnerNode}
             </span>
           </span>
         )
       }
-      // Wrap in span so [&>span:not([data-grain])]:z-[2] elevates text above grain layers
-      return <span>{children}</span>
+      // Text content wrapped in z-elevated span; grain elements rendered separately as direct children
+      return <span>{contentElements}</span>
     }
 
     // Async feedback: override color to show green/red
@@ -451,8 +464,11 @@ const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
         aria-busy={loading || undefined}
         onClick={isAsync ? handleAsyncClick : onClick}
       >
+        {/* Grain layers render as direct children (need absolute positioning) */}
+        {grainElements}
+        {/* Content renders above grain via z-[2] span wrapper */}
         {isAsyncFeedback ? asyncFeedbackIcon : renderStartSlot()}
-        {isAsyncFeedback ? children : renderChildren()}
+        {isAsyncFeedback ? contentElements : renderChildren()}
         {isAsyncFeedback ? null : renderEndSlot()}
       </button>
     )

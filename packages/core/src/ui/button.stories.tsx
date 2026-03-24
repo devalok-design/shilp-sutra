@@ -670,18 +670,39 @@ export const DevalokGrainShowcase: Story = {
 
         <div>
           <p className="text-ds-xs font-semibold text-surface-fg-subtle uppercase tracking-wider mb-ds-03">
-            With vs without — side by side
+            Progressive polish — side by side
           </p>
           <div className="flex flex-wrap items-center gap-ds-04">
-            <Button variant="solid">No grain</Button>
+            <Button variant="solid">Plain</Button>
             <Button variant="solid">
               <DevalokGrain />
-              With grain
+              + Grain
             </Button>
-            <Button variant="soft" color="success">No grain</Button>
+            <Button variant="solid">
+              <DevalokGrain sheen />
+              + Grain + Sheen
+            </Button>
+          </div>
+          <div className="flex flex-wrap items-center gap-ds-04 mt-ds-03">
+            <Button variant="soft" color="success">Plain</Button>
             <Button variant="soft" color="success">
               <DevalokGrain surface="soft" />
-              With grain
+              + Grain
+            </Button>
+            <Button variant="soft" color="success">
+              <DevalokGrain surface="soft" sheen />
+              + Grain + Sheen
+            </Button>
+          </div>
+          <div className="flex flex-wrap items-center gap-ds-04 mt-ds-03">
+            <Button variant="solid" color="error">Plain</Button>
+            <Button variant="solid" color="error">
+              <DevalokGrain />
+              + Grain
+            </Button>
+            <Button variant="solid" color="error">
+              <DevalokGrain sheen />
+              + Grain + Sheen
             </Button>
           </div>
         </div>

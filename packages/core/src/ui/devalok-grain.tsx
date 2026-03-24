@@ -28,6 +28,12 @@ export interface DevalokGrainProps {
    * Default: 'solid'
    */
   surface?: 'solid' | 'soft'
+  /**
+   * Add an inner highlight (top-lit emboss) for a premium 3D feel.
+   * Adds an inset shadow: light highlight on top edge, dark shadow on bottom edge.
+   * Works best on solid variant buttons. Default: false
+   */
+  sheen?: boolean
 }
 
 /**
@@ -62,6 +68,7 @@ export interface DevalokGrainProps {
 export function DevalokGrain({
   intensity = 'subtle',
   surface = 'solid',
+  sheen = false,
 }: DevalokGrainProps) {
   const noise = NOISE_OPACITY[intensity][surface]
   const g = GRADIENT[intensity]
@@ -99,6 +106,14 @@ export function DevalokGrain({
           opacity: noise,
         }}
       />
+      {/* Sheen — inner highlight for 3D emboss (top-lit: light top edge, dark bottom edge) */}
+      {sheen && (
+        <span
+          data-grain=""
+          aria-hidden="true"
+          className="pointer-events-none absolute inset-0 z-[1] rounded-[inherit] shadow-raised-inner"
+        />
+      )}
     </>
   )
 }

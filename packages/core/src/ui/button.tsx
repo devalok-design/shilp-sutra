@@ -53,11 +53,11 @@ export const buttonVariants = cva(
       },
     },
     compoundVariants: [
-      // ============ SOLID ============
+      // ============ SOLID ============ (colored hover shadows — shadow tints with the button's own hue)
       { variant: 'solid', color: 'accent',  className: 'bg-accent-9 text-accent-fg hover:bg-accent-10 shadow-raised hover:shadow-brand' },
-      { variant: 'solid', color: 'error',   className: 'bg-error-9 text-error-fg hover:bg-error-10 shadow-raised' },
-      { variant: 'solid', color: 'success', className: 'bg-success-9 text-success-fg hover:bg-success-10 shadow-raised' },
-      { variant: 'solid', color: 'warning', className: 'bg-warning-9 text-warning-fg hover:bg-warning-10 shadow-raised' },
+      { variant: 'solid', color: 'error',   className: 'bg-error-9 text-error-fg hover:bg-error-10 shadow-raised hover:shadow-error' },
+      { variant: 'solid', color: 'success', className: 'bg-success-9 text-success-fg hover:bg-success-10 shadow-raised hover:shadow-success' },
+      { variant: 'solid', color: 'warning', className: 'bg-warning-9 text-warning-fg hover:bg-warning-10 shadow-raised hover:shadow-warning' },
       { variant: 'solid', color: 'neutral', className: 'bg-neutral-5 text-surface-fg hover:bg-neutral-7 shadow-raised' },
 
       // ============ SOFT ============
@@ -332,6 +332,8 @@ const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
     }
 
     const inset = iconInsetClass[resolvedSize] ?? { start: '', end: '' }
+    // Dim icons on filled variants (Radix pattern — icon is decorative, text is primary)
+    const dimIcon = resolvedVariant === 'solid' || resolvedVariant === 'soft' || resolvedVariant === 'outline'
 
     const renderStartSlot = () => {
       if (loading && loadingPosition === 'start') {
@@ -339,7 +341,7 @@ const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
       }
       if (startIcon) {
         return (
-          <span className={cn('inline-flex shrink-0 items-center justify-center pointer-events-none', iconClass, inset.start)}>
+          <span className={cn('inline-flex shrink-0 items-center justify-center pointer-events-none', iconClass, inset.start, dimIcon && 'opacity-90')}>
             {startIcon}
           </span>
         )
@@ -353,7 +355,7 @@ const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
       }
       if (endIcon) {
         return (
-          <span className={cn('inline-flex shrink-0 items-center justify-center pointer-events-none', iconClass, inset.end)}>
+          <span className={cn('inline-flex shrink-0 items-center justify-center pointer-events-none', iconClass, inset.end, dimIcon && 'opacity-90')}>
             {endIcon}
           </span>
         )
@@ -407,8 +409,10 @@ const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
           buttonVariants({ variant: resolvedVariant, color: resolvedColor, weight: resolvedWeight, size: resolvedSize }),
           resolvedShape === 'pill' && 'rounded-full',
           fullWidth && 'w-full',
-          !loading && !isAsyncFeedback && 'active:scale-[0.95] transition-[color,background-color,border-color,box-shadow,transform,filter] duration-fast-01 ease-productive-standard',
-          !loading && !isAsyncFeedback && 'active:brightness-[0.92] active:saturate-[1.1]',
+          // Asymmetric timing: hover-out is slow+relaxed, hover-in is fast+snappy (applied via hover: override)
+          !loading && !isAsyncFeedback && 'transition-[color,background-color,border-color,box-shadow,transform,filter] duration-moderate-01 ease-productive-exit',
+          !loading && !isAsyncFeedback && 'hover:duration-fast-02 hover:ease-productive-entrance',
+          !loading && !isAsyncFeedback && 'active:scale-[0.95] active:brightness-[0.92] active:saturate-[1.1] active:duration-[0ms]',
           feedbackColorClass,
           isAsyncFeedback && 'transition-colors duration-moderate-01 ease-productive-standard',
           className,

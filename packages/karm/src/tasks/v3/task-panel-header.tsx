@@ -1,10 +1,24 @@
 'use client'
 
 import * as React from 'react'
-import { IconX, IconArrowsMaximize, IconDots } from '@tabler/icons-react'
+import {
+  IconX,
+  IconArrowsMaximize,
+  IconDots,
+  IconLink,
+  IconCopy,
+  IconTrash,
+} from '@tabler/icons-react'
 import { Icon } from '@/ui/icon'
 import { cn } from '@/ui/lib/utils'
 import { Button } from '@/ui/button'
+import {
+  DropdownMenu,
+  DropdownMenuTrigger,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuSeparator,
+} from '@/ui/dropdown-menu'
 import { InlineEdit } from '@/composed/inline-edit'
 import { useTaskPanel } from './task-panel-context'
 
@@ -22,8 +36,17 @@ export interface TaskPanelHeaderProps extends React.HTMLAttributes<HTMLDivElemen
 // ---------------------------------------------------------------------------
 
 export function TaskPanelHeader({ className, menuSlot, ...props }: TaskPanelHeaderProps) {
-  const { task, mode, clientMode, onUpdateTitle, onClose, onExpand } =
-    useTaskPanel()
+  const {
+    task,
+    mode,
+    clientMode,
+    onUpdateTitle,
+    onClose,
+    onExpand,
+    onCopyLink,
+    onDuplicateTask,
+    onDeleteTask,
+  } = useTaskPanel()
 
   return (
     <div
@@ -67,15 +90,47 @@ export function TaskPanelHeader({ className, menuSlot, ...props }: TaskPanelHead
               <Icon icon={IconArrowsMaximize} size="sm" />
             </Button>
           )}
-          {/* Composable menu slot — consumer provides their own DropdownMenu here */}
+          {/* Actions menu — composable slot with built-in default */}
           {menuSlot ?? (
-            <Button
-              variant="ghost"
-              size="icon-sm"
-              aria-label="More actions"
-            >
-              <Icon icon={IconDots} size="sm" />
-            </Button>
+            <DropdownMenu>
+              <DropdownMenuTrigger asChild>
+                <Button variant="ghost" size="icon-sm" aria-label="Task actions">
+                  <Icon icon={IconDots} size="sm" />
+                </Button>
+              </DropdownMenuTrigger>
+              <DropdownMenuContent align="end" className="w-48">
+                <DropdownMenuItem onClick={onCopyLink}>
+                  <Icon icon={IconLink} size="sm" className="mr-ds-03" />
+                  Copy link
+                </DropdownMenuItem>
+                <DropdownMenuItem
+                  onClick={() => {
+                    const ref = `${task.taskId}: ${task.title}`
+                    navigator.clipboard.writeText(ref)
+                  }}
+                >
+                  <Icon icon={IconCopy} size="sm" className="mr-ds-03" />
+                  Copy reference
+                </DropdownMenuItem>
+                <DropdownMenuSeparator />
+                <DropdownMenuItem onClick={onDuplicateTask}>
+                  <Icon icon={IconCopy} size="sm" className="mr-ds-03" />
+                  Duplicate
+                </DropdownMenuItem>
+                {!clientMode && (
+                  <>
+                    <DropdownMenuSeparator />
+                    <DropdownMenuItem
+                      onClick={onDeleteTask}
+                      className="text-error-11 focus:text-error-11"
+                    >
+                      <Icon icon={IconTrash} size="sm" className="mr-ds-03" />
+                      Delete task
+                    </DropdownMenuItem>
+                  </>
+                )}
+              </DropdownMenuContent>
+            </DropdownMenu>
           )}
           <Button
             variant="ghost"

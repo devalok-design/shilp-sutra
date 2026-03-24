@@ -103,11 +103,20 @@ const PRIORITY_CONFIG: Record<
 }
 
 // ---------------------------------------------------------------------------
-// Shared styles
+// Shared styles for full-row clickable triggers
 // ---------------------------------------------------------------------------
 
-const interactiveValueBase =
-  'rounded-ds-md px-ds-01 py-ds-01 -mx-ds-01 hover:bg-surface-raised-hover transition-colors cursor-pointer'
+const rowTriggerBase =
+  'flex w-full items-center justify-between rounded-ds-lg px-ds-03 py-ds-02b -mx-ds-01 hover:bg-surface-raised-hover transition-colors'
+
+const cellTriggerBase =
+  'flex flex-col gap-ds-01 rounded-ds-lg px-ds-03 py-ds-02b hover:bg-surface-raised-hover transition-colors text-left'
+
+const readonlyRowBase =
+  'flex w-full items-center justify-between rounded-ds-lg px-ds-03 py-ds-02b -mx-ds-01'
+
+const readonlyCellBase =
+  'flex flex-col gap-ds-01 rounded-ds-lg px-ds-03 py-ds-02b text-left'
 
 // ---------------------------------------------------------------------------
 // Wing animation config
@@ -120,23 +129,99 @@ const wingVariants = {
 }
 
 // ---------------------------------------------------------------------------
-// Property row — label on left, value on right
+// Reusable people value display (for leads & assignees)
 // ---------------------------------------------------------------------------
 
-function PropertyRow({
-  label,
-  children,
+function PeopleValue({
+  people,
 }: {
-  label: string
-  children: React.ReactNode
+  people: TaskPanelTask['leads']
+}) {
+  if (people.length === 0) {
+    return (
+      <>
+        <span className="flex h-5 w-5 items-center justify-center rounded-full border border-dashed border-surface-fg-subtle">
+          <Icon icon={IconUser} size="xs" className="text-surface-fg-subtle" />
+        </span>
+        <span className="text-ds-sm text-surface-fg-subtle">None</span>
+      </>
+    )
+  }
+  return (
+    <>
+      <div className="flex items-center -space-x-1">
+        {people.slice(0, 3).map((person) => (
+          <Avatar key={person.id} size="xs" className="h-5 w-5 ring-1 ring-surface-raised">
+            {person.image && <AvatarImage src={person.image} />}
+            <AvatarFallback className="text-[8px]">
+              {getInitials(person.name)}
+            </AvatarFallback>
+          </Avatar>
+        ))}
+        {people.length > 3 && (
+          <span className="flex h-5 w-5 items-center justify-center rounded-full bg-surface-raised-hover ring-1 ring-surface-raised text-[8px] font-medium text-surface-fg-muted">
+            +{people.length - 3}
+          </span>
+        )}
+      </div>
+      <span className="text-ds-sm text-surface-fg">
+        {people.length === 1 ? people[0].name : `${people.length} people`}
+      </span>
+    </>
+  )
+}
+
+// ---------------------------------------------------------------------------
+// Reusable people picker popover content
+// ---------------------------------------------------------------------------
+
+function PeoplePickerContent({
+  members,
+  selected,
+  onAdd,
+  onRemove,
+}: {
+  members: TaskPanelTask['members']
+  selected: TaskPanelTask['leads']
+  onAdd: (id: string) => void
+  onRemove: (id: string) => void
 }) {
   return (
-    <div className="flex items-center justify-between gap-ds-03">
-      <span className="shrink-0 text-ds-xs font-medium text-surface-fg-subtle">
-        {label}
-      </span>
-      <div className="min-w-0">{children}</div>
-    </div>
+    <>
+      {members.map((member) => {
+        const isSelected = selected.some((s) => s.id === member.id)
+        return (
+          <Button
+            key={member.id}
+            variant="ghost"
+            size="compact-sm"
+            weight="normal"
+            onClick={() => {
+              if (isSelected) {
+                onRemove(member.id)
+              } else {
+                onAdd(member.id)
+              }
+            }}
+            className={cn(
+              'w-full justify-start gap-ds-03',
+              isSelected && 'bg-surface-raised-hover',
+            )}
+          >
+            <Avatar size="xs" className="h-5 w-5">
+              {member.image && <AvatarImage src={member.image} />}
+              <AvatarFallback className="text-[10px]">
+                {getInitials(member.name)}
+              </AvatarFallback>
+            </Avatar>
+            <span className="text-ds-sm text-surface-fg">{member.name}</span>
+            {isSelected && (
+              <Icon icon={IconCheck} size="sm" className="ml-auto text-accent-11" />
+            )}
+          </Button>
+        )
+      })}
+    </>
   )
 }
 
@@ -250,430 +335,261 @@ export function TaskPanelPropertiesCard() {
           )}
         </div>
 
-        {/* 2-column top section: Status, Due Date */}
+        {/* 2-column top section: Status, Due Date — each cell fully clickable */}
         <div className="grid grid-cols-2 gap-ds-03 mb-ds-04">
           {/* Status */}
-          <div className="flex flex-col gap-ds-01">
-            <span className="text-[10px] text-surface-fg-subtle/50 uppercase tracking-wider">
-              Status
-            </span>
-            {interactive ? (
-              <Popover open={statusOpen} onOpenChange={setStatusOpen}>
-                <PopoverTrigger asChild>
-                  <Button
-                    variant="ghost"
-                    size="compact-xs"
-                    className="flex items-center gap-ds-02 -mx-ds-01"
-                  >
+          {interactive ? (
+            <Popover open={statusOpen} onOpenChange={setStatusOpen}>
+              <PopoverTrigger asChild>
+                <button type="button" className={cellTriggerBase}>
+                  <span className="text-[10px] text-surface-fg-subtle/50 uppercase tracking-wider">
+                    Status
+                  </span>
+                  <div className="flex items-center gap-ds-02">
                     <span className={cn('h-2 w-2 shrink-0 rounded-full', statusDotColor)} />
                     <span className="text-ds-sm text-surface-fg truncate">{statusName}</span>
+                  </div>
+                </button>
+              </PopoverTrigger>
+              <PopoverContent
+                className="w-[180px] border-surface-border-strong bg-surface-overlay p-ds-02"
+                align="start"
+                sideOffset={4}
+              >
+                {task.statusOptions.map((opt) => (
+                  <Button
+                    key={opt.id}
+                    variant="ghost"
+                    size="compact-sm"
+                    weight="normal"
+                    onClick={() => {
+                      onUpdateStatus(opt.id)
+                      setStatusOpen(false)
+                    }}
+                    className={cn(
+                      'w-full justify-start gap-ds-03',
+                      opt.id === task.status && 'bg-surface-raised-hover',
+                    )}
+                  >
+                    <span className={cn('h-2 w-2 shrink-0 rounded-full', getStatusDotColor(opt.name))} aria-hidden />
+                    <span className="text-ds-sm text-surface-fg">{opt.name}</span>
+                    {opt.id === task.status && (
+                      <Icon icon={IconCheck} size="sm" className="ml-auto text-accent-11" />
+                    )}
                   </Button>
-                </PopoverTrigger>
-                <PopoverContent
-                  className="w-[180px] border-surface-border-strong bg-surface-overlay p-ds-02"
-                  align="start"
-                  sideOffset={4}
-                >
-                  {task.statusOptions.map((opt) => (
-                    <Button
-                      key={opt.id}
-                      variant="ghost"
-                      size="xs"
-                      weight="normal"
-                      onClick={() => {
-                        onUpdateStatus(opt.id)
-                        setStatusOpen(false)
-                      }}
-                      className={cn(
-                        'w-full justify-start gap-ds-03',
-                        opt.id === task.status && 'bg-surface-raised-hover',
-                      )}
-                    >
-                      <span className={cn('h-2 w-2 shrink-0 rounded-full', getStatusDotColor(opt.name))} aria-hidden />
-                      <span className="text-ds-sm text-surface-fg">{opt.name}</span>
-                      {opt.id === task.status && (
-                        <Icon icon={IconCheck} size="sm" className="ml-auto text-accent-11" />
-                      )}
-                    </Button>
-                  ))}
-                </PopoverContent>
-              </Popover>
-            ) : (
-              <div className="flex items-center gap-ds-02 px-ds-02 py-ds-01">
+                ))}
+              </PopoverContent>
+            </Popover>
+          ) : (
+            <div className={readonlyCellBase}>
+              <span className="text-[10px] text-surface-fg-subtle/50 uppercase tracking-wider">
+                Status
+              </span>
+              <div className="flex items-center gap-ds-02">
                 <span className={cn('h-2 w-2 shrink-0 rounded-full', statusDotColor)} />
                 <span className="text-ds-sm text-surface-fg truncate">{statusName}</span>
               </div>
-            )}
-          </div>
+            </div>
+          )}
 
           {/* Due Date */}
-          <div className="flex flex-col gap-ds-01">
-            <span className="text-[10px] text-surface-fg-subtle/50 uppercase tracking-wider">
-              Due
-            </span>
-            {interactive ? (
-              <Popover open={dueDateOpen} onOpenChange={setDueDateOpen}>
-                <PopoverTrigger asChild>
-                  <Button
-                    variant="ghost"
-                    size="compact-xs"
-                    className="flex items-center gap-ds-02 -mx-ds-01"
+          {interactive ? (
+            <Popover open={dueDateOpen} onOpenChange={setDueDateOpen}>
+              <PopoverTrigger asChild>
+                <button type="button" className={cellTriggerBase}>
+                  <span className="text-[10px] text-surface-fg-subtle/50 uppercase tracking-wider">
+                    Due
+                  </span>
+                  <span
+                    className={cn(
+                      'text-ds-sm truncate',
+                      task.dueDate
+                        ? dueDateOverdue
+                          ? 'text-error-11'
+                          : 'text-surface-fg'
+                        : 'text-surface-fg-subtle',
+                    )}
                   >
-                    <span
-                      className={cn(
-                        'text-ds-sm truncate',
-                        task.dueDate
-                          ? dueDateOverdue
-                            ? 'text-error-11'
-                            : 'text-surface-fg'
-                          : 'text-surface-fg-subtle',
-                      )}
-                    >
-                      {task.dueDate ? formatDate(task.dueDate) : 'None'}
-                    </span>
-                  </Button>
-                </PopoverTrigger>
-                <PopoverContent
-                  className="w-[220px] border-surface-border-strong bg-surface-overlay p-ds-03"
-                  align="start"
-                  sideOffset={4}
-                >
-                  <label className="flex flex-col gap-ds-02">
-                    <span className="text-ds-xs font-medium text-surface-fg-muted">
-                      Due date
-                    </span>
-                    <Input
-                      type="date"
-                      size="sm"
-                      defaultValue={task.dueDate ? task.dueDate.slice(0, 10) : ''}
-                      onChange={(e) => {
-                        const val = e.target.value
-                        if (val) {
-                          onUpdateDueDate(new Date(val + 'T00:00:00'))
-                        } else {
-                          onUpdateDueDate(null)
-                        }
-                        setDueDateOpen(false)
-                      }}
-                    />
-                  </label>
-                </PopoverContent>
-              </Popover>
-            ) : (
-              <div className="flex items-center gap-ds-02 px-ds-02 py-ds-01">
-                <span
-                  className={cn(
-                    'text-ds-sm truncate',
-                    task.dueDate
-                      ? dueDateOverdue
-                        ? 'text-error-11'
-                        : 'text-surface-fg'
-                      : 'text-surface-fg-subtle',
-                  )}
-                >
-                  {task.dueDate ? formatDate(task.dueDate) : 'None'}
-                </span>
-              </div>
-            )}
-          </div>
+                    {task.dueDate ? formatDate(task.dueDate) : 'None'}
+                  </span>
+                </button>
+              </PopoverTrigger>
+              <PopoverContent
+                className="w-[220px] border-surface-border-strong bg-surface-overlay p-ds-03"
+                align="start"
+                sideOffset={4}
+              >
+                <label className="flex flex-col gap-ds-02">
+                  <span className="text-ds-xs font-medium text-surface-fg-muted">
+                    Due date
+                  </span>
+                  <Input
+                    type="date"
+                    size="sm"
+                    defaultValue={task.dueDate ? task.dueDate.slice(0, 10) : ''}
+                    onChange={(e) => {
+                      const val = e.target.value
+                      if (val) {
+                        onUpdateDueDate(new Date(val + 'T00:00:00'))
+                      } else {
+                        onUpdateDueDate(null)
+                      }
+                      setDueDateOpen(false)
+                    }}
+                  />
+                </label>
+              </PopoverContent>
+            </Popover>
+          ) : (
+            <div className={readonlyCellBase}>
+              <span className="text-[10px] text-surface-fg-subtle/50 uppercase tracking-wider">
+                Due
+              </span>
+              <span
+                className={cn(
+                  'text-ds-sm truncate',
+                  task.dueDate
+                    ? dueDateOverdue
+                      ? 'text-error-11'
+                      : 'text-surface-fg'
+                    : 'text-surface-fg-subtle',
+                )}
+              >
+                {task.dueDate ? formatDate(task.dueDate) : 'None'}
+              </span>
+            </div>
+          )}
         </div>
 
-        {/* Remaining properties as standard rows */}
-        <div className="flex flex-col gap-ds-04">
-          {/* Priority */}
-          <PropertyRow label="Priority">
-            {interactive ? (
-              <Popover open={priorityOpen} onOpenChange={setPriorityOpen}>
-                <PopoverTrigger asChild>
-                  <Button
-                    variant="ghost"
-                    size="xs"
-                    className={cn('flex items-center gap-ds-02', interactiveValueBase)}
-                  >
+        {/* Remaining properties — full-width clickable rows */}
+        <div className="flex flex-col gap-ds-05">
+          {/* Priority — full row trigger */}
+          {interactive ? (
+            <Popover open={priorityOpen} onOpenChange={setPriorityOpen}>
+              <PopoverTrigger asChild>
+                <button type="button" className={rowTriggerBase}>
+                  <span className="text-ds-xs font-medium text-surface-fg-subtle">Priority</span>
+                  <div className="flex items-center gap-ds-02">
                     <Icon icon={PriorityIcon as any} size="xs" className={priorityCfg.className} />
-                    <span className={cn('text-ds-sm truncate', priorityCfg.className)}>
+                    <span className={cn('text-ds-sm', priorityCfg.className)}>
                       {priorityCfg.label}
                     </span>
-                  </Button>
-                </PopoverTrigger>
-                <PopoverContent
-                  className="w-[180px] border-surface-border-strong bg-surface-overlay p-ds-02"
-                  align="end"
-                  sideOffset={4}
-                >
-                  {PRIORITIES.map((p) => {
-                    const c = PRIORITY_CONFIG[p]
-                    const PIcon = c.icon
-                    return (
-                      <Button
-                        key={p}
-                        variant="ghost"
-                        size="xs"
-                        weight="normal"
-                        onClick={() => {
-                          onUpdatePriority(p)
-                          setPriorityOpen(false)
-                        }}
-                        className={cn(
-                          'w-full justify-start gap-ds-03',
-                          p === task.priority && 'bg-surface-raised-hover',
-                        )}
-                      >
-                        <Icon icon={PIcon as any} size="sm" className={c.className} />
-                        <span className="text-ds-sm text-surface-fg">{c.label}</span>
-                        {p === task.priority && (
-                          <Icon icon={IconCheck} size="sm" className="ml-auto text-accent-11" />
-                        )}
-                      </Button>
-                    )
-                  })}
-                </PopoverContent>
-              </Popover>
-            ) : (
+                  </div>
+                </button>
+              </PopoverTrigger>
+              <PopoverContent
+                className="w-[180px] border-surface-border-strong bg-surface-overlay p-ds-02"
+                align="end"
+                sideOffset={4}
+              >
+                {PRIORITIES.map((p) => {
+                  const c = PRIORITY_CONFIG[p]
+                  const PIcon = c.icon
+                  return (
+                    <Button
+                      key={p}
+                      variant="ghost"
+                      size="compact-sm"
+                      weight="normal"
+                      onClick={() => {
+                        onUpdatePriority(p)
+                        setPriorityOpen(false)
+                      }}
+                      className={cn(
+                        'w-full justify-start gap-ds-03',
+                        p === task.priority && 'bg-surface-raised-hover',
+                      )}
+                    >
+                      <Icon icon={PIcon as any} size="sm" className={c.className} />
+                      <span className="text-ds-sm text-surface-fg">{c.label}</span>
+                      {p === task.priority && (
+                        <Icon icon={IconCheck} size="sm" className="ml-auto text-accent-11" />
+                      )}
+                    </Button>
+                  )
+                })}
+              </PopoverContent>
+            </Popover>
+          ) : (
+            <div className={readonlyRowBase}>
+              <span className="text-ds-xs font-medium text-surface-fg-subtle">Priority</span>
               <div className="flex items-center gap-ds-02">
                 <Icon icon={PriorityIcon as any} size="xs" className={priorityCfg.className} />
-                <span className={cn('text-ds-sm truncate', priorityCfg.className)}>
+                <span className={cn('text-ds-sm', priorityCfg.className)}>
                   {priorityCfg.label}
                 </span>
               </div>
-            )}
-          </PropertyRow>
+            </div>
+          )}
 
-          {/* Leads */}
-          <PropertyRow label="Leads">
-            {interactive ? (
-              <Popover open={leadOpen} onOpenChange={setLeadOpen}>
-                <PopoverTrigger asChild>
-                  <Button
-                    variant="ghost"
-                    size="xs"
-                    className={cn('flex items-center gap-ds-02', interactiveValueBase)}
-                  >
-                    {task.leads.length > 0 ? (
-                      <>
-                        <div className="flex items-center -space-x-1">
-                          {task.leads.slice(0, 3).map((lead) => (
-                            <Avatar key={lead.id} size="xs" className="h-5 w-5 ring-1 ring-surface-raised">
-                              {lead.image && <AvatarImage src={lead.image} />}
-                              <AvatarFallback className="text-[8px]">
-                                {getInitials(lead.name)}
-                              </AvatarFallback>
-                            </Avatar>
-                          ))}
-                          {task.leads.length > 3 && (
-                            <span className="flex h-5 w-5 items-center justify-center rounded-full bg-surface-raised-hover ring-1 ring-surface-raised text-[8px] font-medium text-surface-fg-muted">
-                              +{task.leads.length - 3}
-                            </span>
-                          )}
-                        </div>
-                        <span className="text-ds-sm text-surface-fg">
-                          {task.leads.length === 1 ? task.leads[0].name : `${task.leads.length} people`}
-                        </span>
-                      </>
-                    ) : (
-                      <>
-                        <span className="flex h-5 w-5 items-center justify-center rounded-full border border-dashed border-surface-fg-subtle">
-                          <Icon icon={IconUser} size="xs" className="text-surface-fg-subtle" />
-                        </span>
-                        <span className="text-ds-sm text-surface-fg-subtle">
-                          None
-                        </span>
-                      </>
-                    )}
-                  </Button>
-                </PopoverTrigger>
-                <PopoverContent
-                  className="w-[200px] border-surface-border-strong bg-surface-overlay p-ds-02"
-                  align="end"
-                  sideOffset={4}
-                >
-                  {task.members.map((member) => {
-                    const isSelected = task.leads.some((l) => l.id === member.id)
-                    return (
-                      <Button
-                        key={member.id}
-                        variant="ghost"
-                        size="xs"
-                        weight="normal"
-                        onClick={() => {
-                          if (isSelected) {
-                            onRemoveLead(member.id)
-                          } else {
-                            onAddLead(member.id)
-                          }
-                        }}
-                        className={cn(
-                          'w-full justify-start gap-ds-03',
-                          isSelected && 'bg-surface-raised-hover',
-                        )}
-                      >
-                        <Avatar size="xs" className="h-5 w-5">
-                          {member.image && <AvatarImage src={member.image} />}
-                          <AvatarFallback className="text-[10px]">
-                            {getInitials(member.name)}
-                          </AvatarFallback>
-                        </Avatar>
-                        <span className="text-ds-sm text-surface-fg">{member.name}</span>
-                        {isSelected && (
-                          <Icon icon={IconCheck} size="sm" className="ml-auto text-accent-11" />
-                        )}
-                      </Button>
-                    )
-                  })}
-                </PopoverContent>
-              </Popover>
-            ) : (
-              task.leads.length > 0 ? (
-                <div className="flex items-center gap-ds-02">
-                  <div className="flex items-center -space-x-1">
-                    {task.leads.slice(0, 3).map((lead) => (
-                      <Avatar key={lead.id} size="xs" className="h-5 w-5 ring-1 ring-surface-raised">
-                        {lead.image && <AvatarImage src={lead.image} />}
-                        <AvatarFallback className="text-[8px]">
-                          {getInitials(lead.name)}
-                        </AvatarFallback>
-                      </Avatar>
-                    ))}
-                    {task.leads.length > 3 && (
-                      <span className="flex h-5 w-5 items-center justify-center rounded-full bg-surface-raised-hover ring-1 ring-surface-raised text-[8px] font-medium text-surface-fg-muted">
-                        +{task.leads.length - 3}
-                      </span>
-                    )}
+          {/* Leads — full row trigger */}
+          {interactive ? (
+            <Popover open={leadOpen} onOpenChange={setLeadOpen}>
+              <PopoverTrigger asChild>
+                <button type="button" className={rowTriggerBase}>
+                  <span className="shrink-0 text-ds-xs font-medium text-surface-fg-subtle">Leads</span>
+                  <div className="flex items-center gap-ds-02 min-w-0">
+                    <PeopleValue people={task.leads} />
                   </div>
-                  <span className="text-ds-sm text-surface-fg">
-                    {task.leads.length === 1 ? task.leads[0].name : `${task.leads.length} people`}
-                  </span>
-                </div>
-              ) : (
-                <span className="text-ds-sm text-surface-fg-subtle">None</span>
-              )
-            )}
-          </PropertyRow>
+                </button>
+              </PopoverTrigger>
+              <PopoverContent
+                className="w-[200px] border-surface-border-strong bg-surface-overlay p-ds-02"
+                align="end"
+                sideOffset={4}
+              >
+                <PeoplePickerContent
+                  members={task.members}
+                  selected={task.leads}
+                  onAdd={onAddLead}
+                  onRemove={onRemoveLead}
+                />
+              </PopoverContent>
+            </Popover>
+          ) : (
+            <div className={readonlyRowBase}>
+              <span className="shrink-0 text-ds-xs font-medium text-surface-fg-subtle">Leads</span>
+              <div className="flex items-center gap-ds-02 min-w-0">
+                <PeopleValue people={task.leads} />
+              </div>
+            </div>
+          )}
 
-          {/* Assignees */}
-          <PropertyRow label="Assignees">
-            {interactive ? (
-              <Popover open={assigneeOpen} onOpenChange={setAssigneeOpen}>
-                <PopoverTrigger asChild>
-                  <Button
-                    variant="ghost"
-                    size="xs"
-                    className={cn('flex items-center gap-ds-02', interactiveValueBase)}
-                  >
-                    {task.assignees.length > 0 ? (
-                      <>
-                        <div className="flex items-center -space-x-1">
-                          {task.assignees.slice(0, 3).map((assignee) => (
-                            <Avatar key={assignee.id} size="xs" className="h-5 w-5 ring-1 ring-surface-raised">
-                              {assignee.image && (
-                                <AvatarImage src={assignee.image} />
-                              )}
-                              <AvatarFallback className="text-[8px]">
-                                {getInitials(assignee.name)}
-                              </AvatarFallback>
-                            </Avatar>
-                          ))}
-                          {task.assignees.length > 3 && (
-                            <span className="flex h-5 w-5 items-center justify-center rounded-full bg-surface-raised-hover ring-1 ring-surface-raised text-[8px] font-medium text-surface-fg-muted">
-                              +{task.assignees.length - 3}
-                            </span>
-                          )}
-                        </div>
-                        <span className="text-ds-sm text-surface-fg">
-                          {task.assignees.length === 1 ? task.assignees[0].name : `${task.assignees.length} people`}
-                        </span>
-                      </>
-                    ) : (
-                      <>
-                        <span className="flex h-5 w-5 items-center justify-center rounded-full border border-dashed border-surface-fg-subtle">
-                          <Icon icon={IconUser} size="xs" className="text-surface-fg-subtle" />
-                        </span>
-                        <span className="text-ds-sm text-surface-fg-subtle">
-                          None
-                        </span>
-                      </>
-                    )}
-                  </Button>
-                </PopoverTrigger>
-                <PopoverContent
-                  className="w-[200px] border-surface-border-strong bg-surface-overlay p-ds-02"
-                  align="end"
-                  sideOffset={4}
-                >
-                  {task.members.map((member) => {
-                    const isSelected = task.assignees.some((a) => a.id === member.id)
-                    return (
-                      <Button
-                        key={member.id}
-                        variant="ghost"
-                        size="xs"
-                        weight="normal"
-                        onClick={() => {
-                          if (isSelected) {
-                            onRemoveAssignee(member.id)
-                          } else {
-                            onAddAssignee(member.id)
-                          }
-                        }}
-                        className={cn(
-                          'w-full justify-start gap-ds-03',
-                          isSelected && 'bg-surface-raised-hover',
-                        )}
-                      >
-                        <Avatar size="xs" className="h-5 w-5">
-                          {member.image && <AvatarImage src={member.image} />}
-                          <AvatarFallback className="text-[10px]">
-                            {getInitials(member.name)}
-                          </AvatarFallback>
-                        </Avatar>
-                        <span className="text-ds-sm text-surface-fg">{member.name}</span>
-                        {isSelected && (
-                          <Icon icon={IconCheck} size="sm" className="ml-auto text-accent-11" />
-                        )}
-                      </Button>
-                    )
-                  })}
-                </PopoverContent>
-              </Popover>
-            ) : (
-              task.assignees.length > 0 ? (
-                <div className="flex items-center gap-ds-02">
-                  <div className="flex items-center -space-x-1">
-                    {task.assignees.slice(0, 3).map((assignee) => (
-                      <Avatar key={assignee.id} size="xs" className="h-5 w-5 ring-1 ring-surface-raised">
-                        {assignee.image && (
-                          <AvatarImage src={assignee.image} />
-                        )}
-                        <AvatarFallback className="text-[8px]">
-                          {getInitials(assignee.name)}
-                        </AvatarFallback>
-                      </Avatar>
-                    ))}
-                    {task.assignees.length > 3 && (
-                      <span className="flex h-5 w-5 items-center justify-center rounded-full bg-surface-raised-hover ring-1 ring-surface-raised text-[8px] font-medium text-surface-fg-muted">
-                        +{task.assignees.length - 3}
-                      </span>
-                    )}
+          {/* Assignees — full row trigger */}
+          {interactive ? (
+            <Popover open={assigneeOpen} onOpenChange={setAssigneeOpen}>
+              <PopoverTrigger asChild>
+                <button type="button" className={rowTriggerBase}>
+                  <span className="shrink-0 text-ds-xs font-medium text-surface-fg-subtle">Assignees</span>
+                  <div className="flex items-center gap-ds-02 min-w-0">
+                    <PeopleValue people={task.assignees} />
                   </div>
-                  <span className="text-ds-sm text-surface-fg">
-                    {task.assignees.length === 1 ? task.assignees[0].name : `${task.assignees.length} people`}
-                  </span>
-                </div>
-              ) : (
-                <div className="flex items-center gap-ds-02">
-                  <span className="flex h-5 w-5 items-center justify-center rounded-full border border-dashed border-surface-fg-subtle">
-                    <Icon icon={IconUser} size="xs" className="text-surface-fg-subtle" />
-                  </span>
-                  <span className="text-ds-sm text-surface-fg-subtle">
-                    None
-                  </span>
-                </div>
-              )
-            )}
-          </PropertyRow>
+                </button>
+              </PopoverTrigger>
+              <PopoverContent
+                className="w-[200px] border-surface-border-strong bg-surface-overlay p-ds-02"
+                align="end"
+                sideOffset={4}
+              >
+                <PeoplePickerContent
+                  members={task.members}
+                  selected={task.assignees}
+                  onAdd={onAddAssignee}
+                  onRemove={onRemoveAssignee}
+                />
+              </PopoverContent>
+            </Popover>
+          ) : (
+            <div className={readonlyRowBase}>
+              <span className="shrink-0 text-ds-xs font-medium text-surface-fg-subtle">Assignees</span>
+              <div className="flex items-center gap-ds-02 min-w-0">
+                <PeopleValue people={task.assignees} />
+              </div>
+            </div>
+          )}
 
-          {/* Labels — vertical layout */}
-          <div className="group/labels flex flex-col gap-ds-02">
+          {/* Labels — vertical layout (not a row trigger since it has inline dismiss) */}
+          <div className="group/labels flex flex-col gap-ds-02 rounded-ds-lg px-ds-03 py-ds-02b -mx-ds-01">
             <span className="text-ds-xs text-surface-fg-subtle font-medium">Labels</span>
             <div className="flex flex-wrap gap-ds-02">
               {task.labels.length > 0 ? (
@@ -696,7 +612,7 @@ export function TaskPanelPropertiesCard() {
                     <Button
                       variant="ghost"
                       size="icon-xs"
-                      className="rounded-full border border-dashed border-surface-fg-subtle text-surface-fg-subtle hover:border-accent-9 hover:text-accent-11 opacity-0 group-hover/labels:opacity-100 h-[16px] w-[16px]"
+                      className="rounded-full border border-dashed border-surface-fg-subtle text-surface-fg-subtle hover:border-accent-9 hover:text-accent-11 opacity-0 group-hover/labels:opacity-100"
                       aria-label="Add label"
                     >
                       <Icon icon={IconPlus} size="xs" />

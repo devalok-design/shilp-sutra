@@ -320,6 +320,9 @@ export {
   type SegmentedControlItemProps,
 } from './segmented-control'
 
+// Brand Texture
+export { DevalokGrain, type DevalokGrainProps, type GrainIntensity } from './devalok-grain'
+
 // Other
 export { Link, type LinkProps } from './link'
 

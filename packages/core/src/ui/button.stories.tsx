@@ -15,16 +15,18 @@ const meta: Meta<typeof Button> = {
   argTypes: {
     variant: {
       control: 'select',
-      options: ['solid', 'outline', 'ghost', 'link'],
+      options: ['solid', 'soft', 'outline', 'ghost', 'link'],
     },
     color: {
       control: 'select',
-      options: ['default', 'error'],
+      options: ['accent', 'error', 'success', 'warning', 'neutral'],
     },
     size: {
       control: 'select',
-      options: ['sm', 'md', 'lg', 'icon-sm', 'icon-md', 'icon-lg'],
+      options: ['xs', 'sm', 'md', 'lg', 'compact-xs', 'compact-sm', 'compact-md', 'icon-sm', 'icon-md', 'icon-lg'],
     },
+    shape: { control: 'radio', options: ['default', 'pill'] },
+    weight: { control: 'radio', options: ['semibold', 'normal'] },
     disabled: { control: 'boolean' },
     asChild: { control: 'boolean' },
     startIcon: { control: false },
@@ -435,6 +437,140 @@ export const AllFeatures: Story = {
           <Button size="lg" endIcon={<IconArrowRight size={18} />}>
             Large
           </Button>
+        </div>
+      </div>
+    </div>
+  ),
+}
+
+// --- V2 stories: variant×color grid, soft, pill, compact, weight, real-world ---
+
+export const VariantColorGrid: Story = {
+  name: 'Variant × Color Grid',
+  render: () => {
+    const variants = ['solid', 'soft', 'outline', 'ghost', 'link'] as const
+    const colors = ['accent', 'error', 'success', 'warning', 'neutral'] as const
+    return (
+      <div className="space-y-ds-06">
+        <div className="grid grid-cols-6 gap-ds-04 items-center">
+          <div />
+          {colors.map(c => (
+            <span key={c} className="text-ds-xs font-semibold text-surface-fg-subtle uppercase tracking-wider text-center">{c}</span>
+          ))}
+        </div>
+        {variants.map(v => (
+          <div key={v} className="grid grid-cols-6 gap-ds-04 items-center">
+            <span className="text-ds-xs font-semibold text-surface-fg-muted">{v}</span>
+            {colors.map(c => (
+              <Button key={c} variant={v} color={c} size="sm">
+                {v === 'link' ? 'Action' : 'Button'}
+              </Button>
+            ))}
+          </div>
+        ))}
+      </div>
+    )
+  },
+}
+
+export const SoftShowcase: Story = {
+  name: 'Soft Variant',
+  render: () => (
+    <div className="space-y-ds-04">
+      <div className="flex flex-wrap gap-ds-03">
+        {(['accent', 'error', 'success', 'warning', 'neutral'] as const).map(c => (
+          <Button key={c} variant="soft" color={c} size="sm">{c}</Button>
+        ))}
+      </div>
+      <div className="flex flex-wrap gap-ds-03">
+        {(['accent', 'error', 'success', 'warning', 'neutral'] as const).map(c => (
+          <Button key={c} variant="soft" color={c} size="sm" startIcon={<IconPlus />}>{c}</Button>
+        ))}
+      </div>
+    </div>
+  ),
+}
+
+export const PillButtons: Story = {
+  name: 'Pill Shape',
+  render: () => (
+    <div className="space-y-ds-04">
+      <div className="flex flex-wrap gap-ds-03">
+        {(['accent', 'error', 'success', 'warning', 'neutral'] as const).map(c => (
+          <Button key={c} variant="soft" color={c} size="xs" shape="pill">{c}</Button>
+        ))}
+      </div>
+      <div className="flex flex-wrap gap-ds-03">
+        <Button variant="soft" color="accent" size="xs" shape="pill" startIcon={<IconPlus />}>In Progress</Button>
+        <Button variant="soft" color="success" size="xs" shape="pill" startIcon={<IconPlus />}>Approved</Button>
+        <Button variant="soft" color="warning" size="xs" shape="pill" startIcon={<IconPlus />}>Draft</Button>
+      </div>
+    </div>
+  ),
+}
+
+export const CompactSizes: Story = {
+  name: 'Compact Sizes',
+  render: () => (
+    <div className="space-y-ds-04">
+      <div className="flex flex-wrap gap-ds-03 items-end">
+        <Button size="compact-xs">compact-xs</Button>
+        <Button size="compact-sm">compact-sm</Button>
+        <Button size="compact-md">compact-md</Button>
+      </div>
+      <p className="text-ds-xs text-surface-fg-subtle">Compact sizes use padding-only height (no fixed h-* class). Compare with standard:</p>
+      <div className="flex flex-wrap gap-ds-03 items-end">
+        <Button size="xs">xs</Button>
+        <Button size="sm">sm</Button>
+        <Button size="md">md</Button>
+      </div>
+    </div>
+  ),
+}
+
+export const WeightNormal: Story = {
+  name: 'Weight Normal',
+  render: () => (
+    <div className="flex gap-ds-04">
+      <Button variant="ghost" color="neutral" weight="semibold">Semibold (default)</Button>
+      <Button variant="ghost" color="neutral" weight="normal">Normal weight</Button>
+    </div>
+  ),
+}
+
+export const RealWorldPatterns: Story = {
+  name: 'Real-World Patterns',
+  render: () => (
+    <div className="space-y-ds-08 max-w-xl">
+      <div>
+        <p className="text-ds-xs font-semibold text-surface-fg-subtle uppercase tracking-wider mb-ds-03">Status Pills</p>
+        <div className="flex flex-wrap gap-ds-02">
+          <Button variant="soft" color="accent" size="xs" shape="pill" startIcon={<IconPlus />}>In Progress</Button>
+          <Button variant="soft" color="neutral" size="xs" shape="pill" startIcon={<IconPlus />}>Unassigned</Button>
+          <Button variant="soft" color="warning" size="xs" shape="pill" startIcon={<IconPlus />}>High</Button>
+        </div>
+      </div>
+      <div>
+        <p className="text-ds-xs font-semibold text-surface-fg-subtle uppercase tracking-wider mb-ds-03">Review Actions</p>
+        <div className="flex gap-ds-03">
+          <Button variant="solid" color="success" size="sm" startIcon={<IconPlus />}>Approve</Button>
+          <Button variant="outline" color="error" size="sm">Request Changes</Button>
+        </div>
+      </div>
+      <div>
+        <p className="text-ds-xs font-semibold text-surface-fg-subtle uppercase tracking-wider mb-ds-03">Form Actions</p>
+        <div className="flex gap-ds-03">
+          <Button>Save Changes</Button>
+          <Button variant="outline" color="neutral">Cancel</Button>
+          <Button variant="solid" color="error" startIcon={<IconPlus />}>Delete</Button>
+        </div>
+      </div>
+      <div>
+        <p className="text-ds-xs font-semibold text-surface-fg-subtle uppercase tracking-wider mb-ds-03">Popover Options (compact + normal weight)</p>
+        <div className="w-48 rounded-ds-md border border-surface-border-strong p-ds-01">
+          <Button variant="ghost" color="neutral" size="compact-sm" weight="normal" className="w-full justify-start">Backlog</Button>
+          <Button variant="ghost" color="neutral" size="compact-sm" weight="normal" className="w-full justify-start">In Progress</Button>
+          <Button variant="ghost" color="neutral" size="compact-sm" weight="normal" className="w-full justify-start">Done</Button>
         </div>
       </div>
     </div>

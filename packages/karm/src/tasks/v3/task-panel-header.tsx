@@ -9,6 +9,8 @@ import {
   IconCopy,
   IconTrash,
   IconChevronRight,
+  IconChevronUp,
+  IconChevronDown,
 } from '@tabler/icons-react'
 import { Icon } from '@/ui/icon'
 import { cn } from '@/ui/lib/utils'
@@ -47,6 +49,8 @@ export function TaskPanelHeader({ className, menuSlot, ...props }: TaskPanelHead
     onCopyLink,
     onDuplicateTask,
     onDeleteTask,
+    onNavigatePrev,
+    onNavigateNext,
   } = useTaskPanel()
 
   return (
@@ -80,6 +84,16 @@ export function TaskPanelHeader({ className, menuSlot, ...props }: TaskPanelHead
 
         {/* Action buttons */}
         <div className="flex shrink-0 items-center gap-ds-01">
+          {onNavigatePrev && (
+            <Button variant="ghost" size="icon-xs" onClick={onNavigatePrev} aria-label="Previous task">
+              <Icon icon={IconChevronUp} size="sm" />
+            </Button>
+          )}
+          {onNavigateNext && (
+            <Button variant="ghost" size="icon-xs" onClick={onNavigateNext} aria-label="Next task">
+              <Icon icon={IconChevronDown} size="sm" />
+            </Button>
+          )}
           {mode !== 'full' && (
             <Button
               variant="ghost"

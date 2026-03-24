@@ -21,6 +21,7 @@ export {
 export { TaskPanelWings, type TaskPanelWingsProps } from './task-panel-wings'
 export { TaskPanelReviewCard } from './task-panel-wing-review'
 export { TaskPanelPropertiesCard } from './task-panel-wing-properties'
+export { TaskPanelFiles, type TaskPanelFilesProps } from './task-panel-files'
 
 // Context
 export {

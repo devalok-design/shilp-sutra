@@ -13,6 +13,7 @@ import { TaskPanelMessageInput } from './task-panel-message-input'
 import { TaskPanelWings } from './task-panel-wings'
 import { TaskPanelReviewCard } from './task-panel-wing-review'
 import { TaskPanelPropertiesCard } from './task-panel-wing-properties'
+import { TaskPanelFiles } from './task-panel-files'
 
 // ---------------------------------------------------------------------------
 // Layout wrappers
@@ -59,4 +60,5 @@ export const TaskPanel = Object.assign(TaskPanelRoot, {
   Wings: TaskPanelWings,
   ReviewCard: TaskPanelReviewCard,
   PropertiesCard: TaskPanelPropertiesCard,
+  Files: TaskPanelFiles,
 })

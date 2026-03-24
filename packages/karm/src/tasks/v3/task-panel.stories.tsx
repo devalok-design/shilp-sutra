@@ -467,11 +467,18 @@ function TaskPanelDemo({
   agentStreamingText?: string
 }) {
   const [open, setOpen] = useState(false)
+  const [taskState, setTaskState] = useState(task)
 
   const callbacks = {
     ...sharedCallbacks,
     onClose: () => setOpen(false),
     onExpand: fn(),
+    onToggleVisibility: () => setTaskState((t) => ({
+      ...t,
+      visibility: t.visibility === 'EVERYONE' ? 'INTERNAL' as const : 'EVERYONE' as const,
+    })),
+    onUpdateStatus: (statusId: string) => setTaskState((t) => ({ ...t, status: statusId })),
+    onUpdatePriority: (priority: string) => setTaskState((t) => ({ ...t, priority: priority as TaskPanelTask['priority'] })),
   }
 
   const panelContent = (
@@ -479,7 +486,7 @@ function TaskPanelDemo({
       {/* Wings — composable, positioned to the left of the sheet */}
       {mode === 'side' && (
         <TaskPanel.Wings>
-          {task.isInReview && <TaskPanel.ReviewCard />}
+          {taskState.isInReview && <TaskPanel.ReviewCard />}
           {!clientMode && <TaskPanel.PropertiesCard />}
         </TaskPanel.Wings>
       )}
@@ -509,14 +516,14 @@ function TaskPanelDemo({
         </p>
 
         {/* Trigger card — replicates TaskCard structure */}
-        <TriggerCard task={task} onClick={() => setOpen(true)} />
+        <TriggerCard task={taskState} onClick={() => setOpen(true)} />
       </div>
 
       {/* Panel — wings render as composable children */}
       <TaskPanel
         mode={mode}
         open={open}
-        task={task}
+        task={taskState}
         clientMode={clientMode}
         currentUserId={clientMode ? 'client-1' : 'u1'}
         timeline={timelineProp}

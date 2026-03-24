@@ -625,10 +625,10 @@ export function TaskPanelPropertiesCard() {
             </div>
           )}
 
-          {/* Labels — vertical layout (not a row trigger since it has inline dismiss) */}
-          <div className="group/labels flex flex-col gap-ds-02 rounded-ds-lg px-ds-03 py-ds-02b -mx-ds-01">
-            <span className="text-ds-xs text-surface-fg-subtle font-medium">Labels</span>
-            <div className="flex flex-wrap items-start gap-ds-02">
+          {/* Labels */}
+          <div className="group/labels rounded-ds-lg px-ds-03 py-ds-02b -mx-ds-01">
+            <span className="text-ds-xs text-surface-fg-subtle font-medium mb-ds-02 block">Labels</span>
+            <div className="flex flex-wrap items-center gap-1.5">
               {task.labels.length > 0 ? (
                 task.labels.map((label) => (
                   <Badge
@@ -641,19 +641,18 @@ export function TaskPanelPropertiesCard() {
                   </Badge>
                 ))
               ) : (
-                <span className="text-ds-sm text-surface-fg-subtle">None</span>
+                <span className="text-ds-xs text-surface-fg-subtle">None</span>
               )}
               {interactive && (
                 <Popover open={labelOpen} onOpenChange={setLabelOpen}>
                   <PopoverTrigger asChild>
-                    <Button
-                      variant="ghost"
-                      size="icon-xs"
-                      className="rounded-full border border-dashed border-surface-fg-subtle text-surface-fg-subtle hover:border-accent-9 hover:text-accent-11 opacity-0 group-hover/labels:opacity-100"
+                    <button
+                      type="button"
+                      className="inline-flex h-5 w-5 items-center justify-center rounded-full border border-dashed border-surface-fg-subtle text-surface-fg-subtle hover:border-accent-9 hover:text-accent-11 transition-colors opacity-0 group-hover/labels:opacity-100"
                       aria-label="Add label"
                     >
-                      <Icon icon={IconPlus} size="xs" />
-                    </Button>
+                      <Icon icon={IconPlus} size="xs" className="h-3 w-3" />
+                    </button>
                   </PopoverTrigger>
                   <PopoverContent
                     className="w-[200px] border-surface-border-strong bg-surface-overlay p-ds-03"

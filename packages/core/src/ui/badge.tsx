@@ -1,31 +1,31 @@
 'use client'
 
-import { IconX } from '@tabler/icons-react'
-import * as React from 'react'
+import { IconCheck, IconX } from '@tabler/icons-react'
 import { cva, type VariantProps } from 'class-variance-authority'
 import { motion } from 'framer-motion'
-import { cn } from './lib/utils'
+import { Slot } from '@primitives/react-slot'
+import * as React from 'react'
 import { Icon } from './icon'
+import { cn } from './lib/utils'
 
 const badgeVariants = cva(
-  'inline-flex items-center gap-ds-02b font-sans font-medium rounded-ds-full border transition-colors duration-fast-01 ease-productive-standard',
+  'relative inline-flex items-center rounded-full font-sans font-medium overflow-hidden isolate transition-colors duration-fast-01 ease-productive-standard select-none [&>span:not([data-grain])]:relative [&>span:not([data-grain])]:z-[2]',
   {
     variants: {
       variant: {
         subtle: '',
-        secondary: '',    // alias → subtle
         solid: '',
         outline: '',
-        destructive: '',  // alias → solid + error
+        soft: '',
       },
       color: {
         default: '',
-        info: '',
-        success: '',
-        error: '',
-        warning: '',
-        brand: '',
         accent: '',
+        error: '',
+        success: '',
+        warning: '',
+        info: '',
+        neutral: '',
         teal: '',
         amber: '',
         slate: '',
@@ -33,65 +33,79 @@ const badgeVariants = cva(
         cyan: '',
         orange: '',
         emerald: '',
+        custom: '',
       },
       size: {
-        xs: 'h-[16px] px-ds-02b text-ds-xs',
-        sm: 'h-[20px] px-ds-03 text-ds-xs',
-        md: 'h-ds-xs px-ds-03 text-ds-sm',
-        lg: 'h-ds-xs-plus px-ds-04 text-ds-md',
+        xs: 'h-4 px-1.5 text-[10px] gap-1',
+        sm: 'h-5 px-2 text-ds-xs gap-1',
+        md: 'h-6 px-2.5 text-ds-xs gap-1.5',
+        lg: 'h-7 px-3 text-ds-sm gap-1.5',
       },
     },
     compoundVariants: [
-      // subtle (surface bg)
-      { variant: 'subtle', color: 'default', className: 'bg-surface-raised-hover text-surface-fg-muted border-surface-border-strong' },
-      // "secondary" alias → same as subtle + default
-      { variant: 'secondary', color: 'default', className: 'bg-surface-raised-hover text-surface-fg-muted border-surface-border-strong' },
-      // "destructive" alias → solid + error
-      { variant: 'destructive', color: 'default', className: 'bg-error-9 text-accent-fg border-transparent' },
-      { variant: 'destructive', color: 'error', className: 'bg-error-9 text-accent-fg border-transparent' },
-      { variant: 'subtle', color: 'info', className: 'bg-info-3 text-info-11 border-info-7' },
-      { variant: 'subtle', color: 'success', className: 'bg-success-3 text-success-11 border-success-7' },
-      { variant: 'subtle', color: 'error', className: 'bg-error-3 text-error-11 border-error-7' },
-      { variant: 'subtle', color: 'warning', className: 'bg-warning-3 text-warning-11 border-warning-7' },
-      { variant: 'subtle', color: 'brand', className: 'bg-accent-2 text-accent-11 border-accent-7' },
-      { variant: 'subtle', color: 'accent', className: 'bg-accent-2 text-accent-11 border-accent-7' },
-      { variant: 'subtle', color: 'teal', className: 'bg-category-teal-3 text-category-teal-11 border-category-teal-7' },
-      { variant: 'subtle', color: 'amber', className: 'bg-category-amber-3 text-category-amber-11 border-category-amber-7' },
-      { variant: 'subtle', color: 'slate', className: 'bg-category-slate-3 text-category-slate-11 border-category-slate-7' },
-      { variant: 'subtle', color: 'indigo', className: 'bg-category-indigo-3 text-category-indigo-11 border-category-indigo-7' },
-      { variant: 'subtle', color: 'cyan', className: 'bg-category-cyan-3 text-category-cyan-11 border-category-cyan-7' },
-      { variant: 'subtle', color: 'orange', className: 'bg-category-orange-3 text-category-orange-11 border-category-orange-7' },
-      { variant: 'subtle', color: 'emerald', className: 'bg-category-emerald-3 text-category-emerald-11 border-category-emerald-7' },
-      // solid (filled bg)
-      { variant: 'solid', color: 'default', className: 'bg-accent-9 text-accent-fg border-transparent' },
-      { variant: 'solid', color: 'info', className: 'bg-info-9 text-accent-fg border-transparent' },
-      { variant: 'solid', color: 'success', className: 'bg-success-9 text-accent-fg border-transparent' },
-      { variant: 'solid', color: 'error', className: 'bg-error-9 text-accent-fg border-transparent' },
-      { variant: 'solid', color: 'warning', className: 'bg-warning-9 text-accent-fg border-transparent' },
-      { variant: 'solid', color: 'brand', className: 'bg-accent-9 text-accent-fg border-transparent' },
+      // ── subtle × colors ──────────────────────────────────────────
+      { variant: 'subtle', color: 'default', className: 'bg-surface-raised-hover text-surface-fg-muted border border-surface-border-strong' },
+      { variant: 'subtle', color: 'accent', className: 'bg-accent-3 text-accent-11 border border-accent-7' },
+      { variant: 'subtle', color: 'error', className: 'bg-error-3 text-error-11 border border-error-7' },
+      { variant: 'subtle', color: 'success', className: 'bg-success-3 text-success-11 border border-success-7' },
+      { variant: 'subtle', color: 'warning', className: 'bg-warning-3 text-warning-11 border border-warning-7' },
+      { variant: 'subtle', color: 'info', className: 'bg-info-3 text-info-11 border border-info-7' },
+      { variant: 'subtle', color: 'neutral', className: 'bg-surface-raised-hover text-surface-fg-muted border border-surface-border-strong' },
+      { variant: 'subtle', color: 'teal', className: 'bg-category-teal-3 text-category-teal-11 border border-category-teal-7' },
+      { variant: 'subtle', color: 'amber', className: 'bg-category-amber-3 text-category-amber-11 border border-category-amber-7' },
+      { variant: 'subtle', color: 'slate', className: 'bg-category-slate-3 text-category-slate-11 border border-category-slate-7' },
+      { variant: 'subtle', color: 'indigo', className: 'bg-category-indigo-3 text-category-indigo-11 border border-category-indigo-7' },
+      { variant: 'subtle', color: 'cyan', className: 'bg-category-cyan-3 text-category-cyan-11 border border-category-cyan-7' },
+      { variant: 'subtle', color: 'orange', className: 'bg-category-orange-3 text-category-orange-11 border border-category-orange-7' },
+      { variant: 'subtle', color: 'emerald', className: 'bg-category-emerald-3 text-category-emerald-11 border border-category-emerald-7' },
+
+      // ── solid × colors ───────────────────────────────────────────
+      { variant: 'solid', color: 'default', className: 'bg-neutral-5 text-surface-fg border-transparent' },
       { variant: 'solid', color: 'accent', className: 'bg-accent-9 text-accent-fg border-transparent' },
-      { variant: 'solid', color: 'teal', className: 'bg-category-teal-9 text-accent-fg border-transparent' },
-      { variant: 'solid', color: 'amber', className: 'bg-category-amber-9 text-accent-fg border-transparent' },
-      { variant: 'solid', color: 'slate', className: 'bg-category-slate-9 text-accent-fg border-transparent' },
-      { variant: 'solid', color: 'indigo', className: 'bg-category-indigo-9 text-accent-fg border-transparent' },
-      { variant: 'solid', color: 'cyan', className: 'bg-category-cyan-9 text-accent-fg border-transparent' },
-      { variant: 'solid', color: 'orange', className: 'bg-category-orange-9 text-accent-fg border-transparent' },
-      { variant: 'solid', color: 'emerald', className: 'bg-category-emerald-9 text-accent-fg border-transparent' },
-      // outline (border only)
-      { variant: 'outline', color: 'default', className: 'bg-transparent text-surface-fg-muted border-surface-border-strong' },
-      { variant: 'outline', color: 'info', className: 'bg-transparent text-info-11 border-info-7' },
-      { variant: 'outline', color: 'success', className: 'bg-transparent text-success-11 border-success-7' },
-      { variant: 'outline', color: 'error', className: 'bg-transparent text-error-11 border-error-7' },
-      { variant: 'outline', color: 'warning', className: 'bg-transparent text-warning-11 border-warning-7' },
-      { variant: 'outline', color: 'brand', className: 'bg-transparent text-accent-11 border-accent-7' },
-      { variant: 'outline', color: 'accent', className: 'bg-transparent text-accent-11 border-accent-7' },
-      { variant: 'outline', color: 'teal', className: 'bg-transparent text-category-teal-11 border-category-teal-7' },
-      { variant: 'outline', color: 'amber', className: 'bg-transparent text-category-amber-11 border-category-amber-7' },
-      { variant: 'outline', color: 'slate', className: 'bg-transparent text-category-slate-11 border-category-slate-7' },
-      { variant: 'outline', color: 'indigo', className: 'bg-transparent text-category-indigo-11 border-category-indigo-7' },
-      { variant: 'outline', color: 'cyan', className: 'bg-transparent text-category-cyan-11 border-category-cyan-7' },
-      { variant: 'outline', color: 'orange', className: 'bg-transparent text-category-orange-11 border-category-orange-7' },
-      { variant: 'outline', color: 'emerald', className: 'bg-transparent text-category-emerald-11 border-category-emerald-7' },
+      { variant: 'solid', color: 'error', className: 'bg-error-9 text-error-fg border-transparent' },
+      { variant: 'solid', color: 'success', className: 'bg-success-9 text-success-fg border-transparent' },
+      { variant: 'solid', color: 'warning', className: 'bg-warning-9 text-warning-fg border-transparent' },
+      { variant: 'solid', color: 'info', className: 'bg-info-9 text-info-fg border-transparent' },
+      { variant: 'solid', color: 'neutral', className: 'bg-neutral-5 text-surface-fg border-transparent' },
+      { variant: 'solid', color: 'teal', className: 'bg-category-teal-9 text-white border-transparent' },
+      { variant: 'solid', color: 'amber', className: 'bg-category-amber-9 text-white border-transparent' },
+      { variant: 'solid', color: 'slate', className: 'bg-category-slate-9 text-white border-transparent' },
+      { variant: 'solid', color: 'indigo', className: 'bg-category-indigo-9 text-white border-transparent' },
+      { variant: 'solid', color: 'cyan', className: 'bg-category-cyan-9 text-white border-transparent' },
+      { variant: 'solid', color: 'orange', className: 'bg-category-orange-9 text-white border-transparent' },
+      { variant: 'solid', color: 'emerald', className: 'bg-category-emerald-9 text-white border-transparent' },
+
+      // ── outline × colors ─────────────────────────────────────────
+      { variant: 'outline', color: 'default', className: 'bg-transparent text-surface-fg-muted border border-surface-border-strong' },
+      { variant: 'outline', color: 'accent', className: 'bg-transparent text-accent-11 border border-accent-7' },
+      { variant: 'outline', color: 'error', className: 'bg-transparent text-error-11 border border-error-7' },
+      { variant: 'outline', color: 'success', className: 'bg-transparent text-success-11 border border-success-7' },
+      { variant: 'outline', color: 'warning', className: 'bg-transparent text-warning-11 border border-warning-7' },
+      { variant: 'outline', color: 'info', className: 'bg-transparent text-info-11 border border-info-7' },
+      { variant: 'outline', color: 'neutral', className: 'bg-transparent text-surface-fg-muted border border-surface-border-strong' },
+      { variant: 'outline', color: 'teal', className: 'bg-transparent text-category-teal-11 border border-category-teal-7' },
+      { variant: 'outline', color: 'amber', className: 'bg-transparent text-category-amber-11 border border-category-amber-7' },
+      { variant: 'outline', color: 'slate', className: 'bg-transparent text-category-slate-11 border border-category-slate-7' },
+      { variant: 'outline', color: 'indigo', className: 'bg-transparent text-category-indigo-11 border border-category-indigo-7' },
+      { variant: 'outline', color: 'cyan', className: 'bg-transparent text-category-cyan-11 border border-category-cyan-7' },
+      { variant: 'outline', color: 'orange', className: 'bg-transparent text-category-orange-11 border border-category-orange-7' },
+      { variant: 'outline', color: 'emerald', className: 'bg-transparent text-category-emerald-11 border border-category-emerald-7' },
+
+      // ── soft × colors ────────────────────────────────────────────
+      { variant: 'soft', color: 'default', className: 'bg-surface-raised-hover text-surface-fg-muted border-transparent' },
+      { variant: 'soft', color: 'accent', className: 'bg-accent-3 text-accent-11 border-transparent' },
+      { variant: 'soft', color: 'error', className: 'bg-error-3 text-error-11 border-transparent' },
+      { variant: 'soft', color: 'success', className: 'bg-success-3 text-success-11 border-transparent' },
+      { variant: 'soft', color: 'warning', className: 'bg-warning-3 text-warning-11 border-transparent' },
+      { variant: 'soft', color: 'info', className: 'bg-info-3 text-info-11 border-transparent' },
+      { variant: 'soft', color: 'neutral', className: 'bg-surface-raised-hover text-surface-fg-muted border-transparent' },
+      { variant: 'soft', color: 'teal', className: 'bg-category-teal-3 text-category-teal-11 border-transparent' },
+      { variant: 'soft', color: 'amber', className: 'bg-category-amber-3 text-category-amber-11 border-transparent' },
+      { variant: 'soft', color: 'slate', className: 'bg-category-slate-3 text-category-slate-11 border-transparent' },
+      { variant: 'soft', color: 'indigo', className: 'bg-category-indigo-3 text-category-indigo-11 border-transparent' },
+      { variant: 'soft', color: 'cyan', className: 'bg-category-cyan-3 text-category-cyan-11 border-transparent' },
+      { variant: 'soft', color: 'orange', className: 'bg-category-orange-3 text-category-orange-11 border-transparent' },
+      { variant: 'soft', color: 'emerald', className: 'bg-category-emerald-3 text-category-emerald-11 border-transparent' },
     ],
     defaultVariants: {
       variant: 'subtle',
@@ -101,74 +115,210 @@ const badgeVariants = cva(
   },
 )
 
+/** Icon sizing per badge size */
+const iconSizeMap: Record<string, string> = {
+  xs: '[&>svg]:h-2.5 [&>svg]:w-2.5',
+  sm: '[&>svg]:h-3 [&>svg]:w-3',
+  md: '[&>svg]:h-3 [&>svg]:w-3',
+  lg: '[&>svg]:h-3.5 [&>svg]:w-3.5',
+}
+
 /**
- * Props for Badge — a compact inline label with a two-axis variant system, an optional
- * leading dot indicator, and a dismissible close button.
+ * Badge — a compact inline label with a two-axis variant system.
  *
  * **Two axes:**
- * - `variant` controls **visual style**: `"subtle"` (default, surface bg) | `"solid"` (filled) | `"outline"` (border only)
- * - `color` controls **semantic intent/category**: `"default"` | `"info"` | `"success"` | `"error"` |
- *   `"warning"` | `"brand"` | `"accent"` | `"teal"` | `"amber"` | `"slate"` | `"indigo"` | `"cyan"` | `"orange"` | `"emerald"`
+ * - `variant` controls **visual style**: `"subtle"` | `"solid"` | `"outline"` | `"soft"`
+ * - `color` controls **semantic intent/category**: 16 built-in colors + `"custom"` (CSS variable)
  *
- * **Comparison with Chip:** Badge is a pure display label (no onClick, no delete handler).
- * Chip (`<Chip>`) is interactive — use Chip when users can click or dismiss the tag.
- *
- * **Dismissible:** Provide `onDismiss` to show an × button. Badge does NOT include a `dismissible`
- * boolean prop — the presence of `onDismiss` is the signal.
+ * **Interactive:** Pass `onClick` to make it a button. Pass `selected` for toggle state.
+ * **Dismissible:** Pass `onDismiss` to show a dismiss button.
+ * **Custom colors:** Set `color="custom"` and CSS variable `--badge-color` on a parent or via `style`.
+ * For light custom colors on solid variant, set `--badge-fg-color` to a dark value.
  *
  * @example
- * // Status badge in a table cell:
  * <Badge color="success">Active</Badge>
  *
  * @example
- * // Notification count with dot indicator (solid fill for high contrast):
  * <Badge variant="solid" size="sm" dot>3 new</Badge>
  *
  * @example
- * // Dismissible category filter (e.g. in a filter bar):
- * <Badge color="teal" onDismiss={() => removeFilter('teal')}>Teal team</Badge>
- *
- * @example
- * // Error badge for a failed job in a pipeline view:
- * <Badge color="error" size="lg">Build failed</Badge>
- * // These are just a few ways — feel free to combine props creatively!
+ * <Badge color="custom" style={{ '--badge-color': '#8b5cf6' } as React.CSSProperties}>
+ *   Custom
+ * </Badge>
  */
-export interface BadgeProps
-  extends Omit<React.HTMLAttributes<HTMLSpanElement>, 'color'>,
+interface BadgeProps
+  extends Omit<React.HTMLAttributes<HTMLElement>, 'color'>,
     VariantProps<typeof badgeVariants> {
+  asChild?: boolean
+  startIcon?: React.ReactElement | null
+  endIcon?: React.ReactElement | null
   dot?: boolean
   onDismiss?: () => void
+  selected?: boolean
+  disabled?: boolean
+  maxWidth?: number
+  circle?: boolean
 }
 
-const Badge = React.forwardRef<HTMLSpanElement, BadgeProps>(
-  ({ className, variant, color, size, dot, onDismiss, children, ...props }, ref) => {
+const Badge = React.forwardRef<HTMLElement, BadgeProps>(
+  (
+    {
+      className,
+      variant,
+      color,
+      size,
+      asChild,
+      startIcon,
+      endIcon,
+      dot,
+      onDismiss,
+      onClick,
+      selected,
+      disabled,
+      maxWidth,
+      circle,
+      children,
+      style,
+      ...props
+    },
+    ref,
+  ) => {
+    const resolvedVariant = variant ?? 'subtle'
+    const resolvedColor = color ?? 'default'
+    const resolvedSize = size ?? 'md'
+
+    // When both onClick + onDismiss, use div with role="button" to avoid nested <button>
+    const Comp = asChild
+      ? Slot
+      : onClick && onDismiss
+        ? 'div'
+        : onClick
+          ? 'button'
+          : 'span'
+
+    // Custom color inline styles via CSS variable
+    const customStyles =
+      resolvedColor === 'custom'
+        ? {
+            ...(resolvedVariant === 'subtle' && {
+              backgroundColor: 'color-mix(in oklch, var(--badge-color) 15%, transparent)',
+              color: 'var(--badge-color)',
+              borderColor: 'color-mix(in oklch, var(--badge-color) 40%, transparent)',
+            }),
+            ...(resolvedVariant === 'solid' && {
+              backgroundColor: 'var(--badge-color)',
+              color: 'var(--badge-fg-color, white)',
+              borderColor: 'transparent',
+            }),
+            ...(resolvedVariant === 'outline' && {
+              backgroundColor: 'transparent',
+              color: 'var(--badge-color)',
+              borderColor: 'color-mix(in oklch, var(--badge-color) 50%, transparent)',
+            }),
+            ...(resolvedVariant === 'soft' && {
+              backgroundColor: 'color-mix(in oklch, var(--badge-color) 12%, transparent)',
+              color: 'var(--badge-color)',
+              borderColor: 'transparent',
+            }),
+          }
+        : undefined
+
+    // Keyboard handler for div[role="button"] (onClick + onDismiss case)
+    const handleKeyDown =
+      onClick && onDismiss
+        ? (e: React.KeyboardEvent<HTMLElement>) => {
+            if (e.key === 'Enter' || e.key === ' ') {
+              e.preventDefault()
+              if (!disabled) onClick(e as unknown as React.MouseEvent<HTMLElement>)
+            }
+            props.onKeyDown?.(e)
+          }
+        : props.onKeyDown
+
     return (
-      <span ref={ref} className={cn(badgeVariants({ variant, color, size }), className)} {...props}>
+      <Comp
+        ref={ref as React.Ref<never>}
+        className={cn(
+          badgeVariants({ variant: resolvedVariant, color: resolvedColor, size: resolvedSize }),
+          onClick &&
+            'cursor-pointer hover:brightness-95 active:scale-[0.95] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent-9 focus-visible:ring-offset-1',
+          selected && 'ring-1 ring-current/20',
+          disabled && 'opacity-action-disabled pointer-events-none saturate-[0.3]',
+          circle && 'justify-center px-0 aspect-square',
+          className,
+        )}
+        style={{ ...style, ...customStyles, ...(maxWidth ? { maxWidth } : undefined) }}
+        onClick={disabled ? undefined : (onClick as React.MouseEventHandler<HTMLElement>)}
+        onKeyDown={handleKeyDown}
+        {...(Comp === 'button' && { type: 'button' as const })}
+        {...(Comp === 'button' && disabled ? { disabled: true } : {})}
+        {...(Comp === 'div' && onClick ? { role: 'button' as const, tabIndex: 0 } : {})}
+        {...props}
+      >
+        {/* Dot indicator */}
         {dot && (
-          <span className="relative inline-flex h-ds-02b w-ds-02b shrink-0" aria-hidden="true">
+          <span className="relative inline-flex h-1.5 w-1.5 shrink-0" aria-hidden="true">
             <motion.span
-              className="absolute inset-0 rounded-ds-full bg-current"
+              className="absolute inset-0 rounded-full bg-current"
               animate={{ scale: [1, 2.5], opacity: [0.4, 0] }}
               transition={{ repeat: Infinity, duration: 1.5, ease: 'easeOut' }}
             />
-            <span className="relative h-ds-02b w-ds-02b rounded-ds-full bg-current" />
+            <span className="relative h-1.5 w-1.5 rounded-full bg-current" />
           </span>
         )}
-        {children}
+
+        {/* Selected check icon (auto-inserted if no startIcon/dot) */}
+        {selected && !startIcon && !dot && (
+          <Icon icon={IconCheck} size="xs" className="shrink-0" />
+        )}
+
+        {/* Start icon */}
+        {startIcon && (
+          <span className={cn('shrink-0', iconSizeMap[resolvedSize])}>{startIcon}</span>
+        )}
+
+        {/* Children — with optional truncation */}
+        {maxWidth ? (
+          <span
+            className="truncate"
+            title={typeof children === 'string' ? children : undefined}
+          >
+            {children}
+          </span>
+        ) : (
+          children
+        )}
+
+        {/* End icon */}
+        {endIcon && (
+          <span className={cn('shrink-0', iconSizeMap[resolvedSize])}>{endIcon}</span>
+        )}
+
+        {/* Dismiss button */}
         {onDismiss && (
           <button
             type="button"
-            onClick={onDismiss}
-            className="ml-ds-01 min-h-ds-xs min-w-ds-xs flex items-center justify-center rounded-ds-full text-current/60 hover:text-current hover:bg-current/10 transition-[color,background-color,transform] duration-fast-02 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent-9"
-            aria-label={`Remove ${typeof children === 'string' ? children : ''}`.trim() || 'Remove'}
+            onClick={(e) => {
+              e.stopPropagation()
+              onDismiss()
+            }}
+            className={cn(
+              'shrink-0 rounded-full text-current/60 hover:text-current hover:bg-current/10 transition-colors focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-accent-9',
+              resolvedSize === 'xs'
+                ? 'p-0 -mr-0.5 min-w-[16px] min-h-[16px]'
+                : 'p-px',
+            )}
+            aria-label={
+              `Remove ${typeof children === 'string' ? children : ''}`.trim() || 'Remove'
+            }
           >
-            <Icon icon={IconX} size="sm" />
+            <Icon icon={IconX} size="xs" />
           </button>
         )}
-      </span>
+      </Comp>
     )
   },
 )
 Badge.displayName = 'Badge'
 
-export { Badge, badgeVariants }
+export { Badge, badgeVariants, type BadgeProps }

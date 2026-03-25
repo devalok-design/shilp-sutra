@@ -1,5 +1,6 @@
 import { render, screen } from '@testing-library/react'
-import { describe, it, expect } from 'vitest'
+import userEvent from '@testing-library/user-event'
+import { describe, it, expect, vi } from 'vitest'
 import { StatusBadge } from './status-badge'
 
 describe('StatusBadge', () => {
@@ -41,5 +42,80 @@ describe('StatusBadge', () => {
       <StatusBadge status="draft" className="extra-class" />,
     )
     expect(container.firstElementChild).toHaveClass('extra-class')
+  })
+
+  it('renders in-progress status with accent-3 background', () => {
+    const { container } = render(<StatusBadge status="in-progress" />)
+    const badge = container.querySelector('[class*="bg-accent-3"]')
+    expect(badge).toBeInTheDocument()
+    expect(badge).toHaveClass('text-accent-11')
+  })
+
+  it('renders review status with info-3 background', () => {
+    const { container } = render(<StatusBadge status="review" />)
+    const badge = container.querySelector('[class*="bg-info-3"]')
+    expect(badge).toBeInTheDocument()
+    expect(badge).toHaveClass('text-info-11')
+  })
+
+  it('renders as button when onClick provided', async () => {
+    const handleClick = vi.fn()
+    render(<StatusBadge status="active" onClick={handleClick} />)
+    const button = screen.getByRole('button')
+    expect(button).toBeInTheDocument()
+    expect(button).toHaveAttribute('type', 'button')
+    expect(button).toHaveClass('cursor-pointer')
+
+    const user = userEvent.setup()
+    await user.click(button)
+    expect(handleClick).toHaveBeenCalledOnce()
+  })
+
+  it('shows auto chevron-down icon when clickable and no custom icon', () => {
+    const { container } = render(
+      <StatusBadge status="active" onClick={() => {}} />,
+    )
+    // The Icon component renders an SVG from IconChevronDown
+    const svg = container.querySelector('svg')
+    expect(svg).toBeInTheDocument()
+  })
+
+  it('shows custom icon when provided (no auto-chevron)', () => {
+    const customIcon = <span data-testid="custom-icon">★</span>
+    const { container } = render(
+      <StatusBadge status="active" onClick={() => {}} icon={customIcon} />,
+    )
+    expect(screen.getByTestId('custom-icon')).toBeInTheDocument()
+    // Should not have the auto-chevron SVG from Icon
+    const svgs = container.querySelectorAll('svg')
+    expect(svgs).toHaveLength(0)
+  })
+
+  it('backward compat: active status renders success classes unchanged', () => {
+    const { container } = render(<StatusBadge status="active" />)
+    const badge = container.querySelector('[class*="bg-success-3"]')
+    expect(badge).toBeInTheDocument()
+    expect(badge).toHaveClass('text-success-11')
+    // Should render as span, not button
+    expect(badge!.tagName).toBe('SPAN')
+  })
+
+  it('renders as span without chevron when onClick not provided', () => {
+    const { container } = render(<StatusBadge status="pending" />)
+    const badge = container.querySelector('[class*="bg-warning-3"]')
+    expect(badge).toBeInTheDocument()
+    expect(badge!.tagName).toBe('SPAN')
+    // Should not have chevron icon
+    const svg = container.querySelector('svg')
+    expect(svg).toBeNull()
+  })
+
+  it('renders as button in color branch when onClick provided', () => {
+    const handleClick = vi.fn()
+    render(<StatusBadge color="success" onClick={handleClick} />)
+    const button = screen.getByRole('button')
+    expect(button).toBeInTheDocument()
+    expect(button).toHaveAttribute('type', 'button')
+    expect(button).toHaveClass('cursor-pointer')
   })
 })

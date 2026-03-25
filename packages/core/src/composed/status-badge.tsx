@@ -3,7 +3,9 @@
 import * as React from 'react'
 import { cva, type VariantProps } from 'class-variance-authority'
 import { motion, AnimatePresence } from 'framer-motion'
+import { IconChevronDown } from '@tabler/icons-react'
 
+import { Icon } from '../ui/icon'
 import { motionProps } from '../ui/lib/motion'
 import { cn } from '../ui/lib/utils'
 
@@ -18,6 +20,8 @@ const statusBadgeVariants = cva(
         rejected: 'bg-error-3 text-error-11',
         completed: 'bg-success-3 text-success-11',
         blocked: 'bg-error-3 text-error-11',
+        'in-progress': 'bg-accent-3 text-accent-11',
+        review: 'bg-info-3 text-info-11',
         cancelled: 'bg-surface-raised text-surface-fg-subtle',
         draft: 'bg-surface-raised text-surface-fg-subtle',
       },
@@ -46,6 +50,8 @@ const dotColorMap: Record<string, string> = {
   rejected: 'bg-error-9',
   completed: 'bg-success-9',
   blocked: 'bg-error-9',
+  'in-progress': 'bg-accent-9',
+  review: 'bg-info-9',
   cancelled: 'bg-disabled',
   draft: 'bg-surface-fg-subtle',
 }
@@ -62,6 +68,8 @@ interface StatusBadgeBaseProps extends Omit<React.HTMLAttributes<HTMLSpanElement
   label?: string
   hideDot?: boolean
   size?: VariantProps<typeof statusBadgeVariants>['size']
+  onClick?: () => void
+  icon?: React.ReactNode
 }
 
 interface StatusBadgeWithStatus extends StatusBadgeBaseProps {
@@ -79,7 +87,17 @@ export type StatusBadgeProps = StatusBadgeWithStatus | StatusBadgeWithColor
 const statusMorphTransition = { duration: 0.3, ease: 'easeOut' as const }
 
 const StatusBadge = React.forwardRef<HTMLSpanElement, StatusBadgeProps>(
-  ({ status, color, size, label, hideDot = false, className, ...props }, ref) => {
+  ({ status, color, size, label, hideDot = false, onClick, icon, className, ...props }, ref) => {
+    const isClickable = onClick != null
+    const Tag = isClickable ? motion.button : motion.span
+    const clickableClasses = isClickable ? 'cursor-pointer hover:opacity-80 transition-opacity' : undefined
+
+    const trailingIcon = icon != null
+      ? icon
+      : isClickable
+        ? <Icon icon={IconChevronDown} size="xs" className="text-current/50 -mr-0.5 shrink-0" />
+        : null
+
     if (color != null) {
       // Color branch — color is the styling key
       const displayLabel = label ?? (color.charAt(0).toUpperCase() + color.slice(1))
@@ -87,15 +105,17 @@ const StatusBadge = React.forwardRef<HTMLSpanElement, StatusBadgeProps>(
 
       return (
         <AnimatePresence mode="wait">
-          <motion.span
+          <Tag
             key={color}
-            ref={ref}
+            ref={ref as any}
+            {...(isClickable ? { type: 'button' as const, onClick } : {})}
             initial={{ opacity: 0.6, scale: 0.95 }}
             animate={{ opacity: 1, scale: 1 }}
             exit={{ opacity: 0.6, scale: 0.95 }}
             transition={statusMorphTransition}
             className={cn(
               statusBadgeVariants({ color, size }),
+              clickableClasses,
               className,
             )}
             {...motionProps(props)}
@@ -111,7 +131,8 @@ const StatusBadge = React.forwardRef<HTMLSpanElement, StatusBadgeProps>(
               />
             )}
             {displayLabel}
-          </motion.span>
+            {trailingIcon}
+          </Tag>
         </AnimatePresence>
       )
     }
@@ -123,15 +144,17 @@ const StatusBadge = React.forwardRef<HTMLSpanElement, StatusBadgeProps>(
 
     return (
       <AnimatePresence mode="wait">
-        <motion.span
+        <Tag
           key={statusKey}
-          ref={ref}
+          ref={ref as any}
+          {...(isClickable ? { type: 'button' as const, onClick } : {})}
           initial={{ opacity: 0.6 }}
           animate={{ opacity: 1 }}
           exit={{ opacity: 0.6 }}
           transition={statusMorphTransition}
           className={cn(
             statusBadgeVariants({ status: statusKey, size }),
+            clickableClasses,
             className,
           )}
           {...motionProps(props)}
@@ -147,7 +170,8 @@ const StatusBadge = React.forwardRef<HTMLSpanElement, StatusBadgeProps>(
             />
           )}
           {displayLabel}
-        </motion.span>
+          {trailingIcon}
+        </Tag>
       </AnimatePresence>
     )
   },

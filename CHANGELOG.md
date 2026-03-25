@@ -41,12 +41,19 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - **`<IconGroup>`** — Flex row container for icon groups (toolbars, action rows) with gap presets (tight/default/loose) and optional `role="toolbar"`.
 - **Icon animation: state machine** — `<Icon state="loading" />` shows Spinner, transitions to success/error with choreographed animation. Delegates to existing Spinner component.
 - **Spinner bare-mode fix** — Spinner arc now uses `currentColor` in bare variant (was hardcoded accent-9). Loading spinners inside colored buttons now match the button's text color.
+- **Input v2** — Container-level focus ring wraps the entire input + icons as one unit.
+- **`startSection` / `endSection`** — Replace `startIcon`/`endIcon`. Accept any ReactNode (icons, buttons, text, spinners).
+- **`startSectionClickable` / `endSectionClickable`** — Opt-in pointer-events for interactive sections (clear buttons, toggles).
+- **`wrapperClassName`** — Style the wrapper div independently from the input element.
+- **Per-size section scaling** — Section width = input height - 2px (square). Icons auto-size via IconProvider.
 
 ### Deprecated
 
 - **Button `variant="default"`** — Use `variant="solid"` instead.
 - **Button `variant="destructive"`** — Use `variant="solid" color="error"` instead.
 - **Button `color="default"`** — Use `color="accent"` instead.
+- **`startIcon` / `endIcon`** on Input — Use `startSection`/`endSection` instead. Old props still work as aliases.
+- **`inputVariants`** — Use `inputWrapperVariants` (semantics changed: now targets wrapper, not input).
 
 ### Breaking Changes (karm)
 

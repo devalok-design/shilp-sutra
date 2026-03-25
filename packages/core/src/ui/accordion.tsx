@@ -68,24 +68,35 @@ const AccordionItem = React.forwardRef<
 ))
 AccordionItem.displayName = 'AccordionItem'
 
+interface AccordionTriggerExtendedProps extends React.ComponentPropsWithoutRef<typeof AccordionPrimitive.Trigger> {
+  chevronPosition?: 'left' | 'right'
+}
+
 const AccordionTrigger = React.forwardRef<
   React.ElementRef<typeof AccordionPrimitive.Trigger>,
-  React.ComponentPropsWithoutRef<typeof AccordionPrimitive.Trigger>
->(({ className, children, ...props }, ref) => (
-  <AccordionPrimitive.Header className="flex">
-    <AccordionPrimitive.Trigger
-      ref={ref}
-      className={cn(
-        'group flex flex-1 items-center justify-between py-ds-05 text-left text-ds-md font-medium hover:bg-surface-raised rounded-ds-md data-[state=open]:bg-surface-raised focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent-9',
-        className,
-      )}
-      {...props}
-    >
-      {children}
-      <Icon icon={IconChevronDown} size="sm" className="shrink-0 text-surface-fg-muted transition-transform duration-moderate-02 ease-productive-standard group-data-[state=open]:rotate-180" />
-    </AccordionPrimitive.Trigger>
-  </AccordionPrimitive.Header>
-))
+  AccordionTriggerExtendedProps
+>(({ className, children, chevronPosition = 'right', ...props }, ref) => {
+  const chevron = (
+    <Icon icon={IconChevronDown} size="sm" className="shrink-0 text-surface-fg-muted transition-transform duration-moderate-02 ease-productive-standard group-data-[state=open]:rotate-180" />
+  )
+
+  return (
+    <AccordionPrimitive.Header className="flex">
+      <AccordionPrimitive.Trigger
+        ref={ref}
+        className={cn(
+          'group flex flex-1 items-center justify-between py-ds-05 text-left text-ds-md font-medium hover:bg-surface-raised rounded-ds-md data-[state=open]:bg-surface-raised focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent-9',
+          className,
+        )}
+        {...props}
+      >
+        {chevronPosition === 'left' && chevron}
+        {children}
+        {chevronPosition === 'right' && chevron}
+      </AccordionPrimitive.Trigger>
+    </AccordionPrimitive.Header>
+  )
+})
 AccordionTrigger.displayName = AccordionPrimitive.Trigger.displayName
 
 const AccordionContent = React.forwardRef<
@@ -109,7 +120,7 @@ const AccordionContent = React.forwardRef<
 AccordionContent.displayName = AccordionPrimitive.Content.displayName
 
 export type AccordionItemProps = React.ComponentPropsWithoutRef<typeof AccordionPrimitive.Item>
-export type AccordionTriggerProps = React.ComponentPropsWithoutRef<typeof AccordionPrimitive.Trigger>
+export type AccordionTriggerProps = AccordionTriggerExtendedProps
 export type AccordionContentProps = React.ComponentPropsWithoutRef<typeof AccordionPrimitive.Content>
 
 export { Accordion, AccordionItem, AccordionTrigger, AccordionContent }

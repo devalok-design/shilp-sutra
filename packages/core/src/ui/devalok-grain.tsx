@@ -34,6 +34,22 @@ export interface DevalokGrainProps {
    * Works best on solid variant buttons. Default: false
    */
   sheen?: boolean
+  /**
+   * Tint color for the directional gradient. Accepts any CSS color value.
+   * The gradient goes from a darker shade of this color to a lighter shade.
+   * Default: neutral black-to-white wash.
+   *
+   * @example
+   * // Warm pink tint (Devalok brand)
+   * <DevalokGrain tint="oklch(0.55 0.19 360)" />
+   *
+   * // Cool blue tint
+   * <DevalokGrain tint="oklch(0.55 0.12 240)" />
+   *
+   * // Use a CSS variable
+   * <DevalokGrain tint="var(--color-accent-9)" />
+   */
+  tint?: string
 }
 
 /**
@@ -69,9 +85,18 @@ export function DevalokGrain({
   intensity = 'subtle',
   surface = 'solid',
   sheen = false,
+  tint,
 }: DevalokGrainProps) {
   const noise = NOISE_OPACITY[intensity][surface]
   const g = GRADIENT[intensity]
+
+  // Build gradient colors based on whether a tint is provided
+  const lightGradient = tint
+    ? `linear-gradient(135deg, color-mix(in oklch, ${tint} ${Math.round(g.ld * 100)}%, transparent), color-mix(in oklch, white ${Math.round(g.ll * 100)}%, transparent))`
+    : `linear-gradient(135deg, oklch(0 0 0 / ${g.ld}), oklch(1 0 0 / ${g.ll}))`
+  const darkGradient = tint
+    ? `linear-gradient(135deg, transparent, color-mix(in oklch, ${tint} ${Math.round(g.dk * 100)}%, transparent))`
+    : `linear-gradient(135deg, transparent, oklch(0 0 0 / ${g.dk}))`
 
   return (
     <span
@@ -82,16 +107,12 @@ export function DevalokGrain({
       {/* Gradient — light mode */}
       <span
         className="absolute inset-0 dark:hidden"
-        style={{
-          background: `linear-gradient(135deg, oklch(0 0 0 / ${g.ld}), oklch(1 0 0 / ${g.ll}))`,
-        }}
+        style={{ background: lightGradient }}
       />
       {/* Gradient — dark mode */}
       <span
         className="absolute inset-0 hidden dark:block"
-        style={{
-          background: `linear-gradient(135deg, transparent, oklch(0 0 0 / ${g.dk}))`,
-        }}
+        style={{ background: darkGradient }}
       />
       {/* Noise texture — opacity-only, no blend mode (avoids compositing issues with text) */}
       <span

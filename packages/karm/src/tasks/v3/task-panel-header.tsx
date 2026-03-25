@@ -78,7 +78,7 @@ export function TaskPanelHeader({ className, menuSlot, ...props }: TaskPanelHead
       )}
       {...props}
     >
-      <DevalokGrain intensity="medium" surface="soft" />
+      <DevalokGrain intensity="medium" surface="soft" tint="var(--color-accent-9)" />
       {/* Project breadcrumb + Task ID */}
       <div className="flex items-center gap-ds-01 text-ds-xs text-surface-fg-subtle">
         {task.projectName && (

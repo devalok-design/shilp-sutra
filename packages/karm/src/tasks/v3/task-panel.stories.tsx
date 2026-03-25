@@ -10,6 +10,7 @@ import {
 import { Icon } from '@/ui/icon'
 import { cn } from '@/ui/lib/utils'
 import { Avatar, AvatarFallback } from '@/ui/avatar'
+import { DevalokGrain } from '@/ui/devalok-grain'
 import { TaskPanel } from './task-panel'
 import type { TaskPanelRootProps } from './task-panel-root'
 import type { TaskPanelTask, TaskPanelMode, TimelineEntry } from './task-panel-types'
@@ -553,10 +554,14 @@ function TaskPanelDemo({
       )}
 
       <div className="flex h-full flex-col">
-        <TaskPanel.Header />
+        {/* Hero section — header + description share a subtle grain */}
+        <div className="relative overflow-hidden isolate border-b border-surface-border-subtle">
+          <DevalokGrain intensity="subtle" surface="soft" tint="var(--color-accent-9)" />
+          <TaskPanel.Header />
+          <TaskPanel.Description />
+        </div>
         {mode === 'peek' && <TaskPanel.QuickProps />}
         <div className="flex flex-1 flex-col overflow-hidden">
-          <TaskPanel.Description />
           {mode !== 'peek' && <TaskPanel.Subtasks />}
           {mode !== 'peek' && <TaskPanel.Files />}
           {mode !== 'peek' && <TaskPanel.Dependencies />}
@@ -597,12 +602,16 @@ function TaskPanelDemo({
         {...callbacks}
       >
         {mode === 'full' ? (
-          /* Fix 9: Full page mode with properties sidebar */
+          /* Full page mode with properties sidebar */
           <div className="flex h-full">
             <div className="flex flex-1 flex-col">
-              <TaskPanel.Header />
-              <div className="flex flex-1 flex-col overflow-hidden">
+              {/* Hero section — header + description */}
+              <div className="relative overflow-hidden isolate border-b border-surface-border-subtle">
+                <DevalokGrain intensity="subtle" surface="soft" tint="var(--color-accent-9)" />
+                <TaskPanel.Header />
                 <TaskPanel.Description />
+              </div>
+              <div className="flex flex-1 flex-col overflow-hidden">
                 <TaskPanel.Subtasks />
                 <TaskPanel.Files />
                 <TaskPanel.Dependencies />

@@ -24,7 +24,6 @@ import {
   DropdownMenuSeparator,
 } from '@/ui/dropdown-menu'
 import { InlineEdit } from '@/composed/inline-edit'
-import { DevalokGrain } from '@/ui/devalok-grain'
 import { useTaskPanel } from './task-panel-context'
 
 // ---------------------------------------------------------------------------
@@ -73,12 +72,11 @@ export function TaskPanelHeader({ className, menuSlot, ...props }: TaskPanelHead
   return (
     <div
       className={cn(
-        'relative overflow-hidden isolate flex flex-col gap-ds-02 px-ds-06 py-ds-05',
+        'flex flex-col gap-ds-02 px-ds-06 py-ds-05',
         className,
       )}
       {...props}
     >
-      <DevalokGrain intensity="medium" surface="soft" tint="var(--color-accent-9)" />
       {/* Project breadcrumb + Task ID */}
       <div className="flex items-center gap-ds-01 text-ds-xs text-surface-fg-subtle">
         {task.projectName && (

@@ -15,6 +15,7 @@ import { TaskPanelWings } from './task-panel-wings'
 import { TaskPanelReviewCard } from './task-panel-wing-review'
 import { TaskPanelPropertiesCard } from './task-panel-wing-properties'
 import { TaskPanelFiles } from './task-panel-files'
+import { TaskPanelDependencies } from './task-panel-dependencies'
 
 // ---------------------------------------------------------------------------
 // Layout wrappers
@@ -98,5 +99,6 @@ export const TaskPanel = Object.assign(TaskPanelRoot, {
   ReviewCard: TaskPanelReviewCard,
   PropertiesCard: TaskPanelPropertiesCard,
   Files: TaskPanelFiles,
+  Dependencies: TaskPanelDependencies,
   Loading: TaskPanelLoading,
 })

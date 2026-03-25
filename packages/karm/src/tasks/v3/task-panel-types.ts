@@ -135,4 +135,8 @@ export interface TaskPanelTask {
   projectName?: string
   parentTaskId?: string | null
   files?: TaskFile[]
+  dependencies?: {
+    blockedBy: { id: string; taskId: string; title: string; status: string }[]
+    blocking: { id: string; taskId: string; title: string; status: string }[]
+  }
 }

@@ -179,21 +179,23 @@ export const BoardToolbar = React.forwardRef<HTMLDivElement, BoardToolbarProps>(
             placeholder="Search tasks..."
             aria-label="Search tasks"
             size="sm"
-            startIcon={<Icon icon={IconSearch} size="sm" />}
-            endIcon={
+            startSection={<Icon icon={IconSearch} />}
+            endSection={
               searchValue ? (
-                <button
+                <Button
+                  variant="ghost"
+                  size="icon-xs"
                   onClick={() => {
                     setSearchValue('')
                     setFilters({ search: '' })
                   }}
-                  className="pointer-events-auto cursor-pointer text-surface-fg-subtle hover:text-surface-fg"
                   aria-label="Clear search"
                 >
-                  <Icon icon={IconX} size="xs" />
-                </button>
+                  <Icon icon={IconX} />
+                </Button>
               ) : undefined
             }
+            endSectionClickable={!!searchValue}
           />
         </div>
 

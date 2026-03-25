@@ -344,15 +344,17 @@ SidebarInset.displayName = 'SidebarInset'
 const SidebarInput = forwardRef<
   ElementRef<typeof Input>,
   ComponentProps<typeof Input>
->(({ className, ...props }, ref) => {
+>(({ className, wrapperClassName, ...props }, ref) => {
   return (
     <Input
       ref={ref}
       data-sidebar="input"
-      className={cn(
-        'h-ds-sm w-full bg-surface-raised shadow-none focus-visible:ring-2 focus-visible:ring-accent-9',
-        className,
+      size="sm"
+      wrapperClassName={cn(
+        'bg-surface-raised shadow-none focus-within:ring-2 focus-within:ring-accent-9',
+        wrapperClassName,
       )}
+      className={cn('w-full', className)}
       {...props}
     />
   )

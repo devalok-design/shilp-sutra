@@ -321,4 +321,12 @@ const Badge = React.forwardRef<HTMLElement, BadgeProps>(
 )
 Badge.displayName = 'Badge'
 
-export { Badge, badgeVariants, type BadgeProps }
+import { BadgeIndicator } from './badge-indicator'
+import { BadgeGroup } from './badge-group'
+
+const BadgeCompound = Object.assign(Badge, {
+  Indicator: BadgeIndicator,
+  Group: BadgeGroup,
+})
+
+export { BadgeCompound as Badge, badgeVariants, type BadgeProps }

@@ -1,43 +1,45 @@
 import type { Meta, StoryObj } from '@storybook/react'
+import * as React from 'react'
 import { Badge } from './badge'
+import { BadgeIndicator } from './badge-indicator'
+import { BadgeGroup } from './badge-group'
+import { Icon } from './icon'
+import { Avatar, AvatarFallback } from './avatar'
+import { DevalokGrain } from './devalok-grain'
+import {
+  IconPlus,
+  IconCheck,
+  IconTag,
+  IconFilter,
+  IconStar,
+  IconBell,
+  IconUser,
+  IconAlertTriangle,
+  IconArrowRight,
+  IconCalendar,
+  IconBolt,
+  IconFlame,
+} from '@tabler/icons-react'
 
 const meta: Meta<typeof Badge> = {
-  title: 'UI/Data Display/Badge',
+  title: 'UI/Core/Badge',
   component: Badge,
   tags: ['autodocs'],
   argTypes: {
-    variant: {
-      control: 'select',
-      options: ['subtle', 'solid', 'outline'],
-    },
-    color: {
-      control: 'select',
-      options: [
-        'default',
-        'info',
-        'success',
-        'error',
-        'warning',
-        'brand',
-        'accent',
-        'teal',
-        'amber',
-        'slate',
-        'indigo',
-        'cyan',
-        'orange',
-        'emerald',
-      ],
-    },
-    size: {
-      control: 'radio',
-      options: ['sm', 'md', 'lg'],
-    },
+    variant: { control: 'select', options: ['subtle', 'solid', 'outline', 'soft'] },
+    color: { control: 'select', options: ['default', 'accent', 'error', 'success', 'warning', 'info', 'neutral', 'teal', 'amber', 'slate', 'indigo', 'cyan', 'orange', 'emerald', 'custom'] },
+    size: { control: 'select', options: ['xs', 'sm', 'md', 'lg'] },
     dot: { control: 'boolean' },
+    selected: { control: 'boolean' },
+    disabled: { control: 'boolean' },
+    circle: { control: 'boolean' },
+    maxWidth: { control: 'number' },
   },
 }
 export default meta
 type Story = StoryObj<typeof Badge>
+
+// ── 1. Default ─────────────────────────────────────────────
 
 export const Default: Story = {
   args: {
@@ -45,145 +47,410 @@ export const Default: Story = {
   },
 }
 
-export const Info: Story = {
-  args: {
-    color: 'info',
-    children: 'In Progress',
-  },
-}
+// ── 2. VariantColorGrid ────────────────────────────────────
 
-export const Success: Story = {
-  args: {
-    color: 'success',
-    children: 'Completed',
-  },
-}
-
-export const Error: Story = {
-  args: {
-    color: 'error',
-    children: 'Urgent',
-  },
-}
-
-export const Warning: Story = {
-  args: {
-    color: 'warning',
-    children: 'Pending',
-  },
-}
-
-export const Brand: Story = {
-  args: {
-    color: 'brand',
-    children: 'Review',
-  },
-}
-
-export const Accent: Story = {
-  args: {
-    color: 'accent',
-    children: 'Design',
-  },
-}
-
-export const WithDot: Story = {
-  args: {
-    color: 'success',
-    dot: true,
-    children: 'Active',
-  },
-}
-
-export const Dismissible: Story = {
-  args: {
-    color: 'info',
-    children: 'Tag',
-    onDismiss: () => {},
-  },
-}
-
-export const Small: Story = {
-  args: {
-    size: 'sm',
-    children: 'Small',
-  },
-}
-
-export const Large: Story = {
-  args: {
-    size: 'lg',
-    children: 'Large',
-  },
-}
-
-export const AllVariants: Story = {
+export const VariantColorGrid: Story = {
   render: () => {
-    const colors = ['default', 'info', 'success', 'error', 'warning', 'brand', 'accent', 'teal', 'amber', 'slate', 'indigo', 'cyan', 'orange', 'emerald'] as const
-    const variants = ['subtle', 'solid', 'outline'] as const
-    const sizes = ['sm', 'md', 'lg'] as const
+    const variants = ['subtle', 'solid', 'outline', 'soft'] as const
+    const colors = ['default', 'accent', 'error', 'success', 'warning', 'info', 'teal', 'indigo'] as const
 
     return (
       <div className="flex flex-col gap-ds-06">
         {variants.map((variant) => (
           <div key={variant}>
-            <p className="mb-ds-03 text-ds-sm font-semibold text-surface-fg-muted capitalize">Variant: {variant}</p>
+            <p className="mb-ds-03 text-ds-sm font-semibold text-surface-fg-muted capitalize">
+              {variant}
+            </p>
             <div className="flex flex-wrap items-center gap-ds-03">
               {colors.map((color) => (
-                <Badge key={`${variant}-${color}`} variant={variant} color={color} size="md">{color}</Badge>
+                <Badge key={`${variant}-${color}`} variant={variant} color={color} size="md">
+                  {color}
+                </Badge>
               ))}
             </div>
           </div>
         ))}
+      </div>
+    )
+  },
+}
 
-        <div>
-          <p className="mb-ds-03 text-ds-sm font-semibold text-surface-fg-muted">Sizes (subtle)</p>
-          <div className="flex flex-wrap items-center gap-ds-03">
-            {sizes.map((size) => (
-              <Badge key={size} size={size}>{size}</Badge>
-            ))}
+// ── 3. CustomColors ────────────────────────────────────────
+
+export const CustomColors: Story = {
+  render: () => {
+    const customs = [
+      { hex: '#8b5cf6', label: 'Violet' },
+      { hex: '#ec4899', label: 'Pink' },
+      { hex: '#06b6d4', label: 'Cyan' },
+      { hex: '#84cc16', label: 'Lime' },
+      { hex: '#f97316', label: 'Orange' },
+    ]
+
+    return (
+      <div className="flex flex-col gap-ds-06">
+        {(['subtle', 'solid', 'outline', 'soft'] as const).map((variant) => (
+          <div key={variant}>
+            <p className="mb-ds-03 text-ds-sm font-semibold text-surface-fg-muted capitalize">
+              {variant}
+            </p>
+            <div className="flex flex-wrap items-center gap-ds-03">
+              {customs.map(({ hex, label }) => (
+                <Badge
+                  key={`${variant}-${hex}`}
+                  variant={variant}
+                  color="custom"
+                  style={{ '--badge-color': hex } as React.CSSProperties}
+                >
+                  {label}
+                </Badge>
+              ))}
+            </div>
           </div>
+        ))}
+      </div>
+    )
+  },
+}
+
+// ── 4. Interactive ─────────────────────────────────────────
+
+export const Interactive: Story = {
+  render: function InteractiveStory() {
+    const labels = ['Design', 'Frontend', 'Backend', 'QA', 'DevOps']
+    const [selected, setSelected] = React.useState<Set<string>>(new Set(['Design']))
+
+    return (
+      <div className="flex flex-col gap-ds-04">
+        <p className="text-ds-sm text-surface-fg-muted">Click to toggle selection:</p>
+        <div className="flex flex-wrap items-center gap-ds-03">
+          {labels.map((label) => (
+            <Badge
+              key={label}
+              variant="subtle"
+              color="accent"
+              selected={selected.has(label)}
+              onClick={() => {
+                setSelected((prev) => {
+                  const next = new Set(prev)
+                  if (next.has(label)) next.delete(label)
+                  else next.add(label)
+                  return next
+                })
+              }}
+            >
+              {label}
+            </Badge>
+          ))}
         </div>
+        <p className="text-ds-xs text-surface-fg-subtle">
+          Selected: {selected.size === 0 ? 'none' : [...selected].join(', ')}
+        </p>
+      </div>
+    )
+  },
+}
 
-        <div>
-          <p className="mb-ds-03 text-ds-sm font-semibold text-surface-fg-muted">With Dot</p>
-          <div className="flex flex-wrap items-center gap-ds-03">
-            {colors.map((color) => (
-              <Badge key={`dot-${color}`} color={color} dot>{color}</Badge>
-            ))}
-          </div>
+// ── 5. Dismissible ─────────────────────────────────────────
+
+export const Dismissible: Story = {
+  render: function DismissibleStory() {
+    const initial = ['React', 'TypeScript', 'Tailwind', 'Vitest', 'Storybook']
+    const [tags, setTags] = React.useState(initial)
+
+    return (
+      <div className="flex flex-col gap-ds-04">
+        <div className="flex flex-wrap items-center gap-ds-03">
+          {tags.map((tag) => (
+            <Badge
+              key={tag}
+              variant="subtle"
+              color="accent"
+              onDismiss={() => setTags((prev) => prev.filter((t) => t !== tag))}
+            >
+              {tag}
+            </Badge>
+          ))}
+          {tags.length === 0 && (
+            <p className="text-ds-sm text-surface-fg-subtle">All cleared!</p>
+          )}
         </div>
+        {tags.length < initial.length && (
+          <button
+            type="button"
+            className="text-ds-xs text-accent-11 hover:underline self-start"
+            onClick={() => setTags(initial)}
+          >
+            Reset
+          </button>
+        )}
+      </div>
+    )
+  },
+}
 
+// ── 6. WithIcons ───────────────────────────────────────────
+
+export const WithIcons: Story = {
+  render: () => (
+    <div className="flex flex-col gap-ds-04">
+      <div className="flex flex-wrap items-center gap-ds-03">
+        <Badge startIcon={<Icon icon={IconPlus} />} color="accent">Add label</Badge>
+        <Badge startIcon={<Icon icon={IconCheck} />} color="success" variant="solid">Approved</Badge>
+        <Badge endIcon={<Icon icon={IconArrowRight} />} color="info">View all</Badge>
+        <Badge startIcon={<Icon icon={IconAlertTriangle} />} color="warning" variant="outline">Warning</Badge>
+        <Badge startIcon={<Icon icon={IconStar} />} color="amber">Featured</Badge>
+      </div>
+      <p className="text-ds-sm font-semibold text-surface-fg-muted">Dot indicator</p>
+      <div className="flex flex-wrap items-center gap-ds-03">
+        <Badge dot color="success">Online</Badge>
+        <Badge dot color="warning">Away</Badge>
+        <Badge dot color="error">Busy</Badge>
+        <Badge dot>Offline</Badge>
+      </div>
+    </div>
+  ),
+}
+
+// ── 7. Truncation ──────────────────────────────────────────
+
+export const Truncation: Story = {
+  render: () => (
+    <div className="flex flex-col gap-ds-04">
+      <p className="text-ds-sm text-surface-fg-muted">maxWidth constrains long text with ellipsis:</p>
+      <div className="flex flex-wrap items-center gap-ds-03">
+        <Badge maxWidth={80}>Very long label text</Badge>
+        <Badge maxWidth={100} color="accent">This is a much longer label that truncates</Badge>
+        <Badge maxWidth={120} color="success" variant="solid">Production environment deployment status</Badge>
+        <Badge maxWidth={60} color="error" variant="outline">Critical</Badge>
+      </div>
+    </div>
+  ),
+}
+
+// ── 8. Sizes ───────────────────────────────────────────────
+
+export const Sizes: Story = {
+  render: () => (
+    <div className="flex flex-col gap-ds-06">
+      <div>
+        <p className="mb-ds-03 text-ds-sm font-semibold text-surface-fg-muted">Text badges</p>
+        <div className="flex flex-wrap items-end gap-ds-03">
+          <Badge size="xs">xs</Badge>
+          <Badge size="sm">sm</Badge>
+          <Badge size="md">md</Badge>
+          <Badge size="lg">lg</Badge>
+        </div>
+      </div>
+      <div>
+        <p className="mb-ds-03 text-ds-sm font-semibold text-surface-fg-muted">Circle (count badges)</p>
+        <div className="flex flex-wrap items-end gap-ds-03">
+          <Badge size="xs" circle variant="solid" color="error">3</Badge>
+          <Badge size="sm" circle variant="solid" color="error">7</Badge>
+          <Badge size="md" circle variant="solid" color="error">12</Badge>
+          <Badge size="lg" circle variant="solid" color="accent">99</Badge>
+        </div>
+      </div>
+    </div>
+  ),
+}
+
+// ── 9. Indicator ───────────────────────────────────────────
+
+export const Indicator: Story = {
+  render: () => (
+    <div className="flex flex-col gap-ds-06">
+      <div>
+        <p className="mb-ds-03 text-ds-sm font-semibold text-surface-fg-muted">Counts on avatars</p>
+        <div className="flex flex-wrap items-center gap-ds-06">
+          <BadgeIndicator count={3}>
+            <Avatar className="h-10 w-10">
+              <AvatarFallback>MK</AvatarFallback>
+            </Avatar>
+          </BadgeIndicator>
+          <BadgeIndicator count={42}>
+            <Avatar className="h-10 w-10">
+              <AvatarFallback>AB</AvatarFallback>
+            </Avatar>
+          </BadgeIndicator>
+          <BadgeIndicator count={150} max={99}>
+            <Avatar className="h-10 w-10">
+              <AvatarFallback>CD</AvatarFallback>
+            </Avatar>
+          </BadgeIndicator>
+        </div>
+      </div>
+      <div>
+        <p className="mb-ds-03 text-ds-sm font-semibold text-surface-fg-muted">Dot on icons</p>
+        <div className="flex flex-wrap items-center gap-ds-06">
+          <BadgeIndicator dot>
+            <Icon icon={IconBell} size="lg" />
+          </BadgeIndicator>
+          <BadgeIndicator dot color="success">
+            <Icon icon={IconUser} size="lg" />
+          </BadgeIndicator>
+          <BadgeIndicator count={5} color="warning">
+            <Icon icon={IconCalendar} size="lg" />
+          </BadgeIndicator>
+        </div>
+      </div>
+      <div>
+        <p className="mb-ds-03 text-ds-sm font-semibold text-surface-fg-muted">Placements</p>
+        <div className="flex flex-wrap items-center gap-ds-06">
+          {(['top-right', 'top-left', 'bottom-right', 'bottom-left'] as const).map((placement) => (
+            <BadgeIndicator key={placement} count={1} placement={placement} color="accent">
+              <div className="flex h-10 w-10 items-center justify-center rounded-ds-md bg-surface-raised-hover text-ds-xs text-surface-fg-muted">
+                {placement.replace('-', '\n')}
+              </div>
+            </BadgeIndicator>
+          ))}
+        </div>
+      </div>
+    </div>
+  ),
+}
+
+// ── 10. Group ──────────────────────────────────────────────
+
+export const Group: Story = {
+  render: () => {
+    const labels = ['React', 'TypeScript', 'Tailwind', 'Vitest', 'Storybook', 'Vite', 'Radix']
+
+    return (
+      <div className="flex flex-col gap-ds-06">
         <div>
-          <p className="mb-ds-03 text-ds-sm font-semibold text-surface-fg-muted">Dismissible</p>
-          <div className="flex flex-wrap items-center gap-ds-03">
-            {colors.map((color) => (
-              <Badge key={`dismiss-${color}`} color={color} onDismiss={() => {}}>{color}</Badge>
-            ))}
-          </div>
+          <p className="mb-ds-03 text-ds-sm font-semibold text-surface-fg-muted">No limit</p>
+          <BadgeGroup>
+            {labels.map((l) => <Badge key={l} size="sm">{l}</Badge>)}
+          </BadgeGroup>
+        </div>
+        <div>
+          <p className="mb-ds-03 text-ds-sm font-semibold text-surface-fg-muted">max=3</p>
+          <BadgeGroup max={3}>
+            {labels.map((l) => <Badge key={l} size="sm">{l}</Badge>)}
+          </BadgeGroup>
+        </div>
+        <div>
+          <p className="mb-ds-03 text-ds-sm font-semibold text-surface-fg-muted">max=1</p>
+          <BadgeGroup max={1}>
+            {labels.map((l) => <Badge key={l} size="sm">{l}</Badge>)}
+          </BadgeGroup>
         </div>
       </div>
     )
   },
 }
 
-export const AllSizes: Story = {
+// ── 11. WithGrain ──────────────────────────────────────────
+
+export const WithGrain: Story = {
   render: () => (
-    <div className="flex flex-wrap items-center gap-ds-03">
-      <Badge size="sm">Small</Badge>
-      <Badge size="md">Medium</Badge>
-      <Badge size="lg">Large</Badge>
+    <div className="flex flex-col gap-ds-04">
+      <p className="text-ds-sm text-surface-fg-muted">
+        Badge has <code>relative overflow-hidden isolate</code> built in, so DevalokGrain works directly:
+      </p>
+      <div className="flex flex-wrap items-center gap-ds-03">
+        <Badge variant="solid" color="accent" size="lg">
+          <DevalokGrain />
+          <span>Accent grain</span>
+        </Badge>
+        <Badge variant="solid" color="error" size="lg">
+          <DevalokGrain />
+          <span>Error grain</span>
+        </Badge>
+        <Badge variant="solid" color="success" size="lg">
+          <DevalokGrain />
+          <span>Success grain</span>
+        </Badge>
+        <Badge variant="solid" color="indigo" size="lg">
+          <DevalokGrain />
+          <span>Indigo grain</span>
+        </Badge>
+        <Badge variant="solid" color="custom" size="lg" style={{ '--badge-color': '#8b5cf6' } as React.CSSProperties}>
+          <DevalokGrain />
+          <span>Custom grain</span>
+        </Badge>
+      </div>
     </div>
   ),
 }
 
-export const WithDots: Story = {
-  render: () => (
-    <div className="flex flex-wrap items-center gap-ds-02">
-      <Badge color="success" dot>Online</Badge>
-      <Badge color="warning" dot>Away</Badge>
-      <Badge color="error" dot>Busy</Badge>
-      <Badge dot>Offline</Badge>
-    </div>
-  ),
+// ── 12. RealWorld ──────────────────────────────────────────
+
+export const RealWorld: Story = {
+  render: function RealWorldStory() {
+    const [filters, setFilters] = React.useState<Set<string>>(new Set(['Active', 'High']))
+
+    return (
+      <div className="flex flex-col gap-ds-06">
+        {/* Task labels */}
+        <div>
+          <p className="mb-ds-03 text-ds-sm font-semibold text-surface-fg-muted">Task labels</p>
+          <div className="flex flex-wrap items-center gap-ds-03">
+            <Badge startIcon={<Icon icon={IconTag} />} color="accent" size="sm">Design</Badge>
+            <Badge startIcon={<Icon icon={IconTag} />} color="teal" size="sm">Frontend</Badge>
+            <Badge startIcon={<Icon icon={IconTag} />} color="indigo" size="sm">Backend</Badge>
+            <Badge startIcon={<Icon icon={IconTag} />} color="orange" size="sm">DevOps</Badge>
+          </div>
+        </div>
+
+        {/* Status badges */}
+        <div>
+          <p className="mb-ds-03 text-ds-sm font-semibold text-surface-fg-muted">Status badges</p>
+          <div className="flex flex-wrap items-center gap-ds-03">
+            <Badge variant="solid" color="success" dot>Active</Badge>
+            <Badge variant="subtle" color="warning">In Review</Badge>
+            <Badge variant="outline" color="error">Blocked</Badge>
+            <Badge variant="soft" color="info">Draft</Badge>
+          </div>
+        </div>
+
+        {/* Filter chips */}
+        <div>
+          <p className="mb-ds-03 text-ds-sm font-semibold text-surface-fg-muted">Filter chips</p>
+          <div className="flex flex-wrap items-center gap-ds-03">
+            {['Active', 'Completed', 'High', 'Medium', 'Low'].map((f) => (
+              <Badge
+                key={f}
+                variant="subtle"
+                color={filters.has(f) ? 'accent' : 'default'}
+                selected={filters.has(f)}
+                size="sm"
+                startIcon={filters.has(f) ? <Icon icon={IconCheck} /> : <Icon icon={IconFilter} />}
+                onClick={() => {
+                  setFilters((prev) => {
+                    const next = new Set(prev)
+                    if (next.has(f)) next.delete(f)
+                    else next.add(f)
+                    return next
+                  })
+                }}
+              >
+                {f}
+              </Badge>
+            ))}
+          </div>
+        </div>
+
+        {/* Notification dots */}
+        <div>
+          <p className="mb-ds-03 text-ds-sm font-semibold text-surface-fg-muted">Notification dots</p>
+          <div className="flex flex-wrap items-center gap-ds-06">
+            <BadgeIndicator count={3}>
+              <Icon icon={IconBell} size="xl" />
+            </BadgeIndicator>
+            <BadgeIndicator dot color="success">
+              <Icon icon={IconUser} size="xl" />
+            </BadgeIndicator>
+            <BadgeIndicator count={12} color="warning">
+              <Icon icon={IconBolt} size="xl" />
+            </BadgeIndicator>
+            <BadgeIndicator count={99} max={99} color="error">
+              <Icon icon={IconFlame} size="xl" />
+            </BadgeIndicator>
+          </div>
+        </div>
+      </div>
+    )
+  },
 }

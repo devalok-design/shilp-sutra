@@ -5,6 +5,7 @@ import { Icon } from '@/ui/icon'
 import { motion } from 'framer-motion'
 import { tweens } from '@/ui/lib/motion'
 import { Button } from '@/ui/button'
+import { DevalokGrain } from '@/ui/devalok-grain'
 import { useTaskPanel } from './task-panel-context'
 
 // ---------------------------------------------------------------------------
@@ -95,9 +96,10 @@ export function TaskPanelReviewCard() {
       animate="visible"
       exit="exit"
       transition={{ ...tweens.fade, delay: 0.2 }}
-      className="w-[280px] overflow-hidden rounded-ds-xl border border-surface-border-strong bg-surface-raised shadow-floating"
+      className="relative isolate w-[280px] overflow-hidden rounded-ds-xl border border-surface-border-strong bg-surface-raised shadow-floating"
       data-testid="review-wing"
     >
+      <DevalokGrain intensity="subtle" surface="soft" />
       <div className="p-ds-05">
         {clientMode ? (
           /* Client view — action buttons to approve/reject */

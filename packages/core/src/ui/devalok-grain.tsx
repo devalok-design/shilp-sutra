@@ -7,15 +7,15 @@ const NOISE_SVG = `url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/
 export type GrainIntensity = 'subtle' | 'medium' | 'heavy'
 
 const NOISE_OPACITY = {
-  subtle: { solid: 0.15, soft: 0.10 },
-  medium: { solid: 0.28, soft: 0.18 },
-  heavy:  { solid: 0.45, soft: 0.30 },
+  subtle: { solid: 0.15, soft: 0.12 },
+  medium: { solid: 0.28, soft: 0.22 },
+  heavy:  { solid: 0.45, soft: 0.35 },
 } as const
 
 const GRADIENT = {
-  subtle: { ld: 0.12, ll: 0.15, dk: 0.15 },
-  medium: { ld: 0.18, ll: 0.20, dk: 0.22 },
-  heavy:  { ld: 0.25, ll: 0.28, dk: 0.30 },
+  subtle: { ld: 0.06, ll: 0.08, dk: 0.08 },
+  medium: { ld: 0.10, ll: 0.12, dk: 0.12 },
+  heavy:  { ld: 0.16, ll: 0.18, dk: 0.18 },
 } as const
 
 export interface DevalokGrainProps {
@@ -99,7 +99,7 @@ export function DevalokGrain({
         style={{
           backgroundImage: NOISE_SVG,
           backgroundSize: '100px 100px',
-          filter: 'contrast(200%) brightness(110%)',
+          filter: 'contrast(250%) brightness(105%)',
           opacity: noise,
         }}
       />

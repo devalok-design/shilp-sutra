@@ -14,7 +14,7 @@ export const PRIORITY_DOT_COLORS: Record<string, string> = {
   URGENT: 'bg-error-9',
 }
 
-export type BadgeColor = 'default' | 'info' | 'success' | 'error' | 'warning' | 'brand' | 'accent' | 'teal' | 'amber' | 'slate' | 'indigo' | 'cyan' | 'orange' | 'emerald'
+export type BadgeColor = 'default' | 'info' | 'success' | 'error' | 'warning' | 'accent' | 'teal' | 'amber' | 'slate' | 'indigo' | 'cyan' | 'orange' | 'emerald'
 
 export interface ReviewStatusConfig {
   color: BadgeColor
@@ -24,6 +24,6 @@ export interface ReviewStatusConfig {
 export const REVIEW_STATUS_MAP: Record<string, ReviewStatusConfig> = {
   PENDING: { color: 'warning', label: 'Pending' },
   APPROVED: { color: 'success', label: 'Approved' },
-  CHANGES_REQUESTED: { color: 'brand', label: 'Changes Requested' },
+  CHANGES_REQUESTED: { color: 'accent', label: 'Changes Requested' },
   REJECTED: { color: 'error', label: 'Rejected' },
 }

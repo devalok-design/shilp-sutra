@@ -72,12 +72,13 @@ function formatRelativeDate(iso: string): { text: string; isOverdue: boolean } {
 }
 
 function getInitials(name: string): string {
-  return name
+  return (name || '')
     .split(' ')
+    .filter(Boolean)
     .map((w) => w[0])
     .join('')
     .toUpperCase()
-    .slice(0, 2)
+    .slice(0, 2) || '?'
 }
 
 // ---------------------------------------------------------------------------

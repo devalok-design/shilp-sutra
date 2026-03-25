@@ -49,7 +49,7 @@ export function TaskPanelMessageInput({
     if (textareaRef.current) {
       textareaRef.current.style.height = 'auto'
     }
-  }, [text, onPostComment])
+  }, [text, onPostComment, visibility, clientMode])
 
   const handleKeyDown = React.useCallback(
     (e: React.KeyboardEvent<HTMLTextAreaElement>) => {

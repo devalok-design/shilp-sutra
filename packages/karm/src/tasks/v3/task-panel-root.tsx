@@ -11,6 +11,7 @@ import { TaskPanelPeek } from './task-panel-peek'
 import { TaskPanelSheet } from './task-panel-sheet'
 import { TaskPanelFull } from './task-panel-full'
 import { useTaskPanelKeyboard } from './use-task-panel-keyboard'
+import { TaskPanelErrorBoundary } from './task-panel-error-boundary'
 
 // ---------------------------------------------------------------------------
 // Types
@@ -47,24 +48,26 @@ export function TaskPanelRoot({
   const onClose = providerProps.onClose ?? (() => {})
 
   return (
-    <TaskPanelProvider mode={mode} onClose={providerProps.onClose} {...providerProps}>
-      <TaskPanelKeyboardHandler />
-      {mode === 'peek' && (
-        <TaskPanelPeek open={open} onClose={onClose} className={className}>
-          {children}
-        </TaskPanelPeek>
-      )}
-      {mode === 'side' && (
-        <TaskPanelSheet open={open} onClose={onClose} className={className}>
-          {children}
-        </TaskPanelSheet>
-      )}
-      {mode === 'full' && (
-        <TaskPanelFull className={className}>
-          {children}
-        </TaskPanelFull>
-      )}
-    </TaskPanelProvider>
+    <TaskPanelErrorBoundary onClose={onClose}>
+      <TaskPanelProvider mode={mode} onClose={providerProps.onClose} {...providerProps}>
+        <TaskPanelKeyboardHandler />
+        {mode === 'peek' && (
+          <TaskPanelPeek open={open} onClose={onClose} className={className}>
+            {children}
+          </TaskPanelPeek>
+        )}
+        {mode === 'side' && (
+          <TaskPanelSheet open={open} onClose={onClose} className={className}>
+            {children}
+          </TaskPanelSheet>
+        )}
+        {mode === 'full' && (
+          <TaskPanelFull className={className}>
+            {children}
+          </TaskPanelFull>
+        )}
+      </TaskPanelProvider>
+    </TaskPanelErrorBoundary>
   )
 }
 

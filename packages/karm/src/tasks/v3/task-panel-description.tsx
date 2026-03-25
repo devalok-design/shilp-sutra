@@ -40,7 +40,7 @@ export function TaskPanelDescription({
   const canEdit = !clientMode || clientMode === 'COLLABORATOR'
   const [expanded, setExpanded] = React.useState(false)
   const [isEditing, setIsEditing] = React.useState(false)
-  const [draft, setDraft] = React.useState(task.description)
+  const [draft, setDraft] = React.useState(task.description ?? '')
   const textareaRef = React.useRef<HTMLTextAreaElement>(null)
 
   React.useEffect(() => {
@@ -54,7 +54,7 @@ export function TaskPanelDescription({
     }
   }, [isEditing])
 
-  const isEmpty = !task.description.trim()
+  const isEmpty = !task.description?.trim()
 
   const handleSave = React.useCallback(() => {
     setIsEditing(false)
@@ -67,10 +67,12 @@ export function TaskPanelDescription({
     (e: React.KeyboardEvent) => {
       if (e.key === 'Escape') {
         e.preventDefault()
-        handleSave()
+        // Cancel — revert to original, don't save
+        setDraft(task.description ?? '')
+        setIsEditing(false)
       }
     },
-    [handleSave],
+    [task.description],
   )
 
   // Empty + read-only client: nothing

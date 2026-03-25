@@ -120,7 +120,17 @@ export function TaskPanelHeader({ className, menuSlot, ...props }: TaskPanelHead
                 <DropdownMenuItem
                   onClick={() => {
                     const ref = `${task.taskId}: ${task.title}`
-                    navigator.clipboard.writeText(ref)
+                    navigator.clipboard?.writeText(ref).catch(() => {
+                      // Fallback for non-HTTPS contexts
+                      const textarea = document.createElement('textarea')
+                      textarea.value = ref
+                      textarea.style.position = 'fixed'
+                      textarea.style.opacity = '0'
+                      document.body.appendChild(textarea)
+                      textarea.select()
+                      document.execCommand('copy')
+                      document.body.removeChild(textarea)
+                    })
                   }}
                 >
                   <Icon icon={IconCopy} size="sm" className="mr-ds-03" />

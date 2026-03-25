@@ -357,7 +357,6 @@ export function TaskPanelTimeline({
 
   const [filter, setFilter] = React.useState<TimelineFilter>('all')
   const scrollRef = React.useRef<HTMLDivElement>(null)
-  const prevLengthRef = React.useRef(timeline.length)
   const [userScrolledUp, setUserScrolledUp] = React.useState(false)
   const [newCount, setNewCount] = React.useState(0)
 
@@ -376,6 +375,8 @@ export function TaskPanelTimeline({
       return true
     })
   }, [timeline, clientMode])
+
+  const prevLengthRef = React.useRef(clientFiltered.length)
 
   // ---- Type filtering (staff only, hidden in peek) ----
   const filtered = React.useMemo(() => {
@@ -420,15 +421,15 @@ export function TaskPanelTimeline({
   }, [])
 
   React.useEffect(() => {
-    if (timeline.length > prevLengthRef.current) {
+    if (clientFiltered.length > prevLengthRef.current) {
       if (userScrolledUp) {
-        setNewCount((c) => c + (timeline.length - prevLengthRef.current))
+        setNewCount((c) => c + (clientFiltered.length - prevLengthRef.current))
       } else {
         scrollToBottom()
       }
     }
-    prevLengthRef.current = timeline.length
-  }, [timeline.length, userScrolledUp, scrollToBottom])
+    prevLengthRef.current = clientFiltered.length
+  }, [clientFiltered.length, userScrolledUp, scrollToBottom])
 
   // Initial scroll to bottom
   React.useEffect(() => {

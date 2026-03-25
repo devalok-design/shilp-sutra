@@ -252,7 +252,9 @@ const Badge = React.forwardRef<HTMLElement, BadgeProps>(
           }
         : props.onKeyDown
 
-    const hasLeading = !!(dot || selected || startIcon)
+    // For interactive badges, always account for the check icon space (even when not selected)
+    // to prevent width jumps during toggle animation
+    const hasLeading = !!(dot || startIcon || (onClick && !startIcon && !dot))
     const hasTrailing = !!(onDismiss || endIcon)
 
     return (
@@ -299,22 +301,17 @@ const Badge = React.forwardRef<HTMLElement, BadgeProps>(
           )}
         </AnimatePresence>
 
-        {/* Selected check icon — animated enter/exit */}
-        <AnimatePresence mode="popLayout">
-          {selected && !startIcon && !dot && (
-            <motion.span
-              key="badge-check"
-              layout
-              initial={{ scale: 0, width: 0, opacity: 0 }}
-              animate={{ scale: 1, width: 'auto', opacity: 1 }}
-              exit={{ scale: 0, width: 0, opacity: 0 }}
-              transition={{ type: 'spring', stiffness: 500, damping: 25, mass: 0.5 }}
-              className="inline-flex shrink-0 overflow-hidden"
-            >
-              <Icon icon={IconCheck} size="xs" />
-            </motion.span>
-          )}
-        </AnimatePresence>
+        {/* Selected check icon — always mounted when onClick exists, animated visibility */}
+        {onClick && !startIcon && !dot && (
+          <motion.span
+            animate={{ scale: selected ? 1 : 0, opacity: selected ? 1 : 0 }}
+            transition={{ duration: 0.15, ease: [0.2, 0, 0, 1] }}
+            className="inline-flex shrink-0"
+            aria-hidden={!selected}
+          >
+            <Icon icon={IconCheck} size="xs" />
+          </motion.span>
+        )}
 
         {/* Start icon */}
         {startIcon && (

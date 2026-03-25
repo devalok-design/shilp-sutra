@@ -86,4 +86,41 @@ describe('Switch', () => {
     const results = await axe(container)
     expect(results).toHaveNoViolations()
   })
+
+  it('renders sm size with correct track dimensions', () => {
+    render(<Switch aria-label="Small switch" size="sm" />)
+    const toggle = screen.getByRole('switch')
+    expect(toggle).toHaveClass('h-[18px]', 'w-[32px]')
+  })
+
+  it('renders lg size with correct track dimensions', () => {
+    render(<Switch aria-label="Large switch" size="lg" />)
+    const toggle = screen.getByRole('switch')
+    expect(toggle).toHaveClass('h-7', 'w-[52px]')
+  })
+
+  it('renders success color when checked', () => {
+    render(<Switch aria-label="Success switch" color="success" checked />)
+    const toggle = screen.getByRole('switch')
+    expect(toggle).toHaveClass('data-[state=checked]:bg-success-9')
+  })
+
+  it('renders thumbIcon inside thumb', () => {
+    render(
+      <Switch
+        aria-label="Icon switch"
+        thumbIcon={<span data-testid="thumb-icon">!</span>}
+      />,
+    )
+    expect(screen.getByTestId('thumb-icon')).toBeInTheDocument()
+  })
+
+  it('backward compat: no size/color props renders md/accent defaults', () => {
+    render(<Switch aria-label="Default switch" />)
+    const toggle = screen.getByRole('switch')
+    // md track dimensions
+    expect(toggle).toHaveClass('h-6', 'w-11')
+    // accent checked color
+    expect(toggle).toHaveClass('data-[state=checked]:bg-accent-9')
+  })
 })

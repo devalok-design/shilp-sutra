@@ -7,17 +7,33 @@ import * as SwitchPrimitives from "@primitives/react-switch"
 import { springs } from './lib/motion'
 import { cn } from "./lib/utils"
 
+const sizeConfig = {
+  sm: { track: 'h-[18px] w-[32px]', thumb: 'h-[14px] w-[14px]', travel: 14 },
+  md: { track: 'h-6 w-11', thumb: 'h-ico-md w-ico-md', travel: 20 },
+  lg: { track: 'h-7 w-[52px]', thumb: 'h-[22px] w-[22px]', travel: 24 },
+} as const
+
+const colorMap = {
+  accent: 'data-[state=checked]:bg-accent-9',
+  success: 'data-[state=checked]:bg-success-9',
+  warning: 'data-[state=checked]:bg-warning-9',
+} as const
+
 export interface SwitchProps extends React.ComponentPropsWithoutRef<typeof SwitchPrimitives.Root> {
   error?: boolean
+  size?: 'sm' | 'md' | 'lg'
+  color?: 'accent' | 'success' | 'warning'
+  thumbIcon?: React.ReactNode
 }
 
 const Switch = React.forwardRef<
   React.ElementRef<typeof SwitchPrimitives.Root>,
   SwitchProps
->(({ className, error, checked, defaultChecked, onCheckedChange, ...props }, ref) => {
+>(({ className, error, size = 'md', color = 'accent', thumbIcon, checked, defaultChecked, onCheckedChange, ...props }, ref) => {
   // Track checked state internally to drive Framer Motion animation
   const [internalChecked, setInternalChecked] = React.useState(defaultChecked ?? false)
   const isChecked = checked !== undefined ? checked : internalChecked
+  const { track, thumb, travel } = sizeConfig[size]
 
   const handleCheckedChange = React.useCallback(
     (value: boolean) => {
@@ -32,7 +48,9 @@ const Switch = React.forwardRef<
   return (
     <SwitchPrimitives.Root
       className={cn(
-        "peer inline-flex h-6 w-11 shrink-0 cursor-pointer items-center rounded-ds-full border-2 border-surface-border-strong shadow-raised transition-colors duration-fast-01 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent-9 focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-action-disabled data-[state=checked]:border-transparent data-[state=checked]:bg-accent-9 data-[state=unchecked]:bg-surface-border-strong data-[state=unchecked]:hover:bg-surface-raised-active",
+        "peer inline-flex shrink-0 cursor-pointer items-center rounded-ds-full border-2 border-surface-border-strong shadow-raised transition-colors duration-fast-01 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent-9 focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-action-disabled data-[state=checked]:border-transparent data-[state=unchecked]:bg-surface-border-strong data-[state=unchecked]:hover:bg-surface-raised-active",
+        track,
+        colorMap[color],
         error && "border-error-7 data-[state=checked]:bg-error-9",
         className
       )}
@@ -44,11 +62,16 @@ const Switch = React.forwardRef<
     >
       <SwitchPrimitives.Thumb asChild>
         <motion.span
-          className="pointer-events-none block h-ico-md w-ico-md rounded-ds-full bg-accent-fg shadow-raised-hover ring-0"
-          animate={{ x: isChecked ? 20 : 0 }}
+          className={cn(
+            "pointer-events-none flex items-center justify-center rounded-ds-full bg-accent-fg shadow-raised-hover ring-0",
+            thumb
+          )}
+          animate={{ x: isChecked ? travel : 0 }}
           whileTap={{ scale: 0.85 }}
           transition={springs.snappy}
-        />
+        >
+          {thumbIcon}
+        </motion.span>
       </SwitchPrimitives.Thumb>
     </SwitchPrimitives.Root>
   )

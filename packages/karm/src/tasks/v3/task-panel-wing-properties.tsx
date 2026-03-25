@@ -2,32 +2,33 @@
 
 import * as React from 'react'
 import {
-  IconEye,
-  IconLock,
   IconCheck,
-  IconUser,
+  IconPlus,
+  IconCalendar,
   IconAlertTriangleFilled,
   IconArrowUp,
   IconArrowDown,
   IconMinus,
-  IconPlus,
 } from '@tabler/icons-react'
 import { Icon } from '@/ui/icon'
 import { motion } from 'framer-motion'
 import { Button } from '@/ui/button'
 import { Input } from '@/ui/input'
 import { cn } from '@/ui/lib/utils'
-import { Avatar, AvatarImage, AvatarFallback } from '@/ui/avatar'
 import { Badge } from '@/ui/badge'
 import { Tooltip, TooltipTrigger, TooltipContent } from '@/ui/tooltip'
 import { Popover, PopoverTrigger, PopoverContent } from '@/ui/popover'
+import { Switch } from '@/ui/switch'
+import { Progress } from '@/ui/progress'
 import { tweens } from '@/ui/lib/motion'
+import { StatusBadge } from '@/composed/status-badge'
+import { AvatarGroup } from '@/composed/avatar-group'
+import { PeoplePicker } from '../../composed/people-picker'
+import { TaskSection } from '../../composed/task-section'
 import { useTaskPanel } from './task-panel-context'
 import type { TaskPanelTask } from './task-panel-types'
 
-// ---------------------------------------------------------------------------
-// Helpers
-// ---------------------------------------------------------------------------
+// ─── Helpers ─────────────────────────────────────────────────────────────────
 
 function timeAgo(timestamp: string): string {
   const seconds = Math.floor(
@@ -43,51 +44,61 @@ function timeAgo(timestamp: string): string {
 }
 
 function formatDate(iso: string): string {
-  const d = new Date(iso)
-  return d.toLocaleDateString('en-US', { month: 'short', day: 'numeric' })
+  return new Date(iso).toLocaleDateString('en-US', {
+    month: 'short',
+    day: 'numeric',
+  })
 }
 
 function formatMetaDate(iso: string): string {
-  const d = new Date(iso)
-  return d.toLocaleDateString('en-US', {
+  return new Date(iso).toLocaleDateString('en-US', {
     month: 'short',
     day: 'numeric',
     year: 'numeric',
   })
 }
 
-function isOverdue(iso: string): boolean {
-  return new Date(iso).getTime() < Date.now()
+/** Returns human-readable relative string + urgency flags */
+function formatRelativeLabel(iso: string): {
+  text: string
+  isOverdue: boolean
+  isSoon: boolean
+} {
+  const diffDays = Math.ceil(
+    (new Date(iso).getTime() - Date.now()) / 86_400_000,
+  )
+  if (diffDays < -1)
+    return { text: `${Math.abs(diffDays)} days overdue`, isOverdue: true, isSoon: false }
+  if (diffDays === -1)
+    return { text: '1 day overdue', isOverdue: true, isSoon: false }
+  if (diffDays === 0)
+    return { text: 'Today', isOverdue: false, isSoon: true }
+  if (diffDays === 1)
+    return { text: 'Tomorrow', isOverdue: false, isSoon: true }
+  if (diffDays <= 3)
+    return { text: `In ${diffDays} days`, isOverdue: false, isSoon: true }
+  if (diffDays <= 7)
+    return { text: `In ${diffDays} days`, isOverdue: false, isSoon: false }
+  return { text: '', isOverdue: false, isSoon: false }
 }
 
-function formatRelativeDate(iso: string): { text: string; isOverdue: boolean } {
-  const now = new Date()
-  const due = new Date(iso)
-  const diffMs = due.getTime() - now.getTime()
-  const diffDays = Math.ceil(diffMs / 86_400_000)
-
-  if (diffDays < -1) return { text: `${Math.abs(diffDays)}d overdue`, isOverdue: true }
-  if (diffDays === -1) return { text: 'Overdue by 1d', isOverdue: true }
-  if (diffDays === 0) return { text: 'Due today', isOverdue: false }
-  if (diffDays === 1) return { text: 'Due tomorrow', isOverdue: false }
-  if (diffDays <= 7) return { text: `Due in ${diffDays}d`, isOverdue: false }
-  return { text: formatDate(iso), isOverdue: false }
+/** Progress ratio between start and due dates (0-1), clamped */
+function getDateProgress(
+  startIso: string | undefined,
+  dueIso: string | undefined,
+): number | null {
+  if (!startIso || !dueIso) return null
+  const start = new Date(startIso).getTime()
+  const due = new Date(dueIso).getTime()
+  const total = due - start
+  if (total <= 0) return null
+  const elapsed = Date.now() - start
+  return Math.max(0, Math.min(1, elapsed / total))
 }
 
-function getInitials(name: string): string {
-  return (name || '')
-    .split(' ')
-    .filter(Boolean)
-    .map((w) => w[0])
-    .join('')
-    .toUpperCase()
-    .slice(0, 2) || '?'
-}
+// ─── Status helpers ──────────────────────────────────────────────────────────
 
-// ---------------------------------------------------------------------------
-// Status color helpers
-// ---------------------------------------------------------------------------
-
+/** Dot color for the status picker popover items */
 function getStatusDotColor(statusName: string): string {
   const lower = statusName.toLowerCase()
   if (lower === 'done' || lower === 'complete' || lower === 'completed')
@@ -99,43 +110,46 @@ function getStatusDotColor(statusName: string): string {
   return 'bg-accent-9'
 }
 
-// ---------------------------------------------------------------------------
-// Priority display config
-// ---------------------------------------------------------------------------
+// ─── Status → StatusBadge mapping ────────────────────────────────────────────
 
-type Priority = TaskPanelTask['priority']
+type StatusBadgeMapping =
+  | { status: 'completed' | 'in-progress' | 'review' | 'draft' | 'blocked' | 'pending' | 'active' | 'approved' | 'rejected' | 'cancelled'; color?: never }
+  | { status?: never; color: 'success' | 'warning' | 'error' | 'info' | 'neutral' }
 
-const PRIORITIES: Priority[] = ['URGENT', 'HIGH', 'MEDIUM', 'LOW']
-
-const PRIORITY_CONFIG: Record<
-  Priority,
-  { icon: React.ElementType; className: string; label: string }
-> = {
-  URGENT: { icon: IconAlertTriangleFilled, className: 'text-error-9', label: 'Urgent' },
-  HIGH: { icon: IconArrowUp, className: 'text-warning-9', label: 'High' },
-  MEDIUM: { icon: IconMinus, className: 'text-surface-fg-muted', label: 'Medium' },
-  LOW: { icon: IconArrowDown, className: 'text-surface-fg-subtle', label: 'Low' },
+function mapStatusToBadge(statusName: string): StatusBadgeMapping {
+  const lower = statusName.toLowerCase()
+  if (lower === 'done' || lower === 'complete' || lower === 'completed')
+    return { status: 'completed' }
+  if (lower === 'in progress' || lower === 'in-progress')
+    return { status: 'in-progress' }
+  if (lower === 'review')
+    return { color: 'warning' }
+  if (lower === 'backlog' || lower === 'todo' || lower === 'to do')
+    return { color: 'neutral' }
+  if (lower === 'blocked')
+    return { status: 'blocked' }
+  if (lower === 'draft')
+    return { status: 'draft' }
+  if (lower === 'cancelled' || lower === 'canceled')
+    return { status: 'cancelled' }
+  return { color: 'info' }
 }
 
-// ---------------------------------------------------------------------------
-// Shared styles for full-row clickable triggers
-// ---------------------------------------------------------------------------
+// ─── Priority config ─────────────────────────────────────────────────────────
 
-const rowTriggerBase =
-  'flex w-full items-center justify-between rounded-ds-lg px-ds-03 py-ds-02b -mx-ds-01 hover:bg-surface-raised-hover transition-colors'
+type Priority = TaskPanelTask['priority']
+const PRIORITIES: Priority[] = ['URGENT', 'HIGH', 'MEDIUM', 'LOW']
+const PRIORITY_CONFIG: Record<
+  Priority,
+  { icon: React.ElementType; className: string; bgClassName: string; label: string }
+> = {
+  URGENT: { icon: IconAlertTriangleFilled, className: 'text-error-9', bgClassName: 'bg-error-3 text-error-11', label: 'Urgent' },
+  HIGH: { icon: IconArrowUp, className: 'text-warning-9', bgClassName: 'bg-warning-3 text-warning-11', label: 'High' },
+  MEDIUM: { icon: IconMinus, className: 'text-surface-fg-muted', bgClassName: 'bg-surface-raised-hover text-surface-fg-muted', label: 'Medium' },
+  LOW: { icon: IconArrowDown, className: 'text-surface-fg-subtle', bgClassName: 'bg-surface-raised-hover text-surface-fg-subtle', label: 'Low' },
+}
 
-const cellTriggerBase =
-  'flex flex-col gap-ds-01 rounded-ds-lg px-ds-03 py-ds-02b hover:bg-surface-raised-hover transition-colors text-left'
-
-const readonlyRowBase =
-  'flex w-full items-center justify-between rounded-ds-lg px-ds-03 py-ds-02b -mx-ds-01'
-
-const readonlyCellBase =
-  'flex flex-col gap-ds-01 rounded-ds-lg px-ds-03 py-ds-02b text-left'
-
-// ---------------------------------------------------------------------------
-// Wing animation config
-// ---------------------------------------------------------------------------
+// ─── Animation ───────────────────────────────────────────────────────────────
 
 const wingVariants = {
   hidden: { opacity: 0, x: 40, scale: 0.97 },
@@ -143,177 +157,84 @@ const wingVariants = {
   exit: { opacity: 0, x: 40, scale: 0.97 },
 }
 
-// ---------------------------------------------------------------------------
-// Reusable people value display (for leads & assignees)
-// ---------------------------------------------------------------------------
+const popoverCls = 'border-surface-border-strong bg-surface-overlay shadow-floating'
 
-function PeopleValue({
-  people,
-}: {
-  people: TaskPanelTask['leads']
-}) {
-  if (people.length === 0) {
-    return (
-      <>
-        <span className="flex h-5 w-5 items-center justify-center rounded-full border border-dashed border-surface-fg-subtle">
-          <Icon icon={IconUser} size="xs" className="text-surface-fg-subtle" />
-        </span>
-        <span className="text-ds-sm text-surface-fg-subtle">None</span>
-      </>
-    )
-  }
-  return (
-    <>
-      <div className="flex items-center -space-x-1">
-        {people.slice(0, 3).map((person) => (
-          <Avatar key={person.id} size="xs" className="h-5 w-5 ring-1 ring-surface-raised">
-            {person.image && <AvatarImage src={person.image} />}
-            <AvatarFallback className="text-[8px]">
-              {getInitials(person.name)}
-            </AvatarFallback>
-          </Avatar>
-        ))}
-        {people.length > 3 && (
-          <span className="flex h-5 w-5 items-center justify-center rounded-full bg-surface-raised-hover ring-1 ring-surface-raised text-[8px] font-medium text-surface-fg-muted">
-            +{people.length - 3}
-          </span>
-        )}
-      </div>
-      <span className="text-ds-sm text-surface-fg">
-        {people.length === 1 ? people[0].name : `${people.length} people`}
-      </span>
-      {people.map((person) => (
-        <React.Fragment key={`${person.id}-indicators`}>
-          {person.bandwidth === 'OVERLOADED' && (
-            <span className="h-1.5 w-1.5 rounded-full bg-error-9 shrink-0" title="Overloaded" />
-          )}
-          {person.bandwidth === 'ELEVATED' && (
-            <span className="h-1.5 w-1.5 rounded-full bg-warning-9 shrink-0" title="Elevated workload" />
-          )}
-          {person.isOnLeave && (
-            <span className="text-[10px] text-warning-11 shrink-0">On leave</span>
-          )}
-        </React.Fragment>
-      ))}
-    </>
-  )
-}
-
-// ---------------------------------------------------------------------------
-// Reusable people picker popover content
-// ---------------------------------------------------------------------------
-
-function PeoplePickerContent({
-  members,
-  selected,
-  onAdd,
-  onRemove,
-}: {
-  members: TaskPanelTask['members']
-  selected: TaskPanelTask['leads']
-  onAdd: (id: string) => void
-  onRemove: (id: string) => void
-}) {
-  return (
-    <>
-      {members.map((member) => {
-        const isSelected = selected.some((s) => s.id === member.id)
-        return (
-          <Button
-            key={member.id}
-            variant="ghost"
-            size="compact-sm"
-            weight="normal"
-            onClick={() => {
-              if (isSelected) {
-                onRemove(member.id)
-              } else {
-                onAdd(member.id)
-              }
-            }}
-            className={cn(
-              'w-full justify-start gap-ds-03',
-              isSelected && 'bg-surface-raised-hover',
-            )}
-          >
-            <Avatar size="xs" className="h-5 w-5">
-              {member.image && <AvatarImage src={member.image} />}
-              <AvatarFallback className="text-[10px]">
-                {getInitials(member.name)}
-              </AvatarFallback>
-            </Avatar>
-            <span className="text-ds-sm text-surface-fg">{member.name}</span>
-            {isSelected && (
-              <Icon icon={IconCheck} size="sm" className="ml-auto text-accent-11" />
-            )}
-          </Button>
-        )
-      })}
-    </>
-  )
-}
-
-// ---------------------------------------------------------------------------
-// TaskPanelPropertiesCard — tiered information hierarchy
-// ---------------------------------------------------------------------------
+// ═══════════════════════════════════════════════════════════════════════════════
 
 export function TaskPanelPropertiesCard() {
   const {
-    task,
-    clientMode,
-    onUpdateStatus,
-    onUpdatePriority,
-    onAddAssignee,
-    onRemoveAssignee,
-    onAddLead,
-    onRemoveLead,
-    onUpdateDueDate,
-    onUpdateStartDate,
-    onUpdatePhase,
-    onToggleVisibility,
-    onAddLabel,
-    onRemoveLabel,
+    task, clientMode,
+    onUpdateStatus, onUpdatePriority,
+    onAddAssignee, onRemoveAssignee, onAddLead, onRemoveLead,
+    onUpdateDueDate, onUpdateStartDate, onUpdatePhase,
+    onToggleVisibility, onAddLabel, onRemoveLabel,
   } = useTaskPanel()
 
   const [statusOpen, setStatusOpen] = React.useState(false)
   const [priorityOpen, setPriorityOpen] = React.useState(false)
-  const [assigneeOpen, setAssigneeOpen] = React.useState(false)
-  const [leadOpen, setLeadOpen] = React.useState(false)
   const [dueDateOpen, setDueDateOpen] = React.useState(false)
   const [startDateOpen, setStartDateOpen] = React.useState(false)
   const [phaseOpen, setPhaseOpen] = React.useState(false)
   const [labelOpen, setLabelOpen] = React.useState(false)
   const [newLabel, setNewLabel] = React.useState('')
 
-  const statusName =
-    task.statusOptions.find((o) => o.id === task.status)?.name ?? task.status
-  const statusDotColor = getStatusDotColor(statusName)
-
+  const statusName = task.statusOptions.find((o) => o.id === task.status)?.name ?? task.status
+  const statusBadgeProps = mapStatusToBadge(statusName)
   const priorityCfg = PRIORITY_CONFIG[task.priority]
-  const PriorityIcon = priorityCfg.icon
-
   const interactive = !clientMode
+  const relDue = task.dueDate ? formatRelativeLabel(task.dueDate) : null
+  const hasPhase = task.phaseOptions && task.phaseOptions.length > 0
+  const dateProgress = getDateProgress(task.startDate ?? undefined, task.dueDate ?? undefined)
 
-  const relDue = task.dueDate ? formatRelativeDate(task.dueDate) : null
+  // Merge all people (assignees + leads that aren't already assignees)
+  const leadIds = React.useMemo(() => new Set(task.leads.map((l) => l.id)), [task.leads])
+  const allPeople = React.useMemo(() => {
+    const ids = new Set(task.assignees.map((a) => a.id))
+    const merged = [...task.assignees]
+    for (const lead of task.leads) {
+      if (!ids.has(lead.id)) merged.push(lead)
+    }
+    return merged
+  }, [task.assignees, task.leads])
+
+  // AvatarGroup-compatible users
+  const avatarUsers = React.useMemo(
+    () => allPeople.map((p) => ({
+      name: p.name,
+      image: p.image,
+      indicator: leadIds.has(p.id) ? 'lead' as const : undefined,
+    })),
+    [allPeople, leadIds],
+  )
+
+  // Smart people label: show lead's first name if one lead, otherwise count
+  const peopleLabel = React.useMemo(() => {
+    if (allPeople.length === 0) return ''
+    const leadName = task.leads.length === 1 ? task.leads[0].name.split(' ')[0] : null
+    const othersCount = allPeople.length - (leadName ? 1 : 0)
+    if (leadName && othersCount > 0) return `${leadName} +${othersCount}`
+    if (leadName) return leadName
+    if (allPeople.length === 1) return allPeople[0].name.split(' ')[0]
+    return `${allPeople.length} people`
+  }, [allPeople, task.leads])
+
+  const handleToggleLead = React.useCallback(
+    (memberId: string) => {
+      if (leadIds.has(memberId)) onRemoveLead(memberId)
+      else onAddLead(memberId)
+    },
+    [leadIds, onAddLead, onRemoveLead],
+  )
 
   const handleAddLabel = React.useCallback(() => {
     const trimmed = newLabel.trim()
-    if (trimmed) {
-      onAddLabel(trimmed)
-      setNewLabel('')
-    }
+    if (trimmed) { onAddLabel(trimmed); setNewLabel('') }
   }, [newLabel, onAddLabel])
 
   const handleLabelKeyDown = React.useCallback(
     (e: React.KeyboardEvent) => {
-      if (e.key === 'Enter') {
-        e.preventDefault()
-        handleAddLabel()
-      } else if (e.key === 'Escape') {
-        e.preventDefault()
-        setNewLabel('')
-        setLabelOpen(false)
-      }
+      if (e.key === 'Enter') { e.preventDefault(); handleAddLabel() }
+      else if (e.key === 'Escape') { e.preventDefault(); setNewLabel(''); setLabelOpen(false) }
     },
     [handleAddLabel],
   )
@@ -325,134 +246,150 @@ export function TaskPanelPropertiesCard() {
       animate="visible"
       exit="exit"
       transition={{ ...tweens.fade, delay: 0.25 }}
-      className="w-[280px] overflow-hidden rounded-ds-xl border border-surface-border-strong bg-surface-raised shadow-floating"
+      className="w-[280px] overflow-hidden rounded-ds-xl border border-surface-border bg-surface-raised shadow-floating"
       data-testid="properties-wing"
     >
-      <div className="p-ds-05">
-        {/* Header with visibility toggle */}
-        <div className="flex items-center justify-between border-b border-surface-border-subtle pb-ds-04 mb-ds-04">
-          <span className="text-ds-xs font-semibold uppercase tracking-wider text-surface-fg-muted">
-            Properties
-          </span>
-          {/* Client visibility toggle — staff only */}
-          {interactive && (
-            <Tooltip>
-              <TooltipTrigger asChild>
-                <Button
-                  variant={task.visibility === 'EVERYONE' ? 'soft' : 'ghost'}
-                  color={task.visibility === 'EVERYONE' ? 'success' : 'neutral'}
-                  size="compact-sm"
-                  shape="pill"
-                  onClick={onToggleVisibility}
-                  startIcon={<Icon icon={task.visibility === 'EVERYONE' ? IconEye : IconLock} />}
-                >
-                  {task.visibility === 'EVERYONE' ? 'Client' : 'Internal'}
-                </Button>
-              </TooltipTrigger>
-              <TooltipContent>
-                {task.visibility === 'EVERYONE'
-                  ? 'Visible to clients'
-                  : 'Team only'}
-              </TooltipContent>
-            </Tooltip>
-          )}
-        </div>
+      <div className="p-ds-04 flex flex-col gap-4">
 
-        {/* 2-column top section: Status, Due Date — each cell fully clickable */}
-        <div className="grid grid-cols-2 gap-ds-03 mb-ds-04">
-          {/* Status */}
+        {/* ═══ Top bar: Status + Priority + Visibility ══════════════════ */}
+        <div className="flex items-center gap-2">
+          {/* Status chip */}
           {interactive ? (
             <Popover open={statusOpen} onOpenChange={setStatusOpen}>
               <PopoverTrigger asChild>
-                <button type="button" className={cellTriggerBase}>
-                  <span className="text-[10px] text-surface-fg-subtle/50 uppercase tracking-wider">
-                    Status
-                  </span>
-                  <div className="flex items-center gap-ds-02">
-                    <span className={cn('h-2 w-2 shrink-0 rounded-full', statusDotColor)} />
-                    <span className="text-ds-sm text-surface-fg truncate">{statusName}</span>
-                  </div>
-                </button>
+                <span className="flex-1">
+                  <StatusBadge
+                    {...statusBadgeProps}
+                    label={statusName}
+                    size="sm"
+                    onClick={() => setStatusOpen((o) => !o)}
+                    className="w-full justify-center"
+                  />
+                </span>
               </PopoverTrigger>
-              <PopoverContent
-                className="w-[180px] border-surface-border-strong bg-surface-overlay p-ds-02"
-                align="start"
-                sideOffset={4}
-              >
+              <PopoverContent className={cn('w-[180px] p-ds-02', popoverCls)} align="start" sideOffset={4}>
                 {task.statusOptions.length === 0 ? (
-                  <p className="px-ds-03 py-ds-02 text-ds-xs text-surface-fg-subtle">No status options configured</p>
+                  <p className="px-ds-03 py-ds-02 text-ds-xs text-surface-fg-subtle">No status options</p>
                 ) : (
                   task.statusOptions.map((opt) => (
                     <Button
-                      key={opt.id}
-                      variant="ghost"
-                      size="compact-sm"
-                      weight="normal"
-                      onClick={() => {
-                        onUpdateStatus(opt.id)
-                        setStatusOpen(false)
-                      }}
-                      className={cn(
-                        'w-full justify-start gap-ds-03',
-                        opt.id === task.status && 'bg-surface-raised-hover',
-                      )}
+                      key={opt.id} variant="ghost" size="compact-sm" weight="normal"
+                      onClick={() => { onUpdateStatus(opt.id); setStatusOpen(false) }}
+                      className={cn('w-full justify-start gap-ds-02', opt.id === task.status && 'bg-surface-raised-hover')}
                     >
                       <span className={cn('h-2 w-2 shrink-0 rounded-full', getStatusDotColor(opt.name))} aria-hidden />
-                      <span className="text-ds-sm text-surface-fg">{opt.name}</span>
-                      {opt.id === task.status && (
-                        <Icon icon={IconCheck} size="sm" className="ml-auto text-accent-11" />
-                      )}
+                      <span className="text-ds-sm">{opt.name}</span>
+                      {opt.id === task.status && <Icon icon={IconCheck} size="sm" className="ml-auto text-accent-11" />}
                     </Button>
                   ))
                 )}
               </PopoverContent>
             </Popover>
           ) : (
-            <div className={readonlyCellBase}>
-              <span className="text-[10px] text-surface-fg-subtle/50 uppercase tracking-wider">
-                Status
-              </span>
-              <div className="flex items-center gap-ds-02">
-                <span className={cn('h-2 w-2 shrink-0 rounded-full', statusDotColor)} />
-                <span className="text-ds-sm text-surface-fg truncate">{statusName}</span>
-              </div>
-            </div>
+            <StatusBadge
+              {...statusBadgeProps}
+              label={statusName}
+              size="sm"
+              className="flex-1 justify-center"
+            />
           )}
 
-          {/* Due Date */}
+          {/* Priority chip */}
+          {interactive ? (
+            <Popover open={priorityOpen} onOpenChange={setPriorityOpen}>
+              <PopoverTrigger asChild>
+                <button
+                  type="button"
+                  className={cn('inline-flex items-center gap-1 rounded-ds-md px-2.5 py-1.5 transition-colors cursor-pointer hover:opacity-80', priorityCfg.bgClassName)}
+                >
+                  <Icon icon={priorityCfg.icon as any} size="xs" className={priorityCfg.className} />
+                  <span className="text-[12px] font-medium">{priorityCfg.label}</span>
+                </button>
+              </PopoverTrigger>
+              <PopoverContent className={cn('w-[160px] p-ds-02', popoverCls)} align="start" sideOffset={4}>
+                {PRIORITIES.map((p) => {
+                  const c = PRIORITY_CONFIG[p]
+                  return (
+                    <Button key={p} variant="ghost" size="compact-sm" weight="normal"
+                      onClick={() => { onUpdatePriority(p); setPriorityOpen(false) }}
+                      className={cn('w-full justify-start gap-ds-02', p === task.priority && 'bg-surface-raised-hover')}
+                    >
+                      <Icon icon={c.icon as any} size="sm" className={c.className} />
+                      <span className="text-ds-sm">{c.label}</span>
+                      {p === task.priority && <Icon icon={IconCheck} size="sm" className="ml-auto text-accent-11" />}
+                    </Button>
+                  )
+                })}
+              </PopoverContent>
+            </Popover>
+          ) : (
+            <span className={cn('inline-flex items-center gap-1 rounded-ds-md px-2.5 py-1.5', priorityCfg.bgClassName)}>
+              <Icon icon={priorityCfg.icon as any} size="xs" className={priorityCfg.className} />
+              <span className="text-[12px] font-medium">{priorityCfg.label}</span>
+            </span>
+          )}
+
+          {/* Visibility toggle */}
+          {interactive && (
+            <Tooltip>
+              <TooltipTrigger asChild>
+                <span className="ml-auto flex items-center"
+                  aria-label={task.visibility === 'EVERYONE' ? 'Visible to clients — click to make internal' : 'Internal only — click to make client visible'}
+                >
+                  <Switch
+                    size="sm"
+                    color="success"
+                    checked={task.visibility === 'EVERYONE'}
+                    onCheckedChange={() => onToggleVisibility()}
+                  />
+                </span>
+              </TooltipTrigger>
+              <TooltipContent>
+                {task.visibility === 'EVERYONE' ? 'Client visible' : 'Internal only'}
+              </TooltipContent>
+            </Tooltip>
+          )}
+        </div>
+
+        {/* ═══ Due Date ═══════════════════════════════════════════════════ */}
+        <div className="flex flex-col gap-1">
           {interactive ? (
             <Popover open={dueDateOpen} onOpenChange={setDueDateOpen}>
               <PopoverTrigger asChild>
-                <button type="button" className={cellTriggerBase}>
-                  <span className="text-[10px] text-surface-fg-subtle/50 uppercase tracking-wider">
-                    Due
-                  </span>
-                  <span
+                <button
+                  type="button"
+                  className="flex items-center gap-2 w-full rounded-ds-sm px-1.5 py-1.5 -mx-1.5 hover:bg-surface-raised-hover transition-colors cursor-pointer text-left"
+                >
+                  <Icon
+                    icon={IconCalendar}
+                    size="xs"
                     className={cn(
-                      'text-ds-sm truncate',
-                      relDue?.isOverdue
-                        ? 'text-error-11 font-medium'
-                        : task.dueDate
-                          ? 'text-surface-fg'
-                          : 'text-surface-fg-subtle',
+                      relDue?.isOverdue ? 'text-error-9' : relDue?.isSoon ? 'text-warning-9' : 'text-surface-fg-subtle/50',
                     )}
-                  >
-                    {relDue ? relDue.text : 'None'}
-                  </span>
-                  {relDue && relDue.text !== formatDate(task.dueDate!) && (
-                    <span className="text-[10px] text-surface-fg-subtle/50 truncate">
-                      {formatDate(task.dueDate!)}
+                  />
+                  {task.dueDate ? (
+                    <span className="flex items-baseline gap-1.5 min-w-0">
+                      <span className={cn(
+                        'text-[13px]',
+                        relDue?.isOverdue ? 'text-error-11' : 'text-surface-fg',
+                      )}>
+                        Due {formatDate(task.dueDate)}
+                      </span>
+                      {relDue?.text && (
+                        <span className={cn(
+                          'text-[12px]',
+                          relDue.isOverdue ? 'text-error-11/70' : relDue.isSoon ? 'text-warning-11' : 'text-surface-fg-subtle/60',
+                        )}>
+                          · {relDue.text}
+                        </span>
+                      )}
                     </span>
+                  ) : (
+                    <span className="text-[13px] text-surface-fg-subtle/40">Set due date</span>
                   )}
                 </button>
               </PopoverTrigger>
-              <PopoverContent
-                key={task.dueDate ?? 'empty'}
-                className="w-[220px] border-surface-border-strong bg-surface-overlay p-ds-03"
-                align="start"
-                sideOffset={4}
-              >
-                {/* Quick shortcuts */}
+              <PopoverContent key={task.dueDate ?? 'empty'} className={cn('w-[220px] p-ds-03', popoverCls)} align="start" sideOffset={4}>
                 <div className="flex flex-col gap-ds-01 mb-ds-03">
                   {[
                     { label: 'Today', days: 0 },
@@ -461,388 +398,207 @@ export function TaskPanelPropertiesCard() {
                     { label: 'In 2 weeks', days: 14 },
                     { label: 'Next month', days: 30 },
                   ].map(({ label, days }) => (
-                    <Button
-                      key={label}
-                      variant="ghost"
-                      size="compact-sm"
-                      weight="normal"
-                      className="w-full justify-start"
-                      onClick={() => {
-                        const d = new Date()
-                        d.setDate(d.getDate() + days)
-                        d.setHours(0, 0, 0, 0)
-                        onUpdateDueDate(d)
-                        setDueDateOpen(false)
-                      }}
-                    >
-                      {label}
-                    </Button>
+                    <Button key={label} variant="ghost" size="compact-sm" weight="normal" className="w-full justify-start"
+                      onClick={() => { const d = new Date(); d.setDate(d.getDate() + days); d.setHours(0, 0, 0, 0); onUpdateDueDate(d); setDueDateOpen(false) }}
+                    >{label}</Button>
                   ))}
                   {task.dueDate && (
-                    <Button
-                      variant="ghost"
-                      size="compact-sm"
-                      weight="normal"
-                      color="error"
-                      className="w-full justify-start"
-                      onClick={() => {
-                        onUpdateDueDate(null)
-                        setDueDateOpen(false)
-                      }}
-                    >
-                      Remove due date
-                    </Button>
+                    <Button variant="ghost" size="compact-sm" weight="normal" color="error" className="w-full justify-start"
+                      onClick={() => { onUpdateDueDate(null); setDueDateOpen(false) }}
+                    >Remove</Button>
                   )}
                 </div>
-
-                {/* Custom date picker */}
                 <div className="border-t border-surface-border-subtle pt-ds-03">
-                  <label className="flex flex-col gap-ds-02">
-                    <span className="text-ds-xs font-medium text-surface-fg-muted">
-                      Custom date
-                    </span>
-                    <Input
-                      type="date"
-                      size="sm"
-                      defaultValue={task.dueDate ? task.dueDate.slice(0, 10) : ''}
-                      onChange={(e) => {
-                        const val = e.target.value
-                        if (val) {
-                          onUpdateDueDate(new Date(val + 'T00:00:00'))
-                        } else {
-                          onUpdateDueDate(null)
-                        }
-                        setDueDateOpen(false)
-                      }}
-                    />
-                  </label>
+                  <Input type="date" size="sm" defaultValue={task.dueDate ? task.dueDate.slice(0, 10) : ''}
+                    onChange={(e) => { const v = e.target.value; onUpdateDueDate(v ? new Date(v + 'T00:00:00') : null); setDueDateOpen(false) }}
+                  />
                 </div>
               </PopoverContent>
             </Popover>
           ) : (
-            <div className={readonlyCellBase}>
-              <span className="text-[10px] text-surface-fg-subtle/50 uppercase tracking-wider">
-                Due
-              </span>
-              <span
-                className={cn(
-                  'text-ds-sm truncate',
-                  relDue?.isOverdue
-                    ? 'text-error-11 font-medium'
-                    : task.dueDate
-                      ? 'text-surface-fg'
-                      : 'text-surface-fg-subtle',
-                )}
-              >
-                {relDue ? relDue.text : 'None'}
-              </span>
-              {relDue && relDue.text !== formatDate(task.dueDate!) && (
-                <span className="text-[10px] text-surface-fg-subtle/50 truncate">
-                  {formatDate(task.dueDate!)}
+            <div className="flex items-center gap-2 px-1.5 py-1.5">
+              <Icon icon={IconCalendar} size="xs" className={relDue?.isOverdue ? 'text-error-9' : 'text-surface-fg-subtle/50'} />
+              {task.dueDate ? (
+                <span className="flex items-baseline gap-1.5">
+                  <span className={cn('text-[13px]', relDue?.isOverdue ? 'text-error-11' : 'text-surface-fg')}>
+                    Due {formatDate(task.dueDate)}
+                  </span>
+                  {relDue?.text && (
+                    <span className={cn('text-[12px]', relDue.isOverdue ? 'text-error-11/70' : 'text-surface-fg-subtle/60')}>
+                      · {relDue.text}
+                    </span>
+                  )}
                 </span>
+              ) : (
+                <span className="text-[13px] text-surface-fg-subtle/40">No due date</span>
               )}
             </div>
           )}
-        </div>
 
-        {/* Row 2: Start Date + Phase */}
-        <div className="grid grid-cols-2 gap-ds-03 mb-ds-04">
-          {/* Start Date */}
-          {interactive ? (
-            <Popover open={startDateOpen} onOpenChange={setStartDateOpen}>
-              <PopoverTrigger asChild>
-                <button type="button" className={cellTriggerBase}>
-                  <span className="text-[10px] text-surface-fg-subtle/50 uppercase tracking-wider">Start</span>
-                  <span className={cn('text-ds-sm truncate', task.startDate ? 'text-surface-fg' : 'text-surface-fg-subtle')}>
-                    {task.startDate ? formatDate(task.startDate) : 'None'}
-                  </span>
-                </button>
-              </PopoverTrigger>
-              <PopoverContent key={task.startDate ?? 'empty'} className="w-[220px] border-surface-border-strong bg-surface-overlay p-ds-03" align="start" sideOffset={4}>
-                <label className="flex flex-col gap-ds-02">
-                  <span className="text-ds-xs font-medium text-surface-fg-muted">Start date</span>
-                  <Input
-                    type="date"
-                    size="sm"
-                    defaultValue={task.startDate ? task.startDate.slice(0, 10) : ''}
-                    onChange={(e) => {
-                      const val = e.target.value
-                      onUpdateStartDate(val ? new Date(val + 'T00:00:00') : null)
-                      setStartDateOpen(false)
-                    }}
-                  />
-                </label>
-              </PopoverContent>
-            </Popover>
-          ) : (
-            <div className={readonlyCellBase}>
-              <span className="text-[10px] text-surface-fg-subtle/50 uppercase tracking-wider">Start</span>
-              <span className={cn('text-ds-sm truncate', task.startDate ? 'text-surface-fg' : 'text-surface-fg-subtle')}>
-                {task.startDate ? formatDate(task.startDate) : 'None'}
-              </span>
-            </div>
-          )}
-
-          {/* Phase */}
-          {interactive && task.phaseOptions && task.phaseOptions.length > 0 ? (
-            <Popover open={phaseOpen} onOpenChange={setPhaseOpen}>
-              <PopoverTrigger asChild>
-                <button type="button" className={cellTriggerBase}>
-                  <span className="text-[10px] text-surface-fg-subtle/50 uppercase tracking-wider">Phase</span>
-                  <span className={cn('text-ds-sm truncate', task.phase ? 'text-surface-fg' : 'text-surface-fg-subtle')}>
-                    {task.phase?.name ?? 'None'}
-                  </span>
-                </button>
-              </PopoverTrigger>
-              <PopoverContent className="w-[180px] border-surface-border-strong bg-surface-overlay p-ds-02" align="start" sideOffset={4}>
-                {task.phaseOptions.map((opt) => (
-                  <Button
-                    key={opt.id}
-                    variant="ghost"
-                    size="compact-sm"
-                    weight="normal"
-                    onClick={() => { onUpdatePhase(opt.id); setPhaseOpen(false) }}
-                    className={cn('w-full justify-start', opt.id === task.phase?.id && 'bg-surface-raised-hover')}
-                  >
-                    {opt.name}
-                    {opt.id === task.phase?.id && <Icon icon={IconCheck} size="sm" className="ml-auto text-accent-11" />}
-                  </Button>
-                ))}
-                {task.phase && (
-                  <Button
-                    variant="ghost"
-                    size="compact-sm"
-                    weight="normal"
-                    color="error"
-                    onClick={() => { onUpdatePhase(null); setPhaseOpen(false) }}
-                    className="w-full justify-start mt-ds-01"
-                  >
-                    Remove phase
-                  </Button>
-                )}
-              </PopoverContent>
-            </Popover>
-          ) : (
-            <div className={readonlyCellBase}>
-              <span className="text-[10px] text-surface-fg-subtle/50 uppercase tracking-wider">Phase</span>
-              <span className={cn('text-ds-sm truncate', task.phase ? 'text-surface-fg' : 'text-surface-fg-subtle')}>
-                {task.phase?.name ?? 'None'}
-              </span>
-            </div>
+          {/* Progress bar */}
+          {dateProgress !== null && (
+            <Progress autoColor value={Math.round(dateProgress * 100)} size="sm" />
           )}
         </div>
 
-        {/* Remaining properties — full-width clickable rows */}
-        <div className="flex flex-col gap-ds-05">
-          {/* Priority — full row trigger */}
-          {interactive ? (
-            <Popover open={priorityOpen} onOpenChange={setPriorityOpen}>
-              <PopoverTrigger asChild>
-                <button type="button" className={rowTriggerBase}>
-                  <span className="text-ds-xs font-medium text-surface-fg-subtle">Priority</span>
-                  <div className="flex items-center gap-ds-02">
-                    <Icon icon={PriorityIcon as any} size="xs" className={priorityCfg.className} />
-                    <span className={cn('text-ds-sm', priorityCfg.className)}>
-                      {priorityCfg.label}
-                    </span>
-                  </div>
-                </button>
-              </PopoverTrigger>
-              <PopoverContent
-                className="w-[180px] border-surface-border-strong bg-surface-overlay p-ds-02"
-                align="end"
-                sideOffset={4}
-              >
-                {PRIORITIES.map((p) => {
-                  const c = PRIORITY_CONFIG[p]
-                  const PIcon = c.icon
-                  return (
-                    <Button
-                      key={p}
-                      variant="ghost"
-                      size="compact-sm"
-                      weight="normal"
-                      onClick={() => {
-                        onUpdatePriority(p)
-                        setPriorityOpen(false)
-                      }}
-                      className={cn(
-                        'w-full justify-start gap-ds-03',
-                        p === task.priority && 'bg-surface-raised-hover',
-                      )}
-                    >
-                      <Icon icon={PIcon as any} size="sm" className={c.className} />
-                      <span className="text-ds-sm text-surface-fg">{c.label}</span>
-                      {p === task.priority && (
-                        <Icon icon={IconCheck} size="sm" className="ml-auto text-accent-11" />
-                      )}
-                    </Button>
-                  )
-                })}
-              </PopoverContent>
-            </Popover>
-          ) : (
-            <div className={readonlyRowBase}>
-              <span className="text-ds-xs font-medium text-surface-fg-subtle">Priority</span>
-              <div className="flex items-center gap-ds-02">
-                <Icon icon={PriorityIcon as any} size="xs" className={priorityCfg.className} />
-                <span className={cn('text-ds-sm', priorityCfg.className)}>
-                  {priorityCfg.label}
-                </span>
-              </div>
-            </div>
-          )}
+        {/* ═══ People ═════════════════════════════════════════════════════ */}
+        {interactive ? (
+          <PeoplePicker
+            members={task.members}
+            assignees={task.assignees}
+            leads={task.leads}
+            onAssign={onAddAssignee}
+            onUnassign={onRemoveAssignee}
+            onToggleLead={handleToggleLead}
+            align="end"
+          >
+            <button
+              type="button"
+              className="flex items-center gap-2.5 w-full rounded-ds-sm px-1.5 py-1.5 -mx-1.5 hover:bg-surface-raised-hover transition-colors cursor-pointer text-left"
+            >
+              {allPeople.length > 0 ? (
+                <>
+                  <AvatarGroup users={avatarUsers} max={4} size="xs" />
+                  <span className="text-[13px] text-surface-fg truncate">
+                    {peopleLabel}
+                  </span>
+                </>
+              ) : (
+                <>
+                  <span className="flex h-[22px] w-[22px] items-center justify-center rounded-full border border-dashed border-surface-fg-subtle/30">
+                    <Icon icon={IconPlus} size="xs" className="text-surface-fg-subtle/40" />
+                  </span>
+                  <span className="text-[13px] text-surface-fg-subtle/50">Add people</span>
+                </>
+              )}
+            </button>
+          </PeoplePicker>
+        ) : allPeople.length > 0 ? (
+          <div className="flex items-center gap-2.5 px-1.5 py-1.5">
+            <AvatarGroup users={avatarUsers} max={4} size="xs" />
+            <span className="text-[13px] text-surface-fg truncate">{peopleLabel}</span>
+          </div>
+        ) : null}
 
-          {/* Leads — full row trigger */}
-          {interactive ? (
-            <Popover open={leadOpen} onOpenChange={setLeadOpen}>
-              <PopoverTrigger asChild>
-                <button type="button" className={rowTriggerBase}>
-                  <span className="shrink-0 text-ds-xs font-medium text-surface-fg-subtle">Leads</span>
-                  <div className="flex items-center gap-ds-02 min-w-0">
-                    <PeopleValue people={task.leads} />
-                  </div>
-                </button>
-              </PopoverTrigger>
-              <PopoverContent
-                className="w-[200px] border-surface-border-strong bg-surface-overlay p-ds-02"
-                align="end"
-                sideOffset={4}
-              >
-                <PeoplePickerContent
-                  members={task.members}
-                  selected={task.leads}
-                  onAdd={onAddLead}
-                  onRemove={onRemoveLead}
-                />
-              </PopoverContent>
-            </Popover>
-          ) : (
-            <div className={readonlyRowBase}>
-              <span className="shrink-0 text-ds-xs font-medium text-surface-fg-subtle">Leads</span>
-              <div className="flex items-center gap-ds-02 min-w-0">
-                <PeopleValue people={task.leads} />
-              </div>
-            </div>
-          )}
-
-          {/* Assignees — full row trigger */}
-          {interactive ? (
-            <Popover open={assigneeOpen} onOpenChange={setAssigneeOpen}>
-              <PopoverTrigger asChild>
-                <button type="button" className={rowTriggerBase}>
-                  <span className="shrink-0 text-ds-xs font-medium text-surface-fg-subtle">Assignees</span>
-                  <div className="flex items-center gap-ds-02 min-w-0">
-                    <PeopleValue people={task.assignees} />
-                  </div>
-                </button>
-              </PopoverTrigger>
-              <PopoverContent
-                className="w-[200px] border-surface-border-strong bg-surface-overlay p-ds-02"
-                align="end"
-                sideOffset={4}
-              >
-                <PeoplePickerContent
-                  members={task.members}
-                  selected={task.assignees}
-                  onAdd={onAddAssignee}
-                  onRemove={onRemoveAssignee}
-                />
-              </PopoverContent>
-            </Popover>
-          ) : (
-            <div className={readonlyRowBase}>
-              <span className="shrink-0 text-ds-xs font-medium text-surface-fg-subtle">Assignees</span>
-              <div className="flex items-center gap-ds-02 min-w-0">
-                <PeopleValue people={task.assignees} />
-              </div>
-            </div>
-          )}
-
-          {/* Labels */}
-          <div className="group/labels rounded-ds-lg px-ds-03 py-ds-02b -mx-ds-01">
-            <span className="text-ds-xs text-surface-fg-subtle font-medium mb-ds-02 block">Labels</span>
+        {/* ═══ Details (collapsible — labels, phase, dates, meta) ═══════ */}
+        <TaskSection title="Details" chevronPosition="right" defaultOpen={false}>
+          <div className="flex flex-col gap-3 pt-2">
+            {/* Labels — inline badges, no separate header */}
             <div className="flex flex-wrap items-center gap-1.5">
               {task.labels.length > 0 ? (
                 task.labels.map((label) => (
-                  <Badge
-                    key={label}
-                    variant="outline"
-                    size="xs"
+                  <Badge key={label} variant="outline" size="sm"
                     onDismiss={interactive ? () => onRemoveLabel(label) : undefined}
-                  >
-                    {label}
-                  </Badge>
+                  >{label}</Badge>
                 ))
               ) : (
-                <span className="text-ds-xs text-surface-fg-subtle">None</span>
+                <span className="text-[12px] text-surface-fg-subtle/40">No labels</span>
               )}
               {interactive && (
                 <Popover open={labelOpen} onOpenChange={setLabelOpen}>
                   <PopoverTrigger asChild>
                     <button
                       type="button"
-                      className="inline-flex h-5 w-5 items-center justify-center rounded-full border border-dashed border-surface-fg-subtle text-surface-fg-subtle hover:border-accent-9 hover:text-accent-11 transition-colors opacity-0 group-hover/labels:opacity-100"
+                      className="inline-flex h-[22px] items-center gap-0.5 rounded-ds-sm px-1.5 border border-dashed border-surface-fg-subtle/20 text-surface-fg-subtle/40 hover:text-accent-11 hover:border-accent-9/40 hover:bg-surface-raised-hover transition-colors"
                       aria-label="Add label"
                     >
-                      <Icon icon={IconPlus} size="xs" className="h-3 w-3" />
+                      <Icon icon={IconPlus} size="xs" />
+                      <span className="text-[11px]">Add</span>
                     </button>
                   </PopoverTrigger>
-                  <PopoverContent
-                    className="w-[200px] border-surface-border-strong bg-surface-overlay p-ds-03"
-                    align="start"
-                    sideOffset={4}
-                  >
-                    <label className="flex flex-col gap-ds-02">
-                      <span className="text-ds-xs font-medium text-surface-fg-muted">
-                        New label
-                      </span>
-                      <Input
-                        type="text"
-                        size="sm"
-                        value={newLabel}
-                        onChange={(e) => setNewLabel(e.target.value)}
-                        onKeyDown={handleLabelKeyDown}
-                        placeholder="Label name..."
-                        autoFocus
-                      />
-                    </label>
+                  <PopoverContent className={cn('w-[200px] p-ds-03', popoverCls)} align="start" sideOffset={4}>
+                    <Input type="text" size="sm" value={newLabel} onChange={(e) => setNewLabel(e.target.value)}
+                      onKeyDown={handleLabelKeyDown} placeholder="Label name..." autoFocus
+                    />
                   </PopoverContent>
                 </Popover>
               )}
             </div>
-          </div>
 
-        </div>
+            {/* 2-column grid: Phase + Started */}
+            <div className="grid grid-cols-2 gap-x-3 gap-y-2">
+              {(hasPhase && (task.phase || interactive)) && (
+                <div className="flex flex-col gap-0.5">
+                  <span className="text-[10px] text-surface-fg-subtle/40 uppercase tracking-wider">Phase</span>
+                  {interactive ? (
+                    <Popover open={phaseOpen} onOpenChange={setPhaseOpen}>
+                      <PopoverTrigger asChild>
+                        <button type="button" className="text-[12px] text-surface-fg-muted hover:text-surface-fg transition-colors text-left truncate">
+                          {task.phase?.name ?? <span className="text-surface-fg-subtle/40">None</span>}
+                        </button>
+                      </PopoverTrigger>
+                      <PopoverContent className={cn('w-[180px] p-ds-02', popoverCls)} align="start" sideOffset={4}>
+                        {task.phaseOptions!.map((opt) => (
+                          <Button key={opt.id} variant="ghost" size="compact-sm" weight="normal"
+                            onClick={() => { onUpdatePhase(opt.id); setPhaseOpen(false) }}
+                            className={cn('w-full justify-start', opt.id === task.phase?.id && 'bg-surface-raised-hover')}
+                          >
+                            {opt.name}
+                            {opt.id === task.phase?.id && <Icon icon={IconCheck} size="sm" className="ml-auto text-accent-11" />}
+                          </Button>
+                        ))}
+                        {task.phase && (
+                          <Button variant="ghost" size="compact-sm" weight="normal" color="error"
+                            onClick={() => { onUpdatePhase(null); setPhaseOpen(false) }}
+                            className="w-full justify-start mt-ds-01"
+                          >Remove</Button>
+                        )}
+                      </PopoverContent>
+                    </Popover>
+                  ) : (
+                    <span className="text-[12px] text-surface-fg-muted truncate">{task.phase?.name ?? 'None'}</span>
+                  )}
+                </div>
+              )}
 
-        {/* Separator before meta */}
-        <div className="border-t border-surface-border mt-ds-04 pt-ds-04" />
+              {(task.startDate || interactive) && (
+                <div className="flex flex-col gap-0.5">
+                  <span className="text-[10px] text-surface-fg-subtle/40 uppercase tracking-wider">Started</span>
+                  {interactive ? (
+                    <Popover open={startDateOpen} onOpenChange={setStartDateOpen}>
+                      <PopoverTrigger asChild>
+                        <button type="button" className="text-[12px] text-surface-fg-muted hover:text-surface-fg transition-colors text-left">
+                          {task.startDate ? formatDate(task.startDate) : <span className="text-surface-fg-subtle/40">Not set</span>}
+                        </button>
+                      </PopoverTrigger>
+                      <PopoverContent key={task.startDate ?? 'empty'} className={cn('w-[220px] p-ds-03', popoverCls)} align="start" sideOffset={4}>
+                        <Input type="date" size="sm" defaultValue={task.startDate ? task.startDate.slice(0, 10) : ''}
+                          onChange={(e) => { const v = e.target.value; onUpdateStartDate(v ? new Date(v + 'T00:00:00') : null); setStartDateOpen(false) }}
+                        />
+                      </PopoverContent>
+                    </Popover>
+                  ) : (
+                    <span className="text-[12px] text-surface-fg-muted">{task.startDate ? formatDate(task.startDate) : 'Not set'}</span>
+                  )}
+                </div>
+              )}
+            </div>
 
-        {/* Creator attribution */}
-        {task.createdByName && (
-          <div className="flex items-center gap-ds-02 mb-ds-03">
-            <span className="text-ds-xs text-surface-fg-subtle">Created by</span>
-            <span className="text-ds-xs text-surface-fg-muted font-medium">{task.createdByName}</span>
-            {task.createdByType === 'SYSTEM' && (
-              <Badge variant="subtle" color="accent" size="xs">AI</Badge>
+            {/* Created by */}
+            {task.createdByName && (
+              <div className="flex flex-col gap-0.5">
+                <span className="text-[10px] text-surface-fg-subtle/40 uppercase tracking-wider">Created by</span>
+                <div className="flex items-center gap-1">
+                  <span className="text-[12px] text-surface-fg-muted">{task.createdByName}</span>
+                  {task.createdByType === 'SYSTEM' && <Badge variant="subtle" color="accent" size="xs">AI</Badge>}
+                  {task.createdByType === 'CLIENT' && <Badge variant="subtle" color="success" size="xs">Client</Badge>}
+                </div>
+              </div>
             )}
-            {task.createdByType === 'CLIENT' && (
-              <Badge variant="subtle" color="success" size="xs">Client</Badge>
-            )}
-          </div>
-        )}
 
-        {/* Meta — Updated / Created (two-column) */}
-        <div className="flex items-start justify-between">
-          <div className="flex flex-col gap-ds-01">
-            <span className="text-[9px] uppercase tracking-widest text-surface-fg-subtle/40">Updated</span>
-            <span className="text-ds-xs text-surface-fg-muted">{timeAgo(task.updatedAt)}</span>
+            {/* 2-column grid: Created + Updated */}
+            <div className="grid grid-cols-2 gap-x-3">
+              <div className="flex flex-col gap-0.5">
+                <span className="text-[10px] text-surface-fg-subtle/40 uppercase tracking-wider">Created</span>
+                <span className="text-[12px] text-surface-fg-subtle/60">{formatMetaDate(task.createdAt)}</span>
+              </div>
+              <div className="flex flex-col gap-0.5">
+                <span className="text-[10px] text-surface-fg-subtle/40 uppercase tracking-wider">Updated</span>
+                <span className="text-[12px] text-surface-fg-subtle/60">{timeAgo(task.updatedAt)}</span>
+              </div>
+            </div>
           </div>
-          <div className="flex flex-col gap-ds-01 items-end">
-            <span className="text-[9px] uppercase tracking-widest text-surface-fg-subtle/40">Created</span>
-            <span className="text-ds-xs text-surface-fg-muted">{formatMetaDate(task.createdAt)}</span>
-          </div>
-        </div>
+        </TaskSection>
       </div>
     </motion.div>
   )

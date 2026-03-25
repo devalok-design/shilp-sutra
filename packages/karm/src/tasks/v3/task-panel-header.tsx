@@ -7,6 +7,7 @@ import {
   IconDots,
   IconLink,
   IconCopy,
+  IconClipboard,
   IconTrash,
   IconChevronRight,
   IconChevronUp,
@@ -23,6 +24,7 @@ import {
   DropdownMenuSeparator,
 } from '@/ui/dropdown-menu'
 import { InlineEdit } from '@/composed/inline-edit'
+import { DevalokGrain } from '@/ui/devalok-grain'
 import { useTaskPanel } from './task-panel-context'
 
 // ---------------------------------------------------------------------------
@@ -71,11 +73,12 @@ export function TaskPanelHeader({ className, menuSlot, ...props }: TaskPanelHead
   return (
     <div
       className={cn(
-        'flex flex-col gap-ds-02 px-ds-06 py-ds-05',
+        'relative overflow-hidden isolate flex flex-col gap-ds-02 px-ds-06 py-ds-05',
         className,
       )}
       {...props}
     >
+      <DevalokGrain intensity="subtle" surface="soft" />
       {/* Project breadcrumb + Task ID */}
       <div className="flex items-center gap-ds-01 text-ds-xs text-surface-fg-subtle">
         {task.projectName && (
@@ -152,6 +155,18 @@ export function TaskPanelHeader({ className, menuSlot, ...props }: TaskPanelHead
                 >
                   <Icon icon={IconCopy} size="sm" className="mr-ds-03" />
                   Copy reference
+                </DropdownMenuItem>
+                <DropdownMenuItem
+                  onClick={() => {
+                    const status = task.statusOptions?.find(o => o.id === task.status)?.name ?? task.status
+                    const assigneeNames = task.assignees.map(a => a.name).join(', ') || 'Unassigned'
+                    const due = task.dueDate ? new Date(task.dueDate).toLocaleDateString('en-US', { month: 'short', day: 'numeric' }) : 'No due date'
+                    const summary = `${task.taskId}: ${task.title}\nStatus: ${status} | Assigned: ${assigneeNames} | Due: ${due}`
+                    navigator.clipboard?.writeText(summary).catch(() => {})
+                  }}
+                >
+                  <Icon icon={IconClipboard} size="sm" className="mr-ds-03" />
+                  Copy summary
                 </DropdownMenuItem>
                 <DropdownMenuSeparator />
                 <DropdownMenuItem onClick={onDuplicateTask}>

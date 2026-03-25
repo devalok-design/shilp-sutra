@@ -10,7 +10,7 @@ import { cn } from "./lib/utils"
 const sizeConfig = {
   sm: { track: 'h-[18px] w-[32px]', thumb: 'h-[14px] w-[14px]', travel: 14 },
   md: { track: 'h-6 w-11', thumb: 'h-ico-md w-ico-md', travel: 20 },
-  lg: { track: 'h-7 w-[52px]', thumb: 'h-[22px] w-[22px]', travel: 24 },
+  lg: { track: 'h-7 w-[52px]', thumb: 'h-6 w-6', travel: 24 },
 } as const
 
 const colorMap = {

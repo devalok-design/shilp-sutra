@@ -11,9 +11,20 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 - **Warning color remapped from yellow to amber-bright** — `warning-*` tokens now use a warm amber (OKLCH hue 65-70, L=0.78 at step 9) instead of yellow (hue 85, L=0.55). The old yellow produced a muddy olive at mid-lightness with insufficient contrast for both light and dark text. `warning-fg` is now hardcoded dark in both themes. Existing `--amber-*` category colors are untouched — only the `warning-*` semantic tokens changed.
 - **Button `startIcon`/`endIcon` now require `<Icon>` wrapper** — Pass `<Icon icon={IconPlus} />` instead of raw `<IconPlus />`. Mechanical find-and-replace migration.
+- **Badge rewritten** — `variant="secondary"`, `variant="destructive"`, `color="brand"` removed. Use `variant="subtle"`, `variant="solid" color="error"`, `color="accent"`.
+- **Chip deprecated** — Use `<Badge onClick={...}>` instead. Chip wrapper maps `label` prop to children for backward compat.
 
 ### Added
 
+- **Badge `variant="soft"`** — Borderless tinted background for the lightest treatment.
+- **Badge `color="custom"`** — Arbitrary colors via `--badge-color` CSS variable.
+- **Badge interactive states** — `onClick`, `selected`, `disabled` props.
+- **Badge `startIcon` / `endIcon`** — Leading/trailing content slots.
+- **Badge `maxWidth`** — Truncation with ellipsis for long text.
+- **Badge `circle`** — Equal width/height for single-character count badges.
+- **Badge `asChild`** — Render as link, button, or any element.
+- **Badge.Indicator** — Notification overlay with count, dot, animated transitions.
+- **Badge.Group** — Overflow handling with "+N" indicator.
 - **Button `variant="soft"`** — Tinted/muted background variant. The workhorse for secondary actions, status pills, and subtle controls. Available in all 5 colors.
 - **Button `color` axis expanded** — `accent` (renamed from `default`), `error` (existing), `success` (new), `warning` (new), `neutral` (new). 25 variant×color combinations.
 - **Button `shape="pill"`** — Applies `rounded-full` for chip/tag/pill-shaped buttons.

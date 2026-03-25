@@ -278,7 +278,7 @@ If you have shadcn/ui knowledge, these are the differences that WILL trip you up
 | variant="destructive" | color="error" | Two-axis system: variant=shape, color=intent |
 | size="default" | size="md" | All sizes: sm, md, lg (never "default") |
 | <Select size="lg"> | <SelectTrigger size="lg"> | Size goes on trigger, NOT root |
-| <Chip>text</Chip> | <Chip label="text" /> | Chip uses label prop, NOT children |
+| <Chip> | <Badge onClick={...}> | Chip is deprecated, use Badge with onClick |
 | useToast() + toast({ variant }) | toast.success('msg') | Imperative API, no hook needed |
 | Badge variant="destructive" | Badge variant="solid" color="error" | Two-axis: variant + color |
 | Alert + AlertTitle + AlertDescription | <Alert title="..." color="error"> | Single component, not compound |
@@ -298,7 +298,7 @@ Examples:
   <Badge variant="solid" color="success">Active</Badge>       // green solid badge
   <Alert variant="filled" color="warning">Warning!</Alert>    // amber filled alert
 
-Components with two-axis system: Button, Badge, Alert, Chip, Banner, Progress, StatusBadge
+Components with two-axis system: Button, Badge, Alert, Banner, Progress, StatusBadge
 
 ## Component Quick Reference
 
@@ -333,8 +333,8 @@ NOTIFICATION SELECTION GUIDE:
   - Toast: transient notification triggered by user action (needs <Toaster>, then call toast.success() etc.)
 
 ### Data Display
-- Badge: variant(subtle|solid|outline) color(default|info|success|error|warning|brand|accent + 7 category colors) size(xs|sm|md|lg) + onDismiss
-- Chip: variant(subtle|outline) color(default|primary|success|error|warning|info + 7 category) size(sm|md|lg) label(string, REQUIRED) + onDismiss, onClick
+- Badge: variant(subtle|solid|outline|soft) color(default|accent|error|success|warning|info|neutral + 7 category colors + custom) size(xs|sm|md|lg) + onClick, onDismiss, selected, disabled, dot, startIcon, endIcon, maxWidth, circle, asChild. Compound: Badge.Indicator(count, max, dot, color, invisible, showZero, placement, children), Badge.Group(max, gap, size, onOverflowClick, children). Custom colors: color="custom" + style={{'--badge-color':'#hex'}}. Grain-ready (has relative/overflow-hidden/isolate).
+- Chip: DEPRECATED — Use `<Badge onClick={...}>` instead. Chip wrapper maps label prop to children for backward compat.
 - Avatar: size(xs|sm|md|lg|xl) shape(circle|square|rounded) status?(AvatarStatus) ring?('lead'|'admin'|'client') badge?(number|'dot'|ReactNode) loading?(boolean) > AvatarImage + AvatarFallback(colorSeed?). Types: AvatarStatus = 'online'|'offline'|'busy'|'away', AvatarRing = 'none'|'lead'|'admin'|'client'. Fallback colors are deterministic from name hash (8 categorical). Online dot pulses. Badge pops in with MotionPop.
 - Card: variant(default|elevated|outline|flat) interactive(boolean) accent?(left|top|right|bottom) accentColor?(default|secondary|error|success|warning|info) > CardHeader > CardTitle, CardDescription; CardContent; CardFooter
 - Table > TableHeader > TableRow > TableHead; TableBody > TableRow > TableCell; TableFooter; TableCaption
@@ -470,7 +470,7 @@ DO NOT use barrel imports in Server Components — they include "use client" com
 - DO NOT use variant="destructive" — use color="error"
 - DO NOT use size="default" — use size="md" (or sm, lg)
 - DO NOT put size on <Select> — put it on <SelectTrigger size="md">
-- DO NOT use <Chip>text</Chip> — use <Chip label="text" />
+- DO NOT use <Chip> — Chip is deprecated. Use <Badge onClick={...}> instead
 - DO NOT use useToast() hook — use import { toast } from '@devalok/shilp-sutra/ui/toast' (imperative)
 - DO NOT use toast({ title, color }) object syntax — use toast.success('message'), toast.error('message'), etc.
 - DO NOT call toast() without <Toaster /> mounted at your layout root

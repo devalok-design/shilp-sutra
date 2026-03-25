@@ -39,6 +39,8 @@ export interface ActivityFeedProps extends React.HTMLAttributes<HTMLDivElement> 
   maxInitialItems?: number
   groupBy?: 'time' | 'none'
   groupLabels?: GroupLabels
+  /** Custom renderer per item. Return ReactNode for custom rendering, undefined to use default ActivityEntry. */
+  renderItem?: (item: ActivityItem, index: number) => React.ReactNode | undefined
 }
 
 const dotColorMap = {
@@ -223,6 +225,35 @@ function ActivityEntry({
   )
 }
 
+/**
+ * Wraps custom renderItem content with the same dot + layout container
+ * that ActivityEntry uses, keeping vertical rhythm consistent.
+ */
+function CustomEntry({
+  item,
+  compact,
+  children,
+}: {
+  item: ActivityItem
+  compact: boolean
+  children: React.ReactNode
+}) {
+  const color = item.color ?? 'default'
+  return (
+    <div className={cn('relative flex items-start', compact ? 'gap-ds-02' : 'gap-ds-03')}>
+      {/* Dot — same as ActivityEntry */}
+      <div
+        className={cn(
+          'relative z-10 mt-1.5 h-2 w-2 shrink-0 rounded-ds-full ring-2 ring-surface-base',
+          dotColorMap[color],
+        )}
+      />
+      {/* Custom content in the same flex slot as ActivityEntry's content area */}
+      <div className="min-w-0 flex-1">{children}</div>
+    </div>
+  )
+}
+
 function GroupHeader({
   label,
   isFirst,
@@ -262,6 +293,7 @@ const ActivityFeed = React.forwardRef<HTMLDivElement, ActivityFeedProps>(
       maxInitialItems,
       groupBy = 'none',
       groupLabels,
+      renderItem,
       className,
       ...props
     },
@@ -295,6 +327,17 @@ const ActivityFeed = React.forwardRef<HTMLDivElement, ActivityFeedProps>(
 
     const useGrouping = groupBy === 'time'
 
+    /** Resolve what to render for a single item, respecting renderItem. */
+    const resolveEntry = (item: ActivityItem, index: number) => {
+      if (renderItem) {
+        const custom = renderItem(item, index)
+        if (custom !== undefined) {
+          return <CustomEntry item={item} compact={compact}>{custom}</CustomEntry>
+        }
+      }
+      return <ActivityEntry item={item} compact={compact} />
+    }
+
     return (
       <div ref={ref} className={cn('relative', className)} {...props}>
         {/* Items */}
@@ -308,7 +351,7 @@ const ActivityFeed = React.forwardRef<HTMLDivElement, ActivityFeedProps>(
                   <div className="absolute bottom-0 left-[3px] top-0 w-px bg-surface-border" />
                   {group.items.map((item, index) => (
                     <motion.div key={item.id} initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ ...tweens.fade, delay: index * 0.03 }}>
-                      <ActivityEntry item={item} compact={compact} />
+                      {resolveEntry(item, index)}
                     </motion.div>
                   ))}
                 </div>
@@ -321,7 +364,7 @@ const ActivityFeed = React.forwardRef<HTMLDivElement, ActivityFeedProps>(
             <div className="absolute bottom-0 left-[3px] top-0 w-px bg-surface-border" />
             {visibleItems.map((item, index) => (
               <motion.div key={item.id} initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ ...tweens.fade, delay: index * 0.03 }}>
-                <ActivityEntry item={item} compact={compact} />
+                {resolveEntry(item, index)}
               </motion.div>
             ))}
           </div>

@@ -75,6 +75,83 @@ describe('ActivityFeed', () => {
     await user.click(btn)
     expect(onLoadMore).toHaveBeenCalledTimes(1)
   })
+
+  describe('renderItem', () => {
+    it('renders custom content when renderItem returns JSX', () => {
+      const items = [makeItem({ id: '1', action: 'created a task' })]
+      render(
+        <ActivityFeed
+          items={items}
+          renderItem={() => <div>Custom card content</div>}
+        />,
+      )
+      expect(screen.getByText('Custom card content')).toBeInTheDocument()
+      // Default action text should NOT be rendered
+      expect(screen.queryByText('created a task')).not.toBeInTheDocument()
+    })
+
+    it('falls back to default ActivityEntry when renderItem returns undefined', () => {
+      const items = [makeItem({ id: '1', actor: { name: 'Alice' }, action: 'created a task' })]
+      render(
+        <ActivityFeed
+          items={items}
+          renderItem={() => undefined}
+        />,
+      )
+      expect(screen.getByText('Alice')).toBeInTheDocument()
+      expect(screen.getByText('created a task')).toBeInTheDocument()
+    })
+
+    it('uses default rendering when renderItem is not provided', () => {
+      const items = [
+        makeItem({ id: '1', actor: { name: 'Alice' }, action: 'created a task' }),
+        makeItem({ id: '2', actor: { name: 'Bob' }, action: 'commented' }),
+      ]
+      render(<ActivityFeed items={items} />)
+      expect(screen.getByText('Alice')).toBeInTheDocument()
+      expect(screen.getByText('Bob')).toBeInTheDocument()
+      expect(screen.getByText('created a task')).toBeInTheDocument()
+      expect(screen.getByText('commented')).toBeInTheDocument()
+    })
+
+    it('still renders timeline dot when using custom renderItem', () => {
+      const items = [makeItem({ id: '1', color: 'success' })]
+      const { container } = render(
+        <ActivityFeed
+          items={items}
+          renderItem={() => <div>Custom content</div>}
+        />,
+      )
+      // The dot should have the success color class
+      const dot = container.querySelector('.bg-success-9')
+      expect(dot).toBeInTheDocument()
+      // The timeline line should still be present
+      const timelineLine = container.querySelector('.bg-surface-border')
+      expect(timelineLine).toBeInTheDocument()
+    })
+
+    it('supports mixed rendering: some items custom, some default', () => {
+      const items = [
+        makeItem({ id: '1', actor: { name: 'Alice' }, action: 'created a task' }),
+        makeItem({ id: '2', actor: { name: 'Bob' }, action: 'commented' }),
+      ]
+      render(
+        <ActivityFeed
+          items={items}
+          renderItem={(item, index) => {
+            if (index === 0) return <div>Custom for Alice</div>
+            return undefined // fallback for Bob
+          }}
+        />,
+      )
+      // First item: custom rendering
+      expect(screen.getByText('Custom for Alice')).toBeInTheDocument()
+      expect(screen.queryByText('created a task')).not.toBeInTheDocument()
+      // Second item: default rendering
+      expect(screen.getByText('Bob')).toBeInTheDocument()
+      expect(screen.getByText('commented')).toBeInTheDocument()
+    })
+  })
 })
 
 describe('groupItemsByTime', () => {

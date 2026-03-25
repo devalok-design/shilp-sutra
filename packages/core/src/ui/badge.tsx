@@ -123,6 +123,21 @@ const iconSizeMap: Record<string, string> = {
   lg: '[&>svg]:h-3.5 [&>svg]:w-3.5',
 }
 
+/** Tighter padding on icon side — icon provides visual weight at the edge */
+const iconInsetStart: Record<string, string> = {
+  xs: '-ml-px',
+  sm: '-ml-0.5',
+  md: '-ml-0.5',
+  lg: '-ml-1',
+}
+
+const iconInsetEnd: Record<string, string> = {
+  xs: '-mr-px',
+  sm: '-mr-0.5',
+  md: '-mr-0.5',
+  lg: '-mr-1',
+}
+
 /**
  * Badge — a compact inline label with a two-axis variant system.
  *
@@ -241,7 +256,7 @@ const Badge = React.forwardRef<HTMLElement, BadgeProps>(
         className={cn(
           badgeVariants({ variant: resolvedVariant, color: resolvedColor, size: resolvedSize }),
           onClick &&
-            'cursor-pointer hover:brightness-95 active:scale-[0.95] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent-9 focus-visible:ring-offset-1',
+            'cursor-pointer hover:brightness-[0.97] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent-9 focus-visible:ring-offset-1 transition-[color,background-color,border-color,transform,filter] duration-moderate-01 ease-productive-exit hover:duration-fast-02 hover:ease-productive-entrance active:scale-[0.95] active:brightness-[0.92] active:duration-[0ms]',
           selected && 'ring-1 ring-current/20',
           disabled && 'opacity-action-disabled pointer-events-none saturate-[0.3]',
           circle && 'justify-center px-0 aspect-square',
@@ -255,26 +270,28 @@ const Badge = React.forwardRef<HTMLElement, BadgeProps>(
         {...(Comp === 'div' && onClick ? { role: 'button' as const, tabIndex: 0 } : {})}
         {...props}
       >
-        {/* Dot indicator */}
+        {/* Dot indicator — uses DS easeOut, tightens left padding */}
         {dot && (
-          <span className="relative inline-flex h-1.5 w-1.5 shrink-0" aria-hidden="true">
+          <span className={cn('relative inline-flex h-1.5 w-1.5 shrink-0', iconInsetStart[resolvedSize])} aria-hidden="true">
             <motion.span
               className="absolute inset-0 rounded-full bg-current"
               animate={{ scale: [1, 2.5], opacity: [0.4, 0] }}
-              transition={{ repeat: Infinity, duration: 1.5, ease: 'easeOut' }}
+              transition={{ repeat: Infinity, duration: 1.5, ease: [0, 0, 0.58, 1] }}
             />
             <span className="relative h-1.5 w-1.5 rounded-full bg-current" />
           </span>
         )}
 
-        {/* Selected check icon (auto-inserted if no startIcon/dot) */}
+        {/* Selected check icon — tightens left padding */}
         {selected && !startIcon && !dot && (
-          <Icon icon={IconCheck} size="xs" className="shrink-0" />
+          <span className={cn('shrink-0', iconInsetStart[resolvedSize])}>
+            <Icon icon={IconCheck} size="xs" />
+          </span>
         )}
 
-        {/* Start icon */}
+        {/* Start icon — tightens left padding */}
         {startIcon && (
-          <span className={cn('shrink-0', iconSizeMap[resolvedSize])}>{startIcon}</span>
+          <span className={cn('shrink-0', iconSizeMap[resolvedSize], iconInsetStart[resolvedSize])}>{startIcon}</span>
         )}
 
         {/* Children — with optional truncation */}
@@ -289,9 +306,9 @@ const Badge = React.forwardRef<HTMLElement, BadgeProps>(
           children
         )}
 
-        {/* End icon */}
+        {/* End icon — tightens right padding */}
         {endIcon && (
-          <span className={cn('shrink-0', iconSizeMap[resolvedSize])}>{endIcon}</span>
+          <span className={cn('shrink-0', iconSizeMap[resolvedSize], iconInsetEnd[resolvedSize])}>{endIcon}</span>
         )}
 
         {/* Dismiss button */}

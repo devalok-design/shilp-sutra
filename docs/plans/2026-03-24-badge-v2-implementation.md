@@ -50,7 +50,7 @@ Total: **8 tasks across 4 phases.**
 
 ```typescript
 const badgeVariants = cva(
-  'inline-flex items-center rounded-full font-sans font-medium transition-colors duration-fast-01 ease-productive-standard select-none',
+  'relative inline-flex items-center rounded-full font-sans font-medium overflow-hidden isolate transition-colors duration-fast-01 ease-productive-standard select-none [&>span:not([data-grain])]:relative [&>span:not([data-grain])]:z-[2]',
   {
     variants: {
       variant: {

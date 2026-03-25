@@ -16,7 +16,7 @@ import { springs } from '@/ui/lib/motion'
 export interface TaskSectionProps {
   title: string
   /** Optional badge count next to title */
-  count?: number
+  count?: number | string
   /** Initial open state. @default false */
   defaultOpen?: boolean
   /** Controlled open state */

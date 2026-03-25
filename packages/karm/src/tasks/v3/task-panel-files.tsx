@@ -2,7 +2,6 @@
 
 import * as React from 'react'
 import {
-  IconChevronDown,
   IconUpload,
   IconFile,
   IconPhoto,
@@ -12,8 +11,7 @@ import {
 import { Icon } from '@/ui/icon'
 import { cn } from '@/ui/lib/utils'
 import { Button } from '@/ui/button'
-import { Badge } from '@/ui/badge'
-import { MotionCollapse } from '@/motion/primitives'
+import { TaskSection } from '../../composed/task-section'
 import { useTaskPanel } from './task-panel-context'
 
 // ---------------------------------------------------------------------------
@@ -50,7 +48,6 @@ export function TaskPanelFiles({
   ...props
 }: TaskPanelFilesProps) {
   const { task, mode, clientMode, onUploadFile, onDeleteFile } = useTaskPanel()
-  const [expanded, setExpanded] = React.useState(false)
   const fileInputRef = React.useRef<HTMLInputElement>(null)
 
   if (mode === 'peek') return null
@@ -115,31 +112,7 @@ export function TaskPanelFiles({
       )}
       {...props}
     >
-      {/* Compact strip */}
-      <Button
-        variant="ghost"
-        size="sm"
-        aria-expanded={expanded}
-        onClick={() => setExpanded(!expanded)}
-        className="flex w-full items-center gap-ds-03 justify-start -mx-ds-04 px-ds-04"
-      >
-        <Icon
-          icon={IconChevronDown}
-          size="xs"
-          className={cn(
-            'shrink-0 text-surface-fg-subtle transition-transform',
-            expanded && 'rotate-180',
-          )}
-        />
-        <span className="text-ds-xs font-medium text-surface-fg-muted uppercase tracking-wider">
-          Files
-        </span>
-        <Badge size="xs" variant="outline">
-          {files.length}
-        </Badge>
-      </Button>
-
-      <MotionCollapse show={expanded}>
+      <TaskSection title="Files" count={files.length} defaultOpen={false}>
         <div className="px-ds-04 pb-ds-03 mt-ds-02 flex flex-col gap-ds-01">
           {files.map((file) => (
             <div
@@ -208,7 +181,7 @@ export function TaskPanelFiles({
             multiple
           />
         </div>
-      </MotionCollapse>
+      </TaskSection>
     </div>
   )
 }

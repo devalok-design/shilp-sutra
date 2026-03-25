@@ -1,12 +1,11 @@
 'use client'
 
 import * as React from 'react'
-import { IconChevronDown } from '@tabler/icons-react'
-import { Icon } from '@/ui/icon'
 import { cn } from '@/ui/lib/utils'
 import { Checkbox } from '@/ui/checkbox'
-import { Badge } from '@/ui/badge'
+import { Progress } from '@/ui/progress'
 import { MotionCollapse } from '@/motion/primitives'
+import { TaskSection } from '../../composed/task-section'
 import { useTaskPanel } from './task-panel-context'
 
 // ---------------------------------------------------------------------------
@@ -26,7 +25,6 @@ export function TaskPanelSubtasks({
 }: TaskPanelSubtasksProps) {
   const { task, mode, clientMode, onToggleSubtask, onAddSubtask } =
     useTaskPanel()
-  const [expanded, setExpanded] = React.useState(false)
   const [isAdding, setIsAdding] = React.useState(false)
   const [newTitle, setNewTitle] = React.useState('')
   const inputRef = React.useRef<HTMLInputElement>(null)
@@ -83,7 +81,6 @@ export function TaskPanelSubtasks({
           type="button"
           className="w-full rounded-ds-md border border-dashed border-surface-border px-ds-04 py-ds-03 text-left text-ds-sm text-surface-fg-subtle transition-colors hover:border-surface-border-strong hover:text-accent-11"
           onClick={() => {
-            setExpanded(true)
             setIsAdding(true)
           }}
         >
@@ -107,42 +104,17 @@ export function TaskPanelSubtasks({
     )
   }
 
-  // Has subtasks — compact progress strip, expandable
+  // Has subtasks — TaskSection with progress bar in actions slot
   return (
     <div className={cn('px-ds-06 py-ds-03 border-b border-surface-border-subtle', className)} {...props}>
-      {/* Compact strip — always visible */}
-      <button
-        type="button"
-        aria-expanded={expanded}
-        onClick={() => setExpanded(!expanded)}
-        className="flex w-full items-center gap-ds-03 rounded-ds-md px-ds-04 py-ds-03 text-left transition-colors hover:bg-surface-raised-hover -mx-ds-04"
+      <TaskSection
+        title="Subtasks"
+        count={`${completedCount}/${totalCount}`}
+        defaultOpen={false}
+        actions={
+          <Progress autoColor value={progressPct} size="sm" className="w-16" />
+        }
       >
-        <Icon
-          icon={IconChevronDown}
-          size="xs"
-          className={cn(
-            'shrink-0 text-surface-fg-subtle transition-transform',
-            expanded && 'rotate-180',
-          )}
-        />
-        <span className="text-ds-xs font-medium text-surface-fg-muted uppercase tracking-wider">
-          Subtasks
-        </span>
-        <Badge size="xs" variant="outline">
-          {completedCount}/{totalCount}
-        </Badge>
-
-        {/* Progress bar */}
-        <div className="flex-1 h-1.5 rounded-full bg-surface-raised-hover overflow-hidden">
-          <div
-            className="h-full rounded-full bg-accent-9 transition-all duration-300"
-            style={{ width: `${progressPct}%` }}
-          />
-        </div>
-      </button>
-
-      {/* Expanded checklist */}
-      <MotionCollapse show={expanded}>
         <div className="px-ds-04 pb-ds-03">
           <div className="flex flex-col gap-ds-01 mt-ds-02">
             {subtasks.map((subtask) => {
@@ -205,7 +177,7 @@ export function TaskPanelSubtasks({
             </>
           )}
         </div>
-      </MotionCollapse>
+      </TaskSection>
     </div>
   )
 }

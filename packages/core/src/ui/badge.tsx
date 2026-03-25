@@ -307,7 +307,7 @@ const Badge = React.forwardRef<HTMLElement, BadgeProps>(
               ? { opacity: 1, scale: 1, width: 'auto', marginRight: 0 }
               : { opacity: 0, scale: 0.5, width: 0, marginRight: -4 }
             }
-            transition={{ type: 'tween', duration: 0.2, ease: [0.4, 0, 0.2, 1] }}
+            transition={{ type: 'tween', duration: 0.15, ease: [0.2, 0, 0.38, 0.9] }}  /* ease-productive-standard */
             className="inline-flex shrink-0 overflow-hidden"
             aria-hidden={!selected}
           >

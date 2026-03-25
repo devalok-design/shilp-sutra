@@ -4,18 +4,12 @@ import { IconSearch, IconX } from '@tabler/icons-react'
 import { AnimatePresence, motion } from 'framer-motion'
 import * as React from 'react'
 import { springs } from './lib/motion'
-import { cn } from './lib/utils'
 import { Spinner } from './spinner'
 import { Icon } from './icon'
+import { Input } from './input'
+import { Button } from './button'
 
 type SearchInputSize = 'xs' | 'sm' | 'md' | 'lg'
-
-const sizeClasses: Record<SearchInputSize, string> = {
-  xs: 'h-ds-xs-plus text-ds-sm pl-ds-07 pr-ds-06',
-  sm: 'h-ds-sm text-ds-sm pl-ds-08 pr-ds-07',
-  md: 'h-ds-md text-ds-md pl-[2.5rem] pr-[2.25rem]',
-  lg: 'h-ds-lg text-ds-md pl-[3rem] pr-[2.5rem]',
-}
 
 /**
  * Props for SearchInput — a search field with a built-in leading magnifier icon, optional loading
@@ -58,53 +52,47 @@ export interface SearchInputProps extends Omit<React.InputHTMLAttributes<HTMLInp
 }
 
 const SearchInput = React.forwardRef<HTMLInputElement, SearchInputProps>(
-  ({ className, value, onClear, loading, size = 'md', ...props }, ref) => {
+  ({ className, value, onClear, loading, size = 'md', placeholder, ...props }, ref) => {
     const hasValue = value !== undefined && value !== ''
 
-    return (
-      <div className="relative flex items-center">
-        <Icon icon={IconSearch} size="md" className="absolute left-[0.75rem] text-surface-fg-muted pointer-events-none" />
-        <input
-          ref={ref}
-          value={value}
-          aria-busy={loading}
-          className={cn(
-            'flex w-full font-sans',
-            sizeClasses[size],
-            'bg-surface-raised-hover text-surface-fg',
-            'border border-surface-border-strong rounded-ds-md',
-            'placeholder:text-surface-fg-subtle',
-            'hover:bg-surface-raised-active',
-            'transition-colors duration-fast-01 ease-productive-standard',
-            'focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent-9 focus-visible:border-accent-7',
-            'disabled:cursor-not-allowed disabled:opacity-action-disabled',
-            className,
-          )}
-          {...props}
-        />
-        {loading ? (
-          <span className="absolute right-[0.75rem] pointer-events-none" aria-hidden="true">
-            <Spinner size="sm" />
-          </span>
-        ) : (
-          <AnimatePresence>
-            {hasValue && onClear && (
-              <motion.button
-                type="button"
-                onClick={onClear}
-                className="absolute right-[0.75rem] rounded-ds-full h-ico-md w-ico-md flex items-center justify-center text-surface-fg-muted hover:text-surface-fg hover:bg-surface-raised transition-colors ease-productive-standard"
-                aria-label="Clear search"
-                initial={{ opacity: 0, scale: 0.8 }}
-                animate={{ opacity: 1, scale: 1 }}
-                exit={{ opacity: 0, scale: 0.8 }}
-                transition={springs.snappy}
-              >
-                <Icon icon={IconX} size="sm" />
-              </motion.button>
-            )}
-          </AnimatePresence>
+    const endContent = loading ? (
+      <Spinner size="sm" />
+    ) : (
+      <AnimatePresence>
+        {hasValue && onClear && (
+          <motion.div
+            initial={{ opacity: 0, scale: 0.8 }}
+            animate={{ opacity: 1, scale: 1 }}
+            exit={{ opacity: 0, scale: 0.8 }}
+            transition={springs.snappy}
+          >
+            <Button
+              type="button"
+              variant="ghost"
+              size="icon-xs"
+              onClick={onClear}
+              aria-label="Clear search"
+            >
+              <Icon icon={IconX} />
+            </Button>
+          </motion.div>
         )}
-      </div>
+      </AnimatePresence>
+    )
+
+    return (
+      <Input
+        ref={ref}
+        size={size}
+        startSection={<Icon icon={IconSearch} />}
+        endSection={endContent}
+        endSectionClickable={!!hasValue && !loading}
+        placeholder={placeholder}
+        value={value}
+        aria-busy={loading || undefined}
+        className={className}
+        {...props}
+      />
     )
   },
 )

@@ -30,8 +30,19 @@ export function TaskPanelMessageInput({
 
   const showVisibilityToggle = !clientMode && task.visibility === 'EVERYONE'
 
-  // Hidden in peek mode or for VIEW_ONLY clients
-  if (mode === 'peek' || !canPost) return null
+  // Hidden in peek mode
+  if (mode === 'peek') return null
+
+  // VIEW_ONLY clients see an explanation instead of input
+  if (!canPost && clientMode === 'VIEW_ONLY') {
+    return (
+      <div className="px-ds-06 py-ds-04 text-center text-ds-xs text-surface-fg-subtle border-t border-surface-border-subtle">
+        You have view-only access to this task.
+      </div>
+    )
+  }
+
+  if (!canPost) return null
 
   const adjustHeight = React.useCallback(() => {
     const el = textareaRef.current

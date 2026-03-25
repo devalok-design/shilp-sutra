@@ -379,28 +379,32 @@ export function TaskPanelPropertiesCard() {
                 align="start"
                 sideOffset={4}
               >
-                {task.statusOptions.map((opt) => (
-                  <Button
-                    key={opt.id}
-                    variant="ghost"
-                    size="compact-sm"
-                    weight="normal"
-                    onClick={() => {
-                      onUpdateStatus(opt.id)
-                      setStatusOpen(false)
-                    }}
-                    className={cn(
-                      'w-full justify-start gap-ds-03',
-                      opt.id === task.status && 'bg-surface-raised-hover',
-                    )}
-                  >
-                    <span className={cn('h-2 w-2 shrink-0 rounded-full', getStatusDotColor(opt.name))} aria-hidden />
-                    <span className="text-ds-sm text-surface-fg">{opt.name}</span>
-                    {opt.id === task.status && (
-                      <Icon icon={IconCheck} size="sm" className="ml-auto text-accent-11" />
-                    )}
-                  </Button>
-                ))}
+                {task.statusOptions.length === 0 ? (
+                  <p className="px-ds-03 py-ds-02 text-ds-xs text-surface-fg-subtle">No status options configured</p>
+                ) : (
+                  task.statusOptions.map((opt) => (
+                    <Button
+                      key={opt.id}
+                      variant="ghost"
+                      size="compact-sm"
+                      weight="normal"
+                      onClick={() => {
+                        onUpdateStatus(opt.id)
+                        setStatusOpen(false)
+                      }}
+                      className={cn(
+                        'w-full justify-start gap-ds-03',
+                        opt.id === task.status && 'bg-surface-raised-hover',
+                      )}
+                    >
+                      <span className={cn('h-2 w-2 shrink-0 rounded-full', getStatusDotColor(opt.name))} aria-hidden />
+                      <span className="text-ds-sm text-surface-fg">{opt.name}</span>
+                      {opt.id === task.status && (
+                        <Icon icon={IconCheck} size="sm" className="ml-auto text-accent-11" />
+                      )}
+                    </Button>
+                  ))
+                )}
               </PopoverContent>
             </Popover>
           ) : (
@@ -443,6 +447,7 @@ export function TaskPanelPropertiesCard() {
                 </button>
               </PopoverTrigger>
               <PopoverContent
+                key={task.dueDate ?? 'empty'}
                 className="w-[220px] border-surface-border-strong bg-surface-overlay p-ds-03"
                 align="start"
                 sideOffset={4}
@@ -553,7 +558,7 @@ export function TaskPanelPropertiesCard() {
                   </span>
                 </button>
               </PopoverTrigger>
-              <PopoverContent className="w-[220px] border-surface-border-strong bg-surface-overlay p-ds-03" align="start" sideOffset={4}>
+              <PopoverContent key={task.startDate ?? 'empty'} className="w-[220px] border-surface-border-strong bg-surface-overlay p-ds-03" align="start" sideOffset={4}>
                 <label className="flex flex-col gap-ds-02">
                   <span className="text-ds-xs font-medium text-surface-fg-muted">Start date</span>
                   <Input

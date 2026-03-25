@@ -75,8 +75,17 @@ export function TaskPanelDescription({
     [task.description],
   )
 
-  // Empty + read-only client: nothing
-  if (isEmpty && !canEdit) return null
+  // Empty + read-only client: explain view-only access
+  if (isEmpty && !canEdit) {
+    if (clientMode === 'VIEW_ONLY') {
+      return (
+        <div className={cn('border-b border-surface-border-subtle px-ds-06 pb-ds-04', className)} {...props}>
+          <p className="text-ds-xs text-surface-fg-subtle italic">No description added yet.</p>
+        </div>
+      )
+    }
+    return null
+  }
 
   // Empty + editable (staff or collaborator): compact add prompt
   if (isEmpty && canEdit) {
@@ -158,6 +167,7 @@ export function TaskPanelDescription({
 
           <button
             type="button"
+            aria-expanded={true}
             onClick={() => setExpanded(false)}
             className="mt-ds-02 text-ds-xs font-medium text-accent-11 hover:text-accent-12 transition-colors"
           >
@@ -168,6 +178,7 @@ export function TaskPanelDescription({
         /* Collapsed mode — 2-line clamp */
         <button
           type="button"
+          aria-expanded={false}
           onClick={() => setExpanded(true)}
           className="w-full text-left"
         >

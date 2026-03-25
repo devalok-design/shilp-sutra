@@ -119,6 +119,7 @@ export function TaskPanelFiles({
       <Button
         variant="ghost"
         size="sm"
+        aria-expanded={expanded}
         onClick={() => setExpanded(!expanded)}
         className="flex w-full items-center gap-ds-03 justify-start -mx-ds-04 px-ds-04"
       >

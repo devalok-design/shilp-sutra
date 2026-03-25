@@ -50,6 +50,13 @@ export function TaskPanelSubtasks({
     setIsAdding(false)
   }
 
+  const handleBlur = () => {
+    // Only close input if draft is empty — user must press Enter to add or Escape to cancel
+    if (!newTitle.trim()) {
+      setIsAdding(false)
+    }
+  }
+
   const handleKeyDown = (e: React.KeyboardEvent) => {
     if (e.key === 'Enter') {
       e.preventDefault()
@@ -89,7 +96,7 @@ export function TaskPanelSubtasks({
               type="text"
               value={newTitle}
               onChange={(e) => setNewTitle(e.target.value)}
-              onBlur={handleAdd}
+              onBlur={handleBlur}
               onKeyDown={handleKeyDown}
               className="w-full rounded-ds-md border border-surface-border bg-surface-raised px-ds-04 py-ds-03 text-ds-sm text-surface-fg outline-none focus:border-accent-8 focus:ring-1 focus:ring-accent-8"
               placeholder="Subtask title..."
@@ -106,6 +113,7 @@ export function TaskPanelSubtasks({
       {/* Compact strip — always visible */}
       <button
         type="button"
+        aria-expanded={expanded}
         onClick={() => setExpanded(!expanded)}
         className="flex w-full items-center gap-ds-03 rounded-ds-md px-ds-04 py-ds-03 text-left transition-colors hover:bg-surface-raised-hover -mx-ds-04"
       >
@@ -187,7 +195,7 @@ export function TaskPanelSubtasks({
                     type="text"
                     value={newTitle}
                     onChange={(e) => setNewTitle(e.target.value)}
-                    onBlur={handleAdd}
+                    onBlur={handleBlur}
                     onKeyDown={handleKeyDown}
                     className="w-full rounded-ds-md border border-surface-border bg-surface-raised px-ds-04 py-ds-03 text-ds-sm text-surface-fg outline-none focus:border-accent-8 focus:ring-1 focus:ring-accent-8"
                     placeholder="Subtask title..."

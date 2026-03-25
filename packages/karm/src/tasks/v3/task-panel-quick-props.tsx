@@ -132,27 +132,31 @@ function StatusPill({ interactive }: { interactive: boolean }) {
         align="start"
         sideOffset={4}
       >
-        {task.statusOptions.map((opt) => (
-          <button
-            key={opt.id}
-            type="button"
-            onClick={() => {
-              onUpdateStatus(opt.id)
-              setOpen(false)
-            }}
-            className={cn(
-              'flex w-full items-center gap-ds-03 rounded-ds-md px-ds-03 py-ds-02b transition-colors',
-              'hover:bg-surface-raised-hover',
-              opt.id === task.status && 'bg-surface-raised-hover',
-            )}
-          >
-            <span className="h-2 w-2 shrink-0 rounded-full bg-accent-9" aria-hidden />
-            <span className="text-ds-sm text-surface-fg">{opt.name}</span>
-            {opt.id === task.status && (
-              <Icon icon={IconCheck} size="sm" className="ml-auto text-accent-11" />
-            )}
-          </button>
-        ))}
+        {task.statusOptions.length === 0 ? (
+          <p className="px-ds-03 py-ds-02 text-ds-xs text-surface-fg-subtle">No status options configured</p>
+        ) : (
+          task.statusOptions.map((opt) => (
+            <button
+              key={opt.id}
+              type="button"
+              onClick={() => {
+                onUpdateStatus(opt.id)
+                setOpen(false)
+              }}
+              className={cn(
+                'flex w-full items-center gap-ds-03 rounded-ds-md px-ds-03 py-ds-02b transition-colors',
+                'hover:bg-surface-raised-hover',
+                opt.id === task.status && 'bg-surface-raised-hover',
+              )}
+            >
+              <span className="h-2 w-2 shrink-0 rounded-full bg-accent-9" aria-hidden />
+              <span className="text-ds-sm text-surface-fg">{opt.name}</span>
+              {opt.id === task.status && (
+                <Icon icon={IconCheck} size="sm" className="ml-auto text-accent-11" />
+              )}
+            </button>
+          ))
+        )}
       </PopoverContent>
     </Popover>
   )
@@ -381,6 +385,7 @@ function DueDatePill({ interactive }: { interactive: boolean }) {
         <TooltipContent>Due date (D)</TooltipContent>
       </Tooltip>
       <PopoverContent
+        key={task.dueDate ?? 'empty'}
         className="w-[220px] border-surface-border-strong bg-surface-overlay p-ds-03"
         align="start"
         sideOffset={4}
@@ -447,23 +452,27 @@ function PeekTriageRow() {
           align="start"
           sideOffset={4}
         >
-          {task.statusOptions.map((opt) => (
-            <button
-              key={opt.id}
-              type="button"
-              onClick={() => {
-                onUpdateStatus(opt.id)
-                setStatusOpen(false)
-              }}
-              className={cn(
-                'flex w-full items-center gap-ds-03 rounded-ds-md px-ds-03 py-ds-02b transition-colors',
-                'hover:bg-surface-raised-hover',
-                opt.id === task.status && 'bg-surface-raised-hover',
-              )}
-            >
-              <span className="text-ds-sm">{opt.name}</span>
-            </button>
-          ))}
+          {task.statusOptions.length === 0 ? (
+            <p className="px-ds-03 py-ds-02 text-ds-xs text-surface-fg-subtle">No status options configured</p>
+          ) : (
+            task.statusOptions.map((opt) => (
+              <button
+                key={opt.id}
+                type="button"
+                onClick={() => {
+                  onUpdateStatus(opt.id)
+                  setStatusOpen(false)
+                }}
+                className={cn(
+                  'flex w-full items-center gap-ds-03 rounded-ds-md px-ds-03 py-ds-02b transition-colors',
+                  'hover:bg-surface-raised-hover',
+                  opt.id === task.status && 'bg-surface-raised-hover',
+                )}
+              >
+                <span className="text-ds-sm">{opt.name}</span>
+              </button>
+            ))
+          )}
         </PopoverContent>
       </Popover>
 

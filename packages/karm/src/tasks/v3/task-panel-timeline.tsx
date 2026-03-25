@@ -491,6 +491,8 @@ export function TaskPanelTimeline({
       <div
         ref={scrollRef}
         onScroll={handleScroll}
+        aria-live="polite"
+        aria-relevant="additions"
         className="flex-1 overflow-y-auto px-ds-06 py-ds-04"
         style={{ scrollbarWidth: 'thin', scrollbarColor: 'var(--color-surface-border) transparent' }}
       >

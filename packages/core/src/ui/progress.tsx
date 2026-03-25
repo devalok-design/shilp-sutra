@@ -86,6 +86,8 @@ interface ProgressProps
   indicatorClassName?: string
   /** Display the percentage label next to the progress bar */
   showLabel?: boolean
+  /** When true, color auto-shifts by value: 0-59 = default (accent), 60-84 = warning, 85-100 = success, >100 = error. @default false */
+  autoColor?: boolean
 }
 
 /* ---------------------------------------------------------------------------
@@ -104,11 +106,23 @@ const Progress = React.forwardRef<
       color,
       indicatorClassName,
       showLabel,
+      autoColor,
       ...props
     },
     ref,
   ) => {
     const isIndeterminate = value === undefined || value === null
+
+    const effectiveColor =
+      autoColor && value != null
+        ? value > 100
+          ? 'error'
+          : value >= 85
+            ? 'success'
+            : value >= 60
+              ? 'warning'
+              : 'default'
+        : color
 
     return (
       <div className={cn('flex items-center gap-ds-03', showLabel && 'w-full')}>
@@ -121,7 +135,7 @@ const Progress = React.forwardRef<
           {isIndeterminate ? (
             <ProgressPrimitive.Indicator
               className={cn(
-                progressIndicatorVariants({ color }),
+                progressIndicatorVariants({ color: effectiveColor }),
                 'w-2/5 animate-progress-indeterminate motion-reduce:animate-none',
                 indicatorClassName,
               )}
@@ -132,7 +146,7 @@ const Progress = React.forwardRef<
               asChild
             >
               <motion.div
-                className={cn(progressIndicatorVariants({ color }))}
+                className={cn(progressIndicatorVariants({ color: effectiveColor }))}
                 initial={false}
                 animate={{ width: `${value || 0}%` }}
                 transition={springs.smooth}

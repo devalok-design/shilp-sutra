@@ -107,12 +107,16 @@ export function DevalokGrain({
   const hoverNoise = Math.min(noise * 1.4, 0.6) // 40% more on hover, capped
   const g = GRADIENT[intensity]
 
+  // Gradient only renders when tinted — without a tint color, the neutral black/white
+  // gradient reads as an unwanted dark corner on light surfaces. The noise texture
+  // alone provides the Devalok feel; the gradient adds directional warmth only when
+  // there's a color to work with.
   const lightGradient = tint
     ? `linear-gradient(135deg, color-mix(in oklch, ${tint} ${Math.round(g.ld * 100)}%, transparent), color-mix(in oklch, white ${Math.round(g.ll * 100)}%, transparent))`
-    : `linear-gradient(135deg, oklch(0 0 0 / ${g.ld}), oklch(1 0 0 / ${g.ll}))`
+    : null
   const darkGradient = tint
     ? `linear-gradient(135deg, transparent, color-mix(in oklch, ${tint} ${Math.round(g.dk * 100)}%, transparent))`
-    : `linear-gradient(135deg, transparent, oklch(0 0 0 / ${g.dk}))`
+    : null
 
   const shouldAnimate = animated && !prefersReduced
 
@@ -132,20 +136,23 @@ export function DevalokGrain({
       className="pointer-events-none absolute inset-0 z-[1] rounded-[inherit] isolate overflow-hidden"
       {...(wrapperProps as any)}
     >
-      {/* Gradient — light mode */}
-      <span
-        className={`absolute inset-0 dark:hidden transition-opacity duration-300 ${
-          hoverIntensify ? 'group-hover:opacity-100 opacity-80' : ''
-        }`}
-        style={{ background: lightGradient }}
-      />
-      {/* Gradient — dark mode */}
-      <span
-        className={`absolute inset-0 hidden dark:block transition-opacity duration-300 ${
-          hoverIntensify ? 'group-hover:opacity-100 opacity-80' : ''
-        }`}
-        style={{ background: darkGradient }}
-      />
+      {/* Gradient — only when tinted (neutral gradient looks like a dark smudge on light surfaces) */}
+      {lightGradient && (
+        <span
+          className={`absolute inset-0 dark:hidden transition-opacity duration-300 ${
+            hoverIntensify ? 'group-hover:opacity-100 opacity-80' : ''
+          }`}
+          style={{ background: lightGradient }}
+        />
+      )}
+      {darkGradient && (
+        <span
+          className={`absolute inset-0 hidden dark:block transition-opacity duration-300 ${
+            hoverIntensify ? 'group-hover:opacity-100 opacity-80' : ''
+          }`}
+          style={{ background: darkGradient }}
+        />
+      )}
       {/* Noise texture */}
       <span
         className={`absolute inset-0 transition-opacity duration-300 ${

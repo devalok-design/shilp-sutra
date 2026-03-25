@@ -121,6 +121,15 @@ const mockTask: TaskPanelTask = {
     { name: 'token-refresh-fix.patch', size: '4.2 KB' },
     { name: 'auth-flow-diagram.png', size: '156 KB' },
   ],
+  dependencies: {
+    blockedBy: [
+      { id: 'dep-1', taskId: 'KRM-812', title: 'Set up token rotation service', status: 'In Progress' },
+    ],
+    blocking: [
+      { id: 'dep-2', taskId: 'KRM-856', title: 'OAuth2 integration for client portal', status: 'Backlog' },
+      { id: 'dep-3', taskId: 'KRM-862', title: 'Session timeout UX improvements', status: 'Backlog' },
+    ],
+  },
   files: [
     {
       id: 'file-1',
@@ -550,6 +559,7 @@ function TaskPanelDemo({
           <TaskPanel.Description />
           {mode !== 'peek' && <TaskPanel.Subtasks />}
           {mode !== 'peek' && <TaskPanel.Files />}
+          {mode !== 'peek' && <TaskPanel.Dependencies />}
           <TaskPanel.Timeline />
         </div>
         {mode !== 'peek' && <TaskPanel.MessageInput />}
@@ -595,6 +605,7 @@ function TaskPanelDemo({
                 <TaskPanel.Description />
                 <TaskPanel.Subtasks />
                 <TaskPanel.Files />
+                <TaskPanel.Dependencies />
                 <TaskPanel.Timeline />
               </div>
               <TaskPanel.MessageInput />

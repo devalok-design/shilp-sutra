@@ -300,15 +300,16 @@ const Badge = React.forwardRef<HTMLElement, BadgeProps>(
         </AnimatePresence>
 
         {/* Selected check icon — animated enter/exit */}
-        <AnimatePresence>
+        <AnimatePresence mode="popLayout">
           {selected && !startIcon && !dot && (
             <motion.span
-              key="check"
-              initial={{ scale: 0, opacity: 0 }}
-              animate={{ scale: 1, opacity: 1 }}
-              exit={{ scale: 0, opacity: 0 }}
-              transition={springs.bouncy}
-              className="inline-flex shrink-0"
+              key="badge-check"
+              layout
+              initial={{ scale: 0, width: 0, opacity: 0 }}
+              animate={{ scale: 1, width: 'auto', opacity: 1 }}
+              exit={{ scale: 0, width: 0, opacity: 0 }}
+              transition={{ type: 'spring', stiffness: 500, damping: 25, mass: 0.5 }}
+              className="inline-flex shrink-0 overflow-hidden"
             >
               <Icon icon={IconCheck} size="xs" />
             </motion.span>

@@ -2,7 +2,8 @@
 
 import { IconCheck, IconX } from '@tabler/icons-react'
 import { cva, type VariantProps } from 'class-variance-authority'
-import { motion } from 'framer-motion'
+import { motion, AnimatePresence } from 'framer-motion'
+import { springs } from './lib/motion'
 import { Slot } from '@primitives/react-slot'
 import * as React from 'react'
 import { Icon } from './icon'
@@ -263,7 +264,7 @@ const Badge = React.forwardRef<HTMLElement, BadgeProps>(
           hasTrailing && paddingRightWithTrailing[resolvedSize],
           onClick &&
             'cursor-pointer hover:brightness-[0.97] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent-9 focus-visible:ring-offset-1 transition-[color,background-color,border-color,transform,filter] duration-moderate-01 ease-productive-exit hover:duration-fast-02 hover:ease-productive-entrance active:scale-[0.95] active:brightness-[0.92] active:duration-[0ms]',
-          selected && 'ring-1 ring-current/20',
+          selected && 'ring-1 ring-current/20 transition-shadow duration-fast-02',
           disabled && 'opacity-action-disabled pointer-events-none saturate-[0.3]',
           circle && 'justify-center px-0 aspect-square',
           className,
@@ -276,22 +277,43 @@ const Badge = React.forwardRef<HTMLElement, BadgeProps>(
         {...(Comp === 'div' && onClick ? { role: 'button' as const, tabIndex: 0 } : {})}
         {...props}
       >
-        {/* Dot indicator */}
-        {dot && (
-          <span className="relative inline-flex h-1.5 w-1.5 shrink-0" aria-hidden="true">
+        {/* Dot indicator — animated entrance + continuous pulse */}
+        <AnimatePresence>
+          {dot && (
             <motion.span
-              className="absolute inset-0 rounded-full bg-current"
-              animate={{ scale: [1, 2.5], opacity: [0.4, 0] }}
-              transition={{ repeat: Infinity, duration: 1.5, ease: [0, 0, 0.58, 1] }}
-            />
-            <span className="relative h-1.5 w-1.5 rounded-full bg-current" />
-          </span>
-        )}
+              key="dot"
+              initial={{ scale: 0 }}
+              animate={{ scale: 1 }}
+              exit={{ scale: 0 }}
+              transition={springs.snappy}
+              className="relative inline-flex h-1.5 w-1.5 shrink-0"
+              aria-hidden="true"
+            >
+              <motion.span
+                className="absolute inset-0 rounded-full bg-current"
+                animate={{ scale: [1, 2.5], opacity: [0.35, 0] }}
+                transition={{ repeat: Infinity, repeatDelay: 0.3, duration: 1.2, ease: [0, 0, 0.58, 1] }}
+              />
+              <span className="relative h-1.5 w-1.5 rounded-full bg-current" />
+            </motion.span>
+          )}
+        </AnimatePresence>
 
-        {/* Selected check icon */}
-        {selected && !startIcon && !dot && (
-          <Icon icon={IconCheck} size="xs" className="shrink-0" />
-        )}
+        {/* Selected check icon — animated enter/exit */}
+        <AnimatePresence>
+          {selected && !startIcon && !dot && (
+            <motion.span
+              key="check"
+              initial={{ scale: 0, opacity: 0 }}
+              animate={{ scale: 1, opacity: 1 }}
+              exit={{ scale: 0, opacity: 0 }}
+              transition={springs.bouncy}
+              className="inline-flex shrink-0"
+            >
+              <Icon icon={IconCheck} size="xs" />
+            </motion.span>
+          )}
+        </AnimatePresence>
 
         {/* Start icon */}
         {startIcon && (

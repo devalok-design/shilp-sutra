@@ -301,12 +301,16 @@ const Badge = React.forwardRef<HTMLElement, BadgeProps>(
           )}
         </AnimatePresence>
 
-        {/* Selected check icon — always mounted when onClick exists, animated visibility */}
+        {/* Selected check icon — always mounted for interactive badges */}
         {onClick && !startIcon && !dot && (
           <motion.span
-            animate={{ scale: selected ? 1 : 0, opacity: selected ? 1 : 0 }}
-            transition={{ duration: 0.15, ease: [0.2, 0, 0, 1] }}
-            className="inline-flex shrink-0"
+            initial={false}
+            animate={selected
+              ? { opacity: 1, scale: 1, width: 'auto', marginRight: 0 }
+              : { opacity: 0, scale: 0.5, width: 0, marginRight: -4 }
+            }
+            transition={{ type: 'tween', duration: 0.2, ease: [0.4, 0, 0.2, 1] }}
+            className="inline-flex shrink-0 overflow-hidden"
             aria-hidden={!selected}
           >
             <Icon icon={IconCheck} size="xs" />

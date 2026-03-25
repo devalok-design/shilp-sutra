@@ -46,6 +46,7 @@ export interface AvatarUser {
   name: string
   image?: string | null
   ring?: AvatarRing
+  indicator?: 'lead' | 'admin' | React.ReactNode
 }
 
 export interface AvatarGroupProps
@@ -159,35 +160,48 @@ const AvatarGroup = React.forwardRef<HTMLDivElement, AvatarGroupProps>(
               )
             }
 
-            const avatar = (
-              <Avatar
+            const avatarNode = (
+              <div
                 key={user.name}
-                size={size}
                 className={cn(
-                  borderClass,
+                  'relative shrink-0',
                   index > 0 && overlapClass,
                   spotlightClasses,
                   user.ring && user.ring !== 'none' && groupRingMap[user.ring],
                 )}
                 style={{ zIndex: displayed.length - index, transform: getExpandTransform(index) }}
               >
-                {user.image && (
-                  <AvatarImage src={user.image} alt={user.name} />
-                )}
-                <AvatarFallback
-                  className="font-body font-semibold"
-                  colorSeed={user.name}
+                <Avatar
+                  size={size}
+                  className={borderClass}
                 >
-                  {initials}
-                </AvatarFallback>
-              </Avatar>
+                  {user.image && (
+                    <AvatarImage src={user.image} alt={user.name} />
+                  )}
+                  <AvatarFallback
+                    className="font-body font-semibold"
+                    colorSeed={user.name}
+                  >
+                    {initials}
+                  </AvatarFallback>
+                </Avatar>
+                {user.indicator && (
+                  <span className={cn(
+                    'absolute -top-0.5 -right-0.5 h-2 w-2 rounded-full ring-1 ring-surface-raised',
+                    user.indicator === 'lead' ? 'bg-warning-9' :
+                    user.indicator === 'admin' ? 'bg-accent-9' : '',
+                  )}>
+                    {typeof user.indicator !== 'string' && user.indicator}
+                  </span>
+                )}
+              </div>
             )
 
-            if (!showTooltip) return avatar
+            if (!showTooltip) return avatarNode
 
             return (
               <Tooltip key={user.name}>
-                <TooltipTrigger asChild>{avatar}</TooltipTrigger>
+                <TooltipTrigger asChild>{avatarNode}</TooltipTrigger>
                 <TooltipContent
                   className="border-surface-border-strong bg-surface-base text-surface-fg"
                   sideOffset={6}

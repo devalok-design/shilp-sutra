@@ -10,7 +10,7 @@ import { Icon } from './icon'
 import { cn } from './lib/utils'
 
 const badgeVariants = cva(
-  'relative inline-flex items-center rounded-full font-sans font-medium overflow-hidden isolate transition-colors duration-fast-01 ease-productive-standard select-none [&>span:not([data-grain])]:relative [&>span:not([data-grain])]:z-[2]',
+  'relative inline-flex items-center rounded-full font-sans font-medium overflow-hidden isolate transition-[color,background-color,border-color,padding] duration-fast-02 ease-productive-standard select-none [&>span:not([data-grain])]:relative [&>span:not([data-grain])]:z-[2]',
   {
     variants: {
       variant: {
@@ -252,9 +252,7 @@ const Badge = React.forwardRef<HTMLElement, BadgeProps>(
           }
         : props.onKeyDown
 
-    // For interactive badges, always account for the check icon space (even when not selected)
-    // to prevent width jumps during toggle animation
-    const hasLeading = !!(dot || startIcon || (onClick && !startIcon && !dot))
+    const hasLeading = !!(dot || startIcon || (onClick && selected && !startIcon && !dot))
     const hasTrailing = !!(onDismiss || endIcon)
 
     return (

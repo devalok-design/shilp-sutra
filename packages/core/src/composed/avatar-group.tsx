@@ -148,7 +148,7 @@ const AvatarGroup = React.forwardRef<HTMLDivElement, AvatarGroupProps>(
                 <div
                   key={user.name}
                   className={cn(
-                    'shrink-0',
+                    'shrink-0 rounded-full',
                     index > 0 && overlapClass,
                     spotlightClasses,
                     user.ring && user.ring !== 'none' && groupRingMap[user.ring],
@@ -164,7 +164,7 @@ const AvatarGroup = React.forwardRef<HTMLDivElement, AvatarGroupProps>(
               <div
                 key={user.name}
                 className={cn(
-                  'relative shrink-0',
+                  'relative shrink-0 rounded-full',
                   index > 0 && overlapClass,
                   spotlightClasses,
                   user.ring && user.ring !== 'none' && groupRingMap[user.ring],

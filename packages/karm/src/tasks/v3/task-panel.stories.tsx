@@ -541,6 +541,69 @@ function TaskPanelDemo({
       ...t,
       phase: phaseId ? t.phaseOptions?.find((p) => p.id === phaseId) ?? null : null,
     })),
+    onToggleSubtask: (subtaskId: string) => setTaskState((t) => ({
+      ...t,
+      subtasks: t.subtasks.map((s) =>
+        s.id === subtaskId
+          ? {
+              ...s,
+              column: s.column?.isTerminal
+                ? { id: 'todo', name: 'To Do' }
+                : { id: 'done', name: 'Done', isTerminal: true },
+              columnId: s.column?.isTerminal ? 'todo' : 'done',
+            }
+          : s,
+      ),
+    })),
+    onAddSubtask: (title: string) => setTaskState((t) => ({
+      ...t,
+      subtasks: [
+        ...t.subtasks,
+        {
+          id: `st-${Date.now()}`,
+          title,
+          priority: 'MEDIUM' as const,
+          columnId: 'todo',
+          column: { id: 'todo', name: 'To Do' },
+          assignees: [],
+        },
+      ],
+    })),
+    onAddLabel: (label: string) => setTaskState((t) => ({
+      ...t,
+      labels: t.labels.includes(label) ? t.labels : [...t.labels, label],
+    })),
+    onRemoveLabel: (label: string) => setTaskState((t) => ({
+      ...t,
+      labels: t.labels.filter((l) => l !== label),
+    })),
+    onAddAssignee: (memberId: string) => setTaskState((t) => {
+      if (t.assignees.some((a) => a.id === memberId)) return t
+      const member = t.members.find((m) => m.id === memberId)
+      if (!member) return t
+      return { ...t, assignees: [...t.assignees, { ...member, bandwidth: 'HEALTHY' as const }] }
+    }),
+    onRemoveAssignee: (memberId: string) => setTaskState((t) => ({
+      ...t,
+      assignees: t.assignees.filter((a) => a.id !== memberId),
+      leads: t.leads.filter((l) => l.id !== memberId),
+    })),
+    onAddLead: (memberId: string) => setTaskState((t) => {
+      if (t.leads.some((l) => l.id === memberId)) return t
+      const member = t.members.find((m) => m.id === memberId)
+      if (!member) return t
+      return { ...t, leads: [...t.leads, { ...member, bandwidth: 'HEALTHY' as const }] }
+    }),
+    onRemoveLead: (memberId: string) => setTaskState((t) => ({
+      ...t,
+      leads: t.leads.filter((l) => l.id !== memberId),
+    })),
+    onUpdateDueDate: (date: Date | null) => setTaskState((t) => ({
+      ...t,
+      dueDate: date?.toISOString() ?? null,
+    })),
+    onUpdateTitle: (title: string) => setTaskState((t) => ({ ...t, title })),
+    onUpdateDescription: (desc: string) => setTaskState((t) => ({ ...t, description: desc })),
   }
 
   const panelContent = (

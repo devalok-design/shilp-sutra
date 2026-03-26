@@ -2,7 +2,9 @@
 
 import * as React from 'react'
 import { cva, type VariantProps } from 'class-variance-authority'
+import { motion, AnimatePresence } from 'framer-motion'
 import { cn } from '../ui/lib/utils'
+import { springs } from '../ui/lib/motion'
 import {
   Avatar,
   AvatarImage,
@@ -185,15 +187,23 @@ const AvatarGroup = React.forwardRef<HTMLDivElement, AvatarGroupProps>(
                     {initials}
                   </AvatarFallback>
                 </Avatar>
-                {user.indicator && (
-                  <span className={cn(
-                    'absolute top-0 right-0 h-2 w-2 rounded-full ring-1 ring-surface-raised',
-                    user.indicator === 'lead' ? 'bg-warning-9' :
-                    user.indicator === 'admin' ? 'bg-accent-9' : '',
-                  )}>
-                    {typeof user.indicator !== 'string' && user.indicator}
-                  </span>
-                )}
+                <AnimatePresence>
+                  {user.indicator && (
+                    <motion.span
+                      initial={{ scale: 0, opacity: 0 }}
+                      animate={{ scale: 1, opacity: 1 }}
+                      exit={{ scale: 0, opacity: 0 }}
+                      transition={springs.snappy}
+                      className={cn(
+                        'absolute top-0 right-0 h-2 w-2 rounded-full ring-1 ring-surface-raised',
+                        user.indicator === 'lead' ? 'bg-warning-9' :
+                        user.indicator === 'admin' ? 'bg-accent-9' : '',
+                      )}
+                    >
+                      {typeof user.indicator !== 'string' && user.indicator}
+                    </motion.span>
+                  )}
+                </AnimatePresence>
               </div>
             )
 

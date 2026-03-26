@@ -384,11 +384,41 @@ Note: getFormFieldA11y() was removed in favor of useFormField() hook.
 - Category: ui
 
 ## Props
-    variant: "subtle" | "solid" | "outline" | "secondary" (alias->subtle) | "destructive" (alias->solid+error)
-    color: "default" | "info" | "success" | "error" | "warning" | "brand" | "accent" | "teal" | "amber" | "slate" | "indigo" | "cyan" | "orange" | "emerald"
+    variant: "subtle" | "solid" | "outline" | "soft"
+    color: "default" | "accent" | "error" | "success" | "warning" | "info" | "neutral" | "teal" | "amber" | "slate" | "indigo" | "cyan" | "orange" | "emerald" | "custom"
     size: "xs" | "sm" | "md" | "lg"
-    dot: boolean (shows leading dot indicator)
-    onDismiss: () => void (shows X button when provided)
+    dot: boolean (shows animated leading dot indicator with pulse)
+    startIcon: ReactElement | null (leading icon)
+    endIcon: ReactElement | null (trailing icon)
+    onClick: MouseEventHandler (renders as <button>; with onDismiss renders as div[role="button"] to avoid nested buttons)
+    selected: boolean (shows animated check icon for toggle state; adds ring-1)
+    disabled: boolean (opacity + pointer-events-none + desaturated)
+    onDismiss: () => void (shows X dismiss button with aria-label "Remove {children}")
+    maxWidth: number (pixel cap; enables text truncation with title tooltip)
+    circle: boolean (equal aspect-ratio circle shape, removes horizontal padding)
+    asChild: boolean (Radix Slot — merge props onto child element)
+    children: ReactNode
+
+## Compound Components
+    Badge (root)
+      Badge.Indicator — Notification count/dot overlay positioned on a child element
+      Badge.Group — Flex-wrap container with overflow "+N" badge
+
+## Badge.Indicator Props
+    count: number (displayed count)
+    max: number (default: 99 — counts above this show "99+")
+    dot: boolean (default: false — show dot instead of count)
+    color: "error" | "success" | "warning" | "accent" | "info" (default: "error")
+    invisible: boolean (default: false — hides indicator without unmounting)
+    showZero: boolean (default: false — show indicator when count is 0)
+    placement: "top-right" | "top-left" | "bottom-right" | "bottom-left" (default: "top-right")
+    children: ReactNode (REQUIRED — the element to overlay)
+
+## Badge.Group Props
+    max: number (visible badge limit; overflow renders "+N" badge)
+    gap: "tight" | "default" | "loose" (default: "default")
+    size: BadgeProps["size"] (size passed to overflow "+N" badge)
+    onOverflowClick: () => void (click handler on the "+N" overflow badge)
     children: ReactNode
 
 ## Defaults
@@ -398,13 +428,39 @@ Note: getFormFieldA11y() was removed in favor of useFormField() hook.
 ```jsx
 <Badge variant="solid" color="success">Active</Badge>
 <Badge color="teal" onDismiss={() => removeFilter('teal')}>Teal team</Badge>
+<Badge color="accent" onClick={toggle} selected={isSelected}>Feature</Badge>
+<Badge color="custom" style={{ '--badge-color': '#8b5cf6' }}>Custom</Badge>
+
+<Badge.Indicator count={5} color="error">
+  <IconBell />
+</Badge.Indicator>
+
+<Badge.Group max={3} onOverflowClick={() => showAll()}>
+  <Badge color="teal">Design</Badge>
+  <Badge color="amber">Dev</Badge>
+  <Badge color="indigo">QA</Badge>
+  <Badge color="cyan">Ops</Badge>
+</Badge.Group>
 ```
 
 ## Gotchas
-- DO NOT use variant="destructive" — use variant="solid" color="error"
-- Badge is display-only; for interactive tags use Chip
+- Chip is deprecated — Badge v2 replaces it for interactive tag/filter use cases
+- `color="custom"` requires CSS variable `--badge-color` on the element or a parent; for solid variant with light custom colors, also set `--badge-fg-color`
+- When both `onClick` and `onDismiss` are set, the root renders as `div[role="button"]` (not nested buttons) with manual Enter/Space keyboard handling
+- `selected` check icon only renders when `onClick` is set and neither `startIcon` nor `dot` is provided
+- Badge.Indicator animates in/out with Framer Motion (bouncy spring); respects `prefers-reduced-motion`
+- Badge.Group overflow badge uses `variant="outline" color="neutral"` and inherits `size` prop
 
 ## Changes
+### v0.29.0
+- **Changed** (BREAKING) Badge v2 — now interactive. Added `onClick`, `selected`, `disabled`, `startIcon`, `endIcon`, `maxWidth`, `circle`, `asChild` props
+- **Added** `color="custom"` with CSS variable `--badge-color` / `--badge-fg-color`
+- **Added** `color="neutral"` semantic color
+- **Added** `variant="soft"` (tinted background, no border)
+- **Added** `Badge.Indicator` compound part — notification count/dot overlay with animated entrance
+- **Added** `Badge.Group` compound part — flex-wrap container with overflow "+N" badge
+- **Deprecated** Chip component — use Badge with `onClick`/`onDismiss` instead
+
 ### v0.18.0
 - **Changed** Pulse-ring animation migrated to Framer Motion
 - **Fixed** Accent color variants — `text-accent-9` changed to `text-accent-11`, `border-accent-9` changed to `border-accent-7`

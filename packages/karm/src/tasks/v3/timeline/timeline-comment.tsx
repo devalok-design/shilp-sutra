@@ -1,7 +1,7 @@
 'use client'
 
 import * as React from 'react'
-import { IconMoodSmile, IconArrowBackUp, IconPencil, IconTrash } from '@tabler/icons-react'
+import { IconMoodSmile, IconArrowBackUp, IconPencil, IconTrash, IconLock } from '@tabler/icons-react'
 import { Icon } from '@/ui/icon'
 import { cn } from '@/ui/lib/utils'
 import { Avatar, AvatarImage, AvatarFallback } from '@/ui/avatar'
@@ -62,6 +62,9 @@ export interface TimelineCommentProps {
   /** When true, this comment is a continuation of the previous message from
    *  the same author — avatar and name are hidden, spacing is tighter. */
   isGrouped?: boolean
+  /** When true, the task has client visibility — internal comments get a
+   *  visual tint + lock icon to distinguish them from client-visible ones. */
+  isClientTask?: boolean
 }
 
 // ---------------------------------------------------------------------------
@@ -75,6 +78,7 @@ export function TimelineComment({
   onEditComment,
   onDeleteComment,
   isGrouped = false,
+  isClientTask = false,
 }: TimelineCommentProps) {
   const { comment, reactions } = entry
   const author = getAuthorInfo(comment)
@@ -136,20 +140,26 @@ export function TimelineComment({
     currentUserId !== null &&
     comment.content.includes(`@${currentUserId}`)
 
+  // Internal note on a client-visible task — Intercom-style amber tint
+  const isInternalNote = isClientTask && author.type === 'INTERNAL'
+
   return (
     <div
       className={cn(
         'group relative flex gap-ds-03',
         isMentioned &&
           'border-l-2 border-l-accent-9 bg-accent-2 pl-ds-03 rounded-ds-sm',
+        isInternalNote &&
+          !isMentioned &&
+          'bg-warning-2/50 rounded-ds-sm pl-ds-03',
       )}
       data-testid="timeline-comment"
     >
       {/* Avatar — hidden for grouped (continuation) messages */}
       {isGrouped ? (
-        <div className="w-8 shrink-0" aria-hidden />
+        <div className="w-6 shrink-0" aria-hidden />
       ) : (
-        <Avatar size="sm" className="h-8 w-8 shrink-0">
+        <Avatar size="sm" className="h-6 w-6 shrink-0">
           {author.image && <AvatarImage src={author.image} alt={author.name} />}
           <AvatarFallback>{getInitials(author.name)}</AvatarFallback>
         </Avatar>
@@ -166,6 +176,9 @@ export function TimelineComment({
             <span className="text-ds-xs text-surface-fg-subtle/30">
               {formatTime(comment.createdAt)}
             </span>
+            {isInternalNote && (
+              <Icon icon={IconLock} size="xs" className="text-warning-11/60" />
+            )}
             {author.type === 'CLIENT' && (
               <Badge
                 variant="subtle"
@@ -234,7 +247,7 @@ export function TimelineComment({
 
       {/* Hover action bar */}
       <div
-        className="absolute -top-2 right-0 flex items-center gap-ds-01 rounded-ds-md border border-surface-border bg-surface-raised px-ds-01 py-ds-01 shadow-sm opacity-0 group-hover:opacity-100 transition-opacity"
+        className="absolute -top-2 right-0 flex items-center gap-ds-01 rounded-ds-md border border-surface-border bg-surface-raised px-ds-01 py-ds-01 shadow-sm opacity-0 group-hover:opacity-100 transition-opacity duration-150 delay-100"
       >
         <Button
           variant="ghost"

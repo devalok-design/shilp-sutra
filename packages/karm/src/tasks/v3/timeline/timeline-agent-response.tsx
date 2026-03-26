@@ -52,7 +52,7 @@ export function TimelineAgentResponse({ entry }: TimelineAgentResponseProps) {
   const [expanded, setExpanded] = React.useState(false)
 
   return (
-    <div className="flex gap-ds-03" data-testid="timeline-agent-response">
+    <div className="flex gap-ds-03 bg-accent-2/30 rounded-ds-md p-ds-03 -mx-ds-03" data-testid="timeline-agent-response">
       {/* Agent icon */}
       <div className="shrink-0">
         {response.agentIcon ?? (

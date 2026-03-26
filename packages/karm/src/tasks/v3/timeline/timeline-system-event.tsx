@@ -61,7 +61,7 @@ export function TimelineSystemEvent({ entry }: TimelineSystemEventProps) {
 
   return (
     <div
-      className="flex items-center gap-ds-02 py-ds-01 text-[11px] text-surface-fg-subtle/60"
+      className="flex items-center gap-ds-02 rounded-ds-sm bg-surface-raised-hover/30 px-ds-02 py-ds-01 -mx-ds-02 text-[11px] text-surface-fg-subtle/60"
       data-testid="timeline-system-event"
     >
       <Icon icon={EventIcon as any} size="xs" className="shrink-0" />

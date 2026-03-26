@@ -19,6 +19,8 @@ export interface TimelineEntryRendererProps {
   onDeleteComment?: (commentId: string) => void
   /** Whether this comment is a grouped continuation (same author, <5min). */
   isGrouped?: boolean
+  /** Whether the task has client visibility (EVERYONE). */
+  isClientTask?: boolean
 }
 
 // ---------------------------------------------------------------------------
@@ -32,6 +34,7 @@ export function TimelineEntryRenderer({
   onEditComment,
   onDeleteComment,
   isGrouped,
+  isClientTask,
 }: TimelineEntryRendererProps) {
   switch (entry.type) {
     case 'comment':
@@ -43,6 +46,7 @@ export function TimelineEntryRenderer({
           onEditComment={onEditComment}
           onDeleteComment={onDeleteComment}
           isGrouped={isGrouped}
+          isClientTask={isClientTask}
         />
       )
     case 'system-event':

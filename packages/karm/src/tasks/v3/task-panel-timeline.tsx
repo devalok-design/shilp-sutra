@@ -342,6 +342,7 @@ export function TaskPanelTimeline({
   ...props
 }: TaskPanelTimelineProps) {
   const {
+    task,
     timeline,
     lastViewedAt,
     clientMode,
@@ -354,6 +355,8 @@ export function TaskPanelTimeline({
     isAgentStreaming,
     agentStreamingText,
   } = useTaskPanel()
+
+  const isClientTask = task.visibility === 'EVERYONE'
 
   const [filter, setFilter] = React.useState<TimelineFilter>('all')
   const scrollRef = React.useRef<HTMLDivElement>(null)
@@ -545,7 +548,7 @@ export function TaskPanelTimeline({
               <React.Fragment key={entryId}>
                 {showDateDivider && <DateDivider timestamp={itemTimestamp} />}
                 {showUnread && !isPeek && <UnreadDivider />}
-                <div className={isGrouped ? '-mt-ds-04' : undefined}>
+                <div className={isGrouped ? '-mt-ds-03' : undefined}>
                   <TimelineEntryRenderer
                     entry={item.entry}
                     currentUserId={currentUserId}
@@ -553,6 +556,7 @@ export function TaskPanelTimeline({
                     onEditComment={onEditComment}
                     onDeleteComment={onDeleteComment}
                     isGrouped={isGrouped}
+                    isClientTask={isClientTask}
                   />
                 </div>
               </React.Fragment>

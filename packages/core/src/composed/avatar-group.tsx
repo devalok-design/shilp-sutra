@@ -187,7 +187,7 @@ const AvatarGroup = React.forwardRef<HTMLDivElement, AvatarGroupProps>(
                 </Avatar>
                 {user.indicator && (
                   <span className={cn(
-                    'absolute -top-0.5 -right-0.5 h-2 w-2 rounded-full ring-1 ring-surface-raised',
+                    'absolute top-0 right-0 h-2 w-2 rounded-full ring-1 ring-surface-raised',
                     user.indicator === 'lead' ? 'bg-warning-9' :
                     user.indicator === 'admin' ? 'bg-accent-9' : '',
                   )}>

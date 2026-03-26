@@ -60,7 +60,7 @@ export function TaskPanelTimeline({
     agentStreamingText,
   } = useTaskPanel()
 
-  const [filter, setFilter] = React.useState<'all' | 'comments' | 'reviews'>('all')
+  const [filter, setFilter] = React.useState<'all' | 'comments' | 'activity' | 'reviews'>('all')
   const scrollRef = React.useRef<HTMLDivElement>(null)
   const [userScrolledUp, setUserScrolledUp] = React.useState(false)
   const [newCount, setNewCount] = React.useState(0)

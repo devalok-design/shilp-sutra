@@ -15,11 +15,15 @@ import type { TimelineEntry, ClientMode } from '../tasks/v3/task-panel-types'
 // Props
 // ---------------------------------------------------------------------------
 
+export type TimelineFilter = 'all' | 'comments' | 'activity' | 'reviews'
+
 export interface TaskTimelineProps {
   entries: TimelineEntry[]
-  filter?: 'all' | 'comments' | 'reviews'
-  onFilterChange?: (filter: 'all' | 'comments' | 'reviews') => void
+  filter?: TimelineFilter
+  onFilterChange?: (filter: TimelineFilter) => void
   clientMode: ClientMode
+  /** Timestamp of last view — entries after this get the "new" divider */
+  lastViewedAt?: string | Date | null
   onReact?: (entryId: string, emoji: string) => void
   onReply?: (entryId: string) => void
   onEdit?: (entryId: string) => void
@@ -31,13 +35,69 @@ export interface TaskTimelineProps {
 // Helpers
 // ---------------------------------------------------------------------------
 
-type FilterValue = 'all' | 'comments' | 'reviews'
-
-const FILTERS: { key: FilterValue; label: string }[] = [
+const FILTERS: { key: TimelineFilter; label: string }[] = [
   { key: 'all', label: 'All' },
   { key: 'comments', label: 'Comments' },
+  { key: 'activity', label: 'Activity' },
   { key: 'reviews', label: 'Reviews' },
 ]
+
+// ---------------------------------------------------------------------------
+// System event collapsing — group 3+ consecutive events from the same actor
+// within a 10-minute window into a single collapsed item
+// ---------------------------------------------------------------------------
+
+function collapseSystemEvents(entries: TimelineEntry[]): TimelineEntry[] {
+  const result: TimelineEntry[] = []
+  let i = 0
+
+  while (i < entries.length) {
+    const entry = entries[i]
+
+    if (entry.type !== 'system-event') {
+      result.push(entry)
+      i++
+      continue
+    }
+
+    // Collect consecutive system events from same actor within 10 min
+    const group: TimelineEntry[] = [entry]
+    let j = i + 1
+    while (j < entries.length) {
+      const next = entries[j]
+      if (next.type !== 'system-event') break
+      if (next.event.actorName !== entry.event.actorName) break
+      const timeDiff = Math.abs(
+        new Date(next.event.timestamp).getTime() -
+          new Date(entry.event.timestamp).getTime(),
+      )
+      if (timeDiff > 10 * 60 * 1000) break // 10 min window
+      group.push(next)
+      j++
+    }
+
+    if (group.length >= 3) {
+      // Collapse into a single merged event
+      const descriptions = group
+        .map((g) => (g as { type: 'system-event'; event: { description: string } }).event.description)
+        .join(', ')
+      result.push({
+        type: 'system-event',
+        event: {
+          ...entry.event,
+          id: `collapsed-${entry.event.id}`,
+          description: descriptions,
+        },
+      } as TimelineEntry)
+    } else {
+      for (const g of group) result.push(g)
+    }
+
+    i = j
+  }
+
+  return result
+}
 
 const reviewActionColorMap: Record<string, ActivityItem['color']> = {
   submitted: 'info',
@@ -218,6 +278,7 @@ export function TaskTimeline({
   filter = 'all',
   onFilterChange,
   clientMode,
+  lastViewedAt,
   onReact: _onReact,
   onReply,
   onEdit,
@@ -232,6 +293,11 @@ export function TaskTimeline({
         (e) => e.type === 'comment' || e.type === 'agent-response',
       )
     }
+    if (filter === 'activity') {
+      return entries.filter(
+        (e) => e.type === 'system-event' || e.type === 'review-event',
+      )
+    }
     // 'reviews'
     return entries.filter((e) => e.type === 'review-event')
   }, [entries, filter])
@@ -243,16 +309,37 @@ export function TaskTimeline({
       if (entry.type === 'comment' && entry.comment.authorType === 'INTERNAL') {
         return false
       }
-      // Also hide system events from clients (matches task-panel-timeline behavior)
       if (entry.type === 'system-event') return false
       return true
     })
   }, [typeFiltered, clientMode])
 
+  // ---- Collapse consecutive system events from same actor ----
+  const collapsed = React.useMemo(
+    () => collapseSystemEvents(visibilityFiltered),
+    [visibilityFiltered],
+  )
+
+  // ---- Compute "new" divider index ----
+  const newDividerIndex = React.useMemo(() => {
+    if (!lastViewedAt) return -1
+    const threshold = new Date(lastViewedAt).getTime()
+    for (let i = 0; i < collapsed.length; i++) {
+      const entry = collapsed[i]
+      const ts =
+        entry.type === 'comment' ? entry.comment.createdAt :
+        entry.type === 'system-event' ? entry.event.timestamp :
+        entry.type === 'agent-response' ? entry.response.timestamp :
+        entry.type === 'review-event' ? entry.event.timestamp : null
+      if (ts && new Date(ts).getTime() > threshold) return i
+    }
+    return -1
+  }, [collapsed, lastViewedAt])
+
   // ---- Map to ActivityItem[] ----
   const activityItems = React.useMemo(
-    () => mapEntriesToActivityItems(visibilityFiltered),
-    [visibilityFiltered],
+    () => mapEntriesToActivityItems(collapsed),
+    [collapsed],
   )
 
   // ---- Build a set of comment IDs for renderItem ----
@@ -264,20 +351,54 @@ export function TaskTimeline({
     return set
   }, [visibilityFiltered])
 
-  // ---- Custom renderItem: comments get rich card, rest use default ----
+  // ---- Custom renderItem: comments get rich card, new divider, rest default ----
   const renderItem = React.useCallback(
-    (item: ActivityItem, _index: number): React.ReactNode | undefined => {
-      if (!commentIdSet.has(item.id)) return undefined
+    (item: ActivityItem, index: number): React.ReactNode | undefined => {
+      const isComment = commentIdSet.has(item.id)
+      const isNewDivider = index === newDividerIndex
+
+      // Inject "new" divider before this item if it's the first unread entry
+      const divider = isNewDivider ? (
+        <div className="flex items-center gap-ds-02 mb-ds-02">
+          <div className="flex-1 border-t border-error-7/50" />
+          <span className="text-[10px] font-medium uppercase tracking-wider text-error-9">New</span>
+          <div className="flex-1 border-t border-error-7/50" />
+        </div>
+      ) : null
+
+      if (!isComment) {
+        // System events use default rendering — but we still need the divider
+        if (divider) {
+          return (
+            <>
+              {divider}
+              {/* Return a fragment so ActivityFeed doesn't use default for this one */}
+              <div className="text-ds-xs text-surface-fg-muted">
+                <span className="font-medium text-surface-fg">{item.actor?.name}</span>
+                {' '}{typeof item.action === 'string' ? item.action : ''}
+                <span className="text-surface-fg-subtle/50 ml-ds-02">
+                  {formatRelativeTime(item.timestamp)}
+                </span>
+              </div>
+            </>
+          )
+        }
+        return undefined // default ActivityEntry
+      }
+
       return (
-        <CommentCard
-          item={item}
-          onReply={onReply}
-          onEdit={onEdit}
-          onDelete={onDelete}
-        />
+        <>
+          {divider}
+          <CommentCard
+            item={item}
+            onReply={onReply}
+            onEdit={onEdit}
+            onDelete={onDelete}
+          />
+        </>
       )
     },
-    [commentIdSet, onReply, onEdit, onDelete],
+    [commentIdSet, newDividerIndex, onReply, onEdit, onDelete],
   )
 
   return (
@@ -300,6 +421,13 @@ export function TaskTimeline({
               {f.label}
             </Button>
           ))}
+
+          {/* New entries count */}
+          {newDividerIndex >= 0 && (
+            <span className="ml-auto text-[10px] font-medium text-error-9 flex items-center">
+              {collapsed.length - newDividerIndex} new
+            </span>
+          )}
         </div>
       )}
 

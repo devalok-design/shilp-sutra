@@ -44,7 +44,7 @@ const pillBase =
   'inline-flex items-center gap-ds-02 rounded-full text-ds-sm px-ds-04 py-ds-02'
 
 const pillInteractive =
-  'bg-surface-raised-hover transition-colors hover:bg-surface-3 cursor-pointer'
+  'bg-surface-raised-hover transition-colors hover:bg-surface-raised-active cursor-pointer'
 
 const pillStatic = 'bg-surface-raised-hover'
 
@@ -407,7 +407,7 @@ function DueDatePill({ interactive }: { interactive: boolean }) {
               }
               setOpen(false)
             }}
-            className="rounded-ds-md border border-surface-border bg-surface-1 px-ds-03 py-ds-02 text-ds-sm text-surface-fg outline-none focus:border-accent-9"
+            className="rounded-ds-md border border-surface-border bg-surface-base px-ds-03 py-ds-02 text-ds-sm text-surface-fg outline-none focus:border-accent-9"
           />
         </label>
       </PopoverContent>

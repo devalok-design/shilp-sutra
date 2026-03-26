@@ -14,7 +14,7 @@
 ## Compound Components
     Accordion (root)
       AccordionItem (value: string, REQUIRED)
-        AccordionTrigger (clickable header, chevron auto-renders)
+        AccordionTrigger (clickable header, chevron auto-renders; chevronPosition: "left" | "right")
         AccordionContent (collapsible body)
 
 ## Defaults
@@ -35,6 +35,9 @@
 - collapsible only works with type="single"
 
 ## Changes
+### v0.29.0
+- **Added** `chevronPosition` prop on AccordionTrigger: `"left"` | `"right"` (default: `"right"`) — controls which side the chevron icon renders
+
 ### v0.18.0
 - **Changed** Accordion content fade animation migrated to Framer Motion (height animation still uses CSS keyframes)
 

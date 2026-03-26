@@ -19,6 +19,7 @@
     name: string (REQUIRED)
     image?: string | null
     ring?: "none" | "lead" | "admin" | "client" — role ring per user in group
+    indicator?: "lead" | "admin" | ReactNode — small dot indicator at top-right of avatar
 
 ## Defaults
     size="md", max=4, showTooltip=true, borderColor="surface-2", expandDirection="right", expandAmount="default"
@@ -46,6 +47,9 @@
 - `renderAvatar` wrapper is positioning-only — pass `size` directly to your Avatar (do NOT use `className="h-full w-full"`)
 
 ## Changes
+### v0.29.0
+- **Added** `indicator` prop on AvatarUser: `"lead"` (warning dot) | `"admin"` (accent dot) | ReactNode (custom indicator) — animated dot at the top-right corner of each avatar
+
 ### v0.22.3
 - **Fixed** `renderAvatar` wrapper no longer clips consumer Avatar content (removed overflow-hidden, border, and size classes from wrapper)
 - **Fixed** Removed redundant text-size classes from wrapper — Avatar handles font scaling internally

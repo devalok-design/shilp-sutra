@@ -5,12 +5,24 @@
 - Category: ui
 
 ## Props
-    variant: "subtle" | "solid" | "outline" | "secondary" (alias->subtle) | "destructive" (alias->solid+error)
-    color: "default" | "info" | "success" | "error" | "warning" | "brand" | "accent" | "teal" | "amber" | "slate" | "indigo" | "cyan" | "orange" | "emerald"
+    variant: "subtle" | "solid" | "outline" | "soft"
+    color: "default" | "accent" | "error" | "success" | "warning" | "info" | "neutral" | "teal" | "amber" | "slate" | "indigo" | "cyan" | "orange" | "emerald" | "custom"
     size: "xs" | "sm" | "md" | "lg"
-    dot: boolean (shows leading dot indicator)
-    onDismiss: () => void (shows X button when provided)
+    startIcon: ReactElement | null
+    endIcon: ReactElement | null
+    dot: boolean (shows animated leading dot indicator)
+    onClick: () => void (makes badge interactive as button)
+    selected: boolean (toggle state — shows check icon when true)
+    disabled: boolean
+    onDismiss: () => void (shows dismiss X button)
+    maxWidth: number (enables truncation with title tooltip)
+    circle: boolean (square aspect-ratio, centered content)
+    asChild: boolean
     children: ReactNode
+
+## Compound Components
+    Badge.Indicator — status indicator sub-component
+    Badge.Group — layout wrapper for badge collections
 
 ## Defaults
     variant="subtle", color="default", size="md"
@@ -19,13 +31,32 @@
 ```jsx
 <Badge variant="solid" color="success">Active</Badge>
 <Badge color="teal" onDismiss={() => removeFilter('teal')}>Teal team</Badge>
+<Badge onClick={() => toggle()} selected={isSelected}>Filterable</Badge>
+<Badge color="custom" style={{ '--badge-color': '#8b5cf6' }}>Custom</Badge>
 ```
 
 ## Gotchas
 - DO NOT use variant="destructive" — use variant="solid" color="error"
-- Badge is display-only; for interactive tags use Chip
+- Badge is now interactive when `onClick` is provided (renders as `<button>`)
+- When both `onClick` and `onDismiss` are provided, renders as `div[role="button"]` to avoid nested buttons
+- Chip is deprecated — use Badge with `onClick` for interactive tags
+- `color="custom"` requires `--badge-color` CSS variable (and optionally `--badge-fg-color` for solid variant)
 
 ## Changes
+### v0.29.0
+- **Changed** (BREAKING) v2 rewrite — Badge is now a full interactive component
+- **Added** `soft` variant (tinted bg, no border — completes the 4-variant set: subtle/solid/outline/soft)
+- **Added** `custom` color with CSS variable `--badge-color` (and `--badge-fg-color` for solid)
+- **Added** Interactive mode: `onClick` makes Badge a clickable button, `selected` shows animated check icon
+- **Added** `disabled` prop with reduced opacity and pointer-events-none
+- **Added** `startIcon` / `endIcon` props (auto-sized per badge size)
+- **Added** `maxWidth` prop for truncation with title tooltip
+- **Added** `circle` prop for square aspect-ratio badges
+- **Added** `asChild` prop for Slot composition
+- **Added** `Badge.Indicator` and `Badge.Group` compound sub-components
+- **Deprecated** Chip component — use Badge with `onClick` instead
+- **Changed** Dot animation now uses Framer Motion spring entrance + continuous pulse
+
 ### v0.18.0
 - **Changed** Pulse-ring animation migrated to Framer Motion
 - **Fixed** Accent color variants — `text-accent-9` changed to `text-accent-11`, `border-accent-9` changed to `border-accent-7`

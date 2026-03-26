@@ -5,10 +5,15 @@
 - Category: ui
 
 ## Props
-    size: "sm" | "md" | "lg"
+    size: "xs" | "sm" | "md" | "lg"
     state: InputState
-    startIcon: ReactNode
-    endIcon: ReactNode
+    startSection: ReactNode (icon or content in the leading slot)
+    endSection: ReactNode (icon or content in the trailing slot)
+    startSectionClickable: boolean (enables pointer events on start section)
+    endSectionClickable: boolean (enables pointer events on end section)
+    wrapperClassName: string (classes for the wrapper div — border, bg, ring)
+    startIcon: ReactNode (@deprecated — use startSection)
+    endIcon: ReactNode (@deprecated — use endSection)
     (plus all standard HTML input attributes except native "size")
 
 ## Types
@@ -19,17 +24,31 @@
 
 ## Example
 ```jsx
-<Input type="email" placeholder="you@example.com" state="error" startIcon={<IconMail />} />
+<Input type="email" placeholder="you@example.com" state="error" startSection={<Icon icon={IconMail} />} />
+<Input size="xs" placeholder="Quick search" startSection={<Icon icon={IconSearch} />} />
 ```
 
 ## Gotchas
 - HTML native "size" attribute is excluded — use CSS width instead
 - state="error" sets aria-invalid automatically
 - Inside FormField: auto-inherits state, aria-describedby, aria-required from context (explicit props override)
-- Resting border is border-subtle (soft); focus ring is `ring-1 ring-accent-7` (v0.12.0)
-- All sizes (sm, md, lg) use text-ds-md (14px) font — size only affects height and padding (v0.15.0)
+- `className` targets the `<input>` element; use `wrapperClassName` for border/bg/ring overrides
+- Focus ring is on the wrapper container (focus-within), not the input itself
+- Icons in startSection/endSection are auto-sized via IconProvider per input size
+- Sections are `pointer-events-none` by default — set `startSectionClickable`/`endSectionClickable` for interactive sections
 
 ## Changes
+### v0.29.0
+- **Changed** v2 rewrite: container-first architecture with wrapper div holding focus ring
+- **Added** `xs` size (28px height)
+- **Added** `startSection` / `endSection` props replacing `startIcon` / `endIcon` (deprecated but still work)
+- **Added** `startSectionClickable` / `endSectionClickable` props for interactive sections
+- **Added** `wrapperClassName` prop for styling the wrapper div (border, bg, ring)
+- **Changed** Focus ring now on wrapper via `focus-within` (container-level ring, not input-level)
+- **Changed** Icons auto-sized via `IconProvider` context per input size
+- **Deprecated** `startIcon` / `endIcon` — use `startSection` / `endSection`
+- **Deprecated** `inputVariants` export — use `inputWrapperVariants` (semantics changed to target wrapper)
+
 ### v0.15.0
 - **Changed** `lg` size font changed from `text-ds-lg` (18px) to `text-ds-md` (14px) — all input sizes now use 14px for consistency
 - **Changed** `md` size font standardized to `text-ds-md` (14px) from mixed values

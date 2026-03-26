@@ -32,6 +32,9 @@
 - No longer server-safe as of v0.18.0 (uses Framer Motion)
 
 ## Changes
+### v0.29.0
+- **Changed** `bare` variant spinning state now uses `currentColor` instead of `var(--color-accent-9)` — inherits text color from parent for seamless embedding in buttons/toolbars
+
 ### v0.18.0
 - **Changed** (BREAKING) Complete rewrite with Framer Motion arc animation and state transitions
 - **Added** `state` prop: 'spinning' | 'success' | 'error'

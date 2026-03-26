@@ -1,4 +1,6 @@
 import type { Meta, StoryObj } from '@storybook/react'
+import { IconRocket } from '@tabler/icons-react'
+import { Icon } from '../ui/icon'
 import { StatusBadge } from './status-badge'
 
 const meta: Meta<typeof StatusBadge> = {
@@ -15,6 +17,8 @@ const meta: Meta<typeof StatusBadge> = {
         'rejected',
         'completed',
         'blocked',
+        'in-progress',
+        'review',
         'cancelled',
         'draft',
       ],
@@ -219,4 +223,47 @@ export const ColorWithCustomLabels: Story = {
       <StatusBadge color="neutral" label="Unknown" />
     </div>
   ),
+}
+
+// --- New status stories ---
+
+export const InProgress: Story = {
+  args: {
+    status: 'in-progress',
+  },
+}
+
+export const Review: Story = {
+  args: {
+    status: 'review',
+  },
+}
+
+export const Clickable: Story = {
+  args: {
+    status: 'active',
+    onClick: () => alert('StatusBadge clicked'),
+  },
+  parameters: {
+    docs: {
+      description: {
+        story: 'When `onClick` is provided, the badge becomes a button with a trailing chevron icon.',
+      },
+    },
+  },
+}
+
+export const WithCustomIcon: Story = {
+  args: {
+    status: 'active',
+    onClick: () => alert('StatusBadge clicked'),
+    icon: <Icon icon={IconRocket} size="xs" className="text-current/50 -mr-0.5 shrink-0" />,
+  },
+  parameters: {
+    docs: {
+      description: {
+        story: 'Custom `icon` overrides the default chevron while keeping the button behavior from `onClick`.',
+      },
+    },
+  },
 }

@@ -1,3 +1,4 @@
+import React from 'react'
 import type { Meta, StoryObj } from '@storybook/react'
 import { Progress } from './progress'
 
@@ -174,5 +175,47 @@ export const AllVariants: Story = {
         </div>
       </div>
     )
+  },
+}
+
+export const AutoColor: Story = {
+  render: () => {
+    const [value, setValue] = React.useState(50)
+
+    const colorLabel =
+      value > 100
+        ? 'error'
+        : value >= 85
+          ? 'success'
+          : value >= 60
+            ? 'warning'
+            : 'default'
+
+    return (
+      <div className="flex flex-col gap-ds-04 max-w-md">
+        <Progress value={value} autoColor showLabel />
+        <input
+          type="range"
+          min={0}
+          max={110}
+          step={1}
+          value={value}
+          onChange={(e) => setValue(Number(e.target.value))}
+          className="w-full"
+          aria-label="Progress value"
+        />
+        <p className="text-ds-xs text-surface-fg-muted">
+          Value: <strong>{value}</strong> — auto color: <strong>{colorLabel}</strong>
+          {' '}(0-59 default, 60-84 warning, 85-100 success, {'>'}100 error)
+        </p>
+      </div>
+    )
+  },
+  parameters: {
+    docs: {
+      description: {
+        story: 'When `autoColor` is true, the indicator color auto-shifts based on value thresholds.',
+      },
+    },
   },
 }

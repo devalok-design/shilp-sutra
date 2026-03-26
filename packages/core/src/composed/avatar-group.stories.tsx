@@ -400,6 +400,25 @@ export const ExpandAmounts: Story = {
   },
 }
 
+export const WithLeadIndicator: Story = {
+  args: {
+    users: [
+      { name: 'Aarav Sharma', image: null, indicator: 'lead' },
+      { name: 'Priya Patel', image: null, indicator: 'lead' },
+      { name: 'Rohan Gupta', image: null },
+      { name: 'Ananya Verma', image: null },
+    ],
+    max: 4,
+  },
+  parameters: {
+    docs: {
+      description: {
+        story: 'Users with `indicator: "lead"` show a small yellow dot on the top-right of their avatar.',
+      },
+    },
+  },
+}
+
 export const SizeComparison: Story = {
   name: 'Size Comparison (Group vs Standalone)',
   render: () => {

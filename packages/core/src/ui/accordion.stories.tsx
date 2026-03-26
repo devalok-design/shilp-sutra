@@ -105,3 +105,28 @@ export const DefaultOpen: Story = {
     </Accordion>
   ),
 }
+
+export const ChevronLeft: Story = {
+  render: () => (
+    <Accordion type="single" collapsible className="w-full max-w-md">
+      <AccordionItem value="item-1">
+        <AccordionTrigger chevronPosition="left">Getting Started</AccordionTrigger>
+        <AccordionContent>
+          Install the package and import the components you need. Each component is tree-shakeable.
+        </AccordionContent>
+      </AccordionItem>
+      <AccordionItem value="item-2">
+        <AccordionTrigger chevronPosition="left">Theming</AccordionTrigger>
+        <AccordionContent>
+          The design system uses CSS custom properties for theming. Override the token variables to customize the look and feel.
+        </AccordionContent>
+      </AccordionItem>
+      <AccordionItem value="item-3">
+        <AccordionTrigger chevronPosition="left">Accessibility</AccordionTrigger>
+        <AccordionContent>
+          All components are built on Radix UI primitives and follow WAI-ARIA patterns for keyboard navigation and screen reader support.
+        </AccordionContent>
+      </AccordionItem>
+    </Accordion>
+  ),
+}

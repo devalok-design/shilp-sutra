@@ -1,4 +1,5 @@
 import type { Meta, StoryObj } from '@storybook/react'
+import { IconCheck, IconLock } from '@tabler/icons-react'
 import { Switch } from './switch'
 import { Label } from './label'
 
@@ -60,6 +61,47 @@ export const FormExample: Story = {
       <div className="flex items-center justify-between">
         <Label htmlFor="push-switch">Push notifications</Label>
         <Switch id="push-switch" defaultChecked />
+      </div>
+    </div>
+  ),
+}
+
+export const Sizes: Story = {
+  render: () => (
+    <div className="flex items-center gap-ds-06">
+      {(['sm', 'md', 'lg'] as const).map((s) => (
+        <div key={s} className="flex flex-col items-center gap-ds-02">
+          <Switch size={s} defaultChecked />
+          <span className="text-ds-xs text-surface-fg-muted">{s}</span>
+        </div>
+      ))}
+    </div>
+  ),
+}
+
+export const Colors: Story = {
+  render: () => (
+    <div className="flex items-center gap-ds-06">
+      {(['accent', 'success', 'warning'] as const).map((c) => (
+        <div key={c} className="flex flex-col items-center gap-ds-02">
+          <Switch color={c} defaultChecked />
+          <span className="text-ds-xs text-surface-fg-muted">{c}</span>
+        </div>
+      ))}
+    </div>
+  ),
+}
+
+export const WithThumbIcon: Story = {
+  render: () => (
+    <div className="flex items-center gap-ds-06">
+      <div className="flex flex-col items-center gap-ds-02">
+        <Switch defaultChecked thumbIcon={<IconCheck size={12} />} />
+        <span className="text-ds-xs text-surface-fg-muted">check</span>
+      </div>
+      <div className="flex flex-col items-center gap-ds-02">
+        <Switch defaultChecked color="warning" thumbIcon={<IconLock size={12} />} />
+        <span className="text-ds-xs text-surface-fg-muted">lock</span>
       </div>
     </div>
   ),

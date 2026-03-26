@@ -289,3 +289,28 @@ export const GroupedWithCustomLabels: Story = {
     },
   },
 }
+
+export const CustomRenderItem: Story = {
+  name: 'Custom renderItem',
+  args: {
+    items: BASIC_ITEMS,
+    renderItem: (item: ActivityItem, index: number) => {
+      if (index === 0) {
+        return (
+          <div className="rounded-ds-md border border-accent-6 bg-accent-2 p-ds-03">
+            <p className="text-ds-sm font-medium text-accent-11">{item.actor?.name}</p>
+            <p className="text-ds-xs text-accent-11/70">{typeof item.action === 'string' ? item.action : 'Custom action'}</p>
+          </div>
+        )
+      }
+      return undefined
+    },
+  },
+  parameters: {
+    docs: {
+      description: {
+        story: 'Use `renderItem` to render specific items with a custom card. Return `undefined` to fall back to the default `ActivityEntry`.',
+      },
+    },
+  },
+}

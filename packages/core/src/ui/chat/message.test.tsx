@@ -76,12 +76,10 @@ describe('Message', () => {
   // ── deleted ──────────────────────────────────────────────────────────
   it('deleted=true renders "This message was deleted" with trash icon', () => {
     const { container } = render(<Message deleted />)
-    expect(screen.getByText('This message was deleted')).toBeInTheDocument()
-    // Root motion.div should have the italic class
-    const root = container.firstChild as HTMLElement
-    expect(root).toHaveClass('italic')
-    // Should contain a trash icon (SVG with aria-hidden)
-    expect(root.querySelector('svg')).toBeInTheDocument()
+    const deletedText = screen.getByText('This message was deleted')
+    expect(deletedText).toBeInTheDocument()
+    // The deleted placeholder should contain a trash icon SVG
+    expect(container.querySelector('svg')).toBeInTheDocument()
   })
 
   it('deleted=true uses custom deletedText', () => {

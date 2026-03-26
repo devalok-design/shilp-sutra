@@ -1,11 +1,7 @@
 'use client'
 
 import * as React from 'react'
-import { useState, useRef, useCallback, type KeyboardEvent } from 'react'
-import { IconSend, IconSquare } from '@tabler/icons-react'
-import { Icon } from '@/ui/icon'
-import { Button } from '@/ui/button'
-import { cn } from '@/ui/lib/utils'
+import { MessageInput } from '@/ui/chat'
 
 export interface ChatInputProps extends Omit<React.HTMLAttributes<HTMLDivElement>, 'onSubmit'> {
   onSubmit: (message: string) => void
@@ -16,81 +12,31 @@ export interface ChatInputProps extends Omit<React.HTMLAttributes<HTMLDivElement
 }
 
 export const ChatInput = React.forwardRef<HTMLDivElement, ChatInputProps>(
-  function ChatInput({
-  onSubmit,
-  onCancel,
-  isStreaming = false,
-  placeholder = 'Ask Karm AI...',
-  disclaimer = 'AI responses may be inaccurate. Verify important information.',
-  className,
-  ...props
-}, ref) {
-  const [text, setText] = useState('')
-  const textareaRef = useRef<HTMLTextAreaElement>(null)
-
-  const adjustHeight = useCallback(() => {
-    const el = textareaRef.current
-    if (!el) return
-    el.style.height = 'auto'
-    el.style.height = Math.min(el.scrollHeight, 160) + 'px'
-  }, [])
-
-  const handleSend = useCallback(() => {
-    const trimmed = text.trim()
-    if (!trimmed || isStreaming) return
-    setText('')
-    // Reset textarea height
-    if (textareaRef.current) {
-      textareaRef.current.style.height = 'auto'
-    }
-    onSubmit(trimmed)
-  }, [text, isStreaming, onSubmit])
-
-  const handleKeyDown = useCallback(
-    (e: KeyboardEvent<HTMLTextAreaElement>) => {
-      if (e.key === 'Enter' && !e.shiftKey) {
-        e.preventDefault()
-        handleSend()
-      }
+  function ChatInput(
+    {
+      onSubmit,
+      onCancel,
+      isStreaming = false,
+      placeholder = 'Ask Karm AI...',
+      disclaimer = 'AI responses may be inaccurate. Verify important information.',
+      className,
+      ...props
     },
-    [handleSend],
-  )
-
-  return (
-    <div ref={ref} className={cn("border-t border-surface-border-strong bg-surface-raised p-ds-04", className)} {...props}>
-      <div className="flex items-end gap-ds-03 rounded-ds-xl border border-surface-border-strong bg-surface-raised-hover px-ds-04 py-ds-03">
-        <textarea
-          ref={textareaRef}
-          value={text}
-          onChange={(e) => {
-            setText(e.target.value)
-            adjustHeight()
-          }}
-          onKeyDown={handleKeyDown}
-          placeholder={placeholder}
-          aria-label="Type a message"
-          disabled={isStreaming}
-          rows={1}
-          className="text-ds-md no-scrollbar max-h-[160px] min-h-ds-xs flex-1 resize-none bg-transparent text-surface-fg placeholder:text-surface-fg-subtle focus:outline-none disabled:opacity-action-disabled"
-        />
-        {isStreaming ? (
-          <Button variant="solid" color="error" size="icon-sm" className="h-ds-sm w-ds-sm shrink-0 rounded-ds-lg" onClick={onCancel} aria-label="Stop generating">
-            <Icon icon={IconSquare} size="sm" />
-          </Button>
-        ) : (
-          <Button size="icon-sm" className="h-ds-sm w-ds-sm shrink-0 rounded-ds-lg" onClick={handleSend} disabled={!text.trim()} aria-label="Send message">
-            <Icon icon={IconSend} size="sm" />
-          </Button>
-        )}
-      </div>
-      {disclaimer && (
-        <p className="text-ds-sm mt-ds-02b text-center text-surface-fg-subtle">
-          {disclaimer}
-        </p>
-      )}
-    </div>
-  )
-},
+    ref,
+  ) {
+    return (
+      <MessageInput
+        ref={ref}
+        onSubmit={onSubmit}
+        onCancel={onCancel}
+        isStreaming={isStreaming}
+        placeholder={placeholder}
+        disclaimer={disclaimer}
+        className={className}
+        {...props}
+      />
+    )
+  },
 )
 
 ChatInput.displayName = 'ChatInput'

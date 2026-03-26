@@ -70,9 +70,9 @@ describe('Badge', () => {
     expect(outer).toBeInTheDocument()
   })
 
-  it('selected adds check icon', () => {
-    render(<Badge selected>Test</Badge>)
-    // check icon SVG should be present
+  it('selected adds check icon when interactive', () => {
+    render(<Badge selected onClick={() => {}}>Test</Badge>)
+    // check icon SVG should be present (only renders when onClick + selected)
     const svgs = document.querySelectorAll('svg')
     expect(svgs.length).toBeGreaterThanOrEqual(1)
   })

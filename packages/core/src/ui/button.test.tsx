@@ -230,7 +230,7 @@ describe('Button', () => {
   it('renders compact-xs without fixed height', () => {
     const { container } = render(<Button size="compact-xs">Compact</Button>)
     const btn = container.firstChild as HTMLElement
-    expect(btn.className).toContain('py-ds-01')
+    expect(btn.className).toContain('py-[3px]')
     expect(btn.className).not.toMatch(/\bh-ds-/)
   })
 

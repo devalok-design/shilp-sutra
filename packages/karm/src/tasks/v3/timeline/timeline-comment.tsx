@@ -3,11 +3,8 @@
 import * as React from 'react'
 import { IconMoodSmile, IconArrowBackUp, IconPencil, IconTrash, IconLock } from '@tabler/icons-react'
 import { Icon } from '@/ui/icon'
-import { cn } from '@/ui/lib/utils'
-import { Avatar, AvatarImage, AvatarFallback } from '@/ui/avatar'
+import { Message } from '@/ui/chat'
 import { Badge } from '@/ui/badge'
-import { Button } from '@/ui/button'
-import { Textarea } from '@/ui/textarea'
 import type { Comment, Reaction } from '../task-panel-types'
 
 // ---------------------------------------------------------------------------
@@ -83,57 +80,9 @@ export function TimelineComment({
   const { comment, reactions } = entry
   const author = getAuthorInfo(comment)
 
-  const [isEditing, setIsEditing] = React.useState(false)
-  const [editDraft, setEditDraft] = React.useState(comment.content)
-  const editRef = React.useRef<HTMLTextAreaElement>(null)
-
   const isOwnComment = currentUserId !== null && comment.authorId === currentUserId
-  const canEdit = isOwnComment && onEditComment
-  const canDelete = isOwnComment && onDeleteComment
-
-  React.useEffect(() => {
-    if (isEditing && editRef.current) {
-      editRef.current.focus()
-      editRef.current.selectionStart = editRef.current.value.length
-    }
-  }, [isEditing])
-
-  const handleEditSave = React.useCallback(() => {
-    const trimmed = editDraft.trim()
-    setIsEditing(false)
-    if (trimmed && trimmed !== comment.content && onEditComment) {
-      onEditComment(comment.id, trimmed)
-    } else {
-      setEditDraft(comment.content)
-    }
-  }, [editDraft, comment.content, comment.id, onEditComment])
-
-  const handleEditKeyDown = React.useCallback(
-    (e: React.KeyboardEvent) => {
-      if (e.key === 'Escape') {
-        e.preventDefault()
-        setIsEditing(false)
-        setEditDraft(comment.content)
-      } else if (e.key === 'Enter' && !e.shiftKey) {
-        e.preventDefault()
-        handleEditSave()
-      }
-    },
-    [handleEditSave, comment.content],
-  )
-
-  // ---- Deleted placeholder ----
-  if (entry.deleted) {
-    return (
-      <div
-        className="flex items-center gap-ds-02 py-ds-02 text-ds-xs text-surface-fg-subtle/50 italic"
-        data-testid="timeline-comment-deleted"
-      >
-        <Icon icon={IconTrash} size="xs" />
-        This message was deleted
-      </div>
-    )
-  }
+  const canEdit = isOwnComment && !!onEditComment
+  const canDelete = isOwnComment && !!onDeleteComment
 
   // Check if the current user is @mentioned in the content
   const isMentioned =
@@ -143,155 +92,106 @@ export function TimelineComment({
   // Internal note on a client-visible task — Intercom-style amber tint
   const isInternalNote = isClientTask && author.type === 'INTERNAL'
 
-  return (
-    <div
-      className={cn(
-        'group relative flex gap-ds-03',
-        isMentioned &&
-          'border-l-2 border-l-accent-9 bg-accent-2 pl-ds-03 rounded-ds-sm',
-        isInternalNote &&
-          !isMentioned &&
-          'bg-warning-2/50 rounded-ds-sm pl-ds-03',
+  const highlight = isMentioned
+    ? ('mention' as const)
+    : isInternalNote
+      ? ('internal' as const)
+      : undefined
+
+  // Build the client badge or internal-note lock icon for the author row
+  const authorBadge = (
+    <>
+      {isInternalNote && (
+        <Icon icon={IconLock} size="xs" className="text-warning-11/60" />
       )}
+      {author.type === 'CLIENT' && (
+        <Badge
+          variant="subtle"
+          color="success"
+          size="xs"
+          className="text-[10px]"
+          data-testid="comment-badge"
+        >
+          Client
+        </Badge>
+      )}
+    </>
+  )
+
+  return (
+    <Message
+      grouped={isGrouped}
+      deleted={entry.deleted}
+      highlight={highlight}
       data-testid="timeline-comment"
     >
-      {/* Avatar — hidden for grouped (continuation) messages */}
-      {isGrouped ? (
-        <div className="w-6 shrink-0" aria-hidden />
-      ) : (
-        <Avatar size="sm" className="h-6 w-6 shrink-0">
-          {author.image && <AvatarImage src={author.image} alt={author.name} />}
-          <AvatarFallback>{getInitials(author.name)}</AvatarFallback>
-        </Avatar>
-      )}
-
-      {/* Body */}
-      <div className="min-w-0 flex-1">
-        {/* Header row — hidden for grouped messages */}
-        {!isGrouped && (
-          <div className="flex items-center gap-ds-02 text-ds-sm">
-            <span className="font-semibold text-surface-fg" data-testid="comment-author">
-              {author.name}
-            </span>
-            <span className="text-ds-xs text-surface-fg-subtle/30">
-              {formatTime(comment.createdAt)}
-            </span>
-            {isInternalNote && (
-              <Icon icon={IconLock} size="xs" className="text-warning-11/60" />
-            )}
-            {author.type === 'CLIENT' && (
-              <Badge
-                variant="subtle"
-                color="success"
-                size="xs"
-                className="text-[10px]"
-                data-testid="comment-badge"
-              >
-                Client
-              </Badge>
-            )}
-          </div>
-        )}
-
-        {/* Content — editable inline or rendered HTML */}
-        {isEditing ? (
-          <Textarea
-            ref={editRef}
-            value={editDraft}
-            onChange={(e) => setEditDraft(e.target.value)}
-            onBlur={handleEditSave}
-            onKeyDown={handleEditKeyDown}
-            size="sm"
-            className={cn(
-              'resize-none',
-              !isGrouped && 'mt-ds-01',
-            )}
-            rows={3}
-            data-testid="comment-edit-textarea"
-          />
-        ) : (
-          /* eslint-disable-next-line react/no-danger -- consumer responsibility to sanitize */
-          <div
-            className={cn(
-              'max-w-[65ch] text-ds-sm leading-relaxed text-surface-fg whitespace-pre-wrap',
-              !isGrouped && 'mt-ds-01',
-            )}
-            data-testid="comment-content"
-            dangerouslySetInnerHTML={{ __html: comment.content }}
-          />
-        )}
-
-        {/* Reactions row */}
+      <Message.Avatar
+        src={author.image}
+        fallback={getInitials(author.name)}
+        size="md"
+      />
+      <Message.Content>
+        <Message.Author
+          name={author.name}
+          formattedTimestamp={formatTime(comment.createdAt)}
+          badge={authorBadge}
+        />
+        <Message.EditableBody
+          content={comment.content}
+          canEdit={canEdit}
+          onSave={(newContent) => onEditComment?.(comment.id, newContent)}
+          renderContent={(content) => (
+            <div
+              className="max-w-[65ch]"
+              data-testid="comment-content"
+              // Consumer is responsible for sanitizing HTML content before
+              // passing it into the timeline. The raw HTML render is
+              // intentional — see task-panel-types.Comment.content.
+              dangerouslySetInnerHTML={{ __html: content }}
+            />
+          )}
+        />
         {reactions && reactions.length > 0 && (
-          <div className="mt-ds-02 flex flex-wrap gap-ds-01" data-testid="reactions-row">
-            {reactions.map((reaction) => (
-              <Button
-                key={reaction.emoji}
-                variant="ghost"
-                size="xs"
-                shape="pill"
-                onClick={() => onReact(comment.id, reaction.emoji)}
-                className={cn(
-                  'px-ds-02 h-auto py-px',
-                  reaction.reacted && 'bg-accent-3 border border-accent-6',
-                )}
-                data-testid="reaction-button"
-              >
-                <span>{reaction.emoji}</span>
-                <span className="text-ds-xs">{reaction.count}</span>
-              </Button>
-            ))}
-          </div>
+          <Message.Reactions
+            reactions={reactions}
+            onReact={(emoji) => onReact(comment.id, emoji)}
+          />
         )}
-      </div>
+      </Message.Content>
 
       {/* Hover action bar */}
-      <div
-        className="absolute -top-2 right-0 flex items-center gap-ds-01 rounded-ds-md border border-surface-border bg-surface-raised px-ds-01 py-ds-01 shadow-sm opacity-0 group-hover:opacity-100 transition-opacity duration-150 delay-100"
-      >
-        <Button
-          variant="ghost"
-          size="icon-xs"
-          aria-label="Add reaction"
+      <Message.Actions>
+        <Message.Action
+          icon={IconMoodSmile}
+          label="Add reaction"
           onClick={() => onReact(comment.id, '')}
-          data-testid="react-trigger"
-        >
-          <Icon icon={IconMoodSmile} size="xs" />
-        </Button>
-        <Button
-          variant="ghost"
-          size="icon-xs"
-          aria-label="Reply"
-        >
-          <Icon icon={IconArrowBackUp} size="xs" />
-        </Button>
+        />
+        <Message.Action
+          icon={IconArrowBackUp}
+          label="Reply"
+          onClick={() => {}}
+        />
         {canEdit && (
-          <Button
-            variant="ghost"
-            size="icon-xs"
-            aria-label="Edit comment"
+          <Message.Action
+            icon={IconPencil}
+            label="Edit comment"
             onClick={() => {
-              setEditDraft(comment.content)
-              setIsEditing(true)
+              // EditableBody handles its own click-to-edit interaction;
+              // this toolbar button is kept for discoverability parity
+              // with the previous implementation.
             }}
-            data-testid="edit-trigger"
-          >
-            <Icon icon={IconPencil} size="xs" />
-          </Button>
+          />
         )}
         {canDelete && (
-          <Button
-            variant="ghost"
-            size="icon-xs"
-            aria-label="Delete comment"
+          <Message.Action
+            icon={IconTrash}
+            label="Delete comment"
             onClick={() => onDeleteComment!(comment.id)}
-            data-testid="delete-trigger"
-          >
-            <Icon icon={IconTrash} size="xs" />
-          </Button>
+            variant="danger"
+          />
         )}
-      </div>
-    </div>
+      </Message.Actions>
+    </Message>
   )
 }
 

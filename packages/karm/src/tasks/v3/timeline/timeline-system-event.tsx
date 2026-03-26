@@ -10,6 +10,7 @@ import {
   IconEye,
 } from '@tabler/icons-react'
 import { Icon } from '@/ui/icon'
+import { SystemMessage } from '@/ui/chat'
 import type { SystemEvent } from '../task-panel-types'
 
 // ---------------------------------------------------------------------------
@@ -24,20 +25,6 @@ const ACTION_ICONS: Record<SystemEvent['action'], React.ElementType> = {
   'label-remove': IconTag,
   'due-date': IconCalendar,
   visibility: IconEye,
-}
-
-// ---------------------------------------------------------------------------
-// Helpers
-// ---------------------------------------------------------------------------
-
-function formatTimestamp(iso: string): string {
-  const d = new Date(iso)
-  return d.toLocaleString('en-US', {
-    month: 'short',
-    day: 'numeric',
-    hour: 'numeric',
-    minute: '2-digit',
-  })
 }
 
 // ---------------------------------------------------------------------------
@@ -60,18 +47,15 @@ export function TimelineSystemEvent({ entry }: TimelineSystemEventProps) {
   const EventIcon = ACTION_ICONS[event.action]
 
   return (
-    <div
-      className="flex items-center gap-ds-02 rounded-ds-sm bg-surface-raised-hover/30 px-ds-02 py-ds-01 -mx-ds-02 text-[11px] text-surface-fg-subtle/60"
+    <SystemMessage
+      icon={<Icon icon={EventIcon as any} size="xs" className="shrink-0" />}
+      timestamp={event.timestamp}
       data-testid="timeline-system-event"
     >
-      <Icon icon={EventIcon as any} size="xs" className="shrink-0" />
-      <span>
-        <span className="font-medium">{event.actorName}</span>
-        {' '}
-        {event.description}
-      </span>
-      <span className="ml-auto shrink-0">{formatTimestamp(event.timestamp)}</span>
-    </div>
+      <span className="font-medium">{event.actorName}</span>
+      {' '}
+      {event.description}
+    </SystemMessage>
   )
 }
 

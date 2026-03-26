@@ -3,7 +3,7 @@
 import * as React from 'react'
 import { IconRobot } from '@tabler/icons-react'
 import { Icon } from '@/ui/icon'
-import { cn } from '@/ui/lib/utils'
+import { Message } from '@/ui/chat'
 import { Badge } from '@/ui/badge'
 import { MotionCollapse } from '@/motion/primitives'
 import { StreamingText } from '../../../chat/streaming-text'
@@ -51,32 +51,32 @@ export function TimelineAgentResponse({ entry }: TimelineAgentResponseProps) {
   const isLong = response.content.length > COLLAPSE_CHAR_THRESHOLD
   const [expanded, setExpanded] = React.useState(false)
 
+  const aiBadge = (
+    <Badge variant="solid" color="accent" size="xs" data-testid="ai-badge">
+      AI
+    </Badge>
+  )
+
   return (
-    <div className="flex gap-ds-03 bg-accent-2/30 rounded-ds-md p-ds-03 -mx-ds-03" data-testid="timeline-agent-response">
-      {/* Agent icon */}
-      <div className="shrink-0">
-        {response.agentIcon ?? (
-          <Icon icon={IconRobot} size="md" className="text-accent-11" />
-        )}
-      </div>
-
-      {/* Body */}
-      <div className="min-w-0 flex-1">
-        {/* Header row */}
-        <div className="flex items-center gap-ds-02 text-ds-sm">
-          <span className="font-semibold text-surface-fg">
-            {response.agentName}
-          </span>
-          <Badge variant="solid" color="accent" size="xs" data-testid="ai-badge">
-            AI
-          </Badge>
-          <span className="text-ds-xs text-surface-fg-subtle">
-            {formatTimestamp(response.timestamp)}
-          </span>
-        </div>
-
-        {/* Content */}
-        <div className="mt-ds-01">
+    <Message
+      className="bg-accent-2/30 rounded-ds-md p-ds-03 -mx-ds-03"
+      data-testid="timeline-agent-response"
+    >
+      <Message.Avatar
+        icon={
+          response.agentIcon ?? (
+            <Icon icon={IconRobot} size="md" className="text-accent-11" />
+          )
+        }
+        size="md"
+      />
+      <Message.Content>
+        <Message.Author
+          name={response.agentName}
+          badge={aiBadge}
+          formattedTimestamp={formatTimestamp(response.timestamp)}
+        />
+        <Message.Body>
           {response.isStreaming ? (
             <StreamingText
               text={response.content}
@@ -109,9 +109,9 @@ export function TimelineAgentResponse({ entry }: TimelineAgentResponseProps) {
               </p>
             </MotionCollapse>
           )}
-        </div>
-      </div>
-    </div>
+        </Message.Body>
+      </Message.Content>
+    </Message>
   )
 }
 

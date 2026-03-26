@@ -6,13 +6,19 @@ import { Icon } from '@/ui/icon'
 import { cn } from '@/ui/lib/utils'
 import { Badge } from '@/ui/badge'
 import { Button } from '@/ui/button'
-import { Separator } from '@/ui/separator'
 import { ToggleGroup, ToggleGroupItem } from '@/ui/toggle-group'
+import {
+  MessageList,
+  Message,
+  DateSeparator,
+  UnreadSeparator,
+  TypingIndicator,
+} from '@/ui/chat'
 import { EmptyState } from '@/composed/empty-state'
 import { MotionCollapse } from '@/motion/primitives'
 import { StreamingText } from '../../chat/streaming-text'
 import { useTaskPanel } from './task-panel-context'
-import type { TimelineEntry, SystemEvent } from './task-panel-types'
+import type { TimelineEntry } from './task-panel-types'
 import { TimelineEntryRenderer } from './timeline/timeline-entry'
 
 // ---------------------------------------------------------------------------
@@ -56,24 +62,6 @@ function getDateKey(timestamp: string): string {
   return `${d.getFullYear()}-${d.getMonth()}-${d.getDate()}`
 }
 
-function formatDateDivider(timestamp: string): string {
-  const d = new Date(timestamp)
-  const now = new Date()
-
-  const today = new Date(now.getFullYear(), now.getMonth(), now.getDate())
-  const target = new Date(d.getFullYear(), d.getMonth(), d.getDate())
-  const diffDays = Math.round((today.getTime() - target.getTime()) / 86_400_000)
-
-  if (diffDays === 0) return 'Today'
-  if (diffDays === 1) return 'Yesterday'
-
-  const month = d.toLocaleString('en-US', { month: 'short' })
-  const day = d.getDate()
-
-  if (d.getFullYear() === now.getFullYear()) return `${month} ${day}`
-  return `${month} ${day}, ${d.getFullYear()}`
-}
-
 function getEntryId(entry: TimelineEntry): string {
   switch (entry.type) {
     case 'comment':
@@ -86,10 +74,6 @@ function getEntryId(entry: TimelineEntry): string {
       return entry.response.id
   }
 }
-
-// ---------------------------------------------------------------------------
-// Smart collapsing — group consecutive system events by same actor within 10min
-// ---------------------------------------------------------------------------
 
 // ---------------------------------------------------------------------------
 // Comment grouping — consecutive comments from same author within 5 minutes
@@ -232,65 +216,6 @@ function CollapsedSystemGroup({ group }: { group: CollapsedGroup }) {
 }
 
 // ---------------------------------------------------------------------------
-// Date divider
-// ---------------------------------------------------------------------------
-
-function DateDivider({ timestamp }: { timestamp: string }) {
-  return (
-    <div className="flex items-center gap-ds-03 py-ds-03">
-      <Separator className="flex-1" variant="gradient-right" />
-      <span className="text-[10px] font-medium text-surface-fg-subtle/50 uppercase tracking-wider">
-        {formatDateDivider(timestamp)}
-      </span>
-      <Separator className="flex-1" variant="gradient-left" />
-    </div>
-  )
-}
-
-// ---------------------------------------------------------------------------
-// Unread divider
-// ---------------------------------------------------------------------------
-
-function UnreadDivider() {
-  return (
-    <div className="relative flex items-center py-ds-02">
-      <Separator className="flex-1 h-[2px] bg-accent-7" />
-      <span className="px-ds-03 text-ds-xs font-semibold text-accent-11">
-        NEW
-      </span>
-      <Separator className="flex-1 h-[2px] bg-accent-7" />
-    </div>
-  )
-}
-
-// ---------------------------------------------------------------------------
-// Typing indicator
-// ---------------------------------------------------------------------------
-
-function TypingIndicator({ users }: { users: { name: string; image?: string | null }[] }) {
-  if (users.length === 0) return null
-
-  const names =
-    users.length === 1
-      ? users[0].name
-      : users.length === 2
-        ? `${users[0].name} and ${users[1].name}`
-        : `${users[0].name} and ${users.length - 1} others`
-
-  return (
-    <div className="flex items-center gap-ds-02 px-ds-02 py-ds-01 text-ds-xs text-surface-fg-subtle">
-      {/* Animated dots */}
-      <span className="flex gap-[2px]">
-        <span className="h-1 w-1 animate-bounce rounded-full bg-surface-fg-subtle [animation-delay:0ms]" />
-        <span className="h-1 w-1 animate-bounce rounded-full bg-surface-fg-subtle [animation-delay:150ms]" />
-        <span className="h-1 w-1 animate-bounce rounded-full bg-surface-fg-subtle [animation-delay:300ms]" />
-      </span>
-      <span>{names} is typing...</span>
-    </div>
-  )
-}
-
-// ---------------------------------------------------------------------------
 // Filter bar
 // ---------------------------------------------------------------------------
 
@@ -359,8 +284,6 @@ export function TaskPanelTimeline({
   const isClientTask = task.visibility === 'EVERYONE'
 
   const [filter, setFilter] = React.useState<TimelineFilter>('all')
-  const scrollRef = React.useRef<HTMLDivElement>(null)
-  const [userScrolledUp, setUserScrolledUp] = React.useState(false)
   const [newCount, setNewCount] = React.useState(0)
 
   const isPeek = mode === 'peek'
@@ -415,37 +338,23 @@ export function TaskPanelTimeline({
     return -1
   }, [filtered, lastViewedAt])
 
-  // ---- Auto-scroll ----
-  const scrollToBottom = React.useCallback(() => {
-    const el = scrollRef.current
-    if (el) {
-      el.scrollTop = el.scrollHeight
-    }
-  }, [])
-
+  // ---- Track new messages for the "N new" pill ----
   React.useEffect(() => {
     if (clientFiltered.length > prevLengthRef.current) {
-      if (userScrolledUp) {
-        setNewCount((c) => c + (clientFiltered.length - prevLengthRef.current))
-      } else {
-        scrollToBottom()
-      }
+      setNewCount((c) => c + (clientFiltered.length - prevLengthRef.current))
     }
     prevLengthRef.current = clientFiltered.length
-  }, [clientFiltered.length, userScrolledUp, scrollToBottom])
+  }, [clientFiltered.length])
 
-  // Initial scroll to bottom
-  React.useEffect(() => {
-    scrollToBottom()
-  }, [scrollToBottom])
-
-  const handleScroll = React.useCallback(() => {
-    const el = scrollRef.current
-    if (!el) return
-    const atBottom = el.scrollHeight - el.scrollTop - el.clientHeight < 40
-    setUserScrolledUp(!atBottom)
-    if (atBottom) setNewCount(0)
-  }, [])
+  // ---- Normalize typing users (core expects `string | undefined`, context provides `string | null`) ----
+  const normalizedTypingUsers = React.useMemo(
+    () =>
+      (typingUsers ?? []).map((u) => ({
+        name: u.name,
+        image: u.image ?? undefined,
+      })),
+    [typingUsers],
+  )
 
   // ---- Empty state ----
   if (filtered.length === 0 && !isPeek) {
@@ -490,123 +399,108 @@ export function TaskPanelTimeline({
         </div>
       )}
 
-      {/* Scrollable timeline */}
-      <div
-        ref={scrollRef}
-        onScroll={handleScroll}
-        aria-live="polite"
-        aria-relevant="additions"
-        className="flex-1 overflow-y-auto px-ds-06 py-ds-04"
-        style={{ scrollbarWidth: 'thin', scrollbarColor: 'var(--color-surface-border) transparent' }}
+      {/* Scrollable timeline via core MessageList */}
+      <MessageList
+        autoScroll
+        newMessageCount={newCount}
+        onScrollToBottom={() => {
+          setNewCount(0)
+        }}
+        headerSlot={
+          !clientMode && !isPeek ? (
+            <div className="pointer-events-none sticky top-0 left-0 right-0 z-10 h-3 -mb-3 bg-gradient-to-b from-surface-raised to-transparent" />
+          ) : undefined
+        }
+        className="px-ds-01"
       >
-        {/* Fade-in gradient at top of scroll area */}
-        {!clientMode && !isPeek && (
-          <div className="pointer-events-none sticky top-0 left-0 right-0 z-10 h-3 -mb-3 bg-gradient-to-b from-surface-raised to-transparent" />
-        )}
-        <div className="flex flex-col gap-ds-05 py-ds-03">
-          {displayItems.map((item, idx) => {
-            // Determine timestamp and date key for this item
-            const itemTimestamp =
-              item.kind === 'collapsed'
-                ? item.entries[0].event.timestamp
-                : getEntryTimestamp(item.entry)
-            const dateKey = getDateKey(itemTimestamp)
-            const showDateDivider = !isPeek && dateKey !== prevDateKey
-            prevDateKey = dateKey
+        {displayItems.map((item, idx) => {
+          // Determine timestamp and date key for this item
+          const itemTimestamp =
+            item.kind === 'collapsed'
+              ? item.entries[0].event.timestamp
+              : getEntryTimestamp(item.entry)
+          const dateKey = getDateKey(itemTimestamp)
+          const showDateDivider = !isPeek && dateKey !== prevDateKey
+          prevDateKey = dateKey
 
-            if (item.kind === 'collapsed') {
-              // Check if unread divider should appear before this group
-              const groupStartIdx = filteredIdx
-              const showUnread =
-                unreadAfterIndex >= 0 &&
-                unreadAfterIndex >= groupStartIdx &&
-                unreadAfterIndex < groupStartIdx + item.entries.length
-              filteredIdx += item.entries.length
-
-              return (
-                <React.Fragment key={`group-${item.entries[0].event.id}`}>
-                  {showDateDivider && <DateDivider timestamp={itemTimestamp} />}
-                  {showUnread && <UnreadDivider />}
-                  <CollapsedSystemGroup group={item} />
-                </React.Fragment>
-              )
-            }
-
-            // Single entry
-            const entryIdx = filteredIdx
-            filteredIdx++
+          if (item.kind === 'collapsed') {
+            // Check if unread divider should appear before this group
+            const groupStartIdx = filteredIdx
             const showUnread =
-              unreadAfterIndex >= 0 && entryIdx === unreadAfterIndex + 1
-
-            // For peek, entries already sliced; no unread logic needed
-            const entryId = getEntryId(item.entry)
-
-            // Grouped comments get tighter spacing
-            const isGrouped = item.isGrouped
+              unreadAfterIndex >= 0 &&
+              unreadAfterIndex >= groupStartIdx &&
+              unreadAfterIndex < groupStartIdx + item.entries.length
+            filteredIdx += item.entries.length
 
             return (
-              <React.Fragment key={entryId}>
-                {showDateDivider && <DateDivider timestamp={itemTimestamp} />}
-                {showUnread && !isPeek && <UnreadDivider />}
-                <div className={isGrouped ? '-mt-ds-03' : undefined}>
-                  <TimelineEntryRenderer
-                    entry={item.entry}
-                    currentUserId={currentUserId}
-                    onReact={onReact}
-                    onEditComment={onEditComment}
-                    onDeleteComment={onDeleteComment}
-                    isGrouped={isGrouped}
-                    isClientTask={isClientTask}
-                  />
-                </div>
+              <React.Fragment key={`group-${item.entries[0].event.id}`}>
+                {showDateDivider && <DateSeparator date={itemTimestamp} />}
+                {showUnread && <UnreadSeparator />}
+                <CollapsedSystemGroup group={item} />
               </React.Fragment>
             )
-          })}
-        </div>
+          }
+
+          // Single entry
+          const entryIdx = filteredIdx
+          filteredIdx++
+          const showUnread =
+            unreadAfterIndex >= 0 && entryIdx === unreadAfterIndex + 1
+
+          // For peek, entries already sliced; no unread logic needed
+          const entryId = getEntryId(item.entry)
+
+          // Grouped comments get tighter spacing
+          const isGrouped = item.isGrouped
+
+          return (
+            <React.Fragment key={entryId}>
+              {showDateDivider && <DateSeparator date={itemTimestamp} />}
+              {showUnread && !isPeek && <UnreadSeparator />}
+              <div className={isGrouped ? '-mt-ds-03' : undefined}>
+                <TimelineEntryRenderer
+                  entry={item.entry}
+                  currentUserId={currentUserId}
+                  onReact={onReact}
+                  onEditComment={onEditComment}
+                  onDeleteComment={onDeleteComment}
+                  isGrouped={isGrouped}
+                  isClientTask={isClientTask}
+                />
+              </div>
+            </React.Fragment>
+          )
+        })}
 
         {/* Agent streaming entry */}
         {isAgentStreaming && agentStreamingText && (
-          <div className="flex gap-ds-03 px-ds-02 py-ds-02">
-            <div className="shrink-0">
-              <Icon icon={IconRobot} size="md" className="text-accent-11" />
-            </div>
-            <div className="min-w-0 flex-1">
-              <div className="flex items-center gap-ds-02 text-ds-sm">
-                <span className="font-semibold text-surface-fg">Sutradhar</span>
-                <Badge variant="solid" color="accent" size="xs">AI</Badge>
-              </div>
-              <div className="mt-ds-01">
+          <Message className="px-ds-02 py-ds-02">
+            <Message.Avatar
+              icon={<Icon icon={IconRobot} size="md" className="text-accent-11" />}
+              size="md"
+            />
+            <Message.Content>
+              <Message.Author
+                name="Sutradhar"
+                badge={
+                  <Badge variant="solid" color="accent" size="xs">AI</Badge>
+                }
+              />
+              <Message.Body>
                 <StreamingText
                   text={agentStreamingText}
                   className="text-ds-sm text-surface-fg"
                 />
-              </div>
-            </div>
-          </div>
+              </Message.Body>
+            </Message.Content>
+          </Message>
         )}
 
         {/* Typing indicator */}
-        {typingUsers && typingUsers.length > 0 && (
-          <TypingIndicator users={typingUsers} />
+        {normalizedTypingUsers.length > 0 && (
+          <TypingIndicator users={normalizedTypingUsers} />
         )}
-      </div>
-
-      {/* "N new" floating pill */}
-      {userScrolledUp && newCount > 0 && (
-        <Button
-          variant="solid"
-          size="xs"
-          shape="pill"
-          onClick={() => {
-            scrollToBottom()
-            setUserScrolledUp(false)
-            setNewCount(0)
-          }}
-          className="absolute bottom-ds-04 left-1/2 -translate-x-1/2 shadow-md"
-        >
-          &darr; {newCount} new
-        </Button>
-      )}
+      </MessageList>
     </div>
   )
 }

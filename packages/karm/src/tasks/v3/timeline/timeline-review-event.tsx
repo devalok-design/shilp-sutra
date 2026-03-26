@@ -4,6 +4,7 @@ import * as React from 'react'
 import { IconCheck, IconArrowBackUp, IconClock } from '@tabler/icons-react'
 import { Icon } from '@/ui/icon'
 import { cn } from '@/ui/lib/utils'
+import { Message } from '@/ui/chat'
 import type { ReviewEvent } from '../task-panel-types'
 
 // ---------------------------------------------------------------------------
@@ -66,31 +67,34 @@ export function TimelineReviewEvent({ entry }: TimelineReviewEventProps) {
   const ReviewIcon = config.icon
 
   return (
-    <div className="flex flex-col gap-ds-01" data-testid="timeline-review-event">
-      <div className="flex items-center gap-ds-02 text-ds-sm">
-        <Icon
-          icon={ReviewIcon as any}
-          size="sm"
-          className={cn('shrink-0', config.className)}
+    <Message data-testid="timeline-review-event">
+      <Message.Avatar
+        icon={
+          <Icon
+            icon={ReviewIcon as any}
+            size="sm"
+            className={cn('shrink-0', config.className)}
+          />
+        }
+        size="sm"
+      />
+      <Message.Content>
+        <Message.Author
+          name={event.reviewerName}
+          formattedTimestamp={formatTimestamp(event.timestamp)}
+          badge={
+            <span className="text-surface-fg-muted text-[13px] font-normal">
+              {config.label}
+            </span>
+          }
         />
-        <span className="text-surface-fg-muted">
-          <span className="font-semibold text-surface-fg">
-            {event.reviewerName}
-          </span>
-          {' '}
-          {config.label}
-        </span>
-        <span className="ml-auto shrink-0 text-ds-xs text-surface-fg-subtle">
-          {formatTimestamp(event.timestamp)}
-        </span>
-      </div>
-
-      {event.comment && (
-        <p className="ml-ds-06 text-ds-sm text-surface-fg-muted">
-          {event.comment}
-        </p>
-      )}
-    </div>
+        {event.comment && (
+          <Message.Body className="text-surface-fg-muted">
+            {event.comment}
+          </Message.Body>
+        )}
+      </Message.Content>
+    </Message>
   )
 }
 

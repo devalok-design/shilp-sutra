@@ -328,6 +328,34 @@ export {
 // Brand Texture
 export { DevalokGrain, type DevalokGrainProps, type GrainIntensity } from './devalok-grain'
 
+// Chat primitives
+export {
+  MessageList,
+  type MessageListProps,
+  Message,
+  useMessageContext,
+  type MessageProps,
+  type MessageContextValue,
+  type MessageAvatarProps,
+  type MessageContentProps,
+  type MessageAuthorProps,
+  type MessageBodyProps,
+  type MessageEditableBodyProps,
+  type MessageReactionsProps,
+  type MessageActionsProps,
+  type MessageActionProps,
+  SystemMessage,
+  type SystemMessageProps,
+  DateSeparator,
+  type DateSeparatorProps,
+  UnreadSeparator,
+  type UnreadSeparatorProps,
+  MessageInput,
+  type MessageInputProps,
+  TypingIndicator,
+  type TypingIndicatorProps,
+} from './chat'
+
 // Other
 export { Link, type LinkProps } from './link'
 

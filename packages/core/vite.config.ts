@@ -56,6 +56,7 @@ const autoEntries = collectEntries([
 
 // Subdirectory entries that aren't picked up by the top-level scan
 const explicitEntries: Record<string, string> = {
+  'ui/chat/index': resolve(__dirname, 'src/ui/chat/index.ts'),
   'ui/charts/index': resolve(__dirname, 'src/ui/charts/index.ts'),
   'ui/tree-view/index': resolve(__dirname, 'src/ui/tree-view/index.ts'),
   'ui/lib/utils': resolve(__dirname, 'src/ui/lib/utils.ts'),

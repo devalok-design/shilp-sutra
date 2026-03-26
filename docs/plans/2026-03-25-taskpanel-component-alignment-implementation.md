@@ -387,13 +387,19 @@ export interface PeoplePickerProps {
   onAssign: (memberId: string) => void
   onUnassign: (memberId: string) => void
   onToggleLead: (memberId: string) => void
+  /** Position of the helper hint text. @default 'top' */
+  hintPosition?: 'top' | 'bottom'
+  /** Custom hint text. @default "Click to assign · ★ = lead" */
+  hint?: React.ReactNode
   children: React.ReactNode  // trigger element
 }
 ```
 
 **Implementation:**
 - Wraps `Popover` with a `PopoverContent` containing the member list
-- Header hint: `"Click to assign · ★ = lead"` in `text-[10px] uppercase tracking-wider`
+- Helper hint: `"Click to assign · ★ = lead"` in `text-[10px] uppercase tracking-wider`
+- `hintPosition` controls whether hint renders above or below the member list (default: top)
+- `hint` allows custom hint text or `null` to hide entirely
 - Each member row:
   - `Button variant="ghost"` with avatar + name + check icon (if assigned)
   - Star toggle button (only visible when assigned): `IconStarFilled` (warning-9) when lead, `IconStar` (muted) when not

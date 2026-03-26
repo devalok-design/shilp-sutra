@@ -54,9 +54,9 @@ Color tokens use OKLCH (perceptually uniform) with 12 functional steps per palet
 Semantic layer:
 - Accent (swappable): --color-accent-{1-12} + --color-accent-fg
 - Secondary: --color-secondary-{1-12} + --color-secondary-fg
-- Surface: --color-surface-{1-4} + --color-surface-fg / fg-muted / fg-subtle / border / border-strong
-  - Border mapping: light mode border=step5, border-strong=step6; dark mode border=step3, border-strong=step4
-  - Shell chrome (sidebar, topbar, bottom nav) uses surface-2 for elevation above surface-1 app background
+- Surface: --color-surface-{base,raised,sunken} + --color-surface-fg / fg-muted / fg-subtle / border / border-subtle
+  - Border mapping: light mode border=step5, border-subtle=step3; dark mode border=step3, border-subtle=step2
+  - Shell chrome (sidebar, topbar, bottom nav) uses surface-sunken with brand tint for recessed chrome
 - Status: --color-{error,success,warning,info}-{3,7,9,11}
 - Category: --color-category-{teal,amber,slate,indigo,cyan,orange,emerald}
 
@@ -602,7 +602,7 @@ Note: getFormFieldA11y() was removed in favor of useFormField() hook.
 
 ## Example
 ```jsx
-<Button variant="solid" color="error" startIcon={<IconTrash />} loading={isDeleting}>
+<Button variant="solid" color="error" startIcon={<Icon icon={IconTrash} />} loading={isDeleting}>
   Delete project
 </Button>
 
@@ -725,7 +725,7 @@ Note: getFormFieldA11y() was removed in favor of useFormField() hook.
 - **Added** Initial release
 # Icon
 
-- Import: @devalok/shilp-sutra/ui/icon
+- Import: @devalok/shilp-sutra/ui (barrel export)
 - Server-safe: No
 - Category: ui
 
@@ -736,6 +736,7 @@ Note: getFormFieldA11y() was removed in favor of useFormField() hook.
     label: string | undefined — Accessible label. Without: aria-hidden. With: aria-label + role="img"
     animate: "spin" | "pulse" | "bounce" | "none" | { rotate, scale } — Animation preset
     state: "idle" | "loading" | "success" | "error" — State machine (delegates to Spinner)
+    className: string — Additional CSS classes
 
 ## Size Tiers
     xs=14px, sm=16px, md=18px, lg=20px, xl=24px, 2xl=32px
@@ -779,7 +780,7 @@ Note: getFormFieldA11y() was removed in favor of useFormField() hook.
 
 # IconGroup
 
-- Import: @devalok/shilp-sutra/ui/icon
+- Import: @devalok/shilp-sutra/ui (barrel export)
 - Server-safe: No
 - Category: ui
 

@@ -146,7 +146,10 @@ const Progress = React.forwardRef<
               asChild
             >
               <motion.div
-                className={cn(progressIndicatorVariants({ color: effectiveColor }))}
+                className={cn(
+                  progressIndicatorVariants({ color: effectiveColor }),
+                  'transition-colors duration-moderate-01 ease-productive-standard',
+                )}
                 initial={false}
                 animate={{ width: `${value || 0}%` }}
                 transition={springs.smooth}

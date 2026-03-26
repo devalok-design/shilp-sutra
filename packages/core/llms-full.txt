@@ -731,7 +731,8 @@ Note: getFormFieldA11y() was removed in favor of useFormField() hook.
     size: "xs" | "sm" | "md" | "lg" | "xl" | "2xl" — propagated to children via IconContext
     stroke: "light" | "regular" | "bold" — propagated to children via IconContext
     gap: "tight" | "default" | "loose" — flex gap between icons
-    role: string — optional, use "toolbar" for toolbar patterns
+    label: string — accessible label (used as aria-label when role="toolbar")
+    role: "toolbar" — optional, set for toolbar patterns
 
 ## Example
 ```jsx
@@ -1902,31 +1903,70 @@ Drop as a child of any element with `relative overflow-hidden isolate`. Uses `ro
 - Category: ui
 
 ## Props
-    size: "sm" | "md" | "lg"
+    size: "xs" | "sm" | "md" | "lg"
     state: InputState
-    startIcon: ReactNode
-    endIcon: ReactNode
+    startSection: ReactNode          — leading section (icons, text, spinners)
+    endSection: ReactNode            — trailing section (icons, buttons, spinners)
+    startSectionClickable: boolean   — opt-in pointer-events for start section
+    endSectionClickable: boolean     — opt-in pointer-events for end section
+    wrapperClassName: string         — classes for the wrapper div (border, bg, ring)
+    className: string                — classes for the inner <input> element
+    startIcon: ReactNode             — DEPRECATED, alias for startSection
+    endIcon: ReactNode               — DEPRECATED, alias for endSection
     (plus all standard HTML input attributes except native "size")
 
 ## Types
     InputState = 'default' | 'error' | 'warning' | 'success'
 
+## Exports
+    Input             — the component
+    inputWrapperVariants — CVA variants for the wrapper div
+    inputVariants     — DEPRECATED alias for inputWrapperVariants
+
 ## Defaults
     size: "md"
 
+## Sizes
+    xs → h-ds-xs-plus (28px), text-ds-sm, section width 26px
+    sm → h-ds-sm (32px), text-ds-sm, section width 30px
+    md → h-ds-md (40px), text-ds-md, section width 38px
+    lg → h-ds-lg (48px), text-ds-md, rounded-ds-lg, section width 46px
+
 ## Example
 ```jsx
-<Input type="email" placeholder="you@example.com" state="error" startIcon={<IconMail />} />
+<Input type="email" placeholder="you@example.com" startSection={<IconMail />} state="error" />
+<Input size="sm" endSection={<IconSearch />} placeholder="Search..." />
+<Input
+  startSection={<span className="text-ds-sm text-surface-fg-muted">https://</span>}
+  endSection={<IconButton icon={<IconCopy />} variant="ghost" size="xs" aria-label="Copy" />}
+  endSectionClickable
+  placeholder="devalok.com/api/key"
+/>
 ```
 
 ## Gotchas
 - HTML native "size" attribute is excluded — use CSS width instead
 - state="error" sets aria-invalid automatically
 - Inside FormField: auto-inherits state, aria-describedby, aria-required from context (explicit props override)
-- Resting border is border-subtle (soft); focus ring is `ring-1 ring-accent-7` (v0.12.0)
-- All sizes (sm, md, lg) use text-ds-md (14px) font — size only affects height and padding (v0.15.0)
+- Focus ring wraps the entire input + sections as one unit (container-first architecture)
+- Sections are pointer-events-none by default — set startSectionClickable/endSectionClickable for interactive content (buttons, links)
+- Icons inside sections are auto-sized via IconProvider based on the input size
+- Section width = input height - 2px (per-size scaling)
+- className targets the inner <input>; use wrapperClassName for border/bg/ring overrides
+- startIcon/endIcon still work but are deprecated — use startSection/endSection instead
 
 ## Changes
+### v0.29.0
+- **Added** `startSection`, `endSection` props — accept any ReactNode (icons, buttons, text, spinners)
+- **Added** `startSectionClickable`, `endSectionClickable` boolean props for interactive sections
+- **Added** `wrapperClassName` prop to style the wrapper div independently from the input
+- **Added** `xs` size (28px height, text-ds-sm)
+- **Added** `inputWrapperVariants` export (CVA variants for the wrapper)
+- **Changed** Container-first architecture — focus ring wraps entire input + sections as one unit
+- **Changed** Per-size section scaling — section width = input height - 2px
+- **Deprecated** `startIcon` / `endIcon` — still work as aliases, use `startSection` / `endSection`
+- **Deprecated** `inputVariants` export — use `inputWrapperVariants` (semantics changed to target wrapper)
+
 ### v0.15.0
 - **Changed** `lg` size font changed from `text-ds-lg` (18px) to `text-ds-md` (14px) — all input sizes now use 14px for consistency
 - **Changed** `md` size font standardized to `text-ds-md` (14px) from mixed values

@@ -7,6 +7,28 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Breaking Changes (karm)
+
+- **TaskPanel v3 is now the default export** — The v2 tab-based TaskPanel is available as `TaskPanelV2`. V3 uses a unified scrollable layout with composable wings.
+- **`clientMode` type changed** — From `boolean` to `false | 'VIEW_ONLY' | 'COLLABORATOR'`. Passing `true` auto-normalizes to `'VIEW_ONLY'`.
+
+### Added (karm — TaskPanel v3)
+
+- **Files section** — Upload, download, delete files with GDrive link support. Collapsible section with drag-and-drop.
+- **Start date + Phase picker** — Two new property cells in the properties wing.
+- **Overdue styling** — Due dates show relative text ("3d overdue", "Due tomorrow") with red treatment.
+- **Creator attribution** — Shows "Created by X" with AI/Client badges.
+- **Task actions menu** — Copy link, copy reference, duplicate, delete via "..." dropdown.
+- **Project breadcrumb** — Shows "ProjectName > KRM-847" in header.
+- **Prev/next navigation** — Up/down buttons + J/K keyboard shortcuts.
+- **Keyboard shortcuts** — S/A/P/D/E/C/Escape for property pickers and actions.
+- **Bandwidth indicators** — Red/amber dots on overloaded/elevated assignees.
+- **Leave indicators** — "On leave" label on leads/assignees.
+- **TaskPanelSheetWrapper** — Convenience wrapper owning Sheet + loading state.
+- **Client COLLABORATOR mode** — Clients with COLLABORATOR access can edit priority, due date, description, and post messages.
+
+## [0.29.0] - 2026-03-26 (core)
+
 ### Breaking Changes
 
 - **Warning color remapped from yellow to amber-bright** — `warning-*` tokens now use a warm amber (OKLCH hue 65-70, L=0.78 at step 9) instead of yellow (hue 85, L=0.55). The old yellow produced a muddy olive at mid-lightness with insufficient contrast for both light and dark text. `warning-fg` is now hardcoded dark in both themes. Existing `--amber-*` category colors are untouched — only the `warning-*` semantic tokens changed.
@@ -46,6 +68,31 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - **`startSectionClickable` / `endSectionClickable`** — Opt-in pointer-events for interactive sections (clear buttons, toggles).
 - **`wrapperClassName`** — Style the wrapper div independently from the input element.
 - **Per-size section scaling** — Section width = input height - 2px (square). Icons auto-size via IconProvider.
+- **Chat primitives** — New `ui/chat` module with 7 components:
+  - `MessageList` — Scroll container with auto-scroll, "N new messages" pill, load-more trigger, ARIA log role
+  - `Message` — Compound component (Message.Avatar, Message.Author, Message.Body, Message.EditableBody, Message.Actions, Message.Reactions)
+  - `SystemMessage` — Styled system/info messages
+  - `MessageInput` — Auto-resizing textarea with send/stop buttons
+  - `DateSeparator` — Date divider between message groups
+  - `UnreadSeparator` — "New messages" line marker
+  - `TypingIndicator` — Animated dots for typing state
+- **Switch `size` prop** — `sm`, `md` (default), `lg` variants
+- **Switch `color` prop** — `accent` (default), `success`, `warning` for checked state
+- **Switch `thumbIcon` prop** — Render content inside the switch thumb
+- **StatusBadge `in-progress` + `review` statuses** — New built-in status variants
+- **StatusBadge clickable** — `onClick` prop renders as button with auto chevron-down icon
+- **AvatarGroup `indicator`** — `lead` (warning dot) or `admin` (accent dot) overlay on individual avatars
+- **Progress `autoColor`** — Automatically shifts color by value: default → warning (60%) → success (85%) → error (100%+)
+- **ActivityFeed `renderItem`** — Custom render function for individual feed items; return `undefined` to fall back to default
+- **Accordion `chevronPosition`** — `left` or `right` (default) placement of the expand/collapse chevron
+- **DevalokGrain `tint` prop** — Control gradient tint color on the grain texture
+- **DevalokGrain animations** — Entrance animations on the grain effect
+
+### Fixed
+
+- **AvatarGroup** — Restored `rounded-full` on wrapper divs for circular rings
+- **Progress autoColor** — Background-color transitions now animate smoothly
+- **DevalokGrain** — No gradient without tint (was showing dark smudge on light surfaces)
 
 ### Deprecated
 
@@ -54,26 +101,6 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - **Button `color="default"`** — Use `color="accent"` instead.
 - **`startIcon` / `endIcon`** on Input — Use `startSection`/`endSection` instead. Old props still work as aliases.
 - **`inputVariants`** — Use `inputWrapperVariants` (semantics changed: now targets wrapper, not input).
-
-### Breaking Changes (karm)
-
-- **TaskPanel v3 is now the default export** — The v2 tab-based TaskPanel is available as `TaskPanelV2`. V3 uses a unified scrollable layout with composable wings.
-- **`clientMode` type changed** — From `boolean` to `false | 'VIEW_ONLY' | 'COLLABORATOR'`. Passing `true` auto-normalizes to `'VIEW_ONLY'`.
-
-### Added (karm — TaskPanel v3)
-
-- **Files section** — Upload, download, delete files with GDrive link support. Collapsible section with drag-and-drop.
-- **Start date + Phase picker** — Two new property cells in the properties wing.
-- **Overdue styling** — Due dates show relative text ("3d overdue", "Due tomorrow") with red treatment.
-- **Creator attribution** — Shows "Created by X" with AI/Client badges.
-- **Task actions menu** — Copy link, copy reference, duplicate, delete via "..." dropdown.
-- **Project breadcrumb** — Shows "ProjectName > KRM-847" in header.
-- **Prev/next navigation** — Up/down buttons + J/K keyboard shortcuts.
-- **Keyboard shortcuts** — S/A/P/D/E/C/Escape for property pickers and actions.
-- **Bandwidth indicators** — Red/amber dots on overloaded/elevated assignees.
-- **Leave indicators** — "On leave" label on leads/assignees.
-- **TaskPanelSheetWrapper** — Convenience wrapper owning Sheet + loading state.
-- **Client COLLABORATOR mode** — Clients with COLLABORATOR access can edit priority, due date, description, and post messages.
 
 ## [0.28.0] - 2026-03-21 (core) / [0.24.1] - 2026-03-21 (karm)
 

@@ -1,4 +1,4 @@
-# Chat Primitives — Design
+# Chat Primitives — Design (v2, post-audit)
 
 **Date:** 2026-03-26
 **Scope:** Composable chat primitive components for `@devalok/shilp-sutra` (core), serving both Karm AI chat and task timeline conversations.
@@ -12,15 +12,11 @@ Karm has two chat-like experiences built with completely different architectures
 - **AI Chat** (`karm/src/chat/MessageList`) — bubble-based, 2-party (USER/ASSISTANT), no grouping, no reactions, no system events
 - **Task Timeline** (`karm/src/tasks/v3/timeline/`) — flat, multi-party, system events, reactions, hover actions, inline editing, grouping, unread markers
 
-Both rebuild scroll management, auto-scroll, typing indicators, and message rendering from scratch. When we tried to unify them via `ActivityFeed` (a log component), it destroyed the chat feel.
+Both rebuild scroll management, auto-scroll, typing indicators, and message rendering from scratch.
 
 ## Research Basis
 
-Audited 8 chat component libraries: Stream Chat React, Chatscope, react-chat-elements, Sendbird UIKit, TalkJS, Ant Design X, shadcn-chat, assistant-ui.
-
-**Industry consensus:** Composable primitives with a smart scroll container. The `MessageList` (scroll + auto-scroll + grouping + load-more) is the hard primitive. Message rendering is just styled divs composed by the consumer.
-
-**What won:** Stream Chat's component override pattern + Chatscope's explicit composition + Ant Design X's role mapping. What failed: monolithic data-driven lists (react-chat-elements), black-box widgets (TalkJS).
+Audited 8 chat component libraries: Stream Chat React, Chatscope, assistant-ui, Sendbird UIKit, TalkJS, Ant Design X, shadcn-chat. Industry consensus: composable primitives with a smart scroll container.
 
 ---
 
@@ -30,162 +26,173 @@ Audited 8 chat component libraries: Stream Chat React, Chatscope, react-chat-ele
 
 ```
 packages/core/src/ui/chat/
-  chat-container.tsx      — flex column wrapper, ChatContext provider
-  message-list.tsx        — THE hard primitive: scroll, auto-scroll, grouping
+  message-list.tsx        — scroll container: auto-scroll, "N new" pill, load-more
   message.tsx             — compound: Message.Avatar, .Content, .Author, .Body, .Actions, .Reactions
-  system-message.tsx      — compact inline event annotation
+  system-message.tsx      — compact inline event annotation (single-line or multi-line)
   date-separator.tsx      — "Today" / "Yesterday" / "Mar 25"
   unread-separator.tsx    — "NEW" accent-colored divider
-  message-input.tsx       — auto-resize textarea + send + extensible slots
+  message-input.tsx       — auto-resize textarea + send + slots + streaming cancel
   typing-indicator.tsx    — "Name is typing..." with animated dots
   index.ts                — barrel export
 ```
 
+**Removed:** `ChatContainer` (audit #7 — it's just a div with an empty context. Consumers write `<div className="flex flex-col h-full">` themselves).
+
 ### What lives where
 
-| Layer | Owns | Examples |
-|-------|------|---------|
-| **Core** (`ui/chat/`) | Scroll behavior, grouping, message compound, separators, input shell | MessageList, Message, SystemMessage, DateSeparator, MessageInput |
-| **Karm AI chat** | AI-specific composition — bubble variant, role mapping, streaming | Composes core with `variant="bubble"`, `placement="end"` |
-| **Karm task timeline** | Task-specific orchestration — filters, visibility, collapsing | Composes core with `variant="flat"`, highlight, system events |
+| Layer | Owns |
+|-------|------|
+| **Core** (`ui/chat/`) | Scroll behavior, message compound, separators, input shell |
+| **Karm consumers** | Grouping computation, client filtering, system event collapsing, peek mode, filter tabs, visibility toggle |
+
+**Key decision (audit #1/#14/#23):** Grouping is **consumer-side**, not built into MessageList. The data-attribute approach doesn't work in React (can't read/set attributes on ReactElements before they render). The current task timeline's `computeCommentGrouping()` returning a boolean array + `isGrouped` prop is the correct pattern. MessageList is purely a scroll container — it doesn't inspect its children.
 
 ### NOT building
 
 - State management / runtime (consumer's job)
+- Grouping logic in MessageList (consumer computes, passes `grouped` prop to Message)
 - Emoji picker (separate component)
-- File upload handling (already exists)
-- Rich text editor (already exists)
-- Virtualized list (premature — add later if 1000+ messages)
+- Virtualized list (add later if needed)
+- Threading / reply chains (future)
 
 ---
 
 ## Component APIs
 
-### ChatContainer
-
-```tsx
-interface ChatContainerProps extends React.HTMLAttributes<HTMLDivElement> {
-  children: React.ReactNode
-}
-```
-
-Flex column wrapper. Provides `ChatContext` (currently just a marker for compound component validation — extensible later for shared state if needed). Handles `height: 100%` and overflow containment.
-
-### MessageList (the hard primitive)
+### MessageList (scroll container)
 
 ```tsx
 interface MessageListProps extends React.HTMLAttributes<HTMLDivElement> {
   children: React.ReactNode
 
-  /** Auto-scroll to bottom when new content arrives (unless user scrolled up). @default true */
+  /** Auto-scroll to bottom on new content (unless user scrolled up). @default true */
   autoScroll?: boolean
-  /** Number of new messages when user is scrolled up — drives the "N new" pill. */
+  /** Number of new messages when scrolled up — drives floating pill. */
   newMessageCount?: number
-  /** Called when user scrolls to bottom or clicks the "scroll to bottom" pill. */
+  /** Called when user scrolls to bottom or clicks pill. */
   onScrollToBottom?: () => void
 
-  /** Called when user scrolls near the top — load older messages. */
+  /** Called near top — load older messages. */
   onLoadMore?: () => void
-  /** Shows loading spinner at top while loading more. */
+  /** Shows spinner at top while loading. */
   isLoadingMore?: boolean
 
-  /** Message grouping — groups consecutive messages by same author within time window.
-   *  Reads data-author-id and data-timestamp from children.
-   *  Adds data-group-position to each child.
-   *  @default true */
-  grouping?: boolean | { maxInterval?: number }
-
-  /** Custom "scroll to bottom" button. Default: floating pill with count. */
-  scrollToBottomSlot?: React.ReactNode
-  /** Custom loading indicator for load-more. */
-  loadingSlot?: React.ReactNode
   /** Empty state when no children. */
   emptySlot?: React.ReactNode
+  /** Custom scroll-to-bottom button. */
+  scrollToBottomSlot?: React.ReactNode
+  /** Slot above the scroll area (e.g., fade gradient overlay). */
+  headerSlot?: React.ReactNode
 }
 ```
 
-**Key behaviors:**
-1. **Sticky scroll** — if at bottom, auto-scroll on new children. If scrolled up, hold position. Threshold: 40px from bottom.
-2. **"N new" pill** — floating bottom-center when `newMessageCount > 0` and scrolled up. Click scrolls to bottom + `onScrollToBottom()`.
-3. **Load more** — when within 100px of top, calls `onLoadMore`. Preserves scroll position after prepend (capture `scrollHeight` before, set `scrollTop = newScrollHeight - oldScrollHeight` after).
-4. **Grouping via data attributes** — reads `data-author-id` and `data-timestamp` from direct children. Computes group boundaries (same author, within `maxInterval` ms, default 5min). Sets `data-group-position` on each child. Consumers style based on this attribute.
-5. **Thin scrollbar** — `scrollbar-width: thin`, `scrollbar-color: var(--color-surface-border) transparent`.
+**MessageList does NOT do grouping.** It's purely a scroll container with:
+1. **Sticky scroll** — auto-scroll on new children unless user scrolled up (threshold: 40px)
+2. **"N new" pill** — floating at bottom when `newMessageCount > 0` and scrolled up. **Consumer must reset `newMessageCount` to 0 inside `onScrollToBottom`** — MessageList does not clear it internally.
+3. **Load more** — calls `onLoadMore` near top. Preserves scroll position via `useRef` capturing `scrollHeight` before update and adjusting `scrollTop` in `useLayoutEffect` after
+4. **`headerSlot`** — for the fade gradient overlay the task timeline uses
+5. **Accessibility** — `role="log"` + `aria-live="polite"` + `aria-relevant="additions"` baked in
+6. **Thin scrollbar** — `scrollbar-width: thin`
 
 ### Message (compound component)
 
 ```tsx
 interface MessageProps extends React.HTMLAttributes<HTMLDivElement> {
   children: React.ReactNode
-  /** Visual style. flat = no bubble bg, bubble = rounded bg. @default 'flat' */
+  /** flat = no bubble bg, bubble = rounded bg. @default 'flat' */
   variant?: 'flat' | 'bubble'
-  /** Alignment. start = left, end = right. @default 'start' */
+  /** start = left, end = right. @default 'start' */
   placement?: 'start' | 'end'
-  /** Highlight tint. mention = accent, internal = amber, urgent = error. */
-  highlight?: 'mention' | 'internal' | 'urgent'
-  // Data attributes for MessageList grouping
-  'data-author-id'?: string
-  'data-timestamp'?: string
+  /** Highlight tint. mention = accent, internal = amber. */
+  highlight?: 'mention' | 'internal'
+  /** When true, hides Avatar and Author (continuation of same-author group). Consumer controls this. */
+  grouped?: boolean
+  /** When true, renders deleted placeholder instead of children. */
+  deleted?: boolean
+  /** Deleted placeholder text. @default "This message was deleted" */
+  deletedText?: string
 }
 ```
+
+**Audit fixes applied:**
+- **#1/#23:** `grouped` is a simple boolean prop (not data-attributes). Consumer computes grouping and passes it. `Message.Avatar` and `Message.Author` check this prop and render a spacer/hide when `grouped=true`.
+- **#3:** `deleted` prop renders a muted "This message was deleted" placeholder with trash icon instead of children.
+- **#18:** Message wraps content in `motion.div` with `initial={{ opacity: 0, y: 8 }}` + `animate={{ opacity: 1, y: 0 }}` using `springs.snappy`. MessageList wraps children in `<AnimatePresence initial={false}>` so messages present on first render don't animate in — only subsequently added messages do. This is an internal implementation detail, not a public API.
 
 **Sub-components:**
 
 ```tsx
-// Message.Avatar — shows author avatar. Auto-hides when grouped (middle/last).
+// Message.Avatar — wraps core Avatar. Renders spacer when grouped.
 interface MessageAvatarProps {
   src?: string | null
-  fallback?: string          // initials
-  icon?: React.ReactNode     // alternative: icon instead of image (for bots)
-  size?: 'sm' | 'md'        // sm=20px, md=24px. @default 'md'
+  fallback?: string
+  icon?: React.ReactNode       // for bots
+  size?: 'sm' | 'md'          // sm=20px, md=24px. @default 'md'
+  children?: React.ReactNode   // escape hatch: full custom Avatar
 }
 
-// Message.Content — flex column wrapper for author/body/reactions
+// Message.Content — flex column wrapper
 interface MessageContentProps extends React.HTMLAttributes<HTMLDivElement> {
   children: React.ReactNode
 }
 
-// Message.Author — name + optional badge + timestamp. Auto-hides when grouped.
+// Message.Author — name + badge + timestamp. Hidden when grouped.
 interface MessageAuthorProps {
   name: string
-  badge?: React.ReactNode    // <Badge>Client</Badge>, <Badge>AI</Badge>
-  timestamp?: string | Date
+  badge?: React.ReactNode
+  /** ISO 8601 string or Date object. Strings are parsed via `new Date()`. For pre-formatted strings, use `formattedTimestamp` instead. */
+  timestamp?: Date
+  /** Pre-formatted timestamp string — rendered as-is, skips formatting. */
+  formattedTimestamp?: string
   timestampFormat?: (date: Date) => string
 }
 
-// Message.Body — renders children. Consumer decides: text, HTML, markdown, streaming.
+// Message.Body — renders children (text, markdown, streaming, whatever)
 interface MessageBodyProps extends React.HTMLAttributes<HTMLDivElement> {
   children: React.ReactNode
 }
 
-// Message.Reactions — emoji pills row
+// Message.EditableBody — view/edit toggle for inline editing (audit #2)
+interface MessageEditableBodyProps {
+  content: string
+  onSave: (newContent: string) => void
+  onCancel?: () => void        // called on Escape — for analytics, optimistic rollback, etc.
+  canEdit?: boolean            // only show edit affordance for own messages
+  renderContent?: (content: string) => React.ReactNode  // custom renderer (HTML, markdown)
+}
+
+// Message.Reactions — emoji pills
 interface MessageReactionsProps {
   reactions: { emoji: string; count: number; reacted: boolean }[]
   onReact: (emoji: string) => void
 }
 
-// Message.Actions — floating toolbar, appears on hover with delay
+// Message.Actions — floating toolbar on hover
 interface MessageActionsProps {
-  children: React.ReactNode   // Message.Action items
-  delay?: number              // hover delay in ms. @default 100
+  children: React.ReactNode
+  delay?: number               // @default 100ms
 }
 
 // Message.Action — individual action button
 interface MessageActionProps {
   icon: React.ComponentType<any>
-  label: string               // aria-label + tooltip
+  label: string
   onClick: () => void
-  variant?: 'default' | 'danger'  // danger = error color on hover
+  variant?: 'default' | 'danger'
 }
 ```
 
-**Grouping integration:**
-- `Message.Avatar` reads `data-group-position` from the nearest `Message` ancestor. When position is `middle` or `last`, renders an invisible spacer instead of the avatar.
-- `Message.Author` same logic — hides name/timestamp when grouped.
-- CSS-driven: `[data-group-position="middle"] [data-chat-avatar] { visibility: hidden }` so it works without re-renders.
+**`Message.EditableBody` (audit #2):** Handles the view/edit toggle internally — click to edit (when `canEdit`), renders textarea in edit mode, Enter to save, Escape to cancel, blur to save. `renderContent` is the escape hatch for custom rendering (HTML, markdown). When not editing, calls `renderContent(content)` or renders content as text.
 
-**Variant rendering:**
-- `flat`: no background, flex row. Avatar left, content right. Full width.
-- `bubble`: rounded background (`bg-surface-raised-hover` for start, `bg-accent-9 text-accent-fg` for end). Max-width 85%. Border radius adjusts for grouped messages.
+**`Message.Avatar` children escape hatch (audit #10):** When `children` is provided, renders that instead of the simplified `src`/`fallback` API. This lets consumers use the full core `Avatar` compound with status dots, rings, etc:
+```tsx
+<Message.Avatar>
+  <Avatar size="sm" status="online" ring="lead">
+    <AvatarImage src={...} />
+    <AvatarFallback>AR</AvatarFallback>
+  </Avatar>
+</Message.Avatar>
+```
 
 ### SystemMessage
 
@@ -193,23 +200,27 @@ interface MessageActionProps {
 interface SystemMessageProps extends React.HTMLAttributes<HTMLDivElement> {
   icon?: React.ReactNode
   timestamp?: string
-  children: React.ReactNode   // "Sarah changed status to Done"
+  /** Visual style. event = compact muted line, alert = centered error banner. @default 'event' */
+  variant?: 'event' | 'alert'
+  children: React.ReactNode
 }
 ```
 
-Single compact line (~24px). Subtle background tint (`bg-surface-raised-hover/30`). Muted text (11px). No avatar, no hover actions.
+**Audit #4/#13 fix:** Two variants:
+- `'event'` (default): compact single-line for status changes, assignments. Subtle bg tint, muted 11px text. Supports multi-line children for review events with comments.
+- `'alert'`: centered error banner for AI chat SYSTEM role messages. `bg-error-3 text-error-11` with alert icon.
 
 ### DateSeparator
 
 ```tsx
 interface DateSeparatorProps {
   date: Date | string
-  format?: (date: Date) => string
+  format?: (date: Date) => string   // default: "Today"/"Yesterday"/"Mar 25"
   className?: string
 }
 ```
 
-Centered label on gradient horizontal rules. Default format: "Today" / "Yesterday" / "Mar 25".
+Centered label on gradient horizontal rules.
 
 ### UnreadSeparator
 
@@ -230,16 +241,22 @@ interface MessageInputProps extends Omit<React.HTMLAttributes<HTMLDivElement>, '
   onSubmit: (text: string) => void
   placeholder?: string
   disabled?: boolean
-  /** Slot before the textarea (e.g., visibility toggle). */
-  leadingSlot?: React.ReactNode
-  /** Slot after the textarea (e.g., attach, emoji). Replaces default send button if provided. */
-  trailingSlot?: React.ReactNode
-  /** Custom send button icon. @default IconSend */
+  /** Streaming/cancel state (audit #11) */
+  isStreaming?: boolean
+  onCancel?: () => void
+  /** Slots */
+  leadingSlot?: React.ReactNode     // visibility toggle
+  trailingSlot?: React.ReactNode    // attach, emoji (appended after send/cancel button)
+  /** Below the input (audit #12) */
+  disclaimer?: string
+  /** Custom send icon. @default IconSend */
   sendIcon?: React.ReactNode
 }
 ```
 
-Auto-resizing textarea (max 160px). Enter to send, Shift+Enter for newline. The `leadingSlot` and `trailingSlot` are where karm adds its visibility Switch and paperclip.
+**Audit #11 fix:** `isStreaming` + `onCancel` are first-class. When streaming, send button transforms to a stop button (red `IconSquare`) that calls `onCancel`. Enter-to-send is disabled during streaming.
+
+**Audit #12 fix:** `disclaimer` renders muted text below the input area.
 
 ### TypingIndicator
 
@@ -250,131 +267,55 @@ interface TypingIndicatorProps {
 }
 ```
 
-"Sarah is typing..." or "Sarah and Arjun are typing..." with bouncing dots. Reserves vertical space to prevent layout shift.
+**Audit #19 fix:** Correct grammar: 1 user = "Sarah is typing...", 2 users = "Sarah and Arjun are typing...", 3+ = "Several people are typing..."
+
+Reserves vertical space (min-height) to prevent layout shift. AnimatePresence for enter/exit.
 
 ---
 
-## How Karm Composes These
+## What Consumers Own (not core)
 
-### AI Chat (bubble, 2-party)
+These features stay consumer-side (audit #6/#8/#9):
 
-```tsx
-<ChatContainer>
-  <MessageList emptySlot={<EmptyState icon={IconRobot} title="Karm AI" />}>
-    {messages.map(msg => (
-      <Message key={msg.id}
-        variant="bubble"
-        placement={msg.role === 'USER' ? 'end' : 'start'}
-        data-author-id={msg.role}
-        data-timestamp={msg.createdAt}
-      >
-        {msg.role !== 'USER' && <Message.Avatar icon={<Icon icon={IconRobot} />} />}
-        <Message.Content>
-          {msg.role !== 'USER' && (
-            <Message.Author name="Devadoot" badge={<Badge size="xs" color="accent">AI</Badge>} />
-          )}
-          <Message.Body><ReactMarkdown>{msg.content}</ReactMarkdown></Message.Body>
-        </Message.Content>
-      </Message>
-    ))}
-  </MessageList>
-  <TypingIndicator users={isStreaming ? [{ name: 'Devadoot' }] : []} />
-  <MessageInput onSubmit={onSend} placeholder="Ask Karm AI..." />
-</ChatContainer>
-```
-
-### Task Timeline (flat, multi-party)
-
-```tsx
-<ChatContainer>
-  <FilterTabs filter={filter} onChange={setFilter} />
-  <MessageList autoScroll newMessageCount={newCount} onScrollToBottom={clearNew}
-    emptySlot={<EmptyState title="Start the conversation" />}>
-
-    {displayItems.map(item => {
-      if (item.type === 'date-divider')
-        return <DateSeparator key={item.key} date={item.date} />
-
-      if (item.type === 'unread-divider')
-        return <UnreadSeparator key="unread" />
-
-      if (item.type === 'system-event')
-        return (
-          <SystemMessage key={item.id} icon={actionIcon}>
-            <b>{actorName}</b> {description}
-          </SystemMessage>
-        )
-
-      if (item.type === 'comment')
-        return (
-          <Message key={item.id}
-            highlight={isInternal ? 'internal' : isMentioned ? 'mention' : undefined}
-            data-author-id={authorId} data-timestamp={createdAt}>
-            <Message.Avatar src={author.image} fallback={initials} />
-            <Message.Content>
-              <Message.Author name={author.name} badge={clientBadge} timestamp={createdAt} />
-              <Message.Body>{sanitizedContent}</Message.Body>
-              <Message.Reactions reactions={reactions} onReact={onReact} />
-            </Message.Content>
-            <Message.Actions>
-              <Message.Action icon={IconMoodSmile} label="React" onClick={handleReact} />
-              <Message.Action icon={IconPencil} label="Edit" onClick={handleEdit} />
-              <Message.Action icon={IconTrash} label="Delete" onClick={handleDelete} variant="danger" />
-            </Message.Actions>
-          </Message>
-        )
-
-      if (item.type === 'agent-response')
-        return (
-          <Message key={item.id} data-author-id={agentId} data-timestamp={ts}>
-            <Message.Avatar icon={<Icon icon={IconRobot} />} />
-            <Message.Content>
-              <Message.Author name={agentName} badge={<Badge size="xs" color="accent">AI</Badge>} />
-              <Message.Body>{isStreaming ? <StreamingText /> : content}</Message.Body>
-            </Message.Content>
-          </Message>
-        )
-    })}
-  </MessageList>
-  <TypingIndicator users={typingUsers} />
-  <TaskComposer onSubmit={onPost} showVisibility={showVis} />
-</ChatContainer>
-```
-
-Same primitives. Different compositions. Core owns scroll + visual building blocks. Karm owns business logic.
+| Feature | Where | Why |
+|---------|-------|-----|
+| **Message grouping computation** | Consumer passes `grouped` prop | Grouping rules differ per context (task timeline groups comments, AI chat groups by role) |
+| **System event collapsing** | `task-panel-timeline.tsx` | Business logic: 3+ events from same actor within 10min |
+| **Client filtering** | `task-panel-timeline.tsx` | Business logic: hide internal comments from clients |
+| **Peek mode** | `task-panel-timeline.tsx` | Slice to last 2 entries, hide filters |
+| **Filter tabs** | `task-panel-timeline.tsx` | All/Comments/Activity tabs are task-specific |
+| **Agent long-content collapse** | Consumer wraps `Message.Body` children | Use a collapsible wrapper around long content (audit #5) |
+| **Visibility toggle** | Karm's `TaskComposer` | Core `MessageInput` provides `leadingSlot` |
 
 ---
 
 ## Animation and Tokens
 
-All animations use existing motion tokens:
-- Message enter: `springs.snappy` (opacity 0 to 1, y 8 to 0)
+- Message enter: `springs.snappy` (opacity 0→1, y 8→0). First mount skips animation.
 - Typing indicator dots: `duration: 0.6, repeat: Infinity, delay: i * 0.15`
-- "N new" pill: `tweens.fade` enter/exit
-- Actions toolbar: `opacity 0 to 1, transition-opacity duration-150 delay-100`
+- "N new" pill: `tweens.fade` enter/exit via AnimatePresence
+- Actions toolbar: CSS `transition-opacity duration-150 delay-100` (not Framer Motion — hover states don't need AnimatePresence)
 - Scroll-to-bottom: `behavior: 'smooth'`
-- Grouping position changes: CSS-driven (data attribute swap, no JS re-render)
-
-All colors use semantic tokens. No hardcoded values.
+- All colors: semantic tokens only
 
 ---
 
 ## Migration Path
 
-1. Build core chat primitives (8 components)
-2. Migrate karm AI chat (`karm/src/chat/MessageList` uses core `MessageList` + `Message` bubble variant)
-3. Migrate karm task timeline (timeline sub-components use core `Message` + `SystemMessage` + separators)
+1. Build 7 core chat primitives
+2. Migrate karm AI chat — `MessageList` replaces custom scroll, `Message variant="bubble"` replaces custom bubbles, `MessageInput` replaces `ChatInput`
+3. Migrate karm task timeline — timeline sub-components (`TimelineComment`, `TimelineSystemEvent`, etc.) rewritten to compose `Message`, `SystemMessage`, separators. Container logic (`task-panel-timeline.tsx`) stays but renders core primitives.
 4. Delete old implementations
-5. `task-panel-timeline.tsx` container logic (filtering, collapsing, grouping, unread placement) stays — renders core primitives instead of custom components
 
 ---
 
 ## Success Criteria
 
 - One `MessageList` handles scroll/auto-scroll for both AI chat and task timeline
-- `Message` compound component renders both bubble (AI) and flat (task) variants
+- `Message` compound renders both bubble and flat variants
+- All 28 task timeline features preserved (grouping consumer-side, scroll in core)
+- All 14 AI chat features preserved (streaming cancel, SYSTEM alerts, bubbles)
 - Zero scroll-related code in karm — all in core's MessageList
-- All 28 task timeline features preserved
-- All 14 AI chat features preserved
 - Storybook stories for every primitive + both compositions
 - Typecheck clean across both packages
+- ARIA: `role="log"`, `aria-live="polite"` on MessageList

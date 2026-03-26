@@ -363,6 +363,11 @@
       "default": "./dist/ui/tree-view/index.js",
       "types": "./dist/ui/tree-view/index.d.ts"
     },
+    "./ui/chat": {
+      "import": "./dist/ui/chat/index.js",
+      "default": "./dist/ui/chat/index.js",
+      "types": "./dist/ui/chat/index.d.ts"
+    },
     "./composed": {
       "import": "./dist/composed/index.js",
       "default": "./dist/composed/index.js",

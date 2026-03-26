@@ -59,7 +59,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - **Button icon treatment** — `pointer-events-none` on icon wrappers, per-size gap scaling.
 - **ButtonGroup** propagates `weight` and `shape` via context.
 - **`<Icon>` component** — Context-aware wrapper for Tabler icons with standardized sizing (xs/sm/md/lg/xl/2xl), stroke weights (light/regular/bold), accessibility (aria-hidden by default, opt-in label), and animation presets (spin/pulse/bounce). Reads size from Button/IconGroup context automatically.
-- **`<IconProvider>` / `<IconContext>`** — Provides size and stroke defaults to a subtree of Icon components. Button and IconGroup auto-provide this context.
+- **`<IconProvider>`** — Provides size and stroke defaults to a subtree of Icon components. Button and IconGroup auto-provide this context. (`IconContext` is the raw React context for advanced escape-hatch reads.)
 - **`<IconGroup>`** — Flex row container for icon groups (toolbars, action rows) with gap presets (tight/default/loose) and optional `role="toolbar"`.
 - **Icon animation: state machine** — `<Icon state="loading" />` shows Spinner, transitions to success/error with choreographed animation. Delegates to existing Spinner component.
 - **Spinner bare-mode fix** — Spinner arc now uses `currentColor` in bare variant (was hardcoded accent-9). Loading spinners inside colored buttons now match the button's text color.
@@ -70,7 +70,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - **Per-size section scaling** — Section width = input height - 2px (square). Icons auto-size via IconProvider.
 - **Chat primitives** — New `ui/chat` module with 7 components:
   - `MessageList` — Scroll container with auto-scroll, "N new messages" pill, load-more trigger, ARIA log role
-  - `Message` — Compound component (Message.Avatar, Message.Author, Message.Body, Message.EditableBody, Message.Actions, Message.Reactions)
+  - `Message` — Compound component (Message.Avatar, Message.Content, Message.Author, Message.Body, Message.EditableBody, Message.Actions, Message.Action, Message.Reactions)
   - `SystemMessage` — Styled system/info messages
   - `MessageInput` — Auto-resizing textarea with send/stop buttons
   - `DateSeparator` — Date divider between message groups

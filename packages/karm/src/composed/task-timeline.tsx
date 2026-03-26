@@ -4,7 +4,6 @@ import * as React from 'react'
 import { IconMessageCircle, IconPencil, IconTrash, IconArrowBackUp } from '@tabler/icons-react'
 import { cn } from '@/ui/lib/utils'
 import { Avatar, AvatarImage, AvatarFallback } from '@/ui/avatar'
-import { Button } from '@/ui/button'
 import { Icon } from '@/ui/icon'
 import { ActivityFeed, type ActivityItem } from '@/composed/activity-feed'
 import { formatRelativeTime } from '@/ui/lib/date-utils'
@@ -193,77 +192,75 @@ interface CommentCardProps {
 
 function CommentCard({ item, onReply, onEdit, onDelete }: CommentCardProps) {
   const hasActions = onReply || onEdit || onDelete
+  const ts = typeof item.timestamp === 'string' ? new Date(item.timestamp) : item.timestamp
 
   return (
-    <div className="group/comment flex gap-ds-03">
-      {/* Avatar */}
-      <Avatar className="h-6 w-6 shrink-0 text-[10px]">
+    <div className="group/comment flex gap-2 py-0.5">
+      {/* Avatar — 20px to match ActivityFeed density */}
+      <Avatar className="h-5 w-5 shrink-0 mt-0.5">
         {item.actor?.image && (
           <AvatarImage src={item.actor.image} alt={item.actor.name} />
         )}
-        <AvatarFallback className="text-[10px]">
+        <AvatarFallback className="text-[8px] font-medium">
           {getInitials(item.actor?.name ?? '?')}
         </AvatarFallback>
       </Avatar>
 
       {/* Body */}
       <div className="min-w-0 flex-1">
-        <div className="flex items-center gap-ds-02">
-          <span className="text-ds-sm font-medium text-surface-fg">
+        {/* Author + time on one line */}
+        <div className="flex items-baseline gap-1.5">
+          <span className="text-[13px] font-medium text-surface-fg leading-tight">
             {item.actor?.name}
           </span>
           <time
-            className="text-ds-xs text-surface-fg-subtle"
-            dateTime={
-              (typeof item.timestamp === 'string'
-                ? new Date(item.timestamp)
-                : item.timestamp
-              ).toISOString()
-            }
+            className="text-[11px] text-surface-fg-subtle/50 leading-tight"
+            dateTime={ts.toISOString()}
           >
             {formatRelativeTime(item.timestamp)}
           </time>
+
+          {/* Action buttons — inline with header, visible on hover */}
+          {hasActions && (
+            <div className="ml-auto flex gap-0.5 opacity-0 transition-opacity group-hover/comment:opacity-100">
+              {onReply && (
+                <button
+                  type="button"
+                  onClick={() => onReply(item.id)}
+                  aria-label="Reply"
+                  className="p-0.5 rounded-ds-sm text-surface-fg-subtle/40 hover:text-surface-fg hover:bg-surface-raised-hover transition-colors"
+                >
+                  <Icon icon={IconArrowBackUp} size="xs" />
+                </button>
+              )}
+              {onEdit && (
+                <button
+                  type="button"
+                  onClick={() => onEdit(item.id)}
+                  aria-label="Edit"
+                  className="p-0.5 rounded-ds-sm text-surface-fg-subtle/40 hover:text-surface-fg hover:bg-surface-raised-hover transition-colors"
+                >
+                  <Icon icon={IconPencil} size="xs" />
+                </button>
+              )}
+              {onDelete && (
+                <button
+                  type="button"
+                  onClick={() => onDelete(item.id)}
+                  aria-label="Delete"
+                  className="p-0.5 rounded-ds-sm text-surface-fg-subtle/40 hover:text-error-11 hover:bg-surface-raised-hover transition-colors"
+                >
+                  <Icon icon={IconTrash} size="xs" />
+                </button>
+              )}
+            </div>
+          )}
         </div>
 
-        <p className="mt-ds-01 text-ds-sm text-surface-fg-muted whitespace-pre-wrap">
+        {/* Comment body */}
+        <p className="mt-0.5 text-[13px] text-surface-fg-muted leading-relaxed whitespace-pre-wrap">
           {item.action}
         </p>
-
-        {/* Action buttons — visible on hover */}
-        {hasActions && (
-          <div className="mt-ds-01 flex gap-ds-01 opacity-0 transition-opacity group-hover/comment:opacity-100">
-            {onReply && (
-              <Button
-                variant="ghost"
-                size="xs"
-                onClick={() => onReply(item.id)}
-                aria-label="Reply"
-              >
-                <Icon icon={IconArrowBackUp} size="xs" />
-              </Button>
-            )}
-            {onEdit && (
-              <Button
-                variant="ghost"
-                size="xs"
-                onClick={() => onEdit(item.id)}
-                aria-label="Edit"
-              >
-                <Icon icon={IconPencil} size="xs" />
-              </Button>
-            )}
-            {onDelete && (
-              <Button
-                variant="ghost"
-                size="xs"
-                onClick={() => onDelete(item.id)}
-                aria-label="Delete"
-              >
-                <Icon icon={IconTrash} size="xs" />
-              </Button>
-            )}
-          </div>
-        )}
       </div>
     </div>
   )
@@ -405,26 +402,26 @@ export function TaskTimeline({
     <div className={cn('flex flex-col gap-ds-03', className)}>
       {/* Filter toggle tabs */}
       {onFilterChange && (
-        <div className="flex gap-ds-01">
+        <div className="flex items-center gap-0.5 border-b border-surface-border-subtle pb-2 mb-1">
           {FILTERS.map((f) => (
-            <Button
+            <button
               key={f.key}
-              variant="ghost"
-              size="xs"
+              type="button"
               className={cn(
-                'rounded-full px-ds-03 text-ds-xs',
-                filter === f.key &&
-                  'bg-surface-raised text-surface-fg font-medium',
+                'rounded-ds-md px-2 py-1 text-[11px] transition-colors',
+                filter === f.key
+                  ? 'bg-surface-raised-hover text-surface-fg font-medium'
+                  : 'text-surface-fg-subtle/60 hover:text-surface-fg-muted hover:bg-surface-raised-hover/50',
               )}
               onClick={() => onFilterChange(f.key)}
             >
               {f.label}
-            </Button>
+            </button>
           ))}
 
           {/* New entries count */}
           {newDividerIndex >= 0 && (
-            <span className="ml-auto text-[10px] font-medium text-error-9 flex items-center">
+            <span className="ml-auto text-[10px] font-semibold text-error-9 bg-error-3 rounded-ds-full px-1.5 py-0.5">
               {collapsed.length - newDividerIndex} new
             </span>
           )}

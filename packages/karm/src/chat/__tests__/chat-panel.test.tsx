@@ -1,10 +1,18 @@
 import { render, screen } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 import { axe } from 'vitest-axe'
-import { describe, it, expect, vi } from 'vitest'
+import { describe, it, expect, vi, beforeAll } from 'vitest'
 import { ChatPanel, type ChatPanelProps } from '../chat-panel'
 import type { ChatMessage } from '../message-list'
 import type { Conversation } from '../conversation-list'
+
+// ============================================================
+// Polyfills for jsdom
+// ============================================================
+
+beforeAll(() => {
+  Element.prototype.scrollTo = vi.fn()
+})
 
 // ============================================================
 // Fixtures
@@ -81,7 +89,7 @@ describe('ChatPanel — integration', () => {
 
   it('renders send button (disabled when input is empty)', () => {
     renderChatPanel()
-    const sendBtn = screen.getByLabelText('Send message')
+    const sendBtn = screen.getByLabelText('Send')
     expect(sendBtn).toBeDisabled()
   })
 

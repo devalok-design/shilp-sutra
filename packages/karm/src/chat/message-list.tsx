@@ -98,6 +98,73 @@ export const MessageList = React.forwardRef<HTMLDivElement, MessageListProps>(
       )
     }
 
+    // Build children array — avoid passing `false` from conditional
+    // expressions, which React.Children.count treats as real children
+    // and breaks the core MessageList's isEmpty detection.
+    const children: React.ReactNode[] = messages.map((msg) => {
+      if (msg.role === 'SYSTEM') {
+        return (
+          <SystemMessage key={msg.id} variant="alert">
+            {msg.content}
+          </SystemMessage>
+        )
+      }
+
+      if (msg.role === 'USER') {
+        return (
+          <Message
+            key={msg.id}
+            variant="bubble"
+            placement="end"
+            data-author-id="user"
+          >
+            <Message.Body>
+              <p className="whitespace-pre-wrap">{msg.content}</p>
+            </Message.Body>
+          </Message>
+        )
+      }
+
+      // ASSISTANT
+      return (
+        <Message
+          key={msg.id}
+          variant="bubble"
+          placement="start"
+          data-author-id="assistant"
+        >
+          <Message.Avatar icon={robotAvatar} />
+          <Message.Body>
+            <ReactMarkdown components={markdownComponents}>
+              {msg.content}
+            </ReactMarkdown>
+          </Message.Body>
+        </Message>
+      )
+    })
+
+    if (isStreaming && streamingText) {
+      children.push(
+        <Message
+          key="streaming-text"
+          variant="bubble"
+          placement="start"
+          data-author-id="assistant"
+        >
+          <Message.Avatar icon={robotAvatar} />
+          <Message.Body>
+            <StreamingText text={streamingText} />
+          </Message.Body>
+        </Message>,
+      )
+    }
+
+    if (isStreaming && !streamingText) {
+      children.push(
+        <TypingIndicator key="streaming-dots" users={[{ name: 'AI' }]} />,
+      )
+    }
+
     return (
       <CoreMessageList
         ref={ref}
@@ -107,68 +174,7 @@ export const MessageList = React.forwardRef<HTMLDivElement, MessageListProps>(
         }
         {...props}
       >
-        {/* Rendered messages */}
-        {messages.map((msg) => {
-          if (msg.role === 'SYSTEM') {
-            return (
-              <SystemMessage key={msg.id} variant="alert">
-                {msg.content}
-              </SystemMessage>
-            )
-          }
-
-          if (msg.role === 'USER') {
-            return (
-              <Message
-                key={msg.id}
-                variant="bubble"
-                placement="end"
-                data-author-id="user"
-              >
-                <Message.Body>
-                  <p className="whitespace-pre-wrap">{msg.content}</p>
-                </Message.Body>
-              </Message>
-            )
-          }
-
-          // ASSISTANT
-          return (
-            <Message
-              key={msg.id}
-              variant="bubble"
-              placement="start"
-              data-author-id="assistant"
-            >
-              <Message.Avatar icon={robotAvatar} />
-              <Message.Body>
-                <ReactMarkdown components={markdownComponents}>
-                  {msg.content}
-                </ReactMarkdown>
-              </Message.Body>
-            </Message>
-          )
-        })}
-
-        {/* Streaming assistant message (has text) */}
-        {isStreaming && streamingText && (
-          <Message
-            key="streaming-text"
-            variant="bubble"
-            placement="start"
-            data-author-id="assistant"
-          >
-            <Message.Avatar icon={robotAvatar} />
-            <Message.Body>
-              <StreamingText text={streamingText} />
-            </Message.Body>
-          </Message>
-        )}
-
-        {/* Streaming indicator (no text yet) */}
-        {isStreaming && !streamingText && (
-          <TypingIndicator key="streaming-dots" users={[{ name: 'AI' }]} />
-        )}
+        {children}
       </CoreMessageList>
     )
   },

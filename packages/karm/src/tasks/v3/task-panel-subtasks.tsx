@@ -29,6 +29,12 @@ export function TaskPanelSubtasks({
   const [newTitle, setNewTitle] = React.useState('')
   const inputRef = React.useRef<HTMLInputElement>(null)
 
+  React.useEffect(() => {
+    if (isAdding && inputRef.current) {
+      inputRef.current.focus()
+    }
+  }, [isAdding])
+
   // Hidden in peek mode
   if (mode === 'peek') return null
 
@@ -65,12 +71,6 @@ export function TaskPanelSubtasks({
       setIsAdding(false)
     }
   }
-
-  React.useEffect(() => {
-    if (isAdding && inputRef.current) {
-      inputRef.current.focus()
-    }
-  }, [isAdding])
 
   // Empty state — compact add prompt
   if (totalCount === 0) {

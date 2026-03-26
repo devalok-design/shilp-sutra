@@ -101,13 +101,15 @@ describe('TaskPanelDescription', () => {
     ).toBeInTheDocument()
   })
 
-  it('empty state renders nothing for client', () => {
-    const { container } = renderWithProvider({
+  it('empty state renders placeholder for client (VIEW_ONLY)', () => {
+    renderWithProvider({
       task: { ...mockTask, description: '', descriptionUpdatedBy: undefined },
       clientMode: true,
     })
-    // Component returns null for empty + client
-    expect(container.innerHTML).toBe('')
+    // clientMode: true normalizes to 'VIEW_ONLY', which shows a placeholder
+    expect(
+      screen.getByText('No description added yet.'),
+    ).toBeInTheDocument()
   })
 
   it('clicking description text in staff mode enters edit mode', async () => {

@@ -5,7 +5,7 @@ import { IconMoodSmile, IconArrowBackUp, IconPencil, IconTrash, IconLock } from 
 import { Icon } from '@/ui/icon'
 import { Message } from '@/ui/chat'
 import { Badge } from '@/ui/badge'
-import type { Comment, Reaction } from '../task-panel-types'
+import type { Comment } from '../task-panel-types'
 
 // ---------------------------------------------------------------------------
 // Helpers

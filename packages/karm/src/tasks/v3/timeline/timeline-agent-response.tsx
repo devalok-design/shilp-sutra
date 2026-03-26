@@ -7,7 +7,6 @@ import { Message } from '@/ui/chat'
 import { Badge } from '@/ui/badge'
 import { MotionCollapse } from '@/motion/primitives'
 import { StreamingText } from '../../../chat/streaming-text'
-import type { AgentResponse } from '../task-panel-types'
 
 // ---------------------------------------------------------------------------
 // Constants

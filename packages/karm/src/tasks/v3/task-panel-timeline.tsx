@@ -413,7 +413,7 @@ export function TaskPanelTimeline({
         }
         className="px-ds-01"
       >
-        {displayItems.map((item, idx) => {
+        {displayItems.map((item) => {
           // Determine timestamp and date key for this item
           const itemTimestamp =
             item.kind === 'collapsed'

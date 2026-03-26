@@ -30,7 +30,7 @@ const mockTask: TaskPanelTask = {
     { id: 'u1', name: 'Jane Doe', image: null },
     { id: 'u2', name: 'John Smith', image: null },
   ],
-  dueDate: '2026-04-01T00:00:00Z',
+  dueDate: '2027-04-01T00:00:00Z',
   labels: [],
   visibility: 'INTERNAL',
   createdAt: '2026-03-21T00:00:00Z',

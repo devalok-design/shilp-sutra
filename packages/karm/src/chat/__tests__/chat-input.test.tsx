@@ -24,12 +24,12 @@ describe('ChatInput', () => {
 
   it('renders send button with accessible label', () => {
     render(<ChatInput onSubmit={vi.fn()} />)
-    expect(screen.getByLabelText('Send message')).toBeInTheDocument()
+    expect(screen.getByLabelText('Send')).toBeInTheDocument()
   })
 
   it('renders stop button when streaming', () => {
     render(<ChatInput onSubmit={vi.fn()} isStreaming onCancel={vi.fn()} />)
-    expect(screen.getByLabelText('Stop generating')).toBeInTheDocument()
+    expect(screen.getByLabelText('Stop')).toBeInTheDocument()
   })
 
   it('renders disclaimer text', () => {

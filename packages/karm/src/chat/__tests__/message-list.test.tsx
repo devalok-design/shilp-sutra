@@ -1,6 +1,6 @@
 import { render, screen } from '@testing-library/react'
 import { axe } from 'vitest-axe'
-import { describe, it, expect } from 'vitest'
+import { describe, it, expect, vi, beforeAll } from 'vitest'
 import { MessageList } from '../message-list'
 import type { ChatMessage } from '../message-list'
 
@@ -9,6 +9,10 @@ const sampleMessages: ChatMessage[] = [
   { id: 'msg-2', role: 'ASSISTANT', content: 'I am doing well, thanks!' },
   { id: 'msg-3', role: 'SYSTEM', content: 'Connection error occurred.' },
 ]
+
+beforeAll(() => {
+  Element.prototype.scrollTo = vi.fn()
+})
 
 describe('MessageList', () => {
   it('has no a11y violations with messages', async () => {

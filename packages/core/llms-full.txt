@@ -5,7 +5,7 @@
 > All variant values and props verified from source CVA definitions.
 >
 > Package: @devalok/shilp-sutra
-> Version: 0.28.0
+> Version: 0.29.0
 
 ---
 
@@ -108,7 +108,7 @@ Note: getFormFieldA11y() was removed in favor of useFormField() hook.
 ## Compound Components
     Accordion (root)
       AccordionItem (value: string, REQUIRED)
-        AccordionTrigger (clickable header, chevron auto-renders)
+        AccordionTrigger (clickable header, chevron auto-renders, chevronPosition?: "left" | "right")
         AccordionContent (collapsible body)
 
 ## Defaults
@@ -127,8 +127,12 @@ Note: getFormFieldA11y() was removed in favor of useFormField() hook.
 ## Gotchas
 - type is REQUIRED — omitting it causes runtime error
 - collapsible only works with type="single"
+- chevronPosition defaults to "right" — pass "left" for file-explorer style
 
 ## Changes
+### v0.29.0
+- **Added** `chevronPosition` prop on AccordionTrigger — "left" | "right" (default: "right")
+
 ### v0.18.0
 - **Changed** Accordion content fade animation migrated to Framer Motion (height animation still uses CSS keyframes)
 
@@ -833,6 +837,225 @@ import { BarChart } from '@devalok/shilp-sutra/ui/charts'
 
 ### v0.1.0
 - **Added** Initial release
+# Chat Primitives (MessageList, Message, SystemMessage, MessageInput, DateSeparator, UnreadSeparator, TypingIndicator)
+
+- Import: @devalok/shilp-sutra/ui/chat
+- Server-safe: No (MessageList, Message, MessageInput, TypingIndicator use Framer Motion; DateSeparator, UnreadSeparator are SSR-safe but exported from client barrel)
+- Category: ui
+
+7 primitives for building chat interfaces. Use together inside a flex column layout.
+
+## MessageList
+
+Scrollable container for messages with auto-scroll, load-more, and "N new" floating pill.
+
+### Props
+    children: ReactNode (REQUIRED) — Message/SystemMessage/DateSeparator children
+    autoScroll: boolean (default: true) — auto-scroll to bottom on new content
+    newMessageCount: number (default: 0) — shows floating "N new" pill when > 0 and user scrolled up
+    onScrollToBottom: () => void — called when user clicks the "N new" pill
+    onLoadMore: () => void — called when user scrolls near top (load older messages)
+    isLoadingMore: boolean (default: false) — shows spinner at top
+    emptySlot: ReactNode — content when no children
+    headerSlot: ReactNode — content above the scroll container (e.g. channel name)
+
+### Example
+```jsx
+<MessageList
+  newMessageCount={3}
+  onScrollToBottom={() => markAsRead()}
+  onLoadMore={() => fetchOlderMessages()}
+  isLoadingMore={loading}
+  emptySlot={<EmptyState title="No messages yet" />}
+>
+  <DateSeparator date={new Date()} />
+  <Message variant="flat">
+    <Message.Avatar src="/alice.jpg" fallback="A" />
+    <Message.Content>
+      <Message.Author name="Alice" timestamp={new Date()} />
+      <Message.Body>Hello!</Message.Body>
+    </Message.Content>
+  </Message>
+</MessageList>
+```
+
+### Gotchas
+- Uses `role="log"` and `aria-live="polite"` for accessibility
+- Auto-scroll only fires if user is at bottom (within 40px threshold)
+- Load-more triggers when scrollTop < 100px — scroll position is preserved after load
+- Wrap children in AnimatePresence internally for enter/exit animations
+
+## Message (Compound)
+
+Renders a single chat message. Compound component with sub-parts.
+
+### Root Props
+    variant: "flat" | "bubble" (default: "flat") — flat=Slack-style rows, bubble=iMessage-style
+    placement: "start" | "end" (default: "start") — message alignment
+    highlight: "mention" | "internal" — accent-tinted background for mentions or internal notes
+    grouped: boolean (default: false) — hides avatar and author for consecutive same-sender messages
+    deleted: boolean (default: false) — renders italic "This message was deleted" with trash icon
+    deletedText: string (default: "This message was deleted")
+
+### Sub-parts
+    Message.Avatar — src?, fallback?, icon?(ReactNode), size?("sm"|"md"), children?(custom avatar)
+    Message.Content — flex container for author + body
+    Message.Author — name(string, REQUIRED), badge?(ReactNode), timestamp?(Date), formattedTimestamp?(string), timestampFormat?((date)=>string)
+    Message.Body — text content wrapper (whitespace-pre-wrap)
+    Message.EditableBody — content(string), onSave((newContent)=>void), onCancel?(), canEdit?(boolean), renderContent?((content)=>ReactNode). Inline edit: click to edit, Enter to save, Escape to cancel.
+    Message.Reactions — reactions({emoji, count, reacted}[]), onReact((emoji)=>void). Pill buttons with active ring.
+    Message.Actions — children(ReactNode), delay?(number, default 100). Floating toolbar, visible on hover.
+    Message.Action — icon(TablerIcon), label(string), onClick(()=>void), variant?("default"|"danger"). Single icon button inside Actions toolbar.
+
+### Example
+```jsx
+{/* Flat variant (Slack-style) */}
+<Message variant="flat" highlight="mention">
+  <Message.Avatar src="/bob.jpg" fallback="B" />
+  <Message.Content>
+    <Message.Author name="Bob" timestamp={new Date()} badge={<Badge size="xs">Admin</Badge>} />
+    <Message.Body>@Alice check this out</Message.Body>
+    <Message.Reactions reactions={[{ emoji: '👍', count: 3, reacted: true }]} onReact={handleReact} />
+    <Message.Actions>
+      <Message.Action icon={IconEdit} label="Edit" onClick={edit} />
+      <Message.Action icon={IconTrash} label="Delete" onClick={del} variant="danger" />
+    </Message.Actions>
+  </Message.Content>
+</Message>
+
+{/* Bubble variant (iMessage-style) */}
+<Message variant="bubble" placement="end">
+  <Message.Author name="Me" />
+  <Message.Body>Sent from my side</Message.Body>
+</Message>
+
+{/* Deleted message */}
+<Message deleted />
+
+{/* Grouped consecutive messages (no avatar/author) */}
+<Message grouped>
+  <Message.Avatar fallback="A" />
+  <Message.Content>
+    <Message.Body>Follow-up message</Message.Body>
+  </Message.Content>
+</Message>
+```
+
+### Gotchas
+- `grouped=true` hides avatar (renders spacer) and author — use for consecutive same-sender messages
+- `deleted=true` ignores all children and renders a single-line deleted indicator
+- `Message.Actions` toolbar appears on `group-hover/message` — parent has `group/message` class
+- `Message.EditableBody` saves on Enter, cancels on Escape, also saves on blur
+- `highlight="mention"` adds accent left border + accent-2 bg; `highlight="internal"` adds warning-2 bg
+- `useMessageContext()` hook available for custom sub-parts (returns variant, placement, grouped, highlight)
+
+## SystemMessage
+
+Inline event or alert message in chat (e.g., "Alice joined the channel").
+
+### Props
+    variant: "event" | "alert" (default: "event")
+    icon: ReactNode (default: AlertCircle for alert variant)
+    timestamp: string (ISO date string, formatted to locale time)
+    children: ReactNode (REQUIRED) — the message text
+
+### Example
+```jsx
+<SystemMessage icon={<Icon icon={IconUserPlus} size="xs" />} timestamp="2026-03-26T10:30:00Z">
+  Alice joined the channel
+</SystemMessage>
+<SystemMessage variant="alert">Connection lost</SystemMessage>
+```
+
+## MessageInput
+
+Composable chat input with send/stop button, auto-resize textarea.
+
+### Props
+    onSubmit: (text: string) => void (REQUIRED)
+    placeholder: string (default: "Type a message...")
+    disabled: boolean (default: false)
+    isStreaming: boolean (default: false) — shows red stop button instead of send
+    onCancel: () => void — called when stop button clicked during streaming
+    leadingSlot: ReactNode — before textarea (e.g., attachment button)
+    trailingSlot: ReactNode — after send button
+    disclaimer: string — small centered text below input (e.g., "AI may make mistakes")
+    sendIcon: ReactNode — custom send icon (default: IconSend)
+
+### Example
+```jsx
+<MessageInput
+  onSubmit={(text) => sendMessage(text)}
+  isStreaming={isGenerating}
+  onCancel={() => abortGeneration()}
+  placeholder="Message #general"
+  disclaimer="Messages are visible to all members"
+  leadingSlot={<IconButton icon={<Icon icon={IconPaperclip} />} aria-label="Attach" />}
+/>
+```
+
+### Gotchas
+- Enter sends, Shift+Enter inserts newline
+- Textarea auto-resizes up to 160px max height
+- During streaming, send button is replaced with a red stop button
+- `isStreaming` prevents sending (Enter is ignored)
+
+## DateSeparator
+
+Horizontal rule with a centered date label.
+
+### Props
+    date: Date | string (REQUIRED) — auto-parses ISO strings
+    format: (date: Date) => string — custom format function
+    className: string
+
+### Defaults
+    format: auto ("Today", "Yesterday", "Mar 15", "Mar 15, 2025" for different years)
+
+### Example
+```jsx
+<DateSeparator date={new Date()} />
+<DateSeparator date="2026-01-15" format={(d) => d.toLocaleDateString()} />
+```
+
+## UnreadSeparator
+
+Accent-colored horizontal rule marking unread boundary.
+
+### Props
+    label: string (default: "NEW")
+    count: number — when set, renders "3 NEW" instead of just "NEW"
+    className: string
+
+### Example
+```jsx
+<UnreadSeparator />
+<UnreadSeparator count={5} />
+```
+
+## TypingIndicator
+
+Animated bouncing dots with typing user names.
+
+### Props
+    users: { name: string, image?: string }[] (REQUIRED)
+    className: string
+
+### Example
+```jsx
+<TypingIndicator users={[{ name: 'Alice' }]} />
+<TypingIndicator users={[{ name: 'Alice' }, { name: 'Bob' }]} />
+```
+
+### Gotchas
+- Empty `users` array renders nothing (hides with AnimatePresence)
+- 1 user: "Alice is typing...", 2 users: "Alice and Bob are typing...", 3+: "Several people are typing..."
+- Fixed 24px min-height to prevent layout shift
+
+## Changes
+### v0.29.0
+- **Added** Initial release — MessageList, Message (compound), SystemMessage, MessageInput, DateSeparator, UnreadSeparator, TypingIndicator
+
 # Checkbox
 
 - Import: @devalok/shilp-sutra/ui/checkbox
@@ -1358,6 +1581,61 @@ import { DataTableToolbar } from '@devalok/shilp-sutra/ui/data-table-toolbar'
 
 ### v0.1.0
 - **Added** Initial release
+# DevalokGrain
+
+- Import: @devalok/shilp-sutra/ui/devalok-grain
+- Server-safe: No
+- Category: ui
+
+Brand texture component — adds noise grain + optional tinted directional gradient to any surface.
+Drop as a child of any element with `relative overflow-hidden isolate`. Uses `rounded-[inherit]` to match parent border-radius.
+
+## Props
+    intensity: "subtle" | "medium" | "heavy" (noise + gradient strength)
+    surface: "solid" | "soft" ("solid" for filled backgrounds, "soft" for tinted/muted — adjusts noise opacity)
+    sheen: boolean (inner highlight — inset shadow for 3D emboss feel)
+    animated: boolean (fade-in on mount, 600ms)
+    hoverIntensify: boolean (noise +40% on parent hover — parent needs `group` class)
+    tint: string (CSS color for directional gradient, e.g. "oklch(0.55 0.19 360)" or "var(--color-accent-9)")
+
+## Defaults
+    intensity="subtle", surface="solid", sheen=false, animated=false, hoverIntensify=false, tint=undefined
+
+## Example
+```jsx
+{/* Inside a Button (already has relative/overflow-hidden/isolate): */}
+<Button>
+  <DevalokGrain />
+  Save changes
+</Button>
+
+{/* Inside a Card with tint: */}
+<Card className="relative overflow-hidden isolate">
+  <DevalokGrain surface="soft" tint="var(--color-accent-9)" />
+  Card content
+</Card>
+
+{/* Hero section with heavy grain: */}
+<div className="group relative overflow-hidden isolate rounded-ds-lg bg-accent-9 p-8">
+  <DevalokGrain intensity="heavy" tint="oklch(0.55 0.19 360)" hoverIntensify />
+  <h1 className="relative z-[2]">Hero</h1>
+</div>
+```
+
+## Gotchas
+- Parent MUST have `relative overflow-hidden isolate` for grain to render correctly
+- Without `tint`, NO directional gradient is rendered — only noise texture. Neutral gradient looks like a dark smudge on light surfaces.
+- `hoverIntensify` requires parent to have `group` class for `group-hover:` Tailwind utilities
+- `animated` respects `prefers-reduced-motion` via Framer Motion's `useReducedMotion`
+- Content above the grain needs `relative z-[2]` or higher to stay interactive (grain is at z-[1])
+- `aria-hidden="true"` and `pointer-events-none` are set automatically
+- Noise opacity ranges: subtle=0.12-0.15, medium=0.22-0.28, heavy=0.35-0.45 (soft surface uses lower end)
+- Badge component is grain-ready out of the box (has relative/overflow-hidden/isolate)
+
+## Changes
+### v0.29.0
+- **Added** Initial release — composable brand texture with intensity, surface, sheen, animated, hoverIntensify, and tint props
+
 # Dialog
 
 - Import: @devalok/shilp-sutra/ui/dialog
@@ -1987,21 +2265,31 @@ import { DataTableToolbar } from '@devalok/shilp-sutra/ui/data-table-toolbar'
     color: "default" | "success" | "warning" | "error" (indicator color)
     showLabel: boolean (shows percentage text)
     indicatorClassName: string
+    autoColor: boolean (auto-shifts color by value thresholds)
 
 ## Defaults
     size: "md"
     color: "default"
+    autoColor: false
 
 ## Example
 ```jsx
 <Progress value={75} color="success" showLabel />
 <Progress size="sm" />  {/* indeterminate */}
+<Progress value={92} autoColor showLabel />  {/* auto: success (>=85) */}
+<Progress value={70} autoColor />  {/* auto: warning (>=60, <85) */}
 ```
 
 ## Gotchas
 - Omit value (or pass undefined) for indeterminate animation
+- `autoColor` thresholds: 0-59 = default (accent), 60-84 = warning, 85-100 = success, >100 = error
+- `autoColor` only applies when `value` is set (not for indeterminate)
+- When `autoColor` is true, explicit `color` prop is ignored
 
 ## Changes
+### v0.29.0
+- **Added** `autoColor` prop — automatically shifts indicator color based on value thresholds
+
 ### v0.1.0
 - **Added** Initial release with `size`, `color`, `indeterminate` variants and optional label slot
 # ProgressRing
@@ -2715,16 +3003,31 @@ import { DataTableToolbar } from '@devalok/shilp-sutra/ui/data-table-toolbar'
     onCheckedChange: (checked: boolean) => void
     error: boolean (shows red border/bg)
     disabled: boolean
+    size: "sm" | "md" | "lg" (track + thumb dimensions)
+    color: "accent" | "success" | "warning" (checked-state track color)
+    thumbIcon: ReactNode (icon rendered inside the thumb)
+
+## Defaults
+    size="md", color="accent"
 
 ## Example
 ```jsx
 <Switch checked={enabled} onCheckedChange={setEnabled} />
+<Switch size="sm" color="success" />
+<Switch size="lg" color="warning" thumbIcon={<Icon icon={IconSun} size="xs" />} />
 ```
 
 ## Gotchas
 - Use error prop for validation states (matches Checkbox API)
+- `error` overrides color to error-9 when checked
+- Size dimensions: sm=18×32px, md=24×44px, lg=28×52px
 
 ## Changes
+### v0.29.0
+- **Added** `size` prop — "sm" | "md" | "lg" (track and thumb scale together)
+- **Added** `color` prop — "accent" | "success" | "warning" (checked-state track color)
+- **Added** `thumbIcon` prop — ReactNode rendered inside the thumb circle
+
 ### v0.18.0
 - **Changed** Migrated to Framer Motion spring thumb animation
 - **Fixed** Added visible border on unchecked state (`border-surface-border-strong`) — was borderless, making unchecked state hard to see
@@ -3258,6 +3561,7 @@ export default function RootLayout({ children }) {
     maxInitialItems: number — truncate with "Show all (N)" toggle
     groupBy?: 'time' | 'none' — group items by time buckets (today, yesterday, this week, older)
     groupLabels?: GroupLabels — custom labels for time groups: { today?, yesterday?, thisWeek?, older? }
+    renderItem?: (item: ActivityItem, index: number) => ReactNode | undefined — custom renderer per item; return ReactNode for custom rendering, undefined to fall back to default ActivityEntry
 
 ## Defaults
     loading=false, compact=false, hasMore=false, groupBy='none'
@@ -3272,6 +3576,7 @@ export default function RootLayout({ children }) {
   hasMore
   onLoadMore={() => fetchMore()}
   compact
+  renderItem={(item) => item.id === 'special' ? <MyCustomEntry item={item} /> : undefined}
 />
 ```
 
@@ -3285,8 +3590,13 @@ export default function RootLayout({ children }) {
 - `maxInitialItems` truncates with a "Show all (N)" toggle button
 - `maxInitialItems` applies to the flat list BEFORE grouping — items are sliced first, then grouped
 - Empty time groups are automatically skipped
+- `renderItem` returning `undefined` falls back to default ActivityEntry — return ReactNode to override
+- Custom `renderItem` content is wrapped in a `CustomEntry` container that preserves the timeline dot + vertical rhythm
 
 ## Changes
+### v0.29.0
+- **Added** `renderItem` prop — custom per-item renderer; return ReactNode for custom, undefined for default
+
 ### v0.20.0
 - **Added** `groupBy="time"` prop — groups items into Today, Yesterday, This Week, Older with section headers
 - **Added** `groupLabels` prop for custom group label text
@@ -3318,6 +3628,7 @@ export default function RootLayout({ children }) {
     name: string (REQUIRED)
     image?: string | null
     ring?: "none" | "lead" | "admin" | "client" — role ring per user in group
+    indicator?: "lead" | "admin" | ReactNode — small dot overlay on avatar (top-right corner)
 
 ## Defaults
     size="md", max=4, showTooltip=true, borderColor="surface-2", expandDirection="right", expandAmount="default"
@@ -3326,8 +3637,8 @@ export default function RootLayout({ children }) {
 ```jsx
 <AvatarGroup
   users={[
-    { name: 'Alice', image: '/alice.jpg', ring: 'lead' },
-    { name: 'Bob', ring: 'admin' },
+    { name: 'Alice', image: '/alice.jpg', ring: 'lead', indicator: 'lead' },
+    { name: 'Bob', ring: 'admin', indicator: 'admin' },
   ]}
   max={3}
   size="md"
@@ -3343,8 +3654,12 @@ export default function RootLayout({ children }) {
 - Hover expand animation uses CSS `group-hover` — parent must not clip overflow
 - `borderColor` should match the surface context the group sits on (e.g., `surface-1` on cards)
 - `renderAvatar` wrapper is positioning-only — pass `size` directly to your Avatar (do NOT use `className="h-full w-full"`)
+- `indicator` renders a small animated dot on the avatar's top-right corner: 'lead' = warning-9 (gold), 'admin' = accent-9 (brand), or pass custom ReactNode
 
 ## Changes
+### v0.29.0
+- **Added** `AvatarUser.indicator` field — "lead" | "admin" | ReactNode — animated dot overlay on avatar
+
 ### v0.22.3
 - **Fixed** `renderAvatar` wrapper no longer clips consumer Avatar content (removed overflow-hidden, border, and size classes from wrapper)
 - **Fixed** Removed redundant text-size classes from wrapper — Avatar handles font scaling internally
@@ -4507,11 +4822,13 @@ Event colors: "primary" | "success" | "warning" | "error" | "info" | "neutral"
 Note: StatusBadge was server-safe prior to v0.18.0 but is NO LONGER server-safe due to Framer Motion dependency.
 
 ## Props
-    status: "active" | "pending" | "approved" | "rejected" | "completed" | "blocked" | "cancelled" | "draft"
+    status: "active" | "pending" | "approved" | "rejected" | "completed" | "blocked" | "in-progress" | "review" | "cancelled" | "draft"
     color: "success" | "warning" | "error" | "info" | "neutral" (overrides status styling when set)
     size: "sm" | "md"
     label: string (auto-derived from status/color if omitted)
     hideDot: boolean (default: false)
+    onClick: () => void (renders as <button>, auto-adds chevron-down trailing icon)
+    icon: ReactNode (custom trailing icon, overrides the auto chevron-down)
 
 ## Defaults
     size="md", hideDot=false
@@ -4520,15 +4837,25 @@ Note: StatusBadge was server-safe prior to v0.18.0 but is NO LONGER server-safe 
 ## Example
 ```jsx
 <StatusBadge status="active" />
+<StatusBadge status="in-progress" />
+<StatusBadge status="review" label="In Review" />
 <StatusBadge color="warning" label="In Review" size="sm" />
+<StatusBadge status="pending" onClick={() => openStatusPicker()} />
 ```
 
 ## Gotchas
 - When `color` is set, it takes priority over `status` for styling
 - Props use a discriminated union — pass either `status` or `color`, not both
 - As of v0.18.0, StatusBadge is NOT server-safe (Framer Motion dependency)
+- `onClick` renders as a `<button>` with `hover:opacity-80` and auto chevron-down icon
+- `in-progress` uses accent color (accent-3/accent-11), `review` uses info color (info-3/info-11)
 
 ## Changes
+### v0.29.0
+- **Added** `in-progress` and `review` status values
+- **Added** `onClick` prop — renders as button with auto chevron-down trailing icon
+- **Added** `icon` prop — custom trailing icon (replaces auto chevron-down when clickable)
+
 ### v0.18.0
 - **Changed** No longer server-safe due to Framer Motion dependency
 

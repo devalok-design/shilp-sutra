@@ -254,6 +254,9 @@ import { Button } from '@devalok/shilp-sutra/ui/button'
 import { PageHeader } from '@devalok/shilp-sutra/composed/page-header'
 import { TopBar } from '@devalok/shilp-sutra/shell/top-bar'
 
+// Chat primitives (v0.29.0+):
+import { MessageList, Message, SystemMessage, MessageInput, DateSeparator, UnreadSeparator, TypingIndicator } from '@devalok/shilp-sutra/ui/chat'
+
 // AI command system (v0.25.0+):
 import { CommandBar, AIConversation, BlockRenderer, AICommandProvider, DevadootIcon } from '@devalok/shilp-sutra/ai'
 
@@ -312,7 +315,7 @@ Components with two-axis system: Button, Badge, Alert, Banner, Progress, StatusB
 - Textarea: size(xs|sm|md|lg) state(default|error|warning|success)
 - ColorInput: value(hex string) onChange(value) presets({hex,label}[]|string[]|false, default: 10 named colors) variant('default'|'inline') showPicker(boolean, default:true) defaultFormat('hex'|'rgb'|'hsl') align('start'|'center'|'end') disabled. Popover trigger opens interactive picker (react-colorful) + format switcher + preset swatches + undo/reset. Inline variant renders entire trigger as the color with contrast-aware text.
 - Checkbox: checked, onCheckedChange, error(boolean), indeterminate(boolean)
-- Switch: checked, onCheckedChange, error(boolean)
+- Switch: checked, onCheckedChange, error(boolean), size(sm|md|lg), color(accent|success|warning), thumbIcon(ReactNode)
 - RadioGroup > RadioGroupItem(value)
 - Select > SelectTrigger(size: xs|sm|md|lg) > SelectValue; SelectContent > SelectItem(value)
 - Toggle: variant(default|outline) size(sm|md|lg)
@@ -325,7 +328,7 @@ Components with two-axis system: Button, Badge, Alert, Banner, Progress, StatusB
 - Banner: color(info|success|warning|error|neutral) + actions?(ReactNode), onDismiss. `action` (singular) deprecated, use `actions`. Mobile flex-wrap for multiple buttons.
 - Toast: imperative API via toast.success/error/warning/info/loading/message/undo/promise/upload/custom — REQUIRES <Toaster> at layout root
 - Spinner: size(sm|md|lg) — renders with role="status"
-- Progress: track size(sm|md|lg), indicator color(default|success|warning|error)
+- Progress: track size(sm|md|lg), indicator color(default|success|warning|error), autoColor(boolean, auto-shifts color by value: 0-59=default, 60-84=warning, 85-100=success, >100=error)
 
 NOTIFICATION SELECTION GUIDE:
   - Alert: inline contextual feedback within a form or page section
@@ -345,6 +348,17 @@ NOTIFICATION SELECTION GUIDE:
 - ColorSwatch: color(CSS string) size(sm|md|lg) shape(circle|square|rounded) ring(boolean) — for dynamic runtime colors
 - StatusDot: status(healthy|warning|critical|neutral|inactive) size(sm|md|lg) pulse?(boolean, default true for healthy) label?(string)
 - ProgressRing: value(number) max?(100) size(sm|md|lg) color(default|success|warning|error|info) showValue?(boolean) label?(string). Also: MultiProgressRing for concentric Activity Ring style
+- DevalokGrain: Brand texture overlay — drop inside any element with `relative overflow-hidden isolate`. Props: intensity('subtle'|'medium'|'heavy'), surface('solid'|'soft'), sheen(boolean, inner highlight), animated(boolean, fade-in on mount), hoverIntensify(boolean, parent needs `group` class), tint(CSS color string for directional gradient). No gradient rendered without tint.
+
+### Chat Primitives (ui/chat/)
+Import: `@devalok/shilp-sutra/ui/chat`
+- MessageList: children, autoScroll?(true), newMessageCount?(number, shows floating "N new" pill), onScrollToBottom?(), onLoadMore?(), isLoadingMore?(boolean), emptySlot?(ReactNode), headerSlot?(ReactNode). role="log" aria-live="polite".
+- Message: COMPOUND — variant('flat'|'bubble') placement('start'|'end') highlight?('mention'|'internal') grouped?(boolean) deleted?(boolean) deletedText?(string). Sub-parts: Message.Avatar(src?, fallback?, icon?, size?('sm'|'md')), Message.Content, Message.Author(name, badge?, timestamp?, formattedTimestamp?, timestampFormat?), Message.Body, Message.EditableBody(content, onSave, onCancel?, canEdit?, renderContent?), Message.Reactions(reactions[{emoji,count,reacted}], onReact), Message.Actions(children, delay?), Message.Action(icon, label, onClick, variant?('default'|'danger'))
+- SystemMessage: variant('event'|'alert') icon?(ReactNode) timestamp?(string) children
+- MessageInput: onSubmit(text=>void), placeholder?, disabled?, isStreaming?(boolean, shows stop button), onCancel?(), leadingSlot?, trailingSlot?, disclaimer?(string), sendIcon?(ReactNode). Enter to send, Shift+Enter for newline.
+- DateSeparator: date(Date|string), format?((date)=>string). Shows "Today", "Yesterday", or "Mar 15".
+- UnreadSeparator: label?('NEW'), count?(number). Accent-colored horizontal rule.
+- TypingIndicator: users({name, image?}[]). Shows animated bouncing dots + "Alice is typing..." / "Alice and Bob are typing..." / "Several people are typing..."
 
 ### Overlays
 - Dialog > DialogTrigger; DialogContent > DialogHeader > DialogTitle, DialogDescription; [content]; DialogFooter
@@ -357,7 +371,7 @@ NOTIFICATION SELECTION GUIDE:
 
 ### Navigation
 - Tabs > TabsList(variant: line|contained) > TabsTrigger(value); TabsContent(value) — variant propagates via context
-- Accordion(type: single|multiple) > AccordionItem(value) > AccordionTrigger; AccordionContent
+- Accordion(type: single|multiple) > AccordionItem(value) > AccordionTrigger(chevronPosition?: 'left'|'right', default 'right'); AccordionContent
 - Breadcrumb > BreadcrumbList > BreadcrumbItem > BreadcrumbLink | BreadcrumbPage; BreadcrumbSeparator
 - PaginationRoot > PaginationContent > PaginationItem > PaginationLink(isActive) | PaginationPrevious | PaginationNext | PaginationEllipsis
 - DropdownMenu > DropdownMenuTrigger; DropdownMenuContent > DropdownMenuItem, DropdownMenuLabel, DropdownMenuSeparator, DropdownMenuCheckboxItem, DropdownMenuRadioGroup > DropdownMenuRadioItem
@@ -380,8 +394,8 @@ NOTIFICATION SELECTION GUIDE:
 ### Composed Components
 - ConfirmDialog: open, onOpenChange, title, description, onConfirm + confirmText, cancelText, color(default|error), loading
 - PageHeader: title, subtitle, breadcrumbs[], actions(ReactNode)
-- AvatarGroup: users(AvatarUser[]), max?(number), size?(xs|sm|md|lg|xl), showTooltip?, borderColor?('surface-base'|'surface-raised'), onOverflowClick?(), renderAvatar?((user,index)=>ReactNode), expandDirection?('left'|'right'), expandAmount?('compact'|'default'|'wide'). Type: AvatarUser = { name, image?, ring? }. GPU-composited hover expand via translateX. Use expandDirection="left" for right-aligned groups.
-- StatusBadge: DISCRIMINATED UNION — pass status OR color, not both. status(active|pending|approved|rejected|completed|blocked|cancelled|draft) color(success|warning|error|info|neutral) size(sm|md)
+- AvatarGroup: users(AvatarUser[]), max?(number), size?(xs|sm|md|lg|xl), showTooltip?, borderColor?('surface-base'|'surface-raised'), onOverflowClick?(), renderAvatar?((user,index)=>ReactNode), expandDirection?('left'|'right'), expandAmount?('compact'|'default'|'wide'). Type: AvatarUser = { name, image?, ring?, indicator?('lead'|'admin'|ReactNode) }. GPU-composited hover expand via translateX. Use expandDirection="left" for right-aligned groups. indicator renders a small dot on avatar: 'lead'=warning-9, 'admin'=accent-9, or custom ReactNode.
+- StatusBadge: DISCRIMINATED UNION — pass status OR color, not both. status(active|pending|approved|rejected|completed|blocked|in-progress|review|cancelled|draft) color(success|warning|error|info|neutral) size(sm|md) onClick?(() => void, renders as button with auto chevron-down icon) icon?(ReactNode, custom trailing icon)
 - ContentCard: variant(default|outline|ghost) padding(default|compact|spacious|none)
 - EmptyState: icon(ReactNode or ComponentType), title(required), description, action(ReactNode), compact
 - PriorityIndicator: priority(Priority) display(compact|full). Type: Priority = 'LOW' | 'MEDIUM' | 'HIGH' | 'URGENT' | 'low' | 'medium' | 'high' | 'urgent'
@@ -396,7 +410,7 @@ NOTIFICATION SELECTION GUIDE:
 - (UploadProgress REMOVED — upload tracking is now built into toast.upload())
 - RichTextEditor: Tiptap editor — bold/italic/underline/strike/highlight, headings, blockquote, lists (bullet/ordered/task), code, links, images (paste/drop/upload), file attachments, @mentions, emoji picker + :shortcode:, text alignment, HR. Props: onImageUpload?, onFileUpload?, mentions?, onMentionSearch?, onMentionSelect?(item: MentionItem)
 - RichTextViewer: read-only renderer for RichTextEditor HTML content (renders all above content types)
-- ActivityFeed: items(ActivityItem[]), onLoadMore, loading, hasMore, emptyState, compact, maxInitialItems, groupBy?('time'|'none'), groupLabels?({ today, yesterday, thisWeek, older }). Type: ActivityItem = { id, actor?, action, timestamp, icon?, color?, detail? }. Utility: groupItemsByTime(items, labels) exported.
+- ActivityFeed: items(ActivityItem[]), onLoadMore, loading, hasMore, emptyState, compact, maxInitialItems, groupBy?('time'|'none'), groupLabels?({ today, yesterday, thisWeek, older }), renderItem?((item, index) => ReactNode|undefined, custom renderer per item — return ReactNode for custom, undefined for default). Type: ActivityItem = { id, actor?, action, timestamp, icon?, color?, detail? }. Utility: groupItemsByTime(items, labels) exported.
 - CommandPalette: open, defaultOpen, onOpenChange (controlled/uncontrolled), keybinding(string|string[]|false), maxHeight, emptyState(ReactNode), footerHints(FooterHint[]|false). CommandItem: label(string|ReactNode), description(string|ReactNode), renderLabel(query=>ReactNode), filterValue(string), shortcut(rendered as keycap badges). Keyboard shortcuts rendered per-key with platform-aware Cmd/Ctrl. Reduced-motion support via MotionProvider.
 - MemberPicker: thin wrapper around MultiSelectPopover with Avatar rendering
 - MultiSelectPopover: items/groups, value, onValueChange, searchPlaceholder, onSearch?(async), renderItem?, emptyMessage, maxSelections. Generic multi-select popover with search + checkmarks.

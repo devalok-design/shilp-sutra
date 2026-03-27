@@ -77,22 +77,21 @@ function AntsOverlay({
           exit={{ opacity: 0 }}
           transition={{ duration: 0.2 }}
           aria-hidden="true"
-          className="absolute inset-0 z-[3] rounded-[inherit] pointer-events-none"
-          style={
-            prefersReduced
-              ? {
-                  boxShadow: `inset 0 0 0 1.5px ${color}`,
-                  opacity: 0.6,
-                }
-              : {
-                  // Two-layer background: conic gradient on border-box, solid match on padding-box
-                  // The padding creates a 1.5px gap where only the conic gradient is visible
-                  background: `conic-gradient(from var(--border-angle), ${color}, transparent 40%, transparent 60%, ${color}) border-box`,
-                  animation: `processing-ants-rotate ${duration} linear infinite`,
-                  border: '1.5px solid transparent',
-                  borderRadius: 'inherit',
-                }
-          }
+          className="absolute inset-0 z-[3] pointer-events-none"
+          style={{
+            borderRadius: 'inherit',
+            // 4 gradient strips — one per edge — creating marching dashes
+            backgroundImage: [
+              `repeating-linear-gradient(90deg, ${color} 0 4px, transparent 4px 8px)`,   // top
+              `repeating-linear-gradient(0deg, ${color} 0 4px, transparent 4px 8px)`,    // right
+              `repeating-linear-gradient(90deg, ${color} 0 4px, transparent 4px 8px)`,   // bottom
+              `repeating-linear-gradient(0deg, ${color} 0 4px, transparent 4px 8px)`,    // left
+            ].join(', '),
+            backgroundSize: '8px 1.5px, 1.5px 8px, 8px 1.5px, 1.5px 8px',
+            backgroundPosition: '0 0, 100% 0, 100% 100%, 0 100%',
+            backgroundRepeat: 'repeat-x, repeat-y, repeat-x, repeat-y',
+            animation: prefersReduced ? 'none' : `processing-ants-march ${duration} linear infinite`,
+          }}
         />
       )}
     </AnimatePresence>

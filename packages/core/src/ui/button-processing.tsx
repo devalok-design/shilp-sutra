@@ -56,13 +56,15 @@ export function ProcessingOverlay({ active, speed, color }: ProcessingOverlayPro
     if (!btnEl) return
 
     const style = getComputedStyle(btnEl)
-    const r = parseFloat(style.borderRadius) || 8
+    const rawR = parseFloat(style.borderRadius) || 8
+    const w = btnEl.offsetWidth - 2
+    const h = btnEl.offsetHeight - 2
+    // Cap radius at half the shorter dimension (pill buttons report 9999px)
+    const r = Math.min(rawR, h / 2, w / 2)
     setBorderRadius(r)
 
     // Perimeter of a rounded rect:
     // 4 straight edges + 4 quarter-circle arcs (= one full circle of radius r)
-    const w = btnEl.offsetWidth - 2
-    const h = btnEl.offsetHeight - 2
     const perimeter = 2 * (w - 2 * r) + 2 * (h - 2 * r) + 2 * Math.PI * r
 
     // Target: 8px dash, 6px gap — adjust gap so dashes fit evenly (no seam)

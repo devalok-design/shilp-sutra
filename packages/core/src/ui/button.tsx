@@ -371,16 +371,16 @@ const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
     const renderStartSlot = () => {
       if (loading && loadingPosition === 'start') {
         return (
-          <motion.span layout={!prefersReduced} className={cn('inline-flex shrink-0 items-center justify-center', startIcon && inset.start)}>
+          <span className={cn('inline-flex shrink-0 items-center justify-center', startIcon && inset.start)}>
             <Spinner size={BUTTON_TO_SPINNER_SIZE[resolvedSize]} variant="bare" />
-          </motion.span>
+          </span>
         )
       }
       if (startIcon) {
         return (
-          <motion.span layout={!prefersReduced} className={cn('inline-flex shrink-0 items-center justify-center pointer-events-none', inset.start, dimIcon && 'opacity-90')}>
+          <span className={cn('inline-flex shrink-0 items-center justify-center pointer-events-none', inset.start, dimIcon && 'opacity-90')}>
             {startIcon}
-          </motion.span>
+          </span>
         )
       }
       return null
@@ -389,16 +389,16 @@ const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
     const renderEndSlot = () => {
       if (loading && loadingPosition === 'end') {
         return (
-          <motion.span layout={!prefersReduced} className={cn('inline-flex shrink-0 items-center justify-center', endIcon && inset.end)}>
+          <span className={cn('inline-flex shrink-0 items-center justify-center', endIcon && inset.end)}>
             <Spinner size={BUTTON_TO_SPINNER_SIZE[resolvedSize]} variant="bare" />
-          </motion.span>
+          </span>
         )
       }
       if (endIcon) {
         return (
-          <motion.span layout={!prefersReduced} className={cn('inline-flex shrink-0 items-center justify-center pointer-events-none', inset.end, dimIcon && 'opacity-90')}>
+          <span className={cn('inline-flex shrink-0 items-center justify-center pointer-events-none', inset.end, dimIcon && 'opacity-90')}>
             {endIcon}
-          </motion.span>
+          </span>
         )
       }
       return null
@@ -465,8 +465,6 @@ const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
 
     const buttonEl = (
       <motion.button
-        layout={!prefersReduced}
-        transition={{ layout: tweens.layout }}
         {...motionProps(props)}
         className={cn(
           buttonVariants({
@@ -509,14 +507,14 @@ const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
     // processing toggle, enabling smooth CSS transitions between states.
     return (
       <IconProvider size={iconSize}>
-        <motion.span layout={!prefersReduced} transition={{ layout: tweens.layout }} className={cn('relative inline-flex', fullWidth && 'w-full')}>
+        <span className={cn('relative inline-flex w-fit', fullWidth && 'w-full')}>
           {buttonEl}
           <ProcessingOverlay
             active={isProcessing}
             speed={processingSpeed ?? 'working'}
             color={resolvedProcessingColor}
           />
-        </motion.span>
+        </span>
       </IconProvider>
     )
   },

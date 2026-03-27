@@ -80,22 +80,24 @@ function AntsOverlay({
           exit={{ opacity: 0 }}
           transition={{ duration: 0.2 }}
           aria-hidden="true"
-          className={`absolute inset-[-1.5px] z-[3] rounded-[inherit] pointer-events-none ${
+          className={`absolute inset-0 z-[3] rounded-[inherit] pointer-events-none ${
             prefersReduced ? '' : ANTS_ANIMATION[speed]
           }`}
           style={
             prefersReduced
               ? {
-                  // Static dashed border fallback
-                  border: `1.5px dashed ${color}`,
+                  // Static dashed border fallback (inset by 0.5px so it's visible inside overflow-hidden)
+                  boxShadow: `inset 0 0 0 1.5px ${color}`,
+                  opacity: 0.6,
                 }
               : {
                   // Conic gradient rotated by --border-angle (animated via CSS @property)
                   background: `conic-gradient(from var(--border-angle), ${color}, transparent 40%, transparent 60%, ${color})`,
-                  // Mask to a 1.5px border ring
+                  // Mask: show only a 1.5px outer ring (content-box is inset by padding)
+                  WebkitMask: 'linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0)',
+                  WebkitMaskComposite: 'xor',
                   mask: 'linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0)',
                   maskComposite: 'exclude',
-                  WebkitMaskComposite: 'xor',
                   padding: '1.5px',
                 }
           }

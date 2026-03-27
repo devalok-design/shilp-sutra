@@ -299,12 +299,6 @@ const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
 
     const prefersReduced = useReducedMotion()
 
-    const processingSpeed: ProcessingSpeed | undefined = processingProp === true ? 'working'
-      : processingProp === false || !processingProp ? undefined
-      : processingProp
-    const isProcessing = !!processingSpeed
-    const resolvedProcessingColor = processingColor ?? (resolvedColor === 'default' ? 'accent' : resolvedColor) ?? 'accent'
-
     // Async state machine: idle → loading → success | error → idle
     type AsyncState = 'idle' | 'loading' | 'success' | 'error'
     const [asyncState, setAsyncState] = React.useState<AsyncState>('idle')
@@ -334,6 +328,15 @@ const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
     const isAsync = !!onClickAsync
     const loading = isAsync ? asyncState === 'loading' : loadingProp
     const isAsyncFeedback = asyncState === 'success' || asyncState === 'error'
+
+    // Processing: explicit prop takes priority, otherwise auto-processing during onClickAsync
+    const autoProcessing = isAsync && asyncState === 'loading' && !processingProp
+    const processingSpeed: ProcessingSpeed | undefined = processingProp === true ? 'working'
+      : processingProp === false || !processingProp
+        ? (autoProcessing ? 'working' : undefined)
+        : processingProp
+    const isProcessing = !!processingSpeed
+    const resolvedProcessingColor = processingColor ?? (resolvedColor === 'default' ? 'accent' : resolvedColor) ?? 'accent'
 
     if (asChild) {
       // Slot merges all props into the child element via cloneElement at runtime.
@@ -498,26 +501,20 @@ const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
       </motion.button>
     )
 
-    // When processing, wrap in a positioned container so the overlay
-    // renders as a sibling OUTSIDE the button — not affected by disabled opacity
-    if (isProcessing) {
-      return (
-        <IconProvider size={iconSize}>
-          <span className={cn('relative inline-flex', fullWidth && 'w-full')}>
-            {buttonEl}
-            <ProcessingOverlay
-              active={isProcessing}
-              speed={processingSpeed!}
-              color={resolvedProcessingColor}
-            />
-          </span>
-        </IconProvider>
-      )
-    }
-
+    // Always wrap in a positioned container so the overlay can render
+    // as a sibling OUTSIDE the button (not affected by disabled opacity).
+    // Keeping the wrapper always-on prevents React unmount/remount on
+    // processing toggle, enabling smooth CSS transitions between states.
     return (
       <IconProvider size={iconSize}>
-        {buttonEl}
+        <motion.span layout={!prefersReduced} transition={{ layout: tweens.layout }} className={cn('relative inline-flex', fullWidth && 'w-full')}>
+          {buttonEl}
+          <ProcessingOverlay
+            active={isProcessing}
+            speed={processingSpeed ?? 'working'}
+            color={resolvedProcessingColor}
+          />
+        </motion.span>
       </IconProvider>
     )
   },

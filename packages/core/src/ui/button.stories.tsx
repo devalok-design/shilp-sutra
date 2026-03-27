@@ -908,13 +908,23 @@ export const ProcessingWithGrain: Story = {
 
 export const ProcessingInteractive: Story = {
   render: () => {
-    const [state, setState] = React.useState<'idle' | 'processing' | 'done'>('idle')
-    return (
-      <div className="flex flex-col items-start gap-ds-04">
+    function ProcessingButton({
+      variant,
+      color,
+      label,
+    }: {
+      variant: 'solid' | 'soft' | 'outline' | 'ghost'
+      color: 'accent' | 'error' | 'success' | 'warning' | 'neutral'
+      label: string
+    }) {
+      const [state, setState] = React.useState<'idle' | 'processing' | 'done'>('idle')
+      return (
         <Button
+          variant={variant}
+          color={color}
           processing={state === 'processing' ? 'working' : false}
-          startIcon={state === 'done' ? <Icon icon={IconCheck} /> : <Icon icon={IconSend} />}
-          color={state === 'done' ? 'success' : 'accent'}
+          startIcon={state === 'done' ? <Icon icon={IconCheck} /> : undefined}
+          color={state === 'done' ? 'success' : color}
           onClick={() => {
             if (state === 'idle') {
               setState('processing')
@@ -922,11 +932,59 @@ export const ProcessingInteractive: Story = {
               setTimeout(() => setState('idle'), 5000)
             }
           }}
-          processingDisabled={false}
         >
-          {state === 'idle' ? 'Generate' : state === 'processing' ? 'Generating...' : 'Done!'}
+          {state === 'idle' ? label : state === 'processing' ? 'Processing...' : 'Done!'}
         </Button>
-        <p className="text-ds-xs text-surface-fg-subtle">Click to see: idle → processing → done → idle</p>
+      )
+    }
+
+    return (
+      <div className="flex flex-col gap-ds-06">
+        <p className="text-ds-sm text-surface-fg-muted font-medium">Click any button — idle → processing (3s) → done → idle</p>
+
+        <div className="flex flex-col gap-ds-02">
+          <p className="text-ds-xs text-surface-fg-subtle uppercase tracking-wider">Solid</p>
+          <div className="flex items-center gap-ds-03 flex-wrap">
+            <ProcessingButton variant="solid" color="accent" label="Accent" />
+            <ProcessingButton variant="solid" color="error" label="Error" />
+            <ProcessingButton variant="solid" color="success" label="Success" />
+            <ProcessingButton variant="solid" color="warning" label="Warning" />
+            <ProcessingButton variant="solid" color="neutral" label="Neutral" />
+          </div>
+        </div>
+
+        <div className="flex flex-col gap-ds-02">
+          <p className="text-ds-xs text-surface-fg-subtle uppercase tracking-wider">Soft</p>
+          <div className="flex items-center gap-ds-03 flex-wrap">
+            <ProcessingButton variant="soft" color="accent" label="Accent" />
+            <ProcessingButton variant="soft" color="error" label="Error" />
+            <ProcessingButton variant="soft" color="success" label="Success" />
+            <ProcessingButton variant="soft" color="warning" label="Warning" />
+            <ProcessingButton variant="soft" color="neutral" label="Neutral" />
+          </div>
+        </div>
+
+        <div className="flex flex-col gap-ds-02">
+          <p className="text-ds-xs text-surface-fg-subtle uppercase tracking-wider">Outline</p>
+          <div className="flex items-center gap-ds-03 flex-wrap">
+            <ProcessingButton variant="outline" color="accent" label="Accent" />
+            <ProcessingButton variant="outline" color="error" label="Error" />
+            <ProcessingButton variant="outline" color="success" label="Success" />
+            <ProcessingButton variant="outline" color="warning" label="Warning" />
+            <ProcessingButton variant="outline" color="neutral" label="Neutral" />
+          </div>
+        </div>
+
+        <div className="flex flex-col gap-ds-02">
+          <p className="text-ds-xs text-surface-fg-subtle uppercase tracking-wider">Ghost</p>
+          <div className="flex items-center gap-ds-03 flex-wrap">
+            <ProcessingButton variant="ghost" color="accent" label="Accent" />
+            <ProcessingButton variant="ghost" color="error" label="Error" />
+            <ProcessingButton variant="ghost" color="success" label="Success" />
+            <ProcessingButton variant="ghost" color="warning" label="Warning" />
+            <ProcessingButton variant="ghost" color="neutral" label="Neutral" />
+          </div>
+        </div>
       </div>
     )
   },

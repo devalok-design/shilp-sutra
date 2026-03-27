@@ -16,12 +16,14 @@ export interface ProcessingOverlayProps {
 
 // ── Color mapping ──────────────────────────────────────────────────
 
+// Use text-level color tokens (step 11) so ants match the button's text color.
+// This ensures visibility on all variants — especially neutral where step-9 is too close to the soft bg.
 const COLOR_MAP: Record<string, string> = {
-  accent:  'var(--color-accent-9)',
-  error:   'var(--color-error-9)',
-  success: 'var(--color-success-9)',
-  warning: 'var(--color-warning-9)',
-  neutral: 'var(--color-neutral-9)',
+  accent:  'var(--color-accent-11)',
+  error:   'var(--color-error-11)',
+  success: 'var(--color-success-11)',
+  warning: 'var(--color-warning-11)',
+  neutral: 'var(--color-surface-fg)',
 }
 
 // ── Speed → duration (seconds) ─────────────────────────────────────
@@ -101,6 +103,7 @@ export function ProcessingOverlay({ active, speed, color }: ProcessingOverlayPro
               stroke={solidColor}
               strokeWidth="2"
               strokeDasharray={dashInfo.array}
+              style={{ transition: 'stroke 0.3s ease' }}
               animate={prefersReduced ? {} : { strokeDashoffset: [0, -dashInfo.cycle] }}
               transition={prefersReduced ? {} : {
                 duration,

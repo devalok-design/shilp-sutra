@@ -85,13 +85,12 @@ function AntsOverlay({
                   opacity: 0.6,
                 }
               : {
-                  background: `conic-gradient(from var(--border-angle), ${color}, transparent 40%, transparent 60%, ${color})`,
+                  // Two-layer background: conic gradient on border-box, solid match on padding-box
+                  // The padding creates a 1.5px gap where only the conic gradient is visible
+                  background: `conic-gradient(from var(--border-angle), ${color}, transparent 40%, transparent 60%, ${color}) border-box`,
                   animation: `processing-ants-rotate ${duration} linear infinite`,
-                  WebkitMask: 'linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0)',
-                  WebkitMaskComposite: 'xor',
-                  mask: 'linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0)',
-                  maskComposite: 'exclude',
-                  padding: '1.5px',
+                  border: '1.5px solid transparent',
+                  borderRadius: 'inherit',
                 }
           }
         />

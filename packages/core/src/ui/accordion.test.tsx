@@ -1,4 +1,4 @@
-import { render, screen } from '@testing-library/react'
+import { render, screen, waitFor } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 import { describe, it, expect } from 'vitest'
 import { Accordion, AccordionItem, AccordionTrigger, AccordionContent } from './accordion'
@@ -19,10 +19,14 @@ function renderAccordion() {
 }
 
 describe('Accordion', () => {
-  it('renders triggers', () => {
+  it('renders triggers', async () => {
     renderAccordion()
-    expect(screen.getByRole('button', { name: 'Section One' })).toBeInTheDocument()
-    expect(screen.getByRole('button', { name: 'Section Two' })).toBeInTheDocument()
+    // Radix accordion may defer role assignment via useLayoutEffect in jsdom;
+    // waitFor avoids flakes under full-suite load.
+    await waitFor(() => {
+      expect(screen.getByRole('button', { name: 'Section One' })).toBeInTheDocument()
+      expect(screen.getByRole('button', { name: 'Section Two' })).toBeInTheDocument()
+    })
   })
 
   it('content is hidden when collapsed', () => {

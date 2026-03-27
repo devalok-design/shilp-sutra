@@ -46,7 +46,7 @@ describe('Toast — rendering', () => {
     })
     await waitFor(() => {
       expect(screen.getByText('Saved!')).toBeVisible()
-    })
+    }, { timeout: 3000 })
   })
 
   it('renders an error toast with accent bar and icon', async () => {
@@ -56,7 +56,7 @@ describe('Toast — rendering', () => {
     })
     await waitFor(() => {
       expect(screen.getByText('Failed to save')).toBeVisible()
-    })
+    }, { timeout: 3000 })
     // Error toast should have role="status" and accent bar
     const status = screen.getAllByRole('status').find((el) =>
       el.textContent?.includes('Failed to save'),
@@ -72,9 +72,11 @@ describe('Toast — rendering', () => {
     act(() => {
       toast.warning('Disk space low')
     })
+    // Sonner schedules toast rendering via setTimeout; under full-suite load the
+    // default 1s waitFor timeout can be too tight.
     await waitFor(() => {
       expect(screen.getByText('Disk space low')).toBeVisible()
-    })
+    }, { timeout: 3000 })
   })
 
   it('renders an info toast', async () => {
@@ -84,7 +86,7 @@ describe('Toast — rendering', () => {
     })
     await waitFor(() => {
       expect(screen.getByText('New version available')).toBeVisible()
-    })
+    }, { timeout: 3000 })
   })
 
   it('renders a plain message toast (no icon, no accent bar)', async () => {
@@ -94,7 +96,7 @@ describe('Toast — rendering', () => {
     })
     await waitFor(() => {
       expect(screen.getByText('Something happened')).toBeVisible()
-    })
+    }, { timeout: 3000 })
     const status = screen.getAllByRole('status').find((el) =>
       el.textContent?.includes('Something happened'),
     )
@@ -113,7 +115,7 @@ describe('Toast — rendering', () => {
     })
     await waitFor(() => {
       expect(screen.getByText('Saving...')).toBeVisible()
-    })
+    }, { timeout: 3000 })
     // Loading toast should contain a Spinner (role="status" with "Loading..." sr text)
     const spinners = screen.getAllByRole('status')
     const spinner = spinners.find((el) =>
@@ -130,7 +132,7 @@ describe('Toast — rendering', () => {
     await waitFor(() => {
       expect(screen.getByText('File uploaded')).toBeVisible()
       expect(screen.getByText('3 files processed')).toBeVisible()
-    })
+    }, { timeout: 3000 })
   })
 })
 
@@ -146,7 +148,7 @@ describe('Toast — accessibility', () => {
     })
     await waitFor(() => {
       expect(screen.getByText('A11y test')).toBeVisible()
-    })
+    }, { timeout: 3000 })
     const status = screen.getAllByRole('status').find((el) =>
       el.textContent?.includes('A11y test'),
     )
@@ -457,6 +459,6 @@ describe('Toast — undo', () => {
     await waitFor(() => {
       expect(screen.getByText('Item deleted')).toBeVisible()
       expect(screen.getByRole('button', { name: 'Undo' })).toBeVisible()
-    })
+    }, { timeout: 3000 })
   })
 })

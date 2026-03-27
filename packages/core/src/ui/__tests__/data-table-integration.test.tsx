@@ -761,13 +761,13 @@ describe('DataTable — bulkActions', () => {
     await user.click(screen.getAllByLabelText('Select row')[0])
     await waitFor(() => {
       expect(screen.getByText('1 selected')).toBeInTheDocument()
-    })
+    }, { timeout: 3000 })
 
     // Select second row (re-query after DOM update)
     await user.click(screen.getAllByLabelText('Select row')[1])
     await waitFor(() => {
       expect(screen.getByText('2 selected')).toBeInTheDocument()
-    })
+    }, { timeout: 3000 })
 
     await user.click(screen.getByText('Archive'))
     expect(archiveAction).toHaveBeenCalledWith([data[0], data[1]])
@@ -846,16 +846,16 @@ describe('DataTable — bulkActions', () => {
     await user.click(screen.getAllByLabelText('Select row')[0])
     await waitFor(() => {
       expect(screen.getByText('1 selected')).toBeInTheDocument()
-    })
+    }, { timeout: 3000 })
 
     await user.click(screen.getAllByLabelText('Select row')[1])
     await waitFor(() => {
       expect(screen.getByText('2 selected')).toBeInTheDocument()
-    })
+    }, { timeout: 3000 })
 
     await user.click(screen.getAllByLabelText('Select row')[2])
     await waitFor(() => {
       expect(screen.getByText('3 selected')).toBeInTheDocument()
-    })
+    }, { timeout: 3000 })
   })
 })

@@ -39,13 +39,6 @@ const sectionWidthMap: Record<string, string> = {
   lg: 'w-[46px]',
 }
 
-const paddingMap: Record<string, { base: string; withStart: string; withEnd: string }> = {
-  xs: { base: 'px-ds-02', withStart: 'pl-[26px]', withEnd: 'pr-[26px]' },
-  sm: { base: 'px-ds-03', withStart: 'pl-[30px]', withEnd: 'pr-[30px]' },
-  md: { base: 'px-ds-04', withStart: 'pl-[38px]', withEnd: 'pr-[38px]' },
-  lg: { base: 'px-ds-05', withStart: 'pl-[46px]', withEnd: 'pr-[46px]' },
-}
-
 const iconSizeMap: Record<string, IconSize> = {
   xs: 'xs',
   sm: 'sm',
@@ -94,6 +87,12 @@ export interface InputProps
   endSection?: React.ReactNode
   startSectionClickable?: boolean
   endSectionClickable?: boolean
+  /** Section display type. `'icon'` = fixed-width centered cell (default for ReactElements).
+   *  `'label'` = tinted background with border separator (default for strings). */
+  startSectionType?: 'icon' | 'label'
+  /** Section display type. `'icon'` = fixed-width centered cell (default for ReactElements).
+   *  `'label'` = tinted background with border separator (default for strings). */
+  endSectionType?: 'icon' | 'label'
   /** Classes for the wrapper div (border, bg, ring). */
   wrapperClassName?: string
   /** @deprecated Use startSection */
@@ -113,6 +112,8 @@ const Input = React.forwardRef<HTMLInputElement, InputProps>(
       endSection,
       startSectionClickable,
       endSectionClickable,
+      startSectionType: startSectionTypeProp,
+      endSectionType: endSectionTypeProp,
       startIcon,
       endIcon,
       wrapperClassName,
@@ -135,9 +136,33 @@ const Input = React.forwardRef<HTMLInputElement, InputProps>(
     const resolvedStart = startSection ?? startIcon
     const resolvedEnd = endSection ?? endIcon
 
-    const pad = paddingMap[size]
     const hasStart = !!resolvedStart
     const hasEnd = !!resolvedEnd
+
+    // Infer section type: string → label, ReactElement → icon
+    const startType = startSectionTypeProp ?? (typeof resolvedStart === 'string' ? 'label' : 'icon')
+    const endType = endSectionTypeProp ?? (typeof resolvedEnd === 'string' ? 'label' : 'icon')
+
+    const labelPaddingMap: Record<string, string> = {
+      xs: 'px-ds-02',
+      sm: 'px-ds-02',
+      md: 'px-ds-03',
+      lg: 'px-ds-03',
+    }
+
+    const labelTextMap: Record<string, string> = {
+      xs: 'text-ds-sm',
+      sm: 'text-ds-sm',
+      md: 'text-ds-sm',
+      lg: 'text-ds-md',
+    }
+
+    const inputPadding: Record<string, string> = {
+      xs: 'px-ds-02',
+      sm: 'px-ds-03',
+      md: 'px-ds-03',
+      lg: 'px-ds-04',
+    }
 
     return (
       <div
@@ -149,11 +174,27 @@ const Input = React.forwardRef<HTMLInputElement, InputProps>(
           wrapperClassName,
         )}
       >
-        {hasStart && (
+        {hasStart && startType === 'label' && (
+          <span
+            className={cn(
+              'flex items-center shrink-0 select-none self-stretch',
+              'border-r border-surface-border',
+              'bg-surface-raised text-surface-fg-muted',
+              'rounded-l-[inherit]',
+              labelPaddingMap[size],
+              labelTextMap[size],
+              !startSectionClickable && 'pointer-events-none',
+            )}
+          >
+            {resolvedStart}
+          </span>
+        )}
+
+        {hasStart && startType === 'icon' && (
           <IconProvider size={iconSizeMap[size]}>
             <span
               className={cn(
-                'absolute left-0 top-0 h-full flex items-center justify-center text-surface-fg-muted',
+                'flex items-center justify-center shrink-0 self-stretch text-surface-fg-muted',
                 sectionWidthMap[size],
                 !startSectionClickable && 'pointer-events-none',
               )}
@@ -166,13 +207,15 @@ const Input = React.forwardRef<HTMLInputElement, InputProps>(
         <input
           type={type}
           className={cn(
-            'w-full h-full bg-transparent outline-none font-sans',
+            'flex-1 min-w-0 h-full bg-transparent outline-none font-sans',
             'placeholder:text-surface-fg-subtle',
             'disabled:cursor-not-allowed',
             'read-only:cursor-default',
-            pad.base,
-            hasStart && pad.withStart,
-            hasEnd && pad.withEnd,
+            inputPadding[size],
+            // Remove left padding when start icon section is present (icon provides visual space)
+            hasStart && startType === 'icon' && 'pl-0',
+            // Remove right padding when end icon section is present
+            hasEnd && endType === 'icon' && 'pr-0',
             className,
           )}
           aria-invalid={state === 'error' || undefined}
@@ -182,11 +225,27 @@ const Input = React.forwardRef<HTMLInputElement, InputProps>(
           {...props}
         />
 
-        {hasEnd && (
+        {hasEnd && endType === 'label' && (
+          <span
+            className={cn(
+              'flex items-center shrink-0 select-none self-stretch',
+              'border-l border-surface-border',
+              'bg-surface-raised text-surface-fg-muted',
+              'rounded-r-[inherit]',
+              labelPaddingMap[size],
+              labelTextMap[size],
+              !endSectionClickable && 'pointer-events-none',
+            )}
+          >
+            {resolvedEnd}
+          </span>
+        )}
+
+        {hasEnd && endType === 'icon' && (
           <IconProvider size={iconSizeMap[size]}>
             <span
               className={cn(
-                'absolute right-0 top-0 h-full flex items-center justify-center text-surface-fg-muted',
+                'flex items-center justify-center shrink-0 self-stretch text-surface-fg-muted',
                 sectionWidthMap[size],
                 !endSectionClickable && 'pointer-events-none',
               )}

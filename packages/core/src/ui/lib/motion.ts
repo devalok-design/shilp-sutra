@@ -24,6 +24,8 @@ export const tweens = {
   colorShift: { type: 'tween', duration: 0.07, ease: 'easeOut' } as Transition,
   /** Greeting fade, hint crossfade — unhurried, confident */
   elegant: { type: 'tween', duration: 0.4, ease: [0.25, 0.1, 0.25, 1] } as Transition,
+  /** Button/element layout transitions — smooth width/height changes, no overshoot */
+  layout: { type: 'tween', duration: 0.2, ease: [0.25, 0.1, 0.25, 1] } as Transition,
 } as const
 
 // ── Stagger helper ──

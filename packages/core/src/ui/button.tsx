@@ -244,6 +244,24 @@ export interface ButtonProps
   onClickAsync?: (e: React.MouseEvent<HTMLButtonElement>) => Promise<void>
   /** How long (ms) to show the success/error state before reverting. Default: 1500 */
   asyncFeedbackDuration?: number
+
+  /**
+   * Show processing animation — animated border/glow while content stays visible.
+   * `true` = "working" speed. Semantic speeds:
+   * - `"ambient"` (3s) — background sync, file upload
+   * - `"working"` (2s) — standard API call, generation
+   * - `"urgent"` (1s) — retry, nearly done
+   */
+  processing?: boolean | 'ambient' | 'working' | 'urgent'
+
+  /** Override processing animation color. Defaults to button's own color. */
+  processingColor?: 'accent' | 'error' | 'success' | 'warning' | 'neutral'
+
+  /** Processing visual style. 'ants' = rotating border, 'glow' = breathing shadow. Default: 'ants' */
+  processingStyle?: 'ants' | 'glow'
+
+  /** Disable button during processing. Default: true. Set false for cancel-by-click patterns. */
+  processingDisabled?: boolean
 }
 
 const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(

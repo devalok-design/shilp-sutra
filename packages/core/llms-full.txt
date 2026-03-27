@@ -630,7 +630,10 @@ Note: getFormFieldA11y() was removed in favor of useFormField() hook.
     loadingPosition: "start" | "end" | "center" (default: "start")
     fullWidth: boolean
     asChild: boolean
-    onClickAsync: (e: MouseEvent) => Promise<void> (auto loading->success/error->idle)
+    processing: boolean | 'ambient' | 'working' | 'urgent' (marching ants SVG border)
+    processingColor: 'accent' | 'error' | 'success' | 'warning' | 'neutral' (override animation color)
+    processingDisabled: boolean (disable button during processing, default: true)
+    onClickAsync: (e: MouseEvent) => Promise<void> (auto loading->success/error->idle, auto-activates processing)
     asyncFeedbackDuration: number (ms, default 1500)
 
 ## Defaults
@@ -652,7 +655,9 @@ Note: getFormFieldA11y() was removed in favor of useFormField() hook.
 - DO NOT use color="danger" or color="default" — use color="error" or color="accent"
 - startIcon/endIcon now expect `<Icon icon={...} />` wrapper, not bare icon components
 - Inherits variant/color/size/weight/shape from ButtonGroup context if present
-- onClickAsync overrides onClick and loading when active
+- onClickAsync overrides onClick and loading when active; also auto-activates processing='working' during loading phase
+- processing forces soft variant so marching ants pop against the background
+- processingDisabled=true (default) makes button aria-disabled and pointer-events-none during processing
 - Grain children (DevalokGrain) are auto-separated and rendered as direct button children for absolute positioning
 
 ## Changes
@@ -668,10 +673,10 @@ Note: getFormFieldA11y() was removed in favor of useFormField() hook.
 - **Changed** Solid hover adds tinted shadows per color (e.g., `hover:shadow-brand`, `hover:shadow-error`)
 - **Changed** Icon slots get negative-margin inset to tighten padding against button edges
 - **Added** DevalokGrain support — grain children are auto-separated and rendered for texture overlays
-- **Added** `processing` prop — animated border/glow while content stays visible (`"ambient"` | `"working"` | `"urgent"` | boolean)
+- **Added** `processing` prop — marching ants SVG border while content stays visible (`"ambient"` (3s) | `"working"` (2s) | `"urgent"` (1s) | boolean). Forces soft variant so ants pop.
 - **Added** `processingColor` — override processing animation color independently of button color
-- **Added** `processingStyle` — `"ants"` (rotating conic-gradient border, default) or `"glow"` (breathing box-shadow)
-- **Added** `processingDisabled` — disable button during processing (default: true)
+- **Added** `processingDisabled` — disable button during processing (default: true). Set false for cancel-by-click patterns.
+- **Added** Auto-processing during `onClickAsync` — loading phase auto-activates `processing='working'` when no explicit `processing` prop is set
 - **Added** Always-on layout animation — smooth width/height transitions via Framer Motion FLIP
 
 ### v0.22.0
@@ -742,7 +747,7 @@ See `Button` docs for the public API.
 
 ## Changes
 ### v0.29.0
-- **Added** Initial release — ants (conic-gradient border) and glow (breathing box-shadow) processing overlays
+- **Added** Initial release — marching ants processing overlay (SVG dashed rect with animated stroke-dashoffset). Speed tiers: ambient (3s), working (2s), urgent (1s). Color maps to step-11 tokens for visibility on all variants.
 # Card
 
 - Import: @devalok/shilp-sutra/ui/card
@@ -1865,7 +1870,7 @@ import { DataTableToolbar } from '@devalok/shilp-sutra/ui/data-table-toolbar'
     size: "xs" | "sm" | "md" | "lg" | "xl" | "2xl" — reads from IconContext if not set
     stroke: "light" | "regular" | "bold" — reads from IconContext if not set
     label: string — accessible label (renders <title> + sets aria-label; without it, icon is aria-hidden)
-    animate: "spin" | "pulse" | "bounce" | "none" | { rotate?: number; scale?: number }
+    animate: "spin" | "pulse" | "bounce" | "draw" | "none" | { rotate?: number; scale?: number }
     state: "idle" | "loading" | "success" | "error" — delegates to Spinner (bare variant)
     className: string
 
@@ -1881,6 +1886,7 @@ import { DataTableToolbar } from '@devalok/shilp-sutra/ui/data-table-toolbar'
 <Icon icon={IconPlus} size="xs" stroke="light" />
 <Icon icon={IconPlus} label="Add item" />
 <Icon icon={IconPlus} animate="spin" />
+<Icon icon={IconCheck} animate="draw" />
 <Icon icon={IconPlus} state="loading" />
 <Icon icon={IconPlus} state="success" />
 ```
@@ -1893,11 +1899,13 @@ import { DataTableToolbar } from '@devalok/shilp-sutra/ui/data-table-toolbar'
 - Size tiers map to pixel values: xs=14, sm=16, md=18, lg=20, xl=24, 2xl=32
 - Stroke weight varies by size tier (lighter strokes on smaller icons)
 - Reads size/stroke from IconContext (provided by Button, IconGroup, etc.); explicit props override context
+- `animate="draw"` works with IconCheck, IconX, and CircleCheck only — other icons fall back to static render
 - Respects `prefers-reduced-motion` — animations disabled when user prefers reduced motion
 
 ## Changes
 ### v0.29.0
 - **Added** Initial release — context-aware Icon wrapper with size tiers, stroke weights, accessibility, animations, state machine
+- **Added** `animate="draw"` — SVG path-draw animation using `pathLength`. Draws check/X strokes progressively (0.35s easeOut). Respects `prefers-reduced-motion`.
 # IconButton
 
 - Import: @devalok/shilp-sutra/ui/icon-button
@@ -2025,6 +2033,8 @@ const { size, stroke } = useIconContext()
     endSection: ReactNode (icon or content in the trailing slot)
     startSectionClickable: boolean (enables pointer events on start section)
     endSectionClickable: boolean (enables pointer events on end section)
+    startSectionType: 'icon' | 'label' (section display type — auto-inferred from content)
+    endSectionType: 'icon' | 'label' (section display type — auto-inferred from content)
     wrapperClassName: string (classes for the wrapper div — border, bg, ring)
     startIcon: ReactNode (@deprecated — use startSection)
     endIcon: ReactNode (@deprecated — use endSection)
@@ -2040,6 +2050,8 @@ const { size, stroke } = useIconContext()
 ```jsx
 <Input type="email" placeholder="you@example.com" state="error" startSection={<Icon icon={IconMail} />} />
 <Input size="xs" placeholder="Quick search" startSection={<Icon icon={IconSearch} />} />
+<Input startSection="https://" startSectionType="label" placeholder="example.com" />
+<Input endSection=".00" endSectionType="label" startSection={<Icon icon={IconCurrencyDollar} />} placeholder="0" />
 ```
 
 ## Gotchas
@@ -2050,6 +2062,7 @@ const { size, stroke } = useIconContext()
 - Focus ring is on the wrapper container (focus-within), not the input itself
 - Icons in startSection/endSection are auto-sized via IconProvider per input size
 - Sections are `pointer-events-none` by default — set `startSectionClickable`/`endSectionClickable` for interactive sections
+- Section type is auto-inferred: strings default to `'label'` (tinted bg + border), React elements default to `'icon'` (fixed-width centered). Override with `startSectionType`/`endSectionType`.
 
 ## Changes
 ### v0.29.0
@@ -2061,6 +2074,8 @@ const { size, stroke } = useIconContext()
 - **Changed** Focus ring now on wrapper via `focus-within` (container-level ring, not input-level)
 - **Changed** Icons auto-sized via `IconProvider` context per input size
 - **Deprecated** `startIcon` / `endIcon` — use `startSection` / `endSection`
+- **Added** `startSectionType` / `endSectionType` props — `'icon'` (fixed-width centered cell) or `'label'` (tinted background with border separator). Auto-inferred from content type (strings → label, React elements → icon).
+- **Changed** Sections use flexbox layout for consistent alignment
 - **Deprecated** `inputVariants` export — use `inputWrapperVariants` (semantics changed to target wrapper)
 
 ### v0.15.0

@@ -13,6 +13,12 @@ import {
   IconCheck,
   IconEye,
   IconLock,
+  IconUpload,
+  IconRefresh,
+  IconMail,
+  IconShare,
+  IconPlayerPlay,
+  IconX,
 } from '@tabler/icons-react'
 
 const meta: Meta<typeof Button> = {
@@ -983,6 +989,176 @@ export const ProcessingInteractive: Story = {
             <ProcessingButton variant="ghost" color="success" label="Success" />
             <ProcessingButton variant="ghost" color="warning" label="Warning" />
             <ProcessingButton variant="ghost" color="neutral" label="Neutral" />
+          </div>
+        </div>
+      </div>
+    )
+  },
+}
+
+export const RealWorldScenarios: Story = {
+  render: () => {
+    // ── 1. Async save (onClickAsync auto-processing) ──
+    const handleSave = () => new Promise<void>((resolve) => setTimeout(resolve, 2500))
+    const handleSaveFail = () => new Promise<void>((_, reject) => setTimeout(reject, 2000))
+
+    // ── 2. File upload with progress color change ──
+    const [uploadState, setUploadState] = React.useState<'idle' | 'uploading' | 'done'>('idle')
+    const [uploadColor, setUploadColor] = React.useState<'accent' | 'success'>('accent')
+
+    // ── 3. Deploy pipeline ──
+    const [deployState, setDeployState] = React.useState<'idle' | 'building' | 'deploying' | 'live'>('idle')
+
+    // ── 4. Send message ──
+    const [sendState, setSendState] = React.useState<'idle' | 'sending' | 'sent'>('idle')
+
+    // ── 5. Delete with confirmation ──
+    const [deleteState, setDeleteState] = React.useState<'idle' | 'deleting' | 'deleted'>('idle')
+
+    // ── 6. Generate AI content ──
+    const [genState, setGenState] = React.useState<'idle' | 'generating' | 'done'>('idle')
+
+    return (
+      <div className="flex flex-col gap-ds-08 max-w-2xl">
+        <p className="text-ds-sm text-surface-fg-muted font-medium">Real-world button scenarios — click each to test</p>
+
+        {/* 1. Async save — auto processing via onClickAsync */}
+        <div className="flex flex-col gap-ds-02">
+          <p className="text-ds-xs text-surface-fg-subtle uppercase tracking-wider">Auto async (onClickAsync)</p>
+          <div className="flex items-center gap-ds-03">
+            <Button onClickAsync={handleSave} startIcon={<Icon icon={IconCheck} />}>
+              Save changes
+            </Button>
+            <Button onClickAsync={handleSaveFail} variant="outline" color="error" startIcon={<Icon icon={IconTrash} />}>
+              Delete (will fail)
+            </Button>
+          </div>
+        </div>
+
+        {/* 2. Upload with color shift */}
+        <div className="flex flex-col gap-ds-02">
+          <p className="text-ds-xs text-surface-fg-subtle uppercase tracking-wider">Upload — color shifts accent → success</p>
+          <Button
+            processing={uploadState === 'uploading' ? 'working' : false}
+            processingColor={uploadColor}
+            startIcon={
+              uploadState === 'done' ? <Icon icon={IconCheck} /> : <Icon icon={IconUpload} />
+            }
+            color={uploadState === 'done' ? 'success' : 'accent'}
+            onClick={() => {
+              if (uploadState === 'idle') {
+                setUploadState('uploading')
+                setUploadColor('accent')
+                setTimeout(() => setUploadColor('success'), 1500)
+                setTimeout(() => { setUploadState('done'); setUploadColor('accent') }, 3000)
+                setTimeout(() => setUploadState('idle'), 5000)
+              }
+            }}
+          >
+            {uploadState === 'idle' ? 'Upload file' : uploadState === 'uploading' ? 'Uploading...' : 'Uploaded!'}
+          </Button>
+        </div>
+
+        {/* 3. Multi-stage deploy */}
+        <div className="flex flex-col gap-ds-02">
+          <p className="text-ds-xs text-surface-fg-subtle uppercase tracking-wider">Deploy pipeline — ambient → urgent → success</p>
+          <Button
+            processing={deployState === 'building' ? 'ambient' : deployState === 'deploying' ? 'urgent' : false}
+            processingColor={deployState === 'deploying' ? 'warning' : 'accent'}
+            startIcon={
+              deployState === 'live' ? <Icon icon={IconCheck} /> : <Icon icon={IconPlayerPlay} />
+            }
+            color={deployState === 'live' ? 'success' : 'accent'}
+            variant="solid"
+            onClick={() => {
+              if (deployState === 'idle') {
+                setDeployState('building')
+                setTimeout(() => setDeployState('deploying'), 2500)
+                setTimeout(() => setDeployState('live'), 4500)
+                setTimeout(() => setDeployState('idle'), 7000)
+              }
+            }}
+          >
+            {deployState === 'idle' ? 'Deploy to production'
+              : deployState === 'building' ? 'Building...'
+              : deployState === 'deploying' ? 'Deploying...'
+              : 'Live!'}
+          </Button>
+        </div>
+
+        {/* 4. Send message — ghost variant */}
+        <div className="flex flex-col gap-ds-02">
+          <p className="text-ds-xs text-surface-fg-subtle uppercase tracking-wider">Ghost + icon only transition</p>
+          <Button
+            variant="ghost"
+            processing={sendState === 'sending' ? 'working' : false}
+            startIcon={
+              sendState === 'sent' ? <Icon icon={IconCheck} /> : <Icon icon={IconSend} />
+            }
+            color={sendState === 'sent' ? 'success' : 'accent'}
+            onClick={() => {
+              if (sendState === 'idle') {
+                setSendState('sending')
+                setTimeout(() => setSendState('sent'), 2000)
+                setTimeout(() => setSendState('idle'), 4000)
+              }
+            }}
+          >
+            {sendState === 'idle' ? 'Send' : sendState === 'sending' ? 'Sending...' : 'Sent!'}
+          </Button>
+        </div>
+
+        {/* 5. Destructive delete — error color */}
+        <div className="flex flex-col gap-ds-02">
+          <p className="text-ds-xs text-surface-fg-subtle uppercase tracking-wider">Destructive action — error variant</p>
+          <Button
+            variant="solid"
+            processing={deleteState === 'deleting' ? 'urgent' : false}
+            startIcon={
+              deleteState === 'deleted' ? <Icon icon={IconCheck} /> : <Icon icon={IconTrash} />
+            }
+            color={deleteState === 'deleted' ? 'success' : 'error'}
+            onClick={() => {
+              if (deleteState === 'idle') {
+                setDeleteState('deleting')
+                setTimeout(() => setDeleteState('deleted'), 1500)
+                setTimeout(() => setDeleteState('idle'), 3500)
+              }
+            }}
+          >
+            {deleteState === 'idle' ? 'Delete project' : deleteState === 'deleting' ? 'Deleting...' : 'Deleted'}
+          </Button>
+        </div>
+
+        {/* 6. AI generation — with grain */}
+        <div className="flex flex-col gap-ds-02">
+          <p className="text-ds-xs text-surface-fg-subtle uppercase tracking-wider">AI generation — with grain texture</p>
+          <Button
+            processing={genState === 'generating' ? 'working' : false}
+            startIcon={genState === 'done' ? <Icon icon={IconCheck} /> : undefined}
+            color={genState === 'done' ? 'success' : 'accent'}
+            onClick={() => {
+              if (genState === 'idle') {
+                setGenState('generating')
+                setTimeout(() => setGenState('done'), 3000)
+                setTimeout(() => setGenState('idle'), 5000)
+              }
+            }}
+          >
+            <DevalokGrain intensity="subtle" />
+            {genState === 'idle' ? 'Generate summary' : genState === 'generating' ? 'Generating...' : 'Done!'}
+          </Button>
+        </div>
+
+        {/* 7. Sizes comparison */}
+        <div className="flex flex-col gap-ds-02">
+          <p className="text-ds-xs text-surface-fg-subtle uppercase tracking-wider">Sizes — all processing</p>
+          <div className="flex items-center gap-ds-03">
+            <Button processing="working" size="xs">XS</Button>
+            <Button processing="working" size="sm">SM</Button>
+            <Button processing="working" size="md">MD</Button>
+            <Button processing="working" size="lg">LG</Button>
+            <Button processing="working" shape="pill">Pill</Button>
           </div>
         </div>
       </div>

@@ -329,9 +329,11 @@ const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
     const loading = isAsync ? asyncState === 'loading' : loadingProp
     const isAsyncFeedback = asyncState === 'success' || asyncState === 'error'
 
-    // Processing: explicit prop takes priority, otherwise auto-processing during onClickAsync
+    // Processing: explicit prop takes priority, otherwise auto-processing during onClickAsync.
+    // Processing is always OFF during async feedback (success/error) so the feedback colors show.
     const autoProcessing = isAsync && asyncState === 'loading' && !processingProp
-    const processingSpeed: ProcessingSpeed | undefined = processingProp === true ? 'working'
+    const processingSpeed: ProcessingSpeed | undefined = isAsyncFeedback ? undefined
+      : processingProp === true ? 'working'
       : processingProp === false || !processingProp
         ? (autoProcessing ? 'working' : undefined)
         : processingProp
@@ -468,8 +470,8 @@ const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
         {...motionProps(props)}
         className={cn(
           buttonVariants({
-            // When processing, force soft variant so the ants border pops against a light bg
-            variant: isProcessing && resolvedVariant !== 'ghost' && resolvedVariant !== 'outline' && resolvedVariant !== 'link' ? 'soft' : resolvedVariant,
+            // When processing (and not showing async feedback), force soft variant so ants pop
+            variant: isProcessing && !isAsyncFeedback && resolvedVariant !== 'ghost' && resolvedVariant !== 'outline' && resolvedVariant !== 'link' ? 'soft' : resolvedVariant,
             color: resolvedColor,
             weight: resolvedWeight,
             size: resolvedSize,

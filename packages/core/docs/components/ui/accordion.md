@@ -18,7 +18,7 @@
         AccordionContent (collapsible body)
 
 ## Defaults
-    none (type is required)
+    none (type is required); AccordionTrigger: chevronPosition="right"
 
 ## Example
 ```jsx

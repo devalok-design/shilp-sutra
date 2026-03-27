@@ -13,7 +13,7 @@
     children: ReactNode (REQUIRED)
 
 ## Defaults
-    gap="default", max=undefined (show all)
+    gap="default", max=undefined (show all), size="sm" (overflow badge)
 
 ## Example
 ```jsx

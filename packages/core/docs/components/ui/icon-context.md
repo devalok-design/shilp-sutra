@@ -18,7 +18,7 @@
 
 ## Example
 ```jsx
-import { IconProvider, useIconContext } from '@devalok/shilp-sutra/ui/icon'
+import { IconProvider, useIconContext } from '@devalok/shilp-sutra/ui'
 
 <IconProvider size="sm" stroke="bold">
   <MyCustomIconComponent />

@@ -72,12 +72,16 @@ Compound component: `Message`, `Message.Avatar`, `Message.Content`, `Message.Aut
     reactions: { emoji: string; count: number; reacted: boolean }[] (REQUIRED)
     onReact: (emoji: string) => void (REQUIRED)
 
+### Message.Content Props
+    children: ReactNode (REQUIRED)
+    className: string
+
 ### Message.Actions Props
     children: ReactNode (REQUIRED)
     delay: number — hover reveal delay in ms (default: 100)
 
 ### Message.Action Props
-    icon: IconComponent (REQUIRED)
+    icon: IconProps["icon"] (REQUIRED) — pass the Tabler component reference, e.g. `IconReply` (not `<IconReply />`)
     label: string (REQUIRED)
     onClick: () => void (REQUIRED)
     variant: "default" | "danger" (default: "default")
@@ -201,6 +205,8 @@ Animated bouncing dots with a text description of who is typing.
 - `grouped` hides avatar and author — use for consecutive messages from the same user
 - MessageInput sends on Enter (Shift+Enter for newline) — textarea auto-resizes up to 160px
 - TypingIndicator renders nothing when `users` is empty
+- Message.Actions toolbar is hidden by default (opacity-0) — it reveals on hover of the parent Message root via `group-hover/message`. Only works when Actions is inside a Message root.
+- Message.Content is the flex column wrapper for Author + Body — required for proper layout in flat variant
 - DateSeparator's default formatter shows "Today", "Yesterday", or "Mon DD" / "Mon DD, YYYY"
 
 ## Changes

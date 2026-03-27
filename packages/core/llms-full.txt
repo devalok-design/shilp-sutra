@@ -112,7 +112,7 @@ Note: getFormFieldA11y() was removed in favor of useFormField() hook.
         AccordionContent (collapsible body)
 
 ## Defaults
-    none (type is required)
+    none (type is required); AccordionTrigger: chevronPosition="right"
 
 ## Example
 ```jsx
@@ -470,7 +470,7 @@ Note: getFormFieldA11y() was removed in favor of useFormField() hook.
     children: ReactNode (REQUIRED)
 
 ## Defaults
-    gap="default", max=undefined (show all)
+    gap="default", max=undefined (show all), size="sm" (overflow badge)
 
 ## Example
 ```jsx
@@ -888,12 +888,16 @@ Compound component: `Message`, `Message.Avatar`, `Message.Content`, `Message.Aut
     reactions: { emoji: string; count: number; reacted: boolean }[] (REQUIRED)
     onReact: (emoji: string) => void (REQUIRED)
 
+### Message.Content Props
+    children: ReactNode (REQUIRED)
+    className: string
+
 ### Message.Actions Props
     children: ReactNode (REQUIRED)
     delay: number — hover reveal delay in ms (default: 100)
 
 ### Message.Action Props
-    icon: IconComponent (REQUIRED)
+    icon: IconProps["icon"] (REQUIRED) — pass the Tabler component reference, e.g. `IconReply` (not `<IconReply />`)
     label: string (REQUIRED)
     onClick: () => void (REQUIRED)
     variant: "default" | "danger" (default: "default")
@@ -1017,6 +1021,8 @@ Animated bouncing dots with a text description of who is typing.
 - `grouped` hides avatar and author — use for consecutive messages from the same user
 - MessageInput sends on Enter (Shift+Enter for newline) — textarea auto-resizes up to 160px
 - TypingIndicator renders nothing when `users` is empty
+- Message.Actions toolbar is hidden by default (opacity-0) — it reveals on hover of the parent Message root via `group-hover/message`. Only works when Actions is inside a Message root.
+- Message.Content is the flex column wrapper for Author + Body — required for proper layout in flat variant
 - DateSeparator's default formatter shows "Today", "Yesterday", or "Mon DD" / "Mon DD, YYYY"
 
 ## Changes
@@ -1932,7 +1938,7 @@ import { DataTableToolbar } from '@devalok/shilp-sutra/ui/data-table-toolbar'
 
 ## Example
 ```jsx
-import { IconProvider, useIconContext } from '@devalok/shilp-sutra/ui/icon'
+import { IconProvider, useIconContext } from '@devalok/shilp-sutra/ui'
 
 <IconProvider size="sm" stroke="bold">
   <MyCustomIconComponent />
@@ -3724,7 +3730,7 @@ export default function RootLayout({ children }) {
     max: number (default: 4, overflow shows "+N" badge)
     size: "xs" | "sm" | "md" | "lg" | "xl"
     showTooltip: boolean (default: true)
-    borderColor: "surface-1" | "surface-2" (default: "surface-2") — overlap border color
+    borderColor: "surface-base" | "surface-raised" (default: "surface-raised") — overlap border color
     onOverflowClick: () => void — makes the "+N" badge interactive (button)
     renderAvatar: (user: AvatarUser, index: number) => ReactNode — custom avatar render
     expandDirection: "left" | "right" (default: "right") — direction group expands on hover
@@ -3737,7 +3743,7 @@ export default function RootLayout({ children }) {
     indicator?: "lead" | "admin" | ReactNode — small dot indicator at top-right of avatar
 
 ## Defaults
-    size="md", max=4, showTooltip=true, borderColor="surface-2", expandDirection="right", expandAmount="default"
+    size="md", max=4, showTooltip=true, borderColor="surface-raised", expandDirection="right", expandAmount="default"
 
 ## Example
 ```jsx
@@ -3748,7 +3754,7 @@ export default function RootLayout({ children }) {
   ]}
   max={3}
   size="md"
-  borderColor="surface-1"
+  borderColor="surface-base"
   onOverflowClick={() => setShowAll(true)}
 />
 ```
@@ -3758,7 +3764,7 @@ export default function RootLayout({ children }) {
 - Users beyond `max` are collapsed into a "+N" overflow badge
 - Missing `image` falls back to initials derived from `name`
 - Hover expand animation uses CSS `group-hover` — parent must not clip overflow
-- `borderColor` should match the surface context the group sits on (e.g., `surface-1` on cards)
+- `borderColor` should match the surface the group sits on (`surface-base` on page bg, `surface-raised` on cards)
 - `renderAvatar` wrapper is positioning-only — pass `size` directly to your Avatar (do NOT use `className="h-full w-full"`)
 
 ## Changes
@@ -3773,7 +3779,6 @@ export default function RootLayout({ children }) {
 - **Added** `xs` and `xl` size variants
 - **Added** `borderColor` prop for overlap border matching surface context
 - **Added** `onOverflowClick` prop making the overflow badge an interactive button
-- **Added** `overflowContent` prop for popover content on overflow click
 - **Added** `renderAvatar` prop for custom per-avatar rendering
 - **Added** `AvatarUser.ring` field for per-user role rings in groups
 

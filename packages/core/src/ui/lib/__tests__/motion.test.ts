@@ -15,8 +15,8 @@ describe('springs', () => {
 })
 
 describe('tweens', () => {
-  it('has fade, colorShift, elegant keys', () => {
-    expect(Object.keys(tweens)).toEqual(['fade', 'colorShift', 'elegant'])
+  it('has fade, colorShift, elegant, layout keys', () => {
+    expect(Object.keys(tweens)).toEqual(['fade', 'colorShift', 'elegant', 'layout'])
   })
 
   it.each(['fade', 'colorShift', 'elegant'] as const)('%s has type: "tween"', (key) => {

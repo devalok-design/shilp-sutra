@@ -296,4 +296,46 @@ describe('Button', () => {
     const btn = container.firstChild as HTMLElement
     expect(btn.className).toContain('disabled:saturate-')
   })
+
+  // ============ Processing state ============
+
+  describe('processing state', () => {
+    it('sets aria-busy when processing', () => {
+      render(<Button processing>Save</Button>)
+      expect(screen.getByRole('button')).toHaveAttribute('aria-busy', 'true')
+    })
+
+    it('is disabled by default when processing', () => {
+      render(<Button processing>Save</Button>)
+      expect(screen.getByRole('button')).toBeDisabled()
+    })
+
+    it('is NOT disabled when processingDisabled={false}', () => {
+      render(<Button processing processingDisabled={false}>Cancel</Button>)
+      expect(screen.getByRole('button')).not.toBeDisabled()
+    })
+
+    it('renders processing overlay when processing is set', () => {
+      const { container } = render(<Button processing="ambient">Syncing</Button>)
+      // ProcessingOverlay renders with aria-hidden="true" and z-[3]
+      const overlay = container.querySelector('[aria-hidden="true"]')
+      expect(overlay).toBeInTheDocument()
+    })
+
+    it('does not render overlay when not processing', () => {
+      const { container } = render(<Button>Save</Button>)
+      // No z-[3] overlay when not processing
+      const overlays = container.querySelectorAll('[aria-hidden="true"]')
+      // There should be no processing overlay (grain might have aria-hidden but different z-index)
+      const processingOverlay = Array.from(overlays).find(el =>
+        el.className?.includes('z-[3]')
+      )
+      expect(processingOverlay).toBeUndefined()
+    })
+
+    it('normalizes processing={true} to "working" speed', () => {
+      render(<Button processing>Save</Button>)
+      expect(screen.getByRole('button')).toHaveAttribute('aria-busy', 'true')
+    })
+  })
 })

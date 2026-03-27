@@ -443,36 +443,10 @@ const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
         : 'bg-error-9 text-accent-fg border-transparent hover:bg-error-9'
       : undefined
 
-    // Async feedback icon replaces start slot (same inset as normal icon for layout stability)
-    // Async feedback icon — SVG path draws in like a pen stroke
-    const feedbackIconSize = BUTTON_TO_ICON_SIZE[resolvedSize] === 'xs' ? 14 : BUTTON_TO_ICON_SIZE[resolvedSize] === 'sm' ? 16 : BUTTON_TO_ICON_SIZE[resolvedSize] === 'lg' ? 22 : 18
+    // Async feedback icon — uses Icon's draw animation for pen-stroke effect
     const asyncFeedbackIcon = isAsyncFeedback ? (
       <span className={cn('inline-flex shrink-0 items-center justify-center pointer-events-none', startIcon && inset.start)}>
-        <svg width={feedbackIconSize} height={feedbackIconSize} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
-          {asyncState === 'success' ? (
-            <motion.polyline
-              points="4 12 10 18 20 6"
-              initial={{ pathLength: 0, opacity: 0 }}
-              animate={{ pathLength: 1, opacity: 1 }}
-              transition={{ pathLength: { duration: 0.35, ease: 'easeOut' }, opacity: { duration: 0.1 } }}
-            />
-          ) : (
-            <>
-              <motion.line
-                x1="6" y1="6" x2="18" y2="18"
-                initial={{ pathLength: 0, opacity: 0 }}
-                animate={{ pathLength: 1, opacity: 1 }}
-                transition={{ pathLength: { duration: 0.25, ease: 'easeOut' }, opacity: { duration: 0.1 } }}
-              />
-              <motion.line
-                x1="18" y1="6" x2="6" y2="18"
-                initial={{ pathLength: 0, opacity: 0 }}
-                animate={{ pathLength: 1, opacity: 1 }}
-                transition={{ pathLength: { duration: 0.25, ease: 'easeOut', delay: 0.1 }, opacity: { duration: 0.1, delay: 0.1 } }}
-              />
-            </>
-          )}
-        </svg>
+        <Icon icon={asyncState === 'success' ? IconCheck : IconX} animate="draw" />
       </span>
     ) : null
 

@@ -54,8 +54,12 @@ export interface IconProps {
   stroke?: IconStroke
   /** Accessible label — renders <title> + sets aria-label. Without this, icon is aria-hidden. */
   label?: string
-  /** Preset animation or controlled motion. 'none' disables inherited animation. */
-  animate?: 'spin' | 'pulse' | 'bounce' | 'none' | { rotate?: number; scale?: number }
+  /**
+   * Preset animation or controlled motion. 'none' disables inherited animation.
+   * 'draw' renders the icon as an SVG path that draws in like a pen stroke
+   * (works with IconCheck and IconX — others fall back to fade-in).
+   */
+  animate?: 'spin' | 'pulse' | 'bounce' | 'draw' | 'none' | { rotate?: number; scale?: number }
   /**
    * State machine for loading→success/error transitions. Delegates to Spinner (bare variant).
    *
@@ -113,9 +117,59 @@ export const Icon = React.forwardRef<SVGSVGElement, IconProps>(
       )
     }
 
+    // ── Draw animation (SVG pathLength) ─────────────────────────────────
+    if (animate === 'draw' && !prefersReduced) {
+      const drawProps = {
+        initial: { pathLength: 0, opacity: 0 },
+        animate: { pathLength: 1, opacity: 1 },
+        transition: { pathLength: { duration: 0.35, ease: 'easeOut' as const }, opacity: { duration: 0.1 } },
+      }
+      // Check which icon this is to render the appropriate SVG path.
+      // Tabler displayNames: IconCheck → "Check", IconX → "X"
+      const name = TablerIcon.displayName ?? ''
+      const isCheck = name === 'Check' || name === 'IconCheck' || name === 'CircleCheck'
+      const isX = name === 'X' || name === 'IconX'
+
+      if (isCheck || isX) {
+        return (
+          <svg
+            ref={ref}
+            width={px}
+            height={px}
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            strokeWidth={sw}
+            strokeLinecap="round"
+            strokeLinejoin="round"
+            className={className}
+            aria-hidden={label ? undefined : 'true'}
+            aria-label={label}
+            role={label ? 'img' : undefined}
+          >
+            {isCheck ? (
+              <motion.polyline points="4 12 10 18 20 6" {...drawProps} />
+            ) : (
+              <>
+                <motion.line x1="6" y1="6" x2="18" y2="18" {...drawProps} />
+                <motion.line x1="18" y1="6" x2="6" y2="18"
+                  {...drawProps}
+                  transition={{
+                    pathLength: { duration: 0.25, ease: 'easeOut', delay: 0.1 },
+                    opacity: { duration: 0.1, delay: 0.1 },
+                  }}
+                />
+              </>
+            )}
+          </svg>
+        )
+      }
+      // Unknown icon: fall through to fade-in via static render
+    }
+
     // ── Determine animation ────────────────────────────────────────────
     const animatePreset =
-      typeof animate === 'string' && animate !== 'none'
+      typeof animate === 'string' && animate !== 'none' && animate !== 'draw'
         ? ANIMATION_PRESETS[animate as keyof typeof ANIMATION_PRESETS]
         : null
     const animateObject =

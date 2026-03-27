@@ -2,14 +2,16 @@
 
 import { cva, type VariantProps } from 'class-variance-authority'
 import { IconCheck, IconX } from '@tabler/icons-react'
-import { motion, AnimatePresence } from 'framer-motion'
+import { motion, AnimatePresence, useReducedMotion } from 'framer-motion'
 import { Slot, Slottable } from '@primitives/react-slot'
 import * as React from 'react'
 import { useButtonGroup } from './button-group'
 import { Icon } from './icon'
 import { IconProvider } from './icon-context'
 import type { IconSize } from './icon-context'
-import { springs } from './lib/motion'
+import { springs, tweens, motionProps } from './lib/motion'
+import { ProcessingOverlay } from './button-processing'
+import type { ProcessingSpeed } from './button-processing'
 import { cn } from './lib/utils'
 import { Spinner } from './spinner'
 
@@ -283,6 +285,10 @@ const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
       onClick,
       onClickAsync,
       asyncFeedbackDuration = 1500,
+      processing: processingProp,
+      processingColor,
+      processingStyle = 'ants',
+      processingDisabled = true,
       children,
       ...props
     },
@@ -294,6 +300,15 @@ const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
     const resolvedWeight = weight ?? group.weight ?? 'semibold'
     const resolvedShape = shape ?? group.shape ?? 'default'
     const resolvedSize = size ?? group.size ?? 'md'
+
+    const prefersReduced = useReducedMotion()
+
+    const processingSpeed: ProcessingSpeed | undefined = processingProp === true ? 'working'
+      : processingProp === false || !processingProp ? undefined
+      : processingProp
+    const isProcessing = !!processingSpeed
+    const resolvedProcessingColor = processingColor ?? (resolvedColor === 'default' ? 'accent' : resolvedColor) ?? 'accent'
+
     // Async state machine: idle → loading → success | error → idle
     type AsyncState = 'idle' | 'loading' | 'success' | 'error'
     const [asyncState, setAsyncState] = React.useState<AsyncState>('idle')
@@ -355,16 +370,16 @@ const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
     const renderStartSlot = () => {
       if (loading && loadingPosition === 'start') {
         return (
-          <span className={cn('inline-flex shrink-0 items-center justify-center', startIcon && inset.start)}>
+          <motion.span layout={!prefersReduced} className={cn('inline-flex shrink-0 items-center justify-center', startIcon && inset.start)}>
             <Spinner size={BUTTON_TO_SPINNER_SIZE[resolvedSize]} variant="bare" />
-          </span>
+          </motion.span>
         )
       }
       if (startIcon) {
         return (
-          <span className={cn('inline-flex shrink-0 items-center justify-center pointer-events-none', inset.start, dimIcon && 'opacity-90')}>
+          <motion.span layout={!prefersReduced} className={cn('inline-flex shrink-0 items-center justify-center pointer-events-none', inset.start, dimIcon && 'opacity-90')}>
             {startIcon}
-          </span>
+          </motion.span>
         )
       }
       return null
@@ -373,16 +388,16 @@ const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
     const renderEndSlot = () => {
       if (loading && loadingPosition === 'end') {
         return (
-          <span className={cn('inline-flex shrink-0 items-center justify-center', endIcon && inset.end)}>
+          <motion.span layout={!prefersReduced} className={cn('inline-flex shrink-0 items-center justify-center', endIcon && inset.end)}>
             <Spinner size={BUTTON_TO_SPINNER_SIZE[resolvedSize]} variant="bare" />
-          </span>
+          </motion.span>
         )
       }
       if (endIcon) {
         return (
-          <span className={cn('inline-flex shrink-0 items-center justify-center pointer-events-none', inset.end, dimIcon && 'opacity-90')}>
+          <motion.span layout={!prefersReduced} className={cn('inline-flex shrink-0 items-center justify-center pointer-events-none', inset.end, dimIcon && 'opacity-90')}>
             {endIcon}
-          </span>
+          </motion.span>
         )
       }
       return null
@@ -449,8 +464,10 @@ const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
 
     return (
       <IconProvider size={iconSize}>
-        <button
-          {...props}
+        <motion.button
+          layout={!prefersReduced}
+          transition={{ layout: tweens.layout }}
+          {...motionProps(props)}
           className={cn(
             buttonVariants({ variant: resolvedVariant, color: resolvedColor, weight: resolvedWeight, size: resolvedSize }),
             resolvedShape === 'pill' && 'rounded-full',
@@ -465,17 +482,26 @@ const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
             className,
           )}
           ref={ref}
-          disabled={disabled || loading || isAsyncFeedback}
-          aria-busy={loading || undefined}
+          disabled={disabled || loading || isAsyncFeedback || (isProcessing && processingDisabled)}
+          aria-busy={loading || isProcessing || undefined}
           onClick={isAsync ? handleAsyncClick : onClick}
         >
           {/* Grain layers render as direct children (need absolute positioning) */}
           {grainElements}
+          {/* Processing overlay */}
+          {isProcessing && (
+            <ProcessingOverlay
+              active={isProcessing}
+              speed={processingSpeed!}
+              style={processingStyle}
+              color={resolvedProcessingColor}
+            />
+          )}
           {/* Content renders above grain via z-[2] span wrapper */}
           {isAsyncFeedback ? asyncFeedbackIcon : renderStartSlot()}
           {isAsyncFeedback ? contentElements : renderChildren()}
           {isAsyncFeedback ? null : renderEndSlot()}
-        </button>
+        </motion.button>
       </IconProvider>
     )
   },

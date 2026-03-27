@@ -1,6 +1,6 @@
 # IconGroup
 
-- Import: @devalok/shilp-sutra/ui/icon
+- Import: @devalok/shilp-sutra/ui (barrel export)
 - Server-safe: No
 - Category: ui
 

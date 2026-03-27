@@ -62,7 +62,7 @@ Semantic layer:
 
 Consumer rebranding: Override accent scale CSS vars or use generateScale(options) utility.
 
-Tailwind utilities: accent-1..12, secondary-1..12, surface-1..4, plus fg/border variants.
+Tailwind utilities: accent-1..12, secondary-1..12, surface-base/raised/sunken, plus fg/border variants.
 
 ### Toast Setup Pattern
 
@@ -108,7 +108,7 @@ Note: getFormFieldA11y() was removed in favor of useFormField() hook.
 ## Compound Components
     Accordion (root)
       AccordionItem (value: string, REQUIRED)
-        AccordionTrigger (clickable header, chevron auto-renders, chevronPosition?: "left" | "right")
+        AccordionTrigger (clickable header, chevron auto-renders; chevronPosition: "left" | "right")
         AccordionContent (collapsible body)
 
 ## Defaults
@@ -127,11 +127,10 @@ Note: getFormFieldA11y() was removed in favor of useFormField() hook.
 ## Gotchas
 - type is REQUIRED — omitting it causes runtime error
 - collapsible only works with type="single"
-- chevronPosition defaults to "right" — pass "left" for file-explorer style
 
 ## Changes
 ### v0.29.0
-- **Added** `chevronPosition` prop on AccordionTrigger — "left" | "right" (default: "right")
+- **Added** `chevronPosition` prop on AccordionTrigger: `"left"` | `"right"` (default: `"right"`) — controls which side the chevron icon renders
 
 ### v0.18.0
 - **Changed** Accordion content fade animation migrated to Framer Motion (height animation still uses CSS keyframes)
@@ -387,39 +386,21 @@ Note: getFormFieldA11y() was removed in favor of useFormField() hook.
     variant: "subtle" | "solid" | "outline" | "soft"
     color: "default" | "accent" | "error" | "success" | "warning" | "info" | "neutral" | "teal" | "amber" | "slate" | "indigo" | "cyan" | "orange" | "emerald" | "custom"
     size: "xs" | "sm" | "md" | "lg"
-    dot: boolean (shows animated leading dot indicator with pulse)
-    startIcon: ReactElement | null (leading icon)
-    endIcon: ReactElement | null (trailing icon)
-    onClick: MouseEventHandler (renders as <button>; with onDismiss renders as div[role="button"] to avoid nested buttons)
-    selected: boolean (shows animated check icon for toggle state; adds ring-1)
-    disabled: boolean (opacity + pointer-events-none + desaturated)
-    onDismiss: () => void (shows X dismiss button with aria-label "Remove {children}")
-    maxWidth: number (pixel cap; enables text truncation with title tooltip)
-    circle: boolean (equal aspect-ratio circle shape, removes horizontal padding)
-    asChild: boolean (Radix Slot — merge props onto child element)
+    startIcon: ReactElement | null
+    endIcon: ReactElement | null
+    dot: boolean (shows animated leading dot indicator)
+    onClick: () => void (makes badge interactive as button)
+    selected: boolean (toggle state — shows check icon when true)
+    disabled: boolean
+    onDismiss: () => void (shows dismiss X button)
+    maxWidth: number (enables truncation with title tooltip)
+    circle: boolean (square aspect-ratio, centered content)
+    asChild: boolean
     children: ReactNode
 
 ## Compound Components
-    Badge (root)
-      Badge.Indicator — Notification count/dot overlay positioned on a child element
-      Badge.Group — Flex-wrap container with overflow "+N" badge
-
-## Badge.Indicator Props
-    count: number (displayed count)
-    max: number (default: 99 — counts above this show "99+")
-    dot: boolean (default: false — show dot instead of count)
-    color: "error" | "success" | "warning" | "accent" | "info" (default: "error")
-    invisible: boolean (default: false — hides indicator without unmounting)
-    showZero: boolean (default: false — show indicator when count is 0)
-    placement: "top-right" | "top-left" | "bottom-right" | "bottom-left" (default: "top-right")
-    children: ReactNode (REQUIRED — the element to overlay)
-
-## Badge.Group Props
-    max: number (visible badge limit; overflow renders "+N" badge)
-    gap: "tight" | "default" | "loose" (default: "default")
-    size: BadgeProps["size"] (size passed to overflow "+N" badge)
-    onOverflowClick: () => void (click handler on the "+N" overflow badge)
-    children: ReactNode
+    Badge.Indicator — status indicator sub-component
+    Badge.Group — layout wrapper for badge collections
 
 ## Defaults
     variant="subtle", color="default", size="md"
@@ -428,38 +409,31 @@ Note: getFormFieldA11y() was removed in favor of useFormField() hook.
 ```jsx
 <Badge variant="solid" color="success">Active</Badge>
 <Badge color="teal" onDismiss={() => removeFilter('teal')}>Teal team</Badge>
-<Badge color="accent" onClick={toggle} selected={isSelected}>Feature</Badge>
+<Badge onClick={() => toggle()} selected={isSelected}>Filterable</Badge>
 <Badge color="custom" style={{ '--badge-color': '#8b5cf6' }}>Custom</Badge>
-
-<Badge.Indicator count={5} color="error">
-  <IconBell />
-</Badge.Indicator>
-
-<Badge.Group max={3} onOverflowClick={() => showAll()}>
-  <Badge color="teal">Design</Badge>
-  <Badge color="amber">Dev</Badge>
-  <Badge color="indigo">QA</Badge>
-  <Badge color="cyan">Ops</Badge>
-</Badge.Group>
 ```
 
 ## Gotchas
-- Chip is deprecated — Badge v2 replaces it for interactive tag/filter use cases
-- `color="custom"` requires CSS variable `--badge-color` on the element or a parent; for solid variant with light custom colors, also set `--badge-fg-color`
-- When both `onClick` and `onDismiss` are set, the root renders as `div[role="button"]` (not nested buttons) with manual Enter/Space keyboard handling
-- `selected` check icon only renders when `onClick` is set and neither `startIcon` nor `dot` is provided
-- Badge.Indicator animates in/out with Framer Motion (bouncy spring); respects `prefers-reduced-motion`
-- Badge.Group overflow badge uses `variant="outline" color="neutral"` and inherits `size` prop
+- DO NOT use variant="destructive" — use variant="solid" color="error"
+- Badge is now interactive when `onClick` is provided (renders as `<button>`)
+- When both `onClick` and `onDismiss` are provided, renders as `div[role="button"]` to avoid nested buttons
+- Chip is deprecated — use Badge with `onClick` for interactive tags
+- `color="custom"` requires `--badge-color` CSS variable (and optionally `--badge-fg-color` for solid variant)
 
 ## Changes
 ### v0.29.0
-- **Changed** (BREAKING) Badge v2 — now interactive. Added `onClick`, `selected`, `disabled`, `startIcon`, `endIcon`, `maxWidth`, `circle`, `asChild` props
-- **Added** `color="custom"` with CSS variable `--badge-color` / `--badge-fg-color`
-- **Added** `color="neutral"` semantic color
-- **Added** `variant="soft"` (tinted background, no border)
-- **Added** `Badge.Indicator` compound part — notification count/dot overlay with animated entrance
-- **Added** `Badge.Group` compound part — flex-wrap container with overflow "+N" badge
-- **Deprecated** Chip component — use Badge with `onClick`/`onDismiss` instead
+- **Changed** (BREAKING) v2 rewrite — Badge is now a full interactive component
+- **Added** `soft` variant (tinted bg, no border — completes the 4-variant set: subtle/solid/outline/soft)
+- **Added** `custom` color with CSS variable `--badge-color` (and `--badge-fg-color` for solid)
+- **Added** Interactive mode: `onClick` makes Badge a clickable button, `selected` shows animated check icon
+- **Added** `disabled` prop with reduced opacity and pointer-events-none
+- **Added** `startIcon` / `endIcon` props (auto-sized per badge size)
+- **Added** `maxWidth` prop for truncation with title tooltip
+- **Added** `circle` prop for square aspect-ratio badges
+- **Added** `asChild` prop for Slot composition
+- **Added** `Badge.Indicator` and `Badge.Group` compound sub-components
+- **Deprecated** Chip component — use Badge with `onClick` instead
+- **Changed** Dot animation now uses Framer Motion spring entrance + continuous pulse
 
 ### v0.18.0
 - **Changed** Pulse-ring animation migrated to Framer Motion
@@ -481,6 +455,84 @@ Note: getFormFieldA11y() was removed in favor of useFormField() hook.
 
 ### v0.1.0
 - **Added** Initial release
+# BadgeGroup
+
+- Import: @devalok/shilp-sutra/ui (as Badge.Group)
+- Server-safe: Yes
+- Category: ui
+
+## Props
+    max: number — Show at most N badges, rest collapsed into "+N" overflow
+    gap: "tight" | "default" | "loose" (default: "default")
+    size: BadgeProps["size"] — Size passed to the overflow "+N" badge
+    onOverflowClick: () => void — Click handler for the overflow "+N" badge
+    className: string
+    children: ReactNode (REQUIRED)
+
+## Defaults
+    gap="default", max=undefined (show all)
+
+## Example
+```jsx
+<Badge.Group max={3} size="sm" onOverflowClick={() => setShowAll(true)}>
+  <Badge>React</Badge>
+  <Badge>TypeScript</Badge>
+  <Badge>Tailwind</Badge>
+  <Badge>Vite</Badge>
+  <Badge>Vitest</Badge>
+</Badge.Group>
+{/* Renders: React, TypeScript, Tailwind, +2 */}
+```
+
+## Gotchas
+- Overflow badge is always `variant="outline" color="neutral"`
+- `size` only applies to the overflow badge — child badges keep their own size
+- Gap values: tight=4px, default=6px, loose=8px
+- Without `onOverflowClick`, the overflow badge is not interactive
+
+## Changes
+### v0.29.0
+- **Added** Initial release — badge grouping with overflow collapse and click handler
+# BadgeIndicator
+
+- Import: @devalok/shilp-sutra/ui (as Badge.Indicator)
+- Server-safe: No
+- Category: ui
+
+## Props
+    count: number — Numeric value to display
+    max: number (default: 99) — Cap display at this value, shows "99+" when exceeded
+    dot: boolean (default: false) — Show a small dot instead of count
+    color: "error" | "success" | "warning" | "accent" | "info" (default: "error")
+    invisible: boolean (default: false) — Hide the indicator while keeping layout
+    showZero: boolean (default: false) — Show indicator when count is 0
+    placement: "top-right" | "top-left" | "bottom-right" | "bottom-left" (default: "top-right")
+    className: string
+    children: ReactNode (REQUIRED) — The element to attach the indicator to
+
+## Defaults
+    max=99, dot=false, color="error", invisible=false, showZero=false, placement="top-right"
+
+## Example
+```jsx
+<Badge.Indicator count={5}>
+  <IconButton icon={IconBell} variant="ghost" />
+</Badge.Indicator>
+
+<Badge.Indicator dot color="success">
+  <Avatar src={user.avatar} fallback={user.name} />
+</Badge.Indicator>
+```
+
+## Gotchas
+- Wraps children in `position: relative` span — the indicator is absolutely positioned
+- Animation uses spring physics, respects `prefers-reduced-motion`
+- When `count > max`, displays `${max}+` (e.g., "99+")
+- `invisible` keeps the layout but hides the dot/count (useful for transitions)
+
+## Changes
+### v0.29.0
+- **Added** Initial release — animated notification indicator with count, dot, placement, and color
 # Banner
 
 - Import: @devalok/shilp-sutra/ui/banner
@@ -567,13 +619,13 @@ Note: getFormFieldA11y() was removed in favor of useFormField() hook.
 - Category: ui
 
 ## Props
-    variant: "solid" | "soft" | "outline" | "ghost" | "link"
-    color: "accent" | "error" | "success" | "warning" | "neutral"
+    variant: "solid" | "soft" | "outline" | "ghost" | "link" | "default" (alias->solid) | "destructive" (alias->solid+error)
+    color: "accent" | "error" | "success" | "warning" | "neutral" | "default" (alias->accent)
     size: "xs" | "sm" | "md" | "lg" | "compact-xs" | "compact-sm" | "compact-md" | "icon" | "icon-xs" | "icon-sm" | "icon-md" | "icon-lg"
-    shape: "default" | "pill" (pill applies rounded-full)
     weight: "semibold" | "normal"
-    startIcon: ReactNode
-    endIcon: ReactNode
+    shape: "default" | "pill"
+    startIcon: ReactElement (use <Icon icon={...} />) | null
+    endIcon: ReactElement (use <Icon icon={...} />) | null
     loading: boolean (disables button, shows spinner)
     loadingPosition: "start" | "end" | "center" (default: "start")
     fullWidth: boolean
@@ -581,82 +633,41 @@ Note: getFormFieldA11y() was removed in favor of useFormField() hook.
     onClickAsync: (e: MouseEvent) => Promise<void> (auto loading->success/error->idle)
     asyncFeedbackDuration: number (ms, default 1500)
 
-    Deprecated aliases (still work, will be removed in v1.0):
-      variant="default" → solid
-      variant="destructive" → solid + color="error"
-      color="default" → accent
-
 ## Defaults
-    variant="solid", color="accent", size="md", shape="default", weight="semibold"
-
-## Variant × Color Matrix (25 combinations)
-    solid:   accent(brand CTA), error(red), success(green), warning(amber), neutral(grey)
-    soft:    accent(tinted bg), error(red tint), success(green tint), warning(amber tint), neutral(surface hover)
-    outline: accent(brand border), error(red border), success(green border), warning(amber border), neutral(grey border)
-    ghost:   accent(neutral hover — backward compat), error(red hover), success(green hover), warning(amber hover), neutral(neutral hover)
-    link:    accent(underline), error(red), success(green), warning(amber), neutral(muted)
-
-## Compact Sizes
-    compact-xs, compact-sm, compact-md — padding-only height (no fixed h-*), ideal for dense UI:
-    menus, property editors, inline tags. Combine with shape="pill" for chip/tag buttons.
+    variant="solid", color="accent", weight="semibold", size="md", shape="default"
 
 ## Example
 ```jsx
 <Button variant="solid" color="error" startIcon={<Icon icon={IconTrash} />} loading={isDeleting}>
   Delete project
 </Button>
-
-// Soft warning pill for status:
-<Button variant="soft" color="warning" size="compact-sm" shape="pill">
-  Pending review
-</Button>
-
-// Normal weight for menu items:
-<Button variant="ghost" weight="normal" size="compact-md">
-  Settings
-</Button>
+<Button variant="soft" color="success" startIcon={<Icon icon={IconCheck} />}>Approved</Button>
+<Button variant="soft" color="warning" size="compact-sm" shape="pill">Overdue</Button>
 ```
 
 ## Gotchas
-- DO NOT use variant="destructive" — use variant="solid" color="error" (deprecated alias, still works)
-- DO NOT use variant="default" — use variant="solid" (deprecated alias, still works)
-- DO NOT use color="default" — use color="accent" (deprecated alias, still works)
+- DO NOT use variant="destructive" — use variant="solid" color="error"
 - DO NOT use variant="secondary" — use variant="outline" or variant="ghost"
 - DO NOT use size="default" — use size="md"
-- DO NOT use color="danger" — use color="error"
-- Inherits variant/color/weight/shape/size from ButtonGroup context if present
+- DO NOT use color="danger" or color="default" — use color="error" or color="accent"
+- startIcon/endIcon now expect `<Icon icon={...} />` wrapper, not bare icon components
+- Inherits variant/color/size/weight/shape from ButtonGroup context if present
 - onClickAsync overrides onClick and loading when active
-- ghost+accent renders as neutral (no brand tint) for backward compatibility — this is intentional
-- Icon wrappers have pointer-events-none — click handlers on icons inside Button won't fire
-
-## Migration from pre-v2
-    // Before (v1):
-    <Button variant="default">Save</Button>
-    <Button variant="destructive">Delete</Button>
-
-    // After (v2):
-    <Button variant="solid" color="accent">Save</Button>
-    <Button variant="solid" color="error">Delete</Button>
-
-    // New capabilities:
-    <Button variant="soft" color="success">Approve</Button>
-    <Button variant="outline" color="warning" shape="pill">Needs review</Button>
-    <Button variant="ghost" weight="normal" size="compact-md">Menu item</Button>
+- Grain children (DevalokGrain) are auto-separated and rendered as direct button children for absolute positioning
 
 ## Changes
-### v0.29.0 (Button v2)
-- **Added** `variant="soft"` — tinted background variant for all 5 colors
-- **Added** `color` axis expanded: `accent`, `error`, `success`, `warning`, `neutral` (25 variant×color combos)
-- **Added** `shape` prop: `"default"` | `"pill"` (rounded-full)
-- **Added** `weight` prop: `"semibold"` (default) | `"normal"`
-- **Added** compact sizes: `compact-xs`, `compact-sm`, `compact-md`
-- **Added** `size="xs"` (28px height)
-- **Changed** Default color renamed from `"default"` to `"accent"` (alias preserved)
-- **Changed** Active state uses `brightness(0.92) saturate(1.1)` filter, `disabled:saturate(0.3)`
-- **Changed** Icon wrappers use `pointer-events-none`, per-size gap scaling
-- **Deprecated** `variant="default"` → use `variant="solid"`
-- **Deprecated** `variant="destructive"` → use `variant="solid" color="error"`
-- **Deprecated** `color="default"` → use `color="accent"`
+### v0.29.0
+- **Added** `soft` variant — tinted background, colored text (new middle ground between solid and ghost)
+- **Added** 5 color options: `accent` (default), `error`, `success`, `warning`, `neutral` (replaces old `default`/`error`-only axis)
+- **Added** `shape` prop: `"default"` | `"pill"` (rounded-full with extra horizontal padding)
+- **Added** compact sizes: `compact-xs`, `compact-sm`, `compact-md` (height-less inline buttons)
+- **Added** `xs` size and `icon-xs` size
+- **Added** `weight` prop: `"semibold"` (default) | `"normal"` for lighter labels
+- **Changed** `startIcon`/`endIcon` now accept `<Icon icon={...} />` wrapper (auto-sized via IconProvider context per button size)
+- **Changed** Default color is now `"accent"` (was `"default"`)
+- **Changed** Solid hover adds tinted shadows per color (e.g., `hover:shadow-brand`, `hover:shadow-error`)
+- **Changed** Icon slots get negative-margin inset to tighten padding against button edges
+- **Added** DevalokGrain support — grain children are auto-separated and rendered for texture overlays
 
 ### v0.22.0
 - **Changed** Active/pressed scale from `0.97` to `0.95` for snappier press feedback.
@@ -690,8 +701,6 @@ Note: getFormFieldA11y() was removed in favor of useFormField() hook.
     variant: ButtonProps['variant'] (propagated to children)
     color: ButtonProps['color'] (propagated to children)
     size: ButtonProps['size'] (propagated to children)
-    weight: ButtonProps['weight'] (propagated to children)
-    shape: ButtonProps['shape'] (propagated to children)
     orientation: "horizontal" | "vertical" (default: "horizontal")
 
 ## Defaults
@@ -703,107 +712,17 @@ Note: getFormFieldA11y() was removed in favor of useFormField() hook.
   <Button>Bold</Button>
   <Button>Italic</Button>
 </ButtonGroup>
-
-// Pill-shaped tag group:
-<ButtonGroup variant="soft" shape="pill" size="compact-sm">
-  <Button color="success">Active</Button>
-  <Button color="warning">Pending</Button>
-</ButtonGroup>
 ```
 
 ## Gotchas
-- Children can override variant/color/weight/shape/size individually
+- Children can override variant/size individually
 
 ## Changes
-### v0.29.0
-- **Added** `weight` and `shape` propagated to children via context
-
 ### v0.4.2
 - **Fixed** `Omit<HTMLAttributes, 'color'>` resolves TS2320 conflict with CVA color prop
 
 ### v0.1.0
 - **Added** Initial release
-# Icon
-
-- Import: @devalok/shilp-sutra/ui (barrel export)
-- Server-safe: No
-- Category: ui
-
-## Props
-    icon: TablerIconComponent (required) — The Tabler icon component
-    size: "xs" | "sm" | "md" | "lg" | "xl" | "2xl" (default: "md", or from context)
-    stroke: "light" | "regular" | "bold" (default: "regular", or from context)
-    label: string | undefined — Accessible label. Without: aria-hidden. With: aria-label + role="img"
-    animate: "spin" | "pulse" | "bounce" | "none" | { rotate, scale } — Animation preset
-    state: "idle" | "loading" | "success" | "error" — State machine (delegates to Spinner)
-    className: string — Additional CSS classes
-
-## Size Tiers
-    xs=14px, sm=16px, md=18px, lg=20px, xl=24px, 2xl=32px
-
-## Stroke scales with size
-    light:   xs=1.25, sm=1.5, md=1.5, lg=1.75, xl=2, 2xl=2
-    regular: xs=1.5,  sm=2,   md=2,   lg=2,    xl=2, 2xl=2.25
-    bold:    xs=2,    sm=2.5, md=2.5, lg=2.5,  xl=2.5, 2xl=2.5
-
-## Context
-    Button provides IconContext automatically. Icon inside a Button inherits the correct size.
-    IconGroup provides IconContext with explicit size/stroke props.
-    Explicit props on Icon always override context.
-
-## Example
-```jsx
-// Standalone icon
-<Icon icon={IconPlus} size="lg" label="Add item" />
-
-// Inside Button (inherits size from Button context)
-<Button startIcon={<Icon icon={IconPlus} />}>Add</Button>
-
-// Toolbar with IconGroup
-<IconGroup size="sm" gap="tight">
-  <Icon icon={IconBold} />
-  <Icon icon={IconItalic} />
-</IconGroup>
-
-// State machine
-<Icon icon={IconCheck} state="loading" />
-```
-
-## Gotchas
-- Button startIcon/endIcon now accept <Icon> elements, not raw Tabler icons
-- Before: startIcon={<IconPlus />}
-- After:  startIcon={<Icon icon={IconPlus} />}
-
-## Changes
-### v0.29.0
-- **Added** Initial release — context-aware Icon wrapper with size tiers, stroke weights, accessibility, animations, state machine
-
-# IconGroup
-
-- Import: @devalok/shilp-sutra/ui (barrel export)
-- Server-safe: No
-- Category: ui
-
-## Props
-    size: "xs" | "sm" | "md" | "lg" | "xl" | "2xl" — propagated to children via IconContext
-    stroke: "light" | "regular" | "bold" — propagated to children via IconContext
-    gap: "tight" | "default" | "loose" — flex gap between icons
-    label: string — accessible label (used as aria-label when role="toolbar")
-    role: "toolbar" — optional, set for toolbar patterns
-
-## Example
-```jsx
-<IconGroup size="sm" gap="tight" role="toolbar">
-  <Icon icon={IconBold} label="Bold" />
-  <Icon icon={IconItalic} label="Italic" />
-  <Icon icon={IconUnderline} label="Underline" />
-</IconGroup>
-```
-
-## Changes
-### v0.29.0
-- **Added** Initial release
-
 # Card
 
 - Import: @devalok/shilp-sutra/ui/card
@@ -895,194 +814,177 @@ import { BarChart } from '@devalok/shilp-sutra/ui/charts'
 
 ### v0.1.0
 - **Added** Initial release
-# Chat Primitives (MessageList, Message, SystemMessage, MessageInput, DateSeparator, UnreadSeparator, TypingIndicator)
+# Chat
 
 - Import: @devalok/shilp-sutra/ui/chat
-- Server-safe: No (MessageList, Message, MessageInput, TypingIndicator use Framer Motion; DateSeparator, UnreadSeparator are SSR-safe but exported from client barrel)
+- Server-safe: No (MessageList, Message, MessageInput, TypingIndicator use Framer Motion); DateSeparator and UnreadSeparator are server-safe
 - Category: ui
 
-7 primitives for building chat interfaces. Use together inside a flex column layout.
+Seven primitives for building chat interfaces: MessageList, Message (compound), SystemMessage, MessageInput, DateSeparator, UnreadSeparator, TypingIndicator.
+
+---
 
 ## MessageList
 
-Scrollable container for messages with auto-scroll, load-more, and "N new" floating pill.
+Scrollable container with auto-scroll, load-more, empty state, and "N new" floating pill.
 
 ### Props
-    children: ReactNode (REQUIRED) — Message/SystemMessage/DateSeparator children
-    autoScroll: boolean (default: true) — auto-scroll to bottom on new content
-    newMessageCount: number (default: 0) — shows floating "N new" pill when > 0 and user scrolled up
+    autoScroll: boolean — auto-scroll to bottom on new content (default: true)
+    newMessageCount: number — count shown in floating pill (default: 0)
     onScrollToBottom: () => void — called when user clicks the "N new" pill
-    onLoadMore: () => void — called when user scrolls near top (load older messages)
-    isLoadingMore: boolean (default: false) — shows spinner at top
-    emptySlot: ReactNode — content when no children
+    onLoadMore: () => void — called when user scrolls near top
+    isLoadingMore: boolean — shows spinner at top (default: false)
+    emptySlot: ReactNode — content when there are no children
     headerSlot: ReactNode — content above the scroll container (e.g. channel name)
+    scrollToBottomSlot: ReactNode — reserved slot for custom scroll-to-bottom button
+    children: ReactNode (REQUIRED)
 
 ### Example
 ```jsx
-<MessageList
-  newMessageCount={3}
-  onScrollToBottom={() => markAsRead()}
-  onLoadMore={() => fetchOlderMessages()}
-  isLoadingMore={loading}
-  emptySlot={<EmptyState title="No messages yet" />}
->
-  <DateSeparator date={new Date()} />
-  <Message variant="flat">
-    <Message.Avatar src="/alice.jpg" fallback="A" />
-    <Message.Content>
-      <Message.Author name="Alice" timestamp={new Date()} />
-      <Message.Body>Hello!</Message.Body>
-    </Message.Content>
-  </Message>
+<MessageList autoScroll onLoadMore={loadMore} isLoadingMore={loading} newMessageCount={3} onScrollToBottom={markRead}>
+  {messages.map(m => <Message key={m.id}>...</Message>)}
 </MessageList>
 ```
 
-### Gotchas
-- Uses `role="log"` and `aria-live="polite"` for accessibility
-- Auto-scroll only fires if user is at bottom (within 40px threshold)
-- Load-more triggers when scrollTop < 100px — scroll position is preserved after load
-- Wrap children in AnimatePresence internally for enter/exit animations
+---
 
 ## Message (Compound)
 
-Renders a single chat message. Compound component with sub-parts.
+Compound component: `Message`, `Message.Avatar`, `Message.Content`, `Message.Author`, `Message.Body`, `Message.EditableBody`, `Message.Reactions`, `Message.Actions`, `Message.Action`.
 
-### Root Props
-    variant: "flat" | "bubble" (default: "flat") — flat=Slack-style rows, bubble=iMessage-style
-    placement: "start" | "end" (default: "start") — message alignment
-    highlight: "mention" | "internal" — accent-tinted background for mentions or internal notes
-    grouped: boolean (default: false) — hides avatar and author for consecutive same-sender messages
-    deleted: boolean (default: false) — renders italic "This message was deleted" with trash icon
+### Message (root) Props
+    variant: "flat" | "bubble" (default: "flat")
+    placement: "start" | "end" (default: "start")
+    highlight: "mention" | "internal"
+    grouped: boolean — hides avatar/author for consecutive messages (default: false)
+    deleted: boolean — renders deleted placeholder (default: false)
     deletedText: string (default: "This message was deleted")
 
-### Sub-parts
-    Message.Avatar — src?, fallback?, icon?(ReactNode), size?("sm"|"md"), children?(custom avatar)
-    Message.Content — flex container for author + body
-    Message.Author — name(string, REQUIRED), badge?(ReactNode), timestamp?(Date), formattedTimestamp?(string), timestampFormat?((date)=>string)
-    Message.Body — text content wrapper (whitespace-pre-wrap)
-    Message.EditableBody — content(string), onSave((newContent)=>void), onCancel?(), canEdit?(boolean), renderContent?((content)=>ReactNode). Inline edit: click to edit, Enter to save, Escape to cancel.
-    Message.Reactions — reactions({emoji, count, reacted}[]), onReact((emoji)=>void). Pill buttons with active ring.
-    Message.Actions — children(ReactNode), delay?(number, default 100). Floating toolbar, visible on hover.
-    Message.Action — icon(TablerIcon), label(string), onClick(()=>void), variant?("default"|"danger"). Single icon button inside Actions toolbar.
+### Message.Avatar Props
+    src: string | null — avatar image URL
+    fallback: string — initials text
+    icon: ReactNode — custom icon instead of avatar
+    size: "sm" | "md" (default: "md")
+    children: ReactNode — fully custom avatar slot
+
+### Message.Author Props
+    name: string (REQUIRED)
+    badge: ReactNode
+    timestamp: Date
+    formattedTimestamp: string — pre-formatted timestamp (overrides timestamp)
+    timestampFormat: (date: Date) => string — custom formatter
+
+### Message.Body Props
+    children: ReactNode (REQUIRED)
+
+### Message.EditableBody Props
+    content: string (REQUIRED)
+    onSave: (newContent: string) => void (REQUIRED)
+    onCancel: () => void
+    canEdit: boolean (default: false)
+    renderContent: (content: string) => ReactNode — custom render for display mode
+
+### Message.Reactions Props
+    reactions: { emoji: string; count: number; reacted: boolean }[] (REQUIRED)
+    onReact: (emoji: string) => void (REQUIRED)
+
+### Message.Actions Props
+    children: ReactNode (REQUIRED)
+    delay: number — hover reveal delay in ms (default: 100)
+
+### Message.Action Props
+    icon: IconComponent (REQUIRED)
+    label: string (REQUIRED)
+    onClick: () => void (REQUIRED)
+    variant: "default" | "danger" (default: "default")
 
 ### Example
 ```jsx
-{/* Flat variant (Slack-style) */}
 <Message variant="flat" highlight="mention">
-  <Message.Avatar src="/bob.jpg" fallback="B" />
+  <Message.Avatar src={user.photo} fallback="JD" />
   <Message.Content>
-    <Message.Author name="Bob" timestamp={new Date()} badge={<Badge size="xs">Admin</Badge>} />
-    <Message.Body>@Alice check this out</Message.Body>
-    <Message.Reactions reactions={[{ emoji: '👍', count: 3, reacted: true }]} onReact={handleReact} />
+    <Message.Author name="Jane Doe" timestamp={new Date()} badge={<Badge>Admin</Badge>} />
+    <Message.Body>Hello, world!</Message.Body>
+    <Message.Reactions reactions={reactions} onReact={handleReact} />
     <Message.Actions>
-      <Message.Action icon={IconEdit} label="Edit" onClick={edit} />
-      <Message.Action icon={IconTrash} label="Delete" onClick={del} variant="danger" />
+      <Message.Action icon={IconReply} label="Reply" onClick={handleReply} />
+      <Message.Action icon={IconTrash} label="Delete" onClick={handleDelete} variant="danger" />
     </Message.Actions>
   </Message.Content>
 </Message>
-
-{/* Bubble variant (iMessage-style) */}
-<Message variant="bubble" placement="end">
-  <Message.Author name="Me" />
-  <Message.Body>Sent from my side</Message.Body>
-</Message>
-
-{/* Deleted message */}
-<Message deleted />
-
-{/* Grouped consecutive messages (no avatar/author) */}
-<Message grouped>
-  <Message.Avatar fallback="A" />
-  <Message.Content>
-    <Message.Body>Follow-up message</Message.Body>
-  </Message.Content>
-</Message>
 ```
 
-### Gotchas
-- `grouped=true` hides avatar (renders spacer) and author — use for consecutive same-sender messages
-- `deleted=true` ignores all children and renders a single-line deleted indicator
-- `Message.Actions` toolbar appears on `group-hover/message` — parent has `group/message` class
-- `Message.EditableBody` saves on Enter, cancels on Escape, also saves on blur
-- `highlight="mention"` adds accent left border + accent-2 bg; `highlight="internal"` adds warning-2 bg
-- `useMessageContext()` hook available for custom sub-parts (returns variant, placement, grouped, highlight)
+---
 
 ## SystemMessage
 
-Inline event or alert message in chat (e.g., "Alice joined the channel").
+Inline system event or alert message (e.g. "Alice joined the channel").
 
 ### Props
+    icon: ReactNode — custom icon
+    timestamp: string — ISO timestamp string
     variant: "event" | "alert" (default: "event")
-    icon: ReactNode (default: AlertCircle for alert variant)
-    timestamp: string (ISO date string, formatted to locale time)
-    children: ReactNode (REQUIRED) — the message text
+    children: ReactNode (REQUIRED)
 
 ### Example
 ```jsx
-<SystemMessage icon={<Icon icon={IconUserPlus} size="xs" />} timestamp="2026-03-26T10:30:00Z">
-  Alice joined the channel
-</SystemMessage>
-<SystemMessage variant="alert">Connection lost</SystemMessage>
+<SystemMessage>Alice joined the channel</SystemMessage>
+<SystemMessage variant="alert" timestamp="2026-03-26T10:00:00Z">Connection lost</SystemMessage>
 ```
+
+---
 
 ## MessageInput
 
-Composable chat input with send/stop button, auto-resize textarea.
+Auto-resizing textarea with send/stop buttons, streaming support, and slot-based extensibility.
 
 ### Props
     onSubmit: (text: string) => void (REQUIRED)
     placeholder: string (default: "Type a message...")
     disabled: boolean (default: false)
-    isStreaming: boolean (default: false) — shows red stop button instead of send
-    onCancel: () => void — called when stop button clicked during streaming
-    leadingSlot: ReactNode — before textarea (e.g., attachment button)
-    trailingSlot: ReactNode — after send button
-    disclaimer: string — small centered text below input (e.g., "AI may make mistakes")
-    sendIcon: ReactNode — custom send icon (default: IconSend)
+    isStreaming: boolean — shows stop button instead of send (default: false)
+    onCancel: () => void — called when stop button is clicked
+    leadingSlot: ReactNode — content before the textarea (e.g. attachment button)
+    trailingSlot: ReactNode — content after the send button
+    disclaimer: string — centered text below the input (e.g. "AI can make mistakes")
+    sendIcon: ReactNode — custom send icon
 
 ### Example
 ```jsx
 <MessageInput
-  onSubmit={(text) => sendMessage(text)}
-  isStreaming={isGenerating}
-  onCancel={() => abortGeneration()}
-  placeholder="Message #general"
-  disclaimer="Messages are visible to all members"
-  leadingSlot={<IconButton icon={<Icon icon={IconPaperclip} />} aria-label="Attach" />}
+  onSubmit={handleSend}
+  isStreaming={streaming}
+  onCancel={handleStop}
+  disclaimer="AI can make mistakes"
 />
 ```
 
-### Gotchas
-- Enter sends, Shift+Enter inserts newline
-- Textarea auto-resizes up to 160px max height
-- During streaming, send button is replaced with a red stop button
-- `isStreaming` prevents sending (Enter is ignored)
+---
 
 ## DateSeparator
 
-Horizontal rule with a centered date label.
+Horizontal rule with a formatted date label.
 
 ### Props
-    date: Date | string (REQUIRED) — auto-parses ISO strings
-    format: (date: Date) => string — custom format function
+    date: Date | string (REQUIRED)
+    format: (date: Date) => string — custom date formatter
     className: string
-
-### Defaults
-    format: auto ("Today", "Yesterday", "Mar 15", "Mar 15, 2025" for different years)
 
 ### Example
 ```jsx
 <DateSeparator date={new Date()} />
-<DateSeparator date="2026-01-15" format={(d) => d.toLocaleDateString()} />
+<DateSeparator date="2026-03-25" format={(d) => d.toLocaleDateString()} />
 ```
+
+---
 
 ## UnreadSeparator
 
-Accent-colored horizontal rule marking unread boundary.
+Accent-colored horizontal rule marking the unread boundary.
 
 ### Props
     label: string (default: "NEW")
-    count: number — when set, renders "3 NEW" instead of just "NEW"
+    count: number — prepended to label (e.g. "5 NEW")
     className: string
 
 ### Example
@@ -1091,12 +993,14 @@ Accent-colored horizontal rule marking unread boundary.
 <UnreadSeparator count={5} />
 ```
 
+---
+
 ## TypingIndicator
 
-Animated bouncing dots with typing user names.
+Animated bouncing dots with a text description of who is typing.
 
 ### Props
-    users: { name: string, image?: string }[] (REQUIRED)
+    users: { name: string; image?: string }[] (REQUIRED)
     className: string
 
 ### Example
@@ -1105,15 +1009,19 @@ Animated bouncing dots with typing user names.
 <TypingIndicator users={[{ name: 'Alice' }, { name: 'Bob' }]} />
 ```
 
-### Gotchas
-- Empty `users` array renders nothing (hides with AnimatePresence)
-- 1 user: "Alice is typing...", 2 users: "Alice and Bob are typing...", 3+: "Several people are typing..."
-- Fixed 24px min-height to prevent layout shift
+---
+
+## Gotchas
+- MessageList uses `role="log"` with `aria-live="polite"` — screen readers announce new messages
+- Message entrance animations use Framer Motion springs — AnimatePresence wraps children in MessageList
+- `grouped` hides avatar and author — use for consecutive messages from the same user
+- MessageInput sends on Enter (Shift+Enter for newline) — textarea auto-resizes up to 160px
+- TypingIndicator renders nothing when `users` is empty
+- DateSeparator's default formatter shows "Today", "Yesterday", or "Mon DD" / "Mon DD, YYYY"
 
 ## Changes
 ### v0.29.0
-- **Added** Initial release — MessageList, Message (compound), SystemMessage, MessageInput, DateSeparator, UnreadSeparator, TypingIndicator
-
+- **Added** Initial release — 7 chat primitives (MessageList, Message, SystemMessage, MessageInput, DateSeparator, UnreadSeparator, TypingIndicator)
 # Checkbox
 
 - Import: @devalok/shilp-sutra/ui/checkbox
@@ -1645,55 +1553,55 @@ import { DataTableToolbar } from '@devalok/shilp-sutra/ui/data-table-toolbar'
 - Server-safe: No
 - Category: ui
 
-Brand texture component — adds noise grain + optional tinted directional gradient to any surface.
-Drop as a child of any element with `relative overflow-hidden isolate`. Uses `rounded-[inherit]` to match parent border-radius.
-
 ## Props
-    intensity: "subtle" | "medium" | "heavy" (noise + gradient strength)
-    surface: "solid" | "soft" ("solid" for filled backgrounds, "soft" for tinted/muted — adjusts noise opacity)
-    sheen: boolean (inner highlight — inset shadow for 3D emboss feel)
-    animated: boolean (fade-in on mount, 600ms)
-    hoverIntensify: boolean (noise +40% on parent hover — parent needs `group` class)
-    tint: string (CSS color for directional gradient, e.g. "oklch(0.55 0.19 360)" or "var(--color-accent-9)")
+    intensity: "subtle" | "medium" | "heavy" — grain intensity level
+    surface: "solid" | "soft" — affects noise opacity ('solid' for filled backgrounds, 'soft' for tinted/muted)
+    sheen: boolean — inner highlight (top-lit emboss) for premium 3D feel
+    animated: boolean — fade-in entrance animation on mount
+    hoverIntensify: boolean — increase grain visibility on parent hover (requires parent `group` class)
+    tint: string — CSS color for the directional gradient (e.g. "oklch(0.55 0.19 360)", "var(--color-accent-9)")
 
 ## Defaults
-    intensity="subtle", surface="solid", sheen=false, animated=false, hoverIntensify=false, tint=undefined
+    intensity: "subtle"
+    surface: "solid"
+    sheen: false
+    animated: false
+    hoverIntensify: false
+    tint: undefined (no gradient, noise texture only)
 
 ## Example
 ```jsx
-{/* Inside a Button (already has relative/overflow-hidden/isolate): */}
+{/* Inside a Button (Button already has relative/overflow-hidden/isolate): */}
 <Button>
   <DevalokGrain />
   Save changes
 </Button>
 
-{/* Inside a Card with tint: */}
+{/* Inside a Card: */}
 <Card className="relative overflow-hidden isolate">
-  <DevalokGrain surface="soft" tint="var(--color-accent-9)" />
+  <DevalokGrain surface="soft" />
   Card content
 </Card>
 
-{/* Hero section with heavy grain: */}
-<div className="group relative overflow-hidden isolate rounded-ds-lg bg-accent-9 p-8">
-  <DevalokGrain intensity="heavy" tint="oklch(0.55 0.19 360)" hoverIntensify />
+{/* Heavy grain with tint on a hero section: */}
+<div className="relative overflow-hidden isolate rounded-ds-lg bg-accent-9 p-8">
+  <DevalokGrain intensity="heavy" tint="oklch(0.55 0.19 360)" />
   <h1 className="relative z-[2]">Hero</h1>
 </div>
 ```
 
 ## Gotchas
-- Parent MUST have `relative overflow-hidden isolate` for grain to render correctly
-- Without `tint`, NO directional gradient is rendered — only noise texture. Neutral gradient looks like a dark smudge on light surfaces.
-- `hoverIntensify` requires parent to have `group` class for `group-hover:` Tailwind utilities
-- `animated` respects `prefers-reduced-motion` via Framer Motion's `useReducedMotion`
-- Content above the grain needs `relative z-[2]` or higher to stay interactive (grain is at z-[1])
-- `aria-hidden="true"` and `pointer-events-none` are set automatically
-- Noise opacity ranges: subtle=0.12-0.15, medium=0.22-0.28, heavy=0.35-0.45 (soft surface uses lower end)
-- Badge component is grain-ready out of the box (has relative/overflow-hidden/isolate)
+- Parent element MUST have `relative overflow-hidden isolate` for the grain to render correctly
+- The grain layers are absolute-positioned at `z-[1]` — content that should appear above must use `z-[2]` or higher
+- Uses `rounded-[inherit]` to match parent border-radius automatically
+- Renders `aria-hidden="true"` — purely decorative
+- Without `tint`, only the noise texture renders (no directional gradient)
+- `hoverIntensify` requires the parent to have a `group` class for `group-hover:` to work
+- Respects `prefers-reduced-motion` — entrance animation disabled when user prefers reduced motion
 
 ## Changes
 ### v0.29.0
-- **Added** Initial release — composable brand texture with intensity, surface, sheen, animated, hoverIntensify, and tint props
-
+- **Added** Initial release — brand noise texture with directional gradient, sheen, animation, and hover intensification
 # Dialog
 
 - Import: @devalok/shilp-sutra/ui/dialog
@@ -1920,6 +1828,50 @@ Drop as a child of any element with `relative overflow-hidden isolate`. Uses `ro
 
 ### v0.1.0
 - **Added** Initial release
+# Icon
+
+- Import: @devalok/shilp-sutra/ui (barrel export)
+- Server-safe: No
+- Category: ui
+
+## Props
+    icon: ForwardRefExoticComponent (REQUIRED — Tabler icon or any ForwardRef SVG icon component)
+    size: "xs" | "sm" | "md" | "lg" | "xl" | "2xl" — reads from IconContext if not set
+    stroke: "light" | "regular" | "bold" — reads from IconContext if not set
+    label: string — accessible label (renders <title> + sets aria-label; without it, icon is aria-hidden)
+    animate: "spin" | "pulse" | "bounce" | "none" | { rotate?: number; scale?: number }
+    state: "idle" | "loading" | "success" | "error" — delegates to Spinner (bare variant)
+    className: string
+
+## Defaults
+    size: "md" (from context or fallback)
+    stroke: "regular" (from context or fallback)
+    state: undefined (no state machine)
+    animate: undefined (static render)
+
+## Example
+```jsx
+<Icon icon={IconPlus} />
+<Icon icon={IconPlus} size="xs" stroke="light" />
+<Icon icon={IconPlus} label="Add item" />
+<Icon icon={IconPlus} animate="spin" />
+<Icon icon={IconPlus} state="loading" />
+<Icon icon={IconPlus} state="success" />
+```
+
+## Gotchas
+- Without `label`, the icon renders `aria-hidden="true"` (decorative)
+- With `label`, the icon renders `role="img"` with `aria-label` and a `<title>` element
+- **Priority rule:** If both `state` and `animate` are set, `state` wins
+- `state="loading"` renders a bare Spinner; `state="success"` / `state="error"` render animated checkmark/cross
+- Size tiers map to pixel values: xs=14, sm=16, md=18, lg=20, xl=24, 2xl=32
+- Stroke weight varies by size tier (lighter strokes on smaller icons)
+- Reads size/stroke from IconContext (provided by Button, IconGroup, etc.); explicit props override context
+- Respects `prefers-reduced-motion` — animations disabled when user prefers reduced motion
+
+## Changes
+### v0.29.0
+- **Added** Initial release — context-aware Icon wrapper with size tiers, stroke weights, accessibility, animations, state machine
 # IconButton
 
 - Import: @devalok/shilp-sutra/ui/icon-button
@@ -1927,7 +1879,7 @@ Drop as a child of any element with `relative overflow-hidden isolate`. Uses `ro
 - Category: ui
 
 ## Props
-    icon: ReactNode (REQUIRED)
+    icon: ReactElement (REQUIRED — use <Icon icon={...} />)
     aria-label: string (REQUIRED — WCAG AA mandatory)
     shape: "square" | "circle"
     size: "sm" | "md" | "lg"
@@ -1942,17 +1894,98 @@ Drop as a child of any element with `relative overflow-hidden isolate`. Uses `ro
 
 ## Example
 ```jsx
-<IconButton icon={<IconEdit />} variant="ghost" aria-label="Edit item" />
-<IconButton icon={<IconX />} shape="circle" variant="ghost" size="sm" aria-label="Close" />
+<IconButton icon={<Icon icon={IconEdit} />} variant="ghost" aria-label="Edit item" />
+<IconButton icon={<Icon icon={IconX} />} shape="circle" variant="ghost" size="sm" aria-label="Close" />
+<IconButton icon={<Icon icon={IconTrash} />} variant="solid" color="error" aria-label="Delete" />
 ```
 
 ## Gotchas
 - aria-label is enforced by TypeScript — you MUST provide it
 - Prefer IconButton over Button with size="icon-*" for icon-only buttons
+- `icon` prop should use `<Icon icon={...} />` wrapper (auto-sized via Button's IconProvider)
 
 ## Changes
+### v0.29.0
+- **Changed** `icon` prop now expects `<Icon icon={...} />` wrapper (auto-sized via Button's IconProvider context)
+- **Changed** Inherits all new Button v2 colors: `accent`, `error`, `success`, `warning`, `neutral` (was `default`/`error` only)
+- **Changed** Inherits Button v2 variants including new `soft` variant
+
 ### v0.1.0
 - **Added** Initial release
+# IconContext
+
+- Import: @devalok/shilp-sutra/ui (barrel export)
+- Server-safe: No
+- Category: ui
+
+## Exports
+    IconContext — React.Context<IconContextValue>
+    IconProvider — Provider component (props: size?, stroke?, children)
+    useIconContext() — Hook returning { size?, stroke? }
+    IconSize — Type: "xs" | "sm" | "md" | "lg" | "xl" | "2xl"
+    IconStroke — Type: "light" | "regular" | "bold"
+
+## IconProvider Props
+    size: "xs" | "sm" | "md" | "lg" | "xl" | "2xl"
+    stroke: "light" | "regular" | "bold"
+    children: ReactNode (REQUIRED)
+
+## Example
+```jsx
+import { IconProvider, useIconContext } from '@devalok/shilp-sutra/ui/icon'
+
+<IconProvider size="sm" stroke="bold">
+  <MyCustomIconComponent />
+</IconProvider>
+
+// Inside MyCustomIconComponent:
+const { size, stroke } = useIconContext()
+```
+
+## Gotchas
+- Used internally by IconGroup and Button to propagate icon sizing to children
+- If no provider is present, `useIconContext()` returns `{}` (empty object) — consumers should fall back to defaults
+- Value is memoized — safe for frequent re-renders
+
+## Changes
+### v0.29.0
+- **Added** Initial release — React context for propagating icon size and stroke weight
+# IconGroup
+
+- Import: @devalok/shilp-sutra/ui (barrel export)
+- Server-safe: No
+- Category: ui
+
+## Props
+    size: "xs" | "sm" | "md" | "lg" | "xl" | "2xl" — propagated to children via IconContext
+    stroke: "light" | "regular" | "bold" — propagated to children via IconContext
+    gap: "tight" | "default" | "loose" — flex gap between icons
+    label: string — accessible label (used as aria-label when role="toolbar")
+    role: "toolbar" — optional, set for toolbar patterns
+    className: string
+    children: ReactNode (REQUIRED)
+
+## Defaults
+    gap: "default"
+    role: undefined (no ARIA role)
+
+## Example
+```jsx
+<IconGroup size="sm" gap="tight" role="toolbar" label="Formatting">
+  <Icon icon={IconBold} label="Bold" />
+  <Icon icon={IconItalic} label="Italic" />
+  <Icon icon={IconUnderline} label="Underline" />
+</IconGroup>
+```
+
+## Gotchas
+- Wraps children in an IconProvider — all child Icons inherit size/stroke from the group
+- `label` is only applied as `aria-label` when `role="toolbar"` is set
+- Gap values: tight=2px, default=4px, loose=8px
+
+## Changes
+### v0.29.0
+- **Added** Initial release — icon grouping with shared context, toolbar ARIA support
 # Input
 
 - Import: @devalok/shilp-sutra/ui/input
@@ -1962,66 +1995,46 @@ Drop as a child of any element with `relative overflow-hidden isolate`. Uses `ro
 ## Props
     size: "xs" | "sm" | "md" | "lg"
     state: InputState
-    startSection: ReactNode          — leading section (icons, text, spinners)
-    endSection: ReactNode            — trailing section (icons, buttons, spinners)
-    startSectionClickable: boolean   — opt-in pointer-events for start section
-    endSectionClickable: boolean     — opt-in pointer-events for end section
-    wrapperClassName: string         — classes for the wrapper div (border, bg, ring)
-    className: string                — classes for the inner <input> element
-    startIcon: ReactNode             — DEPRECATED, alias for startSection
-    endIcon: ReactNode               — DEPRECATED, alias for endSection
+    startSection: ReactNode (icon or content in the leading slot)
+    endSection: ReactNode (icon or content in the trailing slot)
+    startSectionClickable: boolean (enables pointer events on start section)
+    endSectionClickable: boolean (enables pointer events on end section)
+    wrapperClassName: string (classes for the wrapper div — border, bg, ring)
+    startIcon: ReactNode (@deprecated — use startSection)
+    endIcon: ReactNode (@deprecated — use endSection)
     (plus all standard HTML input attributes except native "size")
 
 ## Types
     InputState = 'default' | 'error' | 'warning' | 'success'
 
-## Exports
-    Input             — the component
-    inputWrapperVariants — CVA variants for the wrapper div
-    inputVariants     — DEPRECATED alias for inputWrapperVariants
-
 ## Defaults
     size: "md"
 
-## Sizes
-    xs → h-ds-xs-plus (28px), text-ds-sm, section width 26px
-    sm → h-ds-sm (32px), text-ds-sm, section width 30px
-    md → h-ds-md (40px), text-ds-md, section width 38px
-    lg → h-ds-lg (48px), text-ds-md, rounded-ds-lg, section width 46px
-
 ## Example
 ```jsx
-<Input type="email" placeholder="you@example.com" startSection={<IconMail />} state="error" />
-<Input size="sm" endSection={<IconSearch />} placeholder="Search..." />
-<Input
-  startSection={<span className="text-ds-sm text-surface-fg-muted">https://</span>}
-  endSection={<IconButton icon={<IconCopy />} variant="ghost" size="xs" aria-label="Copy" />}
-  endSectionClickable
-  placeholder="devalok.com/api/key"
-/>
+<Input type="email" placeholder="you@example.com" state="error" startSection={<Icon icon={IconMail} />} />
+<Input size="xs" placeholder="Quick search" startSection={<Icon icon={IconSearch} />} />
 ```
 
 ## Gotchas
 - HTML native "size" attribute is excluded — use CSS width instead
 - state="error" sets aria-invalid automatically
 - Inside FormField: auto-inherits state, aria-describedby, aria-required from context (explicit props override)
-- Focus ring wraps the entire input + sections as one unit (container-first architecture)
-- Sections are pointer-events-none by default — set startSectionClickable/endSectionClickable for interactive content (buttons, links)
-- Icons inside sections are auto-sized via IconProvider based on the input size
-- Section width = input height - 2px (per-size scaling)
-- className targets the inner <input>; use wrapperClassName for border/bg/ring overrides
-- startIcon/endIcon still work but are deprecated — use startSection/endSection instead
+- `className` targets the `<input>` element; use `wrapperClassName` for border/bg/ring overrides
+- Focus ring is on the wrapper container (focus-within), not the input itself
+- Icons in startSection/endSection are auto-sized via IconProvider per input size
+- Sections are `pointer-events-none` by default — set `startSectionClickable`/`endSectionClickable` for interactive sections
 
 ## Changes
 ### v0.29.0
-- **Added** `startSection`, `endSection` props — accept any ReactNode (icons, buttons, text, spinners)
-- **Added** `startSectionClickable`, `endSectionClickable` boolean props for interactive sections
-- **Added** `wrapperClassName` prop to style the wrapper div independently from the input
-- **Added** `xs` size (28px height, text-ds-sm)
-- **Added** `inputWrapperVariants` export (CVA variants for the wrapper)
-- **Changed** Container-first architecture — focus ring wraps entire input + sections as one unit
-- **Changed** Per-size section scaling — section width = input height - 2px
-- **Deprecated** `startIcon` / `endIcon` — still work as aliases, use `startSection` / `endSection`
+- **Changed** v2 rewrite: container-first architecture with wrapper div holding focus ring
+- **Added** `xs` size (28px height)
+- **Added** `startSection` / `endSection` props replacing `startIcon` / `endIcon` (deprecated but still work)
+- **Added** `startSectionClickable` / `endSectionClickable` props for interactive sections
+- **Added** `wrapperClassName` prop for styling the wrapper div (border, bg, ring)
+- **Changed** Focus ring now on wrapper via `focus-within` (container-level ring, not input-level)
+- **Changed** Icons auto-sized via `IconProvider` context per input size
+- **Deprecated** `startIcon` / `endIcon` — use `startSection` / `endSection`
 - **Deprecated** `inputVariants` export — use `inputWrapperVariants` (semantics changed to target wrapper)
 
 ### v0.15.0
@@ -2360,32 +2373,27 @@ Drop as a child of any element with `relative overflow-hidden isolate`. Uses `ro
     value: number (0-100) — omit for indeterminate
     size: "sm" | "md" | "lg" (track height)
     color: "default" | "success" | "warning" | "error" (indicator color)
+    autoColor: boolean (auto-shifts color by value: 0-59=default, 60-84=warning, 85-100=success, >100=error)
     showLabel: boolean (shows percentage text)
     indicatorClassName: string
-    autoColor: boolean (auto-shifts color by value thresholds)
 
 ## Defaults
     size: "md"
     color: "default"
-    autoColor: false
 
 ## Example
 ```jsx
 <Progress value={75} color="success" showLabel />
 <Progress size="sm" />  {/* indeterminate */}
-<Progress value={92} autoColor showLabel />  {/* auto: success (>=85) */}
-<Progress value={70} autoColor />  {/* auto: warning (>=60, <85) */}
 ```
 
 ## Gotchas
 - Omit value (or pass undefined) for indeterminate animation
-- `autoColor` thresholds: 0-59 = default (accent), 60-84 = warning, 85-100 = success, >100 = error
-- `autoColor` only applies when `value` is set (not for indeterminate)
-- When `autoColor` is true, explicit `color` prop is ignored
+- `autoColor` overrides `color` when `value` is set — do not pass both unless you want autoColor to win
 
 ## Changes
 ### v0.29.0
-- **Added** `autoColor` prop — automatically shifts indicator color based on value thresholds
+- **Added** `autoColor` prop — automatically shifts indicator color based on value thresholds (0-59 default, 60-84 warning, 85-100 success, >100 error)
 
 ### v0.1.0
 - **Added** Initial release with `size`, `color`, `indeterminate` variants and optional label slot
@@ -2897,6 +2905,9 @@ Drop as a child of any element with `relative overflow-hidden isolate`. Uses `ro
 - No longer server-safe as of v0.18.0 (uses Framer Motion)
 
 ## Changes
+### v0.29.0
+- **Changed** `bare` variant spinning state now uses `currentColor` instead of `var(--color-accent-9)` — inherits text color from parent for seamless embedding in buttons/toolbars
+
 ### v0.18.0
 - **Changed** (BREAKING) Complete rewrite with Framer Motion arc animation and state transitions
 - **Added** `state` prop: 'spinning' | 'success' | 'error'
@@ -3100,8 +3111,8 @@ Drop as a child of any element with `relative overflow-hidden isolate`. Uses `ro
     onCheckedChange: (checked: boolean) => void
     error: boolean (shows red border/bg)
     disabled: boolean
-    size: "sm" | "md" | "lg" (track + thumb dimensions)
-    color: "accent" | "success" | "warning" (checked-state track color)
+    size: "sm" | "md" | "lg"
+    color: "accent" | "success" | "warning"
     thumbIcon: ReactNode (icon rendered inside the thumb)
 
 ## Defaults
@@ -3110,20 +3121,18 @@ Drop as a child of any element with `relative overflow-hidden isolate`. Uses `ro
 ## Example
 ```jsx
 <Switch checked={enabled} onCheckedChange={setEnabled} />
-<Switch size="sm" color="success" />
-<Switch size="lg" color="warning" thumbIcon={<Icon icon={IconSun} size="xs" />} />
+<Switch size="lg" color="success" thumbIcon={<IconCheck size={14} />} />
 ```
 
 ## Gotchas
 - Use error prop for validation states (matches Checkbox API)
-- `error` overrides color to error-9 when checked
-- Size dimensions: sm=18×32px, md=24×44px, lg=28×52px
+- `error` overrides `color` — when error is true, checked state always uses error-9
 
 ## Changes
 ### v0.29.0
-- **Added** `size` prop — "sm" | "md" | "lg" (track and thumb scale together)
-- **Added** `color` prop — "accent" | "success" | "warning" (checked-state track color)
-- **Added** `thumbIcon` prop — ReactNode rendered inside the thumb circle
+- **Added** `size` prop: `"sm"` (18px track) | `"md"` (24px, default) | `"lg"` (28px track)
+- **Added** `color` prop: `"accent"` (default) | `"success"` | `"warning"` for checked-state color
+- **Added** `thumbIcon` prop — renders any ReactNode inside the thumb circle (e.g., check icon)
 
 ### v0.18.0
 - **Changed** Migrated to Framer Motion spring thumb animation
@@ -3658,7 +3667,7 @@ export default function RootLayout({ children }) {
     maxInitialItems: number — truncate with "Show all (N)" toggle
     groupBy?: 'time' | 'none' — group items by time buckets (today, yesterday, this week, older)
     groupLabels?: GroupLabels — custom labels for time groups: { today?, yesterday?, thisWeek?, older? }
-    renderItem?: (item: ActivityItem, index: number) => ReactNode | undefined — custom renderer per item; return ReactNode for custom rendering, undefined to fall back to default ActivityEntry
+    renderItem?: (item: ActivityItem, index: number) => ReactNode | undefined — custom renderer per item; return undefined to fall back to default ActivityEntry
 
 ## Defaults
     loading=false, compact=false, hasMore=false, groupBy='none'
@@ -3673,7 +3682,6 @@ export default function RootLayout({ children }) {
   hasMore
   onLoadMore={() => fetchMore()}
   compact
-  renderItem={(item) => item.id === 'special' ? <MyCustomEntry item={item} /> : undefined}
 />
 ```
 
@@ -3687,12 +3695,13 @@ export default function RootLayout({ children }) {
 - `maxInitialItems` truncates with a "Show all (N)" toggle button
 - `maxInitialItems` applies to the flat list BEFORE grouping — items are sliced first, then grouped
 - Empty time groups are automatically skipped
-- `renderItem` returning `undefined` falls back to default ActivityEntry — return ReactNode to override
-- Custom `renderItem` content is wrapped in a `CustomEntry` container that preserves the timeline dot + vertical rhythm
+- `renderItem` receives the item and index; return `undefined` to use the default ActivityEntry rendering
+- Custom `renderItem` content is wrapped in the same dot + layout container as default entries for consistent vertical rhythm
 
 ## Changes
 ### v0.29.0
-- **Added** `renderItem` prop — custom per-item renderer; return ReactNode for custom, undefined for default
+- **Added** `renderItem` prop — custom render function per item; return ReactNode for custom rendering, return `undefined` to fall back to default ActivityEntry
+- **Added** Internal `CustomEntry` wrapper that keeps dot + layout consistent with default entries
 
 ### v0.20.0
 - **Added** `groupBy="time"` prop — groups items into Today, Yesterday, This Week, Older with section headers
@@ -3715,7 +3724,7 @@ export default function RootLayout({ children }) {
     max: number (default: 4, overflow shows "+N" badge)
     size: "xs" | "sm" | "md" | "lg" | "xl"
     showTooltip: boolean (default: true)
-    borderColor: "surface-base" | "surface-raised" (default: "surface-raised") — overlap border color
+    borderColor: "surface-1" | "surface-2" (default: "surface-2") — overlap border color
     onOverflowClick: () => void — makes the "+N" badge interactive (button)
     renderAvatar: (user: AvatarUser, index: number) => ReactNode — custom avatar render
     expandDirection: "left" | "right" (default: "right") — direction group expands on hover
@@ -3725,21 +3734,21 @@ export default function RootLayout({ children }) {
     name: string (REQUIRED)
     image?: string | null
     ring?: "none" | "lead" | "admin" | "client" — role ring per user in group
-    indicator?: "lead" | "admin" | ReactNode — small dot overlay on avatar (top-right corner)
+    indicator?: "lead" | "admin" | ReactNode — small dot indicator at top-right of avatar
 
 ## Defaults
-    size="md", max=4, showTooltip=true, borderColor="surface-raised", expandDirection="right", expandAmount="default"
+    size="md", max=4, showTooltip=true, borderColor="surface-2", expandDirection="right", expandAmount="default"
 
 ## Example
 ```jsx
 <AvatarGroup
   users={[
-    { name: 'Alice', image: '/alice.jpg', ring: 'lead', indicator: 'lead' },
-    { name: 'Bob', ring: 'admin', indicator: 'admin' },
+    { name: 'Alice', image: '/alice.jpg', ring: 'lead' },
+    { name: 'Bob', ring: 'admin' },
   ]}
   max={3}
   size="md"
-  borderColor="surface-base"
+  borderColor="surface-1"
   onOverflowClick={() => setShowAll(true)}
 />
 ```
@@ -3749,13 +3758,12 @@ export default function RootLayout({ children }) {
 - Users beyond `max` are collapsed into a "+N" overflow badge
 - Missing `image` falls back to initials derived from `name`
 - Hover expand animation uses CSS `group-hover` — parent must not clip overflow
-- `borderColor` should match the surface context the group sits on (e.g., `surface-base` on page background, `surface-raised` on cards)
+- `borderColor` should match the surface context the group sits on (e.g., `surface-1` on cards)
 - `renderAvatar` wrapper is positioning-only — pass `size` directly to your Avatar (do NOT use `className="h-full w-full"`)
-- `indicator` renders a small animated dot on the avatar's top-right corner: 'lead' = warning-9 (gold), 'admin' = accent-9 (brand), or pass custom ReactNode
 
 ## Changes
 ### v0.29.0
-- **Added** `AvatarUser.indicator` field — "lead" | "admin" | ReactNode — animated dot overlay on avatar
+- **Added** `indicator` prop on AvatarUser: `"lead"` (warning dot) | `"admin"` (accent dot) | ReactNode (custom indicator) — animated dot at the top-right corner of each avatar
 
 ### v0.22.3
 - **Fixed** `renderAvatar` wrapper no longer clips consumer Avatar content (removed overflow-hidden, border, and size classes from wrapper)
@@ -4924,8 +4932,8 @@ Note: StatusBadge was server-safe prior to v0.18.0 but is NO LONGER server-safe 
     size: "sm" | "md"
     label: string (auto-derived from status/color if omitted)
     hideDot: boolean (default: false)
-    onClick: () => void (renders as <button>, auto-adds chevron-down trailing icon)
-    icon: ReactNode (custom trailing icon, overrides the auto chevron-down)
+    onClick: () => void (makes badge clickable — renders as button with chevron)
+    icon: ReactNode (custom trailing icon — replaces default chevron when clickable)
 
 ## Defaults
     size="md", hideDot=false
@@ -4935,23 +4943,24 @@ Note: StatusBadge was server-safe prior to v0.18.0 but is NO LONGER server-safe 
 ```jsx
 <StatusBadge status="active" />
 <StatusBadge status="in-progress" />
-<StatusBadge status="review" label="In Review" />
+<StatusBadge status="review" label="Needs Review" />
 <StatusBadge color="warning" label="In Review" size="sm" />
-<StatusBadge status="pending" onClick={() => openStatusPicker()} />
+<StatusBadge status="active" onClick={() => openStatusPicker()} />
 ```
 
 ## Gotchas
 - When `color` is set, it takes priority over `status` for styling
 - Props use a discriminated union — pass either `status` or `color`, not both
 - As of v0.18.0, StatusBadge is NOT server-safe (Framer Motion dependency)
-- `onClick` renders as a `<button>` with `hover:opacity-80` and auto chevron-down icon
-- `in-progress` uses accent color (accent-3/accent-11), `review` uses info color (info-3/info-11)
+- When `onClick` is provided, badge renders as a `<button>` with a trailing chevron icon
+- Pass `icon` to replace the default chevron with a custom trailing icon
 
 ## Changes
 ### v0.29.0
-- **Added** `in-progress` and `review` status values
-- **Added** `onClick` prop — renders as button with auto chevron-down trailing icon
-- **Added** `icon` prop — custom trailing icon (replaces auto chevron-down when clickable)
+- **Added** `in-progress` status (accent/blue styling)
+- **Added** `review` status (info styling)
+- **Added** `onClick` prop — renders as a `<button>` with trailing chevron and hover opacity
+- **Added** `icon` prop — custom trailing icon (replaces the default chevron when clickable)
 
 ### v0.18.0
 - **Changed** No longer server-safe due to Framer Motion dependency

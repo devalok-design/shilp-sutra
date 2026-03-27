@@ -54,15 +54,15 @@ Color tokens use OKLCH (perceptually uniform) with 12 functional steps per palet
 Semantic layer:
 - Accent (swappable): --color-accent-{1-12} + --color-accent-fg
 - Secondary: --color-secondary-{1-12} + --color-secondary-fg
-- Surface: --color-surface-{1-4} + --color-surface-fg / fg-muted / fg-subtle / border / border-strong
-  - Border mapping: light mode border=step5, border-strong=step6; dark mode border=step3, border-strong=step4
-  - Shell chrome (sidebar, topbar, bottom nav) uses surface-2 for elevation above surface-1 app background
+- Surface: --color-surface-{base,raised,sunken} + --color-surface-fg / fg-muted / fg-subtle / border / border-subtle
+  - Border mapping: light mode border=step5, border-subtle=step3; dark mode border=step3, border-subtle=step2
+  - Shell chrome (sidebar, topbar, bottom nav) uses surface-sunken with brand tint for recessed chrome
 - Status: --color-{error,success,warning,info}-{3,7,9,11}
 - Category: --color-category-{teal,amber,slate,indigo,cyan,orange,emerald}
 
 Consumer rebranding: Override accent scale CSS vars or use generateScale(options) utility.
 
-Tailwind utilities: accent-1..12, secondary-1..12, surface-1..4, plus fg/border variants.
+Tailwind utilities: accent-1..12, secondary-1..12, surface-base/raised/sunken, plus fg/border variants.
 
 ### Toast Setup Pattern
 

@@ -1,4 +1,5 @@
 import type { Meta, StoryObj } from '@storybook/react'
+import * as React from 'react'
 import { Button } from './button'
 import { Icon } from './icon'
 import { DevalokGrain } from './devalok-grain'
@@ -867,4 +868,94 @@ export const DevalokGrainRealWorld: Story = {
       </div>
     </div>
   ),
+}
+
+// --- Processing state + layout animation stories ---
+
+export const ProcessingAnts: Story = {
+  render: () => (
+    <div className="flex flex-col gap-ds-06">
+      <p className="text-ds-sm text-surface-fg-muted font-medium">Speeds</p>
+      <div className="flex items-center gap-ds-04">
+        <Button processing="ambient">Ambient</Button>
+        <Button processing="working">Working</Button>
+        <Button processing="urgent">Urgent</Button>
+      </div>
+      <p className="text-ds-sm text-surface-fg-muted font-medium">Colors</p>
+      <div className="flex items-center gap-ds-04">
+        <Button processing="working" color="error">Error</Button>
+        <Button processing="working" color="success">Success</Button>
+        <Button processing="working" color="warning">Warning</Button>
+      </div>
+      <p className="text-ds-sm text-surface-fg-muted font-medium">Color Override + Variants</p>
+      <div className="flex items-center gap-ds-04">
+        <Button processing="working" processingColor="success">Override to Success</Button>
+        <Button processing="working" variant="outline">Outline</Button>
+        <Button processing="working" variant="ghost">Ghost</Button>
+      </div>
+    </div>
+  ),
+}
+
+export const ProcessingGlow: Story = {
+  render: () => (
+    <div className="flex items-center gap-ds-04">
+      <Button processing="working" processingStyle="glow" variant="ghost">Ghost Glow</Button>
+      <Button processing="working" processingStyle="glow" variant="soft">Soft Glow</Button>
+      <Button processing="working" processingStyle="glow">Solid Glow</Button>
+      <Button processing="urgent" processingStyle="glow" color="error">Urgent Error</Button>
+    </div>
+  ),
+}
+
+export const ProcessingWithGrain: Story = {
+  render: () => (
+    <Button processing="working">
+      <DevalokGrain intensity="subtle" />
+      Generating Report
+    </Button>
+  ),
+}
+
+export const ProcessingInteractive: Story = {
+  render: () => {
+    const [state, setState] = React.useState<'idle' | 'processing' | 'done'>('idle')
+    return (
+      <div className="flex flex-col items-start gap-ds-04">
+        <Button
+          processing={state === 'processing' ? 'working' : false}
+          startIcon={state === 'done' ? <Icon icon={IconCheck} /> : <Icon icon={IconSend} />}
+          color={state === 'done' ? 'success' : 'accent'}
+          onClick={() => {
+            if (state === 'idle') {
+              setState('processing')
+              setTimeout(() => setState('done'), 3000)
+              setTimeout(() => setState('idle'), 5000)
+            }
+          }}
+          processingDisabled={false}
+        >
+          {state === 'idle' ? 'Generate' : state === 'processing' ? 'Generating...' : 'Done!'}
+        </Button>
+        <p className="text-ds-xs text-surface-fg-subtle">Click to see: idle → processing → done → idle</p>
+      </div>
+    )
+  },
+}
+
+export const LayoutAnimation: Story = {
+  render: () => {
+    const [expanded, setExpanded] = React.useState(false)
+    return (
+      <div className="flex flex-col items-start gap-ds-04">
+        <Button
+          startIcon={expanded ? <Icon icon={IconCheck} /> : undefined}
+          onClick={() => setExpanded(!expanded)}
+        >
+          {expanded ? 'Saved successfully' : 'Save'}
+        </Button>
+        <p className="text-ds-xs text-surface-fg-subtle">Click to toggle — watch the smooth width transition</p>
+      </div>
+    )
+  },
 }

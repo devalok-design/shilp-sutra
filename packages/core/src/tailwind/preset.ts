@@ -323,6 +323,13 @@ const preset: Partial<Config> = {
           '0%': { transform: 'scaleX(1)' },
           '100%': { transform: 'scaleX(0)' },
         },
+        'processing-ants': {
+          to: { '--border-angle': '360deg' },
+        },
+        'processing-glow': {
+          '0%, 100%': { boxShadow: '0 0 0 0 var(--processing-glow-color)' },
+          '50%': { boxShadow: '0 0 8px 3px var(--processing-glow-color)' },
+        },
       },
       animation: {
         // ── Radix-coupled height animations ──
@@ -337,6 +344,12 @@ const preset: Partial<Config> = {
           'skeleton-shimmer var(--duration-slow-02) var(--ease-linear) infinite',
         'caret-blink': 'caret-blink 1.25s ease-out infinite',
         'timer-bar': 'timer-bar linear forwards',
+        'processing-ants-ambient': 'processing-ants 3s linear infinite',
+        'processing-ants-working': 'processing-ants 2s linear infinite',
+        'processing-ants-urgent': 'processing-ants 1s linear infinite',
+        'processing-glow-ambient': 'processing-glow 3s ease-in-out infinite',
+        'processing-glow-working': 'processing-glow 2s ease-in-out infinite',
+        'processing-glow-urgent': 'processing-glow 1s ease-in-out infinite',
       },
       backgroundImage: {
         'gradient-brand': 'var(--gradient-brand-light)',
@@ -394,7 +407,14 @@ const preset: Partial<Config> = {
     },
   },
   plugins: [
-    plugin(({ addUtilities }) => {
+    plugin(({ addBase, addUtilities }) => {
+      addBase({
+        '@property --border-angle': {
+          syntax: '"<angle>"',
+          'initial-value': '0deg',
+          inherits: 'false',
+        },
+      })
       addUtilities({
         '.focus-ring': {
           '&:focus-visible': {

@@ -26,18 +26,12 @@ const COLOR_MAP: Record<string, string> = {
   neutral: 'var(--color-neutral-9)',
 }
 
-// ── Animation class mapping ────────────────────────────────────────
+// ── Speed → duration ───────────────────────────────────────────────
 
-const ANTS_ANIMATION: Record<ProcessingSpeed, string> = {
-  ambient: 'animate-processing-ants-ambient',
-  working: 'animate-processing-ants-working',
-  urgent:  'animate-processing-ants-urgent',
-}
-
-const GLOW_ANIMATION: Record<ProcessingSpeed, string> = {
-  ambient: 'animate-processing-glow-ambient',
-  working: 'animate-processing-glow-working',
-  urgent:  'animate-processing-glow-urgent',
+const SPEED_DURATION: Record<ProcessingSpeed, string> = {
+  ambient: '3s',
+  working: '2s',
+  urgent:  '1s',
 }
 
 // ── Component ──────────────────────────────────────────────────────
@@ -46,6 +40,9 @@ const GLOW_ANIMATION: Record<ProcessingSpeed, string> = {
  * Internal overlay component for button processing state.
  * Renders either a rotating conic-gradient border ("ants") or a breathing
  * box-shadow ("glow"). Not exported from the barrel — used only by Button.
+ *
+ * Animations are defined in semantic.css as real CSS @keyframes + @property
+ * (Tailwind's JS keyframes can't animate registered custom properties).
  */
 export function ProcessingOverlay({ active, speed, style, color }: ProcessingOverlayProps) {
   const solidColor = COLOR_MAP[color] ?? COLOR_MAP.accent
@@ -67,8 +64,8 @@ function AntsOverlay({
   speed: ProcessingSpeed
   color: string
 }) {
-  // Reduced motion: detect via media query
   const prefersReduced = useReducedMotion()
+  const duration = SPEED_DURATION[speed]
 
   return (
     <AnimatePresence>
@@ -80,20 +77,16 @@ function AntsOverlay({
           exit={{ opacity: 0 }}
           transition={{ duration: 0.2 }}
           aria-hidden="true"
-          className={`absolute inset-0 z-[3] rounded-[inherit] pointer-events-none ${
-            prefersReduced ? '' : ANTS_ANIMATION[speed]
-          }`}
+          className="absolute inset-0 z-[3] rounded-[inherit] pointer-events-none"
           style={
             prefersReduced
               ? {
-                  // Static dashed border fallback (inset by 0.5px so it's visible inside overflow-hidden)
                   boxShadow: `inset 0 0 0 1.5px ${color}`,
                   opacity: 0.6,
                 }
               : {
-                  // Conic gradient rotated by --border-angle (animated via CSS @property)
                   background: `conic-gradient(from var(--border-angle), ${color}, transparent 40%, transparent 60%, ${color})`,
-                  // Mask: show only a 1.5px outer ring (content-box is inset by padding)
+                  animation: `processing-ants-rotate ${duration} linear infinite`,
                   WebkitMask: 'linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0)',
                   WebkitMaskComposite: 'xor',
                   mask: 'linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0)',
@@ -119,8 +112,7 @@ function GlowOverlay({
   color: string
 }) {
   const prefersReduced = useReducedMotion()
-
-  // The glow color at 25% opacity for the box-shadow keyframes
+  const duration = SPEED_DURATION[speed]
   const glowColor = `color-mix(in oklch, ${color} 25%, transparent)`
 
   return (
@@ -132,18 +124,13 @@ function GlowOverlay({
           animate={{ opacity: 1, transition: { duration: 0.2 } }}
           exit={{ opacity: 0, scale: 1.05, transition: { duration: 0.3 } }}
           aria-hidden="true"
-          className={`absolute inset-0 z-[3] rounded-[inherit] pointer-events-none ${
-            prefersReduced ? '' : GLOW_ANIMATION[speed]
-          }`}
+          className="absolute inset-0 z-[3] rounded-[inherit] pointer-events-none"
           style={{
             '--processing-glow-color': glowColor,
             ...(prefersReduced
-              ? {
-                  // Static subtle shadow fallback
-                  boxShadow: `0 0 4px 1px ${glowColor}`,
-                }
-              : {}),
-          } as React.CSSProperties}
+              ? { boxShadow: `0 0 4px 1px ${glowColor}` }
+              : { animation: `processing-glow-pulse ${duration} ease-in-out infinite` }),
+          } as unknown as React.CSSProperties}
         />
       )}
     </AnimatePresence>

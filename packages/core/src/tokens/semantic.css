@@ -497,6 +497,33 @@
 }
 
 /* ── Reduced Motion ──────────────────────────────────── */
+/* ═══════════════════════════════════════════════════════════
+   PROCESSING ANIMATIONS
+   ═══════════════════════════════════════════════════════════ */
+
+@property --border-angle {
+  syntax: "<angle>";
+  initial-value: 0deg;
+  inherits: false;
+}
+
+@keyframes processing-ants-rotate {
+  to {
+    --border-angle: 360deg;
+  }
+}
+
+@keyframes processing-glow-pulse {
+  0%, 100% {
+    box-shadow: 0 0 0 0 var(--processing-glow-color);
+  }
+  50% {
+    box-shadow: 0 0 8px 3px var(--processing-glow-color);
+  }
+}
+
+/* ═══════════════════════════════════════════════════════════ */
+
 @media (prefers-reduced-motion: reduce) {
 
   *,

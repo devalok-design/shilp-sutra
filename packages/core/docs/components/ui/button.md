@@ -16,7 +16,10 @@
     loadingPosition: "start" | "end" | "center" (default: "start")
     fullWidth: boolean
     asChild: boolean
-    onClickAsync: (e: MouseEvent) => Promise<void> (auto loading->success/error->idle)
+    processing: boolean | 'ambient' | 'working' | 'urgent' (marching ants SVG border)
+    processingColor: 'accent' | 'error' | 'success' | 'warning' | 'neutral' (override animation color)
+    processingDisabled: boolean (disable button during processing, default: true)
+    onClickAsync: (e: MouseEvent) => Promise<void> (auto loading->success/error->idle, auto-activates processing)
     asyncFeedbackDuration: number (ms, default 1500)
 
 ## Defaults
@@ -38,7 +41,9 @@
 - DO NOT use color="danger" or color="default" — use color="error" or color="accent"
 - startIcon/endIcon now expect `<Icon icon={...} />` wrapper, not bare icon components
 - Inherits variant/color/size/weight/shape from ButtonGroup context if present
-- onClickAsync overrides onClick and loading when active
+- onClickAsync overrides onClick and loading when active; also auto-activates processing='working' during loading phase
+- processing forces soft variant so marching ants pop against the background
+- processingDisabled=true (default) makes button aria-disabled and pointer-events-none during processing
 - Grain children (DevalokGrain) are auto-separated and rendered as direct button children for absolute positioning
 
 ## Changes
@@ -54,10 +59,10 @@
 - **Changed** Solid hover adds tinted shadows per color (e.g., `hover:shadow-brand`, `hover:shadow-error`)
 - **Changed** Icon slots get negative-margin inset to tighten padding against button edges
 - **Added** DevalokGrain support — grain children are auto-separated and rendered for texture overlays
-- **Added** `processing` prop — animated border/glow while content stays visible (`"ambient"` | `"working"` | `"urgent"` | boolean)
+- **Added** `processing` prop — marching ants SVG border while content stays visible (`"ambient"` (3s) | `"working"` (2s) | `"urgent"` (1s) | boolean). Forces soft variant so ants pop.
 - **Added** `processingColor` — override processing animation color independently of button color
-- **Added** `processingStyle` — `"ants"` (rotating conic-gradient border, default) or `"glow"` (breathing box-shadow)
-- **Added** `processingDisabled` — disable button during processing (default: true)
+- **Added** `processingDisabled` — disable button during processing (default: true). Set false for cancel-by-click patterns.
+- **Added** Auto-processing during `onClickAsync` — loading phase auto-activates `processing='working'` when no explicit `processing` prop is set
 - **Added** Always-on layout animation — smooth width/height transitions via Framer Motion FLIP
 
 ### v0.22.0

@@ -12,4 +12,4 @@ See `Button` docs for the public API.
 
 ## Changes
 ### v0.29.0
-- **Added** Initial release — ants (conic-gradient border) and glow (breathing box-shadow) processing overlays
+- **Added** Initial release — marching ants processing overlay (SVG dashed rect with animated stroke-dashoffset). Speed tiers: ambient (3s), working (2s), urgent (1s). Color maps to step-11 tokens for visibility on all variants.

@@ -87,12 +87,17 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - **Accordion `chevronPosition`** — `left` or `right` (default) placement of the expand/collapse chevron
 - **DevalokGrain `tint` prop** — Control gradient tint color on the grain texture
 - **DevalokGrain animations** — Entrance animations on the grain effect
+- **Button `processing` state** — Marching ants SVG border while content stays visible. Speeds: `'ambient'` (3s), `'working'` (2s), `'urgent'` (1s). `processingColor` overrides animation color. `processingDisabled` (default: true) disables button during processing. Auto-activates during `onClickAsync` loading phase. Forces soft variant so ants pop against the background.
+- **Icon `animate="draw"`** — SVG path-draw animation for check/X icons (progressive stroke via `pathLength`). Works with IconCheck, IconX, and CircleCheck; other icons fall back to static render. Respects `prefers-reduced-motion`.
+- **Input `startSectionType` / `endSectionType`** — Explicit control over section display: `'icon'` (fixed-width centered cell) or `'label'` (tinted background with border separator). Auto-inferred from content type (strings default to `'label'`, React elements to `'icon'`). Flexbox-based section layout.
 
 ### Fixed
 
 - **AvatarGroup** — Restored `rounded-full` on wrapper divs for circular rings
 - **Progress autoColor** — Background-color transitions now animate smoothly
 - **DevalokGrain** — No gradient without tint (was showing dark smudge on light surfaces)
+- **DevalokGrain** — Subtle opacity bumped (solid: 0.15 to 0.20, soft: 0.12 to 0.15) for more visible texture. Gradient restored for untinted surfaces.
+- **Chat primitives** — Spacing and typography token fixes across MessageList, Message, and MessageInput (no API changes)
 
 ### Deprecated
 

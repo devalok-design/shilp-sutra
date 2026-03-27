@@ -11,6 +11,8 @@
     endSection: ReactNode (icon or content in the trailing slot)
     startSectionClickable: boolean (enables pointer events on start section)
     endSectionClickable: boolean (enables pointer events on end section)
+    startSectionType: 'icon' | 'label' (section display type — auto-inferred from content)
+    endSectionType: 'icon' | 'label' (section display type — auto-inferred from content)
     wrapperClassName: string (classes for the wrapper div — border, bg, ring)
     startIcon: ReactNode (@deprecated — use startSection)
     endIcon: ReactNode (@deprecated — use endSection)
@@ -26,6 +28,8 @@
 ```jsx
 <Input type="email" placeholder="you@example.com" state="error" startSection={<Icon icon={IconMail} />} />
 <Input size="xs" placeholder="Quick search" startSection={<Icon icon={IconSearch} />} />
+<Input startSection="https://" startSectionType="label" placeholder="example.com" />
+<Input endSection=".00" endSectionType="label" startSection={<Icon icon={IconCurrencyDollar} />} placeholder="0" />
 ```
 
 ## Gotchas
@@ -36,6 +40,7 @@
 - Focus ring is on the wrapper container (focus-within), not the input itself
 - Icons in startSection/endSection are auto-sized via IconProvider per input size
 - Sections are `pointer-events-none` by default — set `startSectionClickable`/`endSectionClickable` for interactive sections
+- Section type is auto-inferred: strings default to `'label'` (tinted bg + border), React elements default to `'icon'` (fixed-width centered). Override with `startSectionType`/`endSectionType`.
 
 ## Changes
 ### v0.29.0
@@ -47,6 +52,8 @@
 - **Changed** Focus ring now on wrapper via `focus-within` (container-level ring, not input-level)
 - **Changed** Icons auto-sized via `IconProvider` context per input size
 - **Deprecated** `startIcon` / `endIcon` — use `startSection` / `endSection`
+- **Added** `startSectionType` / `endSectionType` props — `'icon'` (fixed-width centered cell) or `'label'` (tinted background with border separator). Auto-inferred from content type (strings → label, React elements → icon).
+- **Changed** Sections use flexbox layout for consistent alignment
 - **Deprecated** `inputVariants` export — use `inputWrapperVariants` (semantics changed to target wrapper)
 
 ### v0.15.0

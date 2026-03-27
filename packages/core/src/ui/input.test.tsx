@@ -55,20 +55,22 @@ describe('Input', () => {
     expect(screen.getByTestId('end-icon')).toBeInTheDocument()
   })
 
-  it('adjusts input padding when startSection is present', () => {
+  it('adjusts input padding when startSection (icon) is present', () => {
     render(
       <Input size="md" startSection={<span>S</span>} placeholder="Padded" />,
     )
     const input = screen.getByPlaceholderText('Padded')
-    expect(input).toHaveClass('pl-[38px]')
+    // Icon sections are flex siblings — input removes left padding
+    expect(input).toHaveClass('pl-0')
   })
 
-  it('adjusts input padding when endSection is present', () => {
+  it('adjusts input padding when endSection (icon) is present', () => {
     render(
       <Input size="md" endSection={<span>E</span>} placeholder="Padded" />,
     )
     const input = screen.getByPlaceholderText('Padded')
-    expect(input).toHaveClass('pr-[38px]')
+    // Icon sections are flex siblings — input removes right padding
+    expect(input).toHaveClass('pr-0')
   })
 
   // --- Section pointer-events ---
@@ -149,7 +151,8 @@ describe('Input', () => {
     )
     expect(screen.getByTestId('legacy-icon')).toBeInTheDocument()
     const input = screen.getByPlaceholderText('Legacy')
-    expect(input).toHaveClass('pl-[38px]')
+    // Icon section is flex sibling — input drops left padding
+    expect(input).toHaveClass('pl-0')
   })
 
   it('deprecated endIcon prop renders as endSection', () => {
@@ -158,7 +161,73 @@ describe('Input', () => {
     )
     expect(screen.getByTestId('legacy-end')).toBeInTheDocument()
     const input = screen.getByPlaceholderText('Legacy end')
-    expect(input).toHaveClass('pr-[38px]')
+    // Icon section is flex sibling — input drops right padding
+    expect(input).toHaveClass('pr-0')
+  })
+
+  // --- Section types ---
+
+  describe('section types', () => {
+    it('string startSection renders with border-r and bg-surface-raised', () => {
+      render(<Input startSection="$" placeholder="Amount" />)
+      const input = screen.getByPlaceholderText('Amount')
+      const wrapper = input.parentElement!
+      const labelSpan = wrapper.firstElementChild!
+      expect(labelSpan).toHaveClass('border-r')
+      expect(labelSpan).toHaveClass('bg-surface-raised')
+      expect(labelSpan).toHaveTextContent('$')
+    })
+
+    it('string endSection renders with border-l and bg-surface-raised', () => {
+      render(<Input endSection=".com" placeholder="Domain" />)
+      const input = screen.getByPlaceholderText('Domain')
+      const wrapper = input.parentElement!
+      const labelSpan = wrapper.lastElementChild!
+      expect(labelSpan).toHaveClass('border-l')
+      expect(labelSpan).toHaveClass('bg-surface-raised')
+      expect(labelSpan).toHaveTextContent('.com')
+    })
+
+    it('ReactElement startSection renders WITHOUT separator (icon style)', () => {
+      render(
+        <Input startSection={<span data-testid="icon-el">IC</span>} placeholder="Icon test" />,
+      )
+      const startSpan = screen.getByTestId('icon-el').parentElement!
+      expect(startSpan).not.toHaveClass('border-r')
+      expect(startSpan).not.toHaveClass('bg-surface-raised')
+    })
+
+    it('explicit sectionType="label" overrides auto-inference for ReactElement', () => {
+      render(
+        <Input
+          startSection={<span data-testid="forced-label">FX</span>}
+          startSectionType="label"
+          placeholder="Forced label"
+        />,
+      )
+      const input = screen.getByPlaceholderText('Forced label')
+      const wrapper = input.parentElement!
+      const labelSpan = wrapper.firstElementChild!
+      expect(labelSpan).toHaveClass('border-r')
+      expect(labelSpan).toHaveClass('bg-surface-raised')
+    })
+
+    it('explicit sectionType="icon" overrides auto-inference for string', () => {
+      render(
+        <Input
+          startSection="$"
+          startSectionType="icon"
+          placeholder="Forced icon"
+        />,
+      )
+      const input = screen.getByPlaceholderText('Forced icon')
+      const wrapper = input.parentElement!
+      const iconSpan = wrapper.firstElementChild!
+      expect(iconSpan).not.toHaveClass('border-r')
+      expect(iconSpan).not.toHaveClass('bg-surface-raised')
+      // Icon sections get fixed width
+      expect(iconSpan).toHaveClass('w-[38px]')
+    })
   })
 
   // --- Size variants on wrapper ---

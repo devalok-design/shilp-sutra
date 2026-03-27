@@ -1,5 +1,6 @@
 import type { Meta, StoryObj } from '@storybook/react'
 import * as React from 'react'
+import { motion } from 'framer-motion'
 import { Button } from './button'
 import { Icon } from './icon'
 import { DevalokGrain } from './devalok-grain'
@@ -20,6 +21,20 @@ import {
   IconPlayerPlay,
   IconX,
 } from '@tabler/icons-react'
+
+/** Animated check icon — draws in like a pen stroke */
+function AnimatedCheck({ size = 18 }: { size?: number }) {
+  return (
+    <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
+      <motion.polyline
+        points="4 12 10 18 20 6"
+        initial={{ pathLength: 0, opacity: 0 }}
+        animate={{ pathLength: 1, opacity: 1 }}
+        transition={{ pathLength: { duration: 0.35, ease: 'easeOut' }, opacity: { duration: 0.1 } }}
+      />
+    </svg>
+  )
+}
 
 const meta: Meta<typeof Button> = {
   title: 'UI/Core/Button',
@@ -1314,7 +1329,7 @@ export const ProcessingInteractive: Story = {
           variant={variant}
           color={color}
           processing={state === 'processing' ? 'working' : false}
-          startIcon={state === 'done' ? <Icon icon={IconCheck} /> : undefined}
+          startIcon={state === 'done' ? <AnimatedCheck /> : undefined}
           color={state === 'done' ? 'success' : color}
           onClick={() => {
             if (state === 'idle') {
@@ -1486,7 +1501,7 @@ export const RealWorldScenarios: Story = {
             processingColor={uploadColor}
             startIcon={
               uploadState === 'done' ? (
-                <Icon icon={IconCheck} />
+                <AnimatedCheck />
               ) : (
                 <Icon icon={IconUpload} />
               )
@@ -1529,7 +1544,7 @@ export const RealWorldScenarios: Story = {
             processingColor={deployState === 'deploying' ? 'warning' : 'accent'}
             startIcon={
               deployState === 'live' ? (
-                <Icon icon={IconCheck} />
+                <AnimatedCheck />
               ) : (
                 <Icon icon={IconPlayerPlay} />
               )
@@ -1565,7 +1580,7 @@ export const RealWorldScenarios: Story = {
             processing={sendState === 'sending' ? 'working' : false}
             startIcon={
               sendState === 'sent' ? (
-                <Icon icon={IconCheck} />
+                <AnimatedCheck />
               ) : (
                 <Icon icon={IconSend} />
               )
@@ -1597,7 +1612,7 @@ export const RealWorldScenarios: Story = {
             processing={deleteState === 'deleting' ? 'urgent' : false}
             startIcon={
               deleteState === 'deleted' ? (
-                <Icon icon={IconCheck} />
+                <AnimatedCheck />
               ) : (
                 <Icon icon={IconTrash} />
               )
@@ -1627,7 +1642,7 @@ export const RealWorldScenarios: Story = {
           <Button
             processing={genState === 'generating' ? 'working' : false}
             startIcon={
-              genState === 'done' ? <Icon icon={IconCheck} /> : undefined
+              genState === 'done' ? <AnimatedCheck /> : undefined
             }
             color={genState === 'done' ? 'success' : 'accent'}
             onClick={() => {
@@ -1681,7 +1696,7 @@ export const LayoutAnimation: Story = {
     return (
       <div className="flex flex-col items-start gap-ds-04">
         <Button
-          startIcon={expanded ? <Icon icon={IconCheck} /> : undefined}
+          startIcon={expanded ? <AnimatedCheck /> : undefined}
           onClick={() => setExpanded(!expanded)}
         >
           {expanded ? 'Saved successfully' : 'Save'}

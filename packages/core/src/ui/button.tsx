@@ -444,24 +444,65 @@ const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
       : undefined
 
     // Async feedback icon replaces start slot (same inset as normal icon for layout stability)
+    // Async feedback icon — SVG path draws in like a pen stroke
+    const feedbackIconSize = BUTTON_TO_ICON_SIZE[resolvedSize] === 'xs' ? 14 : BUTTON_TO_ICON_SIZE[resolvedSize] === 'sm' ? 16 : BUTTON_TO_ICON_SIZE[resolvedSize] === 'lg' ? 22 : 18
     const asyncFeedbackIcon = isAsyncFeedback ? (
       <span className={cn('inline-flex shrink-0 items-center justify-center pointer-events-none', startIcon && inset.start)}>
-        <AnimatePresence mode="wait">
-          <motion.span
-            key={asyncState}
-            initial={{ opacity: 0, scale: 0.5 }}
-            animate={{ opacity: 1, scale: 1 }}
-            exit={{ opacity: 0, scale: 0.5 }}
-            transition={springs.bouncy}
-            className="inline-flex items-center justify-center"
-          >
-            <Icon icon={asyncState === 'success' ? IconCheck : IconX} />
-          </motion.span>
-        </AnimatePresence>
+        <svg width={feedbackIconSize} height={feedbackIconSize} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
+          {asyncState === 'success' ? (
+            <motion.polyline
+              points="4 12 10 18 20 6"
+              initial={{ pathLength: 0, opacity: 0 }}
+              animate={{ pathLength: 1, opacity: 1 }}
+              transition={{ pathLength: { duration: 0.35, ease: 'easeOut' }, opacity: { duration: 0.1 } }}
+            />
+          ) : (
+            <>
+              <motion.line
+                x1="6" y1="6" x2="18" y2="18"
+                initial={{ pathLength: 0, opacity: 0 }}
+                animate={{ pathLength: 1, opacity: 1 }}
+                transition={{ pathLength: { duration: 0.25, ease: 'easeOut' }, opacity: { duration: 0.1 } }}
+              />
+              <motion.line
+                x1="18" y1="6" x2="6" y2="18"
+                initial={{ pathLength: 0, opacity: 0 }}
+                animate={{ pathLength: 1, opacity: 1 }}
+                transition={{ pathLength: { duration: 0.25, ease: 'easeOut', delay: 0.1 }, opacity: { duration: 0.1, delay: 0.1 } }}
+              />
+            </>
+          )}
+        </svg>
       </span>
     ) : null
 
     const iconSize = BUTTON_TO_ICON_SIZE[resolvedSize] ?? 'md'
+
+    // Track button width for smooth wrapper transitions when content changes.
+    // We measure the button's scrollWidth and set it as an explicit width on the
+    // wrapper span. The wrapper has a CSS transition on width, creating smooth
+    // resize. requestAnimationFrame ensures we read after React's DOM commit.
+    const wrapperRef = React.useRef<HTMLSpanElement>(null)
+    const btnRef = React.useRef<HTMLButtonElement | null>(null)
+    const rafRef = React.useRef<number>()
+
+    React.useEffect(() => {
+      const btn = btnRef.current
+      const wrapper = wrapperRef.current
+      if (!btn || !wrapper || fullWidth || prefersReduced) return
+
+      rafRef.current = requestAnimationFrame(() => {
+        // Temporarily remove width constraint so button can expand to natural size
+        wrapper.style.width = 'auto'
+        const w = btn.offsetWidth
+        if (w > 0) {
+          // Force a layout read, then set the explicit width for transition
+          wrapper.getBoundingClientRect()
+          wrapper.style.width = `${w}px`
+        }
+      })
+      return () => { if (rafRef.current) cancelAnimationFrame(rafRef.current) }
+    }) // run on every render to catch content changes
 
     const buttonEl = (
       <motion.button
@@ -486,8 +527,12 @@ const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
           isProcessing && processingDisabled && 'pointer-events-none cursor-default',
           className,
         )}
-        ref={ref}
-        disabled={disabled || (loading && !isProcessing) || isAsyncFeedback}
+        ref={(el: HTMLButtonElement | null) => {
+          btnRef.current = el
+          if (typeof ref === 'function') ref(el)
+          else if (ref) (ref as React.MutableRefObject<HTMLButtonElement | null>).current = el
+        }}
+        disabled={disabled || (loading && !isProcessing)}
         aria-busy={loading || isProcessing || undefined}
         aria-disabled={isProcessing && processingDisabled || undefined}
         onClick={isAsync ? handleAsyncClick : (isProcessing && processingDisabled ? undefined : onClick)}
@@ -507,7 +552,11 @@ const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
     // processing toggle, enabling smooth CSS transitions between states.
     return (
       <IconProvider size={iconSize}>
-        <span className={cn('relative inline-flex w-fit', fullWidth && 'w-full')}>
+        <span
+          ref={wrapperRef}
+          className={cn('relative inline-flex', fullWidth && 'w-full')}
+          style={fullWidth || prefersReduced ? undefined : { transition: 'width 0.2s cubic-bezier(0.25, 0.1, 0.25, 1)' }}
+        >
           {buttonEl}
           <ProcessingOverlay
             active={isProcessing}

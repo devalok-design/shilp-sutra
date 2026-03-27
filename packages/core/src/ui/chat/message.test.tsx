@@ -14,10 +14,10 @@ describe('Message', () => {
         </Message.Content>
       </Message>,
     )
-    // The root motion.div should have flex + gap-ds-03 classes
+    // The root motion.div should have flex + gap-ds-04 classes
     const root = container.firstChild as HTMLElement
     expect(root).toHaveClass('flex')
-    expect(root).toHaveClass('gap-ds-03')
+    expect(root).toHaveClass('gap-ds-04')
     expect(screen.getByText('Hello world')).toBeInTheDocument()
   })
 

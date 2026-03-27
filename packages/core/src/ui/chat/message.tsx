@@ -120,8 +120,8 @@ const MessageRoot = React.forwardRef<HTMLDivElement, MessageProps>(
           animate={{ opacity: 1, y: 0 }}
           transition={springs.snappy}
           className={cn(
-            'group/message relative flex gap-ds-03',
-            grouped && '-mt-ds-02',
+            'group/message relative flex gap-ds-04',
+            grouped && '-mt-ds-01',
             highlight === 'mention' && 'border-l-2 border-l-accent-9 bg-accent-2 pl-ds-03 rounded-ds-sm',
             highlight === 'internal' && 'bg-warning-2/50 rounded-ds-sm',
             className,
@@ -203,7 +203,7 @@ export interface MessageContentProps extends React.HTMLAttributes<HTMLDivElement
 
 function MessageContent({ children, className, ...props }: MessageContentProps) {
   return (
-    <div className={cn('min-w-0 flex-1 flex flex-col gap-ds-01', className)} {...props}>
+    <div className={cn('min-w-0 flex-1 flex flex-col gap-ds-02', className)} {...props}>
       {children}
     </div>
   )
@@ -388,7 +388,7 @@ function MessageReactions({ reactions, onReact }: MessageReactionsProps) {
   if (reactions.length === 0) return null
 
   return (
-    <div className="flex flex-wrap gap-ds-02 mt-ds-02">
+    <div className="flex flex-wrap gap-ds-02 mt-ds-03">
       {reactions.map((r) => (
         <button
           key={r.emoji}

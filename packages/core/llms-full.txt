@@ -668,6 +668,11 @@ Note: getFormFieldA11y() was removed in favor of useFormField() hook.
 - **Changed** Solid hover adds tinted shadows per color (e.g., `hover:shadow-brand`, `hover:shadow-error`)
 - **Changed** Icon slots get negative-margin inset to tighten padding against button edges
 - **Added** DevalokGrain support — grain children are auto-separated and rendered for texture overlays
+- **Added** `processing` prop — animated border/glow while content stays visible (`"ambient"` | `"working"` | `"urgent"` | boolean)
+- **Added** `processingColor` — override processing animation color independently of button color
+- **Added** `processingStyle` — `"ants"` (rotating conic-gradient border, default) or `"glow"` (breathing box-shadow)
+- **Added** `processingDisabled` — disable button during processing (default: true)
+- **Added** Always-on layout animation — smooth width/height transitions via Framer Motion FLIP
 
 ### v0.22.0
 - **Changed** Active/pressed scale from `0.97` to `0.95` for snappier press feedback.
@@ -723,6 +728,21 @@ Note: getFormFieldA11y() was removed in favor of useFormField() hook.
 
 ### v0.1.0
 - **Added** Initial release
+# ButtonProcessing (Internal)
+
+- Import: Internal — not exported from barrel. Used only by Button.
+- Server-safe: No
+- Category: ui
+
+## Description
+
+Internal component that renders the processing animation overlay for Button. Consumers use the `processing` prop on Button, not this component directly.
+
+See `Button` docs for the public API.
+
+## Changes
+### v0.29.0
+- **Added** Initial release — ants (conic-gradient border) and glow (breathing box-shadow) processing overlays
 # Card
 
 - Import: @devalok/shilp-sutra/ui/card

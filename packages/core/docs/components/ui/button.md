@@ -54,6 +54,11 @@
 - **Changed** Solid hover adds tinted shadows per color (e.g., `hover:shadow-brand`, `hover:shadow-error`)
 - **Changed** Icon slots get negative-margin inset to tighten padding against button edges
 - **Added** DevalokGrain support — grain children are auto-separated and rendered for texture overlays
+- **Added** `processing` prop — animated border/glow while content stays visible (`"ambient"` | `"working"` | `"urgent"` | boolean)
+- **Added** `processingColor` — override processing animation color independently of button color
+- **Added** `processingStyle` — `"ants"` (rotating conic-gradient border, default) or `"glow"` (breathing box-shadow)
+- **Added** `processingDisabled` — disable button during processing (default: true)
+- **Added** Always-on layout animation — smooth width/height transitions via Framer Motion FLIP
 
 ### v0.22.0
 - **Changed** Active/pressed scale from `0.97` to `0.95` for snappier press feedback.

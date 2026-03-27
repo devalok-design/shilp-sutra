@@ -117,10 +117,66 @@ export const TextPrefix: Story = {
   render: () => (
     <div className="max-w-sm">
       <Input
-        startSection={<span className="text-ds-sm text-surface-fg-muted font-medium">$</span>}
+        startSection="$"
         placeholder="0.00"
         type="number"
       />
+    </div>
+  ),
+}
+
+/** Label sections — strings get a tinted background and border separator automatically. */
+export const LabelSections: Story = {
+  render: () => (
+    <div className="flex flex-col gap-ds-04 max-w-md">
+      <div className="flex flex-col gap-ds-01">
+        <Label>Currency</Label>
+        <Input startSection="$" placeholder="0.00" />
+      </div>
+      <div className="flex flex-col gap-ds-01">
+        <Label>URL protocol</Label>
+        <Input startSection="https://" placeholder="example.com" />
+      </div>
+      <div className="flex flex-col gap-ds-01">
+        <Label>Domain suffix</Label>
+        <Input endSection=".com" placeholder="yoursite" />
+      </div>
+      <div className="flex flex-col gap-ds-01">
+        <Label>Both sides</Label>
+        <Input startSection="$" endSection=".00" placeholder="0" />
+      </div>
+      <div className="flex flex-col gap-ds-01">
+        <Label>Email handle</Label>
+        <Input startSection="@" placeholder="username" />
+      </div>
+      <div className="flex flex-col gap-ds-01">
+        <Label>Unit suffix</Label>
+        <Input startSection="kg" endSection="per item" placeholder="0" />
+      </div>
+    </div>
+  ),
+}
+
+/** Mixed sections — label on one side, icon on the other. */
+export const MixedSections: Story = {
+  render: () => (
+    <div className="flex flex-col gap-ds-04 max-w-md">
+      <div className="flex flex-col gap-ds-01">
+        <Label>Label start + icon end</Label>
+        <Input
+          startSection="https://"
+          endSection={<Icon icon={IconSearch} />}
+          placeholder="Search URL..."
+        />
+      </div>
+      <div className="flex flex-col gap-ds-01">
+        <Label>Icon start + label end</Label>
+        <Input
+          startSection={<Icon icon={IconMail} />}
+          endSection="@gmail.com"
+          placeholder="username"
+        />
+      </div>
     </div>
   ),
 }

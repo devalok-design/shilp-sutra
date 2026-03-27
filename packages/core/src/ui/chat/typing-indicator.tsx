@@ -26,7 +26,7 @@ function TypingIndicator({ users, className }: TypingIndicatorProps) {
             exit={{ opacity: 0 }}
             className="flex items-center gap-ds-02 text-ds-xs text-surface-fg-subtle"
           >
-            <span className="flex items-center gap-0.5">
+            <span className="flex items-center gap-ds-01">
               {[0, 1, 2].map((i) => (
                 <motion.span
                   key={i}

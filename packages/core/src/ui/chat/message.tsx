@@ -120,7 +120,8 @@ const MessageRoot = React.forwardRef<HTMLDivElement, MessageProps>(
           animate={{ opacity: 1, y: 0 }}
           transition={springs.snappy}
           className={cn(
-            'group/message relative flex gap-2',
+            'group/message relative flex gap-ds-03',
+            grouped && '-mt-ds-02',
             highlight === 'mention' && 'border-l-2 border-l-accent-9 bg-accent-2 pl-ds-03 rounded-ds-sm',
             highlight === 'internal' && 'bg-warning-2/50 rounded-ds-sm',
             className,
@@ -155,9 +156,10 @@ function MessageAvatar({
   const { grouped } = useMessageContext()
 
   const sizeClass = size === 'sm' ? 'w-5' : 'w-6'
+  const heightClass = size === 'sm' ? 'h-5' : 'h-6'
 
   if (grouped) {
-    return <div className={cn(sizeClass, 'shrink-0')} />
+    return <div className={cn(sizeClass, heightClass, 'shrink-0')} />
   }
 
   if (children) {
@@ -201,7 +203,7 @@ export interface MessageContentProps extends React.HTMLAttributes<HTMLDivElement
 
 function MessageContent({ children, className, ...props }: MessageContentProps) {
   return (
-    <div className={cn('min-w-0 flex-1 flex flex-col', className)} {...props}>
+    <div className={cn('min-w-0 flex-1 flex flex-col gap-ds-01', className)} {...props}>
       {children}
     </div>
   )
@@ -237,7 +239,7 @@ function MessageAuthor({
     ?? (timestamp ? timestampFormat(timestamp) : undefined)
 
   return (
-    <div className="flex items-baseline gap-1.5">
+    <div className="flex items-baseline gap-ds-02">
       <span className="font-semibold text-[13px] text-surface-fg">{name}</span>
       {badge}
       {timeStr && (
@@ -342,7 +344,7 @@ function MessageEditableBody({
           className="w-full resize-none rounded-ds-sm border border-surface-border-strong bg-surface-raised-hover px-ds-02 py-ds-01 text-[13px] leading-relaxed text-surface-fg focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent-9"
           rows={2}
         />
-        <div className="mt-1 text-[11px] text-surface-fg-subtle/50">
+        <div className="mt-ds-01 text-ds-xs text-surface-fg-subtle/50">
           Enter to save · Escape to cancel
         </div>
       </div>
@@ -386,14 +388,14 @@ function MessageReactions({ reactions, onReact }: MessageReactionsProps) {
   if (reactions.length === 0) return null
 
   return (
-    <div className="flex flex-wrap gap-1 mt-1">
+    <div className="flex flex-wrap gap-ds-02 mt-ds-02">
       {reactions.map((r) => (
         <button
           key={r.emoji}
           type="button"
           onClick={() => onReact(r.emoji)}
           className={cn(
-            'inline-flex items-center gap-1 rounded-full px-2 py-0.5 text-ds-xs transition-colors',
+            'inline-flex items-center gap-ds-01 rounded-full px-ds-02 py-ds-01 text-ds-xs transition-colors',
             r.reacted
               ? 'bg-accent-3 ring-1 ring-accent-6'
               : 'bg-surface-raised-hover hover:bg-surface-raised-active',
@@ -420,7 +422,7 @@ function MessageActions({ children, delay = 100 }: MessageActionsProps) {
     <div
       className={cn(
         'absolute -top-2 right-0 z-10',
-        'flex items-center gap-0.5 rounded-ds-md border border-surface-border bg-surface-raised px-0.5 py-0.5 shadow-raised',
+        'flex items-center gap-ds-01 rounded-ds-md border border-surface-border bg-surface-raised px-ds-01 py-ds-01 shadow-raised',
         'opacity-0 group-hover/message:opacity-100 transition-opacity duration-150',
       )}
       style={{ transitionDelay: `${delay}ms` }}
@@ -454,7 +456,7 @@ function MessageAction({
           onClick={onClick}
           aria-label={label}
           className={cn(
-            'p-1 rounded-ds-sm transition-colors',
+            'p-ds-02 rounded-ds-sm transition-colors',
             variant === 'default' &&
               'text-surface-fg-subtle hover:text-surface-fg hover:bg-surface-raised-hover',
             variant === 'danger' &&

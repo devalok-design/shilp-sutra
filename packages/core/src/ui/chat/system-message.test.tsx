@@ -49,7 +49,7 @@ describe('SystemMessage', () => {
       </SystemMessage>,
     )
     // Should show time formatted (e.g., "2:30 PM" or locale equivalent)
-    const root = document.querySelector('[class*="text-\\[11px\\]"]')
+    const root = document.querySelector('[class*="text-ds-sm"]')
       ?? document.querySelector('[class*="bg-surface-raised-hover"]')
     expect(root).toBeInTheDocument()
     // The timestamp span should exist with the formatted time

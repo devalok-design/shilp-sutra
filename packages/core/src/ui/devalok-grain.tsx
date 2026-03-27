@@ -8,7 +8,7 @@ const NOISE_SVG = `url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/
 export type GrainIntensity = 'subtle' | 'medium' | 'heavy'
 
 const NOISE_OPACITY = {
-  subtle: { solid: 0.15, soft: 0.12 },
+  subtle: { solid: 0.20, soft: 0.15 },
   medium: { solid: 0.28, soft: 0.22 },
   heavy:  { solid: 0.45, soft: 0.35 },
 } as const
@@ -107,16 +107,15 @@ export function DevalokGrain({
   const hoverNoise = Math.min(noise * 1.4, 0.6) // 40% more on hover, capped
   const g = GRADIENT[intensity]
 
-  // Gradient only renders when tinted — without a tint color, the neutral black/white
-  // gradient reads as an unwanted dark corner on light surfaces. The noise texture
-  // alone provides the Devalok feel; the gradient adds directional warmth only when
-  // there's a color to work with.
+  // Gradient adds directional dimensionality — a subtle diagonal wash that makes the
+  // surface feel lit from the top-left. When tinted, the gradient carries the tint color.
+  // When untinted, a neutral black→white wash still adds depth without coloring the surface.
   const lightGradient = tint
     ? `linear-gradient(135deg, color-mix(in oklch, ${tint} ${Math.round(g.ld * 100)}%, transparent), color-mix(in oklch, white ${Math.round(g.ll * 100)}%, transparent))`
-    : null
+    : `linear-gradient(135deg, oklch(0 0 0 / ${g.ld}), oklch(1 0 0 / ${g.ll}))`
   const darkGradient = tint
     ? `linear-gradient(135deg, transparent, color-mix(in oklch, ${tint} ${Math.round(g.dk * 100)}%, transparent))`
-    : null
+    : `linear-gradient(135deg, transparent, oklch(0 0 0 / ${g.dk}))`
 
   const shouldAnimate = animated && !prefersReduced
 

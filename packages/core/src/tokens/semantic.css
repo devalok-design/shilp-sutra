@@ -519,12 +519,9 @@
   }
 }
 
-@keyframes processing-glow-pulse {
-  0%, 100% {
-    box-shadow: 0 0 0 0 var(--processing-glow-color);
-  }
-  50% {
-    box-shadow: 0 0 8px 3px var(--processing-glow-color);
+@keyframes processing-ants-svg {
+  to {
+    stroke-dashoffset: -10;
   }
 }
 

@@ -259,9 +259,6 @@ export interface ButtonProps
   /** Override processing animation color. Defaults to button's own color. */
   processingColor?: 'accent' | 'error' | 'success' | 'warning' | 'neutral'
 
-  /** Processing visual style. 'ants' = rotating border, 'glow' = breathing shadow. Default: 'ants' */
-  processingStyle?: 'ants' | 'glow'
-
   /** Disable button during processing. Default: true. Set false for cancel-by-click patterns. */
   processingDisabled?: boolean
 }
@@ -287,7 +284,6 @@ const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
       asyncFeedbackDuration = 1500,
       processing: processingProp,
       processingColor,
-      processingStyle = 'ants',
       processingDisabled = true,
       children,
       ...props
@@ -462,46 +458,66 @@ const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
 
     const iconSize = BUTTON_TO_ICON_SIZE[resolvedSize] ?? 'md'
 
-    return (
-      <IconProvider size={iconSize}>
-        <motion.button
-          layout={!prefersReduced}
-          transition={{ layout: tweens.layout }}
-          {...motionProps(props)}
-          className={cn(
-            buttonVariants({ variant: resolvedVariant, color: resolvedColor, weight: resolvedWeight, size: resolvedSize }),
-            resolvedShape === 'pill' && 'rounded-full',
-            resolvedShape === 'pill' && pillPaddingClass[resolvedSize],
-            fullWidth && 'w-full',
-            // Asymmetric timing: hover-out is slow+relaxed, hover-in is fast+snappy (applied via hover: override)
-            !loading && !isAsyncFeedback && 'transition-[color,background-color,border-color,box-shadow,transform,filter] duration-moderate-01 ease-productive-exit',
-            !loading && !isAsyncFeedback && 'hover:duration-fast-02 hover:ease-productive-entrance',
-            !loading && !isAsyncFeedback && 'active:scale-[0.95] active:brightness-[0.92] active:saturate-[1.1] active:duration-[0ms]',
-            feedbackColorClass,
-            isAsyncFeedback && 'transition-colors duration-moderate-01 ease-productive-standard',
-            className,
-          )}
-          ref={ref}
-          disabled={disabled || loading || isAsyncFeedback || (isProcessing && processingDisabled)}
-          aria-busy={loading || isProcessing || undefined}
-          onClick={isAsync ? handleAsyncClick : onClick}
-        >
-          {/* Grain layers render as direct children (need absolute positioning) */}
-          {grainElements}
-          {/* Processing overlay */}
-          {isProcessing && (
+    const buttonEl = (
+      <motion.button
+        layout={!prefersReduced}
+        transition={{ layout: tweens.layout }}
+        {...motionProps(props)}
+        className={cn(
+          buttonVariants({
+            // When processing, force soft variant so the ants border pops against a light bg
+            variant: isProcessing && resolvedVariant !== 'ghost' && resolvedVariant !== 'outline' && resolvedVariant !== 'link' ? 'soft' : resolvedVariant,
+            color: resolvedColor,
+            weight: resolvedWeight,
+            size: resolvedSize,
+          }),
+          resolvedShape === 'pill' && 'rounded-full',
+          resolvedShape === 'pill' && pillPaddingClass[resolvedSize],
+          fullWidth && 'w-full',
+          // Asymmetric timing: hover-out is slow+relaxed, hover-in is fast+snappy (applied via hover: override)
+          !loading && !isAsyncFeedback && 'transition-[color,background-color,border-color,box-shadow,transform,filter] duration-moderate-01 ease-productive-exit',
+          !loading && !isAsyncFeedback && 'hover:duration-fast-02 hover:ease-productive-entrance',
+          !loading && !isAsyncFeedback && 'active:scale-[0.95] active:brightness-[0.92] active:saturate-[1.1] active:duration-[0ms]',
+          feedbackColorClass,
+          isAsyncFeedback && 'transition-colors duration-moderate-01 ease-productive-standard',
+          isProcessing && processingDisabled && 'pointer-events-none cursor-default',
+          className,
+        )}
+        ref={ref}
+        disabled={disabled || (loading && !isProcessing) || isAsyncFeedback}
+        aria-busy={loading || isProcessing || undefined}
+        aria-disabled={isProcessing && processingDisabled || undefined}
+        onClick={isAsync ? handleAsyncClick : (isProcessing && processingDisabled ? undefined : onClick)}
+      >
+        {/* Grain layers render as direct children (need absolute positioning) */}
+        {grainElements}
+        {/* Content renders above grain via z-[2] span wrapper */}
+        {isAsyncFeedback ? asyncFeedbackIcon : renderStartSlot()}
+        {isAsyncFeedback ? contentElements : renderChildren()}
+        {isAsyncFeedback ? null : renderEndSlot()}
+      </motion.button>
+    )
+
+    // When processing, wrap in a positioned container so the overlay
+    // renders as a sibling OUTSIDE the button — not affected by disabled opacity
+    if (isProcessing) {
+      return (
+        <IconProvider size={iconSize}>
+          <span className={cn('relative inline-flex', fullWidth && 'w-full')}>
+            {buttonEl}
             <ProcessingOverlay
               active={isProcessing}
               speed={processingSpeed!}
-              style={processingStyle}
               color={resolvedProcessingColor}
             />
-          )}
-          {/* Content renders above grain via z-[2] span wrapper */}
-          {isAsyncFeedback ? asyncFeedbackIcon : renderStartSlot()}
-          {isAsyncFeedback ? contentElements : renderChildren()}
-          {isAsyncFeedback ? null : renderEndSlot()}
-        </motion.button>
+          </span>
+        </IconProvider>
+      )
+    }
+
+    return (
+      <IconProvider size={iconSize}>
+        {buttonEl}
       </IconProvider>
     )
   },

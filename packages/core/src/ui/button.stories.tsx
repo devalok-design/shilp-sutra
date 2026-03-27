@@ -897,17 +897,6 @@ export const ProcessingAnts: Story = {
   ),
 }
 
-export const ProcessingGlow: Story = {
-  render: () => (
-    <div className="flex items-center gap-ds-04">
-      <Button processing="working" processingStyle="glow" variant="ghost">Ghost Glow</Button>
-      <Button processing="working" processingStyle="glow" variant="soft">Soft Glow</Button>
-      <Button processing="working" processingStyle="glow">Solid Glow</Button>
-      <Button processing="urgent" processingStyle="glow" color="error">Urgent Error</Button>
-    </div>
-  ),
-}
-
 export const ProcessingWithGrain: Story = {
   render: () => (
     <Button processing="working">

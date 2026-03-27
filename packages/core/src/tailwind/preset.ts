@@ -326,10 +326,6 @@ const preset: Partial<Config> = {
         'processing-ants': {
           to: { '--border-angle': '360deg' },
         },
-        'processing-glow': {
-          '0%, 100%': { boxShadow: '0 0 0 0 var(--processing-glow-color)' },
-          '50%': { boxShadow: '0 0 8px 3px var(--processing-glow-color)' },
-        },
       },
       animation: {
         // ── Radix-coupled height animations ──
@@ -347,9 +343,6 @@ const preset: Partial<Config> = {
         'processing-ants-ambient': 'processing-ants 3s linear infinite',
         'processing-ants-working': 'processing-ants 2s linear infinite',
         'processing-ants-urgent': 'processing-ants 1s linear infinite',
-        'processing-glow-ambient': 'processing-glow 3s ease-in-out infinite',
-        'processing-glow-working': 'processing-glow 2s ease-in-out infinite',
-        'processing-glow-urgent': 'processing-glow 1s ease-in-out infinite',
       },
       backgroundImage: {
         'gradient-brand': 'var(--gradient-brand-light)',

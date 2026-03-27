@@ -6,12 +6,10 @@ import * as React from 'react'
 // ── Types ──────────────────────────────────────────────────────────
 
 export type ProcessingSpeed = 'ambient' | 'working' | 'urgent'
-export type ProcessingStyleType = 'ants' | 'glow'
 
 export interface ProcessingOverlayProps {
   active: boolean
   speed: ProcessingSpeed
-  style: ProcessingStyleType
   /** Resolved color name — maps to CSS token `--color-{name}-9` */
   color: string
 }
@@ -26,46 +24,54 @@ const COLOR_MAP: Record<string, string> = {
   neutral: 'var(--color-neutral-9)',
 }
 
-// ── Speed → duration ───────────────────────────────────────────────
+// ── Speed → duration (seconds) ─────────────────────────────────────
 
-const SPEED_DURATION: Record<ProcessingSpeed, string> = {
-  ambient: '3s',
-  working: '2s',
-  urgent:  '1s',
+const SPEED_SECONDS: Record<ProcessingSpeed, number> = {
+  ambient: 3,
+  working: 2,
+  urgent:  1,
 }
 
 // ── Component ──────────────────────────────────────────────────────
 
 /**
  * Internal overlay component for button processing state.
- * Renders either a rotating conic-gradient border ("ants") or a breathing
- * box-shadow ("glow"). Not exported from the barrel — used only by Button.
- *
- * Animations are defined in semantic.css as real CSS @keyframes + @property
- * (Tailwind's JS keyframes can't animate registered custom properties).
+ * Renders marching ants (SVG dashed rect with animated stroke-dashoffset).
+ * Not exported from the barrel — used only by Button.
  */
-export function ProcessingOverlay({ active, speed, style, color }: ProcessingOverlayProps) {
+export function ProcessingOverlay({ active, speed, color }: ProcessingOverlayProps) {
   const solidColor = COLOR_MAP[color] ?? COLOR_MAP.accent
-
-  if (style === 'glow') {
-    return <GlowOverlay active={active} speed={speed} color={solidColor} />
-  }
-  return <AntsOverlay active={active} speed={speed} color={solidColor} />
-}
-
-// ── Ants (rotating conic-gradient border) ──────────────────────────
-
-function AntsOverlay({
-  active,
-  speed,
-  color,
-}: {
-  active: boolean
-  speed: ProcessingSpeed
-  color: string
-}) {
   const prefersReduced = useReducedMotion()
-  const duration = SPEED_DURATION[speed]
+  const duration = SPEED_SECONDS[speed]
+  const svgRef = React.useRef<SVGRectElement>(null)
+  const [borderRadius, setBorderRadius] = React.useState(8)
+  const [dashInfo, setDashInfo] = React.useState({ array: '8 6', cycle: 14 })
+
+  // Read the button's dimensions + border-radius, compute dash pattern
+  React.useEffect(() => {
+    const wrapper = svgRef.current?.closest('span')
+    const btnEl = wrapper?.previousElementSibling as HTMLElement | null
+    if (!btnEl) return
+
+    const style = getComputedStyle(btnEl)
+    const r = parseFloat(style.borderRadius) || 8
+    setBorderRadius(r)
+
+    // Perimeter of a rounded rect:
+    // 4 straight edges + 4 quarter-circle arcs (= one full circle of radius r)
+    const w = btnEl.offsetWidth - 2
+    const h = btnEl.offsetHeight - 2
+    const perimeter = 2 * (w - 2 * r) + 2 * (h - 2 * r) + 2 * Math.PI * r
+
+    // Target: 8px dash, 6px gap — adjust gap so dashes fit evenly (no seam)
+    const dashPx = 8
+    const gapPx = 6
+    const approxCycle = dashPx + gapPx
+    const count = Math.round(perimeter / approxCycle)
+    const adjustedGap = (perimeter - count * dashPx) / count
+    const finalGap = Math.max(2, adjustedGap)
+    setDashInfo({ array: `${dashPx} ${finalGap.toFixed(1)}`, cycle: dashPx + finalGap })
+  }, [active])
 
   return (
     <AnimatePresence>
@@ -77,59 +83,33 @@ function AntsOverlay({
           exit={{ opacity: 0 }}
           transition={{ duration: 0.2 }}
           aria-hidden="true"
-          className="absolute inset-0 z-[3] pointer-events-none"
-          style={{
-            borderRadius: 'inherit',
-            // 4 gradient strips — one per edge — creating marching dashes
-            backgroundImage: [
-              `repeating-linear-gradient(90deg, ${color} 0 4px, transparent 4px 8px)`,   // top
-              `repeating-linear-gradient(0deg, ${color} 0 4px, transparent 4px 8px)`,    // right
-              `repeating-linear-gradient(90deg, ${color} 0 4px, transparent 4px 8px)`,   // bottom
-              `repeating-linear-gradient(0deg, ${color} 0 4px, transparent 4px 8px)`,    // left
-            ].join(', '),
-            backgroundSize: '8px 1.5px, 1.5px 8px, 8px 1.5px, 1.5px 8px',
-            backgroundPosition: '0 0, 100% 0, 100% 100%, 0 100%',
-            backgroundRepeat: 'repeat-x, repeat-y, repeat-x, repeat-y',
-            animation: prefersReduced ? 'none' : `processing-ants-march ${duration} linear infinite`,
-          }}
-        />
-      )}
-    </AnimatePresence>
-  )
-}
-
-// ── Glow (breathing box-shadow) ────────────────────────────────────
-
-function GlowOverlay({
-  active,
-  speed,
-  color,
-}: {
-  active: boolean
-  speed: ProcessingSpeed
-  color: string
-}) {
-  const prefersReduced = useReducedMotion()
-  const duration = SPEED_DURATION[speed]
-  const glowColor = `color-mix(in oklch, ${color} 25%, transparent)`
-
-  return (
-    <AnimatePresence>
-      {active && (
-        <motion.span
-          key="processing-glow"
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1, transition: { duration: 0.2 } }}
-          exit={{ opacity: 0, scale: 1.05, transition: { duration: 0.3 } }}
-          aria-hidden="true"
-          className="absolute inset-0 z-[3] rounded-[inherit] pointer-events-none"
-          style={{
-            '--processing-glow-color': glowColor,
-            ...(prefersReduced
-              ? { boxShadow: `0 0 4px 1px ${glowColor}` }
-              : { animation: `processing-glow-pulse ${duration} ease-in-out infinite` }),
-          } as unknown as React.CSSProperties}
-        />
+          className="absolute inset-0 pointer-events-none"
+        >
+          <svg
+            className="absolute inset-0 w-full h-full"
+            style={{ overflow: 'visible' }}
+          >
+            <motion.rect
+              ref={svgRef}
+              x="1"
+              y="1"
+              width="calc(100% - 2px)"
+              height="calc(100% - 2px)"
+              rx={borderRadius}
+              ry={borderRadius}
+              fill="none"
+              stroke={solidColor}
+              strokeWidth="2"
+              strokeDasharray={dashInfo.array}
+              animate={prefersReduced ? {} : { strokeDashoffset: [0, -dashInfo.cycle] }}
+              transition={prefersReduced ? {} : {
+                duration,
+                ease: 'linear',
+                repeat: Infinity,
+              }}
+            />
+          </svg>
+        </motion.span>
       )}
     </AnimatePresence>
   )

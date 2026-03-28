@@ -1,4 +1,4 @@
-import type { Meta, StoryObj } from '@storybook/react'
+import type { Meta, StoryObj } from '@storybook/react-vite'
 import { ChatPanel, type ChatPanelProps } from './chat-panel'
 import type { ChatMessage } from './message-list'
 import type { Conversation } from './conversation-list'

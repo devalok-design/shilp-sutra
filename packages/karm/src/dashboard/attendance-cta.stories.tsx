@@ -1,4 +1,4 @@
-import type { Meta, StoryObj } from '@storybook/react'
+import type { Meta, StoryObj } from '@storybook/react-vite'
 import { AttendanceCTA } from './attendance-cta'
 
 const meta: Meta<typeof AttendanceCTA> = {

@@ -1,4 +1,4 @@
-import type { Meta, StoryObj } from '@storybook/react'
+import type { Meta, StoryObj } from '@storybook/react-vite'
 import { LineChart } from './line-chart'
 
 const meta: Meta<typeof LineChart> = {

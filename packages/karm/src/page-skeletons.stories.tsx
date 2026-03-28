@@ -1,4 +1,4 @@
-import type { Meta, StoryObj } from '@storybook/react'
+import type { Meta, StoryObj } from '@storybook/react-vite'
 import { DevsabhaSkeleton, BandwidthSkeleton } from './page-skeletons'
 
 const meta: Meta = {

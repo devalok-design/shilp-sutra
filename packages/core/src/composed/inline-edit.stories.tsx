@@ -1,5 +1,5 @@
 import React, { useState } from 'react'
-import type { Meta, StoryObj } from '@storybook/react'
+import type { Meta, StoryObj } from '@storybook/react-vite'
 import { InlineEdit } from './inline-edit'
 
 const meta: Meta<typeof InlineEdit> = {

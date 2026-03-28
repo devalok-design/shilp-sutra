@@ -1,4 +1,4 @@
-import type { Meta, StoryObj } from '@storybook/react'
+import type { Meta, StoryObj } from '@storybook/react-vite'
 import { DeadlineIndicator } from './deadline-indicator'
 
 const meta: Meta<typeof DeadlineIndicator> = {

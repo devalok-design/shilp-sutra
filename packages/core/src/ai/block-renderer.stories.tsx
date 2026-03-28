@@ -1,5 +1,5 @@
 import * as React from 'react'
-import type { Meta, StoryObj } from '@storybook/react'
+import type { Meta, StoryObj } from '@storybook/react-vite'
 import { BlockRenderer } from './block-renderer'
 import type { Block } from './types'
 import { AICommandProvider } from './ai-command-provider'

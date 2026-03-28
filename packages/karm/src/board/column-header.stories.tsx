@@ -1,5 +1,5 @@
 import React from 'react'
-import type { Meta, StoryObj } from '@storybook/react'
+import type { Meta, StoryObj } from '@storybook/react-vite'
 import { ColumnHeader } from './column-header'
 import { BoardProvider } from './board-context'
 import type { BoardTask } from './board-types'

@@ -1,5 +1,5 @@
-import type { Meta, StoryObj } from '@storybook/react'
-import { fn } from '@storybook/test'
+import type { Meta, StoryObj } from '@storybook/react-vite'
+import { fn } from 'storybook/test'
 import { AdminDashboard } from './admin-dashboard'
 import type { AdminUser, GroupedAttendance, AttendanceRecord, BreakRequest } from '../types'
 import type { AttendanceCorrection } from './correction-list'

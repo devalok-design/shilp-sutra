@@ -1,6 +1,6 @@
 import React from 'react'
-import type { Preview } from '@storybook/react'
-import type { Decorator } from '@storybook/react'
+import type { Preview } from '@storybook/react-vite'
+import type { Decorator } from '@storybook/react-vite'
 import { TooltipProvider } from '../packages/core/src/ui/tooltip'
 import theme from './theme'
 import '../packages/core/src/tokens/index.css'

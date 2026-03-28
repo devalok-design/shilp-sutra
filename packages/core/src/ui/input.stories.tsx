@@ -1,4 +1,4 @@
-import type { Meta, StoryObj } from '@storybook/react'
+import type { Meta, StoryObj } from '@storybook/react-vite'
 import { useState } from 'react'
 import { IconSearch, IconX, IconMail, IconLock, IconEye, IconEyeOff } from '@tabler/icons-react'
 import { Input } from './input'

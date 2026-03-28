@@ -1,5 +1,5 @@
 import * as React from 'react'
-import type { Meta, StoryObj } from '@storybook/react'
+import type { Meta, StoryObj } from '@storybook/react-vite'
 import { toast } from './toast'
 import type { UploadFile } from './toast-types'
 import { Toaster } from './toaster'

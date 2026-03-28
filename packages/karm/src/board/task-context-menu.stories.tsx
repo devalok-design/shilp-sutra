@@ -1,5 +1,5 @@
 import React from 'react'
-import type { Meta, StoryObj } from '@storybook/react'
+import type { Meta, StoryObj } from '@storybook/react-vite'
 import { TaskContextMenu } from './task-context-menu'
 import { BoardProvider } from './board-context'
 import type { BoardTask } from './board-types'

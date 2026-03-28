@@ -1,4 +1,4 @@
-import type { Meta, StoryObj } from '@storybook/react'
+import type { Meta, StoryObj } from '@storybook/react-vite'
 import { ProjectHealthCard, type ProjectHealthData } from './project-health-card'
 
 const meta: Meta<typeof ProjectHealthCard> = {

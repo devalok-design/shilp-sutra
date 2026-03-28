@@ -1,4 +1,4 @@
-import type { Meta, StoryObj } from '@storybook/react'
+import type { Meta, StoryObj } from '@storybook/react-vite'
 import { DailyBrief, type BriefData } from './daily-brief'
 
 const meta: Meta<typeof DailyBrief> = {

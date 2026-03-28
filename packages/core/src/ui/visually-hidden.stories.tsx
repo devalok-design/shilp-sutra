@@ -1,4 +1,4 @@
-import type { Meta, StoryObj } from '@storybook/react'
+import type { Meta, StoryObj } from '@storybook/react-vite'
 import { VisuallyHidden } from './visually-hidden'
 
 const meta: Meta<typeof VisuallyHidden> = {

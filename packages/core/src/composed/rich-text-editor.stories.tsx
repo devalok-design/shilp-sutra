@@ -1,5 +1,5 @@
-import type { Meta, StoryObj } from '@storybook/react'
-import { fn } from '@storybook/test'
+import type { Meta, StoryObj } from '@storybook/react-vite'
+import { fn } from 'storybook/test'
 import { RichTextEditor, RichTextViewer } from './rich-text-editor'
 import type { MentionItem } from './rich-text-editor'
 

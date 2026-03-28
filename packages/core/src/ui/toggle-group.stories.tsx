@@ -1,4 +1,4 @@
-import type { Meta, StoryObj } from '@storybook/react'
+import type { Meta, StoryObj } from '@storybook/react-vite'
 import { IconBold, IconItalic, IconUnderline } from '@tabler/icons-react'
 import { ToggleGroup, ToggleGroupItem } from './toggle-group'
 

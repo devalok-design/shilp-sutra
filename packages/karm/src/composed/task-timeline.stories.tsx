@@ -1,6 +1,6 @@
 import React from 'react'
-import type { Meta, StoryObj } from '@storybook/react'
-import { fn } from '@storybook/test'
+import type { Meta, StoryObj } from '@storybook/react-vite'
+import { fn } from 'storybook/test'
 import { TaskTimeline } from './task-timeline'
 import type { TimelineEntry } from '../tasks/v3/task-panel-types'
 

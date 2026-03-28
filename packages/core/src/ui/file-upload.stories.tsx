@@ -1,5 +1,5 @@
-import type { Meta, StoryObj } from '@storybook/react'
-import { within, expect } from '@storybook/test'
+import type { Meta, StoryObj } from '@storybook/react-vite'
+import { within, expect } from 'storybook/test'
 import { FileUpload } from './file-upload'
 
 const meta: Meta<typeof FileUpload> = {

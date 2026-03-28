@@ -1,5 +1,5 @@
 import React, { useState } from 'react'
-import type { Meta, StoryObj } from '@storybook/react'
+import type { Meta, StoryObj } from '@storybook/react-vite'
 import { MultiSelectPopover, type MultiSelectItem, type MultiSelectGroup } from './multi-select-popover'
 import { Button } from '../ui/button'
 

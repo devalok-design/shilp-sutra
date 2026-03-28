@@ -1,5 +1,5 @@
 import React from 'react'
-import type { Meta, StoryObj } from '@storybook/react'
+import type { Meta, StoryObj } from '@storybook/react-vite'
 import { Button } from '@/ui/button'
 import { AvatarGroup } from '@/composed/avatar-group'
 import type { AvatarUser } from '@/composed/avatar-group'

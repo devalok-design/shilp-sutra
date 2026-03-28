@@ -1,6 +1,6 @@
 import { useState } from 'react'
-import type { Meta, StoryObj } from '@storybook/react'
-import { within, userEvent, expect } from '@storybook/test'
+import type { Meta, StoryObj } from '@storybook/react-vite'
+import { within, userEvent, expect } from 'storybook/test'
 import { Autocomplete, type AutocompleteOption } from './autocomplete'
 
 const fruitOptions: AutocompleteOption[] = [

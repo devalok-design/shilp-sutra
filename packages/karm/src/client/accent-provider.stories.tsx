@@ -1,4 +1,4 @@
-import type { Meta, StoryObj } from '@storybook/react'
+import type { Meta, StoryObj } from '@storybook/react-vite'
 import { AccentProvider } from './accent-provider'
 
 const meta: Meta<typeof AccentProvider> = {

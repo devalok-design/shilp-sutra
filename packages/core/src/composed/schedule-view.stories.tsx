@@ -1,4 +1,4 @@
-import type { Meta, StoryObj } from '@storybook/react'
+import type { Meta, StoryObj } from '@storybook/react-vite'
 import { ScheduleView, type ScheduleEvent } from './schedule-view'
 
 const baseDate = new Date(2026, 2, 10) // Tuesday, March 10 2026

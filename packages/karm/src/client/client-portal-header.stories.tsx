@@ -1,4 +1,4 @@
-import type { Meta, StoryObj } from '@storybook/react'
+import type { Meta, StoryObj } from '@storybook/react-vite'
 import { ClientPortalHeader } from './client-portal-header'
 
 const meta: Meta<typeof ClientPortalHeader> = {

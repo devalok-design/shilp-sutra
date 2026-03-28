@@ -34,9 +34,8 @@ vi.mock('framer-motion', () => {
         // motion.create(Component) → return the component unchanged
         return (Component: any) => Component
       }
-      // motion.div, motion.span, etc.
+      // motion.div, motion.span, motion.button, etc.
       return ({ children, ...props }: any) => {
-        const el = tag === 'span' ? 'span' : 'div'
         // Filter out motion-specific props to avoid React warnings
         const filtered = Object.fromEntries(
           Object.entries(props).filter(
@@ -44,10 +43,9 @@ vi.mock('framer-motion', () => {
               !['initial', 'animate', 'exit', 'transition', 'variants', 'whileHover', 'whileTap', 'layout', 'layoutId'].includes(k),
           ),
         )
-        if (el === 'span') {
-          return <span {...filtered}>{children}</span>
-        }
-        return <div {...filtered}>{children}</div>
+        // Render as the correct HTML element
+        const El = tag as any
+        return <El {...filtered}>{children}</El>
       }
     },
   }

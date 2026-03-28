@@ -1,5 +1,5 @@
 import { useState } from 'react'
-import type { Meta, StoryObj } from '@storybook/react'
+import type { Meta, StoryObj } from '@storybook/react-vite'
 import { DataTable } from './data-table'
 import type { ColumnDef } from '@tanstack/react-table'
 import { Badge } from './badge'

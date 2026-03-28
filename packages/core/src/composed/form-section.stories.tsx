@@ -1,4 +1,4 @@
-import type { Meta, StoryObj } from '@storybook/react'
+import type { Meta, StoryObj } from '@storybook/react-vite'
 import { FormSection } from './form-section'
 import { Input } from '../ui/input'
 import { Label } from '../ui/label'

@@ -1,4 +1,4 @@
-import type { Meta, StoryObj } from '@storybook/react'
+import type { Meta, StoryObj } from '@storybook/react-vite'
 import { NotificationCenter } from './notification-center'
 import type { Notification } from './notification-center'
 

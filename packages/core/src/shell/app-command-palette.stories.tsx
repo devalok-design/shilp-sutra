@@ -1,4 +1,4 @@
-import type { Meta, StoryObj } from '@storybook/react'
+import type { Meta, StoryObj } from '@storybook/react-vite'
 import * as React from 'react'
 import { AppCommandPalette } from './app-command-palette'
 import type { SearchResult, SearchResultGroup, AppCommandPaletteUser } from './app-command-palette'

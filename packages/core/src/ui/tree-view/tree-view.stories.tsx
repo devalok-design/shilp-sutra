@@ -1,4 +1,4 @@
-import type { Meta, StoryObj } from '@storybook/react'
+import type { Meta, StoryObj } from '@storybook/react-vite'
 import { IconFile, IconFolder, IconFolderOpen } from '@tabler/icons-react'
 import { useState } from 'react'
 

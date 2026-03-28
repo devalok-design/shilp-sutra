@@ -1,5 +1,5 @@
-import type { Meta, StoryObj } from '@storybook/react'
-import { fn } from '@storybook/test'
+import type { Meta, StoryObj } from '@storybook/react-vite'
+import { fn } from 'storybook/test'
 import { TaskDetailPanel, type FullTask } from './task-detail-panel'
 import type { Member, Column } from './task-properties'
 import type { Subtask } from './subtasks-tab'

@@ -1,5 +1,5 @@
 import React, { useState } from 'react'
-import type { Meta, StoryObj } from '@storybook/react'
+import type { Meta, StoryObj } from '@storybook/react-vite'
 import { EmojiPicker, EmojiPickerPopover, type EmojiData } from './emoji-picker'
 import { Button } from '../ui/button'
 

@@ -1,4 +1,4 @@
-import type { Meta, StoryObj } from '@storybook/react'
+import type { Meta, StoryObj } from '@storybook/react-vite'
 import { PriorityIndicator } from './priority-indicator'
 
 const meta: Meta<typeof PriorityIndicator> = {

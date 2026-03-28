@@ -1,6 +1,6 @@
 import * as React from 'react'
-import type { Meta, StoryObj } from '@storybook/react'
-import { within, userEvent, expect } from '@storybook/test'
+import type { Meta, StoryObj } from '@storybook/react-vite'
+import { within, userEvent, expect } from 'storybook/test'
 import { IconUser, IconBriefcase, IconCode } from '@tabler/icons-react'
 import { Combobox, type ComboboxOption } from './combobox'
 

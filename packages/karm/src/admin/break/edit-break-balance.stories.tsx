@@ -1,4 +1,4 @@
-import type { Meta, StoryObj } from '@storybook/react'
+import type { Meta, StoryObj } from '@storybook/react-vite'
 import { EditBreakBalance } from './edit-break-balance'
 import type { BreakBalanceData } from '../types'
 

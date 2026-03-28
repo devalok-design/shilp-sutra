@@ -1,4 +1,4 @@
-import type { Meta, StoryObj } from '@storybook/react'
+import type { Meta, StoryObj } from '@storybook/react-vite'
 import { BoardToolbar } from './board-toolbar'
 import { BulkActionBar } from './bulk-action-bar'
 import { BoardProvider } from './board-context'

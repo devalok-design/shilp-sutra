@@ -27,31 +27,49 @@ beforeAll(() => {
 // ---------------------------------------------------------------------------
 
 // framer-motion — avoid animations in tests
+const MOTION_PROPS = new Set([
+  'initial', 'animate', 'exit', 'transition', 'variants',
+  'whileHover', 'whileTap', 'whileFocus', 'whileDrag', 'whileInView',
+  'layout', 'layoutId', 'layoutDependency', 'layoutScroll',
+  'drag', 'dragConstraints', 'dragElastic', 'dragMomentum',
+  'onAnimationStart', 'onAnimationComplete', 'onDragStart', 'onDragEnd',
+  'onLayoutAnimationStart', 'onLayoutAnimationComplete',
+])
+const HTML_TAGS = new Set([
+  'a','article','aside','blockquote','button','caption','code','col',
+  'dd','details','dialog','div','dl','dt','em','fieldset','figcaption',
+  'figure','footer','form','h1','h2','h3','h4','h5','h6','header','hr',
+  'img','input','label','li','main','mark','nav','ol','option','output',
+  'p','pre','progress','section','select','small','span','strong','sub',
+  'summary','sup','table','tbody','td','textarea','tfoot','th','thead',
+  'tr','ul','video',
+])
+
 vi.mock('framer-motion', () => {
+  const React = require('react')
+  const makeMotionComponent = (tag: string) => {
+    const Comp = React.forwardRef(({ children, ...props }: any, ref: any) => {
+      const filtered: Record<string, any> = {}
+      for (const [k, v] of Object.entries(props)) {
+        if (!MOTION_PROPS.has(k)) filtered[k] = v
+      }
+      return React.createElement(tag, { ...filtered, ref }, children)
+    })
+    Comp.displayName = `motion.${tag}`
+    return Comp
+  }
+
   const motionHandler = {
-    get(_: any, tag: string) {
-      if (tag === 'create') {
-        // motion.create(Component) → return the component unchanged
-        return (Component: any) => Component
-      }
-      // motion.div, motion.span, motion.button, etc.
-      return ({ children, ...props }: any) => {
-        // Filter out motion-specific props to avoid React warnings
-        const filtered = Object.fromEntries(
-          Object.entries(props).filter(
-            ([k]) =>
-              !['initial', 'animate', 'exit', 'transition', 'variants', 'whileHover', 'whileTap', 'layout', 'layoutId'].includes(k),
-          ),
-        )
-        // Render as the correct HTML element
-        const El = tag as any
-        return <El {...filtered}>{children}</El>
-      }
+    get(_: any, prop: string | symbol) {
+      if (typeof prop === 'symbol') return undefined
+      if (prop === 'create') return (Component: any) => Component
+      if (HTML_TAGS.has(prop)) return makeMotionComponent(prop)
+      return undefined
     },
   }
   return {
     motion: new Proxy({}, motionHandler),
-    AnimatePresence: ({ children }: any) => <>{children}</>,
+    AnimatePresence: ({ children }: any) => React.createElement(React.Fragment, null, children),
     useReducedMotion: () => false,
   }
 })

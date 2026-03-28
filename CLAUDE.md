@@ -39,6 +39,15 @@ To add a legitimate exception, add the filename to `SURFACE1_ALLOWLIST` in `scri
 
 If you realize docs were incomplete after publishing, immediately publish a patch version.
 
+## Storybook MCP Server
+
+When the Storybook dev server is running (`pnpm dev`), an MCP server at `localhost:6006/mcp` provides AI agents with:
+- Live component metadata (props, stories, docs)
+- Component and accessibility testing
+- Live preview embedding
+
+This complements the static `llms.txt` / `llms-full.txt` files with interactive capabilities.
+
 ## Consumer AI Agent Feedback Protocol
 
 This repo receives feedback from AI agents working on consumer apps (e.g., Karm).

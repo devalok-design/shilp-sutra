@@ -8,6 +8,7 @@ const config: StorybookConfig = {
   ],
   addons: [
     '@storybook/addon-vitest',
+    '@storybook/addon-mcp',
     {
       name: '@storybook/addon-docs',
       options: {

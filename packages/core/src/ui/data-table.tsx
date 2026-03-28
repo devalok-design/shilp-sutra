@@ -568,11 +568,13 @@ export function DataTable<TData, TValue>({
     }),
   })
 
-  // Stable ref for onSelectionChange to avoid effect re-fires
+  // Stable refs to avoid effect re-fires from inline callbacks
   const onSelectionChangeRef = useRef(onSelectionChange)
+  const getRowIdRef = useRef(getRowIdProp)
   useEffect(() => {
     onSelectionChangeRef.current = onSelectionChange
-  }, [onSelectionChange])
+    getRowIdRef.current = getRowIdProp
+  }, [onSelectionChange, getRowIdProp])
 
   // Fire selection callback when row selection changes (skip when syncing from prop)
   useEffect(() => {
@@ -583,11 +585,11 @@ export function DataTable<TData, TValue>({
     if (!onSelectionChangeRef.current) return
     const selectedRowIds = Object.keys(rowSelection).filter((k) => rowSelection[k])
     const selected = data.filter((_, i) => {
-      const id = getRowIdProp ? getRowIdProp(data[i]) : String(i)
+      const id = getRowIdRef.current ? getRowIdRef.current(data[i]) : String(i)
       return selectedRowIds.includes(id)
     })
     onSelectionChangeRef.current(selected)
-  }, [rowSelection, data, getRowIdProp])
+  }, [rowSelection, data])
 
   /** Compute sticky positioning styles for pinned columns */
   function getPinnedCellStyle(columnId: string) {

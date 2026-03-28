@@ -1,5 +1,5 @@
 import type { Meta, StoryObj } from '@storybook/react-vite'
-import { within, expect } from 'storybook/test'
+import { within, expect, waitFor } from 'storybook/test'
 import { FileUpload } from './file-upload'
 
 const meta: Meta<typeof FileUpload> = {
@@ -57,7 +57,8 @@ export const WithError: Story = {
   play: async ({ canvasElement }) => {
     const canvas = within(canvasElement)
     const alert = canvas.getByRole('alert')
-    await expect(alert).toBeVisible()
+    // Wait for framer-motion enter animation to complete
+    await waitFor(() => expect(alert).toBeVisible())
     await expect(alert).toHaveTextContent('File type not supported')
   },
 }

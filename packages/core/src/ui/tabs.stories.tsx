@@ -1,5 +1,5 @@
 import type { Meta, StoryObj } from '@storybook/react-vite'
-import { within, userEvent, expect } from 'storybook/test'
+import { within, userEvent, expect, waitFor } from 'storybook/test'
 import { Tabs, TabsContent, TabsList, TabsTrigger } from './tabs'
 
 const meta: Meta<typeof Tabs> = {
@@ -37,13 +37,13 @@ export const Line: Story = {
   ),
   play: async ({ canvasElement }) => {
     const canvas = within(canvasElement)
-    // Verify initial tab content is visible
-    await expect(canvas.getByText('Project overview and summary information.')).toBeVisible()
+    // Wait for initial tab content animation
+    await waitFor(() => expect(canvas.getByText('Project overview and summary information.')).toBeVisible())
     // Click the "Tasks" tab
     const tasksTab = canvas.getByRole('tab', { name: /tasks/i })
     await userEvent.click(tasksTab)
-    // Verify the tasks content is now visible
-    await expect(canvas.getByText('Task list and kanban board view.')).toBeVisible()
+    // Wait for new tab content animation
+    await waitFor(() => expect(canvas.getByText('Task list and kanban board view.')).toBeVisible())
   },
 }
 
@@ -75,16 +75,16 @@ export const Contained: Story = {
   play: async ({ canvasElement }) => {
     const canvas = within(canvasElement)
 
-    // Verify initial content
-    await expect(canvas.getByText('Showing all items.')).toBeVisible()
+    // Wait for initial tab content animation
+    await waitFor(() => expect(canvas.getByText('Showing all items.')).toBeVisible())
 
     // Click the "Archived" tab
     await userEvent.click(canvas.getByRole('tab', { name: /archived/i }))
-    await expect(canvas.getByText('Showing archived items only.')).toBeVisible()
+    await waitFor(() => expect(canvas.getByText('Showing archived items only.')).toBeVisible())
 
     // Click the "Active" tab
     await userEvent.click(canvas.getByRole('tab', { name: /active/i }))
-    await expect(canvas.getByText('Showing active items only.')).toBeVisible()
+    await waitFor(() => expect(canvas.getByText('Showing active items only.')).toBeVisible())
   },
 }
 

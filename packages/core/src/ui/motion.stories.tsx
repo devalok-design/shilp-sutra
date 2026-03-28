@@ -778,7 +778,7 @@ export const ScenarioFormSubmission: StoryObj = {
           </Button>
 
           {/* Success feedback */}
-          <Fade open={step === 'success'}>
+          <MotionFade open={step === 'success'}>
             <div className="flex items-center gap-ds-03 rounded-ds-md bg-success-3 border border-success-7 p-ds-04">
               <IconCheck className="h-ico-md w-ico-md text-success-11" />
               <div>
@@ -786,7 +786,7 @@ export const ScenarioFormSubmission: StoryObj = {
                 <p className="text-ds-xs text-success-11 opacity-80">We'll get back to you soon.</p>
               </div>
             </div>
-          </Fade>
+          </MotionFade>
         </div>
 
         <div className="space-y-ds-02">

@@ -72,6 +72,9 @@
     "vitest": "^4.0.18",
     "vitest-axe": "^0.1.0"
   },
+  "imports": {
+    "#.storybook/*": "./.storybook/*"
+  },
   "packageManager": "pnpm@10.0.0",
   "engines": {
     "node": ">=20.19.0"
@@ -80,5 +83,10 @@
     "type": "git",
     "url": "https://github.com/devalok-design/shilp-sutra.git"
   },
-  "license": "MIT"
+  "license": "MIT",
+  "pnpm": {
+    "patchedDependencies": {
+      "@storybook/addon-vitest": "patches/@storybook__addon-vitest.patch"
+    }
+  }
 }

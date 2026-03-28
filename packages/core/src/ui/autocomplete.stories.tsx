@@ -1,6 +1,6 @@
 import { useState } from 'react'
 import type { Meta, StoryObj } from '@storybook/react-vite'
-import { within, userEvent, expect } from 'storybook/test'
+import { within, userEvent, expect, waitFor } from 'storybook/test'
 import { Autocomplete, type AutocompleteOption } from './autocomplete'
 
 const fruitOptions: AutocompleteOption[] = [
@@ -97,18 +97,16 @@ export const Controlled: Story = {
     // Type to filter options
     await userEvent.type(input, 'Che')
 
-    // The dropdown should show Cherry as a match
+    // Wait for dropdown animation to complete
     const option = await canvas.findByRole('option', { name: /cherry/i })
-    await expect(option).toBeVisible()
+    await waitFor(() => expect(option).toBeVisible())
 
     // Click to select
     await userEvent.click(option)
 
-    // Verify the input now shows the selected value
-    await expect(input).toHaveValue('Cherry')
-
-    // Verify the selected label text updates
-    await expect(canvas.getByText('Selected: Cherry')).toBeVisible()
+    // Wait for controlled state to propagate
+    await waitFor(() => expect(input).toHaveValue('Cherry'))
+    await waitFor(() => expect(canvas.getByText('Selected: Cherry')).toBeVisible())
   },
 }
 

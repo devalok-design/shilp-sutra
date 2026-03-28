@@ -1,5 +1,5 @@
 import type { Meta, StoryObj } from '@storybook/react-vite'
-import { within, userEvent, expect, fn } from 'storybook/test'
+import { within, userEvent, expect, fn, waitFor } from 'storybook/test'
 import { Alert } from './alert'
 
 const meta: Meta<typeof Alert> = {
@@ -75,8 +75,8 @@ export const Dismissible: Story = {
     await expect(dismissButton).toBeVisible()
     await userEvent.click(dismissButton)
 
-    // Verify onDismiss was called
-    await expect(args.onDismiss).toHaveBeenCalledTimes(1)
+    // onDismiss fires after the exit animation completes (AnimatePresence.onExitComplete)
+    await waitFor(() => expect(args.onDismiss).toHaveBeenCalledTimes(1))
   },
 }
 

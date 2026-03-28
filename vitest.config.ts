@@ -11,6 +11,7 @@ export default defineConfig({
   plugins: [react()],
   resolve: {
     alias: {
+      '#.storybook': resolve(__dirname, '.storybook'),
       '@primitives': resolve(__dirname, 'packages/core/src/primitives'),
       '@': resolve(__dirname, 'packages/core/src'),
     },

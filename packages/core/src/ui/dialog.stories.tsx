@@ -1,5 +1,5 @@
 import type { Meta, StoryObj } from '@storybook/react-vite'
-import { within, userEvent, expect } from 'storybook/test'
+import { within, userEvent, expect, waitFor } from 'storybook/test'
 import {
   Dialog,
   DialogContent,
@@ -99,8 +99,8 @@ export const Confirmation: Story = {
     // Close the dialog via the Cancel button
     await userEvent.click(within(dialog).getByRole('button', { name: /cancel/i }))
 
-    // Verify the dialog is no longer in the DOM
-    await expect(within(document.body).queryByRole('dialog')).toBeNull()
+    // Wait for exit animation to complete and dialog to be removed from DOM
+    await waitFor(() => expect(within(document.body).queryByRole('dialog')).toBeNull())
   },
 }
 

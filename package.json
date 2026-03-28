@@ -20,7 +20,9 @@
     "format": "prettier --write \"packages/*/src/**/*.{ts,tsx,css}\"",
     "format:check": "prettier --check \"packages/*/src/**/*.{ts,tsx,css}\"",
     "test": "pnpm -r test",
-    "test:watch": "pnpm -r test:watch"
+    "test:watch": "pnpm -r test:watch",
+    "test:storybook": "vitest --project storybook",
+    "test:storybook:ci": "vitest run --project storybook"
   },
   "devDependencies": {
     "@storybook/addon-a11y": "^10.3.3",

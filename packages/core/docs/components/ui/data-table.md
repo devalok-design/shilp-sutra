@@ -65,6 +65,9 @@ import { DataTable } from '@devalok/shilp-sutra/ui/data-table'
 - Use defaultDensity="compact" for Karm-style h-9 rows
 
 ## Changes
+### v0.29.0
+- **Fixed** Controlled selection infinite re-render loop — inline `getRowId` callback caused `onSelectionChange` effect to fire every render, creating a setState cycle with `selectedIds`. Now uses a stable ref for `getRowId`.
+
 ### v0.16.1
 - **Fixed** `serverPagination` object reference in `useCallback` dependency caused stale closure — now uses stable ref for `onPageChange`
 - **Fixed** `onSelectionChange` effect fired every render due to `table` in dependency array — now derives selected rows directly

@@ -98,6 +98,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - **DevalokGrain** — No gradient without tint (was showing dark smudge on light surfaces)
 - **DevalokGrain** — Subtle opacity bumped (solid: 0.15 to 0.20, soft: 0.12 to 0.15) for more visible texture. Gradient restored for untinted surfaces.
 - **Chat primitives** — Spacing and typography token fixes across MessageList, Message, and MessageInput (no API changes)
+- **DataTable controlled selection** — Fixed infinite re-render loop when using `selectedIds` with inline `getRowId` callback. The `onSelectionChange` effect now uses a ref for `getRowId` to avoid re-firing on every render.
+- **Button rules-of-hooks** — Moved `useRef`/`useEffect` hooks before the `asChild` early return to comply with React's rules of hooks.
 
 ### Deprecated
 

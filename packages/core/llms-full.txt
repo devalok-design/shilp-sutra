@@ -1526,6 +1526,9 @@ import { DataTable } from '@devalok/shilp-sutra/ui/data-table'
 - **Added** `onRowClick` handler
 - **Added** `bulkActions` floating action bar
 
+### v0.29.0
+- **Fixed** Controlled selection infinite re-render loop — inline `getRowId` callback caused `onSelectionChange` effect to fire every render. Now uses a stable ref for `getRowId`.
+
 ### v0.5.0
 - **Changed** (BREAKING) Removed from `@devalok/shilp-sutra/ui` barrel export — must use `@devalok/shilp-sutra/ui/data-table`
 

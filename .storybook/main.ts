@@ -7,6 +7,7 @@ const config: StorybookConfig = {
     '../packages/*/src/**/*.mdx',
   ],
   addons: [
+    '@storybook/addon-vitest',
     {
       name: '@storybook/addon-docs',
       options: {

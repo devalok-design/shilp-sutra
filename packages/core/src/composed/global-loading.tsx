@@ -12,7 +12,7 @@ const GlobalLoading = React.forwardRef<HTMLDivElement, GlobalLoadingProps>(
   function GlobalLoading({ isLoading, className, ...props }, forwardedRef) {
   const ref = useRef<HTMLDivElement>(null)
   const [animationComplete, setAnimationComplete] = useState(true)
-  const timeoutRef = useRef<ReturnType<typeof setTimeout>>()
+  const timeoutRef = useRef<ReturnType<typeof setTimeout> | undefined>(undefined)
 
   useEffect(() => {
     return () => { clearTimeout(timeoutRef.current) }

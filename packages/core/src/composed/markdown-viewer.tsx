@@ -25,7 +25,7 @@ function extractText(node: React.ReactNode): string {
   if (!node) return ''
   if (Array.isArray(node)) return node.map(extractText).join('')
   if (typeof node === 'object' && 'props' in node) {
-    return extractText((node as React.ReactElement).props.children)
+    return extractText((node as React.ReactElement<{ children?: React.ReactNode }>).props.children)
   }
   return ''
 }
@@ -51,7 +51,7 @@ export interface MarkdownViewerProps extends React.HTMLAttributes<HTMLDivElement
 // Small copy-to-clipboard button for code blocks
 function CopyButton({ code }: { code: string }) {
   const [copied, setCopied] = React.useState(false)
-  const timerRef = React.useRef<ReturnType<typeof setTimeout>>()
+  const timerRef = React.useRef<ReturnType<typeof setTimeout> | undefined>(undefined)
   React.useEffect(() => () => clearTimeout(timerRef.current), [])
 
   function handleCopy() {

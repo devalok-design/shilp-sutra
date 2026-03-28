@@ -302,7 +302,7 @@ const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
     // Refs + effect for smooth width transitions (must be before any early returns)
     const wrapperRef = React.useRef<HTMLSpanElement>(null)
     const btnRef = React.useRef<HTMLButtonElement | null>(null)
-    const rafRef = React.useRef<number>()
+    const rafRef = React.useRef<number | undefined>(undefined)
 
     // eslint-disable-next-line react-hooks/exhaustive-deps
     React.useEffect(() => {
@@ -324,7 +324,7 @@ const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
     // Async state machine: idle → loading → success | error → idle
     type AsyncState = 'idle' | 'loading' | 'success' | 'error'
     const [asyncState, setAsyncState] = React.useState<AsyncState>('idle')
-    const timeoutRef = React.useRef<ReturnType<typeof setTimeout>>()
+    const timeoutRef = React.useRef<ReturnType<typeof setTimeout> | undefined>(undefined)
     const isMountedRef = React.useRef(true)
 
     React.useEffect(() => () => {

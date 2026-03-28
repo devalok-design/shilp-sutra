@@ -476,7 +476,7 @@ function VideoPreview({ url, onError }: { url: string; onError?: (msg: string) =
   const [error, setError] = React.useState(false)
   const [showControls, setShowControls] = React.useState(true)
   const [playbackRate, setPlaybackRate] = React.useState(1)
-  const hideTimer = React.useRef<ReturnType<typeof setTimeout>>()
+  const hideTimer = React.useRef<ReturnType<typeof setTimeout> | undefined>(undefined)
 
   React.useEffect(() => {
     return () => clearTimeout(hideTimer.current)

@@ -87,7 +87,7 @@ const Autocomplete = React.forwardRef<HTMLInputElement, AutocompleteProps>(
     const [highlightedIndex, setHighlightedIndex] = React.useState(-1)
     const internalRef = React.useRef<HTMLInputElement>(null)
     const listRef = React.useRef<HTMLUListElement>(null)
-    const blurTimeoutRef = React.useRef<ReturnType<typeof setTimeout>>()
+    const blurTimeoutRef = React.useRef<ReturnType<typeof setTimeout> | undefined>(undefined)
 
     // Compose external + internal ref
     const composedRef = React.useCallback(

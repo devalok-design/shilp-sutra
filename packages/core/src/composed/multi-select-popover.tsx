@@ -89,7 +89,7 @@ const MultiSelectPopover = React.forwardRef<HTMLDivElement, MultiSelectPopoverPr
     const [asyncItems, setAsyncItems] = React.useState<MultiSelectItem[] | null>(null)
     const [loading, setLoading] = React.useState(false)
     const [focusedIndex, setFocusedIndex] = React.useState(-1)
-    const debounceRef = React.useRef<ReturnType<typeof setTimeout>>()
+    const debounceRef = React.useRef<ReturnType<typeof setTimeout> | undefined>(undefined)
     const listRef = React.useRef<HTMLDivElement>(null)
 
     // Reset search and focus when popover closes

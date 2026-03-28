@@ -41,7 +41,7 @@ export interface ColorSwatchProps extends React.HTMLAttributes<HTMLSpanElement> 
 const ColorSwatch = React.forwardRef<HTMLSpanElement, ColorSwatchProps>(
   ({ color, size = 'md', shape = 'circle', ring = false, copyable = false, checkerboard = false, className, style, ...props }, ref) => {
     const [copied, setCopied] = React.useState(false)
-    const timerRef = React.useRef<ReturnType<typeof setTimeout>>()
+    const timerRef = React.useRef<ReturnType<typeof setTimeout> | undefined>(undefined)
     React.useEffect(() => () => clearTimeout(timerRef.current), [])
 
     const sharedClasses = cn(

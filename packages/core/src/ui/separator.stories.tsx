@@ -1,7 +1,7 @@
-import type { Meta, StoryObj } from '@storybook/react-vite'
+import { preview } from '#.storybook/preview'
 import { Separator } from './separator'
 
-const meta: Meta<typeof Separator> = {
+const meta = preview.meta({
   title: 'UI/Core/Separator',
   component: Separator,
   tags: ['autodocs', 'stable'],
@@ -16,37 +16,36 @@ const meta: Meta<typeof Separator> = {
       options: ['default', 'gradient', 'gradient-left', 'gradient-right'],
     },
   },
-}
+})
 export default meta
-type Story = StoryObj<typeof Separator>
 
-export const Horizontal: Story = {
+export const Horizontal = meta.story({
   args: {
     orientation: 'horizontal',
   },
   decorators: [
-    (Story) => (
+    (Story: any) => (
       <div className="w-full max-w-md">
         <Story />
       </div>
     ),
   ],
-}
+})
 
-export const Vertical: Story = {
+export const Vertical = meta.story({
   args: {
     orientation: 'vertical',
   },
   decorators: [
-    (Story) => (
+    (Story: any) => (
       <div className="h-20 flex items-center">
         <Story />
       </div>
     ),
   ],
-}
+})
 
-export const BetweenText: Story = {
+export const BetweenText = meta.story({
   render: () => (
     <div className="max-w-md space-y-ds-04">
       <div>
@@ -64,9 +63,9 @@ export const BetweenText: Story = {
       </div>
     </div>
   ),
-}
+})
 
-export const Gradient: Story = {
+export const Gradient = meta.story({
   render: () => (
     <div className="max-w-md space-y-ds-06">
       <div className="space-y-ds-04">
@@ -95,9 +94,9 @@ export const Gradient: Story = {
       </div>
     </div>
   ),
-}
+})
 
-export const VerticalInline: Story = {
+export const VerticalInline = meta.story({
   render: () => (
     <div className="flex items-center gap-ds-04 h-6">
       <span className="text-ds-sm">Home</span>
@@ -107,4 +106,4 @@ export const VerticalInline: Story = {
       <span className="text-ds-sm">Profile</span>
     </div>
   ),
-}
+})

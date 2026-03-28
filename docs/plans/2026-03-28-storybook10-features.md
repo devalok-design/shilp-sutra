@@ -10,13 +10,20 @@
 
 ---
 
-## Verified Facts
+## Verified Facts (from npm registry + installed types + official docs)
 
 - `@storybook/addon-vitest@10.3.3` exists on npm; peer deps: `vitest ^3.0.0 || ^4.0.0`, `@vitest/browser-playwright ^4.0.0`
+- `@vitest/browser@4.0.18` and `@vitest/browser-playwright@4.0.18` exist — must pin to match our `vitest@4.0.18`
 - Import path: `@storybook/addon-vitest/vitest-plugin` exports `storybookTest`
+- Vitest 4 browser provider: `playwright({})` function from `@vitest/browser-playwright`, NOT the string `'playwright'`
+- **Vitest addon does NOT need Storybook running** — transforms stories via portable stories. `storybookUrl` is optional (for debug links on failures).
 - Vitest 4 has `defineConfig` and `defineProject` but NOT `defineWorkspace` — use `test.projects` array instead
-- CSF Factories API: `definePreview()` exported from `@storybook/react-vite`, returns `ReactPreview` with `.meta()` and `.story()` methods
+- Tags config shape: `{ tagName: { defaultFilterSelection?: 'include' | 'exclude' } }` — NOT `{ sidebar: boolean }`
+- Built-in tags: `dev` (sidebar), `test` (test runner), `autodocs`, `play-fn` (auto-applied), `manifest`
+- Remove inherited tags with `!` prefix: `tags: ['!dev']` hides from sidebar
+- CSF Factories API: `definePreview()` exported from `@storybook/react-vite`, returns `ReactPreview` with `.meta()` and `.story()`. Status: **Preview** (not yet in official docs, confirmed via installed types)
 - `definePreview()` requires `{ addons: [...] }` parameter — plain `Preview` objects are NOT compatible
+- `@storybook/addon-mcp@0.4.2` exists; peer deps: `storybook ^10.3.0`, `@storybook/addon-vitest ^10.3.0` — Phase 1 must be done before Phase 6
 - 181 story files (120 core, 59 karm, 2 brand), 103 with play functions
 - 4 stories missing autodocs tags
 - Current `pnpm -r test` runs per-package vitest configs — must not break this
@@ -33,10 +40,10 @@
 **Step 1: Add Vitest browser testing packages**
 
 ```bash
-pnpm add -D @storybook/addon-vitest @vitest/browser @vitest/browser-playwright
+pnpm add -D @storybook/addon-vitest @vitest/browser@4.0.18 @vitest/browser-playwright@4.0.18 playwright
 ```
 
-> **Note:** `@vitest/browser-playwright` is the Vitest 4 Playwright provider (replaces the old `playwright` direct dep for browser mode).
+> **Note:** Pin `@vitest/browser` and `@vitest/browser-playwright` to `4.0.18` to match our installed `vitest@4.0.18`. The `playwright` package provides the browser binary.
 
 **Step 2: Install Playwright Chromium browser binary**
 
@@ -105,6 +112,7 @@ The root `vitest.config.ts` currently defines a standalone config. Replace it wi
 ```ts
 import { defineConfig } from 'vitest/config'
 import { storybookTest } from '@storybook/addon-vitest/vitest-plugin'
+import { playwright } from '@vitest/browser-playwright'
 import { resolve, dirname } from 'node:path'
 import { fileURLToPath } from 'node:url'
 import react from '@vitejs/plugin-react'
@@ -134,17 +142,22 @@ export default defineConfig({
           browser: {
             enabled: true,
             headless: true,
-            provider: 'playwright',
+            provider: playwright({}),
             instances: [{ browser: 'chromium' }],
           },
+          // storybookTest plugin generates test entries from stories — don't pick up unit tests
           include: [],
           testTimeout: 30_000,
+          // Retry flaky browser tests once
+          retry: 1,
         },
       },
     ],
   },
 })
 ```
+
+> **Note:** The `playwright({})` function call (from `@vitest/browser-playwright`) is required for Vitest 4. The string `'playwright'` was the Vitest 3 syntax and will not work.
 
 **Step 2: Verify per-package tests still work**
 
@@ -187,30 +200,23 @@ Add to root `package.json` scripts:
 
 **Step 2: Run a single story test to verify**
 
-The `storybookTest` plugin may need Storybook running, or it may work standalone. Try standalone first:
+The plugin transforms stories into tests via portable stories — no running Storybook needed:
 
 ```bash
 pnpm vitest run --project storybook -- button.stories
 ```
 
-If it fails with a connection error, start Storybook first:
+Expected: Tests pass — each story gets a smoke test, and stories with `play:` functions get those executed in Chromium.
+
+**Step 3: If that passes, run the full storybook test suite**
 
 ```bash
-pnpm dev &
-# wait for "Storybook ready"
-pnpm vitest run --project storybook -- button.stories
+pnpm test:storybook:ci
 ```
 
-If Storybook needs to be running, add `storybookScript` to the plugin config:
+Expected: Most pass. Some may fail due to missing mocks or browser-specific issues. Document failures.
 
-```ts
-storybookTest({
-  configDir: resolve(__dirname, '.storybook'),
-  storybookScript: 'pnpm dev --no-open',
-})
-```
-
-**Step 3: Document which approach works and commit**
+**Step 4: Commit**
 
 ```bash
 git add package.json vitest.config.ts
@@ -236,9 +242,7 @@ After the existing `Test` step and `Build` step, add:
   run: pnpm test:storybook:ci
 ```
 
-> **Note:** If Task 4 determined Storybook needs to be running, either:
-> (a) Use `storybookScript` in the plugin config (auto-starts/stops), or
-> (b) Add an explicit `pnpm build-storybook` step and point `storybookUrl` to the static build served via `npx serve storybook-static`
+> **Note:** The Vitest addon does NOT need Storybook running. It transforms stories into tests via portable stories and runs them directly in Playwright. No `storybookScript` or `storybookUrl` is needed for CI. Optionally, add `storybookUrl` pointing to the deployed Storybook for debug links in failure output.
 
 **Step 2: Commit**
 
@@ -262,19 +266,21 @@ git commit -m "ci: add storybook browser tests to CI pipeline"
 
 **Step 1: Add tags config**
 
-Add a `tags` property to the Storybook config. Verify the `StorybookConfig` type from `@storybook/react-vite` accepts a `tags` property — if not, use `// @ts-expect-error` or check if it goes in `parameters` instead.
+Add a `tags` property to the Storybook config:
 
 ```ts
 const config: StorybookConfig = {
   // ... existing config
   tags: {
-    deprecated: { sidebar: false },
-    internal: { sidebar: false },
+    deprecated: { defaultFilterSelection: 'exclude' },
+    internal: { defaultFilterSelection: 'exclude' },
   },
 }
 ```
 
-This hides `deprecated` and `internal` tagged stories from the sidebar by default (users can toggle in filter dropdown).
+This sets `deprecated` and `internal` stories to be excluded from the sidebar filter by default. Users can toggle them back in the sidebar filter dropdown. The API shape is `{ [tag]: { defaultFilterSelection?: 'include' | 'exclude' } }`.
+
+> **Note:** Stories can remove inherited tags with the `!` prefix: `tags: ['!dev']` hides a story from the sidebar entirely. Built-in tags: `dev` (sidebar), `test` (test runner), `autodocs`, `play-fn` (auto-applied to stories with play functions).
 
 **Step 2: Start Storybook and verify the sidebar filter dropdown appears**
 

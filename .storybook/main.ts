@@ -33,6 +33,10 @@ const config: StorybookConfig = {
     reactDocgen: 'react-docgen-typescript',
   },
   staticDirs: ['../packages/core/fonts'],
+  tags: {
+    deprecated: { defaultFilterSelection: 'exclude' },
+    internal: { defaultFilterSelection: 'exclude' },
+  },
 }
 
 export default config

@@ -1,6 +1,11 @@
 import { defineConfig } from 'vitest/config'
+import { storybookTest } from '@storybook/addon-vitest/vitest-plugin'
+import { playwright } from '@vitest/browser-playwright'
+import { resolve, dirname } from 'node:path'
+import { fileURLToPath } from 'node:url'
 import react from '@vitejs/plugin-react'
-import { resolve } from 'path'
+
+const __dirname = dirname(fileURLToPath(import.meta.url))
 
 export default defineConfig({
   plugins: [react()],
@@ -11,10 +16,27 @@ export default defineConfig({
     },
   },
   test: {
-    environment: 'jsdom',
-    globals: true,
-    setupFiles: ['./packages/core/src/test-setup.ts'],
-    include: ['packages/*/src/**/*.test.{ts,tsx}'],
-    css: true,
+    projects: [
+      {
+        extends: true,
+        plugins: [
+          storybookTest({
+            configDir: resolve(__dirname, '.storybook'),
+          }),
+        ],
+        test: {
+          name: 'storybook',
+          browser: {
+            enabled: true,
+            headless: true,
+            provider: playwright({}),
+            instances: [{ browser: 'chromium' }],
+          },
+          include: [],
+          testTimeout: 30_000,
+          retry: 1,
+        },
+      },
+    ],
   },
 })

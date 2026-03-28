@@ -38,3 +38,9 @@ jobs:
 
       - name: Build library
         run: pnpm build
+
+      - name: Install Playwright
+        run: npx playwright install chromium
+
+      - name: Test Stories (browser)
+        run: pnpm test:storybook:ci

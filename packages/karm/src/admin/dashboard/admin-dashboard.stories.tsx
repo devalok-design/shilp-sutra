@@ -143,7 +143,7 @@ const mockUserImages: Record<string, string> = {
 const meta = {
   title: 'Karm/Admin/Dashboard/AdminDashboard',
   component: AdminDashboard,
-  tags: ['autodocs'],
+  tags: ['autodocs', 'stable'],
   parameters: {
     layout: 'padded',
     docs: {

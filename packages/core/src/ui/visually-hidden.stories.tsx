@@ -4,7 +4,7 @@ import { VisuallyHidden } from './visually-hidden'
 const meta: Meta<typeof VisuallyHidden> = {
   title: 'UI/Core/VisuallyHidden',
   component: VisuallyHidden,
-  tags: ['autodocs'],
+  tags: ['autodocs', 'stable'],
 }
 export default meta
 type Story = StoryObj<typeof VisuallyHidden>

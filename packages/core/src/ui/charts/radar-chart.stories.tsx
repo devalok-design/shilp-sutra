@@ -4,7 +4,7 @@ import { RadarChart } from './radar-chart'
 const meta: Meta<typeof RadarChart> = {
   title: 'UI/Charts/RadarChart',
   component: RadarChart,
-  tags: ['autodocs'],
+  tags: ['autodocs', 'stable'],
   argTypes: {
     height: { control: { type: 'number', min: 200, max: 600 } },
     levels: { control: { type: 'range', min: 2, max: 10, step: 1 } },

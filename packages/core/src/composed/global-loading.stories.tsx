@@ -5,7 +5,7 @@ import { GlobalLoading } from './global-loading'
 const meta: Meta<typeof GlobalLoading> = {
   title: 'Composed/GlobalLoading',
   component: GlobalLoading,
-  tags: ['autodocs'],
+  tags: ['autodocs', 'stable'],
   parameters: {
     layout: 'fullscreen',
   },

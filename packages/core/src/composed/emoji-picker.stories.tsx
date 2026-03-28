@@ -6,7 +6,7 @@ import { Button } from '../ui/button'
 const meta: Meta<typeof EmojiPicker> = {
   title: 'Composed/EmojiPicker',
   component: EmojiPicker,
-  tags: ['autodocs'],
+  tags: ['autodocs', 'stable'],
   parameters: {
     layout: 'centered',
   },

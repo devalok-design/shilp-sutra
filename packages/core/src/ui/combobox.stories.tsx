@@ -51,7 +51,7 @@ const teamMembers: ComboboxOption[] = [
 const meta: Meta<typeof Combobox> = {
   title: 'UI/Form Controls/Combobox',
   component: Combobox,
-  tags: ['autodocs'],
+  tags: ['autodocs', 'stable'],
   decorators: [(Story) => <div className="p-ds-08"><Story /></div>],
 }
 export default meta

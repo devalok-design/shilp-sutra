@@ -24,7 +24,7 @@ import {
 const meta: Meta<typeof Badge> = {
   title: 'UI/Core/Badge',
   component: Badge,
-  tags: ['autodocs'],
+  tags: ['autodocs', 'stable'],
   argTypes: {
     variant: { control: 'select', options: ['subtle', 'solid', 'outline', 'soft'] },
     color: { control: 'select', options: ['default', 'accent', 'error', 'success', 'warning', 'info', 'neutral', 'teal', 'amber', 'slate', 'indigo', 'cyan', 'orange', 'emerald', 'custom'] },

@@ -4,7 +4,7 @@ import { ProgressRing, MultiProgressRing } from './progress-ring'
 const meta: Meta<typeof ProgressRing> = {
   title: 'UI/Core/ProgressRing',
   component: ProgressRing,
-  tags: ['autodocs'],
+  tags: ['autodocs', 'stable'],
   argTypes: {
     value: { control: { type: 'range', min: 0, max: 100 } },
     max: { control: 'number' },

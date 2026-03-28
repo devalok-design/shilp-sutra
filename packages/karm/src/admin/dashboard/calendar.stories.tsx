@@ -8,7 +8,7 @@ import { Calendar } from './calendar'
 const meta = {
   title: 'Karm/Admin/Calendar',
   component: Calendar,
-  tags: ['autodocs'],
+  tags: ['autodocs', 'stable'],
   parameters: {
     layout: 'centered',
     docs: {

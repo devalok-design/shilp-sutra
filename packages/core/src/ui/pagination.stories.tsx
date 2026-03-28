@@ -12,7 +12,7 @@ import {
 const meta: Meta<typeof PaginationRoot> = {
   title: 'UI/Navigation/Pagination',
   component: PaginationRoot,
-  tags: ['autodocs'],
+  tags: ['autodocs', 'stable'],
 }
 export default meta
 type Story = StoryObj<typeof PaginationRoot>

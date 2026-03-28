@@ -7,7 +7,7 @@ import { ScratchpadWidget, type ScratchpadItem } from './scratchpad-widget'
 const meta: Meta<typeof ScratchpadWidget> = {
   title: 'Karm/Dashboard/ScratchpadWidget',
   component: ScratchpadWidget,
-  tags: ['autodocs'],
+  tags: ['autodocs', 'stable'],
   parameters: {
     layout: 'padded',
     docs: {

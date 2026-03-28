@@ -4,7 +4,7 @@ import { ErrorDisplay } from './error-boundary'
 const meta: Meta<typeof ErrorDisplay> = {
   title: 'Composed/ErrorBoundary',
   component: ErrorDisplay,
-  tags: ['autodocs'],
+  tags: ['autodocs', 'stable'],
   decorators: [
     (Story) => (
       <div style={{ width: '100%', maxWidth: 640, margin: '0 auto' }}>

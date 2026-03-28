@@ -94,7 +94,7 @@ const multiplePending: ReviewRequest[] = [
 const meta: Meta<typeof ReviewTab> = {
   title: 'Karm/Tasks/ReviewTab',
   component: ReviewTab,
-  tags: ['autodocs'],
+  tags: ['autodocs', 'stable'],
   parameters: {
     layout: 'centered',
     docs: {

@@ -60,7 +60,7 @@ const mockBreakBalanceData: BreakBalanceData[] = [
 const meta = {
   title: 'Karm/Admin/Break/BreakBalance',
   component: BreakBalance,
-  tags: ['autodocs'],
+  tags: ['autodocs', 'stable'],
   parameters: {
     layout: 'padded',
     docs: {

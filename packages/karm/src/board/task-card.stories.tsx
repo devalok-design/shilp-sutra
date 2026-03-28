@@ -113,7 +113,7 @@ function BoardWrapper({
 const meta: Meta<typeof TaskCard> = {
   title: 'Karm/Board/TaskCard',
   component: TaskCard,
-  tags: ['autodocs'],
+  tags: ['autodocs', 'stable'],
   parameters: {
     layout: 'centered',
     docs: {

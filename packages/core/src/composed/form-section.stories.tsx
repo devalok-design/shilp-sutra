@@ -6,7 +6,7 @@ import { Label } from '../ui/label'
 const meta: Meta<typeof FormSection> = {
   title: 'Composed/FormSection',
   component: FormSection,
-  tags: ['autodocs'],
+  tags: ['autodocs', 'stable'],
 }
 export default meta
 type Story = StoryObj<typeof FormSection>

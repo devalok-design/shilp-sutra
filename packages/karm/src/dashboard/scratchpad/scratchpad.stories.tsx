@@ -7,7 +7,7 @@ import type { ScratchpadItem } from './scratchpad-context'
 
 const meta: Meta = {
   title: 'Karm/Dashboard/Scratchpad (Composable)',
-  tags: ['autodocs'],
+  tags: ['autodocs', 'stable'],
   parameters: {
     layout: 'padded',
     docs: {

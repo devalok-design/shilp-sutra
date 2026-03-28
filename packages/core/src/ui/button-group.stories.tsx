@@ -7,7 +7,7 @@ import { ButtonGroup } from './button-group'
 const meta: Meta<typeof ButtonGroup> = {
   title: 'UI/Core/ButtonGroup',
   component: ButtonGroup,
-  tags: ['autodocs'],
+  tags: ['autodocs', 'stable'],
   argTypes: {
     variant: {
       control: 'select',

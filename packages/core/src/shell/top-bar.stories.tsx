@@ -36,7 +36,7 @@ const mockUserWithImage: TopBarUser = {
 const meta: Meta<typeof TopBar> = {
   title: 'Shell/TopBar',
   component: TopBar,
-  tags: ['autodocs'],
+  tags: ['autodocs', 'stable'],
   parameters: {
     layout: 'fullscreen',
   },

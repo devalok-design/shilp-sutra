@@ -4,7 +4,7 @@ import { DeadlineIndicator } from './deadline-indicator'
 const meta: Meta<typeof DeadlineIndicator> = {
   title: 'Composed/DeadlineIndicator',
   component: DeadlineIndicator,
-  tags: ['autodocs'],
+  tags: ['autodocs', 'stable'],
   argTypes: {
     format: { control: 'select', options: ['relative', 'absolute'] },
     showIcon: { control: 'boolean' },

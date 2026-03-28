@@ -4,7 +4,7 @@ import { PriorityIndicator } from './priority-indicator'
 const meta: Meta<typeof PriorityIndicator> = {
   title: 'Composed/PriorityIndicator',
   component: PriorityIndicator,
-  tags: ['autodocs'],
+  tags: ['autodocs', 'stable'],
   argTypes: {
     priority: {
       control: 'select',

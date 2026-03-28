@@ -4,7 +4,7 @@ import { BarChart } from './bar-chart'
 const meta: Meta<typeof BarChart> = {
   title: 'UI/Charts/BarChart',
   component: BarChart,
-  tags: ['autodocs'],
+  tags: ['autodocs', 'stable'],
   argTypes: {
     orientation: {
       control: 'radio',

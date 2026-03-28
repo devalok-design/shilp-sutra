@@ -4,7 +4,7 @@ import { InputOTP, InputOTPGroup, InputOTPSlot, InputOTPSeparator } from './inpu
 const meta: Meta<typeof InputOTP> = {
   title: 'UI/Form Controls/InputOTP',
   component: InputOTP,
-  tags: ['autodocs'],
+  tags: ['autodocs', 'stable'],
 }
 export default meta
 type Story = StoryObj<typeof InputOTP>

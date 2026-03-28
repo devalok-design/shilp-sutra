@@ -4,7 +4,7 @@ import { FilePreview } from './file-preview'
 const meta: Meta<typeof FilePreview> = {
   title: 'Composed/FilePreview',
   component: FilePreview,
-  tags: ['autodocs'],
+  tags: ['autodocs', 'stable'],
   parameters: {
     layout: 'padded',
   },

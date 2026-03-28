@@ -16,7 +16,7 @@ import { Label } from './label'
 const meta: Meta<typeof Sheet> = {
   title: 'UI/Feedback/Sheet',
   component: Sheet,
-  tags: ['autodocs'],
+  tags: ['autodocs', 'stable'],
 }
 export default meta
 type Story = StoryObj<typeof Sheet>

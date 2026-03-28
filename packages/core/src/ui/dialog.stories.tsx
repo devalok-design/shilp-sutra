@@ -17,7 +17,7 @@ import { Label } from './label'
 const meta: Meta<typeof Dialog> = {
   title: 'UI/Feedback/Dialog',
   component: Dialog,
-  tags: ['autodocs'],
+  tags: ['autodocs', 'stable'],
 }
 export default meta
 type Story = StoryObj<typeof Dialog>

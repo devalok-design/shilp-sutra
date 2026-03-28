@@ -160,7 +160,7 @@ const htmlComment: Comment[] = [
 const meta: Meta<typeof ConversationTab> = {
   title: 'Karm/Tasks/ConversationTab',
   component: ConversationTab,
-  tags: ['autodocs'],
+  tags: ['autodocs', 'stable'],
   parameters: {
     layout: 'centered',
     docs: {

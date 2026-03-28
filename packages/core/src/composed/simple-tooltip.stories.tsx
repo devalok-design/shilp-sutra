@@ -4,7 +4,7 @@ import { SimpleTooltip } from './simple-tooltip'
 const meta: Meta<typeof SimpleTooltip> = {
   title: 'Composed/SimpleTooltip',
   component: SimpleTooltip,
-  tags: ['autodocs'],
+  tags: ['autodocs', 'stable'],
   argTypes: {
     side: {
       control: 'select',

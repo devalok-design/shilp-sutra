@@ -4,7 +4,7 @@ import { KarmLogo } from '.'
 const meta: Meta<typeof KarmLogo> = {
   title: 'Brand/Karm/Logo',
   component: KarmLogo,
-  tags: ['autodocs'],
+  tags: ['autodocs', 'stable'],
   argTypes: {
     type: {
       control: 'select',

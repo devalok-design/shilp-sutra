@@ -5,7 +5,7 @@ import { FilterBar, FilterSelect, FilterMultiSelect } from './filter-bar'
 const meta: Meta<typeof FilterBar> = {
   title: 'Composed/FilterBar',
   component: FilterBar,
-  tags: ['autodocs'],
+  tags: ['autodocs', 'stable'],
 }
 export default meta
 type Story = StoryObj<typeof FilterBar>

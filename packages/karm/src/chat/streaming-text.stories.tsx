@@ -4,7 +4,7 @@ import { StreamingText } from './streaming-text'
 const meta: Meta<typeof StreamingText> = {
   title: 'Karm/Chat/StreamingText',
   component: StreamingText,
-  tags: ['autodocs'],
+  tags: ['autodocs', 'stable'],
   parameters: {
     layout: 'padded',
     docs: {

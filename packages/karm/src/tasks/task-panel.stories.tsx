@@ -237,7 +237,7 @@ const noopStr = fn() as (...args: unknown[]) => void
 const meta: Meta<typeof TaskPanel> = {
   title: 'Karm/Tasks/TaskPanel',
   component: TaskPanel,
-  tags: ['autodocs'],
+  tags: ['autodocs', 'stable'],
   parameters: {
     layout: 'fullscreen',
     docs: {

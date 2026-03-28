@@ -5,7 +5,7 @@ import { Button } from './button'
 const meta: Meta<typeof Collapsible> = {
   title: 'UI/Feedback/Collapsible',
   component: Collapsible,
-  tags: ['autodocs'],
+  tags: ['autodocs', 'stable'],
 }
 export default meta
 type Story = StoryObj<typeof Collapsible>

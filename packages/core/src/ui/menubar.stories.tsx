@@ -12,7 +12,7 @@ import {
 const meta: Meta<typeof Menubar> = {
   title: 'UI/Navigation/Menubar',
   component: Menubar,
-  tags: ['autodocs'],
+  tags: ['autodocs', 'stable'],
 }
 export default meta
 type Story = StoryObj<typeof Menubar>

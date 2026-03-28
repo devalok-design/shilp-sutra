@@ -4,7 +4,7 @@ import { ConversationList, type Conversation } from './conversation-list'
 const meta: Meta<typeof ConversationList> = {
   title: 'Karm/Chat/ConversationList',
   component: ConversationList,
-  tags: ['autodocs'],
+  tags: ['autodocs', 'stable'],
   parameters: {
     layout: 'padded',
     docs: {

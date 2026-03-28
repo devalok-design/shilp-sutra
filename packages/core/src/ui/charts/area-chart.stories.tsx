@@ -4,7 +4,7 @@ import { AreaChart } from './area-chart'
 const meta: Meta<typeof AreaChart> = {
   title: 'UI/Charts/AreaChart',
   component: AreaChart,
-  tags: ['autodocs'],
+  tags: ['autodocs', 'stable'],
   argTypes: {
     curved: { control: 'boolean' },
     stacked: { control: 'boolean' },

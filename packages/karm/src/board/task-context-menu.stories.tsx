@@ -32,7 +32,7 @@ function Wrapper({ children }: { children: React.ReactNode }) {
 const meta: Meta<typeof TaskContextMenu> = {
   title: 'Karm/Board/TaskContextMenu',
   component: TaskContextMenu,
-  tags: ['autodocs'],
+  tags: ['autodocs', 'stable'],
   decorators: [(Story) => <Wrapper><Story /></Wrapper>],
   parameters: {
     layout: 'centered',

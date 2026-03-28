@@ -4,7 +4,7 @@ import { ProjectCard } from './project-card'
 const meta: Meta<typeof ProjectCard> = {
   title: 'Karm/Client/ProjectCard',
   component: ProjectCard,
-  tags: ['autodocs'],
+  tags: ['autodocs', 'stable'],
   parameters: {
     layout: 'padded',
     docs: {

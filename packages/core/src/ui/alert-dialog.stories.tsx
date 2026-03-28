@@ -16,7 +16,7 @@ import { Button } from './button'
 const meta: Meta<typeof AlertDialog> = {
   title: 'UI/Feedback/AlertDialog',
   component: AlertDialog,
-  tags: ['autodocs'],
+  tags: ['autodocs', 'stable'],
 }
 export default meta
 type Story = StoryObj<typeof AlertDialog>

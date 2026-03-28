@@ -4,7 +4,7 @@ import { AttendanceCTA } from './attendance-cta'
 const meta: Meta<typeof AttendanceCTA> = {
   title: 'Karm/Dashboard/AttendanceCTA',
   component: AttendanceCTA,
-  tags: ['autodocs'],
+  tags: ['autodocs', 'stable'],
   parameters: {
     layout: 'padded',
     docs: {

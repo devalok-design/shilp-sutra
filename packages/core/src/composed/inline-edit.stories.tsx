@@ -5,7 +5,7 @@ import { InlineEdit } from './inline-edit'
 const meta: Meta<typeof InlineEdit> = {
   title: 'Composed/InlineEdit',
   component: InlineEdit,
-  tags: ['autodocs'],
+  tags: ['autodocs', 'stable'],
   parameters: {
     layout: 'centered',
   },

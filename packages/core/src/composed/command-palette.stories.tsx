@@ -131,7 +131,7 @@ const allGroups = [navigationGroup, actionsGroup, settingsGroup]
 const meta: Meta<typeof CommandPalette> = {
   title: 'Composed/CommandPalette',
   component: CommandPalette,
-  tags: ['autodocs'],
+  tags: ['autodocs', 'stable'],
   parameters: {
     layout: 'fullscreen',
   },

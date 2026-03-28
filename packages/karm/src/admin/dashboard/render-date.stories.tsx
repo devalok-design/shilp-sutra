@@ -72,7 +72,7 @@ const breakMap = new Map<string, DateAttendanceInfo>([
 const meta = {
   title: 'Karm/Admin/Dashboard/RenderDate',
   component: RenderDate,
-  tags: ['autodocs'],
+  tags: ['autodocs', 'stable'],
   parameters: {
     layout: 'centered',
     docs: {

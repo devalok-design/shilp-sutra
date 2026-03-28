@@ -66,7 +66,7 @@ const mockBreaks: BreakRequest[] = [
 const meta = {
   title: 'Karm/Admin/Break/Breaks',
   component: Breaks,
-  tags: ['autodocs'],
+  tags: ['autodocs', 'stable'],
   parameters: {
     layout: 'padded',
     docs: {

@@ -4,7 +4,7 @@ import { LineChart } from './line-chart'
 const meta: Meta<typeof LineChart> = {
   title: 'UI/Charts/LineChart',
   component: LineChart,
-  tags: ['autodocs'],
+  tags: ['autodocs', 'stable'],
   argTypes: {
     curved: { control: 'boolean' },
     showDots: { control: 'boolean' },

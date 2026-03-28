@@ -9,7 +9,7 @@ import { RadarChart } from './radar-chart'
 
 const meta: Meta = {
   title: 'UI/Charts/Overview',
-  tags: ['autodocs'],
+  tags: ['autodocs', 'stable'],
   parameters: { layout: 'padded' },
 }
 export default meta

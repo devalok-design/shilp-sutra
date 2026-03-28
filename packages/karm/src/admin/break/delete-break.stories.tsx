@@ -9,7 +9,7 @@ import { DeleteBreak } from './delete-break'
 const meta = {
   title: 'Karm/Admin/Break/DeleteBreak',
   component: DeleteBreak,
-  tags: ['autodocs'],
+  tags: ['autodocs', 'stable'],
   parameters: {
     layout: 'centered',
     docs: {

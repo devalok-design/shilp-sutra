@@ -9,7 +9,7 @@ import { AICommandProvider } from './ai-command-provider'
 const meta: Meta<typeof AIConversation> = {
   title: 'AI/AIConversation',
   component: AIConversation,
-  tags: ['autodocs'],
+  tags: ['autodocs', 'stable'],
   parameters: {
     layout: 'padded',
     docs: {

@@ -3,7 +3,7 @@ import { CardSkeleton, TableSkeleton, BoardSkeleton, ListSkeleton } from './load
 
 const meta: Meta = {
   title: 'Composed/LoadingSkeleton',
-  tags: ['autodocs'],
+  tags: ['autodocs', 'stable'],
 }
 export default meta
 type Story = StoryObj

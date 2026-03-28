@@ -106,7 +106,7 @@ const unassignedSubtasks: Subtask[] = [
 const meta: Meta<typeof SubtasksTab> = {
   title: 'Karm/Tasks/SubtasksTab',
   component: SubtasksTab,
-  tags: ['autodocs'],
+  tags: ['autodocs', 'stable'],
   parameters: {
     layout: 'centered',
     docs: {

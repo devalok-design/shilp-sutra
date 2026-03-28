@@ -24,7 +24,7 @@ import {
 const meta: Meta<typeof Button> = {
   title: 'UI/Core/Button',
   component: Button,
-  tags: ['autodocs'],
+  tags: ['autodocs', 'stable'],
   argTypes: {
     variant: {
       control: 'select',

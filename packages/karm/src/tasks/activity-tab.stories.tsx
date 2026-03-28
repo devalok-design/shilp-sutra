@@ -215,7 +215,7 @@ const systemAndAgentActivities: AuditLogEntry[] = [
 const meta: Meta<typeof ActivityTab> = {
   title: 'Karm/Tasks/ActivityTab',
   component: ActivityTab,
-  tags: ['autodocs'],
+  tags: ['autodocs', 'stable'],
   parameters: {
     layout: 'centered',
     docs: {

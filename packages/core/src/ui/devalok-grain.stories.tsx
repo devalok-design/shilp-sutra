@@ -9,7 +9,7 @@ import { IconPlus, IconCheck, IconHeart, IconStar, IconSend } from '@tabler/icon
 const meta: Meta<typeof DevalokGrain> = {
   title: 'UI/Core/DevalokGrain',
   component: DevalokGrain,
-  tags: ['autodocs'],
+  tags: ['autodocs', 'stable'],
   argTypes: {
     intensity: { control: 'select', options: ['subtle', 'medium', 'heavy'] },
     surface: { control: 'select', options: ['solid', 'soft'] },

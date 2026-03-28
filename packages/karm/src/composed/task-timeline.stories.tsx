@@ -81,7 +81,7 @@ const MOCK_ENTRIES: TimelineEntry[] = [
 const meta: Meta<typeof TaskTimeline> = {
   title: 'Karm/Composed/TaskTimeline',
   component: TaskTimeline,
-  tags: ['autodocs'],
+  tags: ['autodocs', 'stable'],
   parameters: {
     layout: 'padded',
     docs: {

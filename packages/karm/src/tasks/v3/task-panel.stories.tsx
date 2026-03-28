@@ -382,6 +382,7 @@ const sharedCallbacks = {
 const meta: Meta<TaskPanelRootProps> = {
   title: 'Karm/Tasks/TaskPanel v3',
   component: TaskPanel,
+  tags: ['autodocs', 'experimental'],
   parameters: {
     layout: 'fullscreen',
   },

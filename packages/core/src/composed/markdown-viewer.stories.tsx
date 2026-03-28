@@ -4,7 +4,7 @@ import { MarkdownViewer } from './markdown-viewer'
 const meta: Meta<typeof MarkdownViewer> = {
   title: 'Composed/MarkdownViewer',
   component: MarkdownViewer,
-  tags: ['autodocs'],
+  tags: ['autodocs', 'stable'],
 }
 export default meta
 type Story = StoryObj<typeof MarkdownViewer>

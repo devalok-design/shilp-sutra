@@ -15,7 +15,7 @@ import { Label } from './label'
 const meta: Meta<typeof Select> = {
   title: 'UI/Form Controls/Select',
   component: Select,
-  tags: ['autodocs'],
+  tags: ['autodocs', 'stable'],
 }
 export default meta
 type Story = StoryObj<typeof Select>

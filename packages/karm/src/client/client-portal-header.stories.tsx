@@ -4,7 +4,7 @@ import { ClientPortalHeader } from './client-portal-header'
 const meta: Meta<typeof ClientPortalHeader> = {
   title: 'Karm/Client/ClientPortalHeader',
   component: ClientPortalHeader,
-  tags: ['autodocs'],
+  tags: ['autodocs', 'stable'],
   parameters: {
     layout: 'fullscreen',
     docs: {

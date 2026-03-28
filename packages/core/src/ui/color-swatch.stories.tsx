@@ -4,7 +4,7 @@ import { ColorSwatch } from './color-swatch'
 const meta: Meta<typeof ColorSwatch> = {
   title: 'UI/Core/ColorSwatch',
   component: ColorSwatch,
-  tags: ['autodocs'],
+  tags: ['autodocs', 'stable'],
   argTypes: {
     color: { control: 'color' },
     size: { control: 'select', options: ['sm', 'md', 'lg'] },

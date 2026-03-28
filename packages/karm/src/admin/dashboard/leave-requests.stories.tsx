@@ -67,7 +67,7 @@ const mockUserImages: Record<string, string> = {
 const meta = {
   title: 'Karm/Admin/LeaveRequests',
   component: LeaveRequests,
-  tags: ['autodocs'],
+  tags: ['autodocs', 'stable'],
   parameters: {
     layout: 'padded',
     docs: {

@@ -4,7 +4,7 @@ import { StatCard } from './stat-card'
 const meta: Meta<typeof StatCard> = {
   title: 'UI/Data Display/StatCard',
   component: StatCard,
-  tags: ['autodocs'],
+  tags: ['autodocs', 'stable'],
   argTypes: {
     label: { control: 'text' },
     value: { control: 'text' },

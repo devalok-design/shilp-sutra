@@ -50,7 +50,7 @@ const mockAdjustments: Adjustment[] = [
 const meta = {
   title: 'Karm/Admin/Adjustments/ApprovedAdjustments',
   component: ApprovedAdjustments,
-  tags: ['autodocs'],
+  tags: ['autodocs', 'stable'],
   parameters: {
     layout: 'padded',
     docs: {

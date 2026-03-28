@@ -12,7 +12,7 @@ import { ActivityFeed, type ActivityItem } from './activity-feed'
 const meta: Meta<typeof ActivityFeed> = {
   title: 'Composed/ActivityFeed',
   component: ActivityFeed,
-  tags: ['autodocs'],
+  tags: ['autodocs', 'stable'],
   parameters: {
     layout: 'padded',
     docs: {

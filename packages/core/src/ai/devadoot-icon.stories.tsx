@@ -8,7 +8,7 @@ import type { ConversationMessage } from './types'
 const meta: Meta<typeof DevadootIcon> = {
   title: 'AI/DevadootIcon',
   component: DevadootIcon,
-  tags: ['autodocs'],
+  tags: ['autodocs', 'stable'],
   parameters: {
     layout: 'centered',
     docs: {

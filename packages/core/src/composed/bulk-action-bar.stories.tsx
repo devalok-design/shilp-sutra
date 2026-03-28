@@ -6,7 +6,7 @@ import { IconArchive, IconCopy, IconTag, IconTrash } from '@tabler/icons-react'
 const meta: Meta<typeof BulkActionBar> = {
   title: 'Composed/BulkActionBar',
   component: BulkActionBar,
-  tags: ['autodocs'],
+  tags: ['autodocs', 'stable'],
   parameters: {
     layout: 'fullscreen',
   },

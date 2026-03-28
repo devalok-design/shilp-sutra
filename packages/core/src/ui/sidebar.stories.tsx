@@ -19,7 +19,7 @@ import {
 const meta: Meta<typeof Sidebar> = {
   title: 'UI/Navigation/Sidebar',
   component: Sidebar,
-  tags: ['autodocs'],
+  tags: ['autodocs', 'stable'],
   parameters: {
     layout: 'fullscreen',
   },

@@ -5,7 +5,7 @@ import { Label } from './label'
 const meta: Meta<typeof Textarea> = {
   title: 'UI/Form Controls/Textarea',
   component: Textarea,
-  tags: ['autodocs'],
+  tags: ['autodocs', 'stable'],
   argTypes: {
     state: {
       control: 'select',

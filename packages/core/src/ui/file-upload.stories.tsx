@@ -5,7 +5,7 @@ import { FileUpload } from './file-upload'
 const meta: Meta<typeof FileUpload> = {
   title: 'UI/Form Controls/FileUpload',
   component: FileUpload,
-  tags: ['autodocs'],
+  tags: ['autodocs', 'stable'],
   decorators: [(Story) => <div className="p-ds-08 max-w-lg"><Story /></div>],
   args: {
     onFiles: (files) => console.log('Files selected:', files),

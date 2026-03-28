@@ -13,7 +13,7 @@ import {
 const meta: Meta<typeof Skeleton> = {
   title: 'UI/Data Display/Skeleton',
   component: Skeleton,
-  tags: ['autodocs'],
+  tags: ['autodocs', 'stable'],
   argTypes: {
     variant: {
       control: 'select',

@@ -59,7 +59,7 @@ const rejectedBreak: BreakRequest = {
 const meta = {
   title: 'Karm/Admin/Dashboard/BreakRequestCard',
   component: BreakRequestCard,
-  tags: ['autodocs'],
+  tags: ['autodocs', 'stable'],
   parameters: {
     layout: 'padded',
     docs: {

@@ -106,7 +106,7 @@ const mockNotifications: Notification[] = [
 const meta: Meta<typeof NotificationCenter> = {
   title: 'Shell/NotificationCenter',
   component: NotificationCenter,
-  tags: ['autodocs'],
+  tags: ['autodocs', 'stable'],
   parameters: {
     layout: 'centered',
   },

@@ -4,7 +4,7 @@ import { ChatInput } from './chat-input'
 const meta: Meta<typeof ChatInput> = {
   title: 'Karm/Chat/ChatInput',
   component: ChatInput,
-  tags: ['autodocs'],
+  tags: ['autodocs', 'stable'],
   parameters: {
     layout: 'padded',
     docs: {

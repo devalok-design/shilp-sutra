@@ -6,7 +6,7 @@ import { Button } from '../ui/button'
 const meta: Meta<typeof MultiSelectPopover> = {
   title: 'Composed/MultiSelectPopover',
   component: MultiSelectPopover,
-  tags: ['autodocs'],
+  tags: ['autodocs', 'stable'],
   parameters: {
     layout: 'centered',
   },

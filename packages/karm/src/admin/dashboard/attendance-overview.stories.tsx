@@ -126,7 +126,7 @@ const mockUserImages: Record<string, string> = {
 const meta = {
   title: 'Karm/Admin/AttendanceOverview',
   component: AttendanceOverview,
-  tags: ['autodocs'],
+  tags: ['autodocs', 'stable'],
   parameters: {
     layout: 'padded',
     docs: {

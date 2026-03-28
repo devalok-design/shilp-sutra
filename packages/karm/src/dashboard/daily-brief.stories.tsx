@@ -4,7 +4,7 @@ import { DailyBrief, type BriefData } from './daily-brief'
 const meta: Meta<typeof DailyBrief> = {
   title: 'Karm/Dashboard/DailyBrief',
   component: DailyBrief,
-  tags: ['autodocs'],
+  tags: ['autodocs', 'stable'],
   parameters: {
     layout: 'padded',
     docs: {

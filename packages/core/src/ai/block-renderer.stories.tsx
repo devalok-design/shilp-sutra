@@ -7,7 +7,7 @@ import { AICommandProvider } from './ai-command-provider'
 const meta: Meta<typeof BlockRenderer> = {
   title: 'AI/BlockRenderer',
   component: BlockRenderer,
-  tags: ['autodocs'],
+  tags: ['autodocs', 'stable'],
   parameters: { layout: 'padded' },
   decorators: [
     (Story) => (

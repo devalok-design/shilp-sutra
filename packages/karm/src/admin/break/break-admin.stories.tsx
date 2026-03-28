@@ -138,7 +138,7 @@ const mockUserImages: Record<string, string> = {
 const meta = {
   title: 'Karm/Admin/Break/BreakAdmin',
   component: BreakAdmin,
-  tags: ['autodocs'],
+  tags: ['autodocs', 'stable'],
   parameters: {
     layout: 'padded',
     docs: {

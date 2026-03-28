@@ -4,7 +4,7 @@ import { Sparkline } from './sparkline'
 const meta: Meta<typeof Sparkline> = {
   title: 'UI/Charts/Sparkline',
   component: Sparkline,
-  tags: ['autodocs'],
+  tags: ['autodocs', 'stable'],
   argTypes: {
     variant: {
       control: 'radio',

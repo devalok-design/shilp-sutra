@@ -4,7 +4,7 @@ import { GaugeChart } from './gauge-chart'
 const meta: Meta<typeof GaugeChart> = {
   title: 'UI/Charts/GaugeChart',
   component: GaugeChart,
-  tags: ['autodocs'],
+  tags: ['autodocs', 'stable'],
   argTypes: {
     value: { control: { type: 'range', min: 0, max: 100, step: 1 } },
     max: { control: { type: 'number', min: 1, max: 1000 } },

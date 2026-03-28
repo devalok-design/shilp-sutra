@@ -3,7 +3,7 @@ import { renderAdjustmentType, AdjustmentType } from './render-adjustment-type'
 
 const meta: Meta = {
   title: 'Karm/Admin/Utils/RenderAdjustmentType',
-  tags: ['autodocs'],
+  tags: ['autodocs', 'stable'],
   parameters: {
     docs: {
       description: {

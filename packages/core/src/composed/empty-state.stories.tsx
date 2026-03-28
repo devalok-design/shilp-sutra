@@ -13,7 +13,7 @@ import {
 const meta: Meta<typeof EmptyState> = {
   title: 'Composed/EmptyState',
   component: EmptyState,
-  tags: ['autodocs'],
+  tags: ['autodocs', 'stable'],
   decorators: [
     (Story) => (
       <div style={{ width: '100%', maxWidth: 500 }}>

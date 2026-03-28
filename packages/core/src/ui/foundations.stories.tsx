@@ -3,7 +3,7 @@ import { Separator } from './separator'
 
 const meta: Meta = {
   title: 'Foundations/Tokens',
-  tags: ['autodocs'],
+  tags: ['autodocs', 'stable'],
 }
 export default meta
 type Story = StoryObj

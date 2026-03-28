@@ -4,7 +4,7 @@ import { PageHeader } from './page-header'
 const meta: Meta<typeof PageHeader> = {
   title: 'Composed/PageHeader',
   component: PageHeader,
-  tags: ['autodocs'],
+  tags: ['autodocs', 'stable'],
   parameters: {
     layout: 'padded',
   },

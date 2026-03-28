@@ -7,7 +7,7 @@ import { Label } from './label'
 const meta: Meta<typeof Popover> = {
   title: 'UI/Feedback/Popover',
   component: Popover,
-  tags: ['autodocs'],
+  tags: ['autodocs', 'stable'],
 }
 export default meta
 type Story = StoryObj<typeof Popover>

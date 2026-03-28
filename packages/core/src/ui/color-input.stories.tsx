@@ -5,7 +5,7 @@ import { ColorInput } from './color-input'
 const meta: Meta<typeof ColorInput> = {
   title: 'UI/Core/ColorInput',
   component: ColorInput,
-  tags: ['autodocs'],
+  tags: ['autodocs', 'stable'],
   argTypes: {
     value: { control: 'color' },
     disabled: { control: 'boolean' },

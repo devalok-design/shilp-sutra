@@ -7,7 +7,7 @@ import type { ScratchpadItem } from './scratchpad-widget'
 const meta: Meta<typeof SidebarScratchpad> = {
   title: 'Karm/Dashboard/SidebarScratchpad',
   component: SidebarScratchpad,
-  tags: ['autodocs'],
+  tags: ['autodocs', 'stable'],
   parameters: {
     layout: 'padded',
     docs: {

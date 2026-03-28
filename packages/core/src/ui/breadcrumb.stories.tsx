@@ -12,7 +12,7 @@ import {
 const meta: Meta<typeof Breadcrumb> = {
   title: 'UI/Navigation/Breadcrumb',
   component: Breadcrumb,
-  tags: ['autodocs'],
+  tags: ['autodocs', 'stable'],
 }
 export default meta
 type Story = StoryObj<typeof Breadcrumb>

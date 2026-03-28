@@ -105,7 +105,7 @@ function SelectTasksEffect({ ids }: { ids: string[] }) {
 const meta: Meta<typeof BoardToolbar> = {
   title: 'Karm/Board/BoardToolbar',
   component: BoardToolbar,
-  tags: ['autodocs'],
+  tags: ['autodocs', 'stable'],
   parameters: {
     layout: 'padded',
     docs: {

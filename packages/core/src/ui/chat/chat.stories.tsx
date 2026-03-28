@@ -25,6 +25,7 @@ import {
 
 const meta: Meta = {
   title: 'UI/Chat',
+  tags: ['autodocs', 'stable'],
   parameters: {
     layout: 'padded',
     docs: {

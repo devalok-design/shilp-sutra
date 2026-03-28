@@ -4,7 +4,7 @@ import { AspectRatio } from './aspect-ratio'
 const meta: Meta<typeof AspectRatio> = {
   title: 'UI/Data Display/AspectRatio',
   component: AspectRatio,
-  tags: ['autodocs'],
+  tags: ['autodocs', 'stable'],
 }
 export default meta
 type Story = StoryObj<typeof AspectRatio>

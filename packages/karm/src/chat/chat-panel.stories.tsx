@@ -6,7 +6,7 @@ import type { Conversation } from './conversation-list'
 const meta: Meta<typeof ChatPanel> = {
   title: 'Karm/Chat/ChatPanel',
   component: ChatPanel,
-  tags: ['autodocs'],
+  tags: ['autodocs', 'stable'],
   parameters: {
     layout: 'fullscreen',
     docs: {

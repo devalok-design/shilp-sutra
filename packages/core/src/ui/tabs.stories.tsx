@@ -5,7 +5,7 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from './tabs'
 const meta: Meta<typeof Tabs> = {
   title: 'UI/Navigation/Tabs',
   component: Tabs,
-  tags: ['autodocs'],
+  tags: ['autodocs', 'stable'],
 }
 export default meta
 type Story = StoryObj<typeof Tabs>

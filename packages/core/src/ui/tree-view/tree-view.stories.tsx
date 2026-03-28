@@ -7,7 +7,7 @@ import { TreeView, TreeItem, useTree, type TreeNode } from '.'
 const meta: Meta<typeof TreeView> = {
   title: 'UI/Data Display/TreeView',
   component: TreeView,
-  tags: ['autodocs'],
+  tags: ['autodocs', 'stable'],
   parameters: {
     layout: 'padded',
   },

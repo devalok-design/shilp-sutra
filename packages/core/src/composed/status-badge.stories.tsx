@@ -6,7 +6,7 @@ import { StatusBadge } from './status-badge'
 const meta: Meta<typeof StatusBadge> = {
   title: 'Composed/StatusBadge',
   component: StatusBadge,
-  tags: ['autodocs'],
+  tags: ['autodocs', 'stable'],
   argTypes: {
     status: {
       control: 'select',

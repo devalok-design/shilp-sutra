@@ -157,7 +157,7 @@ const respondedBlocks: Block[] = [
 const meta: Meta<typeof CommandBar> = {
   title: 'AI/CommandBar',
   component: CommandBar,
-  tags: ['autodocs'],
+  tags: ['autodocs', 'stable'],
   parameters: {
     layout: 'fullscreen',
   },

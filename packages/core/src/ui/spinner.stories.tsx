@@ -6,7 +6,7 @@ import { Button } from './button'
 const meta: Meta<typeof Spinner> = {
   title: 'UI/Feedback/Spinner',
   component: Spinner,
-  tags: ['autodocs'],
+  tags: ['autodocs', 'stable'],
   argTypes: {
     size: {
       control: 'select',

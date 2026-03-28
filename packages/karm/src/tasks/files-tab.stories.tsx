@@ -147,7 +147,7 @@ const noDownloadFile: TaskFile[] = [
 const meta: Meta<typeof FilesTab> = {
   title: 'Karm/Tasks/FilesTab',
   component: FilesTab,
-  tags: ['autodocs'],
+  tags: ['autodocs', 'stable'],
   parameters: {
     layout: 'centered',
     docs: {

@@ -15,7 +15,7 @@ import * as React from 'react'
 const meta: Meta<typeof Icon> = {
   title: 'UI/Core/Icon',
   component: Icon,
-  tags: ['autodocs'],
+  tags: ['autodocs', 'stable'],
   argTypes: {
     size: { control: 'select', options: ['xs', 'sm', 'md', 'lg', 'xl', '2xl'] },
     stroke: { control: 'select', options: ['light', 'regular', 'bold'] },

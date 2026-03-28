@@ -3,7 +3,7 @@ import { DevsabhaSkeleton, BandwidthSkeleton } from './page-skeletons'
 
 const meta: Meta = {
   title: 'Karm/PageSkeletons',
-  tags: ['autodocs'],
+  tags: ['autodocs', 'stable'],
   parameters: {
     layout: 'padded',
     docs: {

@@ -5,7 +5,7 @@ import { MasterDetail } from './master-detail'
 const meta: Meta<typeof MasterDetail> = {
   title: 'Composed/MasterDetail',
   component: MasterDetail,
-  tags: ['autodocs'],
+  tags: ['autodocs', 'stable'],
 }
 export default meta
 type Story = StoryObj<typeof MasterDetail>

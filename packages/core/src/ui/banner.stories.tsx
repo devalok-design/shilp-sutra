@@ -5,7 +5,7 @@ import { Button } from './button'
 const meta: Meta<typeof Banner> = {
   title: 'UI/Feedback/Banner',
   component: Banner,
-  tags: ['autodocs'],
+  tags: ['autodocs', 'stable'],
   argTypes: {
     color: {
       control: 'select',

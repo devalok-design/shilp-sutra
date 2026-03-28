@@ -49,7 +49,7 @@ const rejectedBreak: BreakRequest & { numberOfDays: number } = {
 const meta = {
   title: 'Karm/Admin/Break/EditBreak',
   component: EditBreak,
-  tags: ['autodocs'],
+  tags: ['autodocs', 'stable'],
   parameters: {
     layout: 'centered',
     docs: {

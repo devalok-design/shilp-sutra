@@ -7,7 +7,7 @@ import { Textarea } from './textarea'
 const meta: Meta<typeof FormField> = {
   title: 'UI/Form Controls/Form',
   component: FormField,
-  tags: ['autodocs'],
+  tags: ['autodocs', 'stable'],
 }
 export default meta
 type Story = StoryObj<typeof FormField>

@@ -70,7 +70,7 @@ const highCarryForwardBalance: BreakBalanceData = {
 const meta = {
   title: 'Karm/Admin/EditBreakBalance',
   component: EditBreakBalance,
-  tags: ['autodocs'],
+  tags: ['autodocs', 'stable'],
   parameters: {
     layout: 'centered',
     docs: {

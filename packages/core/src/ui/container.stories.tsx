@@ -4,7 +4,7 @@ import { Container } from './container'
 const meta: Meta<typeof Container> = {
   title: 'UI/Layout/Container',
   component: Container,
-  tags: ['autodocs'],
+  tags: ['autodocs', 'stable'],
   argTypes: {
     maxWidth: {
       control: 'select',

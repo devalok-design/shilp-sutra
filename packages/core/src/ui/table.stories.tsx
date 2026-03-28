@@ -13,7 +13,7 @@ import {
 const meta: Meta<typeof Table> = {
   title: 'UI/Data Display/Table',
   component: Table,
-  tags: ['autodocs'],
+  tags: ['autodocs', 'stable'],
 }
 export default meta
 type Story = StoryObj<typeof Table>

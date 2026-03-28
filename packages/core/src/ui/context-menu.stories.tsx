@@ -19,7 +19,7 @@ import { useState } from 'react'
 const meta: Meta<typeof ContextMenu> = {
   title: 'UI/Navigation/ContextMenu',
   component: ContextMenu,
-  tags: ['autodocs'],
+  tags: ['autodocs', 'stable'],
 }
 export default meta
 type Story = StoryObj<typeof ContextMenu>

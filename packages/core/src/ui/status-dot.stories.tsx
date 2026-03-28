@@ -4,7 +4,7 @@ import { StatusDot } from './status-dot'
 const meta: Meta<typeof StatusDot> = {
   title: 'UI/Core/StatusDot',
   component: StatusDot,
-  tags: ['autodocs'],
+  tags: ['autodocs', 'stable'],
   argTypes: {
     status: {
       control: 'select',

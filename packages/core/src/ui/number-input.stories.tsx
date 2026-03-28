@@ -5,7 +5,7 @@ import { NumberInput } from './number-input'
 const meta: Meta<typeof NumberInput> = {
   title: 'UI/Form Controls/NumberInput',
   component: NumberInput,
-  tags: ['autodocs'],
+  tags: ['autodocs', 'stable'],
   argTypes: {
     value: { control: 'number' },
     min: { control: 'number' },

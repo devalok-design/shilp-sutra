@@ -5,7 +5,7 @@ import { ColumnEmpty } from './column-empty'
 const meta: Meta<typeof ColumnEmpty> = {
   title: 'Karm/Board/ColumnEmpty',
   component: ColumnEmpty,
-  tags: ['autodocs'],
+  tags: ['autodocs', 'stable'],
   parameters: {
     layout: 'centered',
     docs: {

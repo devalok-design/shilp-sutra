@@ -12,7 +12,7 @@ import { Button } from './button'
 const meta: Meta<typeof Card> = {
   title: 'UI/Data Display/Card',
   component: Card,
-  tags: ['autodocs'],
+  tags: ['autodocs', 'stable'],
   argTypes: {
     interactive: { control: 'boolean' },
   },

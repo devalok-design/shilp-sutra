@@ -26,7 +26,7 @@ const mockUsersWithImages: AvatarUser[] = [
 const meta: Meta<typeof AvatarGroup> = {
   title: 'Composed/AvatarGroup',
   component: AvatarGroup,
-  tags: ['autodocs'],
+  tags: ['autodocs', 'stable'],
   argTypes: {
     size: {
       control: 'select',

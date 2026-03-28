@@ -4,7 +4,7 @@ import { AccentProvider } from './accent-provider'
 const meta: Meta<typeof AccentProvider> = {
   title: 'Karm/Client/AccentProvider',
   component: AccentProvider,
-  tags: ['autodocs'],
+  tags: ['autodocs', 'stable'],
   parameters: {
     layout: 'padded',
     docs: {

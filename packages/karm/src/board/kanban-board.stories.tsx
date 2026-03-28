@@ -247,7 +247,7 @@ const heavyBoardData: BoardData = {
 const meta: Meta<typeof KanbanBoard> = {
   title: 'Karm/Board/KanbanBoard',
   component: KanbanBoard,
-  tags: ['autodocs'],
+  tags: ['autodocs', 'stable'],
   parameters: {
     layout: 'fullscreen',
     docs: {

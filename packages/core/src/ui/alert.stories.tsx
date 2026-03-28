@@ -5,7 +5,7 @@ import { Alert } from './alert'
 const meta: Meta<typeof Alert> = {
   title: 'UI/Feedback/Alert',
   component: Alert,
-  tags: ['autodocs'],
+  tags: ['autodocs', 'stable'],
   argTypes: {
     color: {
       control: 'select',

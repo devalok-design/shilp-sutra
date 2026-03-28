@@ -4,7 +4,7 @@ import { ProjectHealthCard, type ProjectHealthData } from './project-health-card
 const meta: Meta<typeof ProjectHealthCard> = {
   title: 'Karm/Dashboard/ProjectHealthCard',
   component: ProjectHealthCard,
-  tags: ['autodocs'],
+  tags: ['autodocs', 'stable'],
   parameters: {
     layout: 'padded',
     docs: {

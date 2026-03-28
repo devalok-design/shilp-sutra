@@ -6,7 +6,7 @@ import type { WeekDay } from './week-heatmap-context'
 
 const meta: Meta = {
   title: 'Karm/Dashboard/WeekHeatmap',
-  tags: ['autodocs'],
+  tags: ['autodocs', 'stable'],
   parameters: {
     layout: 'padded',
     docs: {

@@ -4,7 +4,7 @@ import { PieChart } from './pie-chart'
 const meta: Meta<typeof PieChart> = {
   title: 'UI/Charts/PieChart',
   component: PieChart,
-  tags: ['autodocs'],
+  tags: ['autodocs', 'stable'],
   argTypes: {
     variant: {
       control: 'radio',

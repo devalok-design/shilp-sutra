@@ -16,7 +16,7 @@ const MOCK_MEMBERS: PeoplePickerMember[] = [
 const meta: Meta<typeof PeoplePicker> = {
   title: 'Karm/Composed/PeoplePicker',
   component: PeoplePicker,
-  tags: ['autodocs'],
+  tags: ['autodocs', 'stable'],
   parameters: {
     layout: 'padded',
     docs: {

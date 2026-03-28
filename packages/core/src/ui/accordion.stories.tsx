@@ -10,7 +10,7 @@ import {
 const meta: Meta<typeof Accordion> = {
   title: 'UI/Navigation/Accordion',
   component: Accordion,
-  tags: ['autodocs'],
+  tags: ['autodocs', 'stable'],
 }
 export default meta
 type Story = StoryObj<typeof Accordion>

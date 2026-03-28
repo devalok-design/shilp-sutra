@@ -340,7 +340,7 @@ const urgentBlockedTask: FullTask = {
 const meta: Meta<typeof TaskDetailPanel> = {
   title: 'Karm/Tasks/TaskDetailPanel',
   component: TaskDetailPanel,
-  tags: ['autodocs'],
+  tags: ['autodocs', 'stable'],
   parameters: {
     layout: 'fullscreen',
     docs: {

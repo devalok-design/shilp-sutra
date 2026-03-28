@@ -8,7 +8,7 @@ import { DevsabhaSkeleton, BandwidthSkeleton } from '../../../karm/src/page-skel
 
 const meta: Meta = {
   title: 'Composed/PageSkeletons',
-  tags: ['autodocs'],
+  tags: ['autodocs', 'stable'],
   decorators: [
     (Story) => (
       <div style={{ width: '100%', maxWidth: 1200, margin: '0 auto' }}>

@@ -4,7 +4,7 @@ import { Code } from './code'
 const meta: Meta<typeof Code> = {
   title: 'UI/Data Display/Code',
   component: Code,
-  tags: ['autodocs'],
+  tags: ['autodocs', 'stable'],
   argTypes: {
     variant: {
       control: 'radio',

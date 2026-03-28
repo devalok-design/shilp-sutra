@@ -22,7 +22,7 @@ import { useState } from 'react'
 const meta: Meta<typeof DropdownMenu> = {
   title: 'UI/Navigation/DropdownMenu',
   component: DropdownMenu,
-  tags: ['autodocs'],
+  tags: ['autodocs', 'stable'],
 }
 export default meta
 type Story = StoryObj<typeof DropdownMenu>

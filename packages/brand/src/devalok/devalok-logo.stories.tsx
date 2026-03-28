@@ -4,7 +4,7 @@ import { DevalokLogo } from '.'
 const meta: Meta<typeof DevalokLogo> = {
   title: 'Brand/Devalok/Logo',
   component: DevalokLogo,
-  tags: ['autodocs'],
+  tags: ['autodocs', 'stable'],
   argTypes: {
     type: {
       control: 'select',

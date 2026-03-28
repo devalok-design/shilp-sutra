@@ -5,7 +5,7 @@ import { TaskComposer } from './task-composer'
 const meta: Meta<typeof TaskComposer> = {
   title: 'Karm/Composed/TaskComposer',
   component: TaskComposer,
-  tags: ['autodocs'],
+  tags: ['autodocs', 'stable'],
   parameters: {
     layout: 'padded',
     docs: {

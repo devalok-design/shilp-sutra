@@ -5,7 +5,7 @@ import { Label } from './label'
 const meta: Meta<typeof RadioGroup> = {
   title: 'UI/Form Controls/Radio',
   component: RadioGroup,
-  tags: ['autodocs'],
+  tags: ['autodocs', 'stable'],
   argTypes: {
     disabled: { control: 'boolean' },
     orientation: {

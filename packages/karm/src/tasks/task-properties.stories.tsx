@@ -91,7 +91,7 @@ const singleAssigneeTask: TaskData = {
 const meta: Meta<typeof TaskProperties> = {
   title: 'Karm/Tasks/TaskProperties',
   component: TaskProperties,
-  tags: ['autodocs'],
+  tags: ['autodocs', 'stable'],
   parameters: {
     layout: 'centered',
     docs: {

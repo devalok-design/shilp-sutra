@@ -38,7 +38,7 @@ import { MotionFade, MotionCollapse, MotionScale, MotionSlide } from '../motion/
 
 const meta: Meta = {
   title: 'Foundations/Motion Overview',
-  tags: [],
+  tags: ['autodocs', 'stable'],
 }
 export default meta
 

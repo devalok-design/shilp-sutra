@@ -4,7 +4,7 @@ import { MessageList, type ChatMessage } from './message-list'
 const meta: Meta<typeof MessageList> = {
   title: 'Karm/Chat/MessageList',
   component: MessageList,
-  tags: ['autodocs'],
+  tags: ['autodocs', 'stable'],
   parameters: {
     layout: 'padded',
     docs: {

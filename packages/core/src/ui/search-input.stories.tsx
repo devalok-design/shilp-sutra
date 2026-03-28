@@ -5,7 +5,7 @@ import { SearchInput } from './search-input'
 const meta: Meta<typeof SearchInput> = {
   title: 'UI/Form Controls/SearchInput',
   component: SearchInput,
-  tags: ['autodocs'],
+  tags: ['autodocs', 'stable'],
   argTypes: {
     loading: { control: 'boolean' },
     disabled: { control: 'boolean' },

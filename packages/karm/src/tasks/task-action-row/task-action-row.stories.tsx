@@ -6,6 +6,7 @@ import type { TaskActionRowTask } from './task-action-row-context'
 const meta: Meta<typeof TaskActionRow> = {
   title: 'Karm/Tasks/TaskActionRow',
   component: TaskActionRow,
+  tags: ['autodocs', 'stable'],
   parameters: {
     layout: 'padded',
   },

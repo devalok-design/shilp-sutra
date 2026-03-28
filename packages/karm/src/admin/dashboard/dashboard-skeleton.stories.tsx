@@ -8,7 +8,7 @@ import { DashboardSkeleton } from './dashboard-skeleton'
 const meta = {
   title: 'Karm/Admin/Dashboard/DashboardSkeleton',
   component: DashboardSkeleton,
-  tags: ['autodocs'],
+  tags: ['autodocs', 'stable'],
   parameters: {
     layout: 'padded',
     docs: {

@@ -5,7 +5,7 @@ import { ToggleGroup, ToggleGroupItem } from './toggle-group'
 const meta: Meta<typeof ToggleGroup> = {
   title: 'UI/Form Controls/ToggleGroup',
   component: ToggleGroup,
-  tags: ['autodocs'],
+  tags: ['autodocs', 'stable'],
 }
 export default meta
 type Story = StoryObj<typeof ToggleGroup>

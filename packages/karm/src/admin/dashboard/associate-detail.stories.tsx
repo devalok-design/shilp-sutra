@@ -105,7 +105,7 @@ const mockTasks: TaskItem[] = [
 const meta = {
   title: 'Karm/Admin/AssociateDetail',
   component: AssociateDetail,
-  tags: ['autodocs'],
+  tags: ['autodocs', 'stable'],
   parameters: {
     layout: 'padded',
     docs: {

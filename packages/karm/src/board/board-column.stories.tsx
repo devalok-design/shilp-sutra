@@ -122,7 +122,7 @@ function BoardWrapper({
 const meta: Meta<typeof BoardColumn> = {
   title: 'Karm/Board/BoardColumn',
   component: BoardColumn,
-  tags: ['autodocs'],
+  tags: ['autodocs', 'stable'],
   parameters: {
     layout: 'centered',
     docs: {

@@ -5,7 +5,7 @@ import { Toggle } from './toggle'
 const meta: Meta<typeof Toggle> = {
   title: 'UI/Form Controls/Toggle',
   component: Toggle,
-  tags: ['autodocs'],
+  tags: ['autodocs', 'stable'],
   argTypes: {
     variant: {
       control: 'select',

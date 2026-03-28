@@ -8,7 +8,7 @@ import { DatePicker, DateRangePicker, CalendarGrid, TimePicker, DateTimePicker }
 const datePickerMeta: Meta<typeof DatePicker> = {
   title: 'Composed/DatePicker',
   component: DatePicker,
-  tags: ['autodocs'],
+  tags: ['autodocs', 'stable'],
 }
 export default datePickerMeta
 type DatePickerStory = StoryObj<typeof DatePicker>

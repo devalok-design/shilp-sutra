@@ -4,7 +4,7 @@ import { Text } from './text'
 const meta = {
   title: 'UI/Core/Text',
   component: Text,
-  tags: ['autodocs'],
+  tags: ['autodocs', 'stable'],
   argTypes: {
     variant: {
       control: 'select',

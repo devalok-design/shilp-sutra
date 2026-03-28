@@ -74,7 +74,7 @@ const yearsList = [
 const meta = {
   title: 'Karm/Admin/Dashboard/DashboardHeader',
   component: DashboardHeader,
-  tags: ['autodocs'],
+  tags: ['autodocs', 'stable'],
   parameters: {
     layout: 'padded',
     docs: {

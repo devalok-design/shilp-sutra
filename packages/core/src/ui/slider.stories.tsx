@@ -4,7 +4,7 @@ import { Slider } from './slider'
 const meta: Meta<typeof Slider> = {
   title: 'UI/Form Controls/Slider',
   component: Slider,
-  tags: ['autodocs'],
+  tags: ['autodocs', 'stable'],
 }
 export default meta
 type Story = StoryObj<typeof Slider>

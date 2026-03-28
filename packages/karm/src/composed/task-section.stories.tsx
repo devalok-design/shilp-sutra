@@ -7,7 +7,7 @@ import { TaskSection } from './task-section'
 const meta: Meta<typeof TaskSection> = {
   title: 'Karm/Composed/TaskSection',
   component: TaskSection,
-  tags: ['autodocs'],
+  tags: ['autodocs', 'stable'],
   parameters: {
     layout: 'padded',
     docs: {

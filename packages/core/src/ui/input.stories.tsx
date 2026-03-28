@@ -9,7 +9,7 @@ import { Label } from './label'
 const meta: Meta<typeof Input> = {
   title: 'UI/Core/Input',
   component: Input,
-  tags: ['autodocs'],
+  tags: ['autodocs', 'stable'],
   argTypes: {
     size: { control: 'select', options: ['xs', 'sm', 'md', 'lg'] },
     state: { control: 'select', options: ['default', 'error', 'warning', 'success'] },

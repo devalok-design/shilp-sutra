@@ -5,7 +5,7 @@ import { Stack } from './stack'
 const meta: Meta<typeof Stack> = {
   title: 'UI/Layout/Stack',
   component: Stack,
-  tags: ['autodocs'],
+  tags: ['autodocs', 'stable'],
   argTypes: {
     direction: {
       control: 'select',

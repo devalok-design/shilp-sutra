@@ -11,7 +11,7 @@ import {
 const meta: Meta<typeof NavigationMenu> = {
   title: 'UI/Navigation/NavigationMenu',
   component: NavigationMenu,
-  tags: ['autodocs'],
+  tags: ['autodocs', 'stable'],
 }
 export default meta
 type Story = StoryObj<typeof NavigationMenu>

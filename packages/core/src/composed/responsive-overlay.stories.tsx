@@ -6,7 +6,7 @@ import { Button } from '../ui/button'
 const meta: Meta<typeof ResponsiveOverlay> = {
   title: 'Composed/ResponsiveOverlay',
   component: ResponsiveOverlay,
-  tags: ['autodocs'],
+  tags: ['autodocs', 'stable'],
   parameters: {
     layout: 'centered',
   },

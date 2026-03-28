@@ -8,7 +8,7 @@ import { BreakAdminSkeleton } from './break-admin-skeleton'
 const meta = {
   title: 'Karm/Admin/Break/BreakAdminSkeleton',
   component: BreakAdminSkeleton,
-  tags: ['autodocs'],
+  tags: ['autodocs', 'stable'],
   parameters: {
     layout: 'padded',
     docs: {

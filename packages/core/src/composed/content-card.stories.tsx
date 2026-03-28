@@ -4,7 +4,7 @@ import { ContentCard } from './content-card'
 const meta: Meta<typeof ContentCard> = {
   title: 'Composed/ContentCard',
   component: ContentCard,
-  tags: ['autodocs'],
+  tags: ['autodocs', 'stable'],
   decorators: [
     (Story) => (
       <div style={{ width: 400 }}>

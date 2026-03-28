@@ -32,7 +32,7 @@ function Wrapper({ children }: { children: React.ReactNode }) {
 const meta: Meta<typeof BulkActionBar> = {
   title: 'Karm/Board/BulkActionBar',
   component: BulkActionBar,
-  tags: ['autodocs'],
+  tags: ['autodocs', 'stable'],
   decorators: [(Story) => <Wrapper><Story /></Wrapper>],
   parameters: {
     layout: 'padded',

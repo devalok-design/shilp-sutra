@@ -7,7 +7,7 @@ import { Button } from './button'
 const meta: Meta<typeof Toaster> = {
   title: 'UI/Feedback/Toaster',
   component: Toaster,
-  tags: ['autodocs'],
+  tags: ['autodocs', 'stable'],
 }
 export default meta
 type Story = StoryObj<typeof Toaster>

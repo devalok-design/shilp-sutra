@@ -7,7 +7,7 @@ import { Button } from './button'
 
 const meta: Meta = {
   title: 'UI/Feedback/Toast',
-  tags: ['autodocs'],
+  tags: ['autodocs', 'stable'],
   decorators: [
     (Story) => (
       <>

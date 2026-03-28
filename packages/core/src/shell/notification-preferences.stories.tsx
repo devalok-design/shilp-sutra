@@ -55,7 +55,7 @@ const mockPreferences: NotificationPreference[] = [
 const meta: Meta<typeof NotificationPreferences> = {
   title: 'Shell/NotificationPreferences',
   component: NotificationPreferences,
-  tags: ['autodocs'],
+  tags: ['autodocs', 'stable'],
   parameters: {
     layout: 'centered',
   },

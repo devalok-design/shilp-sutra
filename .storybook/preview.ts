@@ -1,6 +1,5 @@
 import React from 'react'
-import type { Preview } from '@storybook/react-vite'
-import type { Decorator } from '@storybook/react-vite'
+import { definePreview } from '@storybook/react-vite'
 import { TooltipProvider } from '../packages/core/src/ui/tooltip'
 import theme from './theme'
 import '../packages/core/src/tokens/index.css'
@@ -22,7 +21,7 @@ function ThemeWrapper({ theme: selectedTheme, children }: { theme: string; child
   return React.createElement(React.Fragment, null, children)
 }
 
-const withThemeToggle: Decorator = (Story, context) => {
+const withThemeToggle = (Story: any, context: any) => {
   const selectedTheme = (context.globals.theme as string) || 'light'
 
   return React.createElement(
@@ -32,7 +31,8 @@ const withThemeToggle: Decorator = (Story, context) => {
   )
 }
 
-const preview: Preview = {
+export const preview = definePreview({
+  addons: [],
   globalTypes: {
     theme: {
       name: 'Theme',
@@ -53,7 +53,7 @@ const preview: Preview = {
   },
   decorators: [
     withThemeToggle,
-    (Story) =>
+    (Story: any) =>
       React.createElement(
         TooltipProvider,
         null,
@@ -129,6 +129,6 @@ const preview: Preview = {
       },
     },
   },
-}
+})
 
 export default preview

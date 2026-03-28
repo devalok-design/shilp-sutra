@@ -157,3 +157,19 @@ Dark mode is toggled by adding the `.dark` class to a parent element (typically 
 ```
 
 In Storybook, use the theme switcher in the toolbar to toggle between light and dark modes.
+
+---
+
+## Dark Mode Variants
+
+Individual stories can declare their theme context using story globals:
+
+```tsx
+export const DarkMode: Story = {
+  globals: { theme: 'dark' },
+}
+```
+
+The ThemeWrapper decorator reads `globals.theme` and toggles the `.dark` class on `<html>`. Use this to create permanent dark-mode variants of any story.
+
+You can also toggle dark mode interactively from the Storybook toolbar (sun/moon icon).

@@ -4,9 +4,22 @@
 
 **Goal:** Adopt Storybook 9+10 features — browser testing for 103 play functions, story audit + tags, dark mode globals, and CSF Factories enablement.
 
-**Architecture:** Five phases — Vitest addon setup (highest value, enables CI testing of 103 play functions in real Chromium), story audit + cleanup (fix 4 missing autodocs, verify 181 stories), tags infrastructure (status tags + sidebar filtering), story globals documentation, and CSF Factories config. Each phase has a hard gate before proceeding.
+**Architecture:** Five phases — Vitest addon setup (highest value, enables CI testing of play functions in real Chromium), story audit + cleanup (fix 4 missing autodocs, tag 181 stories), tags infrastructure (status tags + sidebar filtering), story globals documentation, and CSF Factories config with `definePreview()`. Each phase has a hard gate before proceeding.
 
-**Tech Stack:** @storybook/addon-vitest, @vitest/browser, Playwright (Chromium), Vitest 4 workspace projects
+**Tech Stack:** @storybook/addon-vitest 10.3.3, @vitest/browser, Playwright (Chromium), Vitest 4 `test.projects`
+
+---
+
+## Verified Facts
+
+- `@storybook/addon-vitest@10.3.3` exists on npm; peer deps: `vitest ^3.0.0 || ^4.0.0`, `@vitest/browser-playwright ^4.0.0`
+- Import path: `@storybook/addon-vitest/vitest-plugin` exports `storybookTest`
+- Vitest 4 has `defineConfig` and `defineProject` but NOT `defineWorkspace` — use `test.projects` array instead
+- CSF Factories API: `definePreview()` exported from `@storybook/react-vite`, returns `ReactPreview` with `.meta()` and `.story()` methods
+- `definePreview()` requires `{ addons: [...] }` parameter — plain `Preview` objects are NOT compatible
+- 181 story files (120 core, 59 karm, 2 brand), 103 with play functions
+- 4 stories missing autodocs tags
+- Current `pnpm -r test` runs per-package vitest configs — must not break this
 
 ---
 
@@ -20,10 +33,12 @@
 **Step 1: Add Vitest browser testing packages**
 
 ```bash
-pnpm add -D @storybook/addon-vitest @vitest/browser playwright
+pnpm add -D @storybook/addon-vitest @vitest/browser @vitest/browser-playwright
 ```
 
-**Step 2: Install Playwright Chromium browser**
+> **Note:** `@vitest/browser-playwright` is the Vitest 4 Playwright provider (replaces the old `playwright` direct dep for browser mode).
+
+**Step 2: Install Playwright Chromium browser binary**
 
 ```bash
 npx playwright install chromium
@@ -74,70 +89,89 @@ git commit -m "feat: register @storybook/addon-vitest addon"
 
 ---
 
-### Task 3: Create Vitest workspace with storybook project
+### Task 3: Add storybook test project to root vitest config
 
 **Files:**
-- Create: `vitest.workspace.ts`
+- Modify: `vitest.config.ts` (root)
 
-**Step 1: Create the workspace file at the repo root**
+**Step 1: Rewrite root vitest.config.ts with `test.projects`**
 
-This defines three test projects: `core` (jsdom), `karm` (jsdom), and `storybook` (Chromium browser). The existing `vitest.config.ts` at root becomes unused — the workspace replaces it.
+The root `vitest.config.ts` currently defines a standalone config. Replace it with a `test.projects` array that includes the existing per-package configs plus a new `storybook` browser test project.
+
+> **IMPORTANT:** Vitest 4 removed `defineWorkspace`. Do NOT create `vitest.workspace.ts`. Use `test.projects` inside `defineConfig` instead.
+
+> **IMPORTANT:** The existing `pnpm -r test` flow (which runs `vitest run` from each package dir using their own configs) must keep working. Per-package vitest configs are self-contained and are not affected by the root config. The root `test.projects` is only used when running `vitest` from the repo root (e.g. `vitest --project storybook`).
 
 ```ts
-import { defineWorkspace } from 'vitest/config'
+import { defineConfig } from 'vitest/config'
 import { storybookTest } from '@storybook/addon-vitest/vitest-plugin'
-import path from 'node:path'
+import { resolve, dirname } from 'node:path'
 import { fileURLToPath } from 'node:url'
+import react from '@vitejs/plugin-react'
 
-const dirname = path.dirname(fileURLToPath(import.meta.url))
+const __dirname = dirname(fileURLToPath(import.meta.url))
 
-export default defineWorkspace([
-  // Existing unit test projects — unchanged
-  'packages/core/vitest.config.ts',
-  'packages/karm/vitest.config.ts',
-  // Storybook browser test project — NEW
-  {
-    extends: '.storybook/vite.config.ts',
-    plugins: [
-      storybookTest({
-        configDir: path.join(dirname, '.storybook'),
-      }),
-    ],
-    test: {
-      name: 'storybook',
-      browser: {
-        enabled: true,
-        headless: true,
-        provider: 'playwright',
-        instances: [{ browser: 'chromium' }],
-      },
-      // Don't pick up unit test files
-      include: [],
-      // Story test timeout — some components need time to render in real browser
-      testTimeout: 30_000,
+export default defineConfig({
+  plugins: [react()],
+  resolve: {
+    alias: {
+      '@primitives': resolve(__dirname, 'packages/core/src/primitives'),
+      '@': resolve(__dirname, 'packages/core/src'),
     },
   },
-])
+  test: {
+    projects: [
+      // Storybook browser test project
+      {
+        extends: true,
+        plugins: [
+          storybookTest({
+            configDir: resolve(__dirname, '.storybook'),
+          }),
+        ],
+        test: {
+          name: 'storybook',
+          browser: {
+            enabled: true,
+            headless: true,
+            provider: 'playwright',
+            instances: [{ browser: 'chromium' }],
+          },
+          include: [],
+          testTimeout: 30_000,
+        },
+      },
+    ],
+  },
+})
 ```
 
-**Step 2: Verify the workspace resolves correctly**
+**Step 2: Verify per-package tests still work**
+
+```bash
+cd packages/core && pnpm vitest run src/ui/button.test.tsx
+```
+
+Expected: PASS (per-package config is unaffected).
+
+**Step 3: Verify the storybook project resolves**
 
 ```bash
 pnpm vitest list --project storybook 2>&1 | head -20
 ```
 
-Expected: A list of story test entries (one per story file).
+Expected: A list of story test entries.
 
-**Step 3: Commit**
+**Step 4: Commit**
 
 ```bash
-git add vitest.workspace.ts
-git commit -m "feat: add vitest workspace with storybook browser test project"
+git add vitest.config.ts
+git commit -m "feat: add storybook browser test project via Vitest 4 test.projects"
 ```
 
 ---
 
-### Task 4: Add test scripts and verify play functions run
+### Task 4: Add test scripts and verify
 
 **Files:**
 - Modify: `package.json`
@@ -151,34 +185,35 @@ Add to root `package.json` scripts:
 "test:storybook:ci": "vitest run --project storybook"
 ```
 
-**Step 2: Start Storybook in one terminal**
+**Step 2: Run a single story test to verify**
+
+The `storybookTest` plugin may need Storybook running, or it may work standalone. Try standalone first:
+
+```bash
+pnpm vitest run --project storybook -- button.stories
+```
+
+If it fails with a connection error, start Storybook first:
 
 ```bash
 pnpm dev &
+# wait for "Storybook ready"
+pnpm vitest run --project storybook -- button.stories
 ```
 
-Wait for "Storybook ready" message.
+If Storybook needs to be running, add `storybookScript` to the plugin config:
 
-**Step 3: Run a single story test to verify**
-
-```bash
-pnpm vitest run --project storybook -- packages/core/src/ui/button.stories.tsx
+```ts
+storybookTest({
+  configDir: resolve(__dirname, '.storybook'),
+  storybookScript: 'pnpm dev --no-open',
+})
 ```
 
-Expected: Tests pass — each story in button.stories.tsx gets a smoke test, and any with `play:` functions get those executed.
-
-**Step 4: If tests pass, run the full storybook test suite**
+**Step 3: Document which approach works and commit**
 
 ```bash
-pnpm test:storybook:ci
-```
-
-Expected: Most pass. Some may fail due to browser-vs-jsdom differences. Document failures.
-
-**Step 5: Commit**
-
-```bash
-git add package.json
+git add package.json vitest.config.ts
 git commit -m "feat: add test:storybook scripts for browser-based story testing"
 ```
 
@@ -191,20 +226,19 @@ git commit -m "feat: add test:storybook scripts for browser-based story testing"
 
 **Step 1: Add Playwright install and storybook test steps**
 
-After the existing `Test` step, add:
+After the existing `Test` step and `Build` step, add:
 
 ```yaml
 - name: Install Playwright
   run: npx playwright install chromium
 
-- name: Build Storybook
-  run: pnpm build-storybook
-
 - name: Test Stories (browser)
   run: pnpm test:storybook:ci
 ```
 
-> **Note:** The Storybook test project may need a built Storybook or a running dev server. Check if `storybookTest()` plugin handles this automatically, or if we need `storybookScript` or `storybookUrl` config. Adjust based on what works in Task 4.
+> **Note:** If Task 4 determined Storybook needs to be running, either:
+> (a) Use `storybookScript` in the plugin config (auto-starts/stops), or
+> (b) Add an explicit `pnpm build-storybook` step and point `storybookUrl` to the static build served via `npx serve storybook-static`
 
 **Step 2: Commit**
 
@@ -213,7 +247,9 @@ git add .github/workflows/ci.yml
 git commit -m "ci: add storybook browser tests to CI pipeline"
 ```
 
-### GATE: Do not proceed to Phase 2 unless storybook tests run successfully (locally and/or in CI). Some individual story failures are OK — the infrastructure must work.
+### GATE: Do not proceed to Phase 2 unless storybook tests run successfully locally. Some individual story failures are OK — the infrastructure must work.
+
+### Fallback: If the Vitest addon doesn't work (version incompatibility, browser mode issues), skip Phase 1 entirely and proceed to Phase 2. The story audit, tags, and CSF Factories are all independent and still valuable.
 
 ---
 
@@ -226,7 +262,7 @@ git commit -m "ci: add storybook browser tests to CI pipeline"
 
 **Step 1: Add tags config**
 
-Add a `tags` property to the Storybook config:
+Add a `tags` property to the Storybook config. Verify the `StorybookConfig` type from `@storybook/react-vite` accepts a `tags` property — if not, use `// @ts-expect-error` or check if it goes in `parameters` instead.
 
 ```ts
 const config: StorybookConfig = {
@@ -240,7 +276,13 @@ const config: StorybookConfig = {
 
 This hides `deprecated` and `internal` tagged stories from the sidebar by default (users can toggle in filter dropdown).
 
-**Step 2: Commit**
+**Step 2: Start Storybook and verify the sidebar filter dropdown appears**
+
+```bash
+pnpm dev
+```
+
+**Step 3: Commit**
 
 ```bash
 git add .storybook/main.ts
@@ -265,6 +307,11 @@ This is the big pass. For each story file:
 4. Add a status tag: `'stable'`, `'experimental'`, or `'deprecated'`
 5. Remove broken or dead stories
 
+**Tagging criteria:**
+- `stable` — Component is in production use, API is not expected to change. **Default for most components.**
+- `experimental` — New component or major API revision in progress. Apply to: v3 task-panel components, any component marked WIP in its source.
+- `deprecated` — Component is being replaced. Apply only if a replacement exists.
+
 **Known issues to fix:**
 - 4 stories missing `autodocs`:
   - `packages/core/src/ui/chat/chat.stories.tsx`
@@ -282,27 +329,21 @@ const meta: Meta<typeof Component> = {
 }
 ```
 
-> **Note:** This task is best done with a subagent that can read and modify files in parallel. Break into sub-batches by package: core first (120 stories), then karm (59), then brand (2).
+> **Execution:** Best done with parallel subagents — one per package (core, karm, brand). Each subagent reads every story file, adds the status tag, fixes any missing autodocs.
 
 **Step 1: Audit and tag core stories (120 files)**
 
-Run through all stories in `packages/core/src/`. For each, add the appropriate status tag. Most will be `'stable'`.
-
 **Step 2: Audit and tag karm stories (59 files)**
-
-Run through all stories in `packages/karm/src/`.
 
 **Step 3: Audit and tag brand stories (2 files)**
 
-Run through both stories in `packages/brand/src/`.
-
-**Step 4: Verify no stories are missing tags**
+**Step 4: Verify no stories are missing status tags**
 
 ```bash
 grep -rL "'stable'\|'experimental'\|'deprecated'" packages/*/src/**/*.stories.tsx
 ```
 
-Expected: No results (all stories tagged).
+Expected: No results.
 
 **Step 5: Commit**
 
@@ -322,27 +363,27 @@ git commit -m "refactor: audit and tag all 181 stories with status tags
 ### Task 8: Document dark mode globals pattern
 
 **Files:**
-- Modify: `packages/core/src/Introduction.mdx` (or create a dedicated Dark Mode guide)
+- Modify: `packages/core/src/Introduction.mdx`
 
 **Step 1: Add documentation section**
 
-Add a section to the Introduction MDX explaining how to create dark mode story variants:
+Add a section explaining how to create dark mode story variants using per-story globals:
 
 ```mdx
 ## Dark Mode Variants
 
 Individual stories can declare their theme context using story globals:
 
-\`\`\`tsx
+```tsx
 export const DarkMode: Story = {
   globals: { theme: 'dark' },
 }
-\`\`\`
+```
 
 The existing ThemeWrapper decorator reads `globals.theme` and toggles the `.dark` class on `<html>`. Use this pattern to create permanent dark-mode variants of any story.
 
 You can also toggle dark mode from the Storybook toolbar (sun/moon icon).
-\`\`\`
+```
 
 **Step 2: Commit**
 
@@ -355,11 +396,13 @@ git commit -m "docs: document story globals pattern for dark mode variants"
 
 ## Phase 4: CSF Factories Enablement
 
-### Task 9: Add preview config alias for CSF Factories
+### Task 9: Rewrite preview.ts with definePreview() and add alias
 
 **Files:**
 - Modify: `.storybook/vite.config.ts`
-- Modify: `.storybook/preview.ts`
+- Rewrite: `.storybook/preview.ts`
+
+> **IMPORTANT:** CSF Factories requires `definePreview()` from `@storybook/react-vite`. This returns a `ReactPreview` object with `.meta()` and `.story()` methods. A plain `Preview` object does NOT have these methods. The existing `preview.ts` must be rewritten, not just given a named export.
 
 **Step 1: Add the `#.storybook` alias to vite config**
 
@@ -377,29 +420,129 @@ resolve: {
 },
 ```
 
-**Step 2: Add named `config` export to preview.ts**
+**Step 2: Rewrite preview.ts using definePreview()**
 
-At the bottom of `.storybook/preview.ts`, after the existing `export default preview`, add:
+The current preview.ts has decorators, globalTypes, parameters, etc. All of this needs to be passed through `definePreview()`:
 
 ```ts
-export const config = preview
+import React from 'react'
+import { definePreview } from '@storybook/react-vite'
+import { TooltipProvider } from '../packages/core/src/ui/tooltip'
+import theme from './theme'
+import '../packages/core/src/tokens/index.css'
+import '../storybook.css'
+
+// ThemeWrapper decorator — same as current
+function ThemeWrapper({ theme: selectedTheme, children }: { theme: string; children: React.ReactNode }) {
+  React.useEffect(() => {
+    document.documentElement.classList.toggle('dark', selectedTheme === 'dark')
+    return () => { document.documentElement.classList.remove('dark') }
+  }, [selectedTheme])
+  return React.createElement(React.Fragment, null, children)
+}
+
+const withThemeToggle = (Story: any, context: any) => {
+  const selectedTheme = (context.globals.theme as string) || 'light'
+  return React.createElement(ThemeWrapper, { theme: selectedTheme }, React.createElement(Story))
+}
+
+export const preview = definePreview({
+  addons: [],
+  decorators: [
+    withThemeToggle,
+    (Story: any) =>
+      React.createElement(
+        TooltipProvider,
+        null,
+        React.createElement(
+          'div',
+          { className: 'story-surface', style: { background: 'var(--color-surface-base)', padding: '2rem', borderRadius: '8px' } },
+          React.createElement(Story)
+        )
+      ),
+  ],
+  globalTypes: {
+    theme: {
+      name: 'Theme',
+      description: 'Toggle light / dark mode for component preview',
+      toolbar: {
+        icon: 'sun',
+        items: [
+          { value: 'light', icon: 'sun', title: 'Light' },
+          { value: 'dark', icon: 'moon', title: 'Dark' },
+        ],
+        showName: true,
+        dynamicTitle: true,
+      },
+    },
+  },
+  initialGlobals: { theme: 'light' },
+  parameters: {
+    backgrounds: { disable: true },
+    layout: 'centered',
+    controls: {
+      matchers: {
+        color: /(background|color)$/i,
+        date: /Date$/i,
+      },
+    },
+    darkMode: {
+      darkClass: ['dark'],
+      lightClass: [],
+      stylePreview: true,
+      classTarget: 'html',
+    },
+    docs: { theme },
+    options: {
+      storySort: {
+        order: [
+          'Getting Started', 'About', 'Foundations', ['Motion', 'Motion Overview', 'Motion Primitives', 'Motion Showcase'],
+          'Iconography', 'Guides', ['Import Paths', 'Coming from shadcn'],
+          'UI', ['Introduction', 'Core', 'Layout', 'Form Controls', 'Data Display', 'Navigation', 'Feedback', 'Charts', '*'],
+          'Composed', ['Introduction', '*'],
+          'Shell', ['Introduction', '*'],
+          'Brand', ['Introduction', 'Devalok', ['Logo'], 'Karm', ['Logo']],
+          'Karm', ['Introduction', 'Board', 'Tasks', 'Chat', 'Dashboard', 'Client', 'Admin', '*'],
+          'Changelog',
+        ],
+      },
+    },
+  },
+})
+
+// Default export for backwards compatibility with CSF3 stories
+export default preview
 ```
 
-> **Note:** CSF Factories uses `import { config } from '#.storybook/preview'`. The named export must exist. The existing default export remains for backwards compatibility.
+> **Note:** The `addons: []` array in `definePreview()` is for type-level addon integration (flowing addon types into stories). The actual addon registration remains in `main.ts`. Pass an empty array if no addon-specific types are needed.
 
-**Step 3: Verify the alias resolves**
-
-Start Storybook and check there are no resolution errors:
+**Step 3: Verify Storybook still works**
 
 ```bash
 pnpm dev
 ```
 
-**Step 4: Commit**
+Check that:
+- Stories render correctly
+- Dark mode toggle works
+- Docs pages generate
+- Controls work
+
+**Step 4: Verify typecheck passes**
+
+```bash
+pnpm typecheck
+```
+
+**Step 5: Commit**
 
 ```bash
 git add .storybook/vite.config.ts .storybook/preview.ts
-git commit -m "feat: enable CSF Factories with #.storybook alias and named config export"
+git commit -m "feat: rewrite preview.ts with definePreview() for CSF Factories support
+
+Uses definePreview() from @storybook/react-vite which returns a
+ReactPreview with .meta() and .story() methods. Existing CSF3 stories
+continue to work via the default export."
 ```
 
 ---
@@ -407,21 +550,17 @@ git commit -m "feat: enable CSF Factories with #.storybook alias and named confi
 ### Task 10: Create a CSF Factories example story
 
 **Files:**
-- Create: `packages/core/src/ui/badge.stories.tsx` (overwrite with CSF Factories format as reference)
+- Modify: One simple existing story (e.g. `packages/core/src/ui/separator.stories.tsx`)
 
-> **Actually — don't overwrite an existing story.** Instead, pick one simple story and convert it as a reference example. Or create a new story variant. The goal is to have one working CSF Factories story that proves the setup works and serves as a template.
+> **Pick a simple story** with few variants and no play functions. Convert it in place — CSF Factories is stable enough in SB10 Preview and will become default in SB11.
 
-**Step 1: Create a reference CSF Factories story**
-
-Pick the simplest existing story (e.g. `separator.stories.tsx` or `label.stories.tsx`) and create a CSF Factories version alongside it, or convert it in place.
-
-CSF Factories pattern:
+**Step 1: Convert the story to CSF Factories format**
 
 ```tsx
-import { config } from '#.storybook/preview'
+import { preview } from '#.storybook/preview'
 import { Separator } from './separator'
 
-const meta = config.meta({
+const meta = preview.meta({
   title: 'UI/Layout/Separator',
   component: Separator,
   tags: ['autodocs', 'stable'],
@@ -440,7 +579,7 @@ export const Vertical = meta.story({
 
 **Step 2: Verify it renders in Storybook**
 
-Open `http://localhost:6006` and navigate to the converted story. Verify:
+Navigate to the story. Verify:
 - Story renders correctly
 - Autodocs page generates
 - Controls work
@@ -450,7 +589,7 @@ Open `http://localhost:6006` and navigate to the converted story. Verify:
 
 ```bash
 git add packages/core/src/ui/separator.stories.tsx
-git commit -m "feat: convert separator story to CSF Factories format as reference
+git commit -m "feat: convert separator story to CSF Factories as reference
 
 New stories should follow this pattern. Existing CSF3 stories remain
 valid and will be migrated gradually."
@@ -462,21 +601,19 @@ valid and will be migrated gradually."
 
 ### Task 11: End-to-end verification
 
-**Step 1: Run full unit test suite (core only — karm is slow)**
+**Step 1: Run core unit tests**
 
 ```bash
 cd packages/core && pnpm vitest run
 ```
 
-Expected: All 188 files, 1650 tests pass.
+Expected: 188 files, 1650 tests pass.
 
-**Step 2: Run Storybook browser tests**
+**Step 2: Run Storybook browser tests (if Phase 1 succeeded)**
 
 ```bash
 pnpm test:storybook:ci
 ```
-
-Expected: Most stories pass. Document any failures.
 
 **Step 3: Build Storybook**
 
@@ -491,26 +628,144 @@ Expected: Builds without errors.
 Start Storybook, check that:
 - Stories tagged `deprecated` are hidden by default
 - The sidebar filter dropdown shows tag options
-- Toggling a tag filter shows/hides stories
+- Status tags are visible
 
 **Step 5: Verify CSF Factories story works**
 
-Navigate to the converted story, verify rendering + autodocs.
+Navigate to the converted separator story, verify rendering + autodocs.
 
 **Step 6: Typecheck and lint**
 
 ```bash
-pnpm typecheck
-pnpm lint
+pnpm typecheck && pnpm lint
 ```
 
 Expected: Clean.
 
 **Step 7: Final commit if any fixes needed**
 
+---
+
+## Phase 6: Storybook MCP Server
+
+### Task 12: Install and configure @storybook/addon-mcp
+
+The Storybook MCP server (`@storybook/addon-mcp`) exposes component metadata, stories, API docs, and live testing capabilities to AI agents via Model Context Protocol at `localhost:6006/mcp`. Available in SB 10.3+.
+
+**What it gives AI agents:**
+- Component metadata (props, stories, docs) — agents reuse existing components instead of inventing new
+- Live preview embedding — verify generated UI in chat
+- Self-verification — agents can run component + a11y tests autonomously
+- Benchmarked: 12.8% better code reuse, 2.76x faster generation, 27% fewer tokens
+
+**This is especially valuable for us** because Karm's Claude Code agent already uses `llms.txt` and `llms-full.txt` for component intelligence. The MCP server is the live, interactive version of that.
+
+**Files:**
+- Modify: `package.json`
+- Modify: `.storybook/main.ts`
+
+**Step 1: Install the addon**
+
 ```bash
-git add -A
-git commit -m "fix: resolve issues from storybook 10 feature adoption verification"
+pnpm add -D @storybook/addon-mcp
+```
+
+**Step 2: Register in main.ts**
+
+Add `@storybook/addon-mcp` to the addons array:
+
+```ts
+addons: [
+  '@storybook/addon-vitest',
+  '@storybook/addon-mcp',
+  {
+    name: '@storybook/addon-docs',
+    // ...
+  },
+  '@storybook/addon-a11y',
+  'storybook-dark-mode',
+],
+```
+
+**Step 3: Verify MCP endpoint is available**
+
+Start Storybook and check the MCP endpoint:
+
+```bash
+pnpm dev
+# In another terminal:
+curl -s http://localhost:6006/mcp | head -20
+```
+
+Expected: JSON response with MCP server metadata.
+
+**Step 4: Commit**
+
+```bash
+git add package.json pnpm-lock.yaml .storybook/main.ts
+git commit -m "feat: add Storybook MCP server for AI agent integration
+
+@storybook/addon-mcp exposes component metadata, stories, and testing
+capabilities to AI agents via MCP at localhost:6006/mcp. This gives
+Claude Code (and other AI tools) live component intelligence when
+building UI with our design system."
+```
+
+---
+
+### Task 13: Register MCP server in Claude Code config
+
+**Files:**
+- Modify: `.claude/settings.json` or `.mcp.json` (whichever is the project MCP config)
+
+**Step 1: Add the Storybook MCP server to the project's MCP config**
+
+The MCP server runs at `http://localhost:6006/mcp` when Storybook dev server is running. Register it so Claude Code can discover it:
+
+```bash
+npx mcp-add --type http --url "http://localhost:6006/mcp" --scope project
+```
+
+Or manually add to the project's MCP config:
+
+```json
+{
+  "mcpServers": {
+    "storybook": {
+      "type": "http",
+      "url": "http://localhost:6006/mcp"
+    }
+  }
+}
+```
+
+> **Note:** This MCP server is only available when Storybook is running (`pnpm dev`). It won't be available in CI or when Storybook is not started. That's fine — it's a development-time tool.
+
+**Step 2: Verify Claude Code sees the MCP server**
+
+Start Storybook, then in a Claude Code session, check if the MCP tools are available.
+
+**Step 3: Update Karm's CLAUDE.md**
+
+Add a note to Karm's CLAUDE.md (or equivalent) telling AI agents that when Storybook is running, they can use the MCP server for component intelligence instead of reading llms.txt:
+
+```markdown
+## Storybook MCP Server
+
+When the Storybook dev server is running (`pnpm dev` in shilp-sutra),
+an MCP server is available at `localhost:6006/mcp` providing:
+- Live component metadata (props, stories, docs)
+- Component testing capabilities
+- Live preview embedding
+
+This is the interactive version of llms.txt / llms-full.txt.
+```
+
+**Step 4: Commit**
+
+```bash
+git add .
+git commit -m "feat: register Storybook MCP server for Claude Code integration"
 ```
 
 ---
@@ -519,8 +774,16 @@ git commit -m "fix: resolve issues from storybook 10 feature adoption verificati
 
 | Phase | Tasks | Key Deliverable |
 |-------|-------|-----------------|
-| 1 | Tasks 1-5 | 103 play functions running as CI browser tests |
+| 1 | Tasks 1-5 | Play functions running as CI browser tests |
 | 2 | Tasks 6-7 | 181 stories audited, tagged, cleaned up |
 | 3 | Task 8 | Dark mode globals documented |
-| 4 | Tasks 9-10 | CSF Factories enabled with reference story |
+| 4 | Tasks 9-10 | CSF Factories enabled with `definePreview()` + reference story |
 | 5 | Task 11 | End-to-end verification |
+| 6 | Tasks 12-13 | Storybook MCP server for AI agent component intelligence |
+
+## Rollback
+
+- **Phase 1 fails:** Skip entirely, proceed to Phase 2. Story audit + tags + CSF Factories are independent.
+- **CSF Factories breaks:** Revert preview.ts to the pre-`definePreview()` version. The `default export` ensures CSF3 stories always work.
+- **Tags break sidebar:** Remove `tags` property from main.ts. Stories render fine without it.
+- **MCP addon breaks:** Remove `@storybook/addon-mcp` from main.ts. Everything else works without it.

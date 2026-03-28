@@ -20,7 +20,7 @@ import type { Subtask } from '../task-types'
 // Types
 // ============================================================
 
-export interface SubtaskItemProps extends Omit<React.HTMLAttributes<HTMLDivElement>, 'onClick'> {
+export interface SubtaskItemProps extends Omit<React.HTMLAttributes<HTMLDivElement>, 'onClick' | 'onToggle'> {
   subtask: Subtask
   isComplete: boolean
   onToggle?: (id: string, isComplete: boolean) => void

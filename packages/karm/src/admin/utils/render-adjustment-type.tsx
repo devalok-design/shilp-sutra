@@ -1,5 +1,7 @@
 'use client'
 
+import * as React from 'react'
+
 /**
  * renderAdjustmentType is a pure render utility function, not a React component.
  * It maps an AdjustmentType key to a human-readable label wrapped in a <div>.
@@ -23,7 +25,7 @@ const ADJUSTMENT_TYPE_LABELS: Record<keyof typeof AdjustmentType, string> = {
   OTHER: 'Other',
 }
 
-function renderAdjustmentType(type: keyof typeof AdjustmentType): JSX.Element {
+function renderAdjustmentType(type: keyof typeof AdjustmentType): React.JSX.Element {
   return <div>{ADJUSTMENT_TYPE_LABELS[type]}</div>
 }
 

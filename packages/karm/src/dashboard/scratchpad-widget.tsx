@@ -11,7 +11,7 @@ import type { ScratchpadItem } from './scratchpad/scratchpad-context'
 
 export type { ScratchpadItem }
 
-export interface ScratchpadWidgetProps extends Omit<React.HTMLAttributes<HTMLDivElement>, 'title'> {
+export interface ScratchpadWidgetProps extends Omit<React.HTMLAttributes<HTMLDivElement>, 'title' | 'onToggle'> {
   items: ScratchpadItem[]
   maxItems?: number
   onToggle: (id: string, done: boolean) => void

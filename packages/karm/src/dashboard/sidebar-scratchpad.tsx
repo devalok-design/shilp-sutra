@@ -12,7 +12,7 @@ import type { ScratchpadItem } from './scratchpad/scratchpad-context'
 // Types
 // ============================================================
 
-export interface SidebarScratchpadProps extends React.HTMLAttributes<HTMLDivElement> {
+export interface SidebarScratchpadProps extends Omit<React.HTMLAttributes<HTMLDivElement>, 'onToggle'> {
   items: ScratchpadItem[]
   onToggle: (id: string, done: boolean) => void
   onAdd?: (text: string) => void

@@ -299,6 +299,28 @@ const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
 
     const prefersReduced = useReducedMotion()
 
+    // Refs + effect for smooth width transitions (must be before any early returns)
+    const wrapperRef = React.useRef<HTMLSpanElement>(null)
+    const btnRef = React.useRef<HTMLButtonElement | null>(null)
+    const rafRef = React.useRef<number>()
+
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    React.useEffect(() => {
+      const btn = btnRef.current
+      const wrapper = wrapperRef.current
+      if (!btn || !wrapper || fullWidth || prefersReduced) return
+
+      rafRef.current = requestAnimationFrame(() => {
+        wrapper.style.width = 'auto'
+        const w = btn.offsetWidth
+        if (w > 0) {
+          wrapper.getBoundingClientRect()
+          wrapper.style.width = `${w}px`
+        }
+      })
+      return () => { if (rafRef.current) cancelAnimationFrame(rafRef.current) }
+    }) // run on every render to catch content changes
+
     // Async state machine: idle → loading → success | error → idle
     type AsyncState = 'idle' | 'loading' | 'success' | 'error'
     const [asyncState, setAsyncState] = React.useState<AsyncState>('idle')
@@ -451,32 +473,6 @@ const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
     ) : null
 
     const iconSize = BUTTON_TO_ICON_SIZE[resolvedSize] ?? 'md'
-
-    // Track button width for smooth wrapper transitions when content changes.
-    // We measure the button's scrollWidth and set it as an explicit width on the
-    // wrapper span. The wrapper has a CSS transition on width, creating smooth
-    // resize. requestAnimationFrame ensures we read after React's DOM commit.
-    const wrapperRef = React.useRef<HTMLSpanElement>(null)
-    const btnRef = React.useRef<HTMLButtonElement | null>(null)
-    const rafRef = React.useRef<number>()
-
-    React.useEffect(() => {
-      const btn = btnRef.current
-      const wrapper = wrapperRef.current
-      if (!btn || !wrapper || fullWidth || prefersReduced) return
-
-      rafRef.current = requestAnimationFrame(() => {
-        // Temporarily remove width constraint so button can expand to natural size
-        wrapper.style.width = 'auto'
-        const w = btn.offsetWidth
-        if (w > 0) {
-          // Force a layout read, then set the explicit width for transition
-          wrapper.getBoundingClientRect()
-          wrapper.style.width = `${w}px`
-        }
-      })
-      return () => { if (rafRef.current) cancelAnimationFrame(rafRef.current) }
-    }) // run on every render to catch content changes
 
     const buttonEl = (
       <motion.button

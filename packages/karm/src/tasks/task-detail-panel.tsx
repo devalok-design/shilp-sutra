@@ -10,7 +10,7 @@ import {
 } from '@/ui/sheet'
 import { VisuallyHidden } from '@/ui/visually-hidden'
 import { Skeleton } from '@/ui/skeleton'
-import { Tabs, TabsList, TabsTrigger } from '@/ui'
+import { Tabs, TabsList, TabsTrigger } from '@/ui/tabs'
 import { TaskProperties, type Member, type Column } from './task-properties'
 import { SubtasksTab, type Subtask } from './subtasks-tab'
 import { ReviewTab, type ReviewRequest } from './review-tab'

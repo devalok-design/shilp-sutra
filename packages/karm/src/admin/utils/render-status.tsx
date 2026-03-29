@@ -1,7 +1,7 @@
 'use client'
 
 import * as React from 'react'
-import { Badge } from '@/ui'
+import { Badge } from '@/ui/badge'
 import type { BadgeProps } from '@/ui/badge'
 
 // ============================================================

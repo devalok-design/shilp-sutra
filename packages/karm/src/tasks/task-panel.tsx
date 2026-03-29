@@ -2,7 +2,7 @@
 
 import * as React from 'react'
 import { cn } from '@/ui/lib/utils'
-import { Tabs, TabsList, TabsTrigger, TabsContent } from '@/ui'
+import { Tabs, TabsList, TabsTrigger, TabsContent } from '@/ui/tabs'
 import { Skeleton } from '@/ui/skeleton'
 
 // ============================================================

@@ -14,7 +14,7 @@ import {
   DropdownMenuTrigger,
   DropdownMenuContent,
   DropdownMenuItem,
-} from '@/ui'
+} from '@/ui/dropdown-menu'
 
 // ============================================================
 // Types

@@ -256,9 +256,9 @@ describe('ColumnHeader', () => {
 
     await user.click(screen.getByRole('button', { name: 'Cancel adding task' }))
 
-    // Framer-motion exit animations don't complete in jsdom so the
-    // input lingers in DOM, but the form state is reset (value cleared)
-    expect(screen.getByLabelText('New task title')).toHaveValue('')
+    // AnimatePresence is stubbed as a Fragment in tests, so the form is
+    // removed from DOM immediately when isAdding goes false (no exit animation).
+    expect(screen.queryByLabelText('New task title')).not.toBeInTheDocument()
   })
 
   // ---- Accent color cycling ----

@@ -8,7 +8,7 @@ import { CSS } from '@dnd-kit/utilities'
 import { cva } from 'class-variance-authority'
 import { cn } from '@/ui/lib/utils'
 import { springs } from '@/ui/lib/motion'
-import { Checkbox } from '@/ui'
+import { Checkbox } from '@/ui/checkbox'
 import { Avatar, AvatarImage, AvatarFallback } from '@/ui/avatar'
 import {
   IconArrowDown,

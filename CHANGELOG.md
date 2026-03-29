@@ -100,6 +100,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - **Chat primitives** — Spacing and typography token fixes across MessageList, Message, and MessageInput (no API changes)
 - **DataTable controlled selection** — Fixed infinite re-render loop when using `selectedIds` with inline `getRowId` callback. The `onSelectionChange` effect now uses a ref for `getRowId` to avoid re-firing on every render.
 - **Button rules-of-hooks** — Moved `useRef`/`useEffect` hooks before the `asChild` early return to comply with React's rules of hooks.
+- **React 19 type compatibility** — Fixed `useRef(null)` initial values and `ReactElement.props` typing across FilePreview, GlobalLoading, MarkdownViewer, MultiSelectPopover, Autocomplete, Button.
+- **Textarea** — Removed `cursor-ns-resize` from base class that forced resize cursor even when `resize-none` was applied.
 
 ### Deprecated
 

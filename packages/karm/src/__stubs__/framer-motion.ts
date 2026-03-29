@@ -91,5 +91,4 @@ export const animate = (_target: any, _keyframes?: any, _options?: any) => ({
 
 export type Transition = Record<string, any>
 export type Variants = Record<string, any>
-export type HTMLMotionProps<T extends keyof JSX.IntrinsicElements = 'div'> =
-  React.ComponentPropsWithRef<T> & Record<string, any>
+export type HTMLMotionProps<_T extends string = 'div'> = Record<string, any>

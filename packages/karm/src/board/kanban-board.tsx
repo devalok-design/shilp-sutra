@@ -176,11 +176,20 @@ function BoardCanvas({ className }: { className?: string }) {
   } = useBoardContext()
 
   const [mounted, setMounted] = useState(false)
-  const [dragPreview, setDragPreview] = useState<{
+  const [dragPreview, setDragPreviewState] = useState<{
     taskId: string
     columnId: string
     index: number
   } | null>(null)
+  // Ref mirror — handleDragEnd reads from here instead of the closure.
+  // React 18's async batching means setState in handleDragOver may not flush
+  // before handleDragEnd fires (mousemove → mouseup in quick succession).
+  // The ref is updated synchronously and always has the latest value.
+  const dragPreviewRef = useRef(dragPreview)
+  const setDragPreview = useCallback((value: typeof dragPreview) => {
+    dragPreviewRef.current = value
+    setDragPreviewState(value)
+  }, [])
   const scrollRef = useRef<HTMLDivElement | null>(null)
   const canvasRef = useRef<HTMLDivElement | null>(null)
 
@@ -281,7 +290,10 @@ function BoardCanvas({ className }: { className?: string }) {
   const handleDragEnd = useCallback(
     (event: DragEndEvent) => {
       const { active, over } = event
-      const preview = dragPreview
+      // Read from ref — immune to React 18's async batching.
+      // The closure's dragPreview may be stale if React hasn't re-rendered
+      // since handleDragOver called setDragPreview.
+      const preview = dragPreviewRef.current
       setActiveTask(null)
       setDragPreview(null)
 
@@ -321,7 +333,7 @@ function BoardCanvas({ className }: { className?: string }) {
 
       onTaskMove(activeId, targetColumnId, newOrder)
     },
-    [columns, dragPreview, findColumnByTaskId, setActiveTask, onTaskMove],
+    [columns, findColumnByTaskId, setActiveTask, setDragPreview, onTaskMove],
   )
 
   const handleDragCancel = useCallback(() => {

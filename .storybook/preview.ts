@@ -1,5 +1,6 @@
 import React from 'react'
 import { definePreview } from '@storybook/react-vite'
+import { parameters as docsParameters } from '@storybook/addon-docs/preview'
 import { TooltipProvider } from '../packages/core/src/ui/tooltip'
 import theme from './theme'
 import '../packages/core/src/tokens/index.css'
@@ -79,7 +80,7 @@ export const preview = definePreview({
       stylePreview: true,
       classTarget: 'html',
     },
-    docs: { theme },
+    docs: { ...docsParameters.docs, theme },
     options: {
       storySort: {
         order: [

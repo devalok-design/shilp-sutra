@@ -104,115 +104,130 @@ function FileRow({
     isStaff || (canDeleteOwn && file.uploadedBy.id === currentUserId)
 
   return (
-    <div className="group/file flex items-center gap-ds-03 rounded-ds-md px-ds-03 py-ds-02 hover:bg-surface-raised-hover transition-colors">
-      {/* Thumbnail or icon */}
-      {isImage && (file.thumbnailUrl || file.fileUrl) ? (
-        <button
-          type="button"
-          className="size-12 shrink-0 overflow-hidden rounded-ds-md bg-surface-raised"
-          onClick={onPreview}
-        >
-          <img
-            src={file.thumbnailUrl || file.fileUrl}
-            alt={file.name}
-            className="size-full object-cover"
+    <div className="group/file rounded-ds-md px-ds-03 py-ds-02 hover:bg-surface-raised-hover transition-colors">
+      <div className="flex items-center gap-ds-03">
+        {/* Thumbnail or icon */}
+        {isImage && (file.thumbnailUrl || file.fileUrl) ? (
+          <button
+            type="button"
+            className="size-12 shrink-0 overflow-hidden rounded-ds-md bg-surface-raised"
+            onClick={onPreview}
+          >
+            <img
+              src={file.thumbnailUrl || file.fileUrl}
+              alt={file.name}
+              className="size-full object-cover"
+            />
+          </button>
+        ) : (
+          <Icon
+            icon={FileIcon}
+            size="sm"
+            className="shrink-0 text-surface-fg-subtle"
           />
-        </button>
-      ) : (
-        <Icon
-          icon={FileIcon}
-          size="sm"
-          className="shrink-0 text-surface-fg-subtle"
-        />
-      )}
-
-      {/* Name + metadata */}
-      <div className="min-w-0 flex-1">
-        <button
-          type="button"
-          className="text-ds-sm text-surface-fg truncate block text-left hover:text-accent-11 transition-colors max-w-full"
-          onClick={onPreview}
-        >
-          {file.name}
-        </button>
-        <span className="text-ds-xs text-surface-fg-subtle">
-          {formatFileSize(file.size)} &middot; {file.uploadedBy.name}
-        </span>
-      </div>
-
-      {/* Status badge */}
-      {file.status === 'final' && (
-        <Badge size="xs" color="success" variant="subtle">
-          Final
-        </Badge>
-      )}
-
-      {/* Hover actions */}
-      <div className="flex items-center gap-ds-01 shrink-0 opacity-0 group-hover/file:opacity-100 transition-opacity">
-        {isStaff && (
-          <Button
-            variant="ghost"
-            size="icon-xs"
-            onClick={() => onToggleVisibility(file.id)}
-            aria-label={
-              file.isClientVisible === false
-                ? `Show ${file.name} to client`
-                : `Hide ${file.name} from client`
-            }
-          >
-            <Icon
-              icon={file.isClientVisible === false ? IconEyeOff : IconEye}
-            />
-          </Button>
         )}
 
-        {isStaff && (
-          <Button
-            variant="ghost"
-            size="icon-xs"
-            onClick={() =>
-              onUpdateStatus(
-                file.id,
-                file.status === 'final' ? 'draft' : 'final',
-              )
-            }
-            aria-label={
-              file.status === 'final'
-                ? `Mark ${file.name} as draft`
-                : `Mark ${file.name} as final`
-            }
+        {/* Name + metadata */}
+        <div className="min-w-0 flex-1">
+          <button
+            type="button"
+            className="text-ds-sm text-surface-fg truncate block text-left hover:text-accent-11 transition-colors max-w-full"
+            onClick={onPreview}
           >
-            <Icon
-              icon={
-                file.status === 'final' ? IconCircleMinus : IconCircleCheck
+            {file.name}
+          </button>
+          <span className="text-ds-xs text-surface-fg-subtle">
+            {formatFileSize(file.size)} &middot; {file.uploadedBy.name}
+          </span>
+        </div>
+
+        {/* Status badge */}
+        {file.status === 'final' && (
+          <Badge size="xs" color="success" variant="subtle">
+            Final
+          </Badge>
+        )}
+
+        {/* Hover actions */}
+        <div className="flex items-center gap-ds-01 shrink-0 opacity-0 group-hover/file:opacity-100 transition-opacity">
+          {isStaff && (
+            <Button
+              variant="ghost"
+              size="icon-xs"
+              onClick={() => onToggleVisibility(file.id)}
+              aria-label={
+                file.isClientVisible === false
+                  ? `Show ${file.name} to client`
+                  : `Hide ${file.name} from client`
               }
-            />
-          </Button>
-        )}
+            >
+              <Icon
+                icon={file.isClientVisible === false ? IconEyeOff : IconEye}
+              />
+            </Button>
+          )}
 
-        {file.gDriveUrl && (
-          <a
-            href={file.gDriveUrl}
-            target="_blank"
-            rel="noopener noreferrer"
-            className="inline-flex items-center justify-center rounded-ds-md p-ds-01 text-surface-fg-subtle hover:text-accent-11 transition-colors"
-            aria-label="Open in Google Drive"
-          >
-            <Icon icon={IconExternalLink} size="xs" />
-          </a>
-        )}
+          {isStaff && (
+            <Button
+              variant="ghost"
+              size="icon-xs"
+              onClick={() =>
+                onUpdateStatus(
+                  file.id,
+                  file.status === 'final' ? 'draft' : 'final',
+                )
+              }
+              aria-label={
+                file.status === 'final'
+                  ? `Mark ${file.name} as draft`
+                  : `Mark ${file.name} as final`
+              }
+            >
+              <Icon
+                icon={
+                  file.status === 'final' ? IconCircleMinus : IconCircleCheck
+                }
+              />
+            </Button>
+          )}
 
-        {canDelete && (
-          <Button
-            variant="ghost"
-            size="icon-xs"
-            onClick={() => onDelete(file.id)}
-            aria-label={`Delete ${file.name}`}
-          >
-            <Icon icon={IconTrash} />
-          </Button>
-        )}
+          {file.gDriveUrl && (
+            <a
+              href={file.gDriveUrl}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="inline-flex items-center justify-center rounded-ds-md p-ds-01 text-surface-fg-subtle hover:text-accent-11 transition-colors"
+              aria-label="Open in Google Drive"
+            >
+              <Icon icon={IconExternalLink} size="xs" />
+            </a>
+          )}
+
+          {canDelete && (
+            <Button
+              variant="ghost"
+              size="icon-xs"
+              onClick={() => onDelete(file.id)}
+              aria-label={`Delete ${file.name}`}
+            >
+              <Icon icon={IconTrash} />
+            </Button>
+          )}
+        </div>
       </div>
+
+      {/* Inline Figma embed */}
+      {file.source === 'figma' && file.embedUrl && (
+        <div className="mt-ds-02 rounded-ds-md overflow-hidden border border-surface-border-subtle">
+          <iframe
+            src={`https://www.figma.com/embed?embed_host=karm&url=${encodeURIComponent(file.embedUrl)}`}
+            className="w-full h-[200px]"
+            allowFullScreen
+            loading="lazy"
+            title={`Figma: ${file.name}`}
+          />
+        </div>
+      )}
     </div>
   )
 }

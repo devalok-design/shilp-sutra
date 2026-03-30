@@ -3,28 +3,44 @@
 import * as React from 'react'
 import {
   IconUpload,
+  IconLink,
   IconFile,
   IconPhoto,
+  IconVideo,
   IconExternalLink,
   IconTrash,
+  IconEye,
+  IconEyeOff,
+  IconCircleCheck,
+  IconCircleMinus,
+  IconX,
+  IconBrandFigma,
+  IconBrandYoutube,
+  IconBrandVimeo,
+  IconBrandGoogle,
+  IconBrandDropbox,
+  IconPlayerPlay,
+  IconFileText,
+  IconPresentation,
 } from '@tabler/icons-react'
 import { Icon } from '@/ui/icon'
 import { cn } from '@/ui/lib/utils'
 import { Button } from '@/ui/button'
+import { Badge } from '@/ui/badge'
+import { Progress } from '@/ui/progress'
+import { MotionCollapse } from '@/motion/primitives'
 import { TaskSection } from '../../composed/task-section'
 import { useTaskPanel } from './task-panel-context'
+import {
+  isImageFile,
+  groupFilesByCategory,
+  type FileCategory,
+} from './file-utils'
+import type { TaskFile, UploadingFile } from './task-panel-types'
 
 // ---------------------------------------------------------------------------
 // Helpers
 // ---------------------------------------------------------------------------
-
-const IMAGE_EXTENSIONS = ['.png', '.jpg', '.jpeg', '.gif', '.svg', '.webp']
-
-function getFileIcon(name: string) {
-  return IMAGE_EXTENSIONS.some((ext) => name.toLowerCase().endsWith(ext))
-    ? IconPhoto
-    : IconFile
-}
 
 function formatFileSize(bytes: number): string {
   if (bytes < 1024) return `${bytes} B`
@@ -32,49 +48,445 @@ function formatFileSize(bytes: number): string {
   return `${(bytes / (1024 * 1024)).toFixed(1)} MB`
 }
 
+function getFileIcon(file: TaskFile) {
+  if (file.source === 'figma') return IconBrandFigma
+  if (file.source === 'youtube') return IconBrandYoutube
+  if (file.source === 'vimeo') return IconBrandVimeo
+  if (file.source === 'gdrive') return IconBrandGoogle
+  if (file.source === 'dropbox') return IconBrandDropbox
+  if (file.source === 'loom') return IconPlayerPlay
+  if (isImageFile(file.name)) return IconPhoto
+  const ext = file.name.split('.').pop()?.toLowerCase() ?? ''
+  if (['mp4', 'mov', 'webm'].includes(ext)) return IconVideo
+  if (['pdf', 'docx', 'txt'].includes(ext)) return IconFileText
+  if (['pptx', 'xlsx'].includes(ext)) return IconPresentation
+  return IconFile
+}
+
+const CATEGORY_ORDER: FileCategory[] = ['design', 'media', 'documents', 'links']
+
+const CATEGORY_LABELS: Record<FileCategory, string> = {
+  design: 'Design',
+  media: 'Media',
+  documents: 'Documents',
+  links: 'Links',
+}
+
 // ---------------------------------------------------------------------------
-// Types
+// FileRow
 // ---------------------------------------------------------------------------
 
-export interface TaskPanelFilesProps
-  extends React.HTMLAttributes<HTMLDivElement> {}
+interface FileRowProps {
+  file: TaskFile
+  isStaff: boolean
+  canDeleteOwn: boolean
+  currentUserId: string | null
+  onDelete: (fileId: string) => void
+  onToggleVisibility: (fileId: string) => void
+  onUpdateStatus: (fileId: string, status: 'draft' | 'final') => void
+  onPreview?: () => void
+}
+
+function FileRow({
+  file,
+  isStaff,
+  canDeleteOwn,
+  currentUserId,
+  onDelete,
+  onToggleVisibility,
+  onUpdateStatus,
+  onPreview,
+}: FileRowProps) {
+  const FileIcon = getFileIcon(file)
+  const isImage = isImageFile(file.name)
+  const canDelete =
+    isStaff || (canDeleteOwn && file.uploadedBy.id === currentUserId)
+
+  return (
+    <div className="group/file flex items-center gap-ds-03 rounded-ds-md px-ds-03 py-ds-02 hover:bg-surface-raised-hover transition-colors">
+      {/* Thumbnail or icon */}
+      {isImage && (file.thumbnailUrl || file.fileUrl) ? (
+        <button
+          type="button"
+          className="size-12 shrink-0 overflow-hidden rounded-ds-md bg-surface-raised"
+          onClick={onPreview}
+        >
+          <img
+            src={file.thumbnailUrl || file.fileUrl}
+            alt={file.name}
+            className="size-full object-cover"
+          />
+        </button>
+      ) : (
+        <Icon
+          icon={FileIcon}
+          size="sm"
+          className="shrink-0 text-surface-fg-subtle"
+        />
+      )}
+
+      {/* Name + metadata */}
+      <div className="min-w-0 flex-1">
+        <button
+          type="button"
+          className="text-ds-sm text-surface-fg truncate block text-left hover:text-accent-11 transition-colors max-w-full"
+          onClick={onPreview}
+        >
+          {file.name}
+        </button>
+        <span className="text-ds-xs text-surface-fg-subtle">
+          {formatFileSize(file.size)} &middot; {file.uploadedBy.name}
+        </span>
+      </div>
+
+      {/* Status badge */}
+      {file.status === 'final' && (
+        <Badge size="xs" color="success" variant="subtle">
+          Final
+        </Badge>
+      )}
+
+      {/* Hover actions */}
+      <div className="flex items-center gap-ds-01 shrink-0 opacity-0 group-hover/file:opacity-100 transition-opacity">
+        {isStaff && (
+          <Button
+            variant="ghost"
+            size="icon-xs"
+            onClick={() => onToggleVisibility(file.id)}
+            aria-label={
+              file.isClientVisible === false
+                ? `Show ${file.name} to client`
+                : `Hide ${file.name} from client`
+            }
+          >
+            <Icon
+              icon={file.isClientVisible === false ? IconEyeOff : IconEye}
+            />
+          </Button>
+        )}
+
+        {isStaff && (
+          <Button
+            variant="ghost"
+            size="icon-xs"
+            onClick={() =>
+              onUpdateStatus(
+                file.id,
+                file.status === 'final' ? 'draft' : 'final',
+              )
+            }
+            aria-label={
+              file.status === 'final'
+                ? `Mark ${file.name} as draft`
+                : `Mark ${file.name} as final`
+            }
+          >
+            <Icon
+              icon={
+                file.status === 'final' ? IconCircleMinus : IconCircleCheck
+              }
+            />
+          </Button>
+        )}
+
+        {file.gDriveUrl && (
+          <a
+            href={file.gDriveUrl}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="inline-flex items-center justify-center rounded-ds-md p-ds-01 text-surface-fg-subtle hover:text-accent-11 transition-colors"
+            aria-label="Open in Google Drive"
+          >
+            <Icon icon={IconExternalLink} size="xs" />
+          </a>
+        )}
+
+        {canDelete && (
+          <Button
+            variant="ghost"
+            size="icon-xs"
+            onClick={() => onDelete(file.id)}
+            aria-label={`Delete ${file.name}`}
+          >
+            <Icon icon={IconTrash} />
+          </Button>
+        )}
+      </div>
+    </div>
+  )
+}
+
+// ---------------------------------------------------------------------------
+// UploadingFileRow
+// ---------------------------------------------------------------------------
+
+interface UploadingFileRowProps {
+  upload: UploadingFile
+  onCancel: (uploadId: string) => void
+  onRetry: (uploadId: string) => void
+}
+
+function UploadingFileRow({ upload, onCancel, onRetry }: UploadingFileRowProps) {
+  const hasError = !!upload.error
+
+  return (
+    <div className="flex items-center gap-ds-03 rounded-ds-md px-ds-03 py-ds-02">
+      <Icon icon={IconFile} size="sm" className="shrink-0 text-surface-fg-subtle" />
+      <div className="min-w-0 flex-1">
+        <span className="text-ds-sm text-surface-fg truncate block">
+          {upload.name}
+        </span>
+        {hasError ? (
+          <span className="text-ds-xs text-error-11">{upload.error}</span>
+        ) : (
+          <Progress value={upload.progress} autoColor size="sm" className="mt-ds-01" />
+        )}
+      </div>
+      {hasError ? (
+        <Button
+          variant="ghost"
+          size="icon-xs"
+          onClick={() => onRetry(upload.id)}
+          aria-label={`Retry upload ${upload.name}`}
+          className="shrink-0 text-accent-11"
+        >
+          <span className="text-ds-xs font-medium">Retry</span>
+        </Button>
+      ) : (
+        <Button
+          variant="ghost"
+          size="icon-xs"
+          onClick={() => onCancel(upload.id)}
+          aria-label={`Cancel upload ${upload.name}`}
+          className="shrink-0"
+        >
+          <Icon icon={IconX} />
+        </Button>
+      )}
+    </div>
+  )
+}
+
+// ---------------------------------------------------------------------------
+// ValidationError
+// ---------------------------------------------------------------------------
+
+interface ValidationErrorProps {
+  errors: string[]
+}
+
+function ValidationErrors({ errors }: ValidationErrorProps) {
+  if (errors.length === 0) return null
+  return (
+    <div className="px-ds-03 py-ds-02">
+      {errors.map((err, i) => (
+        <p key={i} className="text-ds-xs text-error-11">
+          {err}
+        </p>
+      ))}
+    </div>
+  )
+}
 
 // ---------------------------------------------------------------------------
 // TaskPanelFiles
 // ---------------------------------------------------------------------------
 
+export interface TaskPanelFilesProps
+  extends React.HTMLAttributes<HTMLDivElement> {}
+
 export function TaskPanelFiles({
   className,
   ...props
 }: TaskPanelFilesProps) {
-  const { task, mode, clientMode, onUploadFile, onDeleteFile } = useTaskPanel()
+  const {
+    task,
+    mode,
+    clientMode,
+    currentUserId,
+    onUploadFile,
+    onDeleteFile,
+    uploadingFiles,
+    onRetryUpload,
+    onCancelUpload,
+    onAttachLink,
+    onUpdateFileStatus,
+    onToggleFileVisibility,
+    maxFileSize,
+    acceptedFileTypes,
+  } = useTaskPanel()
+
   const fileInputRef = React.useRef<HTMLInputElement>(null)
+  const dragCountRef = React.useRef(0)
+  const [isDragging, setIsDragging] = React.useState(false)
+  const [showLinkInput, setShowLinkInput] = React.useState(false)
+  const [linkUrl, setLinkUrl] = React.useState('')
+  const [validationErrors, setValidationErrors] = React.useState<string[]>([])
+  const [previewIndex, setPreviewIndex] = React.useState(-1)
+
+  // Clear validation errors after 5 seconds
+  React.useEffect(() => {
+    if (validationErrors.length === 0) return
+    const timer = setTimeout(() => setValidationErrors([]), 5000)
+    return () => clearTimeout(timer)
+  }, [validationErrors])
 
   if (mode === 'peek') return null
 
-  const files = task.files ?? []
   const isStaff = !clientMode
+  const isCollaborator = clientMode === 'COLLABORATOR'
+  const canUpload = isStaff || isCollaborator
 
-  if (files.length === 0 && !isStaff) return null
+  // Client filtering: clients only see files where isClientVisible !== false
+  const allFiles = task.files ?? []
+  const files = clientMode
+    ? allFiles.filter((f) => f.isClientVisible !== false)
+    : allFiles
+
+  const uploads = uploadingFiles ?? []
+
+  // Client with no visible files: hide section entirely
+  if (clientMode && files.length === 0 && uploads.length === 0) return null
+
+  // ---------------------------------------------------------------------------
+  // Validation
+  // ---------------------------------------------------------------------------
+
+  const validateFile = (file: File): string | null => {
+    if (maxFileSize && file.size > maxFileSize)
+      return `File too large (max ${formatFileSize(maxFileSize)})`
+    if (acceptedFileTypes?.length) {
+      const ext = file.name.split('.').pop()?.toLowerCase()
+      const matches = acceptedFileTypes.some((t) =>
+        t.startsWith('.') ? ext === t.slice(1) : file.type === t,
+      )
+      if (!matches) return `File type .${ext} not accepted`
+    }
+    return null
+  }
+
+  const processFiles = (fileList: FileList | File[]) => {
+    const errors: string[] = []
+    const valid: File[] = []
+    Array.from(fileList).forEach((f) => {
+      const err = validateFile(f)
+      if (err) {
+        errors.push(`${f.name}: ${err}`)
+      } else {
+        valid.push(f)
+      }
+    })
+    if (errors.length > 0) {
+      setValidationErrors(errors)
+    }
+    valid.forEach((f) => onUploadFile(f))
+  }
+
+  // ---------------------------------------------------------------------------
+  // Handlers
+  // ---------------------------------------------------------------------------
 
   const handleFileSelect = (e: React.ChangeEvent<HTMLInputElement>) => {
     const selected = e.target.files
-    if (selected) {
-      Array.from(selected).forEach((f) => onUploadFile(f))
-    }
+    if (selected) processFiles(selected)
     e.target.value = ''
+  }
+
+  const handleDragEnter = (e: React.DragEvent) => {
+    e.preventDefault()
+    dragCountRef.current += 1
+    if (dragCountRef.current === 1) setIsDragging(true)
+  }
+
+  const handleDragLeave = (e: React.DragEvent) => {
+    e.preventDefault()
+    dragCountRef.current -= 1
+    if (dragCountRef.current === 0) setIsDragging(false)
+  }
+
+  const handleDragOver = (e: React.DragEvent) => {
+    e.preventDefault()
   }
 
   const handleDrop = (e: React.DragEvent) => {
     e.preventDefault()
+    dragCountRef.current = 0
+    setIsDragging(false)
     const dropped = e.dataTransfer.files
-    if (dropped) {
-      Array.from(dropped).forEach((f) => onUploadFile(f))
+    if (dropped) processFiles(dropped)
+  }
+
+  const handleLinkSubmit = () => {
+    const trimmed = linkUrl.trim()
+    if (trimmed) {
+      onAttachLink(trimmed)
+      setLinkUrl('')
+      setShowLinkInput(false)
     }
   }
 
-  // Empty state for staff — just show upload zone
-  if (files.length === 0 && isStaff) {
+  const handleLinkKeyDown = (e: React.KeyboardEvent) => {
+    if (e.key === 'Enter') {
+      e.preventDefault()
+      handleLinkSubmit()
+    } else if (e.key === 'Escape') {
+      setShowLinkInput(false)
+      setLinkUrl('')
+    }
+  }
+
+  // ---------------------------------------------------------------------------
+  // Categorized vs flat rendering
+  // ---------------------------------------------------------------------------
+
+  const grouped = groupFilesByCategory(files)
+  const categoryCount = grouped.size
+  const shouldCategorize = files.length > 3 && categoryCount > 1
+
+  const renderFileRow = (file: TaskFile, index: number) => (
+    <FileRow
+      key={file.id}
+      file={file}
+      isStaff={isStaff}
+      canDeleteOwn={isCollaborator}
+      currentUserId={currentUserId}
+      onDelete={onDeleteFile}
+      onToggleVisibility={onToggleFileVisibility}
+      onUpdateStatus={onUpdateFileStatus}
+      onPreview={() => setPreviewIndex(index)}
+    />
+  )
+
+  const renderFileList = () => {
+    if (files.length === 0) return null
+
+    if (!shouldCategorize) {
+      return files.map((file, i) => renderFileRow(file, i))
+    }
+
+    // Track global index for preview
+    let globalIndex = 0
+    return CATEGORY_ORDER.map((cat) => {
+      const catFiles = grouped.get(cat)
+      if (!catFiles || catFiles.length === 0) return null
+      const startIndex = globalIndex
+      globalIndex += catFiles.length
+      return (
+        <div key={cat}>
+          <span className="block text-[11px] font-semibold text-surface-fg-subtle/60 uppercase tracking-wider mt-ds-03 mb-ds-01 px-ds-03">
+            {CATEGORY_LABELS[cat]}
+          </span>
+          {catFiles.map((file, i) => renderFileRow(file, startIndex + i))}
+        </div>
+      )
+    })
+  }
+
+  // ---------------------------------------------------------------------------
+  // Empty state for staff
+  // ---------------------------------------------------------------------------
+
+  if (files.length === 0 && uploads.length === 0 && isStaff) {
     return (
       <div
         className={cn(
@@ -83,16 +495,53 @@ export function TaskPanelFiles({
         )}
         {...props}
       >
-        <button
-          type="button"
-          className="w-full rounded-ds-lg border border-dashed border-surface-border px-ds-04 py-ds-03 text-center text-ds-sm text-surface-fg-subtle transition-colors hover:border-surface-border-strong hover:text-accent-11"
-          onClick={() => fileInputRef.current?.click()}
-          onDragOver={(e) => e.preventDefault()}
+        <div
+          className="relative"
+          onDragEnter={handleDragEnter}
+          onDragLeave={handleDragLeave}
+          onDragOver={handleDragOver}
           onDrop={handleDrop}
         >
-          <Icon icon={IconUpload} size="sm" className="mx-auto mb-ds-01" />
-          <span>Drop files or click to upload</span>
-        </button>
+          <button
+            type="button"
+            className="w-full rounded-ds-lg border border-dashed border-surface-border px-ds-04 py-ds-03 text-center text-ds-sm text-surface-fg-subtle transition-colors hover:border-surface-border-strong hover:text-accent-11"
+            onClick={() => fileInputRef.current?.click()}
+          >
+            <Icon icon={IconUpload} size="sm" className="mx-auto mb-ds-01" />
+            <span>Drop files or click to upload</span>
+          </button>
+          <div className="mt-ds-02 flex justify-center">
+            <Button
+              variant="ghost"
+              size="sm"
+              onClick={() => setShowLinkInput(true)}
+            >
+              <Icon icon={IconLink} size="xs" className="mr-ds-01" />
+              Attach link
+            </Button>
+          </div>
+          <MotionCollapse show={showLinkInput}>
+            <div className="mt-ds-02">
+              <input
+                type="url"
+                value={linkUrl}
+                onChange={(e) => setLinkUrl(e.target.value)}
+                onKeyDown={handleLinkKeyDown}
+                placeholder="Paste a Figma, Drive, Loom, or any URL..."
+                className="w-full rounded-ds-md border border-surface-border bg-surface-1 px-ds-03 py-ds-02 text-ds-sm text-surface-fg placeholder:text-surface-fg-subtle/50 outline-none focus:border-accent-7 transition-colors"
+                autoFocus
+              />
+            </div>
+          </MotionCollapse>
+          <ValidationErrors errors={validationErrors} />
+          {isDragging && (
+            <div className="absolute inset-0 z-10 flex items-center justify-center rounded-ds-lg border-2 border-dashed border-accent-7 bg-accent-3/50">
+              <span className="text-ds-sm font-medium text-accent-11">
+                Drop files here
+              </span>
+            </div>
+          )}
+        </div>
         <input
           ref={fileInputRef}
           type="file"
@@ -104,6 +553,12 @@ export function TaskPanelFiles({
     )
   }
 
+  // ---------------------------------------------------------------------------
+  // Main render
+  // ---------------------------------------------------------------------------
+
+  const totalCount = files.length + uploads.length
+
   return (
     <div
       className={cn(
@@ -112,67 +567,82 @@ export function TaskPanelFiles({
       )}
       {...props}
     >
-      <TaskSection title="Files" count={files.length} defaultOpen={false}>
-        <div className="px-ds-04 pb-ds-03 mt-ds-02 flex flex-col gap-ds-01">
-          {files.map((file) => (
-            <div
-              key={file.id}
-              className="group/file flex items-center gap-ds-03 rounded-ds-md px-ds-03 py-ds-02 hover:bg-surface-raised-hover transition-colors"
-            >
-              <Icon
-                icon={getFileIcon(file.name)}
+      <TaskSection
+        title="Files"
+        count={totalCount}
+        defaultOpen={totalCount > 0}
+      >
+        <div
+          className="relative px-ds-04 pb-ds-03 mt-ds-02 flex flex-col gap-ds-01"
+          onDragEnter={canUpload ? handleDragEnter : undefined}
+          onDragLeave={canUpload ? handleDragLeave : undefined}
+          onDragOver={canUpload ? handleDragOver : undefined}
+          onDrop={canUpload ? handleDrop : undefined}
+        >
+          {/* Action bar — upload + link buttons */}
+          {canUpload && (
+            <div className="flex items-center gap-ds-02 mb-ds-02">
+              <Button
+                variant="ghost"
                 size="sm"
-                className="shrink-0 text-surface-fg-subtle"
-              />
-              <div className="min-w-0 flex-1">
-                <a
-                  href={file.downloadUrl}
-                  className="text-ds-sm text-surface-fg truncate block hover:text-accent-11 transition-colors"
-                  download
-                >
-                  {file.name}
-                </a>
-                <span className="text-ds-xs text-surface-fg-subtle">
-                  {formatFileSize(file.size)} &middot; {file.uploadedBy.name}
-                </span>
-              </div>
-              {file.gDriveUrl && (
-                <a
-                  href={file.gDriveUrl}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="shrink-0 text-surface-fg-subtle hover:text-accent-11 transition-colors"
-                  aria-label="Open in Google Drive"
-                >
-                  <Icon icon={IconExternalLink} size="xs" />
-                </a>
-              )}
-              {isStaff && (
-                <Button
-                  variant="ghost"
-                  size="icon-xs"
-                  onClick={() => onDeleteFile(file.id)}
-                  aria-label={`Delete ${file.name}`}
-                  className="shrink-0 opacity-0 group-hover/file:opacity-100"
-                >
-                  <Icon icon={IconTrash} />
-                </Button>
-              )}
+                onClick={() => fileInputRef.current?.click()}
+              >
+                <Icon icon={IconUpload} size="xs" className="mr-ds-01" />
+                Upload
+              </Button>
+              <Button
+                variant="ghost"
+                size="sm"
+                onClick={() => setShowLinkInput((v) => !v)}
+              >
+                <Icon icon={IconLink} size="xs" className="mr-ds-01" />
+                Attach link
+              </Button>
             </div>
+          )}
+
+          {/* Link URL input */}
+          <MotionCollapse show={showLinkInput && canUpload}>
+            <div className="mb-ds-02">
+              <input
+                type="url"
+                value={linkUrl}
+                onChange={(e) => setLinkUrl(e.target.value)}
+                onKeyDown={handleLinkKeyDown}
+                placeholder="Paste a Figma, Drive, Loom, or any URL..."
+                className="w-full rounded-ds-md border border-surface-border bg-surface-1 px-ds-03 py-ds-02 text-ds-sm text-surface-fg placeholder:text-surface-fg-subtle/50 outline-none focus:border-accent-7 transition-colors"
+                autoFocus
+              />
+            </div>
+          </MotionCollapse>
+
+          {/* Validation errors */}
+          <ValidationErrors errors={validationErrors} />
+
+          {/* Uploading files */}
+          {uploads.map((upload) => (
+            <UploadingFileRow
+              key={upload.id}
+              upload={upload}
+              onCancel={onCancelUpload}
+              onRetry={onRetryUpload}
+            />
           ))}
 
-          {/* Upload area — staff only */}
-          {isStaff && (
+          {/* File list — categorized or flat */}
+          {renderFileList()}
+
+          {/* Upload area at bottom — staff and collaborator */}
+          {canUpload && files.length > 0 && (
             <button
               type="button"
               className="mt-ds-02 rounded-ds-lg border border-dashed border-surface-border px-ds-04 py-ds-03 text-center text-ds-xs text-surface-fg-subtle transition-colors hover:border-accent-7 hover:text-accent-11"
               onClick={() => fileInputRef.current?.click()}
-              onDragOver={(e) => e.preventDefault()}
-              onDrop={handleDrop}
             >
               + Upload files
             </button>
           )}
+
           <input
             ref={fileInputRef}
             type="file"
@@ -180,6 +650,15 @@ export function TaskPanelFiles({
             onChange={handleFileSelect}
             multiple
           />
+
+          {/* Drag overlay */}
+          {canUpload && isDragging && (
+            <div className="absolute inset-0 z-10 flex items-center justify-center rounded-ds-lg border-2 border-dashed border-accent-7 bg-accent-3/50">
+              <span className="text-ds-sm font-medium text-accent-11">
+                Drop files here
+              </span>
+            </div>
+          )}
         </div>
       </TaskSection>
     </div>

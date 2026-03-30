@@ -3,9 +3,11 @@
 import { createContext, useContext, useMemo, type ReactNode } from 'react'
 import type {
   ClientMode,
+  FileStatus,
   TaskPanelMode,
   TaskPanelTask,
   TimelineEntry,
+  UploadingFile,
 } from './task-panel-types'
 
 // ---------------------------------------------------------------------------
@@ -49,10 +51,20 @@ export interface TaskPanelContextValue {
   onCopyLink: () => void
   onUploadFile: (file: File) => void
   onDeleteFile: (fileId: string) => void
+  onRetryUpload: (uploadId: string) => void
+  onCancelUpload: (uploadId: string) => void
+  onAttachLink: (url: string) => void
+  onUpdateFileStatus: (fileId: string, status: FileStatus) => void
+  onToggleFileVisibility: (fileId: string) => void
   onClose: () => void
   onExpand: () => void
   onNavigatePrev?: () => void
   onNavigateNext?: () => void
+
+  // File upload state
+  uploadingFiles?: UploadingFile[]
+  maxFileSize?: number
+  acceptedFileTypes?: string[]
 
   // Agent
   isAgentStreaming?: boolean
@@ -124,10 +136,20 @@ export interface TaskPanelProviderProps {
   onCopyLink?: () => void
   onUploadFile?: (file: File) => void
   onDeleteFile?: (fileId: string) => void
+  onRetryUpload?: (uploadId: string) => void
+  onCancelUpload?: (uploadId: string) => void
+  onAttachLink?: (url: string) => void
+  onUpdateFileStatus?: (fileId: string, status: FileStatus) => void
+  onToggleFileVisibility?: (fileId: string) => void
   onClose?: () => void
   onExpand?: () => void
   onNavigatePrev?: () => void
   onNavigateNext?: () => void
+
+  // File upload state
+  uploadingFiles?: UploadingFile[]
+  maxFileSize?: number
+  acceptedFileTypes?: string[]
 
   // Agent
   isAgentStreaming?: boolean
@@ -185,10 +207,19 @@ export function TaskPanelProvider({
       onCopyLink: value.onCopyLink ?? noop,
       onUploadFile: value.onUploadFile ?? noop,
       onDeleteFile: value.onDeleteFile ?? noop,
+      onRetryUpload: value.onRetryUpload ?? noop,
+      onCancelUpload: value.onCancelUpload ?? noop,
+      onAttachLink: value.onAttachLink ?? noop,
+      onUpdateFileStatus: value.onUpdateFileStatus ?? noop,
+      onToggleFileVisibility: value.onToggleFileVisibility ?? noop,
       onClose: value.onClose ?? noop,
       onExpand: value.onExpand ?? noop,
       onNavigatePrev: value.onNavigatePrev,
       onNavigateNext: value.onNavigateNext,
+
+      uploadingFiles: value.uploadingFiles,
+      maxFileSize: value.maxFileSize,
+      acceptedFileTypes: value.acceptedFileTypes,
 
       isAgentStreaming: value.isAgentStreaming,
       agentStreamingText: value.agentStreamingText,
@@ -230,10 +261,18 @@ export function TaskPanelProvider({
       value.onCopyLink,
       value.onUploadFile,
       value.onDeleteFile,
+      value.onRetryUpload,
+      value.onCancelUpload,
+      value.onAttachLink,
+      value.onUpdateFileStatus,
+      value.onToggleFileVisibility,
       value.onClose,
       value.onExpand,
       value.onNavigatePrev,
       value.onNavigateNext,
+      value.uploadingFiles,
+      value.maxFileSize,
+      value.acceptedFileTypes,
       value.isAgentStreaming,
       value.agentStreamingText,
       value.onCancelAgentStream,

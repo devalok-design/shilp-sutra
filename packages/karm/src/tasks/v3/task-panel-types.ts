@@ -75,6 +75,16 @@ export interface AgentResponse {
 // Files attached to a task
 // ---------------------------------------------------------------------------
 
+export type FileSource = 'upload' | 'figma' | 'gdrive' | 'dropbox' | 'loom' | 'youtube' | 'vimeo' | 'link'
+export type FileStatus = 'draft' | 'final'
+
+export interface UploadingFile {
+  id: string
+  name: string
+  progress: number  // 0-100
+  error?: string
+}
+
 export interface TaskFile {
   id: string
   name: string
@@ -86,6 +96,14 @@ export interface TaskFile {
   createdAt: string
   gDriveUrl?: string
   isClientVisible?: boolean
+  source?: FileSource
+  embedUrl?: string
+  thumbnailUrl?: string
+  status?: FileStatus
+  mimeType?: string
+  width?: number
+  height?: number
+  duration?: number
 }
 
 // ---------------------------------------------------------------------------

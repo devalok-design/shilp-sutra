@@ -40,6 +40,8 @@ export {
 // Types
 export type {
   ClientMode,
+  FileSource,
+  FileStatus,
   TaskFile,
   TaskPanelMode,
   TaskPanelTask,
@@ -48,4 +50,5 @@ export type {
   ReviewEvent,
   AgentResponse,
   Reaction,
+  UploadingFile,
 } from './task-panel-types'

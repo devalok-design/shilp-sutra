@@ -342,7 +342,7 @@ function BoardCanvas({ className }: { className?: string }) {
       <div
         ref={canvasRef}
         tabIndex={0}
-        className="no-scrollbar flex h-full gap-ds-05 overflow-x-auto pb-ds-05 outline-none"
+        className="flex h-full gap-ds-05 overflow-x-auto pb-ds-02 outline-none [scrollbar-width:thin] [scrollbar-color:var(--color-surface-border)_transparent]"
       >
         <SortableContext
           items={columnIds}
@@ -404,7 +404,7 @@ function ReadOnlyCanvas({ className }: { className?: string }) {
   const { columns } = useBoardContext()
 
   return (
-    <div className={cn('no-scrollbar flex h-full gap-ds-05 overflow-x-auto pb-ds-05', className)}>
+    <div className={cn('flex h-full gap-ds-05 overflow-x-auto pb-ds-02 [scrollbar-width:thin] [scrollbar-color:var(--color-surface-border)_transparent]', className)}>
       <MotionStagger delay={0.05} className="contents">
         {columns.map((column, index) => (
           <MotionStaggerItem key={column.id} className="flex-shrink-0">
@@ -428,10 +428,12 @@ function BoardContent() {
   }
 
   return (
-    <div className="flex flex-col gap-ds-03">
+    <div className="flex h-full flex-col gap-ds-03">
       <BoardToolbar />
       <BulkActionBar />
-      {isMobileListView ? <BoardListView /> : <BoardCanvas />}
+      <div className="min-h-0 flex-1">
+        {isMobileListView ? <BoardListView /> : <BoardCanvas />}
+      </div>
     </div>
   )
 }

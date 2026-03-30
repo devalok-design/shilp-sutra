@@ -9,8 +9,7 @@ import {
 } from '@/ui/chat'
 import { Icon } from '@/ui/icon'
 import { IconRobot } from '@tabler/icons-react'
-import ReactMarkdown from 'react-markdown'
-import { markdownComponents } from './markdown-components'
+import { LazyMarkdown } from './lazy-markdown'
 import { StreamingText } from './streaming-text'
 
 // ============================================================
@@ -135,9 +134,7 @@ export const MessageList = React.forwardRef<HTMLDivElement, MessageListProps>(
         >
           <Message.Avatar icon={robotAvatar} />
           <Message.Body>
-            <ReactMarkdown components={markdownComponents}>
-              {msg.content}
-            </ReactMarkdown>
+            <LazyMarkdown>{msg.content}</LazyMarkdown>
           </Message.Body>
         </Message>
       )

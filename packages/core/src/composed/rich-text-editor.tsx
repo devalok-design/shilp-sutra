@@ -165,107 +165,156 @@ function ToolbarDivider() {
   return <div className="mx-ds-02 h-[16px] w-px bg-surface-border" />
 }
 
-function Toolbar({ editor, onImageClick, onFileClick, onEmojiClick }: {
+function Toolbar({ editor, toolbar, onImageClick, onFileClick, onEmojiClick }: {
   editor: Editor
+  toolbar?: ToolbarItem[]
   onImageClick?: () => void
   onFileClick?: () => void
   onEmojiClick?: () => void
 }) {
+  const show = (item: ToolbarItem) => !toolbar || toolbar.includes(item)
+
+  // Each group is an array of ToolbarItem names that belong to it.
+  // A divider renders between two adjacent groups only if both have at least one visible item.
+  const hasInline = show('bold') || show('italic') || show('underline') || show('strike') || show('highlight')
+  const hasBlock = show('h2') || show('h3') || show('blockquote')
+  const hasList = show('bulletList') || show('orderedList') || show('taskList') || show('codeBlock')
+  const hasMedia = show('link') || (!!onImageClick && show('image')) || (!!onFileClick && show('file')) || show('hr')
+  const hasAlign = show('alignLeft') || show('alignCenter') || show('alignRight')
+  const hasEmojiGroup = !!onEmojiClick && show('emoji')
+  const hasHistory = show('undo') || show('redo')
+
   return (
     <div className="flex flex-wrap items-center gap-ds-01 border-b border-surface-border-strong px-ds-04 py-ds-02b">
       {/* Inline formatting */}
-      <ToolbarButton onClick={() => editor.chain().focus().toggleBold().run()} isActive={editor.isActive('bold')} title="Bold">
-        <Icon icon={IconBold} size="sm" stroke="bold" />
-      </ToolbarButton>
-      <ToolbarButton onClick={() => editor.chain().focus().toggleItalic().run()} isActive={editor.isActive('italic')} title="Italic">
-        <Icon icon={IconItalic} size="sm" stroke="bold" />
-      </ToolbarButton>
-      <ToolbarButton onClick={() => editor.chain().focus().toggleUnderline().run()} isActive={editor.isActive('underline')} title="Underline">
-        <Icon icon={IconUnderline} size="sm" stroke="bold" />
-      </ToolbarButton>
-      <ToolbarButton onClick={() => editor.chain().focus().toggleStrike().run()} isActive={editor.isActive('strike')} title="Strikethrough">
-        <Icon icon={IconStrikethrough} size="sm" stroke="bold" />
-      </ToolbarButton>
-      <ToolbarButton onClick={() => editor.chain().focus().toggleHighlight().run()} isActive={editor.isActive('highlight')} title="Highlight">
-        <Icon icon={IconHighlight} size="sm" stroke="bold" />
-      </ToolbarButton>
+      {show('bold') && (
+        <ToolbarButton onClick={() => editor.chain().focus().toggleBold().run()} isActive={editor.isActive('bold')} title="Bold">
+          <Icon icon={IconBold} size="sm" stroke="bold" />
+        </ToolbarButton>
+      )}
+      {show('italic') && (
+        <ToolbarButton onClick={() => editor.chain().focus().toggleItalic().run()} isActive={editor.isActive('italic')} title="Italic">
+          <Icon icon={IconItalic} size="sm" stroke="bold" />
+        </ToolbarButton>
+      )}
+      {show('underline') && (
+        <ToolbarButton onClick={() => editor.chain().focus().toggleUnderline().run()} isActive={editor.isActive('underline')} title="Underline">
+          <Icon icon={IconUnderline} size="sm" stroke="bold" />
+        </ToolbarButton>
+      )}
+      {show('strike') && (
+        <ToolbarButton onClick={() => editor.chain().focus().toggleStrike().run()} isActive={editor.isActive('strike')} title="Strikethrough">
+          <Icon icon={IconStrikethrough} size="sm" stroke="bold" />
+        </ToolbarButton>
+      )}
+      {show('highlight') && (
+        <ToolbarButton onClick={() => editor.chain().focus().toggleHighlight().run()} isActive={editor.isActive('highlight')} title="Highlight">
+          <Icon icon={IconHighlight} size="sm" stroke="bold" />
+        </ToolbarButton>
+      )}
 
-      <ToolbarDivider />
+      {hasInline && hasBlock && <ToolbarDivider />}
 
       {/* Block formatting */}
-      <ToolbarButton onClick={() => editor.chain().focus().toggleHeading({ level: 2 }).run()} isActive={editor.isActive('heading', { level: 2 })} title="Heading 2">
-        <Icon icon={IconH2} size="sm" stroke="bold" />
-      </ToolbarButton>
-      <ToolbarButton onClick={() => editor.chain().focus().toggleHeading({ level: 3 }).run()} isActive={editor.isActive('heading', { level: 3 })} title="Heading 3">
-        <Icon icon={IconH3} size="sm" stroke="bold" />
-      </ToolbarButton>
-      <ToolbarButton onClick={() => editor.chain().focus().toggleBlockquote().run()} isActive={editor.isActive('blockquote')} title="Blockquote">
-        <Icon icon={IconBlockquote} size="sm" stroke="bold" />
-      </ToolbarButton>
+      {show('h2') && (
+        <ToolbarButton onClick={() => editor.chain().focus().toggleHeading({ level: 2 }).run()} isActive={editor.isActive('heading', { level: 2 })} title="Heading 2">
+          <Icon icon={IconH2} size="sm" stroke="bold" />
+        </ToolbarButton>
+      )}
+      {show('h3') && (
+        <ToolbarButton onClick={() => editor.chain().focus().toggleHeading({ level: 3 }).run()} isActive={editor.isActive('heading', { level: 3 })} title="Heading 3">
+          <Icon icon={IconH3} size="sm" stroke="bold" />
+        </ToolbarButton>
+      )}
+      {show('blockquote') && (
+        <ToolbarButton onClick={() => editor.chain().focus().toggleBlockquote().run()} isActive={editor.isActive('blockquote')} title="Blockquote">
+          <Icon icon={IconBlockquote} size="sm" stroke="bold" />
+        </ToolbarButton>
+      )}
 
-      <ToolbarDivider />
+      {hasBlock && hasList && <ToolbarDivider />}
 
       {/* Lists */}
-      <ToolbarButton onClick={() => editor.chain().focus().toggleBulletList().run()} isActive={editor.isActive('bulletList')} title="Bullet list">
-        <Icon icon={IconList} size="sm" stroke="bold" />
-      </ToolbarButton>
-      <ToolbarButton onClick={() => editor.chain().focus().toggleOrderedList().run()} isActive={editor.isActive('orderedList')} title="Ordered list">
-        <Icon icon={IconListNumbers} size="sm" stroke="bold" />
-      </ToolbarButton>
-      <ToolbarButton onClick={() => editor.chain().focus().toggleTaskList().run()} isActive={editor.isActive('taskList')} title="Task list">
-        <Icon icon={IconListCheck} size="sm" stroke="bold" />
-      </ToolbarButton>
-      <ToolbarButton onClick={() => editor.chain().focus().toggleCodeBlock().run()} isActive={editor.isActive('codeBlock')} title="Code block">
-        <Icon icon={IconCode} size="sm" stroke="bold" />
-      </ToolbarButton>
+      {show('bulletList') && (
+        <ToolbarButton onClick={() => editor.chain().focus().toggleBulletList().run()} isActive={editor.isActive('bulletList')} title="Bullet list">
+          <Icon icon={IconList} size="sm" stroke="bold" />
+        </ToolbarButton>
+      )}
+      {show('orderedList') && (
+        <ToolbarButton onClick={() => editor.chain().focus().toggleOrderedList().run()} isActive={editor.isActive('orderedList')} title="Ordered list">
+          <Icon icon={IconListNumbers} size="sm" stroke="bold" />
+        </ToolbarButton>
+      )}
+      {show('taskList') && (
+        <ToolbarButton onClick={() => editor.chain().focus().toggleTaskList().run()} isActive={editor.isActive('taskList')} title="Task list">
+          <Icon icon={IconListCheck} size="sm" stroke="bold" />
+        </ToolbarButton>
+      )}
+      {show('codeBlock') && (
+        <ToolbarButton onClick={() => editor.chain().focus().toggleCodeBlock().run()} isActive={editor.isActive('codeBlock')} title="Code block">
+          <Icon icon={IconCode} size="sm" stroke="bold" />
+        </ToolbarButton>
+      )}
 
-      <ToolbarDivider />
+      {hasList && hasMedia && <ToolbarDivider />}
 
       {/* Media & Links */}
-      <LinkButton editor={editor} />
-      {onImageClick && (
+      {show('link') && <LinkButton editor={editor} />}
+      {onImageClick && show('image') && (
         <ToolbarButton onClick={onImageClick} title="Insert image">
           <Icon icon={IconPhoto} size="sm" />
         </ToolbarButton>
       )}
-      {onFileClick && (
+      {onFileClick && show('file') && (
         <ToolbarButton onClick={onFileClick} title="Attach file">
           <Icon icon={IconPaperclip} size="sm" />
         </ToolbarButton>
       )}
-      <ToolbarButton onClick={() => editor.chain().focus().setHorizontalRule().run()} title="Horizontal rule">
-        <Icon icon={IconLineDashed} size="sm" />
-      </ToolbarButton>
+      {show('hr') && (
+        <ToolbarButton onClick={() => editor.chain().focus().setHorizontalRule().run()} title="Horizontal rule">
+          <Icon icon={IconLineDashed} size="sm" />
+        </ToolbarButton>
+      )}
 
-      <ToolbarDivider />
+      {hasMedia && hasAlign && <ToolbarDivider />}
 
       {/* Alignment */}
-      <ToolbarButton onClick={() => editor.chain().focus().setTextAlign('left').run()} isActive={editor.isActive({ textAlign: 'left' })} title="Align left">
-        <Icon icon={IconAlignLeft} size="sm" />
-      </ToolbarButton>
-      <ToolbarButton onClick={() => editor.chain().focus().setTextAlign('center').run()} isActive={editor.isActive({ textAlign: 'center' })} title="Align center">
-        <Icon icon={IconAlignCenter} size="sm" />
-      </ToolbarButton>
-      <ToolbarButton onClick={() => editor.chain().focus().setTextAlign('right').run()} isActive={editor.isActive({ textAlign: 'right' })} title="Align right">
-        <Icon icon={IconAlignRight} size="sm" />
-      </ToolbarButton>
+      {show('alignLeft') && (
+        <ToolbarButton onClick={() => editor.chain().focus().setTextAlign('left').run()} isActive={editor.isActive({ textAlign: 'left' })} title="Align left">
+          <Icon icon={IconAlignLeft} size="sm" />
+        </ToolbarButton>
+      )}
+      {show('alignCenter') && (
+        <ToolbarButton onClick={() => editor.chain().focus().setTextAlign('center').run()} isActive={editor.isActive({ textAlign: 'center' })} title="Align center">
+          <Icon icon={IconAlignCenter} size="sm" />
+        </ToolbarButton>
+      )}
+      {show('alignRight') && (
+        <ToolbarButton onClick={() => editor.chain().focus().setTextAlign('right').run()} isActive={editor.isActive({ textAlign: 'right' })} title="Align right">
+          <Icon icon={IconAlignRight} size="sm" />
+        </ToolbarButton>
+      )}
 
-      <ToolbarDivider />
+      {hasAlign && (hasEmojiGroup || hasHistory) && <ToolbarDivider />}
 
       {/* Emoji */}
-      {onEmojiClick && (
+      {onEmojiClick && show('emoji') && (
         <ToolbarButton onClick={onEmojiClick} title="Emoji">
           <Icon icon={IconMoodSmile} size="sm" />
         </ToolbarButton>
       )}
 
       {/* History */}
-      <ToolbarButton onClick={() => editor.chain().focus().undo().run()} disabled={!editor.can().undo()} title="Undo">
-        <Icon icon={IconArrowBackUp} size="sm" />
-      </ToolbarButton>
-      <ToolbarButton onClick={() => editor.chain().focus().redo().run()} disabled={!editor.can().redo()} title="Redo">
-        <Icon icon={IconArrowForwardUp} size="sm" />
-      </ToolbarButton>
+      {show('undo') && (
+        <ToolbarButton onClick={() => editor.chain().focus().undo().run()} disabled={!editor.can().undo()} title="Undo">
+          <Icon icon={IconArrowBackUp} size="sm" />
+        </ToolbarButton>
+      )}
+      {show('redo') && (
+        <ToolbarButton onClick={() => editor.chain().focus().redo().run()} disabled={!editor.can().redo()} title="Redo">
+          <Icon icon={IconArrowForwardUp} size="sm" />
+        </ToolbarButton>
+      )}
     </div>
   )
 }
@@ -297,6 +346,14 @@ function EmojiPickerLazy({ onSelect }: { onSelect: (native: string) => void }) {
   )
 }
 
+export type ToolbarItem =
+  | 'bold' | 'italic' | 'underline' | 'strike' | 'highlight'
+  | 'h2' | 'h3' | 'blockquote'
+  | 'bulletList' | 'orderedList' | 'taskList' | 'codeBlock'
+  | 'link' | 'image' | 'file' | 'hr'
+  | 'alignLeft' | 'alignCenter' | 'alignRight'
+  | 'emoji' | 'undo' | 'redo'
+
 export interface MentionItem {
   id: string
   label: string
@@ -313,6 +370,8 @@ export interface RichTextEditorProps extends Omit<React.ComponentPropsWithoutRef
   onImageUpload?: (file: File) => Promise<string>
   /** Called when a non-image file is dropped/pasted. If not provided, non-image files are ignored. */
   onFileUpload?: (file: File) => Promise<{ url: string; name: string; size: number }>
+  /** Whitelist of toolbar items to display. Omit to show all. */
+  toolbar?: ToolbarItem[]
   /** Static list of mentionable items */
   mentions?: MentionItem[]
   /** Async mention search. Takes precedence over static list. */
@@ -328,6 +387,7 @@ const RichTextEditor = React.forwardRef<HTMLDivElement, RichTextEditorProps>(
   onChange,
   className,
   editable = true,
+  toolbar,
   onImageUpload,
   onFileUpload,
   mentions,
@@ -543,6 +603,7 @@ const RichTextEditor = React.forwardRef<HTMLDivElement, RichTextEditorProps>(
         {editable && (
           <Toolbar
             editor={editor}
+            toolbar={toolbar}
             onImageClick={() => imageInputRef.current?.click()}
             onFileClick={onFileUpload ? () => fileInputRef.current?.click() : undefined}
             onEmojiClick={() => setShowEmojiPicker((prev) => !prev)}

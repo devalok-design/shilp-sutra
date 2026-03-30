@@ -41,6 +41,22 @@ describe('RichTextEditor', () => {
     const { container } = render(<RichTextEditor className="my-editor" />)
     expect(container.firstElementChild).toHaveClass('my-editor')
   })
+
+  it('hides toolbar items not in toolbar prop', () => {
+    render(<RichTextEditor toolbar={['bold', 'italic', 'link']} />)
+    expect(screen.getByTitle('Bold')).toBeInTheDocument()
+    expect(screen.getByTitle('Italic')).toBeInTheDocument()
+    expect(screen.queryByTitle('Underline')).not.toBeInTheDocument()
+    expect(screen.queryByTitle('Heading 2')).not.toBeInTheDocument()
+  })
+
+  it('shows all toolbar items when toolbar prop is omitted', () => {
+    render(<RichTextEditor />)
+    expect(screen.getByTitle('Bold')).toBeInTheDocument()
+    expect(screen.getByTitle('Underline')).toBeInTheDocument()
+    expect(screen.getByTitle('Heading 2')).toBeInTheDocument()
+    expect(screen.getByTitle('Undo')).toBeInTheDocument()
+  })
 })
 
 describe('RichTextViewer', () => {

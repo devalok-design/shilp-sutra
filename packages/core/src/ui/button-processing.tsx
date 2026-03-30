@@ -7,7 +7,7 @@ import * as React from 'react'
 
 export type ProcessingSpeed = 'ambient' | 'working' | 'urgent'
 
-export interface ProcessingOverlayProps {
+interface ProcessingOverlayProps {
   active: boolean
   speed: ProcessingSpeed
   /** Resolved color name — maps to CSS token `--color-{name}-9` */

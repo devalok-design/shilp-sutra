@@ -13,7 +13,7 @@ import { Avatar, AvatarFallback } from '@/ui/avatar'
 import { DevalokGrain } from '@/ui/devalok-grain'
 import { TaskPanel } from './task-panel'
 import type { TaskPanelRootProps } from './task-panel-root'
-import type { TaskPanelTask, TaskPanelMode, TimelineEntry } from './task-panel-types'
+import type { TaskPanelTask, TaskPanelMode, TimelineEntry, UploadingFile } from './task-panel-types'
 
 // ============================================================
 // Mock team members
@@ -47,12 +47,14 @@ const statusOptions = [
   { id: 'done', name: 'Done' },
 ]
 
+const htmlDescription =
+  '<p>Users are being logged out unexpectedly when their <strong>JWT access token</strong> expires during an active session.</p><ul><li>The refresh token flow is not triggered correctly</li><li>API middleware returns <code>401</code> instead of refreshing</li><li>Affects all authenticated routes</li></ul><p>Particularly disruptive during <em>long form submissions</em>.</p>'
+
 const mockTask: TaskPanelTask = {
   id: 'task-1',
   taskId: 'KRM-847',
   title: 'Fix authentication token refresh on expired sessions',
-  description:
-    'Users are being logged out unexpectedly when their JWT access token expires during an active session. The refresh token flow is not being triggered correctly, causing the API middleware to return 401 instead of silently refreshing. This affects all authenticated routes and is particularly disruptive during long form submissions.',
+  description: htmlDescription,
   descriptionUpdatedBy: { name: 'Arjun Rao', timestamp: hoursAgo(3) },
   status: 'in-progress',
   statusOptions,
@@ -154,6 +156,58 @@ const mockTask: TaskPanelTask = {
       gDriveUrl: 'https://drive.google.com/example',
     },
   ],
+}
+
+// ============================================================
+// Rich mock data for file gallery / upload stories
+// ============================================================
+
+const richFiles: TaskPanelTask['files'] = [
+  {
+    id: 'file-1', name: 'auth-flow-v3.fig', fileUrl: '#', downloadUrl: '#',
+    fileType: 'fig', size: 2_400_000, source: 'figma',
+    embedUrl: 'https://www.figma.com/file/example',
+    uploadedBy: { id: 'u1', name: 'Arjun Rao', image: null }, createdAt: hoursAgo(5), status: 'final',
+  },
+  {
+    id: 'file-2', name: 'hero-mockup.png', fileUrl: 'https://picsum.photos/800/600', downloadUrl: '#',
+    fileType: 'png', size: 356_000, source: 'upload', thumbnailUrl: 'https://picsum.photos/200/150',
+    uploadedBy: { id: 'u2', name: 'Priya Mehta', image: null }, createdAt: hoursAgo(3), isClientVisible: true,
+  },
+  {
+    id: 'file-3', name: 'brand-guidelines.pdf', fileUrl: '#', downloadUrl: '#',
+    fileType: 'pdf', size: 4_800_000, source: 'upload',
+    uploadedBy: { id: 'u3', name: 'Nick Padgett', image: null }, createdAt: daysAgo(2), status: 'final', isClientVisible: true,
+  },
+  {
+    id: 'file-4', name: 'client-presentation.pptx', fileUrl: '#', downloadUrl: '#',
+    fileType: 'pptx', size: 12_000_000, source: 'gdrive',
+    gDriveUrl: 'https://drive.google.com/example',
+    uploadedBy: { id: 'u1', name: 'Arjun Rao', image: null }, createdAt: daysAgo(1),
+  },
+  {
+    id: 'file-5', name: 'Onboarding walkthrough', fileUrl: '#', downloadUrl: '#',
+    fileType: 'video', size: 0, source: 'loom',
+    embedUrl: 'https://www.loom.com/share/example',
+    uploadedBy: { id: 'u2', name: 'Priya Mehta', image: null }, createdAt: hoursAgo(8),
+  },
+  {
+    id: 'file-6', name: 'internal-notes.docx', fileUrl: '#', downloadUrl: '#',
+    fileType: 'docx', size: 84_000, source: 'upload',
+    uploadedBy: { id: 'u1', name: 'Arjun Rao', image: null }, createdAt: hoursAgo(1), isClientVisible: false,
+  },
+]
+
+const mockUploadingFiles: UploadingFile[] = [
+  { id: 'up-1', name: 'revised-mockup-v4.fig', progress: 67 },
+  { id: 'up-2', name: 'recording.mp4', progress: 23 },
+  { id: 'up-3', name: 'broken-export.psd', progress: 0, error: 'Upload failed — file too large' },
+]
+
+const richMockTask: TaskPanelTask = {
+  ...mockTask,
+  description: htmlDescription,
+  files: richFiles,
 }
 
 // ============================================================
@@ -513,6 +567,7 @@ function TaskPanelDemo({
   label,
   isAgentStreaming,
   agentStreamingText,
+  uploadingFiles,
 }: {
   mode: TaskPanelMode
   clientMode?: boolean | 'VIEW_ONLY' | 'COLLABORATOR'
@@ -523,6 +578,7 @@ function TaskPanelDemo({
   label: string
   isAgentStreaming?: boolean
   agentStreamingText?: string
+  uploadingFiles?: UploadingFile[]
 }) {
   const [open, setOpen] = useState(false)
   const [taskState, setTaskState] = useState(task)
@@ -663,6 +719,7 @@ function TaskPanelDemo({
         typingUsers={typingUsers}
         isAgentStreaming={isAgentStreaming}
         agentStreamingText={agentStreamingText}
+        uploadingFiles={uploadingFiles}
         {...callbacks}
       >
         {mode === 'full' ? (
@@ -841,6 +898,76 @@ export const ClientCollaborator: Story = {
       clientMode="COLLABORATOR"
       task={{ ...mockTask, isInReview: false }}
       label="Client collaborator — can edit priority, due date, description, post messages"
+    />
+  ),
+}
+
+/** Rich HTML description rendered with TipTap viewer */
+export const RichDescription: Story = {
+  render: () => (
+    <TaskPanelDemo
+      mode="side"
+      task={{ ...richMockTask, isInReview: false }}
+      label="Click to see rich HTML description with formatting"
+    />
+  ),
+}
+
+/** Full file gallery — design files, documents, media, links across categories */
+export const FileGallery: Story = {
+  render: () => (
+    <TaskPanelDemo
+      mode="side"
+      task={richMockTask}
+      label="Click to see categorized file gallery with thumbnails and mixed file types"
+    />
+  ),
+}
+
+/** Files mid-upload with progress bars and an error state */
+export const FileUploadProgress: Story = {
+  render: () => (
+    <TaskPanelDemo
+      mode="side"
+      task={richMockTask}
+      uploadingFiles={mockUploadingFiles}
+      label="Click to see upload progress bars and error states"
+    />
+  ),
+}
+
+/** VIEW_ONLY client — downloads visible files, no upload actions */
+export const ClientViewOnlyFiles: Story = {
+  render: () => (
+    <TaskPanelDemo
+      mode="side"
+      clientMode="VIEW_ONLY"
+      task={richMockTask}
+      label="Client view-only — sees only client-visible files, no upload"
+    />
+  ),
+}
+
+/** Inline review banner (in full page layout) */
+export const ReviewBannerVisible: Story = {
+  render: () => (
+    <TaskPanelDemo
+      mode="full"
+      task={mockTask}
+      label="Full page — review banner visible at top"
+    />
+  ),
+}
+
+/** Dark mode — staff side panel */
+export const DarkMode: Story = {
+  globals: { theme: 'dark' },
+  render: () => (
+    <TaskPanelDemo
+      mode="side"
+      task={richMockTask}
+      label="Dark mode — staff view with rich content"
+      lastViewedAt={hoursAgo(4)}
     />
   ),
 }

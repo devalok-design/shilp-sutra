@@ -22,6 +22,7 @@ export { TaskPanelWings, type TaskPanelWingsProps } from './task-panel-wings'
 export { TaskPanelReviewCard } from './task-panel-wing-review'
 export { TaskPanelPropertiesCard } from './task-panel-wing-properties'
 export { TaskPanelFiles, type TaskPanelFilesProps } from './task-panel-files'
+export { TaskPanelFilePreview, type TaskPanelFilePreviewProps } from './task-panel-file-preview'
 export { TaskPanelDependencies, type TaskPanelDependenciesProps } from './task-panel-dependencies'
 export { TaskPanelErrorBoundary } from './task-panel-error-boundary'
 export {

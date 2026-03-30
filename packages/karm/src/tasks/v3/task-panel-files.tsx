@@ -36,6 +36,7 @@ import {
   groupFilesByCategory,
   type FileCategory,
 } from './file-utils'
+import { TaskPanelFilePreview } from './task-panel-file-preview'
 import type { TaskFile, UploadingFile } from './task-panel-types'
 
 // ---------------------------------------------------------------------------
@@ -443,7 +444,18 @@ export function TaskPanelFiles({
   const categoryCount = grouped.size
   const shouldCategorize = files.length > 3 && categoryCount > 1
 
-  const renderFileRow = (file: TaskFile, index: number) => (
+  // Build flat ordered list matching rendered order (for gallery navigation)
+  const orderedFiles = (() => {
+    if (!shouldCategorize) return files
+    const result: TaskFile[] = []
+    for (const cat of CATEGORY_ORDER) {
+      const group = grouped.get(cat)
+      if (group) result.push(...group)
+    }
+    return result
+  })()
+
+  const renderFileRow = (file: TaskFile) => (
     <FileRow
       key={file.id}
       file={file}
@@ -453,7 +465,10 @@ export function TaskPanelFiles({
       onDelete={onDeleteFile}
       onToggleVisibility={onToggleFileVisibility}
       onUpdateStatus={onUpdateFileStatus}
-      onPreview={() => setPreviewIndex(index)}
+      onPreview={() => {
+        const idx = orderedFiles.findIndex((f) => f.id === file.id)
+        setPreviewIndex(idx >= 0 ? idx : 0)
+      }}
     />
   )
 
@@ -461,22 +476,18 @@ export function TaskPanelFiles({
     if (files.length === 0) return null
 
     if (!shouldCategorize) {
-      return files.map((file, i) => renderFileRow(file, i))
+      return files.map((file) => renderFileRow(file))
     }
 
-    // Track global index for preview
-    let globalIndex = 0
     return CATEGORY_ORDER.map((cat) => {
       const catFiles = grouped.get(cat)
       if (!catFiles || catFiles.length === 0) return null
-      const startIndex = globalIndex
-      globalIndex += catFiles.length
       return (
         <div key={cat}>
           <span className="block text-[11px] font-semibold text-surface-fg-subtle/60 uppercase tracking-wider mt-ds-03 mb-ds-01 px-ds-03">
             {CATEGORY_LABELS[cat]}
           </span>
-          {catFiles.map((file, i) => renderFileRow(file, startIndex + i))}
+          {catFiles.map((file) => renderFileRow(file))}
         </div>
       )
     })
@@ -661,6 +672,15 @@ export function TaskPanelFiles({
           )}
         </div>
       </TaskSection>
+
+      <TaskPanelFilePreview
+        files={orderedFiles}
+        initialIndex={previewIndex}
+        open={previewIndex >= 0}
+        onOpenChange={(open) => {
+          if (!open) setPreviewIndex(-1)
+        }}
+      />
     </div>
   )
 }

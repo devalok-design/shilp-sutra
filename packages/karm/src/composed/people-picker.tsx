@@ -178,8 +178,8 @@ export function PeoplePicker({
                   )}
                 </div>
 
-                {/* Lead star — always visible if lead, otherwise show on row hover */}
-                {(isAssigned || isLead) && (
+                {/* Lead star — only for assigned members */}
+                {isAssigned && (
                   <Tooltip>
                     <TooltipTrigger asChild>
                       <span

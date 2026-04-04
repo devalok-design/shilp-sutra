@@ -162,56 +162,6 @@ const popoverCls = 'border-surface-border-strong bg-surface-overlay shadow-float
 
 // ─── People bandwidth / leave indicators ─────────────────────────────────────
 
-type PersonWithBandwidth = TaskPanelTask['assignees'][number]
-
-function PeopleIndicators({ summary }: {
-  summary: {
-    overloaded: PersonWithBandwidth[]
-    elevated: PersonWithBandwidth[]
-    onLeave: PersonWithBandwidth[]
-  }
-}) {
-  const { overloaded, elevated, onLeave } = summary
-  if (overloaded.length === 0 && elevated.length === 0 && onLeave.length === 0) return null
-
-  return (
-    <span className="ml-auto flex items-center gap-1 shrink-0">
-      {overloaded.length > 0 && (
-        <Tooltip>
-          <TooltipTrigger asChild>
-            <span className="h-2 w-2 rounded-full bg-error-9" aria-label="Overloaded" />
-          </TooltipTrigger>
-          <TooltipContent>
-            Overloaded: {overloaded.map((p) => p.name.split(' ')[0]).join(', ')}
-          </TooltipContent>
-        </Tooltip>
-      )}
-      {elevated.length > 0 && (
-        <Tooltip>
-          <TooltipTrigger asChild>
-            <span className="h-2 w-2 rounded-full bg-warning-9" aria-label="Elevated workload" />
-          </TooltipTrigger>
-          <TooltipContent>
-            Elevated: {elevated.map((p) => p.name.split(' ')[0]).join(', ')}
-          </TooltipContent>
-        </Tooltip>
-      )}
-      {onLeave.length > 0 && (
-        <Tooltip>
-          <TooltipTrigger asChild>
-            <span>
-              <Badge variant="subtle" color="warning" size="xs">On leave</Badge>
-            </span>
-          </TooltipTrigger>
-          <TooltipContent>
-            On leave: {onLeave.map((p) => p.name.split(' ')[0]).join(', ')}
-          </TooltipContent>
-        </Tooltip>
-      )}
-    </span>
-  )
-}
-
 // ═══════════════════════════════════════════════════════════════════════════════
 
 export function TaskPanelPropertiesCard() {
@@ -260,24 +210,16 @@ export function TaskPanelPropertiesCard() {
     [allPeople, leadIds],
   )
 
-  // Smart people label: show lead's first name if one lead, otherwise count
+  // People label: lead name or first assignee name + remaining count
   const peopleLabel = React.useMemo(() => {
     if (allPeople.length === 0) return ''
-    const leadName = task.leads.length === 1 ? task.leads[0].name.split(' ')[0] : null
-    const othersCount = allPeople.length - (leadName ? 1 : 0)
-    if (leadName && othersCount > 0) return `${leadName} +${othersCount}`
-    if (leadName) return leadName
-    if (allPeople.length === 1) return allPeople[0].name.split(' ')[0]
-    return `${allPeople.length} people`
+    // Prefer showing the lead's name
+    const lead = task.leads[0]
+    const primaryName = lead ? lead.name.split(' ')[0] : allPeople[0].name.split(' ')[0]
+    const remaining = allPeople.length - 1
+    if (remaining > 0) return `${primaryName} +${remaining}`
+    return primaryName
   }, [allPeople, task.leads])
-
-  // Bandwidth + leave summary for indicator rendering
-  const bandwidthSummary = React.useMemo(() => {
-    const overloaded = allPeople.filter((p) => p.bandwidth === 'OVERLOADED')
-    const elevated = allPeople.filter((p) => p.bandwidth === 'ELEVATED')
-    const onLeave = allPeople.filter((p) => p.isOnLeave)
-    return { overloaded, elevated, onLeave }
-  }, [allPeople])
 
   // Enrich members with isOnLeave from assignees/leads for PeoplePicker
   const enrichedMembers = React.useMemo(() => {
@@ -534,11 +476,10 @@ export function TaskPanelPropertiesCard() {
             >
               {allPeople.length > 0 ? (
                 <>
-                  <AvatarGroup users={avatarUsers} max={4} size="xs" />
+                  <AvatarGroup users={avatarUsers} max={3} size="xs" />
                   <span className="text-[13px] text-surface-fg truncate">
                     {peopleLabel}
                   </span>
-                  <PeopleIndicators summary={bandwidthSummary} />
                 </>
               ) : (
                 <>
@@ -552,9 +493,8 @@ export function TaskPanelPropertiesCard() {
           </PeoplePicker>
         ) : allPeople.length > 0 ? (
           <div className="flex items-center gap-2.5 py-1.5">
-            <AvatarGroup users={avatarUsers} max={4} size="xs" />
+            <AvatarGroup users={avatarUsers} max={3} size="xs" />
             <span className="text-[13px] text-surface-fg truncate">{peopleLabel}</span>
-            <PeopleIndicators summary={bandwidthSummary} />
           </div>
         ) : null}
 

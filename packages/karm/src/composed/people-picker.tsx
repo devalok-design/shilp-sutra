@@ -1,7 +1,7 @@
 'use client'
 
 import * as React from 'react'
-import { IconCheck, IconStar, IconStarFilled, IconSearch } from '@tabler/icons-react'
+import { IconStar, IconStarFilled, IconSearch } from '@tabler/icons-react'
 import { Icon } from '@/ui/icon'
 import { cn } from '@/ui/lib/utils'
 import { Avatar, AvatarImage, AvatarFallback } from '@/ui/avatar'
@@ -134,7 +134,7 @@ export function PeoplePicker({
           </div>
         )}
 
-        <div className="flex flex-col max-h-[280px] overflow-y-auto">
+        <div className="flex flex-col gap-ds-01 max-h-[280px] overflow-y-auto">
           {filtered.length === 0 && (
             <p className="px-ds-03 py-ds-04 text-center text-ds-xs text-surface-fg-subtle">
               No matches
@@ -149,10 +149,7 @@ export function PeoplePicker({
                 key={member.id}
                 type="button"
                 className={cn(
-                  'group/row flex items-center gap-ds-03 w-full rounded-ds-md px-ds-03 py-ds-03 text-left transition-colors',
-                  isAssigned
-                    ? 'bg-accent-2 hover:bg-accent-3'
-                    : 'hover:bg-surface-raised-hover',
+                  'group/row flex items-center gap-ds-03 w-full rounded-ds-md px-ds-03 py-ds-03 text-left transition-colors hover:bg-surface-raised-hover',
                 )}
                 onClick={() =>
                   isAssigned
@@ -172,7 +169,7 @@ export function PeoplePicker({
                 <div className="flex flex-col min-w-0 flex-1">
                   <span className={cn(
                     'text-ds-sm truncate',
-                    isAssigned ? 'text-surface-fg' : 'text-surface-fg-muted',
+                    isAssigned ? 'text-accent-11 font-semibold' : 'text-surface-fg-muted',
                   )}>
                     {member.name}
                   </span>
@@ -219,15 +216,6 @@ export function PeoplePicker({
                       {isLead ? 'Remove as lead' : 'Make lead'}
                     </TooltipContent>
                   </Tooltip>
-                )}
-
-                {/* Assigned check */}
-                {isAssigned && (
-                  <Icon
-                    icon={IconCheck}
-                    size="xs"
-                    className="shrink-0 text-success-11"
-                  />
                 )}
               </button>
             )

@@ -16,12 +16,27 @@ import type { TaskPanelRootProps } from './task-panel-root'
 import type { TaskPanelTask, TaskPanelMode, TimelineEntry, UploadingFile } from './task-panel-types'
 
 // ============================================================
-// Mock team members
+// Mock team members (Devalok team)
 // ============================================================
 
-const arjun = { id: 'u1', name: 'Arjun Rao', image: null }
-const priya = { id: 'u2', name: 'Priya Mehta', image: null }
-const nick = { id: 'u3', name: 'Nick Padgett', image: null }
+const mudit = { id: 'u1', name: 'Mudit Lal', image: null }
+const aishwarya = { id: 'u2', name: 'Aishwarya Ganji', image: null }
+const amal = { id: 'u3', name: 'Amal Krishna A', image: null }
+const arundhati = { id: 'u4', name: 'Arundhati Thakur', image: null }
+const ayursha = { id: 'u5', name: 'Ayursha Nimse', image: null }
+const bhavika = { id: 'u6', name: 'Bhavika Jain', image: null }
+const chhavi = { id: 'u7', name: 'Chhavi Priya Gaur', image: null }
+const goutham = { id: 'u8', name: 'Goutham H M', image: null }
+const parth = { id: 'u9', name: 'Parth Dake', image: null }
+const shalini = { id: 'u10', name: 'Shalini Srivastava', image: null }
+const srihitha = { id: 'u11', name: 'Srihitha Jaligama', image: null }
+const vidit = { id: 'u12', name: 'Vidit Lal', image: null }
+const yogin = { id: 'u13', name: 'Yogin Naidu', image: null }
+
+const allMembers = [mudit, aishwarya, amal, arundhati, ayursha, bhavika, chhavi, goutham, parth, shalini, srihitha, vidit, yogin]
+
+// Mock client (not a team member)
+const nick = { id: 'client-1', name: 'Nick Padgett', image: null }
 
 // ============================================================
 // Time helpers
@@ -55,18 +70,20 @@ const mockTask: TaskPanelTask = {
   taskId: 'KRM-847',
   title: 'Fix authentication token refresh on expired sessions',
   description: htmlDescription,
-  descriptionUpdatedBy: { name: 'Arjun Rao', timestamp: hoursAgo(3) },
+  descriptionUpdatedBy: { name: 'Mudit Lal', timestamp: hoursAgo(3) },
   status: 'in-progress',
   statusOptions,
   priority: 'HIGH',
   assignees: [
-    { ...arjun, bandwidth: 'ELEVATED' as const },
-    { ...priya, bandwidth: 'HEALTHY' as const },
+    { ...aishwarya, bandwidth: 'ELEVATED' as const },
+    { ...parth, bandwidth: 'HEALTHY' as const },
+    { ...chhavi, bandwidth: 'HEALTHY' as const },
   ],
   leads: [
-    { ...nick, isOnLeave: true },
+    { ...mudit },
+    { ...goutham, isOnLeave: true },
   ],
-  members: [arjun, priya, nick],
+  members: allMembers,
   dueDate: new Date(now.getTime() + 3 * 86_400_000).toISOString(),
   startDate: new Date(now.getTime() - 2 * 86_400_000).toISOString(),
   phase: { id: 'phase-2', name: 'Development' },
@@ -77,7 +94,7 @@ const mockTask: TaskPanelTask = {
     { id: 'phase-4', name: 'Launch' },
   ],
   createdByType: 'LOKWASI' as const,
-  createdByName: 'Nick Padgett',
+  createdByName: 'Mudit Lal',
   projectName: 'Karm',
   labels: ['bug', 'auth', 'critical-path'],
   visibility: 'EVERYONE',
@@ -91,7 +108,7 @@ const mockTask: TaskPanelTask = {
       priority: 'HIGH',
       columnId: 'done',
       column: { id: 'done', name: 'Done', isTerminal: true },
-      assignees: [{ user: arjun }],
+      assignees: [{ user: aishwarya }],
     },
     {
       id: 'st-2',
@@ -99,7 +116,7 @@ const mockTask: TaskPanelTask = {
       priority: 'HIGH',
       columnId: 'in-progress',
       column: { id: 'in-progress', name: 'In Progress' },
-      assignees: [{ user: arjun }],
+      assignees: [{ user: aishwarya }],
     },
     {
       id: 'st-3',
@@ -107,7 +124,7 @@ const mockTask: TaskPanelTask = {
       priority: 'MEDIUM',
       columnId: 'todo',
       column: { id: 'todo', name: 'To Do' },
-      assignees: [{ user: priya }],
+      assignees: [{ user: parth }],
     },
     {
       id: 'st-4',
@@ -119,7 +136,7 @@ const mockTask: TaskPanelTask = {
     },
   ],
   isInReview: true,
-  reviewSubmittedBy: { name: 'Arjun Rao', timestamp: hoursAgo(2) },
+  reviewSubmittedBy: { name: 'Aishwarya Ganji', timestamp: hoursAgo(2) },
   reviewFiles: [
     { name: 'token-refresh-fix.patch', size: '4.2 KB' },
     { name: 'auth-flow-diagram.png', size: '156 KB' },
@@ -141,7 +158,7 @@ const mockTask: TaskPanelTask = {
       downloadUrl: '#',
       fileType: 'patch',
       size: 4300,
-      uploadedBy: { id: 'u1', name: 'Arjun Rao', image: null },
+      uploadedBy: { id: 'u2', name: 'Aishwarya Ganji', image: null },
       createdAt: hoursAgo(5),
     },
     {
@@ -151,7 +168,7 @@ const mockTask: TaskPanelTask = {
       downloadUrl: '#',
       fileType: 'png',
       size: 159744,
-      uploadedBy: { id: 'u2', name: 'Priya Mehta', image: null },
+      uploadedBy: { id: 'u9', name: 'Parth Dake', image: null },
       createdAt: hoursAgo(3),
       gDriveUrl: 'https://drive.google.com/example',
     },
@@ -167,34 +184,34 @@ const richFiles: TaskPanelTask['files'] = [
     id: 'file-1', name: 'auth-flow-v3.fig', fileUrl: '#', downloadUrl: '#',
     fileType: 'fig', size: 2_400_000, source: 'figma',
     embedUrl: 'https://www.figma.com/file/example',
-    uploadedBy: { id: 'u1', name: 'Arjun Rao', image: null }, createdAt: hoursAgo(5), status: 'final',
+    uploadedBy: { id: 'u2', name: 'Aishwarya Ganji', image: null }, createdAt: hoursAgo(5), status: 'final',
   },
   {
     id: 'file-2', name: 'hero-mockup.png', fileUrl: 'https://picsum.photos/800/600', downloadUrl: '#',
     fileType: 'png', size: 356_000, source: 'upload', thumbnailUrl: 'https://picsum.photos/200/150',
-    uploadedBy: { id: 'u2', name: 'Priya Mehta', image: null }, createdAt: hoursAgo(3), isClientVisible: true,
+    uploadedBy: { id: 'u9', name: 'Parth Dake', image: null }, createdAt: hoursAgo(3), isClientVisible: true,
   },
   {
     id: 'file-3', name: 'brand-guidelines.pdf', fileUrl: '#', downloadUrl: '#',
     fileType: 'pdf', size: 4_800_000, source: 'upload',
-    uploadedBy: { id: 'u3', name: 'Nick Padgett', image: null }, createdAt: daysAgo(2), status: 'final', isClientVisible: true,
+    uploadedBy: { id: 'u7', name: 'Chhavi Priya Gaur', image: null }, createdAt: daysAgo(2), status: 'final', isClientVisible: true,
   },
   {
     id: 'file-4', name: 'client-presentation.pptx', fileUrl: '#', downloadUrl: '#',
     fileType: 'pptx', size: 12_000_000, source: 'gdrive',
     gDriveUrl: 'https://drive.google.com/example',
-    uploadedBy: { id: 'u1', name: 'Arjun Rao', image: null }, createdAt: daysAgo(1),
+    uploadedBy: { id: 'u2', name: 'Aishwarya Ganji', image: null }, createdAt: daysAgo(1),
   },
   {
     id: 'file-5', name: 'Onboarding walkthrough', fileUrl: '#', downloadUrl: '#',
     fileType: 'video', size: 0, source: 'loom',
     embedUrl: 'https://www.loom.com/share/example',
-    uploadedBy: { id: 'u2', name: 'Priya Mehta', image: null }, createdAt: hoursAgo(8),
+    uploadedBy: { id: 'u9', name: 'Parth Dake', image: null }, createdAt: hoursAgo(8),
   },
   {
     id: 'file-6', name: 'internal-notes.docx', fileUrl: '#', downloadUrl: '#',
     fileType: 'docx', size: 84_000, source: 'upload',
-    uploadedBy: { id: 'u1', name: 'Arjun Rao', image: null }, createdAt: hoursAgo(1), isClientVisible: false,
+    uploadedBy: { id: 'u2', name: 'Aishwarya Ganji', image: null }, createdAt: hoursAgo(1), isClientVisible: false,
   },
 ]
 
@@ -219,8 +236,8 @@ const mockTimeline: TimelineEntry[] = [
     type: 'system-event',
     event: {
       id: 'ev-1',
-      actorId: 'u3',
-      actorName: 'Nick Padgett',
+      actorId: 'u1',
+      actorName: 'Mudit Lal',
       action: 'status-change',
       description: 'moved this to In Progress',
       timestamp: daysAgo(4),
@@ -230,10 +247,10 @@ const mockTimeline: TimelineEntry[] = [
     type: 'system-event',
     event: {
       id: 'ev-2',
-      actorId: 'u3',
-      actorName: 'Nick Padgett',
+      actorId: 'u1',
+      actorName: 'Mudit Lal',
       action: 'assignment',
-      description: 'assigned Arjun Rao',
+      description: 'assigned Aishwarya Ganji',
       timestamp: daysAgo(4),
     },
   },
@@ -241,8 +258,8 @@ const mockTimeline: TimelineEntry[] = [
     type: 'system-event',
     event: {
       id: 'ev-3',
-      actorId: 'u3',
-      actorName: 'Nick Padgett',
+      actorId: 'u1',
+      actorName: 'Mudit Lal',
       action: 'priority',
       description: 'changed priority to High',
       timestamp: daysAgo(4),
@@ -252,8 +269,8 @@ const mockTimeline: TimelineEntry[] = [
     type: 'system-event',
     event: {
       id: 'ev-4',
-      actorId: 'u3',
-      actorName: 'Nick Padgett',
+      actorId: 'u1',
+      actorName: 'Mudit Lal',
       action: 'label-add',
       description: 'added label critical-path',
       timestamp: daysAgo(4),
@@ -265,12 +282,12 @@ const mockTimeline: TimelineEntry[] = [
       id: 'c-1',
       taskId: 'task-1',
       authorType: 'INTERNAL',
-      authorId: 'u1',
+      authorId: 'u2',
       content:
         "I've traced the issue to the Axios interceptor. The refresh call is racing with parallel requests and the second refresh attempt fails because the first already invalidated the old refresh token. We need a request queue.",
       createdAt: daysAgo(3),
       updatedAt: daysAgo(3),
-      internalAuthor: arjun,
+      internalAuthor: aishwarya,
     },
     reactions: [
       { emoji: '\u{1F44D}', count: 2, reacted: false },
@@ -283,12 +300,12 @@ const mockTimeline: TimelineEntry[] = [
       id: 'c-2',
       taskId: 'task-1',
       authorType: 'INTERNAL',
-      authorId: 'u2',
+      authorId: 'u9',
       content:
         'Good find. I saw a similar pattern in the Notion client SDK -- they use a promise-based lock so only one refresh happens at a time. Want me to pair on this?',
       createdAt: daysAgo(2),
       updatedAt: daysAgo(2),
-      internalAuthor: priya,
+      internalAuthor: parth,
     },
   },
   {
@@ -315,12 +332,12 @@ const mockTimeline: TimelineEntry[] = [
       id: 'c-4',
       taskId: 'task-1',
       authorType: 'INTERNAL',
-      authorId: 'u1',
+      authorId: 'u2',
       content:
         "Hi Sarah -- we've identified the root cause and the fix is in progress. The request queue is implemented and I'm writing tests now. Should have a PR up by end of day tomorrow.",
       createdAt: hoursAgo(20),
       updatedAt: hoursAgo(20),
-      internalAuthor: arjun,
+      internalAuthor: aishwarya,
     },
   },
   {
@@ -334,7 +351,7 @@ const mockTimeline: TimelineEntry[] = [
       content: '',
       createdAt: hoursAgo(18),
       updatedAt: hoursAgo(18),
-      internalAuthor: priya,
+      internalAuthor: parth,
     },
   },
   // Fix 11: AI agent response in timeline
@@ -356,7 +373,7 @@ const mockTimeline: TimelineEntry[] = [
     event: {
       id: 'ev-5',
       actorId: 'u1',
-      actorName: 'Arjun Rao',
+      actorName: 'Aishwarya Ganji',
       action: 'status-change',
       description: 'moved this to Review',
       timestamp: hoursAgo(3),
@@ -366,8 +383,8 @@ const mockTimeline: TimelineEntry[] = [
     type: 'review-event',
     event: {
       id: 'rev-1',
-      reviewerId: 'u1',
-      reviewerName: 'Arjun Rao',
+      reviewerId: 'u2',
+      reviewerName: 'Aishwarya Ganji',
       action: 'submitted',
       comment: 'Ready for review. The interceptor now uses a mutex lock pattern.',
       timestamp: hoursAgo(2),
@@ -379,12 +396,12 @@ const mockTimeline: TimelineEntry[] = [
       id: 'c-5',
       taskId: 'task-1',
       authorType: 'INTERNAL',
-      authorId: 'u2',
+      authorId: 'u9',
       content:
         "Looks solid. One question -- what happens if the refresh token itself is expired? I see we're catching that in the interceptor but the redirect to /login seems to have a flash of the authenticated layout.",
       createdAt: hoursAgo(1),
       updatedAt: hoursAgo(1),
-      internalAuthor: priya,
+      internalAuthor: parth,
     },
     reactions: [
       { emoji: '\u{1F4AF}', count: 1, reacted: false },
@@ -763,7 +780,7 @@ export const SidePanelStaff: Story = {
       mode="side"
       label="Click the task card below to open the side panel (staff view). Review and properties wings appear to the left."
       lastViewedAt={hoursAgo(4)}
-      typingUsers={[{ name: 'Priya Mehta', image: null }]}
+      typingUsers={[{ name: 'Parth Dake', image: null }]}
     />
   ),
 }
@@ -813,7 +830,7 @@ export const EmptyTask: Story = {
       priority: 'MEDIUM',
       assignees: [],
       leads: [],
-      members: [arjun, priya, nick],
+      members: allMembers,
       dueDate: null,
       startDate: null,
       labels: [],

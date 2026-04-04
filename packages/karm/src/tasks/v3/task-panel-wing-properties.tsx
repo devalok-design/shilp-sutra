@@ -422,7 +422,7 @@ export function TaskPanelPropertiesCard() {
               <PopoverTrigger asChild>
                 <button
                   type="button"
-                  className="flex items-center gap-2 w-full rounded-ds-md px-1.5 py-1.5 -mx-1.5 hover:bg-surface-raised-hover transition-colors cursor-pointer text-left"
+                  className="flex items-center gap-2 w-full rounded-ds-md py-1.5 hover:bg-surface-raised-hover transition-colors cursor-pointer text-left"
                 >
                   <Icon
                     icon={IconCalendar}
@@ -480,7 +480,7 @@ export function TaskPanelPropertiesCard() {
               </PopoverContent>
             </Popover>
           ) : (
-            <div className="flex items-center gap-2 px-1.5 py-1.5">
+            <div className="flex items-center gap-2 py-1.5">
               <Icon icon={IconCalendar} size="xs" className={relDue?.isOverdue ? 'text-error-9' : 'text-surface-fg-subtle/50'} />
               {task.dueDate ? (
                 <span className="flex items-baseline gap-1.5">
@@ -518,7 +518,7 @@ export function TaskPanelPropertiesCard() {
           >
             <button
               type="button"
-              className="flex items-center gap-2.5 w-full rounded-ds-md px-1.5 py-1.5 -mx-1.5 hover:bg-surface-raised-hover transition-colors cursor-pointer text-left"
+              className="flex items-center gap-2.5 w-full rounded-ds-md py-1.5 hover:bg-surface-raised-hover transition-colors cursor-pointer text-left"
             >
               {allPeople.length > 0 ? (
                 <>
@@ -539,7 +539,7 @@ export function TaskPanelPropertiesCard() {
             </button>
           </PeoplePicker>
         ) : allPeople.length > 0 ? (
-          <div className="flex items-center gap-2.5 px-1.5 py-1.5">
+          <div className="flex items-center gap-2.5 py-1.5">
             <AvatarGroup users={avatarUsers} max={4} size="xs" />
             <span className="text-[13px] text-surface-fg truncate">{peopleLabel}</span>
             <PeopleIndicators summary={bandwidthSummary} />
@@ -589,7 +589,7 @@ export function TaskPanelPropertiesCard() {
                   {interactive ? (
                     <Popover open={phaseOpen} onOpenChange={setPhaseOpen}>
                       <PopoverTrigger asChild>
-                        <button type="button" className="text-[12px] text-surface-fg-muted hover:text-surface-fg hover:bg-surface-raised-hover rounded-ds-md px-1.5 py-1.5 -mx-1.5 transition-colors text-left truncate">
+                        <button type="button" className="text-[12px] text-surface-fg-muted hover:text-surface-fg hover:bg-surface-raised-hover rounded-ds-md px-1.5 py-1.5 transition-colors text-left truncate">
                           {task.phase?.name ?? <span className="text-surface-fg-subtle/40">None</span>}
                         </button>
                       </PopoverTrigger>
@@ -623,7 +623,7 @@ export function TaskPanelPropertiesCard() {
                   {interactive ? (
                     <Popover open={startDateOpen} onOpenChange={setStartDateOpen}>
                       <PopoverTrigger asChild>
-                        <button type="button" className="text-[12px] text-surface-fg-muted hover:text-surface-fg hover:bg-surface-raised-hover rounded-ds-md px-1.5 py-1.5 -mx-1.5 transition-colors text-left">
+                        <button type="button" className="text-[12px] text-surface-fg-muted hover:text-surface-fg hover:bg-surface-raised-hover rounded-ds-md px-1.5 py-1.5 transition-colors text-left">
                           {task.startDate ? formatDate(task.startDate) : <span className="text-surface-fg-subtle/40">Not set</span>}
                         </button>
                       </PopoverTrigger>

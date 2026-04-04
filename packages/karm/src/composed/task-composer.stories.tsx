@@ -11,7 +11,7 @@ const meta: Meta<typeof TaskComposer> = {
     docs: {
       description: {
         component:
-          '**Package:** `@devalok/shilp-sutra-karm` · Message composer with auto-resize textarea, optional visibility toggle, and file attach.',
+          '**Package:** `@devalok/shilp-sutra-karm` · Message composer with auto-resize textarea, optional visibility tabs (Team / Client), and file attach.',
       },
     },
   },

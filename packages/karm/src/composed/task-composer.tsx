@@ -1,12 +1,10 @@
 'use client'
 
 import * as React from 'react'
-import { IconPaperclip, IconMoodSmile, IconSend, IconLock, IconEye } from '@tabler/icons-react'
+import { IconPaperclip, IconSend, IconLock, IconEye } from '@tabler/icons-react'
 import { Icon } from '@/ui/icon'
 import { cn } from '@/ui/lib/utils'
 import { Button } from '@/ui/button'
-import { Switch } from '@/ui/switch'
-import { Tooltip, TooltipTrigger, TooltipContent } from '@/ui/tooltip'
 
 // ---------------------------------------------------------------------------
 // Types
@@ -114,47 +112,50 @@ export function TaskComposer({
         className,
       )}
     >
-      {/* Client-visibility warning banner */}
-      {showVisibility && isClient && (
-        <div className="mb-ds-02 flex items-center gap-ds-02 text-ds-xs text-warning-11">
-          <Icon icon={IconEye} size="xs" className="shrink-0" />
-          <span>This message will be visible to clients</span>
+      {/* Visibility tabs — staff on client-visible tasks only */}
+      {showVisibility && (
+        <div className="mb-ds-02 flex items-center gap-ds-01">
+          <button
+            type="button"
+            onClick={() => setVisibility('INTERNAL')}
+            className={cn(
+              'inline-flex items-center gap-ds-02 rounded-ds-md px-ds-03 py-ds-01 text-ds-xs font-medium transition-colors',
+              !isClient
+                ? 'bg-surface-raised-hover text-surface-fg'
+                : 'text-surface-fg-subtle hover:text-surface-fg',
+            )}
+          >
+            <Icon icon={IconLock} size="xs" />
+            Team
+          </button>
+          <button
+            type="button"
+            onClick={() => setVisibility('CLIENT')}
+            className={cn(
+              'inline-flex items-center gap-ds-02 rounded-ds-md px-ds-03 py-ds-01 text-ds-xs font-medium transition-colors',
+              isClient
+                ? 'bg-warning-3 text-warning-11'
+                : 'text-surface-fg-subtle hover:text-surface-fg',
+            )}
+          >
+            <Icon icon={IconEye} size="xs" />
+            Client
+          </button>
         </div>
       )}
 
-      <div className="flex items-end gap-ds-02 rounded-ds-xl border border-surface-border bg-surface-base p-ds-03">
-        {/* Visibility toggle — Switch replaces icon-button toggle */}
-        {showVisibility && (
-          <div className="mb-px flex shrink-0 items-center gap-ds-02">
-            <Tooltip>
-              <TooltipTrigger asChild>
-                <div className="flex items-center gap-ds-02">
-                  <Icon
-                    icon={isClient ? IconEye : IconLock}
-                    size="xs"
-                    className={isClient ? 'text-warning-11' : 'text-surface-fg-subtle'}
-                  />
-                  <Switch
-                    size="sm"
-                    color="success"
-                    checked={isClient}
-                    onCheckedChange={(checked) =>
-                      setVisibility(checked ? 'CLIENT' : 'INTERNAL')
-                    }
-                    aria-label={
-                      isClient
-                        ? 'Visible to client — toggle to make team only'
-                        : 'Team only — toggle to make visible to client'
-                    }
-                  />
-                </div>
-              </TooltipTrigger>
-              <TooltipContent>
-                {isClient
-                  ? 'Visible to client — toggle to make team only'
-                  : 'Team only — toggle to make visible to client'}
-              </TooltipContent>
-            </Tooltip>
+      <div
+        className={cn(
+          'flex items-end gap-ds-02 rounded-ds-xl border p-ds-03 transition-colors',
+          isClient && showVisibility
+            ? 'border-warning-7 bg-warning-2'
+            : 'border-surface-border bg-surface-1',
+        )}
+      >
+        {/* Client mode warning inline */}
+        {showVisibility && isClient && (
+          <div className="mb-px flex shrink-0 items-center">
+            <Icon icon={IconEye} size="xs" className="text-warning-11" />
           </div>
         )}
 
@@ -170,7 +171,10 @@ export function TaskComposer({
           placeholder={resolvedPlaceholder}
           aria-label="Message input"
           rows={1}
-          className="max-h-[160px] min-h-[24px] flex-1 resize-none bg-transparent text-ds-sm text-surface-fg placeholder:text-surface-fg-subtle focus:outline-none"
+          className={cn(
+            'max-h-[160px] min-h-[24px] flex-1 resize-none bg-transparent text-ds-sm text-surface-fg placeholder:text-surface-fg-subtle focus:outline-none',
+            isClient && showVisibility && 'placeholder:text-warning-11/50',
+          )}
         />
 
         {/* Action buttons */}

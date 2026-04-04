@@ -279,6 +279,18 @@ export function TaskPanelPropertiesCard() {
     return { overloaded, elevated, onLeave }
   }, [allPeople])
 
+  // Enrich members with isOnLeave from assignees/leads for PeoplePicker
+  const enrichedMembers = React.useMemo(() => {
+    const leaveSet = new Set<string>()
+    for (const p of [...task.assignees, ...task.leads]) {
+      if (p.isOnLeave) leaveSet.add(p.id)
+    }
+    if (leaveSet.size === 0) return task.members
+    return task.members.map((m) =>
+      leaveSet.has(m.id) ? { ...m, isOnLeave: true } : m,
+    )
+  }, [task.members, task.assignees, task.leads])
+
   const handleToggleLead = React.useCallback(
     (memberId: string) => {
       if (leadIds.has(memberId)) onRemoveLead(memberId)
@@ -508,7 +520,7 @@ export function TaskPanelPropertiesCard() {
         {/* ═══ People ═════════════════════════════════════════════════════ */}
         {interactive ? (
           <PeoplePicker
-            members={task.members}
+            members={enrichedMembers}
             assignees={task.assignees}
             leads={task.leads}
             onAssign={onAddAssignee}

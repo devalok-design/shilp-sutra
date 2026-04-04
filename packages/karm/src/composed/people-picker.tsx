@@ -4,7 +4,6 @@ import * as React from 'react'
 import { IconCheck, IconStar, IconStarFilled } from '@tabler/icons-react'
 import { Icon } from '@/ui/icon'
 import { cn } from '@/ui/lib/utils'
-import { Button } from '@/ui/button'
 import { Avatar, AvatarImage, AvatarFallback } from '@/ui/avatar'
 import { Tooltip, TooltipTrigger, TooltipContent } from '@/ui/tooltip'
 import { Popover, PopoverTrigger, PopoverContent } from '@/ui/popover'
@@ -17,6 +16,7 @@ export interface PeoplePickerMember {
   id: string
   name: string
   image?: string | null
+  isOnLeave?: boolean
 }
 
 export interface PeoplePickerProps {
@@ -71,17 +71,12 @@ export function PeoplePicker({
     [leads],
   )
 
-  const defaultHint = (
-    <span className="flex items-center gap-1">
-      Click to assign ·{' '}
-      <Icon icon={IconStarFilled} size="xs" className="text-warning-9" /> = lead
-    </span>
-  )
-
-  const resolvedHint = hint === undefined ? defaultHint : hint
+  const resolvedHint = hint === undefined
+    ? <span className="text-surface-fg-subtle/60">Click name to assign · star for lead</span>
+    : hint
 
   const hintEl = resolvedHint !== null && (
-    <p className="text-[10px] text-surface-fg-subtle/50 uppercase tracking-wider px-ds-02">
+    <p className="text-[10px] text-surface-fg-subtle/50 px-ds-02 py-ds-01">
       {resolvedHint}
     </p>
   )
@@ -91,7 +86,7 @@ export function PeoplePicker({
       <PopoverTrigger asChild>{children}</PopoverTrigger>
       <PopoverContent
         align={align}
-        className="w-[240px] p-ds-02 border-surface-border-strong bg-surface-overlay shadow-floating"
+        className="w-[260px] p-ds-02 border-surface-border-strong bg-surface-overlay shadow-floating"
       >
         {hintPosition === 'top' && hintEl}
 
@@ -101,14 +96,14 @@ export function PeoplePicker({
             const isLead = leadIds.has(member.id)
 
             return (
-              <Button
+              <button
                 key={member.id}
-                variant="ghost"
-                size="compact-sm"
-                weight="normal"
+                type="button"
                 className={cn(
-                  'w-full justify-start',
-                  isAssigned && 'bg-surface-raised-hover',
+                  'flex items-center gap-ds-03 w-full rounded-ds-md px-ds-02 py-ds-02 text-left transition-colors',
+                  isAssigned
+                    ? 'bg-surface-raised-hover hover:bg-surface-raised-active'
+                    : 'hover:bg-surface-raised-hover',
                 )}
                 onClick={() =>
                   isAssigned
@@ -116,61 +111,73 @@ export function PeoplePicker({
                     : onAssign(member.id)
                 }
               >
-                <Avatar size="xs" className="h-5 w-5 shrink-0">
+                <Avatar size="xs" className="h-6 w-6 shrink-0">
                   {member.image && (
                     <AvatarImage src={member.image} alt={member.name} />
                   )}
-                  <AvatarFallback>{getInitials(member.name)}</AvatarFallback>
+                  <AvatarFallback className="text-[10px]">
+                    {getInitials(member.name)}
+                  </AvatarFallback>
                 </Avatar>
 
-                <span className="truncate">{member.name}</span>
+                <div className="flex flex-col min-w-0 flex-1">
+                  <span className={cn(
+                    'text-ds-sm truncate',
+                    isAssigned ? 'text-surface-fg' : 'text-surface-fg-muted',
+                  )}>
+                    {member.name}
+                  </span>
+                  {member.isOnLeave && (
+                    <span className="text-[10px] text-warning-11">On leave</span>
+                  )}
+                </div>
 
-                <span className="flex-1" />
-
-                {isAssigned && (
-                  <>
-                    <Tooltip>
-                      <TooltipTrigger asChild>
-                        <span
-                          role="button"
-                          tabIndex={0}
-                          className="shrink-0 rounded-ds-sm p-0.5 transition-colors hover:bg-surface-raised"
-                          onClick={(e) => {
+                {/* Lead star — visible for assigned members + anyone who is already a lead */}
+                {(isAssigned || isLead) && (
+                  <Tooltip>
+                    <TooltipTrigger asChild>
+                      <span
+                        role="button"
+                        tabIndex={0}
+                        className="shrink-0 rounded-ds-sm p-0.5 transition-colors hover:bg-surface-raised"
+                        onClick={(e) => {
+                          e.stopPropagation()
+                          onToggleLead(member.id)
+                        }}
+                        onKeyDown={(e) => {
+                          if (e.key === 'Enter' || e.key === ' ') {
+                            e.preventDefault()
                             e.stopPropagation()
                             onToggleLead(member.id)
-                          }}
-                          onKeyDown={(e) => {
-                            if (e.key === 'Enter' || e.key === ' ') {
-                              e.preventDefault()
-                              e.stopPropagation()
-                              onToggleLead(member.id)
-                            }
-                          }}
-                        >
-                          <Icon
-                            icon={isLead ? IconStarFilled : IconStar}
-                            size="xs"
-                            className={
-                              isLead
-                                ? 'text-warning-9'
-                                : 'text-surface-fg-subtle/30'
-                            }
-                          />
-                        </span>
-                      </TooltipTrigger>
-                      <TooltipContent>
-                        {isLead ? 'Remove as lead' : 'Make lead'}
-                      </TooltipContent>
-                    </Tooltip>
-
-                    <Icon
-                      icon={IconCheck}
-                      size="xs"
-                      className="shrink-0 text-accent-9"
-                    />
-                  </>
+                          }
+                        }}
+                      >
+                        <Icon
+                          icon={isLead ? IconStarFilled : IconStar}
+                          size="xs"
+                          className={
+                            isLead
+                              ? 'text-warning-9'
+                              : 'text-surface-fg-subtle/30'
+                          }
+                        />
+                      </span>
+                    </TooltipTrigger>
+                    <TooltipContent>
+                      {isLead ? 'Remove as lead' : 'Make lead'}
+                    </TooltipContent>
+                  </Tooltip>
                 )}
-              </Button>
+
+                {/* Assigned check */}
+                {isAssigned && (
+                  <Icon
+                    icon={IconCheck}
+                    size="xs"
+                    className="shrink-0 text-success-11"
+                  />
+                )}
+              </button>
             )
           })}
         </div>

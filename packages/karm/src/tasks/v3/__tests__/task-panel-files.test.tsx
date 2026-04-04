@@ -135,10 +135,9 @@ describe('TaskPanelFiles', () => {
 
   it('staff sees upload and attach link buttons', () => {
     renderWithProvider()
-    // There are two buttons matching /upload/i — the action-bar "Upload" and
-    // the bottom "+ Upload files" drop target. Check at least one exists.
-    const uploadButtons = screen.getAllByRole('button', { name: /upload/i })
-    expect(uploadButtons.length).toBeGreaterThanOrEqual(1)
+    expect(
+      screen.getByRole('button', { name: /upload/i }),
+    ).toBeInTheDocument()
     expect(
       screen.getByRole('button', { name: /attach link/i }),
     ).toBeInTheDocument()
@@ -153,8 +152,9 @@ describe('TaskPanelFiles', () => {
 
   it('COLLABORATOR sees upload button', () => {
     renderWithProvider({ clientMode: 'COLLABORATOR' })
-    const uploadButtons = screen.getAllByRole('button', { name: /upload/i })
-    expect(uploadButtons.length).toBeGreaterThanOrEqual(1)
+    expect(
+      screen.getByRole('button', { name: /upload/i }),
+    ).toBeInTheDocument()
   })
 
   it('client mode filters out non-visible files', () => {

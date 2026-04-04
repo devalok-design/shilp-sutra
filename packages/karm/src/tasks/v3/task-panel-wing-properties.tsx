@@ -328,7 +328,7 @@ export function TaskPanelPropertiesCard() {
                   />
                 </span>
               </PopoverTrigger>
-              <PopoverContent className={cn('w-[180px] p-ds-02', popoverCls)} align="start" sideOffset={4}>
+              <PopoverContent className={cn('w-[180px] p-ds-02 flex flex-col', popoverCls)} align="start" sideOffset={4}>
                 {task.statusOptions.length === 0 ? (
                   <p className="px-ds-03 py-ds-02 text-ds-xs text-surface-fg-subtle">No status options</p>
                 ) : (
@@ -367,7 +367,7 @@ export function TaskPanelPropertiesCard() {
                   <span className="text-[12px] font-medium">{priorityCfg.label}</span>
                 </button>
               </PopoverTrigger>
-              <PopoverContent className={cn('w-[160px] p-ds-02', popoverCls)} align="start" sideOffset={4}>
+              <PopoverContent className={cn('w-[160px] p-ds-02 flex flex-col', popoverCls)} align="start" sideOffset={4}>
                 {PRIORITIES.map((p) => {
                   const c = PRIORITY_CONFIG[p]
                   return (
@@ -593,7 +593,7 @@ export function TaskPanelPropertiesCard() {
                           {task.phase?.name ?? <span className="text-surface-fg-subtle/40">None</span>}
                         </button>
                       </PopoverTrigger>
-                      <PopoverContent className={cn('w-[180px] p-ds-02', popoverCls)} align="start" sideOffset={4}>
+                      <PopoverContent className={cn('w-[180px] p-ds-02 flex flex-col', popoverCls)} align="start" sideOffset={4}>
                         {task.phaseOptions!.map((opt) => (
                           <Button key={opt.id} variant="ghost" size="compact-sm" weight="normal"
                             onClick={() => { onUpdatePhase(opt.id); setPhaseOpen(false) }}

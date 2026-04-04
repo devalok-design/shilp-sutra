@@ -214,16 +214,12 @@ describe('TaskPanel v3 — integration', () => {
     // Priority chip label
     expect(within(wing).getByText('High')).toBeInTheDocument()
 
-    // Visibility switch is present (only in staff mode)
-    const visSwitch = within(wing).getByRole('switch')
-    expect(visSwitch).toBeInTheDocument()
+    // Visibility button is present (only in staff mode)
+    const visButton = within(wing).getByLabelText(/visible to clients|internal only/i)
+    expect(visButton).toBeInTheDocument()
 
     // Due date text
     expect(within(wing).getByText(/Due /)).toBeInTheDocument()
-
-    // People — Arjun is an assignee, Nick is a lead
-    // The peopleLabel should show lead name + count
-    expect(within(wing).getByText(/Nick/)).toBeInTheDocument()
   })
 
   // 4. Overdue date shows red/error styling

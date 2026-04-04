@@ -135,7 +135,7 @@ export function PeoplePicker({
           </div>
         )}
 
-        <div className="flex flex-col gap-ds-01 max-h-[280px] overflow-y-auto">
+        <div className="flex flex-col gap-ds-01 max-h-[280px] overflow-y-auto [&::-webkit-scrollbar]:w-1 [&::-webkit-scrollbar-track]:bg-transparent [&::-webkit-scrollbar-thumb]:rounded-full [&::-webkit-scrollbar-thumb]:bg-surface-border">
           {filtered.length === 0 && (
             <p className="px-ds-03 py-ds-04 text-center text-ds-xs text-surface-fg-subtle">
               No matches
@@ -169,10 +169,13 @@ export function PeoplePicker({
 
                 <div className="flex flex-col min-w-0 flex-1">
                   <span className={cn(
-                    'text-ds-sm truncate',
+                    'text-ds-sm truncate inline-flex items-center gap-1',
                     isAssigned ? 'text-accent-11 font-semibold' : 'text-surface-fg-muted',
                   )}>
                     {member.name}
+                    {isLead && (
+                      <Icon icon={IconStarFilled} size="xs" className="text-warning-9 shrink-0" />
+                    )}
                   </span>
                   {member.isOnLeave && (
                     <span className="text-[10px] text-warning-11">On leave</span>

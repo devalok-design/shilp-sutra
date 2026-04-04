@@ -100,9 +100,9 @@ export function PeoplePicker({
                 key={member.id}
                 type="button"
                 className={cn(
-                  'flex items-center gap-ds-03 w-full rounded-ds-md px-ds-02 py-ds-02 text-left transition-colors',
+                  'group/row flex items-center gap-ds-03 w-full rounded-ds-md px-ds-02 py-ds-02 text-left transition-colors',
                   isAssigned
-                    ? 'bg-surface-raised-hover hover:bg-surface-raised-active'
+                    ? 'bg-accent-2 hover:bg-accent-3'
                     : 'hover:bg-surface-raised-hover',
                 )}
                 onClick={() =>
@@ -132,14 +132,17 @@ export function PeoplePicker({
                   )}
                 </div>
 
-                {/* Lead star — visible for assigned members + anyone who is already a lead */}
+                {/* Lead star — always visible if lead, otherwise show on row hover */}
                 {(isAssigned || isLead) && (
                   <Tooltip>
                     <TooltipTrigger asChild>
                       <span
                         role="button"
                         tabIndex={0}
-                        className="shrink-0 rounded-ds-sm p-0.5 transition-colors hover:bg-surface-raised"
+                        className={cn(
+                          'shrink-0 rounded-ds-sm p-0.5 transition-all hover:bg-surface-raised',
+                          isLead ? 'opacity-100' : 'opacity-0 group-hover/row:opacity-100',
+                        )}
                         onClick={(e) => {
                           e.stopPropagation()
                           onToggleLead(member.id)

@@ -233,7 +233,7 @@ function FilterBar({
   onChange: (filter: TimelineFilter) => void
 }) {
   return (
-    <div className="px-ds-02 pb-ds-02">
+    <div className="px-ds-04 pb-ds-02">
       <ToggleGroup
         type="single"
         value={value}

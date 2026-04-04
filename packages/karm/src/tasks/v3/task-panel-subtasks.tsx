@@ -123,7 +123,7 @@ export function TaskPanelSubtasks({
                 <label
                   key={subtask.id}
                   className={cn(
-                    'flex items-center gap-ds-03 rounded-ds-md px-ds-03 py-ds-02',
+                    'flex items-center gap-ds-03 rounded-ds-md px-ds-03 py-ds-03',
                     !clientMode && 'hover:bg-surface-raised-hover transition-colors cursor-pointer',
                   )}
                 >
@@ -154,7 +154,7 @@ export function TaskPanelSubtasks({
               {!isAdding && (
                 <button
                   type="button"
-                  className="mt-ds-02 text-ds-sm text-accent-11 hover:text-accent-12 transition-colors"
+                  className="mt-ds-02 px-ds-03 text-ds-sm text-accent-11 hover:text-accent-12 transition-colors"
                   onClick={() => setIsAdding(true)}
                 >
                   + Add subtask

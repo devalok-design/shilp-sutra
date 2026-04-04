@@ -93,7 +93,7 @@ function StatusPill({ interactive }: { interactive: boolean }) {
     task.statusOptions.find((o) => o.id === task.status)?.name ?? task.status
 
   const dot = (
-    <span className="h-2 w-2 shrink-0 rounded-full bg-accent-9" aria-hidden />
+    <span className="h-2.5 w-2.5 shrink-0 rounded-full bg-accent-9" aria-hidden />
   )
 
   const content = (
@@ -149,7 +149,7 @@ function StatusPill({ interactive }: { interactive: boolean }) {
                 opt.id === task.status && 'bg-surface-raised-hover',
               )}
             >
-              <span className="h-2 w-2 shrink-0 rounded-full bg-accent-9" aria-hidden />
+              <span className="h-2.5 w-2.5 shrink-0 rounded-full bg-accent-9" aria-hidden />
               <span className="text-ds-sm text-surface-fg">{opt.name}</span>
               {opt.id === task.status && (
                 <Icon icon={IconCheck} size="sm" className="ml-auto text-accent-11" />
@@ -443,7 +443,7 @@ function PeekTriageRow() {
             type="button"
             className={cn(pillBase, pillInteractive, 'text-ds-xs')}
           >
-            <span className="h-2 w-2 shrink-0 rounded-full bg-accent-9" aria-hidden />
+            <span className="h-2.5 w-2.5 shrink-0 rounded-full bg-accent-9" aria-hidden />
             {statusName}
           </button>
         </PopoverTrigger>
@@ -606,7 +606,7 @@ export function TaskPanelQuickProps({
   const canEditBasic = isStaff || clientMode === 'COLLABORATOR'
 
   return (
-    <div className={cn('px-ds-05 pt-ds-03 pb-ds-02', className)} {...props}>
+    <div className={cn('px-ds-06 pt-ds-03 pb-ds-02', className)} {...props}>
       {/* Property pills */}
       <div className="flex flex-wrap items-center gap-ds-03">
         <StatusPill interactive={isStaff} />

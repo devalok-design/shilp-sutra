@@ -29,9 +29,9 @@ export function TaskPanelDependencies(props: TaskPanelDependenciesProps) {
                 <Icon icon={IconArrowBarRight} size="xs" className="text-error-11" />
                 <span className="text-ds-xs font-medium text-error-11">Blocked by</span>
               </div>
-              <div className="flex flex-col gap-ds-01 pl-ds-05">
+              <div className="flex flex-col gap-ds-01">
                 {deps.blockedBy.map(dep => (
-                  <div key={dep.id} className="flex items-center gap-ds-02 text-ds-xs">
+                  <div key={dep.id} className="flex items-center gap-ds-02 text-ds-xs rounded-ds-md px-ds-03 py-ds-03 hover:bg-surface-raised-hover transition-colors">
                     <span className="font-mono text-surface-fg-subtle">{dep.taskId}</span>
                     <span className="text-surface-fg-muted truncate">{dep.title}</span>
                     <Badge size="xs" variant="outline" className="ml-auto shrink-0">{dep.status}</Badge>
@@ -46,9 +46,9 @@ export function TaskPanelDependencies(props: TaskPanelDependenciesProps) {
                 <Icon icon={IconArrowBarToRight} size="xs" className="text-warning-11" />
                 <span className="text-ds-xs font-medium text-warning-11">Blocking</span>
               </div>
-              <div className="flex flex-col gap-ds-01 pl-ds-05">
+              <div className="flex flex-col gap-ds-01">
                 {deps.blocking.map(dep => (
-                  <div key={dep.id} className="flex items-center gap-ds-02 text-ds-xs">
+                  <div key={dep.id} className="flex items-center gap-ds-02 text-ds-xs rounded-ds-md px-ds-03 py-ds-03 hover:bg-surface-raised-hover transition-colors">
                     <span className="font-mono text-surface-fg-subtle">{dep.taskId}</span>
                     <span className="text-surface-fg-muted truncate">{dep.title}</span>
                     <Badge size="xs" variant="outline" className="ml-auto shrink-0">{dep.status}</Badge>

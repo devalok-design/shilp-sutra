@@ -323,7 +323,7 @@ export function TaskPanelPropertiesCard() {
                     label={statusName}
                     size="sm"
                     onClick={() => setStatusOpen((o) => !o)}
-                    className="w-full justify-center"
+                    className="w-full justify-center rounded-ds-md px-2.5 py-1.5 text-[12px]"
                   />
                 </span>
               </PopoverTrigger>
@@ -350,7 +350,7 @@ export function TaskPanelPropertiesCard() {
               {...statusBadgeProps}
               label={statusName}
               size="sm"
-              className="flex-1 justify-center"
+              className="flex-1 justify-center rounded-ds-md px-2.5 py-1.5 text-[12px]"
             />
           )}
 

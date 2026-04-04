@@ -210,17 +210,6 @@ export function TaskPanelPropertiesCard() {
     [allPeople, leadIds],
   )
 
-  // People label: lead name or first assignee name + remaining count
-  const peopleLabel = React.useMemo(() => {
-    if (allPeople.length === 0) return ''
-    // Prefer showing the lead's name
-    const lead = task.leads[0]
-    const primaryName = lead ? lead.name.split(' ')[0] : allPeople[0].name.split(' ')[0]
-    const remaining = allPeople.length - 1
-    if (remaining > 0) return `${primaryName} +${remaining}`
-    return primaryName
-  }, [allPeople, task.leads])
-
   // Enrich members with isOnLeave from assignees/leads for PeoplePicker
   const enrichedMembers = React.useMemo(() => {
     const leaveSet = new Set<string>()
@@ -475,12 +464,7 @@ export function TaskPanelPropertiesCard() {
               className="flex items-center gap-2.5 w-full rounded-ds-md py-1.5 hover:bg-surface-raised-hover transition-colors cursor-pointer text-left"
             >
               {allPeople.length > 0 ? (
-                <>
-                  <AvatarGroup users={avatarUsers} max={3} size="xs" />
-                  <span className="text-[13px] text-surface-fg truncate">
-                    {peopleLabel}
-                  </span>
-                </>
+                <AvatarGroup users={avatarUsers.slice(0, 3)} max={3} size="xs" />
               ) : (
                 <>
                   <span className="flex h-[22px] w-[22px] items-center justify-center rounded-full border border-dashed border-surface-fg-subtle/30">
@@ -493,8 +477,7 @@ export function TaskPanelPropertiesCard() {
           </PeoplePicker>
         ) : allPeople.length > 0 ? (
           <div className="flex items-center gap-2.5 py-1.5">
-            <AvatarGroup users={avatarUsers} max={3} size="xs" />
-            <span className="text-[13px] text-surface-fg truncate">{peopleLabel}</span>
+            <AvatarGroup users={avatarUsers.slice(0, 3)} max={3} size="xs" />
           </div>
         ) : null}
 

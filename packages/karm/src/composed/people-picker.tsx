@@ -74,25 +74,26 @@ export function PeoplePicker({
     [leads],
   )
 
-  // Filter + sort: assigned first, then alphabetical
+  // Filter + sort: leads first, then assigned, then alphabetical
   const filtered = React.useMemo(() => {
     const q = query.toLowerCase().trim()
     const list = q
       ? members.filter((m) => m.name.toLowerCase().includes(q))
       : members
     return [...list].sort((a, b) => {
+      const aLead = leadIds.has(a.id) ? 0 : 1
+      const bLead = leadIds.has(b.id) ? 0 : 1
+      if (aLead !== bLead) return aLead - bLead
       const aAssigned = assigneeIds.has(a.id) ? 0 : 1
       const bAssigned = assigneeIds.has(b.id) ? 0 : 1
       if (aAssigned !== bAssigned) return aAssigned - bAssigned
       return a.name.localeCompare(b.name)
     })
-  }, [members, query, assigneeIds])
+  }, [members, query, assigneeIds, leadIds])
 
   const showSearch = members.length > 5
 
-  const resolvedHint = hint === undefined
-    ? <span className="text-surface-fg-subtle/60">Click name to assign · star for lead</span>
-    : hint
+  const resolvedHint = hint === undefined ? null : hint
 
   const hintEl = resolvedHint !== null && (
     <p className="text-[10px] text-surface-fg-subtle/50 px-ds-02 py-ds-01">
@@ -105,11 +106,11 @@ export function PeoplePicker({
       <PopoverTrigger asChild>{children}</PopoverTrigger>
       <PopoverContent
         align={align}
-        className="w-[260px] p-ds-02 border-surface-border-strong bg-surface-overlay shadow-floating"
+        className="w-[260px] p-ds-03 border-surface-border-strong bg-surface-overlay shadow-floating"
         onOpenAutoFocus={(e) => {
           if (showSearch) {
             e.preventDefault()
-            inputRef.current?.focus()
+            setTimeout(() => inputRef.current?.focus(), 0)
           }
         }}
       >
@@ -121,15 +122,15 @@ export function PeoplePicker({
             <Icon
               icon={IconSearch}
               size="xs"
-              className="absolute left-ds-02 top-1/2 -translate-y-1/2 text-surface-fg-subtle/40 pointer-events-none"
+              className="absolute left-2.5 top-1/2 -translate-y-1/2 text-surface-fg-subtle/40 pointer-events-none"
             />
             <input
               ref={inputRef}
               type="text"
               value={query}
               onChange={(e) => setQuery(e.target.value)}
-              placeholder="Search people..."
-              className="w-full rounded-ds-md border border-surface-border bg-surface-1 py-ds-02 pl-7 pr-ds-03 text-ds-xs text-surface-fg placeholder:text-surface-fg-subtle/40 outline-none focus:border-accent-7 transition-colors"
+              placeholder="Search..."
+              className="w-full rounded-ds-lg border border-surface-border bg-surface-1 py-1.5 pl-7 pr-ds-03 text-ds-sm text-surface-fg placeholder:text-surface-fg-subtle/40 outline-none focus:border-accent-7 transition-colors"
             />
           </div>
         )}

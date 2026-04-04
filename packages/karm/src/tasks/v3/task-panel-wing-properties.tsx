@@ -9,6 +9,8 @@ import {
   IconArrowUp,
   IconArrowDown,
   IconMinus,
+  IconEye,
+  IconLock,
 } from '@tabler/icons-react'
 import { Icon } from '@/ui/icon'
 import { motion } from 'framer-motion'
@@ -18,7 +20,6 @@ import { cn } from '@/ui/lib/utils'
 import { Badge } from '@/ui/badge'
 import { Tooltip, TooltipTrigger, TooltipContent } from '@/ui/tooltip'
 import { Popover, PopoverTrigger, PopoverContent } from '@/ui/popover'
-import { Switch } from '@/ui/switch'
 import { Progress } from '@/ui/progress'
 import { tweens } from '@/ui/lib/motion'
 import { StatusBadge } from '@/composed/status-badge'
@@ -393,16 +394,19 @@ export function TaskPanelPropertiesCard() {
           {interactive && (
             <Tooltip>
               <TooltipTrigger asChild>
-                <span className="ml-auto flex items-center"
+                <button
+                  type="button"
+                  onClick={() => onToggleVisibility()}
+                  className={cn(
+                    'ml-auto inline-flex items-center gap-1 rounded-ds-md px-2 py-1.5 transition-colors cursor-pointer',
+                    task.visibility === 'EVERYONE'
+                      ? 'bg-success-3 text-success-11 hover:bg-success-4'
+                      : 'bg-surface-raised-hover text-surface-fg-subtle hover:bg-surface-raised-active',
+                  )}
                   aria-label={task.visibility === 'EVERYONE' ? 'Visible to clients — click to make internal' : 'Internal only — click to make client visible'}
                 >
-                  <Switch
-                    size="sm"
-                    color="success"
-                    checked={task.visibility === 'EVERYONE'}
-                    onCheckedChange={() => onToggleVisibility()}
-                  />
-                </span>
+                  <Icon icon={task.visibility === 'EVERYONE' ? IconEye : IconLock} size="xs" />
+                </button>
               </TooltipTrigger>
               <TooltipContent>
                 {task.visibility === 'EVERYONE' ? 'Client visible' : 'Internal only'}

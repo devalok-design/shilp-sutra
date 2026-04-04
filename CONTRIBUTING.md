@@ -35,8 +35,6 @@ Example: `AdminDashboard.Root` / `AdminDashboard.Calendar` / `AdminDashboard.Con
 
 ```
 primitives/ → ui/ → composed/ → shell/
-                                  ↑
-                     karm/ ───────┘
 ```
 
 | Layer | Purpose | May import from |
@@ -44,13 +42,10 @@ primitives/ → ui/ → composed/ → shell/
 | `ui/` | Generic primitives, zero domain knowledge | `primitives/` only |
 | `composed/` | Built from ui/, domain-agnostic, may have complex state | `ui/` |
 | `shell/` | App-level singletons, rendered once per layout | `ui/`, `composed/` |
-| `karm/` | Domain-specific (tasks, boards, attendance, HR) | `ui/`, `composed/`, `shell/`, `hooks/`, sibling karm/ |
 
 **Forbidden imports:**
-- `ui/` must NOT import from `composed/`, `shell/`, or `karm/`
-- `composed/` must NOT import from `karm/`
-- `shell/` must NOT import from `karm/`
-- `karm/` must NOT import from `primitives/_internal/` or `@primitives/*`
+- `ui/` must NOT import from `composed/` or `shell/`
+- `composed/` must NOT import from `shell/`
 
 ## Commit Convention
 
@@ -59,7 +54,6 @@ type(scope): description
 
 feat(ui): add new component
 fix(a11y): resolve contrast issue
-refactor(karm): extract hook
 test(composed): add tests for DatePicker
 refactor(shell): update sidebar layout
 docs: update README

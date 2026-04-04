@@ -2,7 +2,7 @@
 
 ## Quick Reference
 
-- **Monorepo**: pnpm workspaces — `packages/core`, `packages/brand`, `packages/karm`
+- **Monorepo**: pnpm workspaces — `packages/core`, `packages/brand`
 - **Stack**: React 18, TypeScript 5.7 (strict), Vite 5.4, Tailwind 3.4, CVA
 - **Test**: `pnpm test` (Vitest + RTL + vitest-axe)
 - **Build**: `pnpm build` (per-package)

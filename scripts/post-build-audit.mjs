@@ -44,7 +44,7 @@ if (staleJs.length > 0) {
 
 // ─── Check 2: inject-use-client blast radius ────────────────
 
-const PACKAGES = ['core', 'karm']
+const PACKAGES = ['core']
 
 for (const pkg of PACKAGES) {
   const distDir = join(ROOT, 'packages', pkg, 'dist')

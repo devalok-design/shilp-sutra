@@ -10,7 +10,6 @@
     "pre-publish-audit": "node scripts/pre-publish-audit.mjs",
     "build:core": "pnpm --filter @devalok/shilp-sutra build",
     "build:brand": "pnpm --filter @devalok/shilp-sutra-brand build",
-    "build:karm": "pnpm --filter @devalok/shilp-sutra-karm build",
     "build-storybook": "storybook build",
     "build:playground": "cd apps/playground && pnpm build",
     "typecheck": "pnpm -r typecheck",

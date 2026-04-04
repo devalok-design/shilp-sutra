@@ -128,11 +128,10 @@ gate('Working tree is clean', () => {
 console.log('\n\x1b[36mVersion Consistency\x1b[0m')
 
 const coreVersion = getPackageVersion('core')
-const karmVersion = getPackageVersion('karm')
 const clVersion = getChangelogLatestVersion()
 
-gate(`Core version (${coreVersion}) or Karm version (${karmVersion}) matches CHANGELOG (${clVersion})`, () => {
-  return coreVersion === clVersion || karmVersion === clVersion || `CHANGELOG latest is ${clVersion}`
+gate(`Core version (${coreVersion}) matches CHANGELOG (${clVersion})`, () => {
+  return coreVersion === clVersion || `CHANGELOG latest is ${clVersion}`
 })
 
 gate('CHANGELOG has entry for current version', () => {
@@ -195,21 +194,6 @@ gate('Core tests pass', () => {
   }
 })
 
-gate('Karm tests pass', () => {
-  try {
-    execSync('pnpm vitest run --reporter=dot', {
-      cwd: join(ROOT, 'packages/karm'),
-      encoding: 'utf-8',
-      stdio: 'pipe',
-      timeout: 300000,
-    })
-    return true
-  } catch (e) {
-    const failMatch = e.stdout?.match(/(\d+) failed/)
-    return failMatch ? `${failMatch[1]} tests failed` : 'Tests failed'
-  }
-})
-
 gate('Build succeeds', () => {
   try {
     execSync('pnpm build', { cwd: ROOT, encoding: 'utf-8', stdio: 'pipe', timeout: 300000 })
@@ -247,7 +231,6 @@ gate('No deprecated surface tokens in components', () => {
   const violations = []
   const sourceFiles = [
     ...globSync('packages/core/src/**/*.tsx', { cwd: ROOT }),
-    ...globSync('packages/karm/src/**/*.tsx', { cwd: ROOT }),
   ]
 
   for (const file of sourceFiles) {
@@ -279,7 +262,6 @@ gate('No deprecated shadow tokens in components', () => {
   const violations = []
   const sourceFiles = [
     ...globSync('packages/core/src/**/*.tsx', { cwd: ROOT }),
-    ...globSync('packages/karm/src/**/*.tsx', { cwd: ROOT }),
   ]
 
   for (const file of sourceFiles) {

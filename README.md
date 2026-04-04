@@ -10,7 +10,8 @@ The Devalok Design System -- tokens, components, and patterns for React & Next.j
 | --- | --- |
 | `@devalok/shilp-sutra` | Core tokens, 60+ UI primitives, 14 composed components, 7 shell components, and Tailwind preset |
 | `@devalok/shilp-sutra-brand` | Brand logos and SVG/PNG/WebP assets (Devalok, Karm) |
-| `@devalok/shilp-sutra-karm` | Domain components -- board, tasks, chat, dashboard, client, admin |
+
+> **Note:** Domain-specific components (board, tasks, chat, dashboard, client, admin) previously published as `@devalok/shilp-sutra-karm` have been moved to their respective consumer app repositories.
 
 ```bash
 # Core (required)
@@ -18,9 +19,6 @@ pnpm add @devalok/shilp-sutra
 
 # Brand assets (optional)
 pnpm add @devalok/shilp-sutra-brand
-
-# Karm domain components (optional -- requires core >=0.3.0 as peer)
-pnpm add @devalok/shilp-sutra-karm
 ```
 
 ## Quick Setup
@@ -37,7 +35,6 @@ export default {
   content: [
     './app/**/*.{ts,tsx}',
     './node_modules/@devalok/shilp-sutra/dist/**/*.js',
-    './node_modules/@devalok/shilp-sutra-karm/dist/**/*.js',
   ],
 }
 ```
@@ -58,8 +55,6 @@ import { Button, Dialog, Input } from '@devalok/shilp-sutra/ui'
 import { PageHeader, DatePicker } from '@devalok/shilp-sutra/composed'
 import { AppSidebar, TopBar } from '@devalok/shilp-sutra/shell'
 import { DevalokLogo } from '@devalok/shilp-sutra-brand/devalok'
-import { KanbanBoard } from '@devalok/shilp-sutra-karm/board'
-import { ChatPanel } from '@devalok/shilp-sutra-karm/chat'
 ```
 
 ## Mental Model
@@ -206,18 +201,6 @@ Only install the packages you actually use:
 | `@devalok/shilp-sutra-brand/karm` | Karm logos (full, mark, wordmark) |
 | `@devalok/shilp-sutra-brand/assets/*` | Raw SVG/PNG/WebP assets |
 
-### @devalok/shilp-sutra-karm
-
-| Import path | Contents |
-| --- | --- |
-| `@devalok/shilp-sutra-karm` | All Karm domain components |
-| `@devalok/shilp-sutra-karm/board` | Kanban board (drag-drop) |
-| `@devalok/shilp-sutra-karm/tasks` | Task detail panel, properties, tabs |
-| `@devalok/shilp-sutra-karm/chat` | AI chat panel, message list, streaming |
-| `@devalok/shilp-sutra-karm/dashboard` | Attendance CTA, daily brief |
-| `@devalok/shilp-sutra-karm/client` | Client portal (accent provider, header, project card) |
-| `@devalok/shilp-sutra-karm/admin` | Admin dashboard, break management, adjustments |
-
 ## UI Components
 
 ### Core
@@ -266,7 +249,6 @@ pnpm dev                # Start Storybook at localhost:6006
 pnpm build              # Build all packages
 pnpm build:core         # Build core only
 pnpm build:brand        # Build brand only
-pnpm build:karm         # Build karm only
 pnpm typecheck          # TypeScript check (all packages)
 pnpm lint               # ESLint (all packages)
 pnpm test               # Run tests (all packages)

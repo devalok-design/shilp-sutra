@@ -398,7 +398,7 @@ export function TaskPanelPropertiesCard() {
                   type="button"
                   onClick={() => onToggleVisibility()}
                   className={cn(
-                    'ml-auto inline-flex items-center gap-1 rounded-ds-md px-2 py-1.5 transition-colors cursor-pointer',
+                    'ml-auto inline-flex items-center justify-center size-[30px] rounded-ds-md transition-colors cursor-pointer',
                     task.visibility === 'EVERYONE'
                       ? 'bg-success-3 text-success-11 hover:bg-success-4'
                       : 'bg-surface-raised-hover text-surface-fg-subtle hover:bg-surface-raised-active',

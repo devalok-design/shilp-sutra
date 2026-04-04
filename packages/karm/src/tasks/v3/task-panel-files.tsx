@@ -103,39 +103,42 @@ function FileRow({
   const canDelete =
     isStaff || (canDeleteOwn && file.uploadedBy.id === currentUserId)
 
+  const handleRowClick = (e: React.MouseEvent) => {
+    // Don't trigger preview if clicking an action button/link
+    const target = e.target as HTMLElement
+    if (target.closest('button, a, [role="button"]')) return
+    onPreview?.()
+  }
+
   return (
-    <div className="group/file rounded-ds-md px-ds-03 py-ds-02 hover:bg-surface-raised-hover transition-colors">
+    <div
+      className="group/file rounded-ds-md px-ds-03 py-ds-03 hover:bg-surface-raised-hover transition-colors cursor-pointer"
+      onClick={handleRowClick}
+      role="button"
+      tabIndex={0}
+      onKeyDown={(e) => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); onPreview?.() } }}
+    >
       <div className="flex items-center gap-ds-03">
         {/* Thumbnail or icon */}
         {isImage && (file.thumbnailUrl || file.fileUrl) ? (
-          <button
-            type="button"
-            className="size-12 shrink-0 overflow-hidden rounded-ds-md bg-surface-raised"
-            onClick={onPreview}
-          >
+          <div className="size-10 shrink-0 overflow-hidden rounded-ds-md bg-surface-raised">
             <img
               src={file.thumbnailUrl || file.fileUrl}
               alt={file.name}
               className="size-full object-cover"
             />
-          </button>
+          </div>
         ) : (
-          <Icon
-            icon={FileIcon}
-            size="sm"
-            className="shrink-0 text-surface-fg-subtle"
-          />
+          <div className="flex size-10 shrink-0 items-center justify-center rounded-ds-md bg-surface-raised">
+            <Icon icon={FileIcon} size="sm" className="text-surface-fg-subtle" />
+          </div>
         )}
 
         {/* Name + metadata */}
         <div className="min-w-0 flex-1">
-          <button
-            type="button"
-            className="text-ds-sm text-surface-fg truncate block text-left hover:text-accent-11 transition-colors max-w-full"
-            onClick={onPreview}
-          >
+          <span className="text-ds-sm text-surface-fg truncate block text-left max-w-full">
             {file.name}
-          </button>
+          </span>
           <span className="text-ds-xs text-surface-fg-subtle">
             {formatFileSize(file.size)} &middot; {file.uploadedBy.name}
           </span>
@@ -216,18 +219,6 @@ function FileRow({
         </div>
       </div>
 
-      {/* Inline Figma embed */}
-      {file.source === 'figma' && file.embedUrl && (
-        <div className="mt-ds-02 rounded-ds-md overflow-hidden border border-surface-border-subtle">
-          <iframe
-            src={`https://www.figma.com/embed?embed_host=karm&url=${encodeURIComponent(file.embedUrl)}`}
-            className="w-full h-[200px]"
-            allowFullScreen
-            loading="lazy"
-            title={`Figma: ${file.name}`}
-          />
-        </div>
-      )}
     </div>
   )
 }
@@ -246,7 +237,7 @@ function UploadingFileRow({ upload, onCancel, onRetry }: UploadingFileRowProps) 
   const hasError = !!upload.error
 
   return (
-    <div className="flex items-center gap-ds-03 rounded-ds-md px-ds-03 py-ds-02">
+    <div className="flex items-center gap-ds-03 rounded-ds-md px-ds-03 py-ds-03">
       <Icon icon={IconFile} size="sm" className="shrink-0 text-surface-fg-subtle" />
       <div className="min-w-0 flex-1">
         <span className="text-ds-sm text-surface-fg truncate block">
@@ -494,12 +485,17 @@ export function TaskPanelFiles({
       return files.map((file) => renderFileRow(file))
     }
 
-    return CATEGORY_ORDER.map((cat) => {
-      const catFiles = grouped.get(cat)
-      if (!catFiles || catFiles.length === 0) return null
+    const visibleCategories = CATEGORY_ORDER.filter(
+      (cat) => (grouped.get(cat)?.length ?? 0) > 0,
+    )
+    return visibleCategories.map((cat, i) => {
+      const catFiles = grouped.get(cat)!
       return (
         <div key={cat}>
-          <span className="block text-[11px] font-semibold text-surface-fg-subtle/60 uppercase tracking-wider mt-ds-03 mb-ds-01 px-ds-03">
+          <span className={cn(
+            'block text-[11px] font-semibold text-surface-fg-subtle/60 uppercase tracking-wider mb-ds-01 px-ds-03',
+            i > 0 && 'mt-ds-03',
+          )}>
             {CATEGORY_LABELS[cat]}
           </span>
           {catFiles.map((file) => renderFileRow(file))}
@@ -657,17 +653,6 @@ export function TaskPanelFiles({
 
           {/* File list — categorized or flat */}
           {renderFileList()}
-
-          {/* Upload area at bottom — staff and collaborator */}
-          {canUpload && files.length > 0 && (
-            <button
-              type="button"
-              className="mt-ds-02 rounded-ds-lg border border-dashed border-surface-border px-ds-04 py-ds-03 text-center text-ds-xs text-surface-fg-subtle transition-colors hover:border-accent-7 hover:text-accent-11"
-              onClick={() => fileInputRef.current?.click()}
-            >
-              + Upload files
-            </button>
-          )}
 
           <input
             ref={fileInputRef}

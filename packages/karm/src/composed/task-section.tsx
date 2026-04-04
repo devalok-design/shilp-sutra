@@ -80,7 +80,7 @@ export function TaskSection({
       <CollapsibleTrigger asChild>
         <button
           type="button"
-          className="flex w-full items-center gap-ds-02 rounded-ds-md py-ds-02 text-left transition-colors hover:bg-surface-raised-hover -mx-ds-02 px-ds-02"
+          className="flex w-full items-center gap-ds-02 rounded-ds-md py-ds-03 text-left transition-colors hover:bg-surface-raised-hover -mx-ds-02 px-ds-02"
         >
           {chevronPosition === 'left' && chevron}
           <span className="text-[11px] text-surface-fg-subtle/50 uppercase tracking-wider font-medium">

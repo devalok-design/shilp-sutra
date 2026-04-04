@@ -1,7 +1,5 @@
 import * as React from 'react'
 import { cn } from '../ui/lib/utils'
-import { IconChevronRight } from '@tabler/icons-react'
-import { Icon } from '../ui/icon'
 
 export interface Breadcrumb {
   label: string
@@ -38,7 +36,20 @@ const PageHeader = React.forwardRef<HTMLDivElement, PageHeaderProps>(
             {breadcrumbs.map((crumb, index) => (
               <React.Fragment key={index}>
                 {index > 0 && (
-                  <Icon icon={IconChevronRight} size="sm" stroke="light" className="text-surface-fg-subtle" />
+                  <svg
+                    width={16}
+                    height={16}
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
+                    strokeWidth={1.5}
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    aria-hidden="true"
+                    className="text-surface-fg-subtle"
+                  >
+                    <path d="M9 6l6 6l-6 6" />
+                  </svg>
                 )}
                 {crumb.href ? (
                   <a

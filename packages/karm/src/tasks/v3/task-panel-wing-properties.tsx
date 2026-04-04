@@ -585,7 +585,7 @@ export function TaskPanelPropertiesCard() {
                   {interactive ? (
                     <Popover open={phaseOpen} onOpenChange={setPhaseOpen}>
                       <PopoverTrigger asChild>
-                        <button type="button" className="text-[12px] text-surface-fg-muted hover:text-surface-fg transition-colors text-left truncate">
+                        <button type="button" className="text-[12px] text-surface-fg-muted hover:text-surface-fg hover:bg-surface-raised-hover rounded-ds-sm px-1.5 py-1 -mx-1.5 transition-colors text-left truncate">
                           {task.phase?.name ?? <span className="text-surface-fg-subtle/40">None</span>}
                         </button>
                       </PopoverTrigger>
@@ -619,7 +619,7 @@ export function TaskPanelPropertiesCard() {
                   {interactive ? (
                     <Popover open={startDateOpen} onOpenChange={setStartDateOpen}>
                       <PopoverTrigger asChild>
-                        <button type="button" className="text-[12px] text-surface-fg-muted hover:text-surface-fg transition-colors text-left">
+                        <button type="button" className="text-[12px] text-surface-fg-muted hover:text-surface-fg hover:bg-surface-raised-hover rounded-ds-sm px-1.5 py-1 -mx-1.5 transition-colors text-left">
                           {task.startDate ? formatDate(task.startDate) : <span className="text-surface-fg-subtle/40">Not set</span>}
                         </button>
                       </PopoverTrigger>

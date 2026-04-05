@@ -4,6 +4,10 @@
 > Built on the same primitives as shadcn/ui but with key API differences.
 > Read this file BEFORE writing any UI code. Do NOT guess from shadcn/ui knowledge.
 
+## CHANGES (v0.30.0)
+- **RichTextEditor `toolbar` prop** — `toolbar?: ToolbarItem[]` whitelist of toolbar items to display. Omit to show all (default). `ToolbarItem` type exported.
+- **`@devalok/shilp-sutra-karm` removed** — Domain components moved to Karm app repo. npm package deprecated.
+
 ## BREAKING CHANGES (v0.27.0 — Externalized Dependencies)
 
 FilePreview and MarkdownViewer dependencies are now **external** (not bundled).

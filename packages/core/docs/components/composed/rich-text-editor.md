@@ -18,7 +18,10 @@ Exports: RichTextEditor, RichTextViewer
     onFileUpload?: (file: File) => Promise<{ url: string; name: string; size: number }> — enables file attachments
     mentions?: MentionItem[] — static list for @mention autocomplete
     onMentionSearch?: (query: string) => Promise<MentionItem[]> — async search, takes precedence over static mentions
+    toolbar?: ToolbarItem[] — whitelist of toolbar items to show. Omit to show all.
     onMentionSelect?: (item: MentionItem) => void — called when a mention is selected
+
+ToolbarItem: 'bold' | 'italic' | 'underline' | 'strike' | 'highlight' | 'h2' | 'h3' | 'blockquote' | 'bulletList' | 'orderedList' | 'taskList' | 'codeBlock' | 'link' | 'image' | 'file' | 'hr' | 'alignLeft' | 'alignCenter' | 'alignRight' | 'emoji' | 'undo' | 'redo'
 
 MentionItem: { id: string; label: string; avatar?: string }
 
@@ -52,6 +55,9 @@ MentionItem: { id: string; label: string; avatar?: string }
 - Features: bold, italic, underline, strikethrough, highlight, headings, blockquote, lists, task lists, code, links, images, file attachments, mentions, emoji, text alignment, horizontal rule
 
 ## Changes
+### v0.30.0
+- **Added** `toolbar` prop — whitelist of `ToolbarItem` names to control which toolbar buttons appear. Dividers render only between groups that have visible items. `ToolbarItem` type exported from barrel.
+
 ### v0.18.0
 - **Fixed** Use ref to track internal changes, prevent update loop
 

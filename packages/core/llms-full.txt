@@ -5,7 +5,7 @@
 > All variant values and props verified from source CVA definitions.
 >
 > Package: @devalok/shilp-sutra
-> Version: 0.30.0
+> Version: 0.31.0
 
 ---
 
@@ -152,13 +152,12 @@ Note: getFormFieldA11y() was removed in favor of useFormField() hook.
 ## Props
     variant: "subtle" | "filled" | "outline"
     color: "info" | "success" | "warning" | "error" | "neutral"
-    size: "sm" | "md" | "lg"
     title: string (optional)
     onDismiss: () => void (optional, shows X button when provided)
     children: ReactNode (body text)
 
 ## Defaults
-    variant="subtle", color="info", size="md"
+    variant="subtle", color="info"
 
 ## Example
 ```jsx
@@ -398,7 +397,6 @@ Note: getFormFieldA11y() was removed in favor of useFormField() hook.
     disabled: boolean
     onDismiss: () => void (shows dismiss X button)
     maxWidth: number (enables truncation with title tooltip)
-    truncate: boolean (enables ellipsis truncation — use with fixed width className or maxWidth)
     circle: boolean (square aspect-ratio, centered content)
     asChild: boolean
     children: ReactNode
@@ -427,7 +425,7 @@ Note: getFormFieldA11y() was removed in favor of useFormField() hook.
 
 ## Changes
 ### v0.31.0
-- **Added** `truncate` prop — enables ellipsis truncation without requiring maxWidth. Combine with fixed width.
+- **Added** `truncate` prop — enables ellipsis truncation without requiring maxWidth
 
 ### v0.29.0
 - **Changed** (BREAKING) v2 rewrite — Badge is now a full interactive component
@@ -764,12 +762,10 @@ See `Button` docs for the public API.
 
 ## Props
     variant: "default" | "elevated" | "outline" | "flat"
-    color: "default" | "accent" | "error" | "success" | "warning" | "info" | "neutral"
-    size: "sm" | "md" | "lg"
     interactive: boolean (enables hover shadow lift + pointer cursor)
 
 ## Compound Components
-    Card (root — size propagated via CardSizeContext)
+    Card (root)
       CardHeader
         CardTitle
         CardDescription
@@ -777,7 +773,7 @@ See `Button` docs for the public API.
       CardFooter
 
 ## Defaults
-    variant="default", color="default", size="md"
+    variant="default"
 
 ## Example
 ```jsx
@@ -795,7 +791,7 @@ See `Button` docs for the public API.
 
 ## Changes
 ### v0.31.0
-- **Added** `color` prop: semantic border colors (accent, error, success, warning, info, neutral)
+- **Added** `color` prop: semantic border color (accent, error, success, warning, info, neutral)
 - **Added** `size` prop: `sm | md | lg` — padding propagated to sub-components via React context
 
 ### v0.18.0
@@ -2631,9 +2627,7 @@ const { size, stroke } = useIconContext()
 
 ## Props
 ### SelectTrigger
-    variant: "default" | "outline" | "ghost"
-    color: "default" | "error" | "success" | "warning"
-    size: "xs" | "sm" | "md" | "lg"
+    size: "sm" | "md" | "lg"
 
 ## Compound Components
     Select (root — value, onValueChange, defaultValue)
@@ -2646,7 +2640,7 @@ const { size, stroke } = useIconContext()
         SelectSeparator
 
 ## Defaults
-    SelectTrigger variant="default", color="default", size="md"
+    SelectTrigger size: "md"
 
 ## Example
 ```jsx
@@ -2662,14 +2656,13 @@ const { size, stroke } = useIconContext()
 ```
 
 ## Gotchas
-- Size, variant, and color go on SelectTrigger, NOT on Select root
+- Size goes on SelectTrigger, NOT on Select root
 - `<Select size="lg">` is silently ignored (no TypeScript error)
-- `color="error"` auto-sets `aria-invalid="true"` for screen readers
 
 ## Changes
 ### v0.31.0
 - **Added** `variant` prop on SelectTrigger: `default | outline | ghost`
-- **Added** `color` prop on SelectTrigger: `default | error | success | warning` (validation feedback)
+- **Added** `color` prop on SelectTrigger: `default | error | success | warning`. Sets `aria-invalid` when error.
 
 ### v0.15.0
 - **Changed** `lg` size font changed from `text-ds-lg` (18px) to `text-ds-md` (14px) — all input sizes now use 14px for consistency
@@ -3273,8 +3266,6 @@ const { size, stroke } = useIconContext()
 
 ### TabsList
     variant: "line" | "contained"
-    size: "sm" | "md" | "lg"
-    color: "accent" | "neutral"
 
 ### TabsTrigger
     value: string (REQUIRED)
@@ -3290,7 +3281,7 @@ const { size, stroke } = useIconContext()
       TabsContent (value)
 
 ## Defaults
-    TabsList variant: "line", size: "md", color: "accent"
+    TabsList variant: "line"
 
 ## Example
 ```jsx
@@ -3305,9 +3296,8 @@ const { size, stroke } = useIconContext()
 ```
 
 ## Gotchas
-- variant, size, and color go on TabsList, NOT on individual TabsTrigger (propagates via context)
+- variant goes on TabsList, NOT on individual TabsTrigger (propagates via context)
 - Normally omit `variant` on TabsTrigger — it inherits from TabsList via context. You CAN set it per-trigger to override.
-- `color` only affects the line variant (active text + underline). Contained variant uses pill background.
 
 ## Changes
 ### v0.31.0

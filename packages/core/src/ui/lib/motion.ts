@@ -1,3 +1,4 @@
+// @server-safe
 import type { Transition } from 'framer-motion'
 
 // ── Spring configs (spatial: position, scale, size, rotation) ──

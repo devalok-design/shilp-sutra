@@ -51,4 +51,25 @@ describe('Alert', () => {
     render(<Alert>Non-dismissible</Alert>)
     expect(screen.queryByRole('button', { name: 'Dismiss' })).not.toBeInTheDocument()
   })
+
+  it('applies sm size classes', () => {
+    render(<Alert size="sm">Small alert</Alert>)
+    const alertEl = screen.getByRole('alert')
+    expect(alertEl.className).toContain('gap-ds-03')
+    expect(alertEl.className).toContain('p-ds-03')
+  })
+
+  it('applies lg size classes', () => {
+    render(<Alert size="lg">Large alert</Alert>)
+    const alertEl = screen.getByRole('alert')
+    expect(alertEl.className).toContain('gap-ds-05')
+    expect(alertEl.className).toContain('p-ds-07')
+  })
+
+  it('defaults to md size (non-breaking)', () => {
+    render(<Alert>Default alert</Alert>)
+    const alertEl = screen.getByRole('alert')
+    expect(alertEl.className).toContain('gap-ds-04')
+    expect(alertEl.className).toContain('p-ds-05')
+  })
 })

@@ -7,6 +7,10 @@ import { motion } from 'framer-motion'
 import { springs, tweens, motionProps } from './lib/motion'
 import { cn } from './lib/utils'
 
+type CardSize = 'sm' | 'md' | 'lg'
+
+const CardSizeContext = React.createContext<CardSize>('md')
+
 const cardVariants = cva(
   'rounded-ds-lg text-surface-fg transition-shadow duration-fast-02 ease-productive-standard',
   {
@@ -17,8 +21,22 @@ const cardVariants = cva(
         outline: 'bg-transparent border border-surface-border-strong shadow-none',
         flat: 'bg-surface-raised border-none shadow-none',
       },
+      color: {
+        default: '',
+        accent: 'border-accent-7',
+        error: 'border-error-7',
+        success: 'border-success-7',
+        warning: 'border-warning-7',
+        info: 'border-info-7',
+        neutral: '',
+      },
+      size: {
+        sm: '',
+        md: '',
+        lg: '',
+      },
     },
-    defaultVariants: { variant: 'default' },
+    defaultVariants: { variant: 'default', color: 'default', size: 'md' },
   },
 )
 
@@ -80,7 +98,7 @@ const accentColorMap: Record<string, string> = {
 }
 
 export interface CardProps
-  extends React.HTMLAttributes<HTMLDivElement>,
+  extends Omit<React.HTMLAttributes<HTMLDivElement>, 'color'>,
     VariantProps<typeof cardVariants> {
   interactive?: boolean
   /** Position of the accent border strip */
@@ -90,6 +108,8 @@ export interface CardProps
   /** Width of the accent strip in pixels @default 3 */
   accentWidth?: 2 | 3 | 4 | 6
 }
+
+export type { CardSize }
 
 const accentSizeClasses: Record<string, Record<number, string>> = {
   left:   { 2: 'w-[2px]', 3: 'w-[3px]', 4: 'w-[4px]', 6: 'w-[6px]' },
@@ -114,9 +134,10 @@ function resolveAccentColor(color: string): string {
 }
 
 const Card = React.forwardRef<HTMLDivElement, CardProps>(
-  ({ className, variant, interactive, accent, accentColor = 'default', accentWidth = 3, children, ...props }, ref) => {
+  ({ className, variant, color, size, interactive, accent, accentColor = 'default', accentWidth = 3, children, ...props }, ref) => {
+    const resolvedSize: CardSize = size ?? 'md'
     const classes = cn(
-      cardVariants({ variant }),
+      cardVariants({ variant, color, size }),
       accent && 'relative overflow-hidden',
       interactive && 'hover:shadow-raised-hover hover:border-surface-border-strong cursor-pointer transition-shadow duration-fast-02 ease-productive-standard',
       className,
@@ -133,6 +154,13 @@ const Card = React.forwardRef<HTMLDivElement, CardProps>(
       />
     ) : null
 
+    const content = (
+      <CardSizeContext.Provider value={resolvedSize}>
+        {accentEl}
+        {children}
+      </CardSizeContext.Provider>
+    )
+
     if (interactive) {
       return (
         <motion.div
@@ -143,32 +171,39 @@ const Card = React.forwardRef<HTMLDivElement, CardProps>(
           className={classes}
           {...motionProps(props)}
         >
-          {accentEl}
-          {children}
+          {content}
         </motion.div>
       )
     }
 
     return (
       <div ref={ref} className={classes} {...props}>
-        {accentEl}
-        {children}
+        {content}
       </div>
     )
   },
 )
 Card.displayName = 'Card'
 
+const headerSizeClasses: Record<CardSize, string> = {
+  sm: 'p-ds-03',
+  md: 'p-ds-06',
+  lg: 'p-ds-07',
+}
+
 const CardHeader = React.forwardRef<
   HTMLDivElement,
   React.HTMLAttributes<HTMLDivElement>
->(({ className, ...props }, ref) => (
-  <div
-    ref={ref}
-    className={cn('flex flex-col space-y-ds-02b p-ds-06', className)}
-    {...props}
-  />
-))
+>(({ className, ...props }, ref) => {
+  const size = React.useContext(CardSizeContext)
+  return (
+    <div
+      ref={ref}
+      className={cn('flex flex-col space-y-ds-02b', headerSizeClasses[size], className)}
+      {...props}
+    />
+  )
+})
 CardHeader.displayName = 'CardHeader'
 
 const CardTitle = React.forwardRef<
@@ -195,24 +230,42 @@ const CardDescription = React.forwardRef<
 ))
 CardDescription.displayName = 'CardDescription'
 
+const contentSizeClasses: Record<CardSize, string> = {
+  sm: 'p-ds-03 pt-0',
+  md: 'p-ds-06 pt-0',
+  lg: 'p-ds-07 pt-0',
+}
+
 const CardContent = React.forwardRef<
   HTMLDivElement,
   React.HTMLAttributes<HTMLDivElement>
->(({ className, ...props }, ref) => (
-  <div ref={ref} className={cn('p-ds-06 pt-0', className)} {...props} />
-))
+>(({ className, ...props }, ref) => {
+  const size = React.useContext(CardSizeContext)
+  return (
+    <div ref={ref} className={cn(contentSizeClasses[size], className)} {...props} />
+  )
+})
 CardContent.displayName = 'CardContent'
+
+const footerSizeClasses: Record<CardSize, string> = {
+  sm: 'p-ds-03 pt-0',
+  md: 'p-ds-06 pt-0',
+  lg: 'p-ds-07 pt-0',
+}
 
 const CardFooter = React.forwardRef<
   HTMLDivElement,
   React.HTMLAttributes<HTMLDivElement>
->(({ className, ...props }, ref) => (
-  <div
-    ref={ref}
-    className={cn('flex items-center p-ds-06 pt-0', className)}
-    {...props}
-  />
-))
+>(({ className, ...props }, ref) => {
+  const size = React.useContext(CardSizeContext)
+  return (
+    <div
+      ref={ref}
+      className={cn('flex items-center', footerSizeClasses[size], className)}
+      {...props}
+    />
+  )
+})
 CardFooter.displayName = 'CardFooter'
 
 export { Card, cardVariants, CardHeader, CardFooter, CardTitle, CardDescription, CardContent }

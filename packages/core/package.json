@@ -58,6 +58,16 @@
       "default": "./dist/ui/badge.js",
       "types": "./dist/ui/badge.d.ts"
     },
+    "./ui/badge-group": {
+      "import": "./dist/ui/badge-group.js",
+      "default": "./dist/ui/badge-group.js",
+      "types": "./dist/ui/badge-group.d.ts"
+    },
+    "./ui/badge-indicator": {
+      "import": "./dist/ui/badge-indicator.js",
+      "default": "./dist/ui/badge-indicator.js",
+      "types": "./dist/ui/badge-indicator.d.ts"
+    },
     "./ui/banner": {
       "import": "./dist/ui/banner.js",
       "default": "./dist/ui/banner.js",
@@ -143,6 +153,11 @@
       "default": "./dist/ui/dialog.js",
       "types": "./dist/ui/dialog.d.ts"
     },
+    "./ui/devalok-grain": {
+      "import": "./dist/ui/devalok-grain.js",
+      "default": "./dist/ui/devalok-grain.js",
+      "types": "./dist/ui/devalok-grain.d.ts"
+    },
     "./ui/dropdown-menu": {
       "import": "./dist/ui/dropdown-menu.js",
       "default": "./dist/ui/dropdown-menu.js",
@@ -163,10 +178,25 @@
       "default": "./dist/ui/hover-card.js",
       "types": "./dist/ui/hover-card.d.ts"
     },
+    "./ui/icon": {
+      "import": "./dist/ui/icon.js",
+      "default": "./dist/ui/icon.js",
+      "types": "./dist/ui/icon.d.ts"
+    },
     "./ui/icon-button": {
       "import": "./dist/ui/icon-button.js",
       "default": "./dist/ui/icon-button.js",
       "types": "./dist/ui/icon-button.d.ts"
+    },
+    "./ui/icon-context": {
+      "import": "./dist/ui/icon-context.js",
+      "default": "./dist/ui/icon-context.js",
+      "types": "./dist/ui/icon-context.d.ts"
+    },
+    "./ui/icon-group": {
+      "import": "./dist/ui/icon-group.js",
+      "default": "./dist/ui/icon-group.js",
+      "types": "./dist/ui/icon-group.d.ts"
     },
     "./ui/input": {
       "import": "./dist/ui/input.js",
@@ -661,6 +691,11 @@
       "default": "./dist/ai/blocks/index.js",
       "types": "./dist/ai/blocks/index.d.ts"
     },
+    "./ai/types": {
+      "import": "./dist/ai/types.js",
+      "default": "./dist/ai/types.js",
+      "types": "./dist/ai/types.d.ts"
+    },
     "./docs/*": "./docs/components/*"
   },
   "files": [
@@ -672,7 +707,7 @@
     "llms-full.txt"
   ],
   "scripts": {
-    "build": "vite build && pnpm build:tokens && node scripts/fix-dts-primitives.mjs && node scripts/inject-use-client.mjs && node scripts/build-tailwind-cjs.mjs && pnpm build:docs",
+    "build": "vite build && node scripts/post-build.mjs",
     "build:tokens": "node scripts/copy-tokens.mjs",
     "build:docs": "node scripts/build-component-docs.mjs",
     "build:docs:check": "node scripts/build-component-docs.mjs --check",

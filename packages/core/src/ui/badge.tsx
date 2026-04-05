@@ -174,6 +174,12 @@ interface BadgeProps
   selected?: boolean
   disabled?: boolean
   maxWidth?: number
+  /**
+   * Truncate children with ellipsis when they overflow the badge width.
+   * Use with a fixed width (e.g. `className="w-20"`) or `maxWidth` for
+   * constrained pill badges. Always adds a title tooltip on the full text.
+   */
+  truncate?: boolean
   circle?: boolean
 }
 
@@ -193,6 +199,7 @@ const Badge = React.forwardRef<HTMLElement, BadgeProps>(
       selected,
       disabled,
       maxWidth,
+      truncate,
       circle,
       children,
       style,
@@ -321,7 +328,7 @@ const Badge = React.forwardRef<HTMLElement, BadgeProps>(
         )}
 
         {/* Children — with optional truncation */}
-        {maxWidth ? (
+        {truncate || maxWidth ? (
           <span
             className="truncate"
             title={typeof children === 'string' ? children : undefined}

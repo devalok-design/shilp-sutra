@@ -135,3 +135,97 @@ export const WithDisabledItems: Story = {
     </Select>
   ),
 }
+
+export const Variants: Story = {
+  render: () => (
+    <div className="flex flex-col gap-ds-04">
+      <div className="flex flex-col gap-ds-02">
+        <Label>Default</Label>
+        <Select>
+          <SelectTrigger variant="default" className="w-[240px]">
+            <SelectValue placeholder="Default variant" />
+          </SelectTrigger>
+          <SelectContent>
+            <SelectItem value="a">Option A</SelectItem>
+            <SelectItem value="b">Option B</SelectItem>
+          </SelectContent>
+        </Select>
+      </div>
+      <div className="flex flex-col gap-ds-02">
+        <Label>Outline</Label>
+        <Select>
+          <SelectTrigger variant="outline" className="w-[240px]">
+            <SelectValue placeholder="Outline variant" />
+          </SelectTrigger>
+          <SelectContent>
+            <SelectItem value="a">Option A</SelectItem>
+            <SelectItem value="b">Option B</SelectItem>
+          </SelectContent>
+        </Select>
+      </div>
+      <div className="flex flex-col gap-ds-02">
+        <Label>Ghost</Label>
+        <Select>
+          <SelectTrigger variant="ghost" className="w-[240px]">
+            <SelectValue placeholder="Ghost variant" />
+          </SelectTrigger>
+          <SelectContent>
+            <SelectItem value="a">Option A</SelectItem>
+            <SelectItem value="b">Option B</SelectItem>
+          </SelectContent>
+        </Select>
+      </div>
+    </div>
+  ),
+}
+
+export const ValidationColors: Story = {
+  render: () => (
+    <div className="flex flex-col gap-ds-04">
+      <div className="flex flex-col gap-ds-02">
+        <Label>Default</Label>
+        <Select>
+          <SelectTrigger color="default" className="w-[240px]">
+            <SelectValue placeholder="No validation" />
+          </SelectTrigger>
+          <SelectContent>
+            <SelectItem value="a">Option A</SelectItem>
+          </SelectContent>
+        </Select>
+      </div>
+      <div className="flex flex-col gap-ds-02">
+        <Label>Error</Label>
+        <Select>
+          <SelectTrigger color="error" className="w-[240px]">
+            <SelectValue placeholder="Error state" />
+          </SelectTrigger>
+          <SelectContent>
+            <SelectItem value="a">Option A</SelectItem>
+          </SelectContent>
+        </Select>
+      </div>
+      <div className="flex flex-col gap-ds-02">
+        <Label>Success</Label>
+        <Select>
+          <SelectTrigger color="success" className="w-[240px]">
+            <SelectValue placeholder="Success state" />
+          </SelectTrigger>
+          <SelectContent>
+            <SelectItem value="a">Option A</SelectItem>
+          </SelectContent>
+        </Select>
+      </div>
+      <div className="flex flex-col gap-ds-02">
+        <Label>Warning</Label>
+        <Select>
+          <SelectTrigger color="warning" className="w-[240px]">
+            <SelectValue placeholder="Warning state" />
+          </SelectTrigger>
+          <SelectContent>
+            <SelectItem value="a">Option A</SelectItem>
+          </SelectContent>
+        </Select>
+      </div>
+    </div>
+  ),
+}

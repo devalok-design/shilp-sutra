@@ -11,6 +11,10 @@ const meta: Meta<typeof Alert> = {
       control: 'select',
       options: ['info', 'success', 'warning', 'error', 'neutral'],
     },
+    size: {
+      control: 'select',
+      options: ['sm', 'md', 'lg'],
+    },
     title: { control: 'text' },
   },
 }
@@ -77,6 +81,21 @@ export const Dismissible: Story = {
 
     // onDismiss fires after the exit animation completes (AnimatePresence.onExitComplete)
     await waitFor(() => expect(args.onDismiss).toHaveBeenCalledTimes(1))
+  },
+}
+
+export const Sizes: Story = {
+  render: () => {
+    const sizes = ['sm', 'md', 'lg'] as const
+    return (
+      <div className="flex flex-col gap-ds-06 max-w-lg">
+        {sizes.map((size) => (
+          <Alert key={size} color="info" size={size} title={`Size: ${size}`}>
+            This is a {size} alert with title and body text.
+          </Alert>
+        ))}
+      </div>
+    )
   },
 }
 

@@ -73,6 +73,7 @@ const explicitEntries: Record<string, string> = {
   'ai/block-renderer': resolve(__dirname, 'src/ai/block-renderer.tsx'),
   'ai/ai-command-provider': resolve(__dirname, 'src/ai/ai-command-provider.tsx'),
   'ai/blocks/index': resolve(__dirname, 'src/ai/blocks/index.ts'),
+  'ai/types': resolve(__dirname, 'src/ai/types.ts'),
 }
 
 export default defineConfig({

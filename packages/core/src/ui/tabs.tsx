@@ -92,8 +92,20 @@ Tabs.displayName = 'Tabs'
 export type TabsProps = React.ComponentPropsWithoutRef<typeof TabsPrimitive.Root>
 
 type TabsVariant = 'line' | 'contained'
-const TabsListContext = React.createContext<{ variant: TabsVariant; layoutId: string }>({
+type TabsSize = 'sm' | 'md' | 'lg'
+type TabsColor = 'accent' | 'neutral'
+
+interface TabsListContextValue {
+  variant: TabsVariant
+  size: TabsSize
+  color: TabsColor
+  layoutId: string
+}
+
+const TabsListContext = React.createContext<TabsListContextValue>({
   variant: 'line',
+  size: 'md',
+  color: 'accent',
   layoutId: 'tab-indicator',
 })
 
@@ -104,28 +116,37 @@ const tabsListVariants = cva('inline-flex items-center', {
       contained:
         'bg-surface-raised p-ds-02 rounded-ds-lg gap-ds-02',
     },
+    size: {
+      sm: 'h-8',
+      md: 'h-10',
+      lg: 'h-12',
+    },
   },
-  defaultVariants: { variant: 'line' },
+  defaultVariants: { variant: 'line', size: 'md' },
 })
 
 const tabsTriggerVariants = cva(
-  'relative inline-flex items-center justify-center gap-ds-02 whitespace-nowrap font-sans text-ds-md font-medium transition-colors duration-100 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent-9 focus-visible:ring-offset-1 disabled:pointer-events-none disabled:opacity-action-disabled',
+  'relative inline-flex items-center justify-center gap-ds-02 whitespace-nowrap font-sans font-medium transition-colors duration-100 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent-9 focus-visible:ring-offset-1 disabled:pointer-events-none disabled:opacity-action-disabled',
   {
     variants: {
       variant: {
         line: [
-          'px-ds-05 py-ds-03 -mb-px',
+          '-mb-px',
           'text-surface-fg-muted hover:text-surface-fg',
-          'data-[state=active]:text-accent-11',
         ],
         contained: [
-          'px-ds-05 py-ds-02b rounded-ds-md',
+          'rounded-ds-md',
           'text-surface-fg-muted hover:text-surface-fg',
           'data-[state=active]:text-surface-fg',
         ],
       },
+      size: {
+        sm: 'px-ds-03 py-ds-02 text-ds-xs',
+        md: 'px-ds-05 py-ds-03 text-ds-sm',
+        lg: 'px-ds-06 py-ds-04 text-ds-md',
+      },
     },
-    defaultVariants: { variant: 'line' },
+    defaultVariants: { variant: 'line', size: 'md' },
   },
 )
 
@@ -149,24 +170,34 @@ const tabsTriggerVariants = cva(
  */
 export interface TabsListProps
   extends React.ComponentPropsWithoutRef<typeof TabsPrimitive.List>,
-    VariantProps<typeof tabsListVariants> {}
+    VariantProps<typeof tabsListVariants> {
+  /** Color axis — affects active tab indicator and text color. @default "accent" */
+  color?: TabsColor
+}
 
 const TabsList = React.forwardRef<
   React.ElementRef<typeof TabsPrimitive.List>,
   TabsListProps
->(({ className, variant, ...props }, ref) => {
-  const resolved: TabsVariant = variant ?? 'line'
+>(({ className, variant, size, color, ...props }, ref) => {
+  const resolvedVariant: TabsVariant = variant ?? 'line'
+  const resolvedSize: TabsSize = size ?? 'md'
+  const resolvedColor: TabsColor = color ?? 'accent'
   const layoutId = React.useId()
   const contextValue = React.useMemo(
-    () => ({ variant: resolved, layoutId: `tab-indicator-${layoutId}` }),
-    [resolved, layoutId],
+    () => ({
+      variant: resolvedVariant,
+      size: resolvedSize,
+      color: resolvedColor,
+      layoutId: `tab-indicator-${layoutId}`,
+    }),
+    [resolvedVariant, resolvedSize, resolvedColor, layoutId],
   )
   return (
     <TabsListContext.Provider value={contextValue}>
       <LayoutGroup>
         <TabsPrimitive.List
           ref={ref}
-          className={cn(tabsListVariants({ variant: resolved }), className)}
+          className={cn(tabsListVariants({ variant: resolvedVariant, size: resolvedSize }), className)}
           {...props}
         />
       </LayoutGroup>
@@ -179,6 +210,17 @@ export interface TabsTriggerProps
   extends React.ComponentPropsWithoutRef<typeof TabsPrimitive.Trigger>,
     VariantProps<typeof tabsTriggerVariants> {}
 
+/* ── Color classes for active state ────── */
+const lineActiveColorMap: Record<TabsColor, string> = {
+  accent: 'data-[state=active]:text-accent-11',
+  neutral: 'data-[state=active]:text-surface-fg',
+}
+
+const lineIndicatorColorMap: Record<TabsColor, string> = {
+  accent: 'bg-accent-9',
+  neutral: 'bg-surface-fg',
+}
+
 const TabsTrigger = React.forwardRef<
   React.ElementRef<typeof TabsPrimitive.Trigger>,
   TabsTriggerProps
@@ -186,12 +228,18 @@ const TabsTrigger = React.forwardRef<
   const listContext = React.useContext(TabsListContext)
   const activeValue = React.useContext(TabsValueContext)
   const variant = variantProp ?? listContext.variant
+  const size = listContext.size
+  const color = listContext.color
   const isActive = props.value === activeValue
 
   return (
     <TabsPrimitive.Trigger
       ref={ref}
-      className={cn(tabsTriggerVariants({ variant }), className)}
+      className={cn(
+        tabsTriggerVariants({ variant, size }),
+        variant === 'line' && lineActiveColorMap[color],
+        className,
+      )}
       {...props}
     >
       {/* Contained variant: sliding pill background */}
@@ -208,7 +256,7 @@ const TabsTrigger = React.forwardRef<
       {variant === 'line' && isActive && (
         <motion.span
           layoutId={`${listContext.layoutId}-line`}
-          className="absolute bottom-0 left-0 right-0 h-0.5 bg-accent-9"
+          className={cn('absolute bottom-0 left-0 right-0 h-0.5', lineIndicatorColorMap[color])}
           transition={springs.smooth}
         />
       )}
@@ -244,3 +292,4 @@ TabsContent.displayName = TabsPrimitive.Content.displayName
 export type TabsContentProps = React.ComponentPropsWithoutRef<typeof TabsPrimitive.Content>
 
 export { Tabs, TabsList, TabsTrigger, TabsContent }
+export type { TabsSize, TabsColor }

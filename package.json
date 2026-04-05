@@ -21,9 +21,14 @@
     "test": "pnpm -r test",
     "test:watch": "pnpm -r test:watch",
     "test:storybook": "vitest --project storybook",
-    "test:storybook:ci": "vitest run --project storybook"
+    "test:storybook:ci": "vitest run --project storybook",
+    "changeset": "changeset",
+    "version-packages": "changeset version",
+    "release": "pnpm build && changeset publish"
   },
   "devDependencies": {
+    "@changesets/changelog-github": "^0.6.0",
+    "@changesets/cli": "^2.30.0",
     "@storybook/addon-a11y": "^10.3.3",
     "@storybook/addon-docs": "^10.3.3",
     "@storybook/addon-mcp": "^0.4.2",
@@ -50,6 +55,7 @@
     "@vitest/browser": "4.0.18",
     "@vitest/browser-playwright": "4.0.18",
     "autoprefixer": "^10.4.20",
+    "chromatic": "^16.1.0",
     "eslint": "^9.19.0",
     "eslint-plugin-jsx-a11y": "^6.10.2",
     "eslint-plugin-react-hooks": "^7.0.1",

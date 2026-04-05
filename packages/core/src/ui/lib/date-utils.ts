@@ -1,3 +1,4 @@
+// @server-safe
 /**
  * Shared relative-time formatting utility.
  */

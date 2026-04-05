@@ -87,6 +87,13 @@ describe('Badge', () => {
     expect(container.querySelector('.truncate')).toBeInTheDocument()
   })
 
+  it('truncate prop enables ellipsis without maxWidth', () => {
+    const { container } = render(<Badge truncate className="w-20">Very long text that overflows</Badge>)
+    const truncEl = container.querySelector('.truncate')
+    expect(truncEl).toBeInTheDocument()
+    expect(truncEl).toHaveAttribute('title', 'Very long text that overflows')
+  })
+
   it('circle forces square aspect', () => {
     const { container } = render(<Badge circle>3</Badge>)
     expect(container.firstChild?.className).toContain('aspect-square')

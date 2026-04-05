@@ -145,4 +145,113 @@ describe('Select', () => {
     const results = await axe(container)
     expect(results).toHaveNoViolations()
   })
+
+  describe('variant', () => {
+    it('applies default variant classes when no variant is specified', () => {
+      renderSelect()
+      const trigger = screen.getByRole('combobox')
+      expect(trigger.className).toMatch(/bg-surface-raised-hover/)
+      expect(trigger.className).toMatch(/border-surface-border-strong/)
+    })
+
+    it('applies outline variant classes', () => {
+      render(
+        <Select>
+          <SelectTrigger variant="outline">
+            <SelectValue placeholder="Pick" />
+          </SelectTrigger>
+          <SelectContent>
+            <SelectItem value="a">A</SelectItem>
+          </SelectContent>
+        </Select>,
+      )
+      const trigger = screen.getByRole('combobox')
+      expect(trigger.className).toMatch(/bg-transparent/)
+      expect(trigger.className).toMatch(/border-surface-border-strong/)
+    })
+
+    it('applies ghost variant classes', () => {
+      render(
+        <Select>
+          <SelectTrigger variant="ghost">
+            <SelectValue placeholder="Pick" />
+          </SelectTrigger>
+          <SelectContent>
+            <SelectItem value="a">A</SelectItem>
+          </SelectContent>
+        </Select>,
+      )
+      const trigger = screen.getByRole('combobox')
+      expect(trigger.className).toMatch(/bg-transparent/)
+      expect(trigger.className).toMatch(/border-transparent/)
+    })
+  })
+
+  describe('color', () => {
+    it('applies error color classes and sets aria-invalid', () => {
+      render(
+        <Select>
+          <SelectTrigger color="error">
+            <SelectValue placeholder="Pick" />
+          </SelectTrigger>
+          <SelectContent>
+            <SelectItem value="a">A</SelectItem>
+          </SelectContent>
+        </Select>,
+      )
+      const trigger = screen.getByRole('combobox')
+      expect(trigger.className).toMatch(/border-error-7/)
+      expect(trigger.className).toMatch(/text-error-11/)
+      expect(trigger).toHaveAttribute('aria-invalid', 'true')
+    })
+
+    it('applies success color classes', () => {
+      render(
+        <Select>
+          <SelectTrigger color="success">
+            <SelectValue placeholder="Pick" />
+          </SelectTrigger>
+          <SelectContent>
+            <SelectItem value="a">A</SelectItem>
+          </SelectContent>
+        </Select>,
+      )
+      const trigger = screen.getByRole('combobox')
+      expect(trigger.className).toMatch(/border-success-7/)
+    })
+
+    it('applies warning color classes', () => {
+      render(
+        <Select>
+          <SelectTrigger color="warning">
+            <SelectValue placeholder="Pick" />
+          </SelectTrigger>
+          <SelectContent>
+            <SelectItem value="a">A</SelectItem>
+          </SelectContent>
+        </Select>,
+      )
+      const trigger = screen.getByRole('combobox')
+      expect(trigger.className).toMatch(/border-warning-7/)
+    })
+
+    it('does not set aria-invalid for non-error colors', () => {
+      render(
+        <Select>
+          <SelectTrigger color="success">
+            <SelectValue placeholder="Pick" />
+          </SelectTrigger>
+          <SelectContent>
+            <SelectItem value="a">A</SelectItem>
+          </SelectContent>
+        </Select>,
+      )
+      expect(screen.getByRole('combobox')).not.toHaveAttribute('aria-invalid')
+    })
+
+    it('does not set aria-invalid when color is default', () => {
+      renderSelect()
+      expect(screen.getByRole('combobox')).not.toHaveAttribute('aria-invalid')
+    })
+  })
 })

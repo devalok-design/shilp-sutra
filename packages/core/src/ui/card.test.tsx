@@ -1,6 +1,6 @@
 import { render, screen } from '@testing-library/react'
 import { describe, it, expect } from 'vitest'
-import { Card } from './card'
+import { Card, CardHeader, CardContent, CardFooter } from './card'
 
 describe('Card', () => {
   it('renders children', () => {
@@ -52,5 +52,94 @@ describe('Card', () => {
   it('applies custom className', () => {
     const { container } = render(<Card className="my-class">Content</Card>)
     expect(container.firstChild).toHaveClass('my-class')
+  })
+
+  describe('color', () => {
+    it('defaults to no color border class', () => {
+      const { container } = render(<Card>Content</Card>)
+      expect(container.firstChild).not.toHaveClass('border-accent-7')
+      expect(container.firstChild).not.toHaveClass('border-error-7')
+    })
+
+    it('applies accent border color', () => {
+      const { container } = render(<Card color="accent">Content</Card>)
+      expect(container.firstChild).toHaveClass('border-accent-7')
+    })
+
+    it('applies error border color', () => {
+      const { container } = render(<Card color="error">Content</Card>)
+      expect(container.firstChild).toHaveClass('border-error-7')
+    })
+
+    it('applies success border color', () => {
+      const { container } = render(<Card color="success">Content</Card>)
+      expect(container.firstChild).toHaveClass('border-success-7')
+    })
+
+    it('applies warning border color', () => {
+      const { container } = render(<Card color="warning">Content</Card>)
+      expect(container.firstChild).toHaveClass('border-warning-7')
+    })
+
+    it('applies info border color', () => {
+      const { container } = render(<Card color="info">Content</Card>)
+      expect(container.firstChild).toHaveClass('border-info-7')
+    })
+
+    it('neutral applies no extra border class', () => {
+      const { container } = render(<Card color="neutral">Content</Card>)
+      expect(container.firstChild).not.toHaveClass('border-accent-7')
+      expect(container.firstChild).not.toHaveClass('border-error-7')
+    })
+  })
+
+  describe('size', () => {
+    it('defaults to md padding on sub-components', () => {
+      const { container } = render(
+        <Card>
+          <CardHeader>Header</CardHeader>
+          <CardContent>Body</CardContent>
+          <CardFooter>Footer</CardFooter>
+        </Card>,
+      )
+      const header = screen.getByText('Header').closest('div')!
+      const content = screen.getByText('Body').closest('div')!
+      const footer = screen.getByText('Footer').closest('div')!
+      expect(header).toHaveClass('p-ds-06')
+      expect(content).toHaveClass('p-ds-06')
+      expect(footer).toHaveClass('p-ds-06')
+    })
+
+    it('applies sm padding to sub-components', () => {
+      render(
+        <Card size="sm">
+          <CardHeader>Header</CardHeader>
+          <CardContent>Body</CardContent>
+          <CardFooter>Footer</CardFooter>
+        </Card>,
+      )
+      const header = screen.getByText('Header').closest('div')!
+      const content = screen.getByText('Body').closest('div')!
+      const footer = screen.getByText('Footer').closest('div')!
+      expect(header).toHaveClass('p-ds-03')
+      expect(content).toHaveClass('p-ds-03')
+      expect(footer).toHaveClass('p-ds-03')
+    })
+
+    it('applies lg padding to sub-components', () => {
+      render(
+        <Card size="lg">
+          <CardHeader>Header</CardHeader>
+          <CardContent>Body</CardContent>
+          <CardFooter>Footer</CardFooter>
+        </Card>,
+      )
+      const header = screen.getByText('Header').closest('div')!
+      const content = screen.getByText('Body').closest('div')!
+      const footer = screen.getByText('Footer').closest('div')!
+      expect(header).toHaveClass('p-ds-07')
+      expect(content).toHaveClass('p-ds-07')
+      expect(footer).toHaveClass('p-ds-07')
+    })
   })
 })

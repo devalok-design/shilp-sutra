@@ -106,6 +106,128 @@ export const Disabled: Story = {
   ),
 }
 
+export const Sizes: Story = {
+  render: () => (
+    <div className="flex flex-col gap-ds-08 w-full max-w-lg">
+      <div>
+        <p className="mb-ds-03 text-ds-sm font-semibold text-surface-fg-muted">Small</p>
+        <Tabs defaultValue="overview">
+          <TabsList variant="line" size="sm">
+            <TabsTrigger value="overview">Overview</TabsTrigger>
+            <TabsTrigger value="tasks">Tasks</TabsTrigger>
+            <TabsTrigger value="settings">Settings</TabsTrigger>
+          </TabsList>
+          <TabsContent value="overview">
+            <p className="text-ds-sm text-surface-fg-muted">Small line tabs.</p>
+          </TabsContent>
+        </Tabs>
+      </div>
+      <div>
+        <p className="mb-ds-03 text-ds-sm font-semibold text-surface-fg-muted">Medium (default)</p>
+        <Tabs defaultValue="overview">
+          <TabsList variant="line" size="md">
+            <TabsTrigger value="overview">Overview</TabsTrigger>
+            <TabsTrigger value="tasks">Tasks</TabsTrigger>
+            <TabsTrigger value="settings">Settings</TabsTrigger>
+          </TabsList>
+          <TabsContent value="overview">
+            <p className="text-ds-sm text-surface-fg-muted">Medium line tabs.</p>
+          </TabsContent>
+        </Tabs>
+      </div>
+      <div>
+        <p className="mb-ds-03 text-ds-sm font-semibold text-surface-fg-muted">Large</p>
+        <Tabs defaultValue="overview">
+          <TabsList variant="line" size="lg">
+            <TabsTrigger value="overview">Overview</TabsTrigger>
+            <TabsTrigger value="tasks">Tasks</TabsTrigger>
+            <TabsTrigger value="settings">Settings</TabsTrigger>
+          </TabsList>
+          <TabsContent value="overview">
+            <p className="text-ds-sm text-surface-fg-muted">Large line tabs.</p>
+          </TabsContent>
+        </Tabs>
+      </div>
+      <div>
+        <p className="mb-ds-03 text-ds-sm font-semibold text-surface-fg-muted">Contained — Small / Medium / Large</p>
+        <div className="flex flex-col gap-ds-05">
+          <Tabs defaultValue="all">
+            <TabsList variant="contained" size="sm">
+              <TabsTrigger value="all">All</TabsTrigger>
+              <TabsTrigger value="active">Active</TabsTrigger>
+              <TabsTrigger value="archived">Archived</TabsTrigger>
+            </TabsList>
+          </Tabs>
+          <Tabs defaultValue="all">
+            <TabsList variant="contained" size="md">
+              <TabsTrigger value="all">All</TabsTrigger>
+              <TabsTrigger value="active">Active</TabsTrigger>
+              <TabsTrigger value="archived">Archived</TabsTrigger>
+            </TabsList>
+          </Tabs>
+          <Tabs defaultValue="all">
+            <TabsList variant="contained" size="lg">
+              <TabsTrigger value="all">All</TabsTrigger>
+              <TabsTrigger value="active">Active</TabsTrigger>
+              <TabsTrigger value="archived">Archived</TabsTrigger>
+            </TabsList>
+          </Tabs>
+        </div>
+      </div>
+    </div>
+  ),
+}
+
+export const Colors: Story = {
+  render: () => (
+    <div className="flex flex-col gap-ds-08 w-full max-w-lg">
+      <div>
+        <p className="mb-ds-03 text-ds-sm font-semibold text-surface-fg-muted">Accent (default)</p>
+        <Tabs defaultValue="overview">
+          <TabsList variant="line" color="accent">
+            <TabsTrigger value="overview">Overview</TabsTrigger>
+            <TabsTrigger value="tasks">Tasks</TabsTrigger>
+            <TabsTrigger value="settings">Settings</TabsTrigger>
+          </TabsList>
+          <TabsContent value="overview">
+            <p className="text-ds-sm text-surface-fg-muted">Accent color — active tab uses accent tokens.</p>
+          </TabsContent>
+        </Tabs>
+      </div>
+      <div>
+        <p className="mb-ds-03 text-ds-sm font-semibold text-surface-fg-muted">Neutral</p>
+        <Tabs defaultValue="overview">
+          <TabsList variant="line" color="neutral">
+            <TabsTrigger value="overview">Overview</TabsTrigger>
+            <TabsTrigger value="tasks">Tasks</TabsTrigger>
+            <TabsTrigger value="settings">Settings</TabsTrigger>
+          </TabsList>
+          <TabsContent value="overview">
+            <p className="text-ds-sm text-surface-fg-muted">Neutral color — active tab uses surface-fg tokens.</p>
+          </TabsContent>
+        </Tabs>
+      </div>
+      <div>
+        <p className="mb-ds-03 text-ds-sm font-semibold text-surface-fg-muted">Contained — Accent vs Neutral</p>
+        <div className="flex flex-col gap-ds-05">
+          <Tabs defaultValue="all">
+            <TabsList variant="contained" color="accent">
+              <TabsTrigger value="all">All</TabsTrigger>
+              <TabsTrigger value="active">Active</TabsTrigger>
+            </TabsList>
+          </Tabs>
+          <Tabs defaultValue="all">
+            <TabsList variant="contained" color="neutral">
+              <TabsTrigger value="all">All</TabsTrigger>
+              <TabsTrigger value="active">Active</TabsTrigger>
+            </TabsList>
+          </Tabs>
+        </div>
+      </div>
+    </div>
+  ),
+}
+
 export const ManyTabs: Story = {
   render: () => (
     <Tabs defaultValue="board" className="w-full max-w-2xl">

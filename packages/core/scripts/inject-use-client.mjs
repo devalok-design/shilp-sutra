@@ -5,6 +5,10 @@
  * file in dist/, EXCEPT for files that are server-safe (pure markup / no hooks)
  * and files that already contain the directive.
  *
+ * Server-safe components are detected automatically from a `// @server-safe`
+ * comment on the first line of their source file. Build artifacts that are
+ * server-safe (chunks, tailwind config) are listed in BUILD_ARTIFACT_SAFE below.
+ *
  * Run from packages/core/:
  *   node scripts/inject-use-client.mjs
  */
@@ -12,40 +16,66 @@
 import { readFileSync, writeFileSync, readdirSync, statSync } from 'fs'
 import { join, posix } from 'path'
 
-// ── Server-safe allow-list (relative to dist/, forward slashes) ─────────────
-const SERVER_SAFE = new Set([
-  // ui – pure-markup components
-  'ui/text',
-  'ui/skeleton',
-  // ui/spinner — removed from server-safe list (v2 uses framer-motion hooks)
-  'ui/stack',
-  'ui/container',
-  'ui/table',
-  'ui/visually-hidden',
-  'ui/code',
-
-  // composed – no client hooks
-  'composed/content-card',
-  'composed/page-header',
-  'composed/loading-skeleton',
-  'composed/page-skeletons',
-  'composed/priority-indicator',
-
+// ── Build-artifact exemptions (not source files, can't be annotated) ────────
+const BUILD_ARTIFACT_SAFE = new Set([
   // tailwind config (Node-only, no React)
   'tailwind/index',
   'tailwind/preset',
 
-  // utility modules
-  'ui/lib/utils',
-  'ui/lib/motion',
-
   // vendor-utils chunk — pure functions (clsx, cva, tailwind-merge), no React
   '_chunks/vendor-utils',
-
-  // utility modules — pure functions, no React
-  'ui/lib/date-utils',
-  'composed/lib/string-utils',
 ])
+
+// ── Scan source files for @server-safe annotation ──────────────────────────
+const ANNOTATION = '// @server-safe'
+const srcRoot = join(process.cwd(), 'src')
+
+/** Recursively collect all .ts/.tsx files under `dir`. */
+function walkSrc(dir) {
+  const results = []
+  for (const entry of readdirSync(dir)) {
+    const full = join(dir, entry)
+    if (statSync(full).isDirectory()) {
+      results.push(...walkSrc(full))
+    } else if (full.endsWith('.ts') || full.endsWith('.tsx')) {
+      results.push(full)
+    }
+  }
+  return results
+}
+
+/**
+ * Build the server-safe set from source annotations.
+ * Scans all .ts/.tsx files under src/ for `// @server-safe` on the first line.
+ * Returns dist-relative POSIX keys (e.g. 'ui/text', 'composed/page-header').
+ */
+function detectServerSafeFromSource() {
+  const detected = new Set()
+  const srcFiles = walkSrc(srcRoot)
+
+  for (const filePath of srcFiles) {
+    const firstLine = readFileSync(filePath, 'utf8').split('\n')[0].trim()
+    if (firstLine === ANNOTATION) {
+      // Convert src path to dist key: strip srcRoot prefix, normalise slashes, strip extension
+      let rel = filePath.slice(srcRoot.length + 1).split('\\').join('/')
+      rel = rel.replace(/\.tsx?$/, '')
+      detected.add(rel)
+    }
+  }
+
+  return detected
+}
+
+const sourceServerSafe = detectServerSafeFromSource()
+
+// Merge source annotations with build-artifact exemptions
+const SERVER_SAFE = new Set([...sourceServerSafe, ...BUILD_ARTIFACT_SAFE])
+
+// Log detected server-safe files for debugging
+console.log(`inject-use-client: detected ${sourceServerSafe.size} @server-safe source files:`)
+for (const key of [...sourceServerSafe].sort()) {
+  console.log(`  ${key}`)
+}
 
 // ── Directories to skip entirely ────────────────────────────────────────────
 const SKIP_DIRS = new Set(['primitives', 'tokens'])

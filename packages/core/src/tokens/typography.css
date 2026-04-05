@@ -39,7 +39,17 @@
   font-display: swap;
 }
 
-/* ── Title Scale (T1–T7) ───────────────────────────────────────── */
+/* ── DEPRECATED Title Scale (T1–T7) ────────────────────────────────
+ * @deprecated Use typography-semantic.css tokens instead:
+ *   T1-Reg → --typo-heading-2xl  (60px)
+ *   T2-Reg → --typo-heading-xl   (48px)
+ *   T3-Reg → --typo-heading-lg   (36px)
+ *   T4-Reg → --typo-heading-md   (32px)
+ *   T5-Reg → --typo-heading-sm   (24px)
+ *   T6-Reg → --typo-heading-xs   (20px)
+ *   T7-Reg → --typo-heading-xs   (20px, tighter)
+ * These classes will be removed in v1.0.
+ * ──────────────────────────────────────────────────────────────── */
 
 .T1-Reg {
   font-family: inherit;
@@ -103,7 +113,15 @@
   letter-spacing: -0.48px;
 }
 
-/* ── Body Scale (B1–B8) ────────────────────────────────────────── */
+/* ── DEPRECATED Body Scale (B1–B8) ─────────────────────────────────
+ * @deprecated Use typography-semantic.css tokens instead:
+ *   B1-Reg → --typo-body-lg   (16px)
+ *   B2-Reg → --typo-body-md   (14px)
+ *   B3-Reg → --typo-body-sm   (12px)
+ *   B4-Reg → --typo-body-xs   (10px)
+ *   B5-B8  → Use body-lg/md/sm/xs with weight overrides
+ * These classes will be removed in v1.0.
+ * ──────────────────────────────────────────────────────────────── */
 
 .B1-Reg {
   font-family: inherit;
@@ -184,7 +202,15 @@
   letter-spacing: -0.32px;
 }
 
-/* ── Label Scale (L1–L6) ───────────────────────────────────────── */
+/* ── DEPRECATED Label Scale (L1–L6) ────────────────────────────────
+ * @deprecated Use typography-semantic.css tokens instead:
+ *   L1 → --typo-label-lg   (16px)
+ *   L2 → --typo-label-md   (14px)
+ *   L3 → --typo-label-sm   (12px)
+ *   L4 → --typo-label-xs   (10px)
+ *   L5-L6 → Use label-sm/xs with weight overrides
+ * These classes will be removed in v1.0.
+ * ──────────────────────────────────────────────────────────────── */
 
 .L1 {
   font-family: inherit;
@@ -236,7 +262,10 @@
   text-transform: uppercase;
 }
 
-/* ── Paragraph Scale (P1–P7) ───────────────────────────────────── */
+/* ── DEPRECATED Paragraph Scale (P1–P7) ────────────────────────────
+ * @deprecated Use typography-semantic.css --typo-body-* tokens instead.
+ * These classes will be removed in v1.0.
+ * ──────────────────────────────────────────────────────────────── */
 /* NOTE: P2 (0.36px tracking) and B5-Reg (0.32px tracking) are near-identical
    at 16px/140%. P2 is for paragraph blocks, B5-Reg for inline body text. */
 

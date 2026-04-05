@@ -9,7 +9,7 @@ import { springs, motionProps } from './lib/motion'
 import { Icon } from './icon'
 
 const alertVariants = cva(
-  'relative flex gap-ds-04 rounded-ds-lg border p-ds-05',
+  'relative flex rounded-ds-lg border',
   {
     variants: {
       variant: {
@@ -23,6 +23,11 @@ const alertVariants = cva(
         warning: '',
         error: '',
         neutral: '',
+      },
+      size: {
+        sm: 'gap-ds-03 p-ds-03',
+        md: 'gap-ds-04 p-ds-05',
+        lg: 'gap-ds-05 p-ds-07',
       },
     },
     compoundVariants: [
@@ -45,7 +50,7 @@ const alertVariants = cva(
       { variant: 'outline', color: 'error', className: 'bg-transparent border-error-7 text-error-11' },
       { variant: 'outline', color: 'neutral', className: 'bg-transparent border-surface-border-strong text-surface-fg [&>svg]:text-surface-fg-muted' },
     ],
-    defaultVariants: { variant: 'subtle', color: 'info' },
+    defaultVariants: { variant: 'subtle', color: 'info', size: 'md' },
   },
 )
 
@@ -107,13 +112,18 @@ export interface AlertProps
 }
 
 const Alert = React.forwardRef<HTMLDivElement, AlertProps>(
-  ({ className, variant = 'subtle', color = 'info', title, onDismiss, children, ...props }, ref) => {
+  ({ className, variant = 'subtle', color = 'info', size = 'md', title, onDismiss, children, ...props }, ref) => {
     const AlertIcon = ALERT_ICONS[color ?? 'info']
     const [isVisible, setIsVisible] = React.useState(true)
 
     const handleDismiss = React.useCallback(() => {
       setIsVisible(false)
     }, [])
+
+    const iconSize = size === 'sm' ? 'sm' : size === 'lg' ? 'lg' : 'md'
+    const dismissIconSize = size === 'sm' ? 'xs' : 'sm'
+    const textClass = size === 'sm' ? 'text-ds-xs' : size === 'lg' ? 'text-ds-md' : 'text-ds-md'
+    const titleClass = size === 'sm' ? 'text-ds-sm' : size === 'lg' ? 'text-ds-lg' : 'text-ds-md'
 
     return (
       <AnimatePresence onExitComplete={onDismiss}>
@@ -124,14 +134,14 @@ const Alert = React.forwardRef<HTMLDivElement, AlertProps>(
             animate={{ opacity: 1, y: 0 }}
             exit={{ opacity: 0, y: -8 }}
             transition={springs.snappy}
-            className={cn(alertVariants({ variant, color }), className)}
+            className={cn(alertVariants({ variant, color, size }), className)}
             role="alert"
             {...motionProps(props)}
           >
-            <Icon icon={AlertIcon} size="md" className="mt-ds-01 shrink-0" />
+            <Icon icon={AlertIcon} size={iconSize} className="mt-ds-01 shrink-0" />
             <div className="flex-1 min-w-0">
-              {title && <p className="text-ds-md font-semibold mb-ds-01">{title}</p>}
-              <div className="text-ds-md text-surface-fg-muted">{children}</div>
+              {title && <p className={cn(titleClass, 'font-semibold mb-ds-01')}>{title}</p>}
+              <div className={cn(textClass, 'text-surface-fg-muted')}>{children}</div>
             </div>
             {onDismiss && (
               <button
@@ -140,7 +150,7 @@ const Alert = React.forwardRef<HTMLDivElement, AlertProps>(
                 className="shrink-0 min-h-ds-xs min-w-ds-xs flex items-center justify-center rounded-ds-sm text-surface-fg-subtle transition-colors duration-fast-01 ease-productive-standard hover:text-surface-fg-muted hover:bg-surface-raised-hover active:scale-95 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent-9"
                 aria-label="Dismiss"
               >
-                <Icon icon={IconX} size="sm" />
+                <Icon icon={IconX} size={dismissIconSize} />
               </button>
             )}
           </motion.div>

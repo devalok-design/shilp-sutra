@@ -230,7 +230,7 @@ Three-tier CSS custom property system:
 
 1. **Primitives** (`primitives.css`) -- Raw palette values (pink, purple, neutral, green, red, yellow, blue). Full 50-950 scales. Never used directly in components.
 2. **Semantic** (`semantic.css`) -- Intent-based tokens mapping primitives to meaning (`--color-interactive`, `--color-text-primary`, etc.). Includes complete dark mode via `.dark` class.
-3. **Typography** (`typography.css`) -- Font-face declarations, type scale utilities (T1-T7, B1-B8, L1-L6, P1-P7), prose styles.
+3. **Typography** (`typography.css` + `typography-semantic.css`) -- Font-face declarations and semantic type presets (heading-2xl..xs, body-lg..xs, label-lg..xs, caption, overline).
 
 ## Component Design
 
@@ -240,6 +240,10 @@ Three-tier CSS custom property system:
 - **Dark mode** -- Toggle via `.dark` class on a parent element. All tokens have dark mode overrides.
 - **next/font compatible** -- Font families use CSS variables (`--font-sans`, `--font-body`, `--font-mono`) overridable via `next/font`.
 - **Tree-shakeable** -- Each sub-module is independently importable. `preserveModules: true` in build config.
+
+## Design Philosophy
+
+See [docs/design-philosophy.md](docs/design-philosophy.md) for the brand manifesto, color heritage (OKLCH-based scales), and architectural principles behind the system.
 
 ## Development
 

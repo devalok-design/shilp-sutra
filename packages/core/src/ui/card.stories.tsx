@@ -129,3 +129,51 @@ export const AccentColors: Story = {
     )
   },
 }
+
+export const Colors: Story = {
+  render: () => {
+    const colors = ['default', 'accent', 'error', 'success', 'warning', 'info', 'neutral'] as const
+    return (
+      <div className="grid grid-cols-2 gap-ds-04">
+        {colors.map((color) => (
+          <Card key={color} color={color} className="w-[280px]">
+            <CardHeader>
+              <CardTitle className="capitalize">{color}</CardTitle>
+              <CardDescription>Card with {color} border color.</CardDescription>
+            </CardHeader>
+            <CardContent>
+              <p className="text-ds-sm">The border color changes to match the semantic color.</p>
+            </CardContent>
+          </Card>
+        ))}
+      </div>
+    )
+  },
+}
+
+export const Sizes: Story = {
+  render: () => {
+    const sizes = ['sm', 'md', 'lg'] as const
+    return (
+      <div className="flex flex-col gap-ds-04">
+        {sizes.map((size) => (
+          <Card key={size} size={size} className="w-[350px]">
+            <CardHeader>
+              <CardTitle className="capitalize">{size} Card</CardTitle>
+              <CardDescription>Internal padding adjusts with size.</CardDescription>
+            </CardHeader>
+            <CardContent>
+              <p className="text-ds-sm">
+                Card content with {size} padding on header, content, and footer.
+              </p>
+            </CardContent>
+            <CardFooter className="gap-ds-02">
+              <Button variant="solid" size="sm">Action</Button>
+              <Button variant="ghost" size="sm">Cancel</Button>
+            </CardFooter>
+          </Card>
+        ))}
+      </div>
+    )
+  },
+}

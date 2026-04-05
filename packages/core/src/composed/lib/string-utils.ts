@@ -1,3 +1,4 @@
+// @server-safe
 /**
  * Extract initials from a person's name.
  * "John Doe" -> "JD", "Alice" -> "AL"

@@ -38,9 +38,23 @@ const SelectGroup = SelectPrimitive.Group
 const SelectValue = SelectPrimitive.Value
 
 export const selectTriggerVariants = cva(
-  'flex w-full items-center justify-between whitespace-nowrap rounded-ds-md border border-surface-border-strong bg-surface-raised-hover placeholder:text-surface-fg-subtle focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent-9 focus-visible:ring-offset-2 focus-visible:border-accent-7 disabled:cursor-not-allowed disabled:opacity-action-disabled [&>span]:line-clamp-1',
+  'flex w-full items-center justify-between whitespace-nowrap rounded-ds-md placeholder:text-surface-fg-subtle focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent-9 focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-action-disabled [&>span]:line-clamp-1',
   {
     variants: {
+      variant: {
+        default:
+          'border border-surface-border-strong bg-surface-raised-hover focus-visible:border-accent-7',
+        outline:
+          'border border-surface-border-strong bg-transparent focus-visible:border-accent-7',
+        ghost:
+          'border border-transparent bg-transparent hover:bg-surface-raised-hover focus-visible:border-accent-7',
+      },
+      color: {
+        default: '',
+        error: 'border-error-7 text-error-11 focus-visible:ring-error-9',
+        success: 'border-success-7',
+        warning: 'border-warning-7',
+      },
       size: {
         xs: 'h-ds-xs-plus text-ds-sm px-ds-02',
         sm: 'h-ds-sm text-ds-sm px-ds-03',
@@ -48,7 +62,7 @@ export const selectTriggerVariants = cva(
         lg: 'h-ds-lg text-ds-md px-ds-05',
       },
     },
-    defaultVariants: { size: 'md' },
+    defaultVariants: { variant: 'default', color: 'default', size: 'md' },
   },
 )
 
@@ -61,16 +75,17 @@ export const selectTriggerVariants = cva(
  * </SelectTrigger>
  */
 export interface SelectTriggerProps
-  extends React.ComponentPropsWithoutRef<typeof SelectPrimitive.Trigger>,
+  extends Omit<React.ComponentPropsWithoutRef<typeof SelectPrimitive.Trigger>, 'color'>,
     VariantProps<typeof selectTriggerVariants> {}
 
 const SelectTrigger = React.forwardRef<
   React.ElementRef<typeof SelectPrimitive.Trigger>,
   SelectTriggerProps
->(({ className, children, size, ...props }, ref) => (
+>(({ className, children, variant, color, size, ...props }, ref) => (
   <SelectPrimitive.Trigger
     ref={ref}
-    className={cn(selectTriggerVariants({ size }), className)}
+    className={cn(selectTriggerVariants({ variant, color, size }), className)}
+    aria-invalid={color === 'error' || undefined}
     {...props}
   >
     {children}

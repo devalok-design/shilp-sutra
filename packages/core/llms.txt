@@ -7,6 +7,9 @@
 ## CHANGES (v0.30.0)
 - **RichTextEditor `toolbar` prop** — `toolbar?: ToolbarItem[]` whitelist of toolbar items to display. Omit to show all (default). `ToolbarItem` type exported.
 - **`@devalok/shilp-sutra-karm` removed** — Domain components moved to Karm app repo. npm package deprecated.
+- **Warning dark mode fixed** — `warning-*` tokens now have proper dark mode values (higher chroma than category amber).
+- **tailwind-merge fix** — All `text-ds-*` sizes now correctly registered. `cn('text-ds-lg', 'text-accent-11')` no longer strips the color.
+- **AvatarGroup fixes** — Overflow badge text matches avatar size, indicator dots scale with size, aria-labels added.
 
 ## BREAKING CHANGES (v0.27.0 — Externalized Dependencies)
 

@@ -19,6 +19,11 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 - **PageHeader** — Replaced `@tabler/icons-react` chevron with inline SVG, removing the runtime icon dependency for this component.
 - **`ProcessingOverlayProps` unexported** — Was accidentally exported; this is an internal-only interface.
+- **tailwind-merge font-size registration** — `text-ds-lg` and above (`base`, `xl`, `2xl`–`6xl`) were not registered as font-size classes, causing `tailwind-merge` to strip text color classes when combined (e.g. `cn('text-ds-lg', 'text-accent-11')` would drop the color).
+- **Warning tokens dark mode** — `amber-bright` primitives and `warning-7/9/10/11` semantic tokens were missing dark mode overrides, rendering warning badges with light-mode yellow on dark backgrounds.
+- **AvatarGroup overflow badge** — Text size now matches avatar fallback text at every size. Removed extra `font-body` that caused weight mismatch. Added `aria-label` for screen readers.
+- **AvatarGroup indicator dots** — Dot size now scales with avatar size (was hardcoded 8px at all sizes).
+- **AvatarGroup consistency** — Fixed `rounded-full` → `rounded-ds-full`, keys now include index to handle duplicate names.
 
 ## [0.29.0] - 2026-03-26 (core)
 

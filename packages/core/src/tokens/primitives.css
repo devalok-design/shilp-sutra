@@ -427,4 +427,14 @@
   --emerald-11: oklch(0.76 0.0821 160);
   --emerald-12: oklch(0.88 0.0316 160);
 
+  /* ── Amber Bright (dark) — warning semantic use — H:65, higher chroma than category amber ── */
+  --amber-bright-2:  oklch(0.18 0.02 65);
+  --amber-bright-3:  oklch(0.25 0.045 65);
+  --amber-bright-4:  oklch(0.32 0.065 65);
+  --amber-bright-5:  oklch(0.38 0.085 65);
+  --amber-bright-7:  oklch(0.50 0.13 65);
+  --amber-bright-9:  oklch(0.72 0.17 65);
+  --amber-bright-10: oklch(0.66 0.17 65);
+  --amber-bright-11: oklch(0.82 0.11 65);
+
 }

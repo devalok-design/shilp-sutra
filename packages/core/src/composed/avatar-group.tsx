@@ -98,6 +98,26 @@ const AvatarGroup = React.forwardRef<HTMLDivElement, AvatarGroupProps>(
     }
     const overlapClass = overlapMap[size ?? 'md']
 
+    // Match Avatar fallback font sizes so the "+N" badge text is consistent
+    const textSizeMap: Record<string, string> = {
+      xs: 'text-[9px]',
+      sm: 'text-ds-xs',
+      md: 'text-ds-sm',
+      lg: 'text-ds-md',
+      xl: 'text-ds-lg',
+    }
+    const textSizeClass = textSizeMap[size ?? 'md']
+
+    // Indicator dot scales with avatar size (matches Avatar's statusDotSizeMap)
+    const indicatorDotSizeMap: Record<string, string> = {
+      xs: 'h-1 w-1',
+      sm: 'h-1.5 w-1.5',
+      md: 'h-2 w-2',
+      lg: 'h-2.5 w-2.5',
+      xl: 'h-3 w-3',
+    }
+    const indicatorDotClass = indicatorDotSizeMap[size ?? 'md']
+
     const borderClass =
       borderColor === 'surface-base'
         ? 'border-surface-base'
@@ -142,15 +162,17 @@ const AvatarGroup = React.forwardRef<HTMLDivElement, AvatarGroupProps>(
           {displayed.map((user, index) => {
             const initials = getInitials(user.name)
 
+            const key = `${user.name}-${index}`
+
             if (renderAvatar) {
               // When renderAvatar is provided, the consumer owns the Avatar entirely.
               // Wrapper is positioning-only (overlap, z-index, spotlight) — no size/border/clip
               // so the consumer's Avatar renders at its natural size without being clipped.
               return (
                 <div
-                  key={user.name}
+                  key={key}
                   className={cn(
-                    'shrink-0 rounded-full',
+                    'shrink-0 rounded-ds-full',
                     index > 0 && overlapClass,
                     spotlightClasses,
                     user.ring && user.ring !== 'none' && groupRingMap[user.ring],
@@ -164,9 +186,9 @@ const AvatarGroup = React.forwardRef<HTMLDivElement, AvatarGroupProps>(
 
             const avatarNode = (
               <div
-                key={user.name}
+                key={key}
                 className={cn(
-                  'relative shrink-0 rounded-full',
+                  'relative shrink-0 rounded-ds-full',
                   index > 0 && overlapClass,
                   spotlightClasses,
                   user.ring && user.ring !== 'none' && groupRingMap[user.ring],
@@ -181,7 +203,6 @@ const AvatarGroup = React.forwardRef<HTMLDivElement, AvatarGroupProps>(
                     <AvatarImage src={user.image} alt={user.name} />
                   )}
                   <AvatarFallback
-                    className="font-body font-semibold"
                     colorSeed={user.name}
                   >
                     {initials}
@@ -195,7 +216,8 @@ const AvatarGroup = React.forwardRef<HTMLDivElement, AvatarGroupProps>(
                       exit={{ scale: 0, opacity: 0 }}
                       transition={springs.snappy}
                       className={cn(
-                        'absolute top-0 right-0 h-2 w-2 rounded-full ring-1 ring-surface-raised',
+                        'absolute top-0 right-0 rounded-ds-full ring-1 ring-surface-raised',
+                        indicatorDotClass,
                         user.indicator === 'lead' ? 'bg-warning-9' :
                         user.indicator === 'admin' ? 'bg-accent-9' : '',
                       )}
@@ -210,7 +232,7 @@ const AvatarGroup = React.forwardRef<HTMLDivElement, AvatarGroupProps>(
             if (!showTooltip) return avatarNode
 
             return (
-              <Tooltip key={user.name}>
+              <Tooltip key={key}>
                 <TooltipTrigger asChild>{avatarNode}</TooltipTrigger>
                 <TooltipContent
                   className="border-surface-border-strong bg-surface-base text-surface-fg"
@@ -229,11 +251,12 @@ const AvatarGroup = React.forwardRef<HTMLDivElement, AvatarGroupProps>(
                   <button
                     type="button"
                     onClick={onOverflowClick}
+                    aria-label={`${overflow} more members`}
                     className={cn(
                       avatarSizeVariants({ size }),
                       borderClass,
                       overlapClass,
-                      'flex cursor-pointer items-center justify-center bg-accent-2 font-body font-semibold text-accent-11',
+                      `flex cursor-pointer items-center justify-center bg-accent-2 font-semibold text-accent-11 ${textSizeClass}`,
                       'hover:scale-105 hover:bg-accent-3 transition-[transform,background-color] duration-300 ease-out',
                     )}
                     style={{ zIndex: 0, transform: getExpandTransform(displayed.length) }}
@@ -242,11 +265,13 @@ const AvatarGroup = React.forwardRef<HTMLDivElement, AvatarGroupProps>(
                   </button>
                 ) : (
                   <div
+                    role="img"
+                    aria-label={`${overflow} more members`}
                     className={cn(
                       avatarSizeVariants({ size }),
                       borderClass,
                       overlapClass,
-                      'flex cursor-default items-center justify-center bg-accent-2 font-body font-semibold text-accent-11',
+                      `flex cursor-default items-center justify-center bg-accent-2 font-semibold text-accent-11 ${textSizeClass}`,
                       'transition-[transform,opacity] duration-300 ease-out',
                     )}
                     style={{ zIndex: 0, transform: getExpandTransform(displayed.length) }}

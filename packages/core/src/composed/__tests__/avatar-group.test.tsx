@@ -172,7 +172,7 @@ describe('AvatarGroup', () => {
           showTooltip={false}
         />,
       )
-      const overflowBtn = screen.getByRole('button', { name: /\+4/ })
+      const overflowBtn = screen.getByRole('button', { name: /4 more members/ })
       await user.click(overflowBtn)
       expect(onClick).toHaveBeenCalledOnce()
     })
@@ -186,7 +186,7 @@ describe('AvatarGroup', () => {
           showTooltip={false}
         />,
       )
-      const overflowBtn = screen.getByRole('button', { name: /\+4/ })
+      const overflowBtn = screen.getByRole('button', { name: /4 more members/ })
       expect(overflowBtn.className).toContain('cursor-pointer')
     })
 

@@ -121,9 +121,9 @@ describe('Card', () => {
       const header = screen.getByText('Header').closest('div')!
       const content = screen.getByText('Body').closest('div')!
       const footer = screen.getByText('Footer').closest('div')!
-      expect(header).toHaveClass('p-ds-04')
-      expect(content).toHaveClass('p-ds-04')
-      expect(footer).toHaveClass('p-ds-04')
+      expect(header).toHaveClass('p-ds-05')
+      expect(content).toHaveClass('p-ds-05')
+      expect(footer).toHaveClass('p-ds-05')
     })
 
     it('applies lg padding to sub-components', () => {

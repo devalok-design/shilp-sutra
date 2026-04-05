@@ -186,7 +186,7 @@ const Card = React.forwardRef<HTMLDivElement, CardProps>(
 Card.displayName = 'Card'
 
 const headerSizeClasses: Record<CardSize, string> = {
-  sm: 'p-ds-03',
+  sm: 'p-ds-04',
   md: 'p-ds-06',
   lg: 'p-ds-07',
 }
@@ -231,7 +231,7 @@ const CardDescription = React.forwardRef<
 CardDescription.displayName = 'CardDescription'
 
 const contentSizeClasses: Record<CardSize, string> = {
-  sm: 'p-ds-03 pt-0',
+  sm: 'p-ds-04 pt-0',
   md: 'p-ds-06 pt-0',
   lg: 'p-ds-07 pt-0',
 }
@@ -248,7 +248,7 @@ const CardContent = React.forwardRef<
 CardContent.displayName = 'CardContent'
 
 const footerSizeClasses: Record<CardSize, string> = {
-  sm: 'p-ds-03 pt-0',
+  sm: 'p-ds-04 pt-0',
   md: 'p-ds-06 pt-0',
   lg: 'p-ds-07 pt-0',
 }

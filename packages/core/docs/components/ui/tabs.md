@@ -46,6 +46,10 @@
 - Normally omit `variant` on TabsTrigger — it inherits from TabsList via context. You CAN set it per-trigger to override.
 
 ## Changes
+### v0.31.0
+- **Added** `size` prop on TabsList: `sm | md | lg`. Scales height and trigger padding.
+- **Added** `color` prop on TabsList: `accent | neutral`. Affects line variant indicator.
+
 ### v0.18.0
 - **Fixed** Wrapped TabsList context provider value in `useMemo` for performance
 

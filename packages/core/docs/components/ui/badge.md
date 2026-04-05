@@ -43,6 +43,9 @@
 - `color="custom"` requires `--badge-color` CSS variable (and optionally `--badge-fg-color` for solid variant)
 
 ## Changes
+### v0.31.0
+- **Added** `truncate` prop — enables ellipsis truncation without requiring maxWidth
+
 ### v0.29.0
 - **Changed** (BREAKING) v2 rewrite — Badge is now a full interactive component
 - **Added** `soft` variant (tinted bg, no border — completes the 4-variant set: subtle/solid/outline/soft)

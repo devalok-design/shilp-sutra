@@ -34,6 +34,10 @@
 - Use `interactive` prop for clickable cards — adds hover lift and pointer cursor
 
 ## Changes
+### v0.31.0
+- **Added** `color` prop: semantic border color (accent, error, success, warning, info, neutral)
+- **Added** `size` prop: `sm | md | lg` — padding propagated to sub-components via React context
+
 ### v0.18.0
 - **Changed** Interactive card hover lift animation migrated to Framer Motion
 

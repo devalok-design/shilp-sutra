@@ -5,6 +5,31 @@ All notable changes to `@devalok/shilp-sutra` will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.31.0] - 2026-04-06 (core)
+
+### Added
+
+- **Alert `size` prop** — `sm`, `md` (default), `lg`. Scales padding, gap, icon size, and text size.
+- **Card `color` prop** — `default`, `accent`, `error`, `success`, `warning`, `info`, `neutral`. Applies semantic border color.
+- **Card `size` prop** — `sm`, `md` (default), `lg`. Propagated to CardHeader, CardContent, CardFooter via React context.
+- **Select `variant` prop** — `default`, `outline`, `ghost` on SelectTrigger. Controls border/background treatment.
+- **Select `color` prop** — `default`, `error`, `success`, `warning` on SelectTrigger. For validation feedback. Sets `aria-invalid` when `color="error"`.
+- **Tabs `color` prop** — `accent` (default), `neutral`. Affects active tab indicator and text color on line variant.
+- **Tabs `size` prop** — `sm`, `md` (default), `lg`. Scales TabsList height and TabsTrigger padding/text.
+- **Badge `truncate` prop** — Enables text truncation with ellipsis. Use with fixed width (`className="w-20"`) or `maxWidth` for constrained pill badges.
+- **Subpath exports** — `./ui/icon`, `./ui/icon-context`, `./ui/icon-group`, `./ui/badge-group`, `./ui/badge-indicator`, `./ui/devalok-grain`, `./ai/types` now available as direct imports.
+- **`./ai/types` build entry** — BlockComponentProps and all AI type definitions importable without pulling in component code.
+
+### Fixed
+
+- **Server-safe allowlist** — `empty-state`, `priority-indicator`, and `status-badge` were incorrectly marked as server-safe despite using framer-motion. They now correctly receive `"use client"` in dist. This fixes potential SSR crashes in Next.js when importing these components.
+
+### Changed
+
+- **Post-build pipeline** — 5 sequential scripts consolidated into single `post-build.mjs` with step reporting and failure isolation.
+- **Server-safe detection** — Hardcoded allowlist replaced with `// @server-safe` source-level annotations. New server-safe components are now opt-in via annotation instead of editing a script.
+- **Legacy typography classes deprecated** — `T1-T7`, `B1-B8`, `L1-L6`, `P1-P7` in `typography.css` marked `@deprecated` with migration mapping to `typography-semantic.css` tokens (`--typo-heading-*`, `--typo-body-*`, `--typo-label-*`). Will be removed in v1.0.
+
 ## [0.30.0] - 2026-04-05 (core)
 
 ### Removed

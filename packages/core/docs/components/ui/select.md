@@ -39,6 +39,10 @@
 - `<Select size="lg">` is silently ignored (no TypeScript error)
 
 ## Changes
+### v0.31.0
+- **Added** `variant` prop on SelectTrigger: `default | outline | ghost`
+- **Added** `color` prop on SelectTrigger: `default | error | success | warning`. Sets `aria-invalid` when error.
+
 ### v0.15.0
 - **Changed** `lg` size font changed from `text-ds-lg` (18px) to `text-ds-md` (14px) — all input sizes now use 14px for consistency
 

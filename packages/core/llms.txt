@@ -4,6 +4,19 @@
 > Built on the same primitives as shadcn/ui but with key API differences.
 > Read this file BEFORE writing any UI code. Do NOT guess from shadcn/ui knowledge.
 
+## CHANGES (v0.31.0)
+- **Alert `size` prop** — `sm | md (default) | lg`. Scales padding, gap, icon, text.
+- **Card `color` prop** — `default | accent | error | success | warning | info | neutral`. Semantic border color.
+- **Card `size` prop** — `sm | md (default) | lg`. Propagated to sub-components via context.
+- **Select `variant` prop** — `default | outline | ghost` on SelectTrigger.
+- **Select `color` prop** — `default | error | success | warning` on SelectTrigger. Sets `aria-invalid` when error.
+- **Tabs `color` prop** — `accent (default) | neutral`. Affects line variant indicator.
+- **Tabs `size` prop** — `sm | md (default) | lg`. Scales height and padding.
+- **Badge `truncate` prop** — Enables ellipsis truncation. Combine with fixed width or `maxWidth`.
+- **New subpath exports** — `./ui/icon`, `./ui/icon-context`, `./ui/icon-group`, `./ui/badge-group`, `./ui/badge-indicator`, `./ui/devalok-grain`, `./ai/types`.
+- **Server-safe fix** — `empty-state`, `priority-indicator`, `status-badge` now correctly get `"use client"` (were incorrectly omitted).
+- **Server-safe detection** — Hardcoded allowlist replaced with `// @server-safe` source annotations.
+
 ## CHANGES (v0.30.0)
 - **RichTextEditor `toolbar` prop** — `toolbar?: ToolbarItem[]` whitelist of toolbar items to display. Omit to show all (default). `ToolbarItem` type exported.
 - **`@devalok/shilp-sutra-karm` removed** — Domain components moved to Karm app repo. npm package deprecated.
@@ -106,7 +119,7 @@ Same pattern for `border-surface-*`, `text-surface-*`, `ring-surface-*`.
 
 **Button `onClickAsync`:** New prop `onClickAsync?: (e) => Promise<void>` — auto-manages loading → success/error → idle states. `asyncFeedbackDuration?: number` (default 1500ms).
 
-**Server safety changes:** EmptyState, StatusBadge, Spinner are NO LONGER server-safe (they now use Framer Motion). Remove from RSC imports.
+**Server safety changes:** EmptyState, StatusBadge, PriorityIndicator, Spinner are NOT server-safe (they use Framer Motion). Do NOT import from RSC.
 
 **Build:** `framer-motion` and `sonner` moved from `dependencies` to `devDependencies` (bundled at build time — no consumer install needed for core).
 

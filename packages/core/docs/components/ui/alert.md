@@ -28,6 +28,9 @@
 - Icon is auto-selected by color (info=circle, success=check, warning=triangle, error=alert)
 
 ## Changes
+### v0.31.0
+- **Added** `size` prop: `sm | md | lg`. Default `md` (non-breaking).
+
 ### v0.18.0
 - **Changed** Exit animation migrated to Framer Motion
 - **Fixed** `onDismiss` JSDoc documenting it fires after exit animation completes

@@ -65,7 +65,7 @@ const Checkbox = React.forwardRef<
       defaultChecked={!isControlled && !indeterminate ? defaultChecked : undefined}
       onCheckedChange={handleCheckedChange}
       className={cn(
-        'peer flex items-center justify-center h-ico-md w-ico-md shrink-0 rounded-ds-sm',
+        'peer flex items-center justify-center h-6 w-6 shrink-0 rounded-ds-sm',
         'border border-surface-border-strong',
         'bg-surface-raised-hover',
         'transition-colors duration-fast-01 ease-productive-standard',
@@ -94,7 +94,7 @@ const Checkbox = React.forwardRef<
                 height="16"
                 viewBox="0 0 16 16"
                 fill="none"
-                className="h-ico-sm w-ico-sm"
+                className="h-[18px] w-[18px]"
               >
                 {actualChecked === 'indeterminate' ? (
                   <motion.line

@@ -90,7 +90,7 @@ describe('Switch', () => {
   it('renders sm size with correct track dimensions', () => {
     render(<Switch aria-label="Small switch" size="sm" />)
     const toggle = screen.getByRole('switch')
-    expect(toggle).toHaveClass('h-[18px]', 'w-[32px]')
+    expect(toggle).toHaveClass('h-6', 'w-[38px]')
   })
 
   it('renders lg size with correct track dimensions', () => {

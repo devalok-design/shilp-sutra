@@ -425,7 +425,7 @@ const preset: Partial<Config> = {
         '.focus-ring-sm': {
           '&:focus-visible': {
             outline: 'none',
-            'box-shadow': '0 0 0 1px var(--color-accent-7)',
+            'box-shadow': '0 0 0 2px var(--color-accent-7)',
           },
         },
       })

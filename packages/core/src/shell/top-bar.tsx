@@ -58,12 +58,12 @@ export interface UserMenuItem {
 // TopBar (root)
 // -----------------------------------------------------------------------
 
-interface TopBarRootProps extends React.HTMLAttributes<HTMLDivElement> {
+interface TopBarRootProps extends React.HTMLAttributes<HTMLElement> {
   children: React.ReactNode
   className?: string
 }
 
-const TopBarRoot = React.forwardRef<HTMLDivElement, TopBarRootProps>(
+const TopBarRoot = React.forwardRef<HTMLElement, TopBarRootProps>(
   ({ className, children, ...props }, ref) => {
     // Detect if a Center zone is present to switch to grid layout
     const hasCenter = React.Children.toArray(children).some(
@@ -71,7 +71,7 @@ const TopBarRoot = React.forwardRef<HTMLDivElement, TopBarRootProps>(
     )
 
     return (
-      <div
+      <header
         {...props}
         ref={ref}
         className={cn(
@@ -83,7 +83,7 @@ const TopBarRoot = React.forwardRef<HTMLDivElement, TopBarRootProps>(
         )}
       >
         {children}
-      </div>
+      </header>
     )
   },
 )
@@ -199,6 +199,7 @@ const TopBarIconButton = React.forwardRef<
       <button
         ref={ref}
         type="button"
+        aria-label={tooltip}
         className={cn(
           'flex h-ds-sm-plus w-ds-sm-plus items-center justify-center rounded-ds-full border border-surface-border-strong bg-surface-raised-hover text-surface-fg-muted transition-[color,background-color,border-color,transform] hover:bg-surface-raised-active active:scale-90 duration-fast-01 ease-productive-standard',
           className,
@@ -265,7 +266,7 @@ const TopBarUserMenu = React.forwardRef<HTMLButtonElement, TopBarUserMenuProps>(
               <button
                 ref={ref}
                 type="button"
-                className={cn('flex items-center gap-ds-03 outline-none', className)}
+                className={cn('flex items-center gap-ds-03 outline-none focus-visible:ring-2 focus-visible:ring-accent-9 focus-visible:ring-offset-2', className)}
               >
                 <Avatar className="h-ds-sm-plus w-ds-sm-plus cursor-pointer">
                   {user.image ? (

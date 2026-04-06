@@ -8,7 +8,7 @@
  */
 import * as React from 'react'
 import { useLink } from './link-context'
-import { useState } from 'react'
+import { useState, useEffect, useRef, useCallback } from 'react'
 import { IconDots, IconX } from '@tabler/icons-react'
 import { Icon } from '../ui/icon'
 import { cn } from '../ui/lib/utils'
@@ -135,6 +135,17 @@ const BottomNavbar = React.forwardRef<HTMLElement, BottomNavbarProps>(
   ) => {
     const Link = useLink()
     const [showMore, setShowMore] = useState(false)
+    const overlayRef = useRef<HTMLDivElement>(null)
+
+    const closeMore = useCallback(() => setShowMore(false), [])
+
+    // Focus first focusable item when overlay opens
+    useEffect(() => {
+      if (showMore && overlayRef.current) {
+        const firstFocusable = overlayRef.current.querySelector<HTMLElement>('a, button')
+        firstFocusable?.focus()
+      }
+    }, [showMore])
 
     const isActive = (path: string, exact = false) => {
       if (exact || path === '/') {
@@ -161,13 +172,19 @@ const BottomNavbar = React.forwardRef<HTMLElement, BottomNavbarProps>(
           <div className="absolute inset-0 bg-overlay" />
           {/* eslint-disable-next-line jsx-a11y/no-static-element-interactions -- stopPropagation prevents closing when clicking inside menu */}
           <motion.div
+            ref={overlayRef}
+            role="dialog"
+            aria-label="More navigation"
             initial={{ y: '100%' }}
             animate={{ y: 0 }}
             exit={{ y: '100%' }}
             transition={springs.smooth}
             className="absolute bottom-[72px] left-0 right-0 rounded-t-ds-2xl border-t border-surface-border-strong bg-surface-overlay p-ds-05 pb-ds-03"
             onClick={(e) => e.stopPropagation()}
-            onKeyDown={(e) => e.stopPropagation()}
+            onKeyDown={(e) => {
+              e.stopPropagation()
+              if (e.key === 'Escape') closeMore()
+            }}
           >
             <div className="mb-ds-04 flex items-center justify-between">
               <span className="text-ds-md font-semibold text-surface-fg">

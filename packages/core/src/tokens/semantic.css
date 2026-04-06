@@ -420,10 +420,12 @@
 .dark {
   color-scheme: dark;
 
-  /* Foreground on solid accent/status backgrounds.
-     Inherits var(--neutral-1) from :root — in dark mode neutral-1 = L=0.11,
-     giving dark text on bright step-9 backgrounds (~6.5:1 contrast).
-     Previously set to neutral-12 (L=0.88) which was bright-on-bright (~1.8:1). */
+  /* Foreground on solid accent/status backgrounds — white text on brand colors */
+  --color-accent-fg: var(--neutral-12);
+  --color-secondary-fg: var(--neutral-12);
+  --color-error-fg: var(--neutral-12);
+  --color-success-fg: var(--neutral-12);
+  --color-info-fg: var(--neutral-12);
 
   /* Warning: amber-bright dark ramp for dark mode */
   --color-warning-2:  var(--amber-bright-2);
@@ -434,7 +436,7 @@
   --color-warning-9:  var(--amber-bright-9);
   --color-warning-10: var(--amber-bright-10);
   --color-warning-11: var(--amber-bright-11);
-  /* --color-warning-fg: inherits oklch(0.25 0.01 55) from :root — dark on bright amber, good contrast */
+  --color-warning-fg: var(--neutral-12);
 
   /* Dark mode borders need lower contrast — bright borders look harsh.
      Drop to step 3/4 for subtle resting borders that don't overpower surfaces */

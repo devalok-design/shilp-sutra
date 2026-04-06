@@ -420,12 +420,12 @@
 .dark {
   color-scheme: dark;
 
-  /* Foreground on solid accent/status backgrounds — white text on brand colors */
-  --color-accent-fg: var(--neutral-12);
-  --color-secondary-fg: var(--neutral-12);
-  --color-error-fg: var(--neutral-12);
-  --color-success-fg: var(--neutral-12);
-  --color-info-fg: var(--neutral-12);
+  /* Foreground on solid accent/status backgrounds — pure white on brand colors */
+  --color-accent-fg: var(--neutral-0);
+  --color-secondary-fg: var(--neutral-0);
+  --color-error-fg: var(--neutral-0);
+  --color-success-fg: var(--neutral-0);
+  --color-info-fg: var(--neutral-0);
 
   /* Warning: amber-bright dark ramp for dark mode */
   --color-warning-2:  var(--amber-bright-2);
@@ -436,7 +436,7 @@
   --color-warning-9:  var(--amber-bright-9);
   --color-warning-10: var(--amber-bright-10);
   --color-warning-11: var(--amber-bright-11);
-  --color-warning-fg: var(--neutral-12);
+  --color-warning-fg: var(--neutral-0);
 
   /* Dark mode borders need lower contrast — bright borders look harsh.
      Drop to step 3/4 for subtle resting borders that don't overpower surfaces */

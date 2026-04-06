@@ -192,7 +192,8 @@ const Sidebar = forwardRef<
 
     if (collapsible === 'none') {
       return (
-        <div
+        <aside
+          aria-label="Sidebar"
           className={cn(
             'flex h-full w-[--sidebar-width] flex-col bg-surface-raised text-surface-fg',
             className,
@@ -201,7 +202,7 @@ const Sidebar = forwardRef<
           {...props}
         >
           {children}
-        </div>
+        </aside>
       )
     }
 
@@ -219,7 +220,7 @@ const Sidebar = forwardRef<
             }
             side={side}
           >
-            <div className="flex h-full w-full flex-col">{children}</div>
+            <aside aria-label="Sidebar" className="flex h-full w-full flex-col">{children}</aside>
           </SheetContent>
         </Sheet>
       )
@@ -257,12 +258,13 @@ const Sidebar = forwardRef<
           )}
           {...props}
         >
-          <div
+          <aside
+            aria-label="Sidebar"
             data-sidebar="sidebar"
             className="flex h-full w-full flex-col bg-surface-raised group-data-[variant=floating]:rounded-ds-lg group-data-[variant=floating]:border group-data-[variant=floating]:border-surface-border group-data-[variant=floating]:shadow"
           >
             {children}
-          </div>
+          </aside>
         </div>
       </div>
     )

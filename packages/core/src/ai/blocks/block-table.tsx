@@ -104,22 +104,36 @@ const BlockTable = React.memo(function BlockTable({
           <TableRow>
             {columns.map((col) => {
               const isSorted = sortKey === col.key
-              const ariaSort = isSorted
-                ? sortDir === 'asc'
-                  ? ('ascending' as const)
-                  : ('descending' as const)
+              const ariaSort = data.sortable
+                ? isSorted
+                  ? sortDir === 'asc'
+                    ? ('ascending' as const)
+                    : ('descending' as const)
+                  : ('none' as const)
                 : undefined
 
               return (
                 <TableHead
                   key={col.key}
+                  role="columnheader"
                   className={cn(
                     col.variant === 'number' && 'text-right',
                     data.sortable && 'cursor-pointer select-none',
                   )}
+                  tabIndex={data.sortable ? 0 : undefined}
                   onClick={
                     data.sortable
                       ? () => handleHeaderClick(col.key)
+                      : undefined
+                  }
+                  onKeyDown={
+                    data.sortable
+                      ? (e: React.KeyboardEvent) => {
+                          if (e.key === 'Enter' || e.key === ' ') {
+                            e.preventDefault()
+                            handleHeaderClick(col.key)
+                          }
+                        }
                       : undefined
                   }
                   aria-sort={ariaSort}

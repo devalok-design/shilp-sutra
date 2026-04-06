@@ -133,7 +133,7 @@ export const MobileFullScreen: Story = {
     viewport: { defaultViewport: 'mobile1' },
   },
   render: function Render() {
-    const [open, setOpen] = React.useState(true)
+    const [open, setOpen] = React.useState(false)
     return (
       <Dialog open={open} onOpenChange={setOpen}>
         <DialogTrigger asChild>

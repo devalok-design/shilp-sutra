@@ -16,7 +16,7 @@ type Story = StoryObj<typeof BottomSheet>
 
 export const Default: Story = {
   render: function Render() {
-    const [open, setOpen] = React.useState(true)
+    const [open, setOpen] = React.useState(false)
     return (
       <>
         <Button variant="outline" onClick={() => setOpen(true)}>Open BottomSheet</Button>
@@ -31,7 +31,7 @@ export const Default: Story = {
 
 export const NoDragHandle: Story = {
   render: function Render() {
-    const [open, setOpen] = React.useState(true)
+    const [open, setOpen] = React.useState(false)
     return (
       <>
         <Button variant="outline" onClick={() => setOpen(true)}>Open</Button>

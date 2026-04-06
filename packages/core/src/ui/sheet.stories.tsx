@@ -123,7 +123,7 @@ export const MobileBottomSheet: Story = {
     viewport: { defaultViewport: 'mobile1' },
   },
   render: function Render() {
-    const [open, setOpen] = React.useState(true)
+    const [open, setOpen] = React.useState(false)
     return (
       <Sheet open={open} onOpenChange={setOpen}>
         <SheetTrigger asChild>

@@ -6,6 +6,8 @@ import { motion, AnimatePresence } from 'framer-motion'
 
 import { cn } from './lib/utils'
 import { springs, tweens } from './lib/motion'
+import { useIsMobile } from '../hooks/use-mobile'
+import { BottomSheet } from './lib/bottom-sheet'
 
 // ── Internal context to thread `open` state to animated children ──
 
@@ -50,7 +52,21 @@ const PopoverContent = React.forwardRef<
   React.ElementRef<typeof PopoverPrimitive.Content>,
   React.ComponentPropsWithoutRef<typeof PopoverPrimitive.Content>
 >(({ className, align = 'center', sideOffset = 4, children, ...props }, ref) => {
-  const { open } = React.useContext(PopoverOpenContext)
+  const isMobileRaw = useIsMobile()
+  const { open, onClose } = React.useContext(PopoverOpenContext)
+
+  if (isMobileRaw) {
+    return (
+      <BottomSheet
+        open={open}
+        onOpenChange={(v) => { if (!v) onClose() }}
+        title="Options"
+        className={className}
+      >
+        {children}
+      </BottomSheet>
+    )
+  }
 
   return (
     <AnimatePresence>

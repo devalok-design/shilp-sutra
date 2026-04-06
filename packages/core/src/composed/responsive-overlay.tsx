@@ -20,6 +20,11 @@ import {
 // Types
 // ============================================================
 
+/**
+ * @deprecated Dialog and Sheet now auto-adapt to mobile viewports.
+ * Use Dialog directly (fullScreens on mobile) or Sheet directly (becomes bottom sheet on mobile).
+ * This component will be removed in a future major version.
+ */
 export interface ResponsiveOverlayProps {
   open: boolean
   onOpenChange: (open: boolean) => void
@@ -59,6 +64,9 @@ function useIsMobileOverlay(breakpoint: string): boolean {
 // ResponsiveOverlay
 // ============================================================
 
+/**
+ * @deprecated Use Dialog or Sheet directly — they are now individually mobile-responsive.
+ */
 function ResponsiveOverlay({
   open,
   onOpenChange,

@@ -4,11 +4,12 @@ import * as React from 'react'
 import * as SheetPrimitive from '@primitives/react-dialog'
 import { cva, type VariantProps } from 'class-variance-authority'
 import { IconX } from '@tabler/icons-react'
-import { motion, AnimatePresence } from 'framer-motion'
+import { motion, AnimatePresence, useReducedMotion } from 'framer-motion'
 
 import { cn } from './lib/utils'
 import { springs, tweens, motionProps } from './lib/motion'
 import { Icon } from './icon'
+import { useIsMobile } from '../hooks/use-mobile'
 
 // ── Internal open-state context ──────────────────────────────────────
 
@@ -189,13 +190,30 @@ const sheetVariants = cva(
  */
 export interface SheetContentProps
   extends React.ComponentPropsWithoutRef<typeof SheetPrimitive.Content>,
-    VariantProps<typeof sheetVariants> {}
+    VariantProps<typeof sheetVariants> {
+  /** When true (default), Sheet slides from bottom on mobile with swipe-to-dismiss. */
+  responsive?: boolean
+}
 
 const SheetContent = React.forwardRef<
   React.ElementRef<typeof SheetPrimitive.Content>,
   SheetContentProps
->(({ side = 'right', className, children, ...props }, ref) => {
-  const { open } = React.useContext(SheetOpenContext)
+>(({ side = 'right', responsive, className, children, ...props }, ref) => {
+  const isMobileRaw = useIsMobile()
+  const isMobile = responsive !== false && isMobileRaw
+  const isReduced = useReducedMotion()
+  const { open, onClose } = React.useContext(SheetOpenContext)
+  const effectiveSide = isMobile ? 'bottom' : (side ?? 'right')
+
+  const internalRef = React.useRef<HTMLDivElement>(null)
+  const composedRef = React.useCallback(
+    (node: HTMLDivElement | null) => {
+      internalRef.current = node
+      if (typeof ref === 'function') ref(node)
+      else if (ref) (ref as React.MutableRefObject<HTMLDivElement | null>).current = node
+    },
+    [ref],
+  )
 
   return (
     <AnimatePresence>
@@ -204,14 +222,35 @@ const SheetContent = React.forwardRef<
           <SheetOverlay />
           <SheetPrimitive.Content forceMount asChild>
             <motion.div
-              ref={ref}
-              className={cn(sheetVariants({ side }), className)}
-              initial={slideInitial[side!]}
-              animate={slideAnimate[side!]}
-              exit={slideInitial[side!]}
+              ref={composedRef}
+              className={cn(sheetVariants({ side: effectiveSide }), className)}
+              initial={slideInitial[effectiveSide]}
+              animate={slideAnimate[effectiveSide]}
+              exit={slideInitial[effectiveSide]}
               transition={springs.smooth}
+              drag={isMobile && !isReduced ? 'y' : false}
+              dragConstraints={{ top: 0 }}
+              dragElastic={0.2}
+              onDragEnd={
+                isMobile
+                  ? (
+                      _: unknown,
+                      info: { offset: { y: number }; velocity: { y: number } },
+                    ) => {
+                      const h =
+                        internalRef.current?.getBoundingClientRect().height ?? 300
+                      if (info.offset.y > h * 0.3 || info.velocity.y > 500)
+                        onClose()
+                    }
+                  : undefined
+              }
               {...motionProps(props)}
             >
+              {isMobile && (
+                <div className="flex justify-center pt-ds-03 pb-ds-02">
+                  <div className="h-1 w-8 rounded-ds-full bg-surface-border" />
+                </div>
+              )}
               <SheetPrimitive.Close className="absolute right-ds-05 top-ds-05 min-h-ds-xs min-w-ds-xs flex items-center justify-center rounded-ds-sm text-surface-fg-subtle transition-colors ease-productive-standard hover:text-surface-fg-muted hover:bg-surface-raised-hover active:scale-90 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent-9 disabled:pointer-events-none">
                 <Icon icon={IconX} size="sm" />
                 <span className="sr-only">Close</span>

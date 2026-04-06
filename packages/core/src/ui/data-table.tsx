@@ -14,7 +14,6 @@ import {
   type TableState,
   type Updater,
   type VisibilityState,
-  flexRender,
   getCoreRowModel,
   getExpandedRowModel,
   getFilteredRowModel,
@@ -23,32 +22,25 @@ import {
   useReactTable,
 } from '@tanstack/react-table'
 import { useVirtualizer } from '@tanstack/react-virtual'
-import { motion, AnimatePresence } from 'framer-motion'
-import {
-  IconArrowDown,
-  IconArrowUp,
-  IconArrowsSort,
-  IconChevronLeft,
-  IconChevronRight,
-  IconSearch,
-  IconX,
-} from '@tabler/icons-react'
+import { IconChevronRight, IconSearch } from '@tabler/icons-react'
 
 import { Icon } from './icon'
-import {
-  Table,
-  TableBody,
-  TableCell,
-  TableHead,
-  TableHeader,
-  TableRow,
-} from './table'
-import { Button } from './button'
+import { Table } from './table'
 import { Checkbox } from './checkbox'
-import { Skeleton } from './skeleton'
 import { cn } from './lib/utils'
-import { springs } from './lib/motion'
 import { DataTableToolbar, type Density } from './data-table-toolbar'
+import {
+  DataTableProvider,
+  densityPaddingMap,
+  type EditingCell,
+} from './data-table-context'
+import { DataTableHeader } from './data-table-header'
+import { DataTableBody } from './data-table-body'
+import { DataTablePagination } from './data-table-pagination'
+import { DataTableBulkActions, type BulkAction } from './data-table-bulk-actions'
+
+// Re-export public types so consumers' imports don't break
+export type { BulkAction } from './data-table-bulk-actions'
 
 declare module '@tanstack/react-table' {
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
@@ -56,34 +48,6 @@ declare module '@tanstack/react-table' {
     align?: 'left' | 'center' | 'right'
     hideBelow?: 'sm' | 'md' | 'lg'
   }
-}
-
-function getColumnMetaClasses(meta?: Record<string, unknown>): string {
-  if (!meta) return ''
-  const classes: string[] = []
-  if (meta.align === 'right') classes.push('text-right tabular-nums')
-  if (meta.align === 'center') classes.push('text-center')
-  if (meta.hideBelow === 'sm') classes.push('hidden sm:table-cell')
-  if (meta.hideBelow === 'md') classes.push('hidden md:table-cell')
-  if (meta.hideBelow === 'lg') classes.push('hidden lg:table-cell')
-  return classes.join(' ')
-}
-
-const densityPaddingMap: Record<Density, string> = {
-  compact: 'py-ds-02',
-  standard: 'py-ds-05',
-  comfortable: 'py-ds-07',
-}
-
-/** Editing state: which cell is currently in edit mode */
-type EditingCell = { rowIndex: number; columnId: string } | null
-
-/** Bulk action definition for the floating action bar */
-export interface BulkAction<TData> {
-  label: string
-  onClick: (selectedRows: TData[]) => void
-  color?: 'default' | 'error'
-  disabled?: boolean
 }
 
 /**
@@ -242,63 +206,6 @@ export interface DataTableProps<TData, TValue> {
   /** Actions shown in a floating bar when rows are selected */
   bulkActions?: BulkAction<TData>[]
 }
-
-/**
- * Inline edit input rendered inside a table cell.
- * Auto-focuses, saves on Enter/blur, cancels on Escape.
- */
-function CellEditInput({
-  initialValue,
-  onSave,
-  onCancel,
-}: {
-  initialValue: string
-  onSave: (value: string) => void
-  onCancel: () => void
-}) {
-  const [value, setValue] = useState(initialValue)
-  const inputRef = useRef<HTMLInputElement>(null)
-
-  useEffect(() => {
-    inputRef.current?.focus()
-    inputRef.current?.select()
-  }, [])
-
-  const handleSave = useCallback(() => {
-    onSave(value)
-  }, [onSave, value])
-
-  return (
-    <input
-      ref={inputRef}
-      type="text"
-      value={value}
-      onChange={(e) => setValue(e.target.value)}
-      onBlur={handleSave}
-      onKeyDown={(e) => {
-        if (e.key === 'Enter') {
-          e.preventDefault()
-          handleSave()
-        } else if (e.key === 'Escape') {
-          e.preventDefault()
-          onCancel()
-        }
-      }}
-      className={cn(
-        'h-ds-xs-plus w-full rounded-ds-md',
-        'border border-accent-7 bg-surface-raised-hover',
-        'px-ds-02 text-ds-sm',
-        'text-surface-fg placeholder:text-surface-fg-subtle',
-        'outline-none focus:border-accent-7',
-      )}
-      aria-label="Edit cell value"
-    />
-  )
-}
-
-/** Interactive element selectors for row click filtering */
-const INTERACTIVE_SELECTOR =
-  'button, a, input, select, textarea, [role="checkbox"]'
 
 export function DataTable<TData, TValue>({
   columns,
@@ -596,42 +503,6 @@ export function DataTable<TData, TValue>({
     onSelectionChangeRef.current(selected)
   }, [rowSelection, data])
 
-  /** Compute sticky positioning styles for pinned columns */
-  function getPinnedCellStyle(columnId: string) {
-    const { left = [], right = [] } = columnPinningState
-    const leftIndex = left.indexOf(columnId)
-    const rightIndex = right.indexOf(columnId)
-
-    if (leftIndex !== -1) {
-      return {
-        className: 'sticky bg-surface-base z-raised',
-        style: { left: 0 } as React.CSSProperties,
-      }
-    }
-    if (rightIndex !== -1) {
-      return {
-        className: 'sticky bg-surface-base z-raised',
-        style: { right: 0 } as React.CSSProperties,
-      }
-    }
-    return { className: '', style: {} as React.CSSProperties }
-  }
-
-  /** Check if a column allows editing */
-  function isColumnEditable(columnId: string): boolean {
-    if (!editable) return false
-    // Internal columns are never editable
-    if (columnId === '_select' || columnId === '_expand') return false
-    const col = table.getColumn(columnId)
-    if (!col) return false
-    const meta = col.columnDef.meta as
-      | { enableEditing?: boolean }
-      | undefined
-    // Editable by default unless explicitly disabled
-    if (meta?.enableEditing === false) return false
-    return true
-  }
-
   const cellPadding = densityPaddingMap[density]
 
   const rows = table.getRowModel().rows
@@ -646,200 +517,6 @@ export function DataTable<TData, TValue>({
 
   // Number of skeleton rows for loading state
   const skeletonRowCount = serverPagination?.pageSize ?? initialPageSize ?? 5
-  // Number of visible columns for skeleton
-  const visibleColumnCount = allColumns.length
-
-  /** Handle row click, filtering out interactive element origins */
-  const handleRowClick = useCallback(
-    (row: TData, e: React.MouseEvent<HTMLTableRowElement>) => {
-      if (!onRowClick) return
-      const target = e.target as HTMLElement
-      if (target.closest(INTERACTIVE_SELECTOR)) return
-      onRowClick(row)
-    },
-    [onRowClick],
-  )
-
-  /** Render a single data row (shared between virtual and non-virtual paths) */
-  function renderDataRow(
-    row: Row<TData>,
-    style?: React.CSSProperties,
-  ) {
-    const visibleCells = row.getVisibleCells()
-    return (
-      <TableRow
-        key={row.id}
-        data-state={row.getIsSelected() && 'selected'}
-        style={style}
-        className={cn(
-          virtualRows ? 'absolute w-full flex' : undefined,
-          onRowClick && 'cursor-pointer',
-        )}
-        onClick={
-          onRowClick
-            ? (e: React.MouseEvent<HTMLTableRowElement>) =>
-                handleRowClick(row.original, e)
-            : undefined
-        }
-      >
-        {visibleCells.map((cell) => {
-          const pinned = getPinnedCellStyle(cell.column.id)
-          const isEditing =
-            editingCell?.rowIndex === row.index &&
-            editingCell?.columnId === cell.column.id
-
-          return (
-            <TableCell
-              key={cell.id}
-              className={cn(
-                cellPadding,
-                pinned.className,
-                virtualRows && 'flex-1',
-                getColumnMetaClasses(cell.column.columnDef.meta as Record<string, unknown>),
-              )}
-              style={pinned.style}
-              onDoubleClick={() => {
-                if (isColumnEditable(cell.column.id)) {
-                  setEditingCell({
-                    rowIndex: row.index,
-                    columnId: cell.column.id,
-                  })
-                }
-              }}
-            >
-              {isEditing ? (
-                <CellEditInput
-                  initialValue={String(cell.getValue() ?? '')}
-                  onSave={(value) => {
-                    onCellEdit?.(row.index, cell.column.id, value)
-                    setEditingCell(null)
-                  }}
-                  onCancel={() => setEditingCell(null)}
-                />
-              ) : (
-                flexRender(cell.column.columnDef.cell, cell.getContext())
-              )}
-            </TableCell>
-          )
-        })}
-      </TableRow>
-    )
-  }
-
-  /** Render expanded content row below the data row */
-  function renderExpandedRow(row: Row<TData>, style?: React.CSSProperties) {
-    if (!expandable || !row.getIsExpanded() || !renderExpanded) return null
-    return (
-      <TableRow
-        key={`${row.id}-expanded`}
-        style={style}
-        className={virtualRows ? 'absolute w-full flex' : undefined}
-      >
-        <TableCell
-          colSpan={allColumns.length}
-          className={cn(
-            'bg-surface-raised p-ds-05',
-            virtualRows && 'flex-1',
-          )}
-        >
-          {renderExpanded(row.original)}
-        </TableCell>
-      </TableRow>
-    )
-  }
-
-  /** Render skeleton loading rows */
-  function renderSkeletonRows() {
-    const skeletonWidths = ['w-3/4', 'w-1/2', 'w-2/3', 'w-full']
-    return (
-      <TableBody>
-        {Array.from({ length: skeletonRowCount }, (_, rowIdx) => (
-          <TableRow key={`skeleton-${rowIdx}`}>
-            {Array.from({ length: visibleColumnCount }, (_, colIdx) => {
-              const colId = allColumns[colIdx]?.id ?? allColumns[colIdx]?.header
-              const isSelect = colId === '_select'
-              return (
-                <TableCell
-                  key={`skeleton-${rowIdx}-${colIdx}`}
-                  className={cellPadding}
-                >
-                  {isSelect ? (
-                    <Skeleton variant="text" className="h-4 w-4" animation="pulse" />
-                  ) : (
-                    <Skeleton variant="text" className={cn('h-4', skeletonWidths[colIdx % skeletonWidths.length])} animation="pulse" />
-                  )}
-                </TableCell>
-              )
-            })}
-          </TableRow>
-        ))}
-      </TableBody>
-    )
-  }
-
-  /** Render the table body — virtual or standard */
-  function renderTableBody() {
-    // Loading state: show skeleton rows
-    if (loading) {
-      return renderSkeletonRows()
-    }
-
-    if (!rows.length) {
-      return (
-        <TableBody>
-          <TableRow>
-            <TableCell
-              colSpan={allColumns.length}
-              className={cn(
-                'h-24 text-center',
-                !emptyState && 'text-surface-fg-subtle',
-              )}
-            >
-              {emptyState || noResultsText || 'No results.'}
-            </TableCell>
-          </TableRow>
-        </TableBody>
-      )
-    }
-
-    if (virtualRows) {
-      const virtualItems = virtualizer.getVirtualItems()
-      const totalSize = virtualizer.getTotalSize()
-
-      return (
-        <TableBody
-          style={{
-            height: `${totalSize}px`,
-            position: 'relative',
-          }}
-        >
-          {virtualItems.map((virtualRow) => {
-            const row = rows[virtualRow.index]
-            return renderDataRow(row, {
-              position: 'absolute',
-              top: 0,
-              left: 0,
-              width: '100%',
-              height: `${virtualRow.size}px`,
-              transform: `translateY(${virtualRow.start}px)`,
-            })
-          })}
-        </TableBody>
-      )
-    }
-
-    // Standard (non-virtual) rendering
-    return (
-      <TableBody>
-        {rows.map((row) => (
-          <React.Fragment key={row.id}>
-            {renderDataRow(row)}
-            {renderExpandedRow(row)}
-          </React.Fragment>
-        ))}
-      </TableBody>
-    )
-  }
 
   // Get selected rows for bulk actions (derived from rowSelection + data, not table instance)
   const selectedRows = useMemo(() => {
@@ -858,297 +535,130 @@ export function DataTable<TData, TValue>({
     ? serverPagination!.total
     : table.getFilteredRowModel().rows.length
 
+  // Build context value for sub-components
+  const contextValue = useMemo(
+    () => ({
+      table,
+      allColumns: allColumns.map((col) => ({
+        id: (col as { id?: string }).id,
+        header: (col as { header?: unknown }).header,
+      })),
+      cellPadding,
+      columnPinningState,
+      sortable,
+      filterable,
+      editable,
+      expandable,
+      virtualRows,
+      editingCell,
+      setEditingCell,
+      onCellEdit,
+      renderExpanded,
+      onRowClick,
+    }),
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    [
+      table,
+      allColumns.length,
+      cellPadding,
+      columnPinningState,
+      sortable,
+      filterable,
+      editable,
+      expandable,
+      virtualRows,
+      editingCell,
+      onCellEdit,
+      renderExpanded,
+      onRowClick,
+    ],
+  )
+
+  // Virtual items for body
+  const virtualItems = virtualRows ? virtualizer.getVirtualItems() : undefined
+  const totalVirtualSize = virtualRows ? virtualizer.getTotalSize() : undefined
+
   // Determine if we need a scroll wrapper for virtualization
   const tableContent = (
     <Table>
-      <TableHeader
-        className={cn(
-          stickyHeader && 'sticky top-0 z-10 bg-surface-base',
-        )}
-      >
-        {table.getHeaderGroups().map((headerGroup) => (
-          <TableRow key={headerGroup.id}>
-            {headerGroup.headers.map((header) => {
-              const canSort = sortable && header.column.getCanSort()
-              const sorted = header.column.getIsSorted()
-              const pinned = getPinnedCellStyle(header.column.id)
-
-              return (
-                <TableHead
-                  key={header.id}
-                  className={cn(pinned.className, getColumnMetaClasses(header.column.columnDef.meta as Record<string, unknown>))}
-                  style={pinned.style}
-                  aria-sort={
-                    canSort
-                      ? sorted === 'asc'
-                        ? 'ascending'
-                        : sorted === 'desc'
-                          ? 'descending'
-                          : 'none'
-                      : undefined
-                  }
-                >
-                  {header.isPlaceholder ? null : canSort ? (
-                    <button
-                      type="button"
-                      className={cn(
-                        'flex items-center gap-ds-01 font-medium',
-                        'cursor-pointer select-none',
-                        '-ml-ds-01 rounded-ds-sm px-ds-01 py-ds-01',
-                        'hover:bg-surface-raised transition-colors',
-                      )}
-                      onClick={header.column.getToggleSortingHandler()}
-                      aria-label={`Sort by ${typeof header.column.columnDef.header === 'string' ? header.column.columnDef.header : header.column.id}`}
-                    >
-                      {flexRender(
-                        header.column.columnDef.header,
-                        header.getContext(),
-                      )}
-                      <AnimatePresence mode="wait" initial={false}>
-                        {sorted === 'asc' ? (
-                          <motion.span
-                            key="asc"
-                            initial={{ opacity: 0, rotate: 90 }}
-                            animate={{ opacity: 1, rotate: 0 }}
-                            exit={{ opacity: 0, rotate: -90 }}
-                            transition={springs.snappy}
-                            className="inline-flex"
-                          >
-                            <Icon icon={IconArrowUp} size="sm" className="text-surface-fg-muted" />
-                          </motion.span>
-                        ) : sorted === 'desc' ? (
-                          <motion.span
-                            key="desc"
-                            initial={{ opacity: 0, rotate: -90 }}
-                            animate={{ opacity: 1, rotate: 0 }}
-                            exit={{ opacity: 0, rotate: 90 }}
-                            transition={springs.snappy}
-                            className="inline-flex"
-                          >
-                            <Icon icon={IconArrowDown} size="sm" className="text-surface-fg-muted" />
-                          </motion.span>
-                        ) : (
-                          <motion.span
-                            key="unsorted"
-                            initial={{ opacity: 0 }}
-                            animate={{ opacity: 1 }}
-                            exit={{ opacity: 0 }}
-                            transition={springs.snappy}
-                            className="inline-flex"
-                          >
-                            <Icon icon={IconArrowsSort} size="sm" className="text-surface-fg-subtle" />
-                          </motion.span>
-                        )}
-                      </AnimatePresence>
-                    </button>
-                  ) : (
-                    flexRender(
-                      header.column.columnDef.header,
-                      header.getContext(),
-                    )
-                  )}
-                </TableHead>
-              )
-            })}
-          </TableRow>
-        ))}
-
-        {/* Column filter row */}
-        {filterable &&
-          table.getHeaderGroups().map((headerGroup) => (
-            <TableRow key={`${headerGroup.id}-filters`}>
-              {headerGroup.headers.map((header) => (
-                <TableHead key={`${header.id}-filter`} className="py-ds-01">
-                  {header.isPlaceholder ||
-                  header.column.columnDef.enableColumnFilter === false ? null : (
-                    <input
-                      type="text"
-                      value={
-                        (header.column.getFilterValue() as string) ?? ''
-                      }
-                      onChange={(e) =>
-                        header.column.setFilterValue(e.target.value)
-                      }
-                      placeholder={`Filter ${typeof header.column.columnDef.header === 'string' ? header.column.columnDef.header : ''}...`}
-                      aria-label={`Filter ${typeof header.column.columnDef.header === 'string' ? header.column.columnDef.header : header.column.id}`}
-                      className={cn(
-                        'h-ds-xs-plus w-full rounded-ds-md',
-                        'border border-surface-border-strong bg-surface-raised-hover',
-                        'px-ds-02 text-ds-sm',
-                        'text-surface-fg placeholder:text-surface-fg-subtle',
-                        'outline-none focus:border-accent-7',
-                      )}
-                    />
-                  )}
-                </TableHead>
-              ))}
-            </TableRow>
-          ))}
-      </TableHeader>
-      {renderTableBody()}
+      <DataTableHeader stickyHeader={stickyHeader} />
+      <DataTableBody
+        loading={loading}
+        skeletonRowCount={skeletonRowCount}
+        noResultsText={noResultsText}
+        emptyState={emptyState}
+        virtualItems={virtualItems}
+        totalVirtualSize={totalVirtualSize}
+      />
     </Table>
   )
 
   return (
-    <div className={cn(className)}>
-      {/* Toolbar */}
-      {toolbar && (
-        <DataTableToolbar
-          table={table}
-          globalFilter={globalFilter}
-          globalFilterValue={globalFilterValue}
-          onGlobalFilterChange={setGlobalFilterValue}
-          density={density}
-          onDensityChange={setDensity}
-        />
-      )}
-
-      {/* Global search input — only show standalone when toolbar is disabled */}
-      {globalFilter && !toolbar && (
-        <div className="flex items-center gap-ds-03 pb-ds-04 border-b border-surface-border mb-ds-04">
-          <Icon icon={IconSearch} size="sm" className="text-surface-fg-subtle" />
-          <input
-            type="text"
-            value={globalFilterValue}
-            onChange={(e) => setGlobalFilterValue(e.target.value)}
-            placeholder="Search all columns..."
-            aria-label="Search all columns"
-            className={cn(
-              'flex-1 bg-transparent text-ds-md',
-              'text-surface-fg placeholder:text-surface-fg-subtle',
-              'outline-none',
-            )}
+    <DataTableProvider value={contextValue}>
+      <div className={cn(className)}>
+        {/* Toolbar */}
+        {toolbar && (
+          <DataTableToolbar
+            table={table}
+            globalFilter={globalFilter}
+            globalFilterValue={globalFilterValue}
+            onGlobalFilterChange={setGlobalFilterValue}
+            density={density}
+            onDensityChange={setDensity}
           />
-        </div>
-      )}
+        )}
 
-      {/* Virtualized scroll container or plain table */}
-      {virtualRows ? (
-        <div
-          ref={scrollContainerRef}
-          style={{ maxHeight: `${maxHeight}px`, overflowY: 'auto' }}
-        >
-          {tableContent}
-        </div>
-      ) : (
-        tableContent
-      )}
-
-      {/* Pagination controls */}
-      {showPagination && (
-        <div className="flex items-center justify-between px-ds-03 py-ds-04 border-t border-surface-border">
-          <span className="text-ds-sm text-surface-fg-muted">
-            {totalRowCount} total rows
-          </span>
-          <div className="flex items-center gap-ds-03">
-            {/* Page size selector */}
-            {!useServerPagination && (
-              <select
-                value={table.getState().pagination.pageSize}
-                onChange={(e) => {
-                  table.setPageSize(Number(e.target.value))
-                }}
-                aria-label="Rows per page"
-                className={cn(
-                  'h-ds-sm rounded-ds-md',
-                  'border border-surface-border-strong bg-surface-raised-hover',
-                  'px-ds-03 text-ds-sm',
-                  'text-surface-fg',
-                )}
-              >
-                {(pageSizeOptions ?? [10, 20, 50, 100]).map((size) => (
-                  <option key={size} value={size}>
-                    {size} rows
-                  </option>
-                ))}
-              </select>
-            )}
-
-            {/* Previous page button */}
-            <button
-              type="button"
-              disabled={!table.getCanPreviousPage()}
-              onClick={() => table.previousPage()}
-              aria-label="Previous page"
+        {/* Global search input — only show standalone when toolbar is disabled */}
+        {globalFilter && !toolbar && (
+          <div className="flex items-center gap-ds-03 pb-ds-04 border-b border-surface-border mb-ds-04">
+            <Icon icon={IconSearch} size="sm" className="text-surface-fg-subtle" />
+            <input
+              type="text"
+              value={globalFilterValue}
+              onChange={(e) => setGlobalFilterValue(e.target.value)}
+              placeholder="Search all columns..."
+              aria-label="Search all columns"
               className={cn(
-                'h-ds-sm w-ds-sm flex items-center justify-center',
-                'rounded-ds-md border border-surface-border-strong',
-                'enabled:hover:bg-surface-raised',
-                'disabled:opacity-action-disabled disabled:cursor-not-allowed',
-                'transition-colors',
+                'flex-1 bg-transparent text-ds-md',
+                'text-surface-fg placeholder:text-surface-fg-subtle',
+                'outline-none',
               )}
-            >
-              <Icon icon={IconChevronLeft} size="sm" />
-            </button>
-
-            {/* Page info */}
-            <span className="text-ds-sm text-surface-fg-muted">
-              Page {table.getState().pagination.pageIndex + 1} of{' '}
-              {table.getPageCount()}
-            </span>
-
-            {/* Next page button */}
-            <button
-              type="button"
-              disabled={!table.getCanNextPage()}
-              onClick={() => table.nextPage()}
-              aria-label="Next page"
-              className={cn(
-                'h-ds-sm w-ds-sm flex items-center justify-center',
-                'rounded-ds-md border border-surface-border-strong',
-                'enabled:hover:bg-surface-raised',
-                'disabled:opacity-action-disabled disabled:cursor-not-allowed',
-                'transition-colors',
-              )}
-            >
-              <Icon icon={IconChevronRight} size="sm" />
-            </button>
+            />
           </div>
-        </div>
-      )}
+        )}
 
-      {/* Bulk action bar */}
-      {bulkActions && selectable && hasSelectedRows && (
-        <div
-          className={cn(
-            'fixed bottom-6 left-1/2 -translate-x-1/2 z-50',
-            'flex items-center gap-ds-04 px-ds-05 py-ds-03',
-            'rounded-ds-lg border border-surface-border-strong bg-surface-overlay shadow-floating',
-            'animate-in slide-in-from-bottom-2',
-          )}
-          role="toolbar"
-          aria-label="Bulk actions"
-        >
-          <span className="text-ds-sm font-medium text-surface-fg whitespace-nowrap">
-            {selectedRows.length} selected
-          </span>
-          <div className="h-5 w-px bg-surface-border" aria-hidden="true" />
-          {bulkActions.map((action) => (
-            <Button
-              key={action.label}
-              size="sm"
-              variant={action.color === 'error' ? 'destructive' : 'outline'}
-              disabled={action.disabled}
-              onClick={() => action.onClick(selectedRows)}
-            >
-              {action.label}
-            </Button>
-          ))}
-          <button
-            type="button"
-            onClick={() => table.resetRowSelection()}
-            aria-label="Clear selection"
-            className={cn(
-              'flex items-center justify-center p-ds-01',
-              'rounded-ds-sm hover:bg-surface-raised transition-colors',
-              'text-surface-fg-muted hover:text-surface-fg',
-            )}
+        {/* Virtualized scroll container or plain table */}
+        {virtualRows ? (
+          <div
+            ref={scrollContainerRef}
+            style={{ maxHeight: `${maxHeight}px`, overflowY: 'auto' }}
           >
-            <Icon icon={IconX} size="sm" />
-          </button>
-        </div>
-      )}
-    </div>
+            {tableContent}
+          </div>
+        ) : (
+          tableContent
+        )}
+
+        {/* Pagination controls */}
+        {showPagination && (
+          <DataTablePagination
+            table={table}
+            totalRowCount={totalRowCount}
+            useServerPagination={useServerPagination}
+            pageSizeOptions={pageSizeOptions}
+          />
+        )}
+
+        {/* Bulk action bar */}
+        {bulkActions && selectable && hasSelectedRows && (
+          <DataTableBulkActions
+            table={table}
+            selectedRows={selectedRows}
+            bulkActions={bulkActions}
+          />
+        )}
+      </div>
+    </DataTableProvider>
   )
 }
 DataTable.displayName = 'DataTable'

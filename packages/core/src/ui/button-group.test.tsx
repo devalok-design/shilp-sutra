@@ -51,10 +51,10 @@ describe('ButtonGroup', () => {
     render(
       <ButtonGroup variant="solid" color="error">
         <Button>Delete</Button>
-        <Button>Remove</Button>
       </ButtonGroup>,
     )
-    expect(screen.getAllByRole('button')).toHaveLength(2)
+    const btn = screen.getByRole('button', { name: 'Delete' })
+    expect(btn.className).toContain('bg-error-9')
   })
 
   it('merges custom className', () => {

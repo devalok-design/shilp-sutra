@@ -173,4 +173,43 @@ const ErrorDisplay = React.forwardRef<HTMLDivElement, ErrorDisplayProps>(
 
 ErrorDisplay.displayName = 'ErrorDisplay'
 
-export { ErrorDisplay }
+interface ErrorBoundaryProps {
+  children: React.ReactNode
+  /** Optional callback when the user clicks "Try Again" */
+  onReset?: () => void
+  /** Optional custom fallback — receives the caught error. Defaults to ErrorDisplay. */
+  fallback?: (props: { error: unknown; onReset?: () => void }) => React.ReactNode
+}
+
+interface ErrorBoundaryState {
+  error: unknown | null
+}
+
+class ErrorBoundary extends React.Component<ErrorBoundaryProps, ErrorBoundaryState> {
+  constructor(props: ErrorBoundaryProps) {
+    super(props)
+    this.state = { error: null }
+  }
+
+  static getDerivedStateFromError(error: unknown): ErrorBoundaryState {
+    return { error }
+  }
+
+  private handleReset = () => {
+    this.setState({ error: null })
+    this.props.onReset?.()
+  }
+
+  render() {
+    if (this.state.error !== null) {
+      if (this.props.fallback) {
+        return this.props.fallback({ error: this.state.error, onReset: this.handleReset })
+      }
+      return <ErrorDisplay error={this.state.error} onReset={this.handleReset} />
+    }
+    return this.props.children
+  }
+}
+
+export { ErrorDisplay, ErrorBoundary }
+export type { ErrorBoundaryProps }

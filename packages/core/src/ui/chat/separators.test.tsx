@@ -37,12 +37,9 @@ describe('DateSeparator', () => {
   })
 
   it('renders year for dates in a different year', () => {
-    const date = new Date(2025, 2, 25) // March 25, 2025
-    const now = new Date()
-    if (now.getFullYear() !== 2025) {
-      render(<DateSeparator date={date} />)
-      expect(screen.getByText('Mar 25, 2025')).toBeInTheDocument()
-    }
+    const date = new Date(2020, 2, 25) // March 25, 2020 — definitively past
+    render(<DateSeparator date={date} />)
+    expect(screen.getByText('Mar 25, 2020')).toBeInTheDocument()
   })
 
   it('uses custom format function', () => {

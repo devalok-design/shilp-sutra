@@ -1,5 +1,6 @@
 import { render, screen } from '@testing-library/react'
 import { describe, it, expect } from 'vitest'
+import { axe } from 'vitest-axe'
 import {
   Table,
   TableHeader,
@@ -66,5 +67,10 @@ describe('Table', () => {
       </Table>,
     )
     expect(screen.getByRole('table')).toHaveClass('my-custom-table')
+  })
+
+  it('has no a11y violations', async () => {
+    const { container } = renderTable()
+    expect(await axe(container)).toHaveNoViolations()
   })
 })

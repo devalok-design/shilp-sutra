@@ -1,6 +1,21 @@
 import { render, screen } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 import { describe, it, expect, vi, beforeAll } from 'vitest'
+
+// ── ESM-only dep mocks (must be before component imports) ────────────────────
+
+vi.mock('react-markdown', () => ({
+  __esModule: true,
+  default: ({ children }: { children?: string }) => (
+    <div data-testid="markdown">{children}</div>
+  ),
+}))
+
+vi.mock('remark-gfm', () => ({
+  __esModule: true,
+  default: () => {},
+}))
+
 import { AIConversation } from '../conversation'
 import { AICommandProvider } from '../ai-command-provider'
 import type { ConversationMessage } from '../types'

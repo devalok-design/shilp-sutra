@@ -46,17 +46,19 @@ describe('Banner', () => {
     expect(screen.queryByRole('button', { name: 'Dismiss' })).not.toBeInTheDocument()
   })
 
-  it('removes banner from DOM when dismiss button is clicked', async () => {
+  it('hides banner when dismiss button is clicked', async () => {
     const user = userEvent.setup()
-    render(<Banner onDismiss={() => {}}>Dismiss me</Banner>)
+    const onDismiss = vi.fn()
+    render(<Banner onDismiss={onDismiss}>Dismiss me</Banner>)
 
     expect(screen.getByRole('alert')).toBeInTheDocument()
     await user.click(screen.getByRole('button', { name: 'Dismiss' }))
-    // AnimatePresence exit animation triggers — the banner element gets exit styles
+    // framer-motion exit sets height: 0 + opacity: 0 in JSDOM
+    // (onExitComplete / onDismiss only fires after real animation completes,
+    //  which doesn't happen in JSDOM — so we assert the exit state instead)
     await waitFor(() => {
       const alert = screen.getByRole('alert')
-      // After dismiss click, framer-motion sets exit styles (height: 0, opacity: 0)
-      expect(alert.style.opacity).toBe('0')
+      expect(alert).toHaveStyle({ height: '0px', opacity: '0' })
     })
   })
 

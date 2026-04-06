@@ -46,8 +46,8 @@ export {
   TaskDetailSkeleton,
 } from './page-skeletons'
 
-export { ErrorDisplay } from './error-boundary'
-export type { ErrorDisplayProps } from './error-boundary'
+export { ErrorDisplay, ErrorBoundary } from './error-boundary'
+export type { ErrorDisplayProps, ErrorBoundaryProps } from './error-boundary'
 
 export { GlobalLoading } from './global-loading'
 export type { GlobalLoadingProps } from './global-loading'

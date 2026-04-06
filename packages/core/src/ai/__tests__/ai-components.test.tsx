@@ -116,7 +116,7 @@ describe('AICommandProvider', () => {
 // ────────────────────────────────────────────────────────────────────────────
 
 describe('TextBlock', () => {
-  it('renders markdown content', () => {
+  it('renders text block with content', () => {
     render(<TextBlock data={{ content: 'Hello **world**' }} />)
     expect(screen.getByTestId('markdown')).toHaveTextContent(
       'Hello **world**',

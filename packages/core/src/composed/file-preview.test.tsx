@@ -1,4 +1,4 @@
-import { render, screen } from '@testing-library/react'
+import { render, screen, waitFor } from '@testing-library/react'
 import { describe, it, expect, vi } from 'vitest'
 
 // Mock the heavy lazy-loaded deps to avoid loading react-zoom-pan-pinch and react-pdf in tests
@@ -34,10 +34,15 @@ describe('FilePreview', () => {
     expect(link.closest('a')).toHaveAttribute('href', 'test.png')
   })
 
-  it('auto-detects image type from URL extension', () => {
+  it('auto-detects image type from URL extension', async () => {
     const { container } = render(<FilePreview url="photo.jpg" />)
-    // Image preview is rendered via Suspense/lazy; we at least get the container
-    expect(container.firstElementChild).toBeInTheDocument()
+    // Wait for the lazy-loaded ImagePreview to resolve and render the <img>
+    // (alt="" makes it presentational, so getByRole('img') won't find it)
+    await waitFor(() => {
+      const img = container.querySelector('img')
+      expect(img).toBeInTheDocument()
+      expect(img).toHaveAttribute('src', 'photo.jpg')
+    })
   })
 
   it('renders with explicit type prop', () => {

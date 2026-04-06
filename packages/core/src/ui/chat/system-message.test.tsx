@@ -43,19 +43,16 @@ describe('SystemMessage', () => {
   })
 
   it('timestamp renders formatted', () => {
-    render(
+    const { container } = render(
       <SystemMessage timestamp="2026-03-25T14:30:00Z">
         Event
       </SystemMessage>,
     )
-    // Should show time formatted (e.g., "2:30 PM" or locale equivalent)
-    const root = document.querySelector('[class*="text-ds-sm"]')
-      ?? document.querySelector('[class*="bg-surface-raised-hover"]')
-    expect(root).toBeInTheDocument()
-    // The timestamp span should exist with the formatted time
-    const spans = root!.querySelectorAll('span')
+    // The event variant root contains child spans; the last one is the timestamp
+    const root = container.firstChild as HTMLElement
+    const spans = root.querySelectorAll('span')
     const lastSpan = spans[spans.length - 1]
-    // It should contain a colon (time format like "2:30 PM")
+    // Should contain a colon (time format like "2:30 PM")
     expect(lastSpan.textContent).toMatch(/\d+:\d+/)
   })
 

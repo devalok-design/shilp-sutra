@@ -79,7 +79,7 @@ describe('Toggle', () => {
       </Toggle>,
     )
     const btn = screen.getByRole('button')
-    expect(btn.className).toContain('border')
+    expect(btn).toHaveClass('border')
   })
 
   it('applies size variant classes', () => {

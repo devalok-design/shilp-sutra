@@ -1,6 +1,7 @@
 import { render, screen } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 import { describe, it, expect, vi } from 'vitest'
+import { axe } from 'vitest-axe'
 import { IconButton } from './icon-button'
 
 describe('IconButton', () => {
@@ -64,5 +65,10 @@ describe('IconButton', () => {
       />,
     )
     expect(ref.current).toBeInstanceOf(HTMLButtonElement)
+  })
+
+  it('has no a11y violations', async () => {
+    const { container } = render(<IconButton icon={<TestIcon />} aria-label="Add" />)
+    expect(await axe(container)).toHaveNoViolations()
   })
 })

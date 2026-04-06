@@ -1,6 +1,6 @@
-import { render, fireEvent } from '@testing-library/react'
+import { render, fireEvent, screen } from '@testing-library/react'
 import { describe, it, expect, vi, beforeEach, afterEach } from 'vitest'
-import { ErrorDisplay } from '../error-boundary'
+import { ErrorDisplay, ErrorBoundary } from '../error-boundary'
 
 describe('ErrorDisplay', () => {
   // Suppress console.error for cleaner test output
@@ -120,5 +120,32 @@ describe('ErrorDisplay', () => {
     const ref = { current: null as HTMLDivElement | null }
     render(<ErrorDisplay ref={ref} error={new Error('test')} />)
     expect(ref.current).toBeInstanceOf(HTMLDivElement)
+  })
+})
+
+function Bomb({ shouldThrow }: { shouldThrow: boolean }) {
+  if (shouldThrow) throw new Error('Test error')
+  return <span>Safe</span>
+}
+
+describe('ErrorBoundary', () => {
+  it('catches render errors and shows ErrorDisplay', () => {
+    const spy = vi.spyOn(console, 'error').mockImplementation(() => {})
+    render(
+      <ErrorBoundary>
+        <Bomb shouldThrow />
+      </ErrorBoundary>,
+    )
+    expect(screen.getByText(/something went wrong/i)).toBeInTheDocument()
+    spy.mockRestore()
+  })
+
+  it('renders children when no error', () => {
+    render(
+      <ErrorBoundary>
+        <Bomb shouldThrow={false} />
+      </ErrorBoundary>,
+    )
+    expect(screen.getByText('Safe')).toBeInTheDocument()
   })
 })

@@ -27,4 +27,35 @@ describe('Checkbox', () => {
     render(<Checkbox checked aria-label="Checked box" />)
     expect(screen.getByRole('checkbox', { name: 'Checked box' })).toBeChecked()
   })
+
+  describe('size prop', () => {
+    it('defaults to md (h-6 w-6)', () => {
+      render(<Checkbox aria-label="Size test" />)
+      const el = screen.getByRole('checkbox')
+      expect(el.className).toContain('h-6')
+      expect(el.className).toContain('w-6')
+    })
+
+    it('renders sm size (h-5 w-5)', () => {
+      render(<Checkbox size="sm" aria-label="Small checkbox" />)
+      const el = screen.getByRole('checkbox')
+      expect(el.className).toContain('h-5')
+      expect(el.className).toContain('w-5')
+    })
+
+    it('renders lg size (h-7 w-7)', () => {
+      render(<Checkbox size="lg" aria-label="Large checkbox" />)
+      const el = screen.getByRole('checkbox')
+      expect(el.className).toContain('h-7')
+      expect(el.className).toContain('w-7')
+    })
+
+    it('sm checkbox can still be checked', async () => {
+      const user = userEvent.setup()
+      const onCheckedChange = vi.fn()
+      render(<Checkbox size="sm" aria-label="Small check" onCheckedChange={onCheckedChange} />)
+      await user.click(screen.getByRole('checkbox'))
+      expect(onCheckedChange).toHaveBeenCalledWith(true)
+    })
+  })
 })

@@ -15,15 +15,33 @@ const RadioGroup = React.forwardRef<
 })
 RadioGroup.displayName = RadioGroupPrimitive.Root.displayName
 
+export interface RadioGroupItemProps extends React.ComponentPropsWithoutRef<typeof RadioGroupPrimitive.Item> {
+  /** Control size — `sm` (20px), `md` (24px, default, WCAG compliant), `lg` (28px). */
+  size?: 'sm' | 'md' | 'lg'
+}
+
+const radioSizeClasses = {
+  sm: 'h-5 w-5',
+  md: 'h-6 w-6',
+  lg: 'h-7 w-7',
+} as const
+
+const radioIndicatorClasses = {
+  sm: 'h-1.5 w-1.5',
+  md: 'h-ds-03 w-ds-03',
+  lg: 'h-2.5 w-2.5',
+} as const
+
 const RadioGroupItem = React.forwardRef<
   React.ElementRef<typeof RadioGroupPrimitive.Item>,
-  React.ComponentPropsWithoutRef<typeof RadioGroupPrimitive.Item>
->(({ className, ...props }, ref) => {
+  RadioGroupItemProps
+>(({ className, size = 'md', ...props }, ref) => {
   return (
     <RadioGroupPrimitive.Item
       ref={ref}
       className={cn(
-        'aspect-square h-6 w-6 rounded-ds-full',
+        'aspect-square rounded-ds-full',
+        radioSizeClasses[size],
         'border border-surface-border-strong bg-surface-raised-hover',
         'transition-colors duration-fast-01',
         'focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent-9 focus-visible:ring-offset-2',
@@ -41,7 +59,7 @@ const RadioGroupItem = React.forwardRef<
           animate={{ scale: 1 }}
           transition={springs.bouncy}
         >
-          <IconCircle className="h-ds-03 w-ds-03 fill-accent-9 text-accent-11" />
+          <IconCircle className={cn(radioIndicatorClasses[size], 'fill-accent-9 text-accent-11')} />
         </motion.span>
       </RadioGroupPrimitive.Indicator>
     </RadioGroupPrimitive.Item>
@@ -50,6 +68,5 @@ const RadioGroupItem = React.forwardRef<
 RadioGroupItem.displayName = RadioGroupPrimitive.Item.displayName
 
 export type RadioGroupProps = React.ComponentPropsWithoutRef<typeof RadioGroupPrimitive.Root>
-export type RadioGroupItemProps = React.ComponentPropsWithoutRef<typeof RadioGroupPrimitive.Item>
 
 export { RadioGroup, RadioGroupItem }

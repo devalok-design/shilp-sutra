@@ -35,12 +35,26 @@ import { cn } from './lib/utils'
 export interface CheckboxProps extends React.ComponentPropsWithoutRef<typeof CheckboxPrimitive.Root> {
   error?: boolean
   indeterminate?: boolean
+  /** Control size — `sm` (20px), `md` (24px, default, WCAG compliant), `lg` (28px). */
+  size?: 'sm' | 'md' | 'lg'
 }
+
+const checkboxSizeClasses = {
+  sm: 'h-5 w-5',
+  md: 'h-6 w-6',
+  lg: 'h-7 w-7',
+} as const
+
+const checkboxIconClasses = {
+  sm: 'h-[14px] w-[14px]',
+  md: 'h-[18px] w-[18px]',
+  lg: 'h-5 w-5',
+} as const
 
 const Checkbox = React.forwardRef<
   React.ElementRef<typeof CheckboxPrimitive.Root>,
   CheckboxProps
->(({ className, error, indeterminate, checked, onCheckedChange, defaultChecked, ...props }, ref) => {
+>(({ className, error, indeterminate, size = 'md', checked, onCheckedChange, defaultChecked, ...props }, ref) => {
   // Track internal state so AnimatePresence works for both controlled & uncontrolled usage
   const isControlled = checked !== undefined
   const [internalChecked, setInternalChecked] = React.useState<boolean | 'indeterminate'>(
@@ -65,7 +79,8 @@ const Checkbox = React.forwardRef<
       defaultChecked={!isControlled && !indeterminate ? defaultChecked : undefined}
       onCheckedChange={handleCheckedChange}
       className={cn(
-        'peer flex items-center justify-center h-6 w-6 shrink-0 rounded-ds-sm',
+        'peer flex items-center justify-center shrink-0 rounded-ds-sm',
+        checkboxSizeClasses[size],
         'border border-surface-border-strong',
         'bg-surface-raised-hover',
         'transition-colors duration-fast-01 ease-productive-standard',
@@ -94,7 +109,7 @@ const Checkbox = React.forwardRef<
                 height="16"
                 viewBox="0 0 16 16"
                 fill="none"
-                className="h-[18px] w-[18px]"
+                className={checkboxIconClasses[size]}
               >
                 {actualChecked === 'indeterminate' ? (
                   <motion.line

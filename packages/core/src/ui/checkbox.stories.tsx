@@ -12,6 +12,7 @@ const meta: Meta<typeof Checkbox> = {
     disabled: { control: 'boolean' },
     error: { control: 'boolean' },
     indeterminate: { control: 'boolean' },
+    size: { control: 'radio', options: ['sm', 'md', 'lg'] },
   },
 }
 export default meta
@@ -67,6 +68,25 @@ export const WithLabel: Story = {
     <div className="flex items-center gap-ds-02">
       <Checkbox id="terms" />
       <Label htmlFor="terms">Accept terms and conditions</Label>
+    </div>
+  ),
+}
+
+export const Sizes: Story = {
+  render: () => (
+    <div className="flex items-end gap-ds-04">
+      <div className="flex items-center gap-ds-02">
+        <Checkbox id="size-sm" size="sm" />
+        <Label htmlFor="size-sm">Small (20px)</Label>
+      </div>
+      <div className="flex items-center gap-ds-02">
+        <Checkbox id="size-md" size="md" />
+        <Label htmlFor="size-md">Medium (24px)</Label>
+      </div>
+      <div className="flex items-center gap-ds-02">
+        <Checkbox id="size-lg" size="lg" />
+        <Label htmlFor="size-lg">Large (28px)</Label>
+      </div>
     </div>
   ),
 }

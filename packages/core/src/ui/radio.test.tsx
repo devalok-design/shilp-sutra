@@ -120,4 +120,51 @@ describe('RadioGroup', () => {
     const results = await axe(container)
     expect(results).toHaveNoViolations()
   })
+
+  describe('RadioGroupItem size prop', () => {
+    it('defaults to md (h-6 w-6)', () => {
+      render(
+        <RadioGroup aria-label="Size test">
+          <RadioGroupItem value="a" aria-label="Option A" />
+        </RadioGroup>,
+      )
+      const el = screen.getByRole('radio')
+      expect(el.className).toContain('h-6')
+      expect(el.className).toContain('w-6')
+    })
+
+    it('renders sm size (h-5 w-5)', () => {
+      render(
+        <RadioGroup aria-label="Size test">
+          <RadioGroupItem size="sm" value="a" aria-label="Option A" />
+        </RadioGroup>,
+      )
+      const el = screen.getByRole('radio')
+      expect(el.className).toContain('h-5')
+      expect(el.className).toContain('w-5')
+    })
+
+    it('renders lg size (h-7 w-7)', () => {
+      render(
+        <RadioGroup aria-label="Size test">
+          <RadioGroupItem size="lg" value="a" aria-label="Option A" />
+        </RadioGroup>,
+      )
+      const el = screen.getByRole('radio')
+      expect(el.className).toContain('h-7')
+      expect(el.className).toContain('w-7')
+    })
+
+    it('sm radio can still be selected', async () => {
+      const onValueChange = vi.fn()
+      const user = userEvent.setup()
+      render(
+        <RadioGroup aria-label="Size test" onValueChange={onValueChange}>
+          <RadioGroupItem size="sm" value="a" aria-label="Option A" />
+        </RadioGroup>,
+      )
+      await user.click(screen.getByRole('radio'))
+      expect(onValueChange).toHaveBeenCalledWith('a')
+    })
+  })
 })

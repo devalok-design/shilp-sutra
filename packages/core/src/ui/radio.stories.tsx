@@ -12,6 +12,7 @@ const meta: Meta<typeof RadioGroup> = {
       control: 'radio',
       options: ['horizontal', 'vertical'],
     },
+    size: { control: 'radio', options: ['sm', 'md', 'lg'] },
   },
 }
 export default meta
@@ -67,6 +68,46 @@ export const Disabled: Story = {
         <Label htmlFor="d2">Disabled option</Label>
       </div>
     </RadioGroup>
+  ),
+}
+
+export const Sizes: Story = {
+  render: () => (
+    <div className="flex items-end gap-ds-06">
+      <RadioGroup defaultValue="sm-1">
+        <p className="text-sm font-medium mb-ds-02">Small (20px)</p>
+        <div className="flex items-center gap-ds-02">
+          <RadioGroupItem size="sm" value="sm-1" id="sz-sm-1" />
+          <Label htmlFor="sz-sm-1">Option A</Label>
+        </div>
+        <div className="flex items-center gap-ds-02">
+          <RadioGroupItem size="sm" value="sm-2" id="sz-sm-2" />
+          <Label htmlFor="sz-sm-2">Option B</Label>
+        </div>
+      </RadioGroup>
+      <RadioGroup defaultValue="md-1">
+        <p className="text-sm font-medium mb-ds-02">Medium (24px)</p>
+        <div className="flex items-center gap-ds-02">
+          <RadioGroupItem size="md" value="md-1" id="sz-md-1" />
+          <Label htmlFor="sz-md-1">Option A</Label>
+        </div>
+        <div className="flex items-center gap-ds-02">
+          <RadioGroupItem size="md" value="md-2" id="sz-md-2" />
+          <Label htmlFor="sz-md-2">Option B</Label>
+        </div>
+      </RadioGroup>
+      <RadioGroup defaultValue="lg-1">
+        <p className="text-sm font-medium mb-ds-02">Large (28px)</p>
+        <div className="flex items-center gap-ds-02">
+          <RadioGroupItem size="lg" value="lg-1" id="sz-lg-1" />
+          <Label htmlFor="sz-lg-1">Option A</Label>
+        </div>
+        <div className="flex items-center gap-ds-02">
+          <RadioGroupItem size="lg" value="lg-2" id="sz-lg-2" />
+          <Label htmlFor="sz-lg-2">Option B</Label>
+        </div>
+      </RadioGroup>
+    </div>
   ),
 }
 

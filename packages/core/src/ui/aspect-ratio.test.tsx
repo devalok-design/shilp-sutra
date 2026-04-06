@@ -10,7 +10,7 @@ describe('AspectRatio', () => {
         <img src="/test.jpg" alt="Landscape scenery" />
       </AspectRatio>,
     )
-    expect(screen.getByAltText('Test image')).toBeInTheDocument()
+    expect(screen.getByAltText('Landscape scenery')).toBeInTheDocument()
   })
 
   it('renders with default ratio', () => {

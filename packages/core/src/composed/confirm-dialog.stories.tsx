@@ -21,7 +21,7 @@ const meta: Meta<typeof ConfirmDialog> = {
 export default meta
 type Story = StoryObj<typeof ConfirmDialog>
 
-function ConfirmDialogDemo({ color = 'default' }: { color?: 'default' | 'error' }) {
+function ConfirmDialogDemo({ color = 'accent' }: { color?: 'accent' | 'error' }) {
   const [open, setOpen] = useState(false)
   return (
     <>

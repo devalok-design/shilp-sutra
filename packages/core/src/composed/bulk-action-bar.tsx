@@ -18,7 +18,7 @@ export interface BulkActionBarAction {
   label: string
   icon?: IconProps['icon']
   onClick: () => void
-  color?: 'default' | 'error'
+  color?: 'accent' | 'error'
   disabled?: boolean
   /** Show inline confirmation before executing the action */
   requiresConfirmation?: boolean
@@ -93,7 +93,7 @@ const ActionButton = React.forwardRef<HTMLDivElement, { action: BulkActionBarAct
       <Button
         variant="ghost"
         size="sm"
-        color={action.color === 'error' ? 'error' : 'default'}
+        color={action.color === 'error' ? 'error' : 'accent'}
         disabled={action.disabled}
         onClick={action.requiresConfirmation ? () => setConfirming(true) : action.onClick}
         startIcon={action.icon ? <Icon icon={action.icon} /> : undefined}

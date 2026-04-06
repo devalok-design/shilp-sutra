@@ -25,9 +25,6 @@ export const buttonVariants = cva(
         outline: 'border',
         ghost: '',
         link: 'underline-offset-4 hover:underline active:opacity-80',
-        // Deprecated aliases
-        default: '',
-        destructive: '',
       },
       color: {
         accent: '',
@@ -35,8 +32,6 @@ export const buttonVariants = cva(
         success: '',
         warning: '',
         neutral: '',
-        // Deprecated alias
-        default: '',
       },
       weight: {
         semibold: 'font-semibold',
@@ -93,22 +88,6 @@ export const buttonVariants = cva(
       { variant: 'link', color: 'success', className: 'text-success-11' },
       { variant: 'link', color: 'warning', className: 'text-warning-11' },
       { variant: 'link', color: 'neutral', className: 'text-surface-fg-muted' },
-
-      // ============ DEPRECATED ALIASES ============
-      // "default" variant → solid
-      { variant: 'default', color: 'accent',  className: 'bg-accent-9 text-accent-fg hover:bg-accent-10 shadow-raised hover:shadow-brand' },
-      { variant: 'default', color: 'error',   className: 'bg-error-9 text-error-fg hover:bg-error-10 shadow-raised' },
-      { variant: 'default', color: 'default', className: 'bg-accent-9 text-accent-fg hover:bg-accent-10 shadow-raised hover:shadow-brand' },
-      // "destructive" → solid + error (ignores color prop)
-      { variant: 'destructive', color: 'accent',  className: 'bg-error-9 text-error-fg hover:bg-error-10 shadow-raised' },
-      { variant: 'destructive', color: 'error',   className: 'bg-error-9 text-error-fg hover:bg-error-10 shadow-raised' },
-      { variant: 'destructive', color: 'default', className: 'bg-error-9 text-error-fg hover:bg-error-10 shadow-raised' },
-      // "default" color alias → accent
-      { variant: 'solid',   color: 'default', className: 'bg-accent-9 text-accent-fg hover:bg-accent-10 shadow-raised hover:shadow-brand' },
-      { variant: 'soft',    color: 'default', className: 'bg-accent-3 text-accent-11 hover:bg-accent-4 active:bg-accent-5' },
-      { variant: 'outline', color: 'default', className: 'bg-transparent text-accent-11 border-accent-7 hover:bg-accent-3 active:bg-accent-4' },
-      { variant: 'ghost',   color: 'default', className: 'bg-transparent text-surface-fg-muted hover:bg-surface-raised-hover hover:text-surface-fg active:bg-surface-raised-active' },
-      { variant: 'link',    color: 'default', className: 'text-accent-11' },
     ],
     defaultVariants: {
       variant: 'solid',
@@ -360,7 +339,7 @@ const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
         ? (autoProcessing ? 'working' : undefined)
         : processingProp
     const isProcessing = !!processingSpeed
-    const resolvedProcessingColor = processingColor ?? (resolvedColor === 'default' ? 'accent' : resolvedColor) ?? 'accent'
+    const resolvedProcessingColor = processingColor ?? resolvedColor ?? 'accent'
 
     if (asChild) {
       // Slot merges all props into the child element via cloneElement at runtime.

@@ -166,7 +166,7 @@ export const PromiseToastError: Story = {
   render: () => {
     return (
       <Button
-        variant="destructive"
+        variant="solid" color="error"
         onClick={() =>
           toast.promise(
             new Promise<void>((_resolve, reject) => setTimeout(() => reject(new Error('Network error')), 2000)),

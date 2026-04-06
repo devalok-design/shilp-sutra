@@ -26,7 +26,7 @@ export interface ConfirmDialogProps extends Omit<React.ComponentPropsWithoutRef<
   /** Cancel button text */
   cancelText?: string
   /** Color of the confirm button */
-  color?: 'default' | 'error'
+  color?: 'accent' | 'error'
   /** Whether the dialog is in a loading state */
   loading?: boolean
   /** Called when the user confirms. Dialog stays open — consumer controls closing via onOpenChange. */
@@ -42,7 +42,7 @@ const ConfirmDialog = React.forwardRef<HTMLDivElement, ConfirmDialogProps>(
       description,
       confirmText = 'Confirm',
       cancelText = 'Cancel',
-      color = 'default',
+      color = 'accent',
       loading = false,
       onConfirm,
       className,

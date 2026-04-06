@@ -266,26 +266,6 @@ describe('Button', () => {
     expect(btn.className).toContain('bg-neutral-5')
   })
 
-  // ============ Deprecated aliases ============
-
-  it('deprecated variant="default" renders as solid accent', () => {
-    render(<Button variant="default">Legacy</Button>)
-    const btn = screen.getByRole('button')
-    expect(btn.className).toContain('bg-accent-9')
-  })
-
-  it('deprecated variant="destructive" renders as solid error', () => {
-    render(<Button variant="destructive">Delete</Button>)
-    const btn = screen.getByRole('button')
-    expect(btn.className).toContain('bg-error-9')
-  })
-
-  it('deprecated color="default" renders as accent', () => {
-    render(<Button color="default">Legacy</Button>)
-    const btn = screen.getByRole('button')
-    expect(btn.className).toContain('bg-accent-9')
-  })
-
   // ============ Weight ============
 
   it('renders weight normal', () => {

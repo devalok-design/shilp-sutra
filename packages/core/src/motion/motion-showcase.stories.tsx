@@ -78,9 +78,9 @@ function ButtonGesturesDemo() {
       </p>
       <div className="flex flex-wrap gap-ds-03">
         <Button>Default</Button>
-        <Button variant="secondary">Secondary</Button>
+        <Button variant="soft">Soft</Button>
         <Button variant="outline">Outline</Button>
-        <Button variant="destructive">Destructive</Button>
+        <Button variant="solid" color="error">Destructive</Button>
         <Button variant="ghost">Ghost</Button>
       </div>
     </Section>

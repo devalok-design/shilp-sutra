@@ -12,7 +12,7 @@ describe('Card', () => {
     const { container } = render(<Card accent="left" accentColor="error">Content</Card>)
     const accentEl = container.querySelector('[aria-hidden="true"]')
     expect(accentEl).toBeInTheDocument()
-    expect(accentEl).toHaveStyle({ backgroundColor: 'var(--color-error-9)' })
+    expect(accentEl).toHaveStyle({ '--card-accent-bg': 'var(--color-error-9)' })
   })
 
   it('does not render accent when prop is not set', () => {
@@ -28,7 +28,7 @@ describe('Card', () => {
   it('defaults accentColor to default', () => {
     const { container } = render(<Card accent="left">Content</Card>)
     const accentEl = container.querySelector('[aria-hidden="true"]')
-    expect(accentEl).toHaveStyle({ backgroundColor: 'var(--color-accent-9)' })
+    expect(accentEl).toHaveStyle({ '--card-accent-bg': 'var(--color-accent-9)' })
   })
 
   it('supports all accent positions', () => {

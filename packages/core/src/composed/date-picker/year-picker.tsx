@@ -59,34 +59,39 @@ export const YearPicker = React.forwardRef<HTMLDivElement, YearPickerProps>(
       <div className="text-center pb-ds-04 text-ds-md font-semibold text-surface-fg">
         {startYear} &ndash; {startYear + 11}
       </div>
-      <div className="grid grid-cols-3 gap-ds-02" role="grid" aria-label="Year picker" onKeyDown={handleKeyDown}>
-        {years.map((year, index) => {
-          const isSelected = year === selectedYear
-          const isDisabled = isYearDisabled(year)
+      <div role="grid" aria-label="Year picker" onKeyDown={handleKeyDown}>
+        {[0, 1, 2, 3].map((rowIdx) => (
+          <div key={rowIdx} role="row" className="grid grid-cols-3 gap-ds-02 mb-ds-02 last:mb-0">
+            {years.slice(rowIdx * COLS, rowIdx * COLS + COLS).map((year) => {
+              const index = years.indexOf(year)
+              const isSelected = year === selectedYear
+              const isDisabled = isYearDisabled(year)
 
-          return (
-            <button
-              key={year}
-              ref={(el) => { buttonRefs.current[index] = el }}
-              type="button"
-              role="gridcell"
-              tabIndex={index === focusedIndex ? 0 : -1}
-              disabled={isDisabled || false}
-              onClick={() => !isDisabled && onYearSelect(year)}
-              className={cn(
-                'h-ds-sm-plus rounded-ds-md text-ds-md transition-colors focus-visible:ring-2 focus-visible:ring-accent-9 focus-visible:ring-offset-2',
-                isDisabled && 'opacity-action-disabled pointer-events-none cursor-not-allowed',
-                isSelected &&
-                  'bg-accent-9 text-accent-fg',
-                !isSelected &&
-                  !isDisabled &&
-                  'hover:bg-surface-raised-hover text-surface-fg',
-              )}
-            >
-              {year}
-            </button>
-          )
-        })}
+              return (
+                <button
+                  key={year}
+                  ref={(el) => { buttonRefs.current[index] = el }}
+                  type="button"
+                  role="gridcell"
+                  tabIndex={index === focusedIndex ? 0 : -1}
+                  disabled={isDisabled || false}
+                  onClick={() => !isDisabled && onYearSelect(year)}
+                  className={cn(
+                    'h-ds-sm-plus rounded-ds-md text-ds-md transition-colors focus-visible:ring-2 focus-visible:ring-accent-9 focus-visible:ring-offset-2',
+                    isDisabled && 'opacity-action-disabled pointer-events-none cursor-not-allowed',
+                    isSelected &&
+                      'bg-accent-9 text-accent-fg',
+                    !isSelected &&
+                      !isDisabled &&
+                      'hover:bg-surface-raised-hover text-surface-fg',
+                  )}
+                >
+                  {year}
+                </button>
+              )
+            })}
+          </div>
+        ))}
       </div>
     </div>
   )

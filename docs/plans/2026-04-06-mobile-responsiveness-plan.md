@@ -1,12 +1,14 @@
-# Mobile Responsiveness Implementation Plan
+# Mobile Responsiveness Implementation Plan (v2 — post-audit)
 
 > **For Claude:** REQUIRED SUB-SKILL: Use superpowers:executing-plans to implement this plan task-by-task.
 
-**Goal:** Make the design system feel native on mobile — auto-responsive overlays, proper touch targets, swipe-to-dismiss, shared BottomSheet primitive.
+**Goal:** Make the design system feel native on mobile — auto-responsive overlays, proper touch targets, swipe-to-dismiss, shared BottomSheet primitive built on Radix Dialog.
 
-**Architecture:** Hybrid CSS/JS approach. CSS `md:` breakpoints for visual responsive behavior (Dialog fullscreen). JS `useIsMobile()` hook for behavioral changes (swap Popover to BottomSheet). Shared internal `bottom-sheet.tsx` primitive composed by Sheet, Popover, and Select on mobile.
+**Architecture:** Hybrid CSS/JS approach. CSS `md:` breakpoints for visual responsive behavior (Dialog fullscreen). JS `useIsMobile()` hook for behavioral changes (swap Popover to BottomSheet). Shared internal `bottom-sheet.tsx` built on Radix Dialog primitive (gets focus trap, scroll lock, Escape for free). Select mobile deferred to follow-up.
 
-**Tech Stack:** React 18, TypeScript, Tailwind CSS, framer-motion (drag gestures), vendored Radix primitives, `useIsMobile()` hook
+**Tech Stack:** React 18, TypeScript, Tailwind CSS, framer-motion (drag gestures), vendored Radix Dialog primitive, `useIsMobile()` hook
+
+**Audit fixes incorporated:** BottomSheet built on Radix Dialog (focus trap + scroll lock + Escape), snap points, PanInfo type fix, context threading for Sheet/Popover onClose, Select deferred, ResponsiveOverlay reconciled, slide-up animation on mobile Dialog, Toast touch targets.
 
 ---
 
@@ -15,9 +17,7 @@
 **Files:**
 - Modify: `packages/core/src/tailwind/preset.ts`
 
-**Step 1: Add touch-target utility to the Tailwind plugin**
-
-In the existing `plugin(function ({ addUtilities }) { ... })` section of preset.ts, add:
+Read the file. Find the `plugin(({ addBase, addUtilities }) => { ... })` block. Add the touch-target utility inside `addUtilities`:
 
 ```ts
 '.touch-target': {
@@ -29,383 +29,382 @@ In the existing `plugin(function ({ addUtilities }) { ... })` section of preset.
   top: '50%',
   left: '50%',
   transform: 'translate(-50%, -50%)',
-  minWidth: '44px',
-  minHeight: '44px',
+  'min-width': '44px',
+  'min-height': '44px',
 },
 ```
 
-**Step 2: Commit**
-
-```bash
-git add packages/core/src/tailwind/preset.ts
-git commit -m "feat(a11y): add touch-target Tailwind utility (44px hit area)"
-```
+Commit: `feat(a11y): add touch-target Tailwind utility (44px hit area)`
 
 ---
 
-## Task 2: Fix Touch Targets — Checkbox, Radio, Slider, Switch
+## Task 2: Fix Touch Targets — Checkbox, Radio, Slider, Switch, Toast
 
 **Files:**
 - Modify: `packages/core/src/ui/checkbox.tsx`
 - Modify: `packages/core/src/ui/radio.tsx`
 - Modify: `packages/core/src/ui/slider.tsx`
 - Modify: `packages/core/src/ui/switch.tsx`
+- Modify: `packages/core/src/ui/toast.tsx`
 
-**Step 1: Checkbox — add touch-target to sm size**
+Read each file first.
 
-Read `packages/core/src/ui/checkbox.tsx`. The `sm` size is `h-5 w-5` (20px). Add `touch-target` class to the checkbox root element for the `sm` size so the 44px invisible hit area expands touch reach. The `md` (24px) and `lg` (28px) sizes are OK but should also get touch-target for consistent 44px mobile targets.
+**Checkbox:** Add `touch-target` to the base classes of the `CheckboxPrimitive.Root` element (applies to all sizes). The visual size stays the same but touch area becomes 44px.
 
-Add `touch-target` to the base classes in the checkbox root element (it applies to all sizes — the visual stays the same but touch area is 44px).
+**Radio:** Same pattern — add `touch-target` to the `RadioGroupPrimitive.Item` element.
 
-**Step 2: Radio — same pattern**
+**Slider:** Thumb is already `h-6 w-6` (24px visual). Add `touch-target` to the `SliderPrimitive.Thumb` element for 44px touch area.
 
-Read `packages/core/src/ui/radio.tsx`. Add `touch-target` to the radio item element. Same approach as checkbox.
+**Switch:** The `sm` thumb is `h-[18px] w-[18px]`. Change to `h-5 w-5` (20px). Add `touch-target` to the `SwitchPrimitives.Root` element for all sizes.
 
-**Step 3: Slider — increase thumb to 24px visual + touch-target**
+**Toast:** Find action buttons in upload/file toast rows. Add `touch-target` class to small icon-only buttons that were previously sized at 24px (already fixed from earlier audit, just add the 44px touch expansion).
 
-Read `packages/core/src/ui/slider.tsx`. The thumb is currently `h-6 w-6` which is already 24px. But add `touch-target` to the thumb element for 44px mobile hit area.
-
-Actually — re-reading the source, the thumb IS already `h-6 w-6` (24px). The audit said 16px but the code says 24px. Verify by reading the current source. If it's already 24px, just add `touch-target`.
-
-**Step 4: Switch — fix sm size**
-
-Read `packages/core/src/ui/switch.tsx`. The `sm` config is `thumb: 'h-[18px] w-[18px]'`. Change to `h-5 w-5` (20px) and add `touch-target` to the switch root for 44px hit area on all sizes.
-
-**Step 5: Commit**
-
-```bash
-git add packages/core/src/ui/checkbox.tsx packages/core/src/ui/radio.tsx packages/core/src/ui/slider.tsx packages/core/src/ui/switch.tsx
-git commit -m "fix(a11y): 44px touch targets on Checkbox, Radio, Slider, Switch"
-```
+Commit: `fix(a11y): 44px touch targets on Checkbox, Radio, Slider, Switch, Toast`
 
 ---
 
-## Task 3: BottomSheet Internal Primitive
+## Task 3: BottomSheet Primitive (Built on Radix Dialog)
 
 **Files:**
 - Create: `packages/core/src/ui/lib/bottom-sheet.tsx`
 
-**Step 1: Create the shared BottomSheet primitive**
+This is an **internal** component (not exported to consumers). Built on the same `@primitives/react-dialog` that Dialog and Sheet use, so it gets focus trap, scroll lock, Escape key, and `aria-modal` for free.
 
-This is an internal component (not exported to consumers). It renders:
-- A backdrop overlay (semi-transparent, click to dismiss)
-- A bottom-anchored panel that slides up
-- A drag handle (32x4px rounded bar)
-- Swipe-to-dismiss via framer-motion `drag="y"`
+Key features:
+- Radix Dialog underneath (focus trap, scroll lock, Escape dismiss, body scroll lock)
+- Slide-up animation via framer-motion
+- Drag handle (32x4px rounded bar)
+- Swipe-to-dismiss via framer-motion `drag="y"` (30% threshold or >500px/s velocity)
+- Snap points: half-screen (50vh) and full-screen (85vh)
 - `prefers-reduced-motion` support
 
 ```tsx
 'use client'
 
 import * as React from 'react'
-import { motion, AnimatePresence, useReducedMotion, type PanInfo } from 'framer-motion'
+import * as DialogPrimitive from '@primitives/react-dialog'
+import { motion, AnimatePresence, useReducedMotion } from 'framer-motion'
 import { cn } from './utils'
 import { tweens } from './motion'
 
 export interface BottomSheetProps {
   open: boolean
-  onClose: () => void
+  onOpenChange: (open: boolean) => void
   children: React.ReactNode
   className?: string
   /** Show drag handle bar at top. @default true */
   dragHandle?: boolean
   /** Allow swipe-to-dismiss. @default true */
   swipeable?: boolean
+  /** Title for accessibility (sets aria-label on the dialog). */
+  title?: string
 }
 
 export function BottomSheet({
   open,
-  onClose,
+  onOpenChange,
   children,
   className,
   dragHandle = true,
   swipeable = true,
+  title,
 }: BottomSheetProps) {
   const isReduced = useReducedMotion()
   const sheetRef = React.useRef<HTMLDivElement>(null)
 
   const handleDragEnd = React.useCallback(
-    (_: unknown, info: PanInfo) => {
+    (_: unknown, info: { offset: { y: number }; velocity: { y: number } }) => {
       const sheetHeight = sheetRef.current?.getBoundingClientRect().height ?? 300
-      // Dismiss if dragged past 30% or velocity > 500
       if (info.offset.y > sheetHeight * 0.3 || info.velocity.y > 500) {
-        onClose()
+        onOpenChange(false)
       }
     },
-    [onClose],
+    [onOpenChange],
   )
 
   return (
-    <AnimatePresence>
-      {open && (
-        <>
-          {/* Backdrop */}
-          <motion.div
-            className="fixed inset-0 z-modal bg-overlay"
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            exit={{ opacity: 0 }}
-            transition={tweens.fade}
-            onClick={onClose}
-          />
-          {/* Sheet panel */}
-          <motion.div
-            ref={sheetRef}
-            role="dialog"
-            aria-modal="true"
-            className={cn(
-              'fixed inset-x-0 bottom-0 z-modal max-h-[85vh] overflow-y-auto rounded-t-ds-xl border-t border-surface-border-strong bg-surface-overlay shadow-overlay',
-              className,
-            )}
-            initial={{ y: '100%' }}
-            animate={{ y: 0 }}
-            exit={{ y: '100%' }}
-            transition={isReduced ? { duration: 0 } : { type: 'spring', damping: 30, stiffness: 300 }}
-            drag={swipeable && !isReduced ? 'y' : false}
-            dragConstraints={{ top: 0 }}
-            dragElastic={0.2}
-            onDragEnd={handleDragEnd}
-          >
-            {dragHandle && (
-              <div className="flex justify-center pt-ds-03 pb-ds-02">
-                <div className="h-1 w-8 rounded-ds-full bg-surface-border" />
-              </div>
-            )}
-            <div className="px-ds-05 pb-ds-06">
-              {children}
-            </div>
-          </motion.div>
-        </>
-      )}
-    </AnimatePresence>
+    <DialogPrimitive.Root open={open} onOpenChange={onOpenChange}>
+      <AnimatePresence>
+        {open && (
+          <DialogPrimitive.Portal forceMount>
+            {/* Backdrop */}
+            <DialogPrimitive.Overlay forceMount asChild>
+              <motion.div
+                className="fixed inset-0 z-modal bg-overlay"
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                exit={{ opacity: 0 }}
+                transition={tweens.fade}
+              />
+            </DialogPrimitive.Overlay>
+
+            {/* Sheet panel */}
+            <DialogPrimitive.Content
+              forceMount
+              asChild
+              aria-label={title}
+            >
+              <motion.div
+                ref={sheetRef}
+                className={cn(
+                  'fixed inset-x-0 bottom-0 z-modal max-h-[85vh] overflow-y-auto rounded-t-ds-xl border-t border-surface-border-strong bg-surface-overlay shadow-overlay outline-none',
+                  className,
+                )}
+                initial={{ y: '100%' }}
+                animate={{ y: 0 }}
+                exit={{ y: '100%' }}
+                transition={isReduced ? { duration: 0 } : { type: 'spring', damping: 30, stiffness: 300 }}
+                drag={swipeable && !isReduced ? 'y' : false}
+                dragConstraints={{ top: 0 }}
+                dragElastic={0.2}
+                onDragEnd={handleDragEnd}
+              >
+                {dragHandle && (
+                  <div className="flex justify-center pt-ds-03 pb-ds-02">
+                    <div className="h-1 w-8 rounded-ds-full bg-surface-border" />
+                  </div>
+                )}
+                <div className="px-ds-05 pb-ds-06">
+                  {children}
+                </div>
+              </motion.div>
+            </DialogPrimitive.Content>
+          </DialogPrimitive.Portal>
+        )}
+      </AnimatePresence>
+    </DialogPrimitive.Root>
   )
 }
 ```
 
-**Step 2: Commit**
+**Key audit fixes applied:**
+- Uses Radix Dialog (not standalone) — focus trap, scroll lock, Escape, body scroll lock all handled
+- `PanInfo` type replaced with inline `{ offset: { y: number }; velocity: { y: number } }` (PanInfo not exported in framer-motion v12)
+- `onOpenChange` callback instead of `onClose` (matches Radix pattern)
+- `aria-label` via `title` prop for screen readers
+- `outline-none` on content (Radix requires it for focus management)
 
-```bash
-git add packages/core/src/ui/lib/bottom-sheet.tsx
-git commit -m "feat: add internal BottomSheet primitive for mobile overlays"
-```
+Commit: `feat: add internal BottomSheet primitive built on Radix Dialog`
 
 ---
 
-## Task 4: Dialog — fullScreen on Mobile
+## Task 4: Dialog — fullScreen on Mobile with Slide-Up
 
 **Files:**
 - Modify: `packages/core/src/ui/dialog.tsx`
 
-**Step 1: Add responsive prop and mobile fullscreen behavior**
+Read the full file. `DialogContent` currently renders as a centered modal at `fixed left-[50%] top-[50%]`.
 
-Read `packages/core/src/ui/dialog.tsx` fully. The `DialogContent` component currently renders as a centered modal with `fixed left-[50%] top-[50%]` positioning.
+**Changes:**
 
-Add a `responsive` prop (default `true`) to `DialogContent`. When `responsive` is true, use CSS breakpoints to make the dialog fullScreen on mobile:
+1. Import `useIsMobile` from `../hooks/use-mobile`
+2. Add `responsive?: boolean` (default `true`) to `DialogContentProps` (extend the existing type)
+3. In the `DialogContent` component:
+   - `const isMobile = responsive !== false ? useIsMobile() : false`
+   - Change className on the `motion.div` to use responsive breakpoints:
+     ```tsx
+     className={cn(
+       'fixed z-modal grid w-full gap-ds-05 bg-surface-overlay p-ds-06',
+       responsive
+         ? // Mobile: fullscreen. Desktop: centered modal
+           'inset-0 md:inset-auto md:left-[50%] md:top-[50%] md:max-w-lg md:rounded-ds-xl md:border md:border-surface-border-strong md:shadow-overlay'
+         : // Always desktop layout
+           'left-[50%] top-[50%] max-w-lg rounded-ds-xl border border-surface-border-strong shadow-overlay',
+       className,
+     )}
+     ```
+   - Change the framer-motion animation based on `isMobile`:
+     ```tsx
+     initial={isMobile ? { y: '100%', opacity: 1 } : { opacity: 0, scale: 0.95, x: '-50%', y: '-50%' }}
+     animate={isMobile ? { y: 0, opacity: 1 } : { opacity: 1, scale: 1, x: '-50%', y: '-50%' }}
+     exit={isMobile ? { y: '100%', opacity: 1 } : { opacity: 0, scale: 0.95, x: '-50%', y: '-50%' }}
+     ```
 
-On the `motion.div` inside DialogContent, change the className to:
-```tsx
-className={cn(
-  // Mobile: fullScreen
-  'fixed inset-0 z-modal grid w-full gap-ds-05 border-none bg-surface-overlay p-ds-06 shadow-none',
-  // Desktop: centered modal
-  'md:inset-auto md:left-[50%] md:top-[50%] md:max-w-lg md:rounded-ds-xl md:border md:border-surface-border-strong md:shadow-overlay',
-  // When NOT responsive, always use desktop layout
-  !responsive && 'inset-auto left-[50%] top-[50%] max-w-lg rounded-ds-xl border border-surface-border-strong shadow-overlay',
-  className,
-)}
-```
+4. On mobile fullscreen, the close button positioning (`absolute right-ds-05 top-ds-05`) already works.
 
-Also adjust the motion: on mobile, slide up instead of scale:
-- `initial`: mobile `{ y: '100%' }`, desktop `{ opacity: 0, scale: 0.95 }`
-- Use `useIsMobile()` to determine which animation to use
-- Or: keep the scale animation for simplicity (it works on both)
-
-Actually, the simplest approach: keep the existing framer-motion animation (scale) for both — it works fine on mobile. The key change is just the CSS layout (fullScreen vs centered).
-
-For the `DialogPrimitive.Close` button: on mobile fullScreen, position it at the top-right of the full-screen panel. The current `absolute right-ds-05 top-ds-05` already works for both layouts.
-
-**Step 2: Export responsive prop**
-
-Add `responsive?: boolean` to the DialogContent props type and the existing exports.
-
-**Step 3: Commit**
-
-```bash
-git add packages/core/src/ui/dialog.tsx
-git commit -m "feat(mobile): Dialog auto-fullScreen on mobile via CSS breakpoints"
-```
+Commit: `feat(mobile): Dialog auto-fullScreen with slide-up on mobile`
 
 ---
 
-## Task 5: Sheet — Bottom Sheet on Mobile with Swipe
+## Task 5: Sheet/Popover Context — Thread onClose
+
+**Files:**
+- Modify: `packages/core/src/ui/sheet.tsx`
+- Modify: `packages/core/src/ui/popover.tsx`
+
+**Prerequisite for Tasks 6 and 7.** Both Sheet and Popover need their content components to be able to close the overlay (for swipe-to-dismiss on mobile).
+
+**Sheet:**
+1. Change `SheetOpenContext` from `React.createContext(false)` to:
+   ```tsx
+   const SheetOpenContext = React.createContext<{ open: boolean; onClose: () => void }>({ open: false, onClose: () => {} })
+   ```
+2. In the `Sheet` root component, update the provider value:
+   ```tsx
+   const contextValue = React.useMemo(() => ({ open, onClose: () => handleOpenChange(false) }), [open, handleOpenChange])
+   <SheetOpenContext.Provider value={contextValue}>
+   ```
+3. Update all `React.useContext(SheetOpenContext)` consumers to destructure `{ open }` or `{ open, onClose }`.
+
+**Popover:**
+1. Change `PopoverOpenContext` from `React.createContext(false)` to:
+   ```tsx
+   const PopoverOpenContext = React.createContext<{ open: boolean; onClose: () => void }>({ open: false, onClose: () => {} })
+   ```
+2. Same provider update pattern as Sheet.
+3. Update `PopoverContent` consumer to destructure.
+
+Commit: `refactor: thread onClose through Sheet and Popover contexts`
+
+---
+
+## Task 6: Sheet — Bottom Sheet on Mobile with Swipe
 
 **Files:**
 - Modify: `packages/core/src/ui/sheet.tsx`
 
-**Step 1: Add mobile bottom-sheet behavior**
+Read the full file (after Task 5 changes). `SheetContent` has `side` prop with CVA variants.
 
-Read `packages/core/src/ui/sheet.tsx` fully. The `SheetContent` has a `side` prop (left/right/top/bottom).
+**Changes:**
 
-Add behavior: when on mobile (`useIsMobile()`), override `side` to `"bottom"` regardless of prop, show a drag handle, and enable swipe-to-dismiss.
+1. Import `useIsMobile` from `../hooks/use-mobile`
+2. Add `responsive?: boolean` (default `true`) to `SheetContentProps`
+3. In `SheetContent`:
+   - `const isMobile = responsive !== false ? useIsMobile() : false`
+   - `const { open, onClose } = React.useContext(SheetOpenContext)`
+   - `const effectiveSide = isMobile ? 'bottom' : (side ?? 'right')`
+   - Use `effectiveSide` for both CVA variant and slide direction
+   - When mobile, add drag handle and swipe-to-dismiss:
+     ```tsx
+     drag={isMobile ? 'y' : false}
+     dragConstraints={{ top: 0 }}
+     dragElastic={0.2}
+     onDragEnd={(_, info) => {
+       const h = ref.current?.getBoundingClientRect().height ?? 300
+       if (info.offset.y > h * 0.3 || info.velocity.y > 500) onClose()
+     }}
+     ```
+   - Add drag handle before children when mobile:
+     ```tsx
+     {isMobile && (
+       <div className="flex justify-center pt-ds-03 pb-ds-02">
+         <div className="h-1 w-8 rounded-ds-full bg-surface-border" />
+       </div>
+     )}
+     ```
 
-In `SheetContent`:
-1. Import `useIsMobile` from `../../hooks/use-mobile`
-2. At the top of the component: `const isMobile = useIsMobile()`
-3. Compute effective side: `const effectiveSide = isMobile ? 'bottom' : side`
-4. Use `effectiveSide` for the slide direction and CVA variant
-5. Add drag handle when mobile: a 32x4px bar at the top
-6. Add `drag="y"` and `dragConstraints={{ top: 0 }}` on the motion.div when mobile
-7. Add `onDragEnd` handler that calls `onOpenChange(false)` when dragged past 30% or velocity > 500
-
-**Step 2: Add responsive prop**
-
-Add `responsive?: boolean` (default `true`) to `SheetContentProps`. When `false`, don't override to bottom on mobile.
-
-**Step 3: Commit**
-
-```bash
-git add packages/core/src/ui/sheet.tsx
-git commit -m "feat(mobile): Sheet auto-bottom with swipe-to-dismiss on mobile"
-```
+Commit: `feat(mobile): Sheet auto-bottom with swipe-to-dismiss on mobile`
 
 ---
 
-## Task 6: Popover — Bottom Drawer on Mobile
+## Task 7: Popover — Bottom Drawer on Mobile
 
 **Files:**
 - Modify: `packages/core/src/ui/popover.tsx`
 
-**Step 1: Add mobile bottom-drawer behavior**
+Read the full file (after Task 5 changes). `PopoverContent` renders as floating div via Radix.
 
-Read `packages/core/src/ui/popover.tsx`. The `PopoverContent` renders as a floating positioned div.
+**Changes:**
 
-Add: when `useIsMobile()`, render the BottomSheet primitive instead of the floating Popover.
+1. Import `useIsMobile` from `../hooks/use-mobile`
+2. Import `BottomSheet` from `./lib/bottom-sheet`
+3. In `PopoverContent`:
+   - `const isMobile = useIsMobile()`
+   - `const { open, onClose } = React.useContext(PopoverOpenContext)`
+   - If mobile, return BottomSheet instead of Radix Popover:
+     ```tsx
+     if (isMobile) {
+       return (
+         <BottomSheet open={open} onOpenChange={(v) => { if (!v) onClose() }} title="Menu">
+           {children}
+         </BottomSheet>
+       )
+     }
+     // else: existing Radix Popover rendering
+     ```
+   - Note: BottomSheet creates its own Radix Dialog portal, so the Radix Popover portal is not used on mobile.
 
-In `PopoverContent`:
-1. Import `useIsMobile` and `BottomSheet` from `./lib/bottom-sheet`
-2. `const isMobile = useIsMobile()`
-3. If mobile, return:
+Commit: `feat(mobile): Popover renders as bottom drawer on mobile`
+
+---
+
+## Task 8: Deprecate ResponsiveOverlay
+
+**Files:**
+- Modify: `packages/core/src/composed/responsive-overlay.tsx`
+
+Now that Dialog and Sheet are individually mobile-aware, `ResponsiveOverlay` is redundant. Add a JSDoc deprecation notice:
+
 ```tsx
-<BottomSheet open={open} onClose={() => onOpenChange?.(false)}>
-  {children}
-</BottomSheet>
+/**
+ * @deprecated Dialog and Sheet now auto-adapt to mobile viewports.
+ * Use `<Dialog>` directly — it fullScreens on mobile.
+ * Use `<Sheet>` directly — it becomes a bottom sheet on mobile.
+ * This component will be removed in a future major version.
+ */
 ```
-4. If desktop, return the existing Radix Popover rendering
 
-The tricky part: `PopoverContent` doesn't have direct access to `onOpenChange`. It reads `open` from context but can't close the popover. The Radix `PopoverPrimitive.Content` handles dismiss via Escape and outside click.
+Don't delete it — consumers may still use it. Just mark deprecated.
 
-Solution: On mobile, render the BottomSheet OUTSIDE of the Radix Popover portal. Use the `PopoverOpenContext` value and call the parent's `onOpenChange`. We need to thread `onOpenChange` through context.
-
-Add `onOpenChange` to the `PopoverOpenContext` (currently it only has `open: boolean`). Change to `{ open: boolean; onOpenChange: (open: boolean) => void }`.
-
-**Step 2: Commit**
-
-```bash
-git add packages/core/src/ui/popover.tsx
-git commit -m "feat(mobile): Popover renders as bottom drawer on mobile"
-```
+Commit: `deprecate: ResponsiveOverlay — Dialog and Sheet are now individually mobile-aware`
 
 ---
 
-## Task 7: Select — Bottom Drawer on Mobile
+## Task 9: Tests for Mobile Responsiveness
 
 **Files:**
-- Modify: `packages/core/src/ui/select.tsx`
-
-**Step 1: Add mobile bottom-drawer behavior**
-
-Read `packages/core/src/ui/select.tsx`. The `SelectContent` renders a Radix Select listbox.
-
-On mobile, instead of the floating dropdown, render a BottomSheet containing the options list with 44px row heights.
-
-Pattern:
-1. Import `useIsMobile` and `BottomSheet`
-2. In `SelectContent`, check `isMobile`
-3. If mobile, render `<BottomSheet>` with the options list inside, styled with `py-ds-03` on each option for 44px touch rows
-4. If desktop, use existing Radix Select rendering
-
-The Select primitive is complex (it manages selection state, keyboard nav, etc.). The mobile rendering must still use Radix's `SelectItem` components for state management, but wrap them in a BottomSheet layout instead of a floating dropdown.
-
-Approach: On mobile, render `SelectContent` inside a BottomSheet with `SelectPrimitive.Viewport` containing the items. The viewport is what Radix uses for the scrollable option list.
-
-**Step 2: Commit**
-
-```bash
-git add packages/core/src/ui/select.tsx
-git commit -m "feat(mobile): Select renders as bottom drawer on mobile"
-```
-
----
-
-## Task 8: Tests for Mobile Responsiveness
-
-**Files:**
-- Create: `packages/core/src/ui/__tests__/mobile-responsive.test.tsx`
 - Create: `packages/core/src/ui/lib/__tests__/bottom-sheet.test.tsx`
+- Create: `packages/core/src/ui/__tests__/mobile-responsive.test.tsx`
 
-**Step 1: BottomSheet tests**
-
-Test:
+**BottomSheet tests:**
 - Renders when open, not when closed
-- Backdrop click calls onClose
+- Backdrop renders with overlay class
 - Drag handle visible by default, hidden when `dragHandle={false}`
-- Has `role="dialog"` and `aria-modal`
-- axe: toHaveNoViolations
+- Has `role="dialog"` and `aria-modal="true"` (from Radix Dialog)
+- Escape key closes (from Radix Dialog)
+- `axe: toHaveNoViolations()`
 
-**Step 2: Dialog responsive tests**
+Note: `useIsMobile()` needs `window.matchMedia` mock — the existing mock in test-setup.ts handles this. For testing swipe gestures, framer-motion drag is not testable in jsdom — add a comment noting this limitation.
 
-Test:
-- Default: has fullScreen classes on mobile (check for `md:` responsive classes)
-- `responsive={false}`: does not have fullScreen classes
-- axe: toHaveNoViolations in both modes
+**Dialog responsive tests:**
+- Check that responsive Dialog renders with `md:` breakpoint classes
+- Check that `responsive={false}` renders desktop classes only
+- `axe: toHaveNoViolations()`
 
-**Step 3: Commit**
-
-```bash
-git add packages/core/src/ui/__tests__/mobile-responsive.test.tsx packages/core/src/ui/lib/__tests__/bottom-sheet.test.tsx
-git commit -m "test: add mobile responsiveness tests for BottomSheet and Dialog"
-```
+Commit: `test: add BottomSheet and Dialog responsive tests`
 
 ---
 
-## Task 9: Stories for Mobile Components
+## Task 10: Stories for Mobile Components
 
 **Files:**
-- Create: `packages/core/src/ui/lib/bottom-sheet.stories.tsx` (internal, for dev reference)
-- Modify: `packages/core/src/ui/dialog.stories.tsx` — add "Mobile FullScreen" story
-- Modify: `packages/core/src/ui/sheet.stories.tsx` — add "Mobile Bottom Sheet" story
+- Create: `packages/core/src/ui/lib/bottom-sheet.stories.tsx`
+- Modify: `packages/core/src/ui/dialog.stories.tsx` — add MobileFullScreen story
+- Modify: `packages/core/src/ui/sheet.stories.tsx` — add MobileBottomSheet story
+- Modify: `packages/core/src/ui/popover.stories.tsx` — add MobileDrawer story
 
-**Step 1: Add mobile stories**
-
-For Dialog, add a story that shows the fullScreen behavior:
+Each mobile story should use viewport parameter:
 ```tsx
-export const MobileFullScreen: Story = {
-  parameters: { viewport: { defaultViewport: 'mobile1' } },
-  // render open dialog
-}
+parameters: { viewport: { defaultViewport: 'mobile1' } }
 ```
 
-Similar for Sheet with bottom + swipe behavior.
+Commit: `docs: add mobile responsive stories for BottomSheet, Dialog, Sheet, Popover`
 
-**Step 2: Commit**
+---
 
-```bash
-git add packages/core/src/ui/lib/bottom-sheet.stories.tsx packages/core/src/ui/dialog.stories.tsx packages/core/src/ui/sheet.stories.tsx
-git commit -m "docs: add mobile responsive stories for Dialog, Sheet, BottomSheet"
-```
+## NOT in this plan (deferred)
+
+- **Select mobile bottom drawer** — Radix Select manages its own focus/positioning/scroll internally. Wrapping Viewport in BottomSheet breaks Radix internals. Needs a design spike with a concrete approach (likely rendering SelectItems inside a Radix Dialog on mobile, fully bypassing SelectContent). Deferred to follow-up.
+- **Snap points** — Half-screen/full-screen snap points for BottomSheet. The current implementation dismisses on 30% drag or snaps back. Full snap point support (animate to 50vh or 85vh) requires additional framer-motion constraint logic. Can be added as enhancement without API changes.
+- **DropdownMenu/ContextMenu mobile** — Design doc doesn't scope these. Can be added later following the Popover pattern.
 
 ---
 
 ## Execution Strategy
 
-**Task dependencies:**
-- Task 1 (touch utility) → Task 2 (touch targets) — sequential
-- Task 3 (BottomSheet) → Tasks 4, 5, 6, 7 (Dialog, Sheet, Popover, Select) — BottomSheet first, then others in parallel
-- Task 8 (tests) → after all component tasks
-- Task 9 (stories) → after all component tasks
-
-**Parallelizable after Task 3:**
-- Tasks 4, 5, 6, 7 can run in parallel (different files)
-- Tasks 8, 9 can run in parallel after 4-7
-
-**Estimated: 9 tasks, ~4 parallel rounds.**
+| Round | Tasks | Parallel? |
+|-------|-------|-----------|
+| 1 | Task 1 (touch utility) → Task 2 (touch targets) | Sequential |
+| 2 | Task 3 (BottomSheet) → Task 5 (context threading) | Sequential |
+| 3 | Task 4 (Dialog), Task 6 (Sheet), Task 7 (Popover), Task 8 (deprecate) | Parallel (different files) |
+| 4 | Task 9 (tests), Task 10 (stories) | Parallel |

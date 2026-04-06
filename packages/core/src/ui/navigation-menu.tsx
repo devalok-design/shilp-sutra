@@ -135,7 +135,7 @@ const NavigationMenuContent = React.forwardRef<
         initial={initial}
         animate={animate}
         transition={{ ...springs.smooth, opacity: tweens.fade }}
-        style={{ width: '100%' }}
+        className="w-full"
       >
         {props.children}
       </motion.div>
@@ -195,11 +195,7 @@ const NavigationMenuViewport = React.forwardRef<
       {/* Overlay motion element for scale+fade animation */}
       <motion.div
         aria-hidden
-        style={{
-          position: 'absolute',
-          inset: 0,
-          pointerEvents: 'none',
-        }}
+        className="absolute inset-0 pointer-events-none"
         initial={false}
         animate={isOpen ? { opacity: 1, scale: 1 } : { opacity: 0, scale: 0.95 }}
         transition={{ ...springs.smooth, opacity: tweens.fade }}

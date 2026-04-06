@@ -149,8 +149,8 @@ const Card = React.forwardRef<HTMLDivElement, CardProps>(
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
         transition={tweens.fade}
-        className={cn('absolute pointer-events-none', getAccentPositionClasses(accent, accentWidth))}
-        style={{ backgroundColor: resolveAccentColor(accentColor) }}
+        className={cn('absolute pointer-events-none bg-[var(--card-accent-bg)]', getAccentPositionClasses(accent, accentWidth))}
+        style={{ '--card-accent-bg': resolveAccentColor(accentColor) } as React.CSSProperties}
       />
     ) : null
 

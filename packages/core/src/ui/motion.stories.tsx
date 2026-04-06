@@ -15,7 +15,6 @@ import { Icon } from './icon'
 import { Switch } from './switch'
 import { Checkbox } from './checkbox'
 import { Input } from './input'
-import { Chip } from './chip'
 import { Tabs, TabsList, TabsTrigger, TabsContent } from './tabs'
 import { Accordion, AccordionItem, AccordionTrigger, AccordionContent } from './accordion'
 import {
@@ -296,17 +295,18 @@ export const FastMicroInteractions: StoryObj = {
           <TokenBadge>transition-[color,background-color,border-color,box-shadow] duration-fast-01</TokenBadge>
         </div>
 
-        {/* Chips */}
+        {/* Badge dismiss interactions */}
         <div className="space-y-ds-03">
-          <h4 className="text-ds-md font-medium text-surface-fg">Chip interactions</h4>
+          <h4 className="text-ds-md font-medium text-surface-fg">Badge dismiss interactions</h4>
           <div className="flex flex-wrap gap-ds-02">
             {chips.map((label) => (
-              <Chip
+              <Badge
                 key={label}
-                label={label}
                 variant="outline"
                 onDismiss={() => setChips((prev) => prev.filter((c) => c !== label))}
-              />
+              >
+                {label}
+              </Badge>
             ))}
             {chips.length === 0 && (
               <Button
@@ -314,7 +314,7 @@ export const FastMicroInteractions: StoryObj = {
                 size="sm"
                 onClick={() => setChips(['React', 'TypeScript', 'Tailwind'])}
               >
-                Restore chips
+                Restore badges
               </Button>
             )}
           </div>
@@ -949,7 +949,7 @@ export const ScenarioDashboardLoading: StoryObj = {
  * ========================================================================= */
 
 /**
- * Interactive notification scenario: badge pulse, sheet slide, chip dismiss.
+ * Interactive notification scenario: badge pulse, sheet slide, badge dismiss.
  * Shows how micro-interactions and reveals combine in a realistic workflow.
  */
 export const ScenarioNotificationCenter: StoryObj = {

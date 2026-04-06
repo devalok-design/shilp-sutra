@@ -103,11 +103,6 @@
       "default": "./dist/ui/color-swatch.js",
       "types": "./dist/ui/color-swatch.d.ts"
     },
-    "./ui/chip": {
-      "import": "./dist/ui/chip.js",
-      "default": "./dist/ui/chip.js",
-      "types": "./dist/ui/chip.d.ts"
-    },
     "./ui/code": {
       "import": "./dist/ui/code.js",
       "default": "./dist/ui/code.js",

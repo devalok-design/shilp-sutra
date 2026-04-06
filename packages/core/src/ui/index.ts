@@ -299,9 +299,6 @@ export {
 // Workflow
 export { Stepper, Step, type StepperProps, type StepProps } from './stepper'
 
-// Interactive Tags (deprecated — use Badge instead)
-export { Chip, ChipGroup, type ChipProps } from './chip'
-
 
 // Typography
 export { Text, textVariants, type TextProps, type TextVariant } from './text'

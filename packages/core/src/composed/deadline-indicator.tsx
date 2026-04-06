@@ -54,7 +54,7 @@ function formatAbsolute(date: Date): string {
 // DeadlineIndicator
 // ============================================================
 
-function DeadlineIndicator({
+const DeadlineIndicator = React.forwardRef<HTMLSpanElement, DeadlineIndicatorProps>(({
   deadline,
   warningThreshold = 1440,
   criticalThreshold = 240,
@@ -63,7 +63,7 @@ function DeadlineIndicator({
   refreshInterval = 60000,
   className,
   ...props
-}: DeadlineIndicatorProps) {
+}, ref) => {
   const [, forceUpdate] = React.useReducer((x: number) => x + 1, 0)
   React.useEffect(() => {
     if (!refreshInterval) return
@@ -102,6 +102,7 @@ function DeadlineIndicator({
   if (shouldPulse) {
     const inner = (
       <motion.span
+        ref={ref}
         className={cn('inline-flex items-center gap-ds-01 font-sans text-ds-sm', colorClass, className)}
         animate={{ opacity: [1, 0.7, 1] }}
         transition={{ duration: 2, repeat: Infinity }}
@@ -117,6 +118,7 @@ function DeadlineIndicator({
 
   const inner = (
     <span
+      ref={ref}
       className={cn('inline-flex items-center gap-ds-01 font-sans text-ds-sm', colorClass, className)}
       {...props}
     >
@@ -126,6 +128,7 @@ function DeadlineIndicator({
   )
 
   return showTooltip ? <SimpleTooltip content={tooltipContent}>{inner}</SimpleTooltip> : inner
-}
+})
+DeadlineIndicator.displayName = 'DeadlineIndicator'
 
 export { DeadlineIndicator }

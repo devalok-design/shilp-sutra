@@ -12,7 +12,7 @@ import { useState, useEffect, useRef, useCallback } from 'react'
 import { IconDots, IconX } from '@tabler/icons-react'
 import { Icon } from '../ui/icon'
 import { cn } from '../ui/lib/utils'
-import { motion, AnimatePresence } from 'framer-motion'
+import { motion, AnimatePresence, useReducedMotion } from 'framer-motion'
 import { springs } from '../ui/lib/motion'
 
 // -----------------------------------------------------------------------
@@ -83,8 +83,9 @@ function BottomNavLink({
   onClick?: () => void
 }) {
   const Link = useLink()
+  const prefersReducedMotion = useReducedMotion()
   return (
-    <motion.div whileTap={{ y: -2 }} transition={springs.snappy} className="flex max-w-[70px] flex-1">
+    <motion.div whileTap={prefersReducedMotion ? undefined : { y: -2 }} transition={prefersReducedMotion ? { duration: 0 } : springs.snappy} className="flex max-w-[70px] flex-1">
       <Link
         href={item.href}
         onClick={onClick}
@@ -103,7 +104,7 @@ function BottomNavLink({
               layoutId="bottom-nav-indicator"
               className="absolute top-0 h-[3px] w-full rounded-b-ds-sm bg-accent-9 p-0"
               aria-hidden="true"
-              transition={springs.snappy}
+              transition={prefersReducedMotion ? { duration: 0 } : springs.snappy}
             />
           )}
           <div className="relative p-ds-03">
@@ -134,6 +135,7 @@ const BottomNavbar = React.forwardRef<HTMLElement, BottomNavbarProps>(
     ref,
   ) => {
     const Link = useLink()
+    const prefersReducedMotion = useReducedMotion()
     const [showMore, setShowMore] = useState(false)
     const overlayRef = useRef<HTMLDivElement>(null)
 
@@ -178,7 +180,7 @@ const BottomNavbar = React.forwardRef<HTMLElement, BottomNavbarProps>(
             initial={{ y: '100%' }}
             animate={{ y: 0 }}
             exit={{ y: '100%' }}
-            transition={springs.smooth}
+            transition={prefersReducedMotion ? { duration: 0 } : springs.smooth}
             className="absolute bottom-[72px] left-0 right-0 rounded-t-ds-2xl border-t border-surface-border-strong bg-surface-overlay p-ds-05 pb-ds-03"
             onClick={(e) => e.stopPropagation()}
             onKeyDown={(e) => {
@@ -248,8 +250,8 @@ const BottomNavbar = React.forwardRef<HTMLElement, BottomNavbarProps>(
             onClick={() => setShowMore(!showMore)}
             aria-label="More navigation options"
             aria-expanded={showMore}
-            whileTap={{ y: -2 }}
-            transition={springs.snappy}
+            whileTap={prefersReducedMotion ? undefined : { y: -2 }}
+            transition={prefersReducedMotion ? { duration: 0 } : springs.snappy}
             className={cn(
               'flex h-16 max-w-[70px] flex-1 cursor-pointer flex-col items-center gap-ds-02 p-ds-02 pt-0 text-ds-sm',
               showMore || isMoreActive
@@ -263,7 +265,7 @@ const BottomNavbar = React.forwardRef<HTMLElement, BottomNavbarProps>(
                   layoutId="bottom-nav-indicator"
                   className="absolute top-0 h-[3px] w-full rounded-b-ds-sm bg-accent-9 p-0"
                   aria-hidden="true"
-                  transition={springs.snappy}
+                  transition={prefersReducedMotion ? { duration: 0 } : springs.snappy}
                 />
               )}
               <div className="p-ds-03">

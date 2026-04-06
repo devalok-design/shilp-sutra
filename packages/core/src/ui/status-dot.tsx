@@ -86,7 +86,7 @@ const StatusDot = React.forwardRef<HTMLSpanElement, StatusDotProps>(
           {shouldPulse && (
             <span
               data-pulse=""
-              className={cn('absolute inline-flex rounded-full animate-ping', s.pulse, pulseColorMap[status])}
+              className={cn('absolute inline-flex rounded-full animate-ping motion-reduce:animate-none', s.pulse, pulseColorMap[status])}
             />
           )}
           <span className={dotClasses} />

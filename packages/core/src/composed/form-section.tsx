@@ -24,7 +24,7 @@ export interface FormSectionProps extends React.HTMLAttributes<HTMLDivElement> {
 // FormSection
 // ============================================================
 
-function FormSection({
+const FormSection = React.forwardRef<HTMLDivElement, FormSectionProps>(({
   title,
   description,
   collapsible = false,
@@ -32,7 +32,7 @@ function FormSection({
   children,
   className,
   ...props
-}: FormSectionProps) {
+}, ref) => {
   const header = (
     <div className="flex flex-col gap-ds-01">
       <span className="text-ds-md font-semibold text-surface-fg font-sans">
@@ -72,7 +72,7 @@ function FormSection({
   }
 
   return (
-    <div className={cn('space-y-ds-04', className)} {...props}>
+    <div ref={ref} className={cn('space-y-ds-04', className)} {...props}>
       {header}
       <div className="border-b border-surface-border-subtle" />
       <div className="space-y-ds-04">
@@ -80,6 +80,7 @@ function FormSection({
       </div>
     </div>
   )
-}
+})
+FormSection.displayName = 'FormSection'
 
 export { FormSection }

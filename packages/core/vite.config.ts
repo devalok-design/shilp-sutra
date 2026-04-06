@@ -126,7 +126,7 @@ export default defineConfig({
           if (id.includes('node_modules')) {
             if (id.includes('@tiptap/') || id.includes('prosemirror'))
               return 'tiptap'
-            // Framer Motion — only loaded by Spinner and future animation components
+            // framer-motion — imported by 80+ components system-wide for enter/exit/layout animations
             if (id.includes('framer-motion'))
               return 'framer'
             // Client-only deps that use React hooks/DOM — includes transitive deps

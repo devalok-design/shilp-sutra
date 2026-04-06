@@ -1,7 +1,7 @@
 'use client'
 
 import * as React from 'react'
-import { motion, useMotionValue, useTransform, animate } from 'framer-motion'
+import { motion, useMotionValue, useTransform, animate, useReducedMotion } from 'framer-motion'
 import { springs } from './lib/motion'
 import { cn } from './lib/utils'
 
@@ -43,6 +43,7 @@ export interface ProgressRingProps extends Omit<React.SVGAttributes<SVGSVGElemen
 
 const ProgressRing = React.forwardRef<SVGSVGElement, ProgressRingProps>(
   ({ value, max = 100, size = 'md', color = 'default', showValue = false, label, className, ...props }, ref) => {
+    const prefersReducedMotion = useReducedMotion()
     const config = sizeConfig[size]
     const radius = (config.size - config.strokeWidth) / 2
     const circumference = 2 * Math.PI * radius
@@ -56,13 +57,12 @@ const ProgressRing = React.forwardRef<SVGSVGElement, ProgressRingProps>(
     const displayValue = useTransform(motionVal, (v) => `${Math.round(v)}%`)
 
     React.useEffect(() => {
-      const controls = animate(motionVal, progress * 100, {
-        stiffness: 100,
-        damping: 30,
-        type: 'spring',
-      })
+      const controls = animate(motionVal, progress * 100, prefersReducedMotion
+        ? { type: 'tween', duration: 0 }
+        : { stiffness: 100, damping: 30, type: 'spring' },
+      )
       return () => controls.stop()
-    }, [progress, motionVal])
+    }, [progress, motionVal, prefersReducedMotion])
 
     return (
       <svg
@@ -99,7 +99,7 @@ const ProgressRing = React.forwardRef<SVGSVGElement, ProgressRingProps>(
           strokeDasharray={circumference}
           initial={{ strokeDashoffset: circumference }}
           animate={{ strokeDashoffset: offset }}
-          transition={springs.smooth}
+          transition={prefersReducedMotion ? { duration: 0 } : springs.smooth}
           transform={`rotate(-90 ${center} ${center})`}
         />
         {showValue && (
@@ -141,6 +141,7 @@ export interface MultiProgressRingProps extends Omit<React.SVGAttributes<SVGSVGE
 
 const MultiProgressRing = React.forwardRef<SVGSVGElement, MultiProgressRingProps>(
   ({ rings, size = 'md', className, ...props }, ref) => {
+    const prefersReducedMotion = useReducedMotion()
     const config = sizeConfig[size]
     const center = config.size / 2
     const gap = config.strokeWidth + 2
@@ -184,7 +185,7 @@ const MultiProgressRing = React.forwardRef<SVGSVGElement, MultiProgressRingProps
                 strokeDasharray={circumference}
                 initial={{ strokeDashoffset: circumference }}
                 animate={{ strokeDashoffset: offset }}
-                transition={springs.smooth}
+                transition={prefersReducedMotion ? { duration: 0 } : springs.smooth}
                 transform={`rotate(-90 ${center} ${center})`}
               />
             </React.Fragment>

@@ -25,7 +25,7 @@ export interface IconGroupProps {
   children: React.ReactNode
 }
 
-export function IconGroup({
+const IconGroup = React.forwardRef<HTMLDivElement, IconGroupProps>(({
   size,
   stroke,
   gap = 'default',
@@ -33,10 +33,11 @@ export function IconGroup({
   role: ariaRole,
   className,
   children,
-}: IconGroupProps) {
+}, ref) => {
   return (
     <IconProvider size={size} stroke={stroke}>
       <div
+        ref={ref}
         role={ariaRole}
         aria-label={ariaRole ? label : undefined}
         className={cn('inline-flex items-center', gapClasses[gap], className)}
@@ -45,6 +46,7 @@ export function IconGroup({
       </div>
     </IconProvider>
   )
-}
-
+})
 IconGroup.displayName = 'IconGroup'
+
+export { IconGroup }

@@ -123,19 +123,19 @@ function CodeBlock({ language, code, mb }: { language: string; code: string; mb:
   )
 }
 
-function MarkdownViewer({
+const MarkdownViewer = React.forwardRef<HTMLDivElement, MarkdownViewerProps>(({
   content,
   compact = false,
   allowHtml = false,
   linkTarget = '_blank',
   className,
   ...props
-}: MarkdownViewerProps) {
+}, ref) => {
   const mb = compact ? 'mb-ds-02' : 'mb-ds-03'
   const mt = compact ? 'mt-ds-03' : 'mt-ds-05'
 
   return (
-    <div className={cn('font-sans text-surface-fg', className)} {...props}>
+    <div ref={ref} className={cn('font-sans text-surface-fg', className)} {...props}>
       <Markdown
         remarkPlugins={[remarkGfm]}
         skipHtml={!allowHtml}
@@ -246,6 +246,7 @@ function MarkdownViewer({
       </Markdown>
     </div>
   )
-}
+})
+MarkdownViewer.displayName = 'MarkdownViewer'
 
 export { MarkdownViewer }

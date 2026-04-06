@@ -23,7 +23,7 @@ import { IconBell, IconChecks, IconInbox, IconX } from '@tabler/icons-react'
 import { Icon } from '../ui/icon'
 import { cn } from '../ui/lib/utils'
 import { Spinner } from '../ui/spinner'
-import { motion } from 'framer-motion'
+import { motion, useReducedMotion } from 'framer-motion'
 
 // -----------------------------------------------------------------------
 // Types
@@ -286,6 +286,7 @@ const NotificationCenter = React.forwardRef<HTMLButtonElement, NotificationCente
     ref,
   ) => {
     const scrollRef = useRef<HTMLDivElement>(null)
+    const prefersReducedMotion = useReducedMotion()
 
   const unreadCount =
     unreadCountProp ?? notifications.filter((n) => !n.isRead).length
@@ -346,8 +347,8 @@ const NotificationCenter = React.forwardRef<HTMLButtonElement, NotificationCente
               {unreadCount > 0 && (
                 <motion.span
                   initial={{ rotate: 0 }}
-                  animate={{ rotate: [0, -3, 3, -1, 1, 0] }}
-                  transition={{ duration: 0.4, ease: 'easeInOut' }}
+                  animate={prefersReducedMotion ? undefined : { rotate: [0, -3, 3, -1, 1, 0] }}
+                  transition={prefersReducedMotion ? { duration: 0 } : { duration: 0.4, ease: 'easeInOut' }}
                   className="absolute -right-ds-01 -top-ds-01 flex h-4 min-w-4 items-center justify-center rounded-ds-full bg-accent-9 px-ds-02 text-ds-xs font-semibold text-accent-fg"
                 >
                   {unreadCount > 99 ? '99+' : unreadCount}
@@ -430,9 +431,9 @@ const NotificationCenter = React.forwardRef<HTMLButtonElement, NotificationCente
                   {items.map((notification, index) => (
                     <motion.div
                       key={notification.id}
-                      initial={{ opacity: 0 }}
+                      initial={prefersReducedMotion ? undefined : { opacity: 0 }}
                       animate={{ opacity: 1 }}
-                      transition={{ delay: index * 0.03 }}
+                      transition={prefersReducedMotion ? { duration: 0 } : { delay: index * 0.03 }}
                     >
                       <NotificationItem
                         notification={notification}

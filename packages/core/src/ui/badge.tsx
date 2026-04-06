@@ -2,7 +2,7 @@
 
 import { IconCheck, IconX } from '@tabler/icons-react'
 import { cva, type VariantProps } from 'class-variance-authority'
-import { motion, AnimatePresence } from 'framer-motion'
+import { motion, AnimatePresence, useReducedMotion } from 'framer-motion'
 import { springs } from './lib/motion'
 import { Slot } from '@primitives/react-slot'
 import * as React from 'react'
@@ -207,6 +207,7 @@ const Badge = React.forwardRef<HTMLElement, BadgeProps>(
     },
     ref,
   ) => {
+    const prefersReducedMotion = useReducedMotion()
     const resolvedVariant = variant ?? 'subtle'
     const resolvedColor = color ?? 'default'
     const resolvedSize = size ?? 'md'
@@ -298,8 +299,8 @@ const Badge = React.forwardRef<HTMLElement, BadgeProps>(
             >
               <motion.span
                 className="absolute inset-0 rounded-full bg-current"
-                animate={{ scale: [1, 2.5], opacity: [0.35, 0] }}
-                transition={{ repeat: Infinity, repeatDelay: 0.3, duration: 1.2, ease: [0, 0, 0.58, 1] }}
+                animate={prefersReducedMotion ? undefined : { scale: [1, 2.5], opacity: [0.35, 0] }}
+                transition={prefersReducedMotion ? { duration: 0 } : { repeat: Infinity, repeatDelay: 0.3, duration: 1.2, ease: [0, 0, 0.58, 1] }}
               />
               <span className="relative h-1.5 w-1.5 rounded-full bg-current" />
             </motion.span>

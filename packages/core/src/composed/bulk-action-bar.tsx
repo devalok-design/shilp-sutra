@@ -4,7 +4,7 @@ import * as React from 'react'
 import { createPortal } from 'react-dom'
 import { AnimatePresence, motion } from 'framer-motion'
 import { IconX } from '@tabler/icons-react'
-import { Icon } from '../ui/icon'
+import { Icon, type IconProps } from '../ui/icon'
 import { cn } from '../ui/lib/utils'
 import { Button } from '../ui/button'
 import { Badge } from '../ui/badge'
@@ -16,7 +16,7 @@ import { springs } from '../ui/lib/motion'
 
 export interface BulkActionBarAction {
   label: string
-  icon?: React.ComponentType<{ className?: string }>
+  icon?: IconProps['icon']
   onClick: () => void
   color?: 'default' | 'error'
   disabled?: boolean
@@ -96,7 +96,7 @@ const ActionButton = React.forwardRef<HTMLDivElement, { action: BulkActionBarAct
         color={action.color === 'error' ? 'error' : 'default'}
         disabled={action.disabled}
         onClick={action.requiresConfirmation ? () => setConfirming(true) : action.onClick}
-        startIcon={action.icon ? <Icon icon={action.icon as any} /> : undefined}
+        startIcon={action.icon ? <Icon icon={action.icon} /> : undefined}
         tabIndex={-1}
       >
         {action.label}
@@ -219,5 +219,7 @@ function BulkActionBar({
     document.body,
   )
 }
+
+BulkActionBar.displayName = 'BulkActionBar'
 
 export { BulkActionBar }

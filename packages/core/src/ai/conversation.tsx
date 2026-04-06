@@ -243,7 +243,7 @@ const DEFAULT_AGENT = { name: 'Assistant' }
 
 // ── AIConversation ───────────────────────────────────────────────────────────
 
-function AIConversation({
+const AIConversation = React.forwardRef<HTMLDivElement, AIConversationProps>(({
   messages,
   isProcessing = false,
   processingSteps,
@@ -253,7 +253,7 @@ function AIConversation({
   maxHeight,
   autoScroll = true,
   className,
-}: AIConversationProps) {
+}, ref) => {
   const ctx = useAICommand()
   const { reducedMotion } = useMotion()
 
@@ -326,7 +326,7 @@ function AIConversation({
   // ── Render ───────────────────────────────────────────────────────────────
 
   return (
-    <div className={cn('relative', className)}>
+    <div ref={ref} className={cn('relative', className)}>
       <div
         ref={scrollRef}
         className="flex flex-col gap-ds-05 overflow-y-auto"
@@ -373,6 +373,7 @@ function AIConversation({
       </AnimatePresence>
     </div>
   )
-}
+})
+AIConversation.displayName = 'AIConversation'
 
 export { AIConversation }

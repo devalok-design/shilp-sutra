@@ -159,4 +159,7 @@ function EmojiPickerPopover({
   )
 }
 
+EmojiPicker.displayName = 'EmojiPicker'
+EmojiPickerPopover.displayName = 'EmojiPickerPopover'
+
 export { EmojiPicker, EmojiPickerPopover }

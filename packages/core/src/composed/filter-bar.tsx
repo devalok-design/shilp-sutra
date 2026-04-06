@@ -39,7 +39,7 @@ export interface FilterBarProps extends React.HTMLAttributes<HTMLDivElement> {
   size?: FilterBarSize
 }
 
-function FilterBar({
+const FilterBar = React.forwardRef<HTMLDivElement, FilterBarProps>(({
   searchValue,
   onSearchChange,
   searchPlaceholder = 'Search...',
@@ -48,10 +48,11 @@ function FilterBar({
   children,
   className,
   ...props
-}: FilterBarProps) {
+}, ref) => {
   return (
     <FilterBarContext.Provider value={{ size }}>
       <div
+        ref={ref}
         className={cn('flex flex-wrap items-center gap-ds-03', className)}
         role="toolbar"
         aria-label="Filters"
@@ -76,7 +77,8 @@ function FilterBar({
       </div>
     </FilterBarContext.Provider>
   )
-}
+})
+FilterBar.displayName = 'FilterBar'
 
 // ============================================================
 // FilterSelect

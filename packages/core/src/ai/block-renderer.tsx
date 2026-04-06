@@ -50,13 +50,13 @@ export interface BlockRendererProps {
   className?: string
 }
 
-export function BlockRenderer({
+const BlockRenderer = React.forwardRef<HTMLDivElement, BlockRendererProps>(({
   blocks,
   onAction,
   customBlocks,
   staggerDelay = 50,
   className,
-}: BlockRendererProps) {
+}, ref) => {
   const ctx = useAICommand()
   const { reducedMotion } = useMotion()
 
@@ -70,7 +70,7 @@ export function BlockRenderer({
   const resolvedOnAction = onAction ?? ctx?.onAction
 
   return (
-    <div className={cn('flex flex-col gap-ds-04', className)}>
+    <div ref={ref} className={cn('flex flex-col gap-ds-04', className)}>
       {blocks.map((block, index) => {
         const Component =
           mergedCustomBlocks[block.type] ??
@@ -109,4 +109,7 @@ export function BlockRenderer({
       })}
     </div>
   )
-}
+})
+BlockRenderer.displayName = 'BlockRenderer'
+
+export { BlockRenderer }

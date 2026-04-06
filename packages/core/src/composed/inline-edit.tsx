@@ -30,7 +30,7 @@ export interface InlineEditProps extends Omit<React.HTMLAttributes<HTMLDivElemen
 // Like Notion, Linear, Figma layer names.
 // ============================================================
 
-function InlineEdit({
+const InlineEdit = React.forwardRef<HTMLDivElement, InlineEditProps>(({
   value,
   onSave,
   placeholder = 'Click to edit',
@@ -40,7 +40,7 @@ function InlineEdit({
   saving: savingProp = false,
   className,
   ...props
-}: InlineEditProps) {
+}, ref) => {
   const [saving, setSaving] = React.useState(false)
   const [focused, setFocused] = React.useState(false)
   const editRef = React.useRef<HTMLSpanElement>(null)
@@ -139,7 +139,7 @@ function InlineEdit({
   }
 
   return (
-    <div className={cn('group inline-flex items-center gap-ds-02', className)} {...props}>
+    <div ref={ref} className={cn('group inline-flex items-center gap-ds-02', className)} {...props}>
       <span
         ref={editRef}
         role={readOnly ? undefined : 'textbox'}
@@ -174,6 +174,7 @@ function InlineEdit({
       {isSaving && <Spinner size="sm" />}
     </div>
   )
-}
+})
+InlineEdit.displayName = 'InlineEdit'
 
 export { InlineEdit }

@@ -42,17 +42,19 @@ export interface BulkActionBarProps {
 // ActionButton — handles inline confirmation
 // ============================================================
 
-function ActionButton({ action }: { action: BulkActionBarAction }) {
+const ActionButton = React.forwardRef<HTMLDivElement, { action: BulkActionBarAction; tabIndex?: number }>(function ActionButton({ action, tabIndex }, ref) {
   const [confirming, setConfirming] = React.useState(false)
 
   if (confirming) {
     return (
       <motion.div
+        ref={ref}
         initial={{ opacity: 0, scale: 0.95 }}
         animate={{ opacity: 1, scale: 1 }}
         exit={{ opacity: 0, scale: 0.95 }}
         transition={{ type: 'spring', stiffness: 500, damping: 30 }}
         className="flex items-center gap-ds-02"
+        tabIndex={tabIndex}
       >
         <span className="text-ds-sm text-surface-fg-muted whitespace-nowrap">
           {action.confirmMessage ?? 'Are you sure?'}
@@ -81,10 +83,12 @@ function ActionButton({ action }: { action: BulkActionBarAction }) {
 
   return (
     <motion.div
+      ref={ref}
       initial={{ opacity: 0, scale: 0.95 }}
       animate={{ opacity: 1, scale: 1 }}
       exit={{ opacity: 0, scale: 0.95 }}
       transition={{ type: 'spring', stiffness: 500, damping: 30 }}
+      tabIndex={tabIndex}
     >
       <Button
         variant="ghost"
@@ -93,12 +97,13 @@ function ActionButton({ action }: { action: BulkActionBarAction }) {
         disabled={action.disabled}
         onClick={action.requiresConfirmation ? () => setConfirming(true) : action.onClick}
         startIcon={action.icon ? <Icon icon={action.icon as any} /> : undefined}
+        tabIndex={-1}
       >
         {action.label}
       </Button>
     </motion.div>
   )
-}
+})
 
 // ============================================================
 // BulkActionBar
@@ -114,10 +119,49 @@ function BulkActionBar({
   className,
 }: BulkActionBarProps) {
   const [mounted, setMounted] = React.useState(false)
+  const [focusedIndex, setFocusedIndex] = React.useState(0)
+  const actionRefs = React.useRef<(HTMLDivElement | null)[]>([])
+
+  // Reset focused index when actions change
+  React.useEffect(() => {
+    setFocusedIndex(0)
+  }, [actions.length])
 
   React.useEffect(() => {
     setMounted(true)
   }, [])
+
+  function handleKeyDown(e: React.KeyboardEvent) {
+    if (e.key === 'Escape') {
+      e.preventDefault()
+      onClearSelection()
+      return
+    }
+
+    const count = actions.length
+    if (count === 0) return
+
+    if (e.key === 'ArrowRight') {
+      e.preventDefault()
+      const next = (focusedIndex + 1) % count
+      setFocusedIndex(next)
+      actionRefs.current[next]?.focus()
+    } else if (e.key === 'ArrowLeft') {
+      e.preventDefault()
+      const prev = (focusedIndex - 1 + count) % count
+      setFocusedIndex(prev)
+      actionRefs.current[prev]?.focus()
+    } else if (e.key === 'Home') {
+      e.preventDefault()
+      setFocusedIndex(0)
+      actionRefs.current[0]?.focus()
+    } else if (e.key === 'End') {
+      e.preventDefault()
+      const last = count - 1
+      setFocusedIndex(last)
+      actionRefs.current[last]?.focus()
+    }
+  }
 
   if (!mounted) return null
 
@@ -136,6 +180,7 @@ function BulkActionBar({
           )}
           role="toolbar"
           aria-label={`${count} items selected`}
+          onKeyDown={handleKeyDown}
         >
           <Badge variant="solid" size="sm">
             {count} selected
@@ -149,8 +194,13 @@ function BulkActionBar({
 
           <div className="flex items-center gap-ds-02">
             <AnimatePresence mode="popLayout">
-              {actions.map((action) => (
-                <ActionButton key={action.label} action={action} />
+              {actions.map((action, i) => (
+                <ActionButton
+                  key={action.label}
+                  ref={(el: HTMLDivElement | null) => { actionRefs.current[i] = el }}
+                  action={action}
+                  tabIndex={i === focusedIndex ? 0 : -1}
+                />
               ))}
             </AnimatePresence>
           </div>

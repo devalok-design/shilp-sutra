@@ -84,6 +84,7 @@ function ToolbarButton({
       onClick={onClick}
       disabled={disabled}
       title={title}
+      aria-label={title}
       aria-pressed={isActive}
       className={cn(
         'inline-flex h-ds-xs-plus w-ds-xs-plus items-center justify-center rounded-ds-md transition-colors duration-fast-01 ease-productive-standard',
@@ -185,7 +186,7 @@ function Toolbar({ editor, toolbar, onImageClick, onFileClick, onEmojiClick }: {
   const hasHistory = show('undo') || show('redo')
 
   return (
-    <div className="flex flex-wrap items-center gap-ds-01 border-b border-surface-border-strong px-ds-04 py-ds-02b">
+    <div role="toolbar" aria-label="Text formatting" className="flex flex-wrap items-center gap-ds-01 border-b border-surface-border-strong px-ds-04 py-ds-02b">
       {/* Inline formatting */}
       {show('bold') && (
         <ToolbarButton onClick={() => editor.chain().focus().toggleBold().run()} isActive={editor.isActive('bold')} title="Bold">

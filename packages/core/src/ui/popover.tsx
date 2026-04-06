@@ -9,7 +9,7 @@ import { springs, tweens } from './lib/motion'
 
 // ── Internal context to thread `open` state to animated children ──
 
-const PopoverOpenContext = React.createContext(false)
+const PopoverOpenContext = React.createContext<{ open: boolean; onClose: () => void }>({ open: false, onClose: () => {} })
 
 const Popover: React.FC<React.ComponentPropsWithoutRef<typeof PopoverPrimitive.Root>> = ({
   open: controlledOpen,
@@ -29,8 +29,13 @@ const Popover: React.FC<React.ComponentPropsWithoutRef<typeof PopoverPrimitive.R
     [isControlled, onOpenChange],
   )
 
+  const contextValue = React.useMemo(
+    () => ({ open, onClose: () => handleOpenChange(false) }),
+    [open, handleOpenChange],
+  )
+
   return (
-    <PopoverOpenContext.Provider value={open}>
+    <PopoverOpenContext.Provider value={contextValue}>
       <PopoverPrimitive.Root open={open} onOpenChange={handleOpenChange} {...props} />
     </PopoverOpenContext.Provider>
   )
@@ -45,7 +50,7 @@ const PopoverContent = React.forwardRef<
   React.ElementRef<typeof PopoverPrimitive.Content>,
   React.ComponentPropsWithoutRef<typeof PopoverPrimitive.Content>
 >(({ className, align = 'center', sideOffset = 4, children, ...props }, ref) => {
-  const open = React.useContext(PopoverOpenContext)
+  const { open } = React.useContext(PopoverOpenContext)
 
   return (
     <AnimatePresence>

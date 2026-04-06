@@ -12,7 +12,7 @@ import { Icon } from './icon'
 
 // ── Internal open-state context ──────────────────────────────────────
 
-const SheetOpenContext = React.createContext(false)
+const SheetOpenContext = React.createContext<{ open: boolean; onClose: () => void }>({ open: false, onClose: () => {} })
 
 /**
  * Sheet compound component — accessible sliding panel anchored to a screen edge, with focus trap
@@ -79,8 +79,13 @@ const Sheet: React.FC<React.ComponentPropsWithoutRef<typeof SheetPrimitive.Root>
     [isControlled, onOpenChange],
   )
 
+  const contextValue = React.useMemo(
+    () => ({ open, onClose: () => handleOpenChange(false) }),
+    [open, handleOpenChange],
+  )
+
   return (
-    <SheetOpenContext.Provider value={open}>
+    <SheetOpenContext.Provider value={contextValue}>
       <SheetPrimitive.Root open={open} onOpenChange={handleOpenChange} {...props}>
         {children}
       </SheetPrimitive.Root>
@@ -190,7 +195,7 @@ const SheetContent = React.forwardRef<
   React.ElementRef<typeof SheetPrimitive.Content>,
   SheetContentProps
 >(({ side = 'right', className, children, ...props }, ref) => {
-  const open = React.useContext(SheetOpenContext)
+  const { open } = React.useContext(SheetOpenContext)
 
   return (
     <AnimatePresence>

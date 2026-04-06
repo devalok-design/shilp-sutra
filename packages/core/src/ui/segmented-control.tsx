@@ -1,141 +1,14 @@
 'use client'
 
-import React, { useState, useRef, useId } from 'react'
-import { motion, AnimatePresence, LayoutGroup } from 'framer-motion'
-import { cva } from 'class-variance-authority'
+import * as React from 'react'
+import { motion, LayoutGroup } from 'framer-motion'
 import { cn } from './lib/utils'
-import { useRipple } from './lib/use-ripple'
-import { springs } from './lib/motion'
-
-/* ── CVA for the item button ────────────────────────────────── */
-const segmentedControlItemVariants = cva(
-  [
-    'inline-flex items-center gap-ds-03 rounded-ds-full border-none outline-none cursor-pointer',
-    'focus-visible:ring-2 focus-visible:ring-accent-9 focus-visible:ring-offset-2',
-    'transition-[color,background-color,border-color,box-shadow] duration-moderate-02 ease-productive-standard',
-    'relative overflow-hidden',
-    'font-accent font-semibold leading-none text-center',
-    'bg-surface-overlay',
-    'first:rounded-tr-none first:rounded-br-none',
-    'last:rounded-tl-none last:rounded-bl-none',
-  ],
-  {
-    variants: {
-      size: {
-        sm: 'h-ds-sm-plus px-ds-05 py-ds-03 text-ds-sm',
-        md: 'px-ds-02b py-ds-03 pl-ds-04 text-ds-md',
-        lg: 'h-[56px] px-ds-06 py-ds-05 text-ds-md',
-      },
-      variant: {
-        filled: "text-accent-fg [text-shadow:0px_1px_1px_var(--color-text-shadow)]",
-        tonal: 'text-surface-fg-subtle',
-      },
-      selected: {
-        true: '',
-        false: '',
-      },
-      isHovered: {
-        true: '',
-        false: '',
-      },
-      isDisabled: {
-        true: 'cursor-not-allowed pointer-events-none border-none shadow-none [text-shadow:none]',
-        false: '',
-      },
-    },
-    compoundVariants: [
-      // Selected + filled — bg/shadow handled by motion indicator
-      {
-        selected: true,
-        variant: 'filled',
-        className: '',
-      },
-      // Selected + tonal — bg handled by motion indicator
-      {
-        selected: true,
-        variant: 'tonal',
-        className: 'text-surface-fg',
-      },
-      // Hover + filled
-      {
-        isHovered: true,
-        variant: 'filled',
-        className: [
-          'bg-accent-9',
-          'shadow-[0px_4px_8px_0px_var(--color-accent-10),0px_1px_3px_0.05px_var(--color-surface-raised),inset_0px_8px_16px_0px_var(--color-inset-glow-strong),inset_0px_2px_0px_0px_var(--color-inset-glow-subtle)]',
-        ].join(' '),
-      },
-      // Hover + tonal
-      {
-        isHovered: true,
-        variant: 'tonal',
-        className: 'text-surface-fg',
-      },
-      // Disabled + filled
-      {
-        isDisabled: true,
-        variant: 'filled',
-        className: 'text-surface-fg-subtle',
-      },
-      // Disabled + tonal
-      {
-        isDisabled: true,
-        variant: 'tonal',
-        className: 'text-surface-fg-subtle',
-      },
-      // Filled + SVG icon fill
-      {
-        variant: 'filled',
-        className: '[&_svg_path]:fill-accent-fg',
-      },
-      // Filled + disabled SVG icon fill
-      {
-        variant: 'filled',
-        isDisabled: true,
-        className: '[&_svg_path]:fill-disabled',
-      },
-      // Medium size last-child padding flip
-      {
-        size: 'md',
-        className: 'last:pl-ds-02b last:pr-ds-04',
-      },
-    ],
-    defaultVariants: {
-      size: 'md',
-      variant: 'tonal',
-      selected: false,
-      isHovered: false,
-      isDisabled: false,
-    },
-  },
-)
-
-/* ── ripple bg per variant ────────────────────────────────── */
-const rippleBgMap: Record<string, string> = {
-  filled: 'bg-surface-overlay-light',
-  tonal: 'bg-surface-overlay-dark',
-}
-
-/* ── Size mapping for backward compatibility ──────────────── */
-const sizeLegacyMap: Record<string, SegmentedControlSize> = {
-  small: 'sm',
-  medium: 'md',
-  big: 'lg',
-}
-
-/** Resolve legacy size names (small/medium/big) to standard (sm/md/lg). */
-function resolveSize(size: SegmentedControlSize): 'sm' | 'md' | 'lg' {
-  return (sizeLegacyMap[size] ?? size) as 'sm' | 'md' | 'lg'
-}
 
 /* ── Types ─────────────────────────────────────────────────── */
-export type SegmentedControlSize = 'sm' | 'md' | 'lg' | 'small' | 'medium' | 'big'
-export type SegmentedControlVariant = 'filled' | 'tonal'
 
-/**
- * A single option in a `<SegmentedControl>`. The `id` must be unique across all options in
- * the same control — it is used as the selection key for `selectedId` and `onSelect`.
- */
+export type SegmentedControlSize = 'sm' | 'md' | 'lg'
+export type SegmentedControlVariant = 'default' | 'accent'
+
 export interface SegmentedControlOption {
   id: string
   text: string
@@ -143,315 +16,170 @@ export interface SegmentedControlOption {
   icon?: React.ComponentType<{ className?: string }>
 }
 
-/**
- * Props for SegmentedControl — a pill-shaped tab-row for mutually exclusive option selection,
- * similar to a radio group but styled as a single connected control.
- *
- * **`size`:** `'sm'` | `'md'` (default) | `'lg'`. Legacy aliases `'small'` | `'medium'` | `'big'` are
- * also accepted for backward compatibility but prefer the canonical form.
- *
- * **`variant`:** `'tonal'` (default, subdued) | `'filled'` (vibrant brand color when selected).
- *
- * **Options:** Each option needs a unique `id`, a display `text`, and an optional `icon` component.
- *
- * **Controlled only:** `selectedId` + `onSelect` are required. There is no uncontrolled mode.
- *
- * @example
- * // View mode switcher (list vs grid vs board):
- * <SegmentedControl
- *   size="md"
- *   variant="tonal"
- *   options={[
- *     { id: 'list', text: 'List' },
- *     { id: 'grid', text: 'Grid' },
- *     { id: 'board', text: 'Board' },
- *   ]}
- *   selectedId={viewMode}
- *   onSelect={setViewMode}
- * />
- *
- * @example
- * // Time range selector with filled variant (more prominent):
- * <SegmentedControl
- *   size="sm"
- *   variant="filled"
- *   options={[
- *     { id: '7d', text: '7D' },
- *     { id: '30d', text: '30D' },
- *     { id: '90d', text: '90D' },
- *   ]}
- *   selectedId={range}
- *   onSelect={setRange}
- * />
- * // These are just a few ways — feel free to combine props creatively!
- */
 export interface SegmentedControlProps extends Omit<React.HTMLAttributes<HTMLDivElement>, 'onSelect'> {
-  size: SegmentedControlSize
-  variant: SegmentedControlVariant
+  size?: SegmentedControlSize
+  variant?: SegmentedControlVariant
   options: SegmentedControlOption[]
   selectedId: string
   onSelect: (id: string) => void
   disabled?: boolean
-  className?: string
 }
 
-/* ── SegmentedControl (root) ──────────────────────────────── */
+/* ── Size config ───────────────────────────────────────────── */
+
+const sizeConfig = {
+  sm: { button: 'h-7 px-ds-04 text-ds-sm', icon: 'h-3.5 w-3.5' },
+  md: { button: 'h-8 px-ds-05 text-ds-md', icon: 'h-4 w-4' },
+  lg: { button: 'h-10 px-ds-06 text-ds-md', icon: 'h-4 w-4' },
+} as const
+
+/* ── Pill styles per variant ───────────────────────────────── */
+
+const pillStyles = {
+  default: 'bg-surface-overlay shadow-sm',
+  accent: 'bg-accent-9',
+} as const
+
+const selectedTextStyles = {
+  default: 'text-surface-fg',
+  accent: 'text-accent-fg',
+} as const
+
+/* ── Spring config (snappy, minimal overshoot) ─────────────── */
+
+const pillSpring = { type: 'spring' as const, stiffness: 400, damping: 30 }
+
+/* ── SegmentedControl ──────────────────────────────────────── */
+
 const SegmentedControl = React.forwardRef<HTMLDivElement, SegmentedControlProps>(
-  function SegmentedControl({
-  size,
-  variant,
-  options,
-  selectedId,
-  onSelect,
-  disabled = false,
-  className = '',
-  ...props
-}, forwardedRef) {
-  const resolved = resolveSize(size)
-  const instanceId = useId()
-  const [focusedId, setFocusedId] = useState<string | null>(null)
-  const tablistRef = useRef<HTMLDivElement | null>(null)
-  const mergedRef = React.useCallback((node: HTMLDivElement | null) => {
-    tablistRef.current = node
-    if (typeof forwardedRef === 'function') forwardedRef(node)
-    else if (forwardedRef) (forwardedRef as React.MutableRefObject<HTMLDivElement | null>).current = node
-  }, [forwardedRef])
+  function SegmentedControl(
+    {
+      size = 'md',
+      variant = 'default',
+      options,
+      selectedId,
+      onSelect,
+      disabled = false,
+      className,
+      ...props
+    },
+    ref,
+  ) {
+    const instanceId = React.useId()
+    const tablistRef = React.useRef<HTMLDivElement | null>(null)
 
-  // Handle keyboard navigation
-  const handleKeyDown = (event: React.KeyboardEvent<HTMLDivElement>) => {
-    if (disabled) return
+    // Compose refs
+    const mergedRef = React.useCallback(
+      (node: HTMLDivElement | null) => {
+        tablistRef.current = node
+        if (typeof ref === 'function') ref(node)
+        else if (ref) (ref as React.MutableRefObject<HTMLDivElement | null>).current = node
+      },
+      [ref],
+    )
 
-    const currentIndex = options.findIndex(option => option.id === focusedId)
-    let nextIndex = currentIndex
+    // Keyboard navigation
+    const handleKeyDown = (e: React.KeyboardEvent<HTMLDivElement>) => {
+      if (disabled) return
 
-    switch (event.key) {
-      case 'ArrowLeft':
-        event.preventDefault()
-        nextIndex = currentIndex > 0 ? currentIndex - 1 : options.length - 1
-        break
-      case 'ArrowRight':
-        event.preventDefault()
-        nextIndex = currentIndex < options.length - 1 ? currentIndex + 1 : 0
-        break
-      case 'Home':
-        event.preventDefault()
-        nextIndex = 0
-        break
-      case 'End':
-        event.preventDefault()
-        nextIndex = options.length - 1
-        break
-      default:
-        return
+      const currentIndex = options.findIndex((o) => o.id === selectedId)
+      let nextIndex = currentIndex
+
+      switch (e.key) {
+        case 'ArrowLeft':
+          e.preventDefault()
+          nextIndex = currentIndex > 0 ? currentIndex - 1 : options.length - 1
+          break
+        case 'ArrowRight':
+          e.preventDefault()
+          nextIndex = currentIndex < options.length - 1 ? currentIndex + 1 : 0
+          break
+        case 'Home':
+          e.preventDefault()
+          nextIndex = 0
+          break
+        case 'End':
+          e.preventDefault()
+          nextIndex = options.length - 1
+          break
+        default:
+          return
+      }
+
+      onSelect(options[nextIndex].id)
+      requestAnimationFrame(() => {
+        const buttons = tablistRef.current?.querySelectorAll<HTMLButtonElement>('[role="tab"]')
+        buttons?.[nextIndex]?.focus()
+      })
     }
 
-    const nextOption = options[nextIndex]
-    setFocusedId(nextOption.id)
-    onSelect(nextOption.id)
+    const { button: buttonSize, icon: iconSize } = sizeConfig[size]
 
-    // Move DOM focus to the target button so screen readers and focus rings follow
-    requestAnimationFrame(() => {
-      const buttons = tablistRef.current?.querySelectorAll<HTMLButtonElement>('[role="tab"]')
-      buttons?.[nextIndex]?.focus()
-    })
-  }
+    return (
+      <div
+        ref={mergedRef}
+        role="tablist"
+        aria-label={props['aria-label'] ?? 'Segmented control'}
+        onKeyDown={handleKeyDown}
+        className={cn(
+          'inline-flex p-[3px] rounded-ds-lg',
+          'bg-surface-raised-hover border border-surface-border-subtle shadow-inset',
+          disabled && 'opacity-action-disabled pointer-events-none',
+          className,
+        )}
+        {...props}
+      >
+        <LayoutGroup id={instanceId}>
+          {options.map((option) => {
+            const isSelected = option.id === selectedId
+            const OptionIcon = option.icon
 
-  return (
-    <div
-      ref={mergedRef}
-      className={cn(
-        'inline-flex gap-0 p-0 rounded-ds-full',
-        'bg-surface-raised shadow-inset',
-        'border border-solid border-surface-border-strong',
-        className,
-      )}
-      role="tablist"
-      onKeyDown={handleKeyDown}
-      tabIndex={-1}
-      aria-label="Segmented control options"
-      {...props}
-    >
-      <LayoutGroup>
-        {options.map((option) => (
-          <SegmentedControlItem
-            key={option.id}
-            size={resolved}
-            variant={variant}
-            text={option.text}
-            icon={option.icon}
-            isSelected={option.id === selectedId}
-            onClick={() => onSelect(option.id)}
-            disabled={disabled}
-            isFocused={option.id === focusedId}
-            onFocus={() => setFocusedId(option.id)}
-            onBlur={() => setFocusedId(null)}
-            layoutId={`${instanceId}-segment-indicator`}
-          />
-        ))}
-      </LayoutGroup>
-    </div>
-  )
-},
+            return (
+              <button
+                key={option.id}
+                type="button"
+                role="tab"
+                aria-selected={isSelected}
+                tabIndex={isSelected ? 0 : -1}
+                disabled={disabled}
+                onClick={() => onSelect(option.id)}
+                className={cn(
+                  'relative inline-flex items-center justify-center gap-ds-02 rounded-ds-md',
+                  'font-medium transition-colors duration-fast-02 ease-productive-standard',
+                  'outline-none focus-visible:ring-2 focus-visible:ring-accent-9 focus-visible:ring-offset-2',
+                  buttonSize,
+                  isSelected
+                    ? selectedTextStyles[variant]
+                    : 'text-surface-fg-muted hover:text-surface-fg',
+                )}
+              >
+                {/* Sliding pill indicator */}
+                {isSelected && (
+                  <motion.span
+                    layoutId="segment-pill"
+                    className={cn(
+                      'absolute inset-0 rounded-ds-md pointer-events-none',
+                      pillStyles[variant],
+                    )}
+                    transition={pillSpring}
+                  />
+                )}
+
+                {/* Content (above pill via z-index) */}
+                {OptionIcon && (
+                  <OptionIcon className={cn('relative z-[1] shrink-0', iconSize)} />
+                )}
+                <span className="relative z-[1]">{option.text}</span>
+              </button>
+            )
+          })}
+        </LayoutGroup>
+      </div>
+    )
+  },
 )
 SegmentedControl.displayName = 'SegmentedControl'
 
-/* ── SegmentedControlItem ─────────────────────────────────── */
-/**
- * Props for SegmentedControlItem — the individual button segment within a `<SegmentedControl>`.
- * Normally you don't use this directly; compose via `<SegmentedControl options={...} />` instead.
- * Use `SegmentedControlItem` directly only when building a fully custom segmented tab row.
- *
- * **Note:** `isFocused`, `onFocus`, and `onBlur` are managed by the parent `SegmentedControl`.
- * You must wire them yourself when using the item standalone.
- *
- * @example
- * // Standalone custom segmented row (without parent SegmentedControl):
- * const [view, setView] = useState<'list' | 'grid'>('list')
- * const [focused, setFocused] = useState<string | null>(null)
- *
- * <div role="tablist" className="inline-flex rounded-full border border-surface-border-strong bg-surface-raised">
- *   <SegmentedControlItem
- *     size="md" variant="tonal" text="List"
- *     isSelected={view === 'list'} isFocused={focused === 'list'}
- *     onClick={() => setView('list')}
- *     onFocus={() => setFocused('list')} onBlur={() => setFocused(null)}
- *   />
- *   <SegmentedControlItem
- *     size="md" variant="tonal" text="Grid" icon={IconLayoutGrid}
- *     isSelected={view === 'grid'} isFocused={focused === 'grid'}
- *     onClick={() => setView('grid')}
- *     onFocus={() => setFocused('grid')} onBlur={() => setFocused(null)}
- *   />
- * </div>
- *
- * // These are just a few ways — feel free to combine props creatively!
- */
-export interface SegmentedControlItemProps {
-  size: 'sm' | 'md' | 'lg'
-  variant: SegmentedControlVariant
-  text: string
-  /** Optional icon component rendered before the text label. */
-  icon?: React.ComponentType<{ className?: string }>
-  isSelected: boolean
-  onClick: () => void
-  disabled?: boolean
-  isFocused: boolean
-  onFocus: () => void
-  onBlur: () => void
-  /** @internal Unique layout animation ID — provided by the parent SegmentedControl. */
-  layoutId?: string
-}
+/* ── Exports ───────────────────────────────────────────────── */
 
-const SegmentedControlItem = React.forwardRef<HTMLButtonElement, SegmentedControlItemProps>(
-  function SegmentedControlItem({
-  size,
-  variant,
-  text,
-  icon: Icon,
-  isSelected,
-  onClick,
-  disabled = false,
-  isFocused,
-  onFocus,
-  onBlur,
-  layoutId = 'segment-indicator',
-}, ref) {
-  const [state, setState] = useState<'default' | 'hover' | 'pressed'>('default')
-  const { ripples, createRipple } = useRipple()
-
-  const handleMouseEnter = () => {
-    if (!disabled && !isFocused) {
-      setState('hover')
-    }
-  }
-
-  const handleMouseLeave = () => {
-    if (!disabled) {
-      setState('default')
-    }
-  }
-
-  const handleMouseDown = () => {
-    if (!disabled) {
-      setState('pressed')
-    }
-  }
-
-  const handleMouseUp = () => {
-    if (!disabled) {
-      setState('hover')
-    }
-  }
-
-  return (
-    <button
-      ref={ref}
-      className={cn(
-        segmentedControlItemVariants({
-          size,
-          variant,
-          selected: isSelected,
-          isHovered: state === 'hover',
-          isDisabled: disabled,
-        }),
-      )}
-      onClick={(e) => {
-        createRipple(e)
-        onClick()
-      }}
-      disabled={disabled}
-      type="button"
-      role="tab"
-      aria-selected={isSelected}
-      aria-disabled={disabled}
-      onMouseEnter={handleMouseEnter}
-      onMouseLeave={handleMouseLeave}
-      onMouseDown={handleMouseDown}
-      onMouseUp={handleMouseUp}
-      onTouchStart={handleMouseDown}
-      onTouchEnd={handleMouseUp}
-      onFocus={onFocus}
-      onBlur={onBlur}
-    >
-      {/* Sliding active indicator — only mounted in the selected segment */}
-      {isSelected && (
-        <motion.span
-          layoutId={layoutId}
-          className={cn(
-            'absolute inset-0 rounded-ds-full pointer-events-none',
-            variant === 'filled'
-              ? 'bg-accent-9 shadow-[0px_1px_3px_0.05px_var(--color-accent-10),inset_0px_8px_16px_0px_var(--color-inset-glow-strong),inset_0px_2px_0px_0px_var(--color-inset-glow-subtle)]'
-              : 'bg-surface-raised-hover',
-          )}
-          transition={springs.smooth}
-        />
-      )}
-      <AnimatePresence>
-        {ripples.map((ripple) => (
-          <motion.span
-            key={ripple.id}
-            className={cn(
-              'absolute rounded-ds-full -translate-x-1/2 -translate-y-1/2 pointer-events-none',
-              rippleBgMap[variant],
-            )}
-            style={{
-              left: ripple.x,
-              top: ripple.y,
-              width: ripple.size,
-              height: ripple.size,
-            }}
-            initial={{ scale: 0, opacity: 1 }}
-            animate={{ scale: 4, opacity: 0 }}
-            transition={{ duration: 0.6 }}
-          />
-        ))}
-      </AnimatePresence>
-      {Icon && <Icon className="relative z-[1] h-ico-sm w-ico-sm shrink-0" />}
-      <span className="relative z-[1] font-accent leading-none">{text}</span>
-    </button>
-  )
-},
-)
-SegmentedControlItem.displayName = 'SegmentedControlItem'
-
-export { SegmentedControl, SegmentedControlItem, segmentedControlItemVariants }
+export { SegmentedControl }

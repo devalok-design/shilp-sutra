@@ -13,8 +13,6 @@ describe('SegmentedControl', () => {
   it('has no a11y violations', async () => {
     const { container } = render(
       <SegmentedControl
-        size="md"
-        variant="tonal"
         options={options}
         selectedId="weekly"
         onSelect={vi.fn()}
@@ -27,8 +25,6 @@ describe('SegmentedControl', () => {
   it('renders all options', () => {
     render(
       <SegmentedControl
-        size="md"
-        variant="tonal"
         options={options}
         selectedId="weekly"
         onSelect={vi.fn()}
@@ -41,8 +37,6 @@ describe('SegmentedControl', () => {
   it('has tablist role', () => {
     render(
       <SegmentedControl
-        size="md"
-        variant="tonal"
         options={options}
         selectedId="weekly"
         onSelect={vi.fn()}
@@ -54,8 +48,6 @@ describe('SegmentedControl', () => {
   it('marks selected tab with aria-selected', () => {
     render(
       <SegmentedControl
-        size="md"
-        variant="tonal"
         options={options}
         selectedId="weekly"
         onSelect={vi.fn()}
@@ -69,8 +61,6 @@ describe('SegmentedControl', () => {
   it('renders disabled state', () => {
     render(
       <SegmentedControl
-        size="md"
-        variant="tonal"
         options={options}
         selectedId="weekly"
         onSelect={vi.fn()}
@@ -83,11 +73,10 @@ describe('SegmentedControl', () => {
     })
   })
 
-  it('renders with filled variant', async () => {
+  it('renders with accent variant', async () => {
     const { container } = render(
       <SegmentedControl
-        size="md"
-        variant="filled"
+        variant="accent"
         options={options}
         selectedId="weekly"
         onSelect={vi.fn()}
@@ -95,5 +84,17 @@ describe('SegmentedControl', () => {
     )
     const results = await axe(container)
     expect(results).toHaveNoViolations()
+  })
+
+  it('defaults to md size and default variant', () => {
+    render(
+      <SegmentedControl
+        options={options}
+        selectedId="weekly"
+        onSelect={vi.fn()}
+      />,
+    )
+    expect(screen.getByRole('tablist')).toBeInTheDocument()
+    expect(screen.getAllByRole('tab')).toHaveLength(2)
   })
 })

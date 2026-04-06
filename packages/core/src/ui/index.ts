@@ -316,13 +316,10 @@ export { TreeView, type TreeViewProps, TreeItem, type TreeItemProps, useTree, ty
 // Segmented Control
 export {
   SegmentedControl,
-  SegmentedControlItem,
-  segmentedControlItemVariants,
   type SegmentedControlSize,
   type SegmentedControlVariant,
   type SegmentedControlOption,
   type SegmentedControlProps,
-  type SegmentedControlItemProps,
 } from './segmented-control'
 
 // Brand Texture

@@ -49,7 +49,7 @@ const meta: Meta<typeof SegmentedControl> = {
     },
     variant: {
       control: 'select',
-      options: ['filled', 'tonal'],
+      options: ['default', 'accent'],
     },
     disabled: {
       control: 'boolean',
@@ -64,7 +64,7 @@ type Story = StoryObj<typeof SegmentedControl>
 
 function ControlledDemo({
   size = 'md',
-  variant = 'filled',
+  variant = 'default',
   options = textOptions,
   disabled = false,
   defaultId,
@@ -94,16 +94,16 @@ function ControlledDemo({
 export const Default: Story = {
   args: {
     size: 'md',
-    variant: 'filled',
+    variant: 'default',
     options: textOptions,
     selectedId: 'board',
   },
 }
 
-export const Tonal: Story = {
+export const Accent: Story = {
   args: {
     size: 'md',
-    variant: 'tonal',
+    variant: 'accent',
     options: textOptions,
     selectedId: 'board',
   },
@@ -112,7 +112,7 @@ export const Tonal: Story = {
 export const Small: Story = {
   args: {
     size: 'sm',
-    variant: 'filled',
+    variant: 'accent',
     options: textOptions,
     selectedId: 'list',
   },
@@ -121,7 +121,7 @@ export const Small: Story = {
 export const Large: Story = {
   args: {
     size: 'lg',
-    variant: 'filled',
+    variant: 'accent',
     options: textOptions,
     selectedId: 'calendar',
   },
@@ -130,16 +130,16 @@ export const Large: Story = {
 export const WithIcons: Story = {
   args: {
     size: 'md',
-    variant: 'filled',
+    variant: 'accent',
     options: iconOptions,
     selectedId: 'board',
   },
 }
 
-export const WithIconsTonal: Story = {
+export const WithIconsDefault: Story = {
   args: {
     size: 'md',
-    variant: 'tonal',
+    variant: 'default',
     options: iconOptions,
     selectedId: 'list',
   },
@@ -148,7 +148,7 @@ export const WithIconsTonal: Story = {
 export const MixedIconsAndText: Story = {
   args: {
     size: 'md',
-    variant: 'filled',
+    variant: 'accent',
     options: mixedOptions,
     selectedId: 'overview',
   },
@@ -157,7 +157,7 @@ export const MixedIconsAndText: Story = {
 export const TwoOptions: Story = {
   args: {
     size: 'md',
-    variant: 'filled',
+    variant: 'accent',
     options: twoOptions,
     selectedId: 'active',
   },
@@ -166,17 +166,17 @@ export const TwoOptions: Story = {
 export const Disabled: Story = {
   args: {
     size: 'md',
-    variant: 'filled',
+    variant: 'accent',
     options: textOptions,
     selectedId: 'board',
     disabled: true,
   },
 }
 
-export const DisabledTonal: Story = {
+export const DisabledDefault: Story = {
   args: {
     size: 'md',
-    variant: 'tonal',
+    variant: 'default',
     options: iconOptions,
     selectedId: 'list',
     disabled: true,
@@ -219,27 +219,27 @@ export const AllSizes: Story = {
 export const AllVariants: Story = {
   render: () => (
     <div style={{ display: 'flex', flexDirection: 'column', gap: 24 }}>
-      {/* Filled variant */}
+      {/* Default variant */}
       <div>
         <p className="mb-ds-04 text-ds-md font-accent font-semibold text-surface-fg">
-          Filled
+          Default
         </p>
         <div style={{ display: 'flex', flexDirection: 'column', gap: 12 }}>
-          <ControlledDemo size="sm" variant="filled" options={iconOptions} />
-          <ControlledDemo size="md" variant="filled" options={iconOptions} />
-          <ControlledDemo size="lg" variant="filled" options={iconOptions} />
+          <ControlledDemo size="sm" variant="default" options={iconOptions} />
+          <ControlledDemo size="md" variant="default" options={iconOptions} />
+          <ControlledDemo size="lg" variant="default" options={iconOptions} />
         </div>
       </div>
 
-      {/* Tonal variant */}
+      {/* Accent variant */}
       <div>
         <p className="mb-ds-04 text-ds-md font-accent font-semibold text-surface-fg">
-          Tonal
+          Accent
         </p>
         <div style={{ display: 'flex', flexDirection: 'column', gap: 12 }}>
-          <ControlledDemo size="sm" variant="tonal" options={iconOptions} />
-          <ControlledDemo size="md" variant="tonal" options={iconOptions} />
-          <ControlledDemo size="lg" variant="tonal" options={iconOptions} />
+          <ControlledDemo size="sm" variant="accent" options={iconOptions} />
+          <ControlledDemo size="md" variant="accent" options={iconOptions} />
+          <ControlledDemo size="lg" variant="accent" options={iconOptions} />
         </div>
       </div>
 
@@ -249,8 +249,8 @@ export const AllVariants: Story = {
           Text only
         </p>
         <div style={{ display: 'flex', flexDirection: 'column', gap: 12 }}>
-          <ControlledDemo size="md" variant="filled" options={textOptions} />
-          <ControlledDemo size="md" variant="tonal" options={textOptions} />
+          <ControlledDemo size="md" variant="accent" options={textOptions} />
+          <ControlledDemo size="md" variant="default" options={textOptions} />
         </div>
       </div>
 
@@ -260,8 +260,8 @@ export const AllVariants: Story = {
           Disabled
         </p>
         <div style={{ display: 'flex', flexDirection: 'column', gap: 12 }}>
-          <ControlledDemo size="md" variant="filled" options={iconOptions} disabled />
-          <ControlledDemo size="md" variant="tonal" options={iconOptions} disabled />
+          <ControlledDemo size="md" variant="accent" options={iconOptions} disabled />
+          <ControlledDemo size="md" variant="default" options={iconOptions} disabled />
         </div>
       </div>
     </div>

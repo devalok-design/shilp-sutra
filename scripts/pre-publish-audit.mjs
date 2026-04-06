@@ -13,7 +13,7 @@
  */
 
 import { execSync } from 'child_process'
-import { readFileSync, existsSync } from 'fs'
+import { readFileSync, existsSync, readdirSync, statSync } from 'fs'
 import { join, resolve } from 'path'
 import { globSync } from 'node:fs'
 
@@ -286,6 +286,70 @@ gate('No deprecated shadow tokens in components', () => {
     return `Deprecated shadow tokens found:\n${violations.map(v => `      ${v}`).join('\n')}\n      Use semantic names: shadow-raised, shadow-floating, shadow-overlay, etc.`
   }
   return true
+})
+
+// --- New Gates (added by ecosystem audit 2026-04-06) ---
+console.log('\n\x1b[36mComponent Hygiene\x1b[0m')
+
+// Gate: Stories existence check (advisory — some internals legitimately lack stories)
+advisory('Components have Storybook stories', () => {
+  const STORY_EXEMPT = new Set([
+    'icon-context', 'link-context', 'command-registry', 'ai-command-provider',
+    'button-processing', 'lib/utils', 'lib/motion', 'lib/date-utils', 'lib/link-context',
+    'lib/string-utils', 'types', 'toast-types',
+  ])
+  const missing = []
+  const layers = ['ui', 'composed', 'shell', 'ai']
+  for (const layer of layers) {
+    const srcDir = join(ROOT, 'packages/core/src', layer)
+    let files
+    try { files = readdirSync(srcDir) } catch { continue }
+    for (const f of files) {
+      if (!f.endsWith('.tsx')) continue
+      if (f.includes('.test.') || f.includes('.stories.') || f.startsWith('_')) continue
+      const name = f.replace(/\.tsx$/, '')
+      if (STORY_EXEMPT.has(name)) continue
+      const storyPath = join(srcDir, `${name}.stories.tsx`)
+      if (!existsSync(storyPath)) missing.push(`${layer}/${name}`)
+    }
+  }
+  if (missing.length > 0) return `${missing.length} components missing stories:\n${missing.map(m => `      ${m}`).join('\n')}`
+  return true
+})
+
+// Gate: Brand package version matches CHANGELOG
+advisory('Brand version matches CHANGELOG', () => {
+  try {
+    const brandVersion = getPackageVersion('brand')
+    const brandCL = readFileSync(join(ROOT, 'CHANGELOG.md'), 'utf-8')
+    const brandMatch = brandCL.match(/## \[(\d+\.\d+\.\d+)\].*brand/i)
+    if (!brandMatch) return true // No brand entry — acceptable
+    if (brandVersion !== brandMatch[1]) return `Brand ${brandVersion} vs CHANGELOG ${brandMatch[1]}`
+    return true
+  } catch {
+    return true // Brand package may not exist
+  }
+})
+
+// Gate: Bundle size tracking (informational)
+advisory('Bundle size tracking', () => {
+  try {
+    const distDir = join(ROOT, 'packages/core/dist')
+    let totalSize = 0
+    const walkSize = (dir) => {
+      for (const entry of readdirSync(dir)) {
+        const full = join(dir, entry)
+        const stat = statSync(full)
+        if (stat.isDirectory()) walkSize(full)
+        else totalSize += stat.size
+      }
+    }
+    walkSize(distDir)
+    console.log(`    dist/ total: ${(totalSize / 1024).toFixed(0)} KB`)
+    return true
+  } catch {
+    return 'Could not measure dist/ size'
+  }
 })
 
 // --- Advisory ---

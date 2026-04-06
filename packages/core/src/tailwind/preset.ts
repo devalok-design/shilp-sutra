@@ -363,6 +363,7 @@ const preset: Partial<Config> = {
         warning: 'var(--shadow-warning)',
         'ring-sm': 'var(--shadow-ring-sm)',
         ring: 'var(--shadow-ring)',
+        kbd: 'var(--shadow-kbd)',
       },
       transitionDuration: {
         instant: 'var(--duration-instant)',

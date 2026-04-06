@@ -1,3 +1,4 @@
+// @server-safe
 // ── Block protocol ──
 
 export interface Block {

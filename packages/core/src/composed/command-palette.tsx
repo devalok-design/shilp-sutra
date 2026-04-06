@@ -362,7 +362,7 @@ const CommandPalette = React.forwardRef<HTMLDivElement, CommandPaletteProps>(
               autoCorrect="off"
               spellCheck={false}
             />
-            <kbd className="hidden shrink-0 select-none rounded-ds-md border border-surface-border-strong bg-surface-raised px-ds-02b py-ds-01 text-ds-sm font-medium text-surface-fg-subtle shadow-[inset_0_-1px_0_rgba(0,0,0,0.1)] sm:inline-flex">
+            <kbd className="hidden shrink-0 select-none rounded-ds-md border border-surface-border-strong bg-surface-raised px-ds-02b py-ds-01 text-ds-sm font-medium text-surface-fg-subtle shadow-kbd sm:inline-flex">
               Esc
             </kbd>
           </div>
@@ -458,7 +458,7 @@ const CommandPalette = React.forwardRef<HTMLDivElement, CommandPaletteProps>(
                             <kbd
                               key={i}
                               className={cn(
-                                'inline-flex min-w-[20px] items-center justify-center rounded border px-ds-02b py-ds-01 text-ds-xs font-medium shadow-[inset_0_-1px_0_rgba(0,0,0,0.1)] transition-colors duration-fast-02 ease-productive-standard',
+                                'inline-flex min-w-[20px] items-center justify-center rounded border px-ds-02b py-ds-01 text-ds-xs font-medium shadow-kbd transition-colors duration-fast-02 ease-productive-standard',
                                 isActive
                                   ? 'bg-accent-2 text-accent-11 border-accent-6'
                                   : 'bg-surface-raised text-surface-fg-subtle border-surface-border-strong',
@@ -501,19 +501,19 @@ const CommandPalette = React.forwardRef<HTMLDivElement, CommandPaletteProps>(
                 <div key={i} className="flex items-center gap-ds-02b">
                   {hint.keys === '↑↓' ? (
                     <div className="flex items-center gap-ds-01">
-                      <kbd className="inline-flex h-ico-md w-ico-md items-center justify-center rounded border border-surface-border-strong bg-surface-raised shadow-[inset_0_-1px_0_rgba(0,0,0,0.1)]">
+                      <kbd className="inline-flex h-ico-md w-ico-md items-center justify-center rounded border border-surface-border-strong bg-surface-raised shadow-kbd">
                         <Icon icon={IconArrowUp} size="xs" className="text-surface-fg-subtle" />
                       </kbd>
-                      <kbd className="inline-flex h-ico-md w-ico-md items-center justify-center rounded border border-surface-border-strong bg-surface-raised shadow-[inset_0_-1px_0_rgba(0,0,0,0.1)]">
+                      <kbd className="inline-flex h-ico-md w-ico-md items-center justify-center rounded border border-surface-border-strong bg-surface-raised shadow-kbd">
                         <Icon icon={IconArrowDown} size="xs" className="text-surface-fg-subtle" />
                       </kbd>
                     </div>
                   ) : hint.keys === '↵' ? (
-                    <kbd className="inline-flex h-[20px] items-center justify-center rounded-ds-md border border-surface-border-strong bg-surface-raised px-ds-02b shadow-[inset_0_-1px_0_rgba(0,0,0,0.1)]">
+                    <kbd className="inline-flex h-[20px] items-center justify-center rounded-ds-md border border-surface-border-strong bg-surface-raised px-ds-02b shadow-kbd">
                       <Icon icon={IconCornerDownLeft} size="xs" className="text-surface-fg-subtle" />
                     </kbd>
                   ) : (
-                    <kbd className="inline-flex h-[20px] items-center justify-center rounded-ds-md border border-surface-border-strong bg-surface-raised px-ds-02b text-ds-xs font-medium text-surface-fg-subtle shadow-[inset_0_-1px_0_rgba(0,0,0,0.1)]">
+                    <kbd className="inline-flex h-[20px] items-center justify-center rounded-ds-md border border-surface-border-strong bg-surface-raised px-ds-02b text-ds-xs font-medium text-surface-fg-subtle shadow-kbd">
                       {hint.keys}
                     </kbd>
                   )}

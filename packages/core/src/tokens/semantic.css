@@ -292,6 +292,9 @@
   /* Shadow transition */
   --shadow-transition: box-shadow var(--duration-fast-02) var(--ease-productive-standard);
 
+  /* Keyboard shortcut badge shadow */
+  --shadow-kbd: inset 0 -1px 0 oklch(0 0 0 / 0.1);
+
   /* Shadow primitives (internal) */
   --shadow-xs:
     0 0 0 1px oklch(var(--shadow-color) / calc(0.035 * var(--shadow-strength))),

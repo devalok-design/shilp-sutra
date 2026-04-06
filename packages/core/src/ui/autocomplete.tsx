@@ -87,7 +87,7 @@ const Autocomplete = React.forwardRef<HTMLInputElement, AutocompleteProps>(
     const [highlightedIndex, setHighlightedIndex] = React.useState(-1)
     const internalRef = React.useRef<HTMLInputElement>(null)
     const listRef = React.useRef<HTMLUListElement>(null)
-    const blurTimeoutRef = React.useRef<ReturnType<typeof setTimeout> | undefined>(undefined)
+    const containerRef = React.useRef<HTMLDivElement>(null)
 
     // Compose external + internal ref
     const composedRef = React.useCallback(
@@ -107,7 +107,7 @@ const Autocomplete = React.forwardRef<HTMLInputElement, AutocompleteProps>(
     // Cleanup blur timeout on unmount
     React.useEffect(() => {
       return () => {
-        if (blurTimeoutRef.current) clearTimeout(blurTimeoutRef.current)
+        // Option selected — close and blur handled by relatedTarget check
       }
     }, [])
 
@@ -163,7 +163,7 @@ const Autocomplete = React.forwardRef<HTMLInputElement, AutocompleteProps>(
       highlightedIndex >= 0 ? `${optionIdPrefix}-${highlightedIndex}` : undefined
 
     return (
-      <div className={cn('relative', className)} {...props}>
+      <div ref={containerRef} className={cn('relative', className)} {...props}>
         <input
           ref={composedRef}
           type="text"
@@ -187,8 +187,11 @@ const Autocomplete = React.forwardRef<HTMLInputElement, AutocompleteProps>(
             setHighlightedIndex(-1)
           }}
           onFocus={() => setIsOpen(true)}
-          onBlur={() => {
-            blurTimeoutRef.current = setTimeout(() => setIsOpen(false), 150)
+          onBlur={(e) => {
+            // Close only if focus moved outside the autocomplete container
+            if (!containerRef.current?.contains(e.relatedTarget as Node)) {
+              setIsOpen(false)
+            }
           }}
           onKeyDown={handleKeyDown}
         />

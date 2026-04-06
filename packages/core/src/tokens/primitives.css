@@ -91,7 +91,9 @@
   --green-11: oklch(0.43 0.1032 145);
   --green-12: oklch(0.32 0.0589 145);
 
-  /* ── Yellow — H:85 ── */
+  /* ── Yellow — H:85 ── RESERVED — not referenced by semantic tokens.
+     Kept for consumer apps that may use primitives directly.
+     Warning status uses amber-bright scale instead. */
   --yellow-1:  oklch(0.99 0.0037 85);
   --yellow-2:  oklch(0.97 0.0111 85);
   --yellow-3:  oklch(0.93 0.0258 85);

@@ -131,4 +131,6 @@ const LoadingBlock = React.memo(function LoadingBlock({
   )
 })
 
+LoadingBlock.displayName = 'LoadingBlock'
+
 export { LoadingBlock }

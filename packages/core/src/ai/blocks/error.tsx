@@ -31,4 +31,6 @@ const ErrorBlock = React.memo(function ErrorBlock({
   )
 })
 
+ErrorBlock.displayName = 'ErrorBlock'
+
 export { ErrorBlock }

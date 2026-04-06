@@ -123,4 +123,6 @@ const SuccessBlock = React.memo(function SuccessBlock({
   )
 })
 
+SuccessBlock.displayName = 'SuccessBlock'
+
 export { SuccessBlock }

@@ -69,4 +69,6 @@ const ConfirmBlock = React.memo(function ConfirmBlock({
   )
 })
 
+ConfirmBlock.displayName = 'ConfirmBlock'
+
 export { ConfirmBlock }

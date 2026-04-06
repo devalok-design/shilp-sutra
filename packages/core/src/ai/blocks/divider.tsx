@@ -29,4 +29,6 @@ const DividerBlock = React.memo(function DividerBlock(
   )
 })
 
+DividerBlock.displayName = 'DividerBlock'
+
 export { DividerBlock }

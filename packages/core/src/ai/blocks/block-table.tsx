@@ -196,4 +196,6 @@ const BlockTable = React.memo(function BlockTable({
   )
 })
 
+BlockTable.displayName = 'BlockTable'
+
 export { BlockTable }

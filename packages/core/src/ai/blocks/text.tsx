@@ -27,4 +27,6 @@ const TextBlock = React.memo(function TextBlock({
   )
 })
 
+TextBlock.displayName = 'TextBlock'
+
 export { TextBlock }

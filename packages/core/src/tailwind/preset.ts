@@ -394,9 +394,6 @@ const preset: Partial<Config> = {
         toast: 'var(--z-toast)',
         tooltip: 'var(--z-tooltip)',
       },
-      fontVariantNumeric: {
-        tabular: 'tabular-nums',
-      },
     },
   },
   plugins: [
@@ -409,23 +406,24 @@ const preset: Partial<Config> = {
         },
       })
       addUtilities({
+        '.tabular-nums': { 'font-variant-numeric': 'tabular-nums' },
         '.focus-ring': {
           '&:focus-visible': {
             outline: 'none',
             'box-shadow':
-              '0 0 0 2px var(--color-surface-base), 0 0 0 4px var(--color-accent-9)',
+              '0 0 0 var(--border-focus-width) var(--color-surface-base), 0 0 0 calc(var(--border-focus-width) + var(--border-focus-offset)) var(--color-accent-9)',
           },
         },
         '.focus-ring-inset': {
           '&:focus-visible': {
             outline: 'none',
-            'box-shadow': 'inset 0 0 0 2px var(--color-accent-9)',
+            'box-shadow': 'inset 0 0 0 var(--border-focus-width) var(--color-accent-9)',
           },
         },
         '.focus-ring-sm': {
           '&:focus-visible': {
             outline: 'none',
-            'box-shadow': '0 0 0 2px var(--color-accent-7)',
+            'box-shadow': '0 0 0 var(--border-focus-width) var(--color-accent-7)',
           },
         },
       })

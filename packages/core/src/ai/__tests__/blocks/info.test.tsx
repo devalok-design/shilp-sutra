@@ -3,14 +3,14 @@ import { describe, it, expect } from 'vitest'
 import { InfoBlock } from '../../blocks/info'
 
 describe('InfoBlock', () => {
-  it('renders with role="alert"', () => {
+  it('renders with role="status"', () => {
     render(<InfoBlock data={{ message: 'Info message' }} />)
-    expect(screen.getByRole('alert')).toBeInTheDocument()
+    expect(screen.getByRole('status')).toBeInTheDocument()
   })
 
   it('displays the message text', () => {
     render(<InfoBlock data={{ message: 'Please check your settings' }} />)
-    expect(screen.getByRole('alert')).toHaveTextContent(
+    expect(screen.getByRole('status')).toHaveTextContent(
       'Please check your settings',
     )
   })
@@ -19,7 +19,7 @@ describe('InfoBlock', () => {
     const { container } = render(
       <InfoBlock data={{ message: 'Info note' }} />,
     )
-    const alert = container.querySelector('[role="alert"]') as HTMLElement
+    const alert = container.querySelector('[role="status"]') as HTMLElement
     expect(alert.className).toContain('bg-info-3')
   })
 })

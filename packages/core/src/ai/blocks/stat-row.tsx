@@ -57,4 +57,6 @@ const StatRowBlock = React.memo(function StatRowBlock({
   )
 })
 
+StatRowBlock.displayName = 'StatRowBlock'
+
 export { StatRowBlock }

@@ -82,3 +82,21 @@ export const AlignEnd: Story = {
     </Popover>
   ),
 }
+
+export const MobileDrawer: Story = {
+  parameters: {
+    viewport: { defaultViewport: 'mobile1' },
+  },
+  render: () => (
+    <Popover>
+      <PopoverTrigger asChild>
+        <Button variant="outline">Open Popover</Button>
+      </PopoverTrigger>
+      <PopoverContent>
+        <p className="text-ds-sm">
+          On mobile, this renders as a bottom drawer instead of a floating popover.
+        </p>
+      </PopoverContent>
+    </Popover>
+  ),
+}

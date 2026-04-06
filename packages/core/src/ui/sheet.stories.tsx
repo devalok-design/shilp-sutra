@@ -1,4 +1,5 @@
 import type { Meta, StoryObj } from '@storybook/react-vite'
+import * as React from 'react'
 import {
   Sheet,
   SheetContent,
@@ -115,4 +116,28 @@ export const Bottom: Story = {
       </SheetContent>
     </Sheet>
   ),
+}
+
+export const MobileBottomSheet: Story = {
+  parameters: {
+    viewport: { defaultViewport: 'mobile1' },
+  },
+  render: function Render() {
+    const [open, setOpen] = React.useState(true)
+    return (
+      <Sheet open={open} onOpenChange={setOpen}>
+        <SheetTrigger asChild>
+          <Button variant="outline">Open Sheet</Button>
+        </SheetTrigger>
+        <SheetContent side="right">
+          <SheetHeader>
+            <SheetTitle>Mobile Bottom Sheet</SheetTitle>
+            <SheetDescription>
+              On mobile, this right-side sheet becomes a bottom sheet with swipe-to-dismiss.
+            </SheetDescription>
+          </SheetHeader>
+        </SheetContent>
+      </Sheet>
+    )
+  },
 }

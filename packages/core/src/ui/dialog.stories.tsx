@@ -1,4 +1,5 @@
 import type { Meta, StoryObj } from '@storybook/react-vite'
+import * as React from 'react'
 import { within, userEvent, expect, waitFor } from 'storybook/test'
 import {
   Dialog,
@@ -125,4 +126,36 @@ export const SimpleMessage: Story = {
       </DialogContent>
     </Dialog>
   ),
+}
+
+export const MobileFullScreen: Story = {
+  parameters: {
+    viewport: { defaultViewport: 'mobile1' },
+  },
+  render: function Render() {
+    const [open, setOpen] = React.useState(true)
+    return (
+      <Dialog open={open} onOpenChange={setOpen}>
+        <DialogTrigger asChild>
+          <Button variant="solid">Open Dialog</Button>
+        </DialogTrigger>
+        <DialogContent>
+          <DialogHeader>
+            <DialogTitle>Mobile Full Screen</DialogTitle>
+            <DialogDescription>
+              On mobile viewports, this dialog fills the entire screen with a slide-up animation.
+            </DialogDescription>
+          </DialogHeader>
+          <div className="py-ds-05">
+            <p className="text-surface-fg-muted">Content area expands to fill the viewport.</p>
+          </div>
+          <DialogFooter>
+            <DialogClose asChild>
+              <Button variant="ghost">Close</Button>
+            </DialogClose>
+          </DialogFooter>
+        </DialogContent>
+      </Dialog>
+    )
+  },
 }

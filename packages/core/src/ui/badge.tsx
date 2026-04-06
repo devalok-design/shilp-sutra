@@ -9,6 +9,38 @@ import * as React from 'react'
 import { Icon } from './icon'
 import { cn } from './lib/utils'
 
+// ── Color map — single source of truth for all badge color × variant combos ──
+const colorMap = {
+  default: { bg: 'bg-surface-raised-hover', fg: 'text-surface-fg-muted', border: 'border-surface-border-strong', solid: 'bg-neutral-5', solidFg: 'text-surface-fg' },
+  accent:  { bg: 'bg-accent-3',  fg: 'text-accent-11',  border: 'border-accent-7',  solid: 'bg-accent-9',  solidFg: 'text-accent-fg' },
+  error:   { bg: 'bg-error-3',   fg: 'text-error-11',   border: 'border-error-7',   solid: 'bg-error-9',   solidFg: 'text-error-fg' },
+  success: { bg: 'bg-success-3', fg: 'text-success-11', border: 'border-success-7', solid: 'bg-success-9', solidFg: 'text-success-fg' },
+  warning: { bg: 'bg-warning-3', fg: 'text-warning-11', border: 'border-warning-7', solid: 'bg-warning-9', solidFg: 'text-warning-fg' },
+  info:    { bg: 'bg-info-3',    fg: 'text-info-11',    border: 'border-info-7',    solid: 'bg-info-9',    solidFg: 'text-info-fg' },
+  neutral: { bg: 'bg-surface-raised-hover', fg: 'text-surface-fg-muted', border: 'border-surface-border-strong', solid: 'bg-neutral-5', solidFg: 'text-surface-fg' },
+  teal:    { bg: 'bg-category-teal-3',    fg: 'text-category-teal-11',    border: 'border-category-teal-7',    solid: 'bg-category-teal-9',    solidFg: 'text-white' },
+  amber:   { bg: 'bg-category-amber-3',   fg: 'text-category-amber-11',   border: 'border-category-amber-7',   solid: 'bg-category-amber-9',   solidFg: 'text-white' },
+  slate:   { bg: 'bg-category-slate-3',   fg: 'text-category-slate-11',   border: 'border-category-slate-7',   solid: 'bg-category-slate-9',   solidFg: 'text-white' },
+  indigo:  { bg: 'bg-category-indigo-3',  fg: 'text-category-indigo-11',  border: 'border-category-indigo-7',  solid: 'bg-category-indigo-9',  solidFg: 'text-white' },
+  cyan:    { bg: 'bg-category-cyan-3',    fg: 'text-category-cyan-11',    border: 'border-category-cyan-7',    solid: 'bg-category-cyan-9',    solidFg: 'text-white' },
+  orange:  { bg: 'bg-category-orange-3',  fg: 'text-category-orange-11',  border: 'border-category-orange-7',  solid: 'bg-category-orange-9',  solidFg: 'text-white' },
+  emerald: { bg: 'bg-category-emerald-3', fg: 'text-category-emerald-11', border: 'border-category-emerald-7', solid: 'bg-category-emerald-9', solidFg: 'text-white' },
+} as const
+
+type BadgeColor = keyof typeof colorMap | 'custom'
+
+/** Derive color classes for a given variant + color pair */
+function getColorClasses(variant: 'subtle' | 'solid' | 'outline' | 'soft', color: BadgeColor): string {
+  if (color === 'custom') return ''
+  const c = colorMap[color]
+  switch (variant) {
+    case 'subtle':  return cn(c.bg, c.fg, c.border)
+    case 'solid':   return cn(c.solid, c.solidFg, 'border-transparent')
+    case 'outline': return cn('bg-transparent', c.fg, c.border)
+    case 'soft':    return cn(c.bg, c.fg, 'border-transparent')
+  }
+}
+
 const badgeVariants = cva(
   'relative inline-flex items-center rounded-full font-sans font-medium overflow-hidden isolate transition-[color,background-color,border-color,padding] duration-fast-02 ease-productive-standard select-none [&>span:not([data-grain])]:relative [&>span:not([data-grain])]:z-[2]',
   {
@@ -19,23 +51,6 @@ const badgeVariants = cva(
         outline: 'border',
         soft: 'border border-transparent',
       },
-      color: {
-        default: '',
-        accent: '',
-        error: '',
-        success: '',
-        warning: '',
-        info: '',
-        neutral: '',
-        teal: '',
-        amber: '',
-        slate: '',
-        indigo: '',
-        cyan: '',
-        orange: '',
-        emerald: '',
-        custom: '',
-      },
       size: {
         xs: 'h-4 px-1.5 text-[10px] gap-1',
         sm: 'h-5 px-2 text-ds-xs gap-1',
@@ -43,74 +58,8 @@ const badgeVariants = cva(
         lg: 'h-7 px-3 text-ds-sm gap-1.5',
       },
     },
-    compoundVariants: [
-      // ── subtle × colors ──────────────────────────────────────────
-      { variant: 'subtle', color: 'default', className: 'bg-surface-raised-hover text-surface-fg-muted border-surface-border-strong' },
-      { variant: 'subtle', color: 'accent', className: 'bg-accent-3 text-accent-11 border-accent-7' },
-      { variant: 'subtle', color: 'error', className: 'bg-error-3 text-error-11 border-error-7' },
-      { variant: 'subtle', color: 'success', className: 'bg-success-3 text-success-11 border-success-7' },
-      { variant: 'subtle', color: 'warning', className: 'bg-warning-3 text-warning-11 border-warning-7' },
-      { variant: 'subtle', color: 'info', className: 'bg-info-3 text-info-11 border-info-7' },
-      { variant: 'subtle', color: 'neutral', className: 'bg-surface-raised-hover text-surface-fg-muted border-surface-border-strong' },
-      { variant: 'subtle', color: 'teal', className: 'bg-category-teal-3 text-category-teal-11 border-category-teal-7' },
-      { variant: 'subtle', color: 'amber', className: 'bg-category-amber-3 text-category-amber-11 border-category-amber-7' },
-      { variant: 'subtle', color: 'slate', className: 'bg-category-slate-3 text-category-slate-11 border-category-slate-7' },
-      { variant: 'subtle', color: 'indigo', className: 'bg-category-indigo-3 text-category-indigo-11 border-category-indigo-7' },
-      { variant: 'subtle', color: 'cyan', className: 'bg-category-cyan-3 text-category-cyan-11 border-category-cyan-7' },
-      { variant: 'subtle', color: 'orange', className: 'bg-category-orange-3 text-category-orange-11 border-category-orange-7' },
-      { variant: 'subtle', color: 'emerald', className: 'bg-category-emerald-3 text-category-emerald-11 border-category-emerald-7' },
-
-      // ── solid × colors ───────────────────────────────────────────
-      { variant: 'solid', color: 'default', className: 'bg-neutral-5 text-surface-fg border-transparent' },
-      { variant: 'solid', color: 'accent', className: 'bg-accent-9 text-accent-fg border-transparent' },
-      { variant: 'solid', color: 'error', className: 'bg-error-9 text-error-fg border-transparent' },
-      { variant: 'solid', color: 'success', className: 'bg-success-9 text-success-fg border-transparent' },
-      { variant: 'solid', color: 'warning', className: 'bg-warning-9 text-warning-fg border-transparent' },
-      { variant: 'solid', color: 'info', className: 'bg-info-9 text-info-fg border-transparent' },
-      { variant: 'solid', color: 'neutral', className: 'bg-neutral-5 text-surface-fg border-transparent' },
-      { variant: 'solid', color: 'teal', className: 'bg-category-teal-9 text-white border-transparent' },
-      { variant: 'solid', color: 'amber', className: 'bg-category-amber-9 text-white border-transparent' },
-      { variant: 'solid', color: 'slate', className: 'bg-category-slate-9 text-white border-transparent' },
-      { variant: 'solid', color: 'indigo', className: 'bg-category-indigo-9 text-white border-transparent' },
-      { variant: 'solid', color: 'cyan', className: 'bg-category-cyan-9 text-white border-transparent' },
-      { variant: 'solid', color: 'orange', className: 'bg-category-orange-9 text-white border-transparent' },
-      { variant: 'solid', color: 'emerald', className: 'bg-category-emerald-9 text-white border-transparent' },
-
-      // ── outline × colors ─────────────────────────────────────────
-      { variant: 'outline', color: 'default', className: 'bg-transparent text-surface-fg-muted border-surface-border-strong' },
-      { variant: 'outline', color: 'accent', className: 'bg-transparent text-accent-11 border-accent-7' },
-      { variant: 'outline', color: 'error', className: 'bg-transparent text-error-11 border-error-7' },
-      { variant: 'outline', color: 'success', className: 'bg-transparent text-success-11 border-success-7' },
-      { variant: 'outline', color: 'warning', className: 'bg-transparent text-warning-11 border-warning-7' },
-      { variant: 'outline', color: 'info', className: 'bg-transparent text-info-11 border-info-7' },
-      { variant: 'outline', color: 'neutral', className: 'bg-transparent text-surface-fg-muted border-surface-border-strong' },
-      { variant: 'outline', color: 'teal', className: 'bg-transparent text-category-teal-11 border-category-teal-7' },
-      { variant: 'outline', color: 'amber', className: 'bg-transparent text-category-amber-11 border-category-amber-7' },
-      { variant: 'outline', color: 'slate', className: 'bg-transparent text-category-slate-11 border-category-slate-7' },
-      { variant: 'outline', color: 'indigo', className: 'bg-transparent text-category-indigo-11 border-category-indigo-7' },
-      { variant: 'outline', color: 'cyan', className: 'bg-transparent text-category-cyan-11 border-category-cyan-7' },
-      { variant: 'outline', color: 'orange', className: 'bg-transparent text-category-orange-11 border-category-orange-7' },
-      { variant: 'outline', color: 'emerald', className: 'bg-transparent text-category-emerald-11 border-category-emerald-7' },
-
-      // ── soft × colors ────────────────────────────────────────────
-      { variant: 'soft', color: 'default', className: 'bg-surface-raised-hover text-surface-fg-muted border-transparent' },
-      { variant: 'soft', color: 'accent', className: 'bg-accent-3 text-accent-11 border-transparent' },
-      { variant: 'soft', color: 'error', className: 'bg-error-3 text-error-11 border-transparent' },
-      { variant: 'soft', color: 'success', className: 'bg-success-3 text-success-11 border-transparent' },
-      { variant: 'soft', color: 'warning', className: 'bg-warning-3 text-warning-11 border-transparent' },
-      { variant: 'soft', color: 'info', className: 'bg-info-3 text-info-11 border-transparent' },
-      { variant: 'soft', color: 'neutral', className: 'bg-surface-raised-hover text-surface-fg-muted border-transparent' },
-      { variant: 'soft', color: 'teal', className: 'bg-category-teal-3 text-category-teal-11 border-transparent' },
-      { variant: 'soft', color: 'amber', className: 'bg-category-amber-3 text-category-amber-11 border-transparent' },
-      { variant: 'soft', color: 'slate', className: 'bg-category-slate-3 text-category-slate-11 border-transparent' },
-      { variant: 'soft', color: 'indigo', className: 'bg-category-indigo-3 text-category-indigo-11 border-transparent' },
-      { variant: 'soft', color: 'cyan', className: 'bg-category-cyan-3 text-category-cyan-11 border-transparent' },
-      { variant: 'soft', color: 'orange', className: 'bg-category-orange-3 text-category-orange-11 border-transparent' },
-      { variant: 'soft', color: 'emerald', className: 'bg-category-emerald-3 text-category-emerald-11 border-transparent' },
-    ],
     defaultVariants: {
       variant: 'subtle',
-      color: 'default',
       size: 'md',
     },
   },
@@ -166,6 +115,8 @@ const paddingRightWithTrailing: Record<string, string> = {
 interface BadgeProps
   extends Omit<React.HTMLAttributes<HTMLElement>, 'color'>,
     VariantProps<typeof badgeVariants> {
+  /** Semantic intent or category color. Use `"custom"` with `--badge-color` CSS variable. */
+  color?: BadgeColor
   asChild?: boolean
   startIcon?: React.ReactElement | null
   endIcon?: React.ReactElement | null
@@ -267,7 +218,8 @@ const Badge = React.forwardRef<HTMLElement, BadgeProps>(
       <Comp
         ref={ref as React.Ref<never>}
         className={cn(
-          badgeVariants({ variant: resolvedVariant, color: resolvedColor, size: resolvedSize }),
+          badgeVariants({ variant: resolvedVariant, size: resolvedSize }),
+          getColorClasses(resolvedVariant, resolvedColor),
           hasLeading && paddingLeftWithIcon[resolvedSize],
           hasTrailing && paddingRightWithTrailing[resolvedSize],
           onClick &&
@@ -380,4 +332,4 @@ const BadgeCompound = Object.assign(Badge, {
   Group: BadgeGroup,
 })
 
-export { BadgeCompound as Badge, badgeVariants, type BadgeProps }
+export { BadgeCompound as Badge, badgeVariants, type BadgeProps, type BadgeColor }

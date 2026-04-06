@@ -8,6 +8,7 @@ import { motion, AnimatePresence } from 'framer-motion'
 import { cn } from './lib/utils'
 import { springs, tweens } from './lib/motion'
 import { Icon } from './icon'
+import { useIsMobile } from '../hooks/use-mobile'
 
 // ── Internal context to thread `open` state to animated children ──
 
@@ -113,11 +114,18 @@ const DialogOverlay = React.forwardRef<
 ))
 DialogOverlay.displayName = DialogPrimitive.Overlay.displayName
 
+interface DialogContentProps extends React.ComponentPropsWithoutRef<typeof DialogPrimitive.Content> {
+  /** When true (default), Dialog fills the screen on mobile (<768px). Set false to always use centered modal. */
+  responsive?: boolean
+}
+
 const DialogContent = React.forwardRef<
   React.ElementRef<typeof DialogPrimitive.Content>,
-  React.ComponentPropsWithoutRef<typeof DialogPrimitive.Content>
->(({ className, children, ...props }, ref) => {
+  DialogContentProps
+>(({ className, children, responsive, ...props }, ref) => {
   const { open } = useDialogOpen()
+  const isMobileRaw = useIsMobile()
+  const isMobile = responsive !== false && isMobileRaw
 
   return (
     <AnimatePresence>
@@ -138,12 +146,18 @@ const DialogContent = React.forwardRef<
             {...props}
           >
             <motion.div
-              initial={{ opacity: 0, scale: 0.95, x: '-50%', y: '-50%' }}
-              animate={{ opacity: 1, scale: 1, x: '-50%', y: '-50%' }}
-              exit={{ opacity: 0, scale: 0.95, x: '-50%', y: '-50%' }}
-              transition={{ ...springs.smooth, opacity: tweens.fade }}
+              initial={isMobile ? { y: '100%' } : { opacity: 0, scale: 0.95, x: '-50%', y: '-50%' }}
+              animate={isMobile ? { y: 0 } : { opacity: 1, scale: 1, x: '-50%', y: '-50%' }}
+              exit={isMobile ? { y: '100%' } : { opacity: 0, scale: 0.95, x: '-50%', y: '-50%' }}
+              transition={isMobile
+                ? { type: 'spring', damping: 30, stiffness: 300 }
+                : { ...springs.smooth, opacity: tweens.fade }
+              }
               className={cn(
-                'fixed left-[50%] top-[50%] z-modal grid w-full max-w-lg gap-ds-05 border border-surface-border-strong bg-surface-overlay p-ds-06 shadow-overlay rounded-ds-xl',
+                'fixed z-modal grid w-full gap-ds-05 bg-surface-overlay p-ds-06',
+                responsive !== false
+                  ? 'inset-0 md:inset-auto md:left-[50%] md:top-[50%] md:max-w-lg md:rounded-ds-xl md:border md:border-surface-border-strong md:shadow-overlay'
+                  : 'left-[50%] top-[50%] max-w-lg rounded-ds-xl border border-surface-border-strong shadow-overlay',
                 className,
               )}
             >
@@ -234,7 +248,7 @@ const DialogDescription = React.forwardRef<
 ))
 DialogDescription.displayName = DialogPrimitive.Description.displayName
 
-export type DialogContentProps = React.ComponentPropsWithoutRef<typeof DialogPrimitive.Content>
+export type { DialogContentProps }
 export type DialogTitleProps = React.ComponentPropsWithoutRef<typeof DialogPrimitive.Title>
 
 export {

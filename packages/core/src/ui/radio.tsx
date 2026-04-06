@@ -40,7 +40,7 @@ const RadioGroupItem = React.forwardRef<
     <RadioGroupPrimitive.Item
       ref={ref}
       className={cn(
-        'aspect-square rounded-ds-full',
+        'touch-target aspect-square rounded-ds-full',
         radioSizeClasses[size],
         'border border-surface-border-strong bg-surface-raised-hover',
         'transition-colors duration-fast-01',

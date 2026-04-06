@@ -39,7 +39,7 @@ const Slider = React.forwardRef<
         <SliderPrimitive.Thumb
           key={i}
           aria-label={thumbCount === 1 ? (ariaLabel as string | undefined) : undefined}
-          className="block h-6 w-6 rounded-ds-full border-2 border-accent-7 bg-surface-overlay shadow-raised transition-[color,transform,box-shadow] duration-fast-02 ease-productive-standard hover:scale-110 hover:shadow-raised-hover active:scale-[1.15] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent-9 focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-action-disabled"
+          className="touch-target block h-6 w-6 rounded-ds-full border-2 border-accent-7 bg-surface-overlay shadow-raised transition-[color,transform,box-shadow] duration-fast-02 ease-productive-standard hover:scale-110 hover:shadow-raised-hover active:scale-[1.15] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent-9 focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-action-disabled"
         />
       ))}
     </SliderPrimitive.Root>

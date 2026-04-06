@@ -418,6 +418,18 @@ const preset: Partial<Config> = {
       })
       addUtilities({
         '.tabular-nums': { 'font-variant-numeric': 'tabular-nums' },
+        '.touch-target': {
+          position: 'relative',
+        },
+        '.touch-target::before': {
+          content: '""',
+          position: 'absolute',
+          top: '50%',
+          left: '50%',
+          transform: 'translate(-50%, -50%)',
+          'min-width': '44px',
+          'min-height': '44px',
+        },
         '.focus-ring': {
           '&:focus-visible': {
             outline: 'none',

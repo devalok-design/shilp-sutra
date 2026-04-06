@@ -8,7 +8,7 @@ import { springs } from './lib/motion'
 import { cn } from "./lib/utils"
 
 const sizeConfig = {
-  sm: { track: 'h-6 w-[38px]', thumb: 'h-[18px] w-[18px]', travel: 16 },
+  sm: { track: 'h-6 w-[38px]', thumb: 'h-5 w-5', travel: 16 },
   md: { track: 'h-6 w-11', thumb: 'h-ico-md w-ico-md', travel: 20 },
   lg: { track: 'h-7 w-[52px]', thumb: 'h-6 w-6', travel: 24 },
 } as const
@@ -48,7 +48,7 @@ const Switch = React.forwardRef<
   return (
     <SwitchPrimitives.Root
       className={cn(
-        "peer inline-flex shrink-0 cursor-pointer items-center rounded-ds-full border-2 border-surface-border-strong shadow-raised transition-colors duration-fast-01 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent-9 focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-action-disabled data-[state=checked]:border-transparent data-[state=unchecked]:bg-surface-border-strong data-[state=unchecked]:hover:bg-surface-raised-active",
+        "touch-target peer inline-flex shrink-0 cursor-pointer items-center rounded-ds-full border-2 border-surface-border-strong shadow-raised transition-colors duration-fast-01 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent-9 focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-action-disabled data-[state=checked]:border-transparent data-[state=unchecked]:bg-surface-border-strong data-[state=unchecked]:hover:bg-surface-raised-active",
         track,
         colorMap[color],
         error && "border-error-7 data-[state=checked]:bg-error-9",

@@ -11,6 +11,13 @@ import { springs, tweens } from './lib/motion'
 
 const HoverCardOpenContext = React.createContext(false)
 
+/**
+ * HoverCard displays supplementary content on pointer hover.
+ *
+ * **Accessibility note:** HoverCard is pointer-only by design (WAI-ARIA HoverCard has no APG pattern).
+ * Do NOT use for essential content that keyboard users must access.
+ * For essential content, use {@link Popover} instead which supports keyboard activation.
+ */
 const HoverCard: React.FC<React.ComponentPropsWithoutRef<typeof HoverCardPrimitive.Root>> = ({
   open: controlledOpen,
   defaultOpen = false,

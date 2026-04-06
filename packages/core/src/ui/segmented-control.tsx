@@ -11,6 +11,7 @@ import { springs } from './lib/motion'
 const segmentedControlItemVariants = cva(
   [
     'inline-flex items-center gap-ds-03 rounded-ds-full border-none outline-none cursor-pointer',
+    'focus-visible:ring-2 focus-visible:ring-accent-9 focus-visible:ring-offset-2',
     'transition-[color,background-color,border-color,box-shadow] duration-moderate-02 ease-productive-standard',
     'relative overflow-hidden',
     'font-accent font-semibold leading-none text-center',
@@ -247,6 +248,12 @@ const SegmentedControl = React.forwardRef<HTMLDivElement, SegmentedControlProps>
     const nextOption = options[nextIndex]
     setFocusedId(nextOption.id)
     onSelect(nextOption.id)
+
+    // Move DOM focus to the target button so screen readers and focus rings follow
+    requestAnimationFrame(() => {
+      const buttons = tablistRef.current?.querySelectorAll<HTMLButtonElement>('[role="tab"]')
+      buttons?.[nextIndex]?.focus()
+    })
   }
 
   return (

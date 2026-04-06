@@ -144,6 +144,8 @@ const Step = React.forwardRef<HTMLDivElement, StepProps>(
         data-step=""
         data-state={state}
         role="listitem"
+        aria-current={state === 'active' ? 'step' : undefined}
+        aria-label={`Step ${_index + 1}: ${label}, ${state === 'completed' ? 'completed' : state === 'active' ? 'current' : 'upcoming'}`}
         className={cn(
           'flex items-center gap-ds-03',
           orientation === 'vertical' && 'py-ds-02',

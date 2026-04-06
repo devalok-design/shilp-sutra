@@ -112,9 +112,9 @@
   --color-surface-fg: var(--neutral-12);
   --color-surface-fg-muted: var(--neutral-11);
   --color-surface-fg-subtle: var(--neutral-8);
-  --color-surface-border: var(--neutral-5);
-  --color-surface-border-strong: var(--neutral-6);
-  --color-surface-border-subtle: var(--neutral-4);
+  --color-surface-border: var(--neutral-6);         /* was neutral-5; bumped for WCAG 1.4.11 non-text contrast */
+  --color-surface-border-strong: var(--neutral-7);   /* was neutral-6 */
+  --color-surface-border-subtle: var(--neutral-5);   /* was neutral-4 */
   --color-backdrop: oklch(0 0 0 / 0.4);
 
   /* ═══════════════════════════════════════════════════════════
@@ -417,12 +417,10 @@
 .dark {
   color-scheme: dark;
 
-  /* Foreground on accent flips in dark mode */
-  --color-accent-fg: var(--neutral-12);
-  --color-secondary-fg: var(--neutral-12);
-  --color-error-fg: var(--neutral-12);
-  --color-success-fg: var(--neutral-12);
-  --color-info-fg: var(--neutral-12);
+  /* Foreground on solid accent/status backgrounds.
+     Inherits var(--neutral-1) from :root — in dark mode neutral-1 = L=0.11,
+     giving dark text on bright step-9 backgrounds (~6.5:1 contrast).
+     Previously set to neutral-12 (L=0.88) which was bright-on-bright (~1.8:1). */
 
   /* Warning: amber-bright dark ramp for dark mode */
   --color-warning-2:  var(--amber-bright-2);
@@ -433,7 +431,7 @@
   --color-warning-9:  var(--amber-bright-9);
   --color-warning-10: var(--amber-bright-10);
   --color-warning-11: var(--amber-bright-11);
-  --color-warning-fg: var(--neutral-12);
+  /* --color-warning-fg: inherits oklch(0.25 0.01 55) from :root — dark on bright amber, good contrast */
 
   /* Dark mode borders need lower contrast — bright borders look harsh.
      Drop to step 3/4 for subtle resting borders that don't overpower surfaces */
@@ -441,10 +439,10 @@
   --color-surface-base: var(--neutral-1);     /* 0.11L — dark page */
   --color-surface-raised: var(--neutral-2);   /* 0.17L — lighter cards */
 
-  --color-surface-border: var(--neutral-3);
-  --color-surface-border-strong: var(--neutral-4);
+  --color-surface-border: var(--neutral-4);         /* was neutral-3; bumped for contrast */
+  --color-surface-border-strong: var(--neutral-5);   /* was neutral-4 */
   --color-surface-overlay: oklch(0.13 0.0002 350);
-  --color-surface-border-subtle: var(--neutral-2);
+  --color-surface-border-subtle: var(--neutral-3); /* was neutral-2 = same as raised = invisible (1:1) */
   --color-backdrop: oklch(0 0 0 / 0.6);
 
   /* Overlay */

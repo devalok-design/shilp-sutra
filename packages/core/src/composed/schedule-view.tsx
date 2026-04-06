@@ -26,16 +26,24 @@ export interface ScheduleEvent {
   color?: 'primary' | 'success' | 'warning' | 'error' | 'info' | 'neutral'
 }
 
+/**
+ * A day/week calendar schedule grid. Renders time-slotted events with
+ * proportional height, color coding, click handlers, and a current-time indicator.
+ */
 export interface ScheduleViewProps extends React.HTMLAttributes<HTMLDivElement> {
+  /** Display mode: single-day column or full-week (7 columns). */
   view: 'day' | 'week'
   /** Current day (day view) or any date within the target week (week view). */
   date: Date
+  /** Events to display on the calendar grid. */
   events: ScheduleEvent[]
+  /** Called when an event block is clicked. */
   onEventClick?: (event: ScheduleEvent) => void
+  /** Called when an empty time slot is clicked, with the slot's start and end times. */
   onSlotClick?: (start: Date, end: Date) => void
   /** First visible hour (default 8). */
   startHour?: number
-  /** Last visible hour — exclusive (default 18). */
+  /** Last visible hour -- exclusive (default 18). */
   endHour?: number
   /** Slot duration in minutes (default 30). */
   slotDuration?: number

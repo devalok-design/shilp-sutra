@@ -323,6 +323,14 @@ const preset: Partial<Config> = {
           '0%': { transform: 'scaleX(1)' },
           '100%': { transform: 'scaleX(0)' },
         },
+        'popover-in': {
+          from: { opacity: '0', transform: 'scale(0.95)' },
+          to: { opacity: '1', transform: 'scale(1)' },
+        },
+        'popover-out': {
+          from: { opacity: '1', transform: 'scale(1)' },
+          to: { opacity: '0', transform: 'scale(0.95)' },
+        },
         'processing-ants': {
           to: { '--border-angle': '360deg' },
         },
@@ -340,6 +348,8 @@ const preset: Partial<Config> = {
           'skeleton-shimmer var(--duration-slow-02) var(--ease-linear) infinite',
         'caret-blink': 'caret-blink 1.25s ease-out infinite',
         'timer-bar': 'timer-bar linear forwards',
+        'popover-in': 'popover-in 150ms var(--ease-productive-entrance)',
+        'popover-out': 'popover-out 100ms var(--ease-productive-exit)',
         'processing-ants-ambient': 'processing-ants 3s linear infinite',
         'processing-ants-working': 'processing-ants 2s linear infinite',
         'processing-ants-urgent': 'processing-ants 1s linear infinite',

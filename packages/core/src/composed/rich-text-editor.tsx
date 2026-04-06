@@ -361,11 +361,19 @@ export interface MentionItem {
   avatar?: string
 }
 
+/**
+ * A Tiptap-powered rich text editor with a configurable toolbar, @mentions,
+ * emoji suggestions, file/image uploads, and task lists.
+ * Outputs sanitized HTML via `onChange`.
+ */
 export interface RichTextEditorProps extends Omit<React.ComponentPropsWithoutRef<'div'>, 'onChange' | 'content'> {
+  /** Initial HTML content. Updates are NOT reactive — use `onChange` for controlled state. */
   content?: string
   placeholder?: string
+  /** Called with the editor's HTML string whenever content changes. */
   onChange?: (html: string) => void
   className?: string
+  /** Set to false to render in read-only mode (e.g. for previewing). */
   editable?: boolean
   /** Called when an image is pasted/dropped. Return a URL. If not provided, images inline as base64. */
   onImageUpload?: (file: File) => Promise<string>
@@ -373,11 +381,11 @@ export interface RichTextEditorProps extends Omit<React.ComponentPropsWithoutRef
   onFileUpload?: (file: File) => Promise<{ url: string; name: string; size: number }>
   /** Whitelist of toolbar items to display. Omit to show all. */
   toolbar?: ToolbarItem[]
-  /** Static list of mentionable items */
+  /** Static list of mentionable items (shown when user types @). */
   mentions?: MentionItem[]
-  /** Async mention search. Takes precedence over static list. */
+  /** Async mention search. Takes precedence over static `mentions` list. */
   onMentionSearch?: (query: string) => Promise<MentionItem[]>
-  /** Called when a mention is selected from the suggestion dropdown */
+  /** Called when a mention is selected from the suggestion dropdown. */
   onMentionSelect?: (item: MentionItem) => void
 }
 

@@ -158,6 +158,10 @@ MenubarSubContent.displayName = MenubarPrimitive.SubContent.displayName
 // to detect the data-state attribute. However, the simplest reliable approach is to use
 // a wrapper that detects mount via useEffect.
 
+// MenubarContent uses CSS data-state animations instead of framer-motion because
+// MenubarPrimitive.Menu doesn't expose open/onOpenChange, making AnimatePresence
+// impossible to wire up for exit animations. The popover-in/popover-out keyframes
+// are defined in the tailwind preset and triggered by Radix's data-state attribute.
 const MenubarContent = React.forwardRef<
   React.ElementRef<typeof MenubarPrimitive.Content>,
   React.ComponentPropsWithoutRef<typeof MenubarPrimitive.Content>
@@ -172,21 +176,14 @@ const MenubarContent = React.forwardRef<
         align={align}
         alignOffset={alignOffset}
         sideOffset={sideOffset}
-        asChild
+        className={cn(
+          'z-popover min-w-[12rem] rounded-ds-lg border border-surface-border-strong bg-surface-overlay p-ds-02 text-surface-fg shadow-floating',
+          'data-[state=open]:animate-popover-in data-[state=closed]:animate-popover-out',
+          className,
+        )}
         {...props}
       >
-        <motion.div
-          initial={{ opacity: 0, scale: 0.95 }}
-          animate={{ opacity: 1, scale: 1 }}
-          exit={{ opacity: 0, scale: 0.95 }}
-          transition={{ ...springs.snappy, opacity: tweens.fade }}
-          className={cn(
-            'z-popover min-w-[12rem] rounded-ds-lg border border-surface-border-strong bg-surface-overlay p-ds-02 text-surface-fg shadow-floating',
-            className,
-          )}
-        >
-          {children}
-        </motion.div>
+        {children}
       </MenubarPrimitive.Content>
     </MenubarPrimitive.Portal>
   ),

@@ -69,14 +69,19 @@ export interface ComboboxOption {
  * // These are just a few ways — feel free to combine props creatively!
  */
 interface ComboboxBaseProps extends Omit<React.HTMLAttributes<HTMLDivElement>, 'onChange'> {
+  /** Available options shown in the dropdown. */
   options: ComboboxOption[]
+  /** Placeholder shown in the trigger when no value is selected. */
   placeholder?: string
+  /** Placeholder for the search input inside the dropdown. */
   searchPlaceholder?: string
+  /** Message shown when the search yields no results. */
   emptyMessage?: string
   disabled?: boolean
   triggerClassName?: string
-  /** Max visible items in the dropdown before scroll (default 6) */
+  /** Max visible items in the dropdown before scroll (default 6). */
   maxVisible?: number
+  /** Custom renderer for each option row. Receives the option and whether it's currently selected. */
   renderOption?: (option: ComboboxOption, selected: boolean) => React.ReactNode
   /** Accessible label for the trigger button. Falls back to `placeholder` if not provided. */
   accessibleLabel?: string

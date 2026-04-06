@@ -16,15 +16,25 @@ import { MonthPicker } from './month-picker'
 
 type CalendarView = 'days' | 'months' | 'years'
 
+/**
+ * A popover-based date picker with day/month/year drill-down views.
+ * Supports min/max date constraints and arbitrary date disabling.
+ */
 export interface DatePickerProps extends Omit<React.ComponentPropsWithoutRef<'button'>, 'onChange' | 'value'> {
+  /** Currently selected date (controlled). */
   value?: Date | null
+  /** Called when a date is selected. Receives null if cleared. */
   onChange?: (date: Date | null) => void
   placeholder?: string
-  className?: string
+  /** date-fns format string for the trigger display. @default 'MMM d, yyyy' */
   formatStr?: string
+  /** Earliest selectable date. */
   minDate?: Date
+  /** Latest selectable date. */
   maxDate?: Date
+  /** Predicate to disable specific dates (return true to disable). */
   disabledDates?: (date: Date) => boolean
+  className?: string
 }
 
 const DatePicker = React.forwardRef<HTMLButtonElement, DatePickerProps>(

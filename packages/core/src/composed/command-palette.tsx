@@ -56,10 +56,19 @@ export interface FooterHint {
   label: string
 }
 
+/**
+ * A searchable command palette with keyboard navigation (Ctrl+K / Cmd+K).
+ * Supports grouped items, custom keybindings, controlled/uncontrolled open state,
+ * and custom empty states.
+ */
 export interface CommandPaletteProps extends React.ComponentPropsWithoutRef<'div'> {
+  /** Item groups displayed in the palette. Each group has a label and an array of CommandItems. */
   groups?: CommandGroup[]
+  /** Placeholder text for the search input. */
   placeholder?: string
+  /** Called on every search input change with the current query string. */
   onSearch?: (query: string) => void
+  /** Simple text shown when no results match. Overridden by `emptyState` if provided. */
   emptyMessage?: string
   /** Full custom empty state ReactNode — overrides `emptyMessage` when provided. */
   emptyState?: React.ReactNode

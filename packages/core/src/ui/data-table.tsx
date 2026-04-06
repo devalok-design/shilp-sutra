@@ -140,8 +140,13 @@ export interface BulkAction<TData> {
  * />
  * // These are just a few ways — feel free to combine props creatively!
  */
+/**
+ * A full-featured data table built on TanStack Table with sorting, filtering,
+ * pagination, row selection, inline cell editing, expandable rows, column pinning,
+ * a toolbar with density/export controls, and optional row virtualization.
+ */
 export interface DataTableProps<TData, TValue> {
-  /** Column definitions passed to TanStack Table */
+  /** Column definitions passed to TanStack Table. */
   columns: ColumnDef<TData, TValue>[]
   /** Row data */
   data: TData[]

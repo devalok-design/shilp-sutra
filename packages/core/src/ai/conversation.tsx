@@ -22,14 +22,26 @@ import type {
 
 // ── Props ────────────────────────────────────────────────────────────────────
 
+/**
+ * Renders a scrollable AI conversation thread with support for streaming
+ * processing steps, custom content blocks, and action confirmations.
+ */
 export interface AIConversationProps {
+  /** Ordered conversation messages (user + assistant turns). */
   messages: ConversationMessage[]
+  /** When true, shows a live processing indicator below the last message. */
   isProcessing?: boolean
+  /** Granular processing steps shown during the processing state. */
   processingSteps?: ProcessingStep[]
+  /** Agent identity displayed as a header on assistant messages. */
   agent?: { name: string; icon?: React.ReactNode }
+  /** Called when user interacts with an action block (confirm/cancel/undo). */
   onAction?: (actionId: string, type: 'confirm' | 'cancel' | 'undo') => void
+  /** Map of custom block type names to React components for extensible rendering. */
   customBlocks?: Record<string, React.ComponentType<BlockComponentProps<any>>>
+  /** Max height of the conversation container (CSS value). Enables scrolling. */
   maxHeight?: string | number
+  /** Auto-scroll to bottom on new messages. @default true */
   autoScroll?: boolean
   className?: string
 }

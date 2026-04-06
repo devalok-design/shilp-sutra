@@ -117,23 +117,40 @@ function GradientBorderWrap({
 // Types
 // -----------------------------------------------------------------------
 
+/**
+ * Unified AI command interface with three visual variants:
+ * - `hero`: full-featured inline bar with greeting, animated placeholder rotation, and hints
+ * - `inline`: compact bar for embedding in panels or toolbars
+ * - `floating`: modal overlay with global keybinding (same pattern as CommandPalette)
+ *
+ * Supports both command-palette filtering (when `groups` provided) and
+ * natural-language AI submission via `onSubmit`.
+ */
 export interface CommandBarProps
   extends Omit<React.ComponentPropsWithRef<'div'>, 'onSubmit'> {
   // -- AI submission --
+  /** Called when the user submits a query (Enter key). */
   onSubmit?: (query: string) => void
+  /** Current interaction state. Controls visual feedback (gradient border, placeholder). */
   state?: 'idle' | 'typing' | 'processing' | 'responded'
 
   // -- Command palette mode (optional) --
+  /** When provided, enables command-palette filtering alongside AI submission. */
   groups?: CommandGroup[]
   onSearch?: (query: string) => void
   emptyMessage?: string
   emptyState?: React.ReactNode
 
   // -- Visual --
+  /** Layout variant. @default 'hero' */
   variant?: 'hero' | 'inline' | 'floating'
+  /** Placeholder text, or an array of strings that rotate on an interval. */
   placeholder?: string | string[]
+  /** Rotation interval in ms when `placeholder` is an array. @default 4000 */
   placeholderInterval?: number
+  /** Greeting text shown above the input in `hero` variant. */
   greeting?: string
+  /** Hint strings shown below the input in `hero` variant. */
   hints?: string[]
   agentName?: string
   agentIcon?: React.ReactNode
@@ -142,6 +159,7 @@ export interface CommandBarProps
   open?: boolean
   defaultOpen?: boolean
   onOpenChange?: (open: boolean) => void
+  /** Keybinding to toggle the floating bar. @default 'mod+k' */
   keybinding?: string | string[] | false
 
   // -- Interaction --

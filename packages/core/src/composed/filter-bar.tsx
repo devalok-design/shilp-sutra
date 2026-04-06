@@ -30,12 +30,20 @@ const FilterBarContext = React.createContext<{ size: FilterBarSize }>({ size: 's
 // FilterBar
 // ============================================================
 
+/**
+ * A toolbar for filtering lists/tables. Composes a search input, slot-based
+ * filter controls (Select, MultiSelect), and an optional "Clear all" button.
+ * Size is propagated to all child controls via context.
+ */
 export interface FilterBarProps extends React.HTMLAttributes<HTMLDivElement> {
+  /** Controlled search input value. Omit `onSearchChange` to hide the search input entirely. */
   searchValue?: string
+  /** Called when the search input changes. If not provided, the search input is hidden. */
   onSearchChange?: (value: string) => void
   searchPlaceholder?: string
+  /** When provided, a "Clear all" button appears that calls this handler. */
   onClearAll?: () => void
-  /** Size propagated to all child controls @default 'sm' */
+  /** Size propagated to all child controls. @default 'sm' */
   size?: FilterBarSize
 }
 

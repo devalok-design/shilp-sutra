@@ -12,18 +12,23 @@ import { springs } from '../ui/lib/motion'
 // Types
 // ============================================================
 
+/**
+ * A responsive master-detail layout. On desktop, shows a fixed-width list panel
+ * alongside a detail panel. Below the breakpoint, switches to a stacked view
+ * with animated transitions and a back button.
+ */
 export interface MasterDetailProps extends React.HTMLAttributes<HTMLDivElement> {
   /** ID of currently selected item. null = no selection (show list on mobile). */
   selected?: string | null
-  /** Called when mobile back button is pressed */
+  /** Called when mobile back button is pressed. */
   onBack?: () => void
-  /** Master panel width on desktop @default '280px' */
+  /** Master panel width on desktop. @default '280px' */
   masterWidth?: string
-  /** Breakpoint below which stacked mode activates @default 'md' */
+  /** Breakpoint below which stacked mode activates. @default 'md' */
   breakpoint?: 'sm' | 'md' | 'lg'
-  /** Content to show in the detail pane when nothing is selected */
+  /** Content to show in the detail pane when nothing is selected. */
   emptyState?: React.ReactNode
-  /** Called when user presses ArrowUp/ArrowDown while the list has focus */
+  /** Called when user presses ArrowUp/ArrowDown while the list has focus. */
   onNavigate?: (direction: 'up' | 'down') => void
 }
 

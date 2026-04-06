@@ -42,6 +42,8 @@ export interface PieChartProps extends Omit<React.HTMLAttributes<HTMLDivElement>
   className?: string
   /** Content to show in center of donut */
   centerLabel?: React.ReactNode
+  /** Accessible label for the chart */
+  ariaLabel?: string
 }
 
 export const PieChart = React.forwardRef<HTMLDivElement, PieChartProps>(
@@ -59,6 +61,7 @@ export const PieChart = React.forwardRef<HTMLDivElement, PieChartProps>(
       animate = true,
       className,
       centerLabel,
+      ariaLabel,
       ...props
     },
     ref,
@@ -130,7 +133,7 @@ export const PieChart = React.forwardRef<HTMLDivElement, PieChartProps>(
             width={containerWidth}
             height={height}
             role="img"
-            aria-label="Pie chart"
+            aria-label={ariaLabel ?? 'Pie chart'}
           >
             <g transform={`translate(${containerWidth / 2},${height / 2})`}>
               {arcs.map((d, i) => {

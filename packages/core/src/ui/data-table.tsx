@@ -873,6 +873,15 @@ export function DataTable<TData, TValue>({
                   key={header.id}
                   className={cn(pinned.className, getColumnMetaClasses(header.column.columnDef.meta as Record<string, unknown>))}
                   style={pinned.style}
+                  aria-sort={
+                    canSort
+                      ? sorted === 'asc'
+                        ? 'ascending'
+                        : sorted === 'desc'
+                          ? 'descending'
+                          : 'none'
+                      : undefined
+                  }
                 >
                   {header.isPlaceholder ? null : canSort ? (
                     <button

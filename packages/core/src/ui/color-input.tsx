@@ -133,7 +133,7 @@ function FormatInput({
 }) {
   return (
     <div className={cn('flex flex-col gap-ds-01', className)}>
-      <label htmlFor={id} className="text-[10px] font-medium uppercase tracking-wider text-surface-fg-muted">
+      <label htmlFor={id} className="text-ds-xs font-medium uppercase tracking-wider text-surface-fg-muted">
         {label}
       </label>
       <div className="flex items-center">
@@ -374,7 +374,7 @@ const ColorInput = React.forwardRef<HTMLDivElement, ColorInputProps>(
                       type="button"
                       onClick={() => setFormat(f)}
                       className={cn(
-                        'relative rounded-ds-sm px-ds-02 py-px text-[10px] font-semibold uppercase tracking-wider transition-colors',
+                        'relative min-h-6 rounded-ds-sm px-ds-02 py-px text-ds-xs font-semibold uppercase tracking-wider transition-colors',
                         format === f
                           ? 'text-accent-11'
                           : 'text-surface-fg-muted hover:text-surface-fg',
@@ -504,7 +504,7 @@ const ColorInput = React.forwardRef<HTMLDivElement, ColorInputProps>(
                     style={{ backgroundColor: openColor }}
                     title={`Original: ${openColor}`}
                   />
-                  <span className="text-[10px] text-surface-fg-muted">
+                  <span className="text-ds-xs text-surface-fg-muted">
                     {openColor.toUpperCase()}
                   </span>
                   <span className="flex-1" />
@@ -512,7 +512,7 @@ const ColorInput = React.forwardRef<HTMLDivElement, ColorInputProps>(
                     <button
                       type="button"
                       onClick={handleUndo}
-                      className="rounded-ds-sm px-ds-02 py-px text-[10px] font-medium text-surface-fg-muted transition-colors hover:text-surface-fg"
+                      className="min-h-6 rounded-ds-sm px-ds-02 py-px text-ds-xs font-medium text-surface-fg-muted transition-colors hover:text-surface-fg"
                     >
                       Undo
                     </button>
@@ -521,7 +521,7 @@ const ColorInput = React.forwardRef<HTMLDivElement, ColorInputProps>(
                     <button
                       type="button"
                       onClick={handleReset}
-                      className="rounded-ds-sm px-ds-02 py-px text-[10px] font-medium text-surface-fg-muted transition-colors hover:text-error-11"
+                      className="min-h-6 rounded-ds-sm px-ds-02 py-px text-ds-xs font-medium text-surface-fg-muted transition-colors hover:text-error-11"
                     >
                       Reset
                     </button>

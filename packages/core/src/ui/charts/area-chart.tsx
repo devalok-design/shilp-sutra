@@ -55,6 +55,8 @@ export interface AreaChartProps extends Omit<React.HTMLAttributes<HTMLDivElement
   xLabel?: string
   /** Y-axis label */
   yLabel?: string
+  /** Accessible label for the chart */
+  ariaLabel?: string
   className?: string
 }
 
@@ -81,6 +83,7 @@ export const AreaChart = React.forwardRef<HTMLDivElement, AreaChartProps>(
       animate = true,
       xLabel,
       yLabel,
+      ariaLabel,
       className,
       ...props
     },
@@ -105,7 +108,7 @@ export const AreaChart = React.forwardRef<HTMLDivElement, AreaChartProps>(
         : {})}
       {...motionProps(props)}
     >
-      <ChartContainer height={height}>
+      <ChartContainer height={height} ariaLabel={ariaLabel ?? 'Area chart'}>
         {({ width, height: innerHeight, margin }) => {
           void margin
 

@@ -145,16 +145,18 @@ function ToastContent({
   selfDismissId?: string | number
 }) {
   const [hovered, setHovered] = React.useState(false)
+  const [focused, setFocused] = React.useState(false)
+  const paused = hovered || focused
   const config = TOAST_TYPE_CONFIG[type]
   const StatusIcon = config.icon
 
-  // Self-managed dismiss timer that pauses on hover
+  // Self-managed dismiss timer that pauses on hover or keyboard focus
   const remainingRef = React.useRef(duration)
   const startTimeRef = React.useRef(0)
 
   React.useEffect(() => {
     if (selfDismissId == null || duration === Infinity) return
-    if (hovered) {
+    if (paused) {
       // Pause: save remaining time
       const elapsed = Date.now() - startTimeRef.current
       remainingRef.current = Math.max(0, remainingRef.current - elapsed)
@@ -166,7 +168,7 @@ function ToastContent({
       sonnerToast.dismiss(selfDismissId)
     }, remainingRef.current)
     return () => clearTimeout(timer)
-  }, [selfDismissId, duration, hovered])
+  }, [selfDismissId, duration, paused])
 
   return (
     <motion.div
@@ -176,6 +178,8 @@ function ToastContent({
       className="group relative flex w-full overflow-hidden rounded-ds-md border border-surface-border-strong bg-surface-overlay shadow-floating"
       onMouseEnter={() => setHovered(true)}
       onMouseLeave={() => setHovered(false)}
+      onFocusCapture={() => setFocused(true)}
+      onBlurCapture={() => setFocused(false)}
       transition={springs.smooth}
     >
       {/* Left accent bar */}
@@ -260,7 +264,7 @@ function ToastContent({
 
       {/* Timer bar */}
       {showTimerBar && type !== 'loading' && (
-        <TimerBar duration={duration} type={type} paused={hovered} />
+        <TimerBar duration={duration} type={type} paused={paused} />
       )}
     </motion.div>
   )
@@ -411,19 +415,19 @@ function UploadFileRow({
             className="flex-1"
           />
           {file.progress !== undefined && (
-            <span className="shrink-0 text-[10px] tabular-nums text-surface-fg-muted">
+            <span className="shrink-0 text-ds-xs tabular-nums text-surface-fg-muted">
               {file.progress}%
             </span>
           )}
         </div>
       ) : file.status === 'complete' ? (
-        <span className="text-[10px] text-success-11">Done</span>
+        <span className="text-ds-xs text-success-11">Done</span>
       ) : file.status === 'error' ? (
-        <span className="max-w-[60px] truncate text-[10px] text-error-11">
+        <span className="max-w-[60px] truncate text-ds-xs text-error-11">
           {file.error || 'Failed'}
         </span>
       ) : (
-        <span className="text-[10px] text-surface-fg-muted">
+        <span className="text-ds-xs text-surface-fg-muted">
           {formatFileSize(file.size)}
         </span>
       )}
@@ -433,20 +437,20 @@ function UploadFileRow({
         <button
           type="button"
           onClick={() => onRetry(file.id)}
-          className="flex h-4 w-4 items-center justify-center rounded-ds-sm text-surface-fg-muted hover:text-surface-fg"
+          className="flex min-h-6 min-w-6 items-center justify-center rounded-ds-sm text-surface-fg-muted hover:text-surface-fg"
           aria-label={`Retry ${file.name}`}
         >
-          <IconRefresh className="h-3 w-3" />
+          <IconRefresh className="h-3.5 w-3.5" />
         </button>
       )}
       {!isTerminal && onRemove && (
         <button
           type="button"
           onClick={() => onRemove(file.id)}
-          className="flex h-4 w-4 items-center justify-center rounded-ds-sm text-surface-fg-muted hover:text-surface-fg"
+          className="flex min-h-6 min-w-6 items-center justify-center rounded-ds-sm text-surface-fg-muted hover:text-surface-fg"
           aria-label={`Cancel ${file.name}`}
         >
-          <IconX className="h-3 w-3" />
+          <IconX className="h-3.5 w-3.5" />
         </button>
       )}
     </motion.div>
@@ -465,19 +469,21 @@ function UploadToastContent({
   selfDismissId?: string | number
 }) {
   const [hovered, setHovered] = React.useState(false)
+  const [focused, setFocused] = React.useState(false)
+  const paused = hovered || focused
   const completeCount = files.filter((f) => f.status === 'complete').length
   const errorCount = files.filter((f) => f.status === 'error').length
   const allTerminal = files.every(
     (f) => f.status === 'complete' || f.status === 'error',
   )
 
-  // Self-managed dismiss timer that pauses on hover
+  // Self-managed dismiss timer that pauses on hover or keyboard focus
   const remainingRef = React.useRef(UPLOAD_COMPLETE_DELAY)
   const startTimeRef = React.useRef(0)
 
   React.useEffect(() => {
     if (selfDismissId == null || !allTerminal) return
-    if (hovered) {
+    if (paused) {
       const elapsed = Date.now() - startTimeRef.current
       remainingRef.current = Math.max(0, remainingRef.current - elapsed)
       return
@@ -487,7 +493,7 @@ function UploadToastContent({
       sonnerToast.dismiss(selfDismissId)
     }, remainingRef.current)
     return () => clearTimeout(timer)
-  }, [selfDismissId, allTerminal, hovered])
+  }, [selfDismissId, allTerminal, paused])
 
   const accentClass = allTerminal
     ? errorCount > 0
@@ -510,6 +516,8 @@ function UploadToastContent({
       className="group relative flex w-full overflow-hidden rounded-ds-md border border-surface-border-strong bg-surface-overlay shadow-floating"
       onMouseEnter={() => setHovered(true)}
       onMouseLeave={() => setHovered(false)}
+      onFocusCapture={() => setFocused(true)}
+      onBlurCapture={() => setFocused(false)}
       transition={springs.smooth}
     >
       {/* Left accent bar */}

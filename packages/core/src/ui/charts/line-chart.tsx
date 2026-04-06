@@ -45,6 +45,8 @@ export interface LineChartProps extends Omit<React.HTMLAttributes<HTMLDivElement
   xLabel?: string
   /** Y-axis label */
   yLabel?: string
+  /** Accessible label for the chart */
+  ariaLabel?: string
   className?: string
 }
 
@@ -65,6 +67,7 @@ export const LineChart = React.forwardRef<HTMLDivElement, LineChartProps>(
       animate = true,
       xLabel,
       yLabel,
+      ariaLabel,
       className,
       ...props
     },
@@ -86,7 +89,7 @@ export const LineChart = React.forwardRef<HTMLDivElement, LineChartProps>(
         : {})}
       {...motionProps(props)}
     >
-      <ChartContainer height={height}>
+      <ChartContainer height={height} ariaLabel={ariaLabel ?? 'Line chart'}>
         {({ width, height: innerHeight, margin }) => {
           void margin
 

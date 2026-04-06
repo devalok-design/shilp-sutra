@@ -47,6 +47,8 @@ export interface BarChartProps extends Omit<React.HTMLAttributes<HTMLDivElement>
   yLabel?: string
   /** Series labels (for legend) */
   seriesLabels?: string[]
+  /** Accessible label for the chart */
+  ariaLabel?: string
   className?: string
 }
 
@@ -69,6 +71,7 @@ export const BarChart = React.forwardRef<HTMLDivElement, BarChartProps>(
       xLabel,
       yLabel,
       seriesLabels,
+      ariaLabel,
       className,
       ...props
     },
@@ -111,7 +114,7 @@ export const BarChart = React.forwardRef<HTMLDivElement, BarChartProps>(
         : {})}
       {...motionProps(props)}
     >
-      <ChartContainer height={height}>
+      <ChartContainer height={height} ariaLabel={ariaLabel ?? 'Bar chart'}>
         {({ width, height: innerHeight, margin }) => {
           // Suppress unused-var lint for margin (available for extensions)
           void margin

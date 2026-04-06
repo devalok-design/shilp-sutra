@@ -34,6 +34,8 @@ export interface RadarChartProps extends Omit<React.HTMLAttributes<HTMLDivElemen
   showLegend?: boolean
   /** Animate on mount */
   animate?: boolean
+  /** Accessible label for the chart */
+  ariaLabel?: string
   className?: string
 }
 
@@ -51,6 +53,7 @@ export const RadarChart = React.forwardRef<HTMLDivElement, RadarChartProps>(
       showTooltip = true,
       showLegend = false,
       animate = true,
+      ariaLabel,
       className,
       ...props
     },
@@ -129,7 +132,7 @@ export const RadarChart = React.forwardRef<HTMLDivElement, RadarChartProps>(
             width={containerWidth}
             height={height}
             role="img"
-            aria-label="Radar chart"
+            aria-label={ariaLabel ?? 'Radar chart'}
           >
             <g transform={`translate(${containerWidth / 2},${height / 2})`}>
               {/* Concentric grid polygons */}

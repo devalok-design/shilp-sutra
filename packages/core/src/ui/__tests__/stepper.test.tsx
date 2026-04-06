@@ -1,5 +1,6 @@
 import { render, screen } from '@testing-library/react'
 import { describe, expect, it } from 'vitest'
+import { axe } from 'vitest-axe'
 import { Stepper, Step } from '../stepper'
 
 describe('Stepper', () => {
@@ -62,5 +63,16 @@ describe('Stepper', () => {
       </Stepper>
     )
     expect(screen.getByText('Create your account')).toBeInTheDocument()
+  })
+
+  it('has no accessibility violations', async () => {
+    const { container } = render(
+      <Stepper activeStep={1}>
+        <Step label="Account" />
+        <Step label="Profile" />
+        <Step label="Review" />
+      </Stepper>
+    )
+    expect(await axe(container)).toHaveNoViolations()
   })
 })

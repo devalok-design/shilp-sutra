@@ -1,5 +1,6 @@
 import { render, screen } from '@testing-library/react'
 import { describe, expect, it } from 'vitest'
+import { axe } from 'vitest-axe'
 import { VisuallyHidden } from '../visually-hidden'
 
 describe('VisuallyHidden', () => {
@@ -29,5 +30,15 @@ describe('VisuallyHidden', () => {
     const ref = { current: null } as React.RefObject<HTMLSpanElement>
     render(<VisuallyHidden ref={ref}>Ref test</VisuallyHidden>)
     expect(ref.current).toBeInstanceOf(HTMLElement)
+  })
+
+  it('has no accessibility violations', async () => {
+    const { container } = render(
+      <button>
+        <VisuallyHidden>Screen reader label</VisuallyHidden>
+        Visible text
+      </button>,
+    )
+    expect(await axe(container)).toHaveNoViolations()
   })
 })

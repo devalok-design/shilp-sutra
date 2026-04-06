@@ -1,5 +1,6 @@
 import { render, screen } from '@testing-library/react'
 import { describe, it, expect } from 'vitest'
+import { axe } from 'vitest-axe'
 import { MarkdownViewer } from './markdown-viewer'
 
 describe('MarkdownViewer', () => {
@@ -61,5 +62,12 @@ describe('MarkdownViewer', () => {
       <MarkdownViewer content="Text" className="custom-md" />,
     )
     expect(container.firstElementChild).toHaveClass('custom-md')
+  })
+
+  it('has no accessibility violations', async () => {
+    const { container } = render(
+      <MarkdownViewer content="# Hello\n\nA paragraph with a [link](https://example.com)." />,
+    )
+    expect(await axe(container)).toHaveNoViolations()
   })
 })

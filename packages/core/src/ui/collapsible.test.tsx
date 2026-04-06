@@ -82,4 +82,35 @@ describe('Collapsible', () => {
     const results = await axe(container)
     expect(results).toHaveNoViolations()
   })
+
+  describe('keyboard interaction', () => {
+    it('expands on Enter key', async () => {
+      const user = userEvent.setup()
+      renderCollapsible()
+      const trigger = screen.getByRole('button', { name: 'Toggle section' })
+      trigger.focus()
+      await user.keyboard('{Enter}')
+      expect(screen.getByText('Collapsible content here')).toBeVisible()
+    })
+
+    it('expands on Space key', async () => {
+      const user = userEvent.setup()
+      renderCollapsible()
+      const trigger = screen.getByRole('button', { name: 'Toggle section' })
+      trigger.focus()
+      await user.keyboard(' ')
+      expect(screen.getByText('Collapsible content here')).toBeVisible()
+    })
+
+    it('updates aria-expanded on toggle', async () => {
+      const user = userEvent.setup()
+      renderCollapsible()
+      const trigger = screen.getByRole('button', { name: 'Toggle section' })
+      expect(trigger).toHaveAttribute('aria-expanded', 'false')
+      await user.click(trigger)
+      expect(trigger).toHaveAttribute('aria-expanded', 'true')
+      await user.click(trigger)
+      expect(trigger).toHaveAttribute('aria-expanded', 'false')
+    })
+  })
 })

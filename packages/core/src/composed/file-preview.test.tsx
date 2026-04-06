@@ -1,5 +1,6 @@
 import { render, screen, waitFor } from '@testing-library/react'
 import { describe, it, expect, vi } from 'vitest'
+import { axe } from 'vitest-axe'
 
 // Mock the heavy lazy-loaded deps to avoid loading react-zoom-pan-pinch and react-pdf in tests
 vi.mock('react-zoom-pan-pinch', () => ({
@@ -57,5 +58,12 @@ describe('FilePreview', () => {
       <FilePreview url="test.png" className="my-preview" />,
     )
     expect(container.firstElementChild).toHaveClass('my-preview')
+  })
+
+  it('has no accessibility violations', async () => {
+    const { container } = render(
+      <FilePreview url="test.png" fileName="photo.png" />,
+    )
+    expect(await axe(container)).toHaveNoViolations()
   })
 })

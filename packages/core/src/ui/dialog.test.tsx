@@ -1,4 +1,4 @@
-import { render, screen } from '@testing-library/react'
+import { render, screen, waitFor } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 import { describe, it, expect } from 'vitest'
 import { Dialog, DialogTrigger, DialogContent, DialogTitle } from './dialog'
@@ -56,5 +56,23 @@ describe('Dialog', () => {
     )
     await user.click(screen.getByRole('button', { name: 'Open' }))
     expect(screen.getByRole('button', { name: 'Close' })).toBeInTheDocument()
+  })
+
+  it('closes on Escape key', async () => {
+    const user = userEvent.setup()
+    render(
+      <Dialog>
+        <DialogTrigger>Open</DialogTrigger>
+        <DialogContent>
+          <DialogTitle>Dialog Heading</DialogTitle>
+        </DialogContent>
+      </Dialog>,
+    )
+    await user.click(screen.getByRole('button', { name: 'Open' }))
+    expect(screen.getByText('Dialog Heading')).toBeInTheDocument()
+    await user.keyboard('{Escape}')
+    await waitFor(() => {
+      expect(screen.queryByText('Dialog Heading')).not.toBeInTheDocument()
+    })
   })
 })

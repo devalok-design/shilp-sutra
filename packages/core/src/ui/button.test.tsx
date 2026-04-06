@@ -2,6 +2,7 @@ import { render, screen } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 import { IconPlus, IconCheck, IconArrowRight } from '@tabler/icons-react'
 import { describe, it, expect, vi } from 'vitest'
+import { axe } from 'vitest-axe'
 import { Button } from './button'
 import { Icon } from './icon'
 
@@ -299,6 +300,11 @@ describe('Button', () => {
     render(<Button disabled>Disabled</Button>)
     const btn = screen.getByRole('button')
     expect(btn.className).toContain('disabled:saturate-')
+  })
+
+  it('has no accessibility violations', async () => {
+    const { container } = render(<Button>Click me</Button>)
+    expect(await axe(container)).toHaveNoViolations()
   })
 
   // ============ Processing state ============

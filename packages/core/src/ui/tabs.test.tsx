@@ -1,6 +1,7 @@
 import { render, screen } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 import { describe, it, expect } from 'vitest'
+import { axe } from 'vitest-axe'
 import { Tabs, TabsList, TabsTrigger, TabsContent } from './tabs'
 
 function renderTabs(defaultValue = 'tab1') {
@@ -127,6 +128,31 @@ describe('Tabs', () => {
       const trigger = screen.getByRole('tab', { name: 'Tab One' })
       // Contained variant should NOT have the line-specific accent-11 active text
       expect(trigger.className).not.toContain('data-[state=active]:text-accent-11')
+    })
+  })
+
+  it('has no accessibility violations', async () => {
+    const { container } = renderTabs()
+    expect(await axe(container)).toHaveNoViolations()
+  })
+
+  describe('keyboard navigation', () => {
+    it('ArrowRight moves focus to next tab', async () => {
+      const user = userEvent.setup()
+      renderTabs()
+      const tabOne = screen.getByRole('tab', { name: 'Tab One' })
+      tabOne.focus()
+      await user.keyboard('{ArrowRight}')
+      expect(screen.getByRole('tab', { name: 'Tab Two' })).toHaveFocus()
+    })
+
+    it('ArrowLeft moves focus to previous tab', async () => {
+      const user = userEvent.setup()
+      renderTabs()
+      const tabTwo = screen.getByRole('tab', { name: 'Tab Two' })
+      tabTwo.focus()
+      await user.keyboard('{ArrowLeft}')
+      expect(screen.getByRole('tab', { name: 'Tab One' })).toHaveFocus()
     })
   })
 })

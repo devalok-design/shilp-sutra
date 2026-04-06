@@ -254,4 +254,24 @@ describe('Select', () => {
       expect(screen.getByRole('combobox')).not.toHaveAttribute('aria-invalid')
     })
   })
+
+  describe('keyboard interaction', () => {
+    it('opens on Enter key', async () => {
+      const user = userEvent.setup()
+      renderSelect()
+      const trigger = screen.getByRole('combobox')
+      trigger.focus()
+      await user.keyboard('{Enter}')
+      expect(screen.getByRole('option', { name: 'Apple' })).toBeInTheDocument()
+    })
+
+    it('opens on Space key', async () => {
+      const user = userEvent.setup()
+      renderSelect()
+      const trigger = screen.getByRole('combobox')
+      trigger.focus()
+      await user.keyboard(' ')
+      expect(screen.getByRole('option', { name: 'Apple' })).toBeInTheDocument()
+    })
+  })
 })

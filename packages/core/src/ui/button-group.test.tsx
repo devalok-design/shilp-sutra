@@ -1,5 +1,6 @@
 import { render, screen } from '@testing-library/react'
 import { describe, it, expect } from 'vitest'
+import { axe } from 'vitest-axe'
 import { Button } from './button'
 import { ButtonGroup } from './button-group'
 
@@ -64,5 +65,15 @@ describe('ButtonGroup', () => {
       </ButtonGroup>,
     )
     expect(screen.getByRole('group')).toHaveClass('my-custom')
+  })
+
+  it('has no accessibility violations', async () => {
+    const { container } = render(
+      <ButtonGroup>
+        <Button>One</Button>
+        <Button>Two</Button>
+      </ButtonGroup>,
+    )
+    expect(await axe(container)).toHaveNoViolations()
   })
 })

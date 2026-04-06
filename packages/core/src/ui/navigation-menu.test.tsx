@@ -104,4 +104,13 @@ describe('NavigationMenu', () => {
     const results = await axe(container)
     expect(results).toHaveNoViolations()
   })
+
+  it('opens content on Enter key press', async () => {
+    const user = userEvent.setup()
+    renderNavMenu()
+    const trigger = screen.getByRole('button', { name: /Products/i })
+    trigger.focus()
+    await user.keyboard('{Enter}')
+    expect(await screen.findByText('Product list content')).toBeInTheDocument()
+  })
 })

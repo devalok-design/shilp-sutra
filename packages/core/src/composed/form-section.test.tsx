@@ -1,5 +1,6 @@
 import { render, screen } from '@testing-library/react'
 import { describe, it, expect } from 'vitest'
+import { axe } from 'vitest-axe'
 import { FormSection } from './form-section'
 
 describe('FormSection', () => {
@@ -48,5 +49,14 @@ describe('FormSection', () => {
     expect(screen.getByText('Advanced')).toBeInTheDocument()
     // Content visible by default (defaultOpen=true)
     expect(screen.getByText('Advanced content')).toBeInTheDocument()
+  })
+
+  it('has no accessibility violations', async () => {
+    const { container } = render(
+      <FormSection title="Contact" description="How to reach you">
+        <input placeholder="Email" />
+      </FormSection>,
+    )
+    expect(await axe(container)).toHaveNoViolations()
   })
 })

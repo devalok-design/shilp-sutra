@@ -1,6 +1,7 @@
 import { render, screen } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 import { describe, it, expect, vi } from 'vitest'
+import { axe } from 'vitest-axe'
 import { BulkActionBar, type BulkActionBarAction } from './bulk-action-bar'
 
 const actions: BulkActionBarAction[] = [
@@ -96,5 +97,17 @@ describe('BulkActionBar', () => {
 
     await user.click(screen.getByText('Confirm'))
     expect(onClick).toHaveBeenCalledTimes(1)
+  })
+
+  it('has no accessibility violations', async () => {
+    const { container } = render(
+      <BulkActionBar
+        show={true}
+        count={2}
+        onClearSelection={vi.fn()}
+        actions={actions}
+      />,
+    )
+    expect(await axe(container)).toHaveNoViolations()
   })
 })

@@ -1,5 +1,6 @@
 import { render, screen } from '@testing-library/react'
 import { describe, it, expect, vi, afterEach } from 'vitest'
+import { axe } from 'vitest-axe'
 import { DeadlineIndicator } from './deadline-indicator'
 
 describe('DeadlineIndicator', () => {
@@ -79,5 +80,15 @@ describe('DeadlineIndicator', () => {
 
     render(<DeadlineIndicator deadline="2026-03-24T12:00:00Z" />)
     expect(screen.getByText('7d left')).toBeInTheDocument()
+  })
+
+  it('has no accessibility violations', async () => {
+    const now = new Date('2026-03-17T12:00:00Z').getTime()
+    vi.spyOn(Date, 'now').mockReturnValue(now)
+
+    const { container } = render(
+      <DeadlineIndicator deadline={new Date('2026-03-24T12:00:00Z')} />,
+    )
+    expect(await axe(container)).toHaveNoViolations()
   })
 })

@@ -12,6 +12,7 @@ export default meta
 type Story = StoryObj<typeof Collapsible>
 
 export const Default: Story = {
+  parameters: { chromatic: { delay: 500 } },
   render: () => (
     <Collapsible className="w-80 space-y-ds-02">
       <div className="flex items-center justify-between space-x-ds-04">

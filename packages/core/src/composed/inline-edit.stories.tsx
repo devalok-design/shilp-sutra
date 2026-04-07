@@ -20,6 +20,7 @@ function HeadingDemo() {
 }
 
 export const Default: Story = {
+  parameters: { chromatic: { delay: 500 } },
   render: () => <HeadingDemo />,
   name: 'Heading (click to edit)',
   play: async ({ canvasElement }) => {

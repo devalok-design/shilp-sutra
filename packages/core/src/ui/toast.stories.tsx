@@ -26,6 +26,7 @@ type Story = StoryObj
  * ------------------------------------------------------------------------ */
 
 export const Default: Story = {
+  parameters: { chromatic: { delay: 500 } },
   render: () => {
     return (
       <Button onClick={() => toast('Something happened')}>

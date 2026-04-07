@@ -28,6 +28,7 @@ export default meta
 type Story = StoryObj<typeof DropdownMenu>
 
 export const Default: Story = {
+  parameters: { chromatic: { delay: 500 } },
   render: () => (
     <DropdownMenu>
       <DropdownMenuTrigger asChild>

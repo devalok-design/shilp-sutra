@@ -47,6 +47,7 @@ function ConfirmDialogDemo({ color = 'accent' }: { color?: 'accent' | 'error' })
 }
 
 export const Default: Story = {
+  parameters: { chromatic: { delay: 500 } },
   render: () => <ConfirmDialogDemo />,
   play: async ({ canvasElement }) => {
     const canvas = within(canvasElement)

@@ -24,6 +24,7 @@ export default meta
 type Story = StoryObj<typeof Sheet>
 
 export const Right: Story = {
+  parameters: { chromatic: { delay: 500 } },
   render: () => (
     <Sheet>
       <SheetTrigger asChild>

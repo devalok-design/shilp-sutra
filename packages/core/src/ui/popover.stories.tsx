@@ -14,6 +14,7 @@ export default meta
 type Story = StoryObj<typeof Popover>
 
 export const Default: Story = {
+  parameters: { chromatic: { delay: 500 } },
   render: () => (
     <Popover>
       <PopoverTrigger asChild>

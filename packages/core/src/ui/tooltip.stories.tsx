@@ -19,6 +19,7 @@ export default meta
 type Story = StoryObj<typeof Tooltip>
 
 export const Default: Story = {
+  parameters: { chromatic: { delay: 500 } },
   render: () => (
     <Tooltip>
       <TooltipTrigger asChild>

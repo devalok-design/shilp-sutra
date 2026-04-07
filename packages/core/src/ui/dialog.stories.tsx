@@ -24,6 +24,7 @@ export default meta
 type Story = StoryObj<typeof Dialog>
 
 export const Default: Story = {
+  parameters: { chromatic: { delay: 500 } },
   render: () => (
     <Dialog>
       <DialogTrigger asChild>
@@ -66,6 +67,7 @@ export const Default: Story = {
 }
 
 export const Confirmation: Story = {
+  parameters: { chromatic: { delay: 500 } },
   render: () => (
     <Dialog>
       <DialogTrigger asChild>

@@ -140,6 +140,7 @@ export default meta
 type Story = StoryObj<typeof CommandPalette>
 
 export const Default: Story = {
+  parameters: { chromatic: { delay: 500 } },
   args: {
     groups: allGroups,
   },

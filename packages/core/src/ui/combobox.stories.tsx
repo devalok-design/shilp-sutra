@@ -61,6 +61,7 @@ type Story = StoryObj<typeof Combobox>
 // 1. Default — single select with search filtering
 // ---------------------------------------------------------------------------
 export const Default: Story = {
+  parameters: { chromatic: { delay: 500 } },
   render: () => {
     const [value, setValue] = React.useState<string>('')
     return (
@@ -105,6 +106,7 @@ export const Default: Story = {
 // 2. MultiSelect — multi-select with pre-selected pills
 // ---------------------------------------------------------------------------
 export const MultiSelect: Story = {
+  parameters: { chromatic: { delay: 500 } },
   render: () => {
     const [value, setValue] = React.useState<string[]>(['apple', 'cherry'])
     return (

@@ -22,6 +22,7 @@ export default meta
 type Story = StoryObj<typeof AlertDialog>
 
 export const Default: Story = {
+  parameters: { chromatic: { delay: 500 } },
   render: () => (
     <AlertDialog>
       <AlertDialogTrigger asChild>

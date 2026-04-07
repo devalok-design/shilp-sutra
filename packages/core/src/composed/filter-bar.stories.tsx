@@ -58,6 +58,7 @@ function DefaultDemo() {
 }
 
 export const Default: Story = {
+  parameters: { chromatic: { delay: 500 } },
   render: () => <DefaultDemo />,
   play: async ({ canvasElement }) => {
     const canvas = within(canvasElement)

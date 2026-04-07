@@ -74,6 +74,7 @@ export const EmptyOptions: Story = {
 }
 
 export const Controlled: Story = {
+  parameters: { chromatic: { delay: 500 } },
   render: () => {
     const [selected, setSelected] = useState<AutocompleteOption | null>(null)
     return (

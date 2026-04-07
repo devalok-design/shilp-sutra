@@ -15,6 +15,7 @@ export default datePickerMeta
 type DatePickerStory = StoryObj<typeof DatePicker>
 
 export const Default: DatePickerStory = {
+  parameters: { chromatic: { delay: 500 } },
   args: {},
   play: async ({ canvasElement }) => {
     const canvas = within(canvasElement)

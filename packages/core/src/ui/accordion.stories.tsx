@@ -16,6 +16,7 @@ export default meta
 type Story = StoryObj<typeof Accordion>
 
 export const Single: Story = {
+  parameters: { chromatic: { delay: 500 } },
   render: () => (
     <Accordion type="single" collapsible className="w-full max-w-md">
       <AccordionItem value="item-1">
@@ -47,6 +48,7 @@ export const Single: Story = {
 }
 
 export const Multiple: Story = {
+  parameters: { chromatic: { delay: 500 } },
   render: () => (
     <Accordion type="multiple" className="w-full max-w-md">
       <AccordionItem value="item-1">

@@ -21,6 +21,7 @@ export default meta
 type Story = StoryObj<typeof Select>
 
 export const Default: Story = {
+  parameters: { chromatic: { delay: 500 } },
   render: () => (
     <Select>
       <SelectTrigger className="w-[240px]">
@@ -46,6 +47,7 @@ export const Default: Story = {
 }
 
 export const WithGroups: Story = {
+  parameters: { chromatic: { delay: 500 } },
   render: () => (
     <Select>
       <SelectTrigger className="w-[240px]">

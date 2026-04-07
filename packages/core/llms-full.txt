@@ -5,7 +5,7 @@
 > All variant values and props verified from source CVA definitions.
 >
 > Package: @devalok/shilp-sutra
-> Version: 0.31.0
+> Version: 0.32.0
 
 ---
 
@@ -1099,53 +1099,6 @@ Animated bouncing dots with a text description of who is typing.
 
 ### v0.1.0
 - **Added** Initial release
-# Chip
-
-- Import: @devalok/shilp-sutra/ui/chip
-- Server-safe: No
-- Category: ui
-
-## Props
-    label: string (REQUIRED — use this, NOT children)
-    variant: "subtle" | "outline"
-    color: "default" | "primary" | "success" | "error" | "warning" | "info" | "teal" | "amber" | "slate" | "indigo" | "cyan" | "orange" | "emerald"
-    size: "sm" | "md" | "lg"
-    icon: ReactNode
-    onClick: MouseEventHandler (renders as <button> when provided)
-    onDismiss: () => void (shows X button)
-    disabled: boolean
-
-## Defaults
-    variant="subtle", size="md", color="default"
-
-## Example
-```jsx
-<Chip label="In Progress" color="warning" />
-<Chip label="React" color="info" onDismiss={() => removeFilter('react')} />
-```
-
-## Additional Exports
-    ChipGroup — re-exported AnimatePresence from framer-motion; wrap a list of Chips for coordinated exit animations
-
-## Gotchas
-- MUST use label prop — children are NOT rendered
-- `<Chip>text</Chip>` is WRONG — use `<Chip label="text" />`
-- Wrap dynamic chip lists in `<ChipGroup>` for exit animations
-- `color="primary"` will be renamed to `color="brand"` in v1.0 — use `color="primary"` for now
-
-## Changes
-### v0.19.1
-- **Fixed** `active:scale-95` tap feedback broken by Framer Motion transform override — replaced with `whileTap={{ scale: 0.95 }}`
-
-### v0.4.2
-- **Changed** (BREAKING) `variant="filled"` renamed to `"subtle"`, `variant="outlined"` renamed to `"outline"`, `onDelete` renamed to `onDismiss`
-
-### v0.1.1
-- **Fixed** `opacity-[var(--action-disabled-opacity,0.38)]` replaced with `opacity-action-disabled`
-- **Fixed** Converted from `React.createElement` to JSX syntax
-
-### v0.1.0
-- **Added** Initial release
 # Code
 
 - Import: @devalok/shilp-sutra/ui/code
@@ -1547,6 +1500,84 @@ import { DataTable } from '@devalok/shilp-sutra/ui/data-table'
 
 ### v0.1.0
 - **Added** Initial release
+# $(echo $f | sed 's/-/ /g' | sed 's/\b\(.\)/\u\1/g')
+
+> Internal sub-component of DataTable. Not exported to consumers.
+
+## Usage
+
+This component is used internally by `<DataTable>` and should not be imported directly.
+See [DataTable](./data-table.md) for the public API.
+
+## Changes
+
+### v0.32.0
+- Extracted from DataTable monolith into focused sub-component.
+# $(echo $f | sed 's/-/ /g' | sed 's/\b\(.\)/\u\1/g')
+
+> Internal sub-component of DataTable. Not exported to consumers.
+
+## Usage
+
+This component is used internally by `<DataTable>` and should not be imported directly.
+See [DataTable](./data-table.md) for the public API.
+
+## Changes
+
+### v0.32.0
+- Extracted from DataTable monolith into focused sub-component.
+# $(echo $f | sed 's/-/ /g' | sed 's/\b\(.\)/\u\1/g')
+
+> Internal sub-component of DataTable. Not exported to consumers.
+
+## Usage
+
+This component is used internally by `<DataTable>` and should not be imported directly.
+See [DataTable](./data-table.md) for the public API.
+
+## Changes
+
+### v0.32.0
+- Extracted from DataTable monolith into focused sub-component.
+# $(echo $f | sed 's/-/ /g' | sed 's/\b\(.\)/\u\1/g')
+
+> Internal sub-component of DataTable. Not exported to consumers.
+
+## Usage
+
+This component is used internally by `<DataTable>` and should not be imported directly.
+See [DataTable](./data-table.md) for the public API.
+
+## Changes
+
+### v0.32.0
+- Extracted from DataTable monolith into focused sub-component.
+# $(echo $f | sed 's/-/ /g' | sed 's/\b\(.\)/\u\1/g')
+
+> Internal sub-component of DataTable. Not exported to consumers.
+
+## Usage
+
+This component is used internally by `<DataTable>` and should not be imported directly.
+See [DataTable](./data-table.md) for the public API.
+
+## Changes
+
+### v0.32.0
+- Extracted from DataTable monolith into focused sub-component.
+# $(echo $f | sed 's/-/ /g' | sed 's/\b\(.\)/\u\1/g')
+
+> Internal sub-component of DataTable. Not exported to consumers.
+
+## Usage
+
+This component is used internally by `<DataTable>` and should not be imported directly.
+See [DataTable](./data-table.md) for the public API.
+
+## Changes
+
+### v0.32.0
+- Extracted from DataTable monolith into focused sub-component.
 # DataTableToolbar
 
 - Import: @devalok/shilp-sutra/ui/data-table-toolbar

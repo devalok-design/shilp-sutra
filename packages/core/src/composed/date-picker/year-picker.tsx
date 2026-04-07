@@ -59,7 +59,7 @@ export const YearPicker = React.forwardRef<HTMLDivElement, YearPickerProps>(
       <div className="text-center pb-ds-04 text-ds-md font-semibold text-surface-fg">
         {startYear} &ndash; {startYear + 11}
       </div>
-      <div role="grid" aria-label="Year picker" onKeyDown={handleKeyDown}>
+      <div role="grid" aria-label="Year picker" tabIndex={-1} onKeyDown={handleKeyDown}>
         {[0, 1, 2, 3].map((rowIdx) => (
           <div key={rowIdx} role="row" className="grid grid-cols-3 gap-ds-02 mb-ds-02 last:mb-0">
             {years.slice(rowIdx * COLS, rowIdx * COLS + COLS).map((year) => {

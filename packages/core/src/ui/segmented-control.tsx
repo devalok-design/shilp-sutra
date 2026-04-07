@@ -119,6 +119,7 @@ const SegmentedControl = React.forwardRef<HTMLDivElement, SegmentedControlProps>
       <div
         ref={mergedRef}
         role="tablist"
+        tabIndex={-1}
         aria-label={props['aria-label'] ?? 'Segmented control'}
         onKeyDown={handleKeyDown}
         className={cn(

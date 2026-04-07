@@ -64,7 +64,7 @@ export const MonthPicker = React.forwardRef<HTMLDivElement, MonthPickerProps>(
       <div className="text-center pb-ds-04 text-ds-md font-semibold text-surface-fg">
         {currentYear}
       </div>
-      <div role="grid" aria-label="Month picker" onKeyDown={handleKeyDown}>
+      <div role="grid" aria-label="Month picker" tabIndex={-1} onKeyDown={handleKeyDown}>
         {[0, 1, 2].map((rowIdx) => (
           <div key={rowIdx} role="row" className="grid grid-cols-4 gap-ds-02 mb-ds-02 last:mb-0">
             {MONTHS.slice(rowIdx * COLS, rowIdx * COLS + COLS).map((label, colIdx) => {

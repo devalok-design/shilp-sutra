@@ -518,6 +518,11 @@
       "default": "./dist/composed/rich-text-editor.js",
       "types": "./dist/composed/rich-text-editor.d.ts"
     },
+    "./composed/rich-chat-input": {
+      "import": "./dist/composed/rich-chat-input.js",
+      "default": "./dist/composed/rich-chat-input.js",
+      "types": "./dist/composed/rich-chat-input.d.ts"
+    },
     "./composed/simple-tooltip": {
       "import": "./dist/composed/simple-tooltip.js",
       "default": "./dist/composed/simple-tooltip.js",

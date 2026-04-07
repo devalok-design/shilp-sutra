@@ -93,15 +93,19 @@ export const Confirmation: Story = {
 
     // Open the confirmation dialog
     await userEvent.click(canvas.getByRole('button', { name: /delete account/i }))
-    const dialog = await within(document.body).findByRole('dialog')
-    await expect(dialog).toBeVisible()
-    await expect(within(dialog).getByText('Are you sure?')).toBeVisible()
+    const body = within(document.body)
+    await waitFor(() => {
+      const dialog = body.getByRole('dialog')
+      expect(dialog).toBeVisible()
+      expect(within(dialog).getByText('Are you sure?')).toBeVisible()
+    })
 
     // Close the dialog via the Cancel button
+    const dialog = body.getByRole('dialog')
     await userEvent.click(within(dialog).getByRole('button', { name: /cancel/i }))
 
     // Wait for exit animation to complete and dialog to be removed from DOM
-    await waitFor(() => expect(within(document.body).queryByRole('dialog')).toBeNull())
+    await waitFor(() => expect(body.queryByRole('dialog')).toBeNull())
   },
 }
 

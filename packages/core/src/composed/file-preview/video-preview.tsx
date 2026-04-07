@@ -201,7 +201,7 @@ export default function VideoPreview({ url, onError }: { url: string; onError?: 
 
             {/* Controls row */}
             <div className="flex items-center gap-ds-03">
-              <button onClick={togglePlay} className="text-white hover:text-white/80" aria-label={playing ? 'Pause' : 'Play'}>
+              <button onClick={togglePlay} className="text-white hover:text-white/80" aria-label={playing ? 'Pause' : 'Play'} title={playing ? 'Pause' : 'Play'}>
                 {playing ? <Icon icon={IconPlayerPause} size="lg" /> : <Icon icon={IconPlayerPlay} size="lg" />}
               </button>
               <VolumeControl
@@ -229,6 +229,7 @@ export default function VideoPreview({ url, onError }: { url: string; onError?: 
                 onClick={() => videoRef.current?.requestFullscreen?.()}
                 className="text-white hover:text-white/80"
                 aria-label="Fullscreen (F)"
+                title="Fullscreen"
               >
                 <Icon icon={IconMaximize} size="sm" />
               </button>

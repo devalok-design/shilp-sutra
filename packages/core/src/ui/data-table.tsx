@@ -361,6 +361,7 @@ export function DataTable<TData, TValue>({
     id: '_select',
     header: ({ table: t }) => (
       <Checkbox
+        size="sm"
         checked={t.getIsAllPageRowsSelected()}
         indeterminate={t.getIsSomePageRowsSelected()}
         onCheckedChange={(v) => t.toggleAllPageRowsSelected(!!v)}
@@ -369,6 +370,7 @@ export function DataTable<TData, TValue>({
     ),
     cell: ({ row }) => (
       <Checkbox
+        size="sm"
         checked={row.getIsSelected()}
         disabled={!row.getCanSelect()}
         onCheckedChange={(v) => row.toggleSelected(!!v)}

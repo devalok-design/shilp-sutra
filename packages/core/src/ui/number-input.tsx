@@ -101,6 +101,7 @@ const NumberInput = React.forwardRef<HTMLInputElement, NumberInputProps>(
           onClick={handleDecrement}
           disabled={disabled || value <= min}
           aria-label="Decrease value"
+          title="Decrease"
           className="flex h-ds-sm w-ds-sm items-center justify-center border-0 text-surface-fg-subtle hover:bg-surface-raised-hover hover:text-surface-fg-muted active:scale-90 transition-[color,transform] duration-fast-01 ease-productive-standard"
         >
           <Icon icon={IconMinus} size="sm" />
@@ -126,6 +127,7 @@ const NumberInput = React.forwardRef<HTMLInputElement, NumberInputProps>(
           onClick={handleIncrement}
           disabled={disabled || value >= max}
           aria-label="Increase value"
+          title="Increase"
           className="flex h-ds-sm w-ds-sm items-center justify-center border-0 text-surface-fg-subtle hover:bg-surface-raised-hover hover:text-surface-fg-muted active:scale-90 transition-[color,transform] duration-fast-01 ease-productive-standard"
         >
           <Icon icon={IconPlus} size="sm" />

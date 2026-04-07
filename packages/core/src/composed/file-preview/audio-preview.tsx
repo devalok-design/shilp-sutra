@@ -146,6 +146,7 @@ export default function AudioPreview({ url, fileName, onError }: { url: string; 
           size="icon-sm"
           onClick={togglePlay}
           aria-label={playing ? 'Pause' : 'Play'}
+          title={playing ? 'Pause' : 'Play'}
           className="shrink-0"
         >
           {playing ? (

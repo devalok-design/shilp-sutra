@@ -72,6 +72,7 @@ const SearchInput = React.forwardRef<HTMLInputElement, SearchInputProps>(
               size="icon-xs"
               onClick={onClear}
               aria-label="Clear search"
+              title="Clear"
             >
               <Icon icon={IconX} />
             </Button>

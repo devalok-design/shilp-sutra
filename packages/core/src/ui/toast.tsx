@@ -439,6 +439,7 @@ function UploadFileRow({
           onClick={() => onRetry(file.id)}
           className="touch-target flex min-h-6 min-w-6 items-center justify-center rounded-ds-sm text-surface-fg-muted hover:text-surface-fg"
           aria-label={`Retry ${file.name}`}
+          title="Retry"
         >
           <IconRefresh className="h-3.5 w-3.5" />
         </button>
@@ -449,6 +450,7 @@ function UploadFileRow({
           onClick={() => onRemove(file.id)}
           className="touch-target flex min-h-6 min-w-6 items-center justify-center rounded-ds-sm text-surface-fg-muted hover:text-surface-fg"
           aria-label={`Cancel ${file.name}`}
+          title="Remove"
         >
           <IconX className="h-3.5 w-3.5" />
         </button>

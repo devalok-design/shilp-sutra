@@ -109,7 +109,7 @@ export function VolumeControl({
 
   return (
     <div className="group/vol flex items-center gap-ds-02 shrink-0">
-      <button onClick={onMuteToggle} className={cn('transition-colors', iconClass)} aria-label={muted ? 'Unmute (M)' : 'Mute (M)'}>
+      <button onClick={onMuteToggle} className={cn('transition-colors', iconClass)} aria-label={muted ? 'Unmute (M)' : 'Mute (M)'} title={muted ? 'Unmute' : 'Mute'}>
         {muted || volume === 0 ? <Icon icon={IconVolumeOff} size="sm" /> : <Icon icon={IconVolume} size="sm" />}
       </button>
       <div className="w-0 overflow-hidden group-hover/vol:w-20 transition-[width] duration-200 ease-productive-standard flex items-center">

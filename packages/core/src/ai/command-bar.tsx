@@ -580,6 +580,7 @@ const CommandBar = React.forwardRef<HTMLDivElement, CommandBarProps>(
             onClick={handleClear}
             className="shrink-0 rounded-ds-sm p-ds-01 text-surface-fg-subtle transition-colors duration-fast-01 hover:bg-surface-raised-hover hover:text-surface-fg-muted focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent-9"
             aria-label="Clear"
+            title="Clear"
           >
             <Icon
               icon={IconX}

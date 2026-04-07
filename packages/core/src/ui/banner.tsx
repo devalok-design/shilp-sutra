@@ -112,6 +112,7 @@ const Banner = React.forwardRef<HTMLDivElement, BannerProps>(
                 onClick={handleDismiss}
                 className="shrink-0 min-h-ds-xs min-w-ds-xs flex items-center justify-center rounded-ds-sm transition-colors duration-moderate-01 ease-productive-standard hover:bg-current/10 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent-9"
                 aria-label="Dismiss"
+                title="Dismiss"
               >
                 <Icon icon={IconX} size="sm" />
               </button>

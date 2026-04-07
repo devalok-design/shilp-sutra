@@ -7,6 +7,9 @@ const preset: Partial<Config> = {
    * set it explicitly in your own tailwind.config — your config takes precedence.
    */
   darkMode: 'class',
+  safelist: [
+    'py-ds-02', 'py-ds-03', 'py-ds-05', 'py-ds-07',
+  ],
   theme: {
     extend: {
       // Breakpoints must be static values — CSS custom properties cannot be used

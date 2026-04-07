@@ -105,21 +105,21 @@ export default function ImagePreview({ url, alt, onError }: { url: string; alt?:
               {/* Toolbar — Google Drive style */}
               {loaded && (
                 <Toolbar className={fullscreen ? 'absolute bottom-ds-06' : undefined}>
-                  <Button variant="ghost" size="icon-xs" onClick={() => zoomOut()} aria-label="Zoom out (-)">
+                  <Button variant="ghost" size="icon-xs" onClick={() => zoomOut()} aria-label="Zoom out (-)" title="Zoom out">
                     <Icon icon={IconZoomOut} size="sm" />
                   </Button>
                   <span className="text-ds-xs font-mono text-surface-fg-muted w-12 text-center tabular-nums select-none">
                     {zoom}%
                   </span>
-                  <Button variant="ghost" size="icon-xs" onClick={() => zoomIn()} aria-label="Zoom in (+)">
+                  <Button variant="ghost" size="icon-xs" onClick={() => zoomIn()} aria-label="Zoom in (+)" title="Zoom in">
                     <Icon icon={IconZoomIn} size="sm" />
                   </Button>
                   <ToolbarDivider />
-                  <Button variant="ghost" size="icon-xs" onClick={() => resetTransform()} aria-label="Reset zoom (0)">
+                  <Button variant="ghost" size="icon-xs" onClick={() => resetTransform()} aria-label="Reset zoom (0)" title="Reset zoom">
                     <Icon icon={IconZoomReset} size="sm" />
                   </Button>
                   <ToolbarDivider />
-                  <Button variant="ghost" size="icon-xs" onClick={() => setFullscreen((f) => !f)} aria-label={fullscreen ? 'Exit fullscreen (Esc)' : 'Fullscreen (F)'}>
+                  <Button variant="ghost" size="icon-xs" onClick={() => setFullscreen((f) => !f)} aria-label={fullscreen ? 'Exit fullscreen (Esc)' : 'Fullscreen (F)'} title={fullscreen ? 'Exit fullscreen' : 'Fullscreen'}>
                     {fullscreen ? <Icon icon={IconMinimize} size="sm" /> : <Icon icon={IconMaximize} size="sm" />}
                   </Button>
                 </Toolbar>

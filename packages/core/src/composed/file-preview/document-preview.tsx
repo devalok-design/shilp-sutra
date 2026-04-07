@@ -91,7 +91,7 @@ export default function DocumentPreview({ url, initialPage, onError }: { url: st
 
       {numPages > 0 && (
         <Toolbar>
-          <Button variant="ghost" size="icon-xs" onClick={() => setPage((p) => Math.max(1, p - 1))} disabled={page <= 1} aria-label="Previous page (←)">
+          <Button variant="ghost" size="icon-xs" onClick={() => setPage((p) => Math.max(1, p - 1))} disabled={page <= 1} aria-label="Previous page (←)" title="Previous page">
             <Icon icon={IconChevronLeft} size="sm" />
           </Button>
           <div className="flex items-center gap-ds-01 text-ds-xs text-surface-fg-muted">
@@ -106,7 +106,7 @@ export default function DocumentPreview({ url, initialPage, onError }: { url: st
             />
             <span>/ {numPages}</span>
           </div>
-          <Button variant="ghost" size="icon-xs" onClick={() => setPage((p) => Math.min(numPages, p + 1))} disabled={page >= numPages} aria-label="Next page (→)">
+          <Button variant="ghost" size="icon-xs" onClick={() => setPage((p) => Math.min(numPages, p + 1))} disabled={page >= numPages} aria-label="Next page (→)" title="Next page">
             <Icon icon={IconChevronRight} size="sm" />
           </Button>
         </Toolbar>

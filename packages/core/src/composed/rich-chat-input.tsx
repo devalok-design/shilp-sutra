@@ -1,7 +1,7 @@
 'use client'
 
 import * as React from 'react'
-import { useEditor, EditorContent, Extension } from '@tiptap/react'
+import { useEditor, EditorContent, Extension, BubbleMenu } from '@tiptap/react'
 import StarterKit from '@tiptap/starter-kit'
 import Placeholder from '@tiptap/extension-placeholder'
 import Underline from '@tiptap/extension-underline'
@@ -35,6 +35,7 @@ import type { MentionItem } from './rich-text-editor'
 import { Button } from '../ui/button'
 import { Icon } from '../ui/icon'
 import { cn } from '../ui/lib/utils'
+import { useIsMobile } from '../hooks/use-mobile'
 
 // ── Types ────────────────────────────────────────────────────────
 
@@ -60,10 +61,12 @@ export type ChatToolbarItem =
  *   slashCommands={[{ label: 'Actions', commands: [...] }]}
  * />
  */
-export interface RichChatInputProps extends Omit<React.HTMLAttributes<HTMLDivElement>, 'onSubmit'> {
+export interface RichChatInputProps extends Omit<React.HTMLAttributes<HTMLDivElement>, 'onSubmit' | 'content'> {
   onSubmit: (html: string, plainText: string) => void
   placeholder?: string
   disabled?: boolean
+  /** Initial HTML content (not reactive — use for message editing). */
+  content?: string
   variant?: 'compact' | 'expanded' | 'minimal'
   maxRows?: number
   enterBehavior?: 'send' | 'newline'
@@ -167,6 +170,7 @@ const RichChatInput = React.forwardRef<HTMLDivElement, RichChatInputProps>(
       onSubmit,
       placeholder = 'Type a message...',
       disabled = false,
+      content = '',
       variant = 'compact',
       maxRows,
       enterBehavior = 'send',
@@ -199,6 +203,7 @@ const RichChatInput = React.forwardRef<HTMLDivElement, RichChatInputProps>(
     const enterBehaviorRef = React.useRef(enterBehavior)
     enterBehaviorRef.current = enterBehavior
 
+    const isMobile = useIsMobile()
     const config = variantConfig[variant]
 
     // Build extensions
@@ -274,10 +279,19 @@ const RichChatInput = React.forwardRef<HTMLDivElement, RichChatInputProps>(
 
     const editor = useEditor({
       extensions,
+      content: content || undefined,
       editable: !disabled,
       editorProps: {
         attributes: {
           class: CHAT_PROSE,
+        },
+        handlePaste: (_view, event) => {
+          const files = Array.from(event.clipboardData?.files ?? [])
+          if (files.length > 0) {
+            files.forEach(processFile)
+            return true // prevent default paste
+          }
+          return false // let TipTap handle text paste
         },
       },
     })
@@ -455,6 +469,33 @@ const RichChatInput = React.forwardRef<HTMLDivElement, RichChatInputProps>(
             />
           </div>
 
+          {/* Mobile floating bubble toolbar — shows on text selection */}
+          {isMobile && editor && (
+            <BubbleMenu
+              editor={editor}
+              className="flex gap-ds-01 rounded-ds-lg border border-surface-border-strong bg-surface-overlay p-ds-02 shadow-floating"
+            >
+              <ToolbarBtn onClick={() => editor.chain().focus().toggleBold().run()} isActive={editor.isActive('bold')} title="Bold">
+                <Icon icon={IconBold} size="xs" />
+              </ToolbarBtn>
+              <ToolbarBtn onClick={() => editor.chain().focus().toggleItalic().run()} isActive={editor.isActive('italic')} title="Italic">
+                <Icon icon={IconItalic} size="xs" />
+              </ToolbarBtn>
+              <ToolbarBtn onClick={() => editor.chain().focus().toggleUnderline().run()} isActive={editor.isActive('underline')} title="Underline">
+                <Icon icon={IconUnderline} size="xs" />
+              </ToolbarBtn>
+              <ToolbarBtn onClick={() => editor.chain().focus().toggleStrike().run()} isActive={editor.isActive('strike')} title="Strike">
+                <Icon icon={IconStrikethrough} size="xs" />
+              </ToolbarBtn>
+              <ToolbarBtn onClick={() => editor.chain().focus().toggleHighlight().run()} isActive={editor.isActive('highlight')} title="Highlight">
+                <Icon icon={IconHighlight} size="xs" />
+              </ToolbarBtn>
+              <ToolbarBtn onClick={() => editor.chain().focus().toggleCode().run()} isActive={editor.isActive('code')} title="Code">
+                <Icon icon={IconCode} size="xs" />
+              </ToolbarBtn>
+            </BubbleMenu>
+          )}
+
           {/* Toolbar */}
           {showToolbar && editor && (
             <div
@@ -462,53 +503,53 @@ const RichChatInput = React.forwardRef<HTMLDivElement, RichChatInputProps>(
               aria-label="Message formatting"
               className="flex flex-wrap items-center gap-ds-01 border-t border-surface-border-subtle px-ds-03 py-ds-02"
             >
-              {/* Formatting */}
-              {show('bold') && (
+              {/* Formatting — hidden on mobile (BubbleMenu handles it) */}
+              {!isMobile && show('bold') && (
                 <ToolbarBtn onClick={() => editor.chain().focus().toggleBold().run()} isActive={editor.isActive('bold')} title="Bold">
                   <Icon icon={IconBold} size="xs" />
                 </ToolbarBtn>
               )}
-              {show('italic') && (
+              {!isMobile && show('italic') && (
                 <ToolbarBtn onClick={() => editor.chain().focus().toggleItalic().run()} isActive={editor.isActive('italic')} title="Italic">
                   <Icon icon={IconItalic} size="xs" />
                 </ToolbarBtn>
               )}
-              {show('underline') && (
+              {!isMobile && show('underline') && (
                 <ToolbarBtn onClick={() => editor.chain().focus().toggleUnderline().run()} isActive={editor.isActive('underline')} title="Underline">
                   <Icon icon={IconUnderline} size="xs" />
                 </ToolbarBtn>
               )}
-              {show('strike') && (
+              {!isMobile && show('strike') && (
                 <ToolbarBtn onClick={() => editor.chain().focus().toggleStrike().run()} isActive={editor.isActive('strike')} title="Strikethrough">
                   <Icon icon={IconStrikethrough} size="xs" />
                 </ToolbarBtn>
               )}
-              {show('highlight') && (
+              {!isMobile && show('highlight') && (
                 <ToolbarBtn onClick={() => editor.chain().focus().toggleHighlight().run()} isActive={editor.isActive('highlight')} title="Highlight">
                   <Icon icon={IconHighlight} size="xs" />
                 </ToolbarBtn>
               )}
-              {show('code') && (
+              {!isMobile && show('code') && (
                 <ToolbarBtn onClick={() => editor.chain().focus().toggleCode().run()} isActive={editor.isActive('code')} title="Code">
                   <Icon icon={IconCode} size="xs" />
                 </ToolbarBtn>
               )}
 
-              <ToolbarDivider />
+              {!isMobile && <ToolbarDivider />}
 
-              {/* Lists */}
-              {show('bulletList') && (
+              {/* Lists — hidden on mobile */}
+              {!isMobile && show('bulletList') && (
                 <ToolbarBtn onClick={() => editor.chain().focus().toggleBulletList().run()} isActive={editor.isActive('bulletList')} title="Bullet list">
                   <Icon icon={IconList} size="xs" />
                 </ToolbarBtn>
               )}
-              {show('orderedList') && (
+              {!isMobile && show('orderedList') && (
                 <ToolbarBtn onClick={() => editor.chain().focus().toggleOrderedList().run()} isActive={editor.isActive('orderedList')} title="Ordered list">
                   <Icon icon={IconListNumbers} size="xs" />
                 </ToolbarBtn>
               )}
 
-              <ToolbarDivider />
+              {!isMobile && <ToolbarDivider />}
 
               {/* Insert */}
               {show('mention') && (mentions || onMentionSearch) && (

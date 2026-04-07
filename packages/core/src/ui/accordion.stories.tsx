@@ -41,11 +41,8 @@ export const Single: Story = {
   ),
   play: async ({ canvasElement }) => {
     const canvas = within(canvasElement)
-    // Click the first accordion trigger to expand it
-    const trigger = canvas.getByText('What is Shilp Sutra?')
-    await userEvent.click(trigger)
-    // Verify the content is now visible
-    await expect(canvas.getByText(/Devalok design system package/)).toBeVisible()
+    await userEvent.click(canvas.getByText('What is Shilp Sutra?'))
+    await waitFor(() => expect(canvas.getByText(/Devalok design system package/)).toBeVisible())
   },
 }
 
@@ -74,15 +71,10 @@ export const Multiple: Story = {
   ),
   play: async ({ canvasElement }) => {
     const canvas = within(canvasElement)
-
-    // Open the first item
     await userEvent.click(canvas.getByText('Getting Started'))
-    await expect(canvas.getByText(/Install the package/)).toBeVisible()
-
-    // Open the second item — both should remain open in "multiple" mode
+    await waitFor(() => expect(canvas.getByText(/Install the package/)).toBeVisible())
     await userEvent.click(canvas.getByText('Theming'))
-    await expect(canvas.getByText(/CSS custom properties/)).toBeVisible()
-    // First item should still be visible
+    await waitFor(() => expect(canvas.getByText(/CSS custom properties/)).toBeVisible())
     await expect(canvas.getByText(/Install the package/)).toBeVisible()
   },
 }

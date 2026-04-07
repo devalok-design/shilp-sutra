@@ -1,6 +1,6 @@
 import * as React from 'react'
 import type { Meta, StoryObj } from '@storybook/react-vite'
-import { within, userEvent, expect } from 'storybook/test'
+import { within, userEvent, expect, waitFor } from 'storybook/test'
 import { IconUser, IconBriefcase, IconCode } from '@tabler/icons-react'
 import { Combobox, type ComboboxOption } from './combobox'
 
@@ -84,18 +84,21 @@ export const Default: Story = {
     await userEvent.click(trigger)
 
     // Find the search input inside the popover (rendered via portal)
-    const searchInput = await within(document.body).findByLabelText(
-      'Search options',
-    )
-    await expect(searchInput).toBeVisible()
+    const body = within(document.body)
+    await waitFor(() => {
+      expect(body.getByLabelText('Search options')).toBeVisible()
+    })
+    const searchInput = body.getByLabelText('Search options')
 
     // Type a search query to filter options
     await userEvent.type(searchInput, 'ch')
 
     // Cherry should be visible, Apple should not
-    const listbox = within(document.body).getByRole('listbox')
-    await expect(within(listbox).getByText('Cherry')).toBeVisible()
-    await expect(within(listbox).queryByText('Apple')).toBeNull()
+    await waitFor(() => {
+      const listbox = within(document.body).getByRole('listbox')
+      expect(within(listbox).getByText('Cherry')).toBeVisible()
+      expect(within(listbox).queryByText('Apple')).toBeNull()
+    })
 
     // Press Escape to close
     await userEvent.keyboard('{Escape}')

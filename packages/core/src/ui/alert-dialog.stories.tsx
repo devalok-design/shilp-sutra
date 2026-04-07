@@ -1,5 +1,5 @@
 import type { Meta, StoryObj } from '@storybook/react-vite'
-import { within, userEvent, expect } from 'storybook/test'
+import { within, userEvent, expect, waitFor } from 'storybook/test'
 import {
   AlertDialog,
   AlertDialogAction,
@@ -47,9 +47,12 @@ export const Default: Story = {
     const canvas = within(canvasElement)
     const trigger = canvas.getByRole('button', { name: /open alert dialog/i })
     await userEvent.click(trigger)
-    const dialog = await within(document.body).findByRole('alertdialog')
-    await expect(dialog).toBeVisible()
-    await expect(within(dialog).getByText('Are you absolutely sure?')).toBeVisible()
+    const body = within(document.body)
+    await waitFor(() => {
+      const dialog = body.getByRole('alertdialog')
+      expect(dialog).toBeVisible()
+      expect(within(dialog).getByText('Are you absolutely sure?')).toBeVisible()
+    })
   },
 }
 

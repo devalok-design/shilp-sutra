@@ -1,5 +1,5 @@
 import type { Meta, StoryObj } from '@storybook/react-vite'
-import { within, userEvent, expect } from 'storybook/test'
+import { within, userEvent, expect, waitFor } from 'storybook/test'
 import {
   Select,
   SelectContent,
@@ -40,9 +40,12 @@ export const Default: Story = {
     const canvas = within(canvasElement)
     const trigger = canvas.getByRole('combobox')
     await userEvent.click(trigger)
-    const listbox = await within(document.body).findByRole('listbox')
-    await expect(listbox).toBeVisible()
-    await expect(within(listbox).getByText('Apple')).toBeVisible()
+    const body = within(document.body)
+    await waitFor(() => {
+      const listbox = body.getByRole('listbox')
+      expect(listbox).toBeVisible()
+      expect(within(listbox).getByText('Apple')).toBeVisible()
+    })
   },
 }
 
@@ -78,14 +81,15 @@ export const WithGroups: Story = {
     const trigger = canvas.getByRole('combobox')
     await userEvent.click(trigger)
 
-    // Verify group labels are visible
-    const listbox = await within(document.body).findByRole('listbox')
-    await expect(within(listbox).getByText('North America')).toBeVisible()
-    await expect(within(listbox).getByText('Asia')).toBeVisible()
-
-    // Verify options from both groups are visible
-    await expect(within(listbox).getByText('Eastern (EST)')).toBeVisible()
-    await expect(within(listbox).getByText('India (IST)')).toBeVisible()
+    // Verify group labels and options are visible
+    const body = within(document.body)
+    await waitFor(() => {
+      const listbox = body.getByRole('listbox')
+      expect(within(listbox).getByText('North America')).toBeVisible()
+      expect(within(listbox).getByText('Asia')).toBeVisible()
+      expect(within(listbox).getByText('Eastern (EST)')).toBeVisible()
+      expect(within(listbox).getByText('India (IST)')).toBeVisible()
+    })
   },
 }
 

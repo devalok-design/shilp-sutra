@@ -32,8 +32,7 @@ export const Default: Story = {
   play: async ({ canvasElement }) => {
     const canvas = within(canvasElement)
     await userEvent.hover(canvas.getByRole('button', { name: /hover me/i }))
-    const body = within(document.body)
-    await waitFor(() => expect(body.getByText('This is a tooltip')).toBeVisible())
+    await waitFor(() => expect(within(document.body).getByRole('tooltip')).toBeVisible())
   },
 }
 

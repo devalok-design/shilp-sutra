@@ -54,12 +54,12 @@ export const Default: Story = {
     await userEvent.click(canvas.getByRole('button', { name: /confirm action/i }))
     // Verify dialog is visible
     const body = within(document.body)
-    const dialog = await body.findByRole('dialog')
+    const dialog = await body.findByRole('alertdialog')
     await expect(dialog).toBeVisible()
     await expect(within(dialog).getByText('Confirm action')).toBeVisible()
     // Click Cancel to close
     await userEvent.click(within(dialog).getByRole('button', { name: /cancel/i }))
-    await waitFor(() => expect(body.queryByRole('dialog')).toBeNull())
+    await waitFor(() => expect(body.queryByRole('alertdialog')).toBeNull())
   },
 }
 

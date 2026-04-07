@@ -188,14 +188,14 @@ export const Controlled: Story = {
   render: () => <ControlledDemo />,
   play: async ({ canvasElement }) => {
     const canvas = within(canvasElement)
-    // Board is selected by default
-    const boardBtn = canvas.getByRole('radio', { name: /board/i })
-    await expect(boardBtn).toHaveAttribute('aria-checked', 'true')
+    // Board is selected by default (role="tab", not radio)
+    const boardBtn = canvas.getByRole('tab', { name: /board/i })
+    await expect(boardBtn).toHaveAttribute('aria-selected', 'true')
     // Click "List" to select it
-    const listBtn = canvas.getByRole('radio', { name: /list/i })
+    const listBtn = canvas.getByRole('tab', { name: /list/i })
     await userEvent.click(listBtn)
-    await expect(listBtn).toHaveAttribute('aria-checked', 'true')
-    await expect(boardBtn).toHaveAttribute('aria-checked', 'false')
+    await expect(listBtn).toHaveAttribute('aria-selected', 'true')
+    await expect(boardBtn).toHaveAttribute('aria-selected', 'false')
   },
 }
 

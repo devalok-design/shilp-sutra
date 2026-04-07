@@ -1,5 +1,6 @@
 import { useState } from 'react'
 import type { Meta, StoryObj } from '@storybook/react-vite'
+import { within, userEvent, expect } from 'storybook/test'
 import { IconList, IconLayoutGrid, IconCalendar, IconChartBar, IconUsers } from '@tabler/icons-react'
 import {
   SegmentedControl,
@@ -8,7 +9,7 @@ import {
   type SegmentedControlVariant,
 } from './segmented-control'
 
-// ── Mock options ────────────────────────────────────────────
+// -- Mock options ----
 
 const textOptions: SegmentedControlOption[] = [
   { id: 'board', text: 'Board' },
@@ -33,7 +34,7 @@ const twoOptions: SegmentedControlOption[] = [
   { id: 'archived', text: 'Archived' },
 ]
 
-// ── Meta ────────────────────────────────────────────────────
+// -- Meta ----
 
 const meta: Meta<typeof SegmentedControl> = {
   title: 'UI/Form Controls/SegmentedControl',
@@ -60,7 +61,7 @@ const meta: Meta<typeof SegmentedControl> = {
 export default meta
 type Story = StoryObj<typeof SegmentedControl>
 
-// ── Helper wrapper for controlled state ─────────────────────
+// -- Helper wrapper for controlled state ----
 
 function ControlledDemo({
   size = 'md',
@@ -89,7 +90,7 @@ function ControlledDemo({
   )
 }
 
-// ── Stories ──────────────────────────────────────────────────
+// -- Stories ----
 
 export const Default: Story = {
   args: {
@@ -185,6 +186,17 @@ export const DisabledDefault: Story = {
 
 export const Controlled: Story = {
   render: () => <ControlledDemo />,
+  play: async ({ canvasElement }) => {
+    const canvas = within(canvasElement)
+    // Board is selected by default
+    const boardBtn = canvas.getByRole('radio', { name: /board/i })
+    await expect(boardBtn).toHaveAttribute('aria-checked', 'true')
+    // Click "List" to select it
+    const listBtn = canvas.getByRole('radio', { name: /list/i })
+    await userEvent.click(listBtn)
+    await expect(listBtn).toHaveAttribute('aria-checked', 'true')
+    await expect(boardBtn).toHaveAttribute('aria-checked', 'false')
+  },
 }
 
 export const ControlledWithIcons: Story = {

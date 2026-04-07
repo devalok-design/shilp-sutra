@@ -1,4 +1,5 @@
 import type { Meta, StoryObj } from '@storybook/react-vite'
+import { within, userEvent, expect, waitFor } from 'storybook/test'
 import { useState } from 'react'
 import { format } from 'date-fns'
 import { DatePicker, DateRangePicker, CalendarGrid, TimePicker, DateTimePicker } from './date-picker'
@@ -15,6 +16,14 @@ type DatePickerStory = StoryObj<typeof DatePicker>
 
 export const Default: DatePickerStory = {
   args: {},
+  play: async ({ canvasElement }) => {
+    const canvas = within(canvasElement)
+    // Click the trigger to open the calendar popover
+    await userEvent.click(canvas.getByRole('button', { name: /pick a date/i }))
+    // Verify the calendar grid is visible in the portal
+    const body = within(document.body)
+    await waitFor(() => expect(body.getByRole('grid')).toBeVisible())
+  },
 }
 
 export const WithValue: DatePickerStory = {

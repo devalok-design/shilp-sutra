@@ -1,5 +1,6 @@
 import React, { useState } from 'react'
 import type { Meta, StoryObj } from '@storybook/react-vite'
+import { within, userEvent, expect } from 'storybook/test'
 import { FilterBar, FilterSelect, FilterMultiSelect } from './filter-bar'
 
 const meta: Meta<typeof FilterBar> = {
@@ -58,6 +59,13 @@ function DefaultDemo() {
 
 export const Default: Story = {
   render: () => <DefaultDemo />,
+  play: async ({ canvasElement }) => {
+    const canvas = within(canvasElement)
+    // Type in the search field
+    const searchInput = canvas.getByPlaceholderText('Search tasks...')
+    await userEvent.type(searchInput, 'design')
+    await expect(searchInput).toHaveValue('design')
+  },
 }
 
 const assigneeOptions = [

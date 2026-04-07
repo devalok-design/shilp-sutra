@@ -1,4 +1,5 @@
 import type { Meta, StoryObj } from '@storybook/react-vite'
+import { within, userEvent, expect } from 'storybook/test'
 import { useState } from 'react'
 import { IconSearch, IconX, IconMail, IconLock, IconEye, IconEyeOff } from '@tabler/icons-react'
 import { Input } from './input'
@@ -24,6 +25,12 @@ type Story = StoryObj<typeof Input>
 export const Default: Story = {
   args: {
     placeholder: 'Enter text...',
+  },
+  play: async ({ canvasElement }) => {
+    const canvas = within(canvasElement)
+    const input = canvas.getByPlaceholderText('Enter text...')
+    await userEvent.type(input, 'Hello world')
+    await expect(input).toHaveValue('Hello world')
   },
 }
 

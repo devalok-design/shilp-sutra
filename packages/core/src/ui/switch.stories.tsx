@@ -1,4 +1,5 @@
 import type { Meta, StoryObj } from '@storybook/react-vite'
+import { within, userEvent, expect } from 'storybook/test'
 import { IconCheck, IconLock } from '@tabler/icons-react'
 import { Switch } from './switch'
 import { Label } from './label'
@@ -17,6 +18,13 @@ type Story = StoryObj<typeof Switch>
 
 export const Default: Story = {
   args: {},
+  play: async ({ canvasElement }) => {
+    const canvas = within(canvasElement)
+    const switchEl = canvas.getByRole('switch')
+    await expect(switchEl).toHaveAttribute('data-state', 'unchecked')
+    await userEvent.click(switchEl)
+    await expect(switchEl).toHaveAttribute('data-state', 'checked')
+  },
 }
 
 export const Checked: Story = {

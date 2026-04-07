@@ -1,4 +1,5 @@
 import type { Meta, StoryObj } from '@storybook/react-vite'
+import { within, userEvent, expect, waitFor } from 'storybook/test'
 import { useState } from 'react'
 import { DataTable } from './data-table'
 import type { ColumnDef } from '@tanstack/react-table'
@@ -87,6 +88,14 @@ export const SingleRow: Story = {
 
 export const Sortable: Story = {
   render: () => <DataTable columns={columns} data={data} sortable />,
+  play: async ({ canvasElement }) => {
+    const canvas = within(canvasElement)
+    // Click the "Title" column header to sort
+    const titleHeader = canvas.getByRole('columnheader', { name: /title/i })
+    await userEvent.click(titleHeader)
+    // Verify the sort indicator appeared (the header should now have an aria-sort attribute)
+    await waitFor(() => expect(titleHeader).toHaveAttribute('aria-sort'))
+  },
 }
 
 const filterData: Task[] = [
@@ -165,6 +174,15 @@ function SelectableDemo() {
 
 export const Selectable: Story = {
   render: () => <SelectableDemo />,
+  play: async ({ canvasElement }) => {
+    const canvas = within(canvasElement)
+    // Click the first row checkbox (skip the header checkbox)
+    const checkboxes = canvas.getAllByRole('checkbox')
+    // checkboxes[0] is the header "select all", checkboxes[1] is the first row
+    await userEvent.click(checkboxes[1])
+    // Verify the selection count updated
+    await waitFor(() => expect(canvas.getByText(/1 of 10 row\(s\) selected/)).toBeVisible())
+  },
 }
 
 export const WithToolbar: Story = {

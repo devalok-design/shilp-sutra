@@ -1,5 +1,6 @@
 import React, { useState } from 'react'
 import type { Meta, StoryObj } from '@storybook/react-vite'
+import { within, userEvent, expect, waitFor } from 'storybook/test'
 import { InlineEdit } from './inline-edit'
 
 const meta: Meta<typeof InlineEdit> = {
@@ -21,6 +22,15 @@ function HeadingDemo() {
 export const Default: Story = {
   render: () => <HeadingDemo />,
   name: 'Heading (click to edit)',
+  play: async ({ canvasElement }) => {
+    const canvas = within(canvasElement)
+    const textbox = canvas.getByRole('textbox')
+    // Verify initial text
+    await expect(textbox).toHaveTextContent('Sprint Planning Q2')
+    // Click to focus and enter edit mode
+    await userEvent.click(textbox)
+    await waitFor(() => expect(textbox).toHaveFocus())
+  },
 }
 
 function BodyTextDemo() {

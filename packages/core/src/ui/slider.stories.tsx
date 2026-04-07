@@ -1,4 +1,5 @@
 import type { Meta, StoryObj } from '@storybook/react-vite'
+import { within, expect } from 'storybook/test'
 import { Slider } from './slider'
 
 const meta: Meta<typeof Slider> = {
@@ -15,6 +16,12 @@ export const Default: Story = {
     max: 100,
     step: 1,
     className: 'w-60',
+  },
+  play: async ({ canvasElement }) => {
+    const canvas = within(canvasElement)
+    const slider = canvas.getByRole('slider')
+    await expect(slider).toBeVisible()
+    await expect(slider).toHaveAttribute('aria-valuenow', '50')
   },
 }
 

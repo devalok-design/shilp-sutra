@@ -38,6 +38,9 @@ const BARREL_ISOLATED_FILES = new Set([
   'data-table-toolbar.tsx',
 ])
 
+// Directories containing internal-only components (not exported to consumers).
+const INTERNAL_DIRS = new Set(['lib'])
+
 /** Cache of barrel file contents by directory path. */
 const barrelCache = new Map()
 
@@ -57,6 +60,7 @@ function collectTsx(dir, acc = []) {
   for (const e of fs.readdirSync(dir, { withFileTypes: true })) {
     const full = path.join(dir, e.name)
     if (e.isDirectory()) {
+      if (INTERNAL_DIRS.has(e.name)) continue // skip internal-only directories
       collectTsx(full, acc)
     } else if (
       e.name.endsWith('.tsx') &&

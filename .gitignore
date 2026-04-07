@@ -14,3 +14,4 @@ packages/*/src/**/*.js
 !packages/*/src/scripts/**/*.js
 giving-claude-eyes/
 tmp-sb-index.json
+build-storybook.log

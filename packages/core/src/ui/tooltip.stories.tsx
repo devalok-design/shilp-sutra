@@ -1,4 +1,5 @@
 import type { Meta, StoryObj } from '@storybook/react-vite'
+import { within, userEvent, expect, waitFor } from 'storybook/test'
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from './tooltip'
 import { Button } from './button'
 
@@ -28,6 +29,12 @@ export const Default: Story = {
       </TooltipContent>
     </Tooltip>
   ),
+  play: async ({ canvasElement }) => {
+    const canvas = within(canvasElement)
+    await userEvent.hover(canvas.getByRole('button', { name: /hover me/i }))
+    const body = within(document.body)
+    await waitFor(() => expect(body.getByText('This is a tooltip')).toBeVisible())
+  },
 }
 
 export const Top: Story = {

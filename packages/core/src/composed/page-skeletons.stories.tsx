@@ -4,7 +4,6 @@ import {
   ProjectListSkeleton,
   TaskDetailSkeleton,
 } from './page-skeletons'
-import { DevsabhaSkeleton, BandwidthSkeleton } from '../../../karm/src/page-skeletons'
 
 const meta: Meta = {
   title: 'Composed/PageSkeletons',
@@ -26,14 +25,6 @@ export const Dashboard: Story = {
 
 export const ProjectList: Story = {
   render: () => <ProjectListSkeleton />,
-}
-
-export const Devsabha: Story = {
-  render: () => <DevsabhaSkeleton />,
-}
-
-export const Bandwidth: Story = {
-  render: () => <BandwidthSkeleton />,
 }
 
 export const TaskDetail: Story = {
@@ -59,20 +50,6 @@ export const AllPageSkeletons: Story = {
           ProjectListSkeleton
         </p>
         <ProjectListSkeleton />
-      </div>
-
-      <div>
-        <p style={{ marginBottom: 16, fontSize: 14, fontWeight: 600, color: 'var(--color-surface-fg)' }}>
-          DevsabhaSkeleton
-        </p>
-        <DevsabhaSkeleton />
-      </div>
-
-      <div>
-        <p style={{ marginBottom: 16, fontSize: 14, fontWeight: 600, color: 'var(--color-surface-fg)' }}>
-          BandwidthSkeleton
-        </p>
-        <BandwidthSkeleton />
       </div>
 
       <div>

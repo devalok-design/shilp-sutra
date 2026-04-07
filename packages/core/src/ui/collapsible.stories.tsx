@@ -1,4 +1,5 @@
 import type { Meta, StoryObj } from '@storybook/react-vite'
+import { within, userEvent, expect } from 'storybook/test'
 import { Collapsible, CollapsibleContent, CollapsibleTrigger } from './collapsible'
 import { Button } from './button'
 
@@ -34,6 +35,15 @@ export const Default: Story = {
       </CollapsibleContent>
     </Collapsible>
   ),
+  play: async ({ canvasElement }) => {
+    const canvas = within(canvasElement)
+    // Initially, hidden content should not be visible
+    await expect(canvas.queryByText('@radix-ui/colors')).toBeNull()
+    // Click toggle to expand
+    await userEvent.click(canvas.getByRole('button', { name: /toggle/i }))
+    // Verify expanded content is visible
+    await expect(canvas.getByText('@radix-ui/colors')).toBeVisible()
+  },
 }
 
 export const DefaultOpen: Story = {

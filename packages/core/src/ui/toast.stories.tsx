@@ -1,5 +1,6 @@
 import * as React from 'react'
 import type { Meta, StoryObj } from '@storybook/react-vite'
+import { within, userEvent, expect, waitFor } from 'storybook/test'
 import { toast } from './toast'
 import type { UploadFile } from './toast-types'
 import { Toaster } from './toaster'
@@ -31,6 +32,12 @@ export const Default: Story = {
         Show Default Toast
       </Button>
     )
+  },
+  play: async ({ canvasElement }) => {
+    const canvas = within(canvasElement)
+    await userEvent.click(canvas.getByRole('button', { name: /show default toast/i }))
+    const body = within(document.body)
+    await waitFor(() => expect(body.getByText('Something happened')).toBeVisible())
   },
 }
 

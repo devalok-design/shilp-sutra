@@ -1,4 +1,5 @@
 import type { Meta, StoryObj } from '@storybook/react-vite'
+import { within, userEvent, expect, waitFor } from 'storybook/test'
 import { Popover, PopoverContent, PopoverTrigger } from './popover'
 import { Button } from './button'
 import { Input } from './input'
@@ -40,6 +41,14 @@ export const Default: Story = {
       </PopoverContent>
     </Popover>
   ),
+  play: async ({ canvasElement }) => {
+    const canvas = within(canvasElement)
+    await userEvent.click(canvas.getByRole('button', { name: /open popover/i }))
+    const body = within(document.body)
+    await waitFor(() => expect(body.getByText('Dimensions')).toBeVisible())
+    await userEvent.keyboard('{Escape}')
+    await waitFor(() => expect(body.queryByText('Dimensions')).toBeNull())
+  },
 }
 
 export const SimpleContent: Story = {
@@ -84,9 +93,7 @@ export const AlignEnd: Story = {
 }
 
 export const MobileDrawer: Story = {
-  parameters: {
-    viewport: { defaultViewport: 'mobile1' },
-  },
+  globals: { viewport: 'mobile' },
   render: () => (
     <Popover>
       <PopoverTrigger asChild>

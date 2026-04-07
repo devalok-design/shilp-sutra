@@ -1,4 +1,5 @@
 import type { Meta, StoryObj } from '@storybook/react-vite'
+import { within, userEvent, expect, waitFor } from 'storybook/test'
 import * as React from 'react'
 import {
   Sheet,
@@ -54,6 +55,14 @@ export const Right: Story = {
       </SheetContent>
     </Sheet>
   ),
+  play: async ({ canvasElement }) => {
+    const canvas = within(canvasElement)
+    await userEvent.click(canvas.getByRole('button', { name: /open sheet \(right\)/i }))
+    const body = within(document.body)
+    await waitFor(() => expect(body.getByText('Edit Profile')).toBeVisible())
+    await userEvent.keyboard('{Escape}')
+    await waitFor(() => expect(body.queryByText('Edit Profile')).toBeNull())
+  },
 }
 
 export const Left: Story = {
@@ -119,9 +128,7 @@ export const Bottom: Story = {
 }
 
 export const MobileBottomSheet: Story = {
-  parameters: {
-    viewport: { defaultViewport: 'mobile1' },
-  },
+  globals: { viewport: 'mobile' },
   render: function Render() {
     const [open, setOpen] = React.useState(false)
     return (

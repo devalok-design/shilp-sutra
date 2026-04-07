@@ -1,6 +1,10 @@
 name: Visual Review (Chromatic)
 
 on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
   workflow_dispatch:
     inputs:
       auto_accept:
@@ -29,14 +33,12 @@ jobs:
       - name: Install dependencies
         run: pnpm install --frozen-lockfile
 
-      - name: Build Storybook
-        run: pnpm build-storybook
-
       - name: Run Chromatic
         uses: chromaui/action@latest
         with:
           projectToken: ${{ secrets.CHROMATIC_PROJECT_TOKEN }}
-          storybookBuildDir: storybook-static
+          buildScriptName: build-storybook
           exitZeroOnChanges: true
-          autoAcceptChanges: ${{ inputs.auto_accept }}
+          exitOnceUploaded: true
+          autoAcceptChanges: ${{ inputs.auto_accept || false }}
           onlyChanged: true

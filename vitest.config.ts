@@ -17,6 +17,11 @@ export default defineConfig({
     },
   },
   test: {
+    coverage: {
+      provider: 'v8',
+      include: ['packages/core/src/**/*.tsx'],
+      exclude: ['**/*.test.*', '**/*.stories.*', '**/primitives/**', '**/__tests__/**'],
+    },
     projects: [
       {
         extends: true,

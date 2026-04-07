@@ -32,6 +32,29 @@ const withThemeToggle = (Story: any, context: any) => {
   )
 }
 
+/* ── Viewport toolbar decorator ──────────────────────────────────
+   Constrains the story container width to simulate common device sizes.
+   Controlled via the viewport toolbar global. */
+const viewportSizes: Record<string, string | undefined> = {
+  responsive: undefined,
+  mobile: '375px',
+  tablet: '768px',
+  desktop: '1280px',
+}
+
+const withViewport = (Story: any, context: any) => {
+  const viewport = context.globals.viewport as string
+  const width = viewportSizes[viewport]
+
+  if (!width) return React.createElement(Story)
+
+  return React.createElement(
+    'div',
+    { style: { width, margin: '0 auto' } },
+    React.createElement(Story)
+  )
+}
+
 export const preview = definePreview({
   addons: [],
   globalTypes: {
@@ -48,11 +71,28 @@ export const preview = definePreview({
         dynamicTitle: true,
       },
     },
+    viewport: {
+      name: 'Viewport',
+      description: 'Preview viewport size',
+      toolbar: {
+        icon: 'mobile',
+        items: [
+          { value: 'responsive', title: 'Responsive' },
+          { value: 'mobile', title: 'Mobile (375px)' },
+          { value: 'tablet', title: 'Tablet (768px)' },
+          { value: 'desktop', title: 'Desktop (1280px)' },
+        ],
+        showName: true,
+        dynamicTitle: true,
+      },
+    },
   },
   initialGlobals: {
     theme: 'light',
+    viewport: 'responsive',
   },
   decorators: [
+    withViewport,
     withThemeToggle,
     (Story: any) =>
       React.createElement(

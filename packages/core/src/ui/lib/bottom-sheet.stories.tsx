@@ -7,9 +7,7 @@ const meta: Meta<typeof BottomSheet> = {
   title: 'Internal/BottomSheet',
   component: BottomSheet,
   tags: ['autodocs'],
-  parameters: {
-    viewport: { defaultViewport: 'mobile1' },
-  },
+  globals: { viewport: 'mobile' },
 }
 export default meta
 type Story = StoryObj<typeof BottomSheet>

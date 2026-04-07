@@ -129,9 +129,7 @@ export const SimpleMessage: Story = {
 }
 
 export const MobileFullScreen: Story = {
-  parameters: {
-    viewport: { defaultViewport: 'mobile1' },
-  },
+  globals: { viewport: 'mobile' },
   render: function Render() {
     const [open, setOpen] = React.useState(false)
     return (

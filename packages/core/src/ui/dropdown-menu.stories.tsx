@@ -59,9 +59,12 @@ export const Default: Story = {
     const canvas = within(canvasElement)
     const trigger = canvas.getByRole('button', { name: /open menu/i })
     await userEvent.click(trigger)
-    const menu = await within(document.body).findByRole('menu')
-    await expect(menu).toBeVisible()
-    await expect(within(menu).getByText('Profile')).toBeVisible()
+    const body = within(document.body)
+    await waitFor(() => {
+      const menu = body.getByRole('menu')
+      expect(menu).toBeVisible()
+      expect(within(menu).getByText('Profile')).toBeVisible()
+    })
   },
 }
 

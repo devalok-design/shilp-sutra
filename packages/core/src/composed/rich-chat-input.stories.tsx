@@ -58,6 +58,16 @@ export const Default: Story = {
   args: {
     onSubmit: fn(),
     placeholder: 'Type a message...',
+    mentions,
+    slashCommands,
+    onFileUpload: async (file: File) => {
+      await new Promise((r) => setTimeout(r, 1000))
+      return { url: '#', name: file.name, size: file.size }
+    },
+    onImageUpload: async () => {
+      await new Promise((r) => setTimeout(r, 1000))
+      return 'https://placehold.co/200x200/6366F1/ffffff?text=Uploaded'
+    },
   },
 }
 

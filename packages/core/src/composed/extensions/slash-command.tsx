@@ -245,6 +245,7 @@ export function createSlashCommandExtension(groups: SlashCommandGroup[]) {
     addProseMirrorPlugins() {
       return [
         Suggestion({
+          pluginKey: 'slashCommand' as any,
           editor: this.editor,
           char: '/',
           startOfLine: true,

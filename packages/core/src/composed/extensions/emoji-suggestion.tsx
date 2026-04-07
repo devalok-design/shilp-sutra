@@ -171,6 +171,7 @@ export const EmojiSuggestion = Extension.create({
   addProseMirrorPlugins() {
     return [
       Suggestion({
+        pluginKey: 'emojiSuggestion' as any,
         editor: this.editor,
         char: ':',
         items: async ({ query }) => {

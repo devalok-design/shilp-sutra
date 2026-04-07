@@ -5,6 +5,92 @@ All notable changes to `@devalok/shilp-sutra` will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.32.0] - 2026-04-07 (core)
+
+### BREAKING CHANGES
+
+- **Button:** Removed deprecated variant aliases — `variant="default"` (use `"solid"`), `variant="destructive"` (use `variant="solid" color="error"`), `color="default"` (use `"accent"`).
+- **Chip:** Removed deprecated component. Use `Badge` with appropriate variant instead.
+- **SegmentedControl:** Complete rewrite. `variant="filled"` renamed to `"accent"`, `variant="tonal"` renamed to `"default"`. `SegmentedControlItem` and `segmentedControlItemVariants` no longer exported. Legacy size aliases (`small`/`medium`/`big`) removed — use `sm`/`md`/`lg`. `size` and `variant` props are now optional (default `md` and `default`).
+- **TopBar:** Root element changed from `<div>` to `<header>`. Consumer tests using `querySelector('div')` on TopBar may break.
+- **Sidebar (ui):** Root element changed from `<div>` to `<aside>`. Consumer tests querying by `div` may break.
+- **InfoBlock (AI):** `role="alert"` changed to `role="status"`. Consumer tests using `getByRole('alert')` on info blocks will break.
+- **Border tokens:** All surface border tokens bumped one step darker (light: neutral-5→6, 6→7, 4→5; dark: neutral-3→4, 4→5, 2→3). Borders are slightly more prominent system-wide.
+- **Dark mode `*-fg` tokens:** Accent/status foreground tokens in dark mode changed to `neutral-0` (#ffffff) for pure white text on brand-colored buttons. Previously used `neutral-12` (gray).
+- **BottomNavbar:** Bottom padding changed from `pb-ds-05b` to `pb-safe` (safe-area-inset-bottom). Accounts for home indicator on notched phones.
+- **ResponsiveOverlay:** Deprecated. Dialog and Sheet now auto-adapt to mobile viewports individually.
+- **iOS input zoom:** Inputs, textareas, and selects on mobile are forced to `font-size: max(16px, 1em)` via `!important` to prevent iOS Safari auto-zoom.
+
+### Added
+
+- **Mobile Responsiveness**
+  - **Dialog auto-fullScreen on mobile** — Below 768px, Dialog fills the viewport with slide-up animation. Opt out via `responsive={false}`.
+  - **Sheet auto-bottom on mobile** — Sheet overrides `side` to `"bottom"` on mobile with swipe-to-dismiss (drag handle, 30% threshold / 500px/s velocity). Opt out via `responsive={false}`.
+  - **Popover → bottom drawer on mobile** — Popover renders as a BottomSheet on mobile instead of floating positioned.
+  - **BottomSheet internal primitive** — Built on Radix Dialog (focus trap, scroll lock, Escape dismiss). Used by Sheet and Popover on mobile.
+  - **Touch target utility** — `.touch-target` Tailwind class adds invisible 44px hit area (Apple HIG minimum).
+  - **Safe area inset utilities** — `.pt-safe`, `.pb-safe`, `.pl-safe`, `.pr-safe`, `.p-safe` for notched/island devices.
+  - **`useTouchDevice()` hook** — Detects touch input capability (vs viewport width). SSR-safe.
+  - **`useViewportHeight()` hook** — Returns dynamic viewport height via Visual Viewport API. Accounts for mobile browser toolbar and virtual keyboard.
+  - **AppSidebar mobile swipe-to-close** — Sidebar stays as left drawer on mobile with swipe gesture + backdrop overlay.
+- **DataTable `mobileView="card"` prop** — Below 640px, rows render as vertically stacked cards with primary field as title, remaining fields as label-value pairs. Selection, sorting, filtering, pagination work identically.
+- **DataTable `aria-sort`** — Sortable column headers now include `aria-sort="ascending|descending|none"`.
+- **Charts `ariaLabel` prop** — All 6 chart components (AreaChart, BarChart, LineChart, PieChart, RadarChart, ChartContainer) accept configurable `ariaLabel` for screen readers.
+- **SegmentedControl rewrite** — Inset radius pattern (10px container, 6px pill), `shadow-sm` on active pill, snappy spring animation (stiffness 400, damping 30), clean `font-medium` typography. Two variants: `default` (white pill) and `accent` (brand-colored pill).
+- **Pre-publish gates** — Stories existence check, brand version match, bundle size tracking added to pre-publish audit script.
+- **Checkbox/Radio `size` prop** — `sm` (20px), `md` (24px, default), `lg` (28px).
+- **`--shadow-kbd` token** — Keyboard shortcut badge shadow extracted to semantic token. Replaces 11 hardcoded `rgba(0,0,0,0.1)` shadows.
+- **Popover animation keyframes** — `popover-in` / `popover-out` keyframes + utilities added to Tailwind preset for CSS-based overlay animations.
+
+### Fixed
+
+- **Ecosystem-wide accessibility audit** — 46 fixes from deep 123-component audit:
+  - 6 keyboard-inaccessible components fixed (SegmentedControl, BulkActionBar, MasterDetail, BottomNavbar "More", BlockTable sort headers, MonthPicker/YearPicker grid nav)
+  - 4 missing landmark roles fixed (TopBar → `<header>`, Sidebar → `<aside>`, Stepper `aria-current="step"`)
+  - 5 animations now respect `prefers-reduced-motion` (StatusDot, Badge, ProgressRing, BottomNavbar, NotificationCenter)
+  - 10 components received `forwardRef`/`displayName`
+  - 18 icon-only buttons received `title` attribute tooltips (Dialog, Sheet, Banner, NumberInput, SearchInput, CommandBar, Toast, FilePreview)
+  - Toast retry/cancel buttons increased to 24px (WCAG 2.5.8)
+  - Toast timer now pauses on keyboard focus (not just mouse hover)
+  - ColorInput labels increased from 10px to token-based sizes
+  - NumberInput focus ring standardized (`ring-2 ring-accent-9`)
+  - Autocomplete blur timeout replaced with `relatedTarget` focus management
+  - Switch `sm` thumb increased from 18px to 20px
+  - `CommandRegistry` added missing `'use client'` directive
+  - Menubar exit animation replaced broken framer-motion with CSS `data-state` animations
+  - HoverCard JSDoc warning added (pointer-only, use Popover for essential content)
+  - 9 AI block components received `displayName`
+- **Dark mode invisible border** — `--color-surface-border-subtle` was identical to `--color-surface-raised` in dark mode (1:1 contrast). Fixed.
+- **ProgressRing track invisible** — Track stroke changed from `surface-sunken` to `surface-raised-hover` for visibility on white cards.
+- **iOS Safari input auto-zoom** — Mobile inputs forced to `font-size: max(16px, 1em)` to prevent viewport zoom on focus.
+- **Tailwind preset** — Dead `fontVariantNumeric` config moved to `addUtilities` plugin. Focus-ring plugin now uses `--border-focus-width`/`--border-focus-offset` tokens instead of hardcoded values.
+- **DataTable density** — `py-ds-02`/`py-ds-05`/`py-ds-07` added to Tailwind safelist for reliable JIT generation. Small checkbox (`size="sm"`) in selection columns.
+
+### Changed
+
+- **Badge CVA** — 57 compound variants replaced with color map lookup (~20 rules). API unchanged.
+- **Button CVA** — 36 → 25 compound variants after deprecated alias removal.
+- **DataTable** — Decomposed from 1,154-line monolith into 5 focused sub-components (context, header, body, pagination, card). Public API unchanged.
+- **FilePreview** — Decomposed from 964-line monolith into format-specific renderers (image, video, audio, document, embed). Public API unchanged.
+- **SegmentedControl** — Rewritten from 458 to 166 lines. Removed useRipple, complex compound shadows, asymmetric padding.
+- **JSDoc** — Added documentation to 10 complex interfaces (CommandPalette, RichTextEditor, DatePicker, DataTable, Combobox, FilterBar, MasterDetail, ScheduleView, AIConversation, CommandBar).
+
+### Removed
+
+- **Chip component** — Fully removed (was deprecated since v0.29.0). Use `Badge` instead.
+- **`useRipple` hook** — Dead code removed (unused after SegmentedControl rewrite).
+- **`SegmentedControlItem`** — No longer exported. Use `SegmentedControl` with `options` prop.
+- **`segmentedControlItemVariants`** — No longer exported.
+
+### Test Coverage
+
+- 6 new test files (Breadcrumb, Link, IconContext, ButtonProcessing, CommandRegistry, DevadootIcon)
+- 16 components received axe accessibility assertions
+- 7 overlay/navigation components received keyboard interaction tests
+- 15 SSR `renderToString` smoke tests for `@server-safe` components
+- BottomSheet and Dialog responsive tests
+- `useTouchDevice` and `useViewportHeight` hook tests
+
 ## [0.31.0] - 2026-04-06 (core)
 
 ### Added

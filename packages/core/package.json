@@ -859,6 +859,7 @@
   },
   "packageManager": "pnpm@10.0.0",
   "dependencies": {
-    "@tiptap/extension-character-count": "^3.22.2"
+    "@tiptap/extension-character-count": "^3.22.2",
+    "prosemirror-state": "^1.4.4"
   }
 }

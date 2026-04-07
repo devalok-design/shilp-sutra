@@ -1,5 +1,6 @@
 import { Extension } from '@tiptap/core'
 import Suggestion, { type SuggestionProps, type SuggestionKeyDownProps } from '@tiptap/suggestion'
+import { PluginKey } from 'prosemirror-state'
 import * as React from 'react'
 import { createRoot, type Root } from 'react-dom/client'
 import { cn } from '../../ui/lib/utils'
@@ -171,7 +172,7 @@ export const EmojiSuggestion = Extension.create({
   addProseMirrorPlugins() {
     return [
       Suggestion({
-        pluginKey: 'emojiSuggestion' as any,
+        pluginKey: new PluginKey('emojiSuggestion'),
         editor: this.editor,
         char: ':',
         items: async ({ query }) => {

@@ -219,6 +219,9 @@ importers:
       '@tiptap/extension-character-count':
         specifier: ^3.22.2
         version: 3.22.2(@tiptap/extensions@3.22.2(@tiptap/core@2.27.2(@tiptap/pm@2.27.2))(@tiptap/pm@2.27.2))
+      prosemirror-state:
+        specifier: ^1.4.4
+        version: 1.4.4
       react:
         specifier: ^18 || ^19
         version: 19.2.4

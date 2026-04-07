@@ -2,6 +2,7 @@
 
 import { Extension } from '@tiptap/core'
 import Suggestion, { type SuggestionProps, type SuggestionKeyDownProps } from '@tiptap/suggestion'
+import { PluginKey } from 'prosemirror-state'
 import type { Editor } from '@tiptap/core'
 import * as React from 'react'
 import { createRoot, type Root } from 'react-dom/client'
@@ -245,7 +246,7 @@ export function createSlashCommandExtension(groups: SlashCommandGroup[]) {
     addProseMirrorPlugins() {
       return [
         Suggestion({
-          pluginKey: 'slashCommand' as any,
+          pluginKey: new PluginKey('slashCommand'),
           editor: this.editor,
           char: '/',
           startOfLine: true,

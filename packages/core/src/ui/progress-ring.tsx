@@ -84,7 +84,7 @@ const ProgressRing = React.forwardRef<SVGSVGElement, ProgressRingProps>(
           cy={center}
           r={radius}
           fill="none"
-          stroke="var(--color-surface-sunken)"
+          stroke="var(--color-surface-raised-hover)"
           strokeWidth={config.strokeWidth}
         />
         {/* Value */}
@@ -171,7 +171,7 @@ const MultiProgressRing = React.forwardRef<SVGSVGElement, MultiProgressRingProps
                 cy={center}
                 r={radius}
                 fill="none"
-                stroke="var(--color-surface-sunken)"
+                stroke="var(--color-surface-raised-hover)"
                 strokeWidth={config.strokeWidth}
               />
               <motion.circle

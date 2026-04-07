@@ -53,6 +53,10 @@ export interface DataTableContextValue<TData = unknown> {
   expandable: boolean
   /** Whether virtual rows are enabled */
   virtualRows: boolean
+  /** Whether row selection is enabled */
+  selectable: boolean
+  /** Mobile view mode */
+  mobileView: 'card' | 'table'
   /** Current editing cell */
   editingCell: EditingCell
   /** Set editing cell */

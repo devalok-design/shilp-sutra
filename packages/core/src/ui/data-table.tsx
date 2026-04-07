@@ -36,6 +36,7 @@ import {
 } from './data-table-context'
 import { DataTableHeader } from './data-table-header'
 import { DataTableBody } from './data-table-body'
+import { DataTableCards } from './data-table-card'
 import { DataTablePagination } from './data-table-pagination'
 import { DataTableBulkActions, type BulkAction } from './data-table-bulk-actions'
 
@@ -205,6 +206,10 @@ export interface DataTableProps<TData, TValue> {
   // --- Bulk actions ---
   /** Actions shown in a floating bar when rows are selected */
   bulkActions?: BulkAction<TData>[]
+
+  // --- Mobile view ---
+  /** Render rows as stacked cards on small screens (below sm breakpoint). Default 'table'. */
+  mobileView?: 'card' | 'table'
 }
 
 export function DataTable<TData, TValue>({
@@ -241,7 +246,20 @@ export function DataTable<TData, TValue>({
   stickyHeader = false,
   onRowClick,
   bulkActions,
+  mobileView = 'table',
 }: DataTableProps<TData, TValue>) {
+  // Detect below-sm viewport (640px) for card mode — separate from useIsMobile (768px)
+  const [isBelowSm, setIsBelowSm] = useState(false)
+  useEffect(() => {
+    const mql = window.matchMedia('(max-width: 639px)')
+    const onChange = () => setIsBelowSm(mql.matches)
+    mql.addEventListener('change', onChange)
+    setIsBelowSm(mql.matches)
+    return () => mql.removeEventListener('change', onChange)
+  }, [])
+
+  const showCards = mobileView === 'card' && isBelowSm
+
   const [sorting, setSorting] = useState<SortingState>([])
   const [columnFilters, setColumnFilters] = useState<ColumnFiltersState>([])
   const [globalFilterValue, setGlobalFilterValue] = useState('')
@@ -552,6 +570,8 @@ export function DataTable<TData, TValue>({
       editable,
       expandable,
       virtualRows,
+      selectable,
+      mobileView,
       editingCell,
       setEditingCell,
       onCellEdit,
@@ -569,6 +589,8 @@ export function DataTable<TData, TValue>({
       editable,
       expandable,
       virtualRows,
+      selectable,
+      mobileView,
       editingCell,
       onCellEdit,
       renderExpanded,
@@ -629,8 +651,15 @@ export function DataTable<TData, TValue>({
           </div>
         )}
 
-        {/* Virtualized scroll container or plain table */}
-        {virtualRows ? (
+        {/* Card view on small screens, or standard table */}
+        {showCards ? (
+          <DataTableCards
+            loading={loading}
+            skeletonRowCount={skeletonRowCount}
+            noResultsText={noResultsText}
+            emptyState={emptyState}
+          />
+        ) : virtualRows ? (
           <div
             ref={scrollContainerRef}
             style={{ maxHeight: `${maxHeight}px`, overflowY: 'auto' }}

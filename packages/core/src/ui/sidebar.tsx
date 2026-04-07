@@ -3,7 +3,7 @@
 import { Slot } from '@primitives/react-slot'
 import { VariantProps, cva } from 'class-variance-authority'
 import { IconLayoutSidebarLeftCollapse } from '@tabler/icons-react'
-import { motion } from 'framer-motion'
+import { motion, useReducedMotion } from 'framer-motion'
 
 import { useIsMobile } from '../hooks/use-mobile'
 import { springs } from './lib/motion'
@@ -27,6 +27,7 @@ import {
   useCallback,
   useEffect,
   useContext,
+  useRef,
   useState,
   createContext,
   CSSProperties,
@@ -169,6 +170,57 @@ const SidebarProvider = forwardRef<
 )
 SidebarProvider.displayName = 'SidebarProvider'
 
+// ── SidebarSwipeWrapper (swipe-to-close on mobile) ─────────────────
+
+// TODO: edge-swipe-to-open (swipe from left edge to open sidebar)
+
+function SidebarSwipeWrapper({
+  side,
+  onClose,
+  children,
+}: {
+  side: 'left' | 'right'
+  onClose: () => void
+  children: React.ReactNode
+}) {
+  const isReduced = useReducedMotion()
+  const panelRef = useRef<HTMLDivElement>(null)
+
+  // For a left sidebar, user swipes left (negative x) to close.
+  // For a right sidebar, user swipes right (positive x) to close.
+  const dragAxis = 'x' as const
+  const dragConstraints = side === 'left' ? { right: 0 } : { left: 0 }
+
+  return (
+    <motion.div
+      ref={panelRef}
+      className="h-full w-full"
+      drag={!isReduced ? dragAxis : false}
+      dragConstraints={dragConstraints}
+      dragElastic={0.2}
+      onDragEnd={(
+        _: unknown,
+        info: { offset: { x: number }; velocity: { x: number } },
+      ) => {
+        const w = panelRef.current?.getBoundingClientRect().width ?? 280
+        if (side === 'left') {
+          // Swipe left to close: negative offset
+          if (info.offset.x < -(w * 0.3) || info.velocity.x < -500) {
+            onClose()
+          }
+        } else {
+          // Swipe right to close: positive offset
+          if (info.offset.x > w * 0.3 || info.velocity.x > 500) {
+            onClose()
+          }
+        }
+      }}
+    >
+      {children}
+    </motion.div>
+  )
+}
+
 const Sidebar = forwardRef<
   HTMLDivElement,
   ComponentProps<'div'> & {
@@ -219,8 +271,11 @@ const Sidebar = forwardRef<
               } as CSSProperties
             }
             side={side}
+            responsive={false}
           >
-            <aside aria-label="Sidebar" className="flex h-full w-full flex-col">{children}</aside>
+            <SidebarSwipeWrapper side={side} onClose={() => setOpenMobile(false)}>
+              <aside aria-label="Sidebar" className="flex h-full w-full flex-col">{children}</aside>
+            </SidebarSwipeWrapper>
           </SheetContent>
         </Sheet>
       )

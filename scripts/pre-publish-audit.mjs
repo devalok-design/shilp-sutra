@@ -297,6 +297,9 @@ advisory('Components have Storybook stories', () => {
     'icon-context', 'link-context', 'command-registry', 'ai-command-provider',
     'button-processing', 'lib/utils', 'lib/motion', 'lib/date-utils', 'lib/link-context',
     'lib/string-utils', 'types', 'toast-types',
+    // Internal DataTable sub-components (covered by DataTable stories)
+    'data-table-body', 'data-table-bulk-actions', 'data-table-card',
+    'data-table-context', 'data-table-header', 'data-table-pagination',
   ])
   const missing = []
   const layers = ['ui', 'composed', 'shell', 'ai']

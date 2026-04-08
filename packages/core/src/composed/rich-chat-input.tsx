@@ -803,9 +803,9 @@ const RichChatInput = React.forwardRef<HTMLDivElement, RichChatInputProps>(
             </BubbleMenu>
           )}
 
-          {/* Zone 4: Toolbar — shown in composing/review or expanded variant */}
+          {/* Zone 4: Toolbar below — only for bottom-positioned variants (not inline/top) */}
           <AnimatePresence>
-            {showToolbar && editor && (
+            {config.toolbarPosition === 'bottom' && showToolbar && editor && (
               <ChatToolbar
                 key="toolbar"
                 editor={editor}

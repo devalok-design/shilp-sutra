@@ -610,7 +610,7 @@ const RichChatInput = React.forwardRef<HTMLDivElement, RichChatInputProps>(
             onClick={() => fileInputRef.current?.click()}
             title="Attach"
             aria-label="Attach file"
-            className="flex shrink-0 items-center justify-center rounded-ds-full bg-accent-9 text-accent-fg hover:bg-accent-10 active:scale-95 transition-all duration-fast-02"
+            className="flex shrink-0 items-center justify-center rounded-ds-lg bg-accent-9 text-accent-fg hover:bg-accent-10 active:scale-95 transition-all duration-fast-02"
             style={{ height: config.minHeight, width: config.minHeight }}
           >
             <span className="text-ds-lg font-light">+</span>
@@ -622,7 +622,7 @@ const RichChatInput = React.forwardRef<HTMLDivElement, RichChatInputProps>(
           role="region"
           aria-label="Message composer"
           className={cn(
-            'flex-1 rounded-ds-xl border border-surface-border-strong bg-surface-raised-hover',
+            'flex-1 rounded-ds-lg border border-surface-border-strong bg-surface-raised-hover',
             'transition-[color,background-color,border-color,box-shadow] duration-fast-02 ease-productive-standard',
             'hover:bg-surface-raised-active',
             (state !== 'idle') && 'ring-2 ring-accent-9 ring-offset-2 border-accent-9',
@@ -853,7 +853,7 @@ const RichChatInput = React.forwardRef<HTMLDivElement, RichChatInputProps>(
               onClick={onCancel}
               aria-label="Stop"
               title="Stop"
-              className="flex shrink-0 items-center justify-center rounded-ds-full bg-error-9 text-error-fg hover:bg-error-10 active:scale-95 transition-all duration-fast-02"
+              className="flex shrink-0 items-center justify-center rounded-ds-lg bg-error-9 text-error-fg hover:bg-error-10 active:scale-95 transition-all duration-fast-02"
               style={{ height: config.minHeight, width: config.minHeight }}
             >
               <Icon icon={IconSquare} size="sm" />
@@ -865,7 +865,7 @@ const RichChatInput = React.forwardRef<HTMLDivElement, RichChatInputProps>(
               disabled={disabled}
               aria-label="Send"
               title="Send"
-              className="flex shrink-0 items-center justify-center rounded-ds-full bg-accent-9 text-accent-fg hover:bg-accent-10 active:scale-95 transition-all duration-fast-02 disabled:opacity-action-disabled disabled:pointer-events-none"
+              className="flex shrink-0 items-center justify-center rounded-ds-lg bg-accent-9 text-accent-fg hover:bg-accent-10 active:scale-95 transition-all duration-fast-02 disabled:opacity-action-disabled disabled:pointer-events-none"
               style={{ height: config.minHeight, width: config.minHeight }}
             >
               <Icon icon={IconSend} size="sm" />
@@ -876,7 +876,7 @@ const RichChatInput = React.forwardRef<HTMLDivElement, RichChatInputProps>(
               onClick={handleStartRecording}
               aria-label="Record voice message"
               title="Record voice message"
-              className="flex shrink-0 items-center justify-center rounded-ds-full border border-surface-border-strong text-surface-fg-subtle hover:bg-surface-raised-hover hover:text-surface-fg active:scale-95 transition-all duration-fast-02"
+              className="flex shrink-0 items-center justify-center rounded-ds-lg border border-surface-border-strong text-surface-fg-subtle hover:bg-surface-raised-hover hover:text-surface-fg active:scale-95 transition-all duration-fast-02"
               style={{ height: config.minHeight, width: config.minHeight }}
             >
               <Icon icon={IconMicrophone} size="sm" />
@@ -887,7 +887,7 @@ const RichChatInput = React.forwardRef<HTMLDivElement, RichChatInputProps>(
               disabled
               aria-label="Send"
               title="Send"
-              className="flex shrink-0 items-center justify-center rounded-ds-full bg-accent-9/50 text-accent-fg/50 cursor-not-allowed"
+              className="flex shrink-0 items-center justify-center rounded-ds-lg bg-accent-9/50 text-accent-fg/50 cursor-not-allowed"
               style={{ height: config.minHeight, width: config.minHeight }}
             >
               <Icon icon={IconSend} size="sm" />

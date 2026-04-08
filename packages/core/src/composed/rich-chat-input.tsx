@@ -10,7 +10,7 @@ import Link from '@tiptap/extension-link'
 import Image from '@tiptap/extension-image'
 import Mention from '@tiptap/extension-mention'
 import CharacterCount from '@tiptap/extension-character-count'
-import { AnimatePresence } from 'framer-motion'
+import { AnimatePresence, motion } from 'framer-motion'
 import { FileAttachment } from './extensions/file-attachment'
 import { EmojiSuggestion } from './extensions/emoji-suggestion'
 import { createSuggestionRenderer } from './extensions/mention-suggestion'
@@ -39,12 +39,13 @@ import {
   IconHighlight,
   IconCode,
   IconMoodSmile,
-  IconPaperclip,
   IconSend,
   IconMicrophone,
   IconChevronDown,
   IconSquare,
   IconTextSize,
+  IconPlus,
+  IconTrash,
 } from '@tabler/icons-react'
 import { cn } from '../ui/lib/utils'
 import { useIsMobile } from '../hooks/use-mobile'
@@ -88,6 +89,8 @@ export interface RichChatInputProps extends Omit<React.HTMLAttributes<HTMLDivEle
   onImageUpload?: (file: File) => Promise<string>
   slashCommands?: SlashCommandGroup[]
   onVoiceRecord?: (audio: Blob, duration: number) => void
+  /** Called after recording stops. Consumer can transcribe and return text to insert into the editor. If null is returned, the audio is attached as a voice note. */
+  onTranscribe?: (blob: Blob, duration: number) => Promise<string | null>
   maxDuration?: number
   replyTo?: { id: string; author: string; preview: string; onDismiss: () => void }
   onTyping?: (isTyping: boolean) => void
@@ -167,6 +170,7 @@ function SplitSendDropdown({ options }: { options: Array<{ label: string; icon?:
       >
         <Icon icon={IconChevronDown} size="xs" />
       </button>
+      {/* min-w-[200px]: component-specific dropdown width — no design token equivalent */}
       {open && (
         <div className="absolute bottom-full right-0 mb-ds-02 min-w-[200px] rounded-ds-lg border border-surface-border-strong bg-surface-overlay p-ds-02 shadow-floating z-popover">
           <p className="px-ds-03 py-ds-01 text-ds-xs font-medium text-surface-fg-subtle">Send options</p>
@@ -177,7 +181,7 @@ function SplitSendDropdown({ options }: { options: Array<{ label: string; icon?:
               onClick={() => { opt.onSelect(); setOpen(false) }}
               className="flex w-full items-center gap-ds-03 rounded-ds-md px-ds-03 py-ds-02 text-ds-sm text-surface-fg hover:bg-surface-raised-hover transition-colors duration-fast-01"
             >
-              {opt.icon && <opt.icon className="h-4 w-4 text-surface-fg-muted" />}
+              {opt.icon && <opt.icon className="h-ico-sm w-ico-sm text-surface-fg-muted" />}
               {opt.label}
             </button>
           ))}
@@ -238,6 +242,7 @@ const RichChatInput = React.forwardRef<HTMLDivElement, RichChatInputProps>(
       onImageUpload,
       slashCommands,
       onVoiceRecord,
+      onTranscribe,
       maxDuration,
       replyTo,
       onTyping,
@@ -276,10 +281,23 @@ const RichChatInput = React.forwardRef<HTMLDivElement, RichChatInputProps>(
     // ── Voice Recorder ────────────────────────────────────────
     const voiceRecorder = useVoiceRecorder({
       maxDuration,
-      onComplete: (blob, duration, waveformData) => {
+      onComplete: async (blob, duration, waveformData) => {
+        onVoiceRecord?.(blob, duration)
+
+        // If consumer provides a transcription handler, try to transcribe
+        if (onTranscribe) {
+          const text = await onTranscribe(blob, duration)
+          if (text != null) {
+            // Insert transcribed text into the editor instead of attaching voice note
+            editor?.chain().focus().insertContent(text).run()
+            setState('composing')
+            return
+          }
+        }
+
+        // Fall back to voice note attachment
         setVoiceNote({ blob, duration, waveformData })
         setState('review')
-        onVoiceRecord?.(blob, duration)
       },
     })
 
@@ -615,7 +633,7 @@ const RichChatInput = React.forwardRef<HTMLDivElement, RichChatInputProps>(
             className="flex shrink-0 items-center justify-center rounded-ds-lg bg-accent-9 text-accent-fg hover:bg-accent-10 active:scale-95 transition-all duration-fast-02"
             style={{ height: config.minHeight, width: config.minHeight }}
           >
-            <span className="text-ds-lg font-light">+</span>
+            <Icon icon={IconPlus} size="sm" />
           </button>
         )}
 
@@ -687,7 +705,6 @@ const RichChatInput = React.forwardRef<HTMLDivElement, RichChatInputProps>(
                 duration={voiceRecorder.duration}
                 analyserNode={voiceRecorder.analyserNode}
                 maxDuration={maxDuration}
-                onStop={handleStopRecording}
                 onCancel={handleCancelRecording}
               />
             ) : (
@@ -824,55 +841,115 @@ const RichChatInput = React.forwardRef<HTMLDivElement, RichChatInputProps>(
 
         {/* Send/mic buttons outside the input on the right */}
         <div className="flex items-center gap-ds-02 shrink-0">
-          {sendOptions && sendOptions.length > 0 && (
+          {sendOptions && sendOptions.length > 0 && state !== 'recording' && (
             <SplitSendDropdown options={sendOptions} />
           )}
-          {isStreaming ? (
-            <button
-              type="button"
-              onClick={onCancel}
-              aria-label="Stop"
-              title="Stop"
-              className="flex shrink-0 items-center justify-center rounded-ds-lg bg-error-9 text-error-fg hover:bg-error-10 active:scale-95 transition-all duration-fast-02"
-              style={{ height: config.minHeight, width: config.minHeight }}
-            >
-              <Icon icon={IconSquare} size="sm" />
-            </button>
-          ) : hasContent ? (
-            <button
-              type="button"
-              onClick={handleSubmit}
-              disabled={disabled}
-              aria-label="Send"
-              title="Send"
-              className="flex shrink-0 items-center justify-center rounded-ds-lg bg-accent-9 text-accent-fg hover:bg-accent-10 active:scale-95 transition-all duration-fast-02 disabled:opacity-action-disabled disabled:pointer-events-none"
-              style={{ height: config.minHeight, width: config.minHeight }}
-            >
-              <Icon icon={IconSend} size="sm" />
-            </button>
-          ) : onVoiceRecord ? (
-            <button
-              type="button"
-              onClick={handleStartRecording}
-              aria-label="Record voice message"
-              title="Record voice message"
-              className="flex shrink-0 items-center justify-center rounded-ds-lg border border-surface-border-strong text-surface-fg-subtle hover:bg-surface-raised-hover hover:text-surface-fg active:scale-95 transition-all duration-fast-02"
-              style={{ height: config.minHeight, width: config.minHeight }}
-            >
-              <Icon icon={IconMicrophone} size="sm" />
-            </button>
-          ) : (
-            <button
-              type="button"
-              disabled
-              aria-label="Send"
-              title="Send"
-              className="flex shrink-0 items-center justify-center rounded-ds-lg bg-accent-9/50 text-accent-fg/50 cursor-not-allowed"
-              style={{ height: config.minHeight, width: config.minHeight }}
-            >
-              <Icon icon={IconSend} size="sm" />
-            </button>
-          )}
+          <AnimatePresence mode="wait">
+            {isStreaming ? (
+              <motion.button
+                key="stop-stream"
+                type="button"
+                onClick={onCancel}
+                aria-label="Stop"
+                title="Stop"
+                initial={{ scale: 0.8, opacity: 0 }}
+                animate={{ scale: 1, opacity: 1 }}
+                exit={{ scale: 0.8, opacity: 0 }}
+                transition={{ duration: 0.15 }}
+                className="flex shrink-0 items-center justify-center rounded-ds-lg bg-error-9 text-error-fg hover:bg-error-10 active:scale-95 transition-colors duration-fast-02"
+                style={{ height: config.minHeight, width: config.minHeight }}
+              >
+                <Icon icon={IconSquare} size="sm" />
+              </motion.button>
+            ) : state === 'recording' ? (
+              <motion.div
+                key="recording-controls"
+                className="flex items-center gap-ds-02"
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                exit={{ opacity: 0 }}
+                transition={{ duration: 0.15 }}
+              >
+                {/* Trash / cancel — slides in from left */}
+                <motion.button
+                  type="button"
+                  onClick={handleCancelRecording}
+                  aria-label="Cancel recording"
+                  title="Cancel recording"
+                  initial={{ x: 8, opacity: 0, scale: 0.8 }}
+                  animate={{ x: 0, opacity: 1, scale: 1 }}
+                  transition={{ duration: 0.2, delay: 0.05 }}
+                  className="flex shrink-0 items-center justify-center rounded-ds-lg border border-surface-border-strong text-surface-fg-subtle hover:bg-error-3 hover:text-error-11 hover:border-error-7 active:scale-95 transition-colors duration-fast-02"
+                  style={{ height: config.minHeight, width: config.minHeight }}
+                >
+                  <Icon icon={IconTrash} size="sm" />
+                </motion.button>
+                {/* Stop — mic morphs to stop square */}
+                <motion.button
+                  type="button"
+                  onClick={handleStopRecording}
+                  aria-label="Stop recording"
+                  title="Stop recording"
+                  initial={{ scale: 0.8, opacity: 0 }}
+                  animate={{ scale: 1, opacity: 1 }}
+                  transition={{ duration: 0.15 }}
+                  className="flex shrink-0 items-center justify-center rounded-ds-lg bg-error-9 text-error-fg hover:bg-error-10 active:scale-95 transition-colors duration-fast-02"
+                  style={{ height: config.minHeight, width: config.minHeight }}
+                >
+                  <Icon icon={IconSquare} size="sm" />
+                </motion.button>
+              </motion.div>
+            ) : hasContent ? (
+              <motion.button
+                key="send"
+                type="button"
+                onClick={handleSubmit}
+                disabled={disabled}
+                aria-label="Send"
+                title="Send"
+                initial={{ scale: 0.8, opacity: 0 }}
+                animate={{ scale: 1, opacity: 1 }}
+                exit={{ scale: 0.8, opacity: 0 }}
+                transition={{ duration: 0.15 }}
+                className="flex shrink-0 items-center justify-center rounded-ds-lg bg-accent-9 text-accent-fg hover:bg-accent-10 active:scale-95 transition-colors duration-fast-02 disabled:opacity-action-disabled disabled:pointer-events-none"
+                style={{ height: config.minHeight, width: config.minHeight }}
+              >
+                <Icon icon={IconSend} size="sm" />
+              </motion.button>
+            ) : onVoiceRecord ? (
+              <motion.button
+                key="mic"
+                type="button"
+                onClick={handleStartRecording}
+                aria-label="Record voice message"
+                title="Record voice message"
+                initial={{ scale: 0.8, opacity: 0 }}
+                animate={{ scale: 1, opacity: 1 }}
+                exit={{ scale: 0.8, opacity: 0 }}
+                transition={{ duration: 0.15 }}
+                className="flex shrink-0 items-center justify-center rounded-ds-lg border border-surface-border-strong text-surface-fg-subtle hover:bg-surface-raised-hover hover:text-surface-fg active:scale-95 transition-colors duration-fast-02"
+                style={{ height: config.minHeight, width: config.minHeight }}
+              >
+                <Icon icon={IconMicrophone} size="sm" />
+              </motion.button>
+            ) : (
+              <motion.button
+                key="send-disabled"
+                type="button"
+                disabled
+                aria-label="Send"
+                title="Send"
+                initial={{ scale: 0.8, opacity: 0 }}
+                animate={{ scale: 1, opacity: 1 }}
+                exit={{ scale: 0.8, opacity: 0 }}
+                transition={{ duration: 0.15 }}
+                className="flex shrink-0 items-center justify-center rounded-ds-lg bg-accent-9/50 text-accent-fg/50 cursor-not-allowed"
+                style={{ height: config.minHeight, width: config.minHeight }}
+              >
+                <Icon icon={IconSend} size="sm" />
+              </motion.button>
+            )}
+          </AnimatePresence>
         </div>
 
         {/* Disclaimer */}

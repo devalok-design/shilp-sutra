@@ -59,6 +59,7 @@ export function AttachmentStrip({
                   scale: { type: 'spring', stiffness: 400, damping: 30 },
                   opacity: { duration: 0.11 },
                 }}
+                /* h-12 w-12 (48px): component-specific thumbnail size — no design token equivalent */
                 className="relative h-12 w-12 shrink-0 group"
               >
                 <img
@@ -68,7 +69,7 @@ export function AttachmentStrip({
                 />
                 <button
                   onClick={() => onRemoveAttachment(att.id)}
-                  className="absolute -top-1 -right-1 h-4 w-4 rounded-full bg-error-9 text-error-fg flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-fast-02"
+                  className="absolute -top-1 -right-1 h-ico-sm w-ico-sm rounded-full bg-error-9 text-error-fg flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-fast-02"
                   aria-label={`Remove ${att.name}`}
                   title="Remove"
                 >
@@ -101,6 +102,7 @@ export function AttachmentStrip({
                   size="xs"
                   className="text-surface-fg-muted"
                 />
+                {/* max-w-[120px]: component-specific truncation width for file names */}
                 <span className="text-ds-xs text-surface-fg-muted truncate max-w-[120px]">
                   {att.name}
                 </span>

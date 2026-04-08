@@ -2,9 +2,6 @@
 
 import * as React from 'react'
 import { motion, useReducedMotion } from 'framer-motion'
-import { IconSquare, IconTrash } from '@tabler/icons-react'
-import { Button } from '../../ui/button'
-import { Icon } from '../../ui/icon'
 import { cn } from '../../ui/lib/utils'
 import { AudioWaveform } from './audio-waveform'
 
@@ -12,7 +9,7 @@ interface RecordingOverlayProps {
   duration: number
   analyserNode: AnalyserNode | null
   maxDuration?: number
-  onStop: () => void
+  /** Escape key handler — cancel recording. Stop/cancel buttons are external. */
   onCancel: () => void
 }
 
@@ -30,7 +27,6 @@ function RecordingOverlay({
   duration,
   analyserNode,
   maxDuration,
-  onStop,
   onCancel,
 }: RecordingOverlayProps) {
   const prefersReduced = useReducedMotion()
@@ -72,7 +68,7 @@ function RecordingOverlay({
       role="status"
       aria-live="polite"
       aria-label="Recording voice message"
-      className="flex items-center gap-ds-03 px-ds-04 py-ds-03"
+      className="flex items-center gap-ds-03 px-ds-04 py-ds-02"
     >
       {/* Red pulsing dot */}
       <span
@@ -101,29 +97,13 @@ function RecordingOverlay({
         {timer.secs}
       </span>
 
-      {/* Live waveform */}
+      {/* Live waveform — stop/cancel buttons are external (right-side button area) */}
       <AudioWaveform
         mode="live"
         analyserNode={analyserNode}
-        height={28}
+        height={20}
         barCount={30}
       />
-
-      {/* Stop button */}
-      <Button variant="ghost" size="icon-sm" onClick={onStop} title="Stop recording">
-        <Icon icon={IconSquare} />
-      </Button>
-
-      {/* Cancel button */}
-      <Button
-        variant="ghost"
-        size="icon-sm"
-        onClick={onCancel}
-        title="Cancel recording"
-        className="text-surface-fg-subtle hover:text-error-11"
-      >
-        <Icon icon={IconTrash} />
-      </Button>
     </motion.div>
   )
 }

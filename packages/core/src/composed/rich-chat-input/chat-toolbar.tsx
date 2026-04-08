@@ -128,14 +128,17 @@ export function ChatToolbar({
 
   return (
     <motion.div
-      initial={{ opacity: 0, y: 4 }}
-      animate={{ opacity: 1, y: 0 }}
-      exit={{ opacity: 0, y: 4 }}
+      initial={{ height: 0, opacity: 0 }}
+      animate={{ height: 'auto', opacity: 1 }}
+      exit={{ height: 0, opacity: 0 }}
       transition={{ duration: 0.15, ease: [0.2, 0, 0.38, 0.9] }}
-      role="toolbar"
-      aria-label="Message formatting"
-      className="flex flex-wrap items-center gap-ds-01 border-t border-surface-border px-ds-04 py-ds-02b"
+      className="overflow-hidden"
     >
+      <div
+        role="toolbar"
+        aria-label="Message formatting"
+        className="flex flex-wrap items-center gap-ds-01 border-t border-surface-border px-ds-04 py-ds-02b"
+      >
       {/* Formatting group — desktop only */}
       {!isMobile && show('bold') && (
         <ToolbarBtn
@@ -361,6 +364,7 @@ export function ChatToolbar({
           </motion.div>
         )}
       </AnimatePresence>
+      </div>
     </motion.div>
   )
 }

@@ -121,7 +121,8 @@ const variantConfig = {
 const CHAT_PROSE = [
   'prose prose-sm max-w-none focus:outline-none',
   'font-body text-ds-md leading-relaxed text-surface-fg',
-  '[&_p.is-editor-empty:first-child::before]:text-surface-fg-subtle [&_p.is-editor-empty:first-child::before]:content-[attr(data-placeholder)] [&_p.is-editor-empty:first-child::before]:float-left [&_p.is-editor-empty:first-child::before]:h-0 [&_p.is-editor-empty:first-child::before]:pointer-events-none [&_p.is-editor-empty:first-child::before]:whitespace-nowrap [&_p.is-editor-empty:first-child::before]:max-w-full [&_p.is-editor-empty:first-child::before]:overflow-hidden [&_p.is-editor-empty:first-child::before]:text-ellipsis',
+  '[&_p.is-editor-empty:first-child]:relative',
+  '[&_p.is-editor-empty:first-child::before]:text-surface-fg-subtle [&_p.is-editor-empty:first-child::before]:content-[attr(data-placeholder)] [&_p.is-editor-empty:first-child::before]:pointer-events-none [&_p.is-editor-empty:first-child::before]:absolute [&_p.is-editor-empty:first-child::before]:left-0 [&_p.is-editor-empty:first-child::before]:top-0 [&_p.is-editor-empty:first-child::before]:w-full [&_p.is-editor-empty:first-child::before]:truncate',
   '[&_p]:mb-ds-01 [&_p]:text-surface-fg',
   '[&_p:last-child]:mb-0',
   '[&_ul]:ml-ds-04 [&_ul]:list-disc [&_ol]:ml-ds-04 [&_ol]:list-decimal',

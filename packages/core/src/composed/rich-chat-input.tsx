@@ -627,7 +627,7 @@ const RichChatInput = React.forwardRef<HTMLDivElement, RichChatInputProps>(
         {(onFileUpload || onImageUpload) && (
           <Button
             variant="solid"
-            size="icon-lg"
+            size="icon-md"
             onClick={() => fileInputRef.current?.click()}
             title="Attach"
             aria-label="Attach file"
@@ -847,36 +847,36 @@ const RichChatInput = React.forwardRef<HTMLDivElement, RichChatInputProps>(
           <AnimatePresence mode="wait">
             {isStreaming ? (
               <motion.div key="stop-stream" initial={{ scale: 0.8, opacity: 0 }} animate={{ scale: 1, opacity: 1 }} exit={{ scale: 0.8, opacity: 0 }} transition={{ duration: 0.15 }}>
-                <Button variant="solid" size="icon-lg" color="error" onClick={onCancel} aria-label="Stop" title="Stop">
+                <Button variant="solid" size="icon-md" color="error" onClick={onCancel} aria-label="Stop" title="Stop">
                   <Icon icon={IconSquare} size="md" />
                 </Button>
               </motion.div>
             ) : state === 'recording' ? (
               <motion.div key="recording-controls" className="flex items-end gap-ds-02" initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} transition={{ duration: 0.15 }}>
                 <motion.div initial={{ x: 8, opacity: 0 }} animate={{ x: 0, opacity: 1 }} transition={{ duration: 0.2, delay: 0.05 }}>
-                  <Button variant="outline" size="icon-lg" onClick={handleCancelRecording} aria-label="Cancel recording" title="Cancel recording" className="text-surface-fg-subtle hover:text-error-11 hover:border-error-7">
+                  <Button variant="outline" size="icon-md" onClick={handleCancelRecording} aria-label="Cancel recording" title="Cancel recording" className="text-surface-fg-subtle hover:text-error-11 hover:border-error-7">
                     <Icon icon={IconTrash} size="md" />
                   </Button>
                 </motion.div>
-                <Button variant="solid" size="icon-lg" color="error" onClick={handleStopRecording} aria-label="Stop recording" title="Stop recording">
+                <Button variant="solid" size="icon-md" color="error" onClick={handleStopRecording} aria-label="Stop recording" title="Stop recording">
                   <Icon icon={IconSquare} size="md" />
                 </Button>
               </motion.div>
             ) : hasContent ? (
               <motion.div key="send" initial={{ scale: 0.8, opacity: 0 }} animate={{ scale: 1, opacity: 1 }} exit={{ scale: 0.8, opacity: 0 }} transition={{ duration: 0.15 }}>
-                <Button variant="solid" size="icon-lg" onClick={handleSubmit} disabled={disabled} aria-label="Send" title="Send">
+                <Button variant="solid" size="icon-md" onClick={handleSubmit} disabled={disabled} aria-label="Send" title="Send">
                   <Icon icon={IconSend} size="md" />
                 </Button>
               </motion.div>
             ) : onVoiceRecord ? (
               <motion.div key="mic" initial={{ scale: 0.8, opacity: 0 }} animate={{ scale: 1, opacity: 1 }} exit={{ scale: 0.8, opacity: 0 }} transition={{ duration: 0.15 }}>
-                <Button variant="outline" size="icon-lg" onClick={handleStartRecording} aria-label="Record voice message" title="Record voice message">
+                <Button variant="outline" size="icon-md" onClick={handleStartRecording} aria-label="Record voice message" title="Record voice message">
                   <Icon icon={IconMicrophone} size="md" />
                 </Button>
               </motion.div>
             ) : (
               <motion.div key="send-disabled" initial={{ scale: 0.8, opacity: 0 }} animate={{ scale: 1, opacity: 1 }} exit={{ scale: 0.8, opacity: 0 }} transition={{ duration: 0.15 }}>
-                <Button variant="solid" size="icon-lg" disabled aria-label="Send" title="Send">
+                <Button variant="solid" size="icon-md" disabled aria-label="Send" title="Send">
                   <Icon icon={IconSend} size="md" />
                 </Button>
               </motion.div>

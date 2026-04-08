@@ -44,6 +44,7 @@ import {
   IconMicrophone,
   IconChevronDown,
   IconSquare,
+  IconTextSize,
 } from '@tabler/icons-react'
 import { cn } from '../ui/lib/utils'
 import { useIsMobile } from '../hooks/use-mobile'
@@ -732,7 +733,7 @@ const RichChatInput = React.forwardRef<HTMLDivElement, RichChatInputProps>(
                         toolbarExpanded ? 'bg-surface-raised-hover text-accent-11' : 'text-surface-fg-subtle',
                       )}
                     >
-                      <Icon icon={IconBold} size="xs" />
+                      <Icon icon={IconTextSize} size="xs" />
                     </button>
 
                     {/* Emoji */}

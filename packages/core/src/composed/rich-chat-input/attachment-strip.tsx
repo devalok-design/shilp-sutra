@@ -1,0 +1,125 @@
+'use client'
+
+import * as React from 'react'
+import { motion, AnimatePresence } from 'framer-motion'
+import { IconX, IconFile } from '@tabler/icons-react'
+import { Icon } from '../../ui/icon'
+import { Spinner } from '../../ui/spinner'
+
+export interface Attachment {
+  id: string
+  url?: string
+  name: string
+  size: number
+  type: 'image' | 'file'
+  uploading: boolean
+}
+
+export interface AttachmentStripProps {
+  attachments: Attachment[]
+  onRemoveAttachment: (id: string) => void
+}
+
+function formatSize(bytes: number): string {
+  if (bytes < 1024) return `${bytes} B`
+  if (bytes < 1024 * 1024) return `${(bytes / 1024).toFixed(1)} KB`
+  return `${(bytes / (1024 * 1024)).toFixed(1)} MB`
+}
+
+export function AttachmentStrip({
+  attachments,
+  onRemoveAttachment,
+}: AttachmentStripProps) {
+  return (
+    <motion.div
+      initial={{ height: 0, opacity: 0 }}
+      animate={{ height: 'auto', opacity: 1 }}
+      exit={{ height: 0, opacity: 0 }}
+      transition={{ duration: 0.24, ease: [0.2, 0, 0.38, 0.9] }}
+      className="overflow-hidden"
+    >
+      <div
+        role="list"
+        aria-label="Attachments"
+        className="flex gap-ds-02 overflow-x-auto px-ds-04 py-ds-02b border-b border-surface-border"
+      >
+        <AnimatePresence initial={false}>
+          {attachments.map((att) =>
+            att.type === 'image' ? (
+              <motion.div
+                key={att.id}
+                role="listitem"
+                aria-label={`Image: ${att.name}`}
+                layout
+                initial={{ scale: 0, opacity: 0 }}
+                animate={{ scale: 1, opacity: 1 }}
+                exit={{ scale: 0.95, opacity: 0 }}
+                transition={{
+                  layout: { type: 'spring', stiffness: 400, damping: 30 },
+                  scale: { type: 'spring', stiffness: 400, damping: 30 },
+                  opacity: { duration: 0.11 },
+                }}
+                className="relative h-12 w-12 shrink-0 group"
+              >
+                <img
+                  src={att.url}
+                  alt={att.name}
+                  className="h-full w-full rounded-ds-md object-cover"
+                />
+                <button
+                  onClick={() => onRemoveAttachment(att.id)}
+                  className="absolute -top-1 -right-1 h-4 w-4 rounded-full bg-error-9 text-error-fg flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-fast-02"
+                  aria-label={`Remove ${att.name}`}
+                  title="Remove"
+                >
+                  <Icon icon={IconX} size="xs" />
+                </button>
+                {att.uploading && (
+                  <div className="absolute inset-0 rounded-ds-md bg-surface-overlay/50 flex items-center justify-center">
+                    <Spinner size="sm" />
+                  </div>
+                )}
+              </motion.div>
+            ) : (
+              <motion.div
+                key={att.id}
+                role="listitem"
+                aria-label={`File: ${att.name}, ${formatSize(att.size)}`}
+                layout
+                initial={{ scale: 0, opacity: 0 }}
+                animate={{ scale: 1, opacity: 1 }}
+                exit={{ scale: 0.95, opacity: 0 }}
+                transition={{
+                  layout: { type: 'spring', stiffness: 400, damping: 30 },
+                  scale: { type: 'spring', stiffness: 400, damping: 30 },
+                  opacity: { duration: 0.11 },
+                }}
+                className="flex items-center gap-ds-02 shrink-0 rounded-ds-md bg-surface-raised px-ds-03 py-ds-01 group"
+              >
+                <Icon
+                  icon={IconFile}
+                  size="xs"
+                  className="text-surface-fg-muted"
+                />
+                <span className="text-ds-xs text-surface-fg-muted truncate max-w-[120px]">
+                  {att.name}
+                </span>
+                <span className="text-ds-xs text-surface-fg-subtle">
+                  {formatSize(att.size)}
+                </span>
+                <button
+                  onClick={() => onRemoveAttachment(att.id)}
+                  className="text-surface-fg-subtle hover:text-error-11 opacity-0 group-hover:opacity-100 transition-opacity duration-fast-02"
+                  aria-label={`Remove ${att.name}`}
+                  title="Remove"
+                >
+                  <Icon icon={IconX} size="xs" />
+                </button>
+              </motion.div>
+            )
+          )}
+        </AnimatePresence>
+      </div>
+    </motion.div>
+  )
+}

@@ -97,7 +97,8 @@ export interface RichChatInputProps extends Omit<React.HTMLAttributes<HTMLDivEle
   leadingSlot?: React.ReactNode
   trailingSlot?: React.ReactNode
   disclaimer?: string
-  toolbar?: boolean | ChatToolbarItem[]
+  /** true = default toolbar, ChatToolbarItem[] = whitelist, ReactNode = custom toolbar, false = hidden */
+  toolbar?: boolean | ChatToolbarItem[] | React.ReactNode
   /** Split send button — dropdown options next to send (e.g. "Schedule send"). */
   sendOptions?: Array<{
     label: string
@@ -887,3 +888,23 @@ RichChatInput.displayName = 'RichChatInput'
 
 export { RichChatInput }
 export type { ChatToolbarItem }
+
+// Re-export toolbar primitives for custom toolbar composition
+export {
+  ToolbarButton,
+  ToolbarDivider,
+  ToolbarGroup,
+  BoldButton,
+  ItalicButton,
+  UnderlineButton,
+  StrikeButton,
+  HighlightButton,
+  CodeButton,
+  BulletListButton,
+  OrderedListButton,
+  BlockquoteButton,
+  LinkButton,
+  MentionButton,
+  EmojiButton,
+  SlashCommandButton,
+} from './rich-chat-input/chat-toolbar'

@@ -1,7 +1,25 @@
 import type { Meta, StoryObj } from '@storybook/react-vite'
 import * as React from 'react'
 import { fn } from 'storybook/test'
-import { RichChatInput, type SlashCommandGroup, type MentionItem } from './rich-chat-input'
+import {
+  RichChatInput,
+  type SlashCommandGroup,
+  type MentionItem,
+  ToolbarButton,
+  ToolbarDivider,
+  ToolbarGroup,
+  BoldButton,
+  ItalicButton,
+  UnderlineButton,
+  StrikeButton,
+  HighlightButton,
+  CodeButton,
+  BulletListButton,
+  OrderedListButton,
+  BlockquoteButton,
+  LinkButton,
+  EmojiButton,
+} from './rich-chat-input'
 import {
   IconLayoutDashboard,
   IconListCheck,
@@ -306,5 +324,49 @@ export const InlineWithScheduleSend: Story = {
       { label: 'Tomorrow at 1:00 PM', onSelect: () => {} },
       { label: 'Next Monday at 8:00 AM', onSelect: () => {} },
     ],
+  },
+}
+
+// ── 19. Custom Toolbar (Google Chat expanded style) ───────────────
+
+export const CustomToolbar: Story = {
+  args: {
+    onSubmit: fn(),
+    variant: 'inline',
+    mentions,
+    placeholder: 'Type a message...',
+    toolbar: (
+      <>
+        <ToolbarGroup>
+          <BoldButton />
+          <ItalicButton />
+          <UnderlineButton />
+          <HighlightButton />
+          <StrikeButton />
+        </ToolbarGroup>
+        <ToolbarDivider />
+        <ToolbarGroup>
+          <BulletListButton />
+          <OrderedListButton />
+        </ToolbarGroup>
+        <ToolbarDivider />
+        <ToolbarGroup>
+          <BlockquoteButton />
+          <LinkButton />
+        </ToolbarGroup>
+        <ToolbarDivider />
+        <ToolbarGroup>
+          <CodeButton />
+        </ToolbarGroup>
+        <ToolbarDivider />
+        <ToolbarGroup>
+          <EmojiButton />
+        </ToolbarGroup>
+        <ToolbarDivider />
+        <ToolbarButton onClick={() => alert('AI Refine!')} title="Refine with AI">
+          <span className="flex items-center gap-ds-01 text-ds-xs font-medium">✨ Refine</span>
+        </ToolbarButton>
+      </>
+    ),
   },
 }

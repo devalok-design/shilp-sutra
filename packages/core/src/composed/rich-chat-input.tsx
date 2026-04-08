@@ -865,27 +865,56 @@ const RichChatInput = React.forwardRef<HTMLDivElement, RichChatInputProps>(
           />
         </div>
 
-        {/* Send/mic buttons outside the input on the right — height matches input */}
-        <div className="flex items-center gap-ds-01 shrink-0" style={{ height: config.minHeight }}>
+        {/* Send/mic buttons outside the input on the right */}
+        <div className="flex items-center gap-ds-02 shrink-0">
           {sendOptions && sendOptions.length > 0 && (
             <SplitSendDropdown options={sendOptions} />
           )}
           {isStreaming ? (
-            <Button variant="ghost" size="icon-sm" color="error" onClick={onCancel} aria-label="Stop" title="Stop">
+            <button
+              type="button"
+              onClick={onCancel}
+              aria-label="Stop"
+              title="Stop"
+              className="flex shrink-0 items-center justify-center rounded-ds-full bg-error-9 text-error-fg hover:bg-error-10 active:scale-95 transition-all duration-fast-02"
+              style={{ height: config.minHeight, width: config.minHeight }}
+            >
               <Icon icon={IconSquare} size="sm" />
-            </Button>
+            </button>
           ) : hasContent ? (
-            <Button variant="solid" size="icon-sm" onClick={handleSubmit} disabled={disabled} aria-label="Send" title="Send">
+            <button
+              type="button"
+              onClick={handleSubmit}
+              disabled={disabled}
+              aria-label="Send"
+              title="Send"
+              className="flex shrink-0 items-center justify-center rounded-ds-full bg-accent-9 text-accent-fg hover:bg-accent-10 active:scale-95 transition-all duration-fast-02 disabled:opacity-action-disabled disabled:pointer-events-none"
+              style={{ height: config.minHeight, width: config.minHeight }}
+            >
               <Icon icon={IconSend} size="sm" />
-            </Button>
+            </button>
           ) : onVoiceRecord ? (
-            <Button variant="ghost" size="icon-sm" onClick={handleStartRecording} aria-label="Record" title="Record voice message">
+            <button
+              type="button"
+              onClick={handleStartRecording}
+              aria-label="Record voice message"
+              title="Record voice message"
+              className="flex shrink-0 items-center justify-center rounded-ds-full border border-surface-border-strong text-surface-fg-subtle hover:bg-surface-raised-hover hover:text-surface-fg active:scale-95 transition-all duration-fast-02"
+              style={{ height: config.minHeight, width: config.minHeight }}
+            >
               <Icon icon={IconMicrophone} size="sm" />
-            </Button>
+            </button>
           ) : (
-            <Button variant="solid" size="icon-sm" disabled aria-label="Send" title="Send">
+            <button
+              type="button"
+              disabled
+              aria-label="Send"
+              title="Send"
+              className="flex shrink-0 items-center justify-center rounded-ds-full bg-accent-9/50 text-accent-fg/50 cursor-not-allowed"
+              style={{ height: config.minHeight, width: config.minHeight }}
+            >
               <Icon icon={IconSend} size="sm" />
-            </Button>
+            </button>
           )}
         </div>
 

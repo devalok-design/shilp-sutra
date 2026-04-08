@@ -40,9 +40,12 @@ const meta: Meta<typeof RichChatInput> = {
   title: 'Composed/RichChatInput',
   component: RichChatInput,
   tags: ['autodocs', 'stable'],
+  parameters: {
+    layout: 'padded',
+  },
   decorators: [
     (Story) => (
-      <div style={{ maxWidth: 640, margin: '0 auto' }}>
+      <div style={{ width: '100%', maxWidth: 720 }}>
         <Story />
       </div>
     ),

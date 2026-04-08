@@ -97,9 +97,9 @@ export interface RichChatInputProps extends Omit<React.HTMLAttributes<HTMLDivEle
 // ── Variant config ──────────────────────────────────────────────
 
 const variantConfig = {
-  compact:  { minHeight: 72, maxHeight: 256, showToolbar: true },
-  expanded: { minHeight: 128, maxHeight: 384, showToolbar: true },
-  minimal:  { minHeight: 40, maxHeight: 128, showToolbar: false },
+  compact:  { minHeight: 40, maxHeight: 256, showToolbar: true },
+  expanded: { minHeight: 96, maxHeight: 384, showToolbar: true },
+  minimal:  { minHeight: 32, maxHeight: 128, showToolbar: false },
 }
 
 // ── Chat prose (tighter than RTE, text-ds-md to match Input) ────
@@ -583,10 +583,8 @@ const RichChatInput = React.forwardRef<HTMLDivElement, RichChatInputProps>(
                 className="px-ds-04 py-ds-03"
                 style={{
                   minHeight: config.minHeight,
-                  height: editorHeight || undefined,
                   maxHeight: maxHeightPx,
-                  transition: 'height 150ms ease-out',
-                  overflow: editorHeight >= maxHeightPx ? 'auto' : 'hidden',
+                  overflowY: 'auto',
                 }}
               >
                 <EditorContent

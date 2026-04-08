@@ -671,18 +671,7 @@ const RichChatInput = React.forwardRef<HTMLDivElement, RichChatInputProps>(
                   isMobile={false}
                   hasMentions={!!(mentions || onMentionSearch)}
                   hasSlashCommands={!!slashCommands}
-                  hasFileUpload={!!(onFileUpload || onImageUpload)}
-                  onAttachClick={() => fileInputRef.current?.click()}
-                  maxLength={undefined}
-                  charCount={0}
-                  isEmpty={true}
                   disabled={disabled}
-                  isStreaming={false}
-                  hasVoice={false}
-                  hasContent={false}
-                  onSubmit={() => {}}
-                  onCancel={undefined}
-                  onMicClick={undefined}
                 />
               )}
             </AnimatePresence>
@@ -813,18 +802,7 @@ const RichChatInput = React.forwardRef<HTMLDivElement, RichChatInputProps>(
                 isMobile={isMobile}
                 hasMentions={!!(mentions || onMentionSearch)}
                 hasSlashCommands={!!slashCommands}
-                hasFileUpload={!!(onFileUpload || onImageUpload)}
-                onAttachClick={() => fileInputRef.current?.click()}
-                maxLength={maxLength}
-                charCount={charCount}
-                isEmpty={editorIsEmpty && attachments.length === 0 && !voiceNote}
                 disabled={disabled}
-                isStreaming={isStreaming}
-                hasVoice={!!onVoiceRecord}
-                hasContent={hasContent}
-                onSubmit={handleSubmit}
-                onCancel={onCancel}
-                onMicClick={handleStartRecording}
               />
             )}
           </AnimatePresence>

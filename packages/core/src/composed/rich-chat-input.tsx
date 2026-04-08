@@ -43,6 +43,7 @@ import {
   IconSend,
   IconMicrophone,
   IconChevronDown,
+  IconSquare,
 } from '@tabler/icons-react'
 import { cn } from '../ui/lib/utils'
 import { useIsMobile } from '../hooks/use-mobile'
@@ -596,13 +597,13 @@ const RichChatInput = React.forwardRef<HTMLDivElement, RichChatInputProps>(
         ref={ref}
         className={cn(
           'border-t border-surface-border-subtle px-ds-05 py-ds-04',
-          isInline && 'flex items-end gap-ds-03',
+          'flex items-end gap-ds-03',
           className,
         )}
         {...props}
       >
-        {/* Inline: + button outside the input on the left */}
-        {isInline && (onFileUpload || onImageUpload) && (
+        {/* + button outside the input on the left */}
+        {(onFileUpload || onImageUpload) && (
           <button
             type="button"
             onClick={() => fileInputRef.current?.click()}
@@ -619,10 +620,9 @@ const RichChatInput = React.forwardRef<HTMLDivElement, RichChatInputProps>(
           role="region"
           aria-label="Message composer"
           className={cn(
-            'rounded-ds-lg border border-surface-border-strong bg-surface-raised-hover',
+            'flex-1 rounded-ds-xl border border-surface-border-strong bg-surface-raised-hover',
             'transition-[color,background-color,border-color,box-shadow] duration-fast-02 ease-productive-standard',
             'hover:bg-surface-raised-active',
-            isInline && 'flex-1 rounded-ds-xl',
             (state !== 'idle') && 'ring-2 ring-accent-9 ring-offset-2 border-accent-9',
             state === 'recording' && 'border-error-7/30',
             isDragging && 'border-dashed border-accent-7 bg-accent-2',
@@ -658,8 +658,8 @@ const RichChatInput = React.forwardRef<HTMLDivElement, RichChatInputProps>(
             )}
           </AnimatePresence>
 
-          {/* Inline variant: toolbar floats ABOVE the input row */}
-          {isInline && (
+          {/* Toolbar above input (inline variant) or toggled via A button */}
+          {config.toolbarPosition === 'top' && (
             <AnimatePresence>
               {toolbarExpanded && editor && (
                 <ChatToolbar
@@ -701,10 +701,7 @@ const RichChatInput = React.forwardRef<HTMLDivElement, RichChatInputProps>(
               <div
                 key="editor"
                 ref={editorWrapperRef}
-                className={cn(
-                  'flex items-center cursor-text [&_.tiptap]:min-h-full [&_.tiptap]:w-full [&_.tiptap]:outline-none',
-                  isInline ? 'px-ds-03 py-ds-02' : 'px-ds-04 py-ds-03',
-                )}
+                className="flex items-center px-ds-04 py-ds-03 cursor-text [&_.tiptap]:min-h-full [&_.tiptap]:w-full [&_.tiptap]:outline-none"
                 style={{
                   height: editorHeight > 0 ? Math.max(editorHeight, config.minHeight) : config.minHeight,
                   maxHeight: maxHeightPx,
@@ -717,8 +714,8 @@ const RichChatInput = React.forwardRef<HTMLDivElement, RichChatInputProps>(
                   editor={editor}
                 />
 
-                {/* Inline variant: action icons + send inside the editor row */}
-                {isInline && editor && (
+                {/* Action icons inside the editor row */}
+                {editor && (
                   <div className="flex items-center gap-ds-01 shrink-0 ml-ds-02">
                     {/* Formatting toggle (A button) */}
                     <button
@@ -854,21 +851,6 @@ const RichChatInput = React.forwardRef<HTMLDivElement, RichChatInputProps>(
             )}
           </AnimatePresence>
 
-          {/* Idle/Focused state: just the mic button (when voice is enabled) */}
-          {(state === 'idle' || state === 'focused') && variant !== 'expanded' && onVoiceRecord && (
-            <div className="flex justify-end px-ds-04 py-ds-02b">
-              <Button
-                variant="ghost"
-                size="icon-sm"
-                onClick={handleStartRecording}
-                aria-label="Record voice message"
-                title="Record voice message"
-              >
-                <Icon icon={IconMicrophone} size="sm" />
-              </Button>
-            </div>
-          )}
-
           {/* Trailing slot */}
           {trailingSlot}
 
@@ -882,30 +864,32 @@ const RichChatInput = React.forwardRef<HTMLDivElement, RichChatInputProps>(
           />
         </div>
 
-        {/* Inline: send/chevron buttons outside the input on the right */}
-        {isInline && (
-          <div className="flex items-center gap-ds-01 mb-ds-01 shrink-0">
-            {sendOptions && sendOptions.length > 0 && (
-              <SplitSendDropdown options={sendOptions} />
-            )}
-            {hasContent ? (
-              <Button variant="solid" size="icon-sm" onClick={handleSubmit} disabled={disabled} aria-label="Send" title="Send">
-                <Icon icon={IconSend} size="sm" />
-              </Button>
-            ) : onVoiceRecord ? (
-              <Button variant="ghost" size="icon-sm" onClick={handleStartRecording} aria-label="Record" title="Record voice message">
-                <Icon icon={IconMicrophone} size="sm" />
-              </Button>
-            ) : (
-              <Button variant="solid" size="icon-sm" disabled aria-label="Send" title="Send">
-                <Icon icon={IconSend} size="sm" />
-              </Button>
-            )}
-          </div>
-        )}
+        {/* Send/mic buttons outside the input on the right */}
+        <div className="flex items-center gap-ds-01 mb-ds-01 shrink-0">
+          {sendOptions && sendOptions.length > 0 && (
+            <SplitSendDropdown options={sendOptions} />
+          )}
+          {isStreaming ? (
+            <Button variant="ghost" size="icon-sm" color="error" onClick={onCancel} aria-label="Stop" title="Stop">
+              <Icon icon={IconSquare} size="sm" />
+            </Button>
+          ) : hasContent ? (
+            <Button variant="solid" size="icon-sm" onClick={handleSubmit} disabled={disabled} aria-label="Send" title="Send">
+              <Icon icon={IconSend} size="sm" />
+            </Button>
+          ) : onVoiceRecord ? (
+            <Button variant="ghost" size="icon-sm" onClick={handleStartRecording} aria-label="Record" title="Record voice message">
+              <Icon icon={IconMicrophone} size="sm" />
+            </Button>
+          ) : (
+            <Button variant="solid" size="icon-sm" disabled aria-label="Send" title="Send">
+              <Icon icon={IconSend} size="sm" />
+            </Button>
+          )}
+        </div>
 
         {/* Disclaimer */}
-        {!isInline && disclaimer && (
+        {disclaimer && (
           <p className="mt-ds-02 text-center text-ds-xs text-surface-fg-subtle/50">
             {disclaimer}
           </p>

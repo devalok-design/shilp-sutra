@@ -1,8 +1,7 @@
 import type { Meta, StoryObj } from '@storybook/react-vite'
 import * as React from 'react'
 import { fn } from 'storybook/test'
-import { RichChatInput, type SlashCommandGroup } from './rich-chat-input'
-import type { MentionItem } from './rich-text-editor'
+import { RichChatInput, type SlashCommandGroup, type MentionItem } from './rich-chat-input'
 import {
   IconLayoutDashboard,
   IconListCheck,
@@ -204,4 +203,71 @@ export const Mobile: Story = {
     placeholder: 'Type a message...',
   },
   globals: { viewport: 'mobile' },
+}
+
+// ── 13. WithVoiceRecording ─────────────────────────────────────────
+
+export const WithVoiceRecording: Story = {
+  args: {
+    onSubmit: fn(),
+    onVoiceRecord: fn(),
+    maxDuration: 120,
+    placeholder: 'Type or record a voice message...',
+  },
+}
+
+// ── 14. WithReply ──────────────────────────────────────────────────
+
+export const WithReply: Story = {
+  render: function Render() {
+    const [reply, setReply] = React.useState<
+      { id: string; author: string; preview: string; onDismiss: () => void } | undefined
+    >({
+      id: '1',
+      author: 'Aarav Sharma',
+      preview: 'Can you check the latest designs for the dashboard?',
+      onDismiss: () => setReply(undefined),
+    })
+    return (
+      <RichChatInput
+        onSubmit={fn()}
+        replyTo={reply}
+        mentions={mentions}
+        placeholder="Reply..."
+      />
+    )
+  },
+}
+
+// ── 15. FullExperience ─────────────────────────────────────────────
+
+export const FullExperience: Story = {
+  args: {
+    onSubmit: fn(),
+    mentions,
+    slashCommands,
+    onFileUpload: async (file: File) => {
+      await new Promise((r) => setTimeout(r, 1000))
+      return { url: '#', name: file.name, size: file.size }
+    },
+    onImageUpload: async () => {
+      await new Promise((r) => setTimeout(r, 1000))
+      return 'https://placehold.co/200x200/6366F1/ffffff?text=Uploaded'
+    },
+    onVoiceRecord: fn(),
+    maxDuration: 300,
+    maxLength: 4000,
+    placeholder: 'Message #general...',
+  },
+}
+
+// ── 16. ProgressiveDisclosure ──────────────────────────────────────
+
+export const ProgressiveDisclosure: Story = {
+  args: {
+    onSubmit: fn(),
+    mentions,
+    onVoiceRecord: fn(),
+    placeholder: 'Click here, then start typing to see the toolbar appear...',
+  },
 }

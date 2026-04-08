@@ -602,14 +602,15 @@ const RichChatInput = React.forwardRef<HTMLDivElement, RichChatInputProps>(
         )}
         {...props}
       >
-        {/* + button outside the input on the left */}
+        {/* + button outside the input on the left — height matches input */}
         {(onFileUpload || onImageUpload) && (
           <button
             type="button"
             onClick={() => fileInputRef.current?.click()}
             title="Attach"
             aria-label="Attach file"
-            className="mb-ds-01 flex h-9 w-9 shrink-0 items-center justify-center rounded-ds-full bg-accent-9 text-accent-fg hover:bg-accent-10 active:scale-95 transition-all duration-fast-02"
+            className="flex shrink-0 items-center justify-center rounded-ds-full bg-accent-9 text-accent-fg hover:bg-accent-10 active:scale-95 transition-all duration-fast-02"
+            style={{ height: config.minHeight, width: config.minHeight }}
           >
             <span className="text-ds-lg font-light">+</span>
           </button>
@@ -864,8 +865,8 @@ const RichChatInput = React.forwardRef<HTMLDivElement, RichChatInputProps>(
           />
         </div>
 
-        {/* Send/mic buttons outside the input on the right */}
-        <div className="flex items-center gap-ds-01 mb-ds-01 shrink-0">
+        {/* Send/mic buttons outside the input on the right — height matches input */}
+        <div className="flex items-center gap-ds-01 shrink-0" style={{ height: config.minHeight }}>
           {sendOptions && sendOptions.length > 0 && (
             <SplitSendDropdown options={sendOptions} />
           )}

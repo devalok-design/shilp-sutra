@@ -698,7 +698,7 @@ const RichChatInput = React.forwardRef<HTMLDivElement, RichChatInputProps>(
           )}
 
           {/* Zone 3: Editor / Recording */}
-          <AnimatePresence mode="wait">
+          <AnimatePresence>
             {state === 'recording' ? (
               <RecordingOverlay
                 key="recording"
@@ -844,7 +844,7 @@ const RichChatInput = React.forwardRef<HTMLDivElement, RichChatInputProps>(
           {sendOptions && sendOptions.length > 0 && state !== 'recording' && (
             <SplitSendDropdown options={sendOptions} />
           )}
-          <AnimatePresence mode="wait">
+          <AnimatePresence>
             {isStreaming ? (
               <motion.div key="stop-stream" initial={{ scale: 0.8, opacity: 0 }} animate={{ scale: 1, opacity: 1 }} exit={{ scale: 0.8, opacity: 0 }} transition={{ duration: 0.15 }}>
                 <Button variant="solid" size="icon-md" color="error" onClick={onCancel} aria-label="Stop" title="Stop">

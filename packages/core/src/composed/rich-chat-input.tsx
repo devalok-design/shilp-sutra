@@ -193,6 +193,7 @@ const RichChatInput = React.forwardRef<HTMLDivElement, RichChatInputProps>(
     const [editorHeight, setEditorHeight] = React.useState<number>(0)
 
     const fileInputRef = React.useRef<HTMLInputElement>(null)
+    const editorWrapperRef = React.useRef<HTMLDivElement>(null)
     const typingTimeoutRef = React.useRef<ReturnType<typeof setTimeout>>(undefined)
     const submitRef = React.useRef<(() => void) | undefined>(undefined)
     const enterBehaviorRef = React.useRef(enterBehavior)
@@ -397,20 +398,23 @@ const RichChatInput = React.forwardRef<HTMLDivElement, RichChatInputProps>(
     }, [editor, state, attachments.length, voiceNote])
 
     // ── Editor Height Breathing (ResizeObserver) ──────────────
+    // Observe the TipTap content element and set explicit height on the wrapper
+    // so CSS transition: height animates the grow/shrink smoothly
     React.useEffect(() => {
       const el = editor?.view?.dom
       if (!el) return
 
+      const PADDING = 16 // py-ds-03 = 8px top + 8px bottom
       const observer = new ResizeObserver((entries) => {
         for (const entry of entries) {
-          const height = Math.min(entry.contentRect.height, maxHeightPx)
-          setEditorHeight(height)
+          const contentHeight = entry.contentRect.height + PADDING
+          setEditorHeight(contentHeight)
         }
       })
 
       observer.observe(el)
       return () => observer.disconnect()
-    }, [editor, maxHeightPx])
+    }, [editor])
 
     // ── Typing Indicator ──────────────────────────────────────
     React.useEffect(() => {
@@ -581,11 +585,13 @@ const RichChatInput = React.forwardRef<HTMLDivElement, RichChatInputProps>(
             ) : (
               <div
                 key="editor"
-                className="flex items-center px-ds-04 py-ds-03 cursor-text [&_.tiptap]:min-h-full [&_.tiptap]:w-full [&_.tiptap]:outline-none"
+                ref={editorWrapperRef}
+                className="flex items-start px-ds-04 py-ds-03 cursor-text [&_.tiptap]:min-h-full [&_.tiptap]:w-full [&_.tiptap]:outline-none"
                 style={{
-                  minHeight: config.minHeight,
+                  height: editorHeight > 0 ? Math.max(editorHeight, config.minHeight) : config.minHeight,
                   maxHeight: maxHeightPx,
-                  overflowY: 'auto',
+                  transition: 'height 150ms ease-out',
+                  overflowY: editorHeight >= maxHeightPx ? 'auto' : 'hidden',
                 }}
                 onClick={() => editor?.commands.focus()}
               >

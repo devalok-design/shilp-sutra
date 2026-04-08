@@ -25,7 +25,9 @@ import {
   IconListCheck,
   IconUsers,
   IconCalendar,
+  IconSparkles,
 } from '@tabler/icons-react'
+import { Icon } from '../ui/icon'
 
 // ── Shared data ─────────────────────────────────────────────────────
 
@@ -363,8 +365,9 @@ export const CustomToolbar: Story = {
           <EmojiButton />
         </ToolbarGroup>
         <ToolbarDivider />
-        <ToolbarButton onClick={() => alert('AI Refine!')} title="Refine with AI">
-          <span className="flex items-center gap-ds-01 text-ds-xs font-medium">✨ Refine</span>
+        <ToolbarButton onClick={() => alert('AI Refine!')} title="Refine with AI" className="w-auto px-ds-02b gap-ds-01">
+          <Icon icon={IconSparkles} size="xs" />
+          <span className="text-ds-xs font-medium whitespace-nowrap">Refine</span>
         </ToolbarButton>
       </>
     ),

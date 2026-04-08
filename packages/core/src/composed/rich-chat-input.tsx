@@ -11,15 +11,6 @@ import Image from '@tiptap/extension-image'
 import Mention from '@tiptap/extension-mention'
 import CharacterCount from '@tiptap/extension-character-count'
 import { AnimatePresence } from 'framer-motion'
-import {
-  IconBold,
-  IconItalic,
-  IconUnderline,
-  IconStrikethrough,
-  IconHighlight,
-  IconCode,
-  IconMicrophone,
-} from '@tabler/icons-react'
 import { FileAttachment } from './extensions/file-attachment'
 import { EmojiSuggestion } from './extensions/emoji-suggestion'
 import { createSuggestionRenderer } from './extensions/mention-suggestion'
@@ -40,6 +31,19 @@ import { useVoiceRecorder } from './rich-chat-input/use-voice-recorder'
 import type { UseVoiceRecorderOptions, UseVoiceRecorderReturn } from './rich-chat-input/use-voice-recorder'
 import { Button } from '../ui/button'
 import { Icon } from '../ui/icon'
+import {
+  IconBold,
+  IconItalic,
+  IconUnderline,
+  IconStrikethrough,
+  IconHighlight,
+  IconCode,
+  IconMoodSmile,
+  IconPaperclip,
+  IconSend,
+  IconMicrophone,
+  IconChevronDown,
+} from '@tabler/icons-react'
 import { cn } from '../ui/lib/utils'
 import { useIsMobile } from '../hooks/use-mobile'
 
@@ -72,7 +76,7 @@ export interface RichChatInputProps extends Omit<React.HTMLAttributes<HTMLDivEle
   disabled?: boolean
   /** Initial HTML content (not reactive — use for message editing). */
   content?: string
-  variant?: 'compact' | 'expanded' | 'minimal'
+  variant?: 'compact' | 'expanded' | 'minimal' | 'inline'
   enterBehavior?: 'send' | 'newline'
   maxLength?: number
   mentions?: MentionItem[]
@@ -92,14 +96,21 @@ export interface RichChatInputProps extends Omit<React.HTMLAttributes<HTMLDivEle
   trailingSlot?: React.ReactNode
   disclaimer?: string
   toolbar?: boolean | ChatToolbarItem[]
+  /** Split send button — dropdown options next to send (e.g. "Schedule send"). */
+  sendOptions?: Array<{
+    label: string
+    icon?: React.ComponentType<{ className?: string }>
+    onSelect: () => void
+  }>
 }
 
 // ── Variant config ──────────────────────────────────────────────
 
 const variantConfig = {
-  compact:  { minHeight: 44, maxHeight: 256, showToolbar: true },
-  expanded: { minHeight: 96, maxHeight: 384, showToolbar: true },
-  minimal:  { minHeight: 44, maxHeight: 128, showToolbar: false },
+  compact:  { minHeight: 44, maxHeight: 256, showToolbar: true, toolbarPosition: 'bottom' as const },
+  expanded: { minHeight: 96, maxHeight: 384, showToolbar: true, toolbarPosition: 'bottom' as const },
+  minimal:  { minHeight: 44, maxHeight: 128, showToolbar: false, toolbarPosition: 'bottom' as const },
+  inline:   { minHeight: 40, maxHeight: 160, showToolbar: false, toolbarPosition: 'top' as const },
 }
 
 // ── Chat prose (tighter than RTE, text-ds-md to match Input) ────
@@ -118,6 +129,59 @@ const CHAT_PROSE = [
   '[&_a]:text-accent-11 [&_a]:underline',
   '[&_.mention]:rounded-ds-sm [&_.mention]:bg-accent-2 [&_.mention]:px-ds-02 [&_.mention]:py-[1px] [&_.mention]:font-medium [&_.mention]:text-accent-11',
 ].join(' ')
+
+// ── Split Send Dropdown (chevron next to send — schedule send, etc.) ──
+
+function SplitSendDropdown({ options }: { options: Array<{ label: string; icon?: React.ComponentType<{ className?: string }>; onSelect: () => void }> }) {
+  const [open, setOpen] = React.useState(false)
+  const dropdownRef = React.useRef<HTMLDivElement>(null)
+
+  // Close on outside click
+  React.useEffect(() => {
+    if (!open) return
+    const handleClick = (e: MouseEvent) => {
+      if (dropdownRef.current && !dropdownRef.current.contains(e.target as Node)) setOpen(false)
+    }
+    document.addEventListener('mousedown', handleClick)
+    return () => document.removeEventListener('mousedown', handleClick)
+  }, [open])
+
+  return (
+    <div ref={dropdownRef} className="relative">
+      <button
+        type="button"
+        onClick={() => setOpen(prev => !prev)}
+        title="More send options"
+        aria-label="More send options"
+        aria-expanded={open}
+        className={cn(
+          'inline-flex h-ds-xs-plus w-5 items-center justify-center rounded-ds-md touch-target',
+          'text-surface-fg-subtle hover:bg-surface-raised-hover hover:text-surface-fg',
+          'transition-colors duration-fast-01 ease-productive-standard',
+          open && 'bg-surface-raised-hover text-surface-fg',
+        )}
+      >
+        <Icon icon={IconChevronDown} size="xs" />
+      </button>
+      {open && (
+        <div className="absolute bottom-full right-0 mb-ds-02 min-w-[200px] rounded-ds-lg border border-surface-border-strong bg-surface-overlay p-ds-02 shadow-floating z-popover">
+          <p className="px-ds-03 py-ds-01 text-ds-xs font-medium text-surface-fg-subtle">Send options</p>
+          {options.map((opt, i) => (
+            <button
+              key={i}
+              type="button"
+              onClick={() => { opt.onSelect(); setOpen(false) }}
+              className="flex w-full items-center gap-ds-03 rounded-ds-md px-ds-03 py-ds-02 text-ds-sm text-surface-fg hover:bg-surface-raised-hover transition-colors duration-fast-01"
+            >
+              {opt.icon && <opt.icon className="h-4 w-4 text-surface-fg-muted" />}
+              {opt.label}
+            </button>
+          ))}
+        </div>
+      )}
+    </div>
+  )
+}
 
 // ── Toolbar Button (for BubbleMenu only — ChatToolbar has its own) ──
 
@@ -180,6 +244,7 @@ const RichChatInput = React.forwardRef<HTMLDivElement, RichChatInputProps>(
       trailingSlot,
       disclaimer,
       toolbar: toolbarProp = true,
+      sendOptions,
       className,
       ...props
     },
@@ -187,6 +252,7 @@ const RichChatInput = React.forwardRef<HTMLDivElement, RichChatInputProps>(
   ) {
     // ── State ──────────────────────────────────────────────────
     const [state, setState] = React.useState<InputState>('idle')
+    const [toolbarExpanded, setToolbarExpanded] = React.useState(false)
     const [attachments, setAttachments] = React.useState<Attachment[]>([])
     const [voiceNote, setVoiceNote] = React.useState<{ blob: Blob; duration: number; waveformData: number[] } | null>(null)
     const [isDragging, setIsDragging] = React.useState(false)
@@ -520,7 +586,10 @@ const RichChatInput = React.forwardRef<HTMLDivElement, RichChatInputProps>(
     const charCount = editor?.storage.characterCount?.characters() ?? 0
     const editorIsEmpty = editor?.isEmpty ?? true
     const hasContent = !editorIsEmpty || attachments.length > 0 || !!voiceNote
-    const showToolbar = state === 'composing' || state === 'review' || variant === 'expanded'
+    const isInline = variant === 'inline'
+    const showToolbar = isInline
+      ? toolbarExpanded  // inline: toggled by A button
+      : (state === 'composing' || state === 'review' || variant === 'expanded')
 
     return (
       <div
@@ -571,6 +640,34 @@ const RichChatInput = React.forwardRef<HTMLDivElement, RichChatInputProps>(
             )}
           </AnimatePresence>
 
+          {/* Inline variant: toolbar floats ABOVE the input row */}
+          {isInline && (
+            <AnimatePresence>
+              {toolbarExpanded && editor && (
+                <ChatToolbar
+                  key="toolbar-top"
+                  editor={editor}
+                  toolbar={toolbarProp}
+                  isMobile={false}
+                  hasMentions={!!(mentions || onMentionSearch)}
+                  hasSlashCommands={!!slashCommands}
+                  hasFileUpload={!!(onFileUpload || onImageUpload)}
+                  onAttachClick={() => fileInputRef.current?.click()}
+                  maxLength={undefined}
+                  charCount={0}
+                  isEmpty={true}
+                  disabled={disabled}
+                  isStreaming={false}
+                  hasVoice={false}
+                  hasContent={false}
+                  onSubmit={() => {}}
+                  onCancel={undefined}
+                  onMicClick={undefined}
+                />
+              )}
+            </AnimatePresence>
+          )}
+
           {/* Zone 3: Editor / Recording */}
           <AnimatePresence mode="wait">
             {state === 'recording' ? (
@@ -586,7 +683,10 @@ const RichChatInput = React.forwardRef<HTMLDivElement, RichChatInputProps>(
               <div
                 key="editor"
                 ref={editorWrapperRef}
-                className="flex items-center px-ds-04 py-ds-03 cursor-text [&_.tiptap]:min-h-full [&_.tiptap]:w-full [&_.tiptap]:outline-none"
+                className={cn(
+                  'flex items-center cursor-text [&_.tiptap]:min-h-full [&_.tiptap]:w-full [&_.tiptap]:outline-none',
+                  isInline ? 'px-ds-03 py-ds-02' : 'px-ds-04 py-ds-03',
+                )}
                 style={{
                   height: editorHeight > 0 ? Math.max(editorHeight, config.minHeight) : config.minHeight,
                   maxHeight: maxHeightPx,
@@ -598,6 +698,70 @@ const RichChatInput = React.forwardRef<HTMLDivElement, RichChatInputProps>(
                 <EditorContent
                   editor={editor}
                 />
+
+                {/* Inline variant: action icons + send inside the editor row */}
+                {isInline && editor && (
+                  <div className="flex items-center gap-ds-01 shrink-0 ml-ds-02">
+                    {/* Formatting toggle (A button) */}
+                    <button
+                      type="button"
+                      onClick={() => setToolbarExpanded(prev => !prev)}
+                      title={toolbarExpanded ? 'Hide formatting' : 'Show formatting'}
+                      aria-label={toolbarExpanded ? 'Hide formatting' : 'Show formatting'}
+                      aria-pressed={toolbarExpanded}
+                      className={cn(
+                        'inline-flex h-ds-xs-plus w-ds-xs-plus items-center justify-center rounded-ds-md touch-target',
+                        'transition-colors duration-fast-01 ease-productive-standard',
+                        'hover:bg-surface-raised-hover',
+                        toolbarExpanded ? 'bg-surface-raised-hover text-accent-11' : 'text-surface-fg-subtle',
+                      )}
+                    >
+                      <Icon icon={IconBold} size="xs" />
+                    </button>
+
+                    {/* Emoji */}
+                    <button
+                      type="button"
+                      onClick={() => editor.chain().focus().insertContent(':').run()}
+                      title="Emoji"
+                      aria-label="Emoji"
+                      className="inline-flex h-ds-xs-plus w-ds-xs-plus items-center justify-center rounded-ds-md touch-target text-surface-fg-subtle hover:bg-surface-raised-hover hover:text-surface-fg transition-colors duration-fast-01"
+                    >
+                      <Icon icon={IconMoodSmile} size="xs" />
+                    </button>
+
+                    {/* Attach */}
+                    {(onFileUpload || onImageUpload) && (
+                      <button
+                        type="button"
+                        onClick={() => fileInputRef.current?.click()}
+                        title="Attach file"
+                        aria-label="Attach file"
+                        className="inline-flex h-ds-xs-plus w-ds-xs-plus items-center justify-center rounded-ds-md touch-target text-surface-fg-subtle hover:bg-surface-raised-hover hover:text-surface-fg transition-colors duration-fast-01"
+                      >
+                        <Icon icon={IconPaperclip} size="xs" />
+                      </button>
+                    )}
+
+                    {/* Split send / Mic */}
+                    {sendOptions && sendOptions.length > 0 && (
+                      <SplitSendDropdown options={sendOptions} />
+                    )}
+                    {hasContent ? (
+                      <Button variant="ghost" size="icon-sm" onClick={handleSubmit} disabled={disabled} aria-label="Send" title="Send">
+                        <Icon icon={IconSend} size="sm" />
+                      </Button>
+                    ) : onVoiceRecord ? (
+                      <Button variant="ghost" size="icon-sm" onClick={handleStartRecording} aria-label="Record" title="Record voice message">
+                        <Icon icon={IconMicrophone} size="sm" />
+                      </Button>
+                    ) : (
+                      <Button variant="ghost" size="icon-sm" disabled aria-label="Send" title="Send">
+                        <Icon icon={IconSend} size="sm" />
+                      </Button>
+                    )}
+                  </div>
+                )}
               </div>
             )}
           </AnimatePresence>

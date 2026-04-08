@@ -274,3 +274,37 @@ export const ProgressiveDisclosure: Story = {
     placeholder: 'Click here, then start typing to see the toolbar appear...',
   },
 }
+
+// ── 17. Inline (Google Chat style) ────────────────────────────────
+
+export const Inline: Story = {
+  args: {
+    onSubmit: fn(),
+    variant: 'inline',
+    mentions,
+    slashCommands,
+    onFileUpload: async (file: File) => {
+      await new Promise((r) => setTimeout(r, 1000))
+      return { url: '#', name: file.name, size: file.size }
+    },
+    onVoiceRecord: fn(),
+    placeholder: 'Type a message...',
+  },
+}
+
+// ── 18. Inline with Schedule Send ─────────────────────────────────
+
+export const InlineWithScheduleSend: Story = {
+  args: {
+    onSubmit: fn(),
+    variant: 'inline',
+    mentions,
+    onVoiceRecord: fn(),
+    placeholder: 'Type a message...',
+    sendOptions: [
+      { label: 'Tomorrow at 8:00 AM', onSelect: () => {} },
+      { label: 'Tomorrow at 1:00 PM', onSelect: () => {} },
+      { label: 'Next Monday at 8:00 AM', onSelect: () => {} },
+    ],
+  },
+}

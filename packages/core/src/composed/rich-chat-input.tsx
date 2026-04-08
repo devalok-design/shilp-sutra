@@ -630,7 +630,7 @@ const RichChatInput = React.forwardRef<HTMLDivElement, RichChatInputProps>(
             onClick={() => fileInputRef.current?.click()}
             title="Attach"
             aria-label="Attach file"
-            className="flex self-stretch aspect-square shrink-0 items-center justify-center rounded-ds-lg bg-accent-9 text-accent-fg hover:bg-accent-10 active:scale-95 transition-all duration-fast-02"
+            className="flex shrink-0 aspect-square items-center justify-center rounded-ds-lg bg-accent-9 text-accent-fg hover:bg-accent-10 active:scale-95 transition-all duration-fast-02"
           >
             <Icon icon={IconPlus} size="sm" />
           </button>

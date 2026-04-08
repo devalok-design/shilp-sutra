@@ -10,6 +10,7 @@ import Link from '@tiptap/extension-link'
 import Image from '@tiptap/extension-image'
 import Mention from '@tiptap/extension-mention'
 import CharacterCount from '@tiptap/extension-character-count'
+import { AnimatePresence } from 'framer-motion'
 import {
   IconBold,
   IconItalic,
@@ -17,58 +18,61 @@ import {
   IconStrikethrough,
   IconHighlight,
   IconCode,
-  IconList,
-  IconListNumbers,
-  IconAt,
-  IconMoodSmile,
-  IconPaperclip,
-  IconSlash,
-  IconSend,
-  IconSquare,
-  IconX,
+  IconMicrophone,
 } from '@tabler/icons-react'
 import { FileAttachment } from './extensions/file-attachment'
 import { EmojiSuggestion } from './extensions/emoji-suggestion'
 import { createSuggestionRenderer } from './extensions/mention-suggestion'
 import { createSlashCommandExtension } from './extensions/slash-command'
+import type { SlashCommandGroup } from './extensions/slash-command'
 import type { MentionItem } from './rich-text-editor'
+import { ReplyBanner } from './rich-chat-input/reply-banner'
+import { AttachmentStrip } from './rich-chat-input/attachment-strip'
+import type { Attachment } from './rich-chat-input/attachment-strip'
+import { RecordingOverlay } from './rich-chat-input/recording-overlay'
+import { ChatToolbar } from './rich-chat-input/chat-toolbar'
+import type { ChatToolbarItem } from './rich-chat-input/chat-toolbar'
+import { AudioWaveform } from './rich-chat-input/audio-waveform'
+import type { AudioWaveformProps } from './rich-chat-input/audio-waveform'
+import { AudioPlayer } from './rich-chat-input/audio-player'
+import type { AudioPlayerProps } from './rich-chat-input/audio-player'
+import { useVoiceRecorder } from './rich-chat-input/use-voice-recorder'
+import type { UseVoiceRecorderOptions, UseVoiceRecorderReturn } from './rich-chat-input/use-voice-recorder'
 import { Button } from '../ui/button'
 import { Icon } from '../ui/icon'
 import { cn } from '../ui/lib/utils'
 import { useIsMobile } from '../hooks/use-mobile'
 
-// ── Types ────────────────────────────────────────────────────────
+// ── Re-exports ──────────────────────────────────────────────────
 
 export type { MentionItem }
 export type { SlashCommand, SlashCommandGroup } from './extensions/slash-command'
 
-export type ChatToolbarItem =
-  | 'bold' | 'italic' | 'underline' | 'strike' | 'highlight' | 'code'
-  | 'bulletList' | 'orderedList'
-  | 'mention' | 'emoji' | 'attach' | 'slash'
+export { AudioWaveform }
+export type { AudioWaveformProps }
+export { AudioPlayer }
+export type { AudioPlayerProps }
+export { useVoiceRecorder }
+export type { UseVoiceRecorderOptions, UseVoiceRecorderReturn }
 
-/**
- * A compact, Linear-style rich text chat input for unified human+AI workspaces.
- *
- * Built on TipTap with @mentions, emoji, file drag-drop/paste, optional slash commands,
- * typing indicator, and character counter. Three variants: compact (default), expanded, minimal.
- *
- * @example
- * <RichChatInput
- *   onSubmit={(html, text) => sendMessage(html)}
- *   mentions={teamMembers}
- *   onFileUpload={uploadFile}
- *   slashCommands={[{ label: 'Actions', commands: [...] }]}
- * />
- */
+// ── Types ───────────────────────────────────────────────────────
+
+type InputState = 'idle' | 'focused' | 'composing' | 'recording' | 'review'
+
+export interface RichChatInputMessage {
+  html: string
+  plainText: string
+  attachments?: Array<{ url: string; name: string; size: number; type: string }>
+  voiceNote?: { blob: Blob; duration: number }
+}
+
 export interface RichChatInputProps extends Omit<React.HTMLAttributes<HTMLDivElement>, 'onSubmit' | 'content'> {
-  onSubmit: (html: string, plainText: string) => void
+  onSubmit: (message: RichChatInputMessage) => void
   placeholder?: string
   disabled?: boolean
   /** Initial HTML content (not reactive — use for message editing). */
   content?: string
   variant?: 'compact' | 'expanded' | 'minimal'
-  maxRows?: number
   enterBehavior?: 'send' | 'newline'
   maxLength?: number
   mentions?: MentionItem[]
@@ -76,7 +80,10 @@ export interface RichChatInputProps extends Omit<React.HTMLAttributes<HTMLDivEle
   onMentionSelect?: (item: MentionItem) => void
   onFileUpload?: (file: File) => Promise<{ url: string; name: string; size: number }>
   onImageUpload?: (file: File) => Promise<string>
-  slashCommands?: import('./extensions/slash-command').SlashCommandGroup[]
+  slashCommands?: SlashCommandGroup[]
+  onVoiceRecord?: (audio: Blob, duration: number) => void
+  maxDuration?: number
+  replyTo?: { id: string; author: string; preview: string; onDismiss: () => void }
   onTyping?: (isTyping: boolean) => void
   onEmpty?: (isEmpty: boolean) => void
   isStreaming?: boolean
@@ -87,42 +94,40 @@ export interface RichChatInputProps extends Omit<React.HTMLAttributes<HTMLDivEle
   toolbar?: boolean | ChatToolbarItem[]
 }
 
-// ── Variant config ───────────────────────────────────────────────
+// ── Variant config ──────────────────────────────────────────────
 
 const variantConfig = {
-  compact: { minHeight: '4.5rem', maxHeight: '16rem', showToolbar: true },
-  expanded: { minHeight: '8rem', maxHeight: '24rem', showToolbar: true },
-  minimal: { minHeight: '2.5rem', maxHeight: '8rem', showToolbar: false },
+  compact:  { minHeight: 72, maxHeight: 256, showToolbar: true },
+  expanded: { minHeight: 128, maxHeight: 384, showToolbar: true },
+  minimal:  { minHeight: 40, maxHeight: 128, showToolbar: false },
 }
 
-// ── Chat prose (tighter than RTE) ────────────────────────────────
+// ── Chat prose (tighter than RTE, text-ds-md to match Input) ────
 
 const CHAT_PROSE = [
   'prose prose-sm max-w-none focus:outline-none',
-  'font-body text-ds-sm leading-relaxed text-surface-fg',
+  'font-body text-ds-md leading-relaxed text-surface-fg',
   '[&_p]:mb-ds-01 [&_p]:text-surface-fg',
   '[&_p:last-child]:mb-0',
   '[&_ul]:ml-ds-04 [&_ul]:list-disc [&_ol]:ml-ds-04 [&_ol]:list-decimal',
   '[&_li]:text-surface-fg',
-  '[&_code]:rounded [&_code]:bg-surface-raised [&_code]:px-ds-02 [&_code]:py-[1px] [&_code]:text-ds-sm [&_code]:text-accent-11',
+  '[&_code]:rounded [&_code]:bg-surface-raised [&_code]:px-ds-02 [&_code]:py-[1px] [&_code]:text-ds-md [&_code]:text-accent-11',
   '[&_strong]:font-semibold [&_strong]:text-surface-fg',
   '[&_mark]:rounded-sm [&_mark]:bg-warning-3 [&_mark]:px-[2px]',
   '[&_a]:text-accent-11 [&_a]:underline',
   '[&_.mention]:rounded-ds-sm [&_.mention]:bg-accent-2 [&_.mention]:px-ds-02 [&_.mention]:py-[1px] [&_.mention]:font-medium [&_.mention]:text-accent-11',
 ].join(' ')
 
-// ── Toolbar Button (local — RTE's is private) ───────────────────
+// ── Toolbar Button (for BubbleMenu only — ChatToolbar has its own) ──
 
-function ToolbarBtn({
+function BubbleBtn({
   onClick,
   isActive = false,
-  disabled = false,
   title,
   children,
 }: {
   onClick: () => void
   isActive?: boolean
-  disabled?: boolean
   title: string
   children: React.ReactNode
 }) {
@@ -130,15 +135,13 @@ function ToolbarBtn({
     <button
       type="button"
       onClick={onClick}
-      disabled={disabled}
       title={title}
       aria-label={title}
       aria-pressed={isActive}
       className={cn(
-        'inline-flex h-6 w-6 items-center justify-center rounded-ds-md touch-target',
+        'inline-flex h-ds-xs-plus w-ds-xs-plus items-center justify-center rounded-ds-md touch-target',
         'transition-colors duration-fast-01 ease-productive-standard',
         'hover:bg-surface-raised-hover',
-        'disabled:pointer-events-none disabled:opacity-action-disabled',
         isActive ? 'bg-surface-raised-hover text-accent-11' : 'text-surface-fg-subtle',
       )}
     >
@@ -147,22 +150,7 @@ function ToolbarBtn({
   )
 }
 
-function ToolbarDivider() {
-  return <div className="h-4 w-px bg-surface-border-subtle mx-ds-01" />
-}
-
-// ── Attachment type ──────────────────────────────────────────────
-
-interface Attachment {
-  id: string
-  url?: string
-  name: string
-  size: number
-  type: 'image' | 'file'
-  uploading: boolean
-}
-
-// ── Component ────────────────────────────────────────────────────
+// ── Component ───────────────────────────────────────────────────
 
 const RichChatInput = React.forwardRef<HTMLDivElement, RichChatInputProps>(
   function RichChatInput(
@@ -172,7 +160,6 @@ const RichChatInput = React.forwardRef<HTMLDivElement, RichChatInputProps>(
       disabled = false,
       content = '',
       variant = 'compact',
-      maxRows,
       enterBehavior = 'send',
       maxLength,
       mentions,
@@ -181,6 +168,9 @@ const RichChatInput = React.forwardRef<HTMLDivElement, RichChatInputProps>(
       onFileUpload,
       onImageUpload,
       slashCommands,
+      onVoiceRecord,
+      maxDuration,
+      replyTo,
       onTyping,
       onEmpty,
       isStreaming = false,
@@ -194,9 +184,13 @@ const RichChatInput = React.forwardRef<HTMLDivElement, RichChatInputProps>(
     },
     ref,
   ) {
+    // ── State ──────────────────────────────────────────────────
+    const [state, setState] = React.useState<InputState>('idle')
     const [attachments, setAttachments] = React.useState<Attachment[]>([])
+    const [voiceNote, setVoiceNote] = React.useState<{ blob: Blob; duration: number; waveformData: number[] } | null>(null)
     const [isDragging, setIsDragging] = React.useState(false)
-    const [focused, setFocused] = React.useState(false)
+    const [editorHeight, setEditorHeight] = React.useState<number>(0)
+
     const fileInputRef = React.useRef<HTMLInputElement>(null)
     const typingTimeoutRef = React.useRef<ReturnType<typeof setTimeout>>(undefined)
     const submitRef = React.useRef<(() => void) | undefined>(undefined)
@@ -205,8 +199,38 @@ const RichChatInput = React.forwardRef<HTMLDivElement, RichChatInputProps>(
 
     const isMobile = useIsMobile()
     const config = variantConfig[variant]
+    const maxHeightPx = config.maxHeight
 
-    // Build extensions
+    // ── Voice Recorder ────────────────────────────────────────
+    const voiceRecorder = useVoiceRecorder({
+      maxDuration,
+      onComplete: (blob, duration, waveformData) => {
+        setVoiceNote({ blob, duration, waveformData })
+        setState('review')
+        onVoiceRecord?.(blob, duration)
+      },
+    })
+
+    const handleStartRecording = React.useCallback(() => {
+      voiceRecorder.start()
+      setState('recording')
+    }, [voiceRecorder])
+
+    const handleStopRecording = React.useCallback(() => {
+      voiceRecorder.stop() // triggers onComplete → setState('review')
+    }, [voiceRecorder])
+
+    const handleCancelRecording = React.useCallback(() => {
+      voiceRecorder.cancel()
+      // Return to previous state based on editor content
+      setState((prev) => {
+        // We can't read editor here directly in a setState callback,
+        // so we'll correct in the effect below. Default to 'focused'.
+        return 'focused'
+      })
+    }, [voiceRecorder])
+
+    // ── TipTap Extensions ─────────────────────────────────────
     const extensions = React.useMemo(() => {
       const exts = [
         StarterKit.configure({
@@ -218,7 +242,10 @@ const RichChatInput = React.forwardRef<HTMLDivElement, RichChatInputProps>(
         Placeholder.configure({ placeholder }),
         Underline,
         Highlight.configure({ multicolor: false }),
-        Link.configure({ openOnClick: false, HTMLAttributes: { class: 'text-accent-11 underline' } }),
+        Link.configure({
+          openOnClick: false,
+          HTMLAttributes: { class: 'text-accent-11 underline' },
+        }),
         Image,
         CharacterCount.configure({ limit: maxLength || undefined }),
         FileAttachment,
@@ -277,6 +304,7 @@ const RichChatInput = React.forwardRef<HTMLDivElement, RichChatInputProps>(
     // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [placeholder, maxLength])
 
+    // ── Editor ────────────────────────────────────────────────
     const editor = useEditor({
       extensions,
       content: content || undefined,
@@ -289,27 +317,101 @@ const RichChatInput = React.forwardRef<HTMLDivElement, RichChatInputProps>(
           const files = Array.from(event.clipboardData?.files ?? [])
           if (files.length > 0) {
             files.forEach(processFile)
-            return true // prevent default paste
+            return true
           }
-          return false // let TipTap handle text paste
+          return false
         },
       },
     })
 
-    // Submit handler
+    // ── Submit Handler (structured output) ────────────────────
     const handleSubmit = React.useCallback(() => {
-      if (!editor || editor.isEmpty || isStreaming) return
-      const html = editor.getHTML()
-      const plainText = editor.getText()
-      onSubmit(html, plainText)
+      if (!editor) return
+
+      const hasText = !editor.isEmpty
+      const hasAttachments = attachments.length > 0
+      const hasVoice = !!voiceNote
+
+      if (!hasText && !hasAttachments && !hasVoice) return
+      if (isStreaming) return
+
+      const message: RichChatInputMessage = {
+        html: hasText ? editor.getHTML() : '',
+        plainText: hasText ? editor.getText() : '',
+      }
+
+      if (hasAttachments) {
+        message.attachments = attachments
+          .filter(a => !a.uploading && a.url)
+          .map(a => ({ url: a.url!, name: a.name, size: a.size, type: a.type }))
+      }
+
+      if (hasVoice) {
+        message.voiceNote = { blob: voiceNote.blob, duration: voiceNote.duration }
+      }
+
+      onSubmit(message)
+
+      // Reset everything
       editor.commands.clearContent()
       setAttachments([])
-    }, [editor, isStreaming, onSubmit])
+      setVoiceNote(null)
+      setState('idle')
+    }, [editor, attachments, voiceNote, isStreaming, onSubmit])
 
     // Wire submit ref (for enter-to-send extension)
     submitRef.current = handleSubmit
 
-    // Typing indicator
+    // ── Focus / Blur / State Tracking ─────────────────────────
+    React.useEffect(() => {
+      if (!editor) return
+
+      const handleFocus = () => {
+        if (state === 'idle') setState('focused')
+      }
+
+      const handleBlur = () => {
+        if (state === 'focused' && editor.isEmpty) setState('idle')
+        if (state === 'composing' && editor.isEmpty && attachments.length === 0) setState('idle')
+      }
+
+      const handleUpdate = () => {
+        if (!editor.isEmpty && (state === 'idle' || state === 'focused')) {
+          setState('composing')
+        }
+        if (editor.isEmpty && state === 'composing' && attachments.length === 0 && !voiceNote) {
+          setState(editor.isFocused ? 'focused' : 'idle')
+        }
+      }
+
+      editor.on('focus', handleFocus)
+      editor.on('blur', handleBlur)
+      editor.on('update', handleUpdate)
+
+      return () => {
+        editor.off('focus', handleFocus)
+        editor.off('blur', handleBlur)
+        editor.off('update', handleUpdate)
+      }
+    }, [editor, state, attachments.length, voiceNote])
+
+    // ── Editor Height Breathing (ResizeObserver) ──────────────
+    React.useEffect(() => {
+      const el = editor?.view?.dom
+      if (!el) return
+
+      const observer = new ResizeObserver((entries) => {
+        for (const entry of entries) {
+          const height = Math.min(entry.contentRect.height, maxHeightPx)
+          setEditorHeight(height)
+        }
+      })
+
+      observer.observe(el)
+      return () => observer.disconnect()
+    }, [editor, maxHeightPx])
+
+    // ── Typing Indicator ──────────────────────────────────────
     React.useEffect(() => {
       if (!editor || !onTyping) return
       const handleUpdate = () => {
@@ -324,7 +426,7 @@ const RichChatInput = React.forwardRef<HTMLDivElement, RichChatInputProps>(
       }
     }, [editor, onTyping])
 
-    // Empty state
+    // ── Empty State Callback ──────────────────────────────────
     React.useEffect(() => {
       if (!editor || !onEmpty) return
       const handleUpdate = () => { onEmpty(editor.isEmpty) }
@@ -333,7 +435,7 @@ const RichChatInput = React.forwardRef<HTMLDivElement, RichChatInputProps>(
       return () => { editor.off('update', handleUpdate) }
     }, [editor, onEmpty])
 
-    // File handling
+    // ── File Handling ─────────────────────────────────────────
     const processFile = React.useCallback(async (file: File) => {
       const id = Math.random().toString(36).slice(2)
       const isImage = file.type.startsWith('image/')
@@ -345,6 +447,12 @@ const RichChatInput = React.forwardRef<HTMLDivElement, RichChatInputProps>(
         type: isImage ? 'image' : 'file',
         uploading: true,
       }])
+
+      // Transition to composing if we're idle/focused
+      setState(prev => {
+        if (prev === 'idle' || prev === 'focused') return 'composing'
+        return prev
+      })
 
       try {
         if (isImage && onImageUpload) {
@@ -368,8 +476,15 @@ const RichChatInput = React.forwardRef<HTMLDivElement, RichChatInputProps>(
     }, [onFileUpload, onImageUpload])
 
     const removeAttachment = React.useCallback((id: string) => {
-      setAttachments(prev => prev.filter(a => a.id !== id))
-    }, [])
+      setAttachments(prev => {
+        const next = prev.filter(a => a.id !== id)
+        // If no attachments and editor is empty, drop back
+        if (next.length === 0 && editor?.isEmpty && !voiceNote) {
+          setState(editor.isFocused ? 'focused' : 'idle')
+        }
+        return next
+      })
+    }, [editor, voiceNote])
 
     const handleDrop = React.useCallback((e: React.DragEvent) => {
       e.preventDefault()
@@ -384,23 +499,23 @@ const RichChatInput = React.forwardRef<HTMLDivElement, RichChatInputProps>(
       e.target.value = '' // reset so same file can be re-selected
     }, [processFile])
 
-    // Toolbar visibility
-    const showToolbar = toolbarProp !== false && (config.showToolbar || focused)
-    const toolbarItems = Array.isArray(toolbarProp) ? toolbarProp : null
-    const show = (item: ChatToolbarItem) => !toolbarItems || toolbarItems.includes(item)
+    // ── Voice Note Review Discard ─────────────────────────────
+    const handleDiscardVoice = React.useCallback(() => {
+      setVoiceNote(null)
+      if (editor && !editor.isEmpty) {
+        setState('composing')
+      } else if (attachments.length > 0) {
+        setState('composing')
+      } else {
+        setState(editor?.isFocused ? 'focused' : 'idle')
+      }
+    }, [editor, attachments.length])
 
-    // Character count
+    // ── Derived Values ────────────────────────────────────────
     const charCount = editor?.storage.characterCount?.characters() ?? 0
-    const charPct = maxLength ? charCount / maxLength : 0
-
-    const isEmpty = editor?.isEmpty ?? true
-
-    // Format file size
-    const formatSize = (bytes: number) => {
-      if (bytes < 1024) return `${bytes} B`
-      if (bytes < 1024 * 1024) return `${(bytes / 1024).toFixed(1)} KB`
-      return `${(bytes / (1024 * 1024)).toFixed(1)} MB`
-    }
+    const editorIsEmpty = editor?.isEmpty ?? true
+    const hasContent = !editorIsEmpty || attachments.length > 0 || !!voiceNote
+    const showToolbar = state === 'composing' || state === 'review' || variant === 'expanded'
 
     return (
       <div
@@ -408,11 +523,18 @@ const RichChatInput = React.forwardRef<HTMLDivElement, RichChatInputProps>(
         className={cn('border-t border-surface-border-subtle px-ds-05 py-ds-04', className)}
         {...props}
       >
+        {/* Container */}
         <div
+          role="region"
+          aria-label="Message composer"
           className={cn(
-            'rounded-ds-xl border bg-surface-base transition-colors',
-            isDragging ? 'border-dashed border-accent-7' : 'border-surface-border',
-            focused && 'border-accent-7',
+            'rounded-ds-lg border border-surface-border-strong bg-surface-raised-hover',
+            'transition-[color,background-color,border-color,box-shadow] duration-fast-02 ease-productive-standard',
+            'hover:bg-surface-raised-active',
+            (state !== 'idle') && 'ring-2 ring-accent-9 ring-offset-2 border-accent-9',
+            state === 'recording' && 'border-error-7/30',
+            isDragging && 'border-dashed border-accent-7 bg-accent-2',
+            disabled && 'opacity-action-disabled cursor-not-allowed',
           )}
           onDragOver={(e) => { e.preventDefault(); setIsDragging(true) }}
           onDragLeave={() => setIsDragging(false)}
@@ -421,181 +543,146 @@ const RichChatInput = React.forwardRef<HTMLDivElement, RichChatInputProps>(
           {/* Leading slot */}
           {leadingSlot}
 
-          {/* Attachment preview strip */}
-          {attachments.length > 0 && (
-            <div className="flex gap-ds-02 overflow-x-auto px-ds-03 py-ds-02 border-b border-surface-border-subtle">
-              {attachments.map(att => (
-                att.type === 'image' && att.url ? (
-                  <div key={att.id} className="relative h-12 w-12 shrink-0 rounded-ds-md overflow-hidden">
-                    <img src={att.url} alt={att.name} className="h-full w-full object-cover" />
-                    <button
-                      onClick={() => removeAttachment(att.id)}
-                      className="absolute -top-1 -right-1 h-4 w-4 rounded-full bg-error-9 text-error-fg text-ds-xs flex items-center justify-center"
-                      title="Remove"
-                    >
-                      <Icon icon={IconX} size="xs" />
-                    </button>
-                  </div>
-                ) : (
-                  <div key={att.id} className="flex items-center gap-ds-02 shrink-0 rounded-ds-md bg-surface-raised px-ds-03 py-ds-01">
-                    <span className="text-ds-xs text-surface-fg-muted truncate max-w-[120px]">
-                      {att.name}
-                    </span>
-                    <span className="text-ds-xs text-surface-fg-subtle">
-                      {formatSize(att.size)}
-                    </span>
-                    <button
-                      onClick={() => removeAttachment(att.id)}
-                      className="text-surface-fg-subtle hover:text-surface-fg"
-                      title="Remove"
-                    >
-                      <Icon icon={IconX} size="xs" />
-                    </button>
-                  </div>
-                )
-              ))}
+          {/* Zone 1: Reply Banner */}
+          <AnimatePresence>
+            {replyTo && (
+              <ReplyBanner
+                key="reply"
+                author={replyTo.author}
+                preview={replyTo.preview}
+                onDismiss={replyTo.onDismiss}
+              />
+            )}
+          </AnimatePresence>
+
+          {/* Zone 2: Attachment Strip */}
+          <AnimatePresence>
+            {attachments.length > 0 && (
+              <AttachmentStrip
+                key="attachments"
+                attachments={attachments}
+                onRemoveAttachment={removeAttachment}
+              />
+            )}
+          </AnimatePresence>
+
+          {/* Zone 3: Editor / Recording */}
+          <AnimatePresence mode="wait">
+            {state === 'recording' ? (
+              <RecordingOverlay
+                key="recording"
+                duration={voiceRecorder.duration}
+                analyserNode={voiceRecorder.analyserNode}
+                maxDuration={maxDuration}
+                onStop={handleStopRecording}
+                onCancel={handleCancelRecording}
+              />
+            ) : (
+              <div
+                key="editor"
+                className="px-ds-04 py-ds-03"
+                style={{
+                  minHeight: config.minHeight,
+                  height: editorHeight || undefined,
+                  maxHeight: maxHeightPx,
+                  transition: 'height 150ms ease-out',
+                  overflow: editorHeight >= maxHeightPx ? 'auto' : 'hidden',
+                }}
+              >
+                <EditorContent
+                  editor={editor}
+                />
+              </div>
+            )}
+          </AnimatePresence>
+
+          {/* Voice Note Review — shown in 'review' state */}
+          {state === 'review' && voiceNote && (
+            <div className="flex items-center gap-ds-03 px-ds-04 py-ds-02b border-b border-surface-border">
+              <AudioPlayer
+                src={voiceNote.blob}
+                duration={voiceNote.duration}
+                waveformData={voiceNote.waveformData}
+                className="flex-1"
+              />
+              <Button
+                variant="ghost"
+                size="icon-sm"
+                onClick={handleDiscardVoice}
+                aria-label="Discard voice note"
+                title="Discard voice note"
+                className="text-surface-fg-subtle hover:text-error-11"
+              >
+                <Icon icon={IconMicrophone} size="sm" className="line-through" />
+              </Button>
             </div>
           )}
 
-          {/* Editor */}
-          <div
-            className="px-ds-03 py-ds-02"
-            style={{ minHeight: config.minHeight, maxHeight: config.maxHeight, overflowY: 'auto' }}
-          >
-            <EditorContent
-              editor={editor}
-              onFocus={() => setFocused(true)}
-              onBlur={() => setFocused(false)}
-            />
-          </div>
-
-          {/* Mobile floating bubble toolbar — shows on text selection */}
-          {isMobile && editor && (
+          {/* Mobile BubbleMenu — shows on text selection */}
+          {isMobile && editor && state === 'composing' && (
             <BubbleMenu
               editor={editor}
               className="flex gap-ds-01 rounded-ds-lg border border-surface-border-strong bg-surface-overlay p-ds-02 shadow-floating"
             >
-              <ToolbarBtn onClick={() => editor.chain().focus().toggleBold().run()} isActive={editor.isActive('bold')} title="Bold">
+              <BubbleBtn onClick={() => editor.chain().focus().toggleBold().run()} isActive={editor.isActive('bold')} title="Bold">
                 <Icon icon={IconBold} size="xs" />
-              </ToolbarBtn>
-              <ToolbarBtn onClick={() => editor.chain().focus().toggleItalic().run()} isActive={editor.isActive('italic')} title="Italic">
+              </BubbleBtn>
+              <BubbleBtn onClick={() => editor.chain().focus().toggleItalic().run()} isActive={editor.isActive('italic')} title="Italic">
                 <Icon icon={IconItalic} size="xs" />
-              </ToolbarBtn>
-              <ToolbarBtn onClick={() => editor.chain().focus().toggleUnderline().run()} isActive={editor.isActive('underline')} title="Underline">
+              </BubbleBtn>
+              <BubbleBtn onClick={() => editor.chain().focus().toggleUnderline().run()} isActive={editor.isActive('underline')} title="Underline">
                 <Icon icon={IconUnderline} size="xs" />
-              </ToolbarBtn>
-              <ToolbarBtn onClick={() => editor.chain().focus().toggleStrike().run()} isActive={editor.isActive('strike')} title="Strike">
+              </BubbleBtn>
+              <BubbleBtn onClick={() => editor.chain().focus().toggleStrike().run()} isActive={editor.isActive('strike')} title="Strikethrough">
                 <Icon icon={IconStrikethrough} size="xs" />
-              </ToolbarBtn>
-              <ToolbarBtn onClick={() => editor.chain().focus().toggleHighlight().run()} isActive={editor.isActive('highlight')} title="Highlight">
+              </BubbleBtn>
+              <BubbleBtn onClick={() => editor.chain().focus().toggleHighlight().run()} isActive={editor.isActive('highlight')} title="Highlight">
                 <Icon icon={IconHighlight} size="xs" />
-              </ToolbarBtn>
-              <ToolbarBtn onClick={() => editor.chain().focus().toggleCode().run()} isActive={editor.isActive('code')} title="Code">
+              </BubbleBtn>
+              <BubbleBtn onClick={() => editor.chain().focus().toggleCode().run()} isActive={editor.isActive('code')} title="Code">
                 <Icon icon={IconCode} size="xs" />
-              </ToolbarBtn>
+              </BubbleBtn>
             </BubbleMenu>
           )}
 
-          {/* Toolbar */}
-          {showToolbar && editor && (
-            <div
-              role="toolbar"
-              aria-label="Message formatting"
-              className="flex flex-wrap items-center gap-ds-01 border-t border-surface-border-subtle px-ds-03 py-ds-02"
-            >
-              {/* Formatting — hidden on mobile (BubbleMenu handles it) */}
-              {!isMobile && show('bold') && (
-                <ToolbarBtn onClick={() => editor.chain().focus().toggleBold().run()} isActive={editor.isActive('bold')} title="Bold">
-                  <Icon icon={IconBold} size="xs" />
-                </ToolbarBtn>
-              )}
-              {!isMobile && show('italic') && (
-                <ToolbarBtn onClick={() => editor.chain().focus().toggleItalic().run()} isActive={editor.isActive('italic')} title="Italic">
-                  <Icon icon={IconItalic} size="xs" />
-                </ToolbarBtn>
-              )}
-              {!isMobile && show('underline') && (
-                <ToolbarBtn onClick={() => editor.chain().focus().toggleUnderline().run()} isActive={editor.isActive('underline')} title="Underline">
-                  <Icon icon={IconUnderline} size="xs" />
-                </ToolbarBtn>
-              )}
-              {!isMobile && show('strike') && (
-                <ToolbarBtn onClick={() => editor.chain().focus().toggleStrike().run()} isActive={editor.isActive('strike')} title="Strikethrough">
-                  <Icon icon={IconStrikethrough} size="xs" />
-                </ToolbarBtn>
-              )}
-              {!isMobile && show('highlight') && (
-                <ToolbarBtn onClick={() => editor.chain().focus().toggleHighlight().run()} isActive={editor.isActive('highlight')} title="Highlight">
-                  <Icon icon={IconHighlight} size="xs" />
-                </ToolbarBtn>
-              )}
-              {!isMobile && show('code') && (
-                <ToolbarBtn onClick={() => editor.chain().focus().toggleCode().run()} isActive={editor.isActive('code')} title="Code">
-                  <Icon icon={IconCode} size="xs" />
-                </ToolbarBtn>
-              )}
+          {/* Zone 4: Toolbar — shown in composing/review or expanded variant */}
+          <AnimatePresence>
+            {showToolbar && editor && (
+              <ChatToolbar
+                key="toolbar"
+                editor={editor}
+                toolbar={toolbarProp}
+                isMobile={isMobile}
+                hasMentions={!!(mentions || onMentionSearch)}
+                hasSlashCommands={!!slashCommands}
+                hasFileUpload={!!(onFileUpload || onImageUpload)}
+                onAttachClick={() => fileInputRef.current?.click()}
+                maxLength={maxLength}
+                charCount={charCount}
+                isEmpty={editorIsEmpty && attachments.length === 0 && !voiceNote}
+                disabled={disabled}
+                isStreaming={isStreaming}
+                hasVoice={!!onVoiceRecord}
+                hasContent={hasContent}
+                onSubmit={handleSubmit}
+                onCancel={onCancel}
+                onMicClick={handleStartRecording}
+              />
+            )}
+          </AnimatePresence>
 
-              {!isMobile && <ToolbarDivider />}
-
-              {/* Lists — hidden on mobile */}
-              {!isMobile && show('bulletList') && (
-                <ToolbarBtn onClick={() => editor.chain().focus().toggleBulletList().run()} isActive={editor.isActive('bulletList')} title="Bullet list">
-                  <Icon icon={IconList} size="xs" />
-                </ToolbarBtn>
-              )}
-              {!isMobile && show('orderedList') && (
-                <ToolbarBtn onClick={() => editor.chain().focus().toggleOrderedList().run()} isActive={editor.isActive('orderedList')} title="Ordered list">
-                  <Icon icon={IconListNumbers} size="xs" />
-                </ToolbarBtn>
-              )}
-
-              {!isMobile && <ToolbarDivider />}
-
-              {/* Insert */}
-              {show('mention') && (mentions || onMentionSearch) && (
-                <ToolbarBtn onClick={() => editor.chain().focus().insertContent('@').run()} title="Mention someone">
-                  <Icon icon={IconAt} size="xs" />
-                </ToolbarBtn>
-              )}
-              {show('emoji') && (
-                <ToolbarBtn onClick={() => editor.chain().focus().insertContent(':').run()} title="Emoji">
-                  <Icon icon={IconMoodSmile} size="xs" />
-                </ToolbarBtn>
-              )}
-              {show('attach') && (onFileUpload || onImageUpload) && (
-                <ToolbarBtn onClick={() => fileInputRef.current?.click()} title="Attach file">
-                  <Icon icon={IconPaperclip} size="xs" />
-                </ToolbarBtn>
-              )}
-              {show('slash') && slashCommands && (
-                <ToolbarBtn onClick={() => { editor.chain().focus().insertContent('/').run() }} title="Slash commands">
-                  <Icon icon={IconSlash} size="xs" />
-                </ToolbarBtn>
-              )}
-
-              {/* Spacer */}
-              <div className="flex-1" />
-
-              {/* Character counter */}
-              {maxLength != null && (
-                <span className={cn(
-                  'text-ds-xs tabular-nums',
-                  charPct >= 1 ? 'text-error-11' : charPct >= 0.9 ? 'text-warning-11' : 'text-surface-fg-subtle',
-                )}>
-                  {charCount}/{maxLength}
-                </span>
-              )}
-
-              {/* Send / Stop */}
-              {isStreaming ? (
-                <Button variant="ghost" size="icon-sm" color="error" onClick={onCancel} aria-label="Stop" title="Stop">
-                  <Icon icon={IconSquare} size="sm" />
-                </Button>
-              ) : (
-                <Button variant="ghost" size="icon-sm" onClick={handleSubmit} disabled={isEmpty || disabled} aria-label="Send" title="Send">
-                  <Icon icon={IconSend} size="sm" />
-                </Button>
-              )}
+          {/* Idle/Focused state: just the mic button (when voice is enabled) */}
+          {(state === 'idle' || state === 'focused') && variant !== 'expanded' && onVoiceRecord && (
+            <div className="flex justify-end px-ds-04 py-ds-02b">
+              <Button
+                variant="ghost"
+                size="icon-sm"
+                onClick={handleStartRecording}
+                aria-label="Record voice message"
+                title="Record voice message"
+              >
+                <Icon icon={IconMicrophone} size="sm" />
+              </Button>
             </div>
           )}
 
@@ -625,3 +712,4 @@ const RichChatInput = React.forwardRef<HTMLDivElement, RichChatInputProps>(
 RichChatInput.displayName = 'RichChatInput'
 
 export { RichChatInput }
+export type { ChatToolbarItem }

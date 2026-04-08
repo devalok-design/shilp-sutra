@@ -34,8 +34,8 @@ export type { PriorityIndicatorProps, Priority } from './priority-indicator'
 export { RichTextEditor, RichTextViewer } from './rich-text-editor'
 export type { RichTextEditorProps, RichTextViewerProps, MentionItem, ToolbarItem } from './rich-text-editor'
 
-export { RichChatInput } from './rich-chat-input'
-export type { RichChatInputProps, ChatToolbarItem } from './rich-chat-input'
+export { RichChatInput, AudioWaveform, AudioPlayer, useVoiceRecorder } from './rich-chat-input'
+export type { RichChatInputProps, RichChatInputMessage, ChatToolbarItem, AudioWaveformProps, AudioPlayerProps, UseVoiceRecorderOptions, UseVoiceRecorderReturn } from './rich-chat-input'
 export type { SlashCommand, SlashCommandGroup } from './extensions/slash-command'
 
 export { DatePicker, DateRangePicker, CalendarGrid, TimePicker, DateTimePicker, Presets, useCalendar, YearPicker, MonthPicker } from './date-picker'

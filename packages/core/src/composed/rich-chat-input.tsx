@@ -581,7 +581,7 @@ const RichChatInput = React.forwardRef<HTMLDivElement, RichChatInputProps>(
             ) : (
               <div
                 key="editor"
-                className="px-ds-04 py-ds-03 cursor-text [&_.tiptap]:min-h-full [&_.tiptap]:outline-none"
+                className="flex items-center px-ds-04 py-ds-03 cursor-text [&_.tiptap]:min-h-full [&_.tiptap]:w-full [&_.tiptap]:outline-none"
                 style={{
                   minHeight: config.minHeight,
                   maxHeight: maxHeightPx,

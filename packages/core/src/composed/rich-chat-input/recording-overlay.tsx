@@ -68,7 +68,7 @@ function RecordingOverlay({
       role="status"
       aria-live="polite"
       aria-label="Recording voice message"
-      className="flex items-center gap-ds-03 px-ds-04 py-ds-02"
+      className="flex items-center gap-ds-03 px-ds-04 py-ds-03"
     >
       {/* Red pulsing dot */}
       <span
@@ -101,7 +101,7 @@ function RecordingOverlay({
       <AudioWaveform
         mode="live"
         analyserNode={analyserNode}
-        height={20}
+        height={24}
         barCount={30}
       />
     </motion.div>

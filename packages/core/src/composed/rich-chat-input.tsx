@@ -623,15 +623,14 @@ const RichChatInput = React.forwardRef<HTMLDivElement, RichChatInputProps>(
         )}
         {...props}
       >
-        {/* + button outside the input on the left — height matches input */}
+        {/* + button outside the input on the left — self-stretch matches input height */}
         {(onFileUpload || onImageUpload) && (
           <button
             type="button"
             onClick={() => fileInputRef.current?.click()}
             title="Attach"
             aria-label="Attach file"
-            className="flex shrink-0 items-center justify-center rounded-ds-lg bg-accent-9 text-accent-fg hover:bg-accent-10 active:scale-95 transition-all duration-fast-02"
-            style={{ height: config.minHeight, width: config.minHeight }}
+            className="flex self-stretch aspect-square shrink-0 items-center justify-center rounded-ds-lg bg-accent-9 text-accent-fg hover:bg-accent-10 active:scale-95 transition-all duration-fast-02"
           >
             <Icon icon={IconPlus} size="sm" />
           </button>
@@ -839,8 +838,8 @@ const RichChatInput = React.forwardRef<HTMLDivElement, RichChatInputProps>(
           />
         </div>
 
-        {/* Send/mic buttons outside the input on the right */}
-        <div className="flex items-center gap-ds-02 shrink-0">
+        {/* Send/mic buttons outside the input on the right — self-stretch to match input */}
+        <div className="flex items-stretch gap-ds-02 shrink-0">
           {sendOptions && sendOptions.length > 0 && state !== 'recording' && (
             <SplitSendDropdown options={sendOptions} />
           )}
@@ -856,8 +855,7 @@ const RichChatInput = React.forwardRef<HTMLDivElement, RichChatInputProps>(
                 animate={{ scale: 1, opacity: 1 }}
                 exit={{ scale: 0.8, opacity: 0 }}
                 transition={{ duration: 0.15 }}
-                className="flex shrink-0 items-center justify-center rounded-ds-lg bg-error-9 text-error-fg hover:bg-error-10 active:scale-95 transition-colors duration-fast-02"
-                style={{ height: config.minHeight, width: config.minHeight }}
+                className="flex shrink-0 aspect-square items-center justify-center rounded-ds-lg bg-error-9 text-error-fg hover:bg-error-10 active:scale-95 transition-colors duration-fast-02"
               >
                 <Icon icon={IconSquare} size="sm" />
               </motion.button>
@@ -879,9 +877,8 @@ const RichChatInput = React.forwardRef<HTMLDivElement, RichChatInputProps>(
                   initial={{ x: 8, opacity: 0, scale: 0.8 }}
                   animate={{ x: 0, opacity: 1, scale: 1 }}
                   transition={{ duration: 0.2, delay: 0.05 }}
-                  className="flex shrink-0 items-center justify-center rounded-ds-lg border border-surface-border-strong text-surface-fg-subtle hover:bg-error-3 hover:text-error-11 hover:border-error-7 active:scale-95 transition-colors duration-fast-02"
-                  style={{ height: config.minHeight, width: config.minHeight }}
-                >
+                  className="flex shrink-0 aspect-square items-center justify-center rounded-ds-lg border border-surface-border-strong text-surface-fg-subtle hover:bg-error-3 hover:text-error-11 hover:border-error-7 active:scale-95 transition-colors duration-fast-02"
+                  >
                   <Icon icon={IconTrash} size="sm" />
                 </motion.button>
                 {/* Stop — mic morphs to stop square */}
@@ -893,9 +890,8 @@ const RichChatInput = React.forwardRef<HTMLDivElement, RichChatInputProps>(
                   initial={{ scale: 0.8, opacity: 0 }}
                   animate={{ scale: 1, opacity: 1 }}
                   transition={{ duration: 0.15 }}
-                  className="flex shrink-0 items-center justify-center rounded-ds-lg bg-error-9 text-error-fg hover:bg-error-10 active:scale-95 transition-colors duration-fast-02"
-                  style={{ height: config.minHeight, width: config.minHeight }}
-                >
+                  className="flex shrink-0 aspect-square items-center justify-center rounded-ds-lg bg-error-9 text-error-fg hover:bg-error-10 active:scale-95 transition-colors duration-fast-02"
+                  >
                   <Icon icon={IconSquare} size="sm" />
                 </motion.button>
               </motion.div>
@@ -911,8 +907,7 @@ const RichChatInput = React.forwardRef<HTMLDivElement, RichChatInputProps>(
                 animate={{ scale: 1, opacity: 1 }}
                 exit={{ scale: 0.8, opacity: 0 }}
                 transition={{ duration: 0.15 }}
-                className="flex shrink-0 items-center justify-center rounded-ds-lg bg-accent-9 text-accent-fg hover:bg-accent-10 active:scale-95 transition-colors duration-fast-02 disabled:opacity-action-disabled disabled:pointer-events-none"
-                style={{ height: config.minHeight, width: config.minHeight }}
+                className="flex shrink-0 aspect-square items-center justify-center rounded-ds-lg bg-accent-9 text-accent-fg hover:bg-accent-10 active:scale-95 transition-colors duration-fast-02 disabled:opacity-action-disabled disabled:pointer-events-none"
               >
                 <Icon icon={IconSend} size="sm" />
               </motion.button>
@@ -927,8 +922,7 @@ const RichChatInput = React.forwardRef<HTMLDivElement, RichChatInputProps>(
                 animate={{ scale: 1, opacity: 1 }}
                 exit={{ scale: 0.8, opacity: 0 }}
                 transition={{ duration: 0.15 }}
-                className="flex shrink-0 items-center justify-center rounded-ds-lg border border-surface-border-strong text-surface-fg-subtle hover:bg-surface-raised-hover hover:text-surface-fg active:scale-95 transition-colors duration-fast-02"
-                style={{ height: config.minHeight, width: config.minHeight }}
+                className="flex shrink-0 aspect-square items-center justify-center rounded-ds-lg border border-surface-border-strong text-surface-fg-subtle hover:bg-surface-raised-hover hover:text-surface-fg active:scale-95 transition-colors duration-fast-02"
               >
                 <Icon icon={IconMicrophone} size="sm" />
               </motion.button>
@@ -943,8 +937,7 @@ const RichChatInput = React.forwardRef<HTMLDivElement, RichChatInputProps>(
                 animate={{ scale: 1, opacity: 1 }}
                 exit={{ scale: 0.8, opacity: 0 }}
                 transition={{ duration: 0.15 }}
-                className="flex shrink-0 items-center justify-center rounded-ds-lg bg-accent-9/50 text-accent-fg/50 cursor-not-allowed"
-                style={{ height: config.minHeight, width: config.minHeight }}
+                className="flex shrink-0 aspect-square items-center justify-center rounded-ds-lg bg-accent-9/50 text-accent-fg/50 cursor-not-allowed"
               >
                 <Icon icon={IconSend} size="sm" />
               </motion.button>

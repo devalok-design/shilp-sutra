@@ -594,9 +594,26 @@ const RichChatInput = React.forwardRef<HTMLDivElement, RichChatInputProps>(
     return (
       <div
         ref={ref}
-        className={cn('border-t border-surface-border-subtle px-ds-05 py-ds-04', className)}
+        className={cn(
+          'border-t border-surface-border-subtle px-ds-05 py-ds-04',
+          isInline && 'flex items-end gap-ds-03',
+          className,
+        )}
         {...props}
       >
+        {/* Inline: + button outside the input on the left */}
+        {isInline && (onFileUpload || onImageUpload) && (
+          <button
+            type="button"
+            onClick={() => fileInputRef.current?.click()}
+            title="Attach"
+            aria-label="Attach file"
+            className="mb-ds-01 flex h-9 w-9 shrink-0 items-center justify-center rounded-ds-full bg-accent-9 text-accent-fg hover:bg-accent-10 active:scale-95 transition-all duration-fast-02"
+          >
+            <span className="text-ds-lg font-light">+</span>
+          </button>
+        )}
+
         {/* Container */}
         <div
           role="region"
@@ -605,6 +622,7 @@ const RichChatInput = React.forwardRef<HTMLDivElement, RichChatInputProps>(
             'rounded-ds-lg border border-surface-border-strong bg-surface-raised-hover',
             'transition-[color,background-color,border-color,box-shadow] duration-fast-02 ease-productive-standard',
             'hover:bg-surface-raised-active',
+            isInline && 'flex-1 rounded-ds-xl',
             (state !== 'idle') && 'ring-2 ring-accent-9 ring-offset-2 border-accent-9',
             state === 'recording' && 'border-error-7/30',
             isDragging && 'border-dashed border-accent-7 bg-accent-2',
@@ -743,22 +761,17 @@ const RichChatInput = React.forwardRef<HTMLDivElement, RichChatInputProps>(
                       </button>
                     )}
 
-                    {/* Split send / Mic */}
-                    {sendOptions && sendOptions.length > 0 && (
-                      <SplitSendDropdown options={sendOptions} />
-                    )}
-                    {hasContent ? (
-                      <Button variant="ghost" size="icon-sm" onClick={handleSubmit} disabled={disabled} aria-label="Send" title="Send">
-                        <Icon icon={IconSend} size="sm" />
-                      </Button>
-                    ) : onVoiceRecord ? (
-                      <Button variant="ghost" size="icon-sm" onClick={handleStartRecording} aria-label="Record" title="Record voice message">
-                        <Icon icon={IconMicrophone} size="sm" />
-                      </Button>
-                    ) : (
-                      <Button variant="ghost" size="icon-sm" disabled aria-label="Send" title="Send">
-                        <Icon icon={IconSend} size="sm" />
-                      </Button>
+                    {/* Voice record (inside input, if no external mic) */}
+                    {onVoiceRecord && (
+                      <button
+                        type="button"
+                        onClick={handleStartRecording}
+                        title="Record voice message"
+                        aria-label="Record voice message"
+                        className="inline-flex h-ds-xs-plus w-ds-xs-plus items-center justify-center rounded-ds-md touch-target text-surface-fg-subtle hover:bg-surface-raised-hover hover:text-surface-fg transition-colors duration-fast-01"
+                      >
+                        <Icon icon={IconMicrophone} size="xs" />
+                      </button>
                     )}
                   </div>
                 )}
@@ -869,8 +882,30 @@ const RichChatInput = React.forwardRef<HTMLDivElement, RichChatInputProps>(
           />
         </div>
 
+        {/* Inline: send/chevron buttons outside the input on the right */}
+        {isInline && (
+          <div className="flex items-center gap-ds-01 mb-ds-01 shrink-0">
+            {sendOptions && sendOptions.length > 0 && (
+              <SplitSendDropdown options={sendOptions} />
+            )}
+            {hasContent ? (
+              <Button variant="solid" size="icon-sm" onClick={handleSubmit} disabled={disabled} aria-label="Send" title="Send">
+                <Icon icon={IconSend} size="sm" />
+              </Button>
+            ) : onVoiceRecord ? (
+              <Button variant="ghost" size="icon-sm" onClick={handleStartRecording} aria-label="Record" title="Record voice message">
+                <Icon icon={IconMicrophone} size="sm" />
+              </Button>
+            ) : (
+              <Button variant="solid" size="icon-sm" disabled aria-label="Send" title="Send">
+                <Icon icon={IconSend} size="sm" />
+              </Button>
+            )}
+          </div>
+        )}
+
         {/* Disclaimer */}
-        {disclaimer && (
+        {!isInline && disclaimer && (
           <p className="mt-ds-02 text-center text-ds-xs text-surface-fg-subtle/50">
             {disclaimer}
           </p>

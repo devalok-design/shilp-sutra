@@ -623,17 +623,18 @@ const RichChatInput = React.forwardRef<HTMLDivElement, RichChatInputProps>(
         )}
         {...props}
       >
-        {/* + button outside the input on the left — self-stretch matches input height */}
+        {/* + button outside the input on the left */}
         {(onFileUpload || onImageUpload) && (
-          <button
-            type="button"
+          <Button
+            variant="solid"
+            size="icon-lg"
             onClick={() => fileInputRef.current?.click()}
             title="Attach"
             aria-label="Attach file"
-            className="flex shrink-0 aspect-square items-center justify-center rounded-ds-lg bg-accent-9 text-accent-fg hover:bg-accent-10 active:scale-95 transition-all duration-fast-02"
+            className="shrink-0 self-end"
           >
-            <Icon icon={IconPlus} size="sm" />
-          </button>
+            <Icon icon={IconPlus} size="md" />
+          </Button>
         )}
 
         {/* Container */}
@@ -839,108 +840,46 @@ const RichChatInput = React.forwardRef<HTMLDivElement, RichChatInputProps>(
         </div>
 
         {/* Send/mic buttons outside the input on the right */}
-        <div className="flex items-stretch gap-ds-02 shrink-0">
+        <div className="flex items-end gap-ds-02 shrink-0">
           {sendOptions && sendOptions.length > 0 && state !== 'recording' && (
             <SplitSendDropdown options={sendOptions} />
           )}
           <AnimatePresence mode="wait">
             {isStreaming ? (
-              <motion.button
-                key="stop-stream"
-                type="button"
-                onClick={onCancel}
-                aria-label="Stop"
-                title="Stop"
-                initial={{ scale: 0.8, opacity: 0 }}
-                animate={{ scale: 1, opacity: 1 }}
-                exit={{ scale: 0.8, opacity: 0 }}
-                transition={{ duration: 0.15 }}
-                className="flex shrink-0 aspect-square items-center justify-center rounded-ds-lg bg-error-9 text-error-fg hover:bg-error-10 active:scale-95 transition-colors duration-fast-02"
-              >
-                <Icon icon={IconSquare} size="sm" />
-              </motion.button>
+              <motion.div key="stop-stream" initial={{ scale: 0.8, opacity: 0 }} animate={{ scale: 1, opacity: 1 }} exit={{ scale: 0.8, opacity: 0 }} transition={{ duration: 0.15 }}>
+                <Button variant="solid" size="icon-lg" color="error" onClick={onCancel} aria-label="Stop" title="Stop">
+                  <Icon icon={IconSquare} size="md" />
+                </Button>
+              </motion.div>
             ) : state === 'recording' ? (
-              <motion.div
-                key="recording-controls"
-                className="flex items-center gap-ds-02"
-                initial={{ opacity: 0 }}
-                animate={{ opacity: 1 }}
-                exit={{ opacity: 0 }}
-                transition={{ duration: 0.15 }}
-              >
-                {/* Trash / cancel — slides in from left */}
-                <motion.button
-                  type="button"
-                  onClick={handleCancelRecording}
-                  aria-label="Cancel recording"
-                  title="Cancel recording"
-                  initial={{ x: 8, opacity: 0, scale: 0.8 }}
-                  animate={{ x: 0, opacity: 1, scale: 1 }}
-                  transition={{ duration: 0.2, delay: 0.05 }}
-                  className="flex shrink-0 aspect-square items-center justify-center rounded-ds-lg border border-surface-border-strong text-surface-fg-subtle hover:bg-error-3 hover:text-error-11 hover:border-error-7 active:scale-95 transition-colors duration-fast-02"
-                  >
-                  <Icon icon={IconTrash} size="sm" />
-                </motion.button>
-                {/* Stop — mic morphs to stop square */}
-                <motion.button
-                  type="button"
-                  onClick={handleStopRecording}
-                  aria-label="Stop recording"
-                  title="Stop recording"
-                  initial={{ scale: 0.8, opacity: 0 }}
-                  animate={{ scale: 1, opacity: 1 }}
-                  transition={{ duration: 0.15 }}
-                  className="flex shrink-0 aspect-square items-center justify-center rounded-ds-lg bg-error-9 text-error-fg hover:bg-error-10 active:scale-95 transition-colors duration-fast-02"
-                  >
-                  <Icon icon={IconSquare} size="sm" />
-                </motion.button>
+              <motion.div key="recording-controls" className="flex items-end gap-ds-02" initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} transition={{ duration: 0.15 }}>
+                <motion.div initial={{ x: 8, opacity: 0 }} animate={{ x: 0, opacity: 1 }} transition={{ duration: 0.2, delay: 0.05 }}>
+                  <Button variant="outline" size="icon-lg" onClick={handleCancelRecording} aria-label="Cancel recording" title="Cancel recording" className="text-surface-fg-subtle hover:text-error-11 hover:border-error-7">
+                    <Icon icon={IconTrash} size="md" />
+                  </Button>
+                </motion.div>
+                <Button variant="solid" size="icon-lg" color="error" onClick={handleStopRecording} aria-label="Stop recording" title="Stop recording">
+                  <Icon icon={IconSquare} size="md" />
+                </Button>
               </motion.div>
             ) : hasContent ? (
-              <motion.button
-                key="send"
-                type="button"
-                onClick={handleSubmit}
-                disabled={disabled}
-                aria-label="Send"
-                title="Send"
-                initial={{ scale: 0.8, opacity: 0 }}
-                animate={{ scale: 1, opacity: 1 }}
-                exit={{ scale: 0.8, opacity: 0 }}
-                transition={{ duration: 0.15 }}
-                className="flex shrink-0 aspect-square items-center justify-center rounded-ds-lg bg-accent-9 text-accent-fg hover:bg-accent-10 active:scale-95 transition-colors duration-fast-02 disabled:opacity-action-disabled disabled:pointer-events-none"
-              >
-                <Icon icon={IconSend} size="sm" />
-              </motion.button>
+              <motion.div key="send" initial={{ scale: 0.8, opacity: 0 }} animate={{ scale: 1, opacity: 1 }} exit={{ scale: 0.8, opacity: 0 }} transition={{ duration: 0.15 }}>
+                <Button variant="solid" size="icon-lg" onClick={handleSubmit} disabled={disabled} aria-label="Send" title="Send">
+                  <Icon icon={IconSend} size="md" />
+                </Button>
+              </motion.div>
             ) : onVoiceRecord ? (
-              <motion.button
-                key="mic"
-                type="button"
-                onClick={handleStartRecording}
-                aria-label="Record voice message"
-                title="Record voice message"
-                initial={{ scale: 0.8, opacity: 0 }}
-                animate={{ scale: 1, opacity: 1 }}
-                exit={{ scale: 0.8, opacity: 0 }}
-                transition={{ duration: 0.15 }}
-                className="flex shrink-0 aspect-square items-center justify-center rounded-ds-lg border border-surface-border-strong text-surface-fg-subtle hover:bg-surface-raised-hover hover:text-surface-fg active:scale-95 transition-colors duration-fast-02"
-              >
-                <Icon icon={IconMicrophone} size="sm" />
-              </motion.button>
+              <motion.div key="mic" initial={{ scale: 0.8, opacity: 0 }} animate={{ scale: 1, opacity: 1 }} exit={{ scale: 0.8, opacity: 0 }} transition={{ duration: 0.15 }}>
+                <Button variant="outline" size="icon-lg" onClick={handleStartRecording} aria-label="Record voice message" title="Record voice message">
+                  <Icon icon={IconMicrophone} size="md" />
+                </Button>
+              </motion.div>
             ) : (
-              <motion.button
-                key="send-disabled"
-                type="button"
-                disabled
-                aria-label="Send"
-                title="Send"
-                initial={{ scale: 0.8, opacity: 0 }}
-                animate={{ scale: 1, opacity: 1 }}
-                exit={{ scale: 0.8, opacity: 0 }}
-                transition={{ duration: 0.15 }}
-                className="flex shrink-0 aspect-square items-center justify-center rounded-ds-lg bg-accent-9/50 text-accent-fg/50 cursor-not-allowed"
-              >
-                <Icon icon={IconSend} size="sm" />
-              </motion.button>
+              <motion.div key="send-disabled" initial={{ scale: 0.8, opacity: 0 }} animate={{ scale: 1, opacity: 1 }} exit={{ scale: 0.8, opacity: 0 }} transition={{ duration: 0.15 }}>
+                <Button variant="solid" size="icon-lg" disabled aria-label="Send" title="Send">
+                  <Icon icon={IconSend} size="md" />
+                </Button>
+              </motion.div>
             )}
           </AnimatePresence>
         </div>

@@ -746,31 +746,7 @@ const RichChatInput = React.forwardRef<HTMLDivElement, RichChatInputProps>(
                       <Icon icon={IconMoodSmile} size="xs" />
                     </button>
 
-                    {/* Attach */}
-                    {(onFileUpload || onImageUpload) && (
-                      <button
-                        type="button"
-                        onClick={() => fileInputRef.current?.click()}
-                        title="Attach file"
-                        aria-label="Attach file"
-                        className="inline-flex h-ds-xs-plus w-ds-xs-plus items-center justify-center rounded-ds-md touch-target text-surface-fg-subtle hover:bg-surface-raised-hover hover:text-surface-fg transition-colors duration-fast-01"
-                      >
-                        <Icon icon={IconPaperclip} size="xs" />
-                      </button>
-                    )}
-
-                    {/* Voice record (inside input, if no external mic) */}
-                    {onVoiceRecord && (
-                      <button
-                        type="button"
-                        onClick={handleStartRecording}
-                        title="Record voice message"
-                        aria-label="Record voice message"
-                        className="inline-flex h-ds-xs-plus w-ds-xs-plus items-center justify-center rounded-ds-md touch-target text-surface-fg-subtle hover:bg-surface-raised-hover hover:text-surface-fg transition-colors duration-fast-01"
-                      >
-                        <Icon icon={IconMicrophone} size="xs" />
-                      </button>
-                    )}
+                    {/* Attach and mic are handled by external buttons (+ on left, mic on right) */}
                   </div>
                 )}
               </div>

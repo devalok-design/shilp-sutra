@@ -618,7 +618,7 @@ const RichChatInput = React.forwardRef<HTMLDivElement, RichChatInputProps>(
         ref={ref}
         className={cn(
           'border-t border-surface-border-subtle px-ds-05 py-ds-04',
-          'flex items-end gap-ds-03',
+          'flex items-stretch gap-ds-03',
           className,
         )}
         {...props}
@@ -838,7 +838,7 @@ const RichChatInput = React.forwardRef<HTMLDivElement, RichChatInputProps>(
           />
         </div>
 
-        {/* Send/mic buttons outside the input on the right — self-stretch to match input */}
+        {/* Send/mic buttons outside the input on the right */}
         <div className="flex items-stretch gap-ds-02 shrink-0">
           {sendOptions && sendOptions.length > 0 && state !== 'recording' && (
             <SplitSendDropdown options={sendOptions} />

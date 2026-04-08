@@ -711,13 +711,13 @@ const RichChatInput = React.forwardRef<HTMLDivElement, RichChatInputProps>(
                 }}
                 onClick={() => editor?.commands.focus()}
               >
-                <EditorContent
-                  editor={editor}
-                />
+                <div className="flex-1 min-w-0">
+                  <EditorContent editor={editor} />
+                </div>
 
-                {/* Action icons inside the editor row */}
+                {/* Action icons — right-aligned inside input */}
                 {editor && (
-                  <div className="flex items-center gap-ds-01 shrink-0 ml-ds-02">
+                  <div className="flex items-center gap-ds-01 shrink-0 ml-ds-03">
                     {/* Formatting toggle (A button) */}
                     <button
                       type="button"

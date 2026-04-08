@@ -697,32 +697,39 @@ const RichChatInput = React.forwardRef<HTMLDivElement, RichChatInputProps>(
             </AnimatePresence>
           )}
 
-          {/* Zone 3: Editor / Recording */}
-          <AnimatePresence>
-            {state === 'recording' ? (
-              <RecordingOverlay
-                key="recording"
-                duration={voiceRecorder.duration}
-                analyserNode={voiceRecorder.analyserNode}
-                maxDuration={maxDuration}
-                onCancel={handleCancelRecording}
-              />
-            ) : (
-              <div
-                key="editor"
-                ref={editorWrapperRef}
-                className="flex items-center px-ds-04 py-ds-03 cursor-text [&_.tiptap]:min-h-full [&_.tiptap]:w-full [&_.tiptap]:outline-none"
-                style={{
-                  height: editorHeight > 0 ? Math.max(editorHeight, config.minHeight) : config.minHeight,
-                  maxHeight: maxHeightPx,
-                  transition: 'height 150ms ease-out',
-                  overflowY: editorHeight >= maxHeightPx ? 'auto' : 'hidden',
-                }}
-                onClick={() => editor?.commands.focus()}
-              >
-                <div className="flex-1 min-w-0">
-                  <EditorContent editor={editor} />
-                </div>
+          {/* Zone 3: Editor (always mounted — never unmount TipTap) */}
+          <div className="relative">
+            {/* Recording overlay — positioned over the editor */}
+            <AnimatePresence>
+              {state === 'recording' && (
+                <RecordingOverlay
+                  key="recording"
+                  duration={voiceRecorder.duration}
+                  analyserNode={voiceRecorder.analyserNode}
+                  maxDuration={maxDuration}
+                  onCancel={handleCancelRecording}
+                />
+              )}
+            </AnimatePresence>
+
+            {/* Editor — always rendered, hidden behind overlay during recording */}
+            <div
+              ref={editorWrapperRef}
+              className={cn(
+                'flex items-center px-ds-04 py-ds-03 cursor-text [&_.tiptap]:min-h-full [&_.tiptap]:w-full [&_.tiptap]:outline-none',
+                state === 'recording' && 'invisible',
+              )}
+              style={{
+                height: editorHeight > 0 ? Math.max(editorHeight, config.minHeight) : config.minHeight,
+                maxHeight: maxHeightPx,
+                transition: 'height 150ms ease-out',
+                overflowY: editorHeight >= maxHeightPx ? 'auto' : 'hidden',
+              }}
+              onClick={() => editor?.commands.focus()}
+            >
+              <div className="flex-1 min-w-0">
+                <EditorContent editor={editor} />
+              </div>
 
                 {/* Action icons — right-aligned inside input */}
                 {editor && (
@@ -759,8 +766,7 @@ const RichChatInput = React.forwardRef<HTMLDivElement, RichChatInputProps>(
                   </div>
                 )}
               </div>
-            )}
-          </AnimatePresence>
+          </div>
 
           {/* Voice Note Review — shown in 'review' state */}
           {state === 'review' && voiceNote && (

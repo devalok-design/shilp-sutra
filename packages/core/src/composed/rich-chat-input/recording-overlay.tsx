@@ -68,7 +68,7 @@ function RecordingOverlay({
       role="status"
       aria-live="polite"
       aria-label="Recording voice message"
-      className="flex items-center gap-ds-03 px-ds-04 py-ds-03"
+      className="absolute inset-0 flex items-center gap-ds-03 px-ds-04 py-ds-03 bg-surface-raised-hover rounded-ds-lg z-10"
     >
       {/* Red pulsing dot */}
       <span

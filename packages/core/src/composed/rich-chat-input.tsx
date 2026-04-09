@@ -191,6 +191,21 @@ function SplitSendDropdown({ options }: { options: Array<{ label: string; icon?:
   )
 }
 
+// ── Stable Editor Wrapper — prevents React from reconciling ProseMirror's DOM ──
+// TipTap's ProseMirror directly manipulates the contentEditable DOM. If React
+// re-renders the component containing EditorContent, it walks into ProseMirror's
+// DOM tree and finds nodes that don't match its virtual DOM → removeChild crash.
+// This memo'd wrapper ensures React NEVER re-renders the EditorContent tree.
+// See: https://github.com/ueberdosis/tiptap/issues/2658
+
+const StableEditorContent = React.memo(
+  function StableEditorContent({ editor }: { editor: ReturnType<typeof useEditor> }) {
+    return <StableEditorContent editor={editor} />
+  },
+  // Always return true → never re-render. TipTap manages its own DOM updates.
+  () => true,
+)
+
 // ── Toolbar Button (for BubbleMenu only — ChatToolbar has its own) ──
 
 function BubbleBtn({
@@ -740,7 +755,7 @@ const RichChatInput = React.forwardRef<HTMLDivElement, RichChatInputProps>(
               onClick={() => editor?.commands.focus()}
             >
               <div className="flex-1 min-w-0">
-                <EditorContent editor={editor} />
+                <StableEditorContent editor={editor} />
               </div>
 
                 {/* Action icons — right-aligned inside input */}

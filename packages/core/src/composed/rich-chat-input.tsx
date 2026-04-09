@@ -461,8 +461,11 @@ const RichChatInput = React.forwardRef<HTMLDivElement, RichChatInputProps>(
       }
 
       const handleBlur = () => {
-        if (state === 'focused' && editor.isEmpty) setState('idle')
-        if (state === 'composing' && editor.isEmpty && attachments.length === 0) setState('idle')
+        // Defer to next frame — same reason as handleUpdate
+        requestAnimationFrame(() => {
+          if (state === 'focused' && editor.isEmpty) setState('idle')
+          if (state === 'composing' && editor.isEmpty && attachments.length === 0) setState('idle')
+        })
       }
 
       const handleUpdate = () => {
@@ -470,7 +473,15 @@ const RichChatInput = React.forwardRef<HTMLDivElement, RichChatInputProps>(
           setState('composing')
         }
         if (editor.isEmpty && state === 'composing' && attachments.length === 0 && !voiceNote) {
-          setState(editor.isFocused ? 'focused' : 'idle')
+          // Defer state transition to next frame — TipTap's ProseMirror is still
+          // modifying the DOM when this fires. If we setState synchronously, React
+          // re-renders and AnimatePresence tries to unmount children while ProseMirror
+          // is still working, causing "removeChild: node is not a child" errors.
+          requestAnimationFrame(() => {
+            if (editor.isEmpty) {
+              setState(editor.isFocused ? 'focused' : 'idle')
+            }
+          })
         }
       }
 

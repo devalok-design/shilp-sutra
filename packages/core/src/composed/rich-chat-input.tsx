@@ -64,7 +64,9 @@ export type { UseVoiceRecorderOptions, UseVoiceRecorderReturn }
 
 // ── Types ───────────────────────────────────────────────────────
 
-type InputState = 'idle' | 'focused' | 'composing' | 'recording' | 'review'
+// Only track states that are USER-TRIGGERED (not editor-triggered).
+// idle/focused/composing are derived from editor.isEmpty at render time.
+type InputState = 'idle' | 'recording' | 'review'
 
 export interface RichChatInputMessage {
   html: string
@@ -281,7 +283,7 @@ const RichChatInput = React.forwardRef<HTMLDivElement, RichChatInputProps>(
     const [attachments, setAttachments] = React.useState<Attachment[]>([])
     const [voiceNote, setVoiceNote] = React.useState<{ blob: Blob; duration: number; waveformData: number[] } | null>(null)
     const [isDragging, setIsDragging] = React.useState(false)
-    const [editorHeight, setEditorHeight] = React.useState<number>(0)
+    // editorHeight state removed — was causing re-renders during ProseMirror DOM changes
 
     const fileInputRef = React.useRef<HTMLInputElement>(null)
     const editorWrapperRef = React.useRef<HTMLDivElement>(null)
@@ -306,7 +308,7 @@ const RichChatInput = React.forwardRef<HTMLDivElement, RichChatInputProps>(
           if (text != null) {
             // Insert transcribed text into the editor instead of attaching voice note
             editor?.chain().focus().insertContent(text).run()
-            setState('composing')
+            setState('idle')  // back to idle — hasContent will be derived from editor
             return
           }
         }
@@ -328,12 +330,7 @@ const RichChatInput = React.forwardRef<HTMLDivElement, RichChatInputProps>(
 
     const handleCancelRecording = React.useCallback(() => {
       voiceRecorder.cancel()
-      // Return to previous state based on editor content
-      setState((prev) => {
-        // We can't read editor here directly in a setState callback,
-        // so we'll correct in the effect below. Default to 'focused'.
-        return 'focused'
-      })
+      setState('idle')
     }, [voiceRecorder])
 
     // ── TipTap Extensions ─────────────────────────────────────
@@ -468,68 +465,17 @@ const RichChatInput = React.forwardRef<HTMLDivElement, RichChatInputProps>(
     // Wire submit ref (for enter-to-send extension)
     submitRef.current = handleSubmit
 
-    // ── Focus / Blur / State Tracking ─────────────────────────
-    React.useEffect(() => {
-      if (!editor) return
+    // ── NO state tracking from editor events ──────────────────
+    // Previous approach tracked idle/focused/composing via setState from TipTap
+    // events. This caused React re-renders during ProseMirror DOM modifications →
+    // "removeChild" crashes. Instead, we derive hasContent/editorIsEmpty at render
+    // time, and use CSS :focus-within for focus styling. Only recording/review
+    // states are tracked (user-triggered, not editor-triggered).
 
-      const handleFocus = () => {
-        if (state === 'idle') setState('focused')
-      }
-
-      const handleBlur = () => {
-        // Defer to next frame — same reason as handleUpdate
-        requestAnimationFrame(() => {
-          if (state === 'focused' && editor.isEmpty) setState('idle')
-          if (state === 'composing' && editor.isEmpty && attachments.length === 0) setState('idle')
-        })
-      }
-
-      const handleUpdate = () => {
-        if (!editor.isEmpty && (state === 'idle' || state === 'focused')) {
-          setState('composing')
-        }
-        if (editor.isEmpty && state === 'composing' && attachments.length === 0 && !voiceNote) {
-          // Defer state transition to next frame — TipTap's ProseMirror is still
-          // modifying the DOM when this fires. If we setState synchronously, React
-          // re-renders and AnimatePresence tries to unmount children while ProseMirror
-          // is still working, causing "removeChild: node is not a child" errors.
-          requestAnimationFrame(() => {
-            if (editor.isEmpty) {
-              setState(editor.isFocused ? 'focused' : 'idle')
-            }
-          })
-        }
-      }
-
-      editor.on('focus', handleFocus)
-      editor.on('blur', handleBlur)
-      editor.on('update', handleUpdate)
-
-      return () => {
-        editor.off('focus', handleFocus)
-        editor.off('blur', handleBlur)
-        editor.off('update', handleUpdate)
-      }
-    }, [editor, state, attachments.length, voiceNote])
-
-    // ── Editor Height Breathing (ResizeObserver) ──────────────
-    // Observe the TipTap content element and set explicit height on the wrapper
-    // so CSS transition: height animates the grow/shrink smoothly
-    React.useEffect(() => {
-      const el = editor?.view?.dom
-      if (!el) return
-
-      const PADDING = 16 // py-ds-03 = 8px top + 8px bottom
-      const observer = new ResizeObserver((entries) => {
-        for (const entry of entries) {
-          const contentHeight = entry.contentRect.height + PADDING
-          setEditorHeight(contentHeight)
-        }
-      })
-
-      observer.observe(el)
-      return () => observer.disconnect()
-    }, [editor])
+    // ── Editor height: pure CSS (no ResizeObserver/setState) ───
+    // ResizeObserver was calling setEditorHeight during ProseMirror DOM changes,
+    // triggering React re-renders → removeChild crashes. CSS min/max-height
+    // + overflow-y: auto handles this natively without any state.
 
     // ── Typing Indicator ──────────────────────────────────────
     React.useEffect(() => {
@@ -568,12 +514,6 @@ const RichChatInput = React.forwardRef<HTMLDivElement, RichChatInputProps>(
         uploading: true,
       }])
 
-      // Transition to composing if we're idle/focused
-      setState(prev => {
-        if (prev === 'idle' || prev === 'focused') return 'composing'
-        return prev
-      })
-
       try {
         if (isImage && onImageUpload) {
           const url = await onImageUpload(file)
@@ -596,15 +536,8 @@ const RichChatInput = React.forwardRef<HTMLDivElement, RichChatInputProps>(
     }, [onFileUpload, onImageUpload])
 
     const removeAttachment = React.useCallback((id: string) => {
-      setAttachments(prev => {
-        const next = prev.filter(a => a.id !== id)
-        // If no attachments and editor is empty, drop back
-        if (next.length === 0 && editor?.isEmpty && !voiceNote) {
-          setState(editor.isFocused ? 'focused' : 'idle')
-        }
-        return next
-      })
-    }, [editor, voiceNote])
+      setAttachments(prev => prev.filter(a => a.id !== id))
+    }, [])
 
     const handleDrop = React.useCallback((e: React.DragEvent) => {
       e.preventDefault()
@@ -622,14 +555,8 @@ const RichChatInput = React.forwardRef<HTMLDivElement, RichChatInputProps>(
     // ── Voice Note Review Discard ─────────────────────────────
     const handleDiscardVoice = React.useCallback(() => {
       setVoiceNote(null)
-      if (editor && !editor.isEmpty) {
-        setState('composing')
-      } else if (attachments.length > 0) {
-        setState('composing')
-      } else {
-        setState(editor?.isFocused ? 'focused' : 'idle')
-      }
-    }, [editor, attachments.length])
+      setState('idle')
+    }, [])
 
     // ── Derived Values ────────────────────────────────────────
     const charCount = editor?.storage.characterCount?.characters() ?? 0
@@ -637,8 +564,8 @@ const RichChatInput = React.forwardRef<HTMLDivElement, RichChatInputProps>(
     const hasContent = !editorIsEmpty || attachments.length > 0 || !!voiceNote
     const isInline = variant === 'inline'
     const showToolbar = isInline
-      ? toolbarExpanded  // inline: toggled by A button
-      : (state === 'composing' || state === 'review' || variant === 'expanded')
+      ? toolbarExpanded
+      : (!editorIsEmpty || state === 'review' || variant === 'expanded')
 
     return (
       <div
@@ -672,7 +599,7 @@ const RichChatInput = React.forwardRef<HTMLDivElement, RichChatInputProps>(
             'flex-1 rounded-ds-lg border border-surface-border-strong bg-surface-raised-hover',
             'transition-[color,background-color,border-color,box-shadow] duration-fast-02 ease-productive-standard',
             'hover:bg-surface-raised-active',
-            (state !== 'idle') && 'ring-2 ring-accent-9 ring-offset-2 border-accent-9',
+            'focus-within:ring-2 focus-within:ring-accent-9 focus-within:ring-offset-2 focus-within:border-accent-9',
             state === 'recording' && 'border-error-7/30',
             isDragging && 'border-dashed border-accent-7 bg-accent-2',
             disabled && 'opacity-action-disabled cursor-not-allowed',
@@ -744,14 +671,13 @@ const RichChatInput = React.forwardRef<HTMLDivElement, RichChatInputProps>(
             <div
               ref={editorWrapperRef}
               className={cn(
-                'flex items-center px-ds-04 py-ds-03 cursor-text [&_.tiptap]:min-h-full [&_.tiptap]:w-full [&_.tiptap]:outline-none',
+                'flex items-center px-ds-04 py-ds-03 cursor-text [&_.tiptap]:w-full [&_.tiptap]:outline-none',
                 state === 'recording' && 'invisible',
               )}
               style={{
-                height: editorHeight > 0 ? Math.max(editorHeight, config.minHeight) : config.minHeight,
+                minHeight: config.minHeight,
                 maxHeight: maxHeightPx,
-                transition: 'height 150ms ease-out',
-                overflowY: editorHeight >= maxHeightPx ? 'auto' : 'hidden',
+                overflowY: 'auto',
               }}
               onClick={() => editor?.commands.focus()}
             >
@@ -819,7 +745,7 @@ const RichChatInput = React.forwardRef<HTMLDivElement, RichChatInputProps>(
           )}
 
           {/* Mobile BubbleMenu — shows on text selection */}
-          {isMobile && editor && state === 'composing' && (
+          {isMobile && editor && !editorIsEmpty && (
             <BubbleMenu
               editor={editor}
               className="flex gap-ds-01 rounded-ds-lg border border-surface-border-strong bg-surface-overlay p-ds-02 shadow-floating"

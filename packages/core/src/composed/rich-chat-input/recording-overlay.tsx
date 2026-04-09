@@ -1,7 +1,7 @@
 'use client'
 
 import * as React from 'react'
-import { motion, useReducedMotion } from 'framer-motion'
+import { useReducedMotion } from 'framer-motion'
 import { cn } from '../../ui/lib/utils'
 import { AudioWaveform } from './audio-waveform'
 
@@ -60,11 +60,7 @@ function RecordingOverlay({
       : 'text-surface-fg'
 
   return (
-    <motion.div
-      initial={prefersReduced ? false : { opacity: 0, y: 8 }}
-      animate={{ opacity: 1, y: 0 }}
-      exit={prefersReduced ? { opacity: 0 } : { opacity: 0, y: 8 }}
-      transition={{ duration: 0.24, ease: [0.2, 0, 0.38, 0.9] }}
+    <div
       role="status"
       aria-live="polite"
       aria-label="Recording voice message"
@@ -104,7 +100,7 @@ function RecordingOverlay({
         height={24}
         barCount={30}
       />
-    </motion.div>
+    </div>
   )
 }
 RecordingOverlay.displayName = 'RecordingOverlay'

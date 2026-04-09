@@ -691,12 +691,16 @@ const RichChatInput = React.forwardRef<HTMLDivElement, RichChatInputProps>(
             )}
           </AnimatePresence>
 
-          {/* Toolbar above input (inline variant) or toggled via A button */}
-          {config.toolbarPosition === 'top' && (
-            <AnimatePresence>
-              {toolbarExpanded && editor && (
+          {/* Toolbar above input (inline variant) — CSS transition */}
+          {config.toolbarPosition === 'top' && editor && (
+            <div
+              className={cn(
+                'grid transition-[grid-template-rows,opacity] duration-moderate-01 ease-productive-standard',
+                toolbarExpanded ? 'grid-rows-[1fr] opacity-100' : 'grid-rows-[0fr] opacity-0 pointer-events-none',
+              )}
+            >
+              <div className="overflow-hidden">
                 <ChatToolbar
-                  key="toolbar-top"
                   editor={editor}
                   toolbar={toolbarProp}
                   isMobile={false}
@@ -704,24 +708,21 @@ const RichChatInput = React.forwardRef<HTMLDivElement, RichChatInputProps>(
                   hasSlashCommands={!!slashCommands}
                   disabled={disabled}
                 />
-              )}
-            </AnimatePresence>
+              </div>
+            </div>
           )}
 
           {/* Zone 3: Editor (always mounted — never unmount TipTap) */}
           <div className="relative">
-            {/* Recording overlay — positioned over the editor */}
-            <AnimatePresence>
-              {state === 'recording' && (
-                <RecordingOverlay
-                  key="recording"
-                  duration={voiceRecorder.duration}
-                  analyserNode={voiceRecorder.analyserNode}
-                  maxDuration={maxDuration}
-                  onCancel={handleCancelRecording}
-                />
-              )}
-            </AnimatePresence>
+            {/* Recording overlay — positioned over the editor, no AnimatePresence */}
+            {state === 'recording' && (
+              <RecordingOverlay
+                duration={voiceRecorder.duration}
+                analyserNode={voiceRecorder.analyserNode}
+                maxDuration={maxDuration}
+                onCancel={handleCancelRecording}
+              />
+            )}
 
             {/* Editor — always rendered, hidden behind overlay during recording */}
             <div
@@ -828,20 +829,26 @@ const RichChatInput = React.forwardRef<HTMLDivElement, RichChatInputProps>(
             </BubbleMenu>
           )}
 
-          {/* Zone 4: Toolbar below — only for bottom-positioned variants (not inline/top) */}
-          <AnimatePresence>
-            {config.toolbarPosition === 'bottom' && showToolbar && editor && (
-              <ChatToolbar
-                key="toolbar"
-                editor={editor}
-                toolbar={toolbarProp}
-                isMobile={isMobile}
-                hasMentions={!!(mentions || onMentionSearch)}
-                hasSlashCommands={!!slashCommands}
-                disabled={disabled}
-              />
-            )}
-          </AnimatePresence>
+          {/* Zone 4: Toolbar below — CSS transition instead of AnimatePresence */}
+          {config.toolbarPosition === 'bottom' && editor && (
+            <div
+              className={cn(
+                'grid transition-[grid-template-rows,opacity] duration-moderate-01 ease-productive-standard',
+                showToolbar ? 'grid-rows-[1fr] opacity-100' : 'grid-rows-[0fr] opacity-0 pointer-events-none',
+              )}
+            >
+              <div className="overflow-hidden">
+                <ChatToolbar
+                  editor={editor}
+                  toolbar={toolbarProp}
+                  isMobile={isMobile}
+                  hasMentions={!!(mentions || onMentionSearch)}
+                  hasSlashCommands={!!slashCommands}
+                  disabled={disabled}
+                />
+              </div>
+            </div>
+          )}
 
           {/* Trailing slot */}
           {trailingSlot}
@@ -856,49 +863,41 @@ const RichChatInput = React.forwardRef<HTMLDivElement, RichChatInputProps>(
           />
         </div>
 
-        {/* Send/mic buttons outside the input on the right */}
+        {/* Send/mic buttons outside the input on the right — NO AnimatePresence */}
         <div className="flex items-end gap-ds-02 shrink-0">
           {sendOptions && sendOptions.length > 0 && state !== 'recording' && (
             <SplitSendDropdown options={sendOptions} />
           )}
-          <AnimatePresence>
-            {isStreaming ? (
-              <motion.div key="stop-stream" initial={{ scale: 0.8, opacity: 0 }} animate={{ scale: 1, opacity: 1 }} exit={{ scale: 0.8, opacity: 0 }} transition={{ duration: 0.15 }}>
-                <Button variant="solid" size="icon-md" color="error" onClick={onCancel} aria-label="Stop" title="Stop">
-                  <Icon icon={IconSquare} size="md" />
-                </Button>
-              </motion.div>
-            ) : state === 'recording' ? (
-              <motion.div key="recording-controls" className="flex items-end gap-ds-02" initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} transition={{ duration: 0.15 }}>
-                <motion.div initial={{ x: 8, opacity: 0 }} animate={{ x: 0, opacity: 1 }} transition={{ duration: 0.2, delay: 0.05 }}>
-                  <Button variant="outline" size="icon-md" onClick={handleCancelRecording} aria-label="Cancel recording" title="Cancel recording" className="text-surface-fg-subtle hover:text-error-11 hover:border-error-7">
-                    <Icon icon={IconTrash} size="md" />
-                  </Button>
-                </motion.div>
-                <Button variant="solid" size="icon-md" color="error" onClick={handleStopRecording} aria-label="Stop recording" title="Stop recording">
-                  <Icon icon={IconSquare} size="md" />
-                </Button>
-              </motion.div>
-            ) : hasContent ? (
-              <motion.div key="send" initial={{ scale: 0.8, opacity: 0 }} animate={{ scale: 1, opacity: 1 }} exit={{ scale: 0.8, opacity: 0 }} transition={{ duration: 0.15 }}>
-                <Button variant="solid" size="icon-md" onClick={handleSubmit} disabled={disabled} aria-label="Send" title="Send">
-                  <Icon icon={IconSend} size="md" />
-                </Button>
-              </motion.div>
-            ) : onVoiceRecord ? (
-              <motion.div key="mic" initial={{ scale: 0.8, opacity: 0 }} animate={{ scale: 1, opacity: 1 }} exit={{ scale: 0.8, opacity: 0 }} transition={{ duration: 0.15 }}>
-                <Button variant="outline" size="icon-md" onClick={handleStartRecording} aria-label="Record voice message" title="Record voice message">
-                  <Icon icon={IconMicrophone} size="md" />
-                </Button>
-              </motion.div>
-            ) : (
-              <motion.div key="send-disabled" initial={{ scale: 0.8, opacity: 0 }} animate={{ scale: 1, opacity: 1 }} exit={{ scale: 0.8, opacity: 0 }} transition={{ duration: 0.15 }}>
-                <Button variant="solid" size="icon-md" disabled aria-label="Send" title="Send">
-                  <Icon icon={IconSend} size="md" />
-                </Button>
-              </motion.div>
-            )}
-          </AnimatePresence>
+          {state === 'recording' && (
+            <>
+              <Button variant="outline" size="icon-md" onClick={handleCancelRecording} aria-label="Cancel recording" title="Cancel recording" className="text-surface-fg-subtle hover:text-error-11 hover:border-error-7">
+                <Icon icon={IconTrash} size="md" />
+              </Button>
+              <Button variant="solid" size="icon-md" color="error" onClick={handleStopRecording} aria-label="Stop recording" title="Stop recording">
+                <Icon icon={IconSquare} size="md" />
+              </Button>
+            </>
+          )}
+          {isStreaming && state !== 'recording' && (
+            <Button variant="solid" size="icon-md" color="error" onClick={onCancel} aria-label="Stop" title="Stop">
+              <Icon icon={IconSquare} size="md" />
+            </Button>
+          )}
+          {!isStreaming && state !== 'recording' && hasContent && (
+            <Button variant="solid" size="icon-md" onClick={handleSubmit} disabled={disabled} aria-label="Send" title="Send">
+              <Icon icon={IconSend} size="md" />
+            </Button>
+          )}
+          {!isStreaming && state !== 'recording' && !hasContent && onVoiceRecord && (
+            <Button variant="outline" size="icon-md" onClick={handleStartRecording} aria-label="Record voice message" title="Record voice message">
+              <Icon icon={IconMicrophone} size="md" />
+            </Button>
+          )}
+          {!isStreaming && state !== 'recording' && !hasContent && !onVoiceRecord && (
+            <Button variant="solid" size="icon-md" disabled aria-label="Send" title="Send">
+              <Icon icon={IconSend} size="md" />
+            </Button>
+          )}
         </div>
 
         {/* Disclaimer */}

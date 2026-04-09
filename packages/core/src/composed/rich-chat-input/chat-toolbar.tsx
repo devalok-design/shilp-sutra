@@ -1,7 +1,7 @@
 'use client'
 
 import * as React from 'react'
-import { motion } from 'framer-motion'
+// motion removed — CSS transitions handle show/hide from parent
 import type { Editor } from '@tiptap/core'
 import {
   IconBold,
@@ -310,19 +310,12 @@ export function ChatToolbar({
   const items = Array.isArray(toolbar) ? toolbar : null
 
   return (
-    <motion.div
-      initial={{ height: 0, opacity: 0 }}
-      animate={{ height: 'auto', opacity: 1 }}
-      exit={{ height: 0, opacity: 0 }}
-      transition={{ duration: 0.15, ease: [0.2, 0, 0.38, 0.9] }}
-      className="overflow-hidden"
-    >
-      <ToolbarContext.Provider value={{ editor, disabled }}>
-        <div
-          role="toolbar"
-          aria-label="Text formatting"
-          className="flex flex-wrap items-center gap-ds-01 border-t border-surface-border px-ds-04 py-ds-02b"
-        >
+    <ToolbarContext.Provider value={{ editor, disabled }}>
+      <div
+        role="toolbar"
+        aria-label="Text formatting"
+        className="flex flex-wrap items-center gap-ds-01 border-t border-surface-border px-ds-04 py-ds-02b"
+      >
           {isCustom ? (
             // Consumer provides their own toolbar content
             toolbar
@@ -332,6 +325,5 @@ export function ChatToolbar({
           )}
         </div>
       </ToolbarContext.Provider>
-    </motion.div>
   )
 }

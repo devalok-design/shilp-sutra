@@ -200,10 +200,11 @@ function SplitSendDropdown({ options }: { options: Array<{ label: string; icon?:
 
 const StableEditorContent = React.memo(
   function StableEditorContent({ editor }: { editor: ReturnType<typeof useEditor> }) {
-    return <StableEditorContent editor={editor} />
+    return <EditorContent editor={editor} />
   },
-  // Always return true → never re-render. TipTap manages its own DOM updates.
-  () => true,
+  // Only re-render when the editor instance changes (null → editor on init).
+  // After init, same instance is reused — no re-renders, no DOM reconciliation conflicts.
+  (prev, next) => prev.editor === next.editor,
 )
 
 // ── Toolbar Button (for BubbleMenu only — ChatToolbar has its own) ──

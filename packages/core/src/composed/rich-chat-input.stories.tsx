@@ -312,20 +312,27 @@ export const Inline: Story = {
   },
 }
 
-// ── 18. Inline with Schedule Send ─────────────────────────────────
+// ── 18. Schedule Send ─────────────────────────────────────────────
+
+export const ScheduleSend: Story = {
+  args: {
+    onSubmit: fn(),
+    onSchedule: fn(),
+    mentions,
+    placeholder: 'Type a message, then schedule it...',
+  },
+}
+
+// ── 18b. Inline with Schedule Send ────────────────────────────────
 
 export const InlineWithScheduleSend: Story = {
   args: {
     onSubmit: fn(),
+    onSchedule: fn(),
     variant: 'inline',
     mentions,
     onVoiceRecord: fn(),
     placeholder: 'Type a message...',
-    sendOptions: [
-      { label: 'Tomorrow at 8:00 AM', onSelect: () => {} },
-      { label: 'Tomorrow at 1:00 PM', onSelect: () => {} },
-      { label: 'Next Monday at 8:00 AM', onSelect: () => {} },
-    ],
   },
 }
 

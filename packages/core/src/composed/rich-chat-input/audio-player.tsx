@@ -122,7 +122,8 @@ const AudioPlayer = React.forwardRef<HTMLDivElement, AudioPlayerProps>(
         className={cn('flex items-center gap-ds-03', className)}
         {...props}
       >
-        {/* Hidden audio element */}
+        {/* Hidden audio element — captions not applicable for voice messages */}
+        {/* eslint-disable-next-line jsx-a11y/media-has-caption */}
         <audio ref={audioRef} src={audioSrc} preload="metadata" />
 
         {/* Play/Pause button */}

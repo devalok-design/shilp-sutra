@@ -1,15 +1,13 @@
 'use client'
 
 import * as React from 'react'
-import { useEditor, EditorContent, Extension, BubbleMenu } from '@tiptap/react'
+import { useEditor, useEditorState, EditorContent, Extension } from '@tiptap/react'
+import { BubbleMenu } from '@tiptap/react/menus'
 import StarterKit from '@tiptap/starter-kit'
-import Placeholder from '@tiptap/extension-placeholder'
-import Underline from '@tiptap/extension-underline'
+import { Placeholder, CharacterCount } from '@tiptap/extensions'
 import Highlight from '@tiptap/extension-highlight'
-import Link from '@tiptap/extension-link'
 import Image from '@tiptap/extension-image'
 import Mention from '@tiptap/extension-mention'
-import CharacterCount from '@tiptap/extension-character-count'
 import { AnimatePresence, motion } from 'framer-motion'
 import { FileAttachment } from './extensions/file-attachment'
 import { EmojiSuggestion } from './extensions/emoji-suggestion'
@@ -193,22 +191,6 @@ function SplitSendDropdown({ options }: { options: Array<{ label: string; icon?:
   )
 }
 
-// ── Stable Editor Wrapper — prevents React from reconciling ProseMirror's DOM ──
-// TipTap's ProseMirror directly manipulates the contentEditable DOM. If React
-// re-renders the component containing EditorContent, it walks into ProseMirror's
-// DOM tree and finds nodes that don't match its virtual DOM → removeChild crash.
-// This memo'd wrapper ensures React NEVER re-renders the EditorContent tree.
-// See: https://github.com/ueberdosis/tiptap/issues/2658
-
-const StableEditorContent = React.memo(
-  function StableEditorContent({ editor }: { editor: ReturnType<typeof useEditor> }) {
-    return <EditorContent editor={editor} />
-  },
-  // Only re-render when the editor instance changes (null → editor on init).
-  // After init, same instance is reused — no re-renders, no DOM reconciliation conflicts.
-  (prev, next) => prev.editor === next.editor,
-)
-
 // ── Toolbar Button (for BubbleMenu only — ChatToolbar has its own) ──
 
 function BubbleBtn({
@@ -341,14 +323,14 @@ const RichChatInput = React.forwardRef<HTMLDivElement, RichChatInputProps>(
           horizontalRule: false,
           codeBlock: false,
           blockquote: false,
+          // v3: Underline + Link included in StarterKit
+          link: {
+            openOnClick: false,
+            HTMLAttributes: { class: 'text-accent-11 underline' },
+          },
         }),
         Placeholder.configure({ placeholder }),
-        Underline,
         Highlight.configure({ multicolor: false }),
-        Link.configure({
-          openOnClick: false,
-          HTMLAttributes: { class: 'text-accent-11 underline' },
-        }),
         Image,
         CharacterCount.configure({ limit: maxLength || undefined }),
         FileAttachment,
@@ -667,11 +649,11 @@ const RichChatInput = React.forwardRef<HTMLDivElement, RichChatInputProps>(
               />
             )}
 
-            {/* Editor — always rendered, hidden behind overlay during recording */}
+            {/* Editor — ISOLATED div with NO changing siblings */}
             <div
               ref={editorWrapperRef}
               className={cn(
-                'flex items-center px-ds-04 py-ds-03 cursor-text [&_.tiptap]:w-full [&_.tiptap]:outline-none',
+                'px-ds-04 py-ds-03 cursor-text [&_.tiptap]:w-full [&_.tiptap]:outline-none',
                 state === 'recording' && 'invisible',
               )}
               style={{
@@ -681,45 +663,41 @@ const RichChatInput = React.forwardRef<HTMLDivElement, RichChatInputProps>(
               }}
               onClick={() => editor?.commands.focus()}
             >
-              <div className="flex-1 min-w-0">
-                <StableEditorContent editor={editor} />
-              </div>
+              <EditorContent editor={editor} />
+            </div>
 
-                {/* Action icons — right-aligned inside input */}
-                {editor && (
-                  <div className="flex items-center gap-ds-01 shrink-0 ml-ds-03">
-                    {/* Formatting toggle (A button) */}
-                    <button
-                      type="button"
-                      onClick={() => setToolbarExpanded(prev => !prev)}
-                      title={toolbarExpanded ? 'Hide formatting' : 'Show formatting'}
-                      aria-label={toolbarExpanded ? 'Hide formatting' : 'Show formatting'}
-                      aria-pressed={toolbarExpanded}
-                      className={cn(
-                        'inline-flex h-ds-xs-plus w-ds-xs-plus items-center justify-center rounded-ds-md touch-target',
-                        'transition-colors duration-fast-01 ease-productive-standard',
-                        'hover:bg-surface-raised-hover',
-                        toolbarExpanded ? 'bg-surface-raised-hover text-accent-11' : 'text-surface-fg-subtle',
-                      )}
-                    >
-                      <Icon icon={IconTextSize} size="xs" />
-                    </button>
-
-                    {/* Emoji */}
-                    <button
-                      type="button"
-                      onClick={() => editor.chain().focus().insertContent(':').run()}
-                      title="Emoji"
-                      aria-label="Emoji"
-                      className="inline-flex h-ds-xs-plus w-ds-xs-plus items-center justify-center rounded-ds-md touch-target text-surface-fg-subtle hover:bg-surface-raised-hover hover:text-surface-fg transition-colors duration-fast-01"
-                    >
-                      <Icon icon={IconMoodSmile} size="xs" />
-                    </button>
-
-                    {/* Attach and mic are handled by external buttons (+ on left, mic on right) */}
-                  </div>
+          {/* Action icons — OUTSIDE the editor div to avoid DOM conflicts */}
+          {editor && state !== 'recording' && (
+            <div className="flex items-center justify-end gap-ds-01 px-ds-04 py-ds-01">
+              {/* Formatting toggle (A button) */}
+              <button
+                type="button"
+                onClick={() => setToolbarExpanded(prev => !prev)}
+                title={toolbarExpanded ? 'Hide formatting' : 'Show formatting'}
+                aria-label={toolbarExpanded ? 'Hide formatting' : 'Show formatting'}
+                aria-pressed={toolbarExpanded}
+                className={cn(
+                  'inline-flex h-ds-xs-plus w-ds-xs-plus items-center justify-center rounded-ds-md touch-target',
+                  'transition-colors duration-fast-01 ease-productive-standard',
+                  'hover:bg-surface-raised-hover',
+                  toolbarExpanded ? 'bg-surface-raised-hover text-accent-11' : 'text-surface-fg-subtle',
                 )}
-              </div>
+              >
+                <Icon icon={IconTextSize} size="xs" />
+              </button>
+
+              {/* Emoji */}
+              <button
+                type="button"
+                onClick={() => editor.chain().focus().insertContent(':').run()}
+                title="Emoji"
+                aria-label="Emoji"
+                className="inline-flex h-ds-xs-plus w-ds-xs-plus items-center justify-center rounded-ds-md touch-target text-surface-fg-subtle hover:bg-surface-raised-hover hover:text-surface-fg transition-colors duration-fast-01"
+              >
+                <Icon icon={IconMoodSmile} size="xs" />
+              </button>
+            </div>
+          )}
           </div>
 
           {/* Voice Note Review — shown in 'review' state */}

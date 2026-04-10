@@ -3,13 +3,10 @@
 import * as React from 'react'
 import { useEditor, EditorContent, type Editor } from '@tiptap/react'
 import StarterKit from '@tiptap/starter-kit'
-import Placeholder from '@tiptap/extension-placeholder'
-import Underline from '@tiptap/extension-underline'
+import { Placeholder } from '@tiptap/extensions'
 import Highlight from '@tiptap/extension-highlight'
-import TaskList from '@tiptap/extension-task-list'
-import TaskItem from '@tiptap/extension-task-item'
+import { TaskList, TaskItem } from '@tiptap/extension-list'
 import TextAlign from '@tiptap/extension-text-align'
-import Link from '@tiptap/extension-link'
 import Image from '@tiptap/extension-image'
 import Mention from '@tiptap/extension-mention'
 import { FileAttachment } from './extensions/file-attachment'
@@ -442,26 +439,26 @@ const RichTextEditor = React.forwardRef<HTMLDivElement, RichTextEditorProps>(
     extensions: [
       StarterKit.configure({
         heading: { levels: [2, 3] },
+        // v3: Underline + Link are now included in StarterKit
+        link: {
+          openOnClick: false,
+          protocols: ['http', 'https', 'mailto'],
+          validate: (href: string) => /^(https?:\/\/|mailto:)/i.test(href),
+          HTMLAttributes: {
+            rel: 'noopener noreferrer',
+            target: '_blank',
+          },
+        },
       }),
       Placeholder.configure({
         placeholder,
         emptyEditorClass:
           'before:content-[attr(data-placeholder)] before:text-surface-fg-subtle before:float-left before:h-0 before:pointer-events-none',
       }),
-      Underline,
       Highlight.configure({ multicolor: false }),
       TaskList,
       TaskItem.configure({ nested: true }),
       TextAlign.configure({ types: ['heading', 'paragraph'] }),
-      Link.configure({
-        openOnClick: false,
-        protocols: ['http', 'https', 'mailto'],
-        validate: (href: string) => /^(https?:\/\/|mailto:)/i.test(href),
-        HTMLAttributes: {
-          rel: 'noopener noreferrer',
-          target: '_blank',
-        },
-      }),
       Image.configure({
         allowBase64: true,
         HTMLAttributes: {
@@ -550,7 +547,7 @@ const RichTextEditor = React.forwardRef<HTMLDivElement, RichTextEditorProps>(
   React.useEffect(() => {
     if (isInternalChangeRef.current) return
     if (editor && content !== editor.getHTML()) {
-      editor.commands.setContent(content, false)
+      editor.commands.setContent(content, { emitUpdate: false })
     }
   }, [editor, content])
 
@@ -638,21 +635,20 @@ const RichTextViewer = React.forwardRef<HTMLDivElement, RichTextViewerProps>(
     extensions: [
       StarterKit.configure({
         heading: { levels: [2, 3] },
+        link: {
+          openOnClick: true,
+          protocols: ['http', 'https', 'mailto'],
+          validate: (href: string) => /^(https?:\/\/|mailto:)/i.test(href),
+          HTMLAttributes: {
+            rel: 'noopener noreferrer',
+            target: '_blank',
+          },
+        },
       }),
-      Underline,
       Highlight.configure({ multicolor: false }),
       TaskList,
       TaskItem.configure({ nested: true }),
       TextAlign.configure({ types: ['heading', 'paragraph'] }),
-      Link.configure({
-        openOnClick: true,
-        protocols: ['http', 'https', 'mailto'],
-        validate: (href: string) => /^(https?:\/\/|mailto:)/i.test(href),
-        HTMLAttributes: {
-          rel: 'noopener noreferrer',
-          target: '_blank',
-        },
-      }),
       Image.configure({
         allowBase64: true,
         HTMLAttributes: {

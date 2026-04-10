@@ -46,6 +46,7 @@ import {
   IconTrash,
 } from '@tabler/icons-react'
 import { cn } from '../ui/lib/utils'
+import { useColorMode } from '../hooks/use-color-mode'
 import { useIsMobile } from '../hooks/use-mobile'
 
 // ── Re-exports ──────────────────────────────────────────────────
@@ -191,6 +192,58 @@ function SplitSendDropdown({ options }: { options: Array<{ label: string; icon?:
   )
 }
 
+// ── Emoji Picker Popover (lazy-loaded) ──────────────────────────
+
+const LazyEmojiPicker = React.lazy(() => import('@emoji-mart/react'))
+
+function EmojiPickerPopover({ onSelect, onClose }: { onSelect: (native: string) => void; onClose: () => void }) {
+  const [data, setData] = React.useState<unknown>(null)
+  const { colorMode } = useColorMode()
+  const ref = React.useRef<HTMLDivElement>(null)
+
+  React.useEffect(() => {
+    import('@emoji-mart/data').then((mod) => setData(mod.default))
+  }, [])
+
+  // Close on click outside
+  React.useEffect(() => {
+    const handleClick = (e: MouseEvent) => {
+      if (ref.current && !ref.current.contains(e.target as Node)) onClose()
+    }
+    document.addEventListener('mousedown', handleClick)
+    return () => document.removeEventListener('mousedown', handleClick)
+  }, [onClose])
+
+  // Close on Escape
+  React.useEffect(() => {
+    const handleKey = (e: KeyboardEvent) => { if (e.key === 'Escape') onClose() }
+    document.addEventListener('keydown', handleKey)
+    return () => document.removeEventListener('keydown', handleKey)
+  }, [onClose])
+
+  const fallback = (
+    <div className="flex h-[350px] w-[352px] items-center justify-center rounded-ds-lg border border-surface-border-strong bg-surface-overlay shadow-floating">
+      <span className="text-ds-sm text-surface-fg-subtle">Loading...</span>
+    </div>
+  )
+
+  return (
+    <div ref={ref} className="rounded-ds-lg border border-surface-border-strong bg-surface-overlay shadow-floating overflow-hidden">
+      {!data ? fallback : (
+        <React.Suspense fallback={fallback}>
+          <LazyEmojiPicker
+            data={data}
+            onEmojiSelect={(emoji: { native: string }) => onSelect(emoji.native)}
+            theme={colorMode === 'dark' ? 'dark' : 'light'}
+            previewPosition="none"
+            skinTonePosition="none"
+          />
+        </React.Suspense>
+      )}
+    </div>
+  )
+}
+
 // ── Toolbar Button (for BubbleMenu only — ChatToolbar has its own) ──
 
 function BubbleBtn({
@@ -304,6 +357,7 @@ const RichChatInput = React.forwardRef<HTMLDivElement, RichChatInputProps>(
     // ── State ──────────────────────────────────────────────────
     const [state, setState] = React.useState<InputState>('idle')
     const [toolbarExpanded, setToolbarExpanded] = React.useState(false)
+    const [showEmojiPicker, setShowEmojiPicker] = React.useState(false)
     const [attachments, setAttachments] = React.useState<Attachment[]>([])
     const [voiceNote, setVoiceNote] = React.useState<{ blob: Blob; duration: number; waveformData: number[] } | null>(null)
     const [isDragging, setIsDragging] = React.useState(false)
@@ -741,16 +795,32 @@ const RichChatInput = React.forwardRef<HTMLDivElement, RichChatInputProps>(
                     <Icon icon={IconTextSize} size="xs" />
                   </button>
 
-                  {/* Emoji */}
-                  <button
-                    type="button"
-                    onClick={() => editor.chain().focus().insertContent(':').run()}
-                    title="Emoji"
-                    aria-label="Emoji"
-                    className="inline-flex h-ds-xs-plus w-ds-xs-plus items-center justify-center rounded-ds-md touch-target text-surface-fg-subtle hover:bg-surface-raised-hover hover:text-surface-fg transition-colors duration-fast-01"
-                  >
-                    <Icon icon={IconMoodSmile} size="xs" />
-                  </button>
+                  {/* Emoji picker */}
+                  <div className="relative">
+                    <button
+                      type="button"
+                      onClick={() => setShowEmojiPicker(prev => !prev)}
+                      title="Emoji"
+                      aria-label="Emoji"
+                      className={cn(
+                        'inline-flex h-ds-xs-plus w-ds-xs-plus items-center justify-center rounded-ds-md touch-target transition-colors duration-fast-01',
+                        showEmojiPicker ? 'bg-surface-raised-hover text-accent-11' : 'text-surface-fg-subtle hover:bg-surface-raised-hover hover:text-surface-fg',
+                      )}
+                    >
+                      <Icon icon={IconMoodSmile} size="xs" />
+                    </button>
+                    {showEmojiPicker && (
+                      <div className="absolute bottom-full right-0 mb-ds-02 z-popover">
+                        <EmojiPickerPopover
+                          onSelect={(native) => {
+                            editor.chain().focus().insertContent(native).run()
+                            setShowEmojiPicker(false)
+                          }}
+                          onClose={() => setShowEmojiPicker(false)}
+                        />
+                      </div>
+                    )}
+                  </div>
                 </div>
               )}
             </div>

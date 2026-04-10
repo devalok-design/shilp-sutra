@@ -384,6 +384,7 @@ const RichChatInput = React.forwardRef<HTMLDivElement, RichChatInputProps>(
     const [scheduledDate, setScheduledDate] = React.useState<Date | null>(null)
     const [scheduleDialogOpen, setScheduleDialogOpen] = React.useState(false)
     const [editorFocused, setEditorFocused] = React.useState(false)
+    const [charCount, setCharCount] = React.useState(0)
     const emojiAnchorRef = React.useRef<HTMLButtonElement>(null)
     const emojiFloatingRef = React.useRef<HTMLDivElement>(null)
 
@@ -701,23 +702,25 @@ const RichChatInput = React.forwardRef<HTMLDivElement, RichChatInputProps>(
     // update without full parent re-renders on every transaction.
     const editorDerived = useEditorState({
       editor,
-      selector: ({ editor: e, transactionNumber }) => {
+      selector: ({ editor: e }) => {
         if (!e) return null
-        return {
-          // transactionNumber ensures re-evaluation on every edit
-          _txn: transactionNumber,
-          charCount: e.storage.characterCount?.characters?.() ?? 0,
-          editorIsEmpty: e.isEmpty,
-        }
-      },
-      equalityFn: (a, b) => {
-        if (a === b) return true
-        if (!a || !b) return false
-        return a.charCount === b.charCount && a.editorIsEmpty === b.editorIsEmpty
+        return { editorIsEmpty: e.isEmpty }
       },
     })
-    const charCount = editorDerived?.charCount ?? 0
     const editorIsEmpty = editorDerived?.editorIsEmpty ?? true
+
+    // Track character count via editor event (useEditorState's deep-equal comparison
+    // swallows storage.characterCount changes since the function reference is stable)
+    React.useEffect(() => {
+      if (!editor) return
+      const updateCount = () => {
+        const count = editor.storage.characterCount?.characters?.() ?? 0
+        setCharCount(count)
+      }
+      updateCount()
+      editor.on('update', updateCount)
+      return () => { editor.off('update', updateCount) }
+    }, [editor])
     const hasContent = !editorIsEmpty || attachments.length > 0 || !!voiceNote
     const isInline = variant === 'inline'
     const showToolbar = toolbarExpanded || state === 'review' || variant === 'expanded'
@@ -726,8 +729,8 @@ const RichChatInput = React.forwardRef<HTMLDivElement, RichChatInputProps>(
       <div
         ref={ref}
         className={cn(
-          'border-t border-surface-border-subtle px-ds-05 py-ds-04',
-          'flex items-center gap-ds-03',
+          'border-t border-surface-border-subtle px-ds-03 py-ds-03 sm:px-ds-05 sm:py-ds-04',
+          'flex items-center gap-ds-02 sm:gap-ds-03 min-w-0',
           className,
         )}
         {...props}
@@ -755,7 +758,7 @@ const RichChatInput = React.forwardRef<HTMLDivElement, RichChatInputProps>(
           role="region"
           aria-label="Message composer"
           className={cn(
-            'flex-1 rounded-ds-lg border border-surface-border-strong bg-surface-raised-hover',
+            'flex-1 min-w-0 rounded-ds-lg border border-surface-border-strong bg-surface-raised-hover',
             'transition-[color,background-color,border-color,box-shadow] duration-fast-02 ease-productive-standard',
             'hover:bg-surface-raised-active',
             'focus-within:ring-2 focus-within:ring-accent-9 focus-within:ring-offset-2 focus-within:border-accent-9',

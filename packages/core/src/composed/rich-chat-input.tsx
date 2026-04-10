@@ -714,8 +714,9 @@ const RichChatInput = React.forwardRef<HTMLDivElement, RichChatInputProps>(
     React.useEffect(() => {
       if (!editor) return
       const updateCount = () => {
-        const count = editor.storage.characterCount?.characters?.() ?? 0
-        setCharCount(count)
+        // Compute directly from document — CharacterCount storage.characters() returns 0 in TipTap v3
+        const text = editor.state.doc.textBetween(0, editor.state.doc.content.size, undefined, ' ')
+        setCharCount(text.length)
       }
       updateCount()
       editor.on('update', updateCount)

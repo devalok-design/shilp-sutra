@@ -725,15 +725,15 @@ const RichChatInput = React.forwardRef<HTMLDivElement, RichChatInputProps>(
     const hasContent = !editorIsEmpty || attachments.length > 0 || !!voiceNote
     const isInline = variant === 'inline'
     const showToolbar = toolbarExpanded || state === 'review' || variant === 'expanded'
-    const btnSize = isMobile ? 'icon-sm' as const : 'icon-md' as const
-    const iconSize = isMobile ? 'sm' as const : 'md' as const
+    const btnSize = 'icon-md' as const
+    const iconSize = 'md' as const
 
     return (
       <div
         ref={ref}
         className={cn(
-          'border-t border-surface-border-subtle px-ds-03 py-ds-03 sm:px-ds-05 sm:py-ds-04',
-          'flex items-center gap-ds-02 sm:gap-ds-03 w-full min-w-0',
+          'border-t border-surface-border-subtle px-ds-05 py-ds-04',
+          'flex items-center gap-ds-03',
           className,
         )}
         {...props}
@@ -744,13 +744,13 @@ const RichChatInput = React.forwardRef<HTMLDivElement, RichChatInputProps>(
             (onFileUpload || onImageUpload) ? (
               <Button
                 variant="solid"
-                size={isMobile ? 'icon-sm' : 'icon-md'}
+                size="icon-md"
                 onClick={() => fileInputRef.current?.click()}
                 title="Attach"
                 aria-label="Attach file"
                 className="shrink-0"
               >
-                <Icon icon={IconPlus} size={isMobile ? 'sm' : 'md'} />
+                <Icon icon={IconPlus} size="md" />
               </Button>
             ) : null
           )
@@ -850,7 +850,7 @@ const RichChatInput = React.forwardRef<HTMLDivElement, RichChatInputProps>(
             <div
               ref={editorWrapperRef}
               className={cn(
-                'flex items-center px-ds-03 py-ds-02b sm:px-ds-04 sm:py-ds-03 cursor-text [&_.tiptap]:w-full [&_.tiptap]:outline-none',
+                'flex items-center px-ds-04 py-ds-03 cursor-text [&_.tiptap]:w-full [&_.tiptap]:outline-none',
                 state === 'recording' && 'invisible',
               )}
               style={{
@@ -866,8 +866,8 @@ const RichChatInput = React.forwardRef<HTMLDivElement, RichChatInputProps>(
               </div>
 
               {/* Action icons — right-aligned inside input */}
-              {editor && state !== 'recording' && !isMobile && (
-                <div className="flex items-center gap-ds-01 shrink-0 ml-ds-02 sm:ml-ds-03">
+              {editor && state !== 'recording' && (
+                <div className="flex items-center gap-ds-01 shrink-0 ml-ds-03">
                   {/* Formatting toggle (A button) */}
                   <button
                     type="button"

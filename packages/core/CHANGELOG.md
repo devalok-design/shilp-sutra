@@ -1,5 +1,17 @@
 # @devalok/shilp-sutra
 
+## 0.33.3
+
+### Patch Changes
+
+- Upgrade TypeScript 6.0.2, ESLint 10, typescript-eslint 8.58.1, react-zoom-pan-pinch 4 (peer dep)
+
+## 0.33.2
+
+### Patch Changes
+
+- Upgrade TypeScript 6.0.2, ESLint 10, typescript-eslint 8.58.1, react-zoom-pan-pinch 4 (peer dep)
+
 ## 0.33.1
 
 ### Patch Changes

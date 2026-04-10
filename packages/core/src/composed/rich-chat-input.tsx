@@ -725,6 +725,8 @@ const RichChatInput = React.forwardRef<HTMLDivElement, RichChatInputProps>(
     const hasContent = !editorIsEmpty || attachments.length > 0 || !!voiceNote
     const isInline = variant === 'inline'
     const showToolbar = toolbarExpanded || state === 'review' || variant === 'expanded'
+    const btnSize = isMobile ? 'icon-sm' as const : 'icon-md' as const
+    const iconSize = isMobile ? 'sm' as const : 'md' as const
 
     return (
       <div
@@ -742,13 +744,13 @@ const RichChatInput = React.forwardRef<HTMLDivElement, RichChatInputProps>(
             (onFileUpload || onImageUpload) ? (
               <Button
                 variant="solid"
-                size="icon-md"
+                size={isMobile ? 'icon-sm' : 'icon-md'}
                 onClick={() => fileInputRef.current?.click()}
                 title="Attach"
                 aria-label="Attach file"
-                className="shrink-0 self-end"
+                className="shrink-0"
               >
-                <Icon icon={IconPlus} size="md" />
+                <Icon icon={IconPlus} size={isMobile ? 'sm' : 'md'} />
               </Button>
             ) : null
           )
@@ -848,7 +850,7 @@ const RichChatInput = React.forwardRef<HTMLDivElement, RichChatInputProps>(
             <div
               ref={editorWrapperRef}
               className={cn(
-                'flex items-center px-ds-04 py-ds-03 cursor-text [&_.tiptap]:w-full [&_.tiptap]:outline-none',
+                'flex items-center px-ds-03 py-ds-02b sm:px-ds-04 sm:py-ds-03 cursor-text [&_.tiptap]:w-full [&_.tiptap]:outline-none',
                 state === 'recording' && 'invisible',
               )}
               style={{
@@ -864,8 +866,8 @@ const RichChatInput = React.forwardRef<HTMLDivElement, RichChatInputProps>(
               </div>
 
               {/* Action icons — right-aligned inside input */}
-              {editor && state !== 'recording' && (
-                <div className="flex items-center gap-ds-01 shrink-0 ml-ds-03">
+              {editor && state !== 'recording' && !isMobile && (
+                <div className="flex items-center gap-ds-01 shrink-0 ml-ds-02 sm:ml-ds-03">
                   {/* Formatting toggle (A button) */}
                   <button
                     type="button"
@@ -1022,11 +1024,11 @@ const RichChatInput = React.forwardRef<HTMLDivElement, RichChatInputProps>(
                 transition={{ duration: 0.15 }}
                 className="flex items-center gap-ds-02"
               >
-                <Button variant="soft" size="icon-md" onClick={handleCancelRecording} aria-label="Cancel recording" title="Cancel recording" className="text-surface-fg-subtle hover:text-error-11">
-                  <Icon icon={IconTrash} size="md" />
+                <Button variant="soft" size={btnSize} onClick={handleCancelRecording} aria-label="Cancel recording" title="Cancel recording" className="text-surface-fg-subtle hover:text-error-11">
+                  <Icon icon={IconTrash} size={iconSize} />
                 </Button>
-                <Button variant="solid" size="icon-md" color="error" onClick={handleStopRecording} aria-label="Stop recording" title="Stop recording">
-                  <Icon icon={IconSquare} size="md" />
+                <Button variant="solid" size={btnSize} color="error" onClick={handleStopRecording} aria-label="Stop recording" title="Stop recording">
+                  <Icon icon={IconSquare} size={iconSize} />
                 </Button>
               </motion.div>
             )}
@@ -1038,8 +1040,8 @@ const RichChatInput = React.forwardRef<HTMLDivElement, RichChatInputProps>(
                 exit={{ scale: 0.8, opacity: 0 }}
                 transition={{ duration: 0.15 }}
               >
-                <Button variant="solid" size="icon-md" color="error" onClick={onCancel} aria-label="Stop" title="Stop">
-                  <Icon icon={IconSquare} size="md" />
+                <Button variant="solid" size={btnSize} color="error" onClick={onCancel} aria-label="Stop" title="Stop">
+                  <Icon icon={IconSquare} size={iconSize} />
                 </Button>
               </motion.div>
             )}
@@ -1055,7 +1057,7 @@ const RichChatInput = React.forwardRef<HTMLDivElement, RichChatInputProps>(
                   onClick={handleSubmit}
                   disabled={disabled}
                   aria-label={scheduledDate ? 'Schedule send' : 'Send'}
-                  size="icon-md"
+                  size={btnSize}
                   dropdownContent={
                     <ScheduleDropdownContent
                       onSchedule={(date) => setScheduledDate(date)}
@@ -1064,7 +1066,7 @@ const RichChatInput = React.forwardRef<HTMLDivElement, RichChatInputProps>(
                     />
                   }
                 >
-                  <Icon icon={scheduledDate ? IconClock : IconSend} size="md" />
+                  <Icon icon={scheduledDate ? IconClock : IconSend} size={iconSize} />
                 </SplitButton>
               </motion.div>
             )}
@@ -1076,8 +1078,8 @@ const RichChatInput = React.forwardRef<HTMLDivElement, RichChatInputProps>(
                 exit={{ scale: 0.8, opacity: 0 }}
                 transition={{ duration: 0.15 }}
               >
-                <Button variant="solid" size="icon-md" onClick={handleSubmit} disabled={disabled} aria-label="Send" title="Send">
-                  <Icon icon={IconSend} size="md" />
+                <Button variant="solid" size={btnSize} onClick={handleSubmit} disabled={disabled} aria-label="Send" title="Send">
+                  <Icon icon={IconSend} size={iconSize} />
                 </Button>
               </motion.div>
             )}
@@ -1089,8 +1091,8 @@ const RichChatInput = React.forwardRef<HTMLDivElement, RichChatInputProps>(
                 exit={{ scale: 0.8, opacity: 0 }}
                 transition={{ duration: 0.15 }}
               >
-                <Button variant="soft" size="icon-md" onClick={handleStartRecording} aria-label="Record voice message" title="Record voice message">
-                  <Icon icon={IconMicrophone} size="md" />
+                <Button variant="soft" size={btnSize} onClick={handleStartRecording} aria-label="Record voice message" title="Record voice message">
+                  <Icon icon={IconMicrophone} size={iconSize} />
                 </Button>
               </motion.div>
             )}
@@ -1102,8 +1104,8 @@ const RichChatInput = React.forwardRef<HTMLDivElement, RichChatInputProps>(
                 exit={{ scale: 0.8, opacity: 0 }}
                 transition={{ duration: 0.15 }}
               >
-                <Button variant="solid" size="icon-md" disabled aria-label="Send" title="Send">
-                  <Icon icon={IconSend} size="md" />
+                <Button variant="solid" size={btnSize} disabled aria-label="Send" title="Send">
+                  <Icon icon={IconSend} size={iconSize} />
                 </Button>
               </motion.div>
             )}

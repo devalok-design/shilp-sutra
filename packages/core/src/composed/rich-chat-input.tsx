@@ -1,6 +1,7 @@
 'use client'
 
 import * as React from 'react'
+import * as ReactDOM from 'react-dom'
 import { useEditor, useEditorState, EditorContent, Extension, type Editor } from '@tiptap/react'
 import { BubbleMenu } from '@tiptap/react/menus'
 import StarterKit from '@tiptap/starter-kit'
@@ -358,6 +359,7 @@ const RichChatInput = React.forwardRef<HTMLDivElement, RichChatInputProps>(
     const [state, setState] = React.useState<InputState>('idle')
     const [toolbarExpanded, setToolbarExpanded] = React.useState(false)
     const [showEmojiPicker, setShowEmojiPicker] = React.useState(false)
+    const emojiAnchorRef = React.useRef<HTMLButtonElement>(null)
     const [attachments, setAttachments] = React.useState<Attachment[]>([])
     const [voiceNote, setVoiceNote] = React.useState<{ blob: Blob; duration: number; waveformData: number[] } | null>(null)
     const [isDragging, setIsDragging] = React.useState(false)
@@ -798,6 +800,7 @@ const RichChatInput = React.forwardRef<HTMLDivElement, RichChatInputProps>(
                   {/* Emoji picker */}
                   <div className="relative">
                     <button
+                      ref={emojiAnchorRef}
                       type="button"
                       onClick={() => setShowEmojiPicker(prev => !prev)}
                       title="Emoji"
@@ -809,8 +812,11 @@ const RichChatInput = React.forwardRef<HTMLDivElement, RichChatInputProps>(
                     >
                       <Icon icon={IconMoodSmile} size="xs" />
                     </button>
-                    {showEmojiPicker && (
-                      <div className="absolute bottom-full right-0 mb-ds-02 z-popover">
+                    {showEmojiPicker && ReactDOM.createPortal(
+                      <div className="fixed z-popover" style={{
+                        bottom: `${window.innerHeight - (emojiAnchorRef.current?.getBoundingClientRect().top ?? 0) + 8}px`,
+                        right: `${window.innerWidth - (emojiAnchorRef.current?.getBoundingClientRect().right ?? 0)}px`,
+                      }}>
                         <EmojiPickerPopover
                           onSelect={(native) => {
                             editor.chain().focus().insertContent(native).run()
@@ -818,7 +824,8 @@ const RichChatInput = React.forwardRef<HTMLDivElement, RichChatInputProps>(
                           }}
                           onClose={() => setShowEmojiPicker(false)}
                         />
-                      </div>
+                      </div>,
+                      document.body,
                     )}
                   </div>
                 </div>

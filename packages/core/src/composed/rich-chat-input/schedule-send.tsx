@@ -151,9 +151,9 @@ function InlineTimePicker({ value, onChange }: { value: Date; onChange: (d: Date
   )
 }
 
-// ── Inline Calendar + Time Picker ──────────────────────────────
+// ── Compact Date + Time Entry (for dropdown) ──────────────────
 
-function InlineDateTimePicker({
+function CompactDateTimeEntry({
   value,
   onChange,
   minDate,
@@ -163,24 +163,70 @@ function InlineDateTimePicker({
   minDate?: Date
 }) {
   const now = new Date()
-  const selected = value ?? now
+  const selected = value ?? (() => { const d = new Date(now); d.setHours(d.getHours() + 1, 0, 0, 0); return d })()
+
+  // Format date as YYYY-MM-DD for the native input
+  const dateStr = `${selected.getFullYear()}-${String(selected.getMonth() + 1).padStart(2, '0')}-${String(selected.getDate()).padStart(2, '0')}`
+
+  const handleDateChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const parts = e.target.value.split('-')
+    if (parts.length !== 3) return
+    const d = new Date(selected)
+    d.setFullYear(Number(parts[0]), Number(parts[1]) - 1, Number(parts[2]))
+    onChange(d)
+  }
+
+  const minDateStr = minDate
+    ? `${minDate.getFullYear()}-${String(minDate.getMonth() + 1).padStart(2, '0')}-${String(minDate.getDate()).padStart(2, '0')}`
+    : undefined
+
+  return (
+    <div className="space-y-ds-03">
+      {/* Date input */}
+      <div className="flex items-center justify-between">
+        <span className="text-ds-xs font-medium text-surface-fg-subtle">Date</span>
+        <input
+          type="date"
+          value={dateStr}
+          min={minDateStr}
+          onChange={handleDateChange}
+          className="h-ds-sm rounded-ds-md border border-surface-border-strong bg-surface-raised px-ds-03 text-ds-sm text-surface-fg focus:outline-none focus:ring-2 focus:ring-accent-9"
+        />
+      </div>
+
+      {/* Time row */}
+      <div className="flex items-center justify-between">
+        <span className="text-ds-xs font-medium text-surface-fg-subtle">Time</span>
+        <InlineTimePicker value={selected} onChange={onChange} />
+      </div>
+    </div>
+  )
+}
+
+// ── Full Calendar + Time Picker (for dialog) ──────────────────
+
+function FullDateTimePicker({
+  value,
+  onChange,
+  minDate,
+}: {
+  value: Date | null
+  onChange: (d: Date) => void
+  minDate?: Date
+}) {
+  const now = new Date()
+  const selected = value ?? (() => { const d = new Date(now); d.setHours(d.getHours() + 1, 0, 0, 0); return d })()
 
   const { currentMonth, goToPreviousMonth, goToNextMonth } = useCalendar(selected)
 
   const handleDateSelect = (date: Date) => {
-    // Preserve time from current selection
     const d = new Date(date)
     d.setHours(selected.getHours(), selected.getMinutes(), 0, 0)
     onChange(d)
   }
 
-  const handleTimeChange = (date: Date) => {
-    onChange(date)
-  }
-
   return (
     <div className="space-y-ds-03">
-      {/* Calendar */}
       <CalendarGrid
         currentMonth={currentMonth}
         selected={selected}
@@ -192,11 +238,9 @@ function InlineDateTimePicker({
         minDate={minDate}
         className="w-full"
       />
-
-      {/* Time row */}
       <div className="flex items-center justify-between border-t border-surface-border pt-ds-03">
         <span className="text-ds-xs font-medium text-surface-fg-subtle">Time</span>
-        <InlineTimePicker value={selected} onChange={handleTimeChange} />
+        <InlineTimePicker value={selected} onChange={onChange} />
       </div>
     </div>
   )
@@ -233,7 +277,7 @@ export function ScheduleDropdownContent({ onSchedule, onClose, onOpenDialog }: S
 
   if (showPicker) {
     return (
-      <div className="p-ds-04" style={{ width: 310 }}>
+      <div className="p-ds-04" style={{ minWidth: 270 }}>
         <div className="mb-ds-03 flex items-center justify-between">
           <p className="text-ds-sm font-medium text-surface-fg">Pick date & time</p>
           <button
@@ -246,7 +290,7 @@ export function ScheduleDropdownContent({ onSchedule, onClose, onOpenDialog }: S
           </button>
         </div>
 
-        <InlineDateTimePicker
+        <CompactDateTimeEntry
           value={customDate}
           onChange={setCustomDate}
           minDate={new Date()}
@@ -337,7 +381,7 @@ export function ScheduleDialog({ open, onOpenChange, onSchedule, initialDate }: 
           <DialogTitle>{initialDate ? 'Reschedule message' : 'Schedule send'}</DialogTitle>
         </DialogHeader>
 
-        <InlineDateTimePicker
+        <FullDateTimePicker
           value={date}
           onChange={setDate}
           minDate={new Date()}

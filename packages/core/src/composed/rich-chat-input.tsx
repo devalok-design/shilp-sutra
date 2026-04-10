@@ -731,7 +731,7 @@ const RichChatInput = React.forwardRef<HTMLDivElement, RichChatInputProps>(
         ref={ref}
         className={cn(
           'border-t border-surface-border-subtle px-ds-03 py-ds-03 sm:px-ds-05 sm:py-ds-04',
-          'flex items-center gap-ds-02 sm:gap-ds-03 w-full min-w-0 overflow-hidden',
+          'flex items-center gap-ds-02 sm:gap-ds-03 w-full min-w-0',
           className,
         )}
         {...props}

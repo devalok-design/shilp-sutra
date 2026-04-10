@@ -532,7 +532,7 @@ const RichChatInput = React.forwardRef<HTMLDivElement, RichChatInputProps>(
 
       return exts
     // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [placeholder, maxLength, emojiSet])
+    }, [placeholder, maxLength, emojiSet, !!mentions, !!onMentionSearch, !!slashCommands])
 
     // ── Editor ────────────────────────────────────────────────
     const editor = useEditor({
@@ -924,7 +924,7 @@ const RichChatInput = React.forwardRef<HTMLDivElement, RichChatInputProps>(
                 title="Discard voice note"
                 className="text-surface-fg-subtle hover:text-error-11"
               >
-                <Icon icon={IconMicrophone} size="sm" className="line-through" />
+                <Icon icon={IconTrash} size="sm" />
               </Button>
             </div>
           )}
@@ -952,6 +952,16 @@ const RichChatInput = React.forwardRef<HTMLDivElement, RichChatInputProps>(
                   disabled={disabled}
                 />
               </div>
+            </div>
+          )}
+
+          {/* Character counter */}
+          {maxLength && charCount > 0 && (
+            <div className={cn(
+              'flex justify-end px-ds-04 pb-ds-02 text-ds-xs tabular-nums',
+              charCount >= maxLength ? 'text-error-11 font-medium' : charCount >= maxLength * 0.9 ? 'text-warning-11' : 'text-surface-fg-subtle',
+            )}>
+              {charCount}/{maxLength}
             </div>
           )}
 

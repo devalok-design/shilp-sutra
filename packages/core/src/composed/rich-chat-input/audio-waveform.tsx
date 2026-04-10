@@ -127,9 +127,9 @@ const AudioWaveform = React.forwardRef<SVGSVGElement, AudioWaveformProps>(
     return (
       <svg
         ref={ref}
-        width={svgWidth}
         height={height}
         viewBox={`0 0 ${svgWidth} ${height}`}
+        preserveAspectRatio="none"
         aria-hidden="true"
         className={cn('shrink-0', className)}
         {...props}

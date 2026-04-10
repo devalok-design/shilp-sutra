@@ -94,12 +94,15 @@ function RecordingOverlay({
       </span>
 
       {/* Live waveform — stop/cancel buttons are external (right-side button area) */}
-      <AudioWaveform
-        mode="live"
-        analyserNode={analyserNode}
-        height={24}
-        barCount={30}
-      />
+      <div className="flex-1 min-w-0 overflow-hidden">
+        <AudioWaveform
+          mode="live"
+          analyserNode={analyserNode}
+          height={24}
+          barCount={60}
+          className="w-full"
+        />
+      </div>
     </div>
   )
 }

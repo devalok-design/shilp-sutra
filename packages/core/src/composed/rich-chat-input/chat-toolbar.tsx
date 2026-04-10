@@ -3,6 +3,7 @@
 import * as React from 'react'
 // motion removed — CSS transitions handle show/hide from parent
 import type { Editor } from '@tiptap/core'
+import { useEditorState } from '@tiptap/react'
 import {
   IconBold,
   IconItalic,
@@ -98,8 +99,12 @@ export function ToolbarGroup({ children, className }: { children: React.ReactNod
 
 export function BoldButton() {
   const { editor } = useToolbarEditor()
+  const { isActive } = useEditorState({
+    editor,
+    selector: ({ editor: e }) => ({ isActive: e.isActive('bold') }),
+  })
   return (
-    <ToolbarButton onClick={() => editor.chain().focus().toggleBold().run()} isActive={editor.isActive('bold')} title="Bold">
+    <ToolbarButton onClick={() => editor.chain().focus().toggleBold().run()} isActive={isActive} title="Bold">
       <Icon icon={IconBold} size="xs" />
     </ToolbarButton>
   )
@@ -107,8 +112,12 @@ export function BoldButton() {
 
 export function ItalicButton() {
   const { editor } = useToolbarEditor()
+  const { isActive } = useEditorState({
+    editor,
+    selector: ({ editor: e }) => ({ isActive: e.isActive('italic') }),
+  })
   return (
-    <ToolbarButton onClick={() => editor.chain().focus().toggleItalic().run()} isActive={editor.isActive('italic')} title="Italic">
+    <ToolbarButton onClick={() => editor.chain().focus().toggleItalic().run()} isActive={isActive} title="Italic">
       <Icon icon={IconItalic} size="xs" />
     </ToolbarButton>
   )
@@ -116,8 +125,12 @@ export function ItalicButton() {
 
 export function UnderlineButton() {
   const { editor } = useToolbarEditor()
+  const { isActive } = useEditorState({
+    editor,
+    selector: ({ editor: e }) => ({ isActive: e.isActive('underline') }),
+  })
   return (
-    <ToolbarButton onClick={() => editor.chain().focus().toggleUnderline().run()} isActive={editor.isActive('underline')} title="Underline">
+    <ToolbarButton onClick={() => editor.chain().focus().toggleUnderline().run()} isActive={isActive} title="Underline">
       <Icon icon={IconUnderline} size="xs" />
     </ToolbarButton>
   )
@@ -125,8 +138,12 @@ export function UnderlineButton() {
 
 export function StrikeButton() {
   const { editor } = useToolbarEditor()
+  const { isActive } = useEditorState({
+    editor,
+    selector: ({ editor: e }) => ({ isActive: e.isActive('strike') }),
+  })
   return (
-    <ToolbarButton onClick={() => editor.chain().focus().toggleStrike().run()} isActive={editor.isActive('strike')} title="Strikethrough">
+    <ToolbarButton onClick={() => editor.chain().focus().toggleStrike().run()} isActive={isActive} title="Strikethrough">
       <Icon icon={IconStrikethrough} size="xs" />
     </ToolbarButton>
   )
@@ -134,8 +151,12 @@ export function StrikeButton() {
 
 export function HighlightButton() {
   const { editor } = useToolbarEditor()
+  const { isActive } = useEditorState({
+    editor,
+    selector: ({ editor: e }) => ({ isActive: e.isActive('highlight') }),
+  })
   return (
-    <ToolbarButton onClick={() => editor.chain().focus().toggleHighlight().run()} isActive={editor.isActive('highlight')} title="Highlight">
+    <ToolbarButton onClick={() => editor.chain().focus().toggleHighlight().run()} isActive={isActive} title="Highlight">
       <Icon icon={IconHighlight} size="xs" />
     </ToolbarButton>
   )
@@ -143,8 +164,12 @@ export function HighlightButton() {
 
 export function CodeButton() {
   const { editor } = useToolbarEditor()
+  const { isActive } = useEditorState({
+    editor,
+    selector: ({ editor: e }) => ({ isActive: e.isActive('code') }),
+  })
   return (
-    <ToolbarButton onClick={() => editor.chain().focus().toggleCode().run()} isActive={editor.isActive('code')} title="Inline code">
+    <ToolbarButton onClick={() => editor.chain().focus().toggleCode().run()} isActive={isActive} title="Inline code">
       <Icon icon={IconCode} size="xs" />
     </ToolbarButton>
   )
@@ -152,8 +177,12 @@ export function CodeButton() {
 
 export function BulletListButton() {
   const { editor } = useToolbarEditor()
+  const { isActive } = useEditorState({
+    editor,
+    selector: ({ editor: e }) => ({ isActive: e.isActive('bulletList') }),
+  })
   return (
-    <ToolbarButton onClick={() => editor.chain().focus().toggleBulletList().run()} isActive={editor.isActive('bulletList')} title="Bullet list">
+    <ToolbarButton onClick={() => editor.chain().focus().toggleBulletList().run()} isActive={isActive} title="Bullet list">
       <Icon icon={IconList} size="xs" />
     </ToolbarButton>
   )
@@ -161,8 +190,12 @@ export function BulletListButton() {
 
 export function OrderedListButton() {
   const { editor } = useToolbarEditor()
+  const { isActive } = useEditorState({
+    editor,
+    selector: ({ editor: e }) => ({ isActive: e.isActive('orderedList') }),
+  })
   return (
-    <ToolbarButton onClick={() => editor.chain().focus().toggleOrderedList().run()} isActive={editor.isActive('orderedList')} title="Ordered list">
+    <ToolbarButton onClick={() => editor.chain().focus().toggleOrderedList().run()} isActive={isActive} title="Ordered list">
       <Icon icon={IconListNumbers} size="xs" />
     </ToolbarButton>
   )
@@ -170,8 +203,12 @@ export function OrderedListButton() {
 
 export function BlockquoteButton() {
   const { editor } = useToolbarEditor()
+  const { isActive } = useEditorState({
+    editor,
+    selector: ({ editor: e }) => ({ isActive: e.isActive('blockquote') }),
+  })
   return (
-    <ToolbarButton onClick={() => editor.chain().focus().toggleBlockquote().run()} isActive={editor.isActive('blockquote')} title="Quote">
+    <ToolbarButton onClick={() => editor.chain().focus().toggleBlockquote().run()} isActive={isActive} title="Quote">
       <Icon icon={IconBlockquote} size="xs" />
     </ToolbarButton>
   )
@@ -179,13 +216,17 @@ export function BlockquoteButton() {
 
 export function LinkButton() {
   const { editor } = useToolbarEditor()
+  const { isActive } = useEditorState({
+    editor,
+    selector: ({ editor: e }) => ({ isActive: e.isActive('link') }),
+  })
   return (
     <ToolbarButton
       onClick={() => {
         const url = window.prompt('URL')
         if (url) editor.chain().focus().setLink({ href: url }).run()
       }}
-      isActive={editor.isActive('link')}
+      isActive={isActive}
       title="Link"
     >
       <Icon icon={IconLink} size="xs" />

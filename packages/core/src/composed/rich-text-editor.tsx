@@ -1,11 +1,11 @@
 'use client'
 
 import * as React from 'react'
-import { useEditor, EditorContent, type Editor } from '@tiptap/react'
+import { useEditor, useEditorState, EditorContent, type Editor } from '@tiptap/react'
 import StarterKit from '@tiptap/starter-kit'
 import { Placeholder } from '@tiptap/extensions'
 import Highlight from '@tiptap/extension-highlight'
-import { TaskList, TaskItem } from '@tiptap/extension-list'
+import { ListKit } from '@tiptap/extension-list'
 import TextAlign from '@tiptap/extension-text-align'
 import Image from '@tiptap/extension-image'
 import Mention from '@tiptap/extension-mention'
@@ -101,9 +101,13 @@ function LinkButton({ editor }: { editor: Editor }) {
   const [showInput, setShowInput] = React.useState(false)
   const [url, setUrl] = React.useState('')
   const inputRef = React.useRef<HTMLInputElement>(null)
+  const { isLink } = useEditorState({
+    editor,
+    selector: ({ editor: e }) => ({ isLink: e.isActive('link') }),
+  })
 
   const handleToggle = () => {
-    if (editor.isActive('link')) {
+    if (isLink) {
       editor.chain().focus().unsetLink().run()
       return
     }
@@ -132,7 +136,7 @@ function LinkButton({ editor }: { editor: Editor }) {
 
   return (
     <div className="relative">
-      <ToolbarButton onClick={handleToggle} isActive={editor.isActive('link')} title="Link">
+      <ToolbarButton onClick={handleToggle} isActive={isLink} title="Link">
         <Icon icon={IconLink} size="sm" />
       </ToolbarButton>
       {showInput && (
@@ -170,6 +174,32 @@ function Toolbar({ editor, toolbar, onImageClick, onFileClick, onEmojiClick }: {
   onFileClick?: () => void
   onEmojiClick?: () => void
 }) {
+  // v3: useEditorState subscribes to specific state slices so the toolbar
+  // re-renders only when active-state or can-undo/redo actually changes.
+  const state = useEditorState({
+    editor,
+    selector: ({ editor: e }) => ({
+      isBold: e.isActive('bold'),
+      isItalic: e.isActive('italic'),
+      isUnderline: e.isActive('underline'),
+      isStrike: e.isActive('strike'),
+      isHighlight: e.isActive('highlight'),
+      isH2: e.isActive('heading', { level: 2 }),
+      isH3: e.isActive('heading', { level: 3 }),
+      isBlockquote: e.isActive('blockquote'),
+      isBulletList: e.isActive('bulletList'),
+      isOrderedList: e.isActive('orderedList'),
+      isTaskList: e.isActive('taskList'),
+      isCodeBlock: e.isActive('codeBlock'),
+      isLink: e.isActive('link'),
+      isAlignLeft: e.isActive({ textAlign: 'left' }),
+      isAlignCenter: e.isActive({ textAlign: 'center' }),
+      isAlignRight: e.isActive({ textAlign: 'right' }),
+      canUndo: e.can().undo(),
+      canRedo: e.can().redo(),
+    }),
+  })
+
   const show = (item: ToolbarItem) => !toolbar || toolbar.includes(item)
 
   // Each group is an array of ToolbarItem names that belong to it.
@@ -186,27 +216,27 @@ function Toolbar({ editor, toolbar, onImageClick, onFileClick, onEmojiClick }: {
     <div role="toolbar" aria-label="Text formatting" className="flex flex-wrap items-center gap-ds-01 border-b border-surface-border-strong px-ds-04 py-ds-02b">
       {/* Inline formatting */}
       {show('bold') && (
-        <ToolbarButton onClick={() => editor.chain().focus().toggleBold().run()} isActive={editor.isActive('bold')} title="Bold">
+        <ToolbarButton onClick={() => editor.chain().focus().toggleBold().run()} isActive={state.isBold} title="Bold">
           <Icon icon={IconBold} size="sm" stroke="bold" />
         </ToolbarButton>
       )}
       {show('italic') && (
-        <ToolbarButton onClick={() => editor.chain().focus().toggleItalic().run()} isActive={editor.isActive('italic')} title="Italic">
+        <ToolbarButton onClick={() => editor.chain().focus().toggleItalic().run()} isActive={state.isItalic} title="Italic">
           <Icon icon={IconItalic} size="sm" stroke="bold" />
         </ToolbarButton>
       )}
       {show('underline') && (
-        <ToolbarButton onClick={() => editor.chain().focus().toggleUnderline().run()} isActive={editor.isActive('underline')} title="Underline">
+        <ToolbarButton onClick={() => editor.chain().focus().toggleUnderline().run()} isActive={state.isUnderline} title="Underline">
           <Icon icon={IconUnderline} size="sm" stroke="bold" />
         </ToolbarButton>
       )}
       {show('strike') && (
-        <ToolbarButton onClick={() => editor.chain().focus().toggleStrike().run()} isActive={editor.isActive('strike')} title="Strikethrough">
+        <ToolbarButton onClick={() => editor.chain().focus().toggleStrike().run()} isActive={state.isStrike} title="Strikethrough">
           <Icon icon={IconStrikethrough} size="sm" stroke="bold" />
         </ToolbarButton>
       )}
       {show('highlight') && (
-        <ToolbarButton onClick={() => editor.chain().focus().toggleHighlight().run()} isActive={editor.isActive('highlight')} title="Highlight">
+        <ToolbarButton onClick={() => editor.chain().focus().toggleHighlight().run()} isActive={state.isHighlight} title="Highlight">
           <Icon icon={IconHighlight} size="sm" stroke="bold" />
         </ToolbarButton>
       )}
@@ -215,17 +245,17 @@ function Toolbar({ editor, toolbar, onImageClick, onFileClick, onEmojiClick }: {
 
       {/* Block formatting */}
       {show('h2') && (
-        <ToolbarButton onClick={() => editor.chain().focus().toggleHeading({ level: 2 }).run()} isActive={editor.isActive('heading', { level: 2 })} title="Heading 2">
+        <ToolbarButton onClick={() => editor.chain().focus().toggleHeading({ level: 2 }).run()} isActive={state.isH2} title="Heading 2">
           <Icon icon={IconH2} size="sm" stroke="bold" />
         </ToolbarButton>
       )}
       {show('h3') && (
-        <ToolbarButton onClick={() => editor.chain().focus().toggleHeading({ level: 3 }).run()} isActive={editor.isActive('heading', { level: 3 })} title="Heading 3">
+        <ToolbarButton onClick={() => editor.chain().focus().toggleHeading({ level: 3 }).run()} isActive={state.isH3} title="Heading 3">
           <Icon icon={IconH3} size="sm" stroke="bold" />
         </ToolbarButton>
       )}
       {show('blockquote') && (
-        <ToolbarButton onClick={() => editor.chain().focus().toggleBlockquote().run()} isActive={editor.isActive('blockquote')} title="Blockquote">
+        <ToolbarButton onClick={() => editor.chain().focus().toggleBlockquote().run()} isActive={state.isBlockquote} title="Blockquote">
           <Icon icon={IconBlockquote} size="sm" stroke="bold" />
         </ToolbarButton>
       )}
@@ -234,22 +264,22 @@ function Toolbar({ editor, toolbar, onImageClick, onFileClick, onEmojiClick }: {
 
       {/* Lists */}
       {show('bulletList') && (
-        <ToolbarButton onClick={() => editor.chain().focus().toggleBulletList().run()} isActive={editor.isActive('bulletList')} title="Bullet list">
+        <ToolbarButton onClick={() => editor.chain().focus().toggleBulletList().run()} isActive={state.isBulletList} title="Bullet list">
           <Icon icon={IconList} size="sm" stroke="bold" />
         </ToolbarButton>
       )}
       {show('orderedList') && (
-        <ToolbarButton onClick={() => editor.chain().focus().toggleOrderedList().run()} isActive={editor.isActive('orderedList')} title="Ordered list">
+        <ToolbarButton onClick={() => editor.chain().focus().toggleOrderedList().run()} isActive={state.isOrderedList} title="Ordered list">
           <Icon icon={IconListNumbers} size="sm" stroke="bold" />
         </ToolbarButton>
       )}
       {show('taskList') && (
-        <ToolbarButton onClick={() => editor.chain().focus().toggleTaskList().run()} isActive={editor.isActive('taskList')} title="Task list">
+        <ToolbarButton onClick={() => editor.chain().focus().toggleTaskList().run()} isActive={state.isTaskList} title="Task list">
           <Icon icon={IconListCheck} size="sm" stroke="bold" />
         </ToolbarButton>
       )}
       {show('codeBlock') && (
-        <ToolbarButton onClick={() => editor.chain().focus().toggleCodeBlock().run()} isActive={editor.isActive('codeBlock')} title="Code block">
+        <ToolbarButton onClick={() => editor.chain().focus().toggleCodeBlock().run()} isActive={state.isCodeBlock} title="Code block">
           <Icon icon={IconCode} size="sm" stroke="bold" />
         </ToolbarButton>
       )}
@@ -278,17 +308,17 @@ function Toolbar({ editor, toolbar, onImageClick, onFileClick, onEmojiClick }: {
 
       {/* Alignment */}
       {show('alignLeft') && (
-        <ToolbarButton onClick={() => editor.chain().focus().setTextAlign('left').run()} isActive={editor.isActive({ textAlign: 'left' })} title="Align left">
+        <ToolbarButton onClick={() => editor.chain().focus().setTextAlign('left').run()} isActive={state.isAlignLeft} title="Align left">
           <Icon icon={IconAlignLeft} size="sm" />
         </ToolbarButton>
       )}
       {show('alignCenter') && (
-        <ToolbarButton onClick={() => editor.chain().focus().setTextAlign('center').run()} isActive={editor.isActive({ textAlign: 'center' })} title="Align center">
+        <ToolbarButton onClick={() => editor.chain().focus().setTextAlign('center').run()} isActive={state.isAlignCenter} title="Align center">
           <Icon icon={IconAlignCenter} size="sm" />
         </ToolbarButton>
       )}
       {show('alignRight') && (
-        <ToolbarButton onClick={() => editor.chain().focus().setTextAlign('right').run()} isActive={editor.isActive({ textAlign: 'right' })} title="Align right">
+        <ToolbarButton onClick={() => editor.chain().focus().setTextAlign('right').run()} isActive={state.isAlignRight} title="Align right">
           <Icon icon={IconAlignRight} size="sm" />
         </ToolbarButton>
       )}
@@ -304,12 +334,12 @@ function Toolbar({ editor, toolbar, onImageClick, onFileClick, onEmojiClick }: {
 
       {/* History */}
       {show('undo') && (
-        <ToolbarButton onClick={() => editor.chain().focus().undo().run()} disabled={!editor.can().undo()} title="Undo">
+        <ToolbarButton onClick={() => editor.chain().focus().undo().run()} disabled={!state.canUndo} title="Undo">
           <Icon icon={IconArrowBackUp} size="sm" />
         </ToolbarButton>
       )}
       {show('redo') && (
-        <ToolbarButton onClick={() => editor.chain().focus().redo().run()} disabled={!editor.can().redo()} title="Redo">
+        <ToolbarButton onClick={() => editor.chain().focus().redo().run()} disabled={!state.canRedo} title="Redo">
           <Icon icon={IconArrowForwardUp} size="sm" />
         </ToolbarButton>
       )}
@@ -436,6 +466,7 @@ const RichTextEditor = React.forwardRef<HTMLDivElement, RichTextEditorProps>(
   }
 
   const editor = useEditor({
+    immediatelyRender: false, // SSR-safe — prevents hydration mismatch in Next.js
     extensions: [
       StarterKit.configure({
         heading: { levels: [2, 3] },
@@ -456,8 +487,14 @@ const RichTextEditor = React.forwardRef<HTMLDivElement, RichTextEditorProps>(
           'before:content-[attr(data-placeholder)] before:text-surface-fg-subtle before:float-left before:h-0 before:pointer-events-none',
       }),
       Highlight.configure({ multicolor: false }),
-      TaskList,
-      TaskItem.configure({ nested: true }),
+      ListKit.configure({
+        bulletList: false,  // Already in StarterKit
+        orderedList: false, // Already in StarterKit
+        listItem: false,    // Already in StarterKit
+        listKeymap: false,  // Already in StarterKit
+        taskList: {},
+        taskItem: { nested: true },
+      }),
       TextAlign.configure({ types: ['heading', 'paragraph'] }),
       Image.configure({
         allowBase64: true,
@@ -632,6 +669,7 @@ export interface RichTextViewerProps extends Omit<React.ComponentPropsWithoutRef
 const RichTextViewer = React.forwardRef<HTMLDivElement, RichTextViewerProps>(
   function RichTextViewer({ content, className, ...props }, ref) {
   const editor = useEditor({
+    immediatelyRender: false, // SSR-safe — prevents hydration mismatch in Next.js
     extensions: [
       StarterKit.configure({
         heading: { levels: [2, 3] },
@@ -646,8 +684,14 @@ const RichTextViewer = React.forwardRef<HTMLDivElement, RichTextViewerProps>(
         },
       }),
       Highlight.configure({ multicolor: false }),
-      TaskList,
-      TaskItem.configure({ nested: true }),
+      ListKit.configure({
+        bulletList: false,
+        orderedList: false,
+        listItem: false,
+        listKeymap: false,
+        taskList: {},
+        taskItem: { nested: true },
+      }),
       TextAlign.configure({ types: ['heading', 'paragraph'] }),
       Image.configure({
         allowBase64: true,

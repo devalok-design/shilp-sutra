@@ -1,7 +1,7 @@
 'use client'
 
 import * as React from 'react'
-import { useEditor, useEditorState, EditorContent, Extension } from '@tiptap/react'
+import { useEditor, useEditorState, EditorContent, Extension, type Editor } from '@tiptap/react'
 import { BubbleMenu } from '@tiptap/react/menus'
 import StarterKit from '@tiptap/starter-kit'
 import { Placeholder, CharacterCount } from '@tiptap/extensions'
@@ -223,6 +223,48 @@ function BubbleBtn({
   )
 }
 
+// ── BubbleMenu with useEditorState (v3) ────────────────────────
+
+function ChatBubbleMenu({ editor }: { editor: Editor }) {
+  const state = useEditorState({
+    editor,
+    selector: ({ editor: e }) => ({
+      isBold: e.isActive('bold'),
+      isItalic: e.isActive('italic'),
+      isUnderline: e.isActive('underline'),
+      isStrike: e.isActive('strike'),
+      isHighlight: e.isActive('highlight'),
+      isCode: e.isActive('code'),
+    }),
+  })
+
+  return (
+    <BubbleMenu
+      editor={editor}
+      className="flex gap-ds-01 rounded-ds-lg border border-surface-border-strong bg-surface-overlay p-ds-02 shadow-floating"
+    >
+      <BubbleBtn onClick={() => editor.chain().focus().toggleBold().run()} isActive={state.isBold} title="Bold">
+        <Icon icon={IconBold} size="xs" />
+      </BubbleBtn>
+      <BubbleBtn onClick={() => editor.chain().focus().toggleItalic().run()} isActive={state.isItalic} title="Italic">
+        <Icon icon={IconItalic} size="xs" />
+      </BubbleBtn>
+      <BubbleBtn onClick={() => editor.chain().focus().toggleUnderline().run()} isActive={state.isUnderline} title="Underline">
+        <Icon icon={IconUnderline} size="xs" />
+      </BubbleBtn>
+      <BubbleBtn onClick={() => editor.chain().focus().toggleStrike().run()} isActive={state.isStrike} title="Strikethrough">
+        <Icon icon={IconStrikethrough} size="xs" />
+      </BubbleBtn>
+      <BubbleBtn onClick={() => editor.chain().focus().toggleHighlight().run()} isActive={state.isHighlight} title="Highlight">
+        <Icon icon={IconHighlight} size="xs" />
+      </BubbleBtn>
+      <BubbleBtn onClick={() => editor.chain().focus().toggleCode().run()} isActive={state.isCode} title="Code">
+        <Icon icon={IconCode} size="xs" />
+      </BubbleBtn>
+    </BubbleMenu>
+  )
+}
+
 // ── Component ───────────────────────────────────────────────────
 
 const RichChatInput = React.forwardRef<HTMLDivElement, RichChatInputProps>(
@@ -391,6 +433,7 @@ const RichChatInput = React.forwardRef<HTMLDivElement, RichChatInputProps>(
 
     // ── Editor ────────────────────────────────────────────────
     const editor = useEditor({
+      immediatelyRender: false, // SSR-safe — prevents hydration mismatch in Next.js
       extensions,
       content: content || undefined,
       editable: !disabled,
@@ -541,8 +584,20 @@ const RichChatInput = React.forwardRef<HTMLDivElement, RichChatInputProps>(
     }, [])
 
     // ── Derived Values ────────────────────────────────────────
-    const charCount = editor?.storage.characterCount?.characters() ?? 0
-    const editorIsEmpty = editor?.isEmpty ?? true
+    // v3: useEditorState subscribes to editor changes so charCount/isEmpty
+    // update without full parent re-renders on every transaction.
+    const editorDerived = useEditorState({
+      editor,
+      selector: ({ editor: e }) => {
+        if (!e) return null
+        return {
+          charCount: e.storage.characterCount?.characters() ?? 0,
+          editorIsEmpty: e.isEmpty,
+        }
+      },
+    })
+    const charCount = editorDerived?.charCount ?? 0
+    const editorIsEmpty = editorDerived?.editorIsEmpty ?? true
     const hasContent = !editorIsEmpty || attachments.length > 0 || !!voiceNote
     const isInline = variant === 'inline'
     const showToolbar = isInline
@@ -724,29 +779,7 @@ const RichChatInput = React.forwardRef<HTMLDivElement, RichChatInputProps>(
 
           {/* Mobile BubbleMenu — shows on text selection */}
           {isMobile && editor && !editorIsEmpty && (
-            <BubbleMenu
-              editor={editor}
-              className="flex gap-ds-01 rounded-ds-lg border border-surface-border-strong bg-surface-overlay p-ds-02 shadow-floating"
-            >
-              <BubbleBtn onClick={() => editor.chain().focus().toggleBold().run()} isActive={editor.isActive('bold')} title="Bold">
-                <Icon icon={IconBold} size="xs" />
-              </BubbleBtn>
-              <BubbleBtn onClick={() => editor.chain().focus().toggleItalic().run()} isActive={editor.isActive('italic')} title="Italic">
-                <Icon icon={IconItalic} size="xs" />
-              </BubbleBtn>
-              <BubbleBtn onClick={() => editor.chain().focus().toggleUnderline().run()} isActive={editor.isActive('underline')} title="Underline">
-                <Icon icon={IconUnderline} size="xs" />
-              </BubbleBtn>
-              <BubbleBtn onClick={() => editor.chain().focus().toggleStrike().run()} isActive={editor.isActive('strike')} title="Strikethrough">
-                <Icon icon={IconStrikethrough} size="xs" />
-              </BubbleBtn>
-              <BubbleBtn onClick={() => editor.chain().focus().toggleHighlight().run()} isActive={editor.isActive('highlight')} title="Highlight">
-                <Icon icon={IconHighlight} size="xs" />
-              </BubbleBtn>
-              <BubbleBtn onClick={() => editor.chain().focus().toggleCode().run()} isActive={editor.isActive('code')} title="Code">
-                <Icon icon={IconCode} size="xs" />
-              </BubbleBtn>
-            </BubbleMenu>
+            <ChatBubbleMenu editor={editor} />
           )}
 
           {/* Zone 4: Toolbar below — CSS transition instead of AnimatePresence */}

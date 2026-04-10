@@ -47,6 +47,10 @@
 - Grain children (DevalokGrain) are auto-separated and rendered as direct button children for absolute positioning
 
 ## Changes
+### v0.33.0
+- **Added** `disabled` inherited from ButtonGroup context
+- **Added** Position-aware border-radius when inside an attached ButtonGroup (compound component pattern)
+
 ### v0.29.0
 - **Added** `soft` variant — tinted background, colored text (new middle ground between solid and ghost)
 - **Added** 5 color options: `accent` (default), `error`, `success`, `warning`, `neutral` (replaces old `default`/`error`-only axis)

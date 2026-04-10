@@ -714,13 +714,18 @@ Note: getFormFieldA11y() was removed in favor of useFormField() hook.
 - Category: ui
 
 ## Props
-    variant: ButtonProps['variant'] (propagated to children)
-    color: ButtonProps['color'] (propagated to children)
-    size: ButtonProps['size'] (propagated to children)
+    variant: ButtonProps['variant'] (propagated to children via context)
+    color: ButtonProps['color'] (propagated to children via context)
+    weight: ButtonProps['weight'] (propagated to children via context)
+    shape: ButtonProps['shape'] (propagated to children via context)
+    size: ButtonProps['size'] (propagated to children via context)
+    disabled: boolean (propagated to all children via context)
     orientation: "horizontal" | "vertical" (default: "horizontal")
+    attached: boolean (default: true — visually merge buttons; false = spaced with gap)
+    fullWidth: boolean (stretch to fill container width)
 
 ## Defaults
-    orientation="horizontal"
+    orientation="horizontal", attached=true
 
 ## Example
 ```jsx
@@ -728,16 +733,104 @@ Note: getFormFieldA11y() was removed in favor of useFormField() hook.
   <Button>Bold</Button>
   <Button>Italic</Button>
 </ButtonGroup>
+
+<ButtonGroup variant="soft" orientation="vertical">
+  <Button>Option A</Button>
+  <Button>Option B</Button>
+  <Button>Option C</Button>
+</ButtonGroup>
+
+<ButtonGroup variant="solid" disabled>
+  <Button>Save</Button>
+  <Button>Publish</Button>
+</ButtonGroup>
+
+<ButtonGroup variant="outline" fullWidth>
+  <Button>Left</Button>
+  <Button>Center</Button>
+  <Button>Right</Button>
+</ButtonGroup>
 ```
 
 ## Gotchas
-- Children can override variant/size individually
+- Children can override variant/color/size individually
+- Compound component pattern: Button reads position (first/middle/last) from context and applies border-radius + border-collapse inline on its own `<motion.button>` element
+- Solid/soft/ghost variants render tonal divider elements between buttons; outline uses border-removal
+- Focus/hover lifts button z-index above siblings (focus ring visible above adjacent buttons)
+- Vertical groups auto-stretch children to full width
 
 ## Changes
+### v0.33.0
+- **Rebuilt** with compound component pattern. Button applies radius internally via position context.
+- **Added** `disabled`, `attached`, `fullWidth` props.
+- **Added** tonal dividers for solid/soft/ghost variants.
+- **Added** focus z-index isolation.
+
 ### v0.4.2
 - **Fixed** `Omit<HTMLAttributes, 'color'>` resolves TS2320 conflict with CVA color prop
 
 ### v0.1.0
+- **Added** Initial release
+
+# SplitButton
+
+- Import: @devalok/shilp-sutra/ui/split-button
+- Server-safe: No
+- Category: ui
+
+## Props
+    children: ReactNode (primary action content — left side)
+    onClick: (e) => void (primary click handler)
+    dropdownContent: ReactNode (rendered inside floating dropdown panel)
+    open: boolean (controlled open state)
+    onOpenChange: (open: boolean) => void
+    variant: "solid" | "soft" | "outline" (default: "solid")
+    color: "accent" | "error" | "success" | "warning" | "neutral" (default: "accent")
+    size: "xs" | "sm" | "md" | "icon-xs" | "icon-sm" | "icon-md" (default: "md")
+    disabled: boolean
+    aria-label: string (for primary button)
+    dropdownLabel: string (default: "More options" — aria-label for trigger)
+    dropdownIcon: ReactNode (default: chevron-down SVG)
+    triggerSide: "left" | "right" (default: "right")
+    triggerWidth: number | string (custom width for trigger half)
+    placement: Floating UI Placement (default: "top-end")
+
+## Defaults
+    variant="solid", color="accent", size="md", triggerSide="right", placement="top-end"
+
+## Example
+```jsx
+<SplitButton onClick={handleSave} dropdownContent={<SaveOptions />}>
+  Save
+</SplitButton>
+
+<SplitButton
+  variant="soft"
+  triggerSide="left"
+  onClick={handleDeploy}
+  dropdownContent={<DeployTargets />}
+>
+  Deploy
+</SplitButton>
+
+<SplitButton
+  size="icon-md"
+  onClick={handleSend}
+  aria-label="Send"
+  dropdownContent={<ScheduleMenu />}
+>
+  <Icon icon={IconSend} size="md" />
+</SplitButton>
+```
+
+## Gotchas
+- Dropdown positioned via `@floating-ui/dom` with flip + shift + offset middleware
+- Dropdown renders in a fixed-position portal (not inside the button) to avoid clipping
+- Close on outside click and Escape key
+- Primary and trigger are separate tab stops (2 buttons in a `role="group"`)
+
+## Changes
+### v0.33.0
 - **Added** Initial release
 # ButtonProcessing (Internal)
 
@@ -4203,6 +4296,7 @@ EmojiPicker, EmojiPickerPopover
 
 ### EmojiPicker
     onSelect: (emoji: EmojiData) => void
+    set: EmojiSet (default: "native") — emoji art style
     theme: "auto" | "light" | "dark"
     previewPosition: "top" | "bottom" | "none"
     skinTonePosition: "search" | "preview" | "none"
@@ -4217,20 +4311,39 @@ EmojiPicker, EmojiPickerPopover
     native: string (the emoji character)
     shortcodes: string
 
+### EmojiSet (type)
+    "native" | "apple" | "google" | "twitter" | "facebook"
+
+### EmojiNode (TipTap extension)
+    Inline atom node for spritesheet emoji rendering.
+    Attrs: { id: string, native: string, set: string, x: number, y: number }
+    renderText returns native character (for getText()/clipboard)
+    parseHTML matches <span data-emoji-id="..."> for HTML round-trip
+    Use with: createEmojiSuggestion(set?) for :shortcode: autocomplete
+
+### createEmojiSuggestion(set?)
+    Factory function returning a TipTap Extension for :shortcode: autocomplete.
+    set: EmojiSet (default: "native")
+    Renders spritesheet images in dropdown for non-native sets.
+    Inserts emojiNode (not raw Unicode) into the editor.
+
 ## Defaults
-    theme="auto", previewPosition="none", skinTonePosition="search", align="start"
+    set="native", theme="auto", previewPosition="none", skinTonePosition="search", align="start"
 
 ## Example
 ```jsx
-<EmojiPickerPopover onSelect={(emoji) => insertEmoji(emoji.native)}>
+<EmojiPickerPopover set="apple" onSelect={(emoji) => insertEmoji(emoji.native)}>
   <Button variant="ghost" size="icon-sm">😀</Button>
 </EmojiPickerPopover>
 
-<EmojiPicker onSelect={handleEmoji} theme="dark" />
+<EmojiPicker set="google" onSelect={handleEmoji} theme="dark" />
 ```
 
 ## Gotchas
 - Wraps `@emoji-mart/react` which is lazy-loaded — shows a Skeleton placeholder while loading
+- emoji-mart caches data in a module-level singleton — `set` is immutable config, not dynamically switchable at runtime
+- Non-native sets load set-specific data from `@emoji-mart/data/sets/15/{set}.json` (includes spritesheet x/y coords)
+- Spritesheets loaded from jsdelivr CDN (~1MB per set, cached after first load)
 - `theme="auto"` reads the `.dark` class on `<html>` to pick light/dark
 - EmojiPickerPopover auto-closes after selection
 # EmptyState
@@ -4889,6 +5002,7 @@ Exports: RichTextEditor, RichTextViewer
     onMentionSearch?: (query: string) => Promise<MentionItem[]> — async search, takes precedence over static mentions
     toolbar?: ToolbarItem[] — whitelist of toolbar items to show. Omit to show all.
     onMentionSelect?: (item: MentionItem) => void — called when a mention is selected
+    emojiSet?: EmojiSet — emoji art style (default: "native")
 
 ToolbarItem: 'bold' | 'italic' | 'underline' | 'strike' | 'highlight' | 'h2' | 'h3' | 'blockquote' | 'bulletList' | 'orderedList' | 'taskList' | 'codeBlock' | 'link' | 'image' | 'file' | 'hr' | 'alignLeft' | 'alignCenter' | 'alignRight' | 'emoji' | 'undo' | 'redo'
 
@@ -4942,8 +5056,100 @@ MentionItem: { id: string; label: string; avatar?: string }
 ### v0.7.0
 - **Added** Initial release — full-featured tiptap-based rich text editing with toolbar, mentions, emoji, image, alignment
 
+### v0.33.0
+- **Added** `emojiSet` prop — `EmojiSet` type, renders non-native emoji via spritesheet
+- **Changed** TipTap v2 → v3 (useEditorState, immediatelyRender, ListKit)
+- **Added** `EmojiNode` + `createEmojiSuggestion(set)` extensions registered internally
+
 ### v0.1.1
 - **Fixed** Added content sync effect so editor updates when `content` prop changes externally
+
+# RichChatInput
+
+- Import: @devalok/shilp-sutra/composed/rich-chat-input
+- Server-safe: No
+- Category: composed
+
+## Props
+    onSubmit: (message: RichChatInputMessage) => void (REQUIRED)
+    placeholder: string
+    disabled: boolean
+    content: string (initial HTML — not reactive, use for edit mode)
+    variant: "compact" | "expanded" | "minimal" | "inline" (default: "compact")
+    enterBehavior: "send" | "newline" (default: "send")
+    maxLength: number (character limit with live counter)
+    mentions: MentionItem[] (static list for @mention)
+    onMentionSearch: (query: string) => Promise<MentionItem[]>
+    onMentionSelect: (item: MentionItem) => void
+    onFileUpload: (file: File) => Promise<{ url: string; name: string; size: number }>
+    onImageUpload: (file: File) => Promise<string>
+    slashCommands: SlashCommandGroup[]
+    onVoiceRecord: (audio: Blob, duration: number) => void
+    onTranscribe: (blob: Blob, duration: number) => Promise<string | null>
+    maxDuration: number (voice recording max seconds)
+    replyTo: { id: string; author: string; preview: string; onDismiss: () => void }
+    onSchedule: (message: RichChatInputMessage, scheduledAt: Date) => void
+    onTyping: (isTyping: boolean) => void
+    onEmpty: (isEmpty: boolean) => void
+    isStreaming: boolean (shows stop button)
+    onCancel: () => void
+    leadingSlot: ReactNode
+    trailingSlot: ReactNode
+    disclaimer: string (AI disclaimer text below input)
+    toolbar: boolean | ChatToolbarItem[] | ReactNode (true=default, false=hidden, array=whitelist, node=custom)
+    actionButton: ReactNode | false (custom left-side button, false=hidden, omit=default attach button)
+    emojiSet: EmojiSet (default: "native")
+    sendOptions: Array<{ label: string; icon?: ComponentType; onSelect: () => void }>
+
+### RichChatInputMessage (output type)
+    html: string
+    plainText: string
+    attachments?: Array<{ url: string; name: string; size: number; type: string }>
+    voiceNote?: { blob: Blob; duration: number }
+
+### Exported toolbar primitives
+    ToolbarButton, ToolbarDivider, ToolbarGroup
+    BoldButton, ItalicButton, UnderlineButton, StrikeButton, HighlightButton
+    CodeButton, BulletListButton, OrderedListButton, BlockquoteButton, LinkButton, EmojiButton
+
+## Defaults
+    variant="compact", enterBehavior="send", emojiSet="native"
+
+## Example
+```jsx
+<RichChatInput onSubmit={(msg) => sendMessage(msg)} placeholder="Type a message..." />
+
+<RichChatInput
+  onSubmit={handleSend}
+  onSchedule={(msg, date) => scheduleMessage(msg, date)}
+  emojiSet="apple"
+  mentions={users}
+  onFileUpload={uploadFile}
+  onVoiceRecord={handleVoice}
+  replyTo={{ id: '1', author: 'Aarav', preview: 'Check the designs', onDismiss: clearReply }}
+/>
+
+{/* Custom toolbar */}
+<RichChatInput
+  onSubmit={handleSend}
+  variant="inline"
+  toolbar={<><ToolbarGroup><BoldButton /><ItalicButton /></ToolbarGroup></>}
+/>
+```
+
+## Gotchas
+- `enterBehavior="send"` sends on Enter, Shift+Enter for newlines. `"newline"` reverses this (Cmd/Ctrl+Enter sends).
+- `onSchedule` makes the send button a SplitButton with smart presets + DateTimePicker
+- `actionButton` replaces the default `+` attach button. Omit to keep default (shows when onFileUpload/onImageUpload provided). Pass `false` to hide.
+- `toolbar={true}` shows default formatting toolbar. `toolbar={false}` hides it. Array whitelists items. ReactNode for full custom.
+- `emojiSet` is immutable config (emoji-mart singleton limitation) — set once, don't toggle at runtime.
+- `isStreaming + onCancel` shows a red stop button instead of send.
+- Voice recording requires HTTPS (MediaRecorder API).
+
+## Changes
+### v0.33.0
+- **Added** Initial release (v2 architecture)
+
 # ScheduleView
 
 - Import: @devalok/shilp-sutra/composed/schedule-view

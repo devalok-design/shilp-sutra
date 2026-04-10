@@ -55,6 +55,11 @@ MentionItem: { id: string; label: string; avatar?: string }
 - Features: bold, italic, underline, strikethrough, highlight, headings, blockquote, lists, task lists, code, links, images, file attachments, mentions, emoji, text alignment, horizontal rule
 
 ## Changes
+### v0.33.0
+- **Added** `emojiSet` prop — `EmojiSet` type for consistent emoji art style rendering
+- **Changed** TipTap v2 → v3 upgrade (useEditorState, immediatelyRender: false for SSR, ListKit)
+- **Added** EmojiNode + createEmojiSuggestion(set) registered internally
+
 ### v0.30.0
 - **Added** `toolbar` prop — whitelist of `ToolbarItem` names to control which toolbar buttons appear. Dividers render only between groups that have visible items. `ToolbarItem` type exported from barrel.
 

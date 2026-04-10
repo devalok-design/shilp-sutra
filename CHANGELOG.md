@@ -5,6 +5,75 @@ All notable changes to `@devalok/shilp-sutra` will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.33.0] - 2026-04-10 (core)
+
+### BREAKING CHANGES
+
+- **EmojiSuggestion:** Named export `EmojiSuggestion` removed. Use `createEmojiSuggestion(set)` factory instead. Default (native) set: `createEmojiSuggestion()`.
+- **Emoji HTML output:** When `emojiSet` is set to a non-native value, emoji inserted via picker or `:shortcode:` autocomplete render as `<span data-emoji-id="..." data-emoji-set="..." role="img" aria-label="...">native</span>` nodes instead of raw Unicode characters. The `plainText` field in `RichChatInputMessage` still contains native Unicode (via `renderText`).
+- **ButtonGroup internals:** `getGroupRadiusStyle` renamed to `getGroupPositionStyle`. If you imported this directly (unlikely — it's internal), update the import.
+
+### Added
+
+- **RichChatInput v2** — Complete rewrite with zone architecture, structured output.
+  - `RichChatInputMessage` output: `{ html, plainText, attachments?, voiceNote? }`
+  - **Inline variant** (`variant="inline"`) — Google Chat-style with external +/send buttons
+  - **Voice recording** — `onVoiceRecord`, `onTranscribe`, `maxDuration` props; waveform visualization, playback controls
+  - **Reply banner** — `replyTo` prop with animated dismiss
+  - **File & image upload** — `onFileUpload`, `onImageUpload` with drag-and-drop, paste handling
+  - **Slash commands** — `slashCommands` prop with `/` trigger, grouped command palette
+  - **Mentions** — `mentions`, `onMentionSearch`, `onMentionSelect` with `@` trigger
+  - **Character limit** — `maxLength` prop with live counter
+  - **Enter behavior** — `enterBehavior="send" | "newline"` (default: send)
+  - **Composable toolbar** — `toolbar` prop accepts `boolean | ChatToolbarItem[] | ReactNode`; exported primitives: `ToolbarButton`, `ToolbarDivider`, `ToolbarGroup`, `BoldButton`, `ItalicButton`, etc.
+  - **Composable action button** — `actionButton` prop replaces or hides the default attach `+` button. Pass `false` to hide, `ReactNode` for custom.
+  - **Streaming state** — `isStreaming` + `onCancel` renders stop button
+  - **Disclaimer** — `disclaimer` prop for AI-generated content notices
+- **Custom EmojiNode** — TipTap inline atom node rendering emoji via spritesheet images.
+  - Consistent Apple/Google/Twitter/Facebook emoji rendering across picker, autocomplete, and editor
+  - `renderText` returns native Unicode for `getText()` / clipboard
+  - `parseHTML` + `renderHTML` with `data-emoji-*` attributes for HTML round-trip
+  - `emojiSet` prop on `EmojiPicker`, `EmojiPickerPopover`, `RichChatInput`, `RichTextEditor`
+  - Five sets: `native` (default), `apple`, `google`, `twitter`, `facebook`
+- **SplitButton** (`ui/`) — First-class split button component.
+  - Variants: `solid`, `soft`, `outline` × 5 colors × 6 sizes
+  - `triggerSide="left" | "right"` (default: right)
+  - `triggerWidth` for custom trigger sizing
+  - `placement` — full Floating UI placement control with smart flip/shift
+  - Proper ARIA: `role="group"`, `aria-haspopup="menu"`, `aria-expanded`, `aria-controls`
+  - Animated dropdown (scale + opacity via framer-motion)
+- **Schedule Send** — `onSchedule` prop on `RichChatInput`.
+  - Smart preset suggestions (context-aware by time of day)
+  - Inline DateTimePicker for custom scheduling
+  - Animated schedule banner inside input
+  - Send button morphs to `[Schedule | ▼]` SplitButton when time is set
+- **Sub-components** (internal, exported for advanced use):
+  - `AudioPlayer`, `AudioWaveform`, `RecordingOverlay`, `ReplyBanner`, `AttachmentStrip`
+  - `useVoiceRecorder` hook (MediaRecorder + Web Audio API)
+  - `createEmojiSuggestion(set)` factory
+  - `EmojiNode`, `EmojiNodeAttrs` types
+- **Storybook Chromatic CI** — Visual review workflow at `.github/workflows/visual-review.yml`
+
+### Changed
+
+- **TipTap v2 → v3** — Upgraded to TipTap v3 with `useEditorState`, `immediatelyRender: false` (SSR-safe), `ListKit`. Fixes React 19 `removeChild` crash.
+- **ButtonGroup rebuild** — Complete rewrite using compound component pattern.
+  - Button reads position context (`first`/`middle`/`last`) from ButtonGroup and applies radius inline on its own `<motion.button>` — fixes custom `rounded-ds-*` tokens not overridable via CSS selectors.
+  - Inner borders removed (not overlapped) for consistent 1px junctions.
+  - Tonal divider elements for `solid`/`soft`/`ghost` variants.
+  - New props: `disabled` (propagates to all children), `attached` (true/false), `fullWidth`.
+  - New stories: `Soft`, `AllVariants`, `Spaced`, `FullWidth`, `DisabledGroup`.
+- **Button** — `disabled` now inherited from `ButtonGroup` context. Width animation disabled when inside a stretching group.
+- **Emoji picker** — Uses set-specific `@emoji-mart/data` files with spritesheet x/y coordinates. Data loaded per-set (lazy, cached).
+- **Voice recording buttons** — Changed from `variant="outline"` to `variant="soft"`.
+- **Send/mic button transitions** — Animated via `AnimatePresence` (scale + opacity) instead of hard-swap.
+
+### Fixed
+
+- **Emoji picker positioning** — Uses Floating UI (`computePosition` + `flip` + `shift`) for smart placement above/below the trigger.
+- **ToolbarButton width** — Custom-width toolbar buttons (e.g. "Refine" with text) no longer forced to fixed square size.
+- **Storybook play functions** — Fixed Chromatic-incompatible assertions (Select, Combobox, Dialog, DropdownMenu, Accordion).
+
 ## [0.32.0] - 2026-04-07 (core)
 
 ### BREAKING CHANGES

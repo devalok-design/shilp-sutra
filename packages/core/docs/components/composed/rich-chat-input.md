@@ -76,5 +76,13 @@ SlashCommandGroup: { label: string; commands: SlashCommand[] }
 - Mention button only appears when `mentions` or `onMentionSearch` is provided
 
 ## Changes
+### v0.33.0
+- **Added** Custom EmojiNode with spritesheet rendering — `emojiSet` prop
+- **Added** `onSchedule` prop — schedule send with smart presets + DateTimePicker, SplitButton UX
+- **Added** `actionButton` prop — composable left-side button (replaces default attach, or pass false to hide)
+- **Added** Animated mic ↔ send button transitions (AnimatePresence)
+- **Changed** Voice recording buttons from outline to soft variant
+- **Fixed** ToolbarButton width for custom-width buttons (e.g. "Refine" with text label)
+
 ### v0.32.0
 - Initial release

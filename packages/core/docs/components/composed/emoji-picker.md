@@ -41,3 +41,12 @@ EmojiPicker, EmojiPickerPopover
 - Wraps `@emoji-mart/react` which is lazy-loaded — shows a Skeleton placeholder while loading
 - `theme="auto"` reads the `.dark` class on `<html>` to pick light/dark
 - EmojiPickerPopover auto-closes after selection
+
+## Changes
+
+### v0.33.0
+- **Added** `set` prop on EmojiPicker and EmojiPickerPopover — `EmojiSet` type: 'native' | 'apple' | 'google' | 'twitter' | 'facebook'
+- **Added** `EmojiNode` TipTap extension — inline atom node with spritesheet rendering for consistent emoji art styles
+- **Added** `createEmojiSuggestion(set?)` factory — replaces `EmojiSuggestion` named export
+- **Added** `EmojiSet` type exported from barrel
+- **Breaking** `EmojiSuggestion` named export removed — use `createEmojiSuggestion()` factory

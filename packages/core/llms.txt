@@ -4,6 +4,22 @@
 > Built on the same primitives as shadcn/ui but with key API differences.
 > Read this file BEFORE writing any UI code. Do NOT guess from shadcn/ui knowledge.
 
+## BREAKING CHANGES (v0.33.0)
+
+- **EmojiSuggestion:** Named export removed. Use `createEmojiSuggestion(set?)` factory. Default: `createEmojiSuggestion()` (native set).
+- **Emoji HTML output:** Non-native `emojiSet` renders emoji as `<span data-emoji-id="..." data-emoji-set="..." role="img">native</span>` nodes, not raw Unicode. `plainText` still returns Unicode.
+
+## CHANGES (v0.33.0)
+
+- **RichChatInput v2** — Complete rewrite. Structured output (`html`, `plainText`, `attachments?`, `voiceNote?`). Zone architecture. 4 variants: `compact` (default), `expanded`, `minimal`, `inline`. Props: `onSubmit`, `onSchedule?(msg, date)`, `mentions?`, `slashCommands?`, `onFileUpload?`, `onImageUpload?`, `onVoiceRecord?`, `onTranscribe?`, `replyTo?`, `toolbar?`, `emojiSet?`, `actionButton?`, `enterBehavior?`, `maxLength?`, `isStreaming?`, `disclaimer?`, `sendOptions?`, `leadingSlot?`, `trailingSlot?`.
+- **Custom EmojiNode** — TipTap inline atom node. Renders emoji via spritesheet images for consistent Apple/Google/Twitter/Facebook art styles. `emojiSet` prop on `EmojiPicker`, `EmojiPickerPopover`, `RichChatInput`, `RichTextEditor`. Sets: `native` (default), `apple`, `google`, `twitter`, `facebook`.
+- **SplitButton** (`ui/`) — `[Action | ▼]` button with dropdown. Props: `variant(solid|soft|outline)`, `color`, `size`, `triggerSide(left|right)`, `triggerWidth`, `placement` (Floating UI), `dropdownContent`. Proper ARIA: `role="group"`, `aria-haspopup`, `aria-expanded`.
+- **Schedule Send** — `onSchedule?(msg, date)` on RichChatInput. Smart presets (time-of-day aware) + DateTimePicker. Banner shows scheduled time. Send button morphs to SplitButton.
+- **ButtonGroup rebuild** — Compound component pattern. Button reads position from context, applies radius inline. New props: `disabled` (propagates), `attached` (true/false), `fullWidth`. Tonal dividers for solid/soft/ghost variants. Focus z-index isolation.
+- **TipTap v2 → v3** — `useEditorState`, `immediatelyRender: false` (SSR-safe), `ListKit`. Fixes React 19 `removeChild` crash.
+- **Composable toolbar** — Exported: `ToolbarButton`, `ToolbarDivider`, `ToolbarGroup`, `BoldButton`, `ItalicButton`, `UnderlineButton`, `StrikeButton`, `HighlightButton`, `CodeButton`, `BulletListButton`, `OrderedListButton`, `BlockquoteButton`, `LinkButton`, `EmojiButton`.
+- **Button `disabled`** — Now inherited from ButtonGroup context.
+
 ## BREAKING CHANGES (v0.32.0)
 
 - **Button:** `variant="default"` removed (use `"solid"`), `variant="destructive"` removed (use `variant="solid" color="error"`), `color="default"` removed (use `"accent"`).
@@ -359,6 +375,8 @@ Components with two-axis system: Button, Badge, Alert, Banner, Progress, StatusB
 ### Inputs & Controls
 - Button: variant(solid|soft|outline|ghost|link) color(accent|error|success|warning|neutral) size(xs|sm|md|lg|compact-xs|compact-sm|compact-md|icon-xs|icon-sm|icon-md|icon-lg) shape(default|pill) weight(semibold|normal) + loading, startIcon, endIcon, asChild, processing?('ambient'|'working'|'urgent'|boolean — marching ants SVG border, forces soft variant), processingColor?('accent'|'error'|'success'|'warning'|'neutral'), processingDisabled?(boolean, default true — set false for cancel-by-click). onClickAsync auto-activates processing='working' during loading phase. Layout animation always on. Deprecated aliases still work: variant="default"→solid, variant="destructive"→solid+error, color="default"→accent
 - IconButton: icon(ReactNode, required) shape(square|circle) size(sm|md|lg) + aria-label required
+- SplitButton: [Action | ▼] button with dropdown. Props: variant(solid|soft|outline), color, size(xs|sm|md|icon-xs|icon-sm|icon-md), triggerSide(left|right, default right), triggerWidth?(number|string), placement?(Floating UI Placement, default top-end), dropdownContent(ReactNode), open?, onOpenChange?, dropdownLabel?, dropdownIcon?. ARIA: role="group", aria-haspopup="menu", aria-expanded.
+- ButtonGroup: Visually merges adjacent Buttons. Props: variant, color, size, disabled (propagates), orientation(horizontal|vertical), attached(true|false, default true), fullWidth. Compound pattern: Button reads position from context, applies radius + border-removal inline. Tonal dividers for solid/soft/ghost. Focus z-index isolation.
 - Icon: `<Icon icon={IconPlus} />` — context-aware wrapper for Tabler icons. Size tiers: xs(14px) sm(16px) md(18px) lg(20px) xl(24px) 2xl(32px). Default: md. Stroke: light(1.5) regular(2) bold(2.5). Default: regular. Scales per size tier. Reads size from parent Button/IconGroup via IconContext. Explicit props override. Accessibility: aria-hidden by default. Pass label="Add item" for accessible icons. Animation: animate="spin|pulse|bounce|draw". `draw` renders SVG path-draw animation (check/X icons draw progressively via pathLength; other icons fall back to static). State machine: state="idle|loading|success|error". Button integration: startIcon={<Icon icon={IconPlus} />} (NOT raw <IconPlus />). IconGroup: <IconGroup size="sm" gap="tight"> for toolbar patterns.
 - Input: size(xs|sm|md|lg) state(InputState) + startSection(ReactNode), endSection(ReactNode), startSectionClickable(bool), endSectionClickable(bool), startSectionType('icon'|'label'), endSectionType('icon'|'label'), wrapperClassName(string). Container-level focus ring wraps input + sections as one unit. Sections are pointer-events-none by default; use *SectionClickable for interactive content (clear buttons, toggles). Section type auto-inferred: strings→'label' (tinted bg + border separator), React elements→'icon' (fixed-width centered). Override with *SectionType. Flexbox section layout. Icons auto-size via IconProvider per input size. className targets <input>, wrapperClassName targets wrapper div. Deprecated aliases: startIcon→startSection, endIcon→endSection, inputVariants→inputWrapperVariants. Type: InputState = 'default' | 'error' | 'warning' | 'success'
 - SearchInput: size(xs|sm|md|lg) + loading, onClear. Delegates to Input v2 sections internally.
@@ -459,8 +477,9 @@ Import: `@devalok/shilp-sutra/ui/chat`
 - Presets: date range quick-select buttons — presets(PresetKey[]), onSelect(start, end). Keys: today, yesterday, last7days, last30days, thisMonth, lastMonth, thisYear
 - useCalendar: hook for calendar month state — returns currentMonth, goToPreviousMonth, goToNextMonth, goToMonth, goToYear
 - (UploadProgress REMOVED — upload tracking is now built into toast.upload())
-- RichTextEditor: Tiptap editor — bold/italic/underline/strike/highlight, headings, blockquote, lists (bullet/ordered/task), code, links, images (paste/drop/upload), file attachments, @mentions, emoji picker + :shortcode:, text alignment, HR. Props: onImageUpload?, onFileUpload?, mentions?, onMentionSearch?, onMentionSelect?(item: MentionItem)
+- RichTextEditor: Tiptap editor — bold/italic/underline/strike/highlight, headings, blockquote, lists (bullet/ordered/task), code, links, images (paste/drop/upload), file attachments, @mentions, emoji picker + :shortcode:, text alignment, HR. Props: onImageUpload?, onFileUpload?, mentions?, onMentionSearch?, onMentionSelect?(item: MentionItem), emojiSet?(native|apple|google|twitter|facebook)
 - RichTextViewer: read-only renderer for RichTextEditor HTML content (renders all above content types)
+- RichChatInput: compact rich text chat input for AI/messaging. Output: RichChatInputMessage { html, plainText, attachments?, voiceNote? }. Variants: compact(default), expanded, minimal, inline. Key props: onSubmit(msg), onSchedule?(msg,date), emojiSet?, mentions?, slashCommands?, onFileUpload?, onImageUpload?, onVoiceRecord?, replyTo?, toolbar?(bool|items[]|ReactNode), actionButton?(ReactNode|false), enterBehavior?(send|newline), maxLength?, isStreaming?, onCancel?, disclaimer?, sendOptions?, leadingSlot?, trailingSlot?. Composable toolbar primitives exported: ToolbarButton, ToolbarDivider, ToolbarGroup, BoldButton, ItalicButton, etc.
 - ActivityFeed: items(ActivityItem[]), onLoadMore, loading, hasMore, emptyState, compact, maxInitialItems, groupBy?('time'|'none'), groupLabels?({ today, yesterday, thisWeek, older }), renderItem?((item, index) => ReactNode|undefined, custom renderer per item — return ReactNode for custom, undefined for default). Type: ActivityItem = { id, actor?, action, timestamp, icon?, color?, detail? }. Utility: groupItemsByTime(items, labels) exported.
 - CommandPalette: open, defaultOpen, onOpenChange (controlled/uncontrolled), keybinding(string|string[]|false), maxHeight, emptyState(ReactNode), footerHints(FooterHint[]|false). CommandItem: label(string|ReactNode), description(string|ReactNode), renderLabel(query=>ReactNode), filterValue(string), shortcut(rendered as keycap badges). Keyboard shortcuts rendered per-key with platform-aware Cmd/Ctrl. Reduced-motion support via MotionProvider.
 - MemberPicker: thin wrapper around MultiSelectPopover with Avatar rendering
@@ -473,7 +492,8 @@ Import: `@devalok/shilp-sutra/ui/chat`
 - MasterDetail: selected, onBack, masterWidth, breakpoint(sm|md|lg). Compound: MasterDetail.List, MasterDetail.Detail, MasterDetail.ListItem(active). Desktop=grid, mobile=stacked with back button.
 - ResponsiveOverlay: open, onOpenChange, title, description, breakpoint(sm|md). Dialog on desktop, bottom Sheet on mobile.
 - MarkdownViewer: content(string), compact?, allowHtml?(false), linkTarget?('_blank'). Renders markdown with design system tokens.
-- EmojiPicker: onSelect(emoji), theme(auto|light|dark). Also EmojiPickerPopover wraps in Popover. Lazy-loads emoji-mart.
+- EmojiPicker: onSelect(emoji), set?(native|apple|google|twitter|facebook), theme(auto|light|dark). EmojiPickerPopover wraps in Popover. Lazy-loads emoji-mart with set-specific data.
+- EmojiNode: TipTap inline atom node for spritesheet emoji rendering. Attrs: id, native, set, x, y. Use createEmojiSuggestion(set) to wire :shortcode: autocomplete. Export: EmojiNode, EmojiNodeAttrs, createEmojiSuggestion.
 - FilePreview: url, type?(image|pdf|video|audio|embed), mimeType?, alt?. Auto-detects type. Image zoom, PDF iframe, native video/audio, embed for Figma/YouTube/Loom.
 - ErrorDisplay, GlobalLoading
 - Loading skeletons: CardSkeleton, TableSkeleton, BoardSkeleton, ListSkeleton

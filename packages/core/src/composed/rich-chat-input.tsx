@@ -2,6 +2,7 @@
 
 import * as React from 'react'
 import * as ReactDOM from 'react-dom'
+import { computePosition, flip, offset, shift } from '@floating-ui/dom'
 import { useEditor, useEditorState, EditorContent, Extension, type Editor } from '@tiptap/react'
 import { BubbleMenu } from '@tiptap/react/menus'
 import StarterKit from '@tiptap/starter-kit'
@@ -360,6 +361,32 @@ const RichChatInput = React.forwardRef<HTMLDivElement, RichChatInputProps>(
     const [toolbarExpanded, setToolbarExpanded] = React.useState(false)
     const [showEmojiPicker, setShowEmojiPicker] = React.useState(false)
     const emojiAnchorRef = React.useRef<HTMLButtonElement>(null)
+    const emojiFloatingRef = React.useRef<HTMLDivElement>(null)
+
+    // Position emoji picker with Floating UI (auto-flips top/bottom based on space)
+    React.useEffect(() => {
+      if (!showEmojiPicker || !emojiAnchorRef.current || !emojiFloatingRef.current) return
+      const anchor = emojiAnchorRef.current
+      const floating = emojiFloatingRef.current
+
+      const update = () => {
+        computePosition(anchor, floating, {
+          placement: 'top-end',
+          middleware: [offset(8), flip(), shift({ padding: 8 })],
+        }).then(({ x, y }) => {
+          Object.assign(floating.style, { left: `${x}px`, top: `${y}px` })
+        })
+      }
+
+      update()
+      // Update on scroll/resize
+      window.addEventListener('scroll', update, true)
+      window.addEventListener('resize', update)
+      return () => {
+        window.removeEventListener('scroll', update, true)
+        window.removeEventListener('resize', update)
+      }
+    }, [showEmojiPicker])
     const [attachments, setAttachments] = React.useState<Attachment[]>([])
     const [voiceNote, setVoiceNote] = React.useState<{ blob: Blob; duration: number; waveformData: number[] } | null>(null)
     const [isDragging, setIsDragging] = React.useState(false)
@@ -813,10 +840,7 @@ const RichChatInput = React.forwardRef<HTMLDivElement, RichChatInputProps>(
                       <Icon icon={IconMoodSmile} size="xs" />
                     </button>
                     {showEmojiPicker && ReactDOM.createPortal(
-                      <div className="fixed z-popover" style={{
-                        bottom: `${window.innerHeight - (emojiAnchorRef.current?.getBoundingClientRect().top ?? 0) + 8}px`,
-                        right: `${window.innerWidth - (emojiAnchorRef.current?.getBoundingClientRect().right ?? 0)}px`,
-                      }}>
+                      <div ref={emojiFloatingRef} className="absolute z-popover" style={{ top: 0, left: 0 }}>
                         <EmojiPickerPopover
                           onSelect={(native) => {
                             editor.chain().focus().insertContent(native).run()

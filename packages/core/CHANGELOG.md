@@ -1,5 +1,11 @@
 # @devalok/shilp-sutra
 
+## 0.33.1
+
+### Patch Changes
+
+- Bump all safe patch/minor dependencies: React 19.2.5, Storybook 10.3.5, Vitest 4.1.4, framer-motion 12.38, @floating-ui/dom 1.7.6, @tabler/icons-react 3.41.1, esbuild 0.28, jsdom 29, and more
+
 ## 0.33.0
 
 ### Minor Changes

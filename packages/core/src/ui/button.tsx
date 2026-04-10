@@ -5,7 +5,7 @@ import { IconCheck, IconX } from '@tabler/icons-react'
 import { motion, AnimatePresence, useReducedMotion } from 'framer-motion'
 import { Slot, Slottable } from '@primitives/react-slot'
 import * as React from 'react'
-import { useButtonGroup } from './button-group'
+import { useButtonGroup, useButtonGroupItem, getGroupPositionStyle } from './button-group'
 import { Icon } from './icon'
 import { IconProvider } from './icon-context'
 import type { IconSize } from './icon-context'
@@ -270,11 +270,21 @@ const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
     ref,
   ) => {
     const group = useButtonGroup()
+    const groupItem = useButtonGroupItem()
     const resolvedVariant = variant ?? group.variant
     const resolvedColor = color ?? group.color
     const resolvedWeight = weight ?? group.weight ?? 'semibold'
     const resolvedShape = shape ?? group.shape ?? 'default'
     const resolvedSize = size ?? group.size ?? 'md'
+    // ButtonGroup can propagate disabled to all children
+    const resolvedDisabled = disabled ?? group.disabled
+
+    // When inside an attached ButtonGroup, adjust border-radius based on position
+    const groupRadiusStyle = groupItem && group.attached !== false
+      ? getGroupPositionStyle(groupItem.position, group.orientation ?? 'horizontal')
+      : undefined
+    // Stretch to fill when inside a vertical or fullWidth ButtonGroup
+    const groupStretch = group._stretch ?? false
 
     const prefersReduced = useReducedMotion()
 
@@ -287,7 +297,7 @@ const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
     React.useEffect(() => {
       const btn = btnRef.current
       const wrapper = wrapperRef.current
-      if (!btn || !wrapper || fullWidth || prefersReduced) return
+      if (!btn || !wrapper || fullWidth || groupStretch || prefersReduced) return
 
       rafRef.current = requestAnimationFrame(() => {
         wrapper.style.width = 'auto'
@@ -350,11 +360,11 @@ const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
           buttonVariants({ variant: resolvedVariant, color: resolvedColor, weight: resolvedWeight, size: resolvedSize }),
           resolvedShape === 'pill' && 'rounded-full',
           resolvedShape === 'pill' && pillPaddingClass[resolvedSize],
-          fullWidth && 'w-full',
+          (fullWidth || groupStretch) && 'w-full',
           className,
         ),
         ref,
-        disabled: disabled || loading,
+        disabled: resolvedDisabled || loading,
         'aria-busy': loading || undefined,
         ...props,
       } as React.ComponentPropsWithRef<typeof Slot>
@@ -456,6 +466,7 @@ const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
     const buttonEl = (
       <motion.button
         {...motionProps(props)}
+        style={{ ...props.style, ...groupRadiusStyle }}
         className={cn(
           buttonVariants({
             // When processing (and not showing async feedback), force soft variant so ants pop
@@ -466,7 +477,7 @@ const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
           }),
           resolvedShape === 'pill' && 'rounded-full',
           resolvedShape === 'pill' && pillPaddingClass[resolvedSize],
-          fullWidth && 'w-full',
+          (fullWidth || groupStretch) && 'w-full',
           // Asymmetric timing: hover-out is slow+relaxed, hover-in is fast+snappy (applied via hover: override)
           !loading && !isAsyncFeedback && 'transition-[color,background-color,border-color,box-shadow,transform,filter] duration-moderate-01 ease-productive-exit',
           !loading && !isAsyncFeedback && 'hover:duration-fast-02 hover:ease-productive-entrance',
@@ -481,7 +492,7 @@ const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
           if (typeof ref === 'function') ref(el)
           else if (ref) (ref as React.MutableRefObject<HTMLButtonElement | null>).current = el
         }}
-        disabled={disabled || (loading && !isProcessing)}
+        disabled={resolvedDisabled || (loading && !isProcessing)}
         aria-busy={loading || isProcessing || undefined}
         aria-disabled={isProcessing && processingDisabled || undefined}
         onClick={isAsync ? handleAsyncClick : (isProcessing && processingDisabled ? undefined : onClick)}
@@ -504,7 +515,10 @@ const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
         <span
           ref={wrapperRef}
           className={cn('relative inline-flex', fullWidth && 'w-full')}
-          style={fullWidth || prefersReduced ? undefined : { transition: 'width 0.2s cubic-bezier(0.25, 0.1, 0.25, 1)' }}
+          style={{
+            ...(fullWidth || groupStretch || prefersReduced ? undefined : { transition: 'width 0.2s cubic-bezier(0.25, 0.1, 0.25, 1)' }),
+            ...groupRadiusStyle,
+          }}
         >
           {buttonEl}
           <ProcessingOverlay

@@ -11,7 +11,7 @@ const meta: Meta<typeof ButtonGroup> = {
   argTypes: {
     variant: {
       control: 'select',
-      options: ['solid', 'outline', 'ghost', 'link'],
+      options: ['solid', 'soft', 'outline', 'ghost', 'link'],
     },
     size: {
       control: 'select',
@@ -98,6 +98,70 @@ export const WithIcons: Story = {
         <Button startIcon={<Icon icon={IconAlignLeft} />}>Left</Button>
         <Button startIcon={<Icon icon={IconAlignCenter} />}>Center</Button>
         <Button startIcon={<Icon icon={IconAlignRight} />}>Right</Button>
+      </ButtonGroup>
+    </div>
+  ),
+}
+
+/** All buttons disabled via the group prop. */
+export const DisabledGroup: Story = {
+  render: () => (
+    <ButtonGroup variant="solid" disabled>
+      <Button>Save</Button>
+      <Button>Update</Button>
+      <Button>Publish</Button>
+    </ButtonGroup>
+  ),
+}
+
+/** Spaced (non-attached) mode — buttons retain individual rounding. */
+export const Spaced: Story = {
+  render: () => (
+    <ButtonGroup variant="outline" attached={false}>
+      <Button>One</Button>
+      <Button>Two</Button>
+      <Button>Three</Button>
+    </ButtonGroup>
+  ),
+}
+
+/** Soft variant group. */
+export const Soft: Story = {
+  render: () => (
+    <ButtonGroup variant="soft">
+      <Button>Save</Button>
+      <Button>Update</Button>
+      <Button>Publish</Button>
+    </ButtonGroup>
+  ),
+}
+
+/** Every variant side by side for comparison. */
+export const AllVariants: Story = {
+  render: () => (
+    <div className="flex flex-col gap-ds-06">
+      {(['solid', 'soft', 'outline', 'ghost'] as const).map((v) => (
+        <div key={v} className="flex items-center gap-ds-04">
+          <span className="w-16 text-ds-xs text-surface-fg-subtle font-medium">{v}</span>
+          <ButtonGroup variant={v}>
+            <Button>Left</Button>
+            <Button>Center</Button>
+            <Button>Right</Button>
+          </ButtonGroup>
+        </div>
+      ))}
+    </div>
+  ),
+}
+
+/** Full width — buttons stretch to fill the container. */
+export const FullWidth: Story = {
+  render: () => (
+    <div style={{ width: 400 }}>
+      <ButtonGroup variant="outline" fullWidth>
+        <Button>Left</Button>
+        <Button>Center</Button>
+        <Button>Right</Button>
       </ButtonGroup>
     </div>
   ),

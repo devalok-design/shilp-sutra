@@ -731,7 +731,7 @@ const RichChatInput = React.forwardRef<HTMLDivElement, RichChatInputProps>(
         ref={ref}
         className={cn(
           'border-t border-surface-border-subtle px-ds-03 py-ds-03 sm:px-ds-05 sm:py-ds-04',
-          'flex items-center gap-ds-02 sm:gap-ds-03 min-w-0',
+          'flex items-center gap-ds-02 sm:gap-ds-03 w-full min-w-0 overflow-hidden',
           className,
         )}
         {...props}
@@ -759,7 +759,7 @@ const RichChatInput = React.forwardRef<HTMLDivElement, RichChatInputProps>(
           role="region"
           aria-label="Message composer"
           className={cn(
-            'flex-1 min-w-0 rounded-ds-lg border border-surface-border-strong bg-surface-raised-hover',
+            'flex-1 min-w-0 overflow-hidden rounded-ds-lg border border-surface-border-strong bg-surface-raised-hover',
             'transition-[color,background-color,border-color,box-shadow] duration-fast-02 ease-productive-standard',
             'hover:bg-surface-raised-active',
             'focus-within:ring-2 focus-within:ring-accent-9 focus-within:ring-offset-2 focus-within:border-accent-9',

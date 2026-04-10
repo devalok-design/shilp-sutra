@@ -243,6 +243,12 @@ export const Mobile: Story = {
   args: {
     onSubmit: fn(),
     placeholder: 'Type a message...',
+    mentions,
+    onFileUpload: async (file: File) => {
+      await new Promise((r) => setTimeout(r, 1000))
+      return { url: '#', name: file.name, size: file.size }
+    },
+    onVoiceRecord: fn(),
   },
   globals: { viewport: 'mobile' },
 }

@@ -4,35 +4,29 @@ import { PluginKey } from 'prosemirror-state'
 import * as React from 'react'
 import { createRoot, type Root } from 'react-dom/client'
 import { cn } from '../../ui/lib/utils'
+import { type ResolvedEmoji, loadEmojiData, searchEmoji, SPRITESHEET_URL, SHEET_COLS, SHEET_ROWS } from './emoji-data'
 
-// emoji-mart data shape (only what we need)
-interface EmojiMartData {
-  emojis: Record<string, {
-    id: string
-    name: string
-    skins: Array<{ native: string }>
-  }>
-}
+// Re-export for external consumers
+export type { ResolvedEmoji as EmojiSuggestionItem }
 
-export interface EmojiSuggestionItem {
-  id: string
-  name: string
-  native: string
-}
-
-let emojiList: EmojiSuggestionItem[] | null = null
-
-async function getEmojiList(): Promise<EmojiSuggestionItem[]> {
-  if (emojiList) return emojiList
-  // Dynamic import to avoid bundling emoji data when not used
-  const mod = await import('@emoji-mart/data')
-  const data = (mod.default ?? mod) as EmojiMartData
-  emojiList = Object.values(data.emojis).map((e) => ({
-    id: e.id,
-    name: e.name,
-    native: e.skins[0]?.native ?? '',
-  }))
-  return emojiList
+function EmojiImage({ emoji, set, size = '1.2em' }: { emoji: ResolvedEmoji; set: string; size?: string }) {
+  if (set === 'native') {
+    return <span style={{ fontSize: size }}>{emoji.native}</span>
+  }
+  return (
+    <span
+      role="img"
+      aria-label={emoji.native}
+      className="inline-block"
+      style={{
+        width: size,
+        height: size,
+        backgroundImage: `url(${SPRITESHEET_URL(set)})`,
+        backgroundSize: `${100 * SHEET_COLS}% ${100 * SHEET_ROWS}%`,
+        backgroundPosition: `${(100 / (SHEET_COLS - 1)) * emoji.x}% ${(100 / (SHEET_ROWS - 1)) * emoji.y}%`,
+      }}
+    />
+  )
 }
 
 interface EmojiListRef {
@@ -40,12 +34,13 @@ interface EmojiListRef {
 }
 
 interface EmojiListProps {
-  items: EmojiSuggestionItem[]
-  command: (item: EmojiSuggestionItem) => void
+  items: ResolvedEmoji[]
+  set: string
+  command: (item: ResolvedEmoji) => void
 }
 
 const EmojiList = React.forwardRef<EmojiListRef, EmojiListProps>(
-  ({ items, command }, ref) => {
+  ({ items, set, command }, ref) => {
     const [selectedIndex, setSelectedIndex] = React.useState(0)
 
     React.useEffect(() => setSelectedIndex(0), [items])
@@ -84,7 +79,7 @@ const EmojiList = React.forwardRef<EmojiListRef, EmojiListProps>(
               index === selectedIndex ? 'bg-surface-raised text-surface-fg' : 'text-surface-fg-muted hover:bg-surface-raised',
             )}
           >
-            <span className="text-ds-base">{item.native}</span>
+            <EmojiImage emoji={item} set={set} size="1.25em" />
             <span className="truncate">:{item.id}:</span>
           </button>
         ))}
@@ -94,48 +89,46 @@ const EmojiList = React.forwardRef<EmojiListRef, EmojiListProps>(
 )
 EmojiList.displayName = 'EmojiList'
 
-function createEmojiSuggestionRenderer() {
+function createEmojiSuggestionRenderer(set: string) {
   return () => {
     let root: Root | null = null
     let container: HTMLDivElement | null = null
     let componentRef: EmojiListRef | null = null
 
     return {
-      onStart: (props: SuggestionProps<EmojiSuggestionItem>) => {
+      onStart: (props: SuggestionProps<ResolvedEmoji>) => {
         container = document.createElement('div')
         container.style.position = 'absolute'
         container.style.zIndex = '1400'
-
         const rect = props.clientRect?.()
         if (rect) {
           container.style.left = `${rect.left}px`
           container.style.top = `${rect.bottom + 4}px`
         }
         document.body.appendChild(container)
-
         root = createRoot(container)
         root.render(
           <EmojiList
             ref={(r) => { componentRef = r }}
-            items={props.items as EmojiSuggestionItem[]}
+            items={props.items as ResolvedEmoji[]}
+            set={set}
             command={(item) => props.command(item)}
           />,
         )
       },
 
-      onUpdate: (props: SuggestionProps<EmojiSuggestionItem>) => {
+      onUpdate: (props: SuggestionProps<ResolvedEmoji>) => {
         if (!root || !container) return
-
         const rect = props.clientRect?.()
         if (rect) {
           container.style.left = `${rect.left}px`
           container.style.top = `${rect.bottom + 4}px`
         }
-
         root.render(
           <EmojiList
             ref={(r) => { componentRef = r }}
-            items={props.items as EmojiSuggestionItem[]}
+            items={props.items as ResolvedEmoji[]}
+            set={set}
             command={(item) => props.command(item)}
           />,
         )
@@ -166,35 +159,36 @@ function createEmojiSuggestionRenderer() {
   }
 }
 
-export const EmojiSuggestion = Extension.create({
-  name: 'emojiSuggestion',
+/** Factory: call with the emoji set to get a configured extension. */
+export function createEmojiSuggestion(set = 'native') {
+  return Extension.create({
+    name: 'emojiSuggestion',
 
-  addProseMirrorPlugins() {
-    return [
-      Suggestion({
-        pluginKey: new PluginKey('emojiSuggestion'),
-        editor: this.editor,
-        char: ':',
-        items: async ({ query }) => {
-          const list = await getEmojiList()
-          if (!query) return list.slice(0, 8)
-          return list
-            .filter((e) =>
-              e.id.includes(query.toLowerCase()) ||
-              e.name.toLowerCase().includes(query.toLowerCase()),
-            )
-            .slice(0, 8)
-        },
-        command: ({ editor, range, props: item }) => {
-          editor
-            .chain()
-            .focus()
-            .deleteRange(range)
-            .insertContent((item as EmojiSuggestionItem).native)
-            .run()
-        },
-        render: createEmojiSuggestionRenderer(),
-      }),
-    ]
-  },
-})
+    addProseMirrorPlugins() {
+      return [
+        Suggestion({
+          pluginKey: new PluginKey('emojiSuggestion'),
+          editor: this.editor,
+          char: ':',
+          items: async ({ query }) => {
+            const data = await loadEmojiData(set)
+            return searchEmoji(data, query, 8)
+          },
+          command: ({ editor, range, props: item }) => {
+            const emoji = item as ResolvedEmoji
+            editor
+              .chain()
+              .focus()
+              .deleteRange(range)
+              .insertContent({
+                type: 'emojiNode',
+                attrs: { id: emoji.id, native: emoji.native, set, x: emoji.x, y: emoji.y },
+              })
+              .run()
+          },
+          render: createEmojiSuggestionRenderer(set),
+        }),
+      ]
+    },
+  })
+}

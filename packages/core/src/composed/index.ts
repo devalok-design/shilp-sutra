@@ -102,7 +102,11 @@ export { MarkdownViewer } from './markdown-viewer'
 export type { MarkdownViewerProps } from './markdown-viewer'
 
 export { EmojiPicker, EmojiPickerPopover } from './emoji-picker'
-export type { EmojiPickerProps, EmojiPickerPopoverProps, EmojiData } from './emoji-picker'
+export type { EmojiPickerProps, EmojiPickerPopoverProps, EmojiData, EmojiSet } from './emoji-picker'
+
+export { EmojiNode } from './extensions/emoji-node'
+export type { EmojiNodeAttrs } from './extensions/emoji-node'
+export { createEmojiSuggestion } from './extensions/emoji-suggestion'
 
 export { FilePreview } from './file-preview'
 export type { FilePreviewProps } from './file-preview'

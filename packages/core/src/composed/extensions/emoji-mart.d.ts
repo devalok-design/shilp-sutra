@@ -9,10 +9,28 @@ declare module '@emoji-mart/data' {
   export default data
 }
 
+declare module '@emoji-mart/data/sets/15/apple.json' {
+  const data: unknown
+  export default data
+}
+declare module '@emoji-mart/data/sets/15/google.json' {
+  const data: unknown
+  export default data
+}
+declare module '@emoji-mart/data/sets/15/twitter.json' {
+  const data: unknown
+  export default data
+}
+declare module '@emoji-mart/data/sets/15/facebook.json' {
+  const data: unknown
+  export default data
+}
+
 declare module '@emoji-mart/react' {
   import type { ComponentType } from 'react'
   interface PickerProps {
-    data: unknown
+    data?: unknown
+    set?: string
     onEmojiSelect: (emoji: { native: string; id: string }) => void
     theme?: 'light' | 'dark' | 'auto'
     previewPosition?: 'none' | 'top' | 'bottom'

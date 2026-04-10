@@ -21,8 +21,12 @@ export interface EmojiData {
   shortcodes?: string
 }
 
+export type EmojiSet = 'native' | 'apple' | 'google' | 'twitter' | 'facebook'
+
 export interface EmojiPickerProps {
   onSelect: (emoji: EmojiData) => void
+  /** Emoji art style. Set once — dynamic switching is not supported (emoji-mart limitation). @default 'native' */
+  set?: EmojiSet
   /** @default 'auto' */
   theme?: 'auto' | 'light' | 'dark'
   /** @default 'none' */
@@ -48,6 +52,18 @@ const LazyPicker = React.lazy(() =>
   })),
 )
 
+// emoji-mart caches data in a module-level singleton that is set once and never
+// replaced.  Each set (apple, google, etc.) needs its own data file with
+// spritesheet x/y coordinates.  The `set` prop should be treated as immutable
+// configuration — dynamic switching within a single page is NOT supported.
+export const emojiDataLoaders: Record<string, () => Promise<{ default: unknown }>> = {
+  native: () => import('@emoji-mart/data'),
+  apple: () => import('@emoji-mart/data/sets/15/apple.json'),
+  google: () => import('@emoji-mart/data/sets/15/google.json'),
+  twitter: () => import('@emoji-mart/data/sets/15/twitter.json'),
+  facebook: () => import('@emoji-mart/data/sets/15/facebook.json'),
+}
+
 function resolveTheme(theme: 'auto' | 'light' | 'dark'): 'light' | 'dark' {
   if (theme !== 'auto') return theme
   if (typeof document === 'undefined') return 'light'
@@ -60,6 +76,7 @@ function resolveTheme(theme: 'auto' | 'light' | 'dark'): 'light' | 'dark' {
 
 function EmojiPicker({
   onSelect,
+  set = 'native',
   theme = 'auto',
   previewPosition = 'none',
   skinTonePosition = 'search',
@@ -70,10 +87,9 @@ function EmojiPicker({
 
   React.useEffect(() => {
     setMounted(true)
-    import('@emoji-mart/data').then((mod) => {
-      setData(mod.default)
-    })
-  }, [])
+    const loader = emojiDataLoaders[set] ?? emojiDataLoaders.native
+    loader().then((mod) => setData(mod.default))
+  }, [set])
 
   const isReady = mounted && !!data
 
@@ -107,6 +123,7 @@ function EmojiPicker({
           >
             <LazyPicker
               data={data}
+              set={set}
               onEmojiSelect={onSelect}
               theme={resolveTheme(theme)}
               previewPosition={previewPosition}
@@ -127,6 +144,7 @@ function EmojiPickerPopover({
   children,
   align = 'start',
   onSelect,
+  set,
   theme,
   previewPosition,
   skinTonePosition,
@@ -149,6 +167,7 @@ function EmojiPickerPopover({
       >
         <EmojiPicker
           onSelect={handleSelect}
+          set={set}
           theme={theme}
           previewPosition={previewPosition}
           skinTonePosition={skinTonePosition}

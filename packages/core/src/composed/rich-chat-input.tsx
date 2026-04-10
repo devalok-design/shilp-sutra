@@ -12,12 +12,18 @@ import Image from '@tiptap/extension-image'
 import Mention from '@tiptap/extension-mention'
 import { AnimatePresence, motion } from 'framer-motion'
 import { FileAttachment } from './extensions/file-attachment'
-import { EmojiSuggestion } from './extensions/emoji-suggestion'
+import { EmojiNode } from './extensions/emoji-node'
+import { createEmojiSuggestion } from './extensions/emoji-suggestion'
+import { loadEmojiData, lookupEmoji } from './extensions/emoji-data'
 import { createSuggestionRenderer } from './extensions/mention-suggestion'
 import { createSlashCommandExtension } from './extensions/slash-command'
 import type { SlashCommandGroup } from './extensions/slash-command'
 import type { MentionItem } from './rich-text-editor'
 import { ReplyBanner } from './rich-chat-input/reply-banner'
+import { ScheduleDropdownContent, ScheduleBanner } from './rich-chat-input/schedule-send'
+import { SplitButton } from '../ui/split-button'
+import { emojiDataLoaders } from './emoji-picker'
+import type { EmojiSet } from './emoji-picker'
 import { AttachmentStrip } from './rich-chat-input/attachment-strip'
 import type { Attachment } from './rich-chat-input/attachment-strip'
 import { RecordingOverlay } from './rich-chat-input/recording-overlay'
@@ -46,6 +52,7 @@ import {
   IconTextSize,
   IconPlus,
   IconTrash,
+  IconClock,
 } from '@tabler/icons-react'
 import { cn } from '../ui/lib/utils'
 import { useColorMode } from '../hooks/use-color-mode'
@@ -105,7 +112,13 @@ export interface RichChatInputProps extends Omit<React.HTMLAttributes<HTMLDivEle
   disclaimer?: string
   /** true = default toolbar, ChatToolbarItem[] = whitelist, ReactNode = custom toolbar, false = hidden */
   toolbar?: boolean | ChatToolbarItem[] | React.ReactNode
-  /** Split send button — dropdown options next to send (e.g. "Schedule send"). */
+  /** Custom action button rendered to the left of the input (replaces the default attach button). Pass `false` to hide. */
+  actionButton?: React.ReactNode | false
+  /** Emoji art style in the picker. @default 'native' (system emoji) */
+  emojiSet?: EmojiSet
+  /** Called when user schedules a message. If provided, a schedule button appears next to send. */
+  onSchedule?: (message: RichChatInputMessage, scheduledAt: Date) => void
+  /** Split send button — dropdown options next to send (e.g. custom actions). */
   sendOptions?: Array<{
     label: string
     icon?: React.ComponentType<{ className?: string }>
@@ -198,14 +211,15 @@ function SplitSendDropdown({ options }: { options: Array<{ label: string; icon?:
 
 const LazyEmojiPicker = React.lazy(() => import('@emoji-mart/react'))
 
-function EmojiPickerPopover({ onSelect, onClose }: { onSelect: (native: string) => void; onClose: () => void }) {
+function EmojiPickerPopover({ set = 'native', onSelect, onClose }: { set?: string; onSelect: (emoji: { id: string; native: string }) => void; onClose: () => void }) {
   const [data, setData] = React.useState<unknown>(null)
   const { colorMode } = useColorMode()
   const ref = React.useRef<HTMLDivElement>(null)
 
   React.useEffect(() => {
-    import('@emoji-mart/data').then((mod) => setData(mod.default))
-  }, [])
+    const loader = emojiDataLoaders[set] ?? emojiDataLoaders.native
+    loader().then((mod) => setData(mod.default))
+  }, [set])
 
   // Close on click outside
   React.useEffect(() => {
@@ -235,7 +249,8 @@ function EmojiPickerPopover({ onSelect, onClose }: { onSelect: (native: string) 
         <React.Suspense fallback={fallback}>
           <LazyEmojiPicker
             data={data}
-            onEmojiSelect={(emoji: { native: string }) => onSelect(emoji.native)}
+            set={set}
+            onEmojiSelect={(emoji: { native: string; id: string }) => onSelect({ id: emoji.id, native: emoji.native })}
             theme={colorMode === 'dark' ? 'dark' : 'light'}
             previewPosition="none"
             skinTonePosition="none"
@@ -351,6 +366,9 @@ const RichChatInput = React.forwardRef<HTMLDivElement, RichChatInputProps>(
       disclaimer,
       toolbar: toolbarProp = true,
       sendOptions,
+      onSchedule,
+      actionButton,
+      emojiSet = 'native',
       className,
       ...props
     },
@@ -360,6 +378,7 @@ const RichChatInput = React.forwardRef<HTMLDivElement, RichChatInputProps>(
     const [state, setState] = React.useState<InputState>('idle')
     const [toolbarExpanded, setToolbarExpanded] = React.useState(false)
     const [showEmojiPicker, setShowEmojiPicker] = React.useState(false)
+    const [scheduledDate, setScheduledDate] = React.useState<Date | null>(null)
     const emojiAnchorRef = React.useRef<HTMLButtonElement>(null)
     const emojiFloatingRef = React.useRef<HTMLDivElement>(null)
 
@@ -459,7 +478,8 @@ const RichChatInput = React.forwardRef<HTMLDivElement, RichChatInputProps>(
         Image,
         CharacterCount.configure({ limit: maxLength || undefined }),
         FileAttachment,
-        EmojiSuggestion,
+        EmojiNode,
+        createEmojiSuggestion(emojiSet),
         // Enter-to-send
         Extension.create({
           name: 'enterToSend',
@@ -512,7 +532,7 @@ const RichChatInput = React.forwardRef<HTMLDivElement, RichChatInputProps>(
 
       return exts
     // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [placeholder, maxLength])
+    }, [placeholder, maxLength, emojiSet])
 
     // ── Editor ────────────────────────────────────────────────
     const editor = useEditor({
@@ -561,14 +581,19 @@ const RichChatInput = React.forwardRef<HTMLDivElement, RichChatInputProps>(
         message.voiceNote = { blob: voiceNote.blob, duration: voiceNote.duration }
       }
 
-      onSubmit(message)
+      if (scheduledDate && onSchedule) {
+        onSchedule(message, scheduledDate)
+      } else {
+        onSubmit(message)
+      }
 
       // Reset everything
       editor.commands.clearContent()
       setAttachments([])
       setVoiceNote(null)
+      setScheduledDate(null)
       setState('idle')
-    }, [editor, attachments, voiceNote, isStreaming, onSubmit])
+    }, [editor, attachments, voiceNote, isStreaming, onSubmit, onSchedule, scheduledDate])
 
     // Wire submit ref (for enter-to-send extension)
     submitRef.current = handleSubmit
@@ -695,18 +720,22 @@ const RichChatInput = React.forwardRef<HTMLDivElement, RichChatInputProps>(
         )}
         {...props}
       >
-        {/* + button outside the input on the left */}
-        {(onFileUpload || onImageUpload) && (
-          <Button
-            variant="solid"
-            size="icon-md"
-            onClick={() => fileInputRef.current?.click()}
-            title="Attach"
-            aria-label="Attach file"
-            className="shrink-0 self-end"
-          >
-            <Icon icon={IconPlus} size="md" />
-          </Button>
+        {/* Action button outside the input on the left */}
+        {actionButton !== false && (
+          actionButton ?? (
+            (onFileUpload || onImageUpload) ? (
+              <Button
+                variant="solid"
+                size="icon-md"
+                onClick={() => fileInputRef.current?.click()}
+                title="Attach"
+                aria-label="Attach file"
+                className="shrink-0 self-end"
+              >
+                <Icon icon={IconPlus} size="md" />
+              </Button>
+            ) : null
+          )
         )}
 
         {/* Container */}
@@ -737,6 +766,17 @@ const RichChatInput = React.forwardRef<HTMLDivElement, RichChatInputProps>(
                 author={replyTo.author}
                 preview={replyTo.preview}
                 onDismiss={replyTo.onDismiss}
+              />
+            )}
+          </AnimatePresence>
+
+          {/* Schedule Banner */}
+          <AnimatePresence>
+            {scheduledDate && (
+              <ScheduleBanner
+                key="schedule"
+                date={scheduledDate}
+                onClear={() => setScheduledDate(null)}
               />
             )}
           </AnimatePresence>
@@ -842,8 +882,18 @@ const RichChatInput = React.forwardRef<HTMLDivElement, RichChatInputProps>(
                     {showEmojiPicker && ReactDOM.createPortal(
                       <div ref={emojiFloatingRef} className="absolute z-popover" style={{ top: 0, left: 0 }}>
                         <EmojiPickerPopover
-                          onSelect={(native) => {
-                            editor.chain().focus().insertContent(native).run()
+                          set={emojiSet}
+                          onSelect={async ({ id, native }) => {
+                            const data = await loadEmojiData(emojiSet)
+                            const resolved = lookupEmoji(data, id)
+                            if (resolved) {
+                              editor.chain().focus().insertContent({
+                                type: 'emojiNode',
+                                attrs: { id, native: resolved.native, set: emojiSet, x: resolved.x, y: resolved.y },
+                              }).run()
+                            } else {
+                              editor.chain().focus().insertContent(native).run()
+                            }
                             setShowEmojiPicker(false)
                           }}
                           onClose={() => setShowEmojiPicker(false)}
@@ -918,41 +968,106 @@ const RichChatInput = React.forwardRef<HTMLDivElement, RichChatInputProps>(
           />
         </div>
 
-        {/* Send/mic buttons outside the input on the right — NO AnimatePresence */}
+        {/* Send/mic/recording buttons — animated transitions between states */}
         <div className="flex items-center gap-ds-02 shrink-0">
           {sendOptions && sendOptions.length > 0 && state !== 'recording' && (
             <SplitSendDropdown options={sendOptions} />
           )}
-          {state === 'recording' && (
-            <>
-              <Button variant="outline" size="icon-md" onClick={handleCancelRecording} aria-label="Cancel recording" title="Cancel recording" className="text-surface-fg-subtle hover:text-error-11 hover:border-error-7">
-                <Icon icon={IconTrash} size="md" />
-              </Button>
-              <Button variant="solid" size="icon-md" color="error" onClick={handleStopRecording} aria-label="Stop recording" title="Stop recording">
-                <Icon icon={IconSquare} size="md" />
-              </Button>
-            </>
-          )}
-          {isStreaming && state !== 'recording' && (
-            <Button variant="solid" size="icon-md" color="error" onClick={onCancel} aria-label="Stop" title="Stop">
-              <Icon icon={IconSquare} size="md" />
-            </Button>
-          )}
-          {!isStreaming && state !== 'recording' && hasContent && (
-            <Button variant="solid" size="icon-md" onClick={handleSubmit} disabled={disabled} aria-label="Send" title="Send">
-              <Icon icon={IconSend} size="md" />
-            </Button>
-          )}
-          {!isStreaming && state !== 'recording' && !hasContent && onVoiceRecord && (
-            <Button variant="outline" size="icon-md" onClick={handleStartRecording} aria-label="Record voice message" title="Record voice message">
-              <Icon icon={IconMicrophone} size="md" />
-            </Button>
-          )}
-          {!isStreaming && state !== 'recording' && !hasContent && !onVoiceRecord && (
-            <Button variant="solid" size="icon-md" disabled aria-label="Send" title="Send">
-              <Icon icon={IconSend} size="md" />
-            </Button>
-          )}
+          <AnimatePresence mode="popLayout" initial={false}>
+            {state === 'recording' && (
+              <motion.div
+                key="recording"
+                initial={{ scale: 0.8, opacity: 0 }}
+                animate={{ scale: 1, opacity: 1 }}
+                exit={{ scale: 0.8, opacity: 0 }}
+                transition={{ duration: 0.15 }}
+                className="flex items-center gap-ds-02"
+              >
+                <Button variant="soft" size="icon-md" onClick={handleCancelRecording} aria-label="Cancel recording" title="Cancel recording" className="text-surface-fg-subtle hover:text-error-11">
+                  <Icon icon={IconTrash} size="md" />
+                </Button>
+                <Button variant="solid" size="icon-md" color="error" onClick={handleStopRecording} aria-label="Stop recording" title="Stop recording">
+                  <Icon icon={IconSquare} size="md" />
+                </Button>
+              </motion.div>
+            )}
+            {isStreaming && state !== 'recording' && (
+              <motion.div
+                key="streaming"
+                initial={{ scale: 0.8, opacity: 0 }}
+                animate={{ scale: 1, opacity: 1 }}
+                exit={{ scale: 0.8, opacity: 0 }}
+                transition={{ duration: 0.15 }}
+              >
+                <Button variant="solid" size="icon-md" color="error" onClick={onCancel} aria-label="Stop" title="Stop">
+                  <Icon icon={IconSquare} size="md" />
+                </Button>
+              </motion.div>
+            )}
+            {!isStreaming && state !== 'recording' && hasContent && onSchedule && (
+              <motion.div
+                key="split-send"
+                initial={{ scale: 0.8, opacity: 0 }}
+                animate={{ scale: 1, opacity: 1 }}
+                exit={{ scale: 0.8, opacity: 0 }}
+                transition={{ duration: 0.15 }}
+              >
+                <SplitButton
+                  onClick={handleSubmit}
+                  disabled={disabled}
+                  aria-label={scheduledDate ? 'Schedule send' : 'Send'}
+                  size="icon-md"
+                  dropdownContent={
+                    <ScheduleDropdownContent
+                      onSchedule={(date) => setScheduledDate(date)}
+                      onClose={() => {}}
+                    />
+                  }
+                >
+                  <Icon icon={scheduledDate ? IconClock : IconSend} size="md" />
+                </SplitButton>
+              </motion.div>
+            )}
+            {!isStreaming && state !== 'recording' && hasContent && !onSchedule && (
+              <motion.div
+                key="send"
+                initial={{ scale: 0.8, opacity: 0 }}
+                animate={{ scale: 1, opacity: 1 }}
+                exit={{ scale: 0.8, opacity: 0 }}
+                transition={{ duration: 0.15 }}
+              >
+                <Button variant="solid" size="icon-md" onClick={handleSubmit} disabled={disabled} aria-label="Send" title="Send">
+                  <Icon icon={IconSend} size="md" />
+                </Button>
+              </motion.div>
+            )}
+            {!isStreaming && state !== 'recording' && !hasContent && onVoiceRecord && (
+              <motion.div
+                key="mic"
+                initial={{ scale: 0.8, opacity: 0 }}
+                animate={{ scale: 1, opacity: 1 }}
+                exit={{ scale: 0.8, opacity: 0 }}
+                transition={{ duration: 0.15 }}
+              >
+                <Button variant="soft" size="icon-md" onClick={handleStartRecording} aria-label="Record voice message" title="Record voice message">
+                  <Icon icon={IconMicrophone} size="md" />
+                </Button>
+              </motion.div>
+            )}
+            {!isStreaming && state !== 'recording' && !hasContent && !onVoiceRecord && (
+              <motion.div
+                key="send-disabled"
+                initial={{ scale: 0.8, opacity: 0 }}
+                animate={{ scale: 1, opacity: 1 }}
+                exit={{ scale: 0.8, opacity: 0 }}
+                transition={{ duration: 0.15 }}
+              >
+                <Button variant="solid" size="icon-md" disabled aria-label="Send" title="Send">
+                  <Icon icon={IconSend} size="md" />
+                </Button>
+              </motion.div>
+            )}
+          </AnimatePresence>
         </div>
 
         {/* Disclaimer */}

@@ -609,7 +609,7 @@ const RichChatInput = React.forwardRef<HTMLDivElement, RichChatInputProps>(
         ref={ref}
         className={cn(
           'border-t border-surface-border-subtle px-ds-05 py-ds-04',
-          'flex items-stretch gap-ds-03',
+          'flex items-end gap-ds-03',
           className,
         )}
         {...props}
@@ -704,11 +704,11 @@ const RichChatInput = React.forwardRef<HTMLDivElement, RichChatInputProps>(
               />
             )}
 
-            {/* Editor — ISOLATED div with NO changing siblings */}
+            {/* Editor + inline action icons in one flex row */}
             <div
               ref={editorWrapperRef}
               className={cn(
-                'px-ds-04 py-ds-03 cursor-text [&_.tiptap]:w-full [&_.tiptap]:outline-none',
+                'flex items-center px-ds-04 py-ds-03 cursor-text [&_.tiptap]:w-full [&_.tiptap]:outline-none',
                 state === 'recording' && 'invisible',
               )}
               style={{
@@ -718,41 +718,44 @@ const RichChatInput = React.forwardRef<HTMLDivElement, RichChatInputProps>(
               }}
               onClick={() => editor?.commands.focus()}
             >
-              <EditorContent editor={editor} />
-            </div>
+              {/* Editor takes all available space */}
+              <div className="flex-1 min-w-0">
+                <EditorContent editor={editor} />
+              </div>
 
-          {/* Action icons — OUTSIDE the editor div to avoid DOM conflicts */}
-          {editor && state !== 'recording' && (
-            <div className="flex items-center justify-end gap-ds-01 px-ds-04 py-ds-01">
-              {/* Formatting toggle (A button) */}
-              <button
-                type="button"
-                onClick={() => setToolbarExpanded(prev => !prev)}
-                title={toolbarExpanded ? 'Hide formatting' : 'Show formatting'}
-                aria-label={toolbarExpanded ? 'Hide formatting' : 'Show formatting'}
-                aria-pressed={toolbarExpanded}
-                className={cn(
-                  'inline-flex h-ds-xs-plus w-ds-xs-plus items-center justify-center rounded-ds-md touch-target',
-                  'transition-colors duration-fast-01 ease-productive-standard',
-                  'hover:bg-surface-raised-hover',
-                  toolbarExpanded ? 'bg-surface-raised-hover text-accent-11' : 'text-surface-fg-subtle',
-                )}
-              >
-                <Icon icon={IconTextSize} size="xs" />
-              </button>
+              {/* Action icons — right-aligned inside input */}
+              {editor && state !== 'recording' && (
+                <div className="flex items-center gap-ds-01 shrink-0 ml-ds-03">
+                  {/* Formatting toggle (A button) */}
+                  <button
+                    type="button"
+                    onClick={() => setToolbarExpanded(prev => !prev)}
+                    title={toolbarExpanded ? 'Hide formatting' : 'Show formatting'}
+                    aria-label={toolbarExpanded ? 'Hide formatting' : 'Show formatting'}
+                    aria-pressed={toolbarExpanded}
+                    className={cn(
+                      'inline-flex h-ds-xs-plus w-ds-xs-plus items-center justify-center rounded-ds-md touch-target',
+                      'transition-colors duration-fast-01 ease-productive-standard',
+                      'hover:bg-surface-raised-hover',
+                      toolbarExpanded ? 'bg-surface-raised-hover text-accent-11' : 'text-surface-fg-subtle',
+                    )}
+                  >
+                    <Icon icon={IconTextSize} size="xs" />
+                  </button>
 
-              {/* Emoji */}
-              <button
-                type="button"
-                onClick={() => editor.chain().focus().insertContent(':').run()}
-                title="Emoji"
-                aria-label="Emoji"
-                className="inline-flex h-ds-xs-plus w-ds-xs-plus items-center justify-center rounded-ds-md touch-target text-surface-fg-subtle hover:bg-surface-raised-hover hover:text-surface-fg transition-colors duration-fast-01"
-              >
-                <Icon icon={IconMoodSmile} size="xs" />
-              </button>
+                  {/* Emoji */}
+                  <button
+                    type="button"
+                    onClick={() => editor.chain().focus().insertContent(':').run()}
+                    title="Emoji"
+                    aria-label="Emoji"
+                    className="inline-flex h-ds-xs-plus w-ds-xs-plus items-center justify-center rounded-ds-md touch-target text-surface-fg-subtle hover:bg-surface-raised-hover hover:text-surface-fg transition-colors duration-fast-01"
+                  >
+                    <Icon icon={IconMoodSmile} size="xs" />
+                  </button>
+                </div>
+              )}
             </div>
-          )}
           </div>
 
           {/* Voice Note Review — shown in 'review' state */}

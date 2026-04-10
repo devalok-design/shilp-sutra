@@ -701,12 +701,19 @@ const RichChatInput = React.forwardRef<HTMLDivElement, RichChatInputProps>(
     // update without full parent re-renders on every transaction.
     const editorDerived = useEditorState({
       editor,
-      selector: ({ editor: e }) => {
+      selector: ({ editor: e, transactionNumber }) => {
         if (!e) return null
         return {
-          charCount: e.storage.characterCount?.characters() ?? 0,
+          // transactionNumber ensures re-evaluation on every edit
+          _txn: transactionNumber,
+          charCount: e.storage.characterCount?.characters?.() ?? 0,
           editorIsEmpty: e.isEmpty,
         }
+      },
+      equalityFn: (a, b) => {
+        if (a === b) return true
+        if (!a || !b) return false
+        return a.charCount === b.charCount && a.editorIsEmpty === b.editorIsEmpty
       },
     })
     const charCount = editorDerived?.charCount ?? 0

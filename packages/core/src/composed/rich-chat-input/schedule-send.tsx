@@ -2,11 +2,19 @@
 
 import * as React from 'react'
 import { motion } from 'framer-motion'
-import { IconClock, IconCalendarEvent, IconX } from '@tabler/icons-react'
+import { IconClock, IconCalendarEvent, IconX, IconPencil } from '@tabler/icons-react'
 import { Icon } from '../../ui/icon'
 import { Button } from '../../ui/button'
 import { cn } from '../../ui/lib/utils'
-import { DateTimePicker } from '../date-picker'
+import { CalendarGrid } from '../date-picker/calendar-grid'
+import { useCalendar } from '../date-picker/use-calendar'
+import {
+  Dialog,
+  DialogContent,
+  DialogHeader,
+  DialogTitle,
+  DialogFooter,
+} from '../../ui/dialog'
 
 // ── Smart Presets ──────────────────────────────────────────────
 
@@ -61,15 +69,149 @@ function getSmartPresets(): PresetOption[] {
   return presets
 }
 
-// ── Schedule Dropdown Content ──────────────────────────────────
-// Renders inside SplitButton's dropdownContent slot.
+// ── Inline Time Selector (hour, minute, AM/PM) ────────────────
+
+function InlineTimePicker({ value, onChange }: { value: Date; onChange: (d: Date) => void }) {
+  const hours12 = value.getHours() % 12 || 12
+  const minutes = value.getMinutes()
+  const isPM = value.getHours() >= 12
+
+  const setHour = (h: number) => {
+    const d = new Date(value)
+    d.setHours(isPM ? (h % 12) + 12 : h % 12)
+    onChange(d)
+  }
+
+  const setMinute = (m: number) => {
+    const d = new Date(value)
+    d.setMinutes(m)
+    onChange(d)
+  }
+
+  const togglePeriod = (pm: boolean) => {
+    const d = new Date(value)
+    const h = d.getHours()
+    if (pm && h < 12) d.setHours(h + 12)
+    else if (!pm && h >= 12) d.setHours(h - 12)
+    onChange(d)
+  }
+
+  return (
+    <div className="flex items-center gap-ds-02">
+      {/* Hour */}
+      <select
+        value={hours12}
+        onChange={(e) => setHour(Number(e.target.value))}
+        className="h-ds-sm rounded-ds-md border border-surface-border-strong bg-surface-raised px-ds-02 text-ds-sm text-surface-fg focus:outline-none focus:ring-2 focus:ring-accent-9"
+        aria-label="Hour"
+      >
+        {Array.from({ length: 12 }, (_, i) => i + 1).map((h) => (
+          <option key={h} value={h}>{h}</option>
+        ))}
+      </select>
+
+      <span className="text-ds-sm text-surface-fg-subtle font-medium">:</span>
+
+      {/* Minute — 5-min steps */}
+      <select
+        value={minutes - (minutes % 5)}
+        onChange={(e) => setMinute(Number(e.target.value))}
+        className="h-ds-sm rounded-ds-md border border-surface-border-strong bg-surface-raised px-ds-02 text-ds-sm text-surface-fg focus:outline-none focus:ring-2 focus:ring-accent-9"
+        aria-label="Minute"
+      >
+        {Array.from({ length: 12 }, (_, i) => i * 5).map((m) => (
+          <option key={m} value={m}>{String(m).padStart(2, '0')}</option>
+        ))}
+      </select>
+
+      {/* AM/PM toggle */}
+      <div className="inline-flex rounded-ds-md border border-surface-border-strong overflow-hidden">
+        <button
+          type="button"
+          onClick={() => togglePeriod(false)}
+          className={cn(
+            'px-ds-02b py-ds-01 text-ds-xs font-medium transition-colors duration-fast-01',
+            !isPM ? 'bg-accent-9 text-white' : 'bg-surface-raised text-surface-fg-subtle hover:bg-surface-raised-hover',
+          )}
+        >
+          AM
+        </button>
+        <button
+          type="button"
+          onClick={() => togglePeriod(true)}
+          className={cn(
+            'px-ds-02b py-ds-01 text-ds-xs font-medium transition-colors duration-fast-01',
+            isPM ? 'bg-accent-9 text-white' : 'bg-surface-raised text-surface-fg-subtle hover:bg-surface-raised-hover',
+          )}
+        >
+          PM
+        </button>
+      </div>
+    </div>
+  )
+}
+
+// ── Inline Calendar + Time Picker ──────────────────────────────
+
+function InlineDateTimePicker({
+  value,
+  onChange,
+  minDate,
+}: {
+  value: Date | null
+  onChange: (d: Date) => void
+  minDate?: Date
+}) {
+  const now = new Date()
+  const selected = value ?? now
+
+  const { currentMonth, goToPreviousMonth, goToNextMonth } = useCalendar(selected)
+
+  const handleDateSelect = (date: Date) => {
+    // Preserve time from current selection
+    const d = new Date(date)
+    d.setHours(selected.getHours(), selected.getMinutes(), 0, 0)
+    onChange(d)
+  }
+
+  const handleTimeChange = (date: Date) => {
+    onChange(date)
+  }
+
+  return (
+    <div className="space-y-ds-03">
+      {/* Calendar */}
+      <CalendarGrid
+        currentMonth={currentMonth}
+        selected={selected}
+        onSelect={handleDateSelect}
+        onMonthChange={(d) => {
+          if (d < currentMonth) goToPreviousMonth()
+          else goToNextMonth()
+        }}
+        minDate={minDate}
+        className="w-full"
+      />
+
+      {/* Time row */}
+      <div className="flex items-center justify-between border-t border-surface-border pt-ds-03">
+        <span className="text-ds-xs font-medium text-surface-fg-subtle">Time</span>
+        <InlineTimePicker value={selected} onChange={handleTimeChange} />
+      </div>
+    </div>
+  )
+}
+
+// ── Schedule Dropdown Content (presets + inline picker) ─────────
 
 export interface ScheduleDropdownContentProps {
   onSchedule: (date: Date) => void
   onClose: () => void
+  /** Open a full dialog instead of inline picker. Consumer provides the dialog. */
+  onOpenDialog?: () => void
 }
 
-export function ScheduleDropdownContent({ onSchedule, onClose }: ScheduleDropdownContentProps) {
+export function ScheduleDropdownContent({ onSchedule, onClose, onOpenDialog }: ScheduleDropdownContentProps) {
   const [showPicker, setShowPicker] = React.useState(false)
   const [customDate, setCustomDate] = React.useState<Date | null>(null)
 
@@ -81,16 +223,17 @@ export function ScheduleDropdownContent({ onSchedule, onClose }: ScheduleDropdow
   }
 
   const handleCustomConfirm = () => {
-    if (customDate) {
+    if (customDate && customDate > new Date()) {
       onSchedule(customDate)
       onClose()
       setCustomDate(null)
+      setShowPicker(false)
     }
   }
 
   if (showPicker) {
     return (
-      <div className="p-ds-04" style={{ minWidth: 280 }}>
+      <div className="p-ds-04" style={{ width: 310 }}>
         <div className="mb-ds-03 flex items-center justify-between">
           <p className="text-ds-sm font-medium text-surface-fg">Pick date & time</p>
           <button
@@ -102,12 +245,13 @@ export function ScheduleDropdownContent({ onSchedule, onClose }: ScheduleDropdow
             <Icon icon={IconX} size="sm" />
           </button>
         </div>
-        <DateTimePicker
+
+        <InlineDateTimePicker
           value={customDate}
           onChange={setCustomDate}
           minDate={new Date()}
-          placeholder="Select date & time"
         />
+
         <div className="mt-ds-03 flex justify-end">
           <Button
             variant="solid"
@@ -147,7 +291,70 @@ export function ScheduleDropdownContent({ onSchedule, onClose }: ScheduleDropdow
         <Icon icon={IconCalendarEvent} size="sm" className="shrink-0 text-accent-11" />
         Pick date & time...
       </button>
+      {onOpenDialog && (
+        <button
+          type="button"
+          onClick={() => { onOpenDialog(); onClose() }}
+          className="flex w-full items-center gap-ds-03 rounded-ds-md px-ds-03 py-ds-02b text-ds-sm text-surface-fg hover:bg-surface-raised-hover transition-colors duration-fast-01"
+        >
+          <Icon icon={IconCalendarEvent} size="sm" className="shrink-0 text-surface-fg-muted" />
+          Open full picker...
+        </button>
+      )}
     </div>
+  )
+}
+
+// ── Schedule Dialog (full-screen on mobile) ────────────────────
+
+export interface ScheduleDialogProps {
+  open: boolean
+  onOpenChange: (open: boolean) => void
+  onSchedule: (date: Date) => void
+  /** Pre-fill with existing scheduled date (edit mode). */
+  initialDate?: Date | null
+}
+
+export function ScheduleDialog({ open, onOpenChange, onSchedule, initialDate }: ScheduleDialogProps) {
+  const [date, setDate] = React.useState<Date | null>(initialDate ?? null)
+
+  // Reset when opened with new initialDate
+  React.useEffect(() => {
+    if (open) setDate(initialDate ?? null)
+  }, [open, initialDate])
+
+  const handleConfirm = () => {
+    if (date && date > new Date()) {
+      onSchedule(date)
+      onOpenChange(false)
+    }
+  }
+
+  return (
+    <Dialog open={open} onOpenChange={onOpenChange}>
+      <DialogContent className="sm:max-w-[380px]">
+        <DialogHeader>
+          <DialogTitle>{initialDate ? 'Reschedule message' : 'Schedule send'}</DialogTitle>
+        </DialogHeader>
+
+        <InlineDateTimePicker
+          value={date}
+          onChange={setDate}
+          minDate={new Date()}
+        />
+
+        <DialogFooter className="gap-ds-02">
+          <Button variant="soft" onClick={() => onOpenChange(false)}>Cancel</Button>
+          <Button
+            variant="solid"
+            onClick={handleConfirm}
+            disabled={!date || date <= new Date()}
+          >
+            {initialDate ? 'Reschedule' : 'Schedule'}
+          </Button>
+        </DialogFooter>
+      </DialogContent>
+    </Dialog>
   )
 }
 
@@ -168,7 +375,7 @@ function formatScheduleTime(date: Date): string {
   return `${date.toLocaleDateString(undefined, { weekday: 'short', month: 'short', day: 'numeric' })} at ${time}`
 }
 
-export function ScheduleBanner({ date, onClear }: { date: Date; onClear: () => void }) {
+export function ScheduleBanner({ date, onClear, onEdit }: { date: Date; onClear: () => void; onEdit?: () => void }) {
   return (
     <motion.div
       initial={{ height: 0, opacity: 0 }}
@@ -182,6 +389,16 @@ export function ScheduleBanner({ date, onClear }: { date: Date; onClear: () => v
         <span className="flex-1 truncate">
           Scheduled for {formatScheduleTime(date)}
         </span>
+        {onEdit && (
+          <button
+            type="button"
+            onClick={onEdit}
+            className="inline-flex shrink-0 items-center justify-center rounded-ds-sm p-ds-01 hover:bg-accent-3 transition-colors"
+            aria-label="Edit schedule"
+          >
+            <Icon icon={IconPencil} size="xs" />
+          </button>
+        )}
         <button
           type="button"
           onClick={onClear}

@@ -20,7 +20,7 @@ import { createSlashCommandExtension } from './extensions/slash-command'
 import type { SlashCommandGroup } from './extensions/slash-command'
 import type { MentionItem } from './rich-text-editor'
 import { ReplyBanner } from './rich-chat-input/reply-banner'
-import { ScheduleDropdownContent, ScheduleBanner } from './rich-chat-input/schedule-send'
+import { ScheduleDropdownContent, ScheduleBanner, ScheduleDialog } from './rich-chat-input/schedule-send'
 import { SplitButton } from '../ui/split-button'
 import { emojiDataLoaders } from './emoji-picker'
 import type { EmojiSet } from './emoji-picker'
@@ -92,6 +92,8 @@ export interface RichChatInputProps extends Omit<React.HTMLAttributes<HTMLDivEle
   variant?: 'compact' | 'expanded' | 'minimal' | 'inline'
   enterBehavior?: 'send' | 'newline'
   maxLength?: number
+  /** When to show the character counter. @default 'near-limit' */
+  charCountDisplay?: 'always' | 'focus' | 'near-limit' | 'hidden'
   mentions?: MentionItem[]
   onMentionSearch?: (query: string) => Promise<MentionItem[]>
   onMentionSelect?: (item: MentionItem) => void
@@ -347,6 +349,7 @@ const RichChatInput = React.forwardRef<HTMLDivElement, RichChatInputProps>(
       variant = 'compact',
       enterBehavior = 'send',
       maxLength,
+      charCountDisplay = 'near-limit',
       mentions,
       onMentionSearch,
       onMentionSelect,
@@ -379,6 +382,8 @@ const RichChatInput = React.forwardRef<HTMLDivElement, RichChatInputProps>(
     const [toolbarExpanded, setToolbarExpanded] = React.useState(false)
     const [showEmojiPicker, setShowEmojiPicker] = React.useState(false)
     const [scheduledDate, setScheduledDate] = React.useState<Date | null>(null)
+    const [scheduleDialogOpen, setScheduleDialogOpen] = React.useState(false)
+    const [editorFocused, setEditorFocused] = React.useState(false)
     const emojiAnchorRef = React.useRef<HTMLButtonElement>(null)
     const emojiFloatingRef = React.useRef<HTMLDivElement>(null)
 
@@ -751,6 +756,8 @@ const RichChatInput = React.forwardRef<HTMLDivElement, RichChatInputProps>(
             isDragging && 'border-dashed border-accent-7 bg-accent-2',
             disabled && 'opacity-action-disabled cursor-not-allowed',
           )}
+          onFocus={() => setEditorFocused(true)}
+          onBlur={(e) => { if (!e.currentTarget.contains(e.relatedTarget)) setEditorFocused(false) }}
           onDragOver={(e) => { e.preventDefault(); setIsDragging(true) }}
           onDragLeave={() => setIsDragging(false)}
           onDrop={handleDrop}
@@ -776,6 +783,7 @@ const RichChatInput = React.forwardRef<HTMLDivElement, RichChatInputProps>(
               <ScheduleBanner
                 key="schedule"
                 date={scheduledDate}
+                onEdit={() => setScheduleDialogOpen(true)}
                 onClear={() => setScheduledDate(null)}
               />
             )}
@@ -956,14 +964,24 @@ const RichChatInput = React.forwardRef<HTMLDivElement, RichChatInputProps>(
           )}
 
           {/* Character counter */}
-          {maxLength && charCount > 0 && (
-            <div className={cn(
-              'flex justify-end px-ds-04 pb-ds-02 text-ds-xs tabular-nums',
-              charCount >= maxLength ? 'text-error-11 font-medium' : charCount >= maxLength * 0.9 ? 'text-warning-11' : 'text-surface-fg-subtle',
-            )}>
-              {charCount}/{maxLength}
-            </div>
-          )}
+          {maxLength && charCountDisplay !== 'hidden' && (() => {
+            const ratio = charCount / maxLength
+            const showAlways = charCountDisplay === 'always'
+            const showFocus = charCountDisplay === 'focus' && editorFocused
+            const showNearLimit = (charCountDisplay === 'near-limit' || !charCountDisplay) && ratio >= 0.8
+            const visible = showAlways || showFocus || showNearLimit || ratio >= 1
+
+            if (!visible) return null
+
+            return (
+              <div className={cn(
+                'flex justify-end px-ds-04 pb-ds-02 text-ds-xs tabular-nums transition-opacity duration-fast-01',
+                ratio >= 1 ? 'text-error-11 font-medium' : ratio >= 0.9 ? 'text-warning-11' : 'text-surface-fg-subtle',
+              )}>
+                {charCount}/{maxLength}
+              </div>
+            )
+          })()}
 
           {/* Trailing slot */}
           {trailingSlot}
@@ -1031,6 +1049,7 @@ const RichChatInput = React.forwardRef<HTMLDivElement, RichChatInputProps>(
                     <ScheduleDropdownContent
                       onSchedule={(date) => setScheduledDate(date)}
                       onClose={() => {}}
+                      onOpenDialog={() => setScheduleDialogOpen(true)}
                     />
                   }
                 >
@@ -1085,6 +1104,16 @@ const RichChatInput = React.forwardRef<HTMLDivElement, RichChatInputProps>(
           <p className="mt-ds-02 text-center text-ds-xs text-surface-fg-subtle/50">
             {disclaimer}
           </p>
+        )}
+
+        {/* Schedule Dialog (full picker) */}
+        {onSchedule && (
+          <ScheduleDialog
+            open={scheduleDialogOpen}
+            onOpenChange={setScheduleDialogOpen}
+            onSchedule={(date) => setScheduledDate(date)}
+            initialDate={scheduledDate}
+          />
         )}
       </div>
     )

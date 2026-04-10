@@ -167,7 +167,26 @@ export const WithCharacterLimit: Story = {
   args: {
     onSubmit: fn(),
     maxLength: 280,
-    placeholder: 'Keep it short...',
+    charCountDisplay: 'always',
+    placeholder: 'Keep it short (280 chars)...',
+  },
+}
+
+export const CharCountNearLimit: Story = {
+  args: {
+    onSubmit: fn(),
+    maxLength: 280,
+    charCountDisplay: 'near-limit',
+    placeholder: 'Counter appears at 80%...',
+  },
+}
+
+export const CharCountOnFocus: Story = {
+  args: {
+    onSubmit: fn(),
+    maxLength: 500,
+    charCountDisplay: 'focus',
+    placeholder: 'Counter shows when focused...',
   },
 }
 

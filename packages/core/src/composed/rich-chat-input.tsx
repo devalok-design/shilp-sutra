@@ -600,16 +600,14 @@ const RichChatInput = React.forwardRef<HTMLDivElement, RichChatInputProps>(
     const editorIsEmpty = editorDerived?.editorIsEmpty ?? true
     const hasContent = !editorIsEmpty || attachments.length > 0 || !!voiceNote
     const isInline = variant === 'inline'
-    const showToolbar = isInline
-      ? toolbarExpanded
-      : (!editorIsEmpty || state === 'review' || variant === 'expanded')
+    const showToolbar = toolbarExpanded || state === 'review' || variant === 'expanded'
 
     return (
       <div
         ref={ref}
         className={cn(
           'border-t border-surface-border-subtle px-ds-05 py-ds-04',
-          'flex items-end gap-ds-03',
+          'flex items-center gap-ds-03',
           className,
         )}
         {...props}
@@ -820,7 +818,7 @@ const RichChatInput = React.forwardRef<HTMLDivElement, RichChatInputProps>(
         </div>
 
         {/* Send/mic buttons outside the input on the right — NO AnimatePresence */}
-        <div className="flex items-end gap-ds-02 shrink-0">
+        <div className="flex items-center gap-ds-02 shrink-0">
           {sendOptions && sendOptions.length > 0 && state !== 'recording' && (
             <SplitSendDropdown options={sendOptions} />
           )}

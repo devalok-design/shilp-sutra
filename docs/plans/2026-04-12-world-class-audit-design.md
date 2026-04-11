@@ -344,6 +344,18 @@ useColorMode, useMobile, useToast, useTouchDevice, useViewportHeight, VisuallyHi
 
 **Cross-check:** Hook API consistency? Utility component quality?
 
+#### Group P: Chat Components (7)
+Message, MessageInput, MessageList, SystemMessage, TypingIndicator, DateSeparator, UnreadSeparator
+
+**Benchmarks:** Slack (chat UI), Discord (message components), Linear (chat), WAI-ARIA (feed/log)
+**Cross-check:** Message grouping? Virtualized list? Keyboard navigation between messages?
+
+#### Group Q: Date Picker (8)
+DatePicker, DateRangePicker, DateTimePicker, MonthPicker, YearPicker, TimePicker, CalendarGrid, Presets + useCalendar hook
+
+**Benchmarks:** React Aria DatePicker (a11y gold standard), Mantine DatePicker, Carbon DatePicker
+**Cross-check:** Keyboard nav (arrow/PageUp/PageDown)? Screen reader announcements? Timezone? Min/max constraints?
+
 ---
 
 ## Phase 4: Cross-Cutting Audit

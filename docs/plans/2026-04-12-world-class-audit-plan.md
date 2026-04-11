@@ -288,6 +288,7 @@ git commit -m "audit(foundations): surface and shadow system audit"
 **Files to read:**
 - `packages/core/src/tokens/semantic.css` — Duration + easing tokens, keyframe definitions
 - `packages/core/src/tailwind/preset.ts` — Animation/transition mappings
+- `packages/core/src/ui/lib/motion.ts` — Framer Motion spring/tween presets (71 lines, core motion infra)
 - Grep for `prefers-reduced-motion` across entire `packages/core/src/`
 - Grep for `framer-motion` or `motion` imports to understand Framer usage patterns
 
@@ -311,8 +312,10 @@ Web search for:
 - "Linear app animations framer motion" — craft reference
 - "prefers-reduced-motion best practices" — WAI/a11y guidelines
 
-**Step 4: Audit each item**
-7 audit items: duration scale, easing philosophy, reduced-motion, Framer integration, entrance/exit, scroll motion, performance.
+**Step 4: Audit each of the 7 items**
+For each of the 7 audit items (duration scale, easing philosophy, `prefers-reduced-motion` compliance, Framer Motion integration with CSS tokens, entrance/exit animation patterns, scroll-triggered motion, animation performance/GPU acceleration):
+- Rate against the rubric
+- Document gaps with file paths and line numbers
 
 **Step 5: Write report and commit**
 
@@ -719,12 +722,12 @@ git commit -m "audit(infra): consumer developer experience audit"
 - `packages/core/src/ui/toggle.tsx`
 - `packages/core/src/ui/toggle-group.tsx`
 - `packages/core/src/ui/segmented-control.tsx`
+- `packages/core/src/ui/link.tsx`
+- `packages/core/src/ui/icon-button.tsx`
 
 **Test files:** `button.test.tsx`, `button-group.test.tsx`, `toggle.test.tsx`, `toggle-group.test.tsx`
 
 **Story files:** `button.stories.tsx`, `button-group.stories.tsx`, `button-processing.stories.tsx`, `split-button.stories.tsx`, `toggle.stories.tsx`, `toggle-group.stories.tsx`, `segmented-control.stories.tsx`
-
-**Note:** Link component lives elsewhere — search for it. IconButton may be part of button.tsx or separate.
 
 **Benchmark research:**
 - "shadcn ui Button component API props" — API reference
@@ -751,8 +754,9 @@ git commit -m "audit(infra): consumer developer experience audit"
 - `packages/core/src/ui/input.tsx` (and `input-otp.tsx`)
 - `packages/core/src/ui/textarea.tsx`
 - `packages/core/src/ui/search-input.tsx`
-- `packages/core/src/ui/number-input.tsx` (search for it)
+- `packages/core/src/ui/number-input.tsx`
 - `packages/core/src/ui/color-input.tsx`
+- `packages/core/src/ui/color-swatch.tsx`
 - `packages/core/src/ui/select.tsx`
 - `packages/core/src/ui/combobox.tsx`
 - `packages/core/src/ui/autocomplete.tsx`
@@ -895,8 +899,9 @@ git commit -m "audit(infra): consumer developer experience audit"
 - `packages/core/src/ui/hover-card.tsx`
 - `packages/core/src/ui/tooltip.tsx`
 - `packages/core/src/composed/simple-tooltip.tsx`
-- `packages/core/src/ui/dropdown-menu.tsx` (search for it)
+- `packages/core/src/ui/dropdown-menu.tsx`
 - `packages/core/src/ui/context-menu.tsx`
+- `packages/core/src/ui/lib/bottom-sheet.tsx`
 
 **Benchmark research:**
 - "Radix Dialog accessibility focus trap" — primitive reference
@@ -1040,7 +1045,7 @@ git commit -m "audit(infra): consumer developer experience audit"
 - `packages/core/src/composed/rich-text-editor.tsx`
 - `packages/core/src/composed/rich-chat-input/` (all files in directory)
 - `packages/core/src/composed/rich-chat-input.tsx`
-- `packages/core/src/ui/file-upload.tsx` (search for it)
+- `packages/core/src/ui/file-upload.tsx`
 - `packages/core/src/composed/file-preview/` (all files)
 - `packages/core/src/composed/file-preview.tsx`
 - `packages/core/src/composed/emoji-picker.tsx`
@@ -1062,12 +1067,15 @@ git commit -m "audit(infra): consumer developer experience audit"
 **Output:** `docs/audits/2026-04-12-world-class/03m-shell.md`
 
 **Component files to read:**
-- `packages/core/src/shell/sidebar.tsx`
+- `packages/core/src/ui/sidebar.tsx` — Sidebar primitive (CVA, core layout component)
+- `packages/core/src/shell/sidebar.tsx` — AppSidebar (application-layer wrapper)
 - `packages/core/src/shell/top-bar.tsx`
 - `packages/core/src/shell/bottom-navbar.tsx`
 - `packages/core/src/shell/app-command-palette.tsx`
 - `packages/core/src/shell/command-registry.tsx`
 - `packages/core/src/shell/link-context.tsx`
+- `packages/core/src/ui/lib/link-context.tsx` — LinkContext provider (ui-level)
+- `packages/core/src/ui/lib/keybinding.ts` — Keyboard shortcut parsing utility
 - `packages/core/src/shell/notification-center.tsx`
 - `packages/core/src/shell/notification-preferences.tsx`
 - `packages/core/src/composed/command-palette.tsx`
@@ -1200,6 +1208,7 @@ git commit -m "audit(infra): consumer developer experience audit"
 - `packages/core/src/composed/date-picker/calendar-grid.tsx`
 - `packages/core/src/composed/date-picker/presets.tsx`
 - `packages/core/src/composed/date-picker/use-calendar.ts`
+- `packages/core/src/ui/lib/date-utils.ts` — Date helper utilities
 
 **Benchmark research:**
 - "React Aria DatePicker" — Adobe's a11y-first date picker (gold standard)
@@ -1241,18 +1250,47 @@ grep -r "on[A-Z].*:" packages/core/src/ui/ --include="*.tsx" | grep -v test | gr
 ```
 Check: `onChange` vs `onValueChange` vs `onCheckedChange` patterns.
 
-**Step 4: Check compound component patterns**
+**Step 4: Check ref forwarding and displayName universality**
 ```bash
-grep -r "displayName" packages/core/src/ --include="*.tsx" | grep -v test | grep -v stories
+grep -r "forwardRef" packages/core/src/ --include="*.tsx" | grep -v test | grep -v stories | grep -v primitives
+grep -r "displayName" packages/core/src/ --include="*.tsx" | grep -v test | grep -v stories | grep -v primitives
 ```
-Verify every component has `displayName`. Check compound component slot naming.
+Verify EVERY component forwards ref AND has displayName. List any that don't.
 
-**Step 5: Check asChild support**
+**Step 5: Check compound component slot naming consistency**
+For every compound component (Dialog, Sheet, Card, Alert, Accordion, Tabs, etc.), extract slot names:
+- Are they consistently Header/Footer/Content? Or mixed with Top/Bottom/Body?
+- Are trigger slots consistently named Trigger?
+
+**Step 6: Check asChild support**
 ```bash
 grep -r "asChild" packages/core/src/ --include="*.tsx" | grep -v test | grep -v stories
 ```
+List which components support it, which should but don't.
 
-**Step 6: Document all findings**
+**Step 7: Check compound component threshold compliance**
+Per CONTRIBUTING.md rule: components with 8+ props or 2+ independently renderable sections should be compound. Grep for components with large prop interfaces that are still monolithic.
+
+**Step 8: Check React Context usage**
+```bash
+grep -r "createContext\|useContext" packages/core/src/ --include="*.tsx" --include="*.ts" | grep -v test | grep -v stories | grep -v primitives
+```
+Check for context leaking, nested context issues, missing providers.
+
+**Step 9: Check polymorphic patterns**
+```bash
+grep -r '"as"\|as\?:' packages/core/src/ --include="*.tsx" | grep -v test | grep -v stories
+```
+Is `as` prop used anywhere alongside `asChild`? Should be one pattern, not both.
+
+**Step 10: Check children API consistency**
+For components accepting children: is the expectation string, ReactNode, or render function? Consistent across similar components?
+
+**Step 11: Audit utility files**
+- `packages/core/src/ui/lib/utils.ts` — the `cn()` utility implementation
+- `packages/core/src/ui/lib/slot.ts` — slot utility
+
+**Step 12: Document all findings**
 Write sections 4a (naming) and 4b (composition) of the cross-cutting report.
 
 **Commit:** `audit(cross-cutting): naming consistency and composition patterns`

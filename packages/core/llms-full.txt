@@ -5,7 +5,9 @@
 > All variant values and props verified from source CVA definitions.
 >
 > Package: @devalok/shilp-sutra
-> Version: 0.33.2
+> Version: 0.33.x (Tailwind 4, TypeScript 6, ESLint 10)
+>
+> Toolchain: Tailwind CSS 4.2, TypeScript 6.0, ESLint 10, Vite 7.3, React 19.2
 
 ---
 

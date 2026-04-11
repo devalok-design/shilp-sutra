@@ -5,6 +5,20 @@ All notable changes to `@devalok/shilp-sutra` will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.33.2] - 2026-04-11 (core)
+
+### Changed
+
+- **TypeScript** 5.7 → 6.0.2
+- **ESLint** 9 → 10, **typescript-eslint** 8.56 → 8.58.1
+- **react-zoom-pan-pinch** peer dep widened to `^3.0.0 || ^4.0.0`, dev dep bumped to 4.0.3
+
+## [0.33.1] - 2026-04-10 (core)
+
+### Changed
+
+- Bumped all safe patch/minor dependencies: React 19.2.5, Storybook 10.3.5, Vitest 4.1.4, framer-motion 12.38, @floating-ui/dom 1.7.6, @tabler/icons-react 3.41.1, esbuild 0.28, jsdom 29, PostCSS 8.5.9, Prettier 3.8.2, Playwright 1.59.1, and more.
+
 ## [0.33.0] - 2026-04-10 (core)
 
 ### BREAKING CHANGES

@@ -1,5 +1,11 @@
 # @devalok/shilp-sutra
 
+## 0.34.1
+
+### Patch Changes
+
+- Upgrade Vite 7 → 8 (Rolldown bundler) + @vitejs/plugin-react 6 (Oxc). SSR safety patch for Rolldown CJS interop.
+
 ## 0.34.0
 
 ### Minor Changes

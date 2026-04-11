@@ -243,7 +243,7 @@ function ToastContent({
                 <button
                   type="button"
                   onClick={action.onClick}
-                  className="text-ds-sm font-medium text-accent-11 underline-offset-2 hover:underline hover:bg-surface-raised-hover rounded-ds-sm px-ds-02 py-ds-01 transition-[color,background-color] duration-fast-01 ease-productive-standard focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent-9 focus-visible:rounded-ds-sm"
+                  className="text-ds-sm font-medium text-accent-11 underline-offset-2 hover:underline hover:bg-surface-raised-hover rounded-ds-sm px-ds-02 py-ds-01 transition-[color,background-color] duration-fast-01 ease-productive-standard focus-visible:outline-hidden focus-visible:ring-2 focus-visible:ring-accent-9 focus-visible:rounded-ds-sm"
                 >
                   {action.label}
                 </button>
@@ -252,7 +252,7 @@ function ToastContent({
                 <button
                   type="button"
                   onClick={cancel.onClick}
-                  className="text-ds-sm text-surface-fg-muted hover:text-surface-fg focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent-9 focus-visible:rounded-ds-sm"
+                  className="text-ds-sm text-surface-fg-muted hover:text-surface-fg focus-visible:outline-hidden focus-visible:ring-2 focus-visible:ring-accent-9 focus-visible:rounded-ds-sm"
                 >
                   {cancel.label}
                 </button>

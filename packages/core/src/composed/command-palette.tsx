@@ -364,7 +364,7 @@ const CommandPalette = React.forwardRef<HTMLDivElement, CommandPaletteProps>(
               aria-activedescendant={filteredItems[activeIndex] ? `command-item-${instanceId}-${filteredItems[activeIndex].id}` : undefined}
               aria-autocomplete="list"
               className={cn(
-                'flex-1 bg-transparent text-ds-base text-surface-fg outline-none',
+                'flex-1 bg-transparent text-ds-base text-surface-fg outline-hidden',
                 'placeholder:text-surface-fg-subtle',
               )}
               autoComplete="off"

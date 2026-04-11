@@ -341,7 +341,7 @@ function MessageEditableBody({
           onChange={(e) => setEditDraft(e.target.value)}
           onKeyDown={handleKeyDown}
           onBlur={handleSave}
-          className="w-full resize-none rounded-ds-sm border border-surface-border-strong bg-surface-raised-hover px-ds-02 py-ds-01 text-[13px] leading-relaxed text-surface-fg focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent-9"
+          className="w-full resize-none rounded-ds-sm border border-surface-border-strong bg-surface-raised-hover px-ds-02 py-ds-01 text-[13px] leading-relaxed text-surface-fg focus-visible:outline-hidden focus-visible:ring-2 focus-visible:ring-accent-9"
           rows={2}
         />
         <div className="mt-ds-01 text-ds-xs text-surface-fg-subtle/50">

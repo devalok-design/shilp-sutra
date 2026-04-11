@@ -55,7 +55,7 @@ const PROSE_CLASSES = [
   '[&_pre]:rounded-ds-lg [&_pre]:bg-surface-raised [&_pre]:p-ds-04',
   '[&_strong]:font-semibold [&_strong]:text-surface-fg',
   '[&_blockquote]:border-l-[3px] [&_blockquote]:border-accent-6 [&_blockquote]:pl-ds-04 [&_blockquote]:italic [&_blockquote]:text-surface-fg-subtle',
-  '[&_mark]:rounded-sm [&_mark]:bg-warning-3 [&_mark]:px-[2px]',
+  '[[&_mark]:rounded-sm_mark]:rounded-xs [&_mark]:bg-warning-3 [&_mark]:px-[2px]',
   '[&_ul[data-type="taskList"]]:ml-0 [&_ul[data-type="taskList"]]:list-none [&_li[data-type="taskItem"]]:flex [&_li[data-type="taskItem"]]:items-start [&_li[data-type="taskItem"]]:gap-ds-02',
   '[&_hr]:my-ds-04 [&_hr]:border-surface-border-strong',
   '[&_a]:text-accent-11 [&_a]:underline [&_a]:decoration-accent-6 hover:[&_a]:decoration-accent-11',
@@ -155,7 +155,7 @@ function LinkButton({ editor }: { editor: Editor }) {
             onChange={(e) => setUrl(e.target.value)}
             onKeyDown={handleKeyDown}
             placeholder="https://..."
-            className="h-ds-sm w-[240px] rounded-ds-sm border border-surface-border-strong bg-surface-overlay px-ds-03 text-ds-sm text-surface-fg focus:border-accent-7 focus:outline-none"
+            className="h-ds-sm w-[240px] rounded-ds-sm border border-surface-border-strong bg-surface-overlay px-ds-03 text-ds-sm text-surface-fg focus:border-accent-7 focus:outline-hidden"
           />
           <button type="submit" className="h-ds-sm rounded-ds-sm bg-accent-9 px-ds-03 text-ds-sm text-accent-fg hover:bg-accent-10">
             Apply
@@ -559,7 +559,7 @@ const RichTextEditor = React.forwardRef<HTMLDivElement, RichTextEditorProps>(
       attributes: {
         class: cn(
           ...PROSE_CLASSES,
-          'focus:outline-none',
+          'focus:outline-hidden',
           'min-h-[120px] px-ds-04 py-ds-04',
         ),
       },

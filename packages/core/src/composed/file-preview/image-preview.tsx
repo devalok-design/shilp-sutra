@@ -56,7 +56,7 @@ export default function ImagePreview({ url, alt, onError }: { url: string; alt?:
   if (error) return <ErrorFallback message="Could not load image" url={url} />
 
   const containerClasses = fullscreen
-    ? 'fixed inset-0 z-50 flex flex-col items-center justify-center bg-black/90 backdrop-blur-sm'
+    ? 'fixed inset-0 z-50 flex flex-col items-center justify-center bg-black/90 backdrop-blur-xs'
     : 'relative flex flex-col items-center gap-ds-03'
 
   return (
@@ -73,7 +73,7 @@ export default function ImagePreview({ url, alt, onError }: { url: string; alt?:
         maxScale={8}
         centerOnInit
         doubleClick={{ mode: 'toggle', step: 2 }}
-        onTransformed={(_, state) => setZoom(Math.round(state.scale * 100))}
+        onTransform={(_: unknown, state: { scale: number }) => setZoom(Math.round(state.scale * 100))}
       >
         {({ zoomIn, zoomOut, resetTransform, centerView }) => {
           controlsRef.current = { zoomIn, zoomOut, resetTransform, centerView }
@@ -85,8 +85,8 @@ export default function ImagePreview({ url, alt, onError }: { url: string; alt?:
               )}>
                 {!loaded && <Skeleton className="h-64 w-full rounded-ds-md" />}
                 <TransformComponent
-                  wrapperClass={cn('!w-full', fullscreen && '!h-full')}
-                  contentClass="!w-full !flex !items-center !justify-center"
+                  wrapperClass={cn('w-full!', fullscreen && 'h-full!')}
+                  contentClass="w-full! flex! items-center! justify-center!"
                 >
                   <motion.img
                     src={url}

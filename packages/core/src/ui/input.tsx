@@ -15,7 +15,7 @@ const inputWrapperVariants = cva(
     'border border-surface-border rounded-ds-md',
     'hover:bg-surface-raised-active',
     'transition-[color,background-color,border-color,box-shadow] duration-fast-02 ease-productive-standard',
-    'focus-within:outline-none focus-within:ring-2 focus-within:ring-accent-9 focus-within:ring-offset-2 focus-within:border-surface-border',
+    'focus-within:outline-hidden focus-within:ring-2 focus-within:ring-accent-9 focus-within:ring-offset-2 focus-within:border-surface-border',
     'has-[:disabled]:cursor-not-allowed has-[:disabled]:opacity-action-disabled',
     'has-[:read-only]:bg-surface-raised has-[:read-only]:cursor-default',
   ],
@@ -207,7 +207,7 @@ const Input = React.forwardRef<HTMLInputElement, InputProps>(
         <input
           type={type}
           className={cn(
-            'flex-1 min-w-0 h-full bg-transparent outline-none font-sans',
+            'flex-1 min-w-0 h-full bg-transparent outline-hidden font-sans',
             'placeholder:text-surface-fg-subtle',
             'disabled:cursor-not-allowed',
             'read-only:cursor-default',

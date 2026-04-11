@@ -4,5 +4,5 @@ import type { Config } from 'tailwindcss'
 export default {
   presets: [preset],
   content: ['./packages/*/src/**/*.{ts,tsx}'],
-  darkMode: 'class',
+  // TW4: darkMode configured via @variant in CSS
 } satisfies Config

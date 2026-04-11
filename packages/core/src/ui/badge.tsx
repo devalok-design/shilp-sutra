@@ -223,7 +223,7 @@ const Badge = React.forwardRef<HTMLElement, BadgeProps>(
           hasLeading && paddingLeftWithIcon[resolvedSize],
           hasTrailing && paddingRightWithTrailing[resolvedSize],
           onClick &&
-            'cursor-pointer hover:brightness-[0.97] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent-9 focus-visible:ring-offset-1 transition-[color,background-color,border-color,transform,filter] duration-moderate-01 ease-productive-exit hover:duration-fast-02 hover:ease-productive-entrance active:scale-[0.95] active:brightness-[0.92] active:duration-[0ms]',
+            'cursor-pointer hover:brightness-[0.97] focus-visible:outline-hidden focus-visible:ring-2 focus-visible:ring-accent-9 focus-visible:ring-offset-1 transition-[color,background-color,border-color,transform,filter] duration-moderate-01 ease-productive-exit hover:duration-fast-02 hover:ease-productive-entrance active:scale-[0.95] active:brightness-[0.92] active:duration-[0ms]',
           selected && 'ring-1 ring-current/20 transition-shadow duration-fast-02',
           disabled && 'opacity-action-disabled pointer-events-none saturate-[0.3]',
           circle && 'justify-center px-0 aspect-square',
@@ -306,7 +306,7 @@ const Badge = React.forwardRef<HTMLElement, BadgeProps>(
               onDismiss()
             }}
             className={cn(
-              'shrink-0 rounded-full text-current/60 hover:text-current hover:bg-current/10 transition-colors focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-accent-9',
+              'shrink-0 rounded-full text-current/60 hover:text-current hover:bg-current/10 transition-colors focus-visible:outline-hidden focus-visible:ring-1 focus-visible:ring-accent-9',
               resolvedSize === 'xs'
                 ? 'p-0 -mr-0.5 min-w-[16px] min-h-[16px]'
                 : 'p-px',

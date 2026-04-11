@@ -153,7 +153,7 @@ const InlineEdit = React.forwardRef<HTMLDivElement, InlineEditProps>(({
         onPaste={handlePaste}
         spellCheck={focused}
         className={cn(
-          'font-sans text-surface-fg outline-none',
+          'font-sans text-surface-fg outline-hidden',
           textClassName,
           // Idle: subtle hover hint
           !readOnly && !focused && 'cursor-text rounded-ds-sm -mx-ds-01 px-ds-01 hover:bg-surface-raised-hover transition-colors duration-fast-01',

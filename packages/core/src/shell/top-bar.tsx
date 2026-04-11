@@ -266,7 +266,7 @@ const TopBarUserMenu = React.forwardRef<HTMLButtonElement, TopBarUserMenuProps>(
               <button
                 ref={ref}
                 type="button"
-                className={cn('flex items-center gap-ds-03 outline-none focus-visible:ring-2 focus-visible:ring-accent-9 focus-visible:ring-offset-2', className)}
+                className={cn('flex items-center gap-ds-03 outline-hidden focus-visible:ring-2 focus-visible:ring-accent-9 focus-visible:ring-offset-2', className)}
               >
                 <Avatar className="h-ds-sm-plus w-ds-sm-plus cursor-pointer">
                   {user.image ? (

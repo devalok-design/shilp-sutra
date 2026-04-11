@@ -309,7 +309,7 @@ const Combobox = React.forwardRef<HTMLButtonElement, ComboboxProps>(
                   {option.label}
                   <button
                     type="button"
-                    className="inline-flex items-center justify-center rounded-ds-full outline-none hover:scale-110 hover:bg-surface-raised-hover transition-transform duration-fast-01 ease-productive-standard"
+                    className="inline-flex items-center justify-center rounded-ds-full outline-hidden hover:scale-110 hover:bg-surface-raised-hover transition-transform duration-fast-01 ease-productive-standard"
                     onClick={(e) => handleRemovePill(e, val)}
                     aria-label={`Remove ${option.label}`}
                     tabIndex={-1}
@@ -358,7 +358,7 @@ const Combobox = React.forwardRef<HTMLButtonElement, ComboboxProps>(
             className={cn(
               'flex h-ds-md w-full items-center justify-between whitespace-nowrap rounded-ds-md border border-surface-border-strong bg-surface-raised-hover px-ds-04 py-ds-03 text-ds-md',
               'transition-colors duration-fast-01 ease-productive-standard',
-              'focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent-9 focus-visible:ring-offset-2 focus-visible:border-accent-7',
+              'focus-visible:outline-hidden focus-visible:ring-2 focus-visible:ring-accent-9 focus-visible:ring-offset-2 focus-visible:border-accent-7',
               'disabled:cursor-not-allowed disabled:opacity-action-disabled',
               open && 'border-accent-7',
               triggerClassName,
@@ -393,7 +393,7 @@ const Combobox = React.forwardRef<HTMLButtonElement, ComboboxProps>(
                     <input
                       ref={searchInputRef}
                       type="text"
-                      className="flex-1 bg-transparent py-ds-03 text-ds-md outline-none placeholder:text-surface-fg-subtle"
+                      className="flex-1 bg-transparent py-ds-03 text-ds-md outline-hidden placeholder:text-surface-fg-subtle"
                       placeholder={searchPlaceholder}
                       value={search}
                       onChange={(e) => {
@@ -436,7 +436,7 @@ const Combobox = React.forwardRef<HTMLButtonElement, ComboboxProps>(
                             aria-selected={selected}
                             aria-disabled={option.disabled || undefined}
                             className={cn(
-                              'relative flex cursor-pointer select-none items-center gap-ds-03 rounded-ds-md px-ds-04 py-ds-03 text-ds-md outline-none',
+                              'relative flex cursor-pointer select-none items-center gap-ds-03 rounded-ds-md px-ds-04 py-ds-03 text-ds-md outline-hidden',
                               'transition-colors duration-fast-01 ease-productive-standard',
                               highlightedIndex === index &&
                                 'bg-accent-2',

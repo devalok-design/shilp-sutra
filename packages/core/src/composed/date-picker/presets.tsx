@@ -104,7 +104,7 @@ export const Presets = React.forwardRef<HTMLDivElement, PresetsProps>(
               'h-ds-sm w-full rounded-ds-md px-ds-03 text-left text-ds-sm',
               'text-surface-fg transition-colors',
               'hover:bg-surface-raised-hover',
-              'focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent-9',
+              'focus-visible:outline-hidden focus-visible:ring-2 focus-visible:ring-accent-9',
             )}
           >
             {preset.label}

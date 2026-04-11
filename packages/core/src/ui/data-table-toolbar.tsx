@@ -119,7 +119,7 @@ export function DataTableToolbar<TData>({
             className={cn(
               'flex-1 bg-transparent text-ds-md',
               'text-surface-fg placeholder:text-surface-fg-subtle',
-              'outline-none',
+              'outline-hidden',
               'h-ds-sm',
             )}
           />

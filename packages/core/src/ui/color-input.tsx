@@ -150,7 +150,7 @@ function FormatInput({
           maxLength={maxLength}
           className={cn(
             'h-ds-xs-plus w-full rounded-ds-sm border border-surface-border bg-surface-overlay px-ds-02 font-mono text-ds-sm text-surface-fg transition-colors',
-            'focus:border-accent-7 focus:outline-none focus:ring-1 focus:ring-accent-9',
+            'focus:border-accent-7 focus:outline-hidden focus:ring-1 focus:ring-accent-9',
             disabled && 'cursor-not-allowed opacity-50',
           )}
         />
@@ -298,7 +298,7 @@ const ColorInput = React.forwardRef<HTMLDivElement, ColorInputProps>(
                 disabled={disabled}
                 className={cn(
                   'group flex items-center justify-center rounded-ds-md px-ds-04 py-ds-02 font-mono text-ds-sm font-medium',
-                  'focus:outline-none focus:ring-2 focus:ring-accent-9 focus:ring-offset-2 focus:ring-offset-surface-base',
+                  'focus:outline-hidden focus:ring-2 focus:ring-accent-9 focus:ring-offset-2 focus:ring-offset-surface-base',
                   disabled && 'cursor-not-allowed opacity-50',
                 )}
                 animate={{
@@ -318,7 +318,7 @@ const ColorInput = React.forwardRef<HTMLDivElement, ColorInputProps>(
                 disabled={disabled}
                 className={cn(
                   'group relative flex items-center overflow-hidden rounded-ds-md border border-surface-border-strong',
-                  'hover:border-accent-7 focus:border-accent-7 focus:outline-none focus:ring-1 focus:ring-accent-9',
+                  'hover:border-accent-7 focus:border-accent-7 focus:outline-hidden focus:ring-1 focus:ring-accent-9',
                   disabled && 'cursor-not-allowed opacity-50',
                 )}
                 whileHover={{ scale: 1.02 }}
@@ -358,7 +358,7 @@ const ColorInput = React.forwardRef<HTMLDivElement, ColorInputProps>(
                   <HexColorPicker
                     color={internalColor}
                     onChange={handleChange}
-                    className="!w-full"
+                    className="w-full!"
                     style={{ height: 160 }}
                   />
                 </div>

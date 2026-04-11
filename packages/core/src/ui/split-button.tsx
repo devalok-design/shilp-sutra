@@ -262,7 +262,7 @@ const SplitButton = React.forwardRef<HTMLDivElement, SplitButtonProps>(
                   className={cn(
                     'inline-flex items-center justify-center select-none',
                     'transition-colors duration-fast-01 ease-productive-standard',
-                    'focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent-9 focus-visible:ring-inset',
+                    'focus-visible:outline-hidden focus-visible:ring-2 focus-visible:ring-accent-9 focus-visible:ring-inset',
                     'disabled:pointer-events-none disabled:opacity-action-disabled',
                     halfClasses,
                     heightClass[size],
@@ -285,7 +285,7 @@ const SplitButton = React.forwardRef<HTMLDivElement, SplitButtonProps>(
               className={cn(
                 'inline-flex items-center justify-center font-semibold select-none whitespace-nowrap',
                 'transition-colors duration-fast-01 ease-productive-standard',
-                'focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent-9 focus-visible:ring-inset',
+                'focus-visible:outline-hidden focus-visible:ring-2 focus-visible:ring-accent-9 focus-visible:ring-inset',
                 'disabled:pointer-events-none disabled:opacity-action-disabled',
                 halfClasses,
                 heightClass[size],
@@ -311,7 +311,7 @@ const SplitButton = React.forwardRef<HTMLDivElement, SplitButtonProps>(
                   className={cn(
                     'inline-flex items-center justify-center select-none',
                     'transition-colors duration-fast-01 ease-productive-standard',
-                    'focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent-9 focus-visible:ring-inset',
+                    'focus-visible:outline-hidden focus-visible:ring-2 focus-visible:ring-accent-9 focus-visible:ring-inset',
                     'disabled:pointer-events-none disabled:opacity-action-disabled',
                     halfClasses,
                     heightClass[size],

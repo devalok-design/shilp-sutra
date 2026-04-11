@@ -147,7 +147,7 @@ const SegmentedControl = React.forwardRef<HTMLDivElement, SegmentedControlProps>
                 className={cn(
                   'relative inline-flex items-center justify-center gap-ds-02 rounded-ds-md',
                   'font-medium transition-colors duration-fast-02 ease-productive-standard',
-                  'outline-none focus-visible:ring-2 focus-visible:ring-accent-9 focus-visible:ring-offset-2',
+                  'outline-hidden focus-visible:ring-2 focus-visible:ring-accent-9 focus-visible:ring-offset-2',
                   buttonSize,
                   isSelected
                     ? selectedTextStyles[variant]

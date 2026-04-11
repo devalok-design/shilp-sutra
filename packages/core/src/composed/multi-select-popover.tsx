@@ -273,7 +273,7 @@ const MultiSelectPopover = React.forwardRef<HTMLDivElement, MultiSelectPopoverPr
               onKeyDown={handleSearchKeyDown}
               aria-label="Search"
               aria-activedescendant={focusedIndex >= 0 ? `msp-item-${focusedIndex}` : undefined}
-              className="w-full bg-transparent text-ds-md font-body text-surface-fg placeholder:text-surface-fg-subtle outline-none"
+              className="w-full bg-transparent text-ds-md font-body text-surface-fg placeholder:text-surface-fg-subtle outline-hidden"
             />
             {loading && <Spinner size="sm" />}
           </div>

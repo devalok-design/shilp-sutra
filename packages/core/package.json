@@ -740,7 +740,7 @@
     "react-syntax-highlighter": "^15.0.0 || ^16.0.0",
     "react-zoom-pan-pinch": "^3.0.0 || ^4.0.0",
     "remark-gfm": "^4.0.0",
-    "tailwindcss": "^3.4.0"
+    "tailwindcss": "^3.4.0 || ^4.0.0"
   },
   "peerDependenciesMeta": {
     "@tanstack/react-table": {
@@ -847,7 +847,7 @@
     "react-zoom-pan-pinch": "^4.0.3",
     "remark-gfm": "^4.0.1",
     "sonner": "^2.0.7",
-    "tailwind-merge": "^3.0.1"
+    "tailwind-merge": "^3.5.0"
   },
   "engines": {
     "node": ">=20.19.0"

@@ -177,7 +177,7 @@ const Autocomplete = React.forwardRef<HTMLInputElement, AutocompleteProps>(
           disabled={disabled}
           className={cn(
             'flex h-ds-md w-full rounded-ds-md border border-surface-border-strong bg-surface-raised-hover px-ds-04 py-ds-03 font-sans text-ds-md text-surface-fg placeholder:text-surface-fg-subtle',
-            'outline-none focus-visible:ring-2 focus-visible:ring-accent-9 focus-visible:ring-offset-[var(--border-focus-offset)]',
+            'outline-hidden focus-visible:ring-2 focus-visible:ring-accent-9 focus-visible:ring-offset-[var(--border-focus-offset)]',
             'transition-colors duration-fast-01',
             disabled && 'opacity-action-disabled cursor-not-allowed',
           )}

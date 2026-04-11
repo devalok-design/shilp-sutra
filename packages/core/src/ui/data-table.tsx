@@ -645,7 +645,7 @@ export function DataTable<TData, TValue>({
               className={cn(
                 'flex-1 bg-transparent text-ds-md',
                 'text-surface-fg placeholder:text-surface-fg-subtle',
-                'outline-none',
+                'outline-hidden',
               )}
             />
           </div>

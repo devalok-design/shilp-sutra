@@ -64,7 +64,7 @@ export function BottomSheet({
               <motion.div
                 ref={sheetRef}
                 className={cn(
-                  'fixed inset-x-0 bottom-0 z-modal max-h-[85vh] overflow-y-auto rounded-t-ds-xl border-t border-surface-border-strong bg-surface-overlay shadow-overlay outline-none',
+                  'fixed inset-x-0 bottom-0 z-modal max-h-[85vh] overflow-y-auto rounded-t-ds-xl border-t border-surface-border-strong bg-surface-overlay shadow-overlay outline-hidden',
                   className,
                 )}
                 initial={{ y: '100%' }}

@@ -506,7 +506,7 @@ const SidebarGroupLabel = forwardRef<
       ref={ref}
       data-sidebar="group-label"
       className={cn(
-        'flex h-ds-sm shrink-0 items-center rounded-ds-md px-ds-03 text-ds-sm font-medium text-surface-fg-muted outline-none ring-accent-9 transition-[margin,opacity] duration-moderate-02 ease-productive-exit focus-visible:ring-2 [&>svg]:h-ico-sm [&>svg]:w-ico-sm [&>svg]:shrink-0',
+        'flex h-ds-sm shrink-0 items-center rounded-ds-md px-ds-03 text-ds-sm font-medium text-surface-fg-muted outline-hidden ring-accent-9 transition-[margin,opacity] duration-moderate-02 ease-productive-exit focus-visible:ring-2 [&>svg]:h-ico-sm [&>svg]:w-ico-sm [&>svg]:shrink-0',
         'group-data-[collapsible=icon]:-mt-8 group-data-[collapsible=icon]:opacity-0',
         className,
       )}
@@ -527,7 +527,7 @@ const SidebarGroupAction = forwardRef<
       ref={ref}
       data-sidebar="group-action"
       className={cn(
-        'hover:bg-surface-raised-hover absolute right-ds-04 top-ds-04 flex aspect-square w-5 items-center justify-center rounded-ds-md p-0 text-surface-fg outline-none ring-accent-9 transition-transform hover:text-surface-fg focus-visible:ring-2 [&>svg]:h-ico-sm [&>svg]:w-ico-sm [&>svg]:shrink-0',
+        'hover:bg-surface-raised-hover absolute right-ds-04 top-ds-04 flex aspect-square w-5 items-center justify-center rounded-ds-md p-0 text-surface-fg outline-hidden ring-accent-9 transition-transform hover:text-surface-fg focus-visible:ring-2 [&>svg]:h-ico-sm [&>svg]:w-ico-sm [&>svg]:shrink-0',
         'after:absolute after:-inset-2 after:md:hidden',
         'group-data-[collapsible=icon]:hidden',
         className,
@@ -575,7 +575,7 @@ const SidebarMenuItem = forwardRef<HTMLLIElement, ComponentProps<'li'>>(
 SidebarMenuItem.displayName = 'SidebarMenuItem'
 
 const sidebarMenuButtonVariants = cva(
-  'peer/menu-button hover:bg-surface-raised-hover active:bg-accent-2 data-[active=true]:bg-accent-2 data-[state=open]:hover:bg-surface-raised-hover flex w-full items-center gap-ds-03 overflow-hidden rounded-ds-md p-ds-03 text-left outline-none ring-accent-9 transition-[width,height,padding] hover:text-surface-fg focus-visible:ring-2 active:text-surface-fg disabled:pointer-events-none disabled:opacity-action-disabled group-has-[[data-sidebar=menu-action]]/menu-item:pr-ds-07 aria-disabled:pointer-events-none aria-disabled:opacity-action-disabled data-[active=true]:font-medium data-[active=true]:text-surface-fg data-[state=open]:hover:text-surface-fg group-data-[collapsible=icon]:!size-8 group-data-[collapsible=icon]:!p-ds-03 [&>span:last-child]:truncate [&>svg]:h-ico-sm [&>svg]:w-ico-sm [&>svg]:shrink-0',
+  'peer/menu-button hover:bg-surface-raised-hover active:bg-accent-2 data-[active=true]:bg-accent-2 data-[state=open]:hover:bg-surface-raised-hover flex w-full items-center gap-ds-03 overflow-hidden rounded-ds-md p-ds-03 text-left outline-hidden ring-accent-9 transition-[width,height,padding] hover:text-surface-fg focus-visible:ring-2 active:text-surface-fg disabled:pointer-events-none disabled:opacity-action-disabled group-has-[[data-sidebar=menu-action]]/menu-item:pr-ds-07 aria-disabled:pointer-events-none aria-disabled:opacity-action-disabled data-[active=true]:font-medium data-[active=true]:text-surface-fg data-[state=open]:hover:text-surface-fg group-data-[collapsible=icon]:!size-8 group-data-[collapsible=icon]:!p-ds-03 [&>span:last-child]:truncate [&>svg]:h-ico-sm [&>svg]:w-ico-sm [&>svg]:shrink-0',
   {
     variants: {
       variant: {
@@ -684,7 +684,7 @@ const SidebarMenuAction = forwardRef<
       ref={ref}
       data-sidebar="menu-action"
       className={cn(
-        'hover:bg-surface-raised-hover absolute right-ds-02 top-ds-02b flex aspect-square w-5 items-center justify-center rounded-ds-md p-0 text-surface-fg outline-none ring-accent-9 transition-transform hover:text-surface-fg focus-visible:ring-2 peer-hover/menu-button:text-surface-fg [&>svg]:h-ico-sm [&>svg]:w-ico-sm [&>svg]:shrink-0',
+        'hover:bg-surface-raised-hover absolute right-ds-02 top-ds-02b flex aspect-square w-5 items-center justify-center rounded-ds-md p-0 text-surface-fg outline-hidden ring-accent-9 transition-transform hover:text-surface-fg focus-visible:ring-2 peer-hover/menu-button:text-surface-fg [&>svg]:h-ico-sm [&>svg]:w-ico-sm [&>svg]:shrink-0',
         'after:absolute after:-inset-2 after:md:hidden',
         'peer-data-[size=sm]/menu-button:top-1',
         'peer-data-[size=md]/menu-button:top-ds-02b',
@@ -795,7 +795,7 @@ const SidebarMenuSubButton = forwardRef<
       data-size={size}
       data-active={isActive}
       className={cn(
-        'hover:bg-surface-raised-hover active:bg-accent-2 flex h-ds-xs-plus min-w-0 -translate-x-px items-center gap-ds-03 overflow-hidden rounded-ds-md px-ds-03 text-surface-fg outline-none ring-accent-9 hover:text-surface-fg focus-visible:ring-2 active:text-surface-fg disabled:pointer-events-none disabled:opacity-action-disabled aria-disabled:pointer-events-none aria-disabled:opacity-action-disabled [&>span:last-child]:truncate [&>svg]:h-ico-sm [&>svg]:w-ico-sm [&>svg]:shrink-0 [&>svg]:text-surface-fg',
+        'hover:bg-surface-raised-hover active:bg-accent-2 flex h-ds-xs-plus min-w-0 -translate-x-px items-center gap-ds-03 overflow-hidden rounded-ds-md px-ds-03 text-surface-fg outline-hidden ring-accent-9 hover:text-surface-fg focus-visible:ring-2 active:text-surface-fg disabled:pointer-events-none disabled:opacity-action-disabled aria-disabled:pointer-events-none aria-disabled:opacity-action-disabled [&>span:last-child]:truncate [&>svg]:h-ico-sm [&>svg]:w-ico-sm [&>svg]:shrink-0 [&>svg]:text-surface-fg',
         'data-[active=true]:bg-accent-2 data-[active=true]:text-surface-fg',
         size === 'sm' && 'text-ds-sm',
         size === 'md' && 'text-ds-md',

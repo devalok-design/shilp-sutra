@@ -1,6 +1,8 @@
-@tailwind base;
-@tailwind components;
-@tailwind utilities;
+@import "tailwindcss";
+@config "./tailwind.config.ts";
+
+/* Dark mode via class — TW4 requires explicit variant declaration */
+@variant dark (&:is(.dark *));
 
 /* Restore table styles inside Storybook docs (Tailwind Preflight strips them) */
 .sbdocs table,

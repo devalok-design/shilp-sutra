@@ -139,7 +139,7 @@ function MasterDetailList({ children, className, ...props }: MasterDetailListPro
       role="listbox"
       tabIndex={-1}
       className={cn(
-        'overflow-y-auto focus-visible:outline-none',
+        'overflow-y-auto focus-visible:outline-hidden',
         !isMobile && 'border-r border-surface-border',
         className,
       )}
@@ -212,7 +212,7 @@ const MasterDetailListItem = React.forwardRef<HTMLButtonElement, MasterDetailLis
           'flex w-full items-center px-ds-04 py-ds-03 text-left text-ds-md font-sans text-surface-fg',
           'transition-colors duration-fast-01 ease-productive-standard',
           'hover:bg-surface-raised-hover',
-          'focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent-7 focus-visible:ring-inset',
+          'focus-visible:outline-hidden focus-visible:ring-2 focus-visible:ring-accent-7 focus-visible:ring-inset',
           active && 'bg-accent-2 text-accent-11 border-l-2 border-accent-9',
           className,
         )}

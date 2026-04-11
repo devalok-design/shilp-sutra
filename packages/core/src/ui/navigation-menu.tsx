@@ -51,7 +51,7 @@ const NavigationMenuTrigger = React.forwardRef<
   <NavigationMenuPrimitive.Trigger
     ref={ref}
     className={cn(
-      'group inline-flex h-ds-sm-plus w-max items-center justify-center rounded-ds-md bg-transparent px-ds-05 py-ds-03 text-ds-md font-medium transition-colors hover:bg-surface-raised-hover focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent-9 disabled:pointer-events-none disabled:opacity-action-disabled',
+      'group inline-flex h-ds-sm-plus w-max items-center justify-center rounded-ds-md bg-transparent px-ds-05 py-ds-03 text-ds-md font-medium transition-colors hover:bg-surface-raised-hover focus-visible:outline-hidden focus-visible:ring-2 focus-visible:ring-accent-9 disabled:pointer-events-none disabled:opacity-action-disabled',
       className,
     )}
     {...props}

@@ -98,7 +98,7 @@ const MessageInput = React.forwardRef<HTMLDivElement, MessageInputProps>(
             placeholder={placeholder}
             disabled={disabled}
             rows={1}
-            className="flex-1 resize-none bg-transparent px-ds-02 py-ds-01 text-ds-sm text-surface-fg placeholder:text-surface-fg-subtle/50 focus:outline-none disabled:opacity-50"
+            className="flex-1 resize-none bg-transparent px-ds-02 py-ds-01 text-ds-sm text-surface-fg placeholder:text-surface-fg-subtle/50 focus:outline-hidden disabled:opacity-50"
             style={{ maxHeight: 160 }}
           />
           {isStreaming ? (

@@ -163,7 +163,7 @@ function DataTableHeaderImpl({ stickyHeader }: { stickyHeader?: boolean }) {
                       'border border-surface-border-strong bg-surface-raised-hover',
                       'px-ds-02 text-ds-sm',
                       'text-surface-fg placeholder:text-surface-fg-subtle',
-                      'outline-none focus:border-accent-7',
+                      'outline-hidden focus:border-accent-7',
                     )}
                   />
                 )}

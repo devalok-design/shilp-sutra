@@ -132,7 +132,7 @@ const AudioPlayer = React.forwardRef<HTMLDivElement, AudioPlayerProps>(
           onClick={togglePlay}
           onKeyDown={handleKeyDown}
           aria-label={playing ? 'Pause voice message' : 'Play voice message'}
-          className="inline-flex h-8 w-8 shrink-0 items-center justify-center rounded-ds-full bg-accent-9 text-accent-fg hover:bg-accent-10 active:scale-95 transition-colors duration-fast-01 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent-9 focus-visible:ring-offset-2"
+          className="inline-flex h-8 w-8 shrink-0 items-center justify-center rounded-ds-full bg-accent-9 text-accent-fg hover:bg-accent-10 active:scale-95 transition-colors duration-fast-01 focus-visible:outline-hidden focus-visible:ring-2 focus-visible:ring-accent-9 focus-visible:ring-offset-2"
         >
           {playing ? (
             <IconPlayerPause size={16} stroke={2} aria-hidden="true" />
@@ -161,7 +161,7 @@ const AudioPlayer = React.forwardRef<HTMLDivElement, AudioPlayerProps>(
           type="button"
           onClick={cycleSpeed}
           aria-label={`Playback speed ${speed}x`}
-          className="shrink-0 text-ds-xs bg-surface-raised rounded-ds-full px-ds-02 py-[1px] hover:bg-surface-raised-hover tabular-nums transition-colors duration-fast-01 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent-9 focus-visible:ring-offset-2"
+          className="shrink-0 text-ds-xs bg-surface-raised rounded-ds-full px-ds-02 py-[1px] hover:bg-surface-raised-hover tabular-nums transition-colors duration-fast-01 focus-visible:outline-hidden focus-visible:ring-2 focus-visible:ring-accent-9 focus-visible:ring-offset-2"
         >
           {speed}x
         </button>

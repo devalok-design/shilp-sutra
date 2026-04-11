@@ -551,7 +551,7 @@ const CommandBar = React.forwardRef<HTMLDivElement, CommandBarProps>(
             aria-autocomplete={hasGroups ? 'list' : undefined}
             aria-label={agentName ? `Ask ${agentName}` : 'AI Command Bar'}
             className={cn(
-              'flex-1 bg-transparent text-surface-fg outline-none',
+              'flex-1 bg-transparent text-surface-fg outline-hidden',
               'placeholder:text-surface-fg-subtle',
               isCompact ? 'h-9 text-ds-sm' : 'h-12 text-ds-base',
               isProcessing && 'cursor-wait',
@@ -578,7 +578,7 @@ const CommandBar = React.forwardRef<HTMLDivElement, CommandBarProps>(
           <button
             type="button"
             onClick={handleClear}
-            className="shrink-0 rounded-ds-sm p-ds-01 text-surface-fg-subtle transition-colors duration-fast-01 hover:bg-surface-raised-hover hover:text-surface-fg-muted focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent-9"
+            className="shrink-0 rounded-ds-sm p-ds-01 text-surface-fg-subtle transition-colors duration-fast-01 hover:bg-surface-raised-hover hover:text-surface-fg-muted focus-visible:outline-hidden focus-visible:ring-2 focus-visible:ring-accent-9"
             aria-label="Clear"
             title="Clear"
           >

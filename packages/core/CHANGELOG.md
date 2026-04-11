@@ -1,5 +1,11 @@
 # @devalok/shilp-sutra
 
+## 0.34.0
+
+### Minor Changes
+
+- Tailwind CSS 4, TypeScript 6, ESLint 10, tailwind-merge 3.5, react-zoom-pan-pinch 4 — full toolchain upgrade
+
 ## 0.33.3
 
 ### Patch Changes

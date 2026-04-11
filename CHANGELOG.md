@@ -5,6 +5,29 @@ All notable changes to `@devalok/shilp-sutra` will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.34.0] - 2026-04-11 (core)
+
+### BREAKING CHANGES
+
+- **Tailwind CSS 3 → 4:** Utility class renames — `outline-none` → `outline-hidden`, `rounded-sm` → `rounded-xs`, `backdrop-blur-sm` → `backdrop-blur-xs`, `!prefix` important → `suffix!`. Consumers: replace `@tailwind base/components/utilities` with `@import "tailwindcss"` + `@config "./your-config.ts"` + `@variant dark (&:is(.dark *))`.
+- **TypeScript 5.7 → 6.0.2:** `types` defaults to `[]`. Add explicit `"types"` array to tsconfig if relying on ambient types.
+- **ESLint 9 → 10:** Config file lookup starts from linted file directory. Verify monorepo ESLint configs.
+- **react-zoom-pan-pinch 3 → 4:** `onTransformed` callback renamed to `onTransform`.
+
+### Changed
+
+- **Tailwind CSS** 3.4 → 4.2.2 — Oxide engine (Rust, faster builds), `@tailwindcss/postcss` + `@tailwindcss/vite` plugins, `@config` bridge for JS presets, CSS-first dark mode via `@variant`.
+- **tailwind-merge** 3.0 → 3.5 — TW4 class recognition.
+- **TypeScript** 5.7 → 6.0.2
+- **ESLint** 9 → 10, **typescript-eslint** 8.56 → 8.58.1
+- **react-zoom-pan-pinch** peer dep widened to `^3.0.0 || ^4.0.0`, dev dep 4.0.3
+- **Tailwind CSS peer dep** widened to `^3.4.0 || ^4.0.0`
+- All safe patch/minor deps bumped (React 19.2.5, Storybook 10.3.5, Vitest 4.1.4, framer-motion 12.38, @floating-ui/dom 1.7.6, @tabler/icons-react 3.41.1, esbuild 0.28, jsdom 29, Playwright 1.59.1, PostCSS 8.5.9, Prettier 3.8.2)
+
+### Fixed
+
+- Duplicate `color` prop in Button processing story
+
 ## [0.33.2] - 2026-04-11 (core)
 
 ### Changed

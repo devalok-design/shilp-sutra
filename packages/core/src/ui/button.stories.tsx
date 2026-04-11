@@ -1312,10 +1312,9 @@ export const ProcessingInteractive: Story = {
       return (
         <Button
           variant={variant}
-          color={color}
+          color={state === 'done' ? 'success' : color}
           processing={state === 'processing' ? 'working' : false}
           startIcon={state === 'done' ? <Icon icon={IconCheck} animate="draw" /> : undefined}
-          color={state === 'done' ? 'success' : color}
           onClick={() => {
             if (state === 'idle') {
               setState('processing')

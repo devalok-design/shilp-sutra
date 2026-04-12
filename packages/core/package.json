@@ -714,6 +714,7 @@
     "typecheck": "tsc --noEmit",
     "lint": "eslint src/",
     "test": "vitest run",
+    "test:coverage": "vitest run --coverage",
     "prepublishOnly": "pnpm build"
   },
   "peerDependencies": {

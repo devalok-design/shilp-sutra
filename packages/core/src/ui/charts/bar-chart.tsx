@@ -122,6 +122,16 @@ export const BarChart = React.forwardRef<HTMLDivElement, BarChartProps>(
           // Category labels
           const categories = data.map((d) => String(d[xKey]))
 
+          // Build data summary for screen readers
+          const dataSummary = data.map((d) => {
+            const cat = String(d[xKey])
+            const vals = yKeys.map((k, i) => {
+              const lbl = seriesLabels?.[i] ?? k
+              return `${lbl}: ${Number(d[k]).toLocaleString()}`
+            }).join(', ')
+            return `${cat} — ${vals}`
+          }).join('. ')
+
           // Calculate max value
           let maxValue: number
           if (stacked) {
@@ -155,6 +165,9 @@ export const BarChart = React.forwardRef<HTMLDivElement, BarChartProps>(
 
           return (
             <>
+              {/* Screen-reader data summary */}
+              <desc>{dataSummary}</desc>
+
               {/* Grid */}
               {showGrid && (
                 <GridLines
@@ -202,6 +215,23 @@ export const BarChart = React.forwardRef<HTMLDivElement, BarChartProps>(
 
                   if (stacked) stackOffset += value
 
+                  const seriesLabel = seriesLabels?.[seriesIdx] ?? key
+                  const barAriaLabel = isMultiSeries
+                    ? `${category}, ${seriesLabel}: ${value.toLocaleString()}`
+                    : `${category}: ${value.toLocaleString()}`
+
+                  const tooltipContent = (
+                    <div>
+                      <div className="font-medium">{category}</div>
+                      {isMultiSeries && (
+                        <div className="text-surface-fg-muted">
+                          {seriesLabel}
+                        </div>
+                      )}
+                      <div>{value.toLocaleString()}</div>
+                    </div>
+                  )
+
                   return (
                     <rect
                       key={`${category}-${key}`}
@@ -211,7 +241,10 @@ export const BarChart = React.forwardRef<HTMLDivElement, BarChartProps>(
                       height={Math.max(0, h)}
                       rx={barRadius}
                       fill={barColor}
-                      className="transition-opacity hover:opacity-80"
+                      className="transition-opacity hover:opacity-80 focus-visible:outline-none focus-visible:opacity-80"
+                      tabIndex={showTooltip ? 0 : undefined}
+                      role={showTooltip ? 'graphics-symbol' : undefined}
+                      aria-label={barAriaLabel}
                       onMouseMove={(e) => {
                         if (showTooltip) {
                           const rect = e.currentTarget
@@ -220,19 +253,25 @@ export const BarChart = React.forwardRef<HTMLDivElement, BarChartProps>(
                           show(
                             e.clientX - (rect?.left ?? 0),
                             e.clientY - (rect?.top ?? 0),
-                            <div>
-                              <div className="font-medium">{category}</div>
-                              {isMultiSeries && (
-                                <div className="text-surface-fg-muted">
-                                  {seriesLabels?.[seriesIdx] ?? key}
-                                </div>
-                              )}
-                              <div>{value.toLocaleString()}</div>
-                            </div>,
+                            tooltipContent,
                           )
                         }
                       }}
                       onMouseLeave={hide}
+                      onFocus={(e) => {
+                        if (showTooltip) {
+                          const svgRect = e.currentTarget
+                            .closest('div')
+                            ?.getBoundingClientRect()
+                          const barRect = e.currentTarget.getBoundingClientRect()
+                          show(
+                            barRect.left + barRect.width / 2 - (svgRect?.left ?? 0),
+                            barRect.top - (svgRect?.top ?? 0),
+                            tooltipContent,
+                          )
+                        }
+                      }}
+                      onBlur={hide}
                     />
                   )
                 })

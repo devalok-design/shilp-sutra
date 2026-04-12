@@ -136,8 +136,20 @@ export const LineChart = React.forwardRef<HTMLDivElement, LineChartProps>(
             .curve(curveType)
             .defined((d) => d !== undefined && d !== null)
 
+          // Build data summary for screen readers
+          const dataSummary = data.map((d) => {
+            const xVal = String(d[xKey])
+            const vals = series.map((s) =>
+              `${s.label}: ${Number(d[s.key]).toLocaleString()}`
+            ).join(', ')
+            return `${xVal} — ${vals}`
+          }).join('. ')
+
           return (
             <>
+              {/* Screen-reader data summary */}
+              <desc>{dataSummary}</desc>
+
               {/* Grid */}
               {showGrid && (
                 <GridLines
@@ -188,11 +200,35 @@ export const LineChart = React.forwardRef<HTMLDivElement, LineChartProps>(
                 )
               })}
 
-              {/* Invisible hover rectangles for tooltip */}
+              {/* Invisible hover/focus rectangles for tooltip */}
               {showTooltip &&
                 data.map((d, i) => {
                   const cx = getX(d)
                   const sliceWidth = width / Math.max(data.length - 1, 1)
+                  const xVal = String(d[xKey])
+                  const pointAriaLabel = `${xVal}: ${series.map((s) => `${s.label} ${Number(d[s.key]).toLocaleString()}`).join(', ')}`
+
+                  const tooltipContent = (
+                    <div>
+                      <div className="font-medium">{xVal}</div>
+                      {series.map((s, sIdx) => (
+                        <div
+                          key={s.key}
+                          className="flex items-center gap-ds-02"
+                        >
+                          <span
+                            className="inline-block h-2 w-2 rounded-ds-full"
+                            style={{ backgroundColor: colors[sIdx] }}
+                          />
+                          <span className="text-surface-fg-muted">
+                            {s.label}:
+                          </span>{' '}
+                          {Number(d[s.key]).toLocaleString()}
+                        </div>
+                      ))}
+                    </div>
+                  )
+
                   return (
                     <rect
                       key={`hover-${i}`}
@@ -201,6 +237,10 @@ export const LineChart = React.forwardRef<HTMLDivElement, LineChartProps>(
                       width={sliceWidth}
                       height={innerHeight}
                       fill="transparent"
+                      tabIndex={0}
+                      role="graphics-symbol"
+                      aria-label={pointAriaLabel}
+                      className="focus-visible:outline-none"
                       onMouseMove={(e) => {
                         const rect = e.currentTarget
                           .closest('div')
@@ -208,29 +248,22 @@ export const LineChart = React.forwardRef<HTMLDivElement, LineChartProps>(
                         show(
                           e.clientX - (rect?.left ?? 0),
                           e.clientY - (rect?.top ?? 0),
-                          <div>
-                            <div className="font-medium">
-                              {String(d[xKey])}
-                            </div>
-                            {series.map((s, sIdx) => (
-                              <div
-                                key={s.key}
-                                className="flex items-center gap-ds-02"
-                              >
-                                <span
-                                  className="inline-block h-2 w-2 rounded-ds-full"
-                                  style={{ backgroundColor: colors[sIdx] }}
-                                />
-                                <span className="text-surface-fg-muted">
-                                  {s.label}:
-                                </span>{' '}
-                                {Number(d[s.key]).toLocaleString()}
-                              </div>
-                            ))}
-                          </div>,
+                          tooltipContent,
                         )
                       }}
                       onMouseLeave={hide}
+                      onFocus={(e) => {
+                        const svgRect = e.currentTarget
+                          .closest('div')
+                          ?.getBoundingClientRect()
+                        const sliceRect = e.currentTarget.getBoundingClientRect()
+                        show(
+                          sliceRect.left + sliceRect.width / 2 - (svgRect?.left ?? 0),
+                          sliceRect.top + sliceRect.height / 2 - (svgRect?.top ?? 0),
+                          tooltipContent,
+                        )
+                      }}
+                      onBlur={hide}
                     />
                   )
                 })}

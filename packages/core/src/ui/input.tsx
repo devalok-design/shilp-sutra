@@ -12,7 +12,7 @@ const inputWrapperVariants = cva(
   [
     'relative flex items-center w-full font-sans',
     'bg-surface-raised-hover text-surface-fg',
-    'border border-surface-border rounded-ds-md',
+    'border border-surface-border-strong rounded-ds-md',
     'hover:bg-surface-raised-active',
     'transition-[color,background-color,border-color,box-shadow] duration-fast-02 ease-productive-standard',
     'focus-within:outline-hidden focus-within:ring-2 focus-within:ring-accent-9 focus-within:ring-offset-2 focus-within:border-surface-border',

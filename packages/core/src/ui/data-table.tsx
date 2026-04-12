@@ -604,7 +604,7 @@ export function DataTable<TData, TValue>({
 
   // Determine if we need a scroll wrapper for virtualization
   const tableContent = (
-    <Table>
+    <Table aria-busy={loading || undefined}>
       <DataTableHeader stickyHeader={stickyHeader} />
       <DataTableBody
         loading={loading}

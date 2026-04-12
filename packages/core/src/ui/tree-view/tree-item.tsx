@@ -125,7 +125,7 @@ const TreeItem = React.forwardRef<HTMLLIElement, TreeItemProps>(
           tabIndex={disabled ? -1 : 0}
           onClick={handleRowClick}
           onKeyDown={handleKeyDown}
-          style={{ paddingLeft: depth * 20 + 8 }}
+          style={{ paddingLeft: `calc(${depth} * var(--spacing-05b) + var(--spacing-03))` }}
           className={cn(
             'flex items-center gap-ds-02 py-ds-02 px-ds-02 rounded-ds-md cursor-pointer transition-colors duration-fast-01',
             'hover:bg-surface-raised',

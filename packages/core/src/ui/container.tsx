@@ -22,7 +22,7 @@ const Container = React.forwardRef<HTMLElement, ContainerProps>(
       Component,
       {
         ref,
-        className: cn('mx-auto w-full px-ds-05', maxWidthMap[maxWidth], className),
+        className: cn('mx-auto w-full px-page-x', maxWidthMap[maxWidth], className),
         ...props,
       },
       children,

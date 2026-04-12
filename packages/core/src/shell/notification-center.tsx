@@ -15,6 +15,12 @@ import {
   PopoverTrigger,
 } from '../ui/popover'
 import {
+  Sheet,
+  SheetContent,
+  SheetTitle,
+  SheetTrigger,
+} from '../ui/sheet'
+import {
   Tooltip,
   TooltipContent,
   TooltipTrigger,
@@ -23,6 +29,7 @@ import { IconBell, IconChecks, IconInbox, IconX } from '@tabler/icons-react'
 import { Icon } from '../ui/icon'
 import { cn } from '../ui/lib/utils'
 import { Spinner } from '../ui/spinner'
+import { useIsMobile } from '../hooks/use-mobile'
 import { motion, useReducedMotion } from 'framer-motion'
 
 // -----------------------------------------------------------------------
@@ -287,6 +294,7 @@ const NotificationCenter = React.forwardRef<HTMLButtonElement, NotificationCente
   ) => {
     const scrollRef = useRef<HTMLDivElement>(null)
     const prefersReducedMotion = useReducedMotion()
+    const isMobile = useIsMobile()
 
   const unreadCount =
     unreadCountProp ?? notifications.filter((n) => !n.isRead).length
@@ -329,32 +337,162 @@ const NotificationCenter = React.forwardRef<HTMLButtonElement, NotificationCente
 
   const groupOrder = ['Today', 'Yesterday', 'Earlier']
 
+  // -- Shared panel content (used in both Popover and Sheet) --
+  const panelContent = (
+    <>
+      {/* Header */}
+      <div className="flex items-center justify-between border-b border-surface-border-strong px-ds-05 py-ds-04">
+        <div className="flex items-center gap-ds-03">
+          {/* On mobile the SheetTitle provides the accessible heading; on desktop use h3 */}
+          {!isMobile && (
+            <h3 className="text-ds-md font-semibold text-surface-fg">
+              Notifications
+            </h3>
+          )}
+          {unreadCount > 0 && (
+            <span className="flex h-5 min-w-5 items-center justify-center rounded-ds-full bg-accent-2 px-ds-02b text-ds-sm font-semibold text-accent-11">
+              {unreadCount}
+            </span>
+          )}
+        </div>
+        <div className="flex items-center gap-ds-03">
+          {unreadCount > 0 && onMarkAllRead && (
+            <button
+              type="button"
+              onClick={onMarkAllRead}
+              className="flex items-center gap-ds-02 text-ds-sm text-surface-fg-subtle transition-colors hover:text-accent-11"
+            >
+              <Icon icon={IconChecks} size="sm" />
+              Mark all read
+            </button>
+          )}
+          {headerActions}
+        </div>
+      </div>
+
+      {/* Notification list */}
+      <div
+        ref={scrollRef}
+        onScroll={handleScroll}
+        className={cn('overflow-y-auto', isMobile ? 'max-h-[60vh]' : 'max-h-[420px]')}
+      >
+        {notifications.length === 0 ? (
+          emptyState || (
+            <div className="flex flex-col items-center justify-center px-ds-05 py-ds-09">
+              <div className="flex h-ds-lg w-ds-lg items-center justify-center rounded-ds-full bg-surface-raised">
+                <Icon icon={IconInbox} size="lg" className="text-surface-fg-subtle" />
+              </div>
+              <p className="mt-ds-04 text-ds-md text-surface-fg-subtle">
+                No notifications yet
+              </p>
+              <p className="mt-ds-02 text-ds-sm text-surface-fg-subtle">
+                You&apos;re all caught up!
+              </p>
+            </div>
+          )
+        ) : (
+          groupOrder.map((group) => {
+            const items = grouped[group]
+            if (!items || items.length === 0) return null
+            return (
+              <div key={group}>
+                <div className="sticky top-0 z-raised bg-surface-overlay px-ds-05 py-ds-02b">
+                  <span className="text-ds-sm font-medium text-surface-fg-subtle">
+                    {group}
+                  </span>
+                </div>
+                {items.map((notification, index) => (
+                  <motion.div
+                    key={notification.id}
+                    initial={prefersReducedMotion ? undefined : { opacity: 0 }}
+                    animate={{ opacity: 1 }}
+                    transition={prefersReducedMotion ? { duration: 0 } : { delay: index * 0.03 }}
+                  >
+                    <NotificationItem
+                      notification={notification}
+                      onRead={handleMarkRead}
+                      onNavigate={handleNavigate}
+                      getRoute={getRoute}
+                      onDismiss={onDismiss}
+                    />
+                  </motion.div>
+                ))}
+              </div>
+            )
+          })
+        )}
+
+        {isLoading && (
+          <div className="flex items-center justify-center py-ds-05">
+            <Spinner />
+          </div>
+        )}
+      </div>
+      {footerSlot && (
+        <div className="border-t border-surface-border-strong px-ds-05 py-ds-03">
+          {footerSlot}
+        </div>
+      )}
+    </>
+  )
+
+  // -- Trigger button (shared between both modes) --
+  const triggerButton = (
+    <button
+      {...props}
+      ref={ref}
+      aria-label={unreadCount > 0 ? `Notifications, ${unreadCount} unread` : 'Notifications'}
+      className={cn(
+        'relative flex h-ds-sm-plus w-ds-sm-plus items-center justify-center rounded-ds-full border border-surface-border-strong bg-surface-raised text-surface-fg-muted transition-colors ease-productive-standard hover:bg-surface-raised-hover',
+        className,
+      )}
+    >
+      <Icon icon={IconBell} size="sm" />
+      {unreadCount > 0 && (
+        <motion.span
+          initial={{ rotate: 0 }}
+          animate={prefersReducedMotion ? undefined : { rotate: [0, -3, 3, -1, 1, 0] }}
+          transition={prefersReducedMotion ? { duration: 0 } : { duration: 0.4, ease: 'easeInOut' }}
+          className="absolute -right-ds-01 -top-ds-01 flex h-4 min-w-4 items-center justify-center rounded-ds-full bg-accent-9 px-ds-02 text-ds-xs font-semibold text-accent-fg"
+        >
+          {unreadCount > 99 ? '99+' : unreadCount}
+        </motion.span>
+      )}
+    </button>
+  )
+
+  // -- Mobile: render in a bottom Sheet --
+  if (isMobile) {
+    return (
+      <Sheet open={open} onOpenChange={onOpenChange}>
+        <Tooltip>
+          <TooltipTrigger asChild>
+            <SheetTrigger asChild>
+              {triggerButton}
+            </SheetTrigger>
+          </TooltipTrigger>
+          <TooltipContent side="bottom" align="center">
+            Notifications
+          </TooltipContent>
+        </Tooltip>
+
+        <SheetContent side="bottom" className={cn('p-0', popoverClassName)} responsive={false}>
+          <SheetTitle className="px-ds-05 pt-ds-04 text-ds-md font-semibold text-surface-fg">
+            Notifications
+          </SheetTitle>
+          {panelContent}
+        </SheetContent>
+      </Sheet>
+    )
+  }
+
+  // -- Desktop: render in a Popover --
   return (
     <Popover open={open} onOpenChange={onOpenChange}>
       <Tooltip>
         <TooltipTrigger asChild>
           <PopoverTrigger asChild>
-            <button
-              {...props}
-              ref={ref}
-              aria-label={unreadCount > 0 ? `Notifications, ${unreadCount} unread` : 'Notifications'}
-              className={cn(
-                'relative flex h-ds-sm-plus w-ds-sm-plus items-center justify-center rounded-ds-full border border-surface-border-strong bg-surface-raised text-surface-fg-muted transition-colors ease-productive-standard hover:bg-surface-raised-hover',
-                className,
-              )}
-            >
-              <Icon icon={IconBell} size="sm" />
-              {unreadCount > 0 && (
-                <motion.span
-                  initial={{ rotate: 0 }}
-                  animate={prefersReducedMotion ? undefined : { rotate: [0, -3, 3, -1, 1, 0] }}
-                  transition={prefersReducedMotion ? { duration: 0 } : { duration: 0.4, ease: 'easeInOut' }}
-                  className="absolute -right-ds-01 -top-ds-01 flex h-4 min-w-4 items-center justify-center rounded-ds-full bg-accent-9 px-ds-02 text-ds-xs font-semibold text-accent-fg"
-                >
-                  {unreadCount > 99 ? '99+' : unreadCount}
-                </motion.span>
-              )}
-            </button>
+            {triggerButton}
           </PopoverTrigger>
         </TooltipTrigger>
         <TooltipContent side="bottom" align="center">
@@ -370,96 +508,7 @@ const NotificationCenter = React.forwardRef<HTMLButtonElement, NotificationCente
         sideOffset={8}
         align="end"
       >
-        {/* Header */}
-        <div className="flex items-center justify-between border-b border-surface-border-strong px-ds-05 py-ds-04">
-          <div className="flex items-center gap-ds-03">
-            <h3 className="text-ds-md font-semibold text-surface-fg">
-              Notifications
-            </h3>
-            {unreadCount > 0 && (
-              <span className="flex h-5 min-w-5 items-center justify-center rounded-ds-full bg-accent-2 px-ds-02b text-ds-sm font-semibold text-accent-11">
-                {unreadCount}
-              </span>
-            )}
-          </div>
-          <div className="flex items-center gap-ds-03">
-            {unreadCount > 0 && onMarkAllRead && (
-              <button
-                type="button"
-                onClick={onMarkAllRead}
-                className="flex items-center gap-ds-02 text-ds-sm text-surface-fg-subtle transition-colors hover:text-accent-11"
-              >
-                <Icon icon={IconChecks} size="sm" />
-                Mark all read
-              </button>
-            )}
-            {headerActions}
-          </div>
-        </div>
-
-        {/* Notification list */}
-        <div
-          ref={scrollRef}
-          onScroll={handleScroll}
-          className="max-h-[420px] overflow-y-auto"
-        >
-          {notifications.length === 0 ? (
-            emptyState || (
-              <div className="flex flex-col items-center justify-center px-ds-05 py-ds-09">
-                <div className="flex h-ds-lg w-ds-lg items-center justify-center rounded-ds-full bg-surface-raised">
-                  <Icon icon={IconInbox} size="lg" className="text-surface-fg-subtle" />
-                </div>
-                <p className="mt-ds-04 text-ds-md text-surface-fg-subtle">
-                  No notifications yet
-                </p>
-                <p className="mt-ds-02 text-ds-sm text-surface-fg-subtle">
-                  You&apos;re all caught up!
-                </p>
-              </div>
-            )
-          ) : (
-            groupOrder.map((group) => {
-              const items = grouped[group]
-              if (!items || items.length === 0) return null
-              return (
-                <div key={group}>
-                  <div className="sticky top-0 z-raised bg-surface-overlay px-ds-05 py-ds-02b">
-                    <span className="text-ds-sm font-medium text-surface-fg-subtle">
-                      {group}
-                    </span>
-                  </div>
-                  {items.map((notification, index) => (
-                    <motion.div
-                      key={notification.id}
-                      initial={prefersReducedMotion ? undefined : { opacity: 0 }}
-                      animate={{ opacity: 1 }}
-                      transition={prefersReducedMotion ? { duration: 0 } : { delay: index * 0.03 }}
-                    >
-                      <NotificationItem
-                        notification={notification}
-                        onRead={handleMarkRead}
-                        onNavigate={handleNavigate}
-                        getRoute={getRoute}
-                        onDismiss={onDismiss}
-                      />
-                    </motion.div>
-                  ))}
-                </div>
-              )
-            })
-          )}
-
-          {isLoading && (
-            <div className="flex items-center justify-center py-ds-05">
-              <Spinner />
-            </div>
-          )}
-        </div>
-        {footerSlot && (
-          <div className="border-t border-surface-border-strong px-ds-05 py-ds-03">
-            {footerSlot}
-          </div>
-        )}
+        {panelContent}
       </PopoverContent>
     </Popover>
     )

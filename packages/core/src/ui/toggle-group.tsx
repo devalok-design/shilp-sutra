@@ -50,6 +50,7 @@ const ToggleGroupItem = React.forwardRef<
           variant: variant ?? context.variant,
           size: size ?? context.size,
         }),
+        'active:scale-[0.95] transition-transform',
         className,
       )}
       {...props}

@@ -284,7 +284,8 @@ const SplitButton = React.forwardRef<HTMLDivElement, SplitButtonProps>(
               aria-label={ariaLabel}
               className={cn(
                 'inline-flex items-center justify-center font-semibold select-none whitespace-nowrap',
-                'transition-colors duration-fast-01 ease-productive-standard',
+                'transition-[colors,transform] duration-fast-01 ease-productive-standard',
+                'active:scale-[0.97]',
                 'focus-visible:outline-hidden focus-visible:ring-2 focus-visible:ring-accent-9 focus-visible:ring-inset',
                 'disabled:pointer-events-none disabled:opacity-action-disabled',
                 halfClasses,

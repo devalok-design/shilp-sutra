@@ -347,6 +347,8 @@ const ColorInput = React.forwardRef<HTMLDivElement, ColorInputProps>(
           </PopoverTrigger>
 
           <PopoverContent
+            role="dialog"
+            aria-label="Color picker"
             align={align}
             sideOffset={8}
             className="w-[272px] rounded-ds-xl border border-surface-border-strong bg-surface-overlay p-0 shadow-floating"

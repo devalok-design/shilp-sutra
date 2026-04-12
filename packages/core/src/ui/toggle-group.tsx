@@ -12,14 +12,15 @@ const ToggleGroupContext = React.createContext<
 >({
   size: 'md',
   variant: 'default',
+  color: 'accent',
 })
 
 const ToggleGroup = React.forwardRef<
   React.ElementRef<typeof ToggleGroupPrimitive.Root>,
   React.ComponentPropsWithoutRef<typeof ToggleGroupPrimitive.Root> &
     VariantProps<typeof toggleVariants>
->(({ className, variant, size, children, ...props }, ref) => {
-  const contextValue = React.useMemo(() => ({ variant, size }), [variant, size])
+>(({ className, variant, size, color, children, ...props }, ref) => {
+  const contextValue = React.useMemo(() => ({ variant, size, color }), [variant, size, color])
 
   return (
     <ToggleGroupPrimitive.Root
@@ -39,7 +40,7 @@ const ToggleGroupItem = React.forwardRef<
   React.ElementRef<typeof ToggleGroupPrimitive.Item>,
   React.ComponentPropsWithoutRef<typeof ToggleGroupPrimitive.Item> &
     VariantProps<typeof toggleVariants>
->(({ className, variant, size, ...props }, ref) => {
+>(({ className, variant, size, color, ...props }, ref) => {
   const context = React.useContext(ToggleGroupContext)
 
   return (
@@ -49,6 +50,7 @@ const ToggleGroupItem = React.forwardRef<
         toggleVariants({
           variant: variant ?? context.variant,
           size: size ?? context.size,
+          color: color ?? context.color,
         }),
         'active:scale-[0.95] transition-transform',
         className,

@@ -229,8 +229,10 @@ const Step = React.forwardRef<HTMLDivElement, StepProps>(
             onClick={() => onStepClick(_index)}
             className={cn(
               'flex items-center gap-ds-03 cursor-pointer',
-              'rounded-ds-md focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent-8 focus-visible:ring-offset-2',
-              'hover:opacity-80 transition-opacity',
+              'rounded-ds-md px-ds-02 py-ds-01 -mx-ds-02 -my-ds-01',
+              'hover:bg-surface-raised-hover active:bg-surface-raised-active',
+              'focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent-8 focus-visible:ring-offset-2',
+              'transition-colors duration-fast-01 ease-productive-standard',
             )}
           >
             {stepContent}

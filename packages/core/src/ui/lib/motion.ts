@@ -1,6 +1,21 @@
 // @server-safe
 import type { Transition } from 'framer-motion'
 
+// ── Duration constants (mirrors CSS --duration-* tokens, in seconds for Framer Motion) ──
+
+export const durations = {
+  instant: 0,
+  fast01: 0.07,
+  fast02: 0.11,
+  moderate01: 0.15,
+  moderate01b: 0.2,
+  moderate02: 0.24,
+  slow01: 0.4,
+  slow02: 0.7,
+} as const
+
+export type DurationPreset = keyof typeof durations
+
 // ── Spring configs (spatial: position, scale, size, rotation) ──
 
 export const springs = {
@@ -19,14 +34,14 @@ export const springs = {
 // ── Tween configs (non-spatial: opacity, color, background) ──
 
 export const tweens = {
-  /** Opacity enter/exit */
-  fade: { type: 'tween', duration: 0.11, ease: 'easeOut' } as Transition,
-  /** Hover color, bg, border transitions */
-  colorShift: { type: 'tween', duration: 0.07, ease: 'easeOut' } as Transition,
-  /** Greeting fade, hint crossfade — unhurried, confident */
-  elegant: { type: 'tween', duration: 0.4, ease: [0.25, 0.1, 0.25, 1] } as Transition,
-  /** Button/element layout transitions — smooth width/height changes, no overshoot */
-  layout: { type: 'tween', duration: 0.2, ease: [0.25, 0.1, 0.25, 1] } as Transition,
+  /** Opacity enter/exit — matches --duration-fast-02 (110ms) */
+  fade: { type: 'tween', duration: durations.fast02, ease: 'easeOut' } as Transition,
+  /** Hover color, bg, border transitions — matches --duration-fast-01 (70ms) */
+  colorShift: { type: 'tween', duration: durations.fast01, ease: 'easeOut' } as Transition,
+  /** Greeting fade, hint crossfade — matches --duration-slow-01 (400ms) */
+  elegant: { type: 'tween', duration: durations.slow01, ease: [0.25, 0.1, 0.25, 1] } as Transition,
+  /** Button/element layout transitions — matches --duration-moderate-01b (200ms) */
+  layout: { type: 'tween', duration: durations.moderate01b, ease: [0.25, 0.1, 0.25, 1] } as Transition,
 } as const
 
 // ── Stagger helper ──

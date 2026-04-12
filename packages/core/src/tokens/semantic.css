@@ -164,6 +164,13 @@
   --color-info-fg: var(--neutral-1);
 
   /* ═══════════════════════════════════════════════════════════
+     LINK COLORS
+     ═══════════════════════════════════════════════════════════ */
+  --color-link: var(--color-accent-11);           /* default link text — high-contrast accent */
+  --color-link-hover: var(--color-accent-12);     /* hover — darker for clear feedback */
+  --color-link-visited: var(--purple-11);          /* visited — distinct from unvisited, uses secondary hue */
+
+  /* ═══════════════════════════════════════════════════════════
      CATEGORY COLORS (Sapta Varna — step subsets)
      ═══════════════════════════════════════════════════════════ */
   --color-category-teal-3: var(--teal-3);
@@ -242,6 +249,16 @@
   --spacing-12: 96px;
   --spacing-13: 160px;
 
+  /* ── Layout Spacing (semantic page/section-level) ──
+     These reference the base spacing scale but provide responsive overrides
+     via @media queries below. Components like Container use these instead
+     of hardcoding a single spacing token. */
+  --spacing-page-x: var(--spacing-05);            /* 16px — horizontal page padding */
+  --spacing-page-y: var(--spacing-07);            /* 32px — vertical page padding */
+  --spacing-section-gap: var(--spacing-08);       /* 40px — between major page sections */
+  --spacing-card-gap: var(--spacing-05);          /* 16px — between cards in a grid */
+  --spacing-stack-gap: var(--spacing-06);         /* 24px — between stacked content blocks */
+
   /* ═══════════════════════════════════════════════════════════
      RADIUS
      ═══════════════════════════════════════════════════════════ */
@@ -263,6 +280,7 @@
   --duration-fast-01: 70ms;
   --duration-fast-02: 110ms;
   --duration-moderate-01: 150ms;
+  --duration-moderate-01b: 200ms;  /* accordion, collapsible, layout transitions — most-used gap */
   --duration-moderate-02: 240ms;
   --duration-slow-01: 400ms;
   --duration-slow-02: 700ms;
@@ -438,6 +456,9 @@
   --color-warning-11: var(--amber-bright-11);
   --color-warning-fg: var(--neutral-0);
 
+  /* Link colors — accent-11/12 already flip via semantic layer;
+     visited uses purple-11 which also flips via primitives dark block */
+
   /* Dark mode borders need lower contrast — bright borders look harsh.
      Drop to step 3/4 for subtle resting borders that don't overpower surfaces */
   /* Dark mode: restore base/raised to original direction (raised = lighter than base) */
@@ -501,6 +522,20 @@
    renders above Sheet/Dialog overlays */
 [data-radix-popper-content-wrapper] {
   z-index: var(--z-popover) !important;
+}
+
+/* ── Responsive Layout Spacing ──────────────────────── */
+@media (min-width: 768px) {
+  :root {
+    --spacing-page-x: var(--spacing-06);          /* 24px on tablet+ */
+    --spacing-section-gap: var(--spacing-10);     /* 64px on tablet+ */
+  }
+}
+
+@media (min-width: 1280px) {
+  :root {
+    --spacing-page-x: var(--spacing-08);          /* 40px on desktop+ */
+  }
 }
 
 /* ── Reduced Motion ──────────────────────────────────── */

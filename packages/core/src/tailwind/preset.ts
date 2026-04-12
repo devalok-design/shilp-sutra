@@ -93,6 +93,12 @@ const preset: Partial<Config> = {
         'ds-11': 'var(--spacing-11)',
         'ds-12': 'var(--spacing-12)',
         'ds-13': 'var(--spacing-13)',
+        // ── Layout spacing (responsive via @media in semantic.css) ──
+        'page-x': 'var(--spacing-page-x)',
+        'page-y': 'var(--spacing-page-y)',
+        'section-gap': 'var(--spacing-section-gap)',
+        'card-gap': 'var(--spacing-card-gap)',
+        'stack-gap': 'var(--spacing-stack-gap)',
       },
       width: {
         'ds-xs': 'var(--size-xs)',
@@ -196,6 +202,11 @@ const preset: Partial<Config> = {
         'surface-border-strong': 'var(--color-surface-border-strong)',
         'surface-border-subtle': 'var(--color-surface-border-subtle)',
         backdrop: 'var(--color-backdrop)',
+
+        // ═══ Link ═══
+        link: 'var(--color-link)',
+        'link-hover': 'var(--color-link-hover)',
+        'link-visited': 'var(--color-link-visited)',
 
         // ═══ NEW: Status (step subsets) ═══
         'error-2': 'var(--color-error-2)',
@@ -377,6 +388,7 @@ const preset: Partial<Config> = {
         'fast-01': 'var(--duration-fast-01)',
         'fast-02': 'var(--duration-fast-02)',
         'moderate-01': 'var(--duration-moderate-01)',
+        'moderate-01b': 'var(--duration-moderate-01b)',
         'moderate-02': 'var(--duration-moderate-02)',
         'slow-01': 'var(--duration-slow-01)',
         'slow-02': 'var(--duration-slow-02)',

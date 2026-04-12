@@ -65,6 +65,12 @@ docs: update README
 - Use `@testing-library/react` for rendering
 - Include at least one `vitest-axe` accessibility assertion
 - Test behavior, not implementation details
+- `pnpm test:coverage` for coverage report (thresholds enforced)
+
+**File location convention:**
+- Co-located: `ui/button.test.tsx` — primary functional tests
+- Subdirectory: `ui/__tests__/button-a11y.test.tsx` — supplementary a11y or feature-specific tests
+- Both locations are scanned by Vitest. Use co-located for the main suite, `__tests__/` for focused follow-ups
 
 ## Pull Requests
 

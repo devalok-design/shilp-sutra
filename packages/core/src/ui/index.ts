@@ -66,7 +66,7 @@ export { NumberInput, numberInputWrapperVariants, type NumberInputProps, type Nu
 export { SearchInput, type SearchInputProps } from './search-input'
 export { InputOTP, InputOTPGroup, InputOTPSlot, InputOTPSeparator, type InputOTPProps } from './input-otp'
 export { FormField, FormHelperText, useFormField, type FormFieldProps, type FormHelperState, type FormHelperTextProps } from './form'
-export { Slider, type SliderProps } from './slider'
+export { Slider, sliderTrackVariants, sliderThumbVariants, type SliderProps, type SliderSize, type SliderColor } from './slider'
 export { Toggle, toggleVariants, type ToggleProps } from './toggle'
 export { ToggleGroup, ToggleGroupItem, type ToggleGroupProps, type ToggleGroupItemProps } from './toggle-group'
 

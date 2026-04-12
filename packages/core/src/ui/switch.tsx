@@ -6,6 +6,7 @@ import * as SwitchPrimitives from "@primitives/react-switch"
 
 import { springs } from './lib/motion'
 import { cn } from "./lib/utils"
+import { useFormField } from './form'
 
 const sizeConfig = {
   sm: { track: 'h-6 w-[38px]', thumb: 'h-5 w-5', travel: 16 },
@@ -30,6 +31,11 @@ const Switch = React.forwardRef<
   React.ElementRef<typeof SwitchPrimitives.Root>,
   SwitchProps
 >(({ className, error, size = 'md', color = 'accent', thumbIcon, checked, defaultChecked, onCheckedChange, ...props }, ref) => {
+  const fieldCtx = useFormField()
+  const isError = error ?? fieldCtx.state === 'error'
+  const ariaDescribedBy = props['aria-describedby'] ?? fieldCtx.helperTextId
+  const ariaRequired = props['aria-required'] ?? fieldCtx.required
+
   // Track checked state internally to drive Framer Motion animation
   const [internalChecked, setInternalChecked] = React.useState(defaultChecked ?? false)
   const isChecked = checked !== undefined ? checked : internalChecked
@@ -51,12 +57,15 @@ const Switch = React.forwardRef<
         "touch-target peer inline-flex shrink-0 cursor-pointer items-center rounded-ds-full border-2 border-surface-border-strong shadow-raised transition-colors duration-fast-01 focus-visible:outline-hidden focus-visible:ring-2 focus-visible:ring-accent-9 focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-action-disabled data-[state=checked]:border-transparent data-[state=unchecked]:bg-surface-border-strong data-[state=unchecked]:hover:bg-surface-raised-active",
         track,
         colorMap[color],
-        error && "border-error-7 data-[state=checked]:bg-error-9",
+        isError && "border-error-7 data-[state=checked]:bg-error-9",
         className
       )}
       checked={checked}
       defaultChecked={defaultChecked}
       onCheckedChange={handleCheckedChange}
+      aria-invalid={isError || undefined}
+      aria-describedby={ariaDescribedBy}
+      aria-required={ariaRequired || undefined}
       {...props}
       ref={ref}
     >

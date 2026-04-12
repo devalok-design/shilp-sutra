@@ -4,6 +4,7 @@ import * as React from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
 import { cn } from './lib/utils'
 import { springs, tweens } from './lib/motion'
+import { useFormField } from './form'
 
 const listVariants = {
   hidden: {},
@@ -159,6 +160,11 @@ const Autocomplete = React.forwardRef<HTMLInputElement, AutocompleteProps>(
       [isOpen, filtered, highlightedIndex, handleSelect],
     )
 
+    const fieldCtx = useFormField()
+    const isError = fieldCtx.state === 'error'
+    const ariaDescribedBy = fieldCtx.helperTextId
+    const ariaRequired = fieldCtx.required
+
     const highlightedOptionId =
       highlightedIndex >= 0 ? `${optionIdPrefix}-${highlightedIndex}` : undefined
 
@@ -172,6 +178,9 @@ const Autocomplete = React.forwardRef<HTMLInputElement, AutocompleteProps>(
           aria-autocomplete="list"
           aria-controls={isOpen ? listboxId : undefined}
           aria-activedescendant={highlightedOptionId}
+          aria-invalid={isError || undefined}
+          aria-describedby={ariaDescribedBy}
+          aria-required={ariaRequired || undefined}
           value={query}
           placeholder={placeholder}
           disabled={disabled}

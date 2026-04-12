@@ -6,12 +6,27 @@ import { AnimatePresence, motion } from 'framer-motion'
 import * as React from 'react'
 import { springs } from './lib/motion'
 import { cn } from './lib/utils'
+import { useFormField } from './form'
 
 const RadioGroup = React.forwardRef<
   React.ElementRef<typeof RadioGroupPrimitive.Root>,
   React.ComponentPropsWithoutRef<typeof RadioGroupPrimitive.Root>
 >(({ className, ...props }, ref) => {
-  return <RadioGroupPrimitive.Root className={cn('grid gap-ds-03', className)} {...props} ref={ref} />
+  const fieldCtx = useFormField()
+  const isError = fieldCtx.state === 'error'
+  const ariaDescribedBy = props['aria-describedby'] ?? fieldCtx.helperTextId
+  const ariaRequired = props['aria-required'] ?? fieldCtx.required
+
+  return (
+    <RadioGroupPrimitive.Root
+      className={cn('grid gap-ds-03', className)}
+      aria-invalid={isError || undefined}
+      aria-describedby={ariaDescribedBy}
+      aria-required={ariaRequired || undefined}
+      {...props}
+      ref={ref}
+    />
+  )
 })
 RadioGroup.displayName = RadioGroupPrimitive.Root.displayName
 

@@ -4,6 +4,7 @@ import * as CheckboxPrimitive from '@primitives/react-checkbox'
 import { AnimatePresence, motion } from 'framer-motion'
 import * as React from 'react'
 import { cn } from './lib/utils'
+import { useFormField } from './form'
 
 /**
  * Props for Checkbox — a Radix-powered accessible checkbox with error state styling and
@@ -61,6 +62,11 @@ const Checkbox = React.forwardRef<
     indeterminate ? 'indeterminate' : (defaultChecked ? true : false),
   )
 
+  const fieldCtx = useFormField()
+  const isError = error ?? fieldCtx.state === 'error'
+  const ariaDescribedBy = props['aria-describedby'] ?? fieldCtx.helperTextId
+  const ariaRequired = props['aria-required'] ?? fieldCtx.required
+
   const actualChecked = indeterminate ? 'indeterminate' : (isControlled ? checked : internalChecked)
   const isActive = actualChecked === true || actualChecked === 'indeterminate'
 
@@ -89,9 +95,12 @@ const Checkbox = React.forwardRef<
         'data-[state=unchecked]:hover:border-accent-7 data-[state=unchecked]:hover:bg-surface-raised-active',
         'data-[state=checked]:bg-accent-9 data-[state=checked]:border-accent-7 data-[state=checked]:text-accent-fg',
         'data-[state=indeterminate]:bg-accent-9 data-[state=indeterminate]:border-accent-7 data-[state=indeterminate]:text-accent-fg',
-        error && 'border-error-7 bg-error-3',
+        isError && 'border-error-7 bg-error-3',
         className,
       )}
+      aria-invalid={isError || undefined}
+      aria-describedby={ariaDescribedBy}
+      aria-required={ariaRequired || undefined}
       {...props}
     >
       <AnimatePresence>

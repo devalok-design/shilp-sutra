@@ -9,6 +9,7 @@ import { motion } from 'framer-motion'
 import { cn } from './lib/utils'
 import { springs, tweens } from './lib/motion'
 import { Icon } from './icon'
+import { useFormField } from './form'
 
 /**
  * Select root — manages open/close state and selected value.
@@ -81,11 +82,21 @@ export interface SelectTriggerProps
 const SelectTrigger = React.forwardRef<
   React.ElementRef<typeof SelectPrimitive.Trigger>,
   SelectTriggerProps
->(({ className, children, variant, color, size, ...props }, ref) => (
+>(({ className, children, variant, color, size, ...props }, ref) => {
+  const fieldCtx = useFormField()
+  const isError =
+    color === 'error' ||
+    (fieldCtx.state === 'error' && color == null)
+  const ariaDescribedBy = props['aria-describedby'] ?? fieldCtx.helperTextId
+  const ariaRequired = props['aria-required'] ?? fieldCtx.required
+
+  return (
   <SelectPrimitive.Trigger
     ref={ref}
-    className={cn(selectTriggerVariants({ variant, color, size }), className)}
-    aria-invalid={color === 'error' || undefined}
+    className={cn(selectTriggerVariants({ variant, color: isError && !color ? 'error' : color, size }), className)}
+    aria-invalid={isError || undefined}
+    aria-describedby={ariaDescribedBy}
+    aria-required={ariaRequired || undefined}
     {...props}
   >
     {children}
@@ -93,7 +104,8 @@ const SelectTrigger = React.forwardRef<
       <Icon icon={IconChevronDown} size="sm" className="opacity-50" />
     </SelectPrimitive.Icon>
   </SelectPrimitive.Trigger>
-))
+  )
+})
 SelectTrigger.displayName = SelectPrimitive.Trigger.displayName
 
 const SelectScrollUpButton = React.forwardRef<

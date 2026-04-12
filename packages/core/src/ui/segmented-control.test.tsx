@@ -109,7 +109,13 @@ describe('SegmentedControl', () => {
     expect(screen.getByRole('tab', { name: 'Gamma' })).toHaveAttribute('tabindex', '-1')
   })
 
-  it('variant="accent" applies accent selected text style', () => {
+  it('variant="solid" applies accent selected text style', () => {
+    render(<SegmentedControl options={options} selectedId="a" onSelect={() => {}} variant="solid" />)
+    const tab = screen.getByRole('tab', { name: 'Alpha' })
+    expect(tab.className).toContain('text-accent-fg')
+  })
+
+  it('accepts deprecated "accent" alias as equivalent to "solid"', () => {
     render(<SegmentedControl options={options} selectedId="a" onSelect={() => {}} variant="accent" />)
     const tab = screen.getByRole('tab', { name: 'Alpha' })
     expect(tab.className).toContain('text-accent-fg')

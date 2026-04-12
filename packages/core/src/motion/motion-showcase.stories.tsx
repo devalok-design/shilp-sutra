@@ -238,7 +238,7 @@ function AlertDismissDemo() {
       )}
       {show && (
         <Alert
-          variant="filled"
+          variant="solid"
           color="info"
           title="FM-powered dismiss"
           onDismiss={() => setShow(false)}

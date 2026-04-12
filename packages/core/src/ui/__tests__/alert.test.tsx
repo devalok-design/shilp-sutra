@@ -54,42 +54,49 @@ describe('Alert', () => {
       expect(el.className).toContain('text-success-11')
     })
 
-    it('applies filled variant for info', () => {
-      const { container } = render(<Alert variant="filled" color="info">Filled</Alert>)
+    it('applies solid variant for info', () => {
+      const { container } = render(<Alert variant="solid" color="info">Solid</Alert>)
       const el = container.firstChild as HTMLElement
       expect(el.className).toContain('bg-info-9')
       expect(el.className).toContain('text-accent-fg')
       expect(el.className).toContain('border-transparent')
     })
 
-    it('applies filled variant for success', () => {
-      const { container } = render(<Alert variant="filled" color="success">Filled</Alert>)
+    it('applies solid variant for success', () => {
+      const { container } = render(<Alert variant="solid" color="success">Solid</Alert>)
       const el = container.firstChild as HTMLElement
       expect(el.className).toContain('bg-success-9')
       expect(el.className).toContain('text-accent-fg')
     })
 
-    it('applies filled variant for warning', () => {
-      const { container } = render(<Alert variant="filled" color="warning">Filled</Alert>)
+    it('applies solid variant for warning', () => {
+      const { container } = render(<Alert variant="solid" color="warning">Solid</Alert>)
       const el = container.firstChild as HTMLElement
       expect(el.className).toContain('bg-warning-9')
       expect(el.className).toContain('text-accent-fg')
     })
 
-    it('applies filled variant for error', () => {
-      const { container } = render(<Alert variant="filled" color="error">Filled</Alert>)
+    it('applies solid variant for error', () => {
+      const { container } = render(<Alert variant="solid" color="error">Solid</Alert>)
       const el = container.firstChild as HTMLElement
       expect(el.className).toContain('bg-error-9')
       expect(el.className).toContain('text-accent-fg')
     })
 
-    it('applies filled variant for neutral (special case)', () => {
-      const { container } = render(<Alert variant="filled" color="neutral">Filled neutral</Alert>)
+    it('applies solid variant for neutral (special case)', () => {
+      const { container } = render(<Alert variant="solid" color="neutral">Solid neutral</Alert>)
       const el = container.firstChild as HTMLElement
       expect(el.className).toContain('bg-surface-raised-hover')
       expect(el.className).toContain('text-surface-fg')
-      // neutral filled should NOT have text-on-color (it uses dark text)
+      // neutral solid should NOT have text-on-color (it uses dark text)
       expect(el.className).not.toContain('text-accent-fg')
+    })
+
+    it('accepts deprecated "filled" alias as equivalent to "solid"', () => {
+      const { container } = render(<Alert variant="filled" color="info">Filled alias</Alert>)
+      const el = container.firstChild as HTMLElement
+      expect(el.className).toContain('bg-info-9')
+      expect(el.className).toContain('text-accent-fg')
     })
 
     it('applies outline variant for info', () => {
@@ -117,16 +124,16 @@ describe('Alert', () => {
     })
   })
 
-  // --- Filled variant icon color ---
-  describe('filled variant icon styling', () => {
-    it('includes svg text-on-color class for filled non-neutral', () => {
-      const { container } = render(<Alert variant="filled" color="info">Filled</Alert>)
+  // --- Solid variant icon color ---
+  describe('solid variant icon styling', () => {
+    it('includes svg text-on-color class for solid non-neutral', () => {
+      const { container } = render(<Alert variant="solid" color="info">Solid</Alert>)
       const el = container.firstChild as HTMLElement
       expect(el.className).toContain('[&>svg]:text-accent-fg')
     })
 
-    it('does not include svg text-on-color for filled neutral', () => {
-      const { container } = render(<Alert variant="filled" color="neutral">Filled</Alert>)
+    it('does not include svg text-on-color for solid neutral', () => {
+      const { container } = render(<Alert variant="solid" color="neutral">Solid</Alert>)
       const el = container.firstChild as HTMLElement
       expect(el.className).not.toContain('[&>svg]:text-accent-fg')
     })
@@ -139,8 +146,8 @@ describe('Alert', () => {
       expect(classes).toContain('bg-info-3')
     })
 
-    it('returns filled error classes', () => {
-      const classes = alertVariants({ variant: 'filled', color: 'error' })
+    it('returns solid error classes', () => {
+      const classes = alertVariants({ variant: 'solid', color: 'error' })
       expect(classes).toContain('bg-error-9')
       expect(classes).toContain('text-accent-fg')
     })

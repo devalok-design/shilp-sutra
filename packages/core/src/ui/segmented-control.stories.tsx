@@ -50,7 +50,7 @@ const meta: Meta<typeof SegmentedControl> = {
     },
     variant: {
       control: 'select',
-      options: ['default', 'accent'],
+      options: ['default', 'solid', 'accent'],
     },
     disabled: {
       control: 'boolean',
@@ -101,10 +101,10 @@ export const Default: Story = {
   },
 }
 
-export const Accent: Story = {
+export const Solid: Story = {
   args: {
     size: 'md',
-    variant: 'accent',
+    variant: 'solid',
     options: textOptions,
     selectedId: 'board',
   },
@@ -113,7 +113,7 @@ export const Accent: Story = {
 export const Small: Story = {
   args: {
     size: 'sm',
-    variant: 'accent',
+    variant: 'solid',
     options: textOptions,
     selectedId: 'list',
   },
@@ -122,7 +122,7 @@ export const Small: Story = {
 export const Large: Story = {
   args: {
     size: 'lg',
-    variant: 'accent',
+    variant: 'solid',
     options: textOptions,
     selectedId: 'calendar',
   },
@@ -131,7 +131,7 @@ export const Large: Story = {
 export const WithIcons: Story = {
   args: {
     size: 'md',
-    variant: 'accent',
+    variant: 'solid',
     options: iconOptions,
     selectedId: 'board',
   },
@@ -149,7 +149,7 @@ export const WithIconsDefault: Story = {
 export const MixedIconsAndText: Story = {
   args: {
     size: 'md',
-    variant: 'accent',
+    variant: 'solid',
     options: mixedOptions,
     selectedId: 'overview',
   },
@@ -158,7 +158,7 @@ export const MixedIconsAndText: Story = {
 export const TwoOptions: Story = {
   args: {
     size: 'md',
-    variant: 'accent',
+    variant: 'solid',
     options: twoOptions,
     selectedId: 'active',
   },
@@ -167,7 +167,7 @@ export const TwoOptions: Story = {
 export const Disabled: Story = {
   args: {
     size: 'md',
-    variant: 'accent',
+    variant: 'solid',
     options: textOptions,
     selectedId: 'board',
     disabled: true,
@@ -243,15 +243,15 @@ export const AllVariants: Story = {
         </div>
       </div>
 
-      {/* Accent variant */}
+      {/* Solid variant */}
       <div>
         <p className="mb-ds-04 text-ds-md font-accent font-semibold text-surface-fg">
-          Accent
+          Solid
         </p>
         <div style={{ display: 'flex', flexDirection: 'column', gap: 12 }}>
-          <ControlledDemo size="sm" variant="accent" options={iconOptions} />
-          <ControlledDemo size="md" variant="accent" options={iconOptions} />
-          <ControlledDemo size="lg" variant="accent" options={iconOptions} />
+          <ControlledDemo size="sm" variant="solid" options={iconOptions} />
+          <ControlledDemo size="md" variant="solid" options={iconOptions} />
+          <ControlledDemo size="lg" variant="solid" options={iconOptions} />
         </div>
       </div>
 
@@ -261,7 +261,7 @@ export const AllVariants: Story = {
           Text only
         </p>
         <div style={{ display: 'flex', flexDirection: 'column', gap: 12 }}>
-          <ControlledDemo size="md" variant="accent" options={textOptions} />
+          <ControlledDemo size="md" variant="solid" options={textOptions} />
           <ControlledDemo size="md" variant="default" options={textOptions} />
         </div>
       </div>
@@ -272,7 +272,7 @@ export const AllVariants: Story = {
           Disabled
         </p>
         <div style={{ display: 'flex', flexDirection: 'column', gap: 12 }}>
-          <ControlledDemo size="md" variant="accent" options={iconOptions} disabled />
+          <ControlledDemo size="md" variant="solid" options={iconOptions} disabled />
           <ControlledDemo size="md" variant="default" options={iconOptions} disabled />
         </div>
       </div>

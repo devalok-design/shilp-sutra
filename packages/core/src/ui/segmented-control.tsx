@@ -7,7 +7,7 @@ import { cn } from './lib/utils'
 /* ── Types ─────────────────────────────────────────────────── */
 
 export type SegmentedControlSize = 'sm' | 'md' | 'lg'
-export type SegmentedControlVariant = 'default' | 'accent'
+export type SegmentedControlVariant = 'default' | 'solid' | /** @deprecated Use `'solid'` instead. */ 'accent'
 
 export interface SegmentedControlOption {
   id: string
@@ -37,11 +37,15 @@ const sizeConfig = {
 
 const pillStyles = {
   default: 'bg-surface-overlay shadow-sm',
+  solid: 'bg-accent-9',
+  /** @deprecated Use `solid` instead. */
   accent: 'bg-accent-9',
 } as const
 
 const selectedTextStyles = {
   default: 'text-surface-fg',
+  solid: 'text-accent-fg',
+  /** @deprecated Use `solid` instead. */
   accent: 'text-accent-fg',
 } as const
 

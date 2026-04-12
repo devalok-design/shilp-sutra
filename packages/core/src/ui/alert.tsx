@@ -14,6 +14,8 @@ const alertVariants = cva(
     variants: {
       variant: {
         subtle: '',
+        solid: '',
+        /** @deprecated Use `solid` instead. Alias kept for one version of backwards compatibility. */
         filled: '',
         outline: '',
       },
@@ -37,7 +39,13 @@ const alertVariants = cva(
       { variant: 'subtle', color: 'warning', className: 'bg-warning-3 border-warning-7 text-warning-11' },
       { variant: 'subtle', color: 'error', className: 'bg-error-3 border-error-7 text-error-11' },
       { variant: 'subtle', color: 'neutral', className: 'bg-surface-raised border-surface-border-strong text-surface-fg [&>svg]:text-surface-fg-muted' },
-      // filled (solid bg, white text)
+      // solid (solid bg, contrasting text) — canonical name
+      { variant: 'solid', color: 'info', className: 'bg-info-9 text-accent-fg border-transparent [&>svg]:text-accent-fg' },
+      { variant: 'solid', color: 'success', className: 'bg-success-9 text-accent-fg border-transparent [&>svg]:text-accent-fg' },
+      { variant: 'solid', color: 'warning', className: 'bg-warning-9 text-accent-fg border-transparent [&>svg]:text-accent-fg' },
+      { variant: 'solid', color: 'error', className: 'bg-error-9 text-accent-fg border-transparent [&>svg]:text-accent-fg' },
+      { variant: 'solid', color: 'neutral', className: 'bg-surface-raised-hover text-surface-fg border-transparent [&>svg]:text-surface-fg-muted' },
+      // filled — deprecated alias for solid (remove in next minor)
       { variant: 'filled', color: 'info', className: 'bg-info-9 text-accent-fg border-transparent [&>svg]:text-accent-fg' },
       { variant: 'filled', color: 'success', className: 'bg-success-9 text-accent-fg border-transparent [&>svg]:text-accent-fg' },
       { variant: 'filled', color: 'warning', className: 'bg-warning-9 text-accent-fg border-transparent [&>svg]:text-accent-fg' },
@@ -66,7 +74,8 @@ const ALERT_ICONS: Record<string, React.ForwardRefExoticComponent<any>> = {
  * Props for Alert — an inline message block with a colored icon, optional title, optional body,
  * and an optional dismiss button. Renders with `role="alert"` for screen reader announcements.
  *
- * **Variants:** `subtle` (default, tinted surface) | `filled` (solid colored bg) | `outline` (transparent bg, colored border)
+ * **Variants:** `subtle` (default, tinted surface) | `solid` (solid colored bg) | `outline` (transparent bg, colored border)
+ * (`filled` is accepted as a deprecated alias for `solid` — will be removed in a future version)
  *
  * **Colors:** `info` (default, blue tones) | `success` | `warning` | `error` | `neutral`
  * The matching icon (info circle, checkmark, triangle, alert circle) is auto-selected by color.

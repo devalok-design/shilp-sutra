@@ -88,6 +88,10 @@ const Tabs = React.forwardRef<
           onValueChange={handleValueChange}
           orientation={orientation}
           {...props}
+          className={cn(
+            resolvedOrientation === 'vertical' && 'flex flex-row gap-ds-05',
+            props.className,
+          )}
         />
       </TabsOrientationContext.Provider>
     </TabsValueContext.Provider>
@@ -134,10 +138,10 @@ const tabsListVariants = cva('inline-flex items-center', {
     },
   },
   compoundVariants: [
-    // Vertical line: left border instead of bottom, auto height
-    { variant: 'line', orientation: 'vertical', class: 'border-b-0 border-l border-surface-border-strong w-auto h-auto gap-0' },
-    // Vertical contained: column layout, auto height
-    { variant: 'contained', orientation: 'vertical', class: 'h-auto w-auto' },
+    // Vertical line: left border instead of bottom, fixed width, auto height
+    { variant: 'line', orientation: 'vertical', class: 'border-b-0 border-l border-surface-border-strong w-48 shrink-0 h-auto gap-0' },
+    // Vertical contained: column layout, fixed width, auto height
+    { variant: 'contained', orientation: 'vertical', class: 'h-auto w-48 shrink-0' },
   ],
   defaultVariants: { variant: 'line', size: 'md', orientation: 'horizontal' },
 })
@@ -258,7 +262,8 @@ const TabsTrigger = React.forwardRef<
       className={cn(
         tabsTriggerVariants({ variant, size }),
         variant === 'line' && lineActiveColorMap[color],
-        // Vertical line: negative left margin instead of negative bottom margin
+        // Vertical: full width triggers, left margin instead of bottom
+        isVertical && 'w-full justify-start',
         variant === 'line' && isVertical && '-ml-px -mb-0',
         className,
       )}
@@ -296,13 +301,18 @@ TabsTrigger.displayName = TabsPrimitive.Trigger.displayName
 const TabsContent = React.forwardRef<
   React.ElementRef<typeof TabsPrimitive.Content>,
   React.ComponentPropsWithoutRef<typeof TabsPrimitive.Content>
->(({ className, children, ...props }, ref) => (
-  <TabsPrimitive.Content
-    ref={ref}
-    className={cn(
-      'mt-ds-05 ring-offset-background focus-visible:outline-hidden focus-visible:ring-2 focus-visible:ring-accent-9 focus-visible:ring-offset-2',
-      className,
-    )}
+>(({ className, children, ...props }, ref) => {
+  const orientation = React.useContext(TabsOrientationContext)
+  const isVertical = orientation === 'vertical'
+
+  return (
+    <TabsPrimitive.Content
+      ref={ref}
+      className={cn(
+        'ring-offset-background focus-visible:outline-hidden focus-visible:ring-2 focus-visible:ring-accent-9 focus-visible:ring-offset-2',
+        isVertical ? 'mt-0 flex-1 min-w-0' : 'mt-ds-05',
+        className,
+      )}
     {...props}
   >
     <motion.div
@@ -313,7 +323,8 @@ const TabsContent = React.forwardRef<
       {children}
     </motion.div>
   </TabsPrimitive.Content>
-))
+  )
+})
 TabsContent.displayName = TabsPrimitive.Content.displayName
 
 /** Props for TabsContent. The `value` prop must match a TabsTrigger's `value`. */

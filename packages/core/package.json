@@ -811,6 +811,7 @@
   "devDependencies": {
     "@emoji-mart/data": "^1.2.1",
     "@emoji-mart/react": "^1.1.1",
+    "@floating-ui/dom": "^1.7.6",
     "@floating-ui/react-dom": "^2.1.8",
     "@tabler/icons-react": "^3.41.1",
     "@tanstack/react-table": "^8.21.3",
@@ -818,8 +819,10 @@
     "@tiptap/core": "^3.22.3",
     "@tiptap/extension-highlight": "^3.22.3",
     "@tiptap/extension-image": "^3.22.3",
+    "@tiptap/extension-list": "^3.22.3",
     "@tiptap/extension-mention": "^3.22.3",
     "@tiptap/extension-text-align": "^3.22.3",
+    "@tiptap/extensions": "^3.22.3",
     "@tiptap/react": "^3.22.3",
     "@tiptap/starter-kit": "^3.22.3",
     "@tiptap/suggestion": "^3.22.3",
@@ -840,6 +843,7 @@
     "esbuild": "^0.28.0",
     "framer-motion": "^12.38.0",
     "input-otp": "^1.4.2",
+    "prosemirror-state": "^1.4.4",
     "react-colorful": "^5.6.1",
     "react-markdown": "^10.1.0",
     "react-pdf": "^10.4.1",
@@ -853,7 +857,5 @@
   "engines": {
     "node": ">=20.19.0"
   },
-  "packageManager": "pnpm@10.0.0",
-  "dependencies": {}
-
+  "packageManager": "pnpm@10.0.0"
 }

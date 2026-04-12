@@ -183,6 +183,39 @@ export const Interactive: Story = {
   },
 }
 
+function ClickableDemo() {
+  const [activeStep, setActiveStep] = useState(2)
+  const steps = ['Account', 'Profile', 'Billing', 'Review']
+
+  return (
+    <div className="space-y-ds-06">
+      <Stepper activeStep={activeStep} onStepClick={(i) => setActiveStep(i)}>
+        {steps.map((label) => (
+          <Step key={label} label={label} />
+        ))}
+      </Stepper>
+
+      <p className="text-ds-sm text-surface-fg-muted">
+        Click any completed step to navigate back. Current: step {activeStep + 1} of {steps.length}.
+      </p>
+    </div>
+  )
+}
+
+export const Clickable: Story = {
+  render: () => <ClickableDemo />,
+  play: async ({ canvasElement }) => {
+    const canvas = within(canvasElement)
+
+    // Initially on step 3 (Billing), steps Account and Profile are completed
+    await expect(canvas.getByText(/step 3 of 4/i)).toBeVisible()
+
+    // Click "Account" (completed step 1) to navigate back
+    await userEvent.click(canvas.getByText('Account'))
+    await expect(canvas.getByText(/step 1 of 4/i)).toBeVisible()
+  },
+}
+
 export const AllVariants: Story = {
   render: () => (
     <div className="space-y-ds-08">

@@ -59,6 +59,22 @@ export const Large: Story = {
   },
 }
 
+export const ColorVariants: Story = {
+  render: () => {
+    const colors = ['accent', 'error', 'success', 'neutral'] as const
+
+    return (
+      <div className="flex flex-wrap items-center gap-ds-03">
+        {colors.map((color) => (
+          <Toggle key={color} color={color} defaultPressed aria-label={`Toggle ${color}`}>
+            {color.charAt(0).toUpperCase() + color.slice(1)}
+          </Toggle>
+        ))}
+      </div>
+    )
+  },
+}
+
 export const AllVariants: Story = {
   render: () => {
     const variants = ['default', 'outline'] as const

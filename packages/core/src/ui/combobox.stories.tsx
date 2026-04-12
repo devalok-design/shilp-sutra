@@ -247,7 +247,37 @@ export const ManyPills: Story = {
 }
 
 // ---------------------------------------------------------------------------
-// 8. AccessibleLabel — custom aria-label for the trigger button
+// 8. Sizes — xs / sm / md / lg side by side
+// ---------------------------------------------------------------------------
+export const Sizes: Story = {
+  render: () => {
+    const sizes = ['xs', 'sm', 'md', 'lg'] as const
+    return (
+      <div className="flex flex-col gap-ds-05">
+        {sizes.map((size) => {
+          const [value, setValue] = React.useState<string>('')
+          return (
+            <div key={size}>
+              <p className="mb-ds-03 text-ds-sm font-semibold text-surface-fg-muted capitalize">{size}</p>
+              <div className="w-[280px]">
+                <Combobox
+                  options={fruits}
+                  value={value}
+                  onValueChange={(v) => setValue(v as string)}
+                  placeholder={`Size ${size}...`}
+                  size={size}
+                />
+              </div>
+            </div>
+          )
+        })}
+      </div>
+    )
+  },
+}
+
+// ---------------------------------------------------------------------------
+// 9. AccessibleLabel — custom aria-label for the trigger button
 // ---------------------------------------------------------------------------
 export const AccessibleLabel: Story = {
   render: () => {

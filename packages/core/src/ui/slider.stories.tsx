@@ -43,3 +43,37 @@ export const Disabled: Story = {
     className: 'w-60',
   },
 }
+
+export const Sizes: Story = {
+  render: () => {
+    const sizes = ['sm', 'md', 'lg'] as const
+
+    return (
+      <div className="flex w-60 flex-col gap-ds-06">
+        {sizes.map((size) => (
+          <div key={size}>
+            <p className="mb-ds-03 text-ds-sm font-semibold text-surface-fg-muted capitalize">{size}</p>
+            <Slider defaultValue={[50]} max={100} step={1} size={size} />
+          </div>
+        ))}
+      </div>
+    )
+  },
+}
+
+export const Colors: Story = {
+  render: () => {
+    const colors = ['accent', 'success', 'warning', 'error'] as const
+
+    return (
+      <div className="flex w-60 flex-col gap-ds-06">
+        {colors.map((color) => (
+          <div key={color}>
+            <p className="mb-ds-03 text-ds-sm font-semibold text-surface-fg-muted capitalize">{color}</p>
+            <Slider defaultValue={[50]} max={100} step={1} color={color} />
+          </div>
+        ))}
+      </div>
+    )
+  },
+}

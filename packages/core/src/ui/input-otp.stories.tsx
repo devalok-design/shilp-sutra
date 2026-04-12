@@ -69,3 +69,50 @@ export const Disabled: Story = {
     </InputOTP>
   ),
 }
+
+export const Sizes: Story = {
+  render: () => {
+    const sizes = ['sm', 'md', 'lg'] as const
+
+    return (
+      <div className="flex flex-col gap-ds-06">
+        {sizes.map((size) => (
+          <div key={size}>
+            <p className="mb-ds-03 text-ds-sm font-semibold text-surface-fg-muted capitalize">{size}</p>
+            <InputOTP maxLength={6} size={size}>
+              <InputOTPGroup>
+                <InputOTPSlot index={0} />
+                <InputOTPSlot index={1} />
+                <InputOTPSlot index={2} />
+              </InputOTPGroup>
+              <InputOTPSeparator />
+              <InputOTPGroup>
+                <InputOTPSlot index={3} />
+                <InputOTPSlot index={4} />
+                <InputOTPSlot index={5} />
+              </InputOTPGroup>
+            </InputOTP>
+          </div>
+        ))}
+      </div>
+    )
+  },
+}
+
+export const ErrorState: Story = {
+  render: () => (
+    <InputOTP maxLength={6} state="error">
+      <InputOTPGroup>
+        <InputOTPSlot index={0} />
+        <InputOTPSlot index={1} />
+        <InputOTPSlot index={2} />
+      </InputOTPGroup>
+      <InputOTPSeparator />
+      <InputOTPGroup>
+        <InputOTPSlot index={3} />
+        <InputOTPSlot index={4} />
+        <InputOTPSlot index={5} />
+      </InputOTPGroup>
+    </InputOTP>
+  ),
+}

@@ -49,3 +49,24 @@ export const AtMinimum: Story = {
 export const AtMaximum: Story = {
   render: () => <NumberInputControlled value={10} min={0} max={10} />,
 }
+
+export const Sizes: Story = {
+  render: () => {
+    const sizes = ['xs', 'sm', 'md', 'lg'] as const
+
+    return (
+      <div className="flex flex-wrap items-end gap-ds-05">
+        {sizes.map((size) => (
+          <div key={size}>
+            <p className="mb-ds-03 text-ds-sm font-semibold text-surface-fg-muted capitalize">{size}</p>
+            <NumberInputControlled value={3} min={0} max={10} size={size} />
+          </div>
+        ))}
+      </div>
+    )
+  },
+}
+
+export const ErrorState: Story = {
+  render: () => <NumberInputControlled value={5} min={0} max={10} state="error" />,
+}

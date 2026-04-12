@@ -228,6 +228,60 @@ export const Colors: Story = {
   ),
 }
 
+export const Vertical: Story = {
+  render: () => (
+    <Tabs defaultValue="overview" orientation="vertical" className="w-full max-w-lg">
+      <TabsList variant="line">
+        <TabsTrigger value="overview">Overview</TabsTrigger>
+        <TabsTrigger value="tasks">Tasks</TabsTrigger>
+        <TabsTrigger value="settings">Settings</TabsTrigger>
+      </TabsList>
+      <TabsContent value="overview">
+        <p className="text-ds-sm text-surface-fg-muted">
+          Vertical line tabs — the indicator appears on the left edge.
+        </p>
+      </TabsContent>
+      <TabsContent value="tasks">
+        <p className="text-ds-sm text-surface-fg-muted">
+          Task list and kanban board view.
+        </p>
+      </TabsContent>
+      <TabsContent value="settings">
+        <p className="text-ds-sm text-surface-fg-muted">
+          Project configuration and permissions.
+        </p>
+      </TabsContent>
+    </Tabs>
+  ),
+}
+
+export const VerticalContained: Story = {
+  render: () => (
+    <Tabs defaultValue="all" orientation="vertical" className="w-full max-w-lg">
+      <TabsList variant="contained">
+        <TabsTrigger value="all">All</TabsTrigger>
+        <TabsTrigger value="active">Active</TabsTrigger>
+        <TabsTrigger value="archived">Archived</TabsTrigger>
+      </TabsList>
+      <TabsContent value="all">
+        <p className="text-ds-sm text-surface-fg-muted">
+          Vertical contained tabs — showing all items.
+        </p>
+      </TabsContent>
+      <TabsContent value="active">
+        <p className="text-ds-sm text-surface-fg-muted">
+          Showing active items only.
+        </p>
+      </TabsContent>
+      <TabsContent value="archived">
+        <p className="text-ds-sm text-surface-fg-muted">
+          Showing archived items only.
+        </p>
+      </TabsContent>
+    </Tabs>
+  ),
+}
+
 export const ManyTabs: Story = {
   render: () => (
     <Tabs defaultValue="board" className="w-full max-w-2xl">

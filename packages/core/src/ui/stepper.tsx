@@ -228,8 +228,9 @@ const Step = React.forwardRef<HTMLDivElement, StepProps>(
             aria-label={`Go to step ${_index + 1}: ${label}`}
             onClick={() => onStepClick(_index)}
             className={cn(
-              'flex items-center gap-ds-03 cursor-pointer',
+              'flex items-center gap-ds-03 cursor-pointer select-none',
               'rounded-ds-md px-ds-02 py-ds-01 -mx-ds-02 -my-ds-01',
+              'bg-transparent border-0',
               'hover:bg-surface-raised-hover active:bg-surface-raised-active',
               'focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent-8 focus-visible:ring-offset-2',
               'transition-colors duration-fast-01 ease-productive-standard',

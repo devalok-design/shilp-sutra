@@ -8,7 +8,9 @@ import { cn } from './lib/utils'
 import { springs, tweens } from './lib/motion'
 
 /* ── Active-value context (drives layoutId indicator) ────── */
+type TabsOrientation = 'horizontal' | 'vertical'
 const TabsValueContext = React.createContext<string | undefined>(undefined)
+const TabsOrientationContext = React.createContext<TabsOrientation>('horizontal')
 
 /**
  * Tabs compound component — accessible tabbed navigation with keyboard support and two visual
@@ -56,7 +58,7 @@ const TabsValueContext = React.createContext<string | undefined>(undefined)
 const Tabs = React.forwardRef<
   React.ElementRef<typeof TabsPrimitive.Root>,
   React.ComponentPropsWithoutRef<typeof TabsPrimitive.Root>
->(({ value: valueProp, defaultValue, onValueChange, ...props }, ref) => {
+>(({ value: valueProp, defaultValue, onValueChange, orientation, ...props }, ref) => {
   // Track the active value so TabsTrigger can conditionally render the motion indicator.
   // For controlled usage, mirror the prop; for uncontrolled, manage internal state.
   const [activeValue, setActiveValue] = React.useState(valueProp ?? defaultValue ?? '')
@@ -74,15 +76,20 @@ const Tabs = React.forwardRef<
     [onValueChange],
   )
 
+  const resolvedOrientation: TabsOrientation = orientation ?? 'horizontal'
+
   return (
     <TabsValueContext.Provider value={activeValue}>
-      <TabsPrimitive.Root
-        ref={ref}
-        value={valueProp}
-        defaultValue={valueProp === undefined ? defaultValue : undefined}
-        onValueChange={handleValueChange}
-        {...props}
-      />
+      <TabsOrientationContext.Provider value={resolvedOrientation}>
+        <TabsPrimitive.Root
+          ref={ref}
+          value={valueProp}
+          defaultValue={valueProp === undefined ? defaultValue : undefined}
+          onValueChange={handleValueChange}
+          orientation={orientation}
+          {...props}
+        />
+      </TabsOrientationContext.Provider>
     </TabsValueContext.Provider>
   )
 })
@@ -121,8 +128,18 @@ const tabsListVariants = cva('inline-flex items-center', {
       md: 'h-10',
       lg: 'h-12',
     },
+    orientation: {
+      horizontal: '',
+      vertical: 'flex-col',
+    },
   },
-  defaultVariants: { variant: 'line', size: 'md' },
+  compoundVariants: [
+    // Vertical line: left border instead of bottom, auto height
+    { variant: 'line', orientation: 'vertical', class: 'border-b-0 border-l border-surface-border-strong w-auto h-auto gap-0' },
+    // Vertical contained: column layout, auto height
+    { variant: 'contained', orientation: 'vertical', class: 'h-auto w-auto' },
+  ],
+  defaultVariants: { variant: 'line', size: 'md', orientation: 'horizontal' },
 })
 
 const tabsTriggerVariants = cva(
@@ -179,6 +196,7 @@ const TabsList = React.forwardRef<
   React.ElementRef<typeof TabsPrimitive.List>,
   TabsListProps
 >(({ className, variant, size, color, ...props }, ref) => {
+  const orientation = React.useContext(TabsOrientationContext)
   const resolvedVariant: TabsVariant = variant ?? 'line'
   const resolvedSize: TabsSize = size ?? 'md'
   const resolvedColor: TabsColor = color ?? 'accent'
@@ -197,7 +215,7 @@ const TabsList = React.forwardRef<
       <LayoutGroup>
         <TabsPrimitive.List
           ref={ref}
-          className={cn(tabsListVariants({ variant: resolvedVariant, size: resolvedSize }), className)}
+          className={cn(tabsListVariants({ variant: resolvedVariant, size: resolvedSize, orientation }), className)}
           {...props}
         />
       </LayoutGroup>
@@ -227,10 +245,12 @@ const TabsTrigger = React.forwardRef<
 >(({ className, variant: variantProp, children, ...props }, ref) => {
   const listContext = React.useContext(TabsListContext)
   const activeValue = React.useContext(TabsValueContext)
+  const orientation = React.useContext(TabsOrientationContext)
   const variant = variantProp ?? listContext.variant
   const size = listContext.size
   const color = listContext.color
   const isActive = props.value === activeValue
+  const isVertical = orientation === 'vertical'
 
   return (
     <TabsPrimitive.Trigger
@@ -238,6 +258,8 @@ const TabsTrigger = React.forwardRef<
       className={cn(
         tabsTriggerVariants({ variant, size }),
         variant === 'line' && lineActiveColorMap[color],
+        // Vertical line: negative left margin instead of negative bottom margin
+        variant === 'line' && isVertical && '-ml-px -mb-0',
         className,
       )}
       {...props}
@@ -252,11 +274,17 @@ const TabsTrigger = React.forwardRef<
       )}
       {/* Content sits above the indicator */}
       <span className="relative z-[1] inline-flex items-center gap-ds-02">{children}</span>
-      {/* Line variant: sliding underline */}
+      {/* Line variant: sliding indicator -- bottom underline (horizontal) or left bar (vertical) */}
       {variant === 'line' && isActive && (
         <motion.span
           layoutId={`${listContext.layoutId}-line`}
-          className={cn('absolute bottom-0 left-0 right-0 h-0.5', lineIndicatorColorMap[color])}
+          className={cn(
+            'absolute',
+            isVertical
+              ? 'left-0 top-0 bottom-0 w-0.5'
+              : 'bottom-0 left-0 right-0 h-0.5',
+            lineIndicatorColorMap[color],
+          )}
           transition={springs.smooth}
         />
       )}
@@ -292,4 +320,4 @@ TabsContent.displayName = TabsPrimitive.Content.displayName
 export type TabsContentProps = React.ComponentPropsWithoutRef<typeof TabsPrimitive.Content>
 
 export { Tabs, TabsList, TabsTrigger, TabsContent }
-export type { TabsSize, TabsColor }
+export type { TabsSize, TabsColor, TabsOrientation }

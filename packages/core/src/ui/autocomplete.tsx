@@ -1,6 +1,8 @@
 'use client'
 
 import * as React from 'react'
+import { createPortal } from 'react-dom'
+import { useFloating, offset, flip, shift, size, autoUpdate } from '@floating-ui/react-dom'
 import { motion, AnimatePresence } from 'framer-motion'
 import { cn } from './lib/utils'
 import { springs, tweens } from './lib/motion'
@@ -89,15 +91,47 @@ const Autocomplete = React.forwardRef<HTMLInputElement, AutocompleteProps>(
     const internalRef = React.useRef<HTMLInputElement>(null)
     const listRef = React.useRef<HTMLUListElement>(null)
     const containerRef = React.useRef<HTMLDivElement>(null)
+    const floatingRef = React.useRef<HTMLUListElement>(null)
 
-    // Compose external + internal ref
+    // Floating UI positioning
+    const { refs, floatingStyles } = useFloating({
+      open: isOpen,
+      placement: 'bottom-start',
+      whileElementsMounted: autoUpdate,
+      middleware: [
+        offset(4),
+        flip(),
+        shift(),
+        size({
+          apply({ availableHeight, rects, elements }) {
+            Object.assign(elements.floating.style, {
+              maxHeight: `${Math.min(availableHeight, 240)}px`,
+              width: `${rects.reference.width}px`,
+            })
+          },
+        }),
+      ],
+    })
+
+    // Compose external + internal ref + floating reference ref for input
     const composedRef = React.useCallback(
       (node: HTMLInputElement | null) => {
         (internalRef as React.MutableRefObject<HTMLInputElement | null>).current = node
+        refs.setReference(node)
         if (typeof ref === 'function') ref(node)
         else if (ref) (ref as React.MutableRefObject<HTMLInputElement | null>).current = node
       },
-      [ref],
+      [ref, refs],
+    )
+
+    // Compose floating ref + listRef
+    const composedFloatingRef = React.useCallback(
+      (node: HTMLUListElement | null) => {
+        (listRef as React.MutableRefObject<HTMLUListElement | null>).current = node
+        ;(floatingRef as React.MutableRefObject<HTMLUListElement | null>).current = node
+        refs.setFloating(node)
+      },
+      [refs],
     )
 
     // Sync query when value changes externally
@@ -197,67 +231,75 @@ const Autocomplete = React.forwardRef<HTMLInputElement, AutocompleteProps>(
           }}
           onFocus={() => setIsOpen(true)}
           onBlur={(e) => {
-            // Close only if focus moved outside the autocomplete container
-            if (!containerRef.current?.contains(e.relatedTarget as Node)) {
+            // Close only if focus moved outside both the container and the portal dropdown
+            const target = e.relatedTarget as Node | null
+            if (
+              !containerRef.current?.contains(target) &&
+              !floatingRef.current?.contains(target)
+            ) {
               setIsOpen(false)
             }
           }}
           onKeyDown={handleKeyDown}
         />
-        <AnimatePresence>
-          {isOpen && (
-            <motion.ul
-              id={listboxId}
-              ref={listRef}
-              role="listbox"
-              initial="hidden"
-              animate="visible"
-              exit="hidden"
-              variants={listVariants}
-              className={cn(
-                'absolute z-popover mt-ds-02 w-full overflow-auto rounded-ds-md border border-surface-border-strong bg-surface-overlay shadow-raised-hover',
-                'max-h-60',
-              )}
-            >
-              {filtered.length === 0 ? (
-                <motion.li
-                  initial={{ opacity: 0 }}
-                  animate={{ opacity: 1 }}
-                  transition={tweens.fade}
-                  className="px-ds-04 py-ds-03 text-ds-md text-surface-fg-muted"
+        {typeof document !== 'undefined' &&
+          createPortal(
+            <AnimatePresence>
+              {isOpen && (
+                <motion.ul
+                  id={listboxId}
+                  ref={composedFloatingRef}
+                  role="listbox"
+                  initial="hidden"
+                  animate="visible"
+                  exit="hidden"
+                  variants={listVariants}
+                  style={floatingStyles}
+                  className={cn(
+                    'z-popover overflow-auto rounded-ds-md border border-surface-border-strong bg-surface-overlay shadow-raised-hover',
+                  )}
                 >
-                  {emptyText}
-                </motion.li>
-              ) : (
-                filtered.map((option, index) => (
-                  <motion.li
-                    key={option.value}
-                    id={`${optionIdPrefix}-${index}`}
-                    role="option"
-                    aria-selected={highlightedIndex === index}
-                    variants={itemVariants}
-                    className={cn(
-                      'cursor-pointer px-ds-04 py-ds-03 text-ds-md text-surface-fg transition-colors duration-fast-01',
-                      highlightedIndex === index && 'bg-accent-3',
-                      value?.value === option.value && 'font-semibold',
-                    )}
-                    onMouseDown={(e) => e.preventDefault()}
-                    onClick={() => handleSelect(option)}
-                    onKeyDown={(e) => {
-                      if (e.key === 'Enter' || e.key === ' ') {
-                        e.preventDefault()
-                        handleSelect(option)
-                      }
-                    }}
-                    onMouseEnter={() => setHighlightedIndex(index)}
-                  >
-                    {option.label}
-                  </motion.li>
-                ))
+                  {filtered.length === 0 ? (
+                    <motion.li
+                      initial={{ opacity: 0 }}
+                      animate={{ opacity: 1 }}
+                      transition={tweens.fade}
+                      className="px-ds-04 py-ds-03 text-ds-md text-surface-fg-muted"
+                    >
+                      {emptyText}
+                    </motion.li>
+                  ) : (
+                    filtered.map((option, index) => (
+                      <motion.li
+                        key={option.value}
+                        id={`${optionIdPrefix}-${index}`}
+                        role="option"
+                        aria-selected={highlightedIndex === index}
+                        variants={itemVariants}
+                        className={cn(
+                          'cursor-pointer px-ds-04 py-ds-03 text-ds-md text-surface-fg transition-colors duration-fast-01',
+                          highlightedIndex === index && 'bg-accent-3',
+                          value?.value === option.value && 'font-semibold',
+                        )}
+                        onMouseDown={(e) => e.preventDefault()}
+                        onClick={() => handleSelect(option)}
+                        onKeyDown={(e) => {
+                          if (e.key === 'Enter' || e.key === ' ') {
+                            e.preventDefault()
+                            handleSelect(option)
+                          }
+                        }}
+                        onMouseEnter={() => setHighlightedIndex(index)}
+                      >
+                        {option.label}
+                      </motion.li>
+                    ))
+                  )}
+                </motion.ul>
               )}
-            </motion.ul>
+            </AnimatePresence>,
+            document.body,
           )}
-        </AnimatePresence>
       </div>
     )
   },

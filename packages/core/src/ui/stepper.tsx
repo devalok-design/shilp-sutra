@@ -100,10 +100,10 @@ const Stepper = React.forwardRef<HTMLDivElement, StepperProps>(
                   )}
                   aria-hidden="true"
                 >
-                  {/* Filled portion — instant state */}
+                  {/* Filled portion — smooth CSS transition */}
                   <div
                     className={cn(
-                      'absolute inset-0 bg-accent-9',
+                      'absolute inset-0 bg-accent-9 transition-transform duration-moderate-02 ease-productive-standard',
                       orientation === 'vertical' ? 'origin-top' : 'origin-left',
                     )}
                     style={{
@@ -152,6 +152,7 @@ const Step = React.forwardRef<HTMLDivElement, StepProps>(
         <div
           className={cn(
             'relative flex-shrink-0 flex items-center justify-center w-ds-sm h-ds-sm rounded-ds-full text-ds-sm font-semibold',
+            'transition-[background-color,border-color,color] duration-moderate-01 ease-productive-standard',
             state === 'completed' && 'bg-accent-9 text-accent-fg',
             state === 'active' && 'bg-accent-9 text-accent-fg',
             state === 'pending' && 'bg-surface-raised text-surface-fg-subtle border border-surface-border-strong',

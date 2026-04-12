@@ -64,10 +64,9 @@ describe('InlineEdit', () => {
     const textbox = screen.getByRole('textbox')
 
     await user.click(textbox)
-    // Clear existing text and type new value
-    await user.clear(textbox)
-    await user.type(textbox, 'Updated')
-    await user.keyboard('{Enter}')
+    // Select all + type replaces content (clear + type drops first char in jsdom contentEditable)
+    await user.tripleClick(textbox)
+    await user.keyboard('Updated{Enter}')
 
     expect(onSave).toHaveBeenCalledWith('Updated')
   })

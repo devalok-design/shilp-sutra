@@ -1,4 +1,5 @@
 import { render, screen } from '@testing-library/react'
+import userEvent from '@testing-library/user-event'
 import { describe, it, expect } from 'vitest'
 import { axe } from 'vitest-axe'
 import { FormSection } from './form-section'
@@ -49,6 +50,49 @@ describe('FormSection', () => {
     expect(screen.getByText('Advanced')).toBeInTheDocument()
     // Content visible by default (defaultOpen=true)
     expect(screen.getByText('Advanced content')).toBeInTheDocument()
+  })
+
+  it('collapsible variant toggles content on click', async () => {
+    const user = userEvent.setup()
+    render(
+      <FormSection title="Advanced" collapsible>
+        <span>Hidden content</span>
+      </FormSection>,
+    )
+
+    // Content is visible by default (defaultOpen=true)
+    expect(screen.getByText('Hidden content')).toBeInTheDocument()
+
+    // Click the trigger to collapse
+    const trigger = screen.getByRole('button')
+    await user.click(trigger)
+
+    // Content should be removed from the DOM after collapse (Radix Collapsible unmounts)
+    expect(screen.queryByText('Hidden content')).not.toBeInTheDocument()
+
+    // Click again to expand
+    await user.click(trigger)
+    expect(screen.getByText('Hidden content')).toBeInTheDocument()
+  })
+
+  it('defaultOpen={false} starts collapsed', () => {
+    render(
+      <FormSection title="Collapsed" collapsible defaultOpen={false}>
+        <span>Collapsed content</span>
+      </FormSection>,
+    )
+    // Content should not be in the DOM when collapsed
+    expect(screen.queryByText('Collapsed content')).not.toBeInTheDocument()
+  })
+
+  it('non-collapsible does not render a toggle button', () => {
+    render(
+      <FormSection title="Static">
+        <span>Always visible</span>
+      </FormSection>,
+    )
+    expect(screen.queryByRole('button')).not.toBeInTheDocument()
+    expect(screen.getByText('Always visible')).toBeVisible()
   })
 
   it('has no accessibility violations', async () => {

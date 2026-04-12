@@ -1,4 +1,5 @@
 import { render, screen } from '@testing-library/react'
+import userEvent from '@testing-library/user-event'
 import { describe, it, expect, vi } from 'vitest'
 import { axe } from 'vitest-axe'
 import { InlineEdit } from './inline-edit'
@@ -43,6 +44,71 @@ describe('InlineEdit', () => {
   it('forwards className to wrapper', () => {
     render(<InlineEdit value="Wrapped" onSave={vi.fn()} className="my-wrapper" />)
     expect(screen.getByRole('textbox').parentElement).toHaveClass('my-wrapper')
+  })
+
+  it('click enters edit mode (shows focus ring)', async () => {
+    const user = userEvent.setup()
+    render(<InlineEdit value="Click me" onSave={vi.fn()} />)
+    const textbox = screen.getByRole('textbox')
+
+    await user.click(textbox)
+
+    // Focused state applies ring-1 ring-accent-7 class
+    expect(textbox).toHaveClass('ring-accent-7')
+  })
+
+  it('Enter saves and exits edit mode', async () => {
+    const user = userEvent.setup()
+    const onSave = vi.fn()
+    render(<InlineEdit value="Original" onSave={onSave} />)
+    const textbox = screen.getByRole('textbox')
+
+    await user.click(textbox)
+    // Clear existing text and type new value
+    await user.clear(textbox)
+    await user.type(textbox, 'Updated')
+    await user.keyboard('{Enter}')
+
+    expect(onSave).toHaveBeenCalledWith('Updated')
+  })
+
+  it('Escape reverts and exits edit mode', async () => {
+    const user = userEvent.setup()
+    const onSave = vi.fn()
+    render(<InlineEdit value="Original" onSave={onSave} />)
+    const textbox = screen.getByRole('textbox')
+
+    await user.click(textbox)
+    await user.keyboard('{Escape}')
+
+    // Should NOT have called onSave
+    expect(onSave).not.toHaveBeenCalled()
+    // Text should revert to original
+    expect(textbox).toHaveTextContent('Original')
+  })
+
+  it('does not save when value is unchanged', async () => {
+    const user = userEvent.setup()
+    const onSave = vi.fn()
+    render(<InlineEdit value="Same" onSave={onSave} />)
+    const textbox = screen.getByRole('textbox')
+
+    await user.click(textbox)
+    await user.keyboard('{Enter}')
+
+    expect(onSave).not.toHaveBeenCalled()
+  })
+
+  it('readOnly prevents entering edit mode on click', async () => {
+    const user = userEvent.setup()
+    const onSave = vi.fn()
+    render(<InlineEdit value="No editing" onSave={onSave} readOnly />)
+    const text = screen.getByText('No editing')
+
+    await user.click(text)
+
+    // Should not have focus ring (no role=textbox when readOnly)
+    expect(text).not.toHaveClass('ring-accent-7')
   })
 
   it('has no accessibility violations', async () => {

@@ -116,6 +116,34 @@ describe('FileUpload', () => {
     expect(input).toBeDisabled()
   })
 
+  it('click on drop zone opens file dialog (clicks hidden input)', async () => {
+    const user = userEvent.setup()
+    render(<FileUpload onFiles={vi.fn()} />)
+    const input = document.querySelector('input[type="file"]') as HTMLInputElement
+    const clickSpy = vi.spyOn(input, 'click')
+
+    const dropZoneButton = screen.getByRole('button')
+    await user.click(dropZoneButton)
+
+    expect(clickSpy).toHaveBeenCalled()
+    clickSpy.mockRestore()
+  })
+
+  it('disabled state prevents opening file dialog on click', async () => {
+    const onFiles = vi.fn()
+    const user = userEvent.setup()
+    render(<FileUpload onFiles={onFiles} disabled />)
+    const input = document.querySelector('input[type="file"]') as HTMLInputElement
+    const clickSpy = vi.spyOn(input, 'click')
+
+    // The drop zone button has aria-disabled when disabled
+    const dropZone = screen.getByRole('button')
+    await user.click(dropZone)
+
+    expect(clickSpy).not.toHaveBeenCalled()
+    clickSpy.mockRestore()
+  })
+
   it('applies drag-active styling on dragover', () => {
     const { container } = render(<FileUpload onFiles={vi.fn()} />)
     const dropZone = container.firstElementChild as HTMLElement

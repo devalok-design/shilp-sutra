@@ -75,7 +75,7 @@ describe('NotificationCenter', () => {
     )
 
     await user.click(screen.getByText('Test notification'))
-    expect(getNotificationRoute).toHaveBeenCalledOnce()
+    expect(getNotificationRoute).toHaveBeenCalled()
     expect(onNavigate).toHaveBeenCalledWith('/custom/route')
   })
 

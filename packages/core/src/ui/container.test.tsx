@@ -29,7 +29,7 @@ describe('Container', () => {
   it('applies base layout classes', () => {
     render(<Container data-testid="ctr">Content</Container>)
     const el = screen.getByTestId('ctr')
-    expect(el).toHaveClass('mx-auto', 'w-full', 'px-ds-05')
+    expect(el).toHaveClass('mx-auto', 'w-full', 'px-page-x')
   })
 
   it('as prop changes rendered element', () => {

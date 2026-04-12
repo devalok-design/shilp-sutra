@@ -58,7 +58,7 @@ describe('AvatarGroup', () => {
   // ── Indicator ───────────────────────────────────────────────────────────
 
   describe('indicator', () => {
-    it('renders lead indicator with bg-warning-9', () => {
+    it('renders lead indicator with bg-accent-9', () => {
       const { container } = render(
         <AvatarGroup
           users={[{ name: 'Alice', indicator: 'lead' }]}
@@ -66,7 +66,7 @@ describe('AvatarGroup', () => {
           showTooltip={false}
         />,
       )
-      const dot = container.querySelector('.bg-warning-9')
+      const dot = container.querySelector('.bg-accent-9')
       expect(dot).toBeInTheDocument()
       expect(dot!.tagName).toBe('SPAN')
     })
@@ -121,7 +121,7 @@ describe('AvatarGroup', () => {
           renderAvatar={(user) => <div data-testid="custom">{user.name}</div>}
         />,
       )
-      expect(container.querySelector('.bg-warning-9')).not.toBeInTheDocument()
+      expect(container.querySelector('.bg-accent-9')).not.toBeInTheDocument()
     })
   })
 })

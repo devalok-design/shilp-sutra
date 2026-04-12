@@ -1,0 +1,300 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Wave 1 Visual Comparison — Before / After</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body { font-family: 'Inter', system-ui, sans-serif; background: #f5f5f5; color: #1a1a1a; }
+
+  .page { max-width: 1400px; margin: 0 auto; padding: 32px 24px; }
+  h1 { font-size: 28px; font-weight: 600; margin-bottom: 8px; }
+  .subtitle { font-size: 14px; color: #666; margin-bottom: 40px; }
+
+  .section { margin-bottom: 56px; }
+  .section-title { font-size: 20px; font-weight: 600; margin-bottom: 4px; }
+  .section-desc { font-size: 13px; color: #888; margin-bottom: 20px; line-height: 1.5; }
+
+  .comparison { display: grid; grid-template-columns: 1fr 1fr; gap: 24px; }
+  .panel { background: white; border-radius: 12px; padding: 24px; border: 1px solid #e5e5e5; }
+  .panel-label { font-size: 11px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.08em; margin-bottom: 16px; }
+  .panel-label.before { color: #888; }
+  .panel-label.after { color: #22c55e; }
+
+  /* ── 1.1: Dark mode contrast ── */
+  .dark-panel { border-radius: 10px; padding: 20px; }
+  .dark-before { background: oklch(0.11 0.01 350); }
+  .dark-after  { background: oklch(0.11 0.01 350); }
+
+  .button-row { display: flex; gap: 10px; flex-wrap: wrap; margin-bottom: 12px; }
+  .btn { display: inline-flex; align-items: center; justify-content: center;
+         padding: 8px 18px; border-radius: 8px; font-size: 14px; font-weight: 500;
+         border: none; cursor: default; min-width: 90px; }
+
+  /* Current dark step-9 values (L=0.63, boosted chroma) */
+  .btn-accent-cur  { background: oklch(0.63 0.209 360); color: #ffffff; }
+  .btn-error-cur   { background: oklch(0.63 0.198 25);  color: #ffffff; }
+  .btn-success-cur { background: oklch(0.63 0.154 145); color: #ffffff; }
+  .btn-warning-cur { background: oklch(0.72 0.17 65);   color: #ffffff; }
+  .btn-info-cur    { background: oklch(0.63 0.132 240); color: #ffffff; }
+
+  /* Proposed dark step-9 values (L=0.54, maintain chroma) */
+  .btn-accent-new  { background: oklch(0.54 0.209 360); color: #ffffff; }
+  .btn-error-new   { background: oklch(0.54 0.198 25);  color: #ffffff; }
+  .btn-success-new { background: oklch(0.54 0.154 145); color: #ffffff; }
+  .btn-warning-new { background: oklch(0.57 0.17 65);   color: #ffffff; }
+  .btn-info-new    { background: oklch(0.54 0.132 240); color: #ffffff; }
+
+  .contrast-note { font-size: 11px; color: oklch(0.7 0 0); margin-top: 8px; font-style: italic; }
+
+  /* Light mode step-9 success fix */
+  .light-panel { border-radius: 10px; padding: 20px; background: oklch(0.97 0.005 350); }
+  .btn-success-light-cur { background: oklch(0.55 0.14 145); color: oklch(0.99 0.005 350); }
+  .btn-success-light-new { background: oklch(0.52 0.14 145); color: oklch(0.99 0.005 350); }
+
+  /* ── 1.2: surface-fg-subtle ── */
+  .subtle-demo { padding: 20px; border-radius: 10px; }
+  .subtle-demo-light { background: oklch(0.97 0.005 350); }
+  .subtle-demo-dark  { background: oklch(0.11 0.01 350); }
+  .text-main { font-size: 15px; font-weight: 500; margin-bottom: 6px; }
+  .text-muted { font-size: 14px; margin-bottom: 6px; }
+  .text-subtle-cur-light { color: oklch(0.62 0.0089 350); font-size: 13px; }
+  .text-subtle-new-light { color: oklch(0.49 0.0089 350); font-size: 13px; }
+  .text-subtle-cur-dark  { color: oklch(0.53 0.0086 350); font-size: 13px; }
+  .text-subtle-new-dark  { color: oklch(0.62 0.0086 350); font-size: 13px; }
+  .text-main-light { color: oklch(0.32 0.01 350); }
+  .text-muted-light { color: oklch(0.43 0.01 350); }
+  .text-main-dark { color: oklch(0.88 0.005 350); }
+  .text-muted-dark { color: oklch(0.76 0.005 350); }
+
+  /* ── 1.3: Responsive typography ── */
+  .type-demo { padding: 16px 20px; border-radius: 10px; background: oklch(0.97 0.005 350);
+               overflow: hidden; }
+  .heading-sample { font-weight: 400; line-height: 1.15; letter-spacing: -0.025em; color: oklch(0.22 0.01 350); }
+  .viewport-label { font-size: 11px; color: #888; margin-top: 8px; margin-bottom: 4px; font-weight: 500; }
+
+  /* ── 1.4: Letter spacing ── */
+  .tracking-demo { padding: 16px 20px; border-radius: 10px; background: oklch(0.97 0.005 350); }
+  .tracking-row { display: flex; align-items: baseline; gap: 12px; margin-bottom: 8px; }
+  .tracking-label { font-size: 11px; color: #888; width: 60px; flex-shrink: 0; }
+  .tracking-sample { line-height: 1.5; color: oklch(0.32 0.01 350); }
+  .tracking-cur-sm { font-size: 12px; letter-spacing: -0.02em; }
+  .tracking-cur-xs { font-size: 10px; letter-spacing: -0.02em; }
+  .tracking-new-lg { font-size: 16px; letter-spacing: -0.01em; }
+  .tracking-new-md { font-size: 14px; letter-spacing: 0em; }
+  .tracking-new-sm { font-size: 12px; letter-spacing: 0.01em; }
+  .tracking-new-xs { font-size: 10px; letter-spacing: 0.02em; }
+  .tracking-cur-lg { font-size: 16px; letter-spacing: -0.02em; }
+  .tracking-cur-md { font-size: 14px; letter-spacing: -0.02em; }
+
+  .tag { display: inline-block; font-size: 10px; font-weight: 600; padding: 2px 6px;
+         border-radius: 4px; margin-left: 8px; vertical-align: middle; }
+  .tag-fail { background: oklch(0.93 0.06 25); color: oklch(0.45 0.15 25); }
+  .tag-pass { background: oklch(0.93 0.06 145); color: oklch(0.35 0.12 145); }
+  .tag-change { background: oklch(0.93 0.06 240); color: oklch(0.40 0.12 240); }
+
+  .divider { border: none; border-top: 1px solid #e5e5e5; margin: 12px 0; }
+</style>
+</head>
+<body>
+<div class="page">
+  <h1>Wave 1 Visual Comparison</h1>
+  <p class="subtitle">Before (current) vs After (proposed) for each visually-altering token change. Review and approve before implementation.</p>
+
+  <!-- ═══════════ 1.1: Dark Mode Solid Variant Contrast ═══════════ -->
+  <div class="section">
+    <div class="section-title">1.1 — Dark Mode Solid Variant Contrast</div>
+    <p class="section-desc">
+      All 5 solid button colors fail WCAG AA in dark mode. White text on bright step-9 backgrounds.<br>
+      Fix: Lower dark step-9 lightness from L=0.63 to L=0.54 (keeps chroma). Warning gets dark text instead of white.
+    </p>
+    <div class="comparison">
+      <div class="panel">
+        <div class="panel-label before">Current (FAILS AA)</div>
+        <div class="dark-panel dark-before">
+          <div class="button-row">
+            <div class="btn btn-accent-cur">Accent <span class="tag tag-fail">3.9:1</span></div>
+            <div class="btn btn-error-cur">Error <span class="tag tag-fail">3.9:1</span></div>
+            <div class="btn btn-success-cur">Success <span class="tag tag-fail">3.3:1</span></div>
+          </div>
+          <div class="button-row">
+            <div class="btn btn-warning-cur">Warning <span class="tag tag-fail">2.6:1</span></div>
+            <div class="btn btn-info-cur">Info <span class="tag tag-fail">3.4:1</span></div>
+          </div>
+          <p class="contrast-note">White text on L=0.63 backgrounds. All fail 4.5:1 AA threshold.</p>
+        </div>
+      </div>
+      <div class="panel">
+        <div class="panel-label after">Proposed (PASSES AA)</div>
+        <div class="dark-panel dark-after">
+          <div class="button-row">
+            <div class="btn btn-accent-new">Accent <span class="tag tag-pass">5.2:1</span></div>
+            <div class="btn btn-error-new">Error <span class="tag tag-pass">5.1:1</span></div>
+            <div class="btn btn-success-new">Success <span class="tag tag-pass">4.8:1</span></div>
+          </div>
+          <div class="button-row">
+            <div class="btn btn-warning-new">Warning <span class="tag tag-pass">4.6:1</span></div>
+            <div class="btn btn-info-new">Info <span class="tag tag-pass">5.0:1</span></div>
+          </div>
+          <p class="contrast-note">White text on L=0.54 backgrounds. All colors use white text. All pass 4.5:1.</p>
+        </div>
+      </div>
+    </div>
+
+    <div style="margin-top: 20px;">
+      <div class="section-desc" style="margin-bottom: 8px; font-weight: 500; color: #555;">Light mode success fix (4.44:1 → 4.6:1)</div>
+      <div class="comparison">
+        <div class="panel">
+          <div class="panel-label before">Current</div>
+          <div class="light-panel">
+            <div class="btn btn-success-light-cur">Success <span class="tag tag-fail">4.4:1</span></div>
+          </div>
+        </div>
+        <div class="panel">
+          <div class="panel-label after">Proposed</div>
+          <div class="light-panel">
+            <div class="btn btn-success-light-new">Success <span class="tag tag-pass">4.8:1</span></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ═══════════ 1.2: surface-fg-subtle Contrast ═══════════ -->
+  <div class="section">
+    <div class="section-title">1.2 — surface-fg-subtle Contrast</div>
+    <p class="section-desc">
+      Tertiary/placeholder text at neutral-8 is too light (3.35:1 light, 3.86:1 dark). Used for timestamps, hints, placeholders.<br>
+      Fix: Darken to ~neutral-9 equivalent in light mode (L=0.49), lighten to ~neutral-8 equivalent in dark mode (L=0.62).
+    </p>
+    <div class="comparison">
+      <div class="panel">
+        <div class="panel-label before">Current</div>
+        <div class="subtle-demo subtle-demo-light" style="margin-bottom: 12px;">
+          <p class="text-main text-main-light">Primary text (surface-fg)</p>
+          <p class="text-muted text-muted-light">Secondary text (surface-fg-muted)</p>
+          <p class="text-subtle-cur-light">Tertiary text (surface-fg-subtle) <span class="tag tag-fail">3.4:1</span></p>
+          <p class="text-subtle-cur-light" style="margin-top: 4px;">Placeholder: Enter your email...</p>
+        </div>
+        <div class="subtle-demo subtle-demo-dark">
+          <p class="text-main text-main-dark">Primary text (surface-fg)</p>
+          <p class="text-muted text-muted-dark">Secondary text (surface-fg-muted)</p>
+          <p class="text-subtle-cur-dark">Tertiary text (surface-fg-subtle) <span class="tag tag-fail">3.9:1</span></p>
+          <p class="text-subtle-cur-dark" style="margin-top: 4px;">Placeholder: Enter your email...</p>
+        </div>
+      </div>
+      <div class="panel">
+        <div class="panel-label after">Proposed</div>
+        <div class="subtle-demo subtle-demo-light" style="margin-bottom: 12px;">
+          <p class="text-main text-main-light">Primary text (surface-fg)</p>
+          <p class="text-muted text-muted-light">Secondary text (surface-fg-muted)</p>
+          <p class="text-subtle-new-light">Tertiary text (surface-fg-subtle) <span class="tag tag-pass">5.0:1</span></p>
+          <p class="text-subtle-new-light" style="margin-top: 4px;">Placeholder: Enter your email...</p>
+        </div>
+        <div class="subtle-demo subtle-demo-dark">
+          <p class="text-main text-main-dark">Primary text (surface-fg)</p>
+          <p class="text-muted text-muted-dark">Secondary text (surface-fg-muted)</p>
+          <p class="text-subtle-new-dark">Tertiary text (surface-fg-subtle) <span class="tag tag-pass">4.7:1</span></p>
+          <p class="text-subtle-new-dark" style="margin-top: 4px;">Placeholder: Enter your email...</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ═══════════ 1.3: Responsive Typography ═══════════ -->
+  <div class="section">
+    <div class="section-title">1.3 — Responsive Typography (clamp)</div>
+    <p class="section-desc">
+      Heading sizes are static. A 60px heading on a 375px phone takes 16% of viewport width.<br>
+      Fix: Replace static rem values with <code>clamp(min, preferred, max)</code>. Body sizes stay static. Zero component changes.
+    </p>
+    <div class="comparison">
+      <div class="panel">
+        <div class="panel-label before">Current (static at all viewports)</div>
+        <div class="type-demo">
+          <p class="viewport-label">At 375px (phone):</p>
+          <p class="heading-sample" style="font-size: 60px;">heading-2xl (60px)</p>
+          <hr class="divider">
+          <p class="heading-sample" style="font-size: 48px;">heading-xl (48px)</p>
+          <hr class="divider">
+          <p class="heading-sample" style="font-size: 36px;">heading-lg (36px)</p>
+          <hr class="divider">
+          <p class="heading-sample" style="font-size: 32px;">heading-md (32px)</p>
+        </div>
+      </div>
+      <div class="panel">
+        <div class="panel-label after">Proposed (fluid scaling)</div>
+        <div class="type-demo">
+          <p class="viewport-label">At 375px (phone) → scales up at wider viewports:</p>
+          <p class="heading-sample" style="font-size: clamp(2.25rem, 1.5rem + 3vw, 3.75rem);">heading-2xl <span class="tag tag-change">36→60px</span></p>
+          <hr class="divider">
+          <p class="heading-sample" style="font-size: clamp(2rem, 1.25rem + 2.5vw, 3rem);">heading-xl <span class="tag tag-change">32→48px</span></p>
+          <hr class="divider">
+          <p class="heading-sample" style="font-size: clamp(1.75rem, 1.25rem + 1.5vw, 2.25rem);">heading-lg <span class="tag tag-change">28→36px</span></p>
+          <hr class="divider">
+          <p class="heading-sample" style="font-size: clamp(1.5rem, 1.125rem + 1.25vw, 2rem);">heading-md <span class="tag tag-change">24→32px</span></p>
+        </div>
+        <p class="section-desc" style="margin-top: 8px; margin-bottom: 0;">Resize this browser window to see the headings scale fluidly. At desktop width they match the current sizes exactly.</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- ═══════════ 1.4: Body Letter Spacing ═══════════ -->
+  <div class="section">
+    <div class="section-title">1.4 — Body Text Letter Spacing</div>
+    <p class="section-desc">
+      All 4 body sizes use -0.02em tracking. At small sizes this hurts readability (negative tracking on 10-12px text).<br>
+      Fix: Differentiate by size. Large text slightly tighter, small text slightly looser. Follows Material Design 3 pattern.
+    </p>
+    <div class="comparison">
+      <div class="panel">
+        <div class="panel-label before">Current (all -0.02em)</div>
+        <div class="tracking-demo">
+          <div class="tracking-row">
+            <span class="tracking-label">body-lg</span>
+            <span class="tracking-sample tracking-cur-lg">The quick brown fox jumps over the lazy dog. Aa Bb Cc 123</span>
+          </div>
+          <div class="tracking-row">
+            <span class="tracking-label">body-md</span>
+            <span class="tracking-sample tracking-cur-md">The quick brown fox jumps over the lazy dog. Aa Bb Cc 123</span>
+          </div>
+          <div class="tracking-row">
+            <span class="tracking-label">body-sm</span>
+            <span class="tracking-sample tracking-cur-sm">The quick brown fox jumps over the lazy dog. Aa Bb Cc 123 <span class="tag tag-fail">-0.02em</span></span>
+          </div>
+          <div class="tracking-row">
+            <span class="tracking-label">body-xs</span>
+            <span class="tracking-sample tracking-cur-xs">The quick brown fox jumps over the lazy dog. Aa Bb Cc 123 <span class="tag tag-fail">-0.02em</span></span>
+          </div>
+        </div>
+      </div>
+      <div class="panel">
+        <div class="panel-label after">Proposed (graduated)</div>
+        <div class="tracking-demo">
+          <div class="tracking-row">
+            <span class="tracking-label">body-lg</span>
+            <span class="tracking-sample tracking-new-lg">The quick brown fox jumps over the lazy dog. Aa Bb Cc 123 <span class="tag tag-change">-0.01em</span></span>
+          </div>
+          <div class="tracking-row">
+            <span class="tracking-label">body-md</span>
+            <span class="tracking-sample tracking-new-md">The quick brown fox jumps over the lazy dog. Aa Bb Cc 123 <span class="tag tag-change">0em</span></span>
+          </div>
+          <div class="tracking-row">
+            <span class="tracking-label">body-sm</span>
+            <span class="tracking-sample tracking-new-sm">The quick brown fox jumps over the lazy dog. Aa Bb Cc 123 <span class="tag tag-pass">+0.01em</span></span>
+          </div>
+          <div class="tracking-row">
+            <span class="tracking-label">body-xs</span>
+            <span class="tracking-sample tracking-new-xs">The quick brown fox jumps over the lazy dog. Aa Bb Cc 123 <span class="tag tag-pass">+0.02em</span></span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+</div>
+</body>
+</html>

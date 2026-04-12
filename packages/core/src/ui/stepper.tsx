@@ -11,6 +11,7 @@ type StepperContextValue = {
   activeStep: number
   orientation: 'horizontal' | 'vertical'
   stepperId: string
+  onStepClick?: (stepIndex: number) => void
 }
 
 const StepperContext = React.createContext<StepperContextValue>({
@@ -45,21 +46,31 @@ const StepperContext = React.createContext<StepperContextValue>({
  *   <Step label="Invite teammates" />
  *   <Step label="Set up billing" />
  * </Stepper>
+ *
+ * @example
+ * // Clickable completed steps — user can navigate back:
+ * <Stepper activeStep={step} onStepClick={(i) => setStep(i)}>
+ *   <Step label="Account" />
+ *   <Step label="Profile" />
+ *   <Step label="Review" />
+ * </Stepper>
  * // These are just a few ways — feel free to combine props creatively!
  */
 interface StepperProps extends React.HTMLAttributes<HTMLDivElement> {
   activeStep: number
   orientation?: 'horizontal' | 'vertical'
+  /** Called when a completed step is clicked. Receives the 0-based step index. */
+  onStepClick?: (stepIndex: number) => void
   children: React.ReactNode
 }
 
 const Stepper = React.forwardRef<HTMLDivElement, StepperProps>(
-  ({ activeStep, orientation = 'horizontal', className, children, ...props }, ref) => {
+  ({ activeStep, orientation = 'horizontal', onStepClick, className, children, ...props }, ref) => {
     const steps = React.Children.toArray(children)
     const stepperId = React.useId()
     const contextValue = React.useMemo(
-      () => ({ activeStep, orientation, stepperId }),
-      [activeStep, orientation, stepperId],
+      () => ({ activeStep, orientation, stepperId, onStepClick }),
+      [activeStep, orientation, stepperId, onStepClick],
     )
     return (
       <StepperContext.Provider value={contextValue}>
@@ -135,24 +146,12 @@ type StepInternalProps = StepProps & { _index?: number }
 const Step = React.forwardRef<HTMLDivElement, StepProps>(
   ({ label, description, icon, className, ...props }, ref) => {
     const { _index = 0, ...restProps } = props as StepInternalProps
-    const { activeStep, orientation, stepperId } = React.useContext(StepperContext)
+    const { activeStep, orientation, stepperId, onStepClick } = React.useContext(StepperContext)
     const state: StepState = _index < activeStep ? 'completed' : _index === activeStep ? 'active' : 'pending'
+    const isClickable = state === 'completed' && !!onStepClick
 
-    return (
-      <div
-        ref={ref}
-        data-step=""
-        data-state={state}
-        role="listitem"
-        aria-current={state === 'active' ? 'step' : undefined}
-        aria-label={`Step ${_index + 1}: ${label}, ${state === 'completed' ? 'completed' : state === 'active' ? 'current' : 'upcoming'}`}
-        className={cn(
-          'flex items-center gap-ds-03',
-          orientation === 'vertical' && 'py-ds-02',
-          className,
-        )}
-        {...restProps}
-      >
+    const stepContent = (
+      <>
         <div
           className={cn(
             'relative flex-shrink-0 flex items-center justify-center w-ds-sm h-ds-sm rounded-ds-full text-ds-sm font-semibold',
@@ -207,6 +206,55 @@ const Step = React.forwardRef<HTMLDivElement, StepProps>(
             </span>
           )}
         </div>
+      </>
+    )
+
+    if (isClickable) {
+      return (
+        <div
+          ref={ref}
+          data-step=""
+          data-state={state}
+          role="listitem"
+          className={cn(
+            orientation === 'vertical' && 'py-ds-02',
+            className,
+          )}
+          {...restProps}
+        >
+          <button
+            type="button"
+            tabIndex={0}
+            aria-label={`Go to step ${_index + 1}: ${label}`}
+            onClick={() => onStepClick(_index)}
+            className={cn(
+              'flex items-center gap-ds-03 cursor-pointer',
+              'rounded-ds-md focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent-8 focus-visible:ring-offset-2',
+              'hover:opacity-80 transition-opacity',
+            )}
+          >
+            {stepContent}
+          </button>
+        </div>
+      )
+    }
+
+    return (
+      <div
+        ref={ref}
+        data-step=""
+        data-state={state}
+        role="listitem"
+        aria-current={state === 'active' ? 'step' : undefined}
+        aria-label={`Step ${_index + 1}: ${label}, ${state === 'completed' ? 'completed' : state === 'active' ? 'current' : 'upcoming'}`}
+        className={cn(
+          'flex items-center gap-ds-03',
+          orientation === 'vertical' && 'py-ds-02',
+          className,
+        )}
+        {...restProps}
+      >
+        {stepContent}
       </div>
     )
   },

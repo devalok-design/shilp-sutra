@@ -100,18 +100,15 @@ const Stepper = React.forwardRef<HTMLDivElement, StepperProps>(
                   )}
                   aria-hidden="true"
                 >
-                  {/* Animated filled portion */}
-                  <motion.div
+                  {/* Filled portion — instant state */}
+                  <div
                     className={cn(
                       'absolute inset-0 bg-accent-9',
                       orientation === 'vertical' ? 'origin-top' : 'origin-left',
                     )}
-                    initial={false}
-                    animate={{
-                      [orientation === 'vertical' ? 'scaleY' : 'scaleX']:
-                        index < activeStep ? 1 : 0,
+                    style={{
+                      transform: `${orientation === 'vertical' ? 'scaleY' : 'scaleX'}(${index < activeStep ? 1 : 0})`,
                     }}
-                    transition={springs.smooth}
                   />
                 </div>
               )}
@@ -156,38 +153,25 @@ const Step = React.forwardRef<HTMLDivElement, StepProps>(
           className={cn(
             'relative flex-shrink-0 flex items-center justify-center w-ds-sm h-ds-sm rounded-ds-full text-ds-sm font-semibold',
             state === 'completed' && 'bg-accent-9 text-accent-fg',
-            state === 'active' && 'text-accent-fg',
+            state === 'active' && 'bg-accent-9 text-accent-fg',
             state === 'pending' && 'bg-surface-raised text-surface-fg-subtle border border-surface-border-strong',
           )}
         >
-          {/* Active step highlight — slides between steps via layoutId */}
-          {state === 'active' && (
-            <motion.div
-              layoutId={`${stepperId}-stepper-active`}
-              className="absolute inset-0 rounded-ds-full bg-accent-9"
-              transition={springs.smooth}
-            />
-          )}
-          <span className="relative z-10">
-            {icon || (state === 'completed' ? (
-              <motion.svg
-                className="w-ico-sm h-ico-sm"
-                viewBox="0 0 24 24"
-                fill="none"
-                stroke="currentColor"
-                strokeWidth={2.5}
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                initial={{ scale: 0 }}
-                animate={{ scale: 1 }}
-                transition={springs.bouncy}
-              >
-                <polyline points="20 6 9 17 4 12" />
-              </motion.svg>
-            ) : (
-              _index + 1
-            ))}
-          </span>
+          {icon || (state === 'completed' ? (
+            <svg
+              className="w-ico-sm h-ico-sm"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              strokeWidth={2.5}
+              strokeLinecap="round"
+              strokeLinejoin="round"
+            >
+              <polyline points="20 6 9 17 4 12" />
+            </svg>
+          ) : (
+            _index + 1
+          ))}
         </div>
         <div className="flex flex-col">
           <span

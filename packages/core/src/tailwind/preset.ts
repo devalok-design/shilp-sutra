@@ -418,6 +418,31 @@ const preset: Partial<Config> = {
   },
   plugins: [
     plugin(({ addBase, addUtilities }) => {
+      // ── Typography composite utilities ──────────────────────────────
+      // Maps each semantic variant to a single class that sets all four
+      // typographic properties (size, weight, leading, tracking).
+      const typoVariants = [
+        'heading-2xl', 'heading-xl', 'heading-lg', 'heading-md', 'heading-sm', 'heading-xs',
+        'body-lg', 'body-md', 'body-sm', 'body-xs',
+        'label-lg', 'label-md', 'label-sm', 'label-xs',
+        'caption', 'overline',
+      ] as const
+      const uppercaseVariants = new Set([
+        'label-lg', 'label-md', 'label-sm', 'label-xs', 'overline',
+      ])
+      const typoUtilities: Record<string, Record<string, string>> = {}
+      for (const v of typoVariants) {
+        const base: Record<string, string> = {
+          'font-size': `var(--typo-${v}-size)`,
+          'font-weight': `var(--typo-${v}-weight)`,
+          'line-height': `var(--typo-${v}-leading)`,
+          'letter-spacing': `var(--typo-${v}-tracking)`,
+        }
+        if (uppercaseVariants.has(v)) {
+          base['text-transform'] = 'uppercase'
+        }
+        typoUtilities[`.text-${v}`] = base
+      }
       addBase({
         '@property --border-angle': {
           syntax: '"<angle>"',
@@ -432,6 +457,7 @@ const preset: Partial<Config> = {
         },
       })
       addUtilities({
+        ...typoUtilities,
         '.tabular-nums': { 'font-variant-numeric': 'tabular-nums' },
         '.touch-target': {
           position: 'relative',

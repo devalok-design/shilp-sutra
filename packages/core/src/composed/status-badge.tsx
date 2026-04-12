@@ -84,6 +84,7 @@ interface StatusBadgeWithColor extends StatusBadgeBaseProps {
 
 export type StatusBadgeProps = StatusBadgeWithStatus | StatusBadgeWithColor
 
+/* Between durations.moderate02 (0.24) and durations.slow01 (0.4) — intentional for smooth morph */
 const statusMorphTransition = { duration: 0.3, ease: 'easeOut' as const }
 
 const StatusBadge = React.forwardRef<HTMLSpanElement, StatusBadgeProps>(

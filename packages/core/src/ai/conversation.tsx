@@ -10,7 +10,7 @@ import {
 } from '@tabler/icons-react'
 import { Icon } from '../ui/icon'
 import { cn } from '../ui/lib/utils'
-import { springs } from '../ui/lib/motion'
+import { springs, durations } from '../ui/lib/motion'
 import { useMotion } from '../motion/motion-provider'
 import { BlockRenderer } from './block-renderer'
 import { useAICommand } from './ai-command-provider'
@@ -178,7 +178,7 @@ function ProcessingIndicator({
               transition={
                 reducedMotion
                   ? { duration: 0 }
-                  : { duration: 0.2, delay: i * 0.05 }
+                  : { duration: durations.moderate01b, delay: i * 0.05 }
               }
             >
               <StepStatusIcon status={step.status} />

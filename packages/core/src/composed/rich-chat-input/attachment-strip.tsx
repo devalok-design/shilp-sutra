@@ -5,6 +5,7 @@ import { motion, AnimatePresence } from 'framer-motion'
 import { IconX, IconFile } from '@tabler/icons-react'
 import { Icon } from '../../ui/icon'
 import { Spinner } from '../../ui/spinner'
+import { durations } from '../../ui/lib/motion'
 
 export interface Attachment {
   id: string
@@ -35,7 +36,7 @@ export function AttachmentStrip({
       initial={{ height: 0, opacity: 0 }}
       animate={{ height: 'auto', opacity: 1 }}
       exit={{ height: 0, opacity: 0 }}
-      transition={{ duration: 0.24, ease: [0.2, 0, 0.38, 0.9] }}
+      transition={{ duration: durations.moderate02, ease: [0.2, 0, 0.38, 0.9] }}
       className="overflow-hidden"
     >
       <div
@@ -55,9 +56,10 @@ export function AttachmentStrip({
                 animate={{ scale: 1, opacity: 1 }}
                 exit={{ scale: 0.95, opacity: 0 }}
                 transition={{
+                  /* Near springs.snappy (500/30/0.5) — intentionally softer for thumbnail pop-in */
                   layout: { type: 'spring', stiffness: 400, damping: 30 },
                   scale: { type: 'spring', stiffness: 400, damping: 30 },
-                  opacity: { duration: 0.11 },
+                  opacity: { duration: durations.fast02 },
                 }}
                 /* h-12 w-12 (48px): component-specific thumbnail size — no design token equivalent */
                 className="relative h-12 w-12 shrink-0 group"
@@ -91,9 +93,10 @@ export function AttachmentStrip({
                 animate={{ scale: 1, opacity: 1 }}
                 exit={{ scale: 0.95, opacity: 0 }}
                 transition={{
+                  /* Near springs.snappy (500/30/0.5) — intentionally softer for file chip pop-in */
                   layout: { type: 'spring', stiffness: 400, damping: 30 },
                   scale: { type: 'spring', stiffness: 400, damping: 30 },
-                  opacity: { duration: 0.11 },
+                  opacity: { duration: durations.fast02 },
                 }}
                 className="flex items-center gap-ds-02 shrink-0 rounded-ds-md bg-surface-raised px-ds-03 py-ds-01 group"
               >

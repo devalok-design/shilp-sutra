@@ -59,6 +59,7 @@ const ProgressRing = React.forwardRef<SVGSVGElement, ProgressRingProps>(
     React.useEffect(() => {
       const controls = animate(motionVal, progress * 100, prefersReducedMotion
         ? { type: 'tween', duration: 0 }
+        /* Intentionally slower than springs.gentle (200/25/0.8) for smooth ring fill */
         : { stiffness: 100, damping: 30, type: 'spring' },
       )
       return () => controls.stop()

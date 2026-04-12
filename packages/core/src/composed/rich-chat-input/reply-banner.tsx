@@ -4,6 +4,7 @@ import * as React from 'react'
 import { motion } from 'framer-motion'
 import { IconX } from '@tabler/icons-react'
 import { Icon } from '../../ui/icon'
+import { durations } from '../../ui/lib/motion'
 import { cn } from '../../ui/lib/utils'
 
 export interface ReplyBannerProps {
@@ -18,7 +19,7 @@ export function ReplyBanner({ author, preview, onDismiss }: ReplyBannerProps) {
       initial={{ height: 0, opacity: 0 }}
       animate={{ height: 'auto', opacity: 1 }}
       exit={{ height: 0, opacity: 0 }}
-      transition={{ duration: 0.24, ease: [0.2, 0, 0.38, 0.9] }}
+      transition={{ duration: durations.moderate02, ease: [0.2, 0, 0.38, 0.9] }}
       className="overflow-hidden"
     >
       <div

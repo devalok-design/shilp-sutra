@@ -46,6 +46,7 @@ const selectedTextStyles = {
 } as const
 
 /* ── Spring config (snappy, minimal overshoot) ─────────────── */
+/* Intentionally softer than springs.snappy (500/30/0.5) for pill slide feel */
 
 const pillSpring = { type: 'spring' as const, stiffness: 400, damping: 30 }
 

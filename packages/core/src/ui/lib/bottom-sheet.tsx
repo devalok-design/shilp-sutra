@@ -4,7 +4,7 @@ import * as React from 'react'
 import * as DialogPrimitive from '@primitives/react-dialog'
 import { motion, AnimatePresence, useReducedMotion } from 'framer-motion'
 import { cn } from './utils'
-import { tweens } from './motion'
+import { springs, tweens } from './motion'
 
 export interface BottomSheetProps {
   open: boolean
@@ -70,7 +70,7 @@ export function BottomSheet({
                 initial={{ y: '100%' }}
                 animate={{ y: 0 }}
                 exit={{ y: '100%' }}
-                transition={isReduced ? { duration: 0 } : { type: 'spring', damping: 30, stiffness: 300 }}
+                transition={isReduced ? { duration: 0 } : springs.smooth}
                 drag={swipeable && !isReduced ? 'y' : false}
                 dragConstraints={{ top: 0 }}
                 dragElastic={0.2}

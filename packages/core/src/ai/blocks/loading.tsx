@@ -11,6 +11,7 @@ import { Icon } from '../../ui/icon'
 import { cn } from '../../ui/lib/utils'
 import { Skeleton } from '../../ui/skeleton'
 import { useMotion } from '../../motion/motion-provider'
+import { durations } from '../../ui/lib/motion'
 import type { BlockComponentProps, LoadingBlockData, ProcessingStep } from '../types'
 
 /** Spinning indicator for active steps */
@@ -102,7 +103,7 @@ const LoadingBlock = React.memo(function LoadingBlock({
             transition={
               isReduced
                 ? { duration: 0 }
-                : { duration: 0.2, delay: index * 0.06 }
+                : { duration: durations.moderate01b, delay: index * 0.06 }
             }
           >
             <StepIcon status={step.status} />

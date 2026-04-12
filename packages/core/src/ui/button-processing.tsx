@@ -2,6 +2,7 @@
 
 import { motion, AnimatePresence } from 'framer-motion'
 import * as React from 'react'
+import { durations } from './lib/motion'
 
 // ── Types ──────────────────────────────────────────────────────────
 
@@ -85,7 +86,7 @@ export function ProcessingOverlay({ active, speed, color }: ProcessingOverlayPro
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           exit={{ opacity: 0 }}
-          transition={{ duration: 0.2 }}
+          transition={{ duration: durations.moderate01b }}
           aria-hidden="true"
           className="absolute inset-0 pointer-events-none"
         >

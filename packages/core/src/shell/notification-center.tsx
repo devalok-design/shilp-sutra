@@ -31,6 +31,7 @@ import { cn } from '../ui/lib/utils'
 import { Spinner } from '../ui/spinner'
 import { useIsMobile } from '../hooks/use-mobile'
 import { motion, useReducedMotion } from 'framer-motion'
+import { durations } from '../ui/lib/motion'
 
 // -----------------------------------------------------------------------
 // Types
@@ -452,7 +453,7 @@ const NotificationCenter = React.forwardRef<HTMLButtonElement, NotificationCente
         <motion.span
           initial={{ rotate: 0 }}
           animate={prefersReducedMotion ? undefined : { rotate: [0, -3, 3, -1, 1, 0] }}
-          transition={prefersReducedMotion ? { duration: 0 } : { duration: 0.4, ease: 'easeInOut' }}
+          transition={prefersReducedMotion ? { duration: 0 } : { duration: durations.slow01, ease: 'easeInOut' }}
           className="absolute -right-ds-01 -top-ds-01 flex h-4 min-w-4 items-center justify-center rounded-ds-full bg-accent-9 px-ds-02 text-ds-xs font-semibold text-accent-fg"
         >
           {unreadCount > 99 ? '99+' : unreadCount}

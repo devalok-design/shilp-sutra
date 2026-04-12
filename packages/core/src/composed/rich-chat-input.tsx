@@ -11,6 +11,7 @@ import Highlight from '@tiptap/extension-highlight'
 import Image from '@tiptap/extension-image'
 import Mention from '@tiptap/extension-mention'
 import { AnimatePresence, motion } from 'framer-motion'
+import { durations } from '../ui/lib/motion'
 import { FileAttachment } from './extensions/file-attachment'
 import { EmojiNode } from './extensions/emoji-node'
 import { createEmojiSuggestion } from './extensions/emoji-suggestion'
@@ -1021,7 +1022,7 @@ const RichChatInput = React.forwardRef<HTMLDivElement, RichChatInputProps>(
                 initial={{ scale: 0.8, opacity: 0 }}
                 animate={{ scale: 1, opacity: 1 }}
                 exit={{ scale: 0.8, opacity: 0 }}
-                transition={{ duration: 0.15 }}
+                transition={{ duration: durations.moderate01 }}
                 className="flex items-center gap-ds-02"
               >
                 <Button variant="soft" size={btnSize} onClick={handleCancelRecording} aria-label="Cancel recording" title="Cancel recording" className="text-surface-fg-subtle hover:text-error-11">
@@ -1038,7 +1039,7 @@ const RichChatInput = React.forwardRef<HTMLDivElement, RichChatInputProps>(
                 initial={{ scale: 0.8, opacity: 0 }}
                 animate={{ scale: 1, opacity: 1 }}
                 exit={{ scale: 0.8, opacity: 0 }}
-                transition={{ duration: 0.15 }}
+                transition={{ duration: durations.moderate01 }}
               >
                 <Button variant="solid" size={btnSize} color="error" onClick={onCancel} aria-label="Stop" title="Stop">
                   <Icon icon={IconSquare} size={iconSize} />
@@ -1051,7 +1052,7 @@ const RichChatInput = React.forwardRef<HTMLDivElement, RichChatInputProps>(
                 initial={{ scale: 0.8, opacity: 0 }}
                 animate={{ scale: 1, opacity: 1 }}
                 exit={{ scale: 0.8, opacity: 0 }}
-                transition={{ duration: 0.15 }}
+                transition={{ duration: durations.moderate01 }}
               >
                 <SplitButton
                   onClick={handleSubmit}
@@ -1076,7 +1077,7 @@ const RichChatInput = React.forwardRef<HTMLDivElement, RichChatInputProps>(
                 initial={{ scale: 0.8, opacity: 0 }}
                 animate={{ scale: 1, opacity: 1 }}
                 exit={{ scale: 0.8, opacity: 0 }}
-                transition={{ duration: 0.15 }}
+                transition={{ duration: durations.moderate01 }}
               >
                 <Button variant="solid" size={btnSize} onClick={handleSubmit} disabled={disabled} aria-label="Send" title="Send">
                   <Icon icon={IconSend} size={iconSize} />
@@ -1089,7 +1090,7 @@ const RichChatInput = React.forwardRef<HTMLDivElement, RichChatInputProps>(
                 initial={{ scale: 0.8, opacity: 0 }}
                 animate={{ scale: 1, opacity: 1 }}
                 exit={{ scale: 0.8, opacity: 0 }}
-                transition={{ duration: 0.15 }}
+                transition={{ duration: durations.moderate01 }}
               >
                 <Button variant="soft" size={btnSize} onClick={handleStartRecording} aria-label="Record voice message" title="Record voice message">
                   <Icon icon={IconMicrophone} size={iconSize} />
@@ -1102,7 +1103,7 @@ const RichChatInput = React.forwardRef<HTMLDivElement, RichChatInputProps>(
                 initial={{ scale: 0.8, opacity: 0 }}
                 animate={{ scale: 1, opacity: 1 }}
                 exit={{ scale: 0.8, opacity: 0 }}
-                transition={{ duration: 0.15 }}
+                transition={{ duration: durations.moderate01 }}
               >
                 <Button variant="solid" size={btnSize} disabled aria-label="Send" title="Send">
                   <Icon icon={IconSend} size={iconSize} />

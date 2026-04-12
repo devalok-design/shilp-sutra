@@ -4,7 +4,7 @@ import * as React from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
 import { IconUpload, IconPaperclip, IconCheck } from '@tabler/icons-react'
 import { cn } from './lib/utils'
-import { springs, tweens } from './lib/motion'
+import { springs, tweens, durations } from './lib/motion'
 import { Spinner } from './spinner'
 import { Icon } from './icon'
 
@@ -407,7 +407,7 @@ const FileUpload = React.forwardRef<HTMLDivElement, FileUploadProps>(
               initial={{ opacity: 0, x: 0 }}
               animate={{ opacity: 1, x: [0, -4, 4, -4, 4, 0] }}
               exit={{ opacity: 0 }}
-              transition={{ opacity: tweens.fade, x: { type: 'tween', duration: 0.4, ease: 'easeOut' } }}
+              transition={{ opacity: tweens.fade, x: { type: 'tween', duration: durations.slow01, ease: 'easeOut' } }}
             >
               {displayError}
             </motion.p>

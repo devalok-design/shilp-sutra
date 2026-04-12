@@ -6,6 +6,7 @@ import { AnimatePresence, motion } from 'framer-motion'
 import { type VariantProps } from 'class-variance-authority'
 import { buttonVariants } from './button'
 import { cn } from './lib/utils'
+import { durations } from './lib/motion'
 
 // ── Types ───────────────────────────────────────────────────────
 
@@ -341,7 +342,7 @@ const SplitButton = React.forwardRef<HTMLDivElement, SplitButtonProps>(
                 initial={{ opacity: 0, scale: 0.95 }}
                 animate={{ opacity: 1, scale: 1 }}
                 exit={{ opacity: 0, scale: 0.95 }}
-                transition={{ duration: 0.15 }}
+                transition={{ duration: durations.moderate01 }}
                 className="rounded-ds-lg border border-surface-border-strong bg-surface-overlay shadow-floating"
               >
                 {dropdownContent}

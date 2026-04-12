@@ -98,7 +98,7 @@ const AlertDialogContent = React.forwardRef<
               animate={isMobile ? { y: 0 } : { opacity: 1, scale: 1, x: '-50%', y: '-50%' }}
               exit={isMobile ? { y: '100%' } : { opacity: 0, scale: 0.95, x: '-50%', y: '-50%' }}
               transition={isMobile
-                ? { type: 'spring', damping: 30, stiffness: 300 }
+                ? springs.smooth
                 : { ...springs.smooth, opacity: tweens.fade }
               }
               className={cn(

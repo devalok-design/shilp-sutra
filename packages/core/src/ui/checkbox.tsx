@@ -4,6 +4,7 @@ import * as CheckboxPrimitive from '@primitives/react-checkbox'
 import { AnimatePresence, motion } from 'framer-motion'
 import * as React from 'react'
 import { cn } from './lib/utils'
+import { durations } from './lib/motion'
 import { useFormField } from './form'
 
 /**
@@ -111,7 +112,7 @@ const Checkbox = React.forwardRef<
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
               exit={{ opacity: 0 }}
-              transition={{ duration: 0.07 }}
+              transition={{ duration: durations.fast01 }}
             >
               <svg
                 width="16"
@@ -132,7 +133,7 @@ const Checkbox = React.forwardRef<
                     initial={{ pathLength: 0 }}
                     animate={{ pathLength: 1 }}
                     exit={{ pathLength: 0 }}
-                    transition={{ duration: 0.24, ease: 'easeOut' }}
+                    transition={{ duration: durations.moderate02, ease: 'easeOut' }}
                   />
                 ) : (
                   <motion.path
@@ -145,7 +146,7 @@ const Checkbox = React.forwardRef<
                     initial={{ pathLength: 0 }}
                     animate={{ pathLength: 1 }}
                     exit={{ pathLength: 0 }}
-                    transition={{ duration: 0.24, ease: 'easeOut' }}
+                    transition={{ duration: durations.moderate02, ease: 'easeOut' }}
                   />
                 )}
               </svg>

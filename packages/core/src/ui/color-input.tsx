@@ -4,7 +4,7 @@ import * as React from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
 import { HexColorPicker } from 'react-colorful'
 import { cn } from './lib/utils'
-import { springs } from './lib/motion'
+import { springs, durations } from './lib/motion'
 import {
   Popover,
   PopoverContent,
@@ -332,6 +332,7 @@ const ColorInput = React.forwardRef<HTMLDivElement, ColorInputProps>(
                   animate={{
                     background: `linear-gradient(to right, ${internalColor} 0%, ${internalColor} 35%, transparent 70%)`,
                   }}
+                  /* Between durations.moderate02 (0.24) and durations.slow01 (0.4) — gradient lerp feel */
                   transition={{ duration: 0.3 }}
                 />
                 <span className="absolute inset-0 bg-surface-overlay/60" style={{
@@ -402,7 +403,7 @@ const ColorInput = React.forwardRef<HTMLDivElement, ColorInputProps>(
                       initial={{ opacity: 0, y: 4 }}
                       animate={{ opacity: 1, y: 0 }}
                       exit={{ opacity: 0, y: -4 }}
-                      transition={{ duration: 0.15 }}
+                      transition={{ duration: durations.moderate01 }}
                       className="flex gap-ds-02"
                     >
                       <FormatInput
@@ -432,7 +433,7 @@ const ColorInput = React.forwardRef<HTMLDivElement, ColorInputProps>(
                       initial={{ opacity: 0, y: 4 }}
                       animate={{ opacity: 1, y: 0 }}
                       exit={{ opacity: 0, y: -4 }}
-                      transition={{ duration: 0.15 }}
+                      transition={{ duration: durations.moderate01 }}
                       className="flex gap-ds-02"
                     >
                       <FormatInput id={`${instanceId}-r`} label="R" value={String(rgb.r)} onChange={(v) => handleRgbChange('r', v)} disabled={disabled} className="flex-1" />
@@ -447,7 +448,7 @@ const ColorInput = React.forwardRef<HTMLDivElement, ColorInputProps>(
                       initial={{ opacity: 0, y: 4 }}
                       animate={{ opacity: 1, y: 0 }}
                       exit={{ opacity: 0, y: -4 }}
-                      transition={{ duration: 0.15 }}
+                      transition={{ duration: durations.moderate01 }}
                       className="flex gap-ds-02"
                     >
                       <FormatInput id={`${instanceId}-h`} label="H" value={String(hsl.h)} onChange={(v) => handleHslChange('h', v)} disabled={disabled} className="flex-1" />

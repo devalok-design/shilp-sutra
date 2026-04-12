@@ -3,7 +3,7 @@
 import { IconCheck, IconX } from '@tabler/icons-react'
 import { cva, type VariantProps } from 'class-variance-authority'
 import { motion, AnimatePresence, useReducedMotion } from 'framer-motion'
-import { springs } from './lib/motion'
+import { springs, durations } from './lib/motion'
 import { Slot } from '@primitives/react-slot'
 import * as React from 'react'
 import { Icon } from './icon'
@@ -267,7 +267,7 @@ const Badge = React.forwardRef<HTMLElement, BadgeProps>(
               ? { opacity: 1, scale: 1, width: 'auto', marginRight: 0 }
               : { opacity: 0, scale: 0.5, width: 0, marginRight: -4 }
             }
-            transition={{ type: 'tween', duration: 0.15, ease: [0.2, 0, 0.38, 0.9] }}  /* ease-productive-standard */
+            transition={{ type: 'tween', duration: durations.moderate01, ease: [0.2, 0, 0.38, 0.9] }}  /* ease-productive-standard */
             className="inline-flex shrink-0 overflow-hidden"
             aria-hidden={!selected}
           >

@@ -117,6 +117,7 @@ const DevadootIcon = React.memo(function DevadootIcon({
         }
         transition={
           state === 'responded'
+            /* Near springs.bouncy (400/15/0.5) — stiffer pop for celebration feedback */
             ? { scale: { type: 'spring', stiffness: 500, damping: 15 } }
             : state === 'error'
               ? { x: { duration: 0.4 } }

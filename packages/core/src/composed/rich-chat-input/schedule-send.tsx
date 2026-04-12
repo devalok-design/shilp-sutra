@@ -6,6 +6,7 @@ import { IconClock, IconCalendarEvent, IconX, IconPencil } from '@tabler/icons-r
 import { Icon } from '../../ui/icon'
 import { Button } from '../../ui/button'
 import { cn } from '../../ui/lib/utils'
+import { durations } from '../../ui/lib/motion'
 import { CalendarGrid } from '../date-picker/calendar-grid'
 import { useCalendar } from '../date-picker/use-calendar'
 import {
@@ -425,7 +426,7 @@ export function ScheduleBanner({ date, onClear, onEdit }: { date: Date; onClear:
       initial={{ height: 0, opacity: 0 }}
       animate={{ height: 'auto', opacity: 1 }}
       exit={{ height: 0, opacity: 0 }}
-      transition={{ duration: 0.15 }}
+      transition={{ duration: durations.moderate01 }}
       className="overflow-hidden"
     >
       <div className="flex items-center gap-ds-03 px-ds-04 py-ds-02b text-ds-xs text-accent-11 bg-accent-2 border-b border-accent-4">

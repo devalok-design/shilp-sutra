@@ -1,6 +1,7 @@
 import type { Meta, StoryObj } from '@storybook/react-vite'
 import * as React from 'react'
 import { Button } from './button'
+import { ProcessingOverlay } from './button-processing'
 import { Icon } from './icon'
 import { DevalokGrain } from './devalok-grain'
 import type { GrainIntensity } from './devalok-grain'
@@ -1691,4 +1692,58 @@ export const LayoutAnimation: Story = {
       </div>
     )
   },
+}
+
+// ── ProcessingOverlay (merged from button-processing.stories) ──
+
+function OverlayDemoButton({
+  speed,
+  color,
+  label,
+}: {
+  speed: 'ambient' | 'working' | 'urgent'
+  color: string
+  label: string
+}) {
+  const [active, setActive] = React.useState(true)
+  return (
+    <div className="flex flex-col items-center gap-ds-03">
+      <span className="relative inline-flex">
+        <Button variant="soft" color={color as any} onClick={() => setActive(!active)}>
+          {label}
+        </Button>
+        <ProcessingOverlay active={active} speed={speed} color={color} />
+      </span>
+      <span className="text-xs text-text-secondary">{speed} / {color}</span>
+    </div>
+  )
+}
+
+export const OverlayDefault: Story = {
+  name: 'ProcessingOverlay / Default',
+  render: () => <OverlayDemoButton speed="working" color="accent" label="Processing..." />,
+}
+
+export const OverlaySpeedVariants: Story = {
+  name: 'ProcessingOverlay / Speed Variants',
+  render: () => (
+    <div className="flex items-start gap-ds-08">
+      <OverlayDemoButton speed="ambient" color="accent" label="Ambient" />
+      <OverlayDemoButton speed="working" color="accent" label="Working" />
+      <OverlayDemoButton speed="urgent" color="accent" label="Urgent" />
+    </div>
+  ),
+}
+
+export const OverlayColorVariants: Story = {
+  name: 'ProcessingOverlay / Color Variants',
+  render: () => (
+    <div className="flex items-start gap-ds-08">
+      <OverlayDemoButton speed="working" color="accent" label="Accent" />
+      <OverlayDemoButton speed="working" color="success" label="Success" />
+      <OverlayDemoButton speed="working" color="error" label="Error" />
+      <OverlayDemoButton speed="working" color="warning" label="Warning" />
+      <OverlayDemoButton speed="working" color="neutral" label="Neutral" />
+    </div>
+  ),
 }

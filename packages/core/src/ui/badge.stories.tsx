@@ -14,6 +14,7 @@ import {
   IconStar,
   IconBell,
   IconUser,
+  IconMail,
   IconAlertTriangle,
   IconArrowRight,
   IconCalendar,
@@ -453,4 +454,143 @@ export const RealWorld: Story = {
       </div>
     )
   },
+}
+
+// ── BadgeGroup (merged from badge-group.stories) ──────────
+
+export const BadgeGroupDefault: Story = {
+  name: 'BadgeGroup / Default',
+  render: () => (
+    <BadgeGroup>
+      <Badge>React</Badge>
+      <Badge>TypeScript</Badge>
+      <Badge>Tailwind</Badge>
+    </BadgeGroup>
+  ),
+}
+
+export const BadgeGroupOverflow: Story = {
+  name: 'BadgeGroup / Overflow',
+  render: () => (
+    <BadgeGroup max={3}>
+      <Badge>React</Badge>
+      <Badge>TypeScript</Badge>
+      <Badge>Tailwind</Badge>
+      <Badge>Vite</Badge>
+      <Badge>Storybook</Badge>
+      <Badge>Vitest</Badge>
+    </BadgeGroup>
+  ),
+}
+
+export const BadgeGroupOverflowClickable: Story = {
+  name: 'BadgeGroup / Overflow Clickable',
+  render: () => (
+    <BadgeGroup max={2} onOverflowClick={() => alert('Show all tags')}>
+      <Badge color="accent">Frontend</Badge>
+      <Badge color="success">Backend</Badge>
+      <Badge color="warning">DevOps</Badge>
+      <Badge color="error">Urgent</Badge>
+    </BadgeGroup>
+  ),
+}
+
+export const BadgeGroupGapVariants: Story = {
+  name: 'BadgeGroup / Gap Variants',
+  render: () => (
+    <div className="flex flex-col gap-ds-06">
+      {(['tight', 'default', 'loose'] as const).map((g) => (
+        <div key={g} className="flex items-center gap-ds-04">
+          <span className="w-16 text-xs text-text-secondary">{g}</span>
+          <BadgeGroup gap={g}>
+            <Badge>Alpha</Badge>
+            <Badge>Beta</Badge>
+            <Badge>Gamma</Badge>
+          </BadgeGroup>
+        </div>
+      ))}
+    </div>
+  ),
+}
+
+// ── BadgeIndicator (merged from badge-indicator.stories) ──
+
+export const IndicatorNotificationDot: Story = {
+  name: 'BadgeIndicator / Notification Dot',
+  render: () => (
+    <BadgeIndicator dot>
+      <Icon icon={IconBell} size="xl" />
+    </BadgeIndicator>
+  ),
+}
+
+export const IndicatorCount: Story = {
+  name: 'BadgeIndicator / Count',
+  render: () => (
+    <BadgeIndicator count={5}>
+      <Icon icon={IconMail} size="xl" />
+    </BadgeIndicator>
+  ),
+}
+
+export const IndicatorMaxOverflow: Story = {
+  name: 'BadgeIndicator / Max Overflow',
+  render: () => (
+    <div className="flex items-center gap-ds-08">
+      <BadgeIndicator count={99}>
+        <Icon icon={IconMail} size="xl" />
+      </BadgeIndicator>
+      <BadgeIndicator count={150} max={99}>
+        <Icon icon={IconMail} size="xl" />
+      </BadgeIndicator>
+    </div>
+  ),
+}
+
+export const IndicatorColors: Story = {
+  name: 'BadgeIndicator / Colors',
+  render: () => (
+    <div className="flex items-center gap-ds-08">
+      {(['error', 'success', 'warning', 'accent', 'info'] as const).map((c) => (
+        <div key={c} className="flex flex-col items-center gap-ds-03">
+          <BadgeIndicator dot color={c}>
+            <Icon icon={IconUser} size="xl" />
+          </BadgeIndicator>
+          <span className="text-xs text-text-secondary">{c}</span>
+        </div>
+      ))}
+    </div>
+  ),
+}
+
+export const IndicatorPlacements: Story = {
+  name: 'BadgeIndicator / Placements',
+  render: () => (
+    <div className="flex items-center gap-ds-10">
+      {(['top-right', 'top-left', 'bottom-right', 'bottom-left'] as const).map((p) => (
+        <div key={p} className="flex flex-col items-center gap-ds-03">
+          <BadgeIndicator dot placement={p}>
+            <div className="h-10 w-10 rounded-ds-full bg-surface-raised flex items-center justify-center">
+              <Icon icon={IconUser} size="md" />
+            </div>
+          </BadgeIndicator>
+          <span className="text-xs text-text-secondary">{p}</span>
+        </div>
+      ))}
+    </div>
+  ),
+}
+
+export const IndicatorInvisible: Story = {
+  name: 'BadgeIndicator / Invisible',
+  render: () => (
+    <div className="flex items-center gap-ds-08">
+      <BadgeIndicator count={3}>
+        <Icon icon={IconBell} size="xl" />
+      </BadgeIndicator>
+      <BadgeIndicator count={3} invisible>
+        <Icon icon={IconBell} size="xl" />
+      </BadgeIndicator>
+    </div>
+  ),
 }

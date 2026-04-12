@@ -8,27 +8,48 @@ import { cn } from './lib/utils'
 import { Icon } from './icon'
 import { useFormField } from './form'
 
+// ── Size context ────────────────────────────────────────────────────
+
+type InputOTPSize = 'sm' | 'md' | 'lg'
+
+const InputOTPSizeContext = React.createContext<InputOTPSize>('md')
+
+const slotSizeClasses: Record<InputOTPSize, string> = {
+  sm: 'h-ds-sm w-ds-sm text-ds-sm',
+  md: 'h-ds-sm-plus w-ds-sm-plus text-ds-md',
+  lg: 'h-ds-md w-ds-md text-ds-lg',
+}
+
+// ── InputOTP ────────────────────────────────────────────────────────
+
 const InputOTP = React.forwardRef<
   React.ElementRef<typeof OTPInput>,
-  React.ComponentPropsWithoutRef<typeof OTPInput> & { state?: 'default' | 'error' }
->(({ className, containerClassName, state, ...props }, ref) => {
+  React.ComponentPropsWithoutRef<typeof OTPInput> & {
+    state?: 'default' | 'error'
+    /** Slot size. @default 'md' */
+    size?: InputOTPSize
+  }
+>(({ className, containerClassName, state, size: sizeProp, ...props }, ref) => {
   const formField = useFormField()
   const isError = state === 'error' || formField?.state === 'error'
+  const size: InputOTPSize = (typeof sizeProp === 'string' ? sizeProp : undefined) ?? 'md'
 
   return (
-    <OTPInput
-      ref={ref}
-      aria-invalid={isError || undefined}
-      aria-describedby={formField?.helperTextId}
-      aria-required={formField?.required || undefined}
-      containerClassName={cn(
-        'group/otp flex items-center gap-ds-03 has-[:disabled]:opacity-action-disabled',
-        isError && 'is-error',
-        containerClassName,
-      )}
-      className={cn('disabled:cursor-not-allowed', className)}
-      {...props}
-    />
+    <InputOTPSizeContext.Provider value={size}>
+      <OTPInput
+        ref={ref}
+        aria-invalid={isError || undefined}
+        aria-describedby={formField?.helperTextId}
+        aria-required={formField?.required || undefined}
+        containerClassName={cn(
+          'group/otp flex items-center gap-ds-03 has-[:disabled]:opacity-action-disabled',
+          isError && 'is-error',
+          containerClassName,
+        )}
+        className={cn('disabled:cursor-not-allowed', className)}
+        {...props}
+      />
+    </InputOTPSizeContext.Provider>
   )
 })
 InputOTP.displayName = 'InputOTP'
@@ -46,13 +67,15 @@ const InputOTPSlot = React.forwardRef<
   React.ComponentPropsWithoutRef<'div'> & { index: number }
 >(({ index, className, ...props }, ref) => {
   const inputOTPContext = React.useContext(OTPInputContext)
+  const size = React.useContext(InputOTPSizeContext)
   const { char, hasFakeCaret, isActive } = inputOTPContext.slots[index]
 
   return (
     <div
       ref={ref}
       className={cn(
-        'relative flex h-ds-sm-plus w-ds-sm-plus items-center justify-center border-y border-r border-surface-border-strong text-ds-md shadow-raised transition-[box-shadow,border-color] first:rounded-l-ds-md first:border-l last:rounded-r-ds-md',
+        'relative flex items-center justify-center border-y border-r border-surface-border-strong shadow-raised transition-[box-shadow,border-color] first:rounded-l-ds-md first:border-l last:rounded-r-ds-md',
+        slotSizeClasses[size],
         'group-[.is-error]/otp:border-error-7',
         isActive && 'z-raised ring-2 ring-accent-9',
         className,
@@ -80,6 +103,10 @@ const InputOTPSeparator = React.forwardRef<
 ))
 InputOTPSeparator.displayName = 'InputOTPSeparator'
 
-export type InputOTPProps = React.ComponentPropsWithoutRef<typeof OTPInput> & { state?: 'default' | 'error' }
+export type InputOTPProps = React.ComponentPropsWithoutRef<typeof OTPInput> & {
+  state?: 'default' | 'error'
+  /** Slot size. @default 'md' */
+  size?: InputOTPSize
+}
 
 export { InputOTP, InputOTPGroup, InputOTPSlot, InputOTPSeparator }

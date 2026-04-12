@@ -62,7 +62,7 @@ export {
   selectTriggerVariants,
 } from './select'
 export { Textarea, textareaVariants, type TextareaProps } from './textarea'
-export { NumberInput, type NumberInputProps } from './number-input'
+export { NumberInput, numberInputWrapperVariants, type NumberInputProps, type NumberInputSize, type NumberInputState } from './number-input'
 export { SearchInput, type SearchInputProps } from './search-input'
 export { InputOTP, InputOTPGroup, InputOTPSlot, InputOTPSeparator, type InputOTPProps } from './input-otp'
 export { FormField, FormHelperText, useFormField, type FormFieldProps, type FormHelperState, type FormHelperTextProps } from './form'

@@ -2,9 +2,62 @@
 
 import * as React from 'react'
 import { IconMinus, IconPlus } from '@tabler/icons-react'
+import { cva, type VariantProps } from 'class-variance-authority'
 import { cn } from './lib/utils'
 import { useFormField } from './form'
 import { Icon } from './icon'
+import type { IconSize } from './icon-context'
+
+export type NumberInputState = 'default' | 'error' | 'warning' | 'success'
+
+const numberInputWrapperVariants = cva(
+  'flex items-center justify-between rounded-ds-full border border-surface-border-strong',
+  {
+    variants: {
+      size: {
+        xs: 'h-ds-xs-plus',
+        sm: 'h-ds-sm',
+        md: 'h-ds-md',
+        lg: 'h-ds-lg',
+      },
+    },
+    defaultVariants: { size: 'md' },
+  },
+)
+
+export type NumberInputSize = NonNullable<VariantProps<typeof numberInputWrapperVariants>['size']>
+
+/** Maps size to stepper button dimensions */
+const buttonSizeMap: Record<NonNullable<NumberInputSize>, string> = {
+  xs: 'h-[22px] w-[22px]',
+  sm: 'h-ds-sm w-ds-sm',
+  md: 'h-ds-sm w-ds-sm',
+  lg: 'h-ds-md w-ds-md',
+}
+
+/** Maps size to Icon component size */
+const iconSizeMap: Record<NonNullable<NumberInputSize>, IconSize> = {
+  xs: 'xs',
+  sm: 'sm',
+  md: 'sm',
+  lg: 'md',
+}
+
+/** Maps size to input text and width classes */
+const inputSizeMap: Record<NonNullable<NumberInputSize>, string> = {
+  xs: 'text-ds-sm w-[28px]',
+  sm: 'text-ds-sm w-ds-sm-plus',
+  md: 'text-ds-md w-ds-sm-plus',
+  lg: 'text-ds-md w-ds-md',
+}
+
+/** Maps state to border color classes */
+const stateColorMap: Record<NonNullable<NumberInputState>, string> = {
+  default: '',
+  error: 'border-error-7',
+  warning: 'border-warning-7',
+  success: 'border-success-7',
+}
 
 /**
  * Props for NumberInput — a stepper control with "−" and "+" buttons flanking a numeric input,
@@ -15,6 +68,11 @@ import { Icon } from './icon'
  *
  * **Step:** The `step` prop controls how much each button press increments/decrements (default 1).
  * Direct text input is also clamped to `[min, max]` on change.
+ *
+ * **Sizes:** `xs` (28px) | `sm` (32px) | `md` (40px, default) | `lg` (48px)
+ *
+ * **Validation states:** `state="error"` colors the border red.
+ * Use with `<FormField>` to show helper text below the input.
  *
  * @example
  * // Quantity selector with 1–99 range:
@@ -39,6 +97,10 @@ export interface NumberInputProps extends Omit<React.InputHTMLAttributes<HTMLInp
   min?: number
   max?: number
   step?: number
+  /** Size of the number input. Controls height, button sizes, text size. */
+  size?: NumberInputSize
+  /** Validation state controlling border color. */
+  state?: NumberInputState
 }
 
 const NumberInput = React.forwardRef<HTMLInputElement, NumberInputProps>(
@@ -51,15 +113,26 @@ const NumberInput = React.forwardRef<HTMLInputElement, NumberInputProps>(
       step = 1,
       disabled = false,
       className,
+      size: sizeProp = 'md',
+      state: stateProp,
       'aria-label': ariaLabelProp,
       ...rest
     },
     ref,
   ) => {
+    const size = sizeProp ?? 'md'
     const fieldCtx = useFormField()
     // If no explicit aria-label and not inside a FormField (no id to associate with Label),
     // provide a sensible default
     const ariaLabel = ariaLabelProp ?? (rest.id || fieldCtx.helperTextId ? undefined : 'Numeric value')
+
+    // Merge FormField context — explicit props always win
+    const state =
+      stateProp ??
+      (fieldCtx.state === 'helper'
+        ? 'default'
+        : (fieldCtx.state as NumberInputState | undefined)) ??
+      'default'
 
     const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
       const raw = e.target.value.trim()
@@ -89,10 +162,15 @@ const NumberInput = React.forwardRef<HTMLInputElement, NumberInputProps>(
       }
     }
 
+    const resolvedButtonSize = buttonSizeMap[size]
+    const resolvedIconSize = iconSizeMap[size]
+    const resolvedInputSize = inputSizeMap[size]
+
     return (
       <div
         className={cn(
-          'flex items-center justify-between rounded-ds-full border border-surface-border-strong',
+          numberInputWrapperVariants({ size }),
+          stateColorMap[state],
           className,
         )}
       >
@@ -102,9 +180,12 @@ const NumberInput = React.forwardRef<HTMLInputElement, NumberInputProps>(
           disabled={disabled || value <= min}
           aria-label="Decrease value"
           title="Decrease"
-          className="flex h-ds-sm w-ds-sm items-center justify-center border-0 text-surface-fg-subtle hover:bg-surface-raised-hover hover:text-surface-fg-muted active:scale-90 transition-[color,transform] duration-fast-01 ease-productive-standard"
+          className={cn(
+            'flex items-center justify-center border-0 text-surface-fg-subtle hover:bg-surface-raised-hover hover:text-surface-fg-muted active:scale-90 transition-[color,transform] duration-fast-01 ease-productive-standard',
+            resolvedButtonSize,
+          )}
         >
-          <Icon icon={IconMinus} size="sm" />
+          <Icon icon={IconMinus} size={resolvedIconSize} />
         </button>
 
         <input
@@ -117,8 +198,12 @@ const NumberInput = React.forwardRef<HTMLInputElement, NumberInputProps>(
           step={step}
           disabled={disabled}
           aria-label={ariaLabel}
+          aria-invalid={state === 'error' || undefined}
           aria-describedby={rest['aria-describedby'] ?? fieldCtx.helperTextId}
-          className="bg-transparent text-ds-md font-semibold w-ds-sm-plus border-0 text-center text-surface-fg-muted focus-visible:outline-hidden focus-visible:ring-2 focus-visible:ring-accent-9 [appearance:textfield] [&::-webkit-inner-spin-button]:appearance-none [&::-webkit-outer-spin-button]:appearance-none"
+          className={cn(
+            'bg-transparent font-semibold border-0 text-center text-surface-fg-muted focus-visible:outline-hidden focus-visible:ring-2 focus-visible:ring-accent-9 [appearance:textfield] [&::-webkit-inner-spin-button]:appearance-none [&::-webkit-outer-spin-button]:appearance-none',
+            resolvedInputSize,
+          )}
           {...rest}
         />
 
@@ -128,9 +213,12 @@ const NumberInput = React.forwardRef<HTMLInputElement, NumberInputProps>(
           disabled={disabled || value >= max}
           aria-label="Increase value"
           title="Increase"
-          className="flex h-ds-sm w-ds-sm items-center justify-center border-0 text-surface-fg-subtle hover:bg-surface-raised-hover hover:text-surface-fg-muted active:scale-90 transition-[color,transform] duration-fast-01 ease-productive-standard"
+          className={cn(
+            'flex items-center justify-center border-0 text-surface-fg-subtle hover:bg-surface-raised-hover hover:text-surface-fg-muted active:scale-90 transition-[color,transform] duration-fast-01 ease-productive-standard',
+            resolvedButtonSize,
+          )}
         >
-          <Icon icon={IconPlus} size="sm" />
+          <Icon icon={IconPlus} size={resolvedIconSize} />
         </button>
       </div>
     )
@@ -138,4 +226,4 @@ const NumberInput = React.forwardRef<HTMLInputElement, NumberInputProps>(
 )
 NumberInput.displayName = 'NumberInput'
 
-export { NumberInput }
+export { NumberInput, numberInputWrapperVariants }

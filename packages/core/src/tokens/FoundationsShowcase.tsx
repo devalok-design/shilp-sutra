@@ -280,10 +280,13 @@ function TypographySamples() {
 const spacingTokens = [
   { token: '--spacing-01', value: '2px' },
   { token: '--spacing-02', value: '4px' },
+  { token: '--spacing-02b', value: '6px' },
   { token: '--spacing-03', value: '8px' },
   { token: '--spacing-04', value: '12px' },
   { token: '--spacing-05', value: '16px' },
+  { token: '--spacing-05b', value: '20px' },
   { token: '--spacing-06', value: '24px' },
+  { token: '--spacing-06b', value: '28px' },
   { token: '--spacing-07', value: '32px' },
   { token: '--spacing-08', value: '40px' },
   { token: '--spacing-09', value: '48px' },
@@ -430,6 +433,7 @@ const zIndexTokens = [
   { token: '--z-sticky', value: '1100' },
   { token: '--z-overlay', value: '1200' },
   { token: '--z-modal', value: '1300' },
+  { token: '--z-popover', value: '1400' },
   { token: '--z-toast', value: '1500' },
   { token: '--z-tooltip', value: '1600' },
 ]

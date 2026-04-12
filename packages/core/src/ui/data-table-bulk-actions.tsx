@@ -32,7 +32,7 @@ export function DataTableBulkActions<TData>({
   return (
     <div
       className={cn(
-        'fixed bottom-6 left-1/2 -translate-x-1/2 z-50',
+        'fixed bottom-6 left-1/2 -translate-x-1/2 z-sticky',
         'flex items-center gap-ds-04 px-ds-05 py-ds-03',
         'rounded-ds-lg border border-surface-border-strong bg-surface-overlay shadow-floating',
         'animate-in slide-in-from-bottom-2',

@@ -52,7 +52,7 @@ const ActionButton = React.forwardRef<HTMLDivElement, { action: BulkActionBarAct
         initial={{ opacity: 0, scale: 0.95 }}
         animate={{ opacity: 1, scale: 1 }}
         exit={{ opacity: 0, scale: 0.95 }}
-        transition={{ type: 'spring', stiffness: 500, damping: 30 }}
+        transition={springs.snappy}
         className="flex items-center gap-ds-02"
         tabIndex={tabIndex}
       >
@@ -87,7 +87,7 @@ const ActionButton = React.forwardRef<HTMLDivElement, { action: BulkActionBarAct
       initial={{ opacity: 0, scale: 0.95 }}
       animate={{ opacity: 1, scale: 1 }}
       exit={{ opacity: 0, scale: 0.95 }}
-      transition={{ type: 'spring', stiffness: 500, damping: 30 }}
+      transition={springs.snappy}
       tabIndex={tabIndex}
     >
       <Button
@@ -174,7 +174,7 @@ function BulkActionBar({
           exit={{ y: 100, opacity: 0 }}
           transition={springs.snappy}
           className={cn(
-            'fixed bottom-ds-06 left-1/2 z-50 -translate-x-1/2',
+            'fixed bottom-ds-06 left-1/2 z-sticky -translate-x-1/2',
             'flex items-center gap-ds-04 rounded-ds-lg border border-surface-border bg-surface-overlay px-ds-05 py-ds-03 shadow-floating',
             className,
           )}

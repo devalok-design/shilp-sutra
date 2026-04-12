@@ -56,7 +56,7 @@ export default function ImagePreview({ url, alt, onError }: { url: string; alt?:
   if (error) return <ErrorFallback message="Could not load image" url={url} />
 
   const containerClasses = fullscreen
-    ? 'fixed inset-0 z-50 flex flex-col items-center justify-center bg-black/90 backdrop-blur-xs'
+    ? 'fixed inset-0 z-modal flex flex-col items-center justify-center bg-black/90 backdrop-blur-xs'
     : 'relative flex flex-col items-center gap-ds-03'
 
   return (

@@ -425,11 +425,13 @@ const preset: Partial<Config> = {
         'heading-2xl', 'heading-xl', 'heading-lg', 'heading-md', 'heading-sm', 'heading-xs',
         'body-lg', 'body-md', 'body-sm', 'body-xs',
         'label-lg', 'label-md', 'label-sm', 'label-xs',
-        'caption', 'overline',
+        'label-plain-lg', 'label-plain-md', 'label-plain-sm',
+        'caption', 'overline', 'code',
       ] as const
       const uppercaseVariants = new Set([
         'label-lg', 'label-md', 'label-sm', 'label-xs', 'overline',
       ])
+      const monoVariants = new Set(['code'])
       const typoUtilities: Record<string, Record<string, string>> = {}
       for (const v of typoVariants) {
         const base: Record<string, string> = {
@@ -440,6 +442,9 @@ const preset: Partial<Config> = {
         }
         if (uppercaseVariants.has(v)) {
           base['text-transform'] = 'uppercase'
+        }
+        if (monoVariants.has(v)) {
+          base['font-family'] = 'var(--typo-code-font)'
         }
         typoUtilities[`.text-${v}`] = base
       }

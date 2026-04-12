@@ -87,6 +87,22 @@
   --typo-label-xs-leading:     var(--line-height-snug);
   --typo-label-xs-tracking:    0.06em;
 
+  /* ── Label Plain (mixed-case, no text-transform) ── */
+  --typo-label-plain-lg-size:   var(--font-size-base);
+  --typo-label-plain-lg-weight: var(--font-weight-semibold);
+  --typo-label-plain-lg-leading: var(--line-height-snug);
+  --typo-label-plain-lg-tracking: 0em;
+
+  --typo-label-plain-md-size:   var(--font-size-md);
+  --typo-label-plain-md-weight: var(--font-weight-semibold);
+  --typo-label-plain-md-leading: var(--line-height-snug);
+  --typo-label-plain-md-tracking: 0em;
+
+  --typo-label-plain-sm-size:   var(--font-size-sm);
+  --typo-label-plain-sm-weight: var(--font-weight-semibold);
+  --typo-label-plain-sm-leading: var(--line-height-snug);
+  --typo-label-plain-sm-tracking: 0em;
+
   /* ── Caption & Overline ────────────────────── */
   --typo-caption-size:         var(--font-size-sm);
   --typo-caption-weight:       var(--font-weight-regular);
@@ -97,4 +113,11 @@
   --typo-overline-weight:      var(--font-weight-regular);
   --typo-overline-leading:     var(--line-height-loose);
   --typo-overline-tracking:    0.08em;
+
+  /* ── Code (monospace) ──────────────────────── */
+  --typo-code-size:            var(--font-size-sm);
+  --typo-code-weight:          var(--font-weight-regular);
+  --typo-code-leading:         var(--line-height-normal);
+  --typo-code-tracking:        0em;
+  --typo-code-font:            var(--font-mono);
 }

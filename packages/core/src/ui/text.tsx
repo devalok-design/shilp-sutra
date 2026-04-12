@@ -22,6 +22,10 @@ const textVariants = cva('font-sans', {
       'label-xs':    'text-[length:var(--typo-label-xs-size)] font-[number:var(--typo-label-xs-weight)] leading-[var(--typo-label-xs-leading)] tracking-[var(--typo-label-xs-tracking)] uppercase',
       caption:       'text-[length:var(--typo-caption-size)] font-[number:var(--typo-caption-weight)] leading-[var(--typo-caption-leading)] tracking-[var(--typo-caption-tracking)]',
       overline:      'text-[length:var(--typo-overline-size)] font-[number:var(--typo-overline-weight)] leading-[var(--typo-overline-leading)] tracking-[var(--typo-overline-tracking)] uppercase',
+      code:              'text-[length:var(--typo-code-size)] font-[number:var(--typo-code-weight)] leading-[var(--typo-code-leading)] tracking-[var(--typo-code-tracking)] font-mono',
+      'label-plain-lg':  'text-[length:var(--typo-label-plain-lg-size)] font-[number:var(--typo-label-plain-lg-weight)] leading-[var(--typo-label-plain-lg-leading)] tracking-[var(--typo-label-plain-lg-tracking)]',
+      'label-plain-md':  'text-[length:var(--typo-label-plain-md-size)] font-[number:var(--typo-label-plain-md-weight)] leading-[var(--typo-label-plain-md-leading)] tracking-[var(--typo-label-plain-md-tracking)]',
+      'label-plain-sm':  'text-[length:var(--typo-label-plain-sm-size)] font-[number:var(--typo-label-plain-sm-weight)] leading-[var(--typo-label-plain-sm-leading)] tracking-[var(--typo-label-plain-sm-tracking)]',
     },
   },
   defaultVariants: {
@@ -48,6 +52,10 @@ const defaultElementMap: Record<TextVariant, keyof React.JSX.IntrinsicElements> 
   'label-xs':    'span',
   caption:       'span',
   overline:      'span',
+  code:              'code',
+  'label-plain-lg':  'span',
+  'label-plain-md':  'span',
+  'label-plain-sm':  'span',
 }
 
 /**

@@ -14,6 +14,8 @@ export interface ChartContainerProps extends Omit<React.HTMLAttributes<HTMLDivEl
   className?: string
   /** Accessible label for the chart SVG */
   ariaLabel?: string
+  /** Accessible description for screen readers — summarize key data points */
+  ariaDescription?: string
   /** Render function receiving inner dimensions (width/height minus margins) */
   children: (dimensions: {
     width: number
@@ -29,6 +31,7 @@ export const ChartContainer = React.forwardRef<HTMLDivElement, ChartContainerPro
       margin: marginOverride,
       className,
       ariaLabel = 'Chart',
+      ariaDescription,
       children,
       ...props
     },
@@ -64,6 +67,7 @@ export const ChartContainer = React.forwardRef<HTMLDivElement, ChartContainerPro
     >
       {width > 0 && (
         <svg width={width} height={height} role="img" aria-label={ariaLabel}>
+          {ariaDescription && <desc>{ariaDescription}</desc>}
           <g transform={`translate(${margin.left},${margin.top})`}>
             {children({ width: innerWidth, height: innerHeight, margin })}
           </g>

@@ -11,7 +11,7 @@ import type { IconSize } from './icon-context'
 export type NumberInputState = 'default' | 'error' | 'warning' | 'success'
 
 const numberInputWrapperVariants = cva(
-  'flex items-center justify-between rounded-ds-full border border-surface-border-strong',
+  'flex items-center justify-between rounded-ds-md border border-surface-border-strong',
   {
     variants: {
       size: {
@@ -181,7 +181,7 @@ const NumberInput = React.forwardRef<HTMLInputElement, NumberInputProps>(
           aria-label="Decrease value"
           title="Decrease"
           className={cn(
-            'flex items-center justify-center border-0 text-surface-fg-subtle hover:bg-surface-raised-hover hover:text-surface-fg-muted active:scale-90 transition-[color,transform] duration-fast-01 ease-productive-standard',
+            'flex items-center justify-center border-0 rounded-ds-sm text-surface-fg-subtle hover:bg-surface-raised-hover hover:text-surface-fg-muted active:scale-90 transition-[color,background-color,transform] duration-fast-01 ease-productive-standard disabled:opacity-action-disabled disabled:pointer-events-none',
             resolvedButtonSize,
           )}
         >
@@ -214,7 +214,7 @@ const NumberInput = React.forwardRef<HTMLInputElement, NumberInputProps>(
           aria-label="Increase value"
           title="Increase"
           className={cn(
-            'flex items-center justify-center border-0 text-surface-fg-subtle hover:bg-surface-raised-hover hover:text-surface-fg-muted active:scale-90 transition-[color,transform] duration-fast-01 ease-productive-standard',
+            'flex items-center justify-center border-0 rounded-ds-sm text-surface-fg-subtle hover:bg-surface-raised-hover hover:text-surface-fg-muted active:scale-90 transition-[color,background-color,transform] duration-fast-01 ease-productive-standard disabled:opacity-action-disabled disabled:pointer-events-none',
             resolvedButtonSize,
           )}
         >

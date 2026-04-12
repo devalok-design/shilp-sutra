@@ -35,14 +35,14 @@
   /* 20px */
   --font-size-2xl: 1.5rem;
   /* 24px */
-  --font-size-3xl: 2rem;
-  /* 32px */
-  --font-size-4xl: 2.25rem;
-  /* 36px */
-  --font-size-5xl: 3rem;
-  /* 48px */
-  --font-size-6xl: 3.75rem;
-  /* 60px */
+  --font-size-3xl: clamp(1.5rem, 1.125rem + 1.25vw, 2rem);
+  /* 24px → 32px fluid */
+  --font-size-4xl: clamp(1.75rem, 1.25rem + 1.5vw, 2.25rem);
+  /* 28px → 36px fluid */
+  --font-size-5xl: clamp(2rem, 1.25rem + 2.5vw, 3rem);
+  /* 32px → 48px fluid */
+  --font-size-6xl: clamp(2.25rem, 1.5rem + 3vw, 3.75rem);
+  /* 36px → 60px fluid */
 
   /* ── Line Heights ──────────────────────────── */
   --line-height-none: 1;
@@ -111,7 +111,7 @@
 
   --color-surface-fg: var(--neutral-12);
   --color-surface-fg-muted: var(--neutral-11);
-  --color-surface-fg-subtle: var(--neutral-8);
+  --color-surface-fg-subtle: var(--neutral-9);  /* was neutral-8; darkened for WCAG AA 4.5:1 contrast */
   --color-surface-border: var(--neutral-6);         /* was neutral-5; bumped for WCAG 1.4.11 non-text contrast */
   --color-surface-border-strong: var(--neutral-7);   /* was neutral-6 */
   --color-surface-border-subtle: var(--neutral-5);   /* was neutral-4 */

@@ -49,22 +49,22 @@
   --typo-body-lg-size:         var(--font-size-base);
   --typo-body-lg-weight:       var(--font-weight-regular);
   --typo-body-lg-leading:      var(--line-height-relaxed);
-  --typo-body-lg-tracking:     -0.02em;
+  --typo-body-lg-tracking:     -0.01em;  /* was -0.02em; loosened for readability */
 
   --typo-body-md-size:         var(--font-size-md);
   --typo-body-md-weight:       var(--font-weight-regular);
   --typo-body-md-leading:      var(--line-height-relaxed);
-  --typo-body-md-tracking:     -0.02em;
+  --typo-body-md-tracking:     0em;     /* was -0.02em; neutral at 14px */
 
   --typo-body-sm-size:         var(--font-size-sm);
   --typo-body-sm-weight:       var(--font-weight-regular);
   --typo-body-sm-leading:      var(--line-height-relaxed);
-  --typo-body-sm-tracking:     -0.02em;
+  --typo-body-sm-tracking:     0.01em;  /* was -0.02em; positive for small text legibility */
 
   --typo-body-xs-size:         var(--font-size-xs);
   --typo-body-xs-weight:       var(--font-weight-regular);
   --typo-body-xs-leading:      var(--line-height-relaxed);
-  --typo-body-xs-tracking:     -0.02em;
+  --typo-body-xs-tracking:     0.02em;  /* was -0.02em; positive for tiny text legibility */
 
   /* ── Label Variants (uppercase UI labels) ─── */
   --typo-label-lg-size:        var(--font-size-base);

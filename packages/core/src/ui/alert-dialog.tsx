@@ -6,6 +6,7 @@ import { motion, AnimatePresence } from 'framer-motion'
 
 import { cn } from './lib/utils'
 import { springs, tweens } from './lib/motion'
+import { useIsMobile } from '../hooks/use-mobile'
 
 // ── Internal context to thread `open` state to animated children ──
 
@@ -61,11 +62,18 @@ const AlertDialogOverlay = React.forwardRef<
 ))
 AlertDialogOverlay.displayName = AlertDialogPrimitive.Overlay.displayName
 
+interface AlertDialogContentProps extends React.ComponentPropsWithoutRef<typeof AlertDialogPrimitive.Content> {
+  /** When true (default), AlertDialog fills the screen on mobile (<768px). Set false to always use centered modal. */
+  responsive?: boolean
+}
+
 const AlertDialogContent = React.forwardRef<
   React.ElementRef<typeof AlertDialogPrimitive.Content>,
-  React.ComponentPropsWithoutRef<typeof AlertDialogPrimitive.Content>
->(({ className, children, ...props }, ref) => {
+  AlertDialogContentProps
+>(({ className, children, responsive, ...props }, ref) => {
   const { open } = useAlertDialogOpen()
+  const isMobileRaw = useIsMobile()
+  const isMobile = responsive !== false && isMobileRaw
 
   return (
     <AnimatePresence>
@@ -86,12 +94,18 @@ const AlertDialogContent = React.forwardRef<
             {...props}
           >
             <motion.div
-              initial={{ opacity: 0, scale: 0.95, x: '-50%', y: '-50%' }}
-              animate={{ opacity: 1, scale: 1, x: '-50%', y: '-50%' }}
-              exit={{ opacity: 0, scale: 0.95, x: '-50%', y: '-50%' }}
-              transition={{ ...springs.smooth, opacity: tweens.fade }}
+              initial={isMobile ? { y: '100%' } : { opacity: 0, scale: 0.95, x: '-50%', y: '-50%' }}
+              animate={isMobile ? { y: 0 } : { opacity: 1, scale: 1, x: '-50%', y: '-50%' }}
+              exit={isMobile ? { y: '100%' } : { opacity: 0, scale: 0.95, x: '-50%', y: '-50%' }}
+              transition={isMobile
+                ? { type: 'spring', damping: 30, stiffness: 300 }
+                : { ...springs.smooth, opacity: tweens.fade }
+              }
               className={cn(
-                'fixed left-[50%] top-[50%] z-modal grid w-full max-w-lg gap-ds-05 border border-surface-border-strong bg-surface-overlay p-ds-06 shadow-overlay rounded-ds-xl',
+                'fixed z-modal grid w-full gap-ds-05 bg-surface-overlay p-ds-06',
+                responsive !== false
+                  ? 'inset-0 md:inset-auto md:left-[50%] md:top-[50%] md:max-w-lg md:rounded-ds-xl md:border md:border-surface-border-strong md:shadow-overlay'
+                  : 'left-[50%] top-[50%] max-w-lg rounded-ds-xl border border-surface-border-strong shadow-overlay',
                 className,
               )}
             >
@@ -191,7 +205,7 @@ const AlertDialogCancel = React.forwardRef<
 ))
 AlertDialogCancel.displayName = AlertDialogPrimitive.Cancel.displayName
 
-export type AlertDialogContentProps = React.ComponentPropsWithoutRef<typeof AlertDialogPrimitive.Content>
+export type { AlertDialogContentProps }
 export type AlertDialogActionProps = React.ComponentPropsWithoutRef<typeof AlertDialogPrimitive.Action>
 export type AlertDialogCancelProps = React.ComponentPropsWithoutRef<typeof AlertDialogPrimitive.Cancel>
 

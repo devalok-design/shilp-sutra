@@ -52,10 +52,10 @@ const badgeVariants = cva(
         soft: 'border border-transparent',
       },
       size: {
-        xs: 'h-4 px-1.5 text-[10px] gap-1',
-        sm: 'h-5 px-2 text-ds-xs gap-1',
-        md: 'h-6 px-2.5 text-ds-xs gap-1.5',
-        lg: 'h-7 px-3 text-ds-sm gap-1.5',
+        xs: 'h-4 px-ds-02b text-ds-xs gap-ds-02',
+        sm: 'h-5 px-ds-03 text-ds-xs gap-ds-02',
+        md: 'h-6 px-2.5 text-ds-xs gap-ds-02b', /* px-2.5=10px — no exact DS token */
+        lg: 'h-7 px-ds-04 text-ds-sm gap-ds-02b',
       },
     },
     defaultVariants: {
@@ -75,18 +75,18 @@ const iconSizeMap: Record<string, string> = {
 
 /** Reduced left padding when leading content (icon/dot/selected) is present */
 const paddingLeftWithIcon: Record<string, string> = {
-  xs: 'pl-1',
-  sm: 'pl-1.5',
-  md: 'pl-2',
-  lg: 'pl-2.5',
+  xs: 'pl-ds-02',
+  sm: 'pl-ds-02b',
+  md: 'pl-ds-03',
+  lg: 'pl-2.5', /* 10px — no exact DS token */
 }
 
 /** Reduced right padding when trailing content (dismiss/endIcon) is present */
 const paddingRightWithTrailing: Record<string, string> = {
-  xs: 'pr-0.5',
-  sm: 'pr-1',
-  md: 'pr-1',
-  lg: 'pr-1.5',
+  xs: 'pr-ds-01',
+  sm: 'pr-ds-02',
+  md: 'pr-ds-02',
+  lg: 'pr-ds-02b',
 }
 
 /**

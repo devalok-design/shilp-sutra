@@ -16,6 +16,10 @@
  * import { Button, Dialog } from '@devalok/shilp-sutra/ui'
  */
 
+// Dev-mode token presence check — runs once on first import
+import { checkTokensLoaded } from './lib/check-tokens'
+checkTokensLoaded()
+
 // Core
 export { Icon, type IconProps } from './icon'
 export { IconContext, IconProvider, useIconContext, type IconContextValue, type IconSize, type IconStroke } from './icon-context'

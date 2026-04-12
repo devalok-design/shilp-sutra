@@ -161,6 +161,6 @@ export default defineConfig({
     },
     cssCodeSplit: true,
     outDir: 'dist',
-    sourcemap: false,
+    sourcemap: 'hidden',  // generates .map files for debugging but omits //# sourceMappingURL comment
   },
 })

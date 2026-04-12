@@ -39,6 +39,9 @@ jobs:
       - name: Build library
         run: pnpm build
 
+      - name: SSR smoke test
+        run: node packages/core/scripts/ssr-smoke-test.mjs
+
       - name: Check bundle size
         run: |
           TOTAL=$(du -sb packages/core/dist | cut -f1)

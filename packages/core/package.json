@@ -853,10 +853,6 @@
     "node": ">=20.19.0"
   },
   "packageManager": "pnpm@10.0.0",
-  "dependencies": {
-    "@floating-ui/dom": "^1.7.6",
-    "@tiptap/extension-list": "^3.22.3",
-    "@tiptap/extensions": "^3.22.3",
-    "prosemirror-state": "^1.4.4"
-  }
+  "dependencies": {}
+
 }

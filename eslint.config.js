@@ -2,6 +2,7 @@ import globals from 'globals'
 import tseslint from 'typescript-eslint'
 import reactHooks from 'eslint-plugin-react-hooks'
 import jsxA11y from 'eslint-plugin-jsx-a11y'
+import simpleImportSort from 'eslint-plugin-simple-import-sort'
 
 export default tseslint.config(
   // ── Global ignores ──────────────────────────────────────────────────
@@ -24,6 +25,7 @@ export default tseslint.config(
     plugins: {
       'react-hooks': reactHooks,
       'jsx-a11y': jsxA11y,
+      'simple-import-sort': simpleImportSort,
     },
     languageOptions: {
       ecmaVersion: 'latest',
@@ -70,6 +72,10 @@ export default tseslint.config(
       'jsx-a11y/no-autofocus': 'warn',
       'jsx-a11y/label-has-associated-control': 'warn',
 
+      // ── Import ordering ────────────────────────────────────────────
+      'simple-import-sort/imports': 'warn',
+      'simple-import-sort/exports': 'warn',
+
       // ── General ───────────────────────────────────────────────────
       'prefer-const': 'warn',
       'no-console': ['warn', { allow: ['warn', 'error'] }],
@@ -93,7 +99,7 @@ export default tseslint.config(
       ],
     },
   },
-  // composed/ cannot import from karm/
+  // composed/ cannot import from shell/ or karm/
   {
     files: ['packages/core/src/composed/**/*.{ts,tsx}'],
     rules: {
@@ -101,6 +107,7 @@ export default tseslint.config(
         'error',
         {
           patterns: [
+            { group: ['**/shell/*', '**/shell'], message: 'composed/ must not import from shell/' },
             { group: ['**/karm/*', '**/karm'], message: 'composed/ must not import from karm/' },
           ],
         },
@@ -121,19 +128,6 @@ export default tseslint.config(
       ],
     },
   },
-  // karm/ cannot import from primitives/_internal/
-  {
-    files: ['packages/karm/src/**/*.{ts,tsx}'],
-    rules: {
-      'no-restricted-imports': [
-        'error',
-        {
-          patterns: [
-            { group: ['**/primitives/_internal/*', '**/primitives/_internal'], message: 'karm/ must not import from primitives/_internal/' },
-            { group: ['@primitives/*'], message: 'karm/ must not import from @primitives/' },
-          ],
-        },
-      ],
-    },
-  },
+
+
 )

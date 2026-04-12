@@ -58,5 +58,5 @@ Each layer can only import from layers to its left. This ensures the design syst
 ## Standards
 
 - **WCAG 2.2 AA** — Minimum accessibility target
-- **W3C Design Tokens** — Token format for cross-tool interoperability
+- **W3C Design Tokens** — Token format for cross-tool interoperability (planned — not yet implemented)
 - **Conventional Commits** — Version history that tells a story

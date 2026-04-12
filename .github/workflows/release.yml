@@ -25,6 +25,18 @@ jobs:
       - name: Install dependencies
         run: pnpm install --frozen-lockfile
 
+      - name: Typecheck
+        run: pnpm typecheck
+
+      - name: Test
+        run: pnpm test
+
+      - name: Build
+        run: pnpm build
+
+      - name: SSR smoke test
+        run: node packages/core/scripts/ssr-smoke-test.mjs
+
       - name: Create Release Pull Request or Publish
         uses: changesets/action@v1
         with:

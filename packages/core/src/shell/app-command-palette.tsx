@@ -10,26 +10,7 @@
  */
 import * as React from 'react'
 import { useCallback, useMemo } from 'react'
-import {
-  IconLayoutDashboard,
-  IconCalendarCheck,
-  IconUmbrella,
-  IconLayoutKanban,
-  IconListCheck,
-  IconBook,
-  IconAdjustmentsHorizontal,
-  IconUserCircle,
-  IconShieldCheck,
-  IconClipboardList,
-  IconUserPlus,
-  IconSettings,
-  IconFileText,
-  IconUsers,
-  IconMessage,
-  IconVideo,
-  IconLink,
-  IconPackage,
-} from '@tabler/icons-react'
+import { IconFileText } from '@tabler/icons-react'
 import { CommandPalette, type CommandGroup, type CommandItem, type CommandPaletteProps, type FooterHint } from '../composed/command-palette'
 import { Icon } from '../ui/icon'
 import { cn } from '../ui/lib/utils'
@@ -52,6 +33,8 @@ export interface SearchResult {
   rank?: number
   /** Keyboard shortcut hint to display on this result. */
   shortcut?: string
+  /** Navigation href. Used as fallback when onSearchResultSelect is not provided. */
+  href?: string
 }
 
 /** A group of search results with a label. */
@@ -112,145 +95,9 @@ export interface AppCommandPaletteProps
 // Constants
 // -----------------------------------------------------------------------
 
-const ENTITY_TYPE_ICONS: Record<string, React.ReactNode> = {
-  TASK: <Icon icon={IconListCheck} />,
-  PROJECT: <Icon icon={IconLayoutKanban} />,
-  USER: <Icon icon={IconUsers} />,
-  COMMENT: <Icon icon={IconMessage} />,
-  MEETING: <Icon icon={IconVideo} />,
-  LINK: <Icon icon={IconLink} />,
-  DELIVERABLE: <Icon icon={IconPackage} />,
-}
-
-// -----------------------------------------------------------------------
-// Default page navigation items
-// -----------------------------------------------------------------------
-
-function buildDefaultPageItems(
-  nav: (to: string) => void,
-): CommandItem[] {
-  return [
-    {
-      id: 'nav-dashboard',
-      label: 'Dashboard',
-      icon: <Icon icon={IconLayoutDashboard} />,
-      onSelect: () => nav('/'),
-    },
-    {
-      id: 'nav-attendance',
-      label: 'Attendance',
-      icon: <Icon icon={IconCalendarCheck} />,
-      onSelect: () => nav('/attendance'),
-    },
-    {
-      id: 'nav-breaks',
-      label: 'Breaks',
-      icon: <Icon icon={IconUmbrella} />,
-      onSelect: () => nav('/breaks'),
-    },
-    {
-      id: 'nav-projects',
-      label: 'Projects',
-      icon: <Icon icon={IconLayoutKanban} />,
-      onSelect: () => nav('/projects'),
-    },
-    {
-      id: 'nav-my-tasks',
-      label: 'My Tasks',
-      icon: <Icon icon={IconListCheck} />,
-      onSelect: () => nav('/my-tasks'),
-    },
-    {
-      id: 'nav-devsabha',
-      label: 'Devsabha',
-      icon: <Icon icon={IconBook} />,
-      onSelect: () => nav('/devsabha'),
-    },
-    {
-      id: 'nav-adjustments',
-      label: 'Adjustments',
-      icon: <Icon icon={IconAdjustmentsHorizontal} />,
-      onSelect: () => nav('/adjustments'),
-    },
-    {
-      id: 'nav-profile',
-      label: 'Profile',
-      icon: <Icon icon={IconUserCircle} />,
-      onSelect: () => nav('/profile'),
-    },
-  ]
-}
-
-function buildDefaultAdminItems(
-  nav: (to: string) => void,
-): CommandItem[] {
-  return [
-    {
-      id: 'nav-admin-dashboard',
-      label: 'Admin Dashboard',
-      icon: <Icon icon={IconShieldCheck} />,
-      onSelect: () => nav('/admin'),
-    },
-    {
-      id: 'nav-admin-breaks',
-      label: 'Manage Breaks',
-      icon: <Icon icon={IconUmbrella} />,
-      onSelect: () => nav('/admin/breaks'),
-    },
-    {
-      id: 'nav-admin-attendance',
-      label: 'Manage Attendance',
-      icon: <Icon icon={IconCalendarCheck} />,
-      onSelect: () => nav('/admin/attendance'),
-    },
-    {
-      id: 'nav-admin-lokwasi',
-      label: 'Lokwasi',
-      icon: <Icon icon={IconClipboardList} />,
-      onSelect: () => nav('/admin/lokwasi'),
-    },
-    {
-      id: 'nav-admin-onboarding',
-      label: 'Onboarding',
-      icon: <Icon icon={IconUserPlus} />,
-      onSelect: () => nav('/admin/onboarding'),
-    },
-    {
-      id: 'nav-admin-config',
-      label: 'System Config',
-      icon: <Icon icon={IconSettings} />,
-      onSelect: () => nav('/admin/system-config'),
-    },
-  ]
-}
-
 // -----------------------------------------------------------------------
 // Helpers
 // -----------------------------------------------------------------------
-
-/** Compute an internal fallback route for a search result (legacy behavior). */
-function computeFallbackRoute(r: SearchResult): string {
-  switch (r.entityType) {
-    case 'TASK':
-      return r.projectId ? `/projects/${r.projectId}?taskId=${r.id}` : '/'
-    case 'PROJECT':
-      return `/projects/${r.id}`
-    case 'USER':
-      return `/teammates`
-    case 'COMMENT':
-      return r.projectId && r.metadata?.taskId
-        ? `/projects/${r.projectId}?taskId=${r.metadata.taskId}`
-        : '/'
-    case 'MEETING':
-      return r.projectId ? `/projects/${r.projectId}?tab=meetings` : '/'
-    case 'LINK':
-      return r.projectId ? `/projects/${r.projectId}?tab=karyakram` : '/'
-    case 'DELIVERABLE':
-      return r.projectId ? `/projects/${r.projectId}?tab=deliverables` : '/'
-    default:
-      return '/'
-  }
-}
 
 /** Convert a SearchResult into a CommandItem. */
 function searchResultToCommandItem(
@@ -263,15 +110,13 @@ function searchResultToCommandItem(
     label: r.title,
     filterValue: r.title,
     description: r.snippet,
-    icon: r.icon ?? ENTITY_TYPE_ICONS[r.entityType] ?? <Icon icon={IconFileText} />,
+    icon: r.icon ?? <Icon icon={IconFileText} />,
     shortcut: r.shortcut,
     onSelect: () => {
       if (onSearchResultSelect) {
-        // Consumer owns routing — only call their handler (#1 Option B)
         onSearchResultSelect(r)
-      } else {
-        // Legacy fallback: compute route internally
-        nav(computeFallbackRoute(r))
+      } else if (r.href) {
+        nav(r.href)
       }
     },
   }
@@ -331,7 +176,7 @@ const AppCommandPalette = React.forwardRef<HTMLDivElement, AppCommandPaletteProp
             keywords: p.keywords,
             onSelect: () => nav(p.path),
           }))
-        : buildDefaultPageItems(nav),
+        : [],  // Consumer provides pages via CommandRegistryProvider
     }),
     [nav, registry],
   )
@@ -347,7 +192,7 @@ const AppCommandPalette = React.forwardRef<HTMLDivElement, AppCommandPaletteProp
             keywords: p.keywords,
             onSelect: () => nav(p.path),
           }))
-        : buildDefaultAdminItems(nav),
+        : [],  // Consumer provides admin pages via CommandRegistryProvider
     }),
     [nav, registry],
   )

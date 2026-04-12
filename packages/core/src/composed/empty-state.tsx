@@ -1,7 +1,7 @@
 'use client'
 
 import * as React from 'react'
-import { motion } from 'framer-motion'
+import { motion, useReducedMotion } from 'framer-motion'
 import { tweens } from '../ui/lib/motion'
 import { cn } from '../ui/lib/utils'
 
@@ -41,6 +41,7 @@ const EmptyState = React.forwardRef<HTMLDivElement, EmptyStateProps>(
     },
     ref,
   ) => {
+    const reducedMotion = useReducedMotion()
     const resolvedIconSize = iconSize ?? (compact ? 'sm' : 'md')
     const iconSizeMap = {
       sm: 'h-ico-sm w-ico-sm',
@@ -78,8 +79,8 @@ const EmptyState = React.forwardRef<HTMLDivElement, EmptyStateProps>(
             compact ? 'h-ds-md w-ds-md' : 'h-ds-lg w-ds-lg',
             !isComponentType && icon != null && iconSizeClass,
           )}
-          animate={{ y: [0, -4, 0] }}
-          transition={{ repeat: Infinity, duration: 3, ease: 'easeInOut' }}
+          animate={reducedMotion ? {} : { y: [0, -4, 0] }}
+          transition={reducedMotion ? {} : { repeat: Infinity, duration: 3, ease: 'easeInOut' }}
         >
           {resolvedIcon}
         </motion.div>

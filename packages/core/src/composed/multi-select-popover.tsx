@@ -200,6 +200,8 @@ const MultiSelectPopover = React.forwardRef<HTMLDivElement, MultiSelectPopoverPr
           key={item.id}
           id={`msp-item-${index}`}
           type="button"
+          role="option"
+          aria-selected={isSelected}
           disabled={item.disabled}
           data-multiselect-item=""
           data-focused={isFocused ? '' : undefined}
@@ -279,7 +281,7 @@ const MultiSelectPopover = React.forwardRef<HTMLDivElement, MultiSelectPopoverPr
           </div>
 
           {/* Items */}
-          <div ref={listRef} className="max-h-[240px] overflow-y-auto py-ds-02">
+          <div ref={listRef} role="listbox" aria-multiselectable="true" className="max-h-[240px] overflow-y-auto py-ds-02">
             {filteredGroups
               ? filteredGroups.map((group) => (
                   <div key={group.label}>

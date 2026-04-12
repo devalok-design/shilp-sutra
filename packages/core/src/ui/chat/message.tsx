@@ -394,6 +394,7 @@ function MessageReactions({ reactions, onReact }: MessageReactionsProps) {
           key={r.emoji}
           type="button"
           onClick={() => onReact(r.emoji)}
+          aria-label={`${r.emoji} ${r.count} reaction${r.count !== 1 ? 's' : ''}${r.reacted ? ', you reacted' : ''}`}
           className={cn(
             'inline-flex items-center gap-ds-01 rounded-full px-ds-02 py-ds-01 text-ds-xs transition-colors',
             r.reacted
@@ -423,7 +424,7 @@ function MessageActions({ children, delay = 100 }: MessageActionsProps) {
       className={cn(
         'absolute -top-2 right-0 z-10',
         'flex items-center gap-ds-01 rounded-ds-md border border-surface-border bg-surface-raised px-ds-01 py-ds-01 shadow-raised',
-        'opacity-0 group-hover/message:opacity-100 transition-opacity duration-150',
+        'opacity-0 group-hover/message:opacity-100 group-focus-within/message:opacity-100 transition-opacity duration-150',
       )}
       style={{ transitionDelay: `${delay}ms` }}
     >

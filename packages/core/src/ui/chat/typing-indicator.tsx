@@ -17,7 +17,7 @@ function formatTypingText(users: { name: string }[]): string {
 
 function TypingIndicator({ users, className }: TypingIndicatorProps) {
   return (
-    <div className={cn('min-h-[24px] px-ds-05', className)}>
+    <div className={cn('min-h-[24px] px-ds-05', className)} role="status" aria-live="polite">
       <AnimatePresence>
         {users.length > 0 && (
           <motion.div

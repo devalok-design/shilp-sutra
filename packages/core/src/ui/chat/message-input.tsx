@@ -96,6 +96,7 @@ const MessageInput = React.forwardRef<HTMLDivElement, MessageInputProps>(
             onChange={handleChange}
             onKeyDown={handleKeyDown}
             placeholder={placeholder}
+            aria-label={placeholder || 'Type a message'}
             disabled={disabled}
             rows={1}
             className="flex-1 resize-none bg-transparent px-ds-02 py-ds-01 text-ds-sm text-surface-fg placeholder:text-surface-fg-subtle/50 focus:outline-hidden disabled:opacity-50"

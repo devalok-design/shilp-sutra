@@ -25,6 +25,7 @@ const SystemMessage = React.forwardRef<HTMLDivElement, SystemMessageProps>(
       return (
         <div
           ref={ref}
+          role="alert"
           className={cn('flex justify-center', className)}
           {...props}
         >

@@ -38,7 +38,7 @@ export { VisuallyHidden, type VisuallyHiddenProps } from './visually-hidden'
 export { Autocomplete, type AutocompleteProps, type AutocompleteOption } from './autocomplete'
 
 // Combobox
-export { Combobox, type ComboboxProps, type ComboboxOption } from './combobox'
+export { Combobox, comboboxTriggerVariants, type ComboboxProps, type ComboboxOption, type ComboboxSize } from './combobox'
 
 // FileUpload
 export { FileUpload, type FileUploadProps } from './file-upload'

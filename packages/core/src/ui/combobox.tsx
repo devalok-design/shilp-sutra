@@ -3,11 +3,61 @@
 import * as React from 'react'
 import * as PopoverPrimitive from '@primitives/react-popover'
 import { IconCheck, IconChevronDown, IconSearch, IconX } from '@tabler/icons-react'
+import { cva, type VariantProps } from 'class-variance-authority'
 import { motion } from 'framer-motion'
 
 import { cn } from './lib/utils'
 import { springs, tweens } from './lib/motion'
 import { Icon } from './icon'
+import type { IconSize } from './icon-context'
+import { useFormField } from './form'
+
+export const comboboxTriggerVariants = cva(
+  [
+    'flex w-full items-center justify-between whitespace-nowrap rounded-ds-md',
+    'border border-surface-border-strong bg-surface-raised-hover',
+    'transition-colors duration-fast-01 ease-productive-standard',
+    'focus-visible:outline-hidden focus-visible:ring-2 focus-visible:ring-accent-9 focus-visible:ring-offset-2 focus-visible:border-accent-7',
+    'disabled:cursor-not-allowed disabled:opacity-action-disabled',
+  ],
+  {
+    variants: {
+      size: {
+        xs: 'h-ds-xs-plus text-ds-sm px-ds-02',
+        sm: 'h-ds-sm text-ds-sm px-ds-03',
+        md: 'h-ds-md text-ds-md px-ds-04',
+        lg: 'h-ds-lg text-ds-md px-ds-05',
+      },
+    },
+    defaultVariants: { size: 'md' },
+  },
+)
+
+export type ComboboxSize = NonNullable<VariantProps<typeof comboboxTriggerVariants>['size']>
+
+/** Maps combobox size to Icon component size for chevron / check icons */
+const iconSizeMap: Record<NonNullable<ComboboxSize>, IconSize> = {
+  xs: 'xs',
+  sm: 'sm',
+  md: 'sm',
+  lg: 'md',
+}
+
+/** Maps combobox size to pill text + padding classes */
+const pillSizeMap: Record<NonNullable<ComboboxSize>, string> = {
+  xs: 'px-ds-02 py-0 text-ds-xs',
+  sm: 'px-ds-02 py-0 text-ds-xs',
+  md: 'px-ds-03 py-[1px] text-ds-sm',
+  lg: 'px-ds-03 py-[2px] text-ds-sm',
+}
+
+/** Maps combobox size to overflow text classes */
+const overflowTextMap: Record<NonNullable<ComboboxSize>, string> = {
+  xs: 'text-ds-xs',
+  sm: 'text-ds-xs',
+  md: 'text-ds-sm',
+  lg: 'text-ds-sm',
+}
 
 /**
  * Option shape for a Combobox dropdown item.
@@ -85,6 +135,8 @@ interface ComboboxBaseProps extends Omit<React.HTMLAttributes<HTMLDivElement>, '
   renderOption?: (option: ComboboxOption, selected: boolean) => React.ReactNode
   /** Accessible label for the trigger button. Falls back to `placeholder` if not provided. */
   accessibleLabel?: string
+  /** Size of the trigger. Controls height, text size, padding, and pill sizing. */
+  size?: ComboboxSize
 }
 
 interface ComboboxSingleProps extends ComboboxBaseProps {
@@ -123,10 +175,12 @@ const Combobox = React.forwardRef<HTMLButtonElement, ComboboxProps>(
       maxVisible = 6,
       renderOption,
       accessibleLabel,
+      size: sizeProp = 'md',
       ...rest
     },
     ref,
   ) => {
+    const size = sizeProp ?? 'md'
     const [open, setOpen] = React.useState(false)
     const [search, setSearch] = React.useState('')
     const [highlightedIndex, setHighlightedIndex] = React.useState(-1)
@@ -291,6 +345,10 @@ const Combobox = React.forwardRef<HTMLButtonElement, ComboboxProps>(
       return option?.label ?? null
     }, [selectedValues, options])
 
+    const resolvedIconSize = iconSizeMap[size]
+    const resolvedPillClasses = pillSizeMap[size]
+    const resolvedOverflowText = overflowTextMap[size]
+
     const renderTriggerContent = () => {
       if (multiple && selectedValues.length > 0) {
         const visiblePills = selectedValues.slice(0, MAX_VISIBLE_PILLS)
@@ -304,7 +362,7 @@ const Combobox = React.forwardRef<HTMLButtonElement, ComboboxProps>(
               return (
                 <span
                   key={val}
-                  className="inline-flex items-center gap-ds-01 rounded-ds-md bg-accent-2 px-ds-03 py-[1px] text-ds-sm"
+                  className={cn('inline-flex items-center gap-ds-01 rounded-ds-md bg-accent-2', resolvedPillClasses)}
                 >
                   {option.label}
                   <button
@@ -314,13 +372,13 @@ const Combobox = React.forwardRef<HTMLButtonElement, ComboboxProps>(
                     aria-label={`Remove ${option.label}`}
                     tabIndex={-1}
                   >
-                    <Icon icon={IconX} size="sm" />
+                    <Icon icon={IconX} size={resolvedIconSize} />
                   </button>
                 </span>
               )
             })}
             {remaining > 0 && (
-              <span className="text-ds-sm text-surface-fg-muted">
+              <span className={cn('text-surface-fg-muted', resolvedOverflowText)}>
                 +{remaining} more
               </span>
             )}
@@ -342,6 +400,11 @@ const Combobox = React.forwardRef<HTMLButtonElement, ComboboxProps>(
       )
     }
 
+    const fieldCtx = useFormField()
+    const isError = fieldCtx.state === 'error'
+    const ariaDescribedBy = fieldCtx.helperTextId
+    const ariaRequired = fieldCtx.required
+
     return (
       <PopoverPrimitive.Root open={open} onOpenChange={handleOpenChange}>
         <div className={cn('relative', className)} {...rest}>
@@ -354,18 +417,18 @@ const Combobox = React.forwardRef<HTMLButtonElement, ComboboxProps>(
             aria-controls={listboxId}
             aria-haspopup="listbox"
             aria-label={accessibleLabel ?? placeholder}
+            aria-invalid={isError || undefined}
+            aria-describedby={ariaDescribedBy}
+            aria-required={ariaRequired || undefined}
             disabled={disabled}
             className={cn(
-              'flex h-ds-md w-full items-center justify-between whitespace-nowrap rounded-ds-md border border-surface-border-strong bg-surface-raised-hover px-ds-04 py-ds-03 text-ds-md',
-              'transition-colors duration-fast-01 ease-productive-standard',
-              'focus-visible:outline-hidden focus-visible:ring-2 focus-visible:ring-accent-9 focus-visible:ring-offset-2 focus-visible:border-accent-7',
-              'disabled:cursor-not-allowed disabled:opacity-action-disabled',
+              comboboxTriggerVariants({ size }),
               open && 'border-accent-7',
               triggerClassName,
             )}
           >
             {renderTriggerContent()}
-            <Icon icon={IconChevronDown} size="sm" className={cn("ml-ds-02 shrink-0 opacity-50 transition-transform duration-fast-01 ease-productive-standard", open && 'rotate-180')} />
+            <Icon icon={IconChevronDown} size={resolvedIconSize} className={cn("ml-ds-02 shrink-0 opacity-50 transition-transform duration-fast-01 ease-productive-standard", open && 'rotate-180')} />
           </button>
         </PopoverPrimitive.Trigger>
 

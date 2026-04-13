@@ -8,45 +8,91 @@ All notable changes to the Shilp Sutra design system.
 
 Format based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/) &middot; [Semantic Versioning](https://semver.org/spec/v2.0.0.html)
 
-> **Current version:** `@devalok/shilp-sutra@0.18.0` (2026-03-14)
+> **Current version:** `@devalok/shilp-sutra@0.34.1` (2026-04-12)
 >
-> For the complete changelog with all releases, see [`CHANGELOG.md`](https://github.com/devalok-design/shilp-sutra/blob/main/CHANGELOG.md) in the repository.
+> For the complete changelog, see [`CHANGELOG.md`](https://github.com/devalok-design/shilp-sutra/blob/main/CHANGELOG.md).
+> For migration guides, see [`docs/MIGRATION.md`](https://github.com/devalok-design/shilp-sutra/blob/main/docs/MIGRATION.md).
 
 ---
 
-## 0.18.0 &mdash; 2026-03-14
+## 0.34.x &mdash; Toolchain Upgrade
 
-The **OKLCH + Framer Motion** release. Three major system-wide migrations:
-
-- **OKLCH Color Tokens** &mdash; All color primitives migrated from hex shade numbers (50&ndash;950) to OKLCH functional steps (1&ndash;12). Dark mode is now algorithmically derived with perceptually uniform lightness/chroma curves.
-- **Framer Motion** &mdash; All interactive animations migrated from CSS keyframes to physics-based springs. 37 components migrated. New `MotionProvider`, spring/tween presets, and 6 motion primitives.
-- **Toast API rewrite** &mdash; Imperative `toast()` function replacing the old component-based API.
+Full build toolchain upgrade: **Tailwind CSS 4**, **TypeScript 6**, **ESLint 10**, **Vite 8** (Rolldown bundler).
 
 ### Breaking Changes
 
-- **Color tokens**: `--pink-50` through `--pink-950` &rarr; `--pink-1` through `--pink-12` (OKLCH). Same for all 8 scales.
-- **Semantic tokens**: `--color-interactive` &rarr; `--color-accent-9`, `--color-text-secondary` &rarr; `--color-surface-fg-muted`, and many more. Old names preserved as aliases.
-- **Transitions removed**: `Fade`, `Collapse`, `Grow`, `Slide` from `./ui/transitions` &rarr; use `MotionFade`, `MotionCollapse`, `MotionSlide` from `./motion/primitives`
-- **18 CSS keyframes removed** from the Tailwind preset (replaced by Framer Motion)
-- **`useReducedMotion` hook removed** &mdash; use `MotionProvider` instead
+- **Tailwind CSS 3 &rarr; 4:** `outline-none` &rarr; `outline-hidden`, `rounded-sm` &rarr; `rounded-xs`, `backdrop-blur-sm` &rarr; `backdrop-blur-xs`, `!prefix` &rarr; `suffix!` important syntax. Consumers: replace `darkMode: 'class'` with `@variant dark (&:is(.dark *))` in CSS. Peer dep accepts `^3.4.0 || ^4.0.0`.
+- **tailwind-merge 3.0 &rarr; 3.5:** Required for TW4 class recognition.
+- **TypeScript 5.7 &rarr; 6.0:** `types` defaults to `[]` in TS6. Add `"types": ["node"]` to tsconfig if needed.
+- **ESLint 9 &rarr; 10:** Config file lookup starts from linted file directory (not CWD). Verify monorepo configs.
+- **react-zoom-pan-pinch 3 &rarr; 4:** `onTransformed` renamed to `onTransform`. Peer dep `^3.0.0 || ^4.0.0`.
 
 ### Added
 
-- **Framer Motion system**: `MotionProvider`, `springs` presets (snappy, smooth, bouncy, gentle), `tweens` presets (fade, colorShift), 6 motion primitives
-- **Spinner v2**: State machine (spinning/success/error), filled/bare variants, Framer Motion arc animation
-- **Button `onClickAsync`**: Promise-driven loading &rarr; success/error states
-- **OKLCH scale generator**: `generateScale()` utility for creating 12-step palettes
-- **61 new Props type exports** added to barrel files
-- **New export paths**: `./motion`, `./motion/primitives`
+- **Vite 8** with Rolldown bundler + `@vitejs/plugin-react` 6 (Oxc). SSR safety patch for Rolldown CJS interop.
+- Bumped React 19.2.5, Storybook 10.3.5, Vitest 4.1.4, framer-motion 12.38, esbuild 0.28, Playwright 1.59.1.
 
-### Fixed
+---
 
-- Switch visible border on unchecked state
-- Badge accent color variants (step corrections)
-- Link color tokens
-- Toast accent bar colors
-- Button async feedback colors
-- SegmentedControl and Stepper token references
+## 0.33.0 &mdash; RichChatInput v2, SplitButton, Schedule Send
+
+### Breaking Changes
+
+- **EmojiSuggestion:** Named export removed. Use `createEmojiSuggestion(set?)` factory.
+- **Emoji HTML output:** Non-native `emojiSet` renders `<span data-emoji-id>` nodes, not raw Unicode.
+
+### Added
+
+- **RichChatInput v2** &mdash; Complete rewrite with structured output (`html`, `plainText`, `attachments?`, `voiceNote?`). Zone architecture. 4 variants: `compact`, `expanded`, `minimal`, `inline`.
+- **Custom EmojiNode** &mdash; TipTap inline atom node with spritesheet rendering. `emojiSet` prop: `native`, `apple`, `google`, `twitter`, `facebook`.
+- **SplitButton** &mdash; `[Action | dropdown]` button with Floating UI positioning and proper ARIA.
+- **Schedule Send** &mdash; `onSchedule?(msg, date)` on RichChatInput. Smart presets + DateTimePicker.
+- **ButtonGroup rebuild** &mdash; Compound component pattern with context-propagated `disabled`, `attached`, `fullWidth`.
+- **Composable toolbar** &mdash; Exported `ToolbarButton`, `ToolbarDivider`, `ToolbarGroup`, and per-format buttons.
+- **TipTap v2 &rarr; v3** &mdash; `useEditorState`, SSR-safe `immediatelyRender: false`, `ListKit`. Fixes React 19 crash.
+
+---
+
+## 0.32.0 &mdash; Button Rewrite, Mobile Responsiveness, Badge Rewrite
+
+### Breaking Changes
+
+- **Button:** `variant="default"` removed (use `"solid"`), `variant="destructive"` removed (use `variant="solid" color="error"`), `color="default"` removed (use `"accent"`).
+- **Chip:** Removed. Use `Badge` instead.
+- **SegmentedControl:** Rewritten. `variant="filled"` &rarr; `"accent"`, `variant="tonal"` &rarr; `"default"`.
+- **TopBar** renders as `<header>`, **Sidebar** as `<aside>`.
+- **ResponsiveOverlay:** Deprecated. Use Dialog or Sheet directly.
+
+### Added
+
+- **Mobile responsive overlays** &mdash; Dialog auto-fullscreen on mobile, Sheet auto-bottom with swipe-to-dismiss, Popover renders as bottom drawer.
+- **Touch utilities** &mdash; `.touch-target` (44px hit area), `.p-safe` inset utilities, `useTouchDevice()`, `useViewportHeight()`.
+- **DataTable `mobileView="card"`** &mdash; Stacked cards below 640px.
+- **SegmentedControl redesign** &mdash; White pill + shadow or brand pill, snappy spring animation.
+- **Checkbox/Radio `size` prop** &mdash; `sm | md | lg`.
+
+---
+
+## 0.31.0 &mdash; Variant Audit
+
+- **Alert `size` prop** &mdash; `sm | md | lg`.
+- **Card `color` + `size` props** &mdash; Semantic border color, context-propagated sizing.
+- **Select `variant` + `color` props** &mdash; `default | outline | ghost`, with `aria-invalid` on error.
+- **Tabs `color` + `size` props** &mdash; `accent | neutral`, `sm | md | lg`.
+- **Badge `truncate` prop** for ellipsis truncation.
+- Server-safe detection via `// @server-safe` source annotations (replaces hardcoded allowlist).
+
+---
+
+## 0.18.0 &mdash; OKLCH + Framer Motion
+
+Three major system-wide migrations:
+
+- **OKLCH Color Tokens** &mdash; All color primitives migrated from hex shade numbers (50&ndash;950) to OKLCH functional steps (1&ndash;12). Dark mode algorithmically derived.
+- **Framer Motion** &mdash; All interactive animations migrated from CSS keyframes to physics-based springs. 37 components migrated. New `MotionProvider`, spring/tween presets, and 6 motion primitives.
+- **Toast API rewrite** &mdash; Imperative `toast()` function replacing the old component-based API.
+- **Spinner v2** &mdash; State machine (spinning/success/error), filled/bare variants, Framer Motion arc animation.
+- **Button `onClickAsync`** &mdash; Promise-driven loading with success/error feedback states.
 
 ---
 
@@ -54,32 +100,17 @@ The **OKLCH + Framer Motion** release. Three major system-wide migrations:
 
 | Version | Date | Highlights |
 |---------|------|------------|
-| 0.17.2 | 2026-03-13 | inject-use-client fix for vendor chunks |
-| 0.17.0 | 2026-03-13 | Stale .js file cleanup, CI pipeline |
-| 0.16.1 | 2026-03-13 | Code review fixes batch |
-| 0.16.0 | 2026-03-12 | Playground app, new components |
-| 0.15.0 | 2026-03-12 | Color input, number input enhancements |
+| 0.30.0 | 2026-04-05 | Karm package removed, RichTextEditor toolbar prop |
+| 0.27.0 | 2026-03-27 | Externalized deps (react-pdf, react-zoom-pan-pinch, react-syntax-highlighter) |
+| 0.23.0 | 2026-03-21 | Semantic surface and shadow tokens |
+| 0.17.x | 2026-03-13 | inject-use-client fix, stale .js cleanup, CI pipeline |
+| 0.16.0 | 2026-03-12 | DataTable server-side features, ActivityFeed |
 | 0.14.0 | 2026-03-12 | ScheduleView, MemberPicker, ConfirmDialog |
-| 0.13.0 | 2026-03-11 | ActivityFeed, SimpleTooltip, GlobalLoading |
 | 0.12.0 | 2026-03-11 | Notification center, command palette |
-| 0.11.0 | 2026-03-10 | Shell component enhancements |
-| 0.10.0 | 2026-03-10 | Karm admin dashboard components |
-| 0.9.2 | 2026-03-10 | vendor-client/vendor-utils chunk split |
-| 0.9.1 | 2026-03-10 | inject-use-client server component fix |
-| 0.9.0 | 2026-03-10 | Dep bundling, zero-external build |
-| 0.8.4 | 2026-03-09 | Karm chat, streaming text |
-| 0.8.3 | 2026-03-09 | Karm board enhancements |
-| 0.8.2 | 2026-03-09 | Karm task detail panel |
-| 0.8.0 | 2026-03-08 | Karm initial release |
-| 0.7.0 | 2026-03-07 | AI agent feedback protocol |
-| 0.6.0 | 2026-03-07 | Consumer feedback fixes |
+| 0.9.x | 2026-03-10 | Dep bundling, zero-external build, vendor chunk split |
+| 0.8.x | 2026-03-09 | Karm initial release and enhancements |
 | 0.5.0 | 2026-03-06 | Barrel isolation, chart components |
-| 0.4.2 | 2026-03-06 | Chip/SegmentedControl/Toast/Card renames |
-| 0.3.1 | 2026-03-06 | Alert/Banner TS fix, Badge touch target |
 | 0.3.0 | 2026-03-06 | Mega Audit release |
-| 0.2.1 | 2026-03-05 | Tailwind CJS require fix |
-| 0.2.0 | 2026-03-05 | Next.js App Router compatibility |
-| 0.1.1 | 2026-03-05 | Runtime fixes, a11y, Shell decoupling |
 | 0.1.0 | 2026-02-28 | Initial release |
 
 See the [full CHANGELOG.md](https://github.com/devalok-design/shilp-sutra/blob/main/CHANGELOG.md) for complete details on each release.

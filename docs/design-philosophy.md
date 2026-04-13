@@ -39,10 +39,10 @@ Components (CVA variants + cn())
 ### Module Hierarchy
 
 ```
-ui/ (41 primitives) → shared/ (13) → layout/ (6) → karm/ (43 domain)
+ui/ (76+ primitives) → composed/ (30+ patterns) → shell/ (8) → ai/ (15)
 ```
 
-Each layer can only import from layers to its left. This ensures the design system core remains independent of domain logic.
+Each layer can only import from layers to its left. This ensures the design system core remains independent of domain logic. Karm domain components were removed in v0.30.0 and now live in the Karm app repository.
 
 ## Motion
 

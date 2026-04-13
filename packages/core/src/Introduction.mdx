@@ -4,15 +4,16 @@ import { Meta } from '@storybook/addon-docs/blocks'
 
 # Shilp Sutra Design System
 
-Welcome to **Shilp Sutra** -- the design system powering Devalok applications. It provides a comprehensive set of tokens, primitives, composed components, shell layouts, and domain-specific modules for building consistent, accessible, and themeable interfaces.
+Welcome to **Shilp Sutra** -- the design system powering Devalok applications. It provides a comprehensive set of tokens, primitives, composed components, shell layouts, and AI patterns for building consistent, accessible, and themeable interfaces.
 
-The system is published as three packages so you can install only what you need:
+The system is published as two packages:
 
 | Package | Purpose |
 |---------|---------|
-| `@devalok/shilp-sutra` | **Core** -- tokens, UI primitives, composed components, shell layouts |
+| `@devalok/shilp-sutra` | **Core** -- tokens, UI primitives, composed components, shell layouts, AI components |
 | `@devalok/shilp-sutra-brand` | **Brand** -- logo components for Devalok, Karm, and other brands |
-| `@devalok/shilp-sutra-karm` | **Karm** -- domain-specific project management components |
+
+> `@devalok/shilp-sutra-karm` was deprecated in v0.30.0. Domain components now live in the Karm app repository.
 
 ---
 
@@ -21,10 +22,10 @@ The system is published as three packages so you can install only what you need:
 | Layer | Count | Description |
 |-------|-------|-------------|
 | **Design Tokens** | 3 tiers | Primitives, semantic tokens, and Tailwind integration |
-| **UI Primitives** | 64+ | Low-level Radix UI-based components |
-| **Composed Components** | 18 | Higher-level reusable patterns |
+| **UI Primitives** | 76+ | Low-level Radix UI-based components |
+| **Composed Components** | 30+ | Higher-level reusable patterns |
 | **Shell Components** | 8 | App shell and navigation structures |
-| **Karm Modules** | 49 | Domain-specific project management components |
+| **AI Components** | 15 | Chat, streaming, and agent UI patterns |
 
 ---
 
@@ -32,10 +33,9 @@ The system is published as three packages so you can install only what you need:
 
 - [**Foundations**](?path=/docs/foundations--docs) -- Color palettes, spacing, typography, shadows, and motion
 - [**Iconography**](?path=/docs/iconography--docs) -- 5,000+ Tabler Icons with sizes, strokes, and usage patterns
-- [**UI Primitives**](?path=/docs/ui-introduction--docs) -- Buttons, inputs, dialogs, tables, and more
-- [**Composed**](?path=/docs/composed-introduction--docs) -- PageHeader, DatePicker, RichTextEditor, and more
+- [**Components**](?path=/docs/ui-introduction--docs) -- Buttons, inputs, dialogs, tables, and more
+- [**Patterns**](?path=/docs/patterns-overview--docs) -- PageHeader, DatePicker, RichTextEditor, and more
 - [**Shell**](?path=/docs/shell-introduction--docs) -- AppSidebar, TopBar, BottomNavbar, and more
-- [**Karm**](?path=/docs/karm-introduction--docs) -- Kanban boards, task details, chat, admin panels
 - [**Changelog**](?path=/docs/changelog--docs) -- Release history and migration guides
 
 ---
@@ -94,9 +94,6 @@ pnpm add @devalok/shilp-sutra
 
 # Brand logos (optional)
 pnpm add @devalok/shilp-sutra-brand
-
-# Karm domain components (optional)
-pnpm add @devalok/shilp-sutra-karm
 ```
 
 ### Setup
@@ -118,7 +115,6 @@ export default {
     './src/**/*.{ts,tsx}',
     './node_modules/@devalok/shilp-sutra/dist/**/*.js',
     './node_modules/@devalok/shilp-sutra-brand/dist/**/*.js',
-    './node_modules/@devalok/shilp-sutra-karm/dist/**/*.js',
   ],
 }
 ```
@@ -138,10 +134,6 @@ import { AppSidebar, TopBar } from '@devalok/shilp-sutra/shell'
 // Brand logos (separate package)
 import { DevalokLogo } from '@devalok/shilp-sutra-brand/devalok'
 import { KarmLogo } from '@devalok/shilp-sutra-brand/karm'
-
-// Karm domain components (separate package)
-import { KanbanBoard } from '@devalok/shilp-sutra-karm/board'
-import { ChatPanel } from '@devalok/shilp-sutra-karm/chat'
 ```
 
 ---

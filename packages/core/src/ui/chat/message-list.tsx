@@ -17,7 +17,7 @@ export interface MessageListProps extends React.HTMLAttributes<HTMLDivElement> {
   /** Called when user scrolls near the top — triggers load-more */
   onLoadMore?: () => void
   /** Whether more messages are currently being loaded */
-  isLoadingMore?: boolean
+  loadingMore?: boolean
   /** Content to render when there are no children */
   emptySlot?: React.ReactNode
   /** Custom scroll-to-bottom button (unused slot for future override) */
@@ -34,7 +34,7 @@ const MessageList = React.forwardRef<HTMLDivElement, MessageListProps>(
       newMessageCount = 0,
       onScrollToBottom,
       onLoadMore,
-      isLoadingMore = false,
+      loadingMore = false,
       emptySlot,
       scrollToBottomSlot,
       headerSlot,
@@ -46,10 +46,10 @@ const MessageList = React.forwardRef<HTMLDivElement, MessageListProps>(
     const scrollRef = React.useRef<HTMLDivElement>(null)
     const isAtBottomRef = React.useRef(true)
     const [isAtBottom, setIsAtBottom] = React.useState(true)
-    const isLoadingMoreRef = React.useRef(false)
+    const loadingMoreRef = React.useRef(false)
     const prevScrollHeightRef = React.useRef(0)
 
-    const isEmpty = React.Children.count(children) === 0 && !isLoadingMore
+    const isEmpty = React.Children.count(children) === 0 && !loadingMore
 
     // ── Scroll handler ────────────────────────────────────────────
     const handleScroll = React.useCallback(() => {
@@ -61,8 +61,8 @@ const MessageList = React.forwardRef<HTMLDivElement, MessageListProps>(
       setIsAtBottom(atBottom)
 
       // Load more when near top
-      if (el.scrollTop < 100 && onLoadMore && !isLoadingMoreRef.current) {
-        isLoadingMoreRef.current = true
+      if (el.scrollTop < 100 && onLoadMore && !loadingMoreRef.current) {
+        loadingMoreRef.current = true
         prevScrollHeightRef.current = el.scrollHeight
         onLoadMore()
       }
@@ -74,10 +74,10 @@ const MessageList = React.forwardRef<HTMLDivElement, MessageListProps>(
       if (!el) return
 
       // Scroll preservation after load-more
-      if (isLoadingMoreRef.current) {
+      if (loadingMoreRef.current) {
         const newScrollHeight = el.scrollHeight
         el.scrollTop = newScrollHeight - prevScrollHeightRef.current
-        isLoadingMoreRef.current = false
+        loadingMoreRef.current = false
         return
       }
 
@@ -87,12 +87,12 @@ const MessageList = React.forwardRef<HTMLDivElement, MessageListProps>(
       }
     }, [children, autoScroll])
 
-    // ── Reset loading flag when isLoadingMore goes false ──────────
+    // ── Reset loading flag when loadingMore goes false ──────────
     React.useEffect(() => {
-      if (!isLoadingMore) {
-        isLoadingMoreRef.current = false
+      if (!loadingMore) {
+        loadingMoreRef.current = false
       }
-    }, [isLoadingMore])
+    }, [loadingMore])
 
     // ── "N new" pill visibility ───────────────────────────────────
     const showNewPill = newMessageCount > 0 && !isAtBottom
@@ -124,7 +124,7 @@ const MessageList = React.forwardRef<HTMLDivElement, MessageListProps>(
           }}
           onScroll={handleScroll}
         >
-          {isLoadingMore && (
+          {loadingMore && (
             <div className="flex justify-center py-ds-03">
               <Spinner size="sm" />
             </div>

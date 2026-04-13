@@ -115,9 +115,9 @@ describe('MessageList', () => {
     expect(onScrollToBottom).toHaveBeenCalledOnce()
   })
 
-  it('shows spinner when isLoadingMore', () => {
+  it('shows spinner when loadingMore', () => {
     render(
-      <MessageList isLoadingMore>
+      <MessageList loadingMore>
         <div>Message</div>
       </MessageList>,
     )

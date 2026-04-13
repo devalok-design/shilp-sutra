@@ -2,7 +2,7 @@ import type { Meta, StoryObj } from '@storybook/react-vite'
 import { Separator } from './separator'
 
 const meta: Meta = {
-  title: 'Foundations/Tokens',
+  title: 'Foundations/Color',
   tags: ['autodocs', 'stable'],
 }
 export default meta

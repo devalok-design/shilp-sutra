@@ -4,7 +4,7 @@ import { BottomSheet } from './bottom-sheet'
 import { Button } from '../button'
 
 const meta: Meta<typeof BottomSheet> = {
-  title: 'Internal/BottomSheet',
+  title: 'Components/Overlays/BottomSheet',
   component: BottomSheet,
   tags: ['autodocs'],
   globals: { viewport: 'mobile' },

@@ -2,7 +2,7 @@ import type { Meta, StoryObj } from '@storybook/react-vite'
 import { CardSkeleton, TableSkeleton, BoardSkeleton, ListSkeleton } from './loading-skeleton'
 
 const meta: Meta = {
-  title: 'Composed/LoadingSkeleton',
+  title: 'Components/Feedback/LoadingSkeleton',
   tags: ['autodocs', 'stable'],
 }
 export default meta

@@ -7,7 +7,7 @@ import { DatePicker, DateRangePicker, CalendarGrid, TimePicker, DateTimePicker }
 // --- DatePicker ---
 
 const datePickerMeta: Meta<typeof DatePicker> = {
-  title: 'Composed/DatePicker',
+  title: 'Components/Selectors/DatePicker',
   component: DatePicker,
   tags: ['autodocs', 'stable'],
 }

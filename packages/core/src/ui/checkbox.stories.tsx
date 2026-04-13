@@ -4,7 +4,7 @@ import { Checkbox } from './checkbox'
 import { Label } from './label'
 
 const meta: Meta<typeof Checkbox> = {
-  title: 'UI/Form Controls/Checkbox',
+  title: 'Components/Inputs/Checkbox',
   component: Checkbox,
   tags: ['autodocs', 'stable'],
   argTypes: {

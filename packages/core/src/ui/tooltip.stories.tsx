@@ -4,7 +4,7 @@ import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from './tool
 import { Button } from './button'
 
 const meta: Meta<typeof Tooltip> = {
-  title: 'UI/Feedback/Tooltip',
+  title: 'Components/Overlays/Tooltip',
   component: Tooltip,
   tags: ['autodocs', 'stable'],
   decorators: [

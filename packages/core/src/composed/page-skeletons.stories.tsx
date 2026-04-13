@@ -6,7 +6,7 @@ import {
 } from './page-skeletons'
 
 const meta: Meta = {
-  title: 'Composed/PageSkeletons',
+  title: 'Patterns/PageSkeletons',
   tags: ['autodocs', 'stable'],
   decorators: [
     (Story) => (

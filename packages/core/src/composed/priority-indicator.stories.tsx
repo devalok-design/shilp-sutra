@@ -2,7 +2,7 @@ import type { Meta, StoryObj } from '@storybook/react-vite'
 import { PriorityIndicator } from './priority-indicator'
 
 const meta: Meta<typeof PriorityIndicator> = {
-  title: 'Composed/PriorityIndicator',
+  title: 'Components/Data Display/PriorityIndicator',
   component: PriorityIndicator,
   tags: ['autodocs', 'stable'],
   argTypes: {

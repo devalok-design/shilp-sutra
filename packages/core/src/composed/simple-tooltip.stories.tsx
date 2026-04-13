@@ -2,7 +2,7 @@ import type { Meta, StoryObj } from '@storybook/react-vite'
 import { SimpleTooltip } from './simple-tooltip'
 
 const meta: Meta<typeof SimpleTooltip> = {
-  title: 'Composed/SimpleTooltip',
+  title: 'Components/Overlays/SimpleTooltip',
   component: SimpleTooltip,
   tags: ['autodocs', 'stable'],
   argTypes: {

@@ -2,7 +2,7 @@ import type { Meta, StoryObj } from '@storybook/react-vite'
 import { RadarChart } from './radar-chart'
 
 const meta: Meta<typeof RadarChart> = {
-  title: 'UI/Charts/RadarChart',
+  title: 'Components/Charts/RadarChart',
   component: RadarChart,
   tags: ['autodocs', 'stable'],
   argTypes: {

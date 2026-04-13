@@ -4,7 +4,7 @@ import { Icon } from '../ui/icon'
 import { StatusBadge } from './status-badge'
 
 const meta: Meta<typeof StatusBadge> = {
-  title: 'Composed/StatusBadge',
+  title: 'Components/Data Display/StatusBadge',
   component: StatusBadge,
   tags: ['autodocs', 'stable'],
   argTypes: {

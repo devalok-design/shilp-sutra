@@ -3,7 +3,7 @@ import { IconBold, IconItalic, IconUnderline } from '@tabler/icons-react'
 import { ToggleGroup, ToggleGroupItem } from './toggle-group'
 
 const meta: Meta<typeof ToggleGroup> = {
-  title: 'UI/Form Controls/ToggleGroup',
+  title: 'Components/Buttons/ToggleGroup',
   component: ToggleGroup,
   tags: ['autodocs', 'stable'],
 }

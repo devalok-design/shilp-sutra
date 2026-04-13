@@ -6,7 +6,7 @@ import { Input } from './input'
 import { Label } from './label'
 
 const meta: Meta<typeof Popover> = {
-  title: 'UI/Feedback/Popover',
+  title: 'Components/Overlays/Popover',
   component: Popover,
   tags: ['autodocs', 'stable'],
 }

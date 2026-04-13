@@ -16,7 +16,7 @@ import {
 } from '@tabler/icons-react'
 
 const meta: Meta<typeof IconGroup> = {
-  title: 'UI/Core/IconGroup',
+  title: 'Components/Data Display/IconGroup',
   component: IconGroup,
   tags: ['autodocs', 'stable'],
   argTypes: {

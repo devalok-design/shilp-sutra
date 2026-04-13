@@ -2,7 +2,7 @@ import type { Meta, StoryObj } from '@storybook/react-vite'
 import { KarmLogo } from '.'
 
 const meta: Meta<typeof KarmLogo> = {
-  title: 'Brand/Karm/Logo',
+  title: 'Brand/Karm',
   component: KarmLogo,
   tags: ['autodocs', 'stable'],
   argTypes: {

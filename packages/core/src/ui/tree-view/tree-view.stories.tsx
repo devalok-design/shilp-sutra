@@ -5,7 +5,7 @@ import { useState } from 'react'
 import { TreeView, TreeItem, useTree, type TreeNode } from '.'
 
 const meta: Meta<typeof TreeView> = {
-  title: 'UI/Data Display/TreeView',
+  title: 'Components/Data Display/TreeView',
   component: TreeView,
   tags: ['autodocs', 'stable'],
   parameters: {

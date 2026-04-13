@@ -11,7 +11,7 @@ import {
 } from './skeleton'
 
 const meta: Meta<typeof Skeleton> = {
-  title: 'UI/Data Display/Skeleton',
+  title: 'Components/Feedback/Skeleton',
   component: Skeleton,
   tags: ['autodocs', 'stable'],
   argTypes: {

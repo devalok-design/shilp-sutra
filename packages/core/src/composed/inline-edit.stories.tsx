@@ -4,7 +4,7 @@ import { within, userEvent, expect, waitFor } from 'storybook/test'
 import { InlineEdit } from './inline-edit'
 
 const meta: Meta<typeof InlineEdit> = {
-  title: 'Composed/InlineEdit',
+  title: 'Components/Forms/InlineEdit',
   component: InlineEdit,
   tags: ['autodocs', 'stable'],
   parameters: {

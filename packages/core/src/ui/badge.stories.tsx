@@ -23,7 +23,7 @@ import {
 } from '@tabler/icons-react'
 
 const meta: Meta<typeof Badge> = {
-  title: 'UI/Core/Badge',
+  title: 'Components/Data Display/Badge',
   component: Badge,
   tags: ['autodocs', 'stable'],
   argTypes: {

@@ -2,7 +2,7 @@ import type { Meta, StoryObj } from '@storybook/react-vite'
 import { MarkdownViewer } from './markdown-viewer'
 
 const meta: Meta<typeof MarkdownViewer> = {
-  title: 'Composed/MarkdownViewer',
+  title: 'Components/Typography/MarkdownViewer',
   component: MarkdownViewer,
   tags: ['autodocs', 'stable'],
 }

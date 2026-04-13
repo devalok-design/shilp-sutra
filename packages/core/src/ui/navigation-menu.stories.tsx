@@ -9,7 +9,7 @@ import {
 } from './navigation-menu'
 
 const meta: Meta<typeof NavigationMenu> = {
-  title: 'UI/Navigation/NavigationMenu',
+  title: 'Components/Navigation/NavigationMenu',
   component: NavigationMenu,
   tags: ['autodocs', 'stable'],
 }

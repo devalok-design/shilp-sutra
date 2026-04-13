@@ -2,7 +2,7 @@ import type { Meta, StoryObj } from '@storybook/react-vite'
 import { Text } from './text'
 
 const meta = {
-  title: 'UI/Core/Text',
+  title: 'Components/Typography/Text',
   component: Text,
   tags: ['autodocs', 'stable'],
   argTypes: {

@@ -3,7 +3,7 @@ import { within, expect } from 'storybook/test'
 import { Slider } from './slider'
 
 const meta: Meta<typeof Slider> = {
-  title: 'UI/Form Controls/Slider',
+  title: 'Components/Inputs/Slider',
   component: Slider,
   tags: ['autodocs', 'stable'],
 }

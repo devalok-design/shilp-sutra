@@ -2,7 +2,7 @@ import type { Meta, StoryObj } from '@storybook/react-vite'
 import { Link } from './link'
 
 const meta: Meta<typeof Link> = {
-  title: 'UI/Core/Link',
+  title: 'Components/Typography/Link',
   component: Link,
   tags: ['autodocs', 'stable'],
   argTypes: {

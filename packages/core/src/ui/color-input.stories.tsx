@@ -3,7 +3,7 @@ import type { Meta, StoryObj } from '@storybook/react-vite'
 import { ColorInput } from './color-input'
 
 const meta: Meta<typeof ColorInput> = {
-  title: 'UI/Core/ColorInput',
+  title: 'Components/Inputs/ColorInput',
   component: ColorInput,
   tags: ['autodocs', 'stable'],
   argTypes: {

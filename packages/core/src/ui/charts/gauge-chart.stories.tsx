@@ -2,7 +2,7 @@ import type { Meta, StoryObj } from '@storybook/react-vite'
 import { GaugeChart } from './gauge-chart'
 
 const meta: Meta<typeof GaugeChart> = {
-  title: 'UI/Charts/GaugeChart',
+  title: 'Components/Charts/GaugeChart',
   component: GaugeChart,
   tags: ['autodocs', 'stable'],
   argTypes: {

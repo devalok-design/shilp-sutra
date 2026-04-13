@@ -8,7 +8,7 @@ import { Button } from './button'
 import { Label } from './label'
 
 const meta: Meta<typeof Input> = {
-  title: 'UI/Core/Input',
+  title: 'Components/Inputs/Input',
   component: Input,
   tags: ['autodocs', 'stable'],
   argTypes: {

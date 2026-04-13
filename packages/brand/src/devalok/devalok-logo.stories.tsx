@@ -2,7 +2,7 @@ import type { Meta, StoryObj } from '@storybook/react-vite'
 import { DevalokLogo } from '.'
 
 const meta: Meta<typeof DevalokLogo> = {
-  title: 'Brand/Devalok/Logo',
+  title: 'Brand/Devalok',
   component: DevalokLogo,
   tags: ['autodocs', 'stable'],
   argTypes: {

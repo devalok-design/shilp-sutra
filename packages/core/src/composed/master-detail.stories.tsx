@@ -3,7 +3,7 @@ import type { Meta, StoryObj } from '@storybook/react-vite'
 import { MasterDetail } from './master-detail'
 
 const meta: Meta<typeof MasterDetail> = {
-  title: 'Composed/MasterDetail',
+  title: 'Patterns/MasterDetail',
   component: MasterDetail,
   tags: ['autodocs', 'stable'],
 }

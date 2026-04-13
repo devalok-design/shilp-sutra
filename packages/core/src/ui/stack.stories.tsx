@@ -3,7 +3,7 @@ import { cn } from './lib/utils'
 import { Stack } from './stack'
 
 const meta: Meta<typeof Stack> = {
-  title: 'UI/Layout/Stack',
+  title: 'Components/Layout/Stack',
   component: Stack,
   tags: ['autodocs', 'stable'],
   argTypes: {

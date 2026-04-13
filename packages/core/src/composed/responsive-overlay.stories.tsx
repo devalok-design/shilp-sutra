@@ -4,7 +4,7 @@ import { ResponsiveOverlay } from './responsive-overlay'
 import { Button } from '../ui/button'
 
 const meta: Meta<typeof ResponsiveOverlay> = {
-  title: 'Composed/ResponsiveOverlay',
+  title: 'Patterns/ResponsiveOverlay',
   component: ResponsiveOverlay,
   tags: ['autodocs', 'stable'],
   parameters: {

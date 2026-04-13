@@ -5,7 +5,7 @@ import { Icon } from './icon'
 import { IconSend, IconDownload, IconUpload, IconRocket } from '@tabler/icons-react'
 
 const meta: Meta<typeof SplitButton> = {
-  title: 'UI/Core/SplitButton',
+  title: 'Components/Buttons/SplitButton',
   component: SplitButton,
   tags: ['autodocs', 'stable'],
   parameters: { layout: 'centered' },

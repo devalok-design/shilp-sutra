@@ -10,7 +10,7 @@ import {
 import { ActivityFeed, type ActivityItem } from './activity-feed'
 
 const meta: Meta<typeof ActivityFeed> = {
-  title: 'Composed/ActivityFeed',
+  title: 'Patterns/ActivityFeed',
   component: ActivityFeed,
   tags: ['autodocs', 'stable'],
   parameters: {

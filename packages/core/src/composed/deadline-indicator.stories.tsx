@@ -2,7 +2,7 @@ import type { Meta, StoryObj } from '@storybook/react-vite'
 import { DeadlineIndicator } from './deadline-indicator'
 
 const meta: Meta<typeof DeadlineIndicator> = {
-  title: 'Composed/DeadlineIndicator',
+  title: 'Components/Data Display/DeadlineIndicator',
   component: DeadlineIndicator,
   tags: ['autodocs', 'stable'],
   argTypes: {

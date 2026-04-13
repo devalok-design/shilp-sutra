@@ -4,7 +4,7 @@ import { within, userEvent, expect } from 'storybook/test'
 import { Stepper, Step } from './stepper'
 
 const meta: Meta<typeof Stepper> = {
-  title: 'UI/Navigation/Stepper',
+  title: 'Components/Navigation/Stepper',
   component: Stepper,
   tags: ['autodocs', 'stable'],
   argTypes: {

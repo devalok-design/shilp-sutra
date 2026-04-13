@@ -2,7 +2,7 @@ import type { Meta, StoryObj } from '@storybook/react-vite'
 import { InputOTP, InputOTPGroup, InputOTPSlot, InputOTPSeparator } from './input-otp'
 
 const meta: Meta<typeof InputOTP> = {
-  title: 'UI/Form Controls/InputOTP',
+  title: 'Components/Inputs/InputOTP',
   component: InputOTP,
   tags: ['autodocs', 'stable'],
 }

@@ -2,7 +2,7 @@ import type { Meta, StoryObj } from '@storybook/react-vite'
 import { StatusDot } from './status-dot'
 
 const meta: Meta<typeof StatusDot> = {
-  title: 'UI/Core/StatusDot',
+  title: 'Components/Data Display/StatusDot',
   component: StatusDot,
   tags: ['autodocs', 'stable'],
   argTypes: {

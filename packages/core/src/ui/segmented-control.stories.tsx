@@ -37,7 +37,7 @@ const twoOptions: SegmentedControlOption[] = [
 // -- Meta ----
 
 const meta: Meta<typeof SegmentedControl> = {
-  title: 'UI/Form Controls/SegmentedControl',
+  title: 'Components/Buttons/SegmentedControl',
   component: SegmentedControl,
   tags: ['autodocs', 'stable'],
   parameters: {

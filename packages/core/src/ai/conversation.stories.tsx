@@ -7,7 +7,7 @@ import type { ConversationMessage, ProcessingStep } from './types'
 import { AICommandProvider } from './ai-command-provider'
 
 const meta: Meta<typeof AIConversation> = {
-  title: 'AI/AIConversation',
+  title: 'AI/Conversation',
   component: AIConversation,
   tags: ['autodocs', 'stable'],
   parameters: {

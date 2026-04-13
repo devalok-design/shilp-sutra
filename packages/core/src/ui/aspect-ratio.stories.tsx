@@ -2,7 +2,7 @@ import type { Meta, StoryObj } from '@storybook/react-vite'
 import { AspectRatio } from './aspect-ratio'
 
 const meta: Meta<typeof AspectRatio> = {
-  title: 'UI/Data Display/AspectRatio',
+  title: 'Components/Layout/AspectRatio',
   component: AspectRatio,
   tags: ['autodocs', 'stable'],
 }

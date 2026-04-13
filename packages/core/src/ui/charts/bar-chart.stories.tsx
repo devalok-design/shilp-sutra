@@ -8,7 +8,7 @@ import { GaugeChart } from './gauge-chart'
 import { RadarChart } from './radar-chart'
 
 const meta: Meta<typeof BarChart> = {
-  title: 'UI/Charts/BarChart',
+  title: 'Components/Charts/BarChart',
   component: BarChart,
   tags: ['autodocs', 'stable'],
   argTypes: {

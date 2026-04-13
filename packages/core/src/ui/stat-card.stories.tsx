@@ -2,7 +2,7 @@ import type { Meta, StoryObj } from '@storybook/react-vite'
 import { StatCard } from './stat-card'
 
 const meta: Meta<typeof StatCard> = {
-  title: 'UI/Data Display/StatCard',
+  title: 'Components/Data Display/StatCard',
   component: StatCard,
   tags: ['autodocs', 'stable'],
   argTypes: {

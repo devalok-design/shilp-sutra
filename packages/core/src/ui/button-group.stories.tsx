@@ -5,7 +5,7 @@ import { Icon } from './icon'
 import { ButtonGroup } from './button-group'
 
 const meta: Meta<typeof ButtonGroup> = {
-  title: 'UI/Core/ButtonGroup',
+  title: 'Components/Buttons/ButtonGroup',
   component: ButtonGroup,
   tags: ['autodocs', 'stable'],
   argTypes: {

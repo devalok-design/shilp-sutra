@@ -7,7 +7,7 @@ import { Icon } from './icon'
 import { IconPlus, IconCheck, IconHeart, IconStar, IconSend } from '@tabler/icons-react'
 
 const meta: Meta<typeof DevalokGrain> = {
-  title: 'UI/Core/DevalokGrain',
+  title: 'Utilities/DevalokGrain',
   component: DevalokGrain,
   tags: ['autodocs', 'stable'],
   argTypes: {

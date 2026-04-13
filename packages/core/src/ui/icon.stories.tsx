@@ -13,7 +13,7 @@ import {
 import * as React from 'react'
 
 const meta: Meta<typeof Icon> = {
-  title: 'UI/Core/Icon',
+  title: 'Components/Data Display/Icon',
   component: Icon,
   tags: ['autodocs', 'stable'],
   argTypes: {

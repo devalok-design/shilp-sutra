@@ -16,7 +16,7 @@ import {
 import { IconButton } from './icon-button'
 
 const meta: Meta<typeof IconButton> = {
-  title: 'UI/Core/IconButton',
+  title: 'Components/Buttons/IconButton',
   component: IconButton,
   tags: ['autodocs', 'stable'],
   argTypes: {

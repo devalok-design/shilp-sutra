@@ -3,7 +3,7 @@ import { within, userEvent, expect, waitFor } from 'storybook/test'
 import { Tabs, TabsContent, TabsList, TabsTrigger } from './tabs'
 
 const meta: Meta<typeof Tabs> = {
-  title: 'UI/Navigation/Tabs',
+  title: 'Components/Navigation/Tabs',
   component: Tabs,
   tags: ['autodocs', 'stable'],
 }

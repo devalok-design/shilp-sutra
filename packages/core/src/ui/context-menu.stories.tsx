@@ -17,7 +17,7 @@ import {
 import { useState } from 'react'
 
 const meta: Meta<typeof ContextMenu> = {
-  title: 'UI/Navigation/ContextMenu',
+  title: 'Components/Navigation/ContextMenu',
   component: ContextMenu,
   tags: ['autodocs', 'stable'],
 }

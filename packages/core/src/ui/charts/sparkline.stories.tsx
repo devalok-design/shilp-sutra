@@ -2,7 +2,7 @@ import type { Meta, StoryObj } from '@storybook/react-vite'
 import { Sparkline } from './sparkline'
 
 const meta: Meta<typeof Sparkline> = {
-  title: 'UI/Charts/Sparkline',
+  title: 'Components/Charts/Sparkline',
   component: Sparkline,
   tags: ['autodocs', 'stable'],
   argTypes: {

@@ -20,7 +20,7 @@ import { Button } from './button'
 import { useState } from 'react'
 
 const meta: Meta<typeof DropdownMenu> = {
-  title: 'UI/Navigation/DropdownMenu',
+  title: 'Components/Navigation/DropdownMenu',
   component: DropdownMenu,
   tags: ['autodocs', 'stable'],
 }

@@ -3,7 +3,7 @@ import { Textarea } from './textarea'
 import { Label } from './label'
 
 const meta: Meta<typeof Textarea> = {
-  title: 'UI/Form Controls/Textarea',
+  title: 'Components/Inputs/Textarea',
   component: Textarea,
   tags: ['autodocs', 'stable'],
   argTypes: {

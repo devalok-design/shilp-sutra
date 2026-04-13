@@ -2,7 +2,7 @@ import type { Meta, StoryObj } from '@storybook/react-vite'
 import { LineChart } from './line-chart'
 
 const meta: Meta<typeof LineChart> = {
-  title: 'UI/Charts/LineChart',
+  title: 'Components/Charts/LineChart',
   component: LineChart,
   tags: ['autodocs', 'stable'],
   argTypes: {

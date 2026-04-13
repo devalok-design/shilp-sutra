@@ -23,7 +23,7 @@ import {
 } from '@tabler/icons-react'
 
 const meta: Meta<typeof Button> = {
-  title: 'UI/Core/Button',
+  title: 'Components/Buttons/Button',
   component: Button,
   tags: ['autodocs', 'stable'],
   argTypes: {

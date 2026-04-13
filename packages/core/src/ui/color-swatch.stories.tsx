@@ -2,7 +2,7 @@ import type { Meta, StoryObj } from '@storybook/react-vite'
 import { ColorSwatch } from './color-swatch'
 
 const meta: Meta<typeof ColorSwatch> = {
-  title: 'UI/Core/ColorSwatch',
+  title: 'Components/Inputs/ColorSwatch',
   component: ColorSwatch,
   tags: ['autodocs', 'stable'],
   argTypes: {

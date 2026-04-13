@@ -24,7 +24,7 @@ import {
 } from '@tabler/icons-react'
 
 const meta: Meta = {
-  title: 'UI/Chat',
+  title: 'Components/Chat/Chat',
   tags: ['autodocs', 'stable'],
   parameters: {
     layout: 'padded',

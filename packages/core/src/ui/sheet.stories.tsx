@@ -16,7 +16,7 @@ import { Input } from './input'
 import { Label } from './label'
 
 const meta: Meta<typeof Sheet> = {
-  title: 'UI/Feedback/Sheet',
+  title: 'Components/Overlays/Sheet',
   component: Sheet,
   tags: ['autodocs', 'stable'],
 }

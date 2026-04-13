@@ -4,7 +4,7 @@ import { within, userEvent, expect } from 'storybook/test'
 import { FilterBar, FilterSelect, FilterMultiSelect } from './filter-bar'
 
 const meta: Meta<typeof FilterBar> = {
-  title: 'Composed/FilterBar',
+  title: 'Components/Selectors/FilterBar',
   component: FilterBar,
   tags: ['autodocs', 'stable'],
 }

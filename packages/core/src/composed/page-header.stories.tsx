@@ -2,7 +2,7 @@ import type { Meta, StoryObj } from '@storybook/react-vite'
 import { PageHeader } from './page-header'
 
 const meta: Meta<typeof PageHeader> = {
-  title: 'Composed/PageHeader',
+  title: 'Patterns/PageHeader',
   component: PageHeader,
   tags: ['autodocs', 'stable'],
   parameters: {

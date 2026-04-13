@@ -3,7 +3,7 @@ import { IconBold } from '@tabler/icons-react'
 import { Toggle } from './toggle'
 
 const meta: Meta<typeof Toggle> = {
-  title: 'UI/Form Controls/Toggle',
+  title: 'Components/Buttons/Toggle',
   component: Toggle,
   tags: ['autodocs', 'stable'],
   argTypes: {

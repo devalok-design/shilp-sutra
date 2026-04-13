@@ -3,7 +3,7 @@ import { within, userEvent, expect, fn, waitFor } from 'storybook/test'
 import { Alert } from './alert'
 
 const meta: Meta<typeof Alert> = {
-  title: 'UI/Feedback/Alert',
+  title: 'Components/Feedback/Alert',
   component: Alert,
   tags: ['autodocs', 'stable'],
   argTypes: {

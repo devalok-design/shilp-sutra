@@ -57,7 +57,7 @@ const slashCommands: SlashCommandGroup[] = [
 // ── Meta ─────────────────────────────────────────────────────────────
 
 const meta: Meta<typeof RichChatInput> = {
-  title: 'Composed/RichChatInput',
+  title: 'Components/Chat/RichChatInput',
   component: RichChatInput,
   tags: ['autodocs', 'stable'],
   parameters: {

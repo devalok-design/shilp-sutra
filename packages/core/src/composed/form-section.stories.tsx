@@ -4,7 +4,7 @@ import { Input } from '../ui/input'
 import { Label } from '../ui/label'
 
 const meta: Meta<typeof FormSection> = {
-  title: 'Composed/FormSection',
+  title: 'Components/Forms/FormSection',
   component: FormSection,
   tags: ['autodocs', 'stable'],
 }

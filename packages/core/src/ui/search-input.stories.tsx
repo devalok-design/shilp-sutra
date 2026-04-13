@@ -3,7 +3,7 @@ import { useState } from 'react'
 import { SearchInput } from './search-input'
 
 const meta: Meta<typeof SearchInput> = {
-  title: 'UI/Form Controls/SearchInput',
+  title: 'Components/Inputs/SearchInput',
   component: SearchInput,
   tags: ['autodocs', 'stable'],
   argTypes: {

@@ -3,7 +3,7 @@ import { Banner } from './banner'
 import { Button } from './button'
 
 const meta: Meta<typeof Banner> = {
-  title: 'UI/Feedback/Banner',
+  title: 'Components/Feedback/Banner',
   component: Banner,
   tags: ['autodocs', 'stable'],
   argTypes: {

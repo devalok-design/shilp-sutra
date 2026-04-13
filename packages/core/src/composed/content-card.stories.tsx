@@ -2,7 +2,7 @@ import type { Meta, StoryObj } from '@storybook/react-vite'
 import { ContentCard } from './content-card'
 
 const meta: Meta<typeof ContentCard> = {
-  title: 'Composed/ContentCard',
+  title: 'Components/Data Display/ContentCard',
   component: ContentCard,
   tags: ['autodocs', 'stable'],
   decorators: [

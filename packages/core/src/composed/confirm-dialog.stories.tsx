@@ -5,7 +5,7 @@ import { ConfirmDialog } from './confirm-dialog'
 import { Button } from '../ui/button'
 
 const meta: Meta<typeof ConfirmDialog> = {
-  title: 'Composed/ConfirmDialog',
+  title: 'Components/Overlays/ConfirmDialog',
   component: ConfirmDialog,
   tags: ['autodocs', 'stable'],
   parameters: {

@@ -63,7 +63,7 @@ const sampleEvents: ScheduleEvent[] = [
 ]
 
 const meta: Meta<typeof ScheduleView> = {
-  title: 'Composed/ScheduleView',
+  title: 'Patterns/ScheduleView',
   component: ScheduleView,
   tags: ['autodocs', 'stable'],
   argTypes: {

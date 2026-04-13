@@ -7,7 +7,7 @@ import { Toaster } from './toaster'
 import { Button } from './button'
 
 const meta: Meta = {
-  title: 'UI/Feedback/Toast',
+  title: 'Components/Feedback/Toast',
   tags: ['autodocs', 'stable'],
   decorators: [
     (Story) => (

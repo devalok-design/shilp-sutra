@@ -50,7 +50,7 @@ const data: Task[] = [
 ]
 
 const meta: Meta<typeof DataTable> = {
-  title: 'UI/Data Display/DataTable',
+  title: 'Components/Data Display/DataTable',
   component: DataTable,
   tags: ['autodocs', 'stable'],
   parameters: {

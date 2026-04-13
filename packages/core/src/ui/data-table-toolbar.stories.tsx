@@ -67,7 +67,7 @@ const data: Employee[] = [
 ]
 
 const meta: Meta = {
-  title: 'UI/Data Display/DataTableToolbar',
+  title: 'Components/Data Display/DataTableToolbar',
   tags: ['autodocs', 'stable'],
   parameters: {
     docs: {

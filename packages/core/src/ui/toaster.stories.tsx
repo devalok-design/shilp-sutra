@@ -5,7 +5,7 @@ import { toast } from './toast'
 import { Button } from './button'
 
 const meta: Meta<typeof Toaster> = {
-  title: 'UI/Feedback/Toaster',
+  title: 'Components/Feedback/Toaster',
   component: Toaster,
   tags: ['autodocs', 'stable'],
 }

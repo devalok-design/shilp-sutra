@@ -16,7 +16,7 @@ import { Input } from './input'
 import { Label } from './label'
 
 const meta: Meta<typeof Dialog> = {
-  title: 'UI/Feedback/Dialog',
+  title: 'Components/Overlays/Dialog',
   component: Dialog,
   tags: ['autodocs', 'stable'],
 }

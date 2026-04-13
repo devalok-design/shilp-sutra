@@ -3,7 +3,7 @@ import type { Meta, StoryObj } from '@storybook/react-vite'
 import { GlobalLoading } from './global-loading'
 
 const meta: Meta<typeof GlobalLoading> = {
-  title: 'Composed/GlobalLoading',
+  title: 'Patterns/GlobalLoading',
   component: GlobalLoading,
   tags: ['autodocs', 'stable'],
   parameters: {

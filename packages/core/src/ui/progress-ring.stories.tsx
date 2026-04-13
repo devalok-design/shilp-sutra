@@ -2,7 +2,7 @@ import type { Meta, StoryObj } from '@storybook/react-vite'
 import { ProgressRing, MultiProgressRing } from './progress-ring'
 
 const meta: Meta<typeof ProgressRing> = {
-  title: 'UI/Core/ProgressRing',
+  title: 'Components/Feedback/ProgressRing',
   component: ProgressRing,
   tags: ['autodocs', 'stable'],
   argTypes: {

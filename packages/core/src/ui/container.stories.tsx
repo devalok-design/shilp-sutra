@@ -2,7 +2,7 @@ import type { Meta, StoryObj } from '@storybook/react-vite'
 import { Container } from './container'
 
 const meta: Meta<typeof Container> = {
-  title: 'UI/Layout/Container',
+  title: 'Components/Layout/Container',
   component: Container,
   tags: ['autodocs', 'stable'],
   argTypes: {

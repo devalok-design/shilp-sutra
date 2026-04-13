@@ -2,7 +2,7 @@ import type { Meta, StoryObj } from '@storybook/react-vite'
 import { FilePreview } from './file-preview'
 
 const meta: Meta<typeof FilePreview> = {
-  title: 'Composed/FilePreview',
+  title: 'Patterns/FilePreview',
   component: FilePreview,
   tags: ['autodocs', 'stable'],
   parameters: {

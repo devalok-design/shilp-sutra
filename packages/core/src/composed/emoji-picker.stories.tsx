@@ -4,7 +4,7 @@ import { EmojiPicker, EmojiPickerPopover, type EmojiData } from './emoji-picker'
 import { Button } from '../ui/button'
 
 const meta: Meta<typeof EmojiPicker> = {
-  title: 'Composed/EmojiPicker',
+  title: 'Components/Selectors/EmojiPicker',
   component: EmojiPicker,
   tags: ['autodocs', 'stable'],
   parameters: {

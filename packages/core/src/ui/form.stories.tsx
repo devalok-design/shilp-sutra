@@ -5,7 +5,7 @@ import { Input } from './input'
 import { Textarea } from './textarea'
 
 const meta: Meta<typeof FormField> = {
-  title: 'UI/Form Controls/Form',
+  title: 'Components/Forms/Form',
   component: FormField,
   tags: ['autodocs', 'stable'],
 }

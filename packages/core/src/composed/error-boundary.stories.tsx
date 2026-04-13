@@ -2,7 +2,7 @@ import type { Meta, StoryObj } from '@storybook/react-vite'
 import { ErrorDisplay } from './error-boundary'
 
 const meta: Meta<typeof ErrorDisplay> = {
-  title: 'Composed/ErrorBoundary',
+  title: 'Patterns/ErrorBoundary',
   component: ErrorDisplay,
   tags: ['autodocs', 'stable'],
   decorators: [

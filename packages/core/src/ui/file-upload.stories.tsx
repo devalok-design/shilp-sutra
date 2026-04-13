@@ -3,7 +3,7 @@ import { within, expect, waitFor } from 'storybook/test'
 import { FileUpload } from './file-upload'
 
 const meta: Meta<typeof FileUpload> = {
-  title: 'UI/Form Controls/FileUpload',
+  title: 'Patterns/FileUpload',
   component: FileUpload,
   tags: ['autodocs', 'stable'],
   decorators: [(Story) => <div className="p-ds-08 max-w-lg"><Story /></div>],

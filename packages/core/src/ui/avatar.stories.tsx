@@ -3,7 +3,7 @@ import { Avatar, AvatarFallback, AvatarImage } from './avatar'
 import type { AvatarRing } from './avatar'
 
 const meta: Meta<typeof Avatar> = {
-  title: 'UI/Data Display/Avatar',
+  title: 'Components/Data Display/Avatar',
   component: Avatar,
   tags: ['autodocs', 'stable'],
 }

@@ -4,7 +4,7 @@ import { Spinner, type SpinnerProps } from './spinner'
 import { Button } from './button'
 
 const meta: Meta<typeof Spinner> = {
-  title: 'UI/Feedback/Spinner',
+  title: 'Components/Feedback/Spinner',
   component: Spinner,
   tags: ['autodocs', 'stable'],
   argTypes: {

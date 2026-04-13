@@ -5,6 +5,69 @@ All notable changes to `@devalok/shilp-sutra` will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.35.0] - 2026-04-13 (core)
+
+### BREAKING CHANGES
+
+- **Dark mode contrast fix:** Solid variant backgrounds darkened (step-9 L=0.63→0.54) for WCAG AA compliance. All solid Button/Badge/StatusDot in dark mode are visibly darker. Warning amber L=0.72→0.57.
+- **Responsive typography:** Heading font-sizes (3xl–6xl) now use `clamp()` for fluid scaling. Headings shrink on mobile viewports. Layouts that assumed fixed heading sizes may shift.
+- **Body letter spacing:** body-lg (-0.02→-0.01em), body-md (-0.02→0em), body-sm (-0.02→+0.01em), body-xs (-0.02→+0.02em).
+- **surface-fg-subtle darkened:** neutral-8→neutral-9 in light mode for WCAG AA contrast (3.35:1→5.0:1). Tertiary/placeholder text is noticeably darker.
+- **MessageList:** `isLoadingMore` prop renamed to `loadingMore`.
+- **AppCommandPalette:** Karm-specific default routes removed. Use `CommandRegistryProvider` to register pages. `SearchResult` type now includes optional `href` field.
+- **NumberInput:** Shape changed from pill (`rounded-full`) to rounded rectangle (`rounded-md`) to match all other form controls.
+- **Alert:** `variant="filled"` deprecated, use `variant="solid"`. Old name still works as alias.
+- **SegmentedControl:** `variant="accent"` deprecated, use `variant="solid"`. Old name still works as alias.
+- **Dependencies:** `@floating-ui/dom`, `@tiptap/extension-list`, `@tiptap/extensions`, `prosemirror-state` moved from `dependencies` to `devDependencies` (bundled into dist — consumers no longer install them).
+
+### Added
+
+- **Combobox** `size` prop (xs/sm/md/lg) — trigger height scales to match Input/Select.
+- **NumberInput** `size` prop (xs/sm/md/lg) + `state` prop (default/error/warning/success).
+- **Slider** `size` prop (sm/md/lg) + `color` prop (accent/success/warning/error).
+- **InputOTP** `size` prop (sm/md/lg) + `state` prop (default/error).
+- **Toggle/ToggleGroup** `color` prop (accent/error/success/neutral).
+- **Tabs** `orientation` prop (`"vertical"` for side-nav tab layout).
+- **Stepper** `onStepClick` prop for navigating back to completed steps.
+- **AlertDialog** `responsive` prop for mobile bottom-sheet layout.
+- **NotificationCenter** mobile adaptation — renders as bottom Sheet on small screens.
+- **ChartContainer** `ariaDescription` prop for screen reader data summaries.
+- **Chart keyboard a11y:** BarChart and LineChart data points are focusable with keyboard tooltip.
+- **Typography variants:** `code` (monospace) and `label-plain-lg/md/sm` (mixed-case labels).
+- **Tailwind utilities:** `text-heading-xl`, `text-body-md`, `text-label-plain-sm`, `text-code`, etc. (20 composite typography classes).
+- **Layout spacing tokens:** `--spacing-page-x` (responsive), `--spacing-section-gap`, `--spacing-card-gap`, `--spacing-stack-gap`.
+- **Link color tokens:** `--color-link`, `--color-link-hover`, `--color-link-visited`.
+- **Duration token:** `--duration-moderate-01b` (200ms).
+- **JS duration constants:** `durations.*` map in `motion.ts` mirrors CSS tokens.
+- **Dev-mode warnings:** Token-missing detection + MotionProvider hint.
+- **useFormField** wired into Select, Combobox, Autocomplete, Checkbox, Radio, Switch, Slider, InputOTP.
+- **136+ new tests** across SplitButton, SegmentedControl, Link, FileUpload, InlineEdit, FormSection, MarkdownViewer, date-utils, RichChatInput, chat a11y.
+- **Coverage thresholds** (60% lines, 55% functions, 50% branches).
+
+### Fixed
+
+- Dark mode: all 5 `*-fg` on `*-9` contrast failures (WCAG AA).
+- Light mode: success-fg on success-9 contrast (4.44→4.8:1).
+- Separator gradient direction broken on vertical orientation.
+- Container padding now responsive via layout spacing tokens.
+- Input border upgraded to `surface-border-strong` (matches Select/Combobox).
+- Textarea/Link focus ring gets `ring-offset-2` (was clipping).
+- TreeView indentation uses DS spacing tokens (was hardcoded pixels).
+- DataTable gets `aria-busy` on loading state.
+- ColorInput popover gets `role="dialog"` + `aria-label`.
+- ToggleGroupItem/SplitButton get tap feedback animation.
+- AvatarGroup `lead` indicator color: `bg-warning-9`→`bg-accent-9` (matches Avatar ring).
+- 3 z-index violations: `z-50`→semantic tokens (bulk-action-bar, data-table-bulk-actions, image-preview).
+- EmptyState floating icon respects `useReducedMotion`.
+- MultiSelectPopover items get `role="listbox"`/`role="option"`.
+- Chat: Message actions visible on keyboard focus, MessageInput aria-label, SystemMessage alert role, TypingIndicator aria-live, reaction aria-labels.
+- FoundationsShowcase: missing spacing -b tokens and z-popover.
+- Autocomplete dropdown migrated to Floating UI portal (no longer clips in overflow:hidden).
+- 50+ inline motion magic numbers replaced with centralized presets.
+- SSR smoke test wired into CI. Changesets publish gets safety gates.
+- ESLint: composed→shell module boundary enforced, import ordering plugin added.
+- Storybook: restructured to Components/Patterns/Shell/AI hierarchy, content updated to v0.35.0.
+
 ## [0.34.1] - 2026-04-11 (core)
 
 ### Changed

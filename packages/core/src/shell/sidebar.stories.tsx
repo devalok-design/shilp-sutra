@@ -75,7 +75,7 @@ const mockFooterLinks = [
 // ── Meta ─────────────────────────────────────────────────────
 
 const meta: Meta<typeof AppSidebar> = {
-  title: 'Shell/Sidebar',
+  title: 'Shell/AppSidebar',
   component: AppSidebar,
   tags: ['autodocs', 'stable'],
   parameters: {

@@ -17,7 +17,7 @@ import {
 } from './sidebar'
 
 const meta: Meta<typeof Sidebar> = {
-  title: 'Shell/Sidebar',
+  title: 'Shell/Sidebar Primitive',
   component: Sidebar,
   tags: ['autodocs', 'stable'],
   parameters: {

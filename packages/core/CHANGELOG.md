@@ -1,5 +1,23 @@
 # @devalok/shilp-sutra
 
+> See the root [CHANGELOG.md](../../CHANGELOG.md) for detailed per-release notes.
+> This file is the Changesets-generated summary shipped alongside releases.
+
+## 0.35.0
+
+### Minor Changes
+
+- World-Class Audit wave 1–5: dark-mode contrast fix, responsive clamp() typography, letter spacing, surface-fg-subtle darkening, size/color axes on Combobox/NumberInput/Slider/InputOTP/Toggle, Tabs `orientation="vertical"`, Stepper `onStepClick`, AlertDialog `responsive`, Chart keyboard a11y + `ariaDescription`, typography composite utilities (text-heading-xl/text-body-md/etc.), layout/link/duration tokens, `useFormField` wired into 8 components, Autocomplete portal, NotificationCenter mobile Sheet, 136+ new tests + coverage thresholds.
+
+### Breaking
+
+- `MessageList` prop `isLoadingMore` → `loadingMore`.
+- `AppCommandPalette` Karm defaults removed — use `CommandRegistryProvider`.
+- `NumberInput` shape: pill → rounded rectangle.
+- `Alert.variant="filled"` deprecated → use `"solid"` (alias still works).
+- `SegmentedControl.variant="accent"` deprecated → use `"solid"` (alias still works).
+- `@floating-ui/dom`, `@tiptap/*`, `prosemirror-state` now bundled (moved to devDeps).
+
 ## 0.34.1
 
 ### Patch Changes
@@ -11,12 +29,6 @@
 ### Minor Changes
 
 - Tailwind CSS 4, TypeScript 6, ESLint 10, tailwind-merge 3.5, react-zoom-pan-pinch 4 — full toolchain upgrade
-
-## 0.33.3
-
-### Patch Changes
-
-- Upgrade TypeScript 6.0.2, ESLint 10, typescript-eslint 8.58.1, react-zoom-pan-pinch 4 (peer dep)
 
 ## 0.33.2
 

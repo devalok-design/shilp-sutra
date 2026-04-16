@@ -8,7 +8,7 @@ The Devalok Design System -- tokens, components, and patterns for React & Next.j
 
 | Package | Description |
 | --- | --- |
-| `@devalok/shilp-sutra` | Core tokens, 60+ UI primitives, 14 composed components, 7 shell components, and Tailwind preset |
+| `@devalok/shilp-sutra` | Core tokens, 78 UI primitives, 29 composed components, 8 shell components, 5 AI components, and Tailwind preset |
 | `@devalok/shilp-sutra-brand` | Brand logos and SVG/PNG/WebP assets (Devalok, Karm) |
 
 > **Note:** Domain-specific components (board, tasks, chat, dashboard, client, admin) previously published as `@devalok/shilp-sutra-karm` have been moved to their respective consumer app repositories.
@@ -63,9 +63,10 @@ The design system is organized into three tiers:
 
 | Layer | Import | What it contains |
 |-------|--------|------------------|
-| **ui** | `@devalok/shilp-sutra/ui` | 60+ atomic primitives -- buttons, inputs, dialogs, cards, tables, badges, charts, navigation, transitions |
-| **composed** | `@devalok/shilp-sutra/composed` | 14 multi-component patterns -- date picker, rich text editor, command palette, page header, loading skeletons |
-| **shell** | `@devalok/shilp-sutra/shell` | 7 app-level layout components -- sidebar, top bar, bottom navbar, notification center, command palette |
+| **ui** | `@devalok/shilp-sutra/ui` | 78 atomic primitives -- buttons, inputs, dialogs, cards, tables, badges, charts, navigation, transitions |
+| **composed** | `@devalok/shilp-sutra/composed` | 29 multi-component patterns -- date picker, rich text editor, command palette, page header, loading skeletons |
+| **shell** | `@devalok/shilp-sutra/shell` | 8 app-level layout components -- sidebar, top bar, bottom navbar, notification center, command palette |
+| **ai** | `@devalok/shilp-sutra/ai` | 5 AI chat/assistant primitives -- conversation, command bar, block renderer |
 
 **ui** components are atomic primitives. They have minimal opinions and are designed to be combined.
 **composed** components combine multiple ui primitives into reusable patterns (e.g. DatePicker combines a calendar grid, popover, time picker, and presets).
@@ -183,11 +184,11 @@ Only install the packages you actually use:
 | `@devalok/shilp-sutra` | Root export -- re-exports all of `./ui` |
 | `@devalok/shilp-sutra/tokens` | CSS custom properties (primitives, semantic, typography) |
 | `@devalok/shilp-sutra/tailwind` | Tailwind CSS preset with token mappings |
-| `@devalok/shilp-sutra/ui` | 60+ Radix-based UI primitives |
+| `@devalok/shilp-sutra/ui` | 78 Radix-based UI primitives |
 | `@devalok/shilp-sutra/ui/<name>` | Per-component exports (e.g. `./ui/button`, `./ui/dialog`) |
-| `@devalok/shilp-sutra/composed` | 14 higher-level composed components |
+| `@devalok/shilp-sutra/composed` | 29 higher-level composed components |
 | `@devalok/shilp-sutra/composed/<name>` | Per-component exports (e.g. `./composed/date-picker`) |
-| `@devalok/shilp-sutra/shell` | 7 app shell components |
+| `@devalok/shilp-sutra/shell` | 8 app shell components |
 | `@devalok/shilp-sutra/shell/<name>` | Per-component exports (e.g. `./shell/top-bar`) |
 | `@devalok/shilp-sutra/hooks` | `useToast`, `useColorMode`, `useIsMobile` |
 | `@devalok/shilp-sutra/fonts/*` | Inter and Ranade variable font files (WOFF2) |
@@ -261,12 +262,12 @@ pnpm format             # Prettier
 
 ## Tech Stack
 
-- React 18 + TypeScript 5.7 (strict mode)
-- Tailwind CSS 3 + CSS custom properties
+- React 19 + TypeScript 6.0 (strict mode)
+- Tailwind CSS 4 + CSS custom properties
 - Radix UI primitives (vendored)
 - class-variance-authority (CVA)
-- Vite 5.4 (library mode build)
-- Storybook 8 (development + documentation)
+- Vite 8 (Rolldown bundler, library mode)
+- Storybook 10 (development + documentation)
 - Inter + Ranade variable fonts (WOFF2)
 
 ## Credits

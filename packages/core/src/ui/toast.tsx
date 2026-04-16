@@ -21,6 +21,7 @@ import { springs, tweens } from './lib/motion'
 import { Spinner } from './spinner'
 import { Progress } from './progress'
 import { Icon } from './icon'
+import { assertToasterMounted } from './toast-registry'
 import type {
   ToastOptions,
   ToastType,
@@ -170,11 +171,15 @@ function ToastContent({
     return () => clearTimeout(timer)
   }, [selfDismissId, duration, paused])
 
+  // Error toasts announce assertively so screen readers interrupt;
+  // warnings stay polite but atomically re-read the message.
+  const isUrgent = type === 'error'
   return (
     <motion.div
       layout="position"
-      role="status"
-      aria-live="polite"
+      role={isUrgent ? 'alert' : 'status'}
+      aria-live={isUrgent ? 'assertive' : 'polite'}
+      aria-atomic="true"
       className="group relative flex w-full overflow-hidden rounded-ds-md border border-surface-border-strong bg-surface-overlay shadow-floating"
       onMouseEnter={() => setHovered(true)}
       onMouseLeave={() => setHovered(false)}
@@ -509,11 +514,12 @@ function UploadToastContent({
       : 'success'
     : 'loading'
 
+  const uploadUrgent = allTerminal && errorCount > 0
   return (
     <motion.div
       layout
-      role="status"
-      aria-live="polite"
+      role={uploadUrgent ? 'alert' : 'status'}
+      aria-live={uploadUrgent ? 'assertive' : 'polite'}
       aria-label="File uploads"
       className="group relative flex w-full overflow-hidden rounded-ds-md border border-surface-border-strong bg-surface-overlay shadow-floating"
       onMouseEnter={() => setHovered(true)}
@@ -633,6 +639,7 @@ function createTypedToast(
   message: string | React.ReactNode,
   options?: ToastOptions,
 ) {
+  assertToasterMounted()
   const duration = options?.duration ?? DEFAULT_DURATION
   return sonnerToast.custom(
     () => (

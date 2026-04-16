@@ -57,13 +57,14 @@ describe('Toast — rendering', () => {
     await waitFor(() => {
       expect(screen.getByText('Failed to save')).toBeVisible()
     }, { timeout: 3000 })
-    // Error toast should have role="status" and accent bar
-    const status = screen.getAllByRole('status').find((el) =>
+    // Error toast is announced assertively (role="alert") so screen readers interrupt.
+    const alert = screen.getAllByRole('alert').find((el) =>
       el.textContent?.includes('Failed to save'),
     )
-    expect(status).toBeDefined()
+    expect(alert).toBeDefined()
+    expect(alert).toHaveAttribute('aria-live', 'assertive')
     // Accent bar is the first child div with bg-error-9
-    const accentBar = status!.querySelector('.bg-error-9')
+    const accentBar = alert!.querySelector('.bg-error-9')
     expect(accentBar).toBeInTheDocument()
   })
 

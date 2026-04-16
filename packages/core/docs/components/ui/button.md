@@ -5,8 +5,8 @@
 - Category: ui
 
 ## Props
-    variant: "solid" | "soft" | "outline" | "ghost" | "link" | "default" (alias->solid) | "destructive" (alias->solid+error)
-    color: "accent" | "error" | "success" | "warning" | "neutral" | "default" (alias->accent)
+    variant: "solid" | "soft" | "outline" | "ghost" | "link"
+    color: "accent" | "error" | "success" | "warning" | "neutral"
     size: "xs" | "sm" | "md" | "lg" | "compact-xs" | "compact-sm" | "compact-md" | "icon" | "icon-xs" | "icon-sm" | "icon-md" | "icon-lg"
     weight: "semibold" | "normal"
     shape: "default" | "pill"

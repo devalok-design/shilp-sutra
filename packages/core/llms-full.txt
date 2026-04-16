@@ -397,6 +397,7 @@ Note: getFormFieldA11y() was removed in favor of useFormField() hook.
     disabled: boolean
     onDismiss: () => void (shows dismiss X button)
     maxWidth: number (enables truncation with title tooltip)
+    truncate: boolean (ellipsis overflow — pair with a width/maxWidth; adds title tooltip)
     circle: boolean (square aspect-ratio, centered content)
     asChild: boolean
     children: ReactNode
@@ -625,8 +626,8 @@ Note: getFormFieldA11y() was removed in favor of useFormField() hook.
 - Category: ui
 
 ## Props
-    variant: "solid" | "soft" | "outline" | "ghost" | "link" | "default" (alias->solid) | "destructive" (alias->solid+error)
-    color: "accent" | "error" | "success" | "warning" | "neutral" | "default" (alias->accent)
+    variant: "solid" | "soft" | "outline" | "ghost" | "link"
+    color: "accent" | "error" | "success" | "warning" | "neutral"
     size: "xs" | "sm" | "md" | "lg" | "compact-xs" | "compact-sm" | "compact-md" | "icon" | "icon-xs" | "icon-sm" | "icon-md" | "icon-lg"
     weight: "semibold" | "normal"
     shape: "default" | "pill"
@@ -1513,7 +1514,7 @@ import { DataTable } from '@devalok/shilp-sutra/ui/data-table'
 
 ### v0.1.0
 - **Added** Initial release
-# $(echo $f | sed 's/-/ /g' | sed 's/\b\(.\)/\u\1/g')
+# DataTableBody
 
 > Internal sub-component of DataTable. Not exported to consumers.
 
@@ -1526,7 +1527,7 @@ See [DataTable](./data-table.md) for the public API.
 
 ### v0.32.0
 - Extracted from DataTable monolith into focused sub-component.
-# $(echo $f | sed 's/-/ /g' | sed 's/\b\(.\)/\u\1/g')
+# DataTableBulkActions
 
 > Internal sub-component of DataTable. Not exported to consumers.
 
@@ -1539,7 +1540,7 @@ See [DataTable](./data-table.md) for the public API.
 
 ### v0.32.0
 - Extracted from DataTable monolith into focused sub-component.
-# $(echo $f | sed 's/-/ /g' | sed 's/\b\(.\)/\u\1/g')
+# DataTableCard
 
 > Internal sub-component of DataTable. Not exported to consumers.
 
@@ -1552,7 +1553,7 @@ See [DataTable](./data-table.md) for the public API.
 
 ### v0.32.0
 - Extracted from DataTable monolith into focused sub-component.
-# $(echo $f | sed 's/-/ /g' | sed 's/\b\(.\)/\u\1/g')
+# DataTableContext
 
 > Internal sub-component of DataTable. Not exported to consumers.
 
@@ -1565,7 +1566,7 @@ See [DataTable](./data-table.md) for the public API.
 
 ### v0.32.0
 - Extracted from DataTable monolith into focused sub-component.
-# $(echo $f | sed 's/-/ /g' | sed 's/\b\(.\)/\u\1/g')
+# DataTableHeader
 
 > Internal sub-component of DataTable. Not exported to consumers.
 
@@ -1578,7 +1579,7 @@ See [DataTable](./data-table.md) for the public API.
 
 ### v0.32.0
 - Extracted from DataTable monolith into focused sub-component.
-# $(echo $f | sed 's/-/ /g' | sed 's/\b\(.\)/\u\1/g')
+# DataTablePagination
 
 > Internal sub-component of DataTable. Not exported to consumers.
 

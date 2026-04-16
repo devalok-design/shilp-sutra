@@ -10,6 +10,8 @@ export type FormHelperState = 'helper' | 'error' | 'warning' | 'success'
 interface FormFieldContextValue {
   state?: FormHelperState
   helperTextId?: string
+  /** Auto-generated id shared between Label (htmlFor) and the field input (id). */
+  inputId?: string
   required?: boolean
 }
 const FormFieldContext = React.createContext<FormFieldContextValue>({})
@@ -35,6 +37,12 @@ export interface FormFieldProps extends React.HTMLAttributes<HTMLDivElement> {
    * Pass this to `useFormField()` consumers that need to set `aria-describedby`.
    */
   helperTextId?: string
+  /**
+   * Custom ID for the field input element. If omitted, an auto-generated ID is used.
+   * Label (when inside FormField) reads this via `htmlFor`; Input reads it via `id`.
+   * Explicit `htmlFor` / `id` props on children always win.
+   */
+  inputId?: string
   /** Current validation state — propagated to child `FormHelperText` via context */
   state?: FormHelperState
   /** Whether the field is required — available to children via `useFormField()` */
@@ -42,12 +50,13 @@ export interface FormFieldProps extends React.HTMLAttributes<HTMLDivElement> {
 }
 
 const FormField = React.forwardRef<HTMLDivElement, FormFieldProps>(
-  ({ className, helperTextId, state = 'helper', required, children, ...props }, ref) => {
+  ({ className, helperTextId, inputId, state = 'helper', required, children, ...props }, ref) => {
     const autoId = React.useId()
-    const resolvedId = helperTextId || `${autoId}-helper`
+    const resolvedHelperId = helperTextId || `${autoId}-helper`
+    const resolvedInputId = inputId || `${autoId}-input`
     const contextValue = React.useMemo(
-      () => ({ state, helperTextId: resolvedId, required }),
-      [state, resolvedId, required],
+      () => ({ state, helperTextId: resolvedHelperId, inputId: resolvedInputId, required }),
+      [state, resolvedHelperId, resolvedInputId, required],
     )
 
     return (

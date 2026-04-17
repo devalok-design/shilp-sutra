@@ -147,15 +147,26 @@ export const ComponentMatrix: Story = {
         </div>
       </Section>
 
-      <Section title="Alerts, Banners, Progress">
-        <Alert color="info" title="Info alert">Heads up — this is informational.</Alert>
-        <Alert color="success" variant="solid" title="Success alert (solid)">All saved.</Alert>
+      <Section title="Alerts — subtle (default)">
+        <Alert color="info" title="Info">Heads up — this is informational.</Alert>
+        <Alert color="success" title="Success">All saved.</Alert>
         <Alert color="warning" title="Warning">Something needs attention.</Alert>
-        <Alert color="error" variant="solid" title="Error (solid)">
-          Error foreground should remain legible.
-        </Alert>
-        <Banner color="info">Banner — compact info strip.</Banner>
-        <div className="space-y-ds-03">
+        <Alert color="error" title="Error">Subtle error — step-3 bg, step-11 text.</Alert>
+      </Section>
+
+      <Section title="Alerts — solid (step-9 bg, fg text)">
+        <Alert color="info" variant="solid" title="Info">Solid info.</Alert>
+        <Alert color="success" variant="solid" title="Success">Solid success.</Alert>
+        <Alert color="warning" variant="solid" title="Warning">Solid warning.</Alert>
+        <Alert color="error" variant="solid" title="Error">Solid error — foreground must stay legible.</Alert>
+      </Section>
+
+      <Section title="Banners & Progress">
+        <Banner color="info">Info banner — compact full-width strip.</Banner>
+        <Banner color="success">Success banner.</Banner>
+        <Banner color="warning">Warning banner.</Banner>
+        <Banner color="error">Error banner.</Banner>
+        <div className="space-y-ds-03 pt-ds-03">
           <Progress value={40} />
           <Progress value={75} color="success" />
         </div>

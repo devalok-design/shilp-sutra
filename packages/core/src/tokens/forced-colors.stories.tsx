@@ -1,6 +1,6 @@
 import type { Meta, StoryObj } from '@storybook/react-vite'
-import { IconCheck, IconX, IconAlertTriangle, IconInfoCircle, IconSearch, IconUser, IconPlus } from '@tabler/icons-react'
-import { Alert, AlertTitle, AlertDescription } from '../ui/alert'
+import { IconX, IconSearch, IconUser, IconPlus } from '@tabler/icons-react'
+import { Alert } from '../ui/alert'
 import { Badge } from '../ui/badge'
 import { Banner } from '../ui/banner'
 import { Button } from '../ui/button'
@@ -13,7 +13,7 @@ import { Input } from '../ui/input'
 import { Label } from '../ui/label'
 import { Link } from '../ui/link'
 import { Progress } from '../ui/progress'
-import { Radio, RadioGroup } from '../ui/radio'
+import { RadioGroup, RadioGroupItem } from '../ui/radio'
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '../ui/select'
 import { Skeleton } from '../ui/skeleton'
 import { Switch } from '../ui/switch'
@@ -139,8 +139,8 @@ export const ComponentMatrix: Story = {
           <label className="flex items-center gap-ds-02"><Checkbox defaultChecked /> Checked</label>
           <label className="flex items-center gap-ds-02"><Checkbox disabled /> Disabled</label>
           <RadioGroup defaultValue="one" className="flex gap-ds-04">
-            <label className="flex items-center gap-ds-02"><Radio value="one" /> One</label>
-            <label className="flex items-center gap-ds-02"><Radio value="two" /> Two</label>
+            <label className="flex items-center gap-ds-02"><RadioGroupItem value="one" /> One</label>
+            <label className="flex items-center gap-ds-02"><RadioGroupItem value="two" /> Two</label>
           </RadioGroup>
           <label className="flex items-center gap-ds-02"><Switch /> Off</label>
           <label className="flex items-center gap-ds-02"><Switch defaultChecked /> On</label>
@@ -148,25 +148,11 @@ export const ComponentMatrix: Story = {
       </Section>
 
       <Section title="Alerts, Banners, Progress">
-        <Alert color="info">
-          <Icon icon={IconInfoCircle} />
-          <AlertTitle>Info alert</AlertTitle>
-          <AlertDescription>Heads up — this is informational.</AlertDescription>
-        </Alert>
-        <Alert color="success" variant="solid">
-          <Icon icon={IconCheck} />
-          <AlertTitle>Success alert (solid)</AlertTitle>
-          <AlertDescription>All saved.</AlertDescription>
-        </Alert>
-        <Alert color="warning">
-          <Icon icon={IconAlertTriangle} />
-          <AlertTitle>Warning</AlertTitle>
-          <AlertDescription>Something needs attention.</AlertDescription>
-        </Alert>
-        <Alert color="error" variant="solid">
-          <Icon icon={IconX} />
-          <AlertTitle>Error (solid)</AlertTitle>
-          <AlertDescription>Error foreground should remain legible.</AlertDescription>
+        <Alert color="info" title="Info alert">Heads up — this is informational.</Alert>
+        <Alert color="success" variant="solid" title="Success alert (solid)">All saved.</Alert>
+        <Alert color="warning" title="Warning">Something needs attention.</Alert>
+        <Alert color="error" variant="solid" title="Error (solid)">
+          Error foreground should remain legible.
         </Alert>
         <Banner color="info">Banner — compact info strip.</Banner>
         <div className="space-y-ds-03">

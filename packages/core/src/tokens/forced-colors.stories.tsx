@@ -2,6 +2,7 @@ import type { Meta, StoryObj } from '@storybook/react-vite'
 import { IconX, IconSearch, IconUser, IconPlus } from '@tabler/icons-react'
 import { Alert } from '../ui/alert'
 import { Badge } from '../ui/badge'
+import { BadgeIndicator } from '../ui/badge-indicator'
 import { Banner } from '../ui/banner'
 import { Button } from '../ui/button'
 import { Card, CardHeader, CardTitle, CardDescription, CardContent, CardFooter } from '../ui/card'
@@ -159,6 +160,103 @@ export const ComponentMatrix: Story = {
         <Alert color="success" variant="solid" title="Success">Solid success.</Alert>
         <Alert color="warning" variant="solid" title="Warning">Solid warning.</Alert>
         <Alert color="error" variant="solid" title="Error">Solid error — foreground must stay legible.</Alert>
+      </Section>
+
+      <Section title="Solid-bg legibility matrix">
+        <p className="text-ds-sm text-surface-fg-muted">
+          Every component that renders text or an icon over a saturated step-9
+          background, shown side-by-side across status colors. Any contrast
+          regression (grey-on-saturated, white-on-light-amber, etc.) should
+          jump out immediately. Warning is the canary — its step-9 is a lighter
+          amber and requires dark text (<code>--color-warning-fg</code>).
+        </p>
+
+        {/* Buttons */}
+        <div>
+          <div className="text-ds-xs font-semibold text-surface-fg-muted uppercase tracking-wider mb-ds-02">Button (solid)</div>
+          <div className="flex flex-wrap gap-ds-02">
+            <Button variant="solid" color="accent">Accent</Button>
+            <Button variant="solid" color="error">Error</Button>
+            <Button variant="solid" color="success">Success</Button>
+            <Button variant="solid" color="warning">Warning</Button>
+            <Button variant="solid" color="neutral">Neutral</Button>
+          </div>
+        </div>
+
+        {/* Button icon slot */}
+        <div>
+          <div className="text-ds-xs font-semibold text-surface-fg-muted uppercase tracking-wider mb-ds-02">Button with icon (solid)</div>
+          <div className="flex flex-wrap gap-ds-02">
+            <Button variant="solid" color="accent" startIcon={<Icon icon={IconPlus} />}>New</Button>
+            <Button variant="solid" color="error" startIcon={<Icon icon={IconX} />}>Delete</Button>
+            <Button variant="solid" color="success" startIcon={<Icon icon={IconPlus} />}>Approve</Button>
+            <Button variant="solid" color="warning" startIcon={<Icon icon={IconPlus} />}>Pending</Button>
+          </div>
+        </div>
+
+        {/* Badges */}
+        <div>
+          <div className="text-ds-xs font-semibold text-surface-fg-muted uppercase tracking-wider mb-ds-02">Badge (solid)</div>
+          <div className="flex flex-wrap gap-ds-02">
+            <Badge variant="solid" color="accent">Accent</Badge>
+            <Badge variant="solid" color="error">Error</Badge>
+            <Badge variant="solid" color="success">Success</Badge>
+            <Badge variant="solid" color="warning">Warning</Badge>
+            <Badge variant="solid" color="info">Info</Badge>
+            <Badge variant="solid" color="neutral">Neutral</Badge>
+          </div>
+        </div>
+
+        {/* BadgeIndicator over Avatar-like anchors */}
+        <div>
+          <div className="text-ds-xs font-semibold text-surface-fg-muted uppercase tracking-wider mb-ds-02">BadgeIndicator (counter)</div>
+          <div className="flex flex-wrap items-center gap-ds-06">
+            {(['accent', 'error', 'success', 'warning', 'info'] as const).map((c) => (
+              <BadgeIndicator key={c} count={12} color={c}>
+                <span className="inline-flex h-ds-md w-ds-md items-center justify-center rounded-ds-full bg-surface-raised-hover text-surface-fg-muted border border-surface-border-strong">
+                  <Icon icon={IconUser} size="sm" />
+                </span>
+              </BadgeIndicator>
+            ))}
+          </div>
+        </div>
+
+        {/* Counter pills (freeform, like NotificationCenter / TopBar / BottomNavbar) */}
+        <div>
+          <div className="text-ds-xs font-semibold text-surface-fg-muted uppercase tracking-wider mb-ds-02">Counter pills (error-9 bg, error-fg text)</div>
+          <div className="flex flex-wrap items-center gap-ds-04">
+            <span className="inline-flex h-4 min-w-4 items-center justify-center rounded-full bg-error-9 px-0.5 text-[10px] font-semibold leading-none text-error-fg">
+              3
+            </span>
+            <span className="inline-flex h-[18px] min-w-[18px] items-center justify-center rounded-ds-full bg-error-9 px-ds-02 text-[10px] font-semibold leading-none text-error-fg">
+              12
+            </span>
+            <span className="inline-flex h-5 min-w-5 items-center justify-center rounded-full bg-error-9 px-1 text-[11px] font-bold leading-none text-error-fg">
+              99+
+            </span>
+          </div>
+        </div>
+
+        {/* Check/radio/switch checked states */}
+        <div>
+          <div className="text-ds-xs font-semibold text-surface-fg-muted uppercase tracking-wider mb-ds-02">Checkable states (accent-9 bg checked)</div>
+          <div className="flex flex-wrap items-center gap-ds-05">
+            <label className="flex items-center gap-ds-02"><Checkbox defaultChecked /> Checked</label>
+            <label className="flex items-center gap-ds-02"><Checkbox defaultChecked indeterminate /> Indeterminate</label>
+            <RadioGroup defaultValue="one" className="flex gap-ds-04">
+              <label className="flex items-center gap-ds-02"><RadioGroupItem value="one" /> Selected radio</label>
+            </RadioGroup>
+            <label className="flex items-center gap-ds-02"><Switch defaultChecked /> On</label>
+          </div>
+        </div>
+
+        {/* Pass/fail quick-scan reference */}
+        <div className="rounded-ds-sm border border-surface-border-subtle bg-surface-base p-ds-03 text-ds-xs text-surface-fg-muted">
+          <strong className="text-surface-fg">What to look for:</strong> every label above must be
+          crisply readable against its background. Grey-on-saturated, white-on-light-amber, or any
+          washed-out rendering = bug. Check both light + dark mode via the Storybook theme toolbar,
+          then forced-colors emulation via DevTools → Rendering.
+        </div>
       </Section>
 
       <Section title="Banners & Progress">

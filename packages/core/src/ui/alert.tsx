@@ -40,16 +40,16 @@ const alertVariants = cva(
       { variant: 'subtle', color: 'error', className: 'bg-error-3 border-error-7 text-error-11' },
       { variant: 'subtle', color: 'neutral', className: 'bg-surface-raised border-surface-border-strong text-surface-fg [&>svg]:text-surface-fg-muted' },
       // solid (solid bg, contrasting text) — canonical name
-      { variant: 'solid', color: 'info', className: 'bg-info-9 text-accent-fg border-transparent [&>svg]:text-accent-fg' },
-      { variant: 'solid', color: 'success', className: 'bg-success-9 text-accent-fg border-transparent [&>svg]:text-accent-fg' },
-      { variant: 'solid', color: 'warning', className: 'bg-warning-9 text-accent-fg border-transparent [&>svg]:text-accent-fg' },
-      { variant: 'solid', color: 'error', className: 'bg-error-9 text-accent-fg border-transparent [&>svg]:text-accent-fg' },
+      { variant: 'solid', color: 'info', className: 'bg-info-9 text-info-fg border-transparent [&>svg]:text-info-fg' },
+      { variant: 'solid', color: 'success', className: 'bg-success-9 text-success-fg border-transparent [&>svg]:text-success-fg' },
+      { variant: 'solid', color: 'warning', className: 'bg-warning-9 text-warning-fg border-transparent [&>svg]:text-warning-fg' },
+      { variant: 'solid', color: 'error', className: 'bg-error-9 text-error-fg border-transparent [&>svg]:text-error-fg' },
       { variant: 'solid', color: 'neutral', className: 'bg-surface-raised-hover text-surface-fg border-transparent [&>svg]:text-surface-fg-muted' },
       // filled — deprecated alias for solid (remove in next minor)
-      { variant: 'filled', color: 'info', className: 'bg-info-9 text-accent-fg border-transparent [&>svg]:text-accent-fg' },
-      { variant: 'filled', color: 'success', className: 'bg-success-9 text-accent-fg border-transparent [&>svg]:text-accent-fg' },
-      { variant: 'filled', color: 'warning', className: 'bg-warning-9 text-accent-fg border-transparent [&>svg]:text-accent-fg' },
-      { variant: 'filled', color: 'error', className: 'bg-error-9 text-accent-fg border-transparent [&>svg]:text-accent-fg' },
+      { variant: 'filled', color: 'info', className: 'bg-info-9 text-info-fg border-transparent [&>svg]:text-info-fg' },
+      { variant: 'filled', color: 'success', className: 'bg-success-9 text-success-fg border-transparent [&>svg]:text-success-fg' },
+      { variant: 'filled', color: 'warning', className: 'bg-warning-9 text-warning-fg border-transparent [&>svg]:text-warning-fg' },
+      { variant: 'filled', color: 'error', className: 'bg-error-9 text-error-fg border-transparent [&>svg]:text-error-fg' },
       { variant: 'filled', color: 'neutral', className: 'bg-surface-raised-hover text-surface-fg border-transparent [&>svg]:text-surface-fg-muted' },
       // outline (transparent bg, colored border)
       { variant: 'outline', color: 'info', className: 'bg-transparent border-info-7 text-info-11' },
@@ -150,7 +150,18 @@ const Alert = React.forwardRef<HTMLDivElement, AlertProps>(
             <Icon icon={AlertIcon} size={iconSize} className="mt-ds-01 shrink-0" />
             <div className="flex-1 min-w-0">
               {title && <p className={cn(titleClass, 'font-semibold mb-ds-01')}>{title}</p>}
-              <div className={cn(textClass, 'text-surface-fg-muted')}>{children}</div>
+              {/* Body: on solid/filled variants the CVA sets text-accent-fg (white) on
+                  saturated step-9 backgrounds. Muting the body to surface-fg (grey)
+                  there drops contrast below WCAG AA. Only mute on subtle/outline
+                  variants where the root color is a readable step-11. */}
+              <div
+                className={cn(
+                  textClass,
+                  variant !== 'solid' && variant !== 'filled' && 'text-surface-fg-muted',
+                )}
+              >
+                {children}
+              </div>
             </div>
             {onDismiss && (
               <button

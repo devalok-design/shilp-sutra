@@ -450,8 +450,8 @@ const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
     // Async feedback: override color to show green/red
     const feedbackColorClass = isAsyncFeedback
       ? asyncState === 'success'
-        ? 'bg-success-9 text-accent-fg border-transparent hover:bg-success-9'
-        : 'bg-error-9 text-accent-fg border-transparent hover:bg-error-9'
+        ? 'bg-success-9 text-success-fg border-transparent hover:bg-success-9'
+        : 'bg-error-9 text-error-fg border-transparent hover:bg-error-9'
       : undefined
 
     // Async feedback icon — uses Icon's draw animation for pen-stroke effect

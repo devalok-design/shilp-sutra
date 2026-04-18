@@ -349,7 +349,7 @@ const TopBarUserMenu = React.forwardRef<HTMLButtonElement, TopBarUserMenuProps>(
                   {item.badge != null &&
                     item.badge !== false &&
                     (typeof item.badge === 'string' ? (
-                      <span className="ml-auto inline-flex h-[18px] min-w-[18px] items-center justify-center rounded-ds-full bg-error-9 px-ds-02 text-[10px] font-semibold leading-none text-accent-fg">
+                      <span className="ml-auto inline-flex h-[18px] min-w-[18px] items-center justify-center rounded-ds-full bg-error-9 px-ds-02 text-[10px] font-semibold leading-none text-error-fg">
                         {item.badge}
                       </span>
                     ) : (

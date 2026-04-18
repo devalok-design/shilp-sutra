@@ -60,7 +60,7 @@ function NavBadge({ count }: { count: number }) {
     <span
       aria-label={`${count} notifications`}
       className={cn(
-        'absolute -right-1 -top-0.5 flex h-4 min-w-4 items-center justify-center rounded-full bg-error-9 text-[10px] font-semibold leading-none text-accent-fg animate-in zoom-in-75',
+        'absolute -right-1 -top-0.5 flex h-4 min-w-4 items-center justify-center rounded-full bg-error-9 text-[10px] font-semibold leading-none text-error-fg animate-in zoom-in-75',
         isMultiDigit ? 'px-0.5' : '',
       )}
     >

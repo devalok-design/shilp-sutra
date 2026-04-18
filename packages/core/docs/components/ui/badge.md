@@ -16,6 +16,7 @@
     disabled: boolean
     onDismiss: () => void (shows dismiss X button)
     maxWidth: number (enables truncation with title tooltip)
+    truncate: boolean (ellipsis overflow — pair with a width/maxWidth; adds title tooltip)
     circle: boolean (square aspect-ratio, centered content)
     asChild: boolean
     children: ReactNode

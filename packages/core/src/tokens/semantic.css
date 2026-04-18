@@ -580,3 +580,163 @@
     scroll-behavior: auto !important;
   }
 }
+
+/* ═══════════════════════════════════════════════════════════
+   FORCED COLORS (Windows High Contrast, etc.)
+   ───────────────────────────────────────────────────────────
+   When the OS forces a color scheme, browsers strip our custom
+   palette and remap to a small set of system keywords. We opt
+   into this by default (forced-color-adjust: auto is the
+   default) and only *explicitly map* our semantic tokens to
+   system colors where the remapping would otherwise be lossy
+   or ambiguous.
+
+   Applies to BOTH light and dark themes — forced-colors is
+   orthogonal to theme. We override both :root and .dark.
+
+   Testing: Chrome DevTools → Rendering → "Emulate CSS media
+   feature forced-colors: active". Or Windows Settings → High
+   Contrast.
+   ═══════════════════════════════════════════════════════════ */
+@media (forced-colors: active) {
+  :root,
+  .dark {
+    /* ── Surface ── */
+    --color-surface-fg: CanvasText;
+    --color-surface-fg-muted: CanvasText;     /* Muted merges with fg; rely on weight/position for hierarchy */
+    --color-surface-fg-subtle: GrayText;
+    --color-surface-fg-disabled: GrayText;
+    --color-surface-base: Canvas;
+    --color-surface-sunken: Canvas;
+    --color-surface-raised: Canvas;
+    --color-surface-raised-hover: Canvas;      /* System handles hover via :hover + Highlight */
+    --color-surface-raised-active: Canvas;
+    --color-surface-overlay: Canvas;
+    --color-surface-disabled: Canvas;
+    --color-surface-inverted: CanvasText;
+    --color-surface-inverted-fg: Canvas;
+    --color-surface-border: CanvasText;
+    --color-surface-border-strong: CanvasText;
+    --color-surface-border-subtle: GrayText;
+    --color-backdrop: Canvas;
+    --color-overlay: Canvas;
+    --color-disabled: GrayText;
+
+    /* ── Accent ──
+       Step 9/10 (solid backgrounds) → Highlight (system selected color).
+       Step 11 (text) → LinkText for emphasis / interactive text runs.
+       Step 3-5 (hover/subtle bg) collapse to Canvas — hover is expressed
+       by system Highlight on :hover automatically. */
+    --color-accent-1: Canvas;
+    --color-accent-2: Canvas;
+    --color-accent-3: Canvas;
+    --color-accent-4: Canvas;
+    --color-accent-5: Canvas;
+    --color-accent-6: Canvas;
+    --color-accent-7: Highlight;
+    --color-accent-8: Highlight;
+    --color-accent-9: Highlight;
+    --color-accent-10: Highlight;
+    --color-accent-11: LinkText;
+    --color-accent-12: LinkText;
+    --color-accent-fg: HighlightText;
+
+    /* ── Secondary accent ── (same pattern) */
+    --color-secondary-9: Highlight;
+    --color-secondary-10: Highlight;
+    --color-secondary-11: LinkText;
+    --color-secondary-12: LinkText;
+    --color-secondary-fg: HighlightText;
+
+    /* ── Status colors ──
+       Forced-colors has no distinct error/success/warning/info slots.
+       Step-11 text → CanvasText (still readable). Step-9 solid → Mark
+       (often highlighted/annotated color in system themes) for error
+       since errors are the most distinguishable need; others use
+       Highlight to stay legible. Meaning MUST be carried by iconography
+       + text, not color, under forced-colors. */
+    --color-error-3: Canvas;
+    --color-error-4: Canvas;
+    --color-error-5: Canvas;
+    --color-error-7: CanvasText;
+    --color-error-9: Mark;
+    --color-error-10: Mark;
+    --color-error-11: CanvasText;
+    --color-error-fg: CanvasText;
+
+    --color-success-3: Canvas;
+    --color-success-4: Canvas;
+    --color-success-5: Canvas;
+    --color-success-7: CanvasText;
+    --color-success-9: Highlight;
+    --color-success-10: Highlight;
+    --color-success-11: CanvasText;
+    --color-success-fg: HighlightText;
+
+    --color-warning-3: Canvas;
+    --color-warning-4: Canvas;
+    --color-warning-5: Canvas;
+    --color-warning-7: CanvasText;
+    --color-warning-9: Highlight;
+    --color-warning-10: Highlight;
+    --color-warning-11: CanvasText;
+    --color-warning-fg: HighlightText;
+
+    --color-info-3: Canvas;
+    --color-info-4: Canvas;
+    --color-info-5: Canvas;
+    --color-info-7: CanvasText;
+    --color-info-9: Highlight;
+    --color-info-10: Highlight;
+    --color-info-11: CanvasText;
+    --color-info-fg: HighlightText;
+
+    /* ── Links ──
+       VisitedText falls back to LinkText on browsers that don't
+       implement it; both render visibly. */
+    --color-link: LinkText;
+    --color-link-hover: LinkText;
+    --color-link-visited: VisitedText;
+
+    /* ── Skeleton ── collapse to Canvas; shimmer animation still runs */
+    --color-skeleton-base: GrayText;
+    --color-skeleton-shimmer: Canvas;
+  }
+
+  /* Focus ring — Tailwind's `ring-*` utility compiles to box-shadow, which
+     CAN be stripped by some UAs under forced-colors. Belt-and-suspenders:
+     enforce an `outline` too so focus is *always* visible. */
+  *:focus-visible {
+    outline: 2px solid Highlight !important;
+    outline-offset: 2px !important;
+  }
+
+  /* Interactive elements need a visible border even when their resting
+     background is transparent (ghost/link buttons, bare inputs). Canvas +
+     no background = invisible interactive area. Use ButtonText for
+     buttons, CanvasText for inputs — the system keywords closest in
+     intent. */
+  button,
+  [role="button"],
+  [role="menuitem"],
+  [role="option"],
+  [role="tab"] {
+    border: 1px solid ButtonText;
+  }
+
+  input,
+  select,
+  textarea {
+    border: 1px solid CanvasText;
+  }
+
+  /* Decorative texture layers are pure noise in high-contrast mode. */
+  [data-grain] {
+    display: none;
+  }
+
+  /* Skeleton shimmer can feel alarming in high-contrast; keep static. */
+  [data-skeleton] {
+    animation: none !important;
+  }
+}

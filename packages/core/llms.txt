@@ -4,6 +4,33 @@
 > Built on the same primitives as shadcn/ui but with key API differences.
 > Read this file BEFORE writing any UI code. Do NOT guess from shadcn/ui knowledge.
 
+## BREAKING CHANGES (v0.35.0 — World-Class Audit)
+
+- **Dark mode colors:** Solid variant backgrounds darkened for WCAG AA. Step-9 L=0.63→0.54. Warning amber L=0.72→0.57. All solid buttons/badges are noticeably darker in dark mode.
+- **Responsive typography:** Heading sizes 3xl–6xl use `clamp()` for fluid scaling. Headings shrink on mobile.
+- **Body letter spacing:** body-lg (-0.01em), body-md (0em), body-sm (+0.01em), body-xs (+0.02em). Was all -0.02em.
+- **surface-fg-subtle:** Darkened from neutral-8 to neutral-9 in light mode. Tertiary text is more visible.
+- **MessageList:** `isLoadingMore` renamed to `loadingMore`.
+- **AppCommandPalette:** Default Karm routes removed. Use `CommandRegistryProvider` for page registration. `SearchResult` type adds optional `href` field.
+- **NumberInput:** Shape changed from pill to rounded rectangle.
+- **Alert:** `variant="filled"` deprecated → use `"solid"` (alias still works).
+- **SegmentedControl:** `variant="accent"` deprecated → use `"solid"` (alias still works).
+- **Dependencies:** `@floating-ui/dom`, `@tiptap/*`, `prosemirror-state` moved to devDeps (bundled; consumers no longer install them).
+
+## NEW (v0.35.0)
+
+- **Size props:** Combobox (xs/sm/md/lg), NumberInput (xs/sm/md/lg + state), Slider (sm/md/lg + color), InputOTP (sm/md/lg + state).
+- **Toggle color:** `color` prop on Toggle/ToggleGroup (accent/error/success/neutral).
+- **Tabs vertical:** `orientation="vertical"` for side-nav layout.
+- **Stepper clickable:** `onStepClick` callback for navigating to completed steps.
+- **AlertDialog responsive:** `responsive` prop for mobile bottom-sheet.
+- **Typography:** `code`, `label-plain-lg/md/sm` variants. Tailwind composite utilities: `text-heading-xl`, `text-body-md`, `text-code`, etc.
+- **Layout spacing:** `--spacing-page-x` (responsive 16→24→40px), `--spacing-section-gap`, `--spacing-card-gap`.
+- **Link colors:** `--color-link`, `--color-link-hover`, `--color-link-visited` tokens.
+- **useFormField:** Now wired into Select, Combobox, Autocomplete, Checkbox, Radio, Switch, Slider, InputOTP.
+- **Chart a11y:** Keyboard tooltip access on BarChart/LineChart. `ariaDescription` on ChartContainer.
+- **Dev warnings:** Token-missing CSS detection + MotionProvider hint (dev mode only).
+
 ## BREAKING CHANGES (v0.33.x — Tailwind 4 + Toolchain)
 
 - **Tailwind CSS 3 → 4:** `outline-none` → `outline-hidden`, `rounded-sm` → `rounded-xs`, `backdrop-blur-sm` → `backdrop-blur-xs`, `!prefix` → `suffix!` important syntax. Consumers using our preset: add `@import "tailwindcss"` + `@config` to your CSS, replace `darkMode: 'class'` with `@variant dark (&:is(.dark *))` in CSS. Peer dep accepts both `^3.4.0 || ^4.0.0`.
@@ -376,9 +403,11 @@ Many components use TWO props where shadcn uses one:
 Examples:
   <Button variant="solid" color="error">Delete</Button>       // red solid button
   <Button variant="soft" color="warning">Pending</Button>     // amber tinted button
-  <Button variant="outline" color="success">Approve</Button>  // green outline button
+  <Button variant="soft" color="accent">Cancel</Button>       // preferred for secondary actions
   <Badge variant="solid" color="success">Active</Badge>       // green solid badge
-  <Alert variant="filled" color="warning">Warning!</Alert>    // amber filled alert
+  <Alert variant="solid" color="warning">Warning!</Alert>     // amber filled alert
+
+**Design preference (Devalok default):** for **secondary** Button actions, reach for `variant="soft"` before `variant="outline"`. Soft feels warmer, brand-consistent, and reads better in data-dense UIs. Use `outline` only when soft's tint would disappear (colored bg, surface-raised), in toolbar/icon-dense contexts, or when you need outline's stronger hierarchy next to a primary action.
 
 Components with two-axis system: Button, Badge, Alert, Banner, Progress, StatusBadge
 

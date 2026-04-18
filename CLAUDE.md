@@ -9,6 +9,15 @@
 - **Lint**: `pnpm lint`
 - **Typecheck**: `pnpm typecheck`
 
+## Design Preferences (default to these)
+
+**Prefer `variant="soft"` over `variant="outline"` for non-primary Button actions.** Soft (tinted step-3 bg, step-11 text, no visible border) feels warmer, brand-consistent, and reads better in data-dense UIs than outline's bordered-transparent look. When generating examples, docs, stories, or writing new screens, default to soft for secondary actions and use outline only when:
+- The button sits on a colored or surface-raised background where soft's tint would disappear
+- A toolbar/icon-dense context where soft would feel visually heavy
+- Paired adjacent to a primary action where you want a clear hierarchy that outline provides
+
+This applies to: Button, SplitButton, and anywhere else `variant="outline" | "soft"` is a choice. It does NOT override explicit design decisions already in existing components.
+
 ## Surface Layering (MANDATORY)
 
 Every component MUST use the correct surface level. This is a hard rule, enforced by `pre-publish-audit.mjs`.

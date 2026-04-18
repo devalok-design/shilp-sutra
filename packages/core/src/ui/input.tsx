@@ -131,6 +131,8 @@ const Input = React.forwardRef<HTMLInputElement, InputProps>(
         : (fieldCtx.state as InputState | undefined))
     const ariaDescribedBy = props['aria-describedby'] ?? fieldCtx.helperTextId
     const ariaRequired = props['aria-required'] ?? fieldCtx.required
+    // Explicit id wins; otherwise adopt FormField's inputId so <Label htmlFor> resolves.
+    const inputId = props.id ?? fieldCtx.inputId
 
     // Backward compat: map deprecated props
     const resolvedStart = startSection ?? startIcon
@@ -223,6 +225,7 @@ const Input = React.forwardRef<HTMLInputElement, InputProps>(
           aria-required={ariaRequired || undefined}
           ref={ref}
           {...props}
+          id={inputId}
         />
 
         {hasEnd && endType === 'label' && (

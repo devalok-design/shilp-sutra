@@ -3,6 +3,7 @@
 import * as React from 'react'
 import { Toaster as SonnerToaster } from 'sonner'
 import { cn } from './lib/utils'
+import { registerToaster } from './toast-registry'
 
 /**
  * Toaster — mount once at your root layout to enable toast notifications.
@@ -58,6 +59,7 @@ export const Toaster = React.forwardRef<HTMLDivElement, ToasterProps>(
     },
     ref,
   ) => {
+    React.useEffect(() => registerToaster(), [])
     return (
       <div ref={ref} className={cn('z-toast', className)}>
         <SonnerToaster

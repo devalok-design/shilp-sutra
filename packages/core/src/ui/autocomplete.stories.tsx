@@ -98,8 +98,10 @@ export const Controlled: Story = {
     // Type to filter options
     await userEvent.type(input, 'Che')
 
-    // Wait for dropdown animation to complete
-    const option = await canvas.findByRole('option', { name: /cherry/i })
+    // Autocomplete portals its dropdown out of canvasElement (Floating UI).
+    // Query document.body to find the option after typing filters down.
+    const body = within(document.body)
+    const option = await body.findByRole('option', { name: /cherry/i })
     await waitFor(() => expect(option).toBeVisible())
 
     // Click to select

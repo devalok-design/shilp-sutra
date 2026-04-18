@@ -1,4 +1,4 @@
-# $(echo $f | sed 's/-/ /g' | sed 's/\b\(.\)/\u\1/g')
+# DataTableBody
 
 > Internal sub-component of DataTable. Not exported to consumers.
 

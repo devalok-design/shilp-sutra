@@ -403,9 +403,11 @@ Many components use TWO props where shadcn uses one:
 Examples:
   <Button variant="solid" color="error">Delete</Button>       // red solid button
   <Button variant="soft" color="warning">Pending</Button>     // amber tinted button
-  <Button variant="outline" color="success">Approve</Button>  // green outline button
+  <Button variant="soft" color="accent">Cancel</Button>       // preferred for secondary actions
   <Badge variant="solid" color="success">Active</Badge>       // green solid badge
-  <Alert variant="filled" color="warning">Warning!</Alert>    // amber filled alert
+  <Alert variant="solid" color="warning">Warning!</Alert>     // amber filled alert
+
+**Design preference (Devalok default):** for **secondary** Button actions, reach for `variant="soft"` before `variant="outline"`. Soft feels warmer, brand-consistent, and reads better in data-dense UIs. Use `outline` only when soft's tint would disappear (colored bg, surface-raised), in toolbar/icon-dense contexts, or when you need outline's stronger hierarchy next to a primary action.
 
 Components with two-axis system: Button, Badge, Alert, Banner, Progress, StatusBadge
 

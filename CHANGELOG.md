@@ -5,6 +5,38 @@ All notable changes to `@devalok/shilp-sutra` will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.36.0] - 2026-04-19 (core)
+
+No breaking changes. All additions are additive; all fixes preserve
+existing API shapes.
+
+### Added
+
+- **Forced-colors (Windows high-contrast) support.** `@media (forced-colors: active)` block in `semantic.css` maps every semantic color token to system keywords (`Canvas`, `CanvasText`, `Highlight`, `HighlightText`, `LinkText`, `GrayText`, `Mark`, `ButtonText`, `VisitedText`). Applies to both light and dark themes — forced-colors is orthogonal to theme. Belt-and-suspenders focus-ring outline (always visible on `*:focus-visible`), forced visible borders on interactive elements so ghost/link buttons remain perceivable, decorative grain (`[data-grain]`) hidden, skeleton shimmer frozen. Zero runtime impact when forced-colors is inactive.
+- **FormField auto-wires Label + Input ids** via context-published `inputId`. `Label` reads `htmlFor` from context, `Input` reads `id` from context, unless either is explicitly set on the child. Eliminates manual id juggling and a whole class of Label-input mismatch bugs.
+- **Toast error variants announce assertively** — `toast.error()` renders `role="alert"` + `aria-live="assertive"` + `aria-atomic="true"` so screen readers interrupt speech. Other toast types remain `role="status"` + `aria-live="polite"`. Upload toasts go assertive only when a file fails.
+- **Dev-mode `<Toaster />` missing warning** — `toast()` called without a mounted `Toaster` logs a one-time console warning pointing to the fix. Production-silent.
+- **Storybook: Foundations → Forced Colors → Component Matrix** story, with a solid-bg legibility sub-section showing every status color × every applicable component (Button, Badge, BadgeIndicator, counter pills, checkables) side-by-side. Designed to catch contrast bugs at a glance.
+- **Design preference codified: prefer `variant="soft"` over `variant="outline"`** for non-primary Button actions. Captured in `CLAUDE.md`, `packages/core/llms.txt`, and `packages/core/llms-full.txt`. Outline remains valid for colored-bg contexts, toolbars, and primary-adjacent hierarchy.
+
+### Fixed
+
+- **Alert solid-variant body-text legibility.** Two compounding bugs: the body `<div>` hardcoded `text-surface-fg-muted` (grey), overriding the CVA's foreground on step-9 saturated backgrounds; and solid compound variants all used `text-accent-fg` instead of the matching per-color `-fg` token. Warning was silently broken — dark-text-on-amber is the correct pairing, not white. Now uses per-color `text-{info|success|warning|error}-fg` on solid/filled variants, and skips the muted body override on solid/filled.
+- **Button processing ants rendered outside the button bounds.** The marching-ant overlay sized its SVG and rect via `w-full h-full` + `calc(100% - 2px)`, which resolved against the wrapper — not the button itself. During width transitions and async-feedback icon swaps, wrapper and button diverged and ants traced the wrapper while the button shrank. Now measured directly from `btnEl.offsetWidth/offsetHeight` with a `ResizeObserver` keeping it locked through any content change.
+- **Per-color `-fg` tokens on non-accent status backgrounds** (Button async states, BottomNavbar notification badge, TopBar item badge). No visible change today (all `-fg` tokens resolve to the same near-white), but brand-swap safe — an override of `--color-accent-fg` won't silently mis-color error badges.
+- **Six `data-table-*.md` stub files** shipped with literal bash template headers (`# $(echo $f | sed ...)`) in `llms-full.txt`. Corrupt since 0.32.0. Replaced with proper component names.
+- **`packages/core/CHANGELOG.md` frozen at 0.33.0** — reconstructed 0.33.x–0.35.0 entries from git history.
+- **Button `llms-full.txt` Props block** advertised fake `variant="default"` / `"destructive"` aliases that were removed in 0.32.0 — stripped.
+- **Badge `truncate` prop missing from Props block** — added.
+- **README component counts stale** (60+/14/7 → 78/29/8, added AI tier; updated tech stack to R19/TS6/TW4/Vite8/SB10).
+- **Autocomplete `Controlled` story play fn** queried `canvasElement` after Floating UI portal migration teleported the listbox; now queries `document.body`. Silent flake since the migration — caught by first CI run in weeks.
+- **CI bundle-size gate miscalibrated** — 5MB budget measured `dist` including 5.4MB of sourcemaps. Now measures runtime JS + CSS + types only; reports sourcemaps separately for transparency.
+
+### Changed
+
+- **vitest `testTimeout` 15s → 30s.** Sequential file execution plus accumulated jsdom pressure on tiptap + axe tests at the tail of a full run was grazing the 15s wall. Isolated runs finish under 1s; real regressions still hit the new ceiling.
+- **Safe dep bumps:** `@typescript-eslint/*` + `typescript-eslint` 8.58.2, `postcss` 8.5.10, `prettier` 3.8.3, `chromatic` 16.3.0, `autoprefixer` 10.5.0, `globals` 17.5.0, `react`/`react-dom` 19.2.5 (playground).
+
 ## [0.35.0] - 2026-04-13 (core)
 
 ### BREAKING CHANGES

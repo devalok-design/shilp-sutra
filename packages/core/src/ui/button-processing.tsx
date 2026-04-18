@@ -49,6 +49,12 @@ export function ProcessingOverlay({ active, speed, color }: ProcessingOverlayPro
   const svgRef = React.useRef<SVGRectElement>(null)
   const [borderRadius, setBorderRadius] = React.useState(8)
   const [dashInfo, setDashInfo] = React.useState({ array: '8 6', cycle: 14 })
+  // Explicit pixel dimensions of the button — drives BOTH the SVG box and the
+  // rect geometry. Relying on CSS `w-full`/`calc(100% - 2px)` made the ants'
+  // outline depend on the wrapper's rendered size, which can drift from the
+  // button's own size during width transitions — leaving a visible gap
+  // between the button edge and the ants.
+  const [size, setSize] = React.useState<{ w: number; h: number } | null>(null)
 
   // Read the button's dimensions + border-radius, compute dash pattern
   React.useEffect(() => {
@@ -56,27 +62,48 @@ export function ProcessingOverlay({ active, speed, color }: ProcessingOverlayPro
     const btnEl = wrapper?.previousElementSibling as HTMLElement | null
     if (!btnEl) return
 
-    const style = getComputedStyle(btnEl)
-    const rawR = parseFloat(style.borderRadius) || 8
-    const w = btnEl.offsetWidth - 2
-    const h = btnEl.offsetHeight - 2
-    // Cap radius at half the shorter dimension (pill buttons report 9999px)
-    const r = Math.min(rawR, h / 2, w / 2)
-    setBorderRadius(r)
+    const measure = () => {
+      const style = getComputedStyle(btnEl)
+      const rawR = parseFloat(style.borderRadius) || 8
+      const btnW = btnEl.offsetWidth
+      const btnH = btnEl.offsetHeight
+      if (btnW === 0 || btnH === 0) return
+      // Inset 1px so the 2px stroke (centered on the edge) lands exactly on
+      // the button's visual border instead of outside it.
+      const w = btnW - 2
+      const h = btnH - 2
+      // Cap radius at half the shorter dimension (pill buttons report 9999px)
+      const r = Math.min(rawR, h / 2, w / 2)
+      setBorderRadius(r)
+      setSize({ w: btnW, h: btnH })
 
-    // Perimeter of a rounded rect:
-    // 4 straight edges + 4 quarter-circle arcs (= one full circle of radius r)
-    const perimeter = 2 * (w - 2 * r) + 2 * (h - 2 * r) + 2 * Math.PI * r
+      // Perimeter of a rounded rect:
+      // 4 straight edges + 4 quarter-circle arcs (= one full circle of radius r)
+      const perimeter = 2 * (w - 2 * r) + 2 * (h - 2 * r) + 2 * Math.PI * r
 
-    // Target: 8px dash, 6px gap — adjust gap so dashes fit evenly (no seam)
-    const dashPx = 8
-    const gapPx = 6
-    const approxCycle = dashPx + gapPx
-    const count = Math.round(perimeter / approxCycle)
-    const adjustedGap = (perimeter - count * dashPx) / count
-    const finalGap = Math.max(2, adjustedGap)
-    setDashInfo({ array: `${dashPx} ${finalGap.toFixed(1)}`, cycle: dashPx + finalGap })
+      // Target: 8px dash, 6px gap — adjust gap so dashes fit evenly (no seam)
+      const dashPx = 8
+      const gapPx = 6
+      const approxCycle = dashPx + gapPx
+      const count = Math.round(perimeter / approxCycle)
+      const adjustedGap = (perimeter - count * dashPx) / count
+      const finalGap = Math.max(2, adjustedGap)
+      setDashInfo({ array: `${dashPx} ${finalGap.toFixed(1)}`, cycle: dashPx + finalGap })
+    }
+
+    measure()
+    // Keep the ants glued to the button when it resizes (text change,
+    // async-feedback icon swap, layout animation settling).
+    const ro = typeof ResizeObserver !== 'undefined' ? new ResizeObserver(measure) : null
+    ro?.observe(btnEl)
+    return () => ro?.disconnect()
   }, [active])
+
+  // Render the overlay even before the first measurement settles — the
+  // aria-hidden anchor must exist for discoverability, and the SVG harmlessly
+  // renders at 0x0 until measurement lands a real size (one animation frame).
+  const w = size?.w ?? 0
+  const h = size?.h ?? 0
 
   return (
     <AnimatePresence>
@@ -88,23 +115,25 @@ export function ProcessingOverlay({ active, speed, color }: ProcessingOverlayPro
           exit={{ opacity: 0 }}
           transition={{ duration: durations.moderate01b }}
           aria-hidden="true"
-          className="absolute inset-0 pointer-events-none"
+          className="absolute top-0 left-0 pointer-events-none"
+          style={{ width: w, height: h }}
         >
           <svg
-            className="absolute inset-0 w-full h-full"
-            style={{ overflow: 'visible' }}
+            width={w}
+            height={h}
+            style={{ overflow: 'visible', display: 'block' }}
           >
             <motion.rect
               ref={svgRef}
-              x="1"
-              y="1"
-              width="calc(100% - 2px)"
-              height="calc(100% - 2px)"
+              x={1}
+              y={1}
+              width={Math.max(0, w - 2)}
+              height={Math.max(0, h - 2)}
               rx={borderRadius}
               ry={borderRadius}
               fill="none"
               stroke={solidColor}
-              strokeWidth="2"
+              strokeWidth={2}
               strokeDasharray={dashInfo.array}
               style={{ transition: 'stroke 0.3s ease' }}
               animate={prefersReduced ? {} : { strokeDashoffset: [0, -dashInfo.cycle] }}

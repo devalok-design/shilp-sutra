@@ -44,11 +44,16 @@ jobs:
 
       - name: Check bundle size
         run: |
-          TOTAL=$(du -sb packages/core/dist | cut -f1)
-          MAX=5242880  # 5MB budget
-          echo "Core bundle size: $((TOTAL / 1024))KB / $((MAX / 1024))KB"
+          # Measure the runtime JS + CSS + .d.ts (what consumers actually pull in).
+          # Exclude .map files — sourcemaps are dev-debug aids shipped alongside
+          # npm artifacts but never counted against a runtime budget.
+          TOTAL=$(find packages/core/dist -type f ! -name '*.map' -printf '%s\n' | awk '{s+=$1} END{print s}')
+          MAP_TOTAL=$(find packages/core/dist -type f -name '*.map' -printf '%s\n' | awk '{s+=$1} END{print s+0}')
+          MAX=5242880  # 5MB runtime budget
+          echo "Core runtime bundle:  $((TOTAL / 1024))KB / $((MAX / 1024))KB"
+          echo "Core sourcemaps:      $((MAP_TOTAL / 1024))KB (excluded from budget)"
           if [ "$TOTAL" -gt "$MAX" ]; then
-            echo "::error::Bundle size $((TOTAL / 1024))KB exceeds budget of $((MAX / 1024))KB"
+            echo "::error::Runtime bundle size $((TOTAL / 1024))KB exceeds budget of $((MAX / 1024))KB"
             exit 1
           fi
 

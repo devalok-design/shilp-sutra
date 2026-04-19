@@ -49,6 +49,14 @@ jobs:
       id-token: write
       contents: write
       pull-requests: write
+    # Job-level env so the Chromatic step's `if:` can gate on its presence.
+    # GitHub Actions DOES NOT allow `secrets.*` references inside step-level
+    # `if:` expressions — the previous fix was wrong. Promoting the secret to
+    # a job-level env means `env.CHROMATIC_PROJECT_TOKEN` IS visible in `if:`
+    # and evaluates to empty when the secret is not configured. See:
+    # https://docs.github.com/en/actions/learn-github-actions/contexts#context-availability
+    env:
+      CHROMATIC_PROJECT_TOKEN: ${{ secrets.CHROMATIC_PROJECT_TOKEN }}
     steps:
       - name: Checkout
         uses: actions/checkout@v4
@@ -119,13 +127,13 @@ jobs:
       # unreviewed. Required for breaking releases (0.37.0 touches every
       # token). Gate is skipped when CHROMATIC_PROJECT_TOKEN secret is not
       # set so the workflow remains green until the secret is configured.
-      # NOTE: `secrets.*` is visible inside `if:` expressions, whereas
-      # step-level `env:` is NOT — do not regress this to `env.*`.
+      # The token is promoted to a job-level env (see `env:` block above)
+      # because GitHub Actions does NOT allow secrets.* in step-level if:.
       - name: Chromatic visual review
-        if: ${{ secrets.CHROMATIC_PROJECT_TOKEN != '' }}
+        if: ${{ env.CHROMATIC_PROJECT_TOKEN != '' }}
         uses: chromaui/action@v11
         with:
-          projectToken: ${{ secrets.CHROMATIC_PROJECT_TOKEN }}
+          projectToken: ${{ env.CHROMATIC_PROJECT_TOKEN }}
           workingDir: packages/core
           exitZeroOnChanges: false
           onlyChanged: true

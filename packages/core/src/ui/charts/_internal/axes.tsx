@@ -57,7 +57,7 @@ export function Axis({
     g.selectAll('.tick line').attr('stroke', 'var(--color-surface-border)')
     g.selectAll('.tick text')
       .attr('fill', 'var(--color-surface-fg-muted)')
-      .attr('font-size', 'var(--font-size-xs)')
+      .attr('font-size', 'var(--text-ds-xs)')
     g.selectAll('.domain').attr('stroke', 'var(--color-surface-border-strong)')
   }, [scale, orientation, tickCount, tickFormat])
 
@@ -74,7 +74,7 @@ export function Axis({
         <text
           textAnchor="middle"
           fill="var(--color-surface-fg-muted)"
-          fontSize="var(--font-size-sm)"
+          fontSize="var(--text-ds-sm)"
           {...labelProps}
         >
           {label}

@@ -101,7 +101,7 @@ function IconCell({ icon: Icon, name, size = 24, strokeWidth }: IconCellProps) {
         alignItems: 'center',
         width: '5.5rem',
         padding: '0.625rem 0.25rem',
-        borderRadius: 'var(--radius-lg, 8px)',
+        borderRadius: 'var(--radius-ds-lg, 8px)',
         background: 'var(--color-surface-raised, #f9f9f9)',
         border: '1px solid var(--color-surface-border, #eee)',
         transition: 'background 0.15s',
@@ -137,7 +137,7 @@ function SizeDemo() {
               justifyContent: 'center',
               width: '4rem',
               height: '4rem',
-              borderRadius: 'var(--radius-lg, 8px)',
+              borderRadius: 'var(--radius-ds-lg, 8px)',
               background: 'var(--color-surface-raised, #f9f9f9)',
               border: '1px solid var(--color-surface-border, #eee)',
             }}
@@ -167,7 +167,7 @@ function StrokeDemo() {
               justifyContent: 'center',
               width: '4rem',
               height: '4rem',
-              borderRadius: 'var(--radius-lg, 8px)',
+              borderRadius: 'var(--radius-ds-lg, 8px)',
               background: 'var(--color-surface-raised, #f9f9f9)',
               border: '1px solid var(--color-surface-border, #eee)',
             }}
@@ -205,7 +205,7 @@ function ColorDemo() {
               justifyContent: 'center',
               width: '4rem',
               height: '4rem',
-              borderRadius: 'var(--radius-lg, 8px)',
+              borderRadius: 'var(--radius-ds-lg, 8px)',
               background: 'var(--color-surface-raised, #f9f9f9)',
               border: '1px solid var(--color-surface-border, #eee)',
             }}

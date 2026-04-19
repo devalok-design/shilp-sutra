@@ -111,9 +111,9 @@ function CodeBlock({ language, code, mb }: { language: string; code: string; mb:
         style={style}
         customStyle={{
           margin: 0,
-          borderRadius: 'var(--radius-md)',
-          fontSize: 'var(--font-size-sm)',
-          padding: 'var(--spacing-04)',
+          borderRadius: 'var(--radius-ds-md)',
+          fontSize: 'var(--text-ds-sm)',
+          padding: 'var(--spacing-ds-04)',
         }}
       >
         {code}

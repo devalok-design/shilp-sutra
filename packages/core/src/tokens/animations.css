@@ -1,0 +1,17 @@
+/* ═══════════════════════════════════════════════════════════════════
+   ANIMATIONS
+   @keyframes declarations referenced by @utility animate-* blocks
+   in utilities.css and by inline `animation:` in components.
+   ═══════════════════════════════════════════════════════════════════ */
+
+@keyframes processing-ants-rotate {
+  to { --border-angle: 360deg; }
+}
+
+@keyframes processing-ants-march {
+  to { background-position: 16px 0, 100% 16px, calc(100% - 16px) 100%, 0 calc(100% - 16px); }
+}
+
+@keyframes processing-ants-svg {
+  to { stroke-dashoffset: -10; }
+}

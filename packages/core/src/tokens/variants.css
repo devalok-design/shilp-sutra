@@ -1,0 +1,16 @@
+/* ═══════════════════════════════════════════════════════════════════
+   CUSTOM VARIANTS (TW4 native)
+
+   `@custom-variant <name> <selector>` registers a Tailwind 4 variant
+   that consumers can use as a prefix, e.g. `dark:bg-surface-raised`.
+
+   Our dark variant matches TW3's classic `darkMode: 'class'` behavior —
+   applies to any descendant of an element with `.dark` class. Consumers
+   put `.dark` on `<html>` or `<body>`; all content is a descendant.
+
+   Acknowledged limitation: the `.dark` element itself does NOT get
+   `dark:*` utilities applied to it (only descendants). Since consumers
+   target `<html>`, this never matters in practice.
+   ═══════════════════════════════════════════════════════════════════ */
+
+@custom-variant dark (&:where(.dark *));

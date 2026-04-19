@@ -1,0 +1,240 @@
+/* ═══════════════════════════════════════════════════════════════════
+   CUSTOM UTILITIES (TW4 native)
+
+   `@utility <name>` declares a Tailwind 4 custom utility. Unlike plain
+   CSS classes, @utility participates in TW4's variant system — so you
+   can write `md:text-heading-xl`, `hover:focus-ring`, etc.
+
+   Migrated from the JS preset's `plugin(({ addBase, addUtilities }))`
+   block in 0.37.0.
+   ═══════════════════════════════════════════════════════════════════ */
+
+/* ───────────────────────────────────────────────────────────────────
+   TYPOGRAPHY COMPOSITES
+
+   Each variant sets font-size, font-weight, line-height, letter-spacing
+   in one class. Source of values: typography-semantic.css (--typo-*).
+   ─────────────────────────────────────────────────────────────────── */
+
+@utility text-heading-2xl {
+  font-size:      var(--typo-heading-2xl-size);
+  font-weight:    var(--typo-heading-2xl-weight);
+  line-height:    var(--typo-heading-2xl-leading);
+  letter-spacing: var(--typo-heading-2xl-tracking);
+}
+
+@utility text-heading-xl {
+  font-size:      var(--typo-heading-xl-size);
+  font-weight:    var(--typo-heading-xl-weight);
+  line-height:    var(--typo-heading-xl-leading);
+  letter-spacing: var(--typo-heading-xl-tracking);
+}
+
+@utility text-heading-lg {
+  font-size:      var(--typo-heading-lg-size);
+  font-weight:    var(--typo-heading-lg-weight);
+  line-height:    var(--typo-heading-lg-leading);
+  letter-spacing: var(--typo-heading-lg-tracking);
+}
+
+@utility text-heading-md {
+  font-size:      var(--typo-heading-md-size);
+  font-weight:    var(--typo-heading-md-weight);
+  line-height:    var(--typo-heading-md-leading);
+  letter-spacing: var(--typo-heading-md-tracking);
+}
+
+@utility text-heading-sm {
+  font-size:      var(--typo-heading-sm-size);
+  font-weight:    var(--typo-heading-sm-weight);
+  line-height:    var(--typo-heading-sm-leading);
+  letter-spacing: var(--typo-heading-sm-tracking);
+}
+
+@utility text-heading-xs {
+  font-size:      var(--typo-heading-xs-size);
+  font-weight:    var(--typo-heading-xs-weight);
+  line-height:    var(--typo-heading-xs-leading);
+  letter-spacing: var(--typo-heading-xs-tracking);
+}
+
+@utility text-body-lg {
+  font-size:      var(--typo-body-lg-size);
+  font-weight:    var(--typo-body-lg-weight);
+  line-height:    var(--typo-body-lg-leading);
+  letter-spacing: var(--typo-body-lg-tracking);
+}
+
+@utility text-body-md {
+  font-size:      var(--typo-body-md-size);
+  font-weight:    var(--typo-body-md-weight);
+  line-height:    var(--typo-body-md-leading);
+  letter-spacing: var(--typo-body-md-tracking);
+}
+
+@utility text-body-sm {
+  font-size:      var(--typo-body-sm-size);
+  font-weight:    var(--typo-body-sm-weight);
+  line-height:    var(--typo-body-sm-leading);
+  letter-spacing: var(--typo-body-sm-tracking);
+}
+
+@utility text-body-xs {
+  font-size:      var(--typo-body-xs-size);
+  font-weight:    var(--typo-body-xs-weight);
+  line-height:    var(--typo-body-xs-leading);
+  letter-spacing: var(--typo-body-xs-tracking);
+}
+
+/* UPPERCASE UI labels — uppercase text-transform applied. */
+@utility text-label-lg {
+  font-size:      var(--typo-label-lg-size);
+  font-weight:    var(--typo-label-lg-weight);
+  line-height:    var(--typo-label-lg-leading);
+  letter-spacing: var(--typo-label-lg-tracking);
+  text-transform: uppercase;
+}
+
+@utility text-label-md {
+  font-size:      var(--typo-label-md-size);
+  font-weight:    var(--typo-label-md-weight);
+  line-height:    var(--typo-label-md-leading);
+  letter-spacing: var(--typo-label-md-tracking);
+  text-transform: uppercase;
+}
+
+@utility text-label-sm {
+  font-size:      var(--typo-label-sm-size);
+  font-weight:    var(--typo-label-sm-weight);
+  line-height:    var(--typo-label-sm-leading);
+  letter-spacing: var(--typo-label-sm-tracking);
+  text-transform: uppercase;
+}
+
+@utility text-label-xs {
+  font-size:      var(--typo-label-xs-size);
+  font-weight:    var(--typo-label-xs-weight);
+  line-height:    var(--typo-label-xs-leading);
+  letter-spacing: var(--typo-label-xs-tracking);
+  text-transform: uppercase;
+}
+
+/* Label Plain — mixed case, no text-transform */
+@utility text-label-plain-lg {
+  font-size:      var(--typo-label-plain-lg-size);
+  font-weight:    var(--typo-label-plain-lg-weight);
+  line-height:    var(--typo-label-plain-lg-leading);
+  letter-spacing: var(--typo-label-plain-lg-tracking);
+}
+
+@utility text-label-plain-md {
+  font-size:      var(--typo-label-plain-md-size);
+  font-weight:    var(--typo-label-plain-md-weight);
+  line-height:    var(--typo-label-plain-md-leading);
+  letter-spacing: var(--typo-label-plain-md-tracking);
+}
+
+@utility text-label-plain-sm {
+  font-size:      var(--typo-label-plain-sm-size);
+  font-weight:    var(--typo-label-plain-sm-weight);
+  line-height:    var(--typo-label-plain-sm-leading);
+  letter-spacing: var(--typo-label-plain-sm-tracking);
+}
+
+@utility text-caption {
+  font-size:      var(--typo-caption-size);
+  font-weight:    var(--typo-caption-weight);
+  line-height:    var(--typo-caption-leading);
+  letter-spacing: var(--typo-caption-tracking);
+}
+
+@utility text-overline {
+  font-size:      var(--typo-overline-size);
+  font-weight:    var(--typo-overline-weight);
+  line-height:    var(--typo-overline-leading);
+  letter-spacing: var(--typo-overline-tracking);
+  text-transform: uppercase;
+}
+
+@utility text-code {
+  font-size:      var(--typo-code-size);
+  font-weight:    var(--typo-code-weight);
+  line-height:    var(--typo-code-leading);
+  letter-spacing: var(--typo-code-tracking);
+  font-family:    var(--typo-code-font);
+}
+
+/* ───────────────────────────────────────────────────────────────────
+   NUMBER FORMATTING
+   ─────────────────────────────────────────────────────────────────── */
+
+@utility tabular-nums {
+  font-variant-numeric: tabular-nums;
+}
+
+/* ───────────────────────────────────────────────────────────────────
+   TOUCH TARGET
+   Expands the clickable hit-area to WCAG minimum 44x44 px without
+   affecting visual size. Applied via `::before` pseudo-element.
+   ─────────────────────────────────────────────────────────────────── */
+
+@utility touch-target {
+  position: relative;
+
+  &::before {
+    content: "";
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    min-width: 44px;
+    min-height: 44px;
+  }
+}
+
+/* ───────────────────────────────────────────────────────────────────
+   FOCUS RINGS
+   Custom focus-visible ring utilities. Use in place of the default
+   `focus:ring-*` stack when you want the DS-branded ring with offset.
+   ─────────────────────────────────────────────────────────────────── */
+
+@utility focus-ring {
+  &:focus-visible {
+    outline: none;
+    box-shadow:
+      0 0 0 var(--border-focus-width) var(--color-surface-base),
+      0 0 0 calc(var(--border-focus-width) + var(--border-focus-offset)) var(--color-accent-9);
+  }
+}
+
+@utility focus-ring-inset {
+  &:focus-visible {
+    outline: none;
+    box-shadow: inset 0 0 0 var(--border-focus-width) var(--color-accent-9);
+  }
+}
+
+@utility focus-ring-sm {
+  &:focus-visible {
+    outline: none;
+    box-shadow: 0 0 0 var(--border-focus-width) var(--color-accent-7);
+  }
+}
+
+/* ───────────────────────────────────────────────────────────────────
+   SAFE AREA INSETS
+   For notched/island devices. `env()` falls back to 0 on browsers
+   without safe-area metadata.
+   ─────────────────────────────────────────────────────────────────── */
+
+@utility pt-safe { padding-top:    env(safe-area-inset-top, 0px); }
+@utility pb-safe { padding-bottom: env(safe-area-inset-bottom, 0px); }
+@utility pl-safe { padding-left:   env(safe-area-inset-left, 0px); }
+@utility pr-safe { padding-right:  env(safe-area-inset-right, 0px); }
+
+@utility p-safe {
+  padding-top:    env(safe-area-inset-top, 0px);
+  padding-bottom: env(safe-area-inset-bottom, 0px);
+  padding-left:   env(safe-area-inset-left, 0px);
+  padding-right:  env(safe-area-inset-right, 0px);
+}

@@ -1,0 +1,26 @@
+/* ═══════════════════════════════════════════════════════════════════
+   BASE LAYER
+   Document-level rules + @property registrations. Wrapped in
+   @layer base so TW4's utility layers still take precedence over
+   these baseline styles.
+   ═══════════════════════════════════════════════════════════════════ */
+
+@layer base {
+  /* Prevent iOS Safari auto-zoom on inputs with font-size < 16px.
+     Applies only on narrow viewports where iOS is the common browser. */
+  @media screen and (max-width: 767px) {
+    input:not([type="checkbox"]):not([type="radio"]),
+    textarea,
+    select {
+      font-size: max(16px, 1em) !important;
+    }
+  }
+}
+
+/* `@property` registrations must live outside @layer so the browser's
+   custom property registry picks them up at page load. */
+@property --border-angle {
+  syntax: "<angle>";
+  initial-value: 0deg;
+  inherits: false;
+}

@@ -559,29 +559,10 @@
 }
 
 /* ═══════════════════════════════════════════════════════════════════
-   PROCESSING ANIMATIONS
-   ═══════════════════════════════════════════════════════════════════ */
-
-@property --border-angle {
-  syntax: "<angle>";
-  initial-value: 0deg;
-  inherits: false;
-}
-
-@keyframes processing-ants-rotate {
-  to { --border-angle: 360deg; }
-}
-
-@keyframes processing-ants-march {
-  to { background-position: 16px 0, 100% 16px, calc(100% - 16px) 100%, 0 calc(100% - 16px); }
-}
-
-@keyframes processing-ants-svg {
-  to { stroke-dashoffset: -10; }
-}
-
-/* ═══════════════════════════════════════════════════════════════════
    REDUCED MOTION
+
+   @property --border-angle and @keyframes definitions moved to
+   base.css and animations.css respectively (Phase 2 of 0.37 migration).
    ═══════════════════════════════════════════════════════════════════ */
 @media (prefers-reduced-motion: reduce) {
   *,

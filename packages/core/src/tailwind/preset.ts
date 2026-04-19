@@ -1,5 +1,4 @@
 import type { Config } from 'tailwindcss'
-import plugin from 'tailwindcss/plugin'
 
 const preset: Partial<Config> = {
   // TW4: darkMode is now configured via @variant in CSS, not here.
@@ -416,99 +415,14 @@ const preset: Partial<Config> = {
       },
     },
   },
-  plugins: [
-    plugin(({ addBase, addUtilities }) => {
-      // ── Typography composite utilities ──────────────────────────────
-      // Maps each semantic variant to a single class that sets all four
-      // typographic properties (size, weight, leading, tracking).
-      const typoVariants = [
-        'heading-2xl', 'heading-xl', 'heading-lg', 'heading-md', 'heading-sm', 'heading-xs',
-        'body-lg', 'body-md', 'body-sm', 'body-xs',
-        'label-lg', 'label-md', 'label-sm', 'label-xs',
-        'label-plain-lg', 'label-plain-md', 'label-plain-sm',
-        'caption', 'overline', 'code',
-      ] as const
-      const uppercaseVariants = new Set([
-        'label-lg', 'label-md', 'label-sm', 'label-xs', 'overline',
-      ])
-      const monoVariants = new Set(['code'])
-      const typoUtilities: Record<string, Record<string, string>> = {}
-      for (const v of typoVariants) {
-        const base: Record<string, string> = {
-          'font-size': `var(--typo-${v}-size)`,
-          'font-weight': `var(--typo-${v}-weight)`,
-          'line-height': `var(--typo-${v}-leading)`,
-          'letter-spacing': `var(--typo-${v}-tracking)`,
-        }
-        if (uppercaseVariants.has(v)) {
-          base['text-transform'] = 'uppercase'
-        }
-        if (monoVariants.has(v)) {
-          base['font-family'] = 'var(--typo-code-font)'
-        }
-        typoUtilities[`.text-${v}`] = base
-      }
-      addBase({
-        '@property --border-angle': {
-          syntax: '"<angle>"',
-          'initial-value': '0deg',
-          inherits: 'false',
-        },
-        // Prevent iOS Safari auto-zoom on inputs with font-size < 16px
-        '@media screen and (max-width: 767px)': {
-          'input:not([type="checkbox"]):not([type="radio"]), textarea, select': {
-            'font-size': 'max(16px, 1em) !important',
-          },
-        },
-      })
-      addUtilities({
-        ...typoUtilities,
-        '.tabular-nums': { 'font-variant-numeric': 'tabular-nums' },
-        '.touch-target': {
-          position: 'relative',
-        },
-        '.touch-target::before': {
-          content: '""',
-          position: 'absolute',
-          top: '50%',
-          left: '50%',
-          transform: 'translate(-50%, -50%)',
-          'min-width': '44px',
-          'min-height': '44px',
-        },
-        '.focus-ring': {
-          '&:focus-visible': {
-            outline: 'none',
-            'box-shadow':
-              '0 0 0 var(--border-focus-width) var(--color-surface-base), 0 0 0 calc(var(--border-focus-width) + var(--border-focus-offset)) var(--color-accent-9)',
-          },
-        },
-        '.focus-ring-inset': {
-          '&:focus-visible': {
-            outline: 'none',
-            'box-shadow': 'inset 0 0 0 var(--border-focus-width) var(--color-accent-9)',
-          },
-        },
-        '.focus-ring-sm': {
-          '&:focus-visible': {
-            outline: 'none',
-            'box-shadow': '0 0 0 var(--border-focus-width) var(--color-accent-7)',
-          },
-        },
-        // Safe area inset utilities for notched/island devices
-        '.pt-safe': { 'padding-top': 'env(safe-area-inset-top, 0px)' },
-        '.pb-safe': { 'padding-bottom': 'env(safe-area-inset-bottom, 0px)' },
-        '.pl-safe': { 'padding-left': 'env(safe-area-inset-left, 0px)' },
-        '.pr-safe': { 'padding-right': 'env(safe-area-inset-right, 0px)' },
-        '.p-safe': {
-          'padding-top': 'env(safe-area-inset-top, 0px)',
-          'padding-bottom': 'env(safe-area-inset-bottom, 0px)',
-          'padding-left': 'env(safe-area-inset-left, 0px)',
-          'padding-right': 'env(safe-area-inset-right, 0px)',
-        },
-      })
-    }),
-  ],
+  // NOTE: the `plugin(({ addBase, addUtilities }))` block that used to live
+  // here was migrated to CSS-native @utility + @layer base in Phase 2 of the
+  // 0.37 migration. Its content now lives in:
+  //   - packages/core/src/tokens/utilities.css (@utility text-heading-*, focus-ring*, *-safe, ...)
+  //   - packages/core/src/tokens/base.css (@layer base + @property)
+  //   - packages/core/src/tokens/animations.css (@keyframes)
+  // This preset remains as a TW3-compat shim for consumers on @config. Phase 4
+  // will shrink it to an empty deprecated stub.
 }
 
 export default preset

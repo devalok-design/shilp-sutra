@@ -151,7 +151,7 @@ const Step = React.forwardRef<HTMLDivElement, StepProps>(
       <>
         <div
           className={cn(
-            'relative flex-shrink-0 flex items-center justify-center w-ds-sm h-ds-sm rounded-ds-full text-ds-sm font-semibold',
+            'relative shrink-0 flex items-center justify-center w-ds-sm h-ds-sm rounded-ds-full text-ds-sm font-semibold',
             'transition-[background-color,border-color,color] duration-moderate-01 ease-productive-standard',
             state === 'completed' && 'bg-accent-9 text-accent-fg',
             state === 'active' && 'bg-accent-9 text-accent-fg',
@@ -217,7 +217,7 @@ const Step = React.forwardRef<HTMLDivElement, StepProps>(
               'rounded-ds-md px-ds-02 py-ds-01 -mx-ds-02 -my-ds-01',
               'bg-transparent border-0',
               'hover:bg-surface-raised-hover active:bg-surface-raised-active',
-              'focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent-8 focus-visible:ring-offset-2',
+              'focus-visible:outline-hidden focus-visible:ring-2 focus-visible:ring-accent-8 focus-visible:ring-offset-2',
               'transition-colors duration-fast-01 ease-productive-standard',
             )}
           >

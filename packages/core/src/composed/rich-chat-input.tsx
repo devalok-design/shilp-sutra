@@ -151,7 +151,7 @@ const CHAT_PROSE = [
   '[&_li]:text-surface-fg',
   '[&_code]:rounded [&_code]:bg-surface-raised [&_code]:px-ds-02 [&_code]:py-[1px] [&_code]:text-ds-md [&_code]:text-accent-11',
   '[&_strong]:font-semibold [&_strong]:text-surface-fg',
-  '[[&_mark]:rounded-sm_mark]:rounded-xs [&_mark]:bg-warning-3 [&_mark]:px-[2px]',
+  '[&_mark]:rounded-xs [&_mark]:bg-warning-3 [&_mark]:px-[2px]',
   '[&_a]:text-accent-11 [&_a]:underline',
   '[&_.mention]:rounded-ds-sm [&_.mention]:bg-accent-2 [&_.mention]:px-ds-02 [&_.mention]:py-[1px] [&_.mention]:font-medium [&_.mention]:text-accent-11',
 ].join(' ')

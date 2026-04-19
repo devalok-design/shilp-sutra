@@ -3,6 +3,11 @@ name: Release
 on:
   push:
     branches: [main]
+  # Allow manual re-runs from the Actions UI / gh CLI without needing a new commit.
+  # Useful when a prior publish failed on a transient issue (auth, registry outage,
+  # token expiry) and we want to retry with the fix in place — as happened after
+  # 0.36.0's initial NPM_TOKEN setup. See 2026-04-19 retro.
+  workflow_dispatch:
 
 concurrency: ${{ github.workflow }}-${{ github.ref }}
 

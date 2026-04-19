@@ -36,7 +36,7 @@ const sizeConfig = {
 /* ── Pill styles per variant ───────────────────────────────── */
 
 const pillStyles = {
-  default: 'bg-surface-overlay shadow-sm',
+  default: 'bg-surface-overlay shadow-raised',
   solid: 'bg-accent-9',
   /** @deprecated Use `solid` instead. */
   accent: 'bg-accent-9',

@@ -4,6 +4,21 @@
 > Built on the same primitives as shadcn/ui but with key API differences.
 > Read this file BEFORE writing any UI code. Do NOT guess from shadcn/ui knowledge.
 
+## NEW (v0.36.0)
+
+- **Forced-colors (Windows high-contrast) support.** Every semantic color token remaps to system keywords (`Canvas`, `CanvasText`, `Highlight`, `HighlightText`, `LinkText`, `GrayText`, `Mark`, `ButtonText`, `VisitedText`) under `@media (forced-colors: active)`. Focus ring forced via `outline: 2px solid Highlight`, interactive elements get visible borders, decorative grain + skeleton shimmer suppressed. Zero runtime impact when inactive.
+- **FormField auto-wires Label ↔ Input via context.** `<FormField>` now publishes an `inputId`; `<Label>` reads `htmlFor` and `<Input>` reads `id` from context unless either is explicit on the child. Drops the need to hand-generate matching ids.
+- **Toast error assertive a11y.** `toast.error()` renders `role="alert"` + `aria-live="assertive"` + `aria-atomic="true"` so screen readers interrupt speech. Other types remain `role="status"` + polite.
+- **Dev-mode missing-`<Toaster />` warning.** `toast()` called without a mounted `Toaster` logs a one-time console warning in dev. Production-silent.
+- **Design default:** prefer `variant="soft"` over `variant="outline"` for non-primary Button actions. Captured in this file's Component Quick Reference and CLAUDE.md. Outline remains valid on colored bg, toolbars, primary-adjacent hierarchy.
+
+## FIXES (v0.36.0)
+
+- **Alert solid body text illegible.** Was forcing `text-surface-fg-muted` (grey) on top of step-9 saturated bgs and using `text-accent-fg` for warning (white-on-amber failed contrast). Now per-color `text-{info|success|warning|error}-fg` on the root + drops the muted override on solid/filled variants.
+- **Button processing ants drifting outside the button.** Overlay SVG now sized to measured `btnEl.offsetWidth/offsetHeight` with a `ResizeObserver` — no more `calc(100% - 2px)` against the wrapper diverging from the button during width transitions / async-feedback icon swaps.
+- **Per-color `-fg` tokens on non-accent status backgrounds.** Button async success/error, BottomNavbar + TopBar error badges now use `text-error-fg` / `text-success-fg` (not `text-accent-fg`) — brand-swap safe.
+- **Documentation truth fixes.** 6 `data-table-*.md` shipped literal bash template headers (`# $(echo $f | sed ...)`) in `llms-full.txt`; fixed. Button Props block had fake `variant="default"` / `"destructive"` alias claims (removed in 0.32.0); stripped. Badge `truncate` prop added to Props block. `packages/core/CHANGELOG.md` reconstructed from 0.33.x → 0.35.0. README component counts + tech stack updated.
+
 ## BREAKING CHANGES (v0.35.0 — World-Class Audit)
 
 - **Dark mode colors:** Solid variant backgrounds darkened for WCAG AA. Step-9 L=0.63→0.54. Warning amber L=0.72→0.57. All solid buttons/badges are noticeably darker in dark mode.

@@ -41,12 +41,22 @@ To add a legitimate exception, add the filename to `SURFACE1_ALLOWLIST` in `scri
 
 **Automated tooling:**
 - `pnpm build` runs `post-build-audit.mjs` automatically (stale .js, use-client blast radius, surface token count)
-- `node scripts/pre-publish-audit.mjs` runs all hard gates (git clean, version match, docs coverage, typecheck, lint, tests, build, token audit)
+- `node scripts/pre-publish-audit.mjs` runs all hard gates (git clean, version match, docs coverage, typecheck, lint, tests, build, token audit, TW4 migration hygiene)
 - The `/publish-release` skill orchestrates docs → version bump → gates → optional Storybook review → publish
 
 **Do NOT run `npm publish` directly.** Always go through `/publish-release`.
 
+**Non-skippable rule:** `pre-publish-audit.mjs` runs BEFORE you decide whether docs are complete — not after. If an agent thinks "all the gates have effectively run in CI so we can skip this" — **no**. The audit script has project-aware checks (surface-1 allowlist, TW4 migration hygiene, docs coverage) that CI does not. The 0.36.0 publish slipped past llms.txt completeness because this rule wasn't followed. See the 2026-04-19 retro.
+
 If you realize docs were incomplete after publishing, immediately publish a patch version.
+
+### Automated publishing (post 0.36.0)
+
+The Release workflow (`.github/workflows/release.yml`) auto-publishes via Changesets Action when a Version Packages PR merges. This requires:
+- `NPM_TOKEN` repo secret (classic Automation token, bypasses 2FA)
+- Org setting: "Workflow permissions: Read and write" + "Allow GitHub Actions to create and approve pull requests"
+
+Both are now configured. `/publish-release` skill remains as a manual fallback for emergencies.
 
 ## Storybook MCP Server
 

@@ -288,6 +288,94 @@ gate('No deprecated shadow tokens in components', () => {
   return true
 })
 
+// --- Tailwind 4 Migration Hygiene (added 2026-04-19 after issue #30) ---
+// The TW 3→4 codemod run in commit 23c68d0 produced two classes of regressions
+// that slipped past the audit: malformed nested arbitrary variants, and
+// unmigrated class names with silently-different visual behavior in TW4.
+// Issue #30 (RichChatInput/RichTextEditor garbled class) surfaced the gap.
+// These gates prevent the same class of bug from shipping again.
+console.log('\n\x1b[36mTailwind 4 Migration Hygiene\x1b[0m')
+
+function scanSource(predicate) {
+  const violations = []
+  const sourceFiles = globSync('packages/core/src/**/*.{tsx,ts}', { cwd: ROOT })
+  for (const file of sourceFiles) {
+    const normalized = file.replace(/\\/g, '/')
+    if (normalized.includes('.stories.') || normalized.includes('__tests__') || normalized.includes('.test.')) continue
+    const content = readFileSync(join(ROOT, file), 'utf-8')
+    const lines = content.split('\n')
+    for (let i = 0; i < lines.length; i++) {
+      const hit = predicate(lines[i])
+      if (hit) violations.push(`${file}:${i + 1} — ${hit}`)
+    }
+  }
+  return violations
+}
+
+// HARD GATE — exact pattern that broke Karm. Malformed nested arbitrary variant.
+gate('No doubled-bracket arbitrary variants', () => {
+  const v = scanSource((line) => {
+    const m = line.match(/\[\[&[^\]]+\]:[a-z0-9-]+_[a-z]+\]:[a-z0-9-]+/)
+    return m ? m[0] : null
+  })
+  if (v.length > 0) {
+    return `Malformed nested arbitrary variants (TW3→4 codemod regression):\n${v.map((x) => `      ${x}`).join('\n')}\n      These are invalid CSS and crash Turbopack consumers.`
+  }
+  return true
+})
+
+// HARD GATE — TW3 outline-none still lingering. TW4 renamed to outline-hidden.
+// Under forced-colors mode, outline-none removes the system outline entirely —
+// breaks the a11y focus indicator. Caused silent regression in bar-chart,
+// line-chart, stepper in 0.36.0 despite the forced-colors feature shipping.
+gate('No TW3 outline-none (use outline-hidden)', () => {
+  const v = scanSource((line) => /(^|[\s"'`:])outline-none(?![\w-])/.test(line) ? 'outline-none' : null)
+  if (v.length > 0) {
+    return `Stray TW3 outline-none (use outline-hidden in TW4):\n${v.map((x) => `      ${x}`).join('\n')}\n      outline-none in TW4 also removes the forced-colors outline — a11y regression.`
+  }
+  return true
+})
+
+// ADVISORY — silent renames: class compiles in TW4 but renders DIFFERENTLY
+// than it did in TW3 (sizes shifted by one step). Visual surprise risk.
+advisory('No TW3 silently-renamed classes (rounded-sm, shadow-sm, blur-sm, backdrop-blur-sm)', () => {
+  // These classes still exist in TW4 but map to what TW3 called the next-size-up,
+  // so leaving them means your UI silently got slightly larger/blurrier.
+  const TW3_SILENT_RENAMES = ['rounded-sm', 'shadow-sm', 'blur-sm', 'backdrop-blur-sm']
+  const v = scanSource((line) => {
+    for (const c of TW3_SILENT_RENAMES) {
+      const re = new RegExp(`(^|[\\s"'\`:/])${c}(?![\\w-])`)
+      if (re.test(line)) return c
+    }
+    return null
+  })
+  if (v.length > 0) {
+    return `Classes whose visual meaning shifted in TW4 (verify intent; rename to -xs or keep deliberately):\n${v.map((x) => `      ${x}`).join('\n')}`
+  }
+  return true
+})
+
+// ADVISORY — TW3 flex-shrink-*/flex-grow-* (deprecated, use shrink-*/grow-*)
+advisory('No TW3 flex-shrink-/flex-grow- (use shrink-/grow- in TW4)', () => {
+  const v = scanSource((line) => {
+    const m = line.match(/(^|[\s"'`:])(flex-(?:shrink|grow)-[0-9a-z]+)/)
+    return m ? m[2] : null
+  })
+  if (v.length > 0) return `Old flex-shrink/flex-grow syntax:\n${v.map((x) => `      ${x}`).join('\n')}`
+  return true
+})
+
+// ADVISORY — TW3 leading-! important prefix (TW4 prefers trailing !).
+// Still functional; flagged so it gets cleaned up before TW5.
+advisory('No TW3 !prefix important (use trailing class! in TW4)', () => {
+  const v = scanSource((line) => {
+    const m = line.match(/:!(size|p|m|w|h|bg|text|border|shadow|rounded|gap)-[\w-]+/)
+    return m ? m[0] : null
+  })
+  if (v.length > 0) return `Leading-! important syntax:\n${v.map((x) => `      ${x}`).join('\n')}`
+  return true
+})
+
 // --- New Gates (added by ecosystem audit 2026-04-06) ---
 console.log('\n\x1b[36mComponent Hygiene\x1b[0m')
 

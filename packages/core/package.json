@@ -11,6 +11,10 @@
     "**/*.css",
     "**/primitives/**"
   ],
+  "publishConfig": {
+    "access": "public",
+    "provenance": true
+  },
   "exports": {
     ".": {
       "types": "./dist/ui/index.d.ts",

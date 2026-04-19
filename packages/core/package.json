@@ -25,6 +25,7 @@
       "import": "./dist/ui/index.js",
       "default": "./dist/ui/index.js"
     },
+    "./css": "./dist/tokens/shilp-sutra.css",
     "./tokens": "./dist/tokens/index.css",
     "./ui": {
       "types": "./dist/ui/index.d.ts",

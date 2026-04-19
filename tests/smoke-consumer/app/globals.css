@@ -1,3 +1,4 @@
+/* TW4-native consumer setup — 0.37 migration target.
+   No tailwind.config.ts. No @config. One import does everything. */
 @import "tailwindcss";
-@import "@devalok/shilp-sutra/tokens";
-@config "../tailwind.config.ts";
+@import "@devalok/shilp-sutra/css";

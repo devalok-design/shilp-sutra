@@ -1,0 +1,40 @@
+/* ═══════════════════════════════════════════════════════════════════
+   @devalok/shilp-sutra — TW4-native consumer entry point
+
+   Consumers import this ONCE in their global stylesheet:
+
+     // app/globals.css
+     @import "tailwindcss";
+     @import "@devalok/shilp-sutra/css";
+
+   That's the whole setup. No `tailwind.config.ts`, no `@config`, no
+   JS preset. TW4 reads the @theme, @utility, @custom-variant, and
+   @source directives in this file and auto-generates the design
+   system's utility surface.
+   ═══════════════════════════════════════════════════════════════════ */
+
+/* Token layer — matches the internal `./tokens` export order.
+   If you add files here, also update `./tokens/index.css` for the
+   legacy subpath. */
+@import "./primitives.css";
+@import "./semantic.css";
+@import "./typography.css";
+@import "./typography-semantic.css";
+@import "./base.css";
+@import "./animations.css";
+@import "./utilities.css";
+@import "./variants.css";
+
+/* TW4 content detection — scan our shipped dist JS for utility classes
+   so consumers don't have to configure "content" for us.
+
+   Two forms combined for robustness across bundlers + pnpm layouts:
+     1. Package-name form: resolves via Node's package resolution
+        (honored by TW4's @tailwindcss/node resolver).
+     2. Relative-glob form: sibling ../**
+        relative to this CSS file at dist/tokens/shilp-sutra.css →
+        resolves to dist plus all sibling subdirs. Works when Node
+        resolution misses under pnpm strict hoisting. */
+@source "@devalok/shilp-sutra";
+@source "../../dist";
+

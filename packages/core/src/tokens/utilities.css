@@ -238,3 +238,39 @@
   padding-left:   env(safe-area-inset-left, 0px);
   padding-right:  env(safe-area-inset-right, 0px);
 }
+
+/* ───────────────────────────────────────────────────────────────────
+   Z-INDEX NAMED LAYERS
+
+   TW4 doesn't expose a `--z-*` auto-namespace; built-in z-* utilities
+   (z-10, z-20, ...) are hard-coded from `--default-z-*`. Our named
+   layers are declared here so class-generation picks them up.
+   Consumers still get TW4's default numeric scale alongside these.
+   ─────────────────────────────────────────────────────────────────── */
+
+@utility z-base      { z-index: var(--z-base); }
+@utility z-raised    { z-index: var(--z-raised); }
+@utility z-dropdown  { z-index: var(--z-dropdown); }
+@utility z-sticky    { z-index: var(--z-sticky); }
+@utility z-overlay   { z-index: var(--z-overlay); }
+@utility z-modal     { z-index: var(--z-modal); }
+@utility z-popover   { z-index: var(--z-popover); }
+@utility z-toast     { z-index: var(--z-toast); }
+@utility z-tooltip   { z-index: var(--z-tooltip); }
+
+/* ───────────────────────────────────────────────────────────────────
+   TRANSITION DURATIONS (named scale)
+
+   TW4's built-in `duration-<ms>` utilities (duration-75, duration-100,
+   etc.) still work. These add our named layer on top so consumers can
+   write `duration-fast-01` instead of `duration-70` etc.
+   ─────────────────────────────────────────────────────────────────── */
+
+@utility duration-instant      { transition-duration: var(--duration-instant); }
+@utility duration-fast-01      { transition-duration: var(--duration-fast-01); }
+@utility duration-fast-02      { transition-duration: var(--duration-fast-02); }
+@utility duration-moderate-01  { transition-duration: var(--duration-moderate-01); }
+@utility duration-moderate-01b { transition-duration: var(--duration-moderate-01b); }
+@utility duration-moderate-02  { transition-duration: var(--duration-moderate-02); }
+@utility duration-slow-01      { transition-duration: var(--duration-slow-01); }
+@utility duration-slow-02      { transition-duration: var(--duration-slow-02); }

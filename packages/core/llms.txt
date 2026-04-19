@@ -1,8 +1,28 @@
 # @devalok/shilp-sutra
 
-> Radix UI + Tailwind CSS + CVA design system for Devalok apps.
+> Radix UI + Tailwind 4 (CSS-first) + CVA design system for Devalok apps.
 > Built on the same primitives as shadcn/ui but with key API differences.
 > Read this file BEFORE writing any UI code. Do NOT guess from shadcn/ui knowledge.
+
+## BREAKING CHANGES (v0.37.0 — Tailwind 4 CSS-first)
+
+**Setup migration only — component APIs unchanged.** See [MIGRATION.md](../../MIGRATION.md#v0370--tailwind-4-css-first-migration) for the full guide.
+
+- **No more JS preset.** `tailwind.config.ts` with `presets: [shilpSutra]` is gone. Tokens ship as TW4 `@theme` CSS via a single CSS import. Consumer setup becomes:
+  ```css
+  @import "tailwindcss";
+  @import "@devalok/shilp-sutra/css";
+  ```
+  The old `./tailwind` export is a deprecated no-op stub; importing it logs a dev-mode `console.warn` and is scheduled for removal in 0.38.
+- **framer-motion is now a required peer dep.** Previously bundled. Install: `pnpm add framer-motion`. Module-scoped React contexts (MotionConfig, LayoutGroup, AnimatePresence) must be single-copy — the peer declaration forces pnpm to dedupe against the consumer's version.
+- **sonner is now an optional peer dep.** Install only if you render `<Toaster />`: `pnpm add sonner`.
+- **tailwindcss peer tightened to `^4.0.0`.** No more `^3.4.0 || ^4.0.0`.
+- **use-sync-external-store moved to our `dependencies`** (from optional peer). Auto-installed transitively.
+- **Node engines floor dropped.** No `engines.node` declared — use any Node 18+.
+- **New export `@devalok/shilp-sutra/css`** — primary consumer entry for TW4 setup.
+- **Source class hygiene:** `w-[--var]` → `w-(--var)`, `theme(spacing.N)` → literal, `bg-gradient-to-*` → `bg-linear-to-*`, bare `shadow` → explicit like `shadow-raised`. Codemod your own code; grep: `grep -rn 'w-\[--\|bg-gradient-to-\|theme(spacing' src/`.
+- **Tokens now expose TW4 namespaces.** Spacing is `--spacing-ds-*` (so `p-ds-03`, not `p-3`). Typography uses `--text-ds-*`, `--leading-ds-*`. Radius is unprefixed (`--radius`, `--radius-ds-*`). Z-layer utilities are custom-generated (`z-popover`, `z-dropdown`, etc.).
+- **Dark mode variant:** `@custom-variant dark (&:where(.dark *))` — identical semantics to old `darkMode: 'class'`. `.dark` on `<html>` or `<body>` activates everything below.
 
 ## NEW (v0.36.0)
 

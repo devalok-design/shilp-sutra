@@ -1,6 +1,162 @@
 # Migration Guide
 
-This page indexes all breaking changes across `@devalok/shilp-sutra` versions. For the full changelog, see [CHANGELOG.md](../CHANGELOG.md).
+This page indexes all breaking changes across `@devalok/shilp-sutra` versions. For the full changelog, see [CHANGELOG.md](./CHANGELOG.md).
+
+> **Upgrading from &lt; 0.36?** Start here, then read each intermediate version section. Breaking changes stack — skipping versions means stacking migrations.
+
+## v0.37.0 — Tailwind 4 CSS-first migration
+
+0.37 completes the Tailwind 3 → 4 migration that started in 0.34. The JS preset is gone. Tokens now ship as `@theme` CSS variables that TW4 consumes directly. **This is a breaking setup change; component APIs are unchanged.**
+
+### Quick migration checklist
+
+1. Install the new required peers:
+   ```sh
+   pnpm add framer-motion @devalok/shilp-sutra@0.37.0
+   # if you use toasts:
+   pnpm add sonner
+   ```
+2. Rewrite `app/globals.css`:
+   ```diff
+   - @import "tailwindcss";
+   - @config "./tailwind.config.ts";
+   + @import "tailwindcss";
+   + @import "@devalok/shilp-sutra/css";
+   ```
+3. **Delete `tailwind.config.ts`** — unless you have your own plugins (see "Keeping your own plugins" below).
+4. Verify `next.config.ts` transpiles BOTH packages:
+   ```ts
+   transpilePackages: ['@devalok/shilp-sutra', '@devalok/shilp-sutra-brand'],
+   ```
+5. Run `pnpm why framer-motion` and confirm **a single version** (see "Framer-motion single-copy check").
+6. Run a dark-mode sanity check (see below).
+7. `pnpm build` — should succeed with no warnings mentioning shilp-sutra.
+
+### Before / after: globals.css
+
+**Before (0.36.x):**
+```css
+@import "tailwindcss";
+@config "./tailwind.config.ts";
+```
+
+**After (0.37.0):**
+```css
+@import "tailwindcss";
+@import "@devalok/shilp-sutra/css";
+
+/* Optional — your own plugins or content globs go here */
+@plugin "@tailwindcss/typography";
+@source "./app/**/*.{ts,tsx}";
+```
+
+`@import "@devalok/shilp-sutra/css"` pulls in our full token set (`@theme` blocks for color, spacing-ds, text-ds, leading-ds, radius, shadow, ease, duration, breakpoints, z-layers, animate), custom utilities (typography composites, focus-ring, touch-target, safe-area insets, z-layer utilities), the dark-mode `@custom-variant`, and a `@source` directive that scans our compiled classes.
+
+### Delete tailwind.config.ts
+
+You **no longer need** `tailwind.config.ts` for shilp-sutra. TW4 config is CSS-first via `@theme`. Delete it if that was its only purpose.
+
+### Keeping your own plugins
+
+If you had TW plugins of your own (e.g., `@tailwindcss/typography`, `@tailwindcss/forms`), keep them with the TW4 CSS directive:
+
+```css
+@plugin "@tailwindcss/typography";
+@plugin "@tailwindcss/forms";
+```
+
+No JS config file required. If you had custom theme extensions, translate them to `@theme` blocks inside your `globals.css`.
+
+### Peer dependency changes
+
+| Dep | 0.36.x | 0.37.0 |
+|---|---|---|
+| `framer-motion` | bundled | **required peer** (`^12.0.0`) |
+| `sonner` | bundled | **optional peer** (`^2.0.0`) — only if you render a `<Toaster />` |
+| `tailwindcss` | `^3.4.0 \|\| ^4.0.0` | **`^4.0.0` only** |
+| `use-sync-external-store` | optional peer | now in `dependencies` (auto-installed) |
+
+**Why framer-motion moved to peer:** module-scoped React contexts (`MotionConfig`, `AnimatePresence`, `LayoutGroup`) fail silently if two copies resolve. Making it a peer means *you* pin the version and pnpm dedupes it.
+
+### Framer-motion single-copy check
+
+Run:
+```sh
+pnpm why framer-motion
+```
+
+**Expected:** one version, one instance. If you see two different versions, run:
+```sh
+pnpm dedupe
+```
+If dedupe doesn't collapse them (version ranges don't overlap), pin `framer-motion` at the top of your app's `package.json` `dependencies`, then `pnpm install`.
+
+> **Note:** `pnpm why` reports what the lockfile resolved. Under strict-hoist, two copies can still coexist if they satisfy different peer ranges. If animations feel "stuck" or `AnimatePresence` exits don't fire, check `pnpm list framer-motion --depth=Infinity` as a second-level verification.
+
+### Dark mode sanity check
+
+Our `.dark` variant now uses `@custom-variant dark (&:where(.dark *))`. After upgrading, render a representative screen with `.dark` toggled on `<html>` (or your usual ancestor) and verify:
+
+- Card backgrounds re-theme (not stuck on light)
+- Solid buttons keep contrast
+- Input borders are visible in dark
+- Toast colors invert correctly
+- Any surface shadows still appear (check `shadow-raised`, `shadow-overlay`)
+
+If any of these is stuck on light, the `.dark` class isn't on an ancestor — add it to `<html>` (recommended) or `<body>`.
+
+### Token collisions
+
+Our spacing scale is namespaced `--spacing-ds-*` (→ `p-ds-03`, `gap-ds-04` etc.) to avoid colliding with TW4's default numeric spacing (`p-4`, `gap-6`). **If you define your own `--spacing-4` in `@theme`, it wins** — our utilities are `p-ds-04` not `p-4`. Typography uses `--text-ds-*`, `--leading-ds-*`. Radius is unprefixed (`--radius`, `--radius-ds-*`) because bare `rounded` / `rounded-ds-md` are the common idiom.
+
+### Source class changes (in consumer code too)
+
+If your own app code used any of these TW3-era patterns, update:
+
+| TW3 (dead in TW4) | TW4 |
+|---|---|
+| `w-[--my-var]` | `w-(--my-var)` |
+| `theme(spacing.4)` inside `w-[…]` | literal value (e.g., `1rem`) |
+| `bg-gradient-to-r` | `bg-linear-to-r` |
+| bare `shadow` | `shadow-sm`, `shadow-raised`, etc. |
+| `outline-none` | `outline-hidden` |
+| `rounded-sm` | `rounded-xs` |
+| `!prefix` | `suffix!` |
+
+Quick grep in your repo:
+```sh
+grep -rn 'w-\[--\|bg-gradient-to-\|theme(spacing' src/
+```
+
+### Troubleshooting
+
+| Symptom | Cause | Fix |
+|---|---|---|
+| `Module not found: Can't resolve 'framer-motion'` on `next build` | framer-motion moved to peer, not installed | `pnpm add framer-motion` |
+| `Module not found: Can't resolve 'sonner'` on `next build` | You import `Toaster`/`toast` from shilp-sutra but sonner isn't installed (optional peer) | `pnpm add sonner` |
+| Toasts render without styling / `toast()` no-ops in dev | Same as above, but you didn't notice the build warning | `pnpm add sonner` |
+| Classes like `p-ds-03` produce no CSS | missing `@import "@devalok/shilp-sutra/css"` in globals.css | add it |
+| Classes like `p-ds-03` produce no CSS (import present) | pnpm strict-hoist hiding our dist from `@source` | verify `node_modules/.pnpm/@devalok+shilp-sutra@0.37.0/node_modules/@devalok/shilp-sutra/dist/` exists |
+| Dark mode not switching | `.dark` not on an ancestor of the component | add `.dark` to `<html>` via `next-themes` or your color-mode hook |
+| Animations feel broken / exits don't fire | two framer-motion copies | see "Framer-motion single-copy check" |
+| `@config` warning on build | legacy config import in your CSS | remove `@config "..."` and use `@import "@devalok/shilp-sutra/css"` |
+| `[@devalok/shilp-sutra] The JS preset at ./tailwind is deprecated` warn | your or a dependency's `tailwind.config.ts` imports our old preset | delete the import; preset is a no-op stub scheduled for removal in 0.38 |
+
+### Upgrading from &lt; 0.36
+
+Read the intermediate sections below (0.34, 0.33, 0.32, 0.30, 0.29, 0.23, 0.9) in order. Each has component-level breakage you'll need to resolve before 0.37's setup-level breakage matters.
+
+### Need to pin 0.36 temporarily?
+
+Use the `latest-0.36` dist-tag:
+```sh
+pnpm add @devalok/shilp-sutra@latest-0.36
+```
+This keeps you on the last TW3-compatible minor. We will backport critical security fixes to the `latest-0.36` line through at least 2026-10-01.
+
+### Rollback recipe (for maintainers)
+
+See [`docs/rollback.md`](./docs/rollback.md) for the executable playbook.
 
 ## v0.34.0 (Tailwind 4 + Toolchain)
 

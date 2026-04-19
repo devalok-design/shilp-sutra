@@ -23,32 +23,34 @@ pnpm add @devalok/shilp-sutra-brand
 
 ## Quick Setup
 
-### 1. Tailwind CSS preset
+### 1. Install with required peers
 
-Add the preset to your `tailwind.config.ts`:
+```bash
+pnpm add @devalok/shilp-sutra framer-motion
+# Only if you render a <Toaster />:
+pnpm add sonner
+# Only if you use rich text / icons already peer-declared in your app:
+pnpm add tailwindcss@^4
+```
+
+### 2. Wire Tailwind 4 in your CSS entry
+
+Shilp Sutra is a **Tailwind 4 CSS-first** design system. No `tailwind.config.ts` is needed for us. Add this to `app/globals.css`:
+
+```css
+@import "tailwindcss";
+@import "@devalok/shilp-sutra/css";
+```
+
+That's it — tokens, utilities, the dark variant, and compiled class scanning all come from the `/css` entry. Your own `@plugin "..."` / `@source "..."` / `@theme { }` extensions go in the same file.
+
+### 3. Transpile our packages in `next.config.ts`
 
 ```ts
-import shilpSutra from '@devalok/shilp-sutra/tailwind'
-
-export default {
-  presets: [shilpSutra],
-  content: [
-    './app/**/*.{ts,tsx}',
-    './node_modules/@devalok/shilp-sutra/dist/**/*.js',
-  ],
-}
+transpilePackages: ['@devalok/shilp-sutra', '@devalok/shilp-sutra-brand'],
 ```
 
-### 2. Import tokens
-
-In your root layout (`app/layout.tsx`):
-
-```tsx
-import '@devalok/shilp-sutra/tokens'
-import './globals.css'
-```
-
-### 3. Use components
+### 4. Use components
 
 ```tsx
 import { Button, Dialog, Input } from '@devalok/shilp-sutra/ui'
@@ -56,6 +58,8 @@ import { PageHeader, DatePicker } from '@devalok/shilp-sutra/composed'
 import { AppSidebar, TopBar } from '@devalok/shilp-sutra/shell'
 import { DevalokLogo } from '@devalok/shilp-sutra-brand/devalok'
 ```
+
+> **Upgrading from 0.36 or earlier?** Read [MIGRATION.md](./MIGRATION.md#v0370--tailwind-4-css-first-migration).
 
 ## Mental Model
 

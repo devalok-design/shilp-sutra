@@ -63,6 +63,15 @@ export default function Page() {
             </TopBar.Right>
           </TopBar>
           <main className="p-6 flex flex-col gap-4">
+            {/* Phase 3 verification surface — forces TW4 to generate
+                @utility, dark:, and @theme utilities so our smoke CSS
+                grep can prove they emit. If any are missing, the grep
+                acceptance fails the smoke run. */}
+            <div
+              data-phase3-verify
+              className="text-heading-xl text-body-md text-label-sm text-code focus-ring pt-safe dark:bg-accent-9 dark:text-accent-11 hover:dark:bg-accent-10"
+            />
+
             <Dialog>
               <DialogTrigger asChild>
                 <Button>Open dialog</Button>

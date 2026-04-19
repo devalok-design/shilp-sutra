@@ -118,6 +118,14 @@ export default defineConfig({
         /^react-pdf($|\/)/,         // lazy-loaded by FilePreview, 3MB with DOMMatrix
         /^react-zoom-pan-pinch($|\/)/, // browser-only transforms, used by FilePreview
         /^react-syntax-highlighter($|\/)/, // used by MarkdownViewer code blocks
+        // Externalized in 0.37 to eliminate the rolldown CJS require() bridge.
+        // use-sync-external-store is a transitive dep of tiptap (via @tiptap/react)
+        // and calls `require("react")` in its shim, which forced us to inject
+        // `import { createRequire } from 'module'` into our rolldown-runtime
+        // chunk — breaking Turbopack consumers (Karm #30). Treating it as peer
+        // means the consumer's React installs pull it in natively; our dist no
+        // longer needs a CJS bridge at all.
+        /^use-sync-external-store($|\/)/,
       ],
       output: {
         entryFileNames: '[name].js',

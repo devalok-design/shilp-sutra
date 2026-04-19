@@ -15,7 +15,8 @@
     "@tabler/icons-react": "^3.0.0",
     "@emoji-mart/data": "^1.0.0",
     "@emoji-mart/react": "^1.0.0",
-    "date-fns": "^4.0.0"
+    "date-fns": "^4.0.0",
+    "use-sync-external-store": "^1.5.0"
   },
   "devDependencies": {
     "@tailwindcss/postcss": "^4.2.0",

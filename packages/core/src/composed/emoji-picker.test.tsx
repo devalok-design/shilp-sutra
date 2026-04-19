@@ -1,5 +1,5 @@
 import { render, screen } from '@testing-library/react'
-import { describe, it, expect, vi } from 'vitest'
+import { describe, expect, it, vi } from 'vitest'
 
 // Mock the heavy emoji-mart dependencies so we don't load them in tests
 vi.mock('@emoji-mart/react', () => ({

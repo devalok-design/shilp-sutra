@@ -1,6 +1,7 @@
-import type { SuggestionProps, SuggestionKeyDownProps } from '@tiptap/suggestion'
+import type { SuggestionKeyDownProps,SuggestionProps } from '@tiptap/suggestion'
 import * as React from 'react'
 import { createRoot, type Root } from 'react-dom/client'
+
 import { cn } from '../../ui/lib/utils'
 import type { MentionItem } from '../rich-text-editor'
 

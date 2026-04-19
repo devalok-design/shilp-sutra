@@ -1,9 +1,10 @@
 'use client'
 
-import * as React from 'react'
 import { IconAlertTriangle, IconBan, IconFileUnknown, IconServerOff } from '@tabler/icons-react'
-import { Icon } from '../ui/icon'
+import * as React from 'react'
+
 import { Button } from '../ui/button'
+import { Icon } from '../ui/icon'
 import { cn } from '../ui/lib/utils'
 
 declare const process: { env: { NODE_ENV?: string } } | undefined
@@ -211,5 +212,5 @@ class ErrorBoundary extends React.Component<ErrorBoundaryProps, ErrorBoundarySta
   }
 }
 
-export { ErrorDisplay, ErrorBoundary }
+export { ErrorBoundary,ErrorDisplay }
 export type { ErrorBoundaryProps }

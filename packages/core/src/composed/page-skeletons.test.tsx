@@ -1,5 +1,6 @@
 import { render } from '@testing-library/react'
-import { describe, it, expect } from 'vitest'
+import { describe, expect,it } from 'vitest'
+
 import { DashboardSkeleton, ProjectListSkeleton, TaskDetailSkeleton } from './page-skeletons'
 
 describe('DashboardSkeleton', () => {

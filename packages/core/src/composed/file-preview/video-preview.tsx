@@ -1,15 +1,16 @@
 'use client'
 
-import * as React from 'react'
-import { motion, AnimatePresence } from 'framer-motion'
-import { springs, tweens } from '../../ui/lib/motion'
-import { Icon } from '../../ui/icon'
 import {
-  IconPlayerPlay,
-  IconPlayerPause,
   IconMaximize,
+  IconPlayerPause,
+  IconPlayerPlay,
 } from '@tabler/icons-react'
-import { ErrorFallback, VolumeControl, formatTime } from './shared'
+import { AnimatePresence,motion } from 'framer-motion'
+import * as React from 'react'
+
+import { Icon } from '../../ui/icon'
+import { springs, tweens } from '../../ui/lib/motion'
+import { ErrorFallback, formatTime,VolumeControl } from './shared'
 
 // ============================================================
 // Video Preview — Custom player with DS styling

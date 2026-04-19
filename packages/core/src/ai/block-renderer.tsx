@@ -1,24 +1,24 @@
 'use client'
 
-import * as React from 'react'
 import { motion } from 'framer-motion'
-import { cn } from '../ui/lib/utils'
-import { springs } from '../ui/lib/motion'
+import * as React from 'react'
+
 import { useMotion } from '../motion/motion-provider'
 import { Alert } from '../ui/alert'
-import type { Block, BlockComponentProps } from './types'
+import { springs } from '../ui/lib/motion'
+import { cn } from '../ui/lib/utils'
 import { useAICommand } from './ai-command-provider'
-
-// Import all built-in blocks
-import { TextBlock } from './blocks/text'
 import { BlockTable } from './blocks/block-table'
 import { ConfirmBlock } from './blocks/confirm'
-import { SuccessBlock } from './blocks/success'
+import { DividerBlock } from './blocks/divider'
 import { ErrorBlock } from './blocks/error'
 import { InfoBlock } from './blocks/info'
 import { LoadingBlock } from './blocks/loading'
-import { DividerBlock } from './blocks/divider'
 import { StatRowBlock } from './blocks/stat-row'
+import { SuccessBlock } from './blocks/success'
+// Import all built-in blocks
+import { TextBlock } from './blocks/text'
+import type { Block, BlockComponentProps } from './types'
 
 const BUILT_IN_BLOCKS: Record<string, React.ComponentType<BlockComponentProps<any>>> = {
   text: TextBlock,

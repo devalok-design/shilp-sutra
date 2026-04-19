@@ -3,9 +3,10 @@
 import * as CheckboxPrimitive from '@primitives/react-checkbox'
 import { AnimatePresence, motion } from 'framer-motion'
 import * as React from 'react'
-import { cn } from './lib/utils'
-import { durations } from './lib/motion'
+
 import { useFormField } from './form'
+import { durations } from './lib/motion'
+import { cn } from './lib/utils'
 
 /**
  * Props for Checkbox — a Radix-powered accessible checkbox with error state styling and

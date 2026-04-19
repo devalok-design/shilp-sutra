@@ -1,11 +1,12 @@
 import { render } from '@testing-library/react'
+import { describe, expect,it } from 'vitest'
 import { axe } from 'vitest-axe'
-import { describe, it, expect } from 'vitest'
+
 import {
-  CardSkeleton,
-  TableSkeleton,
   BoardSkeleton,
+  CardSkeleton,
   ListSkeleton,
+  TableSkeleton,
 } from '../loading-skeleton'
 
 describe('CardSkeleton', () => {

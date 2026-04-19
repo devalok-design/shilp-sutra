@@ -1,6 +1,6 @@
 import { render } from '@testing-library/react'
+import { describe, expect, it, vi } from 'vitest'
 import { axe } from 'vitest-axe'
-import { describe, it, expect, vi } from 'vitest'
 
 vi.mock('../../composed/command-palette', () => ({
   CommandPalette: ({ children, ...props }: { children?: React.ReactNode } & Record<string, unknown>) => (
@@ -8,8 +8,8 @@ vi.mock('../../composed/command-palette', () => ({
   ),
 }))
 
-import { AppCommandPalette } from '../app-command-palette'
 import type { SearchResult, SearchResultGroup } from '../app-command-palette'
+import { AppCommandPalette } from '../app-command-palette'
 
 describe('AppCommandPalette', () => {
   it('renders without crashing', () => {

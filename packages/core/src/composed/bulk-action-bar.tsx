@@ -1,14 +1,15 @@
 'use client'
 
+import { IconX } from '@tabler/icons-react'
+import { AnimatePresence, motion } from 'framer-motion'
 import * as React from 'react'
 import { createPortal } from 'react-dom'
-import { AnimatePresence, motion } from 'framer-motion'
-import { IconX } from '@tabler/icons-react'
-import { Icon, type IconProps } from '../ui/icon'
-import { cn } from '../ui/lib/utils'
-import { Button } from '../ui/button'
+
 import { Badge } from '../ui/badge'
+import { Button } from '../ui/button'
+import { Icon, type IconProps } from '../ui/icon'
 import { springs } from '../ui/lib/motion'
+import { cn } from '../ui/lib/utils'
 
 // ============================================================
 // Types

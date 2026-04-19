@@ -1,9 +1,10 @@
-import { render, screen } from '@testing-library/react'
-import { describe, it, expect } from 'vitest'
-import { axe } from 'vitest-axe'
-import { IconGroup } from './icon-group'
-import { Icon } from './icon'
 import { IconHome, IconSettings, IconUser } from '@tabler/icons-react'
+import { render, screen } from '@testing-library/react'
+import { describe, expect,it } from 'vitest'
+import { axe } from 'vitest-axe'
+
+import { Icon } from './icon'
+import { IconGroup } from './icon-group'
 
 describe('IconGroup', () => {
   it('renders children', () => {

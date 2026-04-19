@@ -1,9 +1,10 @@
-import { describe, it, expect, vi } from 'vitest'
-import { render, screen, fireEvent } from '@testing-library/react'
-import { Badge } from './badge'
-import { BadgeIndicator } from './badge-indicator'
-import { BadgeGroup } from './badge-group'
 import { IconPlus } from '@tabler/icons-react'
+import { fireEvent,render, screen } from '@testing-library/react'
+import { describe, expect, it, vi } from 'vitest'
+
+import { Badge } from './badge'
+import { BadgeGroup } from './badge-group'
+import { BadgeIndicator } from './badge-indicator'
 import { Icon } from './icon'
 
 describe('Badge', () => {

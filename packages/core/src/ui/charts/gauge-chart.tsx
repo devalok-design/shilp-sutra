@@ -1,12 +1,13 @@
 'use client'
 
-import * as React from 'react'
-import { motion } from 'framer-motion'
 import { arc } from 'd3-shape'
+import { motion } from 'framer-motion'
+import * as React from 'react'
+
+import { motionProps,tweens } from '../lib/motion'
 import { cn } from '../lib/utils'
-import { tweens, motionProps } from '../lib/motion'
+import { getTransitionDuration,useReducedMotion } from './_internal/animation'
 import { resolveColor } from './_internal/colors'
-import { useReducedMotion, getTransitionDuration } from './_internal/animation'
 
 export interface GaugeChartProps extends Omit<React.HTMLAttributes<HTMLDivElement>, 'children' | 'color'> {
   /** Current value */

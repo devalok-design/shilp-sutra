@@ -1,5 +1,6 @@
-import { describe, it, expect } from 'vitest'
-import { lookupEmoji, searchEmoji, SPRITESHEET_URL, SHEET_COLS, SHEET_ROWS, type EmojiDataset } from '../extensions/emoji-data'
+import { describe, expect,it } from 'vitest'
+
+import { type EmojiDataset,lookupEmoji, searchEmoji, SHEET_COLS, SHEET_ROWS, SPRITESHEET_URL } from '../extensions/emoji-data'
 
 // Minimal mock dataset
 const mockData: EmojiDataset = {

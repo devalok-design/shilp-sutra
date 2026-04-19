@@ -1,11 +1,12 @@
 'use client'
 
-import * as React from 'react'
 import { motion } from 'framer-motion'
-import { cn } from '../../ui/lib/utils'
+import * as React from 'react'
+
+import { useMotion } from '../../motion/motion-provider'
 import { Alert } from '../../ui/alert'
 import { Button } from '../../ui/button'
-import { useMotion } from '../../motion/motion-provider'
+import { cn } from '../../ui/lib/utils'
 import type { BlockComponentProps, SuccessBlockData } from '../types'
 
 const DEFAULT_UNDO_TIMEOUT = 5000

@@ -1,13 +1,13 @@
 'use client'
 
-import * as React from 'react'
 import * as AccordionPrimitive from '@primitives/react-accordion'
 import { IconChevronDown } from '@tabler/icons-react'
-import { Icon } from './icon'
 import { motion } from 'framer-motion'
+import * as React from 'react'
 
-import { cn } from './lib/utils'
+import { Icon } from './icon'
 import { tweens } from './lib/motion'
+import { cn } from './lib/utils'
 
 /**
  * Accordion compound component — vertically stacked, collapsible content sections.
@@ -123,4 +123,4 @@ export type AccordionItemProps = React.ComponentPropsWithoutRef<typeof Accordion
 export type AccordionTriggerProps = AccordionTriggerExtendedProps
 export type AccordionContentProps = React.ComponentPropsWithoutRef<typeof AccordionPrimitive.Content>
 
-export { Accordion, AccordionItem, AccordionTrigger, AccordionContent }
+export { Accordion, AccordionContent,AccordionItem, AccordionTrigger }

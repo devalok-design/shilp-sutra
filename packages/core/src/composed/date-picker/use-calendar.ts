@@ -1,7 +1,7 @@
 'use client'
 
+import { addMonths, setMonth, setYear,subMonths } from 'date-fns'
 import { useState } from 'react'
-import { subMonths, addMonths, setMonth, setYear } from 'date-fns'
 
 export function useCalendar(initialMonth?: Date) {
   const [currentMonth, setCurrentMonth] = useState(initialMonth ?? new Date())

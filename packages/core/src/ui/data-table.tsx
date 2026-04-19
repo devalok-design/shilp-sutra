@@ -1,11 +1,16 @@
 'use client'
 
-import React, { useCallback, useEffect, useMemo, useRef, useState } from 'react'
+import { IconChevronRight, IconSearch } from '@tabler/icons-react'
 import {
   type ColumnDef,
   type ColumnFiltersState,
   type ColumnPinningState,
   type ExpandedState,
+  getCoreRowModel,
+  getExpandedRowModel,
+  getFilteredRowModel,
+  getPaginationRowModel,
+  getSortedRowModel,
   type PaginationState,
   type Row,
   type RowData,
@@ -13,32 +18,27 @@ import {
   type SortingState,
   type TableState,
   type Updater,
-  type VisibilityState,
-  getCoreRowModel,
-  getExpandedRowModel,
-  getFilteredRowModel,
-  getPaginationRowModel,
-  getSortedRowModel,
   useReactTable,
+  type VisibilityState,
 } from '@tanstack/react-table'
 import { useVirtualizer } from '@tanstack/react-virtual'
-import { IconChevronRight, IconSearch } from '@tabler/icons-react'
+import React, { useCallback, useEffect, useMemo, useRef, useState } from 'react'
 
-import { Icon } from './icon'
-import { Table } from './table'
 import { Checkbox } from './checkbox'
-import { cn } from './lib/utils'
-import { DataTableToolbar, type Density } from './data-table-toolbar'
+import { DataTableBody } from './data-table-body'
+import { type BulkAction,DataTableBulkActions } from './data-table-bulk-actions'
+import { DataTableCards } from './data-table-card'
 import {
   DataTableProvider,
   densityPaddingMap,
   type EditingCell,
 } from './data-table-context'
 import { DataTableHeader } from './data-table-header'
-import { DataTableBody } from './data-table-body'
-import { DataTableCards } from './data-table-card'
 import { DataTablePagination } from './data-table-pagination'
-import { DataTableBulkActions, type BulkAction } from './data-table-bulk-actions'
+import { DataTableToolbar, type Density } from './data-table-toolbar'
+import { Icon } from './icon'
+import { cn } from './lib/utils'
+import { Table } from './table'
 
 // Re-export public types so consumers' imports don't break
 export type { BulkAction } from './data-table-bulk-actions'

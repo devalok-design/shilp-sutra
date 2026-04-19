@@ -1,13 +1,14 @@
 'use client'
 
 import * as React from 'react'
+
 import {
   Avatar,
-  AvatarImage,
   AvatarFallback,
+  AvatarImage,
 } from '../ui/avatar'
-import { MultiSelectPopover, type MultiSelectItem } from './multi-select-popover'
 import { getInitials } from './lib/string-utils'
+import { type MultiSelectItem,MultiSelectPopover } from './multi-select-popover'
 
 // ============================================================
 // Types — backward-compatible with original MemberPicker

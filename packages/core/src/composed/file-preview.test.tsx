@@ -1,5 +1,5 @@
 import { render, screen, waitFor } from '@testing-library/react'
-import { describe, it, expect, vi } from 'vitest'
+import { describe, expect, it, vi } from 'vitest'
 import { axe } from 'vitest-axe'
 
 // Mock the heavy lazy-loaded deps to avoid loading react-zoom-pan-pinch and react-pdf in tests
@@ -18,6 +18,7 @@ vi.mock('react-pdf', () => ({
 }))
 
 import * as React from 'react'
+
 import { FilePreview } from './file-preview'
 
 describe('FilePreview', () => {

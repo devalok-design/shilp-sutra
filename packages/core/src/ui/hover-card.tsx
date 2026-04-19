@@ -1,11 +1,11 @@
 'use client'
 
-import * as React from 'react'
 import * as HoverCardPrimitive from '@primitives/react-hover-card'
-import { motion, AnimatePresence } from 'framer-motion'
+import { AnimatePresence,motion } from 'framer-motion'
+import * as React from 'react'
 
-import { cn } from './lib/utils'
 import { springs, tweens } from './lib/motion'
+import { cn } from './lib/utils'
 
 // ── Internal context to thread `open` state to animated children ──
 
@@ -86,4 +86,4 @@ HoverCardContent.displayName = HoverCardPrimitive.Content.displayName
 
 export type HoverCardContentProps = React.ComponentPropsWithoutRef<typeof HoverCardPrimitive.Content>
 
-export { HoverCard, HoverCardTrigger, HoverCardContent }
+export { HoverCard, HoverCardContent,HoverCardTrigger }

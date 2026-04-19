@@ -11,31 +11,32 @@
  * Supports both command-palette filtering (when `groups` provided) and
  * AI natural-language submission via `onSubmit`.
  */
-import * as React from 'react'
-import { motion, AnimatePresence } from 'framer-motion'
 import {
-  Dialog,
-  DialogPortal,
-  DialogOverlay,
-  DialogContentRaw,
-  DialogTitle,
-  DialogDescription,
-} from '../ui/dialog'
-import {
+  IconArrowDown,
+  IconArrowUp,
+  IconCornerDownLeft,
+  IconLoader2,
   IconSearch,
   IconX,
-  IconCornerDownLeft,
-  IconArrowUp,
-  IconArrowDown,
-  IconLoader2,
 } from '@tabler/icons-react'
-import { Icon } from '../ui/icon'
-import { cn } from '../ui/lib/utils'
-import { tweens, springs } from '../ui/lib/motion'
-import { VisuallyHidden } from '../ui/visually-hidden'
-import { useMotion } from '../motion/motion-provider'
-import { matchesKeybinding, getIsMac, getModifierDisplay } from '../ui/lib/keybinding'
+import { AnimatePresence,motion } from 'framer-motion'
+import * as React from 'react'
+
 import type { CommandGroup, CommandItem } from '../composed/command-palette'
+import { useMotion } from '../motion/motion-provider'
+import {
+  Dialog,
+  DialogContentRaw,
+  DialogDescription,
+  DialogOverlay,
+  DialogPortal,
+  DialogTitle,
+} from '../ui/dialog'
+import { Icon } from '../ui/icon'
+import { getIsMac, getModifierDisplay,matchesKeybinding } from '../ui/lib/keybinding'
+import { springs,tweens } from '../ui/lib/motion'
+import { cn } from '../ui/lib/utils'
+import { VisuallyHidden } from '../ui/visually-hidden'
 
 // -----------------------------------------------------------------------
 // GradientBorderWrap — animated gradient border during processing

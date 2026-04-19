@@ -1,10 +1,10 @@
 'use client'
 
-import * as React from 'react'
 import * as LabelPrimitive from '@primitives/react-label'
+import * as React from 'react'
 
-import { cn } from './lib/utils'
 import { useFormField } from './form'
+import { cn } from './lib/utils'
 
 export interface LabelProps
   extends React.ComponentPropsWithoutRef<typeof LabelPrimitive.Root> {

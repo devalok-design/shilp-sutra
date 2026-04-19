@@ -1,8 +1,9 @@
-import { describe, it, expect } from 'vitest'
+import { IconCheck,IconPlus } from '@tabler/icons-react'
 import { render, screen } from '@testing-library/react'
+import { describe, expect,it } from 'vitest'
+
 import { Icon } from '../icon'
 import { IconProvider } from '../icon-context'
-import { IconPlus, IconCheck } from '@tabler/icons-react'
 
 describe('Icon', () => {
   it('renders a Tabler icon', () => {

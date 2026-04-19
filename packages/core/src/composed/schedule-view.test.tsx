@@ -1,6 +1,7 @@
 import { render, screen } from '@testing-library/react'
-import { describe, it, expect, vi } from 'vitest'
-import { ScheduleView, type ScheduleEvent } from './schedule-view'
+import { describe, expect, it, vi } from 'vitest'
+
+import { type ScheduleEvent,ScheduleView } from './schedule-view'
 
 const baseDate = new Date('2026-03-17T12:00:00Z')
 

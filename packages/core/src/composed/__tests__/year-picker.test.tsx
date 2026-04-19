@@ -1,6 +1,7 @@
 import { render, screen } from '@testing-library/react'
+import { describe, expect, it, vi } from 'vitest'
 import { axe } from 'vitest-axe'
-import { describe, it, expect, vi } from 'vitest'
+
 import { YearPicker } from '../date-picker/year-picker'
 
 describe('YearPicker', () => {

@@ -8,10 +8,11 @@
  *
  * Depends on the CommandPalette shared component being available.
  */
+import { IconFileText } from '@tabler/icons-react'
 import * as React from 'react'
 import { useCallback, useMemo } from 'react'
-import { IconFileText } from '@tabler/icons-react'
-import { CommandPalette, type CommandGroup, type CommandItem, type CommandPaletteProps, type FooterHint } from '../composed/command-palette'
+
+import { type CommandGroup, type CommandItem, CommandPalette, type CommandPaletteProps, type FooterHint } from '../composed/command-palette'
 import { Icon } from '../ui/icon'
 import { cn } from '../ui/lib/utils'
 import { useCommandRegistry } from './command-registry'

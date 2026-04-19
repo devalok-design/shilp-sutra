@@ -3,11 +3,12 @@
 import { IconSearch, IconX } from '@tabler/icons-react'
 import { AnimatePresence, motion } from 'framer-motion'
 import * as React from 'react'
-import { springs } from './lib/motion'
-import { Spinner } from './spinner'
+
+import { Button } from './button'
 import { Icon } from './icon'
 import { Input } from './input'
-import { Button } from './button'
+import { springs } from './lib/motion'
+import { Spinner } from './spinner'
 
 type SearchInputSize = 'xs' | 'sm' | 'md' | 'lg'
 

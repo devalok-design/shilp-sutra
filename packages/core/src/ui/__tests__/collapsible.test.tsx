@@ -1,7 +1,8 @@
 import { render, screen } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
-import { describe, it, expect } from 'vitest'
-import { Collapsible, CollapsibleTrigger, CollapsibleContent } from '../collapsible'
+import { describe, expect,it } from 'vitest'
+
+import { Collapsible, CollapsibleContent,CollapsibleTrigger } from '../collapsible'
 
 function renderCollapsible({ defaultOpen = false }: { defaultOpen?: boolean } = {}) {
   return render(

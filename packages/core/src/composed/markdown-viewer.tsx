@@ -1,12 +1,13 @@
 'use client'
 
+import { IconCheck,IconCopy } from '@tabler/icons-react'
 import * as React from 'react'
 import Markdown from 'react-markdown'
 import remarkGfm from 'remark-gfm'
-import { IconCopy, IconCheck } from '@tabler/icons-react'
+
+import { Button } from '../ui/button'
 import { Icon } from '../ui/icon'
 import { cn } from '../ui/lib/utils'
-import { Button } from '../ui/button'
 
 // react-syntax-highlighter is lazy-loaded in CodeBlock component below
 

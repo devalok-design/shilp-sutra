@@ -1,9 +1,10 @@
 import { render, screen, within } from '@testing-library/react'
-import { describe, it, expect, vi } from 'vitest'
-import { axe } from 'vitest-axe'
 import userEvent from '@testing-library/user-event'
-import { CommandPalette } from '../command-palette'
+import { describe, expect, it, vi } from 'vitest'
+import { axe } from 'vitest-axe'
+
 import type { CommandGroup } from '../command-palette'
+import { CommandPalette } from '../command-palette'
 
 const sampleGroups: CommandGroup[] = [
   {

@@ -3,10 +3,11 @@
 import { IconMinus, IconTrendingDown, IconTrendingUp } from '@tabler/icons-react'
 import { motion } from 'framer-motion'
 import * as React from 'react'
+
+import { Icon } from './icon'
 import { useLink } from './lib/link-context'
 import { springs, tweens } from './lib/motion'
 import { cn } from './lib/utils'
-import { Icon } from './icon'
 
 /**
  * Props for StatCard — a dashboard metric tile displaying a label, a large numeric value,

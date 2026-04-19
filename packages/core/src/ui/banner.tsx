@@ -1,12 +1,13 @@
 'use client'
 
-import { IconAlertCircle, IconCircleCheck, IconInfoCircle, IconX, IconAlertTriangle } from '@tabler/icons-react'
-import * as React from 'react'
+import { IconAlertCircle, IconAlertTriangle,IconCircleCheck, IconInfoCircle, IconX } from '@tabler/icons-react'
 import { cva, type VariantProps } from 'class-variance-authority'
-import { motion, AnimatePresence } from 'framer-motion'
-import { cn } from './lib/utils'
-import { springs, motionProps } from './lib/motion'
+import { AnimatePresence,motion } from 'framer-motion'
+import * as React from 'react'
+
 import { Icon } from './icon'
+import { motionProps,springs } from './lib/motion'
+import { cn } from './lib/utils'
 
 const bannerVariants = cva(
   'flex flex-wrap items-center gap-ds-04 px-ds-06 py-ds-04 text-ds-md font-medium border-b',

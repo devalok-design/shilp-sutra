@@ -1,8 +1,9 @@
+import { IconArrowRight,IconCheck, IconPlus } from '@tabler/icons-react'
 import { render, screen } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
-import { IconPlus, IconCheck, IconArrowRight } from '@tabler/icons-react'
-import { describe, it, expect, vi } from 'vitest'
+import { describe, expect, it, vi } from 'vitest'
 import { axe } from 'vitest-axe'
+
 import { Button } from './button'
 import { Icon } from './icon'
 

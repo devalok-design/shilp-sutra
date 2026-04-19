@@ -1,7 +1,8 @@
 import { render, screen } from '@testing-library/react'
 import { describe, expect, it } from 'vitest'
 import { axe } from 'vitest-axe'
-import { Stepper, Step } from '../stepper'
+
+import { Step,Stepper } from '../stepper'
 
 describe('Stepper', () => {
   const steps = ['Account', 'Profile', 'Review']

@@ -1,14 +1,14 @@
 'use client'
 
-import * as React from 'react'
 import * as DialogPrimitive from '@primitives/react-dialog'
 import { IconX as CloseIcon } from '@tabler/icons-react'
-import { motion, AnimatePresence } from 'framer-motion'
+import { AnimatePresence,motion } from 'framer-motion'
+import * as React from 'react'
 
-import { cn } from './lib/utils'
-import { springs, tweens } from './lib/motion'
-import { Icon } from './icon'
 import { useIsMobile } from '../hooks/use-mobile'
+import { Icon } from './icon'
+import { springs, tweens } from './lib/motion'
+import { cn } from './lib/utils'
 
 // ── Internal context to thread `open` state to animated children ──
 
@@ -253,14 +253,14 @@ export type DialogTitleProps = React.ComponentPropsWithoutRef<typeof DialogPrimi
 
 export {
   Dialog,
-  DialogPortal,
-  DialogOverlay,
-  DialogTrigger,
   DialogClose,
   DialogContent,
   DialogContentRaw,
-  DialogHeader,
-  DialogFooter,
-  DialogTitle,
   DialogDescription,
+  DialogFooter,
+  DialogHeader,
+  DialogOverlay,
+  DialogPortal,
+  DialogTitle,
+  DialogTrigger,
 }

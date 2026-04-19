@@ -1,13 +1,14 @@
 'use client'
 
-import * as React from 'react'
-import { motion } from 'framer-motion'
 import { IconTrash } from '@tabler/icons-react'
-import { cn } from '../lib/utils'
-import { springs, motionProps } from '../lib/motion'
+import { motion } from 'framer-motion'
+import * as React from 'react'
+
+import { Avatar, AvatarFallback,AvatarImage } from '../avatar'
 import { Icon, type IconProps } from '../icon'
-import { Avatar, AvatarImage, AvatarFallback } from '../avatar'
-import { Tooltip, TooltipTrigger, TooltipContent } from '../tooltip'
+import { motionProps,springs } from '../lib/motion'
+import { cn } from '../lib/utils'
+import { Tooltip, TooltipContent,TooltipTrigger } from '../tooltip'
 
 // ── Context ──────────────────────────────────────────────────────────────
 
@@ -487,6 +488,6 @@ export const Message = Object.assign(MessageRoot, {
 })
 
 export {
-  useMessageContext,
   type MessageContextValue,
+  useMessageContext,
 }

@@ -1,5 +1,6 @@
 // @server-safe
 import * as React from 'react'
+
 import { cn } from './lib/utils'
 
 type SpacingToken =
@@ -103,4 +104,4 @@ const Stack = React.forwardRef<HTMLElement, StackProps>(
 )
 Stack.displayName = 'Stack'
 
-export { Stack, type SpacingToken, type StackProps }
+export { type SpacingToken, Stack, type StackProps }

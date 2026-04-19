@@ -1,8 +1,9 @@
 import { render, screen } from '@testing-library/react'
-import { describe, it, expect, vi } from 'vitest'
 import * as React from 'react'
-import { MotionProvider, useMotion } from '../motion-provider'
+import { describe, expect, it, vi } from 'vitest'
+
 import { springs, tweens } from '../../ui/lib/motion'
+import { MotionProvider, useMotion } from '../motion-provider'
 
 // Mock framer-motion's useReducedMotion
 const mockUseReducedMotion = vi.fn(() => false)

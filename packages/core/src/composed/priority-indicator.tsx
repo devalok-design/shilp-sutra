@@ -1,17 +1,18 @@
 'use client'
 
-import * as React from 'react'
+import type { Icon as TablerIcon } from '@tabler/icons-react'
+import {
+  IconAlertTriangle,
+  IconArrowDown,
+  IconArrowUp,
+  IconMinus,
+} from '@tabler/icons-react'
 import { cva, type VariantProps } from 'class-variance-authority'
 import { motion } from 'framer-motion'
-import { cn } from '../ui/lib/utils'
-import {
-  IconArrowDown,
-  IconMinus,
-  IconArrowUp,
-  IconAlertTriangle,
-} from '@tabler/icons-react'
-import type { Icon as TablerIcon } from '@tabler/icons-react'
+import * as React from 'react'
+
 import { Icon, type IconProps } from '../ui/icon'
+import { cn } from '../ui/lib/utils'
 
 export type Priority = 'LOW' | 'MEDIUM' | 'HIGH' | 'URGENT' | 'low' | 'medium' | 'high' | 'urgent'
 

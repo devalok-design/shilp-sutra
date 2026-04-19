@@ -1,9 +1,10 @@
 'use client'
 
-import * as React from 'react'
 import { motion } from 'framer-motion'
-import { springs } from '../../ui/lib/motion'
+import * as React from 'react'
+
 import { useMotion } from '../../motion/motion-provider'
+import { springs } from '../../ui/lib/motion'
 import { StatCard } from '../../ui/stat-card'
 import type { BlockComponentProps, StatRowBlockData } from '../types'
 

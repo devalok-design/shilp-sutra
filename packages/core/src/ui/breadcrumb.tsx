@@ -3,8 +3,9 @@
 import { Slot } from '@primitives/react-slot'
 import { IconChevronRight, IconDots } from '@tabler/icons-react'
 import * as React from 'react'
-import { cn } from './lib/utils'
+
 import { Icon } from './icon'
+import { cn } from './lib/utils'
 
 const Breadcrumb = React.forwardRef<
   HTMLElement,
@@ -94,10 +95,10 @@ export type BreadcrumbLinkProps = React.ComponentPropsWithoutRef<'a'>
 
 export {
   Breadcrumb,
-  BreadcrumbList,
+  BreadcrumbEllipsis,
   BreadcrumbItem,
   BreadcrumbLink,
+  BreadcrumbList,
   BreadcrumbPage,
   BreadcrumbSeparator,
-  BreadcrumbEllipsis,
 }

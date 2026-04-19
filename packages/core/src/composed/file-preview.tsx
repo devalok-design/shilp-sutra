@@ -1,21 +1,22 @@
 'use client'
 
+import { IconDownload } from '@tabler/icons-react'
 import * as React from 'react'
-import { cn } from '../ui/lib/utils'
-import { Skeleton } from '../ui/skeleton'
+
+import { Badge } from '../ui/badge'
 import { Button } from '../ui/button'
 import { Icon } from '../ui/icon'
-import { Badge } from '../ui/badge'
-import { IconDownload } from '@tabler/icons-react'
+import { cn } from '../ui/lib/utils'
+import { Skeleton } from '../ui/skeleton'
 
 // Sub-components: direct imports for non-peer-dep renderers,
 // React.lazy for renderers that pull in optional peer deps
 // (react-zoom-pan-pinch, react-pdf) to preserve code-splitting.
 const LazyImagePreview = React.lazy(() => import('./file-preview/image-preview'))
 const LazyDocumentPreview = React.lazy(() => import('./file-preview/document-preview'))
-import VideoPreview from './file-preview/video-preview'
 import AudioPreview from './file-preview/audio-preview'
 import EmbedPreview from './file-preview/embed-preview'
+import VideoPreview from './file-preview/video-preview'
 
 // ============================================================
 // Types

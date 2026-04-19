@@ -1,7 +1,8 @@
 import { render } from '@testing-library/react'
+import { describe, expect,it } from 'vitest'
 import { axe } from 'vitest-axe'
-import { describe, it, expect } from 'vitest'
-import { Avatar, AvatarImage, AvatarFallback } from '../avatar'
+
+import { Avatar, AvatarFallback,AvatarImage } from '../avatar'
 
 describe('Avatar accessibility', () => {
   it('should have no violations with an image', async () => {

@@ -1,5 +1,5 @@
 // @server-safe
-import { clsx, type ClassValue } from 'clsx'
+import { type ClassValue,clsx } from 'clsx'
 import { extendTailwindMerge } from 'tailwind-merge'
 
 const twMerge = extendTailwindMerge({

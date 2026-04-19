@@ -1,9 +1,10 @@
 import { render, screen, within } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
-import { describe, it, expect, vi } from 'vitest'
+import { describe, expect, it, vi } from 'vitest'
 import { axe } from 'vitest-axe'
-import { Combobox } from './combobox'
+
 import type { ComboboxOption } from './combobox'
+import { Combobox } from './combobox'
 
 const fruits: ComboboxOption[] = [
   { value: 'apple', label: 'Apple' },

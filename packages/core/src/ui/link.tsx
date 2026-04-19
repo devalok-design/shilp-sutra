@@ -2,6 +2,7 @@
 
 import { Slot } from '@primitives/react-slot'
 import * as React from 'react'
+
 import { cn } from './lib/utils'
 
 export interface LinkProps extends React.AnchorHTMLAttributes<HTMLAnchorElement> {

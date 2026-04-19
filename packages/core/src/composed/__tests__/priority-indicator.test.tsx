@@ -1,8 +1,9 @@
 import { render } from '@testing-library/react'
-import { describe, it, expect } from 'vitest'
+import { describe, expect,it } from 'vitest'
 import { axe } from 'vitest-axe'
-import { PriorityIndicator } from '../priority-indicator'
+
 import type { Priority } from '../priority-indicator'
+import { PriorityIndicator } from '../priority-indicator'
 
 const allPriorities: Priority[] = ['LOW', 'MEDIUM', 'HIGH', 'URGENT']
 

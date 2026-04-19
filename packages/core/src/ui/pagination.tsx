@@ -1,10 +1,11 @@
 'use client'
 
-import * as React from 'react'
 import { Slot } from '@primitives/react-slot'
 import { IconChevronLeft, IconChevronRight, IconDots } from '@tabler/icons-react'
-import { cn } from './lib/utils'
+import * as React from 'react'
+
 import { Icon } from './icon'
+import { cn } from './lib/utils'
 
 const PaginationRoot = React.forwardRef<
   HTMLElement,
@@ -286,13 +287,13 @@ const PaginationNav = React.forwardRef<HTMLElement, PaginationNavProps>(
 PaginationNav.displayName = 'PaginationNav'
 
 export {
-  PaginationRoot,
+  generatePagination,
   PaginationContent,
+  PaginationEllipsis,
   PaginationItem,
   PaginationLink,
-  PaginationPrevious,
-  PaginationNext,
-  PaginationEllipsis,
   PaginationNav,
-  generatePagination,
+  PaginationNext,
+  PaginationPrevious,
+  PaginationRoot,
 }

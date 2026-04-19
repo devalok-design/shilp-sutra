@@ -1,13 +1,14 @@
 'use client'
 
+import { IconChevronLeft, IconChevronRight } from '@tabler/icons-react'
+import { AnimatePresence,motion } from 'framer-motion'
 import * as React from 'react'
-import { motion, AnimatePresence } from 'framer-motion'
-import { tweens } from '../../ui/lib/motion'
-import { Skeleton } from '../../ui/skeleton'
+import { Document, Page, pdfjs } from 'react-pdf'
+
 import { Button } from '../../ui/button'
 import { Icon } from '../../ui/icon'
-import { IconChevronLeft, IconChevronRight } from '@tabler/icons-react'
-import { Document, Page, pdfjs } from 'react-pdf'
+import { tweens } from '../../ui/lib/motion'
+import { Skeleton } from '../../ui/skeleton'
 import { ErrorFallback, Toolbar } from './shared'
 
 // ============================================================

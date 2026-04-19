@@ -1,7 +1,8 @@
 import { render } from '@testing-library/react'
+import { describe, expect,it } from 'vitest'
 import { axe } from 'vitest-axe'
-import { describe, it, expect } from 'vitest'
-import { Popover, PopoverTrigger, PopoverContent } from '../popover'
+
+import { Popover, PopoverContent,PopoverTrigger } from '../popover'
 
 describe('Popover accessibility', () => {
   it('should have no violations in closed state', async () => {

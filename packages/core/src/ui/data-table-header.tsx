@@ -1,23 +1,23 @@
 'use client'
 
-import React from 'react'
-import { flexRender } from '@tanstack/react-table'
-import { motion, AnimatePresence } from 'framer-motion'
 import {
   IconArrowDown,
-  IconArrowUp,
   IconArrowsSort,
+  IconArrowUp,
 } from '@tabler/icons-react'
+import { flexRender } from '@tanstack/react-table'
+import { AnimatePresence,motion } from 'framer-motion'
+import React from 'react'
 
-import { Icon } from './icon'
-import { TableHead, TableHeader, TableRow } from './table'
-import { cn } from './lib/utils'
-import { springs } from './lib/motion'
 import {
-  useDataTableContext,
   getColumnMetaClasses,
   getPinnedCellStyle,
+  useDataTableContext,
 } from './data-table-context'
+import { Icon } from './icon'
+import { springs } from './lib/motion'
+import { cn } from './lib/utils'
+import { TableHead, TableHeader, TableRow } from './table'
 
 /**
  * Renders the `<TableHeader>` block including sortable column headers

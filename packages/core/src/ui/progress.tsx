@@ -1,12 +1,12 @@
 'use client'
 
-import * as React from 'react'
 import * as ProgressPrimitive from '@primitives/react-progress'
-import { motion } from 'framer-motion'
 import { cva, type VariantProps } from 'class-variance-authority'
+import { motion } from 'framer-motion'
+import * as React from 'react'
 
-import { cn } from './lib/utils'
 import { springs } from './lib/motion'
+import { cn } from './lib/utils'
 
 /* ---------------------------------------------------------------------------
  * CVA Variants
@@ -169,5 +169,5 @@ const Progress = React.forwardRef<
 )
 Progress.displayName = ProgressPrimitive.Root.displayName
 
-export { Progress, progressTrackVariants, progressIndicatorVariants }
+export { Progress, progressIndicatorVariants,progressTrackVariants }
 export type { ProgressProps }

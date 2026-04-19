@@ -15,10 +15,10 @@
  */
 export { toast } from '../ui/toast'
 export type {
-  UploadFile,
   ToastActionOptions,
-  ToastUndoOptions,
-  ToastUploadOptions,
   ToastOptions,
   ToastType,
+  ToastUndoOptions,
+  ToastUploadOptions,
+  UploadFile,
 } from '../ui/toast-types'

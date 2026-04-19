@@ -1,48 +1,47 @@
-import React from 'react'
-import {
-  // Navigation & Actions
-  IconPlus, IconX, IconCheck, IconMinus, IconSearch,
-  IconChevronRight, IconChevronDown, IconChevronUp, IconChevronLeft,
-  IconArrowRight, IconArrowUp, IconArrowDown, IconArrowBackUp, IconArrowForwardUp,
-  IconDots, IconDotsVertical, IconCornerDownLeft,
-
-  // Status & Feedback
-  IconAlertCircle, IconAlertTriangle, IconInfoCircle, IconCircleCheck,
-  IconBan, IconServerOff, IconLoader2, IconBolt, IconSparkles,
-  IconActivity, IconFlag,
-
-  // Communication
-  IconMessage, IconMessagePlus, IconMessageCircle, IconSend, IconBell, IconInbox,
-
-  // Content & Files
-  IconFile, IconFileText, IconFileCode, IconPhoto, IconFileSpreadsheet,
-  IconFileZip, IconFileUnknown, IconPaperclip, IconArchive,
-  IconDownload, IconUpload, IconLink,
-
-  // User & Identity
-  IconUser, IconUsers, IconUserPlus, IconUserMinus, IconUserCircle,
-  IconLogout, IconSettings, IconShieldCheck,
-
-  // Editing & Text
-  IconPencil, IconEdit, IconBold, IconItalic, IconUnderline,
-  IconStrikethrough, IconH2, IconH3, IconList, IconListNumbers,
-  IconCode, IconListCheck, IconSquareCheck, IconChecks,
-
-  // Layout & Navigation
-  IconLayoutDashboard, IconLayoutSidebarLeftCollapse, IconLayoutKanban,
-  IconCalendar, IconCalendarEvent, IconCalendarCheck,
-  IconGripVertical, IconNavigation,
-
-  // Media & Objects
-  IconHeart, IconMoon, IconSun, IconRobot, IconCoffee, IconClock,
-  IconHistory, IconShare, IconEye, IconEyeOff,
-  IconCircle, IconSquare, IconTag,
-  IconTrendingUp, IconTrendingDown, IconTrash,
-  IconGitPullRequest, IconGitBranch, IconVideo, IconPackage,
-  IconUmbrella, IconBook, IconClipboardList, IconColumns3,
-  IconAdjustmentsHorizontal,
-} from '@tabler/icons-react'
 import type { Icon as TablerIcon } from '@tabler/icons-react'
+import {
+  IconActivity,   IconAdjustmentsHorizontal,
+  // Status & Feedback
+  IconAlertCircle, IconAlertTriangle, IconArchive,
+IconArrowBackUp, IconArrowDown, IconArrowForwardUp,
+  IconArrowRight, IconArrowUp,   IconBan, IconBell, IconBold, IconBolt, IconBook,   IconCalendar, IconCalendarCheck,
+IconCalendarEvent, IconCheck, IconChecks,
+IconChevronDown, IconChevronLeft,
+  IconChevronRight, IconChevronUp,   IconCircle, IconCircleCheck,
+IconClipboardList, IconClock,
+  IconCode, IconCoffee, IconColumns3,
+IconCornerDownLeft,
+  IconDots, IconDotsVertical,   IconDownload, IconEdit, IconEye, IconEyeOff,
+  // Content & Files
+  IconFile, IconFileCode, IconFileSpreadsheet,
+IconFileText, IconFileUnknown,   IconFileZip, IconFlag,
+IconGitBranch,   IconGitPullRequest,   IconGripVertical, IconH2, IconH3, 
+  // Media & Objects
+  IconHeart,   IconHistory, IconInbox,
+IconInfoCircle, IconItalic, 
+  // Layout & Navigation
+  IconLayoutDashboard, IconLayoutKanban,
+IconLayoutSidebarLeftCollapse, IconLink,
+IconList, IconListCheck, IconListNumbers,
+IconLoader2,   IconLogout, 
+  // Communication
+  IconMessage, IconMessageCircle, IconMessagePlus, IconMinus, IconMoon, IconNavigation,
+IconPackage,
+IconPaperclip, 
+  // Editing & Text
+  IconPencil, IconPhoto, 
+  // Navigation & Actions
+  IconPlus, IconRobot, IconSearch,
+IconSend, IconServerOff, IconSettings, IconShare, IconShieldCheck,
+IconSparkles,
+IconSquare, IconSquareCheck,   IconStrikethrough, IconSun, IconTag,
+IconTrash,
+IconTrendingDown,   IconTrendingUp,   IconUmbrella, IconUnderline,
+IconUpload, 
+  // User & Identity
+  IconUser, IconUserCircle,
+IconUserMinus, IconUserPlus, IconUsers, IconVideo, IconX, } from '@tabler/icons-react'
+import React from 'react'
 
 /* ─── Shared styles ─────────────────────────────────────────────── */
 

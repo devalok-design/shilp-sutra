@@ -1,7 +1,8 @@
 'use client'
 
+import { animate, motion, useMotionValue, useReducedMotion,useTransform } from 'framer-motion'
 import * as React from 'react'
-import { motion, useMotionValue, useTransform, animate, useReducedMotion } from 'framer-motion'
+
 import { springs } from './lib/motion'
 import { cn } from './lib/utils'
 
@@ -198,4 +199,4 @@ const MultiProgressRing = React.forwardRef<SVGSVGElement, MultiProgressRingProps
 )
 MultiProgressRing.displayName = 'MultiProgressRing'
 
-export { ProgressRing, MultiProgressRing }
+export { MultiProgressRing,ProgressRing }

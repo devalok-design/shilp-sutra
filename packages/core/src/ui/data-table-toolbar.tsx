@@ -1,23 +1,24 @@
 'use client'
 
-import * as React from 'react'
-import { type Table } from '@tanstack/react-table'
 import {
-  IconSearch,
   IconColumns3,
-  IconTextResize,
   IconDownload,
+  IconSearch,
+  IconTextResize,
 } from '@tabler/icons-react'
+import { type Table } from '@tanstack/react-table'
+import * as React from 'react'
+
 import {
   DropdownMenu,
-  DropdownMenuTrigger,
-  DropdownMenuContent,
   DropdownMenuCheckboxItem,
+  DropdownMenuContent,
   DropdownMenuLabel,
   DropdownMenuSeparator,
+  DropdownMenuTrigger,
 } from './dropdown-menu'
-import { cn } from './lib/utils'
 import { Icon } from './icon'
+import { cn } from './lib/utils'
 
 export type Density = 'compact' | 'standard' | 'comfortable'
 

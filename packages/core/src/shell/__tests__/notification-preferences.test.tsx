@@ -1,6 +1,6 @@
 import { render, screen } from '@testing-library/react'
+import { beforeAll,describe, expect, it, vi } from 'vitest'
 import { axe } from 'vitest-axe'
-import { describe, it, expect, vi, beforeAll } from 'vitest'
 
 // Mock Radix Select which needs pointer events
 vi.mock('../../ui/select', () => ({

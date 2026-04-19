@@ -1,24 +1,25 @@
 'use client'
 
-import * as React from 'react'
+import { IconChevronLeft, IconChevronRight } from '@tabler/icons-react'
 import {
-  format,
-  startOfMonth,
-  endOfMonth,
-  startOfWeek,
-  endOfWeek,
   addDays,
   addMonths,
-  subMonths,
-  isSameMonth,
-  isSameDay,
-  isWithinInterval,
-  isBefore,
+  endOfMonth,
+  endOfWeek,
+  format,
   isAfter,
-  startOfDay,
+  isBefore,
+  isSameDay,
+  isSameMonth,
+  isWithinInterval,
   lastDayOfMonth,
+  startOfDay,
+  startOfMonth,
+  startOfWeek,
+  subMonths,
 } from 'date-fns'
-import { IconChevronLeft, IconChevronRight } from '@tabler/icons-react'
+import * as React from 'react'
+
 import { Icon } from '../../ui/icon'
 import { cn } from '../../ui/lib/utils'
 

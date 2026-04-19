@@ -3,8 +3,9 @@
 import * as React from 'react'
 import Markdown from 'react-markdown'
 import remarkGfm from 'remark-gfm'
-import { cn } from '../../ui/lib/utils'
+
 import { Alert } from '../../ui/alert'
+import { cn } from '../../ui/lib/utils'
 import type { BlockComponentProps, ErrorBlockData } from '../types'
 
 const ErrorBlock = React.memo(function ErrorBlock({

@@ -20,7 +20,7 @@ export function assertToasterMounted(): void {
   if (warned) return
   if (mountedToasters > 0) return
   warned = true
-  // eslint-disable-next-line no-console
+   
   console.warn(
     '[shilp-sutra] toast() was called but no <Toaster /> is mounted. ' +
       'Render <Toaster /> once at your app root (e.g. in RootLayout). ' +

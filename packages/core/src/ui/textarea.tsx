@@ -1,12 +1,13 @@
 'use client'
 
-import * as React from 'react'
-import { motion } from 'framer-motion'
 import { cva, type VariantProps } from 'class-variance-authority'
-import { cn } from './lib/utils'
-import { motionProps } from './lib/motion'
-import type { InputState } from './input'
+import { motion } from 'framer-motion'
+import * as React from 'react'
+
 import { useFormField } from './form'
+import type { InputState } from './input'
+import { motionProps } from './lib/motion'
+import { cn } from './lib/utils'
 
 const textareaVariants = cva(
   [

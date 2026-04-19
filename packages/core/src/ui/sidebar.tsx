@@ -1,16 +1,29 @@
 'use client'
 
 import { Slot } from '@primitives/react-slot'
-import { VariantProps, cva } from 'class-variance-authority'
 import { IconLayoutSidebarLeftCollapse } from '@tabler/icons-react'
+import { cva,VariantProps } from 'class-variance-authority'
 import { motion, useReducedMotion } from 'framer-motion'
+import {
+  ComponentProps,
+  createContext,
+  CSSProperties,
+  ElementRef,
+  forwardRef,
+  useCallback,
+  useContext,
+  useEffect,
+  useMemo,
+  useRef,
+  useState,
+} from 'react'
 
 import { useIsMobile } from '../hooks/use-mobile'
+import { Button } from './button'
+import { Icon } from './icon'
+import { Input } from './input'
 import { springs } from './lib/motion'
 import { cn } from './lib/utils'
-import { Icon } from './icon'
-import { Button } from './button'
-import { Input } from './input'
 import { Separator } from './separator'
 import { Sheet, SheetContent } from './sheet'
 import { Skeleton } from './skeleton'
@@ -20,19 +33,6 @@ import {
   TooltipProvider,
   TooltipTrigger,
 } from './tooltip'
-import {
-  ComponentProps,
-  forwardRef,
-  useMemo,
-  useCallback,
-  useEffect,
-  useContext,
-  useRef,
-  useState,
-  createContext,
-  CSSProperties,
-  ElementRef,
-} from 'react'
 
 const SIDEBAR_COOKIE_NAME = 'sidebar:state'
 const SIDEBAR_COOKIE_MAX_AGE = 60 * 60 * 24 * 7

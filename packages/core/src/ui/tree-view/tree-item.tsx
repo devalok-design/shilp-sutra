@@ -3,9 +3,9 @@
 import { IconChevronRight } from '@tabler/icons-react'
 import * as React from 'react'
 
-import { cn } from '../lib/utils'
-import { Icon } from '../icon'
 import { Checkbox } from '../checkbox'
+import { Icon } from '../icon'
+import { cn } from '../lib/utils'
 import { useTreeContext } from './tree-view'
 
 export interface TreeItemProps {

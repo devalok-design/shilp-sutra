@@ -1,20 +1,21 @@
 'use client'
 
-import * as React from 'react'
-import { motion } from 'framer-motion'
-import { line, curveMonotoneX, curveLinear } from 'd3-shape'
-import { scaleLinear, scalePoint } from 'd3-scale'
 import type { ScaleLinear, ScalePoint } from 'd3-scale'
+import { scaleLinear, scalePoint } from 'd3-scale'
+import { curveLinear,curveMonotoneX, line } from 'd3-shape'
+import { motion } from 'framer-motion'
+import * as React from 'react'
+
+import { motionProps,tweens } from '../lib/motion'
 import { cn } from '../lib/utils'
-import { tweens, motionProps } from '../lib/motion'
-import { ChartContainer } from './chart-container'
-import { Axis, type AnyScale } from './_internal/axes'
+import { useReducedMotion } from './_internal/animation'
+import { type AnyScale,Axis } from './_internal/axes'
+import { resolveColor } from './_internal/colors'
 import { GridLines } from './_internal/grid-lines'
 import { Legend } from './_internal/legend'
 import { ChartTooltip, useChartTooltip } from './_internal/tooltip'
-import { resolveColor } from './_internal/colors'
-import { useReducedMotion } from './_internal/animation'
 import type { DataPoint, Series } from './_internal/types'
+import { ChartContainer } from './chart-container'
 
 export interface LineChartProps extends Omit<React.HTMLAttributes<HTMLDivElement>, 'children'> {
   /** Data array */

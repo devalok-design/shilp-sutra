@@ -6,7 +6,9 @@
  * Subcomponents: TopBar.Left, TopBar.Center, TopBar.Right,
  * TopBar.Section, TopBar.IconButton, TopBar.Title, TopBar.UserMenu.
  */
+import { IconLogout, IconMoon, IconSun,IconUser } from '@tabler/icons-react'
 import * as React from 'react'
+
 import { useColorMode } from '../hooks/use-color-mode'
 import { Avatar, AvatarFallback, AvatarImage } from '../ui/avatar'
 import {
@@ -16,14 +18,13 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from '../ui/dropdown-menu'
+import { Icon } from '../ui/icon'
+import { cn } from '../ui/lib/utils'
 import {
   Tooltip,
   TooltipContent,
   TooltipTrigger,
 } from '../ui/tooltip'
-import { IconLogout, IconUser, IconMoon, IconSun } from '@tabler/icons-react'
-import { Icon } from '../ui/icon'
-import { cn } from '../ui/lib/utils'
 
 // -----------------------------------------------------------------------
 // Types

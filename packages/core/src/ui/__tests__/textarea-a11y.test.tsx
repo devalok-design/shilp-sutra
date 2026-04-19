@@ -1,8 +1,9 @@
 import { render } from '@testing-library/react'
+import { describe, expect,it } from 'vitest'
 import { axe } from 'vitest-axe'
-import { describe, it, expect } from 'vitest'
-import { Textarea } from '../textarea'
+
 import { Label } from '../label'
+import { Textarea } from '../textarea'
 
 describe('Textarea accessibility', () => {
   it('should have no violations with a visible label', async () => {

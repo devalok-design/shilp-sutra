@@ -1,12 +1,13 @@
 'use client'
 
+import { Slot } from '@primitives/react-slot'
 import { IconCheck, IconX } from '@tabler/icons-react'
 import { cva, type VariantProps } from 'class-variance-authority'
-import { motion, AnimatePresence, useReducedMotion } from 'framer-motion'
-import { springs, durations } from './lib/motion'
-import { Slot } from '@primitives/react-slot'
+import { AnimatePresence, motion, useReducedMotion } from 'framer-motion'
 import * as React from 'react'
+
 import { Icon } from './icon'
+import { durations,springs } from './lib/motion'
 import { cn } from './lib/utils'
 
 // ── Color map — single source of truth for all badge color × variant combos ──
@@ -324,12 +325,12 @@ const Badge = React.forwardRef<HTMLElement, BadgeProps>(
 )
 Badge.displayName = 'Badge'
 
-import { BadgeIndicator } from './badge-indicator'
 import { BadgeGroup } from './badge-group'
+import { BadgeIndicator } from './badge-indicator'
 
 const BadgeCompound = Object.assign(Badge, {
   Indicator: BadgeIndicator,
   Group: BadgeGroup,
 })
 
-export { BadgeCompound as Badge, badgeVariants, type BadgeProps, type BadgeColor }
+export { BadgeCompound as Badge, type BadgeColor,type BadgeProps, badgeVariants }

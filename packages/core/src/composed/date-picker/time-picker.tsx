@@ -1,8 +1,9 @@
 'use client'
 
-import * as React from 'react'
-import { format, setHours, setMinutes, setSeconds } from 'date-fns'
 import { IconClock } from '@tabler/icons-react'
+import { format, setHours, setMinutes, setSeconds } from 'date-fns'
+import * as React from 'react'
+
 import { Icon } from '../../ui/icon'
 import { cn } from '../../ui/lib/utils'
 import {

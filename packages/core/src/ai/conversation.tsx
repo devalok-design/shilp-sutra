@@ -1,23 +1,24 @@
 'use client'
 
-import * as React from 'react'
-import { motion, AnimatePresence } from 'framer-motion'
 import {
-  IconCircleCheck,
   IconCircle,
+  IconCircleCheck,
   IconCircleX,
   IconLoader2,
 } from '@tabler/icons-react'
-import { Icon } from '../ui/icon'
-import { cn } from '../ui/lib/utils'
-import { springs, durations } from '../ui/lib/motion'
+import { AnimatePresence,motion } from 'framer-motion'
+import * as React from 'react'
+
 import { useMotion } from '../motion/motion-provider'
-import { BlockRenderer } from './block-renderer'
+import { Icon } from '../ui/icon'
+import { durations,springs } from '../ui/lib/motion'
+import { cn } from '../ui/lib/utils'
 import { useAICommand } from './ai-command-provider'
+import { BlockRenderer } from './block-renderer'
 import type {
+  BlockComponentProps,
   ConversationMessage,
   ProcessingStep,
-  BlockComponentProps,
 } from './types'
 
 // ── Props ────────────────────────────────────────────────────────────────────

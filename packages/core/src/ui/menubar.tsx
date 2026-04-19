@@ -1,13 +1,13 @@
 'use client'
 
-import * as React from 'react'
 import * as MenubarPrimitive from '@primitives/react-menubar'
 import { IconCheck, IconChevronRight, IconCircle } from '@tabler/icons-react'
-import { motion, AnimatePresence } from 'framer-motion'
+import { AnimatePresence,motion } from 'framer-motion'
+import * as React from 'react'
 
-import { cn } from './lib/utils'
-import { springs, tweens } from './lib/motion'
 import { Icon } from './icon'
+import { springs, tweens } from './lib/motion'
+import { cn } from './lib/utils'
 
 // ── Internal contexts to thread open state ──
 
@@ -304,19 +304,19 @@ export type MenubarItemProps = React.ComponentPropsWithoutRef<typeof MenubarPrim
 
 export {
   Menubar,
-  MenubarMenu,
-  MenubarTrigger,
-  MenubarContent,
-  MenubarItem,
-  MenubarSeparator,
-  MenubarLabel,
   MenubarCheckboxItem,
+  MenubarContent,
+  MenubarGroup,
+  MenubarItem,
+  MenubarLabel,
+  MenubarMenu,
+  MenubarPortal,
   MenubarRadioGroup,
   MenubarRadioItem,
-  MenubarPortal,
-  MenubarGroup,
+  MenubarSeparator,
+  MenubarShortcut,
   MenubarSub,
   MenubarSubContent,
   MenubarSubTrigger,
-  MenubarShortcut,
+  MenubarTrigger,
 }

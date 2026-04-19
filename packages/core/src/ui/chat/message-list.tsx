@@ -1,9 +1,10 @@
 'use client'
 
+import { AnimatePresence,motion } from 'framer-motion'
 import * as React from 'react'
-import { motion, AnimatePresence } from 'framer-motion'
-import { cn } from '../lib/utils'
+
 import { tweens } from '../lib/motion'
+import { cn } from '../lib/utils'
 import { Spinner } from '../spinner'
 
 export interface MessageListProps extends React.HTMLAttributes<HTMLDivElement> {

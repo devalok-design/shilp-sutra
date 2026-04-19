@@ -10,55 +10,48 @@
  */
 
 // Layout components -- application shell
-export { LinkProvider, useLink, type LinkProviderProps } from './link-context'
-
-export {
-  AppSidebar,
-  type NavItem,
-  type NavGroup,
-  type SidebarUser,
-  type AppSidebarProps,
-} from './sidebar'
-
-export {
-  TopBar,
-  type TopBarUser,
-  type UserMenuItem,
-  type TopBarProps,
-} from './top-bar'
-
-export {
-  BottomNavbar,
-  type BottomNavItem,
-  type BottomNavbarUser,
-  type BottomNavbarProps,
-} from './bottom-navbar'
-
-export {
-  NotificationCenter,
-  type Notification,
-  type NotificationCenterProps,
-} from './notification-center'
-
-export {
-  NotificationPreferences,
-  type NotificationPreference,
-  type NotificationProject,
-  type NotificationPreferencesProps,
-} from './notification-preferences'
-
 export {
   AppCommandPalette,
+  type AppCommandPaletteProps,
+  type AppCommandPaletteUser,
   type SearchResult,
   type SearchResultGroup,
-  type AppCommandPaletteUser,
-  type AppCommandPaletteProps,
 } from './app-command-palette'
-
 export {
-  CommandRegistryProvider,
-  useCommandRegistry,
-  type CommandRegistry,
+  BottomNavbar,
+  type BottomNavbarProps,
+  type BottomNavbarUser,
+  type BottomNavItem,
+} from './bottom-navbar'
+export {
   type CommandPageItem,
+  type CommandRegistry,
+  CommandRegistryProvider,
   type CommandRegistryProviderProps,
+  useCommandRegistry,
 } from './command-registry'
+export { LinkProvider, type LinkProviderProps,useLink } from './link-context'
+export {
+  type Notification,
+  NotificationCenter,
+  type NotificationCenterProps,
+} from './notification-center'
+export {
+  type NotificationPreference,
+  NotificationPreferences,
+  type NotificationPreferencesProps,
+  type NotificationProject,
+} from './notification-preferences'
+export {
+  AppSidebar,
+  type AppSidebarProps,
+  type NavGroup,
+  type NavItem,
+  type SidebarUser,
+} from './sidebar'
+export {
+  TopBar,
+  type TopBarProps,
+  type TopBarUser,
+  type UserMenuItem,
+} from './top-bar'

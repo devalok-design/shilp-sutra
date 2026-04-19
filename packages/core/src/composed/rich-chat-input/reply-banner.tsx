@@ -1,8 +1,9 @@
 'use client'
 
-import * as React from 'react'
-import { motion } from 'framer-motion'
 import { IconX } from '@tabler/icons-react'
+import { motion } from 'framer-motion'
+import * as React from 'react'
+
 import { Icon } from '../../ui/icon'
 import { durations } from '../../ui/lib/motion'
 import { cn } from '../../ui/lib/utils'

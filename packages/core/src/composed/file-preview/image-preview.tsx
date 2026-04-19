@@ -1,20 +1,21 @@
 'use client'
 
-import * as React from 'react'
-import { motion } from 'framer-motion'
-import { cn } from '../../ui/lib/utils'
-import { tweens } from '../../ui/lib/motion'
-import { Skeleton } from '../../ui/skeleton'
-import { Button } from '../../ui/button'
-import { Icon } from '../../ui/icon'
 import {
+  IconMaximize,
+  IconMinimize,
   IconZoomIn,
   IconZoomOut,
   IconZoomReset,
-  IconMaximize,
-  IconMinimize,
 } from '@tabler/icons-react'
-import { TransformWrapper, TransformComponent } from 'react-zoom-pan-pinch'
+import { motion } from 'framer-motion'
+import * as React from 'react'
+import { TransformComponent,TransformWrapper } from 'react-zoom-pan-pinch'
+
+import { Button } from '../../ui/button'
+import { Icon } from '../../ui/icon'
+import { tweens } from '../../ui/lib/motion'
+import { cn } from '../../ui/lib/utils'
+import { Skeleton } from '../../ui/skeleton'
 import { ErrorFallback, Toolbar, ToolbarDivider } from './shared'
 
 // ============================================================

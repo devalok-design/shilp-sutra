@@ -1,24 +1,25 @@
 'use client'
 
-import * as React from 'react'
+import {
+  IconAt,
+  IconBlockquote,
+  IconBold,
+  IconCode,
+  IconHighlight,
+  IconItalic,
+  IconLink,
+  IconList,
+  IconListNumbers,
+  IconMoodSmile,
+  IconSlash,
+  IconStrikethrough,
+  IconUnderline,
+} from '@tabler/icons-react'
 // motion removed — CSS transitions handle show/hide from parent
 import type { Editor } from '@tiptap/core'
 import { useEditorState } from '@tiptap/react'
-import {
-  IconBold,
-  IconItalic,
-  IconUnderline,
-  IconStrikethrough,
-  IconHighlight,
-  IconCode,
-  IconList,
-  IconListNumbers,
-  IconAt,
-  IconMoodSmile,
-  IconSlash,
-  IconBlockquote,
-  IconLink,
-} from '@tabler/icons-react'
+import * as React from 'react'
+
 import { Icon } from '../../ui/icon'
 import { cn } from '../../ui/lib/utils'
 

@@ -1,6 +1,7 @@
 import { render, screen } from '@testing-library/react'
-import { describe, it, expect } from 'vitest'
-import { ProgressRing, MultiProgressRing } from './progress-ring'
+import { describe, expect,it } from 'vitest'
+
+import { MultiProgressRing,ProgressRing } from './progress-ring'
 
 describe('ProgressRing', () => {
   it('renders SVG with progressbar role', () => {

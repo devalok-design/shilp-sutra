@@ -1,6 +1,7 @@
 // @server-safe
-import * as React from 'react'
 import { cva, type VariantProps } from 'class-variance-authority'
+import * as React from 'react'
+
 import { cn } from './lib/utils'
 
 const skeletonVariants = cva('bg-skeleton-base', {
@@ -361,12 +362,12 @@ SkeletonGroup.displayName = 'SkeletonGroup'
 
 export {
   Skeleton,
-  skeletonVariants,
   SkeletonAvatar,
-  SkeletonText,
   SkeletonButton,
-  SkeletonInput,
   SkeletonChart,
-  SkeletonImage,
   SkeletonGroup,
+  SkeletonImage,
+  SkeletonInput,
+  SkeletonText,
+  skeletonVariants,
 }

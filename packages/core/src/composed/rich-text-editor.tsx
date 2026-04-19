@@ -1,47 +1,48 @@
 'use client'
 
-import * as React from 'react'
-import { useEditor, useEditorState, EditorContent, type Editor } from '@tiptap/react'
-import StarterKit from '@tiptap/starter-kit'
-import { Placeholder } from '@tiptap/extensions'
-import Highlight from '@tiptap/extension-highlight'
-import { ListKit } from '@tiptap/extension-list'
-import TextAlign from '@tiptap/extension-text-align'
-import Image from '@tiptap/extension-image'
-import Mention from '@tiptap/extension-mention'
-import { FileAttachment } from './extensions/file-attachment'
-import { EmojiNode } from './extensions/emoji-node'
-import { createEmojiSuggestion } from './extensions/emoji-suggestion'
-import { loadEmojiData, lookupEmoji } from './extensions/emoji-data'
-import { createSuggestionRenderer } from './extensions/mention-suggestion'
-import { useColorMode } from '../hooks/use-color-mode'
-import type { EmojiSet } from './emoji-picker'
-import { cn } from '../ui/lib/utils'
 import {
-  IconBold,
-  IconItalic,
-  IconStrikethrough,
-  IconH2,
-  IconH3,
-  IconList,
-  IconListNumbers,
-  IconCode,
+  IconAlignCenter,
+  IconAlignLeft,
+  IconAlignRight,
   IconArrowBackUp,
   IconArrowForwardUp,
-  IconUnderline,
-  IconHighlight,
   IconBlockquote,
-  IconListCheck,
-  IconLink,
-  IconPhoto,
-  IconPaperclip,
+  IconBold,
+  IconCode,
+  IconH2,
+  IconH3,
+  IconHighlight,
+  IconItalic,
   IconLineDashed,
-  IconAlignLeft,
-  IconAlignCenter,
-  IconAlignRight,
+  IconLink,
+  IconList,
+  IconListCheck,
+  IconListNumbers,
   IconMoodSmile,
+  IconPaperclip,
+  IconPhoto,
+  IconStrikethrough,
+  IconUnderline,
 } from '@tabler/icons-react'
+import Highlight from '@tiptap/extension-highlight'
+import Image from '@tiptap/extension-image'
+import { ListKit } from '@tiptap/extension-list'
+import Mention from '@tiptap/extension-mention'
+import TextAlign from '@tiptap/extension-text-align'
+import { Placeholder } from '@tiptap/extensions'
+import { type Editor,EditorContent, useEditor, useEditorState } from '@tiptap/react'
+import StarterKit from '@tiptap/starter-kit'
+import * as React from 'react'
+
+import { useColorMode } from '../hooks/use-color-mode'
 import { Icon } from '../ui/icon'
+import { cn } from '../ui/lib/utils'
+import type { EmojiSet } from './emoji-picker'
+import { loadEmojiData, lookupEmoji } from './extensions/emoji-data'
+import { EmojiNode } from './extensions/emoji-node'
+import { createEmojiSuggestion } from './extensions/emoji-suggestion'
+import { FileAttachment } from './extensions/file-attachment'
+import { createSuggestionRenderer } from './extensions/mention-suggestion'
 
 const PROSE_CLASSES = [
   'prose prose-sm max-w-none',

@@ -6,22 +6,23 @@
  * Adapted from Karm V2. Uses ui/Dialog as the overlay.
  * All V1 color tokens replaced with semantic design-system tokens.
  */
+import { IconArrowDown,IconArrowUp, IconCornerDownLeft, IconSearch } from '@tabler/icons-react'
+import { AnimatePresence,motion } from 'framer-motion'
 import * as React from 'react'
-import { motion, AnimatePresence } from 'framer-motion'
+
+import { useMotion } from '../motion/motion-provider'
 import {
   Dialog,
-  DialogPortal,
-  DialogOverlay,
   DialogContentRaw,
-  DialogTitle,
   DialogDescription,
+  DialogOverlay,
+  DialogPortal,
+  DialogTitle,
 } from '../ui/dialog'
-import { IconSearch, IconCornerDownLeft, IconArrowUp, IconArrowDown } from '@tabler/icons-react'
 import { Icon } from '../ui/icon'
+import { springs,tweens } from '../ui/lib/motion'
 import { cn } from '../ui/lib/utils'
-import { tweens, springs } from '../ui/lib/motion'
 import { VisuallyHidden } from '../ui/visually-hidden'
-import { useMotion } from '../motion/motion-provider'
 
 // -----------------------------------------------------------------------
 // Types
@@ -96,7 +97,7 @@ export interface CommandPaletteProps extends React.ComponentPropsWithoutRef<'div
 // Helpers
 // -----------------------------------------------------------------------
 
-import { getIsMac, matchesKeybinding, getModifierDisplay } from '../ui/lib/keybinding'
+import { getIsMac, getModifierDisplay,matchesKeybinding } from '../ui/lib/keybinding'
 
 /** Get the text-searchable value from a CommandItem. */
 function getFilterValue(item: CommandItem): string {

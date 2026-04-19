@@ -1,7 +1,8 @@
 'use client'
 
-import * as React from 'react'
 import { MotionConfig, useReducedMotion as useFMReducedMotion } from 'framer-motion'
+import * as React from 'react'
+
 import { springs, tweens } from '../ui/lib/motion'
 
 type ReducedMotionMode = 'user' | boolean
@@ -46,4 +47,4 @@ function useMotion() {
   return React.useContext(MotionContext)
 }
 
-export { MotionProvider, useMotion, type MotionProviderProps }
+export { MotionProvider, type MotionProviderProps,useMotion }

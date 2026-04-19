@@ -1,8 +1,9 @@
 'use client'
 
-import * as React from 'react'
-import { format, isBefore, isAfter, setMonth, setYear, addMonths } from 'date-fns'
 import { IconCalendarEvent } from '@tabler/icons-react'
+import { addMonths,format, isAfter, isBefore, setMonth, setYear } from 'date-fns'
+import * as React from 'react'
+
 import { Icon } from '../../ui/icon'
 import { cn } from '../../ui/lib/utils'
 import {
@@ -11,10 +12,10 @@ import {
   PopoverTrigger,
 } from '../../ui/popover'
 import { CalendarGrid } from './calendar-grid'
-import { YearPicker } from './year-picker'
 import { MonthPicker } from './month-picker'
-import { Presets } from './presets'
 import type { PresetKey } from './presets'
+import { Presets } from './presets'
+import { YearPicker } from './year-picker'
 
 type CalendarView = 'days' | 'months' | 'years'
 

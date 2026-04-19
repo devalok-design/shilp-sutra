@@ -1,12 +1,13 @@
 'use client'
 
-import * as React from 'react'
-import { computePosition, flip, offset, shift, autoUpdate, type Placement } from '@floating-ui/dom'
-import { AnimatePresence, motion } from 'framer-motion'
+import { autoUpdate, computePosition, flip, offset, type Placement,shift } from '@floating-ui/dom'
 import { type VariantProps } from 'class-variance-authority'
+import { AnimatePresence, motion } from 'framer-motion'
+import * as React from 'react'
+
 import { buttonVariants } from './button'
-import { cn } from './lib/utils'
 import { durations } from './lib/motion'
+import { cn } from './lib/utils'
 
 // ── Types ───────────────────────────────────────────────────────
 
@@ -358,4 +359,4 @@ const SplitButton = React.forwardRef<HTMLDivElement, SplitButtonProps>(
 SplitButton.displayName = 'SplitButton'
 
 export { SplitButton }
-export type { SplitButtonVariant, SplitButtonColor, SplitButtonSize }
+export type { SplitButtonColor, SplitButtonSize,SplitButtonVariant }

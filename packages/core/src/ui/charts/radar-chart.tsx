@@ -1,15 +1,16 @@
 'use client'
 
-import * as React from 'react'
-import { useState, useRef, useEffect } from 'react'
+import { curveLinearClosed,lineRadial } from 'd3-shape'
 import { motion } from 'framer-motion'
-import { lineRadial, curveLinearClosed } from 'd3-shape'
+import * as React from 'react'
+import { useEffect,useRef, useState } from 'react'
+
+import { motionProps,tweens } from '../lib/motion'
 import { cn } from '../lib/utils'
-import { tweens, motionProps } from '../lib/motion'
+import { useReducedMotion } from './_internal/animation'
+import { resolveColor } from './_internal/colors'
 import { Legend } from './_internal/legend'
 import { ChartTooltip, useChartTooltip } from './_internal/tooltip'
-import { resolveColor } from './_internal/colors'
-import { useReducedMotion } from './_internal/animation'
 
 export interface RadarChartProps extends Omit<React.HTMLAttributes<HTMLDivElement>, 'children'> {
   /** Data array (one entry per data point / axis) */

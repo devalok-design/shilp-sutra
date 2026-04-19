@@ -1,6 +1,7 @@
 import { render, screen } from '@testing-library/react'
+import { describe, expect,it } from 'vitest'
 import { axe } from 'vitest-axe'
-import { describe, it, expect } from 'vitest'
+
 import { TimePicker } from '../date-picker/time-picker'
 
 describe('TimePicker', () => {

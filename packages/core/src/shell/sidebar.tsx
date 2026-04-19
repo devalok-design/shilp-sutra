@@ -11,7 +11,14 @@
  * reading from Remix hooks or Zustand stores.
  */
 import * as React from 'react'
-import { useLink } from './link-context'
+
+import { Avatar, AvatarFallback, AvatarImage } from '../ui/avatar'
+import {
+  Collapsible,
+  CollapsibleContent,
+  CollapsibleTrigger,
+} from '../ui/collapsible'
+import { cn } from '../ui/lib/utils'
 import {
   Sidebar as ShadcnSidebar,
   SidebarContent,
@@ -30,13 +37,7 @@ import {
   SidebarMenuSubItem,
   SidebarSeparator,
 } from '../ui/sidebar'
-import {
-  Collapsible,
-  CollapsibleContent,
-  CollapsibleTrigger,
-} from '../ui/collapsible'
-import { Avatar, AvatarFallback, AvatarImage } from '../ui/avatar'
-import { cn } from '../ui/lib/utils'
+import { useLink } from './link-context'
 
 // -----------------------------------------------------------------------
 // Types

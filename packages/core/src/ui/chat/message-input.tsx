@@ -1,7 +1,8 @@
 'use client'
 
-import * as React from 'react'
 import { IconSend, IconSquare } from '@tabler/icons-react'
+import * as React from 'react'
+
 import { Button } from '../button'
 import { Icon } from '../icon'
 import { cn } from '../lib/utils'

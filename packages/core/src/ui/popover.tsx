@@ -1,13 +1,13 @@
 'use client'
 
-import * as React from 'react'
 import * as PopoverPrimitive from '@primitives/react-popover'
-import { motion, AnimatePresence } from 'framer-motion'
+import { AnimatePresence,motion } from 'framer-motion'
+import * as React from 'react'
 
-import { cn } from './lib/utils'
-import { springs, tweens } from './lib/motion'
 import { useIsMobile } from '../hooks/use-mobile'
 import { BottomSheet } from './lib/bottom-sheet'
+import { springs, tweens } from './lib/motion'
+import { cn } from './lib/utils'
 
 // ── Internal context to thread `open` state to animated children ──
 
@@ -102,4 +102,4 @@ PopoverContent.displayName = PopoverPrimitive.Content.displayName
 
 export type PopoverContentProps = React.ComponentPropsWithoutRef<typeof PopoverPrimitive.Content>
 
-export { Popover, PopoverTrigger, PopoverContent, PopoverAnchor }
+export { Popover, PopoverAnchor,PopoverContent, PopoverTrigger }

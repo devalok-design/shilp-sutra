@@ -1,8 +1,9 @@
 import { render } from '@testing-library/react'
-import { describe, it, expect } from 'vitest'
+import { describe, expect,it } from 'vitest'
 import { axe } from 'vitest-axe'
-import { DevadootIcon } from '../devadoot-icon'
+
 import { MotionProvider } from '../../motion/motion-provider'
+import { DevadootIcon } from '../devadoot-icon'
 
 function renderIcon(props: Parameters<typeof DevadootIcon>[0] = {}) {
   return render(

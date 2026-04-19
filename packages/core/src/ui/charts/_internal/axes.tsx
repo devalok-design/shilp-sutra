@@ -1,10 +1,10 @@
 'use client'
 
-import * as React from 'react'
-import { useRef, useEffect } from 'react'
 import { axisBottom, axisLeft, axisRight, axisTop } from 'd3-axis'
+import type { ScaleBand, ScaleLinear, ScalePoint, ScaleTime } from 'd3-scale'
 import { select } from 'd3-selection'
-import type { ScaleLinear, ScaleBand, ScalePoint, ScaleTime } from 'd3-scale'
+import * as React from 'react'
+import { useEffect,useRef } from 'react'
 
 export type AnyScale =
   | ScaleLinear<number, number>

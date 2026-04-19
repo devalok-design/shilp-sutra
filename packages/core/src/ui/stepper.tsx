@@ -1,9 +1,10 @@
 'use client'
 
+import { AnimatePresence,motion } from 'framer-motion'
 import * as React from 'react'
-import { motion, AnimatePresence } from 'framer-motion'
-import { cn } from './lib/utils'
+
 import { springs } from './lib/motion'
+import { cn } from './lib/utils'
 
 type StepState = 'completed' | 'active' | 'pending'
 
@@ -314,4 +315,4 @@ Stepper.displayName = 'Stepper'
 Step.displayName = 'Step'
 StepperContent.displayName = 'StepperContent'
 
-export { Stepper, Step, StepperContent, type StepperProps, type StepProps, type StepperContentProps }
+export { Step, Stepper, StepperContent, type StepperContentProps,type StepperProps, type StepProps }

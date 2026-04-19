@@ -1,8 +1,9 @@
 import { render, screen, within } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
-import { describe, it, expect, vi } from 'vitest'
-import { CommandBar } from '../command-bar'
+import { describe, expect, it, vi } from 'vitest'
+
 import type { CommandGroup } from '../../composed/command-palette'
+import { CommandBar } from '../command-bar'
 
 // -----------------------------------------------------------------------
 // Helpers

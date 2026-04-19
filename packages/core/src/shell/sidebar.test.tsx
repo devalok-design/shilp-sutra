@@ -1,10 +1,11 @@
 import { render, screen } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
-import { describe, it, expect, vi, beforeEach } from 'vitest'
+import { beforeEach,describe, expect, it, vi } from 'vitest'
 import { axe } from 'vitest-axe'
-import { AppSidebar } from './sidebar'
+
 import { SidebarProvider } from '../ui/sidebar'
 import type { NavGroup, NavItem, NavSubItem } from './sidebar'
+import { AppSidebar } from './sidebar'
 
 // jsdom does not provide matchMedia — supply a stub for useMobile / useColorMode
 beforeEach(() => {

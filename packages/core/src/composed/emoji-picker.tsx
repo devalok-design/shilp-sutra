@@ -1,15 +1,16 @@
 'use client'
 
+import { AnimatePresence,motion } from 'framer-motion'
 import * as React from 'react'
-import { motion, AnimatePresence } from 'framer-motion'
-import { cn } from '../ui/lib/utils'
+
 import { springs } from '../ui/lib/motion'
-import { Skeleton } from '../ui/skeleton'
+import { cn } from '../ui/lib/utils'
 import {
   Popover,
   PopoverContent,
   PopoverTrigger,
 } from '../ui/popover'
+import { Skeleton } from '../ui/skeleton'
 
 // ============================================================
 // Types

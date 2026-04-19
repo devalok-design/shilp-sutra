@@ -1,12 +1,13 @@
 'use client'
 
+import { IconCheck,IconPaperclip, IconUpload } from '@tabler/icons-react'
+import { AnimatePresence,motion } from 'framer-motion'
 import * as React from 'react'
-import { motion, AnimatePresence } from 'framer-motion'
-import { IconUpload, IconPaperclip, IconCheck } from '@tabler/icons-react'
-import { cn } from './lib/utils'
-import { springs, tweens, durations } from './lib/motion'
-import { Spinner } from './spinner'
+
 import { Icon } from './icon'
+import { durations,springs, tweens } from './lib/motion'
+import { cn } from './lib/utils'
+import { Spinner } from './spinner'
 
 /**
  * Props for FileUpload — a drag-and-drop file picker with client-side validation (type + size),

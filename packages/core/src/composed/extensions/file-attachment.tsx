@@ -1,6 +1,7 @@
-import { Node, mergeAttributes } from '@tiptap/core'
-import { ReactNodeViewRenderer, NodeViewWrapper, type NodeViewProps } from '@tiptap/react'
-import { IconFile, IconDownload } from '@tabler/icons-react'
+import { IconDownload,IconFile } from '@tabler/icons-react'
+import { mergeAttributes,Node } from '@tiptap/core'
+import { type NodeViewProps,NodeViewWrapper, ReactNodeViewRenderer } from '@tiptap/react'
+
 import { Icon } from '../../ui/icon'
 
 function formatFileSize(bytes: number): string {

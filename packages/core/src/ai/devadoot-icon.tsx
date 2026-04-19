@@ -12,10 +12,11 @@
  * Inspired by Google Gemini's gradient-as-identity approach: the color IS
  * the animation, not just rotation/scale applied to a static shape.
  */
+import { animate, AnimatePresence,motion, useMotionValue, useTransform } from 'framer-motion'
 import * as React from 'react'
-import { motion, useMotionValue, useTransform, animate, AnimatePresence } from 'framer-motion'
-import { cn } from '../ui/lib/utils'
+
 import { useMotion } from '../motion/motion-provider'
+import { cn } from '../ui/lib/utils'
 
 export type DevadootState = 'idle' | 'processing' | 'responded' | 'error'
 

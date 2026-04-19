@@ -1,4 +1,5 @@
 import { renderHook } from '@testing-library/react'
+
 import { useTouchDevice } from '../use-touch-device'
 
 describe('useTouchDevice', () => {

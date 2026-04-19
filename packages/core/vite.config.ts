@@ -119,13 +119,20 @@ export default defineConfig({
         /^react-zoom-pan-pinch($|\/)/, // browser-only transforms, used by FilePreview
         /^react-syntax-highlighter($|\/)/, // used by MarkdownViewer code blocks
         // Externalized in 0.37 to eliminate the rolldown CJS require() bridge.
-        // use-sync-external-store is a transitive dep of tiptap (via @tiptap/react)
-        // and calls `require("react")` in its shim, which forced us to inject
-        // `import { createRequire } from 'module'` into our rolldown-runtime
-        // chunk — breaking Turbopack consumers (Karm #30). Treating it as peer
-        // means the consumer's React installs pull it in natively; our dist no
-        // longer needs a CJS bridge at all.
+        // use-sync-external-store's shim calls `require("react")`, which forced
+        // us to inject `import { createRequire } from 'module'` into our
+        // rolldown-runtime chunk — breaking Turbopack consumers (Karm #30).
+        // Now declared in our `dependencies` so consumers get it transitively.
         /^use-sync-external-store($|\/)/,
+        // Externalized in 0.37: framer-motion and sonner carry module-scoped
+        // React contexts (MotionConfig, LayoutGroup, AnimatePresence, Toaster).
+        // Bundling them into our dist while consumers also install their own
+        // splits the context tree — animations stop mid-flight, toasts mount
+        // to the wrong provider. Declaring as peerDependencies forces a single
+        // consumer-controlled copy; externalizing here ensures we never ship
+        // a duplicate.
+        /^framer-motion($|\/)/,
+        /^sonner($|\/)/,
       ],
       output: {
         entryFileNames: '[name].js',

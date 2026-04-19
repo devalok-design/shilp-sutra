@@ -17,7 +17,8 @@
   },
   "dependencies": {
     "class-variance-authority": "^0.7.1",
-    "clsx": "^2.1.1"
+    "clsx": "^2.1.1",
+    "use-sync-external-store": "^1.5.0"
   },
   "exports": {
     ".": {
@@ -742,16 +743,17 @@
     "d3-time-format": "^4.0.0",
     "d3-transition": "^3.0.0",
     "date-fns": "^4.0.0",
+    "framer-motion": "^12.0.0",
     "input-otp": "^1.0.0",
     "react": "^18 || ^19",
     "react-dom": "^18 || ^19",
-    "use-sync-external-store": "^1.5.0",
     "react-markdown": "^10.0.0",
     "react-pdf": "^10.0.0",
     "react-syntax-highlighter": "^15.0.0 || ^16.0.0",
     "react-zoom-pan-pinch": "^3.0.0 || ^4.0.0",
     "remark-gfm": "^4.0.0",
-    "tailwindcss": "^3.4.0 || ^4.0.0"
+    "sonner": "^2.0.0",
+    "tailwindcss": "^4.0.0"
   },
   "peerDependenciesMeta": {
     "@tanstack/react-table": {
@@ -814,10 +816,10 @@
     "remark-gfm": {
       "optional": true
     },
-    "tailwindcss": {
+    "sonner": {
       "optional": true
     },
-    "use-sync-external-store": {
+    "tailwindcss": {
       "optional": true
     }
   },
@@ -866,9 +868,6 @@
     "remark-gfm": "^4.0.1",
     "sonner": "^2.0.7",
     "tailwind-merge": "^3.5.0"
-  },
-  "engines": {
-    "node": ">=20.19.0"
   },
   "packageManager": "pnpm@10.0.0"
 }

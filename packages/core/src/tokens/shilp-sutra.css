@@ -28,13 +28,14 @@
 /* TW4 content detection — scan our shipped dist JS for utility classes
    so consumers don't have to configure "content" for us.
 
-   Two forms combined for robustness across bundlers + pnpm layouts:
-     1. Package-name form: resolves via Node's package resolution
-        (honored by TW4's @tailwindcss/node resolver).
-     2. Relative-glob form: sibling ../**
-        relative to this CSS file at dist/tokens/shilp-sutra.css →
-        resolves to dist plus all sibling subdirs. Works when Node
-        resolution misses under pnpm strict hoisting. */
-@source "@devalok/shilp-sutra";
+   Priority order is deliberate:
+     1. Relative-path form: from dist/tokens/shilp-sutra.css up to dist/.
+        Under pnpm strict-hoist this always lands on the real (non-symlinked)
+        dist directory, so TW4 can read our compiled JS no matter how the
+        consumer package manager laid things out.
+     2. Package-name form: fallback via Node package resolution. Works on
+        npm/yarn and on pnpm with shamefully-hoist, but can miss under
+        strict-hoist depending on the TW4 resolver version. */
 @source "../../dist";
+@source "@devalok/shilp-sutra";
 

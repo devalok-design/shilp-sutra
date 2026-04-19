@@ -35,6 +35,14 @@ const preset: Partial<Config> = {}
 //
 // Written to stderr directly (not console.warn) so it survives Next's
 // output filters which can silence console calls during `next build`.
+// Inline process shim so we don't need @types/node in packages/core's
+// tsconfig (typecheck runs with types: []).
+declare const process:
+  | {
+      env?: { NODE_ENV?: string }
+      stderr?: { write: (s: string) => void }
+    }
+  | undefined
 let warned = false
 function emitDeprecationNotice(): void {
   if (warned) return
@@ -69,7 +77,7 @@ function emitDeprecationNotice(): void {
   } catch {
     // Fall through to console.warn.
   }
-  // eslint-disable-next-line no-console
+   
   console.warn(msg)
 }
 // Fire when the module is imported (ESM evaluates module body once).

@@ -711,7 +711,9 @@
   "files": [
     "dist",
     "docs/components",
+    "docs/rollback.md",
     "fonts",
+    "MIGRATION.md",
     "README.md",
     "llms.txt",
     "llms-full.txt"

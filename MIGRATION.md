@@ -8,11 +8,13 @@ This page indexes all breaking changes across `@devalok/shilp-sutra` versions. F
 
 0.37 completes the Tailwind 3 → 4 migration that started in 0.34. The JS preset is gone. Tokens now ship as `@theme` CSS variables that TW4 consumes directly. **This is a breaking setup change; component APIs are unchanged.**
 
+> **During the RC window, 0.37 lives on the `@next` dist-tag.** Use `@devalok/shilp-sutra@next` in the commands below. Once stable promotes to `@latest`, plain `@devalok/shilp-sutra` or `@latest` resolves to 0.37.x too. Pin via `@0.37.0` only after the stable release announcement.
+
 ### Quick migration checklist
 
 1. Install the new required peers:
    ```sh
-   pnpm add framer-motion @devalok/shilp-sutra@0.37.0
+   pnpm add framer-motion @devalok/shilp-sutra@next
    # if you use toasts:
    pnpm add sonner
    ```

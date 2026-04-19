@@ -462,14 +462,15 @@ Revised from v2 to use Changesets pre-mode:
 Migrate Karm to @devalok/shilp-sutra@next following MIGRATION.md.
 
 Steps:
-1. pnpm add @devalok/shilp-sutra@next
-2. Read MIGRATION.md at https://github.com/devalok-design/shilp-sutra/blob/main/MIGRATION.md
-3. Update app/globals.css per the "Before/After" section
-4. Delete tailwind.config.ts unless you have your own plugins/theme (in that case simplify per the "Consumer Plugins" section)
-5. Run `pnpm why framer-motion` and verify only ONE version shows
-6. Run `pnpm build` — should succeed with zero warnings referencing shilp-sutra
-7. Run dark mode sanity check from MIGRATION.md#dark-mode
-8. Report: paste the output of `pnpm why framer-motion` + any warnings from build
+1. `pnpm add @devalok/shilp-sutra@next framer-motion` (both required). Add `sonner` only if Karm renders `<Toaster />`.
+2. Read MIGRATION.md at https://github.com/devalok-design/shilp-sutra/blob/main/MIGRATION.md#v0370--tailwind-4-css-first-migration
+3. Update app/globals.css per the "Before / after: globals.css" section
+4. Delete tailwind.config.ts unless Karm has its own plugins/theme (in that case follow the "Keeping your own plugins" section)
+5. Verify `next.config.ts` transpilePackages lists BOTH `@devalok/shilp-sutra` AND `@devalok/shilp-sutra-brand`
+6. Run `pnpm why framer-motion` (see "Framer-motion single-copy check" — if strict-hoist hides a duplicate, fall back to `pnpm list framer-motion --depth=Infinity`)
+7. Run `pnpm build` — should succeed with zero warnings referencing shilp-sutra
+8. Run the dark mode sanity check from MIGRATION.md#dark-mode-sanity-check
+9. Report: paste the output of `pnpm list framer-motion --depth=Infinity` + any warnings from build
 ```
 
 **Acceptance:**

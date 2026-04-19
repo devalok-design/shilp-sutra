@@ -21,6 +21,7 @@ const scriptsDir = __dirname
 
 const steps = [
   { name: 'copy-tokens', script: 'copy-tokens.mjs' },
+  { name: 'copy-root-docs', script: 'copy-root-docs.mjs' },
   { name: 'fix-dts-primitives', script: 'fix-dts-primitives.mjs' },
   { name: 'inject-use-client', script: 'inject-use-client.mjs' },
   { name: 'build-tailwind-cjs', script: 'build-tailwind-cjs.mjs' },

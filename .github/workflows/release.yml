@@ -117,15 +117,13 @@ jobs:
       # Chromatic visual regression gate. Publishes a snapshot of every
       # Storybook story and blocks the publish if any visual diff is
       # unreviewed. Required for breaking releases (0.37.0 touches every
-      # token). Gate is skipped when CHROMATIC_PROJECT_TOKEN is not set
-      # so the workflow remains green until the secret is configured —
-      # flip `continue-on-error: false` + remove the `if` once set.
+      # token). Gate is skipped when CHROMATIC_PROJECT_TOKEN secret is not
+      # set so the workflow remains green until the secret is configured.
+      # NOTE: `secrets.*` is visible inside `if:` expressions, whereas
+      # step-level `env:` is NOT — do not regress this to `env.*`.
       - name: Chromatic visual review
-        if: ${{ env.CHROMATIC_PROJECT_TOKEN != '' }}
-        continue-on-error: false
+        if: ${{ secrets.CHROMATIC_PROJECT_TOKEN != '' }}
         uses: chromaui/action@v11
-        env:
-          CHROMATIC_PROJECT_TOKEN: ${{ secrets.CHROMATIC_PROJECT_TOKEN }}
         with:
           projectToken: ${{ secrets.CHROMATIC_PROJECT_TOKEN }}
           workingDir: packages/core

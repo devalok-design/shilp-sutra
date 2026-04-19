@@ -6,6 +6,102 @@
 >
 > Package: @devalok/shilp-sutra
 > Version: {{VERSION}}
+>
+> **If you are an AI agent reading this file top-to-bottom:** the Setup
+> section below is authoritative. If any later per-component doc or a
+> pre-0.37 history entry shows `tailwind.config.ts` / `presets: [shilpSutra]`
+> / `@config`, that is HISTORICAL and does NOT apply on 0.37+.
+
+---
+
+## Setup (0.37.0+ — Tailwind 4 CSS-first)
+
+**The only supported setup** is TW4 CSS-first. No JS preset, no `tailwind.config.ts` required from us.
+
+```sh
+pnpm add @devalok/shilp-sutra@next framer-motion
+# Only if you render <Toaster />:
+pnpm add sonner
+```
+
+```css
+/* app/globals.css */
+@import "tailwindcss";
+@import "@devalok/shilp-sutra/css";
+
+/* Your own extensions go in the same file */
+@plugin "@tailwindcss/typography";
+@source "./app/**/*.{ts,tsx}";
+```
+
+```ts
+// next.config.ts
+transpilePackages: ['@devalok/shilp-sutra', '@devalok/shilp-sutra-brand'],
+```
+
+**Do NOT** import `@devalok/shilp-sutra/tailwind` in a `tailwind.config.ts`. That export is a deprecated no-op stub and logs a dev-mode `console.warn`. It is scheduled for removal in 0.38.
+
+### Peer dependencies (0.37.0)
+
+| Package | Role | Install when |
+|---|---|---|
+| `react`, `react-dom` | required peer | always |
+| `tailwindcss ^4.0.0` | required peer | always |
+| `framer-motion ^12.0.0` | required peer | always — module-scoped motion contexts must be single-copy |
+| `sonner ^2.0.0` | optional peer | only if you render `<Toaster />` or call `toast()` |
+| `@tabler/icons-react` | optional peer | if you use `Icon` / icon-bearing components |
+| `@tanstack/react-table`, `@tanstack/react-virtual` | optional peer | if you use `DataTable` |
+| `@tiptap/*` | optional peer | if you use `RichTextEditor` or `RichChatInput` |
+| `react-pdf`, `react-zoom-pan-pinch` | optional peer | if you use `FilePreview` |
+| `react-markdown`, `remark-gfm` | optional peer | if you use `MarkdownViewer` |
+| `date-fns` | optional peer | if you use `DatePicker` / `ScheduleView` |
+| `input-otp` | optional peer | if you use `InputOTP` |
+
+### Token namespaces exposed by our `/css` import
+
+| TW4 namespace | Generates utilities like | Our tokens |
+|---|---|---|
+| `--color-*` | `bg-*`, `text-*`, `border-*`, `ring-*` | accent-1..12, secondary-1..12, surface-*, error-*, success-*, warning-*, info-*, category-*, link-* |
+| `--spacing-ds-*` | `p-ds-03`, `m-ds-04`, `gap-ds-05`, `w-ds-md`, `h-ds-lg` | ds-namespaced to avoid collision with consumer numeric `p-4` etc. |
+| `--text-ds-*` | `text-ds-md`, `text-ds-lg` | ds-namespaced; consumer `text-lg` still works |
+| `--leading-ds-*` | `leading-ds-tight`, `leading-ds-normal` | ds-namespaced |
+| `--tracking-*` | `tracking-tight`, `tracking-normal` | standard TW namespace |
+| `--font-*`, `--font-weight-*` | `font-sans`, `font-semibold` | standard TW namespace |
+| `--radius`, `--radius-ds-*` | `rounded` (bare), `rounded-ds-lg` | unprefixed + ds-namespaced |
+| `--shadow-*` | `shadow-raised`, `shadow-overlay` | semantic names only; bare `shadow` is NOT generated (TW4 has no default scale and we don't define `--shadow`) |
+| `--ease-*` | `ease-productive-standard` | semantic names |
+| `--breakpoint-*` | `md:`, `lg:` | standard TW namespace |
+| `--animate-*` | `animate-skeleton-shimmer`, `animate-processing-ants-*` | named animations |
+
+### Utilities declared via `@utility` (not token-driven)
+
+TW4 has no `--z-*` or `--duration-*` auto-namespace, so these are explicit:
+
+- **Z-layer:** `z-base`, `z-raised`, `z-dropdown`, `z-sticky`, `z-overlay`, `z-modal`, `z-popover`, `z-toast`, `z-tooltip`
+- **Named durations:** `duration-instant`, `duration-fast-01`, `duration-fast-02`, `duration-moderate-01`, `duration-moderate-01b`, `duration-moderate-02`, `duration-slow-01`, `duration-slow-02`
+- **Typography composites:** `text-heading-{2xl|xl|lg|md|sm|xs}`, `text-body-{lg|md|sm|xs}`, `text-label-{lg|md|sm|xs}`, `text-label-plain-{lg|md|sm}`, `text-caption`, `text-overline`, `text-code`
+- **Focus rings:** `focus-ring`, `focus-ring-inset`, `focus-ring-sm`
+- **Touch target:** `touch-target` (44×44 WCAG hit area via `::before`)
+- **Safe-area insets:** `pt-safe`, `pb-safe`, `pl-safe`, `pr-safe`, `p-safe`
+- **Number formatting:** `tabular-nums`
+
+### Dark mode
+
+`.dark` class-based. The `@custom-variant dark (&:where(.dark *))` declaration means `dark:` utilities apply to **descendants** of `.dark`, not the element itself. Put `.dark` on `<html>` (standard pattern for `next-themes`) or `<body>`.
+
+### Dead in TW4 — do NOT generate these
+
+| Dead pattern | Replacement |
+|---|---|
+| `w-[--var]` | `w-(--var)` |
+| `theme(spacing.N)` inside arbitrary values | literal value |
+| `bg-gradient-to-*` | `bg-linear-to-*` |
+| bare `shadow` | `shadow-sm`, `shadow-raised`, etc. |
+| `outline-none` | `outline-hidden` |
+| `rounded-sm` | `rounded-xs` |
+| `!prefix` | `suffix!` |
+
+See `MIGRATION.md#v0370--tailwind-4-css-first-migration` (root of this package).
 
 ---
 

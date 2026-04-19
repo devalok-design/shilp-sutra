@@ -11,27 +11,26 @@ For full documentation, setup guides, and architecture details, see the [monorep
 ## Install
 
 ```bash
-pnpm add @devalok/shilp-sutra
+pnpm add @devalok/shilp-sutra framer-motion
+# Only if you render a <Toaster />:
+pnpm add sonner
 ```
+
+> **Upgrading from &lt; 0.37?** 0.37 is a Tailwind 4 CSS-first release — the setup has changed. Read [MIGRATION.md](https://github.com/devalok-design/shilp-sutra/blob/main/MIGRATION.md#v0370--tailwind-4-css-first-migration).
 
 ## Quick Start
 
-```ts
-// tailwind.config.ts
-import shilpSutra from '@devalok/shilp-sutra/tailwind'
-
-export default {
-  presets: [shilpSutra],
-  content: [
-    './app/**/*.{ts,tsx}',
-    './node_modules/@devalok/shilp-sutra/dist/**/*.js',
-  ],
-}
+```css
+/* app/globals.css */
+@import "tailwindcss";
+@import "@devalok/shilp-sutra/css";
 ```
 
-```tsx
-// app/layout.tsx
-import '@devalok/shilp-sutra/tokens'
+```ts
+// next.config.ts
+export default {
+  transpilePackages: ['@devalok/shilp-sutra', '@devalok/shilp-sutra-brand'],
+}
 ```
 
 ```tsx
@@ -39,14 +38,18 @@ import '@devalok/shilp-sutra/tokens'
 import { Button } from '@devalok/shilp-sutra/ui/button'
 ```
 
+No `tailwind.config.ts` required from us. Your own plugins or content globs go in `globals.css` via TW4 directives (`@plugin`, `@source`, `@theme`).
+
 ## Peer Dependencies
 
 ### Required
 
-| Package | Version |
-|---------|---------|
-| `react` | `^18 \|\| ^19` |
-| `react-dom` | `^18 \|\| ^19` |
+| Package | Version | Why |
+|---|---|---|
+| `react` | `^18 \|\| ^19` | |
+| `react-dom` | `^18 \|\| ^19` | |
+| `tailwindcss` | `^4.0.0` | We ship TW4 `@theme` CSS; TW3 is not supported |
+| `framer-motion` | `^12.0.0` | Shared-state motion contexts must be single-copy |
 
 ### Optional
 
@@ -54,28 +57,22 @@ Install only what you use:
 
 | Feature | Packages |
 |---------|----------|
+| Toasts (`./ui/toaster`, `./ui/toast`) | `sonner` |
 | Charts (`./ui/charts`) | `d3-array`, `d3-axis`, `d3-format`, `d3-interpolate`, `d3-scale`, `d3-selection`, `d3-shape`, `d3-time-format`, `d3-transition` |
-| Rich Text Editor (`./composed/rich-text-editor`) | `@tiptap/react`, `@tiptap/starter-kit`, `@tiptap/extension-placeholder` |
+| Rich Text Editor (`./composed/rich-text-editor`) | `@tiptap/react`, `@tiptap/starter-kit` |
 | DataTable (`./ui/data-table`) | `@tanstack/react-table`, `@tanstack/react-virtual` |
 | Icons | `@tabler/icons-react` |
 | Date components (`./composed/date-picker`) | `date-fns` |
 | OTP Input (`./ui/input-otp`) | `input-otp` |
-| Markdown rendering | `react-markdown` |
-
-## Next.js
-
-Add to `next.config.js`:
-
-```js
-transpilePackages: ["@devalok/shilp-sutra", "@devalok/shilp-sutra-brand"]
-```
+| Markdown rendering | `react-markdown`, `remark-gfm` |
+| PDF preview (`./composed/file-preview`) | `react-pdf`, `react-zoom-pan-pinch` |
 
 ## Links
 
 - [Storybook](https://devalok-design.github.io/shilp-sutra/) -- interactive component docs
 - [Monorepo README](https://github.com/devalok-design/shilp-sutra#readme) -- full docs, architecture, component list
 - [Changelog](https://github.com/devalok-design/shilp-sutra/blob/main/CHANGELOG.md)
-- [Migration Guide](https://github.com/devalok-design/shilp-sutra/blob/main/docs/MIGRATION.md)
+- [Migration Guide](https://github.com/devalok-design/shilp-sutra/blob/main/MIGRATION.md)
 
 ## License
 

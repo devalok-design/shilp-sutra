@@ -1,0 +1,3 @@
+@import "tailwindcss";
+@import "@devalok/shilp-sutra/tokens";
+@config "../tailwind.config.ts";

@@ -1,0 +1,28 @@
+{
+  "name": "shilp-sutra-smoke-consumer",
+  "version": "0.0.0",
+  "private": true,
+  "description": "Consumer-side smoke test for @devalok/shilp-sutra. Simulates what Karm (and any TW4 Next.js consumer) does — pnpm packs core, installs the tarball, imports a representative surface of components, runs next build with Turbopack. Any dist-side bug (Node-only imports, TW3 class leftovers, theme() calls, etc.) that a real consumer would hit surfaces here.",
+  "scripts": {
+    "build": "next build --turbopack",
+    "dev": "next dev --turbopack"
+  },
+  "dependencies": {
+    "@devalok/shilp-sutra": "file:./shilp-sutra.tgz",
+    "next": "^16.0.0",
+    "react": "^19.0.0",
+    "react-dom": "^19.0.0",
+    "@tabler/icons-react": "^3.0.0",
+    "@emoji-mart/data": "^1.0.0",
+    "@emoji-mart/react": "^1.0.0",
+    "date-fns": "^4.0.0"
+  },
+  "devDependencies": {
+    "@tailwindcss/postcss": "^4.2.0",
+    "@types/node": "^22.0.0",
+    "@types/react": "^19.0.0",
+    "@types/react-dom": "^19.0.0",
+    "tailwindcss": "^4.2.0",
+    "typescript": "^5.9.0"
+  }
+}

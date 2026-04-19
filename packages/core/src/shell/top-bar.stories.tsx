@@ -212,7 +212,7 @@ export const WithMobileLogo: Story = {
       <TopBar.Left>
         <SidebarTrigger className="hidden text-surface-fg-muted md:flex" />
         <div className="flex items-center gap-ds-02 md:hidden">
-          <div className="h-6 w-6 rounded-ds-md bg-gradient-to-br from-pink-7 to-red-7" />
+          <div className="h-6 w-6 rounded-ds-md bg-linear-to-br from-pink-7 to-red-7" />
           <span className="text-ds-md font-semibold text-surface-fg">Karm</span>
         </div>
         <TopBar.Title>Dashboard</TopBar.Title>

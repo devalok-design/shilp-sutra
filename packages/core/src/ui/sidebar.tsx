@@ -247,7 +247,7 @@ const Sidebar = forwardRef<
         <aside
           aria-label="Sidebar"
           className={cn(
-            'flex h-full w-[--sidebar-width] flex-col bg-surface-raised text-surface-fg',
+            'flex h-full w-(--sidebar-width) flex-col bg-surface-raised text-surface-fg',
             className,
           )}
           ref={ref}
@@ -264,7 +264,7 @@ const Sidebar = forwardRef<
           <SheetContent
             data-sidebar="sidebar"
             data-mobile="true"
-            className="w-[--sidebar-width] bg-surface-raised p-0 text-surface-fg [&>button]:hidden"
+            className="w-(--sidebar-width) bg-surface-raised p-0 text-surface-fg [&>button]:hidden"
             style={
               {
                 '--sidebar-width': SIDEBAR_WIDTH_MOBILE,
@@ -292,23 +292,23 @@ const Sidebar = forwardRef<
       >
         <div
           className={cn(
-            'relative h-svh w-[--sidebar-width] bg-transparent transition-[width] duration-moderate-02 ease-productive-exit',
+            'relative h-svh w-(--sidebar-width) bg-transparent transition-[width] duration-moderate-02 ease-productive-exit',
             'group-data-[collapsible=offcanvas]:w-0',
             'group-data-[side=right]:rotate-180',
             variant === 'floating' || variant === 'inset'
-              ? 'group-data-[collapsible=icon]:w-[calc(var(--sidebar-width-icon)_+_theme(spacing.4))]'
-              : 'group-data-[collapsible=icon]:w-[--sidebar-width-icon]',
+              ? 'group-data-[collapsible=icon]:w-[calc(var(--sidebar-width-icon)_+_1rem)]'
+              : 'group-data-[collapsible=icon]:w-(--sidebar-width-icon)',
           )}
         />
         <div
           className={cn(
-            'fixed inset-y-0 z-raised hidden h-svh w-[--sidebar-width] transition-[left,right,width] duration-moderate-02 ease-productive-exit md:flex',
+            'fixed inset-y-0 z-raised hidden h-svh w-(--sidebar-width) transition-[left,right,width] duration-moderate-02 ease-productive-exit md:flex',
             side === 'left'
               ? 'left-0 group-data-[collapsible=offcanvas]:left-[calc(var(--sidebar-width)*-1)]'
               : 'right-0 group-data-[collapsible=offcanvas]:right-[calc(var(--sidebar-width)*-1)]',
             variant === 'floating' || variant === 'inset'
-              ? 'p-ds-03 group-data-[collapsible=icon]:w-[calc(var(--sidebar-width-icon)_+_theme(spacing.4)_+2px)]'
-              : 'group-data-[collapsible=icon]:w-[--sidebar-width-icon] group-data-[side=left]:border-r group-data-[side=right]:border-l',
+              ? 'p-ds-03 group-data-[collapsible=icon]:w-[calc(var(--sidebar-width-icon)_+_1rem_+2px)]'
+              : 'group-data-[collapsible=icon]:w-(--sidebar-width-icon) group-data-[side=left]:border-r group-data-[side=right]:border-l',
             className,
           )}
           {...props}
@@ -316,7 +316,7 @@ const Sidebar = forwardRef<
           <aside
             aria-label="Sidebar"
             data-sidebar="sidebar"
-            className="flex h-full w-full flex-col bg-surface-raised group-data-[variant=floating]:rounded-ds-lg group-data-[variant=floating]:border group-data-[variant=floating]:border-surface-border group-data-[variant=floating]:shadow"
+            className="flex h-full w-full flex-col bg-surface-raised group-data-[variant=floating]:rounded-ds-lg group-data-[variant=floating]:border group-data-[variant=floating]:border-surface-border group-data-[variant=floating]:shadow-raised"
           >
             {children}
           </aside>
@@ -388,7 +388,7 @@ const SidebarInset = forwardRef<HTMLDivElement, ComponentProps<'main'>>(
         ref={ref}
         className={cn(
           'relative flex min-h-svh flex-1 flex-col bg-surface-base',
-          'peer-data-[variant=inset]:min-h-[calc(100svh-theme(spacing.4))] md:peer-data-[variant=inset]:m-ds-03 md:peer-data-[state=collapsed]:peer-data-[variant=inset]:ml-ds-03 md:peer-data-[variant=inset]:ml-0 md:peer-data-[variant=inset]:rounded-ds-xl md:peer-data-[variant=inset]:shadow',
+          'peer-data-[variant=inset]:min-h-[calc(100svh-1rem)] md:peer-data-[variant=inset]:m-ds-03 md:peer-data-[state=collapsed]:peer-data-[variant=inset]:ml-ds-03 md:peer-data-[variant=inset]:ml-0 md:peer-data-[variant=inset]:rounded-ds-xl md:peer-data-[variant=inset]:shadow-raised',
           className,
         )}
         {...props}
@@ -744,7 +744,7 @@ const SidebarMenuSkeleton = forwardRef<
         />
       )}
       <Skeleton
-        className="h-4 max-w-[--skeleton-width] flex-1"
+        className="h-4 max-w-(--skeleton-width) flex-1"
         data-sidebar="menu-skeleton-text"
         style={
           {

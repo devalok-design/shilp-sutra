@@ -13,7 +13,7 @@ const skeletonVariants = cva('bg-skeleton-base', {
     animation: {
       pulse: 'animate-pulse motion-reduce:animate-none',
       shimmer:
-        'bg-[length:200%_100%] bg-gradient-to-r from-skeleton-base via-skeleton-shimmer to-skeleton-base animate-skeleton-shimmer [background-attachment:fixed] motion-reduce:animate-none',
+        'bg-[length:200%_100%] bg-linear-to-r from-skeleton-base via-skeleton-shimmer to-skeleton-base animate-skeleton-shimmer [background-attachment:fixed] motion-reduce:animate-none',
       none: '',
     },
   },
@@ -77,7 +77,7 @@ Skeleton.displayName = 'Skeleton'
 const animationClasses = {
   pulse: 'animate-pulse',
   shimmer:
-    'bg-[length:200%_100%] bg-gradient-to-r from-skeleton-base via-skeleton-shimmer to-skeleton-base animate-skeleton-shimmer motion-reduce:animate-none',
+    'bg-[length:200%_100%] bg-linear-to-r from-skeleton-base via-skeleton-shimmer to-skeleton-base animate-skeleton-shimmer motion-reduce:animate-none',
   none: '',
 } as const
 

@@ -175,7 +175,7 @@ export default function VideoPreview({ url, onError }: { url: string; onError?: 
             animate={{ opacity: 1, y: 0 }}
             exit={{ opacity: 0, y: 10 }}
             transition={tweens.fade}
-            className="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black/80 to-transparent px-ds-04 pb-ds-04 pt-ds-08"
+            className="absolute bottom-0 left-0 right-0 bg-linear-to-t from-black/80 to-transparent px-ds-04 pb-ds-04 pt-ds-08"
           >
             {/* Progress bar */}
             <div

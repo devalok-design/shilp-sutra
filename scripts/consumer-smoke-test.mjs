@@ -23,7 +23,18 @@ import { fileURLToPath } from 'url'
 const __dirname = dirname(fileURLToPath(import.meta.url))
 const ROOT = resolve(__dirname, '..')
 const CORE = join(ROOT, 'packages/core')
-const CONSUMER = join(ROOT, 'tests/smoke-consumer')
+
+// Variant selection — default Next 16 + Turbopack, or pass `--variant next15-webpack`
+// for the Next 15 + Webpack fixture. Added in 0.37 to cover both current bundler
+// realities (council review called out Webpack-only consumers as untested).
+const variantArg = process.argv.find((a) => a.startsWith('--variant='))?.split('=')[1]
+  ?? (process.argv.includes('--variant')
+    ? process.argv[process.argv.indexOf('--variant') + 1]
+    : null)
+const VARIANT = variantArg ?? 'default'
+const CONSUMER_DIR = VARIANT === 'next15-webpack' ? 'tests/smoke-consumer-next15' : 'tests/smoke-consumer'
+const CONSUMER = join(ROOT, CONSUMER_DIR)
+const VARIANT_LABEL = VARIANT === 'next15-webpack' ? 'Next 15 + Webpack' : 'Next 16 + Turbopack'
 
 const GREEN = '\x1b[32m'
 const RED = '\x1b[31m'
@@ -64,6 +75,8 @@ function run(cmd, args, opts = {}) {
 }
 
 // ── Preflight: smoke consumer fixture exists ────────────────────────────
+
+console.log(`${CYAN}${BOLD}Consumer smoke — ${VARIANT_LABEL}${RESET}`)
 
 if (!existsSync(CONSUMER)) {
   fail(`Smoke consumer fixture not found at ${CONSUMER}. This script is useless without it.`)
@@ -125,7 +138,7 @@ pass('Consumer installed')
 
 // ── Step 4: next build --turbopack ─────────────────────────────────────
 
-step('Running next build (Turbopack)')
+step(`Running next build (${VARIANT_LABEL})`)
 const next = run('pnpm', ['run', 'build'], { cwd: CONSUMER })
 const combined = (next.stdout || '') + '\n' + (next.stderr || '')
 // Save full log for inspection

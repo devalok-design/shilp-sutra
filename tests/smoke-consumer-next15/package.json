@@ -1,0 +1,25 @@
+{
+  "name": "shilp-sutra-smoke-consumer-next15",
+  "version": "0.0.0",
+  "private": true,
+  "description": "Minimal consumer smoke test for @devalok/shilp-sutra on Next.js 15 + Webpack. Scope is narrower than the Turbopack variant — install + import + build, no RichChatInput/tiptap-heavy surface. Catches the Webpack-specific CSS pipeline failures (PostCSS plugin resolution, @source directive handling) that Turbopack doesn't exercise.",
+  "scripts": {
+    "build": "next build"
+  },
+  "dependencies": {
+    "@devalok/shilp-sutra": "file:./shilp-sutra.tgz",
+    "next": "^15.0.0",
+    "react": "^18.3.0",
+    "react-dom": "^18.3.0",
+    "@tabler/icons-react": "^3.0.0",
+    "framer-motion": "^12.0.0"
+  },
+  "devDependencies": {
+    "@tailwindcss/postcss": "^4.2.0",
+    "@types/node": "^22.0.0",
+    "@types/react": "^18.3.0",
+    "@types/react-dom": "^18.3.0",
+    "tailwindcss": "^4.2.0",
+    "typescript": "^5.9.0"
+  }
+}

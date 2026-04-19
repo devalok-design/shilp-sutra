@@ -106,6 +106,32 @@ jobs:
       - name: Consumer smoke (Next 16 + Turbopack + TW4)
         run: node scripts/consumer-smoke-test.mjs
 
+      # Second smoke variant — Next 15 + Webpack. A sizeable portion of
+      # consumers are still on Webpack; TW4 + Webpack has different CSS
+      # pipeline semantics than Turbopack. Runs only when the variant
+      # directory exists so the step is a no-op until #58 lands.
+      - name: Consumer smoke (Next 15 + Webpack)
+        if: ${{ hashFiles('tests/smoke-consumer-next15/package.json') != '' }}
+        run: node scripts/consumer-smoke-test.mjs --variant next15-webpack
+
+      # Chromatic visual regression gate. Publishes a snapshot of every
+      # Storybook story and blocks the publish if any visual diff is
+      # unreviewed. Required for breaking releases (0.37.0 touches every
+      # token). Gate is skipped when CHROMATIC_PROJECT_TOKEN is not set
+      # so the workflow remains green until the secret is configured —
+      # flip `continue-on-error: false` + remove the `if` once set.
+      - name: Chromatic visual review
+        if: ${{ env.CHROMATIC_PROJECT_TOKEN != '' }}
+        continue-on-error: false
+        uses: chromaui/action@v11
+        env:
+          CHROMATIC_PROJECT_TOKEN: ${{ secrets.CHROMATIC_PROJECT_TOKEN }}
+        with:
+          projectToken: ${{ secrets.CHROMATIC_PROJECT_TOKEN }}
+          workingDir: packages/core
+          exitZeroOnChanges: false
+          onlyChanged: true
+
       # ── Publish ─────────────────────────────────────────────────────────
       # Trusted Publisher on npmjs.com is configured for this repo+workflow,
       # so NPM_TOKEN is no longer required once the migration to OIDC is

@@ -149,3 +149,31 @@ Run `npm view @devalok/shilp-sutra dist-tags` to see the live state. The list we
 - `next` — current prerelease (e.g., `0.37.0-next.N`).
 
 If any of those show `undefined` or an unexpected version, treat it as an incident and escalate.
+
+---
+
+## Rollback drill — what, when, who
+
+This playbook is only as good as its last rehearsal. Do a real drill BEFORE every breaking release (0.37.0, 0.38.0, 1.0.0, etc.) so the commands aren't first-run under pressure.
+
+### Drill procedure (15 min)
+
+1. Publish a throwaway RC under the `next` dist-tag:
+   ```sh
+   # On a throwaway branch, cut a changeset patch bump to e.g. 0.37.0-next.999
+   pnpm changeset version
+   # Let the Release workflow publish it to @next
+   ```
+2. Verify: `npm view @devalok/shilp-sutra@0.37.0-next.999 version` returns `0.37.0-next.999`.
+3. Walk Scenario 1 against this throwaway version — replace `0.37.0` with `0.37.0-next.999` and `0.36.1` with the current `@latest`:
+   ```sh
+   npm dist-tag add @devalok/shilp-sutra@<current-latest> latest
+   npm deprecate @devalok/shilp-sutra@0.37.0-next.999 "Drill — not a real incident"
+   npm unpublish @devalok/shilp-sutra@0.37.0-next.999    # within 72h
+   ```
+4. Confirm `npm view @devalok/shilp-sutra dist-tags` shows the expected post-drill state.
+5. Document any step where the command output surprised you, and update this file.
+
+### When to skip
+
+Never skip for breaking releases. Skippable for patches/minors of an already-drilled major, provided the drill is less than 6 months old.

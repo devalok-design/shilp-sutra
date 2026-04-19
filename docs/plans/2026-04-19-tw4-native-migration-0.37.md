@@ -156,13 +156,14 @@ if (typeof process !== 'undefined' && process.env?.NODE_ENV !== 'production') {
 export default preset
 ```
 
-### 4.6 `@source` declared as package-form (primary), glob as fallback
+### 4.6 `@source` — relative-to-dist (primary), package-form (secondary)
 ```css
-/* shilp-sutra.css */
-@source "@devalok/shilp-sutra";
+/* shilp-sutra.css, when shipped at dist/tokens/shilp-sutra.css */
+@source "../../dist";              /* resolves to the real (non-symlinked) dist path */
+@source "@devalok/shilp-sutra";    /* fallback; some bundlers prefer package-form */
 ```
 
-Package-form resolves through pnpm's symlink maze correctly; relative-glob does not.
+**Revision from v2:** under pnpm strict-hoist, the CSS file ships inside `.pnpm/@devalok+shilp-sutra@X/node_modules/@devalok/shilp-sutra/dist/tokens/shilp-sutra.css`. The relative path `../../dist` lands on the *actual* dist files every time. Package-form `@devalok/shilp-sutra` works too but depends on the bundler's module-resolution semantics for non-JS specifiers. Declare both; the relative form is the belt, the package-form is the suspenders.
 
 ### 4.7 CSS file layout
 ```
@@ -328,7 +329,8 @@ Same as v2, with v3 corrections:
 - Z-index namespace is `--z-*` (not `--z-index-*`). primitives.css already has this — just use the existing names in `@theme`.
 - Spacing renamed to `--spacing-ds-*` in `@theme` (not bare `--spacing-*`) to avoid consumer collision.
 - Meta-tokens explicitly allowlisted to stay in `:root {}`: `--action-hover-opacity`, `--action-selected-opacity`, `--action-disabled-opacity`, `--action-focus-opacity`, `--action-active-opacity`, `--shadow-color`, `--shadow-strength`, `--color-surface-0` (private), `--border-focus-width`, `--border-focus-offset`.
-- Explicit allowlist of namespaces that go in `@theme`: `--color-*`, `--spacing-ds-*`, `--text-ds-*`, `--leading-ds-*`, `--tracking-*`, `--font-weight-*`, `--font-*` (families), `--radius-*`, `--shadow-*`, `--blur-*`, `--ease-*`, `--duration-*`, `--breakpoint-*`, `--z-*`, `--animate-*`.
+- Explicit allowlist of namespaces that go in `@theme`: `--color-*`, `--spacing-ds-*`, `--text-ds-*`, `--leading-ds-*`, `--tracking-*`, `--font-weight-*`, `--font-*` (families), `--radius-*`, `--shadow-*`, `--blur-*`, `--ease-*`, `--breakpoint-*`, `--animate-*`.
+- **Non-auto-generating namespaces** — live in `:root` AND get custom `@utility` blocks in `utilities.css`: `--z-*` (TW4 has no `--z-*` namespace), `--duration-*` (TW4 has no `--duration-*` namespace). Both sets use semantic names (`z-popover`, `duration-fast-01`) declared via `@utility`.
 - `--radius-default` becomes `--radius` (no suffix) so bare `rounded` maps correctly.
 - `backgroundImage` gradient tokens go in `--background-image-*` namespace if we want them utility-generating; otherwise stay `:root`.
 
@@ -474,6 +476,36 @@ Steps:
 - `npm view @devalok/shilp-sutra@0.37.0` fresh.
 - Karm confirms green with paste of `pnpm why framer-motion` showing single version.
 - Issue #30 closed with link to 0.37.0.
+
+### 9a. Post-publish — file DS Notice on Karm
+
+**Required for every breaking release.** Within 1 business day of stable publish, invoke `/send-karm-notice` to file an issue on `devalok-design/karm` with label `shilp-sutra-ai-agent-feedback`:
+
+```markdown
+Title: [DS Notice] @devalok/shilp-sutra@0.37.0 — Tailwind 4 CSS-first migration
+
+## Type
+migration-required
+
+## Affects
+- Component(s): all (setup-only; component APIs unchanged)
+- Current version: @devalok/shilp-sutra@0.36.1
+- Target version: @devalok/shilp-sutra@0.37.0
+
+## Description
+0.37 completes the TW3→TW4 migration. JS preset removed; `@theme` CSS-first.
+framer-motion is now a required peer dep (was bundled). sonner is optional peer.
+
+## Action Required
+See MIGRATION.md#v0370--tailwind-4-css-first-migration for before/after
+globals.css diff, peer-install steps, dark-mode sanity check, and framer-motion
+single-copy verification.
+
+## Timeline
+immediate (current TW4 blockers resolved by this release)
+```
+
+Do NOT skip this step for "pre-coordinated" consumers — the DS Notice creates the durable record other future consumers search against.
 
 ## 6. Risks + mitigations
 

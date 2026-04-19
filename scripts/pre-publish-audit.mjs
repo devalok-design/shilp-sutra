@@ -376,6 +376,167 @@ advisory('No TW3 !prefix important (use trailing class! in TW4)', () => {
   return true
 })
 
+// --- v0.37 Council Gates (added 2026-04-19) ---
+// These gates were defined by the TW4 migration agent council review.
+// Each prevents a silent correctness regression identified in round 2.
+console.log('\n\x1b[36mv0.37 Council Gates\x1b[0m')
+
+const corePkg = JSON.parse(readFileSync(join(ROOT, 'packages/core/package.json'), 'utf-8'))
+
+// Gate: framer-motion + sonner in peerDependencies (not bundled as direct dep)
+gate('framer-motion is a required peerDependency', () => {
+  if (!corePkg.peerDependencies?.['framer-motion']) {
+    return 'framer-motion missing from peerDependencies — must be required peer (module-scoped React contexts split when bundled)'
+  }
+  if (corePkg.dependencies?.['framer-motion']) {
+    return 'framer-motion must not be in `dependencies` — it is a peer'
+  }
+  if (corePkg.peerDependenciesMeta?.['framer-motion']?.optional) {
+    return 'framer-motion is REQUIRED (not optional) — remove the optional meta'
+  }
+  return true
+})
+
+gate('sonner is an optional peerDependency', () => {
+  if (!corePkg.peerDependencies?.['sonner']) {
+    return 'sonner missing from peerDependencies'
+  }
+  if (corePkg.dependencies?.['sonner']) {
+    return 'sonner must not be in `dependencies`'
+  }
+  if (!corePkg.peerDependenciesMeta?.['sonner']?.optional) {
+    return 'sonner must be marked optional in peerDependenciesMeta (consumers without toasts should not be required to install it)'
+  }
+  return true
+})
+
+// Gate: tailwindcss peer tightened to ^4.0.0 only (0.37 drops TW3 support)
+gate('tailwindcss peer is ^4.0.0 only', () => {
+  const range = corePkg.peerDependencies?.tailwindcss
+  if (!range) return 'tailwindcss missing from peerDependencies'
+  if (range.includes('^3') || range.includes('3.')) {
+    return `tailwindcss peer range is "${range}" — 0.37 ships TW4-native CSS and cannot support TW3 consumers`
+  }
+  if (!range.startsWith('^4')) {
+    return `tailwindcss peer range is "${range}" — expected ^4.x.y`
+  }
+  return true
+})
+
+// Gate: exports types-first ordering — TS silently falls back to .js otherwise
+gate('exports types-first ordering (every subpath)', () => {
+  const violations = []
+  function walk(node, path) {
+    if (!node || typeof node !== 'object') return
+    // Conditional export block (has `types`/`import`/`default`/etc.)
+    const keys = Object.keys(node)
+    const isConditional = keys.some((k) => ['types', 'import', 'require', 'default', 'node', 'browser'].includes(k))
+    if (isConditional && node.types) {
+      if (keys[0] !== 'types') {
+        violations.push(`${path} — "types" must be first, got: [${keys.join(', ')}]`)
+      }
+      return
+    }
+    // Recurse into sub-exports
+    for (const [k, v] of Object.entries(node)) {
+      if (typeof v === 'object' && v !== null) walk(v, `${path}${k === '.' ? '' : k}`)
+    }
+  }
+  walk(corePkg.exports, '')
+  if (violations.length > 0) {
+    return `Exports with wrong conditional ordering:\n${violations.map((v) => `      ${v}`).join('\n')}`
+  }
+  return true
+})
+
+// Gate: no `engines.node` (Phase 0 spike succeeded; the floor was leftover)
+advisory('No engines.node floor (spike-succeeded state)', () => {
+  if (corePkg.engines?.node) {
+    return `engines.node = "${corePkg.engines.node}" — if the use-sync-external-store spike succeeded, this is leftover and forces EBADENGINE warnings`
+  }
+  return true
+})
+
+// Gate: MIGRATION.md exists at repo root AND has 0.37 section
+gate('MIGRATION.md at repo root with 0.37 section', () => {
+  const path = join(ROOT, 'MIGRATION.md')
+  if (!existsSync(path)) return 'MIGRATION.md not found at repo root'
+  const content = readFileSync(path, 'utf-8')
+  const versionOnly = coreVersion.match(/^(\d+\.\d+)/)?.[1]
+  if (!versionOnly) return true
+  if (!content.includes(`v${versionOnly}`)) {
+    return `MIGRATION.md has no section matching v${versionOnly} (current core version is ${coreVersion})`
+  }
+  return true
+})
+
+// Gate: README setup section has no TW3 preset residue
+gate('README has no TW3 `presets: [shilpSutra]` residue', () => {
+  const readmePaths = [join(ROOT, 'README.md'), join(ROOT, 'packages/core/README.md')]
+  for (const p of readmePaths) {
+    if (!existsSync(p)) continue
+    const content = readFileSync(p, 'utf-8')
+    if (/presets:\s*\[\s*shilpSutra\s*\]/.test(content)) {
+      return `${p} still shows TW3-era \`presets: [shilpSutra]\` — TW4 CSS-first uses \`@import "@devalok/shilp-sutra/css"\``
+    }
+  }
+  return true
+})
+
+// Gate: dist contains zero Node-builtin imports (Phase 0 acceptance)
+gate('dist has zero `from "module"` / `require("module")` imports', () => {
+  const distFiles = globSync('packages/core/dist/**/*.js', { cwd: ROOT })
+  const offenders = []
+  for (const f of distFiles) {
+    const content = readFileSync(join(ROOT, f), 'utf-8')
+    if (/from\s+['"]module['"]/.test(content) || /require\(\s*['"]module['"]\s*\)/.test(content) || /createRequire\s*\(/.test(content)) {
+      offenders.push(f)
+    }
+  }
+  if (offenders.length > 0) {
+    return `Node-builtin import leaked into dist (breaks Turbopack):\n${offenders.map((f) => `      ${f}`).join('\n')}`
+  }
+  return true
+})
+
+// Gate: bare `shadow` class does not appear as a standalone class token in
+// source string literals. TW4 dropped the default shadow scale — bare `shadow`
+// silently compiles to nothing unless `--shadow` (unsuffixed) is defined in
+// @theme. We don't define it, so any bare `shadow` loses its visual effect.
+//
+// Detection: extract string literals, split on whitespace, strip TW4 variant
+// prefixes (`hover:`, `group-data-[…]:`, etc.), check terminal class == 'shadow'.
+// Correctly ignores comments, compound classes (`transition-shadow`,
+// `box-shadow`), and substring matches.
+gate('No bare `shadow` class in className strings', () => {
+  const v = scanSource((line) => {
+    if (/^\s*\*/.test(line) || /^\s*\/\//.test(line)) return null
+    const literals = line.matchAll(/(['"`])((?:\\.|(?!\1)[^\\])*)\1/g)
+    for (const m of literals) {
+      const body = m[2]
+      for (const token of body.split(/\s+/)) {
+        if (!token) continue
+        const terminal = token.replace(/^(?:[a-zA-Z0-9-]+(?:\[[^\]]*\])?:)+/, '')
+        if (terminal === 'shadow') return 'bare `shadow` token'
+      }
+    }
+    return null
+  })
+  if (v.length > 0) {
+    return `Bare \`shadow\` class will silently drop in TW4 (no default scale). Use \`shadow-raised\`, \`shadow-overlay\`, etc.:\n${v.map((x) => `      ${x}`).join('\n')}`
+  }
+  return true
+})
+
+// Gate: Next 15 + Webpack smoke variant exists (wired in release.yml as second smoke)
+advisory('Next 15 + Webpack smoke variant exists', () => {
+  const next15Dir = join(ROOT, 'tests/smoke-consumer-next15')
+  if (!existsSync(next15Dir)) {
+    return 'tests/smoke-consumer-next15/ does not exist — Next 15 + Webpack consumers have no CI coverage'
+  }
+  return true
+})
+
 // --- New Gates (added by ecosystem audit 2026-04-06) ---
 console.log('\n\x1b[36mComponent Hygiene\x1b[0m')
 

@@ -575,7 +575,7 @@ const SidebarMenuItem = forwardRef<HTMLLIElement, ComponentProps<'li'>>(
 SidebarMenuItem.displayName = 'SidebarMenuItem'
 
 const sidebarMenuButtonVariants = cva(
-  'peer/menu-button hover:bg-surface-raised-hover active:bg-accent-2 data-[active=true]:bg-accent-2 data-[state=open]:hover:bg-surface-raised-hover flex w-full items-center gap-ds-03 overflow-hidden rounded-ds-md p-ds-03 text-left outline-hidden ring-accent-9 transition-[width,height,padding] hover:text-surface-fg focus-visible:ring-2 active:text-surface-fg disabled:pointer-events-none disabled:opacity-action-disabled group-has-[[data-sidebar=menu-action]]/menu-item:pr-ds-07 aria-disabled:pointer-events-none aria-disabled:opacity-action-disabled data-[active=true]:font-medium data-[active=true]:text-surface-fg data-[state=open]:hover:text-surface-fg group-data-[collapsible=icon]:!size-8 group-data-[collapsible=icon]:!p-ds-03 [&>span:last-child]:truncate [&>svg]:h-ico-sm [&>svg]:w-ico-sm [&>svg]:shrink-0',
+  'peer/menu-button hover:bg-surface-raised-hover active:bg-accent-2 data-[active=true]:bg-accent-2 data-[state=open]:hover:bg-surface-raised-hover flex w-full items-center gap-ds-03 overflow-hidden rounded-ds-md p-ds-03 text-left outline-hidden ring-accent-9 transition-[width,height,padding] hover:text-surface-fg focus-visible:ring-2 active:text-surface-fg disabled:pointer-events-none disabled:opacity-action-disabled group-has-[[data-sidebar=menu-action]]/menu-item:pr-ds-07 aria-disabled:pointer-events-none aria-disabled:opacity-action-disabled data-[active=true]:font-medium data-[active=true]:text-surface-fg data-[state=open]:hover:text-surface-fg group-data-[collapsible=icon]:size-8! group-data-[collapsible=icon]:p-ds-03! [&>span:last-child]:truncate [&>svg]:h-ico-sm [&>svg]:w-ico-sm [&>svg]:shrink-0',
   {
     variants: {
       variant: {
@@ -587,7 +587,7 @@ const sidebarMenuButtonVariants = cva(
       size: {
         md: 'h-ds-sm text-ds-md',
         sm: 'h-ds-xs-plus text-ds-sm',
-        lg: 'h-ds-lg text-ds-md group-data-[collapsible=icon]:!p-0',
+        lg: 'h-ds-lg text-ds-md group-data-[collapsible=icon]:p-0!',
       },
     },
     defaultVariants: {

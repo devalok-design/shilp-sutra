@@ -55,7 +55,7 @@ const PROSE_CLASSES = [
   '[&_pre]:rounded-ds-lg [&_pre]:bg-surface-raised [&_pre]:p-ds-04',
   '[&_strong]:font-semibold [&_strong]:text-surface-fg',
   '[&_blockquote]:border-l-[3px] [&_blockquote]:border-accent-6 [&_blockquote]:pl-ds-04 [&_blockquote]:italic [&_blockquote]:text-surface-fg-subtle',
-  '[[&_mark]:rounded-sm_mark]:rounded-xs [&_mark]:bg-warning-3 [&_mark]:px-[2px]',
+  '[&_mark]:rounded-xs [&_mark]:bg-warning-3 [&_mark]:px-[2px]',
   '[&_ul[data-type="taskList"]]:ml-0 [&_ul[data-type="taskList"]]:list-none [&_li[data-type="taskItem"]]:flex [&_li[data-type="taskItem"]]:items-start [&_li[data-type="taskItem"]]:gap-ds-02',
   '[&_hr]:my-ds-04 [&_hr]:border-surface-border-strong',
   '[&_a]:text-accent-11 [&_a]:underline [&_a]:decoration-accent-6 hover:[&_a]:decoration-accent-11',

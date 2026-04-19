@@ -240,7 +240,7 @@ export const LineChart = React.forwardRef<HTMLDivElement, LineChartProps>(
                       tabIndex={0}
                       role="graphics-symbol"
                       aria-label={pointAriaLabel}
-                      className="focus-visible:outline-none"
+                      className="focus-visible:outline-hidden"
                       onMouseMove={(e) => {
                         const rect = e.currentTarget
                           .closest('div')

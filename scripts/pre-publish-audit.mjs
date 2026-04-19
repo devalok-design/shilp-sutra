@@ -537,6 +537,30 @@ advisory('Next 15 + Webpack smoke variant exists', () => {
   return true
 })
 
+// Gate: deprecated JS preset stub must emit its warning in production too.
+// If NODE_ENV !== 'production' guards the warn, the consumer most likely to
+// ship broken CSS (CI-only `next build` with no local dev loop) is exactly
+// the one who never sees the signal. Caught in the 2026-04-20 post-audit
+// review; ensure this doesn't regress. See preset.ts commit message for
+// full reasoning.
+gate('Preset stub warning fires in production (no NODE_ENV !== production guard)', () => {
+  const presetPath = join(ROOT, 'packages/core/src/tailwind/preset.ts')
+  if (!existsSync(presetPath)) return 'packages/core/src/tailwind/preset.ts missing'
+  const src = readFileSync(presetPath, 'utf-8')
+  if (/NODE_ENV\s*!==\s*['"]production['"]/.test(src) || /NODE_ENV\s*===\s*['"]production['"].*return/.test(src)) {
+    return 'preset.ts gates its deprecation warning on NODE_ENV — this silently suppresses the warn during `next build` (prod), which is the exact scenario the warn exists to catch. Remove the guard.'
+  }
+  // Also verify the compiled CJS build keeps the guard out.
+  const cjs = join(ROOT, 'packages/core/dist/tailwind/index.cjs')
+  if (existsSync(cjs)) {
+    const cjsSrc = readFileSync(cjs, 'utf-8')
+    if (/NODE_ENV\s*!==\s*['"]production['"]/.test(cjsSrc)) {
+      return 'dist/tailwind/index.cjs still has a NODE_ENV production guard — the esbuild pass kept a dead check or the source regressed. Rebuild.'
+    }
+  }
+  return true
+})
+
 // --- New Gates (added by ecosystem audit 2026-04-06) ---
 console.log('\n\x1b[36mComponent Hygiene\x1b[0m')
 

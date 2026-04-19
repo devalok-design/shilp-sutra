@@ -142,7 +142,9 @@ grep -rn 'w-\[--\|bg-gradient-to-\|theme(spacing' src/
 | Dark mode not switching | `.dark` not on an ancestor of the component | add `.dark` to `<html>` via `next-themes` or your color-mode hook |
 | Animations feel broken / exits don't fire | two framer-motion copies | see "Framer-motion single-copy check" |
 | `@config` warning on build | legacy config import in your CSS | remove `@config "..."` and use `@import "@devalok/shilp-sutra/css"` |
-| `[@devalok/shilp-sutra] The JS preset at ./tailwind is deprecated` warn | your or a dependency's `tailwind.config.ts` imports our old preset | delete the import; preset is a no-op stub scheduled for removal in 0.38 |
+| `[@devalok/shilp-sutra] DEPRECATION: The JS preset at "./tailwind"...` notice on build | your `tailwind.config.ts` still has `presets: [shilpSutra]`, or a dependency's does | delete that line AND add `@import "@devalok/shilp-sutra/css"` to globals.css (both steps — the preset is a no-op stub in 0.37, removed in 0.38) |
+| **App renders unstyled after upgrade; no build error** | You upgraded the package but did not add `@import "@devalok/shilp-sutra/css"` to `globals.css`. TW4 silently drops unknown utilities, so every `bg-surface-raised`/`p-ds-*`/`shadow-raised` class is emitting zero CSS. | Add the `@import` per step 2 above. If you see the DEPRECATION notice in your build output, heed it — that's the signal for exactly this scenario. |
+| Dark mode no longer switches (worked on 0.36) | Same as above — the `@custom-variant dark` declaration lives in the DS `/css` bundle. Without the import, `dark:*` utilities also silently no-op. | Add `@import "@devalok/shilp-sutra/css"` to globals.css. |
 
 ### Upgrading from &lt; 0.36
 

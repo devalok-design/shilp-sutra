@@ -192,6 +192,6 @@ if (hits.length > 0) {
 }
 
 // If next build succeeded and no red flags hit: pass
-pass('next build (Turbopack) completed without errors or known regressions')
+pass(`next build (${VARIANT_LABEL}) completed without errors or known regressions`)
 console.log(`\n${GREEN}${BOLD}✓ Consumer smoke test passed${RESET}`)
 console.log(`   Full build log: ${logPath}`)

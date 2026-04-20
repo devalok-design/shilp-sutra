@@ -78,6 +78,18 @@ jobs:
           # Required for `npm publish --provenance` to pick up the OIDC env.
           registry-url: https://registry.npmjs.org
 
+      # Upgrade npm CLI to latest. Node 22 bundles npm 10.x, but npm
+      # Trusted Publisher OIDC auth (the flow that maps our GitHub Actions
+      # OIDC token against the trusted-publisher config on npmjs.com)
+      # requires npm 11.5.1+. Without this, OIDC signing still succeeds
+      # (sigstore gets the attestation) but the PUT to the registry fails
+      # with a misleading E404 because npm 10 doesn't know how to exchange
+      # the OIDC token for a publish session.
+      - name: Upgrade npm to 11+ (required for OIDC trusted publishing)
+        run: |
+          npm install -g npm@latest
+          npm --version
+
       - name: Install dependencies
         run: pnpm install --frozen-lockfile
 

@@ -146,7 +146,11 @@ jobs:
         uses: chromaui/action@v11
         with:
           projectToken: ${{ env.CHROMATIC_PROJECT_TOKEN }}
-          workingDir: packages/core
+          # `build-storybook` script lives at repo root, not in
+          # packages/core — mirror the working config from
+          # .github/workflows/visual-review.yml which has been
+          # publishing Chromatic builds reliably.
+          buildScriptName: build-storybook
           # Prerelease: upload + auto-accept (non-blocking).
           # Stable: upload + block on diff.
           exitZeroOnChanges: ${{ needs.guard.outputs.prerelease == 'true' }}

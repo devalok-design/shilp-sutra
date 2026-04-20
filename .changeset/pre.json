@@ -6,5 +6,8 @@
     "@devalok/shilp-sutra-brand": "0.6.0",
     "@devalok/shilp-sutra": "0.36.1"
   },
-  "changesets": []
+  "changesets": [
+    "devalok-logo-hydration-fix",
+    "tw4-native-migration"
+  ]
 }

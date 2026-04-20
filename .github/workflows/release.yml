@@ -164,10 +164,20 @@ jobs:
           onlyChanged: true
 
       # ── Publish ─────────────────────────────────────────────────────────
-      # Trusted Publisher on npmjs.com is configured for this repo+workflow,
-      # so NPM_TOKEN is no longer required once the migration to OIDC is
-      # complete. We keep NPM_TOKEN as env fallback during the cutover —
-      # remove after one successful OIDC publish.
+      # OIDC-only auth via Trusted Publishers configured on npmjs.com.
+      #
+      # Critical: do NOT set NPM_TOKEN env here. When both NPM_TOKEN and
+      # OIDC are present, changesets-action creates an .npmrc from the
+      # token ("No user .npmrc file found, creating one with NPM_TOKEN
+      # used as auth token") — which bypasses the OIDC auth path entirely.
+      # `npm publish` then uses the token for auth and OIDC only for
+      # provenance signing. If the package has a trusted publisher
+      # configured, the registry expects OIDC-auth and rejects the token
+      # PUT with a misleading 404.
+      #
+      # Authenticate via setup-node's registry-url + id-token:write
+      # permission + publishConfig.provenance: true in package.json.
+      # No tokens required.
       - name: Create Release Pull Request or Publish
         uses: changesets/action@v1
         with:
@@ -177,6 +187,7 @@ jobs:
           commit: "chore(release): version packages"
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
           # `npm publish --provenance` is emitted by `pnpm release` once
           # `publishConfig.provenance: true` is set in package.json.
+          # OIDC auth proceeds via the id-token:write permission declared
+          # on this job.

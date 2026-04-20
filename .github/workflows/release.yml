@@ -79,15 +79,29 @@ jobs:
           registry-url: https://registry.npmjs.org
 
       # Upgrade npm CLI to latest. Node 22 bundles npm 10.x, but npm
-      # Trusted Publisher OIDC auth (the flow that maps our GitHub Actions
-      # OIDC token against the trusted-publisher config on npmjs.com)
-      # requires npm 11.5.1+. Without this, OIDC signing still succeeds
-      # (sigstore gets the attestation) but the PUT to the registry fails
-      # with a misleading E404 because npm 10 doesn't know how to exchange
-      # the OIDC token for a publish session.
+      # Trusted Publisher OIDC auth requires npm 11.5.1+. Without this,
+      # OIDC signing still succeeds (sigstore attestation) but the PUT
+      # to the registry fails with a misleading E404 because npm 10
+      # doesn't know how to exchange the OIDC token for a publish session.
+      #
+      # npm 10's self-upgrade path is broken ("Cannot find module
+      # 'promise-retry'") when the node_modules tree is midway through
+      # install. Wipe npm's module tree and reinstall via node itself
+      # (bypassing npm) — this is the workaround recommended by
+      # nodejs/node#56341 and used by nodejs/setup-node internally.
       - name: Upgrade npm to 11+ (required for OIDC trusted publishing)
         run: |
-          npm install -g npm@latest
+          set -euo pipefail
+          # Remove the corrupted npm 10.x install that's about to break
+          # during self-upgrade.
+          NODE_PREFIX=$(node -p "require('path').dirname(process.execPath) + '/..'")
+          NPM_GLOBAL_DIR="$NODE_PREFIX/lib/node_modules/npm"
+          echo "Removing corrupted npm at $NPM_GLOBAL_DIR"
+          rm -rf "$NPM_GLOBAL_DIR"
+          # Install npm fresh via node — use npm's official install script
+          # which downloads a clean tarball and sets up bin shims without
+          # relying on the removed npm CLI.
+          curl -qL https://www.npmjs.com/install.sh | sh
           npm --version
 
       - name: Install dependencies

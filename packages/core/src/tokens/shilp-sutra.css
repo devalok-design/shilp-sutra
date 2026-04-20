@@ -25,6 +25,19 @@
 @import "./utilities.css";
 @import "./variants.css";
 
+/* tw-animate-css — TW4-native rewrite of tailwindcss-animate. Provides the
+   `animate-in`, `animate-out`, `fade-in-*`, `zoom-in-*`, `slide-in-from-*`
+   utility set that Radix primitives and our composed components (Dialog,
+   Popover, Avatar, etc.) rely on for enter/exit animations.
+
+   Imported as CSS (not a JS `@plugin`) because tw-animate-css ships a
+   pre-compiled stylesheet via its `"style"` export condition. Declared
+   in our `dependencies` so pnpm installs it transitively for consumers.
+
+   Without this, every `animate-*` class used by the DS silently emits
+   zero CSS → Avatar + motion-using components render without animation. */
+@import "tw-animate-css";
+
 /* TW4 content detection — scan our shipped dist JS for utility classes
    so consumers don't have to configure "content" for us.
 

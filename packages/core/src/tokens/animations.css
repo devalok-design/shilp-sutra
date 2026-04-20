@@ -1,17 +1,128 @@
 /* ═══════════════════════════════════════════════════════════════════
    ANIMATIONS
-   @keyframes declarations referenced by @utility animate-* blocks
-   in utilities.css and by inline `animation:` in components.
+
+   TW4 generates `animate-<name>` utilities from `--animate-<name>`
+   custom properties declared in @theme. Each refers to @keyframes
+   declared below.
+
+   Ported from the deleted TW3 JS preset in 0.37. All names match what
+   components were already using (accordion-down, skeleton-shimmer, etc.)
+   — dropping them would silently break animations in Accordion,
+   Collapsible, Skeleton, Progress, Spinner, Popover, and the
+   processing-ants status dot.
+
+   Note: `animate-in`, `animate-out`, `fade-in-*`, `zoom-in-*`,
+   `slide-in-from-*` come from the `tw-animate-css` plugin (wired in
+   shilp-sutra.css), NOT here. This file is for our custom animations.
    ═══════════════════════════════════════════════════════════════════ */
 
+@theme {
+  /* ── Radix-coupled: height animations driven by Radix CSS vars ── */
+  --animate-accordion-down: accordion-down 200ms ease-out;
+  --animate-accordion-up: accordion-up 200ms ease-out;
+  --animate-collapsible-down: collapsible-down 200ms ease-out;
+  --animate-collapsible-up: collapsible-up 200ms ease-out;
+
+  /* ── CSS-only looping animations ── */
+  --animate-progress-indeterminate: progress-indeterminate var(--duration-slow-02) var(--ease-productive-standard) infinite;
+  --animate-skeleton-shimmer: skeleton-shimmer var(--duration-slow-02) linear infinite;
+  --animate-caret-blink: caret-blink 1.25s ease-out infinite;
+
+  /* ── One-shot animations ── */
+  --animate-timer-bar: timer-bar linear forwards;
+  --animate-popover-in: popover-in 150ms var(--ease-productive-entrance);
+  --animate-popover-out: popover-out 100ms var(--ease-productive-exit);
+
+  /* ── Processing-ants (three speeds keyed to status-dot state) ── */
+  --animate-processing-ants-ambient: processing-ants-rotate 3s linear infinite;
+  --animate-processing-ants-working: processing-ants-rotate 2s linear infinite;
+  --animate-processing-ants-urgent: processing-ants-rotate 1s linear infinite;
+  --animate-processing-ants-march: processing-ants-march 1s linear infinite;
+  --animate-processing-ants-svg: processing-ants-svg 1s linear infinite;
+}
+
+/* ═══════════════════════════════════════════════════════════════════
+   @keyframes definitions
+   Referenced by --animate-* entries above and by inline
+   `animation:` in components (e.g. DevalokGrain's border-angle dance).
+   ═══════════════════════════════════════════════════════════════════ */
+
+/* Radix-coupled: the target height comes from Radix's runtime-injected
+   CSS var (--radix-accordion-content-height / --radix-collapsible-content-height). */
+@keyframes accordion-down {
+  from { height: 0; }
+  to   { height: var(--radix-accordion-content-height); }
+}
+
+@keyframes accordion-up {
+  from { height: var(--radix-accordion-content-height); }
+  to   { height: 0; }
+}
+
+@keyframes collapsible-down {
+  from { height: 0; }
+  to   { height: var(--radix-collapsible-content-height); }
+}
+
+@keyframes collapsible-up {
+  from { height: var(--radix-collapsible-content-height); }
+  to   { height: 0; }
+}
+
+/* Progress bars — indeterminate slider */
+@keyframes progress-indeterminate {
+  0%   { transform: translateX(-100%); }
+  100% { transform: translateX(250%); }
+}
+
+/* Skeleton — left-to-right shimmer pass */
+@keyframes skeleton-shimmer {
+  0%   { background-position: -200% 0; }
+  100% { background-position:  200% 0; }
+}
+
+/* InputOTP caret blink */
+@keyframes caret-blink {
+  0%, 70%, 100% { opacity: 1; }
+  20%, 50%      { opacity: 0; }
+}
+
+/* Toast / countdown timer bar — shrinks left-to-right */
+@keyframes timer-bar {
+  0%   { transform: scaleX(1); }
+  100% { transform: scaleX(0); }
+}
+
+/* Popover micro-animations (scale + fade) */
+@keyframes popover-in {
+  from { opacity: 0; transform: scale(0.95); }
+  to   { opacity: 1; transform: scale(1); }
+}
+
+@keyframes popover-out {
+  from { opacity: 1; transform: scale(1); }
+  to   { opacity: 0; transform: scale(0.95); }
+}
+
+/* Processing-ants status-dot effect: rotate the --border-angle
+   @property through a full turn. Used at three speeds (ambient,
+   working, urgent) via separate --animate-* entries above. */
 @keyframes processing-ants-rotate {
   to { --border-angle: 360deg; }
 }
 
+/* Processing-ants border — marching-ants background-position shift */
 @keyframes processing-ants-march {
-  to { background-position: 16px 0, 100% 16px, calc(100% - 16px) 100%, 0 calc(100% - 16px); }
+  to {
+    background-position:
+      16px 0,
+      100% 16px,
+      calc(100% - 16px) 100%,
+      0 calc(100% - 16px);
+  }
 }
 
+/* Processing-ants SVG stroke — dashoffset animation */
 @keyframes processing-ants-svg {
   to { stroke-dashoffset: -10; }
 }

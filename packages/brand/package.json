@@ -33,7 +33,7 @@
   "scripts": {
     "build": "vite build && node scripts/copy-assets.mjs",
     "typecheck": "tsc --noEmit",
-    "test": "vitest run",
+    "test:local": "vitest run",
     "lint": "eslint src/",
     "prepublishOnly": "pnpm build"
   },

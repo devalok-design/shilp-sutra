@@ -154,6 +154,7 @@
   --amber-bright-3:  oklch(0.92 0.08 70);
   --amber-bright-4:  oklch(0.88 0.11 70);
   --amber-bright-5:  oklch(0.84 0.14 70);
+  --amber-bright-6:  oklch(0.80 0.155 68);   /* interpolated 5↔7 — added 0.37.0-next.1 */
   --amber-bright-7:  oklch(0.75 0.17 65);
   --amber-bright-9:  oklch(0.78 0.16 65);
   --amber-bright-10: oklch(0.74 0.16 65);
@@ -434,6 +435,7 @@
   --amber-bright-3:  oklch(0.25 0.045 65);
   --amber-bright-4:  oklch(0.32 0.065 65);
   --amber-bright-5:  oklch(0.38 0.085 65);
+  --amber-bright-6:  oklch(0.44 0.11 65);    /* interpolated 5↔7 — added 0.37.0-next.1 */
   --amber-bright-7:  oklch(0.50 0.13 65);
   --amber-bright-9:  oklch(0.57 0.17 65);
   --amber-bright-10: oklch(0.52 0.17 65);

@@ -314,6 +314,11 @@
       "import": "./dist/ui/spinner.js",
       "default": "./dist/ui/spinner.js"
     },
+    "./ui/split-button": {
+      "types": "./dist/ui/split-button.d.ts",
+      "import": "./dist/ui/split-button.js",
+      "default": "./dist/ui/split-button.js"
+    },
     "./ui/stack": {
       "types": "./dist/ui/stack.d.ts",
       "import": "./dist/ui/stack.js",

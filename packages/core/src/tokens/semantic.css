@@ -132,8 +132,36 @@
   --color-secondary-fg: var(--neutral-1);
 
   /* ───────────────────────────────────────────────────────────
+     NEUTRAL (primitive → @theme alias)
+     Bridges `:root`-declared `--neutral-*` primitives into the
+     TW4 `--color-*` namespace so `bg-neutral-5`, `border-neutral-7`,
+     `text-neutral-11`, etc. actually emit utilities. Without this,
+     every CVA referencing bg-neutral-* silently renders unstyled.
+     ─────────────────────────────────────────────────────────── */
+  --color-neutral-1:  var(--neutral-1);
+  --color-neutral-2:  var(--neutral-2);
+  --color-neutral-3:  var(--neutral-3);
+  --color-neutral-4:  var(--neutral-4);
+  --color-neutral-5:  var(--neutral-5);
+  --color-neutral-6:  var(--neutral-6);
+  --color-neutral-7:  var(--neutral-7);
+  --color-neutral-8:  var(--neutral-8);
+  --color-neutral-9:  var(--neutral-9);
+  --color-neutral-10: var(--neutral-10);
+  --color-neutral-11: var(--neutral-11);
+  --color-neutral-12: var(--neutral-12);
+
+  /* ───────────────────────────────────────────────────────────
      SURFACE
      ─────────────────────────────────────────────────────────── */
+  /* Numeric layering aliases — canonical per CLAUDE.md surface rule.
+     Consumers and stories use bg-surface-1..4; without these @theme
+     entries TW4 emits zero rules for them. */
+  --color-surface-1: var(--neutral-1);
+  --color-surface-2: var(--neutral-2);
+  --color-surface-3: var(--neutral-3);
+  --color-surface-4: var(--neutral-4);
+
   --color-surface-base:          var(--neutral-2);
   --color-surface-sunken:        var(--color-surface-0);
   --color-surface-raised:        var(--neutral-1);
@@ -152,13 +180,22 @@
   --color-surface-border-subtle: var(--neutral-5);
   --color-backdrop:              oklch(0 0 0 / 0.4);
 
+  /* Overlay + disabled — promoted from internal :root into @theme so
+     `bg-overlay`, `text-overlay`, `bg-disabled`, `text-disabled` emit. */
+  --color-overlay:  oklch(0 0 0 / 0.50);
+  --color-disabled: var(--neutral-5);
+
   /* ───────────────────────────────────────────────────────────
      STATUS — Error
+     Full step subset: 2, 3, 4, 5, 6, 7, 9, 10, 11.
+     Step 6 added in 0.37.0-next.1 (missed in original migration)
+     — SplitButton soft variants and status-dot muted tones use it.
      ─────────────────────────────────────────────────────────── */
   --color-error-2:  var(--red-2);
   --color-error-3:  var(--red-3);
   --color-error-4:  var(--red-4);
   --color-error-5:  var(--red-5);
+  --color-error-6:  var(--red-6);
   --color-error-7:  var(--red-7);
   --color-error-9:  var(--red-9);
   --color-error-10: var(--red-10);
@@ -170,6 +207,7 @@
   --color-success-3:  var(--green-3);
   --color-success-4:  var(--green-4);
   --color-success-5:  var(--green-5);
+  --color-success-6:  var(--green-6);
   --color-success-7:  var(--green-7);
   --color-success-9:  var(--green-9);
   --color-success-10: var(--green-10);
@@ -181,6 +219,7 @@
   --color-warning-3:  var(--amber-bright-3);
   --color-warning-4:  var(--amber-bright-4);
   --color-warning-5:  var(--amber-bright-5);
+  --color-warning-6:  var(--amber-bright-6);
   --color-warning-7:  var(--amber-bright-7);
   --color-warning-9:  var(--amber-bright-9);
   --color-warning-10: var(--amber-bright-10);
@@ -192,6 +231,7 @@
   --color-info-3:  var(--blue-3);
   --color-info-4:  var(--blue-4);
   --color-info-5:  var(--blue-5);
+  --color-info-6:  var(--blue-6);
   --color-info-7:  var(--blue-7);
   --color-info-9:  var(--blue-9);
   --color-info-10: var(--blue-10);
@@ -250,7 +290,8 @@
   --color-skeleton-shimmer: var(--neutral-2);
 
   /* ───────────────────────────────────────────────────────────
-     SPACING
+     SPACING — numeric scale
+     Generates p-ds-* / m-ds-* / gap-ds-* / w-ds-* / h-ds-* / etc.
      ─────────────────────────────────────────────────────────── */
   --spacing-ds-01:  2px;
   --spacing-ds-02:  4px;
@@ -269,12 +310,32 @@
   --spacing-ds-12:  96px;
   --spacing-ds-13:  160px;
 
-  /* Layout spacing (responsive via @media in :root below) */
-  --spacing-ds-page-x:      var(--spacing-ds-05);
-  --spacing-ds-page-y:      var(--spacing-ds-07);
-  --spacing-ds-section-gap: var(--spacing-ds-08);
-  --spacing-ds-card-gap:    var(--spacing-ds-05);
-  --spacing-ds-stack-gap:   var(--spacing-ds-06);
+  /* Named component sizes — drive w-ds-{xs|sm|md|lg|xl}, h-ds-*, min-w-ds-*, min-h-ds-*.
+     These are the heights of Avatar, Button, Input, IconButton, etc.
+     In TW4, spacing-namespaced tokens ALSO emit w-/h-/min-w/min-h/max-* utilities,
+     so one `--spacing-ds-<name>` entry covers all sizing utilities. */
+  --spacing-ds-xs:      24px;
+  --spacing-ds-xs-plus: 28px;
+  --spacing-ds-sm:      32px;
+  --spacing-ds-sm-plus: 36px;
+  --spacing-ds-md:      40px;
+  --spacing-ds-lg:      48px;
+  --spacing-ds-xl:      56px;
+
+  /* Icon sizes — drive w-ico-{sm|md|lg|xl}, h-ico-*. Same spacing-namespace
+     rule applies: one var emits both w- and h- utilities. */
+  --spacing-ico-sm: 16px;
+  --spacing-ico-md: 20px;
+  --spacing-ico-lg: 24px;
+  --spacing-ico-xl: 32px;
+
+  /* Layout spacing (responsive via @media in :root below).
+     Generates p-page-x, p-page-y, gap-section-gap, gap-card-gap, gap-stack-gap. */
+  --spacing-page-x:      var(--spacing-ds-05);
+  --spacing-page-y:      var(--spacing-ds-07);
+  --spacing-section-gap: var(--spacing-ds-08);
+  --spacing-card-gap:    var(--spacing-ds-05);
+  --spacing-stack-gap:   var(--spacing-ds-06);
 
   /* ───────────────────────────────────────────────────────────
      RADIUS
@@ -377,9 +438,11 @@
   --action-focus-opacity:    0.12;
   --action-active-opacity:   0.12;
 
-  /* Overlay / disabled */
-  --color-overlay:  oklch(0 0 0 / 0.50);
-  --color-disabled: var(--neutral-5);
+  /* NOTE: --color-overlay and --color-disabled have been promoted to
+     @theme above (so TW4 emits `bg-overlay`, `text-disabled`, etc.).
+     The dark-mode override below and forced-colors override further
+     down still work because TW4 honors scoped redeclarations of
+     @theme vars. */
 
   /* Shadow internals — the `--shadow-xs-internal` etc. are composed into
      the public `--shadow-raised`/`--shadow-floating` @theme values above.
@@ -554,8 +617,8 @@
    ═══════════════════════════════════════════════════════════════════ */
 @media (min-width: 768px) {
   :root {
-    --spacing-ds-page-x:      var(--spacing-ds-06);
-    --spacing-ds-section-gap: var(--spacing-ds-10);
+    --spacing-page-x:      var(--spacing-ds-06);
+    --spacing-section-gap: var(--spacing-ds-10);
   }
 }
 

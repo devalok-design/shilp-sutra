@@ -274,3 +274,55 @@
 @utility duration-moderate-02  { transition-duration: var(--duration-moderate-02); }
 @utility duration-slow-01      { transition-duration: var(--duration-slow-01); }
 @utility duration-slow-02      { transition-duration: var(--duration-slow-02); }
+
+/* ───────────────────────────────────────────────────────────────────
+   BORDER WIDTH — named DS scale
+
+   TW4 has no `--border-width-*` auto-namespace. The old preset exposed
+   these as `border-ds-{sm,md,lg}` and `border-focus`. Components use
+   `border-focus` for focus-ring thickness; DS-scale border classes are
+   available for consumers that need non-default border widths keyed to
+   our design tokens.
+   ─────────────────────────────────────────────────────────────────── */
+
+@utility border-ds-sm { border-width: var(--border-width-sm); }
+@utility border-ds-md { border-width: var(--border-width-md); }
+@utility border-ds-lg { border-width: var(--border-width-lg); }
+@utility border-focus { border-width: var(--border-focus-width); }
+
+/* ───────────────────────────────────────────────────────────────────
+   OPACITY — action-state opacities
+
+   TW4 has no `--opacity-*` auto-namespace. The old preset mapped
+   `--action-*-opacity` runtime vars to `opacity-action-*` classes.
+   Used for ripple/hover/selection overlays that blend with the
+   underlying surface via opacity rather than a solid color.
+   ─────────────────────────────────────────────────────────────────── */
+
+@utility opacity-action-hover    { opacity: var(--action-hover-opacity); }
+@utility opacity-action-selected { opacity: var(--action-selected-opacity); }
+@utility opacity-action-disabled { opacity: var(--action-disabled-opacity); }
+@utility opacity-action-focus    { opacity: var(--action-focus-opacity); }
+@utility opacity-action-active   { opacity: var(--action-active-opacity); }
+
+/* ───────────────────────────────────────────────────────────────────
+   MAX-WIDTH — named layout widths
+
+   TW4's `max-w-*` utilities come from the `--container-*` or
+   `--spacing-*` namespaces. Our `--max-width` / `--max-width-body`
+   names don't match either, so declare explicit utilities.
+   ─────────────────────────────────────────────────────────────────── */
+
+@utility max-w-layout      { max-width: var(--max-width); }
+@utility max-w-layout-body { max-width: var(--max-width-body); }
+
+/* ───────────────────────────────────────────────────────────────────
+   BACKGROUND IMAGE — brand gradients
+
+   TW4's `bg-*` from `--color-*` wouldn't accept gradient values. The
+   old preset declared these under `backgroundImage` — migrating to
+   explicit utilities here. Consumed by DevalokGrain and brand chrome.
+   ─────────────────────────────────────────────────────────────────── */
+
+@utility bg-gradient-brand      { background-image: var(--gradient-brand-light); }
+@utility bg-gradient-brand-dark { background-image: var(--gradient-brand-dark); }

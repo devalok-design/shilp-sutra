@@ -146,6 +146,17 @@ jobs:
       - name: Consumer smoke (Next 16 + Turbopack + TW4)
         run: node scripts/consumer-smoke-test.mjs
 
+      # Compiled-CSS coverage audit — verifies every DS utility class
+      # referenced in source actually emits a rule in the consumer's
+      # compiled CSS. Catches the exact failure mode that shipped
+      # 0.37.0-next.0 with silently broken Avatar + animations: source
+      # references `animate-skeleton-shimmer`, TW4 emits nothing, no
+      # typecheck/lint/test/build error because TW4 silently drops
+      # unknown utilities. The expanded smoke page renders every
+      # primitive, so this audit exercises the full class surface.
+      - name: Compiled-CSS coverage (Turbopack)
+        run: node scripts/audit-compiled-css.mjs
+
       # Second smoke variant — Next 15 + Webpack. A sizeable portion of
       # consumers are still on Webpack; TW4 + Webpack has different CSS
       # pipeline semantics than Turbopack. Runs only when the variant
@@ -153,6 +164,10 @@ jobs:
       - name: Consumer smoke (Next 15 + Webpack)
         if: ${{ hashFiles('tests/smoke-consumer-next15/package.json') != '' }}
         run: node scripts/consumer-smoke-test.mjs --variant next15-webpack
+
+      - name: Compiled-CSS coverage (Webpack)
+        if: ${{ hashFiles('tests/smoke-consumer-next15/package.json') != '' }}
+        run: node scripts/audit-compiled-css.mjs --variant next15-webpack
 
       # Chromatic visual regression gate. Uploads a snapshot of every
       # Storybook story. Behavior depends on release mode:

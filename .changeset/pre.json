@@ -8,6 +8,8 @@
   },
   "changesets": [
     "devalok-logo-hydration-fix",
+    "restore-animate-utilities",
+    "token-gap-restoration",
     "tw4-native-migration"
   ]
 }

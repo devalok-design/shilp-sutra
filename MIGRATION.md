@@ -10,6 +10,21 @@ This page indexes all breaking changes across `@devalok/shilp-sutra` versions. F
 
 > **During the RC window, 0.37 lives on the `@next` dist-tag.** Use `@devalok/shilp-sutra@next` in the commands below. Once stable promotes to `@latest`, plain `@devalok/shilp-sutra` or `@latest` resolves to 0.37.x too. Pin via `@0.37.0` only after the stable release announcement.
 
+### Before you start — two constraints inherited from Tailwind 4 itself
+
+- **Browser support.** Tailwind 4 requires **Safari 16.4+, Chrome 111+, Firefox 128+**. Consumer apps that must support older browsers should stay on 0.36 (via the `latest-0.36` dist-tag) until they can drop those targets.
+- **PostCSS plugin rename.** If your app had a TW3-style `postcss.config.js` like this:
+  ```js
+  // TW3 — no longer works in v4
+  module.exports = { plugins: { tailwindcss: {}, autoprefixer: {} } }
+  ```
+  update to the v4 plugin:
+  ```js
+  // TW4 — required
+  module.exports = { plugins: { '@tailwindcss/postcss': {} } }
+  ```
+  Install: `pnpm add -D @tailwindcss/postcss`. Next.js 15+ / Vite users whose build already handles this transparently can skip this step.
+
 ### Quick migration checklist
 
 1. Install the new required peers:
@@ -68,6 +83,22 @@ If you had TW plugins of your own (e.g., `@tailwindcss/typography`, `@tailwindcs
 ```
 
 No JS config file required. If you had custom theme extensions, translate them to `@theme` blocks inside your `globals.css`.
+
+### Legacy TW3 config APIs removed in v4
+
+If your old `tailwind.config.ts` used any of these, they no longer exist:
+
+| Removed API | Replacement |
+|---|---|
+| `corePlugins: { … }` | Omit utilities you don't want by not including them; use `@source not "..."` or custom variants to exclude patterns |
+| `safelist: [...]` | `@source inline("bg-red-500 text-lg")` in globals.css |
+| `separator: ':'` | Not configurable; always `:` |
+| `prefix: 'tw-'` | `@import "tailwindcss" prefix(tw);` at top of globals.css |
+| `resolveConfig()` / `defaultTheme` helpers | Read `@theme` CSS vars at runtime via `getComputedStyle(document.documentElement)` |
+| `content: [...]` | `@source "./app/**/*.{ts,tsx}"` in globals.css |
+| `darkMode: 'class'` | `@custom-variant dark (&:where(.dark, .dark *));` (already included in our `/css` bundle) |
+
+If you relied on `resolveConfig()` for runtime theme access in TypeScript (e.g., to pull brand colors into framer-motion variants), migrate to reading CSS custom properties directly — they're all declared on `:root` / `.dark` by the `/css` import.
 
 ### Peer dependency changes
 
@@ -142,6 +173,7 @@ grep -rn 'w-\[--\|bg-gradient-to-\|theme(spacing' src/
 | Dark mode not switching | `.dark` not on an ancestor of the component | add `.dark` to `<html>` via `next-themes` or your color-mode hook |
 | Animations feel broken / exits don't fire | two framer-motion copies | see "Framer-motion single-copy check" |
 | `@config` warning on build | legacy config import in your CSS | remove `@config "..."` and use `@import "@devalok/shilp-sutra/css"` |
+| `Unknown at-rule @theme` / `Unknown at-rule @utility` | PostCSS config still references `tailwindcss` + `autoprefixer` (TW3 style). TW4 uses a single plugin. | Install `@tailwindcss/postcss` and replace both plugins with `'@tailwindcss/postcss': {}` in `postcss.config.js`. See "Before you start" above. |
 | `[@devalok/shilp-sutra] DEPRECATION: The JS preset at "./tailwind"...` notice on build | your `tailwind.config.ts` still has `presets: [shilpSutra]`, or a dependency's does | delete that line AND add `@import "@devalok/shilp-sutra/css"` to globals.css (both steps — the preset is a no-op stub in 0.37, removed in 0.38) |
 | **App renders unstyled after upgrade; no build error** | You upgraded the package but did not add `@import "@devalok/shilp-sutra/css"` to `globals.css`. TW4 silently drops unknown utilities, so every `bg-surface-raised`/`p-ds-*`/`shadow-raised` class is emitting zero CSS. | Add the `@import` per step 2 above. If you see the DEPRECATION notice in your build output, heed it — that's the signal for exactly this scenario. |
 | Dark mode no longer switches (worked on 0.36) | Same as above — the `@custom-variant dark` declaration lives in the DS `/css` bundle. Without the import, `dark:*` utilities also silently no-op. | Add `@import "@devalok/shilp-sutra/css"` to globals.css. |

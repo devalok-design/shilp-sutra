@@ -122,11 +122,23 @@ jobs:
         if: ${{ hashFiles('tests/smoke-consumer-next15/package.json') != '' }}
         run: node scripts/consumer-smoke-test.mjs --variant next15-webpack
 
-      # Chromatic visual regression gate. Publishes a snapshot of every
-      # Storybook story and blocks the publish if any visual diff is
-      # unreviewed. Required for breaking releases (0.37.0 touches every
-      # token). Gate is skipped when CHROMATIC_PROJECT_TOKEN secret is not
-      # set so the workflow remains green until the secret is configured.
+      # Chromatic visual regression gate. Uploads a snapshot of every
+      # Storybook story. Behavior depends on release mode:
+      #
+      #   - PRERELEASE (pre-mode, publishing to @next): uploads snapshots
+      #     but does NOT block on diffs. The whole point of an RC is to
+      #     surface visual changes for review BEFORE committing to a
+      #     baseline — blocking here creates a chicken-and-egg where you
+      #     can't show reviewers the diffs because you can't publish.
+      #     `exitZeroOnChanges: true` + `autoAcceptChanges: true` uploads
+      #     and auto-baselines so the @next publish proceeds.
+      #
+      #   - STABLE (no pre.json, publishing to @latest): blocks on any
+      #     unreviewed diff. Stable publishes MUST have explicit approval
+      #     of every visual change, because they bind the new baseline.
+      #
+      # Gate is skipped when CHROMATIC_PROJECT_TOKEN secret is not set so
+      # the workflow remains green until the secret is configured.
       # The token is promoted to a job-level env (see `env:` block above)
       # because GitHub Actions does NOT allow secrets.* in step-level if:.
       - name: Chromatic visual review
@@ -135,7 +147,10 @@ jobs:
         with:
           projectToken: ${{ env.CHROMATIC_PROJECT_TOKEN }}
           workingDir: packages/core
-          exitZeroOnChanges: false
+          # Prerelease: upload + auto-accept (non-blocking).
+          # Stable: upload + block on diff.
+          exitZeroOnChanges: ${{ needs.guard.outputs.prerelease == 'true' }}
+          autoAcceptChanges: ${{ needs.guard.outputs.prerelease == 'true' }}
           onlyChanged: true
 
       # ── Publish ─────────────────────────────────────────────────────────

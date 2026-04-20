@@ -129,8 +129,19 @@ console.log('\n\x1b[36mVersion Consistency\x1b[0m')
 
 const coreVersion = getPackageVersion('core')
 const clVersion = getChangelogLatestVersion()
+// Changesets pre-mode defers the package.json bump to publish time. While
+// .changeset/pre.json is present, package.json intentionally still reflects
+// the previous stable version while CHANGELOG ALREADY has the next version's
+// entry. That's the designed flow, not a mismatch we should fail on.
+const preModeActive = existsSync(join(ROOT, '.changeset', 'pre.json'))
 
 gate(`Core version (${coreVersion}) matches CHANGELOG (${clVersion})`, () => {
+  if (preModeActive) {
+    // During pre-mode, divergence is expected. The Changesets Action bumps
+    // package.json and re-pins CHANGELOG during `pnpm version-packages` in
+    // the next PR. Skip the equality check.
+    return true
+  }
   return coreVersion === clVersion || `CHANGELOG latest is ${clVersion}`
 })
 
@@ -457,15 +468,26 @@ advisory('No engines.node floor (spike-succeeded state)', () => {
   return true
 })
 
-// Gate: MIGRATION.md exists at repo root AND has 0.37 section
-gate('MIGRATION.md at repo root with 0.37 section', () => {
+// Gate: MIGRATION.md exists at repo root AND has an entry for the next
+// shipped version. "Next shipped" is derived from CHANGELOG's top-most
+// entry — that's what's about to publish (and what Changesets Action will
+// bump package.json to). Using package.json.version here would be wrong
+// during pre-mode, when package.json hasn't been bumped yet.
+//
+// NB: patch-only releases (e.g. 0.37.1 fixing a 0.37.0 bug) can legitimately
+// reuse the 0.37 MIGRATION section — so we check major.minor only, not the
+// exact patch string. Major/minor version changes on 0.x signal breaking
+// surface that SHOULD get an entry; patches inherit the minor's entry.
+gate('MIGRATION.md at repo root has section for target version', () => {
   const path = join(ROOT, 'MIGRATION.md')
   if (!existsSync(path)) return 'MIGRATION.md not found at repo root'
+  const targetVersion = clVersion
+  if (!targetVersion) return true
+  const majorMinor = targetVersion.match(/^(\d+\.\d+)/)?.[1]
+  if (!majorMinor) return true
   const content = readFileSync(path, 'utf-8')
-  const versionOnly = coreVersion.match(/^(\d+\.\d+)/)?.[1]
-  if (!versionOnly) return true
-  if (!content.includes(`v${versionOnly}`)) {
-    return `MIGRATION.md has no section matching v${versionOnly} (current core version is ${coreVersion})`
+  if (!content.includes(`v${majorMinor}`)) {
+    return `MIGRATION.md has no section matching v${majorMinor} (CHANGELOG target is ${targetVersion})`
   }
   return true
 })

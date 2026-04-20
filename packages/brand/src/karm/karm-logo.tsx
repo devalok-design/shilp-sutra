@@ -78,6 +78,13 @@ function shouldSimplify(
 
 // --- Component ---
 
+// useLayoutEffect emits a dev warning when it runs during SSR. The DOM read is
+// client-only (the effect itself doesn't run on the server), but the warning
+// is noisy in Next.js RSC trees that happen to render this module on the
+// server boundary. Fall back to useEffect in non-browser environments.
+const useIsomorphicLayoutEffect =
+  typeof window !== 'undefined' ? React.useLayoutEffect : React.useEffect
+
 const KarmLogo = React.forwardRef<HTMLElement, KarmLogoProps>(
   (
     {
@@ -93,20 +100,23 @@ const KarmLogo = React.forwardRef<HTMLElement, KarmLogoProps>(
     },
     ref,
   ) => {
-    const [resolvedColor, setResolvedColor] = React.useState<'brand' | 'black' | 'white'>(() => {
-      if (color !== 'auto') return color
-      if (typeof document === 'undefined') return 'brand'
-      return document.documentElement.classList.contains('dark') ? 'white' : 'brand'
-    })
+    // DETERMINISTIC initial state. Do NOT read DOM here — the server returns
+    // 'brand' and the client (in dark mode) would return 'white', creating
+    // a hydration mismatch that crashes RSC trees. Render 'brand' always on
+    // the first pass, then swap to the correct color via useLayoutEffect
+    // before the browser paints.
+    const [resolvedColor, setResolvedColor] = React.useState<'brand' | 'black' | 'white'>(
+      color === 'auto' ? 'brand' : color,
+    )
 
-    React.useEffect(() => {
+    useIsomorphicLayoutEffect(() => {
       if (color !== 'auto') {
         setResolvedColor(color)
         return
       }
       const update = () =>
         setResolvedColor(
-          document.documentElement.classList.contains('dark') ? 'white' : 'brand'
+          document.documentElement.classList.contains('dark') ? 'white' : 'brand',
         )
       update()
       const observer = new MutationObserver(update)

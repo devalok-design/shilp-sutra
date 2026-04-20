@@ -1,5 +1,94 @@
 # @devalok/shilp-sutra
 
+## 0.37.0
+
+### Minor Changes
+
+- [`bb1b680`](https://github.com/devalok-design/shilp-sutra/commit/bb1b680c6daf90e7a53c2be78a0cdff2d1fad8e1) Thanks [@Mudit-Lal](https://github.com/Mudit-Lal)! - Restore every utility-class mapping dropped in the TW3 JS-preset → TW4 @theme migration. This fixes visible regressions in Avatar (collapsed to text), StatusDot, Badge, Alert, SplitButton, Accordion, Collapsible, Progress, Spinner, Stepper, and any component using `w-ds-*` / `h-ds-*` sizing, `bg-neutral-*`, `bg-surface-1..4`, step-6 status colors, `animate-accordion-*` / `animate-collapsible-*` / `animate-popover-*` / `animate-timer-bar` / `animate-shake`, `border-focus`, `opacity-action-*`, `max-w-layout*`, or `bg-gradient-brand*`.
+
+  **Root cause:** the old TW3 preset (514 lines of `theme.extend` mapping) was deleted during the TW4 migration. Its replacement — TW4 `@theme` CSS variables — only emits utilities for tokens in namespaces TW4 knows about (`--color-*`, `--spacing-*`, `--text-*`, etc.). Any preset entry whose mapping didn't fit a TW4 namespace was silently lost; the `var()` still exists in `:root` but no utility class is generated. TW4 silently drops unknown utilities, so typecheck/lint/tests/build/smoke all pass while visual output is broken.
+
+  **What's restored:**
+  - `--color-neutral-{1..12}` aliased into @theme (enables `bg-neutral-*`, `border-neutral-*`)
+  - `--color-surface-{1,2,3,4}` aliased for CLAUDE.md surface-layering rule (`bg-surface-1..4`)
+  - `--color-{error,success,warning,info}-6` added (SplitButton soft, StatusDot)
+  - `--amber-bright-6` primitive added (was missing entirely — warning step-6 would resolve to empty)
+  - `--color-overlay` + `--color-disabled` promoted from internal :root into @theme (`bg-overlay`, `bg-disabled`, `text-disabled`)
+  - `--spacing-ds-{xs,xs-plus,sm,sm-plus,md,lg,xl}` added — named component sizes driving `w-ds-*` / `h-ds-*` / `min-w-ds-*` / `min-h-ds-*` (fixes Avatar, Button, Input collapse)
+  - `--spacing-ico-{sm,md,lg,xl}` added — icon sizes
+  - Responsive layout spacing `--spacing-{page-x,page-y,section-gap,card-gap,stack-gap}` corrected (media overrides had `-ds-` prefix but @theme had bare)
+  - `@utility` blocks for `border-ds-{sm,md,lg}`, `border-focus`, `opacity-action-{hover,selected,disabled,focus,active}`, `max-w-layout`, `max-w-layout-body`, `bg-gradient-brand`, `bg-gradient-brand-dark`
+  - 12 custom `--animate-*` keyframes + timings ported from old preset to tokens/animations.css (accordion-down/up, collapsible-down/up, progress-indeterminate, skeleton-shimmer, caret-blink, timer-bar, popover-in/out, processing-ants-ambient/working/urgent/march/svg, shake)
+  - `tw-animate-css ^1.4.0` added to `dependencies` and `@import`ed in shilp-sutra.css (provides `animate-in`, `fade-in-*`, `zoom-*`, `slide-*-from-*` for Radix enter/exit animations)
+  - Missing `./ui/split-button` subpath export added to package.json
+
+  **Regression gate:** new `scripts/audit-compiled-css.mjs` runs AFTER the consumer smoke and verifies every DS utility-class pattern referenced in `packages/core/src/**` emits a rule in the compiled consumer CSS. The expanded smoke-consumer page now renders every primitive (Avatar, StatusDot, Badge, Alert, Accordion, Collapsible, Progress, Spinner, SplitButton, Stepper, form controls), so the audit exercises the full class surface. Wired into `release.yml` as a publish-blocking step for both Turbopack and Webpack variants. If a future refactor drops another token mapping, this gate fails the publish.
+
+  Full audit log: `docs/audits/2026-04-20-0.37-token-gap.md`.
+
+  **Consumer impact:** no-code upgrade from 0.37.0-next.1 to 0.37.0-next.2. Visual regressions in Avatar, animations, and any other affected component are fixed on upgrade.
+
+- [#33](https://github.com/devalok-design/shilp-sutra/pull/33) [`e1f24dd`](https://github.com/devalok-design/shilp-sutra/commit/e1f24ddd285db13bbe275dc2ebef04a773a2152d) Thanks [@Mudit-Lal](https://github.com/Mudit-Lal)! - Tailwind 4 CSS-first migration. Setup-only breaking release — component APIs are unchanged. See [MIGRATION.md](./MIGRATION.md#v0370--tailwind-4-css-first-migration) for the full guide.
+
+  ### BREAKING
+  - **JS preset removed.** `tailwind.config.ts` with `presets: [shilpSutra]` no longer works. Tokens ship as TW4 `@theme` CSS via a single import:
+
+    ```css
+    @import 'tailwindcss';
+    @import '@devalok/shilp-sutra/css';
+    ```
+
+    The old `./tailwind` export is a deprecated no-op stub that logs a dev-mode `console.warn`; scheduled for removal in 0.38.
+
+  - **`framer-motion` is now a required peerDependency** (`^12.0.0`). Module-scoped React contexts (`MotionConfig`, `LayoutGroup`, `AnimatePresence`) break silently when two copies resolve — making framer-motion a peer forces the consumer to control the version and pnpm to dedupe. Install: `pnpm add framer-motion`.
+  - **`sonner` is now an optional peerDependency** (`^2.0.0`). Install only if you render `<Toaster />`: `pnpm add sonner`.
+  - **`tailwindcss` peer tightened to `^4.0.0`** (was `^3.4.0 || ^4.0.0`). 0.37 is TW4-only.
+  - **`use-sync-external-store` moved to `dependencies`** (from optional peer). Auto-installed transitively; no consumer action needed.
+  - **Source class modernization** — our source migrated; consumers whose own code uses TW3-era patterns should update:
+    - `w-[--var]` → `w-(--var)`
+    - `theme(spacing.N)` → literal value
+    - `bg-gradient-to-*` → `bg-linear-to-*`
+    - bare `shadow` → explicit (e.g., `shadow-raised`)
+  - **Token namespaces:** spacing is `--spacing-ds-*` (generates `p-ds-03`), typography is `--text-ds-*` / `--leading-ds-*`. Z-layers (`z-popover`, etc.) and named durations (`duration-fast-01`) are generated via `@utility` blocks since TW4 has no `--z-*` / `--duration-*` auto-namespaces.
+  - **Dark mode:** `@custom-variant dark (&:where(.dark *));` — identical behavior to TW3's `darkMode: 'class'`.
+
+  ### Added
+  - New export `@devalok/shilp-sutra/css` — the single consumer entry for TW4 setup.
+  - New token files at `packages/core/src/tokens/`: `shilp-sutra.css`, `utilities.css`, `variants.css`, `base.css`, `animations.css`.
+  - Next 15 + Webpack smoke consumer at `tests/smoke-consumer-next15/` — complements the existing Next 16 + Turbopack variant. Both wired into the release workflow.
+  - MIGRATION.md at repo root — new v0.37 section with before/after globals, collision examples, dark-mode sanity check, framer-motion single-copy verification, troubleshooting table.
+  - 10 council-gated pre-publish audit checks: peer-vs-dep correctness, tailwindcss peer range, `exports` types-first ordering, bare `shadow` detection, MIGRATION.md presence + 0.37 section, README TW3 residue, dist Node-builtin leak, Next 15 smoke fixture presence.
+  - Chromatic visual-regression gate in release.yml (runs pre-RC, blocks on undiffed visual changes).
+  - Rollback drill procedure in `docs/rollback.md`.
+
+  ### Changed
+  - Build externalization: `framer-motion` and `sonner` are now external (were chunked). Eliminates duplicate-copy risk.
+  - `engines.node` floor dropped. Phase 0 spike made the `process.getBuiltinModule` bridge unnecessary.
+  - `publishConfig.provenance: true` — every 0.37 publish carries an SLSA attestation visible on npmjs.com.
+  - `.github/workflows/release.yml` wired to OIDC trusted publishing and gated on `pre-publish-audit.mjs` + `consumer-smoke-test.mjs` + Chromatic.
+
+  ### Removed
+  - Repo-root `tailwind.config.ts`.
+  - `docs/MIGRATION.md` (moved to repo root).
+  - `rolldown-runtime` CJS bridge patch in `inject-use-client.mjs` (Phase 0 eliminated the need).
+
+### Patch Changes
+
+- [`d4dbbee`](https://github.com/devalok-design/shilp-sutra/commit/d4dbbeecfe57ec20d75d0b082265831af3cd9050) Thanks [@Mudit-Lal](https://github.com/Mudit-Lal)! - Restore the full animation utility surface that was silently dropped in 0.37.0-next.0.
+
+  **The bug:** when the JS preset was removed during the TW4 migration, two things went missing:
+  1. **`tailwindcss-animate` utilities** (`animate-in`, `animate-out`, `fade-in-0`, `zoom-in-75/95`, `slide-in-from-top/bottom/left`, `slide-out-to-*`, etc.) — used by every Radix primitive (Dialog, Popover, Tooltip, HoverCard, Select, DropdownMenu, ContextMenu, AlertDialog, Sheet, Toast, etc.) for enter/exit animations. Without them, overlays snap in/out with no motion. Avatar's fade-in on image load also goes silent.
+  2. **Custom DS animations** (`animate-accordion-down`/`-up`, `animate-collapsible-down`/`-up`, `animate-progress-indeterminate`, `animate-skeleton-shimmer`, `animate-caret-blink`, `animate-timer-bar`, `animate-popover-in`/`-out`, `animate-processing-ants-*`) — their `@keyframes` + `@theme --animate-*` entries existed in the old preset but weren't ported to `tokens/animations.css` during the migration.
+
+  **The fix:**
+  - Added `tw-animate-css ^1.4.0` to core `dependencies` (TW4-native rewrite of tailwindcss-animate by the same author).
+  - `@import "tw-animate-css"` in `tokens/shilp-sutra.css` so consumers get the full `animate-in`/`fade-*`/`slide-*`/`zoom-*` surface automatically.
+  - Ported all 11 custom DS keyframes + `@theme --animate-*` entries from the deleted preset to `tokens/animations.css`. Each references the same timing + easing the preset used (`var(--duration-slow-02)`, `var(--ease-productive-standard)`, etc.), so the motion character is identical to 0.36.
+
+  **Verification:** consumer smoke test (Next 16 + Turbopack) now compiles `animate-in`, `animate-skeleton-shimmer`, `animate-progress-indeterminate`, `animate-caret-blink`, `slide-in-from-bottom`, `zoom-in-75`, and peers into the generated CSS. Previously all of these emitted zero rules.
+
+  **Consumer impact:** existing `animate-*` class names work again without any code change. If you're on `0.37.0-next.0` and seeing broken avatars / motion, upgrading to `0.37.0-next.1` is a no-code fix.
+
 ## 0.37.0-next.1
 
 ### Minor Changes

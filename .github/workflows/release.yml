@@ -60,6 +60,12 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v4
+        with:
+          # Full history required by Chromatic so it can compute visual
+          # baselines across commits. Default `fetch-depth: 1` gives only
+          # the tip commit, which makes Chromatic fail with
+          # "✖ Found only one commit". Mirrors visual-review.yml.
+          fetch-depth: 0
 
       - name: Setup pnpm
         uses: pnpm/action-setup@v4

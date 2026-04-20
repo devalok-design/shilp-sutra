@@ -1,11 +1,12 @@
 'use client'
 
-import { Extension } from '@tiptap/core'
-import Suggestion, { type SuggestionProps, type SuggestionKeyDownProps } from '@tiptap/suggestion'
-import { PluginKey } from 'prosemirror-state'
 import type { Editor } from '@tiptap/core'
+import { Extension } from '@tiptap/core'
+import Suggestion, { type SuggestionKeyDownProps,type SuggestionProps } from '@tiptap/suggestion'
+import { PluginKey } from 'prosemirror-state'
 import * as React from 'react'
 import { createRoot, type Root } from 'react-dom/client'
+
 import { cn } from '../../ui/lib/utils'
 
 export interface SlashCommand {

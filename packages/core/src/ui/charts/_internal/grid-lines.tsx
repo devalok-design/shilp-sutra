@@ -1,5 +1,5 @@
-import * as React from 'react'
 import type { ScaleLinear, ScaleTime } from 'd3-scale'
+import * as React from 'react'
 
 type TickableScale = ScaleLinear<number, number> | ScaleTime<number, number>
 

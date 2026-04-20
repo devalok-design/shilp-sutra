@@ -1,11 +1,11 @@
 'use client'
 
-import * as React from 'react'
 import * as SliderPrimitive from '@primitives/react-slider'
 import { cva, type VariantProps } from 'class-variance-authority'
+import * as React from 'react'
 
-import { cn } from './lib/utils'
 import { useFormField } from './form'
+import { cn } from './lib/utils'
 
 const sliderTrackVariants = cva(
   'relative w-full grow overflow-hidden rounded-ds-full bg-surface-raised-hover',
@@ -115,4 +115,4 @@ const Slider = React.forwardRef<
 })
 Slider.displayName = SliderPrimitive.Root.displayName
 
-export { Slider, sliderTrackVariants, sliderThumbVariants }
+export { Slider, sliderThumbVariants,sliderTrackVariants }

@@ -1,8 +1,9 @@
-import { render, screen, cleanup } from '@testing-library/react'
+import { cleanup,render, screen } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
-import { describe, it, expect, vi, afterEach, beforeAll } from 'vitest'
+import { afterEach, beforeAll,describe, expect, it, vi } from 'vitest'
 import { axe } from 'vitest-axe'
-import { InputOTP, InputOTPGroup, InputOTPSlot, InputOTPSeparator } from './input-otp'
+
+import { InputOTP, InputOTPGroup, InputOTPSeparator,InputOTPSlot } from './input-otp'
 
 // input-otp uses document.elementFromPoint internally (not available in jsdom)
 beforeAll(() => {

@@ -80,7 +80,7 @@ function ColorPalettes() {
                     style={{
                       width: '4rem',
                       height: '2.5rem',
-                      borderRadius: 'var(--radius-md)',
+                      borderRadius: 'var(--radius-ds-md)',
                       backgroundColor: `var(${token})`,
                       border: '1px solid var(--color-surface-border)',
                     }}
@@ -192,7 +192,7 @@ function SemanticColors() {
                     style={{
                       width: '100%',
                       height: '2.5rem',
-                      borderRadius: 'var(--radius-md)',
+                      borderRadius: 'var(--radius-ds-md)',
                       backgroundColor: `var(${token})`,
                       border: '1px solid var(--color-surface-border)',
                     }}
@@ -311,7 +311,7 @@ function SpacingScale() {
                 height: '1rem',
                 width: `var(${s.token})`,
                 backgroundColor: 'var(--color-accent-9)',
-                borderRadius: 'var(--radius-sm)',
+                borderRadius: 'var(--radius-ds-sm)',
               }}
             />
           </div>
@@ -378,7 +378,7 @@ function ShadowScale() {
               style={{
                 width: '7rem',
                 height: '5rem',
-                borderRadius: 'var(--radius-lg)',
+                borderRadius: 'var(--radius-ds-lg)',
                 backgroundColor: 'var(--color-surface-base)',
                 boxShadow: `var(${s.token})`,
                 display: 'flex',
@@ -412,7 +412,7 @@ function GradientScale() {
               style={{
                 width: '10rem',
                 height: '5rem',
-                borderRadius: 'var(--radius-lg)',
+                borderRadius: 'var(--radius-ds-lg)',
                 backgroundImage: `var(${g.token})`,
               }}
             />

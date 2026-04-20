@@ -1,10 +1,11 @@
 'use client'
 
-import * as React from 'react'
 import * as DialogPrimitive from '@primitives/react-dialog'
-import { motion, AnimatePresence, useReducedMotion } from 'framer-motion'
-import { cn } from './utils'
+import { AnimatePresence, motion, useReducedMotion } from 'framer-motion'
+import * as React from 'react'
+
 import { springs, tweens } from './motion'
+import { cn } from './utils'
 
 export interface BottomSheetProps {
   open: boolean

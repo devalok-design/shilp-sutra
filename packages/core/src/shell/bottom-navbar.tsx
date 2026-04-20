@@ -6,14 +6,15 @@
  * Props-driven: accepts currentPath, user, navItems instead of
  * reading from Remix hooks or Zustand stores.
  */
-import * as React from 'react'
-import { useLink } from './link-context'
-import { useState, useEffect, useRef, useCallback } from 'react'
 import { IconDots, IconX } from '@tabler/icons-react'
+import { AnimatePresence, motion, useReducedMotion } from 'framer-motion'
+import * as React from 'react'
+import { useCallback,useEffect, useRef, useState } from 'react'
+
 import { Icon } from '../ui/icon'
-import { cn } from '../ui/lib/utils'
-import { motion, AnimatePresence, useReducedMotion } from 'framer-motion'
 import { springs } from '../ui/lib/motion'
+import { cn } from '../ui/lib/utils'
+import { useLink } from './link-context'
 
 // -----------------------------------------------------------------------
 // Types
@@ -172,7 +173,7 @@ const BottomNavbar = React.forwardRef<HTMLElement, BottomNavbarProps>(
             onClick={() => setShowMore(false)}
           >
           <div className="absolute inset-0 bg-overlay" />
-          {/* eslint-disable-next-line jsx-a11y/no-static-element-interactions -- stopPropagation prevents closing when clicking inside menu */}
+          { }
           <motion.div
             ref={overlayRef}
             role="dialog"

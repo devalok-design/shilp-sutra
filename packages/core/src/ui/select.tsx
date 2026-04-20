@@ -1,15 +1,15 @@
 'use client'
 
-import * as React from 'react'
 import * as SelectPrimitive from '@primitives/react-select'
 import { IconCheck, IconChevronDown, IconChevronUp } from '@tabler/icons-react'
 import { cva, type VariantProps } from 'class-variance-authority'
 import { motion } from 'framer-motion'
+import * as React from 'react'
 
-import { cn } from './lib/utils'
-import { springs, tweens } from './lib/motion'
-import { Icon } from './icon'
 import { useFormField } from './form'
+import { Icon } from './icon'
+import { springs, tweens } from './lib/motion'
+import { cn } from './lib/utils'
 
 /**
  * Select root — manages open/close state and selected value.
@@ -230,13 +230,13 @@ SelectSeparator.displayName = SelectPrimitive.Separator.displayName
 
 export {
   Select,
-  SelectGroup,
-  SelectValue,
-  SelectTrigger,
   SelectContent,
-  SelectLabel,
+  SelectGroup,
   SelectItem,
-  SelectSeparator,
-  SelectScrollUpButton,
+  SelectLabel,
   SelectScrollDownButton,
+  SelectScrollUpButton,
+  SelectSeparator,
+  SelectTrigger,
+  SelectValue,
 }

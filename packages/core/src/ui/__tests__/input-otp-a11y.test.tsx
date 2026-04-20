@@ -1,7 +1,8 @@
 import { render } from '@testing-library/react'
+import { describe, expect,it } from 'vitest'
 import { axe } from 'vitest-axe'
-import { describe, it, expect } from 'vitest'
-import { InputOTP, InputOTPGroup, InputOTPSlot, InputOTPSeparator } from '../input-otp'
+
+import { InputOTP, InputOTPGroup, InputOTPSeparator,InputOTPSlot } from '../input-otp'
 
 describe('InputOTP accessibility', () => {
   it('should have no violations with a basic 4-digit OTP', async () => {

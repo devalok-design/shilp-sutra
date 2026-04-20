@@ -1,15 +1,16 @@
 'use client'
 
-import * as React from 'react'
-import { motion, AnimatePresence } from 'framer-motion'
-import { springs, tweens } from '../../ui/lib/motion'
-import { Icon } from '../../ui/icon'
 import {
-  IconPlayerPlay,
-  IconPlayerPause,
   IconMaximize,
+  IconPlayerPause,
+  IconPlayerPlay,
 } from '@tabler/icons-react'
-import { ErrorFallback, VolumeControl, formatTime } from './shared'
+import { AnimatePresence,motion } from 'framer-motion'
+import * as React from 'react'
+
+import { Icon } from '../../ui/icon'
+import { springs, tweens } from '../../ui/lib/motion'
+import { ErrorFallback, formatTime,VolumeControl } from './shared'
 
 // ============================================================
 // Video Preview — Custom player with DS styling
@@ -175,7 +176,7 @@ export default function VideoPreview({ url, onError }: { url: string; onError?: 
             animate={{ opacity: 1, y: 0 }}
             exit={{ opacity: 0, y: 10 }}
             transition={tweens.fade}
-            className="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black/80 to-transparent px-ds-04 pb-ds-04 pt-ds-08"
+            className="absolute bottom-0 left-0 right-0 bg-linear-to-t from-black/80 to-transparent px-ds-04 pb-ds-04 pt-ds-08"
           >
             {/* Progress bar */}
             <div

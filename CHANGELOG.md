@@ -5,6 +5,53 @@ All notable changes to `@devalok/shilp-sutra` will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.37.0] - unreleased (core)
+
+**Tailwind 4 CSS-first migration.** This is a setup-only breaking release — component APIs are unchanged. See [MIGRATION.md](./MIGRATION.md#v0370--tailwind-4-css-first-migration) for the full guide and the required consumer changes.
+
+### BREAKING
+
+- **JS preset removed.** `tailwind.config.ts` with `presets: [shilpSutra]` no longer works. Tokens ship as TW4 `@theme` CSS via a single import:
+  ```css
+  @import "tailwindcss";
+  @import "@devalok/shilp-sutra/css";
+  ```
+  The old `./tailwind` export is a deprecated no-op stub that logs a dev-mode `console.warn`; it is scheduled for removal in 0.38.
+- **`framer-motion` is now a required peer dependency** (`^12.0.0`). Module-scoped React contexts (`MotionConfig`, `LayoutGroup`, `AnimatePresence`) break silently when two copies resolve — making framer-motion a peer forces the consumer to control the version and pnpm to dedupe.
+- **`sonner` is now an optional peer dependency** (`^2.0.0`). Install only if you render `<Toaster />`.
+- **`tailwindcss` peer range tightened to `^4.0.0`** (was `^3.4.0 || ^4.0.0`). 0.37 is TW4-only.
+- **`use-sync-external-store` moved to `dependencies`** (from optional peer). Auto-installed transitively; no consumer action needed.
+- **Source class modernization.** Our source classes migrated; consumers whose own code uses TW3-era patterns should update too:
+  - `w-[--var]` → `w-(--var)` (TW4 shorthand for CSS vars)
+  - `theme(spacing.N)` → literal value
+  - `bg-gradient-to-*` → `bg-linear-to-*`
+  - bare `shadow` → explicit (e.g., `shadow-raised`)
+- **Token namespaces exposed to TW4:** spacing is `--spacing-ds-*` (generates `p-ds-03`, avoids collision with consumer numeric spacing); typography is `--text-ds-*` / `--leading-ds-*`. Z-layer (`z-popover` etc.) and named-duration utilities (`duration-fast-01`) are generated via `@utility` blocks since TW4 has no `--z-*` / `--duration-*` auto-namespaces.
+- **Dark-mode declaration:** `@custom-variant dark (&:where(.dark *));` — identical behavior to TW3's `darkMode: 'class'`. `.dark` on `<html>` or `<body>` activates `dark:` utilities on all descendants.
+
+### Added
+
+- **New export `@devalok/shilp-sutra/css`** — the single consumer entry for TW4 setup.
+- **New package-level token files** at `packages/core/src/tokens/`: `shilp-sutra.css` (consumer entry), `utilities.css` (custom `@utility` blocks), `variants.css` (dark `@custom-variant`), `base.css` (`@layer base`), `animations.css`.
+- **Next 15 + Webpack smoke consumer** at `tests/smoke-consumer-next15/` — complements the existing Next 16 + Turbopack variant. Both are wired into the release workflow.
+- **MIGRATION.md at repo root** — replaces `docs/MIGRATION.md`. New v0.37 section with before/after globals.css, collision examples, dark-mode sanity check, framer-motion single-copy verification, troubleshooting table.
+- **Council-gated pre-publish audit** — 8 new mechanical gates in `scripts/pre-publish-audit.mjs` covering peer-vs-dep correctness, tailwindcss peer range, `exports` types-first ordering, bare `shadow` class detection, MIGRATION.md presence + 0.37 section, README TW3 residue, dist Node-builtin leak detection, and Next 15 smoke fixture presence.
+- **Chromatic visual regression gate** in release.yml (runs pre-RC, blocks on undiffed visual changes).
+- **Rollback drill procedure** documented in `docs/rollback.md` — `0.37.0-next.999` rehearsal before every breaking release.
+
+### Changed
+
+- Build externalization expanded: `framer-motion` and `sonner` now external (were chunked). Eliminates duplicate-copy risk when bundled alongside a consumer's own install.
+- `engines.node` floor dropped. Phase 0 spike made the `process.getBuiltinModule` bridge unnecessary, so there's no longer a Node version requirement.
+- `publishConfig.provenance: true` — every 0.37 publish carries an SLSA attestation visible on npmjs.com.
+- `.github/workflows/release.yml` wired to OIDC trusted publishing (no more long-lived NPM_TOKEN dependency) and gated on `pre-publish-audit.mjs` + `consumer-smoke-test.mjs` + Chromatic.
+
+### Removed
+
+- Repo-root `tailwind.config.ts` (use TW4 `@theme` CSS-first instead).
+- `docs/MIGRATION.md` (moved to repo root).
+- `rolldown-runtime` CJS bridge patch in `inject-use-client.mjs` (Phase 0 spike eliminated the need).
+
 ## [0.36.0] - 2026-04-19 (core)
 
 No breaking changes. All additions are additive; all fixes preserve

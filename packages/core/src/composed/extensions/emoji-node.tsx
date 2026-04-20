@@ -1,6 +1,7 @@
 import { Node } from '@tiptap/core'
-import { ReactNodeViewRenderer, NodeViewWrapper, type NodeViewProps } from '@tiptap/react'
-import { SPRITESHEET_URL, SHEET_COLS, SHEET_ROWS } from './emoji-data'
+import { type NodeViewProps,NodeViewWrapper, ReactNodeViewRenderer } from '@tiptap/react'
+
+import { SHEET_COLS, SHEET_ROWS,SPRITESHEET_URL } from './emoji-data'
 
 export interface EmojiNodeAttrs {
   id: string

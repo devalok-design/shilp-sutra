@@ -1,11 +1,11 @@
 'use client'
 
-import * as React from 'react'
 import * as CollapsiblePrimitive from '@primitives/react-collapsible'
 import { motion } from 'framer-motion'
+import * as React from 'react'
 
-import { cn } from './lib/utils'
 import { tweens } from './lib/motion'
+import { cn } from './lib/utils'
 
 const Collapsible = CollapsiblePrimitive.Root
 
@@ -33,4 +33,4 @@ CollapsibleContent.displayName = CollapsiblePrimitive.Content.displayName
 
 export type CollapsibleProps = React.ComponentPropsWithoutRef<typeof CollapsiblePrimitive.Root>
 
-export { Collapsible, CollapsibleTrigger, CollapsibleContent }
+export { Collapsible, CollapsibleContent,CollapsibleTrigger }

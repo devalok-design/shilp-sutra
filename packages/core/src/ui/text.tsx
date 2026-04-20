@@ -1,6 +1,7 @@
 // @server-safe
-import * as React from 'react'
 import { cva, type VariantProps } from 'class-variance-authority'
+import * as React from 'react'
+
 import { cn } from './lib/utils'
 
 const textVariants = cva('font-sans', {
@@ -109,4 +110,4 @@ const Text = React.forwardRef<HTMLElement, TextProps>(
 )
 Text.displayName = 'Text'
 
-export { Text, textVariants, type TextProps, type TextVariant }
+export { Text, type TextProps, type TextVariant,textVariants }

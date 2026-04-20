@@ -1,7 +1,8 @@
 import { render } from '@testing-library/react'
+import { describe, expect,it } from 'vitest'
 import { axe } from 'vitest-axe'
-import { describe, it, expect } from 'vitest'
-import { Tabs, TabsList, TabsTrigger, TabsContent } from '../tabs'
+
+import { Tabs, TabsContent,TabsList, TabsTrigger } from '../tabs'
 
 describe('Tabs accessibility', () => {
   it('should have no violations with tab items', async () => {

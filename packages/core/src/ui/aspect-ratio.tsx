@@ -1,7 +1,8 @@
 'use client'
 
-import * as React from 'react'
 import * as AspectRatioPrimitive from '@primitives/react-aspect-ratio'
+import * as React from 'react'
+
 import { cn } from './lib/utils'
 
 const AspectRatio = React.forwardRef<

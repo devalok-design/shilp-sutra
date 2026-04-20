@@ -1,12 +1,12 @@
 'use client'
 
+import * as SwitchPrimitives from "@primitives/react-switch"
 import { motion } from 'framer-motion'
 import * as React from "react"
-import * as SwitchPrimitives from "@primitives/react-switch"
 
+import { useFormField } from './form'
 import { springs } from './lib/motion'
 import { cn } from "./lib/utils"
-import { useFormField } from './form'
 
 const sizeConfig = {
   sm: { track: 'h-6 w-[38px]', thumb: 'h-5 w-5', travel: 16 },

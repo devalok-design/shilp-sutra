@@ -1,7 +1,8 @@
-import { render, screen, waitFor, act } from '@testing-library/react'
+import { act,render, screen, waitFor } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
-import { describe, it, expect, vi, beforeEach } from 'vitest'
+import { beforeEach,describe, expect, it, vi } from 'vitest'
 import { axe } from 'vitest-axe'
+
 import { RichChatInput, type RichChatInputProps } from './rich-chat-input'
 
 // ── TipTap in jsdom ───────────────────────────────────────────────────

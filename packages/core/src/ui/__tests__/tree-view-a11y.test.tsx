@@ -1,8 +1,9 @@
-import { render, fireEvent } from '@testing-library/react'
+import { fireEvent,render } from '@testing-library/react'
+import { describe, expect,it } from 'vitest'
 import { axe } from 'vitest-axe'
-import { describe, it, expect } from 'vitest'
-import { TreeView } from '../tree-view/tree-view'
+
 import { TreeItem } from '../tree-view/tree-item'
+import { TreeView } from '../tree-view/tree-view'
 
 function renderBasicTree() {
   return render(

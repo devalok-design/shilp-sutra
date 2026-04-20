@@ -1,7 +1,8 @@
 'use client'
 
+import { LayoutGroup,motion } from 'framer-motion'
 import * as React from 'react'
-import { motion, LayoutGroup } from 'framer-motion'
+
 import { cn } from './lib/utils'
 
 /* ── Types ─────────────────────────────────────────────────── */

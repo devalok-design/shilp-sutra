@@ -1,17 +1,18 @@
 'use client'
 
-import * as React from 'react'
 import {
-  startOfWeek,
   addDays,
+  differenceInMinutes,
   format,
-  isSameDay,
   getHours,
   getMinutes,
-  differenceInMinutes,
+  isSameDay,
   isToday,
+  startOfWeek,
 } from 'date-fns'
 import { motion } from 'framer-motion'
+import * as React from 'react'
+
 import { cn } from '../ui/lib/utils'
 
 /* ------------------------------------------------------------------ */

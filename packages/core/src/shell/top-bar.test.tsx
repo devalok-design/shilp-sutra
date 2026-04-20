@@ -1,7 +1,7 @@
 import { render, screen } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
+import { beforeEach,describe, expect, it, vi } from 'vitest'
 import { axe } from 'vitest-axe'
-import { describe, it, expect, vi, beforeEach } from 'vitest'
 
 // Mock the sidebar module to avoid SidebarContext dependency
 vi.mock('../ui/sidebar', () => ({
@@ -39,8 +39,8 @@ vi.mock('../ui/dropdown-menu', () => ({
   DropdownMenuSeparator: () => <hr />,
 }))
 
-import { TopBar } from './top-bar'
 import { SidebarTrigger } from '../ui/sidebar'
+import { TopBar } from './top-bar'
 
 describe('TopBar', () => {
   beforeEach(() => {

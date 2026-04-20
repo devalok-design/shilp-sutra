@@ -1,10 +1,11 @@
 'use client'
 
+import { AnimatePresence,motion } from 'framer-motion'
 import * as React from 'react'
-import { motion, AnimatePresence } from 'framer-motion'
 import { HexColorPicker } from 'react-colorful'
+
+import { durations,springs } from './lib/motion'
 import { cn } from './lib/utils'
-import { springs, durations } from './lib/motion'
 import {
   Popover,
   PopoverContent,

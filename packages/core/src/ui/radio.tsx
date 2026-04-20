@@ -4,9 +4,10 @@ import * as RadioGroupPrimitive from '@primitives/react-radio-group'
 import { IconCircle } from '@tabler/icons-react'
 import { AnimatePresence, motion } from 'framer-motion'
 import * as React from 'react'
+
+import { useFormField } from './form'
 import { springs } from './lib/motion'
 import { cn } from './lib/utils'
-import { useFormField } from './form'
 
 const RadioGroup = React.forwardRef<
   React.ElementRef<typeof RadioGroupPrimitive.Root>,

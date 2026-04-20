@@ -2,6 +2,7 @@
 
 import * as React from 'react'
 import { useEffect, useRef, useState } from 'react'
+
 import { cn } from '../ui/lib/utils'
 
 export interface GlobalLoadingProps extends React.ComponentPropsWithoutRef<'div'> {

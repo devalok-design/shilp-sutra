@@ -1,13 +1,14 @@
 import { render } from '@testing-library/react'
+import { describe, expect,it } from 'vitest'
 import { axe } from 'vitest-axe'
-import { describe, it, expect } from 'vitest'
+
 import {
   Card,
+  CardContent,
+  CardDescription,
+  CardFooter,
   CardHeader,
   CardTitle,
-  CardDescription,
-  CardContent,
-  CardFooter,
 } from '../card'
 
 describe('Card accessibility', () => {

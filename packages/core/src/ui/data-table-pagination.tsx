@@ -1,8 +1,8 @@
 'use client'
 
-import React from 'react'
-import { type Table } from '@tanstack/react-table'
 import { IconChevronLeft, IconChevronRight } from '@tabler/icons-react'
+import { type Table } from '@tanstack/react-table'
+import React from 'react'
 
 import { Icon } from './icon'
 import { cn } from './lib/utils'

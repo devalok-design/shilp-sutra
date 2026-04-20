@@ -3,11 +3,55 @@
 ## Quick Reference
 
 - **Monorepo**: pnpm workspaces — `packages/core`, `packages/brand`
-- **Stack**: React 18, TypeScript 5.7 (strict), Vite 5.4, Tailwind 3.4, CVA
+- **Stack**: React 19, TypeScript 6, Vite 8 (Rolldown), Tailwind 4 (CSS-first via `@theme`), CVA
 - **Test**: `pnpm test` (Vitest + RTL + vitest-axe)
 - **Build**: `pnpm build` (per-package)
 - **Lint**: `pnpm lint`
 - **Typecheck**: `pnpm typecheck`
+
+## Tailwind 4 Architecture (0.37.0+)
+
+**CSS-first, no JS preset.** Consumers do:
+```css
+@import "tailwindcss";
+@import "@devalok/shilp-sutra/css";
+```
+
+**Token source-of-truth layout** (at `packages/core/src/tokens/`):
+- `primitives.css` — private palette in `:root { }` + `.dark { }` (NOT `@theme`)
+- `semantic.css` — public utility-generating tokens in `@theme { }` + `.dark { }` overrides + `@media (forced-colors)`
+- `typography.css` — `@font-face` declarations
+- `typography-semantic.css` — `--text-ds-*`, `--leading-ds-*` in `@theme`
+- `base.css` — `@layer base { @property + iOS @media fix }`
+- `animations.css` — `@keyframes` + `@theme { --animate-* }`
+- `utilities.css` — `@utility` blocks (typography composites, focus-ring, touch-target, safe-area, z-layer, duration names)
+- `variants.css` — `@custom-variant dark (&:where(.dark *));`
+- `shilp-sutra.css` — consumer entry: imports all above + `@source "../../dist"` + `@source "@devalok/shilp-sutra"`
+
+**Namespace rules:**
+- Spacing is `--spacing-ds-*` (generates `p-ds-03`, not `p-3`) — avoids collision with consumer numeric spacing
+- Typography is `--text-ds-*` / `--leading-ds-*` — avoids collision with consumer text sizes
+- `--radius` (unsuffixed) generates bare `rounded`; `--radius-ds-*` generates `rounded-ds-lg` etc.
+- `--z-*` and `--duration-*` do NOT auto-generate utilities (TW4 has no such namespaces); they live in `:root` and get explicit `@utility z-popover`, `@utility duration-fast-01` blocks
+- Bare `shadow` class is dead in TW4 — always use `shadow-raised`, `shadow-overlay`, etc.
+- `w-[--var]` is dead — use `w-(--var)` (TW4 shorthand)
+- `bg-gradient-to-*` is dead — use `bg-linear-to-*`
+- `theme(spacing.N)` inside arbitrary values is dead — use the literal value
+
+**Peer dependencies (0.37.0):**
+- `framer-motion ^12` — REQUIRED peer. Module-scoped React contexts (MotionConfig, AnimatePresence, LayoutGroup) must be single-copy; peer-declaration forces consumer dedupe.
+- `sonner ^2` — optional peer (only needed if consumer renders a `<Toaster />`).
+- `tailwindcss ^4.0.0` — tightened from `^3.4.0 || ^4.0.0`.
+- `use-sync-external-store` — moved to our `dependencies` (from optional peer). Auto-installed transitively.
+
+**Build externalization** (vite.config.ts `rollupOptions.external`):
+- `use-sync-external-store`, `framer-motion`, `sonner` are externalized. Bundling them would split consumer contexts and bloat our dist.
+
+**Never** re-introduce:
+- JS preset (`packages/core/src/tailwind/preset.ts` is a deprecated no-op stub, scheduled for removal in 0.38)
+- `@config` directive in consumer CSS
+- `tailwind.config.ts` at repo root (deleted in 0.37)
+- `process.getBuiltinModule` / `createRequire` patches in `inject-use-client.mjs` (Phase 0 spike made the bridge unnecessary)
 
 ## Design Preferences (default to these)
 

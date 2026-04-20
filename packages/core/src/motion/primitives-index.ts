@@ -1,11 +1,11 @@
 export {
-  MotionFade,
-  MotionScale,
-  MotionPop,
-  MotionSlide,
   MotionCollapse,
+  MotionFade,
+  MotionPop,
+  type MotionPrimitiveProps,
+  MotionScale,
+  MotionSlide,
   MotionStagger,
   MotionStaggerItem,
-  type MotionPrimitiveProps,
   type MotionStaggerProps,
 } from './primitives'

@@ -4,20 +4,20 @@
  * These verify that components annotated with `// @server-safe` can actually
  * render to HTML via React's server renderer — not just import without error.
  */
-import { renderToString } from 'react-dom/server'
 import * as React from 'react'
+import { renderToString } from 'react-dom/server'
 
-import { Table, TableBody, TableRow, TableCell, TableHead, TableHeader } from '../ui/table'
-import { Text } from '../ui/text'
-import { Skeleton } from '../ui/skeleton'
-import { Code } from '../ui/code'
-import { Container } from '../ui/container'
-import { Stack } from '../ui/stack'
-import { VisuallyHidden } from '../ui/visually-hidden'
-import { PageHeader } from '../composed/page-header'
 import { ContentCard } from '../composed/content-card'
 import { CardSkeleton, TableSkeleton } from '../composed/loading-skeleton'
+import { PageHeader } from '../composed/page-header'
 import { DashboardSkeleton, ProjectListSkeleton, TaskDetailSkeleton } from '../composed/page-skeletons'
+import { Code } from '../ui/code'
+import { Container } from '../ui/container'
+import { Skeleton } from '../ui/skeleton'
+import { Stack } from '../ui/stack'
+import { Table, TableBody, TableCell, TableHead, TableHeader,TableRow } from '../ui/table'
+import { Text } from '../ui/text'
+import { VisuallyHidden } from '../ui/visually-hidden'
 
 describe('SSR renderToString', () => {
   it('renders Table without crashing', () => {

@@ -1,12 +1,13 @@
 import { render, screen, waitFor } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
+import { describe, expect,it } from 'vitest'
 import { axe } from 'vitest-axe'
-import { describe, it, expect } from 'vitest'
+
 import {
   Sheet,
   SheetContent,
-  SheetTitle,
   SheetDescription,
+  SheetTitle,
   SheetTrigger,
 } from '../sheet'
 

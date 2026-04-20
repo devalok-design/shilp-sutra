@@ -1,8 +1,9 @@
 import { render, screen } from '@testing-library/react'
+import { describe, expect, it, vi } from 'vitest'
 import { axe } from 'vitest-axe'
-import { describe, it, expect, vi } from 'vitest'
-import { SegmentedControl } from '../segmented-control'
+
 import type { SegmentedControlOption } from '../segmented-control'
+import { SegmentedControl } from '../segmented-control'
 
 const options: SegmentedControlOption[] = [
   { id: 'weekly', text: 'Weekly' },

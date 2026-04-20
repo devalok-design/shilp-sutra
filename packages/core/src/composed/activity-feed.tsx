@@ -1,16 +1,17 @@
 'use client'
 
-import * as React from 'react'
-import { cn } from '../ui/lib/utils'
 import { IconChevronRight } from '@tabler/icons-react'
-import { Icon } from '../ui/icon'
+import { motion } from 'framer-motion'
+import * as React from 'react'
+
 import { Avatar, AvatarFallback, AvatarImage } from '../ui/avatar'
 import { Button } from '../ui/button'
+import { Icon } from '../ui/icon'
+import { formatRelativeTime } from '../ui/lib/date-utils'
+import { tweens } from '../ui/lib/motion'
+import { cn } from '../ui/lib/utils'
 import { Skeleton } from '../ui/skeleton'
 import { getInitials } from './lib/string-utils'
-import { formatRelativeTime } from '../ui/lib/date-utils'
-import { motion } from 'framer-motion'
-import { tweens } from '../ui/lib/motion'
 
 export interface ActivityItem {
   id: string

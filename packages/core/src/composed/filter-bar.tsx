@@ -1,14 +1,15 @@
 'use client'
 
-import * as React from 'react'
-import { motion } from 'framer-motion'
 import { IconChevronDown } from '@tabler/icons-react'
-import { Icon } from '../ui/icon'
-import { cn } from '../ui/lib/utils'
-import { springs } from '../ui/lib/motion'
-import { SearchInput } from '../ui/search-input'
-import { Button } from '../ui/button'
+import { motion } from 'framer-motion'
+import * as React from 'react'
+
 import { Badge } from '../ui/badge'
+import { Button } from '../ui/button'
+import { Icon } from '../ui/icon'
+import { springs } from '../ui/lib/motion'
+import { cn } from '../ui/lib/utils'
+import { SearchInput } from '../ui/search-input'
 import {
   Select,
   SelectContent,
@@ -16,7 +17,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from '../ui/select'
-import { MultiSelectPopover, type MultiSelectItem } from './multi-select-popover'
+import { type MultiSelectItem,MultiSelectPopover } from './multi-select-popover'
 
 // ============================================================
 // Context
@@ -207,4 +208,4 @@ function FilterMultiSelect({
   )
 }
 
-export { FilterBar, FilterSelect, FilterMultiSelect }
+export { FilterBar, FilterMultiSelect,FilterSelect }

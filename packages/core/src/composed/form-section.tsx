@@ -1,12 +1,13 @@
 'use client'
 
-import * as React from 'react'
-import { motion } from 'framer-motion'
-import { cn } from '../ui/lib/utils'
-import { springs } from '../ui/lib/motion'
 import { IconChevronDown } from '@tabler/icons-react'
-import { Icon } from '../ui/icon'
+import { motion } from 'framer-motion'
+import * as React from 'react'
+
 import { Collapsible, CollapsibleContent, CollapsibleTrigger } from '../ui/collapsible'
+import { Icon } from '../ui/icon'
+import { springs } from '../ui/lib/motion'
+import { cn } from '../ui/lib/utils'
 
 // ============================================================
 // Types

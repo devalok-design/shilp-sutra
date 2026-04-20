@@ -1,10 +1,11 @@
 'use client'
 
+import { IconPlayerPause,IconPlayerPlay } from '@tabler/icons-react'
 import * as React from 'react'
+
 import { Button } from '../../ui/button'
 import { Icon } from '../../ui/icon'
-import { IconPlayerPlay, IconPlayerPause } from '@tabler/icons-react'
-import { ErrorFallback, VolumeControl, formatTime } from './shared'
+import { ErrorFallback, formatTime,VolumeControl } from './shared'
 
 // ============================================================
 // Audio Preview — Branded mini-player (Spotify/SoundCloud style)
@@ -57,7 +58,7 @@ export default function AudioPreview({ url, fileName, onError }: { url: string; 
     }
     document.addEventListener('keydown', handleKeyDown)
     return () => document.removeEventListener('keydown', handleKeyDown)
-  // eslint-disable-next-line react-hooks/exhaustive-deps
+   
   }, [])
 
   function togglePlay() {

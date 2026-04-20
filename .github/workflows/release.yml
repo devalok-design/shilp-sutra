@@ -12,8 +12,51 @@ on:
 concurrency: ${{ github.workflow }}-${{ github.ref }}
 
 jobs:
-  release:
+  # ── Release-mode guard ─────────────────────────────────────────────────────
+  # Ensures `.changeset/pre.json` state matches the intent of the run:
+  #   - on branches other than `main` we don't publish at all
+  #   - on `main` with `pre.json` present → we're in prerelease mode, publishing to `@next`
+  #   - on `main` without `pre.json` → stable publish to `@latest`
+  # If prerelease mode leaked onto a stable release (forgot `pnpm changeset pre exit`)
+  # we fail the run BEFORE publishing.
+  guard:
     runs-on: ubuntu-latest
+    outputs:
+      prerelease: ${{ steps.check.outputs.prerelease }}
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+      - name: Inspect prerelease state
+        id: check
+        run: |
+          if [ -f .changeset/pre.json ]; then
+            echo "prerelease=true" >> $GITHUB_OUTPUT
+            echo "Release guard: .changeset/pre.json present → prerelease mode (@next)"
+          else
+            echo "prerelease=false" >> $GITHUB_OUTPUT
+            echo "Release guard: no pre.json → stable release (@latest)"
+          fi
+
+  # ── Release job — gated on guard ───────────────────────────────────────────
+  release:
+    needs: guard
+    runs-on: ubuntu-latest
+    # OIDC trusted publishing: `id-token: write` lets npm verify the publish
+    # came from this workflow without a long-lived NPM_TOKEN. `contents: write`
+    # lets changesets/action open the Version Packages PR and push tags.
+    # `pull-requests: write` lets the action open/update PRs.
+    permissions:
+      id-token: write
+      contents: write
+      pull-requests: write
+    # Job-level env so the Chromatic step's `if:` can gate on its presence.
+    # GitHub Actions DOES NOT allow `secrets.*` references inside step-level
+    # `if:` expressions — the previous fix was wrong. Promoting the secret to
+    # a job-level env means `env.CHROMATIC_PROJECT_TOKEN` IS visible in `if:`
+    # and evaluates to empty when the secret is not configured. See:
+    # https://docs.github.com/en/actions/learn-github-actions/contexts#context-availability
+    env:
+      CHROMATIC_PROJECT_TOKEN: ${{ secrets.CHROMATIC_PROJECT_TOKEN }}
     steps:
       - name: Checkout
         uses: actions/checkout@v4
@@ -26,12 +69,23 @@ jobs:
         with:
           node-version: 22
           cache: pnpm
+          # Required for `npm publish --provenance` to pick up the OIDC env.
+          registry-url: https://registry.npmjs.org
 
       - name: Install dependencies
         run: pnpm install --frozen-lockfile
 
+      # ── Quality gates (must all pass before publish) ────────────────────
+      # These mirror `scripts/pre-publish-audit.mjs` so that CI and the
+      # manual audit enforce the same invariants. Ordering mirrors the
+      # audit script so a failure here is debuggable by re-running the
+      # same step locally.
+
       - name: Typecheck
         run: pnpm typecheck
+
+      - name: Lint
+        run: pnpm lint
 
       - name: Test
         run: pnpm test
@@ -39,9 +93,56 @@ jobs:
       - name: Build
         run: pnpm build
 
-      - name: SSR smoke test
+      - name: SSR smoke test (no browser APIs in Node.js)
         run: node packages/core/scripts/ssr-smoke-test.mjs
 
+      # Pre-publish audit runs every HARD gate (git state, version/CHANGELOG
+      # consistency, docs coverage, token audits, TW4 migration hygiene).
+      # Previously this only ran on a developer's laptop via /publish-release.
+      # That made every "HARD gate" in our docs social, not mechanical.
+      # Wiring it here closes the gap.
+      - name: Pre-publish audit
+        run: node scripts/pre-publish-audit.mjs
+
+      # Consumer smoke test installs the packed tarball into a throwaway
+      # Next 16 + TW4 + Turbopack app and runs `next build`. Catches the
+      # dist-side regressions (Node-only imports in client chunks, TW3
+      # class leftovers, missing peer deps) that ALL other gates above
+      # miss because none of them exercise Turbopack + TW4's CSS
+      # generation. This is the gate that would have caught Karm's
+      # 0.34/0.36 blockers before we shipped them.
+      - name: Consumer smoke (Next 16 + Turbopack + TW4)
+        run: node scripts/consumer-smoke-test.mjs
+
+      # Second smoke variant — Next 15 + Webpack. A sizeable portion of
+      # consumers are still on Webpack; TW4 + Webpack has different CSS
+      # pipeline semantics than Turbopack. Runs only when the variant
+      # directory exists so the step is a no-op until #58 lands.
+      - name: Consumer smoke (Next 15 + Webpack)
+        if: ${{ hashFiles('tests/smoke-consumer-next15/package.json') != '' }}
+        run: node scripts/consumer-smoke-test.mjs --variant next15-webpack
+
+      # Chromatic visual regression gate. Publishes a snapshot of every
+      # Storybook story and blocks the publish if any visual diff is
+      # unreviewed. Required for breaking releases (0.37.0 touches every
+      # token). Gate is skipped when CHROMATIC_PROJECT_TOKEN secret is not
+      # set so the workflow remains green until the secret is configured.
+      # The token is promoted to a job-level env (see `env:` block above)
+      # because GitHub Actions does NOT allow secrets.* in step-level if:.
+      - name: Chromatic visual review
+        if: ${{ env.CHROMATIC_PROJECT_TOKEN != '' }}
+        uses: chromaui/action@v11
+        with:
+          projectToken: ${{ env.CHROMATIC_PROJECT_TOKEN }}
+          workingDir: packages/core
+          exitZeroOnChanges: false
+          onlyChanged: true
+
+      # ── Publish ─────────────────────────────────────────────────────────
+      # Trusted Publisher on npmjs.com is configured for this repo+workflow,
+      # so NPM_TOKEN is no longer required once the migration to OIDC is
+      # complete. We keep NPM_TOKEN as env fallback during the cutover —
+      # remove after one successful OIDC publish.
       - name: Create Release Pull Request or Publish
         uses: changesets/action@v1
         with:
@@ -52,3 +153,5 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
+          # `npm publish --provenance` is emitted by `pnpm release` once
+          # `publishConfig.provenance: true` is set in package.json.

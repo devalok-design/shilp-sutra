@@ -2,6 +2,7 @@
 
 import * as React from 'react'
 import { Toaster as SonnerToaster } from 'sonner'
+
 import { cn } from './lib/utils'
 import { registerToaster } from './toast-registry'
 

@@ -1,5 +1,5 @@
 @import "tailwindcss";
-@config "../../../../tailwind.config.ts";
-@variant dark (&:is(.dark *));
+@import '../../../../packages/core/src/tokens/shilp-sutra.css';
 
-@import '../../../../packages/core/src/tokens/index.css';
+/* Dark variant + @source for content scanning come from shilp-sutra.css.
+   No @config or @variant dark declaration needed here. */

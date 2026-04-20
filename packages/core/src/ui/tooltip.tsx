@@ -1,11 +1,11 @@
 'use client'
 
-import * as React from 'react'
 import * as TooltipPrimitive from '@primitives/react-tooltip'
-import { motion, AnimatePresence } from 'framer-motion'
+import { AnimatePresence,motion } from 'framer-motion'
+import * as React from 'react'
 
-import { cn } from './lib/utils'
 import { springs, tweens } from './lib/motion'
+import { cn } from './lib/utils'
 
 // ── Auto-provider: wraps with TooltipPrimitive.Provider if none exists ──
 
@@ -121,4 +121,4 @@ TooltipContent.displayName = TooltipPrimitive.Content.displayName
 
 export type TooltipContentProps = React.ComponentPropsWithoutRef<typeof TooltipPrimitive.Content>
 
-export { Tooltip, TooltipTrigger, TooltipContent, TooltipProvider }
+export { Tooltip, TooltipContent, TooltipProvider,TooltipTrigger }

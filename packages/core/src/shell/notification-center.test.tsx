@@ -1,7 +1,7 @@
 import { render, screen } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
+import { describe, expect, it, vi } from 'vitest'
 import { axe } from 'vitest-axe'
-import { describe, it, expect, vi } from 'vitest'
 
 vi.mock('../ui/popover', () => ({
   Popover: ({ children }: { children: React.ReactNode }) => <>{children}</>,
@@ -21,7 +21,7 @@ vi.mock('../ui/tooltip', () => ({
   ),
 }))
 
-import { NotificationCenter, type Notification } from './notification-center'
+import { type Notification,NotificationCenter } from './notification-center'
 
 const makeNotification = (overrides: Partial<Notification> = {}): Notification => ({
   id: 'n1',

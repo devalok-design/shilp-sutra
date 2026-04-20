@@ -1,11 +1,11 @@
 'use client'
 
-import * as React from 'react'
 import * as TogglePrimitive from '@primitives/react-toggle'
 import { cva, type VariantProps } from 'class-variance-authority'
 import { motion } from 'framer-motion'
+import * as React from 'react'
 
-import { springs, motionProps } from './lib/motion'
+import { motionProps,springs } from './lib/motion'
 import { cn } from './lib/utils'
 
 const MotionToggleRoot = motion.create(TogglePrimitive.Root)

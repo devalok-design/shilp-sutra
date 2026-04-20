@@ -1,0 +1,4 @@
+/* Next 15 + Webpack variant — TW4-native consumer setup, matching the
+   documented 0.37 migration target. No tailwind.config.ts, no @config. */
+@import "tailwindcss";
+@import "@devalok/shilp-sutra/css";

@@ -1,18 +1,19 @@
 'use client'
 
-import * as React from 'react'
-import { motion } from 'framer-motion'
 import { scaleBand, scaleLinear } from 'd3-scale'
+import { motion } from 'framer-motion'
+import * as React from 'react'
+
+import { motionProps,tweens } from '../lib/motion'
 import { cn } from '../lib/utils'
-import { tweens, motionProps } from '../lib/motion'
-import { ChartContainer } from './chart-container'
+import { useReducedMotion } from './_internal/animation'
 import { Axis } from './_internal/axes'
+import { resolveColor } from './_internal/colors'
 import { GridLines } from './_internal/grid-lines'
 import { Legend } from './_internal/legend'
 import { ChartTooltip, useChartTooltip } from './_internal/tooltip'
-import { resolveColor } from './_internal/colors'
-import { useReducedMotion } from './_internal/animation'
-import type { DataPoint, ChartColor } from './_internal/types'
+import type { ChartColor,DataPoint } from './_internal/types'
+import { ChartContainer } from './chart-container'
 
 export interface BarChartProps extends Omit<React.HTMLAttributes<HTMLDivElement>, 'children' | 'color'> {
   /** Data array */

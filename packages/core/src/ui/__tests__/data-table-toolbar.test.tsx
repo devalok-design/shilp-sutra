@@ -1,8 +1,9 @@
+import { type ColumnDef, getCoreRowModel, getFilteredRowModel,useReactTable } from '@tanstack/react-table'
 import { render, screen } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
-import { describe, it, expect, vi } from 'vitest'
-import { type ColumnDef, useReactTable, getCoreRowModel, getFilteredRowModel } from '@tanstack/react-table'
 import * as React from 'react'
+import { describe, expect, it, vi } from 'vitest'
+
 import { DataTableToolbar, type Density } from '../data-table-toolbar'
 
 // ── Fixture: a thin wrapper that creates a real table instance ──

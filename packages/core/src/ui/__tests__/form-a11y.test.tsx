@@ -1,11 +1,12 @@
-import * as React from 'react'
 import { render } from '@testing-library/react'
 import { renderHook } from '@testing-library/react'
+import * as React from 'react'
+import { describe, expect,it } from 'vitest'
 import { axe } from 'vitest-axe'
-import { describe, it, expect } from 'vitest'
+
 import { FormField, FormHelperText, useFormField } from '../form'
-import { Label } from '../label'
 import { Input } from '../input'
+import { Label } from '../label'
 
 describe('Form a11y', () => {
   it('FormField renders without a11y violations', async () => {

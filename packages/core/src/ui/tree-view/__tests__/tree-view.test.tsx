@@ -1,10 +1,11 @@
-import { render, screen, fireEvent } from '@testing-library/react'
-import { axe } from 'vitest-axe'
+import { fireEvent,render, screen } from '@testing-library/react'
+import { act,renderHook } from '@testing-library/react'
 import { vi } from 'vitest'
-import { renderHook, act } from '@testing-library/react'
-import { TreeView } from '../tree-view'
+import { axe } from 'vitest-axe'
+
 import { TreeItem } from '../tree-item'
-import { useTree, type TreeNode } from '../use-tree'
+import { TreeView } from '../tree-view'
+import { type TreeNode,useTree } from '../use-tree'
 
 // ────────────────────────────────────────────────────────────────────────────
 // useTree hook

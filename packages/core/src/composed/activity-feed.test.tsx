@@ -1,7 +1,8 @@
 import { render, screen } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
-import { describe, it, expect, vi } from 'vitest'
-import { ActivityFeed, groupItemsByTime, type ActivityItem } from './activity-feed'
+import { describe, expect, it, vi } from 'vitest'
+
+import { ActivityFeed, type ActivityItem,groupItemsByTime } from './activity-feed'
 
 const now = new Date()
 

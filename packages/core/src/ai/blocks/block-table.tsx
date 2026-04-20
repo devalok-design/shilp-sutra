@@ -1,21 +1,22 @@
 'use client'
 
-import * as React from 'react'
 import { motion } from 'framer-motion'
-import { cn } from '../../ui/lib/utils'
-import { springs } from '../../ui/lib/motion'
+import * as React from 'react'
+
 import { useMotion } from '../../motion/motion-provider'
+import { Badge } from '../../ui/badge'
+import { springs } from '../../ui/lib/motion'
+import { cn } from '../../ui/lib/utils'
 import {
   Table,
-  TableHeader,
   TableBody,
-  TableRow,
-  TableHead,
-  TableCell,
   TableCaption,
+  TableCell,
+  TableHead,
+  TableHeader,
+  TableRow,
 } from '../../ui/table'
-import { Badge } from '../../ui/badge'
-import type { BlockComponentProps, BlockTableData, BlockTableColumn } from '../types'
+import type { BlockComponentProps, BlockTableColumn,BlockTableData } from '../types'
 
 type SortDir = 'asc' | 'desc' | null
 

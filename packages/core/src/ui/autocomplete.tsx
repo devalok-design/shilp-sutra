@@ -1,12 +1,13 @@
 'use client'
 
+import { autoUpdate,flip, offset, shift, size, useFloating } from '@floating-ui/react-dom'
+import { AnimatePresence,motion } from 'framer-motion'
 import * as React from 'react'
 import { createPortal } from 'react-dom'
-import { useFloating, offset, flip, shift, size, autoUpdate } from '@floating-ui/react-dom'
-import { motion, AnimatePresence } from 'framer-motion'
-import { cn } from './lib/utils'
-import { springs, tweens } from './lib/motion'
+
 import { useFormField } from './form'
+import { springs, tweens } from './lib/motion'
+import { cn } from './lib/utils'
 
 const listVariants = {
   hidden: {},
@@ -306,4 +307,4 @@ const Autocomplete = React.forwardRef<HTMLInputElement, AutocompleteProps>(
 )
 Autocomplete.displayName = 'Autocomplete'
 
-export { Autocomplete, type AutocompleteProps, type AutocompleteOption }
+export { Autocomplete, type AutocompleteOption,type AutocompleteProps }

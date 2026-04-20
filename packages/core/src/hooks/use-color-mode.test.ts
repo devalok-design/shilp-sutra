@@ -1,5 +1,6 @@
-import { renderHook, act } from '@testing-library/react'
-import { describe, it, expect, beforeEach, vi } from 'vitest'
+import { act,renderHook } from '@testing-library/react'
+import { beforeEach, describe, expect, it, vi } from 'vitest'
+
 import { useColorMode } from './use-color-mode'
 
 describe('useColorMode', () => {

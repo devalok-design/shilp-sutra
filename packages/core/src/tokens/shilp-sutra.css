@@ -1,0 +1,41 @@
+/* ═══════════════════════════════════════════════════════════════════
+   @devalok/shilp-sutra — TW4-native consumer entry point
+
+   Consumers import this ONCE in their global stylesheet:
+
+     // app/globals.css
+     @import "tailwindcss";
+     @import "@devalok/shilp-sutra/css";
+
+   That's the whole setup. No `tailwind.config.ts`, no `@config`, no
+   JS preset. TW4 reads the @theme, @utility, @custom-variant, and
+   @source directives in this file and auto-generates the design
+   system's utility surface.
+   ═══════════════════════════════════════════════════════════════════ */
+
+/* Token layer — matches the internal `./tokens` export order.
+   If you add files here, also update `./tokens/index.css` for the
+   legacy subpath. */
+@import "./primitives.css";
+@import "./semantic.css";
+@import "./typography.css";
+@import "./typography-semantic.css";
+@import "./base.css";
+@import "./animations.css";
+@import "./utilities.css";
+@import "./variants.css";
+
+/* TW4 content detection — scan our shipped dist JS for utility classes
+   so consumers don't have to configure "content" for us.
+
+   Priority order is deliberate:
+     1. Relative-path form: from dist/tokens/shilp-sutra.css up to dist/.
+        Under pnpm strict-hoist this always lands on the real (non-symlinked)
+        dist directory, so TW4 can read our compiled JS no matter how the
+        consumer package manager laid things out.
+     2. Package-name form: fallback via Node package resolution. Works on
+        npm/yarn and on pnpm with shamefully-hoist, but can miss under
+        strict-hoist depending on the TW4 resolver version. */
+@source "../../dist";
+@source "@devalok/shilp-sutra";
+

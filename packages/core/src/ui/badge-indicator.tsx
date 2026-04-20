@@ -1,9 +1,10 @@
 'use client'
 
+import { AnimatePresence, motion, useReducedMotion } from 'framer-motion'
 import * as React from 'react'
-import { motion, AnimatePresence, useReducedMotion } from 'framer-motion'
-import { cn } from './lib/utils'
+
 import { springs } from './lib/motion'
+import { cn } from './lib/utils'
 
 const PLACEMENT_CLASSES = {
   'top-right': '-top-1 -right-1',

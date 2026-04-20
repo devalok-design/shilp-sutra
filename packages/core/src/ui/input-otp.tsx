@@ -1,12 +1,12 @@
 'use client'
 
-import * as React from 'react'
-import { OTPInput, OTPInputContext } from 'input-otp'
 import { IconMinus } from '@tabler/icons-react'
+import { OTPInput, OTPInputContext } from 'input-otp'
+import * as React from 'react'
 
-import { cn } from './lib/utils'
-import { Icon } from './icon'
 import { useFormField } from './form'
+import { Icon } from './icon'
+import { cn } from './lib/utils'
 
 // ── Size context ────────────────────────────────────────────────────
 
@@ -109,4 +109,4 @@ export type InputOTPProps = React.ComponentPropsWithoutRef<typeof OTPInput> & {
   size?: InputOTPSize
 }
 
-export { InputOTP, InputOTPGroup, InputOTPSlot, InputOTPSeparator }
+export { InputOTP, InputOTPGroup, InputOTPSeparator,InputOTPSlot }

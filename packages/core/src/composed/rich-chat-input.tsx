@@ -1,63 +1,64 @@
 'use client'
 
-import * as React from 'react'
-import * as ReactDOM from 'react-dom'
 import { computePosition, flip, offset, shift } from '@floating-ui/dom'
-import { useEditor, useEditorState, EditorContent, Extension, type Editor } from '@tiptap/react'
-import { BubbleMenu } from '@tiptap/react/menus'
-import StarterKit from '@tiptap/starter-kit'
-import { Placeholder, CharacterCount } from '@tiptap/extensions'
+import {
+  IconBold,
+  IconChevronDown,
+  IconClock,
+  IconCode,
+  IconHighlight,
+  IconItalic,
+  IconMicrophone,
+  IconMoodSmile,
+  IconPlus,
+  IconSend,
+  IconSquare,
+  IconStrikethrough,
+  IconTextSize,
+  IconTrash,
+  IconUnderline,
+} from '@tabler/icons-react'
 import Highlight from '@tiptap/extension-highlight'
 import Image from '@tiptap/extension-image'
 import Mention from '@tiptap/extension-mention'
+import { CharacterCount,Placeholder } from '@tiptap/extensions'
+import { type Editor,EditorContent, Extension, useEditor, useEditorState } from '@tiptap/react'
+import { BubbleMenu } from '@tiptap/react/menus'
+import StarterKit from '@tiptap/starter-kit'
 import { AnimatePresence, motion } from 'framer-motion'
-import { durations } from '../ui/lib/motion'
-import { FileAttachment } from './extensions/file-attachment'
-import { EmojiNode } from './extensions/emoji-node'
-import { createEmojiSuggestion } from './extensions/emoji-suggestion'
-import { loadEmojiData, lookupEmoji } from './extensions/emoji-data'
-import { createSuggestionRenderer } from './extensions/mention-suggestion'
-import { createSlashCommandExtension } from './extensions/slash-command'
-import type { SlashCommandGroup } from './extensions/slash-command'
-import type { MentionItem } from './rich-text-editor'
-import { ReplyBanner } from './rich-chat-input/reply-banner'
-import { ScheduleDropdownContent, ScheduleBanner, ScheduleDialog } from './rich-chat-input/schedule-send'
-import { SplitButton } from '../ui/split-button'
-import { emojiDataLoaders } from './emoji-picker'
-import type { EmojiSet } from './emoji-picker'
-import { AttachmentStrip } from './rich-chat-input/attachment-strip'
-import type { Attachment } from './rich-chat-input/attachment-strip'
-import { RecordingOverlay } from './rich-chat-input/recording-overlay'
-import { ChatToolbar } from './rich-chat-input/chat-toolbar'
-import type { ChatToolbarItem } from './rich-chat-input/chat-toolbar'
-import { AudioWaveform } from './rich-chat-input/audio-waveform'
-import type { AudioWaveformProps } from './rich-chat-input/audio-waveform'
-import { AudioPlayer } from './rich-chat-input/audio-player'
-import type { AudioPlayerProps } from './rich-chat-input/audio-player'
-import { useVoiceRecorder } from './rich-chat-input/use-voice-recorder'
-import type { UseVoiceRecorderOptions, UseVoiceRecorderReturn } from './rich-chat-input/use-voice-recorder'
-import { Button } from '../ui/button'
-import { Icon } from '../ui/icon'
-import {
-  IconBold,
-  IconItalic,
-  IconUnderline,
-  IconStrikethrough,
-  IconHighlight,
-  IconCode,
-  IconMoodSmile,
-  IconSend,
-  IconMicrophone,
-  IconChevronDown,
-  IconSquare,
-  IconTextSize,
-  IconPlus,
-  IconTrash,
-  IconClock,
-} from '@tabler/icons-react'
-import { cn } from '../ui/lib/utils'
+import * as React from 'react'
+import * as ReactDOM from 'react-dom'
+
 import { useColorMode } from '../hooks/use-color-mode'
 import { useIsMobile } from '../hooks/use-mobile'
+import { Button } from '../ui/button'
+import { Icon } from '../ui/icon'
+import { durations } from '../ui/lib/motion'
+import { cn } from '../ui/lib/utils'
+import { SplitButton } from '../ui/split-button'
+import type { EmojiSet } from './emoji-picker'
+import { emojiDataLoaders } from './emoji-picker'
+import { loadEmojiData, lookupEmoji } from './extensions/emoji-data'
+import { EmojiNode } from './extensions/emoji-node'
+import { createEmojiSuggestion } from './extensions/emoji-suggestion'
+import { FileAttachment } from './extensions/file-attachment'
+import { createSuggestionRenderer } from './extensions/mention-suggestion'
+import type { SlashCommandGroup } from './extensions/slash-command'
+import { createSlashCommandExtension } from './extensions/slash-command'
+import type { Attachment } from './rich-chat-input/attachment-strip'
+import { AttachmentStrip } from './rich-chat-input/attachment-strip'
+import type { AudioPlayerProps } from './rich-chat-input/audio-player'
+import { AudioPlayer } from './rich-chat-input/audio-player'
+import type { AudioWaveformProps } from './rich-chat-input/audio-waveform'
+import { AudioWaveform } from './rich-chat-input/audio-waveform'
+import type { ChatToolbarItem } from './rich-chat-input/chat-toolbar'
+import { ChatToolbar } from './rich-chat-input/chat-toolbar'
+import { RecordingOverlay } from './rich-chat-input/recording-overlay'
+import { ReplyBanner } from './rich-chat-input/reply-banner'
+import { ScheduleBanner, ScheduleDialog,ScheduleDropdownContent } from './rich-chat-input/schedule-send'
+import type { UseVoiceRecorderOptions, UseVoiceRecorderReturn } from './rich-chat-input/use-voice-recorder'
+import { useVoiceRecorder } from './rich-chat-input/use-voice-recorder'
+import type { MentionItem } from './rich-text-editor'
 
 // ── Re-exports ──────────────────────────────────────────────────
 
@@ -1140,20 +1141,20 @@ export type { ChatToolbarItem }
 
 // Re-export toolbar primitives for custom toolbar composition
 export {
+  BlockquoteButton,
+  BoldButton,
+  BulletListButton,
+  CodeButton,
+  EmojiButton,
+  HighlightButton,
+  ItalicButton,
+  LinkButton,
+  MentionButton,
+  OrderedListButton,
+  SlashCommandButton,
+  StrikeButton,
   ToolbarButton,
   ToolbarDivider,
   ToolbarGroup,
-  BoldButton,
-  ItalicButton,
   UnderlineButton,
-  StrikeButton,
-  HighlightButton,
-  CodeButton,
-  BulletListButton,
-  OrderedListButton,
-  BlockquoteButton,
-  LinkButton,
-  MentionButton,
-  EmojiButton,
-  SlashCommandButton,
 } from './rich-chat-input/chat-toolbar'

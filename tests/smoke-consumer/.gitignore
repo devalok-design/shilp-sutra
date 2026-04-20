@@ -1,0 +1,7 @@
+node_modules/
+.next/
+shilp-sutra.tgz
+shilp-sutra-*.tgz
+next-env.d.ts
+pnpm-lock.yaml
+smoke-test.log

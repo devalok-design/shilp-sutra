@@ -1,6 +1,7 @@
-import { render, fireEvent, screen } from '@testing-library/react'
-import { describe, it, expect, vi, beforeEach, afterEach } from 'vitest'
-import { ErrorDisplay, ErrorBoundary } from '../error-boundary'
+import { fireEvent, render, screen } from '@testing-library/react'
+import { afterEach,beforeEach, describe, expect, it, vi } from 'vitest'
+
+import { ErrorBoundary,ErrorDisplay } from '../error-boundary'
 
 describe('ErrorDisplay', () => {
   // Suppress console.error for cleaner test output

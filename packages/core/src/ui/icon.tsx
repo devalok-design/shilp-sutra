@@ -1,11 +1,12 @@
 'use client'
 
+import { AnimatePresence, motion, useReducedMotion } from 'framer-motion'
 import * as React from 'react'
-import { motion, AnimatePresence, useReducedMotion } from 'framer-motion'
+
+import { type IconSize, type IconStroke,useIconContext } from './icon-context'
 import { springs, tweens } from './lib/motion'
 import { cn } from './lib/utils'
 import { Spinner } from './spinner'
-import { useIconContext, type IconSize, type IconStroke } from './icon-context'
 
 /** Icon size tier → pixel dimensions */
 const SIZE_PX: Record<IconSize, number> = {

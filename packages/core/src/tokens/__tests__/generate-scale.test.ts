@@ -1,6 +1,7 @@
-import { describe, it, expect } from 'vitest'
-import { generateScale, BRAND_PALETTES } from '../generate-scale'
-import type { ScaleOptions, Scale } from '../generate-scale'
+import { describe, expect,it } from 'vitest'
+
+import type { Scale,ScaleOptions } from '../generate-scale'
+import { BRAND_PALETTES,generateScale } from '../generate-scale'
 
 /** Parse an oklch() string into { l, c, h } */
 function parseOklch(value: string) {

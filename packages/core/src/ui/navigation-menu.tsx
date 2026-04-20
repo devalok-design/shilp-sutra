@@ -1,13 +1,13 @@
 'use client'
 
-import * as React from 'react'
 import * as NavigationMenuPrimitive from '@primitives/react-navigation-menu'
 import { IconChevronDown } from '@tabler/icons-react'
 import { motion } from 'framer-motion'
+import * as React from 'react'
 
-import { cn } from './lib/utils'
-import { springs, tweens } from './lib/motion'
 import { Icon } from './icon'
+import { springs, tweens } from './lib/motion'
+import { cn } from './lib/utils'
 
 const NavigationMenu = React.forwardRef<
   React.ElementRef<typeof NavigationMenuPrimitive.Root>,
@@ -269,11 +269,11 @@ export type NavigationMenuContentProps = React.ComponentPropsWithoutRef<typeof N
 
 export {
   NavigationMenu,
-  NavigationMenuList,
-  NavigationMenuItem,
   NavigationMenuContent,
-  NavigationMenuTrigger,
-  NavigationMenuLink,
   NavigationMenuIndicator,
+  NavigationMenuItem,
+  NavigationMenuLink,
+  NavigationMenuList,
+  NavigationMenuTrigger,
   NavigationMenuViewport,
 }

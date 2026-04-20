@@ -1,5 +1,6 @@
 // @server-safe
 import * as React from 'react'
+
 import { cn } from '../ui/lib/utils'
 import { Skeleton } from '../ui/skeleton'
 
@@ -198,4 +199,4 @@ const ListSkeleton = React.forwardRef<HTMLDivElement, ListSkeletonProps>(
 
 ListSkeleton.displayName = 'ListSkeleton'
 
-export { CardSkeleton, TableSkeleton, BoardSkeleton, ListSkeleton }
+export { BoardSkeleton, CardSkeleton, ListSkeleton,TableSkeleton }

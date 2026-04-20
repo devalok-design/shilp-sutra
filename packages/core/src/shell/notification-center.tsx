@@ -6,9 +6,16 @@
  * Props-driven: accepts notifications array and callbacks instead of
  * reading from Zustand stores or using Remix useNavigate.
  */
+import { IconBell, IconChecks, IconInbox, IconX } from '@tabler/icons-react'
+import { motion, useReducedMotion } from 'framer-motion'
 import * as React from 'react'
-import { useRef, useCallback } from 'react'
+import { useCallback,useRef } from 'react'
+
+import { useIsMobile } from '../hooks/use-mobile'
+import { Icon } from '../ui/icon'
 import { formatRelativeTime } from '../ui/lib/date-utils'
+import { durations } from '../ui/lib/motion'
+import { cn } from '../ui/lib/utils'
 import {
   Popover,
   PopoverContent,
@@ -20,18 +27,12 @@ import {
   SheetTitle,
   SheetTrigger,
 } from '../ui/sheet'
+import { Spinner } from '../ui/spinner'
 import {
   Tooltip,
   TooltipContent,
   TooltipTrigger,
 } from '../ui/tooltip'
-import { IconBell, IconChecks, IconInbox, IconX } from '@tabler/icons-react'
-import { Icon } from '../ui/icon'
-import { cn } from '../ui/lib/utils'
-import { Spinner } from '../ui/spinner'
-import { useIsMobile } from '../hooks/use-mobile'
-import { motion, useReducedMotion } from 'framer-motion'
-import { durations } from '../ui/lib/motion'
 
 // -----------------------------------------------------------------------
 // Types

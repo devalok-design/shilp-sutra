@@ -1,7 +1,7 @@
-import { render, screen, fireEvent } from '@testing-library/react'
-import { axe } from 'vitest-axe'
-import { vi } from 'vitest'
+import { fireEvent,render, screen } from '@testing-library/react'
 import * as React from 'react'
+import { vi } from 'vitest'
+import { axe } from 'vitest-axe'
 
 // ── Mocks ──────────────────────────────────────────────────────────────────
 
@@ -38,11 +38,11 @@ vi.mock('remark-gfm', () => ({
 // ── Imports (after mocks) ──────────────────────────────────────────────────
 
 import { AICommandProvider, useAICommand } from '../ai-command-provider'
-import { AIConversation } from '../conversation'
 import { BlockRenderer } from '../block-renderer'
 import { TextBlock } from '../blocks/text'
 import { CommandBar } from '../command-bar'
-import type { ConversationMessage, Block } from '../types'
+import { AIConversation } from '../conversation'
+import type { Block,ConversationMessage } from '../types'
 
 // ── Helpers ────────────────────────────────────────────────────────────────
 

@@ -1,16 +1,17 @@
 'use client'
 
-import * as React from 'react'
 import { cva, type VariantProps } from 'class-variance-authority'
-import { motion, AnimatePresence } from 'framer-motion'
-import { cn } from '../ui/lib/utils'
-import { springs } from '../ui/lib/motion'
+import { AnimatePresence,motion } from 'framer-motion'
+import * as React from 'react'
+
+import type { AvatarRing } from '../ui/avatar'
 import {
   Avatar,
-  AvatarImage,
   AvatarFallback,
+  AvatarImage,
 } from '../ui/avatar'
-import type { AvatarRing } from '../ui/avatar'
+import { springs } from '../ui/lib/motion'
+import { cn } from '../ui/lib/utils'
 import {
   Tooltip,
   TooltipContent,

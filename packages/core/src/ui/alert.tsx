@@ -1,12 +1,13 @@
 'use client'
 
-import { IconAlertCircle, IconCircleCheck, IconInfoCircle, IconX, IconAlertTriangle } from '@tabler/icons-react'
-import * as React from 'react'
+import { IconAlertCircle, IconAlertTriangle,IconCircleCheck, IconInfoCircle, IconX } from '@tabler/icons-react'
 import { cva, type VariantProps } from 'class-variance-authority'
-import { motion, AnimatePresence } from 'framer-motion'
-import { cn } from './lib/utils'
-import { springs, motionProps } from './lib/motion'
+import { AnimatePresence,motion } from 'framer-motion'
+import * as React from 'react'
+
 import { Icon } from './icon'
+import { motionProps,springs } from './lib/motion'
+import { cn } from './lib/utils'
 
 const alertVariants = cva(
   'relative flex rounded-ds-lg border',

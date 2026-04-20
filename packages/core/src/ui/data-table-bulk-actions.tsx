@@ -1,11 +1,11 @@
 'use client'
 
-import React from 'react'
-import { type Table } from '@tanstack/react-table'
 import { IconX } from '@tabler/icons-react'
+import { type Table } from '@tanstack/react-table'
+import React from 'react'
 
-import { Icon } from './icon'
 import { Button } from './button'
+import { Icon } from './icon'
 import { cn } from './lib/utils'
 
 /** Bulk action definition for the floating action bar */

@@ -3,7 +3,9 @@ import { definePreview } from '@storybook/react-vite'
 import { parameters as docsParameters } from '@storybook/addon-docs/preview'
 import { TooltipProvider } from '../packages/core/src/ui/tooltip'
 import theme from './theme'
-import '../packages/core/src/tokens/index.css'
+// Single CSS entry — storybook.css @imports tailwindcss + shilp-sutra.css
+// (our TW4-native token bundle). The legacy tokens/index.css import that
+// used to live here was removed in 0.37 (avoided double-loading tokens).
 import '../storybook.css'
 
 /* ── Dark-mode toolbar decorator ──────────────────────────────────

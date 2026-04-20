@@ -1,10 +1,11 @@
 import { Extension } from '@tiptap/core'
-import Suggestion, { type SuggestionProps, type SuggestionKeyDownProps } from '@tiptap/suggestion'
+import Suggestion, { type SuggestionKeyDownProps,type SuggestionProps } from '@tiptap/suggestion'
 import { PluginKey } from 'prosemirror-state'
 import * as React from 'react'
 import { createRoot, type Root } from 'react-dom/client'
+
 import { cn } from '../../ui/lib/utils'
-import { type ResolvedEmoji, loadEmojiData, searchEmoji, SPRITESHEET_URL, SHEET_COLS, SHEET_ROWS } from './emoji-data'
+import { loadEmojiData, type ResolvedEmoji, searchEmoji, SHEET_COLS, SHEET_ROWS,SPRITESHEET_URL } from './emoji-data'
 
 // Re-export for external consumers
 export type { ResolvedEmoji as EmojiSuggestionItem }

@@ -1,6 +1,7 @@
-import { describe, it, expect, vi, beforeAll } from 'vitest'
 import { render } from '@testing-library/react'
+import { beforeAll,describe, expect, it, vi } from 'vitest'
 import { axe } from 'vitest-axe'
+
 import { Message } from '../message'
 import { MessageInput } from '../message-input'
 import { MessageList } from '../message-list'

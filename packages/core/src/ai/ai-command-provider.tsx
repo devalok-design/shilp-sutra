@@ -1,6 +1,7 @@
 'use client'
 
 import * as React from 'react'
+
 import type { BlockComponentProps } from './types'
 
 export interface AICommandContext {
@@ -28,7 +29,7 @@ export function AICommandProvider({ children, customBlocks, onAction, agent }: A
   const blocks = customBlocks ?? EMPTY_BLOCKS
   const value = React.useMemo<AICommandContext>(
     () => ({ customBlocks: blocks, onAction, agent }),
-    // eslint-disable-next-line react-hooks/exhaustive-deps -- stable ref for blocks via ?? EMPTY_BLOCKS
+     
     [blocks, onAction, agent],
   )
   return <AICommandCtx.Provider value={value}>{children}</AICommandCtx.Provider>

@@ -1,6 +1,7 @@
 import { render } from '@testing-library/react'
-import { describe, it, expect } from 'vitest'
-import { CardSkeleton, TableSkeleton, BoardSkeleton, ListSkeleton } from './loading-skeleton'
+import { describe, expect,it } from 'vitest'
+
+import { BoardSkeleton, CardSkeleton, ListSkeleton,TableSkeleton } from './loading-skeleton'
 
 describe('CardSkeleton', () => {
   it('renders without crashing', () => {

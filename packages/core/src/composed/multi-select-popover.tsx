@@ -1,16 +1,17 @@
 'use client'
 
+import { IconCheck, IconSearch } from '@tabler/icons-react'
+import { motion } from 'framer-motion'
 import * as React from 'react'
+
+import { Icon } from '../ui/icon'
+import { springs } from '../ui/lib/motion'
 import { cn } from '../ui/lib/utils'
 import {
   Popover,
   PopoverContent,
   PopoverTrigger,
 } from '../ui/popover'
-import { IconCheck, IconSearch } from '@tabler/icons-react'
-import { Icon } from '../ui/icon'
-import { motion } from 'framer-motion'
-import { springs } from '../ui/lib/motion'
 import { Spinner } from '../ui/spinner'
 
 // ============================================================
@@ -160,7 +161,7 @@ const MultiSelectPopover = React.forwardRef<HTMLDivElement, MultiSelectPopoverPr
     }
 
     // Reset focused index when search text changes
-    // eslint-disable-next-line react-hooks/exhaustive-deps
+     
     React.useEffect(() => { setFocusedIndex(-1) }, [search])
 
     // Scroll focused item into view

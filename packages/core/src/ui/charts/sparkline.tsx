@@ -1,12 +1,13 @@
 'use client'
 
-import * as React from 'react'
-import { motion } from 'framer-motion'
-import { line, area, curveMonotoneX } from 'd3-shape'
 import { scaleLinear } from 'd3-scale'
+import { area, curveMonotoneX,line } from 'd3-shape'
+import { motion } from 'framer-motion'
+import * as React from 'react'
+
 import { cn } from '../lib/utils'
-import { resolveColor } from './_internal/colors'
 import { useReducedMotion } from './_internal/animation'
+import { resolveColor } from './_internal/colors'
 
 export interface SparklineProps extends Omit<React.SVGAttributes<SVGSVGElement>, 'children'> {
   /** Numeric data points */

@@ -1,9 +1,10 @@
 import { render } from '@testing-library/react'
-import { describe, it, expect } from 'vitest'
-import { axe } from 'vitest-axe'
 import userEvent from '@testing-library/user-event'
-import { MemberPicker } from '../member-picker'
+import { describe, expect,it } from 'vitest'
+import { axe } from 'vitest-axe'
+
 import type { MemberPickerMember } from '../member-picker'
+import { MemberPicker } from '../member-picker'
 
 const mockMembers: MemberPickerMember[] = [
   { id: '1', name: 'Alice Johnson' },

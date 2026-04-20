@@ -1,22 +1,23 @@
 import { render, screen } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
-import { describe, it, expect, vi } from 'vitest'
+import { describe, expect, it, vi } from 'vitest'
 import { axe } from 'vitest-axe'
+
 import {
   Menubar,
-  MenubarMenu,
-  MenubarTrigger,
+  MenubarCheckboxItem,
   MenubarContent,
   MenubarItem,
-  MenubarSeparator,
   MenubarLabel,
-  MenubarCheckboxItem,
+  MenubarMenu,
   MenubarRadioGroup,
   MenubarRadioItem,
+  MenubarSeparator,
   MenubarShortcut,
   MenubarSub,
-  MenubarSubTrigger,
   MenubarSubContent,
+  MenubarSubTrigger,
+  MenubarTrigger,
 } from './menubar'
 
 function renderMenubar() {

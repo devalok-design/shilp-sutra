@@ -1,12 +1,13 @@
 'use client'
 
-import * as React from 'react'
 import { IconMinus, IconPlus } from '@tabler/icons-react'
 import { cva, type VariantProps } from 'class-variance-authority'
-import { cn } from './lib/utils'
+import * as React from 'react'
+
 import { useFormField } from './form'
 import { Icon } from './icon'
 import type { IconSize } from './icon-context'
+import { cn } from './lib/utils'
 
 export type NumberInputState = 'default' | 'error' | 'warning' | 'success'
 

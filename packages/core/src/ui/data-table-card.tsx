@@ -1,12 +1,12 @@
 'use client'
 
-import React from 'react'
 import { flexRender } from '@tanstack/react-table'
+import React from 'react'
 
 import { Checkbox } from './checkbox'
-import { Skeleton } from './skeleton'
-import { cn } from './lib/utils'
 import { useDataTableContext } from './data-table-context'
+import { cn } from './lib/utils'
+import { Skeleton } from './skeleton'
 
 // ── DataTableCards ─────────────────────────────────────────────
 // Renders rows as vertically stacked cards for small (< sm) viewports.

@@ -1,16 +1,16 @@
 'use client'
 
-import * as React from 'react'
 import * as PopoverPrimitive from '@primitives/react-popover'
 import { IconCheck, IconChevronDown, IconSearch, IconX } from '@tabler/icons-react'
 import { cva, type VariantProps } from 'class-variance-authority'
 import { motion } from 'framer-motion'
+import * as React from 'react'
 
-import { cn } from './lib/utils'
-import { springs, tweens } from './lib/motion'
+import { useFormField } from './form'
 import { Icon } from './icon'
 import type { IconSize } from './icon-context'
-import { useFormField } from './form'
+import { springs, tweens } from './lib/motion'
+import { cn } from './lib/utils'
 
 export const comboboxTriggerVariants = cva(
   [

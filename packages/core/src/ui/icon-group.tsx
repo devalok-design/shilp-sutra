@@ -1,8 +1,9 @@
 'use client'
 
 import * as React from 'react'
-import { cn } from './lib/utils'
+
 import { IconProvider, type IconSize, type IconStroke } from './icon-context'
+import { cn } from './lib/utils'
 
 const gapClasses = {
   tight: 'gap-0.5',

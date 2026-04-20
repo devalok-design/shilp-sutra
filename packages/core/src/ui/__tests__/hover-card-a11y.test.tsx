@@ -1,7 +1,8 @@
 import { render } from '@testing-library/react'
+import { describe, expect,it } from 'vitest'
 import { axe } from 'vitest-axe'
-import { describe, it, expect } from 'vitest'
-import { HoverCard, HoverCardTrigger, HoverCardContent } from '../hover-card'
+
+import { HoverCard, HoverCardContent,HoverCardTrigger } from '../hover-card'
 
 describe('HoverCard accessibility', () => {
   it('should have no violations in closed state', async () => {

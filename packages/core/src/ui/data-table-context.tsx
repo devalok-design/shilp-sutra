@@ -1,7 +1,7 @@
 'use client'
 
-import React from 'react'
 import { type ColumnPinningState, type Table } from '@tanstack/react-table'
+import React from 'react'
 
 import type { Density } from './data-table-toolbar'
 

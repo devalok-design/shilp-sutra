@@ -1,9 +1,9 @@
 'use client'
 
-import * as React from 'react'
-import { cva, type VariantProps } from 'class-variance-authority'
-import { motion, AnimatePresence } from 'framer-motion'
 import { IconChevronDown } from '@tabler/icons-react'
+import { cva, type VariantProps } from 'class-variance-authority'
+import { AnimatePresence,motion } from 'framer-motion'
+import * as React from 'react'
 
 import { Icon } from '../ui/icon'
 import { motionProps } from '../ui/lib/motion'

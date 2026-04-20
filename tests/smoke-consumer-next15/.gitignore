@@ -1,0 +1,6 @@
+node_modules/
+.next/
+*.tgz
+pnpm-lock.yaml
+smoke-test.log
+next-env.d.ts

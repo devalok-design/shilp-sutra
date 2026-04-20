@@ -1,10 +1,10 @@
 'use client'
 
-import * as React from 'react'
 import { cva, type VariantProps } from 'class-variance-authority'
 import { motion } from 'framer-motion'
+import * as React from 'react'
 
-import { springs, tweens, motionProps } from './lib/motion'
+import { motionProps,springs, tweens } from './lib/motion'
 import { cn } from './lib/utils'
 
 type CardSize = 'sm' | 'md' | 'lg'
@@ -268,4 +268,4 @@ const CardFooter = React.forwardRef<
 })
 CardFooter.displayName = 'CardFooter'
 
-export { Card, cardVariants, CardHeader, CardFooter, CardTitle, CardDescription, CardContent }
+export { Card, CardContent,CardDescription, CardFooter, CardHeader, CardTitle, cardVariants }

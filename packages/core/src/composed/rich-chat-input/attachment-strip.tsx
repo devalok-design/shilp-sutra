@@ -1,11 +1,12 @@
 'use client'
 
+import { IconFile,IconX } from '@tabler/icons-react'
+import { AnimatePresence,motion } from 'framer-motion'
 import * as React from 'react'
-import { motion, AnimatePresence } from 'framer-motion'
-import { IconX, IconFile } from '@tabler/icons-react'
+
 import { Icon } from '../../ui/icon'
-import { Spinner } from '../../ui/spinner'
 import { durations } from '../../ui/lib/motion'
+import { Spinner } from '../../ui/spinner'
 
 export interface Attachment {
   id: string

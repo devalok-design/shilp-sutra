@@ -1,9 +1,10 @@
+import { IconCheck,IconPlus } from '@tabler/icons-react'
 import { render, screen } from '@testing-library/react'
-import { describe, it, expect, vi } from 'vitest'
+import { describe, expect, it, vi } from 'vitest'
 import { axe } from 'vitest-axe'
+
 import { Icon } from './icon'
 import { IconProvider } from './icon-context'
-import { IconPlus, IconCheck } from '@tabler/icons-react'
 
 // framer-motion's useReducedMotion returns false in jsdom by default,
 // so static-render tests work without extra mocking.

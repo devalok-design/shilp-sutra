@@ -1,16 +1,17 @@
 import { render, screen, within } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
-import { axe } from 'vitest-axe'
-import { describe, it, expect, vi } from 'vitest'
 import { format } from 'date-fns'
+import { describe, expect, it, vi } from 'vitest'
+import { axe } from 'vitest-axe'
+
+import { CalendarGrid } from '../calendar-grid'
 import { DatePicker } from '../date-picker'
 import { DateRangePicker } from '../date-range-picker'
-import { TimePicker } from '../time-picker'
 import { DateTimePicker } from '../date-time-picker'
-import { CalendarGrid } from '../calendar-grid'
 import { MonthPicker } from '../month-picker'
-import { YearPicker } from '../year-picker'
 import { Presets } from '../presets'
+import { TimePicker } from '../time-picker'
+import { YearPicker } from '../year-picker'
 
 // ---------------------------------------------------------------------------
 // DatePicker

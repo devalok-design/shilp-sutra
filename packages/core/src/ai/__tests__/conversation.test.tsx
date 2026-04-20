@@ -1,6 +1,6 @@
 import { render, screen } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
-import { describe, it, expect, vi, beforeAll } from 'vitest'
+import { beforeAll,describe, expect, it, vi } from 'vitest'
 
 // ── ESM-only dep mocks (must be before component imports) ────────────────────
 
@@ -16,8 +16,8 @@ vi.mock('remark-gfm', () => ({
   default: () => {},
 }))
 
-import { AIConversation } from '../conversation'
 import { AICommandProvider } from '../ai-command-provider'
+import { AIConversation } from '../conversation'
 import type { ConversationMessage } from '../types'
 
 // ── IntersectionObserver mock ────────────────────────────────────────────────

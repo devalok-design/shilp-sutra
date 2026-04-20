@@ -6,16 +6,12 @@
  * Props-driven: accepts preferences array, projects, and callbacks.
  * No internal fetching -- the consumer is responsible for data loading.
  */
+import { IconBell, IconMessage,IconPlus, IconTrash } from '@tabler/icons-react'
 import * as React from 'react'
 import { useState } from 'react'
+
 import { Button } from '../ui/button'
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from '../ui/select'
+import { Card, CardContent,CardHeader, CardTitle } from '../ui/card'
 import {
   Dialog,
   DialogContent,
@@ -23,12 +19,17 @@ import {
   DialogHeader,
   DialogTitle,
 } from '../ui/dialog'
-import { Switch } from '../ui/switch'
-import { Card, CardHeader, CardTitle, CardContent } from '../ui/card'
-import { IconPlus, IconTrash, IconBell, IconMessage } from '@tabler/icons-react'
 import { Icon } from '../ui/icon'
 import { cn } from '../ui/lib/utils'
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from '../ui/select'
 import { Spinner } from '../ui/spinner'
+import { Switch } from '../ui/switch'
 
 // -----------------------------------------------------------------------
 // Types

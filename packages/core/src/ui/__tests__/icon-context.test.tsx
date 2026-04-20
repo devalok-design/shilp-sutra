@@ -1,9 +1,10 @@
-import { render, screen } from '@testing-library/react'
-import { describe, it, expect } from 'vitest'
-import { axe } from 'vitest-axe'
 import { IconPlus } from '@tabler/icons-react'
-import { IconProvider } from '../icon-context'
+import { render, screen } from '@testing-library/react'
+import { describe, expect,it } from 'vitest'
+import { axe } from 'vitest-axe'
+
 import { Icon } from '../icon'
+import { IconProvider } from '../icon-context'
 
 describe('IconContext', () => {
   it('provides default size to child Icons', () => {

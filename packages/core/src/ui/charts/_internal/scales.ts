@@ -1,4 +1,4 @@
-import { scaleBand, scaleLinear, scaleTime, scaleOrdinal } from 'd3-scale'
+import { scaleBand, scaleLinear, scaleOrdinal,scaleTime } from 'd3-scale'
 
 export function createLinearScale(domain: [number, number], range: [number, number]) {
   return scaleLinear().domain(domain).range(range).nice()

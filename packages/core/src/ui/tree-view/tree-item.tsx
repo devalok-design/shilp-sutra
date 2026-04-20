@@ -3,9 +3,9 @@
 import { IconChevronRight } from '@tabler/icons-react'
 import * as React from 'react'
 
-import { cn } from '../lib/utils'
-import { Icon } from '../icon'
 import { Checkbox } from '../checkbox'
+import { Icon } from '../icon'
+import { cn } from '../lib/utils'
 import { useTreeContext } from './tree-view'
 
 export interface TreeItemProps {
@@ -125,7 +125,7 @@ const TreeItem = React.forwardRef<HTMLLIElement, TreeItemProps>(
           tabIndex={disabled ? -1 : 0}
           onClick={handleRowClick}
           onKeyDown={handleKeyDown}
-          style={{ paddingLeft: `calc(${depth} * var(--spacing-05b) + var(--spacing-03))` }}
+          style={{ paddingLeft: `calc(${depth} * var(--spacing-ds-05b) + var(--spacing-ds-03))` }}
           className={cn(
             'flex items-center gap-ds-02 py-ds-02 px-ds-02 rounded-ds-md cursor-pointer transition-colors duration-fast-01',
             'hover:bg-surface-raised',

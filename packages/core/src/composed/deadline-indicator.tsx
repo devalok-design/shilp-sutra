@@ -1,11 +1,12 @@
 'use client'
 
-import * as React from 'react'
-import { motion } from 'framer-motion'
-import { cn } from '../ui/lib/utils'
-import { motionProps } from '../ui/lib/motion'
 import { IconClock } from '@tabler/icons-react'
+import { motion } from 'framer-motion'
+import * as React from 'react'
+
 import { Icon } from '../ui/icon'
+import { motionProps } from '../ui/lib/motion'
+import { cn } from '../ui/lib/utils'
 import { SimpleTooltip } from './simple-tooltip'
 
 // ============================================================

@@ -1,7 +1,8 @@
 'use client'
 
+import { IconPlayerPause,IconPlayerPlay } from '@tabler/icons-react'
 import * as React from 'react'
-import { IconPlayerPlay, IconPlayerPause } from '@tabler/icons-react'
+
 import { cn } from '../../ui/lib/utils'
 import { AudioWaveform } from './audio-waveform'
 

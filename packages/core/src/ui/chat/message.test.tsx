@@ -1,7 +1,8 @@
-import { describe, it, expect, vi } from 'vitest'
-import { render, screen, fireEvent } from '@testing-library/react'
+import { IconEdit, IconMoodSmile,IconTrash } from '@tabler/icons-react'
+import { fireEvent,render, screen } from '@testing-library/react'
+import { describe, expect, it, vi } from 'vitest'
+
 import { Message } from './message'
-import { IconEdit, IconTrash, IconMoodSmile } from '@tabler/icons-react'
 
 describe('Message', () => {
   // ── Root / flat variant ──────────────────────────────────────────────

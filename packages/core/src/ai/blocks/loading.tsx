@@ -1,17 +1,18 @@
 'use client'
 
-import * as React from 'react'
-import { motion } from 'framer-motion'
 import {
-  IconCircleCheck,
   IconCircle,
+  IconCircleCheck,
   IconCircleX,
 } from '@tabler/icons-react'
+import { motion } from 'framer-motion'
+import * as React from 'react'
+
+import { useMotion } from '../../motion/motion-provider'
 import { Icon } from '../../ui/icon'
+import { durations } from '../../ui/lib/motion'
 import { cn } from '../../ui/lib/utils'
 import { Skeleton } from '../../ui/skeleton'
-import { useMotion } from '../../motion/motion-provider'
-import { durations } from '../../ui/lib/motion'
 import type { BlockComponentProps, LoadingBlockData, ProcessingStep } from '../types'
 
 /** Spinning indicator for active steps */

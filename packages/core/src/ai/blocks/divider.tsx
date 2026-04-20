@@ -1,11 +1,11 @@
 'use client'
 
-import * as React from 'react'
 import { motion } from 'framer-motion'
-import { Separator } from '../../ui/separator'
-import { tweens } from '../../ui/lib/motion'
-import { useMotion } from '../../motion/motion-provider'
+import * as React from 'react'
 
+import { useMotion } from '../../motion/motion-provider'
+import { tweens } from '../../ui/lib/motion'
+import { Separator } from '../../ui/separator'
 import type { BlockComponentProps } from '../types'
 
 const DividerBlock = React.memo(function DividerBlock(

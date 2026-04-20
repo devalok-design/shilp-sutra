@@ -1,17 +1,18 @@
 'use client'
 
-import * as React from 'react'
-import { motion } from 'framer-motion'
-import { cn } from '../../ui/lib/utils'
-import { tweens } from '../../ui/lib/motion'
-import { Icon } from '../../ui/icon'
-import { Button } from '../../ui/button'
 import {
-  IconDownload,
   IconAlertTriangle,
+  IconDownload,
   IconVolume,
   IconVolumeOff,
 } from '@tabler/icons-react'
+import { motion } from 'framer-motion'
+import * as React from 'react'
+
+import { Button } from '../../ui/button'
+import { Icon } from '../../ui/icon'
+import { tweens } from '../../ui/lib/motion'
+import { cn } from '../../ui/lib/utils'
 
 // ============================================================
 // Shared: Error Fallback

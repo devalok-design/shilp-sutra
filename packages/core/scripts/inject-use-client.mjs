@@ -232,42 +232,24 @@ try {
   // sonner.js may not exist in all build configurations
 }
 
-// ── SSR safety: patch Rolldown runtime CJS require() shim ───────────────────
-// Vite 8/Rolldown emits a runtime shim that throws in pure ESM Node.js when
-// bundled CJS deps call require() on external modules (e.g. use-sync-external-store
-// calling require('react')). Replace the throwing shim with createRequire().
-const rolldownRuntimePath = join(distRoot, '_chunks', 'rolldown-runtime.js')
-try {
-  let rtContent = readFileSync(rolldownRuntimePath, 'utf8')
-  // Match the require polyfill that throws the error
-  if (rtContent.includes('Calling `require`')) {
-    // Add createRequire import at the top (after "use client" directive)
-    const createRequireImport = `import { createRequire as __createRequire } from 'module';\nconst require = __createRequire(import.meta.url);\n`
-    // Remove the throwing polyfill function and replace with native require
-    rtContent = rtContent.replace(
-      /,\s*l\s*=\s*\/\*[^*]*\*\/\s*\(\(e\)\s*=>.*?throw Error\([^)]+\);\s*\}\);/s,
-      ';'
-    )
-    // Replace exports that reference `l` with the native require
-    rtContent = rtContent.replace(
-      /export \{([^}]+)\}/,
-      (match, exports) => {
-        const fixed = exports.replace(/l as i/, '__nativeRequire as i')
-        return `const __nativeRequire = require;\nexport {${fixed}}`
-      }
-    )
-    // Prepend createRequire after "use client"
-    if (rtContent.startsWith('"use client"')) {
-      rtContent = '"use client";\n' + createRequireImport + rtContent.slice('"use client";\n'.length)
-    } else {
-      rtContent = createRequireImport + rtContent
-    }
-    writeFileSync(rolldownRuntimePath, rtContent)
-    console.log('inject-use-client: patched rolldown-runtime.js CJS require() shim with createRequire()')
-  }
-} catch {
-  // rolldown-runtime.js may not exist (Vite 7 / Rollup builds)
-}
+// ── Rolldown runtime no longer needs a CJS require() bridge ────────────────
+//
+// Historical context (0.34–0.36): Vite 8/Rolldown bundled
+// `use-sync-external-store` (a tiptap transitive) which does
+// `require("react")` as a CJS shim. That forced us to inject
+// `import { createRequire } from 'module'` into `_chunks/rolldown-runtime.js`,
+// which Turbopack consumers could not resolve (`Cannot find module 'module'`),
+// breaking every Next.js 16 + TW4 consumer (Karm #30).
+//
+// Fix (0.37.0): externalize `use-sync-external-store` in vite.config.ts so the
+// consumer's React installs pull it in natively. With no bundled CJS deps
+// calling require(), the rolldown runtime never emits a require shim, and this
+// patch has nothing to do. Dead code removed.
+//
+// If a future dependency re-introduces CJS require into a client chunk, the
+// consumer smoke test (scripts/consumer-smoke-test.mjs) will catch it as
+// `Cannot find module 'module'` in Turbopack. At that point, prefer
+// externalizing the offending dep over re-adding a CJS bridge.
 
 console.log(
   `inject-use-client: ${injected} files updated, ${skipped} skipped`

@@ -1,9 +1,10 @@
 'use client'
 
+import { AnimatePresence, type HTMLMotionProps,motion, type Transition, type Variants } from 'framer-motion'
 import * as React from 'react'
-import { motion, AnimatePresence, type Transition, type Variants, type HTMLMotionProps } from 'framer-motion'
-import { springs, tweens } from '../ui/lib/motion'
+
 import type { SpringPreset } from '../ui/lib/motion'
+import { springs, tweens } from '../ui/lib/motion'
 import { cn } from '../ui/lib/utils'
 
 // ── Shared types ──
@@ -272,13 +273,13 @@ const MotionStaggerItem = React.forwardRef<HTMLDivElement, { children: React.Rea
 MotionStaggerItem.displayName = 'MotionStaggerItem'
 
 export {
-  MotionFade,
-  MotionScale,
-  MotionPop,
-  MotionSlide,
   MotionCollapse,
+  MotionFade,
+  MotionPop,
+  type MotionPrimitiveProps,
+  MotionScale,
+  MotionSlide,
   MotionStagger,
   MotionStaggerItem,
-  type MotionPrimitiveProps,
   type MotionStaggerProps,
 }

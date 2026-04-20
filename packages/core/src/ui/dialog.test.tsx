@@ -1,7 +1,8 @@
 import { render, screen, waitFor } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
-import { describe, it, expect } from 'vitest'
-import { Dialog, DialogTrigger, DialogContent, DialogTitle } from './dialog'
+import { describe, expect,it } from 'vitest'
+
+import { Dialog, DialogContent, DialogTitle,DialogTrigger } from './dialog'
 
 describe('Dialog', () => {
   it('renders the trigger button', () => {

@@ -1,12 +1,13 @@
 import { render, screen, waitFor } from '@testing-library/react'
-import { describe, it, expect, vi } from 'vitest'
 import * as React from 'react'
+import { describe, expect, it, vi } from 'vitest'
+
 import {
-  MotionFade,
-  MotionScale,
-  MotionPop,
-  MotionSlide,
   MotionCollapse,
+  MotionFade,
+  MotionPop,
+  MotionScale,
+  MotionSlide,
   MotionStagger,
   MotionStaggerItem,
 } from '../primitives'

@@ -1,11 +1,12 @@
 'use client'
 
 import * as TabsPrimitive from '@primitives/react-tabs'
-import * as React from 'react'
 import { cva, type VariantProps } from 'class-variance-authority'
-import { motion, LayoutGroup } from 'framer-motion'
-import { cn } from './lib/utils'
+import { LayoutGroup,motion } from 'framer-motion'
+import * as React from 'react'
+
 import { springs, tweens } from './lib/motion'
+import { cn } from './lib/utils'
 
 /* ── Active-value context (drives layoutId indicator) ────── */
 type TabsOrientation = 'horizontal' | 'vertical'
@@ -330,5 +331,5 @@ TabsContent.displayName = TabsPrimitive.Content.displayName
 /** Props for TabsContent. The `value` prop must match a TabsTrigger's `value`. */
 export type TabsContentProps = React.ComponentPropsWithoutRef<typeof TabsPrimitive.Content>
 
-export { Tabs, TabsList, TabsTrigger, TabsContent }
-export type { TabsSize, TabsColor, TabsOrientation }
+export { Tabs, TabsContent,TabsList, TabsTrigger }
+export type { TabsColor, TabsOrientation,TabsSize }

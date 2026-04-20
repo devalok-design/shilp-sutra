@@ -1,6 +1,7 @@
 // @server-safe
-import * as React from 'react'
 import { cva, type VariantProps } from 'class-variance-authority'
+import * as React from 'react'
+
 import { cn } from './lib/utils'
 
 const skeletonVariants = cva('bg-skeleton-base', {
@@ -13,7 +14,7 @@ const skeletonVariants = cva('bg-skeleton-base', {
     animation: {
       pulse: 'animate-pulse motion-reduce:animate-none',
       shimmer:
-        'bg-[length:200%_100%] bg-gradient-to-r from-skeleton-base via-skeleton-shimmer to-skeleton-base animate-skeleton-shimmer [background-attachment:fixed] motion-reduce:animate-none',
+        'bg-[length:200%_100%] bg-linear-to-r from-skeleton-base via-skeleton-shimmer to-skeleton-base animate-skeleton-shimmer [background-attachment:fixed] motion-reduce:animate-none',
       none: '',
     },
   },
@@ -77,7 +78,7 @@ Skeleton.displayName = 'Skeleton'
 const animationClasses = {
   pulse: 'animate-pulse',
   shimmer:
-    'bg-[length:200%_100%] bg-gradient-to-r from-skeleton-base via-skeleton-shimmer to-skeleton-base animate-skeleton-shimmer motion-reduce:animate-none',
+    'bg-[length:200%_100%] bg-linear-to-r from-skeleton-base via-skeleton-shimmer to-skeleton-base animate-skeleton-shimmer motion-reduce:animate-none',
   none: '',
 } as const
 
@@ -361,12 +362,12 @@ SkeletonGroup.displayName = 'SkeletonGroup'
 
 export {
   Skeleton,
-  skeletonVariants,
   SkeletonAvatar,
-  SkeletonText,
   SkeletonButton,
-  SkeletonInput,
   SkeletonChart,
-  SkeletonImage,
   SkeletonGroup,
+  SkeletonImage,
+  SkeletonInput,
+  SkeletonText,
+  skeletonVariants,
 }

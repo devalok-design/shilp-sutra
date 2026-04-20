@@ -1,8 +1,9 @@
 import { render, screen } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
-import { describe, it, expect, vi } from 'vitest'
+import { describe, expect, it, vi } from 'vitest'
 import { axe } from 'vitest-axe'
-import { PaginationNav, generatePagination } from './pagination'
+
+import { generatePagination,PaginationNav } from './pagination'
 
 describe('generatePagination', () => {
   it('returns all pages when total is small', () => {

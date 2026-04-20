@@ -1,4 +1,5 @@
 import { renderHook } from '@testing-library/react'
+
 import { useViewportHeight } from '../use-viewport-height'
 
 describe('useViewportHeight', () => {

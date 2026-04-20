@@ -1,7 +1,8 @@
 'use client'
 
-import * as React from 'react'
 import { motion } from 'framer-motion'
+import * as React from 'react'
+
 import { tweens } from '../../ui/lib/motion'
 import { Skeleton } from '../../ui/skeleton'
 import { ErrorFallback } from './shared'

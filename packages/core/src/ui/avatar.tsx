@@ -1,9 +1,9 @@
 'use client'
 
-import * as React from "react"
 import * as AvatarPrimitive from "@primitives/react-avatar"
 import { cva, type VariantProps } from "class-variance-authority"
 import { motion } from "framer-motion"
+import * as React from "react"
 
 import { springs } from "./lib/motion"
 import { cn } from "./lib/utils"
@@ -317,4 +317,4 @@ const AvatarFallback = React.forwardRef<
 })
 AvatarFallback.displayName = AvatarPrimitive.Fallback.displayName
 
-export { Avatar, AvatarImage, AvatarFallback }
+export { Avatar, AvatarFallback,AvatarImage }

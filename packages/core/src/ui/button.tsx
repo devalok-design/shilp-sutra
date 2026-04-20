@@ -1,17 +1,18 @@
 'use client'
 
-import { cva, type VariantProps } from 'class-variance-authority'
-import { IconCheck, IconX } from '@tabler/icons-react'
-import { motion, AnimatePresence, useReducedMotion } from 'framer-motion'
 import { Slot, Slottable } from '@primitives/react-slot'
+import { IconCheck, IconX } from '@tabler/icons-react'
+import { cva, type VariantProps } from 'class-variance-authority'
+import { AnimatePresence, motion, useReducedMotion } from 'framer-motion'
 import * as React from 'react'
-import { useButtonGroup, useButtonGroupItem, getGroupPositionStyle } from './button-group'
-import { Icon } from './icon'
-import { IconProvider } from './icon-context'
-import type { IconSize } from './icon-context'
-import { springs, tweens, motionProps } from './lib/motion'
-import { ProcessingOverlay } from './button-processing'
+
+import { getGroupPositionStyle,useButtonGroup, useButtonGroupItem } from './button-group'
 import type { ProcessingSpeed } from './button-processing'
+import { ProcessingOverlay } from './button-processing'
+import { Icon } from './icon'
+import type { IconSize } from './icon-context'
+import { IconProvider } from './icon-context'
+import { motionProps,springs, tweens } from './lib/motion'
 import { cn } from './lib/utils'
 import { Spinner } from './spinner'
 
@@ -293,7 +294,7 @@ const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
     const btnRef = React.useRef<HTMLButtonElement | null>(null)
     const rafRef = React.useRef<number | undefined>(undefined)
 
-    // eslint-disable-next-line react-hooks/exhaustive-deps
+     
     React.useEffect(() => {
       const btn = btnRef.current
       const wrapper = wrapperRef.current

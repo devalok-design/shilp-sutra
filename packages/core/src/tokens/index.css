@@ -1,4 +1,26 @@
+/*
+ * Consumer entry point (via the `./tokens` subpath export).
+ *
+ * Order matters:
+ *   primitives             → defines --pink-*, --neutral-*, etc. (private palette)
+ *   semantic               → @theme public tokens referencing the primitives +
+ *                            :root meta-tokens + .dark overrides + forced-colors block
+ *   typography             → @font-face for Inter, Ranade (load early)
+ *   typography-semantic    → --typo-* composites referencing @theme --text-ds-* etc.
+ *   base                   → @property --border-angle + iOS font-size fix
+ *   animations             → @keyframes referenced by component animations
+ *   utilities              → @utility text-heading-*, touch-target, focus-ring*, *-safe
+ *   variants               → @custom-variant dark
+ *
+ * In 0.37.0 this file remains for back-compat. The TW4-native consumer
+ * entry is `shilp-sutra.css` in this same directory, which @imports all
+ * of the above AND `@import "tailwindcss"` + `@source`.
+ */
 @import './primitives.css';
 @import './semantic.css';
 @import './typography.css';
 @import './typography-semantic.css';
+@import './base.css';
+@import './animations.css';
+@import './utilities.css';
+@import './variants.css';

@@ -1,8 +1,10 @@
 @import "tailwindcss";
-@config "./tailwind.config.ts";
+@import "./packages/core/src/tokens/shilp-sutra.css";
 
-/* Dark mode via class — TW4 requires explicit variant declaration */
-@variant dark (&:is(.dark *));
+/* Dark variant comes from shilp-sutra.css (@custom-variant dark).
+   No need to re-declare here. Historical: this file previously used
+   @config "./tailwind.config.ts" to pull the JS preset. That path was
+   removed in 0.37.0 along with the preset itself. */
 
 /* Restore table styles inside Storybook docs (Tailwind Preflight strips them) */
 .sbdocs table,

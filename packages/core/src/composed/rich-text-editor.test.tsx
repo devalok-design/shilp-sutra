@@ -1,5 +1,6 @@
 import { render, screen } from '@testing-library/react'
-import { describe, it, expect, vi } from 'vitest'
+import { describe, expect, it, vi } from 'vitest'
+
 import { RichTextEditor, RichTextViewer } from './rich-text-editor'
 
 // Tiptap needs getComputedStyle to work in jsdom

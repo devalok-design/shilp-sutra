@@ -1,5 +1,6 @@
-import { describe, it, expect } from 'vitest'
-import { springs, tweens, stagger, withReducedMotion } from '../motion'
+import { describe, expect,it } from 'vitest'
+
+import { springs, stagger, tweens, withReducedMotion } from '../motion'
 
 describe('springs', () => {
   it('has snappy, smooth, bouncy, gentle, responsive keys', () => {

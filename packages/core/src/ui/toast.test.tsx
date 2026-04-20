@@ -1,18 +1,19 @@
 import { render, screen, waitFor } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
-import { describe, it, expect, vi, afterEach } from 'vitest'
-import { axe } from 'vitest-axe'
 import { act } from 'react'
-import { Toaster } from './toaster'
+import { afterEach,describe, expect, it, vi } from 'vitest'
+import { axe } from 'vitest-axe'
+
 import {
+  formatFileSize,
+  TimerBar,
   toast,
   ToastContent,
-  UploadToastContent,
   UploadFileRow,
-  TimerBar,
-  formatFileSize,
+  UploadToastContent,
 } from './toast'
 import type { UploadFile } from './toast-types'
+import { Toaster } from './toaster'
 
 /* ---------------------------------------------------------------------------
  * Helpers

@@ -1,7 +1,8 @@
 import { render, screen } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
-import { describe, it, expect, vi } from 'vitest'
-import { MultiSelectPopover, type MultiSelectItem } from './multi-select-popover'
+import { describe, expect, it, vi } from 'vitest'
+
+import { type MultiSelectItem,MultiSelectPopover } from './multi-select-popover'
 
 const items: MultiSelectItem[] = [
   { id: '1', label: 'Alice' },

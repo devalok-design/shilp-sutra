@@ -31,10 +31,31 @@
 </FormField>
 ```
 
+## Composability
+The FormField/useFormField pair is the central a11y wiring pattern. Components that consume it automatically become accessible inside a FormField without any explicit ARIA work on your end.
+
+**FormField cascades through context to:**
+- **Input, Textarea, NumberInput, InputOTP** — auto-receive `aria-describedby` (wired to FormHelperText's id), `aria-invalid` (when state="error"), and `aria-required` (when required=true).
+- **FormHelperText** — auto-reads `state` and `helperTextId` from context; renders `role="alert"` on error so screen readers interrupt.
+- **Label** — pair it with an Input via `htmlFor` / `id` in the normal way; FormField doesn't auto-wire labels (labels need the explicit association to satisfy screen readers reliably).
+
+**Explicit props always override context.** Setting `state="error"` on an Input inside a FormField with `state="helper"` makes only that Input look errored.
+
+**Nesting is NOT supported.** Don't nest FormField inside FormField — only the outermost context wins, and some a11y wiring silently breaks.
+
+**Consuming context in your own components:**
+```tsx
+const field = useFormField()  // returns { state, helperTextId, required } or undefined
+// Thread field?.state onto your control's state prop,
+// and field?.helperTextId onto aria-describedby.
+```
+
 ## Gotchas
 - getFormFieldA11y() was REMOVED — use useFormField() hook instead
 - FormHelperText auto-reads state and id from FormField context
 - FormHelperText renders role="alert" when state="error"
+- Don't nest FormField components — one FormField per field
+- FormField does NOT auto-wire Label→Input association; use `<Label htmlFor="x" />` + `<Input id="x" />` explicitly
 
 ## Changes
 ### v0.18.0

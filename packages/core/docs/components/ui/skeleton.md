@@ -67,6 +67,13 @@
 <SkeletonImage height="h-64" />
 ```
 
+## Composability
+- Server-safe — can render in RSC trees during server-side loading states.
+- **Pattern:** One SkeletonGroup per load region (wraps with `role="status"` + `aria-busy="true"` + announces the `label`). Inside, compose the individual shape skeletons (Avatar, Text, Button, Chart, Image) to mirror the structure that will appear when loaded.
+- Use LoadingSkeleton (composed) instead for pre-built layouts — CardSkeleton, TableSkeleton, ListSkeleton, BoardSkeleton — or PageSkeletons for full-page placeholders.
+- `animation="none"` disables animation entirely — useful when placed inside components that already have their own load animation.
+- No context cascade — each skeleton is independent. If you want to drive multiple skeletons from one "reduced motion" setting, either set `animation="none"` on each or rely on the `useReducedMotion` hook (shimmer already respects it automatically).
+
 ## Gotchas
 - shimmer respects prefers-reduced-motion
 - SkeletonGroup adds role="status" and aria-busy="true" — wrap multiple skeletons for a11y

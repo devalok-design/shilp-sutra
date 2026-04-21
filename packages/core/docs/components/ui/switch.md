@@ -22,9 +22,17 @@
 <Switch size="lg" color="success" thumbIcon={<IconCheck size={14} />} />
 ```
 
+## Composability
+- Radix Switch primitive — `checked` / `onCheckedChange` / `defaultChecked` standard control model.
+- **FormField:** Switch does NOT auto-consume FormField state (same as Checkbox/Radio — form-library convention for toggles). Pass `error` explicitly when needed.
+- **thumbIcon slot:** Any ReactNode renders inside the thumb circle — commonly used for check/X glyphs that animate with the thumb position.
+- **Label pairing:** Manual — pair with `<Label htmlFor="x" />` + `<Switch id="x" />`, or wrap both in a `<label>` for click-to-toggle.
+- Pair with FormHelperText (outside FormField wiring) for custom validation messages.
+
 ## Gotchas
 - Use error prop for validation states (matches Checkbox API)
 - `error` overrides `color` — when error is true, checked state always uses error-9
+- Switch does NOT auto-consume FormField — pass `error` explicitly inside a FormField
 
 ## Changes
 ### v0.29.0

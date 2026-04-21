@@ -385,8 +385,15 @@ Note: getFormFieldA11y() was removed in favor of useFormField() hook.
 </AspectRatio>
 ```
 
+## Composability
+- Radix AspectRatio primitive — pure layout wrapper, no context, no cascade.
+- **Child fill pattern:** Its child is absolutely positioned to fill. Pair with `object-cover` / `object-contain` on `<img>`/`<video>` and `w-full h-full` for anything else.
+- Useful as a responsive-image container, a chart area (pair with Chart components), or a placeholder frame for media skeletons.
+- Works inside Card, any layout component, or flex/grid containers — nothing to configure.
+
 ## Gotchas
 - ratio is a number, not a string — use `16/9` not `"16/9"`
+- The child must be size-fluid (`w-full h-full` or absolutely positioned) — elements with intrinsic size escape the aspect-ratio box
 
 ## Changes
 ### v0.1.0
@@ -1297,8 +1304,15 @@ Animated bouncing dots with a text description of who is typing.
 <Code variant="block">{`const x = 1;\nconsole.log(x);`}</Code>
 ```
 
+## Composability
+- **Server-safe.** No context, no cascade.
+- Inline variant composes inside Text, paragraphs, list items, table cells — wherever body text goes.
+- Block variant is a `<pre><code>` pair with overflow-x scroll; pair with a dark background Card or MarkdownViewer for long snippets.
+- Not a syntax-highlighted code viewer — for that, use RichTextEditor's code block or a dedicated library. Code here is typographic emphasis, not lexer-aware rendering.
+
 ## Gotchas
 - "block" renders as `<pre><code>`, "inline" renders as `<code>`
+- Block variant doesn't syntax-highlight — it's a styled pre tag, nothing more
 
 ## Changes
 ### v0.1.1
@@ -2373,6 +2387,13 @@ const { size, stroke } = useIconContext()
 <Input endSection=".00" endSectionType="label" startSection={<Icon icon={IconCurrencyDollar} />} placeholder="0" />
 ```
 
+## Composability
+- **FormField auto-consumption:** Inside a `<FormField>`, Input auto-inherits `state`, `aria-describedby` (linked to FormHelperText), `aria-invalid` (when state="error"), `aria-required`. Explicit props on Input override context.
+- **IconProvider cascade:** Icons in `startSection` / `endSection` are auto-sized via IconProvider per the input's `size` (xs → sm icon, sm → sm icon, md → md icon, lg → md icon). Don't pass explicit size to nested `<Icon>`.
+- **Container-first architecture (v0.29.0+):** Border, background, focus ring all live on the wrapper div (accessed via `wrapperClassName`). The raw `<input>` inside is transparent. `className` goes to the input element; `wrapperClassName` goes to the wrapper.
+- **Section types:** Strings in startSection/endSection auto-render as `label` (tinted bg + border separator); React elements auto-render as `icon` (fixed-width centered cell). Override via `startSectionType` / `endSectionType`.
+- **Label pairing:** Always pair with `<Label htmlFor="x" />` + `<Input id="x" />` or wrap both in a `<label>` — FormField doesn't auto-wire the visual label to the input.
+
 ## Gotchas
 - HTML native "size" attribute is excluded — use CSS width instead
 - state="error" sets aria-invalid automatically
@@ -2495,8 +2516,14 @@ const { size, stroke } = useIconContext()
 <Label htmlFor="email" required>Email Address</Label>
 ```
 
+## Composability
+- **Label is NOT auto-wired by FormField** — you must explicitly pair `<Label htmlFor="x" />` with the matching `<Input id="x" />` (or Checkbox/Radio/Switch/Select). Screen-reader label association depends on this.
+- Radix Label primitive underneath — clicking the Label focuses its associated control, which is why the `htmlFor`/`id` pairing matters.
+- `required={true}` only renders the red asterisk; it does NOT set `aria-required` on the associated control (that comes from FormField context on the control itself).
+- Works with any input-like component in the library — pair with Input, Textarea, NumberInput, Checkbox, Radio, Switch, Select, Combobox, Autocomplete.
+
 ## Gotchas
-- Use with FormField for automatic aria wiring
+- Use with FormField for automatic aria wiring on the control (but the Label-to-control association is always manual)
 
 ## Changes
 ### v0.2.0
@@ -2524,8 +2551,15 @@ const { size, stroke } = useIconContext()
 <Link asChild><NextLink href="/about">About</NextLink></Link>
 ```
 
+## Composability
+- **Framework router integration via `asChild`:** `<Link asChild><NextLink href="/foo">...</NextLink></Link>` — Link's styling transfers to the child (NextLink/react-router Link/any `<a>`-like component) while preserving the child's navigation semantics. Don't use `asChild` for plain anchors — it's unnecessary and adds a layer.
+- **inline vs block:** Default `inline` (display: inline) so Link composes naturally inside paragraphs and mixed text. Set `inline={false}` for full-width link regions (card wrappers, list items).
+- No context, no cascade. Safe to use anywhere.
+- For icon + text links, nest Icon inside — Link doesn't auto-size via IconProvider (unlike Button), so pass an explicit `size` to the Icon.
+
 ## Gotchas
 - Use asChild with framework-specific Link components (e.g. Next.js Link)
+- Don't nest interactive elements (buttons, form controls) inside a Link — that's invalid HTML and breaks screen-reader navigation
 
 ## Changes
 ### v0.18.0
@@ -2660,6 +2694,12 @@ const { size, stroke } = useIconContext()
 ```jsx
 <NumberInput value={qty} onValueChange={setQty} min={1} max={99} />
 ```
+
+## Composability
+- **FormField auto-consumption:** Inside `<FormField>`, inherits `aria-describedby`, `aria-invalid`, `aria-required`. `state` from FormField context drives the border color unless overridden.
+- **IconProvider cascade:** The `+` and `−` stepper icons auto-size via IconProvider per the input size (xs/sm/md/lg → xs/sm/sm/md icons).
+- **Controlled only** (design choice): no `defaultValue` — pair `value` + `onValueChange` every time. The min/max bounds disable the stepper buttons automatically when reached.
+- **Label pairing:** Manual via `<Label htmlFor="x" />` + `<NumberInput id="x" />`.
 
 ## Gotchas
 - Controlled only — buttons won't work without onValueChange
@@ -2929,8 +2969,16 @@ const { size, stroke } = useIconContext()
 />
 ```
 
+## Composability
+- Purpose-built variant of Input for search — renders the leading search icon and a contextual clear/loading trailing slot. For anything more custom, use Input with explicit `startSection` / `endSection`.
+- **`onClear` makes the X button appear** only when `value` is non-empty. Pair them so users can reset.
+- **`loading={true}` swaps the clear button for a spinner** with `aria-busy="true"` on the input — useful for debounced/async search.
+- Doesn't auto-consume FormField (no `state` prop) — wrap a regular Input inside FormField for validated search fields.
+- Keyboard: Escape auto-triggers `onClear` when wired (handled via `type="search"`'s native behavior on most browsers).
+
 ## Gotchas
 - HTML native "size" attribute is excluded — use CSS width instead
+- Clear button only appears when both `onClear` is provided AND `value` is non-empty
 
 ## Changes
 ### v0.15.0
@@ -2977,9 +3025,17 @@ const { size, stroke } = useIconContext()
 />
 ```
 
+## Composability
+- **Data-driven, not compound** — unlike Tabs/ToggleGroup, SegmentedControl takes an `options` array rather than children. This makes it easier to render from a list but harder to customize per-option styling; use Tabs if you need compound children.
+- **When to use vs Tabs:** SegmentedControl is for mutually-exclusive VIEW-MODE toggles (List/Grid/Kanban) — short labels, no associated content panel. Tabs is for content switching where each tab has a corresponding TabsContent. Both render `role="tablist"`.
+- **Option icons** auto-size based on the `size` prop — don't set explicit icon sizes.
+- Fully controlled — there's no `defaultSelectedId`. Manage state in parent.
+- Built from scratch (no Radix primitive) — standard HTML buttons with `aria-selected` and roving tabindex.
+
 ## Gotchas
 - Controlled only — selectedId + onSelect are required
 - Uses data-driven API (options prop), not compound children
+- Use Tabs (not SegmentedControl) when you need associated content panels per option
 
 ## Changes
 ### v0.18.0
@@ -3069,8 +3125,15 @@ const { size, stroke } = useIconContext()
 <Separator orientation="vertical" className="h-6" />
 ```
 
+## Composability
+- Radix Separator — no context, no cascade. Drop it anywhere; it inherits its stretch dimension from its parent container (full width for horizontal, full height for vertical — but vertical needs an explicit height from the parent flexbox).
+- `decorative={true}` (default) sets `role="none"` — screen readers skip it. Set `decorative={false}` for semantic separators (e.g. between navigation sections) so screen readers announce the boundary.
+- Gradient variants compose cleanly with any surface color — they use `bg-transparent` + inline linear-gradient, so the underlying `bg-*` of the parent shows through.
+- Common inside Menu/DropdownMenu/Sheet components; their internal *Separator subcomponents already wrap this one.
+
 ## Gotchas
 - When decorative is true, the separator is hidden from screen readers
+- Vertical separator needs an explicit height from the parent flex container (`h-6`, `h-full`, etc.)
 
 ## Changes
 ### v0.22.0
@@ -3309,6 +3372,13 @@ The whole Sidebar ecosystem is driven by `SidebarContext` — the Provider owns 
 <SkeletonImage height="h-64" />
 ```
 
+## Composability
+- Server-safe — can render in RSC trees during server-side loading states.
+- **Pattern:** One SkeletonGroup per load region (wraps with `role="status"` + `aria-busy="true"` + announces the `label`). Inside, compose the individual shape skeletons (Avatar, Text, Button, Chart, Image) to mirror the structure that will appear when loaded.
+- Use LoadingSkeleton (composed) instead for pre-built layouts — CardSkeleton, TableSkeleton, ListSkeleton, BoardSkeleton — or PageSkeletons for full-page placeholders.
+- `animation="none"` disables animation entirely — useful when placed inside components that already have their own load animation.
+- No context cascade — each skeleton is independent. If you want to drive multiple skeletons from one "reduced motion" setting, either set `animation="none"` on each or rely on the `useReducedMotion` hook (shimmer already respects it automatically).
+
 ## Gotchas
 - shimmer respects prefers-reduced-motion
 - SkeletonGroup adds role="status" and aria-busy="true" — wrap multiple skeletons for a11y
@@ -3337,9 +3407,18 @@ The whole Sidebar ecosystem is driven by `SidebarContext` — the Provider owns 
 <Slider defaultValue={[25, 75]} max={100} step={1} /> {/* range slider */}
 ```
 
+## Composability
+- Radix Slider primitive — keyboard navigation (arrow keys, Home/End, PageUp/PageDown) pre-wired.
+- **Value is always an array** — single-thumb: `[50]`; range: `[25, 75]`. Don't pass a plain number.
+- **Multi-thumb range:** Pass `[start, end]` — renders two thumbs that can cross each other by default. Use `minStepsBetweenThumbs` to enforce a gap.
+- **FormField:** Slider does NOT auto-consume FormField state. No validation UX — sliders usually don't need it (values are always valid by construction).
+- **No label pairing via Label** — use `aria-label` or `aria-labelledby` directly on the Slider. The thumb is the focusable/labeled element.
+- Not portal-rendered — inline; overflow rules of parents apply.
+
 ## Gotchas
 - value is number[] (array), not a single number
 - Multi-thumb: Pass array `defaultValue={[25, 75]}` for range sliders — renders one thumb per value
+- Slider does NOT auto-consume FormField — sliders don't have validation state visuals by design
 
 ## Changes
 ### v0.18.0
@@ -3653,9 +3732,17 @@ import { SplitButton } from '@devalok/shilp-sutra'
 <Switch size="lg" color="success" thumbIcon={<IconCheck size={14} />} />
 ```
 
+## Composability
+- Radix Switch primitive — `checked` / `onCheckedChange` / `defaultChecked` standard control model.
+- **FormField:** Switch does NOT auto-consume FormField state (same as Checkbox/Radio — form-library convention for toggles). Pass `error` explicitly when needed.
+- **thumbIcon slot:** Any ReactNode renders inside the thumb circle — commonly used for check/X glyphs that animate with the thumb position.
+- **Label pairing:** Manual — pair with `<Label htmlFor="x" />` + `<Switch id="x" />`, or wrap both in a `<label>` for click-to-toggle.
+- Pair with FormHelperText (outside FormField wiring) for custom validation messages.
+
 ## Gotchas
 - Use error prop for validation states (matches Checkbox API)
 - `error` overrides `color` — when error is true, checked state always uses error-9
+- Switch does NOT auto-consume FormField — pass `error` explicitly inside a FormField
 
 ## Changes
 ### v0.29.0
@@ -3815,9 +3902,17 @@ import { SplitButton } from '@devalok/shilp-sutra'
 <Text variant="label-sm" className="text-text-secondary">SECTION LABEL</Text>
 ```
 
+## Composability
+- **Server-safe** (one of few components in the library that is). Can render in RSC trees without `"use client"`.
+- No context consumption, no context cascade — pure typography primitive.
+- **Semantic HTML by default:** Each variant maps to a meaningful HTML element (h1 through p, span, code). The `as` prop overrides for visual-only demotion: e.g. `<Text variant="heading-xl" as="div">` renders h2-sized text inside a div, useful when the element already has a heading ancestor but you want the visual weight.
+- **Underpins many components:** Card's CardTitle, Alert's title, PageHeader, EmptyState, SectionHeader all render Text internally with specific variants. Don't wrap another Text inside them — variants cascade structurally, not via context.
+- Pairs with Code for inline code spans inside body text: `<Text>Call <Code>onClick</Code> to...</Text>`.
+
 ## Gotchas
 - label-* and overline variants are automatically uppercase
 - Use "as" prop to override the HTML element when needed
+- Don't use Text inside headings that already have semantic meaning (e.g. CardTitle) — the double-element wraps are redundant and break screen-reader heading navigation
 
 ## Changes
 ### v0.2.0
@@ -3843,6 +3938,12 @@ import { SplitButton } from '@devalok/shilp-sutra'
 ```jsx
 <Textarea size="lg" state="error" placeholder="Describe the issue..." />
 ```
+
+## Composability
+- **FormField auto-consumption:** Same pattern as Input — inside `<FormField>`, Textarea inherits `state`, `aria-describedby`, `aria-invalid`, `aria-required`. Explicit props override.
+- **Resize:** Vertically resizable by default (`resize-y`); override with `className="resize-none"` if needed.
+- **Label pairing:** Manual — `<Label htmlFor="x" />` + `<Textarea id="x" />`. FormField doesn't auto-wire.
+- No IconProvider cascade (no icon slots — different from Input).
 
 ## Gotchas
 - state="error" sets aria-invalid automatically; all sizes are vertically resizable
@@ -4000,8 +4101,16 @@ export default function RootLayout({ children }) {
 </Toggle>
 ```
 
+## Composability
+- Radix Toggle primitive — `pressed` / `onPressedChange` / `defaultPressed`. Not the same as Switch (boolean value doesn't map to on/off semantically — Toggle is "this action is currently active").
+- **Pairs with ToggleGroup** for mutually-exclusive or multi-select toggle clusters — ToggleGroupItem inherits variant + size from ToggleGroup via context. Don't set variant on a ToggleGroupItem directly.
+- **No context consumption as a standalone** — when rendered outside a ToggleGroup, Toggle is fully independent.
+- **Icon content:** Commonly wraps a single `<Icon>` for formatting toolbar toggles (Bold, Italic, AlignLeft). Pair with IconGroup for a horizontal cluster of independent toggles (vs. ToggleGroup for related state).
+- **aria-label is required** — icon-only toggles need an accessible name.
+
 ## Gotchas
 - Always provide aria-label for accessibility
+- Toggle is not Switch — Toggle means "this action is active right now"; Switch means "this setting is on"
 
 ## Changes
 ### v0.18.0
@@ -4192,9 +4301,16 @@ export default function RootLayout({ children }) {
 <VisuallyHidden>Screen reader only text</VisuallyHidden>
 ```
 
+## Composability
+- Server-safe. Works anywhere — no context, no cascade.
+- Canonical use: wrap a DialogTitle / SheetTitle that must exist for a11y but shouldn't show visually (`<DialogTitle asChild><VisuallyHidden>...</VisuallyHidden></DialogTitle>`).
+- Also useful inside IconButton to provide a text alternative when the icon already has an aria-label (redundant label is harmless and helps some screen readers).
+- Uses the `sr-only` CSS pattern under the hood — content is in the DOM, just positioned off-screen.
+
 ## Gotchas
 - Content is visually hidden but accessible to screen readers
 - Useful for providing accessible labels without visual UI
+- Don't use for content you want hidden entirely — that's `hidden` or conditional rendering
 
 ## Changes
 ### v0.1.0

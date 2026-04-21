@@ -17,6 +17,12 @@
 <Textarea size="lg" state="error" placeholder="Describe the issue..." />
 ```
 
+## Composability
+- **FormField auto-consumption:** Same pattern as Input — inside `<FormField>`, Textarea inherits `state`, `aria-describedby`, `aria-invalid`, `aria-required`. Explicit props override.
+- **Resize:** Vertically resizable by default (`resize-y`); override with `className="resize-none"` if needed.
+- **Label pairing:** Manual — `<Label htmlFor="x" />` + `<Textarea id="x" />`. FormField doesn't auto-wire.
+- No IconProvider cascade (no icon slots — different from Input).
+
 ## Gotchas
 - state="error" sets aria-invalid automatically; all sizes are vertically resizable
 - Inside FormField: auto-inherits state, aria-describedby, aria-required from context (explicit props override)

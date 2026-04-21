@@ -26,8 +26,16 @@
 />
 ```
 
+## Composability
+- Purpose-built variant of Input for search — renders the leading search icon and a contextual clear/loading trailing slot. For anything more custom, use Input with explicit `startSection` / `endSection`.
+- **`onClear` makes the X button appear** only when `value` is non-empty. Pair them so users can reset.
+- **`loading={true}` swaps the clear button for a spinner** with `aria-busy="true"` on the input — useful for debounced/async search.
+- Doesn't auto-consume FormField (no `state` prop) — wrap a regular Input inside FormField for validated search fields.
+- Keyboard: Escape auto-triggers `onClear` when wired (handled via `type="search"`'s native behavior on most browsers).
+
 ## Gotchas
 - HTML native "size" attribute is excluded — use CSS width instead
+- Clear button only appears when both `onClear` is provided AND `value` is non-empty
 
 ## Changes
 ### v0.15.0

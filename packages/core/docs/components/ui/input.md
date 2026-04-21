@@ -32,6 +32,13 @@
 <Input endSection=".00" endSectionType="label" startSection={<Icon icon={IconCurrencyDollar} />} placeholder="0" />
 ```
 
+## Composability
+- **FormField auto-consumption:** Inside a `<FormField>`, Input auto-inherits `state`, `aria-describedby` (linked to FormHelperText), `aria-invalid` (when state="error"), `aria-required`. Explicit props on Input override context.
+- **IconProvider cascade:** Icons in `startSection` / `endSection` are auto-sized via IconProvider per the input's `size` (xs → sm icon, sm → sm icon, md → md icon, lg → md icon). Don't pass explicit size to nested `<Icon>`.
+- **Container-first architecture (v0.29.0+):** Border, background, focus ring all live on the wrapper div (accessed via `wrapperClassName`). The raw `<input>` inside is transparent. `className` goes to the input element; `wrapperClassName` goes to the wrapper.
+- **Section types:** Strings in startSection/endSection auto-render as `label` (tinted bg + border separator); React elements auto-render as `icon` (fixed-width centered cell). Override via `startSectionType` / `endSectionType`.
+- **Label pairing:** Always pair with `<Label htmlFor="x" />` + `<Input id="x" />` or wrap both in a `<label>` — FormField doesn't auto-wire the visual label to the input.
+
 ## Gotchas
 - HTML native "size" attribute is excluded — use CSS width instead
 - state="error" sets aria-invalid automatically

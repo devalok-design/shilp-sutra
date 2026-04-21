@@ -31,9 +31,17 @@
 />
 ```
 
+## Composability
+- **Data-driven, not compound** — unlike Tabs/ToggleGroup, SegmentedControl takes an `options` array rather than children. This makes it easier to render from a list but harder to customize per-option styling; use Tabs if you need compound children.
+- **When to use vs Tabs:** SegmentedControl is for mutually-exclusive VIEW-MODE toggles (List/Grid/Kanban) — short labels, no associated content panel. Tabs is for content switching where each tab has a corresponding TabsContent. Both render `role="tablist"`.
+- **Option icons** auto-size based on the `size` prop — don't set explicit icon sizes.
+- Fully controlled — there's no `defaultSelectedId`. Manage state in parent.
+- Built from scratch (no Radix primitive) — standard HTML buttons with `aria-selected` and roving tabindex.
+
 ## Gotchas
 - Controlled only — selectedId + onSelect are required
 - Uses data-driven API (options prop), not compound children
+- Use Tabs (not SegmentedControl) when you need associated content panels per option
 
 ## Changes
 ### v0.18.0

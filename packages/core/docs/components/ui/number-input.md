@@ -27,6 +27,12 @@
 <NumberInput value={qty} onValueChange={setQty} min={1} max={99} />
 ```
 
+## Composability
+- **FormField auto-consumption:** Inside `<FormField>`, inherits `aria-describedby`, `aria-invalid`, `aria-required`. `state` from FormField context drives the border color unless overridden.
+- **IconProvider cascade:** The `+` and `−` stepper icons auto-size via IconProvider per the input size (xs/sm/md/lg → xs/sm/sm/md icons).
+- **Controlled only** (design choice): no `defaultValue` — pair `value` + `onValueChange` every time. The min/max bounds disable the stepper buttons automatically when reached.
+- **Label pairing:** Manual via `<Label htmlFor="x" />` + `<NumberInput id="x" />`.
+
 ## Gotchas
 - Controlled only — buttons won't work without onValueChange
 

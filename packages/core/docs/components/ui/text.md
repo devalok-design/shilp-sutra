@@ -22,9 +22,17 @@
 <Text variant="label-sm" className="text-text-secondary">SECTION LABEL</Text>
 ```
 
+## Composability
+- **Server-safe** (one of few components in the library that is). Can render in RSC trees without `"use client"`.
+- No context consumption, no context cascade — pure typography primitive.
+- **Semantic HTML by default:** Each variant maps to a meaningful HTML element (h1 through p, span, code). The `as` prop overrides for visual-only demotion: e.g. `<Text variant="heading-xl" as="div">` renders h2-sized text inside a div, useful when the element already has a heading ancestor but you want the visual weight.
+- **Underpins many components:** Card's CardTitle, Alert's title, PageHeader, EmptyState, SectionHeader all render Text internally with specific variants. Don't wrap another Text inside them — variants cascade structurally, not via context.
+- Pairs with Code for inline code spans inside body text: `<Text>Call <Code>onClick</Code> to...</Text>`.
+
 ## Gotchas
 - label-* and overline variants are automatically uppercase
 - Use "as" prop to override the HTML element when needed
+- Don't use Text inside headings that already have semantic meaning (e.g. CardTitle) — the double-element wraps are redundant and break screen-reader heading navigation
 
 ## Changes
 ### v0.2.0

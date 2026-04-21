@@ -2,10 +2,16 @@ import { IconPlus } from '@tabler/icons-react'
 import { fireEvent,render, screen } from '@testing-library/react'
 import { describe, expect, it, vi } from 'vitest'
 
+import { describeConformance } from '../test-utils/conformance'
 import { Badge } from './badge'
 import { BadgeGroup } from './badge-group'
 import { BadgeIndicator } from './badge-indicator'
 import { Icon } from './icon'
+
+describeConformance('Badge', (props) => <Badge {...props}>Active</Badge>, {
+  variants: ['subtle', 'solid', 'outline', 'soft'],
+  sizes: ['xs', 'sm', 'md', 'lg'],
+})
 
 describe('Badge', () => {
   it('renders children', () => {
@@ -100,10 +106,6 @@ describe('Badge', () => {
     expect(container.firstChild?.className).toContain('aspect-square')
   })
 
-  it('merges custom className', () => {
-    const { container } = render(<Badge className="extra-class">Custom</Badge>)
-    expect(container.firstChild).toHaveClass('extra-class')
-  })
 })
 
 describe('BadgeIndicator', () => {

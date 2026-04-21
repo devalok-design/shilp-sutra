@@ -2,7 +2,12 @@ import { render, screen } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 import { describe, expect, it, vi } from 'vitest'
 
+import { describeConformance } from '../test-utils/conformance'
 import { Checkbox } from './checkbox'
+
+describeConformance('Checkbox', (props) => <Checkbox aria-label="Accept terms" {...props} />, {
+  sizes: ['sm', 'md', 'lg'],
+})
 
 describe('Checkbox', () => {
   it('renders unchecked by default', () => {
@@ -16,12 +21,6 @@ describe('Checkbox', () => {
     render(<Checkbox aria-label="Accept terms" onCheckedChange={onCheckedChange} />)
     await user.click(screen.getByRole('checkbox'))
     expect(onCheckedChange).toHaveBeenCalledWith(true)
-  })
-
-  it('forwards ref', () => {
-    const ref = { current: null as HTMLButtonElement | null }
-    render(<Checkbox ref={ref as React.Ref<HTMLButtonElement>} aria-label="Ref test" />)
-    expect(ref.current).toBeInstanceOf(HTMLButtonElement)
   })
 
   it('renders as checked when checked prop is true', () => {

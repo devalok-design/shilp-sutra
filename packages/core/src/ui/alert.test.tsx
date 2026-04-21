@@ -2,7 +2,14 @@ import { render, screen, waitFor } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 import { describe, expect, it, vi } from 'vitest'
 
+import { describeConformance } from '../test-utils/conformance'
 import { Alert } from './alert'
+
+describeConformance('Alert', (props) => <Alert {...props}>Something happened</Alert>, {
+  variants: ['subtle', 'solid', 'outline'],
+  sizes: ['sm', 'md', 'lg'],
+  colors: ['info', 'success', 'warning', 'error', 'neutral'],
+})
 
 describe('Alert', () => {
   it('renders with role="alert"', () => {
@@ -20,15 +27,6 @@ describe('Alert', () => {
     const alert = screen.getByRole('alert')
     expect(alert).toHaveTextContent('Heads up')
     expect(alert).toHaveTextContent('Details here')
-  })
-
-  it('applies variant classes via CVA', () => {
-    const { rerender } = render(<Alert color="error">Error</Alert>)
-    const alertEl = screen.getByRole('alert')
-    expect(alertEl.className).toContain('error')
-
-    rerender(<Alert color="success">Success</Alert>)
-    expect(screen.getByRole('alert').className).toContain('success')
   })
 
   it('shows dismiss button when with onDismiss', async () => {

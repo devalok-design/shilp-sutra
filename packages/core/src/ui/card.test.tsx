@@ -1,7 +1,14 @@
 import { render, screen } from '@testing-library/react'
 import { describe, expect,it } from 'vitest'
 
+import { describeConformance } from '../test-utils/conformance'
 import { Card, CardContent, CardFooter,CardHeader } from './card'
+
+describeConformance('Card', (props) => <Card {...props}>Content</Card>, {
+  variants: ['default', 'elevated', 'outline', 'flat'],
+  sizes: ['sm', 'md', 'lg'],
+  colors: ['default', 'accent', 'error', 'success', 'warning', 'info', 'neutral'],
+})
 
 describe('Card', () => {
   it('renders children', () => {
@@ -48,11 +55,6 @@ describe('Card', () => {
       expect(container.querySelector('[aria-hidden="true"]')).toBeInTheDocument()
       unmount()
     })
-  })
-
-  it('applies custom className', () => {
-    const { container } = render(<Card className="my-class">Content</Card>)
-    expect(container.firstChild).toHaveClass('my-class')
   })
 
   describe('color', () => {

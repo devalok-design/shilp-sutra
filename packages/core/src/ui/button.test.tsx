@@ -2,26 +2,21 @@ import { IconArrowRight,IconCheck, IconPlus } from '@tabler/icons-react'
 import { render, screen } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 import { describe, expect, it, vi } from 'vitest'
-import { axe } from 'vitest-axe'
 
+import { describeConformance } from '../test-utils/conformance'
 import { Button } from './button'
 import { Icon } from './icon'
+
+describeConformance('Button', (props) => <Button {...props}>Click me</Button>, {
+  variants: ['solid', 'soft', 'outline', 'ghost', 'link'],
+  sizes: ['xs', 'sm', 'md', 'lg'],
+  colors: ['accent', 'error', 'success', 'warning', 'neutral'],
+})
 
 describe('Button', () => {
   it('renders children', () => {
     render(<Button>Click me</Button>)
     expect(screen.getByRole('button', { name: 'Click me' })).toBeInTheDocument()
-  })
-
-  it('applies variant classes', () => {
-    render(<Button variant="solid" color="error">Delete</Button>)
-    expect(screen.getByRole('button')).toBeInTheDocument()
-  })
-
-  it('forwards ref', () => {
-    const ref = { current: null as HTMLButtonElement | null }
-    render(<Button ref={ref as React.Ref<HTMLButtonElement>}>Ref test</Button>)
-    expect(ref.current).toBeInstanceOf(HTMLButtonElement)
   })
 
   it('handles click events', async () => {
@@ -35,11 +30,6 @@ describe('Button', () => {
   it('can be disabled', () => {
     render(<Button disabled>Disabled</Button>)
     expect(screen.getByRole('button')).toBeDisabled()
-  })
-
-  it('merges custom className', () => {
-    render(<Button className="custom-class">Styled</Button>)
-    expect(screen.getByRole('button')).toHaveClass('custom-class')
   })
 
   it('renders startIcon before children', () => {
@@ -281,11 +271,6 @@ describe('Button', () => {
     render(<Button disabled>Disabled</Button>)
     const btn = screen.getByRole('button')
     expect(btn.className).toContain('disabled:saturate-')
-  })
-
-  it('has no accessibility violations', async () => {
-    const { container } = render(<Button>Click me</Button>)
-    expect(await axe(container)).toHaveNoViolations()
   })
 
   // ============ Processing state ============

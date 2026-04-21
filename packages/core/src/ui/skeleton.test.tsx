@@ -2,12 +2,17 @@ import { render, screen } from '@testing-library/react'
 import { describe, expect,it } from 'vitest'
 import { axe } from 'vitest-axe'
 
+import { describeConformance } from '../test-utils/conformance'
 import {
   Skeleton,
   SkeletonAvatar,
   SkeletonGroup,
   SkeletonText,
 } from './skeleton'
+
+describeConformance('Skeleton', (props) => <Skeleton {...props} />, {
+  variants: ['rectangle', 'circle', 'text'],
+})
 
 describe('Skeleton', () => {
   it('renders with default rectangle variant', () => {
@@ -51,10 +56,6 @@ describe('Skeleton', () => {
     expect(screen.getByTestId('sk')).toHaveAttribute('aria-hidden', 'true')
   })
 
-  it('merges custom className', () => {
-    render(<Skeleton className="h-20 w-40" data-testid="sk" />)
-    expect(screen.getByTestId('sk')).toHaveClass('h-20', 'w-40')
-  })
 })
 
 describe('SkeletonText', () => {

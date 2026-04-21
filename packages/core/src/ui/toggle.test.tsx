@@ -1,9 +1,15 @@
 import { render, screen } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 import { describe, expect, it, vi } from 'vitest'
-import { axe } from 'vitest-axe'
 
+import { describeConformance } from '../test-utils/conformance'
 import { Toggle } from './toggle'
+
+describeConformance('Toggle', (props) => <Toggle aria-label="Bold" {...props}>B</Toggle>, {
+  variants: ['default', 'outline'],
+  sizes: ['sm', 'md', 'lg'],
+  colors: ['accent', 'error', 'success', 'neutral'],
+})
 
 describe('Toggle', () => {
   it('renders with text content', () => {
@@ -93,30 +99,4 @@ describe('Toggle', () => {
     expect(btn.className).toContain('h-ds-sm')
   })
 
-  it('forwards ref', () => {
-    const ref = { current: null as HTMLButtonElement | null }
-    render(
-      <Toggle ref={ref as React.Ref<HTMLButtonElement>} aria-label="Ref test">
-        B
-      </Toggle>,
-    )
-    expect(ref.current).toBeInstanceOf(HTMLButtonElement)
-  })
-
-  it('merges custom className', () => {
-    render(
-      <Toggle aria-label="Bold" className="my-toggle">
-        B
-      </Toggle>,
-    )
-    expect(screen.getByRole('button')).toHaveClass('my-toggle')
-  })
-
-  it('has no a11y violations', async () => {
-    const { container } = render(
-      <Toggle aria-label="Toggle bold">B</Toggle>,
-    )
-    const results = await axe(container)
-    expect(results).toHaveNoViolations()
-  })
 })

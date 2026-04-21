@@ -1227,20 +1227,34 @@ Animated bouncing dots with a text description of who is typing.
 ## Props
     checked: boolean | "indeterminate"
     onCheckedChange: (checked: boolean | "indeterminate") => void
+    size: "sm" | "md" | "lg"
     error: boolean (shows red border)
     indeterminate: boolean (overrides checked, shows dash icon)
     disabled: boolean
 
 ## Defaults
-    none
+    size="md"
 
 ## Example
 ```jsx
 <Checkbox checked={agreed} onCheckedChange={(v) => setAgreed(v === true)} />
+
+{/* With label */}
+<label htmlFor="terms" className="flex items-center gap-ds-02">
+  <Checkbox id="terms" checked={agreed} onCheckedChange={(v) => setAgreed(v === true)} />
+  I agree to the terms
+</label>
 ```
+
+## Composability
+- **FormField integration:** Unlike Input/Textarea, Checkbox does NOT auto-consume FormField state — the `error` prop must be set explicitly. (Form-library convention differs for checkboxes since they often don't share the same visual grouping.)
+- **Labels:** Checkbox doesn't carry its own label — pair it with `<Label htmlFor="x" />` + `<Checkbox id="x" />`, or wrap both in a `<label>` element. Screen readers rely on that association.
+- **Controlled vs uncontrolled:** Pass `checked` + `onCheckedChange` for controlled, `defaultChecked` for uncontrolled. Don't mix.
 
 ## Gotchas
 - indeterminate overrides checked visually
+- Checkbox does NOT auto-consume FormField error state — pass `error` explicitly if using inside a FormField
+- WCAG 2.5.8 minimum target size met at md (24px); sm (20px) may fail if not paired with enough label hit area
 
 ## Changes
 ### v0.22.0
@@ -2799,9 +2813,26 @@ const { size, stroke } = useIconContext()
 - Server-safe: No
 - Category: ui
 
+## Props
+### RadioGroup
+    value: string (controlled)
+    onValueChange: (value: string) => void
+    defaultValue: string
+    disabled: boolean (propagates to all items)
+    orientation: "horizontal" | "vertical"
+    name: string (form name for all items)
+
+### RadioGroupItem
+    value: string (REQUIRED — what's selected when this item is checked)
+    size: "sm" | "md" | "lg"
+    disabled: boolean (item-level override)
+
 ## Compound Components
-    RadioGroup (root, value, onValueChange, defaultValue)
-      RadioGroupItem (value: string, REQUIRED)
+    RadioGroup (root — value, onValueChange, defaultValue, disabled propagated)
+      RadioGroupItem (value REQUIRED, size/disabled individually overridable)
+
+## Defaults
+    RadioGroupItem size="md"
 
 ## Example
 ```jsx
@@ -2817,9 +2848,17 @@ const { size, stroke } = useIconContext()
 </RadioGroup>
 ```
 
+## Composability
+- Radix RadioGroup — keyboard navigation (arrow keys to move between items, space to select) is pre-wired.
+- **RadioGroup propagates** `disabled` to every RadioGroupItem; items can opt back in with `disabled={false}` for granular control (rare).
+- **Labels:** RadioGroupItem has no intrinsic label — pair each with `<Label htmlFor="x" />` + `<RadioGroupItem id="x" value="..." />`. Screen readers announce the group label (from FormField or aria-labelledby on RadioGroup) plus each item's label.
+- **Form libraries:** RadioGroup works with react-hook-form via Controller (onValueChange maps to field.onChange). The `name` prop puts a hidden form input per item for native form serialization.
+- **FormField integration:** RadioGroup does NOT auto-consume FormField error state. For error visuals, style the RadioGroup surround (e.g. via aria-invalid on a wrapping fieldset) — individual radios don't show red borders the way Inputs do.
+
 ## Gotchas
 - Each RadioGroupItem needs a unique `value` prop
 - Pair each item with a Label for accessibility
+- RadioGroup does NOT auto-inherit FormField error state — handle error styling at the group level
 
 ## Changes
 ### v0.4.2

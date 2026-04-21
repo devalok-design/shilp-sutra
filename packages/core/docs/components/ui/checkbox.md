@@ -7,20 +7,34 @@
 ## Props
     checked: boolean | "indeterminate"
     onCheckedChange: (checked: boolean | "indeterminate") => void
+    size: "sm" | "md" | "lg"
     error: boolean (shows red border)
     indeterminate: boolean (overrides checked, shows dash icon)
     disabled: boolean
 
 ## Defaults
-    none
+    size="md"
 
 ## Example
 ```jsx
 <Checkbox checked={agreed} onCheckedChange={(v) => setAgreed(v === true)} />
+
+{/* With label */}
+<label htmlFor="terms" className="flex items-center gap-ds-02">
+  <Checkbox id="terms" checked={agreed} onCheckedChange={(v) => setAgreed(v === true)} />
+  I agree to the terms
+</label>
 ```
+
+## Composability
+- **FormField integration:** Unlike Input/Textarea, Checkbox does NOT auto-consume FormField state — the `error` prop must be set explicitly. (Form-library convention differs for checkboxes since they often don't share the same visual grouping.)
+- **Labels:** Checkbox doesn't carry its own label — pair it with `<Label htmlFor="x" />` + `<Checkbox id="x" />`, or wrap both in a `<label>` element. Screen readers rely on that association.
+- **Controlled vs uncontrolled:** Pass `checked` + `onCheckedChange` for controlled, `defaultChecked` for uncontrolled. Don't mix.
 
 ## Gotchas
 - indeterminate overrides checked visually
+- Checkbox does NOT auto-consume FormField error state — pass `error` explicitly if using inside a FormField
+- WCAG 2.5.8 minimum target size met at md (24px); sm (20px) may fail if not paired with enough label hit area
 
 ## Changes
 ### v0.22.0

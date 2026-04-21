@@ -4,9 +4,26 @@
 - Server-safe: No
 - Category: ui
 
+## Props
+### RadioGroup
+    value: string (controlled)
+    onValueChange: (value: string) => void
+    defaultValue: string
+    disabled: boolean (propagates to all items)
+    orientation: "horizontal" | "vertical"
+    name: string (form name for all items)
+
+### RadioGroupItem
+    value: string (REQUIRED — what's selected when this item is checked)
+    size: "sm" | "md" | "lg"
+    disabled: boolean (item-level override)
+
 ## Compound Components
-    RadioGroup (root, value, onValueChange, defaultValue)
-      RadioGroupItem (value: string, REQUIRED)
+    RadioGroup (root — value, onValueChange, defaultValue, disabled propagated)
+      RadioGroupItem (value REQUIRED, size/disabled individually overridable)
+
+## Defaults
+    RadioGroupItem size="md"
 
 ## Example
 ```jsx
@@ -22,9 +39,17 @@
 </RadioGroup>
 ```
 
+## Composability
+- Radix RadioGroup — keyboard navigation (arrow keys to move between items, space to select) is pre-wired.
+- **RadioGroup propagates** `disabled` to every RadioGroupItem; items can opt back in with `disabled={false}` for granular control (rare).
+- **Labels:** RadioGroupItem has no intrinsic label — pair each with `<Label htmlFor="x" />` + `<RadioGroupItem id="x" value="..." />`. Screen readers announce the group label (from FormField or aria-labelledby on RadioGroup) plus each item's label.
+- **Form libraries:** RadioGroup works with react-hook-form via Controller (onValueChange maps to field.onChange). The `name` prop puts a hidden form input per item for native form serialization.
+- **FormField integration:** RadioGroup does NOT auto-consume FormField error state. For error visuals, style the RadioGroup surround (e.g. via aria-invalid on a wrapping fieldset) — individual radios don't show red borders the way Inputs do.
+
 ## Gotchas
 - Each RadioGroupItem needs a unique `value` prop
 - Pair each item with a Label for accessibility
+- RadioGroup does NOT auto-inherit FormField error state — handle error styling at the group level
 
 ## Changes
 ### v0.4.2

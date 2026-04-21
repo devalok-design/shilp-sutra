@@ -1,9 +1,14 @@
 import { render, screen } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 import { describe, expect, it, vi } from 'vitest'
-import { axe } from 'vitest-axe'
 
+import { describeConformance } from '../test-utils/conformance'
 import { SearchInput } from './search-input'
+
+describeConformance(
+  'SearchInput',
+  (props) => <SearchInput aria-label="Search" {...props} />,
+)
 
 describe('SearchInput', () => {
   it('renders with placeholder', () => {
@@ -87,22 +92,6 @@ describe('SearchInput', () => {
     expect(screen.getByPlaceholderText('Search')).toBeDisabled()
   })
 
-  it('forwards ref', () => {
-    const ref = { current: null as HTMLInputElement | null }
-    render(
-      <SearchInput
-        ref={ref as React.Ref<HTMLInputElement>}
-        placeholder="Ref test"
-      />,
-    )
-    expect(ref.current).toBeInstanceOf(HTMLInputElement)
-  })
-
-  it('merges custom className', () => {
-    render(<SearchInput placeholder="Styled" className="my-search" />)
-    expect(screen.getByPlaceholderText('Styled')).toHaveClass('my-search')
-  })
-
   it('shows loading spinner instead of clear button when loading', () => {
     render(
       <SearchInput
@@ -117,14 +106,4 @@ describe('SearchInput', () => {
     expect(screen.getByPlaceholderText('Search')).toHaveAttribute('aria-busy', 'true')
   })
 
-  it('has no a11y violations', async () => {
-    const { container } = render(
-      <label htmlFor="search-a11y">
-        Search
-        <SearchInput id="search-a11y" placeholder="Search..." />
-      </label>,
-    )
-    const results = await axe(container)
-    expect(results).toHaveNoViolations()
-  })
 })

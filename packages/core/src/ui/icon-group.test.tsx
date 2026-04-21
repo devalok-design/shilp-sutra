@@ -1,10 +1,22 @@
 import { IconHome, IconSettings, IconUser } from '@tabler/icons-react'
 import { render, screen } from '@testing-library/react'
 import { describe, expect,it } from 'vitest'
-import { axe } from 'vitest-axe'
 
+import { describeConformance } from '../test-utils/conformance'
 import { Icon } from './icon'
 import { IconGroup } from './icon-group'
+
+describeConformance(
+  'IconGroup',
+  (props) => (
+    <IconGroup {...props}>
+      <Icon icon={IconHome} label="Home" />
+    </IconGroup>
+  ),
+  // IconGroup destructures its props explicitly (no ...rest spread) —
+  // arbitrary HTML attrs are not forwarded by design.
+  { skip: ['attrs'] },
+)
 
 describe('IconGroup', () => {
   it('renders children', () => {
@@ -66,15 +78,6 @@ describe('IconGroup', () => {
     expect(wrapper).not.toHaveAttribute('aria-label')
   })
 
-  it('merges custom className', () => {
-    const { container } = render(
-      <IconGroup className="my-icons">
-        <Icon icon={IconHome} />
-      </IconGroup>,
-    )
-    expect(container.querySelector('.my-icons')).toBeInTheDocument()
-  })
-
   it('renders multiple children with default gap', () => {
     const { container } = render(
       <IconGroup>
@@ -88,14 +91,4 @@ describe('IconGroup', () => {
     expect(wrapper.children).toHaveLength(3)
   })
 
-  it('has no a11y violations', async () => {
-    const { container } = render(
-      <IconGroup role="toolbar" label="Actions">
-        <Icon icon={IconHome} label="Home" />
-        <Icon icon={IconSettings} label="Settings" />
-      </IconGroup>,
-    )
-    const results = await axe(container)
-    expect(results).toHaveNoViolations()
-  })
 })

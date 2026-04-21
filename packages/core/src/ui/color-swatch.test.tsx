@@ -1,7 +1,13 @@
 import { render, screen } from '@testing-library/react'
 import { describe, expect,it } from 'vitest'
 
+import { describeConformance } from '../test-utils/conformance'
 import { ColorSwatch } from './color-swatch'
+
+describeConformance(
+  'ColorSwatch',
+  (props) => <ColorSwatch color="#FF5733" {...props} />,
+)
 
 describe('ColorSwatch', () => {
   it('renders with given color', () => {
@@ -34,14 +40,4 @@ describe('ColorSwatch', () => {
     expect(screen.getByTestId('swatch')).toHaveClass('h-6')
   })
 
-  it('merges custom className', () => {
-    render(<ColorSwatch color="#000" className="my-class" data-testid="swatch" />)
-    expect(screen.getByTestId('swatch')).toHaveClass('my-class')
-  })
-
-  it('forwards ref', () => {
-    const ref = { current: null as HTMLSpanElement | null }
-    render(<ColorSwatch color="#000" ref={ref as React.Ref<HTMLSpanElement>} />)
-    expect(ref.current).toBeInstanceOf(HTMLSpanElement)
-  })
 })

@@ -1,8 +1,13 @@
 import { render, screen } from '@testing-library/react'
 import { describe, expect,it } from 'vitest'
-import { axe } from 'vitest-axe'
 
+import { describeConformance } from '../test-utils/conformance'
 import { Stack } from './stack'
+
+describeConformance(
+  'Stack',
+  (props) => <Stack {...props}><span>A</span></Stack>,
+)
 
 describe('Stack', () => {
   it('renders children in a div by default', () => {
@@ -79,27 +84,4 @@ describe('Stack', () => {
     expect(screen.getByTestId('stack').tagName).toBe('UL')
   })
 
-  it('merges custom className', () => {
-    render(<Stack data-testid="stack" className="my-stack">Content</Stack>)
-    const el = screen.getByTestId('stack')
-    expect(el).toHaveClass('my-stack')
-    expect(el).toHaveClass('flex')
-  })
-
-  it('forwards ref', () => {
-    const ref = { current: null as HTMLElement | null }
-    render(<Stack ref={ref}>Ref test</Stack>)
-    expect(ref.current).toBeInstanceOf(HTMLDivElement)
-  })
-
-  it('has no a11y violations', async () => {
-    const { container } = render(
-      <Stack gap="ds-03">
-        <span>Item 1</span>
-        <span>Item 2</span>
-      </Stack>,
-    )
-    const results = await axe(container)
-    expect(results).toHaveNoViolations()
-  })
 })

@@ -1,7 +1,13 @@
 import { render, screen } from '@testing-library/react'
 import { describe, expect,it } from 'vitest'
 
+import { describeConformance } from '../test-utils/conformance'
 import { StatusDot } from './status-dot'
+
+describeConformance(
+  'StatusDot',
+  (props) => <StatusDot status="healthy" {...props} />,
+)
 
 describe('StatusDot', () => {
   it('renders with healthy status', () => {
@@ -42,11 +48,5 @@ describe('StatusDot', () => {
     const { container } = render(<StatusDot status="critical" data-testid="dot" />)
     const dotEl = container.querySelector('.bg-error-9')
     expect(dotEl).toBeInTheDocument()
-  })
-
-  it('forwards ref', () => {
-    const ref = { current: null as HTMLSpanElement | null }
-    render(<StatusDot status="healthy" ref={ref as React.Ref<HTMLSpanElement>} />)
-    expect(ref.current).toBeInstanceOf(HTMLSpanElement)
   })
 })

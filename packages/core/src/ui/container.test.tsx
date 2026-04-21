@@ -1,8 +1,13 @@
 import { render, screen } from '@testing-library/react'
 import { describe, expect,it } from 'vitest'
-import { axe } from 'vitest-axe'
 
+import { describeConformance } from '../test-utils/conformance'
 import { Container } from './container'
+
+describeConformance(
+  'Container',
+  (props) => <Container {...props}>Content</Container>,
+)
 
 describe('Container', () => {
   it('renders children in a div by default', () => {
@@ -43,33 +48,4 @@ describe('Container', () => {
     expect(screen.getByTestId('ctr').tagName).toBe('SECTION')
   })
 
-  it('merges custom className', () => {
-    render(<Container data-testid="ctr" className="my-container">Content</Container>)
-    const el = screen.getByTestId('ctr')
-    expect(el).toHaveClass('my-container')
-    expect(el).toHaveClass('mx-auto')
-  })
-
-  it('forwards ref', () => {
-    const ref = { current: null as HTMLElement | null }
-    render(<Container ref={ref}>Ref test</Container>)
-    expect(ref.current).toBeInstanceOf(HTMLDivElement)
-  })
-
-  it('passes through HTML attributes', () => {
-    render(<Container data-testid="ctr" id="main-container" role="main">Content</Container>)
-    const el = screen.getByTestId('ctr')
-    expect(el).toHaveAttribute('id', 'main-container')
-    expect(el).toHaveAttribute('role', 'main')
-  })
-
-  it('has no a11y violations', async () => {
-    const { container } = render(
-      <Container as="main">
-        <p>Page content goes here.</p>
-      </Container>,
-    )
-    const results = await axe(container)
-    expect(results).toHaveNoViolations()
-  })
 })

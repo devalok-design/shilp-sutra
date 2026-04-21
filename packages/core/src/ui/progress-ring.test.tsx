@@ -1,7 +1,16 @@
 import { render, screen } from '@testing-library/react'
 import { describe, expect,it } from 'vitest'
 
+import { describeConformance } from '../test-utils/conformance'
 import { MultiProgressRing,ProgressRing } from './progress-ring'
+
+describeConformance(
+  'ProgressRing',
+  (props) => <ProgressRing value={50} {...props} />,
+  // ProgressRing renders an SVGElement (not HTMLElement).
+  // Ref type check in the helper would fail — skip it.
+  { skip: ['ref'] },
+)
 
 describe('ProgressRing', () => {
   it('renders SVG with progressbar role', () => {

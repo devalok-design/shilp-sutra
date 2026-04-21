@@ -1,9 +1,21 @@
 import { render, screen } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 import { describe, expect, it, vi } from 'vitest'
-import { axe } from 'vitest-axe'
 
+import { describeConformance } from '../test-utils/conformance'
 import { generatePagination,PaginationNav } from './pagination'
+
+describeConformance(
+  'PaginationNav',
+  (props) => (
+    <PaginationNav
+      totalPages={5}
+      currentPage={1}
+      onPageChange={vi.fn()}
+      {...props}
+    />
+  ),
+)
 
 describe('generatePagination', () => {
   it('returns all pages when total is small', () => {
@@ -224,7 +236,7 @@ describe('PaginationNav', () => {
     ).toBeInTheDocument()
   })
 
-  it('forwards ref', () => {
+  it('forwarded ref is a <nav> element', () => {
     const ref = { current: null as HTMLElement | null }
     render(
       <PaginationNav
@@ -234,34 +246,6 @@ describe('PaginationNav', () => {
         onPageChange={vi.fn()}
       />,
     )
-    expect(ref.current).toBeInstanceOf(HTMLElement)
     expect(ref.current?.tagName).toBe('NAV')
-  })
-
-  it('merges custom className', () => {
-    render(
-      <PaginationNav
-        totalPages={5}
-        currentPage={1}
-        onPageChange={vi.fn()}
-        className="my-pagination"
-      />,
-    )
-
-    expect(
-      screen.getByRole('navigation').classList.contains('my-pagination'),
-    ).toBe(true)
-  })
-
-  it('has no a11y violations', async () => {
-    const { container } = render(
-      <PaginationNav
-        totalPages={10}
-        currentPage={5}
-        onPageChange={vi.fn()}
-      />,
-    )
-    const results = await axe(container)
-    expect(results).toHaveNoViolations()
   })
 })

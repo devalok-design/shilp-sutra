@@ -1,9 +1,19 @@
 import { render, screen } from '@testing-library/react'
 import { describe, expect,it } from 'vitest'
-import { axe } from 'vitest-axe'
 
+import { describeConformance } from '../test-utils/conformance'
 import { Button } from './button'
 import { ButtonGroup } from './button-group'
+
+describeConformance(
+  'ButtonGroup',
+  (props) => (
+    <ButtonGroup {...props}>
+      <Button>One</Button>
+      <Button>Two</Button>
+    </ButtonGroup>
+  ),
+)
 
 describe('ButtonGroup', () => {
   it('renders children buttons', () => {
@@ -59,22 +69,4 @@ describe('ButtonGroup', () => {
     expect(btn.className).toContain('bg-error-9')
   })
 
-  it('merges custom className', () => {
-    render(
-      <ButtonGroup className="my-custom">
-        <Button>A</Button>
-      </ButtonGroup>,
-    )
-    expect(screen.getByRole('group')).toHaveClass('my-custom')
-  })
-
-  it('has no accessibility violations', async () => {
-    const { container } = render(
-      <ButtonGroup>
-        <Button>One</Button>
-        <Button>Two</Button>
-      </ButtonGroup>,
-    )
-    expect(await axe(container)).toHaveNoViolations()
-  })
 })

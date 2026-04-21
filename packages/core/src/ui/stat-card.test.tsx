@@ -1,8 +1,13 @@
 import { fireEvent,render, screen } from '@testing-library/react'
 import { describe, expect, it, vi } from 'vitest'
-import { axe } from 'vitest-axe'
 
+import { describeConformance } from '../test-utils/conformance'
 import { StatCard } from './stat-card'
+
+describeConformance(
+  'StatCard',
+  (props) => <StatCard label="Revenue" value="$48,200" {...props} />,
+)
 
 describe('StatCard', () => {
   // ── Basic rendering ────────────────────────────────────────────────────────
@@ -145,16 +150,4 @@ describe('StatCard', () => {
     expect(screen.getByText('View details')).toBeInTheDocument()
   })
 
-  // ── a11y ───────────────────────────────────────────────────────────────────
-  it('has no a11y violations', async () => {
-    const { container } = render(
-      <StatCard
-        label="Revenue"
-        value="$48,200"
-        delta={{ value: '+12%', direction: 'up' }}
-      />,
-    )
-    const results = await axe(container)
-    expect(results).toHaveNoViolations()
-  })
 })

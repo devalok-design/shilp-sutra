@@ -1,9 +1,18 @@
 import { render, screen } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 import { describe, expect, it, vi } from 'vitest'
-import { axe } from 'vitest-axe'
 
+import { describeConformance } from '../test-utils/conformance'
 import { IconButton } from './icon-button'
+
+const ConformanceIcon = () => <svg data-testid="c-icon" />
+
+describeConformance(
+  'IconButton',
+  (props) => (
+    <IconButton icon={<ConformanceIcon />} aria-label="Action" {...props} />
+  ),
+)
 
 describe('IconButton', () => {
   const TestIcon = () => <svg data-testid="icon" />
@@ -56,20 +65,4 @@ describe('IconButton', () => {
     expect(screen.getByRole('status')).toBeInTheDocument()
   })
 
-  it('forwards ref', () => {
-    const ref = { current: null as HTMLButtonElement | null }
-    render(
-      <IconButton
-        ref={ref as React.Ref<HTMLButtonElement>}
-        icon={<TestIcon />}
-        aria-label="Ref test"
-      />,
-    )
-    expect(ref.current).toBeInstanceOf(HTMLButtonElement)
-  })
-
-  it('has no a11y violations', async () => {
-    const { container } = render(<IconButton icon={<TestIcon />} aria-label="Add" />)
-    expect(await axe(container)).toHaveNoViolations()
-  })
 })

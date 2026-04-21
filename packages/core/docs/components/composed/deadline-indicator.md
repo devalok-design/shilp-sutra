@@ -21,6 +21,10 @@
 <DeadlineIndicator deadline={task.dueDate} warningThreshold={2880} criticalThreshold={480} />
 ```
 
+## Composability
+<!-- composability-stub -->
+- TODO: document how this component composes with others (context cascade, slot API, portal behavior, common pairings, when to use vs alternatives).
+
 ## Gotchas
 - Color is semantic: green (on-track) -> yellow (warning threshold) -> red (critical/overdue)
 - Overdue deadlines show bold red text with "Overdue by Xd/h/m"

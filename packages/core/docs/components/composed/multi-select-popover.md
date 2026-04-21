@@ -47,6 +47,10 @@
 </MultiSelectPopover>
 ```
 
+## Composability
+<!-- composability-stub -->
+- TODO: document how this component composes with others (context cascade, slot API, portal behavior, common pairings, when to use vs alternatives).
+
 ## Gotchas
 - Supply either `items` (flat) or `groups` (sectioned), not both
 - When `onSearch` is provided, local filtering is disabled — the callback must return results

@@ -28,6 +28,10 @@ import Link from 'next/link'
 </LinkProvider>
 ```
 
+## Composability
+<!-- composability-stub -->
+- TODO: document how this component composes with others (context cascade, slot API, portal behavior, common pairings, when to use vs alternatives).
+
 ## Gotchas
 - Without LinkProvider, shell components render plain `<a>` tags (full page reloads)
 - Place at app root, wrapping all shell components that render navigation links

@@ -25,6 +25,10 @@
 />
 ```
 
+## Composability
+<!-- composability-stub -->
+- TODO: document how this component composes with others (context cascade, slot API, portal behavior, common pairings, when to use vs alternatives).
+
 ## Gotchas
 - Uses contentEditable — the text IS the editor. No input field appears.
 - Click to focus → cursor appears in text. Type to edit. Enter saves. Escape reverts.

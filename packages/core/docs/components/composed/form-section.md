@@ -26,6 +26,10 @@
 </FormSection>
 ```
 
+## Composability
+<!-- composability-stub -->
+- TODO: document how this component composes with others (context cascade, slot API, portal behavior, common pairings, when to use vs alternatives).
+
 ## Gotchas
 - `defaultOpen` only applies when `collapsible={true}` — otherwise the section is always open
 - Renders a horizontal rule between the header and content automatically

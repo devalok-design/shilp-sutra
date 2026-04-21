@@ -39,6 +39,10 @@ Exports: CardSkeleton, TableSkeleton, BoardSkeleton, ListSkeleton
 <ListSkeleton rows={10} showAvatar={false} />
 ```
 
+## Composability
+<!-- composability-stub -->
+- TODO: document how this component composes with others (context cascade, slot API, portal behavior, common pairings, when to use vs alternatives).
+
 ## Gotchas
 - Server-safe: can be imported directly in Next.js Server Components
 - These are pre-composed skeleton layouts — for individual skeleton shapes, use the `Skeleton` UI component

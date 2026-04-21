@@ -28,6 +28,10 @@ Note: StatusBadge was server-safe prior to v0.18.0 but is NO LONGER server-safe 
 <StatusBadge status="active" onClick={() => openStatusPicker()} />
 ```
 
+## Composability
+<!-- composability-stub -->
+- TODO: document how this component composes with others (context cascade, slot API, portal behavior, common pairings, when to use vs alternatives).
+
 ## Gotchas
 - When `color` is set, it takes priority over `status` for styling
 - Props use a discriminated union — pass either `status` or `color`, not both

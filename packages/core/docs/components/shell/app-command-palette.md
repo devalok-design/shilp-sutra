@@ -31,6 +31,10 @@ AppCommandPaletteUser: { name: string, role?: string }
 />
 ```
 
+## Composability
+<!-- composability-stub -->
+- TODO: document how this component composes with others (context cascade, slot API, portal behavior, common pairings, when to use vs alternatives).
+
 ## Gotchas
 - Uses CommandRegistry context for page navigation items (see CommandRegistryProvider)
 - `isAdmin` takes precedence over `user.role` for showing admin command groups

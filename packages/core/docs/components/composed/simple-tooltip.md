@@ -21,6 +21,10 @@
 </SimpleTooltip>
 ```
 
+## Composability
+<!-- composability-stub -->
+- TODO: document how this component composes with others (context cascade, slot API, portal behavior, common pairings, when to use vs alternatives).
+
 ## Gotchas
 - Wraps the full Tooltip compound (Provider + Tooltip + Trigger + Content) into one component — no need for TooltipProvider
 - Unlike the low-level Tooltip, SimpleTooltip does not require wrapping in a TooltipProvider

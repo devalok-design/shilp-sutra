@@ -32,6 +32,10 @@
 <FilePreview url="https://youtube.com/watch?v=..." />
 ```
 
+## Composability
+<!-- composability-stub -->
+- TODO: document how this component composes with others (context cascade, slot API, portal behavior, common pairings, when to use vs alternatives).
+
 ## Gotchas
 - Image/PDF lazy-loaded (Skeleton on first render)
 - PDF worker from unpkg CDN — configure workerSrc for offline apps

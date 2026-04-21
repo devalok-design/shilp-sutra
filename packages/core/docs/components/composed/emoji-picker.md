@@ -37,6 +37,10 @@ EmojiPicker, EmojiPickerPopover
 <EmojiPicker onSelect={handleEmoji} theme="dark" />
 ```
 
+## Composability
+<!-- composability-stub -->
+- TODO: document how this component composes with others (context cascade, slot API, portal behavior, common pairings, when to use vs alternatives).
+
 ## Gotchas
 - Wraps `@emoji-mart/react` which is lazy-loaded — shows a Skeleton placeholder while loading
 - `theme="auto"` reads the `.dark` class on `<html>` to pick light/dark

@@ -15,6 +15,10 @@
 <GlobalLoading isLoading={isNavigating} />
 ```
 
+## Composability
+<!-- composability-stub -->
+- TODO: document how this component composes with others (context cascade, slot API, portal behavior, common pairings, when to use vs alternatives).
+
 ## Gotchas
 - Fixed-position bar at top of viewport (z-toast layer)
 - Renders nothing when `isLoading` is false

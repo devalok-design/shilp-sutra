@@ -38,6 +38,10 @@ CommandPageItem: { id: string, label: string, icon: ReactNode, path: string, key
 </CommandRegistryProvider>
 ```
 
+## Composability
+<!-- composability-stub -->
+- TODO: document how this component composes with others (context cascade, slot API, portal behavior, common pairings, when to use vs alternatives).
+
 ## Gotchas
 - Provides the command registry context consumed by AppCommandPalette
 - Place at app root, wrapping both AppCommandPalette and the rest of the app

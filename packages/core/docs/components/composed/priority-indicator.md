@@ -19,6 +19,10 @@ Priority = 'LOW' | 'MEDIUM' | 'HIGH' | 'URGENT' | 'low' | 'medium' | 'high' | 'u
 <PriorityIndicator priority="low" display="compact" />
 ```
 
+## Composability
+<!-- composability-stub -->
+- TODO: document how this component composes with others (context cascade, slot API, portal behavior, common pairings, when to use vs alternatives).
+
 ## Gotchas
 - Case-insensitive — "low" and "LOW" both work
 - Server-safe: can be imported directly in Next.js Server Components

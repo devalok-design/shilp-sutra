@@ -111,6 +111,16 @@ PresetKey: 'today' | 'yesterday' | 'last7days' | 'last30days' | 'thisMonth' | 'l
 <TimePicker value={time} onChange={setTime} format="24h" minuteStep={15} />
 ```
 
+## Composability
+- **7 sub-components in one kit:** DatePicker, DateRangePicker, DateTimePicker, TimePicker, CalendarGrid, MonthPicker, YearPicker, Presets. Built on Popover (trigger + calendar content) + date-fns.
+- **Layered abstractions:**
+  - High-level: DatePicker / DateRangePicker / DateTimePicker / TimePicker (use these 95% of the time — Popover-wrapped, single-field pickers with formatted value display).
+  - Low-level: CalendarGrid / MonthPicker / YearPicker (use for custom picker layouts, inline calendars, dashboards with embedded date selection).
+- **useCalendar hook** manages month navigation state — use it when building custom picker UI (e.g. inline calendar with custom header).
+- **Presets component** is standalone — drop it next to a DateRangePicker's calendar for quick-select sidebars (Today / Last 7 days / This month / etc.).
+- **Events on calendar:** CalendarGrid accepts `events: { date, color, label }[]` — renders up to 3 colored dots per day cell. Useful for availability / booked-days highlights.
+- **min/max/disabledDates** are shared contract across the whole family — pass the same bounds config to any date picker variant.
+
 ## Gotchas
 - TimePicker stores time inside a Date object — only hours/minutes/seconds are meaningful
 - CalendarGrid is a low-level building block — prefer DatePicker/DateRangePicker for most use cases

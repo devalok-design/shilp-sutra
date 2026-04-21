@@ -47,6 +47,10 @@ MentionItem: { id: string; label: string; avatar?: string }
 <RichTextViewer content={savedHtml} />
 ```
 
+## Composability
+<!-- composability-stub -->
+- TODO: document how this component composes with others (context cascade, slot API, portal behavior, common pairings, when to use vs alternatives).
+
 ## Gotchas
 - Tiptap is bundled — no need to install `@tiptap/*` packages separately
 - Emoji picker requires `@emoji-mart/react` + `@emoji-mart/data` peers

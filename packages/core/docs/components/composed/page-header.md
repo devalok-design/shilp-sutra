@@ -28,6 +28,10 @@
 />
 ```
 
+## Composability
+<!-- composability-stub -->
+- TODO: document how this component composes with others (context cascade, slot API, portal behavior, common pairings, when to use vs alternatives).
+
 ## Gotchas
 - Server-safe: can be imported directly in Next.js Server Components
 - If `title` is omitted, the last breadcrumb's `label` is used as the page title

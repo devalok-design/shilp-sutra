@@ -67,6 +67,10 @@ SlashCommandGroup: { label: string; commands: SlashCommand[] }
 />
 ```
 
+## Composability
+<!-- composability-stub -->
+- TODO: document how this component composes with others (context cascade, slot API, portal behavior, common pairings, when to use vs alternatives).
+
 ## Gotchas
 - Tiptap is bundled — no need to install `@tiptap/*` packages separately
 - Enter sends by default; use `enterBehavior="newline"` for long-form composition (Cmd/Ctrl+Enter always sends)

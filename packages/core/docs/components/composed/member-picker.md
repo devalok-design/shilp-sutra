@@ -22,6 +22,10 @@
 </MemberPicker>
 ```
 
+## Composability
+<!-- composability-stub -->
+- TODO: document how this component composes with others (context cascade, slot API, portal behavior, common pairings, when to use vs alternatives).
+
 ## Gotchas
 - `children` is used as the trigger element (e.g., a Button)
 - `onSelect` is called with a single `memberId` — toggle logic is up to the consumer

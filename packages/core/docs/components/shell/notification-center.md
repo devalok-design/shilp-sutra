@@ -44,6 +44,10 @@ NotificationAction: { label: string, variant?: 'primary' | 'default' | 'danger',
 />
 ```
 
+## Composability
+<!-- composability-stub -->
+- TODO: document how this component composes with others (context cascade, slot API, portal behavior, common pairings, when to use vs alternatives).
+
 ## Gotchas
 - Typically rendered inside TopBar's `notificationSlot` prop
 - `getNotificationRoute` must be provided for clickable notifications — no hardcoded routes

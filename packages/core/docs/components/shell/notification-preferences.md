@@ -32,6 +32,10 @@ NotificationProject: { id: string, title: string }
 />
 ```
 
+## Composability
+<!-- composability-stub -->
+- TODO: document how this component composes with others (context cascade, slot API, portal behavior, common pairings, when to use vs alternatives).
+
 ## Gotchas
 - Manages per-project notification preferences (channel, tier, mute)
 - All callback props support async (Promise<void>) for server-side operations

@@ -51,6 +51,10 @@ FilterBar, FilterSelect, FilterMultiSelect
 </FilterBar>
 ```
 
+## Composability
+<!-- composability-stub -->
+- TODO: document how this component composes with others (context cascade, slot API, portal behavior, common pairings, when to use vs alternatives).
+
 ## Gotchas
 - FilterSelect and FilterMultiSelect must be direct children of FilterBar to inherit the size context
 - FilterSelect uses `"all"` as the sentinel value for "no filter" — do not use `"all"` as a real option value

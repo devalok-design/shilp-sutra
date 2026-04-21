@@ -29,6 +29,10 @@ Event colors: "primary" | "success" | "warning" | "error" | "info" | "neutral"
 />
 ```
 
+## Composability
+<!-- composability-stub -->
+- TODO: document how this component composes with others (context cascade, slot API, portal behavior, common pairings, when to use vs alternatives).
+
 ## Gotchas
 - `endHour` is exclusive — `endHour=18` means the last visible slot starts at 17:30 (with default 30min slots)
 - `onSlotClick` fires when clicking an empty time slot — useful for creating new events

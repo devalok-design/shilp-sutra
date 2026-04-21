@@ -34,6 +34,10 @@
 />
 ```
 
+## Composability
+<!-- composability-stub -->
+- TODO: document how this component composes with others (context cascade, slot API, portal behavior, common pairings, when to use vs alternatives).
+
 ## Gotchas
 - Renders via `createPortal` into `document.body` — will not appear during SSR (mounts only client-side)
 - Positioned fixed at bottom-center with `z-50`; ensure no other fixed elements conflict

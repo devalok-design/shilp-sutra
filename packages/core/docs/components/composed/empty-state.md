@@ -27,6 +27,10 @@ Note: EmptyState was server-safe prior to v0.18.0 but is NO LONGER server-safe d
 />
 ```
 
+## Composability
+<!-- composability-stub -->
+- TODO: document how this component composes with others (context cascade, slot API, portal behavior, common pairings, when to use vs alternatives).
+
 ## Gotchas
 - `icon` accepts both JSX elements (`<IconFolder />`) and component references (`IconFolder`). Component references are auto-instantiated with correct sizing classes.
 - `iconSize` controls icon dimensions regardless of icon type. When `compact=true` and no `iconSize`, defaults to `'sm'`.

@@ -16,6 +16,10 @@
 <ErrorDisplay error={error} onReset={() => refetch()} />
 ```
 
+## Composability
+<!-- composability-stub -->
+- TODO: document how this component composes with others (context cascade, slot API, portal behavior, common pairings, when to use vs alternatives).
+
 ## Gotchas
 - Auto-detects HTTP status codes (404, 403, 500) and shows appropriate icon/message
 - Shows stack trace in development mode only

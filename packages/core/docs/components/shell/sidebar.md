@@ -48,6 +48,10 @@ SidebarPromo: { text: string, icon?: ReactNode, action?: { label: string, href?:
 />
 ```
 
+## Composability
+<!-- composability-stub -->
+- TODO: document how this component composes with others (context cascade, slot API, portal behavior, common pairings, when to use vs alternatives).
+
 ## Gotchas
 - Must be wrapped in SidebarProvider (from ui/sidebar)
 - Requires LinkProvider for framework-specific link components

@@ -28,6 +28,10 @@
 </ResponsiveOverlay>
 ```
 
+## Composability
+<!-- composability-stub -->
+- TODO: document how this component composes with others (context cascade, slot API, portal behavior, common pairings, when to use vs alternatives).
+
 ## Gotchas
 - Renders a centered Dialog on desktop and a bottom Sheet on mobile — same content, different container
 - Uses `window.matchMedia` internally — SSR defaults to desktop (Dialog) until hydration

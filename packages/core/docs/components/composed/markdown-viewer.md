@@ -20,6 +20,10 @@
 <MarkdownViewer content={trustedHtml} allowHtml />
 ```
 
+## Composability
+<!-- composability-stub -->
+- TODO: document how this component composes with others (context cascade, slot API, portal behavior, common pairings, when to use vs alternatives).
+
 ## Gotchas
 - Code blocks with a language fence are syntax-highlighted via `react-syntax-highlighter` (lazy-loaded) — the first render shows a plain `<pre>` fallback
 - GFM (tables, strikethrough, task lists) is supported via `remark-gfm`

@@ -19,6 +19,10 @@ Exports: DashboardSkeleton, ProjectListSkeleton, TaskDetailSkeleton
 <TaskDetailSkeleton />
 ```
 
+## Composability
+<!-- composability-stub -->
+- TODO: document how this component composes with others (context cascade, slot API, portal behavior, common pairings, when to use vs alternatives).
+
 ## Gotchas
 - Server-safe: can be imported directly in Next.js Server Components
 - These are full-page skeleton layouts — for smaller skeleton sections, use LoadingSkeleton components

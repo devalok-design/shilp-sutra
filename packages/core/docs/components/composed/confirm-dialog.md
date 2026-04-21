@@ -33,6 +33,10 @@ const [open, setOpen] = useState(false)
 />
 ```
 
+## Composability
+<!-- composability-stub -->
+- TODO: document how this component composes with others (context cascade, slot API, portal behavior, common pairings, when to use vs alternatives).
+
 ## Gotchas
 - Dialog stays open after confirm — consumer must close it via `onOpenChange`
 - Built on AlertDialog internally

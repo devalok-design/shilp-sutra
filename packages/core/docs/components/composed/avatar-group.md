@@ -38,6 +38,10 @@
 />
 ```
 
+## Composability
+<!-- composability-stub -->
+- TODO: document how this component composes with others (context cascade, slot API, portal behavior, common pairings, when to use vs alternatives).
+
 ## Gotchas
 - Wraps TooltipProvider internally — no need to add one yourself
 - Users beyond `max` are collapsed into a "+N" overflow badge

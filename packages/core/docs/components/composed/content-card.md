@@ -23,6 +23,10 @@
 </ContentCard>
 ```
 
+## Composability
+<!-- composability-stub -->
+- TODO: document how this component composes with others (context cascade, slot API, portal behavior, common pairings, when to use vs alternatives).
+
 ## Gotchas
 - Server-safe: can be imported directly in Next.js Server Components
 - Use `headerTitle` for simple text headers; use `header` for custom header content

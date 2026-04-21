@@ -35,6 +35,12 @@
 ## Exported Utilities
     groupItemsByTime(items: ActivityItem[], labels?: GroupLabels) — pure function that buckets items into time groups; returns { label: string, items: ActivityItem[] }[]
 
+## Composability
+- **Built from ui primitives:** Avatar (actor), Button (Load more), Skeleton (loading), Text (body). Override via `renderItem` to use your own primitives per row.
+- **renderItem** is the composition hook — return your own JSX or `undefined` to fall back to default ActivityEntry. Timeline dot + layout wrapper stay consistent.
+- **groupBy="time"** wraps items in Today/Yesterday/This Week/Older buckets; `groupItemsByTime()` export reusable for custom renderers.
+- **Pagination is consumer-driven** — `hasMore` + `onLoadMore` for server-side, or `maxInitialItems` + "Show all" toggle for client-side truncation.
+
 ## Gotchas
 - `items` is required — passing an empty array renders the `emptyState` content
 - `color` on each item controls the timeline dot color

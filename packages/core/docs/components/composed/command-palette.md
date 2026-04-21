@@ -25,6 +25,10 @@ CommandItem shape: { id, label, description?, icon?, shortcut?, onSelect: () => 
 />
 ```
 
+## Composability
+<!-- composability-stub -->
+- TODO: document how this component composes with others (context cascade, slot API, portal behavior, common pairings, when to use vs alternatives).
+
 ## Gotchas
 - Opens with Ctrl+K / Cmd+K by default
 - Items animate in with staggered slide-up (30ms delay cascade); groups fade in; active item icon/shortcut highlight in interactive color (v0.15.0)

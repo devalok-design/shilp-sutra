@@ -42,6 +42,10 @@ MasterDetail (root), MasterDetail.List, MasterDetail.Detail, MasterDetail.ListIt
 </MasterDetail>
 ```
 
+## Composability
+<!-- composability-stub -->
+- TODO: document how this component composes with others (context cascade, slot API, portal behavior, common pairings, when to use vs alternatives).
+
 ## Gotchas
 - On mobile (below breakpoint), List and Detail are mutually exclusive — selecting an item hides the list
 - The `onBack` callback is required for the mobile back button to appear in the Detail pane

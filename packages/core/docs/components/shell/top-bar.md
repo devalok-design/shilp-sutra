@@ -111,6 +111,10 @@ UserMenuItem fields:
 </TopBar>
 ```
 
+## Composability
+<!-- composability-stub -->
+- TODO: document how this component composes with others (context cascade, slot API, portal behavior, common pairings, when to use vs alternatives).
+
 ## Gotchas
 - Without `TopBar.Center`, layout is flex (two-zone). With it, layout switches to CSS grid `1fr auto 1fr` for true centering.
 - `TopBar.IconButton` renders any number of action buttons — no artificial limit. Use responsive hiding (`className="hidden md:flex"`) for mobile.

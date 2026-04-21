@@ -28,6 +28,10 @@ BottomNavbarUser: { name: string, role?: string }
 />
 ```
 
+## Composability
+<!-- composability-stub -->
+- TODO: document how this component composes with others (context cascade, slot API, portal behavior, common pairings, when to use vs alternatives).
+
 ## Gotchas
 - Designed for mobile viewports — fixed to bottom of screen
 - Max 4 `primaryItems` recommended; overflow goes in `moreItems` shown in a "More" sheet

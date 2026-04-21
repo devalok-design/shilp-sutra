@@ -33,8 +33,12 @@
 ```
 
 ## Composability
-<!-- composability-stub -->
-- TODO: document how this component composes with others (context cascade, slot API, portal behavior, common pairings, when to use vs alternatives).
+- **Type-auto-detection** from URL + mimeType routes to the right renderer (image / pdf / video / audio / embed). For ambiguous URLs, pass `type` explicitly.
+- **Heavy deps are lazy-loaded** — react-pdf (PDF), react-zoom-pan-pinch (Image zoom) are only fetched when first needed. Skeleton placeholder while loading. Don't pre-import.
+- **Composes inside Dialog/Sheet** — common pattern: thumbnail in a list → click to open a Dialog with `<FilePreview>` filling it.
+- **Embed URL normalization:** YouTube/Vimeo/Figma/Loom URLs auto-convert to embed format. Pass the original share URL; FilePreview handles it.
+- **PDF worker from unpkg CDN** — for offline apps, override `pdfjs.GlobalWorkerOptions.workerSrc` in your app entry.
+- **Download + error fallback** built in — if the file fails to load, users still get a download link.
 
 ## Gotchas
 - Image/PDF lazy-loaded (Skeleton on first render)

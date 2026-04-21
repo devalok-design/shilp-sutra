@@ -20,8 +20,11 @@ Priority = 'LOW' | 'MEDIUM' | 'HIGH' | 'URGENT' | 'low' | 'medium' | 'high' | 'u
 ```
 
 ## Composability
-<!-- composability-stub -->
-- TODO: document how this component composes with others (context cascade, slot API, portal behavior, common pairings, when to use vs alternatives).
+- **Server-safe priority label** — icon + color + text for task / issue priority.
+- **Composes inside list rows, DataTable cells, Card headers, task panels** — anywhere a priority flag fits.
+- **display="compact"** shows only the icon (with priority text as title attribute for tooltip). Use in tight cells; use `display="full"` (default) in free space.
+- **Case-insensitive priority** — accepts both UPPERCASE (LOW/MEDIUM/HIGH/URGENT) and lowercase. Designed to match both backend conventions without manual coercion.
+- Color semantics: LOW=success, MEDIUM=warning, HIGH=error, URGENT=error with bolder icon.
 
 ## Gotchas
 - Case-insensitive — "low" and "LOW" both work

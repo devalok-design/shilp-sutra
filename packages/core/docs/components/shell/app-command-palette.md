@@ -32,8 +32,12 @@ AppCommandPaletteUser: { name: string, role?: string }
 ```
 
 ## Composability
-<!-- composability-stub -->
-- TODO: document how this component composes with others (context cascade, slot API, portal behavior, common pairings, when to use vs alternatives).
+- **Shell-level wrapper around composed/CommandPalette** — adds opinionated app conventions: user-aware admin command groups, search result integration, navigation dispatch.
+- **Required setup:** Place inside `<CommandRegistryProvider>` (which owns the list of page items). Typically at app root next to TopBar.
+- **Router integration via onNavigate:** Pass `(path) => router.push(path)` (Next.js) or equivalent for your framework. All page command clicks funnel through this callback.
+- **Server-search integration:** Pass `onSearch` + `searchResults` + `onSearchResultSelect` for async search (API calls). `isSearching` drives a loading state. When these props are omitted, AppCommandPalette falls back to local filtering of registered pages.
+- **Admin gating:** `isAdmin=true` surfaces `adminPages` from CommandRegistry. Takes precedence over `user.role`-based detection so you can force admin mode during testing / impersonation.
+- **For scoped, non-app-wide palettes** (per-page command trees, custom popups), use composed/CommandPalette directly without the Registry layer.
 
 ## Gotchas
 - Uses CommandRegistry context for page navigation items (see CommandRegistryProvider)

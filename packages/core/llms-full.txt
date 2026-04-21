@@ -4763,8 +4763,12 @@ export default function RootLayout({ children }) {
 ```
 
 ## Composability
-<!-- composability-stub -->
-- TODO: document how this component composes with others (context cascade, slot API, portal behavior, common pairings, when to use vs alternatives).
+- **Built on ui/Avatar** — each slot is an Avatar with overlap + border + optional Tooltip.
+- **Wraps TooltipProvider internally** — don't add another.
+- **renderAvatar** escape hatch for custom shapes. Wrapper handles overlap/border positioning; your renderer sets size + shape.
+- **borderColor** must match the surface the group sits on (`surface-raised` on Card, `surface-base` on page bg). Mismatch = visible seam.
+- **Overflow:** +N badge with optional `onOverflowClick` → pair with a Popover/Sheet for "show all members".
+- Per-user `ring` (lead/admin/client) surfaces Avatar's ring semantic at group level — use for role/presence hints.
 
 ## Gotchas
 - Wraps TooltipProvider internally — no need to add one yourself
@@ -4828,8 +4832,10 @@ export default function RootLayout({ children }) {
 ```
 
 ## Composability
-<!-- composability-stub -->
-- TODO: document how this component composes with others (context cascade, slot API, portal behavior, common pairings, when to use vs alternatives).
+- **Standalone floating toolbar** — use with DataTable, TreeView, or any selection-capable UI.
+- **DataTable auto-integration:** DataTable's `bulkActions` prop renders this internally — typically you don't render BulkActionBar directly when using DataTable.
+- **Data-driven actions:** `{ label, icon, onClick, color, disabled }[]`. For destructive confirmation, call ConfirmDialog from the onClick handler.
+- **Portal to body + fixed bottom-center z-50** — independent of parent layout. Check for other fixed elements that might overlap.
 
 ## Gotchas
 - Renders via `createPortal` into `document.body` — will not appear during SSR (mounts only client-side)
@@ -4863,8 +4869,11 @@ CommandItem shape: { id, label, description?, icon?, shortcut?, onSelect: () => 
 ```
 
 ## Composability
-<!-- composability-stub -->
-- TODO: document how this component composes with others (context cascade, slot API, portal behavior, common pairings, when to use vs alternatives).
+- **Built on Dialog (portal) + cmdk-style fuzzy matching.** Global Ctrl+K / Cmd+K by default; customize via `keybinding`.
+- **Groups + items are data-driven.** Each item: `{ id, label, icon?, shortcut?, description?, onSelect }`. Labels accept ReactNode for rich rendering; pair with `filterValue` for typeahead matching against a text representation.
+- **renderLabel hook** lets you highlight matched characters in query (`(query) => ReactNode`).
+- **Controlled / uncontrolled** via `open`+`onOpenChange` or `defaultOpen`.
+- **AppCommandPalette (shell)** is the app-wide variant with CommandRegistry — use that for global palettes with dynamically registered commands.
 
 ## Gotchas
 - Opens with Ctrl+K / Cmd+K by default
@@ -4915,8 +4924,10 @@ const [open, setOpen] = useState(false)
 ```
 
 ## Composability
-<!-- composability-stub -->
-- TODO: document how this component composes with others (context cascade, slot API, portal behavior, common pairings, when to use vs alternatives).
+- **Built on AlertDialog** — non-dismissible (no click-outside, Cancel-first focus), portal-rendered.
+- **Controlled-only.** Parent owns `open` + `onOpenChange`.
+- **onConfirm can be async.** `loading=true` replaces confirm text with "Processing..." and disables both buttons. Typical: setLoading(true) → await action() → setLoading(false) + setOpen(false).
+- **Stays open after confirm** — close via onOpenChange. Keeps the modal up on errors or for chained confirmations.
 
 ## Gotchas
 - Dialog stays open after confirm — consumer must close it via `onOpenChange`
@@ -4955,8 +4966,10 @@ const [open, setOpen] = useState(false)
 ```
 
 ## Composability
-<!-- composability-stub -->
-- TODO: document how this component composes with others (context cascade, slot API, portal behavior, common pairings, when to use vs alternatives).
+- **Server-safe higher-level Card** — wraps ui/Card with conventional header/title/actions/footer slots.
+- **When to use:** List rows, dashboard tiles, any "card with title + optional actions + body + optional footer" pattern. Use raw ui/Card for custom layouts or when you need accent bars.
+- **Slot precedence:** `header` beats `headerTitle`. Use `headerTitle` for simple strings, `header` for rich content.
+- **padding variants** (default/compact/spacious/none) set once on ContentCard; the underlying Card size cascade propagates.
 
 ## Gotchas
 - Server-safe: can be imported directly in Next.js Server Components
@@ -5133,8 +5146,11 @@ PresetKey: 'today' | 'yesterday' | 'last7days' | 'last30days' | 'thisMonth' | 'l
 ```
 
 ## Composability
-<!-- composability-stub -->
-- TODO: document how this component composes with others (context cascade, slot API, portal behavior, common pairings, when to use vs alternatives).
+- **Server-safe inline status** — renders a colored text label ("2d left" / "3h left" / "Overdue by 1d") with optional clock icon prefix.
+- **Threshold-driven color:** `warningThreshold` + `criticalThreshold` drive the green→yellow→red progression. Tune per use case (billing deadlines vs. task due dates have different urgency cadences).
+- **Composes inside Card, StatusBadge, DataTable cells** — anywhere a short inline deadline string fits.
+- **Doesn't live-update** — uses `Date.now()` at render time. For ticking timestamps, re-render via a parent interval or use a dedicated "time ago" library.
+- For static absolute timestamps (not relative), set `format="absolute"` — useful when you want the exact date rendered with semantic color coding.
 
 ## Gotchas
 - Color is semantic: green (on-track) -> yellow (warning threshold) -> red (critical/overdue)
@@ -5180,8 +5196,12 @@ EmojiPicker, EmojiPickerPopover
 ```
 
 ## Composability
-<!-- composability-stub -->
-- TODO: document how this component composes with others (context cascade, slot API, portal behavior, common pairings, when to use vs alternatives).
+- **Two exports:** `EmojiPicker` (inline grid, no trigger) and `EmojiPickerPopover` (trigger + popover wrapper). Use EmojiPickerPopover 95% of the time — trigger-on-click is the standard UX.
+- **Wraps @emoji-mart/react**, lazy-loaded with a Skeleton placeholder while the ~200KB bundle fetches. Don't pre-import unless you need it eagerly.
+- **Trigger composition:** EmojiPickerPopover's `children` is the trigger — wrap any Button/IconButton. Typical pairing is an icon-only IconButton with a 😀 label.
+- **TipTap integration:** Use `createEmojiSuggestion(set?)` factory to create a TipTap suggestion plugin that opens the picker on typing `:emoji`. Works with RichChatInput and RichTextEditor.
+- **Theme matching:** `theme="auto"` reads the `.dark` class on `<html>` — matches the DS dark mode toggle automatically. Override with explicit light/dark.
+- **Emoji sets:** Pass `set="apple" | "google" | ...` for consistent cross-platform emoji art (defaults to native OS glyphs).
 
 ## Gotchas
 - Wraps `@emoji-mart/react` which is lazy-loaded — shows a Skeleton placeholder while loading
@@ -5226,8 +5246,12 @@ Note: EmptyState was server-safe prior to v0.18.0 but is NO LONGER server-safe d
 ```
 
 ## Composability
-<!-- composability-stub -->
-- TODO: document how this component composes with others (context cascade, slot API, portal behavior, common pairings, when to use vs alternatives).
+- **Centered block for "no data" / "no results" states.** Renders icon + title + description + optional action slot.
+- **Icon composition:** Accepts both JSX (`<IconFolder />`) and component references (`IconFolder`). Component refs auto-instantiate with correct sizing. Default icon is the Devalok chakra.
+- **DataTable integration:** Pass an EmptyState component to DataTable's `emptyState` prop; takes precedence over `noResultsText` string.
+- **compact mode** for embedding inside Cards, sidebars, narrow sections. Defaults iconSize to 'sm' in compact mode automatically.
+- **Action slot** typically holds a single primary Button ("Create your first task", "Invite members"). For multi-action, use a div + flex with gap.
+- No longer server-safe (Framer Motion entrance animation).
 
 ## Gotchas
 - `icon` accepts both JSX elements (`<IconFolder />`) and component references (`IconFolder`). Component references are auto-instantiated with correct sizing classes.
@@ -5272,8 +5296,11 @@ Note: EmptyState was server-safe prior to v0.18.0 but is NO LONGER server-safe d
 ```
 
 ## Composability
-<!-- composability-stub -->
-- TODO: document how this component composes with others (context cascade, slot API, portal behavior, common pairings, when to use vs alternatives).
+- **ErrorDisplay, not ErrorBoundary** — confusingly, the import path is `error-boundary` but the component is `ErrorDisplay`. It renders an error UI; it does NOT catch errors. Pair it with your own ErrorBoundary (from react-error-boundary, Next.js error.tsx, etc.) as the fallback UI.
+- **Auto-detects HTTP status codes** (404, 403, 500) when the `error` object has a `status` field — shows appropriate icon + message.
+- **Dev-only stack trace:** Renders the stack trace only when `process.env.NODE_ENV !== 'production'`. Production users see a clean error page.
+- **onReset for retry:** Pass a callback that re-fetches / resets state. Commonly wired to a react-query `refetch` or router `replace(...)`.
+- Composes with EmptyState for "no data" states (which aren't really errors) — use EmptyState for empty, ErrorDisplay for failed.
 
 ## Gotchas
 - Auto-detects HTTP status codes (404, 403, 500) and shows appropriate icon/message
@@ -5321,8 +5348,12 @@ Note: EmptyState was server-safe prior to v0.18.0 but is NO LONGER server-safe d
 ```
 
 ## Composability
-<!-- composability-stub -->
-- TODO: document how this component composes with others (context cascade, slot API, portal behavior, common pairings, when to use vs alternatives).
+- **Type-auto-detection** from URL + mimeType routes to the right renderer (image / pdf / video / audio / embed). For ambiguous URLs, pass `type` explicitly.
+- **Heavy deps are lazy-loaded** — react-pdf (PDF), react-zoom-pan-pinch (Image zoom) are only fetched when first needed. Skeleton placeholder while loading. Don't pre-import.
+- **Composes inside Dialog/Sheet** — common pattern: thumbnail in a list → click to open a Dialog with `<FilePreview>` filling it.
+- **Embed URL normalization:** YouTube/Vimeo/Figma/Loom URLs auto-convert to embed format. Pass the original share URL; FilePreview handles it.
+- **PDF worker from unpkg CDN** — for offline apps, override `pdfjs.GlobalWorkerOptions.workerSrc` in your app entry.
+- **Download + error fallback** built in — if the file fails to load, users still get a download link.
 
 ## Gotchas
 - Image/PDF lazy-loaded (Skeleton on first render)
@@ -5384,8 +5415,12 @@ FilterBar, FilterSelect, FilterMultiSelect
 ```
 
 ## Composability
-<!-- composability-stub -->
-- TODO: document how this component composes with others (context cascade, slot API, portal behavior, common pairings, when to use vs alternatives).
+- **FilterBar + FilterSelect + FilterMultiSelect** — three-part kit. FilterBar is the toolbar container; FilterSelect/FilterMultiSelect are the individual filter controls.
+- **size propagates via context** from FilterBar to every FilterSelect/FilterMultiSelect child. Don't set size on individual filters.
+- **Children MUST be direct** — the size cascade breaks if filters are wrapped in extra divs. Use React fragments or let them be direct children.
+- **Active filter highlight:** FilterSelect/FilterMultiSelect auto-show an accent border when their value is set (non-empty array for multi, non-"all" for single).
+- **Pair with DataTable or any list:** FilterBar sits above a DataTable/list; `searchValue` + `onSearchChange` drive global filter; individual filters drive column filters via your own state management.
+- **"Clear all" convention:** Passing `onClearAll` renders a Reset button that's your escape hatch — implement it to clear all filter state in one call.
 
 ## Gotchas
 - FilterSelect and FilterMultiSelect must be direct children of FilterBar to inherit the size context
@@ -5420,8 +5455,10 @@ FilterBar, FilterSelect, FilterMultiSelect
 ```
 
 ## Composability
-<!-- composability-stub -->
-- TODO: document how this component composes with others (context cascade, slot API, portal behavior, common pairings, when to use vs alternatives).
+- **Visual grouping of related FormFields.** Wraps its children with a title + description + horizontal rule separator. No state, no context.
+- **collapsible mode** wraps content in a Collapsible — useful for "Advanced settings" or optional form sections. `defaultOpen={false}` for initially-closed.
+- **Pairs with FormField:** Each form control inside should be a FormField for consistent label + helper text + validation. FormSection doesn't auto-wrap; you still structure each field yourself.
+- **Not a page-level header** — for a full form's main heading use PageHeader. FormSection is mid-form, between field groups.
 
 ## Gotchas
 - `defaultOpen` only applies when `collapsible={true}` — otherwise the section is always open
@@ -5444,8 +5481,10 @@ FilterBar, FilterSelect, FilterMultiSelect
 ```
 
 ## Composability
-<!-- composability-stub -->
-- TODO: document how this component composes with others (context cascade, slot API, portal behavior, common pairings, when to use vs alternatives).
+- **Thin top-of-viewport progress bar** — for route-level navigation indicators (NProgress-style). Fixed at the top; z-toast layer.
+- **Wire to router events:** Pair with Next.js `useRouter` + navigation events, or react-router's `useNavigation`, or a custom global loading state in Redux/Zustand. Set `isLoading={true}` during transit, `false` when landed.
+- **Not for in-page loading** — use Spinner, Skeleton, or LoadingSkeleton for component-level loading states. GlobalLoading is strictly for cross-route / full-page transitions.
+- **Auto-unmounts when isLoading=false** — no need to manage visibility via classes or conditional rendering.
 
 ## Gotchas
 - Fixed-position bar at top of viewport (z-toast layer)
@@ -5485,8 +5524,12 @@ FilterBar, FilterSelect, FilterMultiSelect
 ```
 
 ## Composability
-<!-- composability-stub -->
-- TODO: document how this component composes with others (context cascade, slot API, portal behavior, common pairings, when to use vs alternatives).
+- **contentEditable-based** — the text IS the editor (Notion / Linear / Figma layer-name pattern). No separate input field appears.
+- **Keyboard contract:** Click to focus (auto-selects text, like Finder rename). Type to edit. Enter saves, Escape reverts. Paste strips rich content.
+- **Async save:** `onSave` can return a Promise — InlineEdit shows a spinner and disables editing while pending. On rejection, text reverts to the original value automatically.
+- **Accessibility:** Accepts `aria-label` and `aria-labelledby` (forwarded to the role="textbox" span) — required when the text isn't self-descriptive. Falls back to `placeholder` as label when neither is provided.
+- **Not inside FormField** — InlineEdit is for in-place editing of existing content (task title, project name); use regular FormField + Input for traditional forms.
+- **textClassName for typography control:** Pass `"text-ds-lg font-semibold"` to make it look like a heading without changing the underlying element.
 
 ## Gotchas
 - Uses contentEditable — the text IS the editor. No input field appears.
@@ -5538,8 +5581,11 @@ Exports: CardSkeleton, TableSkeleton, BoardSkeleton, ListSkeleton
 ```
 
 ## Composability
-<!-- composability-stub -->
-- TODO: document how this component composes with others (context cascade, slot API, portal behavior, common pairings, when to use vs alternatives).
+- **Pre-composed skeleton layouts** — CardSkeleton, TableSkeleton, BoardSkeleton, ListSkeleton. Each mimics the shape of a common DS layout so users see meaningful loading placeholders.
+- **Built on ui/Skeleton** — for custom loading layouts, use Skeleton directly (rectangle/circle/text variants). These composed versions are just opinionated shape combinations.
+- **Server-safe** — use during SSR for initial-paint skeletons in Next.js app router (while server data streams in).
+- **Pairs with conditional rendering:** `{isLoading ? <TableSkeleton rows={8} /> : <DataTable data={rows} />}`.
+- **PageSkeletons (separate file)** provides full-page placeholders (DashboardSkeleton, ProjectListSkeleton, TaskDetailSkeleton) — use those for route-level loading states.
 
 ## Gotchas
 - Server-safe: can be imported directly in Next.js Server Components
@@ -5574,8 +5620,13 @@ Exports: CardSkeleton, TableSkeleton, BoardSkeleton, ListSkeleton
 ```
 
 ## Composability
-<!-- composability-stub -->
-- TODO: document how this component composes with others (context cascade, slot API, portal behavior, common pairings, when to use vs alternatives).
+- **Read-only markdown renderer.** For editing, use RichTextEditor (TipTap-based). MarkdownViewer is strictly for display.
+- **Built on react-markdown + remark-gfm** — GFM tables, strikethrough, task lists supported out of the box.
+- **Syntax highlighting is lazy:** Code blocks with a language fence (```ts, ```python) lazy-load react-syntax-highlighter. First render shows a plain `<pre>` fallback. Don't pre-import.
+- **Security posture:** Raw HTML is stripped by default — `allowHtml={true}` must be explicit, and ONLY for trusted content (XSS vector otherwise).
+- **Links open external by default** (`target="_blank"` + `rel="noopener noreferrer"`). Override via `linkTarget`.
+- **compact mode** for inline use (comments, message bubbles). Default spacing is for article-body content.
+- **Pairs with Chat's Message.Body** — render markdown from user messages safely. Always keep `allowHtml={false}` for user-generated content.
 
 ## Gotchas
 - Code blocks with a language fence are syntax-highlighted via `react-syntax-highlighter` (lazy-loaded) — the first render shows a plain `<pre>` fallback
@@ -5627,8 +5678,11 @@ MasterDetail (root), MasterDetail.List, MasterDetail.Detail, MasterDetail.ListIt
 ```
 
 ## Composability
-<!-- composability-stub -->
-- TODO: document how this component composes with others (context cascade, slot API, portal behavior, common pairings, when to use vs alternatives).
+- **Responsive list+detail layout.** Desktop: side-by-side panels. Mobile (below `breakpoint`): stacked, mutually exclusive (list OR detail, controlled by `selected`).
+- **Compound structure:** `MasterDetail.List` contains `MasterDetail.ListItem[]` (interactive). `MasterDetail.Detail` holds the currently-selected view.
+- **onBack is required for mobile** — renders the back button in Detail pane. Omitting it leaves users stranded once they drill into an item on mobile.
+- **SSR gotcha:** Uses `window.matchMedia` — initial SSR render picks desktop mode; hydrates to mobile mode if viewport is narrow. If that causes layout shift, consider rendering this only after mount (via `useState(false)` + `useEffect`).
+- **Pairs with EmptyState** — render EmptyState inside Detail when `selected === null` on desktop ("Pick an item to get started").
 
 ## Gotchas
 - On mobile (below breakpoint), List and Detail are mutually exclusive — selecting an item hides the list
@@ -5659,8 +5713,11 @@ MasterDetail (root), MasterDetail.List, MasterDetail.Detail, MasterDetail.ListIt
 ```
 
 ## Composability
-<!-- composability-stub -->
-- TODO: document how this component composes with others (context cascade, slot API, portal behavior, common pairings, when to use vs alternatives).
+- **Trigger + Popover + search list.** Pass any button/element as `children` to act as the trigger. Typical pairing: outline Button that says "Assign" or an IconButton with avatar overflow.
+- **Single vs multi:** `multiple={true}` allows multiple selections; `false` (default) replaces the previous selection. `selectedIds` is always an array in both modes — consumer controls semantics.
+- **onSelect with a single ID:** Fires once per click with one memberId. Toggle logic in multi mode is consumer responsibility (derive the new array from the click).
+- **Avatar display:** Uses ui/Avatar internally — supply `avatar` URL in the member object, fallback to initials from `name`.
+- **For general-purpose multi-select** (non-members), use MultiSelectPopover which has the same popover+search pattern without member-specific avatar rendering.
 
 ## Gotchas
 - `children` is used as the trigger element (e.g., a Button)
@@ -5723,8 +5780,15 @@ MasterDetail (root), MasterDetail.List, MasterDetail.Detail, MasterDetail.ListIt
 ```
 
 ## Composability
-<!-- composability-stub -->
-- TODO: document how this component composes with others (context cascade, slot API, portal behavior, common pairings, when to use vs alternatives).
+- **Generalized multi-select popover** — picks from a fixed list (items) or grouped list (groups), with search, async search, and custom rendering.
+- **Items vs groups (mutually exclusive):** Pass `items` for flat lists, `groups` for sectioned lists. Don't pass both.
+- **Async search via onSearch:** When provided, local filtering is disabled — the callback owns filtering and returns a new list. `searchDebounce` (default 300ms) throttles calls.
+- **renderItem escape hatch:** Pass `(item, selected) => ReactNode` for custom item rendering (avatar + multi-line descriptions, etc.). Built-in default renders image + label + description.
+- **maxSelections behavior:** At the limit, clicking a new item REPLACES the oldest selection (FIFO). `maxSelections={1}` effectively acts as single-select.
+- **MultiSelectPopover vs Combobox vs MemberPicker:**
+  - Combobox = form-field multi-select (typeahead + selection in place)
+  - MultiSelectPopover = button-triggered popup for bulk selection (good for "Assign to" / "Add tags" scenarios)
+  - MemberPicker = MultiSelectPopover specialized for team-member UI
 
 ## Gotchas
 - Supply either `items` (flat) or `groups` (sectioned), not both
@@ -5770,8 +5834,11 @@ MasterDetail (root), MasterDetail.List, MasterDetail.Detail, MasterDetail.ListIt
 ```
 
 ## Composability
-<!-- composability-stub -->
-- TODO: document how this component composes with others (context cascade, slot API, portal behavior, common pairings, when to use vs alternatives).
+- **Server-safe page-top header** with title + subtitle + breadcrumbs + actions slot. Renders Breadcrumb internally from the `breadcrumbs` array.
+- **Auto-derived title:** If `title` is omitted, the last breadcrumb's `label` becomes the h1. Saves duplication when the page title matches the breadcrumb leaf.
+- **Breadcrumb contract:** Last item should NOT have an `href` (it's the current page — renders as BreadcrumbPage, not a link). Items with `href` render as BreadcrumbLink.
+- **actions slot:** Typically one to three buttons (Save, Cancel, More). For larger action groups, use ButtonGroup or a toolbar.
+- **Not for tabs / sub-navigation** — pair with Tabs rendered below PageHeader for that.
 
 ## Gotchas
 - Server-safe: can be imported directly in Next.js Server Components
@@ -5806,8 +5873,14 @@ Exports: DashboardSkeleton, ProjectListSkeleton, TaskDetailSkeleton
 ```
 
 ## Composability
-<!-- composability-stub -->
-- TODO: document how this component composes with others (context cascade, slot API, portal behavior, common pairings, when to use vs alternatives).
+- **Full-page skeleton layouts** for route-level loading states. Each mimics a common page shape (dashboard tiles, project list with filters, task detail with sidebar).
+- **Server-safe** — use in Next.js app router `loading.tsx` files for instant route-transition feedback while data streams.
+- **Built on LoadingSkeleton + ui/Skeleton** — these just assemble the pre-built regional skeletons into page-shaped layouts.
+- **When to use which skeleton tier:**
+  - `<Skeleton>` (ui) — single shape for a single element
+  - `<CardSkeleton>` / `<TableSkeleton>` (LoadingSkeleton) — individual region shape
+  - `<DashboardSkeleton>` / etc. (PageSkeletons) — full page placeholder
+- **Fixed layout structure** — the className prop adjusts the outer container, but internal layout isn't customizable. For custom page skeletons, compose LoadingSkeleton pieces yourself.
 
 ## Gotchas
 - Server-safe: can be imported directly in Next.js Server Components
@@ -5842,8 +5915,11 @@ Priority = 'LOW' | 'MEDIUM' | 'HIGH' | 'URGENT' | 'low' | 'medium' | 'high' | 'u
 ```
 
 ## Composability
-<!-- composability-stub -->
-- TODO: document how this component composes with others (context cascade, slot API, portal behavior, common pairings, when to use vs alternatives).
+- **Server-safe priority label** — icon + color + text for task / issue priority.
+- **Composes inside list rows, DataTable cells, Card headers, task panels** — anywhere a priority flag fits.
+- **display="compact"** shows only the icon (with priority text as title attribute for tooltip). Use in tight cells; use `display="full"` (default) in free space.
+- **Case-insensitive priority** — accepts both UPPERCASE (LOW/MEDIUM/HIGH/URGENT) and lowercase. Designed to match both backend conventions without manual coercion.
+- Color semantics: LOW=success, MEDIUM=warning, HIGH=error, URGENT=error with bolder icon.
 
 ## Gotchas
 - Case-insensitive — "low" and "LOW" both work
@@ -5887,8 +5963,11 @@ Priority = 'LOW' | 'MEDIUM' | 'HIGH' | 'URGENT' | 'low' | 'medium' | 'high' | 'u
 ```
 
 ## Composability
-<!-- composability-stub -->
-- TODO: document how this component composes with others (context cascade, slot API, portal behavior, common pairings, when to use vs alternatives).
+- **One component, two containers.** Above `breakpoint`: centered Dialog. Below: bottom-anchored Sheet. Same content slot, different surface treatment per viewport.
+- **Standard controlled model** — `open` + `onOpenChange` (same shape as Dialog/Sheet).
+- **title + description pattern** — matches Dialog/Sheet's requirement for an accessible heading. Omit both only when the surrounding context makes the purpose obvious (rare).
+- **SSR caveat:** `window.matchMedia` reads on mount — initial SSR render defaults to desktop (Dialog). Hydration flips to Sheet on mobile. Acceptable for most flows; visible layout shift on low-spec devices.
+- **When to use:** Any modal that needs to behave differently on mobile (edit dialogs, filter panels, quick-action menus). For always-the-same behavior, use Dialog or Sheet directly.
 
 ## Gotchas
 - Renders a centered Dialog on desktop and a bottom Sheet on mobile — same content, different container
@@ -5964,8 +6043,16 @@ SlashCommandGroup: { label: string; commands: SlashCommand[] }
 ```
 
 ## Composability
-<!-- composability-stub -->
-- TODO: document how this component composes with others (context cascade, slot API, portal behavior, common pairings, when to use vs alternatives).
+- **Chat-specific TipTap editor** — purpose-built for AI + human messaging. Built on RichTextEditor primitives but pre-configured for the chat UX (auto-resize, Enter-to-send, inline toolbar).
+- **Variant drives the UX envelope:**
+  - `compact` — 2-3 line inline (chat bubble composer)
+  - `expanded` — 5+ lines with always-visible toolbar (AI prompt input)
+  - `minimal` — single line, toolbar on focus (reply composer, quick comment)
+- **Toolbar is opt-in per feature:** Icons only appear when their corresponding handler/prop is set. `onFileUpload` → attach button appears. `slashCommands` → slash button appears. `mentions` or `onMentionSearch` → @ button appears.
+- **Composes with Message from ui/chat:** RichChatInput is the composer; Message is the read-only render of the message after send. Use them together for a complete chat UX (RichChatInput at the bottom, MessageList above).
+- **TipTap is bundled** — no need to install `@tiptap/*` directly.
+- **For general rich text editing** (not chat — long-form docs, notes), use RichTextEditor instead.
+- **isStreaming + onCancel** — when the receiving side is streaming a response, show a stop button in place of send. Standard AI chat pattern.
 
 ## Gotchas
 - Tiptap is bundled — no need to install `@tiptap/*` packages separately
@@ -6036,8 +6123,13 @@ MentionItem: { id: string; label: string; avatar?: string }
 ```
 
 ## Composability
-<!-- composability-stub -->
-- TODO: document how this component composes with others (context cascade, slot API, portal behavior, common pairings, when to use vs alternatives).
+- **Two exports — editor + viewer.** RichTextEditor for composition; RichTextViewer for read-only rendering of saved HTML. Both share the same prose styling so round-trip display matches the editor.
+- **TipTap v3 bundled** — no `@tiptap/*` install needed. Consumers can't mix in arbitrary TipTap extensions without forking.
+- **Toolbar whitelist via `toolbar` prop:** Pass an array of ToolbarItem names to show only those buttons. Omit to show all. Dividers auto-collapse between empty groups.
+- **Image upload:** Without `onImageUpload`, pasted/dropped images are inlined as base64 (HTML bloats fast). Provide the handler to upload and return a URL.
+- **Mentions:** Static `mentions` array OR async `onMentionSearch` (which takes precedence). The viewer always renders mentions correctly from saved HTML — no mention props needed on the viewer side.
+- **For chat composition specifically** (AI + team chat with streaming / slash commands), use RichChatInput — it's built on the same foundation but pre-configured for chat UX.
+- **Pairs with MarkdownViewer** — many teams use RichTextEditor for compose (WYSIWYG), but render saved content as markdown for simpler serialization. Convert HTML ↔ markdown at the storage boundary.
 
 ## Gotchas
 - Tiptap is bundled — no need to install `@tiptap/*` packages separately
@@ -6104,8 +6196,12 @@ Event colors: "primary" | "success" | "warning" | "error" | "info" | "neutral"
 ```
 
 ## Composability
-<!-- composability-stub -->
-- TODO: document how this component composes with others (context cascade, slot API, portal behavior, common pairings, when to use vs alternatives).
+- **Day / Week calendar view** for time-block display (meetings, shifts, availability). Not a full calendar app — no month view, no drag-to-create.
+- **Event data is consumer-owned:** You pass `events` as an array; ScheduleView doesn't fetch, doesn't cache, doesn't expand recurring events. All scheduling logic lives in your app.
+- **Event click + slot click** — `onEventClick` for existing events; `onSlotClick` for creating new events (fires with start/end of the empty slot).
+- **Color vocabulary matches the DS** — `primary/success/warning/error/info/neutral`. Map your event types to these at the data layer.
+- **endHour is exclusive:** `endHour=18` means the last visible slot starts at 17:30 (with 30min slots). Match your UX expectation: 9-5 typically means `startHour=9, endHour=18`.
+- **Pairs with date-picker/composed** — use DatePicker or DateRangePicker to choose which date to show; pass that as ScheduleView's `date`.
 
 ## Gotchas
 - `endHour` is exclusive — `endHour=18` means the last visible slot starts at 17:30 (with default 30min slots)
@@ -6139,8 +6235,11 @@ Event colors: "primary" | "success" | "warning" | "error" | "info" | "neutral"
 ```
 
 ## Composability
-<!-- composability-stub -->
-- TODO: document how this component composes with others (context cascade, slot API, portal behavior, common pairings, when to use vs alternatives).
+- **One-liner Tooltip** — wraps TooltipProvider + Tooltip + TooltipTrigger + TooltipContent so consumers don't have to manually compose them for a simple label.
+- **When to use:** 90% of tooltip use cases (icon-only button labels, abbreviated text expansions, secondary info). Use the ui/Tooltip compound for advanced cases (controlled open, nested triggers, custom animations).
+- **Auto-provides its own TooltipProvider** — safe to drop anywhere. You can still wrap a broader TooltipProvider at layout level for shared `delayDuration`; SimpleTooltip respects it if present.
+- **Content must be inert** — same rule as ui/Tooltip. For interactive popped content, use Popover or HoverCard.
+- **Pairs with IconButton** — the canonical pattern for labeled icon buttons.
 
 ## Gotchas
 - Wraps the full Tooltip compound (Provider + Tooltip + Trigger + Content) into one component — no need for TooltipProvider
@@ -6183,8 +6282,14 @@ Note: StatusBadge was server-safe prior to v0.18.0 but is NO LONGER server-safe 
 ```
 
 ## Composability
-<!-- composability-stub -->
-- TODO: document how this component composes with others (context cascade, slot API, portal behavior, common pairings, when to use vs alternatives).
+- **Semantic pill for workflow status.** Built on ui/Badge but with opinionated status → color mapping (active=success, pending=warning, rejected=error, etc.).
+- **status vs color discriminated union:** Pass either `status` (auto-mapped color) or `color` (explicit). Don't pass both — `color` wins if you do.
+- **Interactive mode:** Passing `onClick` renders as a `<button>` with a trailing chevron — common pattern for opening a status picker dropdown. Pair with a Popover or DropdownMenu for the status selector.
+- **Pairs with DataTable, Card headers, activity feeds** — anywhere an inline status pill fits. Use `size="sm"` for dense rows.
+- **StatusBadge vs ui/Badge vs StatusDot:**
+  - StatusBadge = workflow status pill with built-in status semantics
+  - ui/Badge = generic badge with full color/variant/shape control
+  - StatusDot = tiny presence indicator (no label pill)
 
 ## Gotchas
 - When `color` is set, it takes priority over `status` for styling
@@ -6254,8 +6359,12 @@ AppCommandPaletteUser: { name: string, role?: string }
 ```
 
 ## Composability
-<!-- composability-stub -->
-- TODO: document how this component composes with others (context cascade, slot API, portal behavior, common pairings, when to use vs alternatives).
+- **Shell-level wrapper around composed/CommandPalette** — adds opinionated app conventions: user-aware admin command groups, search result integration, navigation dispatch.
+- **Required setup:** Place inside `<CommandRegistryProvider>` (which owns the list of page items). Typically at app root next to TopBar.
+- **Router integration via onNavigate:** Pass `(path) => router.push(path)` (Next.js) or equivalent for your framework. All page command clicks funnel through this callback.
+- **Server-search integration:** Pass `onSearch` + `searchResults` + `onSearchResultSelect` for async search (API calls). `isSearching` drives a loading state. When these props are omitted, AppCommandPalette falls back to local filtering of registered pages.
+- **Admin gating:** `isAdmin=true` surfaces `adminPages` from CommandRegistry. Takes precedence over `user.role`-based detection so you can force admin mode during testing / impersonation.
+- **For scoped, non-app-wide palettes** (per-page command trees, custom popups), use composed/CommandPalette directly without the Registry layer.
 
 ## Gotchas
 - Uses CommandRegistry context for page navigation items (see CommandRegistryProvider)
@@ -6299,8 +6408,16 @@ BottomNavbarUser: { name: string, role?: string }
 ```
 
 ## Composability
-<!-- composability-stub -->
-- TODO: document how this component composes with others (context cascade, slot API, portal behavior, common pairings, when to use vs alternatives).
+- **Mobile-only bottom nav** — fixed to bottom of viewport. Desktop should use AppSidebar instead.
+- **Responsive switch pattern:** Use `useIsMobile()` hook to conditionally render AppSidebar (desktop) or BottomNavbar (mobile). Example:
+  ```jsx
+  const isMobile = useIsMobile()
+  return isMobile ? <BottomNavbar ... /> : <AppSidebar ... />
+  ```
+- **Primary vs overflow:** `primaryItems` (max 4) for the always-visible slots; `moreItems` go into a "More" sheet that opens on tap. Don't exceed 4 primary — the bar becomes cramped.
+- **Router integration via LinkProvider:** Each nav item is rendered using the framework-specific Link component registered in LinkProvider. Without LinkProvider, you get full-page reloads on tap.
+- **Badge numbers** cap at 99+ (same as BadgeIndicator pattern).
+- **Not for desktop:** The viewport-fixed positioning + touch-optimized sizing don't translate well to desktop. Hide behind `md:hidden`.
 
 ## Gotchas
 - Designed for mobile viewports — fixed to bottom of screen
@@ -6365,8 +6482,11 @@ CommandPageItem: { id: string, label: string, icon: ReactNode, path: string, key
 ```
 
 ## Composability
-<!-- composability-stub -->
-- TODO: document how this component composes with others (context cascade, slot API, portal behavior, common pairings, when to use vs alternatives).
+- **Context provider for AppCommandPalette.** Registers page-level navigation items that the command palette surfaces as commands.
+- **Place at app root** — wrap both AppCommandPalette and the rest of the app inside `<CommandRegistryProvider>`. Positioning matters: any AppCommandPalette outside the provider gets `useCommandRegistry() === null` and falls back to minimal functionality.
+- **Separation of pages vs adminPages** — the palette filters based on user role / `isAdmin` flag. Keep admin-only routes in the adminPages array to avoid leaking them to regular users.
+- **useCommandRegistry()** is the consumer hook — returns the full registry or null. Use in your own command-aware components (e.g. a Spotlight-style keyboard-search embed elsewhere in the app).
+- **Works with LinkProvider** — CommandPaletteItems navigate via `onNavigate` prop on AppCommandPalette, which routes to your framework's Link component.
 
 ## Gotchas
 - Provides the command registry context consumed by AppCommandPalette
@@ -6407,8 +6527,19 @@ import Link from 'next/link'
 ```
 
 ## Composability
-<!-- composability-stub -->
-- TODO: document how this component composes with others (context cascade, slot API, portal behavior, common pairings, when to use vs alternatives).
+- **The framework router bridge for all shell components.** Without LinkProvider, AppSidebar / BottomNavbar / TopBar.UserMenu / AppCommandPalette render plain `<a>` tags — that means full page reloads instead of client-side navigation.
+- **Required setup:**
+  ```tsx
+  // Next.js
+  import Link from 'next/link'
+  <LinkProvider component={Link}>
+    <App />
+  </LinkProvider>
+  ```
+- **Place at app root** — above every shell component that renders nav links.
+- **component must be forwardRef** (Next.js Link, Remix Link, react-router Link all qualify). Custom components need to forward ref + forward className + forward all anchor props.
+- **Consumer components use `useLink()`** — returns the registered component or falls back to plain `<a>`. Your own components can consume this hook to integrate with the same router abstraction.
+- **ui-category components don't consume LinkProvider** — they use `asChild` for router integration (e.g. `<Button asChild><NextLink ...>...</NextLink></Button>`). LinkProvider is shell-specific because shell components embed link arrays (can't use asChild per-item without breaking the data-driven API).
 
 ## Gotchas
 - Without LinkProvider, shell components render plain `<a>` tags (full page reloads)
@@ -6468,8 +6599,14 @@ NotificationAction: { label: string, variant?: 'primary' | 'default' | 'danger',
 ```
 
 ## Composability
-<!-- composability-stub -->
-- TODO: document how this component composes with others (context cascade, slot API, portal behavior, common pairings, when to use vs alternatives).
+- **Bell + Popover + notification list** — renders the bell button with unread count badge and a popover list on click.
+- **Typical placement:** Inside `<TopBar.Right>` — common pattern is `<TopBar.IconButton>` for utility actions PLUS `<NotificationCenter>` for the bell.
+- **No hardcoded routes** — `getNotificationRoute` is the consumer's routing decision. Return the correct path per notification type (task → `/tasks/:id`, comment → `/threads/:id`, etc.) or null for non-routable notifications.
+- **onNavigate** fires when a notification with a route is clicked — wire to your router's push/navigate call.
+- **Pagination:** Pass `hasMore` + `onFetchMore` for infinite-scroll of older notifications.
+- **emptySlot + footerSlot + headerActions** are content slots for customization — keep the bell+popover shell, swap the inside.
+- **Pairs with NotificationPreferences** (separate page component) for letting users configure which notification tiers/channels they want to receive.
+- **onDismiss** is optional — when provided, per-notification X buttons appear. Otherwise mark-as-read is the only dismissal mechanism.
 
 ## Gotchas
 - Typically rendered inside TopBar's `notificationSlot` prop
@@ -6523,8 +6660,11 @@ NotificationProject: { id: string, title: string }
 ```
 
 ## Composability
-<!-- composability-stub -->
-- TODO: document how this component composes with others (context cascade, slot API, portal behavior, common pairings, when to use vs alternatives).
+- **Full-page preferences UI** — typically rendered on a settings page (`/settings/notifications`). Not an overlay; not a dropdown.
+- **Per-project preferences** — each preference is tied to a project + channel + tier. Users can mute/unmute and adjust tier (INFO / IMPORTANT / CRITICAL threshold) per project-channel combo.
+- **All callback props support Promise<void>** — integrate with server actions / fetch calls without manual loading state management.
+- **Pairs with NotificationCenter** — NotificationCenter shows notifications in real time (driven by these preferences); NotificationPreferences lets users tune the rules.
+- **Data ownership is consumer-side** — you pass `preferences` + `projects`; NotificationPreferences renders. No built-in persistence or sync.
 
 ## Gotchas
 - Manages per-project notification preferences (channel, tier, mute)
@@ -6585,8 +6725,15 @@ SidebarPromo: { text: string, icon?: ReactNode, action?: { label: string, href?:
 ```
 
 ## Composability
-<!-- composability-stub -->
-- TODO: document how this component composes with others (context cascade, slot API, portal behavior, common pairings, when to use vs alternatives).
+- **Opinionated app sidebar** — data-driven via `navGroups`, with user profile header, navigation groups (with optional labels + group actions), and a configurable footer (links + version + optional promo banner).
+- **Required setup (three providers):**
+  - `SidebarProvider` (from ui/sidebar) — owns expanded/collapsed state + cookie persistence
+  - `LinkProvider` — framework router integration for nav item links
+  - `CommandRegistryProvider` (if pairing with AppCommandPalette) — registers the same navGroups so keyboard search finds them
+- **renderItem escape hatch:** Custom per-item rendering (e.g. custom icons per item type, status decorations, hover previews). Return `null` to fall back to default.
+- **Nested navigation:** NavItem's `children: NavSubItem[]` renders a collapsible subsection. Auto-opens if a child matches the current path.
+- **Footer as slot:** `footer` can include links, version info, a ReactNode slot (e.g. theme toggle), and a dismissable promo banner — structure it once, compose.
+- **Pairs with TopBar + BottomNavbar:** Desktop layout = AppSidebar + TopBar. Mobile layout = hide AppSidebar, show BottomNavbar.
 
 ## Gotchas
 - Must be wrapped in SidebarProvider (from ui/sidebar)
@@ -6744,8 +6891,15 @@ UserMenuItem fields:
 ```
 
 ## Composability
-<!-- composability-stub -->
-- TODO: document how this component composes with others (context cascade, slot API, portal behavior, common pairings, when to use vs alternatives).
+- **Composition-based, NOT data-driven.** Use dot-notation subcomponents (`TopBar.Left`, `TopBar.Center`, `TopBar.Right`, `TopBar.Section`, `TopBar.IconButton`, `TopBar.Title`, `TopBar.UserMenu`) to assemble. No "props config" — explicit JSX.
+- **Two-zone vs three-zone layout** — adding `TopBar.Center` flips the root from `flex` to CSS grid (`1fr auto 1fr`) for true centering. Standard apps are two-zone (Left + Right); dashboards with prominent search are three-zone.
+- **Required providers:**
+  - `SidebarProvider` — for SidebarTrigger inside `TopBar.Left` to work
+  - `LinkProvider` — for TopBar.UserMenu's menu items that use `href`
+- **NotificationCenter lives inside TopBar.Right** — it's a complete bell+popover component. Drop it in a TopBar.Section next to other icon buttons.
+- **UserMenu is composable:** `userMenuItems` inserts custom items between the built-in Profile and the color-mode toggle. Each item can navigate (href), run an action (onClick), or show a separator/badge/color decoration.
+- **Responsive hiding:** Actions that shouldn't appear on mobile use `className="hidden md:flex"` on the IconButton — the component doesn't enforce mobile hiding; that's layout responsibility.
+- **Pairs with AppSidebar** — desktop app shell is typically `<TopBar>` + `<AppSidebar>` + main content region.
 
 ## Gotchas
 - Without `TopBar.Center`, layout is flex (two-zone). With it, layout switches to CSS grid `1fr auto 1fr` for true centering.

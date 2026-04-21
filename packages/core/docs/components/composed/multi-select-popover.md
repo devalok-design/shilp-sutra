@@ -48,8 +48,15 @@
 ```
 
 ## Composability
-<!-- composability-stub -->
-- TODO: document how this component composes with others (context cascade, slot API, portal behavior, common pairings, when to use vs alternatives).
+- **Generalized multi-select popover** — picks from a fixed list (items) or grouped list (groups), with search, async search, and custom rendering.
+- **Items vs groups (mutually exclusive):** Pass `items` for flat lists, `groups` for sectioned lists. Don't pass both.
+- **Async search via onSearch:** When provided, local filtering is disabled — the callback owns filtering and returns a new list. `searchDebounce` (default 300ms) throttles calls.
+- **renderItem escape hatch:** Pass `(item, selected) => ReactNode` for custom item rendering (avatar + multi-line descriptions, etc.). Built-in default renders image + label + description.
+- **maxSelections behavior:** At the limit, clicking a new item REPLACES the oldest selection (FIFO). `maxSelections={1}` effectively acts as single-select.
+- **MultiSelectPopover vs Combobox vs MemberPicker:**
+  - Combobox = form-field multi-select (typeahead + selection in place)
+  - MultiSelectPopover = button-triggered popup for bulk selection (good for "Assign to" / "Add tags" scenarios)
+  - MemberPicker = MultiSelectPopover specialized for team-member UI
 
 ## Gotchas
 - Supply either `items` (flat) or `groups` (sectioned), not both

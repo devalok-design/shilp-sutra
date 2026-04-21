@@ -49,8 +49,15 @@ SidebarPromo: { text: string, icon?: ReactNode, action?: { label: string, href?:
 ```
 
 ## Composability
-<!-- composability-stub -->
-- TODO: document how this component composes with others (context cascade, slot API, portal behavior, common pairings, when to use vs alternatives).
+- **Opinionated app sidebar** — data-driven via `navGroups`, with user profile header, navigation groups (with optional labels + group actions), and a configurable footer (links + version + optional promo banner).
+- **Required setup (three providers):**
+  - `SidebarProvider` (from ui/sidebar) — owns expanded/collapsed state + cookie persistence
+  - `LinkProvider` — framework router integration for nav item links
+  - `CommandRegistryProvider` (if pairing with AppCommandPalette) — registers the same navGroups so keyboard search finds them
+- **renderItem escape hatch:** Custom per-item rendering (e.g. custom icons per item type, status decorations, hover previews). Return `null` to fall back to default.
+- **Nested navigation:** NavItem's `children: NavSubItem[]` renders a collapsible subsection. Auto-opens if a child matches the current path.
+- **Footer as slot:** `footer` can include links, version info, a ReactNode slot (e.g. theme toggle), and a dismissable promo banner — structure it once, compose.
+- **Pairs with TopBar + BottomNavbar:** Desktop layout = AppSidebar + TopBar. Mobile layout = hide AppSidebar, show BottomNavbar.
 
 ## Gotchas
 - Must be wrapped in SidebarProvider (from ui/sidebar)

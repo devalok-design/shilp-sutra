@@ -35,8 +35,10 @@
 ```
 
 ## Composability
-<!-- composability-stub -->
-- TODO: document how this component composes with others (context cascade, slot API, portal behavior, common pairings, when to use vs alternatives).
+- **Standalone floating toolbar** — use with DataTable, TreeView, or any selection-capable UI.
+- **DataTable auto-integration:** DataTable's `bulkActions` prop renders this internally — typically you don't render BulkActionBar directly when using DataTable.
+- **Data-driven actions:** `{ label, icon, onClick, color, disabled }[]`. For destructive confirmation, call ConfirmDialog from the onClick handler.
+- **Portal to body + fixed bottom-center z-50** — independent of parent layout. Check for other fixed elements that might overlap.
 
 ## Gotchas
 - Renders via `createPortal` into `document.body` — will not appear during SSR (mounts only client-side)

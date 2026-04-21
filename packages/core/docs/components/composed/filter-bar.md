@@ -52,8 +52,12 @@ FilterBar, FilterSelect, FilterMultiSelect
 ```
 
 ## Composability
-<!-- composability-stub -->
-- TODO: document how this component composes with others (context cascade, slot API, portal behavior, common pairings, when to use vs alternatives).
+- **FilterBar + FilterSelect + FilterMultiSelect** — three-part kit. FilterBar is the toolbar container; FilterSelect/FilterMultiSelect are the individual filter controls.
+- **size propagates via context** from FilterBar to every FilterSelect/FilterMultiSelect child. Don't set size on individual filters.
+- **Children MUST be direct** — the size cascade breaks if filters are wrapped in extra divs. Use React fragments or let them be direct children.
+- **Active filter highlight:** FilterSelect/FilterMultiSelect auto-show an accent border when their value is set (non-empty array for multi, non-"all" for single).
+- **Pair with DataTable or any list:** FilterBar sits above a DataTable/list; `searchValue` + `onSearchChange` drive global filter; individual filters drive column filters via your own state management.
+- **"Clear all" convention:** Passing `onClearAll` renders a Reset button that's your escape hatch — implement it to clear all filter state in one call.
 
 ## Gotchas
 - FilterSelect and FilterMultiSelect must be direct children of FilterBar to inherit the size context

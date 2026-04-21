@@ -23,8 +23,11 @@
 ```
 
 ## Composability
-<!-- composability-stub -->
-- TODO: document how this component composes with others (context cascade, slot API, portal behavior, common pairings, when to use vs alternatives).
+- **Trigger + Popover + search list.** Pass any button/element as `children` to act as the trigger. Typical pairing: outline Button that says "Assign" or an IconButton with avatar overflow.
+- **Single vs multi:** `multiple={true}` allows multiple selections; `false` (default) replaces the previous selection. `selectedIds` is always an array in both modes — consumer controls semantics.
+- **onSelect with a single ID:** Fires once per click with one memberId. Toggle logic in multi mode is consumer responsibility (derive the new array from the click).
+- **Avatar display:** Uses ui/Avatar internally — supply `avatar` URL in the member object, fallback to initials from `name`.
+- **For general-purpose multi-select** (non-members), use MultiSelectPopover which has the same popover+search pattern without member-specific avatar rendering.
 
 ## Gotchas
 - `children` is used as the trigger element (e.g., a Button)

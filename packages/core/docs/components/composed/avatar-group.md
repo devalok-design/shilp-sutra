@@ -39,8 +39,12 @@
 ```
 
 ## Composability
-<!-- composability-stub -->
-- TODO: document how this component composes with others (context cascade, slot API, portal behavior, common pairings, when to use vs alternatives).
+- **Built on ui/Avatar** — each slot is an Avatar with overlap + border + optional Tooltip.
+- **Wraps TooltipProvider internally** — don't add another.
+- **renderAvatar** escape hatch for custom shapes. Wrapper handles overlap/border positioning; your renderer sets size + shape.
+- **borderColor** must match the surface the group sits on (`surface-raised` on Card, `surface-base` on page bg). Mismatch = visible seam.
+- **Overflow:** +N badge with optional `onOverflowClick` → pair with a Popover/Sheet for "show all members".
+- Per-user `ring` (lead/admin/client) surfaces Avatar's ring semantic at group level — use for role/presence hints.
 
 ## Gotchas
 - Wraps TooltipProvider internally — no need to add one yourself

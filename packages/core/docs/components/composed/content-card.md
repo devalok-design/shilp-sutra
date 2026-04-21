@@ -24,8 +24,10 @@
 ```
 
 ## Composability
-<!-- composability-stub -->
-- TODO: document how this component composes with others (context cascade, slot API, portal behavior, common pairings, when to use vs alternatives).
+- **Server-safe higher-level Card** — wraps ui/Card with conventional header/title/actions/footer slots.
+- **When to use:** List rows, dashboard tiles, any "card with title + optional actions + body + optional footer" pattern. Use raw ui/Card for custom layouts or when you need accent bars.
+- **Slot precedence:** `header` beats `headerTitle`. Use `headerTitle` for simple strings, `header` for rich content.
+- **padding variants** (default/compact/spacious/none) set once on ContentCard; the underlying Card size cascade propagates.
 
 ## Gotchas
 - Server-safe: can be imported directly in Next.js Server Components

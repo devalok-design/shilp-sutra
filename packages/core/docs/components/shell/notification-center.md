@@ -45,8 +45,14 @@ NotificationAction: { label: string, variant?: 'primary' | 'default' | 'danger',
 ```
 
 ## Composability
-<!-- composability-stub -->
-- TODO: document how this component composes with others (context cascade, slot API, portal behavior, common pairings, when to use vs alternatives).
+- **Bell + Popover + notification list** — renders the bell button with unread count badge and a popover list on click.
+- **Typical placement:** Inside `<TopBar.Right>` — common pattern is `<TopBar.IconButton>` for utility actions PLUS `<NotificationCenter>` for the bell.
+- **No hardcoded routes** — `getNotificationRoute` is the consumer's routing decision. Return the correct path per notification type (task → `/tasks/:id`, comment → `/threads/:id`, etc.) or null for non-routable notifications.
+- **onNavigate** fires when a notification with a route is clicked — wire to your router's push/navigate call.
+- **Pagination:** Pass `hasMore` + `onFetchMore` for infinite-scroll of older notifications.
+- **emptySlot + footerSlot + headerActions** are content slots for customization — keep the bell+popover shell, swap the inside.
+- **Pairs with NotificationPreferences** (separate page component) for letting users configure which notification tiers/channels they want to receive.
+- **onDismiss** is optional — when provided, per-notification X buttons appear. Otherwise mark-as-read is the only dismissal mechanism.
 
 ## Gotchas
 - Typically rendered inside TopBar's `notificationSlot` prop

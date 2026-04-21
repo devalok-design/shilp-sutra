@@ -68,8 +68,16 @@ SlashCommandGroup: { label: string; commands: SlashCommand[] }
 ```
 
 ## Composability
-<!-- composability-stub -->
-- TODO: document how this component composes with others (context cascade, slot API, portal behavior, common pairings, when to use vs alternatives).
+- **Chat-specific TipTap editor** — purpose-built for AI + human messaging. Built on RichTextEditor primitives but pre-configured for the chat UX (auto-resize, Enter-to-send, inline toolbar).
+- **Variant drives the UX envelope:**
+  - `compact` — 2-3 line inline (chat bubble composer)
+  - `expanded` — 5+ lines with always-visible toolbar (AI prompt input)
+  - `minimal` — single line, toolbar on focus (reply composer, quick comment)
+- **Toolbar is opt-in per feature:** Icons only appear when their corresponding handler/prop is set. `onFileUpload` → attach button appears. `slashCommands` → slash button appears. `mentions` or `onMentionSearch` → @ button appears.
+- **Composes with Message from ui/chat:** RichChatInput is the composer; Message is the read-only render of the message after send. Use them together for a complete chat UX (RichChatInput at the bottom, MessageList above).
+- **TipTap is bundled** — no need to install `@tiptap/*` directly.
+- **For general rich text editing** (not chat — long-form docs, notes), use RichTextEditor instead.
+- **isStreaming + onCancel** — when the receiving side is streaming a response, show a stop button in place of send. Standard AI chat pattern.
 
 ## Gotchas
 - Tiptap is bundled — no need to install `@tiptap/*` packages separately

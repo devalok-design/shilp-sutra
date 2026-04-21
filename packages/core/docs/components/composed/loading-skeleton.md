@@ -40,8 +40,11 @@ Exports: CardSkeleton, TableSkeleton, BoardSkeleton, ListSkeleton
 ```
 
 ## Composability
-<!-- composability-stub -->
-- TODO: document how this component composes with others (context cascade, slot API, portal behavior, common pairings, when to use vs alternatives).
+- **Pre-composed skeleton layouts** — CardSkeleton, TableSkeleton, BoardSkeleton, ListSkeleton. Each mimics the shape of a common DS layout so users see meaningful loading placeholders.
+- **Built on ui/Skeleton** — for custom loading layouts, use Skeleton directly (rectangle/circle/text variants). These composed versions are just opinionated shape combinations.
+- **Server-safe** — use during SSR for initial-paint skeletons in Next.js app router (while server data streams in).
+- **Pairs with conditional rendering:** `{isLoading ? <TableSkeleton rows={8} /> : <DataTable data={rows} />}`.
+- **PageSkeletons (separate file)** provides full-page placeholders (DashboardSkeleton, ProjectListSkeleton, TaskDetailSkeleton) — use those for route-level loading states.
 
 ## Gotchas
 - Server-safe: can be imported directly in Next.js Server Components

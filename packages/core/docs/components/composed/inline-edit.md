@@ -26,8 +26,12 @@
 ```
 
 ## Composability
-<!-- composability-stub -->
-- TODO: document how this component composes with others (context cascade, slot API, portal behavior, common pairings, when to use vs alternatives).
+- **contentEditable-based** — the text IS the editor (Notion / Linear / Figma layer-name pattern). No separate input field appears.
+- **Keyboard contract:** Click to focus (auto-selects text, like Finder rename). Type to edit. Enter saves, Escape reverts. Paste strips rich content.
+- **Async save:** `onSave` can return a Promise — InlineEdit shows a spinner and disables editing while pending. On rejection, text reverts to the original value automatically.
+- **Accessibility:** Accepts `aria-label` and `aria-labelledby` (forwarded to the role="textbox" span) — required when the text isn't self-descriptive. Falls back to `placeholder` as label when neither is provided.
+- **Not inside FormField** — InlineEdit is for in-place editing of existing content (task title, project name); use regular FormField + Input for traditional forms.
+- **textClassName for typography control:** Pass `"text-ds-lg font-semibold"` to make it look like a heading without changing the underlying element.
 
 ## Gotchas
 - Uses contentEditable — the text IS the editor. No input field appears.

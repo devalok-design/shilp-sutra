@@ -22,8 +22,11 @@
 ```
 
 ## Composability
-<!-- composability-stub -->
-- TODO: document how this component composes with others (context cascade, slot API, portal behavior, common pairings, when to use vs alternatives).
+- **Server-safe inline status** — renders a colored text label ("2d left" / "3h left" / "Overdue by 1d") with optional clock icon prefix.
+- **Threshold-driven color:** `warningThreshold` + `criticalThreshold` drive the green→yellow→red progression. Tune per use case (billing deadlines vs. task due dates have different urgency cadences).
+- **Composes inside Card, StatusBadge, DataTable cells** — anywhere a short inline deadline string fits.
+- **Doesn't live-update** — uses `Date.now()` at render time. For ticking timestamps, re-render via a parent interval or use a dedicated "time ago" library.
+- For static absolute timestamps (not relative), set `format="absolute"` — useful when you want the exact date rendered with semantic color coding.
 
 ## Gotchas
 - Color is semantic: green (on-track) -> yellow (warning threshold) -> red (critical/overdue)

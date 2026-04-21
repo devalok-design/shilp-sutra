@@ -29,8 +29,16 @@ BottomNavbarUser: { name: string, role?: string }
 ```
 
 ## Composability
-<!-- composability-stub -->
-- TODO: document how this component composes with others (context cascade, slot API, portal behavior, common pairings, when to use vs alternatives).
+- **Mobile-only bottom nav** — fixed to bottom of viewport. Desktop should use AppSidebar instead.
+- **Responsive switch pattern:** Use `useIsMobile()` hook to conditionally render AppSidebar (desktop) or BottomNavbar (mobile). Example:
+  ```jsx
+  const isMobile = useIsMobile()
+  return isMobile ? <BottomNavbar ... /> : <AppSidebar ... />
+  ```
+- **Primary vs overflow:** `primaryItems` (max 4) for the always-visible slots; `moreItems` go into a "More" sheet that opens on tap. Don't exceed 4 primary — the bar becomes cramped.
+- **Router integration via LinkProvider:** Each nav item is rendered using the framework-specific Link component registered in LinkProvider. Without LinkProvider, you get full-page reloads on tap.
+- **Badge numbers** cap at 99+ (same as BadgeIndicator pattern).
+- **Not for desktop:** The viewport-fixed positioning + touch-optimized sizing don't translate well to desktop. Hide behind `md:hidden`.
 
 ## Gotchas
 - Designed for mobile viewports — fixed to bottom of screen

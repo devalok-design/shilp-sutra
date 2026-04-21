@@ -38,8 +38,12 @@ EmojiPicker, EmojiPickerPopover
 ```
 
 ## Composability
-<!-- composability-stub -->
-- TODO: document how this component composes with others (context cascade, slot API, portal behavior, common pairings, when to use vs alternatives).
+- **Two exports:** `EmojiPicker` (inline grid, no trigger) and `EmojiPickerPopover` (trigger + popover wrapper). Use EmojiPickerPopover 95% of the time — trigger-on-click is the standard UX.
+- **Wraps @emoji-mart/react**, lazy-loaded with a Skeleton placeholder while the ~200KB bundle fetches. Don't pre-import unless you need it eagerly.
+- **Trigger composition:** EmojiPickerPopover's `children` is the trigger — wrap any Button/IconButton. Typical pairing is an icon-only IconButton with a 😀 label.
+- **TipTap integration:** Use `createEmojiSuggestion(set?)` factory to create a TipTap suggestion plugin that opens the picker on typing `:emoji`. Works with RichChatInput and RichTextEditor.
+- **Theme matching:** `theme="auto"` reads the `.dark` class on `<html>` — matches the DS dark mode toggle automatically. Override with explicit light/dark.
+- **Emoji sets:** Pass `set="apple" | "google" | ...` for consistent cross-platform emoji art (defaults to native OS glyphs).
 
 ## Gotchas
 - Wraps `@emoji-mart/react` which is lazy-loaded — shows a Skeleton placeholder while loading

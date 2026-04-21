@@ -29,8 +29,14 @@ Note: StatusBadge was server-safe prior to v0.18.0 but is NO LONGER server-safe 
 ```
 
 ## Composability
-<!-- composability-stub -->
-- TODO: document how this component composes with others (context cascade, slot API, portal behavior, common pairings, when to use vs alternatives).
+- **Semantic pill for workflow status.** Built on ui/Badge but with opinionated status → color mapping (active=success, pending=warning, rejected=error, etc.).
+- **status vs color discriminated union:** Pass either `status` (auto-mapped color) or `color` (explicit). Don't pass both — `color` wins if you do.
+- **Interactive mode:** Passing `onClick` renders as a `<button>` with a trailing chevron — common pattern for opening a status picker dropdown. Pair with a Popover or DropdownMenu for the status selector.
+- **Pairs with DataTable, Card headers, activity feeds** — anywhere an inline status pill fits. Use `size="sm"` for dense rows.
+- **StatusBadge vs ui/Badge vs StatusDot:**
+  - StatusBadge = workflow status pill with built-in status semantics
+  - ui/Badge = generic badge with full color/variant/shape control
+  - StatusDot = tiny presence indicator (no label pill)
 
 ## Gotchas
 - When `color` is set, it takes priority over `status` for styling

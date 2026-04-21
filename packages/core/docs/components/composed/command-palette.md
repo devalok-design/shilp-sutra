@@ -26,8 +26,11 @@ CommandItem shape: { id, label, description?, icon?, shortcut?, onSelect: () => 
 ```
 
 ## Composability
-<!-- composability-stub -->
-- TODO: document how this component composes with others (context cascade, slot API, portal behavior, common pairings, when to use vs alternatives).
+- **Built on Dialog (portal) + cmdk-style fuzzy matching.** Global Ctrl+K / Cmd+K by default; customize via `keybinding`.
+- **Groups + items are data-driven.** Each item: `{ id, label, icon?, shortcut?, description?, onSelect }`. Labels accept ReactNode for rich rendering; pair with `filterValue` for typeahead matching against a text representation.
+- **renderLabel hook** lets you highlight matched characters in query (`(query) => ReactNode`).
+- **Controlled / uncontrolled** via `open`+`onOpenChange` or `defaultOpen`.
+- **AppCommandPalette (shell)** is the app-wide variant with CommandRegistry — use that for global palettes with dynamically registered commands.
 
 ## Gotchas
 - Opens with Ctrl+K / Cmd+K by default

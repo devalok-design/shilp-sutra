@@ -48,8 +48,13 @@ MentionItem: { id: string; label: string; avatar?: string }
 ```
 
 ## Composability
-<!-- composability-stub -->
-- TODO: document how this component composes with others (context cascade, slot API, portal behavior, common pairings, when to use vs alternatives).
+- **Two exports — editor + viewer.** RichTextEditor for composition; RichTextViewer for read-only rendering of saved HTML. Both share the same prose styling so round-trip display matches the editor.
+- **TipTap v3 bundled** — no `@tiptap/*` install needed. Consumers can't mix in arbitrary TipTap extensions without forking.
+- **Toolbar whitelist via `toolbar` prop:** Pass an array of ToolbarItem names to show only those buttons. Omit to show all. Dividers auto-collapse between empty groups.
+- **Image upload:** Without `onImageUpload`, pasted/dropped images are inlined as base64 (HTML bloats fast). Provide the handler to upload and return a URL.
+- **Mentions:** Static `mentions` array OR async `onMentionSearch` (which takes precedence). The viewer always renders mentions correctly from saved HTML — no mention props needed on the viewer side.
+- **For chat composition specifically** (AI + team chat with streaming / slash commands), use RichChatInput — it's built on the same foundation but pre-configured for chat UX.
+- **Pairs with MarkdownViewer** — many teams use RichTextEditor for compose (WYSIWYG), but render saved content as markdown for simpler serialization. Convert HTML ↔ markdown at the storage boundary.
 
 ## Gotchas
 - Tiptap is bundled — no need to install `@tiptap/*` packages separately

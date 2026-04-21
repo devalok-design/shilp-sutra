@@ -30,8 +30,12 @@ Event colors: "primary" | "success" | "warning" | "error" | "info" | "neutral"
 ```
 
 ## Composability
-<!-- composability-stub -->
-- TODO: document how this component composes with others (context cascade, slot API, portal behavior, common pairings, when to use vs alternatives).
+- **Day / Week calendar view** for time-block display (meetings, shifts, availability). Not a full calendar app — no month view, no drag-to-create.
+- **Event data is consumer-owned:** You pass `events` as an array; ScheduleView doesn't fetch, doesn't cache, doesn't expand recurring events. All scheduling logic lives in your app.
+- **Event click + slot click** — `onEventClick` for existing events; `onSlotClick` for creating new events (fires with start/end of the empty slot).
+- **Color vocabulary matches the DS** — `primary/success/warning/error/info/neutral`. Map your event types to these at the data layer.
+- **endHour is exclusive:** `endHour=18` means the last visible slot starts at 17:30 (with 30min slots). Match your UX expectation: 9-5 typically means `startHour=9, endHour=18`.
+- **Pairs with date-picker/composed** — use DatePicker or DateRangePicker to choose which date to show; pass that as ScheduleView's `date`.
 
 ## Gotchas
 - `endHour` is exclusive — `endHour=18` means the last visible slot starts at 17:30 (with default 30min slots)

@@ -28,8 +28,12 @@ Note: EmptyState was server-safe prior to v0.18.0 but is NO LONGER server-safe d
 ```
 
 ## Composability
-<!-- composability-stub -->
-- TODO: document how this component composes with others (context cascade, slot API, portal behavior, common pairings, when to use vs alternatives).
+- **Centered block for "no data" / "no results" states.** Renders icon + title + description + optional action slot.
+- **Icon composition:** Accepts both JSX (`<IconFolder />`) and component references (`IconFolder`). Component refs auto-instantiate with correct sizing. Default icon is the Devalok chakra.
+- **DataTable integration:** Pass an EmptyState component to DataTable's `emptyState` prop; takes precedence over `noResultsText` string.
+- **compact mode** for embedding inside Cards, sidebars, narrow sections. Defaults iconSize to 'sm' in compact mode automatically.
+- **Action slot** typically holds a single primary Button ("Create your first task", "Invite members"). For multi-action, use a div + flex with gap.
+- No longer server-safe (Framer Motion entrance animation).
 
 ## Gotchas
 - `icon` accepts both JSX elements (`<IconFolder />`) and component references (`IconFolder`). Component references are auto-instantiated with correct sizing classes.

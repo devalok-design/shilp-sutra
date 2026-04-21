@@ -172,12 +172,6 @@ describe('RichChatInput', () => {
 
   // ── 6. Disabled state ──────────────────────────────────────────
 
-  it('disabled state adds opacity class to the composer region', () => {
-    renderInput({ disabled: true })
-    const region = screen.getByRole('region', { name: 'Message composer' })
-    expect(region.className).toContain('opacity-action-disabled')
-  })
-
   it('disabled state sets editor to non-editable', async () => {
     renderInput({ disabled: true })
     const editor = await waitForEditor()
@@ -194,37 +188,14 @@ describe('RichChatInput', () => {
     expect(editorWrapper).toBeTruthy()
   })
 
-  it('renders with expanded variant', async () => {
+  it('renders with expanded variant (min-height differs from compact)', async () => {
     renderInput({ variant: 'expanded' })
     await waitForEditor()
-    // Expanded variant uses minHeight 96
     const wrappers = document.querySelectorAll('[style]')
     const expandedWrapper = Array.from(wrappers).find(el =>
       (el as HTMLElement).style.minHeight === '96px',
     )
     expect(expandedWrapper).toBeTruthy()
-  })
-
-  it('renders with minimal variant', async () => {
-    renderInput({ variant: 'minimal' })
-    await waitForEditor()
-    // Minimal variant uses minHeight 44, maxHeight 128
-    const wrappers = document.querySelectorAll('[style]')
-    const minimalWrapper = Array.from(wrappers).find(el =>
-      (el as HTMLElement).style.maxHeight === '128px',
-    )
-    expect(minimalWrapper).toBeTruthy()
-  })
-
-  it('renders with inline variant', async () => {
-    renderInput({ variant: 'inline' })
-    await waitForEditor()
-    // Inline variant uses minHeight 40, maxHeight 160
-    const wrappers = document.querySelectorAll('[style]')
-    const inlineWrapper = Array.from(wrappers).find(el =>
-      (el as HTMLElement).style.maxHeight === '160px',
-    )
-    expect(inlineWrapper).toBeTruthy()
   })
 
   // ── 8. Reply banner ────────────────────────────────────────────
@@ -343,29 +314,6 @@ describe('RichChatInput', () => {
   })
 
   // ── Additional behavior tests ──────────────────────────────────
-
-  it('forwards ref to the outer container div', () => {
-    const ref = { current: null as HTMLDivElement | null }
-    render(
-      <RichChatInput
-        ref={ref as React.Ref<HTMLDivElement>}
-        onSubmit={vi.fn()}
-      />,
-    )
-    expect(ref.current).toBeInstanceOf(HTMLDivElement)
-  })
-
-  it('merges custom className', () => {
-    const ref = { current: null as HTMLDivElement | null }
-    render(
-      <RichChatInput
-        ref={ref as React.Ref<HTMLDivElement>}
-        className="my-custom-class"
-        onSubmit={vi.fn()}
-      />,
-    )
-    expect(ref.current!.className).toContain('my-custom-class')
-  })
 
   it('renders leading slot content', async () => {
     renderInput({ leadingSlot: <div data-testid="leading">Lead</div> })

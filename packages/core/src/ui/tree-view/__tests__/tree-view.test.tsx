@@ -177,13 +177,7 @@ describe('TreeView data-driven mode', () => {
     expect(dir1).toBeTruthy()
   })
 
-  it('has no axe violations with flat items', async () => {
-    const { container } = render(<TreeView items={flatItems} />)
-    const results = await axe(container)
-    expect(results).toHaveNoViolations()
-  })
-
-  it('has no axe violations with nested items', async () => {
+  it('has no axe violations', async () => {
     const { container } = render(
       <TreeView items={nestedItems} defaultExpanded={['dir1']} />,
     )

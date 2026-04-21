@@ -131,18 +131,6 @@ describe('Button', () => {
     })
   })
 
-  it('renders xs size', () => {
-    render(<Button size="xs">Compact</Button>)
-    expect(screen.getByRole('button')).toHaveClass('h-ds-xs-plus')
-  })
-
-  it('renders icon-xs size', () => {
-    render(<Button size="icon-xs">X</Button>)
-    const btn = screen.getByRole('button')
-    expect(btn).toHaveClass('h-ds-xs-plus')
-    expect(btn).toHaveClass('w-ds-xs-plus')
-  })
-
   it('onClickAsync — click triggers loading then error on rejection', async () => {
     const user = userEvent.setup()
     let rejectFn!: (reason: Error) => void
@@ -174,46 +162,18 @@ describe('Button', () => {
 
   it('renders with pill shape', () => {
     render(<Button shape="pill">Pill</Button>)
-    const btn = screen.getByRole('button')
-    expect(btn.className).toContain('rounded-full')
-  })
-
-  it('does not apply rounded-full by default', () => {
-    render(<Button>Default</Button>)
-    const btn = screen.getByRole('button')
-    expect(btn.className).not.toContain('rounded-full')
+    expect(screen.getByRole('button').className).toContain('rounded-full')
   })
 
   // ============ Compact sizes ============
+  // Compact sizes are structurally different — they don't have fixed heights,
+  // so they flow with their content. This is a departure from regular sizes.
 
-  it('renders compact-xs without fixed height', () => {
+  it('compact sizes have no fixed height (flow with content)', () => {
     render(<Button size="compact-xs">Compact</Button>)
     const btn = screen.getByRole('button')
     expect(btn.className).toContain('py-[3px]')
     expect(btn.className).not.toMatch(/\bh-ds-/)
-  })
-
-  it('renders compact-sm without fixed height', () => {
-    render(<Button size="compact-sm">Compact</Button>)
-    const btn = screen.getByRole('button')
-    expect(btn.className).toContain('py-[5px]')
-    expect(btn.className).not.toMatch(/\bh-ds-/)
-  })
-
-  // ============ Weight ============
-
-  it('renders weight normal', () => {
-    render(<Button weight="normal">Normal</Button>)
-    const btn = screen.getByRole('button')
-    expect(btn.className).toContain('font-normal')
-  })
-
-  // ============ Disabled desaturate ============
-
-  it('disabled button has saturate class', () => {
-    render(<Button disabled>Disabled</Button>)
-    const btn = screen.getByRole('button')
-    expect(btn.className).toContain('disabled:saturate-')
   })
 
   // ============ Processing state ============

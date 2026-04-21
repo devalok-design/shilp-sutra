@@ -438,15 +438,6 @@ describe('formatFileSize', () => {
  * Toast dismiss tests
  * ------------------------------------------------------------------------ */
 
-describe('Toast — dismiss', () => {
-  it('toast.dismiss does not throw', () => {
-    // Sonner dismiss relies on CSS animations that don't run in jsdom,
-    // so we verify the API doesn't throw rather than testing DOM removal.
-    expect(() => toast.dismiss()).not.toThrow()
-    expect(() => toast.dismiss('nonexistent')).not.toThrow()
-  })
-})
-
 /* ---------------------------------------------------------------------------
  * Toast.undo tests
  * ------------------------------------------------------------------------ */

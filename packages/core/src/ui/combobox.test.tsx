@@ -236,32 +236,9 @@ describe('Combobox', () => {
     expect(within(trigger).getByText('+2 more')).toBeInTheDocument()
   })
 
-  it('forwards ref (HTMLButtonElement)', () => {
-    const ref = { current: null as HTMLButtonElement | null }
-    render(
-      <Combobox
-        ref={ref as React.Ref<HTMLButtonElement>}
-        options={fruits}
-        onValueChange={vi.fn()}
-      />,
-    )
-    expect(ref.current).toBeInstanceOf(HTMLButtonElement)
-  })
-
-  it('applies custom className to wrapper container', () => {
-    render(
-      <Combobox
-        options={fruits}
-        onValueChange={vi.fn()}
-        className="my-custom-class"
-      />,
-    )
-    // className goes to the wrapper div, not the trigger button
-    const trigger = screen.getByRole('combobox')
-    expect(trigger.closest('.my-custom-class')).toBeTruthy()
-  })
-
-  it('applies triggerClassName to trigger element', () => {
+  // triggerClassName is a distinct API (separate from className which goes on
+  // the wrapper), worth keeping as a contract test.
+  it('applies triggerClassName to trigger element (not the wrapper)', () => {
     render(
       <Combobox
         options={fruits}

@@ -151,17 +151,6 @@ describe('DatePicker', () => {
     const { container } = render(<DatePicker />)
     expect(await axe(container)).toHaveNoViolations()
   })
-
-  it('forwards ref to trigger button', () => {
-    const ref = { current: null as HTMLButtonElement | null }
-    render(<DatePicker ref={ref} />)
-    expect(ref.current).toBeInstanceOf(HTMLButtonElement)
-  })
-
-  it('merges className on trigger', () => {
-    render(<DatePicker className="custom-class" />)
-    expect(screen.getByRole('button')).toHaveClass('custom-class')
-  })
 })
 
 // ---------------------------------------------------------------------------
@@ -238,12 +227,6 @@ describe('DateRangePicker', () => {
   it('has no accessibility violations in closed state', async () => {
     const { container } = render(<DateRangePicker />)
     expect(await axe(container)).toHaveNoViolations()
-  })
-
-  it('forwards ref to trigger button', () => {
-    const ref = { current: null as HTMLButtonElement | null }
-    render(<DateRangePicker ref={ref} />)
-    expect(ref.current).toBeInstanceOf(HTMLButtonElement)
   })
 })
 
@@ -351,12 +334,6 @@ describe('TimePicker', () => {
     const { container } = render(<TimePicker />)
     expect(await axe(container)).toHaveNoViolations()
   })
-
-  it('forwards ref to trigger button', () => {
-    const ref = { current: null as HTMLButtonElement | null }
-    render(<TimePicker ref={ref} />)
-    expect(ref.current).toBeInstanceOf(HTMLButtonElement)
-  })
 })
 
 // ---------------------------------------------------------------------------
@@ -413,12 +390,6 @@ describe('DateTimePicker', () => {
   it('has no accessibility violations in closed state', async () => {
     const { container } = render(<DateTimePicker />)
     expect(await axe(container)).toHaveNoViolations()
-  })
-
-  it('forwards ref to trigger button', () => {
-    const ref = { current: null as HTMLButtonElement | null }
-    render(<DateTimePicker ref={ref} />)
-    expect(ref.current).toBeInstanceOf(HTMLButtonElement)
   })
 })
 

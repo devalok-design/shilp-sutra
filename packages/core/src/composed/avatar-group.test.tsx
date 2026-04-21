@@ -1,6 +1,7 @@
 import { render, screen } from '@testing-library/react'
 import { describe, expect, it, vi } from 'vitest'
 
+import { describeConformance } from '../test-utils/conformance'
 import { AvatarGroup, type AvatarUser } from './avatar-group'
 
 const users: AvatarUser[] = [
@@ -10,6 +11,12 @@ const users: AvatarUser[] = [
   { name: 'Diana' },
   { name: 'Eve' },
 ]
+
+describeConformance(
+  'AvatarGroup',
+  (props) => <AvatarGroup users={users.slice(0, 2)} {...props} />,
+  { sizes: ['xs', 'sm', 'md', 'lg', 'xl'] },
+)
 
 describe('AvatarGroup', () => {
   it('renders a group with correct aria label', () => {

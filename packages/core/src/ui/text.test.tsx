@@ -1,8 +1,23 @@
 import { render, screen } from '@testing-library/react'
 import { describe, expect,it } from 'vitest'
-import { axe } from 'vitest-axe'
 
+import { describeConformance } from '../test-utils/conformance'
 import { Text } from './text'
+
+// Sampling a subset of the 20 variants — conformance just verifies they all
+// render without error; we don't need to enumerate every typography role.
+describeConformance(
+  'Text',
+  (props) => <Text {...props}>Hello</Text>,
+  {
+    variants: [
+      'heading-2xl', 'heading-lg', 'heading-xs',
+      'body-lg', 'body-md', 'body-xs',
+      'label-lg', 'label-xs', 'label-plain-md',
+      'caption', 'overline', 'code',
+    ],
+  },
+)
 
 describe('Text', () => {
   it('renders with default props (body-md as <p>)', () => {
@@ -61,37 +76,9 @@ describe('Text', () => {
     expect(screen.getByText('Inline').tagName).toBe('SPAN')
   })
 
-  it('merges custom className', () => {
-    render(<Text className="my-custom">Styled</Text>)
-    expect(screen.getByText('Styled')).toHaveClass('my-custom')
-  })
-
-  it('forwards ref', () => {
-    const ref = { current: null as HTMLElement | null }
-    render(<Text ref={ref}>Ref test</Text>)
-    expect(ref.current).toBeInstanceOf(HTMLParagraphElement)
-  })
-
-  it('forwards ref when as is set', () => {
+  it('forwards ref when as is set (non-default element)', () => {
     const ref = { current: null as HTMLElement | null }
     render(<Text as="h1" ref={ref}>Heading ref</Text>)
     expect(ref.current).toBeInstanceOf(HTMLHeadingElement)
-  })
-
-  it('passes through HTML attributes', () => {
-    render(<Text data-testid="custom" id="text-1">Attrs</Text>)
-    const el = screen.getByTestId('custom')
-    expect(el).toHaveAttribute('id', 'text-1')
-  })
-
-  it('has no a11y violations', async () => {
-    const { container } = render(
-      <div>
-        <Text variant="heading-2xl">Page Title</Text>
-        <Text variant="body-md">Some body text.</Text>
-      </div>,
-    )
-    const results = await axe(container)
-    expect(results).toHaveNoViolations()
   })
 })

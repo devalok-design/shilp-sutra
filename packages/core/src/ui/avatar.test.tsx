@@ -2,30 +2,20 @@ import { render, screen } from '@testing-library/react'
 import { describe, expect,it } from 'vitest'
 import { axe } from 'vitest-axe'
 
+import { describeConformance } from '../test-utils/conformance'
 import { Avatar, AvatarFallback,AvatarImage } from './avatar'
 
+describeConformance(
+  'Avatar',
+  (props) => (
+    <Avatar {...props}>
+      <AvatarFallback>AB</AvatarFallback>
+    </Avatar>
+  ),
+  { sizes: ['xs', 'sm', 'md', 'lg', 'xl'] },
+)
+
 describe('Avatar', () => {
-  // ── Size variants ──────────────────────────────────────────────────────────
-  it.each(['xs', 'sm', 'md', 'lg', 'xl'] as const)('renders size=%s', (size) => {
-    const { container } = render(
-      <Avatar size={size}>
-        <AvatarFallback>AB</AvatarFallback>
-      </Avatar>,
-    )
-    const root = container.querySelector('[data-slot="avatar-fallback"]')?.closest('span')
-    expect(root).toBeInTheDocument()
-  })
-
-  // ── Shape variants ─────────────────────────────────────────────────────────
-  it.each(['circle', 'square', 'rounded'] as const)('renders shape=%s', (shape) => {
-    const { container } = render(
-      <Avatar shape={shape}>
-        <AvatarFallback>AB</AvatarFallback>
-      </Avatar>,
-    )
-    expect(container.firstChild).toBeInTheDocument()
-  })
-
   // ── Default variants ───────────────────────────────────────────────────────
   it('defaults to size=md and shape=circle', () => {
     const { container } = render(
@@ -187,19 +177,8 @@ describe('Avatar', () => {
     expect(wrapper.className).toContain('ring-accent-7')
   })
 
-  // ── Custom className ───────────────────────────────────────────────────────
-  it('merges custom className', () => {
-    const { container } = render(
-      <Avatar className="extra-class">
-        <AvatarFallback>AB</AvatarFallback>
-      </Avatar>,
-    )
-    const radixRoot = container.querySelector('.extra-class')
-    expect(radixRoot).toBeInTheDocument()
-  })
-
-  // ── a11y ───────────────────────────────────────────────────────────────────
-  it('has no a11y violations', async () => {
+  // ── a11y — status indicator (not covered by conformance default render) ──
+  it('has no a11y violations with status indicator', async () => {
     const { container } = render(
       <Avatar status="online">
         <AvatarFallback>JD</AvatarFallback>

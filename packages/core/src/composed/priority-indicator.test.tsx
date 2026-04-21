@@ -1,7 +1,16 @@
 import { render, screen } from '@testing-library/react'
 import { describe, expect,it } from 'vitest'
 
+import { describeConformance } from '../test-utils/conformance'
 import { PriorityIndicator } from './priority-indicator'
+
+describeConformance(
+  'PriorityIndicator',
+  (props) => <PriorityIndicator priority="LOW" {...props} />,
+  // PriorityIndicator uses `display` not `variant`. Skip that axis;
+  // compact display is tested in behavior tests below.
+  { skip: ['variants'] },
+)
 
 describe('PriorityIndicator', () => {
   it('renders Low priority with label', () => {
@@ -42,8 +51,4 @@ describe('PriorityIndicator', () => {
     expect(container.querySelector('svg')).toBeInTheDocument()
   })
 
-  it('merges custom className', () => {
-    const { container } = render(<PriorityIndicator priority="LOW" className="my-priority" />)
-    expect(container.firstElementChild).toHaveClass('my-priority')
-  })
 })

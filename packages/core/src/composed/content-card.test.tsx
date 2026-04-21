@@ -1,7 +1,14 @@
 import { render, screen } from '@testing-library/react'
 import { describe, expect,it } from 'vitest'
 
+import { describeConformance } from '../test-utils/conformance'
 import { ContentCard } from './content-card'
+
+describeConformance(
+  'ContentCard',
+  (props) => <ContentCard {...props}><p>Card content</p></ContentCard>,
+  { variants: ['default', 'outline', 'ghost'] },
+)
 
 describe('ContentCard', () => {
   it('renders children', () => {
@@ -45,10 +52,4 @@ describe('ContentCard', () => {
     expect(screen.queryByText('Should not render')).not.toBeInTheDocument()
   })
 
-  it('merges custom className', () => {
-    const { container } = render(
-      <ContentCard className="my-card"><p>Body</p></ContentCard>,
-    )
-    expect(container.firstElementChild).toHaveClass('my-card')
-  })
 })

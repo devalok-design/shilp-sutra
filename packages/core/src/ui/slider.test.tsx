@@ -1,8 +1,14 @@
 import { render, screen } from '@testing-library/react'
 import { describe, expect,it } from 'vitest'
-import { axe } from 'vitest-axe'
 
+import { describeConformance } from '../test-utils/conformance'
 import { Slider } from './slider'
+
+describeConformance(
+  'Slider',
+  (props) => <Slider aria-label="Volume" defaultValue={[50]} {...props} />,
+  { sizes: ['sm', 'md', 'lg'] },
+)
 
 describe('Slider', () => {
   it('renders with aria-label', () => {
@@ -31,30 +37,6 @@ describe('Slider', () => {
     expect(screen.getByRole('slider')).toHaveAttribute('data-disabled')
   })
 
-  it('forwards ref', () => {
-    const ref = { current: null as HTMLSpanElement | null }
-    render(
-      <Slider
-        ref={ref as React.Ref<HTMLSpanElement>}
-        aria-label="Ref test"
-        defaultValue={[50]}
-      />,
-    )
-    // Radix Slider Root renders as a span
-    expect(ref.current).toBeInstanceOf(HTMLSpanElement)
-  })
-
-  it('merges custom className', () => {
-    const { container } = render(
-      <Slider
-        aria-label="Styled"
-        defaultValue={[50]}
-        className="my-slider"
-      />,
-    )
-    expect(container.querySelector('.my-slider')).toBeInTheDocument()
-  })
-
   it('supports step prop', () => {
     render(
       <Slider
@@ -67,13 +49,5 @@ describe('Slider', () => {
     )
     const slider = screen.getByRole('slider')
     expect(slider).toBeInTheDocument()
-  })
-
-  it('has no a11y violations', async () => {
-    const { container } = render(
-      <Slider aria-label="Volume control" defaultValue={[50]} />,
-    )
-    const results = await axe(container)
-    expect(results).toHaveNoViolations()
   })
 })

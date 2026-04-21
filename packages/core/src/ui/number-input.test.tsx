@@ -1,9 +1,15 @@
 import { render, screen } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 import { describe, expect, it, vi } from 'vitest'
-import { axe } from 'vitest-axe'
 
+import { describeConformance } from '../test-utils/conformance'
 import { NumberInput } from './number-input'
+
+describeConformance(
+  'NumberInput',
+  (props) => <NumberInput aria-label="Quantity" value={0} {...props} />,
+  { sizes: ['xs', 'sm', 'md', 'lg'] },
+)
 
 describe('NumberInput', () => {
   it('renders with default value of 0', () => {
@@ -88,30 +94,4 @@ describe('NumberInput', () => {
     expect(screen.getByRole('button', { name: 'Decrease value' })).toBeDisabled()
   })
 
-  it('forwards ref to input element', () => {
-    const ref = { current: null as HTMLInputElement | null }
-    render(
-      <NumberInput ref={ref as React.Ref<HTMLInputElement>} value={0} />,
-    )
-    expect(ref.current).toBeInstanceOf(HTMLInputElement)
-  })
-
-  it('merges custom className on wrapper', () => {
-    const { container } = render(
-      <NumberInput value={0} className="my-number" />,
-    )
-    expect(container.querySelector('.my-number')).toBeInTheDocument()
-  })
-
-  it('has no a11y violations', async () => {
-    const { container } = render(
-      // eslint-disable-next-line jsx-a11y/label-has-associated-control
-      <label>
-        Quantity
-        <NumberInput value={1} min={0} max={10} />
-      </label>,
-    )
-    const results = await axe(container)
-    expect(results).toHaveNoViolations()
-  })
 })

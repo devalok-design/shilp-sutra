@@ -3,6 +3,7 @@ import userEvent from '@testing-library/user-event'
 import { describe, expect, it, vi } from 'vitest'
 import { axe } from 'vitest-axe'
 
+import { describeConformance } from '../test-utils/conformance'
 import type { ComboboxOption } from './combobox'
 import { Combobox } from './combobox'
 
@@ -13,6 +14,14 @@ const fruits: ComboboxOption[] = [
   { value: 'dragonfruit', label: 'Dragonfruit' },
   { value: 'elderberry', label: 'Elderberry' },
 ]
+
+describeConformance(
+  'Combobox',
+  (props) => (
+    <Combobox options={fruits} onValueChange={vi.fn()} {...props} />
+  ),
+  { sizes: ['xs', 'sm', 'md', 'lg'] },
+)
 
 describe('Combobox', () => {
   it('renders with placeholder', () => {

@@ -2,7 +2,17 @@ import { render, screen } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 import { describe, expect, it, vi } from 'vitest'
 
+import { describeConformance } from '../test-utils/conformance'
 import { StatusBadge } from './status-badge'
+
+describeConformance(
+  'StatusBadge',
+  (props) => <StatusBadge status="active" {...props} />,
+  {
+    sizes: ['sm', 'md'],
+    colors: ['success', 'warning', 'error', 'info', 'neutral'],
+  },
+)
 
 describe('StatusBadge', () => {
   it('renders with default status (pending) and auto-generated label', () => {
@@ -36,13 +46,6 @@ describe('StatusBadge', () => {
   it('capitalizes status key for display label', () => {
     render(<StatusBadge status="cancelled" />)
     expect(screen.getByText('Cancelled')).toBeInTheDocument()
-  })
-
-  it('merges custom className', () => {
-    const { container } = render(
-      <StatusBadge status="draft" className="extra-class" />,
-    )
-    expect(container.firstElementChild).toHaveClass('extra-class')
   })
 
   it('renders in-progress status with accent-3 background', () => {

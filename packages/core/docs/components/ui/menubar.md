@@ -30,8 +30,17 @@
 </Menubar>
 ```
 
+## Composability
+- Radix Menubar — shares the item-variant vocabulary with DropdownMenu and ContextMenu (checkbox items, radio groups, sub-menus, labels, separators, shortcuts).
+- **Key difference from DropdownMenu:** Menubar is the horizontal top-bar-menu pattern (File / Edit / View / Help). Multiple MenubarMenu children sit side-by-side at the root; opening one closes the others, and arrow keys move between them.
+- **Typical use:** Desktop app-like UIs where the menu is always visible at the top (code editors, design tools). For a single collapsed trigger, use DropdownMenu instead.
+- **Controlled open:** Pass `value` + `onValueChange` to Menubar root to control which MenubarMenu is open (value = menu's `value` prop or falsy for none).
+- **Portal + z-index:** z-popover (1400).
+
 ## Gotchas
 - Follows the standard Radix Menubar compound pattern
+- Don't use Menubar for a single dropdown — use DropdownMenu instead
+- MenubarShortcut is decorative (same as DropdownMenuShortcut) — bind shortcuts separately
 
 ## Changes
 ### v0.18.0

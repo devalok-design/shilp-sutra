@@ -1309,8 +1309,17 @@ Animated bouncing dots with a text description of who is typing.
 </Collapsible>
 ```
 
+## Composability
+- Radix Collapsible primitive — smaller than Accordion (no grouping/value matching, just open/close).
+- **When to use:** A single show/hide section where the state is local (e.g. "Advanced options" inside a form, expandable row detail, show-more). For multi-section with mutual exclusion, use Accordion.
+- **Inline rendering:** CollapsibleContent is NOT portalled — it expands inline and pushes sibling content down. Respects `overflow` rules of the parent.
+- **No built-in chevron** — unlike AccordionTrigger, CollapsibleTrigger is bare. Add your own icon + rotate via `data-state` attribute Radix sets (`[data-state=open]:rotate-180`).
+- **Animation:** Height transition via `animate-collapsible-down/up` keyframes + Radix `--radix-collapsible-content-height` CSS custom property.
+
 ## Gotchas
 - Standard Radix Collapsible API
+- No auto-chevron — add one manually if you want the affordance
+- Not portalled — clipped by parent `overflow: hidden`
 
 ## Changes
 ### v0.13.0
@@ -1553,8 +1562,16 @@ Animated bouncing dots with a text description of who is typing.
 </ContextMenu>
 ```
 
+## Composability
+- Radix ContextMenu — same item-variant surface as DropdownMenu (checkbox, radio group, sub-menus, label, separator) with the same keyboard model. Swap `Dropdown` → `Context` in imports and everything behaves the same.
+- **Trigger is not a button** — ContextMenuTrigger is a wrapper element (defaults to `<div>`) that listens for `contextmenu` events on itself and children. Use `asChild` to pass styling to your own element.
+- **Touch support:** Radix maps long-press to right-click. On mobile, hold-to-open just works without extra code.
+- **No visible trigger affordance** — unlike DropdownMenu/Popover, the user has to *know* the element is right-clickable. Pair with a visible hint (keyboard shortcut label, menu icon elsewhere) for discoverability.
+- **Portal + z-index:** z-popover (1400).
+
 ## Gotchas
 - Triggered by right-click (or long-press on touch devices)
+- ContextMenuTrigger doesn't auto-indicate it's interactive — add visual affordance elsewhere on the page
 
 ## Changes
 ### v0.18.0
@@ -2090,8 +2107,17 @@ const field = useFormField()  // returns { state, helperTextId, required } or un
 </HoverCard>
 ```
 
+## Composability
+- Radix HoverCard — accepts `open`, `onOpenChange`, `defaultOpen`, `openDelay` (ms before show), `closeDelay` (ms before hide).
+- **Distinction from Tooltip:** HoverCardContent can contain interactive elements (links, buttons, form fields). Tooltip is for inert text labels. If you need a rich hover preview — user card, link preview, product card — use HoverCard.
+- **Distinction from Popover:** Popover opens on click/focus; HoverCard opens on hover/focus. Use HoverCard when the intent is a passive preview, Popover when the user must explicitly invoke the panel.
+- **Trigger:** `<HoverCardTrigger asChild>` wraps any element. Works on `<span>`, `<a>`, `<button>` — the trigger doesn't need to be interactive itself (unlike Popover where click matters).
+- **Accessibility:** Hover-only interactions are invisible on touch. Pair with a focus-visible state or use Popover instead for critical content.
+- **Portal + z-index:** z-popover (1400), same as DropdownMenu/Popover.
+
 ## Gotchas
 - Overlay component — uses Framer Motion for enter/exit animations (v0.18.0)
+- Don't nest another HoverCard inside one — both open on the same hover and conflict
 
 ## Changes
 ### v0.18.0
@@ -2490,8 +2516,17 @@ const { size, stroke } = useIconContext()
 </Menubar>
 ```
 
+## Composability
+- Radix Menubar — shares the item-variant vocabulary with DropdownMenu and ContextMenu (checkbox items, radio groups, sub-menus, labels, separators, shortcuts).
+- **Key difference from DropdownMenu:** Menubar is the horizontal top-bar-menu pattern (File / Edit / View / Help). Multiple MenubarMenu children sit side-by-side at the root; opening one closes the others, and arrow keys move between them.
+- **Typical use:** Desktop app-like UIs where the menu is always visible at the top (code editors, design tools). For a single collapsed trigger, use DropdownMenu instead.
+- **Controlled open:** Pass `value` + `onValueChange` to Menubar root to control which MenubarMenu is open (value = menu's `value` prop or falsy for none).
+- **Portal + z-index:** z-popover (1400).
+
 ## Gotchas
 - Follows the standard Radix Menubar compound pattern
+- Don't use Menubar for a single dropdown — use DropdownMenu instead
+- MenubarShortcut is decorative (same as DropdownMenuShortcut) — bind shortcuts separately
 
 ## Changes
 ### v0.18.0

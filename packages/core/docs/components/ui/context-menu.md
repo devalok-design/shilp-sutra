@@ -29,8 +29,16 @@
 </ContextMenu>
 ```
 
+## Composability
+- Radix ContextMenu — same item-variant surface as DropdownMenu (checkbox, radio group, sub-menus, label, separator) with the same keyboard model. Swap `Dropdown` → `Context` in imports and everything behaves the same.
+- **Trigger is not a button** — ContextMenuTrigger is a wrapper element (defaults to `<div>`) that listens for `contextmenu` events on itself and children. Use `asChild` to pass styling to your own element.
+- **Touch support:** Radix maps long-press to right-click. On mobile, hold-to-open just works without extra code.
+- **No visible trigger affordance** — unlike DropdownMenu/Popover, the user has to *know* the element is right-clickable. Pair with a visible hint (keyboard shortcut label, menu icon elsewhere) for discoverability.
+- **Portal + z-index:** z-popover (1400).
+
 ## Gotchas
 - Triggered by right-click (or long-press on touch devices)
+- ContextMenuTrigger doesn't auto-indicate it's interactive — add visual affordance elsewhere on the page
 
 ## Changes
 ### v0.18.0

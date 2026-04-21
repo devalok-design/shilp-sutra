@@ -4,6 +4,20 @@
 **Scope:** Every component in the design system (100+ components across 6 categories)
 **Benchmarked against:** Mantine v7, Radix Themes v3, shadcn/ui, Chakra UI v3
 
+## Status update — 2026-04-21
+
+Most Priority 1-3 items have shipped since this audit was written. Current remaining items:
+
+**Priority 3 remaining:**
+- NumberInput uncontrolled mode (defaultValue prop) — still open, still controlled-only
+- Form validation naming convention doc — still inconsistent (Input=state, Select=color, Checkbox=error). Convention undocumented.
+
+**Priority 3 DONE:** Checkbox size, Radio size, Slider size + color (thumb).
+
+Priority 1 (test coverage) work has been superseded by the 2026-04-21 test-suite pruning + `describeConformance` adoption — every component now has axe + ref + className + attrs + variant/size/color smoke coverage via the helper (52/86 adopted, rest use inline axe). See `docs/plans/2026-04-21-test-suite-pruning.md`.
+
+Priority 2 accessibility items — most shipped. InlineEdit aria-label hole (found 2026-04-21 via conformance) fixed in commit 6c585e7c.
+
 ## Overall Scores by Category
 
 | Category | Components | API | A11y | Tests | Dark Mode | Animation | Industry |
@@ -49,13 +63,13 @@ MotionProvider (springs/tweens snapshot tests)
 
 ## Priority 3: API Consistency
 
-| Component | Missing | Fix |
-|-----------|---------|-----|
-| Checkbox | size, variant props | Add size (sm/md/lg), default md |
-| Radio | size, variant props | Add size (sm/md/lg), default md |
-| Slider | size, color props | Add size (sm/md/lg), color for track |
-| NumberInput | uncontrolled mode | Add defaultValue support |
-| Form validation | Inconsistent naming | Document convention: Input=state, Select=color, Checkbox=error |
+| Component | Missing | Fix | Status |
+|-----------|---------|-----|--------|
+| Checkbox | size, variant props | Add size (sm/md/lg), default md | ✅ shipped |
+| Radio | size, variant props | Add size (sm/md/lg), default md | ✅ shipped |
+| Slider | size, color props | Add size (sm/md/lg), color for thumb + focus ring | ✅ shipped (color on thumb, not track — color affects focus ring which is the interactive element) |
+| NumberInput | uncontrolled mode | Add defaultValue support | ⏳ open |
+| Form validation | Inconsistent naming | Document convention: Input=state, Select=color, Checkbox=error | ⏳ open (docs) |
 
 ## Priority 4: Industry Benchmark Gaps
 

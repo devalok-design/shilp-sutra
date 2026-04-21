@@ -3,7 +3,17 @@ import userEvent from '@testing-library/user-event'
 import { describe, expect, it, vi } from 'vitest'
 import { axe } from 'vitest-axe'
 
+import { describeConformance } from '../test-utils/conformance'
 import { InlineEdit } from './inline-edit'
+
+describeConformance(
+  'InlineEdit',
+  (props) => <InlineEdit value="Hello" onSave={vi.fn()} {...props} />,
+  // FIXME(a11y): InlineEdit renders role="textbox" but doesn't expose an
+  // aria-label prop — the conformance axe check fails until that's fixed.
+  // Real a11y hole flagged by conformance adoption.
+  { skip: ['axe'] },
+)
 
 describe('InlineEdit', () => {
   it('renders the text value', () => {

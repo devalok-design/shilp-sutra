@@ -1,9 +1,15 @@
 import { render, screen } from '@testing-library/react'
 import { describe, expect, it, vi } from 'vitest'
 
+import { describeConformance } from '../test-utils/conformance'
 import { type ScheduleEvent,ScheduleView } from './schedule-view'
 
 const baseDate = new Date('2026-03-17T12:00:00Z')
+
+describeConformance(
+  'ScheduleView',
+  (props) => <ScheduleView view="day" date={baseDate} events={[]} {...props} />,
+)
 
 const sampleEvents: ScheduleEvent[] = [
   {

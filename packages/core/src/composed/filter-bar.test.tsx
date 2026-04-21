@@ -2,7 +2,10 @@ import { render, screen } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 import { describe, expect, it, vi } from 'vitest'
 
+import { describeConformance } from '../test-utils/conformance'
 import { FilterBar } from './filter-bar'
+
+describeConformance('FilterBar', (props) => <FilterBar {...props} />)
 
 describe('FilterBar', () => {
   it('renders with toolbar role', () => {

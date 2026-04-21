@@ -3,12 +3,29 @@ import userEvent from '@testing-library/user-event'
 import { describe, expect, it, vi } from 'vitest'
 import { axe } from 'vitest-axe'
 
+import { describeConformance } from '../test-utils/conformance'
 import { BulkActionBar, type BulkActionBarAction } from './bulk-action-bar'
 
 const actions: BulkActionBarAction[] = [
   { label: 'Archive', onClick: vi.fn() },
   { label: 'Delete', onClick: vi.fn(), color: 'error' },
 ]
+
+describeConformance(
+  'BulkActionBar',
+  (props) => (
+    <BulkActionBar
+      show={true}
+      count={3}
+      onClearSelection={vi.fn()}
+      actions={actions}
+      {...props}
+    />
+  ),
+  // Portals to document.body and destructures its own props — so helper's
+  // container-scoped queries and generic prop-spreading don't apply.
+  { skip: ['className', 'ref', 'attrs'] },
+)
 
 describe('BulkActionBar', () => {
   it('renders the toolbar with selected count when show is true', () => {

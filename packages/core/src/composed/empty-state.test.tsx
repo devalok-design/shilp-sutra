@@ -1,7 +1,13 @@
 import { render, screen } from '@testing-library/react'
 import { describe, expect,it } from 'vitest'
 
+import { describeConformance } from '../test-utils/conformance'
 import { EmptyState } from './empty-state'
+
+describeConformance(
+  'EmptyState',
+  (props) => <EmptyState title="Nothing here" {...props} />,
+)
 
 describe('EmptyState', () => {
   it('renders the title', () => {

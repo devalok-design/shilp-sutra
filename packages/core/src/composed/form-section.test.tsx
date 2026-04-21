@@ -3,7 +3,13 @@ import userEvent from '@testing-library/user-event'
 import { describe, expect,it } from 'vitest'
 import { axe } from 'vitest-axe'
 
+import { describeConformance } from '../test-utils/conformance'
 import { FormSection } from './form-section'
+
+describeConformance(
+  'FormSection',
+  (props) => <FormSection title="Section" {...props} />,
+)
 
 describe('FormSection', () => {
   it('renders the title', () => {

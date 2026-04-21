@@ -1,7 +1,13 @@
 import { render, screen } from '@testing-library/react'
 import { describe, expect,it } from 'vitest'
 
+import { describeConformance } from '../test-utils/conformance'
 import { PageHeader } from './page-header'
+
+describeConformance(
+  'PageHeader',
+  (props) => <PageHeader title="Dashboard" {...props} />,
+)
 
 describe('PageHeader', () => {
   it('renders the title', () => {

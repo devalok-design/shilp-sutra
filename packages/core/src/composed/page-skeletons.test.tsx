@@ -1,7 +1,12 @@
 import { render } from '@testing-library/react'
 import { describe, expect,it } from 'vitest'
 
+import { describeConformance } from '../test-utils/conformance'
 import { DashboardSkeleton, ProjectListSkeleton, TaskDetailSkeleton } from './page-skeletons'
+
+describeConformance('DashboardSkeleton', (props) => <DashboardSkeleton {...props} />)
+describeConformance('ProjectListSkeleton', (props) => <ProjectListSkeleton {...props} />)
+describeConformance('TaskDetailSkeleton', (props) => <TaskDetailSkeleton {...props} />)
 
 describe('DashboardSkeleton', () => {
   it('renders without crashing', () => {

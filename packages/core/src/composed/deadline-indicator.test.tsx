@@ -2,7 +2,15 @@ import { render, screen } from '@testing-library/react'
 import { afterEach,describe, expect, it, vi } from 'vitest'
 import { axe } from 'vitest-axe'
 
+import { describeConformance } from '../test-utils/conformance'
 import { DeadlineIndicator } from './deadline-indicator'
+
+describeConformance(
+  'DeadlineIndicator',
+  (props) => (
+    <DeadlineIndicator deadline={new Date(Date.now() + 7 * 24 * 60 * 60 * 1000)} {...props} />
+  ),
+)
 
 describe('DeadlineIndicator', () => {
   afterEach(() => {

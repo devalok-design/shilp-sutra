@@ -3,8 +3,17 @@ import { render, screen } from '@testing-library/react'
 import { describe, expect, it, vi } from 'vitest'
 import { axe } from 'vitest-axe'
 
+import { describeConformance } from '../test-utils/conformance'
 import { Icon } from './icon'
 import { IconProvider } from './icon-context'
+
+describeConformance(
+  'Icon',
+  (props) => <Icon icon={IconPlus} label="Add" {...props} />,
+  // Icon renders an SVGElement (not HTMLElement) and destructures its
+  // props explicitly — no ...rest spread.
+  { skip: ['ref', 'attrs'] },
+)
 
 // framer-motion's useReducedMotion returns false in jsdom by default,
 // so static-render tests work without extra mocking.

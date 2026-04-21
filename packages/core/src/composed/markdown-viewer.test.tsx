@@ -2,7 +2,13 @@ import { render, screen } from '@testing-library/react'
 import { describe, expect,it } from 'vitest'
 import { axe } from 'vitest-axe'
 
+import { describeConformance } from '../test-utils/conformance'
 import { MarkdownViewer } from './markdown-viewer'
+
+describeConformance(
+  'MarkdownViewer',
+  (props) => <MarkdownViewer content="Hello" {...props} />,
+)
 
 describe('MarkdownViewer', () => {
   // ── Basic rendering ───────────────────────────────────────────────────

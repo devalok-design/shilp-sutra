@@ -2,6 +2,7 @@ import { render, screen } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 import { afterEach,beforeEach, describe, expect, it, vi } from 'vitest'
 
+import { describeConformance } from '../test-utils/conformance'
 import { ActivityFeed, type ActivityItem,groupItemsByTime } from './activity-feed'
 
 const now = new Date()
@@ -15,6 +16,11 @@ function makeItem(overrides: Partial<ActivityItem> = {}): ActivityItem {
     ...overrides,
   }
 }
+
+describeConformance(
+  'ActivityFeed',
+  (props) => <ActivityFeed items={[makeItem()]} {...props} />,
+)
 
 describe('ActivityFeed', () => {
   it('renders activity items', () => {

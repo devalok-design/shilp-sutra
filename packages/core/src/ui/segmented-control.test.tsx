@@ -3,6 +3,7 @@ import userEvent from '@testing-library/user-event'
 import { describe, expect, it, vi } from 'vitest'
 import { axe } from 'vitest-axe'
 
+import { describeConformance } from '../test-utils/conformance'
 import { SegmentedControl, type SegmentedControlOption } from './segmented-control'
 
 const options: SegmentedControlOption[] = [
@@ -10,6 +11,13 @@ const options: SegmentedControlOption[] = [
   { id: 'b', text: 'Beta' },
   { id: 'c', text: 'Gamma' },
 ]
+
+describeConformance(
+  'SegmentedControl',
+  (props) => (
+    <SegmentedControl options={options} selectedId="a" onSelect={vi.fn()} {...props} />
+  ),
+)
 
 describe('SegmentedControl', () => {
   it('renders all options', () => {

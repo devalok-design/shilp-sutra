@@ -3,7 +3,13 @@ import userEvent from '@testing-library/user-event'
 import { describe, expect, it, vi } from 'vitest'
 import { axe } from 'vitest-axe'
 
+import { describeConformance } from '../test-utils/conformance'
 import { ColorInput } from './color-input'
+
+describeConformance(
+  'ColorInput',
+  (props) => <ColorInput value="#d33163" {...props} />,
+)
 
 describe('ColorInput', () => {
   it('renders trigger with color value', () => {

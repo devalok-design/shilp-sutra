@@ -1,25 +1,13 @@
 import { render } from '@testing-library/react'
 import { describe, expect,it } from 'vitest'
 
+import { describeConformance } from '../test-utils/conformance'
 import { BoardSkeleton, CardSkeleton, ListSkeleton,TableSkeleton } from './loading-skeleton'
 
-describe('CardSkeleton', () => {
-  it('renders without crashing', () => {
-    const { container } = render(<CardSkeleton />)
-    expect(container.firstElementChild).toBeInTheDocument()
-  })
-
-  it('merges custom className', () => {
-    const { container } = render(<CardSkeleton className="my-class" />)
-    expect(container.firstElementChild).toHaveClass('my-class')
-  })
-
-  it('forwards ref', () => {
-    let ref: HTMLDivElement | null = null
-    render(<CardSkeleton ref={(el) => { ref = el }} />)
-    expect(ref).toBeInstanceOf(HTMLDivElement)
-  })
-})
+describeConformance('CardSkeleton', (props) => <CardSkeleton {...props} />)
+describeConformance('TableSkeleton', (props) => <TableSkeleton {...props} />)
+describeConformance('ListSkeleton', (props) => <ListSkeleton {...props} />)
+describeConformance('BoardSkeleton', (props) => <BoardSkeleton {...props} />)
 
 describe('TableSkeleton', () => {
   it('renders default 5 rows and 4 columns', () => {

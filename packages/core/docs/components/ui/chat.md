@@ -199,6 +199,15 @@ Animated bouncing dots with a text description of who is typing.
 
 ---
 
+## Composability
+- **Chat is a kit of 7 primitives, not a monolithic ChatWindow.** Compose MessageList (scroll container) + Message/SystemMessage (row variants) + DateSeparator/UnreadSeparator (visual dividers) + MessageInput (composer) + TypingIndicator (presence).
+- **Message is a compound component** — `Message.Avatar`, `Message.Content`, `Message.Author`, `Message.Body`, `Message.Reactions`, `Message.Actions`, `Message.Action`. Arrange them to match your design; most layouts only need Avatar + Content (with Author + Body inside).
+- **Message.Actions reveal on hover** via `group-hover/message` — ONLY works when Actions is nested inside a Message root. If you want a custom action bar, do it differently.
+- **MessageList ARIA:** `role="log" + aria-live="polite"` — screen readers announce new messages automatically. Don't manually add aria-live to children.
+- **grouped mode:** For consecutive messages from the same user, set `grouped={true}` to hide the avatar and author (typical chat UI pattern). Logic for "same user as previous" is consumer-side.
+- **MessageInput is specifically for chat** — auto-resizing textarea (up to 160px), Enter-to-send, Shift+Enter-for-newline, streaming support. For richer composition (formatting, attachments), use RichChatInput from composed (built on top of this + TipTap).
+- **TypingIndicator** accepts multiple users — handles pluralization of the "is/are typing" label automatically.
+
 ## Gotchas
 - MessageList uses `role="log"` with `aria-live="polite"` — screen readers announce new messages
 - Message entrance animations use Framer Motion springs — AnimatePresence wraps children in MessageList

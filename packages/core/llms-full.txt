@@ -983,6 +983,11 @@ Internal component that renders the processing animation overlay for Button. Con
 
 See `Button` docs for the public API.
 
+## Composability
+- **Internal only — do NOT import or use directly.** The Button component owns the lifecycle of this overlay.
+- Drives Button's `processing` prop rendering. If you're building a custom button and want similar marching-ants feedback, copy the SVG/animation pattern — don't reach into this component.
+- Listed here for reference so consumers grep'ing for "processing" find the behavior origin.
+
 ## Changes
 ### v0.29.0
 - **Added** Initial release — marching ants processing overlay (SVG dashed rect with animated stroke-dashoffset). Speed tiers: ambient (3s), working (2s), urgent (1s). Color maps to step-11 tokens for visibility on all variants.
@@ -1080,9 +1085,18 @@ import { BarChart } from '@devalok/shilp-sutra/ui/charts'
 <BarChart data={salesData} />
 ```
 
+## Composability
+- **ChartContainer wraps all chart primitives** — provides responsive sizing (fills parent width, configurable aspect ratio) and a consistent background/padding. Always render charts inside a ChartContainer unless you're building a custom container.
+- **Legend is a sibling, not a child** — render `<Legend items={...} />` next to your chart (above/below), not nested. Use `onHover` / `onClick` handlers in Legend + chart to sync hover highlights.
+- **Data shape is chart-specific** — BarChart wants `[{ label, value }]`, LineChart wants `[{ x, y, series }]`, etc. Each chart's props doc spells out the shape; don't assume cross-chart compatibility.
+- **Sparkline is the only chart safe to use inline** — it's a minimal 1-line SVG, no axes, no legend. Use it inside StatCard, tables, tight cells. For anything larger, reach for the full chart types.
+- **Entrance animations** — all charts use Framer Motion spring-based entry. Animations respect `prefers-reduced-motion`.
+- **Accessibility:** Charts render role="img" with aria-label from the chart title. For dense data, provide a hidden accessible table fallback manually (WCAG requirement for complex charts).
+
 ## Gotchas
 - Barrel-isolated since v0.5.0 — must use `@devalok/shilp-sutra/ui/charts`, NOT the `ui` barrel
 - Requires D3 as an optional peer dependency
+- Chart components do NOT auto-generate accessible data tables — add one manually for WCAG compliance on complex charts
 
 ## Changes
 ### v0.18.0
@@ -1293,6 +1307,15 @@ Animated bouncing dots with a text description of who is typing.
 ```
 
 ---
+
+## Composability
+- **Chat is a kit of 7 primitives, not a monolithic ChatWindow.** Compose MessageList (scroll container) + Message/SystemMessage (row variants) + DateSeparator/UnreadSeparator (visual dividers) + MessageInput (composer) + TypingIndicator (presence).
+- **Message is a compound component** — `Message.Avatar`, `Message.Content`, `Message.Author`, `Message.Body`, `Message.Reactions`, `Message.Actions`, `Message.Action`. Arrange them to match your design; most layouts only need Avatar + Content (with Author + Body inside).
+- **Message.Actions reveal on hover** via `group-hover/message` — ONLY works when Actions is nested inside a Message root. If you want a custom action bar, do it differently.
+- **MessageList ARIA:** `role="log" + aria-live="polite"` — screen readers announce new messages automatically. Don't manually add aria-live to children.
+- **grouped mode:** For consecutive messages from the same user, set `grouped={true}` to hide the avatar and author (typical chat UI pattern). Logic for "same user as previous" is consumer-side.
+- **MessageInput is specifically for chat** — auto-resizing textarea (up to 160px), Enter-to-send, Shift+Enter-for-newline, streaming support. For richer composition (formatting, attachments), use RichChatInput from composed (built on top of this + TipTap).
+- **TypingIndicator** accepts multiple users — handles pluralization of the "is/are typing" label automatically.
 
 ## Gotchas
 - MessageList uses `role="log"` with `aria-live="polite"` — screen readers announce new messages
@@ -1855,6 +1878,10 @@ import { DataTable } from '@devalok/shilp-sutra/ui/data-table'
 This component is used internally by `<DataTable>` and should not be imported directly.
 See [DataTable](./data-table.md) for the public API.
 
+## Composability
+- **Internal only.** Renders the tbody + rows for DataTable. Consumes DataTableContext for row data, selection state, expandable state, loading skeletons.
+- Customization routes through DataTable props: `renderExpanded`, `onRowClick`, `getRowId`, `loading`, `emptyState`.
+
 ## Changes
 
 ### v0.32.0
@@ -1867,6 +1894,10 @@ See [DataTable](./data-table.md) for the public API.
 
 This component is used internally by `<DataTable>` and should not be imported directly.
 See [DataTable](./data-table.md) for the public API.
+
+## Composability
+- **Internal only.** Renders the floating bulk-action bar that appears when rows are selected. Reads selection state + bulkActions config from DataTableContext.
+- Customization goes through DataTable's `bulkActions` prop — `{ label, onClick, color?, disabled? }[]`.
 
 ## Changes
 
@@ -1881,6 +1912,10 @@ See [DataTable](./data-table.md) for the public API.
 This component is used internally by `<DataTable>` and should not be imported directly.
 See [DataTable](./data-table.md) for the public API.
 
+## Composability
+- **Internal only.** Renders the card wrapper around DataTable (border, shadow, rounded corners matching the Card primitive's surface treatment).
+- DataTable uses this automatically — no consumer-facing prop toggles it.
+
 ## Changes
 
 ### v0.32.0
@@ -1893,6 +1928,10 @@ See [DataTable](./data-table.md) for the public API.
 
 This component is used internally by `<DataTable>` and should not be imported directly.
 See [DataTable](./data-table.md) for the public API.
+
+## Composability
+- **Internal React context** — binds DataTable's sub-components (header, body, pagination, toolbar, bulk-actions) to shared state: TanStack table instance, density, selection, loading.
+- Consumer code never reads this context — all interaction goes through DataTable's props.
 
 ## Changes
 
@@ -1907,6 +1946,10 @@ See [DataTable](./data-table.md) for the public API.
 This component is used internally by `<DataTable>` and should not be imported directly.
 See [DataTable](./data-table.md) for the public API.
 
+## Composability
+- **Internal only.** Renders the thead + column headers for DataTable. Reads sort state + column definitions from DataTableContext.
+- Customization goes through DataTable's `columns` prop (column definitions are TanStack ColumnDef<TData> — header, sortable, filter, etc. all declared there).
+
 ## Changes
 
 ### v0.32.0
@@ -1919,6 +1962,10 @@ See [DataTable](./data-table.md) for the public API.
 
 This component is used internally by `<DataTable>` and should not be imported directly.
 See [DataTable](./data-table.md) for the public API.
+
+## Composability
+- **Internal only.** Renders the pagination footer for DataTable. Reads pagination state from DataTableContext.
+- Customization goes through DataTable's `pagination` prop (server-side: pass `{ page, pageSize, total, onPageChange }`) or `pageSize` + `paginated` (client-side).
 
 ## Changes
 
@@ -1957,10 +2004,17 @@ import { DataTableToolbar } from '@devalok/shilp-sutra/ui/data-table-toolbar'
 />
 ```
 
+## Composability
+- **Companion to DataTable** — typically enabled via DataTable's `toolbar={true}` prop (which auto-renders this internally). Use DataTableToolbar directly only if you're building a custom DataTable integration that needs the toolbar positioned/styled differently.
+- **Reads table state via the `table` instance** (TanStack react-table) — you must pass it. For the auto-rendered version inside DataTable, this wiring is automatic.
+- **Feature toggles:** `globalFilter` (search across all columns), density switcher (compact/standard/comfortable row heights), CSV export. Turn each on/off independently.
+- **Density changes are runtime** — the switcher writes to the same `defaultDensity` that DataTable's prop seeds. State lives in DataTable context.
+
 ## Gotchas
 - Barrel-isolated since v0.5.0 — must use `@devalok/shilp-sutra/ui/data-table-toolbar`, NOT the `ui` barrel
 - Companion to DataTable — provides column visibility, density toggle, and CSV export controls
 - Requires @tanstack/react-table as a peer dependency
+- Prefer DataTable's `toolbar={true}` prop over rendering this directly
 
 ## Changes
 ### v0.5.0
@@ -2010,6 +2064,14 @@ import { DataTableToolbar } from '@devalok/shilp-sutra/ui/data-table-toolbar'
   <h1 className="relative z-[2]">Hero</h1>
 </div>
 ```
+
+## Composability
+- **Brand texture overlay** — drops into any parent with `relative overflow-hidden isolate`. Auto-inherits the parent's border radius.
+- **Button auto-extracts Grain children** — if you nest `<DevalokGrain>` inside a `<Button>`, Button auto-separates it from the label slot and positions it correctly. No extra wrapping needed.
+- **Card, custom hero sections, landing-page tiles** — wrap in a positioned container (or add the `relative overflow-hidden isolate` classes to Card explicitly) and drop Grain in as a sibling to your content.
+- **z-layer contract:** Grain renders at `z-[1]`. Content on top needs `z-[2]+`. The component doesn't boost child z-index — that's consumer responsibility.
+- **`hoverIntensify` depends on parent** — the parent must have the Tailwind `group` class so `group-hover:` selectors apply. Forgetting this silently disables the effect.
+- **Tint composes with surface:** Pass an OKLCH color (or CSS variable reference like `var(--color-accent-9)`) to `tint` for a directional gradient on top of the noise. Without tint, just noise.
 
 ## Gotchas
 - Parent element MUST have `relative overflow-hidden isolate` for the grain to render correctly
@@ -2179,9 +2241,17 @@ import { DataTableToolbar } from '@devalok/shilp-sutra/ui/data-table-toolbar'
 />
 ```
 
+## Composability
+- **Two modes, one component:** `compact={false}` (default) = drag-and-drop zone with visible affordance; `compact={true}` = inline "Upload" button. Swap by prop, same callback.
+- **Progress integration:** Drive `uploading` + `progress` from your upload logic. The component renders an embedded Progress bar when uploading=true.
+- **Validation is built-in:** `accept` (MIME types / extensions) + `maxSize` are enforced before `onFiles` fires. Invalid files produce `error` state instead of calling through. Your onFiles never has to re-validate.
+- **Multi-file:** `multiple={true}` accepts File[] (array always, even for single-file mode — use `files[0]`).
+- **Composes with Toast for feedback:** Pair with toast.success on upload complete, toast.error on failure.
+
 ## Gotchas
 - compact=true renders a small inline button; false (default) renders a large drag-and-drop zone
 - Client-side validation: invalid files are rejected before onFiles is called
+- `onFiles` always receives an array — use `files[0]` even when `multiple={false}`
 
 ## Changes
 ### v0.1.0
@@ -2331,6 +2401,13 @@ const field = useFormField()  // returns { state, helperTextId, required } or un
 <Icon icon={IconPlus} state="success" />
 ```
 
+## Composability
+- **IconContext consumption** — Icon auto-reads `size` and `stroke` from the nearest IconProvider. Button, IconButton, IconGroup, Input (startSection/endSection), Badge, NumberInput, and more all wrap their children in IconProvider so nested Icons auto-size. Explicit props always override context.
+- **Use Tabler icon components** — the `icon` prop expects a ForwardRef SVG component (the shape Tabler React exports). Any icon lib following that shape works, but Tabler is the standard.
+- **Label for a11y:** Without `label`, Icon is `aria-hidden="true"` (decorative — appropriate inside labeled buttons). With `label`, renders `role="img"` + aria-label + `<title>` for standalone icons.
+- **State overrides animate:** When both are set, state wins. `state="loading"` renders a bare Spinner; success/error render animated glyphs via Framer Motion.
+- **Reduced motion:** All animations respect `prefers-reduced-motion` — animate props fall back to static render.
+
 ## Gotchas
 - Without `label`, the icon renders `aria-hidden="true"` (decorative)
 - With `label`, the icon renders `role="img"` with `aria-label` and a `<title>` element
@@ -2372,6 +2449,13 @@ const field = useFormField()  // returns { state, helperTextId, required } or un
 <IconButton icon={<Icon icon={IconX} />} shape="circle" variant="ghost" size="sm" aria-label="Close" />
 <IconButton icon={<Icon icon={IconTrash} />} variant="solid" color="error" aria-label="Delete" />
 ```
+
+## Composability
+- **Built on Button internally** — inherits ALL Button features: variant, color, loading, onClickAsync, processing, ButtonGroup context consumption, asChild. Use IconButton when your button is icon-only; use Button for label-plus-icon.
+- **aria-label is TypeScript-enforced** — the library makes it impossible to forget. This is the key accessibility constraint for icon-only buttons.
+- **IconProvider cascade:** The `icon` prop expects `<Icon icon={...} />` — Icon auto-sizes based on IconButton's `size` via IconProvider context (no need to pass size to the nested Icon).
+- **Inside ButtonGroup:** Inherits variant/color/size/weight from ButtonGroup context just like Button does. Useful for icon-only toolbars.
+- **IconGroup vs ButtonGroup of IconButtons:** IconGroup is for static icon clusters (not interactive, or for decorative displays). ButtonGroup of IconButtons is for interactive toolbars where each icon is a button.
 
 ## Gotchas
 - aria-label is enforced by TypeScript — you MUST provide it
@@ -2416,6 +2500,13 @@ import { IconProvider, useIconContext } from '@devalok/shilp-sutra/ui'
 const { size, stroke } = useIconContext()
 ```
 
+## Composability
+- **Low-level context primitive** — rarely used directly. Most consumers want IconGroup (which wraps IconProvider + layout) or just nest Icons inside Button/Input/Badge (which provide their own IconProvider).
+- **When to reach for IconProvider manually:** Building a custom container that hosts many Icons (a dashboard tile row, a custom toolbar, a nav rail) and you want consistent icon sizing without repeating props. IconProvider is the escape hatch for that.
+- **Consumer contract:** `useIconContext()` returns `{}` (empty) when no provider is present — your consumer code MUST handle that (fall back to a default size/stroke). Don't assume a provider exists.
+- **Memoization:** The provider memoizes its value, so consumers don't re-render unless size or stroke actually change. Safe to use in tight loops / frequently-re-rendering trees.
+- **Composes down:** IconProvider nests — inner providers override outer ones. A `<Button size="lg"><IconProvider size="xs">...</IconProvider></Button>` overrides the button's icon sizing.
+
 ## Gotchas
 - Used internally by IconGroup and Button to propagate icon sizing to children
 - If no provider is present, `useIconContext()` returns `{}` (empty object) — consumers should fall back to defaults
@@ -2451,6 +2542,15 @@ const { size, stroke } = useIconContext()
   <Icon icon={IconUnderline} label="Underline" />
 </IconGroup>
 ```
+
+## Composability
+- **IconProvider wrapper + layout** — IconGroup is IconProvider plus a flex container. All child `<Icon>` elements auto-size via the provider. Don't pass size to nested Icons.
+- **IconGroup vs ButtonGroup-of-IconButtons:**
+  - IconGroup = static icon displays (legend rows, feature lists, decorative clusters). Not interactive.
+  - ButtonGroup of IconButtons = interactive toolbar where each icon is a button.
+  - If you want a formatting toolbar (interactive), use ButtonGroup or ToggleGroup, not IconGroup.
+- **Toolbar mode:** Set `role="toolbar"` + provide `label` to give the group a semantic role. Only then does `label` become `aria-label` on the container.
+- **Gap semantics:** tight=2px, default=4px, loose=8px — smaller values than ButtonGroup or Stack because icons are visually dense.
 
 ## Gotchas
 - Wraps children in an IconProvider — all child Icons inherit size/stroke from the group
@@ -2760,8 +2860,17 @@ const { size, stroke } = useIconContext()
 </NavigationMenu>
 ```
 
+## Composability
+- **Radix NavigationMenu** underneath — keyboard model (Tab between items, Arrow for panel navigation, Esc to close) is pre-wired.
+- **NavigationMenuLink vs NavigationMenuTrigger:** Use Link for simple nav items (no dropdown); use Trigger + Content for items with a panel of sub-links.
+- **NavigationMenuViewport** is the animated container that holds the active Content panel — it auto-positions below the triggers. NavigationMenuIndicator is the small arrow/caret pointing from trigger to viewport.
+- **Purpose:** Top-level site navigation (Products, Solutions, Resources) with rich dropdowns containing links grouped by category. Don't use for context menus (use DropdownMenu) or action toolbars (use ButtonGroup).
+- **Router integration:** Use `<NavigationMenuLink asChild><NextLink href="/...">...</NextLink></NavigationMenuLink>` for framework-specific Link components.
+- **Portal + z-popover (1400)** — content panels portal to body and stack above Dialog/Sheet.
+
 ## Gotchas
 - Uses Framer Motion for enter/exit animations (v0.18.0)
+- NavigationMenu is NOT for sidebar nav — use Sidebar; NOT for mobile nav — use Sheet or BottomNavbar
 
 ## Changes
 ### v0.18.0
@@ -2865,8 +2974,18 @@ const { size, stroke } = useIconContext()
 </PaginationRoot>
 ```
 
+## Composability
+- **Two APIs in one component:**
+  - Low-level compound (PaginationRoot + Content + Item + Link + Previous/Next/Ellipsis) — full control over rendering
+  - High-level `PaginationNav` — pass `totalPages` + `currentPage` + `onPageChange` and it renders the whole thing using `generatePagination`
+- **Use PaginationNav for 95% of cases.** Reach for the compound API when you need custom page-button rendering (e.g. pagination with input "jump to page" or custom ellipsis handling).
+- **generatePagination** utility — pass `current`, `total`, `siblingCount` to get the `[1, ..., 5, 6, 7, ..., 20]` structure. Use it standalone if rendering pagination elsewhere (e.g. in a DataTable's footer).
+- **Router integration:** Each PaginationLink accepts `asChild` — wrap with NextLink/react-router Link for URL-based pagination.
+- **DataTable already has built-in pagination** — don't add Pagination separately; use DataTable's `pagination` prop.
+
 ## Gotchas
 - Root component is PaginationRoot (NOT Pagination)
+- PaginationNav is the convenience wrapper — prefer it unless you need custom rendering
 
 ## Changes
 ### v0.1.1
@@ -2938,6 +3057,13 @@ const { size, stroke } = useIconContext()
 <Progress size="sm" />  {/* indeterminate */}
 ```
 
+## Composability
+- **Radix Progress** underneath — `value` (determinate) or absent (indeterminate). Standard ARIA: role=progressbar, aria-valuenow/min/max.
+- **autoColor semantic signal:** Maps value thresholds to color so consumers don't have to manually compute: 0–59=default, 60–84=warning, 85–100=success, >100=error. Useful for storage meters, budget trackers, goal progress.
+- **Indeterminate:** Omit `value` to get a continuous animated indeterminate bar. Use for unknown-duration loads.
+- **Progress vs ProgressRing:** Progress is a linear bar (horizontal). ProgressRing is circular. ProgressRing offers multi-ring stacked variants; Progress doesn't.
+- **Inside Card/StatCard:** StatCard has a `progress` prop that renders a thin inline version — use that inside StatCards instead of a separate Progress.
+
 ## Gotchas
 - Omit value (or pass undefined) for indeterminate animation
 - `autoColor` overrides `color` when `value` is set — do not pass both unless you want autoColor to win
@@ -2984,6 +3110,13 @@ const { size, stroke } = useIconContext()
   size="lg"
 />
 ```
+
+## Composability
+- **SVG-based circular progress** — pure SVG, no chart library dependency.
+- **MultiProgressRing** — concentric rings for multi-metric visualization (Apple Activity style: Move + Exercise + Stand). Don't stack more than 4-5 rings at a size; the innermost rings become too thin. Size auto-allocates ring stroke; pass `size="lg"` for more room.
+- **ProgressRing vs Progress:** Use ProgressRing for dashboard tiles, at-a-glance status, multi-metric visualizations. Use Progress for linear "percentage filled" UIs.
+- **`showValue={true}`** renders the percentage in the center (ProgressRing only). For MultiProgressRing, use external labels since center would conflict with multiple values.
+- **Label for a11y:** `label` falls back to `"{n}% progress"` so screen readers always get meaningful context.
 
 ## Gotchas
 - Uses Framer Motion for the animated fill — not server-safe
@@ -3572,6 +3705,13 @@ The whole Sidebar ecosystem is driven by `SidebarContext` — the Provider owns 
 <Spinner variant="bare" /> {/* uses currentColor, for embedding in buttons */}
 ```
 
+## Composability
+- **Prefer Button's `loading` prop** for inline button spinners — Button's integration is automatic (disables, sets aria-busy, positions the spinner). Manual Spinner inside Button is more work for no gain.
+- **`variant="bare"`** uses `currentColor` — drop it into any surface (button, toolbar, badge, icon group) and it picks up the parent's text color automatically.
+- **State transitions:** `spinning → success → idle` / `spinning → error → idle`. Use the state machine for async operation feedback (the success checkmark, error X animate in). Pair with `onComplete` to trigger next-step logic after the transition.
+- **delay for flicker prevention:** Set `delay={150}` so very fast operations don't flash a spinner. The spinner mounts only after the delay elapses — if the operation completes first, the user never sees it.
+- **Icon.state="loading" uses Spinner internally** — same underlying component. If you're inside an Icon context, prefer `<Icon state="loading" />` for consistent sizing.
+
 ## Gotchas
 - Renders role="status" with sr-only "Loading..." text — no need for aria-label
 - Button has built-in loading prop — prefer that over manual Spinner composition
@@ -3636,6 +3776,17 @@ import { SplitButton } from '@devalok/shilp-sutra'
 | onOpenChange | (open: boolean) => void | — | Open state callback |
 | dropdownLabel | string | 'More options' | aria-label for trigger |
 | dropdownIcon | ReactNode | chevron-down | Custom trigger icon |
+
+## Composability
+- **Two-in-one button:** visually unified `[Action | ▼]` with the left half being the primary click and the right half opening a dropdown. Use for actions that have a most-common choice plus alternatives (Save vs. Save-As-Draft, Send vs. Schedule).
+- **Built on Button + Popover internally** — inherits Button's variant/color/size vocabulary and Popover's placement prop (`top-end` default works for most top-of-page toolbars).
+- **Dropdown content is consumer-provided** — pass any JSX via `dropdownContent` (typically a DropdownMenu, list of actions, a custom panel, or a small form). Don't try to shove a full-featured menu into the chevron; keep it focused on 2–5 alternatives.
+- **ButtonGroup compatibility:** Put SplitButton inside a `<ButtonGroup>` — it inherits variant/color/size from the group context just like Button does. Position-aware corners work too.
+- **Controlled dropdown:** Pass `open` + `onOpenChange` for controlled state; omit for uncontrolled. Useful when the dropdown must close programmatically after a selection.
+
+## Gotchas
+- Always provide `dropdownLabel` (aria-label on the chevron trigger) — defaults to "More options" but context-specific labels are better
+- `triggerSide="left"` flips the chevron to the left — rare, but useful for RTL layouts or when the primary action is the secondary emphasis
 
 ## Changes
 
@@ -3780,6 +3931,15 @@ import { SplitButton } from '@devalok/shilp-sutra'
 <StatusDot status="critical" label="Service down" pulse />
 <StatusDot status="warning" size="lg" label="Elevated load" />
 ```
+
+## Composability
+- **Server-safe presentational dot** — simple status indicator, pairs with inline text.
+- **Status semantics map to color:** healthy=success, warning=warning, critical=error, neutral=muted surface, inactive=dimmed. The pulse animation calls attention to "healthy" by default (active presence); you can flip it for other statuses by setting pulse explicitly.
+- **StatusDot vs BadgeIndicator vs StatusBadge:**
+  - StatusDot = tiny presence/status indicator with optional inline label (e.g. "Service online")
+  - BadgeIndicator = overlay on another element (notification dot on a bell icon)
+  - StatusBadge (composed) = full pill-style badge with colored bg and label text (e.g. ticket status)
+- **Label composability:** If you pass `label`, it renders inline after the dot. Use `labelClassName` for custom typography (e.g. font-mono for status codes).
 
 ## Gotchas
 - The `pulse` prop auto-enables for "healthy" status — pass `pulse={false}` to suppress
@@ -3931,8 +4091,16 @@ import { SplitButton } from '@devalok/shilp-sutra'
 </Table>
 ```
 
+## Composability
+- **Server-safe pure HTML wrappers** — Table and sub-components are thin semantic wrappers around `<table>`, `<thead>`, `<tbody>`, etc. No state, no context. Safe in RSC trees.
+- **Table vs DataTable:** Table is presentational — you control every row, cell, header. DataTable (from `ui/data-table`) is feature-rich — sorting, filtering, pagination, selection, virtualization built in. Pick by whether you need that machinery.
+- **Use cases for bare Table:** Static data displays, marketing comparison tables, documentation tables, small lists where DataTable would be overkill.
+- **Composes with UI primitives inside cells:** Badge for status pills, Avatar for user cells, IconButton for row actions, StatusDot for state indicators. All server-safe if the table is server-rendered.
+- **TableCaption** renders as HTML `<caption>` — useful for a summary description that screen readers announce before the table content.
+
 ## Gotchas
 - Table headers automatically have scope="col" for screen reader navigation
+- For anything beyond trivial display, prefer DataTable — don't rebuild sorting/pagination/selection on top of bare Table
 
 ## Changes
 ### v0.18.0
@@ -4141,6 +4309,15 @@ toast.error('Upload failed', { description: 'File too large' })
 toast.undo('Task deleted', { onUndo: () => restoreTask(id) })
 ```
 
+## Composability
+- **Imperative API only** — `toast.success(...)`, `toast.error(...)`, etc. NO JSX invocation. This is by design (Sonner-based) — you call from event handlers, not render.
+- **Requires Toaster mounted once** at app root. Without it, `toast.*` calls are no-ops. Render `<Toaster />` in the root layout, not inside route components.
+- **toast.promise** orchestrates async flows: `toast.promise(fetch(...), { loading: 'Saving', success: 'Saved', error: 'Failed' })`. One toast, three states. Beats manually calling `.loading()` + `.success()`/`.error()`.
+- **toast.undo** adds an inline Undo button with 8s default duration — pair with state management that supports reversal (soft-delete with restore, last-action redo).
+- **toast.upload** is specifically for file-upload progress — per-file progress bars, retry on error, remove from list. Replaces the old `UploadProgress` composed component.
+- **toast.custom** is the escape hatch — render arbitrary JSX. Use sparingly; prefer the typed methods for consistency.
+- **Distinction from Alert/Banner:** Toast = transient, auto-dismissing, non-interactive-dismissible floating notification. Alert = inline in-flow announcement. Banner = page-level strip. Pick by persistence + position.
+
 ## Gotchas
 - DO NOT use useToast() hook — it is deprecated, use imperative toast.* methods
 - DO NOT use toast({ title, color }) object syntax — use toast.success('message') etc.
@@ -4198,9 +4375,17 @@ export default function RootLayout({ children }) {
 }
 ```
 
+## Composability
+- **Mount once, use everywhere.** Render `<Toaster />` in the root layout file once. Every `toast.*` call anywhere in the tree routes to this single container.
+- **Global config lives here.** Set `position`, `duration`, `visibleToasts` on Toaster to control default behavior for all toasts. Individual `toast.*` calls can override `duration` per toast.
+- **Keyboard shortcut:** `hotkey` prop sets a global shortcut to focus the toast region (default: Alt+T). Useful for keyboard users to review recent notifications.
+- **Next.js / App Router:** Mount inside your root `app/layout.tsx`'s `<body>`. It's marked `'use client'` so it doesn't render on the server (Toaster is client-only).
+- **Portal rendering:** z-toast (highest layer) — Toaster content appears above Dialog, Popover, everything. Don't wrap it in a stacking context.
+
 ## Gotchas
 - Must be mounted once at the layout root for toast notifications to work
 - Use the `toast` import from `@devalok/shilp-sutra/ui/toast` to trigger toasts
+- NOT server-safe — mounts with 'use client'; rendering during SSR has no visual effect
 
 ## Changes
 ### v0.18.0
@@ -4408,8 +4593,20 @@ export default function RootLayout({ children }) {
 </TreeView>
 ```
 
+## Composability
+- **Two rendering modes:**
+  - **Data-driven:** Pass `items: TreeNode[]` with nested `children`. Good for server-fetched or programmatic trees.
+  - **Declarative:** Use `<TreeItem>` children directly. Good for hardcoded nav, readable JSX.
+  - Don't mix — pick one per TreeView instance.
+- **useTree hook** lets you drive TreeView state externally (e.g. sync with URL, persist expanded state, drive from Redux). Pass `defaultExpanded`/`defaultSelected` initially OR manage state via the hook's return value.
+- **TreeItem composability:** Each TreeItem has `icon`, `label`, `secondaryLabel`, and `actions` slots — rich rows without custom render props. `actions` reveals on row hover (same pattern as Message.Actions).
+- **multiSelect + checkboxes:** Set both to turn TreeView into a file-picker style tree with checkboxes instead of single-select highlighting.
+- **Keyboard navigation:** Full `role="tree"` spec — Arrow Up/Down to move, Right to expand/descend, Left to collapse/ascend, Enter to select. Pre-wired; no manual key handling needed.
+
 ## Gotchas
 - Supports both data-driven (items prop) and declarative (children) modes
+- Don't mix data-driven and declarative in the same TreeView — pick one
+- For a simple flat checkbox list, use RadioGroup/Checkbox + Stack — TreeView is overkill for non-hierarchical data
 
 ## Changes
 ### v0.4.2

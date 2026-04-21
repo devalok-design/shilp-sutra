@@ -32,9 +32,17 @@
 />
 ```
 
+## Composability
+- **Two modes, one component:** `compact={false}` (default) = drag-and-drop zone with visible affordance; `compact={true}` = inline "Upload" button. Swap by prop, same callback.
+- **Progress integration:** Drive `uploading` + `progress` from your upload logic. The component renders an embedded Progress bar when uploading=true.
+- **Validation is built-in:** `accept` (MIME types / extensions) + `maxSize` are enforced before `onFiles` fires. Invalid files produce `error` state instead of calling through. Your onFiles never has to re-validate.
+- **Multi-file:** `multiple={true}` accepts File[] (array always, even for single-file mode — use `files[0]`).
+- **Composes with Toast for feedback:** Pair with toast.success on upload complete, toast.error on failure.
+
 ## Gotchas
 - compact=true renders a small inline button; false (default) renders a large drag-and-drop zone
 - Client-side validation: invalid files are rejected before onFiles is called
+- `onFiles` always receives an array — use `files[0]` even when `multiple={false}`
 
 ## Changes
 ### v0.1.0

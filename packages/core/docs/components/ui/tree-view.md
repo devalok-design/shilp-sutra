@@ -51,8 +51,20 @@
 </TreeView>
 ```
 
+## Composability
+- **Two rendering modes:**
+  - **Data-driven:** Pass `items: TreeNode[]` with nested `children`. Good for server-fetched or programmatic trees.
+  - **Declarative:** Use `<TreeItem>` children directly. Good for hardcoded nav, readable JSX.
+  - Don't mix — pick one per TreeView instance.
+- **useTree hook** lets you drive TreeView state externally (e.g. sync with URL, persist expanded state, drive from Redux). Pass `defaultExpanded`/`defaultSelected` initially OR manage state via the hook's return value.
+- **TreeItem composability:** Each TreeItem has `icon`, `label`, `secondaryLabel`, and `actions` slots — rich rows without custom render props. `actions` reveals on row hover (same pattern as Message.Actions).
+- **multiSelect + checkboxes:** Set both to turn TreeView into a file-picker style tree with checkboxes instead of single-select highlighting.
+- **Keyboard navigation:** Full `role="tree"` spec — Arrow Up/Down to move, Right to expand/descend, Left to collapse/ascend, Enter to select. Pre-wired; no manual key handling needed.
+
 ## Gotchas
 - Supports both data-driven (items prop) and declarative (children) modes
+- Don't mix data-driven and declarative in the same TreeView — pick one
+- For a simple flat checkbox list, use RadioGroup/Checkbox + Stack — TreeView is overkill for non-hierarchical data
 
 ## Changes
 ### v0.4.2

@@ -41,6 +41,15 @@ toast.error('Upload failed', { description: 'File too large' })
 toast.undo('Task deleted', { onUndo: () => restoreTask(id) })
 ```
 
+## Composability
+- **Imperative API only** — `toast.success(...)`, `toast.error(...)`, etc. NO JSX invocation. This is by design (Sonner-based) — you call from event handlers, not render.
+- **Requires Toaster mounted once** at app root. Without it, `toast.*` calls are no-ops. Render `<Toaster />` in the root layout, not inside route components.
+- **toast.promise** orchestrates async flows: `toast.promise(fetch(...), { loading: 'Saving', success: 'Saved', error: 'Failed' })`. One toast, three states. Beats manually calling `.loading()` + `.success()`/`.error()`.
+- **toast.undo** adds an inline Undo button with 8s default duration — pair with state management that supports reversal (soft-delete with restore, last-action redo).
+- **toast.upload** is specifically for file-upload progress — per-file progress bars, retry on error, remove from list. Replaces the old `UploadProgress` composed component.
+- **toast.custom** is the escape hatch — render arbitrary JSX. Use sparingly; prefer the typed methods for consistency.
+- **Distinction from Alert/Banner:** Toast = transient, auto-dismissing, non-interactive-dismissible floating notification. Alert = inline in-flow announcement. Banner = page-level strip. Pick by persistence + position.
+
 ## Gotchas
 - DO NOT use useToast() hook — it is deprecated, use imperative toast.* methods
 - DO NOT use toast({ title, color }) object syntax — use toast.success('message') etc.

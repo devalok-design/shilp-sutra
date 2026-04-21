@@ -26,11 +26,20 @@
 ## Additional Exports
     ChipGroup — re-exported AnimatePresence from framer-motion; wrap a list of Chips for coordinated exit animations
 
+## Composability
+- **DEPRECATED — use Badge instead.** Chip v0.29.0+ superset capability merged into Badge. Chip remains in the library for backward compatibility; new code should use:
+  - `<Badge>...</Badge>` for static tags (replaces `<Chip label="..." />`)
+  - `<Badge onClick={...} selected={isSelected}>...</Badge>` for interactive filter chips
+  - `<Badge onDismiss={...}>...</Badge>` for dismissible chips
+- **Why deprecated:** Chip used `label` prop (not children) and had a separate CVA; Badge now supports everything Chip did via children + onClick/onDismiss/selected, with more colors and variants.
+- **Migration:** `<Chip label="React" color="info" />` → `<Badge variant="subtle" color="info">React</Badge>`. ChipGroup → BadgeGroup or just AnimatePresence wrapper.
+
 ## Gotchas
 - MUST use label prop — children are NOT rendered
 - `<Chip>text</Chip>` is WRONG — use `<Chip label="text" />`
 - Wrap dynamic chip lists in `<ChipGroup>` for exit animations
 - `color="primary"` will be renamed to `color="brand"` in v1.0 — use `color="primary"` for now
+- **Deprecated — migrate to Badge for all new code**
 
 ## Changes
 ### v0.19.1

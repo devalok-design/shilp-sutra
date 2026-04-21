@@ -31,10 +31,17 @@ import { DataTableToolbar } from '@devalok/shilp-sutra/ui/data-table-toolbar'
 />
 ```
 
+## Composability
+- **Companion to DataTable** — typically enabled via DataTable's `toolbar={true}` prop (which auto-renders this internally). Use DataTableToolbar directly only if you're building a custom DataTable integration that needs the toolbar positioned/styled differently.
+- **Reads table state via the `table` instance** (TanStack react-table) — you must pass it. For the auto-rendered version inside DataTable, this wiring is automatic.
+- **Feature toggles:** `globalFilter` (search across all columns), density switcher (compact/standard/comfortable row heights), CSV export. Turn each on/off independently.
+- **Density changes are runtime** — the switcher writes to the same `defaultDensity` that DataTable's prop seeds. State lives in DataTable context.
+
 ## Gotchas
 - Barrel-isolated since v0.5.0 — must use `@devalok/shilp-sutra/ui/data-table-toolbar`, NOT the `ui` barrel
 - Companion to DataTable — provides column visibility, density toggle, and CSV export controls
 - Requires @tanstack/react-table as a peer dependency
+- Prefer DataTable's `toolbar={true}` prop over rendering this directly
 
 ## Changes
 ### v0.5.0

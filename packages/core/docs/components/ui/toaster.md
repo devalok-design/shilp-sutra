@@ -33,9 +33,17 @@ export default function RootLayout({ children }) {
 }
 ```
 
+## Composability
+- **Mount once, use everywhere.** Render `<Toaster />` in the root layout file once. Every `toast.*` call anywhere in the tree routes to this single container.
+- **Global config lives here.** Set `position`, `duration`, `visibleToasts` on Toaster to control default behavior for all toasts. Individual `toast.*` calls can override `duration` per toast.
+- **Keyboard shortcut:** `hotkey` prop sets a global shortcut to focus the toast region (default: Alt+T). Useful for keyboard users to review recent notifications.
+- **Next.js / App Router:** Mount inside your root `app/layout.tsx`'s `<body>`. It's marked `'use client'` so it doesn't render on the server (Toaster is client-only).
+- **Portal rendering:** z-toast (highest layer) — Toaster content appears above Dialog, Popover, everything. Don't wrap it in a stacking context.
+
 ## Gotchas
 - Must be mounted once at the layout root for toast notifications to work
 - Use the `toast` import from `@devalok/shilp-sutra/ui/toast` to trigger toasts
+- NOT server-safe — mounts with 'use client'; rendering during SSR has no visual effect
 
 ## Changes
 ### v0.18.0

@@ -41,6 +41,14 @@
 </div>
 ```
 
+## Composability
+- **Brand texture overlay** — drops into any parent with `relative overflow-hidden isolate`. Auto-inherits the parent's border radius.
+- **Button auto-extracts Grain children** — if you nest `<DevalokGrain>` inside a `<Button>`, Button auto-separates it from the label slot and positions it correctly. No extra wrapping needed.
+- **Card, custom hero sections, landing-page tiles** — wrap in a positioned container (or add the `relative overflow-hidden isolate` classes to Card explicitly) and drop Grain in as a sibling to your content.
+- **z-layer contract:** Grain renders at `z-[1]`. Content on top needs `z-[2]+`. The component doesn't boost child z-index — that's consumer responsibility.
+- **`hoverIntensify` depends on parent** — the parent must have the Tailwind `group` class so `group-hover:` selectors apply. Forgetting this silently disables the effect.
+- **Tint composes with surface:** Pass an OKLCH color (or CSS variable reference like `var(--color-accent-9)`) to `tint` for a directional gradient on top of the noise. Without tint, just noise.
+
 ## Gotchas
 - Parent element MUST have `relative overflow-hidden isolate` for the grain to render correctly
 - The grain layers are absolute-positioned at `z-[1]` — content that should appear above must use `z-[2]` or higher

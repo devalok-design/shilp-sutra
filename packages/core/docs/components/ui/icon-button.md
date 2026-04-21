@@ -25,6 +25,13 @@
 <IconButton icon={<Icon icon={IconTrash} />} variant="solid" color="error" aria-label="Delete" />
 ```
 
+## Composability
+- **Built on Button internally** — inherits ALL Button features: variant, color, loading, onClickAsync, processing, ButtonGroup context consumption, asChild. Use IconButton when your button is icon-only; use Button for label-plus-icon.
+- **aria-label is TypeScript-enforced** — the library makes it impossible to forget. This is the key accessibility constraint for icon-only buttons.
+- **IconProvider cascade:** The `icon` prop expects `<Icon icon={...} />` — Icon auto-sizes based on IconButton's `size` via IconProvider context (no need to pass size to the nested Icon).
+- **Inside ButtonGroup:** Inherits variant/color/size/weight from ButtonGroup context just like Button does. Useful for icon-only toolbars.
+- **IconGroup vs ButtonGroup of IconButtons:** IconGroup is for static icon clusters (not interactive, or for decorative displays). ButtonGroup of IconButtons is for interactive toolbars where each icon is a button.
+
 ## Gotchas
 - aria-label is enforced by TypeScript — you MUST provide it
 - Prefer IconButton over Button with size="icon-*" for icon-only buttons

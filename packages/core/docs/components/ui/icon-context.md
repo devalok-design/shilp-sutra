@@ -28,6 +28,13 @@ import { IconProvider, useIconContext } from '@devalok/shilp-sutra/ui'
 const { size, stroke } = useIconContext()
 ```
 
+## Composability
+- **Low-level context primitive** — rarely used directly. Most consumers want IconGroup (which wraps IconProvider + layout) or just nest Icons inside Button/Input/Badge (which provide their own IconProvider).
+- **When to reach for IconProvider manually:** Building a custom container that hosts many Icons (a dashboard tile row, a custom toolbar, a nav rail) and you want consistent icon sizing without repeating props. IconProvider is the escape hatch for that.
+- **Consumer contract:** `useIconContext()` returns `{}` (empty) when no provider is present — your consumer code MUST handle that (fall back to a default size/stroke). Don't assume a provider exists.
+- **Memoization:** The provider memoizes its value, so consumers don't re-render unless size or stroke actually change. Safe to use in tight loops / frequently-re-rendering trees.
+- **Composes down:** IconProvider nests — inner providers override outer ones. A `<Button size="lg"><IconProvider size="xs">...</IconProvider></Button>` overrides the button's icon sizing.
+
 ## Gotchas
 - Used internally by IconGroup and Button to propagate icon sizing to children
 - If no provider is present, `useIconContext()` returns `{}` (empty object) — consumers should fall back to defaults

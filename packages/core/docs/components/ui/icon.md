@@ -30,6 +30,13 @@
 <Icon icon={IconPlus} state="success" />
 ```
 
+## Composability
+- **IconContext consumption** — Icon auto-reads `size` and `stroke` from the nearest IconProvider. Button, IconButton, IconGroup, Input (startSection/endSection), Badge, NumberInput, and more all wrap their children in IconProvider so nested Icons auto-size. Explicit props always override context.
+- **Use Tabler icon components** — the `icon` prop expects a ForwardRef SVG component (the shape Tabler React exports). Any icon lib following that shape works, but Tabler is the standard.
+- **Label for a11y:** Without `label`, Icon is `aria-hidden="true"` (decorative — appropriate inside labeled buttons). With `label`, renders `role="img"` + aria-label + `<title>` for standalone icons.
+- **State overrides animate:** When both are set, state wins. `state="loading"` renders a bare Spinner; success/error render animated glyphs via Framer Motion.
+- **Reduced motion:** All animations respect `prefers-reduced-motion` — animate props fall back to static render.
+
 ## Gotchas
 - Without `label`, the icon renders `aria-hidden="true"` (decorative)
 - With `label`, the icon renders `role="img"` with `aria-label` and a `<title>` element

@@ -62,6 +62,38 @@
 
 This applies to: Button, SplitButton, and anywhere else `variant="outline" | "soft"` is a choice. It does NOT override explicit design decisions already in existing components.
 
+## Figma Component Generation (MANDATORY checklist)
+
+Before claiming any Figma component generated from a CVA source is "done", verify every item. The Button went through four rebuilds on 2026-04-20 because we skipped these:
+
+**Component properties (right-panel UX):**
+- TEXT property for any visible string (label/heading/body) — never hardcode "Button"
+- BOOLEAN property for each icon slot the CVA supports (startIcon, endIcon)
+- BOOLEAN property for every CVA boolean prop (disabled, fullWidth, shape=pill, loading)
+- VARIANT axis for every CVA axis, including State (default/hover/pressed/disabled/loading) where meaningful
+
+**Variable bindings (never raw numbers):**
+- Padding, cornerRadius (all 4 corners), itemSpacing, height, width → bound to Primitives/Spacing, /Radius, /Size
+- Fill, stroke, text color → bound to Semantic/Color
+- Font size → bound OR uses a DS text style (one of the two — no raw px values)
+
+**Effects as Figma Effect Styles:**
+- Every shadow the CVA references (`shadow-raised`, `shadow-brand`, etc.) must exist as a named Effect Style
+- Apply the style to the variant CVA specifies
+
+**Documentation:**
+- ComponentSet `.description` — purpose + 2-3 example use cases + SOURCE path
+- Code Connect mapping: Figma node → GitHub source URL at `packages/core/src/ui/*.tsx`
+
+**Workflow scripts (in repo, re-runnable without an agent session):**
+- `packages/core/scripts/figma-sync-tokens.mjs` — parses `tokens/*.css` → Figma-ready JSON
+- `packages/core/scripts/figma-sync-components.mjs` — parses CVA → Figma component spec
+- `packages/core/scripts/figma-drift-check.mjs` — diffs Figma live state vs CVA
+
+**Publishing:** Only the user can click "Publish library" in Figma — flag it explicitly, don't assume done without it.
+
+Skipping any of the above is NOT a time-saver. The cost of rebuild is 3-5× the cost of doing it right first time.
+
 ## Surface Layering (MANDATORY)
 
 Every component MUST use the correct surface level. This is a hard rule, enforced by `pre-publish-audit.mjs`.

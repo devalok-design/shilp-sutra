@@ -34,8 +34,16 @@
 </Card>
 ```
 
+## Composability
+- **Size cascades through context** — Card's `size` prop sets padding on CardHeader, CardContent, and CardFooter via `CardSizeContext`. Don't set padding classes on sub-components directly; override via `className` if needed.
+- **Not a compound state machine** — Card, CardHeader, CardTitle, etc. are purely structural. No open/close state.
+- **Accent bar is independent:** The `accent` / `accentColor` props render a decorative colored edge bar (absolutely positioned, `aria-hidden`). Works alongside `color` (which tints the border) — the two can stack for layered emphasis.
+- **Interactive cards:** Set `interactive={true}` + `onClick` for clickable cards (entire surface becomes the button). Add `aria-label` on the Card root when there's no visible heading. For complex multi-action cards, prefer standard Card with explicit buttons inside.
+- **ContentCard (composed)** is a higher-level wrapper with built-in header/footer slots and title/actions — use it for list-row-style cards; use Card directly for custom layouts.
+
 ## Gotchas
 - Use `interactive` prop for clickable cards — adds hover lift and pointer cursor
+- Don't override CardHeader/CardContent/CardFooter padding via className if you want the size cascade to work — set size on Card instead
 
 ## Changes
 ### v0.31.0

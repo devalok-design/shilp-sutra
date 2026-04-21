@@ -36,6 +36,15 @@
 </Select>
 ```
 
+## Composability
+- **Radix Select** underneath — `value`/`onValueChange`/`defaultValue`/`open`/`onOpenChange` standard state.
+- **Styling props live on SelectTrigger, not Select root.** The Select root owns value/state; the Trigger owns appearance (variant/color/size). Setting `<Select size="lg">` silently does nothing — TypeScript won't catch it.
+- **SelectItem requires `value`** — unique within the Select. Labels are the children of SelectItem.
+- **SelectGroup + SelectLabel:** Organize options into sections with a non-interactive section heading.
+- **FormField integration:** Set `color="error"` on SelectTrigger for error visuals. Not auto-consumed from FormField (same as Checkbox/Radio — form-library convention for select controls).
+- **Portal + z-popover (1400):** content portals to body, stacks above Dialog/Sheet/other overlays.
+- **Select vs Combobox vs Autocomplete:** Select = short fixed list, click-to-open, no typeahead. Combobox = searchable, forced selection. Autocomplete = searchable, free text. Pick by list size and search need.
+
 ## Gotchas
 - Size goes on SelectTrigger, NOT on Select root
 - `<Select size="lg">` is silently ignored (no TypeScript error)

@@ -21,6 +21,13 @@
 </Banner>
 ```
 
+## Composability
+- **Banner vs Alert vs Toast:** Banner is full-width, top-of-page / top-of-region announcements (maintenance, quota, trial-expiring). Alert is inline in-flow. Toast is transient floating notifications. Pick by where the message lives in the visual hierarchy.
+- **actions slot:** Pass one or more `<Button>` elements — the container flex-wraps on narrow viewports so actions drop below the message rather than squeezing horizontally.
+- **Role=alert** announces assertively. Same constraint as Alert — don't stack multiple Banners.
+- **Dismissal timing:** `onDismiss` fires AFTER the exit animation completes, not on click. Use it to remove the banner from state only after it's visually gone.
+- Works inside Shell layouts (TopBar / Sidebar / main content) — usually sits above main content, below the TopBar.
+
 ## Gotchas
 - Banner is full-width (spans container). Alert is inline.
 - Renders role="alert" automatically

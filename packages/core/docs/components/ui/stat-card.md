@@ -47,6 +47,15 @@
 />
 ```
 
+## Composability
+- **High-density metric card** — optimized for dashboards. Everything optional except `value`. Mix and match features (delta, sparkline, progress, secondary label, footer) per metric's needs.
+- **Router integration via href:** Internally uses `LinkContext` to resolve framework-specific Link components (Next.js, react-router). Set `href` in a LinkProvider-wrapped tree to get seamless client-side navigation without custom asChild wiring.
+- **Interactive modes:** `onClick` makes the entire card a button; `href` makes it a link. Mutually exclusive — href wins if both are set.
+- **Accent bar semantic:** Use `accent` to signal metric health at a glance (success for positive, warning for at-risk, error for over-target). Combine with delta.direction for layered emphasis.
+- **Sparkline:** Pure SVG, lightweight — no chart library. For rich charts use Chart components. Minimum 2 data points.
+- **Icon auto-sizing:** Accepts `ComponentType<{ className }>` OR `ReactNode`. The component prop (e.g. `icon={IconBolt}`) is preferred — icon is rendered at a consistent size.
+- **Loading state:** `loading={true}` renders the full card skeleton — use during initial data fetch.
+
 ## Gotchas
 - delta.direction "up" = green, "down" = red, "neutral" = grey
 - `label` and `title` are aliases — use either, not both

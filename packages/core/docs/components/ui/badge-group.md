@@ -27,6 +27,13 @@
 {/* Renders: React, TypeScript, Tailwind, +2 */}
 ```
 
+## Composability
+- **Wrapper for Badge children** — doesn't style children, just lays them out and optionally collapses overflow into a "+N" indicator.
+- **Server-safe** — can render in RSC trees (children still need to be server-safe themselves).
+- **Overflow indicator is a Badge** — picks `variant="outline" color="neutral"` and the `size` prop on BadgeGroup. Child badges keep their own variant/color/size.
+- **Click-to-reveal pattern:** Pair `onOverflowClick` with a Popover / Sheet / Dialog that shows the full list. Without the handler, the overflow badge is inert (decorative count).
+- Doesn't accept arbitrary children — only Badges. Non-Badge children render but may look off (no gap rhythm matching).
+
 ## Gotchas
 - Overflow badge is always `variant="outline" color="neutral"`
 - `size` only applies to the overflow badge — child badges keep their own size

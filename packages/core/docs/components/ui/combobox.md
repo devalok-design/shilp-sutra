@@ -34,6 +34,15 @@
 />
 ```
 
+## Composability
+- **Combobox vs Autocomplete vs Select:** Combobox = typeahead search + forced selection (the user picks from filtered options). Autocomplete = typeahead + free text allowed. Select = no typeahead, click-to-open with fixed options. Pick by user behavior, not visual style.
+- **Single vs multi mode** is a discriminated union — `multiple: true` changes the shape of value (`string[]`) and onValueChange. TypeScript enforces the pairing.
+- **Multi-select pills:** Capped at 2 visible + "+N more" overflow regardless of `maxVisible`. Clicking the +N opens a popover list of all selected items (handled by the component).
+- **className vs triggerClassName:** className lands on the wrapper (positioning); triggerClassName lands on the trigger button (styling the control). Know which you need.
+- **Portal + z-popover (1400):** content stacks above Dialog/Sheet; works inside scrolling containers without clipping.
+- **renderOption:** For complex option rendering (avatar + label + description), pass `renderOption: (option, selected) => <YourCustom />`. The selected state is a boolean flag.
+- **FormField:** Does NOT auto-consume FormField state. Wrap in FormField for label + helper text, but style error manually.
+
 ## Gotchas
 - Enforces selection from list (unlike Autocomplete which allows free text)
 - In multi mode, selected items appear as pills with "+N more" overflow (capped at 2 visible pills regardless of `maxVisible`)

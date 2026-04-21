@@ -22,6 +22,13 @@
 </Alert>
 ```
 
+## Composability
+- **Flat, not compound** — unlike Dialog/Card, there's no `<AlertTitle>` / `<AlertDescription>`. Use the `title` prop for the heading and `children` for the body text. This simplifies the API and prevents composition traps (missing title, out-of-order header parts).
+- **Auto-icon by color:** Icon is selected automatically from color (info→circle, success→check, warning→triangle, error→alert). Pass a custom `icon` prop to override.
+- **Role=alert:** Announces assertively to screen readers. Don't stack multiple Alerts in a row — the last one wins.
+- **Dismissal pattern:** Pass `onDismiss` for user-dismissable alerts; the library tracks the exit animation before calling back. For persistent alerts (system state), omit `onDismiss`.
+- **Not for transient messages** — use Toast for transient/time-limited notifications and Banner for page-level announcements. Alert is inline, in-flow, block-level.
+
 ## Gotchas
 - NOT a compound component — use title prop, NOT <AlertTitle>
 - DO NOT use variant="destructive" — use color="error"

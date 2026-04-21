@@ -27,6 +27,13 @@
 />
 ```
 
+## Composability
+- **Autocomplete vs Combobox:** Autocomplete allows free-text input (users can type anything); Combobox enforces selection from the list. Pick by whether "off-list" values are valid (e.g. city field that accepts typos → Autocomplete; tag picker from a fixed vocabulary → Combobox).
+- **Value shape is an object** (`{ value, label }`), not a plain string — this preserves label/value decoupling for display-vs-storage.
+- **FormField:** Does NOT auto-consume FormField state. Set explicit error styling via className if needed.
+- **Portal rendering:** Dropdown portals to body with z-popover (1400) — stacks above Dialog/Sheet.
+- **Keyboard:** ArrowDown/Up navigate suggestions, Enter selects, Esc closes. Typeahead is the input's native filtering.
+
 ## Gotchas
 - Allows free-text input (no forced selection) — use Combobox for forced selection
 - value is an object { value, label }, NOT just a string

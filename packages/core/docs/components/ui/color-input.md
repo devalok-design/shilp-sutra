@@ -61,6 +61,14 @@
 <ColorInput value={color} onChange={setColor} showPicker={false} />
 ```
 
+## Composability
+- **Built on Popover internally** — trigger opens a portal-rendered picker panel. z-popover (1400) stacking.
+- **variant="default" vs "inline":** Default variant is an input-style trigger with gradient swatch + hex label (fits in forms). Inline variant IS the selected color — the entire trigger takes the color as its background with contrast-aware text. Use inline for color-tags in chat, lists, or tight toolbar UIs.
+- **Controlled or uncontrolled:** Works both ways — pass `value` + `onChange` for controlled, or omit and let internal state track.
+- **Presets are compositional:** Pass `{ hex, label }[]` for named brand colors (accessible, keyboard-navigable). Pass `false` to hide the preset strip entirely (picker-only mode).
+- **react-colorful** is bundled (2.8KB gzipped) — zero additional setup. Picker itself is pointer-based; keyboard users edit via the HEX/RGB/HSL format inputs below.
+- **FormField:** Not auto-consumed (no `state` prop). Wrap in FormField for label + helper text; style error visuals via className.
+
 ## Gotchas
 - Value must be a 6-character hex string (e.g. "#d33163")
 - Presets accept both `string[]` (backward-compatible) and `{ hex, label }[]` (recommended for accessibility)

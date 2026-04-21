@@ -36,6 +36,18 @@
 <Badge color="custom" style={{ '--badge-color': '#8b5cf6' }}>Custom</Badge>
 ```
 
+## Composability
+- **Badge.Group** (BadgeGroup) wraps a set of badges with overflow collapse (`max` + "+N" indicator) and gap control. Use it for filter chips, tag lists, user cluster avatars-equivalent.
+- **Badge.Indicator** (BadgeIndicator) attaches a count / dot overlay to ANY child (icons, avatars, buttons). It's positioning-only — doesn't style the child.
+- **Interactive modes:**
+  - `onClick` alone → renders as `<button>` (standard interactive badge)
+  - `onDismiss` alone → renders as `<span>` with an inner X button
+  - Both → renders as `<div role="button">` (avoids invalid nested buttons) — the X button inside handles its own click isolation
+- **asChild:** Use with router Links for nav-style badges (`<Badge asChild><Link href="/tags/react">React</Link></Badge>`).
+- **Custom colors via CSS variables:** Set `color="custom"` + inline style `style={{ '--badge-color': '#...' }}`. For solid variant, also set `--badge-fg-color` for the foreground.
+- **Icon slots auto-size via IconProvider** — same cascade as Button. Don't set explicit size on nested `<Icon>`.
+- **Chip (deprecated)** was merged into Badge — use Badge with `onClick` and `selected` for the old Chip use case.
+
 ## Gotchas
 - DO NOT use variant="destructive" — use variant="solid" color="error"
 - Badge is now interactive when `onClick` is provided (renders as `<button>`)

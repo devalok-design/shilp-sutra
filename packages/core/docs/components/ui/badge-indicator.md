@@ -29,6 +29,13 @@
 </Badge.Indicator>
 ```
 
+## Composability
+- **Overlay wrapper** — takes any child and overlays a positioned count/dot at the specified corner. The child must be inline-friendly (anything that renders in a span-wrapped position: relative context).
+- **Common pairings:** IconButton (notification bell with count), Avatar (online presence dot), Button (cart with item count), tabs (unread indicator).
+- **Invisible for layout stability:** Use `invisible={true}` to keep the child's position consistent when the badge should disappear — avoids layout shift as counts appear/disappear.
+- **showZero vs hide-on-zero:** By default `count={0}` hides the indicator. Set `showZero={true}` for use cases where "zero" is meaningful (scores, pending items that should display 0 explicitly).
+- **Dot vs count:** `dot={true}` is a presence-only pulse indicator (online, new activity); count is a numeric badge. They're mutually exclusive — setting both uses dot.
+
 ## Gotchas
 - Wraps children in `position: relative` span — the indicator is absolutely positioned
 - Animation uses spring physics, respects `prefers-reduced-motion`

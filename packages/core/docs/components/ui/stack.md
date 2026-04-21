@@ -23,6 +23,14 @@
 </Stack>
 ```
 
+## Composability
+- **Server-safe layout primitive.** Nothing to hydrate — works anywhere.
+- **Pattern:** Stack wraps child elements in a flex container. Swap between vertical/horizontal without rewriting the child layout.
+- **Polymorphic via `as`:** Use `as="ul"` / `as="ol"` for list semantics with flex styling; `as="section"` for major page divisions; etc.
+- **gap is design-system tokenized** — use token strings (`"ds-04"`) or numeric shortcuts (`4` → `"ds-04"`). Raw numbers map 1:1 to the `ds-0N` token set.
+- **Responsive direction:** Not built in — for responsive direction changes use Tailwind's `flex-col md:flex-row` directly on a plain div, or wrap multiple Stacks with display-toggling.
+- Container vs Stack: Container centers + caps width; Stack arranges children. Compose them: `<Container><Stack>...</Stack></Container>`.
+
 ## Gotchas
 - "row" and "column" are aliases for "horizontal" and "vertical"
 - gap accepts both token strings and numeric values

@@ -273,6 +273,13 @@ Note: getFormFieldA11y() was removed in favor of useFormField() hook.
 </Alert>
 ```
 
+## Composability
+- **Flat, not compound** — unlike Dialog/Card, there's no `<AlertTitle>` / `<AlertDescription>`. Use the `title` prop for the heading and `children` for the body text. This simplifies the API and prevents composition traps (missing title, out-of-order header parts).
+- **Auto-icon by color:** Icon is selected automatically from color (info→circle, success→check, warning→triangle, error→alert). Pass a custom `icon` prop to override.
+- **Role=alert:** Announces assertively to screen readers. Don't stack multiple Alerts in a row — the last one wins.
+- **Dismissal pattern:** Pass `onDismiss` for user-dismissable alerts; the library tracks the exit animation before calling back. For persistent alerts (system state), omit `onDismiss`.
+- **Not for transient messages** — use Toast for transient/time-limited notifications and Banner for page-level announcements. Alert is inline, in-flow, block-level.
+
 ## Gotchas
 - NOT a compound component — use title prop, NOT <AlertTitle>
 - DO NOT use variant="destructive" — use color="error"
@@ -427,6 +434,13 @@ Note: getFormFieldA11y() was removed in favor of useFormField() hook.
 />
 ```
 
+## Composability
+- **Autocomplete vs Combobox:** Autocomplete allows free-text input (users can type anything); Combobox enforces selection from the list. Pick by whether "off-list" values are valid (e.g. city field that accepts typos → Autocomplete; tag picker from a fixed vocabulary → Combobox).
+- **Value shape is an object** (`{ value, label }`), not a plain string — this preserves label/value decoupling for display-vs-storage.
+- **FormField:** Does NOT auto-consume FormField state. Set explicit error styling via className if needed.
+- **Portal rendering:** Dropdown portals to body with z-popover (1400) — stacks above Dialog/Sheet.
+- **Keyboard:** ArrowDown/Up navigate suggestions, Enter selects, Esc closes. Typeahead is the input's native filtering.
+
 ## Gotchas
 - Allows free-text input (no forced selection) — use Combobox for forced selection
 - value is an object { value, label }, NOT just a string
@@ -550,6 +564,18 @@ Note: getFormFieldA11y() was removed in favor of useFormField() hook.
 <Badge color="custom" style={{ '--badge-color': '#8b5cf6' }}>Custom</Badge>
 ```
 
+## Composability
+- **Badge.Group** (BadgeGroup) wraps a set of badges with overflow collapse (`max` + "+N" indicator) and gap control. Use it for filter chips, tag lists, user cluster avatars-equivalent.
+- **Badge.Indicator** (BadgeIndicator) attaches a count / dot overlay to ANY child (icons, avatars, buttons). It's positioning-only — doesn't style the child.
+- **Interactive modes:**
+  - `onClick` alone → renders as `<button>` (standard interactive badge)
+  - `onDismiss` alone → renders as `<span>` with an inner X button
+  - Both → renders as `<div role="button">` (avoids invalid nested buttons) — the X button inside handles its own click isolation
+- **asChild:** Use with router Links for nav-style badges (`<Badge asChild><Link href="/tags/react">React</Link></Badge>`).
+- **Custom colors via CSS variables:** Set `color="custom"` + inline style `style={{ '--badge-color': '#...' }}`. For solid variant, also set `--badge-fg-color` for the foreground.
+- **Icon slots auto-size via IconProvider** — same cascade as Button. Don't set explicit size on nested `<Icon>`.
+- **Chip (deprecated)** was merged into Badge — use Badge with `onClick` and `selected` for the old Chip use case.
+
 ## Gotchas
 - DO NOT use variant="destructive" — use variant="solid" color="error"
 - Badge is now interactive when `onClick` is provided (renders as `<button>`)
@@ -624,6 +650,13 @@ Note: getFormFieldA11y() was removed in favor of useFormField() hook.
 {/* Renders: React, TypeScript, Tailwind, +2 */}
 ```
 
+## Composability
+- **Wrapper for Badge children** — doesn't style children, just lays them out and optionally collapses overflow into a "+N" indicator.
+- **Server-safe** — can render in RSC trees (children still need to be server-safe themselves).
+- **Overflow indicator is a Badge** — picks `variant="outline" color="neutral"` and the `size` prop on BadgeGroup. Child badges keep their own variant/color/size.
+- **Click-to-reveal pattern:** Pair `onOverflowClick` with a Popover / Sheet / Dialog that shows the full list. Without the handler, the overflow badge is inert (decorative count).
+- Doesn't accept arbitrary children — only Badges. Non-Badge children render but may look off (no gap rhythm matching).
+
 ## Gotchas
 - Overflow badge is always `variant="outline" color="neutral"`
 - `size` only applies to the overflow badge — child badges keep their own size
@@ -664,6 +697,13 @@ Note: getFormFieldA11y() was removed in favor of useFormField() hook.
 </Badge.Indicator>
 ```
 
+## Composability
+- **Overlay wrapper** — takes any child and overlays a positioned count/dot at the specified corner. The child must be inline-friendly (anything that renders in a span-wrapped position: relative context).
+- **Common pairings:** IconButton (notification bell with count), Avatar (online presence dot), Button (cart with item count), tabs (unread indicator).
+- **Invisible for layout stability:** Use `invisible={true}` to keep the child's position consistent when the badge should disappear — avoids layout shift as counts appear/disappear.
+- **showZero vs hide-on-zero:** By default `count={0}` hides the indicator. Set `showZero={true}` for use cases where "zero" is meaningful (scores, pending items that should display 0 explicitly).
+- **Dot vs count:** `dot={true}` is a presence-only pulse indicator (online, new activity); count is a numeric badge. They're mutually exclusive — setting both uses dot.
+
 ## Gotchas
 - Wraps children in `position: relative` span — the indicator is absolutely positioned
 - Animation uses spring physics, respects `prefers-reduced-motion`
@@ -695,6 +735,13 @@ Note: getFormFieldA11y() was removed in favor of useFormField() hook.
   Scheduled maintenance on Sunday.
 </Banner>
 ```
+
+## Composability
+- **Banner vs Alert vs Toast:** Banner is full-width, top-of-page / top-of-region announcements (maintenance, quota, trial-expiring). Alert is inline in-flow. Toast is transient floating notifications. Pick by where the message lives in the visual hierarchy.
+- **actions slot:** Pass one or more `<Button>` elements — the container flex-wraps on narrow viewports so actions drop below the message rather than squeezing horizontally.
+- **Role=alert** announces assertively. Same constraint as Alert — don't stack multiple Banners.
+- **Dismissal timing:** `onDismiss` fires AFTER the exit animation completes, not on click. Use it to remove the banner from state only after it's visually gone.
+- Works inside Shell layouts (TopBar / Sidebar / main content) — usually sits above main content, below the TopBar.
 
 ## Gotchas
 - Banner is full-width (spans container). Alert is inline.
@@ -743,8 +790,16 @@ Note: getFormFieldA11y() was removed in favor of useFormField() hook.
 </Breadcrumb>
 ```
 
+## Composability
+- **Compound structure only** — no context cascade, each part is standalone. The semantic shape (`<nav>` → `<ol>` → `<li>`) is what matters for a11y, not any internal state.
+- **BreadcrumbLink vs BreadcrumbPage:** Use BreadcrumbLink for everything except the current page; BreadcrumbPage for the current page (not clickable, renders without href, announced as "current page" via aria-current).
+- **Router integration:** Use `<BreadcrumbLink asChild><NextLink href="/x">...</NextLink></BreadcrumbLink>` (Radix Slot pattern).
+- **Truncation:** For long paths, use BreadcrumbEllipsis between the first and last items instead of showing all. Pair with a DropdownMenu (open the ellipsis to show hidden intermediate items) if you need to expose them.
+- **PageHeader (composed) auto-builds Breadcrumb** from its `breadcrumbs` prop — use that higher-level component for page-top breadcrumbs and save this component for inline or custom positioning.
+
 ## Gotchas
 - Use BreadcrumbPage for the current (non-clickable) page, BreadcrumbLink for navigable items
+- Don't wrap BreadcrumbPage in a link — it's the current location by definition
 
 ## Changes
 ### v0.18.0
@@ -787,6 +842,15 @@ Note: getFormFieldA11y() was removed in favor of useFormField() hook.
 <Button variant="soft" color="success" startIcon={<Icon icon={IconCheck} />}>Approved</Button>
 <Button variant="soft" color="warning" size="compact-sm" shape="pill">Overdue</Button>
 ```
+
+## Composability
+- **ButtonGroup context consumption:** When nested inside `<ButtonGroup>`, Button auto-inherits variant/color/size/weight/shape/disabled. Explicit props on the individual Button override. The context also drives position-aware border-radius (first/middle/last within an attached group).
+- **IconProvider cascade:** Icons in `startIcon`/`endIcon` auto-size via IconProvider per the button size (xs→sm, sm→sm, md→md, lg→md, icon-xs→xs, icon-lg→lg). Don't pass explicit `size` to `<Icon>` inside Button.
+- **asChild for router links:** `<Button asChild><Link href="/foo">...</Link></Button>` transfers Button's styling to the Link while preserving navigation semantics. Required for Next.js `<Link>` / react-router `<Link>`.
+- **onClickAsync state machine:** Overrides onClick. Auto-cycles `idle → loading (aria-busy, spinner) → success (checkmark) → idle` on resolve; `loading → error (X mark) → idle` on reject. Duration controlled by `asyncFeedbackDuration` (1500ms default). Auto-activates `processing='working'` during loading — marching-ants border keeps users visually aware.
+- **Processing vs loading:** `loading` is a short async state (shows spinner, blocks clicks). `processing` is a longer-running state (marching ants border, may or may not block clicks based on `processingDisabled`). Use onClickAsync for simple request cases; use processing explicitly for long-running background operations.
+- **DevalokGrain children:** Grain elements are auto-extracted and rendered as direct button children for absolute positioning — lets you layer grain texture on solid-variant buttons without breaking layout.
+- **Prefer `variant="soft"` over `variant="outline"` for secondary actions** (see Gotchas for details). This is a design-system-wide convention.
 
 ## Gotchas
 - **Prefer `variant="soft"` over `variant="outline"` for secondary actions.** Soft (tinted step-3 bg, step-11 text) is the Devalok-recommended default — it feels warmer and brand-consistent. Use `outline` only when soft's tint would disappear (on colored/surface-raised bg), in toolbar/icon-dense contexts, or when you need outline's stronger hierarchy next to a primary action.
@@ -958,8 +1022,16 @@ See `Button` docs for the public API.
 </Card>
 ```
 
+## Composability
+- **Size cascades through context** — Card's `size` prop sets padding on CardHeader, CardContent, and CardFooter via `CardSizeContext`. Don't set padding classes on sub-components directly; override via `className` if needed.
+- **Not a compound state machine** — Card, CardHeader, CardTitle, etc. are purely structural. No open/close state.
+- **Accent bar is independent:** The `accent` / `accentColor` props render a decorative colored edge bar (absolutely positioned, `aria-hidden`). Works alongside `color` (which tints the border) — the two can stack for layered emphasis.
+- **Interactive cards:** Set `interactive={true}` + `onClick` for clickable cards (entire surface becomes the button). Add `aria-label` on the Card root when there's no visible heading. For complex multi-action cards, prefer standard Card with explicit buttons inside.
+- **ContentCard (composed)** is a higher-level wrapper with built-in header/footer slots and title/actions — use it for list-row-style cards; use Card directly for custom layouts.
+
 ## Gotchas
 - Use `interactive` prop for clickable cards — adds hover lift and pointer cursor
+- Don't override CardHeader/CardContent/CardFooter padding via className if you want the size cascade to work — set size on Card instead
 
 ## Changes
 ### v0.31.0
@@ -1432,6 +1504,14 @@ Animated bouncing dots with a text description of who is typing.
 <ColorInput value={color} onChange={setColor} showPicker={false} />
 ```
 
+## Composability
+- **Built on Popover internally** — trigger opens a portal-rendered picker panel. z-popover (1400) stacking.
+- **variant="default" vs "inline":** Default variant is an input-style trigger with gradient swatch + hex label (fits in forms). Inline variant IS the selected color — the entire trigger takes the color as its background with contrast-aware text. Use inline for color-tags in chat, lists, or tight toolbar UIs.
+- **Controlled or uncontrolled:** Works both ways — pass `value` + `onChange` for controlled, or omit and let internal state track.
+- **Presets are compositional:** Pass `{ hex, label }[]` for named brand colors (accessible, keyboard-navigable). Pass `false` to hide the preset strip entirely (picker-only mode).
+- **react-colorful** is bundled (2.8KB gzipped) — zero additional setup. Picker itself is pointer-based; keyboard users edit via the HEX/RGB/HSL format inputs below.
+- **FormField:** Not auto-consumed (no `state` prop). Wrap in FormField for label + helper text; style error visuals via className.
+
 ## Gotchas
 - Value must be a 6-character hex string (e.g. "#d33163")
 - Presets accept both `string[]` (backward-compatible) and `{ hex, label }[]` (recommended for accessibility)
@@ -1482,6 +1562,13 @@ Animated bouncing dots with a text description of who is typing.
 <ColorSwatch color="oklch(0.7 0.15 200)" shape="rounded" />
 ```
 
+## Composability
+- **Server-safe, decorative-only primitive.** Accepts any valid CSS color string — hex, rgb, oklch, hsl, named. Pure presentation, no context.
+- **Usage patterns:** Inline color marker next to a label, preview dot in lists, color-indicator in a category chip, legend swatch for charts.
+- **`ring={true}`** adds a subtle outline — essential for white/very-light colors that would otherwise disappear on surface-raised backgrounds.
+- **Interactive color picking:** Use ColorInput (which opens a full picker). ColorSwatch is display-only.
+- No IconProvider cascade, no FormField consumption — composes freely with anything.
+
 ## Gotchas
 - Color is applied via inline `backgroundColor` style, not a token class — accepts any runtime CSS color string
 - Renders `role="presentation"` — purely decorative, not interactive
@@ -1520,6 +1607,15 @@ Animated bouncing dots with a text description of who is typing.
   placeholder="Select tags..."
 />
 ```
+
+## Composability
+- **Combobox vs Autocomplete vs Select:** Combobox = typeahead search + forced selection (the user picks from filtered options). Autocomplete = typeahead + free text allowed. Select = no typeahead, click-to-open with fixed options. Pick by user behavior, not visual style.
+- **Single vs multi mode** is a discriminated union — `multiple: true` changes the shape of value (`string[]`) and onValueChange. TypeScript enforces the pairing.
+- **Multi-select pills:** Capped at 2 visible + "+N more" overflow regardless of `maxVisible`. Clicking the +N opens a popover list of all selected items (handled by the component).
+- **className vs triggerClassName:** className lands on the wrapper (positioning); triggerClassName lands on the trigger button (styling the control). Know which you need.
+- **Portal + z-popover (1400):** content stacks above Dialog/Sheet; works inside scrolling containers without clipping.
+- **renderOption:** For complex option rendering (avatar + label + description), pass `renderOption: (option, selected) => <YourCustom />`. The selected state is a boolean flag.
+- **FormField:** Does NOT auto-consume FormField state. Wrap in FormField for label + helper text, but style error manually.
 
 ## Gotchas
 - Enforces selection from list (unlike Autocomplete which allows free text)
@@ -1563,8 +1659,19 @@ Animated bouncing dots with a text description of who is typing.
 </Container>
 ```
 
+## Composability
+- **Server-safe layout primitive.** Safe in RSC trees — no hooks, no context.
+- **maxWidth choices:**
+  - `"default"` (standard page container — matches the design system's layout grid)
+  - `"body"` (narrower reading width — use for article/blog content)
+  - `"full"` (no max — edge-to-edge, useful for full-bleed marketing sections)
+- **Polymorphic via `as`:** Change the rendered element for semantics (`as="main"` for page content, `as="section"` for major subdivisions, `as="article"` for standalone content).
+- **mx-auto centering is automatic** — Container handles horizontal centering; it does NOT add vertical spacing. Pair with `py-*` utility classes on the Container itself or inside it.
+- Nothing cascades — nesting Containers is fine but rarely useful (max-width constraints compound).
+
 ## Gotchas
 - Server-safe component — can be imported directly in Next.js Server Components
+- Container does NOT add vertical padding — add it explicitly via className if needed
 
 ## Changes
 ### v0.1.0
@@ -3088,6 +3195,15 @@ const { size, stroke } = useIconContext()
 </Select>
 ```
 
+## Composability
+- **Radix Select** underneath — `value`/`onValueChange`/`defaultValue`/`open`/`onOpenChange` standard state.
+- **Styling props live on SelectTrigger, not Select root.** The Select root owns value/state; the Trigger owns appearance (variant/color/size). Setting `<Select size="lg">` silently does nothing — TypeScript won't catch it.
+- **SelectItem requires `value`** — unique within the Select. Labels are the children of SelectItem.
+- **SelectGroup + SelectLabel:** Organize options into sections with a non-interactive section heading.
+- **FormField integration:** Set `color="error"` on SelectTrigger for error visuals. Not auto-consumed from FormField (same as Checkbox/Radio — form-library convention for select controls).
+- **Portal + z-popover (1400):** content portals to body, stacks above Dialog/Sheet/other overlays.
+- **Select vs Combobox vs Autocomplete:** Select = short fixed list, click-to-open, no typeahead. Combobox = searchable, forced selection. Autocomplete = searchable, free text. Pick by list size and search need.
+
 ## Gotchas
 - Size goes on SelectTrigger, NOT on Select root
 - `<Select size="lg">` is silently ignored (no TypeScript error)
@@ -3550,6 +3666,14 @@ import { SplitButton } from '@devalok/shilp-sutra'
 </Stack>
 ```
 
+## Composability
+- **Server-safe layout primitive.** Nothing to hydrate — works anywhere.
+- **Pattern:** Stack wraps child elements in a flex container. Swap between vertical/horizontal without rewriting the child layout.
+- **Polymorphic via `as`:** Use `as="ul"` / `as="ol"` for list semantics with flex styling; `as="section"` for major page divisions; etc.
+- **gap is design-system tokenized** — use token strings (`"ds-04"`) or numeric shortcuts (`4` → `"ds-04"`). Raw numbers map 1:1 to the `ds-0N` token set.
+- **Responsive direction:** Not built in — for responsive direction changes use Tailwind's `flex-col md:flex-row` directly on a plain div, or wrap multiple Stacks with display-toggling.
+- Container vs Stack: Container centers + caps width; Stack arranges children. Compose them: `<Container><Stack>...</Stack></Container>`.
+
 ## Gotchas
 - "row" and "column" are aliases for "horizontal" and "vertical"
 - gap accepts both token strings and numeric values
@@ -3612,6 +3736,15 @@ import { SplitButton } from '@devalok/shilp-sutra'
   footer={<a href="/storage">Manage storage →</a>}
 />
 ```
+
+## Composability
+- **High-density metric card** — optimized for dashboards. Everything optional except `value`. Mix and match features (delta, sparkline, progress, secondary label, footer) per metric's needs.
+- **Router integration via href:** Internally uses `LinkContext` to resolve framework-specific Link components (Next.js, react-router). Set `href` in a LinkProvider-wrapped tree to get seamless client-side navigation without custom asChild wiring.
+- **Interactive modes:** `onClick` makes the entire card a button; `href` makes it a link. Mutually exclusive — href wins if both are set.
+- **Accent bar semantic:** Use `accent` to signal metric health at a glance (success for positive, warning for at-risk, error for over-target). Combine with delta.direction for layered emphasis.
+- **Sparkline:** Pure SVG, lightweight — no chart library. For rich charts use Chart components. Minimum 2 data points.
+- **Icon auto-sizing:** Accepts `ComponentType<{ className }>` OR `ReactNode`. The component prop (e.g. `icon={IconBolt}`) is preferred — icon is rendered at a consistent size.
+- **Loading state:** `loading={true}` renders the full card skeleton — use during initial data fetch.
 
 ## Gotchas
 - delta.direction "up" = green, "down" = red, "neutral" = grey

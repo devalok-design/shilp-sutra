@@ -3553,8 +3553,14 @@ import { SplitButton } from '@devalok/shilp-sutra'
 </Tabs>
 ```
 
+## Composability
+- TabsList propagates `variant`, `size`, and `orientation` to every TabsTrigger child via `TabsListContext`. TabsTrigger reads all three from context; explicit props on a trigger override the inherited value.
+- `orientation="vertical"` on TabsList changes the TabsList layout (flex-col + left border) AND the `roving-tabindex` keyboard behavior (ArrowUp/Down navigate, not ArrowLeft/Right).
+- Tabs (root) is just the Radix Tabs.Root — state props (value, defaultValue, onValueChange) live there; styling props live on TabsList.
+- Tabs content is rendered inline (not portalled) — container-scoped queries work fine in tests.
+
 ## Gotchas
-- variant goes on TabsList, NOT on individual TabsTrigger (propagates via context)
+- variant/size/orientation go on TabsList, NOT on Tabs root or individual TabsTrigger
 - Normally omit `variant` on TabsTrigger — it inherits from TabsList via context. You CAN set it per-trigger to override.
 
 ## Changes

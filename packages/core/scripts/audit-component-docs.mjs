@@ -17,6 +17,7 @@
  * Usage (from packages/core/):
  *   node scripts/audit-component-docs.mjs         # human-readable report
  *   node scripts/audit-component-docs.mjs --json  # JSON for tooling
+ *   node scripts/audit-component-docs.mjs --check # CI gate: exit 1 if any HIGH drift
  */
 import { readFileSync, readdirSync, statSync } from 'node:fs'
 import { dirname, join, basename } from 'node:path'
@@ -447,6 +448,7 @@ function auditComponent(category, name) {
 // ── Run ─────────────────────────────────────────────────────────────────────
 
 const jsonMode = process.argv.includes('--json')
+const checkMode = process.argv.includes('--check')
 const results = []
 const summary = { clean: 0, withIssues: 0, totalIssues: 0, bySeverity: { high: 0, medium: 0, low: 0 } }
 
@@ -462,6 +464,27 @@ for (const cat of CATEGORIES) {
       for (const i of r.issues) summary.bySeverity[i.severity] = (summary.bySeverity[i.severity] ?? 0) + 1
     }
   }
+}
+
+if (checkMode) {
+  // CI gate: fail only on HIGH drift. Summary on one line.
+  const nHigh = summary.bySeverity.high ?? 0
+  const nMed = summary.bySeverity.medium ?? 0
+  const nLow = summary.bySeverity.low ?? 0
+  if (nHigh > 0) {
+    console.error(`Component doc drift: ${nHigh} HIGH, ${nMed} medium, ${nLow} low — ${summary.withIssues} component(s) affected.`)
+    for (const r of results) {
+      for (const i of r.issues) {
+        if (i.severity === 'high') {
+          console.error(`  [${r.category}/${r.name}] ${i.kind}: ${i.detail}`)
+        }
+      }
+    }
+    console.error('\nRun `node scripts/audit-component-docs.mjs` for the full report.')
+    process.exit(1)
+  }
+  console.log(`Component docs: no HIGH drift (${nMed} medium, ${nLow} low — mostly TS-only prop flags, verify manually).`)
+  process.exit(0)
 }
 
 if (jsonMode) {

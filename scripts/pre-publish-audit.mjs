@@ -176,6 +176,24 @@ gate('Core docs coverage (build:docs:check)', () => {
   }
 })
 
+gate('Core docs CVA accuracy (no HIGH drift vs source)', () => {
+  // Mechanical check: every axis in a component's CVA must appear in its doc.
+  // Catches the rot that accumulated before the 2026-04-21 sweep (Card missing
+  // color+size, Combobox missing size, Text missing full variant list, etc.).
+  // Only HIGH drift fails — MEDIUM "extra-axis" flags are false positives on
+  // TS-only props the script can't see.
+  try {
+    execSync('node scripts/audit-component-docs.mjs --check', {
+      cwd: join(ROOT, 'packages/core'),
+      encoding: 'utf-8',
+      stdio: 'pipe',
+    })
+    return true
+  } catch (e) {
+    return e.stderr?.trim() || e.stdout?.trim() || 'audit-component-docs --check failed'
+  }
+})
+
 // --- Code Quality ---
 console.log('\n\x1b[36mCode Quality\x1b[0m')
 

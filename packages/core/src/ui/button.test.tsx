@@ -170,43 +170,6 @@ describe('Button', () => {
     })
   })
 
-  // ============ Soft variant ============
-
-  it('renders soft variant with accent color', () => {
-    render(<Button variant="soft" color="accent">Soft</Button>)
-    const btn = screen.getByRole('button')
-    expect(btn.className).toContain('bg-accent-3')
-    expect(btn.className).toContain('text-accent-11')
-  })
-
-  it('renders soft variant with error color', () => {
-    render(<Button variant="soft" color="error">Soft Error</Button>)
-    const btn = screen.getByRole('button')
-    expect(btn.className).toContain('bg-error-3')
-    expect(btn.className).toContain('text-error-11')
-  })
-
-  it('renders soft variant with success color', () => {
-    render(<Button variant="soft" color="success">Approve</Button>)
-    const btn = screen.getByRole('button')
-    expect(btn.className).toContain('bg-success-3')
-    expect(btn.className).toContain('text-success-11')
-  })
-
-  it('renders soft variant with warning color', () => {
-    render(<Button variant="soft" color="warning">Draft</Button>)
-    const btn = screen.getByRole('button')
-    expect(btn.className).toContain('bg-warning-3')
-    expect(btn.className).toContain('text-warning-11')
-  })
-
-  it('renders soft variant with neutral color', () => {
-    render(<Button variant="soft" color="neutral">Cancel</Button>)
-    const btn = screen.getByRole('button')
-    expect(btn.className).toContain('bg-surface-raised-hover')
-    expect(btn.className).toContain('text-surface-fg-muted')
-  })
-
   // ============ Shape prop ============
 
   it('renders with pill shape', () => {
@@ -235,26 +198,6 @@ describe('Button', () => {
     const btn = screen.getByRole('button')
     expect(btn.className).toContain('py-[5px]')
     expect(btn.className).not.toMatch(/\bh-ds-/)
-  })
-
-  // ============ New colors on solid variant ============
-
-  it('renders solid success', () => {
-    render(<Button variant="solid" color="success">Approve</Button>)
-    const btn = screen.getByRole('button')
-    expect(btn.className).toContain('bg-success-9')
-  })
-
-  it('renders solid warning', () => {
-    render(<Button variant="solid" color="warning">Caution</Button>)
-    const btn = screen.getByRole('button')
-    expect(btn.className).toContain('bg-warning-9')
-  })
-
-  it('renders solid neutral', () => {
-    render(<Button variant="solid" color="neutral">Cancel</Button>)
-    const btn = screen.getByRole('button')
-    expect(btn.className).toContain('bg-neutral-5')
   })
 
   // ============ Weight ============

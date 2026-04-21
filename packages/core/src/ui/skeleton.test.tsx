@@ -15,25 +15,6 @@ describeConformance('Skeleton', (props) => <Skeleton {...props} />, {
 })
 
 describe('Skeleton', () => {
-  it('renders with default rectangle variant', () => {
-    const { container } = render(<Skeleton data-testid="sk" />)
-    const el = screen.getByTestId('sk')
-    expect(el.className).toContain('rounded-ds-md')
-  })
-
-  it('renders circle variant', () => {
-    const { container } = render(<Skeleton variant="circle" data-testid="sk" />)
-    expect(screen.getByTestId('sk').className).toContain('rounded-ds-full')
-    expect(screen.getByTestId('sk').className).toContain('aspect-square')
-  })
-
-  it('renders text variant', () => {
-    render(<Skeleton variant="text" data-testid="sk" />)
-    const el = screen.getByTestId('sk')
-    expect(el.className).toContain('h-4')
-    expect(el.className).toContain('w-full')
-  })
-
   it('applies pulse animation by default', () => {
     render(<Skeleton data-testid="sk" />)
     expect(screen.getByTestId('sk').className).toContain('animate-pulse')

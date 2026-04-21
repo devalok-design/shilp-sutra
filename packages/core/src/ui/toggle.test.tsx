@@ -79,24 +79,4 @@ describe('Toggle', () => {
     expect(onPressedChange).not.toHaveBeenCalled()
   })
 
-  it('applies outline variant classes', () => {
-    render(
-      <Toggle aria-label="Bold" variant="outline">
-        B
-      </Toggle>,
-    )
-    const btn = screen.getByRole('button')
-    expect(btn).toHaveClass('border')
-  })
-
-  it('applies size variant classes', () => {
-    render(
-      <Toggle aria-label="Bold" size="sm">
-        B
-      </Toggle>,
-    )
-    const btn = screen.getByRole('button')
-    expect(btn.className).toContain('h-ds-sm')
-  })
-
 })

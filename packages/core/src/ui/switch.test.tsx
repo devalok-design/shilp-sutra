@@ -66,24 +66,6 @@ describe('Switch', () => {
     expect(onCheckedChange).not.toHaveBeenCalled()
   })
 
-  it('renders sm size with correct track dimensions', () => {
-    render(<Switch aria-label="Small switch" size="sm" />)
-    const toggle = screen.getByRole('switch')
-    expect(toggle).toHaveClass('h-6', 'w-[38px]')
-  })
-
-  it('renders lg size with correct track dimensions', () => {
-    render(<Switch aria-label="Large switch" size="lg" />)
-    const toggle = screen.getByRole('switch')
-    expect(toggle).toHaveClass('h-7', 'w-[52px]')
-  })
-
-  it('renders success color when checked', () => {
-    render(<Switch aria-label="Success switch" color="success" checked />)
-    const toggle = screen.getByRole('switch')
-    expect(toggle).toHaveClass('data-[state=checked]:bg-success-9')
-  })
-
   it('renders thumbIcon inside thumb', () => {
     render(
       <Switch

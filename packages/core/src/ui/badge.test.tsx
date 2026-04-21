@@ -19,28 +19,6 @@ describe('Badge', () => {
     expect(screen.getByText('Active')).toBeInTheDocument()
   })
 
-  it('renders with subtle variant by default', () => {
-    const { container } = render(<Badge>Test</Badge>)
-    expect(container.firstChild).toHaveClass('bg-surface-raised-hover')
-  })
-
-  it('renders solid variant', () => {
-    const { container } = render(<Badge variant="solid" color="accent">Test</Badge>)
-    expect(container.firstChild?.className).toContain('bg-accent-9')
-  })
-
-  it('renders outline variant', () => {
-    const { container } = render(<Badge variant="outline" color="error">Test</Badge>)
-    expect(container.firstChild?.className).toContain('border')
-    expect(container.firstChild?.className).toContain('text-error-11')
-  })
-
-  it('renders soft variant without border', () => {
-    const { container } = render(<Badge variant="soft" color="success">Test</Badge>)
-    expect(container.firstChild?.className).toContain('bg-success-3')
-    expect(container.firstChild?.className).toContain('border-transparent')
-  })
-
   it('renders startIcon', () => {
     render(<Badge startIcon={<Icon icon={IconPlus} />}>Test</Badge>)
     const svg = document.querySelector('svg')

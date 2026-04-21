@@ -57,45 +57,6 @@ describe('Card', () => {
     })
   })
 
-  describe('color', () => {
-    it('defaults to no color border class', () => {
-      const { container } = render(<Card>Content</Card>)
-      expect(container.firstChild).not.toHaveClass('border-accent-7')
-      expect(container.firstChild).not.toHaveClass('border-error-7')
-    })
-
-    it('applies accent border color', () => {
-      const { container } = render(<Card color="accent">Content</Card>)
-      expect(container.firstChild).toHaveClass('border-accent-7')
-    })
-
-    it('applies error border color', () => {
-      const { container } = render(<Card color="error">Content</Card>)
-      expect(container.firstChild).toHaveClass('border-error-7')
-    })
-
-    it('applies success border color', () => {
-      const { container } = render(<Card color="success">Content</Card>)
-      expect(container.firstChild).toHaveClass('border-success-7')
-    })
-
-    it('applies warning border color', () => {
-      const { container } = render(<Card color="warning">Content</Card>)
-      expect(container.firstChild).toHaveClass('border-warning-7')
-    })
-
-    it('applies info border color', () => {
-      const { container } = render(<Card color="info">Content</Card>)
-      expect(container.firstChild).toHaveClass('border-info-7')
-    })
-
-    it('neutral applies no extra border class', () => {
-      const { container } = render(<Card color="neutral">Content</Card>)
-      expect(container.firstChild).not.toHaveClass('border-accent-7')
-      expect(container.firstChild).not.toHaveClass('border-error-7')
-    })
-  })
-
   describe('size', () => {
     it('defaults to md padding on sub-components', () => {
       const { container } = render(

@@ -359,3 +359,90 @@ describe('TreeItem features', () => {
     expect(items[1].getAttribute('aria-level')).toBe('2')
   })
 })
+
+// ────────────────────────────────────────────────────────────────────────────
+// TreeView — keyboard navigation
+// ────────────────────────────────────────────────────────────────────────────
+
+describe('TreeView keyboard navigation', () => {
+  it('ArrowDown moves focus to next visible item', () => {
+    const { container } = render(
+      <TreeView defaultExpanded={['1']}>
+        <TreeItem itemId="1" label="Documents">
+          <TreeItem itemId="1-1" label="Resume.pdf" />
+        </TreeItem>
+        <TreeItem itemId="2" label="Photos">
+          <TreeItem itemId="2-1" label="Vacation.jpg" />
+        </TreeItem>
+      </TreeView>,
+    )
+    const tree = container.querySelector('[role="tree"]')!
+    const firstRow = container.querySelector('[data-tree-item="1"]')!
+    ;(firstRow as HTMLElement).focus()
+    expect(document.activeElement).toBe(firstRow)
+    fireEvent.keyDown(tree, { key: 'ArrowDown' })
+    const secondRow = container.querySelector('[data-tree-item="1-1"]')
+    expect(document.activeElement).toBe(secondRow)
+  })
+
+  it('ArrowUp moves focus to previous visible item', () => {
+    const { container } = render(
+      <TreeView defaultExpanded={['1']}>
+        <TreeItem itemId="1" label="Documents">
+          <TreeItem itemId="1-1" label="Resume.pdf" />
+        </TreeItem>
+      </TreeView>,
+    )
+    const tree = container.querySelector('[role="tree"]')!
+    const secondRow = container.querySelector('[data-tree-item="1-1"]') as HTMLElement
+    secondRow.focus()
+    fireEvent.keyDown(tree, { key: 'ArrowUp' })
+    const firstRow = container.querySelector('[data-tree-item="1"]')
+    expect(document.activeElement).toBe(firstRow)
+  })
+
+  it('ArrowRight on collapsed item expands it', () => {
+    const { container } = render(
+      <TreeView>
+        <TreeItem itemId="1" label="Documents">
+          <TreeItem itemId="1-1" label="Resume.pdf" />
+        </TreeItem>
+      </TreeView>,
+    )
+    const firstRow = container.querySelector('[data-tree-item="1"]') as HTMLElement
+    const treeItem = container.querySelector('[role="treeitem"]')!
+    firstRow.focus()
+    expect(treeItem.getAttribute('aria-expanded')).toBe('false')
+    fireEvent.keyDown(firstRow, { key: 'ArrowRight' })
+    expect(treeItem.getAttribute('aria-expanded')).toBe('true')
+  })
+
+  it('ArrowLeft on expanded item collapses it', () => {
+    const { container } = render(
+      <TreeView defaultExpanded={['1']}>
+        <TreeItem itemId="1" label="Documents">
+          <TreeItem itemId="1-1" label="Resume.pdf" />
+        </TreeItem>
+      </TreeView>,
+    )
+    const firstRow = container.querySelector('[data-tree-item="1"]') as HTMLElement
+    const treeItem = container.querySelector('[role="treeitem"]')!
+    firstRow.focus()
+    expect(treeItem.getAttribute('aria-expanded')).toBe('true')
+    fireEvent.keyDown(firstRow, { key: 'ArrowLeft' })
+    expect(treeItem.getAttribute('aria-expanded')).toBe('false')
+  })
+
+  it('Enter selects an item', () => {
+    const onSelect = vi.fn()
+    const { container } = render(
+      <TreeView onSelect={onSelect}>
+        <TreeItem itemId="1" label="Documents" />
+      </TreeView>,
+    )
+    const firstRow = container.querySelector('[data-tree-item="1"]') as HTMLElement
+    firstRow.focus()
+    fireEvent.keyDown(firstRow, { key: 'Enter' })
+    expect(onSelect).toHaveBeenCalled()
+  })
+})

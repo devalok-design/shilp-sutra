@@ -10,7 +10,7 @@ import {
   DropdownMenuLabel,
   DropdownMenuSeparator,
   DropdownMenuTrigger,
-} from '../dropdown-menu'
+} from './dropdown-menu'
 
 function renderDropdown() {
   return render(

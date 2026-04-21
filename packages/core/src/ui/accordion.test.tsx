@@ -1,6 +1,7 @@
 import { render, screen, waitFor } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 import { describe, expect,it } from 'vitest'
+import { axe } from 'vitest-axe'
 
 import { Accordion, AccordionContent,AccordionItem, AccordionTrigger } from './accordion'
 
@@ -20,6 +21,11 @@ function renderAccordion() {
 }
 
 describe('Accordion', () => {
+  it('passes axe audit', async () => {
+    const { container } = renderAccordion()
+    expect(await axe(container)).toHaveNoViolations()
+  })
+
   it('renders triggers', async () => {
     renderAccordion()
     // Radix accordion may defer role assignment via useLayoutEffect in jsdom;

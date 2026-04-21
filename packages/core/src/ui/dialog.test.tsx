@@ -1,10 +1,24 @@
 import { render, screen, waitFor } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 import { describe, expect,it } from 'vitest'
+import { axe } from 'vitest-axe'
 
-import { Dialog, DialogContent, DialogTitle,DialogTrigger } from './dialog'
+import { Dialog, DialogContent, DialogDescription, DialogTitle,DialogTrigger } from './dialog'
 
 describe('Dialog', () => {
+  it('passes axe audit in open state', async () => {
+    const { container } = render(
+      <Dialog open>
+        <DialogTrigger>Open</DialogTrigger>
+        <DialogContent>
+          <DialogTitle>Confirm</DialogTitle>
+          <DialogDescription>Are you sure?</DialogDescription>
+        </DialogContent>
+      </Dialog>,
+    )
+    expect(await axe(container)).toHaveNoViolations()
+  })
+
   it('renders the trigger button', () => {
     render(
       <Dialog>

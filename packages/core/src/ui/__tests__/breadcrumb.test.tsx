@@ -1,5 +1,6 @@
 import { render, screen } from '@testing-library/react'
 import { describe, expect,it } from 'vitest'
+import { axe } from 'vitest-axe'
 
 import {
   Breadcrumb,
@@ -31,6 +32,11 @@ const renderBreadcrumb = () =>
   )
 
 describe('Breadcrumb', () => {
+  it('passes axe audit', async () => {
+    const { container } = renderBreadcrumb()
+    expect(await axe(container)).toHaveNoViolations()
+  })
+
   it('renders navigation landmark with breadcrumb label', () => {
     renderBreadcrumb()
     const nav = screen.getByRole('navigation')

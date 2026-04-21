@@ -1,5 +1,6 @@
 import { act,render, screen } from '@testing-library/react'
 import { afterEach,beforeEach, describe, expect, it, vi } from 'vitest'
+import { axe } from 'vitest-axe'
 
 import { Spinner } from './spinner'
 
@@ -9,6 +10,13 @@ describe('Spinner', () => {
   })
   afterEach(() => {
     vi.useRealTimers()
+  })
+
+  it('passes axe audit', async () => {
+    vi.useRealTimers()
+    const { container } = render(<Spinner />)
+    expect(await axe(container)).toHaveNoViolations()
+    vi.useFakeTimers()
   })
 
   it('renders with role="status"', () => {

@@ -9,7 +9,7 @@ import {
   SheetDescription,
   SheetTitle,
   SheetTrigger,
-} from '../sheet'
+} from './sheet'
 
 describe('Sheet accessibility', () => {
   it('should have no violations in open state with title and description', async () => {

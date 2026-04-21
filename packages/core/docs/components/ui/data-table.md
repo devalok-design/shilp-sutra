@@ -55,6 +55,30 @@ import { DataTable } from '@devalok/shilp-sutra/ui/data-table'
 />
 ```
 
+## Composability
+**Server vs client mode is prop-driven, not explicit.**
+- Pass `onSort` → server-side sort (manual, rows stay in data order — you're responsible for re-fetching).
+- Pass `pagination` object → server-side pagination (manual, pass total count).
+- Omit both → client-side sort/pagination via TanStack react-table.
+- Mix-and-match: `onSort` + no pagination = server sort + client pagination.
+
+**Companion components:**
+- `DataTableToolbar` — enabled via `toolbar={true}`. Provides column visibility, density switcher, CSV export. Reads table state via `DataTableContext` (internal). Rendered ABOVE the table automatically.
+- `BulkActionBar` (floating) — appears when rows are selected AND `bulkActions` array is non-empty. Synced with `selectedIds`; shows count + action buttons.
+- `EmptyState` from `@devalok/shilp-sutra/composed` — pass to `emptyState` prop. Takes precedence over `noResultsText` string.
+
+**Controlled selection:**
+- Pass `selectedIds` (Set<string>) + `onSelectionChange` for controlled row selection.
+- Provide `getRowId: (row) => row.id` so selection survives data refetches (otherwise TanStack uses array index, which breaks on sort/filter).
+- `selectableFilter: (row) => boolean` disables selection on specific rows (e.g. archived items).
+
+**Row click model:**
+- `onRowClick` fires on row-level click BUT excludes clicks on checkboxes, buttons, links, and inputs automatically. No manual `stopPropagation` needed for standard interactive elements.
+
+**Virtualization:** `virtualRows={true}` enables row virtualization via `@tanstack/react-virtual`. Turn it on for 1000+ row datasets; the scroll container must have a bounded height.
+
+**Density integration:** `defaultDensity="compact"` is the Karm-style dense mode (h-9 rows). DataTableToolbar's density switcher updates this at runtime; the prop sets the initial state only.
+
 ## Gotchas
 - Barrel-isolated since v0.5.0 — must use `@devalok/shilp-sutra/ui/data-table`, NOT the `ui` barrel
 - Requires @tanstack/react-table and @tanstack/react-virtual as peer dependencies
@@ -63,6 +87,7 @@ import { DataTable } from '@devalok/shilp-sutra/ui/data-table'
 - selectedIds syncs via useEffect — provide getRowId for custom row IDs
 - onRowClick does NOT fire when clicking checkboxes, buttons, links, or inputs
 - Use defaultDensity="compact" for Karm-style h-9 rows
+- `virtualRows={true}` requires a bounded scroll container — unbounded height silently disables virtualization
 
 ## Changes
 ### v0.29.0

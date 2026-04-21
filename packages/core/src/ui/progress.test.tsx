@@ -1,8 +1,12 @@
 import { render, screen } from '@testing-library/react'
 import { describe, expect,it } from 'vitest'
-import { axe } from 'vitest-axe'
 
+import { describeConformance } from '../test-utils/conformance'
 import { Progress } from './progress'
+
+describeConformance('Progress', (props) => <Progress value={50} aria-label="Upload" {...props} />, {
+  sizes: ['sm', 'md', 'lg'],
+})
 
 describe('Progress', () => {
   it('renders with progressbar role', () => {
@@ -41,22 +45,6 @@ describe('Progress', () => {
     expect(screen.queryByText('%')).not.toBeInTheDocument()
   })
 
-  it('applies size variant classes', () => {
-    const { rerender } = render(<Progress value={50} size="sm" />)
-    expect(screen.getByRole('progressbar').className).toContain('h-1')
-
-    rerender(<Progress value={50} size="md" />)
-    expect(screen.getByRole('progressbar').className).toContain('h-2')
-
-    rerender(<Progress value={50} size="lg" />)
-    expect(screen.getByRole('progressbar').className).toContain('h-3')
-  })
-
-  it('merges custom className on track', () => {
-    render(<Progress value={50} className="my-progress" />)
-    expect(screen.getByRole('progressbar').className).toContain('my-progress')
-  })
-
   it('applies autoColor based on value', () => {
     const { container, rerender } = render(<Progress value={40} autoColor />)
     // 0-59 = default (accent)
@@ -77,11 +65,5 @@ describe('Progress', () => {
     rerender(<Progress value={110} autoColor />)
     indicator = container.querySelector('[class*="error"]')
     expect(indicator).toBeInTheDocument()
-  })
-
-  it('has no axe violations', async () => {
-    const { container } = render(<Progress value={60} aria-label="Upload progress" />)
-    const results = await axe(container)
-    expect(results).toHaveNoViolations()
   })
 })

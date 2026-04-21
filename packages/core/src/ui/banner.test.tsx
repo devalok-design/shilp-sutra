@@ -1,9 +1,13 @@
 import { render, screen, waitFor } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 import { describe, expect, it, vi } from 'vitest'
-import { axe } from 'vitest-axe'
 
+import { describeConformance } from '../test-utils/conformance'
 import { Banner } from './banner'
+
+describeConformance('Banner', (props) => <Banner {...props}>System update</Banner>, {
+  colors: ['info', 'success', 'warning', 'error', 'neutral'],
+})
 
 describe('Banner', () => {
   it('renders with role="alert"', () => {
@@ -14,27 +18,6 @@ describe('Banner', () => {
   it('renders children content', () => {
     render(<Banner>Scheduled maintenance tonight</Banner>)
     expect(screen.getByRole('alert')).toHaveTextContent('Scheduled maintenance tonight')
-  })
-
-  it('applies info color classes by default', () => {
-    render(<Banner>Info banner</Banner>)
-    const alert = screen.getByRole('alert')
-    expect(alert.className).toContain('info')
-  })
-
-  it('applies color variant classes', () => {
-    const { rerender } = render(<Banner color="error">Error</Banner>)
-    expect(screen.getByRole('alert').className).toContain('error')
-
-    rerender(<Banner color="success">Success</Banner>)
-    expect(screen.getByRole('alert').className).toContain('success')
-
-    rerender(<Banner color="warning">Warning</Banner>)
-    expect(screen.getByRole('alert').className).toContain('warning')
-
-    // neutral uses bg-surface-raised, not a class containing "neutral"
-    rerender(<Banner color="neutral">Neutral</Banner>)
-    expect(screen.getByRole('alert').className).toContain('bg-surface-raised')
   })
 
   it('shows dismiss button when onDismiss is provided', () => {
@@ -81,18 +64,4 @@ describe('Banner', () => {
     expect(screen.getByRole('button', { name: 'Legacy action' })).toBeInTheDocument()
   })
 
-  it('merges custom className', () => {
-    render(<Banner className="my-custom-banner">Custom</Banner>)
-    expect(screen.getByRole('alert').className).toContain('my-custom-banner')
-  })
-
-  it('has no axe violations', async () => {
-    const { container } = render(
-      <Banner color="warning" onDismiss={() => {}}>
-        Accessible banner
-      </Banner>,
-    )
-    const results = await axe(container)
-    expect(results).toHaveNoViolations()
-  })
 })

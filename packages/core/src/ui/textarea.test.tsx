@@ -1,9 +1,13 @@
 import { render, screen } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 import { describe, expect, it, vi } from 'vitest'
-import { axe } from 'vitest-axe'
 
+import { describeConformance } from '../test-utils/conformance'
 import { Textarea } from './textarea'
+
+describeConformance('Textarea', (props) => <Textarea aria-label="Test textarea" {...props} />, {
+  sizes: ['xs', 'sm', 'md', 'lg'],
+})
 
 describe('Textarea', () => {
   it('renders with placeholder', () => {
@@ -25,22 +29,6 @@ describe('Textarea', () => {
   it('renders disabled state', () => {
     render(<Textarea disabled placeholder="Disabled" />)
     expect(screen.getByPlaceholderText('Disabled')).toBeDisabled()
-  })
-
-  it('forwards ref', () => {
-    const ref = { current: null as HTMLTextAreaElement | null }
-    render(
-      <Textarea
-        ref={ref as React.Ref<HTMLTextAreaElement>}
-        placeholder="Ref test"
-      />,
-    )
-    expect(ref.current).toBeInstanceOf(HTMLTextAreaElement)
-  })
-
-  it('merges custom className', () => {
-    render(<Textarea className="my-class" placeholder="Styled" />)
-    expect(screen.getByPlaceholderText('Styled')).toHaveClass('my-class')
   })
 
   it('applies rows attribute', () => {
@@ -69,16 +57,5 @@ describe('Textarea', () => {
   it('renders read-only textarea', () => {
     render(<Textarea readOnly defaultValue="Read only text" placeholder="RO" />)
     expect(screen.getByPlaceholderText('RO')).toHaveAttribute('readonly')
-  })
-
-  it('has no a11y violations', async () => {
-    const { container } = render(
-      <label htmlFor="textarea-desc">
-        Description
-        <Textarea id="textarea-desc" placeholder="Enter description" />
-      </label>,
-    )
-    const results = await axe(container)
-    expect(results).toHaveNoViolations()
   })
 })

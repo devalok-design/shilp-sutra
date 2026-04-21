@@ -1,8 +1,10 @@
 import { render, screen } from '@testing-library/react'
 import { describe, expect,it } from 'vitest'
-import { axe } from 'vitest-axe'
 
+import { describeConformance } from '../test-utils/conformance'
 import { Label } from './label'
+
+describeConformance('Label', (props) => <Label {...props}>Email</Label>)
 
 describe('Label', () => {
   it('renders text content', () => {
@@ -19,19 +21,6 @@ describe('Label', () => {
     )
     const label = screen.getByText('Email')
     expect(label).toHaveAttribute('for', 'email-input')
-  })
-
-  it('merges custom className', () => {
-    render(<Label className="my-label">Name</Label>)
-    expect(screen.getByText('Name')).toHaveClass('my-label')
-  })
-
-  it('forwards ref', () => {
-    const ref = { current: null as HTMLLabelElement | null }
-    render(
-      <Label ref={ref as React.Ref<HTMLLabelElement>}>Ref test</Label>,
-    )
-    expect(ref.current).toBeInstanceOf(HTMLLabelElement)
   })
 
   it('renders required indicator when required is true', () => {
@@ -52,16 +41,5 @@ describe('Label', () => {
       </Label>,
     )
     expect(screen.getByTestId('child')).toBeInTheDocument()
-  })
-
-  it('has no a11y violations', async () => {
-    const { container } = render(
-      <>
-        <Label htmlFor="name-input">Name</Label>
-        <input id="name-input" type="text" />
-      </>,
-    )
-    const results = await axe(container)
-    expect(results).toHaveNoViolations()
   })
 })

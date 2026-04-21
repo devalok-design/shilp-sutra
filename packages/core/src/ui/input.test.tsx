@@ -1,7 +1,12 @@
 import { render, screen } from '@testing-library/react'
 import { describe, expect,it } from 'vitest'
 
+import { describeConformance } from '../test-utils/conformance'
 import { Input } from './input'
+
+describeConformance('Input', (props) => <Input aria-label="Test input" {...props} />, {
+  sizes: ['xs', 'sm', 'md', 'lg'],
+})
 
 describe('Input', () => {
   it('renders with placeholder', () => {
@@ -19,18 +24,11 @@ describe('Input', () => {
     expect(screen.getByPlaceholderText('Name')).not.toHaveAttribute('aria-invalid')
   })
 
-  it('applies custom className to the input element, not the wrapper', () => {
+  it('applies className to the input element, not the wrapper', () => {
     render(<Input className="my-custom-class" placeholder="Test" />)
     const input = screen.getByPlaceholderText('Test')
     expect(input).toHaveClass('my-custom-class')
-    // Wrapper should NOT have the className
     expect(input.parentElement).not.toHaveClass('my-custom-class')
-  })
-
-  it('forwards ref', () => {
-    const ref = { current: null as HTMLInputElement | null }
-    render(<Input ref={ref as React.Ref<HTMLInputElement>} placeholder="Ref test" />)
-    expect(ref.current).toBeInstanceOf(HTMLInputElement)
   })
 
   it('renders xs size with correct height class on the wrapper', () => {

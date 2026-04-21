@@ -8,11 +8,7 @@ import { InlineEdit } from './inline-edit'
 
 describeConformance(
   'InlineEdit',
-  (props) => <InlineEdit value="Hello" onSave={vi.fn()} {...props} />,
-  // FIXME(a11y): InlineEdit renders role="textbox" but doesn't expose an
-  // aria-label prop — the conformance axe check fails until that's fixed.
-  // Real a11y hole flagged by conformance adoption.
-  { skip: ['axe'] },
+  (props) => <InlineEdit value="Hello" onSave={vi.fn()} aria-label="Title" {...props} />,
 )
 
 describe('InlineEdit', () => {
@@ -121,15 +117,35 @@ describe('InlineEdit', () => {
     expect(text).not.toHaveClass('ring-accent-7')
   })
 
-  it('has no accessibility violations', async () => {
-    const { container } = render(
-      <InlineEdit value="Editable text" onSave={vi.fn()} />,
+  it('forwards aria-label to the textbox element (not the wrapper)', () => {
+    render(<InlineEdit value="Editable" onSave={vi.fn()} aria-label="Title" />)
+    const textbox = screen.getByRole('textbox')
+    expect(textbox).toHaveAttribute('aria-label', 'Title')
+    // Wrapper div should NOT carry aria-label
+    expect(textbox.parentElement).not.toHaveAttribute('aria-label')
+  })
+
+  it('forwards aria-labelledby to the textbox element', () => {
+    render(
+      <>
+        <span id="ext-label">Project name</span>
+        <InlineEdit value="Alpha" onSave={vi.fn()} aria-labelledby="ext-label" />
+      </>,
     )
-    // The contentEditable textbox span lacks an aria-label — this is a known
-    // gap (the label must be provided by the surrounding context). Disable
-    // that specific rule so the rest of the a11y surface is still audited.
-    expect(await axe(container, {
-      rules: { 'aria-input-field-name': { enabled: false } },
-    })).toHaveNoViolations()
+    const textbox = screen.getByRole('textbox')
+    expect(textbox).toHaveAttribute('aria-labelledby', 'ext-label')
+  })
+
+  it('falls back to placeholder as aria-label when none is provided', () => {
+    render(<InlineEdit value="" onSave={vi.fn()} placeholder="Add a title..." />)
+    const textbox = screen.getByRole('textbox')
+    expect(textbox).toHaveAttribute('aria-label', 'Add a title...')
+  })
+
+  it('has no accessibility violations (textbox has accessible name via fallback)', async () => {
+    const { container } = render(
+      <InlineEdit value="Editable text" onSave={vi.fn()} placeholder="Edit name" />,
+    )
+    expect(await axe(container)).toHaveNoViolations()
   })
 })

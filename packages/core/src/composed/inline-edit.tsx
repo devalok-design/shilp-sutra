@@ -40,6 +40,11 @@ const InlineEdit = React.forwardRef<HTMLDivElement, InlineEditProps>(({
   maxLength,
   saving: savingProp = false,
   className,
+  // aria-label / aria-labelledby apply to the editable textbox (the inner
+  // span), not the outer wrapper div. Intercept them from ...props so they
+  // land on the role="textbox" element that actually needs the name.
+  'aria-label': ariaLabel,
+  'aria-labelledby': ariaLabelledBy,
   ...props
 }, ref) => {
   const [saving, setSaving] = React.useState(false)
@@ -147,6 +152,10 @@ const InlineEdit = React.forwardRef<HTMLDivElement, InlineEditProps>(({
         contentEditable={!readOnly && !isSaving}
         suppressContentEditableWarning
         tabIndex={readOnly ? undefined : 0}
+        // Fall back to the placeholder when no explicit label is supplied —
+        // screen readers need _something_ on role="textbox".
+        aria-label={readOnly ? undefined : (ariaLabel ?? (ariaLabelledBy ? undefined : placeholder))}
+        aria-labelledby={readOnly ? undefined : ariaLabelledBy}
         onFocus={handleFocus}
         onBlur={commit}
         onKeyDown={handleKeyDown}

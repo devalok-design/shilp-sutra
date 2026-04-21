@@ -56,4 +56,54 @@ describe('EmptyState', () => {
     )
     expect(container.firstElementChild).toHaveClass('my-empty')
   })
+
+  describe('iconSize prop', () => {
+    const TestIcon = ({ className }: { className?: string }) => (
+      <svg data-testid="test-icon" className={className} aria-hidden="true">
+        <circle cx="16" cy="16" r="16" />
+      </svg>
+    )
+
+    it('defaults to md icon size (h-ico-lg)', () => {
+      render(<EmptyState title="Default" icon={TestIcon} />)
+      const cls = screen.getByTestId('test-icon').getAttribute('class') ?? ''
+      expect(cls).toContain('h-ico-lg')
+    })
+
+    it('applies sm icon size', () => {
+      render(<EmptyState title="Small" icon={TestIcon} iconSize="sm" />)
+      const cls = screen.getByTestId('test-icon').getAttribute('class') ?? ''
+      expect(cls).toContain('h-ico-sm')
+    })
+
+    it('applies lg icon size', () => {
+      render(<EmptyState title="Large" icon={TestIcon} iconSize="lg" />)
+      const cls = screen.getByTestId('test-icon').getAttribute('class') ?? ''
+      expect(cls).toContain('h-ico-xl')
+    })
+
+    it('defaults to sm when compact and no explicit iconSize', () => {
+      render(<EmptyState title="Compact" icon={TestIcon} compact />)
+      const cls = screen.getByTestId('test-icon').getAttribute('class') ?? ''
+      expect(cls).toContain('h-ico-sm')
+    })
+
+    it('respects explicit iconSize over compact default', () => {
+      render(<EmptyState title="Compact lg" icon={TestIcon} compact iconSize="lg" />)
+      const cls = screen.getByTestId('test-icon').getAttribute('class') ?? ''
+      expect(cls).toContain('h-ico-xl')
+    })
+
+    it('applies icon size to container when icon is ReactNode', () => {
+      render(
+        <EmptyState
+          title="ReactNode icon"
+          icon={<span data-testid="node-icon">icon</span>}
+          iconSize="lg"
+        />,
+      )
+      const nodeIcon = screen.getByTestId('node-icon')
+      expect(nodeIcon.parentElement!.className).toContain('h-ico-xl')
+    })
+  })
 })

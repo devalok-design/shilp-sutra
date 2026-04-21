@@ -126,6 +126,25 @@ describe('Icon', () => {
     expect(svg).toBeInTheDocument()
   })
 
+  // ── stroke prop ────────────────────────────────────────────────────────────
+  it('applies regular stroke (strokeWidth 2)', () => {
+    render(<Icon icon={IconPlus} />)
+    const svg = document.querySelector('svg')
+    expect(svg).toHaveAttribute('stroke-width', '2')
+  })
+
+  it('applies light stroke (strokeWidth 1.5)', () => {
+    render(<Icon icon={IconPlus} stroke="light" />)
+    const svg = document.querySelector('svg')
+    expect(svg).toHaveAttribute('stroke-width', '1.5')
+  })
+
+  it('applies bold stroke (strokeWidth 2.5)', () => {
+    render(<Icon icon={IconPlus} stroke="bold" />)
+    const svg = document.querySelector('svg')
+    expect(svg).toHaveAttribute('stroke-width', '2.5')
+  })
+
   // ── a11y ───────────────────────────────────────────────────────────────────
   it('has no a11y violations (with label)', async () => {
     const { container } = render(<Icon icon={IconPlus} label="Add item" />)

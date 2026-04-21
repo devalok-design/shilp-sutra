@@ -119,4 +119,20 @@ describe('StatusBadge', () => {
     expect(button).toHaveAttribute('type', 'button')
     expect(button).toHaveClass('cursor-pointer')
   })
+
+  it('uses color name as default label when color is set without label or status', () => {
+    render(<StatusBadge color="warning" />)
+    expect(screen.getByText('Warning')).toBeInTheDocument()
+  })
+
+  it('prefers explicit label over color name', () => {
+    render(<StatusBadge color="error" label="Failed" />)
+    expect(screen.getByText('Failed')).toBeInTheDocument()
+  })
+
+  it('color wins over status when both are provided', () => {
+    const { container } = render(<StatusBadge status="active" color="error" />)
+    const badge = container.firstElementChild!
+    expect(badge.className).toContain('bg-error-3')
+  })
 })

@@ -73,4 +73,14 @@ describe('PageHeader', () => {
     render(<PageHeader title="Styled" titleClassName="text-red-500" />)
     expect(screen.getByRole('heading', { name: 'Styled' })).toHaveClass('text-red-500')
   })
+
+  it('explicit title takes precedence over breadcrumb-derived title', () => {
+    render(
+      <PageHeader
+        title="Custom Title"
+        breadcrumbs={[{ label: 'Home', href: '/' }, { label: 'Dashboard' }]}
+      />,
+    )
+    expect(screen.getByRole('heading', { level: 1 })).toHaveTextContent('Custom Title')
+  })
 })

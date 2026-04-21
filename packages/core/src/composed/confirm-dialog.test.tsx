@@ -66,4 +66,9 @@ describe('ConfirmDialog', () => {
       expect(btn).toBeDisabled()
     })
   })
+
+  it('does not render when open is false', () => {
+    renderDialog({ open: false })
+    expect(screen.queryByText('Delete item?')).not.toBeInTheDocument()
+  })
 })

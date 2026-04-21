@@ -58,3 +58,57 @@ describe('Accordion', () => {
     expect(screen.queryByText('Content of section one')).not.toBeInTheDocument()
   })
 })
+
+describe('AccordionTrigger chevronPosition', () => {
+  function renderWithChevron({
+    chevronPosition,
+  }: { chevronPosition?: 'left' | 'right' } = {}) {
+    return render(
+      <Accordion type="single" collapsible>
+        <AccordionItem value="item-1">
+          <AccordionTrigger chevronPosition={chevronPosition}>
+            <span data-testid="trigger-text">Section One</span>
+          </AccordionTrigger>
+          <AccordionContent>Content for section one.</AccordionContent>
+        </AccordionItem>
+      </Accordion>,
+    )
+  }
+
+  it('renders chevron after trigger text by default (right)', () => {
+    renderWithChevron()
+    const trigger = screen.getByRole('button', { name: /Section One/i })
+    const children = Array.from(trigger.children)
+    const textIndex = children.findIndex(
+      (el) => el.getAttribute('data-testid') === 'trigger-text',
+    )
+    const chevronIndex = children.findIndex(
+      (el) => el.tagName.toLowerCase() === 'svg' || el.querySelector?.('svg') !== null,
+    )
+    expect(textIndex).toBeGreaterThanOrEqual(0)
+    expect(chevronIndex).toBeGreaterThanOrEqual(0)
+    expect(textIndex).toBeLessThan(chevronIndex)
+  })
+
+  it('renders chevron before trigger text when chevronPosition="left"', () => {
+    renderWithChevron({ chevronPosition: 'left' })
+    const trigger = screen.getByRole('button', { name: /Section One/i })
+    const children = Array.from(trigger.children)
+    const textIndex = children.findIndex(
+      (el) => el.getAttribute('data-testid') === 'trigger-text',
+    )
+    const chevronIndex = children.findIndex(
+      (el) => el.tagName.toLowerCase() === 'svg' || el.querySelector?.('svg') !== null,
+    )
+    expect(chevronIndex).toBeLessThan(textIndex)
+  })
+
+  it('chevron has rotation class when open', async () => {
+    const user = userEvent.setup()
+    renderWithChevron()
+    const trigger = screen.getByRole('button', { name: /Section One/i })
+    await user.click(trigger)
+    const chevron = trigger.querySelector('svg')
+    expect(chevron?.classList.toString()).toContain('rotate-180')
+  })
+})

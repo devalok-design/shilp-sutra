@@ -125,4 +125,42 @@ describe('AvatarGroup', () => {
       expect(container.querySelector('.bg-accent-9')).not.toBeInTheDocument()
     })
   })
+
+  describe('border', () => {
+    it('renders border-surface-raised by default', () => {
+      const { container } = render(
+        <AvatarGroup users={users.slice(0, 2)} showTooltip={false} />,
+      )
+      const avatars = container.querySelectorAll('[data-slot="avatar-fallback"]')
+      const avatarWrapper = avatars[0].closest('span')!.parentElement!
+      expect(avatarWrapper.className).toContain('border-surface-raised')
+    })
+
+    it('renders border-surface-base when borderColor="surface-base"', () => {
+      const { container } = render(
+        <AvatarGroup
+          users={users.slice(0, 2)}
+          borderColor="surface-base"
+          showTooltip={false}
+        />,
+      )
+      const avatars = container.querySelectorAll('[data-slot="avatar-fallback"]')
+      const avatarWrapper = avatars[0].closest('span')!.parentElement!
+      expect(avatarWrapper.className).toContain('border-surface-base')
+    })
+  })
+
+  describe('ring property', () => {
+    it('renders ring class per user', () => {
+      const usersWithRings: AvatarUser[] = [
+        { name: 'Lead User', ring: 'lead' },
+        { name: 'Admin User', ring: 'admin' },
+      ]
+      const { container } = render(
+        <AvatarGroup users={usersWithRings} showTooltip={false} />,
+      )
+      expect(container.querySelector('.ring-accent-7')).toBeInTheDocument()
+      expect(container.querySelector('.ring-warning-7')).toBeInTheDocument()
+    })
+  })
 })

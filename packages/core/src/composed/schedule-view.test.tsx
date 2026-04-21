@@ -80,4 +80,10 @@ describe('ScheduleView', () => {
     )
     expect(container.firstElementChild).toHaveClass('my-schedule')
   })
+
+  it('week view renders day columns', () => {
+    render(<ScheduleView view="week" date={baseDate} events={[]} />)
+    expect(screen.getByText(/Mon/)).toBeInTheDocument()
+    expect(screen.getByText(/Tue/)).toBeInTheDocument()
+  })
 })

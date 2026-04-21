@@ -1,6 +1,6 @@
 import { render, screen } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
-import { describe, expect, it, vi } from 'vitest'
+import { afterEach,beforeEach, describe, expect, it, vi } from 'vitest'
 
 import { ActivityFeed, type ActivityItem,groupItemsByTime } from './activity-feed'
 
@@ -152,6 +152,67 @@ describe('ActivityFeed', () => {
       expect(screen.getByText('Bob')).toBeInTheDocument()
       expect(screen.getByText('commented')).toBeInTheDocument()
     })
+  })
+
+  it('applies gap-1 in compact mode', () => {
+    const { container } = render(<ActivityFeed items={[makeItem()]} compact />)
+    expect(container.querySelector('.gap-1')).toBeInTheDocument()
+  })
+
+  it('expands detail on action click', async () => {
+    const user = userEvent.setup()
+    const items = [
+      makeItem({
+        id: '1',
+        action: 'updated the status',
+        detail: <p>Status changed from "In Progress" to "Done"</p>,
+      }),
+    ]
+    render(<ActivityFeed items={items} />)
+    expect(screen.queryByText(/Status changed/)).not.toBeInTheDocument()
+    await user.click(screen.getByText('updated the status'))
+    expect(screen.getByText(/Status changed from/)).toBeInTheDocument()
+  })
+})
+
+describe('ActivityFeed groupBy', () => {
+  beforeEach(() => {
+    vi.useFakeTimers()
+    vi.setSystemTime(new Date('2026-03-11T14:00:00Z'))
+  })
+  afterEach(() => {
+    vi.useRealTimers()
+  })
+
+  const groupedItems: ActivityItem[] = [
+    { id: 'g1', actor: { name: 'Alice' }, action: 'did thing today', timestamp: new Date('2026-03-11T10:00:00Z') },
+    { id: 'g2', actor: { name: 'Bob' }, action: 'did thing yesterday', timestamp: new Date('2026-03-10T10:00:00Z') },
+    { id: 'g3', actor: { name: 'Charlie' }, action: 'did thing last week', timestamp: new Date('2026-03-01T10:00:00Z') },
+  ]
+
+  it('renders group headers when groupBy="time"', () => {
+    render(<ActivityFeed items={groupedItems} groupBy="time" />)
+    expect(screen.getByText('Today')).toBeInTheDocument()
+    expect(screen.getByText('Yesterday')).toBeInTheDocument()
+    expect(screen.getByText('Older')).toBeInTheDocument()
+  })
+
+  it('does not render group headers by default (groupBy="none")', () => {
+    render(<ActivityFeed items={groupedItems} />)
+    expect(screen.queryByText('Today')).not.toBeInTheDocument()
+  })
+
+  it('renders custom group labels', () => {
+    render(
+      <ActivityFeed
+        items={groupedItems}
+        groupBy="time"
+        groupLabels={{ today: 'Aaj', yesterday: 'Kal', older: 'Purana' }}
+      />,
+    )
+    expect(screen.getByText('Aaj')).toBeInTheDocument()
+    expect(screen.getByText('Kal')).toBeInTheDocument()
+    expect(screen.getByText('Purana')).toBeInTheDocument()
   })
 })
 

@@ -220,9 +220,19 @@ Note: getFormFieldA11y() was removed in favor of useFormField() hook.
 </Accordion>
 ```
 
+## Composability
+- Built on Radix Accordion — accepts `value`/`defaultValue`/`onValueChange` matching the `type` discriminated union.
+- **`type="single"`** — value is a string (which item is open). Only one item open at a time. Pair with `collapsible` to allow closing the current item by re-clicking it.
+- **`type="multiple"`** — value is a string[] (which items are open). Multiple can be open at once.
+- **AccordionTrigger chevron:** Inline SVG that auto-rotates via the `data-state` attribute Radix sets (`open` / `closed`). The `chevronPosition` prop controls render order inside the trigger (left / right) — rotation still works from either position.
+- **AccordionContent:** Uses Radix CSS custom properties (`--radix-accordion-content-height`) for open/close height animation. Framer Motion handles the fade. Don't wrap AccordionContent children in additional motion components — doubles the animation.
+- **Inline, not portalled** — parent `overflow: hidden` WILL clip an open accordion. Keep accordions out of tight overflow contexts or use `overflow-visible` on the container.
+
 ## Gotchas
 - type is REQUIRED — omitting it causes runtime error
 - collapsible only works with type="single"
+- Each AccordionItem needs a unique `value` — duplicates silently break toggling
+- Don't put focusable elements inside AccordionTrigger — the trigger IS the focusable button, nested focusables break screen reader navigation
 
 ## Changes
 ### v0.29.0
@@ -330,8 +340,17 @@ Note: getFormFieldA11y() was removed in favor of useFormField() hook.
 </AlertDialog>
 ```
 
+## Composability
+- Built on Radix AlertDialog — like Dialog but **non-dismissible** by clicking outside or pressing Escape. The user must choose Cancel or Action.
+- Same portal + trigger + asChild pattern as Dialog.
+- `AlertDialogAction` and `AlertDialogCancel` are semantically distinct from generic buttons: they auto-close the dialog on click. Use them even if you wrap them around a styled Button via `asChild` so the close behavior stays wired.
+- **Focus management:** Initial focus lands on `AlertDialogCancel` (the safe default) — destructive confirmation is always one tab away.
+- Use AlertDialog for destructive / irreversible actions; use Dialog for everything else.
+
 ## Gotchas
-- AlertDialogAction does NOT have color="error" styling — add it yourself via className or wrap a Button
+- AlertDialogAction does NOT have color="error" styling — add it yourself via className or wrap a Button with `asChild`
+- Do NOT add a close-on-outside-click handler — the non-dismissible behavior is the whole point
+- AlertDialogCancel receives initial focus; don't flip the convention
 
 ## Changes
 ### v0.19.1
@@ -1854,8 +1873,18 @@ import { DataTableToolbar } from '@devalok/shilp-sutra/ui/data-table-toolbar'
 </Dialog>
 ```
 
+## Composability
+- Built on Radix Dialog primitives — every standard Radix prop passes through (`open`, `onOpenChange`, `defaultOpen`, `modal`).
+- **Trigger composition:** `<DialogTrigger asChild>` renders the wrapped element as the trigger — typical pattern is `<DialogTrigger asChild><Button>...</Button></DialogTrigger>`. Without `asChild`, a default button is injected.
+- **Portal rendering:** DialogContent portals to `document.body`. CSS containers (`overflow: hidden`, `transform`, stacking contexts) on ancestors of the trigger don't clip it. Container-scoped test queries miss portalled content — use `screen` or the portal root.
+- **Focus management:** Radix traps focus inside Content while open and restores it to the trigger on close. First focusable element inside receives focus automatically.
+- **Imperative close** from deep children: use `<DialogClose asChild>` around your own button, or `useDialogContext` — no prop drilling.
+- **z-index:** DialogContent uses `z-dialog` (configured in Tailwind theme). Nested overlays (Popover inside Dialog) stack on top because Popover uses `z-popover` (1400) higher than `z-dialog`.
+
 ## Gotchas
 - DialogTitle is required for accessibility — screen readers announce it when the dialog opens
+- If your layout suppresses the title visually, use `<VisuallyHidden>` around DialogTitle — don't omit it
+- Focus returns to the trigger on close — if the trigger is conditionally unmounted, focus lands on body; handle manually if that matters
 
 ## Changes
 ### v0.19.1
@@ -1904,8 +1933,18 @@ import { DataTableToolbar } from '@devalok/shilp-sutra/ui/data-table-toolbar'
 </DropdownMenu>
 ```
 
+## Composability
+- Radix DropdownMenu underneath — same prop surface (`open`, `onOpenChange`, `defaultOpen`, `modal`).
+- **Item variants** stack cleanly: `DropdownMenuCheckboxItem` for multi-select toggles, `DropdownMenuRadioGroup` + `DropdownMenuRadioItem` for single-select, `DropdownMenuSub` + `DropdownMenuSubTrigger/SubContent` for nested submenus. Each has its own keyboard model pre-wired.
+- **Keyboard:** Arrow keys navigate items, Enter/Space activates, Esc closes, typeahead jumps to first letter. All handled by Radix — don't re-implement.
+- **Trigger:** `<DropdownMenuTrigger asChild>` around any button. IconButton is the common pairing.
+- **Shortcut hints:** `<DropdownMenuShortcut>` inside an item renders a right-aligned `⌘K`-style kbd. Visual only — does NOT bind the shortcut globally.
+- **Closing from a handler:** Item onSelect auto-closes the menu by default. Pass `event.preventDefault()` inside the handler to keep it open (e.g. for checkbox items that shouldn't close on toggle).
+
 ## Gotchas
 - Use `asChild` on DropdownMenuTrigger to render your own button element
+- DropdownMenuShortcut is decorative — bind keyboard shortcuts separately (e.g. with `useHotkeys`)
+- Sub-menus need BOTH DropdownMenuSubTrigger (visible item) and DropdownMenuSubContent (the submenu panel) — missing either silently breaks the hover-open behavior
 
 ## Changes
 ### v0.22.0
@@ -2625,8 +2664,17 @@ const { size, stroke } = useIconContext()
 </Popover>
 ```
 
+## Composability
+- Built on Radix Popover — accepts `open`, `onOpenChange`, `defaultOpen`, `modal`.
+- **Trigger:** `<PopoverTrigger asChild>` wraps any focusable element.
+- **PopoverAnchor:** Optional — decouples the visual anchor from the interactive trigger. Useful when the trigger is small (e.g. an icon button) but you want the popover to position relative to a larger surrounding element.
+- **Positioning:** PopoverContent accepts `side` (top / right / bottom / left), `align` (start / center / end), `sideOffset`, and `collisionPadding` — all forwarded to Floating UI via Radix.
+- **Portal rendering:** Content portals to body; z-index is `z-popover` (1400) — above Dialog (`z-dialog`) so nested popovers-in-dialogs work correctly.
+- **Not for tooltips** — use Tooltip for transient hover-label content; Popover is for interactive content (forms, menus, pickers).
+
 ## Gotchas
 - Uses Framer Motion for enter/exit animations (v0.18.0)
+- If content needs to be modal (backdrop, focus trap), pass `modal={true}` to the root Popover
 
 ## Changes
 ### v0.18.0
@@ -2958,8 +3006,18 @@ const { size, stroke } = useIconContext()
 </Sheet>
 ```
 
+## Defaults
+    side="right"
+
+## Composability
+- Same primitives as Dialog — open/onOpenChange/defaultOpen, trigger asChild, portal rendering, focus trap.
+- `side` controls both the enter-from edge and the layout: top/bottom sides full-width, left/right sides ~75% of viewport (capped at sm breakpoint).
+- Use Sheet for side-anchored drawers (settings panels, mobile navigation); use Dialog for centered modals.
+- On mobile (`isMobile` from use-mobile), consider Sheet as the mobile-friendly equivalent of a Dialog/Popover — more thumb-reachable on tall screens.
+
 ## Gotchas
 - Uses Framer Motion for slide enter/exit animations (v0.18.0)
+- SheetTitle is required for accessibility (same rule as Dialog)
 
 ## Changes
 ### v0.18.0
@@ -3043,9 +3101,28 @@ const { size, stroke } = useIconContext()
 </SidebarProvider>
 ```
 
+## Composability
+The whole Sidebar ecosystem is driven by `SidebarContext` — the Provider owns the expand/collapse state and every descendant reads from it.
+
+**Who reads the context:**
+- `Sidebar` — applies collapsed / expanded / off-canvas styles based on `state`
+- `SidebarTrigger` — calls `toggleSidebar()` on click; reflects aria-expanded
+- `SidebarMenuButton` — uses `state === 'collapsed'` to show its `tooltip` (hidden label appears only when sidebar is icon-width)
+- `SidebarInset` — main content area adjusts its left offset based on sidebar width + state
+- `SidebarRail` — invisible hit target on the outer edge for click-to-toggle
+- Any user component that calls `useSidebar()` — full access to open/isMobile/toggle
+
+**Desktop vs mobile:** Context tracks `isMobile` via the `use-mobile` hook and branches behavior: on desktop the sidebar collapses to an icon rail; on mobile it becomes an off-canvas drawer controlled by `openMobile`.
+
+**Controlled or uncontrolled:** `SidebarProvider` accepts `open` + `onOpenChange` (controlled) or `defaultOpen` (uncontrolled). State is synced to a cookie for cross-route persistence.
+
+**Next.js / router integration:** `SidebarMenuButton` with `asChild` wraps any link element (`next/link`, `react-router Link`, plain `<a>`) — it transfers its styling + isActive state to the child while preserving the link's navigation semantics.
+
 ## Gotchas
 - SidebarProvider MUST wrap both Sidebar and SidebarInset
 - Use SidebarMenuButton for nav items (supports tooltip in collapsed state)
+- `tooltip` is only visible when sidebar is collapsed — providing one doesn't duplicate the visible label
+- Cookie-based state persistence means the sidebar defaults to its prior state on page reload — use `defaultOpen` to override if needed
 
 ## Changes
 ### v0.18.0
@@ -3425,8 +3502,16 @@ import { SplitButton } from '@devalok/shilp-sutra'
 </Stepper>
 ```
 
+## Composability
+- `Stepper` passes `activeStep` + `orientation` + each step's index down to every `Step` child via `StepperContext`. Each Step derives its own status (completed / active / pending) from its position vs `activeStep`.
+- Step index is assigned by position in children — order matters. Don't conditionally render Steps via `&&` or `.filter()`; it shifts the indices and breaks the active highlight.
+- `StepperContent` is separate from `Stepper` — it's the animated panel surface that shows one child per step index. Pass the same `activeStep` value to both.
+- `orientation="vertical"` swaps the Step layout (stacked with connecting line on the left) AND changes how StepperContent animates (vertical crossfade instead of horizontal slide).
+- Custom icons via `Step.icon` override the default number/checkmark — the icon slot still receives the status-based styling (muted for pending, accent for active/completed).
+
 ## Gotchas
 - Steps before activeStep are "completed", at activeStep is "active", after is "pending"
+- Don't conditionally render Step children — position is the index contract
 
 ## Changes
 ### v0.18.0
@@ -3893,8 +3978,18 @@ export default function RootLayout({ children }) {
 </TooltipProvider>
 ```
 
+## Composability
+- Built on Radix Tooltip — accepts `delayDuration`, `skipDelayDuration` (on TooltipProvider), and `open`/`onOpenChange`/`defaultOpen` (on Tooltip root).
+- **Auto-provider (v0.22.0+):** If no ancestor TooltipProvider exists, `<Tooltip>` auto-wraps itself with one. Explicit TooltipProvider is still recommended at layout root for shared `delayDuration` tuning.
+- **Trigger:** `<TooltipTrigger asChild>` around the element that should show the tooltip on hover/focus. Icon-only buttons are the canonical use case.
+- **Not interactive:** TooltipContent is for non-interactive text labels — don't put buttons/links inside. Use HoverCard or Popover when the popped content needs interaction.
+- **Positioning:** TooltipContent accepts `side`, `align`, `sideOffset`, and arrow via `<TooltipArrow>` (optional).
+- **Portal rendering:** z-index is `z-tooltip` (highest in the stack — above Popover and Dialog).
+
 ## Gotchas
-- TooltipProvider is REQUIRED — without it, tooltips won't show
+- TooltipProvider is REQUIRED at the layout level OR auto-created per-tooltip — but having a single root provider is better for consistent delays
+- Don't use Tooltip for critical information — hover-triggered UI is invisible to touch users. Pair with a visible label or aria-description
+- TooltipContent children must be inert — no buttons, no links, no focusable elements
 
 ## Changes
 ### v0.22.0

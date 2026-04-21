@@ -20,8 +20,18 @@
 </TooltipProvider>
 ```
 
+## Composability
+- Built on Radix Tooltip — accepts `delayDuration`, `skipDelayDuration` (on TooltipProvider), and `open`/`onOpenChange`/`defaultOpen` (on Tooltip root).
+- **Auto-provider (v0.22.0+):** If no ancestor TooltipProvider exists, `<Tooltip>` auto-wraps itself with one. Explicit TooltipProvider is still recommended at layout root for shared `delayDuration` tuning.
+- **Trigger:** `<TooltipTrigger asChild>` around the element that should show the tooltip on hover/focus. Icon-only buttons are the canonical use case.
+- **Not interactive:** TooltipContent is for non-interactive text labels — don't put buttons/links inside. Use HoverCard or Popover when the popped content needs interaction.
+- **Positioning:** TooltipContent accepts `side`, `align`, `sideOffset`, and arrow via `<TooltipArrow>` (optional).
+- **Portal rendering:** z-index is `z-tooltip` (highest in the stack — above Popover and Dialog).
+
 ## Gotchas
-- TooltipProvider is REQUIRED — without it, tooltips won't show
+- TooltipProvider is REQUIRED at the layout level OR auto-created per-tooltip — but having a single root provider is better for consistent delays
+- Don't use Tooltip for critical information — hover-triggered UI is invisible to touch users. Pair with a visible label or aria-description
+- TooltipContent children must be inert — no buttons, no links, no focusable elements
 
 ## Changes
 ### v0.22.0

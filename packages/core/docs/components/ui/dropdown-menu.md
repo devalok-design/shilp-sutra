@@ -31,8 +31,18 @@
 </DropdownMenu>
 ```
 
+## Composability
+- Radix DropdownMenu underneath — same prop surface (`open`, `onOpenChange`, `defaultOpen`, `modal`).
+- **Item variants** stack cleanly: `DropdownMenuCheckboxItem` for multi-select toggles, `DropdownMenuRadioGroup` + `DropdownMenuRadioItem` for single-select, `DropdownMenuSub` + `DropdownMenuSubTrigger/SubContent` for nested submenus. Each has its own keyboard model pre-wired.
+- **Keyboard:** Arrow keys navigate items, Enter/Space activates, Esc closes, typeahead jumps to first letter. All handled by Radix — don't re-implement.
+- **Trigger:** `<DropdownMenuTrigger asChild>` around any button. IconButton is the common pairing.
+- **Shortcut hints:** `<DropdownMenuShortcut>` inside an item renders a right-aligned `⌘K`-style kbd. Visual only — does NOT bind the shortcut globally.
+- **Closing from a handler:** Item onSelect auto-closes the menu by default. Pass `event.preventDefault()` inside the handler to keep it open (e.g. for checkbox items that shouldn't close on toggle).
+
 ## Gotchas
 - Use `asChild` on DropdownMenuTrigger to render your own button element
+- DropdownMenuShortcut is decorative — bind keyboard shortcuts separately (e.g. with `useHotkeys`)
+- Sub-menus need BOTH DropdownMenuSubTrigger (visible item) and DropdownMenuSubContent (the submenu panel) — missing either silently breaks the hover-open behavior
 
 ## Changes
 ### v0.22.0

@@ -42,8 +42,17 @@
 </AlertDialog>
 ```
 
+## Composability
+- Built on Radix AlertDialog — like Dialog but **non-dismissible** by clicking outside or pressing Escape. The user must choose Cancel or Action.
+- Same portal + trigger + asChild pattern as Dialog.
+- `AlertDialogAction` and `AlertDialogCancel` are semantically distinct from generic buttons: they auto-close the dialog on click. Use them even if you wrap them around a styled Button via `asChild` so the close behavior stays wired.
+- **Focus management:** Initial focus lands on `AlertDialogCancel` (the safe default) — destructive confirmation is always one tab away.
+- Use AlertDialog for destructive / irreversible actions; use Dialog for everything else.
+
 ## Gotchas
-- AlertDialogAction does NOT have color="error" styling — add it yourself via className or wrap a Button
+- AlertDialogAction does NOT have color="error" styling — add it yourself via className or wrap a Button with `asChild`
+- Do NOT add a close-on-outside-click handler — the non-dismissible behavior is the whole point
+- AlertDialogCancel receives initial focus; don't flip the convention
 
 ## Changes
 ### v0.19.1

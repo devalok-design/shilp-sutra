@@ -30,9 +30,19 @@
 </Accordion>
 ```
 
+## Composability
+- Built on Radix Accordion — accepts `value`/`defaultValue`/`onValueChange` matching the `type` discriminated union.
+- **`type="single"`** — value is a string (which item is open). Only one item open at a time. Pair with `collapsible` to allow closing the current item by re-clicking it.
+- **`type="multiple"`** — value is a string[] (which items are open). Multiple can be open at once.
+- **AccordionTrigger chevron:** Inline SVG that auto-rotates via the `data-state` attribute Radix sets (`open` / `closed`). The `chevronPosition` prop controls render order inside the trigger (left / right) — rotation still works from either position.
+- **AccordionContent:** Uses Radix CSS custom properties (`--radix-accordion-content-height`) for open/close height animation. Framer Motion handles the fade. Don't wrap AccordionContent children in additional motion components — doubles the animation.
+- **Inline, not portalled** — parent `overflow: hidden` WILL clip an open accordion. Keep accordions out of tight overflow contexts or use `overflow-visible` on the container.
+
 ## Gotchas
 - type is REQUIRED — omitting it causes runtime error
 - collapsible only works with type="single"
+- Each AccordionItem needs a unique `value` — duplicates silently break toggling
+- Don't put focusable elements inside AccordionTrigger — the trigger IS the focusable button, nested focusables break screen reader navigation
 
 ## Changes
 ### v0.29.0

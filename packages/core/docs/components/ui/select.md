@@ -6,11 +6,13 @@
 
 ## Props
 ### SelectTrigger
-    size: "sm" | "md" | "lg"
+    variant: "default" | "outline" | "ghost"
+    color: "default" | "error" | "success" | "warning" (sets aria-invalid when error)
+    size: "xs" | "sm" | "md" | "lg"
 
 ## Compound Components
     Select (root — value, onValueChange, defaultValue)
-      SelectTrigger (size goes HERE, not on Select root)
+      SelectTrigger (variant/color/size go HERE, not on Select root)
         SelectValue (placeholder)
       SelectContent
         SelectGroup (optional grouping)
@@ -19,7 +21,7 @@
         SelectSeparator
 
 ## Defaults
-    SelectTrigger size: "md"
+    SelectTrigger variant="default", color="default", size="md"
 
 ## Example
 ```jsx

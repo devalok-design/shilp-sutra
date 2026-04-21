@@ -5,7 +5,7 @@
 - Category: ui
 
 ## Props
-    size: "sm" | "md" | "lg"
+    size: "xs" | "sm" | "md" | "lg"
     state: "default" | "error" | "warning" | "success"
     (plus standard textarea attributes except native "size")
 

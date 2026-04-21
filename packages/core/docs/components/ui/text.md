@@ -5,11 +5,8 @@
 - Category: ui
 
 ## Props
-    variant: TextVariant
+    variant: "heading-2xl" | "heading-xl" | "heading-lg" | "heading-md" | "heading-sm" | "heading-xs" | "body-lg" | "body-md" | "body-sm" | "body-xs" | "label-lg" | "label-md" | "label-sm" | "label-xs" | "label-plain-lg" | "label-plain-md" | "label-plain-sm" | "caption" | "overline" | "code"
     as: ElementType (override the auto-selected HTML element)
-
-## Types
-    TextVariant = 'heading-2xl' | 'heading-xl' | 'heading-lg' | 'heading-md' | 'heading-sm' | 'heading-xs' | 'body-lg' | 'body-md' | 'body-sm' | 'body-xs' | 'label-lg' | 'label-md' | 'label-sm' | 'label-xs' | 'caption' | 'overline'
 
 ## Defaults
     variant: "body-md"

@@ -7,6 +7,8 @@
 ## Props
     value: number (default: 0)
     onValueChange: (value: number) => void
+    size: "xs" | "sm" | "md" | "lg"
+    state: "default" | "error" | "warning" | "success" (border color)
     min: number
     max: number
     step: number (default: 1)
@@ -14,6 +16,8 @@
 
 ## Defaults
     value: 0
+    size: "md"
+    state: "default"
     step: 1
     min: Number.MIN_SAFE_INTEGER
     max: Number.MAX_SAFE_INTEGER

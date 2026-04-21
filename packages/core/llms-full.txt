@@ -246,14 +246,15 @@ Note: getFormFieldA11y() was removed in favor of useFormField() hook.
 - Category: ui
 
 ## Props
-    variant: "subtle" | "filled" | "outline"
+    variant: "subtle" | "solid" | "outline" | "filled" (deprecated alias for "solid")
     color: "info" | "success" | "warning" | "error" | "neutral"
+    size: "sm" | "md" | "lg"
     title: string (optional)
     onDismiss: () => void (optional, shows X button when provided)
     children: ReactNode (body text)
 
 ## Defaults
-    variant="subtle", color="info"
+    variant="subtle", color="info", size="md"
 
 ## Example
 ```jsx
@@ -873,18 +874,22 @@ See `Button` docs for the public API.
 
 ## Props
     variant: "default" | "elevated" | "outline" | "flat"
+    color: "default" | "accent" | "error" | "success" | "warning" | "info" | "neutral" (border accent color)
+    size: "sm" | "md" | "lg" (padding — propagated to CardHeader/CardContent/CardFooter via context)
     interactive: boolean (enables hover shadow lift + pointer cursor)
+    accent: "left" | "top" | "right" | "bottom" (render a colored accent bar on the specified edge)
+    accentColor: "default" | "accent" | "error" | "success" | "warning" | "info" (color of the accent bar; default maps to accent-9)
 
 ## Compound Components
     Card (root)
-      CardHeader
+      CardHeader      ← inherits size from Card context
         CardTitle
         CardDescription
-      CardContent
-      CardFooter
+      CardContent     ← inherits size from Card context
+      CardFooter      ← inherits size from Card context
 
 ## Defaults
-    variant="default"
+    variant="default", color="default", size="md"
 
 ## Example
 ```jsx
@@ -1402,6 +1407,7 @@ Animated bouncing dots with a text description of who is typing.
 
 ## Props
     options: ComboboxOption[] (REQUIRED) — { value: string, label: string, description?: string, icon?: ReactNode, disabled?: boolean }
+    size: "xs" | "sm" | "md" | "lg" (trigger height)
     DISCRIMINATED UNION — type depends on `multiple` flag:
     Single (default): multiple?: false, value?: string, onValueChange: (value: string) => void
     Multiple: multiple: true, value?: string[], onValueChange: (value: string[]) => void
@@ -1409,13 +1415,14 @@ Animated bouncing dots with a text description of who is typing.
     searchPlaceholder: string (default: "Search...")
     emptyMessage: string (default: "No results found")
     disabled: boolean
-    triggerClassName: string
+    className: string (wrapper div — the positioning container, NOT the trigger)
+    triggerClassName: string (the actual Popover trigger button)
     accessibleLabel: string (custom aria-label for trigger, falls back to placeholder)
     maxVisible: number (default: 6, max dropdown items before scroll)
     renderOption: (option, selected) => ReactNode
 
 ## Defaults
-    placeholder="Select...", searchPlaceholder="Search...", emptyMessage="No results found", maxVisible=6
+    size="md", placeholder="Select...", searchPlaceholder="Search...", emptyMessage="No results found", maxVisible=6
 
 ## Example
 ```jsx
@@ -1430,7 +1437,9 @@ Animated bouncing dots with a text description of who is typing.
 
 ## Gotchas
 - Enforces selection from list (unlike Autocomplete which allows free text)
-- In multi mode, selected items appear as pills with "+N more" overflow
+- In multi mode, selected items appear as pills with "+N more" overflow (capped at 2 visible pills regardless of `maxVisible`)
+- `className` vs `triggerClassName`: `className` lands on the wrapper div (useful for width/positioning); `triggerClassName` lands on the actual Popover trigger button (useful for styling the control itself)
+- Dropdown content is portalled to document.body — parent styles like `overflow: hidden` don't clip it, and container-scoped test queries won't find it
 
 ## Changes
 ### v0.18.0
@@ -2446,6 +2455,8 @@ const { size, stroke } = useIconContext()
 ## Props
     value: number (default: 0)
     onValueChange: (value: number) => void
+    size: "xs" | "sm" | "md" | "lg"
+    state: "default" | "error" | "warning" | "success" (border color)
     min: number
     max: number
     step: number (default: 1)
@@ -2453,6 +2464,8 @@ const { size, stroke } = useIconContext()
 
 ## Defaults
     value: 0
+    size: "md"
+    state: "default"
     step: 1
     min: Number.MIN_SAFE_INTEGER
     max: Number.MAX_SAFE_INTEGER
@@ -2769,11 +2782,13 @@ const { size, stroke } = useIconContext()
 
 ## Props
 ### SelectTrigger
-    size: "sm" | "md" | "lg"
+    variant: "default" | "outline" | "ghost"
+    color: "default" | "error" | "success" | "warning" (sets aria-invalid when error)
+    size: "xs" | "sm" | "md" | "lg"
 
 ## Compound Components
     Select (root — value, onValueChange, defaultValue)
-      SelectTrigger (size goes HERE, not on Select root)
+      SelectTrigger (variant/color/size go HERE, not on Select root)
         SelectValue (placeholder)
       SelectContent
         SelectGroup (optional grouping)
@@ -2782,7 +2797,7 @@ const { size, stroke } = useIconContext()
         SelectSeparator
 
 ## Defaults
-    SelectTrigger size: "md"
+    SelectTrigger variant="default", color="default", size="md"
 
 ## Example
 ```jsx
@@ -2899,6 +2914,14 @@ const { size, stroke } = useIconContext()
 - Server-safe: No
 - Category: ui
 
+## Props
+### SidebarMenuButton
+    variant: "default" | "outline"
+    size: "sm" | "md" | "lg"
+    isActive: boolean (highlights as current nav item)
+    tooltip: ReactNode | string (shown when sidebar is collapsed)
+    asChild: boolean (render as Slot — common with next/link)
+
 ## Compound Components
     SidebarProvider (context provider — must wrap everything)
       Sidebar (root panel)
@@ -2926,6 +2949,9 @@ const { size, stroke } = useIconContext()
 
 ## Hook
     useSidebar() => { state, open, setOpen, openMobile, setOpenMobile, isMobile, toggleSidebar }
+
+## Defaults
+    SidebarMenuButton variant="default", size="md"
 
 ## Example
 ```jsx
@@ -3049,7 +3075,12 @@ const { size, stroke } = useIconContext()
 - Category: ui
 
 ## Props
-    Standard Radix Slider props (value, onValueChange, defaultValue, min, max, step, aria-label)
+    size: "sm" | "md" | "lg" (track height and thumb dimensions)
+    color: "accent" | "success" | "warning" | "error" (thumb border + focus ring color)
+    (plus standard Radix Slider props: value, onValueChange, defaultValue, min, max, step, aria-label)
+
+## Defaults
+    size="md", color="accent"
 
 ## Example
 ```jsx
@@ -3449,6 +3480,8 @@ import { SplitButton } from '@devalok/shilp-sutra'
 
 ### TabsList
     variant: "line" | "contained"
+    size: "sm" | "md" | "lg"
+    orientation: "horizontal" | "vertical"
 
 ### TabsTrigger
     value: string (REQUIRED)
@@ -3464,7 +3497,7 @@ import { SplitButton } from '@devalok/shilp-sutra'
       TabsContent (value)
 
 ## Defaults
-    TabsList variant: "line"
+    TabsList variant="line", size="md", orientation="horizontal"
 
 ## Example
 ```jsx
@@ -3502,11 +3535,8 @@ import { SplitButton } from '@devalok/shilp-sutra'
 - Category: ui
 
 ## Props
-    variant: TextVariant
+    variant: "heading-2xl" | "heading-xl" | "heading-lg" | "heading-md" | "heading-sm" | "heading-xs" | "body-lg" | "body-md" | "body-sm" | "body-xs" | "label-lg" | "label-md" | "label-sm" | "label-xs" | "label-plain-lg" | "label-plain-md" | "label-plain-sm" | "caption" | "overline" | "code"
     as: ElementType (override the auto-selected HTML element)
-
-## Types
-    TextVariant = 'heading-2xl' | 'heading-xl' | 'heading-lg' | 'heading-md' | 'heading-sm' | 'heading-xs' | 'body-lg' | 'body-md' | 'body-sm' | 'body-xs' | 'label-lg' | 'label-md' | 'label-sm' | 'label-xs' | 'caption' | 'overline'
 
 ## Defaults
     variant: "body-md"
@@ -3539,7 +3569,7 @@ import { SplitButton } from '@devalok/shilp-sutra'
 - Category: ui
 
 ## Props
-    size: "sm" | "md" | "lg"
+    size: "xs" | "sm" | "md" | "lg"
     state: "default" | "error" | "warning" | "success"
     (plus standard textarea attributes except native "size")
 
@@ -3692,13 +3722,13 @@ export default function RootLayout({ children }) {
 ## Props
     variant: "default" | "outline"
     size: "sm" | "md" | "lg"
+    color: "accent" | "error" | "success" | "neutral" (pressed-state bg + text color)
     pressed: boolean
     onPressedChange: (pressed: boolean) => void
     defaultPressed: boolean
 
 ## Defaults
-    variant: "default"
-    size: "md"
+    variant="default", size="md", color="accent"
 
 ## Example
 ```jsx

@@ -5,7 +5,12 @@
 - Category: ui
 
 ## Props
-    Standard Radix Slider props (value, onValueChange, defaultValue, min, max, step, aria-label)
+    size: "sm" | "md" | "lg" (track height and thumb dimensions)
+    color: "accent" | "success" | "warning" | "error" (thumb border + focus ring color)
+    (plus standard Radix Slider props: value, onValueChange, defaultValue, min, max, step, aria-label)
+
+## Defaults
+    size="md", color="accent"
 
 ## Example
 ```jsx

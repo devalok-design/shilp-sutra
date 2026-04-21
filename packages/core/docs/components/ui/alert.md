@@ -5,14 +5,15 @@
 - Category: ui
 
 ## Props
-    variant: "subtle" | "filled" | "outline"
+    variant: "subtle" | "solid" | "outline" | "filled" (deprecated alias for "solid")
     color: "info" | "success" | "warning" | "error" | "neutral"
+    size: "sm" | "md" | "lg"
     title: string (optional)
     onDismiss: () => void (optional, shows X button when provided)
     children: ReactNode (body text)
 
 ## Defaults
-    variant="subtle", color="info"
+    variant="subtle", color="info", size="md"
 
 ## Example
 ```jsx

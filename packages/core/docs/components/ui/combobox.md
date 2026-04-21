@@ -6,6 +6,7 @@
 
 ## Props
     options: ComboboxOption[] (REQUIRED) — { value: string, label: string, description?: string, icon?: ReactNode, disabled?: boolean }
+    size: "xs" | "sm" | "md" | "lg" (trigger height)
     DISCRIMINATED UNION — type depends on `multiple` flag:
     Single (default): multiple?: false, value?: string, onValueChange: (value: string) => void
     Multiple: multiple: true, value?: string[], onValueChange: (value: string[]) => void
@@ -13,13 +14,14 @@
     searchPlaceholder: string (default: "Search...")
     emptyMessage: string (default: "No results found")
     disabled: boolean
-    triggerClassName: string
+    className: string (wrapper div — the positioning container, NOT the trigger)
+    triggerClassName: string (the actual Popover trigger button)
     accessibleLabel: string (custom aria-label for trigger, falls back to placeholder)
     maxVisible: number (default: 6, max dropdown items before scroll)
     renderOption: (option, selected) => ReactNode
 
 ## Defaults
-    placeholder="Select...", searchPlaceholder="Search...", emptyMessage="No results found", maxVisible=6
+    size="md", placeholder="Select...", searchPlaceholder="Search...", emptyMessage="No results found", maxVisible=6
 
 ## Example
 ```jsx
@@ -34,7 +36,9 @@
 
 ## Gotchas
 - Enforces selection from list (unlike Autocomplete which allows free text)
-- In multi mode, selected items appear as pills with "+N more" overflow
+- In multi mode, selected items appear as pills with "+N more" overflow (capped at 2 visible pills regardless of `maxVisible`)
+- `className` vs `triggerClassName`: `className` lands on the wrapper div (useful for width/positioning); `triggerClassName` lands on the actual Popover trigger button (useful for styling the control itself)
+- Dropdown content is portalled to document.body — parent styles like `overflow: hidden` don't clip it, and container-scoped test queries won't find it
 
 ## Changes
 ### v0.18.0

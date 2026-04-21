@@ -4,6 +4,14 @@
 - Server-safe: No
 - Category: ui
 
+## Props
+### SidebarMenuButton
+    variant: "default" | "outline"
+    size: "sm" | "md" | "lg"
+    isActive: boolean (highlights as current nav item)
+    tooltip: ReactNode | string (shown when sidebar is collapsed)
+    asChild: boolean (render as Slot — common with next/link)
+
 ## Compound Components
     SidebarProvider (context provider — must wrap everything)
       Sidebar (root panel)
@@ -31,6 +39,9 @@
 
 ## Hook
     useSidebar() => { state, open, setOpen, openMobile, setOpenMobile, isMobile, toggleSidebar }
+
+## Defaults
+    SidebarMenuButton variant="default", size="md"
 
 ## Example
 ```jsx

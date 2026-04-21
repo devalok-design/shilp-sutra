@@ -12,6 +12,8 @@
 
 ### TabsList
     variant: "line" | "contained"
+    size: "sm" | "md" | "lg"
+    orientation: "horizontal" | "vertical"
 
 ### TabsTrigger
     value: string (REQUIRED)
@@ -27,7 +29,7 @@
       TabsContent (value)
 
 ## Defaults
-    TabsList variant: "line"
+    TabsList variant="line", size="md", orientation="horizontal"
 
 ## Example
 ```jsx

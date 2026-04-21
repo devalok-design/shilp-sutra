@@ -7,13 +7,13 @@
 ## Props
     variant: "default" | "outline"
     size: "sm" | "md" | "lg"
+    color: "accent" | "error" | "success" | "neutral" (pressed-state bg + text color)
     pressed: boolean
     onPressedChange: (pressed: boolean) => void
     defaultPressed: boolean
 
 ## Defaults
-    variant: "default"
-    size: "md"
+    variant="default", size="md", color="accent"
 
 ## Example
 ```jsx

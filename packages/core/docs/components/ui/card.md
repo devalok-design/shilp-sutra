@@ -6,18 +6,22 @@
 
 ## Props
     variant: "default" | "elevated" | "outline" | "flat"
+    color: "default" | "accent" | "error" | "success" | "warning" | "info" | "neutral" (border accent color)
+    size: "sm" | "md" | "lg" (padding — propagated to CardHeader/CardContent/CardFooter via context)
     interactive: boolean (enables hover shadow lift + pointer cursor)
+    accent: "left" | "top" | "right" | "bottom" (render a colored accent bar on the specified edge)
+    accentColor: "default" | "accent" | "error" | "success" | "warning" | "info" (color of the accent bar; default maps to accent-9)
 
 ## Compound Components
     Card (root)
-      CardHeader
+      CardHeader      ← inherits size from Card context
         CardTitle
         CardDescription
-      CardContent
-      CardFooter
+      CardContent     ← inherits size from Card context
+      CardFooter      ← inherits size from Card context
 
 ## Defaults
-    variant="default"
+    variant="default", color="default", size="md"
 
 ## Example
 ```jsx

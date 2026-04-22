@@ -1,5 +1,34 @@
 # @devalok/shilp-sutra
 
+## 0.37.1
+
+### Patch Changes
+
+- [`b9103ec`](https://github.com/devalok-design/shilp-sutra/commit/b9103ec07f7733060265280517fd52e8c93f3e53) Thanks [@Mudit-Lal](https://github.com/Mudit-Lal)! - **docs:** comprehensive sweep of every component doc — Composability sections, prop accuracy, and a new publish gate that prevents drift.
+
+  Most of the work is in `docs/components/**/*.md` (which ships in the npm bundle via the `files` array) and `llms-full.txt` (the compiled AI-agent reference, also shipped). No component APIs change.
+
+  **What changed for consumers:**
+  - **Every one of the 119 component docs now has a `## Composability` section** — covers required providers, context cascade, sibling/companion components, alternatives, router/framework integration. AI agents reading `llms-full.txt` get richer guidance on how pieces fit together, not just props + defaults.
+  - **Prop accuracy fixes on 11 components:** Alert (added `size`, documented `solid` variant), Card (added `color` / `size` / `accent` / `accentColor`), Combobox (`size`), NumberInput (`size` + `state`), Select (`variant` + `color`, size expanded to `xs`), Sidebar (SidebarMenuButton's `variant` / `size` / `isActive` / `tooltip` / `asChild`), Slider (`size` + `color`), Tabs (TabsList `size` + `orientation`), Text (full variant list enumerated), Textarea (`xs` size), Toggle (`color`). These props existed in source but weren't documented — consumers had to read the `.tsx` to find them.
+  - **Composability deepening** on 26 context-heavy components — Card (size cascade), ButtonGroup (position-aware radius, focus isolation), Form (FormField auto-consumption by Input/Textarea/NumberInput/InputOTP; explicit for Checkbox/Radio/Switch/Slider), Icon (IconProvider cascade), Sidebar (SidebarProvider state model + three-provider setup), DataTable (server vs client mode switching), etc.
+  - **InputOTP** — Props section finally lists `maxLength`, `value`, `onChange`, `onComplete`, `pattern`, `state`, `size` (was "standard input-otp props"). Documented the InputOTPSizeContext cascade.
+
+  **New publish gate:** `scripts/audit-component-docs.mjs --check` runs in `pre-publish-audit.mjs`. Fails the publish on any HIGH drift between a component's CVA source and its Props-section axes. Medium flags (TS-only props the script can't see) stay advisory.
+
+- [`b9103ec`](https://github.com/devalok-design/shilp-sutra/commit/b9103ec07f7733060265280517fd52e8c93f3e53) Thanks [@Mudit-Lal](https://github.com/Mudit-Lal)! - **fix(InlineEdit):** forward `aria-label` / `aria-labelledby` to the `role="textbox"` span.
+
+  InlineEdit renders `role="textbox"` on an inner span but previously spread all props to the outer wrapper `<div>` — so any `aria-label` consumers passed never reached the element that actually needed the accessible name. axe flagged it as "ARIA input fields must have an accessible name"; the existing a11y test even had a rule-disable workaround for this.
+
+  **Fix:**
+  - Intercept `aria-label` and `aria-labelledby` from props before spreading to the wrapper; apply them to the textbox span.
+  - Fall back to `placeholder` as the aria-label when neither is provided — screen readers always get a meaningful name.
+  - Skip entirely in `readOnly` mode (no `role="textbox"` to label).
+
+  **Migration:** no breaking changes. Consumers already passing `aria-label` will now see it on the correct element; consumers relying on the previous (broken) behavior had nothing to rely on — the label was silently dropped.
+
+  Discovered during the `describeConformance` adoption audit (2026-04-21).
+
 ## 0.37.0
 
 ### Minor Changes

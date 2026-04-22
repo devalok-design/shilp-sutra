@@ -4,8 +4,12 @@ storybook-static/
 *.tsbuildinfo
 .DS_Store
 .worktrees/
-.claude/
+# Ignore .claude/ EXCEPT for slash-command definitions, which we check in.
+# Must use `.claude/*` (not `.claude/`) so the negation can re-include
+# subdirectories — git can't un-ignore children of a fully-ignored dir.
+.claude/*
 !.claude/commands/
+!.claude/commands/**
 *.pdf
 
 # Prevent stale compiled .js from shadowing .tsx sources

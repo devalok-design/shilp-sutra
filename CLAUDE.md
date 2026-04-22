@@ -113,26 +113,17 @@ To add a legitimate exception, add the filename to `SURFACE1_ALLOWLIST` in `scri
 
 ## Publishing
 
-**Use `/publish-release` to publish.** This skill enforces the full checklist with automated gates.
+**Day-to-day:** Add a `.changeset/*.md` file → push/merge to `main` → `changesets/action` opens a Version Packages PR → review + merge → `.github/workflows/release.yml` publishes via OIDC Trusted Publisher (sigstore provenance). **Do not run `npm publish` manually.**
 
-**Automated tooling:**
-- `pnpm build` runs `post-build-audit.mjs` automatically (stale .js, use-client blast radius, surface token count)
-- `node scripts/pre-publish-audit.mjs` runs all hard gates (git clean, version match, docs coverage, typecheck, lint, tests, build, token audit, TW4 migration hygiene)
-- The `/publish-release` skill orchestrates docs → version bump → gates → optional Storybook review → publish
+**Authority on gates:** `scripts/pre-publish-audit.mjs` is the single source of truth — 45 hard gates (git clean, version ↔ CHANGELOG match, per-component docs coverage, CVA/doc prop accuracy, typecheck, lint, tests, build, SSR smoke, surface/shadow token hygiene, TW4 migration hygiene, published-exports ordering, bundle size). It runs in release.yml's Audit step before publish AND can be invoked locally (`node scripts/pre-publish-audit.mjs`) for pre-flight checks.
 
-**Do NOT run `npm publish` directly.** Always go through `/publish-release`.
+**Human judgment lives on the Version Packages PR.** See `/publish-release` for the reviewer checklist (changeset body quality, bump magnitude, Chromatic review, Storybook spot-check). CI can't evaluate these — they gate on merge.
 
-**Non-skippable rule:** `pre-publish-audit.mjs` runs BEFORE you decide whether docs are complete — not after. If an agent thinks "all the gates have effectively run in CI so we can skip this" — **no**. The audit script has project-aware checks (surface-1 allowlist, TW4 migration hygiene, docs coverage) that CI does not. The 0.36.0 publish slipped past llms.txt completeness because this rule wasn't followed. See the 2026-04-19 retro.
+**When CI is broken:** Use `/publish-release`'s emergency manual runbook. Not optional gates — every one still runs locally before publish. The Iron Law ("NO PUBLISHING WITHOUT EVERY GATE PASSING") applies regardless of who's pressing the button.
 
-If you realize docs were incomplete after publishing, immediately publish a patch version.
+**Auth state (2026-04-21+):** OIDC Trusted Publisher is active. `NPM_TOKEN` is no longer set; release.yml requires `id-token: write` permission and npm 11.5.1+ (the workflow bootstraps npm 11 before the publish step). See commits `79d60a8c`, `1f23742c`, `2c1f6ee0` for the saga that got us here.
 
-### Automated publishing (post 0.36.0)
-
-The Release workflow (`.github/workflows/release.yml`) auto-publishes via Changesets Action when a Version Packages PR merges. This requires:
-- `NPM_TOKEN` repo secret (classic Automation token, bypasses 2FA)
-- Org setting: "Workflow permissions: Read and write" + "Allow GitHub Actions to create and approve pull requests"
-
-Both are now configured. `/publish-release` skill remains as a manual fallback for emergencies.
+**If docs slip past a publish** (happened with 0.36.0's llms.txt gap): publish a patch immediately. Don't wait.
 
 ## Storybook MCP Server
 

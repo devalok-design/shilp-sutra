@@ -84,9 +84,16 @@ function getPackageVersion(pkg) {
   return pj.version
 }
 
-function getChangelogLatestVersion() {
-  const cl = readFileSync(join(ROOT, 'CHANGELOG.md'), 'utf-8')
-  const match = cl.match(/^## \[(\d+\.\d+\.\d+)\]/m)
+// Reads the latest version header from a package's changesets-managed
+// CHANGELOG.md. Changesets writes `## 0.37.1` (no brackets); the legacy
+// hand-maintained root CHANGELOG used Keep-a-Changelog `## [0.37.1]`.
+// Accept both. Skip prerelease entries (`## 0.37.0-next.1`) — pre-mode bypasses
+// this gate anyway, so stable-only matching keeps the regex simple.
+function getChangelogLatestVersion(pkg = 'core') {
+  const path = join(ROOT, 'packages', pkg, 'CHANGELOG.md')
+  if (!existsSync(path)) return null
+  const cl = readFileSync(path, 'utf-8')
+  const match = cl.match(/^## \[?(\d+\.\d+\.\d+)\]?\s*$/m)
   return match ? match[1] : null
 }
 
@@ -648,10 +655,9 @@ advisory('Components have Storybook stories', () => {
 advisory('Brand version matches CHANGELOG', () => {
   try {
     const brandVersion = getPackageVersion('brand')
-    const brandCL = readFileSync(join(ROOT, 'CHANGELOG.md'), 'utf-8')
-    const brandMatch = brandCL.match(/## \[(\d+\.\d+\.\d+)\].*brand/i)
-    if (!brandMatch) return true // No brand entry — acceptable
-    if (brandVersion !== brandMatch[1]) return `Brand ${brandVersion} vs CHANGELOG ${brandMatch[1]}`
+    const brandCLVersion = getChangelogLatestVersion('brand')
+    if (!brandCLVersion) return true // No brand CHANGELOG — acceptable
+    if (brandVersion !== brandCLVersion) return `Brand ${brandVersion} vs CHANGELOG ${brandCLVersion}`
     return true
   } catch {
     return true // Brand package may not exist

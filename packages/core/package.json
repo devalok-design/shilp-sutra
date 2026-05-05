@@ -841,7 +841,7 @@
     "@emoji-mart/react": "^1.1.1",
     "@floating-ui/dom": "^1.7.6",
     "@floating-ui/react-dom": "^2.1.8",
-    "@tabler/icons-react": "^3.41.1",
+    "@tabler/icons-react": "^3.42.0",
     "@tanstack/react-table": "^8.21.3",
     "@tanstack/react-virtual": "^3.13.23",
     "@tiptap/core": "^3.22.5",

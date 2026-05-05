@@ -5,7 +5,7 @@
 > All variant values and props verified from source CVA definitions.
 >
 > Package: @devalok/shilp-sutra
-> Version: 0.37.0
+> Version: 0.37.1
 >
 > **If you are an AI agent reading this file top-to-bottom:** the Setup
 > section below is authoritative. If any later per-component doc or a
@@ -256,7 +256,7 @@ Note: getFormFieldA11y() was removed in favor of useFormField() hook.
 - Category: ui
 
 ## Props
-    variant: "subtle" | "solid" | "outline" | "filled" (deprecated alias for "solid")
+    variant: "subtle" | "solid" | "outline"
     color: "info" | "success" | "warning" | "error" | "neutral"
     size: "sm" | "md" | "lg"
     title: string (optional)
@@ -287,6 +287,9 @@ Note: getFormFieldA11y() was removed in favor of useFormField() hook.
 - Icon is auto-selected by color (info=circle, success=check, warning=triangle, error=alert)
 
 ## Changes
+### v0.38.0
+- **Removed** (BREAKING) `variant="filled"` deprecated alias. Use `variant="solid"`.
+
 ### v0.31.0
 - **Added** `size` prop: `sm | md | lg`. Default `md` (non-breaking).
 

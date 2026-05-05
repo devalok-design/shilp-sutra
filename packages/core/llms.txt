@@ -471,7 +471,7 @@ Components with two-axis system: Button, Badge, Alert, Banner, Progress, StatusB
 - Slider: standard Radix slider
 
 ### Feedback & Notifications
-- Alert: variant(subtle|filled|outline) color(info|success|warning|error|neutral) + title, onDismiss
+- Alert: variant(subtle|solid|outline) color(info|success|warning|error|neutral) size(sm|md|lg) + title, onDismiss
 - Banner: color(info|success|warning|error|neutral) + actions?(ReactNode), onDismiss. `action` (singular) deprecated, use `actions`. Mobile flex-wrap for multiple buttons.
 - Toast: imperative API via toast.success/error/warning/info/loading/message/undo/promise/upload/custom — REQUIRES <Toaster> at layout root
 - Spinner: size(sm|md|lg) — renders with role="status"

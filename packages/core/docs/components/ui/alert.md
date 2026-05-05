@@ -5,7 +5,7 @@
 - Category: ui
 
 ## Props
-    variant: "subtle" | "solid" | "outline" | "filled" (deprecated alias for "solid")
+    variant: "subtle" | "solid" | "outline"
     color: "info" | "success" | "warning" | "error" | "neutral"
     size: "sm" | "md" | "lg"
     title: string (optional)
@@ -36,6 +36,9 @@
 - Icon is auto-selected by color (info=circle, success=check, warning=triangle, error=alert)
 
 ## Changes
+### v0.38.0
+- **Removed** (BREAKING) `variant="filled"` deprecated alias. Use `variant="solid"`.
+
 ### v0.31.0
 - **Added** `size` prop: `sm | md | lg`. Default `md` (non-breaking).
 

@@ -16,8 +16,6 @@ const alertVariants = cva(
       variant: {
         subtle: '',
         solid: '',
-        /** @deprecated Use `solid` instead. Alias kept for one version of backwards compatibility. */
-        filled: '',
         outline: '',
       },
       color: {
@@ -46,12 +44,6 @@ const alertVariants = cva(
       { variant: 'solid', color: 'warning', className: 'bg-warning-9 text-warning-fg border-transparent [&>svg]:text-warning-fg' },
       { variant: 'solid', color: 'error', className: 'bg-error-9 text-error-fg border-transparent [&>svg]:text-error-fg' },
       { variant: 'solid', color: 'neutral', className: 'bg-surface-raised-hover text-surface-fg border-transparent [&>svg]:text-surface-fg-muted' },
-      // filled — deprecated alias for solid (remove in next minor)
-      { variant: 'filled', color: 'info', className: 'bg-info-9 text-info-fg border-transparent [&>svg]:text-info-fg' },
-      { variant: 'filled', color: 'success', className: 'bg-success-9 text-success-fg border-transparent [&>svg]:text-success-fg' },
-      { variant: 'filled', color: 'warning', className: 'bg-warning-9 text-warning-fg border-transparent [&>svg]:text-warning-fg' },
-      { variant: 'filled', color: 'error', className: 'bg-error-9 text-error-fg border-transparent [&>svg]:text-error-fg' },
-      { variant: 'filled', color: 'neutral', className: 'bg-surface-raised-hover text-surface-fg border-transparent [&>svg]:text-surface-fg-muted' },
       // outline (transparent bg, colored border)
       { variant: 'outline', color: 'info', className: 'bg-transparent border-info-7 text-info-11' },
       { variant: 'outline', color: 'success', className: 'bg-transparent border-success-7 text-success-11' },
@@ -76,7 +68,6 @@ const ALERT_ICONS: Record<string, React.ForwardRefExoticComponent<any>> = {
  * and an optional dismiss button. Renders with `role="alert"` for screen reader announcements.
  *
  * **Variants:** `subtle` (default, tinted surface) | `solid` (solid colored bg) | `outline` (transparent bg, colored border)
- * (`filled` is accepted as a deprecated alias for `solid` — will be removed in a future version)
  *
  * **Colors:** `info` (default, blue tones) | `success` | `warning` | `error` | `neutral`
  * The matching icon (info circle, checkmark, triangle, alert circle) is auto-selected by color.
@@ -151,14 +142,14 @@ const Alert = React.forwardRef<HTMLDivElement, AlertProps>(
             <Icon icon={AlertIcon} size={iconSize} className="mt-ds-01 shrink-0" />
             <div className="flex-1 min-w-0">
               {title && <p className={cn(titleClass, 'font-semibold mb-ds-01')}>{title}</p>}
-              {/* Body: on solid/filled variants the CVA sets text-accent-fg (white) on
+              {/* Body: on solid variants the CVA sets text-accent-fg (white) on
                   saturated step-9 backgrounds. Muting the body to surface-fg (grey)
                   there drops contrast below WCAG AA. Only mute on subtle/outline
                   variants where the root color is a readable step-11. */}
               <div
                 className={cn(
                   textClass,
-                  variant !== 'solid' && variant !== 'filled' && 'text-surface-fg-muted',
+                  variant !== 'solid' && 'text-surface-fg-muted',
                 )}
               >
                 {children}

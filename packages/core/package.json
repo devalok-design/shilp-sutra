@@ -554,11 +554,6 @@
       "import": "./dist/composed/status-badge.js",
       "default": "./dist/composed/status-badge.js"
     },
-    "./composed/responsive-overlay": {
-      "types": "./dist/composed/responsive-overlay.d.ts",
-      "import": "./dist/composed/responsive-overlay.js",
-      "default": "./dist/composed/responsive-overlay.js"
-    },
     "./composed/schedule-view": {
       "types": "./dist/composed/schedule-view.d.ts",
       "import": "./dist/composed/schedule-view.js",

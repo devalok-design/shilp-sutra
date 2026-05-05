@@ -107,7 +107,6 @@
 - **Border tokens:** One step darker system-wide.
 - **Dark mode button text:** Pure white `neutral-0` (#fff) on brand-colored buttons.
 - **BottomNavbar:** Bottom padding is now `pb-safe` (safe-area-inset).
-- **ResponsiveOverlay:** Deprecated. Use Dialog or Sheet directly.
 - **iOS inputs:** Forced to `font-size: max(16px, 1em)` on mobile via preset.
 
 ## CHANGES (v0.32.0)
@@ -568,7 +567,6 @@ Import: `@devalok/shilp-sutra/ui/chat`
 - BulkActionBar: show, count, onClearSelection, actions[{label,icon?,onClick,color?,disabled?}]. Fixed bottom floating bar for multi-select contexts.
 - DeadlineIndicator: deadline(Date|string), warningThreshold?(1440min), criticalThreshold?(240min), format(relative|absolute), showIcon. Color transitions: green→yellow→red→overdue.
 - MasterDetail: selected, onBack, masterWidth, breakpoint(sm|md|lg). Compound: MasterDetail.List, MasterDetail.Detail, MasterDetail.ListItem(active). Desktop=grid, mobile=stacked with back button.
-- ResponsiveOverlay: open, onOpenChange, title, description, breakpoint(sm|md). Dialog on desktop, bottom Sheet on mobile.
 - MarkdownViewer: content(string), compact?, allowHtml?(false), linkTarget?('_blank'). Renders markdown with design system tokens.
 - EmojiPicker: onSelect(emoji), set?(native|apple|google|twitter|facebook), theme(auto|light|dark). EmojiPickerPopover wraps in Popover. Lazy-loads emoji-mart with set-specific data.
 - EmojiNode: TipTap inline atom node for spritesheet emoji rendering. Attrs: id, native, set, x, y. Use createEmojiSuggestion(set) to wire :shortcode: autocomplete. Export: EmojiNode, EmojiNodeAttrs, createEmojiSuggestion.

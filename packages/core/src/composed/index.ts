@@ -69,8 +69,6 @@ export {
 } from './page-skeletons'
 export type { Priority,PriorityIndicatorProps } from './priority-indicator'
 export { PriorityIndicator } from './priority-indicator'
-export type { ResponsiveOverlayProps } from './responsive-overlay'
-export { ResponsiveOverlay } from './responsive-overlay'
 export type { AudioPlayerProps, AudioWaveformProps, ChatToolbarItem, RichChatInputMessage, RichChatInputProps, UseVoiceRecorderOptions, UseVoiceRecorderReturn } from './rich-chat-input'
 export { AudioPlayer, AudioWaveform, RichChatInput, useVoiceRecorder } from './rich-chat-input'
 export type { MentionItem, RichTextEditorProps, RichTextViewerProps, ToolbarItem } from './rich-text-editor'

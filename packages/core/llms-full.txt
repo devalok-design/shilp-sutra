@@ -2617,6 +2617,7 @@ const { size, stroke } = useIconContext()
 ## Changes
 ### v0.38.0
 - **Removed** (BREAKING) deprecated `startIcon` / `endIcon` props. Use `startSection` / `endSection`.
+- **Removed** (BREAKING) deprecated `inputVariants` export. Use `inputWrapperVariants`.
 
 ### v0.29.0
 - **Changed** v2 rewrite: container-first architecture with wrapper div holding focus ring

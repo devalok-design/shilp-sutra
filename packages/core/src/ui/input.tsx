@@ -254,7 +254,4 @@ const Input = React.forwardRef<HTMLInputElement, InputProps>(
 )
 Input.displayName = 'Input'
 
-/** @deprecated Use inputWrapperVariants — semantics changed (now targets wrapper, not input) */
-const inputVariants = inputWrapperVariants
-
-export { Input, inputVariants, inputWrapperVariants }
+export { Input, inputWrapperVariants }

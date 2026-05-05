@@ -142,28 +142,6 @@ describe('Input', () => {
     expect(wrapper).toHaveClass('border-success-7')
   })
 
-  // --- Deprecated props backward compat ---
-
-  it('deprecated startIcon prop renders as startSection', () => {
-    render(
-      <Input startIcon={<span data-testid="legacy-icon">L</span>} placeholder="Legacy" />,
-    )
-    expect(screen.getByTestId('legacy-icon')).toBeInTheDocument()
-    const input = screen.getByPlaceholderText('Legacy')
-    // Icon section is flex sibling — input drops left padding
-    expect(input).toHaveClass('pl-0')
-  })
-
-  it('deprecated endIcon prop renders as endSection', () => {
-    render(
-      <Input endIcon={<span data-testid="legacy-end">L</span>} placeholder="Legacy end" />,
-    )
-    expect(screen.getByTestId('legacy-end')).toBeInTheDocument()
-    const input = screen.getByPlaceholderText('Legacy end')
-    // Icon section is flex sibling — input drops right padding
-    expect(input).toHaveClass('pr-0')
-  })
-
   // --- Section types ---
 
   describe('section types', () => {

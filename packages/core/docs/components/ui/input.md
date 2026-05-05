@@ -14,8 +14,6 @@
     startSectionType: 'icon' | 'label' (section display type — auto-inferred from content)
     endSectionType: 'icon' | 'label' (section display type — auto-inferred from content)
     wrapperClassName: string (classes for the wrapper div — border, bg, ring)
-    startIcon: ReactNode (@deprecated — use startSection)
-    endIcon: ReactNode (@deprecated — use endSection)
     (plus all standard HTML input attributes except native "size")
 
 ## Types
@@ -50,6 +48,9 @@
 - Section type is auto-inferred: strings default to `'label'` (tinted bg + border), React elements default to `'icon'` (fixed-width centered). Override with `startSectionType`/`endSectionType`.
 
 ## Changes
+### v0.38.0
+- **Removed** (BREAKING) deprecated `startIcon` / `endIcon` props. Use `startSection` / `endSection`.
+
 ### v0.29.0
 - **Changed** v2 rewrite: container-first architecture with wrapper div holding focus ring
 - **Added** `xs` size (28px height)

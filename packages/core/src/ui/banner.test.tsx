@@ -55,13 +55,4 @@ describe('Banner', () => {
     expect(screen.getByRole('button', { name: 'View details' })).toBeInTheDocument()
   })
 
-  it('renders deprecated action prop', () => {
-    render(
-      <Banner action={<button>Legacy action</button>}>
-        Legacy banner
-      </Banner>,
-    )
-    expect(screen.getByRole('button', { name: 'Legacy action' })).toBeInTheDocument()
-  })
-
 })

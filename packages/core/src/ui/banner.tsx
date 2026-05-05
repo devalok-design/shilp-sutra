@@ -48,7 +48,7 @@ const BANNER_ICONS: Record<string, React.ForwardRefExoticComponent<any>> = {
  * Alert is an inline block inside page content. Use Banner for system-level announcements.
  *
  * **`actions` slot:** Accepts any React node(s) — typically one or more `<Button variant="ghost" size="sm">`.
- * Multiple actions wrap gracefully on narrow viewports. The singular `action` prop is deprecated.
+ * Multiple actions wrap gracefully on narrow viewports.
  * **Dismissible:** Provide `onDismiss` to show an × button.
  *
  * @example
@@ -59,7 +59,7 @@ const BANNER_ICONS: Record<string, React.ForwardRefExoticComponent<any>> = {
  *
  * @example
  * // Success banner with a CTA action button:
- * <Banner color="success" action={<Button variant="ghost" size="sm">View report</Button>}>
+ * <Banner color="success" actions={<Button variant="ghost" size="sm">View report</Button>}>
  *   Your export is ready.
  * </Banner>
  *
@@ -73,16 +73,13 @@ const BANNER_ICONS: Record<string, React.ForwardRefExoticComponent<any>> = {
 export interface BannerProps
   extends Omit<React.HTMLAttributes<HTMLDivElement>, 'color'>,
     VariantProps<typeof bannerVariants> {
-  /** @deprecated Use `actions` instead */
-  action?: React.ReactNode
-  /** Action slot — accepts any React node(s), typically ghost Buttons. Preferred over `action`. */
+  /** Action slot — accepts any React node(s), typically ghost Buttons. */
   actions?: React.ReactNode
   onDismiss?: () => void
 }
 
 const Banner = React.forwardRef<HTMLDivElement, BannerProps>(
-  ({ className, color = 'info', action, actions, onDismiss, children, ...props }, ref) => {
-    const resolvedActions = actions ?? action
+  ({ className, color = 'info', actions, onDismiss, children, ...props }, ref) => {
     const BannerIcon = BANNER_ICONS[color ?? 'info']
     const [isVisible, setIsVisible] = React.useState(true)
 
@@ -104,8 +101,8 @@ const Banner = React.forwardRef<HTMLDivElement, BannerProps>(
           >
             <Icon icon={BannerIcon} size="md" className="shrink-0" />
             <div className="min-w-0 flex-1">{children}</div>
-            {resolvedActions && (
-              <div className="flex shrink-0 items-center gap-ds-02 [&_button]:transition-colors [&_button]:duration-moderate-01 [&_button]:ease-productive-standard [&_button:hover]:bg-current/10">{resolvedActions}</div>
+            {actions && (
+              <div className="flex shrink-0 items-center gap-ds-02 [&_button]:transition-colors [&_button]:duration-moderate-01 [&_button]:ease-productive-standard [&_button:hover]:bg-current/10">{actions}</div>
             )}
             {onDismiss && (
               <button

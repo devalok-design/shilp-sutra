@@ -472,7 +472,7 @@ Components with two-axis system: Button, Badge, Alert, Banner, Progress, StatusB
 
 ### Feedback & Notifications
 - Alert: variant(subtle|solid|outline) color(info|success|warning|error|neutral) size(sm|md|lg) + title, onDismiss
-- Banner: color(info|success|warning|error|neutral) + actions?(ReactNode), onDismiss. `action` (singular) deprecated, use `actions`. Mobile flex-wrap for multiple buttons.
+- Banner: color(info|success|warning|error|neutral) + actions?(ReactNode), onDismiss. Mobile flex-wrap for multiple buttons.
 - Toast: imperative API via toast.success/error/warning/info/loading/message/undo/promise/upload/custom — REQUIRES <Toaster> at layout root
 - Spinner: size(sm|md|lg) — renders with role="status"
 - Progress: track size(sm|md|lg), indicator color(default|success|warning|error), autoColor(boolean, auto-shifts color by value: 0-59=default, 60-84=warning, 85-100=success, >100=error)

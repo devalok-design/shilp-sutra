@@ -624,11 +624,6 @@
       "import": "./dist/hooks/use-mobile.js",
       "default": "./dist/hooks/use-mobile.js"
     },
-    "./hooks/use-toast": {
-      "types": "./dist/hooks/use-toast.d.ts",
-      "import": "./dist/hooks/use-toast.js",
-      "default": "./dist/hooks/use-toast.js"
-    },
     "./utils": {
       "types": "./dist/ui/lib/utils.d.ts",
       "import": "./dist/ui/lib/utils.js",

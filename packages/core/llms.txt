@@ -48,8 +48,6 @@
 - **MessageList:** `isLoadingMore` renamed to `loadingMore`.
 - **AppCommandPalette:** Default Karm routes removed. Use `CommandRegistryProvider` for page registration. `SearchResult` type adds optional `href` field.
 - **NumberInput:** Shape changed from pill to rounded rectangle.
-- **Alert:** `variant="filled"` deprecated → use `"solid"` (alias still works).
-- **SegmentedControl:** `variant="accent"` deprecated → use `"solid"` (alias still works).
 - **Dependencies:** `@floating-ui/dom`, `@tiptap/*`, `prosemirror-state` moved to devDeps (bundled; consumers no longer install them).
 
 ## NEW (v0.35.0)
@@ -100,7 +98,7 @@
 
 - **Button:** `variant="default"` removed (use `"solid"`), `variant="destructive"` removed (use `variant="solid" color="error"`), `color="default"` removed (use `"accent"`).
 - **Chip:** Removed. Use `Badge` instead.
-- **SegmentedControl:** Rewritten. `variant="filled"` → `"accent"`, `variant="tonal"` → `"default"`. `SegmentedControlItem` no longer exported. Legacy sizes `small`/`medium`/`big` removed.
+- **SegmentedControl:** Rewritten. Variants are `"default"` (white pill) and `"solid"` (brand pill). `SegmentedControlItem` no longer exported.
 - **TopBar:** Now renders as `<header>` (was `<div>`).
 - **Sidebar:** Now renders as `<aside>` (was `<div>`).
 - **InfoBlock:** `role="status"` (was `role="alert"`).
@@ -123,7 +121,7 @@
 - **DataTable `mobileView="card"`** — Rows render as stacked cards below 640px. First column = card title, rest = label-value pairs.
 - **DataTable `aria-sort`** — Sortable column headers include `aria-sort`.
 - **Charts `ariaLabel` prop** — Configurable screen reader label on all chart components.
-- **SegmentedControl** — Redesigned: `variant="default"` (white pill + shadow-sm) | `variant="accent"` (brand pill). Inset radius, snappy spring animation.
+- **SegmentedControl** — Redesigned: `variant="default"` (white pill + shadow-raised) | `variant="solid"` (brand pill). Inset radius, snappy spring animation.
 - **`--shadow-kbd` token** — Keyboard shortcut badge shadow. Use `shadow-kbd` utility.
 - **Checkbox/Radio `size` prop** — `sm | md (default) | lg`.
 
@@ -466,7 +464,7 @@ Components with two-axis system: Button, Badge, Alert, Banner, Progress, StatusB
 - Select > SelectTrigger(size: xs|sm|md|lg) > SelectValue; SelectContent > SelectItem(value)
 - Toggle: variant(default|outline) size(sm|md|lg)
 - ToggleGroup > ToggleGroupItem (variant/size propagate from root)
-- SegmentedControl > SegmentedControlItem: variant(filled|tonal) size(sm|md|lg). Types: SegmentedControlOption = { id, text, icon? }, SegmentedControlSize = 'sm' | 'md' | 'lg', SegmentedControlVariant = 'filled' | 'tonal'
+- SegmentedControl: variant(default|solid) size(sm|md|lg) options selectedId onSelect. Types: SegmentedControlOption = { id, text, icon? }, SegmentedControlSize = 'sm' | 'md' | 'lg', SegmentedControlVariant = 'default' | 'solid'
 - Slider: standard Radix slider
 
 ### Feedback & Notifications

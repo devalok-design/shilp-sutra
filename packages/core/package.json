@@ -629,18 +629,6 @@
       "import": "./dist/hooks/use-toast.js",
       "default": "./dist/hooks/use-toast.js"
     },
-    "./tailwind": {
-      "types": "./dist/tailwind/index.d.ts",
-      "require": "./dist/tailwind/index.cjs",
-      "import": "./dist/tailwind/index.js",
-      "default": "./dist/tailwind/index.js"
-    },
-    "./tailwind/preset": {
-      "types": "./dist/tailwind/preset.d.ts",
-      "require": "./dist/tailwind/index.cjs",
-      "import": "./dist/tailwind/preset.js",
-      "default": "./dist/tailwind/preset.js"
-    },
     "./utils": {
       "types": "./dist/ui/lib/utils.d.ts",
       "import": "./dist/ui/lib/utils.js",

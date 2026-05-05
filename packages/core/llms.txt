@@ -13,7 +13,7 @@
   @import "tailwindcss";
   @import "@devalok/shilp-sutra/css";
   ```
-  The old `./tailwind` export is a deprecated no-op stub; importing it logs a dev-mode `console.warn` and is scheduled for removal in 0.38.
+  The `./tailwind` export has been removed in 0.38. Delete any `tailwind.config.ts` that referenced the preset and switch to the CSS import above.
 - **framer-motion is now a required peer dep.** Previously bundled. Install: `pnpm add framer-motion`. Module-scoped React contexts (MotionConfig, LayoutGroup, AnimatePresence) must be single-copy — the peer declaration forces pnpm to dedupe against the consumer's version.
 - **sonner is now an optional peer dep.** Install only if you render `<Toaster />`: `pnpm add sonner`.
 - **tailwindcss peer tightened to `^4.0.0`.** No more `^3.4.0 || ^4.0.0`.
@@ -406,11 +406,8 @@ import { toast } from '@devalok/shilp-sutra/ui/toast'
 // Hooks:
 import { useColorMode } from '@devalok/shilp-sutra/hooks/use-color-mode'
 
-// CSS tokens (import once at app root):
-import '@devalok/shilp-sutra/tokens'
-
-// Tailwind preset (in tailwind.config):
-import shilpSutra from '@devalok/shilp-sutra/tailwind'
+// CSS tokens (import once at app root — already included in /css):
+import '@devalok/shilp-sutra/css'
 
 ## CRITICAL: Differences from shadcn/ui
 

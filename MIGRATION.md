@@ -4,6 +4,73 @@ This page indexes all breaking changes across `@devalok/shilp-sutra` versions. F
 
 > **Upgrading from &lt; 0.36?** Start here, then read each intermediate version section. Breaking changes stack — skipping versions means stacking migrations.
 
+## v0.38.0 — Deprecation sweep
+
+0.38 removes 8 deprecated APIs that were soft-deprecated in earlier minor releases. All were available as aliases alongside their replacements; this release drops the aliases.
+
+### Removed APIs and replacements
+
+| Package | Removed | Use instead |
+|---------|---------|-------------|
+| `@devalok/shilp-sutra/ui/alert` | `variant="filled"` | `variant="solid"` |
+| `@devalok/shilp-sutra/ui/banner` | `action` prop | `actions` prop |
+| `@devalok/shilp-sutra/ui/input` | `startIcon` / `endIcon` props | `startSection` / `endSection` |
+| `@devalok/shilp-sutra/ui/input` | `inputVariants` export | `inputWrapperVariants` |
+| `@devalok/shilp-sutra/ui/segmented-control` | `variant="accent"` | `variant="solid"` |
+| `@devalok/shilp-sutra/composed` | `ResponsiveOverlay` component | `Dialog` or `Sheet` directly |
+| `@devalok/shilp-sutra/tailwind` | entire `./tailwind` export | CSS import (see v0.37 guide) |
+| `@devalok/shilp-sutra/hooks/use-toast` | entire `./hooks/use-toast` export | `toast` from `@devalok/shilp-sutra` |
+
+### Quick migration checklist
+
+**Alert `variant="filled"` → `variant="solid"`:**
+```diff
+- <Alert variant="filled" color="error">Error occurred</Alert>
++ <Alert variant="solid" color="error">Error occurred</Alert>
+```
+
+**Banner `action` → `actions`:**
+```diff
+- <Banner action={<Button>Dismiss</Button>}>Update available</Banner>
++ <Banner actions={<Button>Dismiss</Button>}>Update available</Banner>
+```
+
+**Input `startIcon`/`endIcon` → `startSection`/`endSection`:**
+```diff
+- <Input startIcon={<Icon icon={IconSearch} />} />
++ <Input startSection={<Icon icon={IconSearch} />} />
+```
+
+**Input `inputVariants` → `inputWrapperVariants`:**
+```diff
+- import { inputVariants } from '@devalok/shilp-sutra'
++ import { inputWrapperVariants } from '@devalok/shilp-sutra'
+```
+
+**SegmentedControl `variant="accent"` → `variant="solid"`:**
+```diff
+- <SegmentedControl variant="accent" ... />
++ <SegmentedControl variant="solid" ... />
+```
+
+**ResponsiveOverlay → Dialog or Sheet:**
+```diff
+- import { ResponsiveOverlay } from '@devalok/shilp-sutra/composed'
+- <ResponsiveOverlay open={open} onOpenChange={setOpen} title="Details">...</ResponsiveOverlay>
++ import { Dialog, DialogContent, DialogHeader, DialogTitle } from '@devalok/shilp-sutra'
++ <Dialog open={open} onOpenChange={setOpen}>
++   <DialogContent><DialogHeader><DialogTitle>Details</DialogTitle></DialogHeader>...</DialogContent>
++ </Dialog>
+```
+
+**`./tailwind` preset:** Already removed in 0.37 — follow the [v0.37 migration guide](#v0370--tailwind-4-css-first-migration) if you haven't already.
+
+**`hooks/use-toast`:**
+```diff
+- import { toast } from '@devalok/shilp-sutra/hooks/use-toast'
++ import { toast } from '@devalok/shilp-sutra'
+```
+
 ## v0.37.0 — Tailwind 4 CSS-first migration
 
 0.37 completes the Tailwind 3 → 4 migration that started in 0.34. The JS preset is gone. Tokens now ship as `@theme` CSS variables that TW4 consumes directly. **This is a breaking setup change; component APIs are unchanged.**

@@ -1,5 +1,10 @@
 # shilp-sutra Design System
 
+> **Other AI agents (Cursor, Copilot, Codex, Aider):** read [`AGENTS.md`](./AGENTS.md) — generic agent contract.
+> **Consumer-facing setup recipes:** [`packages/core/docs/recipes/`](./packages/core/docs/recipes/) — ship inside the npm tarball, available at `node_modules/@devalok/shilp-sutra/docs/recipes/` once installed.
+>
+> This file (`CLAUDE.md`) is the maintainer-facing repo guide loaded by Claude Code when working IN this repository. It is not shipped to consumers.
+
 ## Quick Reference
 
 - **Monorepo**: pnpm workspaces — `packages/core`, `packages/brand`

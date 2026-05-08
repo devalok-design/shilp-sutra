@@ -1,13 +1,44 @@
 {
   "name": "@devalok/shilp-sutra",
   "version": "0.37.1",
-  "description": "Devalok Design System — tokens, components, and patterns for Next.js",
+  "description": "Devalok Design System — accessible React components, OKLCH design tokens, and Tailwind 4 CSS-first setup. Ships with AI-agent setup recipes.",
   "license": "MIT",
+  "author": "Devalok Design & Strategy Studios <shilp-sutra@devalok.in>",
+  "homepage": "https://devalok-design.github.io/shilp-sutra/",
   "repository": {
     "type": "git",
     "url": "https://github.com/devalok-design/shilp-sutra",
     "directory": "packages/core"
   },
+  "bugs": {
+    "url": "https://github.com/devalok-design/shilp-sutra/issues"
+  },
+  "keywords": [
+    "react",
+    "design-system",
+    "components",
+    "ui",
+    "ui-library",
+    "tailwindcss",
+    "tailwind-v4",
+    "typescript",
+    "accessible",
+    "a11y",
+    "wcag",
+    "radix-ui",
+    "headless",
+    "cva",
+    "design-tokens",
+    "oklch",
+    "framer-motion",
+    "dark-mode",
+    "nextjs",
+    "vite",
+    "astro",
+    "remix",
+    "ai-agent",
+    "llms-txt"
+  ],
   "type": "module",
   "main": "./dist/ui/index.js",
   "module": "./dist/ui/index.js",
@@ -700,6 +731,7 @@
   "files": [
     "dist",
     "docs/components",
+    "docs/recipes",
     "docs/rollback.md",
     "fonts",
     "MIGRATION.md",

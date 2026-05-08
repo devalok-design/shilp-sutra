@@ -4,6 +4,30 @@
 > Built on the same primitives as shadcn/ui but with key API differences.
 > Read this file BEFORE writing any UI code. Do NOT guess from shadcn/ui knowledge.
 
+## QUICK SETUP (AI agents — start here)
+
+If you are setting up shilp-sutra in a consumer project for the first time, **do not improvise**. Use a recipe.
+
+When the package is installed, recipes ship at `node_modules/@devalok/shilp-sutra/docs/recipes/`. Pick one based on the consumer's framework:
+
+| Framework | Recipe file |
+|---|---|
+| Next.js (App Router) | `install-next-app-router.md` |
+| Next.js (Pages Router) | `install-next-pages.md` |
+| Vite + React | `install-vite.md` |
+| Astro | `install-astro.md` |
+| Remix | `install-remix.md` |
+| TanStack Start | `install-tanstack-start.md` |
+| Other React + Tailwind | start from `install-vite.md` and adapt |
+
+Other recipes:
+
+- `customize-brand.md` — token override cookbook (color, radius, font, spacing)
+- `server-components.md` — RSC-safety matrix and import patterns
+- `troubleshoot.md` — decision tree for the 8 most common breakages
+
+The repo URL for these files is `https://github.com/devalok-design/shilp-sutra/tree/main/packages/core/docs/recipes`. Consumer projects should also have an `AGENTS.md` at their root with the rules above pre-loaded — read that first if it exists.
+
 ## BREAKING CHANGES (v0.37.0 — Tailwind 4 CSS-first)
 
 **Setup migration only — component APIs unchanged.** See `MIGRATION.md` at the root of this package (or https://github.com/devalok-design/shilp-sutra/blob/main/MIGRATION.md#v0370--tailwind-4-css-first-migration) for the full guide.

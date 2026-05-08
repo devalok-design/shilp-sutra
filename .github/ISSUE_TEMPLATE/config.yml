@@ -1,0 +1,14 @@
+blank_issues_enabled: false
+contact_links:
+  - name: Security vulnerability
+    url: https://github.com/devalok-design/shilp-sutra/blob/main/SECURITY.md
+    about: Report privately via shilp-sutra@devalok.in — do NOT open a public issue.
+  - name: Setup question (read first)
+    url: https://github.com/devalok-design/shilp-sutra/blob/main/packages/core/docs/recipes/troubleshoot.md
+    about: Most install / setup problems are answered in the troubleshoot decision tree.
+  - name: Storybook component reference
+    url: https://devalok-design.github.io/shilp-sutra/
+    about: Browse components, variants, props, and live examples.
+  - name: AI agent contract
+    url: https://github.com/devalok-design/shilp-sutra/blob/main/AGENTS.md
+    about: How AI coding agents should consume shilp-sutra.

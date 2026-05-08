@@ -1,0 +1,68 @@
+name: AI agent feedback
+description: An AI coding agent (Claude Code, Cursor, Copilot, Codex, Aider) hit a wall while using shilp-sutra in a consumer project.
+title: "[ai-agent] "
+labels: ["ai-agent-feedback", "needs-triage"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        File this when an agent: (a) followed a recipe and it broke, (b) the docs claim something the code doesn't do, (c) `llms.txt` / `llms-full.txt` / `AGENTS.md` is missing context the agent needed, OR (d) a constraint we documented turned out to be wrong.
+
+        Karm's agent flow uses the `karm-ai-agent-feedback` label specifically — pick that label below if you're filing from Karm. Other consumer agents use the default `ai-agent-feedback`.
+
+  - type: input
+    id: agent
+    attributes:
+      label: Which agent
+      placeholder: "Claude Code 2.x / Cursor 0.x / GitHub Copilot / Codex / Aider"
+    validations:
+      required: true
+
+  - type: input
+    id: package-version
+    attributes:
+      label: shilp-sutra version
+      placeholder: "0.38.0"
+    validations:
+      required: true
+
+  - type: input
+    id: recipe-path
+    attributes:
+      label: Recipe followed (if any)
+      description: Path inside `docs/recipes/` or "none — improvised"
+      placeholder: "install-next-app-router.md"
+
+  - type: textarea
+    id: what-agent-tried
+    attributes:
+      label: What the agent tried
+      description: Paste the prompt, the agent's plan, OR the file edits it made.
+    validations:
+      required: true
+
+  - type: textarea
+    id: what-broke
+    attributes:
+      label: Where it broke
+      description: Exact error, stack trace, or describe the confused-but-not-erroring behavior. Include the file/line the docs pointed to vs. what the agent actually saw.
+    validations:
+      required: true
+
+  - type: textarea
+    id: doc-gap
+    attributes:
+      label: What the docs should have said
+      description: Suggest the fix. Even a rough sentence helps. We update llms.txt, llms-full.txt, AGENTS.md, and recipes from these reports.
+    validations:
+      required: true
+
+  - type: dropdown
+    id: source
+    attributes:
+      label: Where you'd like this routed
+      options:
+        - "ai-agent-feedback (default — any consumer)"
+        - "karm-ai-agent-feedback (Karm app specifically)"
+    validations:
+      required: true

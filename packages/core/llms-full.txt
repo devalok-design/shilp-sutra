@@ -39,7 +39,7 @@ pnpm add sonner
 transpilePackages: ['@devalok/shilp-sutra', '@devalok/shilp-sutra-brand'],
 ```
 
-**Do NOT** import `@devalok/shilp-sutra/tailwind` in a `tailwind.config.ts`. That export is a deprecated no-op stub and logs a dev-mode `console.warn`. It is scheduled for removal in 0.38.
+**Do NOT** import `@devalok/shilp-sutra/tailwind`. That export was removed in 0.38.0. Use the CSS-first setup (`@import "tailwindcss"; @import "@devalok/shilp-sutra/css";`) — no `tailwind.config.ts` is required.
 
 ### Peer dependencies (0.37.0)
 

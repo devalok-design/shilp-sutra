@@ -4,6 +4,26 @@
 
 ### Minor Changes
 
+- [#41](https://github.com/devalok-design/shilp-sutra/pull/41) [`db68ada`](https://github.com/devalok-design/shilp-sutra/commit/db68ada99bb33ca95c9a3cc050ed918536816b2b) Thanks [@Mudit-Lal](https://github.com/Mudit-Lal)! - **v0.38.0 — Deprecation sweep (8 breaking removals)**
+
+  Removes all APIs deprecated since v0.29.0–v0.37.0. Migrate using the [v0.38 migration guide](https://github.com/devalok-design/shilp-sutra/blob/main/MIGRATION.md#v0380--deprecation-sweep).
+
+  > **Note on bump magnitude:** these are breaking changes shipped as a `minor` bump per the pre-1.0 semver convention codified in [`CONTRIBUTING.md` § Versioning & Breaking Changes](https://github.com/devalok-design/shilp-sutra/blob/main/CONTRIBUTING.md#versioning--breaking-changes). Once we hit 1.0, equivalent removals will require a `major` bump.
+
+  **Breaking changes:**
+  - `Alert`: removed `variant="filled"` → use `variant="solid"`
+  - `Banner`: removed `action` prop → use `actions`
+  - `Input`: removed `startIcon` / `endIcon` props → use `startSection` / `endSection`
+  - `Input`: removed `inputVariants` export → use `inputWrapperVariants`
+  - `SegmentedControl`: removed `variant="accent"` → use `variant="solid"`
+  - `ResponsiveOverlay`: removed component → use `Dialog` or `Sheet` directly
+  - `./tailwind` export: removed (was a no-op stub since 0.37.0) → use CSS-first setup
+  - `./hooks/use-toast` export: removed → import `toast` from `@devalok/shilp-sutra`
+
+  **Dependency bumps (no consumer API changes):**
+  - TipTap `^3.22.3` → `^3.22.5`
+  - `@tabler/icons-react` `^3.41.1` → `^3.42.0`
+
 - [#41](https://github.com/devalok-design/shilp-sutra/pull/41) [`db68ada`](https://github.com/devalok-design/shilp-sutra/commit/db68ada99bb33ca95c9a3cc050ed918536816b2b) Thanks [@Mudit-Lal](https://github.com/Mudit-Lal)! - **Doc-driven AI-agent setup for public release**
 
   Ships a complete recipes catalog + governance baseline so any AI coding agent (Claude Code, Cursor, Copilot, Codex, Aider) can install and configure shilp-sutra in any consumer project just by reading the bundled docs.
@@ -49,24 +69,6 @@
   **For maintainers:**
 
   The `CODEOWNERS` file routes reviews to the `@devalok-design/shilp-sutra` GitHub team (<https://github.com/orgs/devalok-design/teams/shilp-sutra>). Vulnerability reports go to `shilp-sutra@devalok.in` (set up as an alias to the maintainer inbox).
-
-- [#41](https://github.com/devalok-design/shilp-sutra/pull/41) [`db68ada`](https://github.com/devalok-design/shilp-sutra/commit/db68ada99bb33ca95c9a3cc050ed918536816b2b) Thanks [@Mudit-Lal](https://github.com/Mudit-Lal)! - **v0.38.0 — Deprecation sweep (8 breaking removals)**
-
-  Removes all APIs deprecated since v0.29.0–v0.37.0. Migrate using the [v0.38 migration guide](https://github.com/devalok-design/shilp-sutra/blob/main/MIGRATION.md#v0380--deprecation-sweep).
-
-  **Breaking changes:**
-  - `Alert`: removed `variant="filled"` → use `variant="solid"`
-  - `Banner`: removed `action` prop → use `actions`
-  - `Input`: removed `startIcon` / `endIcon` props → use `startSection` / `endSection`
-  - `Input`: removed `inputVariants` export → use `inputWrapperVariants`
-  - `SegmentedControl`: removed `variant="accent"` → use `variant="solid"`
-  - `ResponsiveOverlay`: removed component → use `Dialog` or `Sheet` directly
-  - `./tailwind` export: removed (was a no-op stub since 0.37.0) → use CSS-first setup
-  - `./hooks/use-toast` export: removed → import `toast` from `@devalok/shilp-sutra`
-
-  **Dependency bumps (no consumer API changes):**
-  - TipTap `^3.22.3` → `^3.22.5`
-  - `@tabler/icons-react` `^3.41.1` → `^3.42.0`
 
 ## 0.37.1
 

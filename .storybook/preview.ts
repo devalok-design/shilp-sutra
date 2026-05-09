@@ -1,12 +1,33 @@
 import React from 'react'
 import { definePreview } from '@storybook/react-vite'
 import { parameters as docsParameters } from '@storybook/addon-docs/preview'
+import isChromatic from 'chromatic/isChromatic'
 import { TooltipProvider } from '../packages/core/src/ui/tooltip'
 import theme from './theme'
 // Single CSS entry — storybook.css @imports tailwindcss + shilp-sutra.css
 // (our TW4-native token bundle). The legacy tokens/index.css import that
 // used to live here was removed in 0.37 (avoided double-loading tokens).
 import '../storybook.css'
+
+// Freeze animations under Chromatic for deterministic visual snapshots.
+// Spinner, marching-ant Button, and other infinite animations otherwise
+// capture at random phases and produce false-positive diffs every build.
+// Trade-off: Chromatic loses the ability to catch easing-curve regressions.
+// Acceptable — visual diffs of static frames are far more valuable to gate.
+if (typeof document !== 'undefined' && isChromatic()) {
+  const style = document.createElement('style')
+  style.setAttribute('data-shilp-sutra', 'chromatic-freeze')
+  style.textContent = `
+    *, *::before, *::after {
+      animation-duration: 0s !important;
+      animation-delay: 0s !important;
+      animation-iteration-count: 1 !important;
+      animation-fill-mode: both !important;
+      transition-duration: 0s !important;
+    }
+  `
+  document.head.appendChild(style)
+}
 
 /* ── Dark-mode toolbar decorator ──────────────────────────────────
    Toggles the `.dark` class on <html> based on the toolbar selection.

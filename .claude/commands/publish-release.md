@@ -31,9 +31,11 @@ Before approving + merging the Version Packages PR, walk through this list. Trea
 
 ### Content
 - [ ] **Changeset bodies describe the actual change.** Open each `.changeset/*.md` that was consumed — if the description is vague ("fix bug", "update component"), reject and ask for a real description.
-- [ ] **Version bump magnitude matches change severity.** Patch for fixes, minor for additive features (while 0.x). If ANY public API changed (props added/removed/renamed, types changed, DOM structure changed, ARIA roles changed), it is breaking — minor while 0.x, major once stable.
+- [ ] **Version bump magnitude matches change severity.** Patch for fixes, minor for additive features (while 0.x). If ANY public API changed (props added/removed/renamed, types changed, DOM structure changed, ARIA roles changed), it is breaking — minor while 0.x, major once stable. **For the full public-API surface definition (including `docs/recipes/`, `llms.txt`, token namespaces), see [`CONTRIBUTING.md` § Versioning & Breaking Changes](../../CONTRIBUTING.md#versioning--breaking-changes).**
 - [ ] **Generated CHANGELOG entry reads well.** Changesets concatenates changeset bodies; reorder or tighten if needed BEFORE merge.
 - [ ] **llms.txt / llms-full.txt reflects reality.** `build-component-docs.mjs` regenerates these from `docs/components/*.md`; check that any new/changed component's Props + Composability + Changes sections are current.
+- [ ] **Recipes in `packages/core/docs/recipes/`** — if any recipe was changed, re-read it end-to-end. Recipes run on consumer machines (humans + AI agents); doc drift causes silent install failures. Verify: framework-detection block still accurate, install commands per package manager still right, code examples use real component APIs (grep CVA source if uncertain).
+- [ ] **`AGENTS.md` BEGIN/END markers + linked paths.** If markers or paths inside them changed, verify links still resolve to the right files. A broken `AGENTS.md` path means AI agents (Claude Code, Cursor, Copilot, Codex) can't find the recipes — silent failure mode.
 
 ### Visual / behavioral
 - [ ] **Chromatic run is green on the source branch**, OR intentional visual diffs are explicitly approved in Chromatic's UI.
@@ -126,4 +128,6 @@ git push origin --tags
 
 ---
 
-**Last reviewed:** 2026-04-22. If CI paths diverge from reality, rewrite this skill rather than letting drift accumulate.
+**Last reviewed:** 2026-05-09. If CI paths diverge from reality, rewrite this skill rather than letting drift accumulate.
+
+**Recent changes (2026-05-09):** added recipe-content + AGENTS.md checkboxes (v0.38.0 introduced `docs/recipes/` shipping in the npm tarball — they are now public surface). Public-API surface definition cross-referenced to `CONTRIBUTING.md`.

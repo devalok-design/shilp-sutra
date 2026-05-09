@@ -4,6 +4,30 @@
 > Built on the same primitives as shadcn/ui but with key API differences.
 > Read this file BEFORE writing any UI code. Do NOT guess from shadcn/ui knowledge.
 
+## QUICK SETUP (AI agents — start here)
+
+If you are setting up shilp-sutra in a consumer project for the first time, **do not improvise**. Use a recipe.
+
+When the package is installed, recipes ship at `node_modules/@devalok/shilp-sutra/docs/recipes/`. Pick one based on the consumer's framework:
+
+| Framework | Recipe file |
+|---|---|
+| Next.js (App Router) | `install-next-app-router.md` |
+| Next.js (Pages Router) | `install-next-pages.md` |
+| Vite + React | `install-vite.md` |
+| Astro | `install-astro.md` |
+| Remix | `install-remix.md` |
+| TanStack Start | `install-tanstack-start.md` |
+| Other React + Tailwind | start from `install-vite.md` and adapt |
+
+Other recipes:
+
+- `customize-brand.md` — token override cookbook (color, radius, font, spacing)
+- `server-components.md` — RSC-safety matrix and import patterns
+- `troubleshoot.md` — decision tree for the 8 most common breakages
+
+The repo URL for these files is `https://github.com/devalok-design/shilp-sutra/tree/main/packages/core/docs/recipes`. Consumer projects should also have an `AGENTS.md` at their root with the rules above pre-loaded — read that first if it exists.
+
 ## BREAKING CHANGES (v0.37.0 — Tailwind 4 CSS-first)
 
 **Setup migration only — component APIs unchanged.** See `MIGRATION.md` at the root of this package (or https://github.com/devalok-design/shilp-sutra/blob/main/MIGRATION.md#v0370--tailwind-4-css-first-migration) for the full guide.
@@ -13,7 +37,7 @@
   @import "tailwindcss";
   @import "@devalok/shilp-sutra/css";
   ```
-  The old `./tailwind` export is a deprecated no-op stub; importing it logs a dev-mode `console.warn` and is scheduled for removal in 0.38.
+  The `./tailwind` export has been removed in 0.38. Delete any `tailwind.config.ts` that referenced the preset and switch to the CSS import above.
 - **framer-motion is now a required peer dep.** Previously bundled. Install: `pnpm add framer-motion`. Module-scoped React contexts (MotionConfig, LayoutGroup, AnimatePresence) must be single-copy — the peer declaration forces pnpm to dedupe against the consumer's version.
 - **sonner is now an optional peer dep.** Install only if you render `<Toaster />`: `pnpm add sonner`.
 - **tailwindcss peer tightened to `^4.0.0`.** No more `^3.4.0 || ^4.0.0`.
@@ -48,8 +72,6 @@
 - **MessageList:** `isLoadingMore` renamed to `loadingMore`.
 - **AppCommandPalette:** Default Karm routes removed. Use `CommandRegistryProvider` for page registration. `SearchResult` type adds optional `href` field.
 - **NumberInput:** Shape changed from pill to rounded rectangle.
-- **Alert:** `variant="filled"` deprecated → use `"solid"` (alias still works).
-- **SegmentedControl:** `variant="accent"` deprecated → use `"solid"` (alias still works).
 - **Dependencies:** `@floating-ui/dom`, `@tiptap/*`, `prosemirror-state` moved to devDeps (bundled; consumers no longer install them).
 
 ## NEW (v0.35.0)
@@ -100,14 +122,13 @@
 
 - **Button:** `variant="default"` removed (use `"solid"`), `variant="destructive"` removed (use `variant="solid" color="error"`), `color="default"` removed (use `"accent"`).
 - **Chip:** Removed. Use `Badge` instead.
-- **SegmentedControl:** Rewritten. `variant="filled"` → `"accent"`, `variant="tonal"` → `"default"`. `SegmentedControlItem` no longer exported. Legacy sizes `small`/`medium`/`big` removed.
+- **SegmentedControl:** Rewritten. Variants are `"default"` (white pill) and `"solid"` (brand pill). `SegmentedControlItem` no longer exported.
 - **TopBar:** Now renders as `<header>` (was `<div>`).
 - **Sidebar:** Now renders as `<aside>` (was `<div>`).
 - **InfoBlock:** `role="status"` (was `role="alert"`).
 - **Border tokens:** One step darker system-wide.
 - **Dark mode button text:** Pure white `neutral-0` (#fff) on brand-colored buttons.
 - **BottomNavbar:** Bottom padding is now `pb-safe` (safe-area-inset).
-- **ResponsiveOverlay:** Deprecated. Use Dialog or Sheet directly.
 - **iOS inputs:** Forced to `font-size: max(16px, 1em)` on mobile via preset.
 
 ## CHANGES (v0.32.0)
@@ -124,7 +145,7 @@
 - **DataTable `mobileView="card"`** — Rows render as stacked cards below 640px. First column = card title, rest = label-value pairs.
 - **DataTable `aria-sort`** — Sortable column headers include `aria-sort`.
 - **Charts `ariaLabel` prop** — Configurable screen reader label on all chart components.
-- **SegmentedControl** — Redesigned: `variant="default"` (white pill + shadow-sm) | `variant="accent"` (brand pill). Inset radius, snappy spring animation.
+- **SegmentedControl** — Redesigned: `variant="default"` (white pill + shadow-raised) | `variant="solid"` (brand pill). Inset radius, snappy spring animation.
 - **`--shadow-kbd` token** — Keyboard shortcut badge shadow. Use `shadow-kbd` utility.
 - **Checkbox/Radio `size` prop** — `sm | md (default) | lg`.
 
@@ -409,11 +430,8 @@ import { toast } from '@devalok/shilp-sutra/ui/toast'
 // Hooks:
 import { useColorMode } from '@devalok/shilp-sutra/hooks/use-color-mode'
 
-// CSS tokens (import once at app root):
-import '@devalok/shilp-sutra/tokens'
-
-// Tailwind preset (in tailwind.config):
-import shilpSutra from '@devalok/shilp-sutra/tailwind'
+// CSS tokens (import once at app root — already included in /css):
+import '@devalok/shilp-sutra/css'
 
 ## CRITICAL: Differences from shadcn/ui
 
@@ -456,7 +474,7 @@ Components with two-axis system: Button, Badge, Alert, Banner, Progress, StatusB
 - SplitButton: [Action | ▼] button with dropdown. Props: variant(solid|soft|outline), color, size(xs|sm|md|icon-xs|icon-sm|icon-md), triggerSide(left|right, default right), triggerWidth?(number|string), placement?(Floating UI Placement, default top-end), dropdownContent(ReactNode), open?, onOpenChange?, dropdownLabel?, dropdownIcon?. ARIA: role="group", aria-haspopup="menu", aria-expanded.
 - ButtonGroup: Visually merges adjacent Buttons. Props: variant, color, size, disabled (propagates), orientation(horizontal|vertical), attached(true|false, default true), fullWidth. Compound pattern: Button reads position from context, applies radius + border-removal inline. Tonal dividers for solid/soft/ghost. Focus z-index isolation.
 - Icon: `<Icon icon={IconPlus} />` — context-aware wrapper for Tabler icons. Size tiers: xs(14px) sm(16px) md(18px) lg(20px) xl(24px) 2xl(32px). Default: md. Stroke: light(1.5) regular(2) bold(2.5). Default: regular. Scales per size tier. Reads size from parent Button/IconGroup via IconContext. Explicit props override. Accessibility: aria-hidden by default. Pass label="Add item" for accessible icons. Animation: animate="spin|pulse|bounce|draw". `draw` renders SVG path-draw animation (check/X icons draw progressively via pathLength; other icons fall back to static). State machine: state="idle|loading|success|error". Button integration: startIcon={<Icon icon={IconPlus} />} (NOT raw <IconPlus />). IconGroup: <IconGroup size="sm" gap="tight"> for toolbar patterns.
-- Input: size(xs|sm|md|lg) state(InputState) + startSection(ReactNode), endSection(ReactNode), startSectionClickable(bool), endSectionClickable(bool), startSectionType('icon'|'label'), endSectionType('icon'|'label'), wrapperClassName(string). Container-level focus ring wraps input + sections as one unit. Sections are pointer-events-none by default; use *SectionClickable for interactive content (clear buttons, toggles). Section type auto-inferred: strings→'label' (tinted bg + border separator), React elements→'icon' (fixed-width centered). Override with *SectionType. Flexbox section layout. Icons auto-size via IconProvider per input size. className targets <input>, wrapperClassName targets wrapper div. Deprecated aliases: startIcon→startSection, endIcon→endSection, inputVariants→inputWrapperVariants. Type: InputState = 'default' | 'error' | 'warning' | 'success'
+- Input: size(xs|sm|md|lg) state(InputState) + startSection(ReactNode), endSection(ReactNode), startSectionClickable(bool), endSectionClickable(bool), startSectionType('icon'|'label'), endSectionType('icon'|'label'), wrapperClassName(string). Container-level focus ring wraps input + sections as one unit. Sections are pointer-events-none by default; use *SectionClickable for interactive content (clear buttons, toggles). Section type auto-inferred: strings→'label' (tinted bg + border separator), React elements→'icon' (fixed-width centered). Override with *SectionType. Flexbox section layout. Icons auto-size via IconProvider per input size. className targets <input>, wrapperClassName targets wrapper div. Type: InputState = 'default' | 'error' | 'warning' | 'success'
 - SearchInput: size(xs|sm|md|lg) + loading, onClear. Delegates to Input v2 sections internally.
 - NumberInput: value + onValueChange, min, max, step (controlled only)
 - Textarea: size(xs|sm|md|lg) state(default|error|warning|success)
@@ -467,12 +485,12 @@ Components with two-axis system: Button, Badge, Alert, Banner, Progress, StatusB
 - Select > SelectTrigger(size: xs|sm|md|lg) > SelectValue; SelectContent > SelectItem(value)
 - Toggle: variant(default|outline) size(sm|md|lg)
 - ToggleGroup > ToggleGroupItem (variant/size propagate from root)
-- SegmentedControl > SegmentedControlItem: variant(filled|tonal) size(sm|md|lg). Types: SegmentedControlOption = { id, text, icon? }, SegmentedControlSize = 'sm' | 'md' | 'lg', SegmentedControlVariant = 'filled' | 'tonal'
+- SegmentedControl: variant(default|solid) size(sm|md|lg) options selectedId onSelect. Types: SegmentedControlOption = { id, text, icon? }, SegmentedControlSize = 'sm' | 'md' | 'lg', SegmentedControlVariant = 'default' | 'solid'
 - Slider: standard Radix slider
 
 ### Feedback & Notifications
-- Alert: variant(subtle|filled|outline) color(info|success|warning|error|neutral) + title, onDismiss
-- Banner: color(info|success|warning|error|neutral) + actions?(ReactNode), onDismiss. `action` (singular) deprecated, use `actions`. Mobile flex-wrap for multiple buttons.
+- Alert: variant(subtle|solid|outline) color(info|success|warning|error|neutral) size(sm|md|lg) + title, onDismiss
+- Banner: color(info|success|warning|error|neutral) + actions?(ReactNode), onDismiss. Mobile flex-wrap for multiple buttons.
 - Toast: imperative API via toast.success/error/warning/info/loading/message/undo/promise/upload/custom — REQUIRES <Toaster> at layout root
 - Spinner: size(sm|md|lg) — renders with role="status"
 - Progress: track size(sm|md|lg), indicator color(default|success|warning|error), autoColor(boolean, auto-shifts color by value: 0-59=default, 60-84=warning, 85-100=success, >100=error)
@@ -568,7 +586,6 @@ Import: `@devalok/shilp-sutra/ui/chat`
 - BulkActionBar: show, count, onClearSelection, actions[{label,icon?,onClick,color?,disabled?}]. Fixed bottom floating bar for multi-select contexts.
 - DeadlineIndicator: deadline(Date|string), warningThreshold?(1440min), criticalThreshold?(240min), format(relative|absolute), showIcon. Color transitions: green→yellow→red→overdue.
 - MasterDetail: selected, onBack, masterWidth, breakpoint(sm|md|lg). Compound: MasterDetail.List, MasterDetail.Detail, MasterDetail.ListItem(active). Desktop=grid, mobile=stacked with back button.
-- ResponsiveOverlay: open, onOpenChange, title, description, breakpoint(sm|md). Dialog on desktop, bottom Sheet on mobile.
 - MarkdownViewer: content(string), compact?, allowHtml?(false), linkTarget?('_blank'). Renders markdown with design system tokens.
 - EmojiPicker: onSelect(emoji), set?(native|apple|google|twitter|facebook), theme(auto|light|dark). EmojiPickerPopover wraps in Popover. Lazy-loads emoji-mart with set-specific data.
 - EmojiNode: TipTap inline atom node for spritesheet emoji rendering. Attrs: id, native, set, x, y. Use createEmojiSuggestion(set) to wire :shortcode: autocomplete. Export: EmojiNode, EmojiNodeAttrs, createEmojiSuggestion.

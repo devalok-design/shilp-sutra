@@ -2,13 +2,19 @@
 
 The Devalok Design System -- tokens, components, and patterns for React & Next.js applications.
 
+[![npm version](https://img.shields.io/npm/v/@devalok/shilp-sutra?logo=npm&color=cb3837)](https://www.npmjs.com/package/@devalok/shilp-sutra)
+[![npm downloads](https://img.shields.io/npm/dm/@devalok/shilp-sutra?logo=npm&color=cb3837)](https://www.npmjs.com/package/@devalok/shilp-sutra)
+[![bundle size](https://img.shields.io/bundlephobia/minzip/@devalok/shilp-sutra?label=minzip)](https://bundlephobia.com/package/@devalok/shilp-sutra)
+[![license MIT](https://img.shields.io/npm/l/@devalok/shilp-sutra?color=blue)](./LICENSE)
+[![provenance](https://img.shields.io/badge/provenance-sigstore-success?logo=npm)](https://docs.npmjs.com/generating-provenance-statements)
 [![Storybook](https://img.shields.io/badge/Storybook-ff4785?logo=storybook&logoColor=white)](https://devalok-design.github.io/shilp-sutra/)
+[![AI agents ready](https://img.shields.io/badge/AI%20agents-AGENTS.md-7c3aed)](./AGENTS.md)
 
 ## Packages
 
 | Package | Description |
 | --- | --- |
-| `@devalok/shilp-sutra` | Core tokens, 78 UI primitives, 29 composed components, 8 shell components, 5 AI components, and Tailwind preset |
+| `@devalok/shilp-sutra` | Tailwind 4 CSS-first tokens, 78 UI primitives, 29 composed components, 8 shell components, 5 AI components |
 | `@devalok/shilp-sutra-brand` | Brand logos and SVG/PNG/WebP assets (Devalok, Karm) |
 
 > **Note:** Domain-specific components (board, tasks, chat, dashboard, client, admin) previously published as `@devalok/shilp-sutra-karm` have been moved to their respective consumer app repositories.
@@ -60,6 +66,27 @@ import { DevalokLogo } from '@devalok/shilp-sutra-brand/devalok'
 ```
 
 > **Upgrading from 0.36 or earlier?** Read [MIGRATION.md](./MIGRATION.md#v0370--tailwind-4-css-first-migration).
+
+## Setup recipes (per framework)
+
+Step-by-step copy-paste install guides for each major React framework. Designed for both humans and AI coding agents (Claude Code, Cursor, Copilot, Codex).
+
+| Framework | Recipe |
+|---|---|
+| Next.js (App Router) | [install-next-app-router.md](./packages/core/docs/recipes/install-next-app-router.md) |
+| Next.js (Pages Router) | [install-next-pages.md](./packages/core/docs/recipes/install-next-pages.md) |
+| Vite + React | [install-vite.md](./packages/core/docs/recipes/install-vite.md) |
+| Astro | [install-astro.md](./packages/core/docs/recipes/install-astro.md) |
+| Remix | [install-remix.md](./packages/core/docs/recipes/install-remix.md) |
+| TanStack Start | [install-tanstack-start.md](./packages/core/docs/recipes/install-tanstack-start.md) |
+
+Customization & diagnostics:
+
+- [customize-brand.md](./packages/core/docs/recipes/customize-brand.md) — change colors, radius, fonts, spacing
+- [server-components.md](./packages/core/docs/recipes/server-components.md) — RSC-safety matrix
+- [troubleshoot.md](./packages/core/docs/recipes/troubleshoot.md) — fixing the 8 most common breakages
+
+Recipes ship inside the npm package at `node_modules/@devalok/shilp-sutra/docs/recipes/`, so AI agents can read them locally without a network round-trip. See [AGENTS.md](./AGENTS.md) for the full agent integration contract.
 
 ## Mental Model
 
@@ -186,8 +213,8 @@ Only install the packages you actually use:
 | Import path | Contents |
 | --- | --- |
 | `@devalok/shilp-sutra` | Root export -- re-exports all of `./ui` |
-| `@devalok/shilp-sutra/tokens` | CSS custom properties (primitives, semantic, typography) |
-| `@devalok/shilp-sutra/tailwind` | Tailwind CSS preset with token mappings |
+| `@devalok/shilp-sutra/css` | **Primary consumer entry** — Tailwind 4 `@theme` tokens, dark variant, base layer, custom utilities |
+| `@devalok/shilp-sutra/tokens` | CSS custom properties only (primitives, semantic, typography) — for advanced setups |
 | `@devalok/shilp-sutra/ui` | 78 Radix-based UI primitives |
 | `@devalok/shilp-sutra/ui/<name>` | Per-component exports (e.g. `./ui/button`, `./ui/dialog`) |
 | `@devalok/shilp-sutra/composed` | 29 higher-level composed components |

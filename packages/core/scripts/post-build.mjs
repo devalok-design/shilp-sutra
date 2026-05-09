@@ -5,10 +5,10 @@
  * On failure: reports which step failed and exits non-zero.
  *
  * Steps (in order):
- * 1. copy-tokens     — Copy CSS token files to dist/
- * 2. fix-dts-primitives — Rewrite @primitives/ import paths in .d.ts files
- * 3. inject-use-client  — Add "use client" directives + SSR safety patches
- * 4. build-tailwind-cjs — Convert tailwind preset ESM → CJS via esbuild
+ * 1. copy-tokens        — Copy CSS token files to dist/
+ * 2. copy-root-docs     — Copy CHANGELOG/MIGRATION/README to dist/
+ * 3. fix-dts-primitives — Rewrite @primitives/ import paths in .d.ts files
+ * 4. inject-use-client  — Add "use client" directives + SSR safety patches
  * 5. build-docs         — Generate per-component documentation
  */
 
@@ -24,7 +24,6 @@ const steps = [
   { name: 'copy-root-docs', script: 'copy-root-docs.mjs' },
   { name: 'fix-dts-primitives', script: 'fix-dts-primitives.mjs' },
   { name: 'inject-use-client', script: 'inject-use-client.mjs' },
-  { name: 'build-tailwind-cjs', script: 'build-tailwind-cjs.mjs' },
   { name: 'build-docs', script: 'build-component-docs.mjs' },
 ]
 

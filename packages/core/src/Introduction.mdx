@@ -96,28 +96,22 @@ pnpm add @devalok/shilp-sutra
 pnpm add @devalok/shilp-sutra-brand
 ```
 
-### Setup
+### Setup (Tailwind 4 CSS-first)
 
-Import the token stylesheet in your app entry point:
+In your global stylesheet (e.g. `app/globals.css`):
 
-```ts
-import '@devalok/shilp-sutra/tokens'
+```css
+@import "tailwindcss";
+@import "@devalok/shilp-sutra/css";
 ```
 
-Add the Tailwind preset to your `tailwind.config.ts`:
+In `next.config.ts`, transpile our packages:
 
 ```ts
-import shilpSutraPreset from '@devalok/shilp-sutra/tailwind'
-
-export default {
-  presets: [shilpSutraPreset],
-  content: [
-    './src/**/*.{ts,tsx}',
-    './node_modules/@devalok/shilp-sutra/dist/**/*.js',
-    './node_modules/@devalok/shilp-sutra-brand/dist/**/*.js',
-  ],
-}
+transpilePackages: ['@devalok/shilp-sutra', '@devalok/shilp-sutra-brand'],
 ```
+
+That's the entire setup. No `tailwind.config.ts` is required — design tokens, utility generation, the dark variant, and class scanning all come from the `/css` entry. For framework-specific recipes (Vite, Astro, Remix, TanStack Start, Next Pages Router), see [`docs/recipes/`](https://github.com/devalok-design/shilp-sutra/tree/main/packages/core/docs/recipes).
 
 ### Component usage
 

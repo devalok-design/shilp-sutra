@@ -1,13 +1,27 @@
 {
   "name": "@devalok/shilp-sutra-brand",
   "version": "0.6.1",
-  "description": "Brand logos and SVG assets for the Devalok Design System",
+  "description": "Brand logos and SVG/PNG/WebP assets for the Devalok Design System (Devalok, Karm).",
   "license": "MIT",
+  "author": "Devalok Design & Strategy Studios <shilp-sutra@devalok.in>",
+  "homepage": "https://devalok-design.github.io/shilp-sutra/",
   "repository": {
     "type": "git",
     "url": "https://github.com/devalok-design/shilp-sutra",
     "directory": "packages/brand"
   },
+  "bugs": {
+    "url": "https://github.com/devalok-design/shilp-sutra/issues"
+  },
+  "keywords": [
+    "react",
+    "design-system",
+    "logos",
+    "brand-assets",
+    "svg",
+    "shilp-sutra",
+    "devalok"
+  ],
   "type": "module",
   "main": "./dist/index.js",
   "module": "./dist/index.js",

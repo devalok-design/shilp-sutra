@@ -1,0 +1,66 @@
+name: Feature request
+description: Propose a new component, prop, variant, or capability.
+title: "[feature] "
+labels: ["feature-request", "needs-triage"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Thanks for proposing. We're more likely to ship features with concrete use cases and a sketch of the API.
+
+  - type: textarea
+    id: problem
+    attributes:
+      label: Problem you're solving
+      description: What user-facing scenario pushed you to file this? Real product context > abstract "would be nice".
+    validations:
+      required: true
+
+  - type: textarea
+    id: proposed-api
+    attributes:
+      label: Proposed API
+      description: Sketch the props, variants, or import shape. Even a rough draft is useful.
+      placeholder: |
+        ```tsx
+        <NewComponent variant="x" size="sm" onChange={(value) => ...} />
+        ```
+    validations:
+      required: true
+
+  - type: textarea
+    id: prior-art
+    attributes:
+      label: Prior art
+      description: How do shadcn/ui, Mantine, Chakra, Radix, or others handle this? Links welcome.
+
+  - type: textarea
+    id: alternatives
+    attributes:
+      label: Alternatives you considered
+      description: Workarounds with existing components, why they're insufficient.
+
+  - type: dropdown
+    id: layer
+    attributes:
+      label: Which layer
+      options:
+        - "ui (atomic primitive)"
+        - "composed (multi-primitive pattern)"
+        - "shell (app frame component)"
+        - "ai (assistant primitive)"
+        - "tokens / theme"
+        - "recipe / docs"
+        - "build / tooling"
+        - "Not sure"
+    validations:
+      required: true
+
+  - type: checkboxes
+    id: scope
+    attributes:
+      label: Scope checks
+      options:
+        - label: This is a presentation / DS concern (not data fetching, state management, or domain logic).
+          required: true
+        - label: I am willing to follow up with a PR if this is approved (optional but helpful).

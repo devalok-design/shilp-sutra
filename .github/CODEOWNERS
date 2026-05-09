@@ -1,0 +1,32 @@
+# CODEOWNERS — auto-request reviews on touched paths.
+# Docs: https://docs.github.com/en/repositories/managing-your-repositorys-settings-and-security/managing-other-settings/managing-code-review-settings-for-your-repository
+
+# Default owner for everything not matched below
+*                                               @devalok-design/shilp-sutra
+
+# Release infrastructure — high blast radius, review carefully
+/.github/workflows/                             @devalok-design/shilp-sutra
+/scripts/pre-publish-audit.mjs                  @devalok-design/shilp-sutra
+/scripts/post-build.mjs                         @devalok-design/shilp-sutra
+/.changeset/                                    @devalok-design/shilp-sutra
+
+# Token contracts — public API surface
+/packages/core/src/tokens/                      @devalok-design/shilp-sutra
+/packages/core/src/ui/                          @devalok-design/shilp-sutra
+/packages/core/src/composed/                    @devalok-design/shilp-sutra
+/packages/core/src/shell/                       @devalok-design/shilp-sutra
+/packages/core/src/ai/                          @devalok-design/shilp-sutra
+/packages/core/src/primitives/                  @devalok-design/shilp-sutra
+
+# AI-readable docs — must stay in sync with the code surface
+/packages/core/llms.txt                         @devalok-design/shilp-sutra
+/packages/core/llms-full.txt                    @devalok-design/shilp-sutra
+/packages/core/docs/                            @devalok-design/shilp-sutra
+/AGENTS.md                                      @devalok-design/shilp-sutra
+/CLAUDE.md                                      @devalok-design/shilp-sutra
+/MIGRATION.md                                   @devalok-design/shilp-sutra
+
+# Governance
+/SECURITY.md                                    @devalok-design/shilp-sutra
+/CODE_OF_CONDUCT.md                             @devalok-design/shilp-sutra
+/CODEOWNERS                                     @devalok-design/shilp-sutra

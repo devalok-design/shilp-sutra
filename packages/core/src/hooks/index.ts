@@ -7,7 +7,7 @@ export type {
   ToastUndoOptions,
   ToastUploadOptions,
   UploadFile,
-} from './use-toast'
-export { toast } from './use-toast'
+} from '../ui/toast-types'
+export { toast } from '../ui/toast'
 export { useTouchDevice } from './use-touch-device'
 export { useViewportHeight } from './use-viewport-height'

@@ -96,10 +96,6 @@ export interface InputProps
   endSectionType?: 'icon' | 'label'
   /** Classes for the wrapper div (border, bg, ring). */
   wrapperClassName?: string
-  /** @deprecated Use startSection */
-  startIcon?: React.ReactNode
-  /** @deprecated Use endSection */
-  endIcon?: React.ReactNode
 }
 
 const Input = React.forwardRef<HTMLInputElement, InputProps>(
@@ -115,8 +111,6 @@ const Input = React.forwardRef<HTMLInputElement, InputProps>(
       endSectionClickable,
       startSectionType: startSectionTypeProp,
       endSectionType: endSectionTypeProp,
-      startIcon,
-      endIcon,
       wrapperClassName,
       ...props
     },
@@ -135,16 +129,12 @@ const Input = React.forwardRef<HTMLInputElement, InputProps>(
     // Explicit id wins; otherwise adopt FormField's inputId so <Label htmlFor> resolves.
     const inputId = props.id ?? fieldCtx.inputId
 
-    // Backward compat: map deprecated props
-    const resolvedStart = startSection ?? startIcon
-    const resolvedEnd = endSection ?? endIcon
-
-    const hasStart = !!resolvedStart
-    const hasEnd = !!resolvedEnd
+    const hasStart = !!startSection
+    const hasEnd = !!endSection
 
     // Infer section type: string → label, ReactElement → icon
-    const startType = startSectionTypeProp ?? (typeof resolvedStart === 'string' ? 'label' : 'icon')
-    const endType = endSectionTypeProp ?? (typeof resolvedEnd === 'string' ? 'label' : 'icon')
+    const startType = startSectionTypeProp ?? (typeof startSection === 'string' ? 'label' : 'icon')
+    const endType = endSectionTypeProp ?? (typeof endSection === 'string' ? 'label' : 'icon')
 
     const labelPaddingMap: Record<string, string> = {
       xs: 'px-ds-02',
@@ -189,7 +179,7 @@ const Input = React.forwardRef<HTMLInputElement, InputProps>(
               !startSectionClickable && 'pointer-events-none',
             )}
           >
-            {resolvedStart}
+            {startSection}
           </span>
         )}
 
@@ -202,7 +192,7 @@ const Input = React.forwardRef<HTMLInputElement, InputProps>(
                 !startSectionClickable && 'pointer-events-none',
               )}
             >
-              {resolvedStart}
+              {startSection}
             </span>
           </IconProvider>
         )}
@@ -241,7 +231,7 @@ const Input = React.forwardRef<HTMLInputElement, InputProps>(
               !endSectionClickable && 'pointer-events-none',
             )}
           >
-            {resolvedEnd}
+            {endSection}
           </span>
         )}
 
@@ -254,7 +244,7 @@ const Input = React.forwardRef<HTMLInputElement, InputProps>(
                 !endSectionClickable && 'pointer-events-none',
               )}
             >
-              {resolvedEnd}
+              {endSection}
             </span>
           </IconProvider>
         )}
@@ -264,7 +254,4 @@ const Input = React.forwardRef<HTMLInputElement, InputProps>(
 )
 Input.displayName = 'Input'
 
-/** @deprecated Use inputWrapperVariants — semantics changed (now targets wrapper, not input) */
-const inputVariants = inputWrapperVariants
-
-export { Input, inputVariants, inputWrapperVariants }
+export { Input, inputWrapperVariants }

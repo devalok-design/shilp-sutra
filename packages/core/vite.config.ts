@@ -51,7 +51,6 @@ const autoEntries = collectEntries([
   'composed',
   'shell',
   'hooks',
-  'tailwind',
 ])
 
 // Subdirectory entries that aren't picked up by the top-level scan

@@ -7,7 +7,6 @@
 ## Props
     color: "info" | "success" | "warning" | "error" | "neutral"
     actions: ReactNode (optional action slot for one or more buttons; wraps on narrow viewports)
-    action: ReactNode (DEPRECATED — use `actions` instead)
     onDismiss: () => void (optional, shows X button)
     children: ReactNode (message text)
 
@@ -34,6 +33,9 @@
 - `onDismiss` fires after the exit animation completes, not immediately on dismiss button click
 
 ## Changes
+### v0.38.0
+- **Removed** (BREAKING) deprecated singular `action` prop. Use `actions={[...]}` (plural).
+
 ### v0.20.0
 - **Added** `actions` prop (plural) for multiple action buttons with mobile-friendly flex-wrap
 - **Deprecated** `action` prop — use `actions` instead (both still work; `actions` takes priority)

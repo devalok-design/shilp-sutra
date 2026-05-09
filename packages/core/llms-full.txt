@@ -5,7 +5,7 @@
 > All variant values and props verified from source CVA definitions.
 >
 > Package: @devalok/shilp-sutra
-> Version: 0.37.0
+> Version: 0.37.1
 >
 > **If you are an AI agent reading this file top-to-bottom:** the Setup
 > section below is authoritative. If any later per-component doc or a
@@ -39,7 +39,7 @@ pnpm add sonner
 transpilePackages: ['@devalok/shilp-sutra', '@devalok/shilp-sutra-brand'],
 ```
 
-**Do NOT** import `@devalok/shilp-sutra/tailwind` in a `tailwind.config.ts`. That export is a deprecated no-op stub and logs a dev-mode `console.warn`. It is scheduled for removal in 0.38.
+**Do NOT** import `@devalok/shilp-sutra/tailwind`. That export was removed in 0.38.0. Use the CSS-first setup (`@import "tailwindcss"; @import "@devalok/shilp-sutra/css";`) — no `tailwind.config.ts` is required.
 
 ### Peer dependencies (0.37.0)
 
@@ -256,7 +256,7 @@ Note: getFormFieldA11y() was removed in favor of useFormField() hook.
 - Category: ui
 
 ## Props
-    variant: "subtle" | "solid" | "outline" | "filled" (deprecated alias for "solid")
+    variant: "subtle" | "solid" | "outline"
     color: "info" | "success" | "warning" | "error" | "neutral"
     size: "sm" | "md" | "lg"
     title: string (optional)
@@ -287,6 +287,9 @@ Note: getFormFieldA11y() was removed in favor of useFormField() hook.
 - Icon is auto-selected by color (info=circle, success=check, warning=triangle, error=alert)
 
 ## Changes
+### v0.38.0
+- **Removed** (BREAKING) `variant="filled"` deprecated alias. Use `variant="solid"`.
+
 ### v0.31.0
 - **Added** `size` prop: `sm | md | lg`. Default `md` (non-breaking).
 
@@ -722,7 +725,6 @@ Note: getFormFieldA11y() was removed in favor of useFormField() hook.
 ## Props
     color: "info" | "success" | "warning" | "error" | "neutral"
     actions: ReactNode (optional action slot for one or more buttons; wraps on narrow viewports)
-    action: ReactNode (DEPRECATED — use `actions` instead)
     onDismiss: () => void (optional, shows X button)
     children: ReactNode (message text)
 
@@ -749,6 +751,9 @@ Note: getFormFieldA11y() was removed in favor of useFormField() hook.
 - `onDismiss` fires after the exit animation completes, not immediately on dismiss button click
 
 ## Changes
+### v0.38.0
+- **Removed** (BREAKING) deprecated singular `action` prop. Use `actions={[...]}` (plural).
+
 ### v0.20.0
 - **Added** `actions` prop (plural) for multiple action buttons with mobile-friendly flex-wrap
 - **Deprecated** `action` prop — use `actions` instead (both still work; `actions` takes priority)
@@ -2576,8 +2581,6 @@ const { size, stroke } = useIconContext()
     startSectionType: 'icon' | 'label' (section display type — auto-inferred from content)
     endSectionType: 'icon' | 'label' (section display type — auto-inferred from content)
     wrapperClassName: string (classes for the wrapper div — border, bg, ring)
-    startIcon: ReactNode (@deprecated — use startSection)
-    endIcon: ReactNode (@deprecated — use endSection)
     (plus all standard HTML input attributes except native "size")
 
 ## Types
@@ -2612,6 +2615,10 @@ const { size, stroke } = useIconContext()
 - Section type is auto-inferred: strings default to `'label'` (tinted bg + border), React elements default to `'icon'` (fixed-width centered). Override with `startSectionType`/`endSectionType`.
 
 ## Changes
+### v0.38.0
+- **Removed** (BREAKING) deprecated `startIcon` / `endIcon` props. Use `startSection` / `endSection`.
+- **Removed** (BREAKING) deprecated `inputVariants` export. Use `inputWrapperVariants`.
+
 ### v0.29.0
 - **Changed** v2 rewrite: container-first architecture with wrapper div holding focus ring
 - **Added** `xs` size (28px height)
@@ -3239,8 +3246,8 @@ const { size, stroke } = useIconContext()
 - Category: ui
 
 ## Props
-    size: "sm" | "md" | "lg" (REQUIRED) — also accepts legacy "small" | "medium" | "big"
-    variant: "filled" | "tonal" (REQUIRED)
+    size: "sm" | "md" | "lg"
+    variant: "default" | "solid"
     options: SegmentedControlOption[] (REQUIRED)
     selectedId: string (REQUIRED)
     onSelect: (id: string) => void (REQUIRED)
@@ -3248,14 +3255,18 @@ const { size, stroke } = useIconContext()
 
 ## Types
     SegmentedControlOption = { id: string, text: string, icon?: ComponentType<{ className?: string }> }
-    SegmentedControlSize = 'sm' | 'md' | 'lg' | 'small' | 'medium' | 'big' (legacy aliases)
-    SegmentedControlVariant = 'filled' | 'tonal'
+    SegmentedControlSize = 'sm' | 'md' | 'lg'
+    SegmentedControlVariant = 'default' | 'solid'
+
+## Defaults
+    size: "md"
+    variant: "default"
 
 ## Example
 ```jsx
 <SegmentedControl
   size="md"
-  variant="tonal"
+  variant="default"
   options={[
     { id: 'list', text: 'List' },
     { id: 'grid', text: 'Grid' },
@@ -3278,11 +3289,14 @@ const { size, stroke } = useIconContext()
 - Use Tabs (not SegmentedControl) when you need associated content panels per option
 
 ## Changes
+### v0.38.0
+- **Removed** (BREAKING) deprecated `variant="accent"` alias. Use `variant="solid"`.
+
 ### v0.18.0
 - **Fixed** `bg-interactive` changed to `bg-accent-9`, `bg-field` changed to `bg-surface-3` (OKLCH migration)
 
 ### v0.4.2
-- **Changed** (BREAKING) `color` prop renamed to `variant` (values `filled`/`tonal` unchanged)
+- **Changed** (BREAKING) `color` prop renamed to `variant`
 
 ### v0.1.1
 - **Fixed** `tabIndex={0}` changed to `tabIndex={-1}` on tablist wrapper — fixes double-focus keyboard navigation bug
@@ -5932,47 +5946,6 @@ Priority = 'LOW' | 'MEDIUM' | 'HIGH' | 'URGENT' | 'low' | 'medium' | 'high' | 'u
 
 ### v0.1.0
 - **Added** Initial release
-# ResponsiveOverlay
-
-- Import: @devalok/shilp-sutra/composed/responsive-overlay
-- Server-safe: No
-- Category: composed
-
-## Props
-    open: boolean
-    onOpenChange: (open: boolean) => void
-    title: string
-    description: string
-    breakpoint: "sm" | "md" (below this renders as bottom Sheet; above as Dialog)
-    children: ReactNode
-    className: string
-
-## Defaults
-    breakpoint="md"
-
-## Example
-```jsx
-<ResponsiveOverlay
-  open={open}
-  onOpenChange={setOpen}
-  title="Edit task"
-  description="Update the task details"
->
-  <TaskForm />
-</ResponsiveOverlay>
-```
-
-## Composability
-- **One component, two containers.** Above `breakpoint`: centered Dialog. Below: bottom-anchored Sheet. Same content slot, different surface treatment per viewport.
-- **Standard controlled model** — `open` + `onOpenChange` (same shape as Dialog/Sheet).
-- **title + description pattern** — matches Dialog/Sheet's requirement for an accessible heading. Omit both only when the surrounding context makes the purpose obvious (rare).
-- **SSR caveat:** `window.matchMedia` reads on mount — initial SSR render defaults to desktop (Dialog). Hydration flips to Sheet on mobile. Acceptable for most flows; visible layout shift on low-spec devices.
-- **When to use:** Any modal that needs to behave differently on mobile (edit dialogs, filter panels, quick-action menus). For always-the-same behavior, use Dialog or Sheet directly.
-
-## Gotchas
-- Renders a centered Dialog on desktop and a bottom Sheet on mobile — same content, different container
-- Uses `window.matchMedia` internally — SSR defaults to desktop (Dialog) until hydration
-- Title and description are optional; if omitted, no header is rendered in either mode
 # RichChatInput
 
 - Import: @devalok/shilp-sutra/composed/rich-chat-input

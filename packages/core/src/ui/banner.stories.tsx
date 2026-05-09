@@ -132,7 +132,7 @@ export const AllVariants: Story = {
           <p className="mb-ds-03 text-ds-sm font-semibold text-surface-fg-muted">With Action</p>
           <div className="flex flex-col">
             {variants.map((variant) => (
-              <Banner key={`action-${variant}`} color={variant} action={<Button variant="ghost" size="sm">Action</Button>}>
+              <Banner key={`action-${variant}`} color={variant} actions={<Button variant="ghost" size="sm">Action</Button>}>
                 {messages[variant]}
               </Banner>
             ))}

@@ -1,13 +1,44 @@
 {
   "name": "@devalok/shilp-sutra",
   "version": "0.37.1",
-  "description": "Devalok Design System — tokens, components, and patterns for Next.js",
+  "description": "Devalok Design System — accessible React components, OKLCH design tokens, and Tailwind 4 CSS-first setup. Ships with AI-agent setup recipes.",
   "license": "MIT",
+  "author": "Devalok Design & Strategy Studios <shilp-sutra@devalok.in>",
+  "homepage": "https://devalok-design.github.io/shilp-sutra/",
   "repository": {
     "type": "git",
     "url": "https://github.com/devalok-design/shilp-sutra",
     "directory": "packages/core"
   },
+  "bugs": {
+    "url": "https://github.com/devalok-design/shilp-sutra/issues"
+  },
+  "keywords": [
+    "react",
+    "design-system",
+    "components",
+    "ui",
+    "ui-library",
+    "tailwindcss",
+    "tailwind-v4",
+    "typescript",
+    "accessible",
+    "a11y",
+    "wcag",
+    "radix-ui",
+    "headless",
+    "cva",
+    "design-tokens",
+    "oklch",
+    "framer-motion",
+    "dark-mode",
+    "nextjs",
+    "vite",
+    "astro",
+    "remix",
+    "ai-agent",
+    "llms-txt"
+  ],
   "type": "module",
   "main": "./dist/ui/index.js",
   "module": "./dist/ui/index.js",
@@ -554,11 +585,6 @@
       "import": "./dist/composed/status-badge.js",
       "default": "./dist/composed/status-badge.js"
     },
-    "./composed/responsive-overlay": {
-      "types": "./dist/composed/responsive-overlay.d.ts",
-      "import": "./dist/composed/responsive-overlay.js",
-      "default": "./dist/composed/responsive-overlay.js"
-    },
     "./composed/schedule-view": {
       "types": "./dist/composed/schedule-view.d.ts",
       "import": "./dist/composed/schedule-view.js",
@@ -628,23 +654,6 @@
       "types": "./dist/hooks/use-mobile.d.ts",
       "import": "./dist/hooks/use-mobile.js",
       "default": "./dist/hooks/use-mobile.js"
-    },
-    "./hooks/use-toast": {
-      "types": "./dist/hooks/use-toast.d.ts",
-      "import": "./dist/hooks/use-toast.js",
-      "default": "./dist/hooks/use-toast.js"
-    },
-    "./tailwind": {
-      "types": "./dist/tailwind/index.d.ts",
-      "require": "./dist/tailwind/index.cjs",
-      "import": "./dist/tailwind/index.js",
-      "default": "./dist/tailwind/index.js"
-    },
-    "./tailwind/preset": {
-      "types": "./dist/tailwind/preset.d.ts",
-      "require": "./dist/tailwind/index.cjs",
-      "import": "./dist/tailwind/preset.js",
-      "default": "./dist/tailwind/preset.js"
     },
     "./utils": {
       "types": "./dist/ui/lib/utils.d.ts",
@@ -722,6 +731,7 @@
   "files": [
     "dist",
     "docs/components",
+    "docs/recipes",
     "docs/rollback.md",
     "fonts",
     "MIGRATION.md",
@@ -841,19 +851,19 @@
     "@emoji-mart/react": "^1.1.1",
     "@floating-ui/dom": "^1.7.6",
     "@floating-ui/react-dom": "^2.1.8",
-    "@tabler/icons-react": "^3.41.1",
+    "@tabler/icons-react": "^3.42.0",
     "@tanstack/react-table": "^8.21.3",
     "@tanstack/react-virtual": "^3.13.23",
-    "@tiptap/core": "^3.22.3",
-    "@tiptap/extension-highlight": "^3.22.3",
-    "@tiptap/extension-image": "^3.22.3",
-    "@tiptap/extension-list": "^3.22.3",
-    "@tiptap/extension-mention": "^3.22.3",
-    "@tiptap/extension-text-align": "^3.22.3",
-    "@tiptap/extensions": "^3.22.3",
-    "@tiptap/react": "^3.22.3",
-    "@tiptap/starter-kit": "^3.22.3",
-    "@tiptap/suggestion": "^3.22.3",
+    "@tiptap/core": "^3.22.5",
+    "@tiptap/extension-highlight": "^3.22.5",
+    "@tiptap/extension-image": "^3.22.5",
+    "@tiptap/extension-list": "^3.22.5",
+    "@tiptap/extension-mention": "^3.22.5",
+    "@tiptap/extension-text-align": "^3.22.5",
+    "@tiptap/extensions": "^3.22.5",
+    "@tiptap/react": "^3.22.5",
+    "@tiptap/starter-kit": "^3.22.5",
+    "@tiptap/suggestion": "^3.22.5",
     "@types/react-syntax-highlighter": "^15.5.13",
     "aria-hidden": "^1.2.6",
     "class-variance-authority": "^0.7.1",

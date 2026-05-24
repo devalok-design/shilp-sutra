@@ -1,6 +1,7 @@
 'use client'
 
 import { useState } from 'react'
+import { motion } from 'framer-motion'
 import {
   IconActivity,
   IconCalendarPlus,
@@ -140,16 +141,22 @@ export function VaidyaShowcase() {
                     disabled={!s.available}
                     onClick={() => setSelectedSlot(s.time)}
                     className={[
-                      'flex items-center justify-center gap-ds-02 h-10 rounded-ds-md border text-ds-sm transition-colors duration-fast-01',
+                      'relative flex items-center justify-center gap-ds-02 h-10 rounded-ds-md border text-ds-sm transition-colors duration-fast-01',
                       !s.available && 'border-surface-border-subtle text-surface-fg-subtle line-through cursor-not-allowed',
-                      s.available && active && 'border-accent-9 bg-accent-3 text-accent-11',
-                      s.available && !active && 'border-surface-border-subtle text-surface-fg hover:border-accent-9 hover:bg-accent-2',
+                      s.available && 'border-surface-border-subtle text-surface-fg hover:border-accent-9 hover:bg-accent-2',
                     ]
                       .filter(Boolean)
                       .join(' ')}
                   >
-                    <IconClockHour4 size={12} />
-                    {s.time}
+                    {active && (
+                      <motion.span
+                        layoutId="vaidya-slot-pill"
+                        className="absolute inset-0 -m-px rounded-ds-md border-2 border-accent-9 bg-accent-3"
+                        transition={{ type: 'spring', stiffness: 500, damping: 30 }}
+                      />
+                    )}
+                    <IconClockHour4 size={12} className={active ? 'relative z-[1] text-accent-11' : 'relative z-[1]'} />
+                    <span className={active ? 'relative z-[1] text-accent-11' : 'relative z-[1]'}>{s.time}</span>
                   </button>
                 )
               })}

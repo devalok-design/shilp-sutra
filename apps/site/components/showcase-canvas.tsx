@@ -1,6 +1,7 @@
 'use client'
 
 import { useState, type CSSProperties, type ReactNode } from 'react'
+import { AnimatePresence, motion } from 'framer-motion'
 import { IconMoon, IconSun } from '@tabler/icons-react'
 import { Button } from '@devalok/shilp-sutra/ui/button'
 import { Text } from '@devalok/shilp-sutra/ui/text'
@@ -30,10 +31,15 @@ export function ShowcaseCanvas({
   const next: CanvasMode = mode === 'light' ? 'dark' : 'light'
 
   return (
-    <div
+    <motion.div
+      animate={{
+        backgroundColor: 'var(--color-surface-raised)',
+        borderColor: 'var(--color-surface-border)',
+      }}
+      transition={{ duration: 0.25, ease: 'easeOut' }}
       className={[
         mode === 'dark' ? 'canvas-dark dark' : 'canvas-light',
-        'rounded-ds-md border border-surface-border overflow-hidden',
+        'rounded-ds-md border overflow-hidden',
       ].join(' ')}
       style={brandStyle}
     >
@@ -47,12 +53,27 @@ export function ShowcaseCanvas({
           aria-label={`Switch canvas to ${next} mode`}
           onClick={() => setMode(next)}
         >
-          {mode === 'light' ? <IconMoon size={14} /> : <IconSun size={14} />}
+          <AnimatePresence mode="wait" initial={false}>
+            <motion.span
+              key={mode}
+              initial={{ rotate: -90, opacity: 0 }}
+              animate={{ rotate: 0, opacity: 1 }}
+              exit={{ rotate: 90, opacity: 0 }}
+              transition={{ duration: 0.2 }}
+              className="inline-flex"
+            >
+              {mode === 'light' ? <IconMoon size={14} /> : <IconSun size={14} />}
+            </motion.span>
+          </AnimatePresence>
         </Button>
       </div>
-      <div className="p-ds-06 lg:p-ds-08 bg-surface-base">
+      <motion.div
+        animate={{ backgroundColor: 'var(--color-surface-base)' }}
+        transition={{ duration: 0.25, ease: 'easeOut' }}
+        className="p-ds-06 lg:p-ds-08"
+      >
         {children}
-      </div>
-    </div>
+      </motion.div>
+    </motion.div>
   )
 }

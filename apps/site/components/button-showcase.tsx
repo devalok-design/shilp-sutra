@@ -1,23 +1,27 @@
 'use client'
 
 import { useState } from 'react'
+import { AnimatePresence, LayoutGroup, motion } from 'framer-motion'
 import {
   IconArrowRight,
   IconCloudUpload,
+  IconDownload,
   IconHeart,
+  IconPlus,
+  IconSend,
   IconSparkles,
   IconTrash,
 } from '@tabler/icons-react'
 import { Button } from '@devalok/shilp-sutra/ui/button'
 import { Text } from '@devalok/shilp-sutra/ui/text'
 
-/**
- * "Look closer" section — picks a single primitive (Button) and shows
- * the things a static screenshot can't: async state machine, processing
- * animation, full variant matrix. The point is to make the consumer
- * feel "oh — they actually thought about this."
- */
+const sleep = (ms: number) => new Promise<void>((r) => setTimeout(r, ms))
 
+/**
+ * "Look closer" — single primitive (Button) shown across the surfaces a
+ * screenshot can't capture. Three interactive demo cards above; full variant
+ * gallery below mirroring Storybook's AllVariants story.
+ */
 export function ButtonShowcase() {
   return (
     <section className="mx-auto max-w-6xl px-ds-page-x py-ds-12">
@@ -29,9 +33,9 @@ export function ButtonShowcase() {
           We sweat the small stuff.
         </Text>
         <Text variant="body-md" className="text-surface-fg-muted">
-          A button is just a button — until you click one and something feels wrong. Loading
-          state lags. The spinner moves the text. The success tick never comes. Ours doesn&apos;t
-          do that. Try them.
+          A button is just a button — until you click one and something feels wrong. The spinner
+          shifts the text. The check never comes. The loading bar lies. Ours don&apos;t do that.
+          Click through.
         </Text>
       </header>
 
@@ -41,68 +45,9 @@ export function ButtonShowcase() {
         <LoadingDemo />
       </div>
 
-      <div className="flex flex-col gap-ds-05">
-        <header className="flex flex-col gap-ds-02 max-w-3xl">
-          <Text variant="heading-md" className="text-surface-fg">
-            One button, every shape.
-          </Text>
-          <Text variant="body-sm" className="text-surface-fg-muted">
-            Five styles. Five colours. Five sizes. Pills, icons, full-width, loading — all from
-            the same component. Use the brand switcher above the fold to recolour the lot.
-          </Text>
-        </header>
+      <ButtonGallery />
 
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-ds-04">
-          <VariantBlock title="Styles">
-            <Button>Solid</Button>
-            <Button variant="soft">Soft</Button>
-            <Button variant="outline">Outline</Button>
-            <Button variant="ghost">Ghost</Button>
-            <Button variant="link">Link</Button>
-          </VariantBlock>
-
-          <VariantBlock title="Colours">
-            <Button>Accent</Button>
-            <Button color="success">Success</Button>
-            <Button color="warning">Warning</Button>
-            <Button color="error">Error</Button>
-            <Button color="neutral">Neutral</Button>
-          </VariantBlock>
-
-          <VariantBlock title="Sizes">
-            <Button size="xs">XS</Button>
-            <Button size="sm">SM</Button>
-            <Button size="md">MD</Button>
-            <Button size="lg">LG</Button>
-          </VariantBlock>
-
-          <VariantBlock title="Shapes &amp; icons">
-            <Button shape="pill">Pill</Button>
-            <Button startIcon={<IconCloudUpload size={14} />}>Upload</Button>
-            <Button endIcon={<IconArrowRight size={14} />}>Continue</Button>
-            <Button variant="soft" color="error" startIcon={<IconTrash size={14} />}>
-              Delete
-            </Button>
-          </VariantBlock>
-
-          <VariantBlock title="States">
-            <Button loading>Saving…</Button>
-            <Button disabled>Disabled</Button>
-            <Button startIcon={<IconHeart size={14} />} variant="soft">
-              42
-            </Button>
-          </VariantBlock>
-
-          <VariantBlock title="Composed">
-            <Button startIcon={<IconSparkles size={14} />}>Improve with AI</Button>
-            <Button variant="soft" endIcon={<IconArrowRight size={14} />}>
-              Skip
-            </Button>
-          </VariantBlock>
-        </div>
-      </div>
-
-      <footer className="mt-ds-08 flex flex-col items-start gap-ds-02 max-w-2xl">
+      <footer className="mt-ds-09 flex flex-col items-start gap-ds-02 max-w-2xl">
         <Text variant="body-sm" className="text-surface-fg-muted">
           That&apos;s the Button. There are 118 others. Each one made with the same care.
         </Text>
@@ -117,31 +62,18 @@ export function ButtonShowcase() {
   )
 }
 
-function VariantBlock({ title, children }: { title: string; children: React.ReactNode }) {
-  return (
-    <div className="flex flex-col gap-ds-03 p-ds-05 rounded-ds-md border border-surface-border-subtle bg-surface-raised">
-      <Text variant="label-sm" className="text-surface-fg-subtle">
-        {title}
-      </Text>
-      <div className="flex flex-wrap items-center gap-ds-02">{children}</div>
-    </div>
-  )
-}
+/* -----------------------------------------------------------------------
+ * Interactive demos
+ * --------------------------------------------------------------------- */
 
-/**
- * onClickAsync — Button's built-in async state machine. Cycles
- * idle → loading (spinner + marching ants) → success (check) → idle.
- * Real demo: each click sleeps 1.4s then resolves.
- */
 function AsyncDemo() {
-  const sleep = (ms: number) => new Promise((r) => setTimeout(r, ms))
   return (
     <DemoCard
       title="One prop. Three states."
       caption={
         <>
-          <code className="font-mono">onClickAsync</code> handles the whole loading →&nbsp;success
-          →&nbsp;reset loop. Click it.
+          <code className="font-mono">onClickAsync</code> handles loading →&nbsp;success
+          →&nbsp;reset. Click it.
         </>
       }
     >
@@ -158,85 +90,224 @@ function AsyncDemo() {
   )
 }
 
-/**
- * processing — marching-ants border. Three speeds for three emotions:
- *   ambient (3s) — "I'm working, no rush"
- *   working (2s) — "I'm working, please wait"
- *   urgent  (1s) — "I'm working, pay attention"
- */
-function ProcessingDemo() {
-  const [speed, setSpeed] = useState<'ambient' | 'working' | 'urgent'>('working')
+type ProcessingSpeed = 'ambient' | 'working' | 'urgent'
 
-  const speeds: { id: 'ambient' | 'working' | 'urgent'; label: string }[] = [
-    { id: 'ambient', label: 'Calm' },
-    { id: 'working', label: 'Working' },
-    { id: 'urgent', label: 'Urgent' },
-  ]
+const PROCESSING_OPTIONS: { id: ProcessingSpeed; label: string; duration: string }[] = [
+  { id: 'ambient', label: 'Calm', duration: '3s loop' },
+  { id: 'working', label: 'Working', duration: '2s loop' },
+  { id: 'urgent', label: 'Urgent', duration: '1s loop' },
+]
+
+function ProcessingDemo() {
+  const [speed, setSpeed] = useState<ProcessingSpeed>('working')
+  const active = PROCESSING_OPTIONS.find((o) => o.id === speed) ?? PROCESSING_OPTIONS[1]
 
   return (
     <DemoCard
       title="Patience, animated."
-      caption="Long jobs need a different feel from short ones. Pick the energy."
+      caption={
+        <>
+          Long jobs need a different feel from short ones. Pick the energy — watch the marching
+          border change pace.
+        </>
+      }
     >
-      <Button processing={speed} processingDisabled={false} variant="solid" size="lg">
+      {/* key on speed remounts the Button so the marching-ants animation restarts cleanly. */}
+      <Button
+        key={speed}
+        processing={speed}
+        processingDisabled={false}
+        variant="solid"
+        size="lg"
+      >
         Running pipeline
       </Button>
-      <div className="flex flex-wrap items-center gap-ds-01 mt-ds-03">
-        {speeds.map((s) => (
-          <button
-            key={s.id}
-            type="button"
-            onClick={() => setSpeed(s.id)}
-            className={[
-              'px-ds-03 py-[3px] rounded-ds-sm text-ds-xs transition-colors duration-fast-01',
-              speed === s.id
-                ? 'bg-accent-3 text-accent-11'
-                : 'text-surface-fg-muted hover:bg-surface-raised-hover',
-            ].join(' ')}
-          >
-            {s.label}
-          </button>
-        ))}
-      </div>
+      <SegmentedSwitch
+        options={PROCESSING_OPTIONS}
+        value={speed}
+        onChange={(v) => setSpeed(v as ProcessingSpeed)}
+      />
+      <Text variant="body-xs" className="text-surface-fg-subtle">
+        {active.label} · <code className="font-mono">{active.duration}</code>
+      </Text>
     </DemoCard>
   )
 }
 
-/**
- * loading + loadingPosition — spinner placement choice.
- * Most libraries center the spinner. shilp-sutra lets you keep the label visible.
- */
+type LoadingPosition = 'start' | 'center' | 'end'
+
+const LOADING_OPTIONS: { id: LoadingPosition; label: string }[] = [
+  { id: 'start', label: 'Start' },
+  { id: 'center', label: 'Center' },
+  { id: 'end', label: 'End' },
+]
+
 function LoadingDemo() {
-  const [pos, setPos] = useState<'start' | 'end' | 'center'>('start')
+  const [pos, setPos] = useState<LoadingPosition>('start')
 
   return (
     <DemoCard
       title="The text stays still."
       caption="Spinners that replace the label feel broken. Pick a side; the label sticks."
     >
-      <Button loading loadingPosition={pos} size="lg" variant="soft">
+      <Button loading loadingPosition={pos} size="lg" variant="soft" startIcon={<IconSend size={16} />}>
         Confirming order
       </Button>
-      <div className="flex flex-wrap items-center gap-ds-01 mt-ds-03">
-        {(['start', 'center', 'end'] as const).map((p) => (
-          <button
-            key={p}
-            type="button"
-            onClick={() => setPos(p)}
-            className={[
-              'px-ds-03 py-[3px] rounded-ds-sm text-ds-xs transition-colors duration-fast-01',
-              pos === p
-                ? 'bg-accent-3 text-accent-11'
-                : 'text-surface-fg-muted hover:bg-surface-raised-hover',
-            ].join(' ')}
-          >
-            {p}
-          </button>
-        ))}
-      </div>
+      <SegmentedSwitch options={LOADING_OPTIONS} value={pos} onChange={(v) => setPos(v as LoadingPosition)} />
     </DemoCard>
   )
 }
+
+/* -----------------------------------------------------------------------
+ * Variant gallery — mirrors AllVariants story (15 combos × 3 sizes)
+ * --------------------------------------------------------------------- */
+
+const COMBOS = [
+  { variant: 'solid', color: 'accent', label: 'solid · accent' },
+  { variant: 'soft', color: 'accent', label: 'soft · accent' },
+  { variant: 'outline', color: 'accent', label: 'outline · accent' },
+  { variant: 'ghost', color: 'accent', label: 'ghost · accent' },
+  { variant: 'solid', color: 'error', label: 'solid · error' },
+  { variant: 'soft', color: 'error', label: 'soft · error' },
+  { variant: 'outline', color: 'error', label: 'outline · error' },
+  { variant: 'solid', color: 'success', label: 'solid · success' },
+  { variant: 'soft', color: 'success', label: 'soft · success' },
+  { variant: 'solid', color: 'warning', label: 'solid · warning' },
+  { variant: 'soft', color: 'warning', label: 'soft · warning' },
+  { variant: 'solid', color: 'neutral', label: 'solid · neutral' },
+  { variant: 'soft', color: 'neutral', label: 'soft · neutral' },
+  { variant: 'link', color: 'accent', label: 'link' },
+] as const
+
+type FilterTone = 'all' | 'solid' | 'soft' | 'outline' | 'ghost' | 'link'
+
+const FILTERS: { id: FilterTone; label: string }[] = [
+  { id: 'all', label: 'All' },
+  { id: 'solid', label: 'Solid' },
+  { id: 'soft', label: 'Soft' },
+  { id: 'outline', label: 'Outline' },
+  { id: 'ghost', label: 'Ghost' },
+  { id: 'link', label: 'Link' },
+]
+
+const SIZES = ['sm', 'md', 'lg'] as const
+
+function ButtonGallery() {
+  const [filter, setFilter] = useState<FilterTone>('all')
+  const visible = filter === 'all' ? COMBOS : COMBOS.filter((c) => c.variant === filter)
+
+  return (
+    <div className="flex flex-col gap-ds-06">
+      <header className="flex flex-col gap-ds-03 max-w-3xl">
+        <Text variant="heading-md" className="text-surface-fg">
+          Fourteen looks. One component.
+        </Text>
+        <Text variant="body-sm" className="text-surface-fg-muted">
+          Every combination shilp-sutra ships. Five styles × five colours × three sizes, plus
+          disabled and loading rows. Filter to focus.
+        </Text>
+      </header>
+
+      <SegmentedSwitch
+        options={FILTERS}
+        value={filter}
+        onChange={(v) => setFilter(v as FilterTone)}
+      />
+
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-ds-04">
+        <AnimatePresence mode="popLayout">
+          {visible.map((combo) => (
+            <motion.article
+              key={combo.label}
+              layout
+              initial={{ opacity: 0, scale: 0.98 }}
+              animate={{ opacity: 1, scale: 1 }}
+              exit={{ opacity: 0, scale: 0.98 }}
+              transition={{ type: 'spring', stiffness: 350, damping: 30 }}
+              className="flex flex-col gap-ds-03 p-ds-05 rounded-ds-md border border-surface-border-subtle bg-surface-raised"
+            >
+              <span className="text-ds-xs font-mono text-surface-fg-subtle">{combo.label}</span>
+              <div className="flex flex-wrap items-center gap-ds-02">
+                {SIZES.map((size) => (
+                  <Button key={size} variant={combo.variant} color={combo.color} size={size}>
+                    {size}
+                  </Button>
+                ))}
+              </div>
+            </motion.article>
+          ))}
+        </AnimatePresence>
+      </div>
+
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-ds-04">
+        <article className="flex flex-col gap-ds-03 p-ds-05 rounded-ds-md border border-surface-border-subtle bg-surface-raised">
+          <span className="text-ds-xs font-mono text-surface-fg-subtle">with icons</span>
+          <div className="flex flex-wrap items-center gap-ds-02">
+            <Button startIcon={<IconPlus size={14} />}>Add</Button>
+            <Button startIcon={<IconDownload size={14} />} variant="soft">
+              Export
+            </Button>
+            <Button startIcon={<IconTrash size={14} />} variant="soft" color="error">
+              Delete
+            </Button>
+            <Button endIcon={<IconArrowRight size={14} />}>Continue</Button>
+            <Button startIcon={<IconSparkles size={14} />} variant="solid">
+              Improve
+            </Button>
+          </div>
+        </article>
+
+        <article className="flex flex-col gap-ds-03 p-ds-05 rounded-ds-md border border-surface-border-subtle bg-surface-raised">
+          <span className="text-ds-xs font-mono text-surface-fg-subtle">shape · pill</span>
+          <div className="flex flex-wrap items-center gap-ds-02">
+            {(['accent', 'success', 'warning', 'error', 'neutral'] as const).map((c) => (
+              <Button key={c} variant="soft" color={c} size="xs" shape="pill">
+                {c}
+              </Button>
+            ))}
+          </div>
+        </article>
+
+        <article className="flex flex-col gap-ds-03 p-ds-05 rounded-ds-md border border-surface-border-subtle bg-surface-raised">
+          <span className="text-ds-xs font-mono text-surface-fg-subtle">compact + icon sizes</span>
+          <div className="flex flex-wrap items-center gap-ds-02">
+            <Button size="compact-xs">c-xs</Button>
+            <Button size="compact-sm">c-sm</Button>
+            <Button size="compact-md">c-md</Button>
+            <Button size="icon-sm" aria-label="Plus">
+              <IconPlus size={14} />
+            </Button>
+            <Button size="icon-md" aria-label="Plus">
+              <IconPlus size={16} />
+            </Button>
+            <Button size="icon-lg" aria-label="Plus">
+              <IconPlus size={18} />
+            </Button>
+          </div>
+        </article>
+
+        <article className="flex flex-col gap-ds-03 p-ds-05 rounded-ds-md border border-surface-border-subtle bg-surface-raised">
+          <span className="text-ds-xs font-mono text-surface-fg-subtle">states · disabled, loading, counter</span>
+          <div className="flex flex-wrap items-center gap-ds-02">
+            <Button loading>Saving…</Button>
+            <Button loading loadingPosition="end" variant="soft">
+              Sending
+            </Button>
+            <Button disabled>Disabled</Button>
+            <Button startIcon={<IconHeart size={14} />} variant="soft">
+              42
+            </Button>
+            <Button onClickAsync={async () => { await sleep(900) }}>Try me</Button>
+          </div>
+        </article>
+      </div>
+    </div>
+  )
+}
+
+/* -----------------------------------------------------------------------
+ * Shared widgets
+ * --------------------------------------------------------------------- */
 
 function DemoCard({
   title,
@@ -257,9 +328,60 @@ function DemoCard({
           {caption}
         </Text>
       </header>
-      <div className="flex flex-col items-start gap-ds-02 min-h-[88px] justify-center pt-ds-03">
+      <div className="flex flex-col items-start gap-ds-03 min-h-[96px] justify-center pt-ds-02">
         {children}
       </div>
     </article>
+  )
+}
+
+/**
+ * Segmented switch — accessible tablist with a sliding accent pill behind
+ * the active option. Used everywhere we have small option groups so state
+ * changes feel like sliding doors, not flickering toggles.
+ */
+function SegmentedSwitch<T extends string>({
+  options,
+  value,
+  onChange,
+}: {
+  options: { id: T; label: string }[]
+  value: T
+  onChange: (v: T) => void
+}) {
+  return (
+    <LayoutGroup id={`switch-${value}`}>
+      <div
+        role="tablist"
+        aria-label="Options"
+        className="relative inline-flex items-center gap-ds-01 p-ds-01 rounded-ds-md bg-surface-overlay border border-surface-border-subtle"
+      >
+        {options.map((opt) => {
+          const active = opt.id === value
+          return (
+            <button
+              key={opt.id}
+              type="button"
+              role="tab"
+              aria-selected={active}
+              onClick={() => onChange(opt.id)}
+              className={[
+                'relative z-[1] px-ds-03 py-ds-02 rounded-ds-sm text-ds-xs font-medium transition-colors duration-fast-01',
+                active ? 'text-accent-11' : 'text-surface-fg-muted hover:text-surface-fg',
+              ].join(' ')}
+            >
+              {active && (
+                <motion.span
+                  layoutId={`switch-pill-${options.map((o) => o.id).join('-')}`}
+                  className="absolute inset-0 rounded-ds-sm bg-accent-3"
+                  transition={{ type: 'spring', stiffness: 500, damping: 35 }}
+                />
+              )}
+              <span className="relative z-[1]">{opt.label}</span>
+            </button>
+          )
+        })}
+      </div>
+    </LayoutGroup>
   )
 }

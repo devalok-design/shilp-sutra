@@ -42,13 +42,20 @@ export function MiraShowcase() {
     <div className="grid grid-cols-1 lg:grid-cols-[1.2fr_1fr] gap-ds-08">
       {/* Product image */}
       <div className="relative rounded-ds-md overflow-hidden border border-surface-border-subtle min-h-[420px] flex items-end">
-        <div
-          aria-hidden
-          className="absolute inset-0 transition-colors duration-fast-02"
-          style={{
-            background: `linear-gradient(135deg, ${activeColour.value} 0%, oklch(0.95 0.02 ${activeColour.value.match(/\s([0-9.]+)\)/)?.[1]}) 100%)`,
-          }}
-        />
+        <AnimatePresence initial={false}>
+          <motion.div
+            key={activeColour.id}
+            aria-hidden
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            transition={{ duration: 0.5, ease: 'easeOut' }}
+            className="absolute inset-0"
+            style={{
+              background: `linear-gradient(135deg, ${activeColour.value} 0%, oklch(0.95 0.02 ${activeColour.value.match(/\s([0-9.]+)\)/)?.[1]}) 100%)`,
+            }}
+          />
+        </AnimatePresence>
         <div className="relative z-[1] p-ds-06 flex items-end justify-between w-full text-surface-fg-inverted">
           <Badge variant="solid" color="accent">
             Slow-made · {activeColour.name}
@@ -74,7 +81,20 @@ export function MiraShowcase() {
             Mira · The everyday kurta
           </Text>
           <Text variant="heading-xl" className="text-surface-fg">
-            The Khadi shirt, in {activeColour.name}.
+            The Khadi shirt, in{' '}
+            <AnimatePresence mode="wait" initial={false}>
+              <motion.span
+                key={activeColour.id}
+                initial={{ opacity: 0, y: 6 }}
+                animate={{ opacity: 1, y: 0 }}
+                exit={{ opacity: 0, y: -6 }}
+                transition={{ duration: 0.18 }}
+                className="inline-block"
+              >
+                {activeColour.name}
+              </motion.span>
+            </AnimatePresence>
+            .
           </Text>
           <div className="flex items-center gap-ds-03 mt-ds-02">
             <Text variant="heading-md" className="text-surface-fg">
@@ -99,20 +119,28 @@ export function MiraShowcase() {
             Colour · {activeColour.name}
           </Text>
           <div className="flex items-center gap-ds-02">
-            {colours.map((c) => (
-              <button
-                key={c.id}
-                type="button"
-                aria-label={c.name}
-                aria-pressed={c.id === colour}
-                onClick={() => setColour(c.id)}
-                className={[
-                  'w-9 h-9 rounded-full border-2 transition-all duration-fast-01',
-                  c.id === colour ? 'border-accent-9 scale-110' : 'border-surface-border-subtle hover:scale-105',
-                ].join(' ')}
-                style={{ background: c.value }}
-              />
-            ))}
+            {colours.map((c) => {
+              const active = c.id === colour
+              return (
+                <button
+                  key={c.id}
+                  type="button"
+                  aria-label={c.name}
+                  aria-pressed={active}
+                  onClick={() => setColour(c.id)}
+                  className="relative w-9 h-9 rounded-full border border-surface-border-subtle hover:scale-105 transition-transform duration-fast-01"
+                  style={{ background: c.value }}
+                >
+                  {active && (
+                    <motion.span
+                      layoutId="mira-colour-ring"
+                      className="absolute -inset-1 rounded-full border-2 border-accent-9"
+                      transition={{ type: 'spring', stiffness: 500, damping: 30 }}
+                    />
+                  )}
+                </button>
+              )
+            })}
           </div>
         </div>
 
@@ -128,22 +156,27 @@ export function MiraShowcase() {
               Size guide
             </a>
           </div>
-          <div className="flex items-center gap-ds-02">
-            {sizes.map((s) => (
-              <button
-                key={s}
-                type="button"
-                onClick={() => setSize(s)}
-                className={[
-                  'min-w-10 h-10 px-ds-03 rounded-ds-md border text-ds-sm transition-colors duration-fast-01',
-                  s === size
-                    ? 'border-accent-9 bg-accent-3 text-accent-11'
-                    : 'border-surface-border-subtle text-surface-fg-muted hover:border-surface-border',
-                ].join(' ')}
-              >
-                {s}
-              </button>
-            ))}
+          <div className="relative flex items-center gap-ds-02">
+            {sizes.map((s) => {
+              const active = s === size
+              return (
+                <button
+                  key={s}
+                  type="button"
+                  onClick={() => setSize(s)}
+                  className="relative min-w-10 h-10 px-ds-03 rounded-ds-md border border-surface-border-subtle text-ds-sm text-surface-fg-muted hover:border-surface-border transition-colors duration-fast-01"
+                >
+                  {active && (
+                    <motion.span
+                      layoutId="mira-size-pill"
+                      className="absolute inset-0 -m-px rounded-ds-md border-2 border-accent-9 bg-accent-3"
+                      transition={{ type: 'spring', stiffness: 500, damping: 30 }}
+                    />
+                  )}
+                  <span className={active ? 'relative z-[1] text-accent-11' : 'relative z-[1]'}>{s}</span>
+                </button>
+              )
+            })}
           </div>
         </div>
 

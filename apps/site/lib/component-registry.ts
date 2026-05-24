@@ -96,3 +96,32 @@ export function groupByLayer(items: ComponentMeta[]): Record<Layer, ComponentMet
   for (const item of items) out[item.layer].push(item)
   return out
 }
+
+/**
+ * Full markdown source for a component slug. Used by the detail page to render
+ * props tables, defaults, example code, composability notes, and gotchas
+ * without re-parsing.
+ */
+export async function getComponentDocRaw(layer: Layer, slug: string): Promise<string | null> {
+  try {
+    return await fs.readFile(join(DOCS_DIR, layer, `${slug}.md`), 'utf8')
+  } catch {
+    return null
+  }
+}
+
+/**
+ * Finds the layer that owns a given slug. Returns null if no doc exists.
+ */
+export async function findLayerForSlug(slug: string): Promise<Layer | null> {
+  for (const layer of LAYERS) {
+    const path = join(DOCS_DIR, layer, `${slug}.md`)
+    try {
+      await fs.access(path)
+      return layer
+    } catch {
+      continue
+    }
+  }
+  return null
+}

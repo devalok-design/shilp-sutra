@@ -108,9 +108,7 @@ export function ComponentGrid({ items }: { items: ComponentMeta[] }) {
           {filtered.map((item) => (
             <li key={`${item.layer}/${item.slug}`}>
               <Link
-                href={item.storybookUrl}
-                target="_blank"
-                rel="noreferrer"
+                href={`/components/${item.slug}`}
                 className="flex flex-col gap-ds-03 h-full p-ds-05 rounded-ds-md border border-surface-border-subtle bg-surface-raised hover:border-surface-border hover:bg-surface-raised-hover transition-colors duration-fast-01 group"
               >
                 <div className="flex items-start justify-between gap-ds-03">

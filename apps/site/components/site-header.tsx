@@ -68,9 +68,13 @@ export function SiteHeader() {
 
   return (
     <>
+      {/* Skip link: anchored top-left, off to the side of the centered bar so
+          it doesn't collide with the logo/brand-switcher cluster. Renders
+          above the bar (z-popover already on the bar; this sits inside the
+          fixed layer at a higher visual z via stacking order on focus). */}
       <a
         href="#main"
-        className="sr-only focus:not-sr-only focus:fixed focus:top-ds-04 focus:left-1/2 focus:-translate-x-1/2 focus:z-popover focus:px-ds-04 focus:py-ds-02 focus:rounded-full focus:bg-accent-9 focus:text-accent-fg focus:shadow-overlay focus:text-ds-sm focus:font-medium"
+        className="sr-only focus:not-sr-only focus:fixed focus:top-ds-02 focus:left-ds-03 focus:z-popover focus:px-ds-04 focus:py-ds-02 focus:rounded-ds-md focus:bg-accent-9 focus:text-accent-fg focus:shadow-overlay focus:text-ds-sm focus:font-medium"
       >
         Skip to content
       </a>

@@ -9,6 +9,7 @@ const navLinks = [
   { href: '/blocks', label: 'Blocks' },
   { href: '/theming', label: 'Theming' },
   { href: '/docs/install-vite', label: 'Docs' },
+  { href: '/agents', label: 'For AI editors', accent: true },
 ] as const
 
 export function SiteHeader() {
@@ -23,15 +24,23 @@ export function SiteHeader() {
         </Link>
 
         <nav className="hidden md:flex items-center gap-ds-05">
-          {navLinks.map((link) => (
-            <Link
-              key={link.href}
-              href={link.href}
-              className="text-ds-sm text-surface-fg-muted hover:text-surface-fg transition-colors duration-fast-01"
-            >
-              {link.label}
-            </Link>
-          ))}
+          {navLinks.map((link) => {
+            const isAccent = 'accent' in link && link.accent
+            return (
+              <Link
+                key={link.href}
+                href={link.href}
+                className={
+                  isAccent
+                    ? 'inline-flex items-center gap-ds-02 text-ds-sm text-accent-11 hover:text-accent-12 transition-colors duration-fast-01'
+                    : 'text-ds-sm text-surface-fg-muted hover:text-surface-fg transition-colors duration-fast-01'
+                }
+              >
+                {isAccent && <span className="w-1.5 h-1.5 rounded-full bg-accent-9" />}
+                {link.label}
+              </Link>
+            )
+          })}
         </nav>
 
         <div className="flex items-center gap-ds-02">

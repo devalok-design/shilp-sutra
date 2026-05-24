@@ -1,26 +1,42 @@
 'use client'
 
 import { useState } from 'react'
-import { AnimatePresence, LayoutGroup, motion } from 'framer-motion'
+import { LayoutGroup, motion } from 'framer-motion'
 import {
   IconArrowRight,
+  IconBolt,
+  IconBookmark,
+  IconBrandGithub,
+  IconBrandSpotify,
+  IconBug,
+  IconCalendarPlus,
+  IconChevronRight,
+  IconClock,
   IconCloudUpload,
-  IconDownload,
+  IconCode,
   IconHeart,
+  IconMail,
+  IconMessageCircle,
+  IconPlayerPlay,
+  IconPlayerSkipForward,
   IconPlus,
+  IconRepeat,
+  IconRocket,
   IconSend,
-  IconSparkles,
-  IconTrash,
+  IconShare3,
+  IconShieldCheck,
 } from '@tabler/icons-react'
 import { Button } from '@devalok/shilp-sutra/ui/button'
+import { ButtonGroup } from '@devalok/shilp-sutra/ui/button-group'
+import { SplitButton } from '@devalok/shilp-sutra/ui/split-button'
 import { Text } from '@devalok/shilp-sutra/ui/text'
 
 const sleep = (ms: number) => new Promise<void>((r) => setTimeout(r, ms))
 
 /**
- * "Look closer" — single primitive (Button) shown across the surfaces a
- * screenshot can't capture. Three interactive demo cards above; full variant
- * gallery below mirroring Storybook's AllVariants story.
+ * "Look closer" — three interactive live demos showing what a screenshot
+ * can't, then ten scenes lifted from wildly different products to prove
+ * the same Button component carries every job a real interface asks of it.
  */
 export function ButtonShowcase() {
   return (
@@ -39,17 +55,18 @@ export function ButtonShowcase() {
         </Text>
       </header>
 
-      <div className="grid grid-cols-1 lg:grid-cols-3 gap-ds-05 mb-ds-09">
+      <div className="grid grid-cols-1 lg:grid-cols-3 gap-ds-05 mb-ds-12">
         <AsyncDemo />
         <ProcessingDemo />
         <LoadingDemo />
       </div>
 
-      <ButtonGallery />
+      <ContextualScenes />
 
       <footer className="mt-ds-09 flex flex-col items-start gap-ds-02 max-w-2xl">
         <Text variant="body-sm" className="text-surface-fg-muted">
-          That&apos;s the Button. There are 118 others. Each one made with the same care.
+          One component, ten products. Multiply by 118 — every other primitive carries this much
+          range too.
         </Text>
         <a
           href="/components/button"
@@ -63,7 +80,7 @@ export function ButtonShowcase() {
 }
 
 /* -----------------------------------------------------------------------
- * Interactive demos
+ * Three interactive demos
  * --------------------------------------------------------------------- */
 
 function AsyncDemo() {
@@ -72,7 +89,7 @@ function AsyncDemo() {
       title="One prop. Three states."
       caption={
         <>
-          <code className="font-mono">onClickAsync</code> handles loading →&nbsp;success
+          <code className="font-mono">onClickAsync</code> runs loading →&nbsp;success
           →&nbsp;reset. Click it.
         </>
       }
@@ -91,7 +108,6 @@ function AsyncDemo() {
 }
 
 type ProcessingSpeed = 'ambient' | 'working' | 'urgent'
-
 const PROCESSING_OPTIONS: { id: ProcessingSpeed; label: string; duration: string }[] = [
   { id: 'ambient', label: 'Calm', duration: '3s loop' },
   { id: 'working', label: 'Working', duration: '2s loop' },
@@ -101,32 +117,15 @@ const PROCESSING_OPTIONS: { id: ProcessingSpeed; label: string; duration: string
 function ProcessingDemo() {
   const [speed, setSpeed] = useState<ProcessingSpeed>('working')
   const active = PROCESSING_OPTIONS.find((o) => o.id === speed) ?? PROCESSING_OPTIONS[1]
-
   return (
     <DemoCard
       title="Patience, animated."
-      caption={
-        <>
-          Long jobs need a different feel from short ones. Pick the energy — watch the marching
-          border change pace.
-        </>
-      }
+      caption="Long jobs need a different feel from short ones. Watch the marching border change pace."
     >
-      {/* key on speed remounts the Button so the marching-ants animation restarts cleanly. */}
-      <Button
-        key={speed}
-        processing={speed}
-        processingDisabled={false}
-        variant="solid"
-        size="lg"
-      >
+      <Button key={speed} processing={speed} processingDisabled={false} variant="solid" size="lg">
         Running pipeline
       </Button>
-      <SegmentedSwitch
-        options={PROCESSING_OPTIONS}
-        value={speed}
-        onChange={(v) => setSpeed(v as ProcessingSpeed)}
-      />
+      <SegmentedSwitch options={PROCESSING_OPTIONS} value={speed} onChange={(v) => setSpeed(v as ProcessingSpeed)} />
       <Text variant="body-xs" className="text-surface-fg-subtle">
         {active.label} · <code className="font-mono">{active.duration}</code>
       </Text>
@@ -135,7 +134,6 @@ function ProcessingDemo() {
 }
 
 type LoadingPosition = 'start' | 'center' | 'end'
-
 const LOADING_OPTIONS: { id: LoadingPosition; label: string }[] = [
   { id: 'start', label: 'Start' },
   { id: 'center', label: 'Center' },
@@ -144,7 +142,6 @@ const LOADING_OPTIONS: { id: LoadingPosition; label: string }[] = [
 
 function LoadingDemo() {
   const [pos, setPos] = useState<LoadingPosition>('start')
-
   return (
     <DemoCard
       title="The text stays still."
@@ -159,155 +156,446 @@ function LoadingDemo() {
 }
 
 /* -----------------------------------------------------------------------
- * Variant gallery — mirrors AllVariants story (15 combos × 3 sizes)
+ * Ten contextual scenes — wildly different products, one component
  * --------------------------------------------------------------------- */
 
-const COMBOS = [
-  { variant: 'solid', color: 'accent', label: 'solid · accent' },
-  { variant: 'soft', color: 'accent', label: 'soft · accent' },
-  { variant: 'outline', color: 'accent', label: 'outline · accent' },
-  { variant: 'ghost', color: 'accent', label: 'ghost · accent' },
-  { variant: 'solid', color: 'error', label: 'solid · error' },
-  { variant: 'soft', color: 'error', label: 'soft · error' },
-  { variant: 'outline', color: 'error', label: 'outline · error' },
-  { variant: 'solid', color: 'success', label: 'solid · success' },
-  { variant: 'soft', color: 'success', label: 'soft · success' },
-  { variant: 'solid', color: 'warning', label: 'solid · warning' },
-  { variant: 'soft', color: 'warning', label: 'soft · warning' },
-  { variant: 'solid', color: 'neutral', label: 'solid · neutral' },
-  { variant: 'soft', color: 'neutral', label: 'soft · neutral' },
-  { variant: 'link', color: 'accent', label: 'link' },
-] as const
-
-type FilterTone = 'all' | 'solid' | 'soft' | 'outline' | 'ghost' | 'link'
-
-const FILTERS: { id: FilterTone; label: string }[] = [
-  { id: 'all', label: 'All' },
-  { id: 'solid', label: 'Solid' },
-  { id: 'soft', label: 'Soft' },
-  { id: 'outline', label: 'Outline' },
-  { id: 'ghost', label: 'Ghost' },
-  { id: 'link', label: 'Link' },
-]
-
-const SIZES = ['sm', 'md', 'lg'] as const
-
-function ButtonGallery() {
-  const [filter, setFilter] = useState<FilterTone>('all')
-  const visible = filter === 'all' ? COMBOS : COMBOS.filter((c) => c.variant === filter)
-
+function ContextualScenes() {
   return (
     <div className="flex flex-col gap-ds-06">
       <header className="flex flex-col gap-ds-03 max-w-3xl">
+        <Text variant="label-md" className="text-surface-fg-subtle">
+          Same Button. Ten worlds.
+        </Text>
         <Text variant="heading-md" className="text-surface-fg">
-          Fourteen looks. One component.
+          Wherever you ship, it fits.
         </Text>
         <Text variant="body-sm" className="text-surface-fg-muted">
-          Every combination shilp-sutra ships. Five styles × five colours × three sizes, plus
-          disabled and loading rows. Filter to focus.
+          These are surfaces from ten different products — email, music, banking, social, code,
+          calendar, deploys. Each card lifts a real interaction shape and shows the same Button
+          component in that context. The variant, color, size, and compound shape pick themselves
+          from what the user is being asked to do.
         </Text>
       </header>
 
-      <SegmentedSwitch
-        options={FILTERS}
-        value={filter}
-        onChange={(v) => setFilter(v as FilterTone)}
-      />
-
       <div className="grid grid-cols-1 md:grid-cols-2 gap-ds-04">
-        <AnimatePresence mode="popLayout">
-          {visible.map((combo) => (
-            <motion.article
-              key={combo.label}
-              layout
-              initial={{ opacity: 0, scale: 0.98 }}
-              animate={{ opacity: 1, scale: 1 }}
-              exit={{ opacity: 0, scale: 0.98 }}
-              transition={{ type: 'spring', stiffness: 350, damping: 30 }}
-              className="flex flex-col gap-ds-03 p-ds-05 rounded-ds-md border border-surface-border-subtle bg-surface-raised"
-            >
-              <span className="text-ds-xs font-mono text-surface-fg-subtle">{combo.label}</span>
-              <div className="flex flex-wrap items-center gap-ds-02">
-                {SIZES.map((size) => (
-                  <Button key={size} variant={combo.variant} color={combo.color} size={size}>
-                    {size}
-                  </Button>
-                ))}
-              </div>
-            </motion.article>
-          ))}
-        </AnimatePresence>
-      </div>
-
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-ds-04">
-        <article className="flex flex-col gap-ds-03 p-ds-05 rounded-ds-md border border-surface-border-subtle bg-surface-raised">
-          <span className="text-ds-xs font-mono text-surface-fg-subtle">with icons</span>
-          <div className="flex flex-wrap items-center gap-ds-02">
-            <Button startIcon={<IconPlus size={14} />}>Add</Button>
-            <Button startIcon={<IconDownload size={14} />} variant="soft">
-              Export
-            </Button>
-            <Button startIcon={<IconTrash size={14} />} variant="soft" color="error">
-              Delete
-            </Button>
-            <Button endIcon={<IconArrowRight size={14} />}>Continue</Button>
-            <Button startIcon={<IconSparkles size={14} />} variant="solid">
-              Improve
-            </Button>
-          </div>
-        </article>
-
-        <article className="flex flex-col gap-ds-03 p-ds-05 rounded-ds-md border border-surface-border-subtle bg-surface-raised">
-          <span className="text-ds-xs font-mono text-surface-fg-subtle">shape · pill</span>
-          <div className="flex flex-wrap items-center gap-ds-02">
-            {(['accent', 'success', 'warning', 'error', 'neutral'] as const).map((c) => (
-              <Button key={c} variant="soft" color={c} size="xs" shape="pill">
-                {c}
-              </Button>
-            ))}
-          </div>
-        </article>
-
-        <article className="flex flex-col gap-ds-03 p-ds-05 rounded-ds-md border border-surface-border-subtle bg-surface-raised">
-          <span className="text-ds-xs font-mono text-surface-fg-subtle">compact + icon sizes</span>
-          <div className="flex flex-wrap items-center gap-ds-02">
-            <Button size="compact-xs">c-xs</Button>
-            <Button size="compact-sm">c-sm</Button>
-            <Button size="compact-md">c-md</Button>
-            <Button size="icon-sm" aria-label="Plus">
-              <IconPlus size={14} />
-            </Button>
-            <Button size="icon-md" aria-label="Plus">
-              <IconPlus size={16} />
-            </Button>
-            <Button size="icon-lg" aria-label="Plus">
-              <IconPlus size={18} />
-            </Button>
-          </div>
-        </article>
-
-        <article className="flex flex-col gap-ds-03 p-ds-05 rounded-ds-md border border-surface-border-subtle bg-surface-raised">
-          <span className="text-ds-xs font-mono text-surface-fg-subtle">states · disabled, loading, counter</span>
-          <div className="flex flex-wrap items-center gap-ds-02">
-            <Button loading>Saving…</Button>
-            <Button loading loadingPosition="end" variant="soft">
-              Sending
-            </Button>
-            <Button disabled>Disabled</Button>
-            <Button startIcon={<IconHeart size={14} />} variant="soft">
-              42
-            </Button>
-            <Button onClickAsync={async () => { await sleep(900) }}>Try me</Button>
-          </div>
-        </article>
+        <SceneEmail />
+        <SceneMusic />
+        <SceneStreaming />
+        <SceneCodeEditor />
+        <SceneSocial />
+        <SceneCalendar />
+        <SceneBanking />
+        <SceneDeploy />
+        <SceneNotes />
+        <SceneCommerce />
       </div>
     </div>
+  )
+}
+
+function Scene({
+  product,
+  why,
+  children,
+}: {
+  product: string
+  why: string
+  children: React.ReactNode
+}) {
+  return (
+    <article className="flex flex-col gap-ds-04 p-ds-05 rounded-ds-md border border-surface-border-subtle bg-surface-raised">
+      <header className="flex flex-col gap-ds-01">
+        <Text variant="label-sm" className="text-surface-fg-subtle">
+          {product}
+        </Text>
+        <Text variant="body-sm" className="text-surface-fg-muted">
+          {why}
+        </Text>
+      </header>
+      <div className="rounded-ds-sm bg-surface-overlay border border-surface-border-subtle p-ds-04">
+        {children}
+      </div>
+    </article>
+  )
+}
+
+/* Email client — Send + Schedule */
+function SceneEmail() {
+  return (
+    <Scene
+      product="Email · Gmail-shaped"
+      why="Primary action with an attached alternative. SplitButton fuses the two visually so the user reads it as one decision."
+    >
+      <div className="flex items-center justify-between gap-ds-03">
+        <div className="flex items-center gap-ds-02">
+          <IconMail size={14} className="text-surface-fg-subtle" />
+          <Text variant="body-xs" className="text-surface-fg-subtle">
+            Draft to mridula@devalok.in
+          </Text>
+        </div>
+        <SplitButton
+          color="accent"
+          size="sm"
+          onClick={() => {}}
+          dropdownLabel="Send options"
+          dropdownContent={
+            <div className="flex flex-col gap-ds-01 p-ds-02 min-w-[12rem]">
+              <DropdownLink icon={<IconSend size={14} />} label="Send now" hint="Default" />
+              <DropdownLink icon={<IconClock size={14} />} label="Schedule send" hint="Tomorrow 9 am" />
+              <DropdownLink icon={<IconBookmark size={14} />} label="Save as draft" hint="" />
+            </div>
+          }
+        >
+          Send
+        </SplitButton>
+      </div>
+    </Scene>
+  )
+}
+
+/* Music player */
+function SceneMusic() {
+  const [playing, setPlaying] = useState(false)
+  return (
+    <Scene
+      product="Music · Spotify-shaped"
+      why="Single icon button as the center of gravity. Size icon-lg + accent — the only loud thing on the row."
+    >
+      <div className="flex items-center justify-between gap-ds-03">
+        <div className="flex items-center gap-ds-03 min-w-0">
+          <span className="w-10 h-10 rounded-ds-sm bg-accent-3 text-accent-11 flex items-center justify-center shrink-0">
+            <IconBrandSpotify size={18} />
+          </span>
+          <div className="flex flex-col min-w-0">
+            <Text variant="body-sm" className="text-surface-fg truncate">
+              Bhairav · morning raag
+            </Text>
+            <Text variant="body-xs" className="text-surface-fg-subtle">
+              Pt. Bhimsen Joshi
+            </Text>
+          </div>
+        </div>
+        <div className="flex items-center gap-ds-01">
+          <Button variant="ghost" size="icon-sm" aria-label="Previous">
+            <IconPlayerSkipForward size={14} className="rotate-180" />
+          </Button>
+          <Button
+            variant="solid"
+            size="icon-lg"
+            shape="pill"
+            aria-label={playing ? 'Pause' : 'Play'}
+            onClick={() => setPlaying((p) => !p)}
+          >
+            <motion.span
+              key={playing ? 'pause' : 'play'}
+              initial={{ scale: 0.6, opacity: 0 }}
+              animate={{ scale: 1, opacity: 1 }}
+              transition={{ type: 'spring', stiffness: 500, damping: 25 }}
+              className="inline-flex"
+            >
+              {playing ? <span className="text-[14px] leading-none">❚❚</span> : <IconPlayerPlay size={16} />}
+            </motion.span>
+          </Button>
+          <Button variant="ghost" size="icon-sm" aria-label="Next">
+            <IconPlayerSkipForward size={14} />
+          </Button>
+        </div>
+      </div>
+    </Scene>
+  )
+}
+
+/* Streaming subscribe */
+function SceneStreaming() {
+  return (
+    <Scene
+      product="Streaming · Netflix-shaped"
+      why="High-emotion conversion. Pill shape + warning hue catches the eye without screaming red."
+    >
+      <div className="flex items-center justify-between gap-ds-03">
+        <div className="flex flex-col gap-ds-01">
+          <Text variant="body-xs" className="text-surface-fg-subtle">
+            7-day free trial · ₹199 / month
+          </Text>
+          <Text variant="body-sm" className="text-surface-fg">
+            All-access. Cancel any time.
+          </Text>
+        </div>
+        <Button color="warning" size="md" shape="pill">
+          Subscribe
+        </Button>
+      </div>
+    </Scene>
+  )
+}
+
+/* Code editor — Run / Debug / Test */
+function SceneCodeEditor() {
+  return (
+    <Scene
+      product="Code editor · VS Code-shaped"
+      why="ButtonGroup attached. Same context, three sibling actions, shared border radius — reads as one toolbar."
+    >
+      <div className="flex items-center justify-between gap-ds-03">
+        <div className="flex items-center gap-ds-02">
+          <IconCode size={14} className="text-surface-fg-subtle" />
+          <Text variant="body-xs" className="text-surface-fg-subtle font-mono">
+            main.ts · ↑ no errors
+          </Text>
+        </div>
+        <ButtonGroup variant="soft" size="sm" color="accent">
+          <Button startIcon={<IconBolt size={12} />}>Run</Button>
+          <Button startIcon={<IconBug size={12} />}>Debug</Button>
+          <Button startIcon={<IconShieldCheck size={12} />}>Test</Button>
+        </ButtonGroup>
+      </div>
+    </Scene>
+  )
+}
+
+/* Social post — Like / Comment / Share */
+function SceneSocial() {
+  const [liked, setLiked] = useState(false)
+  const [likes, setLikes] = useState(312)
+  return (
+    <Scene
+      product="Social · X-shaped"
+      why="Ghost variant + icon + counter. Three sibling actions stay quiet until tapped — content does the work."
+    >
+      <div className="flex items-center justify-between gap-ds-03">
+        <div className="flex items-center gap-ds-03 min-w-0">
+          <Text variant="body-xs" className="text-surface-fg-muted truncate max-w-[18rem]">
+            &ldquo;The slow web is finally winning…&rdquo;
+          </Text>
+        </div>
+        <div className="flex items-center gap-ds-01">
+          <Button
+            variant="ghost"
+            size="sm"
+            color={liked ? 'error' : 'neutral'}
+            startIcon={
+              <IconHeart
+                size={14}
+                className={liked ? 'fill-error-9 text-error-9' : ''}
+              />
+            }
+            onClick={() => {
+              setLiked((l) => !l)
+              setLikes((c) => (liked ? c - 1 : c + 1))
+            }}
+          >
+            <motion.span
+              key={likes}
+              initial={{ y: -3, opacity: 0 }}
+              animate={{ y: 0, opacity: 1 }}
+              transition={{ duration: 0.15 }}
+            >
+              {likes}
+            </motion.span>
+          </Button>
+          <Button variant="ghost" size="sm" startIcon={<IconMessageCircle size={14} />}>
+            41
+          </Button>
+          <Button variant="ghost" size="sm" startIcon={<IconRepeat size={14} />}>
+            18
+          </Button>
+          <Button variant="ghost" size="icon-sm" aria-label="Share">
+            <IconShare3 size={14} />
+          </Button>
+        </div>
+      </div>
+    </Scene>
+  )
+}
+
+/* Calendar — Add event with split for Task / Reminder */
+function SceneCalendar() {
+  return (
+    <Scene
+      product="Calendar · Google Calendar-shaped"
+      why="Top-level create with three flavours. SplitButton reveals the alternatives without cluttering the toolbar."
+    >
+      <div className="flex items-center justify-between gap-ds-03">
+        <div className="flex flex-col gap-ds-01">
+          <Text variant="body-xs" className="text-surface-fg-subtle">
+            Thursday, 26 May
+          </Text>
+          <Text variant="body-sm" className="text-surface-fg">
+            6 events · 2 tasks open
+          </Text>
+        </div>
+        <SplitButton
+          color="accent"
+          variant="solid"
+          size="sm"
+          onClick={() => {}}
+          dropdownLabel="Event types"
+          dropdownContent={
+            <div className="flex flex-col gap-ds-01 p-ds-02 min-w-[12rem]">
+              <DropdownLink icon={<IconCalendarPlus size={14} />} label="Event" hint="With time + place" />
+              <DropdownLink icon={<IconCalendarPlus size={14} />} label="Task" hint="Owned, dated, done-able" />
+              <DropdownLink icon={<IconCalendarPlus size={14} />} label="Reminder" hint="Quiet ping" />
+              <DropdownLink icon={<IconCalendarPlus size={14} />} label="Out of office" hint="Auto-declines" />
+            </div>
+          }
+        >
+          Create
+        </SplitButton>
+      </div>
+    </Scene>
+  )
+}
+
+/* Banking — Send money with async verify */
+function SceneBanking() {
+  return (
+    <Scene
+      product="Banking · Wise-shaped"
+      why="Irreversible + sensitive. Solid + lg + onClickAsync. The user sees the confirm cycle, then it rests."
+    >
+      <div className="flex items-center justify-between gap-ds-03">
+        <div className="flex flex-col gap-ds-01">
+          <Text variant="body-xs" className="text-surface-fg-subtle">
+            To: Yogin Sharma · UPI yogin@axl
+          </Text>
+          <Text variant="heading-sm" className="text-surface-fg">
+            ₹84,000
+          </Text>
+        </div>
+        <Button
+          size="lg"
+          onClickAsync={async () => {
+            await sleep(1600)
+          }}
+        >
+          Verify + send
+        </Button>
+      </div>
+    </Scene>
+  )
+}
+
+/* DevOps — Deploy with urgent processing */
+function SceneDeploy() {
+  return (
+    <Scene
+      product="DevOps · Vercel-shaped"
+      why="Long-running with high stakes. Processing='urgent' keeps the dotted border alive; processingDisabled=false lets the user roll back."
+    >
+      <div className="flex items-center justify-between gap-ds-03">
+        <div className="flex flex-col gap-ds-01 min-w-0">
+          <Text variant="body-xs" className="text-surface-fg-subtle font-mono">
+            shilp-sutra-site@b8eb960
+          </Text>
+          <Text variant="body-sm" className="text-surface-fg">
+            Building · 1m 14s
+          </Text>
+        </div>
+        <ButtonGroup size="sm">
+          <Button variant="outline">Logs</Button>
+          <Button processing="urgent" processingDisabled={false} startIcon={<IconRocket size={12} />}>
+            Deploying
+          </Button>
+        </ButtonGroup>
+      </div>
+    </Scene>
+  )
+}
+
+/* Notes — New page with templates */
+function SceneNotes() {
+  return (
+    <Scene
+      product="Notes · Notion-shaped"
+      why="One primary, many cousins. SplitButton again — but this time the dropdown is content variety, not delivery options."
+    >
+      <div className="flex items-center justify-between gap-ds-03">
+        <div className="flex flex-col gap-ds-01">
+          <Text variant="body-xs" className="text-surface-fg-subtle">
+            Workspace · Devalok
+          </Text>
+          <Text variant="body-sm" className="text-surface-fg">
+            Recent · 12 pages
+          </Text>
+        </div>
+        <SplitButton
+          variant="soft"
+          color="accent"
+          size="sm"
+          onClick={() => {}}
+          dropdownLabel="Page templates"
+          dropdownContent={
+            <div className="flex flex-col gap-ds-01 p-ds-02 min-w-[12rem]">
+              <DropdownLink icon={<IconPlus size={14} />} label="Blank page" hint="" />
+              <DropdownLink icon={<IconPlus size={14} />} label="Meeting notes" hint="Agenda + decisions" />
+              <DropdownLink icon={<IconPlus size={14} />} label="Project brief" hint="Devalok template" />
+              <DropdownLink icon={<IconBrandGithub size={14} />} label="From GitHub README" hint="" />
+            </div>
+          }
+        >
+          New page
+        </SplitButton>
+      </div>
+    </Scene>
+  )
+}
+
+/* Commerce — Add to cart with quick-buy */
+function SceneCommerce() {
+  return (
+    <Scene
+      product="Commerce · Stripe Checkout-shaped"
+      why="Two-emphasis row. Soft + outline pair: equal weight, different priority signalled by tone alone."
+    >
+      <div className="flex items-center justify-between gap-ds-03">
+        <div className="flex flex-col gap-ds-01">
+          <Text variant="body-xs" className="text-surface-fg-subtle">
+            Linen kurta · Tulsi · size M
+          </Text>
+          <Text variant="body-sm" className="text-surface-fg">
+            ₹5,200
+          </Text>
+        </div>
+        <div className="flex items-center gap-ds-02">
+          <Button variant="outline" size="sm">
+            Add to bag
+          </Button>
+          <Button size="sm" endIcon={<IconArrowRight size={14} />}>
+            Buy now
+          </Button>
+        </div>
+      </div>
+    </Scene>
   )
 }
 
 /* -----------------------------------------------------------------------
  * Shared widgets
  * --------------------------------------------------------------------- */
+
+function DropdownLink({
+  icon,
+  label,
+  hint,
+}: {
+  icon: React.ReactNode
+  label: string
+  hint: string
+}) {
+  return (
+    <button
+      type="button"
+      className="flex items-center gap-ds-03 px-ds-03 py-ds-02 rounded-ds-sm text-left hover:bg-surface-raised-hover transition-colors duration-fast-01"
+    >
+      <span className="text-surface-fg-subtle shrink-0">{icon}</span>
+      <span className="flex flex-col flex-1 min-w-0">
+        <span className="text-ds-sm text-surface-fg">{label}</span>
+        {hint && <span className="text-ds-xs text-surface-fg-subtle">{hint}</span>}
+      </span>
+      <IconChevronRight size={12} className="text-surface-fg-subtle" />
+    </button>
+  )
+}
 
 function DemoCard({
   title,
@@ -335,11 +623,6 @@ function DemoCard({
   )
 }
 
-/**
- * Segmented switch — accessible tablist with a sliding accent pill behind
- * the active option. Used everywhere we have small option groups so state
- * changes feel like sliding doors, not flickering toggles.
- */
 function SegmentedSwitch<T extends string>({
   options,
   value,

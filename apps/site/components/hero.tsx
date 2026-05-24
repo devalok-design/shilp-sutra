@@ -37,6 +37,8 @@ export function Hero() {
             v0.39 live
           </span>
           <span>·</span>
+          <span>Open source · MIT</span>
+          <span>·</span>
           <span>Free, forever</span>
           <span>·</span>
           <span>Built into your AI editor</span>

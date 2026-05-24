@@ -233,7 +233,8 @@ function useTweenedPalette(target: AuroraPalette, durationMs: number): AuroraPal
     rafRef.current = requestAnimationFrame(tick)
 
     return () => cancelAnimationFrame(rafRef.current)
-    // eslint-disable-next-line react-hooks/exhaustive-deps
+    // `shown` intentionally omitted from deps — it changes every RAF frame
+    // and re-running this effect on each frame would cancel the tween.
   }, [target, durationMs])
 
   return shown

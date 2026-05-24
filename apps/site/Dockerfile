@@ -8,6 +8,8 @@
 FROM node:22-alpine AS builder
 WORKDIR /repo
 
+ENV BUILD_STANDALONE=1
+
 # pnpm via corepack — pinned in pnpm-lock.yaml via packageManager field
 RUN corepack enable && corepack prepare pnpm@latest --activate
 

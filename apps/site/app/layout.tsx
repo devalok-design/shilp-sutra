@@ -1,4 +1,5 @@
 import type { Metadata, Viewport } from 'next'
+import { BrandInit } from '@/components/brand-init'
 import { ThemeInit } from '@/components/theme-init'
 import './globals.css'
 
@@ -53,6 +54,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
   return (
     <html lang="en" suppressHydrationWarning>
       <head>
+        <BrandInit />
         <ThemeInit />
       </head>
       <body className="min-h-screen flex flex-col">{children}</body>

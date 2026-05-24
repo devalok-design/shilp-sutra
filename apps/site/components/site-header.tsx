@@ -1,6 +1,7 @@
 import Link from 'next/link'
 import { IconBrandGithub } from '@tabler/icons-react'
 import { Button } from '@devalok/shilp-sutra/ui/button'
+import { BrandSwitcher } from './brand-switcher'
 import { ThemeToggle } from './theme-toggle'
 
 const navLinks = [
@@ -34,6 +35,8 @@ export function SiteHeader() {
         </nav>
 
         <div className="flex items-center gap-ds-02">
+          <BrandSwitcher />
+          <ThemeToggle />
           <a
             href="https://github.com/devalok-design/shilp-sutra"
             target="_blank"
@@ -45,7 +48,6 @@ export function SiteHeader() {
               <IconBrandGithub size={18} />
             </Button>
           </a>
-          <ThemeToggle />
         </div>
       </div>
     </header>

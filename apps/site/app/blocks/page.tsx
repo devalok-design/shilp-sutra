@@ -39,7 +39,7 @@ export default function BlocksIndexPage() {
                 <li key={b.slug}>
                   <Link
                     href={`/blocks/${b.slug}`}
-                    className="flex flex-col gap-ds-04 h-full p-ds-06 rounded-ds-md border border-surface-border-subtle bg-surface-raised hover:border-surface-border hover:bg-surface-raised-hover transition-colors duration-fast-01 group"
+                    className="group flex flex-col gap-ds-04 h-full p-ds-06 rounded-ds-md border border-surface-border-subtle bg-surface-raised shadow-raised hover:border-surface-border-strong hover:shadow-raised-hover hover:-translate-y-px transition-[box-shadow,border-color,translate] duration-fast-02 ease-productive-standard focus-visible:outline-hidden focus-visible:ring-2 focus-visible:ring-accent-9 focus-visible:ring-offset-2 focus-visible:ring-offset-surface-base"
                   >
                     <div className="flex items-start justify-between gap-ds-03">
                       <Text variant="heading-md" className="text-surface-fg">

@@ -21,7 +21,7 @@ export function ShowcasePicker({ currentSlug }: { currentSlug: string }) {
           <li key={e.slug}>
             <Link
               href={`/showcase/${e.slug}`}
-              className="flex flex-col gap-ds-03 h-full p-ds-05 rounded-ds-md border border-surface-border-subtle bg-surface-raised hover:border-surface-border transition-colors duration-fast-01 group focus-visible:outline-hidden focus-visible:ring-2 focus-visible:ring-accent-9 focus-visible:ring-offset-2 focus-visible:ring-offset-surface-base"
+              className="group flex flex-col gap-ds-03 h-full p-ds-05 rounded-ds-md border border-surface-border-subtle bg-surface-raised shadow-raised hover:border-surface-border-strong hover:shadow-raised-hover hover:-translate-y-px transition-[box-shadow,border-color,translate] duration-fast-02 ease-productive-standard focus-visible:outline-hidden focus-visible:ring-2 focus-visible:ring-accent-9 focus-visible:ring-offset-2 focus-visible:ring-offset-surface-base"
             >
               <header className="flex items-center justify-between gap-ds-02">
                 <Text variant="label-sm" className="text-surface-fg-subtle">

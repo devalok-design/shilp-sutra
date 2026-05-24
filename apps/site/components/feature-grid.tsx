@@ -40,7 +40,7 @@ export function FeatureGrid() {
           {features.map((f) => (
             <article
               key={f.title}
-              className="flex flex-col gap-ds-03 p-ds-06 rounded-ds-md bg-surface-raised border border-surface-border-subtle hover:border-surface-border transition-colors duration-fast-01"
+              className="flex flex-col gap-ds-03 p-ds-06 rounded-ds-md bg-surface-raised border border-surface-border-subtle shadow-raised hover:border-surface-border-strong hover:shadow-raised-hover hover:-translate-y-px transition-[box-shadow,border-color,translate] duration-fast-02 ease-productive-standard"
             >
               <div className="w-9 h-9 rounded-ds-sm bg-accent-3 text-accent-11 flex items-center justify-center">
                 <f.icon size={18} />

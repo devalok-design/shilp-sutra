@@ -147,13 +147,18 @@ export function LandingSurface() {
                         initial={a.isNew ? { opacity: 0, y: -6, height: 0 } : false}
                         animate={{ opacity: 1, y: 0, height: 'auto' }}
                         transition={{ type: 'spring', stiffness: 350, damping: 30 }}
-                        className="flex items-start gap-ds-03 py-ds-03 border-b border-surface-border-subtle last:border-b-0"
+                        className={[
+                          'flex items-start gap-ds-03 py-ds-03 border-b border-surface-border-subtle last:border-b-0',
+                          a.isNew && 'border-l-2 border-l-accent-9 pl-ds-03 bg-accent-2',
+                        ]
+                          .filter(Boolean)
+                          .join(' ')}
                       >
                         <Avatar size="sm">
                           <AvatarFallback>{a.initials}</AvatarFallback>
                         </Avatar>
                         <div className="flex flex-col flex-1 min-w-0">
-                          <Text variant="body-sm" className="text-surface-fg">
+                          <Text variant="body-sm" className="text-surface-fg line-clamp-2">
                             <span className="font-medium">{a.who}</span>{' '}
                             <span className="text-surface-fg-muted">{a.what}</span>
                           </Text>

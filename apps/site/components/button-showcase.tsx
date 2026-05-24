@@ -203,12 +203,12 @@ function Scene({
   children: React.ReactNode
 }) {
   return (
-    <article className="flex flex-col gap-ds-04 p-ds-05 rounded-ds-md border border-surface-border-subtle bg-surface-raised">
+    <article className="flex flex-col gap-ds-04 p-ds-05b rounded-ds-md border border-surface-border-subtle bg-surface-raised shadow-raised hover:border-surface-border-strong hover:shadow-raised-hover hover:-translate-y-px transition-[box-shadow,border-color,translate] duration-fast-02 ease-productive-standard">
       <header className="flex flex-col gap-ds-01">
         <Text variant="label-sm" className="text-surface-fg-subtle">
           {product}
         </Text>
-        <Text variant="body-sm" className="text-surface-fg-muted">
+        <Text variant="body-sm" className="text-surface-fg-muted line-clamp-2">
           {why}
         </Text>
       </header>
@@ -607,7 +607,7 @@ function DemoCard({
   children: React.ReactNode
 }) {
   return (
-    <article className="flex flex-col gap-ds-04 p-ds-06 rounded-ds-md border border-surface-border-subtle bg-surface-raised">
+    <article className="flex flex-col gap-ds-04 p-ds-06 rounded-ds-md border border-surface-border-subtle bg-surface-raised shadow-raised hover:border-surface-border-strong hover:shadow-raised-hover hover:-translate-y-px transition-[box-shadow,border-color,translate] duration-fast-02 ease-productive-standard">
       <header className="flex flex-col gap-ds-01">
         <Text variant="heading-sm" className="text-surface-fg">
           {title}

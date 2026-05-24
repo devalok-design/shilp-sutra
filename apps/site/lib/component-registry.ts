@@ -125,3 +125,15 @@ export async function findLayerForSlug(slug: string): Promise<Layer | null> {
   }
   return null
 }
+
+/**
+ * Extracts the first fenced code block under the `## Example` heading.
+ * Used by the Preview/Code tabs on the component detail page so the
+ * "Code" tab shows the exact example committed in docs/components/.
+ */
+export function extractExampleCode(raw: string): string | null {
+  const exampleSection = raw.match(/##\s+Example[\s\S]*?(?=\n##\s|$)/)
+  if (!exampleSection) return null
+  const fence = exampleSection[0].match(/```(?:\w+)?\n([\s\S]*?)\n```/)
+  return fence?.[1].trim() ?? null
+}

@@ -142,6 +142,7 @@ export function VaidyaShowcase() {
                     onClick={() => setSelectedSlot(s.time)}
                     className={[
                       'relative flex items-center justify-center gap-ds-02 h-10 rounded-ds-md border text-ds-sm transition-colors duration-fast-01',
+                      'focus-visible:outline-hidden focus-visible:ring-2 focus-visible:ring-accent-9',
                       !s.available && 'border-surface-border-subtle text-surface-fg-subtle line-through cursor-not-allowed',
                       s.available && 'border-surface-border-subtle text-surface-fg hover:border-accent-9 hover:bg-accent-2',
                     ]

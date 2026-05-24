@@ -109,7 +109,7 @@ export function ComponentGrid({ items }: { items: ComponentMeta[] }) {
             <li key={`${item.layer}/${item.slug}`}>
               <Link
                 href={`/components/${item.slug}`}
-                className="flex flex-col gap-ds-03 h-full p-ds-05 rounded-ds-md border border-surface-border-subtle bg-surface-raised hover:border-surface-border hover:bg-surface-raised-hover transition-colors duration-fast-01 group"
+                className="flex flex-col gap-ds-03 h-full p-ds-05 rounded-ds-md border border-surface-border-subtle bg-surface-raised hover:border-surface-border hover:bg-surface-raised-hover transition-colors duration-fast-01 group focus-visible:outline-hidden focus-visible:ring-2 focus-visible:ring-accent-9 focus-visible:ring-offset-2 focus-visible:ring-offset-surface-base"
               >
                 <div className="flex items-start justify-between gap-ds-03">
                   <Text variant="heading-sm" className="text-surface-fg">

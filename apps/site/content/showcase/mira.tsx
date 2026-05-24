@@ -128,7 +128,7 @@ export function MiraShowcase() {
                   aria-label={c.name}
                   aria-pressed={active}
                   onClick={() => setColour(c.id)}
-                  className="relative w-9 h-9 rounded-full border border-surface-border-subtle hover:scale-105 transition-transform duration-fast-01"
+                  className="relative w-9 h-9 rounded-full border border-surface-border-subtle hover:scale-105 transition-transform duration-fast-01 focus-visible:outline-hidden focus-visible:ring-2 focus-visible:ring-accent-9 focus-visible:ring-offset-2 focus-visible:ring-offset-surface-base"
                   style={{ background: c.value }}
                 >
                   {active && (
@@ -164,7 +164,7 @@ export function MiraShowcase() {
                   key={s}
                   type="button"
                   onClick={() => setSize(s)}
-                  className="relative min-w-10 h-10 px-ds-03 rounded-ds-md border border-surface-border-subtle text-ds-sm text-surface-fg-muted hover:border-surface-border transition-colors duration-fast-01"
+                  className="relative min-w-10 h-10 px-ds-03 rounded-ds-md border border-surface-border-subtle text-ds-sm text-surface-fg-muted hover:border-surface-border transition-colors duration-fast-01 focus-visible:outline-hidden focus-visible:ring-2 focus-visible:ring-accent-9 focus-visible:ring-offset-2 focus-visible:ring-offset-surface-base"
                 >
                   {active && (
                     <motion.span

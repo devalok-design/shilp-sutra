@@ -4,9 +4,15 @@ import { notFound } from 'next/navigation'
 import { IconArrowUpRight, IconShieldCheck } from '@tabler/icons-react'
 import { Text } from '@devalok/shilp-sutra/ui/text'
 import { Markdown } from '@/components/markdown'
+import { PreviewCodeTabs } from '@/components/preview-code-tabs'
 import { SiteFooter } from '@/components/site-footer'
 import { SiteHeader } from '@/components/site-header'
-import { findLayerForSlug, getComponentDocRaw, getRegistry } from '@/lib/component-registry'
+import {
+  extractExampleCode,
+  findLayerForSlug,
+  getComponentDocRaw,
+  getRegistry,
+} from '@/lib/component-registry'
 import { getPreview, hasPreview } from '@/lib/preview-registry'
 
 export async function generateStaticParams() {
@@ -44,6 +50,7 @@ export default async function ComponentDetailPage({ params }: { params: Promise<
   const stripped = raw.replace(/^#\s+.+$/m, '').replace(/^([-*]\s+.+\n)+/m, '').trim()
 
   const preview = hasPreview(slug) ? getPreview(slug) : null
+  const exampleCode = extractExampleCode(raw)
 
   return (
     <>
@@ -92,9 +99,7 @@ export default async function ComponentDetailPage({ params }: { params: Promise<
                 <Text id="preview" variant="heading-md" className="text-surface-fg mb-ds-04">
                   Preview
                 </Text>
-                <div className="p-ds-08 rounded-ds-md border border-surface-border bg-surface-base">
-                  <preview.Hero />
-                </div>
+                <PreviewCodeTabs preview={<preview.Hero />} code={exampleCode} />
               </section>
               {preview.Variants && (
                 <section aria-labelledby="variants" className="mb-ds-09">

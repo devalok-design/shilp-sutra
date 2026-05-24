@@ -650,6 +650,7 @@ function SegmentedSwitch<T extends string>({
               onClick={() => onChange(opt.id)}
               className={[
                 'relative z-[1] px-ds-03 py-ds-02 rounded-ds-sm text-ds-xs font-medium transition-colors duration-fast-01',
+                'focus-visible:outline-hidden focus-visible:ring-2 focus-visible:ring-accent-9',
                 active ? 'text-accent-11' : 'text-surface-fg-muted hover:text-surface-fg',
               ].join(' ')}
             >

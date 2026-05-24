@@ -48,7 +48,7 @@ export function BrandShowcase() {
             key={b.slug}
             href={`/showcase/${b.slug}`}
             style={rampInlineStyle(b.hue, b.chroma)}
-            className="flex flex-col gap-ds-04 p-ds-05 rounded-ds-md border border-surface-border-subtle bg-surface-raised hover:border-accent-9 transition-colors duration-fast-01 group"
+            className="flex flex-col gap-ds-04 p-ds-05 rounded-ds-md border border-surface-border-subtle bg-surface-raised hover:border-accent-9 transition-colors duration-fast-01 group focus-visible:outline-hidden focus-visible:ring-2 focus-visible:ring-accent-9 focus-visible:ring-offset-2 focus-visible:ring-offset-surface-base"
           >
             <header className="flex items-center justify-between gap-ds-02">
               <Text variant="label-sm" className="text-surface-fg-subtle">

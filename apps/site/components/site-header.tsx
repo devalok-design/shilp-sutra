@@ -84,8 +84,10 @@ export function SiteHeader() {
         <div
           className={[
             'flex items-center justify-between gap-ds-02 sm:gap-ds-03',
-            // Logo gets more breathing room on the left; controls hug the right edge.
-            'pl-ds-06 pr-ds-02 sm:pl-ds-07 sm:pr-ds-02 py-ds-02',
+            // 10px corners no longer need the extra inset that the full-pill
+            // version required — left padding back to a normal value, symmetric
+            // with the right side's button-relative padding.
+            'pl-ds-04 pr-ds-02 sm:pl-ds-05 sm:pr-ds-02 py-ds-02',
             // Rounded rectangle — 10px corners on a ~56px bar reads clearly
             // as a rectangle, not a pill. Earlier 24px (rounded-ds-2xl) was
             // still half the bar height and looked capsule-y.

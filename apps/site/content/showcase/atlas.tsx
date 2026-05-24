@@ -151,19 +151,18 @@ export function AtlasShowcase() {
             <CardTitle className="text-[length:var(--typo-heading-sm-size)]">Your team</CardTitle>
           </CardHeader>
           <CardContent>
-            <ul className="flex flex-col gap-ds-04">
+            <ul className="flex flex-col">
               {team.map((m) => (
-                <li key={m.name} className="flex items-center gap-ds-03">
+                <li
+                  key={m.name}
+                  className="group/row flex items-center gap-ds-03 px-ds-02 -mx-ds-02 py-ds-02 rounded-ds-md hover:bg-surface-raised-hover transition-colors duration-fast-02 ease-productive-standard cursor-pointer"
+                >
                   <Avatar size="sm">
                     <AvatarFallback>{m.initials}</AvatarFallback>
                   </Avatar>
                   <div className="flex flex-col min-w-0">
-                    <Text variant="body-sm" className="text-surface-fg truncate">
-                      {m.name}
-                    </Text>
-                    <Text variant="body-xs" className="text-surface-fg-subtle truncate">
-                      {m.status}
-                    </Text>
+                    <span className="text-ds-md text-surface-fg font-semibold line-clamp-1">{m.name}</span>
+                    <span className="text-ds-xs text-surface-fg-subtle mt-ds-01 line-clamp-1">{m.status}</span>
                   </div>
                 </li>
               ))}
@@ -190,14 +189,10 @@ export function AtlasShowcase() {
 function StatTile({ label, value, hint }: { label: string; value: string; hint: string }) {
   return (
     <Card>
-      <CardContent className="flex flex-col gap-ds-01 pt-ds-04">
-        <Text variant="label-sm" className="text-surface-fg-subtle">
-          {label}
-        </Text>
-        <Text variant="heading-xl" className="text-surface-fg">
-          {value}
-        </Text>
-        <span className="inline-flex items-center gap-ds-02 text-ds-xs text-success-11">
+      <CardContent className="flex flex-col pt-ds-04">
+        <span className="text-ds-xs text-surface-fg-subtle">{label}</span>
+        <span className="text-ds-2xl text-surface-fg font-semibold leading-none mt-ds-02">{value}</span>
+        <span className="inline-flex items-center gap-ds-02 text-ds-xs text-success-11 mt-ds-02">
           <IconCheck size={10} />
           {hint}
         </span>
@@ -216,17 +211,13 @@ function NextItem({
   when: string
 }) {
   return (
-    <div className="flex items-start gap-ds-03">
+    <div className="group/row flex items-start gap-ds-03 px-ds-02 -mx-ds-02 py-ds-02 rounded-ds-md hover:bg-surface-raised-hover transition-colors duration-fast-02 ease-productive-standard cursor-pointer">
       <span className="w-8 h-8 rounded-ds-sm bg-accent-3 text-accent-11 flex items-center justify-center shrink-0">
         <Icon size={14} />
       </span>
       <div className="flex flex-col min-w-0 flex-1">
-        <Text variant="body-sm" className="text-surface-fg">
-          {title}
-        </Text>
-        <Text variant="body-xs" className="text-surface-fg-subtle">
-          {when}
-        </Text>
+        <span className="text-ds-md text-surface-fg font-semibold line-clamp-1">{title}</span>
+        <span className="text-ds-xs text-surface-fg-subtle mt-ds-01">{when}</span>
       </div>
     </div>
   )

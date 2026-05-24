@@ -116,13 +116,11 @@ export function PricingBlock() {
               </div>
             </CardHeader>
             <CardContent>
-              <ul className="flex flex-col gap-ds-03">
+              <ul className="flex flex-col gap-ds-02">
                 {tier.features.map((f) => (
-                  <li key={f} className="flex items-start gap-ds-02">
-                    <IconCheck size={14} className="mt-1 text-accent-11 shrink-0" />
-                    <Text variant="body-sm" className="text-surface-fg-muted">
-                      {f}
-                    </Text>
+                  <li key={f} className="flex items-start gap-ds-03">
+                    <IconCheck size={14} className="mt-[0.2em] text-accent-11 shrink-0" />
+                    <span className="text-ds-sm text-surface-fg-subtle">{f}</span>
                   </li>
                 ))}
               </ul>

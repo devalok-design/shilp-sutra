@@ -74,17 +74,15 @@ export function DevalokShowcase() {
             <CardDescription>Six practices, one philosophy.</CardDescription>
           </CardHeader>
           <CardContent>
-            <ul className="grid grid-cols-1 sm:grid-cols-2 gap-ds-03">
+            <ul className="grid grid-cols-1 sm:grid-cols-2 gap-ds-02">
               {services.map((s) => (
                 <li
                   key={s.name}
-                  className="flex items-center justify-between gap-ds-03 p-ds-03 rounded-ds-md bg-surface-overlay border border-surface-border-subtle"
+                  className="group/row flex items-center justify-between gap-ds-03 p-ds-03 rounded-ds-md bg-surface-overlay border border-transparent hover:border-surface-border-strong transition-colors duration-fast-02 ease-productive-standard cursor-pointer"
                 >
-                  <div className="flex items-center gap-ds-03">
-                    <IconCircleCheck size={14} className="text-accent-11" />
-                    <Text variant="body-sm" className="text-surface-fg">
-                      {s.name}
-                    </Text>
+                  <div className="flex items-center gap-ds-03 min-w-0">
+                    <IconCircleCheck size={14} className="text-accent-11 shrink-0" />
+                    <span className="text-ds-md text-surface-fg font-semibold line-clamp-1">{s.name}</span>
                   </div>
                   <Badge size="sm" variant="soft" color="neutral">
                     {s.tag}

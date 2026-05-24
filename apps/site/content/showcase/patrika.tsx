@@ -98,15 +98,16 @@ export function PatrikaShowcase() {
             <CardDescription>Vol. iv · Margins</CardDescription>
           </CardHeader>
           <CardContent>
-            <ul className="flex flex-col gap-ds-04">
+            <ul className="flex flex-col">
               {moreReading.map((m, i) => (
-                <li key={i} className="flex flex-col gap-ds-01">
-                  <Text variant="body-sm" className="text-surface-fg">
-                    {m.title}
-                  </Text>
-                  <Text variant="body-xs" className="text-surface-fg-subtle">
+                <li
+                  key={i}
+                  className="group/row flex flex-col gap-ds-01 px-ds-02 -mx-ds-02 py-ds-03 rounded-ds-md border-b border-surface-border-subtle last:border-b-0 hover:bg-surface-raised-hover transition-colors duration-fast-02 ease-productive-standard cursor-pointer"
+                >
+                  <span className="text-ds-md text-surface-fg font-semibold line-clamp-2">{m.title}</span>
+                  <span className="text-ds-xs text-surface-fg-subtle">
                     {m.author} · {m.read}
-                  </Text>
+                  </span>
                 </li>
               ))}
             </ul>

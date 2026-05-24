@@ -4,6 +4,7 @@ import { useMemo, useState } from 'react'
 import Link from 'next/link'
 import { IconArrowUpRight, IconSearch } from '@tabler/icons-react'
 import { Text } from '@devalok/shilp-sutra/ui/text'
+import { CARD_INTERACTIVE, CARD_TITLE } from '@/lib/card-recipe'
 import type { ComponentMeta, Layer } from '@/lib/component-registry'
 
 const LAYER_LABELS: Record<Layer | 'all', string> = {
@@ -107,22 +108,17 @@ export function ComponentGrid({ items }: { items: ComponentMeta[] }) {
         <ul className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-ds-04">
           {filtered.map((item) => (
             <li key={`${item.layer}/${item.slug}`}>
-              <Link
-                href={`/components/${item.slug}`}
-                className="group flex flex-col gap-ds-03 h-full p-ds-05 rounded-ds-md border border-surface-border-subtle bg-surface-raised hover:border-accent-9 hover:bg-surface-raised-hover hover:shadow-floating hover:-translate-y-1 transition-[box-shadow,border-color,translate,background-color] duration-fast-02 ease-productive-standard focus-visible:outline-hidden focus-visible:ring-2 focus-visible:ring-accent-9 focus-visible:ring-offset-2 focus-visible:ring-offset-surface-base"
-              >
+              <Link href={`/components/${item.slug}`} className={CARD_INTERACTIVE + ' flex flex-col gap-ds-03 h-full'}>
                 <div className="flex items-start justify-between gap-ds-03">
-                  <Text variant="heading-sm" className="text-surface-fg">
-                    {item.name}
-                  </Text>
+                  <h3 className={CARD_TITLE}>{item.name}</h3>
                   <IconArrowUpRight
                     size={16}
-                    className="text-surface-fg-subtle group-hover:text-surface-fg transition-colors duration-fast-01 shrink-0 mt-1"
+                    className="text-surface-fg-subtle group-hover:text-surface-fg group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-transform duration-fast-02 ease-productive-standard shrink-0 mt-1"
                   />
                 </div>
-                <code className="text-ds-xs font-mono text-surface-fg-muted truncate">{item.importPath}</code>
-                <div className="flex flex-wrap items-center gap-ds-02 mt-auto">
-                  <span className="inline-flex items-center px-ds-02 py-[1px] rounded-ds-sm bg-surface-overlay text-ds-xs text-surface-fg-muted font-mono">
+                <code className="text-ds-xs font-mono text-surface-fg-subtle truncate">{item.importPath}</code>
+                <div className="flex flex-wrap items-center gap-ds-02 mt-auto pt-ds-02">
+                  <span className="inline-flex items-center px-ds-02 py-[1px] rounded-ds-sm bg-surface-overlay text-ds-xs text-surface-fg-subtle font-mono">
                     {item.layer}
                   </span>
                   {item.serverSafe && (

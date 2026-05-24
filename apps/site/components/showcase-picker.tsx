@@ -1,6 +1,7 @@
 import Link from 'next/link'
 import { IconArrowUpRight } from '@tabler/icons-react'
 import { Text } from '@devalok/shilp-sutra/ui/text'
+import { CARD_EYEBROW, CARD_INTERACTIVE, CARD_TITLE } from '@/lib/card-recipe'
 import { getAllShowcases } from '@/lib/showcase-registry'
 
 export function ShowcasePicker({ currentSlug }: { currentSlug: string }) {
@@ -19,31 +20,25 @@ export function ShowcasePicker({ currentSlug }: { currentSlug: string }) {
       <ul className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-ds-04">
         {others.map((e) => (
           <li key={e.slug}>
-            <Link
-              href={`/showcase/${e.slug}`}
-              className="group flex flex-col gap-ds-03 h-full p-ds-05 rounded-ds-md border border-surface-border-subtle bg-surface-raised hover:border-accent-9 hover:bg-surface-raised-hover hover:shadow-floating hover:-translate-y-1 transition-[box-shadow,border-color,translate,background-color] duration-fast-02 ease-productive-standard focus-visible:outline-hidden focus-visible:ring-2 focus-visible:ring-accent-9 focus-visible:ring-offset-2 focus-visible:ring-offset-surface-base"
-            >
+            <Link href={`/showcase/${e.slug}`} className={CARD_INTERACTIVE + ' flex flex-col gap-ds-03 h-full'}>
               <header className="flex items-center justify-between gap-ds-02">
-                <Text variant="label-sm" className="text-surface-fg-subtle">
-                  {e.industry.split(' · ')[0]}
-                </Text>
+                <span className={CARD_EYEBROW + ' mb-0'}>{e.industry.split(' · ')[0]}</span>
                 <span
                   aria-hidden
-                  className="w-4 h-4 rounded-full border border-surface-border-subtle shrink-0"
+                  className="w-4 h-4 rounded-full border border-surface-border shrink-0"
                   style={{ background: `oklch(0.55 ${e.chroma} ${e.hue})` }}
                 />
               </header>
               <div className="flex flex-col gap-ds-01">
-                <Text variant="heading-sm" className="text-surface-fg">
-                  {e.product}
-                </Text>
-                <Text variant="body-xs" className="text-surface-fg-muted">
-                  {e.tagline}
-                </Text>
+                <h3 className={CARD_TITLE}>{e.product}</h3>
+                <p className="text-ds-xs text-surface-fg-subtle line-clamp-2">{e.tagline}</p>
               </div>
               <span className="mt-auto inline-flex items-center gap-ds-02 text-ds-xs text-accent-11 group-hover:underline underline-offset-2">
                 See it
-                <IconArrowUpRight size={12} />
+                <IconArrowUpRight
+                  size={12}
+                  className="transition-transform duration-fast-02 ease-productive-standard group-hover:translate-x-0.5"
+                />
               </span>
             </Link>
           </li>

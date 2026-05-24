@@ -30,6 +30,7 @@ import { Button } from '@devalok/shilp-sutra/ui/button'
 import { ButtonGroup } from '@devalok/shilp-sutra/ui/button-group'
 import { SplitButton } from '@devalok/shilp-sutra/ui/split-button'
 import { Text } from '@devalok/shilp-sutra/ui/text'
+import { CARD_EYEBROW, CARD_RESTING } from '@/lib/card-recipe'
 
 const sleep = (ms: number) => new Promise<void>((r) => setTimeout(r, ms))
 
@@ -203,16 +204,12 @@ function Scene({
   children: React.ReactNode
 }) {
   return (
-    <article className="flex flex-col gap-ds-04 p-ds-05b rounded-ds-md border border-surface-border-subtle bg-surface-raised hover:border-accent-9 hover:bg-surface-raised-hover hover:shadow-floating hover:-translate-y-1 transition-[box-shadow,border-color,translate,background-color] duration-fast-02 ease-productive-standard">
-      <header className="flex flex-col gap-ds-01">
-        <Text variant="label-sm" className="text-surface-fg-subtle">
-          {product}
-        </Text>
-        <Text variant="body-sm" className="text-surface-fg-muted line-clamp-2">
-          {why}
-        </Text>
+    <article className={CARD_RESTING + ' flex flex-col gap-ds-04'}>
+      <header className="flex flex-col gap-ds-02">
+        <span className={CARD_EYEBROW + ' mb-0'}>{product}</span>
+        <p className="text-ds-sm text-surface-fg-subtle line-clamp-2">{why}</p>
       </header>
-      <div className="rounded-ds-sm bg-surface-overlay border border-surface-border-subtle p-ds-04">
+      <div className="rounded-ds-md bg-surface-overlay border border-surface-border-subtle p-ds-04">
         {children}
       </div>
     </article>
@@ -607,14 +604,10 @@ function DemoCard({
   children: React.ReactNode
 }) {
   return (
-    <article className="flex flex-col gap-ds-04 p-ds-06 rounded-ds-md border border-surface-border-subtle bg-surface-raised hover:border-accent-9 hover:bg-surface-raised-hover hover:shadow-floating hover:-translate-y-1 transition-[box-shadow,border-color,translate,background-color] duration-fast-02 ease-productive-standard">
-      <header className="flex flex-col gap-ds-01">
-        <Text variant="heading-sm" className="text-surface-fg">
-          {title}
-        </Text>
-        <Text variant="body-sm" className="text-surface-fg-muted">
-          {caption}
-        </Text>
+    <article className={CARD_RESTING + ' flex flex-col gap-ds-04'}>
+      <header className="flex flex-col gap-ds-02">
+        <h3 className="text-ds-md text-surface-fg font-semibold">{title}</h3>
+        <p className="text-ds-sm text-surface-fg-subtle">{caption}</p>
       </header>
       <div className="flex flex-col items-start gap-ds-03 min-h-[96px] justify-center pt-ds-02">
         {children}

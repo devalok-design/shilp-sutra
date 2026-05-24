@@ -1,5 +1,6 @@
 import { IconBolt, IconHeart, IconPalette, IconSparkles } from '@tabler/icons-react'
 import { Text } from '@devalok/shilp-sutra/ui/text'
+import { CARD_RESTING } from '@/lib/card-recipe'
 
 const features = [
   {
@@ -38,19 +39,12 @@ export function FeatureGrid() {
         </div>
         <div className="grid grid-cols-1 md:grid-cols-2 gap-ds-06">
           {features.map((f) => (
-            <article
-              key={f.title}
-              className="flex flex-col gap-ds-03 p-ds-06 rounded-ds-md bg-surface-raised border border-surface-border-subtle hover:border-accent-9 hover:bg-surface-raised-hover hover:shadow-floating hover:-translate-y-1 transition-[box-shadow,border-color,translate,background-color] duration-fast-02 ease-productive-standard"
-            >
+            <article key={f.title} className={CARD_RESTING + ' flex flex-col gap-ds-03'}>
               <div className="w-9 h-9 rounded-ds-sm bg-accent-3 text-accent-11 flex items-center justify-center">
                 <f.icon size={18} />
               </div>
-              <Text variant="heading-sm" className="text-surface-fg">
-                {f.title}
-              </Text>
-              <Text variant="body-sm" className="text-surface-fg-muted">
-                {f.body}
-              </Text>
+              <h3 className="text-ds-md text-surface-fg font-semibold">{f.title}</h3>
+              <p className="text-ds-sm text-surface-fg-subtle">{f.body}</p>
             </article>
           ))}
         </div>

@@ -4,6 +4,7 @@ import { IconArrowRight } from '@tabler/icons-react'
 import { Text } from '@devalok/shilp-sutra/ui/text'
 import { SiteFooter } from '@/components/site-footer'
 import { SiteHeader } from '@/components/site-header'
+import { CARD_EYEBROW, CARD_INTERACTIVE, CARD_TITLE } from '@/lib/card-recipe'
 import { getAllBlocks } from '@/lib/blocks-registry'
 
 export const metadata: Metadata = {
@@ -37,27 +38,23 @@ export default function BlocksIndexPage() {
             <ul className="grid grid-cols-1 md:grid-cols-2 gap-ds-05">
               {blocks.map((b) => (
                 <li key={b.slug}>
-                  <Link
-                    href={`/blocks/${b.slug}`}
-                    className="group flex flex-col gap-ds-04 h-full p-ds-06 rounded-ds-md border border-surface-border-subtle bg-surface-raised hover:border-accent-9 hover:bg-surface-raised-hover hover:shadow-floating hover:-translate-y-1 transition-[box-shadow,border-color,translate,background-color] duration-fast-02 ease-productive-standard focus-visible:outline-hidden focus-visible:ring-2 focus-visible:ring-accent-9 focus-visible:ring-offset-2 focus-visible:ring-offset-surface-base"
-                  >
-                    <div className="flex items-start justify-between gap-ds-03">
-                      <Text variant="heading-md" className="text-surface-fg">
-                        {b.title}
-                      </Text>
-                      <IconArrowRight
-                        size={16}
-                        className="text-surface-fg-subtle group-hover:translate-x-1 group-hover:text-surface-fg transition-all duration-fast-01"
-                      />
-                    </div>
-                    <Text variant="body-sm" className="text-surface-fg-muted">
-                      {b.description}
-                    </Text>
-                    <div className="flex flex-wrap gap-ds-01 mt-auto">
-                      {b.tags.map((t) => (
+                  <Link href={`/blocks/${b.slug}`} className={CARD_INTERACTIVE + ' flex flex-col gap-ds-04 h-full'}>
+                    <header className="flex flex-col gap-ds-01">
+                      <span className={CARD_EYEBROW + ' mb-0'}>Block · {b.tags[0] ?? 'pattern'}</span>
+                      <div className="flex items-start justify-between gap-ds-03">
+                        <h3 className={CARD_TITLE}>{b.title}</h3>
+                        <IconArrowRight
+                          size={16}
+                          className="text-surface-fg-subtle group-hover:translate-x-1 group-hover:text-surface-fg transition-transform duration-fast-02 ease-productive-standard shrink-0 mt-1"
+                        />
+                      </div>
+                    </header>
+                    <p className="text-ds-sm text-surface-fg-subtle line-clamp-2">{b.description}</p>
+                    <div className="flex flex-wrap gap-ds-01 mt-auto pt-ds-02">
+                      {b.tags.slice(1).map((t) => (
                         <span
                           key={t}
-                          className="inline-flex items-center px-ds-02 py-[1px] rounded-ds-sm bg-surface-overlay border border-surface-border-subtle text-ds-xs font-mono text-surface-fg-muted"
+                          className="inline-flex items-center px-ds-02 py-[1px] rounded-ds-sm bg-surface-overlay border border-surface-border-subtle text-ds-xs font-mono text-surface-fg-subtle"
                         >
                           {t}
                         </span>
